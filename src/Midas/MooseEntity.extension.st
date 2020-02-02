@@ -7,6 +7,12 @@ MooseEntity >> miFameExtension [
 ]
 
 { #category : #'*Midas' }
+MooseEntity >> miNavigationExtension [
+	<inspectorPresentationOrder: 0 title: 'Navigation'>
+	^ MiNavigationBrowser on: self
+]
+
+{ #category : #'*Midas' }
 MooseEntity >> miPropertiesExtension [
 	<inspectorPresentationOrder: 0 title: 'Moose Properties'>
 	^ MiPropertyBrowser on: self
