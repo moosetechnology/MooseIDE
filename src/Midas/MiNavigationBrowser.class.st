@@ -26,10 +26,11 @@ Internal Representation and Key Implementation Points.
 "
 Class {
 	#name : #MiNavigationBrowser,
-	#superclass : #SpPresenter,
+	#superclass : #StPresenter,
 	#instVars : [
+		'navigation',
 		'model',
-		'navigation'
+		'activationBlock'
 	],
 	#category : #Midas
 }
@@ -45,6 +46,18 @@ MiNavigationBrowser class >> buildCommandsGroupWith: presenter forRoot: aCmComma
 MiNavigationBrowser class >> defaultSpec [
 	^ SpBoxLayout newVertical
 		add: #navigation
+]
+
+{ #category : #accessing }
+MiNavigationBrowser >> connectPresenters [
+	navigation whenSelectionChangedDo: [ :selection | activationBlock cull: self ]
+]
+
+{ #category : #initialization }
+MiNavigationBrowser >> defineOutputPorts [
+	^ { 
+	SpSelectionPort newDelegate: [ navigation ].
+	SpActivationPort newDelegate: [ navigation ] }
 ]
 
 { #category : #initialization }
@@ -76,12 +89,24 @@ MiNavigationBrowser >> model: anObject [
 	model := anObject
 ]
 
+{ #category : #accessing }
+MiNavigationBrowser >> selectedItem [
+	^ navigation selection selectedItem value
+]
+
 { #category : #initialization }
 MiNavigationBrowser >> selectedObject [ 
 	^ navigation selection selectedItem value
 ]
 
-{ #category : #initialization }
-MiNavigationBrowser >> setModelBeforeInitialization: aModel [
-	self model: aModel
+{ #category : #accessing }
+MiNavigationBrowser >> setModelBeforeInitialization: anInspectionModel [ 
+
+	model := anInspectionModel
+]
+
+{ #category : #accessing }
+MiNavigationBrowser >> whenActivatedDo: aBlock [
+
+	activationBlock := aBlock
 ]
