@@ -95,8 +95,8 @@ MiNavigationBrowser >> selectedItem [
 ]
 
 { #category : #initialization }
-MiNavigationBrowser >> selectedObject [ 
-	^ navigation selection selectedItem value
+MiNavigationBrowser >> selectedObject [
+	^ navigation selectedItem
 ]
 
 { #category : #accessing }
