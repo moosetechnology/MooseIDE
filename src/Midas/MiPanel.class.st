@@ -21,6 +21,11 @@ MiPanel class >> open [
 	self new openWithSpec
 ]
 
+{ #category : #specs }
+MiPanel class >> title [
+	^ 'Midas Panel'
+]
+
 { #category : #initialization }
 MiPanel >> connectPresenters [
 	super connectPresenters models whenActivatedDo: [ :selection | details addPage: (self pageFrom: selection selectedItem) ]
