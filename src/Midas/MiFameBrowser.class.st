@@ -31,7 +31,7 @@ Class {
 		'model',
 		'fameDescription'
 	],
-	#category : #Midas
+	#category : #'Midas-Inspector'
 }
 
 { #category : #specs }

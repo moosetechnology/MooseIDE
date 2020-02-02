@@ -32,7 +32,7 @@ Class {
 		'model',
 		'activationBlock'
 	],
-	#category : #Midas
+	#category : #'Midas-Inspector'
 }
 
 { #category : #specs }

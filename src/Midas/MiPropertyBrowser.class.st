@@ -5,7 +5,7 @@ Class {
 		'properties',
 		'model'
 	],
-	#category : #Midas
+	#category : #'Midas-Inspector'
 }
 
 { #category : #specs }

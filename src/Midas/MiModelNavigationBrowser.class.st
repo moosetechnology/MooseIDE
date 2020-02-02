@@ -1,7 +1,7 @@
 Class {
 	#name : #MiModelNavigationBrowser,
 	#superclass : #MiNavigationBrowser,
-	#category : #Midas
+	#category : #'Midas-Inspector'
 }
 
 { #category : #initialization }
