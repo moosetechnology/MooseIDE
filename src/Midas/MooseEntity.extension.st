@@ -3,7 +3,7 @@ Extension { #name : #MooseEntity }
 { #category : #'*Midas' }
 MooseEntity >> miFameExtension [
 	<inspectorPresentationOrder: 2 title: 'Fame'>
-	^ MiFameBrowser on: self
+	^ MiFameExtension on: self
 ]
 
 { #category : #'*Midas' }
@@ -15,5 +15,5 @@ MooseEntity >> miNavigationExtension [
 { #category : #'*Midas' }
 MooseEntity >> miPropertiesExtension [
 	<inspectorPresentationOrder: 1 title: 'Moose Properties'>
-	^ MiPropertyBrowser on: self
+	^ MiPropertyExtension on: self
 ]

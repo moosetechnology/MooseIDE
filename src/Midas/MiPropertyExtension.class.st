@@ -1,5 +1,5 @@
 Class {
-	#name : #MiPropertyBrowser,
+	#name : #MiPropertyExtension,
 	#superclass : #SpPresenter,
 	#instVars : [
 		'properties',
@@ -9,13 +9,13 @@ Class {
 }
 
 { #category : #specs }
-MiPropertyBrowser class >> defaultSpec [
+MiPropertyExtension class >> defaultSpec [
 	^ SpBoxLayout newVertical
 		add: #properties
 ]
 
 { #category : #initialization }
-MiPropertyBrowser >> initializePresenters [
+MiPropertyExtension >> initializePresenters [
 	properties := self newTable.
 	properties
 		addColumn: (SpStringTableColumn title: 'Properties' evaluated: [ :item | item name ]) yourself;
@@ -31,16 +31,16 @@ MiPropertyBrowser >> initializePresenters [
 ]
 
 { #category : #accessing }
-MiPropertyBrowser >> model [
+MiPropertyExtension >> model [
 	^ model
 ]
 
 { #category : #accessing }
-MiPropertyBrowser >> model: anObject [
+MiPropertyExtension >> model: anObject [
 	model := anObject
 ]
 
 { #category : #initialization }
-MiPropertyBrowser >> setModelBeforeInitialization: aModel [
+MiPropertyExtension >> setModelBeforeInitialization: aModel [
 	self model: aModel
 ]

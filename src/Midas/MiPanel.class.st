@@ -1,6 +1,6 @@
 Class {
 	#name : #MiPanel,
-	#superclass : #SpPresenter,
+	#superclass : #MiAbstractBrowser,
 	#instVars : [
 		'models',
 		'details'
@@ -49,4 +49,9 @@ MiPanel >> models [
 { #category : #initialization }
 MiPanel >> pageFrom: aModel [
 	^ SpNotebookPage title: aModel name provider: [ StInspector on: aModel ]
+]
+
+{ #category : #accessing }
+MiPanel >> selectEntity: anEntity [
+	(self accept: anEntity) ifFalse: [ ^ self ]
 ]
