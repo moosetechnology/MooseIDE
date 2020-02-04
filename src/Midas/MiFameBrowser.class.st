@@ -36,7 +36,7 @@ MiFameBrowser >> accept: anObject [
 
 { #category : #initialization }
 MiFameBrowser >> initializePresenters [
-	fameExtension := MiFameExtension on: MooseModel new
+	fameExtension := MiFameExtension on: MooseGroup new
 ]
 
 { #category : #initialization }
