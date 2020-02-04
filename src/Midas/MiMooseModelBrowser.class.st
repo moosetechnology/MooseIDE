@@ -22,7 +22,7 @@ MiMooseModelBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	(aBuilder item: #MooseModelBrowser)
 		parent: self toolbarName;
-		label: 'Model browser';
+		label: 'Moose Model browser';
 		action: [ self runMe ]
 ]
 
@@ -35,6 +35,11 @@ MiMooseModelBrowser class >> runMe [
 { #category : #accessing }
 MiMooseModelBrowser >> accept: anObject [
 	^ anObject isKindOf: MooseModel
+]
+
+{ #category : #initialization }
+MiMooseModelBrowser >> computeModelPresenterRoot [
+	modelPresenter roots: (model model metamodel classes sorted: #name ascending)
 ]
 
 { #category : #initialization }
@@ -73,12 +78,12 @@ MiMooseModelBrowser >> initializeTable [
 						yourself);
 				addColumn: (SpStringTableColumn evaluated: #name);
 				yourself);
-		roots: (model model metamodel classes sorted: #name ascending);
 		children: [ :class | 
 			class isFM3Class
 				ifTrue: [ class implementingClass isTrait ifTrue: [ {} ] ifFalse: [ (model model allWithSubTypesOf: class implementingClass) sorted: #name ascending ] ]
 				ifFalse: [ {} ] ];
-		beResizable
+		beResizable.
+	self computeModelPresenterRoot
 ]
 
 { #category : #initialization }
@@ -101,9 +106,8 @@ MiMooseModelBrowser >> needUpdate: anEntity [
 MiMooseModelBrowser >> selectEntity: anEntity [
 	((self needUpdate: anEntity) and: [ self accept: anEntity ])
 		ifFalse: [ ^ self ].
-	modelPresenter selectItem: anEntity
-	"self needRebuild: false.
-	self buildWithSpec"
+	model model: anEntity.
+	self computeModelPresenterRoot
 ]
 
 { #category : #initialization }
