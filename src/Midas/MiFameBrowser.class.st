@@ -15,6 +15,15 @@ MiFameBrowser class >> defaultSpec [
 ]
 
 { #category : #specs }
+MiFameBrowser class >> menuCommandOn: aBuilder [
+	<worldMenu>
+	(aBuilder item: #Fame)
+		parent: self toolbarName;
+		label: 'Fame browser';
+		action: [ self runMe ]
+]
+
+{ #category : #specs }
 MiFameBrowser class >> runMe [
 	<script>
 	self new openWithSpec

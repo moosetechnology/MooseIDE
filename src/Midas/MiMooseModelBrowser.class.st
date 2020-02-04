@@ -18,6 +18,15 @@ MiMooseModelBrowser class >> defaultSpec [
 ]
 
 { #category : #specs }
+MiMooseModelBrowser class >> menuCommandOn: aBuilder [
+	<worldMenu>
+	(aBuilder item: #MooseModelBrowser)
+		parent: self toolbarName;
+		label: 'Model browser';
+		action: [ self runMe ]
+]
+
+{ #category : #specs }
 MiMooseModelBrowser class >> runMe [
 	<script>
 	self new openWithSpec
@@ -44,7 +53,7 @@ MiMooseModelBrowser >> initializePresenters [
 { #category : #initialization }
 MiMooseModelBrowser >> initializeSearchField [
 	searchField := self newTextInput
-		placeholder: 'Search...';
+		placeholder: 'TODO: Search...';
 		yourself.
 	searchField acceptOnCR: true
 ]
@@ -64,8 +73,11 @@ MiMooseModelBrowser >> initializeTable [
 						yourself);
 				addColumn: (SpStringTableColumn evaluated: #name);
 				yourself);
-		roots: model model entities;
-		"children: [ :elt | elt content ];"
+		roots: (model model metamodel classes sorted: #name ascending);
+		children: [ :class | 
+			class isFM3Class
+				ifTrue: [ class implementingClass isTrait ifTrue: [ {} ] ifFalse: [ (model model allWithSubTypesOf: class implementingClass) sorted: #name ascending ] ]
+				ifFalse: [ {} ] ];
 		beResizable
 ]
 

@@ -8,6 +8,20 @@ Class {
 	#category : #'Midas-Browser'
 }
 
+{ #category : #'world menu' }
+MiAbstractBrowser class >> menuCommandOn: aBuilder [
+	<worldMenu>
+	(aBuilder item: self toolbarName)
+		order: 6.0;
+		withSeparatorAfter;
+		icon: MooseIcons mooseIcon
+]
+
+{ #category : #'world menu' }
+MiAbstractBrowser class >> toolbarName [
+	^ #'Midas Browsers'
+]
+
 { #category : #accessing }
 MiAbstractBrowser >> accept: anObject [
 	^ false

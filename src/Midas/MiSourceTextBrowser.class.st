@@ -17,6 +17,15 @@ MiSourceTextBrowser class >> defaultSpec [
 ]
 
 { #category : #specs }
+MiSourceTextBrowser class >> menuCommandOn: aBuilder [
+	<worldMenu>
+	(aBuilder item: #SourceTextBrowser)
+		parent: self toolbarName;
+		label: 'SourceText browser';
+		action: [ self runMe ]
+]
+
+{ #category : #specs }
 MiSourceTextBrowser class >> runMe [
 	<script>
 	self new openWithSpec
@@ -24,9 +33,7 @@ MiSourceTextBrowser class >> runMe [
 
 { #category : #'as yet unclassified' }
 MiSourceTextBrowser >> accept: anObject [
-	^ true "{FamixPWBUserObject.
-	FamixPWBBehavioral.
-	DPFragmentLocation} includes: anObject class"
+	^ anObject usesFamixTrait: FamixTSourceEntity
 ]
 
 { #category : #'as yet unclassified' }

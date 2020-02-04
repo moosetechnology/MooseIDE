@@ -37,7 +37,8 @@ MiPropertyExtension >> model [
 
 { #category : #accessing }
 MiPropertyExtension >> model: anObject [
-	model := anObject
+	model := anObject.
+	properties ifNotNil: [ :p | p items: model mooseDescription allPrimitiveProperties ]
 ]
 
 { #category : #initialization }
