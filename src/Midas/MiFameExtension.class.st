@@ -44,7 +44,7 @@ MiFameExtension class >> defaultSpec [
 MiFameExtension >> initializePresenters [
 	fameDescription := self newTable.
 	fameDescription
-		items: self model mooseDescription allComplexProperties;
+		items: (self model mooseDescription allComplexProperties sorted: #name ascending);
 		addColumn: (SpStringTableColumn title: 'Name' evaluated: [ :item | item name ]) yourself;
 		addColumn: (SpStringTableColumn title: 'Type' evaluated: [ :item | item type name ]) yourself;
 		addColumn: (SpStringTableColumn title: 'Opposite' evaluated: [ :item | item opposite ifNil: [ '' ] ifNotNil: [ :opposite | opposite name ] ]) yourself;
