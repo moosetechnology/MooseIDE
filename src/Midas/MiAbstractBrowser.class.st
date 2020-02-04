@@ -9,12 +9,27 @@ Class {
 }
 
 { #category : #'world menu' }
+MiAbstractBrowser class >> menuCommandMetaOn: aBuilder [
+	<worldMenu>
+	(aBuilder item: self toolbarMetaName)
+		order: 6.0;
+		parent: self toolbarName;
+		withSeparatorAfter;
+		icon: MooseIcons mooseIcon
+]
+
+{ #category : #'world menu' }
 MiAbstractBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	(aBuilder item: self toolbarName)
 		order: 6.0;
 		withSeparatorAfter;
 		icon: MooseIcons mooseIcon
+]
+
+{ #category : #'world menu' }
+MiAbstractBrowser class >> toolbarMetaName [
+	^ #Meta
 ]
 
 { #category : #'world menu' }

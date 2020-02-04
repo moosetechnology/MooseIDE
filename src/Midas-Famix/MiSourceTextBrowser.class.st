@@ -1,12 +1,12 @@
 Class {
 	#name : #MiSourceTextBrowser,
-	#superclass : #MiAbstractBrowser,
+	#superclass : #MiAbstractFamixBrowser,
 	#instVars : [
 		'sourceText',
 		'noteBook',
 		'sourceCodePage'
 	],
-	#category : #'Midas-SourceTextBrowser'
+	#category : #'Midas-Famix-SourceText'
 }
 
 { #category : #specs }
@@ -20,7 +20,7 @@ MiSourceTextBrowser class >> defaultSpec [
 MiSourceTextBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	(aBuilder item: #SourceTextBrowser)
-		parent: self toolbarName;
+		parent: self toolbarFamixName;
 		label: 'SourceText browser';
 		action: [ self runMe ]
 ]

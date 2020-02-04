@@ -43,7 +43,7 @@ MiPropertyBrowser class >> defaultSpec [
 MiPropertyBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	(aBuilder item: #PropertyBrowser)
-		parent: self toolbarName;
+		parent: self toolbarMetaName;
 		label: 'Properties browser';
 		action: [ self runMe ]
 ]

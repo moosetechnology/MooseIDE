@@ -18,7 +18,7 @@ MiFameBrowser class >> defaultSpec [
 MiFameBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	(aBuilder item: #Fame)
-		parent: self toolbarName;
+		parent: self toolbarMetaName;
 		label: 'Fame browser';
 		action: [ self runMe ]
 ]

@@ -21,7 +21,7 @@ MiMooseModelBrowser class >> defaultSpec [
 MiMooseModelBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	(aBuilder item: #MooseModelBrowser)
-		parent: self toolbarName;
+		parent: self toolbarMetaName;
 		label: 'Moose Model browser';
 		action: [ self runMe ]
 ]

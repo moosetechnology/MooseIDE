@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'selected'
 	],
-	#category : #'Midas-SourceTextBrowser'
+	#category : #'Midas-Famix-SourceText'
 }
 
 { #category : #accessing }

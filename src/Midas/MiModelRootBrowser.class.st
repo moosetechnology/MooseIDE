@@ -44,7 +44,7 @@ MiModelRootBrowser class >> defaultSpec [
 MiModelRootBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	(aBuilder item: #ModelRootBrowser)
-		parent: self toolbarName;
+		parent: self toolbarMetaName;
 		label: 'Model root browser';
 		action: [ self runMe ]
 ]

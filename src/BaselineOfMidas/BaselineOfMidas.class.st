@@ -27,5 +27,6 @@ BaselineOfMidas >> defineGroups: spec [
 
 { #category : #baselines }
 BaselineOfMidas >> definePackages: spec [
-	spec package: 'Midas' with: [ spec requires: #('NewTools') ]
+	spec package: 'Midas' with: [ spec requires: #('NewTools') ].
+	spec package: 'Midas-Famix' with: [ spec requires: #('Midas') ]
 ]
