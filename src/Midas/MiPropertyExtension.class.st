@@ -26,7 +26,7 @@ MiPropertyExtension >> initializePresenters [
 					[ self model mmGetProperty: item ]
 						on: Error
 						do: [ 'error' ] ]);
-		items: self model mooseDescription allPrimitiveProperties;
+		items: (self model mooseDescription allPrimitiveProperties sorted: #name ascending);
 		beResizable
 ]
 
