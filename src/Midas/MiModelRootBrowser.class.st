@@ -63,6 +63,13 @@ MiModelRootBrowser >> accept: anObject [
 ]
 
 { #category : #initialization }
+MiModelRootBrowser >> addModel: mooseModel [
+	"need to refresh the list"
+
+	modelPresenter items: MooseModel root
+]
+
+{ #category : #initialization }
 MiModelRootBrowser >> initializeList [
 	modelPresenter := self newList.
 	modelPresenter
@@ -98,13 +105,20 @@ MiModelRootBrowser >> mainMenu [
 						name: nil;
 						description: 'Import mse';
 						icon: (self iconNamed: #mooseImportMse);
-						action: [ self inform: 'Import mse' ] ];
+						action: [ [ | mooseModel |
+							mooseModel := MooseModel new.
+							mooseModel importFromMSE.
+							mooseModel notEmpty
+								ifTrue: [ mooseModel install.
+									self addModel: mooseModel ] ] fork ] ];
 				addItem: [ :item | 
 					item
 						name: nil;
 						description: 'Import St model';
 						icon: (self iconNamed: #mooseImportSmalltalk);
-						action: [ self inform: 'import smalltalk' ] ] ].
+						action: [ (MooseImportFromSmalltalkImageWizard new
+								open;
+								mooseModel) ifNotNil: [ :mooseModel | self addModel: mooseModel ] ] ] ].
 	^ aMenu
 ]
 
