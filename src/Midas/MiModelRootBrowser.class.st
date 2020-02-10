@@ -28,7 +28,8 @@ Class {
 	#name : #MiModelRootBrowser,
 	#superclass : #MiAbstractBrowser,
 	#instVars : [
-		'modelPresenter'
+		'modelPresenter',
+		'menu'
 	],
 	#category : #'Midas-ModelRootBrowser'
 }
@@ -36,6 +37,7 @@ Class {
 { #category : #specs }
 MiModelRootBrowser class >> defaultSpec [
 	^ SpBoxLayout newVertical
+		add: #menu withConstraints: [ :constraints | constraints height: self toolbarHeight ];
 		add: #modelPresenter;
 		yourself
 ]
@@ -62,9 +64,7 @@ MiModelRootBrowser >> accept: anObject [
 
 { #category : #initialization }
 MiModelRootBrowser >> initializeList [
-	| title |
 	modelPresenter := self newList.
-	title := 'Models'.
 	modelPresenter
 		items: MooseModel root;
 		display: [ :mooseModel | mooseModel name ]
@@ -73,6 +73,7 @@ MiModelRootBrowser >> initializeList [
 { #category : #initialization }
 MiModelRootBrowser >> initializePresenters [
 	model := MiModelRootBrowserModel new.
+	menu := self mainMenu.
 	self initializeList.
 	modelPresenter
 		whenSelectionChangedDo: [ :selected | 
@@ -84,6 +85,27 @@ MiModelRootBrowser >> initializePresenters [
 MiModelRootBrowser >> initializeWindow: aWindowPresenter [
 	super initializeWindow: aWindowPresenter.
 	aWindowPresenter initialExtent: 600 @ 400
+]
+
+{ #category : #initialization }
+MiModelRootBrowser >> mainMenu [
+	| aMenu |
+	aMenu := self newMenuBar
+		addGroup: [ :group | 
+			group
+				addItem: [ :item | 
+					item
+						name: nil;
+						description: 'Import mse';
+						icon: (self iconNamed: #mooseImportMse);
+						action: [ self inform: 'Import mse' ] ];
+				addItem: [ :item | 
+					item
+						name: nil;
+						description: 'Import St model';
+						icon: (self iconNamed: #mooseImportSmalltalk);
+						action: [ self inform: 'import smalltalk' ] ] ].
+	^ aMenu
 ]
 
 { #category : #initialization }
