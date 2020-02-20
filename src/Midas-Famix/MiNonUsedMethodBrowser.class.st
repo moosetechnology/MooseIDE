@@ -93,7 +93,7 @@ MiNonUsedMethodBrowser >> initializeDiagram [
 ]
 
 { #category : #TOREMOVE }
-MiNonUsedMethodBrowser >> initializeWidgets [
+MiNonUsedMethodBrowser >> initializePresenters [
 	model := MiNonUsedFunctionBrowserModel new.
 	self refresh
 ]
