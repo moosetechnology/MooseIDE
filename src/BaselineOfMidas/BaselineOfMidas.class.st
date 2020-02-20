@@ -23,6 +23,13 @@ BaselineOfMidas >> baselineOfRoassal2Spec2: spec [
 ]
 
 { #category : #baselines }
+BaselineOfMidas >> baselineOfRoassal3: spec [
+	spec
+		baseline: 'Roassal3'
+		with: [ spec repository: 'github://ObjectProfile/Roassal3' ]
+]
+
+{ #category : #baselines }
 BaselineOfMidas >> defineDependencies: spec [
 	"new tools"
 
