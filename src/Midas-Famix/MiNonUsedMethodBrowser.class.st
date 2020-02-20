@@ -54,42 +54,33 @@ MiNonUsedMethodBrowser >> diagram: anObject [
 ]
 
 { #category : #TOREMOVE }
-MiNonUsedMethodBrowser >> drawOn: aView [
-	| es |
-	aView @ RTDraggableView @ RTZoomableView.
-	es := (RTBox new
-		size: 15;
-		color: Color gray) elementsOn: model model.
-	aView addAll: es.
-	es @ RTDraggable.
-	es
-		@
-			(RTLabeled new
-				fontSize: 5;
-				top;
-				text: [ :method | 
-					(method parentType
-						ifNotNil: [ method parentType name , '.' ]
-						ifNil: [ '' ]) , method name ]).
-	RTMetricNormalizer new
-		elements: es;
-		normalizeSize: #numberOfLinesOfCode.
-	RTCircleLayout new on: aView elements.
-	^ aView build
-]
-
-{ #category : #TOREMOVE }
-MiNonUsedMethodBrowser >> gloup [
+MiNonUsedMethodBrowser >> drawOn: aCanvas [
+	| boxes |
+	boxes := self model model
+		collect: [ :ent | 
+				| box label composite |
+				box := RSBox new size: 100.
+					label := RSLabel new text: ent name.
+					RSLocation new
+						above;
+						move: box on: label.
+					composite := RSComposite new.
+					composite
+						shapes: {label . box};
+						model: ent.
+					composite @ RSDraggable.
+					composite
+				 ].
+	aCanvas addAll: boxes.
+	RSGridLayout on: boxes.
+	aCanvas @ RSCanvasController.
+	^ aCanvas
 ]
 
 { #category : #TOREMOVE }
 MiNonUsedMethodBrowser >> initializeDiagram [
-	diagram := self instantiate: RoassalModel.
-	diagram
-		script: [ :aView :canvas | 
-			self drawOn: aView.
-			view := aView.
-			aView canvas focusOnCenterScaled ]
+	diagram := self instantiate: SpRoassalPresenter.
+	diagram script: [ :canvas | self drawOn: canvas ]
 ]
 
 { #category : #TOREMOVE }
