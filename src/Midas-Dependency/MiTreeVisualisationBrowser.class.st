@@ -84,10 +84,18 @@ MiTreeVisualisationBrowser >> refresh [
 			| boxes |
 			boxes := self model entities
 				collect: [ :cls | 
-					RSBox new
-						model: cls;
-						size: 100;
-						yourself ]
+					| box label composite |
+					box := RSBox new size: 100.
+					label := RSLabel new text: cls name.
+					RSLocation new
+						above;
+						move: box on: label.
+					composite := RSComposite new.
+					composite
+						shapes: {label . box};
+						model: cls.
+					composite @ RSDraggable.
+					composite ]
 				as: RSGroup.
 			canvas addAll: boxes.
 			RSEdgeBuilder line
