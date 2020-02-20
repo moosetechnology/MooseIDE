@@ -75,12 +75,18 @@ MiTreeBrowser >> initializePresenters [
 				addColumn: (SpStringTableColumn evaluated: #name);
 				yourself);
 		children: [ :aClass | aClass children asOrderedCollection ];
+		beMultipleSelection;
 		beResizable.
 	tree
 		whenSelectionChangedDo: [ :selected | 
-			model selected: selected selectedItem.
 			self freeze: true.
-			self application globallySelect: selected selectedItem.
+			selected selectedItems size = 1
+				ifTrue: [ model selected: selected selectedItem.
+					self application globallySelect: selected selectedItem ]
+				ifFalse: [ | mooseGroup |
+					mooseGroup := MooseGroup withAll: selected selectedItems.
+					model selected: mooseGroup.
+					self application globallySelect: mooseGroup ].
 			self freeze: false ]
 ]
 

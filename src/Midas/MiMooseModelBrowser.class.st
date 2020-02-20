@@ -49,10 +49,10 @@ MiMooseModelBrowser >> initializePresenters [
 	self initializeSearchField.
 	modelPresenter
 		whenSelectionChangedDo: [ :selected | 
-			model selected: selected selectedItem.
-			self application globallySelect: selected selectedItem ].
-	searchField
-		whenTextIsAcceptedDo: [ :text | modelPresenter searchFor: text ]
+			(selected selectedItem isKindOf: MooseEntity)
+				ifTrue: [ model selected: selected selectedItem.
+					self application globallySelect: selected selectedItem ] ].
+	searchField whenTextIsAcceptedDo: [ :text | modelPresenter searchFor: text ]
 ]
 
 { #category : #initialization }
