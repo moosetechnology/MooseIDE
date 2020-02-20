@@ -21,7 +21,7 @@ MiNonUsedFunctionBrowserModel >> model [
 
 { #category : #accessing }
 MiNonUsedFunctionBrowserModel >> refreshModel [
-	model := (selected allToScope: FamixTMethod) select: [ :method | method incomingInvocations isEmpty and: [ method outgoingInvocations isEmpty ] ]
+	model := (selected allToScope: FamixTMethod) select: [ :method | method incomingInvocations isEmpty ]
 ]
 
 { #category : #accessing }
