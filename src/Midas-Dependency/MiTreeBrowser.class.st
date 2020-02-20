@@ -58,7 +58,7 @@ MiTreeBrowser class >> runMe [
 
 { #category : #'as yet unclassified' }
 MiTreeBrowser >> accept: anObject [
-	^ anObject usesFamixTrait: TEntityMetaLevelDependency
+	^ self isNotFreeze and: [ anObject usesFamixTrait: TEntityMetaLevelDependency ]
 ]
 
 { #category : #'as yet unclassified' }
@@ -75,7 +75,13 @@ MiTreeBrowser >> initializePresenters [
 				addColumn: (SpStringTableColumn evaluated: #name);
 				yourself);
 		children: [ :aClass | aClass children asOrderedCollection ];
-		beResizable
+		beResizable.
+	tree
+		whenSelectionChangedDo: [ :selected | 
+			model selected: selected selectedItem.
+			self freeze: true.
+			self application globallySelect: selected selectedItem.
+			self freeze: false ]
 ]
 
 { #category : #'as yet unclassified' }
