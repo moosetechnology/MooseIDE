@@ -68,7 +68,10 @@ MiTreeBrowser >> initializePresenters [
 	tree
 		addColumn:
 			(SpCompositeTableColumn new
-				title: 'Entities';
+				addColumn:
+					((SpImageTableColumn evaluated: #midasIcon)
+						width: 20;
+						yourself);
 				addColumn: (SpStringTableColumn evaluated: #name);
 				yourself);
 		children: [ :aClass | aClass children asOrderedCollection ];

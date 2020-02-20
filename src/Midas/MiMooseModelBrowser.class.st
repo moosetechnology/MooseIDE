@@ -73,7 +73,7 @@ MiMooseModelBrowser >> initializeTable [
 			(SpCompositeTableColumn new
 				title: title;
 				addColumn:
-					((SpImageTableColumn evaluated: #systemIcon)
+					((SpImageTableColumn evaluated: #midasIcon)
 						width: 20;
 						yourself);
 				addColumn: (SpStringTableColumn evaluated: #name);
