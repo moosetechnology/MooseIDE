@@ -32,7 +32,7 @@ BaselineOfMidas >> baselineOfRoassal3: spec [
 { #category : #baselines }
 BaselineOfMidas >> defineDependencies: spec [
 	"new tools"
-
+	self baselineOfRoassal3: spec.
 	self baselineOfRoassal2Spec2: spec.
 	spec baseline: 'NewTools' with: [ spec repository: 'github://pharo-spec/NewTools' ]
 ]
@@ -44,6 +44,6 @@ BaselineOfMidas >> defineGroups: spec [
 { #category : #baselines }
 BaselineOfMidas >> definePackages: spec [
 	spec package: 'Midas' with: [ spec requires: #('NewTools') ].
-	spec package: 'Midas-Dependency' with: [ spec requires: #('Midas') ].
+	spec package: 'Midas-Dependency' with: [ spec requires: #('Midas' 'Roassal3') ].
 	spec package: 'Midas-Famix' with: [ spec requires: #('Midas' 'Roassal2Spec2') ]
 ]
