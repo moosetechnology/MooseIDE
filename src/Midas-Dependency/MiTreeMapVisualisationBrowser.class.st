@@ -48,7 +48,7 @@ MiTreeMapVisualisationBrowser >> diagram: anObject [
 
 { #category : #'as yet unclassified' }
 MiTreeMapVisualisationBrowser >> initializePresenters [
-	self model: (MiTreeMap new childrenBlock: [ :el | (el usesFamixTrait: TEntityMetaLevelDependency) ifTrue: [ el children ] ]).
+	self model: (MiTreeMap new childrenBlock: [ :el | (el usesFamixTrait: TEntityMetaLevelDependency) ifTrue: [ el children ] ifFalse: [ {} ] ]).
 	diagram := self instantiate: SpRoassalPresenter.
 	diagram script: [ :canvas | self model canvas: canvas ]
 ]
