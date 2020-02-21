@@ -49,11 +49,6 @@ MiNavigationBrowser class >> defaultSpec [
 ]
 
 { #category : #initialization }
-MiNavigationBrowser >> defineOutputPorts [
-	^ self outputSelectionPort 
-]
-
-{ #category : #initialization }
 MiNavigationBrowser >> hasOutputActivationPort [
 
 	^ true
@@ -101,23 +96,14 @@ MiNavigationBrowser >> model: anObject [
 
 { #category : #initialization }
 MiNavigationBrowser >> outputActivationPort [
-	
-	^ (SpActivationPort newPresenter: self) 
-		delegateTo: [ navigation ];
-		yourself
-]
-
-{ #category : #initialization }
-MiNavigationBrowser >> outputSelectionPort [
-	
-	^ (SpSelectionPort newPresenter: self)
+	^ (SpActivationPort newPresenter: self)
 		delegateTo: [ navigation ];
 		yourself
 ]
 
 { #category : #accessing }
 MiNavigationBrowser >> selectedItem [
-	^ navigation selection selectedItem
+	^ navigation selection selectedItem value
 ]
 
 { #category : #initialization }
@@ -129,10 +115,4 @@ MiNavigationBrowser >> selectedObject [
 MiNavigationBrowser >> setModelBeforeInitialization: anInspectionModel [ 
 
 	model := anInspectionModel
-]
-
-{ #category : #accessing }
-MiNavigationBrowser >> whenActivatedDo: aBlock [
-
-	activationBlock := aBlock
 ]
