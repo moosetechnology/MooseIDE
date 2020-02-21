@@ -1,20 +1,20 @@
 Class {
-	#name : #MiPropageCommand,
+	#name : #MiPropagateCommand,
 	#superclass : #CmCommand,
 	#category : #'Midas-Command'
 }
 
 { #category : #default }
-MiPropageCommand class >> defaultName [
+MiPropagateCommand class >> defaultName [
 	^ 'Propagate'
 ]
 
 { #category : #testing }
-MiPropageCommand >> canBeExecuted [
+MiPropagateCommand >> canBeExecuted [
 	^ self context miSelectedItem isMooseEntity
 ]
 
 { #category : #testing }
-MiPropageCommand >> execute [
+MiPropagateCommand >> execute [
 	^ MiApplication current globallySelect: self context miSelectedItem
 ]

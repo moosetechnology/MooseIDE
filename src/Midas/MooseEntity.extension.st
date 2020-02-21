@@ -22,3 +22,8 @@ MooseEntity >> miPropertiesExtension [
 	<inspectorPresentationOrder: 1 title: 'Moose Properties'>
 	^ MiPropertyExtension on: self
 ]
+
+{ #category : #'*Midas' }
+MooseEntity >> midasIcon [
+	^ self iconNamed: #mooseMetamodelEntity
+]

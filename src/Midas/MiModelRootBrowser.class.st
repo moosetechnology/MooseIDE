@@ -36,7 +36,8 @@ Class {
 
 { #category : #specs }
 MiModelRootBrowser class >> buildCommandsGroupWith: presenterInstance forRoot: rootCommandGroup [
-	rootCommandGroup register: (MiPropageCommand forSpecContext: presenterInstance)
+	rootCommandGroup register: (MiPropagateCommand forSpecContext: presenterInstance).
+	rootCommandGroup register: (StInspectorInspectSelectedCommand forSpecContext: presenterInstance)
 ]
 
 { #category : #specs }
@@ -53,6 +54,7 @@ MiModelRootBrowser class >> menuCommandOn: aBuilder [
 	(aBuilder item: #ModelRootBrowser)
 		parent: self toolbarMetaName;
 		label: 'Model root browser';
+		icon: (self iconNamed: #mooseNavigation);
 		order: 1.0;
 		action: [ self runMe ]
 ]
@@ -151,6 +153,11 @@ MiModelRootBrowser >> selectEntity: anEntity [
 { #category : #initialization }
 MiModelRootBrowser >> selected [
 	^ model selected
+]
+
+{ #category : #initialization }
+MiModelRootBrowser >> selectedObject [
+	^ modelPresenter selection selectedItem
 ]
 
 { #category : #initialization }

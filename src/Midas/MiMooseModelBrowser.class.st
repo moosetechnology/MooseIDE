@@ -9,6 +9,12 @@ Class {
 }
 
 { #category : #specs }
+MiMooseModelBrowser class >> buildCommandsGroupWith: presenterInstance forRoot: rootCommandGroup [
+	rootCommandGroup register: (MiPropagateCommand forSpecContext: presenterInstance).
+	rootCommandGroup register: (StInspectorInspectSelectedCommand forSpecContext: presenterInstance)
+]
+
+{ #category : #specs }
 MiMooseModelBrowser class >> defaultSpec [
 	^ SpBoxLayout newVertical
 		add: #searchField
@@ -23,6 +29,7 @@ MiMooseModelBrowser class >> menuCommandOn: aBuilder [
 	(aBuilder item: #MooseModelBrowser)
 		parent: self toolbarMetaName;
 		label: 'Moose Model browser';
+		icon: (self iconNamed: #mooseNavigation);
 		order: 2.0;
 		action: [ self runMe ]
 ]
@@ -90,6 +97,7 @@ MiMooseModelBrowser >> initializeTable [
 				ifFalse: [ {} ] ];
 		beResizable;
 		beMultipleSelection.
+	modelPresenter contextMenu: [ self rootCommandsGroup asMenuPresenter ].
 	self computeModelPresenterRoot
 ]
 
@@ -97,6 +105,11 @@ MiMooseModelBrowser >> initializeTable [
 MiMooseModelBrowser >> initializeWindow: aWindowPresenter [
 	super initializeWindow: aWindowPresenter.
 	aWindowPresenter initialExtent: 600 @ 400
+]
+
+{ #category : #initialization }
+MiMooseModelBrowser >> miSelectedItem [
+	^ modelPresenter selection selectedItem
 ]
 
 { #category : #initialization }
@@ -120,6 +133,11 @@ MiMooseModelBrowser >> selectEntity: anEntity [
 { #category : #initialization }
 MiMooseModelBrowser >> selected [
 	^ model selected
+]
+
+{ #category : #initialization }
+MiMooseModelBrowser >> selectedObject [
+	^ modelPresenter selection selectedItem
 ]
 
 { #category : #initialization }

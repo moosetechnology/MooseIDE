@@ -10,7 +10,7 @@ MiObjectInspector class >> buildCommandsGroupWith: presenter forRoot: aCmCommand
 	group := (CmCommandGroup named: 'Toolbar') asSpecGroup.
 	(StInspectorCommand toolbarCommandsFor: self)
 		do: [ :cmd | group register: cmd ].
-	group register: (MiPropageCommand forSpecContext: presenter).
+	group register: (MiPropagateCommand forSpecContext: presenter).
 	aCmCommandsGroup register: group
 	
 ]
