@@ -77,6 +77,9 @@ MiTreeVisualisationBrowser >> diagram: anObject [
 MiTreeVisualisationBrowser >> initializePresenters [
 	self model: MiTreeVisualisationBrowserModel new.
 	diagram := self instantiate: SpRoassalPresenter.
+	diagram
+		script: [ :canvas | canvas color: Smalltalk ui theme backgroundColor ];
+		refresh
 ]
 
 { #category : #'as yet unclassified' }
@@ -84,6 +87,7 @@ MiTreeVisualisationBrowser >> refresh [
 	diagram
 		script: [ :canvas | 
 			| boxes |
+			canvas color: Smalltalk ui theme backgroundColor.
 			boxes := self model entities
 				collect: [ :cls | 
 					| box label composite |
