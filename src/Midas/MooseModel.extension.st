@@ -2,6 +2,6 @@ Extension { #name : #MooseModel }
 
 { #category : #'*Midas' }
 MooseModel >> miNavigationExtension [
-	<inspectorPresentationOrder: 0 title: 'Navigation'>
+	<inspectorPresentationOrder: -100 title: 'Navigation'>
 	^ MiModelNavigationBrowser on: self
 ]

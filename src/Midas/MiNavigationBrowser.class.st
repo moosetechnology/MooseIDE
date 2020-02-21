@@ -74,7 +74,8 @@ MiNavigationBrowser >> initializePresenters [
 					(SpStringTableColumn new
 						evaluated: [ :el | el key printString ];
 						yourself);
-				yourself)
+				yourself).
+		navigation whenActivatedDo: [ :selection | activationBlock value: self ]
 ]
 
 { #category : #initialization }
@@ -97,7 +98,6 @@ MiNavigationBrowser >> model: anObject [
 { #category : #initialization }
 MiNavigationBrowser >> outputActivationPort [
 	^ (SpActivationPort newPresenter: self)
-		delegateTo: [ navigation ];
 		yourself
 ]
 
@@ -115,4 +115,9 @@ MiNavigationBrowser >> selectedObject [
 MiNavigationBrowser >> setModelBeforeInitialization: anInspectionModel [ 
 
 	model := anInspectionModel
+]
+
+{ #category : #initialization }
+MiNavigationBrowser >> whenActivatedDo: aBlock [
+	activationBlock := aBlock
 ]
