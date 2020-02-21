@@ -66,7 +66,7 @@ MiFilesBrowser >> accept: anObject [
 { #category : #'as yet unclassified' }
 MiFilesBrowser >> computeItemsInFileReference: aFileReference [
 	"isChildOf: can bug see issue https://github.com/pharo-project/pharo/issues/5720"
-	^ (self model mooseModel allUsing: FamixTFileAnchor) select: [ :anchor | 1halt. anchor fileReference isChildOf: self model fileReference ] thenCollect: [ :anchor | anchor element ]
+	^ (self model mooseModel allUsing: FamixTFileAnchor) select: [ :anchor | anchor fileReference isChildOf: self model fileReference ] thenCollect: [ :anchor | anchor element ]
 ]
 
 { #category : #'as yet unclassified' }
