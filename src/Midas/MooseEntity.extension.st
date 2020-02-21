@@ -1,6 +1,11 @@
 Extension { #name : #MooseEntity }
 
 { #category : #'*Midas' }
+MooseEntity >> isMooseEntity [
+	^ true
+]
+
+{ #category : #'*Midas' }
 MooseEntity >> miFameExtension [
 	<inspectorPresentationOrder: 2 title: 'Fame'>
 	^ MiFameExtension on: self
