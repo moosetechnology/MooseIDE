@@ -31,7 +31,7 @@ Class {
 		'selected',
 		'entities'
 	],
-	#category : #'Midas-Dependency'
+	#category : #'Midas-Dependency-Tree'
 }
 
 { #category : #accessing }

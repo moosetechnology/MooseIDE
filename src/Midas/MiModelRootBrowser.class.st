@@ -53,6 +53,7 @@ MiModelRootBrowser class >> menuCommandOn: aBuilder [
 	(aBuilder item: #ModelRootBrowser)
 		parent: self toolbarMetaName;
 		label: 'Model root browser';
+		order: 1.0;
 		action: [ self runMe ]
 ]
 

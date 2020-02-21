@@ -21,6 +21,7 @@ MiFameBrowser class >> menuCommandOn: aBuilder [
 		parent: self toolbarMetaName;
 		label: 'Fame browser';
 		icon: (self iconNamed: #mooseFame);
+		order: 4.0;
 		action: [ self runMe ]
 ]
 

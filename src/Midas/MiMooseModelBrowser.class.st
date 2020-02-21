@@ -23,6 +23,7 @@ MiMooseModelBrowser class >> menuCommandOn: aBuilder [
 	(aBuilder item: #MooseModelBrowser)
 		parent: self toolbarMetaName;
 		label: 'Moose Model browser';
+		order: 2.0;
 		action: [ self runMe ]
 ]
 

@@ -31,7 +31,7 @@ Class {
 	#instVars : [
 		'diagram'
 	],
-	#category : #'Midas-Dependency'
+	#category : #'Midas-Dependency-Tree'
 }
 
 { #category : #specs }
@@ -47,6 +47,7 @@ MiTreeVisualisationBrowser class >> menuCommandOn: aBuilder [
 	(aBuilder item: #TreeVisualisationBrowser)
 		parent: self toolbarDependencyName;
 		label: 'Tree Visualisation browser';
+		order: 2.0;
 		icon: (self iconNamed: #mooseTree);
 		action: [ self runMe ]
 ]

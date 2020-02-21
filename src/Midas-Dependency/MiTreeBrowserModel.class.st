@@ -5,7 +5,7 @@ Class {
 		'selected',
 		'root'
 	],
-	#category : #'Midas-Dependency'
+	#category : #'Midas-Dependency-Tree'
 }
 
 { #category : #accessing }

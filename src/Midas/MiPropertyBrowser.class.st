@@ -46,6 +46,7 @@ MiPropertyBrowser class >> menuCommandOn: aBuilder [
 		parent: self toolbarMetaName;
 		label: 'Properties browser';
 		icon: (self iconNamed: #mooseProperties);
+		order: 3.0;
 		action: [ self runMe ]
 ]
 
