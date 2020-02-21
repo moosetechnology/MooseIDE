@@ -91,8 +91,14 @@ MiTreeVisualisationBrowser >> refresh [
 			boxes := self model entities
 				collect: [ :cls | 
 					| box label composite |
-					box := RSBox new size: 100.
-					label := RSLabel new text: cls name.
+					box := RSBox new
+						size: 100;
+						color: Color blue;
+						yourself.
+					label := RSLabel new
+						text: cls name;
+						color: Smalltalk ui theme textColor;
+						yourself.
 					RSLocation new
 						above;
 						move: box on: label.
@@ -108,7 +114,7 @@ MiTreeVisualisationBrowser >> refresh [
 				canvas: canvas;
 				shapes: boxes;
 				withVerticalAttachPoint;
-				connectToAll: [ :a | (a usesFamixTrait: TEntityMetaLevelDependency) ifTrue: [ a children ] ifFalse: [ {  } ] ].
+				connectToAll: [ :a | (a usesFamixTrait: TEntityMetaLevelDependency) ifTrue: [ a children ] ifFalse: [ {} ] ].
 			RSTreeLayout on: boxes.
 			canvas @ RSCanvasController.
 			canvas ];

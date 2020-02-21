@@ -64,7 +64,6 @@ MiTreeMapVisualisationBrowser >> refresh [
 { #category : #'as yet unclassified' }
 MiTreeMapVisualisationBrowser >> selectEntity: anEntity [
 	(self accept: anEntity) ifFalse: [ ^ self ].
-	Transcript crTrace: anEntity printString.
 	(anEntity isOfType: MooseGroup) ifTrue: [ self model rootEntities: anEntity ] ifFalse: [ self model rootEntities: {anEntity} ].
 	self refresh
 ]
