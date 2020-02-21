@@ -48,28 +48,38 @@ MiNavigationBrowser class >> defaultSpec [
 		add: #navigation
 ]
 
-{ #category : #accessing }
-MiNavigationBrowser >> connectPresenters [
-	navigation whenSelectionChangedDo: [ :selection | activationBlock cull: self ]
+{ #category : #initialization }
+MiNavigationBrowser >> defineOutputPorts [
+	^ self outputSelectionPort 
 ]
 
 { #category : #initialization }
-MiNavigationBrowser >> defineOutputPorts [
-	^ { 
-	SpSelectionPort newDelegate: [ navigation ].
-	SpActivationPort newDelegate: [ navigation ] }
+MiNavigationBrowser >> hasOutputActivationPort [
+
+	^ true
 ]
 
 { #category : #initialization }
 MiNavigationBrowser >> initializePresenters [
-	navigation := self newList.
+	navigation := self newTable.
 
 	navigation
 		contextMenu: [ self rootCommandsGroup asMenuPresenter ];
 		items: (self itemsFor: self model);
-		display: [ :item | item key ];
-		icons: [ :item | item value mooseIcon ];
-		sortingBlock: [ :a :b | a key asString < b key asString ]
+		sortingBlock: [ :a :b | a key asString < b key asString ].
+	navigation
+		addColumn:
+			(SpCompositeTableColumn new
+				addColumn:
+					(SpImageTableColumn new
+						beNotExpandable;
+						evaluated: [ :el | el value midasIcon ];
+						yourself);
+				addColumn:
+					(SpStringTableColumn new
+						evaluated: [ :el | el key printString ];
+						yourself);
+				yourself)
 ]
 
 { #category : #initialization }
@@ -89,14 +99,30 @@ MiNavigationBrowser >> model: anObject [
 	model := anObject
 ]
 
+{ #category : #initialization }
+MiNavigationBrowser >> outputActivationPort [
+	
+	^ (SpActivationPort newPresenter: self) 
+		delegateTo: [ navigation ];
+		yourself
+]
+
+{ #category : #initialization }
+MiNavigationBrowser >> outputSelectionPort [
+	
+	^ (SpSelectionPort newPresenter: self)
+		delegateTo: [ navigation ];
+		yourself
+]
+
 { #category : #accessing }
 MiNavigationBrowser >> selectedItem [
-	^ navigation selection selectedItem value
+	^ navigation selection selectedItem
 ]
 
 { #category : #initialization }
 MiNavigationBrowser >> selectedObject [
-	^ navigation selectedItem
+	^ navigation selection selectedItem value
 ]
 
 { #category : #accessing }
