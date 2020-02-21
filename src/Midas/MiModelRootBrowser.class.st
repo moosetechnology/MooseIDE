@@ -35,6 +35,11 @@ Class {
 }
 
 { #category : #specs }
+MiModelRootBrowser class >> buildCommandsGroupWith: presenterInstance forRoot: rootCommandGroup [
+	rootCommandGroup register: (MiPropageCommand forSpecContext: presenterInstance)
+]
+
+{ #category : #specs }
 MiModelRootBrowser class >> defaultSpec [
 	^ SpBoxLayout newVertical
 		add: #menu withConstraints: [ :constraints | constraints height: self toolbarHeight ];
@@ -72,6 +77,7 @@ MiModelRootBrowser >> addModel: mooseModel [
 { #category : #initialization }
 MiModelRootBrowser >> initializeList [
 	modelPresenter := self newList.
+	modelPresenter contextMenu: [ self rootCommandsGroup asMenuPresenter ].
 	modelPresenter
 		items: MooseModel root;
 		display: [ :mooseModel | mooseModel name ]
@@ -120,6 +126,11 @@ MiModelRootBrowser >> mainMenu [
 								open;
 								mooseModel) ifNotNil: [ :mooseModel | self addModel: mooseModel ] ] ] ].
 	^ aMenu
+]
+
+{ #category : #initialization }
+MiModelRootBrowser >> miSelectedItem [
+	^ modelPresenter selection selectedItem
 ]
 
 { #category : #initialization }

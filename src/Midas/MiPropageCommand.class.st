@@ -11,10 +11,10 @@ MiPropageCommand class >> defaultName [
 
 { #category : #testing }
 MiPropageCommand >> canBeExecuted [
-	^ self context isMooseEntity
+	^ self context miSelectedItem isMooseEntity
 ]
 
 { #category : #testing }
 MiPropageCommand >> execute [
-	^ MiApplication current globallySelect: self context
+	^ MiApplication current globallySelect: self context miSelectedItem
 ]
