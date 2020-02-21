@@ -104,7 +104,7 @@ MiTreeVisualisationBrowser >> refresh [
 				canvas: canvas;
 				shapes: boxes;
 				withVerticalAttachPoint;
-				connectToAll: [ :a | (a usesFamixTrait: TEntityMetaLevelDependency) ifTrue: [ a children ] ].
+				connectToAll: [ :a | (a usesFamixTrait: TEntityMetaLevelDependency) ifTrue: [ a children ] ifFalse: [ {  } ] ].
 			RSTreeLayout on: boxes.
 			canvas @ RSCanvasController.
 			canvas ];

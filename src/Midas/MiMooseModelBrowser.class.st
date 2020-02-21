@@ -50,9 +50,14 @@ MiMooseModelBrowser >> initializePresenters [
 	self initializeSearchField.
 	modelPresenter
 		whenSelectionChangedDo: [ :selected | 
-			(selected selectedItem isKindOf: MooseEntity)
-				ifTrue: [ model selected: selected selectedItem.
-					self application globallySelect: selected selectedItem ] ].
+			selected selectedItems size = 1
+				ifTrue: [ selected selectedItem isMooseEntity
+						ifTrue: [ model selected: selected selectedItem.
+							self application globallySelect: selected selectedItem ] ]
+				ifFalse: [ (selected selectedItems allSatisfy: #isMooseEntity)
+						ifTrue: [ 
+							model selected: selected selectedItems.
+							self application globallySelect: (MooseGroup withAll: selected selectedItems) ] ] ].
 	searchField whenTextIsAcceptedDo: [ :text | modelPresenter searchFor: text ]
 ]
 
@@ -83,7 +88,8 @@ MiMooseModelBrowser >> initializeTable [
 			class isFM3Class
 				ifTrue: [ class implementingClass isTrait ifTrue: [ {} ] ifFalse: [ (model model allWithSubTypesOf: class implementingClass) sorted: #name ascending ] ]
 				ifFalse: [ {} ] ];
-		beResizable.
+		beResizable;
+		beMultipleSelection.
 	self computeModelPresenterRoot
 ]
 
