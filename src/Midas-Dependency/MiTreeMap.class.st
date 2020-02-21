@@ -63,7 +63,7 @@ MiTreeMap >> initialize [
 	base := RSComposite new.
 	base draggable.
 	base popup.
-	base when: RSMouseClick do: [ :evt | self processEvent: evt ].
+	base when: RSMouseLeftClick do: [ :evt | self processEvent: evt ].
 
 	border := RSBorder new.
 	rootEntities := #().
@@ -79,6 +79,13 @@ MiTreeMap >> nodeFor: anEntity [
 	(self childrenForEntity: anEntity) ifNotEmpty: [ com border: border ].
 	com announcer: base announcer.
 	com color: (self colorFor: anEntity) trans.
+	com @ (RSMenuActivable new
+		menuDo: [ :menu :box | 
+			menu 
+				add: 'Inspect'
+				target: box model
+				selector: #inspect
+				argument: #() ]).
 	^ com
 ]
 
