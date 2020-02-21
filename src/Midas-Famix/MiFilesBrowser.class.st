@@ -64,6 +64,19 @@ MiFilesBrowser >> accept: anObject [
 ]
 
 { #category : #'as yet unclassified' }
+MiFilesBrowser >> computeItemsInFileReference: aFileReference [
+	"isChildOf: can bug see issue https://github.com/pharo-project/pharo/issues/5720"
+	^ (self model mooseModel allUsing: FamixTFileAnchor) select: [ :anchor | 1halt. anchor fileReference isChildOf: self model fileReference ] thenCollect: [ :anchor | anchor element ]
+]
+
+{ #category : #'as yet unclassified' }
+MiFilesBrowser >> connectPresenters [
+	super connectPresenters.
+	tree whenSelectionChangedDo: [ :selected | selected selectedItem hasChildren ifTrue: [ self selectFileReference: selected selectedItem.
+			list items: (self computeItemsInFileReference: self model fileReference) ] ]
+]
+
+{ #category : #'as yet unclassified' }
 MiFilesBrowser >> initializePresenters [
 	self model: MiFilesModel new.
 	self initializeTreeTable.
@@ -78,8 +91,7 @@ MiFilesBrowser >> initializeTreeTable [
 			(SpCompositeTableColumn new
 				addColumn: (SpStringTableColumn evaluated: [ :fileRef | (fileRef isChildOf: self model fileReference) ifTrue: [ fileRef basename ] ifFalse: [ '..' ] ]);
 				yourself);
-		beResizable.
-	tree whenSelectionChangedDo: [ :selected | selected selectedItem hasChildren ifTrue: [ self selectFileReference: selected selectedItem ] ]
+		beResizable
 ]
 
 { #category : #'as yet unclassified' }
