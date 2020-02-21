@@ -47,6 +47,7 @@ MiTreeBrowser class >> menuCommandOn: aBuilder [
 	(aBuilder item: #TreeBrowser)
 		parent: self toolbarDependencyName;
 		label: 'Tree browser';
+		icon: (self iconNamed: #mooseTree);
 		action: [ self runMe ]
 ]
 
