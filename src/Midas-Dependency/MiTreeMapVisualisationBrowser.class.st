@@ -55,7 +55,8 @@ MiTreeMapVisualisationBrowser >> initializePresenters [
 
 { #category : #'as yet unclassified' }
 MiTreeMapVisualisationBrowser >> refresh [
-	self model run
+	self diagram refresh.
+	self model run.
 ]
 
 { #category : #'as yet unclassified' }
