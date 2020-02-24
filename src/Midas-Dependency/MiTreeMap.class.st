@@ -129,7 +129,10 @@ MiTreeMap >> rootEntities: aCollection [
 
 { #category : #running }
 MiTreeMap >> run [
-	rootEntities do: [:e | canvas add: (self nodeFor: e)].
+	| containerShape | 
+	containerShape := RSComposite new.
+	canvas add: containerShape.
+	rootEntities do: [:e | containerShape add: (self nodeFor: e)].
 	self update
 ]
 
