@@ -51,7 +51,7 @@ MiTreeMapVisualisationBrowser >> initializePresenters [
 	self model: (MiTreeMap new childrenBlock: [ :el | (el usesFamixTrait: TEntityMetaLevelDependency) ifTrue: [ el children ] ifFalse: [ {} ] ]).
 	diagram := self instantiate: SpRoassalPresenter.
 	diagram script: [ :canvas | 
-		canvas color: Smalltalk ui theme backgroundColor.
+		canvas color: self theme backgroundColor.
 		self model canvas: canvas ]
 ]
 

@@ -78,7 +78,7 @@ MiTreeVisualisationBrowser >> initializePresenters [
 	self model: MiTreeVisualisationBrowserModel new.
 	diagram := self instantiate: SpRoassalPresenter.
 	diagram
-		script: [ :canvas | canvas color: Smalltalk ui theme backgroundColor ];
+		script: [ :canvas | canvas color: self theme backgroundColor ];
 		refresh
 ]
 

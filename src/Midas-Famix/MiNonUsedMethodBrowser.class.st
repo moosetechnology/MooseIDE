@@ -58,19 +58,22 @@ MiNonUsedMethodBrowser >> drawOn: aCanvas [
 	| boxes |
 	boxes := self model model
 		collect: [ :ent | 
-				| box label composite |
-				box := RSBox new size: 100.
-					label := RSLabel new text: ent name.
-					RSLocation new
-						above;
-						move: box on: label.
-					composite := RSComposite new.
-					composite
-						shapes: {label . box};
-						model: ent.
-					composite @ RSDraggable.
-					composite
-				 ].
+			| box label composite |
+			box := RSBox new
+				size: 100;
+				color: Color blue.
+			label := RSLabel new
+				text: ent name;
+				color: self theme textColor.
+			RSLocation new
+				above;
+				move: box on: label.
+			composite := RSComposite new.
+			composite
+				shapes: {label . box};
+				model: ent.
+			composite @ RSDraggable.
+			composite ].
 	aCanvas addAll: boxes.
 	RSGridLayout on: boxes.
 	aCanvas @ RSCanvasController.
@@ -79,22 +82,25 @@ MiNonUsedMethodBrowser >> drawOn: aCanvas [
 
 { #category : #TOREMOVE }
 MiNonUsedMethodBrowser >> initializeDiagram [
-	diagram := self instantiate: SpRoassalPresenter.
-	diagram script: [ :canvas | self drawOn: canvas ]
+	diagram
+		script: [ :canvas | 
+			canvas color: self theme backgroundColor.
+			self drawOn: canvas ]
 ]
 
 { #category : #TOREMOVE }
 MiNonUsedMethodBrowser >> initializePresenters [
 	model := MiNonUsedFunctionBrowserModel new.
+	diagram := self instantiate: SpRoassalPresenter.
+	diagram script: [ :canvas | canvas color: self theme backgroundColor ].
 	self refresh
 ]
 
 { #category : #TOREMOVE }
 MiNonUsedMethodBrowser >> refresh [
-	model model isEmpty
-		ifTrue: [ diagram := self instantiate: RoassalModel
-			"diagram := self newNullPresenter" ]
-		ifFalse: [ self initializeDiagram ].
+	model model
+		ifNotEmpty: [ self initializeDiagram.
+			diagram refresh ].
 	self needRebuild: false.
 	self buildWithSpec
 ]
