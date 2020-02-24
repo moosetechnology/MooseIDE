@@ -49,11 +49,16 @@ MiTreeMapVisualisationBrowser >> diagram: anObject [
 { #category : #'as yet unclassified' }
 MiTreeMapVisualisationBrowser >> initializePresenters [
 	super initializePresenters.
-	self model: (MiTreeMap new childrenBlock: [ :el | (el usesFamixTrait: TEntityMetaLevelDependency) ifTrue: [ el children ] ifFalse: [ {} ] ]).
+	self
+		model:
+			(MiTreeMap new
+				theme: self theme;
+				childrenBlock: [ :el | (el usesFamixTrait: TEntityMetaLevelDependency) ifTrue: [ el children ] ifFalse: [ {} ] ]).
 	diagram := self instantiate: SpRoassalPresenter.
-	diagram script: [ :canvas | 
-		canvas color: self theme backgroundColor.
-		self model canvas: canvas ]
+	diagram
+		script: [ :canvas | 
+			canvas color: self theme backgroundColor.
+			self model canvas: canvas ]
 ]
 
 { #category : #'as yet unclassified' }

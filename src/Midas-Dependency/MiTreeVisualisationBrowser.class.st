@@ -88,17 +88,17 @@ MiTreeVisualisationBrowser >> refresh [
 	diagram
 		script: [ :canvas | 
 			| boxes |
-			canvas color: Smalltalk ui theme backgroundColor.
+			canvas color: self theme backgroundColor.
 			boxes := self model entities
 				collect: [ :cls | 
 					| box label composite |
 					box := RSBox new
 						size: 100;
-						color: Color blue;
+						color: self theme selectionColor;
 						yourself.
 					label := RSLabel new
 						text: cls name;
-						color: Smalltalk ui theme textColor;
+						color: self theme textColor;
 						yourself.
 					RSLocation new
 						above;
@@ -125,7 +125,6 @@ MiTreeVisualisationBrowser >> refresh [
 { #category : #'as yet unclassified' }
 MiTreeVisualisationBrowser >> selectEntity: anEntity [
 	(self accept: anEntity) ifFalse: [ ^ self ].
-	Transcript crTrace: anEntity printString.
 	(anEntity isOfType: MooseGroup) ifTrue: [ self model entities: anEntity ] ifFalse: [ self model entities: {anEntity} ].
 	self refresh
 ]

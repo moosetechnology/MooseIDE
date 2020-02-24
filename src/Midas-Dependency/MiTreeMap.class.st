@@ -9,7 +9,8 @@ Class {
 		'rootEntities',
 		'childrenBlock',
 		'multiTagColorBlock',
-		'noTagColorBlock'
+		'noTagColorBlock',
+		'theme'
 	],
 	#category : #'Midas-Dependency-TreeMap'
 }
@@ -51,7 +52,7 @@ MiTreeMap >> close: shape [
 
 { #category : #helpers }
 MiTreeMap >> colorFor: anEntity [
-	^ Color blue
+	^ self theme selectionColor
 ]
 
 { #category : #initialization }
@@ -154,6 +155,16 @@ MiTreeMap >> scale: shape at: t [
 	shape translateTo: (rect1 rsCenter interpolateTo: rect2 rsCenter at: t).
 	
 	shape extent: (rect1 extent interpolateTo: rect2 extent at: t)
+]
+
+{ #category : #accessing }
+MiTreeMap >> theme [
+	^ theme
+]
+
+{ #category : #accessing }
+MiTreeMap >> theme: anObject [
+	theme := anObject
 ]
 
 { #category : #updating }

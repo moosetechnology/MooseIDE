@@ -60,7 +60,7 @@ MiNonUsedMethodBrowser >> drawOn: aCanvas [
 			| box label composite |
 			box := RSBox new
 				size: 100;
-				color: Color blue.
+				color: self theme selectionColor.
 			label := RSLabel new
 				text: ent name;
 				color: self theme textColor.
