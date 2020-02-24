@@ -61,6 +61,15 @@ MiAbstractBrowser >> freeze: aBoolean [
 	(aBoolean ifTrue: [ buttonFreeze ] ifFalse: [ follow ]) state: true
 ]
 
+{ #category : #helper }
+MiAbstractBrowser >> freezeDuring: aBlock [
+	| tmpState |
+	tmpState := self isFreeze.
+	self freeze: true.
+	aBlock
+		ensure: [ self freeze: tmpState ]
+]
+
 { #category : #accessing }
 MiAbstractBrowser >> globallySelect: anEntity [
 	self application globallySelect: anEntity
