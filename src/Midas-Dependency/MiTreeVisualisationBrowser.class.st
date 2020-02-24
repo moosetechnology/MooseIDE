@@ -36,7 +36,7 @@ Class {
 
 { #category : #specs }
 MiTreeVisualisationBrowser class >> defaultSpec [
-	^ SpBoxLayout newHorizontal
+	^ super defaultSpec
 		add: #diagram;
 		yourself
 ]
@@ -75,6 +75,7 @@ MiTreeVisualisationBrowser >> diagram: anObject [
 
 { #category : #'as yet unclassified' }
 MiTreeVisualisationBrowser >> initializePresenters [
+	super initializePresenters.
 	self model: MiTreeVisualisationBrowserModel new.
 	diagram := self instantiate: SpRoassalPresenter.
 	diagram

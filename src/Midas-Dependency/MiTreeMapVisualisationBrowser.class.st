@@ -9,7 +9,7 @@ Class {
 
 { #category : #specs }
 MiTreeMapVisualisationBrowser class >> defaultSpec [
-	^ SpBoxLayout newHorizontal
+	^ super defaultSpec
 		add: #diagram;
 		yourself
 ]
@@ -48,6 +48,7 @@ MiTreeMapVisualisationBrowser >> diagram: anObject [
 
 { #category : #'as yet unclassified' }
 MiTreeMapVisualisationBrowser >> initializePresenters [
+	super initializePresenters.
 	self model: (MiTreeMap new childrenBlock: [ :el | (el usesFamixTrait: TEntityMetaLevelDependency) ifTrue: [ el children ] ifFalse: [ {} ] ]).
 	diagram := self instantiate: SpRoassalPresenter.
 	diagram script: [ :canvas | 

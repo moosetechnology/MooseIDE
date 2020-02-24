@@ -11,7 +11,7 @@ Class {
 
 { #category : #specs }
 MiSourceTextBrowser class >> defaultSpec [
-	^ SpBoxLayout newHorizontal
+	^ super defaultSpec
 		add: #noteBook;
 		yourself
 ]
@@ -44,6 +44,7 @@ MiSourceTextBrowser >> entityName: aString [
 
 { #category : #'as yet unclassified' }
 MiSourceTextBrowser >> initializePresenters [
+	super initializePresenters.
 	model := MiSourceTextBrowserModel new.
 	sourceText := self newText.
 	noteBook := self newNotebook.

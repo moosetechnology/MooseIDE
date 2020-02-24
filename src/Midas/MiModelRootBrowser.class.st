@@ -42,7 +42,7 @@ MiModelRootBrowser class >> buildCommandsGroupWith: presenterInstance forRoot: r
 
 { #category : #specs }
 MiModelRootBrowser class >> defaultSpec [
-	^ SpBoxLayout newVertical
+	^ super defaultSpec
 		add: #menu withConstraints: [ :constraints | constraints height: self toolbarHeight ];
 		add: #modelPresenter;
 		yourself
@@ -88,6 +88,7 @@ MiModelRootBrowser >> initializeList [
 
 { #category : #initialization }
 MiModelRootBrowser >> initializePresenters [
+	super initializePresenters.
 	model := MiModelRootBrowserModel new.
 	menu := self mainMenu.
 	self initializeList.

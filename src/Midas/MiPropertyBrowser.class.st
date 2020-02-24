@@ -34,7 +34,7 @@ Class {
 
 { #category : #specs }
 MiPropertyBrowser class >> defaultSpec [
-	^ SpBoxLayout newHorizontal
+	^ super defaultSpec
 		add: #propertyExtension;
 		yourself
 ]
@@ -63,6 +63,7 @@ MiPropertyBrowser >> accept: anObject [
 
 { #category : #initialization }
 MiPropertyBrowser >> initializePresenters [
+	super initializePresenters.
 	propertyExtension := MiPropertyExtension on: MooseModel new
 ]
 

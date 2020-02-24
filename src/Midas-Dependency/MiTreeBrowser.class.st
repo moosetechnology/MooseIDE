@@ -36,7 +36,7 @@ Class {
 
 { #category : #specs }
 MiTreeBrowser class >> defaultSpec [
-	^ SpBoxLayout newHorizontal
+	^ super defaultSpec
 		add: #tree;
 		yourself
 ]
@@ -65,6 +65,7 @@ MiTreeBrowser >> accept: anObject [
 
 { #category : #'as yet unclassified' }
 MiTreeBrowser >> initializePresenters [
+	super initializePresenters.
 	self model: MiTreeBrowserModel new.
 	tree := self newTreeTable.
 	tree
@@ -81,6 +82,8 @@ MiTreeBrowser >> initializePresenters [
 		beResizable.
 	tree
 		whenSelectionChangedDo: [ :selected | 
+			| tmpState |
+			tmpState := self isFreeze.
 			self freeze: true.
 			selected selectedItems size = 1
 				ifTrue: [ model selected: selected selectedItem.
@@ -89,7 +92,8 @@ MiTreeBrowser >> initializePresenters [
 					mooseGroup := MooseGroup withAll: selected selectedItems.
 					model selected: mooseGroup.
 					MiApplication current globallySelect: mooseGroup ].
-			self freeze: false ]
+			Transcript crTrace: tmpState.
+			self freeze: tmpState ]
 ]
 
 { #category : #'as yet unclassified' }

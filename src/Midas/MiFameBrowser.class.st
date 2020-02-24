@@ -9,7 +9,7 @@ Class {
 
 { #category : #specs }
 MiFameBrowser class >> defaultSpec [
-	^ SpBoxLayout newHorizontal
+	^ super defaultSpec
 		add: #fameExtension;
 		yourself
 ]
@@ -38,6 +38,7 @@ MiFameBrowser >> accept: anObject [
 
 { #category : #initialization }
 MiFameBrowser >> initializePresenters [
+	super initializePresenters.
 	fameExtension := MiFameExtension on: MooseGroup new
 ]
 

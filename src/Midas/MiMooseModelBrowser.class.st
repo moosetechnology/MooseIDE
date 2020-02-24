@@ -16,7 +16,7 @@ MiMooseModelBrowser class >> buildCommandsGroupWith: presenterInstance forRoot: 
 
 { #category : #specs }
 MiMooseModelBrowser class >> defaultSpec [
-	^ SpBoxLayout newVertical
+	^ super defaultSpec
 		add: #searchField
 			withConstraints: [ :constraints | constraints height: self toolbarHeight ];
 		add: #modelPresenter;
@@ -52,6 +52,7 @@ MiMooseModelBrowser >> computeModelPresenterRoot [
 
 { #category : #initialization }
 MiMooseModelBrowser >> initializePresenters [
+	super initializePresenters.
 	model := MiMooseModelBrowserModel new.
 	self initializeTable.
 	self initializeSearchField.

@@ -10,7 +10,7 @@ Class {
 
 { #category : #specs }
 MiPanel class >> defaultSpec [
-	^ SpBoxLayout newHorizontal
+	^ super defaultSpec
 		add: #models withConstraints: [ :constraints | constraints height: self toolbarHeight ];
 		add: #details
 ]
@@ -33,6 +33,7 @@ MiPanel >> connectPresenters [
 
 { #category : #initialization }
 MiPanel >> initializePresenters [
+	super initializePresenters.
 	models := self newList.
 	details := self newNotebook.
 

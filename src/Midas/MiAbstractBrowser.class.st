@@ -3,10 +3,24 @@ Class {
 	#superclass : #MiPresenter,
 	#instVars : [
 		'model',
+		'buttonFreeze',
+		'follow',
 		'freeze'
 	],
 	#category : #'Midas-Browser'
 }
+
+{ #category : #'world menu' }
+MiAbstractBrowser class >> defaultSpec [
+	^ SpBoxLayout newVertical
+		add:
+			(SpBoxLayout newHorizontal
+				add: #follow expand: false;
+				add: #buttonFreeze expand: false;
+				yourself)
+			withConstraints: [ :constraints | constraints height: self toolbarHeight ];
+		yourself
+]
 
 { #category : #'world menu' }
 MiAbstractBrowser class >> menuCommandMetaOn: aBuilder [
@@ -44,7 +58,7 @@ MiAbstractBrowser >> accept: anObject [
 
 { #category : #accessing }
 MiAbstractBrowser >> freeze: aBoolean [
-	freeze := aBoolean
+	(aBoolean ifTrue: [ buttonFreeze ] ifFalse: [ follow ]) state: true
 ]
 
 { #category : #accessing }
@@ -53,9 +67,18 @@ MiAbstractBrowser >> globallySelect: anEntity [
 ]
 
 { #category : #accessing }
-MiAbstractBrowser >> initialize [
-	super initialize.
-	freeze := false
+MiAbstractBrowser >> initializePresenters [
+	super initializePresenters.
+	self flag: 'The state of freeze should be store in a model'.
+	buttonFreeze := self newRadioButton.
+	follow := self newRadioButton.
+	follow
+		associatedRadioButtons:
+			{buttonFreeze.
+			follow}.
+	buttonFreeze label: 'Freeze'.
+	follow label: 'Follow'.
+	self freeze: false.
 ]
 
 { #category : #accessing }
@@ -70,7 +93,7 @@ MiAbstractBrowser >> initializeWindow: aWindowPresenter [
 
 { #category : #accessing }
 MiAbstractBrowser >> isFreeze [
-	^ freeze
+	^ buttonFreeze state
 ]
 
 { #category : #accessing }

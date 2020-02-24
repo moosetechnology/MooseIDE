@@ -10,8 +10,7 @@ Class {
 
 { #category : #specs }
 MiNonUsedMethodBrowser class >> defaultSpec [
-	^ SpBoxLayout newVertical
-		"position: 90 percent;"
+	^ super defaultSpec
 		add: #diagram;
 		yourself
 ]
@@ -90,6 +89,7 @@ MiNonUsedMethodBrowser >> initializeDiagram [
 
 { #category : #TOREMOVE }
 MiNonUsedMethodBrowser >> initializePresenters [
+	super initializePresenters.
 	model := MiNonUsedFunctionBrowserModel new.
 	diagram := self instantiate: SpRoassalPresenter.
 	diagram script: [ :canvas | canvas color: self theme backgroundColor ].

@@ -37,9 +37,12 @@ Class {
 
 { #category : #specs }
 MiFilesBrowser class >> defaultSpec [
-	^ SpBoxLayout newHorizontal
-		add: #tree;
-		add: #list;
+	^ super defaultSpec
+		add:
+			(SpBoxLayout newHorizontal
+				add: #tree;
+				add: #list;
+				yourself);
 		yourself
 ]
 
@@ -79,6 +82,7 @@ MiFilesBrowser >> connectPresenters [
 
 { #category : #'as yet unclassified' }
 MiFilesBrowser >> initializePresenters [
+	super initializePresenters.
 	self model: MiFilesModel new.
 	self initializeTreeTable.
 	list := self newList.
