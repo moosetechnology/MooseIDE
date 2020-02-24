@@ -84,11 +84,11 @@ MiTreeBrowser >> initializePresenters [
 			self freeze: true.
 			selected selectedItems size = 1
 				ifTrue: [ model selected: selected selectedItem.
-					self application globallySelect: selected selectedItem ]
+					MiApplication current globallySelect: selected selectedItem ]
 				ifFalse: [ | mooseGroup |
 					mooseGroup := MooseGroup withAll: selected selectedItems.
 					model selected: mooseGroup.
-					self application globallySelect: mooseGroup ].
+					MiApplication current globallySelect: mooseGroup ].
 			self freeze: false ]
 ]
 
