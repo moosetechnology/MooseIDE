@@ -58,7 +58,7 @@ MiPropertyBrowser class >> runMe [
 
 { #category : #initialization }
 MiPropertyBrowser >> accept: anObject [
-	^ anObject isKindOf: MooseEntity 
+	^ self isNotFreeze and: [ anObject isMooseEntity ] 
 ]
 
 { #category : #initialization }
