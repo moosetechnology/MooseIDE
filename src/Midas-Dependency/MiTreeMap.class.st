@@ -59,7 +59,7 @@ MiTreeMap >> colorFor: anEntity [
 MiTreeMap >> initialize [
 	super initialize.
 	canvas := RSCanvas new.
-	color := TSScale category20b.
+	color := RTScale category20b.
 
 	base := RSComposite new.
 	base draggable.
