@@ -66,3 +66,8 @@ MiUMLBrowser >> selectEntity: anEntity [
 		ifTrue: [ self model rootEntities: anEntity ].
 	self refresh
 ]
+
+{ #category : #TOREMOVE }
+MiUMLBrowser >> title [
+	^ 'UML Browser'
+]
