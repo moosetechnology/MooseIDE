@@ -17,8 +17,8 @@ MiMooseModelBrowser class >> buildCommandsGroupWith: presenterInstance forRoot: 
 { #category : #specs }
 MiMooseModelBrowser class >> defaultSpec [
 	^ super defaultSpec
-		add: #searchField
-			withConstraints: [ :constraints | constraints height: self toolbarHeight ];
+	"	add: #searchField
+			withConstraints: [ :constraints | constraints height: self toolbarHeight ];"
 		add: #modelPresenter;
 		yourself
 ]
@@ -55,7 +55,7 @@ MiMooseModelBrowser >> initializePresenters [
 	super initializePresenters.
 	model := MiMooseModelBrowserModel new.
 	self initializeTable.
-	self initializeSearchField.
+	"self initializeSearchField."
 	modelPresenter
 		whenSelectionChangedDo: [ :selected | 
 			selected selectedItems size = 1
@@ -63,10 +63,8 @@ MiMooseModelBrowser >> initializePresenters [
 						ifTrue: [ model selected: selected selectedItem.
 							self application globallySelect: selected selectedItem ] ]
 				ifFalse: [ (selected selectedItems allSatisfy: #isMooseEntity)
-						ifTrue: [ 
-							model selected: selected selectedItems.
-							self application globallySelect: (MooseGroup withAll: selected selectedItems) ] ] ].
-	searchField whenTextIsAcceptedDo: [ :text | modelPresenter searchFor: text ]
+						ifTrue: [ model selected: selected selectedItems.
+							self application globallySelect: (MooseGroup withAll: selected selectedItems) ] ] ]
 ]
 
 { #category : #initialization }
@@ -74,7 +72,8 @@ MiMooseModelBrowser >> initializeSearchField [
 	searchField := self newTextInput
 		placeholder: 'TODO: Search...';
 		yourself.
-	searchField acceptOnCR: true
+	searchField acceptOnCR: true.
+	searchField whenTextIsAcceptedDo: [ :text | modelPresenter searchFor: text ]
 ]
 
 { #category : #initialization }

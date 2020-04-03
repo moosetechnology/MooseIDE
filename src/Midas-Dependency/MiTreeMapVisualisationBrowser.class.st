@@ -33,7 +33,7 @@ MiTreeMapVisualisationBrowser class >> runMe [
 
 { #category : #'as yet unclassified' }
 MiTreeMapVisualisationBrowser >> accept: anObject [
-	^ self isNotFreeze and: [ (anObject isOfType: MooseGroup) ifFalse: [ true ] ifTrue: [ anObject isNotEmpty ] ]
+	^ self isNotFreeze and: [ (anObject isKindOf: MooseGroup) ifFalse: [ true ] ifTrue: [ anObject isNotEmpty ] ]
 ]
 
 { #category : #accessing }
