@@ -47,7 +47,10 @@ MiMooseModelBrowser >> accept: anObject [
 
 { #category : #initialization }
 MiMooseModelBrowser >> computeModelPresenterRoot [
-	modelPresenter roots: ((model model metamodel classes reject: [ :a | a implementingClass isTrait ]) sorted: #name ascending)
+	modelPresenter
+		roots:
+			((model model metamodel classes reject: [ :a | a implementingClass isTrait or: [ (model model allWithSubTypesOf: a implementingClass) isEmpty ] ])
+				sorted: #name ascending)
 ]
 
 { #category : #initialization }
