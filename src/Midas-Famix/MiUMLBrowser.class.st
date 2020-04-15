@@ -45,7 +45,7 @@ MiUMLBrowser >> diagram [
 MiUMLBrowser >> followAction [
 	(self accept: toSelect)
 		ifFalse: [ ^ self ].
-	(toSelect isKindOf: FAMIXTypeGroup)
+	(toSelect isKindOf: FamixTypeGroup)
 		ifFalse: [ self model rootEntities: {toSelect} ]
 		ifTrue: [ self model rootEntities: toSelect ].
 	self refresh
