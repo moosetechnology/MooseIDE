@@ -60,7 +60,7 @@ MiTreeVisualisationBrowser class >> runMe [
 
 { #category : #'as yet unclassified' }
 MiTreeVisualisationBrowser >> accept: anObject [
-	^ self isNotFreeze
+	^ true
 ]
 
 { #category : #accessing }
@@ -71,6 +71,16 @@ MiTreeVisualisationBrowser >> diagram [
 { #category : #accessing }
 MiTreeVisualisationBrowser >> diagram: anObject [
 	diagram := anObject
+]
+
+{ #category : #'as yet unclassified' }
+MiTreeVisualisationBrowser >> followAction [
+	(self accept: toSelect)
+		ifFalse: [ ^ self ].
+	(toSelect isOfType: MooseGroup)
+		ifTrue: [ self model entities: toSelect ]
+		ifFalse: [ self model entities: {toSelect} ].
+	self refresh
 ]
 
 { #category : #'as yet unclassified' }
@@ -120,13 +130,6 @@ MiTreeVisualisationBrowser >> refresh [
 			canvas @ RSCanvasController.
 			canvas ];
 		refresh
-]
-
-{ #category : #'as yet unclassified' }
-MiTreeVisualisationBrowser >> selectEntity: anEntity [
-	(self accept: anEntity) ifFalse: [ ^ self ].
-	(anEntity isOfType: MooseGroup) ifTrue: [ self model entities: anEntity ] ifFalse: [ self model entities: {anEntity} ].
-	self refresh
 ]
 
 { #category : #'as yet unclassified' }

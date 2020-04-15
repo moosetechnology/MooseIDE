@@ -80,6 +80,14 @@ MiNonUsedMethodBrowser >> drawOn: aCanvas [
 ]
 
 { #category : #TOREMOVE }
+MiNonUsedMethodBrowser >> followAction [
+	((self accept: toSelect) and: (self needUpdate: toSelect))
+		ifFalse: [ ^ self ].
+	model selected: toSelect.
+	self refresh
+]
+
+{ #category : #TOREMOVE }
 MiNonUsedMethodBrowser >> initializeDiagram [
 	diagram
 		script: [ :canvas | 
@@ -103,15 +111,6 @@ MiNonUsedMethodBrowser >> refresh [
 			diagram refresh ].
 	self needRebuild: false.
 	self buildWithSpec
-]
-
-{ #category : #TOREMOVE }
-MiNonUsedMethodBrowser >> selectEntity: anEntity [
-	((self accept: anEntity)
-		and: ((self needUpdate: anEntity) and: self isNotFreeze))
-		ifFalse: [ ^ self ].
-	model selected: anEntity.
-	self refresh
 ]
 
 { #category : #TOREMOVE }

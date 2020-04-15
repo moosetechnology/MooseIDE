@@ -51,8 +51,3 @@ MiPanel >> models [
 MiPanel >> pageFrom: aModel [
 	^ SpNotebookPage title: aModel name provider: [ StInspector on: aModel ]
 ]
-
-{ #category : #accessing }
-MiPanel >> selectEntity: anEntity [
-	(self accept: anEntity) ifFalse: [ ^ self ]
-]

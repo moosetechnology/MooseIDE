@@ -58,7 +58,14 @@ MiPropertyBrowser class >> runMe [
 
 { #category : #initialization }
 MiPropertyBrowser >> accept: anObject [
-	^ self isNotFreeze and: [ anObject isMooseEntity ] 
+	^ anObject isMooseEntity
+]
+
+{ #category : #initialization }
+MiPropertyBrowser >> followAction [
+	(self accept: toSelect)
+		ifFalse: [ ^ self ].
+	propertyExtension model: toSelect
 ]
 
 { #category : #initialization }

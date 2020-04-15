@@ -33,12 +33,22 @@ MiUMLBrowser class >> runMe [
 
 { #category : #accessing }
 MiUMLBrowser >> accept: anObject [
-	^ self isNotFreeze and: [ (anObject isKindOf: FamixTypeGroup) or: [ anObject isType ] ]
+	^ (anObject isKindOf: FamixTypeGroup) or: [ anObject isType ]
 ]
 
 { #category : #accessing }
 MiUMLBrowser >> diagram [
 	^ diagram
+]
+
+{ #category : #accessing }
+MiUMLBrowser >> followAction [
+	(self accept: toSelect)
+		ifFalse: [ ^ self ].
+	(toSelect isKindOf: FAMIXTypeGroup)
+		ifFalse: [ self model rootEntities: {toSelect} ]
+		ifTrue: [ self model rootEntities: toSelect ].
+	self refresh
 ]
 
 { #category : #accessing }
@@ -56,15 +66,6 @@ MiUMLBrowser >> initializePresenters [
 MiUMLBrowser >> refresh [
 	self diagram refresh.
 	self model run.
-]
-
-{ #category : #accessing }
-MiUMLBrowser >> selectEntity: anEntity [
-	(self accept: anEntity) ifFalse: [ ^ self ].
-	(anEntity isKindOf: FamixTypeGroup)
-		ifFalse: [ self model rootEntities: {anEntity} ]
-		ifTrue: [ self model rootEntities: anEntity ].
-	self refresh
 ]
 
 { #category : #TOREMOVE }

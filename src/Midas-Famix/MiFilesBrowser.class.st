@@ -81,6 +81,14 @@ MiFilesBrowser >> connectPresenters [
 ]
 
 { #category : #'as yet unclassified' }
+MiFilesBrowser >> followAction [
+	(self accept: toSelect)
+		ifFalse: [ ^ self ].
+	self model mooseModel: toSelect.
+	self selectFileReference: toSelect rootFolder asFileReference
+]
+
+{ #category : #'as yet unclassified' }
 MiFilesBrowser >> initializePresenters [
 	super initializePresenters.
 	self model: MiFilesModel new.
@@ -102,14 +110,6 @@ MiFilesBrowser >> initializeTreeTable [
 { #category : #'as yet unclassified' }
 MiFilesBrowser >> refresh [
 	tree items: {self model fileReference parent} , self model fileReference directories , self model fileReference files
-]
-
-{ #category : #'as yet unclassified' }
-MiFilesBrowser >> selectEntity: anEntity [
-	(self accept: anEntity)
-		ifFalse: [ ^ self ].
-	self model mooseModel: anEntity.
-	self selectFileReference: anEntity rootFolder asFileReference
 ]
 
 { #category : #'as yet unclassified' }
