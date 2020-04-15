@@ -33,7 +33,7 @@ MiUMLBrowser class >> runMe [
 
 { #category : #accessing }
 MiUMLBrowser >> accept: anObject [
-	^ (anObject isKindOf: FAMIXTypeGroup) or: [ anObject isType ]
+	^ (anObject isKindOf: FamixTypeGroup) or: [ anObject isType ]
 ]
 
 { #category : #accessing }
