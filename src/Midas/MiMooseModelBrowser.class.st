@@ -54,6 +54,14 @@ MiMooseModelBrowser >> computeModelPresenterRoot [
 ]
 
 { #category : #initialization }
+MiMooseModelBrowser >> followAction [
+	((self needUpdate: toSelect) and: [ self accept: toSelect ])
+		ifFalse: [ ^ self ].
+	model model: toSelect.
+	self computeModelPresenterRoot
+]
+
+{ #category : #initialization }
 MiMooseModelBrowser >> initializePresenters [
 	super initializePresenters.
 	model := MiMooseModelBrowserModel new.
@@ -123,14 +131,6 @@ MiMooseModelBrowser >> modelPresenter [
 { #category : #initialization }
 MiMooseModelBrowser >> needUpdate: anEntity [
 	^ model selected ~= anEntity
-]
-
-{ #category : #initialization }
-MiMooseModelBrowser >> selectEntity: anEntity [
-	((self needUpdate: anEntity) and: [ self accept: anEntity ])
-		ifFalse: [ ^ self ].
-	model model: anEntity.
-	self computeModelPresenterRoot
 ]
 
 { #category : #initialization }

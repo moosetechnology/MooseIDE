@@ -33,7 +33,9 @@ MiTreeMapVisualisationBrowser class >> runMe [
 
 { #category : #'as yet unclassified' }
 MiTreeMapVisualisationBrowser >> accept: anObject [
-	^ self isNotFreeze and: [ (anObject isKindOf: MooseGroup) ifFalse: [ true ] ifTrue: [ anObject isNotEmpty ] ]
+	^ (anObject isKindOf: MooseGroup)
+		ifFalse: [ true ]
+		ifTrue: [ anObject isNotEmpty ]
 ]
 
 { #category : #accessing }
@@ -44,6 +46,16 @@ MiTreeMapVisualisationBrowser >> diagram [
 { #category : #accessing }
 MiTreeMapVisualisationBrowser >> diagram: anObject [
 	diagram := anObject
+]
+
+{ #category : #'as yet unclassified' }
+MiTreeMapVisualisationBrowser >> followAction [
+	(self accept: toSelect)
+		ifFalse: [ ^ self ].
+	(toSelect isOfType: MooseGroup)
+		ifTrue: [ self model rootEntities: toSelect ]
+		ifFalse: [ self model rootEntities: {toSelect} ].
+	self refresh
 ]
 
 { #category : #'as yet unclassified' }
@@ -65,13 +77,6 @@ MiTreeMapVisualisationBrowser >> initializePresenters [
 MiTreeMapVisualisationBrowser >> refresh [
 	self diagram refresh.
 	self model run.
-]
-
-{ #category : #'as yet unclassified' }
-MiTreeMapVisualisationBrowser >> selectEntity: anEntity [
-	(self accept: anEntity) ifFalse: [ ^ self ].
-	(anEntity isOfType: MooseGroup) ifTrue: [ self model rootEntities: anEntity ] ifFalse: [ self model rootEntities: {anEntity} ].
-	self refresh
 ]
 
 { #category : #'as yet unclassified' }

@@ -77,6 +77,11 @@ MiModelRootBrowser >> addModel: mooseModel [
 	modelPresenter items: MooseModel root
 ]
 
+{ #category : #'as yet unclassified' }
+MiModelRootBrowser >> followAction [
+	^ self
+]
+
 { #category : #initialization }
 MiModelRootBrowser >> initializeList [
 	modelPresenter := self newList.
@@ -140,15 +145,6 @@ MiModelRootBrowser >> miSelectedItem [
 { #category : #initialization }
 MiModelRootBrowser >> modelPresenter [
 	^ modelPresenter
-]
-
-{ #category : #initialization }
-MiModelRootBrowser >> selectEntity: anEntity [
-	(self accept: anEntity)
-		ifFalse: [ ^ self ].
-	modelPresenter selectItem: anEntity
-	"self needRebuild: false.
-	self buildWithSpec"
 ]
 
 { #category : #initialization }
