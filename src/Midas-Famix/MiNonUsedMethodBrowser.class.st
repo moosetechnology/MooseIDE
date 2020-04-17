@@ -16,7 +16,7 @@ MiNonUsedMethodBrowser class >> defaultSpec [
 ]
 
 { #category : #specs }
-MiNonUsedMethodBrowser class >> lunchOn: anObject [
+MiNonUsedMethodBrowser class >> launchOn: anObject [
 	^ self new
 		selected: anObject;
 		openWithSpec
@@ -28,6 +28,7 @@ MiNonUsedMethodBrowser class >> menuCommandOn: aBuilder [
 	(aBuilder item: #NonUsedMethodBrowser)
 		parent: self toolbarFamixName;
 		label: 'Non used method browser';
+		order: 2.0;
 		action: [ self runMe ]
 ]
 
