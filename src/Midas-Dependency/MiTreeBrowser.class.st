@@ -55,7 +55,7 @@ MiTreeBrowser class >> menuCommandOn: aBuilder [
 { #category : #specs }
 MiTreeBrowser class >> runMe [
 	<script>
-	self new openWithSpec
+	super runMe
 ]
 
 { #category : #'as yet unclassified' }

@@ -28,7 +28,7 @@ MiFameBrowser class >> menuCommandOn: aBuilder [
 { #category : #specs }
 MiFameBrowser class >> runMe [
 	<script>
-	self new openWithSpec
+	super runMe
 ]
 
 { #category : #initialization }

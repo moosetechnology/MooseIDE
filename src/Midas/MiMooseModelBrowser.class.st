@@ -37,7 +37,7 @@ MiMooseModelBrowser class >> menuCommandOn: aBuilder [
 { #category : #specs }
 MiMooseModelBrowser class >> runMe [
 	<script>
-	self new openWithSpec
+	super runMe
 ]
 
 { #category : #accessing }
