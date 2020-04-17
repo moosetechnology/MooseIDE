@@ -30,7 +30,7 @@ Class {
 	#superclass : #MiAbstractFamixBrowser,
 	#instVars : [
 		'tree',
-		'list'
+		'treeEntity'
 	],
 	#category : #'Midas-Famix-FilesBrowser'
 }
@@ -41,7 +41,7 @@ MiFilesBrowser class >> defaultSpec [
 		add:
 			(SpBoxLayout newHorizontal
 				add: #tree;
-				add: #list;
+				add: #treeEntity;
 				yourself);
 		yourself
 ]
@@ -71,14 +71,17 @@ MiFilesBrowser >> accept: anObject [
 { #category : #'as yet unclassified' }
 MiFilesBrowser >> computeItemsInFileReference: aFileReference [
 	"isChildOf: can bug see issue https://github.com/pharo-project/pharo/issues/5720"
-	^ (self model mooseModel allUsing: FamixTFileAnchor) select: [ :anchor | anchor fileReference canonicalize isChildOf: self model fileReference ] thenCollect: [ :anchor | anchor element ]
+
+	^ (self model mooseModel allUsing: FamixTFileAnchor)
+		select: [ :anchor | anchor element isClass and: [ anchor element isAnonymousClass not and: [ anchor fileReference canonicalize isChildOf: self model fileReference ] ] ]
+		thenCollect: [ :anchor | anchor element ]
 ]
 
 { #category : #'as yet unclassified' }
 MiFilesBrowser >> connectPresenters [
 	super connectPresenters.
-	tree whenSelectionChangedDo: [ :selected | selected selectedItem hasChildren ifTrue: [ self selectFileReference: selected selectedItem.
-			list items: (self computeItemsInFileReference: self model fileReference) ] ]
+	tree whenSelectionChangedDo: [ :selected | (selected selectedItem isNotNil and: [  selected selectedItem hasChildren ]) ifTrue: [ self selectFileReference: selected selectedItem.
+			treeEntity roots: (self computeItemsInFileReference: self model fileReference) ] ] 
 ]
 
 { #category : #'as yet unclassified' }
@@ -94,7 +97,29 @@ MiFilesBrowser >> initializePresenters [
 	super initializePresenters.
 	self model: MiFilesModel new.
 	self initializeTreeTable.
-	list := self newList.
+	treeEntity := self newTreeTable.
+	treeEntity
+		addColumn:
+			(SpCompositeTableColumn new
+				addColumn:
+					((SpImageTableColumn evaluated: #midasIcon)
+						width: 20;
+						yourself);
+				addColumn: (SpStringTableColumn evaluated: #name);
+				yourself);
+		children: [ :aClass | aClass children asOrderedCollection ];
+		beMultipleSelection;
+		beResizable.
+	treeEntity
+		whenSelectionChangedDo: [ :selected | 
+			selected selectedItems ifNotEmpty: [ 
+			self
+				freezeDuring: [ selected selectedItems size = 1
+						ifTrue: [
+							MiApplication current globallySelect: selected selectedItem ]
+						ifFalse: [ | mooseGroup |
+							mooseGroup := MooseGroup withAll: selected selectedItems.
+							MiApplication current globallySelect: mooseGroup ] ] ] ]
 ]
 
 { #category : #'as yet unclassified' }
