@@ -33,7 +33,8 @@ MiUMLBrowser class >> runMe [
 
 { #category : #accessing }
 MiUMLBrowser >> accept: anObject [
-	^ (anObject isKindOf: FamixTypeGroup) or: [ anObject isType ]
+	"can't use isType because it can be a MooseModel (that does not answer isType)"
+	^ (anObject isKindOf: FamixTypeGroup) or: [ anObject isOfType: FamixTType ]
 ]
 
 { #category : #accessing }
