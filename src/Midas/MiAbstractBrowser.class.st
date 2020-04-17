@@ -44,6 +44,15 @@ MiAbstractBrowser class >> menuCommandOn: aBuilder [
 ]
 
 { #category : #'world menu' }
+MiAbstractBrowser class >> runMe [
+	<script>
+	self new
+		openWithSpec;
+		"open with the last select entity"
+		selectEntity: MiApplication current logger logs last entity
+]
+
+{ #category : #'world menu' }
 MiAbstractBrowser class >> toolbarMetaName [
 	^ #Meta
 ]

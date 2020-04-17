@@ -28,7 +28,7 @@ MiUMLBrowser class >> menuCommandOn: aBuilder [
 { #category : #specs }
 MiUMLBrowser class >> runMe [
 	<script>
-	self new openWithSpec
+	super runMe
 ]
 
 { #category : #accessing }
