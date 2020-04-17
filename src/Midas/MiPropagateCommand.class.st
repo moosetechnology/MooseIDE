@@ -9,6 +9,11 @@ MiPropagateCommand class >> defaultName [
 	^ 'Propagate'
 ]
 
+{ #category : #default }
+MiPropagateCommand class >> forSpecContext: anObject [
+	^ (self forSpecWithIconNamed: #moosePropagate) beHiddenWhenCantBeRun
+]
+
 { #category : #testing }
 MiPropagateCommand >> canBeExecuted [
 	^ self context miSelectedItem isMooseEntity

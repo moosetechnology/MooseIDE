@@ -43,6 +43,13 @@ MiAbstractBrowser class >> menuCommandOn: aBuilder [
 ]
 
 { #category : #'world menu' }
+MiAbstractBrowser class >> openOn: anEntity [
+	self new
+		openWithSpec;
+		selectEntity: anEntity
+]
+
+{ #category : #'world menu' }
 MiAbstractBrowser class >> runMe [
 	<script>
 	self new
