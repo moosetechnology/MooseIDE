@@ -56,7 +56,7 @@ MiAbstractBrowser class >> runMe [
 	self new
 		openWithSpec;
 		"open with the last select entity"
-		selectEntity: MiApplication current logger logs last entity
+		selectEntity: MiApplication current logger lastEntity
 ]
 
 { #category : #'world menu' }

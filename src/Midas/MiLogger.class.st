@@ -34,6 +34,11 @@ MiLogger >> initialize [
 ]
 
 { #category : #accessing }
+MiLogger >> lastEntity [
+	^ self logs ifEmpty: [ nil ] ifNotEmpty: [ self logs last entity ]
+]
+
+{ #category : #accessing }
 MiLogger >> logs [
 	^ logs
 ]
