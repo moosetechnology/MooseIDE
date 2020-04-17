@@ -37,7 +37,8 @@ MiAbstractBrowser class >> menuCommandMetaOn: aBuilder [
 MiAbstractBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	(aBuilder item: self toolbarName)
-		order: 6.0;
+		order: 2.0;
+		parent: #Moose;
 		withSeparatorAfter;
 		icon: MooseIcons mooseIcon
 ]

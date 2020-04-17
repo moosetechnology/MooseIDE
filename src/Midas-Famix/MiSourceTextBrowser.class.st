@@ -23,6 +23,7 @@ MiSourceTextBrowser class >> menuCommandOn: aBuilder [
 		parent: self toolbarFamixName;
 		label: 'SourceText browser';
 		icon: (self iconNamed: #mooseSourceText);
+		order: 1.0;
 		action: [ self runMe ]
 ]
 
