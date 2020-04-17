@@ -53,12 +53,19 @@ MiPropertyBrowser class >> menuCommandOn: aBuilder [
 { #category : #specs }
 MiPropertyBrowser class >> runMe [
 	<script>
-	self new openWithSpec
+	super runMe
 ]
 
 { #category : #initialization }
 MiPropertyBrowser >> accept: anObject [
-	^ self isNotFreeze and: [ anObject isMooseEntity ] 
+	^ anObject isMooseEntity
+]
+
+{ #category : #initialization }
+MiPropertyBrowser >> followAction [
+	(self accept: toSelect)
+		ifFalse: [ ^ self ].
+	propertyExtension model: toSelect
 ]
 
 { #category : #initialization }

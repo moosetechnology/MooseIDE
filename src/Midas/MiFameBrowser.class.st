@@ -28,7 +28,7 @@ MiFameBrowser class >> menuCommandOn: aBuilder [
 { #category : #specs }
 MiFameBrowser class >> runMe [
 	<script>
-	self new openWithSpec
+	super runMe
 ]
 
 { #category : #initialization }
@@ -37,16 +37,16 @@ MiFameBrowser >> accept: anObject [
 ]
 
 { #category : #initialization }
-MiFameBrowser >> initializePresenters [
-	super initializePresenters.
-	fameExtension := MiFameExtension on: MooseGroup new
+MiFameBrowser >> followAction [
+	(self accept: toSelect)
+		ifFalse: [ ^ self ].
+	fameExtension model: toSelect
 ]
 
 { #category : #initialization }
-MiFameBrowser >> selectEntity: anEntity [
-	(self accept: anEntity)
-		ifFalse: [ ^ self ].
-	fameExtension model: anEntity.
+MiFameBrowser >> initializePresenters [
+	super initializePresenters.
+	fameExtension := MiFameExtension on: MooseGroup new
 ]
 
 { #category : #initialization }

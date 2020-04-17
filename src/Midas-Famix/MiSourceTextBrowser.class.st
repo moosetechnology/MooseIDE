@@ -29,7 +29,7 @@ MiSourceTextBrowser class >> menuCommandOn: aBuilder [
 { #category : #specs }
 MiSourceTextBrowser class >> runMe [
 	<script>
-	self new openWithSpec
+	super runMe
 ]
 
 { #category : #'as yet unclassified' }
@@ -43,6 +43,14 @@ MiSourceTextBrowser >> entityName: aString [
 ]
 
 { #category : #'as yet unclassified' }
+MiSourceTextBrowser >> followAction [
+	(self accept: toSelect)
+		ifFalse: [ ^ self ].
+	model selected: toSelect.
+	self updateCode
+]
+
+{ #category : #'as yet unclassified' }
 MiSourceTextBrowser >> initializePresenters [
 	super initializePresenters.
 	model := MiSourceTextBrowserModel new.
@@ -50,14 +58,6 @@ MiSourceTextBrowser >> initializePresenters [
 	noteBook := self newNotebook.
 	self sourceCodePage.
 	noteBook addPage: sourceCodePage
-]
-
-{ #category : #'as yet unclassified' }
-MiSourceTextBrowser >> selectEntity: anEntity [
-	(self accept: anEntity)
-		ifFalse: [ ^ self ].
-	model selected: anEntity.
-	self updateCode
 ]
 
 { #category : #'as yet unclassified' }

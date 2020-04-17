@@ -4,8 +4,9 @@ Class {
 	#instVars : [
 		'model',
 		'buttonFreeze',
-		'follow',
-		'freeze'
+		'freeze',
+		'toSelect',
+		'buttonFollow'
 	],
 	#category : #'Midas-Browser'
 }
@@ -15,7 +16,7 @@ MiAbstractBrowser class >> defaultSpec [
 	^ SpBoxLayout newVertical
 		add:
 			(SpBoxLayout newHorizontal
-				add: #follow expand: false;
+				add: #buttonFollow expand: false;
 				add: #buttonFreeze expand: false;
 				yourself)
 			withConstraints: [ :constraints | constraints height: self toolbarHeight ];
@@ -42,6 +43,15 @@ MiAbstractBrowser class >> menuCommandOn: aBuilder [
 ]
 
 { #category : #'world menu' }
+MiAbstractBrowser class >> runMe [
+	<script>
+	self new
+		openWithSpec;
+		"open with the last select entity"
+		selectEntity: MiApplication current logger logs last entity
+]
+
+{ #category : #'world menu' }
 MiAbstractBrowser class >> toolbarMetaName [
 	^ #Meta
 ]
@@ -56,9 +66,19 @@ MiAbstractBrowser >> accept: anObject [
 	^ false
 ]
 
+{ #category : #'as yet unclassified' }
+MiAbstractBrowser >> followAction [
+	^ self subclassResponsibility
+]
+
 { #category : #accessing }
 MiAbstractBrowser >> freeze: aBoolean [
-	(aBoolean ifTrue: [ buttonFreeze ] ifFalse: [ follow ]) state: true
+	(aBoolean ifTrue: [ buttonFreeze ] ifFalse: [ buttonFollow ]) state: true
+]
+
+{ #category : #'as yet unclassified' }
+MiAbstractBrowser >> freezeAction [
+	^ self
 ]
 
 { #category : #helper }
@@ -75,18 +95,23 @@ MiAbstractBrowser >> globallySelect: anEntity [
 	self application globallySelect: anEntity
 ]
 
+{ #category : #'as yet unclassified' }
+MiAbstractBrowser >> highlightAction [
+	^ self subclassResponsibility
+]
+
 { #category : #accessing }
 MiAbstractBrowser >> initializePresenters [
 	super initializePresenters.
 	self flag: 'The state of freeze should be store in a model'.
 	buttonFreeze := self newRadioButton.
-	follow := self newRadioButton.
-	follow
+	buttonFollow := self newRadioButton.
+	buttonFollow
 		associatedRadioButtons:
 			{buttonFreeze.
-			follow}.
+			buttonFollow}.
 	buttonFreeze label: 'Freeze'.
-	follow label: 'Follow'.
+	buttonFollow label: 'Follow'.
 	self freeze: false.
 ]
 
@@ -100,9 +125,20 @@ MiAbstractBrowser >> initializeWindow: aWindowPresenter [
 		initialExtent: 900 @ 700
 ]
 
+{ #category : #'as yet unclassified' }
+MiAbstractBrowser >> isFollow [
+	^ buttonFollow state
+]
+
 { #category : #accessing }
 MiAbstractBrowser >> isFreeze [
 	^ buttonFreeze state
+]
+
+{ #category : #'as yet unclassified' }
+MiAbstractBrowser >> isHighlight [
+self flag: #toChangeLater.
+	^ false
 ]
 
 { #category : #accessing }
@@ -132,5 +168,6 @@ MiAbstractBrowser >> needUpdate: anEntity [
 
 { #category : #accessing }
 MiAbstractBrowser >> selectEntity: anEntity [
-	self subclassResponsibility
+	toSelect := anEntity.
+	AbstractBrowserMode actionFor: self
 ]

@@ -1,29 +1,17 @@
 Class {
 	#name : #MiTreeMap,
-	#superclass : #Object,
+	#superclass : #MiAbstractVisualization,
 	#instVars : [
-		'canvas',
 		'color',
 		'base',
 		'border',
 		'rootEntities',
 		'childrenBlock',
 		'multiTagColorBlock',
-		'noTagColorBlock',
-		'theme'
+		'noTagColorBlock'
 	],
 	#category : #'Midas-Dependency-TreeMap'
 }
-
-{ #category : #accessing }
-MiTreeMap >> canvas [
-	^ canvas
-]
-
-{ #category : #accessing }
-MiTreeMap >> canvas: anObject [
-	canvas := anObject
-]
 
 { #category : #accessing }
 MiTreeMap >> childrenBlock [
@@ -59,7 +47,7 @@ MiTreeMap >> colorFor: anEntity [
 MiTreeMap >> initialize [
 	super initialize.
 	canvas := RSCanvas new.
-	color := TSScale category20b.
+	color := RTScale category20b.
 
 	base := RSComposite new.
 	base draggable.
@@ -155,16 +143,6 @@ MiTreeMap >> scale: shape at: t [
 	shape translateTo: (rect1 rsCenter interpolateTo: rect2 rsCenter at: t).
 	
 	shape extent: (rect1 extent interpolateTo: rect2 extent at: t)
-]
-
-{ #category : #accessing }
-MiTreeMap >> theme [
-	^ theme
-]
-
-{ #category : #accessing }
-MiTreeMap >> theme: anObject [
-	theme := anObject
 ]
 
 { #category : #updating }

@@ -59,7 +59,7 @@ MiFilesBrowser class >> menuCommandOn: aBuilder [
 { #category : #specs }
 MiFilesBrowser class >> runMe [
 	<script>
-	self new openWithSpec
+	super runMe
 ]
 
 { #category : #'as yet unclassified' }
@@ -78,6 +78,14 @@ MiFilesBrowser >> connectPresenters [
 	super connectPresenters.
 	tree whenSelectionChangedDo: [ :selected | selected selectedItem hasChildren ifTrue: [ self selectFileReference: selected selectedItem.
 			list items: (self computeItemsInFileReference: self model fileReference) ] ]
+]
+
+{ #category : #'as yet unclassified' }
+MiFilesBrowser >> followAction [
+	(self accept: toSelect)
+		ifFalse: [ ^ self ].
+	self model mooseModel: toSelect.
+	self selectFileReference: toSelect rootFolder asFileReference
 ]
 
 { #category : #'as yet unclassified' }
@@ -102,14 +110,6 @@ MiFilesBrowser >> initializeTreeTable [
 { #category : #'as yet unclassified' }
 MiFilesBrowser >> refresh [
 	tree items: {self model fileReference parent} , self model fileReference directories , self model fileReference files
-]
-
-{ #category : #'as yet unclassified' }
-MiFilesBrowser >> selectEntity: anEntity [
-	(self accept: anEntity)
-		ifFalse: [ ^ self ].
-	self model mooseModel: anEntity.
-	self selectFileReference: anEntity rootFolder asFileReference
 ]
 
 { #category : #'as yet unclassified' }

@@ -62,7 +62,7 @@ MiModelRootBrowser class >> menuCommandOn: aBuilder [
 { #category : #specs }
 MiModelRootBrowser class >> runMe [
 	<script>
-	self new openWithSpec
+	super runMe
 ]
 
 { #category : #accessing }
@@ -75,6 +75,11 @@ MiModelRootBrowser >> addModel: mooseModel [
 	"need to refresh the list"
 
 	modelPresenter items: MooseModel root
+]
+
+{ #category : #'as yet unclassified' }
+MiModelRootBrowser >> followAction [
+	^ self
 ]
 
 { #category : #initialization }
@@ -140,15 +145,6 @@ MiModelRootBrowser >> miSelectedItem [
 { #category : #initialization }
 MiModelRootBrowser >> modelPresenter [
 	^ modelPresenter
-]
-
-{ #category : #initialization }
-MiModelRootBrowser >> selectEntity: anEntity [
-	(self accept: anEntity)
-		ifFalse: [ ^ self ].
-	modelPresenter selectItem: anEntity
-	"self needRebuild: false.
-	self buildWithSpec"
 ]
 
 { #category : #initialization }

@@ -55,12 +55,21 @@ MiTreeBrowser class >> menuCommandOn: aBuilder [
 { #category : #specs }
 MiTreeBrowser class >> runMe [
 	<script>
-	self new openWithSpec
+	super runMe
 ]
 
 { #category : #'as yet unclassified' }
 MiTreeBrowser >> accept: anObject [
-	^ self isNotFreeze and: [ anObject usesFamixTrait: TEntityMetaLevelDependency ]
+	^ anObject usesFamixTrait: TEntityMetaLevelDependency
+]
+
+{ #category : #'as yet unclassified' }
+MiTreeBrowser >> followAction [
+	(self accept: toSelect)
+		ifFalse: [ ^ self ].
+	self model selected: toSelect.
+	self model root: toSelect.
+	self refresh
 ]
 
 { #category : #'as yet unclassified' }
@@ -95,15 +104,6 @@ MiTreeBrowser >> initializePresenters [
 { #category : #'as yet unclassified' }
 MiTreeBrowser >> refresh [
 	tree roots: { self model root }
-]
-
-{ #category : #'as yet unclassified' }
-MiTreeBrowser >> selectEntity: anEntity [
-	(self accept: anEntity)
-		ifFalse: [ ^ self ].
-	self model selected: anEntity.
-	self model root: anEntity.
-	self refresh
 ]
 
 { #category : #'as yet unclassified' }
