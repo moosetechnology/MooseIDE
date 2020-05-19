@@ -16,6 +16,11 @@ BaselineOfMidas >> baseline: spec [
 ]
 
 { #category : #baselines }
+BaselineOfMidas >> baselineOfNewTools: spec [
+	spec baseline: 'NewTools' with: [ spec repository: 'github://pharo-spec/NewTools:67cc6fa' ]
+]
+
+{ #category : #baselines }
 BaselineOfMidas >> baselineOfRoassal3: spec [
 	spec
 		baseline: 'Roassal3'
@@ -26,7 +31,7 @@ BaselineOfMidas >> baselineOfRoassal3: spec [
 BaselineOfMidas >> defineDependencies: spec [
 	"new tools"
 	self baselineOfRoassal3: spec.
-	spec baseline: 'NewTools' with: [ spec repository: 'github://pharo-spec/NewTools' ]
+	self baselineOfNewTools: spec.
 ]
 
 { #category : #baselines }
