@@ -1,0 +1,10 @@
+SmalltalkCISpec {
+  #loading : [
+    SCIMetacelloLoadSpec {
+      #baseline : 'Midas',
+      #directory : 'src',
+      #load : [ 'default' ],
+      #platforms : [ #pharo ]
+    }
+  ]
+}
