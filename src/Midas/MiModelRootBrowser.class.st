@@ -62,7 +62,7 @@ MiModelRootBrowser class >> menuCommandOn: aBuilder [
 { #category : #specs }
 MiModelRootBrowser class >> runMe [
 	<script>
-	super runMe
+	^ super runMe
 ]
 
 { #category : #accessing }

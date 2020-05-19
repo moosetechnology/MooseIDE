@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+MiAbstractFamixBrowser class >> isAbstract [ 
+	^ self == MiAbstractFamixBrowser 
+]
+
+{ #category : #'as yet unclassified' }
 MiAbstractFamixBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	(aBuilder item: #MidasFamixBrowser)

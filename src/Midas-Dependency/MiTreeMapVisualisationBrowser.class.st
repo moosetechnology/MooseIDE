@@ -28,14 +28,15 @@ MiTreeMapVisualisationBrowser class >> menuCommandOn: aBuilder [
 { #category : #specs }
 MiTreeMapVisualisationBrowser class >> runMe [
 	<script>
-	super runMe
+	^ super runMe
 ]
 
 { #category : #'as yet unclassified' }
 MiTreeMapVisualisationBrowser >> accept: anObject [
+	anObject ifNil: [ ^ false ].
 	^ (anObject isKindOf: MooseGroup)
-		ifFalse: [ true ]
-		ifTrue: [ anObject isNotEmpty ]
+				ifFalse: [ true ]
+				ifTrue: [ anObject isNotEmpty ]
 ]
 
 { #category : #accessing }

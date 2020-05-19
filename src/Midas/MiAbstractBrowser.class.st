@@ -24,6 +24,11 @@ MiAbstractBrowser class >> defaultSpec [
 ]
 
 { #category : #'world menu' }
+MiAbstractBrowser class >> isAbstract [ 
+	^ self == MiAbstractBrowser
+]
+
+{ #category : #'world menu' }
 MiAbstractBrowser class >> menuCommandMetaOn: aBuilder [
 	<worldMenu>
 	(aBuilder item: self toolbarMetaName)
@@ -53,7 +58,7 @@ MiAbstractBrowser class >> openOn: anEntity [
 { #category : #'world menu' }
 MiAbstractBrowser class >> runMe [
 	<script>
-	self new
+	^ self new
 		openWithSpec;
 		"open with the last select entity"
 		selectEntity: MiApplication current logger lastEntity

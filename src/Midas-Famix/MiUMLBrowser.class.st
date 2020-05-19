@@ -28,12 +28,13 @@ MiUMLBrowser class >> menuCommandOn: aBuilder [
 { #category : #specs }
 MiUMLBrowser class >> runMe [
 	<script>
-	super runMe
+	^ super runMe
 ]
 
 { #category : #accessing }
 MiUMLBrowser >> accept: anObject [
 	"can't use isType because it can be a MooseModel (that does not answer isType)"
+	anObject ifNil: [ ^ false ].
 	^ (anObject isKindOf: FamixTypeGroup) or: [ anObject isOfType: FamixTType ]
 ]
 

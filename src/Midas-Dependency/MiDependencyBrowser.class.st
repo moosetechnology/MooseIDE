@@ -28,7 +28,7 @@ MiDependencyBrowser class >> menuCommandOn: aBuilder [
 { #category : #'world menu' }
 MiDependencyBrowser class >> runMe [
 	<script>
-	super runMe
+	^ super runMe
 ]
 
 { #category : #acccessing }

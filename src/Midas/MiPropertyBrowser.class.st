@@ -53,7 +53,7 @@ MiPropertyBrowser class >> menuCommandOn: aBuilder [
 { #category : #specs }
 MiPropertyBrowser class >> runMe [
 	<script>
-	super runMe
+	^ super runMe
 ]
 
 { #category : #initialization }

@@ -55,12 +55,12 @@ MiTreeVisualisationBrowser class >> menuCommandOn: aBuilder [
 { #category : #specs }
 MiTreeVisualisationBrowser class >> runMe [
 	<script>
-	super runMe
+	^ super runMe
 ]
 
 { #category : #'as yet unclassified' }
 MiTreeVisualisationBrowser >> accept: anObject [
-	^ true
+	^ anObject isNotNil
 ]
 
 { #category : #accessing }

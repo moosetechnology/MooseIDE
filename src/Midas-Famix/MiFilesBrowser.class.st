@@ -60,7 +60,7 @@ MiFilesBrowser class >> menuCommandOn: aBuilder [
 { #category : #specs }
 MiFilesBrowser class >> runMe [
 	<script>
-	super runMe
+	^ super runMe
 ]
 
 { #category : #'as yet unclassified' }

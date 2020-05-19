@@ -27,6 +27,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+MiAbstractDependencyBrowser class >> isAbstract [ 
+	^ self == MiAbstractDependencyBrowser
+]
+
+{ #category : #'as yet unclassified' }
 MiAbstractDependencyBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	(aBuilder item: self toolbarDependencyName)

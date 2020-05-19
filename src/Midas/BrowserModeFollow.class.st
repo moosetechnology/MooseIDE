@@ -1,7 +1,7 @@
 Class {
 	#name : #BrowserModeFollow,
 	#superclass : #AbstractBrowserMode,
-	#category : #'Midas-Tests'
+	#category : #'Midas-BrowseAction'
 }
 
 { #category : #'as yet unclassified' }

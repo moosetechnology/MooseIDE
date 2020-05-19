@@ -28,7 +28,7 @@ MiFameBrowser class >> menuCommandOn: aBuilder [
 { #category : #specs }
 MiFameBrowser class >> runMe [
 	<script>
-	super runMe
+	^ super runMe
 ]
 
 { #category : #initialization }

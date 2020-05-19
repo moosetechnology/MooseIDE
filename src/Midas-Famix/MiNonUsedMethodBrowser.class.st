@@ -35,7 +35,7 @@ MiNonUsedMethodBrowser class >> menuCommandOn: aBuilder [
 { #category : #specs }
 MiNonUsedMethodBrowser class >> runMe [
 	<script>
-	super runMe
+	^ super runMe
 ]
 
 { #category : #TOREMOVE }

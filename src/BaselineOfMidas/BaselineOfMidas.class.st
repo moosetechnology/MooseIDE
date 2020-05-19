@@ -36,6 +36,7 @@ BaselineOfMidas >> defineGroups: spec [
 { #category : #baselines }
 BaselineOfMidas >> definePackages: spec [
 	spec package: 'Midas' with: [ spec requires: #('NewTools') ].
+	spec package: 'Midas-Tests' with: [ spec requires: #('Midas') ].
 	spec package: 'Midas-Dependency' with: [ spec requires: #('Midas' 'Roassal3') ].
 	spec package: 'Midas-Famix' with: [ spec requires: #('Midas' 'Roassal3') ]
 ]

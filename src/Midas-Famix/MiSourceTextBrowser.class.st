@@ -30,7 +30,7 @@ MiSourceTextBrowser class >> menuCommandOn: aBuilder [
 { #category : #specs }
 MiSourceTextBrowser class >> runMe [
 	<script>
-	super runMe
+	^ super runMe
 ]
 
 { #category : #'as yet unclassified' }
