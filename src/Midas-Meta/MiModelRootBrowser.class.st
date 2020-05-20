@@ -28,8 +28,7 @@ Class {
 	#name : #MiModelRootBrowser,
 	#superclass : #MiAbstractBrowser,
 	#instVars : [
-		'modelPresenter',
-		'menu'
+		'modelPresenter'
 	],
 	#category : #'Midas-Meta-ModelRootBrowser'
 }

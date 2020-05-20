@@ -6,7 +6,10 @@ Class {
 		'buttonFreeze',
 		'freeze',
 		'toSelect',
-		'buttonFollow'
+		'buttonFollow',
+		'buttonHighligh',
+		'buttonPropagate',
+		'menu'
 	],
 	#category : #'Midas-Core-Browser'
 }
@@ -16,8 +19,11 @@ MiAbstractBrowser class >> defaultSpec [
 	^ SpBoxLayout newVertical
 		add:
 			(SpBoxLayout newHorizontal
-				add: #buttonFollow expand: false;
-				add: #buttonFreeze expand: false;
+				add: #buttonFollow width: 65;
+				add: #buttonFreeze width: 60;
+				add: #buttonHighligh width: 80;
+				add: SpBoxLayout newHorizontal expand: true;
+				add: #buttonPropagate expand: false;
 				yourself)
 			withConstraints: [ :constraints | constraints height: self toolbarHeight ];
 		yourself
@@ -117,15 +123,21 @@ MiAbstractBrowser >> highlightAction [
 MiAbstractBrowser >> initializePresenters [
 	super initializePresenters.
 	self flag: 'The state of freeze should be store in a model'.
-	buttonFreeze := self newRadioButton.
-	buttonFollow := self newRadioButton.
-	buttonFollow
-		associatedRadioButtons:
-			{buttonFreeze.
-			buttonFollow}.
-	buttonFreeze label: 'Freeze'.
-	buttonFollow label: 'Follow'.
-	self freeze: false.
+	buttonFreeze := self newRadioButton
+		label: 'Freeze';
+		yourself.
+	buttonFollow := self newRadioButton
+		label: 'Follow';
+		yourself.
+	buttonHighligh := self newRadioButton
+		label: 'Highlight';
+		yourself.
+	buttonFollow associatedRadioButtons: {buttonFreeze . buttonFollow . buttonHighligh}.
+	buttonPropagate := self newButton
+		label: 'Propagate';
+		action: [ (MiPropagateCommand forContext: self) execute ];
+		yourself.
+	self freeze: false
 ]
 
 { #category : #accessing }
@@ -148,10 +160,9 @@ MiAbstractBrowser >> isFreeze [
 	^ buttonFreeze state
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 MiAbstractBrowser >> isHighlight [
-self flag: #toChangeLater.
-	^ false
+	^ buttonHighligh state
 ]
 
 { #category : #accessing }
@@ -166,7 +177,7 @@ MiAbstractBrowser >> isNotFreeze [
 
 { #category : #'as yet unclassified' }
 MiAbstractBrowser >> miSelectedItem [
-	^ MiNoSelectedElementToPropagateException signal
+	^ MiNoSelectedElementToPropagateException new signal
 ]
 
 { #category : #accessing }
