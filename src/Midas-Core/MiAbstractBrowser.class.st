@@ -116,7 +116,7 @@ MiAbstractBrowser >> globallySelect: anEntity [
 
 { #category : #'as yet unclassified' }
 MiAbstractBrowser >> highlightAction [
-	^ self subclassResponsibility
+	^ self
 ]
 
 { #category : #accessing }

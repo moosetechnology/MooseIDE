@@ -92,13 +92,6 @@ MiPropertyBrowser >> initializePresenters [
 ]
 
 { #category : #initialization }
-MiPropertyBrowser >> selectEntity: anEntity [
-	(self accept: anEntity)
-		ifFalse: [ ^ self ].
-	self forEntity: anEntity.
-]
-
-{ #category : #initialization }
 MiPropertyBrowser >> title [
 	^ 'Properties Browser'
 ]

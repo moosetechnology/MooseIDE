@@ -66,13 +66,6 @@ MiFameBrowser >> initializePresenters [
 ]
 
 { #category : #initialization }
-MiFameBrowser >> selectEntity: anEntity [
-	(self accept: anEntity)
-		ifFalse: [ ^ self ].
-	self forEntity: anEntity
-]
-
-{ #category : #initialization }
 MiFameBrowser >> title [
 	^ 'Fame Browser'
 ]
