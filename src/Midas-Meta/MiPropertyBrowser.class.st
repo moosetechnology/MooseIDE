@@ -27,7 +27,7 @@ Class {
 	#name : #MiPropertyBrowser,
 	#superclass : #MiAbstractBrowser,
 	#instVars : [
-		'propertyExtension'
+		'properties'
 	],
 	#category : #'Midas-Meta-PropertyBrowser'
 }
@@ -35,7 +35,7 @@ Class {
 { #category : #specs }
 MiPropertyBrowser class >> defaultSpec [
 	^ super defaultSpec
-		add: #propertyExtension;
+		add: #properties;
 		yourself
 ]
 
@@ -65,20 +65,32 @@ MiPropertyBrowser >> accept: anObject [
 MiPropertyBrowser >> followAction [
 	(self accept: toSelect)
 		ifFalse: [ ^ self ].
-	propertyExtension model: toSelect
+	properties model: toSelect
 ]
 
 { #category : #initialization }
 MiPropertyBrowser >> initializePresenters [
 	super initializePresenters.
-	propertyExtension := MiPropertyExtension on: MooseModel new
+		self flag: 'This currently duplicated code from Midas-NewTools. We have to thing about a good way to integrate all browser inside the inspector'.
+	properties := self newTable.
+	properties
+		addColumn: (SpStringTableColumn title: 'Properties' evaluated: [ :item | item name ]) yourself;
+		addColumn:
+			(SpStringTableColumn
+				title: 'Value'
+				evaluated: [ :item | 
+					[ self model mmGetProperty: item ]
+						on: Error
+						do: [ 'error' ] ]);
+		items: (self model mooseDescription allPrimitiveProperties sorted: #name ascending);
+		beResizable
 ]
 
 { #category : #initialization }
 MiPropertyBrowser >> selectEntity: anEntity [
 	(self accept: anEntity)
 		ifFalse: [ ^ self ].
-	propertyExtension model: anEntity.
+	properties model: anEntity.
 ]
 
 { #category : #initialization }

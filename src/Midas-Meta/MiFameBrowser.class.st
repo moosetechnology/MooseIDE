@@ -2,7 +2,7 @@ Class {
 	#name : #MiFameBrowser,
 	#superclass : #MiAbstractBrowser,
 	#instVars : [
-		'fameExtension'
+		'fameDescription'
 	],
 	#category : #'Midas-Meta-FameBrowser'
 }
@@ -10,7 +10,7 @@ Class {
 { #category : #specs }
 MiFameBrowser class >> defaultSpec [
 	^ super defaultSpec
-		add: #fameExtension;
+		add: #fameDescription;
 		yourself
 ]
 
@@ -40,13 +40,24 @@ MiFameBrowser >> accept: anObject [
 MiFameBrowser >> followAction [
 	(self accept: toSelect)
 		ifFalse: [ ^ self ].
-	fameExtension model: toSelect
+	fameDescription model: toSelect
 ]
 
 { #category : #initialization }
 MiFameBrowser >> initializePresenters [
 	super initializePresenters.
-	fameExtension := MiFameExtension on: MooseGroup new
+	self flag: 'This currently duplicated code from Midas-NewTools. We have to thing about a good way to integrate all browser inside the inspector'.
+	fameDescription := self newTable.
+	fameDescription
+		items: (self model mooseDescription allComplexProperties sorted: #name ascending);
+		addColumn: (SpStringTableColumn title: 'Name' evaluated: [ :item | item name ]) yourself;
+		addColumn: (SpStringTableColumn title: 'Type' evaluated: [ :item | item type name ]) yourself;
+		addColumn: (SpStringTableColumn title: 'Opposite' evaluated: [ :item | item opposite ifNil: [ '' ] ifNotNil: [ :opposite | opposite name ] ]) yourself;
+		addColumn: (SpStringTableColumn title: 'Derived?' evaluated: [ :item | item isDerived ]) yourself;
+		addColumn: (SpStringTableColumn title: 'Container?' evaluated: [ :item | item isContainer ]) yourself;
+		addColumn: (SpStringTableColumn title: 'IsTarget?' evaluated: [ :item | item isTarget ]) yourself;
+		addColumn: (SpStringTableColumn title: 'IsSource?' evaluated: [ :item | item isSource ]) yourself;
+		beResizable
 ]
 
 { #category : #initialization }
