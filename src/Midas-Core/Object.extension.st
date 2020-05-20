@@ -1,0 +1,11 @@
+Extension { #name : #Object }
+
+{ #category : #'*Midas-Core' }
+Object >> isMooseEntity [
+	^ false 
+]
+
+{ #category : #'*Midas-Core' }
+Object >> midasIcon [
+	^ Form extent: 16@16 
+]

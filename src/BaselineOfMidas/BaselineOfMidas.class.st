@@ -28,20 +28,33 @@ BaselineOfMidas >> baselineOfRoassal3: spec [
 ]
 
 { #category : #baselines }
+BaselineOfMidas >> baselineOfSpec: spec [
+	spec
+		baseline: 'Spec2'
+		with: [ spec repository: 'github://pharo-spec/Spec:v0.6.0' ]
+]
+
+{ #category : #baselines }
 BaselineOfMidas >> defineDependencies: spec [
 	"new tools"
 	self baselineOfRoassal3: spec.
 	self baselineOfNewTools: spec.
+	self baselineOfSpec: spec.
 ]
 
 { #category : #baselines }
 BaselineOfMidas >> defineGroups: spec [
+	spec group: 'default' with: #('Midas-Core' 'Midas-Vizualisation' 'Midas-Meta' 'Midas-Tests' 'Midas-Dependency' 'Midas-Famix').
+	spec group: 'newtools' with: #('default' 'Midas-NewTools')
 ]
 
 { #category : #baselines }
 BaselineOfMidas >> definePackages: spec [
-	spec package: 'Midas' with: [ spec requires: #('NewTools') ].
-	spec package: 'Midas-Tests' with: [ spec requires: #('Midas') ].
-	spec package: 'Midas-Dependency' with: [ spec requires: #('Midas' 'Roassal3') ].
-	spec package: 'Midas-Famix' with: [ spec requires: #('Midas' 'Roassal3') ]
+	spec package: 'Midas-Core' with: [ spec requires: #('Spec2') ].
+	spec package: 'Midas-Vizualisation' with: [ spec requires: #('Roassal3') ].
+	spec package: 'Midas-Meta' with: [ spec requires: #('Midas-Core') ].
+	spec package: 'Midas-NewTools' with: [ spec requires: #('NewTools' 'Midas-Meta') ].
+	spec package: 'Midas-Tests' with: [ spec requires: #('Midas-Core') ].
+	spec package: 'Midas-Dependency' with: [ spec requires: #('Midas-Core' 'Midas-Vizualisation') ].
+	spec package: 'Midas-Famix' with: [ spec requires: #('Midas-Core' 'Midas-Vizualisation') ]
 ]
