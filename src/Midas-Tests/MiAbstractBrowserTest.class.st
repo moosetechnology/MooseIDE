@@ -20,6 +20,21 @@ MiAbstractBrowserTest >> testCanOpenAllBrowser [
 ]
 
 { #category : #tests }
+MiAbstractBrowserTest >> testCanOpenAllBrowserWithAnObject [
+	| objectInstance |
+	objectInstance := Object new.
+	concreteBrowser := MiAbstractBrowser allSubclasses reject: #isAbstract.
+	concreteBrowser
+		do: [ :browser | 
+			self
+				shouldnt: [ | browserInstance |
+					browserInstance := browser runMe.
+					browserInstance selectEntity: objectInstance.
+					browserInstance root close ]
+				raise: Error ]
+]
+
+{ #category : #tests }
 MiAbstractBrowserTest >> testCanOpenAllBrowserWithEmptyMooseGroup [
 	| mooseGroup |
 	mooseGroup := MooseGroup new.

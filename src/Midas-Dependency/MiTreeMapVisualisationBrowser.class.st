@@ -35,7 +35,7 @@ MiTreeMapVisualisationBrowser class >> runMe [
 MiTreeMapVisualisationBrowser >> accept: anObject [
 	anObject ifNil: [ ^ false ].
 	^ (anObject isKindOf: MooseGroup)
-				ifFalse: [ true ]
+				ifFalse: [ anObject isKindOf: MooseEntity ]
 				ifTrue: [ anObject isNotEmpty ]
 ]
 

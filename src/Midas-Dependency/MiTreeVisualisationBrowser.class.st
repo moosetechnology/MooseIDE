@@ -60,7 +60,7 @@ MiTreeVisualisationBrowser class >> runMe [
 
 { #category : #'as yet unclassified' }
 MiTreeVisualisationBrowser >> accept: anObject [
-	^ anObject isNotNil
+	^ anObject isKindOf: MooseObject
 ]
 
 { #category : #accessing }
