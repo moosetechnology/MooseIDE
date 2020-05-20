@@ -135,12 +135,11 @@ MiTreeMap >> saveCurrent: shape [
 MiTreeMap >> scale: shape at: t [
 	| rect1 rect2 |
 	shape children do: [ :s | self scale: s at: t ].
-	rect1 := shape attributeAt: #original ifAbsent: [ ^ self].
+	rect1 := shape propertyAt: #original ifAbsent: [ ^ self].
 	
-	rect2 := shape attributeAt: #current.
+	rect2 := shape propertyAt: #current.
 	
-		
-	shape translateTo: (rect1 rsCenter interpolateTo: rect2 rsCenter at: t).
+	shape translateTo: (rect1 center interpolateTo: rect2 center at: t).
 	
 	shape extent: (rect1 extent interpolateTo: rect2 extent at: t)
 ]

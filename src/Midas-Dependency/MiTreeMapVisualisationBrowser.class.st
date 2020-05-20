@@ -82,5 +82,5 @@ MiTreeMapVisualisationBrowser >> refresh [
 
 { #category : #'as yet unclassified' }
 MiTreeMapVisualisationBrowser >> title [
-	^ 'Tree Visualisation Browser'
+	^ 'Tree Map Visualisation Browser'
 ]
