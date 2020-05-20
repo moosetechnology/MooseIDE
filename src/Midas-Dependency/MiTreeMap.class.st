@@ -98,7 +98,7 @@ MiTreeMap >> processEvent: evt [
 
 { #category : #updating }
 MiTreeMap >> relayout: shape [
-	shape attributeAt: #original put: shape encompassingRectangle.
+	shape propertyAt: #original put: shape encompassingRectangle.
 
 	shape shapes do: [ :s | self relayout: s ].
 	RSGridLayout on: shape shapes.
@@ -128,7 +128,7 @@ MiTreeMap >> run [
 { #category : #updating }
 MiTreeMap >> saveCurrent: shape [
 	shape children do: [ :s | self saveCurrent: s].
-	shape attributeAt: #current put: shape encompassingRectangle.
+	shape propertyAt: #current put: shape encompassingRectangle.
 ]
 
 { #category : #updating }
