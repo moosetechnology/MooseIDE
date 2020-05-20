@@ -65,7 +65,12 @@ MiPropertyBrowser >> accept: anObject [
 MiPropertyBrowser >> followAction [
 	(self accept: toSelect)
 		ifFalse: [ ^ self ].
-	properties model: toSelect
+	self forEntity: toSelect
+]
+
+{ #category : #initialization }
+MiPropertyBrowser >> forEntity: anEntity [
+	properties items: (anEntity mooseDescription allPrimitiveProperties sorted: #name ascending).
 ]
 
 { #category : #initialization }
@@ -90,7 +95,7 @@ MiPropertyBrowser >> initializePresenters [
 MiPropertyBrowser >> selectEntity: anEntity [
 	(self accept: anEntity)
 		ifFalse: [ ^ self ].
-	properties model: anEntity.
+	self forEntity: anEntity.
 ]
 
 { #category : #initialization }

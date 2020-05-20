@@ -40,7 +40,12 @@ MiFameBrowser >> accept: anObject [
 MiFameBrowser >> followAction [
 	(self accept: toSelect)
 		ifFalse: [ ^ self ].
-	fameDescription model: toSelect
+	self forEntity: toSelect
+]
+
+{ #category : #initialization }
+MiFameBrowser >> forEntity: anEntity [
+	fameDescription items: anEntity mooseDescription allComplexProperties.
 ]
 
 { #category : #initialization }
@@ -58,6 +63,13 @@ MiFameBrowser >> initializePresenters [
 		addColumn: (SpStringTableColumn title: 'IsTarget?' evaluated: [ :item | item isTarget ]) yourself;
 		addColumn: (SpStringTableColumn title: 'IsSource?' evaluated: [ :item | item isSource ]) yourself;
 		beResizable
+]
+
+{ #category : #initialization }
+MiFameBrowser >> selectEntity: anEntity [
+	(self accept: anEntity)
+		ifFalse: [ ^ self ].
+	self forEntity: anEntity
 ]
 
 { #category : #initialization }
