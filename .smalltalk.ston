@@ -4,7 +4,9 @@ SmalltalkCISpec {
       #baseline : 'Midas',
       #directory : 'src',
       #load : [ 'default' ],
-      #platforms : [ #pharo ]
+      #platforms : [ #pharo ],
+      #onConflict : #useIncoming,
+      #onUpgrade : #useIncoming,
     }
   ]
 }
