@@ -5,8 +5,8 @@ SmalltalkCISpec {
       #directory : 'src',
       #load : [ 'default' ],
       #platforms : [ #pharo ],
-      #onConflict : '#useIncoming',
-      #onUpgrade : '#useIncoming',
+      #onConflict : #useIncoming,
+      #onUpgrade : #useIncoming
     }
   ]
 }
