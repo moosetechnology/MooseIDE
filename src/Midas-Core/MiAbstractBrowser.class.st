@@ -209,8 +209,9 @@ MiAbstractBrowser >> needUpdate: anEntity [
 	^ anEntity ~= model selected
 ]
 
-{ #category : #accessing }
+{ #category : #'private - accessing' }
 MiAbstractBrowser >> selectEntity: anEntity [
+	"I am used by the Mi Application. You should use #globallySelect: anEntity that will transmit the message to me and the other browsers"
 	toSelect := anEntity.
 	AbstractBrowserMode actionFor: self
 ]
