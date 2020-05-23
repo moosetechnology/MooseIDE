@@ -63,9 +63,11 @@ MiFilesBrowser class >> runMe [
 	^ super runMe
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #testing }
 MiFilesBrowser >> accept: anObject [
-	^ (anObject isKindOf: MooseModel) and: [ anObject rootFolder isNotNil and: [ anObject rootFolder asFileReference exists ]  ]
+	^ (anObject isKindOf: MooseModel) and:
+	 [ anObject rootFolder isNotNil and:
+	 [ anObject rootFolder asFileReference exists ]  ]
 ]
 
 { #category : #'as yet unclassified' }
@@ -77,14 +79,18 @@ MiFilesBrowser >> computeItemsInFileReference: aFileReference [
 		thenCollect: [ :anchor | anchor element ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 MiFilesBrowser >> connectPresenters [
 	super connectPresenters.
-	tree whenSelectionChangedDo: [ :selected | (selected selectedItem isNotNil and: [  selected selectedItem hasChildren ]) ifTrue: [ self selectFileReference: selected selectedItem.
-			treeEntity roots: (self computeItemsInFileReference: self model fileReference) ] ] 
+	tree whenSelectionChangedDo: [ :selected |
+		( selected selectedItem isNotNil and: 
+		[ selected selectedItem hasChildren] ) 
+			ifTrue: [
+				self selectFileReference: selected selectedItem.
+				treeEntity roots: (self computeItemsInFileReference: self model fileReference) ] ] 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #actions }
 MiFilesBrowser >> followAction [
 	(self accept: toSelect)
 		ifFalse: [ ^ self ].
@@ -92,7 +98,7 @@ MiFilesBrowser >> followAction [
 	self selectFileReference: toSelect rootFolder asFileReference
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 MiFilesBrowser >> initializePresenters [
 	super initializePresenters.
 	self model: MiFilesModel new.
@@ -122,18 +128,21 @@ MiFilesBrowser >> initializePresenters [
 							MiApplication current globallySelect: mooseGroup ] ] ] ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 MiFilesBrowser >> initializeTreeTable [
 	tree := self newTable.
 	tree
 		addColumn:
 			(SpCompositeTableColumn new
-				addColumn: (SpStringTableColumn evaluated: [ :fileRef | (fileRef isChildOf: self model fileReference) ifTrue: [ fileRef basename ] ifFalse: [ '..' ] ]);
+				addColumn:
+					(SpStringTableColumn evaluated: [ :fileRef |
+						(fileRef isChildOf: self model fileReference)
+							ifTrue: [ fileRef basename ] ifFalse: [ '..' ] ]);
 				yourself);
 		beResizable
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #refreshing }
 MiFilesBrowser >> refresh [
 	tree items: {self model fileReference parent} , self model fileReference directories , self model fileReference files
 ]
@@ -144,7 +153,7 @@ MiFilesBrowser >> selectFileReference: aFileReference [
 	self refresh
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #TOREMOVE }
 MiFilesBrowser >> title [
 	^ 'Files Browser'
 ]

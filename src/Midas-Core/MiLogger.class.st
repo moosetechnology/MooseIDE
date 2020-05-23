@@ -1,3 +1,6 @@
+"
+Keeps a log of all selected entities in the application
+"
 Class {
 	#name : #MiLogger,
 	#superclass : #SpApplication,
@@ -35,7 +38,9 @@ MiLogger >> initialize [
 
 { #category : #accessing }
 MiLogger >> lastEntity [
-	^ self logs ifEmpty: [ nil ] ifNotEmpty: [ self logs last entity ]
+	^ self logs
+		ifEmpty: [ nil ]
+		ifNotEmpty: [ self logs last entity ]
 ]
 
 { #category : #accessing }

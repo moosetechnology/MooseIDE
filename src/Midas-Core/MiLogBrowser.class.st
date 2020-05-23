@@ -1,3 +1,6 @@
+"
+A browser to show the content of the logger
+"
 Class {
 	#name : #MiLogBrowser,
 	#superclass : #MiPresenter,

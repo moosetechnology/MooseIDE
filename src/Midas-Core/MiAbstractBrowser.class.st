@@ -7,6 +7,9 @@ Modes:
 - follow -- selected entities in the application are display in the browser
 - highlight -- entities in the browser remain the same, but those that were selected in the application are highlighted
 - frozen -- ignore entities selected in application 
+
+Instance variable:
+- model
 "
 Class {
 	#name : #MiAbstractBrowser,
@@ -14,7 +17,6 @@ Class {
 	#instVars : [
 		'model',
 		'buttonFreeze',
-		'freeze',
 		'toSelect',
 		'buttonFollow',
 		'buttonHighligh',
@@ -92,6 +94,7 @@ MiAbstractBrowser class >> toolbarName [
 
 { #category : #testing }
 MiAbstractBrowser >> accept: anObject [
+	"whether the browser accepts to deal with anObject"
 	^ false
 ]
 
