@@ -43,7 +43,7 @@ MiLoggerBrowser >> accept: anObject [
 
 { #category : #actions }
 MiLoggerBrowser >> followAction [
-	entryList refresh
+	entryList updateList
 ]
 
 { #category : #initialization }
