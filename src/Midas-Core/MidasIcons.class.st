@@ -10,7 +10,11 @@ Class {
 { #category : #initialization }
 MidasIcons class >> initialize [
 	
-	self class methods select: [ :method | method protocol = 'icons' ] thenDo: [ :method | Smalltalk ui icons icons at: method selector put: (self perform: method selector)  ]
+	self class methods
+		select: [ :method | method protocol = 'icons' ]
+		thenDo: [ :method | Smalltalk ui icons icons
+			at: method selector
+			put: (self perform: method selector)  ]
 ]
 
 { #category : #icons }

@@ -27,3 +27,9 @@ MiSelectedEntityLog >> entity: anObject [
 	entity := anObject.
 	self activate
 ]
+
+{ #category : #printing }
+MiSelectedEntityLog >> printOn: aStream [
+	aStream
+		nextPutAll: entity class name
+]

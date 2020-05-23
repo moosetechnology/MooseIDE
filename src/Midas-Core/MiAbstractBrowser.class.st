@@ -1,10 +1,22 @@
+"
+An abstract browser with the 3 receiving modes (frozen, highlight, follow) and the sending mode (propagate)
+
+Modes:
+- propagate -- selected entities in the browser are propagated to the whole application 
+
+- follow -- selected entities in the application are display in the browser
+- highlight -- entities in the browser remain the same, but those that were selected in the application are highlighted
+- frozen -- ignore entities selected in application 
+
+Instance variable:
+- model
+"
 Class {
 	#name : #MiAbstractBrowser,
 	#superclass : #MiPresenter,
 	#instVars : [
 		'model',
 		'buttonFreeze',
-		'freeze',
 		'toSelect',
 		'buttonFollow',
 		'buttonHighligh',
@@ -80,27 +92,29 @@ MiAbstractBrowser class >> toolbarName [
 	^ #'Midas Browsers'
 ]
 
-{ #category : #accessing }
+{ #category : #testing }
 MiAbstractBrowser >> accept: anObject [
+	"whether the browser accepts to deal with anObject"
 	^ false
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #actions }
 MiAbstractBrowser >> followAction [
 	^ self subclassResponsibility
 ]
 
-{ #category : #accessing }
+{ #category : #actions }
 MiAbstractBrowser >> freeze: aBoolean [
 	(aBoolean ifTrue: [ buttonFreeze ] ifFalse: [ buttonFollow ]) state: true
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #actions }
 MiAbstractBrowser >> freezeAction [
+	"when frozen, does not do anything"
 	^ self
 ]
 
-{ #category : #helper }
+{ #category : #actions }
 MiAbstractBrowser >> freezeDuring: aBlock [
 	| tmpState |
 	tmpState := self isFreeze.
@@ -114,12 +128,12 @@ MiAbstractBrowser >> globallySelect: anEntity [
 	self application globallySelect: anEntity
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #actions }
 MiAbstractBrowser >> highlightAction [
 	^ self
 ]
 
-{ #category : #accessing }
+{ #category : #initialization }
 MiAbstractBrowser >> initializePresenters [
 	super initializePresenters.
 	self flag: 'The state of freeze should be store in a model'.
@@ -140,7 +154,7 @@ MiAbstractBrowser >> initializePresenters [
 	self freeze: false
 ]
 
-{ #category : #accessing }
+{ #category : #initialization }
 MiAbstractBrowser >> initializeWindow: aWindowPresenter [
 	super initializeWindow: aWindowPresenter.
 	aWindowPresenter
@@ -150,32 +164,32 @@ MiAbstractBrowser >> initializeWindow: aWindowPresenter [
 		initialExtent: 900 @ 700
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #actions }
 MiAbstractBrowser >> isFollow [
 	^ buttonFollow state
 ]
 
-{ #category : #accessing }
+{ #category : #actions }
 MiAbstractBrowser >> isFreeze [
 	^ buttonFreeze state
 ]
 
-{ #category : #accessing }
+{ #category : #actions }
 MiAbstractBrowser >> isHighlight [
 	^ buttonHighligh state
 ]
 
-{ #category : #accessing }
+{ #category : #testing }
 MiAbstractBrowser >> isMiBrowser [
 	^ true
 ]
 
-{ #category : #accessing }
+{ #category : #actions }
 MiAbstractBrowser >> isNotFreeze [
 	^ self isFreeze not
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 MiAbstractBrowser >> miSelectedItem [
 	^ MiNoSelectedElementToPropagateException new signal
 ]
