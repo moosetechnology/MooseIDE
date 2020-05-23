@@ -49,8 +49,13 @@ MiLoggerBrowser >> followAction [
 { #category : #initialization }
 MiLoggerBrowser >> initializePresenters [
 	super initializePresenters.
-	entryList := self newList .
+	entryList := self newList.
 	self model: self application logger.
 	entryList items: self model logs.
+	entryList whenSelectionChangedDo: [ :selection | self globallySelect: self miSelectedItem ]
+]
 
+{ #category : #initialization }
+MiLoggerBrowser >> miSelectedItem [
+	^ entryList selectedItems ifEmpty: [ super miSelectedItem ] ifNotEmpty: [ :list | "We can select only one entity" list anyOne entity ]
 ]
