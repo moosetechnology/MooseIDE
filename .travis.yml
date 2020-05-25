@@ -4,7 +4,7 @@ sudo: false
 notifications:
     email:
         on_success: never
-        on_failure: always
+        on_failure: never
 
 os:
 - linux
