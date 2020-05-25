@@ -16,5 +16,5 @@ MiNoSelectedElementToPropagateException >> defaultAction [
 { #category : #initialization }
 MiNoSelectedElementToPropagateException >> initialize [
 	super initialize.
-	messageText := 'No Moose element is selected in this browser or the functionnality is not available yet. Please consider opening an issue: https://github.com/moosetechnology/Midas'
+	messageText := 'This browser does not handle properly item selection. Please consider opening an issue: https://github.com/moosetechnology/Midas'
 ]
