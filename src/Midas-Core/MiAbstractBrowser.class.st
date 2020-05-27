@@ -16,8 +16,8 @@ Class {
 	#superclass : #MiPresenter,
 	#instVars : [
 		'model',
-		'buttonFreeze',
 		'toSelect',
+		'buttonFreeze',
 		'buttonFollow',
 		'buttonHighligh',
 		'buttonPropagate',
@@ -99,6 +99,21 @@ MiAbstractBrowser >> accept: anObject [
 ]
 
 { #category : #actions }
+MiAbstractBrowser >> canFollow [
+	^true
+]
+
+{ #category : #actions }
+MiAbstractBrowser >> canHighlight [
+	^true
+]
+
+{ #category : #actions }
+MiAbstractBrowser >> canPropagate [
+	^true
+]
+
+{ #category : #actions }
 MiAbstractBrowser >> followAction [
 	^ self subclassResponsibility
 ]
@@ -139,19 +154,24 @@ MiAbstractBrowser >> initializePresenters [
 	self flag: 'The state of freeze should be store in a model'.
 	buttonFreeze := self newRadioButton
 		label: 'Freeze';
+		enabled: true ;
 		yourself.
 	buttonFollow := self newRadioButton
 		label: 'Follow';
+		enabled: self canFollow ;
 		yourself.
 	buttonHighligh := self newRadioButton
 		label: 'Highlight';
+		enabled: self canHighlight ;
 		yourself.
 	buttonFollow associatedRadioButtons: {buttonFreeze . buttonFollow . buttonHighligh}.
+	self freeze: self canFollow not.
+	
 	buttonPropagate := self newButton
 		label: 'Propagate';
+		enabled: self canPropagate ;
 		action: [ (MiPropagateCommand forContext: self) execute ];
 		yourself.
-	self freeze: false
 ]
 
 { #category : #initialization }
