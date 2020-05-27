@@ -16,6 +16,13 @@ BaselineOfMidas >> baseline: spec [
 ]
 
 { #category : #baselines }
+BaselineOfMidas >> baselineOfFamix: spec [
+	spec
+		baseline: 'Famix'
+		with: [ spec repository: 'github://moosetechnology/Famix:development/src' ]
+]
+
+{ #category : #baselines }
 BaselineOfMidas >> baselineOfNewTools: spec [
 	spec baseline: 'NewTools' with: [ spec repository: 'github://pharo-spec/NewTools:67cc6fa' ]
 ]
@@ -37,9 +44,11 @@ BaselineOfMidas >> baselineOfSpec: spec [
 { #category : #baselines }
 BaselineOfMidas >> defineDependencies: spec [
 	"new tools"
+
 	self baselineOfRoassal3: spec.
 	self baselineOfNewTools: spec.
 	self baselineOfSpec: spec.
+	self baselineOfFamix: spec
 ]
 
 { #category : #baselines }
@@ -50,7 +59,7 @@ BaselineOfMidas >> defineGroups: spec [
 
 { #category : #baselines }
 BaselineOfMidas >> definePackages: spec [
-	spec package: 'Midas-Core' with: [ spec requires: #('Spec2') ].
+	spec package: 'Midas-Core' with: [ spec requires: #('Famix' 'Spec2') ].
 	spec package: 'Midas-Vizualisation' with: [ spec requires: #('Roassal3') ].
 	spec package: 'Midas-Meta' with: [ spec requires: #('Midas-Core') ].
 	spec package: 'Midas-NewTools' with: [ spec requires: #('NewTools' 'Midas-Meta') ].
