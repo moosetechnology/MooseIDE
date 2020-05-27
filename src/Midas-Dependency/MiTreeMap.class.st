@@ -47,7 +47,6 @@ MiTreeMap >> colorFor: anEntity [
 MiTreeMap >> initialize [
 	super initialize.
 	canvas := RSCanvas new.
-	color := RTScale category20b.
 
 	base := RSComposite new.
 	base draggable.
@@ -67,7 +66,7 @@ MiTreeMap >> nodeFor: anEntity [
 	com model: anEntity.
 	(self childrenForEntity: anEntity) ifNotEmpty: [ com border: border ].
 	com announcer: base announcer.
-	com color: (self colorFor: anEntity) trans.
+	com color: ((self colorFor: anEntity) alpha: 0.4).
 	com @ (RSMenuActivable new
 		menuDo: [ :menu :box | 
 			menu 
