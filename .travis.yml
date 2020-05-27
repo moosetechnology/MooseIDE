@@ -11,4 +11,11 @@ os:
 - osx
 
 smalltalk:
-  - Moose64-8.0
+  - Pharo64-9.0
+  - Pharo64-8.0
+
+matrix:
+  fast_finish: true
+  allow_failures:
+    - smalltalk: Pharo64-9.0
+    
