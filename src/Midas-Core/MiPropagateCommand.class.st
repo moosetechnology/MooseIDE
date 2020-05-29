@@ -1,3 +1,6 @@
+"
+Use me to propagate entities through the application
+"
 Class {
 	#name : #MiPropagateCommand,
 	#superclass : #CmCommand,
