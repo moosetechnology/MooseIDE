@@ -115,9 +115,12 @@ MiTreeVisualisationBrowser >> refresh [
 						move: box on: label.
 					composite := RSComposite new.
 					composite
-						shapes: {label . box};
+						shapes:
+							{label.
+							box};
 						model: cls.
 					composite @ RSDraggable.
+					composite addInteraction: MiSelection new.
 					composite ]
 				as: RSGroup.
 			canvas addAll: boxes.
@@ -125,7 +128,10 @@ MiTreeVisualisationBrowser >> refresh [
 				canvas: canvas;
 				shapes: boxes;
 				withVerticalAttachPoint;
-				connectToAll: [ :a | (a usesFamixTrait: TEntityMetaLevelDependency) ifTrue: [ a children ] ifFalse: [ {} ] ].
+				connectToAll: [ :a | 
+					(a usesFamixTrait: TEntityMetaLevelDependency)
+						ifTrue: [ a children ]
+						ifFalse: [ {} ] ].
 			RSTreeLayout on: boxes.
 			canvas @ RSCanvasController.
 			canvas ];
