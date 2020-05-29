@@ -113,12 +113,8 @@ MiModelRootBrowser >> mainMenu [
 						name: nil;
 						description: 'Import mse';
 						icon: (self iconNamed: #mooseImportMse);
-						action: [ [ | mooseModel |
-							mooseModel := MooseModel new.
-							mooseModel importFromMSE.
-							mooseModel notEmpty
-								ifTrue: [ mooseModel install.
-									self addModel: mooseModel ] ] fork ] ];
+						action: [ MiImportModel new openModalWithSpec.
+							modelPresenter updateList ] ];
 				addItem: [ :item | 
 					item
 						name: nil;
