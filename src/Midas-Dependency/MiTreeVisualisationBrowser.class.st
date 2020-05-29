@@ -83,6 +83,17 @@ MiTreeVisualisationBrowser >> followAction [
 	self refresh
 ]
 
+{ #category : #actions }
+MiTreeVisualisationBrowser >> highlightAction [
+	self refresh.
+	(toSelect isOfType: MooseGroup)
+		ifFalse: [ toSelect := {toSelect} ].
+	diagram canvas nodes
+		select: [ :box | toSelect includes: box model ]
+		thenDo: [ :box | box shapes do: [ :shape | shape color: Color red ] ].
+	diagram canvas signalUpdate
+]
+
 { #category : #'as yet unclassified' }
 MiTreeVisualisationBrowser >> initializePresenters [
 	super initializePresenters.
