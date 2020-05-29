@@ -21,6 +21,11 @@ MiLogger >> application: anObject [
 	application := anObject
 ]
 
+{ #category : #api }
+MiLogger >> clean [
+	logs removeAll
+]
+
 { #category : #accessing }
 MiLogger >> globallySelect: anEntity [
 	logs
