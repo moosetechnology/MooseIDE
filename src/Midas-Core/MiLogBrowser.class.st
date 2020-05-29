@@ -12,6 +12,12 @@ Class {
 }
 
 { #category : #'world menu' }
+MiLogBrowser class >> buildCommandsGroupWith: presenterInstance forRoot: rootCommandGroup [
+	super buildCommandsGroupWith: presenterInstance forRoot: rootCommandGroup.
+	rootCommandGroup register: (MiLoggerRemoveEntryCommand forSpecContext: presenterInstance)
+]
+
+{ #category : #'world menu' }
 MiLogBrowser class >> defaultSpec [
 	^ super defaultSpec
 		add: #toolbar withConstraints: [ :constraints | constraints height: self toolbarHeight ]; 
@@ -63,14 +69,10 @@ MiLogBrowser >> initializePresenters [
 
 	"list"
 	entryList := self newList.
+	entryList contextMenu: [ self rootCommandsGroup asMenuPresenter ].
 	self model: self application logger.
 	entryList items: self model logs.
-	entryList display: [ :anElement | anElement entity mooseName ].
-	entryList
-		whenSelectionChangedDo: [ :selection | 
-			[ self freezeDuring: [ self globallySelect: self miSelectedItem ] ]
-				on: MiNoSelectedElementToPropagateException
-				do: [ "Do not propagate when no element is selected" ] ]
+	entryList display: [ :anElement | anElement entity mooseName ]
 ]
 
 { #category : #accessing }
@@ -81,6 +83,17 @@ MiLogBrowser >> logger [
 { #category : #initialization }
 MiLogBrowser >> miSelectedItem [
 	^ entryList selectedItems ifEmpty: [ super miSelectedItem ] ifNotEmpty: [ :list | "We can select only one entity" list anyOne entity ]
+]
+
+{ #category : #initialization }
+MiLogBrowser >> miSelectedLogEntry [
+	^ entryList selection selectedItem
+]
+
+{ #category : #initialization }
+MiLogBrowser >> removeLog: aLog [
+	self logger removeLog: aLog.
+	self updateList
 ]
 
 { #category : #initialization }

@@ -43,3 +43,23 @@ MiLoggerTest >> testClean [
 	self assert: self logger logs isEmpty.
 	self assert: self logger logs == logs
 ]
+
+{ #category : #tests }
+MiLoggerTest >> testRemoveEntry [
+	| entity1 entity2 |
+	entity1 := MiSelectedEntityLog new
+		logger: logger;
+		entity: 2.
+	entity2 := MiSelectedEntityLog new
+		logger: logger;
+		entity: 1.
+	self logger logs add: entity1.
+	self logger logs add: entity2.
+
+	self assert: self logger logs size equals: 2.
+	self logger removeLog: entity2.
+
+	self assert: (self logger logs includes: entity1).
+	self deny: (self logger logs includes: entity2).
+	self assert: self logger logs size equals: 1
+]

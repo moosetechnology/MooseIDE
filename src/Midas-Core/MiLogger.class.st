@@ -57,3 +57,8 @@ MiLogger >> logs [
 MiLogger >> logs: anObject [
 	logs := anObject
 ]
+
+{ #category : #accessing }
+MiLogger >> removeLog: aLog [
+	self logs remove: aLog
+]
