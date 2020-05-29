@@ -64,3 +64,8 @@ MiLogBrowser >> logger [
 MiLogBrowser >> miSelectedItem [
 	^ entryList selectedItems ifEmpty: [ super miSelectedItem ] ifNotEmpty: [ :list | "We can select only one entity" list anyOne entity ]
 ]
+
+{ #category : #initialization }
+MiLogBrowser >> title [
+	^ 'Logger Browser'
+]

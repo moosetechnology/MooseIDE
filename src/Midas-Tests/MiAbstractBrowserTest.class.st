@@ -8,6 +8,21 @@ Class {
 }
 
 { #category : #tests }
+MiAbstractBrowserTest >> testAllBrowserHaveATitle [
+	| mooseGroup mooseEntity |
+	mooseEntity := MooseEntity new.
+	mooseGroup := MooseGroup new.
+	mooseGroup add: mooseEntity.
+	concreteBrowser := MiAbstractBrowser allSubclasses reject: #isAbstract.
+	concreteBrowser
+		do: [ :browser | 
+			| browserInstance |
+			browserInstance := browser runMe.
+			self deny: browserInstance window title equals: 'Untitled window'.
+			browserInstance window close  ]
+]
+
+{ #category : #tests }
 MiAbstractBrowserTest >> testCanOpenAllBrowser [
 	concreteBrowser := MiAbstractBrowser allSubclasses reject: #isAbstract.
 	concreteBrowser
