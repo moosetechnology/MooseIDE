@@ -31,7 +31,7 @@ MiTreeMapVisualisationBrowser class >> runMe [
 	^ super runMe
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #testing }
 MiTreeMapVisualisationBrowser >> accept: anObject [
 	anObject ifNil: [ ^ false ].
 	^ (anObject isKindOf: MooseGroup)
@@ -49,7 +49,7 @@ MiTreeMapVisualisationBrowser >> diagram: anObject [
 	diagram := anObject
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #actions }
 MiTreeMapVisualisationBrowser >> followAction [
 	(self accept: toSelect)
 		ifFalse: [ ^ self ].
@@ -59,7 +59,14 @@ MiTreeMapVisualisationBrowser >> followAction [
 	self refresh
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #actions }
+MiTreeMapVisualisationBrowser >> highlightAction [
+	(toSelect isOfType: MooseGroup)
+		ifFalse: [ toSelect := {toSelect} ].
+	model highlightEntities: toSelect
+]
+
+{ #category : #initialization }
 MiTreeMapVisualisationBrowser >> initializePresenters [
 	super initializePresenters.
 	self
@@ -74,13 +81,13 @@ MiTreeMapVisualisationBrowser >> initializePresenters [
 			self model canvas: canvas ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #updating }
 MiTreeMapVisualisationBrowser >> refresh [
 	self diagram refresh.
 	self model run.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 MiTreeMapVisualisationBrowser >> title [
 	^ 'Tree Map Visualisation Browser'
 ]

@@ -63,6 +63,52 @@ MiTreeVisualisationBrowser >> accept: anObject [
 	^ anObject isKindOf: MooseObject
 ]
 
+{ #category : #script }
+MiTreeVisualisationBrowser >> boxCompositeFor: cls [
+	| label box composite |
+	box := RSBox new
+		size: 100;
+		color: self theme selectionColor;
+		yourself.
+	label := RSLabel new
+		text: cls name;
+		color: self theme textColor;
+		yourself.
+	RSLocation new
+		above;
+		move: box on: label.
+	composite := RSComposite new.
+	composite
+		shapes:
+			{label.
+			box};
+		model: cls.
+	composite @ RSDraggable.
+	composite
+		addInteraction: (MiSelection on: [ :entity | self model selected: entity ]).
+	^ composite
+]
+
+{ #category : #script }
+MiTreeVisualisationBrowser >> boxesForEntities [
+	^ self model entities
+		collect: [ :cls | self boxCompositeFor: cls ]
+		as: RSGroup
+]
+
+{ #category : #script }
+MiTreeVisualisationBrowser >> connectBoxes: boxes inCanvas: canvas [
+	RSEdgeBuilder line
+		canvas: canvas;
+		shapes: boxes;
+		withVerticalAttachPoint;
+		connectToAll: [ :a | 
+			(a usesFamixTrait: TEntityMetaLevelDependency)
+				ifTrue: [ a children ]
+				ifFalse: [ {} ] ].
+	RSTreeLayout on: boxes
+]
+
 { #category : #accessing }
 MiTreeVisualisationBrowser >> diagram [
 	^ diagram
@@ -90,11 +136,11 @@ MiTreeVisualisationBrowser >> highlightAction [
 		ifFalse: [ toSelect := {toSelect} ].
 	diagram canvas nodes
 		select: [ :box | toSelect includes: box model ]
-		thenDo: [ :box | box shapes do: [ :shape | shape color: Color red ] ].
+		thenDo: [ :box | box shapes do: [ :shape | shape color: self theme warningTextColor  ] ].
 	diagram canvas signalUpdate
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 MiTreeVisualisationBrowser >> initializePresenters [
 	super initializePresenters.
 	self model: MiTreeVisualisationBrowserModel new.
@@ -104,52 +150,29 @@ MiTreeVisualisationBrowser >> initializePresenters [
 		refresh
 ]
 
+{ #category : #script }
+MiTreeVisualisationBrowser >> legendOn: canvas [
+	| legend |
+	legend := RSLegend new.
+	legend container: canvas.
+	legend onDemand: 'Legend'.
+	legend build
+]
+
 { #category : #accessing }
 MiTreeVisualisationBrowser >> miSelectedItem [
 	^ self model selected
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #script }
 MiTreeVisualisationBrowser >> refresh [
 	diagram
 		script: [ :canvas | 
 			| boxes |
 			canvas color: self theme backgroundColor.
-			boxes := self model entities
-				collect: [ :cls | 
-					| box label composite |
-					box := RSBox new
-						size: 100;
-						color: self theme selectionColor;
-						yourself.
-					label := RSLabel new
-						text: cls name;
-						color: self theme textColor;
-						yourself.
-					RSLocation new
-						above;
-						move: box on: label.
-					composite := RSComposite new.
-					composite
-						shapes:
-							{label.
-							box};
-						model: cls.
-					composite @ RSDraggable.
-					composite
-						addInteraction: (MiSelection on: [ :entity | self model selected: entity ]).
-					composite ]
-				as: RSGroup.
+			boxes := self boxesForEntities.
 			canvas addAll: boxes.
-			RSEdgeBuilder line
-				canvas: canvas;
-				shapes: boxes;
-				withVerticalAttachPoint;
-				connectToAll: [ :a | 
-					(a usesFamixTrait: TEntityMetaLevelDependency)
-						ifTrue: [ a children ]
-						ifFalse: [ {} ] ].
-			RSTreeLayout on: boxes.
+			self connectBoxes: boxes inCanvas: canvas.
 			canvas @ RSCanvasController.
 			canvas ];
 		refresh

@@ -4,7 +4,6 @@ Class {
 	#instVars : [
 		'color',
 		'base',
-		'border',
 		'rootEntities',
 		'childrenBlock',
 		'multiTagColorBlock',
@@ -12,6 +11,18 @@ Class {
 	],
 	#category : #'Midas-Dependency-TreeMap'
 }
+
+{ #category : #helpers }
+MiTreeMap >> borderFor: anEntity [
+	| children |
+	children := self childrenForEntity: anEntity.
+	children ifEmpty: [ ^ nil ].
+	^ RSBorder new
+		color:
+			((highlightedEntities includesAny: children)
+				ifTrue: [ self highlightColor ]
+				ifFalse: [ Color black ])
+]
 
 { #category : #accessing }
 MiTreeMap >> childrenBlock [
@@ -32,6 +43,13 @@ MiTreeMap >> childrenForEntity: anEntity [
 	^ (self childrenBlock value: anEntity) sorted: [ :a :b | (self colorFor: a) asHexString < (self colorFor: b) asHexString ] 
 ]
 
+{ #category : #helpers }
+MiTreeMap >> childrenOf: shape in: collection [
+	collection add: shape.
+	shape shapes do: [ :child | self childrenOf: child in: collection ].
+	^ collection
+]
+
 { #category : #running }
 MiTreeMap >> close: shape [
 	shape children copy do: #remove.
@@ -40,7 +58,21 @@ MiTreeMap >> close: shape [
 
 { #category : #helpers }
 MiTreeMap >> colorFor: anEntity [
-	^ self theme selectionColor
+	^ (highlightedEntities includes: anEntity)
+		ifTrue: [ self highlightColor ]
+		ifFalse: [ self theme selectionColor alpha: 0.4 ]
+]
+
+{ #category : #highlighting }
+MiTreeMap >> highlightColor [
+	^ self theme warningTextColor
+]
+
+{ #category : #highlighting }
+MiTreeMap >> highlightEntities: entities [
+	self highlightedEntities: entities.
+	self refreshShapes.
+	self canvas signalUpdate
 ]
 
 { #category : #initialization }
@@ -53,7 +85,6 @@ MiTreeMap >> initialize [
 	base popup.
 	base when: RSMouseLeftClick do: [ :evt | self processEvent: evt ].
 
-	border := RSBorder new.
 	rootEntities := #().
 	childrenBlock := [ :entity | #() ]
 
@@ -64,16 +95,18 @@ MiTreeMap >> nodeFor: anEntity [
 	| com |
 	com := base copy.
 	com model: anEntity.
-	(self childrenForEntity: anEntity) ifNotEmpty: [ com border: border ].
+	com border: (self borderFor: anEntity).
 	com announcer: base announcer.
-	com color: ((self colorFor: anEntity) alpha: 0.4).
-	com @ (RSMenuActivable new
-		menuDo: [ :menu :box | 
-			menu 
-				add: 'Inspect'
-				target: box model
-				selector: #inspect
-				argument: #() ]).
+	com color: (self colorFor: anEntity).
+	com
+		@
+			(RSMenuActivable new
+				menuDo: [ :menu :box | 
+					menu
+						add: 'Inspect'
+						target: box model
+						selector: #inspect
+						argument: #() ]).
 	^ com
 ]
 
@@ -96,6 +129,14 @@ MiTreeMap >> processEvent: evt [
 ]
 
 { #category : #updating }
+MiTreeMap >> refreshShapes [
+	self visibleShapes
+		do: [ :box | 
+			box color: (self colorFor: box model).
+			box border: (self borderFor: box model) ]
+]
+
+{ #category : #updating }
 MiTreeMap >> relayout: shape [
 	shape propertyAt: #original put: shape encompassingRectangle.
 
@@ -115,12 +156,17 @@ MiTreeMap >> rootEntities: aCollection [
 	rootEntities := aCollection
 ]
 
+{ #category : #helpers }
+MiTreeMap >> rootShapes [
+	^ canvas shapes first shapes
+]
+
 { #category : #running }
 MiTreeMap >> run [
 	| containerShape | 
 	containerShape := RSComposite new.
 	canvas add: containerShape.
-	rootEntities do: [:e | containerShape add: (self nodeFor: e)].
+	self rootEntities do: [:e | containerShape add: (self nodeFor: e)].
 	self update
 ]
 
@@ -156,4 +202,10 @@ MiTreeMap >> update [
 			canvas
 				zoomToFit;
 				signalUpdate ]
+]
+
+{ #category : #helpers }
+MiTreeMap >> visibleShapes [
+	^ self rootShapes
+		flatCollect: [ :shape | self childrenOf: shape in: OrderedCollection new ]
 ]

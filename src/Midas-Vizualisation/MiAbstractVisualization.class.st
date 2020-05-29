@@ -3,7 +3,8 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'theme',
-		'canvas'
+		'canvas',
+		'highlightedEntities'
 	],
 	#category : #'Midas-Vizualisation'
 }
@@ -22,6 +23,22 @@ MiAbstractVisualization >> canvas: anObject [
 { #category : #accessing }
 MiAbstractVisualization >> defaultActionOnCanvas [
 	self canvas @ RSCanvasController
+]
+
+{ #category : #accessing }
+MiAbstractVisualization >> highlightedEntities [
+	^ highlightedEntities
+]
+
+{ #category : #accessing }
+MiAbstractVisualization >> highlightedEntities: entities [
+	highlightedEntities := entities
+]
+
+{ #category : #initialization }
+MiAbstractVisualization >> initialize [
+	super initialize.
+	highlightedEntities := MooseGroup new
 ]
 
 { #category : #accessing }
