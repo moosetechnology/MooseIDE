@@ -19,7 +19,7 @@ MiPropagateCommand class >> forSpecContext: anObject [
 
 { #category : #testing }
 MiPropagateCommand >> canBeExecuted [
-	^ self context miSelectedItem isMooseEntity
+	^ self context miSelectedItem isMooseObject
 ]
 
 { #category : #testing }

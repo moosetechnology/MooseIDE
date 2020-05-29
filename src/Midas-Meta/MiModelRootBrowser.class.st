@@ -33,6 +33,15 @@ Class {
 	#category : #'Midas-Meta-ModelRootBrowser'
 }
 
+{ #category : #'world menu' }
+MiModelRootBrowser class >> buildCommandsGroupWith: presenterInstance forRoot: rootCommandGroup [
+	super
+		buildCommandsGroupWith: presenterInstance
+		forRoot: rootCommandGroup.
+	rootCommandGroup
+		register: (MiSetRootFolderCommand forSpecContext: presenterInstance)
+]
+
 { #category : #specs }
 MiModelRootBrowser class >> defaultSpec [
 	^ super defaultSpec
@@ -78,7 +87,8 @@ MiModelRootBrowser >> followAction [
 { #category : #initialization }
 MiModelRootBrowser >> initializeList [
 	modelPresenter := self newList.
-	modelPresenter contextMenu: [ self rootCommandsGroup asMenuPresenter ].
+	modelPresenter
+		contextMenu: [ self rootCommandsGroup asMenuPresenter ].
 	modelPresenter
 		items: MooseModel root;
 		display: [ :mooseModel | mooseModel name ]

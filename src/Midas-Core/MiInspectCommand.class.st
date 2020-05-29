@@ -19,7 +19,7 @@ MiInspectCommand class >> forSpecContext: anObject [
 
 { #category : #testing }
 MiInspectCommand >> canBeExecuted [
-	^ self context miSelectedItem isMooseEntity
+	^ self context miSelectedItem isMooseObject
 ]
 
 { #category : #testing }
