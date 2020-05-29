@@ -29,7 +29,7 @@ MiLogger >> clean [
 { #category : #accessing }
 MiLogger >> globallySelect: anEntity [
 	logs
-		add:
+		addFirst:
 			(MiSelectedEntityLog new
 				logger: self;
 				entity: anEntity)
