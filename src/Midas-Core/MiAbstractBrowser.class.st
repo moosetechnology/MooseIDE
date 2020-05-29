@@ -21,7 +21,8 @@ Class {
 		'buttonFollow',
 		'buttonHighligh',
 		'buttonPropagate',
-		'menu'
+		'menu',
+		'buttonInspect'
 	],
 	#category : #'Midas-Core-Browser'
 }
@@ -41,6 +42,7 @@ MiAbstractBrowser class >> defaultSpec [
 				add: #buttonFreeze width: 60;
 				add: #buttonHighligh width: 80;
 				add: SpBoxLayout newHorizontal expand: true;
+				add: #buttonInspect expand: false;
 				add: #buttonPropagate expand: false;
 				yourself)
 			withConstraints: [ :constraints | constraints height: self toolbarHeight ];
@@ -177,6 +179,11 @@ MiAbstractBrowser >> initializePresenters [
 		label: 'Propagate';
 		enabled: self canPropagate ;
 		action: [ (MiPropagateCommand forContext: self) execute ];
+		yourself.
+		
+	buttonInspect := self newButton
+		label: 'Inspect';
+		action: [ (MiInspectCommand forContext: self) execute ];
 		yourself.
 ]
 
