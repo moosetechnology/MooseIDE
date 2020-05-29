@@ -75,7 +75,7 @@ MiTreeVisualisationBrowser >> diagram: anObject [
 
 { #category : #'as yet unclassified' }
 MiTreeVisualisationBrowser >> followAction [
-	(self accept: toSelect)
+	((self accept: toSelect) and: [ self needUpdate: toSelect ])
 		ifFalse: [ ^ self ].
 	(toSelect isOfType: MooseGroup)
 		ifTrue: [ self model entities: toSelect ]
@@ -91,6 +91,11 @@ MiTreeVisualisationBrowser >> initializePresenters [
 	diagram
 		script: [ :canvas | canvas color: self theme backgroundColor ];
 		refresh
+]
+
+{ #category : #accessing }
+MiTreeVisualisationBrowser >> miSelectedItem [
+	^ self model selected
 ]
 
 { #category : #'as yet unclassified' }
@@ -120,7 +125,8 @@ MiTreeVisualisationBrowser >> refresh [
 							box};
 						model: cls.
 					composite @ RSDraggable.
-					composite addInteraction: MiSelection new.
+					composite
+						addInteraction: (MiSelection on: [ :entity | self model selected: entity ]).
 					composite ]
 				as: RSGroup.
 			canvas addAll: boxes.

@@ -103,6 +103,7 @@ MiAbstractBrowser class >> toolbarName [
 { #category : #testing }
 MiAbstractBrowser >> accept: anObject [
 	"whether the browser accepts to deal with anObject"
+
 	^ false
 ]
 

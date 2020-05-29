@@ -2,14 +2,27 @@ Class {
 	#name : #MiSelection,
 	#superclass : #RSInteraction,
 	#instVars : [
-		'shadowColor'
+		'shadowColor',
+		'selectionAction'
 	],
 	#category : #'Midas-Vizualisation'
 }
 
+{ #category : #'instance creation' }
+MiSelection class >> on: selectionAction [
+	^ self new
+		on: selectionAction;
+		yourself
+]
+
 { #category : #accessing }
 MiSelection >> key [
 	^ self class name
+]
+
+{ #category : #'instance creation' }
+MiSelection >> on: aBlock [
+	selectionAction := aBlock
 ]
 
 { #category : #hooks }
@@ -41,11 +54,11 @@ MiSelection >> removeShadowOn: aShape [
 
 { #category : #hooks }
 MiSelection >> selection: aShape [
-	self inform: 'Selection !'.
 	self
 		removeShadowOn: aShape;
 		putShadowOn: aShape.
-	aShape canvas signalUpdate
+	aShape canvas signalUpdate.
+	selectionAction value: aShape model
 ]
 
 { #category : #accessing }
