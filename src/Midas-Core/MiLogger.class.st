@@ -28,24 +28,19 @@ MiLogger >> clean [
 
 { #category : #accessing }
 MiLogger >> globallySelect: anEntity [
-	logs
-		addFirst:
-			(MiSelectedEntityLog new
-				logger: self;
-				entity: anEntity)
+	self mostRecentEntity == anEntity
+		ifTrue: [ self mostRecentLog activate ]
+		ifFalse: [ logs
+				addFirst:
+					(MiSelectedEntityLog new
+						logger: self;
+						entity: anEntity) ]
 ]
 
 { #category : #accessing }
 MiLogger >> initialize [
 	super initialize.
 	logs := OrderedCollection new
-]
-
-{ #category : #accessing }
-MiLogger >> lastEntity [
-	^ self logs
-		ifEmpty: [ nil ]
-		ifNotEmpty: [ self logs last entity ]
 ]
 
 { #category : #accessing }
@@ -56,6 +51,16 @@ MiLogger >> logs [
 { #category : #accessing }
 MiLogger >> logs: anObject [
 	logs := anObject
+]
+
+{ #category : #accessing }
+MiLogger >> mostRecentEntity [
+	^ self mostRecentLog ifNotNil: [ :log | log entity ]
+]
+
+{ #category : #accessing }
+MiLogger >> mostRecentLog [
+	^ self logs ifEmpty: [ nil ] ifNotEmpty: [ self logs first ]
 ]
 
 { #category : #accessing }
