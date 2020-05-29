@@ -65,6 +65,7 @@ MiLogBrowser >> initializePresenters [
 	entryList := self newList.
 	self model: self application logger.
 	entryList items: self model logs.
+	entryList display: [ :anElement | anElement entity mooseName ].
 	entryList
 		whenSelectionChangedDo: [ :selection | 
 			[ self freezeDuring: [ self globallySelect: self miSelectedItem ] ]

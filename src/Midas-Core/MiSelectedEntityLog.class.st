@@ -28,8 +28,10 @@ MiSelectedEntityLog >> entity: anObject [
 	self activate
 ]
 
-{ #category : #printing }
+{ #category : #accessing }
 MiSelectedEntityLog >> printOn: aStream [
 	aStream
-		nextPutAll: entity class name
+		nextPutAll: 'log(';
+		nextPutAll: entity class name;
+		nextPutAll: ')'
 ]
