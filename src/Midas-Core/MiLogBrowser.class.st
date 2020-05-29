@@ -65,7 +65,11 @@ MiLogBrowser >> initializePresenters [
 	entryList := self newList.
 	self model: self application logger.
 	entryList items: self model logs.
-	entryList whenSelectionChangedDo: [ :selection | self freezeDuring: [ self globallySelect: self miSelectedItem ] ]
+	entryList
+		whenSelectionChangedDo: [ :selection | 
+			[ self freezeDuring: [ self globallySelect: self miSelectedItem ] ]
+				on: MiNoSelectedElementToPropagateException
+				do: [ "Do not propagate when no element is selected" ] ]
 ]
 
 { #category : #accessing }

@@ -100,17 +100,17 @@ MiAbstractBrowser >> accept: anObject [
 
 { #category : #actions }
 MiAbstractBrowser >> canFollow [
-	^true
+	^ true
 ]
 
 { #category : #actions }
 MiAbstractBrowser >> canHighlight [
-	^true
+	^ true
 ]
 
 { #category : #actions }
 MiAbstractBrowser >> canPropagate [
-	^true
+	^ true
 ]
 
 { #category : #actions }
