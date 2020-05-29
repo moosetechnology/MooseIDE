@@ -9,12 +9,6 @@ Class {
 }
 
 { #category : #specs }
-MiMooseModelBrowser class >> buildCommandsGroupWith: presenterInstance forRoot: rootCommandGroup [
-	rootCommandGroup register: (MiPropagateCommand forSpecContext: presenterInstance).
-	rootCommandGroup register: (StInspectorInspectSelectedCommand forSpecContext: presenterInstance)
-]
-
-{ #category : #specs }
 MiMooseModelBrowser class >> defaultSpec [
 	^ super defaultSpec
 	"	add: #searchField

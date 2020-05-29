@@ -34,12 +34,6 @@ Class {
 }
 
 { #category : #specs }
-MiModelRootBrowser class >> buildCommandsGroupWith: presenterInstance forRoot: rootCommandGroup [
-	rootCommandGroup register: (MiPropagateCommand forSpecContext: presenterInstance).
-	rootCommandGroup register: (StInspectorInspectSelectedCommand forSpecContext: presenterInstance)
-]
-
-{ #category : #specs }
 MiModelRootBrowser class >> defaultSpec [
 	^ super defaultSpec
 		add: #menu withConstraints: [ :constraints | constraints height: self toolbarHeight ];

@@ -27,6 +27,12 @@ Class {
 }
 
 { #category : #'world menu' }
+MiAbstractBrowser class >> buildCommandsGroupWith: presenterInstance forRoot: rootCommandGroup [
+	rootCommandGroup register: (MiPropagateCommand forSpecContext: presenterInstance).
+	rootCommandGroup register: (MiInspectCommand forSpecContext: presenterInstance)
+]
+
+{ #category : #'world menu' }
 MiAbstractBrowser class >> defaultSpec [
 	^ SpBoxLayout newVertical
 		add:
