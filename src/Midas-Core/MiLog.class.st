@@ -1,6 +1,6 @@
 Class {
 	#name : #MiLog,
-	#superclass : #SpApplication,
+	#superclass : #Object,
 	#instVars : [
 		'logger'
 	],
