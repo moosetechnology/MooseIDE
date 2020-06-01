@@ -28,7 +28,8 @@ MiLogger >> clean [
 
 { #category : #accessing }
 MiLogger >> globallySelect: anEntity [
-	self mostRecentEntity == anEntity
+	(self mostRecentEntity isNotNil
+		and: [ self mostRecentEntity == anEntity ])
 		ifTrue: [ self mostRecentLog activate ]
 		ifFalse: [ logs
 				addFirst:
@@ -41,6 +42,14 @@ MiLogger >> globallySelect: anEntity [
 MiLogger >> initialize [
 	super initialize.
 	logs := OrderedCollection new
+]
+
+{ #category : #accessing }
+MiLogger >> lastEntity [
+	self
+		deprecated: 'Use #mostRecentEntity instead'
+		transformWith: '`@receiver lastEntity' -> '`@receiver mostRecentEntity'.
+	^ self mostRecentEntity
 ]
 
 { #category : #accessing }
