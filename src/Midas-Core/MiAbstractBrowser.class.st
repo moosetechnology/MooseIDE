@@ -195,7 +195,7 @@ MiAbstractBrowser >> initializeWindow: aWindowPresenter [
 		whenClosedDo: [ self application windowClosed: aWindowPresenter ].
 	aWindowPresenter
 		title: self title;
-		initialExtent: 900 @ 700
+		initialExtent: 500 @ 400
 ]
 
 { #category : #actions }
