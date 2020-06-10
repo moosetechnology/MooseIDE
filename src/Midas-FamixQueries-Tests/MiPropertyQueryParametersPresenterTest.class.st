@@ -9,7 +9,7 @@ Class {
 
 { #category : #testing }
 MiPropertyQueryParametersPresenterTest class >> isAbstract [
-	^ self == FQPropertyQueryParametersPresenterTest
+	^ self == MiPropertyQueryParametersPresenterTest
 ]
 
 { #category : #tests }

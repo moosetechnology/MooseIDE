@@ -9,7 +9,7 @@ Class {
 
 { #category : #testing }
 MiQueryConfigurationPresenterTest class >> isAbstract [
-	^ self == FQQueryConfigurationPresenterTest
+	^ self == MiQueryConfigurationPresenterTest
 ]
 
 { #category : #tests }

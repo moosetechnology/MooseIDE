@@ -6,7 +6,7 @@ Class {
 
 { #category : #testing }
 MiComparativeQueryParametersPresenterTest class >> isAbstract [
-	^ self == FQComparativeQueryParametersPresenterTest
+	^ self == MiComparativeQueryParametersPresenterTest
 ]
 
 { #category : #tests }
