@@ -198,7 +198,7 @@ MiQueriesBrowser >> selectQuery: aQuery [
 				ifFalse: [ EFFormatter
 						format:
 							(RBParser
-								parseExpression: (String streamContents: [ :s | aQuery storeWithParentsOn: s ])) ]).
+								parseExpression: (String streamContents: [ :s | aQuery storeOn: s ])) ]).
 	self update
 ]
 
