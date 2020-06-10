@@ -6,7 +6,8 @@ Class {
 		'queryResult',
 		'selectedQuery',
 		'queries',
-		'queryCode'
+		'queryCode',
+		'queriesToolbar'
 	],
 	#category : #'Midas-FamixQueries-Presenters'
 }
@@ -16,7 +17,12 @@ MiQueriesBrowser class >> defaultSpec [
 	^ super defaultSpec
 		add:
 			(SpPanedLayout newHorizontal
-				add: #queriesTree;
+				add:
+					(SpBoxLayout newVertical
+						add: #queriesToolbar height: self toolbarHeight;
+						add: #queriesTree;
+						yourself);
+				position: 60 percent;
 				add:
 					(SpPanedLayout newVertical
 						add: #queryResult;
@@ -100,7 +106,13 @@ MiQueriesBrowser >> initializePresenters [
 	super initializePresenters.
 	self initializeQueriesTree.
 	self initializeQueryResult.
-	self initializeQueryCode
+	self initializeQueryCode.
+	self initializeQueriesToolbar
+]
+
+{ #category : #initialization }
+MiQueriesBrowser >> initializeQueriesToolbar [
+	self updateQueryToolbar
 ]
 
 { #category : #initialization }
@@ -132,6 +144,12 @@ MiQueriesBrowser >> initializeQueryResult [
 	queryResult := (self instantiate: MiResultTreePresenter on: self)
 		updateForEntities: self entities;
 		yourself
+]
+
+{ #category : #initialization }
+MiQueriesBrowser >> initializeWindow: aWindowPresenter [
+	super initializeWindow: aWindowPresenter.
+	aWindowPresenter initialExtent: 600 @ 400
 ]
 
 { #category : #midas }
@@ -171,7 +189,13 @@ MiQueriesBrowser >> removeQuery: aQuery [
 			^ self ].
 	aQuery prepareRemovalFrom: self.
 	queries remove: aQuery.
+	queriesTree refresh.
 	^ aQuery
+]
+
+{ #category : #action }
+MiQueriesBrowser >> removeSelectedQuery [
+	self removeQuery: selectedQuery
 ]
 
 { #category : #midas }
@@ -199,6 +223,7 @@ MiQueriesBrowser >> selectQuery: aQuery [
 						format:
 							(RBParser
 								parseExpression: (String streamContents: [ :s | aQuery storeOn: s ])) ]).
+	self updateQueryToolbar.
 	self update
 ]
 
@@ -224,4 +249,9 @@ MiQueriesBrowser >> updateForQuery: aQuery [
 	They have the responsibility to establish the [parent* - child] relationship between queries"
 
 	self selectQuery: (queries addLast: aQuery)
+]
+
+{ #category : #action }
+MiQueriesBrowser >> updateQueryToolbar [
+	queriesToolbar := (MiQueryMenuBuilder on: self) newMenuBar
 ]

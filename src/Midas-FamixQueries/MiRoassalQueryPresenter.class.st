@@ -67,45 +67,6 @@ MiRoassalQueryPresenter >> boxLabel [
 ]
 
 { #category : #'boxes configuration' }
-MiRoassalQueryPresenter >> boxMenu: aMenuMorph box: aBox [
-	(aMenuMorph
-		add: 'Create a new query after this one'
-		target: browser
-		selector: #openQueryCreationPresenter)
-		icon: (UITheme iconNamed: #add).
-	aMenuMorph
-		add: 'Create a new query from Library'
-		subMenu: self librarySubMenu.
-	(aMenuMorph
-		add: 'Inspect result'
-		target: aBox model result
-		selector: #inspect) icon: (UITheme iconNamed: #glamorousInspect).
-	(aMenuMorph
-		add: 'Propagate result'
-		target: (MiPropagateCommand forContext: self)
-		selector: #execute) icon: (UITheme iconNamed: #moosePropagate).
-	aBox model isRootQuery
-		ifTrue: [ ^ self ].
-	(aMenuMorph
-		add: 'Inspect query'
-		target: aBox model
-		selector: #inspect) icon: (UITheme iconNamed: #glamorousInspect).
-	(aMenuMorph
-		add: 'Save this query'
-		target: (MiAddQueryToLibraryCommand forContext: browser)
-		selector: #execute) icon: (UITheme iconNamed: #smallSave).
-	(aMenuMorph
-		add: 'Save this query sequence'
-		target: (MiAddQuerySequenceToLibraryCommand forContext: browser)
-		selector: #execute) icon: (UITheme iconNamed: #smallSave).
-	(aMenuMorph
-		add: 'Remove this query'
-		target: self
-		selector: #removeQuery:
-		argumentList: {aBox model}) icon: (UITheme iconNamed: #remove)
-]
-
-{ #category : #'boxes configuration' }
 MiRoassalQueryPresenter >> boxPopup [
 	| label |
 	label := RSPopup new text: [ :model | model result details ].
@@ -140,6 +101,19 @@ MiRoassalQueryPresenter >> buildBoxFor: aQuery [
 ]
 
 { #category : #'roassal script' }
+MiRoassalQueryPresenter >> buildMenuOn: boxes [
+	boxes
+		do: [ :box | 
+			box
+				when: RSMouseRightClick
+				do: [ :evt | 
+					| menu |
+					menu := (MiQueryMenuBuilder on: browser) newMenu
+						buildWithSpecAsPopup.
+					menu popUpInWorld ] ]
+]
+
+{ #category : #'roassal script' }
 MiRoassalQueryPresenter >> buildTreeOn: canvas for: boxes [
 	RSEdgeBuilder line
 		canvas: canvas;
@@ -155,20 +129,9 @@ MiRoassalQueryPresenter >> createBoxes [
 	boxes := queries
 		collect: [ :query | self buildBoxFor: query ]
 		as: RSGroup.
-	boxes
-		@
-			(RSMenuActivable new
-				menuDo: [ :menu :box | self boxMenu: menu box: box ]).
+	hasInteractions
+		ifTrue: [ self buildMenuOn: boxes ].
 	^ boxes
-]
-
-{ #category : #'boxes configuration' }
-MiRoassalQueryPresenter >> createQueryNamed: name [
-	browser
-		updateForQuery:
-			((FQQueriesLibrary current createQueryNamed: name)
-				name: name;
-				beChildOf: browser selectedQuery)
 ]
 
 { #category : #'boxes configuration' }
@@ -212,20 +175,6 @@ MiRoassalQueryPresenter >> legendOn: canvas [
 	legend build
 ]
 
-{ #category : #'boxes configuration' }
-MiRoassalQueryPresenter >> librarySubMenu [
-	| subMenu |
-	subMenu := MenuMorph new.
-	FQQueriesLibrary current savedQueriesNames
-		do: [ :name | 
-			subMenu
-				add: name
-				target: self
-				selector: #createQueryNamed:
-				argument: name ].
-	^ subMenu
-]
-
 { #category : #midas }
 MiRoassalQueryPresenter >> miSelectedItem [
 	^ selectedQuery result
@@ -234,12 +183,6 @@ MiRoassalQueryPresenter >> miSelectedItem [
 { #category : #interactions }
 MiRoassalQueryPresenter >> noInteractions [
 	hasInteractions := false
-]
-
-{ #category : #update }
-MiRoassalQueryPresenter >> removeQuery: aQuery [
-	owner removeQuery: aQuery.
-	self refresh
 ]
 
 { #category : #'roassal script' }

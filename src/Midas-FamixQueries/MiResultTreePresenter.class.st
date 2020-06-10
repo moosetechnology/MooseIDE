@@ -40,15 +40,6 @@ MiResultTreePresenter >> childrenOf: item [
 ]
 
 { #category : #action }
-MiResultTreePresenter >> createQueryForType: aClass [
-	browser
-		updateForQuery:
-			(FQTypeQuery new
-				type: aClass;
-				beChildOf: browser selectedQuery)
-]
-
-{ #category : #action }
 MiResultTreePresenter >> createQueryForTypes: classes [
 	| newTypeQuery |
 	newTypeQuery := FQTypeQuery new beChildOf: browser selectedQuery.

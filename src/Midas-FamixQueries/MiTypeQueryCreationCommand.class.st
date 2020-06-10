@@ -9,7 +9,7 @@ MiTypeQueryCreationCommand class >> defaultName [
 	^ 'Create new type query'
 ]
 
-{ #category : #executing }
+{ #category : #testing }
 MiTypeQueryCreationCommand >> canBeExecuted [
 	^ self context canCreateQueries
 		and: [ self context roots includesAll: self context selectedItems ]
