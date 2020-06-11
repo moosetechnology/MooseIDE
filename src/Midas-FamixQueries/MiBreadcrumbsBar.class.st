@@ -20,7 +20,7 @@ Example:
 	presenter openWithSpec'
 "
 Class {
-	#name : #MiRoassalSequence,
+	#name : #MiBreadcrumbsBar,
 	#superclass : #SpRoassalPresenter,
 	#instVars : [
 		'models',
@@ -33,38 +33,38 @@ Class {
 }
 
 { #category : #specs }
-MiRoassalSequence class >> title [
+MiBreadcrumbsBar class >> title [
 	^ 'Roassal Sequence'
 ]
 
 { #category : #default }
-MiRoassalSequence >> defaultShapeColor [
+MiBreadcrumbsBar >> defaultShapeColor [
 	^ [ :model | Color gray ]
 ]
 
 { #category : #default }
-MiRoassalSequence >> defaultShapeExtent [
+MiBreadcrumbsBar >> defaultShapeExtent [
 	^ 100 @ self class toolbarHeight
 ]
 
 { #category : #default }
-MiRoassalSequence >> defaultShapeLabel [
+MiBreadcrumbsBar >> defaultShapeLabel [
 	^ [ :model | '' ]
 ]
 
 { #category : #initialization }
-MiRoassalSequence >> initialize [
+MiBreadcrumbsBar >> initialize [
 	super initialize.
 	self initializeScript
 ]
 
 { #category : #initialization }
-MiRoassalSequence >> initializeScript [
+MiBreadcrumbsBar >> initializeScript [
 	self script: [ :canvas | self sequenceScriptOn: canvas ]
 ]
 
 { #category : #'private - script' }
-MiRoassalSequence >> label [
+MiBreadcrumbsBar >> label [
 	| label |
 	label := RSLabeled new text: self shapeLabel.
 	label location
@@ -75,7 +75,7 @@ MiRoassalSequence >> label [
 ]
 
 { #category : #'private - script' }
-MiRoassalSequence >> newArrowedShape [
+MiBreadcrumbsBar >> newArrowedShape [
 	| offset points |
 	offset := 0.6.
 	points := {(-1 @ -1).
@@ -88,7 +88,7 @@ MiRoassalSequence >> newArrowedShape [
 ]
 
 { #category : #'private - script' }
-MiRoassalSequence >> newArrowedShapeFor: model position: i [
+MiBreadcrumbsBar >> newArrowedShapeFor: model position: i [
 	| shape |
 	shape := self newArrowedShape
 		model: model;
@@ -102,7 +102,7 @@ MiRoassalSequence >> newArrowedShapeFor: model position: i [
 ]
 
 { #category : #'private - script' }
-MiRoassalSequence >> sequenceScriptOn: canvas [
+MiBreadcrumbsBar >> sequenceScriptOn: canvas [
 	models
 		withIndexDo:
 			[ :model :i | canvas add: (self newArrowedShapeFor: model position: i) ].
@@ -111,52 +111,52 @@ MiRoassalSequence >> sequenceScriptOn: canvas [
 ]
 
 { #category : #'accessing model' }
-MiRoassalSequence >> setModelBeforeInitialization: aCollectionOfModelObjects [
+MiBreadcrumbsBar >> setModelBeforeInitialization: aCollectionOfModelObjects [
 	models := aCollectionOfModelObjects
 ]
 
 { #category : #'accessing model' }
-MiRoassalSequence >> setModels: aCollection [
+MiBreadcrumbsBar >> setModels: aCollection [
 	models := aCollection.
 	self refresh
 ]
 
 { #category : #accessing }
-MiRoassalSequence >> shapeColor [
+MiBreadcrumbsBar >> shapeColor [
 	^ shapeColor ifNil: [ self defaultShapeColor ]
 ]
 
 { #category : #accessing }
-MiRoassalSequence >> shapeColor: anObject [
+MiBreadcrumbsBar >> shapeColor: anObject [
 	shapeColor := anObject
 ]
 
 { #category : #accessing }
-MiRoassalSequence >> shapeExtent [
+MiBreadcrumbsBar >> shapeExtent [
 	^ shapeExtent ifNil: [ self defaultShapeExtent ]
 ]
 
 { #category : #accessing }
-MiRoassalSequence >> shapeExtent: anObject [
+MiBreadcrumbsBar >> shapeExtent: anObject [
 	shapeExtent := anObject
 ]
 
 { #category : #accessing }
-MiRoassalSequence >> shapeLabel [
+MiBreadcrumbsBar >> shapeLabel [
 	^ shapeLabel ifNil: [ self defaultShapeLabel ]
 ]
 
 { #category : #accessing }
-MiRoassalSequence >> shapeLabel: anObject [
+MiBreadcrumbsBar >> shapeLabel: anObject [
 	shapeLabel := anObject
 ]
 
 { #category : #accessing }
-MiRoassalSequence >> shapePopup [
+MiBreadcrumbsBar >> shapePopup [
 	^ shapePopup
 ]
 
 { #category : #accessing }
-MiRoassalSequence >> shapePopup: anObject [
+MiBreadcrumbsBar >> shapePopup: anObject [
 	shapePopup := anObject
 ]

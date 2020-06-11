@@ -8,8 +8,8 @@ Class {
 		'#resultList',
 		'#toolBar',
 		'#browser',
-		'#sequence',
-		'#query => SpObservableSlot'
+		'#query => SpObservableSlot',
+		'#breadcrumbs'
 	],
 	#category : #'Midas-FamixQueries-Presenters'
 }
@@ -24,7 +24,7 @@ MiQueryCreationPresenter class >> buildCommandsGroupWith: presenter forRoot: aCm
 MiQueryCreationPresenter class >> defaultSpec [
 	^ SpBoxLayout newVertical
 		add: #toolBar height: self toolbarHeight;
-		add: #sequence height: self toolbarHeight;
+		add: #breadcrumbs height: self toolbarHeight;
 		add:
 			(SpPanedLayout newHorizontal
 				add: self queryConfigurationLayout;
@@ -118,9 +118,17 @@ MiQueryCreationPresenter >> initialize [
 ]
 
 { #category : #initialization }
+MiQueryCreationPresenter >> initializeBreadcrumbs [
+	breadcrumbs := (MiBreadcrumbsBar
+		on: browser selectedQuery parentSequence)
+		shapeColor: [ :model | model class color ];
+		shapeLabel: [ :model | model name substrings first ]
+]
+
+{ #category : #initialization }
 MiQueryCreationPresenter >> initializePresenters [
 	self initializeToolBar.
-	self initializeRoassalSequence.
+	self initializeBreadcrumbs.
 	self initializeQueryTypesDropList.
 	self initializeQueryCode.
 	self initializeResultList
@@ -148,14 +156,6 @@ MiQueryCreationPresenter >> initializeResultList [
 	resultList := (self instantiate: MiResultTreePresenter on: browser)
 		updateForEntities: browser entities;
 		yourself
-]
-
-{ #category : #initialization }
-MiQueryCreationPresenter >> initializeRoassalSequence [
-	sequence := (MiRoassalSequence
-		on: browser selectedQuery parentSequence)
-		shapeColor: [ :model | model class color ];
-		shapeLabel: [ :model | model name substrings first ]
 ]
 
 { #category : #initialization }
@@ -202,7 +202,7 @@ MiQueryCreationPresenter >> updateForQuery: aQuery [
 	self flag: #FQImprove , 'Use this to update queryConfiguration ?'.
 	resultList updateForEntities: aQuery result.
 	self updateQueryCode.
-	sequence setModels: aQuery parentSequence.
+	breadcrumbs setModels: aQuery parentSequence.
 	self updateToolBar.
 	self update
 ]
@@ -216,7 +216,7 @@ MiQueryCreationPresenter >> updateFromCode: code [
 MiQueryCreationPresenter >> updateFromConfiguration [
 	resultList updateForEntities: self query result.
 	self updateQueryCode.
-	sequence setModels: self query parentSequence.
+	breadcrumbs setModels: self query parentSequence.
 	self updateToolBar
 ]
 

@@ -6,7 +6,7 @@ Class {
 
 { #category : #running }
 MiRoassalSequenceTest >> classToTest [
-	^ MiRoassalSequence
+	^ MiBreadcrumbsBar
 ]
 
 { #category : #accessing }
