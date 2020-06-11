@@ -179,7 +179,7 @@ MiAbstractBrowser >> initializePresenters [
 	buttonPropagate := self newButton
 		label: 'Propagate';
 		enabled: self canPropagate ;
-		action: [ (MiPropagateCommand forContext: self) execute ];
+		action: [ (MiPropagateCommand forContext: self) freezeBrowser; execute ];
 		yourself.
 		
 	buttonInspect := self newButton
