@@ -11,8 +11,7 @@ MiTypeQueryCreationCommand class >> defaultName [
 
 { #category : #testing }
 MiTypeQueryCreationCommand >> canBeExecuted [
-	^ self context canCreateQueries
-		and: [ self context roots includesAll: self context selectedItems ]
+	^ self context class == MiQueriesBrowser
 ]
 
 { #category : #executing }

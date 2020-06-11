@@ -22,7 +22,6 @@ MiQueriesBrowser class >> defaultSpec [
 						add: #queriesToolbar height: self toolbarHeight;
 						add: #queriesTree;
 						yourself);
-				position: 60 percent;
 				add:
 					(SpPanedLayout newVertical
 						add: #queryResult;
@@ -86,6 +85,20 @@ MiQueriesBrowser >> accept: anObject [
 				and: [ anObject asMooseGroup ~= selectedQuery result ] ]
 ]
 
+{ #category : #action }
+MiQueriesBrowser >> createQueryForTypes: classes [
+	| newTypeQuery |
+	newTypeQuery := FQTypeQuery new beChildOf: self selectedQuery.
+	classes do: [ :aClass | newTypeQuery type: aClass ].
+	self updateForQuery: newTypeQuery
+]
+
+{ #category : #action }
+MiQueriesBrowser >> createTypeQuery [
+	self
+		createQueryForTypes: (self miSelectedItem collect: #class) copyWithoutDuplicates
+]
+
 { #category : #accessing }
 MiQueriesBrowser >> entities [
 	^ selectedQuery result
@@ -93,7 +106,13 @@ MiQueriesBrowser >> entities [
 
 { #category : #midas }
 MiQueriesBrowser >> followAction [
-	self selectEntity: toSelect
+	(self accept: toSelect)
+		ifFalse: [ ^ self ].
+	toSelect := toSelect asMooseGroup allUsing: FamixTNamedEntity.
+	queries do: #resetResult.
+	self initialQuery result: toSelect.
+	self initialQuery name: toSelect first mooseModel name.
+	self selectQuery: self initialQuery
 ]
 
 { #category : #accessing }
@@ -148,7 +167,10 @@ MiQueriesBrowser >> initializeQueryResult [
 
 { #category : #midas }
 MiQueriesBrowser >> miSelectedItem [
-	^ selectedQuery result
+	self
+		flag: #FQImprove , 'Moose bug: ifEmpty: returns an OrderedCollection'.
+	^ (queryResult miSelectedItem ifEmpty: [ selectedQuery result ])
+		asMooseGroup
 ]
 
 { #category : #action }
@@ -190,18 +212,6 @@ MiQueriesBrowser >> removeQuery: aQuery [
 { #category : #action }
 MiQueriesBrowser >> removeSelectedQuery [
 	self removeQuery: selectedQuery
-]
-
-{ #category : #midas }
-MiQueriesBrowser >> selectEntity: anEntity [
-	| entityToSelect |
-	(self accept: anEntity)
-		ifFalse: [ ^ self ].
-	entityToSelect := anEntity asMooseGroup allUsing: FamixTNamedEntity.
-	queries do: #resetResult.
-	self initialQuery result: entityToSelect.
-	self initialQuery name: entityToSelect first mooseModel name.
-	self selectQuery: self initialQuery
 ]
 
 { #category : #action }

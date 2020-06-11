@@ -13,13 +13,16 @@ MiResultTreePresenter class >> buildCommandsGroupWith: presenter forRoot: aCmCom
 	aCmCommandsGroup
 		register:
 			((MiInspectCommand forSpecWithIconNamed: #glamorousInspect)
-				context: presenter);
+				context: presenter owner);
 		register:
-			((MiPropagateCommand forSpecWithIconNamed: #moosePropagate)
-				context: presenter);
-		register:
-			((MiTypeQueryCreationCommand forSpecWithIconNamed: #add)
-				context: presenter) beHiddenWhenCantBeRun
+			(MiPropagateCommand new freezeBrowser asSpecCommand
+				iconName: #moosePropagate;
+				context: presenter owner).
+	(presenter roots includesAll: presenter selectedItems)
+		ifTrue: [ aCmCommandsGroup
+				register:
+					((MiTypeQueryCreationCommand forSpecWithIconNamed: #add)
+						context: presenter owner) beHiddenWhenCantBeRun ]
 ]
 
 { #category : #accessing }
@@ -27,30 +30,11 @@ MiResultTreePresenter class >> headerTitle [
 	^ 'Result of current query'
 ]
 
-{ #category : #testing }
-MiResultTreePresenter >> canCreateQueries [
-	^ owner == browser
-]
-
 { #category : #initialization }
 MiResultTreePresenter >> childrenOf: item [
 	^ (self roots includes: item)
 		ifTrue: [ item entities sort: #name ascending ]
 		ifFalse: {}
-]
-
-{ #category : #action }
-MiResultTreePresenter >> createQueryForTypes: classes [
-	| newTypeQuery |
-	newTypeQuery := FQTypeQuery new beChildOf: browser selectedQuery.
-	classes do: [ :aClass | newTypeQuery type: aClass ].
-	browser updateForQuery: newTypeQuery
-]
-
-{ #category : #action }
-MiResultTreePresenter >> createTypeQuery [
-	^ self
-		createQueryForTypes: (self selectedItems flatten collect: #class) copyWithoutDuplicates
 ]
 
 { #category : #initialization }
@@ -109,5 +93,6 @@ MiResultTreePresenter >> updateForEntities: entities [
 
 { #category : #update }
 MiResultTreePresenter >> updateMenu [
-	self contextMenuFromCommandsGroup: [ self rootCommandsGroup ]
+	self owner class == MiQueriesBrowser
+		ifTrue: [ self contextMenuFromCommandsGroup: [ self rootCommandsGroup ] ]
 ]
