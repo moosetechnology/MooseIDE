@@ -17,6 +17,11 @@ MiResultTreePresenter class >> buildCommandsGroupWith: presenter forRoot: aCmCom
 		register:
 			(MiPropagateCommand new freezeBrowser asSpecCommand
 				iconName: #moosePropagate;
+				context: presenter owner);
+		register:
+			(MiPropagateCommand new asSpecCommand
+				iconName: #glamorousRestart;
+				name: 'Use as root for queries';
 				context: presenter owner).
 	(presenter roots includesAll: presenter selectedItems)
 		ifTrue: [ aCmCommandsGroup
