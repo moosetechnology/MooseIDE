@@ -81,8 +81,8 @@ MiQueriesBrowser class >> title [
 { #category : #midas }
 MiQueriesBrowser >> accept: anObject [
 	^ (anObject isKindOf: MooseObject)
-		and: [ (anObject asMooseGroup allUsing: FamixTNamedEntity) isNotEmpty
-				and: [ anObject asMooseGroup ~= selectedQuery result ] ]
+		and:
+			[ (anObject asMooseGroup allUsing: FamixTNamedEntity) isNotEmpty ]
 ]
 
 { #category : #action }
