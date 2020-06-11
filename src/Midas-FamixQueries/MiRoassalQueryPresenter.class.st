@@ -164,13 +164,13 @@ MiRoassalQueryPresenter >> legendOn: canvas [
 			[ :queryClass | legend text: queryClass label withCircleColor: queryClass color ].
 	legend
 		leyendDo: [ :l | 
+			(l nodes first children detect: [ :shape | shape isKindOf: RSLabel ])
+				color: self theme textColor.
 			l
 				withBorder;
-				padding: 20 ].
-	legend location
-		outer;
-		bottom;
-		offset: 0 @ 70.
+				color: self theme backgroundColor;
+				padding: 20;
+				scaleBy: 0.7 ].
 	legend onDemand: 'Legend'.
 	legend build
 ]

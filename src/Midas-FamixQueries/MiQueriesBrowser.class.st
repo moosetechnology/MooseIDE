@@ -146,12 +146,6 @@ MiQueriesBrowser >> initializeQueryResult [
 		yourself
 ]
 
-{ #category : #initialization }
-MiQueriesBrowser >> initializeWindow: aWindowPresenter [
-	super initializeWindow: aWindowPresenter.
-	aWindowPresenter initialExtent: 600 @ 400
-]
-
 { #category : #midas }
 MiQueriesBrowser >> miSelectedItem [
 	^ selectedQuery result

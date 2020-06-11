@@ -23,11 +23,11 @@ MiQueryMenuBuilder >> browser: aBrowser [
 { #category : #building }
 MiQueryMenuBuilder >> buildAdditionalItemsIn: aMenu [
 	aMenu
-		addItem: [ :item | 
+		"addItem: [ :item | 
 			item
 				description: 'Inspect query';
 				icon: (self iconNamed: #glamorousInspect);
-				action: [ browser selectedQuery inspect ] ];
+				action: [ browser selectedQuery inspect ] ];"
 		addItem: [ :item | 
 			item
 				description: 'Save this query';
@@ -50,12 +50,12 @@ MiQueryMenuBuilder >> buildCommonItemsIn: aMenu [
 	aMenu
 		addItem: [ :item | 
 			item
-				description: 'Create a new query after this one';
-				icon: (self iconNamed: #add);
+				description: 'Build a new query after this one';
+				icon: (self iconNamed: #smallNew);
 				action: [ browser openQueryCreationPresenter ] ];
 		addItem: [ :item | 
 			item
-				name: 'Create query from Library';
+				icon: (self iconNamed: #add);
 				description: 'Choose a query in library';
 				subMenu: (aMenu newMenu addGroup: [ :aGroup | self librarySubMenu: aGroup ]) ];
 		addItem: [ :item | 
