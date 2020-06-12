@@ -34,8 +34,8 @@ MiTreeMapVisualisationBrowser class >> runMe [
 { #category : #testing }
 MiTreeMapVisualisationBrowser >> accept: anObject [
 	^ anObject isNotNil
-		and:
-			[ anObject isMooseObject and: [ anObject rootsForTreeMap isNotEmpty ] ]
+		and: [ (anObject isKindOf: MooseObject)
+				and: [ anObject rootsForTreeMap isNotEmpty ] ]
 ]
 
 { #category : #accessing }
