@@ -50,3 +50,8 @@ MiAbstractVisualization >> theme [
 MiAbstractVisualization >> theme: anObject [
 	theme := anObject
 ]
+
+{ #category : #initialization }
+MiAbstractVisualization >> unHighlight [
+	highlightedEntities := MooseGroup new
+]

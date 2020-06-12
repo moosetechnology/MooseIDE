@@ -4,6 +4,9 @@ Use me to propagate entities through the application
 Class {
 	#name : #MiPropagateCommand,
 	#superclass : #CmCommand,
+	#instVars : [
+		'shouldFreezeBrowser'
+	],
 	#category : #'Midas-Core-Command'
 }
 
@@ -24,5 +27,23 @@ MiPropagateCommand >> canBeExecuted [
 
 { #category : #testing }
 MiPropagateCommand >> execute [
+	shouldFreezeBrowser
+		ifTrue: [ self context freezeDuring: [ self propagate ] ]
+		ifFalse: [ self propagate ]
+]
+
+{ #category : #'as yet unclassified' }
+MiPropagateCommand >> freezeBrowser [
+	shouldFreezeBrowser := true
+]
+
+{ #category : #'as yet unclassified' }
+MiPropagateCommand >> initialize [
+	super initialize.
+	shouldFreezeBrowser := false
+]
+
+{ #category : #testing }
+MiPropagateCommand >> propagate [
 	^ MiApplication current globallySelect: self context miSelectedItem
 ]

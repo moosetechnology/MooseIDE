@@ -33,10 +33,9 @@ MiTreeMapVisualisationBrowser class >> runMe [
 
 { #category : #testing }
 MiTreeMapVisualisationBrowser >> accept: anObject [
-	anObject ifNil: [ ^ false ].
-	^ (anObject isKindOf: MooseGroup)
-				ifFalse: [ anObject isKindOf: MooseEntity ]
-				ifTrue: [ anObject isNotEmpty ]
+	^ anObject isNotNil
+		and: [ (anObject isKindOf: MooseObject)
+				and: [ anObject rootsForTreeMap isNotEmpty ] ]
 ]
 
 { #category : #accessing }
@@ -53,17 +52,14 @@ MiTreeMapVisualisationBrowser >> diagram: anObject [
 MiTreeMapVisualisationBrowser >> followAction [
 	(self accept: toSelect)
 		ifFalse: [ ^ self ].
-	(toSelect isOfType: MooseGroup)
-		ifTrue: [ self model rootEntities: toSelect ]
-		ifFalse: [ self model rootEntities: {toSelect} ].
+	self model unHighlight.
+	self model rootEntities: toSelect rootsForTreeMap.
 	self refresh
 ]
 
 { #category : #actions }
 MiTreeMapVisualisationBrowser >> highlightAction [
-	(toSelect isOfType: MooseGroup)
-		ifFalse: [ toSelect := {toSelect} ].
-	model highlightEntities: toSelect
+	model highlightEntities: toSelect rootsForTreeMap
 ]
 
 { #category : #initialization }
