@@ -52,6 +52,7 @@ MiTreeMapVisualisationBrowser >> diagram: anObject [
 MiTreeMapVisualisationBrowser >> followAction [
 	(self accept: toSelect)
 		ifFalse: [ ^ self ].
+	self model unHighlight.
 	self model rootEntities: toSelect rootsForTreeMap.
 	self refresh
 ]
