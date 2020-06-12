@@ -15,7 +15,7 @@ MiDependencyVisualization >> entities [
 
 { #category : #running }
 MiDependencyVisualization >> entities: aCollection [
-	entities := aCollection
+	entities := aCollection select: [ :a | a usesFamixTrait: TDependencyQueries ] 
 ]
 
 { #category : #running }

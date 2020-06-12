@@ -33,7 +33,7 @@ MiDependencyBrowser class >> runMe [
 
 { #category : #acccessing }
 MiDependencyBrowser >> accept: anObject [
-	^ anObject isCollection and: [ anObject allSatisfy: [ :a | a usesFamixTrait: TDependencyQueries ] ]
+	^ anObject isCollection and: [ anObject anySatisfy: [ :a | a usesFamixTrait: TDependencyQueries ] ]
 ]
 
 { #category : #accessing }
