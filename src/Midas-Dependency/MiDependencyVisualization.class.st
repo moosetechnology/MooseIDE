@@ -1,3 +1,6 @@
+"
+Roassal visualization for MiDependencyBrowser
+"
 Class {
 	#name : #MiDependencyVisualization,
 	#superclass : #MiAbstractVisualization,
