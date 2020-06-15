@@ -225,7 +225,7 @@ MiAbstractBrowser >> isNotFreeze [
 
 { #category : #accessing }
 MiAbstractBrowser >> miSelectedItem [
-	^ MiNoSelectedElementToPropagateException new signal
+	^ (MiNoSelectedElementToPropagateException browser: self) signal
 ]
 
 { #category : #accessing }
