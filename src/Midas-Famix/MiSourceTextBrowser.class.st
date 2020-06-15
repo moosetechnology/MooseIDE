@@ -34,6 +34,11 @@ MiSourceTextBrowser class >> runMe [
 ]
 
 { #category : #'as yet unclassified' }
+MiSourceTextBrowser class >> title [
+	^ 'Source code Browser'
+]
+
+{ #category : #'as yet unclassified' }
 MiSourceTextBrowser >> accept: anObject [
 	^ anObject usesFamixTrait: FamixTSourceEntity
 ]
@@ -72,11 +77,6 @@ MiSourceTextBrowser >> sourceCodePage [
 { #category : #'as yet unclassified' }
 MiSourceTextBrowser >> text: aText [
   sourceText text: aText
-]
-
-{ #category : #'as yet unclassified' }
-MiSourceTextBrowser >> title [
-	^ 'Source code Browser'
 ]
 
 { #category : #'as yet unclassified' }

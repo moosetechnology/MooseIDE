@@ -32,6 +32,11 @@ MiFameBrowser class >> runMe [
 ]
 
 { #category : #initialization }
+MiFameBrowser class >> title [
+	^ 'Fame Browser'
+]
+
+{ #category : #initialization }
 MiFameBrowser >> accept: anObject [
 	^ anObject isKindOf: MooseEntity 
 ]
@@ -63,9 +68,4 @@ MiFameBrowser >> initializePresenters [
 		addColumn: (SpStringTableColumn title: 'IsTarget?' evaluated: [ :item | item isTarget ]) yourself;
 		addColumn: (SpStringTableColumn title: 'IsSource?' evaluated: [ :item | item isSource ]) yourself;
 		beResizable
-]
-
-{ #category : #initialization }
-MiFameBrowser >> title [
-	^ 'Fame Browser'
 ]

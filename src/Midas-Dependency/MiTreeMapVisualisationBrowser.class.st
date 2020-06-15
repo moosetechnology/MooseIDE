@@ -31,6 +31,11 @@ MiTreeMapVisualisationBrowser class >> runMe [
 	^ super runMe
 ]
 
+{ #category : #accessing }
+MiTreeMapVisualisationBrowser class >> title [
+	^ 'Tree Map Visualisation Browser'
+]
+
 { #category : #testing }
 MiTreeMapVisualisationBrowser >> accept: anObject [
 	^ anObject isNotNil
@@ -81,9 +86,4 @@ MiTreeMapVisualisationBrowser >> initializePresenters [
 MiTreeMapVisualisationBrowser >> refresh [
 	self diagram refresh.
 	self model run.
-]
-
-{ #category : #accessing }
-MiTreeMapVisualisationBrowser >> title [
-	^ 'Tree Map Visualisation Browser'
 ]

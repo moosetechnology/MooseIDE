@@ -63,6 +63,11 @@ MiFilesBrowser class >> runMe [
 	^ super runMe
 ]
 
+{ #category : #TOREMOVE }
+MiFilesBrowser class >> title [
+	^ 'Files Browser'
+]
+
 { #category : #testing }
 MiFilesBrowser >> accept: anObject [
 	^ (anObject isKindOf: MooseModel) and:
@@ -156,9 +161,4 @@ MiFilesBrowser >> refresh [
 MiFilesBrowser >> selectFileReference: aFileReference [
 	self model fileReference: aFileReference.
 	self refresh
-]
-
-{ #category : #TOREMOVE }
-MiFilesBrowser >> title [
-	^ 'Files Browser'
 ]

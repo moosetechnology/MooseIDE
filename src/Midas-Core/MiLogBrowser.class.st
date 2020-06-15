@@ -44,6 +44,11 @@ MiLogBrowser class >> runMe [
 
 ]
 
+{ #category : #initialization }
+MiLogBrowser class >> title [
+	^ 'Logger Browser'
+]
+
 { #category : #testing }
 MiLogBrowser >> accept: anObject [
 	^ true
@@ -94,11 +99,6 @@ MiLogBrowser >> miSelectedLogEntry [
 MiLogBrowser >> removeLog: aLog [
 	self logger removeLog: aLog.
 	self updateList
-]
-
-{ #category : #initialization }
-MiLogBrowser >> title [
-	^ 'Logger Browser'
 ]
 
 { #category : #actions }

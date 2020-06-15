@@ -34,6 +34,11 @@ MiMooseModelBrowser class >> runMe [
 	^ super runMe
 ]
 
+{ #category : #initialization }
+MiMooseModelBrowser class >> title [
+	^ 'MooseModel Browser'
+]
+
 { #category : #accessing }
 MiMooseModelBrowser >> accept: anObject [
 	^ anObject isKindOf: MooseModel
@@ -140,9 +145,4 @@ MiMooseModelBrowser >> selectedObject [
 { #category : #initialization }
 MiMooseModelBrowser >> setModelPresenterSelection [
 	modelPresenter selectItem: modelPresenter roots first
-]
-
-{ #category : #initialization }
-MiMooseModelBrowser >> title [
-	^ 'MooseModel Browser'
 ]

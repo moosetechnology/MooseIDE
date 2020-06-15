@@ -67,6 +67,11 @@ MiModelRootBrowser class >> runMe [
 	^ super runMe
 ]
 
+{ #category : #initialization }
+MiModelRootBrowser class >> title [
+	^ 'Model root Browser'
+]
+
 { #category : #accessing }
 MiModelRootBrowser >> accept: anObject [
 	^ false
@@ -159,9 +164,4 @@ MiModelRootBrowser >> selectedObject [
 { #category : #initialization }
 MiModelRootBrowser >> setModelPresenterSelection [
 	modelPresenter selectItem: modelPresenter roots first
-]
-
-{ #category : #initialization }
-MiModelRootBrowser >> title [
-	^ 'Model root Browser'
 ]

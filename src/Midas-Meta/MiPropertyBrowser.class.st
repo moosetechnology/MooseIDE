@@ -57,6 +57,11 @@ MiPropertyBrowser class >> runMe [
 ]
 
 { #category : #initialization }
+MiPropertyBrowser class >> title [
+	^ 'Properties Browser'
+]
+
+{ #category : #initialization }
 MiPropertyBrowser >> accept: anObject [
 	^ anObject isMooseEntity
 ]
@@ -89,9 +94,4 @@ MiPropertyBrowser >> initializePresenters [
 						do: [ 'error' ] ]);
 		items: (self model mooseDescription allPrimitiveProperties sorted: #name ascending);
 		beResizable
-]
-
-{ #category : #initialization }
-MiPropertyBrowser >> title [
-	^ 'Properties Browser'
 ]

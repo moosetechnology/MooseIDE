@@ -59,6 +59,11 @@ MiTreeBrowser class >> runMe [
 ]
 
 { #category : #'as yet unclassified' }
+MiTreeBrowser class >> title [
+	^ 'Tree Browser'
+]
+
+{ #category : #'as yet unclassified' }
 MiTreeBrowser >> accept: anObject [
 	^ anObject usesFamixTrait: TEntityMetaLevelDependency
 ]
@@ -104,9 +109,4 @@ MiTreeBrowser >> initializePresenters [
 { #category : #'as yet unclassified' }
 MiTreeBrowser >> refresh [
 	tree roots: { self model root }
-]
-
-{ #category : #'as yet unclassified' }
-MiTreeBrowser >> title [
-	^ 'Tree Browser'
 ]

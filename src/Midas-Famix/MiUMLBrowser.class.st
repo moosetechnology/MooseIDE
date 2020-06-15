@@ -31,6 +31,11 @@ MiUMLBrowser class >> runMe [
 	^ super runMe
 ]
 
+{ #category : #TOREMOVE }
+MiUMLBrowser class >> title [
+	^ 'UML Browser'
+]
+
 { #category : #accessing }
 MiUMLBrowser >> accept: anObject [
 	"can't use isType because it can be a MooseModel (that does not answer isType)"
@@ -68,9 +73,4 @@ MiUMLBrowser >> initializePresenters [
 MiUMLBrowser >> refresh [
 	self diagram refresh.
 	self model run.
-]
-
-{ #category : #TOREMOVE }
-MiUMLBrowser >> title [
-	^ 'UML Browser'
 ]

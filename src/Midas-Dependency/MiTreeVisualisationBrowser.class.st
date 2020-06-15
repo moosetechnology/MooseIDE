@@ -59,6 +59,11 @@ MiTreeVisualisationBrowser class >> runMe [
 ]
 
 { #category : #'as yet unclassified' }
+MiTreeVisualisationBrowser class >> title [
+	^ 'Tree Visualisation Browser'
+]
+
+{ #category : #'as yet unclassified' }
 MiTreeVisualisationBrowser >> accept: anObject [
 	^ anObject isKindOf: MooseObject
 ]
@@ -176,9 +181,4 @@ MiTreeVisualisationBrowser >> refresh [
 			canvas @ RSCanvasController.
 			canvas ];
 		refresh
-]
-
-{ #category : #'as yet unclassified' }
-MiTreeVisualisationBrowser >> title [
-	^ 'Tree Visualisation Browser'
 ]

@@ -31,6 +31,11 @@ MiDependencyBrowser class >> runMe [
 	^ super runMe
 ]
 
+{ #category : #TOREMOVE }
+MiDependencyBrowser class >> title [
+	^ 'Dependency Browser'
+]
+
 { #category : #acccessing }
 MiDependencyBrowser >> accept: anObject [
 	^ anObject isCollection and: [ anObject anySatisfy: [ :a | a usesFamixTrait: TDependencyQueries ] ]
@@ -71,9 +76,4 @@ MiDependencyBrowser >> initializePresenters [
 MiDependencyBrowser >> refresh [
 	self diagram refresh.
 	self model run.
-]
-
-{ #category : #TOREMOVE }
-MiDependencyBrowser >> title [
-	^ 'Dependency Browser'
 ]

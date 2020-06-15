@@ -39,6 +39,11 @@ MiNonUsedMethodBrowser class >> runMe [
 ]
 
 { #category : #TOREMOVE }
+MiNonUsedMethodBrowser class >> title [
+	^ 'Dead methods Browser'
+]
+
+{ #category : #TOREMOVE }
 MiNonUsedMethodBrowser >> accept: anObject [
 	^ anObject usesFamixTrait: FamixTWithMethods
 ]
@@ -122,11 +127,6 @@ MiNonUsedMethodBrowser >> selected [
 { #category : #TOREMOVE }
 MiNonUsedMethodBrowser >> selected: aFamixWithMethod [
 	model selected: aFamixWithMethod
-]
-
-{ #category : #TOREMOVE }
-MiNonUsedMethodBrowser >> title [
-	^ 'Dead methods Browser'
 ]
 
 { #category : #TOREMOVE }
