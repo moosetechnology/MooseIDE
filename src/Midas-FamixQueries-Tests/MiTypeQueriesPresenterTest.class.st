@@ -33,7 +33,7 @@ MiTypeQueriesPresenterTest >> testCheckBoxesChangeQueryTypes [
 ]
 
 { #category : #tests }
-MiTypeQueriesPresenterTest >> testCheckBoxesDisabledSinceFirstDisplay [
+MiTypeQueriesPresenterTest >> testCheckBoxesDisabledWhenOnlyOneChecked [
 	self resetPresenterWithEntities: helper modelExample allModelClasses.
 
 	"Only 1 type in the query, cannot be removed, so the checkBox is disabled"

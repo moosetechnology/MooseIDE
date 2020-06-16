@@ -15,12 +15,12 @@ MiNavigationQueriesPresenter class >> title [
 ]
 
 { #category : #'widgets configuration' }
-MiNavigationQueriesPresenter >> configureCheckBox: checkBox forNavigationAssociation: associationTrait [
-	self setStateOfCheckBox: checkBox association: associationTrait.
+MiNavigationQueriesPresenter >> configureCheckBox: checkBox forNavigationAssociation: associationClass [
+	self setStateOfCheckBox: checkBox association: associationClass.
 	checkBox
-		label: (associationTrait name withoutPrefix: self class traitPrefix);
-		whenActivatedDo: [ self query addAssociation: associationTrait ];
-		whenDeactivatedDo: [ [ self query removeAssociation: associationTrait ]
+		label: associationClass mooseDescription name asString;
+		whenActivatedDo: [ self query addAssociation: associationClass ];
+		whenDeactivatedDo: [ [ self query removeAssociation: associationClass ]
 				on: FQCannotRemoveLastNavigationAssociation
 				do: [ checkBox state: true
 					"Spec does not allow this to work" ] ].
@@ -84,27 +84,21 @@ MiNavigationQueriesPresenter >> setAssociationsCheckBoxesConstraints [
 	checkBoxes
 		do: [ :association | 
 			association
-				whenChangedDo: [ self query associationStrategy associations size == 1
+				whenChangedDo: [ self query associations size == 1
 						ifTrue: [ checkBoxes select: #state thenDo: #disable ]
 						ifFalse: [ checkBoxes select: #state thenDo: #enable ] ] ]
 ]
 
 { #category : #'widgets configuration' }
-MiNavigationQueriesPresenter >> setStateOfCheckBox: checkBox association: associationTrait [
-	checkBox
-		state:
-			(self query associationStrategy associations
-				includes: associationTrait).
-	checkBox
-		enabled:
-			(self query associationStrategy associations size > 1
-				and: [ self query availableAssociations includes: associationTrait ])
+MiNavigationQueriesPresenter >> setStateOfCheckBox: checkBox association: associationClass [
+	checkBox state: (self query associations includes: associationClass).
+	checkBox enabled: self query associations size > 1
 ]
 
 { #category : #update }
 MiNavigationQueriesPresenter >> showAssociationsCheckBoxes [
 	secondParameter := SpDynamicPresentersListBuilder new
-		modelObjects: self query class allPossibleAssociations;
+		modelObjects: self query availableAssociations;
 		presenter: SpCheckBoxPresenter
 			configuredAs: [ :checkBox :associationTrait | 
 			self

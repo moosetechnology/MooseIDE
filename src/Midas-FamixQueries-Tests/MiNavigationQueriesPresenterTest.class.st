@@ -5,32 +5,17 @@ Class {
 }
 
 { #category : #running }
-MiNavigationQueriesPresenterTest >> assertCheckBoxesMatchAllPossibleAssociations [
-	| allAssociations |
-	allAssociations := FQAbstractNavigationAssociations allPossibleAssociations.
-	
-	self assert: self checkBoxes size equals: allAssociations size.
-	
-	self
-		assertCollection:
-			(allAssociations
-				collect: [ :assoc | assoc name withoutPrefix: 'FamixT' ])
-		hasSameElements: (self checkBoxes collect: #label)
-]
-
-{ #category : #running }
 MiNavigationQueriesPresenterTest >> assertCheckBoxesMatchAvailableAssociations [
 	| availableAssociations |
 	availableAssociations := presenter query availableAssociations.
-	
+	self assert: self checkBoxes size equals: availableAssociations size.
 	self
 		assert: (self checkBoxes select: #state) size
 		equals: availableAssociations size.
-	
 	self
 		assertCollection:
 			(availableAssociations
-				collect: [ :assoc | assoc name withoutPrefix: 'FamixT' ])
+				collect: [ :assoc | assoc mooseDescription name asString ])
 		hasSameElements: (self checkBoxes select: #state thenCollect: #label)
 ]
 
@@ -38,14 +23,16 @@ MiNavigationQueriesPresenterTest >> assertCheckBoxesMatchAvailableAssociations [
 MiNavigationQueriesPresenterTest >> assertCheckBoxesMatchQuery [
 	self
 		assertCollection:
-			(presenter query associationStrategy associations
-				collect: [ :type | type name withoutPrefix: 'FamixT' ])
+			(presenter query associations
+				collect: [ :type | type mooseDescription name asString ])
 		hasSameElements: (self checkBoxes select: #state thenCollect: #label).
+		
 	(self radioButtons detect: [ :rb | rb state not ]) click.
+	
 	self
 		assertCollection:
-			(presenter query associationStrategy associations
-				collect: [ :type | type name withoutPrefix: 'FamixT' ])
+			(presenter query associations
+				collect: [ :type | type mooseDescription name asString ])
 		hasSameElements: (self checkBoxes select: #state thenCollect: #label)
 ]
 
@@ -72,7 +59,7 @@ MiNavigationQueriesPresenterTest >> radioButtons [
 ]
 
 { #category : #tests }
-MiNavigationQueriesPresenterTest >> testCheckBoxesDisabledSinceFirstDisplay [
+MiNavigationQueriesPresenterTest >> testCheckBoxesDisabledWhenOnlyOneChecked [
 	self resetPresenterWithEntities: helper methods.
 	(self radioButtons
 		detect: [ :radioButton | radioButton label = 'Local Incoming' ])
@@ -84,42 +71,10 @@ MiNavigationQueriesPresenterTest >> testCheckBoxesDisabledSinceFirstDisplay [
 ]
 
 { #category : #tests }
-MiNavigationQueriesPresenterTest >> testCheckBoxesDisabledWhenUnvailable [
-	| unAvailableAssociations |
-	unAvailableAssociations := FQAbstractNavigationAssociations allPossibleAssociations \ presenter query availableAssociations.
-	
-	self
-		assert: (self checkBoxes reject: #isEnabled) size
-		equals: unAvailableAssociations size.
-	
-	self
-		assertCollection: (self checkBoxes reject: #isEnabled thenCollect: #label)
-		hasSameElements:
-			(unAvailableAssociations
-				collect: [ :association | association name withoutPrefix: 'FamixT' ])
-]
-
-{ #category : #tests }
-MiNavigationQueriesPresenterTest >> testCheckBoxesEnabledOnlyWhenAvailable [
-	| availableAssociations |
-	availableAssociations := presenter query availableAssociations.
-	
-	self
-		assert: (self checkBoxes select: #isEnabled) size
-		equals: availableAssociations size.
-	
-	self
-		assertCollection: (self checkBoxes select: #isEnabled thenCollect: #label)
-		hasSameElements:
-			(availableAssociations
-				collect: [ :association | association name withoutPrefix: 'FamixT' ])
-]
-
-{ #category : #tests }
-MiNavigationQueriesPresenterTest >> testCheckBoxesMatchForOtherDirection [
+MiNavigationQueriesPresenterTest >> testCheckBoxesMatchAssociations [
+	self assertCheckBoxesMatchAvailableAssociations.
+	self assertCheckBoxesMatchQuery.
 	(self radioButtons detect: [ :rb | rb state not ]) click.
-	
-	self assertCheckBoxesMatchAllPossibleAssociations.
 	self assertCheckBoxesMatchAvailableAssociations.
 	self assertCheckBoxesMatchQuery
 ]

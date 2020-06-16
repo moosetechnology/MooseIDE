@@ -37,11 +37,6 @@ MiQueryConfigurationPresenter class >> queryClass [
 	^ self subclassResponsibility
 ]
 
-{ #category : #accessing }
-MiQueryConfigurationPresenter class >> traitPrefix [
-	^ 'FamixT'
-]
-
 { #category : #update }
 MiQueryConfigurationPresenter >> noParameterMessage: aParameterName [
 	^ self instantiate: MiNoPossibleQueryPresenter on: aParameterName
