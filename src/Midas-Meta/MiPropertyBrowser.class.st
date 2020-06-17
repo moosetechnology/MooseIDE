@@ -81,10 +81,15 @@ MiPropertyBrowser >> forEntity: anEntity [
 { #category : #initialization }
 MiPropertyBrowser >> initializePresenters [
 	super initializePresenters.
-		self flag: 'This currently duplicated code from Midas-NewTools. We have to thing about a good way to integrate all browser inside the inspector'.
+	self
+		flag:
+			'This currently duplicated code from Midas-NewTools. We have to thing about a good way to integrate all browser inside the inspector'.
 	properties := self newTable.
 	properties
-		addColumn: (SpStringTableColumn title: 'Properties' evaluated: [ :item | item name ]) yourself;
+		addColumn:
+			(SpStringTableColumn
+				title: 'Properties'
+				evaluated: [ :item | item name ]) yourself;
 		addColumn:
 			(SpStringTableColumn
 				title: 'Value'
@@ -92,6 +97,8 @@ MiPropertyBrowser >> initializePresenters [
 					[ self model mmGetProperty: item ]
 						on: Error
 						do: [ 'error' ] ]);
-		items: (self model mooseDescription allPrimitiveProperties sorted: #name ascending);
+		items:
+			(self model mooseDescription allPrimitiveProperties
+				sorted: #name ascending);
 		beResizable
 ]

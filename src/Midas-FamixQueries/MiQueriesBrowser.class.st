@@ -155,7 +155,8 @@ MiQueriesBrowser >> initializeQueriesTree [
 
 { #category : #initialization }
 MiQueriesBrowser >> initializeQueryCode [
-	queryCode := self newCode text: '"Query code"'
+	queryCode := (self instantiate: MiQueryCodePresenter)
+		text: '"Query code"'
 ]
 
 { #category : #initialization }

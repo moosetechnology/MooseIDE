@@ -101,6 +101,11 @@ MiQueriesCombinationPresenter >> connectPresenters [
 ]
 
 { #category : #initialization }
+MiQueriesCombinationPresenter >> initialize [
+	super initialize.
+]
+
+{ #category : #initialization }
 MiQueriesCombinationPresenter >> initializeDropList [
 	combinationsDroplist := self newDropList
 		items: FQBinaryQuery availableCombinations;

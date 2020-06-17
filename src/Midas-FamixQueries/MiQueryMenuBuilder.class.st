@@ -28,11 +28,11 @@ MiQueryMenuBuilder >> buildAdditionalItemsIn: aMenu [
 				description: 'Use result as root for queries';
 				icon: (self iconNamed: #glamorousRestart);
 				action: [ (MiPropagateCommand forContext: browser) execute ] ];
-		"addItem: [ :item | 
+		addItem: [ :item | 
 			item
 				description: 'Inspect query';
 				icon: (self iconNamed: #glamorousInspect);
-				action: [ browser selectedQuery inspect ] ];"
+				action: [ browser selectedQuery inspect ] ];
 			addItem: [ :item | 
 			item
 				description: 'Save this query';
