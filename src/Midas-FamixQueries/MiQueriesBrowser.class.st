@@ -167,10 +167,12 @@ MiQueriesBrowser >> initializeQueryResult [
 
 { #category : #midas }
 MiQueriesBrowser >> miSelectedItem [
-	self
-		flag: #FQImprove , 'Moose bug: ifEmpty: returns an OrderedCollection'.
-	^ (queryResult miSelectedItem ifEmpty: [ selectedQuery result ])
-		asMooseGroup
+	| selected |
+	selected := queryResult miSelectedItem
+		ifEmpty: [ selectedQuery result ].
+	^ selected size = 1
+		ifTrue: [ selected anyOne ]
+		ifFalse: [ selected ]
 ]
 
 { #category : #action }
