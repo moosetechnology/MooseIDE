@@ -30,8 +30,8 @@ MiQueryCodePresenter >> acceptQueryCode: aCode [
 		on: Error
 		do: [ self informWrongCode.
 			^ self ].
-	query
-		ifNil: [ self informWrongCode.
+	(query isNil or: [ query isClass ])
+		ifTrue: [ self informWrongCode.
 			^ self ].
 	isCreating
 		ifTrue: [ self createNewQuery: query ]
