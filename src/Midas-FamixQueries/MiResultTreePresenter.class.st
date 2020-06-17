@@ -97,6 +97,15 @@ MiResultTreePresenter >> updateForEntities: entities [
 ]
 
 { #category : #update }
+MiResultTreePresenter >> updateForQuery: aQuery [
+	self
+		updateForEntities:
+			(aQuery isValid
+				ifTrue: [ aQuery result ]
+				ifFalse: [ MooseGroup new ])
+]
+
+{ #category : #update }
 MiResultTreePresenter >> updateMenu [
 	self owner class == MiQueriesBrowser
 		ifTrue: [ self contextMenuFromCommandsGroup: [ self rootCommandsGroup ] ]

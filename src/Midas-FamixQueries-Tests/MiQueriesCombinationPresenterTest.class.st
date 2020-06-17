@@ -11,7 +11,7 @@ Class {
 MiQueriesCombinationPresenterTest >> browserWithTwoQueries [
 	| browser |
 	browser := MiQueriesBrowser on: helper classesAndMethods.
-	{(FQBooleanQuery new property: #isAbstract).
+	{(FQBooleanQuery property: #isDead).
 	(FQTypeQuery new type: FamixStClass)}
 		do: [ :parent | 
 			parent beChildOf: browser initialQuery.
@@ -109,7 +109,7 @@ MiQueriesCombinationPresenterTest >> testNonCommutativeQueryLabels [
 			((presenter presenters
 				select: [ :pres | pres class == SpLabelPresenter ])
 				collect: #label)
-		hasSameElements: {'isAbstract' . '\' . 'Classes'}
+		hasSameElements: {'isDead' . '\' . 'Classes'}
 ]
 
 { #category : #tests }

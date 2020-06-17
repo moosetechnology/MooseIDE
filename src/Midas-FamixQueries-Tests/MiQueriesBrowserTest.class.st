@@ -88,15 +88,12 @@ MiQueriesBrowserTest >> testRemoveQuery [
 { #category : #tests }
 MiQueriesBrowserTest >> testSelectQuery [
 	| query1 |
-	query1 := FQBooleanQuery new
-		property: #isAbstract;
+	query1 := (FQBooleanQuery property: #isDead)
 		beChildOf: presenter initialQuery.
 	presenter updateForQuery: query1.
 	presenter
 		updateForQuery: ((FQTypeQuery new type: FamixStClass) beChildOf: query1).
-	
 	presenter selectQuery: query1.
-	
 	self assert: presenter selectedQuery equals: query1.
 	self assert: presenter queriesTree selectedItem equals: query1.
 	self
@@ -120,7 +117,7 @@ MiQueriesBrowserTest >> testUpdateForBinaryQuery [
 { #category : #tests }
 MiQueriesBrowserTest >> testUpdateForQuery [
 	| query |
-	query := (FQBooleanQuery new property: #isAbstract)
+	query := (FQBooleanQuery property: #isDead)
 		beChildOf: presenter initialQuery.
 	presenter updateForQuery: query.
 	self assert: (presenter queries includes: query).
@@ -134,7 +131,7 @@ MiQueriesBrowserTest >> testUpdateForQuery [
 { #category : #running }
 MiQueriesBrowserTest >> unionQuery [
 	| parents union |
-	parents := {(FQBooleanQuery new property: #isAbstract).
+	parents := {(FQBooleanQuery property: #isDead).
 	(FQTypeQuery new type: FamixStClass)}.
 	union := FQUnionQuery new.
 	parents

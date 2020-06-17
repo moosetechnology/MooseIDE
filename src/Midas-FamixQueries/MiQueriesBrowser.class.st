@@ -155,8 +155,7 @@ MiQueriesBrowser >> initializeQueriesTree [
 
 { #category : #initialization }
 MiQueriesBrowser >> initializeQueryCode [
-	queryCode := (self instantiate: MiQueryCodePresenter)
-		text: '"Query code"'
+	queryCode := self instantiate: MiQueryCodePresenter
 ]
 
 { #category : #initialization }
@@ -221,15 +220,8 @@ MiQueriesBrowser >> removeSelectedQuery [
 MiQueriesBrowser >> selectQuery: aQuery [
 	selectedQuery := aQuery.
 	queriesTree selectItem: selectedQuery.
-	queryResult updateForEntities: aQuery result.
-	queryCode
-		text:
-			(aQuery isRootQuery
-				ifTrue: [ '"Query code"' ]
-				ifFalse: [ EFFormatter
-						format:
-							(RBParser
-								parseExpression: (String streamContents: [ :s | aQuery storeOn: s ])) ]).
+	queryResult updateForQuery: aQuery.
+	queryCode updateForQuery: aQuery.
 	self updateQueryToolbar.
 	self update
 ]

@@ -49,19 +49,30 @@ MiQueryCodePresenter >> createNewQuery: aQuery [
 ]
 
 { #category : #initialization }
+MiQueryCodePresenter >> defaultComment [
+	^ '"Query code"'
+]
+
+{ #category : #initialization }
 MiQueryCodePresenter >> initialize [
 	self beCreating.
 	super initialize
 ]
 
 { #category : #initialization }
+MiQueryCodePresenter >> initializeCode [
+	code := self newCode
+		withoutSyntaxHighlight;
+		text: self defaultComment;
+		whenSubmitDo: [ :text | self acceptQueryCode: text ];
+		yourself
+]
+
+{ #category : #initialization }
 MiQueryCodePresenter >> initializePresenters [
 	super initializePresenters.
 	self initializeRadioButtons.
-	code := self newCode
-		withoutSyntaxHighlight;
-		whenSubmitDo: [ :text | self acceptQueryCode: text ];
-		yourself
+	self initializeCode
 ]
 
 { #category : #initialization }
@@ -81,6 +92,13 @@ MiQueryCodePresenter >> modifyQuery: aQuery [
 ]
 
 { #category : #initialization }
-MiQueryCodePresenter >> text: aText [
-	code text: aText
+MiQueryCodePresenter >> updateForQuery: aQuery [
+	code
+		text:
+			(aQuery isRootQuery
+				ifTrue: [ self defaultComment ]
+				ifFalse: [ EFFormatter
+						format:
+							(RBParser
+								parseExpression: (String streamContents: [ :s | aQuery storeOn: s ])) ])
 ]
