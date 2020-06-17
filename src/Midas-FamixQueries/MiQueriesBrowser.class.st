@@ -217,6 +217,16 @@ MiQueriesBrowser >> removeSelectedQuery [
 ]
 
 { #category : #action }
+MiQueriesBrowser >> replaceSelectedQueryWith: aQuery [
+	| newQuery |
+	newQuery := aQuery replace: self selectedQuery.
+	self queries
+		at: (self queries indexOf: self selectedQuery)
+		put: newQuery.
+	self selectQuery: newQuery
+]
+
+{ #category : #action }
 MiQueriesBrowser >> selectQuery: aQuery [
 	selectedQuery := aQuery.
 	queriesTree selectItem: selectedQuery.

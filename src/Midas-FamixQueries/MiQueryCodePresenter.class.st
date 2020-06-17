@@ -88,7 +88,7 @@ MiQueryCodePresenter >> initializeRadioButtons [
 
 { #category : #action }
 MiQueryCodePresenter >> modifyQuery: aQuery [
-	self inform: 'Modifying a query is not working yet'
+	owner replaceSelectedQueryWith: aQuery
 ]
 
 { #category : #initialization }
