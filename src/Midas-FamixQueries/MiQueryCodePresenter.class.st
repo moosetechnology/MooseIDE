@@ -26,7 +26,13 @@ MiQueryCodePresenter class >> defaultSpec [
 { #category : #action }
 MiQueryCodePresenter >> acceptQueryCode: aCode [
 	| query |
-	query := FQAbstractQuery readFrom: aCode.
+	query := [ FQAbstractQuery readFrom: aCode ]
+		on: Error
+		do: [ self informWrongCode.
+			^ self ].
+	query
+		ifNil: [ self informWrongCode.
+			^ self ].
 	isCreating
 		ifTrue: [ self createNewQuery: query ]
 		ifFalse: [ self modifyQuery: query ]
@@ -51,6 +57,16 @@ MiQueryCodePresenter >> createNewQuery: aQuery [
 { #category : #initialization }
 MiQueryCodePresenter >> defaultComment [
 	^ '"Query code"'
+]
+
+{ #category : #action }
+MiQueryCodePresenter >> informWrongCode [
+	UIManager default
+		inform:
+			'This code does not build a query. 
+Click to get current query code.'
+		actionOnClick: [ code
+				text: (String streamContents: [ :s | owner selectedQuery storeOn: s ]) ]
 ]
 
 { #category : #initialization }
