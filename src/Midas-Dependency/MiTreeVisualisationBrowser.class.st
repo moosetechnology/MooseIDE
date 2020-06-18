@@ -46,7 +46,7 @@ MiTreeVisualisationBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	(aBuilder item: #TreeVisualisationBrowser)
 		parent: self toolbarDependencyName;
-		label: 'Tree Visualisation browser';
+		label: self title;
 		order: 2.0;
 		icon: (self iconNamed: #mooseTree);
 		action: [ self runMe ]
@@ -60,7 +60,7 @@ MiTreeVisualisationBrowser class >> runMe [
 
 { #category : #'as yet unclassified' }
 MiTreeVisualisationBrowser class >> title [
-	^ 'Tree Visualisation Browser'
+	^ 'Tree Visualisation'
 ]
 
 { #category : #'as yet unclassified' }

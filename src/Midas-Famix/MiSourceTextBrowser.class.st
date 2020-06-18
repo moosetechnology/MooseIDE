@@ -21,7 +21,7 @@ MiSourceTextBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	(aBuilder item: #SourceTextBrowser)
 		parent: self toolbarFamixName;
-		label: 'SourceText browser';
+		label: self title;
 		icon: (self iconNamed: #mooseSourceText);
 		order: 1.0;
 		action: [ self runMe ]
@@ -35,7 +35,7 @@ MiSourceTextBrowser class >> runMe [
 
 { #category : #'as yet unclassified' }
 MiSourceTextBrowser class >> title [
-	^ 'Source code Browser'
+	^ 'Source code'
 ]
 
 { #category : #'as yet unclassified' }

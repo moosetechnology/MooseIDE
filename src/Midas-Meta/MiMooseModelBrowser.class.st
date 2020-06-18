@@ -22,7 +22,7 @@ MiMooseModelBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	(aBuilder item: #MooseModelBrowser)
 		parent: self toolbarMetaName;
-		label: 'Moose Model browser';
+		label: self title;
 		icon: (self iconNamed: #mooseNavigation);
 		order: 2.0;
 		action: [ self runMe ]
@@ -36,7 +36,7 @@ MiMooseModelBrowser class >> runMe [
 
 { #category : #initialization }
 MiMooseModelBrowser class >> title [
-	^ 'MooseModel Browser'
+	^ 'MooseModel'
 ]
 
 { #category : #accessing }

@@ -30,7 +30,7 @@ MiLogBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	(aBuilder item: #Logger)
 		parent: self toolbarName;
-		label: 'Log browser';
+		label: self title;
 		order: 1.0;
 		action: [ self runMe ]
 ]
@@ -46,7 +46,7 @@ MiLogBrowser class >> runMe [
 
 { #category : #initialization }
 MiLogBrowser class >> title [
-	^ 'Logger Browser'
+	^ 'Logger'
 ]
 
 { #category : #testing }
