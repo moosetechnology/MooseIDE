@@ -109,6 +109,8 @@ MiQueryCodePresenter >> modifyQuery: aQuery [
 
 { #category : #initialization }
 MiQueryCodePresenter >> updateForQuery: aQuery [
+	modifyButton enabled: aQuery isRootQuery not.
+	createButton state: aQuery isRootQuery.
 	code
 		text:
 			(aQuery isRootQuery
