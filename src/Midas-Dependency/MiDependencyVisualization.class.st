@@ -29,6 +29,43 @@ MiDependencyVisualization >> initialize [
 ]
 
 { #category : #running }
+MiDependencyVisualization >> legend [
+	| line |
+	self
+		withLegend: [ :b | 
+			b title: 'Dependency'.
+			b text: 'Number of lines of code' withFadingRamp: {(0 -> 'white') . (1 -> 'black')}.
+			b polymetricWidth: 'number of incoming dependency' height: 'number of outgoing dependency' box: 'an entity'.
+			b
+				leyendDo: [ :s | 
+					s
+						draggable;
+						border:
+							(RSBorder new
+								color: Color red;
+								dashArray: #(4));
+						color: (Color white alpha: 0.8);
+						scaleBy: 0.5;
+						padding: 15 ].
+			b location right middle.
+			line := RSLine new
+				startPoint: 0 @ 0;
+				endPoint: 20 @ 0;
+				color: Color blue yourself.
+			b text: 'Outgoing' withShape: line.
+			line := RSLine new
+				startPoint: 0 @ 0;
+				endPoint: 20 @ 0;
+				color: Color green yourself.
+			b text: 'Incoming' withShape: line.
+			line := RSLine new
+				startPoint: 0 @ 0;
+				endPoint: 20 @ 0;
+				color: Color red yourself.
+			b text: 'Both' withShape: line ]
+]
+
+{ #category : #running }
 MiDependencyVisualization >> run [
 	| nodes shapes nodesOutgoing nodesIncoming high color |
 	nodes := self entities.
@@ -89,5 +126,6 @@ MiDependencyVisualization >> run [
 		widthTo: 1;
 		connectFrom: #yourself toAll: [ :p | ((nodesIncoming at: p) , (nodesOutgoing at: p)) asSet ].
 	RSCircleLayout new on: shapes.
+	self legend.
 	self canvas zoomToFit
 ]

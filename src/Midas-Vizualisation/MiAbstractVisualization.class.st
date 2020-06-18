@@ -55,3 +55,16 @@ MiAbstractVisualization >> theme: anObject [
 MiAbstractVisualization >> unHighlight [
 	highlightedEntities := MooseGroup new
 ]
+
+{ #category : #accessing }
+MiAbstractVisualization >> withLegend: aBlock [
+	| b |
+	b := RSLegend new.
+	b container: self canvas.
+	b defaultTitle fontSize: 12.
+	b defaultLabel fontSize: 10.
+	b defaultBoldText fontSize: 10.
+	aBlock value: b.
+	b onDemand: 'Legend'.
+	b build
+]
