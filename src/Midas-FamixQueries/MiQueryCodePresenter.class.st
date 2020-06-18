@@ -94,6 +94,7 @@ MiQueryCodePresenter >> initializePresenters [
 { #category : #initialization }
 MiQueryCodePresenter >> initializeRadioButtons [
 	modifyButton := self newRadioButton
+		enabled: owner selectedQuery isRootQuery not;
 		label: 'Modify current query';
 		whenActivatedDo: [ self beModifying ].
 	createButton := self newRadioButton
