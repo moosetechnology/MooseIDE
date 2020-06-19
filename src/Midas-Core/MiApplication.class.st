@@ -26,6 +26,16 @@ MiApplication >> browsers [
 	^ self windows collect: #presenter thenSelect: #isMiBrowser
 ]
 
+{ #category : #'as yet unclassified' }
+MiApplication >> freezeBrowsersDuring: aBlock [
+	| activeButtons |
+	activeButtons := self browsers
+		collect: [ :browser | browser activeStateButton ].
+	self browsers do: [ :browser | browser freeze: true ].
+	aBlock
+		ensure: [ activeButtons do: [ :button | button state: true ] ]
+]
+
 { #category : #documentation }
 MiApplication >> globallySelect: anEntity [
 	anEntity ifNotNil: [ self logger globallySelect: anEntity ]

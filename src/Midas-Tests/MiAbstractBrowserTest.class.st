@@ -54,14 +54,17 @@ MiAbstractBrowserTest >> testAllBrowserHaveATitle [
 
 { #category : #tests }
 MiAbstractBrowserTest >> testBrowsersDoNotPropagateWhenFollowing [
-	concreteBrowsers := MiAbstractBrowser allSubclasses
-		reject: #isAbstract
-		thenCollect: #runMe.
-	[ self assertCorrectPropagation: MooseModel new.
-	self assertCorrectPropagation: MooseGroup new.
-	self assertCorrectPropagation: MooseEntity new ]
-		ensure: [ concreteBrowsers
-				do: [ :browserInstance | browserInstance window close ] ]
+	| windows |
+	MiApplication current
+		freezeBrowsersDuring: [ windows := concreteBrowsers
+				collect: [ :browser | 
+					[ browser runMe window ]
+						on: Error
+						do: [ SpWindow new ] ].
+			[ self assertCorrectPropagation: MooseModel new.
+			self assertCorrectPropagation: MooseGroup new.
+			self assertCorrectPropagation: MooseEntity new ]
+				ensure: [ windows do: #close ] ]
 ]
 
 { #category : #tests }

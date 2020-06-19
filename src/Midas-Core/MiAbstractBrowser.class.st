@@ -107,6 +107,13 @@ MiAbstractBrowser >> accept: anObject [
 	^ false
 ]
 
+{ #category : #accessing }
+MiAbstractBrowser >> activeStateButton [
+	^ {buttonFollow.
+	buttonFreeze.
+	buttonHighligh} detect: #state
+]
+
 { #category : #actions }
 MiAbstractBrowser >> canFollow [
 	^ true
