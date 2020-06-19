@@ -115,7 +115,7 @@ MiRoassalQueryPresenter >> buildMenuOn: boxes [
 
 { #category : #'roassal script' }
 MiRoassalQueryPresenter >> buildTreeOn: canvas for: boxes [
-	RSEdgeBuilder line
+	(RSEdgeBuilder new: (RSArrowedLine new color: self theme textColor))
 		canvas: canvas;
 		attachPoint: RSBorderAttachPoint new;
 		shapes: boxes;
