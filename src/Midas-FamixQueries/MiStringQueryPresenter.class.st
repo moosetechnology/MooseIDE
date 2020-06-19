@@ -36,34 +36,12 @@ MiStringQueryPresenter >> comparatorsDropList [
 ]
 
 { #category : #initialization }
-MiStringQueryPresenter >> initializeComparatorsDropList [
-	comparators := self newDropList
-		items: self query class comparators;
-		display: [ :prop | prop asString ];
-		whenSelectedItemChangedDo: [ :prop | 
-			self query comparator: prop.
-			self notifyQueryChanged ];
-		yourself
-]
-
-{ #category : #initialization }
 MiStringQueryPresenter >> initializeSecondParameter [
 	super initializeSecondParameter.
 	query availableProperties
 		ifNotEmpty: [ secondParameter
 				presenterAt: #comparators put: self comparatorsDropList;
 				presenterAt: #valueInput put: self valueInputField ]
-]
-
-{ #category : #initialization }
-MiStringQueryPresenter >> initializeValueInputField [
-	valueInput := self newTextInput
-		placeholder: 'Your pattern';
-		autoAccept: true;
-		whenTextChangedDo: [ :pattern | 
-			self query valueToCompare: pattern.
-			self notifyQueryChanged ];
-		yourself
 ]
 
 { #category : #initialization }

@@ -14,11 +14,6 @@ MiPropertyQueryPresenter class >> addFirstParameterToLayout: defaultLayout [
 	defaultLayout add: #firstParameter width: 0
 ]
 
-{ #category : #'as yet unclassified' }
-MiPropertyQueryPresenter >> comparators [
-	^ secondParameter presenterAt: #comparators
-]
-
 { #category : #initialization }
 MiPropertyQueryPresenter >> initializePresenters [
 	firstParameter := self newNullPresenter hide.
@@ -35,11 +30,6 @@ MiPropertyQueryPresenter >> initializeSecondParameter [
 				yourself ]
 ]
 
-{ #category : #'as yet unclassified' }
-MiPropertyQueryPresenter >> properties [
-	^ secondParameter presenterAt: #properties
-]
-
 { #category : #initialization }
 MiPropertyQueryPresenter >> propertiesDropList [
 	^ self newDropList
@@ -49,9 +39,4 @@ MiPropertyQueryPresenter >> propertiesDropList [
 			self query property: prop.
 			self notifyQueryChanged ];
 		yourself
-]
-
-{ #category : #'as yet unclassified' }
-MiPropertyQueryPresenter >> valueInput [
-	^ secondParameter presenterAt: #valueInput
 ]

@@ -32,11 +32,6 @@ MiQueryConfigurationPresenter class >> defaultSpec [
 	^ defaultLayout
 ]
 
-{ #category : #'as yet unclassified' }
-MiQueryConfigurationPresenter >> firstParameter [
-	^ firstParameter
-]
-
 { #category : #update }
 MiQueryConfigurationPresenter >> noParameterMessage: aParameterName [
 	^ self instantiate: MiNoPossibleQueryPresenter on: aParameterName
@@ -50,11 +45,6 @@ MiQueryConfigurationPresenter >> notifyQueryChanged [
 { #category : #accessing }
 MiQueryConfigurationPresenter >> query [
 	^ query
-]
-
-{ #category : #'as yet unclassified' }
-MiQueryConfigurationPresenter >> secondParameter [
-	^ secondParameter
 ]
 
 { #category : #'accessing model' }
