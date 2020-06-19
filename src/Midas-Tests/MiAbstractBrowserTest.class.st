@@ -9,6 +9,18 @@ Class {
 }
 
 { #category : #tests }
+MiAbstractBrowserTest >> assertAllBrowsersOpenOn: anObject [
+	concreteBrowsers
+		do: [ :browser | 
+			self
+				shouldnt: [ | browserInstance |
+					browserInstance := browser runMe.
+					browserInstance selectEntity: anObject.
+					browserInstance root close ]
+				raise: Error ]
+]
+
+{ #category : #tests }
 MiAbstractBrowserTest >> assertCorrectPropagation: mooseModel [
 	MiApplication current globallySelect: mooseModel.
 	self assert: MiApplication current logger logs size equals: 1.
@@ -19,7 +31,9 @@ MiAbstractBrowserTest >> assertCorrectPropagation: mooseModel [
 MiAbstractBrowserTest >> setUp [
 	super setUp.
 	currentLogs := MiApplication current logger logs.
-	MiApplication current logger logs: OrderedCollection new
+	MiApplication current logger logs: OrderedCollection new.
+	concreteBrowsers := MiAbstractBrowser allSubclasses
+		reject: #isAbstract
 ]
 
 { #category : #running }
@@ -30,8 +44,6 @@ MiAbstractBrowserTest >> tearDown [
 
 { #category : #tests }
 MiAbstractBrowserTest >> testAllBrowserHaveATitle [
-	concreteBrowsers := MiAbstractBrowser allSubclasses
-		reject: #isAbstract.
 	concreteBrowsers
 		do: [ :browser | 
 			| browserInstance |
@@ -54,7 +66,6 @@ MiAbstractBrowserTest >> testBrowsersDoNotPropagateWhenFollowing [
 
 { #category : #tests }
 MiAbstractBrowserTest >> testCanOpenAllBrowser [
-	concreteBrowsers := MiAbstractBrowser allSubclasses reject: #isAbstract.
 	concreteBrowsers
 		do: [ :browser | 
 			self
@@ -66,61 +77,20 @@ MiAbstractBrowserTest >> testCanOpenAllBrowser [
 
 { #category : #tests }
 MiAbstractBrowserTest >> testCanOpenAllBrowserWithAnObject [
-	| objectInstance |
-	objectInstance := Object new.
-	concreteBrowsers := MiAbstractBrowser allSubclasses reject: #isAbstract.
-	concreteBrowsers
-		do: [ :browser | 
-			self
-				shouldnt: [ | browserInstance |
-					browserInstance := browser runMe.
-					browserInstance selectEntity: objectInstance.
-					browserInstance root close ]
-				raise: Error ]
+	self assertAllBrowsersOpenOn: Object new
 ]
 
 { #category : #tests }
 MiAbstractBrowserTest >> testCanOpenAllBrowserWithEmptyMooseGroup [
-	| mooseGroup |
-	mooseGroup := MooseGroup new.
-	concreteBrowsers := MiAbstractBrowser allSubclasses reject: #isAbstract.
-	concreteBrowsers
-		do: [ :browser |
-			self
-				shouldnt: [ | browserInstance |
-					browserInstance := browser runMe.
-					browserInstance selectEntity: mooseGroup.
-					browserInstance root close ]
-				raise: Error ]
+	self assertAllBrowsersOpenOn: MooseGroup new
 ]
 
 { #category : #tests }
 MiAbstractBrowserTest >> testCanOpenAllBrowserWithMooseEntity [
-	| entity |
-	entity := MooseEntity new.
-	concreteBrowsers := MiAbstractBrowser allSubclasses reject: #isAbstract.
-	concreteBrowsers
-		do: [ :browser | 
-			self
-				shouldnt: [ | browserInstance |
-					browserInstance := browser runMe.
-					browserInstance selectEntity: entity.
-					browserInstance root close ]
-				raise: Error ]
+	self assertAllBrowsersOpenOn: MooseEntity new
 ]
 
 { #category : #tests }
 MiAbstractBrowserTest >> testCanOpenAllBrowserWithMooseGroup [
-	| mooseGroup |
-	mooseGroup := MooseGroup with: MooseEntity new.
-	concreteBrowsers := MiAbstractBrowser allSubclasses
-		reject: #isAbstract.
-	concreteBrowsers
-		do: [ :browser | 
-			self
-				shouldnt: [ | browserInstance |
-					browserInstance := browser runMe.
-					browserInstance selectEntity: mooseGroup.
-					browserInstance root close ]
-				raise: Error ]
+	self assertAllBrowsersOpenOn: (MooseGroup with: MooseEntity new)
 ]
