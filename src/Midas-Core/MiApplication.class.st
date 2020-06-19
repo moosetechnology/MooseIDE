@@ -28,7 +28,7 @@ MiApplication >> browsers [
 
 { #category : #documentation }
 MiApplication >> globallySelect: anEntity [
-	self logger globallySelect: anEntity
+	anEntity ifNotNil: [ self logger globallySelect: anEntity ]
 ]
 
 { #category : #documentation }
