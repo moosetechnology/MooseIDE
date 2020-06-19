@@ -1,11 +1,11 @@
 Class {
-	#name : #MiScopeQueriesPresenter,
+	#name : #MiScopeQueryPresenter,
 	#superclass : #MiQueryConfigurationPresenter,
-	#category : #'Midas-FamixQueries-Presenters'
+	#category : #'Midas-FamixQueries-QueriesConfiguration'
 }
 
 { #category : #specs }
-MiScopeQueriesPresenter class >> addSecondParameterToLayout: defaultLayout [
+MiScopeQueryPresenter class >> addSecondParameterToLayout: defaultLayout [
 	defaultLayout
 		add:
 			(SpBoxLayout newVertical
@@ -16,18 +16,13 @@ MiScopeQueriesPresenter class >> addSecondParameterToLayout: defaultLayout [
 				yourself)
 ]
 
-{ #category : #running }
-MiScopeQueriesPresenter class >> queryClass [
-	^ FQScopeQuery
-]
-
 { #category : #specs }
-MiScopeQueriesPresenter class >> title [
+MiScopeQueryPresenter class >> title [
 	^ 'Scope Query'
 ]
 
 { #category : #'widgets configuration' }
-MiScopeQueriesPresenter >> configureRadioButton: radioButton forScopeDirection: direction [
+MiScopeQueryPresenter >> configureRadioButton: radioButton forScopeDirection: direction [
 	radioButton
 		label: direction label;
 		whenActivatedDo: [ self query resetAndChangeDirection: direction.
@@ -36,18 +31,18 @@ MiScopeQueriesPresenter >> configureRadioButton: radioButton forScopeDirection: 
 ]
 
 { #category : #initialization }
-MiScopeQueriesPresenter >> initializePresenters [
+MiScopeQueryPresenter >> initializePresenters [
 	self intializeDirectionRadioButtons.
 	self initializeScopesDropList
 ]
 
 { #category : #initialization }
-MiScopeQueriesPresenter >> initializeScopesDropList [
+MiScopeQueryPresenter >> initializeScopesDropList [
 	self updateAccordingToDirection
 ]
 
 { #category : #initialization }
-MiScopeQueriesPresenter >> intializeDirectionRadioButtons [
+MiScopeQueryPresenter >> intializeDirectionRadioButtons [
 	firstParameter := SpDynamicPresentersListBuilder new
 		modelObjects: self query directionStrategies;
 		presenter: SpRadioButtonPresenter
@@ -61,7 +56,7 @@ MiScopeQueriesPresenter >> intializeDirectionRadioButtons [
 ]
 
 { #category : #'widgets configuration' }
-MiScopeQueriesPresenter >> scopesDropList [
+MiScopeQueryPresenter >> scopesDropList [
 	^ self newDropList
 		items: self query availableScopes;
 		display: [ :item | item mooseDescription name asEnglishPlural ];
@@ -73,14 +68,14 @@ MiScopeQueriesPresenter >> scopesDropList [
 ]
 
 { #category : #initialization }
-MiScopeQueriesPresenter >> selectCurrentQueryDirection [
+MiScopeQueryPresenter >> selectCurrentQueryDirection [
 	(firstParameter presenters
 		detect: [ :radioButton | radioButton label = self query directionStrategy label ])
 		state: true
 ]
 
 { #category : #update }
-MiScopeQueriesPresenter >> updateAccordingToDirection [
+MiScopeQueryPresenter >> updateAccordingToDirection [
 	secondParameter := self query availableScopes
 		ifNotEmpty: [ self scopesDropList ]
 		ifEmpty: [ self noParameterMessage: 'scope' ].

@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'helper'
 	],
-	#category : #'Midas-FamixQueries-Tests-Presenters'
+	#category : #'Midas-FamixQueries-Tests-QueriesConfiguration'
 }
 
 { #category : #testing }
@@ -69,13 +69,13 @@ MiQueryConfigurationPresenterTest >> testFirstParameter [
 { #category : #tests }
 MiQueryConfigurationPresenterTest >> testImpossibleQueryInitialization [
 	self resetPresenterWithEntities: helper noEntities.
-	self assert: (presenter query isKindOf: self queryClass).
+	self assert: presenter query class identicalTo: self queryClass.
 	self deny: presenter query isValid
 ]
 
 { #category : #tests }
 MiQueryConfigurationPresenterTest >> testNormalQueryInitialization [
-	self assert: (presenter query isKindOf: self queryClass).
+	self assert: presenter query class identicalTo: self queryClass.
 	self assert: presenter query isValid
 ]
 

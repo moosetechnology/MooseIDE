@@ -1,31 +1,26 @@
 Class {
-	#name : #MiTypeQueriesPresenter,
+	#name : #MiTypeQueryPresenter,
 	#superclass : #MiQueryConfigurationPresenter,
-	#category : #'Midas-FamixQueries-Presenters'
+	#category : #'Midas-FamixQueries-QueriesConfiguration'
 }
 
 { #category : #specs }
-MiTypeQueriesPresenter class >> addFirstParameterToLayout: defaultLayout [
+MiTypeQueryPresenter class >> addFirstParameterToLayout: defaultLayout [
 	defaultLayout add: #firstParameter width: 0
 ]
 
 { #category : #specs }
-MiTypeQueriesPresenter class >> maximumCheckBoxesPerColumn [
+MiTypeQueryPresenter class >> maximumCheckBoxesPerColumn [
 	^ 6
 ]
 
-{ #category : #running }
-MiTypeQueriesPresenter class >> queryClass [
-	^ FQTypeQuery
-]
-
 { #category : #specs }
-MiTypeQueriesPresenter class >> title [
+MiTypeQueryPresenter class >> title [
 	^ 'Type Query'
 ]
 
 { #category : #'widgets configuration' }
-MiTypeQueriesPresenter >> configureTypeCheckBox: checkBox forType: type [
+MiTypeQueryPresenter >> configureTypeCheckBox: checkBox forType: type [
 	checkBox
 		state: (self query types includes: type);
 		enabled: self query types size > 1;
@@ -40,25 +35,25 @@ MiTypeQueriesPresenter >> configureTypeCheckBox: checkBox forType: type [
 ]
 
 { #category : #initialization }
-MiTypeQueriesPresenter >> initializePresenters [
+MiTypeQueryPresenter >> initializePresenters [
 	firstParameter := self newNullPresenter hide.
 	self initializeTypeCheckBoxes
 ]
 
 { #category : #initialization }
-MiTypeQueriesPresenter >> initializeTypeCheckBoxes [
+MiTypeQueryPresenter >> initializeTypeCheckBoxes [
 	self query availableTypes
 		ifEmpty: [ secondParameter := self noParameterMessage: 'type' ]
 		ifNotEmpty: [ self showTypesCheckBoxes ]
 ]
 
 { #category : #'widgets configuration' }
-MiTypeQueriesPresenter >> labelFor: type [
+MiTypeQueryPresenter >> labelFor: type [
 	^ type mooseDescription name asEnglishPlural
 ]
 
 { #category : #'widgets configuration' }
-MiTypeQueriesPresenter >> setTypeCheckBoxesConstraints [
+MiTypeQueryPresenter >> setTypeCheckBoxesConstraints [
 	| checkBoxes |
 	"Dynamic layout involves NullPresenters, they will not answer to #enable, #disable"
 	checkBoxes := secondParameter presenters
@@ -74,7 +69,7 @@ MiTypeQueriesPresenter >> setTypeCheckBoxesConstraints [
 ]
 
 { #category : #'widgets configuration' }
-MiTypeQueriesPresenter >> showTypesCheckBoxes [
+MiTypeQueryPresenter >> showTypesCheckBoxes [
 	secondParameter := SpDynamicPresentersListBuilder new
 		modelObjects: self query availableTypes;
 		presenter: SpCheckBoxPresenter
@@ -86,19 +81,19 @@ MiTypeQueriesPresenter >> showTypesCheckBoxes [
 ]
 
 { #category : #'widgets configuration' }
-MiTypeQueriesPresenter >> typeCheckBoxesLayout [
+MiTypeQueryPresenter >> typeCheckBoxesLayout [
 	^ SpDynamicTopToBottomColumnsLayout
 		columns: (self query types size min: self class maximumCheckBoxesPerColumn)
 ]
 
 { #category : #update }
-MiTypeQueriesPresenter >> updateForQuery: aQuery [
+MiTypeQueryPresenter >> updateForQuery: aQuery [
 	super updateForQuery: aQuery.
 	self updateTypeCheckBoxesForTypes: aQuery types
 ]
 
 { #category : #update }
-MiTypeQueriesPresenter >> updateTypeCheckBoxesForTypes: types [
+MiTypeQueryPresenter >> updateTypeCheckBoxesForTypes: types [
 	| checkBoxesToTick |
 	checkBoxesToTick := firstParameter presenters
 		select: [ :checkBox | 

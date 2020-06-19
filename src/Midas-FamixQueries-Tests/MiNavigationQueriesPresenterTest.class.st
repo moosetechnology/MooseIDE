@@ -1,7 +1,7 @@
 Class {
 	#name : #MiNavigationQueriesPresenterTest,
 	#superclass : #MiQueryConfigurationPresenterTest,
-	#category : #'Midas-FamixQueries-Tests-Presenters'
+	#category : #'Midas-FamixQueries-Tests-QueriesConfiguration'
 }
 
 { #category : #running }
@@ -44,7 +44,7 @@ MiNavigationQueriesPresenterTest >> checkBoxes [
 
 { #category : #running }
 MiNavigationQueriesPresenterTest >> classToTest [
-	^ MiNavigationQueriesPresenter
+	^ MiNavigationQueryPresenter
 ]
 
 { #category : #running }

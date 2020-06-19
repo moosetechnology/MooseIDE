@@ -1,16 +1,16 @@
 Class {
-	#name : #MiComparativeQueryParametersPresenterTest,
-	#superclass : #MiPropertyQueryParametersPresenterTest,
-	#category : #'Midas-FamixQueries-Tests-SubPresenters'
+	#name : #MiComparativeQueryPresenterTest,
+	#superclass : #MiPropertyQueryPresenterTest,
+	#category : #'Midas-FamixQueries-Tests-QueriesConfiguration'
 }
 
 { #category : #testing }
-MiComparativeQueryParametersPresenterTest class >> isAbstract [
-	^ self == MiComparativeQueryParametersPresenterTest
+MiComparativeQueryPresenterTest class >> isAbstract [
+	^ self == MiComparativeQueryPresenterTest
 ]
 
 { #category : #tests }
-MiComparativeQueryParametersPresenterTest >> testComparatorsDropList [
+MiComparativeQueryPresenterTest >> assertComparatorsDropList [
 	self
 		assert: presenter comparators class
 		identicalTo: SpDropListPresenter.
@@ -20,7 +20,14 @@ MiComparativeQueryParametersPresenterTest >> testComparatorsDropList [
 ]
 
 { #category : #tests }
-MiComparativeQueryParametersPresenterTest >> testMatchesQuery [
+MiComparativeQueryPresenterTest >> assertValueInput [
+	self
+		assert: presenter valueInput class
+		identicalTo: self valueInputClass
+]
+
+{ #category : #tests }
+MiComparativeQueryPresenterTest >> testMatchesQuery [
 	super testMatchesQuery.
 	presenter comparators selectIndex: 2.
 	self
@@ -33,8 +40,9 @@ MiComparativeQueryParametersPresenterTest >> testMatchesQuery [
 ]
 
 { #category : #tests }
-MiComparativeQueryParametersPresenterTest >> testQueryValidity [
+MiComparativeQueryPresenterTest >> testQueryValidity [
 	super testQueryValidity.
+	self resetPresenterWithEntities: helper classesAndMethods.
 	presenter comparators selectIndex: 2.
 	self assert: presenter query isValid.
 	presenter valueInput text: self valueInput.
@@ -42,7 +50,14 @@ MiComparativeQueryParametersPresenterTest >> testQueryValidity [
 ]
 
 { #category : #tests }
-MiComparativeQueryParametersPresenterTest >> testUpdateCreationBrowser [
+MiComparativeQueryPresenterTest >> testSecondParameter [
+	super testSecondParameter.
+	self assertComparatorsDropList.
+	self assertValueInput
+]
+
+{ #category : #tests }
+MiComparativeQueryPresenterTest >> testUpdateCreationBrowser [
 	super testUpdateCreationBrowser.
 	presenter comparators selectIndex: 2.
 	self assertCreationPresenterWasUpdated.
@@ -50,19 +65,12 @@ MiComparativeQueryParametersPresenterTest >> testUpdateCreationBrowser [
 	self assertCreationPresenterWasUpdated
 ]
 
-{ #category : #tests }
-MiComparativeQueryParametersPresenterTest >> testValueInput [
-	self
-		assert: presenter valueInput class
-		identicalTo: self valueInputClass
-]
-
 { #category : #running }
-MiComparativeQueryParametersPresenterTest >> valueInput [
+MiComparativeQueryPresenterTest >> valueInput [
 	^ self subclassResponsibility
 ]
 
 { #category : #running }
-MiComparativeQueryParametersPresenterTest >> valueInputClass [
+MiComparativeQueryPresenterTest >> valueInputClass [
 	^ self subclassResponsibility
 ]

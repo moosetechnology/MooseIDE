@@ -1,21 +1,16 @@
 Class {
-	#name : #MiNavigationQueriesPresenter,
+	#name : #MiNavigationQueryPresenter,
 	#superclass : #MiQueryConfigurationPresenter,
-	#category : #'Midas-FamixQueries-Presenters'
+	#category : #'Midas-FamixQueries-QueriesConfiguration'
 }
 
-{ #category : #running }
-MiNavigationQueriesPresenter class >> queryClass [
-	^ FQNavigationQuery
-]
-
 { #category : #specs }
-MiNavigationQueriesPresenter class >> title [
+MiNavigationQueryPresenter class >> title [
 	^ 'Navigation Query'
 ]
 
 { #category : #'widgets configuration' }
-MiNavigationQueriesPresenter >> configureCheckBox: checkBox forNavigationAssociation: associationClass [
+MiNavigationQueryPresenter >> configureCheckBox: checkBox forNavigationAssociation: associationClass [
 	self setStateOfCheckBox: checkBox association: associationClass.
 	checkBox
 		label: associationClass mooseDescription name asString;
@@ -30,7 +25,7 @@ MiNavigationQueriesPresenter >> configureCheckBox: checkBox forNavigationAssocia
 ]
 
 { #category : #'widgets configuration' }
-MiNavigationQueriesPresenter >> configureRadioButton: radioButton forNavigationDirection: direction [
+MiNavigationQueryPresenter >> configureRadioButton: radioButton forNavigationDirection: direction [
 	radioButton
 		state: self query directionStrategy == direction;
 		label: direction label;
@@ -40,12 +35,12 @@ MiNavigationQueriesPresenter >> configureRadioButton: radioButton forNavigationD
 ]
 
 { #category : #initialization }
-MiNavigationQueriesPresenter >> initializeAssociationsCheckBoxes [
+MiNavigationQueryPresenter >> initializeAssociationsCheckBoxes [
 	self updateAccordingToDirection
 ]
 
 { #category : #initialization }
-MiNavigationQueriesPresenter >> initializeDirectionRadioButtons [
+MiNavigationQueryPresenter >> initializeDirectionRadioButtons [
 	firstParameter := SpDynamicPresentersListBuilder new
 		modelObjects: self query class directionStrategies;
 		presenter: SpRadioButtonPresenter
@@ -60,13 +55,13 @@ MiNavigationQueriesPresenter >> initializeDirectionRadioButtons [
 ]
 
 { #category : #initialization }
-MiNavigationQueriesPresenter >> initializePresenters [
+MiNavigationQueryPresenter >> initializePresenters [
 	self initializeDirectionRadioButtons.
 	self initializeAssociationsCheckBoxes
 ]
 
 { #category : #'widgets configuration' }
-MiNavigationQueriesPresenter >> selectCurrentQueryDirection [
+MiNavigationQueryPresenter >> selectCurrentQueryDirection [
 	(firstParameter presenters
 		detect:
 			[ :radioButton | radioButton label = self query directionStrategy label ])
@@ -74,7 +69,7 @@ MiNavigationQueriesPresenter >> selectCurrentQueryDirection [
 ]
 
 { #category : #initialization }
-MiNavigationQueriesPresenter >> setAssociationsCheckBoxesConstraints [
+MiNavigationQueryPresenter >> setAssociationsCheckBoxesConstraints [
 	| checkBoxes |
 	"Dynamic layout involves NullPresenters, they will not answer to #enable, #disable"
 	checkBoxes := secondParameter presenters
@@ -90,13 +85,13 @@ MiNavigationQueriesPresenter >> setAssociationsCheckBoxesConstraints [
 ]
 
 { #category : #'widgets configuration' }
-MiNavigationQueriesPresenter >> setStateOfCheckBox: checkBox association: associationClass [
+MiNavigationQueryPresenter >> setStateOfCheckBox: checkBox association: associationClass [
 	checkBox state: (self query associations includes: associationClass).
 	checkBox enabled: self query associations size > 1
 ]
 
 { #category : #update }
-MiNavigationQueriesPresenter >> showAssociationsCheckBoxes [
+MiNavigationQueryPresenter >> showAssociationsCheckBoxes [
 	secondParameter := SpDynamicPresentersListBuilder new
 		modelObjects: self query availableAssociations;
 		presenter: SpCheckBoxPresenter
@@ -110,7 +105,7 @@ MiNavigationQueriesPresenter >> showAssociationsCheckBoxes [
 ]
 
 { #category : #update }
-MiNavigationQueriesPresenter >> updateAccordingToDirection [
+MiNavigationQueryPresenter >> updateAccordingToDirection [
 	self query availableAssociations
 		ifEmpty: [ secondParameter := self noParameterMessage: 'association' ]
 		ifNotEmpty: [ self showAssociationsCheckBoxes ].

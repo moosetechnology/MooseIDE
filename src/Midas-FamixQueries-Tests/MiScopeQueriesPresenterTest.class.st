@@ -1,12 +1,12 @@
 Class {
 	#name : #MiScopeQueriesPresenterTest,
 	#superclass : #MiQueryConfigurationPresenterTest,
-	#category : #'Midas-FamixQueries-Tests-Presenters'
+	#category : #'Midas-FamixQueries-Tests-QueriesConfiguration'
 }
 
 { #category : #running }
 MiScopeQueriesPresenterTest >> classToTest [
-	^ MiScopeQueriesPresenter
+	^ MiScopeQueryPresenter
 ]
 
 { #category : #running }

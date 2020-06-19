@@ -6,7 +6,7 @@ Class {
 		'firstParameter',
 		'secondParameter'
 	],
-	#category : #'Midas-FamixQueries-Presenters'
+	#category : #'Midas-FamixQueries-QueriesConfiguration'
 }
 
 { #category : #specs }
@@ -32,9 +32,9 @@ MiQueryConfigurationPresenter class >> defaultSpec [
 	^ defaultLayout
 ]
 
-{ #category : #running }
-MiQueryConfigurationPresenter class >> queryClass [
-	^ self subclassResponsibility
+{ #category : #'as yet unclassified' }
+MiQueryConfigurationPresenter >> firstParameter [
+	^ firstParameter
 ]
 
 { #category : #update }
@@ -50,6 +50,11 @@ MiQueryConfigurationPresenter >> notifyQueryChanged [
 { #category : #accessing }
 MiQueryConfigurationPresenter >> query [
 	^ query
+]
+
+{ #category : #'as yet unclassified' }
+MiQueryConfigurationPresenter >> secondParameter [
+	^ secondParameter
 ]
 
 { #category : #'accessing model' }

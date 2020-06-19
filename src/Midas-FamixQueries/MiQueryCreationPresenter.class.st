@@ -55,8 +55,8 @@ MiQueryCreationPresenter class >> queryConfigurationLayout [
 
 { #category : #'query configuration presenters' }
 MiQueryCreationPresenter class >> queryTypes [
-	^ (FQUnaryQuery subclasses select: #canBeConfigured)
-		sort: #name ascending
+	^ (FQUnaryQuery allSubclasses select: #canBeConfigured)
+		"sort: #name ascending"
 ]
 
 { #category : #specs }
@@ -66,42 +66,42 @@ MiQueryCreationPresenter class >> title [
 
 { #category : #'query configuration' }
 MiQueryCreationPresenter >> configureBooleanQuery: aQuery [
-	queryConfigurationPresenter := MiPropertyQueriesPresenter
+	queryConfigurationPresenter := MiBooleanQueryPresenter
 		owner: self
 		on: aQuery
 ]
 
 { #category : #'query configuration' }
 MiQueryCreationPresenter >> configureNavigationQuery: aQuery [
-	queryConfigurationPresenter := MiNavigationQueriesPresenter
+	queryConfigurationPresenter := MiNavigationQueryPresenter
 		owner: self
 		on: aQuery
 ]
 
 { #category : #'query configuration' }
 MiQueryCreationPresenter >> configureNumericQuery: aQuery [
-	queryConfigurationPresenter := MiPropertyQueriesPresenter
+	queryConfigurationPresenter := MiNumericQueryPresenter
 		owner: self
 		on: aQuery
 ]
 
 { #category : #'query configuration' }
 MiQueryCreationPresenter >> configureScopeQuery: aQuery [
-	queryConfigurationPresenter := MiScopeQueriesPresenter
+	queryConfigurationPresenter := MiScopeQueryPresenter
 		owner: self
 		on: aQuery
 ]
 
 { #category : #'query configuration' }
 MiQueryCreationPresenter >> configureStringQuery: aQuery [
-	queryConfigurationPresenter := MiPropertyQueriesPresenter
+	queryConfigurationPresenter := MiStringQueryPresenter
 		owner: self
 		on: aQuery
 ]
 
 { #category : #'query configuration' }
 MiQueryCreationPresenter >> configureTypeQuery: aQuery [
-	queryConfigurationPresenter := MiTypeQueriesPresenter
+	queryConfigurationPresenter := MiTypeQueryPresenter
 		owner: self
 		on: aQuery
 ]

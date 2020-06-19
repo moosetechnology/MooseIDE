@@ -1,7 +1,7 @@
 Class {
 	#name : #MiTypeQueriesPresenterTest,
 	#superclass : #MiQueryConfigurationPresenterTest,
-	#category : #'Midas-FamixQueries-Tests-Presenters'
+	#category : #'Midas-FamixQueries-Tests-QueriesConfiguration'
 }
 
 { #category : #accessing }
@@ -12,7 +12,7 @@ MiTypeQueriesPresenterTest >> checkBoxes [
 
 { #category : #running }
 MiTypeQueriesPresenterTest >> classToTest [
-	^ MiTypeQueriesPresenter
+	^ MiTypeQueryPresenter
 ]
 
 { #category : #running }

@@ -92,11 +92,7 @@ MiQueryCreationPresenterTest >> testQueryTypesDropList [
 		identicalTo: SpDropListPresenter.
 	self
 		assertCollection: presenter queryTypesDropList listItems
-		hasSameElements:
-			{FQNavigationQuery.
-			FQPropertyQuery.
-			FQScopeQuery.
-			FQTypeQuery}.
+		hasSameElements: (FQUnaryQuery allSubclasses select: #canBeConfigured).
 	presenter queryTypesDropList listItems
 		do: [ :queryClass | 
 			presenter queryTypesDropList selectItem: queryClass.
