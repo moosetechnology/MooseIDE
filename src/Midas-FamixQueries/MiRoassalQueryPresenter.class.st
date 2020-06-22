@@ -12,10 +12,10 @@ Class {
 
 { #category : #'boxes configuration' }
 MiRoassalQueryPresenter >> adaptName: aString [
-	self flag: #FQImprove.
-	^ aString
-		copyReplaceAll: Character space asString
-		with: Character cr asString
+	^ Character cr
+		join:
+			(aString substrings
+				collect: [ :s | (s withoutPrefix: 'numberOf') truncateWithElipsisTo: 15 ])
 ]
 
 { #category : #'roassal script' }
@@ -69,7 +69,21 @@ MiRoassalQueryPresenter >> boxLabel [
 { #category : #'boxes configuration' }
 MiRoassalQueryPresenter >> boxPopup [
 	| label |
-	label := RSPopup new text: [ :model | model result details ].
+	label := RSPopup new
+		text: [ :model | 
+			String
+				streamContents: [ :s | 
+					| firstWord complement |
+					firstWord := model name substrings first.
+					s
+						<< firstWord;
+						cr.
+					complement := model name withoutPrefix: firstWord.
+					complement
+						ifNotEmpty: [ s
+								<< complement;
+								cr ].
+					s << model result details ] ].
 	^ label
 ]
 
