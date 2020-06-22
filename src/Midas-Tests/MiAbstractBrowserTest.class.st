@@ -21,8 +21,20 @@ MiAbstractBrowserTest >> assertAllBrowsersOpenOn: anObject [
 ]
 
 { #category : #tests }
-MiAbstractBrowserTest >> assertCorrectPropagation: mooseModel [
-	MiApplication current globallySelect: mooseModel.
+MiAbstractBrowserTest >> assertCorrectPropagation [
+
+	"Propagate a mooseModel"
+	MiApplication current globallySelect: MooseModel new.
+	self assert: MiApplication current logger logs size equals: 1.
+	MiApplication current logger clean.
+
+	"Propagate a mooseGroup"
+	MiApplication current globallySelect: MooseGroup new.
+	self assert: MiApplication current logger logs size equals: 1.
+	MiApplication current logger clean.
+
+	"Propagate a mooseEntity"
+	MiApplication current globallySelect: MooseEntity new.
 	self assert: MiApplication current logger logs size equals: 1.
 	MiApplication current logger clean
 ]
@@ -53,18 +65,17 @@ MiAbstractBrowserTest >> testAllBrowserHaveATitle [
 ]
 
 { #category : #tests }
-MiAbstractBrowserTest >> testBrowsersDoNotPropagateWhenFollowing [
-	| windows |
+MiAbstractBrowserTest >> testBrowsersDoNotPropagateWhenReceiving [
+	| browsers |
 	MiApplication current
-		freezeBrowsersDuring: [ windows := concreteBrowsers
-				collect: [ :browser | 
-					[ browser runMe window ]
-						on: Error
-						do: [ SpWindow new ] ].
-			[ self assertCorrectPropagation: MooseModel new.
-			self assertCorrectPropagation: MooseGroup new.
-			self assertCorrectPropagation: MooseEntity new ]
-				ensure: [ windows do: #close ] ]
+		freezeBrowsersDuring: [ browsers := concreteBrowsers collect: [ :browser | browser runMe ].
+			[ browsers do: #follow.
+			self assertCorrectPropagation.
+			browsers do: #freeze.
+			self assertCorrectPropagation.
+			browsers do: #highlight.
+			self assertCorrectPropagation ]
+				ensure: [ browsers do: [ :browser | browser window close ] ] ]
 ]
 
 { #category : #tests }
