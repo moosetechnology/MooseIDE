@@ -19,7 +19,7 @@ Class {
 		'toSelect',
 		'buttonFreeze',
 		'buttonFollow',
-		'buttonHighligh',
+		'buttonHighlight',
 		'buttonPropagate',
 		'menu',
 		'buttonInspect'
@@ -40,7 +40,7 @@ MiAbstractBrowser class >> defaultSpec [
 			(SpBoxLayout newHorizontal
 				add: #buttonFollow width: 65;
 				add: #buttonFreeze width: 60;
-				add: #buttonHighligh width: 80;
+				add: #buttonHighlight width: 80;
 				add: SpBoxLayout newHorizontal expand: true;
 				add: #buttonInspect expand: false;
 				add: #buttonPropagate expand: false;
@@ -111,7 +111,7 @@ MiAbstractBrowser >> accept: anObject [
 MiAbstractBrowser >> activeStateButton [
 	^ {buttonFollow.
 	buttonFreeze.
-	buttonHighligh} detect: #state
+	buttonHighlight} detect: #state
 ]
 
 { #category : #actions }
@@ -176,11 +176,11 @@ MiAbstractBrowser >> initializePresenters [
 		label: 'Follow';
 		enabled: self canFollow ;
 		yourself.
-	buttonHighligh := self newRadioButton
+	buttonHighlight := self newRadioButton
 		label: 'Highlight';
 		enabled: self canHighlight ;
 		yourself.
-	buttonFollow associatedRadioButtons: {buttonFreeze . buttonFollow . buttonHighligh}.
+	buttonFollow associatedRadioButtons: {buttonFreeze . buttonFollow . buttonHighlight}.
 	self freeze: self canFollow not.
 	
 	buttonPropagate := self newButton
@@ -217,7 +217,7 @@ MiAbstractBrowser >> isFreeze [
 
 { #category : #actions }
 MiAbstractBrowser >> isHighlight [
-	^ buttonHighligh state
+	^ buttonHighlight state
 ]
 
 { #category : #testing }

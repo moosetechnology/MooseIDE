@@ -12,5 +12,5 @@ MiAbstractBrowser >> freeze [
 
 { #category : #'*Midas-Tests' }
 MiAbstractBrowser >> highlight [
-	buttonHighligh state: true
+	buttonHighlight state: true
 ]
