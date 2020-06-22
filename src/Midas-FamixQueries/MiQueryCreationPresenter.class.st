@@ -122,7 +122,8 @@ MiQueryCreationPresenter >> initializeBreadcrumbs [
 	breadcrumbs := (MiBreadcrumbsBar
 		on: browser selectedQuery parentSequence)
 		shapeColor: [ :model | model class color ];
-		shapeLabel: [ :model | model name substrings first ]
+		shapeLabel: [ :model | model name substrings first truncateWithElipsisTo: 10 ];
+		shapePopup: [ :model | model name ]
 ]
 
 { #category : #initialization }
