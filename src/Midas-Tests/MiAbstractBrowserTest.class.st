@@ -60,8 +60,8 @@ MiAbstractBrowserTest >> testAllBrowserHaveATitle [
 		do: [ :browser | 
 			| browserInstance |
 			browserInstance := browser runMe.
-			self deny: browserInstance window title equals: 'Untitled window'.
-			browserInstance window close ]
+			[ self deny: browserInstance window title equals: 'Untitled window' ]
+				ensure: [ browserInstance window close ] ]
 ]
 
 { #category : #tests }
