@@ -12,6 +12,11 @@ MiAddQuerySequenceToLibraryCommand class >> defaultName [
 { #category : #executing }
 MiAddQuerySequenceToLibraryCommand >> queryNamed: name [
 	^ FQComposedQuery new
-		queries: self context selectedQuery parentSequence;
+		queries: self context selectedQuery parentSequence veryDeepCopy;
 		name: name
+]
+
+{ #category : #executing }
+MiAddQuerySequenceToLibraryCommand >> requestText [
+	^ 'Please name this query sequence'
 ]

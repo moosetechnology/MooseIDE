@@ -104,7 +104,6 @@ MiQueryMenuBuilder >> librarySubMenu: aGroup [
 						action: [ browser
 								updateForQuery:
 									((FQQueriesLibrary current createQueryNamed: name)
-										name: name;
 										beChildOf: browser selectedQuery) ] ] ]
 ]
 

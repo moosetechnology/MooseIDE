@@ -13,13 +13,14 @@ MiAddQueryToLibraryCommand class >> defaultName [
 MiAddQueryToLibraryCommand >> execute [
 	| name |
 	name := self getName.
+	name ifNil: [ ^ self ].
 	FQQueriesLibrary current addNewQuery: (self queryNamed: name)
 ]
 
 { #category : #executing }
 MiAddQueryToLibraryCommand >> getName [
 	| name |
-	name := UIManager default request: 'Please name this query'.
+	name := UIManager default request: self requestText.
 	name ifNil: [ ^ nil ].
 	name ifEmpty: [ ^ self getName ].
 	^ name
@@ -28,4 +29,9 @@ MiAddQueryToLibraryCommand >> getName [
 { #category : #executing }
 MiAddQueryToLibraryCommand >> queryNamed: name [
 	^ self context selectedQuery name: name
+]
+
+{ #category : #executing }
+MiAddQueryToLibraryCommand >> requestText [
+	^ 'Please name this query'
 ]
