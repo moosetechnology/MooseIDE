@@ -19,7 +19,7 @@ MiDependencyBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	(aBuilder item: #DependencyVisualisationBrowser)
 		parent: self toolbarDependencyName;
-		label: 'Dependency Visualisation browser';
+		label: self title;
 		order: 0;
 		icon: (self iconNamed: #mooseTree);
 		action: [ self runMe ]
@@ -33,7 +33,7 @@ MiDependencyBrowser class >> runMe [
 
 { #category : #TOREMOVE }
 MiDependencyBrowser class >> title [
-	^ 'Dependency Browser'
+	^ 'Dependency'
 ]
 
 { #category : #acccessing }

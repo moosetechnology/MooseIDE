@@ -44,7 +44,7 @@ MiPropertyBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	(aBuilder item: #PropertyBrowser)
 		parent: self toolbarMetaName;
-		label: 'Properties browser';
+		label: self title;
 		icon: (self iconNamed: #mooseProperties);
 		order: 3.0;
 		action: [ self runMe ]
@@ -58,7 +58,7 @@ MiPropertyBrowser class >> runMe [
 
 { #category : #initialization }
 MiPropertyBrowser class >> title [
-	^ 'Properties Browser'
+	^ 'Properties'
 ]
 
 { #category : #initialization }

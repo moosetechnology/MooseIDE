@@ -19,7 +19,7 @@ MiUMLBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	(aBuilder item: #UMLVisualisationBrowser)
 		parent: self toolbarFamixName;
-		label: 'UML Visualisation browser';
+		label: self title;
 		icon: (self iconNamed: #mooseUml);
 		order: 4.0;
 		action: [ self runMe ]
@@ -33,7 +33,7 @@ MiUMLBrowser class >> runMe [
 
 { #category : #TOREMOVE }
 MiUMLBrowser class >> title [
-	^ 'UML Browser'
+	^ 'UML'
 ]
 
 { #category : #accessing }

@@ -55,7 +55,7 @@ MiModelRootBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	(aBuilder item: #ModelRootBrowser)
 		parent: self toolbarMetaName;
-		label: 'Model root browser';
+		label: self title;
 		icon: (self iconNamed: #mooseNavigation);
 		order: 1.0;
 		action: [ self runMe ]
@@ -69,7 +69,7 @@ MiModelRootBrowser class >> runMe [
 
 { #category : #initialization }
 MiModelRootBrowser class >> title [
-	^ 'Model root Browser'
+	^ 'Model root'
 ]
 
 { #category : #accessing }

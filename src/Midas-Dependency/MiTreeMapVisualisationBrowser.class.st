@@ -19,7 +19,7 @@ MiTreeMapVisualisationBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	(aBuilder item: #TreeMapVisualisationBrowser)
 		parent: self toolbarDependencyName;
-		label: 'Tree Map Visualisation browser';
+		label: self title;
 		icon: (self iconNamed: #mooseTreeMap);
 		order: 3.0;
 		action: [ self runMe ]
@@ -33,7 +33,7 @@ MiTreeMapVisualisationBrowser class >> runMe [
 
 { #category : #accessing }
 MiTreeMapVisualisationBrowser class >> title [
-	^ 'Tree Map Visualisation Browser'
+	^ 'Tree Map Visualisation'
 ]
 
 { #category : #testing }
