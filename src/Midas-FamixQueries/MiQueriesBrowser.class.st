@@ -96,7 +96,7 @@ MiQueriesBrowser >> createQueryForTypes: classes [
 { #category : #action }
 MiQueriesBrowser >> createTypeQuery [
 	self
-		createQueryForTypes: (self miSelectedItem collect: #class) copyWithoutDuplicates
+		createQueryForTypes: (queryResult miSelectedItem collect: #class) copyWithoutDuplicates
 ]
 
 { #category : #accessing }

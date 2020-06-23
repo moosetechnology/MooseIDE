@@ -189,11 +189,6 @@ MiRoassalQueryPresenter >> legendOn: canvas [
 	legend build
 ]
 
-{ #category : #midas }
-MiRoassalQueryPresenter >> miSelectedItem [
-	^ selectedQuery result
-]
-
 { #category : #interactions }
 MiRoassalQueryPresenter >> noInteractions [
 	hasInteractions := false
@@ -225,16 +220,6 @@ MiRoassalQueryPresenter >> selectedItem [
 { #category : #'accessing model' }
 MiRoassalQueryPresenter >> setModelBeforeInitialization: aQueriesCollection [
 	queries := aQueriesCollection asOrderedCollection
-]
-
-{ #category : #update }
-MiRoassalQueryPresenter >> updateForQuery: newQuery [
-	self
-		flag:
-			#FQImprove
-				, 'maybe change mechanism, why is there 2 #update... methods ?'.
-	queries add: newQuery.
-	self selectItem: newQuery
 ]
 
 { #category : #update }
