@@ -19,7 +19,7 @@ MiFameBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	(aBuilder item: #Fame)
 		parent: self toolbarMetaName;
-		label: 'Fame browser';
+		label: self title;
 		icon: (self iconNamed: #mooseFame);
 		order: 4.0;
 		action: [ self runMe ]
@@ -33,7 +33,7 @@ MiFameBrowser class >> runMe [
 
 { #category : #initialization }
 MiFameBrowser class >> title [
-	^ 'Fame Browser'
+	^ 'Fame'
 ]
 
 { #category : #initialization }

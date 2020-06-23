@@ -36,7 +36,7 @@ MiQueriesBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	(aBuilder item: #Queries)
 		parent: self toolbarName;
-		label: 'Queries';
+		label: self title;
 		action: [ self runMe ]
 ]
 
@@ -75,7 +75,7 @@ MiQueriesBrowser class >> runMe [
 
 { #category : #specs }
 MiQueriesBrowser class >> title [
-	^ 'Query Browser'
+	^ 'Queries'
 ]
 
 { #category : #midas }

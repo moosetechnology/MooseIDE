@@ -51,7 +51,7 @@ MiFilesBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	(aBuilder item: #FilesBrowser)
 		parent: self toolbarFamixName;
-		label: 'Files browser';
+		label: self title;
 		icon: (self iconNamed: #mooseFolder);
 		order: 3.0;
 		action: [ self runMe ]
@@ -65,7 +65,7 @@ MiFilesBrowser class >> runMe [
 
 { #category : #TOREMOVE }
 MiFilesBrowser class >> title [
-	^ 'Files Browser'
+	^ 'Files'
 ]
 
 { #category : #testing }

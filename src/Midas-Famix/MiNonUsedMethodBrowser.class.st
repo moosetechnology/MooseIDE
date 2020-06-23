@@ -27,7 +27,7 @@ MiNonUsedMethodBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	(aBuilder item: #NonUsedMethodBrowser)
 		parent: self toolbarFamixName;
-		label: 'Non used method browser';
+		label: self title;
 		order: 2.0;
 		action: [ self runMe ]
 ]
@@ -40,7 +40,7 @@ MiNonUsedMethodBrowser class >> runMe [
 
 { #category : #TOREMOVE }
 MiNonUsedMethodBrowser class >> title [
-	^ 'Dead methods Browser'
+	^ 'Dead methods'
 ]
 
 { #category : #TOREMOVE }
