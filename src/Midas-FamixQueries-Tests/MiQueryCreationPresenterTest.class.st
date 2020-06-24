@@ -7,6 +7,17 @@ Class {
 	#category : #'Midas-FamixQueries-Tests-Presenters'
 }
 
+{ #category : #tests }
+MiQueryCreationPresenterTest >> assertQueryMatchesInAllSubpresenters [
+	self
+		assert:
+			(presenter query
+				hasSameParametersAs: (helper queryFromCodeInPresenter: presenter)).
+	self
+		assertCollection: presenter queryConfigurationPresenter query result
+		hasSameElements: presenter resultList items
+]
+
 { #category : #running }
 MiQueryCreationPresenterTest >> changeQueryType [
 	presenter queryTypesDropList
@@ -60,8 +71,9 @@ MiQueryCreationPresenterTest >> testQueryCode [
 	self assert: (query isKindOf: FQAbstractQuery).
 	self assert: query isValid.
 	self
-		assert: query
-		equals: presenter queryConfigurationPresenter query
+		assert:
+			(query
+				hasSameParametersAs: presenter queryConfigurationPresenter query)
 ]
 
 { #category : #tests }
@@ -77,12 +89,7 @@ MiQueryCreationPresenterTest >> testQueryConfigurationPresenter [
 
 { #category : #tests }
 MiQueryCreationPresenterTest >> testQueryMatchesInAllSubpresenters [
-	self
-		assert: presenter query
-		equals: (helper queryFromCodeInPresenter: presenter).
-	self
-		assertCollection: presenter queryConfigurationPresenter query result
-		hasSameElements: presenter resultList items
+	self assertQueryMatchesInAllSubpresenters
 ]
 
 { #category : #tests }
@@ -133,11 +140,11 @@ MiQueryCreationPresenterTest >> testToolBar [
 { #category : #tests }
 MiQueryCreationPresenterTest >> testTransmissions [
 	presenter queryTypesDropList selectIndex: 2.
-	self testQueryMatchesInAllSubpresenters.
+	self assertQueryMatchesInAllSubpresenters.
 	presenter queryTypesDropList selectIndex: 3.
-	self testQueryMatchesInAllSubpresenters.
+	self assertQueryMatchesInAllSubpresenters.
 	presenter queryTypesDropList selectIndex: 4.
-	self testQueryMatchesInAllSubpresenters
+	self assertQueryMatchesInAllSubpresenters
 ]
 
 { #category : #tests }

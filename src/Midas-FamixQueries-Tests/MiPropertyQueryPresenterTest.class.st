@@ -10,16 +10,6 @@ MiPropertyQueryPresenterTest class >> isAbstract [
 ]
 
 { #category : #tests }
-MiPropertyQueryPresenterTest >> assertCreationPresenterWasUpdated [
-	self
-		assertCollection: presenter owner resultList items
-		hasSameElements: presenter query result.
-	self
-		assert: (helper queryFromCodeInPresenter: presenter owner)
-		equals: presenter query
-]
-
-{ #category : #tests }
 MiPropertyQueryPresenterTest >> assertPropertiesDropList [
 	self
 		assert: presenter properties class

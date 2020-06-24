@@ -18,8 +18,9 @@ MiQueryConfigurationPresenterTest >> assertCreationPresenterWasUpdated [
 		assertCollection: presenter owner resultList items
 		hasSameElements: presenter query result.
 	self
-		assert: (helper queryFromCodeInPresenter: presenter owner)
-		equals: presenter query
+		assert:
+			((helper queryFromCodeInPresenter: presenter owner)
+				hasSameParametersAs: presenter query)
 ]
 
 { #category : #running }
