@@ -95,7 +95,7 @@ MiQueryMenuBuilder >> initialize [
 
 { #category : #building }
 MiQueryMenuBuilder >> librarySubMenu: aGroup [
-	FQQueriesLibrary current savedQueriesNames
+	FQLibrary current savedQueriesNames
 		do: [ :name | 
 			aGroup
 				addItem: [ :item | 
@@ -103,7 +103,7 @@ MiQueryMenuBuilder >> librarySubMenu: aGroup [
 						name: name;
 						action: [ browser
 								updateForQuery:
-									((FQQueriesLibrary current createQueryNamed: name)
+									((FQLibrary current createQueryNamed: name)
 										beChildOf: browser selectedQuery) ] ] ]
 ]
 

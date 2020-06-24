@@ -1,6 +1,11 @@
 Extension { #name : #FQNumericQuery }
 
 { #category : #'*Midas-FamixQueries' }
+FQNumericQuery class >> canBeConfigured [
+	^ true
+]
+
+{ #category : #'*Midas-FamixQueries' }
 FQNumericQuery class >> color [
 	"Light cyan"
 

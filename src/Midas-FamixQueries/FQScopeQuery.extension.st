@@ -1,6 +1,11 @@
 Extension { #name : #FQScopeQuery }
 
 { #category : #'*Midas-FamixQueries' }
+FQScopeQuery class >> canBeConfigured [
+	^ true
+]
+
+{ #category : #'*Midas-FamixQueries' }
 FQScopeQuery class >> color [
 	"Blue-green"
 

@@ -1,6 +1,11 @@
 Extension { #name : #FQNavigationQuery }
 
 { #category : #'*Midas-FamixQueries' }
+FQNavigationQuery class >> canBeConfigured [
+	^ true
+]
+
+{ #category : #'*Midas-FamixQueries' }
 FQNavigationQuery class >> color [
 	"Light yellow"
 

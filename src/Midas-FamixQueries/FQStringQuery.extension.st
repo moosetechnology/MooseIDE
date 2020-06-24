@@ -1,6 +1,11 @@
 Extension { #name : #FQStringQuery }
 
 { #category : #'*Midas-FamixQueries' }
+FQStringQuery class >> canBeConfigured [
+	^ true
+]
+
+{ #category : #'*Midas-FamixQueries' }
 FQStringQuery class >> color [
 	"Light blue"
 

@@ -14,7 +14,7 @@ MiAddQueryToLibraryCommand >> execute [
 	| name |
 	name := self getName.
 	name ifNil: [ ^ self ].
-	FQQueriesLibrary current addNewQuery: (self queryNamed: name)
+	FQLibrary current addNewQuery: (self queryNamed: name)
 ]
 
 { #category : #executing }

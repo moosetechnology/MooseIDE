@@ -1,6 +1,11 @@
 Extension { #name : #FQTypeQuery }
 
 { #category : #'*Midas-FamixQueries' }
+FQTypeQuery class >> canBeConfigured [
+	^ true
+]
+
+{ #category : #'*Midas-FamixQueries' }
 FQTypeQuery class >> color [
 	"Pear"
 

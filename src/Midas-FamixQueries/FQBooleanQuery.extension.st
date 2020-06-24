@@ -1,6 +1,11 @@
 Extension { #name : #FQBooleanQuery }
 
 { #category : #'*Midas-FamixQueries' }
+FQBooleanQuery class >> canBeConfigured [
+	^ true
+]
+
+{ #category : #'*Midas-FamixQueries' }
 FQBooleanQuery class >> color [
 	"Mint"
 
