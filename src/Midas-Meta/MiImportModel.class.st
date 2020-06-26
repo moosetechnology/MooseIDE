@@ -1,3 +1,6 @@
+"
+Dialog used to import MSE models
+"
 Class {
 	#name : #MiImportModel,
 	#superclass : #MiPresenter,

@@ -1,5 +1,13 @@
 "
-A browser to show the content of the MiLogger
+A browser to show the content of the MiLogger.
+Allows logs edition & removal.
+Can propagate previous logs.
+
+Follow:
+Receives & propagates MooseObjects.
+
+Highlght:
+logs containing the received object
 "
 Class {
 	#name : #MiLogBrowser,

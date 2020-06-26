@@ -1,3 +1,14 @@
+"
+Displays the source text of entities if they have one.
+
+Follow: 
+recives a MooseEntity and displays its source text.
+
+Highlight:
+does nothing.
+
+Possible improvement: tabs for several entities (receiving a MooseGroup)
+"
 Class {
 	#name : #MiSourceTextBrowser,
 	#superclass : #MiAbstractFamixBrowser,

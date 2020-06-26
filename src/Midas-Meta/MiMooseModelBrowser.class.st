@@ -1,3 +1,12 @@
+"
+Displays entities in a MooseModel grouped by entity type
+
+Follow:
+Receives a MooseModel
+
+Highlight:
+Could highlight the received entity.
+"
 Class {
 	#name : #MiMooseModelBrowser,
 	#superclass : #MiAbstractBrowser,

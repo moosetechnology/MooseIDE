@@ -1,3 +1,13 @@
+"
+Displays UML of the received entities.
+
+Follow: 
+receives a TypeGroup or entities using TType.
+
+Highlight: 
+/
+
+"
 Class {
 	#name : #MiUMLBrowser,
 	#superclass : #MiAbstractFamixBrowser,

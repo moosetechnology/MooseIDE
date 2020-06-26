@@ -1,3 +1,13 @@
+"
+Displays the metadescription of an entity.
+*Expert*
+
+Follow: 
+recevies a MooseObject
+
+Highlight:
+/
+"
 Class {
 	#name : #MiFameBrowser,
 	#superclass : #MiAbstractBrowser,
@@ -38,7 +48,7 @@ MiFameBrowser class >> title [
 
 { #category : #initialization }
 MiFameBrowser >> accept: anObject [
-	^ anObject isKindOf: MooseEntity 
+	^ anObject isMooseObject
 ]
 
 { #category : #initialization }

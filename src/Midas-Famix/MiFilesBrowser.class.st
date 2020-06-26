@@ -1,29 +1,13 @@
 "
-Please comment me using the following template inspired by Class Responsibility Collaborator (CRC) design:
+Root folder explorer.
+Allows to ewplre the root folder of a model (left panel) and shows the entities contained in each file (right panel)
 
-For the Class part:  State a one line summary. For example, ""I represent a paragraph of text"".
+Follow:
+Receives a MooseModel that have a root folder
 
-For the Responsibility part: Three sentences about my main responsibilities - what I do, what I know.
-
-For the Collaborators Part: State my main collaborators and one line about how I interact with them. 
-
-Public API and Key Messages
-
-- message one   
-- message two 
-- (for bonus points) how to create instances.
-
-   One simple example is simply gorgeous.
- 
-Internal Representation and Key Implementation Points.
-
-    Instance Variables
-	noteBook:		<Object>
-	sourceCodePage:		<Object>
-	sourceText:		<Object>
-
-
-    Implementation Points
+Highlight:
+entities if present and displayed.
+Could select the file in which the received entity is present.
 "
 Class {
 	#name : #MiFilesBrowser,

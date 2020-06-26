@@ -1,3 +1,12 @@
+"
+Displays dead methods contained in an entity.
+
+Follow: 
+receives MooseEntities
+
+Highlight: 
+methods if present 
+"
 Class {
 	#name : #MiNonUsedMethodBrowser,
 	#superclass : #MiAbstractFamixBrowser,

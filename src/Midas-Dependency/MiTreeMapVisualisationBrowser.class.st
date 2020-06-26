@@ -1,3 +1,12 @@
+"
+Displays the containment as a roassal visualization (direct relations for now) between the entities.
+
+Follow:
+Receives a MooseGroup
+
+Highlight:
+entities if present
+"
 Class {
 	#name : #MiTreeMapVisualisationBrowser,
 	#superclass : #MiAbstractDependencyBrowser,

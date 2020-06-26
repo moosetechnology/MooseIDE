@@ -1,3 +1,13 @@
+"
+Displays dependencies between entities in a MooseGroup
+#queryIncomingDependencies and #queryOutgoingDependencies 
+
+Follow: 
+receives a MooseGroup
+
+Highlight:
+entites if present
+"
 Class {
 	#name : #MiDependencyBrowser,
 	#superclass : #MiAbstractDependencyBrowser,
