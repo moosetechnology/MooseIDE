@@ -22,7 +22,8 @@ Class {
 		'buttonHighlight',
 		'buttonPropagate',
 		'menu',
-		'buttonInspect'
+		'buttonInspect',
+		'buttonHelp'
 	],
 	#category : #'Midas-Core-Browser'
 }
@@ -44,6 +45,7 @@ MiAbstractBrowser class >> defaultSpec [
 				add: SpBoxLayout newHorizontal expand: true;
 				add: #buttonInspect expand: false;
 				add: #buttonPropagate expand: false;
+				add: #buttonHelp width: self iconWidth;
 				yourself)
 			withConstraints: [ :constraints | constraints height: self toolbarHeight ];
 		yourself
@@ -170,29 +172,38 @@ MiAbstractBrowser >> initializePresenters [
 	self flag: 'The state of freeze should be store in a model'.
 	buttonFreeze := self newRadioButton
 		label: 'Freeze';
-		enabled: true ;
+		enabled: true;
 		yourself.
 	buttonFollow := self newRadioButton
 		label: 'Follow';
-		enabled: self canFollow ;
+		enabled: self canFollow;
 		yourself.
 	buttonHighlight := self newRadioButton
 		label: 'Highlight';
-		enabled: self canHighlight ;
+		enabled: self canHighlight;
 		yourself.
-	buttonFollow associatedRadioButtons: {buttonFreeze . buttonFollow . buttonHighlight}.
+	buttonFollow
+		associatedRadioButtons:
+			{buttonFreeze.
+			buttonFollow.
+			buttonHighlight}.
 	self freeze: self canFollow not.
-	
 	buttonPropagate := self newButton
 		label: 'Propagate';
-		enabled: self canPropagate ;
-		action: [ (MiPropagateCommand forContext: self) freezeBrowser; execute ];
+		enabled: self canPropagate;
+		action: [ (MiPropagateCommand forContext: self)
+				freezeBrowser;
+				execute ];
 		yourself.
-		
 	buttonInspect := self newButton
 		label: 'Inspect';
 		action: [ (MiInspectCommand forContext: self) execute ];
 		yourself.
+	buttonHelp := self newButton
+		icon: (self theme iconNamed: #help);
+		help: self class comment;
+		action: [ self showHelp ];
+		yourself
 ]
 
 { #category : #initialization }
@@ -255,4 +266,13 @@ MiAbstractBrowser >> selectEntity: anEntity [
 	"I am used by the Mi Application. You should use #globallySelect: anEntity that will transmit the message to me and the other browsers"
 	toSelect := anEntity.
 	AbstractBrowserMode actionFor: self
+]
+
+{ #category : #actions }
+MiAbstractBrowser >> showHelp [
+	| help |
+	(help := self newPopover)
+		relativeTo: buttonHelp;
+		presenter: (MiHelpPopup owner: help on: self);
+		popup
 ]
