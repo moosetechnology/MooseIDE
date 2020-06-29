@@ -17,7 +17,10 @@ MiPropagateCommand class >> defaultName [
 
 { #category : #default }
 MiPropagateCommand class >> forSpecContext: anObject [
-	^ (self forSpecWithIconNamed: #moosePropagate) beHiddenWhenCantBeRun
+	^ (super forSpecContext: anObject)
+		iconNamed: #moosePropagate;
+		beHiddenWhenCantBeRun;
+		yourself
 ]
 
 { #category : #testing }

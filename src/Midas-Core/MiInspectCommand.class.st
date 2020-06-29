@@ -14,7 +14,10 @@ MiInspectCommand class >> defaultName [
 
 { #category : #default }
 MiInspectCommand class >> forSpecContext: anObject [
-	^ (self forSpecWithIconNamed: #mooseIcon) beHiddenWhenCantBeRun
+	^ (super forSpecContext: anObject)
+		iconNamed: #mooseIcon;
+		beHiddenWhenCantBeRun;
+		yourself
 ]
 
 { #category : #testing }
