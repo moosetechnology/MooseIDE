@@ -83,7 +83,8 @@ MiMooseModelBrowser >> followAction [
 	((self needUpdate: toSelect) and: [ self accept: toSelect ])
 		ifFalse: [ ^ self ].
 	model model: toSelect.
-	self computeModelPresenterRoot
+	self computeModelPresenterRoot.
+	self updateWindowTitle
 ]
 
 { #category : #initialization }
@@ -176,4 +177,9 @@ MiMooseModelBrowser >> selectionAction: selection [
 { #category : #initialization }
 MiMooseModelBrowser >> setModelPresenterSelection [
 	modelPresenter selectItem: modelPresenter roots first
+]
+
+{ #category : #actions }
+MiMooseModelBrowser >> updateWindowTitle [
+	self window title: self class title , ' (' , model model name , ')'
 ]

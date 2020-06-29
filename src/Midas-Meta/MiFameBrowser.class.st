@@ -64,6 +64,8 @@ MiFameBrowser >> followAction [
 { #category : #initialization }
 MiFameBrowser >> forEntity: anEntity [
 	fameDescription items: anEntity mooseDescription allComplexProperties.
+	self window
+		title: self class title , ': Moose description of ' , anEntity name
 ]
 
 { #category : #initialization }

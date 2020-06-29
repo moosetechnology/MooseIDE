@@ -93,7 +93,8 @@ MiFilesBrowser >> followAction [
 	(self accept: toSelect)
 		ifFalse: [ ^ self ].
 	self model mooseModel: toSelect.
-	self selectFileReference: toSelect rootFolder asFileReference
+	self selectFileReference: toSelect rootFolder asFileReference.
+	self updateWindowTitle
 ]
 
 { #category : #initialization }
@@ -149,4 +150,10 @@ MiFilesBrowser >> refresh [
 MiFilesBrowser >> selectFileReference: aFileReference [
 	self model fileReference: aFileReference.
 	self refresh
+]
+
+{ #category : #refreshing }
+MiFilesBrowser >> updateWindowTitle [
+	self window
+		title: self class title , ' of ' , self model mooseModel name , ' model'
 ]

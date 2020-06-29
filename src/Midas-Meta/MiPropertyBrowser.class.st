@@ -62,7 +62,12 @@ MiPropertyBrowser >> followAction [
 
 { #category : #initialization }
 MiPropertyBrowser >> forEntity: anEntity [
-	properties items: (anEntity mooseDescription allPrimitiveProperties sorted: #name ascending).
+	properties
+		items:
+			(anEntity mooseDescription allPrimitiveProperties
+				sorted: #name ascending).
+	self window
+		title: self class title , ': Properties of ' , anEntity name
 ]
 
 { #category : #initialization }
