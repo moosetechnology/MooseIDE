@@ -28,8 +28,8 @@ MiLogger >> clean [
 
 { #category : #accessing }
 MiLogger >> globallySelect: anEntity [
-	(self mostRecentEntity isNotNil
-		and: [ self mostRecentEntity == anEntity ])
+	anEntity ifNil: [ ^ self ].
+	self mostRecentEntity == anEntity
 		ifTrue: [ self mostRecentLog activate ]
 		ifFalse: [ logs
 				addFirst:

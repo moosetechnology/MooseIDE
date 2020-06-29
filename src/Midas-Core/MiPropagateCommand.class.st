@@ -25,6 +25,11 @@ MiPropagateCommand >> canBeExecuted [
 	^ self context miSelectedItem isMooseObject
 ]
 
+{ #category : #freezing }
+MiPropagateCommand >> doNotFreezeBrowser [
+	shouldFreezeBrowser := false
+]
+
 { #category : #testing }
 MiPropagateCommand >> execute [
 	shouldFreezeBrowser
@@ -32,18 +37,19 @@ MiPropagateCommand >> execute [
 		ifFalse: [ self propagate ]
 ]
 
-{ #category : #'as yet unclassified' }
-MiPropagateCommand >> freezeBrowser [
-	shouldFreezeBrowser := true
-]
-
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 MiPropagateCommand >> initialize [
 	super initialize.
-	shouldFreezeBrowser := false
+	shouldFreezeBrowser := true
 ]
 
 { #category : #testing }
 MiPropagateCommand >> propagate [
-	^ MiApplication current globallySelect: self context miSelectedItem
+	| selectedItem |
+	selectedItem := [ self context miSelectedItem ]
+		on: MiNoSelectedElementToPropagateException
+		do: [ :exception | 
+			exception signal.
+			^ self ].
+	^ MiApplication current globallySelect: selectedItem
 ]

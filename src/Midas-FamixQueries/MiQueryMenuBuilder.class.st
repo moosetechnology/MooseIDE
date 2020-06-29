@@ -27,13 +27,15 @@ MiQueryMenuBuilder >> buildAdditionalItemsIn: aMenu [
 			item
 				description: 'Use result as root for queries';
 				icon: (self iconNamed: #glamorousRestart);
-				action: [ (MiPropagateCommand forContext: browser) execute ] ];
+				action: [ (MiPropagateCommand forContext: browser)
+						doNotFreezeBrowser;
+						execute ] ];
 		addItem: [ :item | 
 			item
 				description: 'Inspect query';
 				icon: (self iconNamed: #glamorousInspect);
 				action: [ browser selectedQuery inspect ] ];
-			addItem: [ :item | 
+		addItem: [ :item | 
 			item
 				description: 'Save this query';
 				icon: (self iconNamed: #smallSave);
@@ -74,9 +76,7 @@ MiQueryMenuBuilder >> buildCommonItemsIn: aMenu [
 					item
 						description: 'Propagate result';
 						icon: (self iconNamed: #moosePropagate);
-						action: [ (MiPropagateCommand forContext: browser)
-								freezeBrowser;
-								execute ] ] ]
+						action: [ (MiPropagateCommand forContext: browser) execute ] ] ]
 ]
 
 { #category : #building }

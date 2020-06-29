@@ -24,5 +24,11 @@ MiInspectCommand >> canBeExecuted [
 
 { #category : #testing }
 MiInspectCommand >> execute [
-	^ self context miSelectedItem inspect
+	| selectedItem |
+	selectedItem := [ self context miSelectedItem ]
+		on: MiNoSelectedElementToPropagateException
+		do: [ :exception | 
+			exception signal.
+			^ self ].
+	selectedItem inspect
 ]

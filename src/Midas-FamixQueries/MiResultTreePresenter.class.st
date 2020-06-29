@@ -15,11 +15,11 @@ MiResultTreePresenter class >> buildCommandsGroupWith: presenter forRoot: aCmCom
 			((MiInspectCommand forSpecWithIconNamed: #glamorousInspect)
 				context: presenter owner);
 		register:
-			(MiPropagateCommand new freezeBrowser asSpecCommand
+			(MiPropagateCommand new asSpecCommand
 				iconName: #moosePropagate;
 				context: presenter owner);
 		register:
-			(MiPropagateCommand new asSpecCommand
+			(MiPropagateCommand new doNotFreezeBrowser asSpecCommand
 				iconName: #glamorousRestart;
 				name: 'Use as root for queries';
 				context: presenter owner).
