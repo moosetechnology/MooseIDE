@@ -49,13 +49,13 @@ Class {
 	#category : #'Midas-Core-Browser'
 }
 
-{ #category : #'world menu' }
+{ #category : #specs }
 MiAbstractBrowser class >> buildCommandsGroupWith: presenterInstance forRoot: rootCommandGroup [
 	rootCommandGroup register: (MiPropagateCommand forSpecContext: presenterInstance).
 	rootCommandGroup register: (MiInspectCommand forSpecContext: presenterInstance)
 ]
 
-{ #category : #'world menu' }
+{ #category : #specs }
 MiAbstractBrowser class >> defaultSpec [
 	^ SpBoxLayout newVertical
 		add:
@@ -72,13 +72,13 @@ MiAbstractBrowser class >> defaultSpec [
 		yourself
 ]
 
-{ #category : #configuration }
+{ #category : #'world menu' }
 MiAbstractBrowser class >> helpMessage [
 	^ (self comment lines copyUpTo: '')
 		fold: [ :s1 :s2 | s1 , Character cr asString , s2 ]
 ]
 
-{ #category : #'world menu' }
+{ #category : #testing }
 MiAbstractBrowser class >> isAbstract [ 
 	^ self == MiAbstractBrowser
 ]
@@ -110,7 +110,7 @@ MiAbstractBrowser class >> newModel [
 	^ nil
 ]
 
-{ #category : #'world menu' }
+{ #category : #'instance creation' }
 MiAbstractBrowser class >> openOn: anEntity [
 	self new
 		selectEntity: anEntity;
