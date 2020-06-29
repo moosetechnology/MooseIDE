@@ -41,6 +41,7 @@ MiNonUsedMethodBrowser class >> menuCommandOn: aBuilder [
 		parent: self toolbarFamixName;
 		label: self title;
 		order: 2.0;
+		help: self helpMessage;
 		action: [ self runMe ]
 ]
 

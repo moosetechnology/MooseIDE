@@ -35,6 +35,7 @@ MiFameBrowser class >> menuCommandOn: aBuilder [
 		label: self title;
 		icon: (self iconNamed: #mooseFame);
 		order: 4.0;
+		help: self helpMessage;
 		action: [ self runMe ]
 ]
 

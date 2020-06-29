@@ -41,6 +41,7 @@ MiFilesBrowser class >> menuCommandOn: aBuilder [
 		parent: self toolbarFamixName;
 		label: self title;
 		icon: (self iconNamed: #mooseFolder);
+		help: self helpMessage;
 		order: 3.0;
 		action: [ self runMe ]
 ]

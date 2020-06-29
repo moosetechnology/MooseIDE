@@ -34,6 +34,7 @@ MiUMLBrowser class >> menuCommandOn: aBuilder [
 		label: self title;
 		icon: (self iconNamed: #mooseUml);
 		order: 4.0;
+		help: self helpMessage;
 		action: [ self runMe ]
 ]
 

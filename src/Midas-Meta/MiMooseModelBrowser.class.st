@@ -38,6 +38,7 @@ MiMooseModelBrowser class >> menuCommandOn: aBuilder [
 		label: self title;
 		icon: (self iconNamed: #mooseNavigation);
 		order: 2.0;
+		help: self helpMessage;
 		action: [ self runMe ]
 ]
 

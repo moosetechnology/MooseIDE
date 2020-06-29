@@ -34,6 +34,7 @@ MiTreeMapVisualisationBrowser class >> menuCommandOn: aBuilder [
 		parent: self toolbarDependencyName;
 		label: self title;
 		icon: (self iconNamed: #mooseTreeMap);
+		help: self helpMessage;
 		order: 3.0;
 		action: [ self runMe ]
 ]

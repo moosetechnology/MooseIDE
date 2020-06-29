@@ -51,6 +51,7 @@ MiQueriesBrowser class >> menuCommandOn: aBuilder [
 	(aBuilder item: #Queries)
 		parent: self toolbarName;
 		label: self title;
+		help: self helpMessage;
 		action: [ self runMe ]
 ]
 

@@ -34,6 +34,7 @@ MiDependencyBrowser class >> menuCommandOn: aBuilder [
 		label: self title;
 		order: 0;
 		icon: (self iconNamed: #mooseTree);
+		help: self helpMessage;
 		action: [ self runMe ]
 ]
 

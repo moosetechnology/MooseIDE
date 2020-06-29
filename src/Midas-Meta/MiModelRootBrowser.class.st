@@ -47,6 +47,7 @@ MiModelRootBrowser class >> menuCommandOn: aBuilder [
 		label: self title;
 		icon: (self iconNamed: #mooseNavigation);
 		order: 1.0;
+		help: self helpMessage;
 		action: [ self runMe ]
 ]
 

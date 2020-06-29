@@ -38,6 +38,7 @@ MiSourceTextBrowser class >> menuCommandOn: aBuilder [
 		label: self title;
 		icon: (self iconNamed: #mooseSourceText);
 		order: 1.0;
+		help: self helpMessage;
 		action: [ self runMe ]
 ]
 

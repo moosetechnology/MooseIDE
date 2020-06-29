@@ -51,6 +51,12 @@ MiAbstractBrowser class >> defaultSpec [
 		yourself
 ]
 
+{ #category : #configuration }
+MiAbstractBrowser class >> helpMessage [
+	^ (self comment lines copyUpTo: '')
+		fold: [ :s1 :s2 | s1 , Character cr asString , s2 ]
+]
+
 { #category : #'world menu' }
 MiAbstractBrowser class >> isAbstract [ 
 	^ self == MiAbstractBrowser

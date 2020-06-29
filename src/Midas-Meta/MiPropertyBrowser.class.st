@@ -34,6 +34,7 @@ MiPropertyBrowser class >> menuCommandOn: aBuilder [
 		label: self title;
 		icon: (self iconNamed: #mooseProperties);
 		order: 3.0;
+		help: self helpMessage;
 		action: [ self runMe ]
 ]
 

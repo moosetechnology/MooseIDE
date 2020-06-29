@@ -43,6 +43,7 @@ MiLogBrowser class >> menuCommandOn: aBuilder [
 		parent: self toolbarName;
 		label: self title;
 		order: 1.0;
+		help: self helpMessage;
 		action: [ self runMe ]
 ]
 
