@@ -1,12 +1,14 @@
 "
-Displays dependencies between entities in a MooseGroup
-#queryIncomingDependencies and #queryOutgoingDependencies 
+Shows dependencies between entities (using #queryIncomingDependencies and #queryOutgoingDependencies).
 
-Follow: 
-receives a MooseGroup
+- Follow: 
+Accepts a MooseGroup.
 
-Highlight:
-entites if present
+- Highlight:
+Entites if present.
+
+- Propagate:
+<TODO>
 "
 Class {
 	#name : #MiDependencyBrowser,
@@ -48,7 +50,9 @@ MiDependencyBrowser class >> title [
 
 { #category : #acccessing }
 MiDependencyBrowser >> accept: anObject [
-	^ anObject isCollection and: [ anObject anySatisfy: [ :a | a usesFamixTrait: TDependencyQueries ] ]
+	^ anObject isCollection
+		and: [ anObject
+				anySatisfy: [ :a | a usesFamixTrait: TEntityMetaLevelDependency ] ]
 ]
 
 { #category : #accessing }

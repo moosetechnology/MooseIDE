@@ -1,3 +1,17 @@
+"
+Queries a group of entities.
+Allows the creation of queries and shows their result.
+
+- Follow:
+Receives a MooseObject and selects entities using: FamixTNamedEntity.
+
+- Highlight:
+<TODO>
+
+- Propagate:
+The selected entities if there are some.
+The result of the selected query otherwise.
+"
 Class {
 	#name : #MiQueriesBrowser,
 	#superclass : #MiAbstractBrowser,
@@ -80,9 +94,8 @@ MiQueriesBrowser class >> title [
 
 { #category : #midas }
 MiQueriesBrowser >> accept: anObject [
-	^ (anObject isKindOf: MooseObject)
-		and:
-			[ (anObject asMooseGroup allUsing: FamixTNamedEntity) isNotEmpty ]
+	^ anObject isMooseObject
+		and: [ (anObject asMooseGroup allUsing: FamixTNamedEntity) isNotEmpty ]
 ]
 
 { #category : #action }

@@ -1,11 +1,15 @@
 "
-Displays the containment as a roassal visualization (direct relations for now) between the entities.
+Shows the containment (direct relations for now) between entities.
+Dynamic presentation: clicking on an entity shows the entities it contains.
 
-Follow:
-Receives a MooseGroup
+- Follow:
+Receives MooseObjects.
 
-Highlight:
-entities if present
+- Highlight:
+Entities if present.
+
+- Propagate:
+<TODO>
 "
 Class {
 	#name : #MiTreeMapVisualisationBrowser,
@@ -48,8 +52,8 @@ MiTreeMapVisualisationBrowser class >> title [
 { #category : #testing }
 MiTreeMapVisualisationBrowser >> accept: anObject [
 	^ anObject isNotNil
-		and: [ (anObject isKindOf: MooseObject)
-				and: [ anObject rootsForTreeMap isNotEmpty ] ]
+		and:
+			[ anObject isMooseObject and: [ anObject rootsForTreeMap isNotEmpty ] ]
 ]
 
 { #category : #accessing }

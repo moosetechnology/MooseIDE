@@ -1,11 +1,14 @@
 "
-Displays the containment tree as a roassal visualization (direct relations for now) between the entities.
+Shows the containment tree (direct relations for now) between entities, as a roassal visualization.
 
-Follow:
-Receives a MooseGroup
+- Follow:
+Receives a MooseGroup.
 
-Highlight:
-entities if present
+- Highlight:
+Entities if present.
+
+- Propagate:
+The selected entity if there is one.
 "
 Class {
 	#name : #MiTreeVisualisationBrowser,
@@ -47,7 +50,7 @@ MiTreeVisualisationBrowser class >> title [
 
 { #category : #'as yet unclassified' }
 MiTreeVisualisationBrowser >> accept: anObject [
-	^ anObject isKindOf: MooseObject
+	^ anObject isMooseObject
 ]
 
 { #category : #script }

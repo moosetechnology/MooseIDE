@@ -1,11 +1,14 @@
 "
-Displays dead methods contained in an entity.
+Shows dead methods contained in an entity.
 
-Follow: 
-receives MooseEntities
+- Follow: 
+Receives a MooseEntity.
 
-Highlight: 
-methods if present 
+- Highlight:
+<TODO> Methods if present.
+
+- Propagate:
+<TODO>
 "
 Class {
 	#name : #MiNonUsedMethodBrowser,

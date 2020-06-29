@@ -1,12 +1,14 @@
 "
-Displays UML of the received entities.
+Shows UML of the received entities.
 
-Follow: 
-receives a TypeGroup or entities using TType.
+- Follow: 
+Receives a TypeGroup or entities using TType.
 
-Highlight: 
-/
+- Highlight: 
+<TODO>
 
+- Propagate: 
+<TODO>
 "
 Class {
 	#name : #MiUMLBrowser,
@@ -49,8 +51,11 @@ MiUMLBrowser class >> title [
 { #category : #accessing }
 MiUMLBrowser >> accept: anObject [
 	"can't use isType because it can be a MooseModel (that does not answer isType)"
-	(anObject isKindOf: MooseObject) ifFalse: [ ^ false ].
-	^ (anObject isKindOf: FamixTypeGroup) or: [ anObject isOfType: FamixTType ]
+
+	anObject isMooseObject
+		ifFalse: [ ^ false ].
+	^ (anObject isKindOf: FamixTypeGroup)
+		or: [ anObject isOfType: FamixTType ]
 ]
 
 { #category : #accessing }

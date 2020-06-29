@@ -1,13 +1,16 @@
 "
-Displays the source text of entities if they have one.
+Shows the source text of an entity if it has one.
 
-Follow: 
-recives a MooseEntity and displays its source text.
+- Follow: 
+Receives a MooseEntity that uses FamixTSourceEntity.
 
-Highlight:
-does nothing.
+- Highlight:
+Nothing to do.
 
-Possible improvement: tabs for several entities (receiving a MooseGroup)
+- Propagate: 
+<TODO>
+
+<TODO> Improvement: tabs for several entities (receiving a MooseGroup)
 "
 Class {
 	#name : #MiSourceTextBrowser,

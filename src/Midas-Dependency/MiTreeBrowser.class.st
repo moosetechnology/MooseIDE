@@ -1,11 +1,14 @@
 "
-Displays the containment tree (direct relations for now) between the entities.
+Shows the containment tree (direct relations for now) between the entities.
 
-Follow:
-Receives a MooseGroup
+- Follow:
+Accepts a MooseEntity using TEntityMetaLevelDependency.
 
-Highlight:
-entities if present
+- Highlight:
+Entities if present.
+
+- Propagate:
+<TODO>
 "
 Class {
 	#name : #MiTreeBrowser,

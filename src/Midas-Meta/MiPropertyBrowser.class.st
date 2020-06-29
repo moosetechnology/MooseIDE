@@ -1,11 +1,14 @@
 "
-Displays properties of an entity.
+Shows properties of a MooseObject.
 
-Follow: 
-receives MooseObjects
+- Follow: 
+Receives MooseObjects
 
-Highlight:
-\
+- Highlight:
+Nothing to do.
+
+- Propagate:
+<TODO>
 "
 Class {
 	#name : #MiPropertyBrowser,

@@ -1,12 +1,17 @@
 "
-Midas entrypoint.
+** Midas entrypoint **
 Shows installed models and allows model installation.
 
-Follow:
-\
+- Follow:
+Nothing to do.
 
-Highlight:
-Could highlight the model containing the received entity
+- Highlight:
+<TODO> Could highlight the model containing the received entity.
+
+- Propagate:
+The selected model.
+
+<TODO> Add features available in MoosePanel.
 "
 Class {
 	#name : #MiModelRootBrowser,

@@ -1,11 +1,15 @@
 "
-Displays entities in a MooseModel grouped by entity type
+Shows entities in a MooseModel grouped by entity type.
 
-Follow:
-Receives a MooseModel
+- Follow:
+Receives a MooseModel.
 
-Highlight:
-Could highlight the received entity.
+- Highlight:
+<TODO>
+
+- Propagate:
+Selected entities of there are some.
+<TODO> Improvement: not a collection but a mooseGroup.
 "
 Class {
 	#name : #MiMooseModelBrowser,
