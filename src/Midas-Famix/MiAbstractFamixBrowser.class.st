@@ -4,7 +4,7 @@ Class {
 	#category : #'Midas-Famix-Browser'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #testing }
 MiAbstractFamixBrowser class >> isAbstract [ 
 	^ self == MiAbstractFamixBrowser 
 ]

@@ -63,13 +63,24 @@ MiQueriesBrowser class >> new [
 ]
 
 { #category : #'instance creation' }
+MiQueriesBrowser class >> newModel [
+	^ FQRootQuery new
+		result: self currentApplication logger mostRecentEntity;
+		yourself
+]
+
+{ #category : #'instance creation' }
 MiQueriesBrowser class >> open [
 	<script>
 	self
 		flag:
 			#FQImprove
 				, 'This should be an example AND it depends on tests package'.
-	^ (self on: FQTestsHelper current classesAndMethods)
+	^ (self
+		on:
+		(FQRootQuery new
+		result: FQTestsHelper current classesAndMethods;
+		yourself))
 		openWithSpec;
 		yourself
 ]
@@ -256,12 +267,9 @@ MiQueriesBrowser >> selectedQuery [
 ]
 
 { #category : #'accessing model' }
-MiQueriesBrowser >> setModelBeforeInitialization: aMooseGroup [
+MiQueriesBrowser >> setModelBeforeInitialization: aRootQuery [
 	queries := OrderedCollection new
-		add:
-			(FQRootQuery new
-				result: aMooseGroup;
-				yourself);
+		add: aRootQuery;
 		yourself.
 	selectedQuery := self initialQuery
 ]

@@ -5,7 +5,7 @@ I provide a toolBar with:
 	- Buttons to inspect and propagate the current selection.
 	- A help button that shows the class comment for each browser. 
 
-Concrete browsers can use my instance variable #model.
+Concrete browsers can use my instance variable #model (it can be initialized with #initializeModel).
 They should override:
 Instance side:
 	- #accept: | which entities the browser can receive
@@ -103,6 +103,13 @@ MiAbstractBrowser class >> menuCommandOn: aBuilder [
 		icon: MooseIcons mooseIcon
 ]
 
+{ #category : #'instance creation' }
+MiAbstractBrowser class >> newModel [
+	"Override to return a model for your browser"
+
+	^ nil
+]
+
 { #category : #'world menu' }
 MiAbstractBrowser class >> openOn: anEntity [
 	self new
@@ -110,13 +117,13 @@ MiAbstractBrowser class >> openOn: anEntity [
 		openWithSpec
 ]
 
-{ #category : #'world menu' }
+{ #category : #'instance creation' }
 MiAbstractBrowser class >> runMe [
 	<script>
-	^ self new
+	^ (self on: self newModel)
 		openWithSpec;
 		"open with the last select entity"
-		selectEntity: MiApplication current logger mostRecentEntity
+			selectEntity: self currentApplication logger mostRecentEntity
 ]
 
 { #category : #'world menu' }
@@ -291,6 +298,11 @@ MiAbstractBrowser >> selectEntity: anEntity [
 	"I am used by the Mi Application. You should use #globallySelect: anEntity that will transmit the message to me and the other browsers"
 	toSelect := anEntity.
 	AbstractBrowserMode actionFor: self
+]
+
+{ #category : #'accessing model' }
+MiAbstractBrowser >> setModelBeforeInitialization: aModel [
+	model := aModel
 ]
 
 { #category : #actions }

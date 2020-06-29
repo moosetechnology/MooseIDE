@@ -14,8 +14,12 @@ MiQueriesBrowserTest >> classToTest [
 
 { #category : #running }
 MiQueriesBrowserTest >> setUp [
-	helper :=  FQTestsHelper current.
-	presenter := self classToTest on: helper classesAndMethods
+	helper := FQTestsHelper current.
+	presenter := self classToTest
+		on:
+			(FQRootQuery new
+				result: helper classesAndMethods;
+				yourself)
 ]
 
 { #category : #tests }

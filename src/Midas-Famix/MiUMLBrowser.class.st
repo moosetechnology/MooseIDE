@@ -38,6 +38,11 @@ MiUMLBrowser class >> menuCommandOn: aBuilder [
 		action: [ self runMe ]
 ]
 
+{ #category : #accessing }
+MiUMLBrowser class >> newModel [
+	^ MiUML new theme: self theme
+]
+
 { #category : #specs }
 MiUMLBrowser class >> runMe [
 	<script>
@@ -77,7 +82,6 @@ MiUMLBrowser >> followAction [
 { #category : #accessing }
 MiUMLBrowser >> initializePresenters [
 	super initializePresenters.
-	self model: (MiUML new theme: self theme).
 	diagram := self instantiate: SpRoassalPresenter.
 	diagram
 		script: [ :canvas | 

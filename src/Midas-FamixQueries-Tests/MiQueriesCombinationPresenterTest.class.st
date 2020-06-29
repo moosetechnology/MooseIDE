@@ -10,7 +10,11 @@ Class {
 { #category : #running }
 MiQueriesCombinationPresenterTest >> browserWithTwoQueries [
 	| browser |
-	browser := MiQueriesBrowser on: helper classesAndMethods.
+	browser := MiQueriesBrowser
+		on:
+			(FQRootQuery new
+				result: helper classesAndMethods;
+				yourself).
 	{(FQBooleanQuery property: #isDead).
 	(FQTypeQuery new type: FamixStClass)}
 		do: [ :parent | 

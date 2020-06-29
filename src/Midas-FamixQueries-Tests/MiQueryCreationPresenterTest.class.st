@@ -34,9 +34,14 @@ MiQueryCreationPresenterTest >> classToTest [
 
 { #category : #running }
 MiQueryCreationPresenterTest >> setUp [
-	helper :=  FQTestsHelper current.
+	helper := FQTestsHelper current.
 	presenter := MiQueryCreationPresenter
-		on: (MiQueriesBrowser on: helper classesAndMethods)
+		on:
+			(MiQueriesBrowser
+				on:
+					(FQRootQuery new
+						result: helper classesAndMethods;
+						yourself))
 ]
 
 { #category : #tests }
@@ -58,7 +63,12 @@ MiQueryCreationPresenterTest >> testCreateOnlyOneChild [
 { #category : #tests }
 MiQueryCreationPresenterTest >> testDisabledToolBarButton [
 	presenter := MiQueryCreationPresenter
-		on: (MiQueriesBrowser on: helper noEntities).
+		on:
+			(MiQueriesBrowser
+				on:
+					(FQRootQuery new
+						result: helper noEntities;
+						yourself)).
 	self openInstance.
 	self deny: presenter toolBar presenters first isEnabled
 ]

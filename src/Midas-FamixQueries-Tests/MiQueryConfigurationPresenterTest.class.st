@@ -50,7 +50,12 @@ MiQueryConfigurationPresenterTest >> queryClass [
 MiQueryConfigurationPresenterTest >> resetPresenterWithEntities: aMooseGroup [
 	| superPresenter |
 	superPresenter := MiQueryCreationPresenter
-		on: (MiQueriesBrowser on: aMooseGroup).
+		on:
+			(MiQueriesBrowser
+				on:
+					(FQRootQuery new
+						result: aMooseGroup;
+						yourself)).
 	superPresenter queryTypesDropList selectItem: self queryClass.
 	presenter := superPresenter presenters
 		detect: [ :pres | pres class == self classToTest ]

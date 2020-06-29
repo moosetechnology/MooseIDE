@@ -10,7 +10,11 @@ Class {
 { #category : #running }
 MiRoassalQueryPresenterTest >> browserWithSimilarQueries [
 	| browser query1 query2 query3 query4 |
-	browser := MiQueriesBrowser on: helper classesAndMethods.
+	browser := MiQueriesBrowser
+		on:
+			(FQRootQuery new
+				result: helper classesAndMethods;
+				yourself).
 	query1 := (FQTypeQuery new type: FamixStClass)
 		beChildOf: browser initialQuery.
 	query2 := (FQTypeQuery new type: FamixStMethod)

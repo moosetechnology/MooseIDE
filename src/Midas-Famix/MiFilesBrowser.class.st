@@ -46,6 +46,11 @@ MiFilesBrowser class >> menuCommandOn: aBuilder [
 		action: [ self runMe ]
 ]
 
+{ #category : #initialization }
+MiFilesBrowser class >> newModel [
+	^ MiFilesModel new
+]
+
 { #category : #specs }
 MiFilesBrowser class >> runMe [
 	<script>
@@ -101,7 +106,6 @@ MiFilesBrowser >> followAction [
 { #category : #initialization }
 MiFilesBrowser >> initializePresenters [
 	super initializePresenters.
-	self model: MiFilesModel new.
 	self initializeTreeTable.
 	treeEntity := self newTreeTable.
 	treeEntity
@@ -118,14 +122,13 @@ MiFilesBrowser >> initializePresenters [
 		beResizable.
 	treeEntity
 		whenSelectionChangedDo: [ :selected | 
-			selected selectedItems ifNotEmpty: [ 
-			self
-				freezeDuring: [ selected selectedItems size = 1
-						ifTrue: [
-							MiApplication current globallySelect: selected selectedItem ]
-						ifFalse: [ | mooseGroup |
-							mooseGroup := MooseGroup withAll: selected selectedItems.
-							MiApplication current globallySelect: mooseGroup ] ] ] ]
+			selected selectedItems
+				ifNotEmpty: [ self
+						freezeDuring: [ selected selectedItems size = 1
+								ifTrue: [ MiApplication current globallySelect: selected selectedItem ]
+								ifFalse: [ | mooseGroup |
+									mooseGroup := MooseGroup withAll: selected selectedItems.
+									MiApplication current globallySelect: mooseGroup ] ] ] ]
 ]
 
 { #category : #initialization }

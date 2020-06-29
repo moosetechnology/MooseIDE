@@ -39,6 +39,16 @@ MiTreeMapVisualisationBrowser class >> menuCommandOn: aBuilder [
 		action: [ self runMe ]
 ]
 
+{ #category : #initialization }
+MiTreeMapVisualisationBrowser class >> newModel [
+	^ MiTreeMap new
+		theme: self theme;
+		childrenBlock: [ :el | 
+			(el usesFamixTrait: TEntityMetaLevelDependency)
+				ifTrue: [ el children ]
+				ifFalse: [ {} ] ]
+]
+
 { #category : #specs }
 MiTreeMapVisualisationBrowser class >> runMe [
 	<script>
@@ -84,11 +94,6 @@ MiTreeMapVisualisationBrowser >> highlightAction [
 { #category : #initialization }
 MiTreeMapVisualisationBrowser >> initializePresenters [
 	super initializePresenters.
-	self
-		model:
-			(MiTreeMap new
-				theme: self theme;
-				childrenBlock: [ :el | (el usesFamixTrait: TEntityMetaLevelDependency) ifTrue: [ el children ] ifFalse: [ {} ] ]).
 	diagram := self instantiate: SpRoassalPresenter.
 	diagram
 		script: [ :canvas | 

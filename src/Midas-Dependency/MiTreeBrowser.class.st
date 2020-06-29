@@ -38,6 +38,11 @@ MiTreeBrowser class >> menuCommandOn: aBuilder [
 		action: [ self runMe ]
 ]
 
+{ #category : #'as yet unclassified' }
+MiTreeBrowser class >> newModel [
+	^ MiTreeBrowserModel new
+]
+
 { #category : #specs }
 MiTreeBrowser class >> runMe [
 	<script>
@@ -66,7 +71,6 @@ MiTreeBrowser >> followAction [
 { #category : #'as yet unclassified' }
 MiTreeBrowser >> initializePresenters [
 	super initializePresenters.
-	self model: MiTreeBrowserModel new.
 	tree := self newTreeTable.
 	tree
 		addColumn:

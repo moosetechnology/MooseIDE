@@ -26,7 +26,7 @@ Class {
 	#category : #'Midas-Dependency'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #testing }
 MiAbstractDependencyBrowser class >> isAbstract [ 
 	^ self == MiAbstractDependencyBrowser
 ]

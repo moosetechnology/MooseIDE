@@ -47,13 +47,15 @@ MiLogBrowser class >> menuCommandOn: aBuilder [
 		action: [ self runMe ]
 ]
 
+{ #category : #initialization }
+MiLogBrowser class >> newModel [
+	^ self currentApplication logger
+]
+
 { #category : #'world menu' }
 MiLogBrowser class >> runMe [
 	<script>
-	^ self new
-		openWithSpec;
-		yourself
-
+	^ super runMe
 ]
 
 { #category : #initialization }
@@ -87,7 +89,6 @@ MiLogBrowser >> initializePresenters [
 	"list"
 	entryList := self newList.
 	entryList contextMenu: [ self rootCommandsGroup asMenuPresenter ].
-	self model: self application logger.
 	entryList items: self model logs.
 	entryList display: [ :anElement | anElement entity mooseName ]
 ]

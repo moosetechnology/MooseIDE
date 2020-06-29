@@ -38,6 +38,11 @@ MiDependencyBrowser class >> menuCommandOn: aBuilder [
 		action: [ self runMe ]
 ]
 
+{ #category : #TOREMOVE }
+MiDependencyBrowser class >> newModel [
+	^ MiDependencyVisualization new theme: self theme
+]
+
 { #category : #'world menu' }
 MiDependencyBrowser class >> runMe [
 	<script>
@@ -79,7 +84,6 @@ MiDependencyBrowser >> followAction [
 { #category : #TOREMOVE }
 MiDependencyBrowser >> initializePresenters [
 	super initializePresenters.
-	self model: (MiDependencyVisualization new theme: self theme).
 	diagram := self instantiate: SpRoassalPresenter.
 	diagram
 		script: [ :canvas | 

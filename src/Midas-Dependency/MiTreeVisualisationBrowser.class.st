@@ -38,6 +38,11 @@ MiTreeVisualisationBrowser class >> menuCommandOn: aBuilder [
 		action: [ self runMe ]
 ]
 
+{ #category : #initialization }
+MiTreeVisualisationBrowser class >> newModel [
+	^ MiTreeVisualisationBrowserModel new
+]
+
 { #category : #specs }
 MiTreeVisualisationBrowser class >> runMe [
 	<script>
@@ -134,7 +139,6 @@ MiTreeVisualisationBrowser >> highlightAction [
 { #category : #initialization }
 MiTreeVisualisationBrowser >> initializePresenters [
 	super initializePresenters.
-	self model: MiTreeVisualisationBrowserModel new.
 	diagram := self instantiate: SpRoassalPresenter.
 	diagram
 		script: [ :canvas | canvas color: self theme backgroundColor ];
