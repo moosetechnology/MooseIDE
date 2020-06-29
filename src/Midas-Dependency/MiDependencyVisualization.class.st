@@ -18,7 +18,8 @@ MiDependencyVisualization >> entities [
 
 { #category : #running }
 MiDependencyVisualization >> entities: aCollection [
-	entities := aCollection select: [ :a | a usesFamixTrait: TDependencyQueries ] 
+	entities := aCollection
+		select: [ :a | a usesFamixTrait: TEntityMetaLevelDependency ]
 ]
 
 { #category : #running }
@@ -73,12 +74,21 @@ MiDependencyVisualization >> run [
 	nodesOutgoing := Dictionary new.
 	nodes
 		do: [ :each | 
-			nodesIncoming at: each put: (each queryIncomingDependencies withoutSelfLoops atScope: each class) asOrderedCollection.
-			nodesOutgoing at: each put: (each queryOutgoingDependencies withoutSelfLoops atScope: each class) asOrderedCollection ].
-
+			nodesIncoming
+				at: each
+				put:
+					(each queryAllIncoming withoutSelfLoops atScope: each class)
+						asOrderedCollection.
+			nodesOutgoing
+				at: each
+				put:
+					(each queryAllOutgoing withoutSelfLoops atScope: each class)
+						asOrderedCollection ].
 	color := NSScale linear
 		domain: #(1 500);
-		range: {Color white . Color darkGray}.
+		range:
+			{Color white.
+			Color darkGray}.
 	shapes := nodes
 		collect: [ :node | 
 			RSComposite new
@@ -86,7 +96,7 @@ MiDependencyVisualization >> run [
 					{(RSBox new
 						color: (color scale: node numberOfLinesOfCode);
 						"+5 for a minimal size"
-						width: ((nodesIncoming at: node) size * 2) + 5;
+							width: (nodesIncoming at: node) size * 2 + 5;
 						height: (nodesOutgoing at: node) size * 2 + 5;
 						yourself)};
 				model: node;
@@ -124,7 +134,8 @@ MiDependencyVisualization >> run [
 		withBorderAttachPoint;
 		widthFrom: 1;
 		widthTo: 1;
-		connectFrom: #yourself toAll: [ :p | ((nodesIncoming at: p) , (nodesOutgoing at: p)) asSet ].
+		connectFrom: #yourself
+			toAll: [ :p | ((nodesIncoming at: p) , (nodesOutgoing at: p)) asSet ].
 	RSCircleLayout new on: shapes.
 	self legend.
 	self canvas zoomToFit
