@@ -1,15 +1,36 @@
 "
-An abstract browser with the 3 receiving modes (frozen, highlight, follow) and the sending mode (propagate)
+I am superclass for all browsers in Midas.
+I provide a toolBar with:
+	- Radio buttons to choose a reception mode: Follow, Freeze and Highlight.
+	- Buttons to inspect and propagate the current selection.
+	- A help button that shows the class comment for each browser. 
 
-Modes:
-- propagate -- selected entities in the browser are propagated to the whole application 
+Concrete browsers can use my instance variable #model.
+They should override:
+Instance side:
+	- #accept: | which entities the browser can receive
+	- #followAction | what to do with the received entity in Follow mode
+	- #highlightAction | what to do with the received entity in Highlight mode
+	- #miSelectedItem | entity (or entities) to propagate
+Class side:	
+	- #title | The browser window title
+	- #menuCommandOn: | To be integrated into Midas Browsers menu
+Spec2 methods: 
+	#initializePresenters, #defaultSpec, ...
 
-- follow -- selected entities in the application are display in the browser
-- highlight -- entities in the browser remain the same, but those that were selected in the application are highlighted
-- frozen -- ignore entities selected in application 
+Please comment your browser as follow: 
+*************************************************
+A few lines describing the browser purpose.
 
-Instance variable:
-- model
+- Follow:
+Entities accepted and associated behavior.
+
+- Highlight:
+Highlight behavior.
+
+- Propagate:
+Propagated entities.
+*************************************************
 "
 Class {
 	#name : #MiAbstractBrowser,
