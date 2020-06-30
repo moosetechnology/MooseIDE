@@ -24,8 +24,7 @@ MiSelectedEntityLog >> entity [
 
 { #category : #accessing }
 MiSelectedEntityLog >> entity: anObject [
-	entity := anObject.
-	self activate
+	entity := anObject
 ]
 
 { #category : #accessing }
