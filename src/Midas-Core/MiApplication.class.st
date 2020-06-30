@@ -21,12 +21,12 @@ MiApplication class >> reset [
 	Current := nil
 ]
 
-{ #category : #documentation }
+{ #category : #accessing }
 MiApplication >> browsers [
 	^ self windows collect: #presenter thenSelect: #isMiBrowser
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #actions }
 MiApplication >> freezeBrowsersDuring: aBlock [
 	| activeButtons |
 	activeButtons := self browsers
@@ -36,34 +36,34 @@ MiApplication >> freezeBrowsersDuring: aBlock [
 		ensure: [ activeButtons do: [ :button | button state: true ] ]
 ]
 
-{ #category : #documentation }
+{ #category : #actions }
 MiApplication >> globallySelect: anEntity [
 	anEntity ifNotNil: [ (self logger newLogFor: anEntity) activate ]
 ]
 
-{ #category : #documentation }
+{ #category : #initialization }
 MiApplication >> initialize [
 	super initialize.
 	self logger: MiLogger new
 ]
 
-{ #category : #documentation }
+{ #category : #accessing }
 MiApplication >> logger [
 	^ logger
 ]
 
-{ #category : #documentation }
+{ #category : #accessing }
 MiApplication >> logger: anObject [
 	logger := anObject.
 	logger application: self
 ]
 
-{ #category : #documentation }
+{ #category : #actions }
 MiApplication >> refreshBrowsersWith: anEntity [
 	self browsers do: [ :browser | browser selectEntity: anEntity ]
 ]
 
-{ #category : #documentation }
+{ #category : #actions }
 MiApplication >> start [
 	"we will see"
 ]
