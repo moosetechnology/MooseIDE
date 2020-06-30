@@ -51,6 +51,11 @@ MiModelRootBrowser class >> menuCommandOn: aBuilder [
 		action: [ self runMe ]
 ]
 
+{ #category : #'instance creation' }
+MiModelRootBrowser class >> newModel [
+	^ MiModelRootBrowserModel new
+]
+
 { #category : #specs }
 MiModelRootBrowser class >> runMe [
 	<script>
@@ -62,43 +67,61 @@ MiModelRootBrowser class >> title [
 	^ 'Model root'
 ]
 
-{ #category : #accessing }
+{ #category : #testing }
 MiModelRootBrowser >> accept: anObject [
 	^ false
 ]
 
-{ #category : #initialization }
-MiModelRootBrowser >> addModel: mooseModel [
-	"need to refresh the list"
-
-	modelPresenter items: MooseModel root
-]
-
-{ #category : #'as yet unclassified' }
+{ #category : #actions }
 MiModelRootBrowser >> followAction [
 	^ self
 ]
 
+{ #category : #menu }
+MiModelRootBrowser >> importMSEMenuItem: item [
+	^ item
+		description: 'Import mse';
+		icon: (self iconNamed: #mooseImportMse);
+		action: [ MiImportModel new openModalWithSpec.
+			modelPresenter updateList ]
+]
+
+{ #category : #menu }
+MiModelRootBrowser >> importStMenuItem: item [
+	^ item
+		description: 'Import St model';
+		icon: (self iconNamed: #mooseImportSmalltalk);
+		action: [ (MooseImportFromSmalltalkImageWizard new
+				open;
+				mooseModel) ifNotNil: [ :mooseModel | modelPresenter updateList ] ]
+]
+
 { #category : #initialization }
 MiModelRootBrowser >> initializeList [
-	modelPresenter := self newList.
-	modelPresenter
-		contextMenu: [ self rootCommandsGroup asMenuPresenter ].
-	modelPresenter
+	modelPresenter := self newList
 		items: MooseModel root;
-		display: [ :mooseModel | mooseModel name ]
+		display: [ :mooseModel | mooseModel name ];
+		contextMenu: [ self rootCommandsGroup asMenuPresenter ];
+		whenSelectionChangedDo: [ :selected | 
+			model selected: selected selectedItem.
+			self application globallySelect: selected selectedItem ]
+]
+
+{ #category : #initialization }
+MiModelRootBrowser >> initializeMenu [
+	menu := self newMenuBar
+		addGroup: [ :group | 
+			group
+				addItem: [ :item | self importMSEMenuItem: item ];
+				addItem: [ :item | self importStMenuItem: item ] ];
+		addItem: [ :item | self refreshMenuItem: item ]
 ]
 
 { #category : #initialization }
 MiModelRootBrowser >> initializePresenters [
 	super initializePresenters.
-	model := MiModelRootBrowserModel new.
-	menu := self mainMenu.
-	self initializeList.
-	modelPresenter
-		whenSelectionChangedDo: [ :selected | 
-			model selected: selected selectedItem.
-			self application globallySelect: selected selectedItem ]
+	self initializeMenu.
+	self initializeList
 ]
 
 { #category : #initialization }
@@ -107,51 +130,30 @@ MiModelRootBrowser >> initializeWindow: aWindowPresenter [
 	aWindowPresenter initialExtent: 600 @ 400
 ]
 
-{ #category : #initialization }
-MiModelRootBrowser >> mainMenu [
-	| aMenu |
-	aMenu := self newMenuBar
-		addGroup: [ :group | 
-			group
-				addItem: [ :item | 
-					item
-						name: nil;
-						description: 'Import mse';
-						icon: (self iconNamed: #mooseImportMse);
-						action: [ MiImportModel new openModalWithSpec.
-							modelPresenter updateList ] ];
-				addItem: [ :item | 
-					item
-						name: nil;
-						description: 'Import St model';
-						icon: (self iconNamed: #mooseImportSmalltalk);
-						action: [ (MooseImportFromSmalltalkImageWizard new
-								open;
-								mooseModel) ifNotNil: [ :mooseModel | self addModel: mooseModel ] ] ] ].
-	^ aMenu
-]
-
-{ #category : #initialization }
+{ #category : #accessing }
 MiModelRootBrowser >> miSelectedItem [
 	^ modelPresenter selection selectedItem
 ]
 
-{ #category : #initialization }
+{ #category : #accessing }
 MiModelRootBrowser >> modelPresenter [
 	^ modelPresenter
 ]
 
-{ #category : #initialization }
+{ #category : #menu }
+MiModelRootBrowser >> refreshMenuItem: item [
+	^ item
+		description: 'Refresh list';
+		icon: (self iconNamed: #smallUpdate);
+		action: [ modelPresenter updateList ]
+]
+
+{ #category : #accessing }
 MiModelRootBrowser >> selected [
 	^ model selected
 ]
 
-{ #category : #initialization }
+{ #category : #accessing }
 MiModelRootBrowser >> selectedObject [
 	^ modelPresenter selection selectedItem
-]
-
-{ #category : #initialization }
-MiModelRootBrowser >> setModelPresenterSelection [
-	modelPresenter selectItem: modelPresenter roots first
 ]
