@@ -13,8 +13,8 @@ MiSelectedEntityLog class >> entity: aSelectedEntity [
 ]
 
 { #category : #activation }
-MiSelectedEntityLog >> activate [
-	self application refreshBrowsersWith: self entity
+MiSelectedEntityLog >> activateIn: anApplication [
+	anApplication refreshBrowsersWith: self entity
 ]
 
 { #category : #accessing }

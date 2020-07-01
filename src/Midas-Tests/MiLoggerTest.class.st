@@ -10,56 +10,77 @@ Class {
 	#category : #'Midas-Tests'
 }
 
-{ #category : #accessing }
-MiLoggerTest >> logger [
-	^ logger
-]
-
-{ #category : #running }
-MiLoggerTest >> refreshBrowsersWith: anEntity [
-	"do nothing.. I'm here for the tests"
-]
-
 { #category : #running }
 MiLoggerTest >> setUp [
-	"Hooks that subclasses may override to define the fixture of test."
-
 	logger := MiLogger new
-		application: self;
-		yourself
 ]
 
 { #category : #tests }
 MiLoggerTest >> testClean [
 	| logs |
 	logs := logger logs.
-	logger logs
-		add:
-			(MiSelectedEntityLog new
-				logger: logger;
-				entity: self).
-	self assert: self logger logs isNotEmpty.
+	self assert: logs isEmpty.
+	
+	logger newLogFor: MooseEntity new.
+	self assert: logger logs isNotEmpty.
+	
 	logger clean.
-	self assert: self logger logs isEmpty.
-	self assert: self logger logs == logs
+	self assert: logger logs isEmpty.
+	self assert: logger logs identicalTo: logs
 ]
 
 { #category : #tests }
-MiLoggerTest >> testRemoveEntry [
-	| entity1 entity2 |
-	entity1 := MiSelectedEntityLog new
-		logger: logger;
-		entity: 2.
-	entity2 := MiSelectedEntityLog new
-		logger: logger;
-		entity: 1.
-	self logger logs add: entity1.
-	self logger logs add: entity2.
+MiLoggerTest >> testMostRecentEntity [
+	| entity |
+	self assert: logger mostRecentEntity isNil.
+	entity := MooseEntity new.
+	logger newLogFor: entity.
+	self assert: logger mostRecentEntity identicalTo: entity
+]
 
-	self assert: self logger logs size equals: 2.
-	self logger removeLog: entity2.
+{ #category : #tests }
+MiLoggerTest >> testMostRecentLog [
+	| log |
+	self assert: logger mostRecentLog isNil.
+	log := logger newLogFor: MooseEntity new.
+	self assert: logger mostRecentLog identicalTo: log
+]
 
-	self assert: (self logger logs includes: entity1).
-	self deny: (self logger logs includes: entity2).
-	self assert: self logger logs size equals: 1
+{ #category : #tests }
+MiLoggerTest >> testNewLogFor [
+	| entity group firstLog secondLog thirdLog |
+	entity := MooseEntity new.
+
+	"Logging an entity --> log creation"
+	firstLog := logger newLogFor: entity.
+	self assert: firstLog class identicalTo: MiSelectedEntityLog.
+	self assert: firstLog entity identicalTo: entity.
+	self assertCollection: logger logs hasSameElements: {firstLog}.
+
+	"Logging the same entity --> returning the previous log"
+	secondLog := logger newLogFor: entity.
+	self assert: secondLog identicalTo: firstLog.
+	self assertCollection: logger logs hasSameElements: {firstLog}.
+
+	"Logging another entity --> new log"
+	group := MooseGroup new.
+	thirdLog := logger newLogFor: group.
+	self assert: thirdLog class identicalTo: MiSelectedEntityLog.
+	self assert: thirdLog entity identicalTo: group.
+	self
+		assertCollection: logger logs
+		hasSameElements:
+			{firstLog.
+			thirdLog}
+]
+
+{ #category : #tests }
+MiLoggerTest >> testRemoveLog [
+	| firstLog secondLog |
+	firstLog := logger newLogFor: MooseEntity new.
+	secondLog := logger newLogFor: MooseGroup new.
+
+	"Remove logs"
+	logger removeLog: secondLog.
+	self assertCollection: logger logs hasSameElements: {firstLog}
 ]

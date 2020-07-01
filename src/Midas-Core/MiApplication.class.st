@@ -38,7 +38,8 @@ MiApplication >> freezeBrowsersDuring: aBlock [
 
 { #category : #actions }
 MiApplication >> globallySelect: anEntity [
-	anEntity ifNotNil: [ (self logger newLogFor: anEntity) activate ]
+	anEntity
+		ifNotNil: [ (self logger newLogFor: anEntity) activateIn: self ]
 ]
 
 { #category : #initialization }

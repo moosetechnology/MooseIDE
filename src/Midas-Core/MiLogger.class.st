@@ -5,28 +5,17 @@ Class {
 	#name : #MiLogger,
 	#superclass : #SpApplication,
 	#instVars : [
-		'logs',
-		'application'
+		'logs'
 	],
 	#category : #'Midas-Core-Logger'
 }
-
-{ #category : #accessing }
-MiLogger >> application [
-	^ application
-]
-
-{ #category : #accessing }
-MiLogger >> application: anObject [
-	application := anObject
-]
 
 { #category : #api }
 MiLogger >> clean [
 	logs removeAll
 ]
 
-{ #category : #accessing }
+{ #category : #initialization }
 MiLogger >> initialize [
 	super initialize.
 	logs := OrderedCollection new
@@ -60,18 +49,14 @@ MiLogger >> mostRecentLog [
 	^ self logs ifEmpty: [ nil ] ifNotEmpty: [ self logs first ]
 ]
 
-{ #category : #accessing }
+{ #category : #api }
 MiLogger >> newLogFor: anEntity [
 	^ self mostRecentEntity == anEntity
 		ifTrue: [ self mostRecentLog ]
-		ifFalse: [ logs
-				addFirst:
-					(MiSelectedEntityLog new
-						logger: self;
-						entity: anEntity) ]
+		ifFalse: [ logs addFirst: (MiSelectedEntityLog new entity: anEntity) ]
 ]
 
-{ #category : #accessing }
+{ #category : #api }
 MiLogger >> removeLog: aLog [
 	self logs remove: aLog
 ]
