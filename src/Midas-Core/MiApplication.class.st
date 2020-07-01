@@ -2,7 +2,8 @@ Class {
 	#name : #MiApplication,
 	#superclass : #SpApplication,
 	#instVars : [
-		'logger'
+		'logger',
+		'name'
 	],
 	#classVars : [
 		'Current',
@@ -13,28 +14,40 @@ Class {
 
 { #category : #accessing }
 MiApplication class >> default [
-	^ self registry at: 'Default' ifAbsentPut: [ self new ]
+	^ self named: 'Default'
+]
+
+{ #category : #accessing }
+MiApplication class >> deleteApplication: anApplication [
+	self registry remove: anApplication ifAbsent: [  ]
 ]
 
 { #category : #accessing }
 MiApplication class >> deleteApplicationNamed: aName [
-	self registry removeKey: aName ifAbsent: [  ]
+	self registry remove: (self named: aName)
 ]
 
 { #category : #accessing }
 MiApplication class >> named: aName [
-	^ self registry at: aName ifAbsentPut: [ self new ]
+	^ self registry
+		detect: [ :app | app name = aName ]
+		ifNone: [ self registry
+				add:
+					(self new
+						name: aName;
+						yourself) ]
 ]
 
 { #category : #registry }
 MiApplication class >> registry [
-	^ Registry ifNil: [ Registry := Dictionary new ]
+	^ Registry ifNil: [ Registry := Set new ]
 ]
 
 { #category : #accessing }
 MiApplication class >> reset [
 	<script>
-	Registry := Dictionary new
+	self flag: 'Dangerous if some browsers still use custom applications'.
+	Registry := Set new
 ]
 
 { #category : #accessing }
@@ -72,6 +85,16 @@ MiApplication >> logger [
 { #category : #accessing }
 MiApplication >> logger: anObject [
 	logger := anObject
+]
+
+{ #category : #accessing }
+MiApplication >> name [
+	^ name
+]
+
+{ #category : #accessing }
+MiApplication >> name: anObject [
+	name := anObject
 ]
 
 { #category : #actions }

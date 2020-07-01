@@ -25,9 +25,7 @@ MiApplicationTest >> setUp [
 
 { #category : #running }
 MiApplicationTest >> tearDown [
-	MiApplication
-		deleteApplicationNamed: self applicationName;
-		deleteApplicationNamed: self alternativeApplicationName.
+	MiApplication deleteApplication: application.
 	super tearDown
 ]
 
@@ -39,13 +37,26 @@ MiApplicationTest >> testDefault [
 ]
 
 { #category : #tests }
-MiApplicationTest >> testDeleteApplicationNamed [
+MiApplicationTest >> testDeleteApplication [
 	| initialSize |
 	initialSize := MiApplication registry size.
 	
-	MiApplication deleteApplicationNamed: self applicationName.
+	MiApplication deleteApplication: application.
 	
-	self deny: (MiApplication registry includesKey: self applicationName).
+	self deny: (MiApplication registry includes: application).
+	self assert: MiApplication registry size equals: initialSize - 1
+]
+
+{ #category : #tests }
+MiApplicationTest >> testDeleteApplicationNamed [
+	| initialSize |
+	initialSize := MiApplication registry size.
+	MiApplication deleteApplicationNamed: self applicationName.
+
+	self
+		deny:
+			(MiApplication registry
+				anySatisfy: [ :app | app name = self applicationName ]).
 	self assert: MiApplication registry size equals: initialSize - 1
 ]
 
@@ -57,4 +68,6 @@ MiApplicationTest >> testNamed [
 	
 	self assert: newApp class identicalTo: MiApplication.
 	self assert: MiApplication registry size equals: initialSize + 1.
+	
+	MiApplication deleteApplication: newApp.
 ]
