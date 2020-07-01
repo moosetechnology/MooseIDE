@@ -54,5 +54,5 @@ MiPropagateCommand >> propagate [
 		do: [ :exception | 
 			exception signal.
 			^ self ].
-	^ MiApplication current globallySelect: selectedItem
+	^ MiApplication default globallySelect: selectedItem
 ]

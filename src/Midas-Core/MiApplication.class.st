@@ -5,20 +5,31 @@ Class {
 		'logger'
 	],
 	#classVars : [
-		'Current'
+		'Current',
+		'Registry'
 	],
 	#category : #'Midas-Core-Application'
 }
 
 { #category : #accessing }
-MiApplication class >> current [
-	^ Current ifNil: [ Current := self new ]
+MiApplication class >> default [
+	^ self registry at: 'Default' ifAbsentPut: [ self new ]
+]
+
+{ #category : #accessing }
+MiApplication class >> named: aName [
+	^ self registry at: aName ifAbsentPut: [ self new ]
+]
+
+{ #category : #registry }
+MiApplication class >> registry [
+	^ Registry ifNil: [ Registry := Dictionary new ]
 ]
 
 { #category : #accessing }
 MiApplication class >> reset [
 	<script>
-	Current := nil
+	Registry := nil
 ]
 
 { #category : #accessing }
@@ -55,8 +66,7 @@ MiApplication >> logger [
 
 { #category : #accessing }
 MiApplication >> logger: anObject [
-	logger := anObject.
-	logger application: self
+	logger := anObject
 ]
 
 { #category : #actions }

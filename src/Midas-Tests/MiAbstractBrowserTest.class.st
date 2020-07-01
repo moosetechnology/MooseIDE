@@ -22,35 +22,35 @@ MiAbstractBrowserTest >> assertAllBrowsersOpenOn: anObject [
 
 { #category : #tests }
 MiAbstractBrowserTest >> assertCorrectPropagation [
-
 	"Propagate a mooseModel"
-	MiApplication current globallySelect: MooseModel new.
-	self assert: MiApplication current logger logs size equals: 1.
-	MiApplication current logger clean.
+
+	MiApplication default globallySelect: MooseModel new.
+	self assert: MiApplication default logger logs size equals: 1.
+	MiApplication default logger clean.
 
 	"Propagate a mooseGroup"
-	MiApplication current globallySelect: MooseGroup new.
-	self assert: MiApplication current logger logs size equals: 1.
-	MiApplication current logger clean.
+	MiApplication default globallySelect: MooseGroup new.
+	self assert: MiApplication default logger logs size equals: 1.
+	MiApplication default logger clean.
 
 	"Propagate a mooseEntity"
-	MiApplication current globallySelect: MooseEntity new.
-	self assert: MiApplication current logger logs size equals: 1.
-	MiApplication current logger clean
+	MiApplication default globallySelect: MooseEntity new.
+	self assert: MiApplication default logger logs size equals: 1.
+	MiApplication default logger clean
 ]
 
 { #category : #running }
 MiAbstractBrowserTest >> setUp [
 	super setUp.
-	currentLogs := MiApplication current logger logs.
-	MiApplication current logger logs: OrderedCollection new.
+	currentLogs := MiApplication default logger logs.
+	MiApplication default logger logs: OrderedCollection new.
 	concreteBrowsers := MiAbstractBrowser allSubclasses
 		reject: #isAbstract
 ]
 
 { #category : #running }
 MiAbstractBrowserTest >> tearDown [
-	MiApplication current logger logs: currentLogs.
+	MiApplication default logger logs: currentLogs.
 	super tearDown
 ]
 
@@ -67,7 +67,7 @@ MiAbstractBrowserTest >> testAllBrowserHaveATitle [
 { #category : #tests }
 MiAbstractBrowserTest >> testBrowsersDoNotPropagateWhenReceiving [
 	| browsers |
-	MiApplication current
+	MiApplication default
 		freezeBrowsersDuring: [ browsers := concreteBrowsers collect: [ :browser | browser runMe ].
 			[ browsers do: #follow.
 			self assertCorrectPropagation.
