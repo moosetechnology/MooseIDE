@@ -19,7 +19,7 @@ Class {
 		'entryList',
 		'toolbar'
 	],
-	#category : #'Midas-Core-Browser'
+	#category : #'Midas-Core-Logger'
 }
 
 { #category : #'world menu' }

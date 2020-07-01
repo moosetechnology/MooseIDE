@@ -3,7 +3,7 @@ Keeps a log of all selected entities in the application
 "
 Class {
 	#name : #MiLogger,
-	#superclass : #SpApplication,
+	#superclass : #Object,
 	#instVars : [
 		'logs'
 	],
