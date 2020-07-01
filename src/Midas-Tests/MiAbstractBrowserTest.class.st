@@ -8,6 +8,11 @@ Class {
 	#category : #'Midas-Tests'
 }
 
+{ #category : #running }
+MiAbstractBrowserTest >> application [
+	^ MiApplication current
+]
+
 { #category : #tests }
 MiAbstractBrowserTest >> assertAllBrowsersOpenOn: anObject [
 	concreteBrowsers
@@ -24,33 +29,33 @@ MiAbstractBrowserTest >> assertAllBrowsersOpenOn: anObject [
 MiAbstractBrowserTest >> assertCorrectPropagation [
 	"Propagate a mooseModel"
 
-	MiApplication default globallySelect: MooseModel new.
-	self assert: MiApplication default logger logs size equals: 1.
-	MiApplication default logger clean.
+	self application globallySelect: MooseModel new.
+	self assert: self application logger logs size equals: 1.
+	self application logger clean.
 
 	"Propagate a mooseGroup"
-	MiApplication default globallySelect: MooseGroup new.
-	self assert: MiApplication default logger logs size equals: 1.
-	MiApplication default logger clean.
+	self application globallySelect: MooseGroup new.
+	self assert: self application logger logs size equals: 1.
+	self application logger clean.
 
 	"Propagate a mooseEntity"
-	MiApplication default globallySelect: MooseEntity new.
-	self assert: MiApplication default logger logs size equals: 1.
-	MiApplication default logger clean
+	self application globallySelect: MooseEntity new.
+	self assert: self application logger logs size equals: 1.
+	self application logger clean
 ]
 
 { #category : #running }
 MiAbstractBrowserTest >> setUp [
 	super setUp.
-	currentLogs := MiApplication default logger logs.
-	MiApplication default logger logs: OrderedCollection new.
+	currentLogs := MiApplication current logger logs.
+	MiApplication current logger logs: OrderedCollection new.
 	concreteBrowsers := MiAbstractBrowser allSubclasses
 		reject: #isAbstract
 ]
 
 { #category : #running }
 MiAbstractBrowserTest >> tearDown [
-	MiApplication default logger logs: currentLogs.
+	MiApplication current logger logs: currentLogs.
 	super tearDown
 ]
 
@@ -67,15 +72,14 @@ MiAbstractBrowserTest >> testAllBrowserHaveATitle [
 { #category : #tests }
 MiAbstractBrowserTest >> testBrowsersDoNotPropagateWhenReceiving [
 	| browsers |
-	MiApplication default
-		freezeBrowsersDuring: [ browsers := concreteBrowsers collect: [ :browser | browser runMe ].
-			[ browsers do: #follow.
-			self assertCorrectPropagation.
-			browsers do: #freeze.
-			self assertCorrectPropagation.
-			browsers do: #highlight.
-			self assertCorrectPropagation ]
-				ensure: [ browsers do: [ :browser | browser window close ] ] ]
+	browsers := concreteBrowsers collect: [ :browser | browser runMe ].
+	[ browsers do: #follow.
+	self assertCorrectPropagation.
+	browsers do: #freeze.
+	self assertCorrectPropagation.
+	browsers do: #highlight.
+	self assertCorrectPropagation ]
+		ensure: [ browsers do: [ :browser | browser window close ] ]
 ]
 
 { #category : #tests }

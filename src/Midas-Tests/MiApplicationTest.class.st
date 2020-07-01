@@ -2,72 +2,81 @@ Class {
 	#name : #MiApplicationTest,
 	#superclass : #TestCase,
 	#instVars : [
-		'application'
+		'application',
+		'bus'
 	],
 	#category : #'Midas-Tests'
 }
 
 { #category : #running }
-MiApplicationTest >> alternativeApplicationName [
-	^ 'TestApp2'
+MiApplicationTest >> alternativeBusName [
+	^ 'TestBus2'
 ]
 
 { #category : #running }
-MiApplicationTest >> applicationName [
-	^ 'TestApp'
+MiApplicationTest >> application [
+	^ MiApplication current
+]
+
+{ #category : #running }
+MiApplicationTest >> busName [
+	^ 'TestBus'
 ]
 
 { #category : #running }
 MiApplicationTest >> setUp [
 	super setUp.
-	application := MiApplication named: self applicationName
+	bus := self application busNamed: self busName
 ]
 
 { #category : #running }
 MiApplicationTest >> tearDown [
-	MiApplication deleteApplication: application.
+	self application deleteBus: bus.
 	super tearDown
 ]
 
 { #category : #tests }
-MiApplicationTest >> testDefault [
+MiApplicationTest >> testBusNamed [
+	| initialSize newBus |
+	initialSize := self application buses size.
+	newBus := self application busNamed: self alternativeBusName.
+	
+	self assert: newBus class identicalTo: MiBus.
+	self assert: (self application buses includes: newBus).
+	self assert: self application buses size equals: initialSize + 1.
+	
+	self application deleteBus: newBus.
+]
+
+{ #category : #tests }
+MiApplicationTest >> testDefaultBus [
 	| default |
-	default := MiApplication default.
-	self assert: default class identicalTo: MiApplication
+	default := self application defaultBus.
+	self assert: default class identicalTo: MiBus.
+	self assert: (self application buses includes: default)
 ]
 
 { #category : #tests }
-MiApplicationTest >> testDeleteApplication [
+MiApplicationTest >> testDeleteBus [
 	| initialSize |
-	initialSize := MiApplication registry size.
-	
-	MiApplication deleteApplication: application.
-	
-	self deny: (MiApplication registry includes: application).
-	self assert: MiApplication registry size equals: initialSize - 1
+	initialSize := self application buses size.
+
+	self application deleteBus: bus.
+
+	self deny: (self application buses includes: bus).
+	self assert: self application buses size equals: initialSize - 1
 ]
 
 { #category : #tests }
-MiApplicationTest >> testDeleteApplicationNamed [
+MiApplicationTest >> testDeleteBusNamed [
 	| initialSize |
-	initialSize := MiApplication registry size.
-	MiApplication deleteApplicationNamed: self applicationName.
+	initialSize := MiApplication current buses size.
+	MiApplication current deleteBusNamed: self busName.
 
 	self
 		deny:
-			(MiApplication registry
-				anySatisfy: [ :app | app name = self applicationName ]).
-	self assert: MiApplication registry size equals: initialSize - 1
-]
-
-{ #category : #tests }
-MiApplicationTest >> testNamed [
-	| initialSize newApp |
-	initialSize := MiApplication registry size.
-	newApp := MiApplication named: self alternativeApplicationName.
-	
-	self assert: newApp class identicalTo: MiApplication.
-	self assert: MiApplication registry size equals: initialSize + 1.
-	
-	MiApplication deleteApplication: newApp.
+			(MiApplication current buses
+				anySatisfy: [ :app | app name = self busName ]).
+	self deny: (MiApplication current buses includes: bus).
+	self assert: MiApplication current buses size equals: initialSize - 1
 ]

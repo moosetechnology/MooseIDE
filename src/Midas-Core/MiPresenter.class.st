@@ -6,7 +6,7 @@ Class {
 
 { #category : #private }
 MiPresenter class >> currentApplication [
-	^ MiApplication default
+	^ MiApplication current
 ]
 
 { #category : #private }

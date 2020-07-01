@@ -3,56 +3,55 @@ Class {
 	#superclass : #SpApplication,
 	#instVars : [
 		'logger',
-		'name'
+		'buses'
 	],
 	#classVars : [
-		'Current',
-		'Registry'
+		'Current'
 	],
 	#category : #'Midas-Core-Application'
 }
 
 { #category : #accessing }
-MiApplication class >> default [
-	^ self named: 'Default'
-]
-
-{ #category : #accessing }
-MiApplication class >> deleteApplication: anApplication [
-	self registry remove: anApplication ifAbsent: [  ]
-]
-
-{ #category : #accessing }
-MiApplication class >> deleteApplicationNamed: aName [
-	self registry remove: (self named: aName)
-]
-
-{ #category : #accessing }
-MiApplication class >> named: aName [
-	^ self registry
-		detect: [ :app | app name = aName ]
-		ifNone: [ self registry
-				add:
-					(self new
-						name: aName;
-						yourself) ]
-]
-
-{ #category : #registry }
-MiApplication class >> registry [
-	^ Registry ifNil: [ Registry := Set new ]
+MiApplication class >> current [
+	^ Current ifNil: [ Current := self new ]
 ]
 
 { #category : #accessing }
 MiApplication class >> reset [
 	<script>
-	self flag: 'Dangerous if some browsers still use custom applications'.
-	Registry := Set new
+	Current := nil
 ]
 
 { #category : #accessing }
 MiApplication >> browsers [
 	^ self windows collect: #presenter thenSelect: #isMiBrowser
+]
+
+{ #category : #buses }
+MiApplication >> busNamed: aName [
+	^ buses
+		detect: [ :bus | bus name = aName ]
+		ifNone: [ buses add: (MiBus named: aName) ]
+]
+
+{ #category : #accessing }
+MiApplication >> buses [
+	^ buses
+]
+
+{ #category : #buses }
+MiApplication >> defaultBus [
+	^ self busNamed: 'Default'
+]
+
+{ #category : #buses }
+MiApplication >> deleteBus: aBus [
+	buses remove: aBus ifAbsent: [  ]
+]
+
+{ #category : #buses }
+MiApplication >> deleteBusNamed: aName [
+	buses remove: (self busNamed: aName)
 ]
 
 { #category : #actions }
@@ -74,6 +73,7 @@ MiApplication >> globallySelect: anEntity [
 { #category : #initialization }
 MiApplication >> initialize [
 	super initialize.
+	buses := Set new.
 	self logger: MiLogger new
 ]
 
@@ -85,16 +85,6 @@ MiApplication >> logger [
 { #category : #accessing }
 MiApplication >> logger: anObject [
 	logger := anObject
-]
-
-{ #category : #accessing }
-MiApplication >> name [
-	^ name
-]
-
-{ #category : #accessing }
-MiApplication >> name: anObject [
-	name := anObject
 ]
 
 { #category : #actions }

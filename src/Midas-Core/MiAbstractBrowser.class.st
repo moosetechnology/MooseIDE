@@ -120,10 +120,15 @@ MiAbstractBrowser class >> openOn: anEntity [
 { #category : #'instance creation' }
 MiAbstractBrowser class >> runMe [
 	<script>
+	^ self runMeFollowing: self currentApplication
+]
+
+{ #category : #'instance creation' }
+MiAbstractBrowser class >> runMeFollowing: anApplication [
 	^ (self on: self newModel)
+		application: anApplication;
 		openWithSpec;
-		"open with the last select entity"
-			selectEntity: self currentApplication logger mostRecentEntity
+		selectEntity: anApplication logger mostRecentEntity
 ]
 
 { #category : #'world menu' }
