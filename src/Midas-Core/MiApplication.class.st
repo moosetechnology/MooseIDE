@@ -17,6 +17,11 @@ MiApplication class >> default [
 ]
 
 { #category : #accessing }
+MiApplication class >> deleteApplicationNamed: aName [
+	self registry removeKey: aName ifAbsent: [  ]
+]
+
+{ #category : #accessing }
 MiApplication class >> named: aName [
 	^ self registry at: aName ifAbsentPut: [ self new ]
 ]
@@ -29,7 +34,7 @@ MiApplication class >> registry [
 { #category : #accessing }
 MiApplication class >> reset [
 	<script>
-	Registry := nil
+	Registry := Dictionary new
 ]
 
 { #category : #accessing }
