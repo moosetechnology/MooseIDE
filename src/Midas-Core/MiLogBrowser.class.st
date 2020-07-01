@@ -48,17 +48,14 @@ MiLogBrowser class >> menuCommandOn: aBuilder [
 ]
 
 { #category : #'world menu' }
-MiLogBrowser class >> runMe [
-	<script>
-	^ super runMe
+MiLogBrowser class >> newModel [
+	^ self currentApplication logger
 ]
 
 { #category : #'world menu' }
-MiLogBrowser class >> runMeFollowing: anApplication [
-	^ (self on: anApplication logger)
-		application: anApplication;
-		openWithSpec;
-		selectEntity: anApplication logger mostRecentEntity
+MiLogBrowser class >> runMe [
+	<script>
+	^ super runMe
 ]
 
 { #category : #initialization }
