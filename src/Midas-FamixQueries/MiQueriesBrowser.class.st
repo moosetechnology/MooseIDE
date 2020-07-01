@@ -59,14 +59,16 @@ MiQueriesBrowser class >> menuCommandOn: aBuilder [
 MiQueriesBrowser class >> new [
 	"A MooseGroup is necessary to initialize this presenter"
 
-	^ self on: MooseGroup new
+	^ self
+		on:
+			(FQRootQuery new
+				result: MooseGroup new;
+				yourself)
 ]
 
 { #category : #'instance creation' }
 MiQueriesBrowser class >> newModel [
 	^ FQRootQuery new
-		result: self currentApplication logger mostRecentEntity;
-		yourself
 ]
 
 { #category : #'instance creation' }
