@@ -44,7 +44,8 @@ Class {
 		'buttonPropagate',
 		'menu',
 		'buttonInspect',
-		'buttonHelp'
+		'buttonHelp',
+		'bus'
 	],
 	#category : #'Midas-Core-Browser'
 }
@@ -149,6 +150,11 @@ MiAbstractBrowser >> activeStateButton [
 	buttonHighlight} detect: #state
 ]
 
+{ #category : #accessing }
+MiAbstractBrowser >> bus [
+	^ bus
+]
+
 { #category : #actions }
 MiAbstractBrowser >> canFollow [
 	^ true
@@ -167,6 +173,12 @@ MiAbstractBrowser >> canPropagate [
 { #category : #actions }
 MiAbstractBrowser >> followAction [
 	^ self subclassResponsibility
+]
+
+{ #category : #actions }
+MiAbstractBrowser >> followBus: aBus [
+	bus := aBus.
+	bus registerBrowser: self
 ]
 
 { #category : #actions }

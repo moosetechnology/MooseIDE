@@ -2,8 +2,7 @@ Class {
 	#name : #MiAbstractBrowserTest,
 	#superclass : #TestCase,
 	#instVars : [
-		'currentLogs',
-		'concreteBrowsers'
+		'currentLogs'
 	],
 	#category : #'Midas-Tests'
 }
@@ -15,7 +14,7 @@ MiAbstractBrowserTest >> application [
 
 { #category : #tests }
 MiAbstractBrowserTest >> assertAllBrowsersOpenOn: anObject [
-	concreteBrowsers
+	self concreteBrowsers
 		do: [ :browser | 
 			self
 				shouldnt: [ | browserInstance |
@@ -45,23 +44,32 @@ MiAbstractBrowserTest >> assertCorrectPropagation [
 ]
 
 { #category : #running }
+MiAbstractBrowserTest >> bus [
+	^ self application busNamed: 'TestBus'
+]
+
+{ #category : #running }
+MiAbstractBrowserTest >> concreteBrowsers [
+	^ MiAbstractBrowser allSubclasses reject: #isAbstract
+]
+
+{ #category : #running }
 MiAbstractBrowserTest >> setUp [
 	super setUp.
 	currentLogs := MiApplication current logger logs.
-	MiApplication current logger logs: OrderedCollection new.
-	concreteBrowsers := MiAbstractBrowser allSubclasses
-		reject: #isAbstract
+	MiApplication current logger logs: OrderedCollection new
 ]
 
 { #category : #running }
 MiAbstractBrowserTest >> tearDown [
-	MiApplication current logger logs: currentLogs.
+	self application logger logs: currentLogs.
+	self application deleteBus: self bus.
 	super tearDown
 ]
 
 { #category : #tests }
 MiAbstractBrowserTest >> testAllBrowserHaveATitle [
-	concreteBrowsers
+	self concreteBrowsers
 		do: [ :browser | 
 			| browserInstance |
 			browserInstance := browser runMe.
@@ -72,7 +80,7 @@ MiAbstractBrowserTest >> testAllBrowserHaveATitle [
 { #category : #tests }
 MiAbstractBrowserTest >> testBrowsersDoNotPropagateWhenReceiving [
 	| browsers |
-	browsers := concreteBrowsers collect: [ :browser | browser runMe ].
+	browsers := self concreteBrowsers collect: [ :browser | browser runMe ].
 	[ browsers do: #follow.
 	self assertCorrectPropagation.
 	browsers do: #freeze.
@@ -84,7 +92,7 @@ MiAbstractBrowserTest >> testBrowsersDoNotPropagateWhenReceiving [
 
 { #category : #tests }
 MiAbstractBrowserTest >> testCanOpenAllBrowser [
-	concreteBrowsers
+	self concreteBrowsers
 		do: [ :browser | 
 			self
 				shouldnt: [ | browserInstance |
@@ -111,4 +119,14 @@ MiAbstractBrowserTest >> testCanOpenAllBrowserWithMooseEntity [
 { #category : #tests }
 MiAbstractBrowserTest >> testCanOpenAllBrowserWithMooseGroup [
 	self assertAllBrowsersOpenOn: (MooseGroup with: MooseEntity new)
+]
+
+{ #category : #tests }
+MiAbstractBrowserTest >> testFollowBus [
+	| browser |
+	browser := self concreteBrowsers anyOne runMe.
+	browser followBus: self bus.
+	self assert: browser bus identicalTo: self bus.
+	self assert: (self bus browsers includes: browser).
+	browser window close
 ]
