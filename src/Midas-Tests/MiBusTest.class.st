@@ -57,6 +57,15 @@ MiBusTest >> testRegisterBrowser [
 	| browser |
 	browser := self mockBrowser.
 	bus registerBrowser: browser.
+	self assert: (bus browsers includes: browser)
+]
+
+{ #category : #tests }
+MiBusTest >> testUnregisterBrowser [
+	| browser |
+	browser := self mockBrowser.
+	bus registerBrowser: browser.
 	self assert: (bus browsers includes: browser).
-	browser window close
+	bus unregisterBrowser: browser.
+	self deny: (bus browsers includes: browser)
 ]

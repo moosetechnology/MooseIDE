@@ -68,3 +68,8 @@ MiBus >> refreshBrowsersWith: anEntity [
 MiBus >> registerBrowser: aBrowser [
 	browsers add: aBrowser
 ]
+
+{ #category : #actions }
+MiBus >> unregisterBrowser: aBrowser [
+	browsers remove: aBrowser
+]

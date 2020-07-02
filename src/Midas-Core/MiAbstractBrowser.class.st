@@ -121,9 +121,15 @@ MiAbstractBrowser class >> openOn: anEntity [
 { #category : #'instance creation' }
 MiAbstractBrowser class >> runMe [
 	<script>
+	^ self runMeFollowing: self currentApplication defaultBus
+]
+
+{ #category : #'instance creation' }
+MiAbstractBrowser class >> runMeFollowing: aBus [
 	^ (self on: self newModel)
+		followBus: aBus;
 		openWithSpec;
-		selectEntity: self currentApplication logger mostRecentEntity
+		selectEntity: aBus logger mostRecentEntity
 ]
 
 { #category : #'world menu' }
@@ -253,7 +259,8 @@ MiAbstractBrowser >> initializePresenters [
 MiAbstractBrowser >> initializeWindow: aWindowPresenter [
 	super initializeWindow: aWindowPresenter.
 	aWindowPresenter
-		whenClosedDo: [ self application windowClosed: aWindowPresenter ].
+		whenClosedDo: [ self bus unregisterBrowser: self.
+			self application windowClosed: aWindowPresenter ].
 	aWindowPresenter
 		title: self title;
 		initialExtent: 500 @ 400

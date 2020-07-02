@@ -18,7 +18,7 @@ MiAbstractBrowserTest >> assertAllBrowsersOpenOn: anObject [
 		do: [ :browser | 
 			self
 				shouldnt: [ | browserInstance |
-					browserInstance := browser runMe.
+					browserInstance := browser runMeFollowing: self bus.
 					browserInstance selectEntity: anObject.
 					browserInstance root close ]
 				raise: Error ]
@@ -72,7 +72,7 @@ MiAbstractBrowserTest >> testAllBrowserHaveATitle [
 	self concreteBrowsers
 		do: [ :browser | 
 			| browserInstance |
-			browserInstance := browser runMe.
+			browserInstance := browser runMeFollowing: self bus.
 			[ self deny: browserInstance window title equals: 'Untitled window' ]
 				ensure: [ browserInstance window close ] ]
 ]
@@ -80,7 +80,7 @@ MiAbstractBrowserTest >> testAllBrowserHaveATitle [
 { #category : #tests }
 MiAbstractBrowserTest >> testBrowsersDoNotPropagateWhenReceiving [
 	| browsers |
-	browsers := self concreteBrowsers collect: [ :browser | browser runMe ].
+	browsers := self concreteBrowsers collect: [ :browser | browser runMeFollowing: self bus ].
 	[ browsers do: #follow.
 	self assertCorrectPropagation.
 	browsers do: #freeze.
@@ -96,7 +96,7 @@ MiAbstractBrowserTest >> testCanOpenAllBrowser [
 		do: [ :browser | 
 			self
 				shouldnt: [ | browserInstance |
-					browserInstance := browser runMe.
+					browserInstance := browser runMeFollowing: self bus.
 					browserInstance root close ]
 				raise: Error ]
 ]
@@ -124,9 +124,30 @@ MiAbstractBrowserTest >> testCanOpenAllBrowserWithMooseGroup [
 { #category : #tests }
 MiAbstractBrowserTest >> testFollowBus [
 	| browser |
-	browser := self concreteBrowsers anyOne runMe.
+	browser := self concreteBrowsers anyOne runMeFollowing: self bus.
 	browser followBus: self bus.
 	self assert: browser bus identicalTo: self bus.
 	self assert: (self bus browsers includes: browser).
 	browser window close
+]
+
+{ #category : #tests }
+MiAbstractBrowserTest >> testRunMeFollowing [
+	self concreteBrowsers
+		do: [ :browserClass | 
+			| browser |
+			[ browser := browserClass runMeFollowing: self bus.
+			self assert: browser bus identicalTo: self bus.
+			self assert: (self bus browsers includes: browser) ]
+				ensure: [ browser window close ] ]
+]
+
+{ #category : #tests }
+MiAbstractBrowserTest >> testWindowClosedAction [
+	self concreteBrowsers
+		do: [ :browserClass | 
+			| browser |
+			browser := browserClass runMeFollowing: self bus.
+			browser window close.
+			self deny: (self bus browsers includes: browser) ]
 ]
