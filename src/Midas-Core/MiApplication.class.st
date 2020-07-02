@@ -55,8 +55,7 @@ MiApplication >> logger [
 
 { #category : #accessing }
 MiApplication >> logger: anObject [
-	logger := anObject.
-	logger application: self
+	logger := anObject
 ]
 
 { #category : #actions }
