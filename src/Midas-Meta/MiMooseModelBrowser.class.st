@@ -126,6 +126,7 @@ MiMooseModelBrowser >> initializeTable [
 		children: [ :class | self childrenOf: class ];
 		beResizable;
 		beMultipleSelection;
+		lazilyComputeChildren;
 		contextMenu: [ self rootCommandsGroup asMenuPresenter ].
 	self computeModelPresenterRoot
 ]

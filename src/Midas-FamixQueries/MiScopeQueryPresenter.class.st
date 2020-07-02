@@ -56,9 +56,9 @@ MiScopeQueryPresenter >> intializeDirectionRadioButtons [
 ]
 
 { #category : #'widgets configuration' }
-MiScopeQueryPresenter >> scopesDropList [
+MiScopeQueryPresenter >> scopesDropListForScoped: scopes [
 	^ self newDropList
-		items: self query availableScopes;
+		items: scopes;
 		display: [ :item | item mooseDescription name asEnglishPlural ];
 		selectItem: self query scope;
 		whenSelectedItemChangedDo: [ :scope | 
@@ -77,7 +77,7 @@ MiScopeQueryPresenter >> selectCurrentQueryDirection [
 { #category : #update }
 MiScopeQueryPresenter >> updateAccordingToDirection [
 	secondParameter := self query availableScopes
-		ifNotEmpty: [ self scopesDropList ]
+		ifNotEmpty: [ :scopes | self scopesDropListForScoped: scopes ]
 		ifEmpty: [ self noParameterMessage: 'scope' ].
 	self update
 ]

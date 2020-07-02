@@ -42,9 +42,7 @@ MiTypeQueryPresenter >> initializePresenters [
 
 { #category : #initialization }
 MiTypeQueryPresenter >> initializeTypeCheckBoxes [
-	self query availableTypes
-		ifEmpty: [ secondParameter := self noParameterMessage: 'type' ]
-		ifNotEmpty: [ self showTypesCheckBoxes ]
+	self query availableTypes ifEmpty: [ secondParameter := self noParameterMessage: 'type' ] ifNotEmpty: [ :types | self showTypesCheckBoxesWith: types ]
 ]
 
 { #category : #'widgets configuration' }
@@ -69,12 +67,10 @@ MiTypeQueryPresenter >> setTypeCheckBoxesConstraints [
 ]
 
 { #category : #'widgets configuration' }
-MiTypeQueryPresenter >> showTypesCheckBoxes [
+MiTypeQueryPresenter >> showTypesCheckBoxesWith: types [
 	secondParameter := SpDynamicPresentersListBuilder new
-		modelObjects: self query availableTypes;
-		presenter: SpCheckBoxPresenter
-			configuredAs:
-				[ :presenter :type | self configureTypeCheckBox: presenter forType: type ];
+		modelObjects: types;
+		presenter: SpCheckBoxPresenter configuredAs: [ :presenter :type | self configureTypeCheckBox: presenter forType: type ];
 		layoutBuilder: self typeCheckBoxesLayout;
 		build.
 	^ self setTypeCheckBoxesConstraints
