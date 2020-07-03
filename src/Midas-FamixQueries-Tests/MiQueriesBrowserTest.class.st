@@ -1,7 +1,8 @@
 Class {
 	#name : #MiQueriesBrowserTest,
-	#superclass : #SpTest,
+	#superclass : #TestCase,
 	#instVars : [
+		'presenter',
 		'helper'
 	],
 	#category : #'Midas-FamixQueries-Tests-Presenters'
