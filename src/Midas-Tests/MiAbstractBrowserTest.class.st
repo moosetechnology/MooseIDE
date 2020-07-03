@@ -12,7 +12,7 @@ MiAbstractBrowserTest >> application [
 	^ MiApplication current
 ]
 
-{ #category : #tests }
+{ #category : #'tests - opening' }
 MiAbstractBrowserTest >> assertAllBrowsersOpenOn: anObject [
 	self concreteBrowsers
 		do: [ :browser | 
@@ -24,7 +24,7 @@ MiAbstractBrowserTest >> assertAllBrowsersOpenOn: anObject [
 				raise: Error ]
 ]
 
-{ #category : #tests }
+{ #category : #'tests - opening' }
 MiAbstractBrowserTest >> assertCorrectPropagation [
 	"Propagate a mooseModel"
 
@@ -67,7 +67,7 @@ MiAbstractBrowserTest >> tearDown [
 	super tearDown
 ]
 
-{ #category : #tests }
+{ #category : #'tests - opening' }
 MiAbstractBrowserTest >> testAllBrowserHaveATitle [
 	self concreteBrowsers
 		do: [ :browser | 
@@ -77,7 +77,7 @@ MiAbstractBrowserTest >> testAllBrowserHaveATitle [
 				ensure: [ browserInstance window close ] ]
 ]
 
-{ #category : #tests }
+{ #category : #'tests - opening' }
 MiAbstractBrowserTest >> testBrowsersDoNotPropagateWhenReceiving [
 	| browsers |
 	browsers := self concreteBrowsers collect: [ :browser | browser runMeFollowing: self bus ].
@@ -90,7 +90,7 @@ MiAbstractBrowserTest >> testBrowsersDoNotPropagateWhenReceiving [
 		ensure: [ browsers do: [ :browser | browser window close ] ]
 ]
 
-{ #category : #tests }
+{ #category : #'tests - opening' }
 MiAbstractBrowserTest >> testCanOpenAllBrowser [
 	self concreteBrowsers
 		do: [ :browser | 
@@ -101,37 +101,27 @@ MiAbstractBrowserTest >> testCanOpenAllBrowser [
 				raise: Error ]
 ]
 
-{ #category : #tests }
+{ #category : #'tests - opening' }
 MiAbstractBrowserTest >> testCanOpenAllBrowserWithAnObject [
 	self assertAllBrowsersOpenOn: Object new
 ]
 
-{ #category : #tests }
+{ #category : #'tests - opening' }
 MiAbstractBrowserTest >> testCanOpenAllBrowserWithEmptyMooseGroup [
 	self assertAllBrowsersOpenOn: MooseGroup new
 ]
 
-{ #category : #tests }
+{ #category : #'tests - opening' }
 MiAbstractBrowserTest >> testCanOpenAllBrowserWithMooseEntity [
 	self assertAllBrowsersOpenOn: MooseEntity new
 ]
 
-{ #category : #tests }
+{ #category : #'tests - opening' }
 MiAbstractBrowserTest >> testCanOpenAllBrowserWithMooseGroup [
 	self assertAllBrowsersOpenOn: (MooseGroup with: MooseEntity new)
 ]
 
-{ #category : #tests }
-MiAbstractBrowserTest >> testFollowBus [
-	| browser |
-	browser := self concreteBrowsers anyOne runMeFollowing: self bus.
-	browser followBus: self bus.
-	self assert: browser bus identicalTo: self bus.
-	self assert: (self bus browsers includes: browser).
-	browser window close
-]
-
-{ #category : #tests }
+{ #category : #'tests - opening' }
 MiAbstractBrowserTest >> testRunMeFollowing [
 	self concreteBrowsers
 		do: [ :browserClass | 
@@ -142,7 +132,7 @@ MiAbstractBrowserTest >> testRunMeFollowing [
 				ensure: [ browser window close ] ]
 ]
 
-{ #category : #tests }
+{ #category : #'tests - opening' }
 MiAbstractBrowserTest >> testWindowClosedAction [
 	self concreteBrowsers
 		do: [ :browserClass | 
