@@ -2,7 +2,6 @@ Class {
 	#name : #MiApplication,
 	#superclass : #SpApplication,
 	#instVars : [
-		'logger',
 		'buses'
 	],
 	#classVars : [
@@ -73,18 +72,7 @@ MiApplication >> globallySelect: anEntity [
 { #category : #initialization }
 MiApplication >> initialize [
 	super initialize.
-	buses := Set new.
-	self logger: MiLogger new
-]
-
-{ #category : #accessing }
-MiApplication >> logger [
-	^ logger
-]
-
-{ #category : #accessing }
-MiApplication >> logger: anObject [
-	logger := anObject
+	buses := Set new
 ]
 
 { #category : #actions }

@@ -89,11 +89,11 @@ MiTreeBrowser >> initializePresenters [
 			self
 				freezeDuring: [ selected selectedItems size = 1
 						ifTrue: [ model selected: selected selectedItem.
-							self application globallySelect: selected selectedItem ]
+							self bus globallySelect: selected selectedItem ]
 						ifFalse: [ | mooseGroup |
 							mooseGroup := MooseGroup withAll: selected selectedItems.
 							model selected: mooseGroup.
-							self application globallySelect: mooseGroup ] ] ]
+							self bus globallySelect: mooseGroup ] ] ]
 ]
 
 { #category : #'as yet unclassified' }

@@ -172,7 +172,7 @@ MiMooseModelBrowser >> selectionAction: selection [
 			(entities size = 1
 				ifTrue: [ entities anyOne ]
 				ifFalse: [ entities ]).
-	self application globallySelect: model selected
+	self bus globallySelect: model selected
 ]
 
 { #category : #initialization }

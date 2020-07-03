@@ -209,7 +209,7 @@ MiAbstractBrowser >> freezeDuring: aBlock [
 
 { #category : #accessing }
 MiAbstractBrowser >> globallySelect: anEntity [
-	self application globallySelect: anEntity
+	self bus globallySelect: anEntity
 ]
 
 { #category : #actions }
@@ -258,9 +258,7 @@ MiAbstractBrowser >> initializePresenters [
 { #category : #initialization }
 MiAbstractBrowser >> initializeWindow: aWindowPresenter [
 	super initializeWindow: aWindowPresenter.
-	aWindowPresenter
-		whenClosedDo: [ self bus unregisterBrowser: self.
-			self application windowClosed: aWindowPresenter ].
+	aWindowPresenter whenClosedDo: [ self bus unregisterBrowser: self ].
 	aWindowPresenter
 		title: self title;
 		initialExtent: 500 @ 400

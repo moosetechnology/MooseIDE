@@ -1,7 +1,7 @@
 Class {
 	#name : #MiLogBrowserTest,
-	#superclass : #MiBrowsersTest,
-	#category : #'Midas-Tests'
+	#superclass : #MiAbstractBrowserTest,
+	#category : #'Midas-Tests-Browsers'
 }
 
 { #category : #asserting }
@@ -13,7 +13,7 @@ MiLogBrowserTest >> assertFollowActionFor: aMooseObject [
 ]
 
 { #category : #running }
-MiLogBrowserTest >> classToTest [
+MiLogBrowserTest >> browserClass [
 	^ MiLogBrowser
 ]
 

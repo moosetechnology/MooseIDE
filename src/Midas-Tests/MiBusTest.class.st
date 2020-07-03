@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'bus'
 	],
-	#category : #'Midas-Tests'
+	#category : #'Midas-Tests-Application'
 }
 
 { #category : #running }

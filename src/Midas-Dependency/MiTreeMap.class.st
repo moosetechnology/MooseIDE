@@ -158,7 +158,7 @@ MiTreeMap >> rootEntities: aCollection [
 
 { #category : #helpers }
 MiTreeMap >> rootShapes [
-	^ canvas shapes first shapes
+	^ canvas shapes ifNotEmpty: [ :shapes | shapes first shapes ]
 ]
 
 { #category : #running }
