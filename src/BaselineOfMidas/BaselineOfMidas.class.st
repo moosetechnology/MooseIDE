@@ -45,7 +45,7 @@ BaselineOfMidas >> baselineOfRoassal3: spec [
 BaselineOfMidas >> baselineOfSpec: spec [
 	spec
 		baseline: 'Spec2'
-		with: [ spec repository: 'github://pharo-spec/Spec:v0.6.0' ]
+		with: [ spec repository: 'github://pharo-spec/Spec:v0.7.0' ]
 ]
 
 { #category : #baselines }
