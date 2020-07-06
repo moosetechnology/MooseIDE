@@ -143,10 +143,10 @@ MiQueryCreationPresenterTest >> testResultList [
 MiQueryCreationPresenterTest >> testToolBar [
 	| initialQueriesSize |
 	self openInstance.
-	self assert: presenter toolBar class identicalTo: SpToolBarPresenter.
+	self assert: presenter toolBar class identicalTo: SpToolbarPresenter.
 	self
 		assert: presenter toolBar presenters first class
-		identicalTo: SpToolBarButtonPresenter.
+		identicalTo: SpToolbarButtonPresenter.
 	self assert: presenter toolBar presenters first isEnabled.
 	initialQueriesSize := presenter browser queries size.
 	

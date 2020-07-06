@@ -60,10 +60,10 @@ MiQueriesCombinationPresenterTest >> testBasicInitialization [
 	self
 		assertCollection: presenter resultList items
 		hasSameElements: #().
-	self assert: presenter toolBar class identicalTo: SpToolBarPresenter.
+	self assert: presenter toolBar class identicalTo: SpToolbarPresenter.
 	self
 		assert: presenter toolBar presenters first class
-		identicalTo: SpToolBarButtonPresenter
+		identicalTo: SpToolbarButtonPresenter
 ]
 
 { #category : #tests }

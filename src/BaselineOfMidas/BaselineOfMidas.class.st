@@ -9,10 +9,10 @@ BaselineOfMidas >> baseline: spec [
 	<baseline>
 	spec
 		for: #common
-		do: [ 
+		do: [ spec postLoadDoIt: #postLoadSpecCachesReset.
 			self defineDependencies: spec.
 			self definePackages: spec.
-			self defineGroups: spec ].
+			self defineGroups: spec ]
 ]
 
 { #category : #baselines }
@@ -76,4 +76,13 @@ BaselineOfMidas >> definePackages: spec [
 	spec package: 'Midas-Famix' with: [ spec requires: #('Midas-Core' 'Midas-Vizualisation') ].
 	spec package: 'Midas-FamixQueries' with: [ spec requires: #('FamixQueries' 'Midas-Core') ].
 	spec package: 'Midas-FamixQueries-Tests' with: [ spec requires: #('Midas-FamixQueries') ]
+]
+
+{ #category : #'post load actions' }
+BaselineOfMidas >> postLoadSpecCachesReset [
+	"This is to reset spec caches in Pharo 8. They may not know #Toolbar... but #ToolBar... bindings."
+
+	(SpApplication allSubclasses flatCollect: [ :app | app allInstances ])
+		collect: [ :app | app adapterBindings ]
+		thenDo: [ :bindings | bindings initializeBindings ]
 ]

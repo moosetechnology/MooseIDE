@@ -140,7 +140,7 @@ MiQueriesCombinationPresenter >> initializeResultList [
 
 { #category : #initialization }
 MiQueriesCombinationPresenter >> initializeToolBar [
-	toolBar := self newToolBar fillWith: self rootCommandsGroup
+	toolBar := self newToolbar fillWith: self rootCommandsGroup
 ]
 
 { #category : #initialization }
