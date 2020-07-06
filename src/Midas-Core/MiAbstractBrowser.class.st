@@ -45,7 +45,8 @@ Class {
 		'menu',
 		'buttonInspect',
 		'buttonHelp',
-		'bus'
+		'bus',
+		'busButton'
 	],
 	#category : #'Midas-Core-Browser'
 }
@@ -65,7 +66,9 @@ MiAbstractBrowser class >> defaultSpec [
 				add: #buttonFreeze width: 60;
 				add: #buttonHighlight width: 80;
 				add: SpBoxLayout newHorizontal expand: true;
-				add: #buttonInspect expand: false;
+				add: #busButton width: 100;
+				add: SpBoxLayout newHorizontal expand: true;
+				add: #buttonInspect width: self iconWidth;
 				add: #buttonPropagate expand: false;
 				add: #buttonHelp width: self iconWidth;
 				yourself)
@@ -184,7 +187,8 @@ MiAbstractBrowser >> followAction [
 { #category : #actions }
 MiAbstractBrowser >> followBus: aBus [
 	bus := aBus.
-	bus registerBrowser: self
+	bus registerBrowser: self.
+	busButton label: 'Bus: ' , aBus name
 ]
 
 { #category : #actions }
@@ -218,8 +222,48 @@ MiAbstractBrowser >> highlightAction [
 ]
 
 { #category : #initialization }
+MiAbstractBrowser >> initializeActionButtons [
+	buttonPropagate := self newButton
+		label: 'Propagate';
+		enabled: self canPropagate;
+		action: [ (MiPropagateCommand forContext: self) execute ];
+		yourself.
+	buttonInspect := self newButton
+		iconName: #smallInspectIt;
+		help: 'Inspect';
+		action: [ (MiInspectCommand forContext: self) execute ];
+		yourself
+]
+
+{ #category : #initialization }
+MiAbstractBrowser >> initializeBusButton [
+	busButton := self newButton
+		iconName: #edit;
+		help: 'Edit';
+		action: [ self modifyBus ];
+		yourself
+]
+
+{ #category : #initialization }
+MiAbstractBrowser >> initializeHelpButton [
+	buttonHelp := self newButton
+		iconName: #help;
+		help: self class comment;
+		action: [ self showHelp ];
+		yourself
+]
+
+{ #category : #initialization }
 MiAbstractBrowser >> initializePresenters [
 	super initializePresenters.
+	self initializeStateButtons.
+	self initializeBusButton.
+	self initializeActionButtons.
+	self initializeHelpButton
+]
+
+{ #category : #initialization }
+MiAbstractBrowser >> initializeStateButtons [
 	self flag: 'The state of freeze should be store in a model'.
 	buttonFreeze := self newRadioButton
 		label: 'Freeze';
@@ -238,21 +282,7 @@ MiAbstractBrowser >> initializePresenters [
 			{buttonFreeze.
 			buttonFollow.
 			buttonHighlight}.
-	self freeze: self canFollow not.
-	buttonPropagate := self newButton
-		label: 'Propagate';
-		enabled: self canPropagate;
-		action: [ (MiPropagateCommand forContext: self) execute ];
-		yourself.
-	buttonInspect := self newButton
-		label: 'Inspect';
-		action: [ (MiInspectCommand forContext: self) execute ];
-		yourself.
-	buttonHelp := self newButton
-		icon: (self theme iconNamed: #help);
-		help: self class comment;
-		action: [ self showHelp ];
-		yourself
+	self freeze: self canFollow not
 ]
 
 { #category : #initialization }
@@ -302,6 +332,12 @@ MiAbstractBrowser >> model [
 { #category : #accessing }
 MiAbstractBrowser >> model: anObject [
 	model := anObject
+]
+
+{ #category : #actions }
+MiAbstractBrowser >> modifyBus [
+	self flag: #TODO.
+	self inform: '<TODO> Modify bus'
 ]
 
 { #category : #accessing }
