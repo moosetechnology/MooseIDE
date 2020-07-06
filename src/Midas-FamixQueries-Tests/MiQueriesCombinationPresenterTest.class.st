@@ -1,8 +1,9 @@
 Class {
 	#name : #MiQueriesCombinationPresenterTest,
-	#superclass : #SpTest,
+	#superclass : #TestCase,
 	#instVars : [
-		'helper'
+		'helper',
+		'presenter'
 	],
 	#category : #'Midas-FamixQueries-Tests-Presenters'
 }
@@ -33,14 +34,19 @@ MiQueriesCombinationPresenterTest >> classToTest [
 MiQueriesCombinationPresenterTest >> openInstance [
 	presenter
 		onQueries:
-			(presenter browser queries copyWithout: presenter browser initialQuery).
-	super openInstance
+			(presenter browser queries copyWithout: presenter browser initialQuery);
+		openWithSpec
 ]
 
 { #category : #running }
 MiQueriesCombinationPresenterTest >> setUp [
 	helper := FQTestsHelper current.
 	presenter := self classToTest on: self browserWithTwoQueries
+]
+
+{ #category : #running }
+MiQueriesCombinationPresenterTest >> tearDown [
+	presenter window ifNotNil: [ :window | window close ]
 ]
 
 { #category : #tests }

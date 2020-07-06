@@ -1,8 +1,9 @@
 Class {
 	#name : #MiQueryConfigurationPresenterTest,
-	#superclass : #SpTest,
+	#superclass : #TestCase,
 	#instVars : [
-		'helper'
+		'helper',
+		'presenter'
 	],
 	#category : #'Midas-FamixQueries-Tests-QueriesConfiguration'
 }
@@ -34,14 +35,6 @@ MiQueryConfigurationPresenterTest >> currentQuery [
 ]
 
 { #category : #running }
-MiQueryConfigurationPresenterTest >> openInstance [
-	window
-		ifNil: [ window := presenter owner
-				queryConfigurationPresenter: presenter;
-				openWithSpec ]
-]
-
-{ #category : #running }
 MiQueryConfigurationPresenterTest >> queryClass [
 	^ self subclassResponsibility
 ]
@@ -63,6 +56,7 @@ MiQueryConfigurationPresenterTest >> resetPresenterWithEntities: aMooseGroup [
 
 { #category : #running }
 MiQueryConfigurationPresenterTest >> setUp [
+	super setUp.
 	helper := FQTestsHelper current.
 	self resetPresenterWithEntities: helper classesAndMethods
 ]
