@@ -44,6 +44,11 @@ MiBus >> initialize [
 	logger := MiLogger new
 ]
 
+{ #category : #testing }
+MiBus >> isDefault [
+	^ self name = MiApplication defaultBusName
+]
+
 { #category : #accessing }
 MiBus >> logger [
 	^ logger

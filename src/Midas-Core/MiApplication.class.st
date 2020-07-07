@@ -10,12 +10,17 @@ Class {
 	#category : #'Midas-Core-Application'
 }
 
-{ #category : #accessing }
+{ #category : #'instance creation' }
 MiApplication class >> current [
 	^ Current ifNil: [ Current := self new ]
 ]
 
 { #category : #accessing }
+MiApplication class >> defaultBusName [
+	^ 'Default'
+]
+
+{ #category : #'instance creation' }
 MiApplication class >> reset [
 	<script>
 	Current := nil
@@ -45,7 +50,8 @@ MiApplication >> defaultBus [
 
 { #category : #buses }
 MiApplication >> deleteBus: aBus [
-	buses remove: aBus ifAbsent: [  ]
+	aBus isDefault
+		ifFalse: [ buses remove: aBus ifAbsent: [  ] ]
 ]
 
 { #category : #buses }

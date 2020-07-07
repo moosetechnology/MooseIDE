@@ -38,15 +38,20 @@ MiBusesPopup >> followNewBus [
 ]
 
 { #category : #initialization }
-MiBusesPopup >> initializePresenters [
-	super initializePresenters.
+MiBusesPopup >> initializeBusesList [
 	busesList := self newList
 		items: browser application buses asOrderedCollection;
 		display: #name;
 		whenSelectionChangedDo: [ :selection | 
 			browser followBus: selection selectedItem.
 			self owner dismiss ];
-		yourself.
+		yourself
+]
+
+{ #category : #initialization }
+MiBusesPopup >> initializePresenters [
+	super initializePresenters.
+	self initializeBusesList.
 	newBusNameInput := self newTextInput
 		placeholder: 'New bus name';
 		whenSubmitDo: [ self followNewBus ];
