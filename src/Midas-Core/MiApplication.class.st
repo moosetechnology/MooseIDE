@@ -56,7 +56,7 @@ MiApplication >> deleteBus: aBus [
 
 { #category : #buses }
 MiApplication >> deleteBusNamed: aName [
-	buses remove: (self busNamed: aName)
+	self deleteBus: (self busNamed: aName)
 ]
 
 { #category : #initialization }
