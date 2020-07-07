@@ -31,6 +31,13 @@ MiBusesPopup class >> defaultSpec [
 ]
 
 { #category : #initialization }
+MiBusesPopup >> followNewBus [
+	newBusNameInput text
+		ifNotEmpty: [ :name | browser followBus: (browser application busNamed: name) ].
+	self owner dismiss
+]
+
+{ #category : #initialization }
 MiBusesPopup >> initializePresenters [
 	super initializePresenters.
 	busesList := self newList
@@ -42,12 +49,11 @@ MiBusesPopup >> initializePresenters [
 		yourself.
 	newBusNameInput := self newTextInput
 		placeholder: 'New bus name';
+		whenSubmitDo: [ self followNewBus ];
 		yourself.
 	okButton := self newButton
 		iconName: #smallOk;
-		action: [ newBusNameInput text
-				ifNotEmpty: [ :name | browser followBus: (browser application busNamed: name) ].
-			self owner dismiss ];
+		action: [ self followNewBus ];
 		yourself
 ]
 
