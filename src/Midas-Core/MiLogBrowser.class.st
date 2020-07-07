@@ -104,9 +104,9 @@ MiLogBrowser >> initializePresenters [
 
 { #category : #initialization }
 MiLogBrowser >> initializeToolBar [
-	toolbar := self newToolbar
+	toolbar := self newToolBar
 		addItem:
-			(SpToolbarButtonPresenter new
+			(SpToolBarButtonPresenter new
 				label: 'Clean';
 				help: 'Remove all the logger entries';
 				action: [ self cleanLogger ];

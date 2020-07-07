@@ -163,7 +163,7 @@ MiQueryCreationPresenter >> initializeResultList [
 
 { #category : #initialization }
 MiQueryCreationPresenter >> initializeToolBar [
-	toolBar := self newToolbar	"beText"
+	toolBar := self newToolBar	"beText"
 ]
 
 { #category : #initialization }
