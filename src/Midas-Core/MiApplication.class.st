@@ -59,33 +59,12 @@ MiApplication >> deleteBusNamed: aName [
 	buses remove: (self busNamed: aName)
 ]
 
-{ #category : #actions }
-MiApplication >> freezeBrowsersDuring: aBlock [
-	| activeButtons |
-	activeButtons := self browsers
-		collect: [ :browser | browser activeStateButton ].
-	self browsers do: [ :browser | browser freeze: true ].
-	aBlock
-		ensure: [ activeButtons do: [ :button | button state: true ] ]
-]
-
-{ #category : #actions }
-MiApplication >> globallySelect: anEntity [
-	anEntity
-		ifNotNil: [ (self logger newLogFor: anEntity) activateIn: self ]
-]
-
 { #category : #initialization }
 MiApplication >> initialize [
 	super initialize.
 	buses := Set new
 		add: (MiBus named: 'Default');
 		yourself
-]
-
-{ #category : #actions }
-MiApplication >> refreshBrowsersWith: anEntity [
-	self browsers do: [ :browser | browser selectEntity: anEntity ]
 ]
 
 { #category : #actions }
