@@ -53,6 +53,11 @@ MiMooseModelBrowser class >> title [
 	^ 'MooseModel'
 ]
 
+{ #category : #specs }
+MiMooseModelBrowser class >> windowSize [
+	^ 600 @ 400
+]
+
 { #category : #testing }
 MiMooseModelBrowser >> accept: anObject [
 	^ anObject isKindOf: MooseModel
@@ -130,12 +135,6 @@ MiMooseModelBrowser >> initializeTable [
 	self computeModelPresenterRoot
 ]
 
-{ #category : #initialization }
-MiMooseModelBrowser >> initializeWindow: aWindowPresenter [
-	super initializeWindow: aWindowPresenter.
-	aWindowPresenter initialExtent: 600 @ 400
-]
-
 { #category : #accessing }
 MiMooseModelBrowser >> miSelectedItem [
 	^ modelPresenter selection selectedItem
@@ -172,7 +171,7 @@ MiMooseModelBrowser >> selectionAction: selection [
 			(entities size = 1
 				ifTrue: [ entities anyOne ]
 				ifFalse: [ entities ]).
-	self application globallySelect: model selected
+	self bus globallySelect: model selected
 ]
 
 { #category : #initialization }

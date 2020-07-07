@@ -36,7 +36,7 @@ Class {
 
 { #category : #accessing }
 MiTreeVisualisationBrowserModel >> entities [
-	^ entities
+	^ entities ifNil: [ MooseGroup new ]
 ]
 
 { #category : #accessing }

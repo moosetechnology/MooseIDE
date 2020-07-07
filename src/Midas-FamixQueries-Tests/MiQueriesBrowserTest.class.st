@@ -1,11 +1,16 @@
 Class {
 	#name : #MiQueriesBrowserTest,
-	#superclass : #SpTest,
+	#superclass : #MiAbstractBrowserTest,
 	#instVars : [
 		'helper'
 	],
 	#category : #'Midas-FamixQueries-Tests-Presenters'
 }
+
+{ #category : #running }
+MiQueriesBrowserTest >> browserClass [
+	^ MiQueriesBrowser
+]
 
 { #category : #running }
 MiQueriesBrowserTest >> classToTest [
@@ -14,18 +19,15 @@ MiQueriesBrowserTest >> classToTest [
 
 { #category : #running }
 MiQueriesBrowserTest >> setUp [
+	super setUp.
 	helper := FQTestsHelper current.
-	presenter := self classToTest
-		on:
-			(FQRootQuery new
-				result: helper classesAndMethods;
-				yourself)
+	browser selectEntity: helper classesAndMethods
 ]
 
 { #category : #tests }
 MiQueriesBrowserTest >> testInitialization [
 	self
-		assertCollection: presenter entities
+		assertCollection: browser entities
 		hasSameElements: helper classesAndMethods
 ]
 
@@ -33,18 +35,18 @@ MiQueriesBrowserTest >> testInitialization [
 MiQueriesBrowserTest >> testQueriesTree [
 	self flag: #FQImprove.
 	self
-		assert: presenter queriesTree class
+		assert: browser queriesTree class
 		identicalTo: MiRoassalQueryPresenter
 ]
 
 { #category : #tests }
 MiQueriesBrowserTest >> testQueryResult [
 	self
-		assert: presenter queryResult class
+		assert: browser queryResult class
 		identicalTo: MiResultTreePresenter.
 	self
-		assertCollection: presenter queryResult items
-		hasSameElements: presenter entities
+		assertCollection: browser queryResult items
+		hasSameElements: browser entities
 ]
 
 { #category : #tests }
@@ -52,16 +54,16 @@ MiQueriesBrowserTest >> testRemoveBinaryQuery [
 
 	| unionQuery firstParent |
 	unionQuery := self unionQuery.
-	presenter updateForQuery: unionQuery.
+	browser updateForQuery: unionQuery.
 	firstParent := unionQuery parents first.
 	
-	presenter removeQuery: unionQuery.
+	browser removeQuery: unionQuery.
 	self
-		deny: (presenter queries anySatisfy: [ :query | query == unionQuery ]).
-	self assert: presenter selectedQuery equals: firstParent.
-	self assert: presenter queriesTree selectedItem equals: firstParent.
+		deny: (browser queries anySatisfy: [ :query | query == unionQuery ]).
+	self assert: browser selectedQuery equals: firstParent.
+	self assert: browser queriesTree selectedItem equals: firstParent.
 	self
-		assertCollection: presenter queryResult items
+		assertCollection: browser queryResult items
 		hasSameElements: firstParent result
 ]
 
@@ -69,23 +71,23 @@ MiQueriesBrowserTest >> testRemoveBinaryQuery [
 MiQueriesBrowserTest >> testRemoveQuery [
 	| query |
 	query := FQBooleanQuery new property: #isAbstract.
-	query beChildOf: presenter initialQuery.
-	presenter updateForQuery: query.
+	query beChildOf: browser initialQuery.
+	browser updateForQuery: query.
 	
-	presenter removeQuery: presenter selectedQuery.
+	browser removeQuery: browser selectedQuery.
 	
 	self
 		deny:
-			(presenter queries
+			(browser queries
 				anySatisfy: [ :q | q == query  ]).
 	self
-		assert: presenter selectedQuery
-		equals: presenter initialQuery.
+		assert: browser selectedQuery
+		equals: browser initialQuery.
 	self
-		assert: presenter queriesTree selectedItem
-		equals: presenter initialQuery.
+		assert: browser queriesTree selectedItem
+		equals: browser initialQuery.
 	self
-		assertCollection: presenter queryResult items
+		assertCollection: browser queryResult items
 		hasSameElements: helper classesAndMethods
 ]
 
@@ -93,15 +95,15 @@ MiQueriesBrowserTest >> testRemoveQuery [
 MiQueriesBrowserTest >> testSelectQuery [
 	| query1 |
 	query1 := (FQBooleanQuery property: #isDead)
-		beChildOf: presenter initialQuery.
-	presenter updateForQuery: query1.
-	presenter
+		beChildOf: browser initialQuery.
+	browser updateForQuery: query1.
+	browser
 		updateForQuery: ((FQTypeQuery new type: FamixStClass) beChildOf: query1).
-	presenter selectQuery: query1.
-	self assert: presenter selectedQuery equals: query1.
-	self assert: presenter queriesTree selectedItem equals: query1.
+	browser selectQuery: query1.
+	self assert: browser selectedQuery equals: query1.
+	self assert: browser queriesTree selectedItem equals: query1.
 	self
-		assertCollection: presenter queryResult items
+		assertCollection: browser queryResult items
 		hasSameElements: query1 result
 ]
 
@@ -109,12 +111,12 @@ MiQueriesBrowserTest >> testSelectQuery [
 MiQueriesBrowserTest >> testUpdateForBinaryQuery [
 	| unionQuery |
 	unionQuery := self unionQuery.
-	presenter updateForQuery: unionQuery.
-	self assert: (presenter queries includes: unionQuery).
-	self assert: presenter selectedQuery equals: unionQuery.
-	self assert: presenter queriesTree selectedItem equals: unionQuery.
+	browser updateForQuery: unionQuery.
+	self assert: (browser queries includes: unionQuery).
+	self assert: browser selectedQuery equals: unionQuery.
+	self assert: browser queriesTree selectedItem equals: unionQuery.
 	self
-		assertCollection: presenter queryResult items
+		assertCollection: browser queryResult items
 		hasSameElements: unionQuery result
 ]
 
@@ -122,13 +124,13 @@ MiQueriesBrowserTest >> testUpdateForBinaryQuery [
 MiQueriesBrowserTest >> testUpdateForQuery [
 	| query |
 	query := (FQBooleanQuery property: #isDead)
-		beChildOf: presenter initialQuery.
-	presenter updateForQuery: query.
-	self assert: (presenter queries includes: query).
-	self assert: presenter selectedQuery equals: query.
-	self assert: presenter queriesTree selectedItem equals: query.
+		beChildOf: browser initialQuery.
+	browser updateForQuery: query.
+	self assert: (browser queries includes: query).
+	self assert: browser selectedQuery equals: query.
+	self assert: browser queriesTree selectedItem equals: query.
 	self
-		assertCollection: presenter queryResult items
+		assertCollection: browser queryResult items
 		hasSameElements: query result
 ]
 
@@ -140,8 +142,8 @@ MiQueriesBrowserTest >> unionQuery [
 	union := FQUnionQuery new.
 	parents
 		do: [ :parent | 
-			parent beChildOf: presenter initialQuery.
-			presenter updateForQuery: parent.
+			parent beChildOf: browser initialQuery.
+			browser updateForQuery: parent.
 			parent addChild: union ].
 	union parents: parents.
 	^ union

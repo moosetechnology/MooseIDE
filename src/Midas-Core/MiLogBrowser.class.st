@@ -19,7 +19,7 @@ Class {
 		'entryList',
 		'toolbar'
 	],
-	#category : #'Midas-Core-Browser'
+	#category : #'Midas-Core-Logger'
 }
 
 { #category : #'world menu' }
@@ -47,15 +47,18 @@ MiLogBrowser class >> menuCommandOn: aBuilder [
 		action: [ self runMe ]
 ]
 
-{ #category : #initialization }
-MiLogBrowser class >> newModel [
-	^ self currentApplication logger
-]
-
 { #category : #'world menu' }
 MiLogBrowser class >> runMe [
 	<script>
 	^ super runMe
+]
+
+{ #category : #'instance creation' }
+MiLogBrowser class >> runMeFollowing: aBus [
+	^ (self on: aBus logger)
+		followBus: aBus;
+		openWithSpec;
+		selectEntity: aBus logger mostRecentEntity
 ]
 
 { #category : #initialization }
@@ -69,52 +72,66 @@ MiLogBrowser >> accept: anObject [
 ]
 
 { #category : #actions }
+MiLogBrowser >> cleanLogger [
+	self logger clean.
+	entryList updateList
+]
+
+{ #category : #actions }
 MiLogBrowser >> followAction [
-	self updateList
+	entryList updateList
+]
+
+{ #category : #actions }
+MiLogBrowser >> followBus: aBus [
+	entryList items: aBus logger logs.
+	super followBus: aBus
+]
+
+{ #category : #initialization }
+MiLogBrowser >> initializeEntryList [
+	entryList := self newList.
+	entryList contextMenu: [ self rootCommandsGroup asMenuPresenter ].
+	entryList display: [ :anElement | anElement entity mooseName ]
 ]
 
 { #category : #initialization }
 MiLogBrowser >> initializePresenters [
 	super initializePresenters.
-	"toolbar"
+	self initializeToolBar.
+	self initializeEntryList
+]
+
+{ #category : #initialization }
+MiLogBrowser >> initializeToolBar [
 	toolbar := self newToolBar
 		addItem:
 			(SpToolBarButtonPresenter new
 				label: 'Clean';
 				help: 'Remove all the logger entries';
-				action: [ self model clean.
-					self updateList ];
-				yourself).
-
-	"list"
-	entryList := self newList.
-	entryList contextMenu: [ self rootCommandsGroup asMenuPresenter ].
-	entryList items: self model logs.
-	entryList display: [ :anElement | anElement entity mooseName ]
+				action: [ self cleanLogger ];
+				yourself)
 ]
 
 { #category : #accessing }
 MiLogBrowser >> logger [
-	^ self application logger
+	^ self bus logger
 ]
 
-{ #category : #initialization }
+{ #category : #accessing }
 MiLogBrowser >> miSelectedItem [
-	^ entryList selectedItems ifEmpty: [ super miSelectedItem ] ifNotEmpty: [ :list | "We can select only one entity" list anyOne entity ]
+	^ entryList selectedItems
+		ifEmpty: [ super miSelectedItem ]
+		ifNotEmpty: [ :list | "We can select only one entity" list anyOne entity ]
 ]
 
-{ #category : #initialization }
+{ #category : #accessing }
 MiLogBrowser >> miSelectedLogEntry [
 	^ entryList selection selectedItem
 ]
 
-{ #category : #initialization }
+{ #category : #actions }
 MiLogBrowser >> removeLog: aLog [
 	self logger removeLog: aLog.
-	self updateList
-]
-
-{ #category : #actions }
-MiLogBrowser >> updateList [
 	entryList updateList
 ]

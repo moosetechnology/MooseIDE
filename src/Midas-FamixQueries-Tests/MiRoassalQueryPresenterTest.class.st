@@ -1,6 +1,6 @@
 Class {
 	#name : #MiRoassalQueryPresenterTest,
-	#superclass : #SpTest,
+	#superclass : #TestCase,
 	#instVars : [
 		'helper'
 	],
@@ -43,11 +43,12 @@ MiRoassalQueryPresenterTest >> setUp [
 
 { #category : #tests }
 MiRoassalQueryPresenterTest >> testPointingOnlyToActualChildren [
-	| browser |
+	| browser presenter |
 	browser := self browserWithSimilarQueries.
 	presenter := (self classToTest on: browser queries)
 		adaptToBrowser: browser.
-	self openInstance.
+	[ presenter openWithSpec.
 	presenter canvas nodes
-		do: [ :box | self assert: box incomingEdges size < 2 ]
+		do: [ :box | self assert: box incomingEdges size < 2 ] ]
+		ensure: [ presenter window close ]
 ]

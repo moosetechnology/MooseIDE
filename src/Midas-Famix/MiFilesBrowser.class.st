@@ -125,10 +125,10 @@ MiFilesBrowser >> initializePresenters [
 			selected selectedItems
 				ifNotEmpty: [ self
 						freezeDuring: [ selected selectedItems size = 1
-								ifTrue: [ MiApplication current globallySelect: selected selectedItem ]
+								ifTrue: [ self bus globallySelect: selected selectedItem ]
 								ifFalse: [ | mooseGroup |
 									mooseGroup := MooseGroup withAll: selected selectedItems.
-									MiApplication current globallySelect: mooseGroup ] ] ] ]
+									self bus globallySelect: mooseGroup ] ] ] ]
 ]
 
 { #category : #initialization }

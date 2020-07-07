@@ -1,8 +1,9 @@
 Class {
 	#name : #MiQueryCreationPresenterTest,
-	#superclass : #SpTest,
+	#superclass : #TestCase,
 	#instVars : [
-		'helper'
+		'helper',
+		'presenter'
 	],
 	#category : #'Midas-FamixQueries-Tests-Presenters'
 }
@@ -33,7 +34,13 @@ MiQueryCreationPresenterTest >> classToTest [
 ]
 
 { #category : #running }
+MiQueryCreationPresenterTest >> openInstance [
+	presenter openWithSpec
+]
+
+{ #category : #running }
 MiQueryCreationPresenterTest >> setUp [
+	super setUp.
 	helper := FQTestsHelper current.
 	presenter := MiQueryCreationPresenter
 		on:
@@ -42,6 +49,11 @@ MiQueryCreationPresenterTest >> setUp [
 					(FQRootQuery new
 						result: helper classesAndMethods;
 						yourself))
+]
+
+{ #category : #running }
+MiQueryCreationPresenterTest >> tearDown [
+	presenter window ifNotNil: [ :window | window close ]
 ]
 
 { #category : #tests }

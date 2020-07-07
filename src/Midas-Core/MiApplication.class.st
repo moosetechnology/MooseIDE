@@ -2,7 +2,7 @@ Class {
 	#name : #MiApplication,
 	#superclass : #SpApplication,
 	#instVars : [
-		'logger'
+		'buses'
 	],
 	#classVars : [
 		'Current'
@@ -10,12 +10,17 @@ Class {
 	#category : #'Midas-Core-Application'
 }
 
-{ #category : #accessing }
+{ #category : #'instance creation' }
 MiApplication class >> current [
 	^ Current ifNil: [ Current := self new ]
 ]
 
 { #category : #accessing }
+MiApplication class >> defaultBusName [
+	^ 'Default'
+]
+
+{ #category : #'instance creation' }
 MiApplication class >> reset [
 	<script>
 	Current := nil
@@ -26,41 +31,40 @@ MiApplication >> browsers [
 	^ self windows collect: #presenter thenSelect: #isMiBrowser
 ]
 
-{ #category : #actions }
-MiApplication >> freezeBrowsersDuring: aBlock [
-	| activeButtons |
-	activeButtons := self browsers
-		collect: [ :browser | browser activeStateButton ].
-	self browsers do: [ :browser | browser freeze: true ].
-	aBlock
-		ensure: [ activeButtons do: [ :button | button state: true ] ]
+{ #category : #buses }
+MiApplication >> busNamed: aName [
+	^ buses
+		detect: [ :bus | bus name = aName ]
+		ifNone: [ buses add: (MiBus named: aName) ]
 ]
 
-{ #category : #actions }
-MiApplication >> globallySelect: anEntity [
-	anEntity
-		ifNotNil: [ (self logger newLogFor: anEntity) activateIn: self ]
+{ #category : #accessing }
+MiApplication >> buses [
+	^ buses
+]
+
+{ #category : #buses }
+MiApplication >> defaultBus [
+	^ self busNamed: 'Default'
+]
+
+{ #category : #buses }
+MiApplication >> deleteBus: aBus [
+	aBus isDefault
+		ifFalse: [ buses remove: aBus ifAbsent: [  ] ]
+]
+
+{ #category : #buses }
+MiApplication >> deleteBusNamed: aName [
+	self deleteBus: (self busNamed: aName)
 ]
 
 { #category : #initialization }
 MiApplication >> initialize [
 	super initialize.
-	self logger: MiLogger new
-]
-
-{ #category : #accessing }
-MiApplication >> logger [
-	^ logger
-]
-
-{ #category : #accessing }
-MiApplication >> logger: anObject [
-	logger := anObject
-]
-
-{ #category : #actions }
-MiApplication >> refreshBrowsersWith: anEntity [
-	self browsers do: [ :browser | browser selectEntity: anEntity ]
+	buses := Set new
+		add: (MiBus named: 'Default');
+		yourself
 ]
 
 { #category : #actions }

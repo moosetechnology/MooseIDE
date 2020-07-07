@@ -9,10 +9,9 @@ BaselineOfMidas >> baseline: spec [
 	<baseline>
 	spec
 		for: #common
-		do: [ 
-			self defineDependencies: spec.
+		do: [ self defineDependencies: spec.
 			self definePackages: spec.
-			self defineGroups: spec ].
+			self defineGroups: spec ]
 ]
 
 { #category : #baselines }

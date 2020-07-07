@@ -2,9 +2,9 @@ Class {
 	#name : #MiHelpPopup,
 	#superclass : #SpPresenter,
 	#instVars : [
-		'model',
 		'help',
-		'okButton'
+		'okButton',
+		'browser'
 	],
 	#category : #'Midas-Core-Browser'
 }
@@ -26,7 +26,7 @@ MiHelpPopup class >> defaultSpec [
 { #category : #initialization }
 MiHelpPopup >> initializePresenters [
 	super initializePresenters.
-	help := self newText text: model class comment.
+	help := self newText text: browser class comment.
 	okButton := self newButton
 		label: 'Ok';
 		action: [ self owner dismiss ];
@@ -35,5 +35,5 @@ MiHelpPopup >> initializePresenters [
 
 { #category : #initialization }
 MiHelpPopup >> setModelBeforeInitialization: aBrowser [
-	model := aBrowser
+	browser := aBrowser
 ]

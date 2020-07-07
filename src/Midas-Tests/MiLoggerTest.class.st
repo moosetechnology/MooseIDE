@@ -7,7 +7,7 @@ Class {
 	#instVars : [
 		'logger'
 	],
-	#category : #'Midas-Tests'
+	#category : #'Midas-Tests-Application'
 }
 
 { #category : #running }

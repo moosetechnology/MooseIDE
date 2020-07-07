@@ -1,6 +1,9 @@
 Class {
 	#name : #MiRoassalSequenceTest,
-	#superclass : #SpTest,
+	#superclass : #TestCase,
+	#instVars : [
+		'presenter'
+	],
 	#category : #'Midas-FamixQueries-Tests-Widgets'
 }
 
@@ -35,9 +38,20 @@ MiRoassalSequenceTest >> modelsCollection [
 ]
 
 { #category : #running }
+MiRoassalSequenceTest >> openInstance [
+	presenter openWithSpec
+]
+
+{ #category : #running }
 MiRoassalSequenceTest >> setUp [
 	super setUp.
 	presenter := self classToTest on: self modelsCollection
+]
+
+{ #category : #running }
+MiRoassalSequenceTest >> tearDown [
+	presenter window ifNotNil: [ :window | window close ].
+	super tearDown
 ]
 
 { #category : #tests }

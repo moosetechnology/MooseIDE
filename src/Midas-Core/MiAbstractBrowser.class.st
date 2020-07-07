@@ -44,7 +44,9 @@ Class {
 		'buttonPropagate',
 		'menu',
 		'buttonInspect',
-		'buttonHelp'
+		'buttonHelp',
+		'bus',
+		'busButton'
 	],
 	#category : #'Midas-Core-Browser'
 }
@@ -64,7 +66,9 @@ MiAbstractBrowser class >> defaultSpec [
 				add: #buttonFreeze width: 60;
 				add: #buttonHighlight width: 80;
 				add: SpBoxLayout newHorizontal expand: true;
-				add: #buttonInspect expand: false;
+				add: #busButton width: 100;
+				add: SpBoxLayout newHorizontal expand: true;
+				add: #buttonInspect width: self iconWidth;
 				add: #buttonPropagate expand: false;
 				add: #buttonHelp width: self iconWidth;
 				yourself)
@@ -120,10 +124,15 @@ MiAbstractBrowser class >> openOn: anEntity [
 { #category : #'instance creation' }
 MiAbstractBrowser class >> runMe [
 	<script>
+	^ self runMeFollowing: self currentApplication defaultBus
+]
+
+{ #category : #'instance creation' }
+MiAbstractBrowser class >> runMeFollowing: aBus [
 	^ (self on: self newModel)
+		followBus: aBus;
 		openWithSpec;
-		"open with the last select entity"
-			selectEntity: self currentApplication logger mostRecentEntity
+		selectEntity: aBus logger mostRecentEntity
 ]
 
 { #category : #'world menu' }
@@ -134,6 +143,11 @@ MiAbstractBrowser class >> toolbarMetaName [
 { #category : #'world menu' }
 MiAbstractBrowser class >> toolbarName [
 	^ #'Midas Browsers'
+]
+
+{ #category : #specs }
+MiAbstractBrowser class >> windowSize [
+	^ 500 @ 400
 ]
 
 { #category : #testing }
@@ -148,6 +162,11 @@ MiAbstractBrowser >> activeStateButton [
 	^ {buttonFollow.
 	buttonFreeze.
 	buttonHighlight} detect: #state
+]
+
+{ #category : #accessing }
+MiAbstractBrowser >> bus [
+	^ bus
 ]
 
 { #category : #actions }
@@ -168,6 +187,17 @@ MiAbstractBrowser >> canPropagate [
 { #category : #actions }
 MiAbstractBrowser >> followAction [
 	^ self subclassResponsibility
+]
+
+{ #category : #actions }
+MiAbstractBrowser >> followBus: aBus [
+	aBus == self bus
+		ifTrue: [ ^ self ].
+	self unregisterFromPreviousBus.
+	bus := aBus.
+	bus registerBrowser: self.
+	busButton label: 'Bus: ' , aBus name.
+	self selectEntity: bus logger mostRecentEntity
 ]
 
 { #category : #actions }
@@ -192,7 +222,7 @@ MiAbstractBrowser >> freezeDuring: aBlock [
 
 { #category : #accessing }
 MiAbstractBrowser >> globallySelect: anEntity [
-	self application globallySelect: anEntity
+	self bus globallySelect: anEntity
 ]
 
 { #category : #actions }
@@ -201,8 +231,48 @@ MiAbstractBrowser >> highlightAction [
 ]
 
 { #category : #initialization }
+MiAbstractBrowser >> initializeActionButtons [
+	buttonPropagate := self newButton
+		label: 'Propagate';
+		enabled: self canPropagate;
+		action: [ (MiPropagateCommand forContext: self) execute ];
+		yourself.
+	buttonInspect := self newButton
+		iconName: #smallInspectIt;
+		help: 'Inspect';
+		action: [ (MiInspectCommand forContext: self) execute ];
+		yourself
+]
+
+{ #category : #initialization }
+MiAbstractBrowser >> initializeBusButton [
+	busButton := self newButton
+		iconName: #edit;
+		help: 'Edit';
+		action: [ self modifyBus ];
+		yourself
+]
+
+{ #category : #initialization }
+MiAbstractBrowser >> initializeHelpButton [
+	buttonHelp := self newButton
+		iconName: #help;
+		help: self class comment;
+		action: [ self showHelp ];
+		yourself
+]
+
+{ #category : #initialization }
 MiAbstractBrowser >> initializePresenters [
 	super initializePresenters.
+	self initializeStateButtons.
+	self initializeBusButton.
+	self initializeActionButtons.
+	self initializeHelpButton
+]
+
+{ #category : #initialization }
+MiAbstractBrowser >> initializeStateButtons [
 	self flag: 'The state of freeze should be store in a model'.
 	buttonFreeze := self newRadioButton
 		label: 'Freeze';
@@ -221,31 +291,16 @@ MiAbstractBrowser >> initializePresenters [
 			{buttonFreeze.
 			buttonFollow.
 			buttonHighlight}.
-	self freeze: self canFollow not.
-	buttonPropagate := self newButton
-		label: 'Propagate';
-		enabled: self canPropagate;
-		action: [ (MiPropagateCommand forContext: self) execute ];
-		yourself.
-	buttonInspect := self newButton
-		label: 'Inspect';
-		action: [ (MiInspectCommand forContext: self) execute ];
-		yourself.
-	buttonHelp := self newButton
-		icon: (self theme iconNamed: #help);
-		help: self class comment;
-		action: [ self showHelp ];
-		yourself
+	self freeze: self canFollow not
 ]
 
 { #category : #initialization }
 MiAbstractBrowser >> initializeWindow: aWindowPresenter [
 	super initializeWindow: aWindowPresenter.
 	aWindowPresenter
-		whenClosedDo: [ self application windowClosed: aWindowPresenter ].
-	aWindowPresenter
-		title: self title;
-		initialExtent: 500 @ 400
+		whenClosedDo: [ self bus unregisterBrowser: self.
+			self application windowClosed: aWindowPresenter ].
+	aWindowPresenter initialExtent: self class windowSize
 ]
 
 { #category : #actions }
@@ -288,6 +343,15 @@ MiAbstractBrowser >> model: anObject [
 	model := anObject
 ]
 
+{ #category : #actions }
+MiAbstractBrowser >> modifyBus [
+	| popup |
+	(popup := self newPopover)
+		relativeTo: busButton;
+		presenter: (MiBusesPopup owner: popup on: self);
+		popup
+]
+
 { #category : #accessing }
 MiAbstractBrowser >> needUpdate: anEntity [
 	^ anEntity ~= model selected
@@ -312,4 +376,9 @@ MiAbstractBrowser >> showHelp [
 		relativeTo: buttonHelp;
 		presenter: (MiHelpPopup owner: help on: self);
 		popup
+]
+
+{ #category : #actions }
+MiAbstractBrowser >> unregisterFromPreviousBus [
+	self bus ifNotNil: [ self bus unregisterBrowser: self ]
 ]

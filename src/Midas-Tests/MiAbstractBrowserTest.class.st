@@ -2,109 +2,141 @@ Class {
 	#name : #MiAbstractBrowserTest,
 	#superclass : #TestCase,
 	#instVars : [
-		'currentLogs',
-		'concreteBrowsers'
+		'browser'
 	],
-	#category : #'Midas-Tests'
+	#category : #'Midas-Tests-Browsers'
 }
 
-{ #category : #tests }
-MiAbstractBrowserTest >> assertAllBrowsersOpenOn: anObject [
-	concreteBrowsers
-		do: [ :browser | 
-			self
-				shouldnt: [ | browserInstance |
-					browserInstance := browser runMe.
-					browserInstance selectEntity: anObject.
-					browserInstance root close ]
-				raise: Error ]
+{ #category : #testing }
+MiAbstractBrowserTest class >> isAbstract [
+	^ self == MiAbstractBrowserTest
 ]
 
-{ #category : #tests }
+{ #category : #running }
+MiAbstractBrowserTest >> application [
+	^ MiApplication current
+]
+
+{ #category : #'tests - opening' }
 MiAbstractBrowserTest >> assertCorrectPropagation [
+	self mooseObjects
+		do: [ :mooseObject | 
+			self bus globallySelect: mooseObject.
+			self assert: self bus logger logs size equals: 1.
+			self bus logger clean ]
+]
 
-	"Propagate a mooseModel"
-	MiApplication current globallySelect: MooseModel new.
-	self assert: MiApplication current logger logs size equals: 1.
-	MiApplication current logger clean.
+{ #category : #'tests - actions' }
+MiAbstractBrowserTest >> assertFollowActionFor: aMooseObject [
+	"Override to test follow action"
 
-	"Propagate a mooseGroup"
-	MiApplication current globallySelect: MooseGroup new.
-	self assert: MiApplication current logger logs size equals: 1.
-	MiApplication current logger clean.
+	self skip
+]
 
-	"Propagate a mooseEntity"
-	MiApplication current globallySelect: MooseEntity new.
-	self assert: MiApplication current logger logs size equals: 1.
-	MiApplication current logger clean
+{ #category : #'tests - actions' }
+MiAbstractBrowserTest >> assertHighlightActionFor: aMooseObject [
+	"Override to test highlight action"
+
+	self skip
+]
+
+{ #category : #running }
+MiAbstractBrowserTest >> browserClass [
+	^ self subclassResponsibility
+]
+
+{ #category : #running }
+MiAbstractBrowserTest >> bus [
+	^ self application busNamed: 'TestBus'
+]
+
+{ #category : #running }
+MiAbstractBrowserTest >> concreteBrowsers [
+	^ MiAbstractBrowser allSubclasses reject: #isAbstract
+]
+
+{ #category : #running }
+MiAbstractBrowserTest >> mooseObjects [
+	^ {MooseEntity new.
+	MooseGroup new.
+	(MooseGroup with: MooseEntity new).
+	MooseModel new.
+	(MooseModel with: MooseEntity new)}
+]
+
+{ #category : #running }
+MiAbstractBrowserTest >> nonOpenedBrowser [
+	^ (self browserClass on: self browserClass newModel)
+		followBus: self bus;
+		yourself
 ]
 
 { #category : #running }
 MiAbstractBrowserTest >> setUp [
 	super setUp.
-	currentLogs := MiApplication current logger logs.
-	MiApplication current logger logs: OrderedCollection new.
-	concreteBrowsers := MiAbstractBrowser allSubclasses
-		reject: #isAbstract
+	browser := self browserClass runMeFollowing: self bus
 ]
 
 { #category : #running }
 MiAbstractBrowserTest >> tearDown [
-	MiApplication current logger logs: currentLogs.
+	browser window ifNotNil: [ :window | window close ].
+	self application deleteBus: self bus.
 	super tearDown
 ]
 
-{ #category : #tests }
-MiAbstractBrowserTest >> testAllBrowserHaveATitle [
-	concreteBrowsers
-		do: [ :browser | 
-			| browserInstance |
-			browserInstance := browser runMe.
-			[ self deny: browserInstance window title equals: 'Untitled window' ]
-				ensure: [ browserInstance window close ] ]
+{ #category : #'tests - opening' }
+MiAbstractBrowserTest >> testBrowserHasATitle [
+	self deny: browser window title equals: 'Untitled window'
 ]
 
-{ #category : #tests }
-MiAbstractBrowserTest >> testBrowsersDoNotPropagateWhenReceiving [
-	| browsers |
-	MiApplication current
-		freezeBrowsersDuring: [ browsers := concreteBrowsers collect: [ :browser | browser runMe ].
-			[ browsers do: #follow.
-			self assertCorrectPropagation.
-			browsers do: #freeze.
-			self assertCorrectPropagation.
-			browsers do: #highlight.
-			self assertCorrectPropagation ]
-				ensure: [ browsers do: [ :browser | browser window close ] ] ]
+{ #category : #'tests - opening' }
+MiAbstractBrowserTest >> testCanOpen [
+	| browserToOpen |
+	browserToOpen := self nonOpenedBrowser.
+	[ self
+		shouldnt: [ browserToOpen openWithSpec.
+			{Object new} , self mooseObjects
+				do: [ :object | browserToOpen selectEntity: object ] ]
+		raise: Error ]
+		ensure: [ browserToOpen window close ]
 ]
 
-{ #category : #tests }
-MiAbstractBrowserTest >> testCanOpenAllBrowser [
-	concreteBrowsers
-		do: [ :browser | 
-			self
-				shouldnt: [ | browserInstance |
-					browserInstance := browser runMe.
-					browserInstance root close ]
-				raise: Error ]
+{ #category : #'tests - opening' }
+MiAbstractBrowserTest >> testDoNotPropagateWhenReceiving [
+	browser follow.
+	self assertCorrectPropagation.
+	browser freeze.
+	self assertCorrectPropagation.
+	browser highlight.
+	self assertCorrectPropagation
 ]
 
-{ #category : #tests }
-MiAbstractBrowserTest >> testCanOpenAllBrowserWithAnObject [
-	self assertAllBrowsersOpenOn: Object new
+{ #category : #'tests - actions' }
+MiAbstractBrowserTest >> testFollowAction [
+	browser follow.
+	self mooseObjects
+		do: [ :mooseObject | 
+			self bus globallySelect: mooseObject.
+			self assertFollowActionFor: mooseObject ]
 ]
 
-{ #category : #tests }
-MiAbstractBrowserTest >> testCanOpenAllBrowserWithEmptyMooseGroup [
-	self assertAllBrowsersOpenOn: MooseGroup new
+{ #category : #'tests - actions' }
+MiAbstractBrowserTest >> testHighlightAction [
+	browser highlight.
+	self mooseObjects
+		do: [ :mooseObject | 
+			self bus globallySelect: mooseObject.
+			self assertHighlightActionFor: mooseObject ]
 ]
 
-{ #category : #tests }
-MiAbstractBrowserTest >> testCanOpenAllBrowserWithMooseEntity [
-	self assertAllBrowsersOpenOn: MooseEntity new
+{ #category : #'tests - opening' }
+MiAbstractBrowserTest >> testRunMeFollowing [
+	self assert: browser bus identicalTo: self bus.
+	self assert: (self bus browsers includes: browser)
 ]
 
-{ #category : #tests }
-MiAbstractBrowserTest >> testCanOpenAllBrowserWithMooseGroup [
-	self assertAllBrowsersOpenOn: (MooseGroup with: MooseEntity new)
+{ #category : #'tests - opening' }
+MiAbstractBrowserTest >> testWindowClosedAction [
+	browser window close.
+	self deny: (self bus browsers includes: browser)
 ]

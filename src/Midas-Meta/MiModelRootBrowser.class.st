@@ -67,6 +67,11 @@ MiModelRootBrowser class >> title [
 	^ 'Model root'
 ]
 
+{ #category : #specs }
+MiModelRootBrowser class >> windowSize [
+	^ 600 @ 400
+]
+
 { #category : #testing }
 MiModelRootBrowser >> accept: anObject [
 	^ false
@@ -104,7 +109,7 @@ MiModelRootBrowser >> initializeList [
 		contextMenu: [ self rootCommandsGroup asMenuPresenter ];
 		whenSelectionChangedDo: [ :selected | 
 			model selected: selected selectedItem.
-			self application globallySelect: selected selectedItem ]
+			self bus globallySelect: selected selectedItem ]
 ]
 
 { #category : #initialization }
@@ -122,12 +127,6 @@ MiModelRootBrowser >> initializePresenters [
 	super initializePresenters.
 	self initializeMenu.
 	self initializeList
-]
-
-{ #category : #initialization }
-MiModelRootBrowser >> initializeWindow: aWindowPresenter [
-	super initializeWindow: aWindowPresenter.
-	aWindowPresenter initialExtent: 600 @ 400
 ]
 
 { #category : #accessing }
