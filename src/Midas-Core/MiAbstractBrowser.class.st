@@ -336,8 +336,11 @@ MiAbstractBrowser >> model: anObject [
 
 { #category : #actions }
 MiAbstractBrowser >> modifyBus [
-	self flag: #TODO.
-	self inform: '<TODO> Modify bus'
+	| popup |
+	(popup := self newPopover)
+		relativeTo: busButton;
+		presenter: (MiBusesPopup owner: popup on: self);
+		popup
 ]
 
 { #category : #accessing }

@@ -73,6 +73,8 @@ MiApplication >> globallySelect: anEntity [
 MiApplication >> initialize [
 	super initialize.
 	buses := Set new
+		add: (MiBus named: 'Default');
+		yourself
 ]
 
 { #category : #actions }
