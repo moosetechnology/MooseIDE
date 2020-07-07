@@ -186,9 +186,13 @@ MiAbstractBrowser >> followAction [
 
 { #category : #actions }
 MiAbstractBrowser >> followBus: aBus [
+	aBus == self bus
+		ifTrue: [ ^ self ].
+	self unregisterFromPreviousBus.
 	bus := aBus.
 	bus registerBrowser: self.
-	busButton label: 'Bus: ' , aBus name
+	busButton label: 'Bus: ' , aBus name.
+	self selectEntity: bus logger mostRecentEntity
 ]
 
 { #category : #actions }
@@ -367,4 +371,9 @@ MiAbstractBrowser >> showHelp [
 		relativeTo: buttonHelp;
 		presenter: (MiHelpPopup owner: help on: self);
 		popup
+]
+
+{ #category : #actions }
+MiAbstractBrowser >> unregisterFromPreviousBus [
+	self bus ifNotNil: [ self bus unregisterBrowser: self ]
 ]

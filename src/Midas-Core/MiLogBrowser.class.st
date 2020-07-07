@@ -84,8 +84,8 @@ MiLogBrowser >> followAction [
 
 { #category : #actions }
 MiLogBrowser >> followBus: aBus [
-	super followBus: aBus.
-	entryList items: self bus logger logs
+	entryList items: aBus logger logs.
+	super followBus: aBus
 ]
 
 { #category : #initialization }
