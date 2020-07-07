@@ -145,6 +145,11 @@ MiAbstractBrowser class >> toolbarName [
 	^ #'Midas Browsers'
 ]
 
+{ #category : #specs }
+MiAbstractBrowser class >> windowSize [
+	^ 500 @ 400
+]
+
 { #category : #testing }
 MiAbstractBrowser >> accept: anObject [
 	"whether the browser accepts to deal with anObject"
@@ -292,10 +297,10 @@ MiAbstractBrowser >> initializeStateButtons [
 { #category : #initialization }
 MiAbstractBrowser >> initializeWindow: aWindowPresenter [
 	super initializeWindow: aWindowPresenter.
-	aWindowPresenter whenClosedDo: [ self bus unregisterBrowser: self ].
 	aWindowPresenter
-		title: self title;
-		initialExtent: 500 @ 400
+		whenClosedDo: [ self bus unregisterBrowser: self.
+			self application windowClosed: aWindowPresenter ].
+	aWindowPresenter initialExtent: self class windowSize
 ]
 
 { #category : #actions }

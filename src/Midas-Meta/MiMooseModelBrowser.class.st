@@ -53,6 +53,11 @@ MiMooseModelBrowser class >> title [
 	^ 'MooseModel'
 ]
 
+{ #category : #specs }
+MiMooseModelBrowser class >> windowSize [
+	^ 600 @ 400
+]
+
 { #category : #testing }
 MiMooseModelBrowser >> accept: anObject [
 	^ anObject isKindOf: MooseModel
@@ -128,12 +133,6 @@ MiMooseModelBrowser >> initializeTable [
 		beMultipleSelection;
 		contextMenu: [ self rootCommandsGroup asMenuPresenter ].
 	self computeModelPresenterRoot
-]
-
-{ #category : #initialization }
-MiMooseModelBrowser >> initializeWindow: aWindowPresenter [
-	super initializeWindow: aWindowPresenter.
-	aWindowPresenter initialExtent: 600 @ 400
 ]
 
 { #category : #accessing }

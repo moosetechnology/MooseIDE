@@ -67,6 +67,11 @@ MiModelRootBrowser class >> title [
 	^ 'Model root'
 ]
 
+{ #category : #specs }
+MiModelRootBrowser class >> windowSize [
+	^ 600 @ 400
+]
+
 { #category : #testing }
 MiModelRootBrowser >> accept: anObject [
 	^ false
@@ -122,12 +127,6 @@ MiModelRootBrowser >> initializePresenters [
 	super initializePresenters.
 	self initializeMenu.
 	self initializeList
-]
-
-{ #category : #initialization }
-MiModelRootBrowser >> initializeWindow: aWindowPresenter [
-	super initializeWindow: aWindowPresenter.
-	aWindowPresenter initialExtent: 600 @ 400
 ]
 
 { #category : #accessing }
