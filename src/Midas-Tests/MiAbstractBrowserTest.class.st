@@ -51,11 +51,6 @@ MiAbstractBrowserTest >> bus [
 ]
 
 { #category : #running }
-MiAbstractBrowserTest >> concreteBrowsers [
-	^ MiAbstractBrowser allSubclasses reject: #isAbstract
-]
-
-{ #category : #running }
 MiAbstractBrowserTest >> mooseObjects [
 	^ {MooseEntity new.
 	MooseGroup new.
@@ -138,5 +133,6 @@ MiAbstractBrowserTest >> testRunMeFollowing [
 { #category : #'tests - opening' }
 MiAbstractBrowserTest >> testWindowClosedAction [
 	browser window close.
-	self deny: (self bus browsers includes: browser)
+	self deny: (self bus browsers includes: browser).
+	self deny: (self application browsers includes: browser)
 ]

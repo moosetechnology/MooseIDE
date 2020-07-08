@@ -45,7 +45,7 @@ MiApplication >> buses [
 
 { #category : #buses }
 MiApplication >> defaultBus [
-	^ self busNamed: 'Default'
+	^ self busNamed: self class defaultBusName
 ]
 
 { #category : #buses }
@@ -56,14 +56,16 @@ MiApplication >> deleteBus: aBus [
 
 { #category : #buses }
 MiApplication >> deleteBusNamed: aName [
-	self deleteBus: (self busNamed: aName)
+	buses
+		detect: [ :bus | bus name = aName ]
+		ifFound: [ :bus | self deleteBus: bus ]
 ]
 
 { #category : #initialization }
 MiApplication >> initialize [
 	super initialize.
 	buses := Set new
-		add: (MiBus named: 'Default');
+		add: (MiBus named: self class defaultBusName);
 		yourself
 ]
 

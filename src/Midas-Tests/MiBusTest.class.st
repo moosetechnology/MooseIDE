@@ -13,11 +13,6 @@ MiBusTest >> application [
 ]
 
 { #category : #running }
-MiBusTest >> concreteBrowsers [
-	^ MiAbstractBrowser allSubclasses reject: #isAbstract
-]
-
-{ #category : #running }
 MiBusTest >> mockBrowser [
 	| mockBrowser |
 	mockBrowser := Mock named: 'Mock browser'.
