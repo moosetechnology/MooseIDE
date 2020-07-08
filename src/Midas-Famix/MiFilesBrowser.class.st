@@ -158,6 +158,8 @@ MiFilesBrowser >> selectFileReference: aFileReference [
 
 { #category : #refreshing }
 MiFilesBrowser >> updateWindowTitle [
-	self window
-		title: self class title , ' of ' , self model mooseModel name , ' model'
+	self
+		withWindowDo: [ :window | 
+			window
+				title: self class title , ' of ' , self model mooseModel name , ' model' ]
 ]

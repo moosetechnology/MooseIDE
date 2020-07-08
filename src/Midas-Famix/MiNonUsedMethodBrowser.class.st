@@ -103,7 +103,7 @@ MiNonUsedMethodBrowser >> followAction [
 	((self accept: toSelect) and: (self needUpdate: toSelect))
 		ifFalse: [ ^ self ].
 	model selected: toSelect.
-	self updateWindowTitile.
+	self updateWindowTitle.
 	self refresh
 ]
 
@@ -144,9 +144,10 @@ MiNonUsedMethodBrowser >> selected: aFamixWithMethod [
 ]
 
 { #category : #TOREMOVE }
-MiNonUsedMethodBrowser >> updateWindowTitile [
-	self window
-		title: self class title , ' in ' , self selected name
+MiNonUsedMethodBrowser >> updateWindowTitle [
+	self
+		withWindowDo:
+			[ :window | window title: self class title , ' in ' , self selected name ]
 ]
 
 { #category : #TOREMOVE }

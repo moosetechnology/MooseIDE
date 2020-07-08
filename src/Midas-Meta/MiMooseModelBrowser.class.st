@@ -181,5 +181,7 @@ MiMooseModelBrowser >> setModelPresenterSelection [
 
 { #category : #actions }
 MiMooseModelBrowser >> updateWindowTitle [
-	self window title: self class title , ' (' , model model name , ')'
+	self
+		withWindowDo:
+			[ :window | window title: self class title , ' (' , model model name , ')' ]
 ]

@@ -86,14 +86,21 @@ MiAbstractBrowserTest >> testBrowserHasATitle [
 
 { #category : #'tests - opening' }
 MiAbstractBrowserTest >> testCanOpen [
-	| browserToOpen |
-	browserToOpen := self nonOpenedBrowser.
-	[ self
-		shouldnt: [ browserToOpen openWithSpec.
-			{Object new} , self mooseObjects
-				do: [ :object | browserToOpen selectEntity: object ] ]
-		raise: Error ]
-		ensure: [ browserToOpen window close ]
+	| newBrowser |
+	"Empty bus"
+	self
+		shouldnt: [ newBrowser := self browserClass runMeFollowing: self bus.
+			newBrowser window close ]
+		raise: Error.
+
+	"With object"
+	{Object new} , self mooseObjects
+		do: [ :object | 
+			self bus globallySelect: object.
+			self
+				shouldnt: [ newBrowser := self browserClass runMeFollowing: self bus.
+					newBrowser window close ]
+				raise: Error ]
 ]
 
 { #category : #'tests - opening' }
@@ -113,6 +120,16 @@ MiAbstractBrowserTest >> testFollowAction [
 		do: [ :mooseObject | 
 			self bus globallySelect: mooseObject.
 			self assertFollowActionFor: mooseObject ]
+]
+
+{ #category : #'tests - opening' }
+MiAbstractBrowserTest >> testFollowBusTriggersSelectEntity [
+	browser stub.
+	{Object new} , self mooseObjects
+		do: [ :object | 
+			self bus globallySelect: object.
+			browser followBus: self bus.
+			browser should receive selectEntity: object ]
 ]
 
 { #category : #'tests - actions' }

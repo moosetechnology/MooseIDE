@@ -53,14 +53,6 @@ MiLogBrowser class >> runMe [
 	^ super runMe
 ]
 
-{ #category : #'instance creation' }
-MiLogBrowser class >> runMeFollowing: aBus [
-	^ (self on: aBus logger)
-		followBus: aBus;
-		openWithSpec;
-		selectEntity: aBus logger mostRecentEntity
-]
-
 { #category : #initialization }
 MiLogBrowser class >> title [
 	^ 'Logger'

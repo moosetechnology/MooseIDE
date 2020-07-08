@@ -130,9 +130,9 @@ MiAbstractBrowser class >> runMe [
 { #category : #'instance creation' }
 MiAbstractBrowser class >> runMeFollowing: aBus [
 	^ (self on: self newModel)
-		followBus: aBus;
 		openWithSpec;
-		selectEntity: aBus logger mostRecentEntity
+		followBus: aBus;
+		yourself
 ]
 
 { #category : #'world menu' }

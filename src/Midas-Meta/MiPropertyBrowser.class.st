@@ -67,8 +67,7 @@ MiPropertyBrowser >> forEntity: anEntity [
 		items:
 			(anEntity mooseDescription allPrimitiveProperties
 				sorted: #name ascending).
-	self window
-		title: self class title , ': Properties of ' , anEntity name
+	self updateWindowTitleWith: anEntity name
 ]
 
 { #category : #initialization }
@@ -94,4 +93,11 @@ MiPropertyBrowser >> initializePresenters [
 			(self model mooseDescription allPrimitiveProperties
 				sorted: #name ascending);
 		beResizable
+]
+
+{ #category : #initialization }
+MiPropertyBrowser >> updateWindowTitleWith: aName [
+	self
+		withWindowDo:
+			[ :window | window title: self class title , ': Properties of ' , aName ]
 ]

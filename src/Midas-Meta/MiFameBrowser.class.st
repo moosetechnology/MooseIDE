@@ -50,23 +50,22 @@ MiFameBrowser class >> title [
 	^ 'Fame'
 ]
 
-{ #category : #initialization }
+{ #category : #testing }
 MiFameBrowser >> accept: anObject [
 	^ anObject isMooseObject
 ]
 
-{ #category : #initialization }
+{ #category : #actions }
 MiFameBrowser >> followAction [
 	(self accept: toSelect)
 		ifFalse: [ ^ self ].
 	self forEntity: toSelect
 ]
 
-{ #category : #initialization }
+{ #category : #actions }
 MiFameBrowser >> forEntity: anEntity [
 	fameDescription items: anEntity mooseDescription allComplexProperties.
-	self window
-		title: self class title , ': Moose description of ' , anEntity name
+	self updateWindowTitleWith: anEntity name
 ]
 
 { #category : #initialization }
@@ -84,4 +83,11 @@ MiFameBrowser >> initializePresenters [
 		addColumn: (SpStringTableColumn title: 'IsTarget?' evaluated: [ :item | item isTarget ]) yourself;
 		addColumn: (SpStringTableColumn title: 'IsSource?' evaluated: [ :item | item isSource ]) yourself;
 		beResizable
+]
+
+{ #category : #actions }
+MiFameBrowser >> updateWindowTitleWith: aName [
+	self
+		withWindowDo:
+			[ :window | window title: self class title , ': Moose description of ' , aName ]
 ]
