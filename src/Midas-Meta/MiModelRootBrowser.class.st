@@ -109,7 +109,7 @@ MiModelRootBrowser >> initializeList [
 		contextMenu: [ self rootCommandsGroup asMenuPresenter ];
 		whenSelectionChangedDo: [ :selected | 
 			model selected: selected selectedItem.
-			self bus globallySelect: selected selectedItem ]
+			self buses do: [ :bus | bus globallySelect: selected selectedItem ] ]
 ]
 
 { #category : #initialization }

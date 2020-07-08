@@ -63,6 +63,12 @@ MiLogBrowser >> accept: anObject [
 	^ true
 ]
 
+{ #category : #accessing }
+MiLogBrowser >> bus [
+	self flag: #Todo , 'This must be dealt with'.
+	^ self buses anyOne
+]
+
 { #category : #actions }
 MiLogBrowser >> cleanLogger [
 	self logger clean.

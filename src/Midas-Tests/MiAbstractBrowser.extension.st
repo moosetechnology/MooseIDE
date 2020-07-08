@@ -1,6 +1,11 @@
 Extension { #name : #MiAbstractBrowser }
 
 { #category : #'*Midas-Tests' }
+MiAbstractBrowser >> busButton [
+	^ busButton
+]
+
+{ #category : #'*Midas-Tests' }
 MiAbstractBrowser >> follow [
 	buttonFollow state: true
 ]

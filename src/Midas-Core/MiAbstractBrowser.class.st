@@ -45,8 +45,8 @@ Class {
 		'menu',
 		'buttonInspect',
 		'buttonHelp',
-		'bus',
-		'busButton'
+		'busButton',
+		'buses'
 	],
 	#category : #'Midas-Core-Browser'
 }
@@ -165,8 +165,8 @@ MiAbstractBrowser >> activeStateButton [
 ]
 
 { #category : #accessing }
-MiAbstractBrowser >> bus [
-	^ bus
+MiAbstractBrowser >> buses [
+	^ buses
 ]
 
 { #category : #actions }
@@ -189,15 +189,14 @@ MiAbstractBrowser >> followAction [
 	^ self subclassResponsibility
 ]
 
-{ #category : #actions }
+{ #category : #buses }
 MiAbstractBrowser >> followBus: aBus [
-	aBus == self bus
+	(self buses includes: aBus)
 		ifTrue: [ ^ self ].
-	self unregisterFromPreviousBus.
-	bus := aBus.
-	bus registerBrowser: self.
-	busButton label: 'Bus: ' , aBus name.
-	self selectEntity: bus logger mostRecentEntity
+	self buses add: aBus.
+	aBus registerBrowser: self.
+	self updateBusButton.
+	self selectEntity: aBus logger mostRecentEntity
 ]
 
 { #category : #actions }
@@ -222,12 +221,18 @@ MiAbstractBrowser >> freezeDuring: aBlock [
 
 { #category : #accessing }
 MiAbstractBrowser >> globallySelect: anEntity [
-	self bus globallySelect: anEntity
+	self buses do: [ :bus | bus globallySelect: anEntity ]
 ]
 
 { #category : #actions }
 MiAbstractBrowser >> highlightAction [
 	^ self
+]
+
+{ #category : #initialization }
+MiAbstractBrowser >> initialize [
+	super initialize.
+	buses := Set new
 ]
 
 { #category : #initialization }
@@ -249,7 +254,7 @@ MiAbstractBrowser >> initializeBusButton [
 	busButton := self newButton
 		iconName: #edit;
 		help: 'Edit';
-		action: [ self modifyBus ];
+		action: [ self modifyBuses ];
 		yourself
 ]
 
@@ -298,7 +303,7 @@ MiAbstractBrowser >> initializeStateButtons [
 MiAbstractBrowser >> initializeWindow: aWindowPresenter [
 	super initializeWindow: aWindowPresenter.
 	aWindowPresenter
-		whenClosedDo: [ self bus unregisterBrowser: self.
+		whenClosedDo: [ self buses do: [ :bus | bus unregisterBrowser: self ].
 			self application windowClosed: aWindowPresenter ].
 	aWindowPresenter initialExtent: self class windowSize
 ]
@@ -343,8 +348,8 @@ MiAbstractBrowser >> model: anObject [
 	model := anObject
 ]
 
-{ #category : #actions }
-MiAbstractBrowser >> modifyBus [
+{ #category : #buses }
+MiAbstractBrowser >> modifyBuses [
 	| popup |
 	(popup := self newPopover)
 		relativeTo: busButton;
@@ -378,7 +383,35 @@ MiAbstractBrowser >> showHelp [
 		popup
 ]
 
-{ #category : #actions }
-MiAbstractBrowser >> unregisterFromPreviousBus [
-	self bus ifNotNil: [ self bus unregisterBrowser: self ]
+{ #category : #buses }
+MiAbstractBrowser >> unfollowBus: aBus [
+	(self buses includes: aBus)
+		ifFalse: [ ^ self ].
+	self buses remove: aBus.
+	aBus unregisterBrowser: self.
+	self updateBusButton
+]
+
+{ #category : #buses }
+MiAbstractBrowser >> updateBusButton [
+	busButton
+		label:
+			(self buses
+				ifEmpty: [ 'No bus' ]
+				ifNotEmpty: [ self buses size = 1
+						ifTrue: [ 'Bus: ' , self buses anyOne name ]
+						ifFalse: [ self buses size asString , ' buses' ] ]).
+	busButton
+		help:
+			(self buses
+				ifEmpty: [ 'Click to edit' ]
+				ifNotEmpty: [ String
+						streamContents: [ :s | 
+							self buses
+								do: [ :bus | 
+									s
+										<< '- ';
+										<< bus name;
+										cr ].
+							s << 'Click to edit' ] ])
 ]

@@ -33,6 +33,22 @@ MiAbstractBrowserTest >> assertFollowActionFor: aMooseObject [
 	self skip
 ]
 
+{ #category : #'tests - buses' }
+MiAbstractBrowserTest >> assertFollowSecondBus: otherBus [
+	browser followBus: otherBus.
+	self
+		assertCollection: browser buses
+		hasSameElements:
+			{self bus.
+			otherBus}.
+	self assert: (otherBus browsers includes: browser).
+	self assert: browser busButton label equals: '2 buses'.
+	^ {self bus name.
+	'Other bus'}
+		do:
+			[ :name | self assert: (browser busButton help includesSubstring: name) ]
+]
+
 { #category : #'tests - actions' }
 MiAbstractBrowserTest >> assertHighlightActionFor: aMooseObject [
 	"Override to test highlight action"
@@ -57,13 +73,6 @@ MiAbstractBrowserTest >> mooseObjects [
 	(MooseGroup with: MooseEntity new).
 	MooseModel new.
 	(MooseModel with: MooseEntity new)}
-]
-
-{ #category : #running }
-MiAbstractBrowserTest >> nonOpenedBrowser [
-	^ (self browserClass on: self browserClass newModel)
-		followBus: self bus;
-		yourself
 ]
 
 { #category : #running }
@@ -122,7 +131,26 @@ MiAbstractBrowserTest >> testFollowAction [
 			self assertFollowActionFor: mooseObject ]
 ]
 
-{ #category : #'tests - opening' }
+{ #category : #'tests - buses' }
+MiAbstractBrowserTest >> testFollowBus [
+	| otherBus |
+	"One bus"
+	browser followBus: self bus.
+	self assertCollection: browser buses hasSameElements: {self bus}.
+	self assert: (self bus browsers includes: browser).
+	self assert: browser busButton label equals: 'Bus: ' , self bus name.
+	{self bus name.
+	'Click to edit'}
+		do:
+			[ :name | self assert: (browser busButton help includesSubstring: name) ].
+
+	"Two buses"
+	otherBus := self application busNamed: 'Other bus'.
+	[ self assertFollowSecondBus: otherBus ]
+		ensure: [ self application deleteBus: otherBus ]
+]
+
+{ #category : #'tests - buses' }
 MiAbstractBrowserTest >> testFollowBusTriggersSelectEntity [
 	browser stub.
 	{Object new} , self mooseObjects
@@ -141,10 +169,13 @@ MiAbstractBrowserTest >> testHighlightAction [
 			self assertHighlightActionFor: mooseObject ]
 ]
 
-{ #category : #'tests - opening' }
-MiAbstractBrowserTest >> testRunMeFollowing [
-	self assert: browser bus identicalTo: self bus.
-	self assert: (self bus browsers includes: browser)
+{ #category : #'tests - buses' }
+MiAbstractBrowserTest >> testUnfollowBus [
+	browser unfollowBus: self bus.
+	self deny: (browser buses includes: self bus).
+	self deny: (self bus browsers includes: browser).
+	self assert: browser busButton label equals: 'No bus'.
+	self assert: browser busButton help equals: 'Click to edit'
 ]
 
 { #category : #'tests - opening' }

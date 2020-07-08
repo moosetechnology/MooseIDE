@@ -64,7 +64,7 @@ MiApplication >> deleteBusNamed: aName [
 { #category : #initialization }
 MiApplication >> initialize [
 	super initialize.
-	buses := Set new
+	buses := OrderedCollection new
 		add: (MiBus named: self class defaultBusName);
 		yourself
 ]

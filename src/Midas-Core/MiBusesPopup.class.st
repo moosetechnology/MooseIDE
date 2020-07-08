@@ -4,8 +4,9 @@ Class {
 	#instVars : [
 		'busesList',
 		'newBusNameInput',
-		'okButton',
-		'browser'
+		'browser',
+		'addBusButton',
+		'acceptButton'
 	],
 	#category : #'Midas-Core-Browser'
 }
@@ -22,9 +23,10 @@ MiBusesPopup class >> defaultSpec [
 				add:
 					(SpBoxLayout newHorizontal
 						add: #newBusNameInput;
-						add: #okButton width: self iconWidth;
+						add: #addBusButton width: self iconWidth;
 						yourself)
 					height: self inputTextHeight;
+				add: #acceptButton;
 				yourself)
 			width: 250;
 		yourself
@@ -34,17 +36,21 @@ MiBusesPopup class >> defaultSpec [
 MiBusesPopup >> followNewBus [
 	newBusNameInput text
 		ifNotEmpty: [ :name | browser followBus: (browser application busNamed: name) ].
-	self owner dismiss
+	newBusNameInput clearContent.
+	busesList items: browser application buses
 ]
 
 { #category : #initialization }
 MiBusesPopup >> initializeBusesList [
-	busesList := self newList
-		items: browser application buses asOrderedCollection;
-		display: #name;
-		whenSelectionChangedDo: [ :selection | 
-			browser followBus: selection selectedItem.
-			self owner dismiss ];
+	busesList := self newTable
+		addColumn:
+			((SpCheckBoxTableColumn
+				evaluated: [ :bus | browser buses includes: bus ])
+				onActivation: [ :bus | browser followBus: bus ];
+				onDesactivation: [ :bus | browser unfollowBus: bus ];
+				width: 20);
+		addColumn: (SpStringTableColumn evaluated: #name);
+		items: browser application buses;
 		yourself
 ]
 
@@ -56,9 +62,14 @@ MiBusesPopup >> initializePresenters [
 		placeholder: 'New bus name';
 		whenSubmitDo: [ self followNewBus ];
 		yourself.
-	okButton := self newButton
-		iconName: #smallOk;
+	addBusButton := self newButton
+		iconName: #smallAdd;
 		action: [ self followNewBus ];
+		yourself.
+	acceptButton := self newButton
+		iconName: #smallOk;
+		label: 'Accept';
+		action: [ owner dismiss ];
 		yourself
 ]
 
