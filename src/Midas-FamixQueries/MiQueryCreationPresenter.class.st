@@ -114,7 +114,8 @@ MiQueryCreationPresenter >> connectPresenters [
 { #category : #initialization }
 MiQueryCreationPresenter >> initialize [
 	super initialize.
-	queryTypesDropList selectIndex: 1
+	self flag: #FQImprove.
+	queryTypesDropList selectIndex: 3	"Select the fastest query while we do not compute the results in a fork"
 ]
 
 { #category : #initialization }
@@ -237,8 +238,11 @@ MiQueryCreationPresenter >> updateQueryCode [
 
 { #category : #update }
 MiQueryCreationPresenter >> updateQueryConfigurationFor: queryClass [
-	(queryClass defaultForParent: browser selectedQuery)
-		configureIn: self.
+	self flag: #FQImprove.	"The following method is calling indirectly the method giving the possible types once again.
+		
+		Currently we configure the query before creating the browser.
+		A better way would be to create an unconfigured query, initialize the browser and execute the query with the selected elements of the browser."
+	(queryClass defaultForParent: browser selectedQuery) configureIn: self.
 	self updateForQuery: queryConfigurationPresenter query
 ]
 

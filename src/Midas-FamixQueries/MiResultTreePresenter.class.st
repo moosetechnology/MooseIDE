@@ -3,7 +3,8 @@ Class {
 	#superclass : #SpTreeTablePresenter,
 	#instVars : [
 		'browser',
-		'items'
+		'items',
+		'sortedEntitiesCache'
 	],
 	#category : #'Midas-FamixQueries-Widgets'
 }
@@ -38,20 +39,17 @@ MiResultTreePresenter class >> headerTitle [
 { #category : #initialization }
 MiResultTreePresenter >> childrenOf: item [
 	^ (self roots includes: item)
-		ifTrue: [ item entities sort: #name ascending ]
+		ifTrue: [ sortedEntitiesCache at: item ifAbsentPut: [ item entities sort: #name ascending ] ]
 		ifFalse: {}
 ]
 
 { #category : #initialization }
 MiResultTreePresenter >> initialize [
 	super initialize.
-	"self lazilyComputeChildren"	"useful in case of slowdown. See implementor"
+
 	self
-		addColumn:
-			((SpCompositeTableColumn new title: self class headerTitle)
-				addColumn:
-					(SpStringTableColumn new
-						evaluated: [ :item | self stringForItem: item ]));
+		whenRootsChangedDo: [ sortedEntitiesCache := IdentityDictionary new ];
+		addColumn: (SpStringTableColumn title: self class headerTitle evaluated: [ :item | self stringForItem: item ]);
 		whenSelectionChangedDo: [ :selection | self updateMenu ];
 		children: [ :item | self childrenOf: item ];
 		beMultipleSelection
@@ -78,21 +76,17 @@ MiResultTreePresenter >> setModelBeforeInitialization: aBrowser [
 
 { #category : #naming }
 MiResultTreePresenter >> stringForItem: item [
-	(self roots includes: item)
-		ifTrue: [ ^ item details ].
+	(self roots includes: item) ifTrue: [ ^ item description ].
 	^ item name
 ]
 
 { #category : #update }
 MiResultTreePresenter >> updateForEntities: entities [
-	items := entities.
-	self
-		roots:
-			(((entities collectAsSet: #class)
-				collect:
-					[ :type | (items select: [ :entity | entity class == type ]) asMooseGroup ])
-				asOrderedCollection
-				sort: [ :root | root commonSuperclass name ] ascending).
+	| groups |
+	groups := (entities allEntityTypes collect: [ :type | entities allWithType: type ]) asOrderedCollection.
+	groups do: [ :group | group description: group details ].
+
+	self roots: (groups sort: #description ascending).
 	self update
 ]
 
