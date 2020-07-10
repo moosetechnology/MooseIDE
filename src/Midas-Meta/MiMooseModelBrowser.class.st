@@ -42,6 +42,18 @@ MiMooseModelBrowser class >> menuCommandOn: aBuilder [
 		action: [ self runMe ]
 ]
 
+{ #category : #'instance creation' }
+MiMooseModelBrowser class >> mostRecentModel [
+	^ self currentApplication defaultBus logger mostRecentEntity
+		ifNotNil: [ :entity | entity mooseModel ]
+		ifNil: [ MooseModel new ]
+]
+
+{ #category : #'instance creation' }
+MiMooseModelBrowser class >> newModel [
+	^ MiMooseModelBrowserModel model: self mostRecentModel
+]
+
 { #category : #specs }
 MiMooseModelBrowser class >> runMe [
 	<script>
@@ -60,7 +72,7 @@ MiMooseModelBrowser class >> windowSize [
 
 { #category : #testing }
 MiMooseModelBrowser >> accept: anObject [
-	^ anObject isKindOf: MooseModel
+	^ anObject isMooseModel
 ]
 
 { #category : #initialization }
@@ -96,12 +108,10 @@ MiMooseModelBrowser >> followAction [
 { #category : #initialization }
 MiMooseModelBrowser >> initializePresenters [
 	super initializePresenters.
-	model := MiMooseModelBrowserModel new.
 	self initializeTable.
 	"self initializeSearchField."
 	modelPresenter
-		whenSelectionChangedDo:
-			[ :selected | self selectionAction: selected ]
+		whenSelectionChangedDo: [ :selected | self selectionAction: selected ]
 ]
 
 { #category : #initialization }
