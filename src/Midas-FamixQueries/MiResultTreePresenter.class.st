@@ -56,11 +56,6 @@ MiResultTreePresenter >> initialize [
 ]
 
 { #category : #accessing }
-MiResultTreePresenter >> items [
-	^ items ifNil: [ items := MooseGroup new ]
-]
-
-{ #category : #accessing }
 MiResultTreePresenter >> miSelectedItem [
 	^ (self selectedItems
 		collect: [ :item | 
