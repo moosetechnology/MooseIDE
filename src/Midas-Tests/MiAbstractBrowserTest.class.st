@@ -34,19 +34,24 @@ MiAbstractBrowserTest >> assertFollowActionFor: aMooseObject [
 ]
 
 { #category : #'tests - buses' }
-MiAbstractBrowserTest >> assertFollowSecondBus: otherBus [
-	browser followBus: otherBus.
+MiAbstractBrowserTest >> assertFollowBuses: someBuses [
+	"Browser knows buses"
+
+	self assertCollection: browser buses hasSameElements: someBuses.
+
+	"Only correct buses know browser"
+	someBuses
+		do: [ :bus | self assert: (bus browsers includes: browser) ].
+	self application buses \ someBuses
+		do: [ :bus | self deny: (bus browsers includes: browser) ].
+
+	"Bus Button"
 	self
-		assertCollection: browser buses
-		hasSameElements:
-			{self bus.
-			otherBus}.
-	self assert: (otherBus browsers includes: browser).
-	self assert: browser busButton label equals: '2 buses'.
-	^ {self bus name.
-	'Other bus'}
+		assert: browser busButton label
+		equals: (self buttonLabelForBuses: someBuses).
+	(someBuses collect: #name) , {'Click to edit'}
 		do:
-			[ :name | self assert: (browser busButton help includesSubstring: name) ]
+			[ :str | self assert: (browser busButton help includesSubstring: str) ]
 ]
 
 { #category : #'tests - actions' }
@@ -64,6 +69,14 @@ MiAbstractBrowserTest >> browserClass [
 { #category : #running }
 MiAbstractBrowserTest >> bus [
 	^ self application busNamed: 'TestBus'
+]
+
+{ #category : #'tests - buses' }
+MiAbstractBrowserTest >> buttonLabelForBuses: someBuses [
+	someBuses ifEmpty: [ ^ 'No bus' ].
+	someBuses size = 1
+		ifTrue: [ ^ 'Bus: ' , someBuses anyOne name ].
+	^ '{1} buses' format: {someBuses size}
 ]
 
 { #category : #running }
@@ -135,19 +148,17 @@ MiAbstractBrowserTest >> testFollowAction [
 MiAbstractBrowserTest >> testFollowBus [
 	| otherBus |
 	"One bus"
-	browser followBus: self bus.
-	self assertCollection: browser buses hasSameElements: {self bus}.
-	self assert: (self bus browsers includes: browser).
-	self assert: browser busButton label equals: 'Bus: ' , self bus name.
-	{self bus name.
-	'Click to edit'}
-		do:
-			[ :name | self assert: (browser busButton help includesSubstring: name) ].
+	self assertFollowBuses: {self bus}.
 
 	"Two buses"
 	otherBus := self application busNamed: 'Other bus'.
-	[ self assertFollowSecondBus: otherBus ]
-		ensure: [ self application deleteBus: otherBus ]
+	[ browser followBus: otherBus.
+	self
+		assertFollowBuses:
+			{self bus.
+			otherBus} ]
+		ensure: [ browser unfollowBus: otherBus.
+			self application deleteBus: otherBus ]
 ]
 
 { #category : #'tests - buses' }
@@ -171,11 +182,13 @@ MiAbstractBrowserTest >> testHighlightAction [
 
 { #category : #'tests - buses' }
 MiAbstractBrowserTest >> testUnfollowBus [
+	| otherBus |
+	otherBus := self application busNamed: 'Other bus'.
+	[ browser followBus: otherBus.
 	browser unfollowBus: self bus.
-	self deny: (browser buses includes: self bus).
-	self deny: (self bus browsers includes: browser).
-	self assert: browser busButton label equals: 'No bus'.
-	self assert: browser busButton help equals: 'Click to edit'
+	self assertFollowBuses: {otherBus} ]
+		ensure: [ browser unfollowBus: otherBus.
+			self application deleteBus: otherBus ]
 ]
 
 { #category : #'tests - opening' }

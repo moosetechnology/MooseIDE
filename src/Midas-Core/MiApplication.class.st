@@ -73,3 +73,13 @@ MiApplication >> initialize [
 MiApplication >> start [
 	"we will see"
 ]
+
+{ #category : #actions }
+MiApplication >> updateLogBrowsers [
+	self flag: 'To remove ?'.
+	self browsers
+		select: [ :browser | browser class == MiLogBrowser ]
+		thenDo: [ :logBrowser | 
+			self buses do: [ :bus | logBrowser followBus: bus ].
+			logBrowser update ]
+]

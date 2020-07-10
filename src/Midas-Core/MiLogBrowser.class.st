@@ -1,5 +1,5 @@
 "
-Shows the content of the MiLogger.
+Shows logs of the entities that are propagated.
 Proposes edition & removal of logs.
 Can propagate previous logs.
 
@@ -16,23 +16,19 @@ Class {
 	#name : #MiLogBrowser,
 	#superclass : #MiAbstractBrowser,
 	#instVars : [
-		'entryList',
-		'toolbar'
+		'toolbar',
+		'selectedItem',
+		'logsLists'
 	],
 	#category : #'Midas-Core-Logger'
 }
 
 { #category : #'world menu' }
-MiLogBrowser class >> buildCommandsGroupWith: presenterInstance forRoot: rootCommandGroup [
-	super buildCommandsGroupWith: presenterInstance forRoot: rootCommandGroup.
-	rootCommandGroup register: (MiLoggerRemoveEntryCommand forSpecContext: presenterInstance)
-]
-
-{ #category : #'world menu' }
 MiLogBrowser class >> defaultSpec [
 	^ super defaultSpec
-		add: #toolbar withConstraints: [ :constraints | constraints height: self toolbarHeight ]; 
-		add: #entryList;
+		"add: #toolbar
+			withConstraints: [ :constraints | constraints height: self toolbarHeight ];"
+		add: #logsLists;
 		yourself
 ]
 
@@ -50,7 +46,22 @@ MiLogBrowser class >> menuCommandOn: aBuilder [
 { #category : #'world menu' }
 MiLogBrowser class >> runMe [
 	<script>
-	^ super runMe
+	| browser |
+	browser := self new
+		initializeBuses: self currentApplication buses;
+		openWithSpec;
+		yourself.
+	^ browser
+]
+
+{ #category : #'world menu' }
+MiLogBrowser class >> runMeFollowing: aBus [
+	| browser |
+	browser := self new
+		initializeBuses: {aBus};
+		openWithSpec;
+		yourself.
+	^ browser
 ]
 
 { #category : #initialization }
@@ -63,73 +74,94 @@ MiLogBrowser >> accept: anObject [
 	^ true
 ]
 
-{ #category : #accessing }
-MiLogBrowser >> bus [
-	self flag: #Todo , 'This must be dealt with'.
-	^ self buses anyOne
-]
-
 { #category : #actions }
-MiLogBrowser >> cleanLogger [
-	self logger clean.
-	entryList updateList
+MiLogBrowser >> cleanAllLoggers [
+	self logsList presenters
+		do: [ :presenter | presenter bus logger clean ].
+	self update
 ]
 
 { #category : #actions }
 MiLogBrowser >> followAction [
-	entryList updateList
+	self update
 ]
 
-{ #category : #actions }
+{ #category : #buses }
 MiLogBrowser >> followBus: aBus [
-	entryList items: aBus logger logs.
-	super followBus: aBus
+	super followBus: aBus.
+	self update
+]
+
+{ #category : #buses }
+MiLogBrowser >> initializeBuses: someBuses [
+	buses := Set new.
+	someBuses do: [ :bus | super followBus: bus ]
 ]
 
 { #category : #initialization }
-MiLogBrowser >> initializeEntryList [
-	entryList := self newList.
-	entryList contextMenu: [ self rootCommandsGroup asMenuPresenter ].
-	entryList display: [ :anElement | anElement entity mooseName ]
+MiLogBrowser >> initializeLogsList [
+	logsLists := self newNullPresenter
 ]
 
 { #category : #initialization }
 MiLogBrowser >> initializePresenters [
 	super initializePresenters.
-	self initializeToolBar.
-	self initializeEntryList
+	"self initializeToolBar."
+	self initializeLogsList
 ]
 
 { #category : #initialization }
 MiLogBrowser >> initializeToolBar [
 	toolbar := self newToolBar
 		addItem:
+			(SpToolBarToggleButtonPresenter new
+				label: 'Follow new buses';
+				icon: (self iconNamed: #glamorousRedo);
+				help: 'Each time you create a bus, this browser will follow it';
+				action: [ self flag: 'Do we want that ?'.
+					self setFollowNewBuses ];
+				yourself);
+		addItem:
 			(SpToolBarButtonPresenter new
-				label: 'Clean';
-				help: 'Remove all the logger entries';
-				action: [ self cleanLogger ];
-				yourself)
-]
-
-{ #category : #accessing }
-MiLogBrowser >> logger [
-	^ self bus logger
+				label: 'Clear all';
+				icon: (self theme iconNamed: #smallDelete);
+				help: 'Remove all loggers entries';
+				action: [ self cleanAllLoggers ];
+				yourself);
+		yourself
 ]
 
 { #category : #accessing }
 MiLogBrowser >> miSelectedItem [
-	^ entryList selectedItems
-		ifEmpty: [ super miSelectedItem ]
-		ifNotEmpty: [ :list | "We can select only one entity" list anyOne entity ]
+	^ selectedItem
 ]
 
 { #category : #accessing }
-MiLogBrowser >> miSelectedLogEntry [
-	^ entryList selection selectedItem
+MiLogBrowser >> selectedItem: anEntity [
+	selectedItem := anEntity
+]
+
+{ #category : #buses }
+MiLogBrowser >> unfollowBus: aBus [
+	super unfollowBus: aBus.
+	self update
 ]
 
 { #category : #actions }
-MiLogBrowser >> removeLog: aLog [
-	self logger removeLog: aLog.
-	entryList updateList
+MiLogBrowser >> update [
+	self updateLogsList.
+	super update
+]
+
+{ #category : #initialization }
+MiLogBrowser >> updateLogsList [
+	logsLists := SpDynamicPresentersListBuilder new
+		modelObjects: self buses asOrderedCollection;
+		presenter: MiBusLogsList
+			configuredAs: [ :presenter :bus | 
+			presenter
+				owner: self;
+				forBus: bus ];
+		layoutBuilder: (SpDynamicTopToBottomRowsLayout rows: 1);
+		build
 ]

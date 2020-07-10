@@ -57,7 +57,7 @@ MiTreeMapVisualisationBrowser class >> runMe [
 
 { #category : #accessing }
 MiTreeMapVisualisationBrowser class >> title [
-	^ 'Tree Map Visualisation'
+	^ 'Tree Map Visualization'
 ]
 
 { #category : #testing }

@@ -253,7 +253,6 @@ MiAbstractBrowser >> initializeActionButtons [
 MiAbstractBrowser >> initializeBusButton [
 	busButton := self newButton
 		iconName: #edit;
-		help: 'Edit';
 		action: [ self modifyBuses ];
 		yourself
 ]

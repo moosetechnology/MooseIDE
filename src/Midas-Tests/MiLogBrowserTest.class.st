@@ -4,21 +4,15 @@ Class {
 	#category : #'Midas-Tests-Browsers'
 }
 
-{ #category : #asserting }
-MiLogBrowserTest >> assertFollowActionFor: aMooseObject [
+{ #category : #'tests - buses' }
+MiLogBrowserTest >> assertFollowBuses: someBuses [
+	super assertFollowBuses: someBuses.
 	self
-		assert:
-			(browser entryList items
-				anySatisfy: [ :log | log entity == aMooseObject ])
+		assertCollection: (browser logsList presenters collect: #bus)
+		hasSameElements: someBuses
 ]
 
 { #category : #running }
 MiLogBrowserTest >> browserClass [
 	^ MiLogBrowser
-]
-
-{ #category : #running }
-MiLogBrowserTest >> testLogger [
-	self assert: browser logger identicalTo: browser bus logger.
-	self assert: browser logger identicalTo: self bus logger
 ]
