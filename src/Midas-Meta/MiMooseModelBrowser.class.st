@@ -72,7 +72,7 @@ MiMooseModelBrowser class >> windowSize [
 
 { #category : #testing }
 MiMooseModelBrowser >> accept: anObject [
-	^ anObject isMooseModel
+	^ anObject isKindOf: MooseModel
 ]
 
 { #category : #initialization }
