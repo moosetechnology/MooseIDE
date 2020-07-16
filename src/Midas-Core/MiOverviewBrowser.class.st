@@ -15,7 +15,9 @@ Class {
 		'mainPresenter',
 		'busesButton',
 		'browsersButton',
-		'helpButton'
+		'helpButton',
+		'browsersPage',
+		'busesPage'
 	],
 	#category : #'Midas-Core-Overview'
 }
@@ -96,7 +98,16 @@ MiOverviewBrowser class >> title [
 	^ 'Midas Overview'
 ]
 
-{ #category : #initialization }
+{ #category : #accessing }
+MiOverviewBrowser >> browsersList [
+	^ [ self newComponentList
+		propagateNaturalHeight: true;
+		items:
+			(self application browsers asOrderedCollection
+				collect: [ :browser | MiBrowserPresenter on: browser ]) ]
+]
+
+{ #category : #toolbar }
 MiOverviewBrowser >> browsersMenu [
 	| browsersMenu |
 	browsersMenu := SpMenuPresenter new
@@ -109,38 +120,25 @@ MiOverviewBrowser >> browsersMenu [
 	^ browsersMenu
 ]
 
-{ #category : #initialization }
-MiOverviewBrowser >> browsersMenuItem: anItem [
-	| browsersMenu |
-	browsersMenu := anItem addAllFromPragma: 'miBrowsers' target: self.
-
-	"This empty action avoids an error when clicking on subMenu label"
-	(browsersMenu menuGroups flatCollect: #menuItems)
-		do: [ :item | item action selector ifNil: [ item action: [  ] ] ].
-	^ browsersMenu
-]
-
-{ #category : #initialization }
+{ #category : #accessing }
 MiOverviewBrowser >> browsersPage [
-	^ self newNotebookPage
-		title: 'Browsers';
-		presenterProvider: [ self newComponentList
-				items:
-					(self application browsers asOrderedCollection
-						collect: [ :browser | MiBrowserPresenter owner: self on: browser ]) ];
-		yourself
+	^ browsersPage
+		ifNil: [ browsersPage := self
+				pageNamed: 'Browsers'
+				presenter: self browsersList ]
 ]
 
-{ #category : #initialization }
+{ #category : #accessing }
+MiOverviewBrowser >> busesList [
+	^ [ self newComponentList
+		propagateNaturalHeight: true;
+		items: (self application buses collect: [ :bus | MiBusPresenter on: bus ]) ]
+]
+
+{ #category : #accessing }
 MiOverviewBrowser >> busesPage [
-	^ self newNotebookPage
-		title: 'Buses';
-		presenterProvider: [ self newComponentList
-				propagateNaturalHeight: true;
-				items:
-					(self application buses asOrderedCollection
-						collect: [ :bus | MiBusPresenter owner: self on: bus ]) ];
-		yourself
+	^ busesPage
+		ifNil: [ busesPage := self pageNamed: 'Buses' presenter: self busesList ]
 ]
 
 { #category : #initialization }
@@ -148,7 +146,6 @@ MiOverviewBrowser >> initializeMainPresenter [
 	mainPresenter := self newNotebook
 		addPage: self busesPage;
 		addPage: self browsersPage;
-		help: self class comment;
 		yourself
 ]
 
@@ -159,7 +156,7 @@ MiOverviewBrowser >> initializePresenters [
 	self initializeMainPresenter
 ]
 
-{ #category : #initialization }
+{ #category : #toolbar }
 MiOverviewBrowser >> initializeToolbar [
 	busesButton := self newButton
 		iconName: #smallAdd;
@@ -185,7 +182,7 @@ MiOverviewBrowser >> initializeWindow: aWindowPresenter [
 	aWindowPresenter initialExtent: 500 @ self class height
 ]
 
-{ #category : #initialization }
+{ #category : #toolbar }
 MiOverviewBrowser >> modifyBuses [
 	self newPopover
 		relativeTo: busesButton;
@@ -194,6 +191,14 @@ MiOverviewBrowser >> modifyBuses [
 ]
 
 { #category : #initialization }
+MiOverviewBrowser >> pageNamed: aName presenter: aComponentList [
+	^ self newNotebookPage
+		title: aName;
+		presenterProvider: aComponentList;
+		yourself
+]
+
+{ #category : #toolbar }
 MiOverviewBrowser >> showHelp [
 	self newPopover
 		relativeTo: helpButton;

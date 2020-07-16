@@ -34,8 +34,12 @@ MiApplication >> browsers [
 { #category : #buses }
 MiApplication >> busNamed: aName [
 	^ buses
-		detect: [ :bus | bus name = aName ]
-		ifNone: [ buses add: (MiBus named: aName) ]
+		detect: [ :b | b name = aName ]
+		ifNone: [ | bus |
+			bus := MiBus named: aName.
+			buses add: bus.
+			self updateOverviewBrowsers.
+			bus ]
 ]
 
 { #category : #accessing }
@@ -51,7 +55,9 @@ MiApplication >> defaultBus [
 { #category : #buses }
 MiApplication >> deleteBus: aBus [
 	aBus isDefault
-		ifFalse: [ buses remove: aBus ifAbsent: [  ] ]
+		ifTrue: [ ^ self ].
+	buses remove: aBus ifAbsent: [  ].
+	self updateOverviewBrowsers
 ]
 
 { #category : #buses }
@@ -69,6 +75,15 @@ MiApplication >> initialize [
 		yourself
 ]
 
+{ #category : #'private showing' }
+MiApplication >> open: aPresenter withSpecLayout: aSpecLayout using: aWindowClass [
+	super
+		open: aPresenter
+		withSpecLayout: aSpecLayout
+		using: aWindowClass.
+	self updateOverviewBrowsers
+]
+
 { #category : #actions }
 MiApplication >> start [
 	"we will see"
@@ -82,4 +97,18 @@ MiApplication >> updateLogBrowsers [
 		thenDo: [ :logBrowser | 
 			self buses do: [ :bus | logBrowser followBus: bus ].
 			logBrowser update ]
+]
+
+{ #category : #actions }
+MiApplication >> updateOverviewBrowsers [
+	(self windows
+		collect: #presenter
+		thenSelect: [ :presenter | presenter class == MiOverviewBrowser ])
+		do: #update
+]
+
+{ #category : #windows }
+MiApplication >> windowClosed: aWindowPresenter [
+	super windowClosed: aWindowPresenter.
+	self updateOverviewBrowsers
 ]
