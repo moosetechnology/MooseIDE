@@ -30,6 +30,7 @@ MiFameBrowser class >> defaultSpec [
 { #category : #specs }
 MiFameBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
+	<miBrowsers>
 	(aBuilder item: #Fame)
 		parent: self toolbarMetaName;
 		label: self title;

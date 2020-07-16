@@ -6,7 +6,7 @@ Class {
 		'model',
 		'table'
 	],
-	#category : #'Midas-Core-Application'
+	#category : #'Midas-Core-Overview'
 }
 
 { #category : #specs }
@@ -26,6 +26,11 @@ MiMidasItemPresenter class >> tableHeight [
 MiMidasItemPresenter >> initializePresenters [
 	super initializePresenters.
 	toolbar := self newLabel label: self toolbarLabel.
+	self initializeTable
+]
+
+{ #category : #initialization }
+MiMidasItemPresenter >> initializeTable [
 	table := self newTable
 		addColumn:
 			((SpCheckBoxTableColumn evaluated: self tableCheckBoxEvaluation)

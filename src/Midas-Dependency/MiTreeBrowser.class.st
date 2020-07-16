@@ -29,6 +29,7 @@ MiTreeBrowser class >> defaultSpec [
 { #category : #specs }
 MiTreeBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
+	<miBrowsers>
 	(aBuilder item: #TreeBrowser)
 		parent: self toolbarDependencyName;
 		label: self title;

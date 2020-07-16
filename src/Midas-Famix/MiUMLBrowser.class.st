@@ -29,6 +29,7 @@ MiUMLBrowser class >> defaultSpec [
 { #category : #specs }
 MiUMLBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
+	<miBrowsers>
 	(aBuilder item: #UMLVisualisationBrowser)
 		parent: self toolbarFamixName;
 		label: self title;

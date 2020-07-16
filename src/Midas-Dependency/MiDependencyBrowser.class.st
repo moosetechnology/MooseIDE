@@ -29,6 +29,7 @@ MiDependencyBrowser class >> defaultSpec [
 { #category : #'world menu' }
 MiDependencyBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
+	<miBrowsers>
 	(aBuilder item: #DependencyVisualisationBrowser)
 		parent: self toolbarDependencyName;
 		label: self title;

@@ -33,6 +33,7 @@ MiMooseModelBrowser class >> defaultSpec [
 { #category : #specs }
 MiMooseModelBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
+	<miBrowsers>
 	(aBuilder item: #MooseModelBrowser)
 		parent: self toolbarMetaName;
 		label: self title;

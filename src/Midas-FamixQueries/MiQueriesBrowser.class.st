@@ -48,6 +48,7 @@ MiQueriesBrowser class >> defaultSpec [
 { #category : #'world menu' }
 MiQueriesBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
+	<miBrowsers>
 	(aBuilder item: #Queries)
 		parent: self toolbarName;
 		label: self title;

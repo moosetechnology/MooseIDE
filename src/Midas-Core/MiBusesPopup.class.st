@@ -1,6 +1,6 @@
 Class {
 	#name : #MiBusesPopup,
-	#superclass : #SpPresenter,
+	#superclass : #MiPresenter,
 	#instVars : [
 		'busesList',
 		'newBusNameInput',
@@ -34,24 +34,35 @@ MiBusesPopup class >> defaultSpec [
 
 { #category : #initialization }
 MiBusesPopup >> followNewBus [
-	newBusNameInput text
-		ifNotEmpty: [ :name | browser followBus: (browser application busNamed: name) ].
+	| newBus |
+	newBusNameInput text ifEmpty: [ ^ self ].
+
+	"Create new bus"
+	newBus := self application busNamed: newBusNameInput text.
+
+	"Follow new bus"
+	browser isMiBrowser
+		ifTrue: [ browser followBus: newBus ].
+
+	"Update"
 	newBusNameInput clearContent.
-	busesList items: browser application buses
+	busesList items: self application buses
 ]
 
 { #category : #initialization }
 MiBusesPopup >> initializeBusesList [
-	busesList := self newTable
-		addColumn:
-			((SpCheckBoxTableColumn
-				evaluated: [ :bus | browser buses includes: bus ])
-				onActivation: [ :bus | browser followBus: bus ];
-				onDesactivation: [ :bus | browser unfollowBus: bus ];
-				width: 20);
+	busesList := self newTable.
+	browser isMiBrowser
+		ifTrue: [ busesList
+				addColumn:
+					((SpCheckBoxTableColumn
+						evaluated: [ :bus | browser buses includes: bus ])
+						onActivation: [ :bus | browser followBus: bus ];
+						onDesactivation: [ :bus | browser unfollowBus: bus ];
+						width: 20) ].
+	busesList
 		addColumn: (SpStringTableColumn evaluated: #name);
-		items: browser application buses;
-		yourself
+		items: self application buses
 ]
 
 { #category : #initialization }

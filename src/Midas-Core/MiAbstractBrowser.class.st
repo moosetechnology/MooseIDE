@@ -90,6 +90,7 @@ MiAbstractBrowser class >> isAbstract [
 { #category : #'world menu' }
 MiAbstractBrowser class >> menuCommandMetaOn: aBuilder [
 	<worldMenu>
+	<miBrowsers>
 	(aBuilder item: self toolbarMetaName)
 		order: 6.0;
 		parent: self toolbarName;

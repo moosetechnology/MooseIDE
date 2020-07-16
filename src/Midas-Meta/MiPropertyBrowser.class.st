@@ -29,6 +29,7 @@ MiPropertyBrowser class >> defaultSpec [
 { #category : #specs }
 MiPropertyBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
+	<miBrowsers>
 	(aBuilder item: #PropertyBrowser)
 		parent: self toolbarMetaName;
 		label: self title;

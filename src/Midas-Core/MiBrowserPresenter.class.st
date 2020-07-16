@@ -1,7 +1,7 @@
 Class {
 	#name : #MiBrowserPresenter,
 	#superclass : #MiMidasItemPresenter,
-	#category : #'Midas-Core-Application'
+	#category : #'Midas-Core-Overview'
 }
 
 { #category : #specs }

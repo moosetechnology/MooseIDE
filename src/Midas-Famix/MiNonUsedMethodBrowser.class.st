@@ -37,6 +37,7 @@ MiNonUsedMethodBrowser class >> launchOn: anObject [
 { #category : #specs }
 MiNonUsedMethodBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
+	<miBrowsers>
 	(aBuilder item: #NonUsedMethodBrowser)
 		parent: self toolbarFamixName;
 		label: self title;

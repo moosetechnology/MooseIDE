@@ -1,6 +1,6 @@
 Class {
 	#name : #MiHelpPopup,
-	#superclass : #SpPresenter,
+	#superclass : #MiPresenter,
 	#instVars : [
 		'help',
 		'okButton',

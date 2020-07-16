@@ -35,6 +35,7 @@ MiLogBrowser class >> defaultSpec [
 { #category : #'world menu' }
 MiLogBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
+	<miBrowsers>
 	(aBuilder item: #Logger)
 		parent: self toolbarName;
 		label: self title;

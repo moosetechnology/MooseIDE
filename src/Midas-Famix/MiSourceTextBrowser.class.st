@@ -33,6 +33,7 @@ MiSourceTextBrowser class >> defaultSpec [
 { #category : #specs }
 MiSourceTextBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
+	<miBrowsers>
 	(aBuilder item: #SourceTextBrowser)
 		parent: self toolbarFamixName;
 		label: self title;

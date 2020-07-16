@@ -29,6 +29,7 @@ MiTreeVisualisationBrowser class >> defaultSpec [
 { #category : #specs }
 MiTreeVisualisationBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
+	<miBrowsers>
 	(aBuilder item: #TreeVisualisationBrowser)
 		parent: self toolbarDependencyName;
 		label: self title;

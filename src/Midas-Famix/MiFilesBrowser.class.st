@@ -37,6 +37,7 @@ MiFilesBrowser class >> defaultSpec [
 { #category : #specs }
 MiFilesBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
+	<miBrowsers>
 	(aBuilder item: #FilesBrowser)
 		parent: self toolbarFamixName;
 		label: self title;

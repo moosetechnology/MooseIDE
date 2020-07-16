@@ -12,6 +12,7 @@ MiAbstractFamixBrowser class >> isAbstract [
 { #category : #'as yet unclassified' }
 MiAbstractFamixBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
+	<miBrowsers>
 	(aBuilder item: #MidasFamixBrowser)
 		parent: self toolbarName;
 		label: 'Famix'
