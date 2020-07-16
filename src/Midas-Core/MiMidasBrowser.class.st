@@ -1,3 +1,14 @@
+"
+I show an overview of the current Midas state:
+	- All buses
+	- All opened browsers.
+
+I centralize bus and browser creation and managment.
+
+I offer two tabs that present differently the same information:
+	- Buses tab uses the buses as roots.
+	- Browsers tab uses the browsers as roots.
+"
 Class {
 	#name : #MiMidasBrowser,
 	#superclass : #MiPresenter,
@@ -25,6 +36,11 @@ MiMidasBrowser class >> busesTabHeight [
 				* self tableLineHeight)
 ]
 
+{ #category : #height }
+MiMidasBrowser class >> defaultHeight [
+	^ 400
+]
+
 { #category : #specs }
 MiMidasBrowser class >> defaultSpec [
 	^ SpBoxLayout newVertical
@@ -40,7 +56,17 @@ MiMidasBrowser class >> emptyBrowserHeight [
 { #category : #height }
 MiMidasBrowser class >> height [
 	^ (self busesTabHeight max: self browsersTabHeight)
-		+ self emptyBrowserHeight
+		+ self emptyBrowserHeight max: self defaultHeight
+]
+
+{ #category : #'world menu' }
+MiMidasBrowser class >> menuCommandOn: aBuilder [
+	<worldMenu>
+	(aBuilder item: #'Midas Overview')
+		order: 0;
+		parent: #'Midas Browsers';
+		withSeparatorAfter;
+		action: [ self runMe ]
 ]
 
 { #category : #specs }
@@ -51,7 +77,7 @@ MiMidasBrowser class >> runMe [
 
 { #category : #specs }
 MiMidasBrowser class >> title [
-	^ 'Buses and Browsers'
+	^ 'Midas Overview'
 ]
 
 { #category : #initialization }
