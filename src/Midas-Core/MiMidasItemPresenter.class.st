@@ -2,9 +2,9 @@ Class {
 	#name : #MiMidasItemPresenter,
 	#superclass : #MiPresenter,
 	#instVars : [
-		'toolbar',
 		'model',
-		'table'
+		'table',
+		'nameLabel'
 	],
 	#category : #'Midas-Core-Overview'
 }
@@ -12,7 +12,7 @@ Class {
 { #category : #specs }
 MiMidasItemPresenter class >> defaultSpec [
 	^ SpBoxLayout newVertical
-		add: #toolbar height: self toolbarHeight;
+		add: self toolbarLayout height: self toolbarHeight;
 		add: #table height: self tableHeight;
 		yourself
 ]
@@ -20,6 +20,11 @@ MiMidasItemPresenter class >> defaultSpec [
 { #category : #specs }
 MiMidasItemPresenter class >> tableHeight [
 	^ self subclassResponsibility
+]
+
+{ #category : #specs }
+MiMidasItemPresenter class >> toolbarLayout [
+	self subclassResponsibility
 ]
 
 { #category : #actions }
@@ -35,7 +40,7 @@ MiMidasItemPresenter >> deactivateItem: aBusOrBrowser [
 { #category : #initialization }
 MiMidasItemPresenter >> initializePresenters [
 	super initializePresenters.
-	toolbar := self newLabel label: self toolbarLabel.
+	nameLabel := self newLabel label: self toolbarLabel.
 	self initializeTable
 ]
 
