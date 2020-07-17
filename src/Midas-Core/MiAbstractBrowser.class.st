@@ -304,7 +304,8 @@ MiAbstractBrowser >> initializeWindow: aWindowPresenter [
 	super initializeWindow: aWindowPresenter.
 	aWindowPresenter
 		whenClosedDo: [ self buses do: [ :bus | bus unregisterBrowser: self ].
-			self application windowClosed: aWindowPresenter ].
+			self application windowClosed: aWindowPresenter.
+			self application updateOverviewBrowsers ].
 	aWindowPresenter initialExtent: self class windowSize
 ]
 

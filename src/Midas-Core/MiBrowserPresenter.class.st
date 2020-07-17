@@ -49,7 +49,7 @@ MiBrowserPresenter >> initializePresenters [
 	closeButton := self newButton
 		iconName: #delete;
 		label: 'Close';
-		action: [ model delete ];
+		action: [ model window close ];
 		yourself
 ]
 

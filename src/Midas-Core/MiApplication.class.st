@@ -106,9 +106,3 @@ MiApplication >> updateOverviewBrowsers [
 		thenSelect: [ :presenter | presenter class == MiOverviewBrowser ])
 		do: #update
 ]
-
-{ #category : #windows }
-MiApplication >> windowClosed: aWindowPresenter [
-	super windowClosed: aWindowPresenter.
-	self updateOverviewBrowsers
-]
