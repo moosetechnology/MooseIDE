@@ -22,6 +22,16 @@ MiMidasItemPresenter class >> tableHeight [
 	^ self subclassResponsibility
 ]
 
+{ #category : #actions }
+MiMidasItemPresenter >> activateItem: aBusOrBrowser [
+	self subclassResponsibility
+]
+
+{ #category : #actions }
+MiMidasItemPresenter >> deactivateItem: aBusOrBrowser [
+	self subclassResponsibility
+]
+
 { #category : #initialization }
 MiMidasItemPresenter >> initializePresenters [
 	super initializePresenters.
@@ -34,6 +44,8 @@ MiMidasItemPresenter >> initializeTable [
 	table := self newTable
 		addColumn:
 			((SpCheckBoxTableColumn evaluated: self tableCheckBoxEvaluation)
+				onActivation: [ :aBusOrBrowser | self activateItem: aBusOrBrowser ];
+				onDesactivation: [ :aBusOrBrowser | self deactivateItem: aBusOrBrowser ];
 				width: 20;
 				yourself);
 		addColumn: (SpStringTableColumn evaluated: self tableStringEvaluation);
@@ -42,8 +54,8 @@ MiMidasItemPresenter >> initializeTable [
 ]
 
 { #category : #'accessing model' }
-MiMidasItemPresenter >> setModelBeforeInitialization: aBus [
-	model := aBus
+MiMidasItemPresenter >> setModelBeforeInitialization: aBusOrBrowser [
+	model := aBusOrBrowser
 ]
 
 { #category : #settings }

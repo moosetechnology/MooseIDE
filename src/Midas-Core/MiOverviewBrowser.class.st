@@ -104,7 +104,8 @@ MiOverviewBrowser >> browsersList [
 		propagateNaturalHeight: true;
 		items:
 			(self application browsers asOrderedCollection
-				collect: [ :browser | MiBrowserPresenter on: browser ]) ]
+				collect: [ :browser | MiBrowserPresenter on: browser ]);
+		whenSelectionChangedDo: [ :selection | selection selectedItem highlightWindow ] ]
 ]
 
 { #category : #toolbar }

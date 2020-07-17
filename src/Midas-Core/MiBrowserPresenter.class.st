@@ -9,6 +9,21 @@ MiBrowserPresenter class >> tableHeight [
 	^ self currentApplication buses size * self tableLineHeight
 ]
 
+{ #category : #actions }
+MiBrowserPresenter >> activateItem: aBus [
+	model followBus: aBus
+]
+
+{ #category : #actions }
+MiBrowserPresenter >> deactivateItem: aBus [
+	model unfollowBus: aBus
+]
+
+{ #category : #actions }
+MiBrowserPresenter >> highlightWindow [
+	model window beep
+]
+
 { #category : #settings }
 MiBrowserPresenter >> tableCheckBoxEvaluation [
 	^ [ :bus | model buses includes: bus ]
