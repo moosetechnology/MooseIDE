@@ -78,10 +78,11 @@ MiResultTreePresenter >> stringForItem: item [
 { #category : #update }
 MiResultTreePresenter >> updateForEntities: entities [
 	| groups |
-	groups := (entities allEntityTypes collect: [ :type | entities allWithType: type ]) asOrderedCollection.
+	groups := (entities allEntityTypes
+		collect: [ :type | entities allWithType: type ]) asOrderedCollection.
 	groups do: [ :group | group description: group details ].
-
-	self roots: (groups sort: #description ascending).
+	self
+		roots: (groups sort: [ :group | group description onlyLetters ] ascending).
 	self update
 ]
 
