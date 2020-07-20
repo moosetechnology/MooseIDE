@@ -23,6 +23,11 @@ MiHelpPopup class >> defaultSpec [
 		yourself
 ]
 
+{ #category : #api }
+MiHelpPopup >> dismiss [
+	self owner dismiss
+]
+
 { #category : #initialization }
 MiHelpPopup >> initializePresenters [
 	super initializePresenters.

@@ -32,6 +32,11 @@ MiBusesPopup class >> defaultSpec [
 		yourself
 ]
 
+{ #category : #api }
+MiBusesPopup >> dismiss [
+	self owner dismiss
+]
+
 { #category : #initialization }
 MiBusesPopup >> followNewBus [
 	| newBus |
