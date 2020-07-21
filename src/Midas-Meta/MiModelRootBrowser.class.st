@@ -88,7 +88,7 @@ MiModelRootBrowser >> importMSEMenuItem: item [
 	^ item
 		description: 'Import mse';
 		icon: (self iconNamed: #mooseImportMse);
-		action: [ MiImportModel new openModalWithSpec.
+		action: [ MiModelImporterFromMSE new openModalWithSpec.
 			modelPresenter updateList ]
 ]
 
@@ -97,9 +97,8 @@ MiModelRootBrowser >> importStMenuItem: item [
 	^ item
 		description: 'Import St model';
 		icon: (self iconNamed: #mooseImportSmalltalk);
-		action: [ (MooseImportFromSmalltalkImageWizard new
-				open;
-				mooseModel) ifNotNil: [ :mooseModel | modelPresenter updateList ] ]
+		action: [ MiModelImporterFromPharo new openModalWithSpec.
+			modelPresenter updateList ]
 ]
 
 { #category : #initialization }

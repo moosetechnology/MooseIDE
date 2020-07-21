@@ -2,7 +2,7 @@
 Dialog used to import MSE models
 "
 Class {
-	#name : #MiImportModel,
+	#name : #MiModelImporterFromMSE,
 	#superclass : #MiPresenter,
 	#instVars : [
 		'mooseModelDropbox',
@@ -14,7 +14,7 @@ Class {
 }
 
 { #category : #specs }
-MiImportModel class >> defaultSpec [
+MiModelImporterFromMSE class >> defaultSpec [
 	^ SpBoxLayout newVertical
 		add: #mooseModelDropbox withConstraints: [ :constraints | constraints height: self toolbarHeight ];
 		add:
@@ -27,29 +27,36 @@ MiImportModel class >> defaultSpec [
 ]
 
 { #category : #specs }
-MiImportModel class >> runMe [
+MiModelImporterFromMSE class >> runMe [
 	<script>
 	^ self new
 		openWithSpec
 ]
 
+{ #category : #specs }
+MiModelImporterFromMSE class >> title [
+	^ 'Import model from MSE file'
+]
+
 { #category : #initialization }
-MiImportModel >> initializeDialogWindow: aDialog [
+MiModelImporterFromMSE >> initializeDialogWindow: aDialog [
 	aDialog
 		closeOnBackdropClick: false;
 		addButton: 'Install'
 			do: [ :presenter | 
-			textInput text asFileReference readStreamDo: [ :aStream | (mooseModelDropbox selectedItem importFromMSEStream: aStream) install ].
+			textInput text asFileReference
+				readStreamDo:
+					[ :aStream | (mooseModelDropbox selectedItem importFromMSEStream: aStream) install ].
 			presenter close ];
 		addButton: 'Cancel' do: [ :presenter | presenter close ]
 ]
 
 { #category : #initialization }
-MiImportModel >> initializePresenters [
+MiModelImporterFromMSE >> initializePresenters [
 	super initializePresenters.
 	mooseModelDropbox := self newDropList
 		items: MooseModel withAllSubclasses;
-		selectItem: MooseModel; 
+		selectItem: MooseModel;
 		yourself.
 	textInput := self newTextInput
 		placeholder: 'Path to model';
@@ -58,15 +65,18 @@ MiImportModel >> initializePresenters [
 		label: 'Select file';
 		action:
 			[ | file |
-			file := UIManager default chooseExistingFileReference: 'Import model from MSE file' extensions: #('mse') path: FileLocator home.
-			file ifNotNil: [ textInput text: file asFileReference fullName ] ] yourself
+			file := UIManager default
+				chooseExistingFileReference: 'Import model from MSE file'
+				extensions: #('mse')
+				path: FileLocator home.
+			file ifNotNil: [ textInput text: file asFileReference fullName ] ]
+				yourself
 ]
 
 { #category : #initialization }
-MiImportModel >> initializeWindow: aWindowPresenter [
+MiModelImporterFromMSE >> initializeWindow: aWindowPresenter [
 	super initializeWindow: aWindowPresenter.
 	aWindowPresenter
-		title: 'Import model';
-		initialExtent:  300 @ (self class toolbarHeight * 5);
+		initialExtent: 300 @ (self class toolbarHeight * 5);
 		centered
 ]
