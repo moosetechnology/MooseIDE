@@ -49,13 +49,14 @@ BaselineOfMidas >> baselineOfSpec: spec [
 
 { #category : #baselines }
 BaselineOfMidas >> defineDependencies: spec [
-	"new tools"
-
 	self baselineOfRoassal3: spec.
-	self baselineOfNewTools: spec.
-	self baselineOfSpec: spec.
 	self baselineOfFamix: spec.
 	self baselineOfFamixQueries: spec.
+
+	"Spec and New tools are natively in Pharo 9"
+	spec for: #'pharo8.x' do: [ 
+		self baselineOfNewTools: spec.
+		self baselineOfSpec: spec ]
 ]
 
 { #category : #baselines }
@@ -66,13 +67,19 @@ BaselineOfMidas >> defineGroups: spec [
 
 { #category : #baselines }
 BaselineOfMidas >> definePackages: spec [
-	spec package: 'Midas-Core' with: [ spec requires: #('Famix' 'Spec2') ].
-	spec package: 'Midas-Vizualisation' with: [ spec requires: #('Roassal3') ].
-	spec package: 'Midas-Meta' with: [ spec requires: #('Midas-Core') ].
-	spec package: 'Midas-NewTools' with: [ spec requires: #('NewTools' 'Midas-Meta') ].
-	spec package: 'Midas-Tests' with: [ spec requires: #('Midas-Core') ].
-	spec package: 'Midas-Dependency' with: [ spec requires: #('Midas-Core' 'Midas-Vizualisation') ].
-	spec package: 'Midas-Famix' with: [ spec requires: #('Midas-Core' 'Midas-Vizualisation') ].
-	spec package: 'Midas-FamixQueries' with: [ spec requires: #('FamixQueries' 'Midas-Core') ].
-	spec package: 'Midas-FamixQueries-Tests' with: [ spec requires: #('Midas-FamixQueries') ]
+	spec package: 'Midas-Vizualisation' with: [ spec requires: #( 'Roassal3' ) ].
+	spec package: 'Midas-Meta' with: [ spec requires: #( 'Midas-Core' ) ].
+	spec package: 'Midas-Tests' with: [ spec requires: #( 'Midas-Core' ) ].
+	spec package: 'Midas-Dependency' with: [ spec requires: #( 'Midas-Core' 'Midas-Vizualisation' ) ].
+	spec package: 'Midas-Famix' with: [ spec requires: #( 'Midas-Core' 'Midas-Vizualisation' ) ].
+	spec package: 'Midas-FamixQueries' with: [ spec requires: #( 'FamixQueries' 'Midas-Core' ) ].
+	spec package: 'Midas-FamixQueries-Tests' with: [ spec requires: #( 'Midas-FamixQueries' 'Midas-Tests' ) ].
+	
+	"Spec and New tools are natively in Pharo 9"
+	spec for: #'pharo8.x' do: [ 
+		spec package: 'Midas-Core' with: [ spec requires: #( 'Famix' 'Spec2' ) ].
+		spec package: 'Midas-NewTools' with: [ spec requires: #( 'NewTools' 'Midas-Meta' ) ] ].
+	spec for: #'pharo9.x' do: [ 
+		spec package: 'Midas-Core' with: [ spec requires: #( 'Famix' ) ].
+		spec package: 'Midas-NewTools' with: [ spec requires: #( 'Midas-Meta' ) ] ].
 ]
