@@ -59,7 +59,9 @@ MiModelImporterFromMSE >> initializeDialogWindow: aDialog [
 MiModelImporterFromMSE >> initializePresenters [
 	super initializePresenters.
 	mooseModelDropbox := self newDropList
-		items: MooseModel withAllSubclasses;
+		items:
+			(MooseModel withAllSubclasses
+				reject: [ :modelClass | modelClass name includesSubstring: 'Test' ]);
 		selectItem: MooseModel;
 		yourself.
 	textInput := self newTextInput
