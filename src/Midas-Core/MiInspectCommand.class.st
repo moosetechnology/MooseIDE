@@ -8,6 +8,11 @@ Class {
 }
 
 { #category : #default }
+MiInspectCommand class >> defaultDescription [
+	^ 'Inspect selected entity'
+]
+
+{ #category : #default }
 MiInspectCommand class >> defaultName [
 	^ 'Inspect'
 ]

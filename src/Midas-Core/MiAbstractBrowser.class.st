@@ -238,16 +238,12 @@ MiAbstractBrowser >> initialize [
 
 { #category : #initialization }
 MiAbstractBrowser >> initializeActionButtons [
-	buttonPropagate := self newButton
-		label: 'Propagate';
-		enabled: self canPropagate;
-		action: [ (MiPropagateCommand forContext: self) execute ];
-		yourself.
-	buttonInspect := self newButton
+	buttonPropagate := (MiPropagateCommand forSpecContext: self)
+		asButtonPresenter.
+	buttonInspect := (MiInspectCommand forSpecContext: self)
+		name: '';
 		iconName: #smallInspectIt;
-		help: 'Inspect';
-		action: [ (MiInspectCommand forContext: self) execute ];
-		yourself
+		asButtonPresenter
 ]
 
 { #category : #initialization }

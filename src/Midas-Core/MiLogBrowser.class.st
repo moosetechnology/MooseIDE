@@ -93,6 +93,17 @@ MiLogBrowser >> followBus: aBus [
 	self update
 ]
 
+{ #category : #initialization }
+MiLogBrowser >> initializeActionButtons [
+	buttonPropagate := ((MiPropagateCommand forContext: self)
+		doNotFreezeBrowser;
+		asSpecCommand) asButtonPresenter.
+	buttonInspect := (MiInspectCommand forSpecContext: self)
+		name: '';
+		iconName: #smallInspectIt;
+		asButtonPresenter
+]
+
 { #category : #buses }
 MiLogBrowser >> initializeBuses: someBuses [
 	buses := Set new.
@@ -114,14 +125,6 @@ MiLogBrowser >> initializePresenters [
 { #category : #initialization }
 MiLogBrowser >> initializeToolBar [
 	toolbar := self newToolBar
-		addItem:
-			(SpToolBarToggleButtonPresenter new
-				label: 'Follow new buses';
-				icon: (self iconNamed: #glamorousRedo);
-				help: 'Each time you create a bus, this browser will follow it';
-				action: [ self flag: 'Do we want that ?'.
-					self setFollowNewBuses ];
-				yourself);
 		addItem:
 			(SpToolBarButtonPresenter new
 				label: 'Clear all';

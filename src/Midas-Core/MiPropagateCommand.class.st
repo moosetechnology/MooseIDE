@@ -11,6 +11,11 @@ Class {
 }
 
 { #category : #default }
+MiPropagateCommand class >> defaultDescription [
+	^ 'Propagate selected entity'
+]
+
+{ #category : #default }
 MiPropagateCommand class >> defaultName [
 	^ 'Propagate'
 ]
