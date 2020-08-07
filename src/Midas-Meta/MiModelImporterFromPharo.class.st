@@ -13,7 +13,8 @@ Class {
 		'invocationStrategyDroplist',
 		'packageNames',
 		'contextCheckBoxes',
-		'entitiesToImport'
+		'entitiesToImport',
+		'modelRootBrowser'
 	],
 	#category : #'Midas-Meta-Presenter'
 }
@@ -166,7 +167,9 @@ MiModelImporterFromPharo >> initializeDialogWindow: aDialog [
 		closeOnBackdropClick: false;
 		addButton: 'Install'
 			do: [ :presenter | 
-			self validateImportation.
+			| model |
+			model := self validateImportation.
+			modelRootBrowser updateWith: model.
 			presenter close ];
 		addButton: 'Cancel' do: [ :presenter | presenter close ]
 ]
@@ -249,6 +252,11 @@ MiModelImporterFromPharo >> setImportingContext [
 		do: [ :each | importingContext perform: ('import' , each) asSymbol ]
 ]
 
+{ #category : #'accessing model' }
+MiModelImporterFromPharo >> setModelBeforeInitialization: aModelRootBrowser [
+	modelRootBrowser := aModelRootBrowser
+]
+
 { #category : #updating }
 MiModelImporterFromPharo >> updatePackagesButton [
 	packagesButton
@@ -281,5 +289,5 @@ MiModelImporterFromPharo >> validateImportation [
 		runWithProgress.
 
 	"Install model"
-	mooseModel install
+	^ mooseModel install
 ]

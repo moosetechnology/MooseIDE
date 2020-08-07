@@ -8,7 +8,8 @@ Class {
 		'mooseModelDropbox',
 		'textInput',
 		'selectFileButton',
-		'validate'
+		'validate',
+		'modelRootBrowser'
 	],
 	#category : #'Midas-Meta-Presenter'
 }
@@ -44,9 +45,12 @@ MiModelImporterFromMSE >> initializeDialogWindow: aDialog [
 		closeOnBackdropClick: false;
 		addButton: 'Install'
 			do: [ :presenter | 
+			| model |
 			textInput text asFileReference
-				readStreamDo:
-					[ :aStream | (mooseModelDropbox selectedItem importFromMSEStream: aStream) install ].
+				readStreamDo: [ :aStream | 
+					model := (mooseModelDropbox selectedItem importFromMSEStream: aStream)
+						install ].
+			modelRootBrowser updateWith: model.
 			presenter close ];
 		addButton: 'Cancel' do: [ :presenter | presenter close ]
 ]
@@ -79,4 +83,9 @@ MiModelImporterFromMSE >> initializeWindow: aWindowPresenter [
 	aWindowPresenter
 		initialExtent: 300 @ (self class toolbarHeight * 5);
 		centered
+]
+
+{ #category : #'accessing model' }
+MiModelImporterFromMSE >> setModelBeforeInitialization: aModelRootBrowser [
+	modelRootBrowser := aModelRootBrowser
 ]

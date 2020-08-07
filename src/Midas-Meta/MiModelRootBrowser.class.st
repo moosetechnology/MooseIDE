@@ -68,6 +68,13 @@ MiModelRootBrowser class >> title [
 	^ 'Model root'
 ]
 
+{ #category : #'updating screen' }
+MiModelRootBrowser class >> updateAll [
+	self allInstances
+		select: [ :browser | browser window isOpen ]
+		thenDo: [ :browser | browser updateList ]
+]
+
 { #category : #specs }
 MiModelRootBrowser class >> windowSize [
 	^ 600 @ 400
@@ -88,17 +95,17 @@ MiModelRootBrowser >> importMSEMenuItem: item [
 	^ item
 		description: 'Import mse';
 		icon: (self iconNamed: #mooseImportMse);
-		action: [ MiModelImporterFromMSE new openModalWithSpec.
-			modelPresenter updateList ]
+		action: [ (MiModelImporterFromMSE on: self) openModalWithSpec.
+			self class updateAll ]
 ]
 
 { #category : #menu }
 MiModelRootBrowser >> importStMenuItem: item [
 	^ item
-		description: 'Import St model';
+		description: 'Import Smalltalk model';
 		icon: (self iconNamed: #mooseImportSmalltalk);
-		action: [ MiModelImporterFromPharo new openModalWithSpec.
-			modelPresenter updateList ]
+		action: [ (MiModelImporterFromPharo on: self) openModalWithSpec.
+			self class updateAll ]
 ]
 
 { #category : #initialization }
@@ -109,7 +116,9 @@ MiModelRootBrowser >> initializeList [
 		contextMenu: [ self rootCommandsGroup asMenuPresenter ];
 		whenSelectionChangedDo: [ :selected | 
 			model selected: selected selectedItem.
-			self buses do: [ :bus | bus globallySelect: selected selectedItem ] ]
+			self isFreeze
+				ifFalse:
+					[ self buses do: [ :bus | bus globallySelect: selected selectedItem ] ] ]
 ]
 
 { #category : #initialization }
@@ -155,4 +164,20 @@ MiModelRootBrowser >> selected [
 { #category : #accessing }
 MiModelRootBrowser >> selectedObject [
 	^ modelPresenter selection selectedItem
+]
+
+{ #category : #updating }
+MiModelRootBrowser >> updateList [
+	self
+		freezeDuring: [ | selected |
+			selected := self selected.
+			modelPresenter updateList.
+			modelPresenter selectItem: selected ]
+]
+
+{ #category : #updating }
+MiModelRootBrowser >> updateWith: aModel [
+	modelPresenter
+		updateList;
+		selectItem: aModel
 ]
