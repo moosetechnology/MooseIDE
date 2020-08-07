@@ -59,5 +59,7 @@ MiPropagateCommand >> propagate [
 		do: [ :exception | 
 			exception signal.
 			^ self ].
-	^ self context buses do: [ :bus | bus globallySelect: selectedItem ]
+	selectedItem isMooseObject
+		ifFalse: [ ^ self ].
+	self context buses do: [ :bus | bus globallySelect: selectedItem ]
 ]

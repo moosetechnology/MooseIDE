@@ -64,6 +64,7 @@ MiPropertyBrowser >> followAction [
 
 { #category : #initialization }
 MiPropertyBrowser >> forEntity: anEntity [
+	self model: anEntity.
 	properties
 		items:
 			(anEntity mooseDescription allPrimitiveProperties
@@ -77,8 +78,7 @@ MiPropertyBrowser >> initializePresenters [
 	self
 		flag:
 			'This currently duplicated code from Midas-NewTools. We have to thing about a good way to integrate all browser inside the inspector'.
-	properties := self newTable.
-	properties
+	properties := self newTable
 		addColumn:
 			(SpStringTableColumn
 				title: 'Properties'
@@ -89,11 +89,20 @@ MiPropertyBrowser >> initializePresenters [
 				evaluated: [ :item | 
 					[ self model mmGetProperty: item ]
 						on: Error
-						do: [ 'error' ] ]);
-		items:
-			(self model mooseDescription allPrimitiveProperties
-				sorted: #name ascending);
-		beResizable
+						do: [ :e | e description ] ]);
+		beResizable;
+		contextMenu: [ self rootCommandsGroup asMenuPresenter ]
+]
+
+{ #category : #accessing }
+MiPropertyBrowser >> miSelectedItem [
+	self
+		flag:
+			'This is probably wrong: we allow propagation of a primitive value (number, string, boolean), 
+				which is not a mooseObject and should probably not be propagated.
+				However, this allows to reproduce errors occuring while getting the property.'.
+	^ properties selection selectedItem
+		ifNotNil: [ :item | self model mmGetProperty: item ]
 ]
 
 { #category : #initialization }
