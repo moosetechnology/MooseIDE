@@ -22,7 +22,12 @@ MiAbstractVisualization >> canvas: anObject [
 
 { #category : #accessing }
 MiAbstractVisualization >> defaultActionOnCanvas [
-	self canvas @ RSCanvasController
+	self canvas @ RSCanvasController new noLegend
+]
+
+{ #category : #highlighting }
+MiAbstractVisualization >> highlightColor [
+	^ self theme warningTextColor
 ]
 
 { #category : #accessing }

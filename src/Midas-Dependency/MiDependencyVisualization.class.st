@@ -6,137 +6,150 @@ Class {
 	#superclass : #MiAbstractVisualization,
 	#instVars : [
 		'diagram',
-		'entities'
+		'entities',
+		'incomingDependencies',
+		'outgoingDependencies'
 	],
 	#category : #'Midas-Dependency-Dependency'
 }
 
 { #category : #running }
-MiDependencyVisualization >> entities [
-	^ entities
+MiDependencyVisualization >> buildDependencyLinks [
+	RSEdgeBuilder arrowedLine
+		canvas: canvas;
+		withBorderAttachPoint;
+		color: self theme textColor;
+		source: self entities
+			connectFrom: #yourself
+			toAll:
+				[ :p | (outgoingDependencies at: p) asSet	", (outgoingDependencies at: p)" ]
 ]
 
 { #category : #running }
-MiDependencyVisualization >> entities: aCollection [
-	entities := aCollection
-		select: [ :a | a usesFamixTrait: TEntityMetaLevelDependency ]
-]
-
-{ #category : #running }
-MiDependencyVisualization >> initialize [
-	super initialize.
-	
-	entities := #().
-]
-
-{ #category : #running }
-MiDependencyVisualization >> legend [
-	| line |
-	self
-		withLegend: [ :b | 
-			b title: 'Dependency'.
-			b text: 'Number of lines of code' withFadingRamp: {(0 -> 'white') . (1 -> 'black')}.
-			b polymetricWidth: 'number of incoming dependency' height: 'number of outgoing dependency' box: 'an entity'.
-			b
-				leyendDo: [ :s | 
-					s
-						draggable;
-						border:
-							(RSBorder new
-								color: Color red;
-								dashArray: #(4));
-						color: (Color white alpha: 0.8);
-						scaleBy: 0.5;
-						padding: 15 ].
-			b location right middle.
-			line := RSLine new
-				startPoint: 0 @ 0;
-				endPoint: 20 @ 0;
-				color: Color blue yourself.
-			b text: 'Outgoing' withShape: line.
-			line := RSLine new
-				startPoint: 0 @ 0;
-				endPoint: 20 @ 0;
-				color: Color green yourself.
-			b text: 'Incoming' withShape: line.
-			line := RSLine new
-				startPoint: 0 @ 0;
-				endPoint: 20 @ 0;
-				color: Color red yourself.
-			b text: 'Both' withShape: line ]
-]
-
-{ #category : #running }
-MiDependencyVisualization >> run [
-	| nodes shapes nodesOutgoing nodesIncoming high color |
-	nodes := self entities.
-	nodesIncoming := Dictionary new.
-	nodesOutgoing := Dictionary new.
-	nodes
+MiDependencyVisualization >> collectDependencies [
+	incomingDependencies := Dictionary new.
+	outgoingDependencies := Dictionary new.
+	self entities
 		do: [ :each | 
-			nodesIncoming
+			incomingDependencies
 				at: each
 				put:
 					(each queryAllIncoming withoutSelfLoops atScope: each class)
 						asOrderedCollection.
-			nodesOutgoing
+			outgoingDependencies
 				at: each
 				put:
 					(each queryAllOutgoing withoutSelfLoops atScope: each class)
-						asOrderedCollection ].
-	color := NSScale linear
+						asOrderedCollection ]
+]
+
+{ #category : #running }
+MiDependencyVisualization >> colorScale [
+	^ NSScale linear
 		domain: #(1 500);
 		range:
 			{Color white.
-			Color darkGray}.
-	shapes := nodes
-		collect: [ :node | 
-			RSComposite new
-				shapes:
-					{(RSBox new
-						color: (color scale: node numberOfLinesOfCode);
-						"+5 for a minimal size"
-							width: (nodesIncoming at: node) size * 2 + 5;
-						height: (nodesOutgoing at: node) size * 2 + 5;
-						yourself)};
-				model: node;
-				popup;
-				draggable;
-				yourself ]
+			Color darkGray}
+]
+
+{ #category : #accessing }
+MiDependencyVisualization >> entities [
+	^ entities
+]
+
+{ #category : #accessing }
+MiDependencyVisualization >> entities: aCollection [
+	entities := aCollection
+]
+
+{ #category : #running }
+MiDependencyVisualization >> highlightShape: shape [
+	| high |
+	high := RSHighlightable new withEdges.
+	high
+		highlightColor: [ :edge | 
+			edge = shape
+				ifTrue: [ self highlightColor ]
+				ifFalse: [ | dependency |
+					dependency := edge model key = shape model
+						ifTrue: [ edge model value ]
+						ifFalse: [ edge model key ].
+					((incomingDependencies at: shape model) includes: dependency)
+						ifTrue: [ ((outgoingDependencies at: shape model) includes: dependency)
+								ifTrue: [ "Incoming and outgoing" Color red ]
+								ifFalse: [ "Incoming" Color green ] ]
+						ifFalse: [ "Outgoing" Color blue ] ] ].
+	shape @ high
+]
+
+{ #category : #initialization }
+MiDependencyVisualization >> initialize [
+	super initialize.
+	entities := #()
+]
+
+{ #category : #running }
+MiDependencyVisualization >> legend [
+	self
+		withLegend: [ :b | 
+			b title: 'Dependency'.
+			b
+				text: 'Number of lines of code'
+				withFadingRamp:
+					{(0 -> 'white').
+					(1 -> 'black')}.
+			b
+				polymetricWidth: 'number of incoming dependencies'
+				height: 'number of outgoing dependencies'
+				box: 'Entity'.
+			b text: 'Outgoing' withShape: (self legendArrowColored: Color blue).
+			b
+				text: 'Incoming'
+				withShape: (self legendArrowColored: Color green).
+			b text: 'Both' withShape: (self legendArrowColored: Color red).
+			b
+				leyendDo: [ :s | 
+					s
+						color: (Color white alpha: 0.8);
+						scaleBy: 0.7;
+						padding: 15 ] ]
+]
+
+{ #category : #running }
+MiDependencyVisualization >> legendArrowColored: aColor [
+	^ RSLine new
+		startPoint: 0 @ 0;
+		endPoint: 20 @ 0;
+		color: aColor;
+		yourself
+]
+
+{ #category : #running }
+MiDependencyVisualization >> run [
+	| shapes |
+	self collectDependencies.
+	shapes := self entities
+		collect: [ :node | self shapeForEntity: node ]
 		as: RSGroup.
-	shapes
-		do: [ :shape | 
-			high := RSHighlightable new.
-			high withEdges.
-			high
-				highlightColor: [ :edge | 
-					edge = shape
-						ifTrue: [ Color yellow ]
-						ifFalse: [ | each value |
-							"Is it an outgoingEdge or an incomingEdge"
-							edge model key = shape model
-								ifTrue: [ each := edge model key.
-									value := edge model value ]
-								ifFalse: [ each := edge model value.
-									value := edge model key ].
-							((nodesIncoming at: each) includes: value)
-								ifTrue: [ ((nodesOutgoing at: each) includes: value)
-										ifTrue: [ Color red ]
-										ifFalse: [ Color green ] ]
-								ifFalse: [ Color blue ] ] ].
-			shape @ high ].
+	self buildDependencyLinks.
 	self canvas addAll: shapes.
-	RSEdgeBuilder bimetricLine
-		canvas: canvas;
-		objects: nodes;
-		color: Color lightGray;
-		noBorder;
-		withBorderAttachPoint;
-		widthFrom: 1;
-		widthTo: 1;
-		connectFrom: #yourself
-			toAll: [ :p | ((nodesIncoming at: p) , (nodesOutgoing at: p)) asSet ].
 	RSCircleLayout new on: shapes.
 	self legend.
 	self canvas zoomToFit
+]
+
+{ #category : #running }
+MiDependencyVisualization >> shapeForEntity: node [
+	| shape |
+	shape := RSBox new
+		color: (self colorScale scale: node numberOfLinesOfCode);
+		"+5 for a minimal size"
+			width: (incomingDependencies at: node) size * 2 + 5;
+		height: (outgoingDependencies at: node) size * 2 + 5;
+		model: node;
+		popup;
+		draggable;
+		yourself.
+	self highlightShape: shape.
+	^ shape
 ]

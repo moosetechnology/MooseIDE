@@ -77,8 +77,11 @@ MiDependencyBrowser >> followAction [
 	(self accept: toSelect)
 		ifFalse: [ ^ self ].
 	(toSelect isOfType: MooseGroup)
-		ifTrue: [ self model entities: toSelect ]
-		ifFalse: [ self model entities: {toSelect} ].
+		ifFalse: [ toSelect := {toSelect} ].
+	self model
+		entities:
+			(toSelect
+				select: [ :a | a usesFamixTrait: TEntityMetaLevelDependency ]).
 	self refresh
 ]
 
@@ -94,6 +97,6 @@ MiDependencyBrowser >> initializePresenters [
 
 { #category : #TOREMOVE }
 MiDependencyBrowser >> refresh [
-	self diagram refresh.
-	self model run.
+	diagram refresh.
+	model run
 ]

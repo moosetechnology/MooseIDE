@@ -64,11 +64,6 @@ MiTreeMap >> colorFor: anEntity [
 ]
 
 { #category : #highlighting }
-MiTreeMap >> highlightColor [
-	^ self theme warningTextColor
-]
-
-{ #category : #highlighting }
 MiTreeMap >> highlightEntities: entities [
 	self highlightedEntities: entities.
 	self refreshShapes.
