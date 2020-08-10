@@ -1,26 +1,22 @@
 Class {
 	#name : #MiSetRootFolderCommand,
-	#superclass : #CmCommand,
+	#superclass : #MiModelUtilityCommand,
 	#category : #'Midas-Core-Command'
 }
+
+{ #category : #defaults }
+MiSetRootFolderCommand class >> defaultIconName [
+	^ #glamorousFolder
+]
 
 { #category : #default }
 MiSetRootFolderCommand class >> defaultName [
 	^ 'Set Root Folder'
 ]
 
-{ #category : #testing }
-MiSetRootFolderCommand >> canBeExecuted [
-	^ self context miSelectedItem isMooseObject
-]
-
 { #category : #executing }
 MiSetRootFolderCommand >> execute [
-	| folder |
-	folder := UITheme builder
-		chooseDirectory:
-			'Choose the root folder for the sources of '
-				, self context miSelectedItem name.
-	folder
-		ifNotNil: [ self context miSelectedItem rootFolder: folder fullName ]
+	(UITheme builder
+		chooseDirectory: 'Choose the root folder for the sources of ' , self model name)
+		ifNotNil: [ :folder | self model rootFolder: folder fullName ]
 ]

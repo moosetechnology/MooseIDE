@@ -1,6 +1,6 @@
 Class {
 	#name : #MiExportToMSECommand,
-	#superclass : #MiExportCommand,
+	#superclass : #MiModelExportCommand,
 	#category : #'Midas-Core-Command'
 }
 

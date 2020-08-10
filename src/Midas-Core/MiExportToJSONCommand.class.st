@@ -1,6 +1,6 @@
 Class {
 	#name : #MiExportToJSONCommand,
-	#superclass : #MiExportCommand,
+	#superclass : #MiModelExportCommand,
 	#category : #'Midas-Core-Command'
 }
 

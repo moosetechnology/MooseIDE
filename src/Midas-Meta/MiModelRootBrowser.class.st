@@ -28,9 +28,8 @@ MiModelRootBrowser class >> buildCommandsGroupWith: presenterInstance forRoot: r
 		buildCommandsGroupWith: presenterInstance
 		forRoot: rootCommandGroup.
 	rootCommandGroup
-		register: (MiSetRootFolderCommand forSpecContext: presenterInstance).
-	rootCommandGroup
-		register: (self exportCommandGroupWith: presenterInstance)
+		register: (MiModelExportCommand asCommandGroupWith: presenterInstance);
+		register: (MiModelUtilityCommand asCommandGroupWith: presenterInstance)
 ]
 
 { #category : #specs }
@@ -39,18 +38,6 @@ MiModelRootBrowser class >> defaultSpec [
 		add: #menu withConstraints: [ :constraints | constraints height: self toolbarHeight ];
 		add: #modelPresenter;
 		yourself
-]
-
-{ #category : #'world menu' }
-MiModelRootBrowser class >> exportCommandGroupWith: presenterInstance [
-	| exportCommandGroup |
-	exportCommandGroup := CmCommandGroup forSpec
-		name: 'Export';
-		description: 'Export this model'.
-	MiExportCommand
-		allSubclassesDo:
-			[ :cmd | exportCommandGroup register: (cmd forSpecContext: presenterInstance) ].
-	^ exportCommandGroup
 ]
 
 { #category : #specs }
