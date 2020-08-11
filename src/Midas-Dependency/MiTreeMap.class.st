@@ -2,7 +2,6 @@ Class {
 	#name : #MiTreeMap,
 	#superclass : #MiAbstractVisualization,
 	#instVars : [
-		'color',
 		'base',
 		'rootEntities',
 		'childrenBlock',
@@ -73,16 +72,12 @@ MiTreeMap >> highlightEntities: entities [
 { #category : #initialization }
 MiTreeMap >> initialize [
 	super initialize.
-	canvas := RSCanvas new.
-
-	base := RSComposite new.
-	base draggable.
-	base popup.
-	base when: RSMouseLeftClick do: [ :evt | self processEvent: evt ].
-
+	base := RSComposite new
+		draggable;
+		popup;
+		when: RSMouseLeftClick do: [ :evt | self processEvent: evt ].
 	rootEntities := #().
 	childrenBlock := [ :entity | #() ]
-
 ]
 
 { #category : #helpers }
@@ -153,15 +148,15 @@ MiTreeMap >> rootEntities: aCollection [
 
 { #category : #helpers }
 MiTreeMap >> rootShapes [
-	^ canvas shapes ifNotEmpty: [ :shapes | shapes first shapes ]
+	^ self canvas shapes ifNotEmpty: [ :shapes | shapes first shapes ]
 ]
 
 { #category : #running }
 MiTreeMap >> run [
-	| containerShape | 
+	| containerShape |
 	containerShape := RSComposite new.
-	canvas add: containerShape.
-	self rootEntities do: [:e | containerShape add: (self nodeFor: e)].
+	self rootEntities do: [ :e | containerShape add: (self nodeFor: e) ].
+	self canvas add: containerShape.
 	self update
 ]
 
@@ -187,14 +182,14 @@ MiTreeMap >> scale: shape at: t [
 { #category : #updating }
 MiTreeMap >> update [
 	| first |
-	first := canvas shapes first.
+	first := self canvas shapes first.
 	self relayout: first.
 	self saveCurrent: first.
-	canvas newAnimation
+	self canvas newAnimation
 		duration: 0.5 seconds;
 		onStepDo: [ :t | 
 			self scale: first at: t.
-			canvas
+			self canvas
 				zoomToFit;
 				signalUpdate ]
 ]

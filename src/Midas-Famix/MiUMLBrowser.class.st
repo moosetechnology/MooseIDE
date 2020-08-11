@@ -39,11 +39,6 @@ MiUMLBrowser class >> menuCommandOn: aBuilder [
 		action: [ self runMe ]
 ]
 
-{ #category : #accessing }
-MiUMLBrowser class >> newModel [
-	^ MiUML new theme: self theme
-]
-
 { #category : #specs }
 MiUMLBrowser class >> runMe [
 	<script>
@@ -66,32 +61,17 @@ MiUMLBrowser >> accept: anObject [
 ]
 
 { #category : #accessing }
-MiUMLBrowser >> diagram [
-	^ diagram
-]
-
-{ #category : #accessing }
 MiUMLBrowser >> followAction [
 	(self accept: toSelect)
 		ifFalse: [ ^ self ].
 	(toSelect isKindOf: FamixTypeGroup)
-		ifFalse: [ self model rootEntities: {toSelect} ]
-		ifTrue: [ self model rootEntities: toSelect ].
-	self refresh
+		ifFalse: [ diagram rootEntities: {toSelect} ]
+		ifTrue: [ diagram rootEntities: toSelect ].
+	diagram run
 ]
 
 { #category : #accessing }
 MiUMLBrowser >> initializePresenters [
 	super initializePresenters.
-	diagram := self instantiate: SpRoassalPresenter.
-	diagram
-		script: [ :canvas | 
-			canvas color: self theme backgroundColor.
-			self model canvas: canvas ]
-]
-
-{ #category : #accessing }
-MiUMLBrowser >> refresh [
-	self diagram refresh.
-	self model run.
+	diagram := self instantiate: MiUML
 ]

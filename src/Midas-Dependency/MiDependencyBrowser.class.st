@@ -39,11 +39,6 @@ MiDependencyBrowser class >> menuCommandOn: aBuilder [
 		action: [ self runMe ]
 ]
 
-{ #category : #TOREMOVE }
-MiDependencyBrowser class >> newModel [
-	^ MiDependencyVisualization new theme: self theme
-]
-
 { #category : #'world menu' }
 MiDependencyBrowser class >> runMe [
 	<script>
@@ -62,41 +57,21 @@ MiDependencyBrowser >> accept: anObject [
 				anySatisfy: [ :a | a usesFamixTrait: TEntityMetaLevelDependency ] ]
 ]
 
-{ #category : #accessing }
-MiDependencyBrowser >> diagram [
-	^ diagram
-]
-
-{ #category : #accessing }
-MiDependencyBrowser >> diagram: aDiagram [
-	diagram := aDiagram
-]
-
 { #category : #acccessing }
 MiDependencyBrowser >> followAction [
 	(self accept: toSelect)
 		ifFalse: [ ^ self ].
 	(toSelect isOfType: MooseGroup)
 		ifFalse: [ toSelect := {toSelect} ].
-	self model
+	diagram
 		entities:
 			(toSelect
-				select: [ :a | a usesFamixTrait: TEntityMetaLevelDependency ]).
-	self refresh
+				select: [ :a | a usesFamixTrait: TEntityMetaLevelDependency ]);
+		run
 ]
 
 { #category : #TOREMOVE }
 MiDependencyBrowser >> initializePresenters [
 	super initializePresenters.
-	diagram := self instantiate: SpRoassalPresenter.
-	diagram
-		script: [ :canvas | 
-			canvas color: self theme backgroundColor.
-			self model canvas: canvas ]
-]
-
-{ #category : #TOREMOVE }
-MiDependencyBrowser >> refresh [
-	diagram refresh.
-	model run
+	diagram := self instantiate: MiDependencyVisualization
 ]

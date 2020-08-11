@@ -16,7 +16,7 @@ Class {
 { #category : #running }
 MiDependencyVisualization >> buildDependencyLinks [
 	RSEdgeBuilder arrowedLine
-		canvas: canvas;
+		canvas: self canvas;
 		withBorderAttachPoint;
 		color: self theme textColor;
 		source: self entities
@@ -88,7 +88,7 @@ MiDependencyVisualization >> initialize [
 	entities := #()
 ]
 
-{ #category : #running }
+{ #category : #legend }
 MiDependencyVisualization >> legend [
 	self
 		withLegend: [ :b | 
@@ -115,7 +115,7 @@ MiDependencyVisualization >> legend [
 						padding: 15 ] ]
 ]
 
-{ #category : #running }
+{ #category : #legend }
 MiDependencyVisualization >> legendArrowColored: aColor [
 	^ RSLine new
 		startPoint: 0 @ 0;

@@ -1,29 +1,11 @@
 Class {
 	#name : #MiAbstractVisualization,
-	#superclass : #Object,
+	#superclass : #SpRoassalPresenter,
 	#instVars : [
-		'theme',
-		'canvas',
 		'highlightedEntities'
 	],
 	#category : #'Midas-Vizualisation'
 }
-
-{ #category : #accessing }
-MiAbstractVisualization >> canvas [
-	^ canvas
-]
-
-{ #category : #accessing }
-MiAbstractVisualization >> canvas: anObject [
-	canvas := anObject.
-	self defaultActionOnCanvas
-]
-
-{ #category : #accessing }
-MiAbstractVisualization >> defaultActionOnCanvas [
-	self canvas @ RSCanvasController new noLegend
-]
 
 { #category : #highlighting }
 MiAbstractVisualization >> highlightColor [
@@ -43,20 +25,16 @@ MiAbstractVisualization >> highlightedEntities: entities [
 { #category : #initialization }
 MiAbstractVisualization >> initialize [
 	super initialize.
-	highlightedEntities := MooseGroup new
+	highlightedEntities := MooseGroup new.
+	self script: [ :canvas | canvas @ RSCanvasController new noLegend ]
 ]
 
-{ #category : #accessing }
-MiAbstractVisualization >> theme [
-	^ theme
+{ #category : #running }
+MiAbstractVisualization >> run [
+	self subclassResponsibility
 ]
 
-{ #category : #accessing }
-MiAbstractVisualization >> theme: anObject [
-	theme := anObject
-]
-
-{ #category : #initialization }
+{ #category : #highlighting }
 MiAbstractVisualization >> unHighlight [
 	highlightedEntities := MooseGroup new
 ]

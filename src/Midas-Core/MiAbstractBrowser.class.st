@@ -66,7 +66,7 @@ MiAbstractBrowser class >> defaultSpec [
 				add: #buttonFreeze width: 60;
 				add: #buttonHighlight width: 80;
 				add: SpBoxLayout newHorizontal expand: true;
-				add: #busButton width: 100;
+				add: #busButton;
 				add: SpBoxLayout newHorizontal expand: true;
 				add: #buttonInspect width: self iconWidth;
 				add: #buttonPropagate expand: false;

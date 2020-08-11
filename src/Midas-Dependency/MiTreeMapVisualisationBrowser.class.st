@@ -40,16 +40,6 @@ MiTreeMapVisualisationBrowser class >> menuCommandOn: aBuilder [
 		action: [ self runMe ]
 ]
 
-{ #category : #initialization }
-MiTreeMapVisualisationBrowser class >> newModel [
-	^ MiTreeMap new
-		theme: self theme;
-		childrenBlock: [ :el | 
-			(el usesFamixTrait: TEntityMetaLevelDependency)
-				ifTrue: [ el children ]
-				ifFalse: [ {} ] ]
-]
-
 { #category : #specs }
 MiTreeMapVisualisationBrowser class >> runMe [
 	<script>
@@ -63,9 +53,7 @@ MiTreeMapVisualisationBrowser class >> title [
 
 { #category : #testing }
 MiTreeMapVisualisationBrowser >> accept: anObject [
-	^ anObject isNotNil
-		and:
-			[ anObject isMooseObject and: [ anObject rootsForTreeMap isNotEmpty ] ]
+	^ anObject isMooseObject and: [ anObject rootsForTreeMap isNotEmpty ]
 ]
 
 { #category : #accessing }
@@ -82,28 +70,24 @@ MiTreeMapVisualisationBrowser >> diagram: anObject [
 MiTreeMapVisualisationBrowser >> followAction [
 	(self accept: toSelect)
 		ifFalse: [ ^ self ].
-	self model unHighlight.
-	self model rootEntities: toSelect rootsForTreeMap.
-	self refresh
+	diagram
+		unHighlight;
+		rootEntities: toSelect rootsForTreeMap;
+		run
 ]
 
 { #category : #actions }
 MiTreeMapVisualisationBrowser >> highlightAction [
-	model highlightEntities: toSelect rootsForTreeMap
+	diagram highlightEntities: toSelect rootsForTreeMap
 ]
 
 { #category : #initialization }
 MiTreeMapVisualisationBrowser >> initializePresenters [
 	super initializePresenters.
-	diagram := self instantiate: SpRoassalPresenter.
+	diagram := self instantiate: MiTreeMap.
 	diagram
-		script: [ :canvas | 
-			canvas color: self theme backgroundColor.
-			self model canvas: canvas ]
-]
-
-{ #category : #updating }
-MiTreeMapVisualisationBrowser >> refresh [
-	self diagram refresh.
-	self model run.
+		childrenBlock: [ :el | 
+			(el usesFamixTrait: TEntityMetaLevelDependency)
+				ifTrue: [ el children ]
+				ifFalse: [ {} ] ]
 ]
