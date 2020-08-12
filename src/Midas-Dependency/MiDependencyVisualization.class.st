@@ -44,6 +44,26 @@ MiDependencyVisualization >> collectDependencies [
 						asOrderedCollection ]
 ]
 
+{ #category : #helpers }
+MiDependencyVisualization >> colorFor: anEntity [
+	^ (highlightedEntities includes: anEntity)
+		ifTrue: [ self highlightColor ]
+		ifFalse: [ self colorScale scale: anEntity numberOfLinesOfCode ]
+]
+
+{ #category : #running }
+MiDependencyVisualization >> colorForEdge: edge ofShape: shape [
+	| dependency |
+	dependency := edge model key = shape model
+		ifTrue: [ edge model value ]
+		ifFalse: [ edge model key ].
+	^ ((incomingDependencies at: shape model) includes: dependency)
+		ifTrue: [ ((outgoingDependencies at: shape model) includes: dependency)
+				ifTrue: [ "Incoming and outgoing" Color red ]
+				ifFalse: [ "Incoming" Color green ] ]
+		ifFalse: [ "Outgoing" Color blue ]
+]
+
 { #category : #running }
 MiDependencyVisualization >> colorScale [
 	^ NSScale linear
@@ -114,15 +134,16 @@ MiDependencyVisualization >> makeHighlightable: shape [
 				highlightColor: [ :edge | 
 					edge = shape
 						ifTrue: [ self highlightColor ]
-						ifFalse: [ | dependency |
-							dependency := edge model key = shape model
-								ifTrue: [ edge model value ]
-								ifFalse: [ edge model key ].
-							((incomingDependencies at: shape model) includes: dependency)
-								ifTrue: [ ((outgoingDependencies at: shape model) includes: dependency)
-										ifTrue: [ "Incoming and outgoing" Color red ]
-										ifFalse: [ "Incoming" Color green ] ]
-								ifFalse: [ "Outgoing" Color blue ] ] ])
+						ifFalse: [ self colorForEdge: edge ofShape: shape ] ])
+]
+
+{ #category : #highlighting }
+MiDependencyVisualization >> refreshShapes [
+	"It would be interesting to color edges as well but we have to choose a behavior: 
+			when only one of the source & target is highlighted VS when both are highlighted"
+
+	self canvas nodes
+		do: [ :box | box color: (self colorFor: box model) ]
 ]
 
 { #category : #running }

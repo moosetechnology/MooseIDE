@@ -70,6 +70,13 @@ MiDependencyBrowser >> followAction [
 		run
 ]
 
+{ #category : #actions }
+MiDependencyBrowser >> highlightAction [
+	(toSelect isOfType: MooseGroup)
+		ifFalse: [ toSelect := {toSelect} ].
+	diagram highlightEntities: toSelect
+]
+
 { #category : #initialization }
 MiDependencyBrowser >> initializePresenters [
 	super initializePresenters.

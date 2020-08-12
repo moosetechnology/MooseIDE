@@ -50,13 +50,6 @@ MiTreeVisualisation >> entities: anObject [
 	entities := anObject
 ]
 
-{ #category : #highlighting }
-MiTreeVisualisation >> highlightEntities: someEntities [
-	self highlightedEntities: someEntities.
-	self refreshShapes.
-	self canvas signalUpdate
-]
-
 { #category : #running }
 MiTreeVisualisation >> newBox [
 	^ RSBox new

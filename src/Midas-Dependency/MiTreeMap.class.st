@@ -60,13 +60,6 @@ MiTreeMap >> colorFor: aNode [
 	^ (super colorFor: aNode) alpha: 0.4
 ]
 
-{ #category : #highlighting }
-MiTreeMap >> highlightEntities: entities [
-	self highlightedEntities: entities.
-	self refreshShapes.
-	self canvas signalUpdate
-]
-
 { #category : #initialization }
 MiTreeMap >> initialize [
 	super initialize.

@@ -19,6 +19,13 @@ MiAbstractVisualization >> highlightColor [
 	^ self theme warningTextColor
 ]
 
+{ #category : #highlighting }
+MiAbstractVisualization >> highlightEntities: someEntities [
+	self highlightedEntities: someEntities.
+	self refreshShapes.
+	self canvas signalUpdate
+]
+
 { #category : #accessing }
 MiAbstractVisualization >> highlightedEntities [
 	^ highlightedEntities
@@ -36,6 +43,11 @@ MiAbstractVisualization >> initialize [
 	self script: [ :canvas | canvas @ RSCanvasController new noLegend ]
 ]
 
+{ #category : #highlighting }
+MiAbstractVisualization >> refreshShapes [
+	self subclassResponsibility
+]
+
 { #category : #running }
 MiAbstractVisualization >> run [
 	self refresh
@@ -46,7 +58,7 @@ MiAbstractVisualization >> unHighlight [
 	highlightedEntities := MooseGroup new
 ]
 
-{ #category : #accessing }
+{ #category : #helpers }
 MiAbstractVisualization >> withLegend: aBlock [
 	| b |
 	b := RSLegend new.
