@@ -7,6 +7,7 @@ Class {
 	#instVars : [
 		'diagram',
 		'entities',
+		'selected',
 		'incomingDependencies',
 		'outgoingDependencies'
 	],
@@ -62,26 +63,6 @@ MiDependencyVisualization >> entities: aCollection [
 	entities := aCollection
 ]
 
-{ #category : #running }
-MiDependencyVisualization >> highlightShape: shape [
-	| high |
-	high := RSHighlightable new withEdges.
-	high
-		highlightColor: [ :edge | 
-			edge = shape
-				ifTrue: [ self highlightColor ]
-				ifFalse: [ | dependency |
-					dependency := edge model key = shape model
-						ifTrue: [ edge model value ]
-						ifFalse: [ edge model key ].
-					((incomingDependencies at: shape model) includes: dependency)
-						ifTrue: [ ((outgoingDependencies at: shape model) includes: dependency)
-								ifTrue: [ "Incoming and outgoing" Color red ]
-								ifFalse: [ "Incoming" Color green ] ]
-						ifFalse: [ "Outgoing" Color blue ] ] ].
-	shape @ high
-]
-
 { #category : #initialization }
 MiDependencyVisualization >> initialize [
 	super initialize.
@@ -125,6 +106,26 @@ MiDependencyVisualization >> legendArrowColored: aColor [
 ]
 
 { #category : #running }
+MiDependencyVisualization >> makeHighlightable: shape [
+	shape
+		@
+			(RSHighlightable new
+				withEdges;
+				highlightColor: [ :edge | 
+					edge = shape
+						ifTrue: [ self highlightColor ]
+						ifFalse: [ | dependency |
+							dependency := edge model key = shape model
+								ifTrue: [ edge model value ]
+								ifFalse: [ edge model key ].
+							((incomingDependencies at: shape model) includes: dependency)
+								ifTrue: [ ((outgoingDependencies at: shape model) includes: dependency)
+										ifTrue: [ "Incoming and outgoing" Color red ]
+										ifFalse: [ "Incoming" Color green ] ]
+								ifFalse: [ "Outgoing" Color blue ] ] ])
+]
+
+{ #category : #running }
 MiDependencyVisualization >> run [
 	| shapes |
 	super run.
@@ -132,11 +133,21 @@ MiDependencyVisualization >> run [
 	shapes := self entities
 		collect: [ :node | self shapeForEntity: node ]
 		as: RSGroup.
-	self buildDependencyLinks.
 	self canvas addAll: shapes.
+	self buildDependencyLinks.
 	RSCircleLayout new on: shapes.
 	self legend.
 	self canvas zoomToFit
+]
+
+{ #category : #accessing }
+MiDependencyVisualization >> selected [
+	^ selected
+]
+
+{ #category : #accessing }
+MiDependencyVisualization >> selected: anObject [
+	selected := anObject
 ]
 
 { #category : #running }
@@ -150,7 +161,10 @@ MiDependencyVisualization >> shapeForEntity: node [
 		model: node;
 		popup;
 		draggable;
+		addInteraction:
+			((MiSelection on: [ :entity | self selected: entity ])
+				marginPercentage: 0.5);
 		yourself.
-	self highlightShape: shape.
+	self makeHighlightable: shape.
 	^ shape
 ]

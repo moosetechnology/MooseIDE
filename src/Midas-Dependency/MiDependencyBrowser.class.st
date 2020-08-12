@@ -75,3 +75,8 @@ MiDependencyBrowser >> initializePresenters [
 	super initializePresenters.
 	diagram := self instantiate: MiDependencyVisualization
 ]
+
+{ #category : #accessing }
+MiDependencyBrowser >> miSelectedItem [
+	^ diagram selected
+]

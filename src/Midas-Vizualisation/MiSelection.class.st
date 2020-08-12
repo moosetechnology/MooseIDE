@@ -3,7 +3,8 @@ Class {
 	#superclass : #RSInteraction,
 	#instVars : [
 		'shadowColor',
-		'selectionAction'
+		'selectionAction',
+		'marginPercentage'
 	],
 	#category : #'Midas-Vizualisation'
 }
@@ -18,6 +19,16 @@ MiSelection class >> on: selectionAction [
 { #category : #accessing }
 MiSelection >> key [
 	^ self class name
+]
+
+{ #category : #hooks }
+MiSelection >> marginPercentage [
+	^ marginPercentage ifNil: [ marginPercentage := 0.05 ]
+]
+
+{ #category : #hooks }
+MiSelection >> marginPercentage: aFloat [
+	marginPercentage := aFloat
 ]
 
 { #category : #'instance creation' }
@@ -35,14 +46,13 @@ MiSelection >> onShape: aShape [
 MiSelection >> putShadowOn: aShape [
 	| shadow |
 	shadow := RSBox new
-		fromRectangle: (aShape encompassingRectangle expandBy: aShape extent * 0.05); 
+		fromRectangle:
+			(aShape encompassingRectangle
+				expandBy: aShape extent * self marginPercentage);
 		paint: self shadowColor;
 		yourself.
-	aShape parent
-		addShape: shadow before: aShape.
-	aShape topParent 
-		propertyAt: self key
-		put: shadow
+	aShape parent addShape: shadow before: aShape.
+	aShape topParent propertyAt: self key put: shadow
 ]
 
 { #category : #hooks }
