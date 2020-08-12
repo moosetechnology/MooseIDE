@@ -127,6 +127,7 @@ MiDependencyVisualization >> legendArrowColored: aColor [
 { #category : #running }
 MiDependencyVisualization >> run [
 	| shapes |
+	super run.
 	self collectDependencies.
 	shapes := self entities
 		collect: [ :node | self shapeForEntity: node ]

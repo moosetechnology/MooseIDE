@@ -7,6 +7,13 @@ Class {
 	#category : #'Midas-Vizualisation'
 }
 
+{ #category : #helpers }
+MiAbstractVisualization >> colorFor: anEntity [
+	^ (highlightedEntities includes: anEntity)
+		ifTrue: [ self highlightColor ]
+		ifFalse: [ self theme selectionColor ]
+]
+
 { #category : #highlighting }
 MiAbstractVisualization >> highlightColor [
 	^ self theme warningTextColor
@@ -31,7 +38,7 @@ MiAbstractVisualization >> initialize [
 
 { #category : #running }
 MiAbstractVisualization >> run [
-	self subclassResponsibility
+	self refresh
 ]
 
 { #category : #highlighting }

@@ -56,10 +56,8 @@ MiTreeMap >> close: shape [
 ]
 
 { #category : #helpers }
-MiTreeMap >> colorFor: anEntity [
-	^ (highlightedEntities includes: anEntity)
-		ifTrue: [ self highlightColor ]
-		ifFalse: [ self theme selectionColor alpha: 0.4 ]
+MiTreeMap >> colorFor: aNode [
+	^ (super colorFor: aNode) alpha: 0.4
 ]
 
 { #category : #highlighting }
@@ -153,10 +151,12 @@ MiTreeMap >> rootShapes [
 
 { #category : #running }
 MiTreeMap >> run [
-	| containerShape |
-	containerShape := RSComposite new.
-	self rootEntities do: [ :e | containerShape add: (self nodeFor: e) ].
-	self canvas add: containerShape.
+	super run.
+	self canvas
+		add:
+			(RSComposite new
+				addAll: (self rootEntities collect: [ :e | self nodeFor: e ]);
+				yourself).
 	self update
 ]
 

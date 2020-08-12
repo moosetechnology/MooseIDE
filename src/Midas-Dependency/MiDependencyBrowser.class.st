@@ -50,14 +50,14 @@ MiDependencyBrowser class >> title [
 	^ 'Dependency'
 ]
 
-{ #category : #acccessing }
+{ #category : #testing }
 MiDependencyBrowser >> accept: anObject [
 	^ anObject isCollection
 		and: [ anObject
 				anySatisfy: [ :a | a usesFamixTrait: TEntityMetaLevelDependency ] ]
 ]
 
-{ #category : #acccessing }
+{ #category : #actions }
 MiDependencyBrowser >> followAction [
 	(self accept: toSelect)
 		ifFalse: [ ^ self ].
@@ -70,7 +70,7 @@ MiDependencyBrowser >> followAction [
 		run
 ]
 
-{ #category : #TOREMOVE }
+{ #category : #initialization }
 MiDependencyBrowser >> initializePresenters [
 	super initializePresenters.
 	diagram := self instantiate: MiDependencyVisualization

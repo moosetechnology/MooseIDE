@@ -28,6 +28,7 @@ MiUML >> rootEntities: aCollection [
 
 { #category : #updating }
 MiUML >> run [
+	super run.
 	builder := RSUMLClassBuilder new.
 	builder modelDescriptor forFamix.
 	builder classes: self rootEntities.
