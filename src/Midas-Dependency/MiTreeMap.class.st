@@ -60,6 +60,14 @@ MiTreeMap >> colorFor: aNode [
 	^ (super colorFor: aNode) alpha: 0.4
 ]
 
+{ #category : #updating }
+MiTreeMap >> highlightShapes [
+	self visibleShapes
+		do: [ :box | 
+			box color: (self colorFor: box model).
+			box border: (self borderFor: box model) ]
+]
+
 { #category : #initialization }
 MiTreeMap >> initialize [
 	super initialize.
@@ -107,14 +115,6 @@ MiTreeMap >> processEvent: evt [
 	shape children
 		ifEmpty: [ self open: shape]
 		ifNotEmpty: [ self close: shape ].
-]
-
-{ #category : #updating }
-MiTreeMap >> refreshShapes [
-	self visibleShapes
-		do: [ :box | 
-			box color: (self colorFor: box model).
-			box border: (self borderFor: box model) ]
 ]
 
 { #category : #updating }

@@ -8,7 +8,7 @@ Accepts a MooseGroup.
 Entites if present.
 
 - Propagate:
-<TODO>
+The selected entity if there is one.
 "
 Class {
 	#name : #MiDependencyBrowser,

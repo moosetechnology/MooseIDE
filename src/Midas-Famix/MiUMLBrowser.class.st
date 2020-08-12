@@ -5,10 +5,10 @@ Shows UML of the received entities.
 Receives a TypeGroup or entities using TType.
 
 - Highlight: 
-<TODO>
+Entities if present
 
 - Propagate: 
-<TODO>
+The selected entity if there is one
 "
 Class {
 	#name : #MiUMLBrowser,
@@ -50,7 +50,7 @@ MiUMLBrowser class >> title [
 	^ 'UML'
 ]
 
-{ #category : #accessing }
+{ #category : #testing }
 MiUMLBrowser >> accept: anObject [
 	"can't use isType because it can be a MooseModel (that does not answer isType)"
 
@@ -60,18 +60,36 @@ MiUMLBrowser >> accept: anObject [
 		or: [ anObject isOfType: FamixTType ]
 ]
 
-{ #category : #accessing }
+{ #category : #actions }
 MiUMLBrowser >> followAction [
 	(self accept: toSelect)
 		ifFalse: [ ^ self ].
-	(toSelect isKindOf: FamixTypeGroup)
-		ifFalse: [ diagram rootEntities: {toSelect} ]
-		ifTrue: [ diagram rootEntities: toSelect ].
-	diagram run
+	diagram
+		rootEntities:
+			((toSelect isKindOf: FamixTypeGroup)
+				ifFalse: [ {toSelect} ]
+				ifTrue: [ toSelect ]);
+		run
 ]
 
-{ #category : #accessing }
+{ #category : #actions }
+MiUMLBrowser >> highlightAction [
+	(self accept: toSelect)
+		ifFalse: [ ^ self ].
+	diagram
+		highlightEntities:
+			((toSelect isKindOf: FamixTypeGroup)
+				ifFalse: [ {toSelect} ]
+				ifTrue: [ toSelect ])
+]
+
+{ #category : #initialization }
 MiUMLBrowser >> initializePresenters [
 	super initializePresenters.
 	diagram := self instantiate: MiUML
+]
+
+{ #category : #accessing }
+MiUMLBrowser >> miSelectedItem [
+	^ diagram selected
 ]

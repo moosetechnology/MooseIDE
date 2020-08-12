@@ -11,10 +11,10 @@ Class {
 MiAbstractVisualization >> colorFor: anEntity [
 	^ (highlightedEntities includes: anEntity)
 		ifTrue: [ self highlightColor ]
-		ifFalse: [ self theme selectionColor ]
+		ifFalse: [ self noHighlightColorFor: anEntity ]
 ]
 
-{ #category : #highlighting }
+{ #category : #helpers }
 MiAbstractVisualization >> highlightColor [
 	^ self theme warningTextColor
 ]
@@ -22,8 +22,15 @@ MiAbstractVisualization >> highlightColor [
 { #category : #highlighting }
 MiAbstractVisualization >> highlightEntities: someEntities [
 	self highlightedEntities: someEntities.
-	self refreshShapes.
+	self highlightShapes.
 	self canvas signalUpdate
+]
+
+{ #category : #highlighting }
+MiAbstractVisualization >> highlightShapes [
+	"Override to react to Midas highlight action"
+
+	self subclassResponsibility
 ]
 
 { #category : #accessing }
@@ -43,9 +50,9 @@ MiAbstractVisualization >> initialize [
 	self script: [ :canvas | canvas @ RSCanvasController new noLegend ]
 ]
 
-{ #category : #highlighting }
-MiAbstractVisualization >> refreshShapes [
-	self subclassResponsibility
+{ #category : #helpers }
+MiAbstractVisualization >> noHighlightColorFor: anEntity [
+	^ self theme selectionColor
 ]
 
 { #category : #running }

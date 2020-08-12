@@ -50,6 +50,13 @@ MiTreeVisualisation >> entities: anObject [
 	entities := anObject
 ]
 
+{ #category : #updating }
+MiTreeVisualisation >> highlightShapes [
+	self canvas nodes
+		do:
+			[ :box | box shapes do: [ :shape | shape color: (self colorFor: box model) ] ]
+]
+
 { #category : #running }
 MiTreeVisualisation >> newBox [
 	^ RSBox new
@@ -64,13 +71,6 @@ MiTreeVisualisation >> newLabel: name [
 		text: name;
 		color: self theme textColor;
 		yourself
-]
-
-{ #category : #updating }
-MiTreeVisualisation >> refreshShapes [
-	self canvas nodes
-		do:
-			[ :box | box shapes do: [ :shape | shape color: (self colorFor: box model) ] ]
 ]
 
 { #category : #running }

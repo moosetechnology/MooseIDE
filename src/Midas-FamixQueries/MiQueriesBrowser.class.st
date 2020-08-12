@@ -196,8 +196,8 @@ MiQueriesBrowser >> initializeQueryResult [
 { #category : #midas }
 MiQueriesBrowser >> miSelectedItem [
 	| selected |
-	selected := queryResult miSelectedItem
-		ifEmpty: [ selectedQuery result ].
+	selected := (queryResult miSelectedItem
+		ifEmpty: [ selectedQuery result ]) specialize.
 	^ selected size = 1
 		ifTrue: [ selected anyOne ]
 		ifFalse: [ selected ]
