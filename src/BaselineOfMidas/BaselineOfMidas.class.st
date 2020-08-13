@@ -82,8 +82,8 @@ BaselineOfMidas >> definePackages: spec [
 	spec package: 'Midas-Visualization' with: [ spec requires: #( 'Roassal3' ) ].
 	spec package: 'Midas-Meta' with: [ spec requires: #( 'Midas-Core' ) ].
 	spec package: 'Midas-Tests' with: [ spec requires: #( 'Midas-Core' ) ].
-	spec package: 'Midas-Dependency' with: [ spec requires: #( 'Midas-Core' 'Midas-Vizualisation' ) ].
-	spec package: 'Midas-Famix' with: [ spec requires: #( 'Midas-Core' 'Midas-Vizualisation' ) ].
+	spec package: 'Midas-Dependency' with: [ spec requires: #( 'Midas-Core' 'Midas-Visualization' ) ].
+	spec package: 'Midas-Famix' with: [ spec requires: #( 'Midas-Core' 'Midas-Visualization' ) ].
 	spec package: 'Midas-FamixQueries' with: [ spec requires: #( 'FamixQueries' 'Midas-Core' ) ].
 	spec package: 'Midas-FamixQueries-Tests' with: [ spec requires: #( 'Midas-FamixQueries' 'Midas-Tests' ) ].
 	spec package: 'Midas-Telescope' with: [ spec requires: #('Midas-Core' 'Midas-Visualization' 'TelescopeRoassal3' ) ].
