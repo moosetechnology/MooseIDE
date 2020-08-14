@@ -4,7 +4,7 @@ Incoming dependencies, to the left, are in green.
 Outgoing dependencies, to the right, are in blue
 
 - Follow: 
-Accepts a MooseEntity.
+Accepts a MooseEntity that uses TEntityMetaLevelDependency.
 
 - Highlight:
 <TODO>
@@ -44,6 +44,7 @@ MiDependencyButterflyBrowser class >> title [
 { #category : #testing }
 MiDependencyButterflyBrowser >> accept: anObject [
 	^ anObject isMooseEntity
+		and: [ anObject usesFamixTrait: TEntityMetaLevelDependency ]
 ]
 
 { #category : #initialization }
