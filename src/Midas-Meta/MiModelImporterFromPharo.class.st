@@ -21,61 +21,8 @@ Class {
 
 { #category : #specs }
 MiModelImporterFromPharo class >> defaultSpec [
+
 	^ SpBoxLayout newVertical
-		spacing: 8;
-		add: self modelNameLayout;
-		add: self packageButtonLayout height: self buttonHeight;
-		add: self metamodelFactoryLayout height: self buttonHeight;
-		add: #mergeCheckBox height: self labelHeight;
-		add: #subclassesCheckBox height: self labelHeight;
-		add: #typeOfAttributesCheckBox height: self labelHeight;
-		add: self importerClassLayout height: self buttonHeight;
-		add: #contextCheckBoxes;
-		add: self invocationStrategyLayout height: self buttonHeight;
-		yourself
-]
-
-{ #category : #specs }
-MiModelImporterFromPharo class >> importerClassLayout [
-	^ SpPanedLayout newHorizontal
-		add: 'Importer: ';
-		position: 1.5 / 5;
-		add: #importerDroplist;
-		yourself
-]
-
-{ #category : #specs }
-MiModelImporterFromPharo class >> invocationStrategyLayout [
-	^ SpBoxLayout newHorizontal
-		add: 'Invocation candidates computation:';
-		add: #invocationStrategyDroplist;
-		yourself
-]
-
-{ #category : #specs }
-MiModelImporterFromPharo class >> metamodelFactoryLayout [
-	^ SpPanedLayout newHorizontal
-		add: 'Metamodel factory: ';
-		position: 1.5 / 5;
-		add: #factoryDroplist;
-		yourself
-]
-
-{ #category : #specs }
-MiModelImporterFromPharo class >> modelNameLayout [
-	^ SpBoxLayout newHorizontal
-		add: 'Model name: ';
-		add: #modelNameField;
-		yourself
-]
-
-{ #category : #specs }
-MiModelImporterFromPharo class >> packageButtonLayout [
-	^ SpBoxLayout newHorizontal
-		add: SpNullPresenter new;
-		add: #packagesButton width: self buttonWidth * 2;
-		add: SpNullPresenter new;
-		yourself
 ]
 
 { #category : #specs }
@@ -85,18 +32,61 @@ MiModelImporterFromPharo class >> title [
 
 { #category : #updating }
 MiModelImporterFromPharo >> addContext: context [
+
 	entitiesToImport add: context.
-	(MooseImportingContext entityDependencies at: context)
-		do: [ :dependency | 
-			(self contextCheckBoxes
-				detect: [ :checkBox | checkBox label = dependency asString ])
-				state: true ]
+	(MooseImportingContext entityDependencies at: context) do: [ 
+		:dependency | 
+		(self contextCheckBoxes detect: [ :checkBox | 
+			 checkBox label = dependency asString ]) state: true ]
 ]
 
 { #category : #accessing }
 MiModelImporterFromPharo >> contextCheckBoxes [
-	^ contextCheckBoxes presenters
-		reject: [ :pres | pres class == SpNullPresenter ]
+
+	^ contextCheckBoxes
+]
+
+{ #category : #layout }
+MiModelImporterFromPharo >> contextLayout [
+
+	| contextLayout context |
+	contextLayout := SpBoxLayout newHorizontal.
+
+	context := MooseImportingContext entityDependencies keys sort:
+		           #yourself ascending.
+	(context groupsOf: context size // 3 + 1) do: [ :group | 
+		| subLayout |
+		subLayout := SpBoxLayout newVertical.
+		group do: [ :c | 
+			| checkBox |
+			checkBox := SpCheckBoxPresenter new
+				            label: c;
+				            state: true;
+				            whenActivatedDo: [ self addContext: c ];
+				            whenDeactivatedDo: [ self removeContext: c ];
+				            yourself.
+			subLayout add: checkBox.
+			contextCheckBoxes add: checkBox ].
+		contextLayout add: subLayout ].
+	^ contextLayout
+]
+
+{ #category : #layout }
+MiModelImporterFromPharo >> defaultLayout [
+
+	^ SpBoxLayout newVertical
+		  spacing: 8;
+		  add: self modelNameLayout height: self class buttonHeight;
+		  add: self packageButtonLayout height: self class buttonHeight;
+		  add: self metamodelFactoryLayout height: self class buttonHeight;
+		  add: #mergeCheckBox height: self class labelHeight;
+		  add: #subclassesCheckBox height: self class labelHeight;
+		  add: #typeOfAttributesCheckBox height: self class labelHeight;
+		  add: self importerClassLayout height: self class buttonHeight;
+		  add: self contextLayout;
+		  add: self invocationStrategyLayout
+		  height: self class buttonHeight;
+		  yourself
 ]
 
 { #category : #accessing }
@@ -109,12 +99,23 @@ MiModelImporterFromPharo >> importerClass [
 	^ importerDroplist selectedItem
 ]
 
+{ #category : #layout }
+MiModelImporterFromPharo >> importerClassLayout [
+	^ SpPanedLayout newHorizontal
+		add: 'Importer: ';
+		position: 1.5 / 5;
+		add: #importerDroplist;
+		yourself
+]
+
 { #category : #initialization }
 MiModelImporterFromPharo >> initialize [
+
 	packageNames := OrderedCollection new.
 	importingContext := MooseImportingContext new.
 	entitiesToImport := MooseImportingContext entityDependencies keys
-		asOrderedCollection.
+		                    asOrderedCollection.
+	contextCheckBoxes := OrderedCollection new.
 	super initialize
 ]
 
@@ -137,27 +138,6 @@ MiModelImporterFromPharo >> initializeConfigurationCheckBoxes [
 		whenActivatedDo: [ importingContext computeTypeOfAttributes ];
 		whenDeactivatedDo: [ importingContext doNotComputeTypeOfAttributes ];
 		yourself
-]
-
-{ #category : #'initialization - widgets' }
-MiModelImporterFromPharo >> initializeContextCheckBoxes [
-	contextCheckBoxes := SpDynamicPresentersListBuilder new
-		modelObjects:
-			(MooseImportingContext entityDependencies keys
-				sort: #yourself ascending);
-		presenter: SpCheckBoxPresenter
-			configuredAs: [ :checkBox :context | 
-			checkBox
-				label: context;
-				state: true ];
-		"9 is a magic number so we have 3 columns"
-			layoutBuilder: (SpDynamicTopToBottomColumnsLayout columns: 9);
-		build.
-	self contextCheckBoxes
-		do: [ :checkBox | 
-			checkBox
-				whenActivatedDo: [ self addContext: checkBox label asSymbol ];
-				whenDeactivatedDo: [ self removeContext: checkBox label asSymbol ] ]
 ]
 
 { #category : #initialization }
@@ -211,18 +191,53 @@ MiModelImporterFromPharo >> initializePackagesButton [
 
 { #category : #initialization }
 MiModelImporterFromPharo >> initializePresenters [
+
 	super initializePresenters.
+	self layout: self defaultLayout.
 	self initializeModelNameField.
 	self initializePackagesButton.
 	self initializeDroplists.
 	self initializeConfigurationCheckBoxes.
-	self initializeContextCheckBoxes.
 	self initializeInvocationStrategyDroplist
+]
+
+{ #category : #layout }
+MiModelImporterFromPharo >> invocationStrategyLayout [
+	^ SpBoxLayout newHorizontal
+		add: 'Invocation candidates computation:';
+		add: #invocationStrategyDroplist;
+		yourself
+]
+
+{ #category : #layout }
+MiModelImporterFromPharo >> metamodelFactoryLayout [
+	^ SpPanedLayout newHorizontal
+		add: 'Metamodel factory: ';
+		position: 1.5 / 5;
+		add: #factoryDroplist;
+		yourself
 ]
 
 { #category : #accessing }
 MiModelImporterFromPharo >> modelName [
 	^ modelNameField text
+]
+
+{ #category : #layout }
+MiModelImporterFromPharo >> modelNameLayout [
+	^ SpBoxLayout newHorizontal
+		add: 'Model name: ';
+		add: #modelNameField;
+		yourself
+]
+
+{ #category : #layout }
+MiModelImporterFromPharo >> packageButtonLayout [
+	^ SpBoxLayout newHorizontal
+		add: SpNullPresenter new;
+		add: #packagesButton width: self class buttonWidth * 2;
+		add: SpNullPresenter new;
+		yourself
 ]
 
 { #category : #accessing }
@@ -237,13 +252,12 @@ MiModelImporterFromPharo >> packages: anObject [
 
 { #category : #updating }
 MiModelImporterFromPharo >> removeContext: context [
+
 	entitiesToImport remove: context.
-	(MooseImportingContext entityDependencies
-		select: [ :values | values includes: context ])
-		keysDo: [ :dependency | 
-			(self contextCheckBoxes
-				detect: [ :checkBox | checkBox label = dependency asString ])
-				state: false ]
+	(MooseImportingContext entityDependencies select: [ :values | 
+		 values includes: context ]) keysDo: [ :dependency | 
+		(self contextCheckBoxes detect: [ :checkBox | 
+			 checkBox label = dependency asString ]) state: false ]
 ]
 
 { #category : #action }
