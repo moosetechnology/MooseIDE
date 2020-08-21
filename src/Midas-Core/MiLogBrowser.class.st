@@ -24,15 +24,6 @@ Class {
 }
 
 { #category : #'world menu' }
-MiLogBrowser class >> defaultSpec [
-	^ super defaultSpec
-		"add: #toolbar
-			withConstraints: [ :constraints | constraints height: self toolbarHeight ];"
-		add: #logsLists;
-		yourself
-]
-
-{ #category : #'world menu' }
 MiLogBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	<miBrowsers>
@@ -111,28 +102,16 @@ MiLogBrowser >> initializeBuses: someBuses [
 ]
 
 { #category : #initialization }
-MiLogBrowser >> initializeLogsList [
-	logsLists := self newNullPresenter
-]
+MiLogBrowser >> initializeToolbar [
 
-{ #category : #initialization }
-MiLogBrowser >> initializePresenters [
-	super initializePresenters.
-	"self initializeToolBar."
-	self initializeLogsList
-]
-
-{ #category : #initialization }
-MiLogBrowser >> initializeToolBar [
-	toolbar := self newToolBar
-		addItem:
-			(SpToolBarButtonPresenter new
-				label: 'Clear all';
-				icon: (self theme iconNamed: #smallDelete);
-				help: 'Remove all loggers entries';
-				action: [ self cleanAllLoggers ];
-				yourself);
-		yourself
+	toolbar := self newToolbar
+		           addItem: (SpToolbarButtonPresenter new
+				            label: 'Clear all';
+				            icon: (self theme iconNamed: #smallDelete);
+				            help: 'Remove all loggers entries';
+				            action: [ self cleanAllLoggers ];
+				            yourself);
+		           yourself
 ]
 
 { #category : #accessing }
@@ -159,13 +138,15 @@ MiLogBrowser >> update [
 
 { #category : #initialization }
 MiLogBrowser >> updateLogsList [
-	logsLists := SpDynamicPresentersListBuilder new
-		modelObjects: self buses asOrderedCollection;
-		presenter: MiBusLogsList
-			configuredAs: [ :presenter :bus | 
-			presenter
-				owner: self;
-				forBus: bus ];
-		layoutBuilder: (SpDynamicTopToBottomRowsLayout rows: 1);
-		build
+
+	logsLists := SpBoxLayout newVertical.
+
+	self buses do: [ :bus | 
+		logsLists add: (MiBusLogsList new
+				 owner: self;
+				 forBus: bus) ].
+
+	self layout: (self class defaultSpec
+			 add: logsLists;
+			 yourself)
 ]

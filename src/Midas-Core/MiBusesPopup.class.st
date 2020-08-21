@@ -56,15 +56,14 @@ MiBusesPopup >> followNewBus [
 
 { #category : #initialization }
 MiBusesPopup >> initializeBusesList [
+
 	busesList := self newTable.
-	browser isMiBrowser
-		ifTrue: [ busesList
-				addColumn:
-					((SpCheckBoxTableColumn
-						evaluated: [ :bus | browser buses includes: bus ])
-						onActivation: [ :bus | browser followBus: bus ];
-						onDesactivation: [ :bus | browser unfollowBus: bus ];
-						width: 20) ].
+	browser isMiBrowser ifTrue: [ 
+		busesList addColumn: ((SpCheckBoxTableColumn evaluated: [ :bus | 
+					  browser buses includes: bus ])
+				 onActivation: [ :bus | browser followBus: bus ];
+				 onDeactivation: [ :bus | browser unfollowBus: bus ];
+				 width: 20) ].
 	busesList
 		addColumn: (SpStringTableColumn evaluated: #name);
 		items: self application buses

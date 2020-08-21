@@ -52,7 +52,7 @@ MiBusLogsList >> forBus: aBus [
 ]
 
 { #category : #initialization }
-MiBusLogsList >> initializeClearButtin [
+MiBusLogsList >> initializeClearButton [
 	clearButton := self newButton
 		label: 'Clear';
 		iconName: #smallDelete;
@@ -74,9 +74,10 @@ MiBusLogsList >> initializeLogsList [
 
 { #category : #initialization }
 MiBusLogsList >> initializePresenters [
+
 	super initializePresenters.
 	busName := self newLabel.
-	self initializeClearButtin.
+	self initializeClearButton.
 	self initializeLogsList
 ]
 
