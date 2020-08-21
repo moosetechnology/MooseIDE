@@ -1,6 +1,10 @@
 Class {
 	#name : #MiNavigationQueryPresenter,
 	#superclass : #MiQueryConfigurationPresenter,
+	#instVars : [
+		'directionRadioButtons',
+		'associationCheckBoxes'
+	],
 	#category : #'Midas-FamixQueries-QueriesConfiguration'
 }
 
@@ -9,49 +13,84 @@ MiNavigationQueryPresenter class >> title [
 	^ 'Navigation Query'
 ]
 
-{ #category : #'widgets configuration' }
-MiNavigationQueryPresenter >> configureCheckBox: checkBox forNavigationAssociation: associationClass [
-	self setStateOfCheckBox: checkBox association: associationClass.
-	checkBox
-		label: associationClass mooseDescription name asString;
-		whenActivatedDo: [ self query addAssociation: associationClass ];
-		whenDeactivatedDo: [ [ self query removeAssociation: associationClass ]
-				on: FQCannotRemoveLastNavigationAssociation
-				do: [ checkBox state: true
-					"Spec does not allow this to work" ] ].
-	checkBox
-		whenChangedDo: [ self update.
-			self notifyQueryChanged ]
+{ #category : #layout }
+MiNavigationQueryPresenter >> associationCheckBoxesLayout [
+
+	| subLayout |
+	associationCheckBoxes isCollection ifFalse: [ 
+		^ associationCheckBoxes ].
+
+	subLayout := SpBoxLayout newVertical.
+
+	associationCheckBoxes do: [ :checkBox | 
+		subLayout add: checkBox height: self class buttonHeight ].
+
+	^ subLayout
+]
+
+{ #category : #layout }
+MiNavigationQueryPresenter >> buildLayout [
+
+	self layout: (SpBoxLayout newHorizontal
+			 add: self directionRadioButtonsLayout;
+			 add: self associationCheckBoxesLayout;
+			 yourself)
 ]
 
 { #category : #'widgets configuration' }
-MiNavigationQueryPresenter >> configureRadioButton: radioButton forNavigationDirection: direction [
-	radioButton
-		state: self query directionStrategy == direction;
-		label: direction label;
-		whenActivatedDo: [ self query resetAndChangeDirection: direction.
-			self updateAccordingToDirection.
-			self notifyQueryChanged ]
+MiNavigationQueryPresenter >> checkBoxForNavigationAssociation: associationClass [
+
+	| checkBox |
+	checkBox := self newCheckBox.
+	checkBox
+		state: (self query associations includes: associationClass);
+		enabled: self query associations size > 1;
+		label: associationClass mooseDescription name asString;
+		whenActivatedDo: [ self query addAssociation: associationClass ];
+		whenDeactivatedDo: [ 
+			[ self query removeAssociation: associationClass ]
+				on: FQCannotRemoveLastNavigationAssociation
+				do: [ 
+					checkBox state: true
+					"Spec does not allow this to work" ] ];
+		whenChangedDo: [ 
+			self update.
+			self notifyQueryChanged.
+			self query associations size == 1
+				ifTrue: [ associationCheckBoxes select: #state thenDo: #disable ]
+				ifFalse: [ associationCheckBoxes select: #state thenDo: #enable ] ].
+	^ checkBox
+]
+
+{ #category : #layout }
+MiNavigationQueryPresenter >> directionRadioButtonsLayout [
+
+	| subLayout |
+	subLayout := SpBoxLayout newVertical.
+
+	directionRadioButtons do: [ :radioButton | 
+		subLayout add: radioButton height: self class buttonHeight ].
+
+	^ subLayout
 ]
 
 { #category : #initialization }
 MiNavigationQueryPresenter >> initializeAssociationsCheckBoxes [
-	self updateAccordingToDirection
+
+	self setAssociationCheckBoxes
 ]
 
 { #category : #initialization }
 MiNavigationQueryPresenter >> initializeDirectionRadioButtons [
-	firstParameter := SpDynamicPresentersListBuilder new
-		modelObjects: self query class directionStrategies;
-		presenter: SpRadioButtonPresenter
-			configuredAs: [ :radioButton :direction | 
-			self
-				configureRadioButton: radioButton
-				forNavigationDirection: direction ];
-		layoutBuilder: (SpDynamicTopToBottomRowsLayout rows: 1);
-		build.
-	(firstParameter presenters detect: #state)
-		associatedRadioButtons: firstParameter presenters allButFirst
+
+	| selectedButton |
+	directionRadioButtons := self query class directionStrategies 
+		                         collect: [ :direction | 
+		                         self radioButtonForNavigationDirection:
+			                         direction ].
+	selectedButton := directionRadioButtons detect: #state.
+	selectedButton associatedRadioButtons:
+		(directionRadioButtons copyWithout: selectedButton)
 ]
 
 { #category : #initialization }
@@ -61,53 +100,33 @@ MiNavigationQueryPresenter >> initializePresenters [
 ]
 
 { #category : #'widgets configuration' }
-MiNavigationQueryPresenter >> selectCurrentQueryDirection [
-	(firstParameter presenters
-		detect:
-			[ :radioButton | radioButton label = self query directionStrategy label ])
-		state: true
-]
+MiNavigationQueryPresenter >> radioButtonForNavigationDirection: direction [
 
-{ #category : #initialization }
-MiNavigationQueryPresenter >> setAssociationsCheckBoxesConstraints [
-	| checkBoxes |
-	"Dynamic layout involves NullPresenters, they will not answer to #enable, #disable"
-	checkBoxes := secondParameter presenters
-		reject: [ :pres | pres class == SpNullPresenter ].
-
-	"Disable active checkBoxes when the query has only one association, to forbid removing it."
-	checkBoxes
-		do: [ :association | 
-			association
-				whenChangedDo: [ self query associations size == 1
-						ifTrue: [ checkBoxes select: #state thenDo: #disable ]
-						ifFalse: [ checkBoxes select: #state thenDo: #enable ] ] ]
+	^ self newRadioButton
+		  state: self query directionStrategy == direction;
+		  label: direction label;
+		  whenActivatedDo: [ 
+			  self query resetAndChangeDirection: direction.
+			  self updateAccordingToDirection.
+			  self notifyQueryChanged ]
 ]
 
 { #category : #'widgets configuration' }
-MiNavigationQueryPresenter >> setStateOfCheckBox: checkBox association: associationClass [
-	checkBox state: (self query associations includes: associationClass).
-	checkBox enabled: self query associations size > 1
-]
+MiNavigationQueryPresenter >> setAssociationCheckBoxes [
 
-{ #category : #update }
-MiNavigationQueryPresenter >> showAssociationsCheckBoxes [
-	secondParameter := SpDynamicPresentersListBuilder new
-		modelObjects: self query availableAssociations;
-		presenter: SpCheckBoxPresenter
-			configuredAs: [ :checkBox :associationTrait | 
-			self
-				configureCheckBox: checkBox
-				forNavigationAssociation: associationTrait ];
-		layoutBuilder: (SpDynamicLeftToRightRowsLayout rows: 1);
-		build.
-	self setAssociationsCheckBoxesConstraints
+	associationCheckBoxes := self query availableAssociations
+		                         ifEmpty: [ 
+		                         self noParameterMessage: 'association' ]
+		                         ifNotEmpty: [ :associations | 
+			                         associations collect: [ :associationTrait | 
+				                         self checkBoxForNavigationAssociation:
+					                         associationTrait ] ]
 ]
 
 { #category : #update }
 MiNavigationQueryPresenter >> updateAccordingToDirection [
-	self query availableAssociations
-		ifEmpty: [ secondParameter := self noParameterMessage: 'association' ]
-		ifNotEmpty: [ self showAssociationsCheckBoxes ].
+
+	self setAssociationCheckBoxes.
+	self buildLayout.
 	self update
 ]

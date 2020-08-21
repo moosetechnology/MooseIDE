@@ -74,18 +74,15 @@ MiQueriesBrowser class >> newModel [
 
 { #category : #'instance creation' }
 MiQueriesBrowser class >> open [
+
 	<script>
-	self
-		flag:
-			#FQImprove
-				, 'This should be an example AND it depends on tests package'.
-	^ (self
-		on:
-		(FQRootQuery new
-		result: FQTestsHelper current classesAndMethods;
-		yourself))
-		openWithSpec;
-		yourself
+	self flag: #FQImprove
+		, 'This should be an example AND it depends on tests package'.
+	^ (self on: (FQRootQuery new
+				    result: FQTestsHelper current classesAndMethods;
+				    yourself))
+		  openWithSpec;
+		  yourself
 ]
 
 { #category : #'instance creation' }

@@ -2,36 +2,29 @@ Class {
 	#name : #MiPropertyQueryPresenter,
 	#superclass : #MiQueryConfigurationPresenter,
 	#instVars : [
-		'properties',
-		'comparators',
-		'valueInput'
+		'propertyDropList',
+		'valueInputField',
+		'comparatorDropList'
 	],
 	#category : #'Midas-FamixQueries-QueriesConfiguration'
 }
 
-{ #category : #specs }
-MiPropertyQueryPresenter class >> addFirstParameterToLayout: defaultLayout [
-	defaultLayout add: #firstParameter width: 0
+{ #category : #layout }
+MiPropertyQueryPresenter >> buildLayout [
+
+	self layout: self class layout
 ]
 
 { #category : #initialization }
 MiPropertyQueryPresenter >> initializePresenters [
-	firstParameter := self newNullPresenter hide.
-	self initializeSecondParameter
+
+	propertyDropList := query availableProperties
+		                    ifEmpty: [ self noParameterMessage: 'property' ]
+		                    ifNotEmpty: [ self newPropertyDropList ]
 ]
 
 { #category : #initialization }
-MiPropertyQueryPresenter >> initializeSecondParameter [
-	secondParameter := query availableProperties
-		ifEmpty: [ self noParameterMessage: 'property' ]
-		ifNotEmpty: [ (self instantiate: SpDynamicPresenter)
-				layout: self class layout;
-				presenterAt: #properties put: self propertiesDropList;
-				yourself ]
-]
-
-{ #category : #initialization }
-MiPropertyQueryPresenter >> propertiesDropList [
+MiPropertyQueryPresenter >> newPropertyDropList [
 	^ self newDropList
 		items: self query availableProperties;
 		display: [ :prop | prop asString ];

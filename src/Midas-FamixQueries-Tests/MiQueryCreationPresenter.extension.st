@@ -31,6 +31,6 @@ MiQueryCreationPresenter >> resultList [
 ]
 
 { #category : #'*Midas-FamixQueries-Tests' }
-MiQueryCreationPresenter >> toolBar [
-	^ toolBar
+MiQueryCreationPresenter >> toolbar [
+	^ toolbar
 ]

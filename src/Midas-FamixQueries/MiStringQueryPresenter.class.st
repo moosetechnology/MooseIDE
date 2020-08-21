@@ -6,26 +6,40 @@ Class {
 
 { #category : #specs }
 MiStringQueryPresenter class >> layout [
+
 	| padding |
 	padding := 8.
 	^ SpBoxLayout newVertical
-		add: #properties
-			expand: true
-			fill: true
-			padding: padding;
-		add: #comparators
-			expand: true
-			fill: true
-			padding: padding;
-		add: #valueInput
-			expand: true
-			fill: true
-			padding: padding;
-		yourself
+		  add: #propertyDropList
+		  expand: true
+		  fill: true
+		  padding: padding;
+		  add: #comparatorDropList
+		  expand: true
+		  fill: true
+		  padding: padding;
+		  add: #valueInputField
+		  expand: true
+		  fill: true
+		  padding: padding;
+		  yourself
 ]
 
 { #category : #initialization }
-MiStringQueryPresenter >> comparatorsDropList [
+MiStringQueryPresenter >> initializePresenters [
+
+	super initializePresenters.
+	query availableProperties
+		ifNotEmpty: [ 
+			comparatorDropList := self newComparatorDropList.
+			valueInputField := self newValueInputField ]
+		ifEmpty: [ 
+			comparatorDropList := self newNullPresenter.
+			valueInputField := self newNullPresenter ]
+]
+
+{ #category : #initialization }
+MiStringQueryPresenter >> newComparatorDropList [
 	^ self newDropList
 		items: self query class comparators;
 		display: [ :prop | prop asString ];
@@ -36,16 +50,7 @@ MiStringQueryPresenter >> comparatorsDropList [
 ]
 
 { #category : #initialization }
-MiStringQueryPresenter >> initializeSecondParameter [
-	super initializeSecondParameter.
-	query availableProperties
-		ifNotEmpty: [ secondParameter
-				presenterAt: #comparators put: self comparatorsDropList;
-				presenterAt: #valueInput put: self valueInputField ]
-]
-
-{ #category : #initialization }
-MiStringQueryPresenter >> valueInputField [
+MiStringQueryPresenter >> newValueInputField [
 	^ self newTextInput
 		placeholder: 'Your pattern';
 		autoAccept: true;

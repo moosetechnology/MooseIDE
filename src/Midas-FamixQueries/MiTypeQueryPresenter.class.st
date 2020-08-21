@@ -1,48 +1,54 @@
 Class {
 	#name : #MiTypeQueryPresenter,
 	#superclass : #MiQueryConfigurationPresenter,
+	#instVars : [
+		'typeCheckBoxes'
+	],
 	#category : #'Midas-FamixQueries-QueriesConfiguration'
 }
-
-{ #category : #specs }
-MiTypeQueryPresenter class >> addFirstParameterToLayout: defaultLayout [
-	defaultLayout add: #firstParameter width: 0
-]
-
-{ #category : #specs }
-MiTypeQueryPresenter class >> maximumCheckBoxesPerColumn [
-	^ 6
-]
 
 { #category : #specs }
 MiTypeQueryPresenter class >> title [
 	^ 'Type Query'
 ]
 
+{ #category : #layout }
+MiTypeQueryPresenter >> buildLayout [
+
+	self layout:
+		(SpBoxLayout newHorizontal add: self typeCheckBoxesLayout)
+]
+
 { #category : #'widgets configuration' }
-MiTypeQueryPresenter >> configureTypeCheckBox: checkBox forType: type [
-	checkBox
-		state: (self query types includes: type);
-		enabled: self query types size > 1;
-		label: (self labelFor: type);
-		whenActivatedDo: [ self query addType: type ];
-		whenDeactivatedDo: [ [ self query removeType: type ]
-				on: FQCannotRemoveLastType
-				do: [ checkBox state: true.
-					self flag: #FQSpecPb	"Spec does not allow this to work" ] ];
-		whenChangedDo: [ self update.
-			self notifyQueryChanged ]
+MiTypeQueryPresenter >> checkBoxesForTypes: types [
+
+	typeCheckBoxes := types collect: [ :type | 
+		                  self typeCheckBoxForType: type ].
+
+	"Disable active checkBoxes when the query has only one type, to forbid removing it."
+	typeCheckBoxes do: [ :type | 
+		type whenChangedDo: [ 
+			self query types size == 1
+				ifTrue: [ typeCheckBoxes select: #state thenDo: #disable ]
+				ifFalse: [ typeCheckBoxes do: #enable ] ] ].
+
+	^ typeCheckBoxes
 ]
 
 { #category : #initialization }
 MiTypeQueryPresenter >> initializePresenters [
-	firstParameter := self newNullPresenter hide.
+
+	super initializePresenters.
 	self initializeTypeCheckBoxes
 ]
 
 { #category : #initialization }
 MiTypeQueryPresenter >> initializeTypeCheckBoxes [
-	self query availableTypes ifEmpty: [ secondParameter := self noParameterMessage: 'type' ] ifNotEmpty: [ :types | self showTypesCheckBoxesWith: types ]
+
+	typeCheckBoxes := self query availableTypes
+		                  ifEmpty: [ self noParameterMessage: 'type' ]
+		                  ifNotEmpty: [ :types | 
+		                  self checkBoxesForTypes: types ]
 ]
 
 { #category : #'widgets configuration' }
@@ -51,35 +57,43 @@ MiTypeQueryPresenter >> labelFor: type [
 ]
 
 { #category : #'widgets configuration' }
-MiTypeQueryPresenter >> setTypeCheckBoxesConstraints [
-	| checkBoxes |
-	"Dynamic layout involves NullPresenters, they will not answer to #enable, #disable"
-	checkBoxes := secondParameter presenters
-		reject: [ :pres | pres class == SpNullPresenter ].
+MiTypeQueryPresenter >> typeCheckBoxForType: type [
 
-	"Disable active checkBoxes when the query has only one type, to forbid removing it."
-	checkBoxes
-		do: [ :type | 
-			type
-				whenChangedDo: [ self query types size == 1
-						ifTrue: [ checkBoxes select: #state thenDo: #disable ]
-						ifFalse: [ checkBoxes do: #enable ] ] ]
+	| checkBox |
+	checkBox := self newCheckBox.
+	checkBox
+		state: (self query types includes: type);
+		enabled: self query types size > 1;
+		label: (self labelFor: type);
+		whenActivatedDo: [ self query addType: type ];
+		whenDeactivatedDo: [ 
+			[ self query removeType: type ]
+				on: FQCannotRemoveLastType
+				do: [ 
+					checkBox state: true.
+					self flag: #FQSpecPb "Spec does not allow this to work" ] ];
+		whenChangedDo: [ 
+			self update.
+			self notifyQueryChanged ].
+	^ checkBox
 ]
 
-{ #category : #'widgets configuration' }
-MiTypeQueryPresenter >> showTypesCheckBoxesWith: types [
-	secondParameter := SpDynamicPresentersListBuilder new
-		modelObjects: types;
-		presenter: SpCheckBoxPresenter configuredAs: [ :presenter :type | self configureTypeCheckBox: presenter forType: type ];
-		layoutBuilder: self typeCheckBoxesLayout;
-		build.
-	^ self setTypeCheckBoxesConstraints
-]
-
-{ #category : #'widgets configuration' }
+{ #category : #layout }
 MiTypeQueryPresenter >> typeCheckBoxesLayout [
-	^ SpDynamicTopToBottomColumnsLayout
-		columns: (self query types size min: self class maximumCheckBoxesPerColumn)
+
+	| checkBoxesLayout |
+	typeCheckBoxes isCollection ifFalse: [ ^ typeCheckBoxes ].
+
+	checkBoxesLayout := SpBoxLayout newHorizontal.
+
+	(typeCheckBoxes groupsOf: (typeCheckBoxes size // 3 max: 1)) do: [ 
+		:group | 
+		| subLayout |
+		subLayout := SpBoxLayout newVertical.
+		group do: [ :checkBox | subLayout add: checkBox ].
+		checkBoxesLayout add: subLayout ].
+
+	^ checkBoxesLayout
 ]
 
 { #category : #update }
@@ -90,12 +104,11 @@ MiTypeQueryPresenter >> updateForQuery: aQuery [
 
 { #category : #update }
 MiTypeQueryPresenter >> updateTypeCheckBoxesForTypes: types [
+
 	| checkBoxesToTick |
-	checkBoxesToTick := firstParameter presenters
-		select: [ :checkBox | 
-			(types collect: [ :type | self labelFor: type ])
-				includes: checkBox label ].
+	checkBoxesToTick := typeCheckBoxes select: [ :checkBox | 
+		                    (types collect: [ :type | self labelFor: type ]) 
+			                    includes: checkBox label ].
 	checkBoxesToTick do: [ :cb | cb state: true ].
-	firstParameter presenters \ checkBoxesToTick
-		do: [ :cb | cb state: false ]
+	typeCheckBoxes \ checkBoxesToTick do: [ :cb | cb state: false ]
 ]

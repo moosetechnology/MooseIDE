@@ -29,11 +29,6 @@ MiQueryConfigurationPresenterTest >> classToTest [
 	^ self subclassResponsibility
 ]
 
-{ #category : #accessing }
-MiQueryConfigurationPresenterTest >> currentQuery [
-	^ presenter query
-]
-
 { #category : #running }
 MiQueryConfigurationPresenterTest >> queryClass [
 	^ self subclassResponsibility
@@ -41,33 +36,29 @@ MiQueryConfigurationPresenterTest >> queryClass [
 
 { #category : #running }
 MiQueryConfigurationPresenterTest >> resetPresenterWithEntities: aMooseGroup [
+
 	| superPresenter |
-	superPresenter := MiQueryCreationPresenter
-		on:
-			(MiQueriesBrowser
-				on:
-					(FQRootQuery new
-						result: aMooseGroup;
-						yourself)).
+	superPresenter := MiQueryCreationPresenter on:
+		                  (MiQueriesBrowser on: (FQRootQuery new
+				                    result: aMooseGroup;
+				                    yourself)).
+
 	superPresenter queryTypesDropList selectItem: self queryClass.
-	presenter := superPresenter presenters
-		detect: [ :pres | pres class == self classToTest ]
+	presenter := superPresenter presenters detect: [ :pres | 
+		             pres class == self classToTest ]
 ]
 
 { #category : #running }
 MiQueryConfigurationPresenterTest >> setUp [
+
 	super setUp.
 	helper := FQTestsHelper current.
 	self resetPresenterWithEntities: helper classesAndMethods
 ]
 
 { #category : #tests }
-MiQueryConfigurationPresenterTest >> testFirstParameter [
-	^ self subclassResponsibility
-]
-
-{ #category : #tests }
 MiQueryConfigurationPresenterTest >> testImpossibleQueryInitialization [
+
 	self resetPresenterWithEntities: helper noEntities.
 	self assert: presenter query class identicalTo: self queryClass.
 	self deny: presenter query isValid
@@ -80,12 +71,20 @@ MiQueryConfigurationPresenterTest >> testNormalQueryInitialization [
 ]
 
 { #category : #tests }
-MiQueryConfigurationPresenterTest >> testQueryValidity [
-	^ self subclassResponsibility
+MiQueryConfigurationPresenterTest >> testPresenters [
+
+	self subclassResponsibility
 ]
 
 { #category : #tests }
-MiQueryConfigurationPresenterTest >> testSecondParameter [
+MiQueryConfigurationPresenterTest >> testPresentersOnImpossibleQuery [
+
+	self subclassResponsibility
+]
+
+{ #category : #tests }
+MiQueryConfigurationPresenterTest >> testQueryValidity [
+
 	^ self subclassResponsibility
 ]
 

@@ -51,19 +51,20 @@ MiQueriesCombinationPresenterTest >> tearDown [
 
 { #category : #tests }
 MiQueriesCombinationPresenterTest >> testBasicInitialization [
+
 	self
 		assertCollection: presenter combinationsDroplist listItems
-		hasSameElements:
-			{FQUnionQuery.
-			FQIntersectionQuery.
-			FQSubstractionQuery}.
+		hasSameElements: { 
+				FQUnionQuery.
+				FQIntersectionQuery.
+				FQSubstractionQuery }.
 	self
 		assertCollection: presenter resultList items
-		hasSameElements: #().
-	self assert: presenter toolBar class identicalTo: SpToolBarPresenter.
+		hasSameElements: #(  ).
+	self assert: presenter toolbar class identicalTo: SpToolbarPresenter.
 	self
-		assert: presenter toolBar presenters first class
-		identicalTo: SpToolBarButtonPresenter
+		assert: presenter toolbar presenters first class
+		identicalTo: SpToolbarButtonPresenter
 ]
 
 { #category : #tests }
@@ -144,7 +145,7 @@ MiQueriesCombinationPresenterTest >> testToolBarAction [
 	| initialQueriesSize |
 	self openInstance.
 	initialQueriesSize := presenter browser queries size.
-	presenter toolBar presenters first click.
+	presenter toolbar presenters first click.
 	self
 		assert: presenter browser queries size
 		equals: initialQueriesSize + 1.

@@ -6,40 +6,39 @@ Class {
 
 { #category : #running }
 MiNavigationQueriesPresenterTest >> assertCheckBoxesMatchAvailableAssociations [
+
 	| availableAssociations |
 	availableAssociations := presenter query availableAssociations.
-	self assert: self checkBoxes size equals: availableAssociations size.
 	self
-		assert: (self checkBoxes select: #state) size
+		assert: presenter associationCheckBoxes size
 		equals: availableAssociations size.
 	self
-		assertCollection:
-			(availableAssociations
-				collect: [ :assoc | assoc mooseDescription name asString ])
-		hasSameElements: (self checkBoxes select: #state thenCollect: #label)
+		assert: (presenter associationCheckBoxes select: #state) size
+		equals: availableAssociations size.
+	self
+		assertCollection: (availableAssociations collect: [ :assoc | 
+				 assoc mooseDescription name asString ])
+		hasSameElements:
+		(presenter associationCheckBoxes select: #state thenCollect: #label)
 ]
 
 { #category : #running }
 MiNavigationQueriesPresenterTest >> assertCheckBoxesMatchQuery [
-	self
-		assertCollection:
-			(presenter query associations
-				collect: [ :type | type mooseDescription name asString ])
-		hasSameElements: (self checkBoxes select: #state thenCollect: #label).
-		
-	(self radioButtons detect: [ :rb | rb state not ]) click.
-	
-	self
-		assertCollection:
-			(presenter query associations
-				collect: [ :type | type mooseDescription name asString ])
-		hasSameElements: (self checkBoxes select: #state thenCollect: #label)
-]
 
-{ #category : #accessing }
-MiNavigationQueriesPresenterTest >> checkBoxes [
-	^ presenter secondParameter presenters
-		reject: [ :pres | pres class = SpNullPresenter ]
+	self
+		assertCollection: (presenter query associations collect: [ :type | 
+				 type mooseDescription name asString ])
+		hasSameElements:
+		(presenter associationCheckBoxes select: #state thenCollect: #label).
+
+	(presenter directionRadioButtons detect: [ :rb | rb state not ])
+		click.
+
+	self
+		assertCollection: (presenter query associations collect: [ :type | 
+				 type mooseDescription name asString ])
+		hasSameElements:
+		(presenter associationCheckBoxes select: #state thenCollect: #label)
 ]
 
 { #category : #running }
@@ -52,111 +51,115 @@ MiNavigationQueriesPresenterTest >> queryClass [
 	^ FQNavigationQuery
 ]
 
-{ #category : #accessing }
-MiNavigationQueriesPresenterTest >> radioButtons [
-	^ presenter firstParameter presenters
-		reject: [ :pres | pres class = SpNullPresenter ]
-]
-
 { #category : #tests }
 MiNavigationQueriesPresenterTest >> testCheckBoxesDisabledWhenOnlyOneChecked [
+
 	self resetPresenterWithEntities: helper methods.
-	(self radioButtons
-		detect: [ :radioButton | radioButton label = 'Local Incoming' ])
-		click.
+	(presenter directionRadioButtons detect: [ :radioButton | 
+		 radioButton label = 'Local Incoming' ]) click.
 
 	"Only 1 association in the query, cannot be removed, so all checkBoxes are disabled"
-	self checkBoxes do: [ :cb | self deny: cb isEnabled ].
-	self assert: (self checkBoxes select: #state) size equals: 1
+	presenter associationCheckBoxes do: [ :cb | self deny: cb isEnabled ].
+	self
+		assert: (presenter associationCheckBoxes select: #state) size
+		equals: 1
 ]
 
 { #category : #tests }
 MiNavigationQueriesPresenterTest >> testCheckBoxesMatchAssociations [
+
 	self assertCheckBoxesMatchAvailableAssociations.
 	self assertCheckBoxesMatchQuery.
-	(self radioButtons detect: [ :rb | rb state not ]) click.
+	(presenter directionRadioButtons detect: [ :rb | rb state not ])
+		click.
 	self assertCheckBoxesMatchAvailableAssociations.
 	self assertCheckBoxesMatchQuery
 ]
 
 { #category : #tests }
-MiNavigationQueriesPresenterTest >> testFirstParameter [
-	self assert:
-		(presenter firstParameter presenters
-			allSatisfy: [ :pres | pres class == SpRadioButtonPresenter ]).
+MiNavigationQueriesPresenterTest >> testPresenters [
+
+	self assert: (presenter directionRadioButtons allSatisfy: [ :pres | 
+			 pres class == SpRadioButtonPresenter ]).
+
+	self assert: (presenter associationCheckBoxes allSatisfy: [ :pres | 
+			 pres class == SpCheckBoxPresenter ])
+]
+
+{ #category : #tests }
+MiNavigationQueriesPresenterTest >> testPresentersOnImpossibleQuery [
 
 	self resetPresenterWithEntities: helper noEntities.
-	self assert:
-		(presenter firstParameter presenters
-			allSatisfy: [ :pres | pres class == SpRadioButtonPresenter ])
+
+	self assert: (presenter directionRadioButtons allSatisfy: [ :pres | 
+			 pres class == SpRadioButtonPresenter ]).
+
+	self
+		assert: presenter associationCheckBoxes class
+		identicalTo: MiNoPossibleQueryPresenter
 ]
 
 { #category : #tests }
 MiNavigationQueriesPresenterTest >> testQueryValidity [
-	self assert: presenter query isValid.
-	
-	(self radioButtons detect: [ :rb | rb state not ]) click.
-	self assert: presenter query isValid.
-	
-	self checkBoxes first click.
+
 	self assert: presenter query isValid.
 
-	self checkBoxes first click.
+	(presenter directionRadioButtons detect: [ :rb | rb state not ])
+		click.
 	self assert: presenter query isValid.
-	
-	self resetPresenterWithEntities: helper entitiesWithNoIncomingAssociations.
+
+	presenter associationCheckBoxes first click.
+	self assert: presenter query isValid.
+
+	presenter associationCheckBoxes first click.
+	self assert: presenter query isValid.
+
+	self resetPresenterWithEntities:
+		helper entitiesWithNoIncomingAssociations.
 	self deny: presenter query isValid.
-	
+
 	self resetPresenterWithEntities: helper noEntities.
-	self deny: presenter query isValid.
+	self deny: presenter query isValid
 ]
 
 { #category : #tests }
 MiNavigationQueriesPresenterTest >> testRadioButtonsMatchAvailableDirections [
+
 	| directions |
 	directions := presenter query class directionStrategies.
-	
-	self assert: self radioButtons size equals: directions size.
-	
+
 	self
-		assertCollection: (self radioButtons collect: #label)
+		assert: presenter directionRadioButtons size
+		equals: directions size.
+
+	self
+		assertCollection: (presenter directionRadioButtons collect: #label)
 		hasSameElements: (directions collect: #label)
 ]
 
 { #category : #tests }
 MiNavigationQueriesPresenterTest >> testRadioButtonsMatchQuery [
-	self
-		assert: (self radioButtons detect: #state) label
-		equals: self currentQuery directionStrategy label.
-	
-	(self radioButtons detect: [ :rb | rb state not ]) click.
-	self
-		assert: (self radioButtons detect: #state) label
-		equals: self currentQuery directionStrategy label
-]
 
-{ #category : #tests }
-MiNavigationQueriesPresenterTest >> testSecondParameter [
-	self assert:
-		(presenter secondParameter presenters
-			allSatisfy: [ :pres | 
-				pres class == SpCheckBoxPresenter
-				"Could be some SpNullPresenter depending on the dynamic layout 
-				but it is not the case here" ]).
-
-	self resetPresenterWithEntities: helper noEntities.
 	self
-		assert: presenter secondParameter class
-		identicalTo: MiNoPossibleQueryPresenter
+		assert: (presenter directionRadioButtons detect: #state) label
+		equals: presenter query directionStrategy label.
+
+	(presenter directionRadioButtons detect: [ :rb | rb state not ])
+		click.
+	self
+		assert: (presenter directionRadioButtons detect: #state) label
+		equals: presenter query directionStrategy label
 ]
 
 { #category : #tests }
 MiNavigationQueriesPresenterTest >> testUpdateCreationBrowser [
-	self assertCreationPresenterWasUpdated.
-	
-	(self radioButtons detect: [ :rb | rb state not ]) click.
+
 	self assertCreationPresenterWasUpdated.
 
-	self checkBoxes first click.
+	(presenter directionRadioButtons detect: [ :rb | rb state not ])
+		click.
+	self assertCreationPresenterWasUpdated.
+
+	presenter associationCheckBoxes first click.
 	self assertCreationPresenterWasUpdated
 ]

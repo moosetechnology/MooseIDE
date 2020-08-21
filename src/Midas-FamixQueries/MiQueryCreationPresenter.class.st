@@ -6,10 +6,10 @@ Class {
 		'#queryCode',
 		'#queryTypesDropList',
 		'#resultList',
-		'#toolBar',
 		'#browser',
 		'#query => SpObservableSlot',
-		'#breadcrumbs'
+		'#breadcrumbs',
+		'#toolbar'
 	],
 	#category : #'Midas-FamixQueries-Presenters'
 }
@@ -23,7 +23,7 @@ MiQueryCreationPresenter class >> buildCommandsGroupWith: presenter forRoot: aCm
 { #category : #specs }
 MiQueryCreationPresenter class >> defaultSpec [
 	^ SpBoxLayout newVertical
-		add: #toolBar height: self toolbarHeight;
+		add: #toolbar height: self toolbarHeight;
 		add: #breadcrumbs height: self toolbarHeight;
 		add:
 			(SpPanedLayout newHorizontal
@@ -131,7 +131,7 @@ MiQueryCreationPresenter >> initializeBreadcrumbs [
 
 { #category : #initialization }
 MiQueryCreationPresenter >> initializePresenters [
-	self initializeToolBar.
+	self initializeToolbar.
 	self initializeBreadcrumbs.
 	self initializeQueryTypesDropList.
 	self initializeQueryCode.
@@ -163,8 +163,9 @@ MiQueryCreationPresenter >> initializeResultList [
 ]
 
 { #category : #initialization }
-MiQueryCreationPresenter >> initializeToolBar [
-	toolBar := self newToolBar	"beText"
+MiQueryCreationPresenter >> initializeToolbar [
+
+	toolbar := self newToolbar "beText"
 ]
 
 { #category : #initialization }
@@ -251,7 +252,7 @@ MiQueryCreationPresenter >> updateToolBar [
 	| commandGroup |
 	self flag: #FQSpecPb , 'Disabling a toolbar button does nothing.'.
 	commandGroup := self rootCommandsGroup.
-	toolBar fillWith: commandGroup.
+	toolbar fillWith: commandGroup.
 	commandGroup allCommands do: #updateEnableStatus.
-	toolBar update
+	toolbar update
 ]

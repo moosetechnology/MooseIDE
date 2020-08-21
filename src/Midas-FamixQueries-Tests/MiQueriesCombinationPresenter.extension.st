@@ -26,6 +26,6 @@ MiQueriesCombinationPresenter >> resultList [
 ]
 
 { #category : #'*Midas-FamixQueries-Tests' }
-MiQueriesCombinationPresenter >> toolBar [
-	^ toolBar
+MiQueriesCombinationPresenter >> toolbar [
+	^ toolbar
 ]

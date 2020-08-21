@@ -11,57 +11,81 @@ MiComparativeQueryPresenterTest class >> isAbstract [
 
 { #category : #tests }
 MiComparativeQueryPresenterTest >> assertComparatorsDropList [
+
 	self
-		assert: presenter comparators class
+		assert: presenter comparatorDropList class
 		identicalTo: SpDropListPresenter.
 	self
-		assertCollection: presenter comparators listItems
+		assertCollection: presenter comparatorDropList listItems
 		hasSameElements: presenter query class comparators
 ]
 
 { #category : #tests }
-MiComparativeQueryPresenterTest >> assertValueInput [
+MiComparativeQueryPresenterTest >> assertValueInputField [
+
 	self
-		assert: presenter valueInput class
+		assert: presenter valueInputField class
 		identicalTo: self valueInputClass
 ]
 
 { #category : #tests }
 MiComparativeQueryPresenterTest >> testMatchesQuery [
+
 	super testMatchesQuery.
-	presenter comparators selectIndex: 2.
+	presenter comparatorDropList selectIndex: 2.
 	self
 		assert: presenter query comparator
-		equals: presenter comparators selectedItem.
-	presenter valueInput text: self valueInput.
+		equals: presenter comparatorDropList selectedItem.
+	presenter valueInputField text: self valueInput.
 	self
 		assert: presenter query valueToCompare asString
-		equals: presenter valueInput text
+		equals: presenter valueInputField text
+]
+
+{ #category : #tests }
+MiComparativeQueryPresenterTest >> testPresenters [
+
+	super testPresenters.
+	self
+		assertComparatorsDropList;
+		assertValueInputField
+]
+
+{ #category : #tests }
+MiComparativeQueryPresenterTest >> testPresentersOnImpossibleQuery [
+
+	super testPresentersOnImpossibleQuery.
+
+	self
+		assert: presenter comparatorDropList class
+		identicalTo: SpNullPresenter.
+
+	self
+		assert: presenter valueInputField class
+		identicalTo: SpNullPresenter
 ]
 
 { #category : #tests }
 MiComparativeQueryPresenterTest >> testQueryValidity [
+
 	super testQueryValidity.
+
 	self resetPresenterWithEntities: helper classesAndMethods.
-	presenter comparators selectIndex: 2.
+
+	presenter comparatorDropList selectIndex: 2.
 	self assert: presenter query isValid.
-	presenter valueInput text: self valueInput.
+
+	presenter valueInputField text: self valueInput.
 	self assert: presenter query isValid
 ]
 
 { #category : #tests }
-MiComparativeQueryPresenterTest >> testSecondParameter [
-	super testSecondParameter.
-	self assertComparatorsDropList.
-	self assertValueInput
-]
-
-{ #category : #tests }
 MiComparativeQueryPresenterTest >> testUpdateCreationBrowser [
+
 	super testUpdateCreationBrowser.
-	presenter comparators selectIndex: 2.
+	presenter comparatorDropList selectIndex: 2.
 	self assertCreationPresenterWasUpdated.
-	presenter valueInput text: self valueInput.
+	presenter valueInputField text: self valueInput.
 	self assertCreationPresenterWasUpdated
 ]
 

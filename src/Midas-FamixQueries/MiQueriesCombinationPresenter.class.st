@@ -8,13 +8,13 @@ Class {
 		'#parentQueries',
 		'#newQuery',
 		'#browser',
-		'#toolBar',
 		'#queryWasValidated',
 		'#query => SpObservableSlot',
 		'#firstParent',
 		'#secondParent',
 		'#reverseButton',
-		'#queryOperator'
+		'#queryOperator',
+		'#toolbar'
 	],
 	#category : #'Midas-FamixQueries-Presenters'
 }
@@ -30,7 +30,7 @@ MiQueriesCombinationPresenter class >> buildCommandsGroupWith: presenter forRoot
 { #category : #specs }
 MiQueriesCombinationPresenter class >> defaultSpec [
 	^ SpBoxLayout newVertical
-		add: #toolBar height: self toolbarHeight;
+		add: #toolbar height: self toolbarHeight;
 		add:
 			(SpPanedLayout newHorizontal
 				add:
@@ -46,7 +46,7 @@ MiQueriesCombinationPresenter class >> defaultSpec [
 { #category : #specs }
 MiQueriesCombinationPresenter class >> nonCommuntativeQueryLayout [
 	^ SpBoxLayout newVertical
-		add: #toolBar height: self toolbarHeight;
+		add: #toolbar height: self toolbarHeight;
 		add:
 			(SpPanedLayout newHorizontal
 				add:
@@ -126,7 +126,7 @@ MiQueriesCombinationPresenter >> initializeNonCommutativeConfiguration [
 
 { #category : #initialization }
 MiQueriesCombinationPresenter >> initializePresenters [
-	self initializeToolBar.
+	self initializeToolbar.
 	self initializeDropList.
 	self basicInitializeQueriesTree.
 	self initializeResultList.
@@ -139,8 +139,8 @@ MiQueriesCombinationPresenter >> initializeResultList [
 ]
 
 { #category : #initialization }
-MiQueriesCombinationPresenter >> initializeToolBar [
-	toolBar := self newToolBar fillWith: self rootCommandsGroup
+MiQueriesCombinationPresenter >> initializeToolbar [
+	toolbar := self newToolbar fillWith: self rootCommandsGroup
 ]
 
 { #category : #initialization }

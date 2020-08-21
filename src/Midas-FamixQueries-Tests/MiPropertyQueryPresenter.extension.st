@@ -1,16 +1,16 @@
 Extension { #name : #MiPropertyQueryPresenter }
 
 { #category : #'*Midas-FamixQueries-Tests' }
-MiPropertyQueryPresenter >> comparators [
-	^ secondParameter presenterAt: #comparators
+MiPropertyQueryPresenter >> comparatorDropList [
+	^ comparatorDropList
 ]
 
 { #category : #'*Midas-FamixQueries-Tests' }
-MiPropertyQueryPresenter >> properties [
-	^ secondParameter presenterAt: #properties
+MiPropertyQueryPresenter >> propertyDropList [
+	^ propertyDropList
 ]
 
 { #category : #'*Midas-FamixQueries-Tests' }
-MiPropertyQueryPresenter >> valueInput [
-	^ secondParameter presenterAt: #valueInput
+MiPropertyQueryPresenter >> valueInputField [
+	^ valueInputField
 ]

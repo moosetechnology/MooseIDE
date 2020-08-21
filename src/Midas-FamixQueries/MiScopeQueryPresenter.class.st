@@ -1,62 +1,74 @@
 Class {
 	#name : #MiScopeQueryPresenter,
 	#superclass : #MiQueryConfigurationPresenter,
+	#instVars : [
+		'directionRadioButtons',
+		'scopesDropList'
+	],
 	#category : #'Midas-FamixQueries-QueriesConfiguration'
 }
-
-{ #category : #specs }
-MiScopeQueryPresenter class >> addSecondParameterToLayout: defaultLayout [
-	defaultLayout
-		add:
-			(SpBoxLayout newVertical
-				add: #secondParameter
-					expand: true
-					fill: true
-					padding: 50;
-				yourself)
-]
 
 { #category : #specs }
 MiScopeQueryPresenter class >> title [
 	^ 'Scope Query'
 ]
 
-{ #category : #'widgets configuration' }
-MiScopeQueryPresenter >> configureRadioButton: radioButton forScopeDirection: direction [
-	radioButton
-		label: direction label;
-		whenActivatedDo: [ self query resetAndChangeDirection: direction.
-			self updateAccordingToDirection.
-			self notifyQueryChanged ]
+{ #category : #layout }
+MiScopeQueryPresenter >> buildLayout [
+
+	self layout: (SpBoxLayout newHorizontal
+			 add: self directionRadioButtonsLayout;
+			 add: self scopesDropListLayout;
+			 yourself)
+]
+
+{ #category : #layout }
+MiScopeQueryPresenter >> directionRadioButtonsLayout [
+
+	| subLayout |
+	subLayout := SpBoxLayout newVertical.
+
+	directionRadioButtons do: [ :radioButton | 
+		subLayout add: radioButton ].
+
+	^ subLayout
 ]
 
 { #category : #initialization }
 MiScopeQueryPresenter >> initializePresenters [
-	self intializeDirectionRadioButtons.
-	self initializeScopesDropList
-]
 
-{ #category : #initialization }
-MiScopeQueryPresenter >> initializeScopesDropList [
-	self updateAccordingToDirection
+	self intializeDirectionRadioButtons.
+	self setScopesDropList
 ]
 
 { #category : #initialization }
 MiScopeQueryPresenter >> intializeDirectionRadioButtons [
-	firstParameter := SpDynamicPresentersListBuilder new
-		modelObjects: self query directionStrategies;
-		presenter: SpRadioButtonPresenter
-			configuredAs:
-				[ :radioButton :direction | self configureRadioButton: radioButton forScopeDirection: direction ];
-		layoutBuilder: (SpDynamicTopToBottomRowsLayout rows: 1);
-		build.
-	firstParameter presenters first
-		associatedRadioButtons: firstParameter presenters allButFirst.
-	self selectCurrentQueryDirection
+
+	| selectedButton |
+	directionRadioButtons := self query directionStrategies collect: [ 
+		                         :direction | 
+		                         self radioButtonForScopeDirection:
+			                         direction ].
+
+	selectedButton := directionRadioButtons detect: #state.
+	selectedButton associatedRadioButtons:
+		(directionRadioButtons copyWithout: selectedButton)
 ]
 
 { #category : #'widgets configuration' }
-MiScopeQueryPresenter >> scopesDropListForScoped: scopes [
+MiScopeQueryPresenter >> radioButtonForScopeDirection: direction [
+
+	^ self newRadioButton
+		  label: direction label;
+		  state: direction == self query directionStrategy;
+		  whenActivatedDo: [ 
+			  self query resetAndChangeDirection: direction.
+			  self updateAccordingToDirection.
+			  self notifyQueryChanged ]
+]
+
+{ #category : #'widgets configuration' }
+MiScopeQueryPresenter >> scopesDropListForScopes: scopes [
 	^ self newDropList
 		items: scopes;
 		display: [ :item | item mooseDescription name asEnglishPlural ];
@@ -67,17 +79,29 @@ MiScopeQueryPresenter >> scopesDropListForScoped: scopes [
 			self notifyQueryChanged ]
 ]
 
-{ #category : #initialization }
-MiScopeQueryPresenter >> selectCurrentQueryDirection [
-	(firstParameter presenters
-		detect: [ :radioButton | radioButton label = self query directionStrategy label ])
-		state: true
+{ #category : #layout }
+MiScopeQueryPresenter >> scopesDropListLayout [
+
+	^ SpBoxLayout newVertical
+		  add: #scopesDropList
+		  expand: true
+		  fill: true
+		  padding: 50;
+		  yourself
+]
+
+{ #category : #'widgets configuration' }
+MiScopeQueryPresenter >> setScopesDropList [
+
+	scopesDropList := self query availableScopes
+		                  ifEmpty: [ self noParameterMessage: 'scope' ]
+		                  ifNotEmpty: [ :scopes | 
+		                  self scopesDropListForScopes: scopes ]
 ]
 
 { #category : #update }
 MiScopeQueryPresenter >> updateAccordingToDirection [
-	secondParameter := self query availableScopes
-		ifNotEmpty: [ :scopes | self scopesDropListForScoped: scopes ]
-		ifEmpty: [ self noParameterMessage: 'scope' ].
+
+	self setScopesDropList.
 	self update
 ]

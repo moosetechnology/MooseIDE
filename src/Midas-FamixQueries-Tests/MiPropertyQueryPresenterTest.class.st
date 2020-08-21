@@ -11,15 +11,16 @@ MiPropertyQueryPresenterTest class >> isAbstract [
 
 { #category : #tests }
 MiPropertyQueryPresenterTest >> assertPropertiesDropList [
+
 	self
-		assert: presenter properties class
+		assert: presenter propertyDropList class
 		identicalTo: SpDropListPresenter.
 	self
-		assertCollection: presenter properties listItems
+		assertCollection: presenter propertyDropList listItems
 		hasSameElements: presenter query availableProperties.
 	self
 		assert: presenter query property
-		equals: presenter properties selectedItem
+		equals: presenter propertyDropList selectedItem
 ]
 
 { #category : #running }
@@ -28,68 +29,74 @@ MiPropertyQueryPresenterTest >> queryClass [
 ]
 
 { #category : #tests }
-MiPropertyQueryPresenterTest >> testFirstParameter [
-	self
-		assert: presenter firstParameter class
-		identicalTo: SpNullPresenter.
-		
-	self resetPresenterWithEntities: helper noEntities.
-	self
-		assert: presenter firstParameter class
-		identicalTo: SpNullPresenter.
-]
-
-{ #category : #tests }
 MiPropertyQueryPresenterTest >> testMatchesQuery [
+
 	self
 		assert: presenter query property
-		equals: presenter properties selectedItem.
-	presenter properties selectIndex: 2.
+		equals: presenter propertyDropList selectedItem.
+	presenter propertyDropList selectIndex: 2.
 	self
 		assert: presenter query property
-		equals: presenter properties selectedItem
+		equals: presenter propertyDropList selectedItem
 ]
 
 { #category : #tests }
 MiPropertyQueryPresenterTest >> testNoAvailableProperties [
+
 	self resetPresenterWithEntities: helper noEntities.
 	self
-		assert: presenter secondParameter class
+		assert: presenter propertyDropList class
+		identicalTo: MiNoPossibleQueryPresenter
+]
+
+{ #category : #tests }
+MiPropertyQueryPresenterTest >> testPresenters [
+
+	self assertPropertiesDropList
+]
+
+{ #category : #tests }
+MiPropertyQueryPresenterTest >> testPresentersOnImpossibleQuery [
+
+	self resetPresenterWithEntities: helper noEntities.
+
+	self
+		assert: presenter propertyDropList class
 		identicalTo: MiNoPossibleQueryPresenter
 ]
 
 { #category : #tests }
 MiPropertyQueryPresenterTest >> testQueryMatchesOwnerQuery [
+
 	self assert: presenter query equals: presenter owner query.
-	presenter properties selectIndex: 2.
+	presenter propertyDropList selectIndex: 2.
 	self assert: presenter query equals: presenter owner query
 ]
 
 { #category : #tests }
 MiPropertyQueryPresenterTest >> testQueryValidity [
-	self assert: self currentQuery isValid.
-	presenter properties selectIndex: 2.
-	self assert: self currentQuery isValid.
+
+	self assert: presenter query isValid.
+
+	presenter propertyDropList selectIndex: 2.
+	self assert: presenter query isValid.
 
 	self resetPresenterWithEntities: helper noEntities.
 	self deny: presenter query isValid
 ]
 
 { #category : #tests }
-MiPropertyQueryPresenterTest >> testSecondParameter [
-	self assertPropertiesDropList.
-]
-
-{ #category : #tests }
 MiPropertyQueryPresenterTest >> testUpdateCreationBrowser [
+
 	self assertCreationPresenterWasUpdated.
-	presenter properties selectIndex: 2.
+	presenter propertyDropList selectIndex: 2.
 	self assertCreationPresenterWasUpdated
 ]
 
 { #category : #tests }
 MiPropertyQueryPresenterTest >> testUpdateDoesNotChangeOwnerPresenter [
-	presenter properties selectIndex: 2.
+
+	presenter propertyDropList selectIndex: 2.
 	self
 		assert: presenter owner queryConfigurationPresenter
 		identicalTo: presenter

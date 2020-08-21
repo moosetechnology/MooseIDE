@@ -6,10 +6,11 @@ Class {
 
 { #category : #specs }
 MiBooleanQueryPresenter class >> layout [
+
 	^ SpBoxLayout newVertical
-		add: #properties
-			expand: true
-			fill: true
-			padding: 50;
-		yourself
+		  add: #propertyDropList
+		  expand: true
+		  fill: true
+		  padding: 50;
+		  yourself
 ]

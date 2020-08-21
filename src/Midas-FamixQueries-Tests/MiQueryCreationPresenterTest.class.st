@@ -64,7 +64,7 @@ MiQueryCreationPresenterTest >> testCreateOnlyOneChild [
 	self changeQueryType.
 	self assert: presenter browser initialQuery children isEmpty.
 	
-	presenter toolBar presenters first click.
+	presenter toolbar presenters first click.
 	
 	self assert: presenter browser initialQuery children size equals: 1.
 	self
@@ -82,7 +82,7 @@ MiQueryCreationPresenterTest >> testDisabledToolBarButton [
 						result: helper noEntities;
 						yourself)).
 	self openInstance.
-	self deny: presenter toolBar presenters first isEnabled
+	self deny: presenter toolbar presenters first isEnabled
 ]
 
 { #category : #tests }
@@ -141,16 +141,17 @@ MiQueryCreationPresenterTest >> testResultList [
 
 { #category : #tests }
 MiQueryCreationPresenterTest >> testToolBar [
+
 	| initialQueriesSize |
 	self openInstance.
-	self assert: presenter toolBar class identicalTo: SpToolBarPresenter.
+	self assert: presenter toolbar class identicalTo: SpToolbarPresenter.
 	self
-		assert: presenter toolBar presenters first class
-		identicalTo: SpToolBarButtonPresenter.
-	self assert: presenter toolBar presenters first isEnabled.
+		assert: presenter toolbar presenters first class
+		identicalTo: SpToolbarButtonPresenter.
+	self assert: presenter toolbar presenters first isEnabled.
 	initialQueriesSize := presenter browser queries size.
-	
-	presenter toolBar presenters first click.
+
+	presenter toolbar presenters first click.
 	self
 		assert: presenter browser queries size
 		equals: initialQueriesSize + 1.
