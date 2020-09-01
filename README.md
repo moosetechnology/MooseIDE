@@ -17,7 +17,7 @@ New Tools for Moose
 Metacello new
   baseline: 'Midas';
   repository: 'github://moosetechnology/Midas:master/src';
- onConflict: [ :e | e useIncoming ];
- onUpgrade: [ :e | e useIncoming ];
+  onConflict: [ :e | e useIncoming ];
+  onUpgrade: [ :e | e useIncoming ];
   load.
 ```
