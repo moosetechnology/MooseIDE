@@ -177,7 +177,7 @@ MiRoassalQueryPresenter >> legendOn: canvas [
 		do:
 			[ :queryClass | legend text: queryClass label withCircleColor: queryClass color ].
 	legend
-		leyendDo: [ :l | 
+		legendDo: [ :l | 
 			(l nodes first children detect: [ :shape | shape isKindOf: RSLabel ])
 				color: self theme textColor.
 			l

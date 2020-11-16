@@ -110,7 +110,7 @@ MiDependencyVisualization >> legend [
 				withShape: (self legendArrowColored: Color green).
 			b text: 'Both' withShape: (self legendArrowColored: Color red).
 			b
-				leyendDo: [ :s | 
+				legendDo: [ :s | 
 					s
 						color: (Color white alpha: 0.8);
 						scaleBy: 0.7;
