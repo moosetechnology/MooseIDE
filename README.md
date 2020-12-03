@@ -16,6 +16,6 @@ New Tools for Moose
 ```smalltalk
 Metacello new
   baseline: 'Midas';
-  repository: 'github://moosetechnology/Midas:master/src';
+  repository: 'github://moosetechnology/Midas:development/src';
   load.
 ```
