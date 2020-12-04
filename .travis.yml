@@ -7,7 +7,7 @@ notifications:
         on_failure: never
 
 os:
-- osx
+- linux
 
 smalltalk:
   - Pharo64-9.0
