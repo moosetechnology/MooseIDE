@@ -129,12 +129,13 @@ MiRoassalQueryPresenter >> buildMenuOn: boxes [
 
 { #category : #'roassal script' }
 MiRoassalQueryPresenter >> buildTreeOn: canvas for: boxes [
+
 	(RSEdgeBuilder new: (RSArrowedLine new color: self theme textColor))
 		canvas: canvas;
 		attachPoint: RSBorderAttachPoint new;
 		shapes: boxes;
 		connectToAll: #children.
-	RSDominanceTreeLayout on: canvas nodes
+	RSDominanceTreeLayout new doNotValidateCycles applyOn: canvas nodes
 ]
 
 { #category : #'roassal script' }
