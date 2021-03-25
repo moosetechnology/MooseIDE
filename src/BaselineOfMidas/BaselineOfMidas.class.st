@@ -71,7 +71,7 @@ BaselineOfMidas >> famix: spec [
 	spec
 		baseline: 'Famix'
 		with: [ 
-		spec repository: 'github://moosetechnology/Famix:v1.x.x/src' ]
+		spec repository: 'github://moosetechnology/Famix:development/src' ]
 ]
 
 { #category : #dependencies }
