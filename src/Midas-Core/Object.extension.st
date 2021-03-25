@@ -1,11 +1,6 @@
 Extension { #name : #Object }
 
 { #category : #'*Midas-Core' }
-Object >> isMooseEntity [
-	^ false 
-]
-
-{ #category : #'*Midas-Core' }
 Object >> isMooseObject [
 	^ false
 ]
