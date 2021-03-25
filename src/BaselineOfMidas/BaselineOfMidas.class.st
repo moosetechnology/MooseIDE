@@ -6,65 +6,31 @@ Class {
 
 { #category : #baselines }
 BaselineOfMidas >> baseline: spec [
+
 	<baseline>
-	spec
-		for: #common
-		do: [ self defineDependencies: spec.
-			self definePackages: spec.
-			self defineGroups: spec ]
+	spec for: #common do: [ "Dependencies"
+		self famixQueries: spec.
+		self telescope: spec.
+
+		"Packages"
+		self definePackages: spec.
+
+		"If Famix is not already present"
+		spec for: #NeedsFamix do: [ 
+			self famix: spec.
+			spec package: 'Midas-Core' with: [ spec requires: #( 'Famix' ) ] ].
+
+		"Groups"
+		self defineGroups: spec ]
 ]
 
-{ #category : #baselines }
-BaselineOfMidas >> baselineOfFamix: spec [
-	spec
-		baseline: 'Famix'
-		with: [ spec repository: 'github://moosetechnology/Famix:v1.0.0/src' ]
-]
+{ #category : #accessing }
+BaselineOfMidas >> customProjectAttributes [
 
-{ #category : #baselines }
-BaselineOfMidas >> baselineOfFamixQueries: spec [
-	spec
-		baseline: 'FamixQueries'
-		with: [ spec repository: 'github://moosetechnology/FamixQueries' ]
-]
-
-{ #category : #baselines }
-BaselineOfMidas >> baselineOfNewTools: spec [
-	spec baseline: 'NewTools' with: [ spec repository: 'github://pharo-spec/NewTools:67cc6fa' ]
-]
-
-{ #category : #baselines }
-BaselineOfMidas >> baselineOfRoassal3: spec [
-	spec
-		baseline: 'Roassal3'
-		with: [ spec repository: 'github://ObjectProfile/Roassal3:v0.9.1' ]
-]
-
-{ #category : #baselines }
-BaselineOfMidas >> baselineOfSpec: spec [
-	spec
-		baseline: 'Spec2'
-		with: [ spec repository: 'github://pharo-spec/Spec:v0.6.0' ]
-]
-
-{ #category : #baselines }
-BaselineOfMidas >> baselineOfTelescope: spec [
-	spec
-		baseline: 'TelescopeRoassal3'
-		with: [ spec repository: 'github://TelescopeSt/TelescopeRoassal3' ]
-]
-
-{ #category : #baselines }
-BaselineOfMidas >> defineDependencies: spec [
-	self baselineOfFamix: spec.
-	self baselineOfFamixQueries: spec.
-	self baselineOfTelescope: spec.
-
-	"Spec and New tools are natively in Pharo 9"
-	spec
-		for: #'pharo8.x'
-		do: [ self baselineOfNewTools: spec.
-			self baselineOfSpec: spec ]
+	^ RPackageOrganizer default packages
+		  detect: [ :package | package name = 'BaselineOfFamix' ]
+		  ifFound: [ #(  ) ]
+		  ifNone: [ #( #NeedsFamix ) ]
 ]
 
 { #category : #baselines }
@@ -78,20 +44,58 @@ BaselineOfMidas >> defineGroups: spec [
 
 { #category : #baselines }
 BaselineOfMidas >> definePackages: spec [
-	spec package: 'Midas-Visualization' with: [ spec requires: #( 'TelescopeRoassal3' ) ].
-	spec package: 'Midas-Meta' with: [ spec requires: #( 'Midas-Core' ) ].
-	spec package: 'Midas-Tests' with: [ spec requires: #( 'Midas-Core' ) ].
-	spec package: 'Midas-Dependency' with: [ spec requires: #( 'Midas-Core' 'Midas-Visualization' ) ].
-	spec package: 'Midas-Famix' with: [ spec requires: #( 'Midas-Core' 'Midas-Visualization' ) ].
-	spec package: 'Midas-FamixQueries' with: [ spec requires: #( 'FamixQueries' 'Midas-Core' ) ].
-	spec package: 'Midas-FamixQueries-Tests' with: [ spec requires: #( 'Midas-FamixQueries' 'Midas-Tests' ) ].
-	spec package: 'Midas-Telescope' with: [ spec requires: #('Midas-Core' 'Midas-Visualization' ) ].
-	
-	"Spec and New tools are natively in Pharo 9"
-	spec for: #'pharo8.x' do: [ 
-		spec package: 'Midas-Core' with: [ spec requires: #( 'Famix' 'Spec2' ) ].
-		spec package: 'Midas-NewTools' with: [ spec requires: #( 'NewTools' 'Midas-Meta' ) ] ].
-	spec for: #'pharo9.x' do: [ 
-		spec package: 'Midas-Core' with: [ spec requires: #( 'Famix' ) ].
-		spec package: 'Midas-NewTools' with: [ spec requires: #( 'Midas-Meta' ) ] ].
+
+	spec
+		package: 'Midas-Core';
+		package: 'Midas-Visualization'
+			with: [ spec requires: #( 'TelescopeRoassal3' ) ];
+		package: 'Midas-Meta' with: [ spec requires: #( 'Midas-Core' ) ];
+		package: 'Midas-Tests' with: [ spec requires: #( 'Midas-Core' ) ];
+		package: 'Midas-Dependency'
+			with: [ spec requires: #( 'Midas-Core' 'Midas-Visualization' ) ];
+		package: 'Midas-Famix'
+			with: [ spec requires: #( 'Midas-Core' 'Midas-Visualization' ) ];
+		package: 'Midas-FamixQueries'
+			with: [ spec requires: #( 'FamixQueries' 'Midas-Core' ) ];
+		package: 'Midas-FamixQueries-Tests'
+			with: [ spec requires: #( 'Midas-FamixQueries' 'Midas-Tests' ) ];
+		package: 'Midas-Telescope'
+			with: [ spec requires: #( 'Midas-Core' 'Midas-Visualization' ) ];
+		package: 'Midas-NewTools'
+			with: [ spec requires: #( 'Midas-Meta' ) ]
+]
+
+{ #category : #dependencies }
+BaselineOfMidas >> famix: spec [
+
+	spec
+		baseline: 'Famix'
+		with: [ 
+		spec repository: 'github://moosetechnology/Famix:v1.x.x/src' ]
+]
+
+{ #category : #dependencies }
+BaselineOfMidas >> famixQueries: spec [
+	spec
+		baseline: 'FamixQueries'
+		with: [ spec repository: 'github://moosetechnology/FamixQueries' ]
+]
+
+{ #category : #dependencies }
+BaselineOfMidas >> newTools: spec [
+	spec baseline: 'NewTools' with: [ spec repository: 'github://pharo-spec/NewTools:67cc6fa' ]
+]
+
+{ #category : #dependencies }
+BaselineOfMidas >> spec: spec [
+	spec
+		baseline: 'Spec2'
+		with: [ spec repository: 'github://pharo-spec/Spec:v0.6.0' ]
+]
+
+{ #category : #dependencies }
+BaselineOfMidas >> telescope: spec [
+	spec
+		baseline: 'TelescopeRoassal3'
+		with: [ spec repository: 'github://TelescopeSt/TelescopeRoassal3' ]
 ]
