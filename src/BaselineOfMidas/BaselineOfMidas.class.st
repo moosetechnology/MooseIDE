@@ -15,10 +15,14 @@ BaselineOfMidas >> baseline: spec [
 		"Packages"
 		self definePackages: spec.
 
-		"If Famix is not already present"
-		spec for: #NeedsFamix do: [ 
+		"If Moose is not already present"
+		spec for: #NeedsMoose do: [ 
 			self famix: spec.
-			spec package: 'Midas-Core' with: [ spec requires: #( 'Famix' ) ] ].
+			self mooseFinder: spec.
+			spec
+				package: 'Midas-Core' with: [ spec requires: #( 'Famix' ) ];
+				package: 'Midas-Meta'
+				with: [ spec requires: #( 'Moose-Finder' ) ] ].
 
 		"Groups"
 		self defineGroups: spec ]
@@ -28,9 +32,9 @@ BaselineOfMidas >> baseline: spec [
 BaselineOfMidas >> customProjectAttributes [
 
 	^ RPackageOrganizer default packages
-		  detect: [ :package | package name = 'BaselineOfFamix' ]
+		  detect: [ :package | package name = 'Moose-Core' ]
 		  ifFound: [ #(  ) ]
-		  ifNone: [ #( #NeedsFamix ) ]
+		  ifNone: [ #( #NeedsMoose ) ]
 ]
 
 { #category : #baselines }
@@ -79,6 +83,18 @@ BaselineOfMidas >> famixQueries: spec [
 	spec
 		baseline: 'FamixQueries'
 		with: [ spec repository: 'github://moosetechnology/FamixQueries' ]
+]
+
+{ #category : #dependencies }
+BaselineOfMidas >> mooseFinder: spec [
+
+	spec
+		baseline: 'Moose'
+		with: [ 
+			spec repository: 'github://moosetechnology/Moose:development/src' ];
+		project: 'Moose-Finder'
+		copyFrom: 'Moose'
+		with: [ spec loads: 'Moose-Finder' ]
 ]
 
 { #category : #dependencies }

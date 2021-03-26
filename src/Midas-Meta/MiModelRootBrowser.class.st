@@ -93,20 +93,28 @@ MiModelRootBrowser >> followAction [
 
 { #category : #menu }
 MiModelRootBrowser >> importMSEMenuItem: item [
+
 	^ item
-		description: 'Import mse';
-		icon: (self iconNamed: #mooseImportMse);
-		action: [ (MiModelImporterFromMSE on: self) openModalWithSpec.
-			self class updateAll ]
+		  description: 'Import mse';
+		  icon: (self iconNamed: #mooseImportMse);
+		  action: [ 
+			  (MooseImportFromMSEForm new
+				   openDialogWithSpec;
+				   mooseModel) ifNotNil: [ :newModel | self updateWith: newModel ].
+			  self class updateAll ]
 ]
 
 { #category : #menu }
 MiModelRootBrowser >> importStMenuItem: item [
+
 	^ item
-		description: 'Import Smalltalk model';
-		icon: (self iconNamed: #mooseImportSmalltalk);
-		action: [ (MiModelImporterFromPharo on: self) openModalWithSpec.
-			self class updateAll ]
+		  description: 'Import Smalltalk model';
+		  icon: (self iconNamed: #mooseImportSmalltalk);
+		  action: [ 
+			  (MooseImportFromSmalltalkForm new
+				   openModalWithSpec;
+				   mooseModel) ifNotNil: [ :newModel | self updateWith: newModel ].
+			  self class updateAll ]
 ]
 
 { #category : #initialization }
