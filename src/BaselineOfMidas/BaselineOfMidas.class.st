@@ -32,7 +32,7 @@ BaselineOfMidas >> baseline: spec [
 BaselineOfMidas >> customProjectAttributes [
 
 	^ RPackageOrganizer default packages
-		  detect: [ :package | package name = 'Moose-Finder' ]
+		  detect: [ :package | package name = 'BaselineOfFamix' ]
 		  ifFound: [ #(  ) ]
 		  ifNone: [ #( #NeedsMoose ) ]
 ]
