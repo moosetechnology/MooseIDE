@@ -96,14 +96,15 @@ MiRoassalQueryPresenter >> boxSelectionAction: box [
 
 { #category : #'boxes configuration' }
 MiRoassalQueryPresenter >> boxSize [
-	^ 150
+	^ 150@50
 ]
 
 { #category : #'boxes configuration' }
 MiRoassalQueryPresenter >> buildBoxFor: aQuery [
 	| box |
 	box := RSBox new
-		size: self boxSize;
+		cornerRadius: 5;
+		extent: self boxSize;
 		model: aQuery;
 		color: aQuery class color;
 		addInteraction: self boxLabel;
