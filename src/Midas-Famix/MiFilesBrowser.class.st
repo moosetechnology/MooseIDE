@@ -39,11 +39,11 @@ MiFilesBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	<miBrowsers>
 	(aBuilder item: #FilesBrowser)
-		parent: self toolbarFamixName;
-		label: self title;
+		parent: (self toolbarFamixName);
+		label: (self title);
 		icon: (self iconNamed: #mooseFolder);
-		help: self helpMessage;
-		order: 3.0;
+		help: (self helpMessage);
+		order: 3;
 		action: [ self runMe ]
 ]
 
