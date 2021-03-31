@@ -81,7 +81,7 @@ MiOverviewBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	(aBuilder item: #'Midas Overview')
 		order: 0;
-		parent: #'Midas Browsers';
+		parent: #Moose;
 		withSeparatorAfter;
 		action: [ self runMe ];
 		help: self helpMessage

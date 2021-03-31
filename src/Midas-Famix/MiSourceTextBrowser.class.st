@@ -35,11 +35,11 @@ MiSourceTextBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	<miBrowsers>
 	(aBuilder item: #SourceTextBrowser)
-		parent: self toolbarFamixName;
-		label: self title;
+		parent: (self toolbarFamixName) ;
+		label: (self title) ;
 		icon: (self iconNamed: #mooseSourceText);
-		order: 1.0;
-		help: self helpMessage;
+		order: 1 ;
+		help: (self helpMessage);
 		action: [ self runMe ]
 ]
 

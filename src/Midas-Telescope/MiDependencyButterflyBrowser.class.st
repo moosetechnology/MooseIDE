@@ -23,10 +23,10 @@ MiDependencyButterflyBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	<miBrowsers>
 	(aBuilder item: #butterflyBrowser)
-		parent: self telescopeMenuItemName;
-		label: self title;
+		parent: (self telescopeMenuItemName);
+		label: (self title);
 		icon: (self iconNamed: #mooseTree);
-		help: self helpMessage;
+		help: (self helpMessage);
 		action: [ self runMe ]
 ]
 

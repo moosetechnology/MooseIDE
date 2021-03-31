@@ -35,11 +35,11 @@ MiMooseModelBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	<miBrowsers>
 	(aBuilder item: #MooseModelBrowser)
-		parent: self toolbarMetaName;
-		label: self title;
+		parent: (self toolbarMetaName);
+		label: (self title);
 		icon: (self iconNamed: #mooseNavigation);
-		order: 2.0;
-		help: self helpMessage;
+		order: 2;
+		help: (self helpMessage);
 		action: [ self runMe ]
 ]
 

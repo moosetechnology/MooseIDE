@@ -31,11 +31,11 @@ MiPropertyBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	<miBrowsers>
 	(aBuilder item: #PropertyBrowser)
-		parent: self toolbarMetaName;
-		label: self title;
+		parent: (self toolbarMetaName);
+		label: (self title);
 		icon: (self iconNamed: #mooseProperties);
-		order: 3.0;
-		help: self helpMessage;
+		order: 3;
+		help: (self helpMessage);
 		action: [ self runMe ]
 ]
 

@@ -22,10 +22,10 @@ MiNavigationTreeBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	<miBrowsers>
 	(aBuilder item: #distributionMapBrowser)
-		parent: self telescopeMenuItemName;
-		label: self title;
+		parent: (self telescopeMenuItemName);
+		label: (self title);
 		icon: (self iconNamed: #mooseTreeMap);
-		help: self helpMessage;
+		help: (self helpMessage);
 		action: [ self runMe ]
 ]
 

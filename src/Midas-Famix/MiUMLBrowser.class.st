@@ -31,11 +31,11 @@ MiUMLBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	<miBrowsers>
 	(aBuilder item: #UMLVisualisationBrowser)
-		parent: self toolbarFamixName;
-		label: self title;
+		parent: (self toolbarFamixName);
+		label: (self title);
 		icon: (self iconNamed: #mooseUml);
-		order: 4.0;
-		help: self helpMessage;
+		order: 4;
+		help: (self helpMessage);
 		action: [ self runMe ]
 ]
 

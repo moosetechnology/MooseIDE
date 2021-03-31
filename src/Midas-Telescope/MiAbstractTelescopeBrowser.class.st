@@ -24,8 +24,10 @@ MiAbstractTelescopeBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	<miBrowsers>
 	^ (aBuilder item: self telescopeMenuItemName)
-		parent: self toolbarName;
-		label: 'Telescope'
+		parent: (self toolbarName) ;
+		order: 50 ;
+		label: 'Telescope' ;
+		withSeparatorAfter 
 ]
 
 { #category : #'instance creation' }

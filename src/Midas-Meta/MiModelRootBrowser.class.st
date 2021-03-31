@@ -45,11 +45,11 @@ MiModelRootBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	<miBrowsers>
 	(aBuilder item: #ModelRootBrowser)
-		parent: self toolbarMetaName;
-		label: self title;
+		parent: (self toolbarMetaName);
+		label: (self title);
 		icon: (self iconNamed: #mooseNavigation);
-		order: 1.0;
-		help: self helpMessage;
+		order: 1;
+		help: (self helpMessage);
 		action: [ self runMe ]
 ]
 
