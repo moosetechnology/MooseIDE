@@ -45,11 +45,11 @@ MiModelRootBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	<miBrowsers>
 	(aBuilder item: #ModelRootBrowser)
-		parent: (self toolbarMetaName);
-		label: (self title);
+		parent: self toolbarMetaName;
+		label: self title;
 		icon: (self iconNamed: #mooseNavigation);
-		order: 1;
-		help: (self helpMessage);
+		order: 1.0;
+		help: self helpMessage;
 		action: [ self runMe ]
 ]
 
@@ -104,17 +104,17 @@ MiModelRootBrowser >> importMSEMenuItem: item [
 
 { #category : #menu }
 MiModelRootBrowser >> importMenuItem: item description: aString icon: aSymbol importer: importerClass [
-	^item
-		description: aString ;
-		icon: (self iconNamed: aSymbol) ;
-		action: [ 
-			(importerClass new
-				openDialogWithSpec ;
-				mooseModel) 
-				ifNotNil: [ :newModel | self updateWith: newModel ].
-			self class updateAll
-		]
 
+	^ item
+		  description: aString;
+		  icon: (self iconNamed: aSymbol);
+		  action: [ 
+			  | importForm |
+			  importForm := importerClass new.
+			  importForm announcer when: MPNewModelInstalled do: [ :ann | 
+					  self updateWith: ann newModel.
+					  self class updateAll ].
+			  importForm openDialogWithSpec ]
 ]
 
 { #category : #menu }
@@ -196,6 +196,7 @@ MiModelRootBrowser >> updateList [
 
 { #category : #updating }
 MiModelRootBrowser >> updateWith: aModel [
+
 	modelPresenter
 		updateList;
 		selectItem: aModel
