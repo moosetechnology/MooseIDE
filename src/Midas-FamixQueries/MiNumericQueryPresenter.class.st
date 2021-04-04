@@ -26,23 +26,14 @@ MiNumericQueryPresenter class >> layout [
 ]
 
 { #category : #initialization }
-MiNumericQueryPresenter >> initializePresenters [
-
-	super initializePresenters.
-	query availableProperties
-		ifNotEmpty: [ 
-			comparatorDropList := self newComparatorDropList.
-			valueInputField := self newValueInputField ]
-		ifEmpty: [ 
-			comparatorDropList := self newNullPresenter.
-			valueInputField := self newNullPresenter ]
-]
-
-{ #category : #initialization }
 MiNumericQueryPresenter >> newValueInputField [
-	^ super newValueInputField
-		placeholder: 'Your numeric value' ;
-		climbRate: 1 ;
-		minimum: 0 ;
+	^ self newNumberInput
+		placeholder: 'Your numeric value';
+		climbRate: 1;
+		minimum: 0;
+		autoAccept: true;
+		whenNumberChangedDo: [ :num | 
+			self query valueToCompare: num.
+			self notifyQueryChanged ];
 		yourself
 ]

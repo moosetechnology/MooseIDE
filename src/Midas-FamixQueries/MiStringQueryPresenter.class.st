@@ -8,39 +8,33 @@ Class {
 MiStringQueryPresenter class >> layout [
 
 	| padding |
-	padding := 8.
+	padding := 5.
 	^ SpBoxLayout newVertical
 		  add: #propertyDropList
-		  expand: true
+		  expand: false
 		  fill: true
 		  padding: padding;
+
 		  add: #comparatorDropList
-		  expand: true
+		  expand: false
 		  fill: true
 		  padding: padding;
+
 		  add: #valueInputField
 		  expand: true
 		  fill: true
 		  padding: padding;
+
 		  yourself
 ]
 
 { #category : #initialization }
-MiStringQueryPresenter >> initializePresenters [
-
-	super initializePresenters.
-	query availableProperties
-		ifNotEmpty: [ 
-			comparatorDropList := self newComparatorDropList.
-			valueInputField := self newValueInputField ]
-		ifEmpty: [ 
-			comparatorDropList := self newNullPresenter.
-			valueInputField := self newNullPresenter ]
-]
-
-{ #category : #initialization }
 MiStringQueryPresenter >> newValueInputField [
-	^ super newValueInputField
-		placeholder: 'Your pattern' ;
+	^ self newTextInput
+		placeholder: 'Your pattern';
+		autoAccept: true;
+		whenTextChangedDo: [ :pattern | 
+			self query valueToCompare: pattern.
+			self notifyQueryChanged ];
 		yourself
 ]

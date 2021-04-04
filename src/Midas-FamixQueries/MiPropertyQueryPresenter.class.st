@@ -68,11 +68,5 @@ MiPropertyQueryPresenter >> newPropertyDropList [
 
 { #category : #initialization }
 MiPropertyQueryPresenter >> newValueInputField [
-	^ self newTextInput
-		placeholder: 'Your value';
-		autoAccept: true;
-		whenTextChangedDo: [ :pattern | 
-			self query valueToCompare: pattern.
-			self notifyQueryChanged ];
-		yourself
+	self subclassResponsibility 
 ]
