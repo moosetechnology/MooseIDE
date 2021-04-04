@@ -1,14 +1,9 @@
 "
 Shows properties of a MooseObject.
 
-- Follow: 
-Receives MooseObjects
-
-- Highlight:
-Nothing to do.
-
-- Propagate:
-<TODO>
+- Follow: Receives MooseObjects
+- Highlight: Nothing to do.
+- Propagate: <TODO>
 "
 Class {
 	#name : #MiPropertyBrowser,

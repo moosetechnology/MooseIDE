@@ -3,14 +3,9 @@ Shows dependencies of an entity. The entity is in red.
 Incoming dependencies, to the left, are in green.
 Outgoing dependencies, to the right, are in blue
 
-- Follow: 
-Accepts a MooseEntity that uses TEntityMetaLevelDependency.
-
-- Highlight:
-<TODO>
-
-- Propagate:
-The central entity (in red)
+- Follow: Accepts a MooseEntity that uses TEntityMetaLevelDependency.
+- Highlight: <TODO>
+- Propagate: The central entity (in red)
 "
 Class {
 	#name : #MiDependencyButterflyBrowser,

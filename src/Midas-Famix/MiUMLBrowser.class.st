@@ -1,14 +1,9 @@
 "
 Shows UML of the received entities.
 
-- Follow: 
-Receives a TypeGroup or entities using TType.
-
-- Highlight: 
-Entities if present
-
-- Propagate: 
-The selected entity if there is one
+- Follow: Receives a TypeGroup or entities using TType.
+- Highlight: Entities if present
+- Propagate: The selected entity if there is one
 "
 Class {
 	#name : #MiUMLBrowser,

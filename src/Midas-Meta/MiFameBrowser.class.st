@@ -2,14 +2,9 @@
 ** Expert user **
 Shows the metadescription of a MooseObject.
 
-- Follow: 
-Recevies a MooseObject.
-
-- Highlight:
-Nothing to do.
-
--Propagate:
-<TODO>
+- Follow: Recevies a MooseObject.
+- Highlight: Nothing to do.
+- Propagate: <TODO>
 "
 Class {
 	#name : #MiFameBrowser,

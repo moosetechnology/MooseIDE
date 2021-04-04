@@ -2,14 +2,9 @@
 Shows dependencies of entities.
 Received entities are shown in red.
 
-- Follow: 
-Accepts a MooseObject
-
-- Highlight:
-<TODO>
-
-- Propagate:
-<TODO>
+- Follow: Accepts a MooseObject
+- Highlight: <TODO>
+- Propagate: <TODO>
 "
 Class {
 	#name : #MiNavigationTreeBrowser,

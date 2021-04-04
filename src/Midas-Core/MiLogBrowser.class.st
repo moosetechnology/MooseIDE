@@ -3,14 +3,9 @@ Shows logs of the entities that are propagated.
 Proposes edition & removal of logs.
 Can propagate previous logs.
 
-- Follow:
-Accepts MooseObjects.
-
-- Highlght:
-<TODO> Logs containing the received object.
-
-- Propagate:
-MooseObjects.
+- Follow: Accepts MooseObjects.
+- Highlght: <TODO> Logs containing the received object.
+- Propagate: MooseObjects
 "
 Class {
 	#name : #MiLogBrowser,

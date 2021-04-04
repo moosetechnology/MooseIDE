@@ -1,14 +1,9 @@
 "
 Shows children of entities.
 
-- Follow: 
-Accepts a MooseObject.
-
-- Highlight:
-<TODO>
-
-- Propagate:
-<TODO>
+- Follow: Accepts a MooseObject.
+- Highlight: <TODO>
+- Propagate: <TODO>
 "
 Class {
 	#name : #MiDistributionMapBrowser,

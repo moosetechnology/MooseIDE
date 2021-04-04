@@ -2,14 +2,9 @@
 Shows dependencies between entities.
 Entities that are in a dependency circle are shown in red.
 
-- Follow: 
-Accepts a MooseGroup or MooseModel.
-
-- Highlight:
-<TODO>
-
-- Propagate:
-<TODO>
+- Follow: Accepts a MooseGroup or MooseModel.
+- Highlight: <TODO>
+- Propagate: <TODO>
 "
 Class {
 	#name : #MiCycleDependenciesBrowser,

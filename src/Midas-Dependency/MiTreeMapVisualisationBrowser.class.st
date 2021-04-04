@@ -2,14 +2,9 @@
 Shows the containment (direct relations for now) between entities.
 Dynamic presentation: clicking on an entity shows the entities it contains.
 
-- Follow:
-Receives MooseObjects.
-
-- Highlight:
-Entities if present.
-
-- Propagate:
-<TODO>
+- Follow: Receives MooseObjects.
+- Highlight: Entities if present.
+- Propagate: <TODO>
 "
 Class {
 	#name : #MiTreeMapVisualisationBrowser,

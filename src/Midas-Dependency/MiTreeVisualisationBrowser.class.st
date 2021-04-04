@@ -1,14 +1,9 @@
 "
 Shows the containment tree (direct relations for now) between entities, as a roassal visualization.
 
-- Follow:
-Receives a MooseGroup.
-
-- Highlight:
-Entities if present.
-
-- Propagate:
-The selected entity if there is one.
+- Follow: Receives a MooseGroup.
+- Highlight: Entities if present.
+- Propagate: The selected entity if there is one.
 "
 Class {
 	#name : #MiTreeVisualisationBrowser,

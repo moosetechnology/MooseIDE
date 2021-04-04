@@ -1,14 +1,9 @@
 "
 Shows dependencies between entities (using #queryIncomingDependencies and #queryOutgoingDependencies).
 
-- Follow: 
-Accepts a MooseGroup.
-
-- Highlight:
-Entites if present.
-
-- Propagate:
-The selected entity if there is one.
+- Follow: Accepts a MooseGroup.
+- Highlight: Entites if present.
+- Propagate: The selected entity if there is one.
 "
 Class {
 	#name : #MiDependencyBrowser,
