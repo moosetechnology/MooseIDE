@@ -39,25 +39,10 @@ MiNumericQueryPresenter >> initializePresenters [
 ]
 
 { #category : #initialization }
-MiNumericQueryPresenter >> newComparatorDropList [
-	^ self newDropList
-		items: self query class comparators;
-		display: [ :prop | prop asString ];
-		whenSelectedItemChangedDo: [ :prop | 
-			self query comparator: prop.
-			self notifyQueryChanged ];
-		yourself
-]
-
-{ #category : #initialization }
 MiNumericQueryPresenter >> newValueInputField [
-	^ self newNumberInput
-		placeholder: 'Your numeric value';
-		climbRate: 1;
-		minimum: 0;
-		autoAccept: true;
-		whenNumberChangedDo: [ :num | 
-			self query valueToCompare: num.
-			self notifyQueryChanged ];
+	^ super newValueInputField
+		placeholder: 'Your numeric value' ;
+		climbRate: 1 ;
+		minimum: 0 ;
 		yourself
 ]

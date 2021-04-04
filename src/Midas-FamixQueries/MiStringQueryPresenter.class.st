@@ -39,23 +39,8 @@ MiStringQueryPresenter >> initializePresenters [
 ]
 
 { #category : #initialization }
-MiStringQueryPresenter >> newComparatorDropList [
-	^ self newDropList
-		items: self query class comparators;
-		display: [ :prop | prop asString ];
-		whenSelectedItemChangedDo: [ :prop | 
-			self query comparator: prop.
-			self notifyQueryChanged ];
-		yourself
-]
-
-{ #category : #initialization }
 MiStringQueryPresenter >> newValueInputField [
-	^ self newTextInput
-		placeholder: 'Your pattern';
-		autoAccept: true;
-		whenTextChangedDo: [ :pattern | 
-			self query valueToCompare: pattern.
-			self notifyQueryChanged ];
+	^ super newValueInputField
+		placeholder: 'Your pattern' ;
 		yourself
 ]

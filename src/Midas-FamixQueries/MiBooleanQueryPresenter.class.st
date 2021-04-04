@@ -6,11 +6,32 @@ Class {
 
 { #category : #specs }
 MiBooleanQueryPresenter class >> layout [
-
-	^ SpBoxLayout newVertical
+	| padding |
+	padding := 5.
+	^SpBoxLayout newVertical
 		  add: #propertyDropList
-		  expand: true
+		  expand: false
 		  fill: true
-		  padding: 50;
-		  yourself
+		  padding: padding;
+		
+		  add: #comparatorDropList
+		  expand: false
+		  fill: false
+		  padding: padding;
+	
+		  yourself.
+]
+
+{ #category : #'instance creation' }
+MiBooleanQueryPresenter >> newComparatorDropList [
+	"changing the display of comparators"
+	^ super newComparatorDropList
+		display: [ :prop | prop = #not ifTrue: [ 'is false' ] ifFalse: [ 'is true' ] ] ;
+		yourself
+]
+
+{ #category : #'instance creation' }
+MiBooleanQueryPresenter >> newValueInputField [
+	"Boolean queries do not have a value to comapre to (only a comparator: #not or #yourself)"
+	^self newNullPresenter
 ]
