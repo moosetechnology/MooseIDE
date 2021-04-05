@@ -98,7 +98,7 @@ MiOverviewBrowser class >> title [
 	^ 'Midas Overview'
 ]
 
-{ #category : #accessing }
+{ #category : #presenters }
 MiOverviewBrowser >> browsersList [
 	^ [ self newComponentList
 		propagateNaturalHeight: true;
@@ -121,32 +121,30 @@ MiOverviewBrowser >> browsersMenu [
 	^ browsersMenu
 ]
 
-{ #category : #accessing }
+{ #category : #presenters }
 MiOverviewBrowser >> browsersPage [
-	^ browsersPage
-		ifNil: [ browsersPage := self
-				pageNamed: 'Browsers'
-				presenter: self browsersList ]
+	^browsersPage
+		ifNil: [ browsersPage := self pageNamed: 'Browsers' presenter: self browsersList ]
 ]
 
-{ #category : #accessing }
+{ #category : #presenters }
 MiOverviewBrowser >> busesList [
 	^ [ self newComponentList
 		propagateNaturalHeight: true;
 		items: (self application buses collect: [ :bus | MiBusPresenter on: bus ]) ]
 ]
 
-{ #category : #accessing }
+{ #category : #presenters }
 MiOverviewBrowser >> busesPage [
-	^ busesPage
+	^busesPage
 		ifNil: [ busesPage := self pageNamed: 'Buses' presenter: self busesList ]
 ]
 
 { #category : #initialization }
 MiOverviewBrowser >> initializeMainPresenter [
 	mainPresenter := self newNotebook
-		addPage: self busesPage;
 		addPage: self browsersPage;
+		addPage: self busesPage;
 		yourself
 ]
 
@@ -191,7 +189,7 @@ MiOverviewBrowser >> modifyBuses [
 		popup
 ]
 
-{ #category : #initialization }
+{ #category : #presenters }
 MiOverviewBrowser >> pageNamed: aName presenter: aComponentList [
 	^ self newNotebookPage
 		title: aName;

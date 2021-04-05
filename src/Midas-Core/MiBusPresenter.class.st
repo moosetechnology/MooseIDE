@@ -8,12 +8,7 @@ Class {
 }
 
 { #category : #specs }
-MiBusPresenter class >> tableHeight [
-	^ self currentApplication browsers size * self tableLineHeight
-]
-
-{ #category : #specs }
-MiBusPresenter class >> toolbarLayout [
+MiBusPresenter class >> defaultSpec [
 	^ SpBoxLayout newHorizontal
 		add: #nameLabel;
 		add: SpNullPresenter new;
@@ -38,21 +33,6 @@ MiBusPresenter >> initializePresenters [
 		iconName: #history;
 		label: 'Open logger';
 		action: [ MiLogBrowser runMeFollowing: model ]
-]
-
-{ #category : #settings }
-MiBusPresenter >> tableCheckBoxEvaluation [
-	^ [ :browser | browser buses includes: model ]
-]
-
-{ #category : #settings }
-MiBusPresenter >> tableItems [
-	^ self application browsers asOrderedCollection
-]
-
-{ #category : #settings }
-MiBusPresenter >> tableStringEvaluation [
-	^ [ :browser | browser title ]
 ]
 
 { #category : #settings }

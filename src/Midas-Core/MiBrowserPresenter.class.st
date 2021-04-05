@@ -9,12 +9,7 @@ Class {
 }
 
 { #category : #specs }
-MiBrowserPresenter class >> tableHeight [
-	^ self currentApplication buses size * self tableLineHeight
-]
-
-{ #category : #specs }
-MiBrowserPresenter class >> toolbarLayout [
+MiBrowserPresenter class >> defaultSpec [
 	^ SpBoxLayout newHorizontal
 		add: #nameLabel;
 		add: SpNullPresenter new;
@@ -51,21 +46,6 @@ MiBrowserPresenter >> initializePresenters [
 		label: 'Close';
 		action: [ model window close ];
 		yourself
-]
-
-{ #category : #settings }
-MiBrowserPresenter >> tableCheckBoxEvaluation [
-	^ [ :bus | model buses includes: bus ]
-]
-
-{ #category : #settings }
-MiBrowserPresenter >> tableItems [
-	^ self application buses asOrderedCollection
-]
-
-{ #category : #settings }
-MiBrowserPresenter >> tableStringEvaluation [
-	^ [ :bus | bus name ]
 ]
 
 { #category : #settings }
