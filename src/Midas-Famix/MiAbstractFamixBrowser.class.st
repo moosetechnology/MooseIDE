@@ -14,7 +14,7 @@ MiAbstractFamixBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	<miBrowsers>
 	(aBuilder item: #MidasFamixBrowser)
-		parent: (self toolbarName) ;
+		parent: (self midasBrowserMenuLabel) ;
 		order: 40 ;
 		label: 'Famix'
 ]

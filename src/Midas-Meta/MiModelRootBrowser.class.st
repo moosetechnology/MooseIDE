@@ -40,11 +40,11 @@ MiModelRootBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	<miBrowsers>
 	(aBuilder item: #ModelRootBrowser)
-		parent: self toolbarMetaName;
-		label: self title;
-		icon: (self iconNamed: #mooseNavigation);
-		order: 1.0;
-		help: self helpMessage;
+		parent: #Moose ;
+		label: self title ;
+		icon: (self iconNamed: #mooseNavigation) ;
+		order: 2 ;
+		help: self helpMessage ;
 		action: [ self runMe ]
 ]
 
@@ -61,7 +61,7 @@ MiModelRootBrowser class >> runMe [
 
 { #category : #initialization }
 MiModelRootBrowser class >> title [
-	^ 'Model root'
+	^ 'Models browser'
 ]
 
 { #category : #'updating screen' }

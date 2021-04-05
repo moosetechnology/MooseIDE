@@ -1,12 +1,10 @@
 "
 Shows an overview of the current Midas state:
-	- All buses
-	- All opened browsers.
+- All opened browsers
+- All buses.
+
 Centralizes bus and browser creation and managment.
 
-Offers two tabs that present differently the same information:
-	- Buses tab uses the buses as roots.
-	- Browsers tab uses the browsers as roots.
 "
 Class {
 	#name : #MiOverviewBrowser,
@@ -80,10 +78,9 @@ MiOverviewBrowser class >> helpMessage [
 MiOverviewBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	(aBuilder item: #'Midas Overview')
-		order: 0;
-		parent: #Moose;
-		withSeparatorAfter;
-		action: [ self runMe ];
+		order: 1 ;
+		parent: #Moose ;
+		action: [ self runMe ] ;
 		help: self helpMessage
 ]
 

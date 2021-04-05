@@ -24,7 +24,7 @@ MiAbstractTelescopeBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	<miBrowsers>
 	^ (aBuilder item: self telescopeMenuItemName)
-		parent: (self toolbarName) ;
+		parent: (self midasBrowserMenuLabel) ;
 		order: 50 ;
 		label: 'Telescope' ;
 		withSeparatorAfter 

@@ -30,7 +30,7 @@ MiMooseModelBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	<miBrowsers>
 	(aBuilder item: #MooseModelBrowser)
-		parent: (self toolbarMetaName);
+		parent: (self metaBrowsersMenuLabel);
 		label: (self title);
 		icon: (self iconNamed: #mooseNavigation);
 		order: 2;

@@ -88,23 +88,34 @@ MiAbstractBrowser class >> isAbstract [
 ]
 
 { #category : #'world menu' }
-MiAbstractBrowser class >> menuCommandMetaOn: aBuilder [
+MiAbstractBrowser class >> menuCommandOn: aBuilder [
+	<worldMenu>
+	(aBuilder item: self midasBrowserMenuLabel)
+		order: 5 ;
+		parent: #Moose ;
+		icon: MooseIcons mooseIcon.
+
+]
+
+{ #category : #'world menu' }
+MiAbstractBrowser class >> menuMetaCommandOn: aBuilder [
+	"need to be a separate method because of #miBrowsers pragma"
 	<worldMenu>
 	<miBrowsers>
-	(aBuilder item: self toolbarMetaName)
+	(aBuilder item: self metaBrowsersMenuLabel)
 		order: 100;
-		parent: (self toolbarName);
+		parent: (self midasBrowserMenuLabel);
 		icon: MooseIcons mooseIcon
 ]
 
 { #category : #'world menu' }
-MiAbstractBrowser class >> menuCommandOn: aBuilder [
-	<worldMenu>
-	(aBuilder item: self toolbarName)
-		order: 2.0;
-		parent: #Moose;
-		withSeparatorAfter;
-		icon: MooseIcons mooseIcon
+MiAbstractBrowser class >> metaBrowsersMenuLabel [
+	^ #Meta
+]
+
+{ #category : #'world menu' }
+MiAbstractBrowser class >> midasBrowserMenuLabel [
+	^ #'Midas Browsers'
 ]
 
 { #category : #'instance creation' }
@@ -133,16 +144,6 @@ MiAbstractBrowser class >> runMeFollowing: aBus [
 		openWithSpec;
 		followBus: aBus;
 		yourself
-]
-
-{ #category : #'world menu' }
-MiAbstractBrowser class >> toolbarMetaName [
-	^ #Meta
-]
-
-{ #category : #'world menu' }
-MiAbstractBrowser class >> toolbarName [
-	^ #'Midas Browsers'
 ]
 
 { #category : #specs }

@@ -27,7 +27,7 @@ MiFameBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	<miBrowsers>
 	(aBuilder item: #Fame)
-		parent: (self toolbarMetaName);
+		parent: (self metaBrowsersMenuLabel);
 		label: (self title);
 		icon: (self iconNamed: #mooseFame);
 		order: 4;

@@ -23,9 +23,10 @@ MiLogBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	<miBrowsers>
 	(aBuilder item: #Logger)
-		parent: self toolbarName ;
+		parent: #Moose ;
 		label: self title ;
-		order: 10 ;
+		order: 4 ;
+		withSeparatorAfter ;
 		help: self helpMessage ;
 		action: [ self runMe ]
 ]

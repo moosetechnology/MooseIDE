@@ -44,9 +44,9 @@ MiQueriesBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	<miBrowsers>
 	(aBuilder item: #Queries)
-		parent: self toolbarName ;
+		parent: #Moose ;
 		label: self title ;
-		order: 20 ;
+		order: 3 ;
 		help: self helpMessage ;
 		action: [ self runMe ]
 ]

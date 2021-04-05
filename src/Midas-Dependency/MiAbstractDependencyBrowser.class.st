@@ -36,7 +36,7 @@ MiAbstractDependencyBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	<miBrowsers>
 	(aBuilder item: self toolbarDependencyName)
-		parent: (self toolbarName) ;
+		parent: (self midasBrowserMenuLabel) ;
 		order: 30 ;
 		label: 'Dependency'
 ]

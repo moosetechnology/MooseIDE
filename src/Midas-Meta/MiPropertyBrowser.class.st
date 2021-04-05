@@ -26,7 +26,7 @@ MiPropertyBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	<miBrowsers>
 	(aBuilder item: #PropertyBrowser)
-		parent: (self toolbarMetaName);
+		parent: (self metaBrowsersMenuLabel);
 		label: (self title);
 		icon: (self iconNamed: #mooseProperties);
 		order: 3;
