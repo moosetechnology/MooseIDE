@@ -42,7 +42,6 @@ Class {
 		'buttonFollow',
 		'buttonHighlight',
 		'buttonPropagate',
-		'menu',
 		'buttonInspect',
 		'buttonHelp',
 		'busButton',

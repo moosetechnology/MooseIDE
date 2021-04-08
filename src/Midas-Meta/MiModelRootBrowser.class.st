@@ -12,7 +12,8 @@ Class {
 	#name : #MiModelRootBrowser,
 	#superclass : #MiAbstractBrowser,
 	#instVars : [
-		'modelPresenter'
+		'modelPresenter',
+		'toolbar'
 	],
 	#category : #'Midas-Meta-ModelRootBrowser'
 }
@@ -30,7 +31,7 @@ MiModelRootBrowser class >> buildCommandsGroupWith: presenterInstance forRoot: r
 { #category : #specs }
 MiModelRootBrowser class >> defaultSpec [
 	^ super defaultSpec
-		add: #menu withConstraints: [ :constraints | constraints height: self toolbarHeight ];
+		add: #toolbar withConstraints: [ :constraints | constraints height: self toolbarHeight ];
 		add: #modelPresenter;
 		yourself
 ]
@@ -86,42 +87,6 @@ MiModelRootBrowser >> followAction [
 	^ self
 ]
 
-{ #category : #menu }
-MiModelRootBrowser >> importMSEMenuItem: item [
-
-	^ self
-		importMenuItem: item
-		description: 'Import mse'
-		icon: #mooseImportMse
-		importer: MooseImportFromMSEForm
-
-]
-
-{ #category : #menu }
-MiModelRootBrowser >> importMenuItem: item description: aString icon: aSymbol importer: importerClass [
-
-	^ item
-		  description: aString;
-		  icon: (self iconNamed: aSymbol);
-		  action: [ 
-			  | importForm |
-			  importForm := importerClass new.
-			  importForm announcer when: MPNewModelInstalled do: [ :ann | 
-					  self updateWith: ann newModel.
-					  self class updateAll ].
-			  importForm openDialogWithSpec ]
-]
-
-{ #category : #menu }
-MiModelRootBrowser >> importStMenuItem: item [
-
-	^ self
-		importMenuItem: item
-		description: 'Import Smalltalk model'
-		icon: #mooseImportSmalltalk
-		importer: MooseImportFromSmalltalkForm
-]
-
 { #category : #initialization }
 MiModelRootBrowser >> initializeList [
 	modelPresenter := self newList
@@ -136,20 +101,18 @@ MiModelRootBrowser >> initializeList [
 ]
 
 { #category : #initialization }
-MiModelRootBrowser >> initializeMenu [
-	menu := self newMenuBar
-		addGroup: [ :group | 
-			group
-				addItem: [ :item | self importMSEMenuItem: item ];
-				addItem: [ :item | self importStMenuItem: item ] ];
-		addItem: [ :item | self refreshMenuItem: item ]
+MiModelRootBrowser >> initializePresenters [
+	super initializePresenters.
+	self initializeToolbar.
+	self initializeList
 ]
 
 { #category : #initialization }
-MiModelRootBrowser >> initializePresenters [
-	super initializePresenters.
-	self initializeMenu.
-	self initializeList
+MiModelRootBrowser >> initializeToolbar [
+
+	toolbar := (MPImportCommand asCommandGroupForSpecContext: self)
+		        asToolbarPresenter beIcons.
+	toolbar addItem: self refreshToolbarButton
 ]
 
 { #category : #accessing }
@@ -162,12 +125,14 @@ MiModelRootBrowser >> modelPresenter [
 	^ modelPresenter
 ]
 
-{ #category : #menu }
-MiModelRootBrowser >> refreshMenuItem: item [
-	^ item
-		description: 'Refresh list';
-		icon: (self iconNamed: #smallUpdate);
-		action: [ modelPresenter updateList ]
+{ #category : #initialization }
+MiModelRootBrowser >> refreshToolbarButton [
+
+	^ SpToolbarButtonPresenter new
+		  icon: (self iconNamed: #smallUpdate);
+		  help: 'Refresh list';
+		  action: [ modelPresenter updateList ];
+		  yourself
 ]
 
 { #category : #accessing }
@@ -181,18 +146,17 @@ MiModelRootBrowser >> selectedObject [
 ]
 
 { #category : #updating }
+MiModelRootBrowser >> updateForNewModel: aModel [
+
+	self class updateAll.
+	modelPresenter selectItem: aModel
+]
+
+{ #category : #updating }
 MiModelRootBrowser >> updateList [
 	self
 		freezeDuring: [ | selected |
 			selected := self selected.
 			modelPresenter updateList.
 			modelPresenter selectItem: selected ]
-]
-
-{ #category : #updating }
-MiModelRootBrowser >> updateWith: aModel [
-
-	modelPresenter
-		updateList;
-		selectItem: aModel
 ]
