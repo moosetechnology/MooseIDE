@@ -1,3 +1,16 @@
+"
+Shows the containment (direct relations for now) between entities.
+Dynamic presentation: clicking on an entity shows the entities it contains.
+
+- Follow:
+Receives MooseObjects.
+
+- Highlight:
+Entities if present.
+
+- Propagate:
+<TODO>
+"
 Class {
 	#name : #MiTreeMapVisualisationBrowser,
 	#superclass : #MiAbstractDependencyBrowser,
@@ -17,10 +30,12 @@ MiTreeMapVisualisationBrowser class >> defaultSpec [
 { #category : #specs }
 MiTreeMapVisualisationBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
+	<miBrowsers>
 	(aBuilder item: #TreeMapVisualisationBrowser)
 		parent: self toolbarDependencyName;
-		label: 'Tree Map Visualisation browser';
+		label: self title;
 		icon: (self iconNamed: #mooseTreeMap);
+		help: self helpMessage;
 		order: 3.0;
 		action: [ self runMe ]
 ]
@@ -31,12 +46,14 @@ MiTreeMapVisualisationBrowser class >> runMe [
 	^ super runMe
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
+MiTreeMapVisualisationBrowser class >> title [
+	^ 'Tree Map Visualization'
+]
+
+{ #category : #testing }
 MiTreeMapVisualisationBrowser >> accept: anObject [
-	anObject ifNil: [ ^ false ].
-	^ (anObject isKindOf: MooseGroup)
-				ifFalse: [ anObject isKindOf: MooseEntity ]
-				ifTrue: [ anObject isNotEmpty ]
+	^ anObject isMooseObject and: [ anObject rootsForTreeMap isNotEmpty ]
 ]
 
 { #category : #accessing }
@@ -49,38 +66,28 @@ MiTreeMapVisualisationBrowser >> diagram: anObject [
 	diagram := anObject
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #actions }
 MiTreeMapVisualisationBrowser >> followAction [
 	(self accept: toSelect)
 		ifFalse: [ ^ self ].
-	(toSelect isOfType: MooseGroup)
-		ifTrue: [ self model rootEntities: toSelect ]
-		ifFalse: [ self model rootEntities: {toSelect} ].
-	self refresh
+	diagram
+		unHighlight;
+		rootEntities: toSelect rootsForTreeMap;
+		run
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #actions }
+MiTreeMapVisualisationBrowser >> highlightAction [
+	diagram highlightEntities: toSelect rootsForTreeMap
+]
+
+{ #category : #initialization }
 MiTreeMapVisualisationBrowser >> initializePresenters [
 	super initializePresenters.
-	self
-		model:
-			(MiTreeMap new
-				theme: self theme;
-				childrenBlock: [ :el | (el usesFamixTrait: TEntityMetaLevelDependency) ifTrue: [ el children ] ifFalse: [ {} ] ]).
-	diagram := self instantiate: SpRoassalPresenter.
+	diagram := self instantiate: MiTreeMap.
 	diagram
-		script: [ :canvas | 
-			canvas color: self theme backgroundColor.
-			self model canvas: canvas ]
-]
-
-{ #category : #'as yet unclassified' }
-MiTreeMapVisualisationBrowser >> refresh [
-	self diagram refresh.
-	self model run.
-]
-
-{ #category : #'as yet unclassified' }
-MiTreeMapVisualisationBrowser >> title [
-	^ 'Tree Map Visualisation Browser'
+		childrenBlock: [ :el | 
+			(el usesFamixTrait: TEntityMetaLevelDependency)
+				ifTrue: [ el children ]
+				ifFalse: [ {} ] ]
 ]

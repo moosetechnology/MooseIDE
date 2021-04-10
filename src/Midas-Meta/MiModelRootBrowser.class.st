@@ -1,28 +1,17 @@
 "
-Please comment me using the following template inspired by Class Responsibility Collaborator (CRC) design:
+** Midas entrypoint **
+Shows installed models and allows model installation.
 
-For the Class part:  State a one line summary. For example, ""I represent a paragraph of text"".
+- Follow:
+Nothing to do.
 
-For the Responsibility part: Three sentences about my main responsibilities - what I do, what I know.
+- Highlight:
+<TODO> Could highlight the model containing the received entity.
 
-For the Collaborators Part: State my main collaborators and one line about how I interact with them. 
+- Propagate:
+The selected model.
 
-Public API and Key Messages
-
-- message one   
-- message two 
-- (for bonus points) how to create instances.
-
-   One simple example is simply gorgeous.
- 
-Internal Representation and Key Implementation Points.
-
-    Instance Variables
-	modelPresenter:		<Object>
-	searchField:		<Object>
-
-
-    Implementation Points
+<TODO> Add features available in MoosePanel.
 "
 Class {
 	#name : #MiModelRootBrowser,
@@ -33,10 +22,14 @@ Class {
 	#category : #'Midas-Meta-ModelRootBrowser'
 }
 
-{ #category : #specs }
+{ #category : #'world menu' }
 MiModelRootBrowser class >> buildCommandsGroupWith: presenterInstance forRoot: rootCommandGroup [
-	rootCommandGroup register: (MiPropagateCommand forSpecContext: presenterInstance).
-	rootCommandGroup register: (StInspectorInspectSelectedCommand forSpecContext: presenterInstance)
+	super
+		buildCommandsGroupWith: presenterInstance
+		forRoot: rootCommandGroup.
+	rootCommandGroup
+		register: (MiModelExportCommand asCommandGroupWith: presenterInstance);
+		register: (MiModelUtilityCommand asCommandGroupWith: presenterInstance)
 ]
 
 { #category : #specs }
@@ -50,12 +43,19 @@ MiModelRootBrowser class >> defaultSpec [
 { #category : #specs }
 MiModelRootBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
+	<miBrowsers>
 	(aBuilder item: #ModelRootBrowser)
 		parent: self toolbarMetaName;
-		label: 'Model root browser';
+		label: self title;
 		icon: (self iconNamed: #mooseNavigation);
 		order: 1.0;
+		help: self helpMessage;
 		action: [ self runMe ]
+]
+
+{ #category : #'instance creation' }
+MiModelRootBrowser class >> newModel [
+	^ MiModelRootBrowserModel new
 ]
 
 { #category : #specs }
@@ -64,104 +64,121 @@ MiModelRootBrowser class >> runMe [
 	^ super runMe
 ]
 
-{ #category : #accessing }
+{ #category : #initialization }
+MiModelRootBrowser class >> title [
+	^ 'Model root'
+]
+
+{ #category : #'updating screen' }
+MiModelRootBrowser class >> updateAll [
+	self allInstances
+		select: [ :browser | browser window isOpen ]
+		thenDo: [ :browser | browser updateList ]
+]
+
+{ #category : #specs }
+MiModelRootBrowser class >> windowSize [
+	^ 600 @ 400
+]
+
+{ #category : #testing }
 MiModelRootBrowser >> accept: anObject [
 	^ false
 ]
 
-{ #category : #initialization }
-MiModelRootBrowser >> addModel: mooseModel [
-	"need to refresh the list"
-
-	modelPresenter items: MooseModel root
-]
-
-{ #category : #'as yet unclassified' }
+{ #category : #actions }
 MiModelRootBrowser >> followAction [
 	^ self
 ]
 
+{ #category : #menu }
+MiModelRootBrowser >> importMSEMenuItem: item [
+	^ item
+		description: 'Import mse';
+		icon: (self iconNamed: #mooseImportMse);
+		action: [ (MiModelImporterFromMSE on: self) openModalWithSpec.
+			self class updateAll ]
+]
+
+{ #category : #menu }
+MiModelRootBrowser >> importStMenuItem: item [
+	^ item
+		description: 'Import Smalltalk model';
+		icon: (self iconNamed: #mooseImportSmalltalk);
+		action: [ (MiModelImporterFromPharo on: self) openModalWithSpec.
+			self class updateAll ]
+]
+
 { #category : #initialization }
 MiModelRootBrowser >> initializeList [
-	modelPresenter := self newList.
-	modelPresenter contextMenu: [ self rootCommandsGroup asMenuPresenter ].
-	modelPresenter
+	modelPresenter := self newList
 		items: MooseModel root;
-		display: [ :mooseModel | mooseModel name ]
+		display: [ :mooseModel | mooseModel name ];
+		contextMenu: [ self rootCommandsGroup asMenuPresenter ];
+		whenSelectionChangedDo: [ :selected | 
+			model selected: selected selectedItem.
+			self isFreeze
+				ifFalse:
+					[ self buses do: [ :bus | bus globallySelect: selected selectedItem ] ] ]
+]
+
+{ #category : #initialization }
+MiModelRootBrowser >> initializeMenu [
+	menu := self newMenuBar
+		addGroup: [ :group | 
+			group
+				addItem: [ :item | self importMSEMenuItem: item ];
+				addItem: [ :item | self importStMenuItem: item ] ];
+		addItem: [ :item | self refreshMenuItem: item ]
 ]
 
 { #category : #initialization }
 MiModelRootBrowser >> initializePresenters [
 	super initializePresenters.
-	model := MiModelRootBrowserModel new.
-	menu := self mainMenu.
-	self initializeList.
-	modelPresenter
-		whenSelectionChangedDo: [ :selected | 
-			model selected: selected selectedItem.
-			self application globallySelect: selected selectedItem ]
+	self initializeMenu.
+	self initializeList
 ]
 
-{ #category : #initialization }
-MiModelRootBrowser >> initializeWindow: aWindowPresenter [
-	super initializeWindow: aWindowPresenter.
-	aWindowPresenter initialExtent: 600 @ 400
-]
-
-{ #category : #initialization }
-MiModelRootBrowser >> mainMenu [
-	| aMenu |
-	aMenu := self newMenuBar
-		addGroup: [ :group | 
-			group
-				addItem: [ :item | 
-					item
-						name: nil;
-						description: 'Import mse';
-						icon: (self iconNamed: #mooseImportMse);
-						action: [ [ | mooseModel |
-							mooseModel := MooseModel new.
-							mooseModel importFromMSE.
-							mooseModel notEmpty
-								ifTrue: [ mooseModel install.
-									self addModel: mooseModel ] ] fork ] ];
-				addItem: [ :item | 
-					item
-						name: nil;
-						description: 'Import St model';
-						icon: (self iconNamed: #mooseImportSmalltalk);
-						action: [ (MooseImportFromSmalltalkImageWizard new
-								open;
-								mooseModel) ifNotNil: [ :mooseModel | self addModel: mooseModel ] ] ] ].
-	^ aMenu
-]
-
-{ #category : #initialization }
+{ #category : #accessing }
 MiModelRootBrowser >> miSelectedItem [
 	^ modelPresenter selection selectedItem
 ]
 
-{ #category : #initialization }
+{ #category : #accessing }
 MiModelRootBrowser >> modelPresenter [
 	^ modelPresenter
 ]
 
-{ #category : #initialization }
+{ #category : #menu }
+MiModelRootBrowser >> refreshMenuItem: item [
+	^ item
+		description: 'Refresh list';
+		icon: (self iconNamed: #smallUpdate);
+		action: [ modelPresenter updateList ]
+]
+
+{ #category : #accessing }
 MiModelRootBrowser >> selected [
 	^ model selected
 ]
 
-{ #category : #initialization }
+{ #category : #accessing }
 MiModelRootBrowser >> selectedObject [
 	^ modelPresenter selection selectedItem
 ]
 
-{ #category : #initialization }
-MiModelRootBrowser >> setModelPresenterSelection [
-	modelPresenter selectItem: modelPresenter roots first
+{ #category : #updating }
+MiModelRootBrowser >> updateList [
+	self
+		freezeDuring: [ | selected |
+			selected := self selected.
+			modelPresenter updateList.
+			modelPresenter selectItem: selected ]
 ]
 
-{ #category : #initialization }
-MiModelRootBrowser >> title [
-	^ 'Model root Browser'
+{ #category : #updating }
+MiModelRootBrowser >> updateWith: aModel [
+	modelPresenter
+		updateList;
+		selectItem: aModel
 ]

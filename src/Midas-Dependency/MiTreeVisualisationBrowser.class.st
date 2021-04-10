@@ -1,29 +1,14 @@
 "
-Please comment me using the following template inspired by Class Responsibility Collaborator (CRC) design:
+Shows the containment tree (direct relations for now) between entities, as a roassal visualization.
 
-For the Class part:  State a one line summary. For example, ""I represent a paragraph of text"".
+- Follow:
+Receives a MooseGroup.
 
-For the Responsibility part: Three sentences about my main responsibilities - what I do, what I know.
+- Highlight:
+Entities if present.
 
-For the Collaborators Part: State my main collaborators and one line about how I interact with them. 
-
-Public API and Key Messages
-
-- message one   
-- message two 
-- (for bonus points) how to create instances.
-
-   One simple example is simply gorgeous.
- 
-Internal Representation and Key Implementation Points.
-
-    Instance Variables
-	noteBook:		<Object>
-	sourceCodePage:		<Object>
-	sourceText:		<Object>
-
-
-    Implementation Points
+- Propagate:
+The selected entity if there is one.
 "
 Class {
 	#name : #MiTreeVisualisationBrowser,
@@ -44,11 +29,13 @@ MiTreeVisualisationBrowser class >> defaultSpec [
 { #category : #specs }
 MiTreeVisualisationBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
+	<miBrowsers>
 	(aBuilder item: #TreeVisualisationBrowser)
 		parent: self toolbarDependencyName;
-		label: 'Tree Visualisation browser';
+		label: self title;
 		order: 2.0;
 		icon: (self iconNamed: #mooseTree);
+		help: self helpMessage;
 		action: [ self runMe ]
 ]
 
@@ -59,80 +46,41 @@ MiTreeVisualisationBrowser class >> runMe [
 ]
 
 { #category : #'as yet unclassified' }
+MiTreeVisualisationBrowser class >> title [
+	^ 'Tree Visualisation'
+]
+
+{ #category : #testing }
 MiTreeVisualisationBrowser >> accept: anObject [
-	^ anObject isKindOf: MooseObject
+	^ anObject isMooseObject
 ]
 
-{ #category : #accessing }
-MiTreeVisualisationBrowser >> diagram [
-	^ diagram
-]
-
-{ #category : #accessing }
-MiTreeVisualisationBrowser >> diagram: anObject [
-	diagram := anObject
-]
-
-{ #category : #'as yet unclassified' }
+{ #category : #actions }
 MiTreeVisualisationBrowser >> followAction [
-	(self accept: toSelect)
+	((self accept: toSelect) and: [ toSelect ~= diagram selected ])
 		ifFalse: [ ^ self ].
 	(toSelect isOfType: MooseGroup)
-		ifTrue: [ self model entities: toSelect ]
-		ifFalse: [ self model entities: {toSelect} ].
-	self refresh
+		ifTrue: [ diagram entities: toSelect ]
+		ifFalse: [ diagram entities: {toSelect} ].
+	diagram
+		unHighlight;
+		run
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #actions }
+MiTreeVisualisationBrowser >> highlightAction [
+	(toSelect isOfType: MooseGroup)
+		ifFalse: [ toSelect := {toSelect} ].
+	diagram highlightEntities: toSelect
+]
+
+{ #category : #initialization }
 MiTreeVisualisationBrowser >> initializePresenters [
 	super initializePresenters.
-	self model: MiTreeVisualisationBrowserModel new.
-	diagram := self instantiate: SpRoassalPresenter.
-	diagram
-		script: [ :canvas | canvas color: self theme backgroundColor ];
-		refresh
+	diagram := self instantiate: MiTreeVisualisation
 ]
 
-{ #category : #'as yet unclassified' }
-MiTreeVisualisationBrowser >> refresh [
-	diagram
-		script: [ :canvas | 
-			| boxes |
-			canvas color: self theme backgroundColor.
-			boxes := self model entities
-				collect: [ :cls | 
-					| box label composite |
-					box := RSBox new
-						size: 100;
-						color: self theme selectionColor;
-						yourself.
-					label := RSLabel new
-						text: cls name;
-						color: self theme textColor;
-						yourself.
-					RSLocation new
-						above;
-						move: box on: label.
-					composite := RSComposite new.
-					composite
-						shapes: {label . box};
-						model: cls.
-					composite @ RSDraggable.
-					composite ]
-				as: RSGroup.
-			canvas addAll: boxes.
-			RSEdgeBuilder line
-				canvas: canvas;
-				shapes: boxes;
-				withVerticalAttachPoint;
-				connectToAll: [ :a | (a usesFamixTrait: TEntityMetaLevelDependency) ifTrue: [ a children ] ifFalse: [ {} ] ].
-			RSTreeLayout on: boxes.
-			canvas @ RSCanvasController.
-			canvas ];
-		refresh
-]
-
-{ #category : #'as yet unclassified' }
-MiTreeVisualisationBrowser >> title [
-	^ 'Tree Visualisation Browser'
+{ #category : #accessing }
+MiTreeVisualisationBrowser >> miSelectedItem [
+	^ diagram selected
 ]

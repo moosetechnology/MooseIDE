@@ -4,7 +4,7 @@ Class {
 	#category : #'Midas-Famix-Browser'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #testing }
 MiAbstractFamixBrowser class >> isAbstract [ 
 	^ self == MiAbstractFamixBrowser 
 ]
@@ -12,6 +12,7 @@ MiAbstractFamixBrowser class >> isAbstract [
 { #category : #'as yet unclassified' }
 MiAbstractFamixBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
+	<miBrowsers>
 	(aBuilder item: #MidasFamixBrowser)
 		parent: self toolbarName;
 		label: 'Famix'

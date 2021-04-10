@@ -1,3 +1,15 @@
+"
+Shows dead methods contained in an entity.
+
+- Follow: 
+Receives a MooseEntity.
+
+- Highlight:
+<TODO> Methods if present.
+
+- Propagate:
+<TODO>
+"
 Class {
 	#name : #MiNonUsedMethodBrowser,
 	#superclass : #MiAbstractFamixBrowser,
@@ -25,10 +37,12 @@ MiNonUsedMethodBrowser class >> launchOn: anObject [
 { #category : #specs }
 MiNonUsedMethodBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
+	<miBrowsers>
 	(aBuilder item: #NonUsedMethodBrowser)
 		parent: self toolbarFamixName;
-		label: 'Non used method browser';
+		label: self title;
 		order: 2.0;
+		help: self helpMessage;
 		action: [ self runMe ]
 ]
 
@@ -36,6 +50,11 @@ MiNonUsedMethodBrowser class >> menuCommandOn: aBuilder [
 MiNonUsedMethodBrowser class >> runMe [
 	<script>
 	^ super runMe
+]
+
+{ #category : #TOREMOVE }
+MiNonUsedMethodBrowser class >> title [
+	^ 'Dead methods'
 ]
 
 { #category : #TOREMOVE }
@@ -85,6 +104,7 @@ MiNonUsedMethodBrowser >> followAction [
 	((self accept: toSelect) and: (self needUpdate: toSelect))
 		ifFalse: [ ^ self ].
 	model selected: toSelect.
+	self updateWindowTitle.
 	self refresh
 ]
 
@@ -125,8 +145,10 @@ MiNonUsedMethodBrowser >> selected: aFamixWithMethod [
 ]
 
 { #category : #TOREMOVE }
-MiNonUsedMethodBrowser >> title [
-	^ 'Dead methods Browser'
+MiNonUsedMethodBrowser >> updateWindowTitle [
+	self
+		withWindowDo:
+			[ :window | window title: self class title , ' in ' , self selected name ]
 ]
 
 { #category : #TOREMOVE }

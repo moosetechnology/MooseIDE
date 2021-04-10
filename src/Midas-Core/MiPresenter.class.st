@@ -36,6 +36,11 @@ MiPresenter class >> owner: anOwningPresenter on: aDomainObject [
 		model: aDomainObject
 ]
 
+{ #category : #specs }
+MiPresenter class >> tableLineHeight [
+	^ self labelHeight + 5
+]
+
 { #category : #testing }
 MiPresenter >> isMiBrowser [
 	^ false

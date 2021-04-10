@@ -1,3 +1,15 @@
+"
+Shows dependencies between entities (using #queryIncomingDependencies and #queryOutgoingDependencies).
+
+- Follow: 
+Accepts a MooseGroup.
+
+- Highlight:
+Entites if present.
+
+- Propagate:
+The selected entity if there is one.
+"
 Class {
 	#name : #MiDependencyBrowser,
 	#superclass : #MiAbstractDependencyBrowser,
@@ -17,11 +29,13 @@ MiDependencyBrowser class >> defaultSpec [
 { #category : #'world menu' }
 MiDependencyBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
+	<miBrowsers>
 	(aBuilder item: #DependencyVisualisationBrowser)
 		parent: self toolbarDependencyName;
-		label: 'Dependency Visualisation browser';
+		label: self title;
 		order: 0;
 		icon: (self iconNamed: #mooseTree);
+		help: self helpMessage;
 		action: [ self runMe ]
 ]
 
@@ -31,49 +45,45 @@ MiDependencyBrowser class >> runMe [
 	^ super runMe
 ]
 
-{ #category : #acccessing }
+{ #category : #TOREMOVE }
+MiDependencyBrowser class >> title [
+	^ 'Dependency'
+]
+
+{ #category : #testing }
 MiDependencyBrowser >> accept: anObject [
-	^ anObject isCollection and: [ anObject allSatisfy: [ :a | a usesFamixTrait: TDependencyQueries ] ]
+	^ anObject isCollection
+		and: [ anObject
+				anySatisfy: [ :a | a usesFamixTrait: TEntityMetaLevelDependency ] ]
 ]
 
-{ #category : #accessing }
-MiDependencyBrowser >> diagram [
-	^ diagram
-]
-
-{ #category : #accessing }
-MiDependencyBrowser >> diagram: aDiagram [
-	diagram := aDiagram
-]
-
-{ #category : #acccessing }
+{ #category : #actions }
 MiDependencyBrowser >> followAction [
 	(self accept: toSelect)
 		ifFalse: [ ^ self ].
 	(toSelect isOfType: MooseGroup)
-		ifTrue: [ self model entities: toSelect ]
-		ifFalse: [ self model entities: {toSelect} ].
-	self refresh
+		ifFalse: [ toSelect := {toSelect} ].
+	diagram
+		entities:
+			(toSelect
+				select: [ :a | a usesFamixTrait: TEntityMetaLevelDependency ]);
+		run
 ]
 
-{ #category : #TOREMOVE }
+{ #category : #actions }
+MiDependencyBrowser >> highlightAction [
+	(toSelect isOfType: MooseGroup)
+		ifFalse: [ toSelect := {toSelect} ].
+	diagram highlightEntities: toSelect
+]
+
+{ #category : #initialization }
 MiDependencyBrowser >> initializePresenters [
 	super initializePresenters.
-	self model: (MiDependencyVisualization new theme: self theme).
-	diagram := self instantiate: SpRoassalPresenter.
-	diagram
-		script: [ :canvas | 
-			canvas color: self theme backgroundColor.
-			self model canvas: canvas ]
+	diagram := self instantiate: MiDependencyVisualization
 ]
 
-{ #category : #TOREMOVE }
-MiDependencyBrowser >> refresh [
-	self diagram refresh.
-	self model run.
-]
-
-{ #category : #TOREMOVE }
-MiDependencyBrowser >> title [
-	^ 'Dependency Browser'
+{ #category : #accessing }
+MiDependencyBrowser >> miSelectedItem [
+	^ diagram selected
 ]

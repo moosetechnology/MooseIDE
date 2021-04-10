@@ -7,6 +7,12 @@ New Tools for Moose
 
 ## Installation
 
+### From the Pharo Launcher
+
+![downloadMidas](https://user-images.githubusercontent.com/6225039/83118958-5bf9e680-a0cf-11ea-8a17-66d101995d27.gif)
+
+### From a Pharo Image
+
 ```smalltalk
 Metacello new
   baseline: 'Midas';

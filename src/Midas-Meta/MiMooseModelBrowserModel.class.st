@@ -9,9 +9,16 @@ Class {
 }
 
 { #category : #accessing }
+MiMooseModelBrowserModel class >> model: aMooseModel [
+	^ self new
+		model: aMooseModel;
+		yourself
+]
+
+{ #category : #accessing }
 MiMooseModelBrowserModel >> initialize [
-	super initialize.
-	MooseModel root ifEmpty: [ model := MooseModel new ] ifNotEmpty: [ model := MooseModel root anyOne ]
+	super initialize
+	"MooseModel root ifEmpty: [ model := MooseModel new ] ifNotEmpty: [ model := MooseModel root anyOne ]"
 ]
 
 { #category : #accessing }

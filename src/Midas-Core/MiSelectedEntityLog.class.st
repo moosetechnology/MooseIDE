@@ -13,8 +13,8 @@ MiSelectedEntityLog class >> entity: aSelectedEntity [
 ]
 
 { #category : #activation }
-MiSelectedEntityLog >> activate [
-	self application refreshBrowsersWith: self entity
+MiSelectedEntityLog >> activateIn: anApplication [
+	anApplication refreshBrowsersWith: self entity
 ]
 
 { #category : #accessing }
@@ -24,12 +24,13 @@ MiSelectedEntityLog >> entity [
 
 { #category : #accessing }
 MiSelectedEntityLog >> entity: anObject [
-	entity := anObject.
-	self activate
+	entity := anObject
 ]
 
-{ #category : #printing }
+{ #category : #accessing }
 MiSelectedEntityLog >> printOn: aStream [
 	aStream
-		nextPutAll: entity class name
+		nextPutAll: 'log(';
+		nextPutAll: entity class name;
+		nextPutAll: ')'
 ]

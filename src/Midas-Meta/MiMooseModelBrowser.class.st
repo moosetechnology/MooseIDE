@@ -1,3 +1,16 @@
+"
+Shows entities in a MooseModel grouped by entity type.
+
+- Follow:
+Receives a MooseModel.
+
+- Highlight:
+<TODO>
+
+- Propagate:
+Selected entities of there are some.
+<TODO> Improvement: not a collection but a mooseGroup.
+"
 Class {
 	#name : #MiMooseModelBrowser,
 	#superclass : #MiAbstractBrowser,
@@ -7,12 +20,6 @@ Class {
 	],
 	#category : #'Midas-Meta-MooseModelBrowser'
 }
-
-{ #category : #specs }
-MiMooseModelBrowser class >> buildCommandsGroupWith: presenterInstance forRoot: rootCommandGroup [
-	rootCommandGroup register: (MiPropagateCommand forSpecContext: presenterInstance).
-	rootCommandGroup register: (StInspectorInspectSelectedCommand forSpecContext: presenterInstance)
-]
 
 { #category : #specs }
 MiMooseModelBrowser class >> defaultSpec [
@@ -26,12 +33,26 @@ MiMooseModelBrowser class >> defaultSpec [
 { #category : #specs }
 MiMooseModelBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
+	<miBrowsers>
 	(aBuilder item: #MooseModelBrowser)
 		parent: self toolbarMetaName;
-		label: 'Moose Model browser';
+		label: self title;
 		icon: (self iconNamed: #mooseNavigation);
 		order: 2.0;
+		help: self helpMessage;
 		action: [ self runMe ]
+]
+
+{ #category : #'instance creation' }
+MiMooseModelBrowser class >> mostRecentModel [
+	^ self currentApplication defaultBus logger mostRecentEntity
+		ifNotNil: [ :entity | entity mooseModel ]
+		ifNil: [ MooseModel new ]
+]
+
+{ #category : #'instance creation' }
+MiMooseModelBrowser class >> newModel [
+	^ MiMooseModelBrowserModel model: self mostRecentModel
 ]
 
 { #category : #specs }
@@ -40,42 +61,58 @@ MiMooseModelBrowser class >> runMe [
 	^ super runMe
 ]
 
-{ #category : #accessing }
+{ #category : #initialization }
+MiMooseModelBrowser class >> title [
+	^ 'MooseModel'
+]
+
+{ #category : #specs }
+MiMooseModelBrowser class >> windowSize [
+	^ 600 @ 400
+]
+
+{ #category : #testing }
 MiMooseModelBrowser >> accept: anObject [
 	^ anObject isKindOf: MooseModel
+]
+
+{ #category : #initialization }
+MiMooseModelBrowser >> childrenOf: class [
+	^ class isFM3Class
+		ifTrue: [ class implementingClass isTrait
+				ifTrue: [ {} ]
+				ifFalse: [ (model model allWithSubTypesOf: class implementingClass)
+						sorted: #name ascending ] ]
+		ifFalse: [ {} ]
 ]
 
 { #category : #initialization }
 MiMooseModelBrowser >> computeModelPresenterRoot [
 	modelPresenter
 		roots:
-			((model model metamodel classes reject: [ :a | a implementingClass isTrait or: [ (model model allWithSubTypesOf: a implementingClass) isEmpty ] ])
+			((model model metamodel classes
+				reject: [ :a | 
+					a implementingClass isTrait
+						or: [ (model model allWithSubTypesOf: a implementingClass) isEmpty ] ])
 				sorted: #name ascending)
 ]
 
-{ #category : #initialization }
+{ #category : #actions }
 MiMooseModelBrowser >> followAction [
 	((self needUpdate: toSelect) and: [ self accept: toSelect ])
 		ifFalse: [ ^ self ].
 	model model: toSelect.
-	self computeModelPresenterRoot
+	self computeModelPresenterRoot.
+	self updateWindowTitle
 ]
 
 { #category : #initialization }
 MiMooseModelBrowser >> initializePresenters [
 	super initializePresenters.
-	model := MiMooseModelBrowserModel new.
 	self initializeTable.
 	"self initializeSearchField."
 	modelPresenter
-		whenSelectionChangedDo: [ :selected | 
-			selected selectedItems size = 1
-				ifTrue: [ selected selectedItem isMooseEntity
-						ifTrue: [ model selected: selected selectedItem.
-							self application globallySelect: selected selectedItem ] ]
-				ifFalse: [ (selected selectedItems allSatisfy: #isMooseEntity)
-						ifTrue: [ model selected: selected selectedItems.
-							self application globallySelect: (MooseGroup withAll: selected selectedItems) ] ] ]
+		whenSelectionChangedDo: [ :selected | self selectionAction: selected ]
 ]
 
 { #category : #initialization }
@@ -102,45 +139,51 @@ MiMooseModelBrowser >> initializeTable [
 						yourself);
 				addColumn: (SpStringTableColumn evaluated: #name);
 				yourself);
-		children: [ :class | 
-			class isFM3Class
-				ifTrue: [ class implementingClass isTrait ifTrue: [ {} ] ifFalse: [ (model model allWithSubTypesOf: class implementingClass) sorted: #name ascending ] ]
-				ifFalse: [ {} ] ];
+		children: [ :class | self childrenOf: class ];
 		beResizable;
-		beMultipleSelection.
-	modelPresenter contextMenu: [ self rootCommandsGroup asMenuPresenter ].
+		beMultipleSelection;
+		lazilyComputeChildren;
+		contextMenu: [ self rootCommandsGroup asMenuPresenter ].
 	self computeModelPresenterRoot
 ]
 
-{ #category : #initialization }
-MiMooseModelBrowser >> initializeWindow: aWindowPresenter [
-	super initializeWindow: aWindowPresenter.
-	aWindowPresenter initialExtent: 600 @ 400
-]
-
-{ #category : #initialization }
+{ #category : #accessing }
 MiMooseModelBrowser >> miSelectedItem [
 	^ modelPresenter selection selectedItem
 ]
 
-{ #category : #initialization }
+{ #category : #accessing }
 MiMooseModelBrowser >> modelPresenter [
 	^ modelPresenter
 ]
 
-{ #category : #initialization }
+{ #category : #testing }
 MiMooseModelBrowser >> needUpdate: anEntity [
 	^ model selected ~= anEntity
 ]
 
-{ #category : #initialization }
+{ #category : #accessing }
 MiMooseModelBrowser >> selected [
 	^ model selected
 ]
 
-{ #category : #initialization }
+{ #category : #accessing }
 MiMooseModelBrowser >> selectedObject [
 	^ modelPresenter selection selectedItem
+]
+
+{ #category : #actions }
+MiMooseModelBrowser >> selectionAction: selection [
+	| entities |
+	entities := (MooseGroup withAll: selection selectedItems)
+		select: #isMooseEntity.
+	entities ifEmpty: [ ^ self ].
+	model
+		selected:
+			(entities size = 1
+				ifTrue: [ entities anyOne ]
+				ifFalse: [ entities ]).
+	self buses do: [ :bus | bus globallySelect: model selected ]
 ]
 
 { #category : #initialization }
@@ -148,7 +191,9 @@ MiMooseModelBrowser >> setModelPresenterSelection [
 	modelPresenter selectItem: modelPresenter roots first
 ]
 
-{ #category : #initialization }
-MiMooseModelBrowser >> title [
-	^ 'MooseModel Browser'
+{ #category : #actions }
+MiMooseModelBrowser >> updateWindowTitle [
+	self
+		withWindowDo:
+			[ :window | window title: self class title , ' (' , model model name , ')' ]
 ]

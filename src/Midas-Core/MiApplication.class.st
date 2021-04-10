@@ -2,7 +2,7 @@ Class {
 	#name : #MiApplication,
 	#superclass : #SpApplication,
 	#instVars : [
-		'logger'
+		'buses'
 	],
 	#classVars : [
 		'Current'
@@ -10,50 +10,99 @@ Class {
 	#category : #'Midas-Core-Application'
 }
 
-{ #category : #accessing }
+{ #category : #'instance creation' }
 MiApplication class >> current [
 	^ Current ifNil: [ Current := self new ]
 ]
 
 { #category : #accessing }
+MiApplication class >> defaultBusName [
+	^ 'Default'
+]
+
+{ #category : #'instance creation' }
 MiApplication class >> reset [
 	<script>
 	Current := nil
 ]
 
-{ #category : #documentation }
+{ #category : #accessing }
 MiApplication >> browsers [
 	^ self windows collect: #presenter thenSelect: #isMiBrowser
 ]
 
-{ #category : #documentation }
-MiApplication >> globallySelect: anEntity [
-	self logger globallySelect: anEntity
+{ #category : #buses }
+MiApplication >> busNamed: aName [
+	^ buses
+		detect: [ :b | b name = aName ]
+		ifNone: [ | bus |
+			bus := MiBus named: aName.
+			buses add: bus.
+			self updateOverviewBrowsers.
+			bus ]
 ]
 
-{ #category : #documentation }
+{ #category : #accessing }
+MiApplication >> buses [
+	^ buses
+]
+
+{ #category : #buses }
+MiApplication >> defaultBus [
+	^ self busNamed: self class defaultBusName
+]
+
+{ #category : #buses }
+MiApplication >> deleteBus: aBus [
+	aBus isDefault
+		ifTrue: [ ^ self ].
+	buses remove: aBus ifAbsent: [  ].
+	self updateOverviewBrowsers
+]
+
+{ #category : #buses }
+MiApplication >> deleteBusNamed: aName [
+	buses
+		detect: [ :bus | bus name = aName ]
+		ifFound: [ :bus | self deleteBus: bus ]
+]
+
+{ #category : #initialization }
 MiApplication >> initialize [
 	super initialize.
-	self logger: MiLogger new
+	buses := OrderedCollection new
+		add: (MiBus named: self class defaultBusName);
+		yourself
 ]
 
-{ #category : #documentation }
-MiApplication >> logger [
-	^ logger
+{ #category : #'private showing' }
+MiApplication >> open: aPresenter withSpecLayout: aSpecLayout using: aWindowClass [
+	super
+		open: aPresenter
+		withSpecLayout: aSpecLayout
+		using: aWindowClass.
+	self updateOverviewBrowsers
 ]
 
-{ #category : #documentation }
-MiApplication >> logger: anObject [
-	logger := anObject.
-	logger application: self
-]
-
-{ #category : #documentation }
-MiApplication >> refreshBrowsersWith: anEntity [
-	self browsers do: [ :browser | browser selectEntity: anEntity ]
-]
-
-{ #category : #documentation }
+{ #category : #actions }
 MiApplication >> start [
 	"we will see"
+]
+
+{ #category : #actions }
+MiApplication >> updateLogBrowsers [
+	self flag: 'To remove ?'.
+	self browsers
+		select: [ :browser | browser class == MiLogBrowser ]
+		thenDo: [ :logBrowser | 
+			self buses do: [ :bus | logBrowser followBus: bus ].
+			logBrowser update ]
+]
+
+{ #category : #actions }
+MiApplication >> updateOverviewBrowsers [
+	(self windows
+		collect: #presenter
+		thenSelect: [ :presenter | presenter class == MiOverviewBrowser ])
+		do: #update
 ]

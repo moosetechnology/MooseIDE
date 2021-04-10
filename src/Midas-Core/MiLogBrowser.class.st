@@ -1,39 +1,73 @@
 "
-A browser to show the content of the MiLogger
+Shows logs of the entities that are propagated.
+Proposes edition & removal of logs.
+Can propagate previous logs.
+
+- Follow:
+Accepts MooseObjects.
+
+- Highlght:
+<TODO> Logs containing the received object.
+
+- Propagate:
+MooseObjects.
 "
 Class {
 	#name : #MiLogBrowser,
 	#superclass : #MiAbstractBrowser,
 	#instVars : [
-		'entryList'
+		'toolbar',
+		'selectedItem',
+		'logsLists'
 	],
-	#category : #'Midas-Core-Browser'
+	#category : #'Midas-Core-Logger'
 }
 
 { #category : #'world menu' }
 MiLogBrowser class >> defaultSpec [
 	^ super defaultSpec
-		add: #entryList;
+		"add: #toolbar
+			withConstraints: [ :constraints | constraints height: self toolbarHeight ];"
+		add: #logsLists;
 		yourself
 ]
 
 { #category : #'world menu' }
 MiLogBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
+	<miBrowsers>
 	(aBuilder item: #Logger)
 		parent: self toolbarName;
-		label: 'Log browser';
+		label: self title;
 		order: 1.0;
+		help: self helpMessage;
 		action: [ self runMe ]
 ]
 
 { #category : #'world menu' }
 MiLogBrowser class >> runMe [
 	<script>
-	^ self new
+	| browser |
+	browser := self new
+		initializeBuses: self currentApplication buses;
 		openWithSpec;
-		yourself
+		yourself.
+	^ browser
+]
 
+{ #category : #'world menu' }
+MiLogBrowser class >> runMeFollowing: aBus [
+	| browser |
+	browser := self new
+		initializeBuses: {aBus};
+		openWithSpec;
+		yourself.
+	^ browser
+]
+
+{ #category : #initialization }
+MiLogBrowser class >> title [
+	^ 'Logger'
 ]
 
 { #category : #testing }
@@ -42,25 +76,96 @@ MiLogBrowser >> accept: anObject [
 ]
 
 { #category : #actions }
+MiLogBrowser >> cleanAllLoggers [
+	self logsList presenters
+		do: [ :presenter | presenter bus logger clean ].
+	self update
+]
+
+{ #category : #actions }
 MiLogBrowser >> followAction [
-	entryList updateList
+	self update
+]
+
+{ #category : #buses }
+MiLogBrowser >> followBus: aBus [
+	super followBus: aBus.
+	self update
+]
+
+{ #category : #initialization }
+MiLogBrowser >> initializeActionButtons [
+	buttonPropagate := ((MiPropagateCommand forContext: self)
+		doNotFreezeBrowser;
+		asSpecCommand) asButtonPresenter.
+	buttonInspect := (MiInspectCommand forSpecContext: self)
+		name: '';
+		iconName: #smallInspectIt;
+		asButtonPresenter
+]
+
+{ #category : #buses }
+MiLogBrowser >> initializeBuses: someBuses [
+	buses := Set new.
+	someBuses do: [ :bus | super followBus: bus ]
+]
+
+{ #category : #initialization }
+MiLogBrowser >> initializeLogsList [
+	logsLists := self newNullPresenter
 ]
 
 { #category : #initialization }
 MiLogBrowser >> initializePresenters [
 	super initializePresenters.
-	entryList := self newList.
-	self model: self application logger.
-	entryList items: self model logs.
-	entryList whenSelectionChangedDo: [ :selection | self globallySelect: self miSelectedItem ]
-]
-
-{ #category : #accessing }
-MiLogBrowser >> logger [
-	^ self application logger
+	"self initializeToolBar."
+	self initializeLogsList
 ]
 
 { #category : #initialization }
+MiLogBrowser >> initializeToolBar [
+	toolbar := self newToolBar
+		addItem:
+			(SpToolBarButtonPresenter new
+				label: 'Clear all';
+				icon: (self theme iconNamed: #smallDelete);
+				help: 'Remove all loggers entries';
+				action: [ self cleanAllLoggers ];
+				yourself);
+		yourself
+]
+
+{ #category : #accessing }
 MiLogBrowser >> miSelectedItem [
-	^ entryList selectedItems ifEmpty: [ super miSelectedItem ] ifNotEmpty: [ :list | "We can select only one entity" list anyOne entity ]
+	^ selectedItem
+]
+
+{ #category : #accessing }
+MiLogBrowser >> selectedItem: anEntity [
+	selectedItem := anEntity
+]
+
+{ #category : #buses }
+MiLogBrowser >> unfollowBus: aBus [
+	super unfollowBus: aBus.
+	self update
+]
+
+{ #category : #actions }
+MiLogBrowser >> update [
+	self updateLogsList.
+	super update
+]
+
+{ #category : #initialization }
+MiLogBrowser >> updateLogsList [
+	logsLists := SpDynamicPresentersListBuilder new
+		modelObjects: self buses asOrderedCollection;
+		presenter: MiBusLogsList
+			configuredAs: [ :presenter :bus | 
+			presenter
+				owner: self;
+				forBus: bus ];
+		layoutBuilder: (SpDynamicTopToBottomRowsLayout rows: 1);
+		build
 ]

@@ -1,29 +1,17 @@
 "
-Please comment me using the following template inspired by Class Responsibility Collaborator (CRC) design:
+Root folder explorer.
+Allows to explore the root folder of a model (left panel) and shows the entities contained in each file (right panel).
 
-For the Class part:  State a one line summary. For example, ""I represent a paragraph of text"".
+- Follow:
+Receives a MooseModel that has a root folder
 
-For the Responsibility part: Three sentences about my main responsibilities - what I do, what I know.
+- Highlight:
+<TODO>
+Entities if present and visible.
+Could select the file in which the received entity is present.
 
-For the Collaborators Part: State my main collaborators and one line about how I interact with them. 
-
-Public API and Key Messages
-
-- message one   
-- message two 
-- (for bonus points) how to create instances.
-
-   One simple example is simply gorgeous.
- 
-Internal Representation and Key Implementation Points.
-
-    Instance Variables
-	noteBook:		<Object>
-	sourceCodePage:		<Object>
-	sourceText:		<Object>
-
-
-    Implementation Points
+- Propagate:
+<TODO>
 "
 Class {
 	#name : #MiFilesBrowser,
@@ -49,18 +37,30 @@ MiFilesBrowser class >> defaultSpec [
 { #category : #specs }
 MiFilesBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
+	<miBrowsers>
 	(aBuilder item: #FilesBrowser)
 		parent: self toolbarFamixName;
-		label: 'Files browser';
+		label: self title;
 		icon: (self iconNamed: #mooseFolder);
+		help: self helpMessage;
 		order: 3.0;
 		action: [ self runMe ]
+]
+
+{ #category : #initialization }
+MiFilesBrowser class >> newModel [
+	^ MiFilesModel new
 ]
 
 { #category : #specs }
 MiFilesBrowser class >> runMe [
 	<script>
 	^ super runMe
+]
+
+{ #category : #TOREMOVE }
+MiFilesBrowser class >> title [
+	^ 'Files'
 ]
 
 { #category : #testing }
@@ -100,13 +100,13 @@ MiFilesBrowser >> followAction [
 	(self accept: toSelect)
 		ifFalse: [ ^ self ].
 	self model mooseModel: toSelect.
-	self selectFileReference: toSelect rootFolder asFileReference
+	self selectFileReference: toSelect rootFolder asFileReference.
+	self updateWindowTitle
 ]
 
 { #category : #initialization }
 MiFilesBrowser >> initializePresenters [
 	super initializePresenters.
-	self model: MiFilesModel new.
 	self initializeTreeTable.
 	treeEntity := self newTreeTable.
 	treeEntity
@@ -123,14 +123,13 @@ MiFilesBrowser >> initializePresenters [
 		beResizable.
 	treeEntity
 		whenSelectionChangedDo: [ :selected | 
-			selected selectedItems ifNotEmpty: [ 
-			self
-				freezeDuring: [ selected selectedItems size = 1
-						ifTrue: [
-							MiApplication current globallySelect: selected selectedItem ]
-						ifFalse: [ | mooseGroup |
-							mooseGroup := MooseGroup withAll: selected selectedItems.
-							MiApplication current globallySelect: mooseGroup ] ] ] ]
+			selected selectedItems
+				ifNotEmpty: [ self
+						freezeDuring: [ selected selectedItems size = 1
+								ifTrue: [ self buses do: [ :bus | bus globallySelect: selected selectedItem ] ]
+								ifFalse: [ | mooseGroup |
+									mooseGroup := MooseGroup withAll: selected selectedItems.
+									self buses do: [ :bus | bus globallySelect: mooseGroup ] ] ] ] ]
 ]
 
 { #category : #initialization }
@@ -158,7 +157,10 @@ MiFilesBrowser >> selectFileReference: aFileReference [
 	self refresh
 ]
 
-{ #category : #TOREMOVE }
-MiFilesBrowser >> title [
-	^ 'Files Browser'
+{ #category : #refreshing }
+MiFilesBrowser >> updateWindowTitle [
+	self
+		withWindowDo: [ :window | 
+			window
+				title: self class title , ' of ' , self model mooseModel name , ' model' ]
 ]

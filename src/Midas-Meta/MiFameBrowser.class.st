@@ -1,3 +1,16 @@
+"
+** Expert user **
+Shows the metadescription of a MooseObject.
+
+- Follow: 
+Recevies a MooseObject.
+
+- Highlight:
+Nothing to do.
+
+-Propagate:
+<TODO>
+"
 Class {
 	#name : #MiFameBrowser,
 	#superclass : #MiAbstractBrowser,
@@ -17,11 +30,13 @@ MiFameBrowser class >> defaultSpec [
 { #category : #specs }
 MiFameBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
+	<miBrowsers>
 	(aBuilder item: #Fame)
 		parent: self toolbarMetaName;
-		label: 'Fame browser';
+		label: self title;
 		icon: (self iconNamed: #mooseFame);
 		order: 4.0;
+		help: self helpMessage;
 		action: [ self runMe ]
 ]
 
@@ -32,20 +47,26 @@ MiFameBrowser class >> runMe [
 ]
 
 { #category : #initialization }
-MiFameBrowser >> accept: anObject [
-	^ anObject isKindOf: MooseEntity 
+MiFameBrowser class >> title [
+	^ 'Fame'
 ]
 
-{ #category : #initialization }
+{ #category : #testing }
+MiFameBrowser >> accept: anObject [
+	^ anObject isMooseObject
+]
+
+{ #category : #actions }
 MiFameBrowser >> followAction [
 	(self accept: toSelect)
 		ifFalse: [ ^ self ].
 	self forEntity: toSelect
 ]
 
-{ #category : #initialization }
+{ #category : #actions }
 MiFameBrowser >> forEntity: anEntity [
 	fameDescription items: anEntity mooseDescription allComplexProperties.
+	self updateWindowTitleWith: anEntity name
 ]
 
 { #category : #initialization }
@@ -65,7 +86,9 @@ MiFameBrowser >> initializePresenters [
 		beResizable
 ]
 
-{ #category : #initialization }
-MiFameBrowser >> title [
-	^ 'Fame Browser'
+{ #category : #actions }
+MiFameBrowser >> updateWindowTitleWith: aName [
+	self
+		withWindowDo:
+			[ :window | window title: self class title , ': Moose description of ' , aName ]
 ]

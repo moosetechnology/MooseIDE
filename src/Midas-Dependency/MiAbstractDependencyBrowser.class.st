@@ -26,7 +26,7 @@ Class {
 	#category : #'Midas-Dependency'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #testing }
 MiAbstractDependencyBrowser class >> isAbstract [ 
 	^ self == MiAbstractDependencyBrowser
 ]
@@ -34,6 +34,7 @@ MiAbstractDependencyBrowser class >> isAbstract [
 { #category : #'as yet unclassified' }
 MiAbstractDependencyBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
+	<miBrowsers>
 	(aBuilder item: self toolbarDependencyName)
 		parent: self toolbarName;
 		label: 'Dependency'

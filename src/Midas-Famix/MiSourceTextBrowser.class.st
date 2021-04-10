@@ -1,3 +1,17 @@
+"
+Shows the source text of an entity if it has one.
+
+- Follow: 
+Receives a MooseEntity that uses FamixTSourceEntity.
+
+- Highlight:
+Nothing to do.
+
+- Propagate: 
+<TODO>
+
+<TODO> Improvement: tabs for several entities (receiving a MooseGroup)
+"
 Class {
 	#name : #MiSourceTextBrowser,
 	#superclass : #MiAbstractFamixBrowser,
@@ -19,11 +33,13 @@ MiSourceTextBrowser class >> defaultSpec [
 { #category : #specs }
 MiSourceTextBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
+	<miBrowsers>
 	(aBuilder item: #SourceTextBrowser)
 		parent: self toolbarFamixName;
-		label: 'SourceText browser';
+		label: self title;
 		icon: (self iconNamed: #mooseSourceText);
 		order: 1.0;
+		help: self helpMessage;
 		action: [ self runMe ]
 ]
 
@@ -31,6 +47,11 @@ MiSourceTextBrowser class >> menuCommandOn: aBuilder [
 MiSourceTextBrowser class >> runMe [
 	<script>
 	^ super runMe
+]
+
+{ #category : #'as yet unclassified' }
+MiSourceTextBrowser class >> title [
+	^ 'Source code'
 ]
 
 { #category : #'as yet unclassified' }
@@ -72,11 +93,6 @@ MiSourceTextBrowser >> sourceCodePage [
 { #category : #'as yet unclassified' }
 MiSourceTextBrowser >> text: aText [
   sourceText text: aText
-]
-
-{ #category : #'as yet unclassified' }
-MiSourceTextBrowser >> title [
-	^ 'Source code Browser'
 ]
 
 { #category : #'as yet unclassified' }

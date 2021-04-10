@@ -1,29 +1,14 @@
 "
-Please comment me using the following template inspired by Class Responsibility Collaborator (CRC) design:
+Shows the containment tree (direct relations for now) between the entities.
 
-For the Class part:  State a one line summary. For example, ""I represent a paragraph of text"".
+- Follow:
+Accepts a MooseEntity using TEntityMetaLevelDependency.
 
-For the Responsibility part: Three sentences about my main responsibilities - what I do, what I know.
+- Highlight:
+Entities if present.
 
-For the Collaborators Part: State my main collaborators and one line about how I interact with them. 
-
-Public API and Key Messages
-
-- message one   
-- message two 
-- (for bonus points) how to create instances.
-
-   One simple example is simply gorgeous.
- 
-Internal Representation and Key Implementation Points.
-
-    Instance Variables
-	noteBook:		<Object>
-	sourceCodePage:		<Object>
-	sourceText:		<Object>
-
-
-    Implementation Points
+- Propagate:
+<TODO>
 "
 Class {
 	#name : #MiTreeBrowser,
@@ -44,18 +29,30 @@ MiTreeBrowser class >> defaultSpec [
 { #category : #specs }
 MiTreeBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
+	<miBrowsers>
 	(aBuilder item: #TreeBrowser)
 		parent: self toolbarDependencyName;
-		label: 'Tree browser';
+		label: self title;
 		order: 1.0;
 		icon: (self iconNamed: #mooseTree);
+		help: self helpMessage;
 		action: [ self runMe ]
+]
+
+{ #category : #'as yet unclassified' }
+MiTreeBrowser class >> newModel [
+	^ MiTreeBrowserModel new
 ]
 
 { #category : #specs }
 MiTreeBrowser class >> runMe [
 	<script>
 	^ super runMe
+]
+
+{ #category : #'as yet unclassified' }
+MiTreeBrowser class >> title [
+	^ 'Tree'
 ]
 
 { #category : #'as yet unclassified' }
@@ -75,7 +72,6 @@ MiTreeBrowser >> followAction [
 { #category : #'as yet unclassified' }
 MiTreeBrowser >> initializePresenters [
 	super initializePresenters.
-	self model: MiTreeBrowserModel new.
 	tree := self newTreeTable.
 	tree
 		addColumn:
@@ -94,19 +90,15 @@ MiTreeBrowser >> initializePresenters [
 			self
 				freezeDuring: [ selected selectedItems size = 1
 						ifTrue: [ model selected: selected selectedItem.
-							MiApplication current globallySelect: selected selectedItem ]
+							self buses
+								do: [ :bus | bus globallySelect: selected selectedItem ] ]
 						ifFalse: [ | mooseGroup |
 							mooseGroup := MooseGroup withAll: selected selectedItems.
 							model selected: mooseGroup.
-							MiApplication current globallySelect: mooseGroup ] ] ]
+							self buses do: [ :bus | bus globallySelect: mooseGroup ] ] ] ]
 ]
 
 { #category : #'as yet unclassified' }
 MiTreeBrowser >> refresh [
 	tree roots: { self model root }
-]
-
-{ #category : #'as yet unclassified' }
-MiTreeBrowser >> title [
-	^ 'Tree Browser'
 ]

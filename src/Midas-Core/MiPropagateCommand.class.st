@@ -1,8 +1,19 @@
+"
+Use me to propagate entities through the application
+"
 Class {
 	#name : #MiPropagateCommand,
 	#superclass : #CmCommand,
+	#instVars : [
+		'shouldFreezeBrowser'
+	],
 	#category : #'Midas-Core-Command'
 }
+
+{ #category : #default }
+MiPropagateCommand class >> defaultDescription [
+	^ 'Propagate selected entity'
+]
 
 { #category : #default }
 MiPropagateCommand class >> defaultName [
@@ -11,15 +22,44 @@ MiPropagateCommand class >> defaultName [
 
 { #category : #default }
 MiPropagateCommand class >> forSpecContext: anObject [
-	^ (self forSpecWithIconNamed: #moosePropagate) beHiddenWhenCantBeRun
+	^ (super forSpecContext: anObject)
+		iconNamed: #moosePropagate;
+		beHiddenWhenCantBeRun;
+		yourself
 ]
 
 { #category : #testing }
 MiPropagateCommand >> canBeExecuted [
-	^ self context miSelectedItem isMooseEntity
+	^ self context miSelectedItem isMooseObject
+]
+
+{ #category : #freezing }
+MiPropagateCommand >> doNotFreezeBrowser [
+	shouldFreezeBrowser := false
 ]
 
 { #category : #testing }
 MiPropagateCommand >> execute [
-	^ MiApplication current globallySelect: self context miSelectedItem
+	shouldFreezeBrowser
+		ifTrue: [ self context freezeDuring: [ self propagate ] ]
+		ifFalse: [ self propagate ]
+]
+
+{ #category : #initialization }
+MiPropagateCommand >> initialize [
+	super initialize.
+	shouldFreezeBrowser := true
+]
+
+{ #category : #testing }
+MiPropagateCommand >> propagate [
+	| selectedItem |
+	selectedItem := [ self context miSelectedItem ]
+		on: MiNoSelectedElementToPropagateException
+		do: [ :exception | 
+			exception signal.
+			^ self ].
+	selectedItem isMooseObject
+		ifFalse: [ ^ self ].
+	self context buses do: [ :bus | bus globallySelect: selectedItem ]
 ]
