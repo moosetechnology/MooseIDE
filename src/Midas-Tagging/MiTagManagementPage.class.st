@@ -1,3 +1,6 @@
+"
+The page of the TagBrowser allowing to create, select, or remove tags
+"
 Class {
 	#name : #MiTagManagementPage,
 	#superclass : #MiPresenter,
@@ -28,6 +31,15 @@ MiTagManagementPage class >> defaultSpec [
 		yourself
 ]
 
+{ #category : #'as yet unclassified' }
+MiTagManagementPage >> createTag [
+	|newTag |
+	newTag := self tagModel addTag: nameField text.
+	nameField text: ''.
+	self refreshTagList.
+	allTagsList selectItem: newTag
+]
+
 { #category : #initialization }
 MiTagManagementPage >> initializePresenters [
 	super initializePresenters.
@@ -38,20 +50,24 @@ MiTagManagementPage >> initializePresenters [
 		yourself.
 	addButton := self newButton
 		label: 'Add' ;
-		action: [ |newTag |
-			newTag := self tagModel addTag: nameField text.
-			self refreshTagList.
-			allTagsList selectItem: newTag ] ;
+		action: [ self createTag ] ;
 		yourself.
 	removeButton := self newButton
 		label: 'Remove' ;
-		action: [ tagModel deleteCurrentTag ] ;
+		action: [ self removeTag ] ;
 		yourself.
 ]
 
 { #category : #initialization }
 MiTagManagementPage >> refreshTagList [
+	allTagsList resetSelection.
 	allTagsList items: tagModel allTags
+]
+
+{ #category : #'as yet unclassified' }
+MiTagManagementPage >> removeTag [
+	tagModel deleteCurrentTag.
+	self refreshTagList
 ]
 
 { #category : #accessing }

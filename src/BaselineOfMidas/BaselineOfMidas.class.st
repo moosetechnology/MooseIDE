@@ -42,7 +42,7 @@ BaselineOfMidas >> defineGroups: spec [
 	spec
 		group: 'default'
 		with:
-			#('Midas-Core' 'Midas-Visualization' 'Midas-Meta' 'Midas-Tests' 'Midas-Dependency' 'Midas-Famix' 'Midas-FamixQueries' 'Midas-FamixQueries-Tests' 'Midas-Telescope').
+			#('Midas-Core' 'Midas-Visualization' 'Midas-Meta' 'Midas-Tests' 'Midas-Dependency' 'Midas-Famix' 'Midas-Tagging' 'Midas-FamixQueries' 'Midas-FamixQueries-Tests' 'Midas-Telescope').
 	spec group: 'newtools' with: #('default' 'Midas-NewTools')
 ]
 
@@ -58,6 +58,8 @@ BaselineOfMidas >> definePackages: spec [
 		package: 'Midas-Dependency'
 			with: [ spec requires: #( 'Midas-Core' 'Midas-Visualization' ) ];
 		package: 'Midas-Famix'
+			with: [ spec requires: #( 'Midas-Core' 'Midas-Visualization' ) ];
+		package: 'Midas-Tagging'
 			with: [ spec requires: #( 'Midas-Core' 'Midas-Visualization' ) ];
 		package: 'Midas-FamixQueries'
 			with: [ spec requires: #( 'FamixQueries' 'Midas-Core' ) ];

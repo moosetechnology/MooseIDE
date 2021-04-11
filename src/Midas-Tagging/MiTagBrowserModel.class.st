@@ -36,13 +36,14 @@ MiTagBrowserModel >> currentTag: anObject [
 
 { #category : #accessing }
 MiTagBrowserModel >> deleteCurrentTag [
-	self mooseModel remove: currentTag
+	currentTag remove.
+	self currentTag: nil
 ]
 
 { #category : #accessing }
 MiTagBrowserModel >> entitiesTaggedWithCurrentTag [
-	self mooseModel ifNil: [ #() ].
-	self currentTag ifNil: [ #() ].
+	self mooseModel ifNil: [ ^#() ].
+	self currentTag ifNil: [ ^#() ].
 	^self mooseModel entitiesTaggedWith: self currentTag
 ]
 

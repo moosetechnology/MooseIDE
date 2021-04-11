@@ -1,3 +1,9 @@
+"
+A tool to manage tags
+
+Allows to create new tag, give them name, put them in a hierarchy of tags, give them a color, and of course add or remove entities carrying a tag
+
+"
 Class {
 	#name : #MiTagBrowser,
 	#superclass : #MiAbstractBrowser,
@@ -15,6 +21,18 @@ MiTagBrowser class >> defaultSpec [
 	^super defaultSpec
 		add: #mainPresenter;
 		yourself
+]
+
+{ #category : #'world menu' }
+MiTagBrowser class >> menuCommandOn: aBuilder [
+	<worldMenu>
+	<miBrowsers>
+	(aBuilder item: #FilesBrowser)
+		parent: self midasBrowserMenuLabel;
+		label: self title;
+		help: self helpMessage;
+		order: 5;
+		action: [ self runMe ]
 ]
 
 { #category : #'instance creation' }
@@ -35,6 +53,11 @@ MiTagBrowser class >> newModel [
 MiTagBrowser class >> runMe [
 	<script>
 	^ super runMe
+]
+
+{ #category : #'world menu' }
+MiTagBrowser class >> title [
+	^ 'Tag browser'
 ]
 
 { #category : #testing }

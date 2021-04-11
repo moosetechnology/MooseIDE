@@ -1,3 +1,6 @@
+"
+The page of the TagBrowser showing the entities in the tag and allowing to add or remove entities
+"
 Class {
 	#name : #MiTagDetailPage,
 	#superclass : #MiPresenter,
@@ -31,25 +34,29 @@ MiTagDetailPage class >> defaultSpec [
 { #category : #initialization }
 MiTagDetailPage >> add [
 	incomingEntitiesList selectedItem
-		ifNotNil: [ :entity | tagModel tagEntity: entity ] 
+		ifNotNil: [ :entity | tagModel tagEntity: entity ].
+	self refreshTagEntitiesList
 ]
 
 { #category : #initialization }
 MiTagDetailPage >> addAll [
 	incomingEntitiesList items
-		do: [ :entity | tagModel tagEntity: entity ] 
+		do: [ :entity | tagModel tagEntity: entity ].
+	self refreshTagEntitiesList
 ]
 
 { #category : #initialization }
 MiTagDetailPage >> del [
 	tagEntitiesList selectedItem
-		ifNotNil: [ :entity | tagModel untagEntity: entity ] 
+		ifNotNil: [ :entity | tagModel untagEntity: entity ].
+	self refreshTagEntitiesList
 ]
 
 { #category : #initialization }
 MiTagDetailPage >> delAll [
 	tagEntitiesList items
-		do: [ :entity | tagModel untagEntity: entity ] 
+		do: [ :entity | tagModel untagEntity: entity ].
+	self refreshTagEntitiesList
 ]
 
 { #category : #accessing }
@@ -83,6 +90,11 @@ MiTagDetailPage >> initializePresenters [
 	btnDelAll := self newButton
 		label: '<<<' ;
 		action: [ self delAll ].
+]
+
+{ #category : #initialization }
+MiTagDetailPage >> refreshTagEntitiesList [
+	tagEntitiesList items: self tagEntities
 ]
 
 { #category : #accessing }
