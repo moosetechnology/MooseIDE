@@ -98,6 +98,11 @@ MiTagManagementPage >> initializeTagManagmtPart [
 ]
 
 { #category : #refreshing }
+MiTagManagementPage >> onBrowserPageRedisplay [
+	"nothing to do"
+]
+
+{ #category : #refreshing }
 MiTagManagementPage >> refreshCategoryList [
 	catManagmt refreshList: tagModel allCategories
 ]

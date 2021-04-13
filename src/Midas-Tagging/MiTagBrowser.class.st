@@ -98,6 +98,7 @@ MiTagBrowser >> newTagPage: aMiPresenterClass title: aString [
 		presenterProvider: [
 			(self instantiate: aMiPresenterClass)
 				tagModel: self tagModel ;
+				onBrowserPageRedisplay ;
 				yourself
 		] ;
 		yourself

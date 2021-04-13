@@ -19,17 +19,46 @@ Class {
 
 { #category : #specs }
 MiTagDetailPage class >> defaultSpec [
-
-	^SpBoxLayout newHorizontal
-		add: #incomingEntitiesList ;
-		add: (SpBoxLayout newVertical
-			add: #btnAdd ;
-			add: #btnAddAll ;
-			add: #btnDel ;
-			add: #btnDelAll ;
-			yourself) ;
-		add: #tagEntitiesList ;
+	^SpBoxLayout newVertical
+		add: (SpBoxLayout newHorizontal
+			add: 'Entities queried:' ;
+			add: self filler withConstraints: [:constraints | constraints width: self middleColumnWidth ] ; 
+			add: #lblTagEntities ;
+			yourself)
+		withConstraints: [:constraints | constraints height: self toolbarHeight ]  ;
+		add: self mainContentLayout ;
 		yourself
+]
+
+{ #category : #specs }
+MiTagDetailPage class >> filler [
+	^SpButtonPresenter new
+		hide ;
+		yourself
+]
+
+{ #category : #specs }
+MiTagDetailPage class >> mainContentLayout [
+	^SpBoxLayout newHorizontal
+		add: #incomingEntitiesList;
+		add: (SpBoxLayout newVertical
+			spacing: 5 ;
+			add: self filler expand: true;
+			add: #btnAdd expand: false;
+			add: #btnAddAll expand: false;
+			add: #btnDel expand: false;
+			add: #btnDelAll expand: false;
+			add: self filler expand: true;
+			yourself)
+		withConstraints: [ :constraints | constraints width: self middleColumnWidth ];
+
+		add: #tagEntitiesList;
+		yourself
+]
+
+{ #category : #specs }
+MiTagDetailPage class >> middleColumnWidth [
+	^25
 ]
 
 { #category : #action }
@@ -91,6 +120,13 @@ MiTagDetailPage >> initializePresenters [
 	btnDelAll := self newButton
 		label: '<<<' ;
 		action: [ self delAll ].
+	lblTagEntities := self newLabel
+		label: 'Entities in tag:'.
+]
+
+{ #category : #refreshing }
+MiTagDetailPage >> onBrowserPageRedisplay [
+	lblTagEntities label: 'Entities in tag [' , tagModel currentTag name , ']:'
 ]
 
 { #category : #refreshing }
