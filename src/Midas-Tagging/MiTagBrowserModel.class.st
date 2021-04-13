@@ -11,15 +11,35 @@ Class {
 }
 
 { #category : #accessing }
+MiTagBrowserModel >> addCategory: aName [
+
+]
+
+{ #category : #accessing }
 MiTagBrowserModel >> addTag: aName [
 
 	^self mooseModel tagNamed: aName
 ]
 
 { #category : #accessing }
+MiTagBrowserModel >> allCategories [
+	^#( '*Not implemented yet*' )
+]
+
+{ #category : #accessing }
 MiTagBrowserModel >> allTags [
 
 	^self mooseModel allTags
+]
+
+{ #category : #accessing }
+MiTagBrowserModel >> currentCategory [
+	^ nil
+]
+
+{ #category : #accessing }
+MiTagBrowserModel >> currentCategory: anObject [
+
 ]
 
 { #category : #accessing }
@@ -32,6 +52,11 @@ MiTagBrowserModel >> currentTag [
 MiTagBrowserModel >> currentTag: anObject [
 	currentTag := anObject.
 	owner newTagSelected
+]
+
+{ #category : #accessing }
+MiTagBrowserModel >> deleteCurrentCategory [
+
 ]
 
 { #category : #accessing }

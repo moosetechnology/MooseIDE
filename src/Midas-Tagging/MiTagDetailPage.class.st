@@ -11,7 +11,8 @@ Class {
 		'btnAdd',
 		'btnAddAll',
 		'btnDel',
-		'btnDelAll'
+		'btnDelAll',
+		'lblTagEntities'
 	],
 	#category : #'Midas-Tagging'
 }
@@ -31,28 +32,28 @@ MiTagDetailPage class >> defaultSpec [
 		yourself
 ]
 
-{ #category : #initialization }
+{ #category : #action }
 MiTagDetailPage >> add [
 	incomingEntitiesList selectedItem
 		ifNotNil: [ :entity | tagModel tagEntity: entity ].
 	self refreshTagEntitiesList
 ]
 
-{ #category : #initialization }
+{ #category : #action }
 MiTagDetailPage >> addAll [
 	incomingEntitiesList items
 		do: [ :entity | tagModel tagEntity: entity ].
 	self refreshTagEntitiesList
 ]
 
-{ #category : #initialization }
+{ #category : #action }
 MiTagDetailPage >> del [
 	tagEntitiesList selectedItem
 		ifNotNil: [ :entity | tagModel untagEntity: entity ].
 	self refreshTagEntitiesList
 ]
 
-{ #category : #initialization }
+{ #category : #action }
 MiTagDetailPage >> delAll [
 	tagEntitiesList items
 		do: [ :entity | tagModel untagEntity: entity ].
@@ -92,7 +93,7 @@ MiTagDetailPage >> initializePresenters [
 		action: [ self delAll ].
 ]
 
-{ #category : #initialization }
+{ #category : #refreshing }
 MiTagDetailPage >> refreshTagEntitiesList [
 	tagEntitiesList items: self tagEntities
 ]
