@@ -100,14 +100,19 @@ MiTagDetailPage >> ideEntities [
 { #category : #initialization }
 MiTagDetailPage >> initializePresenters [
 	super initializePresenters.
-	tagEntitiesList := self newList
-		items: self tagEntities ;
-		display: [ :entity | entity name ] ;
-		yourself.
+
+	lblTagEntities := self newLabel
+		label: 'Entities in tag:'.
+
 	incomingEntitiesList := self newList
-		items: self ideEntities ;
 		display: [ :entity | entity name ] ;
 		yourself.
+	self refreshIdeEntitiesList.
+	tagEntitiesList := self newList
+		display: [ :entity | entity name ] ;
+		yourself.
+	self refreshTagEntitiesList.
+
 	btnAdd := self newButton
 		label: ' > ' ;
 		action: [ self add ].
@@ -120,13 +125,17 @@ MiTagDetailPage >> initializePresenters [
 	btnDelAll := self newButton
 		label: '<<<' ;
 		action: [ self delAll ].
-	lblTagEntities := self newLabel
-		label: 'Entities in tag:'.
+
 ]
 
 { #category : #refreshing }
 MiTagDetailPage >> onBrowserPageRedisplay [
 	lblTagEntities label: 'Entities in tag [' , tagModel currentTag name , ']:'
+]
+
+{ #category : #refreshing }
+MiTagDetailPage >> refreshIdeEntitiesList [
+	incomingEntitiesList items: self ideEntities
 ]
 
 { #category : #refreshing }
@@ -145,7 +154,7 @@ MiTagDetailPage >> tagEntities [
 { #category : #accessing }
 MiTagDetailPage >> tagModel: aModel [
 	tagModel := aModel.
-	tagEntitiesList items: tagModel entitiesTaggedWithCurrentTag.
+	self refreshTagEntitiesList.
 	incomingEntitiesList items: tagModel mostRecentEntity
 	
 
