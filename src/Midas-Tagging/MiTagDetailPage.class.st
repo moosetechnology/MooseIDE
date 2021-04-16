@@ -32,9 +32,7 @@ MiTagDetailPage class >> defaultSpec [
 
 { #category : #specs }
 MiTagDetailPage class >> filler [
-	^SpButtonPresenter new
-		hide ;
-		yourself
+	^SpNullPresenter new
 ]
 
 { #category : #specs }

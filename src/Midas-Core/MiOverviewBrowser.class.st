@@ -13,6 +13,7 @@ Class {
 		'mainPresenter',
 		'busesButton',
 		'browsersButton',
+		'chkOpenInPage',
 		'helpButton',
 		'browsersPage',
 		'busesPage'
@@ -48,11 +49,12 @@ MiOverviewBrowser class >> defaultSpec [
 	^ SpBoxLayout newVertical
 		add:
 			(SpBoxLayout newHorizontal
-				add: #busesButton width: self buttonWidth;
-				add: #browsersButton;
-				add: SpNullPresenter new;
+				add: #busesButton width: self buttonWidth ;
+				add: #browsersButton expand: false ;
+				add: #chkOpenInPage expand: false ;
+				add: SpNullPresenter new expand: true ;
 				add: #helpButton width: self iconWidth)
-			height: self toolbarHeight;
+			height: self toolbarHeight ;
 		add: #mainPresenter;
 		yourself
 ]
@@ -96,6 +98,25 @@ MiOverviewBrowser class >> title [
 ]
 
 { #category : #presenters }
+MiOverviewBrowser >> addBrowser: aMiPresenterClass asPage: aString [
+	| spPage |
+	spPage := self
+		pageNamed: aString
+		presenter: [ (aMiPresenterClass owner: self on: aMiPresenterClass newModel)
+			followBus: self application defaultBus ;
+			yourself
+		].
+	spPage beCloseable.
+	self addPage: spPage.
+	^spPage
+]
+
+{ #category : #initialization }
+MiOverviewBrowser >> addPage: aPage [
+	mainPresenter addPage: aPage
+]
+
+{ #category : #presenters }
 MiOverviewBrowser >> browsersList [
 	^ [ self newComponentList
 		propagateNaturalHeight: true;
@@ -109,12 +130,10 @@ MiOverviewBrowser >> browsersList [
 MiOverviewBrowser >> browsersMenu [
 	| browsersMenu |
 	browsersMenu := SpMenuPresenter new
-		addAllFromPragma: 'miBrowsers'
-		target: self.
+		addAllFromPragma: 'miBrowsers' target: self.
 
-	"This empty action avoids an error when clicking on subMenu label"
-	(browsersMenu menuGroups flatCollect: #menuItems)
-		do: [ :item | item action selector ifNil: [ item action: [  ] ] ].
+	(self collectMenuItems: browsersMenu)
+		do: [ :item | self replaceMenuItemAction: item ].
 	^ browsersMenu
 ]
 
@@ -137,12 +156,27 @@ MiOverviewBrowser >> busesPage [
 		ifNil: [ busesPage := self pageNamed: 'Buses' presenter: self busesList ]
 ]
 
+{ #category : #toolbar }
+MiOverviewBrowser >> collectMenuItems: aMenuPresenter [
+	| menuItems |
+	aMenuPresenter ifNil: [ ^#() ].
+
+	menuItems := OrderedCollection new.
+	aMenuPresenter menuGroups
+	do: [:menuGrp | 
+		menuGrp menuItems do: [:anItem |
+			menuItems add: anItem.
+			menuItems addAll: (self collectMenuItems: anItem subMenu)]
+	].
+	^menuItems
+		
+]
+
 { #category : #initialization }
 MiOverviewBrowser >> initializeMainPresenter [
-	mainPresenter := self newNotebook
-		addPage: self browsersPage;
-		addPage: self busesPage;
-		yourself
+	mainPresenter := self newNotebook.
+	self addPage: self browsersPage.
+	self addPage: self busesPage
 ]
 
 { #category : #initialization }
@@ -165,6 +199,10 @@ MiOverviewBrowser >> initializeToolbar [
 				icon: MooseIcons mooseIcon;
 				name: 'Open new browser';
 				subMenu: self browsersMenu ].
+	chkOpenInPage := self newCheckBox 
+		label: 'Open in page' ;
+		labelOnRight ;
+		yourself.
 	helpButton := self newButton
 		iconName: #help;
 		help: self class comment;
@@ -192,6 +230,28 @@ MiOverviewBrowser >> pageNamed: aName presenter: aComponentList [
 		title: aName;
 		presenterProvider: aComponentList;
 		yourself
+]
+
+{ #category : #toolbar }
+MiOverviewBrowser >> replaceMenuItemAction: aMenuItem [
+	| browserClass pageName itemAction |
+	itemAction := aMenuItem action.
+
+	itemAction selector ifNil: [ 
+		aMenuItem action: [ "empty action to avoid errors when selecting subMenu labels" ].
+		^ self
+	].
+
+	browserClass := itemAction receiver outerContext receiver.
+	pageName := aMenuItem name.
+	aMenuItem action: [
+		chkOpenInPage state
+		ifTrue: [
+			self addBrowser: browserClass asPage: pageName.
+			mainPresenter selectPage: mainPresenter pages last ]
+		ifFalse: [
+			itemAction value ]
+	]
 ]
 
 { #category : #toolbar }

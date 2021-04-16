@@ -27,12 +27,13 @@ MiTagBrowser class >> defaultSpec [
 MiTagBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	<miBrowsers>
-	(aBuilder item: #FilesBrowser)
+	^(aBuilder item: #FilesBrowser)
 		parent: self midasBrowserMenuLabel;
 		label: self title;
 		help: self helpMessage;
 		order: 5;
-		action: [ self runMe ]
+		action: [ self runMe ] ;
+		yourself
 ]
 
 { #category : #'instance creation' }
