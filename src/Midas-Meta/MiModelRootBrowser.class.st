@@ -94,8 +94,9 @@ MiModelRootBrowser >> followAction [
 MiModelRootBrowser >> initializeList [
 
 	modelFilteringList := self newFilteringList
-		                  items: MooseModel root;
-		                  display: [ :mooseModel | mooseModel name ].
+		                      items: MooseModel root;
+		                      display: [ :mooseModel | mooseModel name ];
+		                      yourself.
 	modelFilteringList listPresenter
 		contextMenu: [ self rootCommandsGroup asMenuPresenter ];
 		whenSelectionChangedDo: [ :selected | 

@@ -46,6 +46,7 @@ MiBusLogsList >> cleanLogger [
 
 { #category : #actions }
 MiBusLogsList >> forBus: aBus [
+
 	bus := aBus.
 	busName label: 'Bus: ' , bus name.
 	logsList items: bus logger logs
@@ -63,13 +64,15 @@ MiBusLogsList >> initializeClearButton [
 
 { #category : #initialization }
 MiBusLogsList >> initializeLogsList [
-	logsList := self newList
-		display: [ :log | log entity mooseName ];
+
+	logsList := self newFilteringList
+		            display: [ :log | log entity mooseName ];
+		            yourself.
+	logsList listPresenter
 		contextMenu: [ self rootCommandsGroup asMenuPresenter ];
 		whenSelectionChangedDo: [ :selection | 
-			selection selectedItem
-				ifNotNil: [ self setOwnerSelectedItem: selection selectedItem ] ];
-		yourself
+			selection selectedItem ifNotNil: [ 
+					self setOwnerSelectedItem: selection selectedItem ] ]
 ]
 
 { #category : #initialization }
@@ -88,14 +91,16 @@ MiBusLogsList >> logger [
 
 { #category : #accessing }
 MiBusLogsList >> miSelectedItem [
-	^ logsList selectedItems
-		ifEmpty: [  ]
-		ifNotEmpty: [ :list | list anyOne entity ]
+
+	^ logsList listPresenter selectedItems
+		  ifEmpty: [  ]
+		  ifNotEmpty: [ :list | list anyOne entity ]
 ]
 
 { #category : #accessing }
 MiBusLogsList >> miSelectedLog [
-	^ logsList selection selectedItem
+
+	^ logsList selectedItem
 ]
 
 { #category : #actions }
