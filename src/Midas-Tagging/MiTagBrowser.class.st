@@ -77,11 +77,20 @@ MiTagBrowser >> followAction [
 
 { #category : #initialization }
 MiTagBrowser >> initializePresenters [
+
 	super initializePresenters.
 	mainPresenter := self newNotebook
-		addPage: self manageTagsPage ;
-		addPage: self tagDetailsPage ;
-		yourself
+		                 addPage: self manageTagsPage;
+		                 addPage: self tagDetailsPage;
+		                 yourself
+]
+
+{ #category : #initialization }
+MiTagBrowser >> initializeWindow: aWindowPresenter [
+
+	aWindowPresenter
+		title: self class title;
+		initialExtent: 500 @ 500
 ]
 
 { #category : #initialization }
