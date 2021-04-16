@@ -12,8 +12,8 @@ Class {
 	#name : #MiModelRootBrowser,
 	#superclass : #MiAbstractBrowser,
 	#instVars : [
-		'modelPresenter',
-		'toolbar'
+		'toolbar',
+		'modelFilteringList'
 	],
 	#category : #'Midas-Meta-ModelRootBrowser'
 }
@@ -30,10 +30,13 @@ MiModelRootBrowser class >> buildCommandsGroupWith: presenterInstance forRoot: r
 
 { #category : #specs }
 MiModelRootBrowser class >> defaultSpec [
+
 	^ super defaultSpec
-		add: #toolbar withConstraints: [ :constraints | constraints height: self toolbarHeight ];
-		add: #modelPresenter;
-		yourself
+		  add: #toolbar
+		  withConstraints: [ :constraints | 
+			  constraints height: self toolbarHeight ];
+		  add: #modelFilteringList;
+		  yourself
 ]
 
 { #category : #specs }
@@ -89,15 +92,17 @@ MiModelRootBrowser >> followAction [
 
 { #category : #initialization }
 MiModelRootBrowser >> initializeList [
-	modelPresenter := self newList
-		items: MooseModel root;
-		display: [ :mooseModel | mooseModel name ];
+
+	modelFilteringList := self newFilteringList
+		                  items: MooseModel root;
+		                  display: [ :mooseModel | mooseModel name ].
+	modelFilteringList listPresenter
 		contextMenu: [ self rootCommandsGroup asMenuPresenter ];
 		whenSelectionChangedDo: [ :selected | 
 			model selected: selected selectedItem.
-			self isFreeze
-				ifFalse:
-					[ self buses do: [ :bus | bus globallySelect: selected selectedItem ] ] ]
+			self isFreeze ifFalse: [ 
+					self buses do: [ :bus | 
+							bus globallySelect: selected selectedItem ] ] ]
 ]
 
 { #category : #initialization }
@@ -117,12 +122,8 @@ MiModelRootBrowser >> initializeToolbar [
 
 { #category : #accessing }
 MiModelRootBrowser >> miSelectedItem [
-	^ modelPresenter selection selectedItem
-]
 
-{ #category : #accessing }
-MiModelRootBrowser >> modelPresenter [
-	^ modelPresenter
+	^ modelFilteringList selectedItem
 ]
 
 { #category : #initialization }
@@ -131,7 +132,7 @@ MiModelRootBrowser >> refreshToolbarButton [
 	^ SpToolbarButtonPresenter new
 		  icon: (self iconNamed: #smallUpdate);
 		  help: 'Refresh list';
-		  action: [ modelPresenter updateList ];
+		  action: [ modelFilteringList listPresenter updateList ];
 		  yourself
 ]
 
@@ -142,21 +143,23 @@ MiModelRootBrowser >> selected [
 
 { #category : #accessing }
 MiModelRootBrowser >> selectedObject [
-	^ modelPresenter selection selectedItem
+
+	^ modelFilteringList selectedItem
 ]
 
 { #category : #updating }
 MiModelRootBrowser >> updateForNewModel: aModel [
 
 	self class updateAll.
-	modelPresenter selectItem: aModel
+	modelFilteringList selectItem: aModel
 ]
 
 { #category : #updating }
 MiModelRootBrowser >> updateList [
-	self
-		freezeDuring: [ | selected |
-			selected := self selected.
-			modelPresenter updateList.
-			modelPresenter selectItem: selected ]
+
+	self freezeDuring: [ 
+		| selected |
+		selected := self selected.
+		modelFilteringList listPresenter updateList.
+		modelFilteringList selectItem: selected ]
 ]
