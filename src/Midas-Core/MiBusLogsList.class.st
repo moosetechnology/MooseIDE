@@ -2,10 +2,10 @@ Class {
 	#name : #MiBusLogsList,
 	#superclass : #SpPresenter,
 	#instVars : [
-		'logsList',
 		'bus',
 		'busName',
-		'clearButton'
+		'clearButton',
+		'logsFilteringList'
 	],
 	#category : #'Midas-Core-Logger'
 }
@@ -23,15 +23,15 @@ MiBusLogsList class >> buildCommandsGroupWith: presenterInstance forRoot: rootCo
 
 { #category : #specs }
 MiBusLogsList class >> defaultSpec [
+
 	^ SpBoxLayout newVertical
-		add:
-			(SpBoxLayout newHorizontal
-				add: #busName;
-				add: #clearButton width: self buttonWidth;
-				yourself)
-			height: self toolbarHeight;
-		add: #logsList;
-		yourself
+		  add: (SpBoxLayout newHorizontal
+				   add: #busName;
+				   add: #clearButton width: self buttonWidth;
+				   yourself)
+		  height: self toolbarHeight;
+		  add: #logsFilteringList;
+		  yourself
 ]
 
 { #category : #accessing }
@@ -49,7 +49,7 @@ MiBusLogsList >> forBus: aBus [
 
 	bus := aBus.
 	busName label: 'Bus: ' , bus name.
-	logsList items: bus logger logs
+	logsFilteringList items: bus logger logs
 ]
 
 { #category : #initialization }
@@ -65,10 +65,10 @@ MiBusLogsList >> initializeClearButton [
 { #category : #initialization }
 MiBusLogsList >> initializeLogsList [
 
-	logsList := self newFilteringList
+	logsFilteringList := self newFilteringList
 		            display: [ :log | log entity mooseName ];
 		            yourself.
-	logsList listPresenter
+	logsFilteringList listPresenter
 		contextMenu: [ self rootCommandsGroup asMenuPresenter ];
 		whenSelectionChangedDo: [ :selection | 
 			selection selectedItem ifNotNil: [ 
@@ -92,7 +92,7 @@ MiBusLogsList >> logger [
 { #category : #accessing }
 MiBusLogsList >> miSelectedItem [
 
-	^ logsList listPresenter selectedItems
+	^ logsFilteringList listPresenter selectedItems
 		  ifEmpty: [  ]
 		  ifNotEmpty: [ :list | list anyOne entity ]
 ]
@@ -100,7 +100,7 @@ MiBusLogsList >> miSelectedItem [
 { #category : #accessing }
 MiBusLogsList >> miSelectedLog [
 
-	^ logsList selectedItem
+	^ logsFilteringList selectedItem
 ]
 
 { #category : #actions }
