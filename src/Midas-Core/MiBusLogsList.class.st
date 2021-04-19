@@ -2,10 +2,10 @@ Class {
 	#name : #MiBusLogsList,
 	#superclass : #SpPresenter,
 	#instVars : [
-		'logsList',
 		'bus',
 		'busName',
-		'clearButton'
+		'clearButton',
+		'logsFilteringList'
 	],
 	#category : #'Midas-Core-Logger'
 }
@@ -23,15 +23,15 @@ MiBusLogsList class >> buildCommandsGroupWith: presenterInstance forRoot: rootCo
 
 { #category : #specs }
 MiBusLogsList class >> defaultSpec [
+
 	^ SpBoxLayout newVertical
-		add:
-			(SpBoxLayout newHorizontal
-				add: #busName;
-				add: #clearButton width: self buttonWidth;
-				yourself)
-			height: self toolbarHeight;
-		add: #logsList;
-		yourself
+		  add: (SpBoxLayout newHorizontal
+				   add: #busName;
+				   add: #clearButton width: self buttonWidth;
+				   yourself)
+		  height: self toolbarHeight;
+		  add: #logsFilteringList;
+		  yourself
 ]
 
 { #category : #accessing }
@@ -46,9 +46,10 @@ MiBusLogsList >> cleanLogger [
 
 { #category : #actions }
 MiBusLogsList >> forBus: aBus [
+
 	bus := aBus.
 	busName label: 'Bus: ' , bus name.
-	logsList items: bus logger logs
+	logsFilteringList items: bus logger logs
 ]
 
 { #category : #initialization }
@@ -63,13 +64,15 @@ MiBusLogsList >> initializeClearButton [
 
 { #category : #initialization }
 MiBusLogsList >> initializeLogsList [
-	logsList := self newList
-		display: [ :log | log entity mooseName ];
+
+	logsFilteringList := self newFilteringList
+		            display: [ :log | log entity mooseName ];
+		            yourself.
+	logsFilteringList listPresenter
 		contextMenu: [ self rootCommandsGroup asMenuPresenter ];
 		whenSelectionChangedDo: [ :selection | 
-			selection selectedItem
-				ifNotNil: [ self setOwnerSelectedItem: selection selectedItem ] ];
-		yourself
+			selection selectedItem ifNotNil: [ 
+					self setOwnerSelectedItem: selection selectedItem ] ]
 ]
 
 { #category : #initialization }
@@ -88,14 +91,16 @@ MiBusLogsList >> logger [
 
 { #category : #accessing }
 MiBusLogsList >> miSelectedItem [
-	^ logsList selectedItems
-		ifEmpty: [  ]
-		ifNotEmpty: [ :list | list anyOne entity ]
+
+	^ logsFilteringList listPresenter selectedItems
+		  ifEmpty: [  ]
+		  ifNotEmpty: [ :list | list anyOne entity ]
 ]
 
 { #category : #accessing }
 MiBusLogsList >> miSelectedLog [
-	^ logsList selection selectedItem
+
+	^ logsFilteringList selectedItem
 ]
 
 { #category : #actions }
