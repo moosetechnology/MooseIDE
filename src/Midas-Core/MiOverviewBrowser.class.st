@@ -89,7 +89,9 @@ MiOverviewBrowser class >> menuCommandOn: aBuilder [
 { #category : #specs }
 MiOverviewBrowser class >> runMe [
 	<script>
-	self new openWithSpec
+	^self new
+		openWithSpec ;
+		yourself
 ]
 
 { #category : #specs }
@@ -114,6 +116,12 @@ MiOverviewBrowser >> addBrowser: aMiPresenterClass asPage: aString [
 { #category : #initialization }
 MiOverviewBrowser >> addPage: aPage [
 	mainPresenter addPage: aPage
+]
+
+{ #category : #accessing }
+MiOverviewBrowser >> browsersButton [
+
+	^ browsersButton
 ]
 
 { #category : #presenters }
@@ -143,6 +151,12 @@ MiOverviewBrowser >> browsersPage [
 		ifNil: [ browsersPage := self pageNamed: 'Browsers' presenter: self browsersList ]
 ]
 
+{ #category : #accessing }
+MiOverviewBrowser >> busesButton [
+
+	^ busesButton
+]
+
 { #category : #presenters }
 MiOverviewBrowser >> busesList [
 	^ [ self newComponentList
@@ -154,6 +168,12 @@ MiOverviewBrowser >> busesList [
 MiOverviewBrowser >> busesPage [
 	^busesPage
 		ifNil: [ busesPage := self pageNamed: 'Buses' presenter: self busesList ]
+]
+
+{ #category : #accessing }
+MiOverviewBrowser >> chkOpenInPage [
+
+	^ chkOpenInPage
 ]
 
 { #category : #toolbar }
@@ -186,7 +206,7 @@ MiOverviewBrowser >> initializePresenters [
 	self initializeMainPresenter
 ]
 
-{ #category : #toolbar }
+{ #category : #initialization }
 MiOverviewBrowser >> initializeToolbar [
 	busesButton := self newButton
 		iconName: #smallAdd;
@@ -214,6 +234,12 @@ MiOverviewBrowser >> initializeToolbar [
 MiOverviewBrowser >> initializeWindow: aWindowPresenter [
 	super initializeWindow: aWindowPresenter.
 	aWindowPresenter initialExtent: 500 @ self class height
+]
+
+{ #category : #accessing }
+MiOverviewBrowser >> mainPresenter [
+
+	^ mainPresenter
 ]
 
 { #category : #toolbar }
