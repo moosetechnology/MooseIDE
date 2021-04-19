@@ -8,9 +8,8 @@ Class {
 		'tagManagmt',
 		'catManagmt',
 		'txtDescription',
-		'rgbColorSliders',
 		'tagModel',
-		'colorCanvas'
+		'rgbColorChooser'
 	],
 	#category : #'Midas-Tagging'
 }
@@ -26,11 +25,7 @@ MiTagManagementPage class >> defaultSpec [
 		  add: 'Description:' expand: false;
 		  add: #txtDescription;
 		  add: 'Color:' expand: false;
-		  add: (SpPanedLayout newLeftToRight
-				   addFirst: #rgbColorSliders;
-				   addSecond: #colorCanvas;
-				   yourself)
-		  expand: true;
+		  add: #rgbColorChooser;
 		  yourself
 ]
 
@@ -64,12 +59,8 @@ MiTagManagementPage >> initializeCategoryManagmtPart [
 
 { #category : #initialization }
 MiTagManagementPage >> initializeColorChooserPart [
-	rgbColorSliders := (self instantiate: SpRGBSliders)
-		whenChangedDo: [ :notUsed | colorCanvas refresh ].
 
-	colorCanvas := (self instantiate: SpRoassalPresenter)
-		script: [ :canvas | canvas color: (rgbColorSliders color) ];
-		yourself
+	rgbColorChooser := self instantiate: SpRGBChooser
 ]
 
 { #category : #initialization }
