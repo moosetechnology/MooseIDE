@@ -60,6 +60,12 @@ MiTagBrowser class >> title [
 	^ 'Tag browser'
 ]
 
+{ #category : #specs }
+MiTagBrowser class >> windowSize [
+
+	^ 500 @ 500
+]
+
 { #category : #testing }
 MiTagBrowser >> accept: anObject [
 	^ anObject isCollection
@@ -83,14 +89,6 @@ MiTagBrowser >> initializePresenters [
 		                 addPage: self manageTagsPage;
 		                 addPage: self tagDetailsPage;
 		                 yourself
-]
-
-{ #category : #initialization }
-MiTagBrowser >> initializeWindow: aWindowPresenter [
-
-	aWindowPresenter
-		title: self class title;
-		initialExtent: 500 @ 500
 ]
 
 { #category : #initialization }
