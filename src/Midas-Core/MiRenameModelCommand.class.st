@@ -21,11 +21,14 @@ MiRenameModelCommand class >> defaultName [
 
 { #category : #executing }
 MiRenameModelCommand >> execute [
+
 	| newName |
 	newName := UITheme builder
-		textEntry: 'Set new name for MooseModel ' , self model name.
-	(newName isNil or: [ newName isEmpty ])
-		ifTrue: [ ^ self ].
+		           textEntry:
+		           'Set new name for MooseModel ' , self model name
+		           title: self class defaultName
+		           entryText: self model name.
+	(newName isNil or: [ newName isEmpty ]) ifTrue: [ ^ self ].
 	self model name: newName.
 	self context update
 ]
