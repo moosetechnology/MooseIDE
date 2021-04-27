@@ -24,6 +24,21 @@ MiExportBrowser class >> defaultSpec [
 		  yourself
 ]
 
+{ #category : #'world menu' }
+MiExportBrowser class >> menuCommandOn: aBuilder [
+
+	<worldMenu>
+	<miBrowsers>
+	(aBuilder item: #Exporter)
+		parent: #Moose;
+		label: self title;
+		icon: (self iconNamed: #smallExport);
+		order: 5;
+		withSeparatorAfter;
+		help: self helpMessage;
+		action: [ self runMe ]
+]
+
 { #category : #'instance creation' }
 MiExportBrowser class >> runMe [
 
@@ -34,7 +49,7 @@ MiExportBrowser class >> runMe [
 { #category : #specs }
 MiExportBrowser class >> title [
 
-	^ 'Export'
+	^ 'Entities exporter'
 ]
 
 { #category : #actions }

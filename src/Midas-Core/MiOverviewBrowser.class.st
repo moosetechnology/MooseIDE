@@ -118,12 +118,15 @@ MiOverviewBrowser >> addPage: aPage [
 
 { #category : #presenters }
 MiOverviewBrowser >> browsersList [
-	^ [ self newComponentList
-		propagateNaturalHeight: true;
-		items:
-			(self application browsers asOrderedCollection
-				collect: [ :browser | MiBrowserPresenter on: browser ]);
-		whenSelectionChangedDo: [ :selection | selection selectedItem highlightWindow ] ]
+
+	^ [ 
+	  self newComponentList
+		  propagateNaturalHeight: true;
+		  items:
+			  (self application browsers asOrderedCollection collect: [ 
+					   :browser | MiBrowserPresenter on: browser ]);
+		  whenSelectionChangedDo: [ :selection | 
+			  selection selectedItem highlightWindow ] ]
 ]
 
 { #category : #toolbar }

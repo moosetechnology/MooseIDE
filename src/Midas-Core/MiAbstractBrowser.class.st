@@ -90,7 +90,7 @@ MiAbstractBrowser class >> isAbstract [
 MiAbstractBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	(aBuilder item: self midasBrowserMenuLabel)
-		order: 5 ;
+		order: 6 ;
 		parent: #Moose ;
 		icon: MooseIcons mooseIcon.
 
@@ -114,7 +114,7 @@ MiAbstractBrowser class >> metaBrowsersMenuLabel [
 
 { #category : #'world menu' }
 MiAbstractBrowser class >> midasBrowserMenuLabel [
-	^ #'Midas Browsers'
+	^ #'Specialized Browsers'
 ]
 
 { #category : #'instance creation' }

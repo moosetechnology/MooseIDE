@@ -20,14 +20,14 @@ Class {
 
 { #category : #'world menu' }
 MiLogBrowser class >> menuCommandOn: aBuilder [
+
 	<worldMenu>
 	<miBrowsers>
 	(aBuilder item: #Logger)
-		parent: #Moose ;
-		label: self title ;
-		order: 4 ;
-		withSeparatorAfter ;
-		help: self helpMessage ;
+		parent: #Moose;
+		label: self title;
+		order: 4;
+		help: self helpMessage;
 		action: [ self runMe ]
 ]
 
