@@ -55,6 +55,7 @@ MiInspectorBrowser >> accept: anEntity [
 { #category : #actions }
 MiInspectorBrowser >> followAction [
 
+	(self accept: toSelect) ifFalse: [ ^ self ].
 	stInspector model: toSelect
 ]
 
