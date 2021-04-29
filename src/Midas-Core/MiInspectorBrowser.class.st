@@ -44,6 +44,14 @@ MiInspectorBrowser class >> windowSize [
 	^ 700 @ 450
 ]
 
+{ #category : #testing }
+MiInspectorBrowser >> accept: anEntity [
+
+	"Returns true because I think that all object can be inspected with this Midas inspector. It can be changed in future acording to new needs."
+
+	^ true
+]
+
 { #category : #actions }
 MiInspectorBrowser >> followAction [
 
@@ -64,10 +72,4 @@ MiInspectorBrowser >> miSelectedItem [
 	| lastInspectorPage |
 	lastInspectorPage := stInspector millerList pages last.
 	^ lastInspectorPage model inspectedObject
-]
-
-{ #category : #accessing }
-MiInspectorBrowser >> stInspector [
-
-	^ stInspector
 ]
