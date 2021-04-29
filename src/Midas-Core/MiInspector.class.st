@@ -1,15 +1,15 @@
 Class {
-	#name : #MiStInspector,
+	#name : #MiInspector,
 	#superclass : #StInspector,
 	#category : #'Midas-Core-Inspector'
 }
 
 { #category : #'private factory' }
-MiStInspector >> newInspectorFor: aModel [
+MiInspector >> newInspectorFor: aModel [
 
 	| newInspector |
 	newInspector := self
-		                instantiate: MiStObjectInspectorPresenter
+		                instantiate: MiObjectInspectorPresenter
 		                on: aModel asInspectorModel.
 	StPharoSettings inspectorDiveOnSingleClick ifTrue: [ 
 		newInspector activateOnSingleClick ].

@@ -1,11 +1,11 @@
 Class {
-	#name : #MiStObjectContextPresenter,
+	#name : #MiObjectContextPresenter,
 	#superclass : #StObjectContextPresenter,
 	#category : #'Midas-Core-Inspector'
 }
 
 { #category : #initialization }
-MiStObjectContextPresenter >> initializePresenters [
+MiObjectContextPresenter >> initializePresenters [
 
 	view := self model newInspectionView.
 	self intializePresentersWithoutEvaluator

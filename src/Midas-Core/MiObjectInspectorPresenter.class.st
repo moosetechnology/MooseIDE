@@ -1,13 +1,13 @@
 Class {
-	#name : #MiStObjectInspectorPresenter,
+	#name : #MiObjectInspectorPresenter,
 	#superclass : #StObjectInspectorPresenter,
 	#category : #'Midas-Core-Inspector'
 }
 
 { #category : #'private factory' }
-MiStObjectInspectorPresenter >> newInspectionForContext: aContext [
+MiObjectInspectorPresenter >> newInspectionForContext: aContext [
 
-	^ MiStObjectContextPresenter on: (StObjectContextModel new
+	^ MiObjectContextPresenter on: (StObjectContextModel new
 			   inspection: self model;
 			   inspectedObject: self inspectedObject;
 			   context: aContext;

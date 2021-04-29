@@ -50,7 +50,7 @@ MiInspectorBrowser >> followAction [
 MiInspectorBrowser >> initializePresenters [
 
 	super initializePresenters.
-	stInspector := self instantiate: MiStInspector.
+	stInspector := self instantiate: MiInspector.
 	stInspector model: self model
 ]
 
