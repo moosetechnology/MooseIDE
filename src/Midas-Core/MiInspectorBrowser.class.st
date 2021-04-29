@@ -1,3 +1,7 @@
+"
+I am a custom Midas inspector. I have as a sub-presenter an instance of `MiInspectorPresenter` which is at the same time a subclass of `StInspector`. I am just like Pharo's inspector just that I am connected to the `MiApplication` bus.
+I have implemented the methods: `followAction` and `miSelectedItem` in order to listen and propagate entries to the bus.
+"
 Class {
 	#name : #MiInspectorBrowser,
 	#superclass : #MiAbstractBrowser,
@@ -50,7 +54,7 @@ MiInspectorBrowser >> followAction [
 MiInspectorBrowser >> initializePresenters [
 
 	super initializePresenters.
-	stInspector := self instantiate: MiInspector.
+	stInspector := self instantiate: MiInspectorPresenter.
 	stInspector model: self model
 ]
 

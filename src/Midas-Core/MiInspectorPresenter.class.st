@@ -1,11 +1,17 @@
+"
+I am a subclass of `StInspector`.
+
+The only difference between my `newInspectorFor:` method implementation and the one of my superclass, is that mine returns an instance of `MiObjectInspectorPresenter` instead of `StObjectInspectorPresenter`. This is to remove the evaluator (the code presenter of the below part) of the inspector.
+(See `StInspector>>#newInspectorFor:`)
+"
 Class {
-	#name : #MiInspector,
+	#name : #MiInspectorPresenter,
 	#superclass : #StInspector,
 	#category : #'Midas-Core-Inspector'
 }
 
 { #category : #'private factory' }
-MiInspector >> newInspectorFor: aModel [
+MiInspectorPresenter >> newInspectorFor: aModel [
 
 	| newInspector |
 	newInspector := self
