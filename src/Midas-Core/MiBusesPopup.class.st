@@ -5,36 +5,27 @@ Class {
 		'busesList',
 		'newBusNameInput',
 		'browser',
-		'addBusButton',
-		'acceptButton'
+		'addBusButton'
 	],
 	#category : #'Midas-Core-Browser'
 }
 
 { #category : #specs }
 MiBusesPopup class >> defaultSpec [
-	^ SpBoxLayout newHorizontal
-		borderWidth: 5;
-		add:
-			(SpBoxLayout newVertical
-				spacing: 5;
-				add: #busesList
-					height: (MiApplication current buses size + 1) * self labelHeight;
-				add:
-					(SpBoxLayout newHorizontal
-						add: #newBusNameInput;
-						add: #addBusButton width: self iconWidth;
-						yourself)
-					height: self inputTextHeight;
-				add: #acceptButton;
-				yourself)
-			width: 250;
-		yourself
-]
 
-{ #category : #api }
-MiBusesPopup >> dismiss [
-	self owner dismiss
+	^ SpBoxLayout newTopToBottom
+		  borderWidth: 5;
+		  spacing: 5;
+		  add: #busesList withConstraints: [ :constraints | 
+			  constraints
+				  height: MiApplication current buses size + 1 * self labelHeight;
+				  width: 250 ];
+		  add: (SpBoxLayout newLeftToRight
+				   add: #newBusNameInput expand: true;
+				   add: #addBusButton width: self iconWidth;
+				   yourself)
+		  height: self inputTextHeight;
+		  yourself
 ]
 
 { #category : #initialization }
@@ -71,21 +62,19 @@ MiBusesPopup >> initializeBusesList [
 
 { #category : #initialization }
 MiBusesPopup >> initializePresenters [
+
 	super initializePresenters.
 	self initializeBusesList.
 	newBusNameInput := self newTextInput
-		placeholder: 'New bus name';
-		whenSubmitDo: [ self followNewBus ];
-		yourself.
+		                   placeholder: 'New bus name';
+		                   whenSubmitDo: [ self followNewBus ];
+		                   bindKeyCombination: $s meta
+		                   toAction: [ self followNewBus ];
+		                   yourself.
 	addBusButton := self newButton
-		iconName: #smallAdd;
-		action: [ self followNewBus ];
-		yourself.
-	acceptButton := self newButton
-		iconName: #smallOk;
-		label: 'Accept';
-		action: [ owner dismiss ];
-		yourself
+		                iconName: #smallAdd;
+		                action: [ self followNewBus ];
+		                yourself
 ]
 
 { #category : #'accessing model' }
