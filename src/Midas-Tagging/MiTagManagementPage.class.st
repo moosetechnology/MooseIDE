@@ -8,9 +8,8 @@ Class {
 		'tagManagmt',
 		'catManagmt',
 		'txtDescription',
-		'txtColor',
 		'tagModel',
-		'colorExample'
+		'rgbColorChooser'
 	],
 	#category : #'Midas-Tagging'
 }
@@ -18,20 +17,16 @@ Class {
 { #category : #specs }
 MiTagManagementPage class >> defaultSpec [
 
-	^SpBoxLayout newVertical 
-		add: 'Category' expand: false ;
-		add: #catManagmt ;
-		add: 'Tag' expand: false ;
-		add: #tagManagmt ;
-		
-		add: (SpGridLayout new
-			add: 'Description:' at: 1 @ 1 ;
-			add: #txtDescription at: 2 @ 1 span: 2 @ 1 ;
-			add: 'Color:' at: 1 @ 2 ;
-			add: #txtColor at: 2 @ 2 ;
-			add: #colorExample at: 3 @ 2 ;
-			yourself) ;
-		yourself
+	^ SpBoxLayout newVertical
+		  add: 'Category' expand: false;
+		  add: #catManagmt;
+		  add: 'Tag' expand: false;
+		  add: #tagManagmt;
+		  add: 'Description:' expand: false;
+		  add: #txtDescription;
+		  add: 'Color:' expand: false;
+		  add: #rgbColorChooser;
+		  yourself
 ]
 
 { #category : #action }
@@ -64,15 +59,8 @@ MiTagManagementPage >> initializeCategoryManagmtPart [
 
 { #category : #initialization }
 MiTagManagementPage >> initializeColorChooserPart [
-	txtColor := self newText
-		autoAccept: true;
-		color: Color white;
-		whenTextChangedDo: [ :notUsed | colorExample refresh ];
-		yourself.
 
-	colorExample := (self instantiate: SpRoassalPresenter)
-		script: [ :canvas | canvas color: (Color fromHexString: txtColor text asString , '000000') ];
-		yourself
+	rgbColorChooser := self instantiate: SpRGBChooser
 ]
 
 { #category : #initialization }
