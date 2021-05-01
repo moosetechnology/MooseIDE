@@ -125,6 +125,7 @@ MiOverviewBrowser >> browsersList [
 		  items:
 			  (self application browsers asOrderedCollection collect: [ 
 					   :browser | MiBrowserPresenter on: browser ]);
+		  sortingBlock: [ :a :b | a toolbarLabel < b toolbarLabel ];
 		  whenSelectionChangedDo: [ :selection | 
 			  selection selectedItem highlightWindow ] ]
 ]
@@ -148,9 +149,13 @@ MiOverviewBrowser >> browsersPage [
 
 { #category : #presenters }
 MiOverviewBrowser >> busesList [
-	^ [ self newComponentList
-		propagateNaturalHeight: true;
-		items: (self application buses collect: [ :bus | MiBusPresenter on: bus ]) ]
+
+	^ [ 
+	  self newComponentList
+		  propagateNaturalHeight: true;
+		  items:
+			  (self application buses collect: [ :bus | MiBusPresenter on: bus ]);
+		  sortingBlock: [ :a :b | a toolbarLabel < b toolbarLabel ] ]
 ]
 
 { #category : #presenters }
