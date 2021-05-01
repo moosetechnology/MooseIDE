@@ -35,17 +35,21 @@ MiBrowserPresenter >> highlightWindow [
 
 { #category : #initialization }
 MiBrowserPresenter >> initializePresenters [
+
 	super initializePresenters.
 	topButton := self newButton
-		iconName: #window;
-		label: 'Put on top';
-		action: [ model window window activate ];
-		yourself.
+		             iconName: #window;
+		             label: 'Put on top';
+		             action: [ 
+			             model window window
+				             expand;
+				             activate ];
+		             yourself.
 	closeButton := self newButton
-		iconName: #delete;
-		label: 'Close';
-		action: [ model window close ];
-		yourself
+		               iconName: #delete;
+		               label: 'Close';
+		               action: [ model window close ];
+		               yourself
 ]
 
 { #category : #settings }

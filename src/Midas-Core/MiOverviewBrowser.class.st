@@ -126,12 +126,16 @@ MiOverviewBrowser >> browsersButton [
 
 { #category : #presenters }
 MiOverviewBrowser >> browsersList [
-	^ [ self newComponentList
-		propagateNaturalHeight: true;
-		items:
-			(self application browsers asOrderedCollection
-				collect: [ :browser | MiBrowserPresenter on: browser ]);
-		whenSelectionChangedDo: [ :selection | selection selectedItem highlightWindow ] ]
+
+	^ [ 
+	  self newComponentList
+		  propagateNaturalHeight: true;
+		  items:
+			  (self application browsers asOrderedCollection collect: [ 
+					   :browser | MiBrowserPresenter on: browser ]);
+		  sortingBlock: [ :a :b | a toolbarLabel < b toolbarLabel ];
+		  whenSelectionChangedDo: [ :selection | 
+			  selection selectedItem highlightWindow ] ]
 ]
 
 { #category : #toolbar }
@@ -159,9 +163,13 @@ MiOverviewBrowser >> busesButton [
 
 { #category : #presenters }
 MiOverviewBrowser >> busesList [
-	^ [ self newComponentList
-		propagateNaturalHeight: true;
-		items: (self application buses collect: [ :bus | MiBusPresenter on: bus ]) ]
+
+	^ [ 
+	  self newComponentList
+		  propagateNaturalHeight: true;
+		  items:
+			  (self application buses collect: [ :bus | MiBusPresenter on: bus ]);
+		  sortingBlock: [ :a :b | a toolbarLabel < b toolbarLabel ] ]
 ]
 
 { #category : #presenters }

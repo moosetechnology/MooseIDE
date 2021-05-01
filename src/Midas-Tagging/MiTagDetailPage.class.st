@@ -6,13 +6,13 @@ Class {
 	#superclass : #MiPresenter,
 	#instVars : [
 		'tagModel',
-		'tagEntitiesList',
-		'incomingEntitiesList',
 		'btnAdd',
 		'btnAddAll',
 		'btnDel',
 		'btnDelAll',
-		'lblTagEntities'
+		'lblTagEntities',
+		'tagEntitiesFilteringList',
+		'incomingEntitiesFilteringList'
 	],
 	#category : #'Midas-Tagging'
 }
@@ -37,21 +37,22 @@ MiTagDetailPage class >> filler [
 
 { #category : #specs }
 MiTagDetailPage class >> mainContentLayout [
-	^SpBoxLayout newHorizontal
-		add: #incomingEntitiesList;
-		add: (SpBoxLayout newVertical
-			spacing: 5 ;
-			add: self filler expand: true;
-			add: #btnAdd expand: false;
-			add: #btnAddAll expand: false;
-			add: #btnDel expand: false;
-			add: #btnDelAll expand: false;
-			add: self filler expand: true;
-			yourself)
-		withConstraints: [ :constraints | constraints width: self middleColumnWidth ];
 
-		add: #tagEntitiesList;
-		yourself
+	^ SpBoxLayout newHorizontal
+		  add: #incomingEntitiesFilteringList;
+		  add: (SpBoxLayout newVertical
+				   spacing: 5;
+				   add: self filler expand: true;
+				   add: #btnAdd expand: false;
+				   add: #btnAddAll expand: false;
+				   add: #btnDel expand: false;
+				   add: #btnDelAll expand: false;
+				   add: self filler expand: true;
+				   yourself)
+		  withConstraints: [ :constraints | 
+		  constraints width: self middleColumnWidth ];
+		  add: #tagEntitiesFilteringList;
+		  yourself
 ]
 
 { #category : #specs }
@@ -61,28 +62,28 @@ MiTagDetailPage class >> middleColumnWidth [
 
 { #category : #action }
 MiTagDetailPage >> add [
-	incomingEntitiesList selectedItem
+	incomingEntitiesFilteringList selectedItem
 		ifNotNil: [ :entity | tagModel tagEntity: entity ].
 	self refreshTagEntitiesList
 ]
 
 { #category : #action }
 MiTagDetailPage >> addAll [
-	incomingEntitiesList items
+	incomingEntitiesFilteringList items
 		do: [ :entity | tagModel tagEntity: entity ].
 	self refreshTagEntitiesList
 ]
 
 { #category : #action }
 MiTagDetailPage >> del [
-	tagEntitiesList selectedItem
+	tagEntitiesFilteringList selectedItem
 		ifNotNil: [ :entity | tagModel untagEntity: entity ].
 	self refreshTagEntitiesList
 ]
 
 { #category : #action }
 MiTagDetailPage >> delAll [
-	tagEntitiesList items
+	tagEntitiesFilteringList items
 		do: [ :entity | tagModel untagEntity: entity ].
 	self refreshTagEntitiesList
 ]
@@ -97,33 +98,32 @@ MiTagDetailPage >> ideEntities [
 
 { #category : #initialization }
 MiTagDetailPage >> initializePresenters [
+
 	super initializePresenters.
 
-	lblTagEntities := self newLabel
-		label: 'Entities in tag:'.
+	lblTagEntities := self newLabel label: 'Entities in tag:'.
 
-	incomingEntitiesList := self newList
-		display: [ :entity | entity name ] ;
-		yourself.
+	incomingEntitiesFilteringList := self newFilteringList
+		                                 display: [ :entity | entity name ];
+		                                 yourself.
 	self refreshIdeEntitiesList.
-	tagEntitiesList := self newList
-		display: [ :entity | entity name ] ;
-		yourself.
+	tagEntitiesFilteringList := self newFilteringList
+		                            display: [ :entity | entity name ];
+		                            yourself.
 	self refreshTagEntitiesList.
 
 	btnAdd := self newButton
-		label: ' > ' ;
-		action: [ self add ].
+		          label: ' > ';
+		          action: [ self add ].
 	btnAddAll := self newButton
-		label: '>>>' ;
-		action: [ self addAll ].
+		             label: '>>>';
+		             action: [ self addAll ].
 	btnDel := self newButton
-		label: ' < ' ;
-		action: [ self del ].
+		          label: ' < ';
+		          action: [ self del ].
 	btnDelAll := self newButton
-		label: '<<<' ;
-		action: [ self delAll ].
-
+		             label: '<<<';
+		             action: [ self delAll ]
 ]
 
 { #category : #refreshing }
@@ -133,12 +133,12 @@ MiTagDetailPage >> onBrowserPageRedisplay [
 
 { #category : #refreshing }
 MiTagDetailPage >> refreshIdeEntitiesList [
-	incomingEntitiesList items: self ideEntities
+	incomingEntitiesFilteringList items: self ideEntities
 ]
 
 { #category : #refreshing }
 MiTagDetailPage >> refreshTagEntitiesList [
-	tagEntitiesList items: self tagEntities
+	tagEntitiesFilteringList items: self tagEntities
 ]
 
 { #category : #accessing }
@@ -153,7 +153,7 @@ MiTagDetailPage >> tagEntities [
 MiTagDetailPage >> tagModel: aModel [
 	tagModel := aModel.
 	self refreshTagEntitiesList.
-	incomingEntitiesList items: tagModel mostRecentEntity
+	incomingEntitiesFilteringList items: tagModel mostRecentEntity
 	
 
 ]
