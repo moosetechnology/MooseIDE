@@ -3,11 +3,12 @@ Class {
 	#superclass : #MiAbstractBrowser,
 	#instVars : [
 		'queryResultTreePresenter',
-		'selectedQuery',
+		'currentQuery',
 		'queries',
 		'queryCodePresenter',
 		'queryNotebookPresenter',
-		'queryBuilderLayout'
+		'queryBuilderLayout',
+		'queryComponentListPresenter'
 	],
 	#category : #'Midas-NewQueriesBrowser-Presenters'
 }
@@ -54,6 +55,12 @@ MiNewQueriesBrowser >> accept: anObject [
 		  (anObject asMooseGroup allUsing: FamixTNamedEntity) isNotEmpty ]
 ]
 
+{ #category : #accessing }
+MiNewQueriesBrowser >> currentQuery [
+
+	^ currentQuery
+]
+
 { #category : #actions }
 MiNewQueriesBrowser >> followAction [
 
@@ -69,30 +76,35 @@ MiNewQueriesBrowser >> followAction [
 ]
 
 { #category : #initialization }
+MiNewQueriesBrowser >> initializeComponentList [
+
+	queryComponentListPresenter := self newComponentList.
+	queryComponentListPresenter
+		propagateNaturalHeight: true;
+		presenters: { (MiNewQueryCreationPresenter on: self) };
+		whenBuiltDo: [ 
+			queryResultTreePresenter color:
+					self theme class basePassiveBackgroundColor ]
+]
+
+{ #category : #initialization }
 MiNewQueriesBrowser >> initializeLayout [
 
 	| tempLayout |
 	"Initialize the queryBuildeLayout instance variable"
 	queryBuilderLayout := SpBoxLayout newTopToBottom.
-	
+
 	tempLayout := self class defaultSpec.
 	tempLayout add: (SpPanedLayout new
-			 add: queryBuilderLayout;
+			 add: #queryComponentListPresenter;
 			 add: #queryNotebookPresenter;
 			 yourself).
 	self layout: tempLayout
 ]
 
 { #category : #initialization }
-MiNewQueriesBrowser >> initializePresenters [
+MiNewQueriesBrowser >> initializeNotebookPresenter [
 
-	super initializePresenters.
-	self initializeLayout.
-	queryCodePresenter := self instantiate: MiQueryCodePresenter.
-	queryResultTreePresenter := self
-		                            instantiate: MiResultTreePresenter
-		                            on: self.
-	queryResultTreePresenter updateForEntities: self queryResultEntities.
 	queryNotebookPresenter := self newNotebook
 		                          pages: { 
 				                          (SpNotebookPage
@@ -104,10 +116,36 @@ MiNewQueriesBrowser >> initializePresenters [
 		                          yourself
 ]
 
+{ #category : #initialization }
+MiNewQueriesBrowser >> initializePresenters [
+
+	super initializePresenters.
+	self initializeLayout.
+	self initializeComponentList.
+	self initializeQueryCodePresenter.
+	self initializeResultTreePresenter.
+	self initializeNotebookPresenter
+]
+
+{ #category : #initialization }
+MiNewQueriesBrowser >> initializeQueryCodePresenter [
+
+	queryCodePresenter := self instantiate: MiQueryCodePresenter
+]
+
+{ #category : #initialization }
+MiNewQueriesBrowser >> initializeResultTreePresenter [
+
+	queryResultTreePresenter := self
+		                            instantiate: MiResultTreePresenter
+		                            on: self.
+	queryResultTreePresenter updateForEntities: self queryResultEntities
+]
+
 { #category : #accessing }
 MiNewQueriesBrowser >> queryResultEntities [
 
-	^ selectedQuery result
+	^ currentQuery result
 ]
 
 { #category : #accessing }
@@ -119,7 +157,7 @@ MiNewQueriesBrowser >> rootQuery [
 { #category : #action }
 MiNewQueriesBrowser >> selectQuery: aQuery [
 
-	selectedQuery := aQuery.
+	currentQuery := aQuery.
 	"queryRossalPresenter selectItem: selectedQuery."
 	queryResultTreePresenter updateForQuery: aQuery.
 	queryCodePresenter updateForQuery: aQuery.
@@ -128,14 +166,17 @@ MiNewQueriesBrowser >> selectQuery: aQuery [
 
 { #category : #accessing }
 MiNewQueriesBrowser >> selectedQuery [
-	^ selectedQuery
+
+	"This methods is only for backwards compatibility with the old queries browser"
+
+	^ self currentQuery
 ]
 
-{ #category : #initialization }
+{ #category : #'accessing model' }
 MiNewQueriesBrowser >> setModelBeforeInitialization: aRootQuery [
 
 	queries := OrderedCollection new
 		           add: aRootQuery;
 		           yourself.
-	selectedQuery := self rootQuery
+	currentQuery := self rootQuery
 ]
