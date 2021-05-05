@@ -22,16 +22,16 @@ MiQueryCreationPresenter class >> buildCommandsGroupWith: presenter forRoot: aCm
 
 { #category : #specs }
 MiQueryCreationPresenter class >> defaultSpec [
+
 	^ SpBoxLayout newVertical
-		add: #toolbar height: self toolbarHeight;
-		add: #breadcrumbs height: self toolbarHeight;
-		add:
-			(SpPanedLayout newHorizontal
-				add: self queryConfigurationLayout;
-				position: 65 percent;
-				add: #resultList;
-				yourself);
-		yourself
+		  add: #toolbar height: self toolbarHeight;
+		  add: #breadcrumbs height: self toolbarHeight;
+		  add: (SpPanedLayout newHorizontal
+				   add: self queryConfigurationLayout;
+				   positionOfSlider: 65 percent;
+				   add: #resultList;
+				   yourself);
+		  yourself
 ]
 
 { #category : #specs }
@@ -239,10 +239,14 @@ MiQueryCreationPresenter >> updateQueryCode [
 
 { #category : #update }
 MiQueryCreationPresenter >> updateQueryConfigurationFor: queryClass [
-	self flag: #FQImprove.	"The following method is calling indirectly the method giving the possible types once again.
+
+	self flag: #FQImprove.
+	"The following method is calling indirectly the method giving the possible types once again.
 		
 		Currently we configure the query before creating the browser.
 		A better way would be to create an unconfigured query, initialize the browser and execute the query with the selected elements of the browser."
+
+	"configureIn: methdod changes the configurationPresenter acording the selected query."
 	(queryClass defaultForParent: browser selectedQuery) configureIn: self.
 	self updateForQuery: queryConfigurationPresenter query
 ]
