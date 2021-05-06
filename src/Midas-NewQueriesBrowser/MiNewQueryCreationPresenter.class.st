@@ -120,7 +120,7 @@ MiNewQueryCreationPresenter >> query [
 { #category : #initialization }
 MiNewQueryCreationPresenter >> removeQueryAction [
 
-	"parentPresenter removeQueryAction: self query"
+	parentPresenter removeQueryAction: self query
 ]
 
 { #category : #'accessing model' }

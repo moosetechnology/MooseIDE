@@ -166,7 +166,7 @@ MiNewQueriesBrowser >> queryResultEntities [
 ]
 
 { #category : #actions }
-MiNewQueriesBrowser >> removeQuery [
+MiNewQueriesBrowser >> removeQuery: aQuery [
 
 	rootQuery children ifNotEmpty: [ 
 		UIManager default alert:
