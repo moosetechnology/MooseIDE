@@ -49,7 +49,8 @@ MiNewQueryCreationPresenter >> initializeQueryTypesDropList [
 		display: [ :queryClass | queryClass label ];
 		whenSelectedItemChangedDo: [ :queryClass | 
 			self updateQueryConfigurationFor: queryClass ].
-	queryTypesDropListPresenter selectIndex: 3 "Select the fastest query while we do not compute the results in a fork"
+	"Select the fastest query while we do not compute the results in a fork"
+	queryTypesDropListPresenter selectIndex: 3
 ]
 
 { #category : #'accessing model' }
