@@ -68,6 +68,12 @@ MiNewQueriesBrowser >> accept: anObject [
 		  (anObject asMooseGroup allUsing: FamixTNamedEntity) isNotEmpty ]
 ]
 
+{ #category : #api }
+MiNewQueriesBrowser >> addChildToQuery: query [
+
+	rootQuery addChild: query
+]
+
 { #category : #actions }
 MiNewQueriesBrowser >> followAction [
 
@@ -159,6 +165,17 @@ MiNewQueriesBrowser >> queryResultEntities [
 	^ rootQuery result
 ]
 
+{ #category : #actions }
+MiNewQueriesBrowser >> removeQuery [
+
+	rootQuery children ifNotEmpty: [ 
+		UIManager default alert:
+			'Cannot remove a query with children for now'.
+		^ self ].
+	rootQuery prepareRemovalFrom: self.
+	queries remove: rootQuery
+]
+
 { #category : #accessing }
 MiNewQueriesBrowser >> rootQuery [
 
@@ -197,7 +214,6 @@ MiNewQueriesBrowser >> updateForQuery: aQuery [
 	"This method is called from FQQueryCreationPresenter and FQQueriesCombinationPresenter. 
 	They have the responsibility to establish the [parent* - child] relationship between queries"
 
-	rootQuery addChild: aQuery.
 	queries addLast: aQuery.
 	self selectQuery: aQuery
 ]
