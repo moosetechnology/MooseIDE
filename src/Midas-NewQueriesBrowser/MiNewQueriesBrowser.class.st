@@ -68,13 +68,6 @@ MiNewQueriesBrowser >> accept: anObject [
 		  (anObject asMooseGroup allUsing: FamixTNamedEntity) isNotEmpty ]
 ]
 
-{ #category : #api }
-MiNewQueriesBrowser >> addChildToQuery: query [
-
-	rootQuery addChild: query.
-	lastChildQuery := query
-]
-
 { #category : #actions }
 MiNewQueriesBrowser >> followAction [
 
@@ -157,7 +150,7 @@ MiNewQueriesBrowser >> initializeResultTreePresenter [
 { #category : #api }
 MiNewQueriesBrowser >> queryChangedUpdate: query [
 
-	self updatePresentersForLastQuery: query
+	self selectQuery: query
 ]
 
 { #category : #accessing }
@@ -198,10 +191,13 @@ MiNewQueriesBrowser >> setModelBeforeInitialization: aRootQuery [
 	rootQuery := self getRootQuery
 ]
 
-{ #category : #update }
-MiNewQueriesBrowser >> updatePresentersForLastQuery: query [
+{ #category : #api }
+MiNewQueriesBrowser >> updateForQuery: aQuery [
 
-	queryResultTreePresenter updateForEntities: query result.
-	queryCodePresenter updateForQuery: query
-	"queryCodePresenter syntaxHighlight: self query isValid;"
+	"This method is called from FQQueryCreationPresenter and FQQueriesCombinationPresenter. 
+	They have the responsibility to establish the [parent* - child] relationship between queries"
+
+	rootQuery addChild: aQuery.
+	queries addLast: aQuery.
+	self selectQuery: aQuery
 ]
