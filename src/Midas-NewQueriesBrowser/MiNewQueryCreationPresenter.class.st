@@ -3,10 +3,12 @@ Class {
 	#superclass : #SpPresenter,
 	#instVars : [
 		'queryTypesDropListPresenter',
-		'parentBrowser',
-		'queryConfigurationPresenter'
+		'queryConfigurationPresenter',
+		'parentPresenter',
+		'addButton',
+		'removeButton'
 	],
-	#category : #'Midas-NewQueriesBrowser-Subpresenters'
+	#category : #'Midas-NewQueriesBrowser-Sub presenters'
 }
 
 { #category : #specs }
@@ -15,6 +17,8 @@ MiNewQueryCreationPresenter class >> defaultSpec [
 	^ SpBoxLayout newLeftToRight
 		  add: #queryTypesDropListPresenter expand: false;
 		  add: #queryConfigurationPresenter;
+		  add: #addButton width: self iconWidth;
+		  add: #removeButton width: self iconWidth;
 		  yourself
 ]
 
@@ -25,10 +29,30 @@ MiNewQueryCreationPresenter class >> queryTypes [
 	"sort: #name ascending"
 ]
 
+{ #category : #update }
+MiNewQueryCreationPresenter >> addNewQuery [
+
+	parentPresenter addChildToQuery: self query
+]
+
+{ #category : #initialization }
+MiNewQueryCreationPresenter >> initializeButtons [
+
+	addButton := self newButton
+		             icon: (self iconNamed: #smallAdd);
+		             yourself.
+	removeButton := self newButton
+		                icon: (self iconNamed: #remove);
+		                yourself
+]
+
 { #category : #initialization }
 MiNewQueryCreationPresenter >> initializePresenters [
 
-	self initializeQueryTypesDropList
+	self initializeQueryTypesDropList.
+	self initializeButtons.
+	"Select the fastest query while we do not compute the results in a fork"
+	queryTypesDropListPresenter selectIndex: 3
 ]
 
 { #category : #initialization }
@@ -39,28 +63,38 @@ MiNewQueryCreationPresenter >> initializeQueryTypesDropList [
 		items: self class queryTypes;
 		display: [ :queryClass | queryClass label ];
 		whenSelectedItemChangedDo: [ :queryClass | 
-			self updateQueryConfigurationFor: queryClass ];
+			self updateQueryConfigurationFor: queryClass
+			"parentPresenter updateLayout" ];
 		whenBuiltDo: [ "Select the fastest query while we do not compute the results in a fork""queryTypesDropListPresenter selectIndex: 3"
-			 ].
-	"Select the fastest query while we do not compute the results in a fork"
-	queryTypesDropListPresenter selectIndex: 3.
-	queryTypesDropListPresenter selectIndex: 3.
-	queryTypesDropListPresenter selectIndex: 3.
-	queryTypesDropListPresenter selectIndex: 3.
+			 ]
+]
+
+{ #category : #update }
+MiNewQueryCreationPresenter >> query [
+
+	^ queryConfigurationPresenter query
 ]
 
 { #category : #'accessing model' }
-MiNewQueryCreationPresenter >> setModelBeforeInitialization: aQueriesBrowserPresenter [
+MiNewQueryCreationPresenter >> setModelBeforeInitialization: aQueryBuilderPresenter [
 
-	parentBrowser := aQueriesBrowserPresenter
+	parentPresenter := aQueryBuilderPresenter
 ]
 
-{ #category : #'accessing model' }
+{ #category : #update }
+MiNewQueryCreationPresenter >> updateFromConfiguration [
+
+	parentPresenter updateQueryBrowserResultListEntities:
+		self query result.
+	parentPresenter updateQueryBrowserCodePresenter: self query
+]
+
+{ #category : #update }
 MiNewQueryCreationPresenter >> updateQueryConfigurationFor: queryClass [
 
 	| instantiatedQuery |
 	instantiatedQuery := queryClass defaultForParent:
-		                     parentBrowser currentQuery.
+		                     parentPresenter currentQuery.
 	queryConfigurationPresenter := self instantiate:
 		                               (MiQueryConfigurationPresenterFactory
 			                                configureQuery: instantiatedQuery

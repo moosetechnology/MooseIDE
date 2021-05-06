@@ -5,15 +5,29 @@ Class {
 		'builderLayout',
 		'presenters',
 		'parentBrowser',
-		'currentQuery'
+		'componentListPresenter'
 	],
-	#category : #'Midas-NewQueriesBrowser-Subpresenters'
+	#category : #'Midas-NewQueriesBrowser-Sub presenters'
 }
+
+{ #category : #specs }
+MiQueryBuilderPresenter class >> defaultSpec [
+
+	^ SpBoxLayout newTopToBottom
+		  add: #componentListPresenter;
+		  yourself
+]
+
+{ #category : #adding }
+MiQueryBuilderPresenter >> addChildToQuery: query [
+
+	parentBrowser addChildToQuery: query
+]
 
 { #category : #'accessing model' }
 MiQueryBuilderPresenter >> currentQuery [
 
-	^ currentQuery
+	^ parentBrowser currentQuery
 ]
 
 { #category : #initialization }
@@ -22,31 +36,54 @@ MiQueryBuilderPresenter >> initializeFirstQueryCreation [
 	| queryCreationPresenter |
 	queryCreationPresenter := self instantiate:
 		                          (MiNewQueryCreationPresenter on: self).
-	presenters add: queryCreationPresenter
+	presenters add: queryCreationPresenter.
+	self updateComponentList
 ]
 
 { #category : #initialization }
 MiQueryBuilderPresenter >> initializePresenters [
 
 	presenters := OrderedCollection new.
-	self initializeFirstQueryCreation.
-	self updateLayout
+	componentListPresenter := self newComponentList
+		                          propagateNaturalHeight: true;
+		                          yourself.
+	self initializeFirstQueryCreation
 ]
 
 { #category : #'accessing model' }
-MiQueryBuilderPresenter >> setModelBeforeInitialization: aBrowserPresenter [
+MiQueryBuilderPresenter >> setModelBeforeInitialization: aQueryBrowserPresenter [
 
-	parentBrowser := aBrowserPresenter.
-	currentQuery := parentBrowser currentQuery
+	parentBrowser := aQueryBrowserPresenter
+]
+
+{ #category : #initialization }
+MiQueryBuilderPresenter >> updateComponentList [
+
+	componentListPresenter presenters: presenters
 ]
 
 { #category : #initialization }
 MiQueryBuilderPresenter >> updateLayout [
 
-	builderLayout := SpBoxLayout newTopToBottom.
-	presenters do: [ :aQueryCreationPresenter | 
-		builderLayout add: aQueryCreationPresenter ].
-	self layout: builderLayout.
-	"Update method updates the presenter layout"
+	self deprecated: 'Do not call this method'.
+	componentListPresenter presenters: presenters.
+	self layout: (SpBoxLayout newTopToBottom
+			 add: componentListPresenter;
+			 yourself).
 	self update
+	"Update method updates the presenter layout"
+]
+
+{ #category : #'as yet unclassified' }
+MiQueryBuilderPresenter >> updateQueryBrowserCodePresenter: query [
+
+	parentBrowser queryCodePresenter updateForQuery: query
+	"syntaxHighlight: self query isValid;"
+]
+
+{ #category : #api }
+MiQueryBuilderPresenter >> updateQueryBrowserResultListEntities: resultQueryEntities [
+
+	parentBrowser queryResultTreePresenter updateForEntities:
+		resultQueryEntities
 ]

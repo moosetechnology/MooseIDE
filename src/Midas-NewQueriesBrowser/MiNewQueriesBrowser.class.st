@@ -10,8 +10,21 @@ Class {
 		'queryComponentListPresenter',
 		'queryBuilderPresenter'
 	],
-	#category : #'Midas-NewQueriesBrowser-Presenters'
+	#category : #'Midas-NewQueriesBrowser-Main presenters'
 }
+
+{ #category : #'world menu' }
+MiNewQueriesBrowser class >> menuCommandOn: aBuilder [
+
+	<worldMenu>
+	<miBrowsers>
+	(aBuilder item: #NewQueries)
+		parent: #Moose;
+		label: self title;
+		order: 4;
+		help: self helpMessage;
+		action: [ self runMe ]
+]
 
 { #category : #'instance creation' }
 MiNewQueriesBrowser class >> new [
@@ -53,6 +66,13 @@ MiNewQueriesBrowser >> accept: anObject [
 
 	^ anObject isMooseObject and: [ 
 		  (anObject asMooseGroup allUsing: FamixTNamedEntity) isNotEmpty ]
+]
+
+{ #category : #adding }
+MiNewQueriesBrowser >> addChildToQuery: query [
+
+	Halt now.
+	currentQuery addChild: query
 ]
 
 { #category : #accessing }
@@ -144,9 +164,21 @@ MiNewQueriesBrowser >> initializeResultTreePresenter [
 ]
 
 { #category : #accessing }
+MiNewQueriesBrowser >> queryCodePresenter [
+
+	^ queryCodePresenter
+]
+
+{ #category : #accessing }
 MiNewQueriesBrowser >> queryResultEntities [
 
 	^ currentQuery result
+]
+
+{ #category : #accessing }
+MiNewQueriesBrowser >> queryResultTreePresenter [
+
+	^ queryResultTreePresenter
 ]
 
 { #category : #accessing }
