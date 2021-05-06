@@ -15,10 +15,26 @@ Class {
 MiNewQueryCreationPresenter class >> defaultSpec [
 
 	^ SpBoxLayout newLeftToRight
-		  add: #queryTypesDropListPresenter expand: false;
-		  add: #queryConfigurationPresenter;
-		  add: #addButton width: self iconWidth;
-		  add: #removeButton width: self iconWidth;
+		  spacing: 5;
+		  borderWidth: 5;
+		  add: #queryTypesDropListPresenter
+		  withConstraints: [ :constraints | 
+			  constraints
+				  height: self toolbarHeight;
+				  expand: false ];
+		  add: #queryConfigurationPresenter
+		  withConstraints: [ :constraints | 
+		  constraints height: self toolbarHeight ];
+		  addLast: #addButton withConstraints: [ :constraints | 
+		  constraints
+			  height: self toolbarHeight;
+			  width: self iconWidth;
+			  expand: false ];
+		  addLast: #removeButton withConstraints: [ :constraints | 
+		  constraints
+			  height: self toolbarHeight;
+			  width: self iconWidth;
+			  expand: false ];
 		  yourself
 ]
 

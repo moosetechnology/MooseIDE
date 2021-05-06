@@ -2,7 +2,6 @@ Class {
 	#name : #MiQueryBuilderPresenter,
 	#superclass : #SpPresenter,
 	#instVars : [
-		'builderLayout',
 		'presenters',
 		'parentBrowser',
 		'componentListPresenter'
@@ -60,18 +59,6 @@ MiQueryBuilderPresenter >> setModelBeforeInitialization: aQueryBrowserPresenter 
 MiQueryBuilderPresenter >> updateComponentList [
 
 	componentListPresenter presenters: presenters
-]
-
-{ #category : #initialization }
-MiQueryBuilderPresenter >> updateLayout [
-
-	self deprecated: 'Do not call this method'.
-	componentListPresenter presenters: presenters.
-	self layout: (SpBoxLayout newTopToBottom
-			 add: componentListPresenter;
-			 yourself).
-	self update
-	"Update method updates the presenter layout"
 ]
 
 { #category : #'as yet unclassified' }
