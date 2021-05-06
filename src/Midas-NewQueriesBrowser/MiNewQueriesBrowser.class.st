@@ -168,12 +168,14 @@ MiNewQueriesBrowser >> queryResultEntities [
 { #category : #actions }
 MiNewQueriesBrowser >> removeQuery: aQuery [
 
-	rootQuery children ifNotEmpty: [ 
+	queries remove: aQuery.
+	self selectQuery: queryBuilderPresenter queryForLastPresenter
+	"rootQuery children ifNotEmpty: [ 
 		UIManager default alert:
 			'Cannot remove a query with children for now'.
 		^ self ].
 	rootQuery prepareRemovalFrom: self.
-	queries remove: rootQuery
+	queries remove: rootQuery"
 ]
 
 { #category : #accessing }

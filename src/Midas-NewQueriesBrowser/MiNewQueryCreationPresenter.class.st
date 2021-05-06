@@ -79,7 +79,7 @@ MiNewQueryCreationPresenter >> disable [
 MiNewQueryCreationPresenter >> enable [
 
 	queryTypesDropListPresenter enable.
-	queryConfigurationPresenter enable.
+	"queryConfigurationPresenter enable."
 	addButton enable.
 	removeButton enable
 ]

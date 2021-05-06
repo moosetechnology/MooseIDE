@@ -56,6 +56,12 @@ MiQueryBuilderPresenter >> queryChangedUpdate: query [
 	parentBrowser queryChangedUpdate: query
 ]
 
+{ #category : #'api - accessing' }
+MiQueryBuilderPresenter >> queryForLastPresenter [
+
+	^ presenters last query
+]
+
 { #category : #api }
 MiQueryBuilderPresenter >> removeQueryAction: aQuery [
 
