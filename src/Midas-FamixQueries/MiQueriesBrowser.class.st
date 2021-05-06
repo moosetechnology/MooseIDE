@@ -137,7 +137,6 @@ MiQueriesBrowser >> followAction [
 
 { #category : #accessing }
 MiQueriesBrowser >> initialQuery [
-
 	^ queries detect: [ :query | query parent isNil ]
 ]
 
