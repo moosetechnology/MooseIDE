@@ -7,7 +7,6 @@ Class {
 		'queries',
 		'queryCodePresenter',
 		'queryNotebookPresenter',
-		'queryComponentListPresenter',
 		'queryBuilderPresenter'
 	],
 	#category : #'Midas-NewQueriesBrowser-Main presenters'
@@ -68,11 +67,11 @@ MiNewQueriesBrowser >> accept: anObject [
 		  (anObject asMooseGroup allUsing: FamixTNamedEntity) isNotEmpty ]
 ]
 
-{ #category : #adding }
+{ #category : #api }
 MiNewQueriesBrowser >> addChildToQuery: query [
 
-	Halt now.
-	currentQuery addChild: query
+	currentQuery addChild: query.
+	self updatePresentersForQuery: currentQuery
 ]
 
 { #category : #accessing }
@@ -93,15 +92,6 @@ MiNewQueriesBrowser >> followAction [
 		result: toSelect;
 		name: toSelect first mooseModel name.
 	self selectQuery: rootQuery
-]
-
-{ #category : #initialization }
-MiNewQueriesBrowser >> initializeComponentList [
-
-	queryComponentListPresenter := self newComponentList.
-	queryComponentListPresenter
-		propagateNaturalHeight: true;
-		presenters: { (MiNewQueryCreationPresenter on: self) }
 ]
 
 { #category : #initialization }
@@ -163,10 +153,10 @@ MiNewQueriesBrowser >> initializeResultTreePresenter [
 	queryResultTreePresenter updateForEntities: self queryResultEntities
 ]
 
-{ #category : #accessing }
-MiNewQueriesBrowser >> queryCodePresenter [
+{ #category : #api }
+MiNewQueriesBrowser >> queryChangedUpdate: query [
 
-	^ queryCodePresenter
+	self updatePresentersForQuery: query
 ]
 
 { #category : #accessing }
@@ -176,18 +166,12 @@ MiNewQueriesBrowser >> queryResultEntities [
 ]
 
 { #category : #accessing }
-MiNewQueriesBrowser >> queryResultTreePresenter [
-
-	^ queryResultTreePresenter
-]
-
-{ #category : #accessing }
 MiNewQueriesBrowser >> rootQuery [
 
 	^ queries detect: [ :query | query parent isNil ]
 ]
 
-{ #category : #action }
+{ #category : #actions }
 MiNewQueriesBrowser >> selectQuery: aQuery [
 
 	currentQuery := aQuery.
@@ -212,4 +196,12 @@ MiNewQueriesBrowser >> setModelBeforeInitialization: aRootQuery [
 		           add: aRootQuery;
 		           yourself.
 	currentQuery := self rootQuery
+]
+
+{ #category : #update }
+MiNewQueriesBrowser >> updatePresentersForQuery: query [
+
+	queryResultTreePresenter updateForEntities: query result.
+	queryCodePresenter updateForQuery: query
+	"queryCodePresenter syntaxHighlight: self query isValid;"
 ]

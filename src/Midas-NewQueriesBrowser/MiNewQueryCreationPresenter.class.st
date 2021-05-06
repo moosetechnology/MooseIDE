@@ -2,11 +2,12 @@ Class {
 	#name : #MiNewQueryCreationPresenter,
 	#superclass : #SpPresenter,
 	#instVars : [
-		'queryTypesDropListPresenter',
-		'queryConfigurationPresenter',
-		'parentPresenter',
-		'addButton',
-		'removeButton'
+		'#queryTypesDropListPresenter',
+		'#queryConfigurationPresenter',
+		'#parentPresenter',
+		'#addButton',
+		'#removeButton',
+		'#query => SpObservableSlot'
 	],
 	#category : #'Midas-NewQueriesBrowser-Sub presenters'
 }
@@ -45,10 +46,43 @@ MiNewQueryCreationPresenter class >> queryTypes [
 	"sort: #name ascending"
 ]
 
-{ #category : #update }
-MiNewQueryCreationPresenter >> addNewQuery [
+{ #category : #actions }
+MiNewQueryCreationPresenter >> addNewQueryAction [
 
-	parentPresenter addChildToQuery: self query
+	self disable.
+	parentPresenter addNewQueryAction: self query.
+	self notifyPropertyChanged: #query
+]
+
+{ #category : #initialization }
+MiNewQueryCreationPresenter >> connectPresenters [
+
+	queryTypesDropListPresenter whenSelectedItemChangedDo: [ :queryClass | 
+		self updateQueryConfigurationFor: queryClass
+		"parentPresenter updateLayout" ].
+	"After setting whenSelectedItemChangedDo:, select the fastest query while we do not compute the results in a fork.
+This is for instantiate queryConfigurationPresenter variable"
+	queryTypesDropListPresenter selectIndex: 3.
+	addButton action: [ self addNewQueryAction ].
+	removeButton action: [ self removeQueryAction ]
+]
+
+{ #category : #'api - actions' }
+MiNewQueryCreationPresenter >> disable [
+
+	queryTypesDropListPresenter disable.
+	"queryConfigurationPresenter disable."
+	addButton disable.
+	removeButton disable
+]
+
+{ #category : #'api - actions' }
+MiNewQueryCreationPresenter >> enable [
+
+	queryTypesDropListPresenter enable.
+	queryConfigurationPresenter enable.
+	addButton enable.
+	removeButton enable
 ]
 
 { #category : #initialization }
@@ -66,9 +100,7 @@ MiNewQueryCreationPresenter >> initializeButtons [
 MiNewQueryCreationPresenter >> initializePresenters [
 
 	self initializeQueryTypesDropList.
-	self initializeButtons.
-	"Select the fastest query while we do not compute the results in a fork"
-	queryTypesDropListPresenter selectIndex: 3
+	self initializeButtons
 ]
 
 { #category : #initialization }
@@ -78,17 +110,20 @@ MiNewQueryCreationPresenter >> initializeQueryTypesDropList [
 	queryTypesDropListPresenter
 		items: self class queryTypes;
 		display: [ :queryClass | queryClass label ];
-		whenSelectedItemChangedDo: [ :queryClass | 
-			self updateQueryConfigurationFor: queryClass
-			"parentPresenter updateLayout" ];
 		whenBuiltDo: [ "Select the fastest query while we do not compute the results in a fork""queryTypesDropListPresenter selectIndex: 3"
 			 ]
 ]
 
-{ #category : #update }
+{ #category : #accessing }
 MiNewQueryCreationPresenter >> query [
 
 	^ queryConfigurationPresenter query
+]
+
+{ #category : #initialization }
+MiNewQueryCreationPresenter >> removeQueryAction [
+
+	"parentPresenter removeQueryAction: self query"
 ]
 
 { #category : #'accessing model' }
@@ -100,9 +135,7 @@ MiNewQueryCreationPresenter >> setModelBeforeInitialization: aQueryBuilderPresen
 { #category : #update }
 MiNewQueryCreationPresenter >> updateFromConfiguration [
 
-	parentPresenter updateQueryBrowserResultListEntities:
-		self query result.
-	parentPresenter updateQueryBrowserCodePresenter: self query
+	parentPresenter queryChangedUpdate: self query
 ]
 
 { #category : #update }

@@ -17,13 +17,18 @@ MiQueryBuilderPresenter class >> defaultSpec [
 		  yourself
 ]
 
-{ #category : #adding }
-MiQueryBuilderPresenter >> addChildToQuery: query [
+{ #category : #api }
+MiQueryBuilderPresenter >> addNewQueryAction: query [
 
-	parentBrowser addChildToQuery: query
+	| newPresenter |
+	newPresenter := self instantiate:
+		                (MiNewQueryCreationPresenter on: self).
+	presenters add: newPresenter.
+	parentBrowser addChildToQuery: query.
+	self updateComponentList
 ]
 
-{ #category : #'accessing model' }
+{ #category : #accessing }
 MiQueryBuilderPresenter >> currentQuery [
 
 	^ parentBrowser currentQuery
@@ -49,28 +54,20 @@ MiQueryBuilderPresenter >> initializePresenters [
 	self initializeFirstQueryCreation
 ]
 
+{ #category : #api }
+MiQueryBuilderPresenter >> queryChangedUpdate: query [
+
+	parentBrowser queryChangedUpdate: query
+]
+
 { #category : #'accessing model' }
 MiQueryBuilderPresenter >> setModelBeforeInitialization: aQueryBrowserPresenter [
 
 	parentBrowser := aQueryBrowserPresenter
 ]
 
-{ #category : #initialization }
+{ #category : #update }
 MiQueryBuilderPresenter >> updateComponentList [
 
 	componentListPresenter presenters: presenters
-]
-
-{ #category : #'as yet unclassified' }
-MiQueryBuilderPresenter >> updateQueryBrowserCodePresenter: query [
-
-	parentBrowser queryCodePresenter updateForQuery: query
-	"syntaxHighlight: self query isValid;"
-]
-
-{ #category : #api }
-MiQueryBuilderPresenter >> updateQueryBrowserResultListEntities: resultQueryEntities [
-
-	parentBrowser queryResultTreePresenter updateForEntities:
-		resultQueryEntities
 ]
