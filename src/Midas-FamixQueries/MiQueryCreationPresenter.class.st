@@ -239,7 +239,7 @@ MiQueryCreationPresenter >> updateQueryCode [
 
 { #category : #update }
 MiQueryCreationPresenter >> updateQueryConfigurationFor: queryClass [
-	self flag: #FQImprove.  "The following method is calling indirectly the method giving the possible types once again.
+	self flag: #FQImprove.	"The following method is calling indirectly the method giving the possible types once again.
 		
 		Currently we configure the query before creating the browser.
 		A better way would be to create an unconfigured query, initialize the browser and execute the query with the selected elements of the browser."

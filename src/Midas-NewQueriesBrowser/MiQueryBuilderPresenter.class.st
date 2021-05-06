@@ -22,25 +22,15 @@ MiQueryBuilderPresenter >> initializeFirstQueryCreation [
 	| queryCreationPresenter |
 	queryCreationPresenter := self instantiate:
 		                          (MiNewQueryCreationPresenter on: self).
-	presenters add: queryCreationPresenter.
-	builderLayout add: queryCreationPresenter.
-	self initializeLayout
-]
-
-{ #category : #initialization }
-MiQueryBuilderPresenter >> initializeLayout [
-
-	self layout: builderLayout.
-	"Update method updates the presenter layout"
-	self update
+	presenters add: queryCreationPresenter
 ]
 
 { #category : #initialization }
 MiQueryBuilderPresenter >> initializePresenters [
 
-	builderLayout := SpBoxLayout newTopToBottom.
 	presenters := OrderedCollection new.
-	self initializeFirstQueryCreation
+	self initializeFirstQueryCreation.
+	self updateLayout
 ]
 
 { #category : #'accessing model' }
@@ -53,10 +43,10 @@ MiQueryBuilderPresenter >> setModelBeforeInitialization: aBrowserPresenter [
 { #category : #initialization }
 MiQueryBuilderPresenter >> updateLayout [
 
-	| newLayout |
-	newLayout := SpBoxLayout newTopToBottom.
+	builderLayout := SpBoxLayout newTopToBottom.
 	presenters do: [ :aQueryCreationPresenter | 
-		newLayout add: aQueryCreationPresenter ].
-	builderLayout := newLayout.
-	self layout: builderLayout
+		builderLayout add: aQueryCreationPresenter ].
+	self layout: builderLayout.
+	"Update method updates the presenter layout"
+	self update
 ]
