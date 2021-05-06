@@ -7,8 +7,8 @@ Class {
 		'queries',
 		'queryCodePresenter',
 		'queryNotebookPresenter',
-		'queryBuilderLayout',
-		'queryComponentListPresenter'
+		'queryComponentListPresenter',
+		'queryBuilderPresenter'
 	],
 	#category : #'Midas-NewQueriesBrowser-Presenters'
 }
@@ -81,22 +81,16 @@ MiNewQueriesBrowser >> initializeComponentList [
 	queryComponentListPresenter := self newComponentList.
 	queryComponentListPresenter
 		propagateNaturalHeight: true;
-		presenters: { (MiNewQueryCreationPresenter on: self) };
-		whenBuiltDo: [ 
-			queryResultTreePresenter color:
-					self theme class basePassiveBackgroundColor ]
+		presenters: { (MiNewQueryCreationPresenter on: self) }
 ]
 
 { #category : #initialization }
 MiNewQueriesBrowser >> initializeLayout [
 
 	| tempLayout |
-	"Initialize the queryBuildeLayout instance variable"
-	queryBuilderLayout := SpBoxLayout newTopToBottom.
-
 	tempLayout := self class defaultSpec.
 	tempLayout add: (SpPanedLayout new
-			 add: #queryComponentListPresenter;
+			 add: #queryBuilderPresenter;
 			 add: #queryNotebookPresenter;
 			 yourself).
 	self layout: tempLayout
@@ -121,10 +115,17 @@ MiNewQueriesBrowser >> initializePresenters [
 
 	super initializePresenters.
 	self initializeLayout.
-	self initializeComponentList.
 	self initializeQueryCodePresenter.
 	self initializeResultTreePresenter.
-	self initializeNotebookPresenter
+	self initializeNotebookPresenter.
+	self initializeQueryBuilder
+]
+
+{ #category : #initialization }
+MiNewQueriesBrowser >> initializeQueryBuilder [
+
+	queryBuilderPresenter := self instantiate:
+		                         (MiQueryBuilderPresenter on: self)
 ]
 
 { #category : #initialization }

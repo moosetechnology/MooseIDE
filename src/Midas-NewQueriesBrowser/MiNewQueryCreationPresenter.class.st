@@ -6,7 +6,7 @@ Class {
 		'parentBrowser',
 		'queryConfigurationPresenter'
 	],
-	#category : #'Midas-NewQueriesBrowser-Presenters'
+	#category : #'Midas-NewQueriesBrowser-Subpresenters'
 }
 
 { #category : #specs }
