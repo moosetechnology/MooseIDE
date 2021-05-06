@@ -3,11 +3,12 @@ Class {
 	#superclass : #MiAbstractBrowser,
 	#instVars : [
 		'queryResultTreePresenter',
-		'currentQuery',
 		'queries',
 		'queryCodePresenter',
 		'queryNotebookPresenter',
-		'queryBuilderPresenter'
+		'queryBuilderPresenter',
+		'rootQuery',
+		'lastChildQuery'
 	],
 	#category : #'Midas-NewQueriesBrowser-Main presenters'
 }
@@ -70,28 +71,28 @@ MiNewQueriesBrowser >> accept: anObject [
 { #category : #api }
 MiNewQueriesBrowser >> addChildToQuery: query [
 
-	currentQuery addChild: query.
-	self updatePresentersForQuery: currentQuery
-]
-
-{ #category : #accessing }
-MiNewQueriesBrowser >> currentQuery [
-
-	^ currentQuery
+	rootQuery addChild: query.
+	lastChildQuery := query
 ]
 
 { #category : #actions }
 MiNewQueriesBrowser >> followAction [
 
-	| rootQuery |
+	| newQuery |
 	(self accept: toSelect) ifFalse: [ ^ self ].
 	toSelect := toSelect asMooseGroup allUsing: FamixTNamedEntity.
 	queries do: #resetResult.
-	rootQuery := self rootQuery.
-	rootQuery
+	newQuery := self getRootQuery.
+	newQuery
 		result: toSelect;
 		name: toSelect first mooseModel name.
-	self selectQuery: rootQuery
+	self selectQuery: newQuery
+]
+
+{ #category : #accessing }
+MiNewQueriesBrowser >> getRootQuery [
+
+	^ queries detect: [ :query | query parent isNil ]
 ]
 
 { #category : #initialization }
@@ -156,26 +157,25 @@ MiNewQueriesBrowser >> initializeResultTreePresenter [
 { #category : #api }
 MiNewQueriesBrowser >> queryChangedUpdate: query [
 
-	self updatePresentersForQuery: query
+	self updatePresentersForLastQuery: query
 ]
 
 { #category : #accessing }
 MiNewQueriesBrowser >> queryResultEntities [
 
-	^ currentQuery result
+	^ rootQuery result
 ]
 
 { #category : #accessing }
 MiNewQueriesBrowser >> rootQuery [
 
-	^ queries detect: [ :query | query parent isNil ]
+	^ rootQuery
 ]
 
 { #category : #actions }
 MiNewQueriesBrowser >> selectQuery: aQuery [
 
-	currentQuery := aQuery.
-	"queryRossalPresenter selectItem: selectedQuery."
+	rootQuery := aQuery.
 	queryResultTreePresenter updateForQuery: aQuery.
 	queryCodePresenter updateForQuery: aQuery.
 	self update
@@ -186,7 +186,7 @@ MiNewQueriesBrowser >> selectedQuery [
 
 	"This methods is only for backwards compatibility with the old queries browser"
 
-	^ self currentQuery
+	^ self rootQuery
 ]
 
 { #category : #'accessing model' }
@@ -195,11 +195,11 @@ MiNewQueriesBrowser >> setModelBeforeInitialization: aRootQuery [
 	queries := OrderedCollection new
 		           add: aRootQuery;
 		           yourself.
-	currentQuery := self rootQuery
+	rootQuery := self getRootQuery
 ]
 
 { #category : #update }
-MiNewQueriesBrowser >> updatePresentersForQuery: query [
+MiNewQueriesBrowser >> updatePresentersForLastQuery: query [
 
 	queryResultTreePresenter updateForEntities: query result.
 	queryCodePresenter updateForQuery: query

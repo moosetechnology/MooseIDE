@@ -28,12 +28,6 @@ MiQueryBuilderPresenter >> addNewQueryAction: query [
 	self updateComponentList
 ]
 
-{ #category : #accessing }
-MiQueryBuilderPresenter >> currentQuery [
-
-	^ parentBrowser currentQuery
-]
-
 { #category : #initialization }
 MiQueryBuilderPresenter >> initializeFirstQueryCreation [
 
@@ -58,6 +52,12 @@ MiQueryBuilderPresenter >> initializePresenters [
 MiQueryBuilderPresenter >> queryChangedUpdate: query [
 
 	parentBrowser queryChangedUpdate: query
+]
+
+{ #category : #accessing }
+MiQueryBuilderPresenter >> rootQuery [
+
+	^ parentBrowser rootQuery
 ]
 
 { #category : #'accessing model' }

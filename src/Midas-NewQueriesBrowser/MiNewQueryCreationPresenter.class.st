@@ -58,8 +58,7 @@ MiNewQueryCreationPresenter >> addNewQueryAction [
 MiNewQueryCreationPresenter >> connectPresenters [
 
 	queryTypesDropListPresenter whenSelectedItemChangedDo: [ :queryClass | 
-		self updateQueryConfigurationFor: queryClass
-		"parentPresenter updateLayout" ].
+		self updateQueryConfigurationFor: queryClass ].
 	"After setting whenSelectedItemChangedDo:, select the fastest query while we do not compute the results in a fork.
 This is for instantiate queryConfigurationPresenter variable"
 	queryTypesDropListPresenter selectIndex: 3.
@@ -109,9 +108,7 @@ MiNewQueryCreationPresenter >> initializeQueryTypesDropList [
 	queryTypesDropListPresenter := self newDropList.
 	queryTypesDropListPresenter
 		items: self class queryTypes;
-		display: [ :queryClass | queryClass label ];
-		whenBuiltDo: [ "Select the fastest query while we do not compute the results in a fork""queryTypesDropListPresenter selectIndex: 3"
-			 ]
+		display: [ :queryClass | queryClass label ]
 ]
 
 { #category : #accessing }
@@ -143,7 +140,7 @@ MiNewQueryCreationPresenter >> updateQueryConfigurationFor: queryClass [
 
 	| instantiatedQuery |
 	instantiatedQuery := queryClass defaultForParent:
-		                     parentPresenter currentQuery.
+		                     parentPresenter rootQuery.
 	queryConfigurationPresenter := self instantiate:
 		                               (MiQueryConfigurationPresenterFactory
 			                                configureQuery: instantiatedQuery
