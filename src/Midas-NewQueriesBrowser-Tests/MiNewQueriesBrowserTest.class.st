@@ -31,14 +31,15 @@ MiNewQueriesBrowserTest >> setUp [
 ]
 
 { #category : #tests }
-MiNewQueriesBrowserTest >> testInitialization [
+MiNewQueriesBrowserTest >> testInitializePresenters [
+
 	self
 		assertCollection: browser queryResultEntities
 		hasSameElements: helper classesAndMethods
 ]
 
 { #category : #tests }
-MiNewQueriesBrowserTest >> testQueryResult [
+MiNewQueriesBrowserTest >> testQueryResultEntities [
 
 	self
 		assert: browser queryResultTreePresenter class
