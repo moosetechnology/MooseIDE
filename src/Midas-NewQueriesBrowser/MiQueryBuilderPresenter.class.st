@@ -41,6 +41,7 @@ MiQueryBuilderPresenter >> initializeFirstQueryCreation [
 	| queryCreationPresenter |
 	queryCreationPresenter := self instantiate:
 		                          (MiNewQueryCreationPresenter on: self).
+	queryCreationPresenter removeButtonRemoveFromLayout.
 	presenters add: queryCreationPresenter.
 	self updateComponentList
 ]

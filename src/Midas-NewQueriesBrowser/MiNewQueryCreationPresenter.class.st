@@ -2,12 +2,11 @@ Class {
 	#name : #MiNewQueryCreationPresenter,
 	#superclass : #SpPresenter,
 	#instVars : [
-		'#queryTypesDropListPresenter',
-		'#queryConfigurationPresenter',
-		'#parentPresenter',
-		'#addButton',
-		'#removeButton',
-		'#query => SpObservableSlot'
+		'queryTypesDropListPresenter',
+		'queryConfigurationPresenter',
+		'parentPresenter',
+		'addButton',
+		'removeButton'
 	],
 	#category : #'Midas-NewQueriesBrowser-Sub presenters'
 }
@@ -51,7 +50,10 @@ MiNewQueryCreationPresenter >> addNewQueryAction [
 
 	self disable.
 	parentPresenter addNewQueryAction: self query.
-	self notifyPropertyChanged: #query
+	"Need to see if it is neccessary to inform query slot changed.
+	For the moment, query SpObservable slot instance variable is not declared in MiNewQueriesBrowser.
+	
+	self notifyPropertyChanged: #query"
 ]
 
 { #category : #initialization }
@@ -79,8 +81,9 @@ MiNewQueryCreationPresenter >> disable [
 MiNewQueryCreationPresenter >> enable [
 
 	queryTypesDropListPresenter enable.
-	"queryConfigurationPresenter enable."
+	self flag: 'TODO enable method on configuration presenter'.
 	addButton enable.
+	"queryConfigurationPresenter enable."
 	removeButton enable
 ]
 
@@ -115,6 +118,12 @@ MiNewQueryCreationPresenter >> initializeQueryTypesDropList [
 MiNewQueryCreationPresenter >> query [
 
 	^ queryConfigurationPresenter query
+]
+
+{ #category : #actions }
+MiNewQueryCreationPresenter >> removeButtonRemoveFromLayout [
+
+	self layout remove: removeButton
 ]
 
 { #category : #initialization }
