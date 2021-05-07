@@ -172,7 +172,7 @@ MiNewQueryCreationPresenter >> updateQueryConfigurationFor: queryClass [
 	instantiatedQuery := queryClass defaultForParent:
 		                     parentPresenter currentQuery.
 	queryConfigurationPresenter := self instantiate:
-		                               (MiQueryConfigurationPresenterFactory
+		                               (QueryConfigurationPresenterFactory
 			                                configureQuery: instantiatedQuery
 			                                forOwnerPresenter: self).
 	self update

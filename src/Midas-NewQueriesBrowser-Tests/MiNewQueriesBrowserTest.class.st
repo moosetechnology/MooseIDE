@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'helper'
 	],
-	#category : #'Midas-NewQueriesBrowser-Tests'
+	#category : #'Midas-NewQueriesBrowser-Tests-Main presenters'
 }
 
 { #category : #'tests - actions' }
