@@ -75,7 +75,16 @@ MiNewQueryCreationPresenter >> disable [
 	self flag: 'TODO disable method on configuration presenter'.
 	"queryConfigurationPresenter disable."
 	addButton disable.
-	removeButton disable
+	"Do not call removeButton disable directly"
+	self disableRemoveButton
+]
+
+{ #category : #actions }
+MiNewQueryCreationPresenter >> disableRemoveButton [
+
+	"If the button exists in the layout"
+
+	removeButton ifNotNil: [ removeButton disable ]
 ]
 
 { #category : #'api - actions' }
