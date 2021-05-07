@@ -76,15 +76,17 @@ MiNewQueriesBrowser >> currentQuery [
 { #category : #actions }
 MiNewQueriesBrowser >> followAction [
 
-	| newQuery |
+	| newCurrentQuery |
 	(self accept: toSelect) ifFalse: [ ^ self ].
 	toSelect := toSelect asMooseGroup allUsing: FamixTNamedEntity.
 	queriesHistory do: #resetResult.
-	newQuery := self getRootQuery.
-	newQuery
-		result: toSelect;
-		name: toSelect first mooseModel name.
-	self selectQuery: newQuery
+	newCurrentQuery := self getRootQuery
+		                   result: toSelect;
+		                   name: toSelect first mooseModel name;
+		                   yourself.
+	queriesHistory := OrderedCollection new.
+	self updateForQuery: newCurrentQuery.
+	queryBuilderPresenter followAction: newCurrentQuery
 ]
 
 { #category : #accessing }

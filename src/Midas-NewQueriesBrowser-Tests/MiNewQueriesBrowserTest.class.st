@@ -1,27 +1,23 @@
 Class {
 	#name : #MiNewQueriesBrowserTest,
-	#superclass : #TestCase,
+	#superclass : #MiAbstractBrowserTest,
 	#instVars : [
-		'helper',
-		'browser'
+		'helper'
 	],
 	#category : #'Midas-NewQueriesBrowser-Tests'
 }
 
+{ #category : #'tests - actions' }
+MiNewQueriesBrowserTest >> assertFollowActionFor: notUsed [
+
+	self assert: browser queriesHistory size equals: 1.
+	self
+		assertCollection: browser queryResultTreePresenter items
+		hasSameElements: browser currentQuery result
+]
+
 { #category : #running }
 MiNewQueriesBrowserTest >> browserClass [
-
-	^ MiNewQueriesBrowser
-]
-
-{ #category : #running }
-MiNewQueriesBrowserTest >> bus [
-
-	^ MiApplication current busNamed: 'TestBus'
-]
-
-{ #category : #running }
-MiNewQueriesBrowserTest >> classToTest [
 
 	^ MiNewQueriesBrowser
 ]
@@ -31,8 +27,6 @@ MiNewQueriesBrowserTest >> setUp [
 
 	super setUp.
 	helper := FQTestsHelper current.
-	browser := self browserClass runMeFollowing: self bus.
-	browser window close.
 	browser selectEntity: helper classesAndMethods
 ]
 

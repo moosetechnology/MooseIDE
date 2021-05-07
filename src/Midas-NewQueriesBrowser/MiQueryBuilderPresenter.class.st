@@ -35,6 +35,15 @@ MiQueryBuilderPresenter >> currentQuery [
 	^ parentBrowser currentQuery
 ]
 
+{ #category : #'api - actions' }
+MiQueryBuilderPresenter >> followAction: newCurrentQuery [
+
+	presenters := OrderedCollection new
+		              add: newCurrentQuery;
+		              yourself.
+	self updateComponentList
+]
+
 { #category : #initialization }
 MiQueryBuilderPresenter >> initializeFirstQueryCreation [
 
@@ -60,12 +69,6 @@ MiQueryBuilderPresenter >> initializePresenters [
 MiQueryBuilderPresenter >> queryChangedUpdate: query [
 
 	parentBrowser queryChangedUpdate: query
-]
-
-{ #category : #'api - accessing' }
-MiQueryBuilderPresenter >> queryForLastPresenter [
-
-	^ presenters last query
 ]
 
 { #category : #api }
