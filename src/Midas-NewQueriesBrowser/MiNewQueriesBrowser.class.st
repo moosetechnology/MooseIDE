@@ -3,12 +3,11 @@ Class {
 	#superclass : #MiAbstractBrowser,
 	#instVars : [
 		'queryResultTreePresenter',
-		'queries',
+		'queriesHistoryCollection',
 		'queryCodePresenter',
 		'queryNotebookPresenter',
 		'queryBuilderPresenter',
-		'rootQuery',
-		'lastChildQuery'
+		'currentQuery'
 	],
 	#category : #'Midas-NewQueriesBrowser-Main presenters'
 }
@@ -68,10 +67,10 @@ MiNewQueriesBrowser >> accept: anObject [
 		  (anObject asMooseGroup allUsing: FamixTNamedEntity) isNotEmpty ]
 ]
 
-{ #category : #api }
-MiNewQueriesBrowser >> addChildToQuery: query [
+{ #category : #accessing }
+MiNewQueriesBrowser >> currentQuery [
 
-	rootQuery addChild: query
+	^ currentQuery
 ]
 
 { #category : #actions }
@@ -80,7 +79,7 @@ MiNewQueriesBrowser >> followAction [
 	| newQuery |
 	(self accept: toSelect) ifFalse: [ ^ self ].
 	toSelect := toSelect asMooseGroup allUsing: FamixTNamedEntity.
-	queries do: #resetResult.
+	queriesHistoryCollection do: #resetResult.
 	newQuery := self getRootQuery.
 	newQuery
 		result: toSelect;
@@ -91,7 +90,7 @@ MiNewQueriesBrowser >> followAction [
 { #category : #accessing }
 MiNewQueriesBrowser >> getRootQuery [
 
-	^ queries detect: [ :query | query parent isNil ]
+	^ queriesHistoryCollection detect: [ :query | query parent isNil ]
 ]
 
 { #category : #initialization }
@@ -162,14 +161,14 @@ MiNewQueriesBrowser >> queryChangedUpdate: query [
 { #category : #accessing }
 MiNewQueriesBrowser >> queryResultEntities [
 
-	^ rootQuery result
+	^ currentQuery result
 ]
 
 { #category : #actions }
 MiNewQueriesBrowser >> removeQuery: aQuery [
 
-	queries remove: aQuery.
-	self selectQuery: queryBuilderPresenter queryForLastPresenter
+	self selectQuery: queriesHistoryCollection last.
+	queriesHistoryCollection removeLast
 	"rootQuery children ifNotEmpty: [ 
 		UIManager default alert:
 			'Cannot remove a query with children for now'.
@@ -178,16 +177,10 @@ MiNewQueriesBrowser >> removeQuery: aQuery [
 	queries remove: rootQuery"
 ]
 
-{ #category : #accessing }
-MiNewQueriesBrowser >> rootQuery [
-
-	^ rootQuery
-]
-
 { #category : #actions }
 MiNewQueriesBrowser >> selectQuery: aQuery [
 
-	rootQuery := aQuery.
+	currentQuery := aQuery.
 	queryResultTreePresenter updateForQuery: aQuery.
 	queryCodePresenter updateForQuery: aQuery.
 	self update
@@ -198,16 +191,16 @@ MiNewQueriesBrowser >> selectedQuery [
 
 	"This methods is only for backwards compatibility with the old queries browser"
 
-	^ self rootQuery
+	^ self currentQuery
 ]
 
 { #category : #'accessing model' }
 MiNewQueriesBrowser >> setModelBeforeInitialization: aRootQuery [
 
-	queries := OrderedCollection new
+	queriesHistoryCollection := OrderedCollection new
 		           add: aRootQuery;
 		           yourself.
-	rootQuery := self getRootQuery
+	currentQuery := self getRootQuery
 ]
 
 { #category : #api }
@@ -216,6 +209,8 @@ MiNewQueriesBrowser >> updateForQuery: aQuery [
 	"This method is called from FQQueryCreationPresenter and FQQueriesCombinationPresenter. 
 	They have the responsibility to establish the [parent* - child] relationship between queries"
 
-	queries addLast: aQuery.
+	"currentQuery addChild: query"
+
+	queriesHistoryCollection addLast: aQuery.
 	self selectQuery: aQuery
 ]

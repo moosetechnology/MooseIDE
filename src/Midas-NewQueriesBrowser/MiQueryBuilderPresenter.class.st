@@ -24,8 +24,7 @@ MiQueryBuilderPresenter >> addNewQueryAction: query [
 	newPresenter := self instantiate:
 		                (MiNewQueryCreationPresenter on: self).
 	presenters add: newPresenter.
-	
-	parentBrowser addChildToQuery: query.
+
 	parentBrowser updateForQuery: query.
 	self updateComponentList
 ]
@@ -74,7 +73,7 @@ MiQueryBuilderPresenter >> removeQueryAction: aQuery [
 { #category : #accessing }
 MiQueryBuilderPresenter >> rootQuery [
 
-	^ parentBrowser rootQuery
+	^ parentBrowser currentQuery
 ]
 
 { #category : #'accessing model' }
