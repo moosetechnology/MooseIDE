@@ -26,20 +26,26 @@ MiQueryBuilderPresenterTest >> testAddNewQueryAction [
 { #category : #test }
 MiQueryBuilderPresenterTest >> testInitializePresenters [
 
+	| presentersClasses |
+	presentersClasses := builderPresenter presenters collect: #class.
 	self assert: builderPresenter presenters size equals: 2.
-	self assert: builderPresenter presenters first class equals: MiNewQueriesBrowser.
-	self assert: builderPresenter presenters second class equals: SpComponentListPresenter.
+	self assert: (presentersClasses includes: MiNewQueriesBrowser).
+	self assert: (presentersClasses includes: SpComponentListPresenter).
 	self assert: builderPresenter presenters second items size equals: 1.
-	self assert: builderPresenter presenters second items first class equals: MiNewQueryCreationPresenter.
+	self
+		assert: builderPresenter presenters second items first class
+		equals: MiNewQueryCreationPresenter
 ]
 
 { #category : #test }
 MiQueryBuilderPresenterTest >> testRemoveQueryAction [
 
+	| queryCreationPresenter |
+	queryCreationPresenter := builderPresenter presenters second.
 	builderPresenter presentersCollection first addNewQueryAction.
 	builderPresenter presentersCollection second removeQueryAction.
 	self assert: builderPresenter presentersCollection size equals: 1.
-	self assert: builderPresenter presenters second items size equals: 1.
+	self assert: queryCreationPresenter items size equals: 1.
 	self
 		assert: builderPresenter currentQuery
 		equals: builderPresenter presentersCollection first query
