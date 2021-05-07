@@ -29,6 +29,12 @@ MiQueryBuilderPresenter >> addNewQueryAction: query [
 	self updateComponentList
 ]
 
+{ #category : #accessing }
+MiQueryBuilderPresenter >> currentQuery [
+
+	^ parentBrowser currentQuery
+]
+
 { #category : #initialization }
 MiQueryBuilderPresenter >> initializeFirstQueryCreation [
 
@@ -68,12 +74,6 @@ MiQueryBuilderPresenter >> removeQueryAction: aQuery [
 	presenters removeLast.
 	presenters last enable.
 	self updateComponentList
-]
-
-{ #category : #accessing }
-MiQueryBuilderPresenter >> rootQuery [
-
-	^ parentBrowser currentQuery
 ]
 
 { #category : #'accessing model' }
