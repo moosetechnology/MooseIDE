@@ -3,11 +3,11 @@ Class {
 	#superclass : #MiAbstractBrowser,
 	#instVars : [
 		'queryResultTreePresenter',
-		'queriesHistoryCollection',
 		'queryCodePresenter',
 		'queryNotebookPresenter',
 		'queryBuilderPresenter',
-		'currentQuery'
+		'currentQuery',
+		'queriesHistory'
 	],
 	#category : #'Midas-NewQueriesBrowser-Main presenters'
 }
@@ -79,7 +79,7 @@ MiNewQueriesBrowser >> followAction [
 	| newQuery |
 	(self accept: toSelect) ifFalse: [ ^ self ].
 	toSelect := toSelect asMooseGroup allUsing: FamixTNamedEntity.
-	queriesHistoryCollection do: #resetResult.
+	queriesHistory do: #resetResult.
 	newQuery := self getRootQuery.
 	newQuery
 		result: toSelect;
@@ -90,7 +90,7 @@ MiNewQueriesBrowser >> followAction [
 { #category : #accessing }
 MiNewQueriesBrowser >> getRootQuery [
 
-	^ queriesHistoryCollection detect: [ :query | query parent isNil ]
+	^ queriesHistory detect: [ :query | query parent isNil ]
 ]
 
 { #category : #initialization }
@@ -164,11 +164,11 @@ MiNewQueriesBrowser >> queryResultEntities [
 	^ currentQuery result
 ]
 
-{ #category : #actions }
+{ #category : #api }
 MiNewQueriesBrowser >> removeQuery: aQuery [
 
-	self selectQuery: queriesHistoryCollection last.
-	queriesHistoryCollection removeLast
+	self selectQuery: queriesHistory last.
+	queriesHistory removeLast
 	"rootQuery children ifNotEmpty: [ 
 		UIManager default alert:
 			'Cannot remove a query with children for now'.
@@ -197,9 +197,9 @@ MiNewQueriesBrowser >> selectedQuery [
 { #category : #'accessing model' }
 MiNewQueriesBrowser >> setModelBeforeInitialization: aRootQuery [
 
-	queriesHistoryCollection := OrderedCollection new
-		           add: aRootQuery;
-		           yourself.
+	queriesHistory := OrderedCollection new
+		                            add: aRootQuery;
+		                            yourself.
 	currentQuery := self getRootQuery
 ]
 
@@ -211,6 +211,6 @@ MiNewQueriesBrowser >> updateForQuery: aQuery [
 
 	"currentQuery addChild: query"
 
-	queriesHistoryCollection addLast: aQuery.
+	queriesHistory addLast: aQuery.
 	self selectQuery: aQuery
 ]
