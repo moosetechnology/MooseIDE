@@ -57,7 +57,7 @@ MiNewQueriesBrowserTest >> testRemoveQuery [
 	browser updateForQuery: query.
 	browser removeQuery: browser currentQuery.
 	self assert: browser queriesHistory size equals: 1.
-	self deny: (browser queriesHistory anySatisfy: [ :q | q == query ])
+	self deny: (browser queriesHistory includes: query)
 ]
 
 { #category : #tests }
