@@ -94,7 +94,16 @@ MiNewQueryCreationPresenter >> enable [
 	self flag: 'TODO enable method on configuration presenter'.
 	addButton enable.
 	"queryConfigurationPresenter enable."
-	removeButton enable
+	"Do not call `removeButton enable` directly."
+	self enableRemoveButton
+]
+
+{ #category : #actions }
+MiNewQueryCreationPresenter >> enableRemoveButton [
+
+	"If the button exists in the layout."
+
+	removeButton ifNotNil: [ removeButton enable ]
 ]
 
 { #category : #initialization }
