@@ -72,6 +72,7 @@ This is for instantiate queryConfigurationPresenter variable"
 MiNewQueryCreationPresenter >> disable [
 
 	queryTypesDropListPresenter disable.
+	self flag: 'TODO disable method on configuration presenter'.
 	"queryConfigurationPresenter disable."
 	addButton disable.
 	removeButton disable
@@ -120,10 +121,12 @@ MiNewQueryCreationPresenter >> query [
 	^ queryConfigurationPresenter query
 ]
 
-{ #category : #actions }
-MiNewQueryCreationPresenter >> removeButtonRemoveFromLayout [
+{ #category : #'api - actions' }
+MiNewQueryCreationPresenter >> removeButtonRemove [
 
-	self layout remove: removeButton
+	self layout remove: removeButton.
+	"We do not want the removeButton to exist"
+	removeButton := nil
 ]
 
 { #category : #initialization }
