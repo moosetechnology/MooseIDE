@@ -65,6 +65,12 @@ MiTreeBrowser >> followAction [
 ]
 
 { #category : #'as yet unclassified' }
+MiTreeBrowser >> initialize [
+	super initialize.
+	model := MiTreeBrowserModel new
+]
+
+{ #category : #'as yet unclassified' }
 MiTreeBrowser >> initializePresenters [
 	super initializePresenters.
 	tree := self newTreeTable.
