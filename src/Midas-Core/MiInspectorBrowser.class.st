@@ -19,6 +19,19 @@ MiInspectorBrowser class >> defaultSpec [
 		  yourself
 ]
 
+{ #category : #'world menu' }
+MiInspectorBrowser class >> menuCommandOn: aBuilder [
+
+	<worldMenu>
+	<miBrowsers>
+	(aBuilder item: #Inspector)
+		parent: #Moose;
+		label: self title;
+		order: 5;
+		help: self helpMessage;
+		action: [ self runMe ]
+]
+
 { #category : #'instance creation' }
 MiInspectorBrowser class >> newModel [
 
@@ -35,7 +48,7 @@ MiInspectorBrowser class >> runMe [
 { #category : #specs }
 MiInspectorBrowser class >> title [
 
-	^ 'Midas Inspector'
+	^ 'Moose Inspector'
 ]
 
 { #category : #specs }
