@@ -39,6 +39,12 @@ MiNewQueriesBrowserTest >> testInitializePresenters [
 ]
 
 { #category : #tests }
+MiNewQueriesBrowserTest >> testOpen [
+
+	self assert: browser window isBuilt
+]
+
+{ #category : #tests }
 MiNewQueriesBrowserTest >> testQueryResultEntities [
 
 	self

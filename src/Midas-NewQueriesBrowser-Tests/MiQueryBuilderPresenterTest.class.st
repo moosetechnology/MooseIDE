@@ -38,6 +38,15 @@ MiQueryBuilderPresenterTest >> testInitializePresenters [
 ]
 
 { #category : #test }
+MiQueryBuilderPresenterTest >> testOpen [
+
+	| window |
+	window := builderPresenter openWithSpec.
+	self assert: window isBuilt.
+	window close
+]
+
+{ #category : #test }
 MiQueryBuilderPresenterTest >> testRemoveQueryAction [
 
 	| queryCreationPresenter |
