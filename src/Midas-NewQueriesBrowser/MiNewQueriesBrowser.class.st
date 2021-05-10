@@ -71,6 +71,13 @@ MiNewQueriesBrowser >> accept: anObject [
 		  (anObject asMooseGroup allUsing: FamixTNamedEntity) isNotEmpty ]
 ]
 
+{ #category : #api }
+MiNewQueriesBrowser >> addNewQuery: aQuery [
+
+	queriesHistory addLast: aQuery.
+	self selectQuery: aQuery
+]
+
 { #category : #accessing }
 MiNewQueriesBrowser >> currentQuery [
 
@@ -91,7 +98,7 @@ MiNewQueriesBrowser >> followAction [
 		            name: toSelect first mooseModel name;
 		            yourself.
 	queriesHistory := OrderedCollection empty.
-	self updateForQuery: newQuery.
+	self addNewQuery: newQuery.
 	queryBuilderPresenter followAction: newQuery
 ]
 
@@ -211,16 +218,4 @@ MiNewQueriesBrowser >> setModelBeforeInitialization: aRootQuery [
 
 	queriesHistory := OrderedCollection with: aRootQuery.
 	currentQuery := self getRootQuery
-]
-
-{ #category : #api }
-MiNewQueriesBrowser >> updateForQuery: aQuery [
-
-	"This method is called from FQQueryCreationPresenter and FQQueriesCombinationPresenter. 
-	They have the responsibility to establish the [parent* - child] relationship between queries"
-
-	"currentQuery addChild: query"
-
-	queriesHistory addLast: aQuery.
-	self selectQuery: aQuery
 ]
