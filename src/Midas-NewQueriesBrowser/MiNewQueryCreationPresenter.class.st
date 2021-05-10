@@ -148,7 +148,7 @@ MiNewQueryCreationPresenter >> query [
 MiNewQueryCreationPresenter >> removeButtonRemove [
 
 	self layout remove: removeButton.
-	"We do not want the removeButton to exist"
+	"We do not want the removeButton exists"
 	removeButton := nil
 ]
 

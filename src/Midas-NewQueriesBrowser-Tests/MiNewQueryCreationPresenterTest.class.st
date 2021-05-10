@@ -26,8 +26,9 @@ MiNewQueryCreationPresenterTest >> setUp [
 MiNewQueryCreationPresenterTest >> testAddNewQueryAction [
 
 	| builderPresenter |
-	creationPresenter addNewQueryAction.
 	builderPresenter := creationPresenter parentPresenter.
+	self assert: builderPresenter presentersCollection size equals: 1.
+	creationPresenter addNewQueryAction.
 	self assert: builderPresenter presentersCollection size equals: 2
 ]
 

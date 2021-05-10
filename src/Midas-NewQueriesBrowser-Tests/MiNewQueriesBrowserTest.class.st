@@ -61,7 +61,10 @@ MiNewQueriesBrowserTest >> testRemoveQuery [
 	| query |
 	query := FQBooleanQuery new property: #isAbstract.
 	query beChildOf: browser getRootQuery.
+	self assert: browser queriesHistory size equals: 1.
 	browser updateForQuery: query.
+	self assert: browser queriesHistory size equals: 2.
+	self assert: (browser queriesHistory includes: query).
 	browser removeQuery: browser currentQuery.
 	self assert: browser queriesHistory size equals: 1.
 	self deny: (browser queriesHistory includes: query)
@@ -74,15 +77,17 @@ MiNewQueriesBrowserTest >> testSelectQuery [
 	query1 := (FQBooleanQuery property: #isDead) beChildOf:
 		          browser getRootQuery.
 	browser updateForQuery: query1.
+	self assert: browser currentQuery equals: query1.
 	browser updateForQuery:
 		((FQTypeQuery new type: FamixStClass) beChildOf: query1).
+	self deny: browser currentQuery equals: query1.
 	browser selectQuery: query1.
 	self assert: browser currentQuery equals: query1.
 	self
 		assertCollection: browser queryResultTreePresenter items
 		hasSameElements: query1 result.
 	self
-		assertCollection: browser queryResultEntities
+		assertCollection: browser currentQuery result
 		hasSameElements: query1 result
 ]
 
@@ -102,9 +107,12 @@ MiNewQueriesBrowserTest >> testUpdateForBinaryQuery [
 { #category : #tests }
 MiNewQueriesBrowserTest >> testUpdateForQuery [
 
+	"add a new query"
+
 	| query |
 	query := (FQBooleanQuery property: #isDead) beChildOf:
 		         browser currentQuery.
+	self deny: (browser queriesHistory includes: query).
 	browser updateForQuery: query.
 	self assert: (browser queriesHistory includes: query).
 	self assert: browser currentQuery equals: query.

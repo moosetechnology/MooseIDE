@@ -36,6 +36,19 @@ MiQueryBuilderPresenter >> addNewQueryAction: query [
 	self updateComponentList
 ]
 
+{ #category : #initialization }
+MiQueryBuilderPresenter >> createFirstQueryCreation [
+
+	| queryCreationPresenter |
+	queryCreationPresenter := self instantiate:
+		                          (MiNewQueryCreationPresenter on: self).
+	queryCreationPresenter removeButtonRemove.
+	presenters := OrderedCollection new
+		              add: queryCreationPresenter;
+		              yourself.
+	self updateComponentList
+]
+
 { #category : #accessing }
 MiQueryBuilderPresenter >> currentQuery [
 
@@ -43,23 +56,9 @@ MiQueryBuilderPresenter >> currentQuery [
 ]
 
 { #category : #'api - actions' }
-MiQueryBuilderPresenter >> followAction: newCurrentQuery [
+MiQueryBuilderPresenter >> followAction: newFQQuery [
 
-	presenters := OrderedCollection new
-		              add: newCurrentQuery;
-		              yourself.
-	self updateComponentList
-]
-
-{ #category : #initialization }
-MiQueryBuilderPresenter >> initializeFirstQueryCreation [
-
-	| queryCreationPresenter |
-	queryCreationPresenter := self instantiate:
-		                          (MiNewQueryCreationPresenter on: self).
-	queryCreationPresenter removeButtonRemove.
-	presenters add: queryCreationPresenter.
-	self updateComponentList
+	self createFirstQueryCreation
 ]
 
 { #category : #initialization }
@@ -69,7 +68,7 @@ MiQueryBuilderPresenter >> initializePresenters [
 	componentListPresenter := self newComponentList
 		                          propagateNaturalHeight: true;
 		                          yourself.
-	self initializeFirstQueryCreation
+	self createFirstQueryCreation
 ]
 
 { #category : #api }

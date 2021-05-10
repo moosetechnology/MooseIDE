@@ -21,6 +21,8 @@ QueryConfigurationPresenterFactory class >> configureQuery: aQuery forOwnerPrese
 QueryConfigurationPresenterFactory class >> presenterClassForQuery: aQuery [
 
 	| presenterClass |
+	self flag:
+		'remove this class. it can be a extension method on fqquery.'.
 	aQuery = FQNavigationQuery ifTrue: [ 
 		presenterClass := MiNavigationQueryPresenter ].
 	aQuery = FQBooleanQuery ifTrue: [ 
