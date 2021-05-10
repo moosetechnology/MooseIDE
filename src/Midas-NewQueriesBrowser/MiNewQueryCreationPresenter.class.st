@@ -173,12 +173,13 @@ MiNewQueryCreationPresenter >> updateFromConfiguration [
 { #category : #update }
 MiNewQueryCreationPresenter >> updateQueryConfigurationFor: queryClass [
 
-	| instantiatedQuery |
+	| instantiatedQuery miConfigurationPresenterClass |
 	instantiatedQuery := queryClass defaultForParent:
 		                     parentPresenter currentQuery.
+	miConfigurationPresenterClass := instantiatedQuery miPresenterClass.
 	queryConfigurationPresenter := self instantiate:
-		                               (QueryConfigurationPresenterFactory
-			                                configureQuery: instantiatedQuery
-			                                forOwnerPresenter: self).
+		                               (miConfigurationPresenterClass
+			                                owner: self
+			                                on: instantiatedQuery).
 	self update
 ]

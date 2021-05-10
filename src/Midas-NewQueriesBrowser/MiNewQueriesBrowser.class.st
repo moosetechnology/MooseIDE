@@ -80,17 +80,19 @@ MiNewQueriesBrowser >> currentQuery [
 { #category : #actions }
 MiNewQueriesBrowser >> followAction [
 
-	| newCurrentQuery |
+	| newQuery |
 	(self accept: toSelect) ifFalse: [ ^ self ].
+	"Converting the entity from the bus to a famix query"
 	toSelect := toSelect asMooseGroup allUsing: FamixTNamedEntity.
+
 	queriesHistory do: #resetResult.
-	newCurrentQuery := self getRootQuery
-		                   result: toSelect;
-		                   name: toSelect first mooseModel name;
-		                   yourself.
-	queriesHistory := OrderedCollection new.
-	self updateForQuery: newCurrentQuery.
-	queryBuilderPresenter followAction: newCurrentQuery
+	newQuery := self getRootQuery
+		            result: toSelect;
+		            name: toSelect first mooseModel name;
+		            yourself.
+	queriesHistory := OrderedCollection empty.
+	self updateForQuery: newQuery.
+	queryBuilderPresenter followAction: newQuery
 ]
 
 { #category : #accessing }
@@ -114,15 +116,14 @@ MiNewQueriesBrowser >> initializeLayout [
 { #category : #initialization }
 MiNewQueriesBrowser >> initializeNotebookPresenter [
 
-	queryNotebookPresenter := self newNotebook
-		                          pages: { 
-				                          (SpNotebookPage
-					                           title: 'Result of current query'
-					                           provider: [ queryResultTreePresenter ]).
-				                          (SpNotebookPage
-					                           title: 'Current query code'
-					                           provider: [ queryCodePresenter ]) };
-		                          yourself
+	queryNotebookPresenter := self newNotebook.
+	queryNotebookPresenter pages: { 
+			(SpNotebookPage
+				 title: 'Result of current query'
+				 provider: [ queryResultTreePresenter ]).
+			(SpNotebookPage
+				 title: 'Current query code'
+				 provider: [ queryCodePresenter ]) }
 ]
 
 { #category : #initialization }
@@ -186,12 +187,6 @@ MiNewQueriesBrowser >> removeQuery: aQuery [
 
 	self selectQuery: queriesHistory last.
 	queriesHistory removeLast
-	"rootQuery children ifNotEmpty: [ 
-		UIManager default alert:
-			'Cannot remove a query with children for now'.
-		^ self ].
-	rootQuery prepareRemovalFrom: self.
-	queries remove: rootQuery"
 ]
 
 { #category : #actions }
@@ -206,7 +201,7 @@ MiNewQueriesBrowser >> selectQuery: aQuery [
 { #category : #accessing }
 MiNewQueriesBrowser >> selectedQuery [
 
-	"This methods is only for backwards compatibility with the old queries browser"
+	"This method is only for backwards compatibility with the old queries browser"
 
 	^ self currentQuery
 ]
@@ -214,9 +209,7 @@ MiNewQueriesBrowser >> selectedQuery [
 { #category : #'accessing model' }
 MiNewQueriesBrowser >> setModelBeforeInitialization: aRootQuery [
 
-	queriesHistory := OrderedCollection new
-		                            add: aRootQuery;
-		                            yourself.
+	queriesHistory := OrderedCollection with: aRootQuery.
 	currentQuery := self getRootQuery
 ]
 
