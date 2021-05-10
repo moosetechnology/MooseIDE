@@ -39,11 +39,14 @@ BaselineOfMidas >> customProjectAttributes [
 
 { #category : #baselines }
 BaselineOfMidas >> defineGroups: spec [
+
 	spec
 		group: 'default'
 		with:
-			#('Midas-Core' 'Midas-Visualization' 'Midas-Meta' 'Midas-Tests' 'Midas-Dependency' 'Midas-Famix' 'Midas-Tagging' 'Midas-FamixQueries' 'Midas-FamixQueries-Tests' 'Midas-Telescope').
-	spec group: 'newtools' with: #('default' 'Midas-NewTools')
+			#( 'Midas-Core' 'Midas-Visualization' 'Midas-Meta' 'Midas-Tests'
+			   'Midas-Dependency' 'Midas-Famix' 'Midas-Tagging' 'Midas-FamixQueries'
+			   'Midas-FamixQueries-Tests' 'Midas-Telescope' 'Midas-Export' ).
+	spec group: 'newtools' with: #( 'default' 'Midas-NewTools' )
 ]
 
 { #category : #baselines }
