@@ -13,7 +13,7 @@ Class {
 		'currentQuery',
 		'queriesHistory'
 	],
-	#category : #'Midas-NewQueriesBrowser-Main presenters'
+	#category : #'Midas-NewTools-Queries Browser'
 }
 
 { #category : #'world menu' }
@@ -190,6 +190,12 @@ MiNewQueriesBrowser >> miSelectedItem [
 		  ifFalse: [ selected ]
 ]
 
+{ #category : #'as yet unclassified' }
+MiNewQueriesBrowser >> queriesHistory [
+
+	^ queriesHistory
+]
+
 { #category : #'api - actions' }
 MiNewQueriesBrowser >> queryChangedUpdate: query [
 
@@ -200,6 +206,12 @@ MiNewQueriesBrowser >> queryChangedUpdate: query [
 MiNewQueriesBrowser >> queryResultEntities [
 
 	^ currentQuery result
+]
+
+{ #category : #'as yet unclassified' }
+MiNewQueriesBrowser >> queryResultTreePresenter [
+
+	^ queryResultTreePresenter
 ]
 
 { #category : #'api - actions' }

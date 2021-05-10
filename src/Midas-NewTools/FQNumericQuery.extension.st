@@ -1,6 +1,6 @@
 Extension { #name : #FQNumericQuery }
 
-{ #category : #'*Midas-NewQueriesBrowser' }
+{ #category : #'*Midas-NewTools' }
 FQNumericQuery >> miPresenterClass [
 
 	^ MiNumericQueryPresenter

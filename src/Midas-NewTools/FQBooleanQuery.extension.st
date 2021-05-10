@@ -1,6 +1,6 @@
 Extension { #name : #FQBooleanQuery }
 
-{ #category : #'*Midas-NewQueriesBrowser' }
+{ #category : #'*Midas-NewTools' }
 FQBooleanQuery >> miPresenterClass [
 
 	^ MiBooleanQueryPresenter

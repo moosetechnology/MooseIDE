@@ -13,7 +13,7 @@ Class {
 		'parentBrowser',
 		'componentListPresenter'
 	],
-	#category : #'Midas-NewQueriesBrowser-Sub presenters'
+	#category : #'Midas-NewTools-Queries Browser'
 }
 
 { #category : #specs }
@@ -69,6 +69,12 @@ MiQueryBuilderPresenter >> initializePresenters [
 		                          propagateNaturalHeight: true;
 		                          yourself.
 	self createFirstQueryForComponentList
+]
+
+{ #category : #'as yet unclassified' }
+MiQueryBuilderPresenter >> presentersCollection [
+
+	^ presenters
 ]
 
 { #category : #'api - actions' }

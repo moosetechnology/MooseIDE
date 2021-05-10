@@ -1,6 +1,6 @@
 Extension { #name : #FQStringQuery }
 
-{ #category : #'*Midas-NewQueriesBrowser' }
+{ #category : #'*Midas-NewTools' }
 FQStringQuery >> miPresenterClass [
 
 	^ MiStringQueryPresenter

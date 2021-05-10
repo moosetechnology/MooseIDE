@@ -1,6 +1,6 @@
 Extension { #name : #FQNavigationQuery }
 
-{ #category : #'*Midas-NewQueriesBrowser' }
+{ #category : #'*Midas-NewTools' }
 FQNavigationQuery >> miPresenterClass [
 
 	^ MiNavigationQueryPresenter

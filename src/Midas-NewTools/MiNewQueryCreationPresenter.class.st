@@ -13,7 +13,7 @@ Class {
 		'addButton',
 		'removeButton'
 	],
-	#category : #'Midas-NewQueriesBrowser-Sub presenters'
+	#category : #'Midas-NewTools-Queries Browser'
 }
 
 { #category : #specs }
@@ -138,10 +138,21 @@ MiNewQueryCreationPresenter >> initializeQueryTypesDropList [
 		display: [ :queryClass | queryClass label ]
 ]
 
+{ #category : #'as yet unclassified' }
+MiNewQueryCreationPresenter >> parentPresenter [
+	^ parentPresenter
+]
+
 { #category : #accessing }
 MiNewQueryCreationPresenter >> query [
 
 	^ queryConfigurationPresenter query
+]
+
+{ #category : #'as yet unclassified' }
+MiNewQueryCreationPresenter >> queryConfigurationPresenter [
+
+	^ queryConfigurationPresenter
 ]
 
 { #category : #'api - actions' }

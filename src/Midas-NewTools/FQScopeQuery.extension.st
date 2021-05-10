@@ -1,6 +1,6 @@
 Extension { #name : #FQScopeQuery }
 
-{ #category : #'*Midas-NewQueriesBrowser' }
+{ #category : #'*Midas-NewTools' }
 FQScopeQuery >> miPresenterClass [
 
 	^ MiScopeQueryPresenter
