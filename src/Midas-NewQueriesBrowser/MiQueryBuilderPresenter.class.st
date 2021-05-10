@@ -36,7 +36,7 @@ MiQueryBuilderPresenter >> addNewQueryAction: query [
 	self updateComponentList
 ]
 
-{ #category : #initialization }
+{ #category : #actions }
 MiQueryBuilderPresenter >> createFirstQueryForComponentList [
 
 	| queryCreationPresenter |
@@ -51,6 +51,14 @@ MiQueryBuilderPresenter >> createFirstQueryForComponentList [
 MiQueryBuilderPresenter >> currentQuery [
 
 	^ parentBrowser currentQuery
+]
+
+{ #category : #'api - actions' }
+MiQueryBuilderPresenter >> followAction [
+
+	"Re instantiate the first query"
+
+	self createFirstQueryForComponentList
 ]
 
 { #category : #initialization }

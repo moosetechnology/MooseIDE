@@ -89,23 +89,36 @@ MiNewQueriesBrowser >> currentQuery [
 { #category : #actions }
 MiNewQueriesBrowser >> followAction [
 
-	| newQuery |
+	| newQuery mooseModelName |
 	(self accept: toSelect) ifFalse: [ ^ self ].
-	queriesHistory do: #resetResult.
+	"Update window's title"
+	mooseModelName := toSelect first mooseModel name.
+	self window title: (self getTitle: mooseModelName).
+
 	"Create the new query "
+	queriesHistory do: #resetResult.
 	toSelect := toSelect asMooseGroup allUsing: FamixTNamedEntity.
 	newQuery := self getRootQuery
 		            result: toSelect;
-		            name: toSelect first mooseModel name;
+		            name: mooseModelName;
 		            yourself.
+	"Clear the queries history"
+	queriesHistory := OrderedCollection empty.
 	"Update the all the sub presenters with this new query"
-	self selectQuery: newQuery
+	self addNewQuery: newQuery.
+	queryBuilderPresenter followAction
 ]
 
 { #category : #accessing }
 MiNewQueriesBrowser >> getRootQuery [
 
 	^ queriesHistory detect: [ :query | query parent isNil ]
+]
+
+{ #category : #accessing }
+MiNewQueriesBrowser >> getTitle: mooseModelName [
+
+	^ self class title , ' (' , mooseModelName , ')'
 ]
 
 { #category : #initialization }
