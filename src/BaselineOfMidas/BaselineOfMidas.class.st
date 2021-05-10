@@ -45,8 +45,7 @@ BaselineOfMidas >> defineGroups: spec [
 		with:
 			#( 'Midas-Core' 'Midas-Visualization' 'Midas-Meta' 'Midas-Tests'
 			   'Midas-Dependency' 'Midas-Famix' 'Midas-Tagging' 'Midas-FamixQueries'
-			   'Midas-FamixQueries-Tests' 'Midas-Telescope' 'Midas-Export' ).
-	spec group: 'newtools' with: #( 'default' 'Midas-NewTools' )
+			   'Midas-FamixQueries-Tests' 'Midas-Telescope' 'Midas-Export' 'Midas-NewTools' ).
 ]
 
 { #category : #baselines }
@@ -102,11 +101,6 @@ BaselineOfMidas >> mooseFinder: spec [
 		project: 'Moose-Finder'
 		copyFrom: 'Moose'
 		with: [ spec loads: 'Moose-Finder' ]
-]
-
-{ #category : #dependencies }
-BaselineOfMidas >> newTools: spec [
-	spec baseline: 'NewTools' with: [ spec repository: 'github://pharo-spec/NewTools:67cc6fa' ]
 ]
 
 { #category : #dependencies }
