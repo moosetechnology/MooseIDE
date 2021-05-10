@@ -1,3 +1,10 @@
+"
+I contain a presenter collection. Each of the elements of that collection is a query creation presenter. When the add button is pressed, a presenter is added to the collection. Same for the remove button.
+Also I have a componentListPresenter instance variable. The elements of this list are the same as the elements of the presenters collection.
+Each query is an instance of `MiNewQueryCreationPresenter`.
+
+I manage all the logic related to showing all the queries. Also, I update myself and my parentBrowser when a query is added or removed.
+"
 Class {
 	#name : #MiQueryBuilderPresenter,
 	#superclass : #SpPresenter,

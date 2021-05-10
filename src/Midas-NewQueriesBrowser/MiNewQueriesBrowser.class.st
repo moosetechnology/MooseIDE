@@ -1,3 +1,7 @@
+"
+I am a midas browser that allows to create custom queries that applies to a MooseModel. I have a `Mi
+queryBuilderPresenter` instance variable that contains a list with all the queries that you want to apply to the Moose model.
+"
 Class {
 	#name : #MiNewQueriesBrowser,
 	#superclass : #MiAbstractBrowser,

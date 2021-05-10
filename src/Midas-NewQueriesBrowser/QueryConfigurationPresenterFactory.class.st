@@ -1,3 +1,8 @@
+"
+I am a factory class that has the only responsibility of returning the corresponding presenter class for a FQQuery class.
+
+See `QueryConfigurationPresenterFactory class>>#presenterClassForQuery:`
+"
 Class {
 	#name : #QueryConfigurationPresenterFactory,
 	#superclass : #Object,

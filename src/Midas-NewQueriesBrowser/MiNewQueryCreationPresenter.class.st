@@ -1,3 +1,8 @@
+"
+I allow to filter a MooseModel depending on the query that you choose. I have a dropdown list that has all the existing query types. When you select some query type, a configuration presenter is created. This configuration presenter is specific for each type of query.
+
+I manage all the logic related of changing dynamically this configuration presenter. Also, I send a message to my parentPresenter (`MiQueryBuilderPresenter`) each time my add or remove button is pressed.
+"
 Class {
 	#name : #MiNewQueryCreationPresenter,
 	#superclass : #SpPresenter,
