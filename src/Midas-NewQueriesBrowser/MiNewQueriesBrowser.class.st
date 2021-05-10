@@ -24,7 +24,7 @@ MiNewQueriesBrowser class >> menuCommandOn: aBuilder [
 	(aBuilder item: #NewQueries)
 		parent: #Moose;
 		label: self title;
-		order: 4;
+		order: 3;
 		help: self helpMessage;
 		action: [ self runMe ]
 ]
@@ -57,7 +57,7 @@ MiNewQueriesBrowser class >> runMe [
 { #category : #specs }
 MiNewQueriesBrowser class >> title [
 
-	^ 'Queries Browser'
+	^ 'New Queries Browser'
 ]
 
 { #category : #specs }
