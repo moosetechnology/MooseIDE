@@ -158,6 +158,17 @@ MiNewQueriesBrowser >> initializeResultTreePresenter [
 	queryResultTreePresenter updateForEntities: self queryResultEntities
 ]
 
+{ #category : #accessing }
+MiNewQueriesBrowser >> miSelectedItem [
+
+	| selected |
+	selected := (queryResultTreePresenter miSelectedItem ifEmpty: [ 
+		             currentQuery result ]) specialize.
+	^ selected size = 1
+		  ifTrue: [ selected anyOne ]
+		  ifFalse: [ selected ]
+]
+
 { #category : #api }
 MiNewQueriesBrowser >> queryChangedUpdate: query [
 
