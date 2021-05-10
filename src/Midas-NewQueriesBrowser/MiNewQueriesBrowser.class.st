@@ -29,7 +29,7 @@ MiNewQueriesBrowser class >> menuCommandOn: aBuilder [
 		action: [ self runMe ]
 ]
 
-{ #category : #'instance creation' }
+{ #category : #private }
 MiNewQueriesBrowser class >> new [
 
 	"A MooseGroup is necessary to initialize this presenter"
@@ -47,6 +47,8 @@ MiNewQueriesBrowser class >> newModel [
 
 { #category : #'instance creation' }
 MiNewQueriesBrowser class >> runMe [
+
+	"This method implementation is the same as their parent. But it is here for opening this browser more confortably from the system's browser."
 
 	<script>
 	^ super runMe
@@ -71,7 +73,7 @@ MiNewQueriesBrowser >> accept: anObject [
 		  (anObject asMooseGroup allUsing: FamixTNamedEntity) isNotEmpty ]
 ]
 
-{ #category : #api }
+{ #category : #'api - actions' }
 MiNewQueriesBrowser >> addNewQuery: aQuery [
 
 	queriesHistory addLast: aQuery.
@@ -89,17 +91,15 @@ MiNewQueriesBrowser >> followAction [
 
 	| newQuery |
 	(self accept: toSelect) ifFalse: [ ^ self ].
-	"Converting the entity from the bus to a famix query"
-	toSelect := toSelect asMooseGroup allUsing: FamixTNamedEntity.
-
 	queriesHistory do: #resetResult.
+	"Create the new query "
+	toSelect := toSelect asMooseGroup allUsing: FamixTNamedEntity.
 	newQuery := self getRootQuery
 		            result: toSelect;
 		            name: toSelect first mooseModel name;
 		            yourself.
-	queriesHistory := OrderedCollection empty.
-	self addNewQuery: newQuery.
-	queryBuilderPresenter followAction: newQuery
+	"Update the all the sub presenters with this new query"
+	self selectQuery: newQuery
 ]
 
 { #category : #accessing }
@@ -177,7 +177,7 @@ MiNewQueriesBrowser >> miSelectedItem [
 		  ifFalse: [ selected ]
 ]
 
-{ #category : #api }
+{ #category : #'api - actions' }
 MiNewQueriesBrowser >> queryChangedUpdate: query [
 
 	self selectQuery: query
@@ -189,7 +189,7 @@ MiNewQueriesBrowser >> queryResultEntities [
 	^ currentQuery result
 ]
 
-{ #category : #api }
+{ #category : #'api - actions' }
 MiNewQueriesBrowser >> removeQuery: aQuery [
 
 	self selectQuery: queriesHistory last.

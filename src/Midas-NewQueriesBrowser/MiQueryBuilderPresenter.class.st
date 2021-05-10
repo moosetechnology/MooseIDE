@@ -24,7 +24,7 @@ MiQueryBuilderPresenter class >> defaultSpec [
 		  yourself
 ]
 
-{ #category : #api }
+{ #category : #'api - actions' }
 MiQueryBuilderPresenter >> addNewQueryAction: query [
 
 	| newPresenter |
@@ -53,14 +53,6 @@ MiQueryBuilderPresenter >> currentQuery [
 	^ parentBrowser currentQuery
 ]
 
-{ #category : #'api - actions' }
-MiQueryBuilderPresenter >> followAction: newFQQuery [
-
-	"Re initialize the component list"
-
-	self createFirstQueryForComponentList
-]
-
 { #category : #initialization }
 MiQueryBuilderPresenter >> initializePresenters [
 
@@ -71,13 +63,13 @@ MiQueryBuilderPresenter >> initializePresenters [
 	self createFirstQueryForComponentList
 ]
 
-{ #category : #api }
+{ #category : #'api - actions' }
 MiQueryBuilderPresenter >> queryChangedUpdate: query [
 
 	parentBrowser queryChangedUpdate: query
 ]
 
-{ #category : #api }
+{ #category : #'api - actions' }
 MiQueryBuilderPresenter >> removeQueryAction: aQuery [
 
 	parentBrowser removeQuery: aQuery.

@@ -164,7 +164,7 @@ MiNewQueryCreationPresenter >> setModelBeforeInitialization: aQueryBuilderPresen
 	parentPresenter := aQueryBuilderPresenter
 ]
 
-{ #category : #update }
+{ #category : #'api - actions' }
 MiNewQueryCreationPresenter >> updateFromConfiguration [
 
 	parentPresenter queryChangedUpdate: self query
