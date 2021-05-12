@@ -8,7 +8,7 @@ Class {
 	#instVars : [
 		'stInspector'
 	],
-	#category : #'Midas-Core-Inspector'
+	#category : #'Midas-NewTools-Inspector'
 }
 
 { #category : #specs }

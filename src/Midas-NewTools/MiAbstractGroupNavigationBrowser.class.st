@@ -23,7 +23,7 @@ Internal Representation and Key Implementation Points.
 Class {
 	#name : #MiAbstractGroupNavigationBrowser,
 	#superclass : #MiNavigationBrowser,
-	#category : #'Midas-NewTools-Inspector'
+	#category : #'Midas-NewTools-Inspector tabs'
 }
 
 { #category : #initialization }

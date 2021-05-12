@@ -6,7 +6,7 @@ I force my initialization to be without the evaluator (the code presenter in the
 Class {
 	#name : #MiObjectContextPresenter,
 	#superclass : #StObjectContextPresenter,
-	#category : #'Midas-Core-Inspector'
+	#category : #'Midas-NewTools-Inspector'
 }
 
 { #category : #initialization }

@@ -7,7 +7,7 @@ The only difference between my `newInspectorFor:` method implementation and the 
 Class {
 	#name : #MiInspector,
 	#superclass : #StInspector,
-	#category : #'Midas-Core-Inspector'
+	#category : #'Midas-NewTools-Inspector'
 }
 
 { #category : #'private factory' }
