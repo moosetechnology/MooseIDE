@@ -19,6 +19,14 @@ MiInspectorBrowser class >> defaultSpec [
 		  yourself
 ]
 
+{ #category : #api }
+MiInspectorBrowser class >> inspect: anObject [
+
+	^ (self on: anObject)
+		  followBus: self currentApplication defaultBus;
+		  openWithSpec
+]
+
 { #category : #'world menu' }
 MiInspectorBrowser class >> menuCommandOn: aBuilder [
 
@@ -69,7 +77,8 @@ MiInspectorBrowser >> accept: anEntity [
 MiInspectorBrowser >> followAction [
 
 	(self accept: toSelect) ifFalse: [ ^ self ].
-	stInspector model: toSelect
+	self model: toSelect.
+	stInspector model: self model
 ]
 
 { #category : #initialization }
