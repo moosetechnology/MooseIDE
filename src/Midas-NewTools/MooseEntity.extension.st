@@ -11,9 +11,3 @@ MooseEntity >> miNavigationExtension [
 	<inspectorPresentationOrder: 0 title: 'Navigation'>
 	^ MiNavigationBrowser on: self
 ]
-
-{ #category : #'*Midas-NewTools' }
-MooseEntity >> miPropertiesExtension [
-	<inspectorPresentationOrder: 1 title: 'Moose Properties'>
-	^ MiPropertyExtension on: self
-]
