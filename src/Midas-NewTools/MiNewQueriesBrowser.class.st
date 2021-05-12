@@ -29,16 +29,6 @@ MiNewQueriesBrowser class >> menuCommandOn: aBuilder [
 		action: [ self runMe ]
 ]
 
-{ #category : #private }
-MiNewQueriesBrowser class >> new [
-
-	"A MooseGroup is necessary to initialize this presenter"
-
-	^ self on: (FQRootQuery new
-			   result: MooseGroup new;
-			   yourself)
-]
-
 { #category : #'instance creation' }
 MiNewQueriesBrowser class >> newModel [
 
