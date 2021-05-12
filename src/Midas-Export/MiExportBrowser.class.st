@@ -12,9 +12,10 @@ Class {
 	#name : #MiExportBrowser,
 	#superclass : #MiAbstractBrowser,
 	#instVars : [
-		'entitiesList',
 		'toolbar',
-		'commentDictionary'
+		'commentDictionary',
+		'entitiesTable',
+		'commentsButton'
 	],
 	#category : #'Midas-Export-Browser'
 }
@@ -30,7 +31,7 @@ MiExportBrowser class >> defaultSpec [
 
 	^ super defaultSpec
 		  add: #toolbar height: self toolbarHeight;
-		  add: #entitiesList;
+		  add: #entitiesTable;
 		  yourself
 ]
 
@@ -62,22 +63,86 @@ MiExportBrowser class >> title [
 	^ 'Entities exporter'
 ]
 
-{ #category : #actions }
+{ #category : #'columns management' }
+MiExportBrowser >> addColumnForProperty: aFM3Property [
+
+	entitiesTable addColumn: (SpStringTableColumn
+			 title: aFM3Property name
+			 evaluated: [ :entity | 
+			 entity propertyNamed: aFM3Property name ifAbsent: [ '-' ] ])
+			yourself
+]
+
+{ #category : #'columns management' }
 MiExportBrowser >> addCommentsColumn [
 
-	entitiesList addColumn: ((SpStringTableColumn
+	entitiesTable addColumn: ((SpStringTableColumn
 			  title: self class commentColumnTitle
 			  evaluated: [ :entity | self commentOf: entity ])
 			 beEditable;
 			 onAcceptEdition: [ :entity :comment | 
 				 commentDictionary at: entity put: comment ];
-			 yourself)
+			 yourself).
+	entitiesTable refresh
+]
+
+{ #category : #initialization }
+MiExportBrowser >> columnChoiceButton [
+
+	| choiceButton |
+	choiceButton := self newToolbarButton
+		                label: 'Chose columns';
+		                icon: (self iconNamed: #mooseProperties).
+	choiceButton action: [ 
+		| popup |
+		(popup := self newPopover)
+			relativeTo: choiceButton;
+			bePositionRight;
+			presenter: (MiExporterColumnsEditor owner: popup on: self) yourself;
+			popup ].
+	^ choiceButton
 ]
 
 { #category : #actions }
 MiExportBrowser >> commentOf: anEntity [
 
 	^ commentDictionary at: anEntity ifAbsent: ''
+]
+
+{ #category : #initialization }
+MiExportBrowser >> commentsButton [
+
+	^ commentsButton := self newToolbarToggleButton
+		                    label: 'Toggle comments';
+		                    icon: (self iconNamed: #edit);
+		                    action: [ :state :button |  ];
+		                    whenSelectedDo: [ self addCommentsColumn ];
+		                    whenUnselectedDo: [ self removeCommentsColumn ]
+]
+
+{ #category : #actions }
+MiExportBrowser >> commonPropertiesIn: aMooseGroup [
+
+	| properties |
+	properties := (aMooseGroup collect: [ :entity | 
+		               entity mooseDescription allPrimitiveProperties ]) 
+		              fold: [ :availableProperties :entityProperty | 
+			              availableProperties & entityProperty ].
+	^ properties sorted: #name ascending
+]
+
+{ #category : #'columns management' }
+MiExportBrowser >> defaultTableColumns [
+
+	^ { 
+		  ((SpStringTableColumn title: 'Name' evaluated: #name)
+			   beSortable;
+			   yourself).
+		  ((SpStringTableColumn
+			    title: 'Type'
+			    evaluated: [ :entity | entity mooseDescription name ])
+			   beSortable;
+			   yourself) }
 ]
 
 { #category : #actions }
@@ -89,7 +154,7 @@ MiExportBrowser >> exportEntitiesToCSV [
 		        extensions: #( 'csv' )
 		        path: 'entities.csv'.
 	file ifNotNil: [ 
-		file writeStreamDo: [ :stream | entitiesList asCSVOn: stream ].
+		file writeStreamDo: [ :stream | entitiesTable asCSVOn: stream ].
 		UIManager default
 			inform: 'Entities exported.
 Click to show in folder'
@@ -99,7 +164,7 @@ Click to show in folder'
 { #category : #actions }
 MiExportBrowser >> followAction [
 
-	entitiesList items: toSelect asMooseGroup.
+	self updateEntitiesListWith: toSelect asMooseGroup.
 	commentDictionary := Dictionary new
 ]
 
@@ -114,42 +179,61 @@ MiExportBrowser >> initializePresenters [
 { #category : #initialization }
 MiExportBrowser >> initializeTable [
 
-	entitiesList := self newTable
-		                addColumn:
-			                (SpStringTableColumn title: 'Name' evaluated: #name)
-				                beSortable;
-		                addColumn: (SpStringTableColumn
-				                 title: 'Type'
-				                 evaluated: [ :entity | 
-					                 entity mooseDescription name ]) beSortable;
-		                yourself
+	entitiesTable := self newTable beResizable.
+	entitiesTable columns: self defaultTableColumns
 ]
 
 { #category : #initialization }
 MiExportBrowser >> initializeToolbar [
 
 	toolbar := self newToolbar
+		           addItem: self columnChoiceButton;
+		           addItem: self commentsButton;
 		           addItem: (self newToolbarButton
 				            label: 'Export to CSV';
-				            icon: (UITheme iconNamed: #smallExport);
-				            action: [ self exportEntitiesToCSV ]);
-		           addItem: (self newToolbarToggleButton
-				            label: 'Toggle comments';
-				            icon: (UITheme iconNamed: #edit);
-				            action: [ :state :button |  ];
-				            whenSelectedDo: [ self addCommentsColumn ];
-				            whenUnselectedDo: [ self removeCommentsColumn ])
+				            icon: (self iconNamed: #smallExport);
+				            action: [ self exportEntitiesToCSV ])
 ]
 
 { #category : #accessing }
 MiExportBrowser >> miSelectedItem [
 
-	^ entitiesList items
+	^ entitiesTable items
 ]
 
-{ #category : #actions }
+{ #category : #'columns management' }
 MiExportBrowser >> removeCommentsColumn [
 
-	entitiesList columns: (entitiesList columns reject: [ :column | 
-			 column title = self class commentColumnTitle ])
+	entitiesTable columns: (entitiesTable columns reject: [ :column | 
+			 column title = self class commentColumnTitle ]).
+	entitiesTable refresh
+]
+
+{ #category : #'columns management' }
+MiExportBrowser >> showProperties: aCollectionOfFM3Properties [
+
+	entitiesTable columns: self defaultTableColumns.
+	aCollectionOfFM3Properties do: [ :property | 
+		self addColumnForProperty: property ].
+	commentsButton isSelected ifTrue: [ self addCommentsColumn ].
+	entitiesTable refresh
+]
+
+{ #category : #testing }
+MiExportBrowser >> showsProperty: aFM3Property [
+
+	^ entitiesTable columns anySatisfy: [ :column | 
+		  column title = aFM3Property name ]
+]
+
+{ #category : #'columns management' }
+MiExportBrowser >> updateEntitiesListWith: aMooseGroup [
+
+	entitiesTable columns: self defaultTableColumns.
+	(self commonPropertiesIn: aMooseGroup) do: [ :property | 
+		entitiesTable addColumn: (SpStringTableColumn
+				 title: property name
+				 evaluated: [ :entity | 
+				 entity propertyNamed: property name ifAbsent: [ '-' ] ]) ].
+	entitiesTable items: aMooseGroup
 ]
