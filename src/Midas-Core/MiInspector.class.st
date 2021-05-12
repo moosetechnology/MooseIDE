@@ -5,13 +5,13 @@ The only difference between my `newInspectorFor:` method implementation and the 
 (See `StInspector>>#newInspectorFor:`)
 "
 Class {
-	#name : #MiInspectorPresenter,
+	#name : #MiInspector,
 	#superclass : #StInspector,
 	#category : #'Midas-Core-Inspector'
 }
 
 { #category : #'private factory' }
-MiInspectorPresenter >> newInspectorFor: aModel [
+MiInspector >> newInspectorFor: aModel [
 
 	| newInspector |
 	newInspector := self
