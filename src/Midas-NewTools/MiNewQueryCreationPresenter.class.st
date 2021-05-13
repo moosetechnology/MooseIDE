@@ -16,33 +16,6 @@ Class {
 	#category : #'Midas-NewTools-Queries Browser'
 }
 
-{ #category : #specs }
-MiNewQueryCreationPresenter class >> defaultSpec [
-
-	^ SpBoxLayout newLeftToRight
-		  spacing: 5;
-		  borderWidth: 5;
-		  add: #queryTypesDropListPresenter
-		  withConstraints: [ :constraints | 
-			  constraints
-				  height: self toolbarHeight;
-				  expand: false ];
-		  add: #queryConfigurationPresenter
-		  withConstraints: [ :constraints | 
-		  constraints height: self toolbarHeight ];
-		  addLast: #addButton withConstraints: [ :constraints | 
-		  constraints
-			  height: self toolbarHeight;
-			  width: self iconWidth;
-			  expand: false ];
-		  addLast: #removeButton withConstraints: [ :constraints | 
-		  constraints
-			  height: self toolbarHeight;
-			  width: self iconWidth;
-			  expand: false ];
-		  yourself
-]
-
 { #category : #accessing }
 MiNewQueryCreationPresenter class >> queryTypes [
 
@@ -123,8 +96,28 @@ MiNewQueryCreationPresenter >> initializeButtons [
 ]
 
 { #category : #initialization }
+MiNewQueryCreationPresenter >> initializeLayout [
+
+	self layout: (SpBoxLayout newLeftToRight
+			 spacing: 5;
+			 borderWidth: 5;
+			 add: #queryTypesDropListPresenter expand: false;
+			 add: #queryConfigurationPresenter;
+			 addLast: #addButton withConstraints: [ :constraints | 
+				 constraints
+					 width: self class iconWidth;
+					 expand: false ];
+			 addLast: #removeButton withConstraints: [ :constraints | 
+			 constraints
+				 width: self class iconWidth;
+				 expand: false ];
+			 yourself)
+]
+
+{ #category : #initialization }
 MiNewQueryCreationPresenter >> initializePresenters [
 
+	self initializeLayout.
 	self initializeQueryTypesDropList.
 	self initializeButtons
 ]
@@ -158,8 +151,9 @@ MiNewQueryCreationPresenter >> queryConfigurationPresenter [
 { #category : #'api - actions' }
 MiNewQueryCreationPresenter >> removeButtonRemove [
 
-	self layout remove: removeButton.
 	"We do not want the removeButton to exist"
+
+	self layout remove: removeButton.
 	removeButton := nil
 ]
 
