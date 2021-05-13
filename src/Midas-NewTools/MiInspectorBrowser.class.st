@@ -88,7 +88,8 @@ MiInspectorBrowser >> followAction [
 
 	(self accept: toSelect) ifFalse: [ ^ self ].
 	self model: toSelect.
-	stInspector model: self model
+	stInspector model: self model.
+	self updateWindowTitle: self window
 ]
 
 { #category : #initialization }
@@ -102,13 +103,8 @@ MiInspectorBrowser >> initializePresenters [
 { #category : #initialization }
 MiInspectorBrowser >> initializeWindow: aWindow [
 
-	| title |
 	super initializeWindow: aWindow.
-	title := self class title , ' on {1}' format:
-		         { ([ self model displayString ]
-			          on: Error
-			          do: [ :e | e printString ]) }.
-	aWindow title: title
+	self updateWindowTitle: aWindow
 ]
 
 { #category : #accessing }
@@ -117,4 +113,15 @@ MiInspectorBrowser >> miSelectedItem [
 	| lastInspectorPage |
 	lastInspectorPage := stInspector millerList pages last.
 	^ lastInspectorPage model inspectedObject
+]
+
+{ #category : #initialization }
+MiInspectorBrowser >> updateWindowTitle: aWindow [
+
+	| title |
+	title := self class title , ' on {1}' format:
+		         { ([ self model displayString ]
+			          on: Error
+			          do: [ :e | e printString ]) }.
+	aWindow title: title
 ]
