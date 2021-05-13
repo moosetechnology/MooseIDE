@@ -8,7 +8,7 @@ Class {
 	#instVars : [
 		'stInspector'
 	],
-	#category : #'Midas-Core-Inspector'
+	#category : #'Midas-NewTools-Inspector'
 }
 
 { #category : #specs }
@@ -17,6 +17,23 @@ MiInspectorBrowser class >> defaultSpec [
 	^ super defaultSpec
 		  add: #stInspector;
 		  yourself
+]
+
+{ #category : #api }
+MiInspectorBrowser class >> inspect: anObject [
+
+	^ self
+		  inspect: anObject
+		  forBuses: self currentApplication defaultBus asOrderedCollection
+]
+
+{ #category : #api }
+MiInspectorBrowser class >> inspect: anObject forBuses: buses [
+
+	| newInstance |
+	newInstance := self on: anObject.
+	buses do: [ :aBus | newInstance followBus: aBus ].
+	^ newInstance openWithSpec
 ]
 
 { #category : #'world menu' }
@@ -69,15 +86,28 @@ MiInspectorBrowser >> accept: anEntity [
 MiInspectorBrowser >> followAction [
 
 	(self accept: toSelect) ifFalse: [ ^ self ].
-	stInspector model: toSelect
+	self model: toSelect.
+	stInspector model: self model
 ]
 
 { #category : #initialization }
 MiInspectorBrowser >> initializePresenters [
 
 	super initializePresenters.
-	stInspector := self instantiate: MiInspectorPresenter.
+	stInspector := self instantiate: MiInspector.
 	stInspector model: self model
+]
+
+{ #category : #initialization }
+MiInspectorBrowser >> initializeWindow: aWindow [
+
+	| title |
+	super initializeWindow: aWindow.
+	title := self class title , ' on {1}' format:
+		         { ([ self model displayString ]
+			          on: Error
+			          do: [ :e | e printString ]) }.
+	aWindow title: title
 ]
 
 { #category : #accessing }

@@ -31,7 +31,7 @@ Class {
 		'model',
 		'fameDescription'
 	],
-	#category : #'Midas-NewTools-Inspector'
+	#category : #'Midas-NewTools-Inspector tabs'
 }
 
 { #category : #specs }

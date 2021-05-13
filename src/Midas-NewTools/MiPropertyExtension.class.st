@@ -5,7 +5,7 @@ Class {
 		'properties',
 		'model'
 	],
-	#category : #'Midas-NewTools-Inspector'
+	#category : #'Midas-NewTools-Inspector tabs'
 }
 
 { #category : #specs }
@@ -16,17 +16,19 @@ MiPropertyExtension class >> defaultSpec [
 
 { #category : #initialization }
 MiPropertyExtension >> initializePresenters [
+
 	properties := self newTable.
 	properties
-		addColumn: (SpStringTableColumn title: 'Properties' evaluated: [ :item | item name ]) yourself;
+		addColumn: (SpStringTableColumn
+				 title: 'Properties'
+				 evaluated: [ :item | item name ]) yourself;
 		addColumn:
-			(SpStringTableColumn
-				title: 'Value'
-				evaluated: [ :item | 
-					[ self model mmGetProperty: item ]
-						on: Error
-						do: [ 'error' ] ]);
-		items: (self model mooseDescription allPrimitiveProperties sorted: #name ascending);
+			(SpStringTableColumn title: 'Value' evaluated: [ :item | 
+					 [ self model mmGetProperty: item ]
+						 on: Error
+						 do: [ 'error' ] ]);
+		items: (self model mooseDescription allPrimitiveProperties sorted:
+					 #name ascending);
 		beResizable
 ]
 
