@@ -1,7 +1,8 @@
 Extension { #name : #MooseModel }
 
 { #category : #'*Midas-NewTools' }
-MooseModel >> miNavigationExtension [
+MooseModel >> miNavigationInspectorExtension [
+
 	<inspectorPresentationOrder: -100 title: 'Navigation'>
 	^ MiModelNavigationBrowser on: self
 ]
