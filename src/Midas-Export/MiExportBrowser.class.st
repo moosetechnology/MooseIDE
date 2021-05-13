@@ -44,8 +44,7 @@ MiExportBrowser class >> menuCommandOn: aBuilder [
 		parent: #Moose;
 		label: self title;
 		icon: (self iconNamed: #smallExport);
-		order: 5;
-		withSeparatorAfter;
+		order: 6;
 		help: self helpMessage;
 		action: [ self runMe ]
 ]

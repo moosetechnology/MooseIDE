@@ -28,7 +28,8 @@ MiLogBrowser class >> menuCommandOn: aBuilder [
 		label: self title;
 		order: 4;
 		help: self helpMessage;
-		action: [ self runMe ]
+		action: [ self runMe ];
+		withSeparatorAfter
 ]
 
 { #category : #'world menu' }
