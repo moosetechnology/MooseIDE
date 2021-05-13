@@ -88,12 +88,12 @@ MiAbstractBrowser class >> isAbstract [
 
 { #category : #'world menu' }
 MiAbstractBrowser class >> menuCommandOn: aBuilder [
+
 	<worldMenu>
 	(aBuilder item: self midasBrowserMenuLabel)
-		order: 6 ;
-		parent: #Moose ;
-		icon: MooseIcons mooseIcon.
-
+		order: 8;
+		parent: #Moose;
+		icon: MooseIcons mooseIcon
 ]
 
 { #category : #'world menu' }

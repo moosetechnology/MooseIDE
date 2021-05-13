@@ -24,9 +24,10 @@ MiNewQueriesBrowser class >> menuCommandOn: aBuilder [
 	(aBuilder item: #NewQueries)
 		parent: #Moose;
 		label: self title;
-		order: 3;
+		order: 7;
 		help: self helpMessage;
-		action: [ self runMe ]
+		action: [ self runMe ];
+		withSeparatorAfter
 ]
 
 { #category : #'instance creation' }
