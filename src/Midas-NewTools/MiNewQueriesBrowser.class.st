@@ -24,6 +24,7 @@ MiNewQueriesBrowser class >> menuCommandOn: aBuilder [
 	(aBuilder item: #NewQueries)
 		parent: #Moose;
 		label: self title;
+		icon: (self iconNamed: #mooseTree);
 		order: 7;
 		help: self helpMessage;
 		action: [ self runMe ];
