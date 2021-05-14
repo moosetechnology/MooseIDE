@@ -182,12 +182,6 @@ MiNewQueriesBrowser >> miSelectedItem [
 		  ifFalse: [ selected ]
 ]
 
-{ #category : #'as yet unclassified' }
-MiNewQueriesBrowser >> queriesHistory [
-
-	^ queriesHistory
-]
-
 { #category : #'api - actions' }
 MiNewQueriesBrowser >> queryChangedUpdate: query [
 
@@ -200,14 +194,11 @@ MiNewQueriesBrowser >> queryResultEntities [
 	^ currentQuery result
 ]
 
-{ #category : #'as yet unclassified' }
-MiNewQueriesBrowser >> queryResultTreePresenter [
-
-	^ queryResultTreePresenter
-]
-
 { #category : #'api - actions' }
-MiNewQueriesBrowser >> removeQuery: aQuery [
+MiNewQueriesBrowser >> removeQuery: notUsedQuery [
+
+	"For now, the query that is received as a parameters is exactly the same object as queriesHistory last. Because, at the moment only the last query can be removed.
+	It can be changed to remove any query, and if the query has children remove all the children too."
 
 	self selectQuery: queriesHistory last.
 	queriesHistory removeLast
