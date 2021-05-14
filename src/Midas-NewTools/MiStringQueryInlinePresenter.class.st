@@ -6,3 +6,27 @@ Class {
 	#superclass : #MiStringQueryPresenter,
 	#category : #'Midas-NewTools-Queries configuration'
 }
+
+{ #category : #specs }
+MiStringQueryInlinePresenter class >> layout [
+
+	| constraints padding |
+	padding := 5.
+	constraints := [ :cons | cons padding: padding ].
+	^ SpBoxLayout newTopToBottom
+		  add: (SpBoxLayout newLeftToRight
+				   add: #propertyDropList
+				   expand: false
+				   fill: false
+				   padding: padding;
+				   add: #comparatorDropList
+				   expand: false
+				   fill: false
+				   padding: padding;
+				   add: #valueInputField
+				   expand: true
+				   fill: true
+				   padding: padding;
+				   yourself)
+		  height: self toolbarHeight
+]
