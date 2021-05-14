@@ -16,33 +16,6 @@ Class {
 	#category : #'Midas-NewTools-Queries Browser'
 }
 
-{ #category : #specs }
-MiNewQueryCreationPresenter class >> defaultSpec [
-
-	^ SpBoxLayout newLeftToRight
-		  spacing: 5;
-		  borderWidth: 5;
-		  add: #queryTypesDropListPresenter
-		  withConstraints: [ :constraints | 
-			  constraints
-				  height: self toolbarHeight;
-				  expand: false ];
-		  add: #queryConfigurationPresenter
-		  withConstraints: [ :constraints | 
-		  constraints height: self toolbarHeight ];
-		  addLast: #addButton withConstraints: [ :constraints | 
-		  constraints
-			  height: self toolbarHeight;
-			  width: self iconWidth;
-			  expand: false ];
-		  addLast: #removeButton withConstraints: [ :constraints | 
-		  constraints
-			  height: self toolbarHeight;
-			  width: self iconWidth;
-			  expand: false ];
-		  yourself
-]
-
 { #category : #accessing }
 MiNewQueryCreationPresenter class >> queryTypes [
 
@@ -67,8 +40,8 @@ MiNewQueryCreationPresenter >> connectPresenters [
 	queryTypesDropListPresenter whenSelectedItemChangedDo: [ :queryClass | 
 		self updateQueryConfigurationFor: queryClass ].
 	"After setting whenSelectedItemChangedDo:, select the fastest query while we do not compute the results in a fork.
-This is for instantiate queryConfigurationPresenter variable"
-	queryTypesDropListPresenter selectIndex: 3.
+This is for instantiate queryConfigurationPresenter variable" "changed to string query initially was typequery"
+	queryTypesDropListPresenter selectItem: FQStringQuery.
 	addButton action: [ self addNewQueryAction ].
 	removeButton action: [ self removeQueryAction ]
 ]
@@ -123,8 +96,30 @@ MiNewQueryCreationPresenter >> initializeButtons [
 ]
 
 { #category : #initialization }
+MiNewQueryCreationPresenter >> initializeLayout [
+
+	| buttonConstraints tempLayout |
+	buttonConstraints := [ :constraints | 
+	                     constraints
+		                     width: self class iconWidth;
+		                     expand: false ].
+	tempLayout := SpBoxLayout newLeftToRight
+		              spacing: 5;
+		              borderWidth: 5;
+		              add: #queryTypesDropListPresenter expand: false;
+		              add: #queryConfigurationPresenter;
+		              addLast: #addButton
+		              withConstraints: buttonConstraints;
+		              addLast: #removeButton
+		              withConstraints: buttonConstraints;
+		              yourself.
+	self layout: tempLayout
+]
+
+{ #category : #initialization }
 MiNewQueryCreationPresenter >> initializePresenters [
 
+	self initializeLayout.
 	self initializeQueryTypesDropList.
 	self initializeButtons
 ]
@@ -158,8 +153,9 @@ MiNewQueryCreationPresenter >> queryConfigurationPresenter [
 { #category : #'api - actions' }
 MiNewQueryCreationPresenter >> removeButtonRemove [
 
-	self layout remove: removeButton.
 	"We do not want the removeButton to exist"
+
+	self layout remove: removeButton.
 	removeButton := nil
 ]
 
