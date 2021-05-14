@@ -40,7 +40,7 @@ MiNewQueryCreationPresenter >> connectPresenters [
 	queryTypesDropListPresenter whenSelectedItemChangedDo: [ :queryClass | 
 		self updateQueryConfigurationFor: queryClass ].
 	"After setting whenSelectedItemChangedDo:, select the fastest query while we do not compute the results in a fork.
-This is for instantiate queryConfigurationPresenter variable" "changed to string query initialize was typequery"
+This is for instantiate queryConfigurationPresenter variable" "changed to string query initially was typequery"
 	queryTypesDropListPresenter selectItem: FQStringQuery.
 	addButton action: [ self addNewQueryAction ].
 	removeButton action: [ self removeQueryAction ]
@@ -98,19 +98,22 @@ MiNewQueryCreationPresenter >> initializeButtons [
 { #category : #initialization }
 MiNewQueryCreationPresenter >> initializeLayout [
 
-	| buttonConstraints |
+	| buttonConstraints tempLayout |
 	buttonConstraints := [ :constraints | 
 	                     constraints
 		                     width: self class iconWidth;
 		                     expand: false ].
-	self layout: (SpBoxLayout newLeftToRight
-			 spacing: 5;
-			 borderWidth: 5;
-			 add: #queryTypesDropListPresenter expand: false;
-			 add: #queryConfigurationPresenter;
-			 addLast: #addButton withConstraints: buttonConstraints;
-			 addLast: #removeButton withConstraints: buttonConstraints;
-			 yourself)
+	tempLayout := SpBoxLayout newLeftToRight
+		              spacing: 5;
+		              borderWidth: 5;
+		              add: #queryTypesDropListPresenter expand: false;
+		              add: #queryConfigurationPresenter;
+		              addLast: #addButton
+		              withConstraints: buttonConstraints;
+		              addLast: #removeButton
+		              withConstraints: buttonConstraints;
+		              yourself.
+	self layout: tempLayout
 ]
 
 { #category : #initialization }

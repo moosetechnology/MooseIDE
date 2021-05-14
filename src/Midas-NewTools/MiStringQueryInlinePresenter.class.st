@@ -10,23 +10,23 @@ Class {
 { #category : #specs }
 MiStringQueryInlinePresenter class >> layout [
 
-	| constraints padding |
+	| padding wrappedLayout |
 	padding := 5.
-	constraints := [ :cons | cons padding: padding ].
+	wrappedLayout := SpBoxLayout newLeftToRight
+		                 add: #propertyDropList
+		                 expand: false
+		                 fill: false
+		                 padding: padding;
+		                 add: #comparatorDropList
+		                 expand: false
+		                 fill: false
+		                 padding: padding;
+		                 add: #valueInputField
+		                 expand: true
+		                 fill: true
+		                 padding: padding;
+		                 yourself.
 	^ SpBoxLayout newTopToBottom
-		  add: (SpBoxLayout newLeftToRight
-				   add: #propertyDropList
-				   expand: false
-				   fill: false
-				   padding: padding;
-				   add: #comparatorDropList
-				   expand: false
-				   fill: false
-				   padding: padding;
-				   add: #valueInputField
-				   expand: true
-				   fill: true
-				   padding: padding;
-				   yourself)
-		  height: self toolbarHeight
+		  add: wrappedLayout height: self toolbarHeight;
+		  yourself
 ]
