@@ -13,17 +13,27 @@ MiNumericInlineQueryPresenter class >> layout [
 	| padding |
 	padding := 5.
 	^ SpBoxLayout newLeftToRight
-		  add: #propertyDropList withConstraints: [ :cons | 
-			  cons
-				  expand: true;
-				  padding: padding ];
-		  add: #comparatorDropList withConstraints: [ :cons | 
-		  cons
-			  width: 70;
-			  padding: padding ];
-		  add: #valueInputField withConstraints: [ :cons | 
-		  cons
-			  width: 150;
-			  padding: padding ];
+		  add: #propertyDropList
+		  expand: false
+		  fill: true
+		  padding: padding;
+		  add: #comparatorDropList
+		  expand: false
+		  fill: true
+		  padding: padding;
+		  add: #valueInputField
+		  expand: true
+		  fill: true
+		  padding: padding;
+		  yourself
+]
+
+{ #category : #initialization }
+MiNumericInlineQueryPresenter >> newValueInputField [
+
+	"The only thing that is changed here is the placeholder."
+
+	^ super newValueInputField
+		  placeholder: 'Numeric value';
 		  yourself
 ]
