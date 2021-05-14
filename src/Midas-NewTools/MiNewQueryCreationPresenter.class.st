@@ -106,7 +106,7 @@ MiNewQueryCreationPresenter >> initializeLayout [
 	tempLayout := SpBoxLayout newLeftToRight
 		              spacing: 5;
 		              borderWidth: 5;
-		              add: #queryTypesDropListPresenter expand: false;
+		              add: #queryTypesDropListPresenter width: 130;
 		              add: #queryConfigurationPresenter;
 		              addLast: #addButton
 		              withConstraints: buttonConstraints;
