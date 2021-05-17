@@ -71,12 +71,6 @@ MiQueryBuilderPresenter >> initializePresenters [
 	self createFirstQueryForComponentList
 ]
 
-{ #category : #'as yet unclassified' }
-MiQueryBuilderPresenter >> presentersCollection [
-
-	^ presenters
-]
-
 { #category : #'api - actions' }
 MiQueryBuilderPresenter >> queryChangedUpdate: query [
 
