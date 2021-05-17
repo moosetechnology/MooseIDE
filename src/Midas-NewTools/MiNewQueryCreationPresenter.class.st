@@ -133,18 +133,13 @@ MiNewQueryCreationPresenter >> initializeQueryTypesDropList [
 		display: [ :queryClass | queryClass label ]
 ]
 
-{ #category : #'as yet unclassified' }
-MiNewQueryCreationPresenter >> parentPresenter [
-	^ parentPresenter
-]
-
 { #category : #accessing }
 MiNewQueryCreationPresenter >> query [
 
 	^ queryConfigurationPresenter query
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 MiNewQueryCreationPresenter >> queryConfigurationPresenter [
 
 	^ queryConfigurationPresenter
