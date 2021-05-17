@@ -10,14 +10,6 @@ Class {
 	#category : #'Midas-NewTools-Tests-Queries Browser'
 }
 
-{ #category : #'tests - actions' }
-MiNewQueriesBrowserTest >> assertFollowActionFor: aMooseObject [
-
-	"Override to test follow action"
-
-	
-]
-
 { #category : #running }
 MiNewQueriesBrowserTest >> browserClass [
 
