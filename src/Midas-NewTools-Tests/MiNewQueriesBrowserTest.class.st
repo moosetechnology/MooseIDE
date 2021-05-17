@@ -64,8 +64,20 @@ MiNewQueriesBrowserTest >> testAddNewQuery [
 ]
 
 { #category : #tests }
-MiNewQueriesBrowserTest >> testInitialization [
+MiNewQueriesBrowserTest >> testInitializePresenters [
 
+	self
+		assertCollection: browser queryResultEntities
+		hasSameElements: helper classesAndMethods.
+
+	self assert: browser layout isNotNil.
+	self
+		assert: browser queryCodePresenter class
+		equals: MiQueryCodePresenter.
+	self assert: browser queryCodePresenter text isNotEmpty.
+	self
+		assert: browser queryResultTreePresenter class
+		equals: MiResultTreePresenter.
 	self
 		assertCollection: browser queryResultEntities
 		hasSameElements: helper classesAndMethods
@@ -121,6 +133,14 @@ MiNewQueriesBrowserTest >> testSelectQuery [
 		assert: browser queryCodePresenter text
 		equals: (EFFormatter format: (RBParser parseExpression:
 					  (String streamContents: [ :s | query storeOn: s ])))
+]
+
+{ #category : #test }
+MiNewQueriesBrowserTest >> testSetModelBeforeInitialization [
+
+	self assert: browser queriesHistory isCollection.
+	self assert: browser queriesHistory isNotEmpty.
+	self assert: browser currentQuery equals: browser getRootQuery
 ]
 
 { #category : #defaults }
