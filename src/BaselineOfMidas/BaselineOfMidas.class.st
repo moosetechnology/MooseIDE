@@ -71,6 +71,7 @@ BaselineOfMidas >> definePackages: spec [
 		with: [ spec requires: #( 'Midas-Core' 'Midas-Visualization' ) ];
 		package: 'Midas-NewTools'
 		with: [ spec requires: #( 'Midas-Meta' ) ];
+		package: 'Midas-NewTools-Tests' with: [ spec requires: #( 'Midas-NewTools' ) ];
 		package: 'Midas-Export'
 		with: [ spec requires: #( 'Midas-Core' ) ]
 ]
