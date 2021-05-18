@@ -96,7 +96,7 @@ MiMultiSelectionTable >> open [
 { #category : #'accessing model' }
 MiMultiSelectionTable >> setModelBeforeInitialization: aModel [
 
-	"The copy message is to avoid having references to another objects."
+	"The `copy` message is to avoid having references to another objects."
 
 	items := aModel asOrderedCollection copy.
 	selectedItems := items asOrderedCollection copy

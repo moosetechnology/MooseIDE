@@ -53,7 +53,9 @@ MiTypeInlineQueryPresenter >> initializeTypeCheckBoxes [
 { #category : #initialization }
 MiTypeInlineQueryPresenter >> initializeTypesTable [
 
-	typesTable := MiMultiSelectionTable on: self query availableTypes.
+	typesTable := self
+		              instantiate: MiMultiSelectionTable
+		              on: self query availableTypes.
 	typesTable
 		displayBlock: [ :item | self labelFor: item ];
 		windowName: 'Types';
