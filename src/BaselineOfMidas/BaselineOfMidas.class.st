@@ -53,26 +53,18 @@ BaselineOfMidas >> definePackages: spec [
 
 	spec
 		package: 'Midas-Core';
-		package: 'Midas-Visualization'
-		with: [ spec requires: #( 'TelescopeRoassal3' ) ];
+		package: 'Midas-Visualization' with: [ spec requires: #( 'TelescopeRoassal3' ) ];
 		package: 'Midas-Meta' with: [ spec requires: #( 'Midas-Core' ) ];
 		package: 'Midas-Tests' with: [ spec requires: #( 'Midas-Core' ) ];
-		package: 'Midas-Dependency'
-		with: [ spec requires: #( 'Midas-Core' 'Midas-Visualization' ) ];
-		package: 'Midas-Famix'
-		with: [ spec requires: #( 'Midas-Core' 'Midas-Visualization' ) ];
-		package: 'Midas-Tagging'
-		with: [ spec requires: #( 'Midas-Core' 'Midas-Visualization' ) ];
-		package: 'Midas-FamixQueries'
-		with: [ spec requires: #( 'FamixQueries' 'Midas-Core' ) ];
-		package: 'Midas-FamixQueries-Tests'
-		with: [ spec requires: #( 'Midas-FamixQueries' 'Midas-Tests' ) ];
-		package: 'Midas-Telescope'
-		with: [ spec requires: #( 'Midas-Core' 'Midas-Visualization' ) ];
-		package: 'Midas-NewTools'
-		with: [ spec requires: #( 'Midas-Meta' ) ];
-		package: 'Midas-Export'
-		with: [ spec requires: #( 'Midas-Core' ) ]
+		package: 'Midas-Dependency' with: [ spec requires: #( 'Midas-Core' 'Midas-Visualization' ) ];
+		package: 'Midas-Famix' with: [ spec requires: #( 'Midas-Core' 'Midas-Visualization' ) ];
+		package: 'Midas-Tagging' with: [ spec requires: #( 'Midas-Core' 'Midas-Visualization' ) ];
+		package: 'Midas-FamixQueries' with: [ spec requires: #( 'FamixQueries' 'Midas-Core' ) ];
+		package: 'Midas-FamixQueries-Tests' with: [ spec requires: #( 'Midas-FamixQueries' 'Midas-Tests' ) ];
+		package: 'Midas-Telescope' with: [ spec requires: #( 'Midas-Core' 'Midas-Visualization' ) ];
+		package: 'Midas-NewTools' with: [ spec requires: #( 'Midas-Meta' ) ];
+		package: 'Midas-NewTools-Tests' with: [ spec requires: #( 'Midas-NewTools' ) ];
+		package: 'Midas-Export' with: [ spec requires: #( 'Midas-Core' ) ]
 ]
 
 { #category : #dependencies }
