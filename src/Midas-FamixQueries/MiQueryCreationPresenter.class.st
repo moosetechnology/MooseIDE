@@ -22,16 +22,16 @@ MiQueryCreationPresenter class >> buildCommandsGroupWith: presenter forRoot: aCm
 
 { #category : #specs }
 MiQueryCreationPresenter class >> defaultSpec [
+
 	^ SpBoxLayout newVertical
-		add: #toolbar height: self toolbarHeight;
-		add: #breadcrumbs height: self toolbarHeight;
-		add:
-			(SpPanedLayout newHorizontal
-				add: self queryConfigurationLayout;
-				position: 65 percent;
-				add: #resultList;
-				yourself);
-		yourself
+		  add: #toolbar height: self toolbarHeight;
+		  add: #breadcrumbs height: self toolbarHeight;
+		  add: (SpPanedLayout newHorizontal
+				   add: self queryConfigurationLayout;
+				   positionOfSlider: 65 percent;
+				   add: #resultList;
+				   yourself);
+		  yourself
 ]
 
 { #category : #specs }
