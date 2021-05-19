@@ -26,8 +26,11 @@ MiNewQueryCreationPresenter class >> queryTypes [
 { #category : #actions }
 MiNewQueryCreationPresenter >> addNewQueryAction [
 
+	"You cannnot add a new query with a non-existing query as parent."
+
+	self isNoPossibleQuery ifTrue: [ ^ self ].
 	self disable.
-	parentPresenter addNewQueryAction: self query.
+	parentPresenter addNewQueryAction: self query
 	"Need to see if it is neccessary to inform query slot changed.
 	For the moment, query SpObservable slot instance variable is not declared in MiNewQueriesBrowser.
 	
@@ -50,11 +53,21 @@ This is for instantiate queryConfigurationPresenter variable" "changed to string
 MiNewQueryCreationPresenter >> disable [
 
 	queryTypesDropListPresenter disable.
-	self flag: 'TODO disable method on configuration presenter'.
-	"queryConfigurationPresenter disable."
+	queryConfigurationPresenter disable.
 	addButton disable.
 	"Do not call removeButton disable directly"
 	self disableRemoveButton
+]
+
+{ #category : #update }
+MiNewQueryCreationPresenter >> disableAddButtonIfThereIsNoQuery [
+
+	"You cannnot add a new query with a non-existing query as parent."
+
+	self isNoPossibleQuery ifTrue: [ 
+		addButton
+			disable;
+			help: 'You cannot add a new query from a not valid query' ]
 ]
 
 { #category : #actions }
@@ -69,9 +82,8 @@ MiNewQueryCreationPresenter >> disableRemoveButton [
 MiNewQueryCreationPresenter >> enable [
 
 	queryTypesDropListPresenter enable.
-	self flag: 'TODO enable method on configuration presenter'.
 	addButton enable.
-	"queryConfigurationPresenter enable."
+	queryConfigurationPresenter enable.
 	"Do not call `removeButton enable` directly."
 	self enableRemoveButton
 ]
@@ -133,6 +145,16 @@ MiNewQueryCreationPresenter >> initializeQueryTypesDropList [
 		display: [ :queryClass | queryClass label ]
 ]
 
+{ #category : #testing }
+MiNewQueryCreationPresenter >> isNoPossibleQuery [
+
+	| isNoPossibleQuery |
+	isNoPossibleQuery := queryConfigurationPresenter presenters 
+		                     anySatisfy: [ :presenter | 
+		                     presenter class = MiNoPossibleQueryPresenter ].
+	^ isNoPossibleQuery
+]
+
 { #category : #accessing }
 MiNewQueryCreationPresenter >> query [
 
@@ -183,5 +205,6 @@ MiNewQueryCreationPresenter >> updateQueryConfigurationFor: queryClass [
 		                               (miConfigurationPresenterClass
 			                                owner: self
 			                                on: instantiatedQuery).
+	self disableAddButtonIfThereIsNoQuery.
 	self update
 ]
