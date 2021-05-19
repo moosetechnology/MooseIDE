@@ -19,6 +19,18 @@ MiQueryConfigurationPresenter >> buildLayout [
 	self layout: self class defaultSpec
 ]
 
+{ #category : #api }
+MiQueryConfigurationPresenter >> disable [
+
+	self presenters do: [ :subPresenter | subPresenter disable ]
+]
+
+{ #category : #api }
+MiQueryConfigurationPresenter >> enable [
+
+	self presenters do: [ :subPresenter | subPresenter enable ]
+]
+
 { #category : #accessing }
 MiQueryConfigurationPresenter >> initialize [
 

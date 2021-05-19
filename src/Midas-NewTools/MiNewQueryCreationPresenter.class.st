@@ -50,8 +50,7 @@ This is for instantiate queryConfigurationPresenter variable" "changed to string
 MiNewQueryCreationPresenter >> disable [
 
 	queryTypesDropListPresenter disable.
-	self flag: 'TODO disable method on configuration presenter'.
-	"queryConfigurationPresenter disable."
+	queryConfigurationPresenter disable.
 	addButton disable.
 	"Do not call removeButton disable directly"
 	self disableRemoveButton
@@ -69,9 +68,8 @@ MiNewQueryCreationPresenter >> disableRemoveButton [
 MiNewQueryCreationPresenter >> enable [
 
 	queryTypesDropListPresenter enable.
-	self flag: 'TODO enable method on configuration presenter'.
 	addButton enable.
-	"queryConfigurationPresenter enable."
+	queryConfigurationPresenter enable.
 	"Do not call `removeButton enable` directly."
 	self enableRemoveButton
 ]
