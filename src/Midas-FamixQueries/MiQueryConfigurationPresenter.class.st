@@ -22,13 +22,21 @@ MiQueryConfigurationPresenter >> buildLayout [
 { #category : #api }
 MiQueryConfigurationPresenter >> disable [
 
-	self presenters do: [ :subPresenter | subPresenter disable ]
+	"Disable the presenters that had been instantiated."
+
+	self presenters
+		reject: [ :subPresenter | subPresenter class = SpNullPresenter ]
+		thenDo: [ :subPresenter | subPresenter disable ]
 ]
 
 { #category : #api }
 MiQueryConfigurationPresenter >> enable [
 
-	self presenters do: [ :subPresenter | subPresenter enable ]
+	"Enable the presenters that had been instantiated."
+
+	self presenters
+		reject: [ :subPresenter | subPresenter class = SpNullPresenter ]
+		thenDo: [ :subPresenter | subPresenter enable ]
 ]
 
 { #category : #accessing }
