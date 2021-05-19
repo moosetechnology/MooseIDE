@@ -26,7 +26,7 @@ MiQueryConfigurationPresenter >> disable [
 
 	self presenters
 		reject: [ :subPresenter | subPresenter class = SpNullPresenter ]
-		thenDo: [ :subPresenter | subPresenter disable ]
+		thenDo: #disable
 ]
 
 { #category : #api }
@@ -36,7 +36,7 @@ MiQueryConfigurationPresenter >> enable [
 
 	self presenters
 		reject: [ :subPresenter | subPresenter class = SpNullPresenter ]
-		thenDo: [ :subPresenter | subPresenter enable ]
+		thenDo: #enable
 ]
 
 { #category : #accessing }
