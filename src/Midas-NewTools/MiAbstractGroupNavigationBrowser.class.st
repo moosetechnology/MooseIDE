@@ -23,10 +23,10 @@ Internal Representation and Key Implementation Points.
 Class {
 	#name : #MiAbstractGroupNavigationBrowser,
 	#superclass : #MiNavigationBrowser,
-	#category : #'Midas-NewTools-Inspector'
+	#category : #'Midas-NewTools-Inspector tabs'
 }
 
 { #category : #initialization }
 MiAbstractGroupNavigationBrowser >> itemsFor: anEntity [
-	^ anEntity collect: [ :entity | entity mooseName -> entity ]
+	^ anEntity collect: [ :entity | entity mooseName printString -> entity ]
 ]

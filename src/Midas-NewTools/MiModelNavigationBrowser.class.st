@@ -1,7 +1,7 @@
 Class {
 	#name : #MiModelNavigationBrowser,
 	#superclass : #MiNavigationBrowser,
-	#category : #'Midas-NewTools-Inspector'
+	#category : #'Midas-NewTools-Inspector tabs'
 }
 
 { #category : #initialization }

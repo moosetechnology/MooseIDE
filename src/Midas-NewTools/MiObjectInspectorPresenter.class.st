@@ -7,8 +7,18 @@ I rewrite `newInspectionForContext:` method only to return an instance of `MiObj
 Class {
 	#name : #MiObjectInspectorPresenter,
 	#superclass : #StObjectInspectorPresenter,
-	#category : #'Midas-Core-Inspector'
+	#category : #'Midas-NewTools-Inspector'
 }
+
+{ #category : #private }
+MiObjectInspectorPresenter >> allPages [
+
+	| allPagesWithoutBreakpointsPage |
+	"Remove the Breakpoints page in the inspector because is not useful in the Moose Inspector"
+	allPagesWithoutBreakpointsPage := super allPages reject: [ :aPage | 
+		                                  aPage title = 'Breakpoints' ].
+	^ allPagesWithoutBreakpointsPage
+]
 
 { #category : #'private factory' }
 MiObjectInspectorPresenter >> newInspectionForContext: aContext [

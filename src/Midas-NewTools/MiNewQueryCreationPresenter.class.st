@@ -1,0 +1,210 @@
+"
+I allow to filter a MooseModel depending on the query that you choose. I have a dropdown list that has all the existing query types. When you select some query type, a configuration presenter is created. This configuration presenter is specific for each type of query.
+
+I manage all the logic related of changing dynamically this configuration presenter. Also, I send a message to my parentPresenter (`MiQueryBuilderPresenter`) each time my add or remove button is pressed.
+"
+Class {
+	#name : #MiNewQueryCreationPresenter,
+	#superclass : #SpPresenter,
+	#instVars : [
+		'queryTypesDropListPresenter',
+		'queryConfigurationPresenter',
+		'parentPresenter',
+		'addButton',
+		'removeButton'
+	],
+	#category : #'Midas-NewTools-Queries Browser'
+}
+
+{ #category : #accessing }
+MiNewQueryCreationPresenter class >> queryTypes [
+
+	^ FQUnaryQuery allSubclasses select: #canBeConfigured
+	"sort: #name ascending"
+]
+
+{ #category : #actions }
+MiNewQueryCreationPresenter >> addNewQueryAction [
+
+	"You cannnot add a new query with a non-existing query as parent."
+
+	self isNoPossibleQuery ifTrue: [ ^ self ].
+	self disable.
+	parentPresenter addNewQueryAction: self query
+	"Need to see if it is neccessary to inform query slot changed.
+	For the moment, query SpObservable slot instance variable is not declared in MiNewQueriesBrowser.
+	
+	self notifyPropertyChanged: #query"
+]
+
+{ #category : #initialization }
+MiNewQueryCreationPresenter >> connectPresenters [
+
+	queryTypesDropListPresenter whenSelectedItemChangedDo: [ :queryClass | 
+		self updateQueryConfigurationFor: queryClass ].
+	"After setting whenSelectedItemChangedDo:, select the fastest query while we do not compute the results in a fork.
+This is for instantiate queryConfigurationPresenter variable" "changed to string query initially was typequery"
+	queryTypesDropListPresenter selectItem: FQStringQuery.
+	addButton action: [ self addNewQueryAction ].
+	removeButton action: [ self removeQueryAction ]
+]
+
+{ #category : #'api - actions' }
+MiNewQueryCreationPresenter >> disable [
+
+	queryTypesDropListPresenter disable.
+	queryConfigurationPresenter disable.
+	addButton disable.
+	"Do not call removeButton disable directly"
+	self disableRemoveButton
+]
+
+{ #category : #update }
+MiNewQueryCreationPresenter >> disableAddButtonIfThereIsNoQuery [
+
+	"You cannnot add a new query with a non-existing query as parent."
+
+	self isNoPossibleQuery ifTrue: [ 
+		addButton
+			disable;
+			help: 'You cannot add a new query from a not valid query' ]
+]
+
+{ #category : #actions }
+MiNewQueryCreationPresenter >> disableRemoveButton [
+
+	"If the button exists in the layout"
+
+	removeButton ifNotNil: [ removeButton disable ]
+]
+
+{ #category : #'api - actions' }
+MiNewQueryCreationPresenter >> enable [
+
+	queryTypesDropListPresenter enable.
+	addButton enable.
+	queryConfigurationPresenter enable.
+	"Do not call `removeButton enable` directly."
+	self enableRemoveButton
+]
+
+{ #category : #actions }
+MiNewQueryCreationPresenter >> enableRemoveButton [
+
+	"If the button exists in the layout."
+
+	removeButton ifNotNil: [ removeButton enable ]
+]
+
+{ #category : #initialization }
+MiNewQueryCreationPresenter >> initializeButtons [
+
+	addButton := self newButton
+		             icon: (self iconNamed: #smallAdd);
+		             yourself.
+	removeButton := self newButton
+		                icon: (self iconNamed: #remove);
+		                yourself
+]
+
+{ #category : #initialization }
+MiNewQueryCreationPresenter >> initializeLayout [
+
+	| buttonConstraints tempLayout |
+	buttonConstraints := [ :constraints | 
+	                     constraints
+		                     width: self class iconWidth;
+		                     expand: false ].
+	tempLayout := SpBoxLayout newLeftToRight
+		              spacing: 5;
+		              borderWidth: 5;
+		              add: #queryTypesDropListPresenter width: 130;
+		              add: #queryConfigurationPresenter;
+		              addLast: #addButton
+		              withConstraints: buttonConstraints;
+		              addLast: #removeButton
+		              withConstraints: buttonConstraints;
+		              yourself.
+	self layout: tempLayout
+]
+
+{ #category : #initialization }
+MiNewQueryCreationPresenter >> initializePresenters [
+
+	self initializeLayout.
+	self initializeQueryTypesDropList.
+	self initializeButtons
+]
+
+{ #category : #initialization }
+MiNewQueryCreationPresenter >> initializeQueryTypesDropList [
+
+	queryTypesDropListPresenter := self newDropList.
+	queryTypesDropListPresenter
+		items: self class queryTypes;
+		display: [ :queryClass | queryClass label ]
+]
+
+{ #category : #testing }
+MiNewQueryCreationPresenter >> isNoPossibleQuery [
+
+	| isNoPossibleQuery |
+	isNoPossibleQuery := queryConfigurationPresenter presenters 
+		                     anySatisfy: [ :presenter | 
+		                     presenter class = MiNoPossibleQueryPresenter ].
+	^ isNoPossibleQuery
+]
+
+{ #category : #accessing }
+MiNewQueryCreationPresenter >> query [
+
+	^ queryConfigurationPresenter query
+]
+
+{ #category : #accessing }
+MiNewQueryCreationPresenter >> queryConfigurationPresenter [
+
+	^ queryConfigurationPresenter
+]
+
+{ #category : #'api - actions' }
+MiNewQueryCreationPresenter >> removeButtonRemove [
+
+	"We do not want the removeButton to exist"
+
+	self layout remove: removeButton.
+	removeButton := nil
+]
+
+{ #category : #initialization }
+MiNewQueryCreationPresenter >> removeQueryAction [
+
+	parentPresenter removeQueryAction: self query
+]
+
+{ #category : #'accessing model' }
+MiNewQueryCreationPresenter >> setModelBeforeInitialization: aQueryBuilderPresenter [
+
+	parentPresenter := aQueryBuilderPresenter
+]
+
+{ #category : #'api - actions' }
+MiNewQueryCreationPresenter >> updateFromConfiguration [
+
+	parentPresenter queryChangedUpdate: self query
+]
+
+{ #category : #update }
+MiNewQueryCreationPresenter >> updateQueryConfigurationFor: queryClass [
+
+	| instantiatedQuery miConfigurationPresenterClass |
+	instantiatedQuery := queryClass defaultForParent:
+		                     parentPresenter currentQuery.
+	miConfigurationPresenterClass := instantiatedQuery miPresenterClass.
+	queryConfigurationPresenter := self instantiate:
+		                               (miConfigurationPresenterClass
+			                                owner: self
+			                                on: instantiatedQuery).
+	self disableAddButtonIfThereIsNoQuery.
+	self update
+]

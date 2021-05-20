@@ -30,9 +30,10 @@ Class {
 	#instVars : [
 		'navigation',
 		'model',
-		'activationBlock'
+		'activationBlock',
+		'activateOnSingleClick'
 	],
-	#category : #'Midas-NewTools-Inspector'
+	#category : #'Midas-NewTools-Inspector tabs'
 }
 
 { #category : #specs }
@@ -49,6 +50,17 @@ MiNavigationBrowser class >> defaultSpec [
 ]
 
 { #category : #initialization }
+MiNavigationBrowser >> activateOnSingleClick [
+	navigation activateOnSingleClick
+]
+
+{ #category : #accessing }
+MiNavigationBrowser >> activateOnSingleClick: anObject [
+
+	activateOnSingleClick := anObject
+]
+
+{ #category : #initialization }
 MiNavigationBrowser >> hasOutputActivationPort [
 
 	^ true
@@ -56,26 +68,23 @@ MiNavigationBrowser >> hasOutputActivationPort [
 
 { #category : #initialization }
 MiNavigationBrowser >> initializePresenters [
+
 	navigation := self newTable.
 
 	navigation
 		contextMenu: [ self rootCommandsGroup asMenuPresenter ];
 		items: (self itemsFor: self model);
 		sortingBlock: [ :a :b | a key asString < b key asString ].
-	navigation
-		addColumn:
-			(SpCompositeTableColumn new
-				addColumn:
-					(SpImageTableColumn new
-						beNotExpandable;
-						evaluated: [ :el | el value midasIcon ];
-						yourself);
-				addColumn:
-					(SpStringTableColumn new
-						evaluated: [ :el | el key printString ];
-						yourself);
-				yourself).
-		navigation whenActivatedDo: [ :selection | activationBlock value: self ]
+	navigation addColumn: (SpCompositeTableColumn new
+			 addColumn: (SpImageTableColumn new
+					  beNotExpandable;
+					  evaluated: [ :el | el value midasIcon ];
+					  yourself);
+			 addColumn: (SpStringTableColumn new
+					  evaluated: [ :el | el key printString ];
+					  yourself);
+			 yourself).
+	navigation whenActivatedDo: [ :selection | activationBlock value: self ].
 ]
 
 { #category : #initialization }

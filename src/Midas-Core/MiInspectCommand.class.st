@@ -30,13 +30,14 @@ MiInspectCommand >> canBeExecuted [
 	^ self context miSelectedItem isMooseObject
 ]
 
-{ #category : #testing }
+{ #category : #executing }
 MiInspectCommand >> execute [
+
 	| selectedItem |
 	selectedItem := [ self context miSelectedItem ]
-		on: MiNoSelectedElementToPropagateException
-		do: [ :exception | 
-			exception signal.
-			^ self ].
-	selectedItem inspect
+		                on: MiNoSelectedElementToPropagateException
+		                do: [ :exception | 
+			                exception signal.
+			                ^ self ].
+	MiInspectorBrowser inspect: selectedItem forBuses: self context buses
 ]
