@@ -26,9 +26,7 @@ MiNewQueryCreationPresenter class >> queryTypes [
 { #category : #actions }
 MiNewQueryCreationPresenter >> addNewQueryAction [
 
-	"self flag:
-		'You should not be able to add a new query from a non-existing query as parent.'.
-	self isNoPossibleQuery ifTrue: [ ^ self ]."
+	self isNoPossibleQuery ifTrue: [ ^ self ].
 
 	self disable.
 	parentPresenter addNewQueryAction: self query
