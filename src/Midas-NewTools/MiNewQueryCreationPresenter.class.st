@@ -26,9 +26,10 @@ MiNewQueryCreationPresenter class >> queryTypes [
 { #category : #actions }
 MiNewQueryCreationPresenter >> addNewQueryAction [
 
-	"You cannnot add a new query with a non-existing query as parent."
+	"self flag:
+		'You should not be able to add a new query from a non-existing query as parent.'.
+	self isNoPossibleQuery ifTrue: [ ^ self ]."
 
-	self isNoPossibleQuery ifTrue: [ ^ self ].
 	self disable.
 	parentPresenter addNewQueryAction: self query
 	"Need to see if it is neccessary to inform query slot changed.
