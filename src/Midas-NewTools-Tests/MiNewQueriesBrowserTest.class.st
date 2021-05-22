@@ -29,9 +29,10 @@ MiNewQueriesBrowserTest >> testAddNewBinaryQuery [
 
 	| unionQuery |
 	unionQuery := self unionQuery.
-	browser addNewQuery: unionQuery.
-	self assert: (browser queriesHistory includes: unionQuery).
-	self assert: browser currentQuery equals: unionQuery.
+	browser rootQuery addChild: unionQuery.
+	browser selectQuery: unionQuery.
+	self assert: (browser rootQuery children includes: unionQuery).
+	self assert: browser selectedQuery equals: unionQuery.
 	self
 		assertCollection: browser queryResultTreePresenter items
 		hasSameElements: unionQuery result
@@ -42,15 +43,11 @@ MiNewQueriesBrowserTest >> testAddNewQuery [
 
 	| query previousCurrentQuery |
 	query := (FQBooleanQuery property: #isDead) beChildOf:
-		         browser getRootQuery.
-	previousCurrentQuery := browser currentQuery.
-	self assert: browser queriesHistory size equals: 1.
+		         browser rootQuery.
+	previousCurrentQuery := browser selectedQuery.
 	browser addNewQuery: query.
-	self assert: browser queriesHistory size equals: 2.
-	self assert: (browser queriesHistory includes: query).
-	self deny: previousCurrentQuery equals: browser currentQuery.
-	self assert: browser currentQuery equals: query.
-
+	self deny: previousCurrentQuery equals: browser selectedQuery.
+	self assert: browser selectedQuery equals: query.
 	"Check if the query was selected"
 	self testSelectQuery
 ]
@@ -80,11 +77,10 @@ MiNewQueriesBrowserTest >> testRemoveBinaryQuery [
 
 	| unionQuery firstParent |
 	unionQuery := self unionQuery.
-	browser addNewQuery: unionQuery.
+	browser rootQuery addChild: unionQuery.
 	firstParent := unionQuery parents first.
-
 	browser removeQuery: unionQuery.
-	self deny: (browser queriesHistory includes: unionQuery)
+	self deny: (browser rootQuery children includes: unionQuery)
 ]
 
 { #category : #tests }
@@ -92,18 +88,14 @@ MiNewQueriesBrowserTest >> testRemoveQuery [
 
 	| query query2 |
 	query := FQBooleanQuery new property: #isAbstract.
-	query beChildOf: browser getRootQuery.
+	query beChildOf: browser rootQuery.
 	query2 := FQBooleanQuery new property: #isStub.
-	query2 beChildOf: browser getRootQuery.
+	query2 beChildOf: browser rootQuery.
 
-	self assert: browser queriesHistory size equals: 1.
-	browser addNewQuery: query.
-	"Simulate the user changes the query"
-	browser selectQuery: query2.
+	browser rootQuery addChild: query.
+	browser rootQuery addChild: query2.
 	browser removeQuery: query.
-
-	self deny: (browser queriesHistory includes: query).
-	self assert: browser queriesHistory size equals: 1.
+	self deny: (browser rootQuery children includes: query).
 	self
 		assertCollection: browser queryResultTreePresenter items
 		hasSameElements: browser queryResultEntities
@@ -114,9 +106,9 @@ MiNewQueriesBrowserTest >> testSelectQuery [
 
 	| query |
 	query := (FQBooleanQuery property: #isDead) beChildOf:
-		          browser getRootQuery.
+		         browser rootQuery.
 	browser selectQuery: query.
-	self assert: browser currentQuery equals: query.
+	self assert: browser selectedQuery equals: query.
 	self
 		assertCollection: browser queryResultTreePresenter items
 		hasSameElements: query result.
@@ -130,9 +122,8 @@ MiNewQueriesBrowserTest >> testSelectQuery [
 { #category : #test }
 MiNewQueriesBrowserTest >> testSetModelBeforeInitialization [
 
-	self assert: browser queriesHistory isCollection.
-	self assert: browser queriesHistory isNotEmpty.
-	self assert: browser currentQuery equals: browser getRootQuery
+	self assert: browser rootQuery class equals: FQRootQuery.
+	self assert: browser selectedQuery equals: browser rootQuery
 ]
 
 { #category : #defaults }
@@ -144,7 +135,7 @@ MiNewQueriesBrowserTest >> unionQuery [
 		           (FQTypeQuery new type: FamixStClass) }.
 	union := FQUnionQuery new.
 	parents do: [ :parent | 
-		parent beChildOf: browser getRootQuery.
+		parent beChildOf: browser rootQuery.
 		browser addNewQuery: parent.
 		parent addChild: union ].
 	union parents: parents.
