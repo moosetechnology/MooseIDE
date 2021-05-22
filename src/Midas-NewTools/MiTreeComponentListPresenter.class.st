@@ -17,18 +17,18 @@ MiTreeComponentListPresenter >> buildPresenterForNode: aNode indentation: aNumbe
 	| presenter layoutForPresenter depthLevel |
 	layoutForPresenter := SpBoxLayout newLeftToRight.
 	depthLevel := aNode children isNotEmpty
-		              ifTrue: [ aNumber -1 ]
-		              ifFalse: [ aNumber ].
+		              ifTrue: [ aNumber * 2 - 1 ]
+		              ifFalse: [ aNumber * 2 ].
 	depthLevel timesRepeat: [ 
 		layoutForPresenter
 			add: (SpImagePresenter new
-					 image: (self iconNamed: #blank);
+					 image: ((self iconNamed: #blank) scaledToSize: 8 @ 8);
 					 yourself)
 			expand: false ].
 	aNode children isNotEmpty ifTrue: [ 
 		layoutForPresenter
 			add: (SpImagePresenter new
-					 image: (self iconNamed: #arrowDown);
+					 image: ((self iconNamed: #arrowDown) scaledToSize: 8 @ 8);
 					 yourself)
 			expand: false ].
 	presenter := TestPresenter new
