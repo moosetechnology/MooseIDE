@@ -50,12 +50,6 @@ MiQueryBuilderPresenter >> createFirstQueryForComponentList [
 	self updateComponentList
 ]
 
-{ #category : #accessing }
-MiQueryBuilderPresenter >> currentQuery [
-
-	^ parentBrowser currentQuery
-]
-
 { #category : #'api - actions' }
 MiQueryBuilderPresenter >> followAction [
 
@@ -68,6 +62,7 @@ MiQueryBuilderPresenter >> followAction [
 MiQueryBuilderPresenter >> initializePresenters [
 
 	presenters := OrderedCollection new.
+
 	componentListPresenter := self newComponentList
 		                          propagateNaturalHeight: true;
 		                          yourself.

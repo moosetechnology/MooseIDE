@@ -11,10 +11,10 @@ Class {
 	#category : #'Midas-NewTools-Queries Browser'
 }
 
-{ #category : #initialization }
-MiTreeComponentListPresenter >> buildPresenterForNode: aNode indentation: aNumber [
+{ #category : #actions }
+MiTreeComponentListPresenter >> buildLayoutForNode: aNode indentation: aNumber [
 
-	| presenter layoutForPresenter depthLevel |
+	| layoutForPresenter depthLevel |
 	layoutForPresenter := SpBoxLayout newLeftToRight.
 	depthLevel := aNode children isNotEmpty
 		              ifTrue: [ aNumber * 2 - 1 ]
@@ -31,16 +31,27 @@ MiTreeComponentListPresenter >> buildPresenterForNode: aNode indentation: aNumbe
 					 image: ((self iconNamed: #arrowDown) scaledToSize: 8 @ 8);
 					 yourself)
 			expand: false ].
-	presenter := TestPresenter new
-		             label: ('''' join: { 
-						              aNode printString.
-						              aNumber asString });
-		             indentationLayout: layoutForPresenter;
+	^ layoutForPresenter
+]
+
+{ #category : #actions }
+MiTreeComponentListPresenter >> buildPresenterForNode: aNode indentation: aNumber [
+
+	| presenter indentationLayout newLayout |
+	indentationLayout := self buildLayoutForNode: aNode indentation: aNumber.
+	presenter := self instantiate:
+		             ((MiNewQueryCreationPresenter on: aNode)
+			              parentPresenter: owner;
+			              yourself).
+	newLayout := SpBoxLayout newLeftToRight
+		             add: indentationLayout expand: true;
+		             add: presenter layout expand: false;
 		             yourself.
+	presenter layout: newLayout.
 	^ presenter
 ]
 
-{ #category : #initialization }
+{ #category : #actions }
 MiTreeComponentListPresenter >> buildTree: aNode depth: aNumber [
 
 	| newPresenter listOfNodes |
@@ -56,17 +67,10 @@ MiTreeComponentListPresenter >> buildTree: aNode depth: aNumber [
 	^ listOfNodes
 ]
 
-{ #category : #initialization }
-MiTreeComponentListPresenter >> buildTreeOld: aNode depth: aNumber [
+{ #category : #actions }
+MiTreeComponentListPresenter >> buildTreePresenter [
 
-	| newPresenter |
-	aNode = root ifFalse: [ 
-		newPresenter := self
-			                buildPresenterForNode: aNode
-			                indentation: aNumber.
-		componentListPresenter addPresenter: newPresenter ].
-	aNode children do: [ :child | 
-		self buildTreeOld: child depth: aNumber + 1 ]
+	componentListPresenter presenters: (self buildTree: root depth: 0)
 ]
 
 { #category : #initialization }
@@ -82,7 +86,7 @@ MiTreeComponentListPresenter >> initializePresenters [
 
 	self initializeLayout.
 	componentListPresenter := self newComponentList.
-	componentListPresenter presenters: (self buildTree: root depth: 0)
+	self buildTreePresenter
 	"self buildTreeOld: root depth: 0"
 ]
 
@@ -90,4 +94,11 @@ MiTreeComponentListPresenter >> initializePresenters [
 MiTreeComponentListPresenter >> setModelBeforeInitialization: aRoot [
 
 	root := aRoot
+]
+
+{ #category : #updating }
+MiTreeComponentListPresenter >> update [
+
+	self buildTreePresenter.
+	super update
 ]

@@ -43,7 +43,7 @@ MiNewQueryCreationPresenter >> connectPresenters [
 	"After setting whenSelectedItemChangedDo:, select the fastest query while we do not compute the
 	results in a fork.
 	This is for instantiate queryConfigurationPresenter variable"
-	"changed to string query initially was typeQuery"
+	"changed, initially was typeQuery"
 	queryTypesDropListPresenter selectItem: FQStringQuery.
 	addButton action: [ self addNewQueryAction ].
 	removeButton action: [ self removeQueryAction ]

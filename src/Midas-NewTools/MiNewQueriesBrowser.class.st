@@ -11,7 +11,8 @@ Class {
 		'queryNotebookPresenter',
 		'queryBuilderPresenter',
 		'currentQuery',
-		'queriesHistory'
+		'queriesHistory',
+		'rootQuery'
 	],
 	#category : #'Midas-NewTools-Queries Browser'
 }
@@ -65,8 +66,20 @@ MiNewQueriesBrowser >> accept: anObject [
 		  (anObject asMooseGroup allUsing: FamixTNamedEntity) isNotEmpty ]
 ]
 
+{ #category : #adding }
+MiNewQueriesBrowser >> addChild: aChildQuery toNode: aParentNode [
+
+	aChildQuery parent = aParentNode
+		ifTrue: [ aParentNode addChild: aChildQuery ]
+		ifFalse: [ 
+			aParentNode children do: [ :childOfParent | 
+				self addChild: aChildQuery toNode: childOfParent ] ]
+]
+
 { #category : #'api - actions' }
 MiNewQueriesBrowser >> addNewQuery: aQuery [
+
+	"self addChild: aQuery toNode: rootQuery."
 
 	queriesHistory addLast: aQuery.
 	self selectQuery: aQuery
@@ -89,13 +102,16 @@ MiNewQueriesBrowser >> followAction [
 
 	"Create the new query "
 	queriesHistory do: #resetResult.
+	rootQuery resetResult.
+
 	toSelect := toSelect asMooseGroup allUsing: FamixTNamedEntity.
-	newQuery := self getRootQuery
+	newQuery := rootQuery
 		            result: toSelect;
 		            name: mooseModelName;
 		            yourself.
 	"Clear the queries history"
 	queriesHistory := OrderedCollection empty.
+
 	"Update the all the sub presenters with this new query"
 	self addNewQuery: newQuery.
 	queryBuilderPresenter followAction
@@ -204,6 +220,12 @@ MiNewQueriesBrowser >> removeQuery: notUsedQuery [
 	queriesHistory removeLast
 ]
 
+{ #category : #accessing }
+MiNewQueriesBrowser >> rootQuery [
+
+	^ rootQuery
+]
+
 { #category : #actions }
 MiNewQueriesBrowser >> selectQuery: aQuery [
 
@@ -224,6 +246,7 @@ MiNewQueriesBrowser >> selectedQuery [
 { #category : #'accessing model' }
 MiNewQueriesBrowser >> setModelBeforeInitialization: aRootQuery [
 
+	rootQuery := aRootQuery.
 	queriesHistory := OrderedCollection with: aRootQuery.
-	currentQuery := self getRootQuery
+	currentQuery := aRootQuery
 ]
