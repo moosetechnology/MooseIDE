@@ -79,20 +79,11 @@ MiNewQueryCreationPresenter >> indentationSpacesPresenters [
 
 	| indentationPresenters indentationLevel |
 	indentationLevel := parentQuery parentSequence size - 1.
-	"self query children isNotEmpty ifTrue: [ 
-		indentationLevel := indentationLevel - 1 ]."
-
 	indentationPresenters := OrderedCollection empty.
 	indentationLevel timesRepeat: [ 
 		indentationPresenters add: (SpImagePresenter new
 				 image: ((self iconNamed: #blank) scaledToSize: 10 @ 10);
 				 yourself) ].
-	"self query children isNotEmpty ifTrue: [ 
-		indentationPresenters
-			add: (SpImagePresenter new
-					 image: ((self iconNamed: #arrowDown) scaledToSize: 10 @ 10);
-					 yourself)
-			expand: false ]."
 	^ indentationPresenters
 ]
 
