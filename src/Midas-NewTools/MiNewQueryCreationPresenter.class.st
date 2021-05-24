@@ -36,20 +36,6 @@ MiNewQueryCreationPresenter >> addNewQueryAction [
 	self notifyPropertyChanged: #query"
 ]
 
-{ #category : #initialization }
-MiNewQueryCreationPresenter >> connectPresenters [
-
-	queryTypesDropListPresenter whenSelectedItemChangedDo: [ :queryClass | 
-		self updateQueryConfigurationFor: queryClass ].
-	"After setting whenSelectedItemChangedDo:, select the fastest query while we do not compute the
-	results in a fork.
-	This is for instantiate queryConfigurationPresenter variable"
-	"changed, initially was typeQuery"
-	queryTypesDropListPresenter selectItem: FQStringQuery.
-	addButton action: [ self addNewQueryAction ].
-	removeButton action: [ self removeQueryAction ]
-]
-
 { #category : #'api - actions' }
 MiNewQueryCreationPresenter >> disable [
 
@@ -89,14 +75,38 @@ MiNewQueryCreationPresenter >> enableRemoveButton [
 ]
 
 { #category : #initialization }
+MiNewQueryCreationPresenter >> indentationSpacesPresenters [
+
+	| indentationPresenters indentationLevel |
+	indentationLevel := parentQuery parentSequence size - 1.
+	"self query children isNotEmpty ifTrue: [ 
+		indentationLevel := indentationLevel - 1 ]."
+
+	indentationPresenters := OrderedCollection empty.
+	indentationLevel timesRepeat: [ 
+		indentationPresenters add: (SpImagePresenter new
+				 image: ((self iconNamed: #blank) scaledToSize: 10 @ 10);
+				 yourself) ].
+	"self query children isNotEmpty ifTrue: [ 
+		indentationPresenters
+			add: (SpImagePresenter new
+					 image: ((self iconNamed: #arrowDown) scaledToSize: 10 @ 10);
+					 yourself)
+			expand: false ]."
+	^ indentationPresenters
+]
+
+{ #category : #initialization }
 MiNewQueryCreationPresenter >> initializeButtons [
 
-	addButton := self newButton
-		             icon: (self iconNamed: #smallAdd);
-		             yourself.
-	removeButton := self newButton
-		                icon: (self iconNamed: #remove);
-		                yourself
+	addButton := self newButton.
+	addButton
+		icon: (self iconNamed: #smallAdd);
+		action: [ self addNewQueryAction ].
+	removeButton := self newButton.
+	removeButton
+		icon: (self iconNamed: #remove);
+		action: [ self removeQueryAction ]
 ]
 
 { #category : #initialization }
@@ -107,16 +117,16 @@ MiNewQueryCreationPresenter >> initializeLayout [
 	                     constraints
 		                     width: self class iconWidth;
 		                     expand: false ].
-	tempLayout := SpBoxLayout newLeftToRight
-		              spacing: 5;
-		              borderWidth: 5;
-		              add: #queryTypesDropListPresenter width: 130;
-		              add: #queryConfigurationPresenter;
-		              addLast: #addButton
-		              withConstraints: buttonConstraints;
-		              addLast: #removeButton
-		              withConstraints: buttonConstraints;
-		              yourself.
+	tempLayout := SpBoxLayout newLeftToRight.
+	self indentationSpacesPresenters do: [ :each | 
+		tempLayout add: each expand: false ].
+	tempLayout
+		spacing: 5;
+		borderWidth: 5;
+		add: #queryTypesDropListPresenter width: 130;
+		add: #queryConfigurationPresenter;
+		addLast: #addButton withConstraints: buttonConstraints;
+		addLast: #removeButton withConstraints: buttonConstraints.
 	self layout: tempLayout
 ]
 
@@ -124,8 +134,8 @@ MiNewQueryCreationPresenter >> initializeLayout [
 MiNewQueryCreationPresenter >> initializePresenters [
 
 	self initializeLayout.
-	self initializeQueryTypesDropList.
-	self initializeButtons
+	self initializeButtons.
+	self initializeQueryTypesDropList
 ]
 
 { #category : #initialization }
@@ -134,7 +144,14 @@ MiNewQueryCreationPresenter >> initializeQueryTypesDropList [
 	queryTypesDropListPresenter := self newDropList.
 	queryTypesDropListPresenter
 		items: self class queryTypes;
-		display: [ :queryClass | queryClass label ]
+		display: [ :queryClass | queryClass label ];
+		whenSelectedItemChangedDo: [ :queryClass | 
+			self updateQueryConfigurationFor: queryClass ].
+	"After setting whenSelectedItemChangedDo:, select the fastest query while we do not compute the
+	results in a fork.
+	This is for instantiate queryConfigurationPresenter variable"
+	"Changed, initially was typeQuery"
+	queryTypesDropListPresenter selectItem: FQStringQuery
 ]
 
 { #category : #accessing }
