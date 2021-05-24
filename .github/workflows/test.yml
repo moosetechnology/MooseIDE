@@ -6,7 +6,7 @@ name: CI
 # events but only for the development branch
 on:
   pull_request:
-    types: [assigned, opened, synchronize, reopened]
+   branches: [development]
 
 jobs:
   test:
