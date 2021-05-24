@@ -29,7 +29,8 @@ MiQueryBuilderPresenter >> addNewQueryAction: query [
 
 	| newPresenter |
 	newPresenter := self instantiate:
-		                (MiNewQueryCreationPresenter on: self).
+		                ((MiNewQueryCreationPresenter on:
+			                  parentBrowser currentQuery) parentPresenter: self).
 	presenters add: newPresenter.
 
 	parentBrowser addNewQuery: query.
@@ -41,7 +42,9 @@ MiQueryBuilderPresenter >> createFirstQueryForComponentList [
 
 	| queryCreationPresenter |
 	queryCreationPresenter := self instantiate:
-		                          (MiNewQueryCreationPresenter on: self).
+		                          ((MiNewQueryCreationPresenter on:
+			                            parentBrowser currentQuery) 
+			                           parentPresenter: self).
 	queryCreationPresenter removeButtonRemove.
 	presenters := OrderedCollection with: queryCreationPresenter.
 	self updateComponentList

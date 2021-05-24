@@ -11,7 +11,8 @@ Class {
 		'queryConfigurationPresenter',
 		'parentPresenter',
 		'addButton',
-		'removeButton'
+		'removeButton',
+		'parentQuery'
 	],
 	#category : #'Midas-NewTools-Queries Browser'
 }
@@ -39,8 +40,10 @@ MiNewQueryCreationPresenter >> connectPresenters [
 
 	queryTypesDropListPresenter whenSelectedItemChangedDo: [ :queryClass | 
 		self updateQueryConfigurationFor: queryClass ].
-	"After setting whenSelectedItemChangedDo:, select the fastest query while we do not compute the results in a fork.
-This is for instantiate queryConfigurationPresenter variable" "changed to string query initially was typequery"
+	"After setting whenSelectedItemChangedDo:, select the fastest query while we do not compute the
+	results in a fork.
+	This is for instantiate queryConfigurationPresenter variable"
+	"changed to string query initially was typeQuery"
 	queryTypesDropListPresenter selectItem: FQStringQuery.
 	addButton action: [ self addNewQueryAction ].
 	removeButton action: [ self removeQueryAction ]
@@ -134,6 +137,12 @@ MiNewQueryCreationPresenter >> initializeQueryTypesDropList [
 ]
 
 { #category : #accessing }
+MiNewQueryCreationPresenter >> parentPresenter: aQueryBuilderPresenter [
+
+	parentPresenter := aQueryBuilderPresenter
+]
+
+{ #category : #accessing }
 MiNewQueryCreationPresenter >> query [
 
 	^ queryConfigurationPresenter query
@@ -161,9 +170,9 @@ MiNewQueryCreationPresenter >> removeQueryAction [
 ]
 
 { #category : #'accessing model' }
-MiNewQueryCreationPresenter >> setModelBeforeInitialization: aQueryBuilderPresenter [
+MiNewQueryCreationPresenter >> setModelBeforeInitialization: aQuery [
 
-	parentPresenter := aQueryBuilderPresenter
+	parentQuery := aQuery
 ]
 
 { #category : #'api - actions' }
@@ -176,8 +185,7 @@ MiNewQueryCreationPresenter >> updateFromConfiguration [
 MiNewQueryCreationPresenter >> updateQueryConfigurationFor: queryClass [
 
 	| instantiatedQuery miConfigurationPresenterClass |
-	instantiatedQuery := queryClass defaultForParent:
-		                     parentPresenter currentQuery.
+	instantiatedQuery := queryClass defaultForParent: parentQuery.
 	miConfigurationPresenterClass := instantiatedQuery miPresenterClass.
 	queryConfigurationPresenter := self instantiate:
 		                               (miConfigurationPresenterClass
