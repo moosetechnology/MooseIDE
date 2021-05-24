@@ -80,7 +80,6 @@ MiNewQueriesBrowser >> addChild: aChildQuery toNode: aParentNode [
 MiNewQueriesBrowser >> addNewQuery: aQuery [
 
 	"self addChild: aQuery toNode: rootQuery."
-
 	queriesHistory addLast: aQuery.
 	self selectQuery: aQuery
 ]

@@ -28,7 +28,8 @@ MiNewQueryCreationPresenter class >> queryTypes [
 MiNewQueryCreationPresenter >> addNewQueryAction [
 
 	self disable.
-	parentPresenter addNewQueryAction: self query.
+	parentQuery addChild: self query.
+	parentPresenter addNewQueryAction: self query
 	"Need to see if it is neccessary to inform query slot changed.
 	For the moment, query SpObservable slot instance variable is not declared in MiNewQueriesBrowser.
 	
