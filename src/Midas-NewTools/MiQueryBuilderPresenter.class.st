@@ -16,14 +16,6 @@ Class {
 	#category : #'Midas-NewTools-Queries Browser'
 }
 
-{ #category : #specs }
-MiQueryBuilderPresenter class >> defaultSpec [
-
-	^ SpBoxLayout newTopToBottom
-		  add: #componentListPresenter;
-		  yourself
-]
-
 { #category : #'api - actions' }
 MiQueryBuilderPresenter >> addNewQueryAction: query [
 
@@ -59,10 +51,18 @@ MiQueryBuilderPresenter >> followAction [
 ]
 
 { #category : #initialization }
+MiQueryBuilderPresenter >> initializeLayout [
+
+	self layout: (SpBoxLayout newTopToBottom
+			 add: #componentListPresenter;
+			 yourself)
+]
+
+{ #category : #initialization }
 MiQueryBuilderPresenter >> initializePresenters [
 
-	presenters := OrderedCollection new.
-
+	self initializeLayout.
+	presenters := OrderedCollection empty.
 	componentListPresenter := self newComponentList
 		                          propagateNaturalHeight: true;
 		                          yourself.
