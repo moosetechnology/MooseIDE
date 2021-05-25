@@ -42,7 +42,6 @@ MiNewQueryCreationPresenter >> disable [
 	queryTypesDropListPresenter disable.
 	self flag: 'TODO disable method on configuration presenter'.
 	"queryConfigurationPresenter disable."
-	addButton disable.
 	removeButton ifNotNil: [ removeButton disable ]
 ]
 

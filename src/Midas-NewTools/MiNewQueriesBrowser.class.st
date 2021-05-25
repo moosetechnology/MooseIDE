@@ -194,6 +194,7 @@ MiNewQueriesBrowser >> removeQuery: notUsedQuery [
 	"For now, the query that is received as a parameters is exactly the same object as queriesHistory last. Because, at the moment only the last query can be removed.
 	It can be changed to remove any query, and if the query has children remove all the children too."
 
+	self flag: 'remove queries history variable.'.
 	self selectQuery: queriesHistory last.
 	queriesHistory removeLast
 ]
