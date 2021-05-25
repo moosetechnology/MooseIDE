@@ -17,3 +17,11 @@ MiNewQueriesBrowser >> queryResultTreePresenter [
 
 	^ queryResultTreePresenter
 ]
+
+{ #category : #'*Midas-NewTools-Tests' }
+MiNewQueriesBrowser >> selectedQuery [
+
+	"This method is only for backwards compatibility with the old queries browser"
+
+	^ selectedQuery
+]

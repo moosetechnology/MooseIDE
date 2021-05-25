@@ -43,15 +43,6 @@ MiNewQueryCreationPresenter >> disable [
 	self flag: 'TODO disable method on configuration presenter'.
 	"queryConfigurationPresenter disable."
 	addButton disable.
-	"Do not call removeButton disable directly"
-	self disableRemoveButton
-]
-
-{ #category : #actions }
-MiNewQueryCreationPresenter >> disableRemoveButton [
-
-	"If the button exists in the layout"
-
 	removeButton ifNotNil: [ removeButton disable ]
 ]
 
@@ -62,20 +53,13 @@ MiNewQueryCreationPresenter >> enable [
 	self flag: 'TODO enable method on configuration presenter'.
 	addButton enable.
 	"queryConfigurationPresenter enable."
-	"Do not call `removeButton enable` directly."
-	self enableRemoveButton
-]
-
-{ #category : #actions }
-MiNewQueryCreationPresenter >> enableRemoveButton [
-
-	"If the button exists in the layout."
-
 	removeButton ifNotNil: [ removeButton enable ]
 ]
 
 { #category : #initialization }
 MiNewQueryCreationPresenter >> indentationSpacesPresenters [
+
+	"Returns a collection with blank images to show the level of indentation that the query has"
 
 	| indentationPresenters indentationLevel |
 	indentationLevel := parentQuery parentSequence size - 1.
@@ -108,12 +92,13 @@ MiNewQueryCreationPresenter >> initializeLayout [
 	                     constraints
 		                     width: self class iconWidth;
 		                     expand: false ].
-	tempLayout := SpBoxLayout newLeftToRight.
+	tempLayout := SpBoxLayout newLeftToRight
+		              spacing: 5;
+		              borderWidth: 5;
+		              yourself.
 	self indentationSpacesPresenters do: [ :each | 
 		tempLayout add: each expand: false ].
 	tempLayout
-		spacing: 5;
-		borderWidth: 5;
 		add: #queryTypesDropListPresenter width: 130;
 		add: #queryConfigurationPresenter;
 		addLast: #addButton withConstraints: buttonConstraints;
@@ -141,7 +126,7 @@ MiNewQueryCreationPresenter >> initializeQueryTypesDropList [
 	"After setting whenSelectedItemChangedDo:, select the fastest query while we do not compute the
 	results in a fork.
 	This is for instantiate queryConfigurationPresenter variable"
-	"Changed, initially was typeQuery"
+	"Changed, initially was typeQuery (selectIndex: 3)"
 	queryTypesDropListPresenter selectItem: FQStringQuery
 ]
 

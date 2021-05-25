@@ -10,7 +10,7 @@ Class {
 		'queryCodePresenter',
 		'queryNotebookPresenter',
 		'queryBuilderPresenter',
-		'currentQuery',
+		'selectedQuery',
 		'queriesHistory',
 		'rootQuery'
 	],
@@ -53,6 +53,12 @@ MiNewQueriesBrowser class >> title [
 	^ 'New Queries Browser'
 ]
 
+{ #category : #accessing }
+MiNewQueriesBrowser class >> titleForModelName: mooseModelName [
+
+	^ self title , ' (' , mooseModelName , ')'
+]
+
 { #category : #specs }
 MiNewQueriesBrowser class >> windowSize [
 
@@ -66,16 +72,6 @@ MiNewQueriesBrowser >> accept: anObject [
 		  (anObject asMooseGroup allUsing: FamixTNamedEntity) isNotEmpty ]
 ]
 
-{ #category : #adding }
-MiNewQueriesBrowser >> addChild: aChildQuery toNode: aParentNode [
-
-	aChildQuery parent = aParentNode
-		ifTrue: [ aParentNode addChild: aChildQuery ]
-		ifFalse: [ 
-			aParentNode children do: [ :childOfParent | 
-				self addChild: aChildQuery toNode: childOfParent ] ]
-]
-
 { #category : #'api - actions' }
 MiNewQueriesBrowser >> addNewQuery: aQuery [
 
@@ -84,48 +80,31 @@ MiNewQueriesBrowser >> addNewQuery: aQuery [
 	self selectQuery: aQuery
 ]
 
-{ #category : #accessing }
-MiNewQueriesBrowser >> currentQuery [
-
-	^ currentQuery
-]
-
 { #category : #actions }
 MiNewQueriesBrowser >> followAction [
 
 	| newQuery mooseModelName |
 	(self accept: toSelect) ifFalse: [ ^ self ].
+
 	"Update window's title"
 	mooseModelName := toSelect first mooseModel name.
-	self window title: (self getTitle: mooseModelName).
+	self window title: (self class titleForModelName: mooseModelName).
 
 	"Create the new query "
 	queriesHistory do: #resetResult.
 	rootQuery resetResult.
-
 	toSelect := toSelect asMooseGroup allUsing: FamixTNamedEntity.
 	newQuery := rootQuery
 		            result: toSelect;
 		            name: mooseModelName;
 		            yourself.
-	"Clear the queries history"
+
+	"Clear queries history"
 	queriesHistory := OrderedCollection empty.
 
 	"Update the all the sub presenters with this new query"
-	self addNewQuery: newQuery.
+	self selectQuery: newQuery.
 	queryBuilderPresenter followAction
-]
-
-{ #category : #accessing }
-MiNewQueriesBrowser >> getRootQuery [
-
-	^ queriesHistory detect: [ :query | query parent isNil ]
-]
-
-{ #category : #accessing }
-MiNewQueriesBrowser >> getTitle: mooseModelName [
-
-	^ self class title , ' (' , mooseModelName , ')'
 ]
 
 { #category : #initialization }
@@ -191,7 +170,7 @@ MiNewQueriesBrowser >> miSelectedItem [
 
 	| selected |
 	selected := (queryResultTreePresenter miSelectedItem ifEmpty: [ 
-		             currentQuery result ]) specialize.
+		             selectedQuery result ]) specialize.
 	^ selected size = 1
 		  ifTrue: [ selected anyOne ]
 		  ifFalse: [ selected ]
@@ -206,7 +185,7 @@ MiNewQueriesBrowser >> queryChangedUpdate: query [
 { #category : #accessing }
 MiNewQueriesBrowser >> queryResultEntities [
 
-	^ currentQuery result
+	^ selectedQuery result
 ]
 
 { #category : #'api - actions' }
@@ -228,24 +207,16 @@ MiNewQueriesBrowser >> rootQuery [
 { #category : #actions }
 MiNewQueriesBrowser >> selectQuery: aQuery [
 
-	currentQuery := aQuery.
+	selectedQuery := aQuery.
 	queryResultTreePresenter updateForQuery: aQuery.
 	queryCodePresenter updateForQuery: aQuery.
 	self update
-]
-
-{ #category : #accessing }
-MiNewQueriesBrowser >> selectedQuery [
-
-	"This method is only for backwards compatibility with the old queries browser"
-
-	^ self currentQuery
 ]
 
 { #category : #'accessing model' }
 MiNewQueriesBrowser >> setModelBeforeInitialization: aRootQuery [
 
 	rootQuery := aRootQuery.
-	queriesHistory := OrderedCollection with: aRootQuery.
-	currentQuery := aRootQuery
+	queriesHistory := OrderedCollection empty.
+	selectedQuery := aRootQuery
 ]
