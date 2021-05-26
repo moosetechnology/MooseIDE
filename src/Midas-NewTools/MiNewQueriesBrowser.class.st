@@ -11,7 +11,6 @@ Class {
 		'queryNotebookPresenter',
 		'queryBuilderPresenter',
 		'selectedQuery',
-		'queriesHistory',
 		'rootQuery'
 	],
 	#category : #'Midas-NewTools-Queries Browser'
@@ -76,34 +75,29 @@ MiNewQueriesBrowser >> accept: anObject [
 MiNewQueriesBrowser >> addNewQuery: aQuery [
 
 	"self addChild: aQuery toNode: rootQuery."
-	queriesHistory addLast: aQuery.
+
 	self selectQuery: aQuery
 ]
 
 { #category : #actions }
 MiNewQueriesBrowser >> followAction [
 
-	| newQuery mooseModelName |
+	| mooseModelName |
 	(self accept: toSelect) ifFalse: [ ^ self ].
-
 	"Update window's title"
 	mooseModelName := toSelect first mooseModel name.
 	self window title: (self class titleForModelName: mooseModelName).
 
-	"Create the new query "
-	queriesHistory do: #resetResult.
-	rootQuery resetResult.
+	"Create the new root query "
 	toSelect := toSelect asMooseGroup allUsing: FamixTNamedEntity.
-	newQuery := rootQuery
-		            result: toSelect;
-		            name: mooseModelName;
-		            yourself.
-
-	"Clear queries history"
-	queriesHistory := OrderedCollection empty.
+	rootQuery
+		resetResult;
+		resetChildren;
+		result: toSelect;
+		name: mooseModelName.
 
 	"Update the all the sub presenters with this new query"
-	self selectQuery: newQuery.
+	self selectQuery: rootQuery.
 	queryBuilderPresenter followAction
 ]
 
@@ -188,15 +182,20 @@ MiNewQueriesBrowser >> queryResultEntities [
 	^ selectedQuery result
 ]
 
+{ #category : #removing }
+MiNewQueriesBrowser >> removeChild: childToRemove fromNode: aNode [
+
+	(aNode children includes: childToRemove) ifTrue: [ 
+		aNode removeChild: childToRemove.
+		^ self ].
+	aNode children do: [ :aChild | 
+		self removeChild: childToRemove fromNode: aChild ]
+]
+
 { #category : #'api - actions' }
-MiNewQueriesBrowser >> removeQuery: notUsedQuery [
+MiNewQueriesBrowser >> removeQuery: aQuery [
 
-	"For now, the query that is received as a parameters is exactly the same object as queriesHistory last. Because, at the moment only the last query can be removed.
-	It can be changed to remove any query, and if the query has children remove all the children too."
-
-	self flag: 'remove queries history variable.'.
-	self selectQuery: queriesHistory last.
-	queriesHistory removeLast
+	self removeChild: aQuery fromNode: rootQuery
 ]
 
 { #category : #accessing }
@@ -218,6 +217,5 @@ MiNewQueriesBrowser >> selectQuery: aQuery [
 MiNewQueriesBrowser >> setModelBeforeInitialization: aRootQuery [
 
 	rootQuery := aRootQuery.
-	queriesHistory := OrderedCollection empty.
 	selectedQuery := aRootQuery
 ]

@@ -38,11 +38,12 @@ MiTreeComponentListPresenter >> buildLayoutForNode: aNode indentation: aNumber [
 MiTreeComponentListPresenter >> buildPresenterForNode: aNode indentation: aNumber [
 
 	| presenter indentationLayout newLayout |
-	indentationLayout := self buildLayoutForNode: aNode indentation: aNumber.
+	indentationLayout := self
+		                     buildLayoutForNode: aNode
+		                     indentation: aNumber.
 	presenter := self instantiate:
-		             ((MiNewQueryCreationPresenter on: aNode)
-			              parentPresenter: owner;
-			              yourself).
+		             ((MiNewQueryCreationPresenter on: aNode) 
+			              parentPresenter: self).
 	newLayout := SpBoxLayout newLeftToRight
 		             add: indentationLayout expand: true;
 		             add: presenter layout expand: false;

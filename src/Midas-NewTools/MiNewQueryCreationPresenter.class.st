@@ -9,10 +9,10 @@ Class {
 	#instVars : [
 		'queryTypesDropListPresenter',
 		'queryConfigurationPresenter',
-		'parentPresenter',
 		'addButton',
 		'removeButton',
-		'parentQuery'
+		'parentQuery',
+		'parentPresenter'
 	],
 	#category : #'Midas-NewTools-Queries Browser'
 }
@@ -28,7 +28,6 @@ MiNewQueryCreationPresenter class >> queryTypes [
 MiNewQueryCreationPresenter >> addNewQueryAction [
 
 	self disable.
-	parentQuery addChild: self query.
 	parentPresenter addNewQueryAction: self query
 	"Need to see if it is neccessary to inform query slot changed.
 	For the moment, query SpObservable slot instance variable is not declared in MiNewQueriesBrowser.
@@ -40,9 +39,8 @@ MiNewQueryCreationPresenter >> addNewQueryAction [
 MiNewQueryCreationPresenter >> disable [
 
 	queryTypesDropListPresenter disable.
-	self flag: 'TODO disable method on configuration presenter'.
+	self flag: 'TODO disable method on configuration presenter'
 	"queryConfigurationPresenter disable."
-	removeButton ifNotNil: [ removeButton disable ]
 ]
 
 { #category : #'api - actions' }
@@ -52,7 +50,6 @@ MiNewQueryCreationPresenter >> enable [
 	self flag: 'TODO enable method on configuration presenter'.
 	addButton enable.
 	"queryConfigurationPresenter enable."
-	removeButton ifNotNil: [ removeButton enable ]
 ]
 
 { #category : #initialization }
@@ -130,15 +127,16 @@ MiNewQueryCreationPresenter >> initializeQueryTypesDropList [
 ]
 
 { #category : #accessing }
-MiNewQueryCreationPresenter >> parentPresenter: aQueryBuilderPresenter [
-
-	parentPresenter := aQueryBuilderPresenter
+MiNewQueryCreationPresenter >> parentPresenter: aMiQueryBuilderPresenter [ 
+	parentPresenter := aMiQueryBuilderPresenter
 ]
 
 { #category : #accessing }
 MiNewQueryCreationPresenter >> query [
 
-	^ queryConfigurationPresenter query
+	^ queryConfigurationPresenter
+		  ifNotNil: [ queryConfigurationPresenter query ]
+		  ifNil: [ nil ]
 ]
 
 { #category : #accessing }
@@ -159,7 +157,7 @@ MiNewQueryCreationPresenter >> removeButtonRemove [
 { #category : #initialization }
 MiNewQueryCreationPresenter >> removeQueryAction [
 
-	parentPresenter removeQueryAction: self query
+	parentPresenter removeQueryAction: self
 ]
 
 { #category : #'accessing model' }
@@ -177,12 +175,18 @@ MiNewQueryCreationPresenter >> updateFromConfiguration [
 { #category : #update }
 MiNewQueryCreationPresenter >> updateQueryConfigurationFor: queryClass [
 
-	| instantiatedQuery miConfigurationPresenterClass |
-	instantiatedQuery := queryClass defaultForParent: parentQuery.
-	miConfigurationPresenterClass := instantiatedQuery miPresenterClass.
+	| newQuery miConfigurationPresenterClass |
+	"Create the new query"
+	(parentQuery children includes: self query) ifTrue: [ 
+		parentQuery removeChild: self query ].
+	newQuery := queryClass defaultForParent: parentQuery.
+	parentQuery addChild: newQuery.
+
+	"Instantiate the configuration presenter with the new created query"
+	miConfigurationPresenterClass := newQuery miPresenterClass.
 	queryConfigurationPresenter := self instantiate:
 		                               (miConfigurationPresenterClass
 			                                owner: self
-			                                on: instantiatedQuery).
+			                                on: newQuery).
 	self update
 ]

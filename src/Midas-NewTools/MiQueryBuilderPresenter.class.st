@@ -63,9 +63,12 @@ MiQueryBuilderPresenter >> initializePresenters [
 
 	self initializeLayout.
 	presenters := OrderedCollection empty.
-	componentListPresenter := self newComponentList
-		                          propagateNaturalHeight: true;
-		                          yourself.
+	componentListPresenter := self newComponentList.
+	componentListPresenter
+		activateOnSingleClick;
+		propagateNaturalHeight: true;
+		whenSelectedDo: [ :selectedPresenter | 
+			parentBrowser selectQuery: selectedPresenter query ].
 	self createFirstQueryForComponentList
 ]
 
@@ -76,11 +79,23 @@ MiQueryBuilderPresenter >> queryChangedUpdate: query [
 ]
 
 { #category : #'api - actions' }
-MiQueryBuilderPresenter >> removeQueryAction: aQuery [
+MiQueryBuilderPresenter >> removePresentersAssociatedWith: nodeQuery [
 
-	parentBrowser removeQuery: aQuery.
-	presenters removeLast.
-	presenters last enable.
+	nodeQuery children do: [ :childQuery | 
+		| presenterToRemove |
+		presenterToRemove := presenters detect: [ :aPresenter | 
+			                     aPresenter query = childQuery ].
+		presenters remove: presenterToRemove.
+		self removePresentersAssociatedWith: childQuery ]
+]
+
+{ #category : #'api - actions' }
+MiQueryBuilderPresenter >> removeQueryAction: aQueryCreationPresenter [
+
+	parentBrowser removeQuery: aQueryCreationPresenter query.
+	presenters remove: aQueryCreationPresenter.
+	self removePresentersAssociatedWith: aQueryCreationPresenter query.
+	"presenters last enable."
 	self updateComponentList
 ]
 
