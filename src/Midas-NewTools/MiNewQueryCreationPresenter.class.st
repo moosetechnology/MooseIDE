@@ -48,7 +48,6 @@ MiNewQueryCreationPresenter >> enable [
 
 	queryTypesDropListPresenter enable.
 	self flag: 'TODO enable method on configuration presenter'.
-	addButton enable.
 	"queryConfigurationPresenter enable."
 ]
 
@@ -127,7 +126,8 @@ MiNewQueryCreationPresenter >> initializeQueryTypesDropList [
 ]
 
 { #category : #accessing }
-MiNewQueryCreationPresenter >> parentPresenter: aMiQueryBuilderPresenter [ 
+MiNewQueryCreationPresenter >> parentPresenter: aMiQueryBuilderPresenter [
+
 	parentPresenter := aMiQueryBuilderPresenter
 ]
 
@@ -154,7 +154,7 @@ MiNewQueryCreationPresenter >> removeButtonRemove [
 	removeButton := nil
 ]
 
-{ #category : #initialization }
+{ #category : #actions }
 MiNewQueryCreationPresenter >> removeQueryAction [
 
 	parentPresenter removeQueryAction: self

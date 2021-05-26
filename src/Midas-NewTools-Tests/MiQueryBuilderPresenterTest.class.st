@@ -36,10 +36,27 @@ MiQueryBuilderPresenterTest >> testAddNewQueryAction [
 ]
 
 { #category : #test }
+MiQueryBuilderPresenterTest >> testCreateFirstQueryForComponentList [
+
+	self assert: presenter presentersCollection size equals: 1.
+	self
+		assertCollection: presenter componentList presenters
+		hasSameElements: presenter presentersCollection
+]
+
+{ #category : #test }
 MiQueryBuilderPresenterTest >> testRemoveQueryAction [
 
 	self assert: presenter presentersCollection size equals: 1.
 	presenter presentersCollection first addNewQueryAction.
 	presenter presentersCollection last removeQueryAction.
 	self assert: presenter presentersCollection size equals: 1
+]
+
+{ #category : #test }
+MiQueryBuilderPresenterTest >> testUpdateComponentList [
+
+	self
+		assertCollection: presenter componentList presenters
+		hasSameElements: presenter presentersCollection
 ]

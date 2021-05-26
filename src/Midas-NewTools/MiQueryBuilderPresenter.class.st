@@ -78,7 +78,7 @@ MiQueryBuilderPresenter >> queryChangedUpdate: query [
 	parentBrowser queryChangedUpdate: query
 ]
 
-{ #category : #'api - actions' }
+{ #category : #actions }
 MiQueryBuilderPresenter >> removePresentersAssociatedWith: nodeQuery [
 
 	nodeQuery children do: [ :childQuery | 
