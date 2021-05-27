@@ -11,7 +11,7 @@ SmalltalkCISpec {
   ], 
    #testing : {
     #include : {
-      #packages : [ 'Midas-Tests' ]
+      #packages : [ 'Midas-FamixQueries-Tests' ]
     },
     #failOnZeroTests : false
   }
