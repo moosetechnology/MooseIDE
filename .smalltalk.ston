@@ -10,8 +10,8 @@ SmalltalkCISpec {
     }
   ], 
    #testing : {
-    #exclude : {
-      #projects : [ 'BaselineOfMidas' ]
+    #include : {
+      #packages : [ 'Midas-Tests' ]
     },
     #failOnZeroTests : false
   }
