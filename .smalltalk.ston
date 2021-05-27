@@ -12,7 +12,7 @@ SmalltalkCISpec {
    #testing : {
     #exclude : {
       #projects : [ 'BaselineOfMidas' ]
-    }
+    },
     #failOnZeroTests : false
   }
 }
