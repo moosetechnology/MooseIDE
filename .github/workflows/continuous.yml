@@ -11,13 +11,12 @@ on:
 
 jobs:
   build:
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     env:
       PROJECT_NAME: ${{ matrix.smalltalk }}-Midas
     strategy:
       matrix:
         smalltalk: [ Pharo64-9.0 ]
-        os: [ubuntu-latest, windows-latest, macos-latest]
     name: ${{ matrix.smalltalk }}
     steps:
       - uses: actions/checkout@v2
