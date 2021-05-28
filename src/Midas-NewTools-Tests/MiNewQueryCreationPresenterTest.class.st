@@ -11,14 +11,15 @@ Class {
 MiNewQueryCreationPresenterTest >> setUp [
 	| browser |
 	super setUp.
-"parentQuery parentSequence size - 1."
+
 	browser := Mock new.
 	presenter := MiNewQueryCreationPresenter on: FQRootQuery new.
 	presenter parentPresenter: browser.
+	presenter updateQueryConfigurationFor: FQStringQuery
 ]
 
 { #category : #tests }
-MiNewQueryCreationPresenterTest >> testClickNegate [
+MiNewQueryCreationPresenterTest >> testClickNegateSetsButtonInNegatedState [
 	presenter negateButton click.
 	self assert: presenter isNegated.
 	self assert: presenter negateButton icon equals: (self iconNamed: #cancel).
@@ -26,7 +27,7 @@ MiNewQueryCreationPresenterTest >> testClickNegate [
 ]
 
 { #category : #tests }
-MiNewQueryCreationPresenterTest >> testClickNegateTwice [
+MiNewQueryCreationPresenterTest >> testClickNegateTwiceSetsButtonInUnnegatedState [
 	presenter negateButton click.
 	presenter negateButton click.
 
@@ -36,21 +37,21 @@ MiNewQueryCreationPresenterTest >> testClickNegateTwice [
 ]
 
 { #category : #tests }
-MiNewQueryCreationPresenterTest >> testInitializeNegation [
+MiNewQueryCreationPresenterTest >> testInitializeButtonHasDefaultValues [
 	self deny: presenter isNegated.
 	self assert: presenter negateButton icon equals: (self iconNamed: #exception).
 	self assert: (presenter negateButton help beginsWith: 'Negate ')
 ]
 
 { #category : #tests }
-MiNewQueryCreationPresenterTest >> testNegatableQuery [
+MiNewQueryCreationPresenterTest >> testQueryCanBeNegatedButtonIsENabled [
 	presenter updateQueryConfigurationFor: FQStringQuery.
 	self assert: presenter negateButton isEnabled.
 
 ]
 
 { #category : #tests }
-MiNewQueryCreationPresenterTest >> testNotNegatableQuery [
+MiNewQueryCreationPresenterTest >> testQueryCannotBeNegatedButtonIsDisabled [
 	presenter updateQueryConfigurationFor: FQTypeQuery.
 	self deny: presenter negateButton isEnabled.
 

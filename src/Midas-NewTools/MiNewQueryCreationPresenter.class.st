@@ -13,8 +13,7 @@ Class {
 		'removeButton',
 		'parentQuery',
 		'parentPresenter',
-		'negateButton',
-		'isNegated'
+		'negateButton'
 	],
 	#category : #'Midas-NewTools-Queries Browser'
 }
@@ -81,7 +80,6 @@ MiNewQueryCreationPresenter >> indentationSpacesPresenters [
 MiNewQueryCreationPresenter >> initializeButtons [
 
 	negateButton := self newButton.
-	self isNegated: false.
 	negateButton action: [ self negateQueryAction ].
 
 	addButton := self newButton.
@@ -146,23 +144,14 @@ MiNewQueryCreationPresenter >> initializeQueryTypesDropList [
 
 { #category : #'accessing model' }
 MiNewQueryCreationPresenter >> isNegated [
-	^isNegated 
+	^self query isNegated 
 ]
 
 { #category : #'accessing model' }
 MiNewQueryCreationPresenter >> isNegated: aBoolean [
-	isNegated := aBoolean.
-	aBoolean
-	ifTrue: [
-		negateButton
-			icon: (self iconNamed: #cancel) ;
-			help: 'Query negated, click to ''un-negate''' ]
-	ifFalse: [
-		negateButton
-			icon: (self iconNamed: #exception) ;
-			help: 'Negate the query' ].
 
-	self updatePresenter 
+	self query isNegated: aBoolean.
+	self updateNegateButton
 ]
 
 { #category : #testing }
@@ -227,6 +216,22 @@ MiNewQueryCreationPresenter >> updateFromConfiguration [
 ]
 
 { #category : #update }
+MiNewQueryCreationPresenter >> updateNegateButton [
+
+	self isNegated
+		ifTrue: [ 
+			negateButton
+				icon: (self iconNamed: #cancel);
+				help: 'Query negated, click to ''un-negate''' ]
+		ifFalse: [ 
+			negateButton
+				icon: (self iconNamed: #exception);
+				help: 'Negate the query' ].
+
+	self updatePresenter
+]
+
+{ #category : #update }
 MiNewQueryCreationPresenter >> updateQueryConfigurationFor: queryClass [
 
 	| newQuery miConfigurationPresenterClass |
@@ -238,6 +243,7 @@ MiNewQueryCreationPresenter >> updateQueryConfigurationFor: queryClass [
 
 	"Instantiate the configuration presenter with the new created query"
 	miConfigurationPresenterClass := newQuery miPresenterClass.
+
 	queryConfigurationPresenter := self instantiate:
 		(miConfigurationPresenterClass
 			owner: self on: newQuery).
