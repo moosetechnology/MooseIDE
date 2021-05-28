@@ -38,20 +38,6 @@ MiNewQueriesBrowserTest >> testAddNewBinaryQuery [
 		hasSameElements: unionQuery result
 ]
 
-{ #category : #test }
-MiNewQueriesBrowserTest >> testAddNewQuery [
-
-	| query previousCurrentQuery |
-	query := (FQBooleanQuery property: #isDead) beChildOf:
-		         browser rootQuery.
-	previousCurrentQuery := browser selectedQuery.
-	browser addNewQuery: query.
-	self deny: previousCurrentQuery equals: browser selectedQuery.
-	self assert: browser selectedQuery equals: query.
-	"Check if the query was selected"
-	self testSelectQuery
-]
-
 { #category : #tests }
 MiNewQueriesBrowserTest >> testInitializePresenters [
 
@@ -104,10 +90,12 @@ MiNewQueriesBrowserTest >> testRemoveQuery [
 { #category : #tests }
 MiNewQueriesBrowserTest >> testSelectQuery [
 
-	| query |
+	| query previousCurrentQuery |
 	query := (FQBooleanQuery property: #isDead) beChildOf:
 		         browser rootQuery.
+	previousCurrentQuery := browser selectedQuery.
 	browser selectQuery: query.
+	self deny: previousCurrentQuery equals: browser selectedQuery.
 	self assert: browser selectedQuery equals: query.
 	self
 		assertCollection: browser queryResultTreePresenter items
@@ -136,7 +124,7 @@ MiNewQueriesBrowserTest >> unionQuery [
 	union := FQUnionQuery new.
 	parents do: [ :parent | 
 		parent beChildOf: browser rootQuery.
-		browser addNewQuery: parent.
+		browser selectQuery: parent.
 		parent addChild: union ].
 	union parents: parents.
 	^ union

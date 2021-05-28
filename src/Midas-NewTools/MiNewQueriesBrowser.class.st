@@ -71,14 +71,6 @@ MiNewQueriesBrowser >> accept: anObject [
 		  (anObject asMooseGroup allUsing: FamixTNamedEntity) isNotEmpty ]
 ]
 
-{ #category : #'api - actions' }
-MiNewQueriesBrowser >> addNewQuery: aQuery [
-
-	"self addChild: aQuery toNode: rootQuery."
-
-	self selectQuery: aQuery
-]
-
 { #category : #actions }
 MiNewQueriesBrowser >> followAction [
 

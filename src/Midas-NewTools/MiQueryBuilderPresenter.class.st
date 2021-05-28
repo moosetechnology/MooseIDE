@@ -25,7 +25,7 @@ MiQueryBuilderPresenter >> addNewQueryAction: query [
 			                 parentPresenter: self).
 	presenters add: newPresenter.
 
-	parentBrowser addNewQuery: query.
+	parentBrowser selectQuery: query.
 	self updateComponentList
 ]
 

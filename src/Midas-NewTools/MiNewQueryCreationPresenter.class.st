@@ -39,7 +39,6 @@ MiNewQueryCreationPresenter >> addNewQueryAction [
 MiNewQueryCreationPresenter >> disable [
 
 	queryTypesDropListPresenter disable.
-	self flag: 'TODO disable method on configuration presenter'
 	"queryConfigurationPresenter disable."
 ]
 
@@ -58,7 +57,6 @@ MiNewQueryCreationPresenter >> disableAddButtonIfThereIsNoQuery [
 MiNewQueryCreationPresenter >> enable [
 
 	queryTypesDropListPresenter enable.
-	self flag: 'TODO enable method on configuration presenter'.
 	"queryConfigurationPresenter enable."
 ]
 
