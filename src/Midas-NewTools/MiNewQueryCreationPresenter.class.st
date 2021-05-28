@@ -12,7 +12,8 @@ Class {
 		'addButton',
 		'removeButton',
 		'parentQuery',
-		'parentPresenter'
+		'parentPresenter',
+		'negateButton'
 	],
 	#category : #'Midas-NewTools-Queries Browser'
 }
@@ -78,13 +79,19 @@ MiNewQueryCreationPresenter >> indentationSpacesPresenters [
 { #category : #initialization }
 MiNewQueryCreationPresenter >> initializeButtons [
 
+	negateButton := self newButton.
+	negateButton action: [ self negateQueryAction ].
+
 	addButton := self newButton.
 	addButton
-		icon: (self iconNamed: #smallAdd);
+		icon: (self iconNamed: #smallAdd) ;
+		help: 'Restrict result by adding a query' ;
 		action: [ self addNewQueryAction ].
+
 	removeButton := self newButton.
 	removeButton
-		icon: (self iconNamed: #remove);
+		icon: (self iconNamed: #remove) ;
+		help: 'Remove query and its sub-queries' ;
 		action: [ self removeQueryAction ]
 ]
 
@@ -105,6 +112,7 @@ MiNewQueryCreationPresenter >> initializeLayout [
 	tempLayout
 		add: #queryTypesDropListPresenter width: 130;
 		add: #queryConfigurationPresenter;
+		addLast: #negateButton withConstraints: buttonConstraints;
 		addLast: #addButton withConstraints: buttonConstraints;
 		addLast: #removeButton withConstraints: buttonConstraints.
 	self layout: tempLayout
@@ -134,14 +142,30 @@ MiNewQueryCreationPresenter >> initializeQueryTypesDropList [
 	queryTypesDropListPresenter selectItem: FQStringQuery
 ]
 
+{ #category : #'accessing model' }
+MiNewQueryCreationPresenter >> isNegated [
+	^self query isNegated 
+]
+
+{ #category : #'accessing model' }
+MiNewQueryCreationPresenter >> isNegated: aBoolean [
+
+	self query isNegated: aBoolean.
+	self updateNegateButton
+]
+
 { #category : #testing }
 MiNewQueryCreationPresenter >> isNoPossibleQuery [
 
 	| isNoPossibleQuery |
 	isNoPossibleQuery := queryConfigurationPresenter presenters 
-		                     anySatisfy: [ :presenter | 
-		                     presenter class = MiNoPossibleQueryPresenter ].
+		anySatisfy: [ :presenter | presenter class = MiNoPossibleQueryPresenter ].
 	^ isNoPossibleQuery
+]
+
+{ #category : #actions }
+MiNewQueryCreationPresenter >> negateQueryAction [
+	self isNegated: (self isNegated not)
 ]
 
 { #category : #accessing }
@@ -192,20 +216,40 @@ MiNewQueryCreationPresenter >> updateFromConfiguration [
 ]
 
 { #category : #update }
+MiNewQueryCreationPresenter >> updateNegateButton [
+
+	self isNegated
+		ifTrue: [ 
+			negateButton
+				icon: (self iconNamed: #cancel);
+				help: 'Query negated, click to ''un-negate''' ]
+		ifFalse: [ 
+			negateButton
+				icon: (self iconNamed: #exception);
+				help: 'Negate the query' ].
+
+	self updatePresenter
+]
+
+{ #category : #update }
 MiNewQueryCreationPresenter >> updateQueryConfigurationFor: queryClass [
 
 	| newQuery miConfigurationPresenterClass |
 	"Create the new query"
-	(parentQuery children includes: self query) ifTrue: [ 
-		parentQuery removeChild: self query ].
+	(parentQuery children includes: self query)
+		ifTrue: [ parentQuery removeChild: self query ].
 	newQuery := queryClass defaultForParent: parentQuery.
 	parentQuery addChild: newQuery.
 
 	"Instantiate the configuration presenter with the new created query"
 	miConfigurationPresenterClass := newQuery miPresenterClass.
+
 	queryConfigurationPresenter := self instantiate:
-		                               (miConfigurationPresenterClass
-			                                owner: self
-			                                on: newQuery).
+		(miConfigurationPresenterClass
+			owner: self on: newQuery).
+
+	self isNegated: false.
+	negateButton enabled: newQuery canBeNegated.
+
 	self update
 ]

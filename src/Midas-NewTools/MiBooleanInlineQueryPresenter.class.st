@@ -17,9 +17,6 @@ MiBooleanInlineQueryPresenter class >> layout [
 		  expand: false
 		  fill: true
 		  padding: padding;
-		  add: #comparatorDropList
-		  expand: false
-		  fill: false
-		  padding: padding;
+
 		  yourself
 ]
