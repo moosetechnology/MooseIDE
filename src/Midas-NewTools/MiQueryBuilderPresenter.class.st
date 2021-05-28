@@ -16,23 +16,16 @@ Class {
 	#category : #'Midas-NewTools-Queries Browser'
 }
 
-{ #category : #specs }
-MiQueryBuilderPresenter class >> defaultSpec [
-
-	^ SpBoxLayout newTopToBottom
-		  add: #componentListPresenter;
-		  yourself
-]
-
 { #category : #'api - actions' }
 MiQueryBuilderPresenter >> addNewQueryAction: query [
 
 	| newPresenter |
 	newPresenter := self instantiate:
-		                (MiNewQueryCreationPresenter on: self).
+		                ((MiNewQueryCreationPresenter on: query) 
+			                 parentPresenter: self).
 	presenters add: newPresenter.
 
-	parentBrowser addNewQuery: query.
+	parentBrowser selectQuery: query.
 	self updateComponentList
 ]
 
@@ -41,16 +34,12 @@ MiQueryBuilderPresenter >> createFirstQueryForComponentList [
 
 	| queryCreationPresenter |
 	queryCreationPresenter := self instantiate:
-		                          (MiNewQueryCreationPresenter on: self).
+		                          ((MiNewQueryCreationPresenter on:
+			                            parentBrowser rootQuery) 
+			                           parentPresenter: self).
 	queryCreationPresenter removeButtonRemove.
 	presenters := OrderedCollection with: queryCreationPresenter.
 	self updateComponentList
-]
-
-{ #category : #accessing }
-MiQueryBuilderPresenter >> currentQuery [
-
-	^ parentBrowser currentQuery
 ]
 
 { #category : #'api - actions' }
@@ -62,12 +51,24 @@ MiQueryBuilderPresenter >> followAction [
 ]
 
 { #category : #initialization }
+MiQueryBuilderPresenter >> initializeLayout [
+
+	self layout: (SpBoxLayout newTopToBottom
+			 add: #componentListPresenter;
+			 yourself)
+]
+
+{ #category : #initialization }
 MiQueryBuilderPresenter >> initializePresenters [
 
-	presenters := OrderedCollection new.
-	componentListPresenter := self newComponentList
-		                          propagateNaturalHeight: true;
-		                          yourself.
+	self initializeLayout.
+	presenters := OrderedCollection empty.
+	componentListPresenter := self newComponentList.
+	componentListPresenter
+		activateOnSingleClick;
+		propagateNaturalHeight: true;
+		whenSelectedDo: [ :selectedPresenter | 
+			parentBrowser selectQuery: selectedPresenter query ].
 	self createFirstQueryForComponentList
 ]
 
@@ -77,12 +78,24 @@ MiQueryBuilderPresenter >> queryChangedUpdate: query [
 	parentBrowser queryChangedUpdate: query
 ]
 
-{ #category : #'api - actions' }
-MiQueryBuilderPresenter >> removeQueryAction: aQuery [
+{ #category : #actions }
+MiQueryBuilderPresenter >> removePresentersAssociatedWith: nodeQuery [
 
-	parentBrowser removeQuery: aQuery.
-	presenters removeLast.
-	presenters last enable.
+	nodeQuery children do: [ :childQuery | 
+		| presenterToRemove |
+		presenterToRemove := presenters detect: [ :aPresenter | 
+			                     aPresenter query = childQuery ].
+		presenters remove: presenterToRemove.
+		self removePresentersAssociatedWith: childQuery ]
+]
+
+{ #category : #'api - actions' }
+MiQueryBuilderPresenter >> removeQueryAction: aQueryCreationPresenter [
+
+	parentBrowser removeQuery: aQueryCreationPresenter query.
+	presenters remove: aQueryCreationPresenter.
+	self removePresentersAssociatedWith: aQueryCreationPresenter query.
+	"presenters last enable."
 	self updateComponentList
 ]
 

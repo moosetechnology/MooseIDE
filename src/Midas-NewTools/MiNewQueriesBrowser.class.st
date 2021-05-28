@@ -10,8 +10,8 @@ Class {
 		'queryCodePresenter',
 		'queryNotebookPresenter',
 		'queryBuilderPresenter',
-		'currentQuery',
-		'queriesHistory'
+		'selectedQuery',
+		'rootQuery'
 	],
 	#category : #'Midas-NewTools-Queries Browser'
 }
@@ -52,6 +52,12 @@ MiNewQueriesBrowser class >> title [
 	^ 'New Queries Browser'
 ]
 
+{ #category : #accessing }
+MiNewQueriesBrowser class >> titleForModelName: mooseModelName [
+
+	^ self title , ' (' , mooseModelName , ')'
+]
+
 { #category : #specs }
 MiNewQueriesBrowser class >> windowSize [
 
@@ -65,52 +71,26 @@ MiNewQueriesBrowser >> accept: anObject [
 		  (anObject asMooseGroup allUsing: FamixTNamedEntity) isNotEmpty ]
 ]
 
-{ #category : #'api - actions' }
-MiNewQueriesBrowser >> addNewQuery: aQuery [
-
-	queriesHistory addLast: aQuery.
-	self selectQuery: aQuery
-]
-
-{ #category : #accessing }
-MiNewQueriesBrowser >> currentQuery [
-
-	^ currentQuery
-]
-
 { #category : #actions }
 MiNewQueriesBrowser >> followAction [
 
-	| newQuery mooseModelName |
+	| mooseModelName |
 	(self accept: toSelect) ifFalse: [ ^ self ].
 	"Update window's title"
 	mooseModelName := toSelect first mooseModel name.
-	self window title: (self getTitle: mooseModelName).
+	self window title: (self class titleForModelName: mooseModelName).
 
-	"Create the new query "
-	queriesHistory do: #resetResult.
+	"Create the new root query "
 	toSelect := toSelect asMooseGroup allUsing: FamixTNamedEntity.
-	newQuery := self getRootQuery
-		            result: toSelect;
-		            name: mooseModelName;
-		            yourself.
-	"Clear the queries history"
-	queriesHistory := OrderedCollection empty.
+	rootQuery
+		resetResult;
+		resetChildren;
+		result: toSelect;
+		name: mooseModelName.
+
 	"Update the all the sub presenters with this new query"
-	self addNewQuery: newQuery.
+	self selectQuery: rootQuery.
 	queryBuilderPresenter followAction
-]
-
-{ #category : #accessing }
-MiNewQueriesBrowser >> getRootQuery [
-
-	^ queriesHistory detect: [ :query | query parent isNil ]
-]
-
-{ #category : #accessing }
-MiNewQueriesBrowser >> getTitle: mooseModelName [
-
-	^ self class title , ' (' , mooseModelName , ')'
 ]
 
 { #category : #initialization }
@@ -176,7 +156,7 @@ MiNewQueriesBrowser >> miSelectedItem [
 
 	| selected |
 	selected := (queryResultTreePresenter miSelectedItem ifEmpty: [ 
-		             currentQuery result ]) specialize.
+		             selectedQuery result ]) specialize.
 	^ selected size = 1
 		  ifTrue: [ selected anyOne ]
 		  ifFalse: [ selected ]
@@ -191,39 +171,43 @@ MiNewQueriesBrowser >> queryChangedUpdate: query [
 { #category : #accessing }
 MiNewQueriesBrowser >> queryResultEntities [
 
-	^ currentQuery result
+	^ selectedQuery result
+]
+
+{ #category : #removing }
+MiNewQueriesBrowser >> removeChild: childToRemove fromNode: aNode [
+
+	(aNode children includes: childToRemove) ifTrue: [ 
+		aNode removeChild: childToRemove.
+		^ self ].
+	aNode children do: [ :aChild | 
+		self removeChild: childToRemove fromNode: aChild ]
 ]
 
 { #category : #'api - actions' }
-MiNewQueriesBrowser >> removeQuery: notUsedQuery [
+MiNewQueriesBrowser >> removeQuery: aQuery [
 
-	"For now, the query that is received as a parameters is exactly the same object as queriesHistory last. Because, at the moment only the last query can be removed.
-	It can be changed to remove any query, and if the query has children remove all the children too."
+	self removeChild: aQuery fromNode: rootQuery
+]
 
-	self selectQuery: queriesHistory last.
-	queriesHistory removeLast
+{ #category : #accessing }
+MiNewQueriesBrowser >> rootQuery [
+
+	^ rootQuery
 ]
 
 { #category : #actions }
 MiNewQueriesBrowser >> selectQuery: aQuery [
 
-	currentQuery := aQuery.
+	selectedQuery := aQuery.
 	queryResultTreePresenter updateForQuery: aQuery.
 	queryCodePresenter updateForQuery: aQuery.
 	self update
 ]
 
-{ #category : #accessing }
-MiNewQueriesBrowser >> selectedQuery [
-
-	"This method is only for backwards compatibility with the old queries browser"
-
-	^ self currentQuery
-]
-
 { #category : #'accessing model' }
 MiNewQueriesBrowser >> setModelBeforeInitialization: aRootQuery [
 
-	queriesHistory := OrderedCollection with: aRootQuery.
-	currentQuery := self getRootQuery
+	rootQuery := aRootQuery.
+	selectedQuery := aRootQuery
 ]

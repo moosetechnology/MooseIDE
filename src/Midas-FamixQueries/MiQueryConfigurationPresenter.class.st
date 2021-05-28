@@ -19,6 +19,32 @@ MiQueryConfigurationPresenter >> buildLayout [
 	self layout: self class defaultSpec
 ]
 
+{ #category : #api }
+MiQueryConfigurationPresenter >> disable [
+
+	"Disable the presenters that had been instantiated."
+
+	self presenters
+		reject: [ :subPresenter | 
+			{ 
+				SpNullPresenter.
+				MiNoPossibleQueryPresenter } includes: subPresenter class ]
+		thenDo: #disable
+]
+
+{ #category : #api }
+MiQueryConfigurationPresenter >> enable [
+
+	"Enable the presenters that had been instantiated."
+
+	self presenters
+		reject: [ :subPresenter | 
+			{ 
+				SpNullPresenter.
+				MiNoPossibleQueryPresenter } includes: subPresenter class ]
+		thenDo: #enable
+]
+
 { #category : #accessing }
 MiQueryConfigurationPresenter >> initialize [
 
