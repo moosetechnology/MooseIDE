@@ -21,8 +21,8 @@ MiQueryBuilderPresenter >> addNewQueryAction: query [
 
 	| newPresenter |
 	newPresenter := self instantiate:
-		                ((MiNewQueryCreationPresenter on: query) 
-			                 parentPresenter: self).
+		((MiNewQueryCreationPresenter on: query) 
+			parentPresenter: self).
 	presenters add: newPresenter.
 
 	parentBrowser selectQuery: query.

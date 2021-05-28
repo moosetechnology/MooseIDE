@@ -174,11 +174,6 @@ MiNewQueryCreationPresenter >> isNoPossibleQuery [
 	^ isNoPossibleQuery
 ]
 
-{ #category : #accessing }
-MiNewQueryCreationPresenter >> negateButton [
-	^negateButton
-]
-
 { #category : #actions }
 MiNewQueryCreationPresenter >> negateQueryAction [
 	self isNegated: (self isNegated not)
@@ -236,16 +231,19 @@ MiNewQueryCreationPresenter >> updateQueryConfigurationFor: queryClass [
 
 	| newQuery miConfigurationPresenterClass |
 	"Create the new query"
-	(parentQuery children includes: self query) ifTrue: [ 
-		parentQuery removeChild: self query ].
+	(parentQuery children includes: self query)
+		ifTrue: [ parentQuery removeChild: self query ].
 	newQuery := queryClass defaultForParent: parentQuery.
 	parentQuery addChild: newQuery.
 
 	"Instantiate the configuration presenter with the new created query"
 	miConfigurationPresenterClass := newQuery miPresenterClass.
 	queryConfigurationPresenter := self instantiate:
-		                               (miConfigurationPresenterClass
-			                                owner: self
-			                                on: newQuery).
+		(miConfigurationPresenterClass
+			owner: self on: newQuery).
+
+	self isNegated: false.
+	negateButton enabled: newQuery canBeNegated.
+
 	self update
 ]

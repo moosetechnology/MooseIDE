@@ -41,3 +41,17 @@ MiNewQueryCreationPresenterTest >> testInitializeNegation [
 	self assert: presenter negateButton icon equals: (self iconNamed: #exception).
 	self assert: (presenter negateButton help beginsWith: 'Negate ')
 ]
+
+{ #category : #tests }
+MiNewQueryCreationPresenterTest >> testNegatableQuery [
+	presenter updateQueryConfigurationFor: FQStringQuery.
+	self assert: presenter negateButton isEnabled.
+
+]
+
+{ #category : #tests }
+MiNewQueryCreationPresenterTest >> testNotNegatableQuery [
+	presenter updateQueryConfigurationFor: FQTypeQuery.
+	self deny: presenter negateButton isEnabled.
+
+]
