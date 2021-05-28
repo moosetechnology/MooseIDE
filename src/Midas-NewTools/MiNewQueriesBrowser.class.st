@@ -192,7 +192,6 @@ MiNewQueriesBrowser >> removeQuery: aQuery [
 
 { #category : #accessing }
 MiNewQueriesBrowser >> rootQuery [
-
 	^ rootQuery
 ]
 

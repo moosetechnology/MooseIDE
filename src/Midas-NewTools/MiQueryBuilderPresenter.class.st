@@ -34,9 +34,8 @@ MiQueryBuilderPresenter >> createFirstQueryForComponentList [
 
 	| queryCreationPresenter |
 	queryCreationPresenter := self instantiate:
-		                          ((MiNewQueryCreationPresenter on:
-			                            parentBrowser rootQuery) 
-			                           parentPresenter: self).
+		((MiNewQueryCreationPresenter on: parentBrowser rootQuery) 
+			parentPresenter: self).
 	queryCreationPresenter removeButtonRemove.
 	presenters := OrderedCollection with: queryCreationPresenter.
 	self updateComponentList

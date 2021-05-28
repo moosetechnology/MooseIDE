@@ -12,7 +12,9 @@ Class {
 		'addButton',
 		'removeButton',
 		'parentQuery',
-		'parentPresenter'
+		'parentPresenter',
+		'negateButton',
+		'isNegated'
 	],
 	#category : #'Midas-NewTools-Queries Browser'
 }
@@ -78,13 +80,20 @@ MiNewQueryCreationPresenter >> indentationSpacesPresenters [
 { #category : #initialization }
 MiNewQueryCreationPresenter >> initializeButtons [
 
+	negateButton := self newButton.
+	self isNegated: false.
+	negateButton action: [ self negateQueryAction ].
+
 	addButton := self newButton.
 	addButton
-		icon: (self iconNamed: #smallAdd);
+		icon: (self iconNamed: #smallAdd) ;
+		help: 'Restrict result by adding a query' ;
 		action: [ self addNewQueryAction ].
+
 	removeButton := self newButton.
 	removeButton
-		icon: (self iconNamed: #remove);
+		icon: (self iconNamed: #remove) ;
+		help: 'Remove query and its sub-queries' ;
 		action: [ self removeQueryAction ]
 ]
 
@@ -105,6 +114,7 @@ MiNewQueryCreationPresenter >> initializeLayout [
 	tempLayout
 		add: #queryTypesDropListPresenter width: 130;
 		add: #queryConfigurationPresenter;
+		addLast: #negateButton withConstraints: buttonConstraints;
 		addLast: #addButton withConstraints: buttonConstraints;
 		addLast: #removeButton withConstraints: buttonConstraints.
 	self layout: tempLayout
@@ -134,14 +144,44 @@ MiNewQueryCreationPresenter >> initializeQueryTypesDropList [
 	queryTypesDropListPresenter selectItem: FQStringQuery
 ]
 
+{ #category : #'accessing model' }
+MiNewQueryCreationPresenter >> isNegated [
+	^isNegated 
+]
+
+{ #category : #'accessing model' }
+MiNewQueryCreationPresenter >> isNegated: aBoolean [
+	isNegated := aBoolean.
+	aBoolean
+	ifTrue: [
+		negateButton
+			icon: (self iconNamed: #cancel) ;
+			help: 'Query negated, click to ''un-negate''' ]
+	ifFalse: [
+		negateButton
+			icon: (self iconNamed: #exception) ;
+			help: 'Negate the query' ].
+
+	self updatePresenter 
+]
+
 { #category : #testing }
 MiNewQueryCreationPresenter >> isNoPossibleQuery [
 
 	| isNoPossibleQuery |
 	isNoPossibleQuery := queryConfigurationPresenter presenters 
-		                     anySatisfy: [ :presenter | 
-		                     presenter class = MiNoPossibleQueryPresenter ].
+		anySatisfy: [ :presenter | presenter class = MiNoPossibleQueryPresenter ].
 	^ isNoPossibleQuery
+]
+
+{ #category : #accessing }
+MiNewQueryCreationPresenter >> negateButton [
+	^negateButton
+]
+
+{ #category : #actions }
+MiNewQueryCreationPresenter >> negateQueryAction [
+	self isNegated: (self isNegated not)
 ]
 
 { #category : #accessing }
