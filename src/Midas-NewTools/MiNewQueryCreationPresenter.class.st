@@ -204,6 +204,5 @@ MiNewQueryCreationPresenter >> updateQueryConfigurationFor: queryClass [
 		                               (miConfigurationPresenterClass
 			                                owner: self
 			                                on: instantiatedQuery).
-	self disableAddButtonIfThereIsNoQuery.
 	self update
 ]
