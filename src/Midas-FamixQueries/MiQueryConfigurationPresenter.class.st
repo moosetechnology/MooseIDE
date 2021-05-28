@@ -26,8 +26,9 @@ MiQueryConfigurationPresenter >> disable [
 
 	self presenters
 		reject: [ :subPresenter | 
-			subPresenter class = SpNullPresenter
-			| (subPresenter class = MiNoPossibleQueryPresenter) ]
+			{ 
+				SpNullPresenter.
+				MiNoPossibleQueryPresenter } includes: subPresenter class ]
 		thenDo: #disable
 ]
 
@@ -38,8 +39,9 @@ MiQueryConfigurationPresenter >> enable [
 
 	self presenters
 		reject: [ :subPresenter | 
-			subPresenter class = SpNullPresenter
-			| (subPresenter class = MiNoPossibleQueryPresenter) ]
+			{ 
+				SpNullPresenter.
+				MiNoPossibleQueryPresenter } includes: subPresenter class ]
 		thenDo: #enable
 ]
 
