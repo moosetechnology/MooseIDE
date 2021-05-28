@@ -43,6 +43,17 @@ MiNewQueryCreationPresenter >> disable [
 	"queryConfigurationPresenter disable."
 ]
 
+{ #category : #update }
+MiNewQueryCreationPresenter >> disableAddButtonIfThereIsNoQuery [
+
+	"You cannnot add a new query with a non-existing query as parent."
+
+	self isNoPossibleQuery ifTrue: [ 
+		addButton
+			disable;
+			help: 'You cannot add a new query from a not valid query' ]
+]
+
 { #category : #'api - actions' }
 MiNewQueryCreationPresenter >> enable [
 
@@ -123,6 +134,16 @@ MiNewQueryCreationPresenter >> initializeQueryTypesDropList [
 	This is for instantiate queryConfigurationPresenter variable"
 	"Changed, initially was typeQuery (selectIndex: 3)"
 	queryTypesDropListPresenter selectItem: FQStringQuery
+]
+
+{ #category : #testing }
+MiNewQueryCreationPresenter >> isNoPossibleQuery [
+
+	| isNoPossibleQuery |
+	isNoPossibleQuery := queryConfigurationPresenter presenters 
+		                     anySatisfy: [ :presenter | 
+		                     presenter class = MiNoPossibleQueryPresenter ].
+	^ isNoPossibleQuery
 ]
 
 { #category : #accessing }
