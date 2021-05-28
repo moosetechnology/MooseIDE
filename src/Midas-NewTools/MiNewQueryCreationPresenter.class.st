@@ -57,6 +57,17 @@ MiNewQueryCreationPresenter >> disable [
 	self disableRemoveButton
 ]
 
+{ #category : #update }
+MiNewQueryCreationPresenter >> disableAddButtonIfThereIsNoQuery [
+
+	"You cannnot add a new query with a non-existing query as parent."
+
+	self isNoPossibleQuery ifTrue: [ 
+		addButton
+			disable;
+			help: 'You cannot add a new query from a not valid query' ]
+]
+
 { #category : #actions }
 MiNewQueryCreationPresenter >> disableRemoveButton [
 
@@ -131,6 +142,16 @@ MiNewQueryCreationPresenter >> initializeQueryTypesDropList [
 	queryTypesDropListPresenter
 		items: self class queryTypes;
 		display: [ :queryClass | queryClass label ]
+]
+
+{ #category : #testing }
+MiNewQueryCreationPresenter >> isNoPossibleQuery [
+
+	| isNoPossibleQuery |
+	isNoPossibleQuery := queryConfigurationPresenter presenters 
+		                     anySatisfy: [ :presenter | 
+		                     presenter class = MiNoPossibleQueryPresenter ].
+	^ isNoPossibleQuery
 ]
 
 { #category : #accessing }
