@@ -81,17 +81,22 @@ MiNavigationBrowser >> initializePresenters [
 					  evaluated: [ :el | el value midasIcon ];
 					  yourself);
 			 addColumn: (SpStringTableColumn new
-					  evaluated: [ :el | el key printString ];
+					  evaluated: [ :el | el key inspectorToString  ];
 					  yourself);
 			 yourself).
-	navigation whenActivatedDo: [ :selection | activationBlock value: self ].
+	navigation whenActivatedDo: [ :selection | 
+		activationBlock value: self ]
 ]
 
 { #category : #initialization }
 MiNavigationBrowser >> itemsFor: anEntity [
-	^ (anEntity mooseDescription allComplexProperties
-		collect: [ :property | property name -> (anEntity propertyNamed: property name) ]
-		thenReject: [ :assoc | assoc value isNil or: [ assoc value isCollection and: [ assoc value isEmpty ] ] ]) 
+
+	^ anEntity mooseDescription allComplexProperties
+		  collect: [ :property | 
+			  property name -> (anEntity propertyNamed: property name) ]
+		  thenReject: [ :assoc | 
+			  assoc value isNil or: [ 
+				  assoc value isCollection and: [ assoc value isEmpty ] ] ]
 ]
 
 { #category : #accessing }
