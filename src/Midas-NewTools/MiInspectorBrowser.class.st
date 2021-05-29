@@ -124,5 +124,5 @@ MiInspectorBrowser >> updateWindowTitle: aWindow [
 		         { ([ self model displayString ]
 			          on: Error
 			          do: [ :e | e printString ]) }.
-	aWindow title: title
+	aWindow ifNotNil: [ aWindow title: title ]
 ]
