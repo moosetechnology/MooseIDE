@@ -2,8 +2,17 @@ Extension { #name : #TEntityMetaLevelDependency }
 
 { #category : #'*Midas-Dependency' }
 TEntityMetaLevelDependency >> miTreeExtension [
+
 	<inspectorPresentationOrder: 15 title: 'Tree'>
-	^ MiTreeBrowser new
-		selectEntity: self;
-		yourself
+	^ SpTreeTablePresenter new
+		  addColumn: (SpCompositeTableColumn new
+				   addColumn: ((SpImageTableColumn evaluated: #midasIcon)
+						    width: 20;
+						    yourself);
+				   addColumn: (SpStringTableColumn evaluated: #name);
+				   yourself);
+		  children: [ :aClass | aClass children asOrderedCollection ];
+		  beMultipleSelection;
+		  roots: { self };
+		  beResizable
 ]
