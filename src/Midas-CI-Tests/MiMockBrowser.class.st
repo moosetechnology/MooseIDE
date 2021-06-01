@@ -11,6 +11,12 @@ MiMockBrowser class >> runMe [
 	super runMe
 ]
 
+{ #category : #accessing }
+MiMockBrowser class >> title [
+
+	^ 'Mock'
+]
+
 { #category : #actions }
 MiMockBrowser >> followAction [
 	

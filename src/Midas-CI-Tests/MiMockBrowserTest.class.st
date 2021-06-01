@@ -1,13 +1,11 @@
 Class {
 	#name : #MiMockBrowserTest,
-	#superclass : #TestCase,
+	#superclass : #MiAbstractBrowserTest,
 	#category : #'Midas-CI-Tests'
 }
 
-{ #category : #tests }
-MiMockBrowserTest >> testOpeningBrowser [
+{ #category : #running }
+MiMockBrowserTest >> browserClass [
 
-	| browser |
-	browser := MiMockBrowser on: MiMockBrowser newModel.
-	[ browser openWithSpec ] ensure: [ browser owner close ]
+	^ MiMockBrowser
 ]
