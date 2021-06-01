@@ -10,6 +10,6 @@ SmalltalkCISpec {
     }
   ], 
    #testing : {
-    #classes : [ #MiBusTest ]
+    #classes : [ #MiMockBrowserTest ]
   }
 }
