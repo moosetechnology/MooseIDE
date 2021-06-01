@@ -34,6 +34,12 @@ MiBusTest >> tearDown [
 ]
 
 { #category : #tests }
+MiBusTest >> testCIFailsOnOpeningPresenter [
+
+	SpNullPresenter new openWithSpec
+]
+
+{ #category : #tests }
 MiBusTest >> testGloballySelect [
 	| browser entity |
 	
