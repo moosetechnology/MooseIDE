@@ -22,7 +22,7 @@ MiNumericInlineQueryPresenter class >> layout [
 		  fill: true
 		  padding: padding;
 		  add: #valueInputField
-		  expand: true
+		  expand: false
 		  fill: true
 		  padding: padding;
 		  yourself
