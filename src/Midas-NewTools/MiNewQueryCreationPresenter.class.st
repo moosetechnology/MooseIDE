@@ -151,7 +151,8 @@ MiNewQueryCreationPresenter >> isNegated [
 MiNewQueryCreationPresenter >> isNegated: aBoolean [
 
 	self query isNegated: aBoolean.
-	self updateNegateButton
+	self updateNegateButton.
+	self queryChangedUpdate
 ]
 
 { #category : #testing }
@@ -180,6 +181,13 @@ MiNewQueryCreationPresenter >> query [
 	^ queryConfigurationPresenter
 		  ifNotNil: [ queryConfigurationPresenter query ]
 		  ifNil: [ nil ]
+]
+
+{ #category : #'api - actions' }
+MiNewQueryCreationPresenter >> queryChangedUpdate [
+
+	parentPresenter ifNotNil: [ 
+		parentPresenter queryChangedUpdate: self query ]
 ]
 
 { #category : #accessing }
@@ -212,7 +220,9 @@ MiNewQueryCreationPresenter >> setModelBeforeInitialization: aQuery [
 { #category : #'api - actions' }
 MiNewQueryCreationPresenter >> updateFromConfiguration [
 
-	parentPresenter queryChangedUpdate: self query
+	"This method name is not meaningful. This method is kept only for backwards compatibility with the old queries browser."
+
+	^ self queryChangedUpdate
 ]
 
 { #category : #update }
@@ -226,9 +236,7 @@ MiNewQueryCreationPresenter >> updateNegateButton [
 		ifFalse: [ 
 			negateButton
 				icon: (self iconNamed: #exception);
-				help: 'Negate the query' ].
-
-	self updatePresenter
+				help: 'Negate the query' ]
 ]
 
 { #category : #update }
