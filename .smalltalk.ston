@@ -8,5 +8,10 @@ SmalltalkCISpec {
       #onConflict : #useIncoming,
       #onUpgrade : #useIncoming
     }
+  ], 
+  testing : [
+    #exclude : {
+      #classes : [ #MiInspectorBrowserTest ]
+    }
   ]
 }
