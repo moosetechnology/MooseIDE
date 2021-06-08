@@ -10,8 +10,8 @@ SmalltalkCISpec {
     }
   ], 
   #testing : [
-    #exclude : {
+    #exclude : [
       #classes : [ #MiInspectorBrowserTest ]
-    }
+    ]
   ]
 }
