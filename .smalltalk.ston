@@ -9,9 +9,9 @@ SmalltalkCISpec {
       #onUpgrade : #useIncoming
     }
   ], 
-  #testing : [
-    #exclude : [
+  #testing : {
+    #exclude : {
       #classes : [ #MiInspectorBrowserTest ]
-    ]
-  ]
+    }
+  }
 }
