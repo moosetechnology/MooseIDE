@@ -1,6 +1,6 @@
 Extension { #name : #MiInspectorBrowser }
 
 { #category : #'*Midas-NewTools-Tests' }
-MiInspectorBrowser >> stInspector [
-	^ stInspector
+MiInspectorBrowser >> miInspector [
+	^ miInspector
 ]
