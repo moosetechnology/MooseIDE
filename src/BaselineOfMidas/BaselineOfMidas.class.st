@@ -18,11 +18,11 @@ BaselineOfMidas >> baseline: spec [
 		"If Moose is not already present"
 		spec for: #NeedsMoose do: [ 
 			self famix: spec.
-			self mooseFinder: spec.
+			self mooseProjects: spec.
 			spec
 				package: 'Midas-Core' with: [ spec requires: #( 'Famix' ) ];
 				package: 'Midas-Meta'
-				with: [ spec requires: #( 'Moose-Finder' ) ] ].
+				with: [ spec requires: #( 'Moose-Finder' 'Moose-Help' ) ] ].
 
 		"Groups"
 		self defineGroups: spec ]
@@ -84,16 +84,18 @@ BaselineOfMidas >> famixQueries: spec [
 ]
 
 { #category : #dependencies }
-BaselineOfMidas >> mooseFinder: spec [
+BaselineOfMidas >> mooseProjects: spec [
 
 	spec
 		baseline: 'Moose'
 		with: [ 
 			spec repository: 'github://moosetechnology/Moose:development/src' ];
-		project: 'Moose-Finder' copyFrom: 'Moose' with: [ 
-			spec
-				loads: 'Moose-Finder';
-				loads: 'Moose-Help' ]
+		project: 'Moose-Finder'
+		copyFrom: 'Moose'
+		with: [ spec loads: 'Moose-Finder' ];
+		project: 'Moose-Help'
+		copyFrom: 'Moose'
+		with: [ spec loads: 'Moose-Help' ]
 ]
 
 { #category : #dependencies }
