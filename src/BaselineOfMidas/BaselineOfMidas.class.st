@@ -22,7 +22,7 @@ BaselineOfMidas >> baseline: spec [
 			spec
 				package: 'Midas-Core' with: [ spec requires: #( 'Famix' ) ];
 				package: 'Midas-Meta'
-				with: [ spec requires: #( 'Moose-Finder' 'Moose-Help' ) ] ].
+				with: [ spec requires: #( 'Moose-Finder' ) ] ].
 
 		"Groups"
 		self defineGroups: spec ]
