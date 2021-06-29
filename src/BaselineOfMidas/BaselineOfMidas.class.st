@@ -22,7 +22,7 @@ BaselineOfMidas >> baseline: spec [
 			spec
 				package: 'Midas-Core' with: [ spec requires: #( 'Famix' ) ];
 				package: 'Midas-Meta'
-				with: [ spec requires: #( 'Moose-Finder' ) ] ].
+				with: [ spec requires: #( 'Moose-Finder' 'Moose-Help' ) ] ].
 
 		"Groups"
 		self defineGroups: spec ]
@@ -90,9 +90,10 @@ BaselineOfMidas >> mooseFinder: spec [
 		baseline: 'Moose'
 		with: [ 
 			spec repository: 'github://moosetechnology/Moose:development/src' ];
-		project: 'Moose-Finder'
-		copyFrom: 'Moose'
-		with: [ spec loads: 'Moose-Finder' ]
+		project: 'Moose-Finder' copyFrom: 'Moose' with: [ 
+			spec
+				loads: 'Moose-Finder';
+				loads: 'Moose-Help' ]
 ]
 
 { #category : #dependencies }
