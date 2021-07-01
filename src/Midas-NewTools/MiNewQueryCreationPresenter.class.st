@@ -18,6 +18,17 @@ Class {
 	#category : #'Midas-NewTools-Queries Browser'
 }
 
+{ #category : #'instance creation' }
+MiNewQueryCreationPresenter class >> on: aModel parentPresenter: aPresenter [
+
+	^ self basicNew
+		  application: self currentApplication;
+		  setModelBeforeInitialization: aModel;
+		  parentPresenter: aPresenter;
+		  initialize;
+		  yourself
+]
+
 { #category : #accessing }
 MiNewQueryCreationPresenter class >> queryTypes [
 

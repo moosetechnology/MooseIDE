@@ -24,7 +24,7 @@ MiNewQueriesBrowserTest >> setUp [
 	browser selectEntity: helper classesAndMethods
 ]
 
-{ #category : #test }
+{ #category : #tests }
 MiNewQueriesBrowserTest >> testAddNewBinaryQuery [
 
 	| unionQuery |
@@ -107,11 +107,10 @@ MiNewQueriesBrowserTest >> testSelectQuery [
 					  (String streamContents: [ :s | query storeOn: s ])))
 ]
 
-{ #category : #test }
+{ #category : #tests }
 MiNewQueriesBrowserTest >> testSetModelBeforeInitialization [
 
-	self assert: browser rootQuery class equals: FQRootQuery.
-	self assert: browser selectedQuery equals: browser rootQuery
+	self assert: browser rootQuery class equals: FQRootQuery
 ]
 
 { #category : #defaults }
