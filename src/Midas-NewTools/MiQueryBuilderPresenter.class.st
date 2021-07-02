@@ -11,7 +11,8 @@ Class {
 	#instVars : [
 		'presenters',
 		'parentBrowser',
-		'componentListPresenter'
+		'componentListPresenter',
+		'queryCounter'
 	],
 	#category : #'Midas-NewTools-Queries Browser'
 }
@@ -20,10 +21,12 @@ Class {
 MiQueryBuilderPresenter >> addNewQueryAction: query [
 
 	| newPresenter |
-	newPresenter := self instantiate:
-		((MiNewQueryCreationPresenter on: query) 
-			parentPresenter: self).
+	newPresenter := self instantiate: (MiNewQueryCreationPresenter
+			                 on: query
+			                 parentPresenter: self
+			                 queryNumber: queryCounter).
 	presenters add: newPresenter.
+	queryCounter := queryCounter + 1.
 
 	parentBrowser selectQuery: query.
 	self updateComponentList
@@ -33,11 +36,15 @@ MiQueryBuilderPresenter >> addNewQueryAction: query [
 MiQueryBuilderPresenter >> createFirstQueryForComponentList [
 
 	| queryCreationPresenter |
+	queryCounter := 1.
 	queryCreationPresenter := self instantiate:
-		((MiNewQueryCreationPresenter on: parentBrowser rootQuery) 
-			parentPresenter: self).
+		                          (MiNewQueryCreationPresenter
+			                           on: parentBrowser rootQuery
+			                           parentPresenter: self
+			                           queryNumber: queryCounter).
 	queryCreationPresenter removeButtonRemove.
 	presenters := OrderedCollection with: queryCreationPresenter.
+	queryCounter := queryCounter + 1.
 	self updateComponentList
 ]
 
