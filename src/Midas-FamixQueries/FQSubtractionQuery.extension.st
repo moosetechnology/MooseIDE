@@ -1,7 +1,7 @@
-Extension { #name : #FQSubstractionQuery }
+Extension { #name : #FQSubtractionQuery }
 
 { #category : #'*Midas-FamixQueries' }
-FQSubstractionQuery class >> color [
+FQSubtractionQuery class >> color [
 	"Violet"
 
 	^ Color colorFrom: 'd9b6fc'
