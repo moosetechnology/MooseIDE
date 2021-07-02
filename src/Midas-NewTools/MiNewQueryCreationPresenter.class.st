@@ -13,7 +13,9 @@ Class {
 		'removeButton',
 		'parentQuery',
 		'parentPresenter',
-		'negateButton'
+		'negateButton',
+		'queryNumber',
+		'queryNumberLabelPresenter'
 	],
 	#category : #'Midas-NewTools-Queries Browser'
 }
@@ -25,6 +27,18 @@ MiNewQueryCreationPresenter class >> on: aModel parentPresenter: aPresenter [
 		  application: self currentApplication;
 		  setModelBeforeInitialization: aModel;
 		  parentPresenter: aPresenter;
+		  initialize;
+		  yourself
+]
+
+{ #category : #'as yet unclassified' }
+MiNewQueryCreationPresenter class >> on: aModel parentPresenter: aPresenter queryNumber: aNumber [
+
+	^ self basicNew
+		  application: self currentApplication;
+		  setModelBeforeInitialization: aModel;
+		  parentPresenter: aPresenter;
+		  queryNumber: aNumber;
 		  initialize;
 		  yourself
 ]
@@ -121,6 +135,7 @@ MiNewQueryCreationPresenter >> initializeLayout [
 	self indentationSpacesPresenters do: [ :each | 
 		tempLayout add: each expand: false ].
 	tempLayout
+		add: #queryNumberLabelPresenter expand: false;
 		add: #queryTypesDropListPresenter width: 130;
 		add: #queryConfigurationPresenter;
 		addLast: #negateButton withConstraints: buttonConstraints;
@@ -130,11 +145,25 @@ MiNewQueryCreationPresenter >> initializeLayout [
 ]
 
 { #category : #initialization }
+MiNewQueryCreationPresenter >> initializeNumberLabel [
+
+	queryNumberLabelPresenter := self newLabel.
+	queryNumberLabelPresenter label: queryNumber asString
+]
+
+{ #category : #initialization }
 MiNewQueryCreationPresenter >> initializePresenters [
 
 	self initializeLayout.
 	self initializeButtons.
-	self initializeQueryTypesDropList
+	self initializeNumberLabel.
+
+	self initializeQueryTypesDropList.
+	"After setting whenSelectedItemChangedDo:, select the fastest query while we do not compute the
+	results in a fork.
+	This is for instantiate queryConfigurationPresenter variable"
+	"Changed, initially was typeQuery (selectIndex: 3)"
+	queryTypesDropListPresenter selectItem: FQStringQuery
 ]
 
 { #category : #initialization }
@@ -145,12 +174,7 @@ MiNewQueryCreationPresenter >> initializeQueryTypesDropList [
 		items: self class queryTypes;
 		display: [ :queryClass | queryClass label ];
 		whenSelectedItemChangedDo: [ :queryClass | 
-			self updateQueryConfigurationFor: queryClass ].
-	"After setting whenSelectedItemChangedDo:, select the fastest query while we do not compute the
-	results in a fork.
-	This is for instantiate queryConfigurationPresenter variable"
-	"Changed, initially was typeQuery (selectIndex: 3)"
-	queryTypesDropListPresenter selectItem: FQStringQuery
+			self updateQueryConfigurationFor: queryClass ]
 ]
 
 { #category : #'accessing model' }
@@ -205,6 +229,12 @@ MiNewQueryCreationPresenter >> queryChangedUpdate [
 MiNewQueryCreationPresenter >> queryConfigurationPresenter [
 
 	^ queryConfigurationPresenter
+]
+
+{ #category : #accessing }
+MiNewQueryCreationPresenter >> queryNumber: anInteger [
+
+	queryNumber := anInteger
 ]
 
 { #category : #'api - actions' }
