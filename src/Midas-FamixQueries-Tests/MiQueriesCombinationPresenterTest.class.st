@@ -57,7 +57,7 @@ MiQueriesCombinationPresenterTest >> testBasicInitialization [
 		hasSameElements: { 
 				FQUnionQuery.
 				FQIntersectionQuery.
-				FQSubstractionQuery }.
+				FQSubtractionQuery }.
 	self
 		assertCollection: presenter resultList items
 		hasSameElements: #(  ).
@@ -91,7 +91,7 @@ MiQueriesCombinationPresenterTest >> testNeverKeepFalseChildren [
 MiQueriesCombinationPresenterTest >> testNonCommutativeQueryButton [
 	| firstParent secondParent initialResult |
 	self openInstance.
-	presenter combinationsDroplist selectItem: FQSubstractionQuery.
+	presenter combinationsDroplist selectItem: FQSubtractionQuery.
 	firstParent := presenter newQuery parents first.
 	secondParent := presenter newQuery parents second.
 	initialResult := presenter newQuery result.
@@ -114,7 +114,7 @@ MiQueriesCombinationPresenterTest >> testNonCommutativeQueryButton [
 { #category : #tests }
 MiQueriesCombinationPresenterTest >> testNonCommutativeQueryLabels [
 	self openInstance.
-	presenter combinationsDroplist selectItem: FQSubstractionQuery.
+	presenter combinationsDroplist selectItem: FQSubtractionQuery.
 	self
 		assertCollection:
 			((presenter presenters
