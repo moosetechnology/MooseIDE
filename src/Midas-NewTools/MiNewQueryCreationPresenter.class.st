@@ -62,7 +62,7 @@ MiNewQueryCreationPresenter >> addNewQueryAction [
 MiNewQueryCreationPresenter >> disable [
 
 	queryTypesDropListPresenter disable
-	"queryConfigurationPresenter disable"
+	"queryConfigurationPresenter disable."
 ]
 
 { #category : #update }
