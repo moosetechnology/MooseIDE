@@ -14,7 +14,7 @@ New Tools for Moose
 4. (optionally change **Image name:**)
 5. **Create image**
 
-![Screen capture of Pharo Launcher to make Midas image]![moose](https://user-images.githubusercontent.com/33934979/124268297-9e46f000-db39-11eb-8626-ab578dd16ffb.png)
+![Screen capture of Pharo Launcher to make Midas image](https://user-images.githubusercontent.com/33934979/124268297-9e46f000-db39-11eb-8626-ab578dd16ffb.png)
 
 ### From a Pharo Image
 
