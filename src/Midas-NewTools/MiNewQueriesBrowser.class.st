@@ -122,11 +122,11 @@ MiNewQueriesBrowser >> initializeNotebookPresenter [
 MiNewQueriesBrowser >> initializePresenters [
 
 	super initializePresenters.
-	self initializeLayout.
 	self initializeQueryCodePresenter.
 	self initializeResultTreePresenter.
 	self initializeNotebookPresenter.
-	self initializeQueryBuilder
+	self initializeQueryBuilder.
+	self initializeLayout
 ]
 
 { #category : #initialization }
