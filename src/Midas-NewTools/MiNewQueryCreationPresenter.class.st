@@ -46,7 +46,7 @@ MiNewQueryCreationPresenter class >> on: aModel parentPresenter: aPresenter quer
 { #category : #accessing }
 MiNewQueryCreationPresenter class >> queryTypes [
 
-	^ FQUnaryQuery allSubclasses select: #canBeConfigured
+	^ (FQUnaryQuery allSubclasses select: #canBeConfigured) , FQBinaryQuery subclasses
 	"sort: #name ascending"
 ]
 

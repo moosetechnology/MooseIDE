@@ -108,7 +108,7 @@ MiQueriesCombinationPresenter >> initialize [
 { #category : #initialization }
 MiQueriesCombinationPresenter >> initializeDropList [
 	combinationsDroplist := self newDropList
-		items: FQBinaryQuery availableCombinations;
+		items: FQNaryQuery availableCombinations;
 		display: [ :queryClass | queryClass label ];
 		whenSelectedItemChangedDo: [ :queryClass | self updateForQueryClass: queryClass ]
 ]
@@ -153,8 +153,8 @@ MiQueriesCombinationPresenter >> initializeWindow: aWindowPresenter [
 
 { #category : #update }
 MiQueriesCombinationPresenter >> labelsForNonCommutativeQuery: aQuery [
-	firstParent label: aQuery parents first name.
-	secondParent label: aQuery parents second name.
+	firstParent label: aQuery subqueries first name.
+	secondParent label: aQuery subqueries second name.
 	queryOperator label: newQuery operator asString
 ]
 
@@ -220,6 +220,6 @@ MiQueriesCombinationPresenter >> updateLayoutForQueryClass: queryClass [
 { #category : #update }
 MiQueriesCombinationPresenter >> updateSubPresenters [
 	self labelsForNonCommutativeQuery: newQuery.
-	queriesTree updateWithQueries: newQuery parents , {newQuery}.
+	queriesTree updateWithQueries: newQuery subqueries , {newQuery}.
 	resultList updateForEntities: newQuery result
 ]

@@ -55,7 +55,7 @@ MiQueriesBrowserTest >> testRemoveBinaryQuery [
 	| unionQuery firstParent |
 	unionQuery := self unionQuery.
 	browser updateForQuery: unionQuery.
-	firstParent := unionQuery parents first.
+	firstParent := unionQuery subqueries first.
 	
 	browser removeQuery: unionQuery.
 	self
@@ -145,6 +145,6 @@ MiQueriesBrowserTest >> unionQuery [
 			parent beChildOf: browser initialQuery.
 			browser updateForQuery: parent.
 			parent addChild: union ].
-	union parents: parents.
+	union subqueries: parents.
 	^ union
 ]

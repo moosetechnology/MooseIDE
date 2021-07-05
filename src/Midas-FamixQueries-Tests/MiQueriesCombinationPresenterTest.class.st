@@ -76,7 +76,7 @@ MiQueriesCombinationPresenterTest >> testNeverKeepFalseChildren [
 		do: [ :parent | 
 			self assert: parent children size equals: 1.
 			self assert: (parent children includes: presenter newQuery).
-			self assert: (presenter newQuery parents includes: parent) ].
+			self assert: (presenter newQuery subqueries includes: parent) ].
 		
 	presenter combinationsDroplist selectItem: FQIntersectionQuery.
 
@@ -84,7 +84,7 @@ MiQueriesCombinationPresenterTest >> testNeverKeepFalseChildren [
 		do: [ :parent | 
 			self assert: parent children size equals: 1.
 			self assert: (parent children includes: presenter newQuery).
-			self assert: (presenter newQuery parents includes: parent) ].
+			self assert: (presenter newQuery subqueries includes: parent) ].
 ]
 
 { #category : #tests }
@@ -92,16 +92,16 @@ MiQueriesCombinationPresenterTest >> testNonCommutativeQueryButton [
 	| firstParent secondParent initialResult |
 	self openInstance.
 	presenter combinationsDroplist selectItem: FQSubtractionQuery.
-	firstParent := presenter newQuery parents first.
-	secondParent := presenter newQuery parents second.
+	firstParent := presenter newQuery subqueries first.
+	secondParent := presenter newQuery subqueries second.
 	initialResult := presenter newQuery result.
 	(presenter presenters
 		detect: [ :pres | pres class == SpButtonPresenter ]) click.
 	self
-		assert: presenter newQuery parents first
+		assert: presenter newQuery subqueries first
 		identicalTo: secondParent.
 	self
-		assert: presenter newQuery parents second
+		assert: presenter newQuery subqueries second
 		identicalTo: firstParent.
 	self
 		denyCollection: presenter newQuery result
@@ -153,7 +153,7 @@ MiQueriesCombinationPresenterTest >> testToolBarAction [
 		assert: presenter browser selectedQuery
 		equals: presenter newQuery.
 	self
-		assertCollection: presenter browser selectedQuery parents
+		assertCollection: presenter browser selectedQuery subqueries
 		hasSameElements: presenter parentQueries.
 	(presenter browser queries
 		copyWithoutAll:
@@ -175,7 +175,7 @@ MiQueriesCombinationPresenterTest >> testUpdateForQueryClass [
 		do: [ :parent | 
 			self assert: parent children size equals: 1.
 			self assert: (parent children includes: presenter newQuery).
-			self assert: (presenter newQuery parents includes: parent) ].
+			self assert: (presenter newQuery subqueries includes: parent) ].
 	
 	self
 		assert: presenter queriesTree selectedItem

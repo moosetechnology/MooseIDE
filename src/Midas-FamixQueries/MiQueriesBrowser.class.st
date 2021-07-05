@@ -221,11 +221,11 @@ MiQueriesBrowser >> queryInputPort [
 
 { #category : #action }
 MiQueriesBrowser >> removeQuery: aQuery [
-	aQuery children
-		ifNotEmpty: [ UIManager default
-				alert: 'Cannot remove a query with children for now'.
-			^ self ].
-	aQuery prepareRemovalFrom: self.
+
+	aQuery children ifNotEmpty: [ 
+		UIManager default alert:
+			'Cannot remove a query with children for now'.
+		^ self ].
 	queries remove: aQuery.
 	queriesTree refresh.
 	^ aQuery
