@@ -12,7 +12,8 @@ Class {
 		'presenters',
 		'parentBrowser',
 		'componentListPresenter',
-		'queryCounter'
+		'queryCounter',
+		'addRootQueryButton'
 	],
 	#category : #'Midas-NewTools-Queries Browser'
 }
@@ -33,33 +34,65 @@ MiQueryBuilderPresenter >> addNewQueryAction: query [
 ]
 
 { #category : #actions }
+MiQueryBuilderPresenter >> addNewRootQuery [
+
+	presenters add: self newRootQueryPresenter.
+	self updateComponentList
+]
+
+{ #category : #actions }
 MiQueryBuilderPresenter >> createFirstQueryForComponentList [
 
 	| queryCreationPresenter |
-	queryCounter := 1.
-	queryCreationPresenter := self instantiate:
-		                          (MiNewQueryCreationPresenter
-			                           on: parentBrowser rootQuery
-			                           parentPresenter: self
-			                           queryNumber: queryCounter).
-	queryCreationPresenter removeButtonRemove.
+	queryCreationPresenter := self newRootQueryPresenter.
 	presenters := OrderedCollection with: queryCreationPresenter.
-	queryCounter := queryCounter + 1.
 	self updateComponentList
 ]
 
 { #category : #'api - actions' }
 MiQueryBuilderPresenter >> followAction [
 
-	"Re instantiate the first query"
+	"When a new entity arrives on the bus we reset the presenter to have only one query again. Like if it were openen again."
 
+	queryCounter := 1.
 	self createFirstQueryForComponentList
+]
+
+{ #category : #initialization }
+MiQueryBuilderPresenter >> initialize [
+
+	queryCounter := 1.
+	super initialize
+]
+
+{ #category : #initialization }
+MiQueryBuilderPresenter >> initializeAddRootQueryButton [
+
+	addRootQueryButton := self newButton.
+	addRootQueryButton
+		icon: (self iconNamed: #smallAdd);
+		action: [ self addNewRootQuery ]
+]
+
+{ #category : #initialization }
+MiQueryBuilderPresenter >> initializeComponentListPresenter [
+
+	componentListPresenter := self newComponentList.
+	componentListPresenter
+		activateOnSingleClick;
+		propagateNaturalHeight: true;
+		whenSelectedDo: [ :selectedPresenter | 
+			parentBrowser selectQuery: selectedPresenter query ]
 ]
 
 { #category : #initialization }
 MiQueryBuilderPresenter >> initializeLayout [
 
 	self layout: (SpBoxLayout newTopToBottom
+			 add: (SpBoxLayout newLeftToRight
+					  add: #addRootQueryButton width: self class iconWidth;
+					  yourself)
+			 expand: false;
 			 add: #componentListPresenter;
 			 yourself)
 ]
@@ -69,13 +102,22 @@ MiQueryBuilderPresenter >> initializePresenters [
 
 	self initializeLayout.
 	presenters := OrderedCollection empty.
-	componentListPresenter := self newComponentList.
-	componentListPresenter
-		activateOnSingleClick;
-		propagateNaturalHeight: true;
-		whenSelectedDo: [ :selectedPresenter | 
-			parentBrowser selectQuery: selectedPresenter query ].
+	self initializeAddRootQueryButton.
+	self initializeComponentListPresenter.
 	self createFirstQueryForComponentList
+]
+
+{ #category : #actions }
+MiQueryBuilderPresenter >> newRootQueryPresenter [
+
+	| queryCreationPresenter |
+	queryCreationPresenter := self instantiate:
+		                          (MiNewQueryCreationPresenter
+			                           on: parentBrowser rootQuery
+			                           parentPresenter: self
+			                           queryNumber: queryCounter).
+	queryCounter := queryCounter + 1.
+	^ queryCreationPresenter
 ]
 
 { #category : #'api - actions' }
