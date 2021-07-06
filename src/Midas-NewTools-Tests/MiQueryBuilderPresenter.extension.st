@@ -5,9 +5,3 @@ MiQueryBuilderPresenter >> componentList [
 
 	^ componentListPresenter
 ]
-
-{ #category : #'*Midas-NewTools-Tests' }
-MiQueryBuilderPresenter >> creationPresenters [
-
-	^ presenters
-]

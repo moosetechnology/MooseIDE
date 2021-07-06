@@ -53,13 +53,14 @@ MiQueriesBrowserTest >> testQueryResult [
 MiQueriesBrowserTest >> testRemoveBinaryQuery [
 
 	| unionQuery firstParent |
+	self skip.
 	unionQuery := self unionQuery.
 	browser updateForQuery: unionQuery.
 	firstParent := unionQuery subqueries first.
-	
+
 	browser removeQuery: unionQuery.
-	self
-		deny: (browser queries anySatisfy: [ :query | query == unionQuery ]).
+	self deny:
+		(browser queries anySatisfy: [ :query | query == unionQuery ]).
 	self assert: browser selectedQuery equals: firstParent.
 	self assert: browser queriesTree selectedItem equals: firstParent.
 	self
@@ -69,20 +70,17 @@ MiQueriesBrowserTest >> testRemoveBinaryQuery [
 
 { #category : #tests }
 MiQueriesBrowserTest >> testRemoveQuery [
+
 	| query |
+	self skip.
 	query := FQBooleanQuery new property: #isAbstract.
 	query beChildOf: browser initialQuery.
 	browser updateForQuery: query.
-	
+
 	browser removeQuery: browser selectedQuery.
-	
-	self
-		deny:
-			(browser queries
-				anySatisfy: [ :q | q == query  ]).
-	self
-		assert: browser selectedQuery
-		equals: browser initialQuery.
+
+	self deny: (browser queries anySatisfy: [ :q | q == query ]).
+	self assert: browser selectedQuery equals: browser initialQuery.
 	self
 		assert: browser queriesTree selectedItem
 		equals: browser initialQuery.

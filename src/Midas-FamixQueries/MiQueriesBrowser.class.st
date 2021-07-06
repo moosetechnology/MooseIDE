@@ -41,14 +41,15 @@ MiQueriesBrowser class >> defaultSpec [
 
 { #category : #'world menu' }
 MiQueriesBrowser class >> menuCommandOn: aBuilder [
-	<worldMenu>
+
+	"<worldMenu>
 	<miBrowsers>
 	(aBuilder item: #Queries)
-		parent: #Moose ;
-		label: self title ;
-		order: 3 ;
-		help: self helpMessage ;
-		action: [ self runMe ]
+		parent: #Moose;
+		label: self title;
+		order: 3;
+		help: self helpMessage;
+		action: [ self runMe ]"
 ]
 
 { #category : #private }

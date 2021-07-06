@@ -31,7 +31,7 @@ MiNewQueryCreationPresenter class >> on: aModel parentPresenter: aPresenter [
 		  yourself
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'instance creation' }
 MiNewQueryCreationPresenter class >> on: aModel parentPresenter: aPresenter queryNumber: aNumber [
 
 	^ self basicNew
@@ -43,47 +43,20 @@ MiNewQueryCreationPresenter class >> on: aModel parentPresenter: aPresenter quer
 		  yourself
 ]
 
-{ #category : #accessing }
-MiNewQueryCreationPresenter class >> queryTypes [
-
-	^ (FQUnaryQuery allSubclasses select: #canBeConfigured) , FQBinaryQuery subclasses
-	"sort: #name ascending"
-]
-
 { #category : #actions }
 MiNewQueryCreationPresenter >> addNewQueryAction [
 
 	parentPresenter addNewQueryAction: self query
 	"We need to see if after adding a new query we have to disable this one."
-	"self disable"
 ]
 
-{ #category : #'api - actions' }
-MiNewQueryCreationPresenter >> disable [
+{ #category : #accessing }
+MiNewQueryCreationPresenter >> allQueryPresenters [
 
-	queryTypesDropListPresenter disable
-	"queryConfigurationPresenter disable."
+	^ parentPresenter creationPresenters
 ]
 
-{ #category : #update }
-MiNewQueryCreationPresenter >> disableAddButtonIfThereIsNoQuery [
-
-	"You cannnot add a new query with a non-existing query as parent."
-
-	self isNoPossibleQuery ifTrue: [ 
-		addButton
-			disable;
-			help: 'You cannot add a new query from a not valid query' ]
-]
-
-{ #category : #'api - actions' }
-MiNewQueryCreationPresenter >> enable [
-
-	queryTypesDropListPresenter enable.
-	"queryConfigurationPresenter enable."
-]
-
-{ #category : #initialization }
+{ #category : #accessing }
 MiNewQueryCreationPresenter >> indentationSpacesPresenters [
 
 	"Returns a collection with blank images to show the level of indentation that the query has"
@@ -168,18 +141,18 @@ MiNewQueryCreationPresenter >> initializeQueryTypesDropList [
 
 	queryTypesDropListPresenter := self newDropList.
 	queryTypesDropListPresenter
-		items: self class queryTypes;
+		items: parentPresenter availableQueryTypes;
 		display: [ :queryClass | queryClass label ];
 		whenSelectedItemChangedDo: [ :queryClass | 
 			self updateQueryConfigurationFor: queryClass ]
 ]
 
-{ #category : #'accessing model' }
+{ #category : #testing }
 MiNewQueryCreationPresenter >> isNegated [
 	^self query isNegated 
 ]
 
-{ #category : #'accessing model' }
+{ #category : #accessing }
 MiNewQueryCreationPresenter >> isNegated: aBoolean [
 
 	self query isNegated: aBoolean.
@@ -187,18 +160,30 @@ MiNewQueryCreationPresenter >> isNegated: aBoolean [
 	self queryChangedUpdate
 ]
 
-{ #category : #testing }
-MiNewQueryCreationPresenter >> isNoPossibleQuery [
+{ #category : #accessing }
+MiNewQueryCreationPresenter >> name [
 
-	| isNoPossibleQuery |
-	isNoPossibleQuery := queryConfigurationPresenter presenters 
-		anySatisfy: [ :presenter | presenter class = MiNoPossibleQueryPresenter ].
-	^ isNoPossibleQuery
+	^ 'Q', queryNumber asString
 ]
 
 { #category : #actions }
 MiNewQueryCreationPresenter >> negateQueryAction [
 	self isNegated: (self isNegated not)
+]
+
+{ #category : #actions }
+MiNewQueryCreationPresenter >> newQueryForClass: queryClass [
+
+	| newQuery |
+	(parentQuery children includes: self query) ifTrue: [ 
+		parentQuery removeChild: self query ].
+
+	queryClass isNAryQuery
+		ifTrue: [ newQuery := parentQuery ]
+		ifFalse: [ 
+			newQuery := queryClass defaultForParent: parentQuery.
+			parentQuery addChild: newQuery ].
+	^ newQuery
 ]
 
 { #category : #accessing }
@@ -234,22 +219,13 @@ MiNewQueryCreationPresenter >> queryNumber: anInteger [
 	queryNumber := anInteger
 ]
 
-{ #category : #'api - actions' }
-MiNewQueryCreationPresenter >> removeButtonRemove [
-
-	"We do not want the removeButton to exist"
-
-	self layout remove: removeButton.
-	removeButton := nil
-]
-
 { #category : #actions }
 MiNewQueryCreationPresenter >> removeQueryAction [
 
 	parentPresenter removeQueryAction: self
 ]
 
-{ #category : #'accessing model' }
+{ #category : #'accessing - model' }
 MiNewQueryCreationPresenter >> setModelBeforeInitialization: aQuery [
 
 	parentQuery := aQuery
@@ -280,19 +256,15 @@ MiNewQueryCreationPresenter >> updateNegateButton [
 { #category : #update }
 MiNewQueryCreationPresenter >> updateQueryConfigurationFor: queryClass [
 
-	| newQuery miConfigurationPresenterClass |
+	| newQuery |
 	"Create the new query"
-	(parentQuery children includes: self query)
-		ifTrue: [ parentQuery removeChild: self query ].
-	newQuery := queryClass defaultForParent: parentQuery.
-	parentQuery addChild: newQuery.
+	newQuery := self newQueryForClass: queryClass.
 
 	"Instantiate the configuration presenter with the new created query"
-	miConfigurationPresenterClass := newQuery miPresenterClass.
-
 	queryConfigurationPresenter := self instantiate:
-		(miConfigurationPresenterClass
-			owner: self on: newQuery).
+		                               (queryClass miPresenterClass
+			                                owner: self
+			                                on: newQuery).
 
 	self isNegated: false.
 	negateButton enabled: newQuery canBeNegated.

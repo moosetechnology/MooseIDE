@@ -4,3 +4,9 @@ Extension { #name : #Object }
 Object >> inspectorToString [
 	^ self printString
 ]
+
+{ #category : #'*Midas-NewTools' }
+Object >> isNAryQuery [
+
+	^ false
+]

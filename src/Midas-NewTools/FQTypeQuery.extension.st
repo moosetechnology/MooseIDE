@@ -1,7 +1,7 @@
 Extension { #name : #FQTypeQuery }
 
 { #category : #'*Midas-NewTools' }
-FQTypeQuery >> miPresenterClass [
+FQTypeQuery class >> miPresenterClass [
 
 	^ MiTypeInlineQueryPresenter
 ]
