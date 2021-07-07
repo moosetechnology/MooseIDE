@@ -47,11 +47,11 @@ MiNAryQueryPresenter >> initializeButtons [
 
 	addSubqueryToLayoutButton := self newButton.
 	addSubqueryToLayoutButton
-		icon: (self iconNamed: #smallAdd) asGrayScale;
+		icon: (self iconNamed: #smallAdd);
 		action: [ self addSubqueryToLayout ].
 	removeSubqueryFromLayoutButton := self newButton.
 	removeSubqueryFromLayoutButton
-		icon: (self iconNamed: #smallDelete) asGrayScale;
+		icon: (self iconNamed: #smallDelete);
 		action: [ self removeSubqueryFromLayout ].
 	"The remove button must be enabled only when there is more than 2 subqueries drop lists."
 	removeSubqueryFromLayoutButton disable

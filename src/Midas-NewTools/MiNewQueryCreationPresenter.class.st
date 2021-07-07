@@ -9,13 +9,11 @@ Class {
 	#instVars : [
 		'queryTypesDropListPresenter',
 		'queryConfigurationPresenter',
-		'addButton',
-		'removeButton',
 		'parentQuery',
 		'parentPresenter',
-		'negateButton',
 		'queryNumber',
-		'queryNumberLabelPresenter'
+		'queryNumberLabelPresenter',
+		'optionsMenuButton'
 	],
 	#category : #'Midas-NewTools-Queries Browser'
 }
@@ -74,20 +72,31 @@ MiNewQueryCreationPresenter >> indentationSpacesPresenters [
 { #category : #initialization }
 MiNewQueryCreationPresenter >> initializeButtons [
 
-	negateButton := self newButton.
-	negateButton action: [ self negateQueryAction ].
-
-	addButton := self newButton.
-	addButton
-		icon: (self iconNamed: #smallAdd) ;
-		help: 'Restrict result by adding a query' ;
-		action: [ self addNewQueryAction ].
-
-	removeButton := self newButton.
-	removeButton
-		icon: (self iconNamed: #remove) ;
-		help: 'Remove query and its sub-queries' ;
-		action: [ self removeQueryAction ]
+	| optionsMenuGroup |
+	optionsMenuGroup := self newMenu.
+	optionsMenuGroup addGroup: [ :aGroup | 
+		aGroup
+			addItem: [ :anItem | 
+				anItem
+					name: 'Add a child query';
+					icon: (self iconNamed: #smallAdd);
+					help: 'Restrict result by adding a query';
+					action: [ self addNewQueryAction ] ];
+			addItem: [ :anItem | 
+				anItem
+					name: 'Remove this query';
+					icon: (self iconNamed: #remove);
+					help: 'Remove query and its sub-queries';
+					action: [ self removeQueryAction ] ];
+			addItem: [ :anItem | 
+				anItem
+					name: 'Negate/Unnegate';
+					icon: (self iconNamed: #exception);
+					help: 'Negate/Unnegate the query';
+					action: [ self negateQueryAction ] ] ].
+	optionsMenuButton := self newMenuButton
+		                     menu: optionsMenuGroup;
+		                     yourself
 ]
 
 { #category : #initialization }
@@ -108,9 +117,7 @@ MiNewQueryCreationPresenter >> initializeLayout [
 		add: #queryNumberLabelPresenter expand: false;
 		add: #queryTypesDropListPresenter width: 130;
 		add: #queryConfigurationPresenter;
-		addLast: #negateButton withConstraints: buttonConstraints;
-		addLast: #addButton withConstraints: buttonConstraints;
-		addLast: #removeButton withConstraints: buttonConstraints.
+		addLast: #optionsMenuButton expand: false.
 	self layout: tempLayout
 ]
 
@@ -156,7 +163,6 @@ MiNewQueryCreationPresenter >> isNegated [
 MiNewQueryCreationPresenter >> isNegated: aBoolean [
 
 	self query isNegated: aBoolean.
-	self updateNegateButton.
 	self queryChangedUpdate
 ]
 
@@ -168,7 +174,11 @@ MiNewQueryCreationPresenter >> name [
 
 { #category : #actions }
 MiNewQueryCreationPresenter >> negateQueryAction [
-	self isNegated: (self isNegated not)
+
+	self query canBeNegated
+		ifTrue: [ self isNegated: self isNegated not ]
+		ifFalse: [ 
+		UIManager default inform: 'This type of query cannot be negated' ]
 ]
 
 { #category : #actions }
@@ -240,20 +250,6 @@ MiNewQueryCreationPresenter >> updateFromConfiguration [
 ]
 
 { #category : #update }
-MiNewQueryCreationPresenter >> updateNegateButton [
-
-	self isNegated
-		ifTrue: [ 
-			negateButton
-				icon: (self iconNamed: #cancel);
-				help: 'Query negated, click to ''un-negate''' ]
-		ifFalse: [ 
-			negateButton
-				icon: (self iconNamed: #exception);
-				help: 'Negate the query' ]
-]
-
-{ #category : #update }
 MiNewQueryCreationPresenter >> updateQueryConfigurationFor: queryClass [
 
 	| newQuery |
@@ -267,7 +263,6 @@ MiNewQueryCreationPresenter >> updateQueryConfigurationFor: queryClass [
 			                                on: newQuery).
 
 	self isNegated: false.
-	negateButton enabled: newQuery canBeNegated.
 
 	self update
 ]
