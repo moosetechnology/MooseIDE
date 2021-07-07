@@ -120,8 +120,9 @@ MiTagBrowserModel >> owner: anObject [
 ]
 
 { #category : #accessing }
-MiTagBrowserModel >> tagEntity: anEntity [
-	anEntity tagWith: self currentTag
+MiTagBrowserModel >> tagEntityNotYourself: anEntity [
+	self currentTag = anEntity
+	ifFalse: [self currentTag tagEntity: anEntity]
 ]
 
 { #category : #accessing }
