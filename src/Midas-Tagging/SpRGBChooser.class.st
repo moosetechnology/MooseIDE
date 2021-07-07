@@ -63,9 +63,9 @@ SpRGBChooser >> greenSlider [
 { #category : #initialization }
 SpRGBChooser >> initializePresenters [
 
-	redSlider := self instantiate: SpSliderInput.
-	greenSlider := self instantiate: SpSliderInput.
-	blueSlider := self instantiate: SpSliderInput.
+	redSlider := self instantiate: SpSliderInputPresenter.
+	greenSlider := self instantiate: SpSliderInputPresenter.
+	blueSlider := self instantiate: SpSliderInputPresenter.
 	colorPreview := self newImage
 		                image: self makeRGBForm;
 		                yourself.
