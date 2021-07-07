@@ -1,13 +1,13 @@
 "
-I am a query configuration presenter for all N-ary queries (before called binary queries but are not longer binaries because can do with the operation with more than two queries)
+I am a query configuration presenter for all N-ary queries (before called binary queries but are not longer binaries because they can do with the operation with more than two queries)
 "
 Class {
 	#name : #MiNAryQueryPresenter,
 	#superclass : #MiQueryConfigurationPresenter,
 	#instVars : [
-		'addSubqueryButton',
 		'subqueryDropLists',
-		'dynamicLayout'
+		'addSubqueryToLayoutButton',
+		'removeSubqueryFromLayoutButton'
 	],
 	#category : #'Midas-NewTools-Queries configuration'
 }
@@ -22,36 +22,39 @@ MiNAryQueryPresenter class >> dropListWidth [
 MiNAryQueryPresenter >> addSubqueryToLayout [
 
 	subqueryDropLists add: self newSubqueryDropList.
-	dynamicLayout
-		add: subqueryDropLists last
-		width: self class dropListWidth.
+	removeSubqueryFromLayoutButton enable.
+	self buildLayout.
 	self update
 ]
 
 { #category : #layout }
 MiNAryQueryPresenter >> buildLayout [
 
-	dynamicLayout := SpBoxLayout newLeftToRight
-		                 spacing: 5;
-		                 yourself.
-	subqueryDropLists do: [ :subquery | 
-		dynamicLayout add: subquery width: self class dropListWidth ].
-	self layout: (SpBoxLayout newLeftToRight
-			 add: dynamicLayout;
-			 add: #addSubqueryButton withConstraints: [ :c | 
-				 c
-					 expand: false;
-					 width: self class iconWidth ];
-			 yourself)
+	| tempLayout |
+	tempLayout := SpBoxLayout newLeftToRight
+		              spacing: 5;
+		              yourself.
+	subqueryDropLists do: [ :subqueryPresenter | 
+		tempLayout add: subqueryPresenter width: self class dropListWidth ].
+	tempLayout
+		add: #addSubqueryToLayoutButton width: self class iconWidth;
+		add: #removeSubqueryFromLayoutButton width: self class iconWidth.
+	self layout: tempLayout
 ]
 
 { #category : #initialization }
 MiNAryQueryPresenter >> initializeButtons [
 
-	addSubqueryButton := self newButton.
-	addSubqueryButton
+	addSubqueryToLayoutButton := self newButton.
+	addSubqueryToLayoutButton
 		icon: (self iconNamed: #smallAdd) asGrayScale;
-		action: [ self addSubqueryToLayout ]
+		action: [ self addSubqueryToLayout ].
+	removeSubqueryFromLayoutButton := self newButton.
+	removeSubqueryFromLayoutButton
+		icon: (self iconNamed: #smallDelete) asGrayScale;
+		action: [ self removeSubqueryFromLayout ].
+	"The remove button must be enabled only when there is more than 2 subqueries drop lists."
+	removeSubqueryFromLayoutButton disable
 ]
 
 { #category : #initialization }
@@ -74,4 +77,13 @@ MiNAryQueryPresenter >> newSubqueryDropList [
 		  items: availableQueryPresentersForOperation;
 		  display: [ :each | each name ];
 		  yourself
+]
+
+{ #category : #actions }
+MiNAryQueryPresenter >> removeSubqueryFromLayout [
+
+	subqueryDropLists removeLast.
+	subqueryDropLists size < 3 ifTrue: [ removeSubqueryFromLayoutButton disable ].
+	self buildLayout.
+	self update
 ]
