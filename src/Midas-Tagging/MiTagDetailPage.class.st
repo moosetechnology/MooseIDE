@@ -62,6 +62,8 @@ MiTagDetailPage class >> middleColumnWidth [
 
 { #category : #action }
 MiTagDetailPage >> add [
+	self currentTag ifNil: [ ^self ].
+
 	incomingEntitiesFilteringList selectedItem
 		ifNotNil: [ :entity | tagModel tagEntity: entity ].
 	self refreshTagEntitiesList
@@ -69,13 +71,20 @@ MiTagDetailPage >> add [
 
 { #category : #action }
 MiTagDetailPage >> addAll [
+	self currentTag ifNil: [ ^self ].
 	incomingEntitiesFilteringList items
 		do: [ :entity | tagModel tagEntity: entity ].
 	self refreshTagEntitiesList
 ]
 
+{ #category : #accessing }
+MiTagDetailPage >> currentTag [
+	^tagModel currentTag
+]
+
 { #category : #action }
 MiTagDetailPage >> del [
+	self currentTag ifNil: [ ^self ].
 	tagEntitiesFilteringList selectedItem
 		ifNotNil: [ :entity | tagModel untagEntity: entity ].
 	self refreshTagEntitiesList
@@ -83,6 +92,7 @@ MiTagDetailPage >> del [
 
 { #category : #action }
 MiTagDetailPage >> delAll [
+	self currentTag ifNil: [ ^self ].
 	tagEntitiesFilteringList items
 		do: [ :entity | tagModel untagEntity: entity ].
 	self refreshTagEntitiesList
@@ -128,7 +138,13 @@ MiTagDetailPage >> initializePresenters [
 
 { #category : #refreshing }
 MiTagDetailPage >> onBrowserPageRedisplay [
-	lblTagEntities label: 'Entities in tag [' , tagModel currentTag name , ']:'
+
+	lblTagEntities
+		label: 
+			(self currentTag
+				ifNil: [ '!*! No tag selected !*!' ]
+				ifNotNil: [ :tag | 'Entities in tag [' , tag name , ']:' ]
+			)
 ]
 
 { #category : #refreshing }
