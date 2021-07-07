@@ -65,7 +65,7 @@ MiTagDetailPage >> add [
 	self currentTag ifNil: [ ^self ].
 
 	incomingEntitiesFilteringList selectedItem
-		ifNotNil: [ :entity | tagModel tagEntity: entity ].
+		ifNotNil: [ :entity | tagModel tagEntityNotYourself: entity ].
 	self refreshTagEntitiesList
 ]
 
@@ -73,7 +73,7 @@ MiTagDetailPage >> add [
 MiTagDetailPage >> addAll [
 	self currentTag ifNil: [ ^self ].
 	incomingEntitiesFilteringList items
-		do: [ :entity | tagModel tagEntity: entity ].
+		do: [ :entity | tagModel tagEntityNotYourself: entity].
 	self refreshTagEntitiesList
 ]
 
@@ -136,6 +136,11 @@ MiTagDetailPage >> initializePresenters [
 		             action: [ self delAll ]
 ]
 
+{ #category : #accessing }
+MiTagDetailPage >> lblTagEntities [
+	^lblTagEntities
+]
+
 { #category : #refreshing }
 MiTagDetailPage >> onBrowserPageRedisplay [
 
@@ -163,6 +168,11 @@ MiTagDetailPage >> tagEntities [
 		ifNil: [ #() ]
 		ifNotNil: [ tagModel entitiesTaggedWithCurrentTag ]
 
+]
+
+{ #category : #accessing }
+MiTagDetailPage >> tagModel [
+	^tagModel
 ]
 
 { #category : #accessing }

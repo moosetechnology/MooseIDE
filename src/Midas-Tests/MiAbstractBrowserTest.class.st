@@ -91,6 +91,7 @@ MiAbstractBrowserTest >> mooseObjects [
 { #category : #running }
 MiAbstractBrowserTest >> setUp [
 	super setUp.
+	MiApplication reset.
 	browser := self browserClass runMeFollowing: self bus
 ]
 
