@@ -9,7 +9,7 @@ Class {
 		'#newQuery',
 		'#browser',
 		'#queryWasValidated',
-		'#query => SpObservableSlot',
+		'#query => ObservableSlot',
 		'#firstParent',
 		'#secondParent',
 		'#reverseButton',

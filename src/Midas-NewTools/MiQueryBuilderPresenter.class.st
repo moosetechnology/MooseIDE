@@ -11,28 +11,32 @@ Class {
 	#instVars : [
 		'presenters',
 		'parentBrowser',
-		'componentListPresenter'
+		'componentListPresenter',
+		'queryCounter',
+		'addRootQueryButton'
 	],
 	#category : #'Midas-NewTools-Queries Browser'
 }
-
-{ #category : #specs }
-MiQueryBuilderPresenter class >> defaultSpec [
-
-	^ SpBoxLayout newTopToBottom
-		  add: #componentListPresenter;
-		  yourself
-]
 
 { #category : #'api - actions' }
 MiQueryBuilderPresenter >> addNewQueryAction: query [
 
 	| newPresenter |
-	newPresenter := self instantiate:
-		                (MiNewQueryCreationPresenter on: self).
+	newPresenter := self instantiate: (MiNewQueryCreationPresenter
+			                 on: query
+			                 parentPresenter: self
+			                 queryNumber: queryCounter).
 	presenters add: newPresenter.
+	queryCounter := queryCounter + 1.
 
-	parentBrowser addNewQuery: query.
+	parentBrowser selectQuery: query.
+	self updateComponentList
+]
+
+{ #category : #actions }
+MiQueryBuilderPresenter >> addNewRootQuery [
+
+	presenters add: self newRootQueryPresenter.
 	self updateComponentList
 ]
 
@@ -40,35 +44,80 @@ MiQueryBuilderPresenter >> addNewQueryAction: query [
 MiQueryBuilderPresenter >> createFirstQueryForComponentList [
 
 	| queryCreationPresenter |
-	queryCreationPresenter := self instantiate:
-		                          (MiNewQueryCreationPresenter on: self).
-	queryCreationPresenter removeButtonRemove.
+	queryCreationPresenter := self newRootQueryPresenter.
 	presenters := OrderedCollection with: queryCreationPresenter.
 	self updateComponentList
-]
-
-{ #category : #accessing }
-MiQueryBuilderPresenter >> currentQuery [
-
-	^ parentBrowser currentQuery
 ]
 
 { #category : #'api - actions' }
 MiQueryBuilderPresenter >> followAction [
 
-	"Re instantiate the first query"
+	"When a new entity arrives on the bus we reset the presenter to have only one query again. Like if it were openen again."
 
+	queryCounter := 1.
 	self createFirstQueryForComponentList
+]
+
+{ #category : #initialization }
+MiQueryBuilderPresenter >> initialize [
+
+	queryCounter := 1.
+	super initialize
+]
+
+{ #category : #initialization }
+MiQueryBuilderPresenter >> initializeAddRootQueryButton [
+
+	addRootQueryButton := self newButton.
+	addRootQueryButton
+		icon: (self iconNamed: #smallAdd);
+		action: [ self addNewRootQuery ]
+]
+
+{ #category : #initialization }
+MiQueryBuilderPresenter >> initializeComponentListPresenter [
+
+	componentListPresenter := self newComponentList.
+	componentListPresenter
+		activateOnSingleClick;
+		propagateNaturalHeight: true;
+		whenSelectedDo: [ :selectedPresenter | 
+			parentBrowser selectQuery: selectedPresenter query ]
+]
+
+{ #category : #initialization }
+MiQueryBuilderPresenter >> initializeLayout [
+
+	self layout: (SpBoxLayout newTopToBottom
+			 add: (SpBoxLayout newLeftToRight
+					  add: #addRootQueryButton width: self class iconWidth;
+					  yourself)
+			 expand: false;
+			 add: #componentListPresenter;
+			 yourself)
 ]
 
 { #category : #initialization }
 MiQueryBuilderPresenter >> initializePresenters [
 
-	presenters := OrderedCollection new.
-	componentListPresenter := self newComponentList
-		                          propagateNaturalHeight: true;
-		                          yourself.
+	self initializeLayout.
+	presenters := OrderedCollection empty.
+	self initializeAddRootQueryButton.
+	self initializeComponentListPresenter.
 	self createFirstQueryForComponentList
+]
+
+{ #category : #actions }
+MiQueryBuilderPresenter >> newRootQueryPresenter [
+
+	| queryCreationPresenter |
+	queryCreationPresenter := self instantiate:
+		                          (MiNewQueryCreationPresenter
+			                           on: parentBrowser rootQuery
+			                           parentPresenter: self
+			                           queryNumber: queryCounter).
+	queryCounter := queryCounter + 1.
+	^ queryCreationPresenter
 ]
 
 { #category : #'api - actions' }
@@ -77,12 +126,24 @@ MiQueryBuilderPresenter >> queryChangedUpdate: query [
 	parentBrowser queryChangedUpdate: query
 ]
 
-{ #category : #'api - actions' }
-MiQueryBuilderPresenter >> removeQueryAction: aQuery [
+{ #category : #actions }
+MiQueryBuilderPresenter >> removePresentersAssociatedWith: nodeQuery [
 
-	parentBrowser removeQuery: aQuery.
-	presenters removeLast.
-	presenters last enable.
+	nodeQuery children do: [ :childQuery | 
+		| presenterToRemove |
+		presenterToRemove := presenters detect: [ :aPresenter | 
+			                     aPresenter query = childQuery ].
+		presenters remove: presenterToRemove.
+		self removePresentersAssociatedWith: childQuery ]
+]
+
+{ #category : #'api - actions' }
+MiQueryBuilderPresenter >> removeQueryAction: aQueryCreationPresenter [
+
+	parentBrowser removeQuery: aQueryCreationPresenter query.
+	presenters remove: aQueryCreationPresenter.
+	self removePresentersAssociatedWith: aQueryCreationPresenter query.
+	"presenters last enable."
 	self updateComponentList
 ]
 

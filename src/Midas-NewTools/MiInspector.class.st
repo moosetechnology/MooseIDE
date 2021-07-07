@@ -10,14 +10,14 @@ Class {
 	#category : #'Midas-NewTools-Inspector'
 }
 
-{ #category : #'private factory' }
+{ #category : #'private - factory' }
 MiInspector >> newInspectorFor: aModel [
 
 	| newInspector |
 	newInspector := self
 		                instantiate: MiObjectInspectorPresenter
 		                on: aModel asInspectorModel.
-	StPharoSettings inspectorDiveOnSingleClick ifTrue: [ 
+	self class inspectorDiveOnSingleClick ifTrue: [ 
 		newInspector activateOnSingleClick ].
 
 	millerList pages ifNotEmpty: [ :pages | 

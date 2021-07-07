@@ -7,7 +7,7 @@ Class {
 		'#queryTypesDropList',
 		'#resultList',
 		'#browser',
-		'#query => SpObservableSlot',
+		'#query => ObservableSlot',
 		'#breadcrumbs',
 		'#toolbar'
 	],

@@ -43,3 +43,9 @@ MiScopeInlineQueryPresenter >> initializePresenters [
 	super initializePresenters.
 	self initializeDirectionsDropList
 ]
+
+{ #category : #initialization }
+MiScopeInlineQueryPresenter >> intializeDirectionRadioButtons [
+
+	"We override this method because we do not want to build the radio buttons since we use now a drop list."
+]

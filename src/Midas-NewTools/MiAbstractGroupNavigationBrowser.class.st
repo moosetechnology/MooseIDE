@@ -28,5 +28,6 @@ Class {
 
 { #category : #initialization }
 MiAbstractGroupNavigationBrowser >> itemsFor: anEntity [
-	^ anEntity collect: [ :entity | entity mooseName printString -> entity ]
+
+	^ anEntity collect: [ :entity | entity inspectorToString -> entity ]
 ]

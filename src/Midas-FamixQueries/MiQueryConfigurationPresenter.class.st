@@ -25,7 +25,10 @@ MiQueryConfigurationPresenter >> disable [
 	"Disable the presenters that had been instantiated."
 
 	self presenters
-		reject: [ :subPresenter | subPresenter class = SpNullPresenter ]
+		reject: [ :subPresenter | 
+			{ 
+				SpNullPresenter.
+				MiNoPossibleQueryPresenter } includes: subPresenter class ]
 		thenDo: #disable
 ]
 
@@ -35,7 +38,10 @@ MiQueryConfigurationPresenter >> enable [
 	"Enable the presenters that had been instantiated."
 
 	self presenters
-		reject: [ :subPresenter | subPresenter class = SpNullPresenter ]
+		reject: [ :subPresenter | 
+			{ 
+				SpNullPresenter.
+				MiNoPossibleQueryPresenter } includes: subPresenter class ]
 		thenDo: #enable
 ]
 

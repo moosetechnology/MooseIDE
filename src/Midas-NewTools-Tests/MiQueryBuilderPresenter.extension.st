@@ -1,7 +1,13 @@
 Extension { #name : #MiQueryBuilderPresenter }
 
 { #category : #'*Midas-NewTools-Tests' }
-MiQueryBuilderPresenter >> presentersCollection [
+MiQueryBuilderPresenter >> componentList [
+
+	^ componentListPresenter
+]
+
+{ #category : #'*Midas-NewTools-Tests' }
+MiQueryBuilderPresenter >> creationPresenters [
 
 	^ presenters
 ]

@@ -10,7 +10,7 @@ Class {
 { #category : #'tests - actions' }
 MiInspectorBrowserTest >> assertFollowActionFor: aMooseObject [
 
-	self assert: browser stInspector model equals: aMooseObject
+	self assert: browser miInspector model equals: aMooseObject
 	
 ]
 

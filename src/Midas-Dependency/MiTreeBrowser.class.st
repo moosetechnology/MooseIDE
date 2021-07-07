@@ -57,8 +57,8 @@ MiTreeBrowser >> accept: anObject [
 
 { #category : #'as yet unclassified' }
 MiTreeBrowser >> followAction [
-	(self accept: toSelect)
-		ifFalse: [ ^ self ].
+
+	(self accept: toSelect) ifFalse: [ ^ self ].
 	self model selected: toSelect.
 	self model root: toSelect.
 	self refresh
@@ -72,31 +72,35 @@ MiTreeBrowser >> initialize [
 
 { #category : #'as yet unclassified' }
 MiTreeBrowser >> initializePresenters [
+
 	super initializePresenters.
 	tree := self newTreeTable.
 	tree
-		addColumn:
-			(SpCompositeTableColumn new
-				addColumn:
-					((SpImageTableColumn evaluated: #midasIcon)
-						width: 20;
-						yourself);
-				addColumn: (SpStringTableColumn evaluated: #name);
-				yourself);
+		addColumn: (SpCompositeTableColumn new
+				 addColumn: ((SpImageTableColumn evaluated: #midasIcon)
+						  width: 20;
+						  yourself);
+				 addColumn: (SpStringTableColumn evaluated: #name);
+				 yourself);
 		children: [ :aClass | aClass children asOrderedCollection ];
 		beMultipleSelection;
 		beResizable.
-	tree
-		whenSelectionChangedDo: [ :selected | 
-			self
-				freezeDuring: [ selected selectedItems size = 1
-						ifTrue: [ model selected: selected selectedItem.
-							self buses
-								do: [ :bus | bus globallySelect: selected selectedItem ] ]
-						ifFalse: [ | mooseGroup |
-							mooseGroup := MooseGroup withAll: selected selectedItems.
-							model selected: mooseGroup.
-							self buses do: [ :bus | bus globallySelect: mooseGroup ] ] ] ]
+	tree whenSelectionChangedDo: [ :selected | 
+		self freezeDuring: [ 
+			| selectedEntity |
+			selectedEntity := self miSelectedItem.
+			model selected: selectedEntity.
+			self buses do: [ :bus | bus globallySelect: selectedEntity ] ] ]
+]
+
+{ #category : #accessing }
+MiTreeBrowser >> miSelectedItem [
+
+	| selection |
+	selection := tree selection.
+	^ selection selectedItems size = 1
+		  ifTrue: [ selection selectedItem ]
+		  ifFalse: [ MooseGroup withAll: selection selectedItems ]
 ]
 
 { #category : #'as yet unclassified' }

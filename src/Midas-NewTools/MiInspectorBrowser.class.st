@@ -6,7 +6,7 @@ Class {
 	#name : #MiInspectorBrowser,
 	#superclass : #MiAbstractBrowser,
 	#instVars : [
-		'stInspector'
+		'miInspector'
 	],
 	#category : #'Midas-NewTools-Inspector'
 }
@@ -15,7 +15,7 @@ Class {
 MiInspectorBrowser class >> defaultSpec [
 
 	^ super defaultSpec
-		  add: #stInspector;
+		  add: #miInspector;
 		  yourself
 ]
 
@@ -32,8 +32,9 @@ MiInspectorBrowser class >> inspect: anObject forBuses: buses [
 
 	| newInstance |
 	newInstance := self on: anObject.
+	newInstance openWithSpec.
 	buses do: [ :aBus | newInstance followBus: aBus ].
-	^ newInstance openWithSpec
+	^ newInstance
 ]
 
 { #category : #'world menu' }
@@ -88,7 +89,7 @@ MiInspectorBrowser >> followAction [
 
 	(self accept: toSelect) ifFalse: [ ^ self ].
 	self model: toSelect.
-	stInspector model: self model.
+	miInspector model: self model.
 	self updateWindowTitle: self window
 ]
 
@@ -96,8 +97,7 @@ MiInspectorBrowser >> followAction [
 MiInspectorBrowser >> initializePresenters [
 
 	super initializePresenters.
-	stInspector := self instantiate: MiInspector.
-	stInspector model: self model
+	miInspector := self instantiate: MiInspector on: self model
 ]
 
 { #category : #initialization }
@@ -111,7 +111,7 @@ MiInspectorBrowser >> initializeWindow: aWindow [
 MiInspectorBrowser >> miSelectedItem [
 
 	| lastInspectorPage |
-	lastInspectorPage := stInspector millerList pages last.
+	lastInspectorPage := miInspector millerList pages last.
 	^ lastInspectorPage model inspectedObject
 ]
 
@@ -123,5 +123,5 @@ MiInspectorBrowser >> updateWindowTitle: aWindow [
 		         { ([ self model displayString ]
 			          on: Error
 			          do: [ :e | e printString ]) }.
-	aWindow title: title
+	aWindow ifNotNil: [ aWindow title: title ]
 ]

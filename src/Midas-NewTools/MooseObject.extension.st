@@ -1,6 +1,11 @@
 Extension { #name : #MooseObject }
 
 { #category : #'*Midas-NewTools' }
+MooseObject class >> inspectorToString [
+	^ name
+]
+
+{ #category : #'*Midas-NewTools' }
 MooseObject >> miFameInspectorExtension [
 
 	<inspectorPresentationOrder: 3 title: 'Fame'>

@@ -2,13 +2,14 @@ Extension { #name : #RSUMLClassDescriptor }
 
 { #category : #'*Midas-Famix' }
 RSUMLClassDescriptor >> forFamix [
+
 	self
 		classname: #name;
-		instVars: [:cls | cls attributes ];
-		methods: [ :cls | cls methods ];
 		superclass: #superclass;
+		instVars: [ :type | type attributes sorted: #name ascending ];
+		methods: [ :type | type methods sorted: #name ascending ];
 		methodSelector: #name;
 		instVarSelector: #name;
-		methodsLimit: SmallInteger maxVal.
-		
+		methodsLimit: SmallInteger maxVal;
+		isAbstract: [ :cls | cls isAbstract ifNil: [ false ] ]
 ]

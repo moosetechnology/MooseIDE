@@ -1,19 +1,17 @@
-# This is a basic workflow to help you get started with Actions
+name: Daily-development
 
-name: CI
-
-# Controls when the action will run. Triggers the workflow on push or pull request
-# events but only for the development branch
 on:
-  pull_request:
-    branches: [development]
+  schedule:
+    - cron:  '0 0 * * *'
 
 jobs:
-  test:
+  build:
     runs-on: ubuntu-latest
+    env:
+      PROJECT_NAME: Midas-development
     strategy:
       matrix:
-        smalltalk: [ Pharo64-alpha ]
+        smalltalk: [ Pharo64-9.0 ]
     name: ${{ matrix.smalltalk }}
     steps:
       - uses: actions/checkout@v2
