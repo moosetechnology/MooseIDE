@@ -21,7 +21,7 @@ MiNewQueriesBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
 	<miBrowsers>
-	(aBuilder item: #NewQueries)
+	(aBuilder item: #QueryBrowser)
 		parent: #Moose;
 		label: self title;
 		icon: (self iconNamed: #mooseTree);

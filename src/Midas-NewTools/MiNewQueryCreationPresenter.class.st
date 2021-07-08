@@ -140,7 +140,7 @@ MiNewQueryCreationPresenter >> initializePresenters [
 	results in a fork.
 	This is for instantiate queryConfigurationPresenter variable"
 	"Changed, initially was typeQuery (selectIndex: 3)"
-	queryTypesDropListPresenter selectItem: FQStringQuery
+	queryTypesDropListPresenter selectItem: FQBooleanQuery
 ]
 
 { #category : #initialization }
