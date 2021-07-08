@@ -29,7 +29,9 @@ MiTagBrowserModel >> allCategories [
 { #category : #accessing }
 MiTagBrowserModel >> allTags [
 
-	^self mooseModel allTags
+	^self mooseModel
+		ifNil: [ #() ]
+		ifNotNil: [ :model | model allTags ]
 ]
 
 { #category : #accessing }
