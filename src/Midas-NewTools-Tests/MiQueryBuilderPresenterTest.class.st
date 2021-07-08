@@ -42,7 +42,7 @@ MiQueryBuilderPresenterTest >> tearDown [
 	super tearDown
 ]
 
-{ #category : #test }
+{ #category : #tests }
 MiQueryBuilderPresenterTest >> testAddNewQueryAction [
 
 	self assert: presenter creationPresenters size equals: 1.
@@ -50,7 +50,7 @@ MiQueryBuilderPresenterTest >> testAddNewQueryAction [
 	self assert: presenter creationPresenters size equals: 2
 ]
 
-{ #category : #test }
+{ #category : #tests }
 MiQueryBuilderPresenterTest >> testCreateFirstQueryForComponentList [
 
 	self assert: presenter creationPresenters size equals: 1.
@@ -59,7 +59,7 @@ MiQueryBuilderPresenterTest >> testCreateFirstQueryForComponentList [
 		hasSameElements: presenter creationPresenters
 ]
 
-{ #category : #test }
+{ #category : #tests }
 MiQueryBuilderPresenterTest >> testRemoveQueryAction [
 
 	self assert: presenter creationPresenters size equals: 1.
@@ -68,7 +68,7 @@ MiQueryBuilderPresenterTest >> testRemoveQueryAction [
 	self assert: presenter creationPresenters size equals: 1
 ]
 
-{ #category : #test }
+{ #category : #tests }
 MiQueryBuilderPresenterTest >> testUpdateComponentList [
 
 	self

@@ -1,7 +1,7 @@
 Extension { #name : #FQBooleanQuery }
 
 { #category : #'*Midas-NewTools' }
-FQBooleanQuery >> miPresenterClass [
+FQBooleanQuery class >> miPresenterClass [
 
 	^ MiBooleanInlineQueryPresenter
 ]

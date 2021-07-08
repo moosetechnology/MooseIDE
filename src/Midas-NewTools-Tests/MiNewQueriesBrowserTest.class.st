@@ -64,7 +64,7 @@ MiNewQueriesBrowserTest >> testRemoveBinaryQuery [
 	| unionQuery firstParent |
 	unionQuery := self unionQuery.
 	browser rootQuery addChild: unionQuery.
-	firstParent := unionQuery parents first.
+	firstParent := unionQuery subqueries first.
 	browser removeQuery: unionQuery.
 	self deny: (browser rootQuery children includes: unionQuery)
 ]
@@ -125,6 +125,6 @@ MiNewQueriesBrowserTest >> unionQuery [
 		parent beChildOf: browser rootQuery.
 		browser selectQuery: parent.
 		parent addChild: union ].
-	union parents: parents.
+	union subqueries: parents.
 	^ union
 ]

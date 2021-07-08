@@ -40,6 +40,17 @@ MiQueryBuilderPresenter >> addNewRootQuery [
 	self updateComponentList
 ]
 
+{ #category : #accessing }
+MiQueryBuilderPresenter >> availableQueryTypes [
+
+	| queryTypes |
+	queryTypes := FQUnaryQuery allSubclasses select: #canBeConfigured.
+	"There must be at least two queries to create a binary query. The binary query has two parents."
+	presenters size > 1 ifTrue: [ 
+		queryTypes := queryTypes , FQNaryQuery subclasses ].
+	^ queryTypes
+]
+
 { #category : #actions }
 MiQueryBuilderPresenter >> createFirstQueryForComponentList [
 
@@ -47,6 +58,12 @@ MiQueryBuilderPresenter >> createFirstQueryForComponentList [
 	queryCreationPresenter := self newRootQueryPresenter.
 	presenters := OrderedCollection with: queryCreationPresenter.
 	self updateComponentList
+]
+
+{ #category : #accessing }
+MiQueryBuilderPresenter >> creationPresenters [
+
+	^ presenters
 ]
 
 { #category : #'api - actions' }

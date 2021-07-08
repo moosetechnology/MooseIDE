@@ -1,7 +1,7 @@
 Extension { #name : #FQScopeQuery }
 
 { #category : #'*Midas-NewTools' }
-FQScopeQuery >> miPresenterClass [
+FQScopeQuery class >> miPresenterClass [
 
 	^ MiScopeInlineQueryPresenter
 ]

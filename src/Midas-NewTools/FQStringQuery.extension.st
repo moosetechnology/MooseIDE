@@ -1,7 +1,7 @@
 Extension { #name : #FQStringQuery }
 
 { #category : #'*Midas-NewTools' }
-FQStringQuery >> miPresenterClass [
+FQStringQuery class >> miPresenterClass [
 
 	^ MiStringInlineQueryPresenter
 ]
