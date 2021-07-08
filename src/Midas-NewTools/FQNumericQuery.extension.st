@@ -1,7 +1,7 @@
 Extension { #name : #FQNumericQuery }
 
 { #category : #'*Midas-NewTools' }
-FQNumericQuery >> miPresenterClass [
+FQNumericQuery class >> miPresenterClass [
 
 	^ MiNumericInlineQueryPresenter
 ]

@@ -41,14 +41,15 @@ MiQueriesBrowser class >> defaultSpec [
 
 { #category : #'world menu' }
 MiQueriesBrowser class >> menuCommandOn: aBuilder [
-	<worldMenu>
+
+	"<worldMenu>
 	<miBrowsers>
 	(aBuilder item: #Queries)
-		parent: #Moose ;
-		label: self title ;
-		order: 3 ;
-		help: self helpMessage ;
-		action: [ self runMe ]
+		parent: #Moose;
+		label: self title;
+		order: 3;
+		help: self helpMessage;
+		action: [ self runMe ]"
 ]
 
 { #category : #private }
@@ -221,11 +222,11 @@ MiQueriesBrowser >> queryInputPort [
 
 { #category : #action }
 MiQueriesBrowser >> removeQuery: aQuery [
-	aQuery children
-		ifNotEmpty: [ UIManager default
-				alert: 'Cannot remove a query with children for now'.
-			^ self ].
-	aQuery prepareRemovalFrom: self.
+
+	aQuery children ifNotEmpty: [ 
+		UIManager default alert:
+			'Cannot remove a query with children for now'.
+		^ self ].
 	queries remove: aQuery.
 	queriesTree refresh.
 	^ aQuery

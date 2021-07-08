@@ -21,14 +21,13 @@ MiNewQueriesBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
 	<miBrowsers>
-	(aBuilder item: #NewQueries)
+	(aBuilder item: #QueryBrowser)
 		parent: #Moose;
 		label: self title;
 		icon: (self iconNamed: #mooseTree);
-		order: 7;
+		order: 3;
 		help: self helpMessage;
-		action: [ self runMe ];
-		withSeparatorAfter
+		action: [ self runMe ]
 ]
 
 { #category : #'instance creation' }
@@ -49,7 +48,7 @@ MiNewQueriesBrowser class >> runMe [
 { #category : #specs }
 MiNewQueriesBrowser class >> title [
 
-	^ 'New Queries Browser'
+	^ 'Query Browser'
 ]
 
 { #category : #accessing }
@@ -82,9 +81,9 @@ MiNewQueriesBrowser >> followAction [
 
 	"Create the new root query "
 	toSelect := toSelect asMooseGroup allUsing: FamixTNamedEntity.
+	rootQuery children removeAll.
 	rootQuery
 		resetResult;
-		resetChildren;
 		result: toSelect;
 		name: mooseModelName.
 
