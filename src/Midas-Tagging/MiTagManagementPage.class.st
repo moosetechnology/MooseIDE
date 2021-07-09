@@ -16,17 +16,25 @@ Class {
 
 { #category : #specs }
 MiTagManagementPage class >> defaultSpec [
+	^SpBoxLayout newTopToBottom
+		add: (SpBoxLayout newLeftToRight
+			add: (SpBoxLayout newTopToBottom
+				add: 'Category'  expand: false ;
+				add: #catManagmt ;
+				yourself) ;
+			add: (SpBoxLayout newTopToBottom
+				add: 'Tag' expand: false ;
+				add: #tagManagmt  ;
+				yourself) ;
+			yourself) ;
 
-	^ SpBoxLayout newVertical
-		  add: 'Category' expand: false;
-		  add: #catManagmt;
-		  add: 'Tag' expand: false;
-		  add: #tagManagmt;
-		  add: 'Description:' expand: false;
-		  add: #txtDescription;
-		  add: 'Color:' expand: false;
-		  add: #rgbColorChooser;
-		  yourself
+		add: 'Description:'  expand: false ;
+		add: #txtDescription  ;
+
+		add: 'Color:' expand: false ;
+		add: #rgbColorChooser expand: false ;
+
+		yourself
 ]
 
 { #category : #action }
@@ -69,7 +77,7 @@ MiTagManagementPage >> initializePresenters [
 
 	self initializeCategoryManagmtPart.
 	self initializeTagManagmtPart.
-
+	self initializeColorChooserPart
 ]
 
 { #category : #initialization }
@@ -82,7 +90,6 @@ MiTagManagementPage >> initializeTagManagmtPart [
 
 	txtDescription := self newText.
 
-	self initializeColorChooserPart
 ]
 
 { #category : #refreshing }
