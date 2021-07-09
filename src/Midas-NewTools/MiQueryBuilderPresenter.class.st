@@ -45,7 +45,10 @@ MiQueryBuilderPresenter >> availableQueryTypes [
 
 	| queryTypes |
 	queryTypes := FQUnaryQuery allSubclasses select: #canBeConfigured.
-	"There must be at least two queries to create a binary query. The binary query has two parents."
+	"There must be at least one query to do the negation operation"
+	presenters ifNotEmpty: [ 
+		queryTypes := queryTypes , FQComplementQuery asOrderedCollection ].
+	"There must be at least two queries to create an n-ary query."
 	presenters size > 1 ifTrue: [ 
 		queryTypes := queryTypes , FQNaryQuery subclasses ].
 	^ queryTypes

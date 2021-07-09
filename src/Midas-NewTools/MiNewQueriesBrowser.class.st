@@ -79,6 +79,7 @@ MiNewQueriesBrowser >> followAction [
 	mooseModelName := toSelect first mooseModel name.
 	self window title: (self class titleForModelName: mooseModelName).
 
+	Halt now.
 	"Create the new root query "
 	toSelect := toSelect asMooseGroup allUsing: FamixTNamedEntity.
 	rootQuery children removeAll.
