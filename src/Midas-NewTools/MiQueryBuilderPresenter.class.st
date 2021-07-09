@@ -58,8 +58,9 @@ MiQueryBuilderPresenter >> availableQueryTypes [
 MiQueryBuilderPresenter >> createFirstQueryForComponentList [
 
 	| queryCreationPresenter |
+	presenters := OrderedCollection empty.
 	queryCreationPresenter := self newRootQueryPresenter.
-	presenters := OrderedCollection with: queryCreationPresenter.
+	presenters add: queryCreationPresenter.
 	self updateComponentList
 ]
 

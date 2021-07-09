@@ -87,13 +87,8 @@ MiNewQueryCreationPresenter >> initializeButtons [
 					name: 'Remove this query';
 					icon: (self iconNamed: #remove);
 					help: 'Remove query and its sub-queries';
-					action: [ self removeQueryAction ] ];
-			addItem: [ :anItem | 
-				anItem
-					name: 'Negate/Unnegate';
-					icon: (self iconNamed: #exception);
-					help: 'Negate/Unnegate the query';
-					action: [ self negateQueryAction ] ] ].
+					action: [ self removeQueryAction ] ] ].
+
 	optionsMenuButton := self newMenuButton
 		                     menu: optionsMenuGroup;
 		                     yourself
@@ -139,7 +134,7 @@ MiNewQueryCreationPresenter >> initializePresenters [
 	"After setting whenSelectedItemChangedDo:, select the fastest query while we do not compute the
 	results in a fork.
 	This is for instantiate queryConfigurationPresenter variable"
-	"Changed, initially was typeQuery (selectIndex: 3)"
+	"Changed, initially was FQTypeQuery"
 	queryTypesDropListPresenter selectItem: FQBooleanQuery
 ]
 
@@ -154,31 +149,10 @@ MiNewQueryCreationPresenter >> initializeQueryTypesDropList [
 			self updateQueryConfigurationFor: queryClass ]
 ]
 
-{ #category : #testing }
-MiNewQueryCreationPresenter >> isNegated [
-	^self query isNegated 
-]
-
-{ #category : #accessing }
-MiNewQueryCreationPresenter >> isNegated: aBoolean [
-
-	self query isNegated: aBoolean.
-	self queryChangedUpdate
-]
-
 { #category : #accessing }
 MiNewQueryCreationPresenter >> name [
 
 	^ 'Q', queryNumber asString
-]
-
-{ #category : #actions }
-MiNewQueryCreationPresenter >> negateQueryAction [
-
-	self query canBeNegated
-		ifTrue: [ self isNegated: self isNegated not ]
-		ifFalse: [ 
-		UIManager default inform: 'This type of query cannot be negated' ]
 ]
 
 { #category : #actions }
@@ -261,8 +235,6 @@ MiNewQueryCreationPresenter >> updateQueryConfigurationFor: queryClass [
 		                               (queryClass miPresenterClass
 			                                owner: self
 			                                on: newQuery).
-
-	self isNegated: false.
 
 	self update
 ]
