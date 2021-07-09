@@ -1,9 +1,9 @@
 "
 I am a Spec widget allowing a user to choose a Color by its RGB values with the sliders, each for one of the RBG values.
 
-I manage three `SpSliderInput`.
-I set their min at 0 and their max at 255.
-I provide the method `color` that calculates a Color with the current values of the RGB sliders.
+Color can be chosen by setting RGB values (using sliders or text fileds), or from a palette of examples.
+
+One gets the chosen color with `#color`
 
 _Note: The sliders are quite buggy. But this is a bug in the Spec library._
 "
@@ -63,6 +63,7 @@ SpRGBChooser >> color [
 
 { #category : #accessing }
 SpRGBChooser >> colorPalette [
+	"some colors to choose from. A constant for now"
 	^ { 
         Color fromString: '#d4ac0d'.
         Color fromString: '#875692'.
@@ -79,6 +80,18 @@ SpRGBChooser >> colorPalette [
         Color fromString: '#f7dc6f'.
         Color fromString: '#48c9b0'.
         Color fromString: '#ff5050'}
+]
+
+{ #category : #private }
+SpRGBChooser >> colorPreviewed [
+	"for tests gets a pixel of the colorPreview Form"
+	^Color fromHexString: ((colorPreview image bits anyOne printStringBase: 16) copyFrom: 3 to:  8)
+]
+
+{ #category : #private }
+SpRGBChooser >> colorSamples [
+	"for tests"
+	^colorSamples 
 ]
 
 { #category : #initialization }
@@ -107,7 +120,7 @@ SpRGBChooser >> initializePresenters [
 
 ]
 
-{ #category : #accessing }
+{ #category : #initialization }
 SpRGBChooser >> makeColorSample: aColor [
 	^SpToolbarButtonPresenter new
 		icon: ((Form extent: self sampleSize @ self sampleSize depth: 32) fillColor: aColor);
@@ -116,7 +129,7 @@ SpRGBChooser >> makeColorSample: aColor [
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : #initialization }
 SpRGBChooser >> makeRGBForm [
 
 	^ (Form extent: 80 @ 80 depth: 32) fillColor: self color
@@ -143,7 +156,7 @@ SpRGBChooser >> refreshPreview [
 	^ colorPreview image: self makeRGBForm
 ]
 
-{ #category : #accessing }
+{ #category : #initialization }
 SpRGBChooser >> sampleSize [
 	^(self class buttonWidth / 3) asInteger
 ]
