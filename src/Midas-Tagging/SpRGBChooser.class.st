@@ -14,22 +14,35 @@ Class {
 		'redSlider',
 		'greenSlider',
 		'blueSlider',
-		'colorPreview'
+		'colorPreview',
+		'colorSamples',
+		'colorPalette'
 	],
 	#category : #'Midas-Tagging'
 }
 
-{ #category : #specs }
+{ #category : #initialization }
 SpRGBChooser class >> defaultSpec [
+	^SpBoxLayout newTopToBottom
+		add: (SpBoxLayout newLeftToRight
+			add: #colorPreview expand: false ;
+			add: (SpBoxLayout newTopToBottom
+				add: #redSlider expand: false ;
+				add: #greenSlider expand: false ;
+				add: #blueSlider expand: false ;
+				yourself);
+			yourself) ;
 
-	^ SpPanedLayout newLeftToRight
-		  add: #colorPreview;
-		  add: (SpBoxLayout newTopToBottom
-				   add: #redSlider;
-				   add: #greenSlider;
-				   add: #blueSlider;
-				   yourself);
-		  yourself
+		add: 'Sample colors:' expand: false ;
+		add: #colorSamples expand: false ;
+
+		yourself.
+
+]
+
+{ #category : #initialization }
+SpRGBChooser class >> windowSize [
+	^ 700 @ 180
 ]
 
 { #category : #accessing }
@@ -48,10 +61,30 @@ SpRGBChooser >> color [
 		  range: 255
 ]
 
+{ #category : #accessing }
+SpRGBChooser >> colorPalette [
+	^ { 
+        Color fromString: '#d4ac0d'.
+        Color fromString: '#875692'.
+        Color fromString: '#f38400'.
+        Color fromString: '#a1caf1'.
+        Color fromString: '#be0032'.
+        Color fromString: '#008856'.
+        Color fromString: '#e68fac'.
+        Color fromString: '#0067a5'.
+        Color fromString: '#f99379'.
+        Color fromString: '#c2b280'.
+        Color fromString: '#873600'.
+        Color fromString: '#8db600'.
+        Color fromString: '#f7dc6f'.
+        Color fromString: '#48c9b0'.
+        Color fromString: '#ff5050'}
+]
+
 { #category : #initialization }
 SpRGBChooser >> connectPresenters [
 
-	self whenChangedDo: [ colorPreview image: self makeRGBForm ]
+	self whenChangedDo: [ self refreshPreview ]
 ]
 
 { #category : #accessing }
@@ -63,29 +96,24 @@ SpRGBChooser >> greenSlider [
 { #category : #initialization }
 SpRGBChooser >> initializePresenters [
 
-	redSlider := self instantiate: SpSliderInputPresenter.
-	greenSlider := self instantiate: SpSliderInputPresenter.
-	blueSlider := self instantiate: SpSliderInputPresenter.
+	redSlider := self makeSlider: 'Red'.
+	greenSlider := self makeSlider: 'Green'.
+	blueSlider := self makeSlider: 'Blue'.
 	colorPreview := self newImage
 		                image: self makeRGBForm;
 		                yourself.
-	redSlider
-		min: 0;
-		max: 255;
-		label: 'Red'.
-	greenSlider
-		min: 0;
-		max: 255;
-		label: 'Green'.
-	blueSlider
-		min: 0;
-		max: 255;
-		label: 'Blue'.
-	self focusOrder
-		add: redSlider;
-		add: greenSlider;
-		add: blueSlider;
-		add: colorPreview
+	colorSamples := self newToolbar.
+	self colorPalette do: [ :color | colorSamples addItem: (self makeColorSample: color) ].
+
+]
+
+{ #category : #accessing }
+SpRGBChooser >> makeColorSample: aColor [
+	^SpToolbarButtonPresenter new
+		icon: ((Form extent: self sampleSize @ self sampleSize depth: 32) fillColor: aColor);
+		color: aColor ;
+		action: [ self setColor: aColor ] ;
+		yourself
 ]
 
 { #category : #accessing }
@@ -94,10 +122,37 @@ SpRGBChooser >> makeRGBForm [
 	^ (Form extent: 80 @ 80 depth: 32) fillColor: self color
 ]
 
+{ #category : #initialization }
+SpRGBChooser >> makeSlider: name [
+	^(self instantiate: SpSliderInputPresenter)
+		min: 0;
+		max: 255;
+		label: name ;
+		yourself
+]
+
 { #category : #accessing }
 SpRGBChooser >> redSlider [
 
 	^ redSlider
+]
+
+{ #category : #initialization }
+SpRGBChooser >> refreshPreview [
+
+	^ colorPreview image: self makeRGBForm
+]
+
+{ #category : #accessing }
+SpRGBChooser >> sampleSize [
+	^(self class buttonWidth / 3) asInteger
+]
+
+{ #category : #accessing }
+SpRGBChooser >> setColor: aColor [
+	redSlider value: ((aColor red * 255) round: 1).
+	greenSlider value: ((aColor green * 255) round: 1).
+	blueSlider value: ((aColor blue * 255) round: 1).
 ]
 
 { #category : #announcing }

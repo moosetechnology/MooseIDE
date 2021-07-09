@@ -64,7 +64,7 @@ MiTagBrowser class >> title [
 { #category : #specs }
 MiTagBrowser class >> windowSize [
 
-	^ 500 @ 500
+	^ 700 @ 475
 ]
 
 { #category : #testing }
