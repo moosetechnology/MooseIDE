@@ -83,6 +83,8 @@ MiMooseModelBrowser >> childrenOf: class [
 
 { #category : #initialization }
 MiMooseModelBrowser >> computeModelPresenterRoot [
+	model model ifNil: [ ^self ].
+
 	modelPresenter
 		roots:
 			((model model metamodel classes

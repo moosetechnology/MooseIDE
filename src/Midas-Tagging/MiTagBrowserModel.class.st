@@ -29,7 +29,9 @@ MiTagBrowserModel >> allCategories [
 { #category : #accessing }
 MiTagBrowserModel >> allTags [
 
-	^self mooseModel allTags
+	^self mooseModel
+		ifNil: [ #() ]
+		ifNotNil: [ :model | model allTags ]
 ]
 
 { #category : #accessing }
@@ -120,8 +122,9 @@ MiTagBrowserModel >> owner: anObject [
 ]
 
 { #category : #accessing }
-MiTagBrowserModel >> tagEntity: anEntity [
-	anEntity tagWith: self currentTag
+MiTagBrowserModel >> tagEntityNotYourself: anEntity [
+	self currentTag = anEntity
+	ifFalse: [self currentTag tagEntity: anEntity]
 ]
 
 { #category : #accessing }

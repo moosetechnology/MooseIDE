@@ -87,9 +87,9 @@ MiTagBrowser >> initializePresenters [
 
 	super initializePresenters.
 	mainPresenter := self newNotebook
-		                 addPage: self manageTagsPage;
-		                 addPage: self tagDetailsPage;
-		                 yourself
+		addPage: self manageTagsPage ;
+		addPage: self tagDetailsPage ;
+		yourself
 ]
 
 { #category : #initialization }

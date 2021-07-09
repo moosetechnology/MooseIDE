@@ -18,9 +18,12 @@ BaselineOfMidas >> baseline: spec [
 		"If Moose is not already present"
 		spec for: #NeedsMoose do: [ 
 			self famix: spec.
+			self famixTagging: spec.
 			spec
 				package: 'Midas-Core' with: [ spec requires: #( 'Famix' ) ];
-				package: 'Midas-Meta' with: [ spec requires: #( 'Midas-Core' ) ] ].
+				package: 'Midas-Meta' with: [ spec requires: #( 'Midas-Core' ) ];
+				package: 'Midas-Tagging'
+				with: [ spec requires: #( 'FamixTagging' ) ] ].
 
 		"Groups"
 		self defineGroups: spec ]
@@ -79,6 +82,15 @@ BaselineOfMidas >> famixQueries: spec [
 	spec
 		baseline: 'FamixQueries'
 		with: [ spec repository: 'github://moosetechnology/FamixQueries' ]
+]
+
+{ #category : #dependencies }
+BaselineOfMidas >> famixTagging: spec [
+
+	spec
+		baseline: 'FamixTagging'
+		with: [ 
+		spec repository: 'github://moosetechnology/FamixTagging:v1.x.x/src' ]
 ]
 
 { #category : #dependencies }
