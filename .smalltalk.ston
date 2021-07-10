@@ -11,7 +11,7 @@ SmalltalkCISpec {
   ], 
   #testing : {
     #exclude : {
-      #classes : [ #MiInspectorBrowserTest, #MiStringQueryPresenterTest, #MiNumericQueryPresenterTest, #MiBooleanQueryPresenterTest, #MiNavigationQueriesPresenterTest, #MiNewQueriesBrowserTest, #MiRoassalQueryPresenterTest, #MiQueryCreationPresenterTest, #MiQueriesBrowserTest, #MiTypeQueriesPresenterTest, #MiScopeQueriesPresenterTest, #MiQueriesCombinationPresenterTest, #MiQueryBuilderPresenterTest ]
+      #classes : [ #MiInspectorBrowserTest, #MiStringQueryPresenterTest, #MiNumericQueryPresenterTest, #MiBooleanQueryPresenterTest, #MiNavigationQueriesPresenterTest, #MiRoassalQueryPresenterTest, #MiQueryCreationPresenterTest, #MiQueriesBrowserTest, #MiTypeQueriesPresenterTest, #MiScopeQueriesPresenterTest, #MiQueriesCombinationPresenterTest, #MiQueryBuilderPresenterTest ]
     }
   }
 }
