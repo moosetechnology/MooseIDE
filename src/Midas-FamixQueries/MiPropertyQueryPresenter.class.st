@@ -46,13 +46,14 @@ MiPropertyQueryPresenter >> initializePresenters [
 
 { #category : #initialization }
 MiPropertyQueryPresenter >> newComparatorDropList [
+
 	^ self newDropList
-		items: self query class comparators;
-		display: [ :prop | prop asString ];
-		whenSelectedItemChangedDo: [ :prop | 
-			self query comparator: prop.
-			self notifyQueryChanged ];
-		yourself
+		  items: self query class comparators;
+		  display: [ :prop | prop asString ];
+		  whenSelectedItemChangedDo: [ :prop | 
+			  self query comparator: prop.
+			  self notifyQueryChanged ];
+		  yourself
 ]
 
 { #category : #initialization }

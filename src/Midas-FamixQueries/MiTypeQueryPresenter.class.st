@@ -65,7 +65,8 @@ MiTypeQueryPresenter >> typeCheckBoxForType: type [
 		state: (self query types includes: type);
 		enabled: self query types size > 1;
 		label: (self labelFor: type);
-		whenActivatedDo: [ self query addType: type ];
+		whenActivatedDo: [ 
+			self query addType: type ];
 		whenDeactivatedDo: [ 
 			[ self query removeType: type ]
 				on: FQCannotRemoveLastType
