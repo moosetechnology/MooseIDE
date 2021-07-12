@@ -67,6 +67,24 @@ MiNAryQueryPresenter >> initializePresenters [
 ]
 
 { #category : #actions }
+MiNAryQueryPresenter >> nAryClass [
+
+	self subclassResponsibility
+]
+
+{ #category : #actions }
+MiNAryQueryPresenter >> nAryOperationAction [
+
+	| subqueries selectedDropListItems |
+	selectedDropListItems := subqueryDropLists collect: #selectedItem.
+	subqueries := selectedDropListItems collect: #query.
+	query := self nAryClass new
+		         subqueries: subqueries;
+		         yourself.
+	self notifyQueryChanged
+]
+
+{ #category : #actions }
 MiNAryQueryPresenter >> newSubqueryDropList [
 
 	| availableQueryPresentersForOperation |
@@ -76,6 +94,7 @@ MiNAryQueryPresenter >> newSubqueryDropList [
 	^ self newDropList
 		  items: availableQueryPresentersForOperation;
 		  display: [ :each | each name ];
+		  whenSelectedItemChangedDo: [ self nAryOperationAction ];
 		  yourself
 ]
 
