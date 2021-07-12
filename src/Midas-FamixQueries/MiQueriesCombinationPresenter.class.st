@@ -108,7 +108,7 @@ MiQueriesCombinationPresenter >> initialize [
 { #category : #initialization }
 MiQueriesCombinationPresenter >> initializeDropList [
 	combinationsDroplist := self newDropList
-		items: FQNaryQuery availableCombinations;
+		items: FQNAryQuery availableCombinations;
 		display: [ :queryClass | queryClass label ];
 		whenSelectedItemChangedDo: [ :queryClass | self updateForQueryClass: queryClass ]
 ]

@@ -1,13 +1,13 @@
-Extension { #name : #FQNaryQuery }
+Extension { #name : #FQNAryQuery }
 
 { #category : #'*Midas-NewTools' }
-FQNaryQuery class >> isNAryQuery [
+FQNAryQuery class >> isNAryQuery [
 
 	^ true
 ]
 
 { #category : #'*Midas-NewTools' }
-FQNaryQuery class >> miPresenterClass [
+FQNAryQuery class >> miPresenterClass [
 
 	^ MiNAryQueryPresenter
 ]
