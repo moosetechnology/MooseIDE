@@ -28,7 +28,7 @@ MiExporterColumnsEditor >> initializePresenters [
 
 	super initializePresenters.
 	propertiesList := (self instantiate:
-			                   MiFilteringSelectableListPresenter)
+			                   SpFilteringSelectableListPresenter)
 		                  display: [ :property | property name ];
 		                  onActivation: [ :property | 
 			                  exporter showProperties:
@@ -45,7 +45,7 @@ MiExporterColumnsEditor >> setModelBeforeInitialization: anExporter [
 	exporter := anExporter
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 MiExporterColumnsEditor >> setPropertiesListItems [
 
 	| properties |
