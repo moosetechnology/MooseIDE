@@ -5,9 +5,3 @@ FQNAryQuery class >> isNAryQuery [
 
 	^ true
 ]
-
-{ #category : #'*Midas-NewTools' }
-FQNAryQuery class >> miPresenterClass [
-
-	^ MiNAryQueryPresenter
-]
