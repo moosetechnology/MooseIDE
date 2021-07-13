@@ -75,12 +75,14 @@ MiNewQueriesBrowser >> followAction [
 
 	| mooseModelName |
 	(self accept: toSelect) ifFalse: [ ^ self ].
+	"Create a group in case that only one entity was received from the bus"
+	toSelect := toSelect asMooseGroup allUsing: FamixTNamedEntity.
+
 	"Update window's title"
 	mooseModelName := toSelect first mooseModel name.
 	self window title: (self class titleForModelName: mooseModelName).
 
-	"Create the new root query "
-	toSelect := toSelect asMooseGroup allUsing: FamixTNamedEntity.
+	"Create the new root query"
 	rootQuery children removeAll.
 	rootQuery
 		resetResult;

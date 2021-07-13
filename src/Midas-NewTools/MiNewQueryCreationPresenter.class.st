@@ -97,11 +97,7 @@ MiNewQueryCreationPresenter >> initializeButtons [
 { #category : #initialization }
 MiNewQueryCreationPresenter >> initializeLayout [
 
-	| buttonConstraints tempLayout |
-	buttonConstraints := [ :constraints | 
-	                     constraints
-		                     width: self class iconWidth;
-		                     expand: false ].
+	| tempLayout |
 	tempLayout := SpBoxLayout newLeftToRight
 		              spacing: 5;
 		              borderWidth: 5;
@@ -134,7 +130,6 @@ MiNewQueryCreationPresenter >> initializePresenters [
 	"After setting whenSelectedItemChangedDo:, select the fastest query while we do not compute the
 	results in a fork.
 	This is for instantiate queryConfigurationPresenter variable"
-	"Changed, initially was FQTypeQuery"
 	queryTypesDropListPresenter selectItem: FQBooleanQuery
 ]
 
@@ -162,11 +157,11 @@ MiNewQueryCreationPresenter >> newQueryForClass: queryClass [
 	(parentQuery children includes: self query) ifTrue: [ 
 		parentQuery removeChild: self query ].
 
-	queryClass isNAryQuery
-		ifTrue: [ newQuery := parentQuery ]
-		ifFalse: [ 
-			newQuery := queryClass defaultForParent: parentQuery.
-			parentQuery addChild: newQuery ].
+	newQuery := queryClass isNAryQuery
+		            ifTrue: [ 
+		            queryClass subqueries: OrderedCollection empty ]
+		            ifFalse: [ queryClass defaultForParent: parentQuery ].
+	parentQuery addChild: newQuery.
 	^ newQuery
 ]
 
