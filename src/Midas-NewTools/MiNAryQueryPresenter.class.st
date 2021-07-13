@@ -67,20 +67,14 @@ MiNAryQueryPresenter >> initializePresenters [
 ]
 
 { #category : #actions }
-MiNAryQueryPresenter >> nAryClass [
-
-	self subclassResponsibility
-]
-
-{ #category : #actions }
 MiNAryQueryPresenter >> nAryOperationAction [
 
 	| subqueries selectedDropListItems |
 	selectedDropListItems := subqueryDropLists collect: #selectedItem.
 	subqueries := selectedDropListItems collect: #query.
-	query := self nAryClass new
-		         subqueries: subqueries;
-		         yourself.
+	query
+		subqueries: subqueries;
+		resetResult.
 	self notifyQueryChanged
 ]
 
