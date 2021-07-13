@@ -39,7 +39,7 @@ MiNegationQueryPresenter >> initializePresenters [
 { #category : #actions }
 MiNegationQueryPresenter >> negateQueryAction: selectedPresenter [
 
-	query := FQComplementQuery defaultForParent: selectedPresenter query.
+	query := FQComplementQuery queryToNegate: selectedPresenter query.
 	query runOn: selectedPresenter query parent result.
 	self notifyQueryChanged
 ]

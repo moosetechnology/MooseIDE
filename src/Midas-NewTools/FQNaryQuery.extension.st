@@ -1,7 +1,7 @@
 Extension { #name : #FQNAryQuery }
 
 { #category : #'*Midas-NewTools' }
-FQNAryQuery classSide >> isNAryQuery [
+FQNAryQuery class >> isNAryQuery [
 
 	^ true
 ]
