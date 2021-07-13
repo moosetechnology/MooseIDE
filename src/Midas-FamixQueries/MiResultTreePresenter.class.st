@@ -55,6 +55,11 @@ MiResultTreePresenter >> initialize [
 		beMultipleSelection
 ]
 
+{ #category : #'private - for tests' }
+MiResultTreePresenter >> items [
+	^ self roots flatCollect: [ :root | self childrenOf: root ]
+]
+
 { #category : #accessing }
 MiResultTreePresenter >> miSelectedItem [
 	^ (self selectedItems
