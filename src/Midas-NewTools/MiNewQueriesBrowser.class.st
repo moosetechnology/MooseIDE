@@ -21,7 +21,7 @@ MiNewQueriesBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
 	<miBrowsers>
-	(aBuilder item: #QueryBrowser)
+	(aBuilder item: #QueriesBrowser)
 		parent: #Moose;
 		label: self title;
 		icon: (self iconNamed: #mooseTree);
@@ -48,7 +48,7 @@ MiNewQueriesBrowser class >> runMe [
 { #category : #specs }
 MiNewQueriesBrowser class >> title [
 
-	^ 'Query Browser'
+	^ 'Queries Browser'
 ]
 
 { #category : #accessing }
