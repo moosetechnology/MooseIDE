@@ -8,10 +8,5 @@ SmalltalkCISpec {
       #onConflict : #useIncoming,
       #onUpgrade : #useIncoming
     }
-  ], 
-  #testing : {
-    #exclude : {
-      #classes : [ #MiInspectorBrowserTest, #MiStringQueryPresenterTest, #MiNumericQueryPresenterTest, #MiBooleanQueryPresenterTest, #MiNavigationQueriesPresenterTest, #MiRoassalQueryPresenterTest, #MiQueryCreationPresenterTest, #MiQueriesBrowserTest, #MiTypeQueriesPresenterTest, #MiScopeQueriesPresenterTest, #MiQueriesCombinationPresenterTest, #MiQueryBuilderPresenterTest ]
-    }
-  }
+  ]
 }
