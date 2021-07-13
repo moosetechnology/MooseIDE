@@ -46,7 +46,8 @@ BaselineOfMidas >> defineGroups: spec [
 		with:
 			#( 'Midas-Core' 'Midas-Visualization' 'Midas-Meta' 'Midas-Tests'
 			   'Midas-Dependency' 'Midas-Famix' 'Midas-Tagging' 'Midas-FamixQueries'
-			   'Midas-FamixQueries-Tests' 'Midas-Telescope' 'Midas-Export' 'Midas-NewTools' 'Midas-NewTools-Tests').
+			   'Midas-Telescope' 'Midas-Export' 'Midas-NewTools'
+			   'Midas-NewTools-Tests' )
 ]
 
 { #category : #baselines }
