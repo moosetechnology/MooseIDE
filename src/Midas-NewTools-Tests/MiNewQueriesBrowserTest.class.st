@@ -25,7 +25,7 @@ MiNewQueriesBrowserTest >> setUp [
 ]
 
 { #category : #tests }
-MiNewQueriesBrowserTest >> testAddNewBinaryQuery [
+MiNewQueriesBrowserTest >> testAddNewNAryQuery [
 
 	| unionQuery |
 	unionQuery := self unionQuery.
@@ -59,7 +59,7 @@ MiNewQueriesBrowserTest >> testInitializePresenters [
 ]
 
 { #category : #tests }
-MiNewQueriesBrowserTest >> testRemoveBinaryQuery [
+MiNewQueriesBrowserTest >> testRemoveNAryQuery [
 
 	| unionQuery firstParent |
 	unionQuery := self unionQuery.
@@ -76,12 +76,11 @@ MiNewQueriesBrowserTest >> testRemoveQuery [
 	query := FQBooleanQuery new property: #isAbstract.
 	query beChildOf: browser rootQuery.
 	query2 := FQBooleanQuery new property: #isStub.
-	query2 beChildOf: browser rootQuery.
+	query2 beChildOf: query.
 
-	browser rootQuery addChild: query.
-	browser rootQuery addChild: query2.
 	browser removeQuery: query.
 	self deny: (browser rootQuery children includes: query).
+	self deny: (browser rootQuery children includes: query2).
 	self
 		assertCollection: browser queryResultTreePresenter items
 		hasSameElements: browser queryResultEntities
@@ -116,15 +115,15 @@ MiNewQueriesBrowserTest >> testSetModelBeforeInitialization [
 { #category : #defaults }
 MiNewQueriesBrowserTest >> unionQuery [
 
-	| parents union |
-	parents := { 
+	| subqueries union |
+	subqueries := { 
 		           (FQBooleanQuery property: #isDead).
 		           (FQTypeQuery new type: FamixStClass) }.
 	union := FQUnionQuery new.
-	parents do: [ :parent | 
+	subqueries do: [ :parent | 
 		parent beChildOf: browser rootQuery.
 		browser selectQuery: parent.
 		parent addChild: union ].
-	union subqueries: parents.
+	union subqueries: subqueries.
 	^ union
 ]
