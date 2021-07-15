@@ -43,11 +43,32 @@ MiQueryBuilderPresenterTest >> tearDown [
 ]
 
 { #category : #tests }
-MiQueryBuilderPresenterTest >> testAddNewQueryAction [
+MiQueryBuilderPresenterTest >> testAddNewChildQueryAction [
 
-	self assert: presenter creationPresenters size equals: 1.
-	presenter creationPresenters first addNewQueryAction.
-	self assert: presenter creationPresenters size equals: 2
+	presenter creationPresenters first addNewChildQueryAction.
+	self assert: presenter creationPresenters size equals: 2.
+	self deny:
+		presenter creationPresenters second query parent isRootQuery.
+	presenter creationPresenters second addNewChildQueryAction.
+	presenter creationPresenters third addNewChildQueryAction.
+	self
+		assert: presenter creationPresenters last query parentSequence size
+		equals: 5.
+	self assert: presenter creationPresenters last name equals: 'Q4'
+]
+
+{ #category : #tests }
+MiQueryBuilderPresenterTest >> testAddNewFirstLevelQuery [
+
+	presenter
+		addNewFirstLevelQuery;
+		addNewFirstLevelQuery;
+		addNewFirstLevelQuery;
+		addNewFirstLevelQuery.
+	self assert: presenter creationPresenters size equals: 5.
+	self assert: presenter creationPresenters last name equals: 'Q5'.
+	presenter creationPresenters do: [ :aPresenter | 
+		self assert: aPresenter query parent isRootQuery ]
 ]
 
 { #category : #tests }
@@ -63,9 +84,15 @@ MiQueryBuilderPresenterTest >> testCreateFirstQueryForComponentList [
 MiQueryBuilderPresenterTest >> testRemoveQueryAction [
 
 	self assert: presenter creationPresenters size equals: 1.
-	presenter creationPresenters first addNewQueryAction.
+	presenter creationPresenters first addNewChildQueryAction.
 	presenter creationPresenters last removeQueryAction.
-	self assert: presenter creationPresenters size equals: 1
+	self assert: presenter creationPresenters size equals: 1.
+
+	presenter creationPresenters first addNewChildQueryAction.
+	presenter creationPresenters second addNewChildQueryAction.
+	presenter creationPresenters third addNewChildQueryAction.
+	presenter creationPresenters first removeQueryAction.
+	self assert: presenter creationPresenters size equals: 0
 ]
 
 { #category : #tests }

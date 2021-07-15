@@ -19,7 +19,7 @@ Class {
 }
 
 { #category : #'api - actions' }
-MiQueryBuilderPresenter >> addNewQueryAction: query [
+MiQueryBuilderPresenter >> addNewChildQueryAction: query [
 
 	| newPresenter |
 	newPresenter := self instantiate: (MiNewQueryCreationPresenter
@@ -34,9 +34,9 @@ MiQueryBuilderPresenter >> addNewQueryAction: query [
 ]
 
 { #category : #actions }
-MiQueryBuilderPresenter >> addNewRootQuery [
+MiQueryBuilderPresenter >> addNewFirstLevelQuery [
 
-	presenters add: self newRootQueryPresenter.
+	presenters add: self newFirstLevelQueryPresenter.
 	self updateComponentList
 ]
 
@@ -59,7 +59,7 @@ MiQueryBuilderPresenter >> createFirstQueryForComponentList [
 
 	| queryCreationPresenter |
 	presenters := OrderedCollection empty.
-	queryCreationPresenter := self newRootQueryPresenter.
+	queryCreationPresenter := self newFirstLevelQueryPresenter.
 	presenters add: queryCreationPresenter.
 	self updateComponentList
 ]
@@ -92,7 +92,7 @@ MiQueryBuilderPresenter >> initializeAddRootQueryButton [
 	addRootQueryButton := self newButton.
 	addRootQueryButton
 		icon: (self iconNamed: #smallAdd);
-		action: [ self addNewRootQuery ]
+		action: [ self addNewFirstLevelQuery ]
 ]
 
 { #category : #initialization }
@@ -129,7 +129,9 @@ MiQueryBuilderPresenter >> initializePresenters [
 ]
 
 { #category : #actions }
-MiQueryBuilderPresenter >> newRootQueryPresenter [
+MiQueryBuilderPresenter >> newFirstLevelQueryPresenter [
+
+	"This is a query that is a direct child of a FQRootQuery"
 
 	| queryCreationPresenter |
 	queryCreationPresenter := self instantiate:
@@ -168,7 +170,7 @@ MiQueryBuilderPresenter >> removeQueryAction: aQueryCreationPresenter [
 	self updateComponentList
 ]
 
-{ #category : #'accessing model' }
+{ #category : #'accessing - model' }
 MiQueryBuilderPresenter >> setModelBeforeInitialization: aQueryBrowserPresenter [
 
 	parentBrowser := aQueryBrowserPresenter

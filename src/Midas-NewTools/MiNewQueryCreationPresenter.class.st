@@ -42,9 +42,9 @@ MiNewQueryCreationPresenter class >> on: aModel parentPresenter: aPresenter quer
 ]
 
 { #category : #actions }
-MiNewQueryCreationPresenter >> addNewQueryAction [
+MiNewQueryCreationPresenter >> addNewChildQueryAction [
 
-	parentPresenter addNewQueryAction: self query
+	parentPresenter addNewChildQueryAction: self query
 	"We need to see if after adding a new query we have to disable this one."
 ]
 
@@ -81,7 +81,7 @@ MiNewQueryCreationPresenter >> initializeButtons [
 					name: 'Add a child query';
 					icon: (self iconNamed: #smallAdd);
 					help: 'Restrict result by adding a query';
-					action: [ self addNewQueryAction ] ];
+					action: [ self addNewChildQueryAction ] ];
 			addItem: [ :anItem | 
 				anItem
 					name: 'Remove this query';
@@ -184,12 +184,6 @@ MiNewQueryCreationPresenter >> queryChangedUpdate [
 
 	parentPresenter ifNotNil: [ 
 		parentPresenter queryChangedUpdate: self query ]
-]
-
-{ #category : #accessing }
-MiNewQueryCreationPresenter >> queryConfigurationPresenter [
-
-	^ queryConfigurationPresenter
 ]
 
 { #category : #accessing }
