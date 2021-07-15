@@ -16,7 +16,7 @@ jobs:
       PROJECT_NAME: ${{ matrix.smalltalk }}-Midas
     strategy:
       matrix:
-        smalltalk: [ Pharo64-alpha ]
+        smalltalk: [ Pharo64-9.0 ]
     name: ${{ matrix.smalltalk }}
     steps:
       - uses: actions/checkout@v2
