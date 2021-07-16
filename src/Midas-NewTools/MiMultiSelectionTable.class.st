@@ -24,7 +24,7 @@ Class {
 		'windowName',
 		'whenWindowClosedBlock'
 	],
-	#category : #'Midas-NewTools-Queries Browser configuration'
+	#category : #'Midas-NewTools-Queries Browser widgets'
 }
 
 { #category : #actions }
