@@ -1,15 +1,20 @@
 Class {
-	#name : #MiTypeInlineQueryPresenter,
-	#superclass : #MiTypeQueryPresenter,
+	#name : #MiTypeQueryPresenter,
+	#superclass : #MiQueryConfigurationPresenter,
 	#instVars : [
 		'typesTable',
 		'typesButton'
 	],
-	#category : #'Midas-NewTools-Queries configuration'
+	#category : #'Midas-NewTools-Queries Browser configuration'
 }
 
+{ #category : #specs }
+MiTypeQueryPresenter class >> title [
+	^ 'Type Query'
+]
+
 { #category : #layout }
-MiTypeInlineQueryPresenter >> buildLayout [
+MiTypeQueryPresenter >> buildLayout [
 
 	| padding |
 	padding := 5.
@@ -22,7 +27,7 @@ MiTypeInlineQueryPresenter >> buildLayout [
 ]
 
 { #category : #initialization }
-MiTypeInlineQueryPresenter >> initializeButton [
+MiTypeQueryPresenter >> initializeButton [
 
 	typesButton := self query availableTypes
 		               ifEmpty: [ self noParameterMessage: 'type' ]
@@ -35,27 +40,18 @@ MiTypeInlineQueryPresenter >> initializeButton [
 ]
 
 { #category : #initialization }
-MiTypeInlineQueryPresenter >> initializePresenters [
+MiTypeQueryPresenter >> initializePresenters [
 
-	super initializePresenters.
 	self initializeTypesTable.
 	self initializeButton
 ]
 
 { #category : #initialization }
-MiTypeInlineQueryPresenter >> initializeTypeCheckBoxes [
-
-	"We do not want to build the types checkboxes"
-
-	
-]
-
-{ #category : #initialization }
-MiTypeInlineQueryPresenter >> initializeTypesTable [
+MiTypeQueryPresenter >> initializeTypesTable [
 
 	typesTable := self
-		              instantiate: MiMultiSelectionTable
-		              on: self query availableTypes.
+		                instantiate: MiMultiSelectionTable
+		                on: self query availableTypes.
 	typesTable
 		displayBlock: [ :item | self labelFor: item ];
 		windowName: 'Types';
@@ -63,8 +59,13 @@ MiTypeInlineQueryPresenter >> initializeTypesTable [
 			self updateQueryWithSelectedTypes: selectedTypes ]
 ]
 
-{ #category : #actions }
-MiTypeInlineQueryPresenter >> updateQueryWithSelectedTypes: selectedTypes [
+{ #category : #'widgets configuration' }
+MiTypeQueryPresenter >> labelFor: type [
+	^ type mooseDescription name asEnglishPlural
+]
+
+{ #category : #initialization }
+MiTypeQueryPresenter >> updateQueryWithSelectedTypes: selectedTypes [
 
 	| nonSelectedTypes |
 	nonSelectedTypes := self query types difference: selectedTypes.

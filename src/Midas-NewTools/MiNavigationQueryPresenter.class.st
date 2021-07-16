@@ -1,16 +1,21 @@
 Class {
-	#name : #MiNavigationInlineQueryPresenter,
-	#superclass : #MiNavigationQueryPresenter,
+	#name : #MiNavigationQueryPresenter,
+	#superclass : #MiQueryConfigurationPresenter,
 	#instVars : [
 		'directionDropList',
 		'associationsTable',
 		'associationsButton'
 	],
-	#category : #'Midas-NewTools-Queries configuration'
+	#category : #'Midas-NewTools-Queries Browser configuration'
 }
 
+{ #category : #specs }
+MiNavigationQueryPresenter class >> title [
+	^ 'Navigation Query'
+]
+
 { #category : #layout }
-MiNavigationInlineQueryPresenter >> buildLayout [
+MiNavigationQueryPresenter >> buildLayout [
 
 	| padding |
 	padding := 5.
@@ -26,15 +31,7 @@ MiNavigationInlineQueryPresenter >> buildLayout [
 ]
 
 { #category : #initialization }
-MiNavigationInlineQueryPresenter >> initializeAssociationsCheckBoxes [
-
-	"We override this method because we do not want to build the cheboxes"
-
-	
-]
-
-{ #category : #initialization }
-MiNavigationInlineQueryPresenter >> initializeAssociationsTable [
+MiNavigationQueryPresenter >> initializeAssociationsTable [
 
 	associationsTable := self
 		                     instantiate: MiMultiSelectionTable
@@ -47,7 +44,7 @@ MiNavigationInlineQueryPresenter >> initializeAssociationsTable [
 ]
 
 { #category : #initialization }
-MiNavigationInlineQueryPresenter >> initializeButton [
+MiNavigationQueryPresenter >> initializeButton [
 
 	associationsButton := self query availableAssociations
 		                      ifEmpty: [ self noParameterMessage: 'type' ]
@@ -60,15 +57,7 @@ MiNavigationInlineQueryPresenter >> initializeButton [
 ]
 
 { #category : #initialization }
-MiNavigationInlineQueryPresenter >> initializeDirectionRadioButtons [
-
-	"We override this method because we do not want to build the radio buttons since we use now a drop list."
-
-	
-]
-
-{ #category : #initialization }
-MiNavigationInlineQueryPresenter >> initializeDirectionsDropList [
+MiNavigationQueryPresenter >> initializeDirectionsDropList [
 
 	directionDropList := self newDropList.
 	directionDropList
@@ -76,21 +65,20 @@ MiNavigationInlineQueryPresenter >> initializeDirectionsDropList [
 		display: #label;
 		whenSelectedItemChangedDo: [ :selectedDirection | 
 			self query resetAndChangeDirection: selectedDirection.
-			self updateAccordingToDirection.
+			associationsTable items: self query availableAssociations.
 			self notifyQueryChanged ]
 ]
 
 { #category : #initialization }
-MiNavigationInlineQueryPresenter >> initializePresenters [
+MiNavigationQueryPresenter >> initializePresenters [
 
-	super initializePresenters.
 	self initializeDirectionsDropList.
 	self initializeAssociationsTable.
 	self initializeButton
 ]
 
 { #category : #actions }
-MiNavigationInlineQueryPresenter >> updateQueryWithSelectedAssociations: selectedAssociations [
+MiNavigationQueryPresenter >> updateQueryWithSelectedAssociations: selectedAssociations [
 
 	| nonSelectedAssociations |
 	nonSelectedAssociations := self query associations difference:

@@ -9,7 +9,7 @@ Class {
 		'addSubqueryToLayoutButton',
 		'removeSubqueryFromLayoutButton'
 	],
-	#category : #'Midas-NewTools-Queries configuration'
+	#category : #'Midas-NewTools-Queries Browser configuration'
 }
 
 { #category : #accessing }
