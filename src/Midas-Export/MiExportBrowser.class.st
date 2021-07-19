@@ -102,7 +102,7 @@ MiExportBrowser >> columnChoiceButton [
 	^ choiceButton
 ]
 
-{ #category : #actions }
+{ #category : #accessing }
 MiExportBrowser >> commentOf: anEntity [
 
 	^ commentDictionary at: anEntity ifAbsent: ''
@@ -119,7 +119,7 @@ MiExportBrowser >> commentsButton [
 		                    whenUnselectedDo: [ self removeCommentsColumn ]
 ]
 
-{ #category : #actions }
+{ #category : #accessing }
 MiExportBrowser >> commonPropertiesIn: aMooseGroup [
 
 	| properties |
@@ -130,7 +130,8 @@ MiExportBrowser >> commonPropertiesIn: aMooseGroup [
 		              fold: [ :availableProperties :entityProperty | 
 			              availableProperties & entityProperty ].
 
-	^ properties sorted: #name ascending
+	"Show only 5 properties, so it is still readable wothout having to expand the browser."
+	^ (properties sorted: #name ascending) first: 5
 ]
 
 { #category : #'columns management' }
