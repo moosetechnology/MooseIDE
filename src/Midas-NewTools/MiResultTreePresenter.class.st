@@ -48,12 +48,14 @@ MiResultTreePresenter >> childrenOf: item [
 
 { #category : #initialization }
 MiResultTreePresenter >> initialize [
+
 	super initialize.
 
 	self
 		whenRootsChangedDo: [ sortedEntitiesCache := IdentityDictionary new ];
-		addColumn: (SpStringTableColumn title: self class headerTitle evaluated: [ :item | self stringForItem: item ]);
-		whenSelectionChangedDo: [ :selection | self updateMenu ];
+		addColumn: (SpStringTableColumn
+				 title: self class headerTitle
+				 evaluated: [ :item | self stringForItem: item ]);
 		children: [ :item | self childrenOf: item ];
 		beMultipleSelection
 ]
@@ -72,7 +74,7 @@ MiResultTreePresenter >> miSelectedItem [
 				ifFalse: [ item ] ]) flattened copyWithoutDuplicates asMooseGroup
 ]
 
-{ #category : #'accessing model' }
+{ #category : #'accessing - model' }
 MiResultTreePresenter >> setModelBeforeInitialization: aBrowser [
 	browser := aBrowser
 ]
@@ -101,10 +103,4 @@ MiResultTreePresenter >> updateForQuery: aQuery [
 			(aQuery isValid
 				ifTrue: [ aQuery result ]
 				ifFalse: [ MooseGroup new ])
-]
-
-{ #category : #update }
-MiResultTreePresenter >> updateMenu [
-	self owner class == MiQueriesBrowser
-		ifTrue: [ self contextMenuFromCommandsGroup: [ self rootCommandsGroup ] ]
 ]

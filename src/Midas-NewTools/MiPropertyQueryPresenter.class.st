@@ -28,11 +28,6 @@ MiPropertyQueryPresenter >> buildLayout [
 	self layout: self class layout
 ]
 
-{ #category : #'as yet unclassified' }
-MiPropertyQueryPresenter >> comparatorDropList [
-	^ comparatorDropList
-]
-
 { #category : #initialization }
 MiPropertyQueryPresenter >> initializePresenters [
 
@@ -75,14 +70,4 @@ MiPropertyQueryPresenter >> newPropertyDropList [
 { #category : #initialization }
 MiPropertyQueryPresenter >> newValueInputField [
 	self subclassResponsibility 
-]
-
-{ #category : #'as yet unclassified' }
-MiPropertyQueryPresenter >> propertyDropList [
-	^ propertyDropList
-]
-
-{ #category : #'as yet unclassified' }
-MiPropertyQueryPresenter >> valueInputField [
-	^ valueInputField
 ]
