@@ -1,7 +1,7 @@
 Class {
 	#name : #MiComparativeQueryPresenterTest,
 	#superclass : #MiPropertyQueryPresenterTest,
-	#category : #'Midas-FamixQueries-Tests-QueriesConfiguration'
+	#category : #'Midas-NewTools-Tests-Queries Configuration'
 }
 
 { #category : #testing }
@@ -77,16 +77,6 @@ MiComparativeQueryPresenterTest >> testQueryValidity [
 
 	presenter valueInputField text: self valueInput.
 	self assert: presenter query isValid
-]
-
-{ #category : #tests }
-MiComparativeQueryPresenterTest >> testUpdateCreationBrowser [
-
-	super testUpdateCreationBrowser.
-	presenter comparatorDropList selectIndex: 2.
-	self assertCreationPresenterWasUpdated.
-	presenter valueInputField text: self valueInput.
-	self assertCreationPresenterWasUpdated
 ]
 
 { #category : #running }

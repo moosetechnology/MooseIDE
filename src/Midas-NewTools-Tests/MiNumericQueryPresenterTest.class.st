@@ -1,7 +1,7 @@
 Class {
 	#name : #MiNumericQueryPresenterTest,
 	#superclass : #MiComparativeQueryPresenterTest,
-	#category : #'Midas-FamixQueries-Tests-QueriesConfiguration'
+	#category : #'Midas-NewTools-Tests-Queries Configuration'
 }
 
 { #category : #running }

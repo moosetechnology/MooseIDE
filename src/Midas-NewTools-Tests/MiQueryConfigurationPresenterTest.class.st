@@ -3,25 +3,15 @@ Class {
 	#superclass : #TestCase,
 	#instVars : [
 		'helper',
-		'presenter'
+		'presenter',
+		'browser'
 	],
-	#category : #'Midas-FamixQueries-Tests-QueriesConfiguration'
+	#category : #'Midas-NewTools-Tests-Queries Configuration'
 }
 
 { #category : #testing }
 MiQueryConfigurationPresenterTest class >> isAbstract [
 	^ self == MiQueryConfigurationPresenterTest
-]
-
-{ #category : #tests }
-MiQueryConfigurationPresenterTest >> assertCreationPresenterWasUpdated [
-	self
-		assertCollection: presenter owner resultList items
-		hasSameElements: presenter query result.
-	self
-		assert:
-			((helper queryFromCodeInPresenter: presenter owner)
-				hasSameParametersAs: presenter query)
 ]
 
 { #category : #running }
@@ -37,15 +27,20 @@ MiQueryConfigurationPresenterTest >> queryClass [
 { #category : #running }
 MiQueryConfigurationPresenterTest >> resetPresenterWithEntities: aMooseGroup [
 
-	| superPresenter |
-	superPresenter := MiQueryCreationPresenter on:
-		                  (MiQueriesBrowser on: (FQRootQuery new
-				                    result: aMooseGroup;
-				                    yourself)).
-
+	| builder superPresenter |
+	browser := MiNewQueriesBrowser on: (FQRootQuery new
+			            result: aMooseGroup;
+			            yourself).
+	builder := MiQueryBuilderPresenter on: browser.
+	superPresenter := builder componentList items first.
 	superPresenter queryTypesDropList selectItem: self queryClass.
+	"superPresenter := MiNewQueryCreationPresenter
+		                  on: FQRootQuery new
+		                  parentPresenter: builder.
+
 	presenter := superPresenter presenters detect: [ :pres | 
-		             pres class == self classToTest ]
+		             pres class == self classToTest ]."
+	presenter := superPresenter queryConfigurationPresenter
 ]
 
 { #category : #running }
@@ -54,6 +49,15 @@ MiQueryConfigurationPresenterTest >> setUp [
 	super setUp.
 	helper := FQTestsHelper current.
 	self resetPresenterWithEntities: helper classesAndMethods
+]
+
+{ #category : #running }
+MiQueryConfigurationPresenterTest >> tearDown [
+
+	browser window ifNotNil: [ :window | window close ].
+	MiApplication current deleteBus:
+		(MiApplication current busNamed: 'TestBus').
+	super tearDown
 ]
 
 { #category : #tests }
@@ -85,10 +89,5 @@ MiQueryConfigurationPresenterTest >> testPresentersOnImpossibleQuery [
 { #category : #tests }
 MiQueryConfigurationPresenterTest >> testQueryValidity [
 
-	^ self subclassResponsibility
-]
-
-{ #category : #tests }
-MiQueryConfigurationPresenterTest >> testUpdateCreationBrowser [
 	^ self subclassResponsibility
 ]

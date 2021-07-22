@@ -1,7 +1,7 @@
 Class {
 	#name : #MiPropertyQueryPresenterTest,
 	#superclass : #MiQueryConfigurationPresenterTest,
-	#category : #'Midas-FamixQueries-Tests-QueriesConfiguration'
+	#category : #'Midas-NewTools-Tests-Queries Configuration'
 }
 
 { #category : #testing }
@@ -83,14 +83,6 @@ MiPropertyQueryPresenterTest >> testQueryValidity [
 
 	self resetPresenterWithEntities: helper noEntities.
 	self deny: presenter query isValid
-]
-
-{ #category : #tests }
-MiPropertyQueryPresenterTest >> testUpdateCreationBrowser [
-
-	self assertCreationPresenterWasUpdated.
-	presenter propertyDropList selectIndex: 2.
-	self assertCreationPresenterWasUpdated
 ]
 
 { #category : #tests }

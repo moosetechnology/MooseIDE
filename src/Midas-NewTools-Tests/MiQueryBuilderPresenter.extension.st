@@ -5,3 +5,8 @@ MiQueryBuilderPresenter >> componentList [
 
 	^ componentListPresenter
 ]
+
+{ #category : #'*Midas-NewTools-Tests' }
+MiQueryBuilderPresenter >> parentBrowser [
+	^ parentBrowser
+]

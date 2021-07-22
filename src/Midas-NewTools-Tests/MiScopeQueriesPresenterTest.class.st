@@ -1,7 +1,7 @@
 Class {
 	#name : #MiScopeQueriesPresenterTest,
 	#superclass : #MiQueryConfigurationPresenterTest,
-	#category : #'Midas-FamixQueries-Tests-QueriesConfiguration'
+	#category : #'Midas-NewTools-Tests-Queries Configuration'
 }
 
 { #category : #running }
@@ -15,13 +15,19 @@ MiScopeQueriesPresenterTest >> queryClass [
 ]
 
 { #category : #tests }
+MiScopeQueriesPresenterTest >> selectNonSelectedDirection [
+
+	presenter directionsDropList selectItem:
+		presenter directionsDropList items last
+]
+
+{ #category : #tests }
 MiScopeQueriesPresenterTest >> testChangingDirectionChangesAvailableScopes [
 
 	| initialScopes |
 	initialScopes := presenter query availableScopes copy.
 
-	(presenter directionRadioButtons detect: [ :radioButton | 
-		 radioButton state not ]) click.
+	self selectNonSelectedDirection.
 
 	self
 		denyCollection: initialScopes
@@ -46,8 +52,7 @@ MiScopeQueriesPresenterTest >> testDropListMatchesAvailableScopes [
 { #category : #tests }
 MiScopeQueriesPresenterTest >> testDropListMatchesForOtherDirection [
 
-	(presenter directionRadioButtons detect: [ :radioButton | 
-		 radioButton state not ]) click.
+	self selectNonSelectedDirection.
 
 	self testDropListMatchesAvailableScopes.
 	self testDropListMatchesQuery
@@ -74,8 +79,7 @@ MiScopeQueriesPresenterTest >> testNoScopesForADirection [
 
 	self resetPresenterWithEntities: helper entitiesWithNoDownScope.
 
-	(presenter directionRadioButtons detect: [ :radioButton | 
-		 radioButton label = 'Down' ]) click.
+	presenter directionsDropList selectItem: FQScopeDown.
 
 	self
 		assert: presenter scopesDropList class
@@ -85,9 +89,9 @@ MiScopeQueriesPresenterTest >> testNoScopesForADirection [
 { #category : #tests }
 MiScopeQueriesPresenterTest >> testPresenters [
 
-	self assert: (presenter directionRadioButtons allSatisfy: [ :pres | 
-			 pres class == SpRadioButtonPresenter ]).
-
+	self
+		assert: presenter directionsDropList class
+		identicalTo: SpDropListPresenter.
 	self
 		assert: presenter scopesDropList class
 		identicalTo: SpDropListPresenter
@@ -98,8 +102,9 @@ MiScopeQueriesPresenterTest >> testPresentersOnImpossibleQuery [
 
 	self resetPresenterWithEntities: helper noEntities.
 
-	self assert: (presenter directionRadioButtons allSatisfy: [ :pres | 
-			 pres class == SpRadioButtonPresenter ]).
+	self
+		assert: presenter directionsDropList class
+		identicalTo: SpDropListPresenter.
 
 	self
 		assert: presenter scopesDropList class
@@ -111,8 +116,7 @@ MiScopeQueriesPresenterTest >> testQueryValidity [
 
 	self assert: presenter query isValid.
 
-	(presenter directionRadioButtons detect: [ :rb | rb state not ])
-		click.
+	self selectNonSelectedDirection.
 	self assert: presenter query isValid.
 
 	presenter scopesDropList selectItem:
@@ -121,8 +125,7 @@ MiScopeQueriesPresenterTest >> testQueryValidity [
 	self assert: presenter query isValid.
 
 	self resetPresenterWithEntities: helper entitiesWithNoDownScope.
-	(presenter directionRadioButtons detect: [ :radioButton | 
-		 radioButton label = 'Down' ]) click.
+	presenter directionsDropList selectItem: FQScopeDown.
 	self deny: presenter query isValid.
 
 	self resetPresenterWithEntities: helper noEntities.
@@ -135,39 +138,24 @@ MiScopeQueriesPresenterTest >> testRadioButtonsMatchAvailableDirections [
 	| directions |
 	directions := presenter query directionStrategies.
 	self
-		assert: presenter directionRadioButtons size
+		assert: presenter directionsDropList items size
 		equals: directions size.
 
 	self
 		assertCollection: (directions collect: #label)
-		hasSameElements: (presenter directionRadioButtons collect: #label)
+		hasSameElements:
+		(presenter directionsDropList items collect: #label)
 ]
 
 { #category : #tests }
 MiScopeQueriesPresenterTest >> testRadioButtonsMatchQuery [
 
 	self
-		assert: (presenter directionRadioButtons detect: #state) label
+		assert: presenter directionsDropList selectedItem label
 		equals: presenter query directionStrategy label.
 
-	(presenter directionRadioButtons detect: [ :rb | rb state not ])
-		click.
+	self selectNonSelectedDirection.
 	self
-		assert: (presenter directionRadioButtons detect: #state) label
+		assert: presenter directionsDropList selectedItem label
 		equals: presenter query directionStrategy label
-]
-
-{ #category : #tests }
-MiScopeQueriesPresenterTest >> testUpdateCreationBrowser [
-
-	self assertCreationPresenterWasUpdated.
-
-	(presenter directionRadioButtons detect: [ :rb | rb state not ])
-		click.
-	self assertCreationPresenterWasUpdated.
-
-	presenter scopesDropList selectItem:
-		(presenter query availableScopes detect: [ :scope | 
-			 presenter query scope ~~ scope ]).
-	self assertCreationPresenterWasUpdated
 ]

@@ -1,7 +1,7 @@
 Class {
 	#name : #MiBooleanQueryPresenterTest,
 	#superclass : #MiPropertyQueryPresenterTest,
-	#category : #'Midas-FamixQueries-Tests-QueriesConfiguration'
+	#category : #'Midas-NewTools-Tests-Queries Configuration'
 }
 
 { #category : #running }
