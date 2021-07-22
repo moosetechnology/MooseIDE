@@ -1,6 +1,6 @@
 # Midas
 
-![Continuous](https://github.com/moosetechnology/Midas/workflows/Continuous/badge.svg?branch=development) [![Moose version](https://img.shields.io/badge/Moose-8-%23aac9ff.svg)](https://github.com/moosetechnology/Moose)
+[![development](https://github.com/moosetechnology/Midas/actions/workflows/daily.yml/badge.svg)](https://github.com/moosetechnology/Midas/actions/workflows/daily.yml) [![Moose version](https://img.shields.io/badge/Moose-8-%23aac9ff.svg)](https://github.com/moosetechnology/Moose)
 
 New Tools for Moose
 
