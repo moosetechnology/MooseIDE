@@ -192,6 +192,12 @@ MiNewQueryCreationPresenter >> queryNumber: anInteger [
 	queryNumber := anInteger
 ]
 
+{ #category : #accessing }
+MiNewQueryCreationPresenter >> queryTypesDropList [
+
+	^ queryTypesDropListPresenter
+]
+
 { #category : #actions }
 MiNewQueryCreationPresenter >> removeQueryAction [
 

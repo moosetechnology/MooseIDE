@@ -24,7 +24,7 @@ Class {
 		'windowName',
 		'whenWindowClosedBlock'
 	],
-	#category : #'Midas-NewTools-Queries configuration'
+	#category : #'Midas-NewTools-Queries Browser widgets'
 }
 
 { #category : #actions }
@@ -87,13 +87,21 @@ MiMultiSelectionTable >> initializeWindow: aWindowPresenter [
 		whenClosedDo: [ whenWindowClosedBlock value: selectedItems ]
 ]
 
+{ #category : #accessing }
+MiMultiSelectionTable >> items: aModel [
+
+	items := aModel asOrderedCollection copy.
+	selectedItems := items asOrderedCollection copy.
+	table items: items
+]
+
 { #category : #api }
 MiMultiSelectionTable >> open [
 
 	^ self openModalWithSpec
 ]
 
-{ #category : #'accessing model' }
+{ #category : #'accessing - model' }
 MiMultiSelectionTable >> setModelBeforeInitialization: aModel [
 
 	"The `copy` message is to avoid having references to another objects."
