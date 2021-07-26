@@ -146,7 +146,8 @@ MiMooseModelBrowser >> initializeTable [
 
 { #category : #accessing }
 MiMooseModelBrowser >> miSelectedItem [
-	^ modelPresenter selection selectedItem
+
+	^ modelPresenter selection selectedItems mooseInterestingEntity
 ]
 
 { #category : #accessing }
