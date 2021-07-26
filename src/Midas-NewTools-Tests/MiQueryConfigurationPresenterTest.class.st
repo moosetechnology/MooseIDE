@@ -34,12 +34,6 @@ MiQueryConfigurationPresenterTest >> resetPresenterWithEntities: aMooseGroup [
 	builder := MiQueryBuilderPresenter on: browser.
 	superPresenter := builder componentList items first.
 	superPresenter queryTypesDropList selectItem: self queryClass.
-	"superPresenter := MiNewQueryCreationPresenter
-		                  on: FQRootQuery new
-		                  parentPresenter: builder.
-
-	presenter := superPresenter presenters detect: [ :pres | 
-		             pres class == self classToTest ]."
 	presenter := superPresenter queryConfigurationPresenter
 ]
 
@@ -70,6 +64,7 @@ MiQueryConfigurationPresenterTest >> testImpossibleQueryInitialization [
 
 { #category : #tests }
 MiQueryConfigurationPresenterTest >> testNormalQueryInitialization [
+
 	self assert: presenter query class identicalTo: self queryClass.
 	self assert: presenter query isValid
 ]
