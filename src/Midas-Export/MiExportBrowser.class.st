@@ -211,7 +211,7 @@ MiExportBrowser >> miSelectedItem [
 MiExportBrowser >> propertiesListForPopover [
 
 	| list |
-	list := self newSelectableListForPopover.
+	list := self newSelectableListForPopoverExtent: 250 @ 250.
 
 	list
 		display: [ :property | property name ];

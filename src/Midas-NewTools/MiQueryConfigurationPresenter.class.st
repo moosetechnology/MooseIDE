@@ -1,6 +1,6 @@
 Class {
 	#name : #MiQueryConfigurationPresenter,
-	#superclass : #SpPresenter,
+	#superclass : #MiPresenter,
 	#instVars : [
 		'query'
 	],

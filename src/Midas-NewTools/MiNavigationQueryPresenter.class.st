@@ -3,8 +3,8 @@ Class {
 	#superclass : #MiQueryConfigurationPresenter,
 	#instVars : [
 		'directionDropList',
-		'associationsTable',
-		'associationsButton'
+		'associationsButton',
+		'associationsList'
 	],
 	#category : #'Midas-NewTools-Queries Browser configuration'
 }
@@ -12,6 +12,30 @@ Class {
 { #category : #specs }
 MiNavigationQueryPresenter class >> title [
 	^ 'Navigation Query'
+]
+
+{ #category : #initialization }
+MiNavigationQueryPresenter >> associationsList [
+
+	associationsList := self newSelectableListForPopoverExtent: 120 @ 120.
+	associationsList
+		display: [ :item | item mooseDescription name asString ];
+		items: self query availableAssociations;
+		selectItems: self query associations;
+		onActivation: [ :property | 
+			self updateQueryWithSelectedAssociations:
+					associationsList selectedItems ];
+		onDeactivation: [ :property | 
+			associationsList selectedItems
+				ifEmpty: [ 
+					UIManager default
+						alert: 'You must select at least one item'
+						title: 'Cannot unselect all items'.
+					associationsList selectItem: property ]
+				ifNotEmpty: [ 
+					self updateQueryWithSelectedAssociations:
+							associationsList selectedItems ] ].
+	^ associationsList
 ]
 
 { #category : #layout }
@@ -31,20 +55,7 @@ MiNavigationQueryPresenter >> buildLayout [
 ]
 
 { #category : #initialization }
-MiNavigationQueryPresenter >> initializeAssociationsTable [
-
-	associationsTable := self
-		                     instantiate: MiMultiSelectionTable
-		                     on: self query availableAssociations.
-	associationsTable
-		displayBlock: [ :item | item mooseDescription name asString ];
-		windowName: 'Associations';
-		whenWindowClosedDo: [ :selectedAssociations | 
-			self updateQueryWithSelectedAssociations: selectedAssociations ]
-]
-
-{ #category : #initialization }
-MiNavigationQueryPresenter >> initializeButton [
+MiNavigationQueryPresenter >> initializeAssociationsButton [
 
 	associationsButton := self query availableAssociations
 		                      ifEmpty: [ self noParameterMessage: 'type' ]
@@ -52,7 +63,13 @@ MiNavigationQueryPresenter >> initializeButton [
 			                      self newButton
 				                      label: 'Select associations';
 				                      icon: (self iconNamed: #checkboxSelected);
-				                      action: [ associationsTable open ];
+				                      action: [ 
+					                      | popup |
+					                      (popup := self newPopover)
+						                      relativeTo: associationsButton;
+						                      bePositionRight;
+						                      presenter: self associationsList;
+						                      popup ];
 				                      yourself ]
 ]
 
@@ -65,7 +82,7 @@ MiNavigationQueryPresenter >> initializeDirectionsDropList [
 		display: #label;
 		whenSelectedItemChangedDo: [ :selectedDirection | 
 			self query resetAndChangeDirection: selectedDirection.
-			associationsTable items: self query availableAssociations.
+			associationsList items: self query availableAssociations.
 			self notifyQueryChanged ]
 ]
 
@@ -73,8 +90,7 @@ MiNavigationQueryPresenter >> initializeDirectionsDropList [
 MiNavigationQueryPresenter >> initializePresenters [
 
 	self initializeDirectionsDropList.
-	self initializeAssociationsTable.
-	self initializeButton
+	self initializeAssociationsButton
 ]
 
 { #category : #actions }
