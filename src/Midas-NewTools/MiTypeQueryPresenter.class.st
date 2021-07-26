@@ -2,8 +2,8 @@ Class {
 	#name : #MiTypeQueryPresenter,
 	#superclass : #MiQueryConfigurationPresenter,
 	#instVars : [
-		'typesTable',
-		'typesButton'
+		'typesButton',
+		'typesList'
 	],
 	#category : #'Midas-NewTools-Queries Browser configuration'
 }
@@ -27,7 +27,13 @@ MiTypeQueryPresenter >> buildLayout [
 ]
 
 { #category : #initialization }
-MiTypeQueryPresenter >> initializeButton [
+MiTypeQueryPresenter >> initializePresenters [
+
+	self initializeTypesButton
+]
+
+{ #category : #initialization }
+MiTypeQueryPresenter >> initializeTypesButton [
 
 	typesButton := self query availableTypes
 		               ifEmpty: [ self noParameterMessage: 'type' ]
@@ -35,33 +41,41 @@ MiTypeQueryPresenter >> initializeButton [
 			               self newButton
 				               label: 'Select types';
 				               icon: (self iconNamed: #checkboxSelected);
-				               action: [ typesTable open ];
+				               action: [ 
+					               self newPopover
+						               relativeTo: typesButton;
+						               bePositionRight;
+						               presenter: self typesList;
+						               popup ];
 				               yourself ]
-]
-
-{ #category : #initialization }
-MiTypeQueryPresenter >> initializePresenters [
-
-	self initializeTypesTable.
-	self initializeButton
-]
-
-{ #category : #initialization }
-MiTypeQueryPresenter >> initializeTypesTable [
-
-	typesTable := self
-		                instantiate: MiMultiSelectionTable
-		                on: self query availableTypes.
-	typesTable
-		displayBlock: [ :item | self labelFor: item ];
-		windowName: 'Types';
-		whenWindowClosedDo: [ :selectedTypes | 
-			self updateQueryWithSelectedTypes: selectedTypes ]
 ]
 
 { #category : #'widgets configuration' }
 MiTypeQueryPresenter >> labelFor: type [
 	^ type mooseDescription name asEnglishPlural
+]
+
+{ #category : #initialization }
+MiTypeQueryPresenter >> typesList [
+
+	typesList := self newSelectableListForPopoverExtent: 120 @ 120.
+
+	typesList
+		display: [ :item | self labelFor: item ];
+		items: self query availableTypes;
+		selectItems: self query types;
+		onActivation: [ :type | 
+			self updateQueryWithSelectedTypes: typesList selectedItems ];
+		onDeactivation: [ :type | 
+			typesList selectedItems
+				ifEmpty: [ 
+					typesList selectItem: type.
+					UIManager default
+						alert: 'You must select at least one type'
+						title: 'Cannot unselect all types' ]
+				ifNotEmpty: [ 
+					self updateQueryWithSelectedTypes: typesList selectedItems ] ].
+	^ typesList
 ]
 
 { #category : #initialization }

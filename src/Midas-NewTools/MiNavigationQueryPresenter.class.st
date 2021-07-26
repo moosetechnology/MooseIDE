@@ -22,16 +22,16 @@ MiNavigationQueryPresenter >> associationsList [
 		display: [ :item | item mooseDescription name asString ];
 		items: self query availableAssociations;
 		selectItems: self query associations;
-		onActivation: [ :property | 
+		onActivation: [ :associations | 
 			self updateQueryWithSelectedAssociations:
 					associationsList selectedItems ];
-		onDeactivation: [ :property | 
+		onDeactivation: [ :associtations | 
 			associationsList selectedItems
 				ifEmpty: [ 
+					associationsList selectItem: associtations.
 					UIManager default
-						alert: 'You must select at least one item'
-						title: 'Cannot unselect all items'.
-					associationsList selectItem: property ]
+						alert: 'You must select at least one association'
+						title: 'Cannot unselect all associations' ]
 				ifNotEmpty: [ 
 					self updateQueryWithSelectedAssociations:
 							associationsList selectedItems ] ].
@@ -64,8 +64,7 @@ MiNavigationQueryPresenter >> initializeAssociationsButton [
 				                      label: 'Select associations';
 				                      icon: (self iconNamed: #checkboxSelected);
 				                      action: [ 
-					                      | popup |
-					                      (popup := self newPopover)
+					                      self newPopover
 						                      relativeTo: associationsButton;
 						                      bePositionRight;
 						                      presenter: self associationsList;
@@ -82,7 +81,8 @@ MiNavigationQueryPresenter >> initializeDirectionsDropList [
 		display: #label;
 		whenSelectedItemChangedDo: [ :selectedDirection | 
 			self query resetAndChangeDirection: selectedDirection.
-			associationsList items: self query availableAssociations.
+			self initializeAssociationsButton.
+			self update.
 			self notifyQueryChanged ]
 ]
 
