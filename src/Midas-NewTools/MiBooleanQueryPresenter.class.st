@@ -1,3 +1,6 @@
+"
+A query configuration presenter for the `FQBooleanQuery`
+"
 Class {
 	#name : #MiBooleanQueryPresenter,
 	#superclass : #MiPropertyQueryPresenter,

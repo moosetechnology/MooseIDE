@@ -1,3 +1,6 @@
+"
+I am the abstract class for all the configuration presenter for the FamixQueries
+"
 Class {
 	#name : #MiQueryConfigurationPresenter,
 	#superclass : #MiPresenter,

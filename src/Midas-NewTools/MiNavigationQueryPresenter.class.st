@@ -1,3 +1,6 @@
+"
+A query configuration presenter for the `FQNavigationQuery`
+"
 Class {
 	#name : #MiNavigationQueryPresenter,
 	#superclass : #MiQueryConfigurationPresenter,

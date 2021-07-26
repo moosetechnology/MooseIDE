@@ -1,3 +1,7 @@
+"
+A query configuration presenter for the `FQTypeQuery` 
+
+"
 Class {
 	#name : #MiTypeQueryPresenter,
 	#superclass : #MiQueryConfigurationPresenter,

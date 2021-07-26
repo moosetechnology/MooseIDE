@@ -1,3 +1,6 @@
+"
+A query configuration presenter for the `FQStringQuery`
+"
 Class {
 	#name : #MiStringQueryPresenter,
 	#superclass : #MiPropertyQueryPresenter,
