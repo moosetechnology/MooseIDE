@@ -1,3 +1,6 @@
+"
+A query configuration presenter for the `FQNumericQuery`
+"
 Class {
 	#name : #MiNumericQueryPresenter,
 	#superclass : #MiPropertyQueryPresenter,

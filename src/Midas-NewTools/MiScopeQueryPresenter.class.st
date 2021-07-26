@@ -1,3 +1,6 @@
+"
+A query configuration presenter for the `FQScopeQuery`
+"
 Class {
 	#name : #MiScopeQueryPresenter,
 	#superclass : #MiQueryConfigurationPresenter,
