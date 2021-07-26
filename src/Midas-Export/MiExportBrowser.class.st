@@ -125,13 +125,16 @@ MiExportBrowser >> commonPropertiesIn: aMooseGroup [
 	| properties |
 	aMooseGroup ifEmpty: [ ^ aMooseGroup ].
 
-	properties := (aMooseGroup collect: [ :entity | 
-		               entity mooseDescription allPrimitiveProperties ]) 
-		              fold: [ :availableProperties :entityProperty | 
-			              availableProperties & entityProperty ].
+	properties := ((aMooseGroup collect: [ :entity | 
+		                entity mooseDescription allPrimitiveProperties ]) 
+		               fold: [ :availableProperties :entityProperty | 
+			               availableProperties & entityProperty ]) sorted:
+		              #name ascending.
 
 	"Show only 5 properties, so it is still readable wothout having to expand the browser."
-	^ (properties sorted: #name ascending) first: 5
+	^ properties size <= 5
+		  ifTrue: [ properties ]
+		  ifFalse: [ properties first: 5 ]
 ]
 
 { #category : #'columns management' }
