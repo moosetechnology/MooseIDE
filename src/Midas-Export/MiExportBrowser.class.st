@@ -97,7 +97,7 @@ MiExportBrowser >> columnChoiceButton [
 		(popup := self newPopover)
 			relativeTo: choiceButton;
 			bePositionRight;
-			presenter: (MiExporterColumnsEditor owner: popup on: self) yourself;
+			presenter: self propertiesListForPopover;
 			popup ].
 	^ choiceButton
 ]
@@ -205,6 +205,28 @@ MiExportBrowser >> miSelectedItem [
 ]
 
 { #category : #'columns management' }
+MiExportBrowser >> propertiesListForPopover [
+
+	| list |
+	list := self newSelectableListForPopover.
+
+	list
+		display: [ :property | property name ];
+		onActivation: [ :property | self showProperties: list selectedItems ];
+		onDeactivation: [ :property | 
+			self showProperties: list selectedItems ].
+
+	list items: ((self miSelectedItem flatCollectAsSet: [ :entity | 
+			  entity mooseDescription allPrimitiveProperties ]) sorted:
+			 #name ascending).
+
+	list selectItems:
+		(list items select: [ :property | self showsProperty: property ]).
+
+	^ list
+]
+
+{ #category : #'columns management' }
 MiExportBrowser >> removeCommentsColumn [
 
 	entitiesTable columns: (entitiesTable columns reject: [ :column | 
@@ -216,9 +238,12 @@ MiExportBrowser >> removeCommentsColumn [
 MiExportBrowser >> showProperties: aCollectionOfFM3Properties [
 
 	entitiesTable columns: self defaultTableColumns.
+	
 	aCollectionOfFM3Properties do: [ :property | 
 		self addColumnForProperty: property ].
+	
 	commentsButton isSelected ifTrue: [ self addCommentsColumn ].
+	
 	entitiesTable refresh
 ]
 

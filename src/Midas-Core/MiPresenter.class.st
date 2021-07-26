@@ -44,3 +44,16 @@ MiPresenter class >> tableLineHeight [
 MiPresenter >> isMiBrowser [
 	^ false
 ]
+
+{ #category : #'scripting - widgets' }
+MiPresenter >> newSelectableListForPopover [
+
+	^ SpFilteringSelectableListPresenter new layout:
+		  (self newBoxLayoutTopToBottom
+			   add: SpFilteringSelectableListPresenter defaultSpec
+			   withConstraints: [ :c | 
+				   c
+					   height: 250;
+					   width: 250 ];
+			   yourself)
+]
