@@ -75,28 +75,16 @@ MiApplication >> initialize [
 		yourself
 ]
 
-{ #category : #'private showing' }
-MiApplication >> open: aPresenter withSpecLayout: aSpecLayout using: aWindowClass [
-	super
-		open: aPresenter
-		withSpecLayout: aSpecLayout
-		using: aWindowClass.
+{ #category : #private }
+MiApplication >> registerWindow: aWindow [
+
+	super registerWindow: aWindow.
 	self updateOverviewBrowsers
 ]
 
 { #category : #actions }
 MiApplication >> start [
 	"we will see"
-]
-
-{ #category : #actions }
-MiApplication >> updateLogBrowsers [
-	self flag: 'To remove ?'.
-	self browsers
-		select: [ :browser | browser class == MiLogBrowser ]
-		thenDo: [ :logBrowser | 
-			self buses do: [ :bus | logBrowser followBus: bus ].
-			logBrowser update ]
 ]
 
 { #category : #actions }
