@@ -17,10 +17,10 @@ MiNumericQueryPresenter class >> layout [
 		  expand: false
 		  fill: true
 		  padding: padding;
-		  add: #comparatorDropList
-		  expand: false
-		  fill: true
-		  padding: padding;
+		  add: #comparatorDropList withConstraints: [ :constraints | 
+			  constraints
+				  padding: padding;
+				  width: 63 ];
 		  add: #valueInputField
 		  expand: false
 		  fill: true
