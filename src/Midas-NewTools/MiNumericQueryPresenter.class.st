@@ -17,14 +17,14 @@ MiNumericQueryPresenter class >> layout [
 		  expand: false
 		  fill: true
 		  padding: padding;
-		  add: #comparatorDropList
-		  expand: false
-		  fill: true
-		  padding: padding;
-		  add: #valueInputField
-		  expand: false
-		  fill: true
-		  padding: padding;
+		  add: #comparatorDropList withConstraints: [ :constraints | 
+			  constraints
+				  padding: padding;
+				  width: 63 ];
+		  add: #valueInputField withConstraints: [ :constraints | 
+		  constraints
+			  padding: padding;
+			  width: 70 ];
 		  yourself
 ]
 
@@ -32,7 +32,7 @@ MiNumericQueryPresenter class >> layout [
 MiNumericQueryPresenter >> newValueInputField [
 
 	^ self newNumberInput
-		  placeholder: 'Number';
+		  placeholder: 'Value';
 		  climbRate: 1;
 		  minimum: 0;
 		  autoAccept: true;
