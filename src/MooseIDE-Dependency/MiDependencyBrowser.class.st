@@ -31,13 +31,13 @@ MiDependencyBrowser class >> menuCommandOn: aBuilder [
 		order: 0;
 		icon: (self iconNamed: #mooseTree);
 		help: self helpMessage;
-		action: [ self runMe ]
+		action: [ self open ]
 ]
 
 { #category : #'world menu' }
-MiDependencyBrowser class >> runMe [
+MiDependencyBrowser class >> open [
 	<script>
-	^ super runMe
+	^ super open
 ]
 
 { #category : #TOREMOVE }

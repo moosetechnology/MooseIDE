@@ -27,7 +27,7 @@ MiNewQueriesBrowser class >> menuCommandOn: aBuilder [
 		icon: (self iconNamed: #mooseTree);
 		order: 3;
 		help: self helpMessage;
-		action: [ self runMe ]
+		action: [ self open ]
 ]
 
 { #category : #'instance creation' }
@@ -37,12 +37,12 @@ MiNewQueriesBrowser class >> newModel [
 ]
 
 { #category : #'instance creation' }
-MiNewQueriesBrowser class >> runMe [
+MiNewQueriesBrowser class >> open [
 
 	"This method implementation is the same as their parent. But it is here for opening this browser more confortably from the system's browser."
 
 	<script>
-	^ super runMe
+	^ super open
 ]
 
 { #category : #specs }

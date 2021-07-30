@@ -32,13 +32,13 @@ MiFameBrowser class >> menuCommandOn: aBuilder [
 		icon: (self iconNamed: #mooseFame);
 		order: 4;
 		help: (self helpMessage);
-		action: [ self runMe ]
+		action: [ self open ]
 ]
 
 { #category : #specs }
-MiFameBrowser class >> runMe [
+MiFameBrowser class >> open [
 	<script>
-	^ super runMe
+	^ super open
 ]
 
 { #category : #initialization }

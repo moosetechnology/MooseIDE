@@ -21,13 +21,13 @@ MiCycleDependenciesBrowser class >> menuCommandOn: aBuilder [
 		label: (self title);
 		icon: (self iconNamed: #mooseTree);
 		help: (self helpMessage);
-		action: [ self runMe ]
+		action: [ self open ]
 ]
 
 { #category : #'instance creation' }
-MiCycleDependenciesBrowser class >> runMe [
+MiCycleDependenciesBrowser class >> open [
 	<script>
-	super runMe
+	super open
 ]
 
 { #category : #'instance creation' }

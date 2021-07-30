@@ -21,13 +21,13 @@ MiNavigationTreeBrowser class >> menuCommandOn: aBuilder [
 		label: (self title);
 		icon: (self iconNamed: #mooseTreeMap);
 		help: (self helpMessage);
-		action: [ self runMe ]
+		action: [ self open ]
 ]
 
 { #category : #'instance creation' }
-MiNavigationTreeBrowser class >> runMe [
+MiNavigationTreeBrowser class >> open [
 	<script>
-	super runMe
+	super open
 ]
 
 { #category : #'instance creation' }

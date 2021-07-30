@@ -28,12 +28,12 @@ MiLogBrowser class >> menuCommandOn: aBuilder [
 		label: self title;
 		order: 4;
 		help: self helpMessage;
-		action: [ self runMe ];
+		action: [ self open ];
 		withSeparatorAfter
 ]
 
 { #category : #'world menu' }
-MiLogBrowser class >> runMe [
+MiLogBrowser class >> open [
 	<script>
 	| browser |
 	browser := self new

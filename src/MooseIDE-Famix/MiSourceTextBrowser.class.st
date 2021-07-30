@@ -35,13 +35,13 @@ MiSourceTextBrowser class >> menuCommandOn: aBuilder [
 		icon: (self iconNamed: #mooseSourceText);
 		order: 1 ;
 		help: (self helpMessage);
-		action: [ self runMe ]
+		action: [ self open ]
 ]
 
 { #category : #specs }
-MiSourceTextBrowser class >> runMe [
+MiSourceTextBrowser class >> open [
 	<script>
-	^ super runMe
+	^ super open
 ]
 
 { #category : #'as yet unclassified' }

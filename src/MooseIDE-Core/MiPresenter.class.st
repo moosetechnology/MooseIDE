@@ -16,12 +16,6 @@ MiPresenter class >> new [
 ]
 
 { #category : #private }
-MiPresenter class >> on: anObject [
-	self flag: #Todo.	"With the next version of spec this will not be needed as it will just take the current application"
-	^ self newApplication: self currentApplication model: anObject
-]
-
-{ #category : #private }
 MiPresenter class >> owner: anOwningPresenter [
 	self flag: #Todo.	"With the next version of spec this will not be needed as it will just take the current application"
 	^ self newApplication: self currentApplication owner: anOwningPresenter

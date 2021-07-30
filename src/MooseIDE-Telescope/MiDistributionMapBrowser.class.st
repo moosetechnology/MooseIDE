@@ -20,13 +20,13 @@ MiDistributionMapBrowser class >> menuCommandOn: aBuilder [
 		label: (self title);
 		icon: (self iconNamed: #mooseTreeMap);
 		help: (self helpMessage);
-		action: [ self runMe ]
+		action: [ self open ]
 ]
 
 { #category : #'instance creation' }
-MiDistributionMapBrowser class >> runMe [
+MiDistributionMapBrowser class >> open [
 	<script>
-	^ super runMe
+	^ super open
 ]
 
 { #category : #specs }

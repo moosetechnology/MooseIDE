@@ -49,7 +49,7 @@ MiModelRootBrowser class >> menuCommandOn: aBuilder [
 		icon: (self iconNamed: #mooseNavigation) ;
 		order: 2 ;
 		help: self helpMessage ;
-		action: [ self runMe ]
+		action: [ self open ]
 ]
 
 { #category : #'instance creation' }
@@ -58,9 +58,9 @@ MiModelRootBrowser class >> newModel [
 ]
 
 { #category : #specs }
-MiModelRootBrowser class >> runMe [
+MiModelRootBrowser class >> open [
 	<script>
-	^ super runMe
+	^ super open
 ]
 
 { #category : #initialization }

@@ -32,7 +32,7 @@ MiTagBrowser class >> menuCommandOn: aBuilder [
 		label: self title;
 		help: self helpMessage;
 		order: 5;
-		action: [ self runMe ] ;
+		action: [ self open ] ;
 		yourself
 ]
 
@@ -51,9 +51,9 @@ MiTagBrowser class >> newModel [
 ]
 
 { #category : #'instance creation' }
-MiTagBrowser class >> runMe [
+MiTagBrowser class >> open [
 	<script>
-	^ super runMe
+	^ super open
 ]
 
 { #category : #'world menu' }

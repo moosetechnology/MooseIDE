@@ -125,15 +125,8 @@ MiAbstractBrowser class >> newModel [
 ]
 
 { #category : #'instance creation' }
-MiAbstractBrowser class >> openOn: anEntity [
-	self new
-		selectEntity: anEntity;
-		openWithSpec
-]
+MiAbstractBrowser class >> open [
 
-{ #category : #'instance creation' }
-MiAbstractBrowser class >> runMe [
-	<script>
 	^ self runMeFollowing: self currentApplication defaultBus
 ]
 

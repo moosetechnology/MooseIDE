@@ -21,7 +21,7 @@ MooseImportFromMSEForm class >> defaultSpec [
 ]
 
 { #category : #specs }
-MooseImportFromMSEForm class >> runMe [
+MooseImportFromMSEForm class >> open [
 
 	<script>
 	^ self new openDialogWithSpec

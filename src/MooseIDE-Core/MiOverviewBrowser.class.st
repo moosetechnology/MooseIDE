@@ -82,12 +82,12 @@ MiOverviewBrowser class >> menuCommandOn: aBuilder [
 	(aBuilder item: #'Midas Overview')
 		order: 1 ;
 		parent: #Moose ;
-		action: [ self runMe ] ;
+		action: [ self open ] ;
 		help: self helpMessage
 ]
 
 { #category : #specs }
-MiOverviewBrowser class >> runMe [
+MiOverviewBrowser class >> open [
 	<script>
 	self new openWithSpec
 ]
