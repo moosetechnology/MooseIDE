@@ -1,7 +1,7 @@
 SmalltalkCISpec {
   #loading : [
     SCIMetacelloLoadSpec {
-      #baseline : 'Midas',
+      #baseline : 'MooseIDE',
       #directory : 'src',
       #load : [ 'default' ],
       #platforms : [ #pharo ],
