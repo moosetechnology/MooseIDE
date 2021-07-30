@@ -56,26 +56,29 @@ BaselineOfMooseIDE >> definePackages: spec [
 		package: 'MooseIDE-Core';
 		package: 'MooseIDE-Visualization'
 		with: [ spec requires: #( 'TelescopeRoassal3' ) ];
-		package: 'MooseIDE-Meta' with: [ spec requires: #( 'MooseIDE-Core' ) ];
-		package: 'MooseIDE-Tests' with: [ spec requires: #( 'MooseIDE-Core' ) ];
+		package: 'MooseIDE-Meta'
+		with: [ spec requires: #( 'MooseIDE-Core' ) ];
+		package: 'MooseIDE-Tests'
+		with: [ spec requires: #( 'MooseIDE-Core' 'MooseIDE-Tagging' ) ];
 		package: 'MooseIDE-Dependency'
-		with: [ spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' ) ];
+		with: [ 
+			spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' ) ];
 		package: 'MooseIDE-Famix'
-		with: [ spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' ) ];
+		with: [ 
+			spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' ) ];
 		package: 'MooseIDE-Tagging'
-		with: [ spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' ) ];
-		package: 'MooseIDE-FamixQueries'
-		with: [ spec requires: #( 'FamixQueries' 'MooseIDE-Core' ) ];
-		package: 'MooseIDE-FamixQueries-Tests'
-		with: [ spec requires: #( 'MooseIDE-FamixQueries' 'MooseIDE-Tests' ) ];
+		with: [ 
+			spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' ) ];
 		package: 'MooseIDE-Telescope'
-		with: [ spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' ) ];
-		package: 'MooseIDE-NewTools' with: [ 
-			spec requires:
-					#( 'MooseIDE-Meta' 'MooseIDE-Core' 'FamixQueries' ) ];
+		with: [ 
+			spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' ) ];
+		package: 'MooseIDE-NewTools'
+		with: [ 
+			spec requires: #( 'MooseIDE-Meta' 'MooseIDE-Core' 'FamixQueries' ) ];
 		package: 'MooseIDE-NewTools-Tests'
 		with: [ spec requires: #( 'MooseIDE-NewTools' 'MooseIDE-Tests' ) ];
-		package: 'MooseIDE-Export' with: [ spec requires: #( 'MooseIDE-Core' ) ]
+		package: 'MooseIDE-Export'
+		with: [ spec requires: #( 'MooseIDE-Core' ) ]
 ]
 
 { #category : #dependencies }
