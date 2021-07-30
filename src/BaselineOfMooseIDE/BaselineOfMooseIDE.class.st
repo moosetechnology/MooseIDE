@@ -104,13 +104,6 @@ BaselineOfMooseIDE >> famixTagging: spec [
 ]
 
 { #category : #dependencies }
-BaselineOfMooseIDE >> spec: spec [
-	spec
-		baseline: 'Spec2'
-		with: [ spec repository: 'github://pharo-spec/Spec:v0.6.0' ]
-]
-
-{ #category : #dependencies }
 BaselineOfMooseIDE >> telescope: spec [
 	spec
 		baseline: 'TelescopeRoassal3'
