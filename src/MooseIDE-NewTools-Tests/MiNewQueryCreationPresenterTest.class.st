@@ -11,7 +11,7 @@ Class {
 { #category : #running }
 MiNewQueryCreationPresenterTest >> bus [
 
-	^ MiApplication current busNamed: 'TestBus'
+	^ MiTestApplication current defaultBus
 ]
 
 { #category : #running }
@@ -36,7 +36,6 @@ MiNewQueryCreationPresenterTest >> setUp [
 MiNewQueryCreationPresenterTest >> tearDown [
 
 	browser window ifNotNil: [ :window | window close ].
-	MiApplication current deleteBus: self bus.
 	super tearDown
 ]
 

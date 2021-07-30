@@ -5,14 +5,14 @@ Class {
 	#name : #MiTagDetailPage,
 	#superclass : #MiPresenter,
 	#instVars : [
-		'tagModel',
-		'btnAdd',
-		'btnAddAll',
-		'btnDel',
-		'btnDelAll',
-		'lblTagEntities',
-		'tagEntitiesFilteringList',
-		'incomingEntitiesFilteringList'
+		'incomingEntitiesFilteringList',
+		'taggedEntitiesLabel',
+		'taggedEntitiesFilteringList',
+		'addButton',
+		'addAllButton',
+		'removeButton',
+		'removeAllButton',
+		'tagBrowser'
 	],
 	#category : #'MooseIDE-Tagging'
 }
@@ -23,7 +23,7 @@ MiTagDetailPage class >> defaultSpec [
 		add: (SpBoxLayout newHorizontal
 			add: 'Entities queried:' ;
 			add: self filler withConstraints: [:constraints | constraints width: self middleColumnWidth ] ; 
-			add: #lblTagEntities ;
+			add: #taggedEntitiesLabel ;
 			yourself)
 		withConstraints: [:constraints | constraints height: self toolbarHeight ]  ;
 		add: self mainContentLayout ;
@@ -43,108 +43,85 @@ MiTagDetailPage class >> mainContentLayout [
 		  add: (SpBoxLayout newVertical
 				   spacing: 5;
 				   add: self filler expand: true;
-				   add: #btnAdd expand: false;
-				   add: #btnAddAll expand: false;
-				   add: #btnDel expand: false;
-				   add: #btnDelAll expand: false;
+				   add: #addButton expand: false;
+				   add: #addAllButton expand: false;
+				   add: #removeButton expand: false;
+				   add: #removeAllButton expand: false;
 				   add: self filler expand: true;
 				   yourself)
 		  withConstraints: [ :constraints | 
 		  constraints width: self middleColumnWidth ];
-		  add: #tagEntitiesFilteringList;
+		  add: #taggedEntitiesFilteringList;
 		  yourself
 ]
 
 { #category : #specs }
 MiTagDetailPage class >> middleColumnWidth [
-	^25
+
+	^ 25
 ]
 
 { #category : #action }
 MiTagDetailPage >> add [
-	self currentTag ifNil: [ ^self ].
 
-	incomingEntitiesFilteringList selectedItem
-		ifNotNil: [ :entity | tagModel tagEntityNotYourself: entity ].
-	self refreshTagEntitiesList
+	self currentTag ifNil: [ ^ self ].
+
+	incomingEntitiesFilteringList selectedItem ifNotNil: [ :entity | 
+		self tagModel tagEntityNotYourself: entity ].
+	self refreshTaggedEntitiesList
 ]
 
 { #category : #action }
 MiTagDetailPage >> addAll [
-	self currentTag ifNil: [ ^self ].
-	incomingEntitiesFilteringList items
-		do: [ :entity | tagModel tagEntityNotYourself: entity].
-	self refreshTagEntitiesList
+
+	self currentTag ifNil: [ ^ self ].
+	incomingEntitiesFilteringList items do: [ :entity | 
+		self tagModel tagEntityNotYourself: entity ].
+	self refreshTaggedEntitiesList
 ]
 
 { #category : #accessing }
 MiTagDetailPage >> currentTag [
-	^tagModel currentTag
+
+	^ self tagModel currentTag
 ]
 
-{ #category : #action }
-MiTagDetailPage >> del [
-	self currentTag ifNil: [ ^self ].
-	tagEntitiesFilteringList selectedItem
-		ifNotNil: [ :entity | tagModel untagEntity: entity ].
-	self refreshTagEntitiesList
-]
+{ #category : #initialization }
+MiTagDetailPage >> initializeButtons [
 
-{ #category : #action }
-MiTagDetailPage >> delAll [
-	self currentTag ifNil: [ ^self ].
-	tagEntitiesFilteringList items
-		do: [ :entity | tagModel untagEntity: entity ].
-	self refreshTagEntitiesList
-]
-
-{ #category : #accessing }
-MiTagDetailPage >> ideEntities [
-	^tagModel
-		ifNil: [ #() ]
-		ifNotNil: [ tagModel mostRecentEntity ]
-
+	addButton := self newButton
+		          label: ' > ';
+		          action: [ self add ].
+	addAllButton := self newButton
+		             label: '>>>';
+		             action: [ self addAll ].
+	removeButton := self newButton
+		          label: ' < ';
+		          action: [ self remove ].
+	removeAllButton := self newButton
+		             label: '<<<';
+		             action: [ self removeAll ]
 ]
 
 { #category : #initialization }
 MiTagDetailPage >> initializePresenters [
 
-	super initializePresenters.
-
-	lblTagEntities := self newLabel label: 'Entities in tag:'.
-
+	taggedEntitiesLabel := self newLabel label: 'Entities in tag:'.
 	incomingEntitiesFilteringList := self newFilteringList
 		                                 display: [ :entity | entity name ];
 		                                 yourself.
-	self refreshIdeEntitiesList.
-	tagEntitiesFilteringList := self newFilteringList
+	self refreshEntitiesList.
+	taggedEntitiesFilteringList := self newFilteringList
 		                            display: [ :entity | entity name ];
 		                            yourself.
-	self refreshTagEntitiesList.
-
-	btnAdd := self newButton
-		          label: ' > ';
-		          action: [ self add ].
-	btnAddAll := self newButton
-		             label: '>>>';
-		             action: [ self addAll ].
-	btnDel := self newButton
-		          label: ' < ';
-		          action: [ self del ].
-	btnDelAll := self newButton
-		             label: '<<<';
-		             action: [ self delAll ]
-]
-
-{ #category : #accessing }
-MiTagDetailPage >> lblTagEntities [
-	^lblTagEntities
+	self refreshTaggedEntitiesList.
+	self initializeButtons
 ]
 
 { #category : #refreshing }
 MiTagDetailPage >> onBrowserPageRedisplay [
 
-	lblTagEntities
+	taggedEntitiesLabel
 		label: 
 			(self currentTag
 				ifNil: [ '!*! No tag selected !*!' ]
@@ -153,33 +130,48 @@ MiTagDetailPage >> onBrowserPageRedisplay [
 ]
 
 { #category : #refreshing }
-MiTagDetailPage >> refreshIdeEntitiesList [
-	incomingEntitiesFilteringList items: self ideEntities
+MiTagDetailPage >> refreshEntitiesList [
+
+	incomingEntitiesFilteringList items: self tagModel entities
 ]
 
 { #category : #refreshing }
-MiTagDetailPage >> refreshTagEntitiesList [
-	tagEntitiesFilteringList items: self tagEntities
+MiTagDetailPage >> refreshTaggedEntitiesList [
+	taggedEntitiesFilteringList items: self taggedEntities
 ]
 
-{ #category : #accessing }
-MiTagDetailPage >> tagEntities [
-	^tagModel
-		ifNil: [ #() ]
-		ifNotNil: [ tagModel entitiesTaggedWithCurrentTag ]
+{ #category : #action }
+MiTagDetailPage >> remove [
 
+	self currentTag ifNil: [ ^ self ].
+	taggedEntitiesFilteringList selectedItem ifNotNil: [ :entity | 
+		self tagModel untagEntity: entity ].
+	self refreshTaggedEntitiesList
+]
+
+{ #category : #action }
+MiTagDetailPage >> removeAll [
+
+	self currentTag ifNil: [ ^ self ].
+	taggedEntitiesFilteringList items do: [ :entity | 
+		self tagModel untagEntity: entity ].
+	self refreshTaggedEntitiesList
+]
+
+{ #category : #initialization }
+MiTagDetailPage >> setModelBeforeInitialization: aTagBrowser [
+
+	tagBrowser := aTagBrowser
 ]
 
 { #category : #accessing }
 MiTagDetailPage >> tagModel [
-	^tagModel
+
+	^ tagBrowser tagModel
 ]
 
 { #category : #accessing }
-MiTagDetailPage >> tagModel: aModel [
-	tagModel := aModel.
-	self refreshTagEntitiesList.
-	incomingEntitiesFilteringList items: tagModel mostRecentEntity
-	
+MiTagDetailPage >> taggedEntities [
 
+	^ self tagModel entitiesTaggedWithCurrentTag
 ]

@@ -14,7 +14,7 @@ MiAbstractBrowserTest class >> isAbstract [
 
 { #category : #running }
 MiAbstractBrowserTest >> application [
-	^ MiApplication current
+	^ MiTestApplication current
 ]
 
 { #category : #'tests - opening' }
@@ -68,7 +68,8 @@ MiAbstractBrowserTest >> browserClass [
 
 { #category : #running }
 MiAbstractBrowserTest >> bus [
-	^ self application busNamed: 'TestBus'
+
+	^ self application defaultBus
 ]
 
 { #category : #'tests - buses' }
@@ -90,9 +91,10 @@ MiAbstractBrowserTest >> mooseObjects [
 
 { #category : #running }
 MiAbstractBrowserTest >> setUp [
+
 	super setUp.
-	MiApplication reset.
-	browser := self browserClass runMeFollowing: self bus
+	MiTestApplication reset.
+	browser := self browserClass openForTests
 ]
 
 { #category : #running }

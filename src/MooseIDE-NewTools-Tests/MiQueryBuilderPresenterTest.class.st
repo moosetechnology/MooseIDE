@@ -14,13 +14,13 @@ Class {
 { #category : #running }
 MiQueryBuilderPresenterTest >> application [
 
-	^ MiApplication current
+	^ MiTestApplication current
 ]
 
 { #category : #running }
 MiQueryBuilderPresenterTest >> bus [
 
-	^ self application busNamed: 'TestBus'
+	^ self application defaultBus
 ]
 
 { #category : #running }

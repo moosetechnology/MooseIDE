@@ -49,8 +49,6 @@ MiQueryConfigurationPresenterTest >> setUp [
 MiQueryConfigurationPresenterTest >> tearDown [
 
 	browser window ifNotNil: [ :window | window close ].
-	MiApplication current deleteBus:
-		(MiApplication current busNamed: 'TestBus').
 	super tearDown
 ]
 

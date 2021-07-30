@@ -3,9 +3,9 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'currentTag',
-		'owner',
 		'mooseModel',
-		'logger'
+		'tagBrowser',
+		'entities'
 	],
 	#category : #'MooseIDE-Tagging'
 }
@@ -53,7 +53,7 @@ MiTagBrowserModel >> currentTag [
 { #category : #accessing }
 MiTagBrowserModel >> currentTag: anObject [
 	currentTag := anObject.
-	owner newTagSelected
+	tagBrowser newTagSelected
 ]
 
 { #category : #accessing }
@@ -68,57 +68,40 @@ MiTagBrowserModel >> deleteCurrentTag [
 ]
 
 { #category : #accessing }
+MiTagBrowserModel >> entities [
+
+	^ entities
+]
+
+{ #category : #accessing }
+MiTagBrowserModel >> entities: anObject [
+
+	entities := anObject
+]
+
+{ #category : #accessing }
 MiTagBrowserModel >> entitiesTaggedWithCurrentTag [
-	self mooseModel ifNil: [ ^#() ].
-	self currentTag ifNil: [ ^#() ].
-	^self mooseModel entitiesTaggedWith: self currentTag
-]
 
-{ #category : #accessing }
-MiTagBrowserModel >> logger [
-
-	^ logger
-]
-
-{ #category : #accessing }
-MiTagBrowserModel >> logger: anObject [
-	logger := anObject
+	self currentTag ifNil: [ ^ #(  ) ].
+	^ self mooseModel entitiesTaggedWith: self currentTag
 ]
 
 { #category : #accessing }
 MiTagBrowserModel >> mooseModel [
-	^mooseModel ifNil: [
-		mooseModel := self mostRecentModel
-	]
+
+	^ mooseModel ifNil: [ mooseModel := self entities anyOne mooseModel ]
 ]
 
 { #category : #accessing }
-MiTagBrowserModel >> mooseModel: aModel [
-	mooseModel := aModel
+MiTagBrowserModel >> tagBrowser [
+
+	^ tagBrowser
 ]
 
 { #category : #accessing }
-MiTagBrowserModel >> mostRecentEntity [
-	^ self logger mostRecentEntity
-]
+MiTagBrowserModel >> tagBrowser: anObject [
 
-{ #category : #accessing }
-MiTagBrowserModel >> mostRecentModel [
-	^self logger mostRecentEntity
-		ifNil: [  MooseModel new ]
-		ifNotNil: [ :entity | entity mooseModel ]
-]
-
-{ #category : #accessing }
-MiTagBrowserModel >> owner [
-
-	^ owner
-]
-
-{ #category : #accessing }
-MiTagBrowserModel >> owner: anObject [
-
-	owner := anObject
+	tagBrowser := anObject
 ]
 
 { #category : #accessing }

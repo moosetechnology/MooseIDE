@@ -2,7 +2,8 @@ Class {
 	#name : #MiTagBrowserTest,
 	#superclass : #MiAbstractBrowserTest,
 	#instVars : [
-		'detailsPage'
+		'detailsPage',
+		'helper'
 	],
 	#category : #'MooseIDE-Tests-Browsers'
 }
@@ -12,55 +13,69 @@ MiTagBrowserTest >> browserClass [
 	^ MiTagBrowser
 ]
 
+{ #category : #tests }
+MiTagBrowserTest >> mooseModelSize [
+
+	^ helper classesAndMethods anyOne mooseModel size
+]
+
+{ #category : #tests }
+MiTagBrowserTest >> numberOfTaggedEntities [
+
+	^ (helper classesAndMethods anyOne mooseModel select: #isTagged) size
+]
+
 { #category : #running }
 MiTagBrowserTest >> setUp [
-	| model |
+
 	super setUp.
 
-	"putting some entities in the current MooseModel"
-	model := browser tagModel mooseModel.
-	MooseEntity new mooseModel: model.
-	MooseEntity new mooseModel: model.
-
-	"putting the mooseModel in the logger for the browser to retrieve its entities"
-	self application defaultBus logger newLogFor: model.
-	detailsPage := browser tagDetailsPage retrievePresenter.
+	helper := FQTestsHelper current.
+	browser selectEntity: helper classesAndMethods.
+	detailsPage := browser tagDetailsPage retrievePresenter
 ]
 
 { #category : #tests }
 MiTagBrowserTest >> testNoTagDetailPageAddDoNothing [
+
 	| entities |
 	entities := detailsPage tagModel mooseModel entities.
-	self assert: entities size equals: 2.
+	self assert: entities size equals: self mooseModelSize.
 
 	detailsPage addAll.
 
-	self assert: (entities select: #isTagged) size equals: 0
+	self
+		assert: (entities select: #isTagged) size
+		equals: self numberOfTaggedEntities
 ]
 
 { #category : #tests }
 MiTagBrowserTest >> testNoTagDetailPageLabel [
-	self assert: (detailsPage lblTagEntities label beginsWith: '!*!')
+	self assert: (detailsPage taggedEntitiesLabel label beginsWith: '!*!')
 ]
 
 { #category : #tests }
 MiTagBrowserTest >> testTagDetailPageAddEntityToTag [
+
 	| entities tag |
 	entities := detailsPage tagModel mooseModel entities.
-	self assert: entities size equals: 2.
+	self assert: entities size equals: self mooseModelSize.
 
 	tag := detailsPage tagModel addTag: 'aTag'.
 	detailsPage tagModel currentTag: tag.
 	detailsPage addAll.
 
-	self assert: (entities select: #isTagged) size equals: 2
+	self
+		assert: (entities select: #isTagged) size
+		equals: self numberOfTaggedEntities
 ]
 
 { #category : #tests }
 MiTagBrowserTest >> testTagModelInitialization [
+
 	| specModel |
 	specModel := detailsPage tagModel.
 	self assert: specModel isNotNil.
 	self assert: specModel mooseModel isNotNil.
-	self assert: specModel mooseModel size equals: 2.
+	self assert: specModel mooseModel size equals: self mooseModelSize
 ]

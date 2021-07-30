@@ -9,7 +9,7 @@ Class {
 
 { #category : #running }
 MiBusTest >> application [
-	^ MiApplication current
+	^ MiTestApplication current
 ]
 
 { #category : #running }
@@ -24,7 +24,7 @@ MiBusTest >> mockBrowser [
 { #category : #running }
 MiBusTest >> setUp [
 	super setUp.
-	bus := self application busNamed: 'TestBus'
+	bus := self application defaultBus
 ]
 
 { #category : #running }

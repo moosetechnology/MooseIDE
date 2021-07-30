@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'buses'
 	],
-	#classVars : [
+	#classInstVars : [
 		'Current'
 	],
 	#category : #'MooseIDE-Core-Application'
