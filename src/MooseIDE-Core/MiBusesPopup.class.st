@@ -1,3 +1,13 @@
+"
+I am a presenter showing the instantiated buses in the MiApplication.
+
+In browsers, I am used to select which buses to follow --> I show checkboxes to allow selection.
+In MooseIDE Overview, I show all the existing buses --> I only show the buses names, no need for checkboxes.
+
+This difference is now implemented as a conditional, we should do it smarter.
+
+The buses are shown in a SpTable. We don't have action on selection for now. An issue is filled on Spec to add this behavior (https://github.com/pharo-spec/Spec/issues/1122).
+"
 Class {
 	#name : #MiBusesPopup,
 	#superclass : #MiPresenter,
@@ -14,17 +24,19 @@ Class {
 MiBusesPopup class >> defaultSpec [
 
 	^ SpBoxLayout newTopToBottom
-		  borderWidth: 5;
 		  spacing: 5;
 		  add: #busesList withConstraints: [ :constraints | 
 			  constraints
-				  height: MiApplication current buses size + 1 * self labelHeight;
+				  height: 100;
 				  width: 250 ];
 		  add: (SpBoxLayout newLeftToRight
+				   spacing: 5;
 				   add: #newBusNameInput expand: true;
-				   add: #addBusButton width: self iconWidth;
-				   yourself)
-		  height: self inputTextHeight;
+				   add: #addBusButton withConstraints: [ :constraints | 
+					   constraints
+						   height: self inputTextHeight;
+						   width: self iconWidth ];
+				   yourself);
 		  yourself
 ]
 
@@ -49,6 +61,7 @@ MiBusesPopup >> followNewBus [
 MiBusesPopup >> initializeBusesList [
 
 	busesList := self newTable.
+	busesList hideColumnHeaders.
 	browser isMiBrowser ifTrue: [ 
 		busesList addColumn: ((SpCheckBoxTableColumn evaluated: [ :bus | 
 					  browser buses includes: bus ])
