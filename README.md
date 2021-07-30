@@ -1,6 +1,6 @@
-# Midas
+# MooseIDE
 
-[![development](https://github.com/moosetechnology/Midas/actions/workflows/daily.yml/badge.svg)](https://github.com/moosetechnology/Midas/actions/workflows/daily.yml) [![Moose version](https://img.shields.io/badge/Moose-8-%23aac9ff.svg)](https://github.com/moosetechnology/Moose)
+[![development](https://github.com/moosetechnology/MooseIDE/actions/workflows/daily.yml/badge.svg)](https://github.com/moosetechnology/MooseIDE/actions/workflows/daily.yml) [![Moose version](https://img.shields.io/badge/Moose-8-%23aac9ff.svg)](https://github.com/moosetechnology/Moose)
 
 New Tools for Moose
 
@@ -14,13 +14,13 @@ New Tools for Moose
 4. (optionally change **Image name:**)
 5. **Create image**
 
-![Screen capture of Pharo Launcher to make Midas image](https://user-images.githubusercontent.com/33934979/124268297-9e46f000-db39-11eb-8626-ab578dd16ffb.png)
+![Screen capture of Pharo Launcher to make MooseIDE image](https://user-images.githubusercontent.com/33934979/124268297-9e46f000-db39-11eb-8626-ab578dd16ffb.png)
 
 ### From a Pharo Image
 
 ```smalltalk
 Metacello new
-  baseline: 'Midas';
-  repository: 'github://moosetechnology/Midas:development/src';
+  baseline: 'MooseIDE';
+  repository: 'github://moosetechnology/MooseIDE:development/src';
   load.
 ```
