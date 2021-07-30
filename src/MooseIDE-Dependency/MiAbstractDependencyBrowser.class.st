@@ -43,5 +43,5 @@ MiAbstractDependencyBrowser class >> menuCommandOn: aBuilder [
 
 { #category : #'as yet unclassified' }
 MiAbstractDependencyBrowser class >> toolbarDependencyName [
-	^ 'MidasDependencyBrowser'
+	^ 'MooseIDEDependencyBrowser'
 ]

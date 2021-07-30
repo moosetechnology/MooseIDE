@@ -7,7 +7,7 @@ Class {
 { #category : #accessing }
 MiPlayground class >> defaultTitle [ 
 
-	^ 'Midas Playground'
+	^ 'MooseIDE Playground'
 ]
 
 { #category : #'instance creation' }

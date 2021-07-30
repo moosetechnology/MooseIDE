@@ -37,5 +37,5 @@ MiNoSelectedElementToPropagateException >> defaultAction [
 { #category : #initialization }
 MiNoSelectedElementToPropagateException >> initialize [
 	super initialize.
-	messageText := 'This browser does not handle properly item selection. Please consider opening an issue: https://github.com/moosetechnology/Midas'
+	messageText := 'This browser does not handle properly item selection. Please consider opening an issue: https://github.com/moosetechnology/MooseIDE'
 ]

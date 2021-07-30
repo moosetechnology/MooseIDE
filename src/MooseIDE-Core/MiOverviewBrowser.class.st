@@ -94,7 +94,7 @@ MiOverviewBrowser class >> runMe [
 
 { #category : #specs }
 MiOverviewBrowser class >> title [
-	^ 'Midas Overview'
+	^ 'MooseIDE Overview'
 ]
 
 { #category : #presenters }
