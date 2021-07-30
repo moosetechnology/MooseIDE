@@ -38,13 +38,13 @@ MiNonUsedMethodBrowser class >> menuCommandOn: aBuilder [
 		label: (self title);
 		order: 2;
 		help: (self helpMessage);
-		action: [ self runMe ]
+		action: [ self open ]
 ]
 
 { #category : #specs }
-MiNonUsedMethodBrowser class >> runMe [
+MiNonUsedMethodBrowser class >> open [
 	<script>
-	^ super runMe
+	^ super open
 ]
 
 { #category : #TOREMOVE }

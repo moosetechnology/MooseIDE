@@ -31,13 +31,13 @@ MiTreeVisualisationBrowser class >> menuCommandOn: aBuilder [
 		order: 2.0;
 		icon: (self iconNamed: #mooseTree);
 		help: self helpMessage;
-		action: [ self runMe ]
+		action: [ self open ]
 ]
 
 { #category : #specs }
-MiTreeVisualisationBrowser class >> runMe [
+MiTreeVisualisationBrowser class >> open [
 	<script>
-	^ super runMe
+	^ super open
 ]
 
 { #category : #'as yet unclassified' }

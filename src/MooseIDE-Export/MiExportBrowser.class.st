@@ -46,14 +46,14 @@ MiExportBrowser class >> menuCommandOn: aBuilder [
 		icon: (self iconNamed: #smallExport);
 		order: 6;
 		help: self helpMessage;
-		action: [ self runMe ]
+		action: [ self open ]
 ]
 
 { #category : #'instance creation' }
-MiExportBrowser class >> runMe [
+MiExportBrowser class >> open [
 
 	<script>
-	^ super runMe
+	^ super open
 ]
 
 { #category : #specs }

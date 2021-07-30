@@ -31,7 +31,7 @@ MiTreeBrowser class >> menuCommandOn: aBuilder [
 		order: 1.0;
 		icon: (self iconNamed: #mooseTree);
 		help: self helpMessage;
-		action: [ self runMe ]
+		action: [ self open ]
 ]
 
 { #category : #'as yet unclassified' }
@@ -40,9 +40,9 @@ MiTreeBrowser class >> newModel [
 ]
 
 { #category : #specs }
-MiTreeBrowser class >> runMe [
+MiTreeBrowser class >> open [
 	<script>
-	^ super runMe
+	^ super open
 ]
 
 { #category : #'as yet unclassified' }

@@ -31,13 +31,13 @@ MiPropertyBrowser class >> menuCommandOn: aBuilder [
 		icon: (self iconNamed: #mooseProperties);
 		order: 3;
 		help: (self helpMessage);
-		action: [ self runMe ]
+		action: [ self open ]
 ]
 
 { #category : #specs }
-MiPropertyBrowser class >> runMe [
+MiPropertyBrowser class >> open [
 	<script>
-	^ super runMe
+	^ super open
 ]
 
 { #category : #initialization }

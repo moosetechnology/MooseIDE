@@ -19,3 +19,14 @@ MiAbstractBrowser >> freeze [
 MiAbstractBrowser >> highlight [
 	buttonHighlight state: true
 ]
+
+{ #category : #'*MooseIDE-Tests' }
+MiAbstractBrowser class >> openForTests [
+
+	^ (self
+		   newApplication: MiTestApplication current
+		   model: self newModel)
+		  openWithSpec;
+		  followBus: MiTestApplication current defaultBus;
+		  yourself
+]

@@ -15,7 +15,7 @@ API:
 
 "
 Class {
-	#name : #SpAddDelListPresenter,
+	#name : #SpAddRemoveListPresenter,
 	#superclass : #MiPresenter,
 	#instVars : [
 		'model',
@@ -32,7 +32,7 @@ Class {
 }
 
 { #category : #specs }
-SpAddDelListPresenter class >> defaultSpec [
+SpAddRemoveListPresenter class >> defaultSpec [
 
 	^SpGridLayout new
 		add: #lstAll at: 1 @ 1 ;
@@ -43,22 +43,22 @@ SpAddDelListPresenter class >> defaultSpec [
 ]
 
 { #category : #accessing }
-SpAddDelListPresenter >> addNameAction: aBlock [
+SpAddRemoveListPresenter >> addNameAction: aBlock [
 	btnAdd action: aBlock
 ]
 
 { #category : #accessing }
-SpAddDelListPresenter >> clearName [
+SpAddRemoveListPresenter >> clearName [
 	txtName text: ''
 ]
 
 { #category : #accessing }
-SpAddDelListPresenter >> delNameAction: aBlock [
+SpAddRemoveListPresenter >> delNameAction: aBlock [
 	btnDel action: aBlock
 ]
 
 { #category : #initialization }
-SpAddDelListPresenter >> initialize [
+SpAddRemoveListPresenter >> initialize [
 	super initialize.
 	
 	self nameDisplayBlock: [ :object | object name ].
@@ -69,7 +69,7 @@ SpAddDelListPresenter >> initialize [
 ]
 
 { #category : #initialization }
-SpAddDelListPresenter >> initializePresenters [
+SpAddRemoveListPresenter >> initializePresenters [
 	super initializePresenters.
 
 	txtName := self newTextInput.
@@ -84,32 +84,32 @@ SpAddDelListPresenter >> initializePresenters [
 ]
 
 { #category : #accessing }
-SpAddDelListPresenter >> nameDisplayBlock: aBlock [
+SpAddRemoveListPresenter >> nameDisplayBlock: aBlock [
 	 lstAll display: aBlock
 ]
 
 { #category : #accessing }
-SpAddDelListPresenter >> nameEntered [
+SpAddRemoveListPresenter >> nameEntered [
 	^txtName text
 ]
 
 { #category : #updating }
-SpAddDelListPresenter >> refreshList: aCollection [
+SpAddRemoveListPresenter >> refreshList: aCollection [
 	lstAll resetSelection.
 	lstAll items: aCollection
 ]
 
 { #category : #updating }
-SpAddDelListPresenter >> selectName: aString [
+SpAddRemoveListPresenter >> selectName: aString [
 	lstAll selectItem: aString
 ]
 
 { #category : #accessing }
-SpAddDelListPresenter >> selectedName [
+SpAddRemoveListPresenter >> selectedName [
 	lstAll selectedItem
 ]
 
 { #category : #accessing }
-SpAddDelListPresenter >> whenSelectedNameChangedDo: aBlock [
+SpAddRemoveListPresenter >> whenSelectedNameChangedDo: aBlock [
 	lstAll whenSelectedItemChangedDo: aBlock
 ]

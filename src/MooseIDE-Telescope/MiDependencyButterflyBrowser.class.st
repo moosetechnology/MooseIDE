@@ -22,13 +22,13 @@ MiDependencyButterflyBrowser class >> menuCommandOn: aBuilder [
 		label: (self title);
 		icon: (self iconNamed: #mooseTree);
 		help: (self helpMessage);
-		action: [ self runMe ]
+		action: [ self open ]
 ]
 
 { #category : #'instance creation' }
-MiDependencyButterflyBrowser class >> runMe [
+MiDependencyButterflyBrowser class >> open [
 	<script>
-	^ super runMe
+	^ super open
 ]
 
 { #category : #'instance creation' }

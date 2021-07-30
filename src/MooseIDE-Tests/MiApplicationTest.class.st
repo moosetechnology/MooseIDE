@@ -15,12 +15,12 @@ MiApplicationTest >> alternativeBusName [
 
 { #category : #running }
 MiApplicationTest >> application [
-	^ MiApplication current
+	^ MiTestApplication current
 ]
 
 { #category : #running }
 MiApplicationTest >> busName [
-	^ 'TestBus'
+	^ 'Test'
 ]
 
 { #category : #running }
@@ -69,14 +69,14 @@ MiApplicationTest >> testDeleteBus [
 
 { #category : #tests }
 MiApplicationTest >> testDeleteBusNamed [
-	| initialSize |
-	initialSize := MiApplication current buses size.
-	MiApplication current deleteBusNamed: self busName.
 
-	self
-		deny:
-			(MiApplication current buses
-				anySatisfy: [ :app | app name = self busName ]).
-	self deny: (MiApplication current buses includes: bus).
-	self assert: MiApplication current buses size equals: initialSize - 1
+	| initialSize |
+	initialSize := self application buses size.
+	self application deleteBusNamed: self busName.
+
+	self deny:
+		(self application buses anySatisfy: [ :app | 
+			 app name = self busName ]).
+	self deny: (self application buses includes: bus).
+	self assert: self application buses size equals: initialSize - 1
 ]

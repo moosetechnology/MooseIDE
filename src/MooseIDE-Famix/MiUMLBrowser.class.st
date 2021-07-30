@@ -31,13 +31,13 @@ MiUMLBrowser class >> menuCommandOn: aBuilder [
 		icon: (self iconNamed: #mooseUml);
 		order: 4;
 		help: (self helpMessage);
-		action: [ self runMe ]
+		action: [ self open ]
 ]
 
 { #category : #specs }
-MiUMLBrowser class >> runMe [
+MiUMLBrowser class >> open [
 	<script>
-	^ super runMe
+	^ super open
 ]
 
 { #category : #TOREMOVE }

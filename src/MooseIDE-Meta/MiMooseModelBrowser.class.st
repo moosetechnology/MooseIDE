@@ -35,7 +35,7 @@ MiMooseModelBrowser class >> menuCommandOn: aBuilder [
 		icon: (self iconNamed: #mooseNavigation);
 		order: 2;
 		help: (self helpMessage);
-		action: [ self runMe ]
+		action: [ self open ]
 ]
 
 { #category : #'instance creation' }
@@ -51,9 +51,9 @@ MiMooseModelBrowser class >> newModel [
 ]
 
 { #category : #specs }
-MiMooseModelBrowser class >> runMe [
+MiMooseModelBrowser class >> open [
 	<script>
-	^ super runMe
+	^ super open
 ]
 
 { #category : #initialization }

@@ -48,7 +48,7 @@ MiInspectorBrowser class >> menuCommandOn: aBuilder [
 		icon: (self iconNamed: #smallInspectIt);
 		order: 5;
 		help: self helpMessage;
-		action: [ self runMe ]
+		action: [ self open ]
 ]
 
 { #category : #'instance creation' }
@@ -58,10 +58,10 @@ MiInspectorBrowser class >> newModel [
 ]
 
 { #category : #'instance creation' }
-MiInspectorBrowser class >> runMe [
+MiInspectorBrowser class >> open [
 
 	<script>
-	^ super runMe
+	^ super open
 ]
 
 { #category : #specs }

@@ -32,13 +32,13 @@ MiTreeMapVisualisationBrowser class >> menuCommandOn: aBuilder [
 		icon: (self iconNamed: #mooseTreeMap);
 		help: self helpMessage;
 		order: 3.0;
-		action: [ self runMe ]
+		action: [ self open ]
 ]
 
 { #category : #specs }
-MiTreeMapVisualisationBrowser class >> runMe [
+MiTreeMapVisualisationBrowser class >> open [
 	<script>
-	^ super runMe
+	^ super open
 ]
 
 { #category : #accessing }
