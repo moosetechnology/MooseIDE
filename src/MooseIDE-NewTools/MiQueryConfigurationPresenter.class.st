@@ -81,7 +81,7 @@ MiQueryConfigurationPresenter >> queryPresentersListChanged [
 	
 ]
 
-{ #category : #'accessing model' }
+{ #category : #'accessing - model' }
 MiQueryConfigurationPresenter >> setModelBeforeInitialization: aQuery [
 	query := aQuery
 ]
