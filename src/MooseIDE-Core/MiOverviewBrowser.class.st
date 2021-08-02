@@ -79,7 +79,7 @@ MiOverviewBrowser class >> helpMessage [
 { #category : #'world menu' }
 MiOverviewBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
-	(aBuilder item: #'Midas Overview')
+	(aBuilder item: #'Moose IDE Overview')
 		order: 1 ;
 		parent: #Moose ;
 		action: [ self open ] ;

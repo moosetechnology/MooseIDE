@@ -1,5 +1,5 @@
 "
-** Midas entrypoint **
+** Moose IDE entrypoint **
 Shows installed models and allows model installation.
 
 - Follow: Nothing to do.
