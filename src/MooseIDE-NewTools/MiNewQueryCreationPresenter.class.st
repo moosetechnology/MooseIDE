@@ -192,6 +192,12 @@ MiNewQueryCreationPresenter >> queryNumber: anInteger [
 	queryNumber := anInteger
 ]
 
+{ #category : #'api - actions' }
+MiNewQueryCreationPresenter >> queryPresentersListChanged [
+
+	queryConfigurationPresenter queryPresentersListChanged
+]
+
 { #category : #accessing }
 MiNewQueryCreationPresenter >> queryTypesDropList [
 

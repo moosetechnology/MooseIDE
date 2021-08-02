@@ -22,7 +22,7 @@ MiQueryConfigurationPresenter >> buildLayout [
 	self layout: self class defaultSpec
 ]
 
-{ #category : #api }
+{ #category : #'api - actions' }
 MiQueryConfigurationPresenter >> disable [
 
 	"Disable the presenters that had been instantiated."
@@ -35,7 +35,7 @@ MiQueryConfigurationPresenter >> disable [
 		thenDo: #disable
 ]
 
-{ #category : #api }
+{ #category : #'api - actions' }
 MiQueryConfigurationPresenter >> enable [
 
 	"Enable the presenters that had been instantiated."
@@ -70,6 +70,15 @@ MiQueryConfigurationPresenter >> notifyQueryChanged [
 { #category : #accessing }
 MiQueryConfigurationPresenter >> query [
 	^ query
+]
+
+{ #category : #'api - actions' }
+MiQueryConfigurationPresenter >> queryPresentersListChanged [
+
+	"This method is trigerred when the list of queries presenters in MiQueryBuilderPresenter change. This can happen when the user adds or removes a new query from the queries list.
+	The default behavior is to do nothing. This method must be overriden if a subclass wants to do something specific"
+
+	
 ]
 
 { #category : #'accessing model' }

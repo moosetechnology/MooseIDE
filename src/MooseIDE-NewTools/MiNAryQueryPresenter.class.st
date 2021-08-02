@@ -27,6 +27,12 @@ MiNAryQueryPresenter >> addSubqueryToLayout [
 	self update
 ]
 
+{ #category : #actions }
+MiNAryQueryPresenter >> availableQueryPresentersFromOwner [
+
+	^ owner allQueryPresenters reject: [ :q | q query = self owner query ]
+]
+
 { #category : #layout }
 MiNAryQueryPresenter >> buildLayout [
 
@@ -67,9 +73,14 @@ MiNAryQueryPresenter >> initializePresenters [
 ]
 
 { #category : #actions }
-MiNAryQueryPresenter >> nAryOperationAction [
+MiNAryQueryPresenter >> nAryOperationAction: newSelectedItem [
 
 	| subqueries selectedDropListItems |
+	"Sometimes the SpDropListPresenter>>#whenSelectedItemChangedDo: in spec is triggered even though no item were selected. When this happends the selected item is nil. This is an spec problem."
+	newSelectedItem ifNil: [ ^ self ].
+	(subqueryDropLists anySatisfy: [ :dropList | 
+		 dropList selectedItem isNil ]) ifTrue: [ ^ self ].
+
 	selectedDropListItems := subqueryDropLists collect: #selectedItem.
 	subqueries := selectedDropListItems collect: #query.
 	query
@@ -82,14 +93,29 @@ MiNAryQueryPresenter >> nAryOperationAction [
 MiNAryQueryPresenter >> newSubqueryDropList [
 
 	| availableQueryPresentersForOperation |
-	availableQueryPresentersForOperation := owner allQueryPresenters 
-		                                        reject: [ :q | 
-		                                        q query = self owner query ].
+	availableQueryPresentersForOperation := self
+		                                        availableQueryPresentersFromOwner.
 	^ self newDropList
 		  items: availableQueryPresentersForOperation;
 		  display: [ :each | each name ];
-		  whenSelectedItemChangedDo: [ self nAryOperationAction ];
+		  whenSelectedItemChangedDo: [ :selectedItem | 
+			  self nAryOperationAction: selectedItem ];
 		  yourself
+]
+
+{ #category : #'api - actions' }
+MiNAryQueryPresenter >> queryPresentersListChanged [
+
+	"Since the list of available queries of the MiQueryBuilder changed, we need to update the items on the drop list. We do not want to have deleted queries on the list. We want to add to the list the new added query presenter. "
+
+	| previouslySelectedQuery newAvailableQueries |
+	newAvailableQueries := self availableQueryPresentersFromOwner.
+	subqueryDropLists do: [ :dropList | 
+		previouslySelectedQuery := dropList selectedItem.
+		(newAvailableQueries includes: previouslySelectedQuery)
+			ifTrue: [ 
+			dropList updateItemsKeepingSelection: newAvailableQueries ]
+			ifFalse: [ dropList items: newAvailableQueries ] ]
 ]
 
 { #category : #actions }

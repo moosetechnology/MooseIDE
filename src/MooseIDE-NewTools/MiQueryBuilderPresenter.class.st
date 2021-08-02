@@ -179,5 +179,7 @@ MiQueryBuilderPresenter >> setModelBeforeInitialization: aQueryBrowserPresenter 
 { #category : #update }
 MiQueryBuilderPresenter >> updateComponentList [
 
+	presenters do: [ :queryCreationPresenter | 
+		queryCreationPresenter queryPresentersListChanged ].
 	componentListPresenter presenters: presenters
 ]
