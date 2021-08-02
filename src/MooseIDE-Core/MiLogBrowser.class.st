@@ -34,23 +34,11 @@ MiLogBrowser class >> menuCommandOn: aBuilder [
 
 { #category : #'world menu' }
 MiLogBrowser class >> open [
-	<script>
-	| browser |
-	browser := self new
-		initializeBuses: self currentApplication buses;
-		openWithSpec;
-		yourself.
-	^ browser
-]
 
-{ #category : #'world menu' }
-MiLogBrowser class >> runMeFollowing: aBus [
-	| browser |
-	browser := self new
-		initializeBuses: {aBus};
-		openWithSpec;
-		yourself.
-	^ browser
+	<script>
+	^ super open
+		  followBuses: self currentApplication buses;
+		  yourself
 ]
 
 { #category : #initialization }
@@ -81,6 +69,12 @@ MiLogBrowser >> followBus: aBus [
 	self update
 ]
 
+{ #category : #buses }
+MiLogBrowser >> followBuses: aCollectionOfBus [
+
+	aCollectionOfBus do: [ :aBus | self followBus: aBus ]
+]
+
 { #category : #initialization }
 MiLogBrowser >> initializeActionButtons [
 	buttonPropagate := ((MiPropagateCommand forContext: self)
@@ -90,12 +84,6 @@ MiLogBrowser >> initializeActionButtons [
 		name: '';
 		iconName: #smallInspectIt;
 		asButtonPresenter
-]
-
-{ #category : #buses }
-MiLogBrowser >> initializeBuses: someBuses [
-	buses := Set new.
-	someBuses do: [ :bus | super followBus: bus ]
 ]
 
 { #category : #initialization }
