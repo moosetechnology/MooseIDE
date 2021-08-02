@@ -81,7 +81,7 @@ MiAbstractBrowserTest >> testCanOpenOnEmptyBus [
 	| newBrowser |
 	self
 		shouldnt: [ 
-			newBrowser := self browserClass runMeFollowing: self bus.
+			newBrowser := self browserClass openForTests.
 			newBrowser window close ]
 		raise: Error
 ]
@@ -93,7 +93,7 @@ MiAbstractBrowserTest >> testCanOpenOnEmptyMooseGroup [
 	self bus globallySelect: MooseGroup new.
 	self
 		shouldnt: [ 
-			newBrowser := self browserClass runMeFollowing: self bus.
+			newBrowser := self browserClass openForTests.
 			newBrowser window close ]
 		raise: Error
 ]
@@ -105,7 +105,7 @@ MiAbstractBrowserTest >> testCanOpenOnEmptyMooseModel [
 	self bus globallySelect: MooseModel new.
 	self
 		shouldnt: [ 
-			newBrowser := self browserClass runMeFollowing: self bus.
+			newBrowser := self browserClass openForTests.
 			newBrowser window close ]
 		raise: Error
 ]
@@ -117,7 +117,7 @@ MiAbstractBrowserTest >> testCanOpenOnMooseEntity [
 	self bus globallySelect: MooseEntity new.
 	self
 		shouldnt: [ 
-			newBrowser := self browserClass runMeFollowing: self bus.
+			newBrowser := self browserClass openForTests.
 			newBrowser window close ]
 		raise: Error
 ]
@@ -129,7 +129,7 @@ MiAbstractBrowserTest >> testCanOpenOnMooseGroup [
 	self bus globallySelect: (MooseGroup with: MooseEntity new).
 	self
 		shouldnt: [ 
-			newBrowser := self browserClass runMeFollowing: self bus.
+			newBrowser := self browserClass openForTests.
 			newBrowser window close ]
 		raise: Error
 ]
@@ -141,7 +141,7 @@ MiAbstractBrowserTest >> testCanOpenOnMooseModel [
 	self bus globallySelect: (MooseModel with: MooseEntity new).
 	self
 		shouldnt: [ 
-			newBrowser := self browserClass runMeFollowing: self bus.
+			newBrowser := self browserClass openForTests.
 			newBrowser window close ]
 		raise: Error
 ]
@@ -153,7 +153,7 @@ MiAbstractBrowserTest >> testCanOpenOnNil [
 	self bus globallySelect: nil.
 	self
 		shouldnt: [ 
-			newBrowser := self browserClass runMeFollowing: self bus.
+			newBrowser := self browserClass openForTests.
 			newBrowser window close ]
 		raise: Error
 ]
@@ -165,7 +165,7 @@ MiAbstractBrowserTest >> testCanOpenOnObject [
 	self bus globallySelect: Object new.
 	self
 		shouldnt: [ 
-			newBrowser := self browserClass runMeFollowing: self bus.
+			newBrowser := self browserClass openForTests.
 			newBrowser window close ]
 		raise: Error
 ]

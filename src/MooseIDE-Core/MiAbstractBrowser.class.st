@@ -127,7 +127,10 @@ MiAbstractBrowser class >> newModel [
 { #category : #'instance creation' }
 MiAbstractBrowser class >> open [
 
-	^ self runMeFollowing: self currentApplication defaultBus
+	^ (self on: self newModel)
+		  openWithSpec;
+		  followBus: self currentApplication defaultBus;
+		  yourself
 ]
 
 { #category : #'instance creation' }
