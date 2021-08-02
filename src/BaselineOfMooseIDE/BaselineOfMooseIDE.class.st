@@ -43,10 +43,11 @@ BaselineOfMooseIDE >> defineGroups: spec [
 
 	spec
 		group: 'default'
-		with:
-			#( 'MooseIDE-Core' 'MooseIDE-Visualization' 'MooseIDE-Meta' 'MooseIDE-Tests'
-			   'MooseIDE-Dependency' 'MooseIDE-Famix' 'MooseIDE-Tagging' 'MooseIDE-Telescope'
-			   'MooseIDE-Export' 'MooseIDE-NewTools' 'MooseIDE-NewTools-Tests' )
+		with: #( 'MooseIDE-Core' 'MooseIDE-Visualization'
+			   'MooseIDE-Meta' 'MooseIDE-Tests' 'MooseIDE-Dependency'
+			   'MooseIDE-Famix' 'MooseIDE-Tagging' 'MooseIDE-Telescope'
+			   'MooseIDE-Export' 'MooseIDE-NewTools' 'MooseIDE-NewTools-Tests'
+			   'MooseIDE-ColorPalette' 'MooseIDE-ColorPalette-Tests' )
 ]
 
 { #category : #baselines }
@@ -78,7 +79,10 @@ BaselineOfMooseIDE >> definePackages: spec [
 		package: 'MooseIDE-NewTools-Tests'
 		with: [ spec requires: #( 'MooseIDE-NewTools' 'MooseIDE-Tests' ) ];
 		package: 'MooseIDE-Export'
-		with: [ spec requires: #( 'MooseIDE-Core' ) ]
+		with: [ spec requires: #( 'MooseIDE-Core' ) ];
+		package: 'MooseIDE-ColorPalette';
+		package: 'MooseIDE-ColorPalette-Tests'
+		with: [ spec requires: #( 'MooseIDE-ColorPalette' ) ]
 ]
 
 { #category : #dependencies }
