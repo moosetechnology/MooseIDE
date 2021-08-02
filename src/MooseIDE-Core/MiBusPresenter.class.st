@@ -28,11 +28,12 @@ MiBusPresenter >> deactivateItem: aBrowser [
 
 { #category : #initialization }
 MiBusPresenter >> initializePresenters [
+
 	super initializePresenters.
 	loggerButton := self newButton
-		iconName: #history;
-		label: 'Open logger';
-		action: [ MiLogBrowser runMeFollowing: model ]
+		                iconName: #history;
+		                label: 'Open logger';
+		                action: [ MiLogBrowser openOnBus: model ]
 ]
 
 { #category : #settings }

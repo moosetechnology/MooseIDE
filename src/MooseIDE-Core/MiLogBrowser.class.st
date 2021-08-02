@@ -41,6 +41,15 @@ MiLogBrowser class >> open [
 		  yourself
 ]
 
+{ #category : #'as yet unclassified' }
+MiLogBrowser class >> openOnBus: aBus [
+
+	^ (self newApplication: self currentApplication)
+		  followBus: aBus;
+		  openWithSpec;
+		  yourself
+]
+
 { #category : #initialization }
 MiLogBrowser class >> title [
 	^ 'Logger'
