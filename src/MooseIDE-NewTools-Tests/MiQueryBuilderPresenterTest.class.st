@@ -29,7 +29,7 @@ MiQueryBuilderPresenterTest >> setUp [
 	| helper |
 	super setUp.
 	helper := FQTestsHelper current.
-	browser := MiNewQueriesBrowser runMeFollowing: self bus.
+	browser := MiNewQueriesBrowser openForTests.
 	browser selectEntity: helper classesAndMethods.
 	presenter := MiQueryBuilderPresenter on: browser
 ]

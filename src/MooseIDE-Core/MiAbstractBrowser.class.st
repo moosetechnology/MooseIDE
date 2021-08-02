@@ -133,14 +133,6 @@ MiAbstractBrowser class >> open [
 		  yourself
 ]
 
-{ #category : #'instance creation' }
-MiAbstractBrowser class >> runMeFollowing: aBus [
-	^ (self on: self newModel)
-		openWithSpec;
-		followBus: aBus;
-		yourself
-]
-
 { #category : #specs }
 MiAbstractBrowser class >> windowSize [
 	^ 500 @ 400
