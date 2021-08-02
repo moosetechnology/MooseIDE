@@ -33,6 +33,13 @@ MiScopeQueryPresenter >> buildLayout [
 			 yourself)
 ]
 
+{ #category : #actions }
+MiScopeQueryPresenter >> computeQuery: scope [
+
+	scope ifNil: [ ^ self ].
+	self query scope: scope
+]
+
 { #category : #initialization }
 MiScopeQueryPresenter >> initializeDirectionsDropList [
 
@@ -55,14 +62,13 @@ MiScopeQueryPresenter >> initializePresenters [
 
 { #category : #'widgets configuration' }
 MiScopeQueryPresenter >> scopesDropListForScopes: scopes [
+
 	^ self newDropList
-		items: scopes;
-		display: [ :item | item mooseDescription name asEnglishPlural ];
-		selectItem: self query scope;
-		whenSelectedItemChangedDo: [ :scope | 
-			scope ifNil: [ ^ self ].
-			self query scope: scope.
-			self notifyQueryChanged ]
+		  items: scopes;
+		  display: [ :item | item mooseDescription name asEnglishPlural ];
+		  selectItem: self query scope;
+		  whenSelectedItemChangedDo: [ :scope | 
+			  self computeQueryAction: scope ]
 ]
 
 { #category : #'widgets configuration' }

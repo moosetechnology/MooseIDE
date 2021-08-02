@@ -35,6 +35,12 @@ MiNoPossibleQueryPresenter >> initializePresenters [
 	null2 := self newNullPresenter
 ]
 
+{ #category : #testing }
+MiNoPossibleQueryPresenter >> isImpossibleQueryPresenter [
+
+	^ true
+]
+
 { #category : #'accessing model' }
 MiNoPossibleQueryPresenter >> setModelBeforeInitialization: aString [
 	textToDisplay := 'No ' , aString , ' available'

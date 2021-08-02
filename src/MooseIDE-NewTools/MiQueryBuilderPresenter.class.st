@@ -13,7 +13,9 @@ Class {
 		'parentBrowser',
 		'componentListPresenter',
 		'queryCounter',
-		'addRootQueryButton'
+		'addRootQueryButton',
+		'progressNotificationPresenter',
+		'spinnerMorph'
 	],
 	#category : #'MooseIDE-NewTools-Queries Browser'
 }
@@ -71,6 +73,33 @@ MiQueryBuilderPresenter >> creationPresenters [
 ]
 
 { #category : #'api - actions' }
+MiQueryBuilderPresenter >> disableProgressNotification [
+
+	progressNotificationPresenter := SpNullPresenter new.
+
+	spinnerMorph delete.
+	self update
+]
+
+{ #category : #'api - actions' }
+MiQueryBuilderPresenter >> enableProgressNotification [
+
+	| stringMorph font |
+	font := LogicalFont
+		        familyName: StandardFonts defaultFont familyName
+		        pointSize: 14.
+	stringMorph := StringMorph contents: 'Calculating...' font: font.
+	progressNotificationPresenter := SpMorphPresenter new
+		                                 morph: stringMorph;
+		                                 yourself.
+
+	spinnerMorph := SpSpinnerMorph new.
+	spinnerMorph position: UIManager default currentWorld extent / 2.
+	spinnerMorph openInWorld.
+	self update
+]
+
+{ #category : #'api - actions' }
 MiQueryBuilderPresenter >> followAction [
 
 	"When a new entity arrives on the bus we reset the presenter to have only one query again. Like if it were openen again."
@@ -115,6 +144,7 @@ MiQueryBuilderPresenter >> initializeLayout [
 					  yourself)
 			 expand: false;
 			 add: #componentListPresenter;
+			 add: #progressNotificationPresenter expand: false;
 			 yourself)
 ]
 
@@ -125,7 +155,14 @@ MiQueryBuilderPresenter >> initializePresenters [
 	presenters := OrderedCollection empty.
 	self initializeAddRootQueryButton.
 	self initializeComponentListPresenter.
-	self createFirstQueryForComponentList
+	self createFirstQueryForComponentList.
+	self initializeProgressPresenter
+]
+
+{ #category : #initialization }
+MiQueryBuilderPresenter >> initializeProgressPresenter [
+
+	progressNotificationPresenter := SpNullPresenter new
 ]
 
 { #category : #actions }

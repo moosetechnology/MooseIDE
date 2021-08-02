@@ -31,10 +31,8 @@ MiPropertyQueryPresenter >> buildLayout [
 { #category : #initialization }
 MiPropertyQueryPresenter >> initializePresenters [
 
-	super initializePresenters.
-
 	query availableProperties
-		ifNotEmpty: [
+		ifNotEmpty: [ 
 			propertyDropList := self newPropertyDropList.
 			comparatorDropList := self newComparatorDropList.
 			valueInputField := self newValueInputField ]
@@ -58,16 +56,23 @@ MiPropertyQueryPresenter >> newComparatorDropList [
 
 { #category : #initialization }
 MiPropertyQueryPresenter >> newPropertyDropList [
+
 	^ self newDropList
-		items: self query availableProperties;
-		display: [ :prop | prop asString ];
-		whenSelectedItemChangedDo: [ :prop | 
-			self query property: prop.
-			self notifyQueryChanged ];
-		yourself
+		  items: self query availableProperties;
+		  display: [ :prop | prop asString ];
+		  whenSelectedItemChangedDo: [ :property | 
+			  self updateProperty: property ];
+		  yourself
 ]
 
 { #category : #initialization }
 MiPropertyQueryPresenter >> newValueInputField [
 	self subclassResponsibility 
+]
+
+{ #category : #actions }
+MiPropertyQueryPresenter >> updateProperty: property [
+
+	self query property: property.
+	self notifyQueryChanged
 ]

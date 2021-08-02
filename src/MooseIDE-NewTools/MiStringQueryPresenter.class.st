@@ -28,13 +28,18 @@ MiStringQueryPresenter class >> layout [
 		  yourself
 ]
 
+{ #category : #actions }
+MiStringQueryPresenter >> computeQuery: pattern [
+
+	self query valueToCompare: pattern
+]
+
 { #category : #initialization }
 MiStringQueryPresenter >> newValueInputField [
+
 	^ self newTextInput
-		placeholder: 'Your pattern';
-		autoAccept: true;
-		whenTextChangedDo: [ :pattern | 
-			self query valueToCompare: pattern.
-			self notifyQueryChanged ];
-		yourself
+		  placeholder: 'Pattern';
+		  autoAccept: true;
+		  whenTextChangedDo: [ :pattern | self computeQueryAction: pattern ];
+		  yourself
 ]

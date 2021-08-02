@@ -28,6 +28,12 @@ MiNumericQueryPresenter class >> layout [
 		  yourself
 ]
 
+{ #category : #actions }
+MiNumericQueryPresenter >> computeQuery: num [
+
+	self query valueToCompare: num
+]
+
 { #category : #initialization }
 MiNumericQueryPresenter >> newValueInputField [
 
@@ -36,8 +42,6 @@ MiNumericQueryPresenter >> newValueInputField [
 		  climbRate: 1;
 		  minimum: 0;
 		  autoAccept: true;
-		  whenNumberChangedDo: [ :num | 
-			  self query valueToCompare: num.
-			  self notifyQueryChanged ];
+		  whenNumberChangedDo: [ :num | self computeQueryAction: num ];
 		  yourself
 ]
