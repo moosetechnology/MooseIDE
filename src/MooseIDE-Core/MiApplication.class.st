@@ -2,7 +2,8 @@ Class {
 	#name : #MiApplication,
 	#superclass : #SpApplication,
 	#instVars : [
-		'buses'
+		'buses',
+		'defaultBus'
 	],
 	#classInstVars : [
 		'Current'
@@ -49,13 +50,15 @@ MiApplication >> buses [
 
 { #category : #buses }
 MiApplication >> defaultBus [
-	^ self busNamed: self class defaultBusName
+
+	^ defaultBus ifNil: [ 
+		  defaultBus := self busNamed: self class defaultBusName ]
 ]
 
 { #category : #buses }
 MiApplication >> deleteBus: aBus [
-	aBus isDefault
-		ifTrue: [ ^ self ].
+
+	aBus == defaultBus ifTrue: [ ^ self ].
 	buses remove: aBus ifAbsent: [  ].
 	self updateOverviewBrowsers
 ]
@@ -69,10 +72,10 @@ MiApplication >> deleteBusNamed: aName [
 
 { #category : #initialization }
 MiApplication >> initialize [
+
 	super initialize.
-	buses := OrderedCollection new
-		add: (MiBus named: self class defaultBusName);
-		yourself
+	buses := OrderedCollection new.
+	buses add: self defaultBus
 ]
 
 { #category : #private }

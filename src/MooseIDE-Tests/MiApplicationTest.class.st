@@ -20,7 +20,8 @@ MiApplicationTest >> application [
 
 { #category : #running }
 MiApplicationTest >> busName [
-	^ 'Test'
+
+	^ 'Not the default bus'
 ]
 
 { #category : #running }
@@ -31,7 +32,8 @@ MiApplicationTest >> setUp [
 
 { #category : #running }
 MiApplicationTest >> tearDown [
-	self application deleteBus: bus.
+
+	self application reset.
 	super tearDown
 ]
 
