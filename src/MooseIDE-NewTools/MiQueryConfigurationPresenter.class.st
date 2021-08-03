@@ -22,6 +22,21 @@ MiQueryConfigurationPresenter >> buildLayout [
 	self layout: self class defaultSpec
 ]
 
+{ #category : #actions }
+MiQueryConfigurationPresenter >> computeQuery: anObject [
+
+	self subclassResponsibility
+]
+
+{ #category : #actions }
+MiQueryConfigurationPresenter >> computeQueryAction: anObject [
+
+	[ owner parentPresenter enableProgressNotification ] asJob run.
+	self computeQuery: anObject.
+	self notifyQueryChanged.
+	owner disableProgressNotification
+]
+
 { #category : #'api - actions' }
 MiQueryConfigurationPresenter >> disable [
 
@@ -48,7 +63,7 @@ MiQueryConfigurationPresenter >> enable [
 		thenDo: #enable
 ]
 
-{ #category : #accessing }
+{ #category : #initialization }
 MiQueryConfigurationPresenter >> initialize [
 
 	super initialize.
@@ -64,7 +79,7 @@ MiQueryConfigurationPresenter >> noParameterMessage: aParameterName [
 { #category : #transmissions }
 MiQueryConfigurationPresenter >> notifyQueryChanged [
 
-	owner updateFromConfiguration
+	owner queryChangedUpdate
 ]
 
 { #category : #accessing }
@@ -83,10 +98,5 @@ MiQueryConfigurationPresenter >> queryPresentersListChanged [
 
 { #category : #'accessing - model' }
 MiQueryConfigurationPresenter >> setModelBeforeInitialization: aQuery [
-	query := aQuery
-]
-
-{ #category : #update }
-MiQueryConfigurationPresenter >> updateForQuery: aQuery [
 	query := aQuery
 ]

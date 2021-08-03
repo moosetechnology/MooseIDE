@@ -48,6 +48,12 @@ MiNAryQueryPresenter >> buildLayout [
 	self layout: tempLayout
 ]
 
+{ #category : #actions }
+MiNAryQueryPresenter >> computeQuery: newSelectedItem [
+
+	self nAryOperation: newSelectedItem
+]
+
 { #category : #initialization }
 MiNAryQueryPresenter >> initializeButtons [
 
@@ -73,7 +79,7 @@ MiNAryQueryPresenter >> initializePresenters [
 ]
 
 { #category : #actions }
-MiNAryQueryPresenter >> nAryOperationAction: newSelectedItem [
+MiNAryQueryPresenter >> nAryOperation: newSelectedItem [
 
 	| subqueries selectedDropListItems |
 	"Sometimes the SpDropListPresenter>>#whenSelectedItemChangedDo: in spec is triggered even though no item were selected. When this happends the selected item is nil. This is an spec problem."
@@ -85,8 +91,7 @@ MiNAryQueryPresenter >> nAryOperationAction: newSelectedItem [
 	subqueries := selectedDropListItems collect: #query.
 	query
 		subqueries: subqueries;
-		resetResult.
-	self notifyQueryChanged
+		resetResult
 ]
 
 { #category : #actions }
@@ -99,7 +104,7 @@ MiNAryQueryPresenter >> newSubqueryDropList [
 		  items: availableQueryPresentersForOperation;
 		  display: [ :each | each name ];
 		  whenSelectedItemChangedDo: [ :selectedItem | 
-			  self nAryOperationAction: selectedItem ];
+			  self computeQueryAction: selectedItem ];
 		  yourself
 ]
 

@@ -30,6 +30,12 @@ MiNegationQueryPresenter >> buildLayout [
 			 yourself)
 ]
 
+{ #category : #actions }
+MiNegationQueryPresenter >> computeQuery: selectedPresenter [
+
+	self negateQueryAction: selectedPresenter
+]
+
 { #category : #initialization }
 MiNegationQueryPresenter >> initializePresenters [
 
@@ -43,7 +49,7 @@ MiNegationQueryPresenter >> initializeQueryDropListPresenter [
 	subqueryDropListPresenter
 		items: self availableQueryPresentersFromOwner;
 		display: [ :each | each name ];
-		whenSelectedItemChangedDo: [ :item | self negateQueryAction: item ]
+		whenSelectedItemChangedDo: [ :item | self computeQueryAction: item ]
 ]
 
 { #category : #actions }
@@ -54,8 +60,7 @@ MiNegationQueryPresenter >> negateQueryAction: selectedPresenter [
 	selectedPresenter ifNil: [ ^ self ].
 
 	query := FQComplementQuery queryToNegate: selectedPresenter query.
-	query runOn: selectedPresenter query parent result.
-	self notifyQueryChanged
+	query runOn: selectedPresenter query parent result
 ]
 
 { #category : #'api - actions' }

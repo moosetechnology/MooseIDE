@@ -25,19 +25,9 @@ MiNavigationQueryPresenter >> associationsList [
 		display: [ :item | item mooseDescription name asString ];
 		items: self query availableAssociations;
 		selectItems: self query associations;
-		onActivation: [ :associations | 
-			self updateQueryWithSelectedAssociations:
-					associationsList selectedItems ];
-		onDeactivation: [ :associtations | 
-			associationsList selectedItems
-				ifEmpty: [ 
-					associationsList selectItem: associtations.
-					UIManager default
-						alert: 'You must select at least one association'
-						title: 'Cannot unselect all associations' ]
-				ifNotEmpty: [ 
-					self updateQueryWithSelectedAssociations:
-							associationsList selectedItems ] ].
+		onActivation: [ :association | self computeQueryAction: association ];
+		onDeactivation: [ :association | 
+			self computeQueryAction: association ].
 	^ associationsList
 ]
 
@@ -55,6 +45,19 @@ MiNavigationQueryPresenter >> buildLayout [
 				 constraints
 					 width: 150;
 					 padding: padding ] yourself)
+]
+
+{ #category : #actions }
+MiNavigationQueryPresenter >> computeQuery: association [
+
+	associationsList selectedItems ifEmpty: [ 
+		associationsList selectItem: association.
+		UIManager default
+			alert: 'You must select at least one association'
+			title: 'Cannot unselect all associations'.
+		^ self ].
+	self updateQueryWithSelectedAssociations:
+		associationsList selectedItems
 ]
 
 { #category : #initialization }
@@ -83,10 +86,7 @@ MiNavigationQueryPresenter >> initializeDirectionsDropList [
 		items: self query class directionStrategies;
 		display: #label;
 		whenSelectedItemChangedDo: [ :selectedDirection | 
-			self query resetAndChangeDirection: selectedDirection.
-			self initializeAssociationsButton.
-			self update.
-			self notifyQueryChanged ]
+			self updateDirection: selectedDirection ]
 ]
 
 { #category : #initialization }
@@ -97,6 +97,15 @@ MiNavigationQueryPresenter >> initializePresenters [
 ]
 
 { #category : #actions }
+MiNavigationQueryPresenter >> updateDirection: selectedDirection [
+
+	self query resetAndChangeDirection: selectedDirection.
+	self initializeAssociationsButton.
+	self update.
+	self notifyQueryChanged
+]
+
+{ #category : #actions }
 MiNavigationQueryPresenter >> updateQueryWithSelectedAssociations: selectedAssociations [
 
 	| nonSelectedAssociations |
@@ -104,7 +113,5 @@ MiNavigationQueryPresenter >> updateQueryWithSelectedAssociations: selectedAssoc
 		                           selectedAssociations.
 	selectedAssociations do: [ :assoc | self query addAssociation: assoc ].
 	nonSelectedAssociations do: [ :assoc | 
-		self query removeAssociation: assoc ].
-	self update.
-	^ self notifyQueryChanged
+		self query removeAssociation: assoc ]
 ]

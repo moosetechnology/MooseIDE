@@ -54,6 +54,18 @@ MiNewQueryCreationPresenter >> allQueryPresenters [
 	^ parentPresenter creationPresenters
 ]
 
+{ #category : #'api - actions' }
+MiNewQueryCreationPresenter >> disableProgressNotification [
+
+	parentPresenter disableProgressNotification
+]
+
+{ #category : #'api - actions' }
+MiNewQueryCreationPresenter >> enableProgressNotification [
+
+	parentPresenter enableProgressNotification
+]
+
 { #category : #accessing }
 MiNewQueryCreationPresenter >> indentationSpacesPresenters [
 
@@ -214,14 +226,6 @@ MiNewQueryCreationPresenter >> removeQueryAction [
 MiNewQueryCreationPresenter >> setModelBeforeInitialization: aQuery [
 
 	parentQuery := aQuery
-]
-
-{ #category : #'api - actions' }
-MiNewQueryCreationPresenter >> updateFromConfiguration [
-
-	"This method name is not meaningful. This method is kept only for backwards compatibility with the old queries browser."
-
-	^ self queryChangedUpdate
 ]
 
 { #category : #update }

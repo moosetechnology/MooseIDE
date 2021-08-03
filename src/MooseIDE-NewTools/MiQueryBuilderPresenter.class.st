@@ -13,7 +13,9 @@ Class {
 		'parentBrowser',
 		'componentListPresenter',
 		'queryCounter',
-		'addRootQueryButton'
+		'addRootQueryButton',
+		'progressNotificationPresenter',
+		'spinnerMorph'
 	],
 	#category : #'MooseIDE-NewTools-Queries Browser'
 }
@@ -71,6 +73,38 @@ MiQueryBuilderPresenter >> creationPresenters [
 ]
 
 { #category : #'api - actions' }
+MiQueryBuilderPresenter >> disableProgressNotification [
+
+	progressNotificationPresenter := SpNullPresenter new.
+	spinnerMorph delete.
+	self update
+]
+
+{ #category : #'api - actions' }
+MiQueryBuilderPresenter >> enableProgressNotification [
+
+	| queriesBrowserMorph |
+	"stringMorph := StringMorph
+	               contents: 'Computing...'
+	               font: (LogicalFont
+			                familyName: StandardFonts defaultFont familyName
+			                pointSize: 14)."
+	progressNotificationPresenter := SpLabelPresenter new
+		                                 label: 'Computing...';
+		                                 yourself.
+
+
+	"Only put the spinner if the queries browser is opened. Actually, there are no uses cases when this method is called without the queries browser being opened. This is only for avoid the tests faling. Because the tests use this method without open the queries browser."
+	parentBrowser window ifNotNil: [ "Put the spinner in the middle of the queries browser"
+		queriesBrowserMorph := parentBrowser window window.
+		spinnerMorph position:
+			queriesBrowserMorph extent + queriesBrowserMorph position / 2.
+		spinnerMorph openInWorld ].
+
+	self update
+]
+
+{ #category : #'api - actions' }
 MiQueryBuilderPresenter >> followAction [
 
 	"When a new entity arrives on the bus we reset the presenter to have only one query again. Like if it were openen again."
@@ -115,6 +149,7 @@ MiQueryBuilderPresenter >> initializeLayout [
 					  yourself)
 			 expand: false;
 			 add: #componentListPresenter;
+			 add: #progressNotificationPresenter expand: false;
 			 yourself)
 ]
 
@@ -125,7 +160,15 @@ MiQueryBuilderPresenter >> initializePresenters [
 	presenters := OrderedCollection empty.
 	self initializeAddRootQueryButton.
 	self initializeComponentListPresenter.
-	self createFirstQueryForComponentList
+	self createFirstQueryForComponentList.
+	self initializeProgressPresenter
+]
+
+{ #category : #initialization }
+MiQueryBuilderPresenter >> initializeProgressPresenter [
+
+	progressNotificationPresenter := SpNullPresenter new.
+	spinnerMorph := SpSpinnerMorph new
 ]
 
 { #category : #actions }

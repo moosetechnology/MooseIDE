@@ -20,7 +20,23 @@ MiBooleanQueryPresenter class >> layout [
 		  yourself
 ]
 
-{ #category : #'instance creation' }
+{ #category : #actions }
+MiBooleanQueryPresenter >> computeQuery: aProperty [
+
+	self updateProperty: aProperty
+]
+
+{ #category : #initialization }
+MiBooleanQueryPresenter >> initializePresenters [
+
+	super initializePresenters.
+
+	propertyDropList isImpossibleQueryPresenter ifFalse: [ 
+		propertyDropList whenSelectedItemChangedDo: [ :property | 
+			self computeQueryAction: property ] ]
+]
+
+{ #category : #initialization }
 MiBooleanQueryPresenter >> newComparatorDropList [
 	^ self newNullPresenter 
 ]

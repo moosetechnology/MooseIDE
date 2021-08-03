@@ -12,56 +12,29 @@ Class {
 	#name : #MiQueryCodePresenter,
 	#superclass : #SpPresenter,
 	#instVars : [
-		'code',
-		'modifyButton',
-		'createButton',
-		'isCreating'
+		'code'
 	],
 	#category : #'MooseIDE-NewTools-Queries Browser widgets'
 }
 
 { #category : #specs }
 MiQueryCodePresenter class >> defaultSpec [
+
 	^ SpBoxLayout newVertical
-		add:
-			(SpBoxLayout newHorizontal
-				add: #modifyButton;
-				add: #createButton;
-				yourself)
-			height: self buttonHeight;
-		add: #code;
-		yourself
+		  add: #code;
+		  yourself
 ]
 
 { #category : #action }
 MiQueryCodePresenter >> acceptQueryCode: aCode [
+
 	| query |
 	query := [ FQAbstractQuery readFrom: aCode ]
-		on: Error
-		do: [ self informWrongCode.
-			^ self ].
-	(query isNil or: [ query isClass ])
-		ifTrue: [ self informWrongCode.
-			^ self ].
-	isCreating
-		ifTrue: [ self createNewQuery: query ]
-		ifFalse: [ self modifyQuery: query ]
-]
-
-{ #category : #state }
-MiQueryCodePresenter >> beCreating [
-	isCreating := true
-]
-
-{ #category : #state }
-MiQueryCodePresenter >> beModifying [
-	isCreating := false
-]
-
-{ #category : #action }
-MiQueryCodePresenter >> createNewQuery: aQuery [
-	aQuery beChildOf: owner selectedQuery.
-	owner updateForQuery: aQuery
+		         on: Error
+		         do: [ 
+			         self informWrongCode.
+			         ^ self ].
+	(query isNil or: [ query isClass ]) ifFalse: [ self informWrongCode ]
 ]
 
 { #category : #initialization }
@@ -80,54 +53,27 @@ Click to get current query code.'
 ]
 
 { #category : #initialization }
-MiQueryCodePresenter >> initialize [
-	self beCreating.
-	super initialize
-]
-
-{ #category : #initialization }
 MiQueryCodePresenter >> initializeCode [
+
 	code := self newCode
-		withoutSyntaxHighlight;
-		text: self defaultComment;
-		whenSubmitDo: [ :text | self acceptQueryCode: text ];
-		yourself
+		        withoutSyntaxHighlight;beNotEditable;
+		        text: self defaultComment;
+		        whenSubmitDo: [ :text | self acceptQueryCode: text ];
+		        yourself
 ]
 
 { #category : #initialization }
 MiQueryCodePresenter >> initializePresenters [
-	super initializePresenters.
-	self initializeRadioButtons.
+
 	self initializeCode
 ]
 
 { #category : #initialization }
-MiQueryCodePresenter >> initializeRadioButtons [
-	modifyButton := self newRadioButton
-		enabled: owner selectedQuery isRootQuery not;
-		label: 'Modify current query';
-		whenActivatedDo: [ self beModifying ].
-	createButton := self newRadioButton
-		label: 'Create query';
-		whenActivatedDo: [ self beCreating ].
-	createButton associatedRadioButtons: {modifyButton}
-]
-
-{ #category : #action }
-MiQueryCodePresenter >> modifyQuery: aQuery [
-	owner replaceSelectedQueryWith: aQuery
-]
-
-{ #category : #initialization }
 MiQueryCodePresenter >> updateForQuery: aQuery [
-	modifyButton enabled: aQuery isRootQuery not.
-	createButton state: aQuery isRootQuery.
-	code
-		text:
-			(aQuery isRootQuery
-				ifTrue: [ self defaultComment ]
-				ifFalse: [ EFFormatter
-						format:
-							(RBParser
-								parseExpression: (String streamContents: [ :s | aQuery storeOn: s ])) ])
+
+	code text: (aQuery isRootQuery
+			 ifTrue: [ self defaultComment ]
+			 ifFalse: [ 
+				 EFFormatter format: (RBParser parseExpression:
+						  (String streamContents: [ :s | aQuery storeOn: s ])) ])
 ]
