@@ -63,7 +63,7 @@ MiQueryConfigurationPresenter >> enable [
 		thenDo: #enable
 ]
 
-{ #category : #accessing }
+{ #category : #initialization }
 MiQueryConfigurationPresenter >> initialize [
 
 	super initialize.
