@@ -76,7 +76,6 @@ MiQueryBuilderPresenter >> creationPresenters [
 MiQueryBuilderPresenter >> disableProgressNotification [
 
 	progressNotificationPresenter := SpNullPresenter new.
-
 	spinnerMorph delete.
 	self update
 ]
@@ -84,17 +83,23 @@ MiQueryBuilderPresenter >> disableProgressNotification [
 { #category : #'api - actions' }
 MiQueryBuilderPresenter >> enableProgressNotification [
 
-	| stringMorph font |
-	font := LogicalFont
-		        familyName: StandardFonts defaultFont familyName
-		        pointSize: 14.
-	stringMorph := StringMorph contents: 'Calculating...' font: font.
-	progressNotificationPresenter := SpMorphPresenter new
-		                                 morph: stringMorph;
+	| queriesBrowserMorph |
+	"stringMorph := StringMorph
+	               contents: 'Computing...'
+	               font: (LogicalFont
+			                familyName: StandardFonts defaultFont familyName
+			                pointSize: 14)."
+	progressNotificationPresenter := SpLabelPresenter new
+		                                 label: 'Computing...';
 		                                 yourself.
 
-	spinnerMorph := SpSpinnerMorph new.
-	spinnerMorph position: UIManager default currentWorld extent / 2.
+	"Put the spinner in the middle of the queries browser"
+	queriesBrowserMorph := ((UIManager default currentWorld submorphs 
+		                         select: #isSystemWindow) select: [ :each | 
+		                        each model presenter = parentBrowser ])
+		                       anyOne.
+	spinnerMorph position:
+		queriesBrowserMorph extent + queriesBrowserMorph position / 2.
 	spinnerMorph openInWorld.
 	self update
 ]
@@ -162,7 +167,8 @@ MiQueryBuilderPresenter >> initializePresenters [
 { #category : #initialization }
 MiQueryBuilderPresenter >> initializeProgressPresenter [
 
-	progressNotificationPresenter := SpNullPresenter new
+	progressNotificationPresenter := SpNullPresenter new.
+	spinnerMorph := SpSpinnerMorph new
 ]
 
 { #category : #actions }
