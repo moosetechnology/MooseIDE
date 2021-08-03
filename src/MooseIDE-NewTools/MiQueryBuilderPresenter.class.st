@@ -94,10 +94,7 @@ MiQueryBuilderPresenter >> enableProgressNotification [
 		                                 yourself.
 
 	"Put the spinner in the middle of the queries browser"
-	queriesBrowserMorph := ((UIManager default currentWorld submorphs 
-		                         select: #isSystemWindow) select: [ :each | 
-		                        each model presenter = parentBrowser ])
-		                       anyOne.
+	queriesBrowserMorph := parentBrowser window window.
 	spinnerMorph position:
 		queriesBrowserMorph extent + queriesBrowserMorph position / 2.
 	spinnerMorph openInWorld.
