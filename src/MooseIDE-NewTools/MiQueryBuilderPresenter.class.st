@@ -93,11 +93,14 @@ MiQueryBuilderPresenter >> enableProgressNotification [
 		                                 label: 'Computing...';
 		                                 yourself.
 
-	"Put the spinner in the middle of the queries browser"
-	queriesBrowserMorph := parentBrowser window window.
-	spinnerMorph position:
-		queriesBrowserMorph extent + queriesBrowserMorph position / 2.
-	spinnerMorph openInWorld.
+
+	"Only put the spinner if the queries browser is opened. Actually, there are no uses cases when this method is called without the queries browser being opened. This is only for avoid the tests faling. Because the tests use this method without open the queries browser."
+	parentBrowser window ifNotNil: [ "Put the spinner in the middle of the queries browser"
+		queriesBrowserMorph := parentBrowser window window.
+		spinnerMorph position:
+			queriesBrowserMorph extent + queriesBrowserMorph position / 2.
+		spinnerMorph openInWorld ].
+
 	self update
 ]
 
