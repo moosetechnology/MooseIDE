@@ -16,12 +16,6 @@ MiNegationQueryPresenter class >> dropListWidth [
 	^ 57
 ]
 
-{ #category : #initialization }
-MiNegationQueryPresenter >> availableQueryPresentersFromOwner [
-
-	^ owner allQueryPresenters reject: [ :q | q query = self owner query ]
-]
-
 { #category : #layout }
 MiNegationQueryPresenter >> buildLayout [
 
@@ -47,7 +41,7 @@ MiNegationQueryPresenter >> initializeQueryDropListPresenter [
 
 	subqueryDropListPresenter := self newDropList.
 	subqueryDropListPresenter
-		items: self availableQueryPresentersFromOwner;
+		items: owner allQueryPresentersExceptSelf;
 		display: [ :each | each name ];
 		whenSelectedItemChangedDo: [ :item | self computeQueryAction: item ]
 ]
@@ -69,7 +63,7 @@ MiNegationQueryPresenter >> queryPresentersListChanged [
 	"Since the list of available queries of the MiQueryBuilder changed, we need to update the items on the drop list. We do not want to have deleted queries on the list or we want to add the new added query presenter."
 
 	| newAvailableQueries previouslySelectedQuery |
-	newAvailableQueries := self availableQueryPresentersFromOwner.
+	newAvailableQueries := owner allQueryPresentersExceptSelf.
 	previouslySelectedQuery := subqueryDropListPresenter selectedItem.
 	(newAvailableQueries includes: previouslySelectedQuery)
 		ifTrue: [ 

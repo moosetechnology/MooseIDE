@@ -49,9 +49,9 @@ MiNewQueryCreationPresenter >> addNewChildQueryAction [
 ]
 
 { #category : #accessing }
-MiNewQueryCreationPresenter >> allQueryPresenters [
+MiNewQueryCreationPresenter >> allQueryPresentersExceptSelf [
 
-	^ parentPresenter creationPresenters
+	^ parentPresenter creationPresenters reject: [ :q | q query = self query ]
 ]
 
 { #category : #'api - actions' }

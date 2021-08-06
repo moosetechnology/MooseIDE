@@ -27,12 +27,6 @@ MiNAryQueryPresenter >> addSubqueryToLayout [
 	self update
 ]
 
-{ #category : #actions }
-MiNAryQueryPresenter >> availableQueryPresentersFromOwner [
-
-	^ owner allQueryPresenters reject: [ :q | q query = self owner query ]
-]
-
 { #category : #layout }
 MiNAryQueryPresenter >> buildLayout [
 
@@ -98,8 +92,7 @@ MiNAryQueryPresenter >> nAryOperation: newSelectedItem [
 MiNAryQueryPresenter >> newSubqueryDropList [
 
 	| availableQueryPresentersForOperation |
-	availableQueryPresentersForOperation := self
-		                                        availableQueryPresentersFromOwner.
+	availableQueryPresentersForOperation := owner allQueryPresentersExceptSelf.
 	^ self newDropList
 		  items: availableQueryPresentersForOperation;
 		  display: [ :each | each name ];
@@ -114,7 +107,7 @@ MiNAryQueryPresenter >> queryPresentersListChanged [
 	"Since the list of available queries of the MiQueryBuilder changed, we need to update the items on the drop list. We do not want to have deleted queries on the list. We want to add to the list the new added query presenter. "
 
 	| previouslySelectedQuery newAvailableQueries |
-	newAvailableQueries := self availableQueryPresentersFromOwner.
+	newAvailableQueries := owner allQueryPresentersExceptSelf.
 	subqueryDropLists do: [ :dropList | 
 		previouslySelectedQuery := dropList selectedItem.
 		(newAvailableQueries includes: previouslySelectedQuery)

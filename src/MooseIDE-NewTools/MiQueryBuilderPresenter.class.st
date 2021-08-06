@@ -47,9 +47,10 @@ MiQueryBuilderPresenter >> availableQueryTypes [
 
 	| queryTypes |
 	queryTypes := FQUnaryQuery allSubclasses select: #canBeConfigured.
-	"There must be at least one query to do the negation operation"
+	"There must be at least one query to do the negation operation and the result size query"
 	presenters ifNotEmpty: [ 
-		queryTypes := queryTypes , FQComplementQuery asOrderedCollection ].
+		queryTypes := queryTypes , FQComplementQuery asOrderedCollection
+		              , FQResultSizeQuery asOrderedCollection ].
 	"There must be at least two queries to create an n-ary query."
 	presenters size > 1 ifTrue: [ 
 		queryTypes := queryTypes , FQNAryQuery subclasses ].
@@ -84,15 +85,9 @@ MiQueryBuilderPresenter >> disableProgressNotification [
 MiQueryBuilderPresenter >> enableProgressNotification [
 
 	| queriesBrowserMorph |
-	"stringMorph := StringMorph
-	               contents: 'Computing...'
-	               font: (LogicalFont
-			                familyName: StandardFonts defaultFont familyName
-			                pointSize: 14)."
 	progressNotificationPresenter := SpLabelPresenter new
 		                                 label: 'Computing...';
 		                                 yourself.
-
 
 	"Only put the spinner if the queries browser is opened. Actually, there are no uses cases when this method is called without the queries browser being opened. This is only for avoid the tests faling. Because the tests use this method without open the queries browser."
 	parentBrowser window ifNotNil: [ "Put the spinner in the middle of the queries browser"
