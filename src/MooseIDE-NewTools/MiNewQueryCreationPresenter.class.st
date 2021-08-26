@@ -49,9 +49,9 @@ MiNewQueryCreationPresenter >> addNewChildQueryAction [
 ]
 
 { #category : #accessing }
-MiNewQueryCreationPresenter >> allQueryPresenters [
+MiNewQueryCreationPresenter >> allQueryPresentersExceptSelf [
 
-	^ parentPresenter creationPresenters
+	^ parentPresenter creationPresenters reject: [ :q | q query = self query ]
 ]
 
 { #category : #'api - actions' }
@@ -240,6 +240,8 @@ MiNewQueryCreationPresenter >> updateQueryConfigurationFor: queryClass [
 		                               (queryClass miPresenterClass
 			                                owner: self
 			                                on: newQuery).
-
+	"We update the subqueries droplist of all the presenters in the queries browser.
+	This is to keep the list of the queries updated."
+	parentPresenter updateSubqueriesListPresenter.
 	self update
 ]

@@ -6,6 +6,12 @@ FQScopeQuery class >> canBeConfigured [
 ]
 
 { #category : #'*MooseIDE-NewTools' }
+FQScopeQuery >> isScopeQuery [
+
+	^ true
+]
+
+{ #category : #'*MooseIDE-NewTools' }
 FQScopeQuery class >> miPresenterClass [
 
 	^ MiScopeQueryPresenter
