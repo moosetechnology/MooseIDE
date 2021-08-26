@@ -84,14 +84,17 @@ MiQueryBuilderPresenter >> disableProgressNotification [
 { #category : #'api - actions' }
 MiQueryBuilderPresenter >> enableProgressNotification [
 
-	| queriesBrowserMorph morph |
-	morph := (StringMorph
-		          contents: 'Computing...'
-		          font: (LogicalFont
-				           familyName: self theme labelFont familyName
-				           pointSize: self theme labelFont pointSize + 2)
-		          emphasis: TextEmphasis italic) addEmphasis:
-		         TextEmphasis bold.
+	| queriesBrowserMorph font morph |
+	"progressNotificationPresenter := SpLabelPresenter new
+		                                 label: 'Computing...';
+		                                 yourself."
+	font := LogicalFont
+		        familyName: StandardFonts defaultFont familyName
+		        pointSize: 12.
+	morph := StringMorph
+		         contents: 'Computing...'
+		         font: font
+		         emphasis: TextEmphasis italic.
 	progressNotificationPresenter := SpMorphPresenter new
 		                                 morph:
 			                                 (PanelMorph new addMorphFront:
@@ -103,7 +106,6 @@ MiQueryBuilderPresenter >> enableProgressNotification [
 		spinnerMorph position:
 			queriesBrowserMorph extent / 2 + queriesBrowserMorph position.
 		spinnerMorph openInWorld ].
-
 	self update
 ]
 
