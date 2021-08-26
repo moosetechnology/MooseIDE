@@ -31,10 +31,11 @@ MiQueryConfigurationPresenter >> computeQuery: anObject [
 { #category : #actions }
 MiQueryConfigurationPresenter >> computeQueryAction: anObject [
 
-	[ owner parentPresenter enableProgressNotification ] asJob run.
+	[ 
+	owner parentPresenter enableProgressNotification.
 	self computeQuery: anObject.
 	self notifyQueryChanged.
-	owner disableProgressNotification
+	owner disableProgressNotification ] fork
 ]
 
 { #category : #'api - actions' }

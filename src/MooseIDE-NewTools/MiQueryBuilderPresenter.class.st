@@ -84,16 +84,24 @@ MiQueryBuilderPresenter >> disableProgressNotification [
 { #category : #'api - actions' }
 MiQueryBuilderPresenter >> enableProgressNotification [
 
-	| queriesBrowserMorph |
-	progressNotificationPresenter := SpLabelPresenter new
-		                                 label: 'Computing...';
+	| queriesBrowserMorph morph |
+	morph := (StringMorph
+		          contents: 'Computing...'
+		          font: (LogicalFont
+				           familyName: self theme labelFont familyName
+				           pointSize: self theme labelFont pointSize + 2)
+		          emphasis: TextEmphasis italic) addEmphasis:
+		         TextEmphasis bold.
+	progressNotificationPresenter := SpMorphPresenter new
+		                                 morph:
+			                                 (PanelMorph new addMorphFront:
+					                                  morph);
 		                                 yourself.
-
 	"Only put the spinner if the queries browser is opened. Actually, there are no uses cases when this method is called without the queries browser being opened. This is only for avoid the tests faling. Because the tests use this method without open the queries browser."
 	parentBrowser window ifNotNil: [ "Put the spinner in the middle of the queries browser"
 		queriesBrowserMorph := parentBrowser window window.
 		spinnerMorph position:
-			queriesBrowserMorph extent + queriesBrowserMorph position / 2.
+			queriesBrowserMorph extent / 2 + queriesBrowserMorph position.
 		spinnerMorph openInWorld ].
 
 	self update
