@@ -99,7 +99,12 @@ MiNewQueryCreationPresenter >> initializeButtons [
 					name: 'Remove this query';
 					icon: (self iconNamed: #remove);
 					help: 'Remove query and its sub-queries';
-					action: [ self removeQueryAction ] ] ].
+					action: [ self removeQueryAction ] ];
+			addItem: [ :anItem | 
+				anItem
+					name: 'Cancel';
+					icon: (self iconNamed: #smallCancel);
+					action: [  ] ] ].
 
 	optionsMenuButton := self newMenuButton
 		                     menu: optionsMenuGroup;
