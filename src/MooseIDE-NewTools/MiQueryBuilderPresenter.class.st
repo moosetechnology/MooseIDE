@@ -204,7 +204,6 @@ MiQueryBuilderPresenter >> removeQueryAction: aQueryCreationPresenter [
 	parentBrowser removeQuery: aQueryCreationPresenter query.
 	presenters remove: aQueryCreationPresenter.
 	self removePresentersAssociatedWith: aQueryCreationPresenter query.
-	"presenters last enable."
 	self updateComponentList
 ]
 
@@ -217,7 +216,13 @@ MiQueryBuilderPresenter >> setModelBeforeInitialization: aQueryBrowserPresenter 
 { #category : #update }
 MiQueryBuilderPresenter >> updateComponentList [
 
-	presenters do: [ :queryCreationPresenter | 
-		queryCreationPresenter queryPresentersListChanged ].
+	self updateSubqueriesListPresenter.
 	componentListPresenter presenters: presenters
+]
+
+{ #category : #update }
+MiQueryBuilderPresenter >> updateSubqueriesListPresenter [
+
+	presenters do: [ :queryCreationPresenter | 
+		queryCreationPresenter queryPresentersListChanged ]
 ]

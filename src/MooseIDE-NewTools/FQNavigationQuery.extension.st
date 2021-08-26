@@ -6,6 +6,12 @@ FQNavigationQuery class >> canBeConfigured [
 ]
 
 { #category : #'*MooseIDE-NewTools' }
+FQNavigationQuery >> isNavigationQuery [
+
+	^ true
+]
+
+{ #category : #'*MooseIDE-NewTools' }
 FQNavigationQuery class >> miPresenterClass [
 
 	^ MiNavigationQueryPresenter

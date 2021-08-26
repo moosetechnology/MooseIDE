@@ -31,11 +31,12 @@ MiResultSizeQueryPresenter >> buildLayout [
 { #category : #actions }
 MiResultSizeQueryPresenter >> computeQuery: anObject [
 
-	self query
-		innerQuery: subqueriesDropList selectedItem query;
-		comparator: comparatorDropList selectedItem;
-		valueToCompare: valueInputField number;
-		resetResult
+	subqueriesDropList items ifNotEmpty: [ 
+		self query
+			innerQuery: subqueriesDropList selectedItem query;
+			comparator: comparatorDropList selectedItem;
+			valueToCompare: valueInputField number;
+			resetResult ]
 ]
 
 { #category : #initialization }
@@ -62,10 +63,11 @@ MiResultSizeQueryPresenter >> initializeSubqueriesDropList [
 
 	subqueriesDropList := self newDropList.
 	subqueriesDropList
-		items: owner allQueryPresentersExceptSelf;
+		items: self innerQueries;
 		display: [ :each | each name ];
 		whenSelectedItemChangedDo: [ :subQuery | 
-			self computeQueryAction: subQuery ]
+			self computeQueryAction: subQuery ];
+		help: 'The inner query can only be Scope or Navigation query'
 ]
 
 { #category : #initialization }
@@ -78,13 +80,21 @@ MiResultSizeQueryPresenter >> initializeValueInput [
 			self computeQueryAction: newNumber ]
 ]
 
+{ #category : #initialization }
+MiResultSizeQueryPresenter >> innerQueries [
+
+	^ owner allQueryPresentersExceptSelf select: [ :aQueryPresenter | 
+		  aQueryPresenter query isScopeQuery or: [ 
+			  aQueryPresenter query isNavigationQuery ] ]
+]
+
 { #category : #'api - actions' }
 MiResultSizeQueryPresenter >> queryPresentersListChanged [
 
 	"Since the list of available queries of the MiQueryBuilder changed, we need to update the items on the drop list. We do not want to have deleted queries on the list or we want to add the new added query presenter."
 
 	| newAvailableQueries previouslySelectedQuery |
-	newAvailableQueries := owner allQueryPresentersExceptSelf.
+	newAvailableQueries := self innerQueries.
 	previouslySelectedQuery := subqueriesDropList selectedItem.
 	(newAvailableQueries includes: previouslySelectedQuery)
 		ifTrue: [ 
