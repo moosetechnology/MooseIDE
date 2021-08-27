@@ -67,8 +67,7 @@ MiNavigationQueryPresenter >> initializeAssociationsButton [
 		                      ifEmpty: [ self noParameterMessage: 'type' ]
 		                      ifNotEmpty: [ 
 			                      self newButton
-				                      label: 'Select associations';
-				                      icon: (self iconNamed: #checkboxSelected);
+				                      label: 'Select Associations...';
 				                      action: [ 
 					                      self newPopover
 						                      relativeTo: associationsButton;

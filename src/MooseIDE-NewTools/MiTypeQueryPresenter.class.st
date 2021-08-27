@@ -55,8 +55,7 @@ MiTypeQueryPresenter >> initializeTypesButton [
 		               ifEmpty: [ self noParameterMessage: 'type' ]
 		               ifNotEmpty: [ 
 			               self newButton
-				               label: 'Select types';
-				               icon: (self iconNamed: #checkboxSelected);
+				               label: 'Select Types...';
 				               action: [ 
 					               self newPopover
 						               relativeTo: typesButton;
