@@ -33,12 +33,6 @@ MiTypeQueryPresenter >> buildLayout [
 { #category : #actions }
 MiTypeQueryPresenter >> computeQuery: aType [
 
-	typesList selectedItems ifEmpty: [ 
-		typesList selectItem: aType.
-		UIManager default
-			alert: 'You must select at least one type'
-			title: 'Cannot unselect all types'.
-		^ self ].
 	self updateQueryWithSelectedTypes: typesList selectedItems
 ]
 
@@ -78,7 +72,6 @@ MiTypeQueryPresenter >> typesList [
 	typesList
 		display: [ :item | self labelFor: item ];
 		items: self query availableTypes;
-		selectItems: self query types;
 		onActivation: [ :type | self computeQueryAction: type ];
 		onDeactivation: [ :type | self computeQueryAction: type ].
 	^ typesList
