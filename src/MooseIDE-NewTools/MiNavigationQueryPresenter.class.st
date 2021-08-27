@@ -24,7 +24,6 @@ MiNavigationQueryPresenter >> associationsList [
 	associationsList
 		display: [ :item | item mooseDescription name asString ];
 		items: self query availableAssociations;
-		selectItems: self query associations;
 		onActivation: [ :association | self computeQueryAction: association ];
 		onDeactivation: [ :association | 
 			self computeQueryAction: association ].
@@ -50,12 +49,6 @@ MiNavigationQueryPresenter >> buildLayout [
 { #category : #actions }
 MiNavigationQueryPresenter >> computeQuery: association [
 
-	associationsList selectedItems ifEmpty: [ 
-		associationsList selectItem: association.
-		UIManager default
-			alert: 'You must select at least one association'
-			title: 'Cannot unselect all associations'.
-		^ self ].
 	self updateQueryWithSelectedAssociations:
 		associationsList selectedItems
 ]
