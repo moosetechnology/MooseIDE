@@ -57,16 +57,6 @@ MiQueryBuilderPresenter >> availableQueryTypes [
 	^ queryTypes
 ]
 
-{ #category : #actions }
-MiQueryBuilderPresenter >> createFirstQueryForComponentList [
-
-	| queryCreationPresenter |
-	presenters := OrderedCollection empty.
-	queryCreationPresenter := self newFirstLevelQueryPresenter.
-	presenters add: queryCreationPresenter.
-	self updateComponentList
-]
-
 { #category : #accessing }
 MiQueryBuilderPresenter >> creationPresenters [
 
@@ -115,7 +105,8 @@ MiQueryBuilderPresenter >> followAction [
 	"When a new entity arrives on the bus we reset the presenter to have only one query again. Like if it were openen again."
 
 	queryCounter := 1.
-	self createFirstQueryForComponentList
+	presenters := OrderedCollection empty.
+	self updateComponentList
 ]
 
 { #category : #initialization }
@@ -165,7 +156,6 @@ MiQueryBuilderPresenter >> initializePresenters [
 	presenters := OrderedCollection empty.
 	self initializeAddRootQueryButton.
 	self initializeComponentListPresenter.
-	self createFirstQueryForComponentList.
 	self initializeProgressPresenter
 ]
 

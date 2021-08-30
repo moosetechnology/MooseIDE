@@ -45,6 +45,7 @@ MiQueryBuilderPresenterTest >> tearDown [
 { #category : #tests }
 MiQueryBuilderPresenterTest >> testAddNewChildQueryAction [
 
+	presenter addNewFirstLevelQuery.
 	presenter creationPresenters first addNewChildQueryAction.
 	self assert: presenter creationPresenters size equals: 2.
 	self deny:
@@ -60,6 +61,8 @@ MiQueryBuilderPresenterTest >> testAddNewChildQueryAction [
 { #category : #tests }
 MiQueryBuilderPresenterTest >> testAddNewFirstLevelQuery [
 
+	presenter addNewFirstLevelQuery.
+	self assert: presenter creationPresenters size equals: 1.
 	presenter
 		addNewFirstLevelQuery;
 		addNewFirstLevelQuery;
@@ -72,18 +75,9 @@ MiQueryBuilderPresenterTest >> testAddNewFirstLevelQuery [
 ]
 
 { #category : #tests }
-MiQueryBuilderPresenterTest >> testCreateFirstQueryForComponentList [
-
-	self assert: presenter creationPresenters size equals: 1.
-	self
-		assertCollection: presenter componentList presenters
-		hasSameElements: presenter creationPresenters
-]
-
-{ #category : #tests }
 MiQueryBuilderPresenterTest >> testRemoveQueryAction [
 
-	self assert: presenter creationPresenters size equals: 1.
+	presenter addNewFirstLevelQuery.
 	presenter creationPresenters first addNewChildQueryAction.
 	presenter creationPresenters last removeQueryAction.
 	self assert: presenter creationPresenters size equals: 1.
@@ -98,6 +92,14 @@ MiQueryBuilderPresenterTest >> testRemoveQueryAction [
 { #category : #tests }
 MiQueryBuilderPresenterTest >> testUpdateComponentList [
 
+	self
+		assertCollection: presenter componentList presenters
+		hasSameElements: presenter creationPresenters.
+	presenter addNewFirstLevelQuery.
+	self
+		assertCollection: presenter componentList presenters
+		hasSameElements: presenter creationPresenters.
+	presenter creationPresenters first addNewChildQueryAction.
 	self
 		assertCollection: presenter componentList presenters
 		hasSameElements: presenter creationPresenters
