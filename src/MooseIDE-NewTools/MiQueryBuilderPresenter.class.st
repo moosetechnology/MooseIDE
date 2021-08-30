@@ -23,12 +23,13 @@ Class {
 { #category : #'api - actions' }
 MiQueryBuilderPresenter >> addNewChildQueryAction: query [
 
-	| newPresenter |
+	| newPresenter indexToInsert |
 	newPresenter := self instantiate: (MiNewQueryCreationPresenter
 			                 on: query
 			                 parentPresenter: self
 			                 queryNumber: queryCounter).
-	presenters add: newPresenter.
+	indexToInsert := presenters findFirst: [ :each | each query = query ].
+	presenters add: newPresenter afterIndex: indexToInsert.
 	queryCounter := queryCounter + 1.
 
 	parentBrowser selectQuery: query.
