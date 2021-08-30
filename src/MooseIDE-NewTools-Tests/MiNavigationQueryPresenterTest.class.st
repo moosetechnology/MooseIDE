@@ -25,13 +25,7 @@ MiNavigationQueryPresenterTest >> testPresenters [
 		hasSameElements: presenter query class directionStrategies.
 	self
 		assert: presenter associationsButton class
-		equals: SpButtonPresenter.
-	self
-		assert: presenter associationsList class
-		equals: SpFilteringSelectableListPresenter.
-	self
-		assertCollection: presenter associationsList items
-		hasSameElements: presenter query availableAssociations
+		equals: SpButtonPresenter
 ]
 
 { #category : #tests }
