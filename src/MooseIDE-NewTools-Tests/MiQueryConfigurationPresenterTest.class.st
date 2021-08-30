@@ -32,6 +32,8 @@ MiQueryConfigurationPresenterTest >> resetPresenterWithEntities: aMooseGroup [
 			            result: aMooseGroup;
 			            yourself).
 	builder := MiQueryBuilderPresenter on: browser.
+	"Add a query presenter"
+	builder addNewFirstLevelQuery.
 	superPresenter := builder componentList items first.
 	superPresenter queryTypesDropList selectItem: self queryClass.
 	presenter := superPresenter queryConfigurationPresenter
