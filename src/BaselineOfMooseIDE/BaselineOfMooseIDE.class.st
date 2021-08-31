@@ -11,6 +11,7 @@ BaselineOfMooseIDE >> baseline: spec [
 	spec for: #common do: [ "Dependencies"
 		self famixQueries: spec.
 		self telescope: spec.
+		self labelContractor: spec.
 
 		"Packages"
 		self definePackages: spec.
@@ -21,7 +22,8 @@ BaselineOfMooseIDE >> baseline: spec [
 			self famixTagging: spec.
 			spec
 				package: 'MooseIDE-Core' with: [ spec requires: #( 'Famix' ) ];
-				package: 'MooseIDE-Meta' with: [ spec requires: #( 'MooseIDE-Core' ) ];
+				package: 'MooseIDE-Meta'
+				with: [ spec requires: #( 'MooseIDE-Core' ) ];
 				package: 'MooseIDE-Tagging'
 				with: [ spec requires: #( 'FamixTagging' ) ] ].
 
@@ -54,7 +56,8 @@ BaselineOfMooseIDE >> defineGroups: spec [
 BaselineOfMooseIDE >> definePackages: spec [
 
 	spec
-		package: 'MooseIDE-Core';
+		package: 'MooseIDE-Core'
+		with: [ spec requires: #( 'LabelContractor' ) ];
 		package: 'MooseIDE-Visualization'
 		with: [ spec requires: #( 'TelescopeRoassal3' ) ];
 		package: 'MooseIDE-Meta'
@@ -108,6 +111,15 @@ BaselineOfMooseIDE >> famixTagging: spec [
 		baseline: 'FamixTagging'
 		with: [ 
 		spec repository: 'github://moosetechnology/FamixTagging:v1.x.x/src' ]
+]
+
+{ #category : #'as yet unclassified' }
+BaselineOfMooseIDE >> labelContractor: spec [
+
+	spec
+		baseline: 'LabelContractor'
+		with: [ 
+		spec repository: 'github://moosetechnology/LabelContractor/src' ]
 ]
 
 { #category : #dependencies }
