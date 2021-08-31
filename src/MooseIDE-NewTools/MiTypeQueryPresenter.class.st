@@ -39,6 +39,7 @@ MiTypeQueryPresenter >> computeQuery: aType [
 { #category : #initialization }
 MiTypeQueryPresenter >> initializePresenters [
 
+	self initializeTypesList.
 	self initializeTypesButton
 ]
 
@@ -54,27 +55,27 @@ MiTypeQueryPresenter >> initializeTypesButton [
 					               self newPopover
 						               relativeTo: typesButton;
 						               bePositionRight;
-						               presenter: self typesList;
+						               presenter: typesList;
 						               popup ];
 				               yourself ]
 ]
 
-{ #category : #'widgets configuration' }
-MiTypeQueryPresenter >> labelFor: type [
-	^ type mooseDescription name asEnglishPlural
-]
-
 { #category : #initialization }
-MiTypeQueryPresenter >> typesList [
+MiTypeQueryPresenter >> initializeTypesList [
 
 	typesList := self newSelectableListForPopoverExtent: 120 @ 120.
 
 	typesList
 		display: [ :item | self labelFor: item ];
 		items: self query availableTypes;
+		selectItems: self query types;
 		onActivation: [ :type | self computeQueryAction: type ];
-		onDeactivation: [ :type | self computeQueryAction: type ].
-	^ typesList
+		onDeactivation: [ :type | self computeQueryAction: type ]
+]
+
+{ #category : #'widgets configuration' }
+MiTypeQueryPresenter >> labelFor: type [
+	^ type mooseDescription name asEnglishPlural
 ]
 
 { #category : #initialization }

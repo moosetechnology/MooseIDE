@@ -17,19 +17,6 @@ MiNavigationQueryPresenter class >> title [
 	^ 'Navigation Query'
 ]
 
-{ #category : #initialization }
-MiNavigationQueryPresenter >> associationsList [
-
-	associationsList := self newSelectableListForPopoverExtent: 120 @ 120.
-	associationsList
-		display: [ :item | item mooseDescription name asString ];
-		items: self query availableAssociations;
-		onActivation: [ :association | self computeQueryAction: association ];
-		onDeactivation: [ :association | 
-			self computeQueryAction: association ].
-	^ associationsList
-]
-
 { #category : #layout }
 MiNavigationQueryPresenter >> buildLayout [
 
@@ -65,9 +52,22 @@ MiNavigationQueryPresenter >> initializeAssociationsButton [
 					                      self newPopover
 						                      relativeTo: associationsButton;
 						                      bePositionRight;
-						                      presenter: self associationsList;
+						                      presenter: associationsList;
 						                      popup ];
 				                      yourself ]
+]
+
+{ #category : #initialization }
+MiNavigationQueryPresenter >> initializeAssociationsList [
+
+	associationsList := self newSelectableListForPopoverExtent: 120 @ 120.
+	associationsList
+		display: [ :item | item mooseDescription name asString ];
+		items: self query availableAssociations;
+		selectItems: self query associations;
+		onActivation: [ :association | self computeQueryAction: association ];
+		onDeactivation: [ :association | 
+			self computeQueryAction: association ]
 ]
 
 { #category : #initialization }
@@ -85,6 +85,7 @@ MiNavigationQueryPresenter >> initializeDirectionsDropList [
 MiNavigationQueryPresenter >> initializePresenters [
 
 	self initializeDirectionsDropList.
+	self initializeAssociationsList.
 	self initializeAssociationsButton
 ]
 
