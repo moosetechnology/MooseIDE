@@ -56,7 +56,8 @@ Click to get current query code.'
 MiQueryCodePresenter >> initializeCode [
 
 	code := self newCode
-		        withoutSyntaxHighlight;beNotEditable;
+		        withoutSyntaxHighlight;
+		        beNotEditable;
 		        text: self defaultComment;
 		        whenSubmitDo: [ :text | self acceptQueryCode: text ];
 		        yourself
@@ -81,6 +82,12 @@ MiQueryCodePresenter >> updateForQuery: aQuery [
 	code text: (aQuery isRootQuery
 			 ifTrue: [ self defaultComment ]
 			 ifFalse: [ 
-				 EFFormatter format: (RBParser parseExpression:
-						  (String streamContents: [ :s | aQuery storeOn: s ])) ])
+				 | parsedExpression |
+				 parsedExpression := RBParser parseExpression:
+					                     (String streamContents: [ :aStream | 
+						                      aQuery
+							                      storeOn: aStream
+							                      withParentsIn: aQuery parentSequence ]).
+
+				 parsedExpression formattedCode ])
 ]
