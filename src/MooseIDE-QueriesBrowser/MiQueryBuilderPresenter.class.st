@@ -58,12 +58,6 @@ MiQueryBuilderPresenter >> availableQueryTypes [
 	^ queryTypes
 ]
 
-{ #category : #'as yet unclassified' }
-MiQueryBuilderPresenter >> componentList [
-
-	^ componentListPresenter
-]
-
 { #category : #accessing }
 MiQueryBuilderPresenter >> creationPresenters [
 
@@ -186,11 +180,6 @@ MiQueryBuilderPresenter >> newFirstLevelQueryPresenter [
 			                           queryNumber: queryCounter).
 	queryCounter := queryCounter + 1.
 	^ queryCreationPresenter
-]
-
-{ #category : #'as yet unclassified' }
-MiQueryBuilderPresenter >> parentBrowser [
-	^ parentBrowser
 ]
 
 { #category : #'api - actions' }

@@ -68,13 +68,6 @@ MiQueryCodePresenter >> initializePresenters [
 	self initializeCode
 ]
 
-{ #category : #'as yet unclassified' }
-MiQueryCodePresenter >> text [
-
-	self flag: 'Do not use this accessor. This is only for the tests'.
-	^ code text
-]
-
 { #category : #initialization }
 MiQueryCodePresenter >> updateForQuery: aQuery [
 

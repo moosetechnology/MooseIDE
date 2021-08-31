@@ -78,11 +78,6 @@ MiTypeQueryPresenter >> labelFor: type [
 	^ type mooseDescription name asEnglishPlural
 ]
 
-{ #category : #'as yet unclassified' }
-MiTypeQueryPresenter >> typesButton [
-	^ typesButton
-]
-
 { #category : #initialization }
 MiTypeQueryPresenter >> updateQueryWithSelectedTypes: selectedTypes [
 

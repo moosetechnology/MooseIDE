@@ -17,11 +17,6 @@ MiNavigationQueryPresenter class >> title [
 	^ 'Navigation Query'
 ]
 
-{ #category : #'as yet unclassified' }
-MiNavigationQueryPresenter >> associationsButton [
-	^ associationsButton
-]
-
 { #category : #layout }
 MiNavigationQueryPresenter >> buildLayout [
 
@@ -43,11 +38,6 @@ MiNavigationQueryPresenter >> computeQuery: association [
 
 	self updateQueryWithSelectedAssociations:
 		associationsList selectedItems
-]
-
-{ #category : #'as yet unclassified' }
-MiNavigationQueryPresenter >> directionDropList [
-	^ directionDropList
 ]
 
 { #category : #initialization }

@@ -40,11 +40,6 @@ MiScopeQueryPresenter >> computeQuery: scope [
 	self query scope: scope
 ]
 
-{ #category : #'as yet unclassified' }
-MiScopeQueryPresenter >> directionsDropList [
-	^ directionsDropList
-]
-
 { #category : #initialization }
 MiScopeQueryPresenter >> initializeDirectionsDropList [
 
@@ -63,12 +58,6 @@ MiScopeQueryPresenter >> initializePresenters [
 
 	self setScopesDropList.
 	self initializeDirectionsDropList
-]
-
-{ #category : #'as yet unclassified' }
-MiScopeQueryPresenter >> scopesDropList [
-
-	^ scopesDropList
 ]
 
 { #category : #'widgets configuration' }

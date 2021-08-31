@@ -71,8 +71,3 @@ MiNegationQueryPresenter >> queryPresentersListChanged [
 				newAvailableQueries ]
 		ifFalse: [ subqueryDropListPresenter items: newAvailableQueries ]
 ]
-
-{ #category : #'as yet unclassified' }
-MiNegationQueryPresenter >> subqueryDropListPresenter [
-	^ subqueryDropListPresenter
-]
