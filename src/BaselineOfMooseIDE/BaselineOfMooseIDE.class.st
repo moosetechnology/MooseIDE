@@ -47,6 +47,7 @@ BaselineOfMooseIDE >> defineGroups: spec [
 			   'MooseIDE-Meta' 'MooseIDE-Tests' 'MooseIDE-Dependency'
 			   'MooseIDE-Famix' 'MooseIDE-Tagging' 'MooseIDE-Telescope'
 			   'MooseIDE-Export' 'MooseIDE-NewTools' 'MooseIDE-NewTools-Tests'
+			   'MooseIDE-QueriesBrowser' 'MooseIDE-QueriesBrowser-Tests'
 			   'MooseIDE-ColorPalette' 'MooseIDE-ColorPalette-Tests' )
 ]
 
@@ -73,9 +74,12 @@ BaselineOfMooseIDE >> definePackages: spec [
 		package: 'MooseIDE-Telescope'
 		with: [ 
 			spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' ) ];
+		package: [ 'MooseIDE-QueriesBrowser' ]
+		with: [ spec requires: #( 'FamixQueries' 'MooseIDE-Core' ) ];
+		package: [ 'MooseIDE-QueriesBrowser-Tests' ]
+		with: [ spec requires: #( 'MooseIDE-QueriesBrowser' 'MooseIDE-Tests' ) ];
 		package: 'MooseIDE-NewTools'
-		with: [ 
-			spec requires: #( 'MooseIDE-Meta' 'MooseIDE-Core' 'FamixQueries' ) ];
+		with: [ spec requires: #( 'MooseIDE-Meta' 'MooseIDE-Core' ) ];
 		package: 'MooseIDE-NewTools-Tests'
 		with: [ spec requires: #( 'MooseIDE-NewTools' 'MooseIDE-Tests' ) ];
 		package: 'MooseIDE-Export'
