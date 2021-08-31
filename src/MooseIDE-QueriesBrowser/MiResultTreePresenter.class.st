@@ -6,7 +6,6 @@ Class {
 	#superclass : #SpTreeTablePresenter,
 	#instVars : [
 		'browser',
-		'items',
 		'sortedEntitiesCache'
 	],
 	#category : #'MooseIDE-QueriesBrowser-Widgets'

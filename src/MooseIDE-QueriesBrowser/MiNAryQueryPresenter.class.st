@@ -27,11 +27,6 @@ MiNAryQueryPresenter >> addSubqueryToLayout [
 	self update
 ]
 
-{ #category : #'as yet unclassified' }
-MiNAryQueryPresenter >> addSubqueryToLayoutButton [
-	^ addSubqueryToLayoutButton
-]
-
 { #category : #layout }
 MiNAryQueryPresenter >> buildLayout [
 
@@ -128,14 +123,4 @@ MiNAryQueryPresenter >> removeSubqueryFromLayout [
 	subqueryDropLists size < 3 ifTrue: [ removeSubqueryFromLayoutButton disable ].
 	self buildLayout.
 	self update
-]
-
-{ #category : #'as yet unclassified' }
-MiNAryQueryPresenter >> removeSubqueryFromLayoutButton [
-	^ removeSubqueryFromLayoutButton
-]
-
-{ #category : #'as yet unclassified' }
-MiNAryQueryPresenter >> subqueryDropLists [
-	^ subqueryDropLists
 ]

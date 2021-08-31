@@ -182,21 +182,10 @@ MiNewQueryCreationPresenter >> newQueryForClass: queryClass [
 	^ newQuery
 ]
 
-{ #category : #'as yet unclassified' }
-MiNewQueryCreationPresenter >> parentPresenter [
-	^ parentPresenter
-]
-
 { #category : #accessing }
 MiNewQueryCreationPresenter >> parentPresenter: aMiQueryBuilderPresenter [
 
 	parentPresenter := aMiQueryBuilderPresenter
-]
-
-{ #category : #'as yet unclassified' }
-MiNewQueryCreationPresenter >> parentQuery: aQuery [
-
-	parentQuery := aQuery
 ]
 
 { #category : #accessing }
@@ -212,12 +201,6 @@ MiNewQueryCreationPresenter >> queryChangedUpdate [
 
 	parentPresenter ifNotNil: [ 
 		parentPresenter queryChangedUpdate: self query ]
-]
-
-{ #category : #'as yet unclassified' }
-MiNewQueryCreationPresenter >> queryConfigurationPresenter [
-
-	^ queryConfigurationPresenter
 ]
 
 { #category : #accessing }

@@ -169,22 +169,10 @@ MiNewQueriesBrowser >> queryChangedUpdate: query [
 	self selectQuery: query
 ]
 
-{ #category : #'as yet unclassified' }
-MiNewQueriesBrowser >> queryCodePresenter [
-
-	^ queryCodePresenter
-]
-
 { #category : #accessing }
 MiNewQueriesBrowser >> queryResultEntities [
 
 	^ selectedQuery result
-]
-
-{ #category : #'as yet unclassified' }
-MiNewQueriesBrowser >> queryResultTreePresenter [
-
-	^ queryResultTreePresenter
 ]
 
 { #category : #removing }
@@ -217,10 +205,8 @@ MiNewQueriesBrowser >> selectQuery: aQuery [
 	self update
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 MiNewQueriesBrowser >> selectedQuery [
-
-	"This method is only for backwards compatibility with the old queries browser"
 
 	^ selectedQuery
 ]
