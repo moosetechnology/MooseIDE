@@ -47,16 +47,8 @@ MiQueriesListPresenter >> addNewFirstLevelQuery [
 { #category : #accessing }
 MiQueriesListPresenter >> availableQueryTypes [
 
-	| queryTypes |
-	queryTypes := FQUnaryQuery allSubclasses select: #canBeConfigured.
-	"There must be at least one query to do the negation operation and the result size query"
-	presenters ifNotEmpty: [ 
-		queryTypes := queryTypes , FQComplementQuery asOrderedCollection
-		              , FQResultSizeQuery asOrderedCollection ].
-	"There must be at least two queries to create an n-ary query."
-	presenters size > 1 ifTrue: [ 
-		queryTypes := queryTypes , FQNAryQuery subclasses ].
-	^ queryTypes
+	^ FQAbstractQuery allSubclasses select: [ :each | 
+		  each isAvailableForQueriesSize: presenters size ]
 ]
 
 { #category : #accessing }
