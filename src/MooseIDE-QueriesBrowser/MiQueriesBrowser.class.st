@@ -9,9 +9,9 @@ Class {
 		'queryResultTreePresenter',
 		'queryCodePresenter',
 		'queryNotebookPresenter',
-		'queryBuilderPresenter',
 		'selectedQuery',
-		'rootQuery'
+		'rootQuery',
+		'queriesListPresenter'
 	],
 	#category : #'MooseIDE-QueriesBrowser-Main presenters'
 }
@@ -91,7 +91,7 @@ MiQueriesBrowser >> followAction [
 
 	"Update the all the sub presenters with this new query"
 	self selectQuery: rootQuery.
-	queryBuilderPresenter followAction
+	queriesListPresenter followAction
 ]
 
 { #category : #initialization }
@@ -100,7 +100,7 @@ MiQueriesBrowser >> initializeLayout [
 	| tempLayout |
 	tempLayout := self class defaultSpec.
 	tempLayout add: (SpPanedLayout new
-			 add: #queryBuilderPresenter;
+			 add: #queriesListPresenter;
 			 add: #queryNotebookPresenter;
 			 yourself).
 	self layout: tempLayout
@@ -133,7 +133,7 @@ MiQueriesBrowser >> initializePresenters [
 { #category : #initialization }
 MiQueriesBrowser >> initializeQueryBuilder [
 
-	queryBuilderPresenter := self instantiate:
+	queriesListPresenter := self instantiate:
 		                         (MiQueriesListPresenter on: self)
 ]
 

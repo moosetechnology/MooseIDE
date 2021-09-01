@@ -43,6 +43,17 @@ MiNegationQueryPresenterTest >> testImpossibleQueryInitialization [
 ]
 
 { #category : #tests }
+MiNegationQueryPresenterTest >> testNormalQueryInitialization [
+
+	self assert: presenter query class identicalTo: self queryClass.
+	self deny: presenter query isValid.
+	presenter query queryToNegate: (FQBooleanQuery new
+			 property: #isStub;
+			 yourself).
+	self assert: presenter query isValid
+]
+
+{ #category : #tests }
 MiNegationQueryPresenterTest >> testPresenters [
 
 	self

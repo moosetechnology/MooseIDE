@@ -158,7 +158,8 @@ MiQueryListItemPresenter >> newQueryForClass: queryClass [
 
 	newQuery := (queryClass isNAryQuery or: [ 
 		             queryClass isComplementQuery ])
-		            ifTrue: [ queryClass new ]
+		            ifTrue: [ "Nor the NAry query nor the complement query have a parent " 
+			            queryClass new ]
 		            ifFalse: [ queryClass defaultForParent: parentQuery ].
 	parentQuery addChild: newQuery.
 	^ newQuery

@@ -9,13 +9,13 @@ Class {
 	#name : #MiQueriesListPresenter,
 	#superclass : #SpPresenter,
 	#instVars : [
-		'presenters',
-		'parentBrowser',
 		'componentListPresenter',
 		'queryCounter',
 		'addRootQueryButton',
 		'progressNotificationPresenter',
-		'spinnerMorph'
+		'spinnerMorph',
+		'parentQueryBrowser',
+		'queryItemsPresenters'
 	],
 	#category : #'MooseIDE-QueriesBrowser-Main presenters'
 }
@@ -30,17 +30,17 @@ MiQueriesListPresenter >> addNewChildQueryAction: query [
 		                parentPresenter: self.
 	newPresenter setQueryNumber: queryCounter.
 	queryCounter := queryCounter + 1.
-	indexToInsert := presenters findFirst: [ :each | each query = query ].
-	presenters add: newPresenter afterIndex: indexToInsert.
+	indexToInsert := queryItemsPresenters findFirst: [ :each | each query = query ].
+	queryItemsPresenters add: newPresenter afterIndex: indexToInsert.
 
-	parentBrowser selectQuery: query.
+	parentQueryBrowser selectQuery: query.
 	self updateComponentList
 ]
 
 { #category : #actions }
 MiQueriesListPresenter >> addNewFirstLevelQuery [
 
-	presenters add: self newFirstLevelQueryPresenter.
+	queryItemsPresenters add: self newFirstLevelQueryPresenter.
 	self updateComponentList
 ]
 
@@ -48,13 +48,13 @@ MiQueriesListPresenter >> addNewFirstLevelQuery [
 MiQueriesListPresenter >> availableQueryTypes [
 
 	^ FQAbstractQuery allSubclasses select: [ :each | 
-		  each isAvailableForQueriesSize: presenters size ]
+		  each isAvailableForQueriesSize: queryItemsPresenters size ]
 ]
 
 { #category : #accessing }
 MiQueriesListPresenter >> creationPresenters [
 
-	^ presenters
+	^ queryItemsPresenters
 ]
 
 { #category : #'api - actions' }
@@ -85,8 +85,8 @@ MiQueriesListPresenter >> enableProgressNotification [
 					                                  morph);
 		                                 yourself.
 	"Only put the spinner if the queries browser is opened. Actually, there are no uses cases when this method is called without the queries browser being opened. This is only for avoid the tests faling. Because the tests use this method without open the queries browser."
-	parentBrowser window ifNotNil: [ "Put the spinner in the middle of the queries browser"
-		queriesBrowserMorph := parentBrowser window window.
+	parentQueryBrowser window ifNotNil: [ "Put the spinner in the middle of the queries browser"
+		queriesBrowserMorph := parentQueryBrowser window window.
 		spinnerMorph position:
 			queriesBrowserMorph extent / 2 + queriesBrowserMorph position.
 		spinnerMorph openInWorld ].
@@ -99,7 +99,7 @@ MiQueriesListPresenter >> followAction [
 	"When a new entity arrives on the bus we reset the presenter to have only one query again. Like if it were openen again."
 
 	queryCounter := 1.
-	presenters := OrderedCollection empty.
+	queryItemsPresenters := OrderedCollection empty.
 	self updateComponentList
 ]
 
@@ -127,7 +127,7 @@ MiQueriesListPresenter >> initializeComponentListPresenter [
 		activateOnSingleClick;
 		propagateNaturalHeight: true;
 		whenSelectedDo: [ :selectedPresenter | 
-			parentBrowser selectQuery: selectedPresenter query ]
+			parentQueryBrowser selectQuery: selectedPresenter query ]
 ]
 
 { #category : #initialization }
@@ -147,7 +147,7 @@ MiQueriesListPresenter >> initializeLayout [
 MiQueriesListPresenter >> initializePresenters [
 
 	self initializeLayout.
-	presenters := OrderedCollection empty.
+	queryItemsPresenters := OrderedCollection empty.
 	self initializeAddRootQueryButton.
 	self initializeComponentListPresenter.
 	self initializeProgressPresenter
@@ -168,7 +168,7 @@ MiQueriesListPresenter >> newFirstLevelQueryPresenter [
 	| queryCreationPresenter |
 	queryCreationPresenter := MiQueryListItemPresenter
 		                          owner: self
-		                          on: parentBrowser rootQuery
+		                          on: parentQueryBrowser rootQuery
 		                          parentPresenter: self.
 	queryCreationPresenter setQueryNumber: queryCounter.
 	queryCounter := queryCounter + 1.
@@ -178,7 +178,7 @@ MiQueriesListPresenter >> newFirstLevelQueryPresenter [
 { #category : #'api - actions' }
 MiQueriesListPresenter >> queryChangedUpdate: query [
 
-	parentBrowser selectQuery: query
+	parentQueryBrowser selectQuery: query
 ]
 
 { #category : #actions }
@@ -186,17 +186,17 @@ MiQueriesListPresenter >> removePresentersAssociatedWith: nodeQuery [
 
 	nodeQuery children do: [ :childQuery | 
 		| presenterToRemove |
-		presenterToRemove := presenters detect: [ :aPresenter | 
+		presenterToRemove := queryItemsPresenters detect: [ :aPresenter | 
 			                     aPresenter query = childQuery ].
-		presenters remove: presenterToRemove.
+		queryItemsPresenters remove: presenterToRemove.
 		self removePresentersAssociatedWith: childQuery ]
 ]
 
 { #category : #'api - actions' }
 MiQueriesListPresenter >> removeQueryAction: aQueryCreationPresenter [
 
-	parentBrowser removeQuery: aQueryCreationPresenter query.
-	presenters remove: aQueryCreationPresenter.
+	parentQueryBrowser removeQuery: aQueryCreationPresenter query.
+	queryItemsPresenters remove: aQueryCreationPresenter.
 	self removePresentersAssociatedWith: aQueryCreationPresenter query.
 	self updateComponentList
 ]
@@ -204,19 +204,19 @@ MiQueriesListPresenter >> removeQueryAction: aQueryCreationPresenter [
 { #category : #'accessing - model' }
 MiQueriesListPresenter >> setModelBeforeInitialization: aQueryBrowserPresenter [
 
-	parentBrowser := aQueryBrowserPresenter
+	parentQueryBrowser := aQueryBrowserPresenter
 ]
 
 { #category : #update }
 MiQueriesListPresenter >> updateComponentList [
 
 	self updateSubqueriesListPresenter.
-	componentListPresenter presenters: presenters
+	componentListPresenter presenters: queryItemsPresenters
 ]
 
 { #category : #update }
 MiQueriesListPresenter >> updateSubqueriesListPresenter [
 
-	presenters do: [ :queryCreationPresenter | 
+	queryItemsPresenters do: [ :queryCreationPresenter | 
 		queryCreationPresenter queryPresentersListChanged ]
 ]
