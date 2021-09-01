@@ -25,12 +25,13 @@ MiQueriesListPresenter >> addNewChildQueryAction: query [
 
 	| newPresenter indexToInsert |
 	newPresenter := MiQueryListItemPresenter
-		                owner: self
 		                on: query
+		                owner: self
 		                parentPresenter: self.
 	newPresenter setQueryNumber: queryCounter.
 	queryCounter := queryCounter + 1.
-	indexToInsert := queryItemsPresenters findFirst: [ :each | each query = query ].
+	indexToInsert := queryItemsPresenters findFirst: [ :each | 
+		                 each query = query ].
 	queryItemsPresenters add: newPresenter afterIndex: indexToInsert.
 
 	parentQueryBrowser selectQuery: query.
@@ -167,8 +168,8 @@ MiQueriesListPresenter >> newFirstLevelQueryPresenter [
 
 	| queryCreationPresenter |
 	queryCreationPresenter := MiQueryListItemPresenter
-		                          owner: self
 		                          on: parentQueryBrowser rootQuery
+		                          owner: self
 		                          parentPresenter: self.
 	queryCreationPresenter setQueryNumber: queryCounter.
 	queryCounter := queryCounter + 1.
@@ -216,6 +217,8 @@ MiQueriesListPresenter >> updateComponentList [
 
 { #category : #update }
 MiQueriesListPresenter >> updateSubqueriesListPresenter [
+
+	"Maybe we should change this to use announcements"
 
 	queryItemsPresenters do: [ :queryCreationPresenter | 
 		queryCreationPresenter queryPresentersListChanged ]

@@ -29,9 +29,9 @@ MiQueryListItemPresenter class >> buildCommandsGroupWith: presenterInstance forR
 ]
 
 { #category : #'instance creation' }
-MiQueryListItemPresenter class >> owner: aPresenter on: aQuery parentPresenter: aMiQueryListPresenter [
+MiQueryListItemPresenter class >> on: aQuery owner: aPresenter parentPresenter: aMiQueryListPresenter [
 
-	"We need this method because the owner of the presenter will change to SpComponentListPresenter. The first time the owner is the same as parent presenter. But, then, Spec internally changes it. And we need to have the access to the parent presenter."
+	"We need this method because the owner of the presenter will change to SpComponentListPresenter. The first time the owner is the same as parent presenter. But then, Spec internally changes it. And we need to have the access to the parent presenter."
 
 	^ self basicNew
 		  application: self currentApplication;
@@ -194,13 +194,9 @@ MiQueryListItemPresenter >> queryChangedUpdate [
 { #category : #'api - actions' }
 MiQueryListItemPresenter >> queryPresentersListChanged [
 
+	"Maybe we should change this to use announcements"
+
 	queryConfiguratorPresenter queryPresentersListChanged
-]
-
-{ #category : #accessing }
-MiQueryListItemPresenter >> queryTypesDropList [
-
-	^ queryTypesDropListPresenter
 ]
 
 { #category : #'accessing - model' }

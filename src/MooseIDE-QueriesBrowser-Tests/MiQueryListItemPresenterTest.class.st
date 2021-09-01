@@ -26,8 +26,8 @@ MiQueryListItemPresenterTest >> setUp [
 	parentPresenter := MiQueriesListPresenter on: browser.
 
 	presenter := MiQueryListItemPresenter
-		             owner: parentPresenter
 		             on: FQRootQuery new
+		             owner: parentPresenter
 		             parentPresenter: parentPresenter.
 	presenter setQueryNumber: 1.
 	presenter updateQueryConfiguratorPresenterFor: FQStringQuery

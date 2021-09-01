@@ -67,6 +67,8 @@ MiQueryConfiguratorPresenter >> queryPresentersListChanged [
 	"This method is trigerred when the list of queries presenters in MiQueryBuilderPresenter change. This can happen when the user adds or removes a new query from the queries list.
 	The default behavior is to do nothing. This method must be overriden if a subclass wants to do something specific"
 
+	"Maybe we should change this to use announcements"
+
 	
 ]
 
