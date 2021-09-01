@@ -7,8 +7,7 @@ Class {
 	#name : #MiObjectContextPresenter,
 	#superclass : #StObjectContextPresenter,
 	#instVars : [
-		'actionBar',
-		'sliderPosition'
+		'actionBar'
 	],
 	#category : #'MooseIDE-NewTools-Inspector'
 }
