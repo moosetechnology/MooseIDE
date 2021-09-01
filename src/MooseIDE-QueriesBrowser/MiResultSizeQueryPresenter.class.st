@@ -3,7 +3,7 @@ The query configuration presenter for `FQResultSizeQuery`
 "
 Class {
 	#name : #MiResultSizeQueryPresenter,
-	#superclass : #MiQueryConfigurationPresenter,
+	#superclass : #MiQueryConfiguratorPresenter,
 	#instVars : [
 		'subqueriesDropList',
 		'comparatorDropList',

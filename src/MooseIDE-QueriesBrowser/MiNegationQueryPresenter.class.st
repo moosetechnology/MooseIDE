@@ -3,7 +3,7 @@ This is the negation query. It receives one query and negates it. Obviously, can
 "
 Class {
 	#name : #MiNegationQueryPresenter,
-	#superclass : #MiQueryConfigurationPresenter,
+	#superclass : #MiQueryConfiguratorPresenter,
 	#instVars : [
 		'subqueryDropListPresenter'
 	],

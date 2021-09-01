@@ -1,7 +1,7 @@
-Extension { #name : #MiQueryBuilderPresenter }
+Extension { #name : #MiQueriesListPresenter }
 
 { #category : #'*MooseIDE-QueriesBrowser-Tests' }
-MiQueryBuilderPresenter >> componentList [
+MiQueriesListPresenter >> componentList [
 
 	self flag: 'Do not use this accessor. This is only for the tests'.
 	^ componentListPresenter

@@ -1,7 +1,7 @@
 Class {
 	#name : #MiNewToolsExtenstionsTest,
 	#superclass : #TestCase,
-	#category : #'MooseIDE-QueriesBrowser-Tests-Queries Browser'
+	#category : #'MooseIDE-NewTools-Tests'
 }
 
 { #category : #tests }

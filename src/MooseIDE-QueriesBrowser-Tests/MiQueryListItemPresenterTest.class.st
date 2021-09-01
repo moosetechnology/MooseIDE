@@ -1,5 +1,5 @@
 Class {
-	#name : #MiNewQueryCreationPresenterTest,
+	#name : #MiQueryListItemPresenterTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'presenter',
@@ -9,38 +9,39 @@ Class {
 }
 
 { #category : #running }
-MiNewQueryCreationPresenterTest >> bus [
+MiQueryListItemPresenterTest >> bus [
 
 	^ MiTestApplication current defaultBus
 ]
 
 { #category : #running }
-MiNewQueryCreationPresenterTest >> setUp [
+MiQueryListItemPresenterTest >> setUp [
 
 	| parentPresenter helper |
 	super setUp.
 
 	helper := FQTestsHelper current.
-	browser := MiNewQueriesBrowser openForTests.
+	browser := MiQueriesBrowser openForTests.
 	browser selectEntity: helper classesAndMethods.
-	parentPresenter := MiQueryBuilderPresenter on: browser.
+	parentPresenter := MiQueriesListPresenter on: browser.
 
-	presenter := MiNewQueryCreationPresenter
+	presenter := MiQueryListItemPresenter
+		             owner: parentPresenter
 		             on: FQRootQuery new
-		             parentPresenter: parentPresenter
-		             queryNumber: 1.
-	presenter updateQueryConfigurationFor: FQStringQuery
+		             parentPresenter: parentPresenter.
+	presenter setQueryNumber: 1.
+	presenter updateQueryConfiguratorPresenterFor: FQStringQuery
 ]
 
 { #category : #running }
-MiNewQueryCreationPresenterTest >> tearDown [
+MiQueryListItemPresenterTest >> tearDown [
 
 	browser window ifNotNil: [ :window | window close ].
 	super tearDown
 ]
 
 { #category : #tests }
-MiNewQueryCreationPresenterTest >> testIndentationSpacesPresenters [
+MiQueryListItemPresenterTest >> testIndentationSpacesPresenters [
 
 	| newQuery lowQuery2 lowQuery1 |
 	newQuery := browser rootQuery.
@@ -54,30 +55,30 @@ MiNewQueryCreationPresenterTest >> testIndentationSpacesPresenters [
 ]
 
 { #category : #tests }
-MiNewQueryCreationPresenterTest >> testName [
+MiQueryListItemPresenterTest >> testName [
 
 	self assert: presenter name equals: 'Q1'
 ]
 
 { #category : #tests }
-MiNewQueryCreationPresenterTest >> testUpdateQueryConfigurationFor [
+MiQueryListItemPresenterTest >> testUpdateQueryConfigurationFor [
 
-	presenter updateQueryConfigurationFor: FQBooleanQuery.
+	presenter updateQueryConfiguratorPresenterFor: FQBooleanQuery.
 	self assert: presenter query class equals: FQBooleanQuery.
 	self
 		assert: presenter queryConfigurationPresenter class
 		equals: presenter query class miPresenterClass.
-	presenter updateQueryConfigurationFor: FQStringQuery.
+	presenter updateQueryConfiguratorPresenterFor: FQStringQuery.
 	self assert: presenter query class equals: FQStringQuery.
 	self
 		assert: presenter queryConfigurationPresenter class
 		equals: presenter query class miPresenterClass.
-	presenter updateQueryConfigurationFor: FQSubtractionQuery.
+	presenter updateQueryConfiguratorPresenterFor: FQSubtractionQuery.
 	self assert: presenter query class equals: FQSubtractionQuery.
 	self
 		assert: presenter queryConfigurationPresenter class
 		equals: presenter query class miPresenterClass.
-	presenter updateQueryConfigurationFor: FQComplementQuery.
+	presenter updateQueryConfiguratorPresenterFor: FQComplementQuery.
 	self assert: presenter query class equals: FQComplementQuery.
 	self
 		assert: presenter queryConfigurationPresenter class

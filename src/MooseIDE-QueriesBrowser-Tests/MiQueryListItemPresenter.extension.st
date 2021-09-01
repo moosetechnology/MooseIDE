@@ -1,15 +1,15 @@
-Extension { #name : #MiNewQueriesBrowser }
+Extension { #name : #MiQueryListItemPresenter }
 
 { #category : #'*MooseIDE-QueriesBrowser-Tests' }
-MiNewQueriesBrowser >> queryCodePresenter [
+MiQueryListItemPresenter >> parentQuery: aQuery [
 
 	self flag: 'Do not use this accessor. This is only for the tests'.
-	^ queryCodePresenter
+	parentQuery := aQuery
 ]
 
 { #category : #'*MooseIDE-QueriesBrowser-Tests' }
-MiNewQueriesBrowser >> queryResultTreePresenter [
+MiQueryListItemPresenter >> queryConfigurationPresenter [
 
 	self flag: 'Do not use this accessor. This is only for the tests'.
-	^ queryResultTreePresenter
+	^ queryConfiguratorPresenter
 ]
