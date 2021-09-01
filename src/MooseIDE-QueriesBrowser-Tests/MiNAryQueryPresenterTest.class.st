@@ -1,6 +1,6 @@
 Class {
 	#name : #MiNAryQueryPresenterTest,
-	#superclass : #MiQueryConfigurationPresenterTest,
+	#superclass : #MiQueryConfiguratorPresenterTest,
 	#category : #'MooseIDE-QueriesBrowser-Tests-Queries Configuration'
 }
 
@@ -20,10 +20,10 @@ MiNAryQueryPresenterTest >> queryClass [
 MiNAryQueryPresenterTest >> resetPresenterWithEntities: aMooseGroup [
 
 	| builder superPresenter |
-	browser := MiNewQueriesBrowser on: (FQRootQuery new
+	browser := MiQueriesBrowser on: (FQRootQuery new
 			            result: aMooseGroup;
 			            yourself).
-	builder := MiQueryBuilderPresenter on: browser.
+	builder := MiQueriesListPresenter on: browser.
 	builder
 		addNewFirstLevelQuery;
 		addNewFirstLevelQuery;

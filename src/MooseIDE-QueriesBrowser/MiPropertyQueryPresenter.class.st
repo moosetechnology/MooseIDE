@@ -13,7 +13,7 @@ have:
 "
 Class {
 	#name : #MiPropertyQueryPresenter,
-	#superclass : #MiQueryConfigurationPresenter,
+	#superclass : #MiQueryConfiguratorPresenter,
 	#instVars : [
 		'propertyDropList',
 		'valueInputField',

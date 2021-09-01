@@ -3,7 +3,7 @@ A query configuration presenter for the `FQScopeQuery`
 "
 Class {
 	#name : #MiScopeQueryPresenter,
-	#superclass : #MiQueryConfigurationPresenter,
+	#superclass : #MiQueryConfiguratorPresenter,
 	#instVars : [
 		'scopesDropList',
 		'directionsDropList'

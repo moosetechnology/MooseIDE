@@ -1,5 +1,5 @@
 Class {
-	#name : #MiQueryConfigurationPresenterTest,
+	#name : #MiQueryConfiguratorPresenterTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'helper',
@@ -10,28 +10,28 @@ Class {
 }
 
 { #category : #testing }
-MiQueryConfigurationPresenterTest class >> isAbstract [
-	^ self == MiQueryConfigurationPresenterTest
+MiQueryConfiguratorPresenterTest class >> isAbstract [
+	^ self == MiQueryConfiguratorPresenterTest
 ]
 
 { #category : #running }
-MiQueryConfigurationPresenterTest >> classToTest [
+MiQueryConfiguratorPresenterTest >> classToTest [
 	^ self subclassResponsibility
 ]
 
 { #category : #running }
-MiQueryConfigurationPresenterTest >> queryClass [
+MiQueryConfiguratorPresenterTest >> queryClass [
 	^ self subclassResponsibility
 ]
 
 { #category : #running }
-MiQueryConfigurationPresenterTest >> resetPresenterWithEntities: aMooseGroup [
+MiQueryConfiguratorPresenterTest >> resetPresenterWithEntities: aMooseGroup [
 
 	| builder superPresenter |
-	browser := MiNewQueriesBrowser on: (FQRootQuery new
+	browser := MiQueriesBrowser on: (FQRootQuery new
 			            result: aMooseGroup;
 			            yourself).
-	builder := MiQueryBuilderPresenter on: browser.
+	builder := MiQueriesListPresenter on: browser.
 	"Add a query presenter"
 	builder addNewFirstLevelQuery.
 	superPresenter := builder componentList items first.
@@ -40,7 +40,7 @@ MiQueryConfigurationPresenterTest >> resetPresenterWithEntities: aMooseGroup [
 ]
 
 { #category : #running }
-MiQueryConfigurationPresenterTest >> setUp [
+MiQueryConfiguratorPresenterTest >> setUp [
 
 	super setUp.
 	helper := FQTestsHelper current.
@@ -48,14 +48,14 @@ MiQueryConfigurationPresenterTest >> setUp [
 ]
 
 { #category : #running }
-MiQueryConfigurationPresenterTest >> tearDown [
+MiQueryConfiguratorPresenterTest >> tearDown [
 
 	browser window ifNotNil: [ :window | window close ].
 	super tearDown
 ]
 
 { #category : #tests }
-MiQueryConfigurationPresenterTest >> testImpossibleQueryInitialization [
+MiQueryConfiguratorPresenterTest >> testImpossibleQueryInitialization [
 
 	self resetPresenterWithEntities: helper noEntities.
 	self assert: presenter query class identicalTo: self queryClass.
@@ -63,26 +63,26 @@ MiQueryConfigurationPresenterTest >> testImpossibleQueryInitialization [
 ]
 
 { #category : #tests }
-MiQueryConfigurationPresenterTest >> testNormalQueryInitialization [
+MiQueryConfiguratorPresenterTest >> testNormalQueryInitialization [
 
 	self assert: presenter query class identicalTo: self queryClass.
 	self assert: presenter query isValid
 ]
 
 { #category : #tests }
-MiQueryConfigurationPresenterTest >> testPresenters [
+MiQueryConfiguratorPresenterTest >> testPresenters [
 
 	self subclassResponsibility
 ]
 
 { #category : #tests }
-MiQueryConfigurationPresenterTest >> testPresentersOnImpossibleQuery [
+MiQueryConfiguratorPresenterTest >> testPresentersOnImpossibleQuery [
 
 	self subclassResponsibility
 ]
 
 { #category : #tests }
-MiQueryConfigurationPresenterTest >> testQueryValidity [
+MiQueryConfiguratorPresenterTest >> testQueryValidity [
 
 	^ self subclassResponsibility
 ]

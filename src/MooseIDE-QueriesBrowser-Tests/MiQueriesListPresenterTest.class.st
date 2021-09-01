@@ -2,7 +2,7 @@
 A MiQueryBuilderPresenterTest is a test class for testing the behavior of MiQueryBuilderPresenter
 "
 Class {
-	#name : #MiQueryBuilderPresenterTest,
+	#name : #MiQueriesListPresenterTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'presenter',
@@ -12,30 +12,30 @@ Class {
 }
 
 { #category : #running }
-MiQueryBuilderPresenterTest >> application [
+MiQueriesListPresenterTest >> application [
 
 	^ MiTestApplication current
 ]
 
 { #category : #running }
-MiQueryBuilderPresenterTest >> bus [
+MiQueriesListPresenterTest >> bus [
 
 	^ self application defaultBus
 ]
 
 { #category : #running }
-MiQueryBuilderPresenterTest >> setUp [
+MiQueriesListPresenterTest >> setUp [
 
 	| helper |
 	super setUp.
 	helper := FQTestsHelper current.
-	browser := MiNewQueriesBrowser openForTests.
+	browser := MiQueriesBrowser openForTests.
 	browser selectEntity: helper classesAndMethods.
-	presenter := MiQueryBuilderPresenter on: browser
+	presenter := MiQueriesListPresenter on: browser
 ]
 
 { #category : #running }
-MiQueryBuilderPresenterTest >> tearDown [
+MiQueriesListPresenterTest >> tearDown [
 
 	browser window ifNotNil: [ :window | window close ].
 	self application deleteBus: self bus.
@@ -43,15 +43,18 @@ MiQueryBuilderPresenterTest >> tearDown [
 ]
 
 { #category : #tests }
-MiQueryBuilderPresenterTest >> testAddNewChildQueryAction [
+MiQueriesListPresenterTest >> testAddNewChildQueryAction [
 
 	presenter addNewFirstLevelQuery.
-	presenter creationPresenters first addNewChildQueryAction.
+	presenter addNewChildQueryAction:
+		presenter creationPresenters first query.
 	self assert: presenter creationPresenters size equals: 2.
 	self deny:
 		presenter creationPresenters second query parent isRootQuery.
-	presenter creationPresenters second addNewChildQueryAction.
-	presenter creationPresenters third addNewChildQueryAction.
+	presenter addNewChildQueryAction:
+		presenter creationPresenters second query.
+	presenter addNewChildQueryAction:
+		presenter creationPresenters third query.
 	self
 		assert: presenter creationPresenters last query parentSequence size
 		equals: 5.
@@ -59,7 +62,7 @@ MiQueryBuilderPresenterTest >> testAddNewChildQueryAction [
 ]
 
 { #category : #tests }
-MiQueryBuilderPresenterTest >> testAddNewFirstLevelQuery [
+MiQueriesListPresenterTest >> testAddNewFirstLevelQuery [
 
 	presenter addNewFirstLevelQuery.
 	self assert: presenter creationPresenters size equals: 1.
@@ -75,22 +78,27 @@ MiQueryBuilderPresenterTest >> testAddNewFirstLevelQuery [
 ]
 
 { #category : #tests }
-MiQueryBuilderPresenterTest >> testRemoveQueryAction [
+MiQueriesListPresenterTest >> testRemoveQueryAction [
 
 	presenter addNewFirstLevelQuery.
-	presenter creationPresenters first addNewChildQueryAction.
-	presenter creationPresenters last removeQueryAction.
+	presenter addNewChildQueryAction:
+		presenter creationPresenters first query.
+
+	presenter removeQueryAction: presenter creationPresenters last.
 	self assert: presenter creationPresenters size equals: 1.
 
-	presenter creationPresenters first addNewChildQueryAction.
-	presenter creationPresenters second addNewChildQueryAction.
-	presenter creationPresenters third addNewChildQueryAction.
-	presenter creationPresenters first removeQueryAction.
+	presenter addNewChildQueryAction:
+		presenter creationPresenters first query.
+	presenter addNewChildQueryAction:
+		presenter creationPresenters second query.
+	presenter addNewChildQueryAction:
+		presenter creationPresenters third query.
+	presenter removeQueryAction: presenter creationPresenters first.
 	self assert: presenter creationPresenters size equals: 0
 ]
 
 { #category : #tests }
-MiQueryBuilderPresenterTest >> testUpdateComponentList [
+MiQueriesListPresenterTest >> testUpdateComponentList [
 
 	self
 		assertCollection: presenter componentList presenters
@@ -99,7 +107,8 @@ MiQueryBuilderPresenterTest >> testUpdateComponentList [
 	self
 		assertCollection: presenter componentList presenters
 		hasSameElements: presenter creationPresenters.
-	presenter creationPresenters first addNewChildQueryAction.
+	presenter addNewChildQueryAction:
+		presenter creationPresenters first query.
 	self
 		assertCollection: presenter componentList presenters
 		hasSameElements: presenter creationPresenters

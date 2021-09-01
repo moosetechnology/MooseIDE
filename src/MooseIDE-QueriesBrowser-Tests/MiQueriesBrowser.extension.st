@@ -1,14 +1,14 @@
-Extension { #name : #MiNewQueriesBrowser }
+Extension { #name : #MiQueriesBrowser }
 
 { #category : #'*MooseIDE-QueriesBrowser-Tests' }
-MiNewQueriesBrowser >> queryCodePresenter [
+MiQueriesBrowser >> queryCodePresenter [
 
 	self flag: 'Do not use this accessor. This is only for the tests'.
 	^ queryCodePresenter
 ]
 
 { #category : #'*MooseIDE-QueriesBrowser-Tests' }
-MiNewQueriesBrowser >> queryResultTreePresenter [
+MiQueriesBrowser >> queryResultTreePresenter [
 
 	self flag: 'Do not use this accessor. This is only for the tests'.
 	^ queryResultTreePresenter

@@ -1,6 +1,6 @@
 Class {
 	#name : #MiPropertyQueryPresenterTest,
-	#superclass : #MiQueryConfigurationPresenterTest,
+	#superclass : #MiQueryConfiguratorPresenterTest,
 	#category : #'MooseIDE-QueriesBrowser-Tests-Queries Configuration'
 }
 

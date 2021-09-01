@@ -2,7 +2,7 @@
 A MiNewQueriesBrowserTest is a test class for testing the behavior of MiNewQueriesBrowser
 "
 Class {
-	#name : #MiNewQueriesBrowserTest,
+	#name : #MiQueriesBrowserTest,
 	#superclass : #MiAbstractBrowserTest,
 	#instVars : [
 		'helper'
@@ -11,13 +11,13 @@ Class {
 }
 
 { #category : #running }
-MiNewQueriesBrowserTest >> browserClass [
+MiQueriesBrowserTest >> browserClass [
 
-	^ MiNewQueriesBrowser
+	^ MiQueriesBrowser
 ]
 
 { #category : #running }
-MiNewQueriesBrowserTest >> setUp [
+MiQueriesBrowserTest >> setUp [
 
 	super setUp.
 	helper := FQTestsHelper current.
@@ -25,7 +25,7 @@ MiNewQueriesBrowserTest >> setUp [
 ]
 
 { #category : #tests }
-MiNewQueriesBrowserTest >> testAddNewNAryQuery [
+MiQueriesBrowserTest >> testAddNewNAryQuery [
 
 	| unionQuery |
 	unionQuery := self unionQuery.
@@ -39,7 +39,7 @@ MiNewQueriesBrowserTest >> testAddNewNAryQuery [
 ]
 
 { #category : #tests }
-MiNewQueriesBrowserTest >> testInitializePresenters [
+MiQueriesBrowserTest >> testInitializePresenters [
 
 	self
 		assertCollection: browser queryResultEntities
@@ -59,7 +59,7 @@ MiNewQueriesBrowserTest >> testInitializePresenters [
 ]
 
 { #category : #tests }
-MiNewQueriesBrowserTest >> testRemoveNAryQuery [
+MiQueriesBrowserTest >> testRemoveNAryQuery [
 
 	| unionQuery firstParent |
 	unionQuery := self unionQuery.
@@ -70,7 +70,7 @@ MiNewQueriesBrowserTest >> testRemoveNAryQuery [
 ]
 
 { #category : #tests }
-MiNewQueriesBrowserTest >> testRemoveQuery [
+MiQueriesBrowserTest >> testRemoveQuery [
 
 	| query query2 |
 	query := FQBooleanQuery new property: #isAbstract.
@@ -87,7 +87,7 @@ MiNewQueriesBrowserTest >> testRemoveQuery [
 ]
 
 { #category : #tests }
-MiNewQueriesBrowserTest >> testSelectQuery [
+MiQueriesBrowserTest >> testSelectQuery [
 
 	| query previousCurrentQuery |
 	query := (FQBooleanQuery property: #isDead) beChildOf:
@@ -107,13 +107,13 @@ MiNewQueriesBrowserTest >> testSelectQuery [
 ]
 
 { #category : #tests }
-MiNewQueriesBrowserTest >> testSetModelBeforeInitialization [
+MiQueriesBrowserTest >> testSetModelBeforeInitialization [
 
 	self assert: browser rootQuery class equals: FQRootQuery
 ]
 
 { #category : #defaults }
-MiNewQueriesBrowserTest >> unionQuery [
+MiQueriesBrowserTest >> unionQuery [
 
 	| subqueries union |
 	subqueries := { 

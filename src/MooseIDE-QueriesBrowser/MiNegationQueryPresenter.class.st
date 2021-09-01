@@ -3,7 +3,7 @@ This is the negation query. It receives one query and negates it. Obviously, can
 "
 Class {
 	#name : #MiNegationQueryPresenter,
-	#superclass : #MiQueryConfigurationPresenter,
+	#superclass : #MiQueryConfiguratorPresenter,
 	#instVars : [
 		'subqueryDropListPresenter'
 	],
@@ -27,7 +27,12 @@ MiNegationQueryPresenter >> buildLayout [
 { #category : #actions }
 MiNegationQueryPresenter >> computeQuery: selectedPresenter [
 
-	self negateQueryAction: selectedPresenter
+	"Sometimes the SpDropListPresenter>>#whenSelectedItemChangedDo: in spec is triggered even though no item were selected. When this happends the selected item is nil. So to avoid crashin we check in an if that the item is not nil. This is an spec problem."
+
+	selectedPresenter ifNil: [ ^ self ].
+
+	query := FQComplementQuery queryToNegate: selectedPresenter query.
+	query runOn: selectedPresenter query parent result
 ]
 
 { #category : #initialization }
@@ -44,17 +49,6 @@ MiNegationQueryPresenter >> initializeQueryDropListPresenter [
 		items: owner allQueryPresentersExceptSelf;
 		display: [ :each | each name ];
 		whenSelectedItemChangedDo: [ :item | self computeQueryAction: item ]
-]
-
-{ #category : #actions }
-MiNegationQueryPresenter >> negateQueryAction: selectedPresenter [
-
-	"Sometimes the SpDropListPresenter>>#whenSelectedItemChangedDo: in spec is triggered even though no item were selected. When this happends the selected item is nil. So to avoid crashin we check in an if that the item is not nil. This is an spec problem."
-
-	selectedPresenter ifNil: [ ^ self ].
-
-	query := FQComplementQuery queryToNegate: selectedPresenter query.
-	query runOn: selectedPresenter query parent result
 ]
 
 { #category : #'api - actions' }

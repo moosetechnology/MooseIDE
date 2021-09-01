@@ -3,7 +3,7 @@ A MiNegationQueryPresenterTest is a test class for testing the behavior of MiNeg
 "
 Class {
 	#name : #MiNegationQueryPresenterTest,
-	#superclass : #MiQueryConfigurationPresenterTest,
+	#superclass : #MiQueryConfiguratorPresenterTest,
 	#category : #'MooseIDE-QueriesBrowser-Tests-Queries Configuration'
 }
 
@@ -23,10 +23,10 @@ MiNegationQueryPresenterTest >> queryClass [
 MiNegationQueryPresenterTest >> resetPresenterWithEntities: aMooseGroup [
 
 	| builder superPresenter |
-	browser := MiNewQueriesBrowser on: (FQRootQuery new
+	browser := MiQueriesBrowser on: (FQRootQuery new
 			            result: aMooseGroup;
 			            yourself).
-	builder := MiQueryBuilderPresenter on: browser.
+	builder := MiQueriesListPresenter on: browser.
 	builder
 		addNewFirstLevelQuery;
 		addNewFirstLevelQuery;
@@ -40,6 +40,17 @@ MiNegationQueryPresenterTest >> resetPresenterWithEntities: aMooseGroup [
 MiNegationQueryPresenterTest >> testImpossibleQueryInitialization [
 
 	self assert: true
+]
+
+{ #category : #tests }
+MiNegationQueryPresenterTest >> testNormalQueryInitialization [
+
+	self assert: presenter query class identicalTo: self queryClass.
+	self deny: presenter query isValid.
+	presenter query queryToNegate: (FQBooleanQuery new
+			 property: #isStub;
+			 yourself).
+	self assert: presenter query isValid
 ]
 
 { #category : #tests }

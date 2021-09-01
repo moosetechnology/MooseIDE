@@ -3,7 +3,7 @@ I am a query configuration presenter for all N-ary queries (before called binary
 "
 Class {
 	#name : #MiNAryQueryPresenter,
-	#superclass : #MiQueryConfigurationPresenter,
+	#superclass : #MiQueryConfiguratorPresenter,
 	#instVars : [
 		'subqueryDropLists',
 		'addSubqueryToLayoutButton',

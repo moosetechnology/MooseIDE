@@ -4,7 +4,7 @@ A query configuration presenter for the `FQTypeQuery`
 "
 Class {
 	#name : #MiTypeQueryPresenter,
-	#superclass : #MiQueryConfigurationPresenter,
+	#superclass : #MiQueryConfiguratorPresenter,
 	#instVars : [
 		'typesButton',
 		'typesList'

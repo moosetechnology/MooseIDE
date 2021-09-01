@@ -2,7 +2,7 @@
 I am the abstract class for all the configuration presenter for the FamixQueries
 "
 Class {
-	#name : #MiQueryConfigurationPresenter,
+	#name : #MiQueryConfiguratorPresenter,
 	#superclass : #MiPresenter,
 	#instVars : [
 		'query'
@@ -11,25 +11,25 @@ Class {
 }
 
 { #category : #specs }
-MiQueryConfigurationPresenter class >> defaultSpec [
+MiQueryConfiguratorPresenter class >> defaultSpec [
 
 	^ SpBoxLayout newHorizontal
 ]
 
 { #category : #layout }
-MiQueryConfigurationPresenter >> buildLayout [
+MiQueryConfiguratorPresenter >> buildLayout [
 
 	self layout: self class defaultSpec
 ]
 
 { #category : #actions }
-MiQueryConfigurationPresenter >> computeQuery: anObject [
+MiQueryConfiguratorPresenter >> computeQuery: anObject [
 
 	self subclassResponsibility
 ]
 
 { #category : #actions }
-MiQueryConfigurationPresenter >> computeQueryAction: anObject [
+MiQueryConfiguratorPresenter >> computeQueryAction: anObject [
 
 	[ owner enableProgressNotification ] asJob run.
 	self computeQuery: anObject.
@@ -37,66 +37,42 @@ MiQueryConfigurationPresenter >> computeQueryAction: anObject [
 	owner disableProgressNotification
 ]
 
-{ #category : #'api - actions' }
-MiQueryConfigurationPresenter >> disable [
-
-	"Disable the presenters that had been instantiated."
-
-	self presenters
-		reject: [ :subPresenter | 
-			{ 
-				SpNullPresenter.
-				MiNoPossibleQueryPresenter } includes: subPresenter class ]
-		thenDo: #disable
-]
-
-{ #category : #'api - actions' }
-MiQueryConfigurationPresenter >> enable [
-
-	"Enable the presenters that had been instantiated."
-
-	self presenters
-		reject: [ :subPresenter | 
-			{ 
-				SpNullPresenter.
-				MiNoPossibleQueryPresenter } includes: subPresenter class ]
-		thenDo: #enable
-]
-
 { #category : #initialization }
-MiQueryConfigurationPresenter >> initialize [
+MiQueryConfiguratorPresenter >> initialize [
 
 	super initialize.
 	self buildLayout
 ]
 
 { #category : #update }
-MiQueryConfigurationPresenter >> noParameterMessage: aParameterName [
+MiQueryConfiguratorPresenter >> noParameterMessage: aParameterName [
 
 	^ self instantiate: MiNoPossibleQueryPresenter on: aParameterName
 ]
 
 { #category : #transmissions }
-MiQueryConfigurationPresenter >> notifyQueryChanged [
+MiQueryConfiguratorPresenter >> notifyQueryChanged [
 
 	owner queryChangedUpdate
 ]
 
 { #category : #accessing }
-MiQueryConfigurationPresenter >> query [
+MiQueryConfiguratorPresenter >> query [
 	^ query
 ]
 
 { #category : #'api - actions' }
-MiQueryConfigurationPresenter >> queryPresentersListChanged [
+MiQueryConfiguratorPresenter >> queryPresentersListChanged [
 
 	"This method is trigerred when the list of queries presenters in MiQueryBuilderPresenter change. This can happen when the user adds or removes a new query from the queries list.
 	The default behavior is to do nothing. This method must be overriden if a subclass wants to do something specific"
+
+	"Maybe we should change this to use announcements"
 
 	
 ]
 
 { #category : #'accessing - model' }
-MiQueryConfigurationPresenter >> setModelBeforeInitialization: aQuery [
+MiQueryConfiguratorPresenter >> setModelBeforeInitialization: aQuery [
 	query := aQuery
 ]

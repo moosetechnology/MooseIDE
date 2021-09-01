@@ -3,21 +3,21 @@ I am a MooseIDE browser that allows to create custom queries that applies to a M
 queryBuilderPresenter` instance variable that contains a list with all the queries that you want to apply to the Moose model.
 "
 Class {
-	#name : #MiNewQueriesBrowser,
+	#name : #MiQueriesBrowser,
 	#superclass : #MiAbstractBrowser,
 	#instVars : [
 		'queryResultTreePresenter',
 		'queryCodePresenter',
 		'queryNotebookPresenter',
-		'queryBuilderPresenter',
 		'selectedQuery',
-		'rootQuery'
+		'rootQuery',
+		'queriesListPresenter'
 	],
 	#category : #'MooseIDE-QueriesBrowser-Main presenters'
 }
 
 { #category : #'world menu' }
-MiNewQueriesBrowser class >> menuCommandOn: aBuilder [
+MiQueriesBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
 	<miBrowsers>
@@ -31,13 +31,13 @@ MiNewQueriesBrowser class >> menuCommandOn: aBuilder [
 ]
 
 { #category : #'instance creation' }
-MiNewQueriesBrowser class >> newModel [
+MiQueriesBrowser class >> newModel [
 
 	^ FQRootQuery new
 ]
 
 { #category : #'instance creation' }
-MiNewQueriesBrowser class >> open [
+MiQueriesBrowser class >> open [
 
 	"This method implementation is the same as their parent. But it is here for opening this browser more confortably from the system's browser."
 
@@ -46,32 +46,32 @@ MiNewQueriesBrowser class >> open [
 ]
 
 { #category : #specs }
-MiNewQueriesBrowser class >> title [
+MiQueriesBrowser class >> title [
 
 	^ 'Queries Browser'
 ]
 
 { #category : #accessing }
-MiNewQueriesBrowser class >> titleForModelName: mooseModelName [
+MiQueriesBrowser class >> titleForModelName: mooseModelName [
 
 	^ self title , ' (' , mooseModelName , ')'
 ]
 
 { #category : #specs }
-MiNewQueriesBrowser class >> windowSize [
+MiQueriesBrowser class >> windowSize [
 
 	^ 650 @ 420
 ]
 
 { #category : #testing }
-MiNewQueriesBrowser >> accept: anObject [
+MiQueriesBrowser >> accept: anObject [
 
 	^ anObject isMooseObject and: [ 
 		  (anObject asMooseGroup allUsing: FamixTNamedEntity) isNotEmpty ]
 ]
 
 { #category : #actions }
-MiNewQueriesBrowser >> followAction [
+MiQueriesBrowser >> followAction [
 
 	| mooseModelName |
 	(self accept: toSelect) ifFalse: [ ^ self ].
@@ -91,23 +91,23 @@ MiNewQueriesBrowser >> followAction [
 
 	"Update the all the sub presenters with this new query"
 	self selectQuery: rootQuery.
-	queryBuilderPresenter followAction
+	queriesListPresenter followAction
 ]
 
 { #category : #initialization }
-MiNewQueriesBrowser >> initializeLayout [
+MiQueriesBrowser >> initializeLayout [
 
 	| tempLayout |
 	tempLayout := self class defaultSpec.
 	tempLayout add: (SpPanedLayout new
-			 add: #queryBuilderPresenter;
+			 add: #queriesListPresenter;
 			 add: #queryNotebookPresenter;
 			 yourself).
 	self layout: tempLayout
 ]
 
 { #category : #initialization }
-MiNewQueriesBrowser >> initializeNotebookPresenter [
+MiQueriesBrowser >> initializeNotebookPresenter [
 
 	queryNotebookPresenter := self newNotebook.
 	queryNotebookPresenter pages: { 
@@ -120,7 +120,7 @@ MiNewQueriesBrowser >> initializeNotebookPresenter [
 ]
 
 { #category : #initialization }
-MiNewQueriesBrowser >> initializePresenters [
+MiQueriesBrowser >> initializePresenters [
 
 	super initializePresenters.
 	self initializeQueryCodePresenter.
@@ -131,20 +131,20 @@ MiNewQueriesBrowser >> initializePresenters [
 ]
 
 { #category : #initialization }
-MiNewQueriesBrowser >> initializeQueryBuilder [
+MiQueriesBrowser >> initializeQueryBuilder [
 
-	queryBuilderPresenter := self instantiate:
-		                         (MiQueryBuilderPresenter on: self)
+	queriesListPresenter := self instantiate:
+		                         (MiQueriesListPresenter on: self)
 ]
 
 { #category : #initialization }
-MiNewQueriesBrowser >> initializeQueryCodePresenter [
+MiQueriesBrowser >> initializeQueryCodePresenter [
 
 	queryCodePresenter := self instantiate: MiQueryCodePresenter
 ]
 
 { #category : #initialization }
-MiNewQueriesBrowser >> initializeResultTreePresenter [
+MiQueriesBrowser >> initializeResultTreePresenter [
 
 	queryResultTreePresenter := self
 		                            instantiate: MiResultTreePresenter
@@ -153,7 +153,7 @@ MiNewQueriesBrowser >> initializeResultTreePresenter [
 ]
 
 { #category : #accessing }
-MiNewQueriesBrowser >> miSelectedItem [
+MiQueriesBrowser >> miSelectedItem [
 
 	| selected |
 	selected := (queryResultTreePresenter miSelectedItem ifEmpty: [ 
@@ -163,41 +163,35 @@ MiNewQueriesBrowser >> miSelectedItem [
 		  ifFalse: [ selected ]
 ]
 
-{ #category : #'api - actions' }
-MiNewQueriesBrowser >> queryChangedUpdate: query [
-
-	self selectQuery: query
-]
-
 { #category : #accessing }
-MiNewQueriesBrowser >> queryResultEntities [
+MiQueriesBrowser >> queryResultEntities [
 
 	^ selectedQuery result
 ]
 
 { #category : #removing }
-MiNewQueriesBrowser >> removeChild: childToRemove fromNode: aNode [
+MiQueriesBrowser >> removeChild: childToRemove fromParent: aParent [
 
-	(aNode children includes: childToRemove) ifTrue: [ 
-		aNode removeChild: childToRemove.
+	(aParent children includes: childToRemove) ifTrue: [ 
+		aParent removeChild: childToRemove.
 		^ self ].
-	aNode children do: [ :aChild | 
-		self removeChild: childToRemove fromNode: aChild ]
+	aParent children do: [ :aChild | 
+		self removeChild: childToRemove fromParent: aChild ]
 ]
 
 { #category : #'api - actions' }
-MiNewQueriesBrowser >> removeQuery: aQuery [
+MiQueriesBrowser >> removeQuery: aQuery [
 
-	self removeChild: aQuery fromNode: rootQuery
+	self removeChild: aQuery fromParent: rootQuery
 ]
 
 { #category : #accessing }
-MiNewQueriesBrowser >> rootQuery [
+MiQueriesBrowser >> rootQuery [
 	^ rootQuery
 ]
 
 { #category : #actions }
-MiNewQueriesBrowser >> selectQuery: aQuery [
+MiQueriesBrowser >> selectQuery: aQuery [
 
 	selectedQuery := aQuery.
 	queryResultTreePresenter updateForQuery: aQuery.
@@ -206,13 +200,13 @@ MiNewQueriesBrowser >> selectQuery: aQuery [
 ]
 
 { #category : #accessing }
-MiNewQueriesBrowser >> selectedQuery [
+MiQueriesBrowser >> selectedQuery [
 
 	^ selectedQuery
 ]
 
 { #category : #'accessing model' }
-MiNewQueriesBrowser >> setModelBeforeInitialization: aRootQuery [
+MiQueriesBrowser >> setModelBeforeInitialization: aRootQuery [
 
 	rootQuery := aRootQuery.
 	selectedQuery := aRootQuery
