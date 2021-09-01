@@ -78,9 +78,7 @@ MiQueryCodePresenter >> updateForQuery: aQuery [
 				 | parsedExpression |
 				 parsedExpression := RBParser parseExpression:
 					                     (String streamContents: [ :aStream | 
-						                      aQuery
-							                      storeOn: aStream
-							                      withParentsIn: aQuery parentSequence ]).
+						                      aQuery storeWithParentsOn: aStream ]).
 
 				 parsedExpression formattedCode ])
 ]
