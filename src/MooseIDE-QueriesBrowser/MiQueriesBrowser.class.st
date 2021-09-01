@@ -170,19 +170,19 @@ MiQueriesBrowser >> queryResultEntities [
 ]
 
 { #category : #removing }
-MiQueriesBrowser >> removeChild: childToRemove fromNode: aNode [
+MiQueriesBrowser >> removeChild: childToRemove fromParent: aParent [
 
-	(aNode children includes: childToRemove) ifTrue: [ 
-		aNode removeChild: childToRemove.
+	(aParent children includes: childToRemove) ifTrue: [ 
+		aParent removeChild: childToRemove.
 		^ self ].
-	aNode children do: [ :aChild | 
-		self removeChild: childToRemove fromNode: aChild ]
+	aParent children do: [ :aChild | 
+		self removeChild: childToRemove fromParent: aChild ]
 ]
 
 { #category : #'api - actions' }
 MiQueriesBrowser >> removeQuery: aQuery [
 
-	self removeChild: aQuery fromNode: rootQuery
+	self removeChild: aQuery fromParent: rootQuery
 ]
 
 { #category : #accessing }

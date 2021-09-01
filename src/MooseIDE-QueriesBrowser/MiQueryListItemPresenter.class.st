@@ -156,9 +156,9 @@ MiQueryListItemPresenter >> newQueryForClass: queryClass [
 	(parentQuery children includes: self query) ifTrue: [ 
 		parentQuery removeChild: self query ].
 
-	newQuery := queryClass isNAryQuery
-		            ifTrue: [ 
-		            queryClass subqueries: OrderedCollection empty ]
+	newQuery := (queryClass isNAryQuery or: [ 
+		             queryClass isComplementQuery ])
+		            ifTrue: [ queryClass new ]
 		            ifFalse: [ queryClass defaultForParent: parentQuery ].
 	parentQuery addChild: newQuery.
 	^ newQuery
