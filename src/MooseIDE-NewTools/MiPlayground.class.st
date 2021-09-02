@@ -7,7 +7,15 @@ Class {
 { #category : #accessing }
 MiPlayground class >> defaultTitle [ 
 
-	^ 'MooseIDE Playground'
+	^ 'Moose Playground'
+]
+
+{ #category : #initialization }
+MiPlayground class >> initialize [
+
+	"Make playground active by default"
+
+	self register
 ]
 
 { #category : #'world menu' }
