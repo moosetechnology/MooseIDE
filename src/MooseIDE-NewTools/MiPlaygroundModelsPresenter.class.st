@@ -1,3 +1,7 @@
+"
+I am a presenter to show all installed MooseModels and a code preview of how they can be used in the playground.
+By clicking OK, user can add this code to the playground.
+"
 Class {
 	#name : #MiPlaygroundModelsPresenter,
 	#superclass : #StPresenter,

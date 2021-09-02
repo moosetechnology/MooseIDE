@@ -1,3 +1,6 @@
+"
+I am responsible for the opening of a `MiPlaygroundModelsPresenter` and used as toolbar button in `MiPlaygroundPagePresenter`.
+"
 Class {
 	#name : #MiPlaygroundInstalledModelsCommand,
 	#superclass : #MiPlaygroundCommand,
