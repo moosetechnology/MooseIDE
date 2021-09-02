@@ -28,7 +28,10 @@ BaselineOfMooseIDE >> baseline: spec [
 				with: [ spec requires: #( 'FamixTagging' ) ] ].
 
 		"Groups"
-		self defineGroups: spec ]
+		self defineGroups: spec.
+
+		"Register custom tools"
+		spec postLoadDoIt: #registerCustomTools ]
 ]
 
 { #category : #accessing }
@@ -117,13 +120,19 @@ BaselineOfMooseIDE >> famixTagging: spec [
 		spec repository: 'github://moosetechnology/FamixTagging:v1.x.x/src' ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #dependencies }
 BaselineOfMooseIDE >> labelContractor: spec [
 
 	spec
 		baseline: 'LabelContractor'
 		with: [ 
 		spec repository: 'github://moosetechnology/LabelContractor/src' ]
+]
+
+{ #category : #actions }
+BaselineOfMooseIDE >> registerCustomTools [
+
+	(Smalltalk classNamed: #MiPlayground) register
 ]
 
 { #category : #dependencies }

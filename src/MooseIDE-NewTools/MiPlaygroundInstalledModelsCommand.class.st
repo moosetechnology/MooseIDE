@@ -4,23 +4,35 @@ Class {
 	#category : #'MooseIDE-NewTools-Playground'
 }
 
+{ #category : #'accessing - defaults' }
+MiPlaygroundInstalledModelsCommand class >> defaultDescription [
+
+	^ 'Add a model to the playground'
+]
+
+{ #category : #'accessing - defaults' }
+MiPlaygroundInstalledModelsCommand class >> defaultName [
+
+	^ 'Models'
+]
+
 { #category : #converting }
 MiPlaygroundInstalledModelsCommand >> asSpecCommand [
+
 	^ super asSpecCommand
-		iconName: #mooseMetamodelGroup from: MooseIcons;
-		beDisplayedOnRightSide;
-		yourself
+		  iconName: #mooseMetamodelGroup from: MooseIcons;
+		  beDisplayedOnRightSide;
+		  yourself
 ]
 
 { #category : #converting }
 MiPlaygroundInstalledModelsCommand >> execute [
 
-	self inform: 'TODO'
-]
+	| modelsPresenter |
+	modelsPresenter := MiPlaygroundModelsPresenter
+		                   newApplication: context application
+		                   model: context.
 
-{ #category : #converting }
-MiPlaygroundInstalledModelsCommand >> initialize [
-
-	super initialize.
-	self name: 'Model installed'
+	modelsPresenter openDialogWithSpec okAction: [ 
+		self context addModelExpression: modelsPresenter codeToAdd ]
 ]

@@ -7,7 +7,31 @@ Class {
 { #category : #accessing }
 MiPlayground class >> defaultTitle [ 
 
-	^ 'MooseIDE Playground'
+	^ 'Moose Playground'
+]
+
+{ #category : #initialization }
+MiPlayground class >> initialize [
+
+	"Make playground active by default"
+
+	self register
+]
+
+{ #category : #'world menu' }
+MiPlayground class >> menuCommandOn: aBuilder [
+
+	<worldMenu>
+	^ (MooseModel developerTool: self menuCommandOn: aBuilder)
+		  order: 10;
+		  help: 'Playground enhanced for usage in Moose';
+		  yourself
+]
+
+{ #category : #'world menu' }
+MiPlayground class >> menuLabel [
+
+	^ 'Moose Playground'
 ]
 
 { #category : #'instance creation' }
@@ -17,8 +41,7 @@ MiPlayground class >> open [
 ]
 
 { #category : #'instance creation' }
-MiPlayground >> toolbarActions [
-	^ super toolbarActions
-		register: (MiPlaygroundInstalledModelsCommand forSpecContext: self);
-		yourself
+MiPlayground >> newDefaultPlaygroundPage [
+
+	^ MiPlaygroundPage new
 ]
