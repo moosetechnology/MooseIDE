@@ -13,24 +13,18 @@ Class {
 
 { #category : #commands }
 MiResultTreePresenter class >> buildCommandsGroupWith: presenter forRoot: aCmCommandsGroup [
+
 	aCmCommandsGroup
 		register:
-			((MiInspectCommand forSpecWithIconNamed: #glamorousInspect)
-				context: presenter owner);
-		register:
-			(MiPropagateCommand new asSpecCommand
-				iconName: #moosePropagate;
-				context: presenter owner);
-		register:
-			(MiPropagateCommand new doNotFreezeBrowser asSpecCommand
-				iconName: #glamorousRestart;
-				name: 'Use as root for queries';
-				context: presenter owner).
-	(presenter roots includesAll: presenter selectedItems)
-		ifTrue: [ aCmCommandsGroup
-				register:
-					((MiTypeQueryCreationCommand forSpecWithIconNamed: #add)
-						context: presenter owner) beHiddenWhenCantBeRun ]
+			((MiInspectCommand forSpecWithIconNamed: #glamorousInspect) 
+				 context: presenter owner);
+		register: (MiPropagateCommand new asSpecCommand
+				 iconName: #moosePropagate;
+				 context: presenter owner);
+		register: (MiPropagateCommand new doNotFreezeBrowser asSpecCommand
+				 iconName: #glamorousRestart;
+				 name: 'Use as root for queries';
+				 context: presenter owner)
 ]
 
 { #category : #accessing }
