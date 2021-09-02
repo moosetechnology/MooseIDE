@@ -51,8 +51,7 @@ MiApplication >> buses [
 { #category : #buses }
 MiApplication >> defaultBus [
 
-	^ defaultBus ifNil: [ 
-		  defaultBus := self busNamed: self class defaultBusName ]
+	^ defaultBus
 ]
 
 { #category : #buses }
@@ -75,7 +74,7 @@ MiApplication >> initialize [
 
 	super initialize.
 	buses := OrderedCollection new.
-	buses add: self defaultBus
+	defaultBus := self busNamed: self class defaultBusName
 ]
 
 { #category : #private }
