@@ -26,19 +26,19 @@ MiObjectContextPresenter >> intializePresentersWithBetterEvaluator [
 	toogled := false.
 	mainLayout := SpBoxLayout newTopToBottom.
 
-	actionBar := self newActionBar add: (self newButton
-			              label: 'Script';
-			              icon: (self iconNamed: #arrowDoubleUp);
-			              help: 'Open script area.';
-			              action: [ 
-				              toogled
-					              ifTrue: [ 
-						              toogled := false.
-						              mainLayout remove: evaluator ]
-					              ifFalse: [ 
-						              toogled := true.
-						              mainLayout add: evaluator ] ];
-			              yourself).
+	actionBar := self newActionBar.
+	actionBar add: (self newButton
+			 label: 'Script';
+			 icon: (self iconNamed: #arrowDoubleUp);
+			 help: 'Open script area.';
+			 action: [ 
+				 toogled
+					 ifTrue: [ 
+						 toogled := false.
+						 mainLayout remove: evaluator ]
+					 ifFalse: [ 
+						 toogled := true.
+						 mainLayout add: evaluator ] ]).
 
 	(evaluator := self newCode)
 		beForObject: self model inspectedObject;
@@ -52,7 +52,6 @@ MiObjectContextPresenter >> intializePresentersWithBetterEvaluator [
 		add: actionBar
 		expand: false
 		fill: false
-		padding: 0;
-		yourself.
+		padding: 0.
 	self layout: mainLayout
 ]

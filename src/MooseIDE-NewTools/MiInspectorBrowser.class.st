@@ -54,14 +54,16 @@ MiInspectorBrowser class >> menuCommandOn: aBuilder [
 { #category : #'instance creation' }
 MiInspectorBrowser class >> newModel [
 
-	^ MooseModel root entities
+	"^ MooseModel root entities"
+
+	^ self currentApplication defaultBus logger mostRecentEntity
 ]
 
 { #category : #'instance creation' }
 MiInspectorBrowser class >> open [
 
 	<script>
-	^ super open
+	^ (self inspect: self newModel) freeze: false
 ]
 
 { #category : #specs }
@@ -73,7 +75,7 @@ MiInspectorBrowser class >> title [
 { #category : #specs }
 MiInspectorBrowser class >> windowSize [
 
-	^ 700 @ 450
+	^ 700 @ 500
 ]
 
 { #category : #testing }
@@ -97,7 +99,8 @@ MiInspectorBrowser >> followAction [
 MiInspectorBrowser >> initializePresenters [
 
 	super initializePresenters.
-	miInspector := self instantiate: MiInspector on: self model
+	miInspector := self instantiate: MiInspector on: self model.
+	self freeze: true
 ]
 
 { #category : #initialization }
