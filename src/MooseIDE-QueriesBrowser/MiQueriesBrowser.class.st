@@ -156,8 +156,10 @@ MiQueriesBrowser >> initializeResultTreePresenter [
 MiQueriesBrowser >> miSelectedItem [
 
 	| selected |
-	selected := (queryResultTreePresenter miSelectedItem ifEmpty: [ 
-		             selectedQuery result ]) specialize.
+	selected := queryResultTreePresenter miSelectedItem
+		            ifEmpty: [ selectedQuery result ]
+		            ifNotEmpty: [ queryResultTreePresenter miSelectedItem ].
+	selected := selected specialize.
 	^ selected size = 1
 		  ifTrue: [ selected anyOne ]
 		  ifFalse: [ selected ]

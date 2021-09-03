@@ -12,13 +12,9 @@ Class {
 
 { #category : #commands }
 MiBusLogsList class >> buildCommandsGroupWith: presenterInstance forRoot: rootCommandGroup [
-	rootCommandGroup
-		register:
-			(MiPropagateCommand new doNotFreezeBrowser asSpecCommand
-				name: 'Propagate';
-				context: presenterInstance owner);
-		register: (MiInspectCommand forSpecContext: presenterInstance);
-		register: (MiLoggerRemoveLogCommand forSpecContext: presenterInstance)
+
+	rootCommandGroup register:
+		(MiLoggerRemoveLogCommand forSpecContext: presenterInstance)
 ]
 
 { #category : #specs }
