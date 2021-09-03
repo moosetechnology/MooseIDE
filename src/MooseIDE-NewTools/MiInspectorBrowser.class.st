@@ -33,6 +33,7 @@ MiInspectorBrowser class >> inspect: anObject forBuses: buses [
 	| newInstance |
 	newInstance := self on: anObject.
 	newInstance openWithSpec.
+	newInstance freeze.
 	buses do: [ :aBus | newInstance followBus: aBus ].
 	^ newInstance
 ]

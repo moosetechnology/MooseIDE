@@ -59,7 +59,8 @@ MiPlaygroundModelsPresenter >> initializePresenters [
 	modelsPanel presenter: modelsList.
 
 	previewPanel := (self instantiate: StHeaderPanel) label: 'Preview'.
-	codePreview := self newCode beForScripting beNotEditable.
+	codePreview := self newCode beForScripting beNotEditable
+		               withoutLineNumbers.
 	previewPanel presenter: codePreview.
 
 	self selectFirstModel
