@@ -14,3 +14,15 @@ KMModifiedKeyCombinationSequence >> acceptVisitor: aKMShortcutPrinter [
 
 	^ aKMShortcutPrinter visitModifiedCombinationShortcut: self
 ]
+
+{ #category : #matching }
+KMModifiedKeyCombinationSequence >> matchesCompletely: anEventBuffer [
+
+	anEventBuffer size = shortcuts size ifFalse: [ ^ false ].
+
+	anEventBuffer with: shortcuts do: [ :event :shortcut | 
+		(shortcut matchesCompletely: event asKeyCombination) ifFalse: [ 
+			^ false ] ].
+
+	^ true
+]
