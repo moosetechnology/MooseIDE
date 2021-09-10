@@ -45,7 +45,8 @@ Class {
 		'buttonInspect',
 		'buttonHelp',
 		'busButton',
-		'buses'
+		'buses',
+		'btnDrag'
 	],
 	#category : #'MooseIDE-Core-Browser'
 }
@@ -67,6 +68,7 @@ MiAbstractBrowser class >> defaultSpec [
 				add: SpBoxLayout newHorizontal expand: true;
 				add: #busButton;
 				add: SpBoxLayout newHorizontal expand: true;
+				add: #btnDrag width: self iconWidth;
 				add: #buttonInspect width: self iconWidth;
 				add: #buttonPropagate expand: false;
 				add: #buttonHelp width: self iconWidth;
@@ -152,6 +154,23 @@ MiAbstractBrowser >> activeStateButton [
 	buttonHighlight} detect: #state
 ]
 
+{ #category : #opening }
+MiAbstractBrowser >> adaptToDropInto: aDropInContainer [
+	"buttonFreeze := self newNullPresenter.
+	buttonFollow := self newNullPresenter.
+	buttonHighlight := self newNullPresenter.
+	buttonPropagate := self newNullPresenter.
+	buttonInspect := self newNullPresenter.
+	buttonHelp := self newNullPresenter.
+	busButton := self newNullPresenter.
+	btnDrag := self newNullPresenter."
+
+	"browser already removed from 'external' buses when the window was closed"
+	self followBus: (aDropInContainer owner privateBus).
+	
+	^ self 
+]
+
 { #category : #accessing }
 MiAbstractBrowser >> buses [
 	^ buses
@@ -212,6 +231,11 @@ MiAbstractBrowser >> globallySelect: anEntity [
 	self buses do: [ :bus | bus globallySelect: anEntity ]
 ]
 
+{ #category : #testing }
+MiAbstractBrowser >> hasBeenReinstalled [
+	owner isWindowPresenter ifTrue: [ owner close ]
+]
+
 { #category : #actions }
 MiAbstractBrowser >> highlightAction [
 	^ self
@@ -242,6 +266,13 @@ MiAbstractBrowser >> initializeBusButton [
 ]
 
 { #category : #initialization }
+MiAbstractBrowser >> initializeDragButton [
+	btnDrag := self instantiate: SpDragMe.
+	btnDrag icon: (self iconNamed: #smallRemoteOpen).
+	btnDrag passenger: self
+]
+
+{ #category : #initialization }
 MiAbstractBrowser >> initializeHelpButton [
 	buttonHelp := self newButton
 		iconName: #help;
@@ -256,7 +287,9 @@ MiAbstractBrowser >> initializePresenters [
 	self initializeStateButtons.
 	self initializeBusButton.
 	self initializeActionButtons.
-	self initializeHelpButton
+	self initializeHelpButton.
+	
+	self initializeDragButton.
 ]
 
 { #category : #initialization }
@@ -348,7 +381,8 @@ MiAbstractBrowser >> needUpdate: anEntity [
 
 { #category : #'private - accessing' }
 MiAbstractBrowser >> selectEntity: anEntity [
-	"I am used by the Mi Application. You should use #globallySelect: anEntity that will transmit the message to me and the other browsers"
+	"I am used by the Mi Application. You should use #globallySelect: anEntity that will
+	transmit the message to me and the other browsers"
 	toSelect := anEntity.
 	AbstractBrowserMode actionFor: self
 ]
