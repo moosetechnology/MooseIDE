@@ -12,9 +12,8 @@ SmalltalkCISpec {
   #testing : {
     #exclude : {
       #classes : [ #MiInspectorBrowserTest ]
-    }
-  },
-  #coverage : {
+    },
+    #coverage : {
       #packages : [ 'MooseIDE.*' ],
       #format : #lcov
     }
