@@ -13,7 +13,7 @@ SmalltalkCISpec {
     #exclude : {
       #classes : [ #MiInspectorBrowserTest ]
     }
-  }
+  },
   #coverage : {
       #packages : [ 'MooseIDE.*' ],
       #format : #lcov
