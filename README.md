@@ -1,6 +1,6 @@
 # MooseIDE
 
-[![development](https://github.com/moosetechnology/MooseIDE/actions/workflows/daily.yml/badge.svg)](https://github.com/moosetechnology/MooseIDE/actions/workflows/daily.yml) [![Moose version](https://img.shields.io/badge/Moose-8-%23aac9ff.svg)](https://github.com/moosetechnology/Moose)
+[![Coverage Status](https://coveralls.io/repos/github/moosetechnology/MooseIDE/badge.svg)](https://coveralls.io/github/moosetechnology/MooseIDE) [![development](https://github.com/moosetechnology/MooseIDE/actions/workflows/daily.yml/badge.svg)](https://github.com/moosetechnology/MooseIDE/actions/workflows/daily.yml) [![Moose version](https://img.shields.io/badge/Moose-8-%23aac9ff.svg)](https://github.com/moosetechnology/Moose)
 
 New Tools for Moose
 
