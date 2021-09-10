@@ -14,4 +14,9 @@ SmalltalkCISpec {
       #classes : [ #MiInspectorBrowserTest ]
     }
   }
+  #coverage : {
+      #packages : [ 'MooseIDE.*' ],
+      #format : #lcov
+    }
+  }
 }
