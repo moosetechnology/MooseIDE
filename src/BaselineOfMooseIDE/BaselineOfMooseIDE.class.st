@@ -9,10 +9,12 @@ BaselineOfMooseIDE >> baseline: spec [
 
 	<baseline>
 	spec for: #common do: [ "Dependencies"
+		
+		self tylerDurden: spec. 
 		self famixQueries: spec.
 		self telescope: spec.
 		self labelContractor: spec.
-
+		
 		"Packages"
 		self definePackages: spec.
 
@@ -140,4 +142,11 @@ BaselineOfMooseIDE >> telescope: spec [
 	spec
 		baseline: 'TelescopeRoassal3'
 		with: [ spec repository: 'github://TelescopeSt/TelescopeRoassal3' ]
+]
+
+{ #category : #dependencies }
+BaselineOfMooseIDE >> tylerDurden: spec [
+	spec
+		package: 'Durden'
+		with: [ spec repository: 'github://pharo-contributions/Durden' ]
 ]
