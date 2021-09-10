@@ -253,6 +253,10 @@ MooseImportFromSmalltalkForm >> privateImportModel [
 	| mooseModel |
 	self flag: #TODO.
 	"Equivalent of (wizardInformations at: #createScript) ifTrue: [ self generateScriptForPackages: selectedPackages ]"
+	"	packageNames ifEmpty: [ 
+		UIManager default alert: 'You must select at least one package'.
+		^ #(  ) ].
+"
 	self setImportingContext.
 
 	"Create model"
@@ -265,7 +269,6 @@ MooseImportFromSmalltalkForm >> privateImportModel [
 		addFromPackagesNamed: packageNames;
 		candidateClass: invocationStrategyDroplist selectedItem;
 		runWithProgress.
-
 	^ mooseModel
 ]
 

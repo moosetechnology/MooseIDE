@@ -11,6 +11,7 @@ BaselineOfMooseIDE >> baseline: spec [
 	spec for: #common do: [ "Dependencies"
 		self famixQueries: spec.
 		self telescope: spec.
+		self labelContractor: spec.
 
 		"Packages"
 		self definePackages: spec.
@@ -21,12 +22,16 @@ BaselineOfMooseIDE >> baseline: spec [
 			self famixTagging: spec.
 			spec
 				package: 'MooseIDE-Core' with: [ spec requires: #( 'Famix' ) ];
-				package: 'MooseIDE-Meta' with: [ spec requires: #( 'MooseIDE-Core' ) ];
+				package: 'MooseIDE-Meta'
+				with: [ spec requires: #( 'MooseIDE-Core' ) ];
 				package: 'MooseIDE-Tagging'
 				with: [ spec requires: #( 'FamixTagging' ) ] ].
 
 		"Groups"
-		self defineGroups: spec ]
+		self defineGroups: spec.
+
+		"Register custom tools"
+		spec postLoadDoIt: #registerCustomTools ]
 ]
 
 { #category : #accessing }
@@ -47,6 +52,7 @@ BaselineOfMooseIDE >> defineGroups: spec [
 			   'MooseIDE-Meta' 'MooseIDE-Tests' 'MooseIDE-Dependency'
 			   'MooseIDE-Famix' 'MooseIDE-Tagging' 'MooseIDE-Telescope'
 			   'MooseIDE-Export' 'MooseIDE-NewTools' 'MooseIDE-NewTools-Tests'
+			   'MooseIDE-QueriesBrowser' 'MooseIDE-QueriesBrowser-Tests'
 			   'MooseIDE-ColorPalette' 'MooseIDE-ColorPalette-Tests' )
 ]
 
@@ -54,7 +60,8 @@ BaselineOfMooseIDE >> defineGroups: spec [
 BaselineOfMooseIDE >> definePackages: spec [
 
 	spec
-		package: 'MooseIDE-Core';
+		package: 'MooseIDE-Core'
+		with: [ spec requires: #( 'LabelContractor' ) ];
 		package: 'MooseIDE-Visualization'
 		with: [ spec requires: #( 'TelescopeRoassal3' ) ];
 		package: 'MooseIDE-Meta'
@@ -73,9 +80,12 @@ BaselineOfMooseIDE >> definePackages: spec [
 		package: 'MooseIDE-Telescope'
 		with: [ 
 			spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' ) ];
+		package: 'MooseIDE-QueriesBrowser'
+		with: [ spec requires: #( 'MooseIDE-Core' 'FamixQueries' ) ];
+		package: 'MooseIDE-QueriesBrowser-Tests'
+		with: [ spec requires: #( 'MooseIDE-QueriesBrowser' 'MooseIDE-Tests' ) ];
 		package: 'MooseIDE-NewTools'
-		with: [ 
-			spec requires: #( 'MooseIDE-Meta' 'MooseIDE-Core' 'FamixQueries' ) ];
+		with: [ spec requires: #( 'MooseIDE-Meta' 'MooseIDE-Core' 'FamixQueries' ) ];
 		package: 'MooseIDE-NewTools-Tests'
 		with: [ spec requires: #( 'MooseIDE-NewTools' 'MooseIDE-Tests' ) ];
 		package: 'MooseIDE-Export'
@@ -108,6 +118,21 @@ BaselineOfMooseIDE >> famixTagging: spec [
 		baseline: 'FamixTagging'
 		with: [ 
 		spec repository: 'github://moosetechnology/FamixTagging:v1.x.x/src' ]
+]
+
+{ #category : #dependencies }
+BaselineOfMooseIDE >> labelContractor: spec [
+
+	spec
+		baseline: 'LabelContractor'
+		with: [ 
+		spec repository: 'github://moosetechnology/LabelContractor/src' ]
+]
+
+{ #category : #actions }
+BaselineOfMooseIDE >> registerCustomTools [
+
+	(Smalltalk classNamed: #MiPlayground) register
 ]
 
 { #category : #dependencies }

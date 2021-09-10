@@ -4,7 +4,7 @@ A MiInspectorBrowserTest is a test class for testing the behavior of MiInspector
 Class {
 	#name : #MiInspectorBrowserTest,
 	#superclass : #MiAbstractBrowserTest,
-	#category : #'MooseIDE-NewTools-Tests-Inspector'
+	#category : #'MooseIDE-NewTools-Tests'
 }
 
 { #category : #'tests - actions' }

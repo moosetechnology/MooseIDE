@@ -6,12 +6,6 @@ Object >> inspectorToString [
 ]
 
 { #category : #'*MooseIDE-NewTools' }
-Object >> isNAryQuery [
-
-	^ false
-]
-
-{ #category : #'*MooseIDE-NewTools' }
 Object >> mooseInterestingEntity [
 
 	"Method used in UI. 
