@@ -55,7 +55,8 @@ BaselineOfMooseIDE >> defineGroups: spec [
 			   'MooseIDE-Famix' 'MooseIDE-Tagging' 'MooseIDE-Telescope'
 			   'MooseIDE-Export' 'MooseIDE-NewTools' 'MooseIDE-NewTools-Tests'
 			   'MooseIDE-QueriesBrowser' 'MooseIDE-QueriesBrowser-Tests'
-			   'MooseIDE-ColorPalette' 'MooseIDE-ColorPalette-Tests' MooseIDE-Durden )
+			   'MooseIDE-ColorPalette' 'MooseIDE-ColorPalette-Tests'
+			   'MooseIDE-Durden' )
 ]
 
 { #category : #baselines }
