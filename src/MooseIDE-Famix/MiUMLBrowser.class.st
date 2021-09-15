@@ -55,27 +55,24 @@ MiUMLBrowser >> accept: anObject [
 		or: [ anObject isOfType: FamixTType ]
 ]
 
+{ #category : #testing }
+MiUMLBrowser >> canHighlight [
+
+	^ true
+]
+
 { #category : #actions }
-MiUMLBrowser >> followAction [
-	(self accept: toSelect)
-		ifFalse: [ ^ self ].
+MiUMLBrowser >> followEntity: anEntity [
+
 	diagram
-		rootEntities:
-			((toSelect isKindOf: FamixTypeGroup)
-				ifFalse: [ {toSelect} ]
-				ifTrue: [ toSelect ]);
+		rootEntities: anEntity asMooseGroup specialize;
 		run
 ]
 
 { #category : #actions }
-MiUMLBrowser >> highlightAction [
-	(self accept: toSelect)
-		ifFalse: [ ^ self ].
-	diagram
-		highlightEntities:
-			((toSelect isKindOf: FamixTypeGroup)
-				ifFalse: [ {toSelect} ]
-				ifTrue: [ toSelect ])
+MiUMLBrowser >> highlightEntity: anEntity [
+
+	diagram highlightEntities: anEntity asCollection
 ]
 
 { #category : #initialization }

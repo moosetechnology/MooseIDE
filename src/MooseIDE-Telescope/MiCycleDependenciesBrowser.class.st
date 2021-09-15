@@ -46,12 +46,11 @@ MiCycleDependenciesBrowser >> diagramClass [
 ]
 
 { #category : #actions }
-MiCycleDependenciesBrowser >> followAction [
-	(self accept: toSelect)
-		ifFalse: [ ^ self ].
+MiCycleDependenciesBrowser >> followEntity: anEntity [
+
 	diagram
 		entities:
-			(toSelect
-				select: [ :a | a usesFamixTrait: TEntityMetaLevelDependency ]);
+			(anEntity select: [ :a | 
+					 a usesFamixTrait: TEntityMetaLevelDependency ]);
 		run
 ]

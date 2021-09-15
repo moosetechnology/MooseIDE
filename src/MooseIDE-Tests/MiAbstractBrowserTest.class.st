@@ -173,7 +173,7 @@ MiAbstractBrowserTest >> testCanOpenOnObject [
 { #category : #'tests - receiving' }
 MiAbstractBrowserTest >> testDoNotPropagateWhenReceivingInFollowMode [
 
-	browser follow.
+	browser privateReceivingMode: MiFollowMode.
 	self mooseObjects do: [ :object | 
 		browser selectEntity: object.
 		self assertEmpty: self bus logger logs ]
@@ -182,7 +182,7 @@ MiAbstractBrowserTest >> testDoNotPropagateWhenReceivingInFollowMode [
 { #category : #'tests - receiving' }
 MiAbstractBrowserTest >> testDoNotPropagateWhenReceivingInFreezeMode [
 
-	browser freeze.
+	browser privateReceivingMode: MiFreezeMode.
 	self mooseObjects do: [ :object | 
 		browser selectEntity: object.
 		self assertEmpty: self bus logger logs ]
@@ -191,19 +191,10 @@ MiAbstractBrowserTest >> testDoNotPropagateWhenReceivingInFreezeMode [
 { #category : #'tests - receiving' }
 MiAbstractBrowserTest >> testDoNotPropagateWhenReceivingInHighlightMode [
 
-	browser highlight.
+	browser privateReceivingMode: MiHighlightMode.
 	self mooseObjects do: [ :object | 
 		browser selectEntity: object.
 		self assertEmpty: self bus logger logs ]
-]
-
-{ #category : #'tests - actions' }
-MiAbstractBrowserTest >> testFollowAction [
-
-	browser follow.
-	self mooseObjects do: [ :mooseObject | 
-		self bus globallySelect: mooseObject.
-		self assertFollowActionFor: mooseObject ]
 ]
 
 { #category : #'tests - buses' }
@@ -229,6 +220,15 @@ MiAbstractBrowserTest >> testFollowBusTriggersSelectEntity [
 	browser should receive selectEntity: propagatedEntity
 ]
 
+{ #category : #'tests - actions' }
+MiAbstractBrowserTest >> testFollowEntity [
+
+	browser privateReceivingMode: MiFollowMode.
+	self mooseObjects do: [ :mooseObject | 
+		self bus globallySelect: mooseObject.
+		self assertFollowActionFor: mooseObject ]
+]
+
 { #category : #'tests - buses' }
 MiAbstractBrowserTest >> testFollowOtherBus [
 
@@ -247,9 +247,9 @@ MiAbstractBrowserTest >> testFollowOtherBus [
 ]
 
 { #category : #'tests - actions' }
-MiAbstractBrowserTest >> testHighlightAction [
+MiAbstractBrowserTest >> testHighlightEntity [
 
-	browser highlight.
+	browser privateReceivingMode: MiHighlightMode.
 	self mooseObjects do: [ :mooseObject | 
 		self bus globallySelect: mooseObject.
 		self assertHighlightActionFor: mooseObject ]
