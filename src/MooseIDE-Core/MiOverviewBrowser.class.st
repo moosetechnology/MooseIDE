@@ -199,7 +199,7 @@ MiOverviewBrowser >> initializeToolbar [
 	busesButton := self newButton
 		iconName: #smallAdd;
 		label: 'Add Bus';
-		action: [ self modifyBuses ];
+		action: [ self openBusEditor ];
 		yourself.
 	browsersButton := self newMenuBar
 		addItem: [ :item | 
@@ -225,7 +225,7 @@ MiOverviewBrowser >> initializeWindow: aWindowPresenter [
 ]
 
 { #category : #toolbar }
-MiOverviewBrowser >> modifyBuses [
+MiOverviewBrowser >> openBusEditor [
 	self newPopover
 		relativeTo: busesButton;
 		presenter: (MiBusesPopup on: self);

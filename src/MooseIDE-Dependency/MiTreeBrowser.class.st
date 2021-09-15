@@ -55,12 +55,11 @@ MiTreeBrowser >> accept: anObject [
 	^ anObject usesFamixTrait: TEntityMetaLevelDependency
 ]
 
-{ #category : #'as yet unclassified' }
-MiTreeBrowser >> followAction [
+{ #category : #actions }
+MiTreeBrowser >> followEntity: anEntity [
 
-	(self accept: toSelect) ifFalse: [ ^ self ].
-	self model selected: toSelect.
-	self model root: toSelect.
+	self model selected: anEntity.
+	self model root: anEntity.
 	self refresh
 ]
 

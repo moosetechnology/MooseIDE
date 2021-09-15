@@ -67,11 +67,6 @@ MiLogBrowser >> cleanAllLoggers [
 	self update
 ]
 
-{ #category : #actions }
-MiLogBrowser >> followAction [
-	self update
-]
-
 { #category : #buses }
 MiLogBrowser >> followBus: aBus [
 	super followBus: aBus.
@@ -82,6 +77,12 @@ MiLogBrowser >> followBus: aBus [
 MiLogBrowser >> followBuses: aCollectionOfBus [
 
 	aCollectionOfBus do: [ :aBus | self followBus: aBus ]
+]
+
+{ #category : #actions }
+MiLogBrowser >> followEntity: anEntity [
+
+	self update
 ]
 
 { #category : #initialization }

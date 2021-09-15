@@ -48,11 +48,10 @@ MiDependencyButterflyBrowser >> diagramClass [
 ]
 
 { #category : #actions }
-MiDependencyButterflyBrowser >> followAction [
-	(self accept: toSelect)
-		ifFalse: [ ^ self ].
+MiDependencyButterflyBrowser >> followEntity: anEntity [
+
 	diagram
-		entity: toSelect;
+		entity: anEntity;
 		run
 ]
 

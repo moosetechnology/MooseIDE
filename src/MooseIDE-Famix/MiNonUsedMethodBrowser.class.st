@@ -53,8 +53,10 @@ MiNonUsedMethodBrowser class >> title [
 ]
 
 { #category : #TOREMOVE }
-MiNonUsedMethodBrowser >> accept: anObject [
-	^ anObject usesFamixTrait: FamixTWithMethods
+MiNonUsedMethodBrowser >> accept: anEntity [
+
+	^ (anEntity usesFamixTrait: FamixTWithMethods) and: [ 
+		  self needUpdate: anEntity ]
 ]
 
 { #category : #TOREMOVE }
@@ -94,11 +96,10 @@ MiNonUsedMethodBrowser >> drawOn: aCanvas [
 	^ aCanvas
 ]
 
-{ #category : #TOREMOVE }
-MiNonUsedMethodBrowser >> followAction [
-	((self accept: toSelect) and: (self needUpdate: toSelect))
-		ifFalse: [ ^ self ].
-	model selected: toSelect.
+{ #category : #actions }
+MiNonUsedMethodBrowser >> followEntity: anEntity [
+
+	model selected: anEntity.
 	self updateWindowTitle.
 	self refresh
 ]

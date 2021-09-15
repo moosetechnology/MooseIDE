@@ -33,6 +33,7 @@ MiInspectorBrowser class >> inspect: anObject forBuses: buses [
 	| newInstance |
 	newInstance := self on: anObject.
 	newInstance openWithSpec.
+	newInstance beFrozen.
 	buses do: [ :aBus | newInstance followBus: aBus ].
 	^ newInstance
 ]
@@ -54,8 +55,6 @@ MiInspectorBrowser class >> menuCommandOn: aBuilder [
 { #category : #'instance creation' }
 MiInspectorBrowser class >> newModel [
 
-	"^ MooseModel root entities"
-
 	^ self currentApplication defaultBus logger mostRecentEntity
 ]
 
@@ -63,7 +62,7 @@ MiInspectorBrowser class >> newModel [
 MiInspectorBrowser class >> open [
 
 	<script>
-	^ (self inspect: self newModel) freeze: false
+	^ super open
 ]
 
 { #category : #specs }
@@ -87,10 +86,15 @@ MiInspectorBrowser >> accept: anEntity [
 ]
 
 { #category : #actions }
-MiInspectorBrowser >> followAction [
+MiInspectorBrowser >> beFrozen [
 
-	(self accept: toSelect) ifFalse: [ ^ self ].
-	self model: toSelect.
+	buttonFreeze state: true
+]
+
+{ #category : #actions }
+MiInspectorBrowser >> followEntity: anEntity [
+
+	self model: anEntity.
 	miInspector model: self model.
 	self updateWindowTitle: self window
 ]
@@ -99,8 +103,7 @@ MiInspectorBrowser >> followAction [
 MiInspectorBrowser >> initializePresenters [
 
 	super initializePresenters.
-	miInspector := self instantiate: MiInspector on: self model.
-	self freeze: true
+	miInspector := self instantiate: MiInspector on: self model
 ]
 
 { #category : #initialization }

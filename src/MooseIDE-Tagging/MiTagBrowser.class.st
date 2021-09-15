@@ -74,10 +74,9 @@ MiTagBrowser >> accept: anObject [
 ]
 
 { #category : #actions }
-MiTagBrowser >> followAction [
+MiTagBrowser >> followEntity: anEntity [
 
-	(self accept: toSelect) ifFalse: [ ^ self ].
-	tagModel entities: toSelect.
+	tagModel entities: anEntity.
 	tagDetailsPage resetContent
 ]
 

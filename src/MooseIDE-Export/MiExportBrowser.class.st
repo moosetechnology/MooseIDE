@@ -168,9 +168,10 @@ Click to show in folder'
 ]
 
 { #category : #actions }
-MiExportBrowser >> followAction [
+MiExportBrowser >> followEntity: anEntity [
 
-	self updateEntitiesListWith: toSelect asMooseGroup.
+	self updateEntitiesListWith: anEntity asMooseGroup.
+
 	commentDictionary := Dictionary new
 ]
 

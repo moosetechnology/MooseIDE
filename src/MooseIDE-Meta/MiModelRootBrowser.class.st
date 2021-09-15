@@ -86,8 +86,11 @@ MiModelRootBrowser >> accept: anObject [
 ]
 
 { #category : #actions }
-MiModelRootBrowser >> followAction [
-	^ self
+MiModelRootBrowser >> followEntity: anEntity [
+
+	"Nothing to do"
+
+	
 ]
 
 { #category : #initialization }
@@ -101,7 +104,7 @@ MiModelRootBrowser >> initializeList [
 		contextMenu: [ self rootCommandsGroup asMenuPresenter ];
 		whenSelectionChangedDo: [ :selected | 
 			model selected: selected selectedItem.
-			self isFreeze ifFalse: [ 
+			self isFrozen ifFalse: [ 
 					self buses do: [ :bus | 
 							bus globallySelect: selected selectedItem ] ] ]
 ]

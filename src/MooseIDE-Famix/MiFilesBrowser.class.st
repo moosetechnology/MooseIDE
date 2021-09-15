@@ -65,11 +65,6 @@ MiFilesBrowser >> accept: anObject [
 	 [ anObject rootFolder asFileReference exists ]  ]
 ]
 
-{ #category : #actions }
-MiFilesBrowser >> canHighlight [
-	^false
-]
-
 { #category : #'as yet unclassified' }
 MiFilesBrowser >> computeItemsInFileReference: aFileReference [
 	"isChildOf: can bug see issue https://github.com/pharo-project/pharo/issues/5720"
@@ -91,11 +86,10 @@ MiFilesBrowser >> connectPresenters [
 ]
 
 { #category : #actions }
-MiFilesBrowser >> followAction [
-	(self accept: toSelect)
-		ifFalse: [ ^ self ].
-	self model mooseModel: toSelect.
-	self selectFileReference: toSelect rootFolder asFileReference.
+MiFilesBrowser >> followEntity: anEntity [
+
+	self model mooseModel: anEntity.
+	self selectFileReference: anEntity rootFolder asFileReference.
 	self updateWindowTitle
 ]
 
