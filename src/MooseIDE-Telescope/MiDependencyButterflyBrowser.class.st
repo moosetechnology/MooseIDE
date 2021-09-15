@@ -37,7 +37,7 @@ MiDependencyButterflyBrowser class >> title [
 ]
 
 { #category : #testing }
-MiDependencyButterflyBrowser >> accept: anObject [
+MiDependencyButterflyBrowser >> canReceiveEntity: anObject [
 	^ anObject isMooseEntity
 		and: [ anObject usesFamixTrait: TEntityMetaLevelDependency ]
 ]

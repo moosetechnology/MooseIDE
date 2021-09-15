@@ -50,7 +50,7 @@ MiSourceTextBrowser class >> title [
 ]
 
 { #category : #'as yet unclassified' }
-MiSourceTextBrowser >> accept: anObject [
+MiSourceTextBrowser >> canReceiveEntity: anObject [
 	^ anObject usesFamixTrait: FamixTSourceEntity
 ]
 

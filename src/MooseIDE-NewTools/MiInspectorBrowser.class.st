@@ -77,18 +77,18 @@ MiInspectorBrowser class >> windowSize [
 	^ 700 @ 500
 ]
 
-{ #category : #testing }
-MiInspectorBrowser >> accept: anEntity [
-
-	"Returns true because I think that all object can be inspected with this Midas inspector. It can be changed in future acording to new needs."
-
-	^ true
-]
-
 { #category : #actions }
 MiInspectorBrowser >> beFrozen [
 
 	buttonFreeze state: true
+]
+
+{ #category : #testing }
+MiInspectorBrowser >> canReceiveEntity: anEntity [
+
+	"Returns true because I think that all object can be inspected with this Midas inspector. It can be changed in future acording to new needs."
+
+	^ true
 ]
 
 { #category : #actions }

@@ -138,13 +138,6 @@ MiAbstractBrowser class >> windowSize [
 	^ 500 @ 400
 ]
 
-{ #category : #testing }
-MiAbstractBrowser >> accept: anObject [
-	"whether the browser accepts to deal with anObject"
-
-	^ false
-]
-
 { #category : #accessing }
 MiAbstractBrowser >> buses [
 	^ buses
@@ -163,6 +156,14 @@ MiAbstractBrowser >> canHighlight [
 	This behavior should be define by overriding #highlightEntity:"
 
 	^ false
+]
+
+{ #category : #testing }
+MiAbstractBrowser >> canReceiveEntity: anObject [
+
+	"whether the browser accepts to deal with anObject"
+
+	self subclassResponsibility
 ]
 
 { #category : #buses }
@@ -280,12 +281,6 @@ MiAbstractBrowser >> initializeWindow: aWindowPresenter [
 			self application windowClosed: aWindowPresenter.
 			self application updateOverviewBrowsers ].
 	aWindowPresenter initialExtent: self class windowSize
-]
-
-{ #category : #testing }
-MiAbstractBrowser >> isFrozen [
-
-	^ receivingMode isFreeze
 ]
 
 { #category : #testing }

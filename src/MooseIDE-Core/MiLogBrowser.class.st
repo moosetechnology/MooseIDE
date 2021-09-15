@@ -56,7 +56,7 @@ MiLogBrowser class >> title [
 ]
 
 { #category : #testing }
-MiLogBrowser >> accept: anObject [
+MiLogBrowser >> canReceiveEntity: anObject [
 	^ true
 ]
 

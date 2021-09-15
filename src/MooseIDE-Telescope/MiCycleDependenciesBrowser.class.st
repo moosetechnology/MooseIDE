@@ -36,7 +36,7 @@ MiCycleDependenciesBrowser class >> title [
 ]
 
 { #category : #testing }
-MiCycleDependenciesBrowser >> accept: anObject [
+MiCycleDependenciesBrowser >> canReceiveEntity: anObject [
 	^ anObject isMooseObject and: [ anObject isCollection ]
 ]
 

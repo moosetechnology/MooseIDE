@@ -59,7 +59,7 @@ MiFilesBrowser class >> title [
 ]
 
 { #category : #testing }
-MiFilesBrowser >> accept: anObject [
+MiFilesBrowser >> canReceiveEntity: anObject [
 	^ (anObject isKindOf: MooseModel) and:
 	 [ anObject rootFolder isNotNil and:
 	 [ anObject rootFolder asFileReference exists ]  ]

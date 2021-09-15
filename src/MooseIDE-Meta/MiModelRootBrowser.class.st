@@ -81,7 +81,7 @@ MiModelRootBrowser class >> windowSize [
 ]
 
 { #category : #testing }
-MiModelRootBrowser >> accept: anObject [
+MiModelRootBrowser >> canReceiveEntity: anObject [
 	^ false
 ]
 
@@ -103,10 +103,7 @@ MiModelRootBrowser >> initializeList [
 	modelFilteringList listPresenter
 		contextMenu: [ self rootCommandsGroup asMenuPresenter ];
 		whenSelectionChangedDo: [ :selected | 
-			model selected: selected selectedItem.
-			self isFrozen ifFalse: [ 
-					self buses do: [ :bus | 
-							bus globallySelect: selected selectedItem ] ] ]
+			model selected: selected selectedItem ]
 ]
 
 { #category : #initialization }
