@@ -31,7 +31,7 @@ MiHierarchicalVisualizationBrowser class >> title [
 { #category : #testing }
 MiHierarchicalVisualizationBrowser >> canReceiveEntity: anObject [
 
-	^ true
+	^ anObject isMooseObject
 ]
 
 { #category : #actions }
@@ -45,5 +45,9 @@ MiHierarchicalVisualizationBrowser >> followEntity: anEntity [
 MiHierarchicalVisualizationBrowser >> initializePresenters [
 
 	super initializePresenters.
-	diagram := self instantiate: MiHierarchicalVisualization
+	diagram := self instantiate: MiHierarchicalVisualization.
+	diagram childrenBlock: [ :el | 
+		(el usesFamixTrait: TEntityMetaLevelDependency)
+			ifTrue: [ el children ]
+			ifFalse: [ {  } ] ]
 ]
