@@ -14,6 +14,7 @@ BaselineOfMooseIDE >> baseline: spec [
 		self famixQueries: spec.
 		self telescope: spec.
 		self labelContractor: spec.
+		self hierarchicalVisualizations: spec.
 		
 		"Packages"
 		self definePackages: spec.
@@ -123,6 +124,15 @@ BaselineOfMooseIDE >> famixTagging: spec [
 		baseline: 'FamixTagging'
 		with: [ 
 		spec repository: 'github://moosetechnology/FamixTagging:v1.x.x/src' ]
+]
+
+{ #category : #dependencies }
+BaselineOfMooseIDE >> hierarchicalVisualizations: spec [
+
+	spec
+		baseline: 'HierarchicalVisualizations'
+		with: [ 
+		spec repository: 'github://moosetechnology/HierarchicalVisualizations:main/src' ]
 ]
 
 { #category : #dependencies }
