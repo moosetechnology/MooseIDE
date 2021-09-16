@@ -53,7 +53,7 @@ MiNonUsedMethodBrowser class >> title [
 ]
 
 { #category : #TOREMOVE }
-MiNonUsedMethodBrowser >> accept: anEntity [
+MiNonUsedMethodBrowser >> canReceiveEntity: anEntity [
 
 	^ (anEntity usesFamixTrait: FamixTWithMethods) and: [ 
 		  self needUpdate: anEntity ]

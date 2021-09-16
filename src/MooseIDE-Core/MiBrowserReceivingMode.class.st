@@ -12,9 +12,3 @@ MiBrowserReceivingMode class >> browser: aBrowser actOnEntity: anEntity [
 
 	self subclassResponsibility
 ]
-
-{ #category : #testing }
-MiBrowserReceivingMode class >> isFreeze [
-
-	^ false
-]

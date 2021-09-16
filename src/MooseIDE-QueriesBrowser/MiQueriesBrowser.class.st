@@ -64,7 +64,7 @@ MiQueriesBrowser class >> windowSize [
 ]
 
 { #category : #testing }
-MiQueriesBrowser >> accept: anObject [
+MiQueriesBrowser >> canReceiveEntity: anObject [
 
 	^ anObject isMooseObject and: [ 
 		  (anObject asMooseGroup allUsing: FamixTNamedEntity) isNotEmpty ]

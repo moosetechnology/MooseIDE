@@ -51,7 +51,7 @@ MiTreeBrowser class >> title [
 ]
 
 { #category : #'as yet unclassified' }
-MiTreeBrowser >> accept: anObject [
+MiTreeBrowser >> canReceiveEntity: anObject [
 	^ anObject usesFamixTrait: TEntityMetaLevelDependency
 ]
 

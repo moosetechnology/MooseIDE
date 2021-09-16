@@ -15,9 +15,3 @@ MiFreezeMode class >> browser: aBrowser actOnEntity: anEntity [
 
 	
 ]
-
-{ #category : #testing }
-MiFreezeMode class >> isFreeze [
-
-	^ true
-]

@@ -34,11 +34,6 @@ Class {
 }
 
 { #category : #accessing }
-MiModelRootBrowserModel >> initialize [
-	super initialize
-]
-
-{ #category : #accessing }
 MiModelRootBrowserModel >> selected [
 	^ selected
 ]

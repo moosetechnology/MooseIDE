@@ -46,15 +46,15 @@ MiTreeVisualisationBrowser class >> title [
 ]
 
 { #category : #testing }
-MiTreeVisualisationBrowser >> accept: anEntity [
-
-	^ anEntity isMooseObject and: [ self needUpdate: anEntity ]
-]
-
-{ #category : #testing }
 MiTreeVisualisationBrowser >> canHighlight [
 
 	^ true
+]
+
+{ #category : #testing }
+MiTreeVisualisationBrowser >> canReceiveEntity: anEntity [
+
+	^ anEntity isMooseObject and: [ self needUpdate: anEntity ]
 ]
 
 { #category : #actions }

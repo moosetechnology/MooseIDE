@@ -67,7 +67,7 @@ MiTagBrowser class >> windowSize [
 ]
 
 { #category : #testing }
-MiTagBrowser >> accept: anObject [
+MiTagBrowser >> canReceiveEntity: anObject [
 	^ anObject isCollection
 		and: [ anObject
 				anySatisfy: [ :a | a usesFamixTrait: FamixTNamedEntity ] ]

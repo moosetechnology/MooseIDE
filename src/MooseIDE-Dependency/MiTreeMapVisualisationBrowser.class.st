@@ -47,14 +47,14 @@ MiTreeMapVisualisationBrowser class >> title [
 ]
 
 { #category : #testing }
-MiTreeMapVisualisationBrowser >> accept: anObject [
-	^ anObject isMooseObject and: [ anObject rootsForTreeMap isNotEmpty ]
-]
-
-{ #category : #testing }
 MiTreeMapVisualisationBrowser >> canHighlight [
 
 	^ true
+]
+
+{ #category : #testing }
+MiTreeMapVisualisationBrowser >> canReceiveEntity: anObject [
+	^ anObject isMooseObject and: [ anObject rootsForTreeMap isNotEmpty ]
 ]
 
 { #category : #accessing }

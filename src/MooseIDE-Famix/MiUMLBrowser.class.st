@@ -46,19 +46,19 @@ MiUMLBrowser class >> title [
 ]
 
 { #category : #testing }
-MiUMLBrowser >> accept: anObject [
+MiUMLBrowser >> canHighlight [
+
+	^ true
+]
+
+{ #category : #testing }
+MiUMLBrowser >> canReceiveEntity: anObject [
 	"can't use isType because it can be a MooseModel (that does not answer isType)"
 
 	anObject isMooseObject
 		ifFalse: [ ^ false ].
 	^ (anObject isKindOf: FamixTypeGroup)
 		or: [ anObject isOfType: FamixTType ]
-]
-
-{ #category : #testing }
-MiUMLBrowser >> canHighlight [
-
-	^ true
 ]
 
 { #category : #actions }

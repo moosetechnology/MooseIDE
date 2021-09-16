@@ -11,6 +11,6 @@ Class {
 { #category : #action }
 MiHighlightMode class >> browser: aBrowser actOnEntity: anEntity [
 
-	(aBrowser accept: anEntity) ifFalse: [ ^ self ].
+	(aBrowser canReceiveEntity: anEntity) ifFalse: [ ^ self ].
 	^ aBrowser highlightEntity: anEntity
 ]
