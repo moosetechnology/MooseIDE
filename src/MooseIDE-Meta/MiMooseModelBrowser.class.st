@@ -67,8 +67,9 @@ MiMooseModelBrowser class >> windowSize [
 ]
 
 { #category : #testing }
-MiMooseModelBrowser >> accept: anObject [
-	^ anObject isKindOf: MooseModel
+MiMooseModelBrowser >> canReceiveEntity: anEntity [
+
+	^ (anEntity isKindOf: MooseModel) and: [ self needUpdate: anEntity ]
 ]
 
 { #category : #initialization }
@@ -95,10 +96,9 @@ MiMooseModelBrowser >> computeModelPresenterRoot [
 ]
 
 { #category : #actions }
-MiMooseModelBrowser >> followAction [
-	((self needUpdate: toSelect) and: [ self accept: toSelect ])
-		ifFalse: [ ^ self ].
-	model model: toSelect.
+MiMooseModelBrowser >> followEntity: aMooseModel [
+
+	model model: aMooseModel.
 	self computeModelPresenterRoot.
 	self updateWindowTitle
 ]
@@ -153,11 +153,6 @@ MiMooseModelBrowser >> miSelectedItem [
 { #category : #accessing }
 MiMooseModelBrowser >> modelPresenter [
 	^ modelPresenter
-]
-
-{ #category : #testing }
-MiMooseModelBrowser >> needUpdate: anEntity [
-	^ model selected ~= anEntity
 ]
 
 { #category : #accessing }

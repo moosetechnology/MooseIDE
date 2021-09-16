@@ -6,21 +6,6 @@ MiAbstractBrowser >> busButton [
 ]
 
 { #category : #'*MooseIDE-Tests' }
-MiAbstractBrowser >> follow [
-	buttonFollow state: true
-]
-
-{ #category : #'*MooseIDE-Tests' }
-MiAbstractBrowser >> freeze [
-	buttonFreeze state: true
-]
-
-{ #category : #'*MooseIDE-Tests' }
-MiAbstractBrowser >> highlight [
-	buttonHighlight state: true
-]
-
-{ #category : #'*MooseIDE-Tests' }
 MiAbstractBrowser class >> openForTests [
 
 	^ (self
@@ -29,4 +14,12 @@ MiAbstractBrowser class >> openForTests [
 		  openWithSpec;
 		  followBus: MiTestApplication current defaultBus;
 		  yourself
+]
+
+{ #category : #'*MooseIDE-Tests' }
+MiAbstractBrowser >> privateReceivingMode: aMiBrowserReceivingMode [
+
+	"DO NOT USE ME, I AM FOR TESTS"
+
+	receivingMode := aMiBrowserReceivingMode
 ]

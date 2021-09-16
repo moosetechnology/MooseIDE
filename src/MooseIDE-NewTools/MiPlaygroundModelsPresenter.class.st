@@ -35,7 +35,7 @@ MiPlaygroundModelsPresenter >> codeForModel: model [
 
 	^ String streamContents: [ :s | 
 		  s
-			  << model name uncapitalized;
+			  << (model name asValidSelector copyWithout: $:);
 			  << ' := MooseModel root at: ';
 			  << (MooseModel root indexOf: model) asString;
 			  << '.' ]

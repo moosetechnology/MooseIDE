@@ -67,17 +67,16 @@ MiTagBrowser class >> windowSize [
 ]
 
 { #category : #testing }
-MiTagBrowser >> accept: anObject [
+MiTagBrowser >> canReceiveEntity: anObject [
 	^ anObject isCollection
 		and: [ anObject
 				anySatisfy: [ :a | a usesFamixTrait: FamixTNamedEntity ] ]
 ]
 
 { #category : #actions }
-MiTagBrowser >> followAction [
+MiTagBrowser >> followEntity: anEntity [
 
-	(self accept: toSelect) ifFalse: [ ^ self ].
-	tagModel entities: toSelect.
+	tagModel entities: anEntity.
 	tagDetailsPage resetContent
 ]
 

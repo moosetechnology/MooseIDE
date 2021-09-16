@@ -64,29 +64,28 @@ MiQueriesBrowser class >> windowSize [
 ]
 
 { #category : #testing }
-MiQueriesBrowser >> accept: anObject [
+MiQueriesBrowser >> canReceiveEntity: anObject [
 
 	^ anObject isMooseObject and: [ 
 		  (anObject asMooseGroup allUsing: FamixTNamedEntity) isNotEmpty ]
 ]
 
 { #category : #actions }
-MiQueriesBrowser >> followAction [
+MiQueriesBrowser >> followEntity: anEntity [
 
-	| mooseModelName |
-	(self accept: toSelect) ifFalse: [ ^ self ].
+	| mooseGroup mooseModelName |
 	"Create a group in case that only one entity was received from the bus"
-	toSelect := toSelect asMooseGroup allUsing: FamixTNamedEntity.
+	mooseGroup := anEntity asMooseGroup allUsing: FamixTNamedEntity.
 
 	"Update window's title"
-	mooseModelName := toSelect first mooseModel name.
+	mooseModelName := mooseGroup first mooseModel name.
 	self window title: (self class titleForModelName: mooseModelName).
 
 	"Create the new root query"
 	rootQuery children removeAll.
 	rootQuery
 		resetResult;
-		result: toSelect;
+		result: mooseGroup;
 		name: mooseModelName.
 
 	"Update the all the sub presenters with this new query"

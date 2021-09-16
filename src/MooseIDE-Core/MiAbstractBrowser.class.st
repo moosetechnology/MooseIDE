@@ -37,7 +37,6 @@ Class {
 	#superclass : #MiPresenter,
 	#instVars : [
 		'model',
-		'toSelect',
 		'buttonFreeze',
 		'buttonFollow',
 		'buttonHighlight',
@@ -45,7 +44,8 @@ Class {
 		'buttonInspect',
 		'buttonHelp',
 		'busButton',
-		'buses'
+		'buses',
+		'receivingMode'
 	],
 	#category : #'MooseIDE-Core-Browser'
 }
@@ -138,49 +138,38 @@ MiAbstractBrowser class >> windowSize [
 	^ 500 @ 400
 ]
 
-{ #category : #testing }
-MiAbstractBrowser >> accept: anObject [
-	"whether the browser accepts to deal with anObject"
-
-	^ false
-]
-
-{ #category : #accessing }
-MiAbstractBrowser >> activeStateButton [
-	^ {buttonFollow.
-	buttonFreeze.
-	buttonHighlight} detect: #state
-]
-
 { #category : #accessing }
 MiAbstractBrowser >> buses [
 	^ buses
 ]
 
-{ #category : #actions }
+{ #category : #testing }
 MiAbstractBrowser >> canFollow [
+
 	^ true
 ]
 
-{ #category : #actions }
+{ #category : #testing }
 MiAbstractBrowser >> canHighlight [
-	^ true
+
+	"Override to retrun true if you want to give your browser a highlight behavior. 
+	This behavior should be define by overriding #highlightEntity:"
+
+	^ false
 ]
 
-{ #category : #actions }
-MiAbstractBrowser >> canPropagate [
-	^ true
-]
+{ #category : #testing }
+MiAbstractBrowser >> canReceiveEntity: anObject [
 
-{ #category : #actions }
-MiAbstractBrowser >> followAction [
-	^ self subclassResponsibility
+	"whether the browser accepts to deal with anObject"
+
+	self subclassResponsibility
 ]
 
 { #category : #buses }
 MiAbstractBrowser >> followBus: aBus [
-	(self buses includes: aBus)
-		ifTrue: [ ^ self ].
+
+	(self buses includes: aBus) ifTrue: [ ^ self ].
 	self buses add: aBus.
 	aBus registerBrowser: self.
 	self updateBusButton.
@@ -188,38 +177,36 @@ MiAbstractBrowser >> followBus: aBus [
 ]
 
 { #category : #actions }
-MiAbstractBrowser >> freeze: aBoolean [
-	(aBoolean ifTrue: [ buttonFreeze ] ifFalse: [ buttonFollow ]) state: true
-]
+MiAbstractBrowser >> followEntity: anEntity [
 
-{ #category : #actions }
-MiAbstractBrowser >> freezeAction [
-	"when frozen, does not do anything"
-	^ self
+	^ self subclassResponsibility
 ]
 
 { #category : #actions }
 MiAbstractBrowser >> freezeDuring: aBlock [
-	| tmpState |
-	tmpState := self isFreeze.
-	self freeze: true.
-	aBlock
-		ensure: [ self freeze: tmpState ]
-]
 
-{ #category : #accessing }
-MiAbstractBrowser >> globallySelect: anEntity [
-	self buses do: [ :bus | bus globallySelect: anEntity ]
+	| previousMode |
+	previousMode := receivingMode.
+
+	receivingMode := MiFreezeMode.
+
+	aBlock ensure: [ receivingMode := previousMode ]
 ]
 
 { #category : #actions }
-MiAbstractBrowser >> highlightAction [
-	^ self
+MiAbstractBrowser >> highlightEntity: anEntity [
+
+	"Override to add behavior on highlight. 
+	Don't forget to override #canHighlight to return true"
+
+	
 ]
 
 { #category : #initialization }
 MiAbstractBrowser >> initialize [
+
 	super initialize.
+	self setDefaultState.
 	buses := Set new
 ]
 
@@ -235,10 +222,11 @@ MiAbstractBrowser >> initializeActionButtons [
 
 { #category : #initialization }
 MiAbstractBrowser >> initializeBusButton [
+
 	busButton := self newButton
-		iconName: #edit;
-		action: [ self modifyBuses ];
-		yourself
+		             iconName: #edit;
+		             action: [ self openBusEditor ];
+		             yourself
 ]
 
 { #category : #initialization }
@@ -253,33 +241,36 @@ MiAbstractBrowser >> initializeHelpButton [
 { #category : #initialization }
 MiAbstractBrowser >> initializePresenters [
 	super initializePresenters.
-	self initializeStateButtons.
+	self initializeReceivingModeButtons.
 	self initializeBusButton.
 	self initializeActionButtons.
 	self initializeHelpButton
 ]
 
 { #category : #initialization }
-MiAbstractBrowser >> initializeStateButtons [
-	self flag: 'The state of freeze should be store in a model'.
+MiAbstractBrowser >> initializeReceivingModeButtons [
+
 	buttonFreeze := self newRadioButton
-		label: 'Freeze';
-		enabled: true;
-		yourself.
+		                label: 'Freeze';
+		                enabled: true;
+		                whenActivatedDo: [ receivingMode := MiFreezeMode ];
+		                yourself.
 	buttonFollow := self newRadioButton
-		label: 'Follow';
-		enabled: self canFollow;
-		yourself.
+		                label: 'Follow';
+		                enabled: self canFollow;
+		                whenActivatedDo: [ receivingMode := MiFollowMode ];
+		                yourself.
 	buttonHighlight := self newRadioButton
-		label: 'Highlight';
-		enabled: self canHighlight;
-		yourself.
-	buttonFollow
-		associatedRadioButtons:
-			{buttonFreeze.
+		                   label: 'Highlight';
+		                   enabled: self canHighlight;
+		                   whenActivatedDo: [ 
+			                   receivingMode := MiHighlightMode ];
+		                   yourself.
+	buttonFollow associatedRadioButtons: { 
+			buttonFreeze.
 			buttonFollow.
-			buttonHighlight}.
-	self freeze: self canFollow not
+			buttonHighlight }.
+
 ]
 
 { #category : #initialization }
@@ -292,29 +283,9 @@ MiAbstractBrowser >> initializeWindow: aWindowPresenter [
 	aWindowPresenter initialExtent: self class windowSize
 ]
 
-{ #category : #actions }
-MiAbstractBrowser >> isFollow [
-	^ buttonFollow state
-]
-
-{ #category : #actions }
-MiAbstractBrowser >> isFreeze [
-	^ buttonFreeze state
-]
-
-{ #category : #actions }
-MiAbstractBrowser >> isHighlight [
-	^ buttonHighlight state
-]
-
 { #category : #testing }
 MiAbstractBrowser >> isMiBrowser [
 	^ true
-]
-
-{ #category : #actions }
-MiAbstractBrowser >> isNotFreeze [
-	^ self isFreeze not
 ]
 
 { #category : #accessing }
@@ -332,8 +303,15 @@ MiAbstractBrowser >> model: anObject [
 	model := anObject
 ]
 
+{ #category : #testing }
+MiAbstractBrowser >> needUpdate: anEntity [
+
+	^ anEntity ~= model selected
+]
+
 { #category : #buses }
-MiAbstractBrowser >> modifyBuses [
+MiAbstractBrowser >> openBusEditor [
+
 	| popup |
 	(popup := self newPopover)
 		relativeTo: busButton;
@@ -341,16 +319,18 @@ MiAbstractBrowser >> modifyBuses [
 		popup
 ]
 
-{ #category : #accessing }
-MiAbstractBrowser >> needUpdate: anEntity [
-	^ anEntity ~= model selected
-]
-
 { #category : #'private - accessing' }
 MiAbstractBrowser >> selectEntity: anEntity [
+
 	"I am used by the Mi Application. You should use #globallySelect: anEntity that will transmit the message to me and the other browsers"
-	toSelect := anEntity.
-	AbstractBrowserMode actionFor: self
+
+	receivingMode browser: self actOnEntity: anEntity
+]
+
+{ #category : #initialization }
+MiAbstractBrowser >> setDefaultState [
+
+	buttonFollow state: true
 ]
 
 { #category : #'accessing model' }
@@ -360,6 +340,7 @@ MiAbstractBrowser >> setModelBeforeInitialization: aModel [
 
 { #category : #actions }
 MiAbstractBrowser >> showHelp [
+
 	| help |
 	(help := self newPopover)
 		relativeTo: buttonHelp;
@@ -369,8 +350,8 @@ MiAbstractBrowser >> showHelp [
 
 { #category : #buses }
 MiAbstractBrowser >> unfollowBus: aBus [
-	(self buses includes: aBus)
-		ifFalse: [ ^ self ].
+
+	(self buses includes: aBus) ifFalse: [ ^ self ].
 	self buses remove: aBus.
 	aBus unregisterBrowser: self.
 	self updateBusButton
@@ -378,24 +359,19 @@ MiAbstractBrowser >> unfollowBus: aBus [
 
 { #category : #buses }
 MiAbstractBrowser >> updateBusButton [
-	busButton
-		label:
-			(self buses
-				ifEmpty: [ 'No bus' ]
-				ifNotEmpty: [ self buses size = 1
-						ifTrue: [ 'Bus: ' , self buses anyOne name ]
-						ifFalse: [ self buses size asString , ' buses' ] ]).
-	busButton
-		help:
-			(self buses
-				ifEmpty: [ 'Click to edit' ]
-				ifNotEmpty: [ String
-						streamContents: [ :s | 
-							self buses
-								do: [ :bus | 
-									s
-										<< '- ';
-										<< bus name;
-										cr ].
-							s << 'Click to edit' ] ])
+
+	busButton label: (self buses ifEmpty: [ 'No bus' ] ifNotEmpty: [ 
+			 self buses size = 1
+				 ifTrue: [ 'Bus: ' , self buses anyOne name ]
+				 ifFalse: [ self buses size asString , ' buses' ] ]).
+
+	busButton help: (String streamContents: [ :s | 
+			 self buses do: [ :bus | 
+				 s
+					 << '- ';
+					 << bus name;
+					 cr ].
+			 s << 'Click to edit' ]).
+
+	self update
 ]

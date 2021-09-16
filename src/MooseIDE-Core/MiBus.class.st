@@ -22,16 +22,6 @@ MiBus >> browsers [
 ]
 
 { #category : #actions }
-MiBus >> freezeBrowsersDuring: aBlock [
-	| activeButtons |
-	activeButtons := self browsers
-		collect: [ :browser | browser activeStateButton ].
-	self browsers do: [ :browser | browser freeze: true ].
-	aBlock
-		ensure: [ activeButtons do: [ :button | button state: true ] ]
-]
-
-{ #category : #actions }
 MiBus >> globallySelect: anEntity [
 	anEntity
 		ifNotNil: [ (self logger newLogFor: anEntity) activateIn: self ]

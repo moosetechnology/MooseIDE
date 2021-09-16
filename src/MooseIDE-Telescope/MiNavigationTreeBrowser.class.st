@@ -36,7 +36,7 @@ MiNavigationTreeBrowser class >> title [
 ]
 
 { #category : #testing }
-MiNavigationTreeBrowser >> accept: anObject [
+MiNavigationTreeBrowser >> canReceiveEntity: anObject [
 	^ anObject isMooseObject
 ]
 
@@ -46,15 +46,11 @@ MiNavigationTreeBrowser >> diagramClass [
 ]
 
 { #category : #actions }
-MiNavigationTreeBrowser >> followAction [
-	(self accept: toSelect)
-		ifFalse: [ ^ self ].
+MiNavigationTreeBrowser >> followEntity: anEntity [
+
 	diagram
 		entities:
-			((toSelect isCollection
-				ifTrue: [ toSelect ]
-				ifFalse: [ MooseGroup with: toSelect ])
-				allUsing: TEntityMetaLevelDependency);
+			(anEntity asCollection allUsing: TEntityMetaLevelDependency);
 		setAssociation;
 		run
 ]

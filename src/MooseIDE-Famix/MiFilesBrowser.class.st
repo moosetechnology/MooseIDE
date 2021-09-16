@@ -59,15 +59,10 @@ MiFilesBrowser class >> title [
 ]
 
 { #category : #testing }
-MiFilesBrowser >> accept: anObject [
+MiFilesBrowser >> canReceiveEntity: anObject [
 	^ (anObject isKindOf: MooseModel) and:
 	 [ anObject rootFolder isNotNil and:
 	 [ anObject rootFolder asFileReference exists ]  ]
-]
-
-{ #category : #actions }
-MiFilesBrowser >> canHighlight [
-	^false
 ]
 
 { #category : #'as yet unclassified' }
@@ -91,11 +86,10 @@ MiFilesBrowser >> connectPresenters [
 ]
 
 { #category : #actions }
-MiFilesBrowser >> followAction [
-	(self accept: toSelect)
-		ifFalse: [ ^ self ].
-	self model mooseModel: toSelect.
-	self selectFileReference: toSelect rootFolder asFileReference.
+MiFilesBrowser >> followEntity: anEntity [
+
+	self model mooseModel: anEntity.
+	self selectFileReference: anEntity rootFolder asFileReference.
 	self updateWindowTitle
 ]
 

@@ -46,30 +46,31 @@ MiDependencyBrowser class >> title [
 ]
 
 { #category : #testing }
-MiDependencyBrowser >> accept: anObject [
+MiDependencyBrowser >> canHighlight [
+
+	^ true
+]
+
+{ #category : #testing }
+MiDependencyBrowser >> canReceiveEntity: anObject [
 	^ anObject isCollection
 		and: [ anObject
 				anySatisfy: [ :a | a usesFamixTrait: TEntityMetaLevelDependency ] ]
 ]
 
 { #category : #actions }
-MiDependencyBrowser >> followAction [
-	(self accept: toSelect)
-		ifFalse: [ ^ self ].
-	(toSelect isOfType: MooseGroup)
-		ifFalse: [ toSelect := {toSelect} ].
+MiDependencyBrowser >> followEntity: anEntity [
+
 	diagram
-		entities:
-			(toSelect
-				select: [ :a | a usesFamixTrait: TEntityMetaLevelDependency ]);
+		entities: (anEntity asCollection select: [ :a | 
+					 a usesFamixTrait: TEntityMetaLevelDependency ]);
 		run
 ]
 
 { #category : #actions }
-MiDependencyBrowser >> highlightAction [
-	(toSelect isOfType: MooseGroup)
-		ifFalse: [ toSelect := {toSelect} ].
-	diagram highlightEntities: toSelect
+MiDependencyBrowser >> highlightEntity: anEntity [
+
+	diagram highlightEntities: anEntity asCollection
 ]
 
 { #category : #initialization }

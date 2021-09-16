@@ -47,19 +47,13 @@ MiFameBrowser class >> title [
 ]
 
 { #category : #testing }
-MiFameBrowser >> accept: anObject [
+MiFameBrowser >> canReceiveEntity: anObject [
 	^ anObject isMooseObject
 ]
 
 { #category : #actions }
-MiFameBrowser >> followAction [
-	(self accept: toSelect)
-		ifFalse: [ ^ self ].
-	self forEntity: toSelect
-]
+MiFameBrowser >> followEntity: anEntity [
 
-{ #category : #actions }
-MiFameBrowser >> forEntity: anEntity [
 	fameDescription items: anEntity mooseDescription allComplexProperties.
 	self updateWindowTitleWith: anEntity name
 ]

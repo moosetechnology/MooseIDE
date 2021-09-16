@@ -47,7 +47,13 @@ MiTreeMapVisualisationBrowser class >> title [
 ]
 
 { #category : #testing }
-MiTreeMapVisualisationBrowser >> accept: anObject [
+MiTreeMapVisualisationBrowser >> canHighlight [
+
+	^ true
+]
+
+{ #category : #testing }
+MiTreeMapVisualisationBrowser >> canReceiveEntity: anObject [
 	^ anObject isMooseObject and: [ anObject rootsForTreeMap isNotEmpty ]
 ]
 
@@ -62,18 +68,18 @@ MiTreeMapVisualisationBrowser >> diagram: anObject [
 ]
 
 { #category : #actions }
-MiTreeMapVisualisationBrowser >> followAction [
-	(self accept: toSelect)
-		ifFalse: [ ^ self ].
+MiTreeMapVisualisationBrowser >> followEntity: anEntity [
+
 	diagram
 		unHighlight;
-		rootEntities: toSelect rootsForTreeMap;
+		rootEntities: anEntity rootsForTreeMap;
 		run
 ]
 
 { #category : #actions }
-MiTreeMapVisualisationBrowser >> highlightAction [
-	diagram highlightEntities: toSelect rootsForTreeMap
+MiTreeMapVisualisationBrowser >> highlightEntity: anEntity [
+
+	diagram highlightEntities: anEntity rootsForTreeMap
 ]
 
 { #category : #initialization }

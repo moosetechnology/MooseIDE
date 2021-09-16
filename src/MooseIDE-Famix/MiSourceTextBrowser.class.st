@@ -50,7 +50,7 @@ MiSourceTextBrowser class >> title [
 ]
 
 { #category : #'as yet unclassified' }
-MiSourceTextBrowser >> accept: anObject [
+MiSourceTextBrowser >> canReceiveEntity: anObject [
 	^ anObject usesFamixTrait: FamixTSourceEntity
 ]
 
@@ -59,11 +59,10 @@ MiSourceTextBrowser >> entityName: aString [
 	sourceCodePage title: aString , ' source code'
 ]
 
-{ #category : #'as yet unclassified' }
-MiSourceTextBrowser >> followAction [
-	(self accept: toSelect)
-		ifFalse: [ ^ self ].
-	model selected: toSelect.
+{ #category : #actions }
+MiSourceTextBrowser >> followEntity: anEntity [
+
+	model selected: anEntity.
 	self updateCode
 ]
 

@@ -46,27 +46,30 @@ MiTreeVisualisationBrowser class >> title [
 ]
 
 { #category : #testing }
-MiTreeVisualisationBrowser >> accept: anObject [
-	^ anObject isMooseObject
+MiTreeVisualisationBrowser >> canHighlight [
+
+	^ true
+]
+
+{ #category : #testing }
+MiTreeVisualisationBrowser >> canReceiveEntity: anEntity [
+
+	^ anEntity isMooseObject and: [ self needUpdate: anEntity ]
 ]
 
 { #category : #actions }
-MiTreeVisualisationBrowser >> followAction [
-	((self accept: toSelect) and: [ toSelect ~= diagram selected ])
-		ifFalse: [ ^ self ].
-	(toSelect isOfType: MooseGroup)
-		ifTrue: [ diagram entities: toSelect ]
-		ifFalse: [ diagram entities: {toSelect} ].
+MiTreeVisualisationBrowser >> followEntity: anEntity [
+
+	diagram entities: anEntity asMooseGroup.
 	diagram
 		unHighlight;
 		run
 ]
 
 { #category : #actions }
-MiTreeVisualisationBrowser >> highlightAction [
-	(toSelect isOfType: MooseGroup)
-		ifFalse: [ toSelect := {toSelect} ].
-	diagram highlightEntities: toSelect
+MiTreeVisualisationBrowser >> highlightEntity: anEntity [
+
+	diagram highlightEntities: anEntity asCollection
 ]
 
 { #category : #initialization }
@@ -78,4 +81,10 @@ MiTreeVisualisationBrowser >> initializePresenters [
 { #category : #accessing }
 MiTreeVisualisationBrowser >> miSelectedItem [
 	^ diagram selected
+]
+
+{ #category : #testing }
+MiTreeVisualisationBrowser >> needUpdate: anEntity [
+
+	^ anEntity ~= diagram selected
 ]

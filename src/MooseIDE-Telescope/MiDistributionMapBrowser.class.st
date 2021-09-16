@@ -35,7 +35,7 @@ MiDistributionMapBrowser class >> title [
 ]
 
 { #category : #testing }
-MiDistributionMapBrowser >> accept: anObject [
+MiDistributionMapBrowser >> canReceiveEntity: anObject [
 	^ anObject isMooseObject
 ]
 
@@ -45,15 +45,11 @@ MiDistributionMapBrowser >> diagramClass [
 ]
 
 { #category : #actions }
-MiDistributionMapBrowser >> followAction [
-	(self accept: toSelect)
-		ifFalse: [ ^ self ].
-	toSelect isCollection
-		ifFalse: [ toSelect := {toSelect} ].
+MiDistributionMapBrowser >> followEntity: anEntity [
+
 	diagram
-		entities:
-			(toSelect
-				select: [ :a | a usesFamixTrait: TEntityMetaLevelDependency ]);
+		entities: (anEntity asCollection select: [ :a | 
+					 a usesFamixTrait: TEntityMetaLevelDependency ]);
 		run
 ]
 

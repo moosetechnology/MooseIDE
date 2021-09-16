@@ -56,7 +56,7 @@ MiLogBrowser class >> title [
 ]
 
 { #category : #testing }
-MiLogBrowser >> accept: anObject [
+MiLogBrowser >> canReceiveEntity: anObject [
 	^ true
 ]
 
@@ -64,11 +64,6 @@ MiLogBrowser >> accept: anObject [
 MiLogBrowser >> cleanAllLoggers [
 	self logsList presenters
 		do: [ :presenter | presenter bus logger clean ].
-	self update
-]
-
-{ #category : #actions }
-MiLogBrowser >> followAction [
 	self update
 ]
 
@@ -82,6 +77,12 @@ MiLogBrowser >> followBus: aBus [
 MiLogBrowser >> followBuses: aCollectionOfBus [
 
 	aCollectionOfBus do: [ :aBus | self followBus: aBus ]
+]
+
+{ #category : #actions }
+MiLogBrowser >> followEntity: anEntity [
+
+	self update
 ]
 
 { #category : #initialization }

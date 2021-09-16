@@ -46,15 +46,18 @@ MiPropertyBrowser class >> title [
 ]
 
 { #category : #initialization }
-MiPropertyBrowser >> accept: anObject [
+MiPropertyBrowser >> canReceiveEntity: anObject [
 	^ anObject isMooseObject
 ]
 
-{ #category : #initialization }
-MiPropertyBrowser >> followAction [
-	(self accept: toSelect)
-		ifFalse: [ ^ self ].
-	self forEntity: toSelect
+{ #category : #actions }
+MiPropertyBrowser >> followEntity: anEntity [
+
+	self model: anEntity.
+	properties items:
+		(anEntity mooseDescription allPrimitiveProperties sorted:
+			 #name ascending).
+	self updateWindowTitleWith: anEntity name
 ]
 
 { #category : #initialization }
