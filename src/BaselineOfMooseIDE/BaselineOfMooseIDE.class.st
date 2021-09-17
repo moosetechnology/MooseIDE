@@ -66,8 +66,9 @@ BaselineOfMooseIDE >> definePackages: spec [
 	spec
 		package: 'MooseIDE-Core'
 		with: [ spec requires: #( 'LabelContractor' ) ];
-		package: 'MooseIDE-Visualization'
-		with: [ spec requires: #( 'TelescopeRoassal3' ) ];
+		package: 'MooseIDE-Visualization' with: [ 
+			spec requires:
+					#( 'TelescopeRoassal3' 'HierarchicalVisualizations' ) ];
 		package: 'MooseIDE-Meta'
 		with: [ spec requires: #( 'MooseIDE-Core' ) ];
 		package: 'MooseIDE-Tests'
@@ -87,9 +88,12 @@ BaselineOfMooseIDE >> definePackages: spec [
 		package: 'MooseIDE-QueriesBrowser'
 		with: [ spec requires: #( 'MooseIDE-Core' 'FamixQueries' ) ];
 		package: 'MooseIDE-QueriesBrowser-Tests'
-		with: [ spec requires: #( 'MooseIDE-QueriesBrowser' 'MooseIDE-Tests' ) ];
+		with: [ 
+			spec requires: #( 'MooseIDE-QueriesBrowser'
+				   'MooseIDE-Tests' ) ];
 		package: 'MooseIDE-NewTools'
-		with: [ spec requires: #( 'MooseIDE-Meta' 'MooseIDE-Core' 'FamixQueries' ) ];
+		with: [ 
+			spec requires: #( 'MooseIDE-Meta' 'MooseIDE-Core' 'FamixQueries' ) ];
 		package: 'MooseIDE-NewTools-Tests'
 		with: [ spec requires: #( 'MooseIDE-NewTools' 'MooseIDE-Tests' ) ];
 		package: 'MooseIDE-Export'
@@ -97,8 +101,7 @@ BaselineOfMooseIDE >> definePackages: spec [
 		package: 'MooseIDE-ColorPalette';
 		package: 'MooseIDE-ColorPalette-Tests'
 		with: [ spec requires: #( 'MooseIDE-ColorPalette' ) ];
-		package: 'MooseIDE-Durden'
-		with: [ spec requires: #( 'Durden' ) ]
+		package: 'MooseIDE-Durden' with: [ spec requires: #( 'Durden' ) ]
 ]
 
 { #category : #dependencies }
