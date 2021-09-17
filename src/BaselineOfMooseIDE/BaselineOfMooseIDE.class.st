@@ -135,7 +135,7 @@ BaselineOfMooseIDE >> hierarchicalVisualizations: spec [
 	spec
 		baseline: 'HierarchicalVisualizations'
 		with: [ 
-		spec repository: 'github://moosetechnology/HierarchicalVisualizations:main/src' ]
+		spec repository: 'github://ObjectProfile/HierarchicalVisualizations:main/src' ]
 ]
 
 { #category : #dependencies }
