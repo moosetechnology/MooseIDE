@@ -1,19 +1,18 @@
 Class {
 	#name : #MiModelUtilityCommand,
-	#superclass : #CmCommand,
+	#superclass : #MiCommand,
 	#category : #'MooseIDE-Core-Command'
 }
 
 { #category : #converting }
 MiModelUtilityCommand class >> asCommandGroupWith: aPresenter [
+
 	| exportCommandGroup |
 	exportCommandGroup := CmCommandGroup forSpec
-		name: self defaultName;
-		description: self defaultDescription.
-	self
-		allSubclassesDo: [ :cmd | 
-			exportCommandGroup
-				register: ((cmd forSpecContext: aPresenter) iconName: cmd defaultIconName) ].
+		                      name: self defaultName;
+		                      description: self defaultDescription.
+	self allSubclassesDo: [ :cmd | 
+		exportCommandGroup register: (cmd forSpecContext: aPresenter) ].
 	^ exportCommandGroup
 ]
 

@@ -1,30 +1,25 @@
 Class {
 	#name : #MiModelExportCommand,
-	#superclass : #CmCommand,
+	#superclass : #MiCommand,
 	#category : #'MooseIDE-Core-Command'
 }
 
 { #category : #converting }
 MiModelExportCommand class >> asCommandGroupWith: aPresenter [
+
 	| exportCommandGroup |
 	exportCommandGroup := CmCommandGroup forSpec
-		name: self defaultName;
-		description: self defaultDescription;
-		iconName: self defaultIconName.
-	self
-		allSubclassesDo:
-			[ :cmd | exportCommandGroup register: (cmd forSpecContext: aPresenter) ].
+		                      name: self defaultName;
+		                      description: self defaultDescription;
+		                      iconName: #smallExport.
+	self allSubclassesDo: [ :cmd | 
+		exportCommandGroup register: (cmd forSpecContext: aPresenter) ].
 	^ exportCommandGroup
 ]
 
 { #category : #converting }
 MiModelExportCommand class >> defaultDescription [
 	^ 'Export this model'
-]
-
-{ #category : #converting }
-MiModelExportCommand class >> defaultIconName [
-	^ #smallExport
 ]
 
 { #category : #converting }

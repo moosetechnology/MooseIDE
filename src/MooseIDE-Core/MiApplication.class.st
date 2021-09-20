@@ -77,6 +77,12 @@ MiApplication >> initialize [
 	defaultBus := self busNamed: self class defaultBusName
 ]
 
+{ #category : #'instance creation' }
+MiApplication >> newIconProvider [
+
+	^ MiIconProvider new
+]
+
 { #category : #private }
 MiApplication >> registerWindow: aWindow [
 

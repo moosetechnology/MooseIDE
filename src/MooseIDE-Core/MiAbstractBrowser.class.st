@@ -211,75 +211,46 @@ MiAbstractBrowser >> initialize [
 ]
 
 { #category : #initialization }
-MiAbstractBrowser >> initializeActionButtons [
-	buttonPropagate := (MiPropagateCommand forSpecContext: self)
-		asButtonPresenter.
-	buttonInspect := (MiInspectCommand forSpecContext: self)
-		name: '';
-		iconName: #smallInspectIt;
-		asButtonPresenter
-]
-
-{ #category : #initialization }
-MiAbstractBrowser >> initializeBusButton [
-
-	busButton := self newButton
-		             iconName: #edit;
-		             action: [ self openBusEditor ];
-		             yourself
-]
-
-{ #category : #initialization }
-MiAbstractBrowser >> initializeHelpButton [
-	buttonHelp := self newButton
-		iconName: #help;
-		help: self class comment;
-		action: [ self showHelp ];
-		yourself
-]
-
-{ #category : #initialization }
 MiAbstractBrowser >> initializePresenters [
+
 	super initializePresenters.
 	self initializeReceivingModeButtons.
-	self initializeBusButton.
-	self initializeActionButtons.
-	self initializeHelpButton
+
+	busButton := (MiEditBusCommand forSpecContext: self)
+		             asButtonPresenter.
+
+	buttonPropagate := (MiPropagateCommand forSpecContext: self)
+		                   asButtonPresenter.
+
+	buttonInspect := (MiInspectCommand forSpecContext: self)
+		                 asButtonPresenter.
+
+	buttonHelp := (MiHelpCommand forSpecContext: self) asButtonPresenter
 ]
 
 { #category : #initialization }
 MiAbstractBrowser >> initializeReceivingModeButtons [
 
-	buttonFreeze := self newRadioButton
-		                label: 'Freeze';
-		                enabled: true;
-		                whenActivatedDo: [ receivingMode := MiFreezeMode ];
-		                yourself.
-	buttonFollow := self newRadioButton
-		                label: 'Follow';
-		                enabled: self canFollow;
-		                whenActivatedDo: [ receivingMode := MiFollowMode ];
-		                yourself.
-	buttonHighlight := self newRadioButton
-		                   label: 'Highlight';
-		                   enabled: self canHighlight;
-		                   whenActivatedDo: [ 
-			                   receivingMode := MiHighlightMode ];
-		                   yourself.
+	buttonFreeze := MiFreezeMode newRadioButtonIn: self.
+	buttonFollow := MiFollowMode newRadioButtonIn: self.
+	buttonHighlight := MiHighlightMode newRadioButtonIn: self.
+
 	buttonFollow associatedRadioButtons: { 
 			buttonFreeze.
 			buttonFollow.
-			buttonHighlight }.
-
+			buttonHighlight }
 ]
 
 { #category : #initialization }
 MiAbstractBrowser >> initializeWindow: aWindowPresenter [
+
 	super initializeWindow: aWindowPresenter.
-	aWindowPresenter
-		whenClosedDo: [ self buses do: [ :bus | bus unregisterBrowser: self ].
-			self application windowClosed: aWindowPresenter.
-			self application updateOverviewBrowsers ].
+
+	aWindowPresenter whenClosedDo: [ 
+		self buses do: [ :bus | bus unregisterBrowser: self ].
+		self application windowClosed: aWindowPresenter.
+		self application updateOverviewBrowsers ].
+
 	aWindowPresenter initialExtent: self class windowSize
 ]
 
@@ -317,6 +288,12 @@ MiAbstractBrowser >> openBusEditor [
 		relativeTo: busButton;
 		presenter: (MiBusesPopup owner: popup on: self);
 		popup
+]
+
+{ #category : #accessing }
+MiAbstractBrowser >> receivingMode: aReceivingMode [
+
+	receivingMode := aReceivingMode
 ]
 
 { #category : #'private - accessing' }
