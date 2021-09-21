@@ -14,7 +14,7 @@ Class {
 		'removeAllButton',
 		'tagBrowser'
 	],
-	#category : #'MooseIDE-Tagging'
+	#category : #'MooseIDE-Tagging-Browser'
 }
 
 { #category : #specs }

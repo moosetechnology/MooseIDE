@@ -18,7 +18,7 @@ Class {
 		'colorSamples',
 		'colorPalette'
 	],
-	#category : #'MooseIDE-Tagging'
+	#category : #'MooseIDE-Tagging-Browser'
 }
 
 { #category : #initialization }
@@ -163,9 +163,11 @@ SpRGBChooser >> sampleSize [
 
 { #category : #accessing }
 SpRGBChooser >> setColor: aColor [
-	redSlider value: ((aColor red * 255) round: 1).
-	greenSlider value: ((aColor green * 255) round: 1).
-	blueSlider value: ((aColor blue * 255) round: 1).
+
+	redSlider value: (aColor red * 255 round: 1).
+	greenSlider value: (aColor green * 255 round: 1).
+	blueSlider value: (aColor blue * 255 round: 1).
+	colorPreview image fillColor: self color
 ]
 
 { #category : #announcing }
