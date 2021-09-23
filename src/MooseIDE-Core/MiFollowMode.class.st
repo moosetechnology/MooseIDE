@@ -26,3 +26,12 @@ MiFollowMode class >> buttonLabel [
 
 	^ 'Follow'
 ]
+
+{ #category : #'radio button' }
+MiFollowMode class >> iconInBrowser: aBrowser [
+
+	^ aBrowser canFollow
+		  ifTrue: [ MiApplication current iconNamed: #radioButtonSelected ]
+		  ifFalse: [ 
+		  MiApplication current iconNamed: #radioButtonUnSelected ]
+]

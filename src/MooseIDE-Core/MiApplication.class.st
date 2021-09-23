@@ -54,6 +54,12 @@ MiApplication >> defaultBus [
 	^ defaultBus
 ]
 
+{ #category : #showing }
+MiApplication >> defaultWindowPresenterClass [
+
+	^ MiWindowPresenter "SpWindowPresenter"
+]
+
 { #category : #buses }
 MiApplication >> deleteBus: aBus [
 
@@ -101,4 +107,11 @@ MiApplication >> updateOverviewBrowsers [
 		collect: #presenter
 		thenSelect: [ :presenter | presenter class == MiOverviewBrowser ])
 		do: #update
+]
+
+{ #category : #windows }
+MiApplication >> windowClosed: aWindowPresenter [
+
+	super windowClosed: aWindowPresenter.
+	self updateOverviewBrowsers
 ]

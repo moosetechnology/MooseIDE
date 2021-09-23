@@ -16,6 +16,12 @@ MiHelpCommand class >> defaultIconName [
 	^ #help
 ]
 
+{ #category : #'accessing - defaults' }
+MiHelpCommand class >> defaultName [
+
+	^ 'Help'
+]
+
 { #category : #execution }
 MiHelpCommand >> execute [
 

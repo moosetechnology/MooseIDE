@@ -59,7 +59,7 @@ MiAbstractBrowser class >> buildCommandsGroupWith: presenterInstance forRoot: ro
 { #category : #specs }
 MiAbstractBrowser class >> defaultSpec [
 	^ SpBoxLayout newVertical
-		add:
+		"add:
 			(SpBoxLayout newHorizontal
 				add: #buttonFollow width: 65;
 				add: #buttonFreeze width: 60;
@@ -72,7 +72,7 @@ MiAbstractBrowser class >> defaultSpec [
 				add: #buttonHelp width: self iconWidth;
 				yourself)
 			withConstraints: [ :constraints | constraints height: self toolbarHeight ];
-		yourself
+		yourself"
 ]
 
 { #category : #'world menu' }
@@ -172,7 +172,7 @@ MiAbstractBrowser >> followBus: aBus [
 	(self buses includes: aBus) ifTrue: [ ^ self ].
 	self buses add: aBus.
 	aBus registerBrowser: self.
-	self updateBusButton.
+	"	self updateBusButton."
 	self selectEntity: aBus logger mostRecentEntity
 ]
 
@@ -211,24 +211,6 @@ MiAbstractBrowser >> initialize [
 ]
 
 { #category : #initialization }
-MiAbstractBrowser >> initializePresenters [
-
-	super initializePresenters.
-	self initializeReceivingModeButtons.
-
-	busButton := (MiEditBusCommand forSpecContext: self)
-		             asButtonPresenter.
-
-	buttonPropagate := (MiPropagateCommand forSpecContext: self)
-		                   asButtonPresenter.
-
-	buttonInspect := (MiInspectCommand forSpecContext: self)
-		                 asButtonPresenter.
-
-	buttonHelp := (MiHelpCommand forSpecContext: self) asButtonPresenter
-]
-
-{ #category : #initialization }
 MiAbstractBrowser >> initializeReceivingModeButtons [
 
 	buttonFreeze := MiFreezeMode newRadioButtonIn: self.
@@ -242,16 +224,13 @@ MiAbstractBrowser >> initializeReceivingModeButtons [
 ]
 
 { #category : #initialization }
-MiAbstractBrowser >> initializeWindow: aWindowPresenter [
+MiAbstractBrowser >> initializeWindow: aMiWindowPresenter [
 
-	super initializeWindow: aWindowPresenter.
+	super initializeWindow: aMiWindowPresenter.
 
-	aWindowPresenter whenClosedDo: [ 
-		self buses do: [ :bus | bus unregisterBrowser: self ].
-		self application windowClosed: aWindowPresenter.
-		self application updateOverviewBrowsers ].
-
-	aWindowPresenter initialExtent: self class windowSize
+	aMiWindowPresenter buildToolbar.
+	aMiWindowPresenter whenClosedDo: [ 
+		self buses do: [ :bus | bus unregisterBrowser: self ] ]
 ]
 
 { #category : #testing }
@@ -307,7 +286,7 @@ MiAbstractBrowser >> selectEntity: anEntity [
 { #category : #initialization }
 MiAbstractBrowser >> setDefaultState [
 
-	buttonFollow state: true
+	"buttonFollow state: true"self receivingMode: MiFollowMode 
 ]
 
 { #category : #'accessing model' }
@@ -331,7 +310,7 @@ MiAbstractBrowser >> unfollowBus: aBus [
 	(self buses includes: aBus) ifFalse: [ ^ self ].
 	self buses remove: aBus.
 	aBus unregisterBrowser: self.
-	self updateBusButton
+"	self updateBusButton"
 ]
 
 { #category : #buses }

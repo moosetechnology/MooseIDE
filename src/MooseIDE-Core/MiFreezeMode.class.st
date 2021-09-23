@@ -27,3 +27,11 @@ MiFreezeMode class >> buttonLabel [
 
 	^ 'Freeze'
 ]
+
+{ #category : #'radio button' }
+MiFreezeMode class >> iconInBrowser: aBrowser [
+
+	^ aBrowser canFollow
+		  ifTrue: [ MiApplication current iconNamed: #radioButtonUnselected ]
+		  ifFalse: [ MiApplication current iconNamed: #radioButtonSelected ]
+]

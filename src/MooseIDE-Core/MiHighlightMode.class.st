@@ -26,3 +26,9 @@ MiHighlightMode class >> buttonLabel [
 
 	^ 'Highlight'
 ]
+
+{ #category : #'radio button' }
+MiHighlightMode class >> iconInBrowser: aBrowser [
+
+	^ MiApplication current iconNamed: #radioButtonUnselected
+]

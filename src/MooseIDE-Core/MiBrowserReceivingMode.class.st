@@ -26,6 +26,33 @@ MiBrowserReceivingMode class >> buttonLabel [
 ]
 
 { #category : #'radio button' }
+MiBrowserReceivingMode class >> iconInBrowser: aBrowser [
+
+	^ self subclassResponsibility
+]
+
+{ #category : #'radio button' }
+MiBrowserReceivingMode class >> newButtonIn: aToolbar [
+
+	^ aToolbar addItem: (SpToolbarButtonPresenter new
+			   label: self buttonLabel;
+			   enabled: (self buttonEnabledInBrowser: aToolbar);
+			   action: [ aToolbar receivingMode: self ];
+			   yourself)
+]
+
+{ #category : #'radio button' }
+MiBrowserReceivingMode class >> newButtonIn: aToolbar forBrowser: aBrowser [
+
+	^ aToolbar addItem: (SpToolbarButtonPresenter new
+			   label: self buttonLabel;
+			   icon: (self iconInBrowser: aBrowser);
+			   enabled: (self buttonEnabledInBrowser: aBrowser);
+			   action: [ aToolbar receivingMode: self ];
+			   yourself)
+]
+
+{ #category : #'radio button' }
 MiBrowserReceivingMode class >> newRadioButtonIn: aBrowser [
 
 	"This should probably be the responsibility of a command.
