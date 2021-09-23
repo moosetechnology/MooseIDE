@@ -24,73 +24,53 @@ Class {
 MiBusesPopup class >> defaultSpec [
 
 	^ SpBoxLayout newTopToBottom
-		  spacing: 5;
-		  add: #busesList withConstraints: [ :constraints | 
-			  constraints
-				  height: 100;
-				  width: 250 ];
-		  add: (SpBoxLayout newLeftToRight
-				   spacing: 5;
-				   add: #newBusNameInput expand: true;
-				   add: #addBusButton withConstraints: [ :constraints | 
-					   constraints
-						   height: self inputTextHeight;
-						   width: self iconWidth ];
-				   yourself);
+		  add: #busesList;
 		  yourself
 ]
 
 { #category : #initialization }
-MiBusesPopup >> followNewBus [
-	| newBus |
-	newBusNameInput text ifEmpty: [ ^ self ].
+MiBusesPopup >> followNewBusNamed: aName [
 
+	| newBus |
 	"Create new bus"
-	newBus := self application busNamed: newBusNameInput text.
+	newBus := self application busNamed: aName.
 
 	"Follow new bus"
-	browser isMiBrowser
-		ifTrue: [ browser followBus: newBus ].
+	browser isMiBrowser ifTrue: [ browser followBus: newBus ].
 
 	"Update"
-	newBusNameInput clearContent.
+	busesList filterInputPresenter clearContent.
 	busesList items: self application buses
-]
-
-{ #category : #initialization }
-MiBusesPopup >> initializeBusesList [
-
-	busesList := self newTable.
-	busesList hideColumnHeaders.
-	browser isMiBrowser ifTrue: [ 
-		busesList addColumn: ((SpCheckBoxTableColumn evaluated: [ :bus | 
-					  browser buses includes: bus ])
-				 onActivation: [ :bus | browser followBus: bus ];
-				 onDeactivation: [ :bus | browser unfollowBus: bus ];
-				 width: 20) ].
-	busesList
-		addColumn: (SpStringTableColumn evaluated: #name);
-		items: self application buses
 ]
 
 { #category : #initialization }
 MiBusesPopup >> initializePresenters [
 
-	super initializePresenters.
-	self initializeBusesList.
-	newBusNameInput := self newTextInput
-		                   placeholder: 'New bus name';
-		                   whenSubmitDo: [ self followNewBus ];
-		                   bindKeyCombination: $s meta
-		                   toAction: [ self followNewBus ];
-		                   yourself.
-	addBusButton := self newButton
-		                iconName: #smallAdd;
-		                action: [ self followNewBus ];
-		                yourself
+	busesList := self newSelectableListForPopoverExtent: 125 @ 150.
+	busesList display: [ :bus | bus name ].
+	busesList items: self application buses.
+	busesList selectItems: browser buses.
+
+	busesList
+		onActivation: [ :bus | bus ifNotNil: [ browser followBus: bus ] ];
+		onDeactivation: [ :bus | bus ifNotNil: [ browser unfollowBus: bus ] ].
+
+	self useTextInputForBusCreation
 ]
 
 { #category : #'accessing model' }
 MiBusesPopup >> setModelBeforeInitialization: aBrowser [
 	browser := aBrowser
+]
+
+{ #category : #initialization }
+MiBusesPopup >> useTextInputForBusCreation [
+
+	"Do not filter bus use text input for bus creation"
+
+	busesList filterInputPresenter placeholder: '+ New bus'.
+	busesList itemFilter: [ :each :pattern | 
+		true "We do not want to filter anything" ].
+	busesList filterInputPresenter whenSubmitDo: [ 
+		self followNewBusNamed: busesList filterInputPresenter text ]
 ]
