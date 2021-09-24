@@ -82,17 +82,6 @@ MiTagBrowser >> canReceiveEntity: anObject [
 ]
 
 { #category : #actions }
-MiTagBrowser >> followAction [
-
-	(self accept: toSelect) ifFalse: [ ^ self ].
-	toSelect isMooseModel
-		ifTrue: [ self tagModel mooseModel: toSelect ]
-		ifFalse: [ 
-			tagModel entities: toSelect.
-			tagDetailsPage resetContent ]
-]
-
-{ #category : #actions }
 MiTagBrowser >> followEntity: anEntity [
 
 	tagModel entities: anEntity.
