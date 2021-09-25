@@ -28,7 +28,7 @@ Class {
 		'delBlock',
 		'selectItemBlock'
 	],
-	#category : #'MooseIDE-Tagging'
+	#category : #'MooseIDE-Tagging-Browser'
 }
 
 { #category : #specs }

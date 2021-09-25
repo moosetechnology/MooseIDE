@@ -13,7 +13,7 @@ Class {
 		'tagModel',
 		'tagManagementPage'
 	],
-	#category : #'MooseIDE-Tagging'
+	#category : #'MooseIDE-Tagging-Browser'
 }
 
 { #category : #specs }
@@ -64,6 +64,14 @@ MiTagBrowser class >> title [
 MiTagBrowser class >> windowSize [
 
 	^ 700 @ 475
+]
+
+{ #category : #testing }
+MiTagBrowser >> accept: anObject [
+
+	^ (anObject isCollection and: [ 
+		   anObject anySatisfy: [ :a | a usesFamixTrait: FamixTNamedEntity ] ]) 
+		  or: [ anObject isMooseModel ]
 ]
 
 { #category : #testing }

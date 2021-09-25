@@ -36,14 +36,8 @@ MiDraggableAbstractWidget class >> basicDefaultSpec [
 
 { #category : #commands }
 MiDraggableAbstractWidget class >> buildCommandsGroupWith: presenterInstance forRoot: rootCommandGroup [
-
-	rootCommandGroup register:
-		(MiAlceInspectCommand forSpecContext: presenterInstance).
-
-	rootCommandGroup register:
-		(MiColouringCommand forSpecContext: presenterInstance).
-
-
+	rootCommandGroup register: (MiPropagateCommand forSpecContext: presenterInstance).
+	rootCommandGroup register: (MiInspectCommand forSpecContext: presenterInstance)
 ]
 
 { #category : #commands }
@@ -65,9 +59,15 @@ MiDraggableAbstractWidget class >> isAbstract [
 ]
 
 { #category : #commands }
+MiDraggableAbstractWidget class >> open [
+
+	^ MiDraggableDefaultBrowser runMeWith: self
+]
+
+{ #category : #commands }
 MiDraggableAbstractWidget class >> runMe [
 
-	^ AlceBrowser runMeWith: self
+	^ MiDraggableDefaultBrowser runMeWith: self
 ]
 
 { #category : #accessing }
@@ -178,7 +178,7 @@ MiDraggableAbstractWidget >> initializePresenters [
 	dragMeOut := self newButton.
 	dragMeOut action: [ 
 		owner noteThatWidgetHasBeenClosed: self. 
-		AlceBrowser new
+		MiDraggableDefaultBrowser new
 			widget: self;
 			openWithSpec.
  ].

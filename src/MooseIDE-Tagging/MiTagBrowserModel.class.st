@@ -7,7 +7,7 @@ Class {
 		'tagBrowser',
 		'entities'
 	],
-	#category : #'MooseIDE-Tagging'
+	#category : #'MooseIDE-Tagging-Browser'
 }
 
 { #category : #accessing }
@@ -70,7 +70,7 @@ MiTagBrowserModel >> deleteCurrentTag [
 { #category : #accessing }
 MiTagBrowserModel >> entities [
 
-	^ entities
+	^ entities ifNil: [ {  } ]
 ]
 
 { #category : #accessing }
@@ -90,6 +90,11 @@ MiTagBrowserModel >> entitiesTaggedWithCurrentTag [
 MiTagBrowserModel >> mooseModel [
 
 	^ mooseModel ifNil: [ mooseModel := self entities anyOne mooseModel ]
+]
+
+{ #category : #accessing }
+MiTagBrowserModel >> mooseModel: anAlcixModel [ 
+	mooseModel := anAlcixModel
 ]
 
 { #category : #accessing }

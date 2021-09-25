@@ -3,7 +3,7 @@ Use me to inspect the selected entities
 "
 Class {
 	#name : #MiInspectCommand,
-	#superclass : #CmCommand,
+	#superclass : #MiCommand,
 	#category : #'MooseIDE-Core-Command'
 }
 
@@ -13,16 +13,15 @@ MiInspectCommand class >> defaultDescription [
 ]
 
 { #category : #default }
-MiInspectCommand class >> defaultName [
-	^ 'Inspect'
+MiInspectCommand class >> defaultIconName [
+
+	^ #smallInspectIt
 ]
 
 { #category : #default }
-MiInspectCommand class >> forSpecContext: anObject [
-	^ (super forSpecContext: anObject)
-		iconNamed: #mooseIcon;
-		beHiddenWhenCantBeRun;
-		yourself
+MiInspectCommand class >> defaultName [
+
+	^ 'Inspect'
 ]
 
 { #category : #testing }

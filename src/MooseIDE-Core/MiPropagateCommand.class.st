@@ -3,7 +3,7 @@ Use me to propagate entities through the application
 "
 Class {
 	#name : #MiPropagateCommand,
-	#superclass : #CmCommand,
+	#superclass : #MiCommand,
 	#instVars : [
 		'shouldFreezeBrowser'
 	],
@@ -16,16 +16,14 @@ MiPropagateCommand class >> defaultDescription [
 ]
 
 { #category : #default }
-MiPropagateCommand class >> defaultName [
-	^ 'Propagate'
+MiPropagateCommand class >> defaultIconName [
+
+	^ #mooseOutgoing
 ]
 
 { #category : #default }
-MiPropagateCommand class >> forSpecContext: anObject [
-	^ (super forSpecContext: anObject)
-		iconNamed: #moosePropagate;
-		beHiddenWhenCantBeRun;
-		yourself
+MiPropagateCommand class >> defaultName [
+	^ 'Propagate'
 ]
 
 { #category : #testing }

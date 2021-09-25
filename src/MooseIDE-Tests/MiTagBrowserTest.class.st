@@ -31,7 +31,7 @@ MiTagBrowserTest >> setUp [
 	super setUp.
 
 	helper := FQTestsHelper current.
-	browser selectEntity: helper classesAndMethods.
+	browser followEntity: helper classesAndMethods.
 	detailsPage := browser tagDetailsPage retrievePresenter
 ]
 

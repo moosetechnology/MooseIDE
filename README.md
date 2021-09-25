@@ -19,8 +19,10 @@ New Tools for Moose
 ### From a Pharo Image
 
 ```smalltalk
-Metacello new
-  baseline: 'MooseIDE';
-  repository: 'github://moosetechnology/MooseIDE:development/src';
-  load.
+[ Metacello new
+    baseline: 'Moose';
+    repository: 'github://moosetechnology/MooseIDE:development/src';
+    load ]
+    on: MCMergeOrLoadWarning
+    do: [ :warning | warning load ]
 ```

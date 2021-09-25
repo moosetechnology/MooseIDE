@@ -1,8 +1,14 @@
 Class {
 	#name : #MiLoggerRemoveLogCommand,
-	#superclass : #CmCommand,
+	#superclass : #MiCommand,
 	#category : #'MooseIDE-Core-Command'
 }
+
+{ #category : #initialization }
+MiLoggerRemoveLogCommand class >> defaultIconName [
+
+	^ #smallDelete
+]
 
 { #category : #default }
 MiLoggerRemoveLogCommand class >> defaultName [

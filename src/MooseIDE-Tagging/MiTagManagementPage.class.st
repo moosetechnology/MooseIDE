@@ -11,7 +11,7 @@ Class {
 		'categoryManagement',
 		'tagBrowser'
 	],
-	#category : #'MooseIDE-Tagging'
+	#category : #'MooseIDE-Tagging-Browser'
 }
 
 { #category : #specs }
