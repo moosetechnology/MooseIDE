@@ -63,7 +63,7 @@ MiResultSizeQueryPresenter >> initializeSubqueriesDropList [
 
 	subqueriesDropList := self newDropList.
 	subqueriesDropList
-		items: self innerQueries;
+		items: owner allQueryPresentersExceptSelf;
 		display: [ :each | each name ];
 		whenSelectedItemChangedDo: [ :subQuery | 
 			self computeQueryAction: subQuery ];
@@ -80,21 +80,13 @@ MiResultSizeQueryPresenter >> initializeValueInput [
 			self computeQueryAction: newNumber ]
 ]
 
-{ #category : #initialization }
-MiResultSizeQueryPresenter >> innerQueries [
-
-	^ owner allQueryPresentersExceptSelf select: [ :aQueryPresenter | 
-		  aQueryPresenter query isScopeQuery or: [ 
-			  aQueryPresenter query isNavigationQuery ] ]
-]
-
 { #category : #'api - actions' }
 MiResultSizeQueryPresenter >> queryPresentersListChanged [
 
 	"Since the list of available queries of the MiQueryBuilder changed, we need to update the items on the drop list. We do not want to have deleted queries on the list or we want to add the new added query presenter."
 
 	| newAvailableQueries previouslySelectedQuery |
-	newAvailableQueries := self innerQueries.
+	newAvailableQueries := owner allQueryPresentersExceptSelf.
 	previouslySelectedQuery := subqueriesDropList selectedItem.
 	(newAvailableQueries includes: previouslySelectedQuery)
 		ifTrue: [ 
