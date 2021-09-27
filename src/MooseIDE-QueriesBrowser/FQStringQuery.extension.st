@@ -7,6 +7,12 @@ FQStringQuery class >> canBeConfigured [
 ]
 
 { #category : #'*MooseIDE-QueriesBrowser' }
+FQStringQuery class >> isAvailableForQueriesSize: numberOfQueriesInPresenter [
+
+	^ true
+]
+
+{ #category : #'*MooseIDE-QueriesBrowser' }
 FQStringQuery class >> miPresenterClass [
 
 	^ MiStringQueryPresenter
