@@ -45,15 +45,29 @@ Class {
 		'buttonHelp',
 		'busButton',
 		'buses',
-		'receivingMode'
+		'receivingMode',
+		'toolbarCommandGroup'
 	],
 	#category : #'MooseIDE-Core-Browser'
 }
 
 { #category : #specs }
-MiAbstractBrowser class >> buildCommandsGroupWith: presenterInstance forRoot: rootCommandGroup [
-	rootCommandGroup register: (MiPropagateCommand forSpecContext: presenterInstance).
-	rootCommandGroup register: (MiInspectCommand forSpecContext: presenterInstance)
+MiAbstractBrowser class >> buildCommandsGroupWith: presenter forRoot: rootCommandGroup [
+
+	rootCommandGroup
+		register:
+			(MiReceivingModeCommand asCommandGroupForSpecContext: presenter);
+		register: (MiEditBusCommand forSpecContext: presenter);
+		register:
+			(MiHelpCommand forSpecContext: presenter) beDisplayedOnRightSide;
+		register: (CmCommandGroup forSpec
+				 name: 'Actions';
+				 register:
+					 (MiPropagateCommand forSpecContext: presenter)
+						 beDisplayedOnRightSide;
+				 register:
+					 (MiInspectCommand forSpecContext: presenter)
+						 beDisplayedOnRightSide)
 ]
 
 { #category : #specs }
@@ -206,29 +220,17 @@ MiAbstractBrowser >> highlightEntity: anEntity [
 MiAbstractBrowser >> initialize [
 
 	super initialize.
-	self setDefaultState.
+	self setDefaultReceivingMode.
 	buses := Set new
-]
-
-{ #category : #initialization }
-MiAbstractBrowser >> initializeReceivingModeButtons [
-
-	buttonFreeze := MiFreezeMode newRadioButtonIn: self.
-	buttonFollow := MiFollowMode newRadioButtonIn: self.
-	buttonHighlight := MiHighlightMode newRadioButtonIn: self.
-
-	buttonFollow associatedRadioButtons: { 
-			buttonFreeze.
-			buttonFollow.
-			buttonHighlight }
 ]
 
 { #category : #initialization }
 MiAbstractBrowser >> initializeWindow: aMiWindowPresenter [
 
 	super initializeWindow: aMiWindowPresenter.
-
-	aMiWindowPresenter buildToolbar.
+	aMiWindowPresenter toolbar:
+		(self newToolbar fillWith: self toolbarCommandGroup).
+	aMiWindowPresenter whenOpenedDo: [ self updateToolbar ].
 	aMiWindowPresenter whenClosedDo: [ 
 		self buses do: [ :bus | bus unregisterBrowser: self ] ]
 ]
@@ -284,9 +286,9 @@ MiAbstractBrowser >> selectEntity: anEntity [
 ]
 
 { #category : #initialization }
-MiAbstractBrowser >> setDefaultState [
+MiAbstractBrowser >> setDefaultReceivingMode [
 
-	"buttonFollow state: true"self receivingMode: MiFollowMode 
+	self receivingMode: MiFollowMode
 ]
 
 { #category : #'accessing model' }
@@ -302,6 +304,12 @@ MiAbstractBrowser >> showHelp [
 		relativeTo: buttonHelp;
 		presenter: (MiHelpPopup owner: help on: self);
 		popup
+]
+
+{ #category : #initialization }
+MiAbstractBrowser >> toolbarCommandGroup [
+
+	^ toolbarCommandGroup ifNil: [ toolbarCommandGroup := self rootCommandsGroup ]
 ]
 
 { #category : #buses }
@@ -330,4 +338,15 @@ MiAbstractBrowser >> updateBusButton [
 			 s << 'Click to edit' ]).
 
 	self update
+]
+
+{ #category : #actions }
+MiAbstractBrowser >> updateToolbar [
+
+	self toolbarCommandGroup allCommands do: [ :cmd | 
+		cmd updateEnableStatus ].
+	(self toolbarCommandGroup commandOrGroupNamed: 'Receiving Mode')
+		commands do: [ :cmd | 
+		cmd canBeExecuted ifFalse: [ 
+			cmd presenter icon: (cmd icon lighter: 0.4) ] ]
 ]

@@ -19,13 +19,15 @@ Class {
 }
 
 { #category : #'world menu' }
-MiModelRootBrowser class >> buildCommandsGroupWith: presenterInstance forRoot: rootCommandGroup [
-	super
-		buildCommandsGroupWith: presenterInstance
-		forRoot: rootCommandGroup.
-	rootCommandGroup
-		register: (MiModelExportCommand asCommandGroupWith: presenterInstance);
-		register: (MiModelUtilityCommand asCommandGroupWith: presenterInstance)
+MiModelRootBrowser class >> buildModelCommandsGroupWith: presenterInstance [
+
+	^ CmCommandGroup forSpec beRoot
+		  register: (MiInspectCommand forSpecContext: presenterInstance);
+		  register: (MiPropagateCommand forSpecContext: presenterInstance);
+		  register:
+			  (MiModelExportCommand asCommandGroupWith: presenterInstance);
+		  register:
+			  (MiModelUtilityCommand asCommandGroupWith: presenterInstance)
 ]
 
 { #category : #specs }
@@ -101,7 +103,8 @@ MiModelRootBrowser >> initializeList [
 		                      display: [ :mooseModel | mooseModel name ];
 		                      yourself.
 	modelFilteringList listPresenter
-		contextMenu: [ self rootCommandsGroup asMenuPresenter ];
+		contextMenu: [ 
+			(self class buildModelCommandsGroupWith: self) asMenuPresenter ];
 		whenSelectionChangedDo: [ :selected | 
 			model selected: selected selectedItem ]
 ]

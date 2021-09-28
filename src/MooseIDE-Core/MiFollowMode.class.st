@@ -14,24 +14,3 @@ MiFollowMode class >> browser: aBrowser actOnEntity: anEntity [
 	(aBrowser canReceiveEntity: anEntity) ifFalse: [ ^ self ].
 	^ aBrowser followEntity: anEntity
 ]
-
-{ #category : #'radio button' }
-MiFollowMode class >> buttonEnabledInBrowser: aBrowser [
-
-	^ aBrowser canFollow
-]
-
-{ #category : #actions }
-MiFollowMode class >> buttonLabel [
-
-	^ 'Follow'
-]
-
-{ #category : #'radio button' }
-MiFollowMode class >> iconInBrowser: aBrowser [
-
-	^ aBrowser canFollow
-		  ifTrue: [ MiApplication current iconNamed: #radioButtonSelected ]
-		  ifFalse: [ 
-		  MiApplication current iconNamed: #radioButtonUnSelected ]
-]

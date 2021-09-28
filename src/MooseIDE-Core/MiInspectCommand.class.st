@@ -26,6 +26,7 @@ MiInspectCommand class >> defaultName [
 
 { #category : #testing }
 MiInspectCommand >> canBeExecuted [
+
 	^ self context miSelectedItem isMooseObject
 ]
 
