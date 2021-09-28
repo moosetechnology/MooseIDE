@@ -13,9 +13,7 @@ MiFollowCommand class >> defaultName [
 { #category : #accessing }
 MiFollowCommand >> iconName [
 
-	^ self context canFollow
-		  ifTrue: [ #radioButtonSelected ]
-		  ifFalse: [ #radioButtonUnselected ]
+	^ self iconNameForState: self context canFollow
 ]
 
 { #category : #accessing }

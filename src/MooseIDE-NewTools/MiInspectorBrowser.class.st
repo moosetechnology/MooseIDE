@@ -80,7 +80,7 @@ MiInspectorBrowser class >> windowSize [
 { #category : #actions }
 MiInspectorBrowser >> beFrozen [
 
-	buttonFreeze state: true
+	self receivingMode: MiFreezeMode
 ]
 
 { #category : #testing }

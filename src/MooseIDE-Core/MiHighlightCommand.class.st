@@ -18,7 +18,7 @@ MiHighlightCommand >> canBeExecuted [
 { #category : #accessing }
 MiHighlightCommand >> iconName [
 
-	^ #radioButtonUnselected
+	^ self iconNameForState: false
 ]
 
 { #category : #accessing }

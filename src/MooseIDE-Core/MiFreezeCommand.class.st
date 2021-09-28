@@ -13,9 +13,7 @@ MiFreezeCommand class >> defaultName [
 { #category : #accessing }
 MiFreezeCommand >> iconName [
 
-	^ self context canFollow
-		  ifFalse: [ #radioButtonSelected ]
-		  ifTrue: [ #radioButtonUnselected ]
+	^ self iconNameForState: self context canFollow not
 ]
 
 { #category : #accessing }

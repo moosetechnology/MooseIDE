@@ -28,13 +28,22 @@ MiReceivingModeCommand >> asSpecCommand [
 { #category : #execution }
 MiReceivingModeCommand >> execute [
 
-	self context receivingMode: self receivingMode
+	self context receivingMode: self receivingMode.
+	self context updateReceivingModeButtons
 ]
 
 { #category : #accessing }
 MiReceivingModeCommand >> iconName [
 
 	^ self subclassResponsibility
+]
+
+{ #category : #'as yet unclassified' }
+MiReceivingModeCommand >> iconNameForState: aBoolean [
+
+	^ aBoolean
+		  ifTrue: [ #radioButtonSelected ]
+		  ifFalse: [ #radioButtonUnselected ]
 ]
 
 { #category : #accessing }

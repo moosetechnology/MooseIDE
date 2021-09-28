@@ -106,7 +106,8 @@ MiModelRootBrowser >> initializeList [
 		contextMenu: [ 
 			(self class buildModelCommandsGroupWith: self) asMenuPresenter ];
 		whenSelectionChangedDo: [ :selected | 
-			model selected: selected selectedItem ]
+			model selected: selected selectedItem.
+			self updateToolbar ]
 ]
 
 { #category : #initialization }
@@ -155,7 +156,8 @@ MiModelRootBrowser >> selectedObject [
 MiModelRootBrowser >> updateForNewModel: aModel [
 
 	self class updateAll.
-	modelFilteringList selectItem: aModel
+	modelFilteringList selectItem: aModel.
+	self updateToolbar
 ]
 
 { #category : #updating }

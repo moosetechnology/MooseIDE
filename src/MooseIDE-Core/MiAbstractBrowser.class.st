@@ -37,12 +37,8 @@ Class {
 	#superclass : #MiPresenter,
 	#instVars : [
 		'model',
-		'buttonFreeze',
-		'buttonFollow',
-		'buttonHighlight',
 		'buttonPropagate',
 		'buttonInspect',
-		'buttonHelp',
 		'busButton',
 		'buses',
 		'receivingMode',
@@ -301,7 +297,8 @@ MiAbstractBrowser >> showHelp [
 
 	| help |
 	(help := self newPopover)
-		relativeTo: buttonHelp;
+		relativeTo: self window toolbar;
+		bePositionRight;
 		presenter: (MiHelpPopup owner: help on: self);
 		popup
 ]
@@ -338,6 +335,13 @@ MiAbstractBrowser >> updateBusButton [
 			 s << 'Click to edit' ]).
 
 	self update
+]
+
+{ #category : #actions }
+MiAbstractBrowser >> updateReceivingModeButtons [
+
+	(self toolbarCommandGroup commandOrGroupNamed: 'Receiving Mode')
+		commands do: [ :cmd | cmd updateIconForMode: receivingMode ]
 ]
 
 { #category : #actions }
