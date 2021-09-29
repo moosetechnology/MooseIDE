@@ -232,5 +232,6 @@ MiQueryListItemPresenter >> updateQueryConfiguratorPresenterFor: queryClass [
 	"We update the subqueries droplist of all the presenters in the queries browser.
 	This is to keep the list of the queries updated."
 	parentQueryListPresenter updateSubqueriesListPresenter.
+	self flag: 'Update is being used'.
 	self update
 ]

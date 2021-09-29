@@ -84,5 +84,6 @@ MiScopeQueryPresenter >> setScopesDropList [
 MiScopeQueryPresenter >> updateAccordingToDirection [
 
 	self setScopesDropList.
+	self flag: 'Update is being used'.
 	self update
 ]

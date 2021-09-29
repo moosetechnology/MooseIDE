@@ -44,15 +44,16 @@ MiNavigationQueryPresenter >> computeQuery: association [
 MiNavigationQueryPresenter >> initializeAssociationsButton [
 
 	associationsButton := self query availableAssociations
-		                      ifEmpty: [ self noParameterMessage: 'type' ]
+		                      ifEmpty: [ self noParameterMessage: 'association' ]
 		                      ifNotEmpty: [ 
 			                      self newButton
 				                      label: 'Select Associations...';
 				                      action: [ 
+					                      associationsList items: self query availableAssociations.
 					                      self newPopover
 						                      relativeTo: associationsButton;
-						                      bePositionRight;
 						                      presenter: associationsList;
+						                      bePositionRight;
 						                      popup ];
 				                      yourself ]
 ]
@@ -94,6 +95,7 @@ MiNavigationQueryPresenter >> updateDirection: selectedDirection [
 
 	self query resetAndChangeDirection: selectedDirection.
 	self initializeAssociationsButton.
+	self flag: 'Update is being used'.
 	self update.
 	self notifyQueryChanged
 ]
