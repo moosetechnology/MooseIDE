@@ -95,13 +95,14 @@ MiQueriesListPresenter >> enableProgressNotification [
 ]
 
 { #category : #'api - actions' }
-MiQueriesListPresenter >> followAction [
+MiQueriesListPresenter >> followNewEntity [
 
-	"When a new entity arrives on the bus we reset the presenter to have only one query again. Like if it were openen again."
-
-	queryCounter := 1.
-	queryItemsPresenters := OrderedCollection empty.
-	self updateComponentList
+	queryItemsPresenters
+		collect: #queryConfigurationPresenter
+		thenDo: [ :each | 
+			each query resetResult.
+			each query parent isRootQuery ifTrue: [ 
+				each query parent: parentQueryBrowser rootQuery ] ]
 ]
 
 { #category : #initialization }

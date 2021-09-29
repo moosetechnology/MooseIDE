@@ -8,13 +8,6 @@ MiQueryListItemPresenter >> parentQuery: aQuery [
 ]
 
 { #category : #'*MooseIDE-QueriesBrowser-Tests' }
-MiQueryListItemPresenter >> queryConfigurationPresenter [
-
-	self flag: 'Do not use this accessor. This is only for the tests'.
-	^ queryConfiguratorPresenter
-]
-
-{ #category : #'*MooseIDE-QueriesBrowser-Tests' }
 MiQueryListItemPresenter >> queryTypesDropList [
 
 	self flag: 'Do not use this accessor. This is only for the tests'.

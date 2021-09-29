@@ -23,8 +23,7 @@ MiNAryQueryPresenter >> addSubqueryToLayout [
 
 	subqueryDropLists add: self newSubqueryDropList.
 	removeSubqueryFromLayoutButton enable.
-	self buildLayout.
-	self update
+	self buildLayout
 ]
 
 { #category : #layout }
@@ -120,7 +119,7 @@ MiNAryQueryPresenter >> queryPresentersListChanged [
 MiNAryQueryPresenter >> removeSubqueryFromLayout [
 
 	subqueryDropLists removeLast.
-	subqueryDropLists size < 3 ifTrue: [ removeSubqueryFromLayoutButton disable ].
-	self buildLayout.
-	self update
+	subqueryDropLists size < 3 ifTrue: [ 
+		removeSubqueryFromLayoutButton disable ].
+	self buildLayout
 ]

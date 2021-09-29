@@ -191,6 +191,12 @@ MiQueryListItemPresenter >> queryChangedUpdate [
 	parentQueryListPresenter queryChangedUpdate: self query
 ]
 
+{ #category : #accessing }
+MiQueryListItemPresenter >> queryConfigurationPresenter [
+
+	^ queryConfiguratorPresenter
+]
+
 { #category : #'api - actions' }
 MiQueryListItemPresenter >> queryPresentersListChanged [
 
