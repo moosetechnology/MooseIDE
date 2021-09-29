@@ -82,7 +82,6 @@ MiQueriesBrowser >> followEntity: anEntity [
 	self window title: (self class titleForModelName: mooseModelName).
 
 	"Create the new root query"
-	"rootQuery children removeAll."
 	rootQuery
 		resetResult;
 		result: mooseGroup;
@@ -90,7 +89,7 @@ MiQueriesBrowser >> followEntity: anEntity [
 
 	"Update the all the sub presenters with this new query"
 	self selectQuery: rootQuery.
-	queriesListPresenter followAction
+	queriesListPresenter followNewEntity
 ]
 
 { #category : #initialization }
