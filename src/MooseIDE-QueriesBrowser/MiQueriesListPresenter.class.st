@@ -63,16 +63,13 @@ MiQueriesListPresenter >> disableProgressNotification [
 
 	progressNotificationPresenter := SpNullPresenter new.
 	spinnerMorph delete.
-	self update
+	self initializeLayout
 ]
 
 { #category : #'api - actions' }
 MiQueriesListPresenter >> enableProgressNotification [
 
 	| queriesBrowserMorph font morph |
-	"progressNotificationPresenter := SpLabelPresenter new
-		                                 label: 'Computing...';
-		                                 yourself."
 	font := LogicalFont
 		        familyName: StandardFonts defaultFont familyName
 		        pointSize: 12.
@@ -85,13 +82,12 @@ MiQueriesListPresenter >> enableProgressNotification [
 			                                 (PanelMorph new addMorphFront:
 					                                  morph);
 		                                 yourself.
-	"Only put the spinner if the queries browser is opened. Actually, there are no uses cases when this method is called without the queries browser being opened. This is only for avoid the tests faling. Because the tests use this method without open the queries browser."
-	parentQueryBrowser window ifNotNil: [ "Put the spinner in the middle of the queries browser"
+	parentQueryBrowser window ifNotNil: [ 
 		queriesBrowserMorph := parentQueryBrowser window window.
 		spinnerMorph position:
 			queriesBrowserMorph extent / 2 + queriesBrowserMorph position.
 		spinnerMorph openInWorld ].
-	self update
+	self initializeLayout
 ]
 
 { #category : #'api - actions' }
@@ -137,22 +133,23 @@ MiQueriesListPresenter >> initializeLayout [
 
 	self layout: (SpBoxLayout newTopToBottom
 			 add: (SpBoxLayout newLeftToRight
-					  add: #addRootQueryButton width: self class iconWidth;
+					  add: addRootQueryButton width: self class iconWidth;
 					  yourself)
 			 expand: false;
-			 add: #componentListPresenter;
-			 add: #progressNotificationPresenter expand: false;
+			 add: componentListPresenter;
+			 add: progressNotificationPresenter expand: false;
 			 yourself)
 ]
 
 { #category : #initialization }
 MiQueriesListPresenter >> initializePresenters [
 
-	self initializeLayout.
 	queryItemsPresenters := OrderedCollection empty.
 	self initializeAddRootQueryButton.
 	self initializeComponentListPresenter.
-	self initializeProgressPresenter
+	self initializeProgressPresenter.
+	self initializeLayout
+	
 ]
 
 { #category : #initialization }

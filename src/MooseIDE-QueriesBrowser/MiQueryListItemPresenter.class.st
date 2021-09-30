@@ -87,10 +87,10 @@ MiQueryListItemPresenter >> initializeLayout [
 	self indentationSpacesPresenters do: [ :each | 
 		tempLayout add: each expand: false ].
 	tempLayout
-		add: #queryNumberLabelPresenter expand: false;
-		add: #queryTypesDropListPresenter width: 130;
-		add: #queryConfiguratorPresenter;
-		addLast: #optionsMenuButton expand: false.
+		add: queryNumberLabelPresenter expand: false;
+		add: queryTypesDropListPresenter width: 130;
+		add: queryConfiguratorPresenter;
+		addLast: optionsMenuButton expand: false.
 	self layout: tempLayout
 ]
 
@@ -121,7 +121,6 @@ MiQueryListItemPresenter >> initializeNumberLabel [
 { #category : #initialization }
 MiQueryListItemPresenter >> initializePresenters [
 
-	self initializeLayout.
 	self initializeMenu.
 	self initializeNumberLabel.
 
@@ -129,7 +128,8 @@ MiQueryListItemPresenter >> initializePresenters [
 	"After setting whenSelectedItemChangedDo:, select the fastest query while we do not compute the
 	results in a fork.
 	This is for instantiate queryConfigurationPresenter variable"
-	queryTypesDropListPresenter selectItem: FQBooleanQuery
+	queryTypesDropListPresenter selectItem: FQBooleanQuery.
+	self initializeLayout
 ]
 
 { #category : #initialization }
@@ -232,5 +232,5 @@ MiQueryListItemPresenter >> updateQueryConfiguratorPresenterFor: queryClass [
 	"We update the subqueries droplist of all the presenters in the queries browser.
 	This is to keep the list of the queries updated."
 	parentQueryListPresenter updateSubqueriesListPresenter.
-	self update
+	self initializeLayout
 ]

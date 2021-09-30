@@ -23,22 +23,7 @@ MiNAryQueryPresenter >> addSubqueryToLayout [
 
 	subqueryDropLists add: self newSubqueryDropList.
 	removeSubqueryFromLayoutButton enable.
-	self buildLayout
-]
-
-{ #category : #layout }
-MiNAryQueryPresenter >> buildLayout [
-
-	| tempLayout |
-	tempLayout := SpBoxLayout newLeftToRight
-		              spacing: 5;
-		              yourself.
-	subqueryDropLists do: [ :subqueryPresenter | 
-		tempLayout add: subqueryPresenter width: self class dropListWidth ].
-	tempLayout
-		add: #addSubqueryToLayoutButton width: self class iconWidth;
-		add: #removeSubqueryFromLayoutButton width: self class iconWidth.
-	self layout: tempLayout
+	self initializeLayout
 ]
 
 { #category : #actions }
@@ -68,7 +53,8 @@ MiNAryQueryPresenter >> initializePresenters [
 	self initializeButtons.
 	subqueryDropLists := OrderedCollection withAll: { 
 			                     self newSubqueryDropList.
-			                     self newSubqueryDropList }
+			                     self newSubqueryDropList }.
+	self initializeLayout
 ]
 
 { #category : #actions }
@@ -85,6 +71,21 @@ MiNAryQueryPresenter >> nAryOperation: newSelectedItem [
 	query
 		subqueries: subqueries;
 		resetResult
+]
+
+{ #category : #layout }
+MiNAryQueryPresenter >> newLayout [
+
+	| tempLayout |
+	tempLayout := SpBoxLayout newLeftToRight
+		              spacing: 5;
+		              yourself.
+	subqueryDropLists do: [ :subqueryPresenter | 
+		tempLayout add: subqueryPresenter width: self class dropListWidth ].
+	tempLayout
+		add: #addSubqueryToLayoutButton width: self class iconWidth;
+		add: #removeSubqueryFromLayoutButton width: self class iconWidth.
+	^ tempLayout
 ]
 
 { #category : #actions }
@@ -121,5 +122,5 @@ MiNAryQueryPresenter >> removeSubqueryFromLayout [
 	subqueryDropLists removeLast.
 	subqueryDropLists size < 3 ifTrue: [ 
 		removeSubqueryFromLayoutButton disable ].
-	self buildLayout
+	self initializeLayout
 ]

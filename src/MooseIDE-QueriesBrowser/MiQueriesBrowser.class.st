@@ -98,8 +98,8 @@ MiQueriesBrowser >> initializeLayout [
 	| tempLayout |
 	tempLayout := self class defaultSpec.
 	tempLayout add: (SpPanedLayout new
-			 add: #queriesListPresenter;
-			 add: #queryNotebookPresenter;
+			 add: queriesListPresenter;
+			 add: queryNotebookPresenter;
 			 yourself).
 	self layout: tempLayout
 ]

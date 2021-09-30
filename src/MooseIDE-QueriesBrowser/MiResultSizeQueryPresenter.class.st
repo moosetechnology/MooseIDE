@@ -18,16 +18,6 @@ MiResultSizeQueryPresenter class >> dropListWidth [
 	^ 57
 ]
 
-{ #category : #layout }
-MiResultSizeQueryPresenter >> buildLayout [
-
-	self layout: (SpBoxLayout newLeftToRight
-			 add: #subqueriesDropList width: self class dropListWidth;
-			 add: #comparatorDropList width: 63;
-			 add: #valueInputField width: 70;
-			 yourself)
-]
-
 { #category : #actions }
 MiResultSizeQueryPresenter >> computeQuery: anObject [
 
@@ -55,7 +45,8 @@ MiResultSizeQueryPresenter >> initializePresenters [
 
 	self initializeSubqueriesDropList.
 	self initializeComparatorsDropList.
-	self initializeValueInput
+	self initializeValueInput.
+	self initializeLayout
 ]
 
 { #category : #initialization }
@@ -78,6 +69,16 @@ MiResultSizeQueryPresenter >> initializeValueInput [
 		placeholder: 'Value';
 		whenNumberChangedDo: [ :newNumber | 
 			self computeQueryAction: newNumber ]
+]
+
+{ #category : #layout }
+MiResultSizeQueryPresenter >> newLayout [
+
+	^ SpBoxLayout newLeftToRight
+		  add: #subqueriesDropList width: self class dropListWidth;
+		  add: #comparatorDropList width: 63;
+		  add: #valueInputField width: 70;
+		  yourself
 ]
 
 { #category : #'api - actions' }

@@ -10,18 +10,6 @@ Class {
 	#category : #'MooseIDE-QueriesBrowser-Configuration presenters'
 }
 
-{ #category : #specs }
-MiQueryConfiguratorPresenter class >> defaultSpec [
-
-	^ SpBoxLayout newHorizontal
-]
-
-{ #category : #layout }
-MiQueryConfiguratorPresenter >> buildLayout [
-
-	self layout: self class defaultSpec
-]
-
 { #category : #actions }
 MiQueryConfiguratorPresenter >> computeQuery: anObject [
 
@@ -37,11 +25,16 @@ MiQueryConfiguratorPresenter >> computeQueryAction: anObject [
 	owner disableProgressNotification
 ]
 
-{ #category : #initialization }
-MiQueryConfiguratorPresenter >> initialize [
+{ #category : #layout }
+MiQueryConfiguratorPresenter >> initializeLayout [
 
-	super initialize.
-	self buildLayout
+	self layout: self newLayout
+]
+
+{ #category : #layout }
+MiQueryConfiguratorPresenter >> newLayout [
+
+	self subclassResponsibility
 ]
 
 { #category : #update }

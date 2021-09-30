@@ -7,8 +7,21 @@ Class {
 	#category : #'MooseIDE-QueriesBrowser-Configuration presenters'
 }
 
-{ #category : #specs }
-MiStringQueryPresenter class >> layout [
+{ #category : #actions }
+MiStringQueryPresenter >> computeQuery: pattern [
+
+	self query valueToCompare: pattern
+]
+
+{ #category : #initialization }
+MiStringQueryPresenter >> initializePresenters [
+
+	super initializePresenters.
+	self initializeLayout
+]
+
+{ #category : #layout }
+MiStringQueryPresenter >> newLayout [
 
 	| padding |
 	padding := 5.
@@ -26,12 +39,6 @@ MiStringQueryPresenter class >> layout [
 		  fill: true
 		  padding: padding;
 		  yourself
-]
-
-{ #category : #actions }
-MiStringQueryPresenter >> computeQuery: pattern [
-
-	self query valueToCompare: pattern
 ]
 
 { #category : #initialization }
