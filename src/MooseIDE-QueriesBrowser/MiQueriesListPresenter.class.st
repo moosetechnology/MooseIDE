@@ -63,8 +63,7 @@ MiQueriesListPresenter >> disableProgressNotification [
 
 	progressNotificationPresenter := SpNullPresenter new.
 	spinnerMorph delete.
-	self flag: 'Update is being used'.
-	self update
+	self initializeLayout
 ]
 
 { #category : #'api - actions' }
@@ -88,8 +87,7 @@ MiQueriesListPresenter >> enableProgressNotification [
 		spinnerMorph position:
 			queriesBrowserMorph extent / 2 + queriesBrowserMorph position.
 		spinnerMorph openInWorld ].
-	self flag: 'Update is being used'.
-	self update
+	self initializeLayout
 ]
 
 { #category : #'api - actions' }
@@ -135,22 +133,23 @@ MiQueriesListPresenter >> initializeLayout [
 
 	self layout: (SpBoxLayout newTopToBottom
 			 add: (SpBoxLayout newLeftToRight
-					  add: #addRootQueryButton width: self class iconWidth;
+					  add: addRootQueryButton width: self class iconWidth;
 					  yourself)
 			 expand: false;
-			 add: #componentListPresenter;
-			 add: #progressNotificationPresenter expand: false;
+			 add: componentListPresenter;
+			 add: progressNotificationPresenter expand: false;
 			 yourself)
 ]
 
 { #category : #initialization }
 MiQueriesListPresenter >> initializePresenters [
 
-	self initializeLayout.
 	queryItemsPresenters := OrderedCollection empty.
 	self initializeAddRootQueryButton.
 	self initializeComponentListPresenter.
-	self initializeProgressPresenter
+	self initializeProgressPresenter.
+	self initializeLayout
+	
 ]
 
 { #category : #initialization }
