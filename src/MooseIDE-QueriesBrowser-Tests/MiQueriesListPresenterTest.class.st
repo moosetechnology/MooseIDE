@@ -47,33 +47,42 @@ MiQueriesListPresenterTest >> testAddNewChildQueryAction [
 
 	presenter addNewFirstLevelQuery.
 	presenter addNewChildQueryAction:
-		presenter creationPresenters first query.
-	self assert: presenter creationPresenters size equals: 2.
+		presenter queryItemsPresenters first query.
+	self assert: presenter queryItemsPresenters size equals: 2.
 	self deny:
-		presenter creationPresenters second query parent isRootQuery.
+		presenter queryItemsPresenters second query parent isRootQuery.
+
 	presenter addNewChildQueryAction:
-		presenter creationPresenters second query.
+		presenter queryItemsPresenters second query.
 	presenter addNewChildQueryAction:
-		presenter creationPresenters third query.
+		presenter queryItemsPresenters third query.
 	self
-		assert: presenter creationPresenters last query parentSequence size
-		equals: 5.
-	self assert: presenter creationPresenters last name equals: 'Q4'
+		assert:
+		presenter queryItemsPresenters last query parentSequence size
+		equals: 4.
+	self assert: presenter queryItemsPresenters last name equals: 'Q4'.
+
+	"Check if the child query is added in the right place"
+	presenter addNewChildQueryAction:
+		presenter queryItemsPresenters first query.
+	self assert: presenter queryItemsPresenters second name equals: 'Q5'
 ]
 
 { #category : #tests }
 MiQueriesListPresenterTest >> testAddNewFirstLevelQuery [
 
 	presenter addNewFirstLevelQuery.
-	self assert: presenter creationPresenters size equals: 1.
+	self assert: presenter queryItemsPresenters size equals: 1.
+
 	presenter
 		addNewFirstLevelQuery;
 		addNewFirstLevelQuery;
 		addNewFirstLevelQuery;
 		addNewFirstLevelQuery.
-	self assert: presenter creationPresenters size equals: 5.
-	self assert: presenter creationPresenters last name equals: 'Q5'.
-	presenter creationPresenters do: [ :aPresenter | 
+	self assert: presenter queryItemsPresenters size equals: 5.
+	self assert: presenter queryItemsPresenters last name equals: 'Q5'.
+
+	presenter queryItemsPresenters do: [ :aPresenter | 
 		self assert: aPresenter query parent isRootQuery ]
 ]
 
@@ -82,19 +91,19 @@ MiQueriesListPresenterTest >> testRemoveQueryAction [
 
 	presenter addNewFirstLevelQuery.
 	presenter addNewChildQueryAction:
-		presenter creationPresenters first query.
+		presenter queryItemsPresenters first query.
 
-	presenter removeQueryAction: presenter creationPresenters last.
-	self assert: presenter creationPresenters size equals: 1.
+	presenter removeQueryAction: presenter queryItemsPresenters last.
+	self assert: presenter queryItemsPresenters size equals: 1.
 
 	presenter addNewChildQueryAction:
-		presenter creationPresenters first query.
+		presenter queryItemsPresenters first query.
 	presenter addNewChildQueryAction:
-		presenter creationPresenters second query.
+		presenter queryItemsPresenters second query.
 	presenter addNewChildQueryAction:
-		presenter creationPresenters third query.
-	presenter removeQueryAction: presenter creationPresenters first.
-	self assert: presenter creationPresenters size equals: 0
+		presenter queryItemsPresenters third query.
+	presenter removeQueryAction: presenter queryItemsPresenters first.
+	self assert: presenter queryItemsPresenters size equals: 0
 ]
 
 { #category : #tests }
@@ -102,14 +111,14 @@ MiQueriesListPresenterTest >> testUpdateComponentList [
 
 	self
 		assertCollection: presenter componentList presenters
-		hasSameElements: presenter creationPresenters.
+		hasSameElements: presenter queryItemsPresenters.
 	presenter addNewFirstLevelQuery.
 	self
 		assertCollection: presenter componentList presenters
-		hasSameElements: presenter creationPresenters.
+		hasSameElements: presenter queryItemsPresenters.
 	presenter addNewChildQueryAction:
-		presenter creationPresenters first query.
+		presenter queryItemsPresenters first query.
 	self
 		assertCollection: presenter componentList presenters
-		hasSameElements: presenter creationPresenters
+		hasSameElements: presenter queryItemsPresenters
 ]
