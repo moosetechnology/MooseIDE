@@ -43,11 +43,22 @@ MiQueriesBrowserTest >> testFollowEntity [
 
 	| previousResult newResult |
 	browser queriesListPresenter addNewFirstLevelQuery.
+	"Modify the query to not have an empty result"
+	browser queriesListPresenter queryItemsPresenters first 
+		updateQueryConfiguratorPresenterFor: FQBooleanQuery.
+	browser queriesListPresenter queryItemsPresenters first
+		queryConfiguratorPresenter query property: #isDead.
+
 	browser queriesListPresenter addNewChildQueryAction:
 		browser queriesListPresenter queryItemsPresenters first query.
-	browser queriesListPresenter addNewFirstLevelQuery.
-	browser queriesListPresenter addNewChildQueryAction:
-		browser queriesListPresenter queryItemsPresenters first query.
+	"Modify the query to not have an empty result"
+	browser queriesListPresenter queryItemsPresenters second 
+		updateQueryConfiguratorPresenterFor: FQStringQuery.
+	browser queriesListPresenter queryItemsPresenters second
+		queryConfiguratorPresenter query
+		property: #name;
+		comparator: #includesSubstring:;
+		valueToCompare: ''.
 
 	previousResult := (browser queriesListPresenter queryItemsPresenters 
 		                   collect: #query) collect: #result.

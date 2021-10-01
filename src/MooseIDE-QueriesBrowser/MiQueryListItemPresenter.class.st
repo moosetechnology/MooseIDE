@@ -204,7 +204,7 @@ MiQueryListItemPresenter >> queryChangedUpdate [
 ]
 
 { #category : #accessing }
-MiQueryListItemPresenter >> queryConfigurationPresenter [
+MiQueryListItemPresenter >> queryConfiguratorPresenter [
 
 	^ queryConfiguratorPresenter
 ]

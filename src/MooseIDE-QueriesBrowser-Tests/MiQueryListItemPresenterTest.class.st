@@ -96,21 +96,21 @@ MiQueryListItemPresenterTest >> testUpdateQueryConfigurationFor [
 	presenter updateQueryConfiguratorPresenterFor: FQBooleanQuery.
 	self assert: presenter query class equals: FQBooleanQuery.
 	self
-		assert: presenter queryConfigurationPresenter class
+		assert: presenter queryConfiguratorPresenter class
 		equals: presenter query class miPresenterClass.
 	presenter updateQueryConfiguratorPresenterFor: FQStringQuery.
 	self assert: presenter query class equals: FQStringQuery.
 	self
-		assert: presenter queryConfigurationPresenter class
+		assert: presenter queryConfiguratorPresenter class
 		equals: presenter query class miPresenterClass.
 	presenter updateQueryConfiguratorPresenterFor: FQSubtractionQuery.
 	self assert: presenter query class equals: FQSubtractionQuery.
 	self
-		assert: presenter queryConfigurationPresenter class
+		assert: presenter queryConfiguratorPresenter class
 		equals: presenter query class miPresenterClass.
 	presenter updateQueryConfiguratorPresenterFor: FQComplementQuery.
 	self assert: presenter query class equals: FQComplementQuery.
 	self
-		assert: presenter queryConfigurationPresenter class
+		assert: presenter queryConfiguratorPresenter class
 		equals: presenter query class miPresenterClass
 ]

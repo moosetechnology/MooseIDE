@@ -88,7 +88,7 @@ MiQueriesListPresenter >> enableProgressNotification [
 MiQueriesListPresenter >> followNewEntity [
 
 	queryItemsPresenters
-		collect: #queryConfigurationPresenter
+		collect: #queryConfiguratorPresenter
 		thenDo: [ :each | 
 			each query resetResult.
 			each query parent isRootQuery ifTrue: [ 
