@@ -45,7 +45,7 @@ MiQueryListItemPresenter class >> on: aQuery owner: aPresenter parentPresenter: 
 { #category : #accessing }
 MiQueryListItemPresenter >> allQueryPresentersExceptSelf [
 
-	^ parentQueryListPresenter creationPresenters reject: [ :q | 
+	^ parentQueryListPresenter queryItemsPresenters reject: [ :q | 
 		  q query = self query ]
 ]
 
@@ -67,7 +67,12 @@ MiQueryListItemPresenter >> indentationSpacesPresenters [
 	"Returns a collection with blank images to show the level of indentation that the query has"
 
 	| indentationPresenters indentationLevel |
-	indentationLevel := parentQuery parentSequence size - 1.
+	"The parent sequence only has sence in the unary queries because they are the
+	only kind of queries that can gave a parent.
+	The other queries don't have a parent so will only return 1"
+	indentationLevel := parentQuery isUnaryQuery
+		                    ifTrue: [ parentQuery parentSequence size ]
+		                    ifFalse: [ 1 ].
 	indentationPresenters := OrderedCollection empty.
 	indentationLevel timesRepeat: [ 
 		indentationPresenters add: (SpImagePresenter new
@@ -156,11 +161,11 @@ MiQueryListItemPresenter >> newQueryForClass: queryClass [
 	(parentQuery children includes: self query) ifTrue: [ 
 		parentQuery removeChild: self query ].
 
-	newQuery := (queryClass isNAryQuery or: [ 
-		             queryClass isComplementQuery ])
-		            ifTrue: [ "Nor the NAry query nor the complement query have a parent " 
-			            queryClass new ]
-		            ifFalse: [ queryClass defaultForParent: parentQuery ].
+	newQuery := queryClass isUnaryQuery
+		            ifTrue: [ "The unary query is the only one that has a parent" 
+			            queryClass defaultForParent: parentQuery ]
+		            ifFalse: [ "Nor the NAry query nor the complement query have a parent " 
+			            queryClass new ].
 	parentQuery addChild: newQuery.
 	^ newQuery
 ]
@@ -175,6 +180,13 @@ MiQueryListItemPresenter >> parentQueryListPresenter [
 MiQueryListItemPresenter >> parentQueryListPresenter: aPresenter [
 
 	parentQueryListPresenter := aPresenter
+]
+
+{ #category : #printing }
+MiQueryListItemPresenter >> printOn: aStream [
+
+	aStream << self name << ' '.
+	self query printOn: aStream
 ]
 
 { #category : #accessing }

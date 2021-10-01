@@ -7,11 +7,6 @@ FQAbstractQuery class >> isAvailableForQueriesSize: numberOfQueriesInPresenter [
 ]
 
 { #category : #'*MooseIDE-QueriesBrowser' }
-FQAbstractQuery class >> isComplementQuery [
-	^ false
-]
-
-{ #category : #'*MooseIDE-QueriesBrowser' }
 FQAbstractQuery >> isNavigationQuery [
 
 	^ false

@@ -52,12 +52,6 @@ MiQueriesListPresenter >> availableQueryTypes [
 		  each isAvailableForQueriesSize: queryItemsPresenters size ]
 ]
 
-{ #category : #accessing }
-MiQueriesListPresenter >> creationPresenters [
-
-	^ queryItemsPresenters
-]
-
 { #category : #'api - actions' }
 MiQueriesListPresenter >> disableProgressNotification [
 
@@ -178,6 +172,12 @@ MiQueriesListPresenter >> newFirstLevelQueryPresenter [
 MiQueriesListPresenter >> queryChangedUpdate: query [
 
 	parentQueryBrowser selectQuery: query
+]
+
+{ #category : #accessing }
+MiQueriesListPresenter >> queryItemsPresenters [
+
+	^ queryItemsPresenters
 ]
 
 { #category : #actions }

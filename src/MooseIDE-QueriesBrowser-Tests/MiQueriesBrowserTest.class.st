@@ -38,6 +38,30 @@ MiQueriesBrowserTest >> testAddNewNAryQuery [
 		hasSameElements: unionQuery result
 ]
 
+{ #category : #'tests - actions' }
+MiQueriesBrowserTest >> testFollowEntity [
+
+	| previousResult newResult |
+	browser queriesListPresenter addNewFirstLevelQuery.
+	browser queriesListPresenter addNewChildQueryAction:
+		browser queriesListPresenter queryItemsPresenters first query.
+	browser queriesListPresenter addNewFirstLevelQuery.
+	browser queriesListPresenter addNewChildQueryAction:
+		browser queriesListPresenter queryItemsPresenters first query.
+
+	previousResult := (browser queriesListPresenter queryItemsPresenters 
+		                   collect: #query) collect: #result.
+	self bus globallySelect: helper methods.
+	newResult := (browser queriesListPresenter queryItemsPresenters 
+		              collect: #query) collect: #result.
+	"When a new entity is received from the bus we need to keep the same queries but
+	update the result of the queries with the new entity"
+	self assert: previousResult size equals: newResult size.
+	previousResult
+		with: newResult
+		do: [ :a :b | self denyCollection: a hasSameElements: b ]
+]
+
 { #category : #tests }
 MiQueriesBrowserTest >> testInitializePresenters [
 
