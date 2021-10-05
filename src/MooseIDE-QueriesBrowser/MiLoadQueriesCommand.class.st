@@ -28,6 +28,25 @@ MiLoadQueriesCommand class >> iconName [
 { #category : #executing }
 MiLoadQueriesCommand >> execute [
 
-	| allFiles |
-	allFiles := MiSaveQueriesCommand path asFileReference files
+	| allFiles stonFiles filteringList |
+	allFiles := MiSaveQueriesCommand path asFileReference files.
+	stonFiles := allFiles select: [ :each | 
+		             each basename endsWith: '.ston' ].
+	filteringList := self newListForPopoverExtent: 150 @ 150.
+	filteringList
+		items: stonFiles;
+		display: [ :each | each basename ].
+	Halt now
+]
+
+{ #category : #'instance creation' }
+MiLoadQueriesCommand >> newListForPopoverExtent: aPoint [
+
+	^ SpFilteringListPresenter new layout: (SpBoxLayout newTopToBottom
+			   add: SpFilteringListPresenter defaultSpec
+			   withConstraints: [ :c | 
+				   c
+					   height: aPoint x;
+					   width: aPoint y ];
+			   yourself)
 ]

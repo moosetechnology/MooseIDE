@@ -96,7 +96,10 @@ MiQueriesBrowser >> followEntity: anEntity [
 MiQueriesBrowser >> initializeLayout [
 
 	| tempLayout |
-	tempLayout := self class defaultSpec.
+	tempLayout := SpBoxLayout newTopToBottom
+		              spacing: 5;
+		              yourself.
+	tempLayout add: self class defaultSpec expand: false.
 	tempLayout add: (SpPanedLayout new
 			 add: queriesListPresenter;
 			 add: queryNotebookPresenter;

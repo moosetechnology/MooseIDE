@@ -16,7 +16,8 @@ Class {
 		'spinnerMorph',
 		'parentQueryBrowser',
 		'queryItemsPresenters',
-		'saveQueriesButton'
+		'saveQueriesButton',
+		'loadQueriesButton'
 	],
 	#category : #'MooseIDE-QueriesBrowser-Main presenters'
 }
@@ -117,9 +118,14 @@ MiQueriesListPresenter >> initializeButtons [
 	addRootQueryButton
 		icon: (self iconNamed: #smallAdd);
 		action: [ self addNewFirstLevelQuery ].
-	saveQueriesButton := ((MiSaveQueriesCommand forSpecContext: self) iconName:
-		               MiSaveQueriesCommand iconName) asButtonPresenter.
-	saveQueriesButton label: ''
+	saveQueriesButton := ((MiSaveQueriesCommand forSpecContext: self) 
+		                      iconName: MiSaveQueriesCommand iconName)
+		                     asButtonPresenter.
+	saveQueriesButton label: ''.
+	loadQueriesButton := ((MiLoadQueriesCommand forSpecContext: self) 
+		                      iconName: MiLoadQueriesCommand iconName)
+		                     asButtonPresenter.
+	loadQueriesButton label: ''
 ]
 
 { #category : #initialization }
@@ -139,6 +145,8 @@ MiQueriesListPresenter >> initializeLayout [
 	self layout: (SpBoxLayout newTopToBottom
 			 add: (SpBoxLayout newLeftToRight
 					  add: addRootQueryButton width: self class iconWidth;
+					  addLast: loadQueriesButton
+					  withConstraints: [ :c | c width: self class iconWidth ];
 					  addLast: saveQueriesButton
 					  withConstraints: [ :c | c width: self class iconWidth ];
 					  yourself)
