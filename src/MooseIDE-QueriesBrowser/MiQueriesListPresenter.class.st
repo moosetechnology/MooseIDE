@@ -121,11 +121,7 @@ MiQueriesListPresenter >> initializeButtons [
 	saveQueriesButton := ((MiSaveQueriesCommand forSpecContext: self) 
 		                      iconName: MiSaveQueriesCommand iconName)
 		                     asButtonPresenter.
-	saveQueriesButton label: ''.
-	loadQueriesButton := ((MiLoadQueriesCommand forSpecContext: self) 
-		                      iconName: MiLoadQueriesCommand iconName)
-		                     asButtonPresenter.
-	loadQueriesButton label: ''
+	saveQueriesButton label: ''
 ]
 
 { #category : #initialization }
