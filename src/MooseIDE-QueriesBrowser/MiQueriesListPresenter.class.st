@@ -15,7 +15,8 @@ Class {
 		'progressNotificationPresenter',
 		'spinnerMorph',
 		'parentQueryBrowser',
-		'queryItemsPresenters'
+		'queryItemsPresenters',
+		'saveQueriesButton'
 	],
 	#category : #'MooseIDE-QueriesBrowser-Main presenters'
 }
@@ -84,6 +85,13 @@ MiQueriesListPresenter >> enableProgressNotification [
 	self initializeLayout
 ]
 
+{ #category : #accessing }
+MiQueriesListPresenter >> famixQueries [
+
+	^ (queryItemsPresenters collect: #queryConfiguratorPresenter) 
+		  collect: #query
+]
+
 { #category : #'api - actions' }
 MiQueriesListPresenter >> followNewEntity [
 
@@ -103,12 +111,15 @@ MiQueriesListPresenter >> initialize [
 ]
 
 { #category : #initialization }
-MiQueriesListPresenter >> initializeAddRootQueryButton [
+MiQueriesListPresenter >> initializeButtons [
 
 	addRootQueryButton := self newButton.
 	addRootQueryButton
 		icon: (self iconNamed: #smallAdd);
-		action: [ self addNewFirstLevelQuery ]
+		action: [ self addNewFirstLevelQuery ].
+	saveQueriesButton := ((MiSaveQueriesCommand forSpecContext: self) iconName:
+		               MiSaveQueriesCommand iconName) asButtonPresenter.
+	saveQueriesButton label: ''
 ]
 
 { #category : #initialization }
@@ -128,6 +139,8 @@ MiQueriesListPresenter >> initializeLayout [
 	self layout: (SpBoxLayout newTopToBottom
 			 add: (SpBoxLayout newLeftToRight
 					  add: addRootQueryButton width: self class iconWidth;
+					  addLast: saveQueriesButton
+					  withConstraints: [ :c | c width: self class iconWidth ];
 					  yourself)
 			 expand: false;
 			 add: componentListPresenter;
@@ -139,11 +152,10 @@ MiQueriesListPresenter >> initializeLayout [
 MiQueriesListPresenter >> initializePresenters [
 
 	queryItemsPresenters := OrderedCollection empty.
-	self initializeAddRootQueryButton.
+	self initializeButtons.
 	self initializeComponentListPresenter.
 	self initializeProgressPresenter.
 	self initializeLayout
-	
 ]
 
 { #category : #initialization }
