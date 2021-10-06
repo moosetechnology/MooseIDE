@@ -107,5 +107,7 @@ MiBusLogsList >> removeLog: aLog [
 
 { #category : #initialization }
 MiBusLogsList >> setOwnerSelectedItem: aLog [
-	^ self owner selectedItem: aLog entity
+
+	self owner selectedItem: aLog entity.
+	self owner updateToolbar
 ]

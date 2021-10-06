@@ -67,21 +67,8 @@ MiAbstractBrowser class >> buildCommandsGroupWith: presenter forRoot: rootComman
 
 { #category : #specs }
 MiAbstractBrowser class >> defaultSpec [
+
 	^ SpBoxLayout newVertical
-		"add:
-			(SpBoxLayout newHorizontal
-				add: #buttonFollow width: 65;
-				add: #buttonFreeze width: 60;
-				add: #buttonHighlight width: 80;
-				add: SpBoxLayout newHorizontal expand: true;
-				add: #busButton;
-				add: SpBoxLayout newHorizontal expand: true;
-				add: #buttonInspect width: self iconWidth;
-				add: #buttonPropagate expand: false;
-				add: #buttonHelp width: self iconWidth;
-				yourself)
-			withConstraints: [ :constraints | constraints height: self toolbarHeight ];
-		yourself"
 ]
 
 { #category : #'world menu' }

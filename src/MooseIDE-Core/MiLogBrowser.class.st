@@ -18,6 +18,14 @@ Class {
 	#category : #'MooseIDE-Core-Logger'
 }
 
+{ #category : #specs }
+MiLogBrowser class >> defaultSpec [
+
+	^ super defaultSpec
+		  add: #toolbar;
+		  yourself
+]
+
 { #category : #'world menu' }
 MiLogBrowser class >> menuCommandOn: aBuilder [
 
@@ -57,6 +65,7 @@ MiLogBrowser class >> title [
 
 { #category : #testing }
 MiLogBrowser >> canReceiveEntity: anObject [
+
 	^ true
 ]
 
@@ -69,6 +78,7 @@ MiLogBrowser >> cleanAllLoggers [
 
 { #category : #buses }
 MiLogBrowser >> followBus: aBus [
+
 	super followBus: aBus.
 	self update
 ]
@@ -86,21 +96,19 @@ MiLogBrowser >> followEntity: anEntity [
 ]
 
 { #category : #initialization }
-MiLogBrowser >> initializeActionButtons [
-	buttonPropagate := ((MiPropagateCommand forContext: self)
-		doNotFreezeBrowser;
-		asSpecCommand) asButtonPresenter.
-	buttonInspect := (MiInspectCommand forSpecContext: self)
-		name: '';
-		iconName: #smallInspectIt;
-		asButtonPresenter
+MiLogBrowser >> initialize [
+
+	super initialize.
+	((self toolbarCommandGroup commandOrGroupNamed: 'Actions') 
+		 commandOrGroupNamed: 'Propagate') decoratedCommand
+		doNotFreezeBrowser
 ]
 
 { #category : #initialization }
-MiLogBrowser >> initializeToolbar [
+MiLogBrowser >> initializePresenters [
 
 	toolbar := self newToolbar
-		           addItem: (SpToolbarButtonPresenter new
+		           addItemRight: (SpToolbarButtonPresenter new
 				            label: 'Clear all';
 				            icon: (self theme iconNamed: #smallDelete);
 				            help: 'Remove all loggers entries';
@@ -111,11 +119,13 @@ MiLogBrowser >> initializeToolbar [
 
 { #category : #accessing }
 MiLogBrowser >> miSelectedItem [
+
 	^ selectedItem
 ]
 
 { #category : #accessing }
 MiLogBrowser >> selectedItem: anEntity [
+
 	selectedItem := anEntity
 ]
 
