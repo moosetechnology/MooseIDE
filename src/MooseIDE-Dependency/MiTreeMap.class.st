@@ -70,13 +70,15 @@ MiTreeMap >> highlightShapes [
 
 { #category : #initialization }
 MiTreeMap >> initialize [
+
 	super initialize.
 	base := RSComposite new
-		draggable;
-		popup;
-		when: RSMouseLeftClick do: [ :evt | self processEvent: evt ].
-	rootEntities := #().
-	childrenBlock := [ :entity | #() ]
+		        draggable;
+		        popup;
+		        when: RSMouseLeftClick
+		        do: [ :evt | self processEvent: evt ].
+	rootEntities := MooseGroup new.
+	childrenBlock := [ :entity | MooseGroup new ]
 ]
 
 { #category : #helpers }

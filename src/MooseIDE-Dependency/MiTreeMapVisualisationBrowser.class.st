@@ -92,3 +92,9 @@ MiTreeMapVisualisationBrowser >> initializePresenters [
 				ifTrue: [ el children ]
 				ifFalse: [ {} ] ]
 ]
+
+{ #category : #accessing }
+MiTreeMapVisualisationBrowser >> miSelectedItem [
+
+	^ diagram rootEntities
+]
