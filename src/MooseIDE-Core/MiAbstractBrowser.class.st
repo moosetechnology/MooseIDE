@@ -174,6 +174,14 @@ MiAbstractBrowser >> canHighlight [
 ]
 
 { #category : #testing }
+MiAbstractBrowser >> canPropagate [
+
+	| entity |
+	entity := self miSelectedItem.
+	^ entity isMooseObject and: [ entity asMooseGroup isNotEmpty ]
+]
+
+{ #category : #testing }
 MiAbstractBrowser >> canReceiveEntity: anObject [
 
 	"whether the browser accepts to deal with anObject"

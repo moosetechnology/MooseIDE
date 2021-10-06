@@ -28,7 +28,8 @@ MiPropagateCommand class >> defaultName [
 
 { #category : #testing }
 MiPropagateCommand >> canBeExecuted [
-	^ self context miSelectedItem isMooseObject
+
+	^ self context canPropagate
 ]
 
 { #category : #freezing }
