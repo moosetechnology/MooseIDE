@@ -61,7 +61,7 @@ MiNAryQueryPresenter >> initializePresenters [
 MiNAryQueryPresenter >> nAryOperation: newSelectedItem [
 
 	| subqueries selectedDropListItems |
-	"Sometimes the SpDropListPresenter>>#whenSelectedItemChangedDo: in spec is triggered even though no item were selected. When this happends the selected item is nil. This is an spec problem."
+	"Sometimes the SpDropListPresenter>>#whenSelectedItemChangedDo: in spec is triggered even though no item were selected. When this happends the selected item is nil. This is a spec problem."
 	newSelectedItem ifNil: [ ^ self ].
 	(subqueryDropLists anySatisfy: [ :dropList | 
 		 dropList selectedItem isNil ]) ifTrue: [ ^ self ].
@@ -83,8 +83,8 @@ MiNAryQueryPresenter >> newLayout [
 	subqueryDropLists do: [ :subqueryPresenter | 
 		tempLayout add: subqueryPresenter width: self class dropListWidth ].
 	tempLayout
-		add: #addSubqueryToLayoutButton width: self class iconWidth;
-		add: #removeSubqueryFromLayoutButton width: self class iconWidth.
+		add: addSubqueryToLayoutButton width: self class iconWidth;
+		add: removeSubqueryFromLayoutButton width: self class iconWidth.
 	^ tempLayout
 ]
 

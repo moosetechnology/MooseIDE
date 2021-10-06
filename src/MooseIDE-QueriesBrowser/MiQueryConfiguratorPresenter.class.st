@@ -25,6 +25,12 @@ MiQueryConfiguratorPresenter >> computeQueryAction: anObject [
 	owner disableProgressNotification
 ]
 
+{ #category : #'api - actions' }
+MiQueryConfiguratorPresenter >> configureFor: aQuery [
+
+	self subclassResponsibility
+]
+
 { #category : #layout }
 MiQueryConfiguratorPresenter >> initializeLayout [
 

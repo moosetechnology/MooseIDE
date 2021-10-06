@@ -35,8 +35,6 @@ MiSaveQueriesCommand class >> path [
 MiSaveQueriesCommand >> execute [
 
 	| fileName file queriesToStore |
-	"file readStreamDo: [ :stream | 
-		newCollection := STON fromStream: stream ]"
 	queriesToStore := self queriesToStore.
 	fileName := UIManager default
 		            request: 'Name of the file: '
