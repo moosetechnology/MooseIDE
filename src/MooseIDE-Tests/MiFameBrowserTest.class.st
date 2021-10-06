@@ -1,6 +1,9 @@
 Class {
 	#name : #MiFameBrowserTest,
 	#superclass : #MiAbstractBrowserTest,
+	#instVars : [
+		'entityToSelect'
+	],
 	#category : #'MooseIDE-Tests-Browsers'
 }
 
@@ -9,24 +12,27 @@ MiFameBrowserTest >> browserClass [
 	^ MiFameBrowser
 ]
 
+{ #category : #initialization }
+MiFameBrowserTest >> setUp [
+
+	super setUp.
+	entityToSelect := FamixStClass named: 'TestClass'
+]
+
 { #category : #tests }
 MiFameBrowserTest >> testMiActivateActionButtons [
 
-	| itemToSelect |
 	browser actionButtons do: [ :button | self deny: button isEnabled ].
 
-	itemToSelect := FamixStClass named: 'TestClass'.
-	browser selectEntity: itemToSelect.
+	browser selectEntity: entityToSelect.
 	browser actionButtons do: [ :button | self assert: button isEnabled ]
 ]
 
 { #category : #tests }
 MiFameBrowserTest >> testMiSelectedItem [
 
-	| itemToSelect |
 	self assert: browser miSelectedItem isNil.
 
-	itemToSelect := FamixStClass named: 'TestClass'.
-	browser selectEntity: itemToSelect.
-	self assert: browser miSelectedItem equals: itemToSelect
+	browser selectEntity: entityToSelect.
+	self assert: browser miSelectedItem equals: entityToSelect
 ]

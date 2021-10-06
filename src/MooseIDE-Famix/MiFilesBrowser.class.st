@@ -60,9 +60,11 @@ MiFilesBrowser class >> title [
 
 { #category : #testing }
 MiFilesBrowser >> canReceiveEntity: anObject [
-	^ (anObject isKindOf: MooseModel) and:
-	 [ anObject rootFolder isNotNil and:
-	 [ anObject rootFolder asFileReference exists ]  ]
+
+	^ anObject isMooseObject and: [ 
+		  anObject isMooseModel and: [ 
+			  anObject rootFolder isNotNil and: [ 
+				  anObject rootFolder asFileReference exists ] ] ]
 ]
 
 { #category : #'as yet unclassified' }
@@ -90,7 +92,8 @@ MiFilesBrowser >> followEntity: anEntity [
 
 	self model mooseModel: anEntity.
 	self selectFileReference: anEntity rootFolder asFileReference.
-	self updateWindowTitle
+	self updateWindowTitle.
+	self updateToolbar
 ]
 
 { #category : #initialization }
@@ -135,9 +138,18 @@ MiFilesBrowser >> initializeTreeTable [
 		beResizable
 ]
 
+{ #category : #accessing }
+MiFilesBrowser >> miSelectedItem [
+
+	^ model mooseModel
+]
+
 { #category : #refreshing }
 MiFilesBrowser >> refresh [
-	tree items: {self model fileReference parent} , self model fileReference directories , self model fileReference files
+
+	tree items: { self model fileReference parent }
+		, self model fileReference directories
+		, self model fileReference files
 ]
 
 { #category : #'as yet unclassified' }

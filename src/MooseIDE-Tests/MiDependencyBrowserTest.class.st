@@ -1,6 +1,9 @@
 Class {
 	#name : #MiDependencyBrowserTest,
 	#superclass : #MiAbstractBrowserTest,
+	#instVars : [
+		'entityToSelect'
+	],
 	#category : #'MooseIDE-Tests-Browsers'
 }
 
@@ -9,14 +12,19 @@ MiDependencyBrowserTest >> browserClass [
 	^ MiDependencyBrowser
 ]
 
+{ #category : #running }
+MiDependencyBrowserTest >> setUp [
+
+	super setUp.
+	entityToSelect := FamixStClass named: 'TestClass'
+]
+
 { #category : #tests }
 MiDependencyBrowserTest >> testMiActivateActionButtons [
 
-	| itemToSelect |
 	browser actionButtons do: [ :button | self deny: button isEnabled ].
 
-	itemToSelect := FamixStClass named: 'TestClass'.
-	browser selectEntity: (MooseGroup with: itemToSelect).
+	browser selectEntity: (MooseGroup with: entityToSelect).
 	browser actionButtons do: [ :button | self assert: button isEnabled ].
 
 	browser diagram canvas shapes anyOne click.
@@ -26,14 +34,12 @@ MiDependencyBrowserTest >> testMiActivateActionButtons [
 { #category : #tests }
 MiDependencyBrowserTest >> testMiSelectedItem [
 
-	| itemToSelect |
 	self assert: browser miSelectedItem isMooseObject.
 
-	itemToSelect := FamixStClass named: 'TestClass'.
-	browser selectEntity: (MooseGroup with: itemToSelect).
+	browser selectEntity: (MooseGroup with: entityToSelect).
 	self assert: browser miSelectedItem isMooseObject.
-	self assert: browser miSelectedItem anyOne equals: itemToSelect.
+	self assert: browser miSelectedItem anyOne equals: entityToSelect.
 
 	browser diagram canvas shapes anyOne click.
-	self assert: browser miSelectedItem equals: itemToSelect
+	self assert: browser miSelectedItem equals: entityToSelect
 ]
