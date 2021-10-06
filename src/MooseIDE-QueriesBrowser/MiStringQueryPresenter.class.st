@@ -18,7 +18,8 @@ MiStringQueryPresenter >> configureFor: aQuery [
 
 	propertyDropList selectItem: aQuery property.
 	comparatorDropList selectItem: aQuery comparator.
-	valueInputField text: aQuery valueToCompare
+	valueInputField text: aQuery valueToCompare.
+	query := aQuery
 ]
 
 { #category : #initialization }

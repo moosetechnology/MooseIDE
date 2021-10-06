@@ -52,7 +52,7 @@ MiQueriesListPresenter >> availableQueryTypes [
 { #category : #initialization }
 MiQueriesListPresenter >> constructQueriesWithFile: aFile [
 
-	| newQueries newQueryPresenters  |
+	| newQueries |
 	
 	[ self enableProgressNotification ] asJob run.
 	
@@ -64,15 +64,18 @@ MiQueriesListPresenter >> constructQueriesWithFile: aFile [
 		each parent ifNil: [ 
 			each parent: parentQueryBrowser rootQuery ] ].
 
+	queryItemsPresenters := OrderedCollection empty.
 	queryCounter := 1.
-	newQueryPresenters := newQueries collect: [ :each | 
+	"We cannot use a collect here because we need to keep track of how many queries we are creating
+	iteration by iteration"
+	newQueries do: [ :each | 
 		| newPresenter|
 		newPresenter := each parent
 			ifNil: [ self createNewQueryPresenter: parentQueryBrowser rootQuery ]
 			ifNotNil: [ self createNewQueryPresenter: each parent ].
-		newPresenter configureFor: each ].
+		newPresenter configureFor: each.
+		queryItemsPresenters add: newPresenter ].
 
-	queryItemsPresenters := newQueryPresenters.
 	self updateComponentList.
 	
 	self disableProgressNotification
@@ -128,6 +131,12 @@ MiQueriesListPresenter >> famixQueries [
 
 	^ (queryItemsPresenters collect: #queryConfiguratorPresenter) 
 		  collect: #query
+]
+
+{ #category : #'api - actions' }
+MiQueriesListPresenter >> findPresenterForQuery: aQuery [
+
+	^ queryItemsPresenters detect: [ :each | each query = aQuery ]
 ]
 
 { #category : #'api - actions' }

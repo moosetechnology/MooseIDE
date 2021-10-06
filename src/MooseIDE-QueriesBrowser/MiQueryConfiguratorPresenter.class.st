@@ -28,6 +28,8 @@ MiQueryConfiguratorPresenter >> computeQueryAction: anObject [
 { #category : #'api - actions' }
 MiQueryConfiguratorPresenter >> configureFor: aQuery [
 
+	"You should always do `query := aQuery` at the end of this method for all subclasses"
+
 	self subclassResponsibility
 ]
 

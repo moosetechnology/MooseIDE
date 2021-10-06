@@ -16,7 +16,8 @@ MiBooleanQueryPresenter >> computeQuery: aProperty [
 { #category : #'api - actions' }
 MiBooleanQueryPresenter >> configureFor: aQuery [
 
-	propertyDropList selectItem: aQuery property
+	propertyDropList selectItem: aQuery property.
+	query := aQuery
 ]
 
 { #category : #initialization }

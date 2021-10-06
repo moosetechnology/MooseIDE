@@ -64,6 +64,9 @@ MiSaveQueriesCommand >> queriesToStore [
 		self resetResultFor: each.
 		each isUnaryQuery ifTrue: [ 
 			each parent isRootQuery ifTrue: [ each parent: nil ] ] ].
+	"Finally we order the queries to put the nary, complement and resultSize query in the end.
+	Because when we loading the queries we want to ensure that the queries that are used
+	by them are already created."
 	^ queriesToStore
 ]
 

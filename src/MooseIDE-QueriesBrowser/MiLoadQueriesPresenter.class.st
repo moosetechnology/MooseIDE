@@ -51,7 +51,9 @@ MiLoadQueriesPresenter >> initializeList [
 	filteringListPresenter := self newFilteringList.
 	filteringListPresenter
 		items: self queriesStonFiles;
-		display: [ :each | each basename withoutPeriodSuffix ]
+		display: [ :each | each basename withoutPeriodSuffix ].
+	filteringListPresenter listPresenter
+		sortingBlock: #basename ascending
 ]
 
 { #category : #initialization }

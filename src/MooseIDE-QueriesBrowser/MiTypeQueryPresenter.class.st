@@ -27,7 +27,8 @@ MiTypeQueryPresenter >> computeQuery: aType [
 MiTypeQueryPresenter >> configureFor: aQuery [
 
 	typesList selectItems: aQuery types.
-	query types: aQuery types
+	query types: aQuery types.
+	query := aQuery
 ]
 
 { #category : #initialization }

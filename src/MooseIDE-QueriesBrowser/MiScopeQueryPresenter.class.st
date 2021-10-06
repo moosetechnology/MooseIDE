@@ -27,7 +27,8 @@ MiScopeQueryPresenter >> computeQuery: scope [
 MiScopeQueryPresenter >> configureFor: aQuery [
 
 	directionsDropList selectItem: aQuery directionStrategy.
-	scopesDropList selectItem: aQuery scope
+	scopesDropList selectItem: aQuery scope.
+	query := aQuery
 ]
 
 { #category : #initialization }
