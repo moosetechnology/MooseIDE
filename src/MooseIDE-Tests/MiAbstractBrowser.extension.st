@@ -1,11 +1,6 @@
 Extension { #name : #MiAbstractBrowser }
 
 { #category : #'*MooseIDE-Tests' }
-MiAbstractBrowser >> busButton [
-	^ busButton
-]
-
-{ #category : #'*MooseIDE-Tests' }
 MiAbstractBrowser class >> openForTests [
 
 	^ (self

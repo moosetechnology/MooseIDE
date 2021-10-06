@@ -66,11 +66,17 @@ MiBusesPopup >> setModelBeforeInitialization: aBrowser [
 { #category : #initialization }
 MiBusesPopup >> useTextInputForBusCreation [
 
-	"Do not filter bus use text input for bus creation"
+	"Do not filter but use text input for bus creation"
 
 	busesList filterInputPresenter placeholder: '+ New bus'.
+
 	busesList itemFilter: [ :each :pattern | 
 		true "We do not want to filter anything" ].
+
 	busesList filterInputPresenter whenSubmitDo: [ 
-		self followNewBusNamed: busesList filterInputPresenter text ]
+		self followNewBusNamed: busesList filterInputPresenter text.
+		busesList filterInputPresenter clearContent.
+		busesList
+			items: self application buses;
+			selectItems: browser buses copy ]
 ]

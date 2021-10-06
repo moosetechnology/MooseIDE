@@ -39,7 +39,6 @@ Class {
 		'model',
 		'buttonPropagate',
 		'buttonInspect',
-		'busButton',
 		'buses',
 		'receivingMode',
 		'toolbarCommandGroup'
@@ -149,6 +148,12 @@ MiAbstractBrowser class >> windowSize [
 ]
 
 { #category : #accessing }
+MiAbstractBrowser >> busButton [
+
+	^ (self toolbarCommandGroup commandOrGroupNamed: 'Buses') presenter
+]
+
+{ #category : #accessing }
 MiAbstractBrowser >> buses [
 	^ buses
 ]
@@ -182,8 +187,8 @@ MiAbstractBrowser >> followBus: aBus [
 	(self buses includes: aBus) ifTrue: [ ^ self ].
 	self buses add: aBus.
 	aBus registerBrowser: self.
-	"	self updateBusButton."
-	self selectEntity: aBus logger mostRecentEntity
+	self updateBusButton.
+	self selectEntity: aBus logger mostRecentEntity. 
 ]
 
 { #category : #actions }
@@ -257,16 +262,6 @@ MiAbstractBrowser >> needUpdate: anEntity [
 	^ anEntity ~= model selected
 ]
 
-{ #category : #buses }
-MiAbstractBrowser >> openBusEditor [
-
-	| popup |
-	(popup := self newPopover)
-		relativeTo: busButton;
-		presenter: (MiBusesPopup owner: popup on: self);
-		popup
-]
-
 { #category : #accessing }
 MiAbstractBrowser >> receivingMode: aReceivingMode [
 
@@ -278,7 +273,8 @@ MiAbstractBrowser >> selectEntity: anEntity [
 
 	"I am used by the Mi Application. You should use #globallySelect: anEntity that will transmit the message to me and the other browsers"
 
-	receivingMode browser: self actOnEntity: anEntity
+	receivingMode browser: self actOnEntity: anEntity.
+	self updateToolbar
 ]
 
 { #category : #initialization }
@@ -315,11 +311,14 @@ MiAbstractBrowser >> unfollowBus: aBus [
 	(self buses includes: aBus) ifFalse: [ ^ self ].
 	self buses remove: aBus.
 	aBus unregisterBrowser: self.
-"	self updateBusButton"
+	self updateBusButton
 ]
 
 { #category : #buses }
 MiAbstractBrowser >> updateBusButton [
+
+	| busButton |
+	busButton := self busButton.
 
 	busButton label: (self buses ifEmpty: [ 'No bus' ] ifNotEmpty: [ 
 			 self buses size = 1
@@ -332,9 +331,7 @@ MiAbstractBrowser >> updateBusButton [
 					 << '- ';
 					 << bus name;
 					 cr ].
-			 s << 'Click to edit' ]).
-
-	self update
+			 s << 'Click to edit' ])
 ]
 
 { #category : #actions }

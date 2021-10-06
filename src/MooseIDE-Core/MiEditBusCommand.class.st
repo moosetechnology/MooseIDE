@@ -44,12 +44,12 @@ MiEditBusCommand >> busesList [
 			 add: SpFilteringSelectableListPresenter defaultSpec
 			 withConstraints: [ :c | 
 				 c
-					 height: 125;
-					 width: 150 ];
+					 height: 120;
+					 width: 120 ];
 			 yourself).
 	busesList display: [ :bus | bus name ].
 	busesList items: self application buses.
-	busesList selectItems: context buses.
+	busesList selectItems: context buses copy.
 
 	busesList
 		onActivation: [ :bus | bus ifNotNil: [ context followBus: bus ] ];
@@ -63,7 +63,8 @@ MiEditBusCommand >> busesList [
 		context followBus:
 			(self application busNamed: busesList filterInputPresenter text).
 		busesList filterInputPresenter clearContent.
-		busesList items: self application buses ].
+		busesList items: self application buses.
+		busesList selectItems: context buses copy  ].
 	^ busesList
 ]
 
