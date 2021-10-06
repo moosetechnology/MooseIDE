@@ -48,12 +48,14 @@ MiFameBrowser class >> title [
 
 { #category : #testing }
 MiFameBrowser >> canReceiveEntity: anObject [
-	^ anObject isMooseObject
+
+	^ anObject isMooseEntity
 ]
 
 { #category : #actions }
 MiFameBrowser >> followEntity: anEntity [
 
+	model := anEntity.
 	fameDescription items: anEntity mooseDescription allComplexProperties.
 	self updateWindowTitleWith: anEntity name
 ]
@@ -73,6 +75,12 @@ MiFameBrowser >> initializePresenters [
 		addColumn: (SpStringTableColumn title: 'IsTarget?' evaluated: [ :item | item isTarget ]) yourself;
 		addColumn: (SpStringTableColumn title: 'IsSource?' evaluated: [ :item | item isSource ]) yourself;
 		beResizable
+]
+
+{ #category : #accessing }
+MiFameBrowser >> miSelectedItem [
+
+	^ model
 ]
 
 { #category : #actions }
