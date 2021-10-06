@@ -82,7 +82,6 @@ MiQueriesBrowser >> followEntity: anEntity [
 	self window title: (self class titleForModelName: mooseModelName).
 
 	"Create the new root query"
-	rootQuery children removeAll.
 	rootQuery
 		resetResult;
 		result: mooseGroup;
@@ -90,7 +89,7 @@ MiQueriesBrowser >> followEntity: anEntity [
 
 	"Update the all the sub presenters with this new query"
 	self selectQuery: rootQuery.
-	queriesListPresenter followAction
+	queriesListPresenter followNewEntity
 ]
 
 { #category : #initialization }
@@ -99,8 +98,8 @@ MiQueriesBrowser >> initializeLayout [
 	| tempLayout |
 	tempLayout := self class defaultSpec.
 	tempLayout add: (SpPanedLayout new
-			 add: #queriesListPresenter;
-			 add: #queryNotebookPresenter;
+			 add: queriesListPresenter;
+			 add: queryNotebookPresenter;
 			 yourself).
 	self layout: tempLayout
 ]
@@ -145,9 +144,7 @@ MiQueriesBrowser >> initializeQueryCodePresenter [
 { #category : #initialization }
 MiQueriesBrowser >> initializeResultTreePresenter [
 
-	queryResultTreePresenter := self
-		                            instantiate: MiResultTreePresenter
-		                            on: self.
+	queryResultTreePresenter := self instantiate: MiResultTreePresenter.
 	queryResultTreePresenter updateForEntities: self queryResultEntities
 ]
 
@@ -196,8 +193,7 @@ MiQueriesBrowser >> selectQuery: aQuery [
 
 	selectedQuery := aQuery.
 	queryResultTreePresenter updateForQuery: aQuery.
-	queryCodePresenter updateForQuery: aQuery.
-	self update
+	queryCodePresenter updateForQuery: aQuery
 ]
 
 { #category : #accessing }

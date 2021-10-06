@@ -89,7 +89,7 @@ MiTagBrowserModel >> entitiesTaggedWithCurrentTag [
 { #category : #accessing }
 MiTagBrowserModel >> mooseModel [
 
-	^ mooseModel ifNil: [ self error: 'No moose Model selected' ]
+	^ mooseModel ifNil: [ mooseModel := self entities anyOne mooseModel ]
 ]
 
 { #category : #accessing }

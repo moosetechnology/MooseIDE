@@ -36,7 +36,7 @@ MiQueryConfiguratorPresenterTest >> resetPresenterWithEntities: aMooseGroup [
 	builder addNewFirstLevelQuery.
 	superPresenter := builder componentList items first.
 	superPresenter queryTypesDropList selectItem: self queryClass.
-	presenter := superPresenter queryConfigurationPresenter
+	presenter := superPresenter queryConfiguratorPresenter
 ]
 
 { #category : #running }

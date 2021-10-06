@@ -30,7 +30,7 @@ MiNAryQueryPresenterTest >> resetPresenterWithEntities: aMooseGroup [
 		addNewFirstLevelQuery.
 	superPresenter := builder componentList items third.
 	superPresenter queryTypesDropList selectItem: self queryClass.
-	presenter := superPresenter queryConfigurationPresenter
+	presenter := superPresenter queryConfiguratorPresenter
 ]
 
 { #category : #tests }
