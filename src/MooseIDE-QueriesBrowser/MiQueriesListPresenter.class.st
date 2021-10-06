@@ -146,8 +146,8 @@ MiQueriesListPresenter >> followNewEntity [
 		collect: #queryConfiguratorPresenter
 		thenDo: [ :each | 
 			each query resetResult.
-			each query parent isRootQuery ifTrue: [ 
-				each query parent: parentQueryBrowser rootQuery ] ]
+			(each query parent isNotNil and: [ each query parent isRootQuery ]) 
+				ifTrue: [ each query parent: parentQueryBrowser rootQuery ] ]
 ]
 
 { #category : #initialization }

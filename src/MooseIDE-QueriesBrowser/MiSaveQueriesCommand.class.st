@@ -35,12 +35,16 @@ MiSaveQueriesCommand class >> path [
 MiSaveQueriesCommand >> execute [
 
 	| fileName file queriesToStore |
-	queriesToStore := self queriesToStore.
 	fileName := UIManager default
 		            request: 'Name of the file: '
 		            initialAnswer: ''.
+
+	"If the user pressed the cancel button"
+	(fileName isNil or: [ fileName isEmpty ]) ifTrue: [ ^ self ].
+
 	file := (self class path , fileName , '.ston') asFileReference.
 	file ensureCreateFile.
+	queriesToStore := self queriesToStore.
 	file writeStreamDo: [ :stream | 
 		STON put: queriesToStore onStream: stream ]
 ]
@@ -64,9 +68,6 @@ MiSaveQueriesCommand >> queriesToStore [
 		self resetResultFor: each.
 		each isUnaryQuery ifTrue: [ 
 			each parent isRootQuery ifTrue: [ each parent: nil ] ] ].
-	"Finally we order the queries to put the nary, complement and resultSize query in the end.
-	Because when we loading the queries we want to ensure that the queries that are used
-	by them are already created."
 	^ queriesToStore
 ]
 

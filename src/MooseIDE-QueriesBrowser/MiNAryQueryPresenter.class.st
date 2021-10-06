@@ -87,7 +87,7 @@ MiNAryQueryPresenter >> initializePresenters [
 MiNAryQueryPresenter >> nAryOperation: newSelectedItem [
 
 	| subqueries selectedDropListItems |
-	"Sometimes the SpDropListPresenter>>#whenSelectedItemChangedDo: in spec is triggered even though no item were selected. When this happends the selected item is nil. This is a spec problem."
+	"Sometimes the SpDropListPresenter>>#whenSelectedItemChangedDo: in spec is triggered even though no item was selected. When this happends the selected item is nil. This is a spec problem."
 	newSelectedItem ifNil: [ ^ self ].
 	(subqueryDropLists anySatisfy: [ :dropList | 
 		 dropList selectedItem isNil ]) ifTrue: [ ^ self ].

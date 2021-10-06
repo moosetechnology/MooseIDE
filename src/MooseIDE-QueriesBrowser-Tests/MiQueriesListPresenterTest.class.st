@@ -87,6 +87,36 @@ MiQueriesListPresenterTest >> testAddNewFirstLevelQuery [
 ]
 
 { #category : #tests }
+MiQueriesListPresenterTest >> testCreateNewQueryPresenter [
+
+	self assert: presenter queryCounter equals: 1.
+	presenter createNewQueryPresenter: FQStringQuery new.
+	self assert: presenter queryCounter equals: 2
+]
+
+{ #category : #test }
+MiQueriesListPresenterTest >> testFindPresenterForQuery [
+
+	presenter addNewFirstLevelQuery.
+	self
+		assert: presenter queryItemsPresenters first query
+		equals: (presenter findPresenterForQuery: presenter queryItemsPresenters first query) query
+]
+
+{ #category : #test }
+MiQueriesListPresenterTest >> testFollowNewEntity [
+
+	presenter
+		addNewFirstLevelQuery;
+		addNewFirstLevelQuery;
+		addNewFirstLevelQuery;
+		addNewFirstLevelQuery.
+	presenter queryItemsPresenters third updateQueryConfiguratorPresenterFor: FQIntersectionQuery.
+	presenter queryItemsPresenters fourth updateQueryConfiguratorPresenterFor: FQComplementQuery.
+	presenter followNewEntity.
+]
+
+{ #category : #tests }
 MiQueriesListPresenterTest >> testRemoveQueryAction [
 
 	presenter addNewFirstLevelQuery.

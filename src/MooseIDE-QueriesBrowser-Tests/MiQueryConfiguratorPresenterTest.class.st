@@ -14,9 +14,21 @@ MiQueryConfiguratorPresenterTest class >> isAbstract [
 	^ self == MiQueryConfiguratorPresenterTest
 ]
 
+{ #category : #tests }
+MiQueryConfiguratorPresenterTest >> assertSubpresentersAreConfigured [
+
+	self subclassResponsibility
+]
+
 { #category : #running }
 MiQueryConfiguratorPresenterTest >> classToTest [
 	^ self subclassResponsibility
+]
+
+{ #category : #tests }
+MiQueryConfiguratorPresenterTest >> createNewQuery [
+
+	self subclassResponsibility
 ]
 
 { #category : #running }
@@ -52,6 +64,16 @@ MiQueryConfiguratorPresenterTest >> tearDown [
 
 	browser window ifNotNil: [ :window | window close ].
 	super tearDown
+]
+
+{ #category : #tests }
+MiQueryConfiguratorPresenterTest >> testConfigureFor [
+
+	| newQuery |
+	newQuery := self createNewQuery.
+	presenter configureFor: newQuery.
+	self assertSubpresentersAreConfigured.
+	self assert: presenter query equals: newQuery
 ]
 
 { #category : #tests }
