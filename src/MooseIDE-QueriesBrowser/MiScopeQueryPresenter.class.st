@@ -23,6 +23,13 @@ MiScopeQueryPresenter >> computeQuery: scope [
 	self query scope: scope
 ]
 
+{ #category : #'api - actions' }
+MiScopeQueryPresenter >> configureFor: aQuery [
+
+	directionsDropList selectItem: aQuery directionStrategy.
+	scopesDropList selectItem: aQuery scope
+]
+
 { #category : #initialization }
 MiScopeQueryPresenter >> initializeDirectionsDropList [
 
@@ -50,11 +57,11 @@ MiScopeQueryPresenter >> newLayout [
 	| padding |
 	padding := 5.
 	^ SpBoxLayout newLeftToRight
-		  add: #directionsDropList
+		  add: directionsDropList
 		  expand: false
 		  fill: true
 		  padding: padding;
-		  add: #scopesDropList
+		  add: scopesDropList
 		  expand: false
 		  fill: true
 		  padding: padding;

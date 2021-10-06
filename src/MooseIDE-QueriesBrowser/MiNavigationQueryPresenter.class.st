@@ -28,7 +28,7 @@ MiNavigationQueryPresenter >> computeQuery: association [
 MiNavigationQueryPresenter >> configureFor: aQuery [
 
 	directionDropList selectItem: aQuery directionStrategy.
-	associationsList items: aQuery associations.
+	associationsList selectItems: aQuery associations.
 	query := aQuery
 ]
 

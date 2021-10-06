@@ -53,14 +53,23 @@ MiSaveQueriesCommand >> queriesToStore [
 	"Since we are resetting the result and changing the parent of the queries,
 	we don't want to do that on the original queries to keep the queries browser
 	still running. So we will use a copy of the objects"
-	queriesToStore := OrderedCollection new.
-	queries do: [ :each | queriesToStore add: each copy ].
+	
+	"queriesToStore := queries collect: [ :each | each copy ]."
+	queriesToStore := queries.
+	
 	"For the unary queries that have a root query as a parent
 	we put the parent as nil. Because we don't want to store root queries. 
 	Also we don't want to store the result of the queries"
 	queriesToStore do: [ :each | 
+		self resetResultFor: each.
 		each isUnaryQuery ifTrue: [ 
-			each parent isRootQuery ifTrue: [ each parent: nil ] ].
-		each resetResult ].
+			each parent isRootQuery ifTrue: [ each parent: nil ] ] ].
 	^ queriesToStore
+]
+
+{ #category : #executing }
+MiSaveQueriesCommand >> resetResultFor: aQuery [
+
+	aQuery resetResult.
+	aQuery parent ifNotNil: [ :parent | self resetResultFor: parent ]
 ]

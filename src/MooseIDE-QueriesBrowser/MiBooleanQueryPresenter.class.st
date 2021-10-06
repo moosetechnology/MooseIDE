@@ -13,6 +13,12 @@ MiBooleanQueryPresenter >> computeQuery: aProperty [
 	self updateProperty: aProperty
 ]
 
+{ #category : #'api - actions' }
+MiBooleanQueryPresenter >> configureFor: aQuery [
+
+	propertyDropList selectItem: aQuery property
+]
+
 { #category : #initialization }
 MiBooleanQueryPresenter >> initializePresenters [
 
@@ -35,7 +41,7 @@ MiBooleanQueryPresenter >> newLayout [
 	| padding |
 	padding := 5.
 	^ SpBoxLayout newLeftToRight
-		  add: #propertyDropList
+		  add: propertyDropList
 		  expand: false
 		  fill: true
 		  padding: padding;

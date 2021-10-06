@@ -13,6 +13,14 @@ MiNumericQueryPresenter >> computeQuery: num [
 	self query valueToCompare: num
 ]
 
+{ #category : #'api - actions' }
+MiNumericQueryPresenter >> configureFor: aQuery [
+
+	propertyDropList selectItem: aQuery property.
+	comparatorDropList selectItem: aQuery comparator.
+	valueInputField number: aQuery valueToCompare
+]
+
 { #category : #initialization }
 MiNumericQueryPresenter >> initializePresenters [
 
@@ -26,19 +34,19 @@ MiNumericQueryPresenter >> newLayout [
 	| padding |
 	padding := 5.
 	^ SpBoxLayout newLeftToRight
-		  add: #propertyDropList
-		  expand: false
-		  fill: true
-		  padding: padding;
-		  add: #comparatorDropList withConstraints: [ :constraints | 
-			  constraints
-				  padding: padding;
-				  width: 63 ];
-		  add: #valueInputField withConstraints: [ :constraints | 
-		  constraints
-			  padding: padding;
-			  width: 70 ];
-		  yourself
+		add: propertyDropList
+		expand: false
+		fill: true
+		padding: padding;
+		add: comparatorDropList withConstraints: [ :constraints | 
+			constraints
+				padding: padding;
+				width: 63 ];
+		add: valueInputField withConstraints: [ :constraints | 
+			constraints
+				padding: padding;
+				width: 70 ];
+		yourself
 ]
 
 { #category : #initialization }

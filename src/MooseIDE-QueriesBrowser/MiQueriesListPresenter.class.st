@@ -53,6 +53,9 @@ MiQueriesListPresenter >> availableQueryTypes [
 MiQueriesListPresenter >> constructQueriesWithFile: aFile [
 
 	| newQueries newQueryPresenters  |
+	
+	[ self enableProgressNotification ] asJob run.
+	
 	aFile readStreamDo: [ :stream | 
 		newQueries := STON fromStream: stream ].
 
@@ -60,7 +63,6 @@ MiQueriesListPresenter >> constructQueriesWithFile: aFile [
 	newQueries do: [ :each | 
 		each parent ifNil: [ 
 			each parent: parentQueryBrowser rootQuery ] ].
-
 
 	queryCounter := 1.
 	newQueryPresenters := newQueries collect: [ :each | 
@@ -71,7 +73,9 @@ MiQueriesListPresenter >> constructQueriesWithFile: aFile [
 		newPresenter configureFor: each ].
 
 	queryItemsPresenters := newQueryPresenters.
-	self updateComponentList
+	self updateComponentList.
+	
+	self disableProgressNotification
 ]
 
 { #category : #'api - actions' }
@@ -100,17 +104,17 @@ MiQueriesListPresenter >> enableProgressNotification [
 
 	| queriesBrowserMorph font morph |
 	font := LogicalFont
-		        familyName: StandardFonts defaultFont familyName
-		        pointSize: 12.
+			familyName: StandardFonts defaultFont familyName
+			pointSize: 12.
 	morph := StringMorph
-		         contents: 'Computing...'
-		         font: font
-		         emphasis: TextEmphasis italic.
+			contents: 'Computing...'
+			font: font
+			emphasis: TextEmphasis italic.
 	progressNotificationPresenter := SpMorphPresenter new
-		                                 morph:
-			                                 (PanelMorph new addMorphFront:
-					                                  morph);
-		                                 yourself.
+			morph: (PanelMorph new
+				addMorphFront: morph;
+				yourself);
+			yourself.
 	parentQueryBrowser window ifNotNil: [ 
 		queriesBrowserMorph := parentQueryBrowser window window.
 		spinnerMorph position:

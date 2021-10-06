@@ -23,6 +23,13 @@ MiTypeQueryPresenter >> computeQuery: aType [
 	self updateQueryWithSelectedTypes: typesList selectedItems
 ]
 
+{ #category : #'api - actions' }
+MiTypeQueryPresenter >> configureFor: aQuery [
+
+	typesList selectItems: aQuery types.
+	query types: aQuery types
+]
+
 { #category : #initialization }
 MiTypeQueryPresenter >> initializePresenters [
 
@@ -72,11 +79,11 @@ MiTypeQueryPresenter >> newLayout [
 	| padding |
 	padding := 5.
 	^ SpBoxLayout newLeftToRight
-		  add: #typesButton
-		  expand: false
-		  fill: true
-		  padding: padding;
-		  yourself
+		add: typesButton
+		expand: false
+		fill: true
+		padding: padding;
+		yourself
 ]
 
 { #category : #initialization }
