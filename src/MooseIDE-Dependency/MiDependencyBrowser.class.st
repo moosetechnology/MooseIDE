@@ -53,16 +53,17 @@ MiDependencyBrowser >> canHighlight [
 
 { #category : #testing }
 MiDependencyBrowser >> canReceiveEntity: anObject [
-	^ anObject isCollection
-		and: [ anObject
-				anySatisfy: [ :a | a usesFamixTrait: TEntityMetaLevelDependency ] ]
+
+	^ anObject isCollection and: [ 
+		  anObject anySatisfy: [ :a | 
+			  a usesFamixTrait: TEntityMetaLevelDependency ] ]
 ]
 
 { #category : #actions }
 MiDependencyBrowser >> followEntity: anEntity [
 
 	diagram
-		entities: (anEntity asCollection select: [ :a | 
+		entities: (anEntity asMooseGroup select: [ :a | 
 					 a usesFamixTrait: TEntityMetaLevelDependency ]);
 		run
 ]
@@ -81,5 +82,6 @@ MiDependencyBrowser >> initializePresenters [
 
 { #category : #accessing }
 MiDependencyBrowser >> miSelectedItem [
-	^ diagram selected
+
+	^ diagram selected ifNil: [ diagram entities ]
 ]
