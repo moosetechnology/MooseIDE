@@ -18,7 +18,8 @@ Class {
 		'queryItemsPresenters',
 		'saveQueriesButton',
 		'loadQueriesButton',
-		'loadQueriesList'
+		'loadQueriesList',
+		'clearQueriesButton'
 	],
 	#category : #'MooseIDE-QueriesBrowser-Main presenters'
 }
@@ -64,7 +65,6 @@ MiQueriesListPresenter >> constructQueriesWithFile: aFile [
 		each parent ifNil: [ 
 			each parent: parentQueryBrowser rootQuery ] ].
 
-	self reinitializeQueryPresenters.
 	"We cannot use a collect here because we need to keep track of how many queries we are creating
 	iteration by iteration"
 	newQueries do: [ :each | 
@@ -171,7 +171,6 @@ MiQueriesListPresenter >> initializeButtons [
 		afterCreationAction: [ 
 			self reinitializeQueryPresenters.
 			parentQueryBrowser resetRootQueryEntities ].
-
 	saveQueriesButton := saveCommand asSpecCommand asButtonPresenter.
 	saveQueriesButton
 		label: '';
@@ -180,7 +179,12 @@ MiQueriesListPresenter >> initializeButtons [
 	loadQueriesButton := self newButton.
 	loadQueriesButton
 		icon: (self iconNamed: #smallLoadProject);
-		action: [ self showLoadQueriesPopover ]
+		action: [ self showLoadQueriesPopover ].
+	clearQueriesButton := self newButton.
+	clearQueriesButton
+		icon: (self iconNamed: #smallUpdate);
+		action: [ self reinitializeQueryPresenters  ];
+		label: 'Clear queries'
 ]
 
 { #category : #initialization }
@@ -198,17 +202,17 @@ MiQueriesListPresenter >> initializeComponentListPresenter [
 MiQueriesListPresenter >> initializeLayout [
 
 	self layout: (SpBoxLayout newTopToBottom
-			 add: (SpBoxLayout newLeftToRight
-					  add: addRootQueryButton width: self class iconWidth;
-					  addLast: loadQueriesButton
-					  withConstraints: [ :c | c width: self class iconWidth ];
-					  addLast: saveQueriesButton
-					  withConstraints: [ :c | c width: self class iconWidth ];
-					  yourself)
-			 expand: false;
-			 add: componentListPresenter;
-			 add: progressNotificationPresenter expand: false;
-			 yourself)
+		add: (SpBoxLayout newLeftToRight
+			spacing: 5;
+			add: addRootQueryButton width: self class iconWidth;
+			add: clearQueriesButton expand: false;
+			addLast: loadQueriesButton withConstraints: [ :c | c width: self class iconWidth ];
+			addLast: saveQueriesButton withConstraints: [ :c | c width: self class iconWidth ];
+			yourself)
+		expand: false;
+		add: componentListPresenter;
+		add: progressNotificationPresenter expand: false;
+		yourself)
 ]
 
 { #category : #initialization }
