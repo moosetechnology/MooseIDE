@@ -77,11 +77,9 @@ MiSaveQueriesCommand >> queriesToStore [
 
 	| queriesToStore queries |
 	queries := self context famixQueries.
-	"Since we are resetting the result and changing the parent of the queries,
-	we don't want to do that on the original queries to keep the queries browser
-	still running. So we will use a copy of the objects"
+	"Since we are resetting the result and changing the parent of the queries, we don't want to do that on the original queries to keep the queries browser still running.
+	So, we will use a copy of the objects. We need to make an intelligent copiing of the objects. Because if a query has a parent we must change parent to the new parent. For now it's not done.  "
 	
-	"queriesToStore := queries collect: [ :each | each copy ]."
 	queriesToStore := queries.
 	
 	"For the unary queries that have a root query as a parent
