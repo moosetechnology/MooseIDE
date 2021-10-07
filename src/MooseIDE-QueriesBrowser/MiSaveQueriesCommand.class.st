@@ -31,7 +31,7 @@ MiSaveQueriesCommand class >> iconName [
 { #category : #'accessing - defaults' }
 MiSaveQueriesCommand class >> path [
 
-	^ './pharo-local/queries-browser-cache/'
+	^ './pharo-local/queries-browser-saved-queries/'
 ]
 
 { #category : #executing }
