@@ -49,7 +49,7 @@ MiQueriesListPresenter >> availableQueryTypes [
 		  each isAvailableForQueriesSize: queryItemsPresenters size ]
 ]
 
-{ #category : #initialization }
+{ #category : #actions }
 MiQueriesListPresenter >> constructQueriesWithFile: aFile [
 
 	| newQueries |
@@ -64,8 +64,7 @@ MiQueriesListPresenter >> constructQueriesWithFile: aFile [
 		each parent ifNil: [ 
 			each parent: parentQueryBrowser rootQuery ] ].
 
-	queryItemsPresenters := OrderedCollection empty.
-	queryCounter := 1.
+	self reinitializeQueryPresenters.
 	"We cannot use a collect here because we need to keep track of how many queries we are creating
 	iteration by iteration"
 	newQueries do: [ :each | 
@@ -160,14 +159,24 @@ MiQueriesListPresenter >> initialize [
 { #category : #initialization }
 MiQueriesListPresenter >> initializeButtons [
 
+	| saveCommand |
 	addRootQueryButton := self newButton.
 	addRootQueryButton
 		icon: (self iconNamed: #smallAdd);
 		action: [ self addNewFirstLevelQuery ].
-	saveQueriesButton := ((MiSaveQueriesCommand forSpecContext: self) 
-		                      iconName: MiSaveQueriesCommand iconName)
-		                     asButtonPresenter.
-	saveQueriesButton label: ''.
+
+	saveCommand := MiSaveQueriesCommand new.
+	saveCommand
+		context: self;
+		afterCreationAction: [ 
+			self reinitializeQueryPresenters.
+			parentQueryBrowser resetRootQueryEntities ].
+
+	saveQueriesButton := saveCommand asSpecCommand asButtonPresenter.
+	saveQueriesButton
+		label: '';
+		icon: (self iconNamed: MiSaveQueriesCommand iconName).
+
 	loadQueriesButton := self newButton.
 	loadQueriesButton
 		icon: (self iconNamed: #smallLoadProject);
@@ -246,6 +255,14 @@ MiQueriesListPresenter >> queryChangedUpdate: query [
 MiQueriesListPresenter >> queryItemsPresenters [
 
 	^ queryItemsPresenters
+]
+
+{ #category : #actions }
+MiQueriesListPresenter >> reinitializeQueryPresenters [
+
+	queryCounter := 1.
+	queryItemsPresenters := OrderedCollection new.
+	self updateComponentList
 ]
 
 { #category : #actions }

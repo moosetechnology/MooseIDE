@@ -11,7 +11,8 @@ Class {
 		'queryNotebookPresenter',
 		'selectedQuery',
 		'rootQuery',
-		'queriesListPresenter'
+		'queriesListPresenter',
+		'busMooseEntities'
 	],
 	#category : #'MooseIDE-QueriesBrowser-Main presenters'
 }
@@ -73,22 +74,17 @@ MiQueriesBrowser >> canReceiveEntity: anObject [
 { #category : #actions }
 MiQueriesBrowser >> followEntity: anEntity [
 
-	| mooseGroup mooseModelName |
 	"Create a group in case that only one entity was received from the bus"
-	mooseGroup := anEntity asMooseGroup allUsing: FamixTNamedEntity.
+	busMooseEntities := anEntity asMooseGroup allUsing: FamixTNamedEntity.
+		
+	"Create the new root query"
+	self resetRootQueryEntities.
 
 	"Update window's title"
-	mooseModelName := mooseGroup first mooseModel name.
-	self window title: (self class titleForModelName: mooseModelName).
-
-	"Create the new root query"
-	rootQuery
-		resetResult;
-		result: mooseGroup;
-		name: mooseModelName.
+	self window
+		title: (self class titleForModelName: busMooseEntities first mooseModel name).
 
 	"Update the all the sub presenters with this new query"
-	self selectQuery: rootQuery.
 	queriesListPresenter followNewEntity
 ]
 
@@ -184,6 +180,16 @@ MiQueriesBrowser >> removeChild: childToRemove fromParent: aParent [
 MiQueriesBrowser >> removeQuery: aQuery [
 
 	self removeChild: aQuery fromParent: rootQuery
+]
+
+{ #category : #'api - actions' }
+MiQueriesBrowser >> resetRootQueryEntities [
+
+	rootQuery
+		resetResult;
+		result: busMooseEntities;
+		name: busMooseEntities first mooseModel name.
+	self selectQuery: rootQuery
 ]
 
 { #category : #accessing }
