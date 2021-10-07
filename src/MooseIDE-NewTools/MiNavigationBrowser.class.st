@@ -60,6 +60,15 @@ MiNavigationBrowser >> activateOnSingleClick: anObject [
 	activateOnSingleClick := anObject
 ]
 
+{ #category : #action }
+MiNavigationBrowser >> filterEmptyValues: entities [
+
+	^ entities select: [ :each | 
+		  each value isCollection
+			  ifTrue: [ each value isNotEmpty ]
+			  ifFalse: [ true ] ]
+]
+
 { #category : #initialization }
 MiNavigationBrowser >> hasOutputActivationPort [
 
@@ -69,11 +78,13 @@ MiNavigationBrowser >> hasOutputActivationPort [
 { #category : #initialization }
 MiNavigationBrowser >> initializePresenters [
 
+	| items |
 	navigation := self newTable.
 
+	items := self filterEmptyValues: (self itemsFor: self model).
 	navigation
 		contextMenu: [ self rootCommandsGroup asMenuPresenter ];
-		items: (self itemsFor: self model);
+		items: items;
 		sortingBlock: [ :a :b | a key asString < b key asString ].
 	navigation addColumn: (SpCompositeTableColumn new
 			 addColumn: (SpImageTableColumn new
@@ -81,7 +92,7 @@ MiNavigationBrowser >> initializePresenters [
 					  evaluated: [ :el | el value midasIcon ];
 					  yourself);
 			 addColumn: (SpStringTableColumn new
-					  evaluated: [ :el | el key inspectorToString  ];
+					  evaluated: [ :el | el key inspectorToString ];
 					  yourself);
 			 yourself).
 	navigation whenActivatedDo: [ :selection | 
