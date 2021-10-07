@@ -63,7 +63,9 @@ MiSaveQueriesCommand >> execute [
 		            request: 'Name of the file: '
 		            initialAnswer: ''.
 	"If the user pressed the cancel button"
-	(fileName isNil or: [ fileName isEmpty ]) ifTrue: [ ^ self ].
+	(fileName isNil or: [ fileName isEmpty ]) ifTrue: [ 
+		UIManager inform: 'You need to specify a name for the file.'.
+		^ self ].
 
 	file := self createFile: fileName.
 	self write: self queriesToStore toFile: file.
