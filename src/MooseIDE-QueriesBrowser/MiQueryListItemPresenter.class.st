@@ -50,6 +50,13 @@ MiQueryListItemPresenter >> allQueryPresentersExceptSelf [
 ]
 
 { #category : #'api - actions' }
+MiQueryListItemPresenter >> configureFor: aQuery [
+
+	queryTypesDropListPresenter selectItem: aQuery class.
+	queryConfiguratorPresenter configureFor: aQuery
+]
+
+{ #category : #'api - actions' }
 MiQueryListItemPresenter >> disableProgressNotification [
 
 	parentQueryListPresenter disableProgressNotification
@@ -148,6 +155,15 @@ MiQueryListItemPresenter >> initializeQueryTypesDropList [
 			self updateQueryConfiguratorPresenterFor: queryClass ]
 ]
 
+{ #category : #update }
+MiQueryListItemPresenter >> instantiateConfiguratorPresenterForQuery: newQuery [
+
+	queryConfiguratorPresenter := self instantiate:
+		(newQuery class miPresenterClass
+			owner: self
+			on: newQuery)
+]
+
 { #category : #accessing }
 MiQueryListItemPresenter >> name [
 
@@ -161,11 +177,7 @@ MiQueryListItemPresenter >> newQueryForClass: queryClass [
 	(parentQuery children includes: self query) ifTrue: [ 
 		parentQuery removeChild: self query ].
 
-	newQuery := queryClass isUnaryQuery
-		            ifTrue: [ "The unary query is the only one that has a parent" 
-			            queryClass defaultForParent: parentQuery ]
-		            ifFalse: [ "Nor the NAry query nor the complement query have a parent " 
-			            queryClass new ].
+	newQuery := queryClass defaultForParent: parentQuery.
 	parentQuery addChild: newQuery.
 	^ newQuery
 ]
@@ -237,10 +249,8 @@ MiQueryListItemPresenter >> updateQueryConfiguratorPresenterFor: queryClass [
 	newQuery := self newQueryForClass: queryClass.
 
 	"Instantiate the configuration presenter with the new created query"
-	queryConfiguratorPresenter := self instantiate:
-		                              (queryClass miPresenterClass
-			                               owner: self
-			                               on: newQuery).
+	self instantiateConfiguratorPresenterForQuery: newQuery.
+
 	"We update the subqueries droplist of all the presenters in the queries browser.
 	This is to keep the list of the queries updated."
 	parentQueryListPresenter updateSubqueriesListPresenter.

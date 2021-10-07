@@ -25,6 +25,14 @@ MiQueryConfiguratorPresenter >> computeQueryAction: anObject [
 	owner disableProgressNotification
 ]
 
+{ #category : #'api - actions' }
+MiQueryConfiguratorPresenter >> configureFor: aQuery [
+
+	"You should always do `query := aQuery` at the end of this method for all subclasses"
+
+	self subclassResponsibility
+]
+
 { #category : #layout }
 MiQueryConfiguratorPresenter >> initializeLayout [
 

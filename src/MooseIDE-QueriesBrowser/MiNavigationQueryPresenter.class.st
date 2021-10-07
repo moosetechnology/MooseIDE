@@ -24,6 +24,14 @@ MiNavigationQueryPresenter >> computeQuery: association [
 		associationsList selectedItems
 ]
 
+{ #category : #'api - actions' }
+MiNavigationQueryPresenter >> configureFor: aQuery [
+
+	directionDropList selectItem: aQuery directionStrategy.
+	associationsList selectItems: aQuery associations.
+	query := aQuery
+]
+
 { #category : #initialization }
 MiNavigationQueryPresenter >> initializeAssociationsButton [
 
@@ -81,15 +89,15 @@ MiNavigationQueryPresenter >> newLayout [
 	| padding |
 	padding := 5.
 	^ SpBoxLayout newLeftToRight
-		  add: directionDropList
-		  expand: false
-		  fill: true
-		  padding: padding;
-		  add: associationsButton withConstraints: [ :constraints | 
-			  constraints
-				  width: 150;
-				  padding: padding ];
-		  yourself
+		add: directionDropList
+		expand: false
+		fill: true
+		padding: padding;
+		add: associationsButton withConstraints: [ :constraints | 
+			constraints
+				width: 150;
+				padding: padding ];
+		yourself
 ]
 
 { #category : #initialization }

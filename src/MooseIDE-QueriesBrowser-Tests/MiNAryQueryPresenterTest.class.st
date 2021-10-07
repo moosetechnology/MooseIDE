@@ -4,10 +4,49 @@ Class {
 	#category : #'MooseIDE-QueriesBrowser-Tests-Queries Configuration'
 }
 
+{ #category : #tests }
+MiNAryQueryPresenterTest >> assertSubpresentersAreConfigured [
+
+	self assert: presenter query subqueries size equals: 3.
+	self assert: presenter subqueryDropLists size equals: 3
+]
+
 { #category : #running }
 MiNAryQueryPresenterTest >> classToTest [
 
 	^ MiNAryQueryPresenter
+]
+
+{ #category : #tests }
+MiNAryQueryPresenterTest >> createNewQuery [
+
+	| rootQuery query1 query2 query3 nAryQuery |
+	rootQuery := FQRootQuery new
+		result: helper classesAndMethods;
+		yourself.
+	query1 := FQStringQuery defaultForParent: rootQuery.
+	query1 
+		property: #name;
+		comparator: #includesSubstring:;
+		valueToCompare: 'a'.
+	query2 := FQScopeQuery defaultForParent: rootQuery.
+	query2
+		directionStrategy: FQScopeUpAndDown;
+		scope: FamixStClass.
+	query3 := FQBooleanQuery defaultForParent: rootQuery.
+	query3 property: #isStub.
+	nAryQuery := FQUnionQuery subqueries: { query1 . query2 . query3 }.
+	
+	"Add the queries to the browser"
+	browser queriesListPresenter
+		addNewFirstLevelQuery;
+		addNewFirstLevelQuery;
+		addNewFirstLevelQuery.
+	{ query1 . query2 . query3 }
+		with: browser queriesListPresenter queryItemsPresenters
+		do: [ :a :b |
+			b configureFor: a ].
+	^ nAryQuery
 ]
 
 { #category : #running }
