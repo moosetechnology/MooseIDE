@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'builder',
 		'rootEntities',
-		'selected'
+		'selected',
+		'miUMLModelDescriptor'
 	],
 	#category : #'MooseIDE-Famix-UML'
 }
@@ -20,6 +21,18 @@ MiUML >> highlightShapes [
 MiUML >> initialize [
 	super initialize.
 	rootEntities := #()
+]
+
+{ #category : #accessing }
+MiUML >> miUMLModelDescriptor [
+
+	^ miUMLModelDescriptor ifNil: [ RSUMLClassDescriptor new forFamix ]
+]
+
+{ #category : #accessing }
+MiUML >> miUMLModelDescriptor: anObject [
+
+	miUMLModelDescriptor := anObject
 ]
 
 { #category : #helpers }
@@ -41,7 +54,7 @@ MiUML >> rootEntities: aCollection [
 MiUML >> run [
 	super run.
 	builder := RSUMLClassBuilder new.
-	builder modelDescriptor forFamix.
+	builder modelDescriptor: miUMLModelDescriptor.
 	builder classes: self rootEntities.
 	builder build.
 	builder renderIn: self canvas.
