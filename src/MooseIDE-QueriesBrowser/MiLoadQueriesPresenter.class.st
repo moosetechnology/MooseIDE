@@ -50,7 +50,7 @@ MiLoadQueriesPresenter >> initializeList [
 
 	filteringListPresenter := self newFilteringList.
 	filteringListPresenter
-		items: self queriesStonFiles;
+		items: MiSaveQueriesCommand stonFiles;
 		display: [ :each | each basename withoutPeriodSuffix ].
 	filteringListPresenter listPresenter
 		sortingBlock: #basename ascending
@@ -70,22 +70,10 @@ MiLoadQueriesPresenter >> okAction: aBlock [
 	closeButton action: aBlock
 ]
 
-{ #category : #accessing }
-MiLoadQueriesPresenter >> queriesStonFiles [
-
-	| allFiles stonFiles fileReference |
-	fileReference := MiSaveQueriesCommand path asFileReference
-		                 ensureCreateDirectory.
-	allFiles := fileReference files.
-	stonFiles := allFiles select: [ :each | 
-		             each basename endsWith: '.ston' ].
-	^ stonFiles
-]
-
 { #category : #actions }
 MiLoadQueriesPresenter >> resetItems [
 
-	filteringListPresenter items: self queriesStonFiles
+	filteringListPresenter items: MiSaveQueriesCommand stonFiles
 ]
 
 { #category : #accessing }

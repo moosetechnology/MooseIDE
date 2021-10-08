@@ -34,6 +34,19 @@ MiSaveQueriesCommand class >> path [
 	^ './pharo-local/queries-browser-saved-queries/'
 ]
 
+{ #category : #'as yet unclassified' }
+MiSaveQueriesCommand class >> stonFiles [
+
+	| fileReference allFiles stonFiles |
+	fileReference := self path asFileReference.
+	allFiles := fileReference exists
+		ifTrue: [ fileReference files ]
+		ifFalse: [ #( ) ].
+	stonFiles := allFiles select: [ :each | 
+		             each basename endsWith: '.ston' ].
+	^ stonFiles
+]
+
 { #category : #executing }
 MiSaveQueriesCommand >> afterCreationAction [
 
