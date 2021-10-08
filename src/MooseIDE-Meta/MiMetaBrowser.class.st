@@ -2,12 +2,18 @@ Class {
 	#name : #MiMetaBrowser,
 	#superclass : #MiAbstractBrowser,
 	#instVars : [
-		'comment',
+		'commentNoteBook',
 		'entities',
 		'properties',
 		'map',
 		'propertiesRelationsTable',
-		'propertiesPropertiesTable'
+		'propertiesPropertiesTable',
+		'comment',
+		'commentGetterPage',
+		'commentSetterPage',
+		'commentCommentPage',
+		'getterCode',
+		'setterCode'
 	],
 	#category : #'MooseIDE-Meta-MetaBrowser'
 }
@@ -24,7 +30,7 @@ MiMetaBrowser class >> defaultSpec [
 								     yourself);
 						    add: #map;
 						    yourself);
-				   add: #comment;
+				   add: #commentNoteBook;
 				   yourself);
 		  yourself
 ]
@@ -79,8 +85,23 @@ MiMetaBrowser >> followEntity: anEntity [
 ]
 
 { #category : #initialization }
-MiMetaBrowser >> initializeComment [
-	comment := self newText
+MiMetaBrowser >> initializeCommentNoteBook [
+
+	comment := self newText.
+	getterCode := self newCode.
+	setterCode := self newCode.
+	commentGetterPage := SpNotebookPage
+		                     title: 'Getter'
+		                     provider: [ getterCode ].
+	commentSetterPage := SpNotebookPage
+		                     title: 'Setter'
+		                     provider: [ setterCode ].
+	commentCommentPage := SpNotebookPage
+		                      title: 'Comment'
+		                      provider: [ comment ].
+	commentNoteBook := self newNotebook.
+	"Add a first page to select one page by default"
+	commentNoteBook addPage: commentCommentPage
 ]
 
 { #category : #initialization }
@@ -93,9 +114,7 @@ MiMetaBrowser >> initializeEntities [
 	entities whenSelectedItemChangedDo: [ :element | 
 		element ifNotNil: [ 
 			self updatePropertyFromMooseDescription: element.
-			comment text: (element implementingClass
-					 ifNil: [ 'No Comment' ]
-					 ifNotNil: [ :class | class comment ]) ] ]
+			self updateCommentOf: element ] ]
 ]
 
 { #category : #initialization }
@@ -111,7 +130,7 @@ MiMetaBrowser >> initializeMap [
 { #category : #initialization }
 MiMetaBrowser >> initializePresenters [
 	super initializePresenters.
-	self initializeComment.
+	self initializeCommentNoteBook.
 	self initializeEntities.
 	self initializeProperties.
 	self initializeMap.
@@ -153,12 +172,25 @@ MiMetaBrowser >> initializeProperties [
 { #category : #initialization }
 MiMetaBrowser >> updateCommentOf: aMooseDescription [
 
-	comment text: (aMooseDescription isFM3Property
-		ifTrue: [ aMooseDescription comment ]
-		ifFalse: [ "If false I am a fm3trait or fm3Class"
-			aMooseDescription implementingClass
-				ifNil: [ 'No Comment' ]
-				ifNotNil: [ :class | class comment ] ])
+	aMooseDescription isFM3Property
+		ifTrue: [ 
+			comment text: aMooseDescription comment.
+			getterCode text: aMooseDescription compiledMethod sourceCode.
+			setterCode text:
+				((aMooseDescription implementingClass lookupSelector:
+					  (aMooseDescription implementingSelector , ':') asSymbol)
+					 ifNil: [ '' ]
+					 ifNotNil: [ :method | method compiledMethod sourceCode ]).
+			commentNoteBook pages: { 
+					commentCommentPage.
+					commentGetterPage }.
+			setterCode text ifNotEmpty: [ 
+				commentNoteBook addPage: commentSetterPage ] ]
+		ifFalse: [ 
+			comment text: (aMooseDescription implementingClass
+					 ifNil: [ 'No Comment' ]
+					 ifNotNil: [ :class | class comment ]).
+			commentNoteBook pages: { commentCommentPage } ]
 ]
 
 { #category : #initialization }
