@@ -4,3 +4,12 @@ Extension { #name : #MiLogBrowser }
 MiLogBrowser >> logsList [
 	^ logsLists
 ]
+
+{ #category : #'*MooseIDE-Tests' }
+MiLogBrowser class >> openForTestsOnBus: aBus [
+
+	^ (self newApplication: MiTestApplication current)
+		  openWithSpec;
+		  followBus: aBus;
+		  yourself
+]

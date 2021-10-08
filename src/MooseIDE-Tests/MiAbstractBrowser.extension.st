@@ -8,6 +8,12 @@ MiAbstractBrowser >> actionButtons [
 ]
 
 { #category : #'*MooseIDE-Tests' }
+MiAbstractBrowser >> busButton [
+
+	^ (self toolbarCommandGroup commandOrGroupNamed: 'Buses') presenter
+]
+
+{ #category : #'*MooseIDE-Tests' }
 MiAbstractBrowser class >> openForTests [
 
 	^ (self

@@ -22,12 +22,13 @@ MiEditBusCommand >> asSpecCommand [
 	| specCommand |
 	specCommand := super asSpecCommand
 		               name: 'Buses';
+		               description: self help;
 		               yourself.
 
 	specCommand buildPresenterBlock: [ :cmd | 
 		SpToolbarPopoverButtonPresenter new
-			label: specCommand name;
-			help: specCommand description;
+			label: specCommand decoratedCommand label;
+			help: specCommand decoratedCommand help;
 			icon: specCommand icon;
 			content: [ self busesList ];
 			yourself ].
@@ -72,4 +73,25 @@ MiEditBusCommand >> busesList [
 MiEditBusCommand >> execute [
 
 	
+]
+
+{ #category : #converting }
+MiEditBusCommand >> help [
+
+	^ String streamContents: [ :s | 
+		  self context buses do: [ :bus | 
+			  s
+				  << '- ';
+				  << bus name;
+				  cr ].
+		  s << 'Click to edit' ]
+]
+
+{ #category : #converting }
+MiEditBusCommand >> label [
+
+	^ self context buses ifEmpty: [ 'No bus' ] ifNotEmpty: [ :buses | 
+		  buses size = 1
+			  ifTrue: [ 'Bus: ' , buses anyOne name ]
+			  ifFalse: [ buses size asString , ' buses' ] ]
 ]

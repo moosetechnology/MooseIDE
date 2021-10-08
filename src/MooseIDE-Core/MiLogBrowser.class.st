@@ -22,7 +22,7 @@ Class {
 MiLogBrowser class >> defaultSpec [
 
 	^ super defaultSpec
-		  add: #toolbar;
+		  add: #toolbar height: self toolbarHeight;
 		  yourself
 ]
 
@@ -44,7 +44,8 @@ MiLogBrowser class >> menuCommandOn: aBuilder [
 MiLogBrowser class >> open [
 
 	<script>
-	^ super open
+	^ (self on: self newModel)
+		  openWithSpec;
 		  followBuses: self currentApplication buses;
 		  yourself
 ]
@@ -53,8 +54,8 @@ MiLogBrowser class >> open [
 MiLogBrowser class >> openOnBus: aBus [
 
 	^ (self newApplication: self currentApplication)
-		  followBus: aBus;
 		  openWithSpec;
+		  followBus: aBus;
 		  yourself
 ]
 
@@ -71,15 +72,8 @@ MiLogBrowser >> canReceiveEntity: anObject [
 
 { #category : #actions }
 MiLogBrowser >> cleanAllLoggers [
-	self logsList presenters
-		do: [ :presenter | presenter bus logger clean ].
-	self update
-]
 
-{ #category : #buses }
-MiLogBrowser >> followBus: aBus [
-
-	super followBus: aBus.
+	self logsList do: [ :presenter | presenter bus logger clean ].
 	self update
 ]
 
@@ -98,10 +92,9 @@ MiLogBrowser >> followEntity: anEntity [
 { #category : #initialization }
 MiLogBrowser >> initialize [
 
+	logsLists := #(  ).
 	super initialize.
-	((self toolbarCommandGroup commandOrGroupNamed: 'Actions') 
-		 commandOrGroupNamed: 'Propagate') decoratedCommand
-		doNotFreezeBrowser
+	self propagateCommand doNotFreezeBrowser
 ]
 
 { #category : #initialization }
@@ -131,12 +124,22 @@ MiLogBrowser >> selectedItem: anEntity [
 
 { #category : #buses }
 MiLogBrowser >> unfollowBus: aBus [
+
 	super unfollowBus: aBus.
 	self update
 ]
 
 { #category : #actions }
+MiLogBrowser >> unselectAll [
+
+	self selectedItem: nil.
+	logsLists do: [ :busLogsList | busLogsList unselectAll ]
+]
+
+{ #category : #actions }
 MiLogBrowser >> update [
+
+	self selectedItem: nil.
 	self updateLogsList.
 	super update
 ]
@@ -144,14 +147,17 @@ MiLogBrowser >> update [
 { #category : #initialization }
 MiLogBrowser >> updateLogsList [
 
-	logsLists := SpBoxLayout newVertical.
+	| boxLayout |
+	logsLists := (self buses sorted: [ :bus | bus name ] ascending) 
+		             collect: [ :bus | 
+			             MiBusLogsList new
+				             owner: self;
+				             forBus: bus ].
 
-	self buses do: [ :bus | 
-		logsLists add: (MiBusLogsList new
-				 owner: self;
-				 forBus: bus) ].
+	boxLayout := SpBoxLayout newVertical.
+	logsLists do: [ :busLogsList | boxLayout add: busLogsList ].
 
 	self layout: (self class defaultSpec
-			 add: logsLists;
+			 add: boxLayout;
 			 yourself)
 ]

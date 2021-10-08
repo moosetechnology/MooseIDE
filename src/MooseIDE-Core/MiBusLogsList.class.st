@@ -1,6 +1,6 @@
 Class {
 	#name : #MiBusLogsList,
-	#superclass : #SpPresenter,
+	#superclass : #MiPresenter,
 	#instVars : [
 		'bus',
 		'busName',
@@ -62,8 +62,8 @@ MiBusLogsList >> initializeClearButton [
 MiBusLogsList >> initializeLogsList [
 
 	logsFilteringList := self newFilteringList
-		            display: [ :log | log entity mooseName ];
-		            yourself.
+		                     display: [ :log | log entity mooseName ];
+		                     yourself.
 	logsFilteringList listPresenter
 		contextMenu: [ self rootCommandsGroup asMenuPresenter ];
 		whenSelectionChangedDo: [ :selection | 
@@ -108,6 +108,13 @@ MiBusLogsList >> removeLog: aLog [
 { #category : #initialization }
 MiBusLogsList >> setOwnerSelectedItem: aLog [
 
+	self owner unselectAll.
 	self owner selectedItem: aLog entity.
 	self owner updateToolbar
+]
+
+{ #category : #'api - selection' }
+MiBusLogsList >> unselectAll [
+
+	logsFilteringList selectItem: nil
 ]

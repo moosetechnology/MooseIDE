@@ -135,12 +135,6 @@ MiAbstractBrowser class >> windowSize [
 ]
 
 { #category : #accessing }
-MiAbstractBrowser >> busButton [
-
-	^ (self toolbarCommandGroup commandOrGroupNamed: 'Buses') presenter
-]
-
-{ #category : #accessing }
 MiAbstractBrowser >> buses [
 	^ buses
 ]
@@ -238,6 +232,7 @@ MiAbstractBrowser >> isMiBrowser [
 
 { #category : #accessing }
 MiAbstractBrowser >> miSelectedItem [
+
 	^ (MiNoSelectedElementToPropagateException browser: self) signal
 ]
 
@@ -255,6 +250,13 @@ MiAbstractBrowser >> model: anObject [
 MiAbstractBrowser >> needUpdate: anEntity [
 
 	^ anEntity ~= model selected
+]
+
+{ #category : #'private - accessing' }
+MiAbstractBrowser >> propagateCommand [
+
+	^ ((self toolbarCommandGroup commandOrGroupNamed: 'Actions') 
+		   commandOrGroupNamed: 'Propagate') decoratedCommand
 ]
 
 { #category : #accessing }
@@ -312,21 +314,13 @@ MiAbstractBrowser >> unfollowBus: aBus [
 { #category : #buses }
 MiAbstractBrowser >> updateBusButton [
 
-	| busButton |
-	busButton := self busButton.
-
-	busButton label: (self buses ifEmpty: [ 'No bus' ] ifNotEmpty: [ 
-			 self buses size = 1
-				 ifTrue: [ 'Bus: ' , self buses anyOne name ]
-				 ifFalse: [ self buses size asString , ' buses' ] ]).
-
-	busButton help: (String streamContents: [ :s | 
-			 self buses do: [ :bus | 
-				 s
-					 << '- ';
-					 << bus name;
-					 cr ].
-			 s << 'Click to edit' ])
+	| busEditCommand |
+	busEditCommand := self toolbarCommandGroup commandOrGroupNamed:
+		                  'Buses'.
+	busEditCommand presenter ifNil: [ ^ self ].
+	busEditCommand presenter
+		label: busEditCommand decoratedCommand label;
+		help: busEditCommand decoratedCommand help
 ]
 
 { #category : #actions }
