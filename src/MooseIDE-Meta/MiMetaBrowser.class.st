@@ -68,9 +68,8 @@ MiMetaBrowser >> canReceiveEntity: anObject [
 MiMetaBrowser >> followEntity: anEntity [
 
 	", anEntity metamodel traits"
-	comment text: (anEntity mooseDescription implementingClass
-			 ifNil: [ 'No Comment' ]
-			 ifNotNil: [ :class | class comment ]).
+
+	(self updateCommentOf: anEntity mooseDescription).
 	entities roots: (anEntity metamodel classes select: [ :class | 
 			 class superclass fullName = 'Moose.Entity' ]).
 	self updatePropertyFromMooseDescription: anEntity mooseDescription.
@@ -103,7 +102,10 @@ MiMetaBrowser >> initializeEntities [
 MiMetaBrowser >> initializeMap [
 
 	map := self instantiate: MiUML.
-	map miUMLModelDescriptor: RSUMLClassDescriptor new forFame
+	map miUMLModelDescriptor: RSUMLClassDescriptor new forFame.
+	map whenSelectedItemChangedDo: [ :element | 
+		self updatePropertyFromMooseDescription: element.
+		self updateCommentOf: element ]
 ]
 
 { #category : #initialization }
@@ -140,12 +142,23 @@ MiMetaBrowser >> initializeProperties [
 					                              metaProperty type name ]);
 		                             yourself.
 	propertiesRelationsTable whenSelectedDo: [ :property | 
-		comment text: property comment ].
+		self updateCommentOf: property ].
 	propertiesPropertiesTable whenSelectedDo: [ :property | 
-		comment text: property comment ].
+		self updateCommentOf: property ].
 	properties
 		addPageTitle: 'Relations' provider: [ propertiesRelationsTable ];
 		addPageTitle: 'Properties' provider: [ propertiesPropertiesTable ]
+]
+
+{ #category : #initialization }
+MiMetaBrowser >> updateCommentOf: aMooseDescription [
+
+	comment text: (aMooseDescription isFM3Property
+		ifTrue: [ aMooseDescription comment ]
+		ifFalse: [ "If false I am a fm3trait or fm3Class"
+			aMooseDescription implementingClass
+				ifNil: [ 'No Comment' ]
+				ifNotNil: [ :class | class comment ] ])
 ]
 
 { #category : #initialization }

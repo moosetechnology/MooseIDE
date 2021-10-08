@@ -6,7 +6,7 @@ RSUMLClassDescriptor >> forFamix [
 	self
 		classname: #name;
 		superclass: #superclass;
-		instVars: [ :type | type properties sorted: #name ascending ];
+		instVars: [ :type | type attributes sorted: #name ascending ];
 		methods: [ :type | type methods sorted: #name ascending ];
 		methodSelector: #name;
 		instVarSelector: #name;
