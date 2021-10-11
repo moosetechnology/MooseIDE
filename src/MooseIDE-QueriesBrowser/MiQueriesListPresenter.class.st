@@ -179,7 +179,8 @@ MiQueriesListPresenter >> initializeButtons [
 	loadQueriesButton := self newButton.
 	loadQueriesButton
 		icon: (self iconNamed: #smallLoadProject);
-		action: [ self showLoadQueriesPopover ].
+		action: [ self showLoadQueriesPopover ];
+		help: 'Load a set of queries into the browser'.
 	clearQueriesButton := self newButton.
 	clearQueriesButton
 		icon: (self iconNamed: #smallUpdate);
