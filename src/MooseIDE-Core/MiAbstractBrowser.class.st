@@ -159,7 +159,8 @@ MiAbstractBrowser >> canPropagate [
 
 	| entity |
 	entity := self miSelectedItem.
-	^ entity isMooseObject and: [ entity asMooseGroup isNotEmpty ]
+	^ entity isMooseObject and: [ 
+		  entity asMooseGroup isNotEmpty or: [ entity isMooseModel ] ]
 ]
 
 { #category : #testing }

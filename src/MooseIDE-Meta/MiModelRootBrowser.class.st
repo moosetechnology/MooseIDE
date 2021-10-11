@@ -72,6 +72,7 @@ MiModelRootBrowser class >> title [
 
 { #category : #'updating screen' }
 MiModelRootBrowser class >> updateAll [
+
 	self allInstances
 		select: [ :browser | browser window isOpen ]
 		thenDo: [ :browser | browser updateList ]
@@ -98,10 +99,15 @@ MiModelRootBrowser >> followEntity: anEntity [
 { #category : #initialization }
 MiModelRootBrowser >> initializeList [
 
-	modelFilteringList := self newFilteringList
-		                      items: MooseModel root;
-		                      display: [ :mooseModel | mooseModel name ];
-		                      yourself.
+	modelFilteringList := self newFilteringList.
+
+	modelFilteringList items: MooseModel root.
+	MooseModel root ifNotEmpty: [ :root | 
+		modelFilteringList selectItem: root anyOne.
+		model selected: root anyOne ].
+
+	modelFilteringList display: [ :mooseModel | mooseModel name ].
+
 	modelFilteringList listPresenter
 		contextMenu: [ 
 			(self class buildModelCommandsGroupWith: self) asMenuPresenter ];
@@ -128,7 +134,7 @@ MiModelRootBrowser >> initializeToolbar [
 { #category : #accessing }
 MiModelRootBrowser >> miSelectedItem [
 
-	^ modelFilteringList selectedItem
+	^ self selected
 ]
 
 { #category : #initialization }
@@ -156,8 +162,7 @@ MiModelRootBrowser >> selectedObject [
 MiModelRootBrowser >> updateForNewModel: aModel [
 
 	self class updateAll.
-	modelFilteringList selectItem: aModel.
-	self updateToolbar
+	modelFilteringList selectItem: aModel
 ]
 
 { #category : #updating }
@@ -167,5 +172,6 @@ MiModelRootBrowser >> updateList [
 		| selected |
 		selected := self selected.
 		modelFilteringList listPresenter updateList.
-		modelFilteringList selectItem: selected ]
+		modelFilteringList selectItem:
+			(selected ifNil: [ modelFilteringList items first ]) ]
 ]
