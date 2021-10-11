@@ -4,9 +4,31 @@ Class {
 	#category : #'MooseIDE-QueriesBrowser-Tests-Queries Configuration'
 }
 
+{ #category : #tests }
+MiNavigationQueryPresenterTest >> assertSubpresentersAreConfigured [
+
+	self assert: presenter directionDropList selectedItem equals: self createNewQuery directionStrategy.
+	self
+		assertCollection: presenter associationsList selectedItems
+		hasSameElements: self createNewQuery associations
+]
+
 { #category : #running }
 MiNavigationQueryPresenterTest >> classToTest [
 	^ MiNavigationQueryPresenter
+]
+
+{ #category : #tests }
+MiNavigationQueryPresenterTest >> createNewQuery [
+
+	| rootQuery |
+	rootQuery := FQRootQuery new
+		result: helper classesAndMethods;
+		yourself.
+	^ (FQNavigationQuery defaultForParent: rootQuery)
+			resetAndChangeDirection: FQIncomingNavigation;
+			association: FamixStInvocation;
+			yourself
 ]
 
 { #category : #running }

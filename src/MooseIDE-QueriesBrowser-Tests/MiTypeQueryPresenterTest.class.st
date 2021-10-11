@@ -4,9 +4,27 @@ Class {
 	#category : #'MooseIDE-QueriesBrowser-Tests-Queries Configuration'
 }
 
+{ #category : #tests }
+MiTypeQueryPresenterTest >> assertSubpresentersAreConfigured [
+
+	self assertCollection: presenter typesList selectedItems hasSameElements: self createNewQuery types
+]
+
 { #category : #running }
 MiTypeQueryPresenterTest >> classToTest [
 	^ MiTypeQueryPresenter
+]
+
+{ #category : #tests }
+MiTypeQueryPresenterTest >> createNewQuery [
+
+	| rootQuery |
+	rootQuery := FQRootQuery new
+		result: helper classesAndMethods;
+		yourself.
+	^ (FQTypeQuery defaultForParent: rootQuery)
+			types: { FamixStClass . FamixStAttribute };
+			yourself
 ]
 
 { #category : #running }

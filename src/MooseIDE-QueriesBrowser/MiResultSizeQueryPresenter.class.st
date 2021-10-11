@@ -29,6 +29,16 @@ MiResultSizeQueryPresenter >> computeQuery: anObject [
 			resetResult ]
 ]
 
+{ #category : #'api - actions' }
+MiResultSizeQueryPresenter >> configureFor: aQuery [
+
+	comparatorDropList selectItem: aQuery comparator.
+	valueInputField number: aQuery valueToCompare.
+	subqueriesDropList selectItem:
+		(owner parentQueryListPresenter findPresenterForQuery: aQuery innerQuery).
+	query := aQuery
+]
+
 { #category : #initialization }
 MiResultSizeQueryPresenter >> initializeComparatorsDropList [
 

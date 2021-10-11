@@ -3,7 +3,8 @@ Class {
 	#superclass : #TestCase,
 	#instVars : [
 		'presenter',
-		'browser'
+		'browser',
+		'helper'
 	],
 	#category : #'MooseIDE-QueriesBrowser-Tests-Queries Browser'
 }
@@ -17,7 +18,7 @@ MiQueryListItemPresenterTest >> bus [
 { #category : #running }
 MiQueryListItemPresenterTest >> setUp [
 
-	| parentPresenter helper |
+	| parentPresenter |
 	super setUp.
 
 	helper := FQTestsHelper current.
@@ -26,7 +27,7 @@ MiQueryListItemPresenterTest >> setUp [
 	parentPresenter := MiQueriesListPresenter on: browser.
 
 	presenter := MiQueryListItemPresenter
-		             on: FQRootQuery new
+		             on: browser rootQuery
 		             owner: parentPresenter
 		             parentPresenter: parentPresenter.
 	presenter setQueryNumber: 1.
@@ -38,6 +39,39 @@ MiQueryListItemPresenterTest >> tearDown [
 
 	browser window ifNotNil: [ :window | window close ].
 	super tearDown
+]
+
+{ #category : #tests }
+MiQueryListItemPresenterTest >> testAllQueryPresentersExceptSelf [
+
+	self assert: presenter allQueryPresentersExceptSelf size equals: 0.
+	presenter parentQueryListPresenter
+		addNewFirstLevelQuery;
+		addNewFirstLevelQuery.
+	self assert: presenter allQueryPresentersExceptSelf size equals: 2.
+	self
+		denyCollection: presenter allQueryPresentersExceptSelf
+		includesAny: presenter asOrderedCollection
+]
+
+{ #category : #tests }
+MiQueryListItemPresenterTest >> testConfigureFor [
+
+	| newQuery rootQuery |
+	rootQuery := FQRootQuery new
+		result: helper classesAndMethods;
+		yourself.
+	newQuery := FQStringQuery defaultForParent: rootQuery.
+	newQuery
+		comparator: #includesSubstring:;
+		property: #name;
+		valueToCompare: 'a';
+		result.
+
+	presenter configureFor: newQuery.
+	self
+		assert: presenter queryConfiguratorPresenter class
+		equals: newQuery class miPresenterClass
 ]
 
 { #category : #tests }
@@ -92,6 +126,31 @@ MiQueryListItemPresenterTest >> testNewQueryForClass [
 
 { #category : #tests }
 MiQueryListItemPresenterTest >> testUpdateQueryConfigurationFor [
+
+	presenter updateQueryConfiguratorPresenterFor: FQBooleanQuery.
+	self assert: presenter query class equals: FQBooleanQuery.
+	self
+		assert: presenter queryConfiguratorPresenter class
+		equals: presenter query class miPresenterClass.
+	presenter updateQueryConfiguratorPresenterFor: FQStringQuery.
+	self assert: presenter query class equals: FQStringQuery.
+	self
+		assert: presenter queryConfiguratorPresenter class
+		equals: presenter query class miPresenterClass.
+	presenter updateQueryConfiguratorPresenterFor: FQSubtractionQuery.
+	self assert: presenter query class equals: FQSubtractionQuery.
+	self
+		assert: presenter queryConfiguratorPresenter class
+		equals: presenter query class miPresenterClass.
+	presenter updateQueryConfiguratorPresenterFor: FQComplementQuery.
+	self assert: presenter query class equals: FQComplementQuery.
+	self
+		assert: presenter queryConfiguratorPresenter class
+		equals: presenter query class miPresenterClass
+]
+
+{ #category : #tests }
+MiQueryListItemPresenterTest >> testUpdateQueryConfiguratorPresenterFor [
 
 	presenter updateQueryConfiguratorPresenterFor: FQBooleanQuery.
 	self assert: presenter query class equals: FQBooleanQuery.
