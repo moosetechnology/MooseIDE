@@ -19,23 +19,6 @@ Class {
 }
 
 { #category : #specs }
-MiMetaBrowser class >> defaultSpec [
-
-	^ super defaultSpec
-		  add: (SpBoxLayout newLeftToRight
-				   add: (SpBoxLayout newTopToBottom
-						    add: (SpBoxLayout newLeftToRight
-								     add: #entities;
-								     add: #properties;
-								     yourself);
-						    add: #map;
-						    yourself);
-				   add: #commentNoteBook;
-				   yourself);
-		  yourself
-]
-
-{ #category : #specs }
 MiMetaBrowser class >> helpMessage [
 	^ 'Meta description in a metamodel'
 ]
@@ -62,6 +45,12 @@ MiMetaBrowser class >> open [
 { #category : #specs }
 MiMetaBrowser class >> title [
 	^ 'Meta Browser'
+]
+
+{ #category : #specs }
+MiMetaBrowser class >> windowSize [
+
+	^ 750 @ 550
 ]
 
 { #category : #testing }
@@ -118,6 +107,28 @@ MiMetaBrowser >> initializeEntities [
 ]
 
 { #category : #initialization }
+MiMetaBrowser >> initializeLayout [
+
+	| toolbar left |
+	toolbar := self class defaultSpec.
+	left := SpPanedLayout newTopToBottom
+		        add: (SpPanedLayout newLeftToRight
+				         add: entities;
+				         add: properties;
+				         yourself);
+		        add: map;
+		        yourself.
+	self layout: (SpBoxLayout newTopToBottom
+			 add: toolbar expand: false;
+			 add: (SpPanedLayout newLeftToRight
+					  positionOfSlider: 70 percent;
+					  add: left;
+					  add: commentNoteBook;
+					  yourself);
+			 yourself)
+]
+
+{ #category : #initialization }
 MiMetaBrowser >> initializeMap [
 
 	map := self instantiate: MiUML.
@@ -134,6 +145,7 @@ MiMetaBrowser >> initializePresenters [
 	self initializeEntities.
 	self initializeProperties.
 	self initializeMap.
+	self initializeLayout
 ]
 
 { #category : #initialization }
