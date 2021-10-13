@@ -20,9 +20,10 @@ Class {
 
 { #category : #specs }
 MiSourceTextBrowser class >> defaultSpec [
+
 	^ super defaultSpec
-		add: #noteBook;
-		yourself
+		  add: #sourceText;
+		  yourself
 ]
 
 { #category : #specs }
@@ -38,6 +39,12 @@ MiSourceTextBrowser class >> menuCommandOn: aBuilder [
 		action: [ self open ]
 ]
 
+{ #category : #'instance creation' }
+MiSourceTextBrowser class >> newModel [
+
+	^ MiSourceTextBrowserModel new
+]
+
 { #category : #specs }
 MiSourceTextBrowser class >> open [
 	<script>
@@ -51,46 +58,41 @@ MiSourceTextBrowser class >> title [
 
 { #category : #'as yet unclassified' }
 MiSourceTextBrowser >> canReceiveEntity: anObject [
-	^ anObject usesFamixTrait: FamixTSourceEntity
-]
 
-{ #category : #'as yet unclassified' }
-MiSourceTextBrowser >> entityName: aString [
-	sourceCodePage title: aString , ' source code'
+	^ anObject usesFamixTrait: FamixTSourceEntity
 ]
 
 { #category : #actions }
 MiSourceTextBrowser >> followEntity: anEntity [
 
 	model selected: anEntity.
-	self updateCode
+	self text: model sourceText.
+	self updateWindowTitleWith: anEntity name.
+	self updateToolbar
 ]
 
 { #category : #'as yet unclassified' }
 MiSourceTextBrowser >> initializePresenters [
+
 	super initializePresenters.
-	model := MiSourceTextBrowserModel new.
-	sourceText := self newText.
-	noteBook := self newNotebook.
-	self sourceCodePage.
-	noteBook addPage: sourceCodePage
+	sourceText := self newText
 ]
 
-{ #category : #'as yet unclassified' }
-MiSourceTextBrowser >> sourceCodePage [
-	sourceCodePage := SpNotebookPage
-		title: 'Source code'
-		icon: (self iconNamed: #nautilusIcon)
-		provider: [ sourceText ]
+{ #category : #accessing }
+MiSourceTextBrowser >> miSelectedItem [
+
+	^ model selected
 ]
 
 { #category : #'as yet unclassified' }
 MiSourceTextBrowser >> text: aText [
-  sourceText text: aText
+
+	sourceText text: aText
 ]
 
-{ #category : #'as yet unclassified' }
-MiSourceTextBrowser >> updateCode [
-	self text: model sourceText.
-	self entityName: model selected name
+{ #category : #actions }
+MiSourceTextBrowser >> updateWindowTitleWith: aName [
+
+	self withWindowDo: [ :window | 
+		window title: self class title , ' of ' , aName ]
 ]
