@@ -16,28 +16,19 @@ MiScopeQueryPresenter class >> title [
 	^ 'Scope Query'
 ]
 
-{ #category : #layout }
-MiScopeQueryPresenter >> buildLayout [
-
-	| padding |
-	padding := 5.
-	self layout: (SpBoxLayout newLeftToRight
-			 add: #directionsDropList
-			 expand: false
-			 fill: true
-			 padding: padding;
-			 add: #scopesDropList
-			 expand: false
-			 fill: true
-			 padding: padding;
-			 yourself)
-]
-
 { #category : #actions }
 MiScopeQueryPresenter >> computeQuery: scope [
 
 	scope ifNil: [ ^ self ].
 	self query scope: scope
+]
+
+{ #category : #'api - actions' }
+MiScopeQueryPresenter >> configureFor: aQuery [
+
+	directionsDropList selectItem: aQuery directionStrategy.
+	scopesDropList selectItem: aQuery scope.
+	query := aQuery
 ]
 
 { #category : #initialization }
@@ -57,7 +48,25 @@ MiScopeQueryPresenter >> initializeDirectionsDropList [
 MiScopeQueryPresenter >> initializePresenters [
 
 	self setScopesDropList.
-	self initializeDirectionsDropList
+	self initializeDirectionsDropList.
+	self initializeLayout
+]
+
+{ #category : #layout }
+MiScopeQueryPresenter >> newLayout [
+
+	| padding |
+	padding := 5.
+	^ SpBoxLayout newLeftToRight
+		  add: directionsDropList
+		  expand: false
+		  fill: true
+		  padding: padding;
+		  add: scopesDropList
+		  expand: false
+		  fill: true
+		  padding: padding;
+		  yourself
 ]
 
 { #category : #'widgets configuration' }
@@ -84,5 +93,5 @@ MiScopeQueryPresenter >> setScopesDropList [
 MiScopeQueryPresenter >> updateAccordingToDirection [
 
 	self setScopesDropList.
-	self update
+	self initializeLayout
 ]

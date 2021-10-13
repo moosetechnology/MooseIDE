@@ -45,8 +45,15 @@ MiQueryListItemPresenter class >> on: aQuery owner: aPresenter parentPresenter: 
 { #category : #accessing }
 MiQueryListItemPresenter >> allQueryPresentersExceptSelf [
 
-	^ parentQueryListPresenter creationPresenters reject: [ :q | 
+	^ parentQueryListPresenter queryItemsPresenters reject: [ :q | 
 		  q query = self query ]
+]
+
+{ #category : #'api - actions' }
+MiQueryListItemPresenter >> configureFor: aQuery [
+
+	queryTypesDropListPresenter selectItem: aQuery class.
+	queryConfiguratorPresenter configureFor: aQuery
 ]
 
 { #category : #'api - actions' }
@@ -67,7 +74,12 @@ MiQueryListItemPresenter >> indentationSpacesPresenters [
 	"Returns a collection with blank images to show the level of indentation that the query has"
 
 	| indentationPresenters indentationLevel |
-	indentationLevel := parentQuery parentSequence size - 1.
+	"The parent sequence only has sence in the unary queries because they are the
+	only kind of queries that can gave a parent.
+	The other queries don't have a parent so will only return 1"
+	indentationLevel := parentQuery isUnaryQuery
+		                    ifTrue: [ parentQuery parentSequence size ]
+		                    ifFalse: [ 1 ].
 	indentationPresenters := OrderedCollection empty.
 	indentationLevel timesRepeat: [ 
 		indentationPresenters add: (SpImagePresenter new
@@ -87,10 +99,10 @@ MiQueryListItemPresenter >> initializeLayout [
 	self indentationSpacesPresenters do: [ :each | 
 		tempLayout add: each expand: false ].
 	tempLayout
-		add: #queryNumberLabelPresenter expand: false;
-		add: #queryTypesDropListPresenter width: 130;
-		add: #queryConfiguratorPresenter;
-		addLast: #optionsMenuButton expand: false.
+		add: queryNumberLabelPresenter expand: false;
+		add: queryTypesDropListPresenter width: 130;
+		add: queryConfiguratorPresenter;
+		addLast: optionsMenuButton expand: false.
 	self layout: tempLayout
 ]
 
@@ -121,7 +133,6 @@ MiQueryListItemPresenter >> initializeNumberLabel [
 { #category : #initialization }
 MiQueryListItemPresenter >> initializePresenters [
 
-	self initializeLayout.
 	self initializeMenu.
 	self initializeNumberLabel.
 
@@ -129,7 +140,8 @@ MiQueryListItemPresenter >> initializePresenters [
 	"After setting whenSelectedItemChangedDo:, select the fastest query while we do not compute the
 	results in a fork.
 	This is for instantiate queryConfigurationPresenter variable"
-	queryTypesDropListPresenter selectItem: FQBooleanQuery
+	queryTypesDropListPresenter selectItem: FQBooleanQuery.
+	self initializeLayout
 ]
 
 { #category : #initialization }
@@ -141,6 +153,15 @@ MiQueryListItemPresenter >> initializeQueryTypesDropList [
 		display: [ :queryClass | queryClass label ];
 		whenSelectedItemChangedDo: [ :queryClass | 
 			self updateQueryConfiguratorPresenterFor: queryClass ]
+]
+
+{ #category : #update }
+MiQueryListItemPresenter >> instantiateConfiguratorPresenterForQuery: newQuery [
+
+	queryConfiguratorPresenter := self instantiate:
+		(newQuery class miPresenterClass
+			owner: self
+			on: newQuery)
 ]
 
 { #category : #accessing }
@@ -156,11 +177,7 @@ MiQueryListItemPresenter >> newQueryForClass: queryClass [
 	(parentQuery children includes: self query) ifTrue: [ 
 		parentQuery removeChild: self query ].
 
-	newQuery := (queryClass isNAryQuery or: [ 
-		             queryClass isComplementQuery ])
-		            ifTrue: [ "Nor the NAry query nor the complement query have a parent " 
-			            queryClass new ]
-		            ifFalse: [ queryClass defaultForParent: parentQuery ].
+	newQuery := queryClass defaultForParent: parentQuery.
 	parentQuery addChild: newQuery.
 	^ newQuery
 ]
@@ -177,6 +194,13 @@ MiQueryListItemPresenter >> parentQueryListPresenter: aPresenter [
 	parentQueryListPresenter := aPresenter
 ]
 
+{ #category : #printing }
+MiQueryListItemPresenter >> printOn: aStream [
+
+	aStream << self name << ' '.
+	self query printOn: aStream
+]
+
 { #category : #accessing }
 MiQueryListItemPresenter >> query [
 
@@ -189,6 +213,12 @@ MiQueryListItemPresenter >> query [
 MiQueryListItemPresenter >> queryChangedUpdate [
 
 	parentQueryListPresenter queryChangedUpdate: self query
+]
+
+{ #category : #accessing }
+MiQueryListItemPresenter >> queryConfiguratorPresenter [
+
+	^ queryConfiguratorPresenter
 ]
 
 { #category : #'api - actions' }
@@ -219,12 +249,10 @@ MiQueryListItemPresenter >> updateQueryConfiguratorPresenterFor: queryClass [
 	newQuery := self newQueryForClass: queryClass.
 
 	"Instantiate the configuration presenter with the new created query"
-	queryConfiguratorPresenter := self instantiate:
-		                              (queryClass miPresenterClass
-			                               owner: self
-			                               on: newQuery).
+	self instantiateConfiguratorPresenterForQuery: newQuery.
+
 	"We update the subqueries droplist of all the presenters in the queries browser.
 	This is to keep the list of the queries updated."
 	parentQueryListPresenter updateSubqueriesListPresenter.
-	self update
+	self initializeLayout
 ]

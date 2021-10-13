@@ -4,9 +4,29 @@ Class {
 	#category : #'MooseIDE-QueriesBrowser-Tests-Queries Configuration'
 }
 
+{ #category : #tests }
+MiScopeQueriesPresenterTest >> assertSubpresentersAreConfigured [
+
+	self assert: presenter scopesDropList selectedItem equals: self createNewQuery scope.
+	self assert: presenter directionsDropList selectedItem equals: self createNewQuery directionStrategy
+]
+
 { #category : #running }
 MiScopeQueriesPresenterTest >> classToTest [
 	^ MiScopeQueryPresenter
+]
+
+{ #category : #tests }
+MiScopeQueriesPresenterTest >> createNewQuery [
+
+	| rootQuery |
+	rootQuery := FQRootQuery new
+		result: helper classesAndMethods;
+		yourself.
+	^ (FQScopeQuery defaultForParent: rootQuery)
+			resetAndChangeDirection: FQScopeUpAndDown;
+			scope: FamixStClass;
+			yourself
 ]
 
 { #category : #running }

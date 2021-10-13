@@ -6,6 +6,12 @@ FQScopeQuery class >> canBeConfigured [
 ]
 
 { #category : #'*MooseIDE-QueriesBrowser' }
+FQScopeQuery class >> isAvailableForQueriesSize: numberOfQueriesInPresenter [
+
+	^ true
+]
+
+{ #category : #'*MooseIDE-QueriesBrowser' }
 FQScopeQuery >> isScopeQuery [
 
 	^ true

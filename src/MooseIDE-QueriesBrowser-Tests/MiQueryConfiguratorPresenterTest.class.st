@@ -14,9 +14,21 @@ MiQueryConfiguratorPresenterTest class >> isAbstract [
 	^ self == MiQueryConfiguratorPresenterTest
 ]
 
+{ #category : #tests }
+MiQueryConfiguratorPresenterTest >> assertSubpresentersAreConfigured [
+
+	self subclassResponsibility
+]
+
 { #category : #running }
 MiQueryConfiguratorPresenterTest >> classToTest [
 	^ self subclassResponsibility
+]
+
+{ #category : #tests }
+MiQueryConfiguratorPresenterTest >> createNewQuery [
+
+	self subclassResponsibility
 ]
 
 { #category : #running }
@@ -31,12 +43,12 @@ MiQueryConfiguratorPresenterTest >> resetPresenterWithEntities: aMooseGroup [
 	browser := MiQueriesBrowser on: (FQRootQuery new
 			            result: aMooseGroup;
 			            yourself).
-	builder := MiQueriesListPresenter on: browser.
+	builder := browser queriesListPresenter.
 	"Add a query presenter"
 	builder addNewFirstLevelQuery.
 	superPresenter := builder componentList items first.
 	superPresenter queryTypesDropList selectItem: self queryClass.
-	presenter := superPresenter queryConfigurationPresenter
+	presenter := superPresenter queryConfiguratorPresenter
 ]
 
 { #category : #running }
@@ -52,6 +64,19 @@ MiQueryConfiguratorPresenterTest >> tearDown [
 
 	browser window ifNotNil: [ :window | window close ].
 	super tearDown
+]
+
+{ #category : #tests }
+MiQueryConfiguratorPresenterTest >> testConfigureFor [
+
+	| newQuery |
+	browser queriesListPresenter reinitializeQueryPresenters.
+	newQuery := self createNewQuery.
+	browser queriesListPresenter addNewFirstLevelQuery.
+	browser queriesListPresenter queryItemsPresenters last configureFor: newQuery.
+	presenter := browser queriesListPresenter queryItemsPresenters last queryConfiguratorPresenter.
+	self assertSubpresentersAreConfigured.
+	self assert: presenter query equals: newQuery
 ]
 
 { #category : #tests }

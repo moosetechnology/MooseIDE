@@ -1,7 +1,8 @@
 Extension { #name : #FQAbstractQuery }
 
 { #category : #'*MooseIDE-QueriesBrowser' }
-FQAbstractQuery class >> isComplementQuery [
+FQAbstractQuery class >> isAvailableForQueriesSize: numberOfQueriesInPresenter [
+
 	^ false
 ]
 

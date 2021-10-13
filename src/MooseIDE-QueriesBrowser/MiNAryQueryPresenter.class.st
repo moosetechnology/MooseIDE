@@ -19,27 +19,17 @@ MiNAryQueryPresenter class >> dropListWidth [
 ]
 
 { #category : #actions }
-MiNAryQueryPresenter >> addSubqueryToLayout [
+MiNAryQueryPresenter >> addSubqueryPresenter [
 
-	subqueryDropLists add: self newSubqueryDropList.
-	removeSubqueryFromLayoutButton enable.
-	self buildLayout.
-	self update
+	subqueryDropLists add: self newSubqueryDropList
 ]
 
-{ #category : #layout }
-MiNAryQueryPresenter >> buildLayout [
+{ #category : #actions }
+MiNAryQueryPresenter >> addSubqueryToLayoutAction [
 
-	| tempLayout |
-	tempLayout := SpBoxLayout newLeftToRight
-		              spacing: 5;
-		              yourself.
-	subqueryDropLists do: [ :subqueryPresenter | 
-		tempLayout add: subqueryPresenter width: self class dropListWidth ].
-	tempLayout
-		add: #addSubqueryToLayoutButton width: self class iconWidth;
-		add: #removeSubqueryFromLayoutButton width: self class iconWidth.
-	self layout: tempLayout
+	self addSubqueryPresenter.
+	removeSubqueryFromLayoutButton enable.
+	self initializeLayout
 ]
 
 { #category : #actions }
@@ -48,17 +38,37 @@ MiNAryQueryPresenter >> computeQuery: newSelectedItem [
 	self nAryOperation: newSelectedItem
 ]
 
+{ #category : #'api - actions' }
+MiNAryQueryPresenter >> configureFor: aQuery [
+
+	"We know that the NAry query has at last two subqueries"
+	subqueryDropLists first selectItem:
+		(owner parentQueryListPresenter findPresenterForQuery: aQuery subqueries first).
+	subqueryDropLists second selectItem:
+		(owner parentQueryListPresenter findPresenterForQuery: aQuery subqueries second).
+	
+	"Add the rest of the subqueries if they exist"
+	aQuery subqueries from: 3 to: aQuery subqueries size do: [ :each |
+		self addSubqueryPresenter.
+		subqueryDropLists last selectItem:
+			(owner parentQueryListPresenter findPresenterForQuery: each) ].
+
+	query := aQuery.
+	self initializeLayout
+
+]
+
 { #category : #initialization }
 MiNAryQueryPresenter >> initializeButtons [
 
 	addSubqueryToLayoutButton := self newButton.
 	addSubqueryToLayoutButton
 		icon: (self iconNamed: #smallAdd);
-		action: [ self addSubqueryToLayout ].
+		action: [ self addSubqueryToLayoutAction ].
 	removeSubqueryFromLayoutButton := self newButton.
 	removeSubqueryFromLayoutButton
 		icon: (self iconNamed: #smallDelete);
-		action: [ self removeSubqueryFromLayout ].
+		action: [ self removeSubqueryFromLayoutAction ].
 	"The remove button must be enabled only when there is more than 2 subqueries in the drop lists."
 	removeSubqueryFromLayoutButton disable
 ]
@@ -69,14 +79,15 @@ MiNAryQueryPresenter >> initializePresenters [
 	self initializeButtons.
 	subqueryDropLists := OrderedCollection withAll: { 
 			                     self newSubqueryDropList.
-			                     self newSubqueryDropList }
+			                     self newSubqueryDropList }.
+	self initializeLayout
 ]
 
 { #category : #actions }
 MiNAryQueryPresenter >> nAryOperation: newSelectedItem [
 
 	| subqueries selectedDropListItems |
-	"Sometimes the SpDropListPresenter>>#whenSelectedItemChangedDo: in spec is triggered even though no item were selected. When this happends the selected item is nil. This is an spec problem."
+	"Sometimes the SpDropListPresenter>>#whenSelectedItemChangedDo: in spec is triggered even though no item was selected. When this happends the selected item is nil. This is a spec problem."
 	newSelectedItem ifNil: [ ^ self ].
 	(subqueryDropLists anySatisfy: [ :dropList | 
 		 dropList selectedItem isNil ]) ifTrue: [ ^ self ].
@@ -86,6 +97,21 @@ MiNAryQueryPresenter >> nAryOperation: newSelectedItem [
 	query
 		subqueries: subqueries;
 		resetResult
+]
+
+{ #category : #layout }
+MiNAryQueryPresenter >> newLayout [
+
+	| tempLayout |
+	tempLayout := SpBoxLayout newLeftToRight
+		              spacing: 5;
+		              yourself.
+	subqueryDropLists do: [ :subqueryPresenter | 
+		tempLayout add: subqueryPresenter width: self class dropListWidth ].
+	tempLayout
+		add: addSubqueryToLayoutButton width: self class iconWidth;
+		add: removeSubqueryFromLayoutButton width: self class iconWidth.
+	^ tempLayout
 ]
 
 { #category : #actions }
@@ -117,10 +143,10 @@ MiNAryQueryPresenter >> queryPresentersListChanged [
 ]
 
 { #category : #actions }
-MiNAryQueryPresenter >> removeSubqueryFromLayout [
+MiNAryQueryPresenter >> removeSubqueryFromLayoutAction [
 
 	subqueryDropLists removeLast.
-	subqueryDropLists size < 3 ifTrue: [ removeSubqueryFromLayoutButton disable ].
-	self buildLayout.
-	self update
+	subqueryDropLists size < 3 ifTrue: [ 
+		removeSubqueryFromLayoutButton disable ].
+	self initializeLayout
 ]
