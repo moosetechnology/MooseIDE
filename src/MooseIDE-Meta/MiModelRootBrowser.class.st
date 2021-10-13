@@ -118,7 +118,7 @@ MiModelRootBrowser >> initializeList [
 
 { #category : #initialization }
 MiModelRootBrowser >> initializePresenters [
-	super initializePresenters.
+
 	self initializeToolbar.
 	self initializeList
 ]

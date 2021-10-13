@@ -77,7 +77,7 @@ MiUMLBrowser >> highlightEntity: anEntity [
 
 { #category : #initialization }
 MiUMLBrowser >> initializePresenters [
-	super initializePresenters.
+
 	diagram := self instantiate: MiUML
 ]
 

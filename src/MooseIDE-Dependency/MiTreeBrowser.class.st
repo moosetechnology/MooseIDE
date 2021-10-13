@@ -70,7 +70,6 @@ MiTreeBrowser >> followEntity: anEntity [
 { #category : #initialization }
 MiTreeBrowser >> initializePresenters [
 
-	super initializePresenters.
 	tree := self newTreeTable.
 	tree
 		addColumn: (SpCompositeTableColumn new

@@ -106,7 +106,6 @@ MiMooseModelBrowser >> followEntity: aMooseModel [
 { #category : #initialization }
 MiMooseModelBrowser >> initializePresenters [
 
-	super initializePresenters.
 	self initializeTable.
 	self initializeSearchField
 ]

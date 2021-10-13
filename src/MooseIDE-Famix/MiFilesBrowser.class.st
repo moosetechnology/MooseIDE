@@ -98,30 +98,30 @@ MiFilesBrowser >> followEntity: anEntity [
 
 { #category : #initialization }
 MiFilesBrowser >> initializePresenters [
-	super initializePresenters.
+
 	self initializeTreeTable.
 	treeEntity := self newTreeTable.
 	treeEntity
-		addColumn:
-			(SpCompositeTableColumn new
-				addColumn:
-					((SpImageTableColumn evaluated: #midasIcon)
-						width: 20;
-						yourself);
-				addColumn: (SpStringTableColumn evaluated: #name);
-				yourself);
+		addColumn: (SpCompositeTableColumn new
+				 addColumn: ((SpImageTableColumn evaluated: #midasIcon)
+						  width: 20;
+						  yourself);
+				 addColumn: (SpStringTableColumn evaluated: #name);
+				 yourself);
 		children: [ :aClass | aClass children asOrderedCollection ];
 		beMultipleSelection;
 		beResizable.
-	treeEntity
-		whenSelectionChangedDo: [ :selected | 
-			selected selectedItems
-				ifNotEmpty: [ self
-						freezeDuring: [ selected selectedItems size = 1
-								ifTrue: [ self buses do: [ :bus | bus globallySelect: selected selectedItem ] ]
-								ifFalse: [ | mooseGroup |
-									mooseGroup := MooseGroup withAll: selected selectedItems.
-									self buses do: [ :bus | bus globallySelect: mooseGroup ] ] ] ] ]
+	treeEntity whenSelectionChangedDo: [ :selected | 
+		selected selectedItems ifNotEmpty: [ 
+			self freezeDuring: [ 
+				selected selectedItems size = 1
+					ifTrue: [ 
+					self buses do: [ :bus | 
+						bus globallySelect: selected selectedItem ] ]
+					ifFalse: [ 
+						| mooseGroup |
+						mooseGroup := MooseGroup withAll: selected selectedItems.
+						self buses do: [ :bus | bus globallySelect: mooseGroup ] ] ] ] ]
 ]
 
 { #category : #initialization }

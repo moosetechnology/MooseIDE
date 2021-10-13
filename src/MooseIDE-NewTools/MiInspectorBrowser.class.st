@@ -103,7 +103,6 @@ MiInspectorBrowser >> followEntity: anEntity [
 { #category : #initialization }
 MiInspectorBrowser >> initializePresenters [
 
-	super initializePresenters.
 	miInspector := self instantiate: MiInspector on: self model
 ]
 

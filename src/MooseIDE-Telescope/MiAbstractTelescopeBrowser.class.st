@@ -44,6 +44,6 @@ MiAbstractTelescopeBrowser >> diagramClass [
 
 { #category : #initialization }
 MiAbstractTelescopeBrowser >> initializePresenters [
-	super initializePresenters.
+
 	diagram := self instantiate: self diagramClass
 ]

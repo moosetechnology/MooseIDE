@@ -76,7 +76,7 @@ MiDependencyBrowser >> highlightEntity: anEntity [
 
 { #category : #initialization }
 MiDependencyBrowser >> initializePresenters [
-	super initializePresenters.
+
 	diagram := self instantiate: MiDependencyVisualization
 ]
 

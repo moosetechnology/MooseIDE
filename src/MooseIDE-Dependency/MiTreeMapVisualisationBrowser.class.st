@@ -84,13 +84,12 @@ MiTreeMapVisualisationBrowser >> highlightEntity: anEntity [
 
 { #category : #initialization }
 MiTreeMapVisualisationBrowser >> initializePresenters [
-	super initializePresenters.
+
 	diagram := self instantiate: MiTreeMap.
-	diagram
-		childrenBlock: [ :el | 
-			(el usesFamixTrait: TEntityMetaLevelDependency)
-				ifTrue: [ el children ]
-				ifFalse: [ {} ] ]
+	diagram childrenBlock: [ :el | 
+		(el usesFamixTrait: TEntityMetaLevelDependency)
+			ifTrue: [ el children ]
+			ifFalse: [ {  } ] ]
 ]
 
 { #category : #accessing }

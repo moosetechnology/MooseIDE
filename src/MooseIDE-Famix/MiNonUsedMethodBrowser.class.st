@@ -78,7 +78,6 @@ MiNonUsedMethodBrowser >> followEntity: anEntity [
 { #category : #initialization }
 MiNonUsedMethodBrowser >> initializePresenters [
 
-	super initializePresenters.
 	diagram := self instantiate: MiNonUsedMethodVisualization
 ]
 

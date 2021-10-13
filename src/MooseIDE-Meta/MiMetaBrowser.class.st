@@ -129,11 +129,11 @@ MiMetaBrowser >> initializeMap [
 
 { #category : #initialization }
 MiMetaBrowser >> initializePresenters [
-	super initializePresenters.
+
 	self initializeCommentNoteBook.
 	self initializeEntities.
 	self initializeProperties.
-	self initializeMap.
+	self initializeMap
 ]
 
 { #category : #initialization }

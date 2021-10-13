@@ -74,7 +74,6 @@ MiSourceTextBrowser >> followEntity: anEntity [
 { #category : #initialization }
 MiSourceTextBrowser >> initializePresenters [
 
-	super initializePresenters.
 	sourceText := self newText
 ]
 

@@ -91,7 +91,6 @@ MiTagBrowser >> followEntity: anEntity [
 { #category : #initialization }
 MiTagBrowser >> initializePresenters [
 
-	super initializePresenters.
 	self initializeTagManagementPage.
 	self initializeTagDetailsPage.
 	mainPresenter := self newNotebook

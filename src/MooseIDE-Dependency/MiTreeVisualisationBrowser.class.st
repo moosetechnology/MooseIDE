@@ -74,7 +74,7 @@ MiTreeVisualisationBrowser >> highlightEntity: anEntity [
 
 { #category : #initialization }
 MiTreeVisualisationBrowser >> initializePresenters [
-	super initializePresenters.
+
 	diagram := self instantiate: MiTreeVisualisation
 ]
 

@@ -64,8 +64,6 @@ MiPropertyBrowser >> followEntity: anEntity [
 { #category : #initialization }
 MiPropertyBrowser >> initializePresenters [
 
-	super initializePresenters.
-
 	properties := self newTable
 		              addColumn: (SpStringTableColumn
 				               title: 'Properties'
