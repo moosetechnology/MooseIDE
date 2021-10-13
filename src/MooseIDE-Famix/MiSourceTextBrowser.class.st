@@ -56,7 +56,7 @@ MiSourceTextBrowser class >> title [
 	^ 'Source code'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #testing }
 MiSourceTextBrowser >> canReceiveEntity: anObject [
 
 	^ anObject usesFamixTrait: FamixTSourceEntity
@@ -71,7 +71,7 @@ MiSourceTextBrowser >> followEntity: anEntity [
 	self updateToolbar
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 MiSourceTextBrowser >> initializePresenters [
 
 	super initializePresenters.
@@ -84,7 +84,7 @@ MiSourceTextBrowser >> miSelectedItem [
 	^ model selected
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #actions }
 MiSourceTextBrowser >> text: aText [
 
 	sourceText text: aText
