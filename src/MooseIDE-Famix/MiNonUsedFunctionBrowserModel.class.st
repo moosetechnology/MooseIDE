@@ -2,35 +2,42 @@ Class {
 	#name : #MiNonUsedFunctionBrowserModel,
 	#superclass : #Object,
 	#instVars : [
-		'selected',
-		'model'
+		'deadMethods',
+		'container'
 	],
 	#category : #'MooseIDE-Famix-SourceText'
 }
 
 { #category : #accessing }
-MiNonUsedFunctionBrowserModel >> initialize [ 
+MiNonUsedFunctionBrowserModel >> container [
+
+	^ container
+]
+
+{ #category : #accessing }
+MiNonUsedFunctionBrowserModel >> container: anObject [
+
+	container := anObject.
+	deadMethods := ((container allToScope: FamixTMethod) select: [ 
+		                :method | method isDead ]) asMooseGroup specialize
+]
+
+{ #category : #accessing }
+MiNonUsedFunctionBrowserModel >> deadMethods [
+
+	^ deadMethods
+]
+
+{ #category : #accessing }
+MiNonUsedFunctionBrowserModel >> initialize [
+
 	super initialize.
-	model := OrderedCollection new
+	deadMethods := FamixMethodGroup new
 ]
 
 { #category : #accessing }
-MiNonUsedFunctionBrowserModel >> model [
-	^ model
-]
+MiNonUsedFunctionBrowserModel >> refresh [
 
-{ #category : #accessing }
-MiNonUsedFunctionBrowserModel >> refreshModel [
-	model := (selected allToScope: FamixTMethod) select: [ :method | method incomingInvocations isEmpty ]
-]
-
-{ #category : #accessing }
-MiNonUsedFunctionBrowserModel >> selected [
-	^ selected
-]
-
-{ #category : #accessing }
-MiNonUsedFunctionBrowserModel >> selected: anObject [
-	selected := anObject.
-	self refreshModel
+	deadMethods := (container allToScope: FamixTMethod) select: [ :method | 
+		           method incomingInvocations isEmpty ]
 ]
