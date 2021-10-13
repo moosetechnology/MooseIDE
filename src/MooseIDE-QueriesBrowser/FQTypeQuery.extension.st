@@ -6,12 +6,6 @@ FQTypeQuery class >> canBeConfigured [
 ]
 
 { #category : #'*MooseIDE-QueriesBrowser' }
-FQTypeQuery class >> isAvailableForQueriesSize: numberOfQueriesInPresenter [
-
-	^ true
-]
-
-{ #category : #'*MooseIDE-QueriesBrowser' }
 FQTypeQuery class >> miPresenterClass [
 
 	^ MiTypeQueryPresenter

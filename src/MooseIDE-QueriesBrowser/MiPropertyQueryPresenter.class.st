@@ -22,6 +22,12 @@ Class {
 	#category : #'MooseIDE-QueriesBrowser-Configuration presenters'
 }
 
+{ #category : #layout }
+MiPropertyQueryPresenter >> buildLayout [
+
+	self layout: self class layout
+]
+
 { #category : #initialization }
 MiPropertyQueryPresenter >> initializePresenters [
 

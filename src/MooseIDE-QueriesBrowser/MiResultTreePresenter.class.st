@@ -5,6 +5,7 @@ Class {
 	#name : #MiResultTreePresenter,
 	#superclass : #SpTreeTablePresenter,
 	#instVars : [
+		'browser',
 		'sortedEntitiesCache'
 	],
 	#category : #'MooseIDE-QueriesBrowser-Widgets'
@@ -66,6 +67,11 @@ MiResultTreePresenter >> miSelectedItem [
 				ifFalse: [ item ] ]) flattened copyWithoutDuplicates asMooseGroup
 ]
 
+{ #category : #'accessing - model' }
+MiResultTreePresenter >> setModelBeforeInitialization: aBrowser [
+	browser := aBrowser
+]
+
 { #category : #naming }
 MiResultTreePresenter >> stringForItem: item [
 	(self roots includes: item) ifTrue: [ ^ item description ].
@@ -74,13 +80,13 @@ MiResultTreePresenter >> stringForItem: item [
 
 { #category : #update }
 MiResultTreePresenter >> updateForEntities: entities [
-
 	| groups |
-	groups := (entities allEntityTypes collect: [ :type | 
-		           entities allWithType: type ]) asOrderedCollection.
+	groups := (entities allEntityTypes
+		collect: [ :type | entities allWithType: type ]) asOrderedCollection.
 	groups do: [ :group | group description: group details ].
-	self roots:
-		(groups sort: [ :group | group description onlyLetters ] ascending)
+	self
+		roots: (groups sort: [ :group | group description onlyLetters ] ascending).
+	self update
 ]
 
 { #category : #update }

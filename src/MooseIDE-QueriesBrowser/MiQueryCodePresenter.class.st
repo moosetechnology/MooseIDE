@@ -17,6 +17,14 @@ Class {
 	#category : #'MooseIDE-QueriesBrowser-Widgets'
 }
 
+{ #category : #specs }
+MiQueryCodePresenter class >> defaultSpec [
+
+	^ SpBoxLayout newVertical
+		  add: #code;
+		  yourself
+]
+
 { #category : #action }
 MiQueryCodePresenter >> acceptQueryCode: aCode [
 
@@ -56,18 +64,9 @@ MiQueryCodePresenter >> initializeCode [
 ]
 
 { #category : #initialization }
-MiQueryCodePresenter >> initializeLayout [
-
-	self layout: (SpBoxLayout newVertical
-			 add: code;
-			 yourself)
-]
-
-{ #category : #initialization }
 MiQueryCodePresenter >> initializePresenters [
 
-	self initializeCode.
-	self initializeLayout
+	self initializeCode
 ]
 
 { #category : #initialization }

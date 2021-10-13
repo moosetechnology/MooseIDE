@@ -4,38 +4,13 @@ A MiNegationQueryPresenterTest is a test class for testing the behavior of MiNeg
 Class {
 	#name : #MiNegationQueryPresenterTest,
 	#superclass : #MiQueryConfiguratorPresenterTest,
-	#instVars : [
-		'queryToNegate'
-	],
 	#category : #'MooseIDE-QueriesBrowser-Tests-Queries Configuration'
 }
-
-{ #category : #tests }
-MiNegationQueryPresenterTest >> assertSubpresentersAreConfigured [
-
-	self assert: presenter subqueryDropListPresenter selectedItem query equals: queryToNegate
-]
 
 { #category : #running }
 MiNegationQueryPresenterTest >> classToTest [
 
 	^ MiNegationQueryPresenter
-]
-
-{ #category : #tests }
-MiNegationQueryPresenterTest >> createNewQuery [
-
-	| rootQuery |
-	rootQuery := FQRootQuery new
-		result: helper classesAndMethods;
-		yourself.
-	queryToNegate := (FQBooleanQuery defaultForParent: rootQuery)
-		property: #isStub;
-		yourself.
-	browser queriesListPresenter addNewFirstLevelQuery.
-	browser queriesListPresenter queryItemsPresenters last configureFor: queryToNegate.
-	^ FQComplementQuery queryToNegate: queryToNegate
-		
 ]
 
 { #category : #running }
@@ -58,7 +33,7 @@ MiNegationQueryPresenterTest >> resetPresenterWithEntities: aMooseGroup [
 		addNewFirstLevelQuery.
 	superPresenter := builder componentList items third.
 	superPresenter queryTypesDropList selectItem: self queryClass.
-	presenter := superPresenter queryConfiguratorPresenter
+	presenter := superPresenter queryConfigurationPresenter
 ]
 
 { #category : #tests }

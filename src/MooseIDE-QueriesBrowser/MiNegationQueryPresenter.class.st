@@ -16,6 +16,14 @@ MiNegationQueryPresenter class >> dropListWidth [
 	^ 57
 ]
 
+{ #category : #layout }
+MiNegationQueryPresenter >> buildLayout [
+
+	self layout: (SpBoxLayout newLeftToRight
+			 add: #subqueryDropListPresenter width: self class dropListWidth;
+			 yourself)
+]
+
 { #category : #actions }
 MiNegationQueryPresenter >> computeQuery: selectedPresenter [
 
@@ -27,19 +35,10 @@ MiNegationQueryPresenter >> computeQuery: selectedPresenter [
 	query runOn: selectedPresenter query parent result
 ]
 
-{ #category : #'api - actions' }
-MiNegationQueryPresenter >> configureFor: aQuery [
-
-	subqueryDropListPresenter selectItem:
-		(owner parentQueryListPresenter findPresenterForQuery: aQuery queryToNegate).
-	query := aQuery
-]
-
 { #category : #initialization }
 MiNegationQueryPresenter >> initializePresenters [
 
-	self initializeQueryDropListPresenter.
-	self initializeLayout
+	self initializeQueryDropListPresenter
 ]
 
 { #category : #initialization }
@@ -50,14 +49,6 @@ MiNegationQueryPresenter >> initializeQueryDropListPresenter [
 		items: owner allQueryPresentersExceptSelf;
 		display: [ :each | each name ];
 		whenSelectedItemChangedDo: [ :item | self computeQueryAction: item ]
-]
-
-{ #category : #layout }
-MiNegationQueryPresenter >> newLayout [
-
-	^ SpBoxLayout newLeftToRight
-		  add: #subqueryDropListPresenter width: self class dropListWidth;
-		  yourself
 ]
 
 { #category : #'api - actions' }

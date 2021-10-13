@@ -17,26 +17,30 @@ MiTypeQueryPresenter class >> title [
 	^ 'Type Query'
 ]
 
+{ #category : #layout }
+MiTypeQueryPresenter >> buildLayout [
+
+	| padding |
+	padding := 5.
+	self layout: (SpBoxLayout newLeftToRight
+			 add: #typesButton
+			 expand: false
+			 fill: true
+			 padding: padding;
+			 yourself)
+]
+
 { #category : #actions }
 MiTypeQueryPresenter >> computeQuery: aType [
 
 	self updateQueryWithSelectedTypes: typesList selectedItems
 ]
 
-{ #category : #'api - actions' }
-MiTypeQueryPresenter >> configureFor: aQuery [
-
-	typesList selectItems: aQuery types.
-	query types: aQuery types.
-	query := aQuery
-]
-
 { #category : #initialization }
 MiTypeQueryPresenter >> initializePresenters [
 
 	self initializeTypesList.
-	self initializeTypesButton.
-	self initializeLayout
+	self initializeTypesButton
 ]
 
 { #category : #initialization }
@@ -74,24 +78,12 @@ MiTypeQueryPresenter >> labelFor: type [
 	^ type mooseDescription name asEnglishPlural
 ]
 
-{ #category : #layout }
-MiTypeQueryPresenter >> newLayout [
-
-	| padding |
-	padding := 5.
-	^ SpBoxLayout newLeftToRight
-		add: typesButton
-		expand: false
-		fill: true
-		padding: padding;
-		yourself
-]
-
 { #category : #initialization }
 MiTypeQueryPresenter >> updateQueryWithSelectedTypes: selectedTypes [
 
 	| nonSelectedTypes |
 	nonSelectedTypes := self query types difference: selectedTypes.
 	selectedTypes do: [ :type | self query addType: type ].
-	nonSelectedTypes do: [ :type | self query removeType: type ]
+	nonSelectedTypes do: [ :type | self query removeType: type ].
+	self update
 ]

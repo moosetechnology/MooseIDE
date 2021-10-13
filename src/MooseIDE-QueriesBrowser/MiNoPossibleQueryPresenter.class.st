@@ -13,28 +13,26 @@ Class {
 	#category : #'MooseIDE-QueriesBrowser-Widgets'
 }
 
-{ #category : #initialization }
-MiNoPossibleQueryPresenter >> initializeLayout [
-
-	self layout: (SpBoxLayout newHorizontal
-			 add: (SpBoxLayout newVertical
-					  add: null1;
-					  add: label;
-					  add: null2;
-					  yourself)
-			 width: 175;
-			 yourself)
+{ #category : #specs }
+MiNoPossibleQueryPresenter class >> defaultSpec [
+	^ SpBoxLayout newHorizontal
+		add:
+			(SpBoxLayout newVertical
+				add: #null1;
+				add: #label;
+				add: #null2;
+				yourself)
+			width: 175;
+		yourself
 ]
 
 { #category : #initialization }
 MiNoPossibleQueryPresenter >> initializePresenters [
-
 	label := self newLabel
-		         label: textToDisplay;
-		         yourself.
+		label: textToDisplay;
+		yourself.
 	null1 := self newNullPresenter.
-	null2 := self newNullPresenter.
-	self initializeLayout
+	null2 := self newNullPresenter
 ]
 
 { #category : #testing }

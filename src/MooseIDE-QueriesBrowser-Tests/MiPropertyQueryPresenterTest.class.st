@@ -90,6 +90,6 @@ MiPropertyQueryPresenterTest >> testUpdateDoesNotChangeOwnerPresenter [
 
 	presenter propertyDropList selectIndex: 2.
 	self
-		assert: presenter owner queryConfiguratorPresenter
+		assert: presenter owner queryConfigurationPresenter
 		identicalTo: presenter
 ]

@@ -7,47 +7,31 @@ Class {
 	#category : #'MooseIDE-QueriesBrowser-Configuration presenters'
 }
 
-{ #category : #actions }
-MiNumericQueryPresenter >> computeQuery: num [
-
-	self query valueToCompare: num
-]
-
-{ #category : #'api - actions' }
-MiNumericQueryPresenter >> configureFor: aQuery [
-
-	propertyDropList selectItem: aQuery property.
-	comparatorDropList selectItem: aQuery comparator.
-	valueInputField number: aQuery valueToCompare.
-	query := aQuery
-]
-
-{ #category : #initialization }
-MiNumericQueryPresenter >> initializePresenters [
-
-	super initializePresenters.
-	self initializeLayout
-]
-
-{ #category : #layout }
-MiNumericQueryPresenter >> newLayout [
+{ #category : #specs }
+MiNumericQueryPresenter class >> layout [
 
 	| padding |
 	padding := 5.
 	^ SpBoxLayout newLeftToRight
-		add: propertyDropList
-		expand: false
-		fill: true
-		padding: padding;
-		add: comparatorDropList withConstraints: [ :constraints | 
-			constraints
-				padding: padding;
-				width: 63 ];
-		add: valueInputField withConstraints: [ :constraints | 
-			constraints
-				padding: padding;
-				width: 70 ];
-		yourself
+		  add: #propertyDropList
+		  expand: false
+		  fill: true
+		  padding: padding;
+		  add: #comparatorDropList withConstraints: [ :constraints | 
+			  constraints
+				  padding: padding;
+				  width: 63 ];
+		  add: #valueInputField withConstraints: [ :constraints | 
+		  constraints
+			  padding: padding;
+			  width: 70 ];
+		  yourself
+]
+
+{ #category : #actions }
+MiNumericQueryPresenter >> computeQuery: num [
+
+	self query valueToCompare: num
 ]
 
 { #category : #initialization }

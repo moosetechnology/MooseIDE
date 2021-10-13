@@ -18,6 +18,16 @@ MiResultSizeQueryPresenter class >> dropListWidth [
 	^ 57
 ]
 
+{ #category : #layout }
+MiResultSizeQueryPresenter >> buildLayout [
+
+	self layout: (SpBoxLayout newLeftToRight
+			 add: #subqueriesDropList width: self class dropListWidth;
+			 add: #comparatorDropList width: 63;
+			 add: #valueInputField width: 70;
+			 yourself)
+]
+
 { #category : #actions }
 MiResultSizeQueryPresenter >> computeQuery: anObject [
 
@@ -27,16 +37,6 @@ MiResultSizeQueryPresenter >> computeQuery: anObject [
 			comparator: comparatorDropList selectedItem;
 			valueToCompare: valueInputField number;
 			resetResult ]
-]
-
-{ #category : #'api - actions' }
-MiResultSizeQueryPresenter >> configureFor: aQuery [
-
-	comparatorDropList selectItem: aQuery comparator.
-	valueInputField number: aQuery valueToCompare.
-	subqueriesDropList selectItem:
-		(owner parentQueryListPresenter findPresenterForQuery: aQuery innerQuery).
-	query := aQuery
 ]
 
 { #category : #initialization }
@@ -55,8 +55,7 @@ MiResultSizeQueryPresenter >> initializePresenters [
 
 	self initializeSubqueriesDropList.
 	self initializeComparatorsDropList.
-	self initializeValueInput.
-	self initializeLayout
+	self initializeValueInput
 ]
 
 { #category : #initialization }
@@ -64,7 +63,7 @@ MiResultSizeQueryPresenter >> initializeSubqueriesDropList [
 
 	subqueriesDropList := self newDropList.
 	subqueriesDropList
-		items: owner allQueryPresentersExceptSelf;
+		items: self innerQueries;
 		display: [ :each | each name ];
 		whenSelectedItemChangedDo: [ :subQuery | 
 			self computeQueryAction: subQuery ];
@@ -81,14 +80,12 @@ MiResultSizeQueryPresenter >> initializeValueInput [
 			self computeQueryAction: newNumber ]
 ]
 
-{ #category : #layout }
-MiResultSizeQueryPresenter >> newLayout [
+{ #category : #initialization }
+MiResultSizeQueryPresenter >> innerQueries [
 
-	^ SpBoxLayout newLeftToRight
-		  add: #subqueriesDropList width: self class dropListWidth;
-		  add: #comparatorDropList width: 63;
-		  add: #valueInputField width: 70;
-		  yourself
+	^ owner allQueryPresentersExceptSelf select: [ :aQueryPresenter | 
+		  aQueryPresenter query isScopeQuery or: [ 
+			  aQueryPresenter query isNavigationQuery ] ]
 ]
 
 { #category : #'api - actions' }
@@ -97,7 +94,7 @@ MiResultSizeQueryPresenter >> queryPresentersListChanged [
 	"Since the list of available queries of the MiQueryBuilder changed, we need to update the items on the drop list. We do not want to have deleted queries on the list or we want to add the new added query presenter."
 
 	| newAvailableQueries previouslySelectedQuery |
-	newAvailableQueries := owner allQueryPresentersExceptSelf.
+	newAvailableQueries := self innerQueries.
 	previouslySelectedQuery := subqueriesDropList selectedItem.
 	(newAvailableQueries includes: previouslySelectedQuery)
 		ifTrue: [ 

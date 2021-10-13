@@ -1,14 +1,10 @@
 Class {
 	#name : #MiUML,
 	#superclass : #MiAbstractVisualization,
-	#traits : 'TObservable',
-	#classTraits : 'TObservable classTrait',
 	#instVars : [
-		'#builder',
-		'#rootEntities',
-		'#selected => ObservableSlot',
-		'#miUMLModelDescriptor',
-		'#selectionChange'
+		'builder',
+		'rootEntities',
+		'selected'
 	],
 	#category : #'MooseIDE-Famix-UML'
 }
@@ -24,18 +20,6 @@ MiUML >> highlightShapes [
 MiUML >> initialize [
 	super initialize.
 	rootEntities := #()
-]
-
-{ #category : #accessing }
-MiUML >> miUMLModelDescriptor [
-
-	^ miUMLModelDescriptor ifNil: [ RSUMLClassDescriptor new forFamix ]
-]
-
-{ #category : #accessing }
-MiUML >> miUMLModelDescriptor: anObject [
-
-	miUMLModelDescriptor := anObject
 ]
 
 { #category : #helpers }
@@ -57,7 +41,7 @@ MiUML >> rootEntities: aCollection [
 MiUML >> run [
 	super run.
 	builder := RSUMLClassBuilder new.
-	builder modelDescriptor: self miUMLModelDescriptor.
+	builder modelDescriptor forFamix.
 	builder classes: self rootEntities.
 	builder build.
 	builder renderIn: self canvas.
@@ -77,19 +61,5 @@ MiUML >> selected [
 
 { #category : #accessing }
 MiUML >> selected: anObject [
-	selected := anObject.
-	
-]
-
-{ #category : #'private - events' }
-MiUML >> whenPropertyChangedDo: aBlock [
-
-	self property: #selected whenChangedDo: aBlock
-]
-
-{ #category : #'api - events' }
-MiUML >> whenSelectedItemChangedDo: aBlock [
-
-	self whenPropertyChangedDo: [ :selection | 
-		selection ifNotNil: [ aBlock value: selection ] ]
+	selected := anObject
 ]

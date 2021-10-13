@@ -11,7 +11,7 @@ Your presenter should implement `#updateForNewModel:` to define behavior when a 
 "
 Class {
 	#name : #MPImportCommand,
-	#superclass : #MiCommand,
+	#superclass : #CmCommand,
 	#category : #'MooseIDE-Meta-Import'
 }
 
@@ -20,8 +20,7 @@ MPImportCommand class >> addToSpCommandGroup: aSpCommandGroup forSpecContext: aP
 
 	{ 
 		MPImportMSECommand.
-		MPImportSTCommand.
-		MPImportJSONCommand } do: [ :cmd | 
+		MPImportSTCommand } do: [ :cmd | 
 		aSpCommandGroup register: ((cmd forSpecContext: aPresenter)
 				 iconName: cmd defaultIconName;
 				 yourself) ].

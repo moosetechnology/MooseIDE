@@ -10,6 +10,18 @@ Class {
 	#category : #'MooseIDE-QueriesBrowser-Configuration presenters'
 }
 
+{ #category : #specs }
+MiQueryConfiguratorPresenter class >> defaultSpec [
+
+	^ SpBoxLayout newHorizontal
+]
+
+{ #category : #layout }
+MiQueryConfiguratorPresenter >> buildLayout [
+
+	self layout: self class defaultSpec
+]
+
 { #category : #actions }
 MiQueryConfiguratorPresenter >> computeQuery: anObject [
 
@@ -25,24 +37,11 @@ MiQueryConfiguratorPresenter >> computeQueryAction: anObject [
 	owner disableProgressNotification
 ]
 
-{ #category : #'api - actions' }
-MiQueryConfiguratorPresenter >> configureFor: aQuery [
+{ #category : #initialization }
+MiQueryConfiguratorPresenter >> initialize [
 
-	"You should always do `query := aQuery` at the end of this method for all subclasses"
-
-	self subclassResponsibility
-]
-
-{ #category : #layout }
-MiQueryConfiguratorPresenter >> initializeLayout [
-
-	self layout: self newLayout
-]
-
-{ #category : #layout }
-MiQueryConfiguratorPresenter >> newLayout [
-
-	self subclassResponsibility
+	super initialize.
+	self buildLayout
 ]
 
 { #category : #update }
