@@ -112,6 +112,28 @@ MiSaveQueriesCommand >> resetResultFor: aQuery [
 	aQuery parent ifNotNil: [ :parent | self resetResultFor: parent ]
 ]
 
+{ #category : #sorting }
+MiSaveQueriesCommand >> sortQueries: queries [ 
+
+	| sortedQueries queriesWithDependencies isQueryNotUsed randomQuery |
+	sortedQueries := OrderedCollection
+		withAll: (queries select: [ :query | query dependencies isEmpty ]).
+	queriesWithDependencies := 
+		(queries select: [ :query | query dependencies isNotEmpty ]) asOrderedCollection.
+
+	[ queriesWithDependencies isNotEmpty ] whileTrue: [
+		randomQuery := queriesWithDependencies atRandom: (Random new).
+		isQueryNotUsed := true.
+		queriesWithDependencies do: [ :secondQuery | 
+			(randomQuery dependencies includes: secondQuery ) ifTrue: [ isQueryNotUsed := false ] ].
+
+		isQueryNotUsed ifTrue: [ 
+			sortedQueries add: randomQuery.
+			queriesWithDependencies remove: randomQuery ] ].
+
+	^ sortedQueries
+]
+
 { #category : #executing }
 MiSaveQueriesCommand >> write: queriesToStore toFile: file [
 
