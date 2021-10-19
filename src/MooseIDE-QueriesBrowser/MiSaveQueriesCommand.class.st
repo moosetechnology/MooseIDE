@@ -85,6 +85,37 @@ MiSaveQueriesCommand >> execute [
 	self afterCreationAction.
 ]
 
+{ #category : #sorting }
+MiSaveQueriesCommand >> putChildrenInPlace: topSortQueries [
+
+	| trees topSortCopy toBeAdded sortedTrees |
+	trees := Dictionary new.
+	topSortCopy := topSortQueries copy asOrderedCollection.
+	toBeAdded := topSortCopy select: [ :each | each parent isNil ].
+	toBeAdded do: [ :each |
+		trees at: each asOrderedCollection put: (topSortQueries indexOf: each).
+		topSortCopy remove: each ].
+
+	[ topSortCopy isNotEmpty ] whileTrue: [ 
+		| toBeRemoved newCollection |
+		toBeRemoved := OrderedCollection new.
+		topSortCopy do: [ :each | 
+			trees keys
+				detect: [ :collection | collection includes: each parent ]
+				ifFound: [ :collection |
+					newCollection := collection copyWith: each.
+					trees
+						at: newCollection
+						put: ((topSortQueries indexOf: each) max: (trees at: collection)).
+					trees removeKey: collection.
+					toBeRemoved add: each ] ].
+		topSortCopy removeAll: toBeRemoved ].
+	
+	sortedTrees := trees keys sorted: [ :a :b | (trees at: a) < (trees at: b) ].
+	^ sortedTrees flattened
+
+]
+
 { #category : #executing }
 MiSaveQueriesCommand >> queriesToStore [
 
@@ -113,24 +144,21 @@ MiSaveQueriesCommand >> resetResultFor: aQuery [
 ]
 
 { #category : #sorting }
-MiSaveQueriesCommand >> sortQueries: queries [ 
+MiSaveQueriesCommand >> topologicalSortForQueries: queries [
 
-	| sortedQueries queriesWithDependencies isQueryNotUsed randomQuery |
-	sortedQueries := OrderedCollection
-		withAll: (queries select: [ :query | query dependencies isEmpty ]).
-	queriesWithDependencies := 
+	| sortedQueries queriesWithDependencies  |
+	sortedQueries :=
+		OrderedCollection withAll: (queries select: [ :query | query dependencies isEmpty ]).
+	queriesWithDependencies :=
 		(queries select: [ :query | query dependencies isNotEmpty ]) asOrderedCollection.
 
-	[ queriesWithDependencies isNotEmpty ] whileTrue: [
-		randomQuery := queriesWithDependencies atRandom: (Random new).
-		isQueryNotUsed := true.
-		queriesWithDependencies do: [ :secondQuery | 
-			(randomQuery dependencies includes: secondQuery ) ifTrue: [ isQueryNotUsed := false ] ].
-
-		isQueryNotUsed ifTrue: [ 
-			sortedQueries add: randomQuery.
-			queriesWithDependencies remove: randomQuery ] ].
-
+	[ queriesWithDependencies isNotEmpty ] whileTrue: [ 
+		| toBeAdded |
+		toBeAdded := queriesWithDependencies select: [ :firstQuery | 
+			firstQuery dependencies allSatisfy: [ :secondQuery | 
+				sortedQueries includes: secondQuery ] ].
+		sortedQueries addAll: toBeAdded.
+		queriesWithDependencies removeAll: toBeAdded ].
 	^ sortedQueries
 ]
 
