@@ -51,12 +51,15 @@ MiPropertyQueryPresenter >> newComparatorDropList [
 { #category : #initialization }
 MiPropertyQueryPresenter >> newPropertyDropList [
 
+	| sortedProperties |
+	"sortingBlock: is not working on SpDropListPresenter at the moment."
+	sortedProperties := self query availableProperties sorted: #asString ascending.
+
 	^ self newDropList
-		  items: self query availableProperties;
-		  display: [ :prop | prop asString ];
-		  whenSelectedItemChangedDo: [ :property | 
-			  self updateProperty: property ];
-		  yourself
+		items: sortedProperties;
+		display: [ :prop | prop asString ];
+		whenSelectedItemChangedDo: [ :property | self updateProperty: property ];
+		yourself
 ]
 
 { #category : #initialization }
