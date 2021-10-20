@@ -151,7 +151,7 @@ MiSaveQueriesCommand >> resetResultFor: aQuery [
 { #category : #sorting }
 MiSaveQueriesCommand >> topologicalSortForQueries: queries [
 
-	"Gives the topological sort for the list of queries passed as argument. A topological sort assures that a query always come after its dependencies.
+	"Gives the topological sort for the list of queries passed as argument. A topological sort assures that a query always comes after its dependencies.
 	Note that this can cause that a query will not be directly under its parent."
 
 	| sortedQueries queriesWithDependencies  |
