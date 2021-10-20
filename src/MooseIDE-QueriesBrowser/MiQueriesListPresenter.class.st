@@ -169,8 +169,8 @@ MiQueriesListPresenter >> initializeButtons [
 	saveCommand
 		context: self;
 		afterCreationAction: [ 
-			self reinitializeQueryPresenters.
-			parentQueryBrowser resetRootQueryEntities ].
+			"self reinitializeQueryPresenters.
+			parentQueryBrowser resetRootQueryEntities" ].
 	saveQueriesButton := saveCommand asSpecCommand asButtonPresenter.
 	saveQueriesButton
 		label: '';
