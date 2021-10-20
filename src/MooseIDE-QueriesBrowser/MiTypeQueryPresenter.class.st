@@ -71,6 +71,7 @@ MiTypeQueryPresenter >> initializeTypesList [
 
 { #category : #'widgets configuration' }
 MiTypeQueryPresenter >> labelFor: type [
+
 	^ type mooseDescription name asEnglishPlural
 ]
 
