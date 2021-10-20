@@ -47,19 +47,22 @@ MiSaveQueriesCommand class >> stonFiles [
 	^ stonFiles
 ]
 
-{ #category : #executing }
-MiSaveQueriesCommand >> afterCreationAction [
-
-	afterCreationAction value
-]
-
 { #category : #accessing }
 MiSaveQueriesCommand >> afterCreationAction: aBlock [
 
 	afterCreationAction := aBlock
 ]
 
-{ #category : #executing }
+{ #category : #actions }
+MiSaveQueriesCommand >> copyQueriesReferences [
+
+	"Since we are resetting the result and changing the parent of the queries, we don't want to do that on the original queries to keep the queries browser still running.
+	So, we will use a copy of the objects. We need to make an intelligent copiing of the objects. Because if a query has a parent we must change parent to the new parent. For now it's not done.  "
+
+	^ self context famixQueries
+]
+
+{ #category : #'write on disk' }
 MiSaveQueriesCommand >> createFile: fileName [
 
 	| file |
@@ -82,37 +85,98 @@ MiSaveQueriesCommand >> execute [
 
 	file := self createFile: fileName.
 	self write: self queriesToStore toFile: file.
-	self afterCreationAction.
+	self triggerAfterCreationAction
 ]
 
-{ #category : #executing }
+{ #category : #sorting }
+MiSaveQueriesCommand >> putChildrenInPlace: topSortQueries [
+
+	"This method sorts the queries to put a query directly under its parent KEEPING the topological sorting"
+
+	| trees topSortCopy toBeAdded sortedTrees |
+	trees := Dictionary new.
+	topSortCopy := topSortQueries copy asOrderedCollection.
+	toBeAdded := topSortCopy select: [ :each | each parent isNil ].
+	trees := toBeAdded collect: [ :each |
+		topSortCopy remove: each.
+		TreeQueryHolder tree: each asOrderedCollection index: (topSortQueries indexOf: each) ].
+
+	[ topSortCopy isNotEmpty ] whileTrue: [ 
+		| toBeRemoved |
+		toBeRemoved := OrderedCollection new.
+		topSortCopy do: [ :each | 
+			trees
+				detect: [ :tree | tree tree includes: each parent ]
+				ifFound: [ :tree |
+					tree addQuery: each.
+					tree index: ((topSortQueries indexOf: each) max: tree index).
+					toBeRemoved add: each ] ].
+		topSortCopy removeAll: toBeRemoved ].
+
+	sortedTrees := trees sorted: [ :a :b | (a index) < (b index) ].
+	^ (sortedTrees collect: #tree) flattened
+]
+
+{ #category : #actions }
+MiSaveQueriesCommand >> putNilAsParentForRootQuery: aQuery [
+
+	aQuery isUnaryQuery ifTrue: [ 
+		aQuery parent isRootQuery ifTrue: [ aQuery parent: nil ] ]
+]
+
+{ #category : #accessing }
 MiSaveQueriesCommand >> queriesToStore [
 
-	| queriesToStore queries |
-	queries := self context famixQueries.
-	"Since we are resetting the result and changing the parent of the queries, we don't want to do that on the original queries to keep the queries browser still running.
-	So, we will use a copy of the objects. We need to make an intelligent copiing of the objects. Because if a query has a parent we must change parent to the new parent. For now it's not done.  "
+	| queriesToStore topSortedQueries uiSortedQueries |
+	queriesToStore := self copyQueriesReferences.
 	
-	queriesToStore := queries.
-	
-	"For the unary queries that have a root query as a parent
-	we put the parent as nil. Because we don't want to store root queries. 
+	"For the unary queries that have a root query as a parent we put the parent as nil.
 	Also we don't want to store the result of the queries"
 	queriesToStore do: [ :each | 
 		self resetResultFor: each.
-		each isUnaryQuery ifTrue: [ 
-			each parent isRootQuery ifTrue: [ each parent: nil ] ] ].
-	^ queriesToStore
+		self putNilAsParentForRootQuery: each ].
+	
+	topSortedQueries := self topologicalSortForQueries: queriesToStore.
+	uiSortedQueries := self putChildrenInPlace: topSortedQueries.
+	^ uiSortedQueries
 ]
 
-{ #category : #executing }
+{ #category : #actions }
 MiSaveQueriesCommand >> resetResultFor: aQuery [
 
 	aQuery resetResult.
 	aQuery parent ifNotNil: [ :parent | self resetResultFor: parent ]
 ]
 
+{ #category : #sorting }
+MiSaveQueriesCommand >> topologicalSortForQueries: queries [
+
+	"Gives the topological sort for the list of queries passed as argument. A topological sort assures that a query always comes after its dependencies.
+	Note that this can cause that a query will not be directly under its parent."
+
+	| sortedQueries queriesWithDependencies  |
+	sortedQueries :=
+		OrderedCollection withAll: (queries select: [ :query | query dependencies isEmpty ]).
+	queriesWithDependencies :=
+		(queries select: [ :query | query dependencies isNotEmpty ]) asOrderedCollection.
+
+	[ queriesWithDependencies isNotEmpty ] whileTrue: [ 
+		| toBeAdded |
+		toBeAdded := queriesWithDependencies select: [ :firstQuery | 
+			firstQuery dependencies allSatisfy: [ :secondQuery | 
+				sortedQueries includes: secondQuery ] ].
+		sortedQueries addAll: toBeAdded.
+		queriesWithDependencies removeAll: toBeAdded ].
+	^ sortedQueries
+]
+
 { #category : #executing }
+MiSaveQueriesCommand >> triggerAfterCreationAction [
+
+	afterCreationAction value
+]
+
+{ #category : #'write on disk' }
 MiSaveQueriesCommand >> write: queriesToStore toFile: file [
 
 	file writeStreamDo: [ :stream | 
