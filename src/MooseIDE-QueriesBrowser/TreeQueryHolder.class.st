@@ -1,5 +1,5 @@
 "
-I am a class that holder the information of the tree of a query. Tree means all the sequence of a query and all of its children (and the choldren of its children). And the index of were the query has to be inserted.
+I am a class that holds the information of the tree of a query. Tree means all the sequence of a query and all of its children (and the children of its children...) and the index of where the query has to be inserted.
 
 I am used to help the sorting of the queries.
 "
