@@ -84,9 +84,11 @@ MiSaveQueriesCommand >> execute [
 		UIManager inform: 'You need to specify a name for the file.'.
 		^ self ].
 
-	file := self createFile: fileName.
-	self write: self queriesToStore toFile: file.
-	self triggerAfterCreationAction
+	[ :job | 
+		job title: 'Saving queries on disk'.
+		file := self createFile: fileName.
+		self write: self queriesToStore toFile: file.
+		self triggerAfterCreationAction ] asJob run
 ]
 
 { #category : #sorting }
