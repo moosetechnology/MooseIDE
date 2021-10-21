@@ -127,7 +127,7 @@ MiSaveQueriesCommand >> putNilAsParentForRootQuery: aQuery [
 		aQuery parent isRootQuery ifTrue: [ aQuery parent: nil ] ]
 ]
 
-{ #category : #accessing }
+{ #category : #actions }
 MiSaveQueriesCommand >> queriesToStore [
 
 	| queriesToStore topSortedQueries uiSortedQueries |
