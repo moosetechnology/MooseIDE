@@ -54,12 +54,13 @@ MiSaveQueriesCommand >> afterCreationAction: aBlock [
 ]
 
 { #category : #actions }
-MiSaveQueriesCommand >> copyQueriesReferences [
+MiSaveQueriesCommand >> copyQueriesReferencesOf: queries [
 
-	"Since we are resetting the result and changing the parent of the queries, we don't want to do that on the original queries to keep the queries browser still running.
-	So, we will use a copy of the objects. We need to make an intelligent copiing of the objects. Because if a query has a parent we must change parent to the new parent. For now it's not done.  "
+	"We don't want to do that on the original queries to keep the queries browser still running"
 
-	^ self context famixQueries
+	| copy |
+	copy := queries veryDeepCopy.
+	^ copy
 ]
 
 { #category : #'write on disk' }
@@ -83,9 +84,11 @@ MiSaveQueriesCommand >> execute [
 		UIManager inform: 'You need to specify a name for the file.'.
 		^ self ].
 
-	file := self createFile: fileName.
-	self write: self queriesToStore toFile: file.
-	self triggerAfterCreationAction
+	[ :job | 
+		job title: 'Saving queries on disk'.
+		file := self createFile: fileName.
+		self write: self queriesToStore toFile: file.
+		self triggerAfterCreationAction ] asJob run
 ]
 
 { #category : #sorting }
@@ -124,11 +127,11 @@ MiSaveQueriesCommand >> putNilAsParentForRootQuery: aQuery [
 		aQuery parent isRootQuery ifTrue: [ aQuery parent: nil ] ]
 ]
 
-{ #category : #accessing }
+{ #category : #actions }
 MiSaveQueriesCommand >> queriesToStore [
 
 	| queriesToStore topSortedQueries uiSortedQueries |
-	queriesToStore := self copyQueriesReferences.
+	queriesToStore := self copyQueriesReferencesOf: self context famixQueries.
 	
 	"For the unary queries that have a root query as a parent we put the parent as nil.
 	Also we don't want to store the result of the queries"

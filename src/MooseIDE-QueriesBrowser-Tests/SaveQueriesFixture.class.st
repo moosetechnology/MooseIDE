@@ -1,5 +1,7 @@
 "
-I am a fixture for MiSaveQueriesCommandTest
+I am a fixture for MiSaveQueriesCommandTest.
+
+See https://i.imgur.com/n6dfMHQ.png
 "
 Class {
 	#name : #SaveQueriesFixture,
@@ -18,6 +20,22 @@ Class {
 	],
 	#category : #'MooseIDE-QueriesBrowser-Tests-Commands'
 }
+
+{ #category : #accessing }
+SaveQueriesFixture >> exampleForCopyingQueries [
+
+	| root firstLevel secondLevel thirdLevel |
+	root := FQRootQuery new
+		result: FQTestsHelper current classesAndMethods;
+		yourself.
+	firstLevel := FQBooleanQuery property: #isStub.
+	firstLevel beChildOf: root.
+	secondLevel := FQBooleanQuery property: #isDead.
+	secondLevel beChildOf: firstLevel.
+	thirdLevel := FQBooleanQuery property: #containsReplicas.
+	thirdLevel beChildOf: secondLevel.
+	^ { firstLevel. secondLevel. thirdLevel }
+]
 
 { #category : #accessing }
 SaveQueriesFixture >> expectedChildrenInPlaceOrder [
@@ -39,7 +57,7 @@ SaveQueriesFixture >> expectedTopologicalOrder [
 		q9 }					"Level 3"
 ]
 
-{ #category : #'class initialization' }
+{ #category : #initialization }
 SaveQueriesFixture >> initialize [
 
 	q1 := FQBooleanQuery property: #isDead.
@@ -63,15 +81,5 @@ SaveQueriesFixture >> unsortedQueries [
 
 	"Besides the example in the image, we change the order of the children"
 
-	^ { 
-		  q8.
-		  q10.
-		  q2.
-		  q1.
-		  q3.
-		  q4.
-		  q9.
-		  q5.
-		  q6.
-		  q7 }
+	^ { q8. q10. q2. q1. q3. q4. q9. q5. q6. q7 }
 ]
