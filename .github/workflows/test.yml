@@ -6,7 +6,7 @@ name: CI
 # events but only for the development branch
 on:
   pull_request:
-    types: [assigned, opened, synchronize, reopened]
+    branches: [development]
 
 jobs:
   test:
@@ -19,7 +19,9 @@ jobs:
       - uses: actions/checkout@v2
       - uses: hpi-swa/setup-smalltalkCI@v1
         with:
-          smalltalk-version: ${{ matrix.smalltalk }}
+          smalltalk-image: ${{ matrix.smalltalk }}
       - run: smalltalkci -s ${{ matrix.smalltalk }}
         shell: bash
         timeout-minutes: 15
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
