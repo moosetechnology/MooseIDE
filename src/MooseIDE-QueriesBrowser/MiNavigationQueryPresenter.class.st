@@ -142,13 +142,17 @@ MiNavigationQueryPresenter >> updateDirection: selectedDirection [
 MiNavigationQueryPresenter >> updateLabel [
 	
 	| selectedAssociationsString names reducedNames |
-	names := associationsList selectedItems collect: [ :each | each mooseDescription name asString ].
-	reducedNames := names collect: [ :each |
-		LbCContractor new
-			usingPriorities;
-			removeVowels;
-			ellipsisUpTo: 8;
-			reduce: each ].
+	names := associationsList selectedItems collect: [ :each |
+		each mooseDescription name asString ].
+	reducedNames := names size > 2
+	ifTrue: [
+		names collect: [ :each |
+			LbCContractor new
+				usingPriorities;
+				removeVowels;
+				ellipsisUpTo: 8;
+				reduce: each ] ]
+	ifFalse: [ names ].
 	selectedAssociationsString := reducedNames joinUsing: ', '.
 	selectedAssociationsLabel label: selectedAssociationsString
 ]
