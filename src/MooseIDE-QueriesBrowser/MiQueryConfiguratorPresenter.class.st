@@ -39,6 +39,12 @@ MiQueryConfiguratorPresenter >> initializeLayout [
 	self layout: self newLayout
 ]
 
+{ #category : #testing }
+MiQueryConfiguratorPresenter >> isQueryUsed: aQuery [
+
+	^ false
+]
+
 { #category : #layout }
 MiQueryConfiguratorPresenter >> newLayout [
 

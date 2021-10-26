@@ -83,6 +83,13 @@ MiNAryQueryPresenter >> initializePresenters [
 	self initializeLayout
 ]
 
+{ #category : #testing }
+MiNAryQueryPresenter >> isQueryUsed: aQuery [
+
+	^ subqueryDropLists anySatisfy: [ :dropList | 
+		dropList selectedItem = aQuery ]
+]
+
 { #category : #actions }
 MiNAryQueryPresenter >> nAryOperation: newSelectedItem [
 
@@ -137,8 +144,7 @@ MiNAryQueryPresenter >> queryPresentersListChanged [
 	subqueryDropLists do: [ :dropList | 
 		previouslySelectedQuery := dropList selectedItem.
 		(newAvailableQueries includes: previouslySelectedQuery)
-			ifTrue: [ 
-			dropList updateItemsKeepingSelection: newAvailableQueries ]
+			ifTrue: [ dropList updateItemsKeepingSelection: newAvailableQueries ]
 			ifFalse: [ dropList items: newAvailableQueries ] ]
 ]
 

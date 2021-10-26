@@ -242,6 +242,14 @@ MiQueriesListPresenter >> initializeProgressPresenter [
 	spinnerMorph := SpSpinnerMorph new
 ]
 
+{ #category : #testing }
+MiQueriesListPresenter >> isQueryUsed: aQuery [
+
+	^ (queryItemsPresenters collect: #queryConfiguratorPresenter)
+			anySatisfy: [ :queryPresenter | 
+				queryPresenter isQueryUsed: aQuery ]
+]
+
 { #category : #actions }
 MiQueriesListPresenter >> newFirstLevelQueryPresenter [
 

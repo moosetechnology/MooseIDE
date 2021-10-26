@@ -28,5 +28,9 @@ MiRemoveQueryCommand class >> iconName [
 { #category : #executing }
 MiRemoveQueryCommand >> execute [
 
+	(self context parentQueryListPresenter isQueryUsed: self context)
+		ifTrue: [ 
+			UIManager default inform: 'Cannot delete this query. It is used in another query(ies).'.
+			^ self ].
 	self context parentQueryListPresenter removeQueryAction: self context
 ]

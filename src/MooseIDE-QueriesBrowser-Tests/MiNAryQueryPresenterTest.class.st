@@ -73,6 +73,13 @@ MiNAryQueryPresenterTest >> resetPresenterWithEntities: aMooseGroup [
 ]
 
 { #category : #tests }
+MiNAryQueryPresenterTest >> testIsQueryUsed [
+
+	self assert: (presenter isQueryUsed: presenter subqueryDropLists first selectedItem).
+	self deny: (presenter isQueryUsed: presenter subqueryDropLists first items second)
+]
+
+{ #category : #tests }
 MiNAryQueryPresenterTest >> testNormalQueryInitialization [
 
 	presenter subqueryDropLists first selectIndex: 1.
