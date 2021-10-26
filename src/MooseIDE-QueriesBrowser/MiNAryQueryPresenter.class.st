@@ -83,6 +83,13 @@ MiNAryQueryPresenter >> initializePresenters [
 	self initializeLayout
 ]
 
+{ #category : #testing }
+MiNAryQueryPresenter >> isQueryUsed: aQuery [
+
+	^ subqueryDropLists anySatisfy: [ :dropList | 
+		dropList selectedItem = aQuery ]
+]
+
 { #category : #actions }
 MiNAryQueryPresenter >> nAryOperation: newSelectedItem [
 
