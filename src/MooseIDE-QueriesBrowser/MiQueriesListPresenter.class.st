@@ -19,7 +19,8 @@ Class {
 		'saveQueriesButton',
 		'loadQueriesButton',
 		'loadQueriesList',
-		'clearQueriesButton'
+		'clearQueriesButton',
+		'addManualQueryButton'
 	],
 	#category : #'MooseIDE-QueriesBrowser-Main presenters'
 }
@@ -166,11 +167,7 @@ MiQueriesListPresenter >> initializeButtons [
 		action: [ self addNewFirstLevelQuery ].
 
 	saveCommand := MiSaveQueriesCommand new.
-	saveCommand
-		context: self;
-		afterCreationAction: [ 
-			"self reinitializeQueryPresenters.
-			parentQueryBrowser resetRootQueryEntities" ].
+	saveCommand context: self.
 	saveQueriesButton := saveCommand asSpecCommand asButtonPresenter.
 	saveQueriesButton
 		label: '';
@@ -181,11 +178,17 @@ MiQueriesListPresenter >> initializeButtons [
 		icon: (self iconNamed: #smallLoadProject);
 		action: [ self showLoadQueriesPopover ];
 		help: 'Load a set of queries into the browser'.
+
 	clearQueriesButton := self newButton.
 	clearQueriesButton
 		icon: (self iconNamed: #smallUpdate);
 		action: [ self reinitializeQueryPresenters  ];
-		label: 'Clear queries'
+		label: 'Clear queries'.
+
+	addManualQueryButton := self newButton.
+	addManualQueryButton
+		icon: (self iconNamed: #edit);
+		label: 'Manual Query'
 ]
 
 { #category : #initialization }
@@ -206,6 +209,7 @@ MiQueriesListPresenter >> initializeLayout [
 		add: (SpBoxLayout newLeftToRight
 			spacing: 5;
 			add: addRootQueryButton width: self class iconWidth;
+			add: addManualQueryButton expand: false;
 			add: clearQueriesButton expand: false;
 			addLast: loadQueriesButton withConstraints: [ :c | c width: self class iconWidth ];
 			addLast: saveQueriesButton withConstraints: [ :c | c width: self class iconWidth ];
