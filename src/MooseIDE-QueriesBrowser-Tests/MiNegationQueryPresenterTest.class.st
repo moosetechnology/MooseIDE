@@ -68,6 +68,13 @@ MiNegationQueryPresenterTest >> testImpossibleQueryInitialization [
 ]
 
 { #category : #tests }
+MiNegationQueryPresenterTest >> testIsQueryUsed [
+
+	self assert: (presenter isQueryUsed: presenter subqueryDropListPresenter selectedItem).
+	self deny: (presenter isQueryUsed: presenter subqueryDropListPresenter items second)
+]
+
+{ #category : #tests }
 MiNegationQueryPresenterTest >> testNormalQueryInitialization [
 
 	self assert: presenter query class identicalTo: self queryClass.

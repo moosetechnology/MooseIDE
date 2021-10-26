@@ -144,8 +144,7 @@ MiNAryQueryPresenter >> queryPresentersListChanged [
 	subqueryDropLists do: [ :dropList | 
 		previouslySelectedQuery := dropList selectedItem.
 		(newAvailableQueries includes: previouslySelectedQuery)
-			ifTrue: [ 
-			dropList updateItemsKeepingSelection: newAvailableQueries ]
+			ifTrue: [ dropList updateItemsKeepingSelection: newAvailableQueries ]
 			ifFalse: [ dropList items: newAvailableQueries ] ]
 ]
 
