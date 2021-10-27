@@ -63,7 +63,7 @@ MiManualQueryPresenter >> notifyQueryChanged [
 { #category : #accessing }
 MiManualQueryPresenter >> query [
 
-	^ query ifNil: [ parentQuery ]
+	^ query ifNil: [ query := FQNullQuery new ]
 ]
 
 { #category : #'api - actions' }

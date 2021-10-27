@@ -157,21 +157,20 @@ MiQueryListItemPresenter >> initializePresenters [
 
 	self initializeMenu.
 	self initializeNumberLabel.
-
 	self initializeQueryTypesDropList.
-	"After setting whenSelectedItemChangedDo:, select the fastest query while we do not compute the
-	results in a fork.
-	This is for instantiate queryConfigurationPresenter variable"
-	queryTypesDropListPresenter selectItem: FQBooleanQuery.
+	
+	queryConfiguratorPresenter := self instantiate: MiNullQueryPresenter.
 	self initializeLayout
 ]
 
 { #category : #initialization }
 MiQueryListItemPresenter >> initializeQueryTypesDropList [
 
+	| sortedItems |
 	queryTypesDropListPresenter := self newDropList.
+	sortedItems := queriesListPresenter availableQueryTypes sorted: #label ascending.
 	queryTypesDropListPresenter
-		items: queriesListPresenter availableQueryTypes;
+		items: sortedItems;
 		display: [ :queryClass | queryClass label ];
 		whenSelectedItemChangedDo: [ :queryClass | 
 			self updateQueryConfiguratorPresenterFor: queryClass ]

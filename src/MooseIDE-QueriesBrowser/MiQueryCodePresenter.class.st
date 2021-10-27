@@ -53,6 +53,7 @@ MiQueryCodePresenter >> initializeCode [
 
 	code := self newCode
 		withoutSyntaxHighlight;
+		withoutLineNumbers;
 		beNotEditable;
 		text: self defaultComment;
 		whenSubmitDo: [ :text | self acceptQueryCode: text ];
