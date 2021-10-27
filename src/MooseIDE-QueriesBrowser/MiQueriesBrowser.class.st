@@ -137,13 +137,13 @@ MiQueriesBrowser >> initializeQueryBuilder [
 { #category : #initialization }
 MiQueriesBrowser >> initializeQueryCodePresenter [
 
-	queryCodePresenter := self instantiate: MiQueryCodePresenter
+	queryCodePresenter := self instantiate: QueryCodePresenter
 ]
 
 { #category : #initialization }
 MiQueriesBrowser >> initializeResultTreePresenter [
 
-	queryResultTreePresenter := self instantiate: MiResultTreePresenter.
+	queryResultTreePresenter := self instantiate: QueryResultTreePresenter.
 	queryResultTreePresenter updateForEntities: self queryResultEntities
 ]
 

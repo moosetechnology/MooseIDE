@@ -2,7 +2,7 @@
 I am a presenter thas shows the result of the current selected query in a tree presenter.
 "
 Class {
-	#name : #MiResultTreePresenter,
+	#name : #QueryResultTreePresenter,
 	#superclass : #SpTreeTablePresenter,
 	#instVars : [
 		'sortedEntitiesCache'
@@ -11,7 +11,7 @@ Class {
 }
 
 { #category : #commands }
-MiResultTreePresenter class >> buildCommandsGroupWith: presenter forRoot: aCmCommandsGroup [
+QueryResultTreePresenter class >> buildCommandsGroupWith: presenter forRoot: aCmCommandsGroup [
 
 	aCmCommandsGroup
 		register:
@@ -27,19 +27,19 @@ MiResultTreePresenter class >> buildCommandsGroupWith: presenter forRoot: aCmCom
 ]
 
 { #category : #accessing }
-MiResultTreePresenter class >> headerTitle [
+QueryResultTreePresenter class >> headerTitle [
 	^ 'Result of current query'
 ]
 
 { #category : #initialization }
-MiResultTreePresenter >> childrenOf: item [
+QueryResultTreePresenter >> childrenOf: item [
 	^ (self roots includes: item)
 		ifTrue: [ sortedEntitiesCache at: item ifAbsentPut: [ item entities sort: #name ascending ] ]
 		ifFalse: {}
 ]
 
 { #category : #initialization }
-MiResultTreePresenter >> initialize [
+QueryResultTreePresenter >> initialize [
 
 	super initialize.
 
@@ -53,12 +53,12 @@ MiResultTreePresenter >> initialize [
 ]
 
 { #category : #'private - for tests' }
-MiResultTreePresenter >> items [
+QueryResultTreePresenter >> items [
 	^ self roots flatCollect: [ :root | self childrenOf: root ]
 ]
 
 { #category : #accessing }
-MiResultTreePresenter >> miSelectedItem [
+QueryResultTreePresenter >> miSelectedItem [
 	^ (self selectedItems
 		collect: [ :item | 
 			item isCollection
@@ -67,13 +67,13 @@ MiResultTreePresenter >> miSelectedItem [
 ]
 
 { #category : #naming }
-MiResultTreePresenter >> stringForItem: item [
+QueryResultTreePresenter >> stringForItem: item [
 	(self roots includes: item) ifTrue: [ ^ item description ].
 	^ item name
 ]
 
 { #category : #update }
-MiResultTreePresenter >> updateForEntities: entities [
+QueryResultTreePresenter >> updateForEntities: entities [
 
 	| groups |
 	groups := (entities allEntityTypes collect: [ :type | 
@@ -84,7 +84,7 @@ MiResultTreePresenter >> updateForEntities: entities [
 ]
 
 { #category : #update }
-MiResultTreePresenter >> updateForQuery: aQuery [
+QueryResultTreePresenter >> updateForQuery: aQuery [
 	self
 		updateForEntities:
 			(aQuery isValid

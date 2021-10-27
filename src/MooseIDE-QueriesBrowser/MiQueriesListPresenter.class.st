@@ -239,7 +239,7 @@ MiQueriesListPresenter >> initializeLayout [
 { #category : #initialization }
 MiQueriesListPresenter >> initializeLoadQueries [
 
-	loadQueriesList := self instantiate: MiLoadQueriesPresenter.
+	loadQueriesList := self instantiate: LoadQueriesPresenter.
 	loadQueriesList okAction: [ 
 		self constructQueriesWithFile: loadQueriesList selectedFile ]
 ]

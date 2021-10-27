@@ -54,7 +54,7 @@ MiQueryConfiguratorPresenter >> newLayout [
 { #category : #update }
 MiQueryConfiguratorPresenter >> noParameterMessage: aParameterName [
 
-	^ self instantiate: MiNoPossibleQueryPresenter on: aParameterName
+	^ self instantiate: NoPossibleQueryPresenter on: aParameterName
 ]
 
 { #category : #transmissions }

@@ -9,7 +9,7 @@ FQTypeQuery types: {
 ```
 "
 Class {
-	#name : #MiQueryCodePresenter,
+	#name : #QueryCodePresenter,
 	#superclass : #SpPresenter,
 	#instVars : [
 		'code'
@@ -18,7 +18,7 @@ Class {
 }
 
 { #category : #action }
-MiQueryCodePresenter >> acceptQueryCode: aCode [
+QueryCodePresenter >> acceptQueryCode: aCode [
 
 	| query |
 	query := [ FQAbstractQuery readFrom: aCode ]
@@ -30,13 +30,13 @@ MiQueryCodePresenter >> acceptQueryCode: aCode [
 ]
 
 { #category : #initialization }
-MiQueryCodePresenter >> defaultComment [
+QueryCodePresenter >> defaultComment [
 
 	^ '"Query code"'
 ]
 
 { #category : #action }
-MiQueryCodePresenter >> informWrongCode [
+QueryCodePresenter >> informWrongCode [
 
 	| message |
 	message := 'This code does not build a query. 
@@ -49,7 +49,7 @@ Click to get current query code.'.
 ]
 
 { #category : #initialization }
-MiQueryCodePresenter >> initializeCode [
+QueryCodePresenter >> initializeCode [
 
 	code := self newCode
 		withoutSyntaxHighlight;
@@ -61,7 +61,7 @@ MiQueryCodePresenter >> initializeCode [
 ]
 
 { #category : #initialization }
-MiQueryCodePresenter >> initializeLayout [
+QueryCodePresenter >> initializeLayout [
 
 	self layout: (SpBoxLayout newVertical
 		add: code;
@@ -69,14 +69,14 @@ MiQueryCodePresenter >> initializeLayout [
 ]
 
 { #category : #initialization }
-MiQueryCodePresenter >> initializePresenters [
+QueryCodePresenter >> initializePresenters [
 
 	self initializeCode.
 	self initializeLayout
 ]
 
 { #category : #initialization }
-MiQueryCodePresenter >> updateForQuery: aQuery [
+QueryCodePresenter >> updateForQuery: aQuery [
 
 	| text |
 	text := aQuery isRootQuery

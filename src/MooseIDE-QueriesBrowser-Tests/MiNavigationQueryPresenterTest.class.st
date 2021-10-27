@@ -60,7 +60,7 @@ MiNavigationQueryPresenterTest >> testPresentersOnImpossibleQuery [
 		equals: SpDropListPresenter.
 	self
 		assert: presenter associationsButton class
-		identicalTo: MiNoPossibleQueryPresenter
+		identicalTo: NoPossibleQueryPresenter
 ]
 
 { #category : #tests }

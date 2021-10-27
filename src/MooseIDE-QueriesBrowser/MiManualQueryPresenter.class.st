@@ -3,14 +3,32 @@ I am a presenter that compiles a query according to a code input
 "
 Class {
 	#name : #MiManualQueryPresenter,
-	#superclass : #MiPresenter,
+	#superclass : #MiQueryConfiguratorPresenter,
 	#instVars : [
 		'writeQueryButton',
 		'parentQuery',
-		'query'
+		'queryCoder'
 	],
 	#category : #'MooseIDE-QueriesBrowser-Configuration presenters'
 }
+
+{ #category : #actions }
+MiManualQueryPresenter >> computeQuery: anObject [
+
+	
+]
+
+{ #category : #'api - actions' }
+MiManualQueryPresenter >> configureFor: aQuery [
+
+]
+
+{ #category : #initialization }
+MiManualQueryPresenter >> initialize [
+
+	super initialize.
+	query := FQNullQuery new
+]
 
 { #category : #initialization }
 MiManualQueryPresenter >> initializeButton [
@@ -19,7 +37,7 @@ MiManualQueryPresenter >> initializeButton [
 	writeQueryButton
 		label: 'Code a query';
 		icon: (self iconNamed: #edit);
-		action: [  ]
+		action: [ self openQueryCoderPopup ]
 ]
 
 { #category : #initialization }
@@ -32,13 +50,14 @@ MiManualQueryPresenter >> initializeLayout [
 MiManualQueryPresenter >> initializePresenters [
  
 	self initializeButton.
+	self initializeQueryCoder.
 	self initializeLayout
 ]
 
-{ #category : #testing }
-MiManualQueryPresenter >> isQueryUsed: aQuery [
+{ #category : #initialization }
+MiManualQueryPresenter >> initializeQueryCoder [
 
-	^ false
+	queryCoder := self instantiate: QueryCompilerPresenter new
 ]
 
 { #category : #layout }
@@ -54,20 +73,14 @@ MiManualQueryPresenter >> newLayout [
 		yourself
 ]
 
-{ #category : #transmissions }
-MiManualQueryPresenter >> notifyQueryChanged [
+{ #category : #actions }
+MiManualQueryPresenter >> openQueryCoderPopup [
 
-	owner queryChangedUpdate
-]
-
-{ #category : #accessing }
-MiManualQueryPresenter >> query [
-
-	^ query ifNil: [ query := FQNullQuery new ]
-]
-
-{ #category : #'api - actions' }
-MiManualQueryPresenter >> queryPresentersListChanged [
+	self newPopover
+		relativeTo: writeQueryButton;
+		bePositionRight;
+		presenter: queryCoder;
+		popup
 ]
 
 { #category : #'accessing - model' }

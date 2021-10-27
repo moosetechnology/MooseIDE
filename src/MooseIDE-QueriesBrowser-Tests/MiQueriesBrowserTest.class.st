@@ -83,11 +83,11 @@ MiQueriesBrowserTest >> testInitializePresenters [
 	self assert: browser layout isNotNil.
 	self
 		assert: browser queryCodePresenter class
-		equals: MiQueryCodePresenter.
+		equals: QueryCodePresenter.
 	self assert: browser queryCodePresenter text isNotEmpty.
 	self
 		assert: browser queryResultTreePresenter class
-		equals: MiResultTreePresenter.
+		equals: QueryResultTreePresenter.
 	self
 		assertCollection: browser queryResultEntities
 		hasSameElements: helper classesAndMethods

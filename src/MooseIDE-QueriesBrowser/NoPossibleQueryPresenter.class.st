@@ -2,7 +2,7 @@
 I am a presenter that only shows the message 'No property available' when a invalid query is created in a `MiQueryConfigurationPresenter`
 "
 Class {
-	#name : #MiNoPossibleQueryPresenter,
+	#name : #NoPossibleQueryPresenter,
 	#superclass : #SpPresenter,
 	#instVars : [
 		'textToDisplay',
@@ -14,7 +14,7 @@ Class {
 }
 
 { #category : #initialization }
-MiNoPossibleQueryPresenter >> initializeLayout [
+NoPossibleQueryPresenter >> initializeLayout [
 
 	self layout: (SpBoxLayout newHorizontal
 			 add: (SpBoxLayout newVertical
@@ -27,7 +27,7 @@ MiNoPossibleQueryPresenter >> initializeLayout [
 ]
 
 { #category : #initialization }
-MiNoPossibleQueryPresenter >> initializePresenters [
+NoPossibleQueryPresenter >> initializePresenters [
 
 	label := self newLabel
 		         label: textToDisplay;
@@ -38,12 +38,12 @@ MiNoPossibleQueryPresenter >> initializePresenters [
 ]
 
 { #category : #testing }
-MiNoPossibleQueryPresenter >> isImpossibleQueryPresenter [
+NoPossibleQueryPresenter >> isImpossibleQueryPresenter [
 
 	^ true
 ]
 
 { #category : #'accessing model' }
-MiNoPossibleQueryPresenter >> setModelBeforeInitialization: aString [
+NoPossibleQueryPresenter >> setModelBeforeInitialization: aString [
 	textToDisplay := 'No ' , aString , ' available'
 ]
