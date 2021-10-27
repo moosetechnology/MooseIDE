@@ -11,8 +11,7 @@ Class {
 		'queryNotebookPresenter',
 		'selectedQuery',
 		'rootQuery',
-		'queriesListPresenter',
-		'busMooseEntities'
+		'queriesListPresenter'
 	],
 	#category : #'MooseIDE-QueriesBrowser-Main presenters'
 }
@@ -74,11 +73,12 @@ MiQueriesBrowser >> canReceiveEntity: anObject [
 { #category : #actions }
 MiQueriesBrowser >> followEntity: anEntity [
 
+	| busMooseEntities |
 	"Create a group in case that only one entity was received from the bus"
 	busMooseEntities := anEntity asMooseGroup allUsing: FamixTNamedEntity.
 		
 	"Create the new root query"
-	self resetRootQueryEntities.
+	self resetRootQueryForEntities: busMooseEntities.
 
 	"Update window's title"
 	self window
@@ -183,7 +183,7 @@ MiQueriesBrowser >> removeQuery: aQuery [
 ]
 
 { #category : #'api - actions' }
-MiQueriesBrowser >> resetRootQueryEntities [
+MiQueriesBrowser >> resetRootQueryForEntities: busMooseEntities [
 
 	rootQuery
 		resetResult;
