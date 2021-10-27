@@ -22,45 +22,49 @@ MiQueryCodePresenter >> acceptQueryCode: aCode [
 
 	| query |
 	query := [ FQAbstractQuery readFrom: aCode ]
-		         on: Error
-		         do: [ 
-			         self informWrongCode.
-			         ^ self ].
+		on: Error
+		do: [ 
+			self informWrongCode.
+			^ self ].
 	(query isNil or: [ query isClass ]) ifFalse: [ self informWrongCode ]
 ]
 
 { #category : #initialization }
 MiQueryCodePresenter >> defaultComment [
+
 	^ '"Query code"'
 ]
 
 { #category : #action }
 MiQueryCodePresenter >> informWrongCode [
+
+	| message |
+	message := 'This code does not build a query. 
+Click to get current query code.'.
+
 	UIManager default
-		inform:
-			'This code does not build a query. 
-Click to get current query code.'
-		actionOnClick: [ code
-				text: (String streamContents: [ :s | owner selectedQuery storeOn: s ]) ]
+		inform: message
+		actionOnClick: [ code text:
+			(String streamContents: [ :s | owner selectedQuery storeOn: s ]) ]
 ]
 
 { #category : #initialization }
 MiQueryCodePresenter >> initializeCode [
 
 	code := self newCode
-		        withoutSyntaxHighlight;
-		        beNotEditable;
-		        text: self defaultComment;
-		        whenSubmitDo: [ :text | self acceptQueryCode: text ];
-		        yourself
+		withoutSyntaxHighlight;
+		beNotEditable;
+		text: self defaultComment;
+		whenSubmitDo: [ :text | self acceptQueryCode: text ];
+		yourself
 ]
 
 { #category : #initialization }
 MiQueryCodePresenter >> initializeLayout [
 
 	self layout: (SpBoxLayout newVertical
-			 add: code;
-			 yourself)
+		add: code;
+		yourself)
 ]
 
 { #category : #initialization }
@@ -73,13 +77,14 @@ MiQueryCodePresenter >> initializePresenters [
 { #category : #initialization }
 MiQueryCodePresenter >> updateForQuery: aQuery [
 
-	code text: (aQuery isRootQuery
-			 ifTrue: [ self defaultComment ]
-			 ifFalse: [ 
-				 | parsedExpression |
-				 parsedExpression := RBParser parseExpression:
-					                     (String streamContents: [ :aStream | 
-						                      aQuery storeWithParentsOn: aStream ]).
+	| text |
+	text := aQuery isRootQuery
+		ifTrue: [ self defaultComment ]
+		ifFalse: [ 
+			| parsedExpression |
+			parsedExpression := RBParser parseExpression:
+				(String streamContents: [ :aStream | aQuery storeWithParentsOn: aStream ]).
+			parsedExpression formattedCode ].
 
-				 parsedExpression formattedCode ])
+	code text: text
 ]
