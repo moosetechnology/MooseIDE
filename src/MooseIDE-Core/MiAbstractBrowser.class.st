@@ -37,11 +37,8 @@ Class {
 	#superclass : #MiPresenter,
 	#instVars : [
 		'model',
-		'buttonPropagate',
-		'buttonInspect',
 		'buses',
-		'receivingMode',
-		'toolbarCommandGroup'
+		'receivingMode'
 	],
 	#category : #'MooseIDE-Core-Browser'
 }
