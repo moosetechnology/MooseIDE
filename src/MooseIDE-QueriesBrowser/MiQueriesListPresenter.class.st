@@ -44,6 +44,21 @@ MiQueriesListPresenter >> addNewFirstLevelQuery [
 	self updateComponentList
 ]
 
+{ #category : #actions }
+MiQueriesListPresenter >> addNewManualQuery [
+	
+	| newPresenter |
+	newPresenter := MiQueryListItemPresenter
+		newManualQueryOn: queriesBrowser rootQuery
+		owner: self
+		queriesListPresenter: self.
+	newPresenter setQueryNumber: queryCounter.
+	queryCounter := queryCounter + 1.
+
+	queryItemsPresenters add: newPresenter.
+	self updateComponentList
+]
+
 { #category : #accessing }
 MiQueriesListPresenter >> availableQueryTypes [
 
@@ -88,7 +103,7 @@ MiQueriesListPresenter >> createNewQueryPresenter: query [
 	newPresenter := MiQueryListItemPresenter
 		                on: query
 		                owner: self
-		                parentPresenter: self.
+		                queriesListPresenter: self.
 	newPresenter setQueryNumber: queryCounter.
 	queryCounter := queryCounter + 1.
 	^ newPresenter
@@ -188,7 +203,8 @@ MiQueriesListPresenter >> initializeButtons [
 	addManualQueryButton := self newButton.
 	addManualQueryButton
 		icon: (self iconNamed: #edit);
-		label: 'Manual Query'
+		label: 'Manual Query';
+		action: [ self addNewManualQuery ]
 ]
 
 { #category : #initialization }

@@ -29,7 +29,20 @@ MiQueryListItemPresenter class >> buildCommandsGroupWith: presenterInstance forR
 ]
 
 { #category : #'instance creation' }
-MiQueryListItemPresenter class >> on: aQuery owner: aPresenter parentPresenter: aMiQueryListPresenter [
+MiQueryListItemPresenter class >> newManualQueryOn: aQuery owner: aPresenter queriesListPresenter: aMiQueriesListPresenter [
+
+	^ self basicNew
+		application: self currentApplication;
+		owner: aPresenter;
+		setModelBeforeInitialization: aQuery;
+		queriesListPresenter: aMiQueriesListPresenter;
+		initialize;
+		beForManualQuery;
+		yourself
+]
+
+{ #category : #'instance creation' }
+MiQueryListItemPresenter class >> on: aQuery owner: aPresenter queriesListPresenter: aMiQueriesListPresenter [
 
 	"We need this method because the owner of the presenter will change to SpComponentListPresenter. The first time the owner is the same as parent presenter. But then, Spec internally changes it. And we need to have the access to the parent presenter."
 
@@ -37,7 +50,7 @@ MiQueryListItemPresenter class >> on: aQuery owner: aPresenter parentPresenter: 
 		  application: self currentApplication;
 		  owner: aPresenter;
 		  setModelBeforeInitialization: aQuery;
-		  queriesListPresenter: aMiQueryListPresenter;
+		  queriesListPresenter: aMiQueriesListPresenter;
 		  initialize;
 		  yourself
 ]
@@ -47,6 +60,15 @@ MiQueryListItemPresenter >> allQueryPresentersExceptSelf [
 
 	^ queriesListPresenter queryItemsPresenters reject: [ :q | 
 		  q query = self query ]
+]
+
+{ #category : #'manual query' }
+MiQueryListItemPresenter >> beForManualQuery [
+
+	queryConfiguratorPresenter := self instantiate:
+		(MiManualQueryPresenter owner: self on: parentQuery).
+	self initializeLayout.
+	self layout remove: queryTypesDropListPresenter
 ]
 
 { #category : #'api - actions' }
