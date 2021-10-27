@@ -49,7 +49,7 @@ MiAbstractBrowserTest >> mooseObjects [
 	^ { 
 		  MooseEntity new.
 		  MooseGroup new.
-		  (MooseGroup with: MooseEntity new).
+		  (MooseModel with: MooseEntity new) entities asMooseGroup.
 		  MooseModel new.
 		  (MooseModel with: MooseEntity new) }
 ]
@@ -126,7 +126,8 @@ MiAbstractBrowserTest >> testCanOpenOnMooseEntity [
 MiAbstractBrowserTest >> testCanOpenOnMooseGroup [
 
 	| newBrowser |
-	self bus globallySelect: (MooseGroup with: MooseEntity new).
+	self bus globallySelect:
+		(MooseModel with: MooseEntity new) entities asMooseGroup.
 	self
 		shouldnt: [ 
 			newBrowser := self browserClass openForTests.

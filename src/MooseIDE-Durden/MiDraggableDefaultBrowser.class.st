@@ -88,8 +88,6 @@ MiDraggableDefaultBrowser >> followAction [
 { #category : #initialization }
 MiDraggableDefaultBrowser >> initializePresenters [
 
-	super initializePresenters.
-	
 	self widgetClass ifNotNil: [ 
 		widget := self instantiate: self widgetClass ]
 ]

@@ -2,5 +2,6 @@ Extension { #name : #MooseAbstractGroup }
 
 { #category : #'*MooseIDE-Dependency' }
 MooseAbstractGroup >> rootsForTreeMap [
-	^ self
+
+	^ self select: [ :entity | entity isContainerEntity ]
 ]

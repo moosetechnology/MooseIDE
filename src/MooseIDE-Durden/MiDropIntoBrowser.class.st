@@ -99,7 +99,6 @@ MiDropIntoBrowser >> followAction [
 { #category : #initialization }
 MiDropIntoBrowser >> initializePresenters [
 
-	super initializePresenters.
 	toolbar := self newToolbar.
 	status := self newStatusBar.
 	left := self newContainer.

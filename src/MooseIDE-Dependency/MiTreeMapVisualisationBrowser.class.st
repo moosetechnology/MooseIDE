@@ -35,6 +35,12 @@ MiTreeMapVisualisationBrowser class >> menuCommandOn: aBuilder [
 		action: [ self open ]
 ]
 
+{ #category : #'instance creation' }
+MiTreeMapVisualisationBrowser class >> newModel [
+
+	^ MiTreeMapVisualisationModel new
+]
+
 { #category : #specs }
 MiTreeMapVisualisationBrowser class >> open [
 	<script>
@@ -54,26 +60,15 @@ MiTreeMapVisualisationBrowser >> canHighlight [
 
 { #category : #testing }
 MiTreeMapVisualisationBrowser >> canReceiveEntity: anObject [
+
 	^ anObject isMooseObject and: [ anObject rootsForTreeMap isNotEmpty ]
-]
-
-{ #category : #accessing }
-MiTreeMapVisualisationBrowser >> diagram [
-	^ diagram
-]
-
-{ #category : #accessing }
-MiTreeMapVisualisationBrowser >> diagram: anObject [
-	diagram := anObject
 ]
 
 { #category : #actions }
 MiTreeMapVisualisationBrowser >> followEntity: anEntity [
 
-	diagram
-		unHighlight;
-		rootEntities: anEntity rootsForTreeMap;
-		run
+	model entities: anEntity rootsForTreeMap.
+	diagram run
 ]
 
 { #category : #actions }
@@ -84,11 +79,12 @@ MiTreeMapVisualisationBrowser >> highlightEntity: anEntity [
 
 { #category : #initialization }
 MiTreeMapVisualisationBrowser >> initializePresenters [
-	super initializePresenters.
-	diagram := self instantiate: MiTreeMap.
-	diagram
-		childrenBlock: [ :el | 
-			(el usesFamixTrait: TEntityMetaLevelDependency)
-				ifTrue: [ el children ]
-				ifFalse: [ {} ] ]
+
+	diagram := self instantiate: MiTreeMap
+]
+
+{ #category : #accessing }
+MiTreeMapVisualisationBrowser >> miSelectedItem [
+
+	^ model entities mooseInterestingEntity
 ]

@@ -44,7 +44,6 @@ MiHierarchicalVisualizationBrowser >> followEntity: anEntity [
 { #category : #initialization }
 MiHierarchicalVisualizationBrowser >> initializePresenters [
 
-	super initializePresenters.
 	diagram := self instantiate: MiHierarchicalVisualization.
 	diagram childrenBlock: [ :el | 
 		(el usesFamixTrait: TEntityMetaLevelDependency)

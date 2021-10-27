@@ -3,7 +3,6 @@ Class {
 	#superclass : #MiAbstractVisualization,
 	#instVars : [
 		'base',
-		'rootEntities',
 		'childrenBlock',
 		'multiTagColorBlock',
 		'noTagColorBlock'
@@ -23,23 +22,15 @@ MiTreeMap >> borderFor: anEntity [
 				ifFalse: [ Color black ])
 ]
 
-{ #category : #accessing }
-MiTreeMap >> childrenBlock [
-	"a block with one parameter: entity that return the list of children of this entity"
-	^childrenBlock
-]
-
-{ #category : #accessing }
-MiTreeMap >> childrenBlock: aBlock [
-	"a block with one parameter: entity that return the list of children of this entity"
-	childrenBlock := aBlock
-]
-
 { #category : #helpers }
 MiTreeMap >> childrenForEntity: anEntity [
+
 	"should cache #colorFor: result as it might involve intensive computing"
+
 	"using #asHexString to have an obsolute order on Colors"
-	^ (self childrenBlock value: anEntity) sorted: [ :a :b | (self colorFor: a) asHexString < (self colorFor: b) asHexString ] 
+
+	^ (childrenBlock value: anEntity) sorted: [ :a :b | 
+		  (self colorFor: a) asHexString < (self colorFor: b) asHexString ]
 ]
 
 { #category : #helpers }
@@ -70,13 +61,15 @@ MiTreeMap >> highlightShapes [
 
 { #category : #initialization }
 MiTreeMap >> initialize [
+
 	super initialize.
 	base := RSComposite new
-		draggable;
-		popup;
-		when: RSMouseLeftClick do: [ :evt | self processEvent: evt ].
-	rootEntities := #().
-	childrenBlock := [ :entity | #() ]
+		        draggable;
+		        popup;
+		        when: RSMouseLeftClick
+		        do: [ :evt | self processEvent: evt ].
+
+	childrenBlock := [ :entity | entity children ]
 ]
 
 { #category : #helpers }
@@ -127,16 +120,6 @@ MiTreeMap >> relayout: shape [
 	shape padding: 10.
 ]
 
-{ #category : #accessing }
-MiTreeMap >> rootEntities [
-	^rootEntities
-]
-
-{ #category : #accessing }
-MiTreeMap >> rootEntities: aCollection [
-	rootEntities := aCollection
-]
-
 { #category : #helpers }
 MiTreeMap >> rootShapes [
 	^ self canvas shapes ifNotEmpty: [ :shapes | shapes first shapes ]
@@ -144,12 +127,13 @@ MiTreeMap >> rootShapes [
 
 { #category : #running }
 MiTreeMap >> run [
+
 	super run.
-	self canvas
-		add:
-			(RSComposite new
-				addAll: (self rootEntities collect: [ :e | self nodeFor: e ]);
-				yourself).
+	self unHighlight.
+	self canvas add: (RSComposite new
+			 addAll:
+				 (self owner model entities collect: [ :e | self nodeFor: e ]);
+			 yourself).
 	self update
 ]
 

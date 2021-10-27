@@ -119,7 +119,6 @@ MiQueriesBrowser >> initializeNotebookPresenter [
 { #category : #initialization }
 MiQueriesBrowser >> initializePresenters [
 
-	super initializePresenters.
 	self initializeQueryCodePresenter.
 	self initializeResultTreePresenter.
 	self initializeNotebookPresenter.

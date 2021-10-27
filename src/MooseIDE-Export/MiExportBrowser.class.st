@@ -178,7 +178,6 @@ MiExportBrowser >> followEntity: anEntity [
 { #category : #initialization }
 MiExportBrowser >> initializePresenters [
 
-	super initializePresenters.
 	self initializeToolbar.
 	self initializeTable
 ]

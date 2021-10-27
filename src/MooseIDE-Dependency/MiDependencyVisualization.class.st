@@ -86,8 +86,9 @@ MiDependencyVisualization >> highlightShapes [
 
 { #category : #initialization }
 MiDependencyVisualization >> initialize [
+
 	super initialize.
-	entities := #()
+	entities := MooseGroup new
 ]
 
 { #category : #legend }
@@ -170,19 +171,20 @@ MiDependencyVisualization >> selected: anObject [
 
 { #category : #running }
 MiDependencyVisualization >> shapeForEntity: node [
+
 	| shape |
 	shape := RSBox new
-		color: (self colorScale scale: node numberOfLinesOfCode);
-		"+5 for a minimal size"
-			width: (incomingDependencies at: node) size * 2 + 5;
-		height: (outgoingDependencies at: node) size * 2 + 5;
-		model: node;
-		popup;
-		draggable;
-		addInteraction:
-			((MiSelection on: [ :entity | self selected: entity ])
-				marginPercentage: 0.5);
-		yourself.
+		         color: (self colorScale scale: node numberOfLinesOfCode);
+		         "+5 for a minimal size"width:
+			         (incomingDependencies at: node) size * 2 + 5;
+		         height: (outgoingDependencies at: node) size * 2 + 5;
+		         model: node;
+		         popup;
+		         draggable;
+		         addInteraction: ((MiSelection on: [ :entity | 
+					           self selected: entity.
+					           owner updateToolbar ]) marginPercentage: 0.5);
+		         yourself.
 	self makeHighlightable: shape.
 	^ shape
 ]

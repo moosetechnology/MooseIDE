@@ -15,15 +15,3 @@ MiFreezeMode class >> browser: aBrowser actOnEntity: anEntity [
 
 	
 ]
-
-{ #category : #'radio button' }
-MiFreezeMode class >> buttonEnabledInBrowser: aBrowser [
-
-	^ true
-]
-
-{ #category : #actions }
-MiFreezeMode class >> buttonLabel [
-
-	^ 'Freeze'
-]

@@ -23,6 +23,12 @@ MiCommand class >> isAbstract [
 ]
 
 { #category : #converting }
+MiCommand >> application [
+
+	^ context application
+]
+
+{ #category : #converting }
 MiCommand >> asSpecCommand [
 
 	| command |
@@ -41,5 +47,5 @@ MiCommand >> asSpecCommand [
 { #category : #converting }
 MiCommand >> iconProvider [
 
-	^ context application iconProvider
+	^ self application iconProvider
 ]
