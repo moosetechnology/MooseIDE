@@ -69,7 +69,6 @@ MiNonUsedMethodBrowser >> canReceiveEntity: anEntity [
 MiNonUsedMethodBrowser >> followEntity: anEntity [
 
 	model container: anEntity.
-	self updateToolbar.
 	self updateWindowTitleWith: anEntity name.
 	diagram run.
 	self update "This is so the canvas *actually* zoomToFit. Weird that we need it"

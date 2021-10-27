@@ -70,8 +70,7 @@ MiUMLBrowser >> followEntity: anEntity [
 	model
 		entities: anEntity asMooseSpecializedGroup;
 		unselectAll.
-	diagram run.
-	self updateToolbar
+	diagram run
 ]
 
 { #category : #actions }

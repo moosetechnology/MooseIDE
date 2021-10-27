@@ -67,8 +67,7 @@ MiSourceTextBrowser >> followEntity: anEntity [
 
 	model selected: anEntity.
 	self text: model sourceText.
-	self updateWindowTitleWith: anEntity name.
-	self updateToolbar
+	self updateWindowTitleWith: anEntity name
 ]
 
 { #category : #initialization }

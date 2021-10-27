@@ -3,14 +3,15 @@ Extension { #name : #MiAbstractBrowser }
 { #category : #'*MooseIDE-Tests' }
 MiAbstractBrowser >> actionButtons [
 
-	^ (self toolbarCommandGroup commandOrGroupNamed: 'Actions') commands 
-		  collect: #presenter
+	^ (self window toolbarCommandGroup commandOrGroupNamed: 'Actions')
+		  commands collect: #presenter
 ]
 
 { #category : #'*MooseIDE-Tests' }
 MiAbstractBrowser >> busButton [
 
-	^ (self toolbarCommandGroup commandOrGroupNamed: 'Buses') presenter
+	^ (self window toolbarCommandGroup commandOrGroupNamed: 'Buses')
+		  presenter
 ]
 
 { #category : #'*MooseIDE-Tests' }

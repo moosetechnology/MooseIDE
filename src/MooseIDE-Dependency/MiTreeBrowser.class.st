@@ -63,8 +63,7 @@ MiTreeBrowser >> followEntity: anEntity [
 	self model root: anEntity.
 	self model selected: anEntity.
 
-	self refreshTree.
-	self updateToolbar
+	self refreshTree
 ]
 
 { #category : #initialization }

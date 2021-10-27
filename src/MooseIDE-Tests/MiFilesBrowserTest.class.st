@@ -23,7 +23,7 @@ MiFilesBrowserTest >> setUp [
 ]
 
 { #category : #tests }
-MiFilesBrowserTest >> testMiActivateActionButtons [
+MiFilesBrowserTest >> testActivateActionButtons [
 
 	browser actionButtons do: [ :button | self deny: button isEnabled ].
 

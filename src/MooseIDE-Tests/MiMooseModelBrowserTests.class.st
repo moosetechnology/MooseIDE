@@ -36,7 +36,7 @@ MiMooseModelBrowserTests >> tearDown [
 ]
 
 { #category : #tests }
-MiMooseModelBrowserTests >> testMiActivateActionButtons [
+MiMooseModelBrowserTests >> testActivateActionButtons [
 
 	| newModel |
 	browser actionButtons do: [ :button | self deny: button isEnabled ].
@@ -46,7 +46,7 @@ MiMooseModelBrowserTests >> testMiActivateActionButtons [
 			(FamixStClass named: 'Class1').
 			(FamixStClass named: 'Class2') }.
 	MooseModel root add: newModel.
-	browser followEntity: newModel.
+	browser selectEntity: newModel.
 	browser actionButtons do: [ :button | self deny: button isEnabled ].
 
 	browser modelPresenter clickAtPath: #( 1 ).

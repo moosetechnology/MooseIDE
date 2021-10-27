@@ -68,8 +68,7 @@ MiTreeMapVisualisationBrowser >> canReceiveEntity: anObject [
 MiTreeMapVisualisationBrowser >> followEntity: anEntity [
 
 	model entities: anEntity rootsForTreeMap.
-	diagram run.
-	self updateToolbar
+	diagram run
 ]
 
 { #category : #actions }

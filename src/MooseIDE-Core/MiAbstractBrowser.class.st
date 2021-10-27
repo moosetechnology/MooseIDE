@@ -47,22 +47,16 @@ Class {
 }
 
 { #category : #specs }
-MiAbstractBrowser class >> buildCommandsGroupWith: presenter forRoot: rootCommandGroup [
+MiAbstractBrowser class >> actionsCommandGroupFor: presenter [
 
-	rootCommandGroup
-		register:
-			(MiReceivingModeCommand asCommandGroupForSpecContext: presenter);
-		register: (MiEditBusCommand forSpecContext: presenter);
-		register:
-			(MiHelpCommand forSpecContext: presenter) beDisplayedOnRightSide;
-		register: (CmCommandGroup forSpec
-				 name: 'Actions';
-				 register:
-					 (MiPropagateCommand forSpecContext: presenter)
-						 beDisplayedOnRightSide;
-				 register:
-					 (MiInspectCommand forSpecContext: presenter)
-						 beDisplayedOnRightSide)
+	^ CmCommandGroup forSpec
+		  name: 'Actions';
+		  register:
+			  (MiPropagateCommand forSpecContext: presenter)
+				  beDisplayedOnRightSide;
+		  register:
+			  (MiInspectCommand forSpecContext: presenter)
+				  beDisplayedOnRightSide
 ]
 
 { #category : #specs }
@@ -140,6 +134,12 @@ MiAbstractBrowser >> buses [
 ]
 
 { #category : #testing }
+MiAbstractBrowser >> canEditBuses [
+
+	^ true
+]
+
+{ #category : #testing }
 MiAbstractBrowser >> canFollow [
 
 	^ true
@@ -177,8 +177,8 @@ MiAbstractBrowser >> followBus: aBus [
 	(self buses includes: aBus) ifTrue: [ ^ self ].
 	self buses add: aBus.
 	aBus registerBrowser: self.
-	self updateBusButton.
-	self selectEntity: aBus logger mostRecentEntity. 
+	self window ifNotNil: [ :window | window updateBusButton ].
+	self selectEntity: aBus logger mostRecentEntity
 ]
 
 { #category : #actions }
@@ -207,6 +207,13 @@ MiAbstractBrowser >> highlightEntity: anEntity [
 	
 ]
 
+{ #category : #testing }
+MiAbstractBrowser >> ifAutonomous: aBlock [
+
+	self owner isNotNil and: [ 
+		self owner isWindowPresenter ifTrue: aBlock ]
+]
+
 { #category : #initialization }
 MiAbstractBrowser >> initialize [
 
@@ -219,9 +226,9 @@ MiAbstractBrowser >> initialize [
 MiAbstractBrowser >> initializeWindow: aMiWindowPresenter [
 
 	super initializeWindow: aMiWindowPresenter.
-	aMiWindowPresenter toolbar:
-		(self newToolbar fillWith: self toolbarCommandGroup).
-	aMiWindowPresenter whenOpenedDo: [ self updateToolbar ].
+
+	aMiWindowPresenter buildToolbar.
+
 	aMiWindowPresenter whenClosedDo: [ 
 		self buses do: [ :bus | bus unregisterBrowser: self ] ]
 ]
@@ -253,11 +260,10 @@ MiAbstractBrowser >> needUpdate: anEntity [
 	^ anEntity ~= model selected
 ]
 
-{ #category : #'private - accessing' }
-MiAbstractBrowser >> propagateCommand [
+{ #category : #accessing }
+MiAbstractBrowser >> receivingMode [
 
-	^ ((self toolbarCommandGroup commandOrGroupNamed: 'Actions') 
-		   commandOrGroupNamed: 'Propagate') decoratedCommand
+	^ receivingMode
 ]
 
 { #category : #accessing }
@@ -297,47 +303,17 @@ MiAbstractBrowser >> showHelp [
 		popup
 ]
 
-{ #category : #initialization }
-MiAbstractBrowser >> toolbarCommandGroup [
-
-	^ toolbarCommandGroup ifNil: [ toolbarCommandGroup := self rootCommandsGroup ]
-]
-
 { #category : #buses }
 MiAbstractBrowser >> unfollowBus: aBus [
 
 	(self buses includes: aBus) ifFalse: [ ^ self ].
 	self buses remove: aBus.
 	aBus unregisterBrowser: self.
-	self updateBusButton
-]
-
-{ #category : #buses }
-MiAbstractBrowser >> updateBusButton [
-
-	| busEditCommand |
-	busEditCommand := self toolbarCommandGroup commandOrGroupNamed:
-		                  'Buses'.
-	busEditCommand presenter ifNil: [ ^ self ].
-	busEditCommand presenter
-		label: busEditCommand decoratedCommand label;
-		help: busEditCommand decoratedCommand help
-]
-
-{ #category : #actions }
-MiAbstractBrowser >> updateReceivingModeButtons [
-
-	(self toolbarCommandGroup commandOrGroupNamed: 'Receiving Mode')
-		commands do: [ :cmd | cmd updateIconForMode: receivingMode ]
+	self window ifNotNil: [ :window | window updateBusButton ]
 ]
 
 { #category : #actions }
 MiAbstractBrowser >> updateToolbar [
 
-	self toolbarCommandGroup allCommands do: [ :cmd | 
-		cmd updateEnableStatus ].
-	(self toolbarCommandGroup commandOrGroupNamed: 'Receiving Mode')
-		commands do: [ :cmd | 
-		cmd canBeExecuted ifFalse: [ 
-			cmd presenter icon: (cmd icon lighter: 0.4) ] ]
+	self window ifNotNil: [ :window | window updateToolbar ]
 ]

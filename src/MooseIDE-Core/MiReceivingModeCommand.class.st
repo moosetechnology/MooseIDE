@@ -29,7 +29,7 @@ MiReceivingModeCommand >> asSpecCommand [
 MiReceivingModeCommand >> execute [
 
 	self context receivingMode: self receivingMode.
-	self context updateReceivingModeButtons
+	self context window updateReceivingModeButtons
 ]
 
 { #category : #accessing }
@@ -38,7 +38,7 @@ MiReceivingModeCommand >> iconName [
 	^ self subclassResponsibility
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 MiReceivingModeCommand >> iconNameForState: aBoolean [
 
 	^ aBoolean

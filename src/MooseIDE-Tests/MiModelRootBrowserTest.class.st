@@ -28,7 +28,7 @@ MiModelRootBrowserTest >> tearDown [
 ]
 
 { #category : #tests }
-MiModelRootBrowserTest >> testMiActivateActionButtons [
+MiModelRootBrowserTest >> testActivateActionButtons [
 
 	| newModel |
 	browser actionButtons do: [ :button | self deny: button isEnabled ].

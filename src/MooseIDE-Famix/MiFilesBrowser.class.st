@@ -92,8 +92,7 @@ MiFilesBrowser >> followEntity: anEntity [
 
 	self model mooseModel: anEntity.
 	self selectFileReference: anEntity rootFolder asFileReference.
-	self updateWindowTitle.
-	self updateToolbar
+	self updateWindowTitle
 ]
 
 { #category : #initialization }

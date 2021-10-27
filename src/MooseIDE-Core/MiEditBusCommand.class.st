@@ -69,6 +69,12 @@ MiEditBusCommand >> busesList [
 	^ busesList
 ]
 
+{ #category : #testing }
+MiEditBusCommand >> canBeExecuted [
+
+	^ self context canEditBuses
+]
+
 { #category : #execution }
 MiEditBusCommand >> execute [
 

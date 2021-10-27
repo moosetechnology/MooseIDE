@@ -10,11 +10,11 @@ MiTreeBrowserTest >> browserClass [
 ]
 
 { #category : #tests }
-MiTreeBrowserTest >> testMiActivateActionButtons [
+MiTreeBrowserTest >> testActivateActionButtons [
 
 	browser actionButtons do: [ :button | self deny: button isEnabled ].
 
-	browser followEntity: (FamixStClass named: 'TestClass').
+	browser selectEntity: (FamixStClass named: 'TestClass').
 
 	browser actionButtons do: [ :button | self assert: button isEnabled ]
 ]

@@ -81,7 +81,7 @@ MiInspectorBrowser class >> windowSize [
 MiInspectorBrowser >> beFrozen [
 
 	self receivingMode: MiFreezeMode.
-	self updateReceivingModeButtons
+	self window updateReceivingModeButtons
 ]
 
 { #category : #testing }

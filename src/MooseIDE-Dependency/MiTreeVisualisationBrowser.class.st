@@ -70,8 +70,7 @@ MiTreeVisualisationBrowser >> followEntity: anEntity [
 	model root: anEntity.
 	diagram
 		run;
-		selectEntity: anEntity.
-	self updateToolbar
+		selectEntity: anEntity
 ]
 
 { #category : #actions }

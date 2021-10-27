@@ -20,7 +20,7 @@ MiDependencyBrowserTest >> setUp [
 ]
 
 { #category : #tests }
-MiDependencyBrowserTest >> testMiActivateActionButtons [
+MiDependencyBrowserTest >> testActivateActionButtons [
 
 	browser actionButtons do: [ :button | self deny: button isEnabled ].
 

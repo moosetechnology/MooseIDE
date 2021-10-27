@@ -10,7 +10,7 @@ MiNonUsedMethodBrowserTest >> browserClass [
 ]
 
 { #category : #tests }
-MiNonUsedMethodBrowserTest >> testMiActivateActionButtons [
+MiNonUsedMethodBrowserTest >> testActivateActionButtons [
 
 	| entityToSelect |
 	browser actionButtons do: [ :button | self deny: button isEnabled ].
@@ -18,7 +18,7 @@ MiNonUsedMethodBrowserTest >> testMiActivateActionButtons [
 	entityToSelect := (FamixStClass named: 'TestClass')
 		                  addMethod: (FamixStMethod named: 'TestMethod');
 		                  yourself.
-	browser followEntity: entityToSelect.
+	browser selectEntity: entityToSelect.
 
 	browser actionButtons do: [ :button | self assert: button isEnabled ]
 ]

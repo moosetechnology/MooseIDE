@@ -10,11 +10,11 @@ MiTreeMapVisualisationBrowserTest >> browserClass [
 ]
 
 { #category : #tests }
-MiTreeMapVisualisationBrowserTest >> testMiActivateActionButtons [
+MiTreeMapVisualisationBrowserTest >> testActivateActionButtons [
 
 	browser actionButtons do: [ :button | self deny: button isEnabled ].
 
-	browser followEntity: (FamixStClass named: 'TestClass').
+	browser selectEntity: (FamixStClass named: 'TestClass').
 
 	browser actionButtons do: [ :button | self assert: button isEnabled ]
 ]

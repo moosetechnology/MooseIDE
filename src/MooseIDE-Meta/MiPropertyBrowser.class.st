@@ -57,8 +57,7 @@ MiPropertyBrowser >> followEntity: anEntity [
 	properties items:
 		(anEntity mooseDescription allPrimitiveProperties sorted:
 			 #name ascending).
-	self updateWindowTitleWith: anEntity name.
-	self updateToolbar
+	self updateWindowTitleWith: anEntity name
 ]
 
 { #category : #initialization }
