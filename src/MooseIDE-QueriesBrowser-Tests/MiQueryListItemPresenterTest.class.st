@@ -45,7 +45,7 @@ MiQueryListItemPresenterTest >> tearDown [
 MiQueryListItemPresenterTest >> testAllQueryPresentersExceptSelf [
 
 	self assert: presenter allQueryPresentersExceptSelf size equals: 0.
-	presenter parentQueryListPresenter
+	presenter queriesListPresenter
 		addNewFirstLevelQuery;
 		addNewFirstLevelQuery.
 	self assert: presenter allQueryPresentersExceptSelf size equals: 2.

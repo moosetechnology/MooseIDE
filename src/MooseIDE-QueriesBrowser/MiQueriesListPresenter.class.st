@@ -14,13 +14,13 @@ Class {
 		'addRootQueryButton',
 		'progressNotificationPresenter',
 		'spinnerMorph',
-		'parentQueryBrowser',
 		'queryItemsPresenters',
 		'saveQueriesButton',
 		'loadQueriesButton',
 		'loadQueriesList',
 		'clearQueriesButton',
-		'addManualQueryButton'
+		'addManualQueryButton',
+		'queriesBrowser'
 	],
 	#category : #'MooseIDE-QueriesBrowser-Main presenters'
 }
@@ -33,7 +33,7 @@ MiQueriesListPresenter >> addNewChildQueryAction: query [
 	indexToInsert := queryItemsPresenters findFirst: [ :each | 
 		                 each query = query ].
 	queryItemsPresenters add: newPresenter afterIndex: indexToInsert.
-	parentQueryBrowser selectQuery: query.
+	queriesBrowser selectQuery: query.
 	self updateComponentList
 ]
 
@@ -64,14 +64,14 @@ MiQueriesListPresenter >> constructQueriesWithFile: aFile [
 	"Put the root query as the parent for the first level unary queries"
 	newQueries do: [ :each | 
 		each parent ifNil: [ 
-			each parent: parentQueryBrowser rootQuery ] ].
+			each parent: queriesBrowser rootQuery ] ].
 
 	"We cannot use a collect here because we need to keep track of how many queries we are creating
 	iteration by iteration"
 	newQueries do: [ :each | 
 		| newPresenter|
 		newPresenter := each parent
-			ifNil: [ self createNewQueryPresenter: parentQueryBrowser rootQuery ]
+			ifNil: [ self createNewQueryPresenter: queriesBrowser rootQuery ]
 			ifNotNil: [ self createNewQueryPresenter: each parent ].
 		newPresenter configureFor: each.
 		queryItemsPresenters add: newPresenter ].
@@ -118,8 +118,8 @@ MiQueriesListPresenter >> enableProgressNotification [
 				addMorphFront: morph;
 				yourself);
 			yourself.
-	parentQueryBrowser window ifNotNil: [ 
-		queriesBrowserMorph := parentQueryBrowser window window.
+	queriesBrowser window ifNotNil: [ 
+		queriesBrowserMorph := queriesBrowser window window.
 		spinnerMorph position:
 			queriesBrowserMorph extent / 2 + queriesBrowserMorph position.
 		spinnerMorph openInWorld ].
@@ -147,7 +147,7 @@ MiQueriesListPresenter >> followNewEntity [
 		thenDo: [ :each | 
 			each query resetResult.
 			(each query parent isNotNil and: [ each query parent isRootQuery ]) 
-				ifTrue: [ each query parent: parentQueryBrowser rootQuery ] ]
+				ifTrue: [ each query parent: queriesBrowser rootQuery ] ]
 ]
 
 { #category : #initialization }
@@ -199,7 +199,7 @@ MiQueriesListPresenter >> initializeComponentListPresenter [
 		activateOnSingleClick;
 		propagateNaturalHeight: true;
 		whenSelectedDo: [ :selectedPresenter | 
-			parentQueryBrowser selectQuery: selectedPresenter query ]
+			queriesBrowser selectQuery: selectedPresenter query ]
 ]
 
 { #category : #initialization }
@@ -259,13 +259,19 @@ MiQueriesListPresenter >> newFirstLevelQueryPresenter [
 
 	"This is a query that is a direct child of a FQRootQuery"
 
-	^ self createNewQueryPresenter: parentQueryBrowser rootQuery
+	^ self createNewQueryPresenter: queriesBrowser rootQuery
+]
+
+{ #category : #accessing }
+MiQueriesListPresenter >> queriesBrowser [
+
+	^ queriesBrowser
 ]
 
 { #category : #'api - actions' }
 MiQueriesListPresenter >> queryChangedUpdate: query [
 
-	parentQueryBrowser selectQuery: query
+	queriesBrowser selectQuery: query
 ]
 
 { #category : #accessing }
@@ -296,7 +302,7 @@ MiQueriesListPresenter >> removePresentersAssociatedWith: nodeQuery [
 { #category : #'api - actions' }
 MiQueriesListPresenter >> removeQueryAction: aQueryCreationPresenter [
 
-	parentQueryBrowser removeQuery: aQueryCreationPresenter query.
+	queriesBrowser removeQuery: aQueryCreationPresenter query.
 	queryItemsPresenters remove: aQueryCreationPresenter.
 	self removePresentersAssociatedWith: aQueryCreationPresenter query.
 	self updateComponentList
@@ -305,7 +311,7 @@ MiQueriesListPresenter >> removeQueryAction: aQueryCreationPresenter [
 { #category : #'accessing - model' }
 MiQueriesListPresenter >> setModelBeforeInitialization: aQueryBrowserPresenter [
 
-	parentQueryBrowser := aQueryBrowserPresenter
+	queriesBrowser := aQueryBrowserPresenter
 ]
 
 { #category : #actions }

@@ -35,7 +35,7 @@ MiResultSizeQueryPresenter >> configureFor: aQuery [
 	comparatorDropList selectItem: aQuery comparator.
 	valueInputField number: aQuery valueToCompare.
 	subqueriesDropList selectItem:
-		(owner parentQueryListPresenter findPresenterForQuery: aQuery innerQuery).
+		(owner queriesListPresenter findPresenterForQuery: aQuery innerQuery).
 	query := aQuery
 ]
 

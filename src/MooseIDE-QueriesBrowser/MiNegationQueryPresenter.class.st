@@ -31,7 +31,7 @@ MiNegationQueryPresenter >> computeQuery: selectedPresenter [
 MiNegationQueryPresenter >> configureFor: aQuery [
 
 	subqueryDropListPresenter selectItem:
-		(owner parentQueryListPresenter findPresenterForQuery: aQuery queryToNegate).
+		(owner queriesListPresenter findPresenterForQuery: aQuery queryToNegate).
 	query := aQuery
 ]
 

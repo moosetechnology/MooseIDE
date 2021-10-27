@@ -12,7 +12,7 @@ Class {
 		'queryNumberLabelPresenter',
 		'optionsMenuButton',
 		'queryConfiguratorPresenter',
-		'parentQueryListPresenter'
+		'queriesListPresenter'
 	],
 	#category : #'MooseIDE-QueriesBrowser-Main presenters'
 }
@@ -37,7 +37,7 @@ MiQueryListItemPresenter class >> on: aQuery owner: aPresenter parentPresenter: 
 		  application: self currentApplication;
 		  owner: aPresenter;
 		  setModelBeforeInitialization: aQuery;
-		  parentQueryListPresenter: aMiQueryListPresenter;
+		  queriesListPresenter: aMiQueryListPresenter;
 		  initialize;
 		  yourself
 ]
@@ -45,7 +45,7 @@ MiQueryListItemPresenter class >> on: aQuery owner: aPresenter parentPresenter: 
 { #category : #accessing }
 MiQueryListItemPresenter >> allQueryPresentersExceptSelf [
 
-	^ parentQueryListPresenter queryItemsPresenters reject: [ :q | 
+	^ queriesListPresenter queryItemsPresenters reject: [ :q | 
 		  q query = self query ]
 ]
 
@@ -59,13 +59,13 @@ MiQueryListItemPresenter >> configureFor: aQuery [
 { #category : #'api - actions' }
 MiQueryListItemPresenter >> disableProgressNotification [
 
-	parentQueryListPresenter disableProgressNotification
+	queriesListPresenter disableProgressNotification
 ]
 
 { #category : #'api - actions' }
 MiQueryListItemPresenter >> enableProgressNotification [
 
-	parentQueryListPresenter enableProgressNotification
+	queriesListPresenter enableProgressNotification
 ]
 
 { #category : #accessing }
@@ -149,7 +149,7 @@ MiQueryListItemPresenter >> initializeQueryTypesDropList [
 
 	queryTypesDropListPresenter := self newDropList.
 	queryTypesDropListPresenter
-		items: parentQueryListPresenter availableQueryTypes;
+		items: queriesListPresenter availableQueryTypes;
 		display: [ :queryClass | queryClass label ];
 		whenSelectedItemChangedDo: [ :queryClass | 
 			self updateQueryConfiguratorPresenterFor: queryClass ]
@@ -182,23 +182,29 @@ MiQueryListItemPresenter >> newQueryForClass: queryClass [
 	^ newQuery
 ]
 
-{ #category : #accessing }
-MiQueryListItemPresenter >> parentQueryListPresenter [
-
-	^ parentQueryListPresenter
-]
-
-{ #category : #accessing }
-MiQueryListItemPresenter >> parentQueryListPresenter: aPresenter [
-
-	parentQueryListPresenter := aPresenter
-]
-
 { #category : #printing }
 MiQueryListItemPresenter >> printOn: aStream [
 
 	aStream << self name << ' '.
 	self query printOn: aStream
+]
+
+{ #category : #accessing }
+MiQueryListItemPresenter >> queriesBrowser [
+
+	^ queriesListPresenter queriesBrowser
+]
+
+{ #category : #accessing }
+MiQueryListItemPresenter >> queriesListPresenter [
+
+	^ queriesListPresenter
+]
+
+{ #category : #accessing }
+MiQueryListItemPresenter >> queriesListPresenter: aPresenter [
+
+	queriesListPresenter := aPresenter
 ]
 
 { #category : #accessing }
@@ -212,7 +218,7 @@ MiQueryListItemPresenter >> query [
 { #category : #'api - actions' }
 MiQueryListItemPresenter >> queryChangedUpdate [
 
-	parentQueryListPresenter queryChangedUpdate: self query
+	queriesListPresenter queryChangedUpdate: self query
 ]
 
 { #category : #accessing }
@@ -253,6 +259,6 @@ MiQueryListItemPresenter >> updateQueryConfiguratorPresenterFor: queryClass [
 
 	"We update the subqueries droplist of all the presenters in the queries browser.
 	This is to keep the list of the queries updated."
-	parentQueryListPresenter updateSubqueriesListPresenter.
+	queriesListPresenter updateSubqueriesListPresenter.
 	self initializeLayout
 ]
