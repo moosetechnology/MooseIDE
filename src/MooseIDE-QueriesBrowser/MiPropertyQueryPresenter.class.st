@@ -51,12 +51,15 @@ MiPropertyQueryPresenter >> newComparatorDropList [
 { #category : #initialization }
 MiPropertyQueryPresenter >> newPropertyDropList [
 
+	| sortedProperties |
+	sortedProperties := self query availableProperties sorted: #asString ascending.
+	"self query availableProperties always returns as a first element that the query has a property. So, if we sort if we need to update the property of the query"
+	query property: sortedProperties first.
 	^ self newDropList
-		  items: self query availableProperties;
-		  display: [ :prop | prop asString ];
-		  whenSelectedItemChangedDo: [ :property | 
-			  self updateProperty: property ];
-		  yourself
+		items: sortedProperties;
+		display: [ :prop | prop asString ];
+		whenSelectedItemChangedDo: [ :property | self updateProperty: property ];
+		yourself
 ]
 
 { #category : #initialization }

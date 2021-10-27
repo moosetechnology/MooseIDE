@@ -81,6 +81,12 @@ MiResultSizeQueryPresenter >> initializeValueInput [
 			self computeQueryAction: newNumber ]
 ]
 
+{ #category : #testing }
+MiResultSizeQueryPresenter >> isQueryUsed: aQuery [
+
+	^ subqueriesDropList selectedItem = aQuery
+]
+
 { #category : #layout }
 MiResultSizeQueryPresenter >> newLayout [
 
@@ -100,7 +106,6 @@ MiResultSizeQueryPresenter >> queryPresentersListChanged [
 	newAvailableQueries := owner allQueryPresentersExceptSelf.
 	previouslySelectedQuery := subqueriesDropList selectedItem.
 	(newAvailableQueries includes: previouslySelectedQuery)
-		ifTrue: [ 
-		subqueriesDropList updateItemsKeepingSelection: newAvailableQueries ]
+		ifTrue: [ subqueriesDropList updateItemsKeepingSelection: newAvailableQueries ]
 		ifFalse: [ subqueriesDropList items: newAvailableQueries ]
 ]

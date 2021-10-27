@@ -88,6 +88,12 @@ MiQueryConfiguratorPresenterTest >> testImpossibleQueryInitialization [
 ]
 
 { #category : #tests }
+MiQueryConfiguratorPresenterTest >> testIsQueryUsed [
+
+	self deny: (presenter isQueryUsed: FQBooleanQuery new)
+]
+
+{ #category : #tests }
 MiQueryConfiguratorPresenterTest >> testNormalQueryInitialization [
 
 	self assert: presenter query class identicalTo: self queryClass.

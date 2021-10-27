@@ -169,8 +169,8 @@ MiQueriesListPresenter >> initializeButtons [
 	saveCommand
 		context: self;
 		afterCreationAction: [ 
-			self reinitializeQueryPresenters.
-			parentQueryBrowser resetRootQueryEntities ].
+			"self reinitializeQueryPresenters.
+			parentQueryBrowser resetRootQueryEntities" ].
 	saveQueriesButton := saveCommand asSpecCommand asButtonPresenter.
 	saveQueriesButton
 		label: '';
@@ -240,6 +240,14 @@ MiQueriesListPresenter >> initializeProgressPresenter [
 
 	progressNotificationPresenter := SpNullPresenter new.
 	spinnerMorph := SpSpinnerMorph new
+]
+
+{ #category : #testing }
+MiQueriesListPresenter >> isQueryUsed: aQuery [
+
+	^ (queryItemsPresenters collect: #queryConfiguratorPresenter)
+			anySatisfy: [ :queryPresenter | 
+				queryPresenter isQueryUsed: aQuery ]
 ]
 
 { #category : #actions }
