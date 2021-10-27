@@ -78,5 +78,5 @@ MiMooseModelBrowserTests >> testMiSelectedItem [
 	browser modelPresenter clickAtPath: #( 1 1 ).
 	self
 		assert: browser miSelectedItem
-		equals: newModel allModelClasses first
+		equals: (newModel allModelClasses sorted: #name ascending) first
 ]
