@@ -4,25 +4,25 @@ Class {
 	#category : #'MooseIDE-Meta-Import'
 }
 
-{ #category : #'accessing - defaults' }
+{ #category : #default }
 MPImportJSONCommand class >> defaultDescription [
 
 	^ 'Import model from JSON file'
 ]
 
-{ #category : #accessing }
+{ #category : #default }
 MPImportJSONCommand class >> defaultIcon [
 
 	^ MooseIcons mooseImportJson
 ]
 
-{ #category : #initialization }
+{ #category : #default }
 MPImportJSONCommand class >> defaultIconName [
 
 	^ #mooseImportJson
 ]
 
-{ #category : #'accessing - defaults' }
+{ #category : #default }
 MPImportJSONCommand class >> defaultName [
 
 	^ 'Import from JSON'

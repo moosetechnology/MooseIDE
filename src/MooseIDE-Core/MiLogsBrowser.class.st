@@ -2,8 +2,7 @@ Class {
 	#name : #MiLogsBrowser,
 	#superclass : #MiAbstractBrowser,
 	#instVars : [
-		'mainPresenter',
-		'selected'
+		'mainPresenter'
 	],
 	#category : #'MooseIDE-Core-Logger'
 }
@@ -33,7 +32,7 @@ MiLogsBrowser class >> open [
 		  yourself
 ]
 
-{ #category : #accessing }
+{ #category : #specs }
 MiLogsBrowser class >> title [
 
 	^ 'Logger'

@@ -16,7 +16,7 @@ MPImportSTCommand class >> defaultIcon [
 	^ MooseIcons mooseImportSmalltalk
 ]
 
-{ #category : #hooks }
+{ #category : #default }
 MPImportSTCommand class >> defaultIconName [
 	
 	^ #mooseImportSmalltalk

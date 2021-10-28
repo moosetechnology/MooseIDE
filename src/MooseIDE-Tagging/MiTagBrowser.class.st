@@ -138,7 +138,7 @@ MiTagBrowser >> newTagSelected [
 	tagDetailsPage resetContent
 ]
 
-{ #category : #'accessing model' }
+{ #category : #'accessing - model' }
 MiTagBrowser >> setModelBeforeInitialization: aTagModel [
 
 	tagModel := aTagModel.

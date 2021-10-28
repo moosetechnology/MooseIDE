@@ -4,13 +4,13 @@ Class {
 	#category : #'MooseIDE-Core-Command'
 }
 
-{ #category : #initialization }
+{ #category : #default }
 MiEditBusCommand class >> defaultDescription [
 
 	^ 'Edit buses'
 ]
 
-{ #category : #initialization }
+{ #category : #default }
 MiEditBusCommand class >> defaultIconName [
 
 	^ #mooseEditor
@@ -75,7 +75,7 @@ MiEditBusCommand >> canBeExecuted [
 	^ self context canEditBuses
 ]
 
-{ #category : #execution }
+{ #category : #executing }
 MiEditBusCommand >> execute [
 
 	

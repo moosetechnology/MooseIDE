@@ -38,7 +38,7 @@ MiHelpPopup >> initializePresenters [
 		yourself
 ]
 
-{ #category : #initialization }
+{ #category : #'accessing - model' }
 MiHelpPopup >> setModelBeforeInitialization: aBrowser [
 	browser := aBrowser
 ]

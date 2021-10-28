@@ -16,7 +16,7 @@ MPImportMSECommand class >> defaultIcon [
 	^ MooseIcons mooseImportMse
 ]
 
-{ #category : #hooks }
+{ #category : #default }
 MPImportMSECommand class >> defaultIconName [
 
 	^ #mooseImportMse

@@ -1,9 +1,6 @@
 Class {
 	#name : #MiReceivingModeCommand,
 	#superclass : #MiCommand,
-	#instVars : [
-		'receivingMode'
-	],
 	#category : #'MooseIDE-Core-Command'
 }
 
@@ -25,7 +22,7 @@ MiReceivingModeCommand >> asSpecCommand [
 		  yourself
 ]
 
-{ #category : #execution }
+{ #category : #executing }
 MiReceivingModeCommand >> execute [
 
 	self context receivingMode: self receivingMode.

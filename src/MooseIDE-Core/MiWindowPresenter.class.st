@@ -2,8 +2,6 @@ Class {
 	#name : #MiWindowPresenter,
 	#superclass : #SpWindowPresenter,
 	#instVars : [
-		'menuButton',
-		'toolbarCommands',
 		'toolbarCommandGroup'
 	],
 	#category : #'MooseIDE-Core-Browser'

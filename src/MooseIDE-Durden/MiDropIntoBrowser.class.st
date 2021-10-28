@@ -23,11 +23,6 @@ Class {
 }
 
 { #category : #specs }
-MiDropIntoBrowser class >> currentApplication [
-	^ MiApplication current
-]
-
-{ #category : #specs }
 MiDropIntoBrowser class >> defaultSpec [
 
 	^ SpBoxLayout newTopToBottom
@@ -60,9 +55,10 @@ MiDropIntoBrowser class >> menuCommandOn: aBuilder [
 ]
 
 { #category : #specs }
-MiDropIntoBrowser class >> open [ 
-	<script> 
-	self new openWithSpec 
+MiDropIntoBrowser class >> open [
+
+	<script>
+	self new openWithSpec
 ]
 
 { #category : #specs }

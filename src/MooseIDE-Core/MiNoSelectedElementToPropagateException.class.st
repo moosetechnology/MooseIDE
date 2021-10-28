@@ -27,7 +27,7 @@ MiNoSelectedElementToPropagateException >> browser: anObject [
 	browser := anObject
 ]
 
-{ #category : #initialization }
+{ #category : #handling }
 MiNoSelectedElementToPropagateException >> defaultAction [
 	"The default action taken if the exception is signaled."
 

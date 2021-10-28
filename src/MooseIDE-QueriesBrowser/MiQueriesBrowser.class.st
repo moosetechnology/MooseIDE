@@ -210,7 +210,7 @@ MiQueriesBrowser >> selectedQuery [
 	^ selectedQuery
 ]
 
-{ #category : #'accessing model' }
+{ #category : #'accessing - model' }
 MiQueriesBrowser >> setModelBeforeInitialization: aRootQuery [
 
 	rootQuery := aRootQuery.

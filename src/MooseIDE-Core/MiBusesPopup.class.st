@@ -13,9 +13,7 @@ Class {
 	#superclass : #MiPresenter,
 	#instVars : [
 		'busesList',
-		'newBusNameInput',
-		'browser',
-		'addBusButton'
+		'browser'
 	],
 	#category : #'MooseIDE-Core-Browser'
 }
@@ -58,7 +56,7 @@ MiBusesPopup >> initializePresenters [
 	self useTextInputForBusCreation
 ]
 
-{ #category : #'accessing model' }
+{ #category : #'accessing - model' }
 MiBusesPopup >> setModelBeforeInitialization: aBrowser [
 	browser := aBrowser
 ]

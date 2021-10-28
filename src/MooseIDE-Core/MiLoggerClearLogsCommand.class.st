@@ -4,19 +4,19 @@ Class {
 	#category : #'MooseIDE-Core-Command'
 }
 
-{ #category : #initialization }
+{ #category : #default }
 MiLoggerClearLogsCommand class >> defaultIconName [
 
 	^ #smallDelete
 ]
 
-{ #category : #'accessing - defaults' }
+{ #category : #default }
 MiLoggerClearLogsCommand class >> defaultName [
 
 	^ 'Clear logs'
 ]
 
-{ #category : #executing }
+{ #category : #testing }
 MiLoggerClearLogsCommand >> canBeExecuted [
 
 	^ self context miSelectedItem isNotNil

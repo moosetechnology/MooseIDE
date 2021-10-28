@@ -27,7 +27,7 @@ MiSelectedEntityLog >> entity: anObject [
 	entity := anObject
 ]
 
-{ #category : #accessing }
+{ #category : #printing }
 MiSelectedEntityLog >> printOn: aStream [
 	aStream
 		nextPutAll: 'log(';

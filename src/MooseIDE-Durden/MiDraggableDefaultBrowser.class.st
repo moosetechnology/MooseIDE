@@ -10,11 +10,6 @@ Class {
 }
 
 { #category : #specs }
-MiDraggableDefaultBrowser class >> currentApplication [
-	^ MiApplication current
-]
-
-{ #category : #specs }
 MiDraggableDefaultBrowser class >> defaultSpec [
 	^ SpBoxLayout newVertical
 		add:

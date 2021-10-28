@@ -17,12 +17,12 @@ MiModelExportCommand class >> asCommandGroupWith: aPresenter [
 	^ exportCommandGroup
 ]
 
-{ #category : #converting }
+{ #category : #default }
 MiModelExportCommand class >> defaultDescription [
 	^ 'Export this model'
 ]
 
-{ #category : #converting }
+{ #category : #default }
 MiModelExportCommand class >> defaultName [
 	^ 'Export'
 ]

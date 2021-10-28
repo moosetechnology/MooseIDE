@@ -83,7 +83,7 @@ MiApplication >> initialize [
 	defaultBus := self busNamed: self class defaultBusName
 ]
 
-{ #category : #'instance creation' }
+{ #category : #'private - factory' }
 MiApplication >> newIconProvider [
 
 	^ MiIconProvider new
@@ -96,7 +96,7 @@ MiApplication >> registerWindow: aWindow [
 	self updateOverviewBrowsers
 ]
 
-{ #category : #actions }
+{ #category : #running }
 MiApplication >> start [
 	"we will see"
 ]

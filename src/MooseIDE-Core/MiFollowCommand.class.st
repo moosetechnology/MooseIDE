@@ -4,7 +4,7 @@ Class {
 	#category : #'MooseIDE-Core-Command'
 }
 
-{ #category : #'accessing - defaults' }
+{ #category : #default }
 MiFollowCommand class >> defaultName [
 
 	^ 'Follow'

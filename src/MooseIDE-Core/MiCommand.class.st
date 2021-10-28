@@ -4,13 +4,13 @@ Class {
 	#category : #'MooseIDE-Core-Command'
 }
 
-{ #category : #initialization }
+{ #category : #default }
 MiCommand class >> defaultIconName [
 
 	^ ''
 ]
 
-{ #category : #initialization }
+{ #category : #default }
 MiCommand class >> defaultShortcut [
 
 	^ nil

@@ -9,7 +9,7 @@ MiExportToMSECommand class >> defaultDescription [
 	^ 'Export this model to MSE'
 ]
 
-{ #category : #initialization }
+{ #category : #default }
 MiExportToMSECommand class >> defaultIconName [
 
 	^ #mooseExportMse

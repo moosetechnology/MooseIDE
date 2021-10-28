@@ -4,25 +4,25 @@ Class {
 	#category : #'MooseIDE-Core-Command'
 }
 
-{ #category : #'accessing - defaults' }
+{ #category : #default }
 MiHelpCommand class >> defaultDescription [
 
 	^ 'What does this browser do?'
 ]
 
-{ #category : #initialization }
+{ #category : #default }
 MiHelpCommand class >> defaultIconName [
 
 	^ #help
 ]
 
-{ #category : #'accessing - defaults' }
+{ #category : #default }
 MiHelpCommand class >> defaultName [
 
 	^ 'Help'
 ]
 
-{ #category : #execution }
+{ #category : #executing }
 MiHelpCommand >> execute [
 
 	self context showHelp

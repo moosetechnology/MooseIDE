@@ -9,7 +9,7 @@ MiDeleteModelCommand class >> defaultDescription [
 	^ 'Delete this model'
 ]
 
-{ #category : #defaults }
+{ #category : #default }
 MiDeleteModelCommand class >> defaultIconName [
 	^ #smallDelete
 ]
