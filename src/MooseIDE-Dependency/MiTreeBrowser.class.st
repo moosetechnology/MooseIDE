@@ -21,7 +21,7 @@ MiTreeBrowser class >> defaultSpec [
 		yourself
 ]
 
-{ #category : #specs }
+{ #category : #'world menu' }
 MiTreeBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	<miBrowsers>
@@ -34,19 +34,19 @@ MiTreeBrowser class >> menuCommandOn: aBuilder [
 		action: [ self open ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'instance creation' }
 MiTreeBrowser class >> newModel [
 
 	^ MiTreeBrowserModel new
 ]
 
-{ #category : #specs }
+{ #category : #'instance creation' }
 MiTreeBrowser class >> open [
 	<script>
 	^ super open
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #specs }
 MiTreeBrowser class >> title [
 	^ 'Tree'
 ]

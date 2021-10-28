@@ -35,7 +35,7 @@ MiTagTree class >> open [
 	super open
 ]
 
-{ #category : #accessing }
+{ #category : #specs }
 MiTagTree class >> title [
 	^ 'Tags'
 ]

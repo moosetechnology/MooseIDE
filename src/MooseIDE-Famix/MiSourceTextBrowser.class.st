@@ -11,9 +11,7 @@ Class {
 	#name : #MiSourceTextBrowser,
 	#superclass : #MiAbstractFamixBrowser,
 	#instVars : [
-		'sourceText',
-		'noteBook',
-		'sourceCodePage'
+		'sourceText'
 	],
 	#category : #'MooseIDE-Famix-SourceText'
 }
@@ -26,7 +24,7 @@ MiSourceTextBrowser class >> defaultSpec [
 		  yourself
 ]
 
-{ #category : #specs }
+{ #category : #'world menu' }
 MiSourceTextBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	<miBrowsers>
@@ -45,13 +43,13 @@ MiSourceTextBrowser class >> newModel [
 	^ MiSourceTextBrowserModel new
 ]
 
-{ #category : #specs }
+{ #category : #'instance creation' }
 MiSourceTextBrowser class >> open [
 	<script>
 	^ super open
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #specs }
 MiSourceTextBrowser class >> title [
 	^ 'Source code'
 ]

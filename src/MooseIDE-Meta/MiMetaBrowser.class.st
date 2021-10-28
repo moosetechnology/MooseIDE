@@ -18,12 +18,12 @@ Class {
 	#category : #'MooseIDE-Meta-MetaBrowser'
 }
 
-{ #category : #specs }
+{ #category : #'world menu' }
 MiMetaBrowser class >> helpMessage [
 	^ 'Meta description in a metamodel'
 ]
 
-{ #category : #specs }
+{ #category : #'world menu' }
 MiMetaBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	<miBrowsers>

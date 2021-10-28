@@ -7,13 +7,13 @@ Class {
 	#category : #'MooseIDE-NewTools-Playground'
 }
 
-{ #category : #'accessing - defaults' }
+{ #category : #default }
 MiPlaygroundInstalledModelsCommand class >> defaultDescription [
 
 	^ 'Add a model to the playground'
 ]
 
-{ #category : #'accessing - defaults' }
+{ #category : #default }
 MiPlaygroundInstalledModelsCommand class >> defaultName [
 
 	^ 'Models'
@@ -28,7 +28,7 @@ MiPlaygroundInstalledModelsCommand >> asSpecCommand [
 		  yourself
 ]
 
-{ #category : #converting }
+{ #category : #executing }
 MiPlaygroundInstalledModelsCommand >> execute [
 
 	| modelsPresenter |

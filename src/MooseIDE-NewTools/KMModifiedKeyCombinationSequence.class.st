@@ -9,7 +9,7 @@ Class {
 	#category : #'MooseIDE-NewTools-Keymapping'
 }
 
-{ #category : #visiting }
+{ #category : #printing }
 KMModifiedKeyCombinationSequence >> acceptVisitor: aKMShortcutPrinter [
 
 	^ aKMShortcutPrinter visitModifiedCombinationShortcut: self

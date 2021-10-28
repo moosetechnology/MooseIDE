@@ -39,7 +39,7 @@ MiTagWidget class >> open [
 	super open
 ]
 
-{ #category : #examples }
+{ #category : #specs }
 MiTagWidget class >> title [
 	^ 'Tag editor'
 ]

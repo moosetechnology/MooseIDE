@@ -12,7 +12,7 @@ Class {
 	#category : #'MooseIDE-Telescope-CycleDependencies'
 }
 
-{ #category : #'instance creation' }
+{ #category : #'world menu' }
 MiCycleDependenciesBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	<miBrowsers>
@@ -30,7 +30,7 @@ MiCycleDependenciesBrowser class >> open [
 	super open
 ]
 
-{ #category : #'instance creation' }
+{ #category : #specs }
 MiCycleDependenciesBrowser class >> title [
 	^ 'Cycle Dependencies'
 ]

@@ -13,7 +13,7 @@ Class {
 	#category : #'MooseIDE-Telescope-Butterfly'
 }
 
-{ #category : #'instance creation' }
+{ #category : #'world menu' }
 MiDependencyButterflyBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	<miBrowsers>
@@ -31,7 +31,7 @@ MiDependencyButterflyBrowser class >> open [
 	^ super open
 ]
 
-{ #category : #'instance creation' }
+{ #category : #specs }
 MiDependencyButterflyBrowser class >> title [
 	^ 'Dependency Butterfly'
 ]
@@ -55,7 +55,7 @@ MiDependencyButterflyBrowser >> followEntity: anEntity [
 		run
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 MiDependencyButterflyBrowser >> miSelectedItem [
 	^ diagram entity
 ]

@@ -47,7 +47,7 @@ MiManualQueryPresenter >> initializeButton [
 		action: [ self openQueryCoderPopup ]
 ]
 
-{ #category : #initialization }
+{ #category : #layout }
 MiManualQueryPresenter >> initializeLayout [
 
 	self layout: self newLayout

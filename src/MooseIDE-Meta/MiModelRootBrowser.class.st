@@ -41,7 +41,7 @@ MiModelRootBrowser class >> defaultSpec [
 		  yourself
 ]
 
-{ #category : #specs }
+{ #category : #'world menu' }
 MiModelRootBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	<miBrowsers>
@@ -59,18 +59,18 @@ MiModelRootBrowser class >> newModel [
 	^ MiModelRootBrowserModel new
 ]
 
-{ #category : #specs }
+{ #category : #'instance creation' }
 MiModelRootBrowser class >> open [
 	<script>
 	^ super open
 ]
 
-{ #category : #initialization }
+{ #category : #specs }
 MiModelRootBrowser class >> title [
 	^ 'Models browser'
 ]
 
-{ #category : #'updating screen' }
+{ #category : #updating }
 MiModelRootBrowser class >> updateAll [
 
 	self allInstances

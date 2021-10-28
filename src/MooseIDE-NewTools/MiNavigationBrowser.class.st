@@ -45,8 +45,10 @@ MiNavigationBrowser class >> buildCommandsGroupWith: presenter forRoot: aCmComma
 
 { #category : #specs }
 MiNavigationBrowser class >> defaultSpec [
+
 	^ SpBoxLayout newVertical
-		add: #navigation
+		  add: #navigation;
+		  yourself
 ]
 
 { #category : #initialization }
@@ -136,7 +138,7 @@ MiNavigationBrowser >> selectedObject [
 	^ navigation selection selectedItem value
 ]
 
-{ #category : #accessing }
+{ #category : #'accessing - model' }
 MiNavigationBrowser >> setModelBeforeInitialization: anInspectionModel [ 
 
 	model := anInspectionModel

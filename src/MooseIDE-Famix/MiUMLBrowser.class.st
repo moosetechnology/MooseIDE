@@ -21,7 +21,7 @@ MiUMLBrowser class >> defaultSpec [
 		yourself
 ]
 
-{ #category : #specs }
+{ #category : #'world menu' }
 MiUMLBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	<miBrowsers>
@@ -40,7 +40,7 @@ MiUMLBrowser class >> newModel [
 	^ MiUMLModel new
 ]
 
-{ #category : #specs }
+{ #category : #'instance creation' }
 MiUMLBrowser class >> open [
 	<script>
 	^ super open

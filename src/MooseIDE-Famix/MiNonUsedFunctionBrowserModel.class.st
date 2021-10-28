@@ -28,7 +28,7 @@ MiNonUsedFunctionBrowserModel >> deadMethods [
 	^ deadMethods
 ]
 
-{ #category : #accessing }
+{ #category : #initialization }
 MiNonUsedFunctionBrowserModel >> initialize [
 
 	super initialize.

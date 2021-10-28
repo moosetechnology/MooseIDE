@@ -23,7 +23,7 @@ Internal Representation and Key Implementation Points.
 Class {
 	#name : #MiAbstractDependencyBrowser,
 	#superclass : #MiAbstractBrowser,
-	#category : #'MooseIDE-Dependency'
+	#category : #'MooseIDE-Dependency-Dependency'
 }
 
 { #category : #testing }
@@ -31,7 +31,7 @@ MiAbstractDependencyBrowser class >> isAbstract [
 	^ self == MiAbstractDependencyBrowser
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'world menu' }
 MiAbstractDependencyBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	<miBrowsers>
@@ -41,7 +41,7 @@ MiAbstractDependencyBrowser class >> menuCommandOn: aBuilder [
 		label: 'Dependency'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'world menu' }
 MiAbstractDependencyBrowser class >> toolbarDependencyName [
 	^ 'MooseIDEDependencyBrowser'
 ]

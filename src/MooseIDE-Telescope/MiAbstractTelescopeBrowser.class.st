@@ -4,10 +4,10 @@ Class {
 	#instVars : [
 		'diagram'
 	],
-	#category : #'MooseIDE-Telescope'
+	#category : #'MooseIDE-Telescope-Butterfly'
 }
 
-{ #category : #'instance creation' }
+{ #category : #specs }
 MiAbstractTelescopeBrowser class >> defaultSpec [
 	^ super defaultSpec
 		add: #diagram;
@@ -19,7 +19,7 @@ MiAbstractTelescopeBrowser class >> isAbstract [
 	^ self == MiAbstractTelescopeBrowser
 ]
 
-{ #category : #'instance creation' }
+{ #category : #'world menu' }
 MiAbstractTelescopeBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	<miBrowsers>
@@ -30,7 +30,7 @@ MiAbstractTelescopeBrowser class >> menuCommandOn: aBuilder [
 		withSeparatorAfter 
 ]
 
-{ #category : #'instance creation' }
+{ #category : #'world menu' }
 MiAbstractTelescopeBrowser class >> telescopeMenuItemName [
 	^ #TelescopeBrowsers
 ]

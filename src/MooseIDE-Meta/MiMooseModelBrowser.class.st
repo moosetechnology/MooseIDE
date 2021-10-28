@@ -25,7 +25,7 @@ MiMooseModelBrowser class >> defaultSpec [
 		yourself
 ]
 
-{ #category : #specs }
+{ #category : #'world menu' }
 MiMooseModelBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	<miBrowsers>
@@ -50,13 +50,13 @@ MiMooseModelBrowser class >> newModel [
 	^ MiMooseModelBrowserModel model: self mostRecentModel
 ]
 
-{ #category : #specs }
+{ #category : #'instance creation' }
 MiMooseModelBrowser class >> open [
 	<script>
 	^ super open
 ]
 
-{ #category : #initialization }
+{ #category : #specs }
 MiMooseModelBrowser class >> title [
 	^ 'MooseModel'
 ]

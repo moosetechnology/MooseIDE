@@ -22,7 +22,7 @@ MiHierarchicalVisualizationBrowser class >> open [
 	super open
 ]
 
-{ #category : #accessing }
+{ #category : #specs }
 MiHierarchicalVisualizationBrowser class >> title [
 
 	^ 'Hierarchical Visualization'

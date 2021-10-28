@@ -9,8 +9,7 @@ Class {
 	#name : #MiNonUsedMethodBrowser,
 	#superclass : #MiAbstractFamixBrowser,
 	#instVars : [
-		'diagram',
-		'view'
+		'diagram'
 	],
 	#category : #'MooseIDE-Famix-SourceText'
 }
@@ -22,14 +21,7 @@ MiNonUsedMethodBrowser class >> defaultSpec [
 		yourself
 ]
 
-{ #category : #specs }
-MiNonUsedMethodBrowser class >> launchOn: anObject [
-	^ self new
-		selected: anObject;
-		openWithSpec
-]
-
-{ #category : #specs }
+{ #category : #'world menu' }
 MiNonUsedMethodBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	<miBrowsers>
@@ -47,13 +39,13 @@ MiNonUsedMethodBrowser class >> newModel [
 	^ MiNonUsedFunctionBrowserModel new
 ]
 
-{ #category : #specs }
+{ #category : #'instance creation' }
 MiNonUsedMethodBrowser class >> open [
 	<script>
 	^ super open
 ]
 
-{ #category : #TOREMOVE }
+{ #category : #specs }
 MiNonUsedMethodBrowser class >> title [
 	^ 'Dead methods'
 ]

@@ -14,7 +14,7 @@ MiPlayground class >> defaultTitle [
 	^ 'Moose Playground'
 ]
 
-{ #category : #initialization }
+{ #category : #'class initialization' }
 MiPlayground class >> initialize [
 
 	"Make playground active by default"
@@ -44,7 +44,7 @@ MiPlayground class >> open [
 	^ self new openWithSpec
 ]
 
-{ #category : #'instance creation' }
+{ #category : #'private - factory' }
 MiPlayground >> newDefaultPlaygroundPage [
 
 	^ MiPlaygroundPage new

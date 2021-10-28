@@ -16,12 +16,6 @@ MiMooseModelBrowserModel class >> model: aMooseModel [
 ]
 
 { #category : #accessing }
-MiMooseModelBrowserModel >> initialize [
-	super initialize
-	"MooseModel root ifEmpty: [ model := MooseModel new ] ifNotEmpty: [ model := MooseModel root anyOne ]"
-]
-
-{ #category : #accessing }
 MiMooseModelBrowserModel >> model [
 	^ model
 ]

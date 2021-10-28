@@ -21,7 +21,7 @@ MiTreeVisualisationBrowser class >> defaultSpec [
 		yourself
 ]
 
-{ #category : #specs }
+{ #category : #'world menu' }
 MiTreeVisualisationBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	<miBrowsers>
@@ -40,7 +40,7 @@ MiTreeVisualisationBrowser class >> newModel [
 	^ MiTreeVisualizationModel new
 ]
 
-{ #category : #specs }
+{ #category : #'instance creation' }
 MiTreeVisualisationBrowser class >> open [
 	<script>
 	^ super open

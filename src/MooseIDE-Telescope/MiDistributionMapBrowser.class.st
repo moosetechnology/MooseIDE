@@ -11,7 +11,7 @@ Class {
 	#category : #'MooseIDE-Telescope-DistributionMap'
 }
 
-{ #category : #'instance creation' }
+{ #category : #'world menu' }
 MiDistributionMapBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	<miBrowsers>

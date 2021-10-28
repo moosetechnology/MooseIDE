@@ -55,7 +55,7 @@ MiTagBrowser class >> open [
 	^ super open
 ]
 
-{ #category : #'world menu' }
+{ #category : #specs }
 MiTagBrowser class >> title [
 	^ 'Tag browser'
 ]

@@ -4,13 +4,13 @@ Class {
 	#category : #'MooseIDE-NewTools-Playground'
 }
 
-{ #category : #'accessing - defaults' }
+{ #category : #default }
 MiPlaygroundInspectInMooseCommand class >> defaultDescription [
 
 	^ 'Execute selection and inspect the result in a Moose inspector'
 ]
 
-{ #category : #'accessing - defaults' }
+{ #category : #default }
 MiPlaygroundInspectInMooseCommand class >> defaultName [
 
 	^ 'Inspect in Moose'

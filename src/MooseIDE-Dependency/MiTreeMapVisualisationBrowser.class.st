@@ -22,7 +22,7 @@ MiTreeMapVisualisationBrowser class >> defaultSpec [
 		yourself
 ]
 
-{ #category : #specs }
+{ #category : #'world menu' }
 MiTreeMapVisualisationBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	<miBrowsers>
@@ -41,13 +41,13 @@ MiTreeMapVisualisationBrowser class >> newModel [
 	^ MiTreeMapVisualisationModel new
 ]
 
-{ #category : #specs }
+{ #category : #'instance creation' }
 MiTreeMapVisualisationBrowser class >> open [
 	<script>
 	^ super open
 ]
 
-{ #category : #accessing }
+{ #category : #specs }
 MiTreeMapVisualisationBrowser class >> title [
 	^ 'Tree Map Visualization'
 ]

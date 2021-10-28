@@ -4,7 +4,7 @@ Class {
 	#category : #'MooseIDE-Famix-SourceText'
 }
 
-{ #category : #building }
+{ #category : #running }
 MiNonUsedMethodVisualization >> run [
 
 	| boxes |

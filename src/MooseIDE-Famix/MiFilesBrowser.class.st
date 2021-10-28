@@ -29,7 +29,7 @@ MiFilesBrowser class >> defaultSpec [
 		yourself
 ]
 
-{ #category : #specs }
+{ #category : #'world menu' }
 MiFilesBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	<miBrowsers>
@@ -42,18 +42,18 @@ MiFilesBrowser class >> menuCommandOn: aBuilder [
 		action: [ self open ]
 ]
 
-{ #category : #initialization }
+{ #category : #'instance creation' }
 MiFilesBrowser class >> newModel [
 	^ MiFilesModel new
 ]
 
-{ #category : #specs }
+{ #category : #'instance creation' }
 MiFilesBrowser class >> open [
 	<script>
 	^ super open
 ]
 
-{ #category : #TOREMOVE }
+{ #category : #specs }
 MiFilesBrowser class >> title [
 	^ 'Files'
 ]
@@ -67,7 +67,7 @@ MiFilesBrowser >> canReceiveEntity: anObject [
 				  anObject rootFolder asFileReference exists ] ] ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 MiFilesBrowser >> computeItemsInFileReference: aFileReference [
 	"isChildOf: can bug see issue https://github.com/pharo-project/pharo/issues/5720"
 
@@ -151,7 +151,7 @@ MiFilesBrowser >> refresh [
 		, self model fileReference files
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #actions }
 MiFilesBrowser >> selectFileReference: aFileReference [
 	self model fileReference: aFileReference.
 	self refresh

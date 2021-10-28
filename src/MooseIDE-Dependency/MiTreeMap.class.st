@@ -3,9 +3,7 @@ Class {
 	#superclass : #MiAbstractVisualization,
 	#instVars : [
 		'base',
-		'childrenBlock',
-		'multiTagColorBlock',
-		'noTagColorBlock'
+		'childrenBlock'
 	],
 	#category : #'MooseIDE-Dependency-TreeMap'
 }
@@ -51,7 +49,7 @@ MiTreeMap >> colorFor: aNode [
 	^ (super colorFor: aNode) alpha: 0.4
 ]
 
-{ #category : #updating }
+{ #category : #highlighting }
 MiTreeMap >> highlightShapes [
 	self visibleShapes
 		do: [ :box | 

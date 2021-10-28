@@ -12,7 +12,7 @@ Class {
 	#category : #'MooseIDE-Telescope-NavigationTree'
 }
 
-{ #category : #'instance creation' }
+{ #category : #'world menu' }
 MiNavigationTreeBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	<miBrowsers>
@@ -30,7 +30,7 @@ MiNavigationTreeBrowser class >> open [
 	super open
 ]
 
-{ #category : #'instance creation' }
+{ #category : #specs }
 MiNavigationTreeBrowser class >> title [
 	^ 'Navigation tree'
 ]

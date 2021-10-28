@@ -40,7 +40,7 @@ MiDependencyBrowser class >> open [
 	^ super open
 ]
 
-{ #category : #TOREMOVE }
+{ #category : #specs }
 MiDependencyBrowser class >> title [
 	^ 'Dependency'
 ]

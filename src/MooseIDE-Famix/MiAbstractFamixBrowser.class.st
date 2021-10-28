@@ -9,7 +9,7 @@ MiAbstractFamixBrowser class >> isAbstract [
 	^ self == MiAbstractFamixBrowser 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'world menu' }
 MiAbstractFamixBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	<miBrowsers>
@@ -19,7 +19,7 @@ MiAbstractFamixBrowser class >> menuCommandOn: aBuilder [
 		label: 'Famix'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'world menu' }
 MiAbstractFamixBrowser class >> toolbarFamixName [
 	^ 'MooseIDEFamixBrowser'
 ]

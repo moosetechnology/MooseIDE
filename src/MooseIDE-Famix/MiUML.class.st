@@ -4,8 +4,7 @@ Class {
 	#instVars : [
 		'builder',
 		'rootEntities',
-		'miUMLModelDescriptor',
-		'selectionChange'
+		'miUMLModelDescriptor'
 	],
 	#category : #'MooseIDE-Famix-UML'
 }

@@ -43,7 +43,7 @@ MiPlaygroundPagePresenter >> menuActionsFor: aCodePresenter [
 		  yourself
 ]
 
-{ #category : #'instance creation' }
+{ #category : #'private - builder' }
 MiPlaygroundPagePresenter >> toolbarActions [
 
 	^ super toolbarActions
