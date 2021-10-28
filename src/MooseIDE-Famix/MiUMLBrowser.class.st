@@ -46,7 +46,7 @@ MiUMLBrowser class >> open [
 	^ super open
 ]
 
-{ #category : #TOREMOVE }
+{ #category : #specs }
 MiUMLBrowser class >> title [
 	^ 'UML'
 ]
@@ -70,7 +70,9 @@ MiUMLBrowser >> followEntity: anEntity [
 	model
 		entities: anEntity asMooseSpecializedGroup;
 		unselectAll.
-	diagram run
+	diagram
+		rootEntities: model entities;
+		run
 ]
 
 { #category : #actions }
@@ -89,4 +91,10 @@ MiUMLBrowser >> initializePresenters [
 MiUMLBrowser >> miSelectedItem [
 
 	^ (model selected ifNil: [ model entities ]) mooseInterestingEntity
+]
+
+{ #category : #accessing }
+MiUMLBrowser >> selected: anEntity [
+
+	model selected: anEntity
 ]

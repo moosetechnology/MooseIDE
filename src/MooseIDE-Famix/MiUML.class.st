@@ -3,7 +3,9 @@ Class {
 	#superclass : #MiAbstractVisualization,
 	#instVars : [
 		'builder',
-		'miUMLModelDescriptor'
+		'rootEntities',
+		'miUMLModelDescriptor',
+		'selectionChange'
 	],
 	#category : #'MooseIDE-Famix-UML'
 }
@@ -15,10 +17,41 @@ MiUML >> highlightShapes [
 		composite shapes first color: (self colorFor: composite model) ]
 ]
 
+{ #category : #initialization }
+MiUML >> initialize [
+
+	super initialize.
+	rootEntities := #(  )
+]
+
+{ #category : #accessing }
+MiUML >> miUMLModelDescriptor [
+
+	^ miUMLModelDescriptor ifNil: [ RSUMLClassDescriptor new forFamix ]
+]
+
+{ #category : #accessing }
+MiUML >> miUMLModelDescriptor: anObject [
+
+	miUMLModelDescriptor := anObject
+]
+
 { #category : #helpers }
 MiUML >> noHighlightColorFor: anEntity [
 
 	^ builder renderer boxColor
+]
+
+{ #category : #accessing }
+MiUML >> rootEntities [
+
+	^ rootEntities
+]
+
+{ #category : #accessing }
+MiUML >> rootEntities: anObject [
+
+	rootEntities := anObject
 ]
 
 { #category : #running }
@@ -26,13 +59,13 @@ MiUML >> run [
 
 	super run.
 	builder := RSUMLClassBuilder new.
-	builder modelDescriptor: RSUMLClassDescriptor new forFamix.
-	builder classes: self owner model entities.
+	builder modelDescriptor: self miUMLModelDescriptor.
+	builder classes: self rootEntities.
 	builder build.
 	builder renderIn: self canvas.
 	self canvas nodes do: [ :node | 
 		node addInteraction:
-			((MiSelection on: [ :entity | self owner model selected: entity ]) 
+			((MiSelection on: [ :entity | self owner selected: entity ]) 
 				 marginPercentage: 0.2) ].
 	self canvas zoomToFit
 ]
