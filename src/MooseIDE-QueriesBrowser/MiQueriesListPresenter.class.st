@@ -11,16 +11,13 @@ Class {
 	#instVars : [
 		'componentListPresenter',
 		'queryCounter',
-		'addRootQueryButton',
 		'progressNotificationPresenter',
 		'spinnerMorph',
 		'queryItemsPresenters',
-		'saveQueriesButton',
 		'loadQueriesButton',
 		'loadQueriesList',
-		'clearQueriesButton',
-		'addManualQueryButton',
-		'queriesBrowser'
+		'queriesBrowser',
+		'queryToolBar'
 	],
 	#category : #'MooseIDE-QueriesBrowser-Main presenters'
 }
@@ -64,36 +61,6 @@ MiQueriesListPresenter >> availableQueryTypes [
 
 	^ FQAbstractQuery allSubclasses select: [ :each | 
 		  each isAvailableForQueriesSize: queryItemsPresenters size ]
-]
-
-{ #category : #actions }
-MiQueriesListPresenter >> constructQueriesWithFile: aFile [
-
-	| newQueries |
-	
-	[ self enableProgressNotification ] asJob run.
-	
-	aFile readStreamDo: [ :stream | 
-		newQueries := STON fromStream: stream ].
-
-	"Put the root query as the parent for the first level unary queries"
-	newQueries do: [ :each | 
-		each parent ifNil: [ 
-			each parent: queriesBrowser rootQuery ] ].
-
-	"We cannot use a collect here because we need to keep track of how many queries we are creating
-	iteration by iteration"
-	newQueries do: [ :each | 
-		| newPresenter|
-		newPresenter := each parent
-			ifNil: [ self createNewQueryPresenter: queriesBrowser rootQuery ]
-			ifNotNil: [ self createNewQueryPresenter: each parent ].
-		newPresenter configureFor: each.
-		queryItemsPresenters add: newPresenter ].
-
-	self updateComponentList.
-	
-	self disableProgressNotification
 ]
 
 { #category : #'api - actions' }
@@ -173,41 +140,6 @@ MiQueriesListPresenter >> initialize [
 ]
 
 { #category : #initialization }
-MiQueriesListPresenter >> initializeButtons [
-
-	| saveCommand |
-	addRootQueryButton := self newButton.
-	addRootQueryButton
-		icon: (self iconNamed: #smallAdd);
-		action: [ self addNewFirstLevelQuery ].
-
-	saveCommand := MiSaveQueriesCommand new.
-	saveCommand context: self.
-	saveQueriesButton := saveCommand asSpecCommand asButtonPresenter.
-	saveQueriesButton
-		label: '';
-		icon: (self iconNamed: MiSaveQueriesCommand iconName).
-
-	loadQueriesButton := self newButton.
-	loadQueriesButton
-		icon: (self iconNamed: #smallLoadProject);
-		action: [ self showLoadQueriesPopover ];
-		help: 'Load a set of queries into the browser'.
-
-	clearQueriesButton := self newButton.
-	clearQueriesButton
-		icon: (self iconNamed: #smallUpdate);
-		action: [ self reinitializeQueryPresenters  ];
-		label: 'Clear queries'.
-
-	addManualQueryButton := self newButton.
-	addManualQueryButton
-		icon: (self iconNamed: #edit);
-		label: 'Manual Query';
-		action: [ self addNewManualQuery ]
-]
-
-{ #category : #initialization }
 MiQueriesListPresenter >> initializeComponentListPresenter [
 
 	componentListPresenter := self newComponentList.
@@ -222,36 +154,19 @@ MiQueriesListPresenter >> initializeComponentListPresenter [
 MiQueriesListPresenter >> initializeLayout [
 
 	self layout: (SpBoxLayout newTopToBottom
-		add: (SpBoxLayout newLeftToRight
-			spacing: 5;
-			add: addRootQueryButton width: self class iconWidth;
-			add: addManualQueryButton expand: false;
-			add: clearQueriesButton expand: false;
-			addLast: loadQueriesButton withConstraints: [ :c | c width: self class iconWidth ];
-			addLast: saveQueriesButton withConstraints: [ :c | c width: self class iconWidth ];
-			yourself)
-		expand: false;
+		add: queryToolBar expand: false;
 		add: componentListPresenter;
 		add: progressNotificationPresenter expand: false;
 		yourself)
 ]
 
 { #category : #initialization }
-MiQueriesListPresenter >> initializeLoadQueries [
-
-	loadQueriesList := self instantiate: LoadQueriesPresenter.
-	loadQueriesList okAction: [ 
-		self constructQueriesWithFile: loadQueriesList selectedFile ]
-]
-
-{ #category : #initialization }
 MiQueriesListPresenter >> initializePresenters [
 
 	queryItemsPresenters := OrderedCollection empty.
-	self initializeButtons.
 	self initializeComponentListPresenter.
 	self initializeProgressPresenter.
-	self initializeLoadQueries.
+	self initializeQueryToolbar.
 	self initializeLayout
 ]
 
@@ -260,6 +175,12 @@ MiQueriesListPresenter >> initializeProgressPresenter [
 
 	progressNotificationPresenter := SpNullPresenter new.
 	spinnerMorph := SpSpinnerMorph new
+]
+
+{ #category : #initialization }
+MiQueriesListPresenter >> initializeQueryToolbar [
+
+	queryToolBar := self instantiate: MiQueriesBrowserToolbar on: self
 ]
 
 { #category : #testing }
