@@ -12,10 +12,17 @@ Class {
 	#category : #'MooseIDE-QueriesBrowser-Configuration presenters'
 }
 
-{ #category : #actions }
-MiManualQueryPresenter >> computeQuery: anObject [
+{ #category : #compiling }
+MiManualQueryPresenter >> compileQuery [
 
-	
+	| compiledQuery |
+	compiledQuery := queryCoder compileQuery.
+	query := compiledQuery.
+	self notifyQueryChanged
+]
+
+{ #category : #actions }
+MiManualQueryPresenter >> computeQuery: queryString [
 ]
 
 { #category : #'api - actions' }
@@ -57,7 +64,8 @@ MiManualQueryPresenter >> initializePresenters [
 { #category : #initialization }
 MiManualQueryPresenter >> initializeQueryCoder [
 
-	queryCoder := self instantiate: QueryCompilerPresenter new
+	queryCoder := self instantiate: QueryCompilerPresenter on: self.
+	queryCoder submitQueryAction: [ self compileQuery ]
 ]
 
 { #category : #layout }
