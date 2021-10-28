@@ -43,15 +43,15 @@ MiNAryQueryPresenter >> configureFor: aQuery [
 
 	"We know that the NAry query has at last two subqueries"
 	subqueryDropLists first selectItem:
-		(owner parentQueryListPresenter findPresenterForQuery: aQuery subqueries first).
+		(owner queriesListPresenter findPresenterForQuery: aQuery subqueries first).
 	subqueryDropLists second selectItem:
-		(owner parentQueryListPresenter findPresenterForQuery: aQuery subqueries second).
+		(owner queriesListPresenter findPresenterForQuery: aQuery subqueries second).
 	
 	"Add the rest of the subqueries if they exist"
 	aQuery subqueries from: 3 to: aQuery subqueries size do: [ :each |
 		self addSubqueryPresenter.
 		subqueryDropLists last selectItem:
-			(owner parentQueryListPresenter findPresenterForQuery: each) ].
+			(owner queriesListPresenter findPresenterForQuery: each) ].
 
 	query := aQuery.
 	self initializeLayout

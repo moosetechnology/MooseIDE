@@ -103,7 +103,7 @@ MiScopeQueriesPresenterTest >> testNoScopesForADirection [
 
 	self
 		assert: presenter scopesDropList class
-		identicalTo: MiNoPossibleQueryPresenter
+		identicalTo: NoPossibleQueryPresenter
 ]
 
 { #category : #tests }
@@ -128,7 +128,7 @@ MiScopeQueriesPresenterTest >> testPresentersOnImpossibleQuery [
 
 	self
 		assert: presenter scopesDropList class
-		identicalTo: MiNoPossibleQueryPresenter
+		identicalTo: NoPossibleQueryPresenter
 ]
 
 { #category : #tests }

@@ -54,13 +54,19 @@ MiQueryConfiguratorPresenter >> newLayout [
 { #category : #update }
 MiQueryConfiguratorPresenter >> noParameterMessage: aParameterName [
 
-	^ self instantiate: MiNoPossibleQueryPresenter on: aParameterName
+	^ self instantiate: NoPossibleQueryPresenter on: aParameterName
 ]
 
 { #category : #transmissions }
 MiQueryConfiguratorPresenter >> notifyQueryChanged [
 
 	owner queryChangedUpdate
+]
+
+{ #category : #accessing }
+MiQueryConfiguratorPresenter >> queriesBrowser [
+
+	^ owner queriesBrowser
 ]
 
 { #category : #accessing }
