@@ -1,35 +1,35 @@
 Class {
-	#name : #MPImportMSECommand,
-	#superclass : #MPImportCommand,
+	#name : #MiImportMSECommand,
+	#superclass : #MiImportCommand,
 	#category : #'MooseIDE-Meta-Import'
 }
 
 { #category : #hooks }
-MPImportMSECommand class >> defaultDescription [
+MiImportMSECommand class >> defaultDescription [
 
 	^ 'Import model from MSE file'
 ]
 
 { #category : #hooks }
-MPImportMSECommand class >> defaultIcon [
+MiImportMSECommand class >> defaultIcon [
 
 	^ MooseIcons mooseImportMse
 ]
 
 { #category : #default }
-MPImportMSECommand class >> defaultIconName [
+MiImportMSECommand class >> defaultIconName [
 
 	^ #mooseImportMse
 ]
 
 { #category : #hooks }
-MPImportMSECommand class >> defaultName [
+MiImportMSECommand class >> defaultName [
 
 	^ 'Import from MSE'
 ]
 
 { #category : #accessing }
-MPImportMSECommand class >> importForm [
+MiImportMSECommand class >> importForm [
 
 	^ MooseImportFromMSEForm
 ]

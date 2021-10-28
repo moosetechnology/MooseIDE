@@ -10,18 +10,18 @@ You can also use class side method `#asCommandGroupForSpecContext:` to build a S
 Your presenter should implement `#updateForNewModel:` to define behavior when a new model is installed successfully
 "
 Class {
-	#name : #MPImportCommand,
+	#name : #MiImportCommand,
 	#superclass : #MiCommand,
 	#category : #'MooseIDE-Meta-Import'
 }
 
 { #category : #converting }
-MPImportCommand class >> addToSpCommandGroup: aSpCommandGroup forSpecContext: aPresenter [
+MiImportCommand class >> addToSpCommandGroup: aSpCommandGroup forSpecContext: aPresenter [
 
 	{ 
-		MPImportMSECommand.
-		MPImportSTCommand.
-		MPImportJSONCommand } do: [ :cmd | 
+		MiImportMSECommand.
+		MiImportSTCommand.
+		MiImportJSONCommand } do: [ :cmd | 
 		aSpCommandGroup register: ((cmd forSpecContext: aPresenter)
 				 iconName: cmd defaultIconName;
 				 yourself) ].
@@ -29,7 +29,7 @@ MPImportCommand class >> addToSpCommandGroup: aSpCommandGroup forSpecContext: aP
 ]
 
 { #category : #converting }
-MPImportCommand class >> asCommandGroupForSpecContext: aPresenter [
+MiImportCommand class >> asCommandGroupForSpecContext: aPresenter [
 
 	^ self
 		  addToSpCommandGroup: CmCommandGroup forSpec
@@ -37,18 +37,18 @@ MPImportCommand class >> asCommandGroupForSpecContext: aPresenter [
 ]
 
 { #category : #accessing }
-MPImportCommand class >> importForm [
+MiImportCommand class >> importForm [
 
 	self subclassResponsibility
 ]
 
 { #category : #testing }
-MPImportCommand class >> isAbstract [
-	^ self = MPImportCommand
+MiImportCommand class >> isAbstract [
+	^ self = MiImportCommand
 ]
 
 { #category : #hooks }
-MPImportCommand >> execute [
+MiImportCommand >> execute [
 
 	(self class importForm on: self context) openDialogWithSpec
 ]

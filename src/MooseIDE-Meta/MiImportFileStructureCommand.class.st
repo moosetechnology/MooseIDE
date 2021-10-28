@@ -1,23 +1,23 @@
 Class {
-	#name : #MPImportFileStructureCommand,
-	#superclass : #MPImportCommand,
+	#name : #MiImportFileStructureCommand,
+	#superclass : #MiImportCommand,
 	#category : #'MooseIDE-Meta-Import'
 }
 
 { #category : #default }
-MPImportFileStructureCommand class >> defaultIcon [
+MiImportFileStructureCommand class >> defaultIcon [
 
 	^ nil
 ]
 
 { #category : #default }
-MPImportFileStructureCommand class >> defaultName [
+MiImportFileStructureCommand class >> defaultName [
 
 	^ 'Import file model from file system'
 ]
 
 { #category : #hooks }
-MPImportFileStructureCommand >> execute [
+MiImportFileStructureCommand >> execute [
 
 	MooseModel new
 		importFileStructure;

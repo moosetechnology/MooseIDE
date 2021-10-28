@@ -1,35 +1,35 @@
 Class {
-	#name : #MPImportSTCommand,
-	#superclass : #MPImportCommand,
+	#name : #MiImportSTCommand,
+	#superclass : #MiImportCommand,
 	#category : #'MooseIDE-Meta-Import'
 }
 
 { #category : #hooks }
-MPImportSTCommand class >> defaultDescription [
+MiImportSTCommand class >> defaultDescription [
 
 	^ 'Import Famix Smalltalk model from the current image'
 ]
 
 { #category : #hooks }
-MPImportSTCommand class >> defaultIcon [
+MiImportSTCommand class >> defaultIcon [
 
 	^ MooseIcons mooseImportSmalltalk
 ]
 
 { #category : #default }
-MPImportSTCommand class >> defaultIconName [
+MiImportSTCommand class >> defaultIconName [
 	
 	^ #mooseImportSmalltalk
 ]
 
 { #category : #hooks }
-MPImportSTCommand class >> defaultName [
+MiImportSTCommand class >> defaultName [
 
 	^ 'Import from Smalltalk'
 ]
 
 { #category : #accessing }
-MPImportSTCommand class >> importForm [
+MiImportSTCommand class >> importForm [
 
 	^ MooseImportFromSmalltalkForm
 ]
