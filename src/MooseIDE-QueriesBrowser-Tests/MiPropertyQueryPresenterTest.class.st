@@ -46,7 +46,7 @@ MiPropertyQueryPresenterTest >> testNoAvailableProperties [
 	self resetPresenterWithEntities: helper noEntities.
 	self
 		assert: presenter propertyDropList class
-		identicalTo: MiNoPossibleQueryPresenter
+		identicalTo: NoPossibleQueryPresenter
 ]
 
 { #category : #tests }
@@ -62,7 +62,7 @@ MiPropertyQueryPresenterTest >> testPresentersOnImpossibleQuery [
 
 	self
 		assert: presenter propertyDropList class
-		identicalTo: MiNoPossibleQueryPresenter
+		identicalTo: NoPossibleQueryPresenter
 ]
 
 { #category : #tests }

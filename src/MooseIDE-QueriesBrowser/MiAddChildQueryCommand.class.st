@@ -28,6 +28,6 @@ MiAddChildQueryCommand class >> iconName [
 { #category : #executing }
 MiAddChildQueryCommand >> execute [
 
-	self context parentQueryListPresenter addNewChildQueryAction:
+	self context queriesListPresenter addNewChildQueryAction:
 		self context query
 ]

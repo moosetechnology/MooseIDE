@@ -91,6 +91,13 @@ MiSaveQueriesCommand >> execute [
 		self triggerAfterCreationAction ] asJob run
 ]
 
+{ #category : #initialization }
+MiSaveQueriesCommand >> initialize [
+
+	super initialize.
+	afterCreationAction := [  ]
+]
+
 { #category : #sorting }
 MiSaveQueriesCommand >> putChildrenInPlace: topSortQueries [
 

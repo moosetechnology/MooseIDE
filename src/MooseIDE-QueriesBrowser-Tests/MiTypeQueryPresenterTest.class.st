@@ -53,7 +53,7 @@ MiTypeQueryPresenterTest >> testPresentersOnImpossibleQuery [
 	self resetPresenterWithEntities: helper noEntities.
 	self
 		assert: presenter typesButton class
-		identicalTo: MiNoPossibleQueryPresenter
+		identicalTo: NoPossibleQueryPresenter
 ]
 
 { #category : #tests }

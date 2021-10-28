@@ -29,7 +29,7 @@ MiQueryListItemPresenterTest >> setUp [
 	presenter := MiQueryListItemPresenter
 		             on: browser rootQuery
 		             owner: parentPresenter
-		             parentPresenter: parentPresenter.
+		             queriesListPresenter: parentPresenter.
 	presenter setQueryNumber: 1.
 	presenter updateQueryConfiguratorPresenterFor: FQStringQuery
 ]
@@ -45,7 +45,7 @@ MiQueryListItemPresenterTest >> tearDown [
 MiQueryListItemPresenterTest >> testAllQueryPresentersExceptSelf [
 
 	self assert: presenter allQueryPresentersExceptSelf size equals: 0.
-	presenter parentQueryListPresenter
+	presenter queriesListPresenter
 		addNewFirstLevelQuery;
 		addNewFirstLevelQuery.
 	self assert: presenter allQueryPresentersExceptSelf size equals: 2.
