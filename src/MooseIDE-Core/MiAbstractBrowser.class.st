@@ -227,7 +227,9 @@ MiAbstractBrowser >> initializeWindow: aMiWindowPresenter [
 	aMiWindowPresenter buildToolbar.
 
 	aMiWindowPresenter whenClosedDo: [ 
-		self buses do: [ :bus | bus unregisterBrowser: self ] ]
+		self buses do: [ :bus | bus unregisterBrowser: self ] ].
+
+	aMiWindowPresenter initialExtent: self class windowSize
 ]
 
 { #category : #testing }
