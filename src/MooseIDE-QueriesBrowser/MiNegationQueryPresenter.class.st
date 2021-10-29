@@ -36,6 +36,15 @@ MiNegationQueryPresenter >> configureFor: aQuery [
 ]
 
 { #category : #initialization }
+MiNegationQueryPresenter >> initialize [
+
+	super initialize.
+	owner queriesListPresenter announcer
+		when: QueriesListChangedAnnouncement
+		do: [ self queryPresentersListChanged ]
+]
+
+{ #category : #initialization }
 MiNegationQueryPresenter >> initializePresenters [
 
 	self initializeQueryDropListPresenter.

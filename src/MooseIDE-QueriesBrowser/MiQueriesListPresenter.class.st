@@ -272,8 +272,5 @@ MiQueriesListPresenter >> updateComponentList [
 { #category : #update }
 MiQueriesListPresenter >> updateSubqueriesListPresenter [
 
-	"Maybe we should change this to use announcements"
-
-	queryItemsPresenters do: [ :queryCreationPresenter | 
-		queryCreationPresenter queryPresentersListChanged ]
+	self announcer announce: QueriesListChangedAnnouncement new
 ]

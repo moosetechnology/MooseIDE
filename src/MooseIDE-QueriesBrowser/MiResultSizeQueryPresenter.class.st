@@ -40,6 +40,15 @@ MiResultSizeQueryPresenter >> configureFor: aQuery [
 ]
 
 { #category : #initialization }
+MiResultSizeQueryPresenter >> initialize [
+
+	super initialize.
+	owner queriesListPresenter announcer
+		when: QueriesListChangedAnnouncement
+		do: [ self queryPresentersListChanged ]
+]
+
+{ #category : #initialization }
 MiResultSizeQueryPresenter >> initializeComparatorsDropList [
 
 	comparatorDropList := self newDropList.
