@@ -59,6 +59,15 @@ MiNAryQueryPresenter >> configureFor: aQuery [
 ]
 
 { #category : #initialization }
+MiNAryQueryPresenter >> initialize [
+
+	super initialize.
+	owner queriesListPresenter announcer
+		when: QueriesListChangedAnnouncement
+		do: [ self queryPresentersListChanged ]
+]
+
+{ #category : #initialization }
 MiNAryQueryPresenter >> initializeButtons [
 
 	addSubqueryToLayoutButton := self newButton.

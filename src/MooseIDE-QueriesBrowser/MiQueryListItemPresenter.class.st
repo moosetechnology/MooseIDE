@@ -248,14 +248,6 @@ MiQueryListItemPresenter >> queryConfiguratorPresenter [
 	^ queryConfiguratorPresenter
 ]
 
-{ #category : #'api - actions' }
-MiQueryListItemPresenter >> queryPresentersListChanged [
-
-	"Maybe we should change this to use announcements"
-
-	queryConfiguratorPresenter queryPresentersListChanged
-]
-
 { #category : #'accessing - model' }
 MiQueryListItemPresenter >> setModelBeforeInitialization: aQuery [
 
