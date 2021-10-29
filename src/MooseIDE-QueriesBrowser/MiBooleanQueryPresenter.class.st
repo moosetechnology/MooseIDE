@@ -51,6 +51,8 @@ MiBooleanQueryPresenter >> newLayout [
 
 { #category : #initialization }
 MiBooleanQueryPresenter >> newValueInputField [
+
 	"Boolean queries do not have a value to comapre to (only a comparator: #not or #yourself)"
-	^self newNullPresenter
+
+	^ self newNullPresenter
 ]

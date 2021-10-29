@@ -7,7 +7,8 @@ Class {
 	#instVars : [
 		'subqueriesDropList',
 		'comparatorDropList',
-		'valueInputField'
+		'valueInputField',
+		'process'
 	],
 	#category : #'MooseIDE-QueriesBrowser-Configuration presenters'
 }
@@ -43,6 +44,7 @@ MiResultSizeQueryPresenter >> configureFor: aQuery [
 MiResultSizeQueryPresenter >> initialize [
 
 	super initialize.
+	delayer := InputProcessingWaiter new.
 	owner queriesListPresenter announcer
 		when: QueriesListChangedAnnouncement
 		do: [ self queryPresentersListChanged ]
@@ -87,7 +89,7 @@ MiResultSizeQueryPresenter >> initializeValueInput [
 	valueInputField
 		placeholder: 'Value';
 		whenNumberChangedDo: [ :newNumber | 
-			self computeQueryAction: newNumber ]
+			delayer waitAndRun: [ self computeQueryAction: newNumber ] ]
 ]
 
 { #category : #testing }

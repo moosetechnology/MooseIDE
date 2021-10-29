@@ -17,7 +17,9 @@ Class {
 	#instVars : [
 		'propertyDropList',
 		'valueInputField',
-		'comparatorDropList'
+		'comparatorDropList',
+		'process',
+		'delayer'
 	],
 	#category : #'MooseIDE-QueriesBrowser-Configuration presenters'
 }
@@ -25,6 +27,8 @@ Class {
 { #category : #initialization }
 MiPropertyQueryPresenter >> initializePresenters [
 
+	delayer := InputProcessingWaiter new.
+		
 	query availableProperties
 		ifNotEmpty: [ 
 			propertyDropList := self newPropertyDropList.
