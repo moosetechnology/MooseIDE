@@ -9,5 +9,4 @@ MiModelNavigationBrowser >> itemsFor: anEntity [
 
 	^ anEntity navigationItemsFromPragmas
 	  , anEntity navigationItemsFromAttributes
-	  , anEntity customNavigationItems
 ]

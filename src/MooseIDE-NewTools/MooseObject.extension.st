@@ -42,7 +42,7 @@ MooseObject >> navigationItemsFromAttributes [
 	attrs := entity allDeclaredProperties reject: [ :attribute | 
 		         attribute type isPrimitive ].
 	assocs := attrs collect: [ :anAttribute | 
-		          anAttribute
+		          anAttribute name
 		          -> (entity perform: anAttribute compiledMethod selector) ].
 
 	"filter out nils and empty collections, sort"
@@ -61,11 +61,17 @@ MooseObject >> navigationItemsFromPragmas [
 	| pragmaValueAssociations |
 	"returns associations in form name->object for navigation entities obtained from
 	the pragma #navigation:"
-	pragmaValueAssociations := (self mooseInterestingEntity navigationPragmas sorted: [ :pragma | pragma argumentNamed: #navigation ] ascending) 
-											collect: [ :pragma | 
-		         		                  pragma -> 
-												([ self mooseInterestingEntity perform:
-				                            pragma methodSelector ] onErrorDo: [ nil ]) mooseInterestingEntity ].
+	pragmaValueAssociations := (self mooseInterestingEntity
+		                            navigationPragmas sorted:
+		                            [ :pragma | 
+		                            pragma argumentNamed: #navigation ]
+			                            ascending) collect: [ :pragma | 
+		                           pragma
+		                           ->
+			                           ([ 
+			                            self mooseInterestingEntity perform:
+				                            pragma methodSelector ] onErrorDo: [ 
+				                            nil ]) mooseInterestingEntity ].
 
 	"filter out nils and empty collections, sort"
 	^ pragmaValueAssociations reject: [ :entity | 
