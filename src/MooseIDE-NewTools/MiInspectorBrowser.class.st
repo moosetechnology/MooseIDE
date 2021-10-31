@@ -4,7 +4,7 @@ I have implemented the methods: `followAction` and `miSelectedItem` in order to 
 "
 Class {
 	#name : #MiInspectorBrowser,
-	#superclass : #MiAbstractBrowser,
+	#superclass : #MiAbstractBrowser2,
 	#instVars : [
 		'miInspector'
 	],
