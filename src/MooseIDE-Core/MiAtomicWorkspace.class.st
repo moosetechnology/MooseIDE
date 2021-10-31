@@ -145,8 +145,7 @@ MiAtomicWorkspace >> containedBrowser [
 MiAtomicWorkspace >> containedBrowser: aMiBrowser [
 
 	browserContainer install: aMiBrowser.
-	self updateToolbar.
-	self resetLayout
+	self updateWindow
 ]
 
 { #category : #buses }
@@ -217,7 +216,8 @@ MiAtomicWorkspace >> initializeWindow: aMiWindowPresenter [
 	aMiWindowPresenter whenClosedDo: [ 
 		self buses do: [ :bus | bus unregisterBrowser: self ] ].
 
-	aMiWindowPresenter initialExtent: self class windowSize
+	aMiWindowPresenter initialExtent: self containedBrowser class windowSize.
+	aMiWindowPresenter title: self containedBrowser class title
 ]
 
 { #category : #testing }
@@ -259,7 +259,7 @@ MiAtomicWorkspace >> receivingMode: aReceivingMode [
 	receivingMode := aReceivingMode
 ]
 
-{ #category : #initialization }
+{ #category : #'private - updating' }
 MiAtomicWorkspace >> resetLayout [
 
 	^self initializeLayout 
@@ -305,8 +305,29 @@ MiAtomicWorkspace >> unfollowBus: aBus [
 	self window ifNotNil: [ :window | window updateBusButton ]
 ]
 
-{ #category : #actions }
+{ #category : #'private - updating' }
+MiAtomicWorkspace >> updateTitle [
+	self hasWindow
+		ifTrue: [ self window title: self containedBrowser class title]
+	
+]
+
+{ #category : #'private - updating' }
 MiAtomicWorkspace >> updateToolbar [
 
 	self window ifNotNil: [ :window | window updateToolbar ]
+]
+
+{ #category : #'private - updating' }
+MiAtomicWorkspace >> updateWindow [
+	self updateTitle.
+	self updateWindowSize.
+	self updateToolbar.
+	self resetLayout
+]
+
+{ #category : #'private - updating' }
+MiAtomicWorkspace >> updateWindowSize [
+		self hasWindow
+		ifTrue: [ self window windowSize: self containedBrowser class windowSize ]
 ]
