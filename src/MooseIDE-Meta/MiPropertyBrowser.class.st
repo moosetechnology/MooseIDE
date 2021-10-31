@@ -7,7 +7,7 @@ Shows properties of a MooseObject.
 "
 Class {
 	#name : #MiPropertyBrowser,
-	#superclass : #MiAbstractBrowser,
+	#superclass : #MiAbstractBrowser2,
 	#instVars : [
 		'properties'
 	],
