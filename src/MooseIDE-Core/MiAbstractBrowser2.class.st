@@ -89,6 +89,11 @@ MiAbstractBrowser2 class >> open [
 ]
 
 { #category : #specs }
+MiAbstractBrowser2 class >> title [
+	^'MooseIDE browser'
+]
+
+{ #category : #specs }
 MiAbstractBrowser2 class >> windowSize [
 	^ 500 @ 400
 ]
@@ -127,6 +132,11 @@ MiAbstractBrowser2 >> canReceiveEntity: anObject [
 	"whether the browser accepts to deal with anObject"
 
 	self subclassResponsibility
+]
+
+{ #category : #private }
+MiAbstractBrowser2 >> desiredWindowSize [
+	^self class windowSize
 ]
 
 { #category : #actions }
@@ -181,4 +191,9 @@ MiAbstractBrowser2 >> needUpdate: anEntity [
 { #category : #'accessing - model' }
 MiAbstractBrowser2 >> setModelBeforeInitialization: aModel [
 	model := aModel
+]
+
+{ #category : #private }
+MiAbstractBrowser2 >> windowTitle [
+	^self class title
 ]

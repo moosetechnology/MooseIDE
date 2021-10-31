@@ -216,8 +216,8 @@ MiAtomicWorkspace >> initializeWindow: aMiWindowPresenter [
 	aMiWindowPresenter whenClosedDo: [ 
 		self buses do: [ :bus | bus unregisterBrowser: self ] ].
 
-	aMiWindowPresenter initialExtent: self containedBrowser class windowSize.
-	aMiWindowPresenter title: self containedBrowser class title
+	aMiWindowPresenter initialExtent: self containedBrowser desiredWindowSize.
+	aMiWindowPresenter title: self containedBrowser windowTitle
 ]
 
 { #category : #testing }
@@ -308,7 +308,7 @@ MiAtomicWorkspace >> unfollowBus: aBus [
 { #category : #'private - updating' }
 MiAtomicWorkspace >> updateTitle [
 	self hasWindow
-		ifTrue: [ self window title: self containedBrowser class title]
+		ifTrue: [ self window title: self containedBrowser windowTitle]
 	
 ]
 
@@ -329,5 +329,5 @@ MiAtomicWorkspace >> updateWindow [
 { #category : #'private - updating' }
 MiAtomicWorkspace >> updateWindowSize [
 		self hasWindow
-		ifTrue: [ self window windowSize: self containedBrowser class windowSize ]
+		ifTrue: [ self window resize: self containedBrowser desiredWindowSize ]
 ]

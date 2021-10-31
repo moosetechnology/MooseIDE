@@ -15,6 +15,11 @@ MiNullBrowser class >> defaultSpec [
 		yourself
 ]
 
+{ #category : #accessing }
+MiNullBrowser class >> title [ 
+	^'Empty browser'
+]
+
 { #category : #testing }
 MiNullBrowser >> canEditBuses [
 
