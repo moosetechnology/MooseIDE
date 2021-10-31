@@ -4,9 +4,16 @@ I can be used where a MiAbstractBrowser is expected
 "
 Class {
 	#name : #MiNullBrowser,
-	#superclass : #MiAbstractBrowser,
+	#superclass : #MiAbstractBrowser2,
 	#category : #'MooseIDE-Core-Browser'
 }
+
+{ #category : #specs }
+MiNullBrowser class >> defaultSpec [ 
+	^super defaultSpec 
+		add: ('I am a ' , self name) ;
+		yourself
+]
 
 { #category : #testing }
 MiNullBrowser >> canEditBuses [

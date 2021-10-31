@@ -7,16 +7,15 @@ Class {
 	#name : #MiAtomicWorkspace,
 	#superclass : #MiPresenter,
 	#instVars : [
-		'containedBrowser',
 		'buses',
-		'receivingMode'
+		'receivingMode',
+		'browserContainer'
 	],
 	#category : #'MooseIDE-Core-Browser'
 }
 
 { #category : #specs }
 MiAtomicWorkspace class >> actionsCommandGroupFor: presenter [
-
 	^ CmCommandGroup forSpec
 		  name: 'Actions';
 		  register:
@@ -30,8 +29,8 @@ MiAtomicWorkspace class >> actionsCommandGroupFor: presenter [
 { #category : #specs }
 MiAtomicWorkspace class >> defaultSpec [
 
-	^ SpBoxLayout newVertical
-		add: #containedBrowser ;
+	^SpBoxLayout newVertical
+		add: #browserContainer ;
 		yourself
 ]
 
@@ -134,14 +133,20 @@ MiAtomicWorkspace >> canReceiveEntity: anObject [
 { #category : #accessing }
 MiAtomicWorkspace >> containedBrowser [
 
-	^ containedBrowser ifNil: [ containedBrowser := MiNullBrowser new ]
+	^ browserContainer installedPresenter
+		ifNil: [ | presenter |
+			presenter := MiNullBrowser new.
+			browserContainer install: presenter.
+			presenter
+		]
 ]
 
 { #category : #accessing }
-MiAtomicWorkspace >> containedBrowser: anObject [
+MiAtomicWorkspace >> containedBrowser: aMiBrowser [
 
-	containedBrowser := anObject.
-	self updateToolbar 
+	browserContainer install: aMiBrowser.
+	self updateToolbar.
+	self resetLayout
 ]
 
 { #category : #buses }
@@ -187,6 +192,19 @@ MiAtomicWorkspace >> initialize [
 	super initialize.
 	self setDefaultReceivingMode.
 	buses := Set new
+]
+
+{ #category : #initialization }
+MiAtomicWorkspace >> initializeLayout [
+
+	self layout: self class defaultSpec
+]
+
+{ #category : #initialization }
+MiAtomicWorkspace >> initializePresenters [
+	super initializePresenters.
+	browserContainer := self instantiate: SpSingleDropInContainer.
+	self initializeLayout
 ]
 
 { #category : #initialization }
@@ -241,10 +259,18 @@ MiAtomicWorkspace >> receivingMode: aReceivingMode [
 	receivingMode := aReceivingMode
 ]
 
+{ #category : #initialization }
+MiAtomicWorkspace >> resetLayout [
+
+	^self initializeLayout 
+]
+
 { #category : #'private - accessing' }
 MiAtomicWorkspace >> selectEntity: anEntity [
 
-	self containedBrowser selectEntity: anEntity.
+	"I am used by the Mi Application. You should use #globallySelect: anEntity that will transmit the message to me and the other browsers"
+
+	receivingMode browser: self containedBrowser actOnEntity: anEntity.
 	self updateToolbar
 ]
 
