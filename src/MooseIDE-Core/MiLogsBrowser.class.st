@@ -1,3 +1,7 @@
+"
+I log all entities passing on the buses I am attached to and list them.
+This allows to come back to a previous result by selecting it in the list
+"
 Class {
 	#name : #MiLogsBrowser,
 	#superclass : #MiAbstractBrowser,
@@ -6,6 +10,14 @@ Class {
 	],
 	#category : #'MooseIDE-Core-Logger'
 }
+
+{ #category : #specs }
+MiLogsBrowser class >> defaultSpec [
+	^super defaultSpec
+		add: #mainPresenter ;
+		yourself
+
+]
 
 { #category : #'world menu' }
 MiLogsBrowser class >> menuCommandOn: aBuilder [
@@ -35,7 +47,7 @@ MiLogsBrowser class >> open [
 { #category : #specs }
 MiLogsBrowser class >> title [
 
-	^ 'Logger'
+	^ 'Logger-2'
 ]
 
 { #category : #testing }
@@ -86,9 +98,7 @@ MiLogsBrowser >> followEntity: anEntity [
 { #category : #initialization }
 MiLogsBrowser >> initializePresenters [
 
-	self layout: (SpBoxLayout newTopToBottom
-			 add: (mainPresenter := self newNotebook);
-			 yourself).
+	mainPresenter := self newNotebook.
 
 	mainPresenter whenSelectedPageChangedDo: [ :selectedPage | 
 		selectedPage activePresenter ifNotNil: [ :activePresenter | 
