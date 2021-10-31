@@ -24,10 +24,10 @@ MiQueryListItemPresenterTest >> setUp [
 	helper := FQTestsHelper current.
 	browser := MiQueriesBrowser openForTests.
 	browser selectEntity: helper classesAndMethods.
-	parentPresenter := MiQueriesListPresenter on: browser.
+	parentPresenter := MiQueriesListPresenter on: browser containedBrowser.
 
 	presenter := MiQueryListItemPresenter
-		             on: browser rootQuery
+		             on: browser containedBrowser rootQuery
 		             owner: parentPresenter
 		             queriesListPresenter: parentPresenter.
 	presenter setQueryNumber: 1.
@@ -81,7 +81,7 @@ MiQueryListItemPresenterTest >> testIndentationSpacesPresenters [
 	self assert: presenter indentationSpacesPresenters size equals: 0.
 
 	lowQuery1 := FQStringQuery new.
-	lowQuery1 beChildOf: browser rootQuery.
+	lowQuery1 beChildOf: browser containedBrowser rootQuery.
 	presenter parentQuery: lowQuery1.
 	self assert: presenter indentationSpacesPresenters size equals: 1.
 

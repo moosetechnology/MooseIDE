@@ -4,7 +4,7 @@ queryBuilderPresenter` instance variable that contains a list with all the queri
 "
 Class {
 	#name : #MiQueriesBrowser,
-	#superclass : #MiAbstractBrowser,
+	#superclass : #MiAbstractBrowser2,
 	#instVars : [
 		'queryResultTreePresenter',
 		'queryCodePresenter',
