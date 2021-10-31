@@ -1,6 +1,6 @@
 Class {
 	#name : #MiAbstractFamixBrowser,
-	#superclass : #MiAbstractBrowser,
+	#superclass : #MiAbstractBrowser2,
 	#category : #'MooseIDE-Famix-Browser'
 }
 
