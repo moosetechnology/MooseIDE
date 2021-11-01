@@ -148,6 +148,16 @@ MiAtomicWorkspace >> containedBrowser: aMiBrowser [
 	self updateWindow
 ]
 
+{ #category : #actions }
+MiAtomicWorkspace >> dragBrowser [
+	| dragButton |
+	dragButton := SpMorphicDragMeAdapter new
+		adapt: (SpDragMe new passenger: self containedBrowser) ;
+		yourself.
+	dragButton startDragging.
+
+]
+
 { #category : #buses }
 MiAtomicWorkspace >> followBus: aBus [
 
@@ -203,7 +213,7 @@ MiAtomicWorkspace >> initializeLayout [
 MiAtomicWorkspace >> initializePresenters [
 	super initializePresenters.
 	browserContainer := self instantiate: SpSingleDropInContainer.
-	self initializeLayout
+	self initializeLayout.
 ]
 
 { #category : #initialization }
@@ -217,7 +227,8 @@ MiAtomicWorkspace >> initializeWindow: aMiWindowPresenter [
 		self buses do: [ :bus | bus unregisterBrowser: self ] ].
 
 	aMiWindowPresenter initialExtent: self containedBrowser desiredWindowSize.
-	aMiWindowPresenter title: self containedBrowser windowTitle
+	aMiWindowPresenter title: self containedBrowser windowTitle.
+
 ]
 
 { #category : #testing }
@@ -245,6 +256,14 @@ MiAtomicWorkspace >> model: anObject [
 MiAtomicWorkspace >> needUpdate: anEntity [
 
 	^self containedBrowser needUpdate: anEntity
+]
+
+{ #category : #removing }
+MiAtomicWorkspace >> noteThatWidgetHasBeenReinstalled: aMiBrowser [
+	self containedBrowser = aMiBrowser
+		ifFalse: [ ^self ].
+
+	self window close
 ]
 
 { #category : #accessing }

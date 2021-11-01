@@ -13,8 +13,11 @@ MiWindowPresenter class >> actionsCommandGroupFor: aPresenter [
 	^ CmCommandGroup forSpec
 		  name: 'Actions';
 		  register:
+			  (MiDragWindowCommand forSpecContext: aPresenter)
+				  beDisplayedOnRightSide ;
+		  register:
 			  (MiPropagateCommand forSpecContext: aPresenter)
-				  beDisplayedOnRightSide;
+				  beDisplayedOnRightSide ;
 		  register:
 			  (MiInspectCommand forSpecContext: aPresenter)
 				  beDisplayedOnRightSide

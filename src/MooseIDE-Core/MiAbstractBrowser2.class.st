@@ -99,7 +99,12 @@ MiAbstractBrowser2 class >> windowSize [
 ]
 
 { #category : #opening }
-MiAbstractBrowser2 >> adaptToDropInto: aDropDestination [
+MiAbstractBrowser2 >> adaptToDropInto: aWidget [
+	"close the window owning the drag button before installing the button in the dropIn"
+
+	self owner 
+		ifNotNil: [:myContainer | myContainer owner noteThatWidgetHasBeenReinstalled: self].
+	self owner: aWidget
 ]
 
 { #category : #testing }
