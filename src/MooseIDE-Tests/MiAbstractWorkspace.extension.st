@@ -1,21 +1,21 @@
-Extension { #name : #MiAtomicWorkspace }
+Extension { #name : #MiAbstractWorkspace }
 
 { #category : #'*MooseIDE-Tests' }
-MiAtomicWorkspace >> actionButtons [
+MiAbstractWorkspace >> actionButtons [
 
 	^ (self window toolbarCommandGroup commandOrGroupNamed: 'Actions')
 		  commands collect: #presenter
 ]
 
 { #category : #'*MooseIDE-Tests' }
-MiAtomicWorkspace >> busButton [
+MiAbstractWorkspace >> busButton [
 
 	^ (self window toolbarCommandGroup commandOrGroupNamed: 'Buses')
 		  presenter
 ]
 
 { #category : #'*MooseIDE-Tests' }
-MiAtomicWorkspace class >> openForTests [
+MiAbstractWorkspace class >> openForTests [
 
 	^ (self
 		   newApplication: MiTestApplication current
@@ -26,7 +26,7 @@ MiAtomicWorkspace class >> openForTests [
 ]
 
 { #category : #'*MooseIDE-Tests' }
-MiAtomicWorkspace >> privateReceivingMode: aMiBrowserReceivingMode [
+MiAbstractWorkspace >> privateReceivingMode: aMiBrowserReceivingMode [
 
 	"DO NOT USE ME, I AM FOR TESTS"
 

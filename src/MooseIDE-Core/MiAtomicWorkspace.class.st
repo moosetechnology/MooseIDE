@@ -5,107 +5,17 @@ I am an empty shell containing a MiBrowser
 "
 Class {
 	#name : #MiAtomicWorkspace,
-	#superclass : #MiPresenter,
+	#superclass : #MiAbstractWorkspace,
 	#instVars : [
-		'buses',
-		'receivingMode',
 		'browserContainer'
 	],
 	#category : #'MooseIDE-Core-Browser'
 }
 
-{ #category : #specs }
-MiAtomicWorkspace class >> actionsCommandGroupFor: presenter [
-	^ CmCommandGroup forSpec
-		  name: 'Actions';
-		  register:
-			  (MiPropagateCommand forSpecContext: presenter)
-				  beDisplayedOnRightSide;
-		  register:
-			  (MiInspectCommand forSpecContext: presenter)
-				  beDisplayedOnRightSide
-]
-
-{ #category : #specs }
-MiAtomicWorkspace class >> defaultSpec [
-
-	^SpBoxLayout newVertical
-		add: #browserContainer ;
-		yourself
-]
-
-{ #category : #'world menu' }
-MiAtomicWorkspace class >> helpMessage [
-	^ (self comment lines copyUpTo: '')
-		fold: [ :s1 :s2 | s1 , Character cr asString , s2 ]
-]
-
-{ #category : #testing }
-MiAtomicWorkspace class >> isAbstract [ 
-	^ self == MiAbstractBrowser
-]
-
-{ #category : #'world menu' }
-MiAtomicWorkspace class >> menuCommandOn: aBuilder [
-
-	<worldMenu>
-	(aBuilder item: self midasBrowserMenuLabel)
-		order: 8;
-		parent: #Moose;
-		icon: MooseIcons mooseIcon
-]
-
-{ #category : #'world menu' }
-MiAtomicWorkspace class >> menuMetaCommandOn: aBuilder [
-	"need to be a separate method because of #miBrowsers pragma"
-	<worldMenu>
-	<miBrowsers>
-	(aBuilder item: self metaBrowsersMenuLabel)
-		order: 100;
-		parent: (self midasBrowserMenuLabel);
-		icon: MooseIcons mooseIcon
-]
-
-{ #category : #'world menu' }
-MiAtomicWorkspace class >> metaBrowsersMenuLabel [
-	^ #Meta
-]
-
-{ #category : #'world menu' }
-MiAtomicWorkspace class >> midasBrowserMenuLabel [
-	^ #'Specialized Browsers'
-]
-
-{ #category : #'instance creation' }
-MiAtomicWorkspace class >> newModel [
-	"Override to return a model for your browser"
-
-	^ nil
-]
-
 { #category : #'instance creation' }
 MiAtomicWorkspace class >> open [
-
-	^ (self on: self newModel)
-		  openWithSpec;
-		  followBus: self currentApplication defaultBus;
-		  yourself
-]
-
-{ #category : #specs }
-MiAtomicWorkspace class >> windowSize [
-	^ 500 @ 400
-]
-
-{ #category : #accessing }
-MiAtomicWorkspace >> buses [
-	^ buses
-]
-
-{ #category : #testing }
-MiAtomicWorkspace >> canEditBuses [
-
-	^ true
+	<script: 'MiAtomicWorkspace open'>
+	^super open
 ]
 
 { #category : #testing }
@@ -158,31 +68,10 @@ MiAtomicWorkspace >> dragBrowser [
 
 ]
 
-{ #category : #buses }
-MiAtomicWorkspace >> followBus: aBus [
-
-	(self buses includes: aBus) ifTrue: [ ^ self ].
-	self buses add: aBus.
-	aBus registerBrowser: self.
-	self window ifNotNil: [ :window | window updateBusButton ].
-	self selectEntity: aBus logger mostRecentEntity
-]
-
 { #category : #actions }
 MiAtomicWorkspace >> followEntity: anEntity [
 
 	^self containedBrowser followEntity: anEntity 
-]
-
-{ #category : #actions }
-MiAtomicWorkspace >> freezeDuring: aBlock [
-
-	| previousMode |
-	previousMode := receivingMode.
-
-	receivingMode := MiFreezeMode.
-
-	aBlock ensure: [ receivingMode := previousMode ]
 ]
 
 { #category : #actions }
@@ -193,20 +82,6 @@ MiAtomicWorkspace >> highlightEntity: anEntity [
 { #category : #testing }
 MiAtomicWorkspace >> ifAutonomous: aBlock [
 	^self containedBrowser ifAutonomous: aBlock 
-]
-
-{ #category : #initialization }
-MiAtomicWorkspace >> initialize [
-
-	super initialize.
-	self setDefaultReceivingMode.
-	buses := Set new
-]
-
-{ #category : #initialization }
-MiAtomicWorkspace >> initializeLayout [
-
-	self layout: self class defaultSpec
 ]
 
 { #category : #initialization }
@@ -221,19 +96,9 @@ MiAtomicWorkspace >> initializeWindow: aMiWindowPresenter [
 
 	super initializeWindow: aMiWindowPresenter.
 
-	aMiWindowPresenter buildToolbar.
-
-	aMiWindowPresenter whenClosedDo: [ 
-		self buses do: [ :bus | bus unregisterBrowser: self ] ].
-
 	aMiWindowPresenter initialExtent: self containedBrowser desiredWindowSize.
 	aMiWindowPresenter title: self containedBrowser windowTitle.
 
-]
-
-{ #category : #testing }
-MiAtomicWorkspace >> isMiBrowser [
-	^ true
 ]
 
 { #category : #accessing }
@@ -266,24 +131,6 @@ MiAtomicWorkspace >> noteThatWidgetHasBeenReinstalled: aMiBrowser [
 	self window close
 ]
 
-{ #category : #accessing }
-MiAtomicWorkspace >> receivingMode [
-
-	^ receivingMode
-]
-
-{ #category : #accessing }
-MiAtomicWorkspace >> receivingMode: aReceivingMode [
-
-	receivingMode := aReceivingMode
-]
-
-{ #category : #'private - updating' }
-MiAtomicWorkspace >> resetLayout [
-
-	^self initializeLayout 
-]
-
 { #category : #'private - accessing' }
 MiAtomicWorkspace >> selectEntity: anEntity [
 
@@ -291,17 +138,6 @@ MiAtomicWorkspace >> selectEntity: anEntity [
 
 	receivingMode browser: self containedBrowser actOnEntity: anEntity.
 	self updateToolbar
-]
-
-{ #category : #initialization }
-MiAtomicWorkspace >> setDefaultReceivingMode [
-
-	self receivingMode: MiFollowMode
-]
-
-{ #category : #'accessing - model' }
-MiAtomicWorkspace >> setModelBeforeInitialization: aModel [
-	
 ]
 
 { #category : #actions }
@@ -315,34 +151,11 @@ MiAtomicWorkspace >> showHelp [
 		popup
 ]
 
-{ #category : #buses }
-MiAtomicWorkspace >> unfollowBus: aBus [
-
-	(self buses includes: aBus) ifFalse: [ ^ self ].
-	self buses remove: aBus.
-	aBus unregisterBrowser: self.
-	self window ifNotNil: [ :window | window updateBusButton ]
-]
-
 { #category : #'private - updating' }
 MiAtomicWorkspace >> updateTitle [
 	self hasWindow
 		ifTrue: [ self window title: self containedBrowser windowTitle]
 	
-]
-
-{ #category : #'private - updating' }
-MiAtomicWorkspace >> updateToolbar [
-
-	self window ifNotNil: [ :window | window updateToolbar ]
-]
-
-{ #category : #'private - updating' }
-MiAtomicWorkspace >> updateWindow [
-	self updateTitle.
-	self updateWindowSize.
-	self updateToolbar.
-	self resetLayout
 ]
 
 { #category : #'private - updating' }

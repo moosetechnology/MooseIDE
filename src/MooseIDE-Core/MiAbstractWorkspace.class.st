@@ -1,0 +1,188 @@
+"
+Workspaces are windows that can contain MiAbstractBrowsers.
+The workspace handles the buses and the toolbar for the browsers
+"
+Class {
+	#name : #MiAbstractWorkspace,
+	#superclass : #MiPresenter,
+	#instVars : [
+		'buses',
+		'receivingMode'
+	],
+	#category : #'MooseIDE-Core-Browser'
+}
+
+{ #category : #specs }
+MiAbstractWorkspace class >> actionsCommandGroupFor: presenter [
+	^ CmCommandGroup forSpec
+		  name: 'Actions';
+		  register:
+			  (MiPropagateCommand forSpecContext: presenter)
+				  beDisplayedOnRightSide;
+		  register:
+			  (MiInspectCommand forSpecContext: presenter)
+				  beDisplayedOnRightSide
+]
+
+{ #category : #specs }
+MiAbstractWorkspace class >> defaultSpec [
+
+	^SpBoxLayout newVertical
+		add: #browserContainer ;
+		yourself
+]
+
+{ #category : #testing }
+MiAbstractWorkspace class >> isAbstract [ 
+	^ self == MiAbstractWorkspace
+]
+
+{ #category : #'instance creation' }
+MiAbstractWorkspace class >> newModel [ 
+	^nil
+]
+
+{ #category : #'instance creation' }
+MiAbstractWorkspace class >> open [
+	<script: 'MiAtomicWorkspace open'>
+	^ (self on: self newModel)
+		  openWithSpec;
+		  followBus: self currentApplication defaultBus;
+		  yourself
+]
+
+{ #category : #specs }
+MiAbstractWorkspace class >> windowSize [
+	^ 500 @ 400
+]
+
+{ #category : #accessing }
+MiAbstractWorkspace >> buses [
+	^ buses
+]
+
+{ #category : #testing }
+MiAbstractWorkspace >> canEditBuses [
+
+	^ true
+]
+
+{ #category : #buses }
+MiAbstractWorkspace >> followBus: aBus [
+
+	(self buses includes: aBus) ifTrue: [ ^ self ].
+	self buses add: aBus.
+	aBus registerBrowser: self.
+	self window ifNotNil: [ :window | window updateBusButton ].
+	self selectEntity: aBus logger mostRecentEntity
+]
+
+{ #category : #actions }
+MiAbstractWorkspace >> freezeDuring: aBlock [
+
+	| previousMode |
+	previousMode := receivingMode.
+
+	receivingMode := MiFreezeMode.
+
+	aBlock ensure: [ receivingMode := previousMode ]
+]
+
+{ #category : #initialization }
+MiAbstractWorkspace >> initialize [
+
+	super initialize.
+	self setDefaultReceivingMode.
+	buses := Set new
+]
+
+{ #category : #initialization }
+MiAbstractWorkspace >> initializeLayout [
+
+	self layout: self class defaultSpec
+]
+
+{ #category : #initialization }
+MiAbstractWorkspace >> initializeWindow: aMiWindowPresenter [
+
+	super initializeWindow: aMiWindowPresenter.
+
+	aMiWindowPresenter buildToolbar.
+
+	aMiWindowPresenter whenClosedDo: [ 
+		self buses do: [ :bus | bus unregisterBrowser: self ] ].
+
+]
+
+{ #category : #testing }
+MiAbstractWorkspace >> isMiBrowser [
+	^ true
+]
+
+{ #category : #testing }
+MiAbstractWorkspace >> noteThatWidgetHasBeenClosed: aBrowser [
+	self shouldBeImplemented
+]
+
+{ #category : #accessing }
+MiAbstractWorkspace >> receivingMode [
+
+	^ receivingMode
+]
+
+{ #category : #accessing }
+MiAbstractWorkspace >> receivingMode: aReceivingMode [
+
+	receivingMode := aReceivingMode
+]
+
+{ #category : #'private - updating' }
+MiAbstractWorkspace >> resetLayout [
+
+	^self initializeLayout 
+]
+
+{ #category : #accessing }
+MiAbstractWorkspace >> selectEntity: anEntity [
+
+	self subclassResponsibility 
+]
+
+{ #category : #initialization }
+MiAbstractWorkspace >> setDefaultReceivingMode [
+
+	self receivingMode: MiFollowMode
+]
+
+{ #category : #buses }
+MiAbstractWorkspace >> unfollowBus: aBus [
+
+	(self buses includes: aBus) ifFalse: [ ^ self ].
+	self buses remove: aBus.
+	aBus unregisterBrowser: self.
+	self window ifNotNil: [ :window | window updateBusButton ]
+]
+
+{ #category : #'private - updating' }
+MiAbstractWorkspace >> updateTitle [
+	self subclassResponsibility 
+]
+
+{ #category : #'private - updating' }
+MiAbstractWorkspace >> updateToolbar [
+
+	self window ifNotNil: [ :window | window updateToolbar ]
+]
+
+{ #category : #'private - updating' }
+MiAbstractWorkspace >> updateWindow [
+	self updateTitle.
+	self updateWindowSize.
+	self updateToolbar.
+	self resetLayout
+]
+
+{ #category : #'private - updating' }
+MiAbstractWorkspace >> updateWindowSize [
+	self subclassResponsibility 
+]
