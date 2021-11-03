@@ -26,13 +26,3 @@ MiDragWindowCommand class >> defaultName [
 MiDragWindowCommand >> execute [
 	self context dragBrowser
 ]
-
-{ #category : #accessing }
-MiDragWindowCommand >> iconName [
-
-	^ self iconNameForState: self context canBeDragged
-]
-
-{ #category : #accessing }
-MiDragWindowCommand >> iconNameForState: aBoolean [
-]

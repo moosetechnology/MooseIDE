@@ -61,7 +61,8 @@ MiAtomicWorkspace >> containedBrowser: aMiBrowser [
 { #category : #actions }
 MiAtomicWorkspace >> dragBrowser [
 	| dragButton |
-	dragButton := SpMorphicDragMeAdapter new
+	self flag: 'Unfortunately, this is specific to Morphic. should find a way to be more generic'.
+	dragButton := MiMorphicDragMeAdapter new
 		adapt: (SpDragMe new passenger: self containedBrowser) ;
 		yourself.
 	dragButton startDragging.
