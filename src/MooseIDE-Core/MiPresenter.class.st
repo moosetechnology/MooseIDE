@@ -10,6 +10,12 @@ MiPresenter class >> currentApplication [
 	^ MiApplication current
 ]
 
+{ #category : #accessing }
+MiPresenter class >> iconNamed: aName [
+
+	^ self currentApplication iconNamed: aName
+]
+
 { #category : #'instance creation' }
 MiPresenter class >> new [
 
