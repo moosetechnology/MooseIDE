@@ -85,6 +85,12 @@ MiExportBrowser >> addCommentsColumn [
 	entitiesTable refresh
 ]
 
+{ #category : #testing }
+MiExportBrowser >> canReceiveEntity: anObject [
+
+	^ true
+]
+
 { #category : #initialization }
 MiExportBrowser >> columnChoiceButton [
 
