@@ -14,7 +14,7 @@ Class {
 
 { #category : #running }
 MiWorkspaceAtomicTest >> browserClass [
-	^MiAbstractWorkspace
+	^MiAtomicWorkspace
 ]
 
 { #category : #running }

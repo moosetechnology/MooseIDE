@@ -37,9 +37,10 @@ MiMooseModelBrowserTests >> tearDown [
 
 { #category : #tests }
 MiMooseModelBrowserTests >> testActivateActionButtons [
-
 	| newModel |
-	browser actionButtons do: [ :button | self deny: button isEnabled ].
+	{ MiInspectCommand . MiPropagateCommand }
+	do: [ :cmdClass | self deny: (self actionButton: cmdClass) isEnabled ].
+	self assert: (self actionButton: MiDragWindowCommand) isEnabled.
 
 	newModel := FamixStModel new.
 	newModel addAll: { 
@@ -47,13 +48,17 @@ MiMooseModelBrowserTests >> testActivateActionButtons [
 			(FamixStClass named: 'Class2') }.
 	MooseModel root add: newModel.
 	browser selectEntity: newModel.
-	browser actionButtons do: [ :button | self deny: button isEnabled ].
+	{ MiInspectCommand . MiPropagateCommand }
+	do: [ :cmdClass | self deny: (self actionButton: cmdClass) isEnabled ].
 
 	browser modelPresenter clickAtPath: #( 1 ).
-	browser actionButtons do: [ :button | self assert: button isEnabled ].
+	{ MiInspectCommand . MiPropagateCommand . MiDragWindowCommand }
+	do: [ :cmdClass | self assert: (self actionButton: cmdClass) isEnabled ].
 
 	browser modelPresenter clickAtPath: #( 1 1 ).
-	browser actionButtons do: [ :button | self assert: button isEnabled ]
+	{ MiInspectCommand . MiPropagateCommand . MiDragWindowCommand }
+	do: [ :cmdClass | self assert: (self actionButton: cmdClass) isEnabled ].
+
 ]
 
 { #category : #tests }

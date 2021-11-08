@@ -1,13 +1,6 @@
 Extension { #name : #MiAbstractWorkspace }
 
 { #category : #'*MooseIDE-Tests' }
-MiAbstractWorkspace >> actionButtons [
-
-	^ (self window toolbarCommandGroup commandOrGroupNamed: 'Actions')
-		  commands collect: #presenter
-]
-
-{ #category : #'*MooseIDE-Tests' }
 MiAbstractWorkspace >> busButton [
 
 	^ (self window toolbarCommandGroup commandOrGroupNamed: 'Buses')

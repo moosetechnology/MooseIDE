@@ -29,15 +29,18 @@ MiModelRootBrowserTest >> tearDown [
 
 { #category : #tests }
 MiModelRootBrowserTest >> testActivateActionButtons [
-
 	| newModel |
-	browser actionButtons do: [ :button | self deny: button isEnabled ].
+	{ MiInspectCommand . MiPropagateCommand }
+	do: [ :cmdClass | self deny: (self actionButton: cmdClass) isEnabled ].
+	self assert: (self actionButton: MiDragWindowCommand) isEnabled.
 
 	newModel := MooseModel new.
 	MooseModel root add: newModel.
 	browser updateForNewModel: newModel.
 
-	browser actionButtons do: [ :button | self assert: button isEnabled ]
+	{ MiInspectCommand . MiPropagateCommand . MiDragWindowCommand }
+	do: [ :cmdClass | self assert: (self actionButton: cmdClass) isEnabled ].
+
 ]
 
 { #category : #tests }

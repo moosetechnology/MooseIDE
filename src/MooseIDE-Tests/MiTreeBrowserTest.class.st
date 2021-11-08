@@ -11,12 +11,15 @@ MiTreeBrowserTest >> browserClass [
 
 { #category : #tests }
 MiTreeBrowserTest >> testActivateActionButtons [
-
-	browser actionButtons do: [ :button | self deny: button isEnabled ].
+	{ MiInspectCommand . MiPropagateCommand }
+	do: [ :cmdClass | self deny: (self actionButton: cmdClass) isEnabled ].
+	self assert: (self actionButton: MiDragWindowCommand) isEnabled.
 
 	browser selectEntity: (FamixStClass named: 'TestClass').
 
-	browser actionButtons do: [ :button | self assert: button isEnabled ]
+	{ MiInspectCommand . MiPropagateCommand . MiDragWindowCommand }
+	do: [ :cmdClass | self assert: (self actionButton: cmdClass) isEnabled ].
+
 ]
 
 { #category : #tests }
