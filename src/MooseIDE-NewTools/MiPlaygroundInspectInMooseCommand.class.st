@@ -44,7 +44,9 @@ MiPlaygroundInspectInMooseCommand >> execute [
 	"This #on:do: is here to catch a bug in Spec adapters when there is no text to select. 
 	It should be removed when this is fixed, i.e. when inspecting an empty playground does not raise an error anymore."
 
-	selection ifEmpty: [ ^ '' ].
+	selection ifEmpty: [ 
+		self inform: 'Nothing to inspect in Moose'.
+		^ '' ].
 
 	MiInspectorBrowser inspect: (self context text
 			 evaluate: selection
