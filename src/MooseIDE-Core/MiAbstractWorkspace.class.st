@@ -7,9 +7,10 @@ Class {
 	#superclass : #MiPresenter,
 	#instVars : [
 		'buses',
-		'receivingMode'
+		'receivingMode',
+		'privateBus'
 	],
-	#category : #'MooseIDE-Core-Browser'
+	#category : #'MooseIDE-Core-workspace'
 }
 
 { #category : #specs }
@@ -56,7 +57,7 @@ MiAbstractWorkspace class >> windowSize [
 	^ 500 @ 400
 ]
 
-{ #category : #accessing }
+{ #category : #buses }
 MiAbstractWorkspace >> buses [
 	^ buses
 ]
@@ -93,13 +94,23 @@ MiAbstractWorkspace >> initialize [
 
 	super initialize.
 	self setDefaultReceivingMode.
-	buses := Set new
+	
+	buses := Set new.
+	self initializePrivateBus
+	
 ]
 
 { #category : #initialization }
 MiAbstractWorkspace >> initializeLayout [
 
 	self layout: self class defaultSpec
+]
+
+{ #category : #initialization }
+MiAbstractWorkspace >> initializePrivateBus [
+	privateBus := MiBus new
+		name: 'workspace bus'.
+	privateBus registerBrowser: self
 ]
 
 { #category : #initialization }
@@ -119,9 +130,19 @@ MiAbstractWorkspace >> isMiBrowser [
 	^ true
 ]
 
+{ #category : #'instance creation' }
+MiAbstractWorkspace >> newContainer [
+	^self instantiate: MiSingleDropInContainer
+]
+
 { #category : #testing }
 MiAbstractWorkspace >> noteThatWidgetHasBeenClosed: aBrowser [
 	self shouldBeImplemented
+]
+
+{ #category : #buses }
+MiAbstractWorkspace >> privateBus [
+	^privateBus
 ]
 
 { #category : #accessing }
@@ -145,7 +166,7 @@ MiAbstractWorkspace >> resetLayout [
 { #category : #accessing }
 MiAbstractWorkspace >> selectEntity: anEntity [
 
-	self subclassResponsibility 
+	self privateBus globallySelect: anEntity 
 ]
 
 { #category : #initialization }

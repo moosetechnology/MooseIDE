@@ -3,8 +3,8 @@ Class {
 	#superclass : #MiPresenter,
 	#instVars : [
 		'model',
-		'buses',
-		'receivingMode'
+		'receivingMode',
+		'privateBus'
 	],
 	#category : #'MooseIDE-Core-Browser'
 }
@@ -99,12 +99,14 @@ MiAbstractBrowser2 class >> windowSize [
 ]
 
 { #category : #opening }
-MiAbstractBrowser2 >> adaptToDropInto: aWidget [
-	"close the window owning the drag button before installing the button in the dropIn"
-
+MiAbstractBrowser2 >> adaptToDropInto: aBrowserContainer [
+	"set new owner and follow its internal bus"
 	self owner 
 		ifNotNil: [:myContainer | myContainer owner noteThatWidgetHasBeenReinstalled: self].
-	self owner: aWidget
+	self owner: aBrowserContainer.
+
+	self unfollowPrivateBus.
+	self followPrivateBus: aBrowserContainer ownerPrivateBus
 ]
 
 { #category : #testing }
@@ -150,6 +152,15 @@ MiAbstractBrowser2 >> followEntity: anEntity [
 	^ self subclassResponsibility
 ]
 
+{ #category : #buses }
+MiAbstractBrowser2 >> followPrivateBus: aBus [
+
+	(self privateBus = aBus) ifTrue: [ ^ self ].
+	self privateBus: aBus.
+	aBus registerBrowser: self.
+	self selectEntity: aBus logger mostRecentEntity
+]
+
 { #category : #actions }
 MiAbstractBrowser2 >> highlightEntity: anEntity [
 
@@ -193,9 +204,35 @@ MiAbstractBrowser2 >> needUpdate: anEntity [
 	^ anEntity ~= model selected
 ]
 
+{ #category : #buses }
+MiAbstractBrowser2 >> privateBus [
+	^privateBus
+]
+
+{ #category : #buses }
+MiAbstractBrowser2 >> privateBus: aBus [
+	privateBus := aBus
+]
+
+{ #category : #accessing }
+MiAbstractBrowser2 >> selectEntity: anEntity [
+
+	MiFollowMode browser: self actOnEntity: anEntity.
+
+]
+
 { #category : #'accessing - model' }
 MiAbstractBrowser2 >> setModelBeforeInitialization: aModel [
 	model := aModel
+]
+
+{ #category : #buses }
+MiAbstractBrowser2 >> unfollowPrivateBus [
+
+	self privateBus ifNil: [ ^ self ].
+	
+	self privateBus unregisterBrowser: self.
+	self privateBus: nil.
 ]
 
 { #category : #private }

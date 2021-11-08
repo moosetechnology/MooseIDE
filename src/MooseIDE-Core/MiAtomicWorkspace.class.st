@@ -9,7 +9,7 @@ Class {
 	#instVars : [
 		'browserContainer'
 	],
-	#category : #'MooseIDE-Core-Browser'
+	#category : #'MooseIDE-Core-workspace'
 }
 
 { #category : #'instance creation' }
@@ -88,7 +88,7 @@ MiAtomicWorkspace >> ifAutonomous: aBlock [
 { #category : #initialization }
 MiAtomicWorkspace >> initializePresenters [
 	super initializePresenters.
-	browserContainer := self instantiate: SpSingleDropInContainer.
+	browserContainer := self newContainer.
 	self initializeLayout.
 ]
 
