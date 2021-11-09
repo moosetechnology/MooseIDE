@@ -29,7 +29,7 @@ MiUMLBrowserTest >> testMiSelectedItem [
 	self assert: browser miSelectedItem isNil.
 
 	entityToSelect := FamixStClass named: 'TestClass'.
-	browser followEntity: entityToSelect.
+	browser selectEntity: entityToSelect.
 
 	self assert: browser miSelectedItem equals: entityToSelect
 ]

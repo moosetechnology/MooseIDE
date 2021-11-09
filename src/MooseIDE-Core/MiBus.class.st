@@ -1,3 +1,9 @@
+"
+I am a MooseEntity bus connected to MooseIDE browsers.
+Browsers write entities in me and I propagate them to all my browsers.
+
+I store each entity on a Logger
+"
 Class {
 	#name : #MiBus,
 	#superclass : #Object,
@@ -51,6 +57,7 @@ MiBus >> name: anObject [
 
 { #category : #actions }
 MiBus >> refreshBrowsersWith: anEntity [
+
 	self browsers do: [ :browser | browser selectEntity: anEntity ]
 ]
 

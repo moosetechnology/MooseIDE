@@ -20,24 +20,32 @@ MiWorkspaceAtomicTest >> browserClass [
 { #category : #running }
 MiWorkspaceAtomicTest >> setUp [
 	super setUp.
-	
+
 	mockBrowser := MiMockBrowserForTests new.
+	browser containedBrowser: mockBrowser
 
 ]
 
 { #category : #tests }
-MiWorkspaceAtomicTest >> testCanSetContainedBrowser [
+MiWorkspaceAtomicTest >> testCanChangeContainedBrowser [
+	| nullBrowser |
 
-	browser containedBrowser: mockBrowser.
+	self assert: browser privateBus browsers size equals: 2.
+	self assert: (browser privateBus browsers includes: browser).
+	self assert: (browser privateBus browsers includes: mockBrowser).
 	
-	self assert: browser containedBrowser equals: mockBrowser
+	nullBrowser := MiNullBrowser new.
+	browser containedBrowser: nullBrowser.
+	
+	self assert: browser containedBrowser equals: nullBrowser.
+	self assert: browser privateBus browsers size equals: 2.
+	self assert: (browser privateBus browsers includes: browser).
+	self assert: (browser privateBus browsers includes: nullBrowser).
 ]
 
 { #category : #tests }
 MiWorkspaceAtomicTest >> testDelegatesCanFollow [
 
-	browser containedBrowser: mockBrowser.
-	
 	self deny: browser canFollow.
 	mockBrowser canFollow: true.
 	self assert: browser canFollow.
@@ -46,8 +54,6 @@ MiWorkspaceAtomicTest >> testDelegatesCanFollow [
 { #category : #tests }
 MiWorkspaceAtomicTest >> testDelegatesCanHighlight [
 
-	browser containedBrowser: mockBrowser.
-	
 	self deny: browser canHighlight.
 	mockBrowser canHighlight: true.
 	self assert: browser canHighlight.
@@ -56,8 +62,6 @@ MiWorkspaceAtomicTest >> testDelegatesCanHighlight [
 { #category : #tests }
 MiWorkspaceAtomicTest >> testDelegatesCanPropagate [
 
-	browser containedBrowser: mockBrowser.
-	
 	self deny: browser canPropagate.
 	mockBrowser canPropagate: true.
 	self assert: browser canPropagate.
@@ -66,8 +70,6 @@ MiWorkspaceAtomicTest >> testDelegatesCanPropagate [
 { #category : #tests }
 MiWorkspaceAtomicTest >> testDelegatesCanReceiveEntity [
 
-	browser containedBrowser: mockBrowser.
-	
 	self deny: (browser canReceiveEntity: nil).
 	mockBrowser canReceive: true.
 	self assert: (browser canReceiveEntity: nil).
@@ -76,34 +78,28 @@ MiWorkspaceAtomicTest >> testDelegatesCanReceiveEntity [
 { #category : #tests }
 MiWorkspaceAtomicTest >> testDelegatesNeedUpdate [
 
-	browser containedBrowser: mockBrowser.
-	
 	self deny: (browser needUpdate: nil).
 	mockBrowser toUpdate: true.
 	self assert: (browser needUpdate: nil).
 ]
 
 { #category : #tests }
-MiWorkspaceAtomicTest >> testDelegatesSelectedItem [
-
-	browser containedBrowser: mockBrowser.
+MiWorkspaceAtomicTest >> testPrivateBusPropagatesToContainedBrowser [
 	
-	mockBrowser selectedItem: #aSelectedItem.
-	self assert: browser miSelectedItem equals: #aSelectedItem.
+	browser containedBrowser canReceive: true. 
+	browser privateBus globallySelect: #aMockEntity.
+	
+	self assert: browser miSelectedItem equals: #aMockEntity
 ]
 
 { #category : #tests }
 MiWorkspaceAtomicTest >> testWindowSizeChangesWithContainedBrowser [
-
-	browser containedBrowser: mockBrowser.
-	
-	self assert: browser window title equals: MiMockBrowserForTests title
+	"Workspace first created with a MiNullBrowser and changing the containedBrowser does not changes the windowSize"
+	self assert: browser window initialExtent equals: MiNullBrowser windowSize
 ]
 
 { #category : #tests }
 MiWorkspaceAtomicTest >> testWindowTitleChangesWithContainedBrowser [
 
-	browser containedBrowser: mockBrowser.
-	
 	self assert: browser window title equals: MiMockBrowserForTests title
 ]

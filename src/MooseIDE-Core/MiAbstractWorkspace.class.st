@@ -79,6 +79,11 @@ MiAbstractWorkspace >> followBus: aBus [
 ]
 
 { #category : #actions }
+MiAbstractWorkspace >> followEntity: anEntity [
+	^self privateBus globallySelect: anEntity 
+]
+
+{ #category : #actions }
 MiAbstractWorkspace >> freezeDuring: aBlock [
 
 	| previousMode |
@@ -108,7 +113,7 @@ MiAbstractWorkspace >> initializeLayout [
 
 { #category : #initialization }
 MiAbstractWorkspace >> initializePrivateBus [
-	privateBus := MiBus new
+	privateBus := MiPrivateBus new
 		name: 'workspace bus'.
 	privateBus registerBrowser: self
 ]
@@ -135,7 +140,7 @@ MiAbstractWorkspace >> newContainer [
 	^self instantiate: MiSingleDropInContainer
 ]
 
-{ #category : #testing }
+{ #category : #'private - updating' }
 MiAbstractWorkspace >> noteThatWidgetHasBeenClosed: aBrowser [
 	self shouldBeImplemented
 ]
@@ -143,6 +148,13 @@ MiAbstractWorkspace >> noteThatWidgetHasBeenClosed: aBrowser [
 { #category : #buses }
 MiAbstractWorkspace >> privateBus [
 	^privateBus
+]
+
+{ #category : #buses }
+MiAbstractWorkspace >> propagatePrivately: anEntity [
+	"propagating on privateBus we don't do anything,
+	 the privateBus takes care of the contained browser(s)"
+	
 ]
 
 { #category : #accessing }
@@ -166,7 +178,10 @@ MiAbstractWorkspace >> resetLayout [
 { #category : #accessing }
 MiAbstractWorkspace >> selectEntity: anEntity [
 
-	self privateBus globallySelect: anEntity 
+	"I am used by the Mi Application. You should use #globallySelect: anEntity that will transmit the message to me and the other browsers"
+
+	receivingMode browser: self actOnEntity: anEntity.
+	self updateToolbar
 ]
 
 { #category : #initialization }

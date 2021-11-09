@@ -21,6 +21,7 @@ MiFameBrowserTest >> setUp [
 
 { #category : #tests }
 MiFameBrowserTest >> testActivateActionButtons [
+
 	{ MiInspectCommand . MiPropagateCommand }
 	do: [ :cmdClass | self deny: (self actionButton: cmdClass) isEnabled ].
 	self assert: (self actionButton: MiDragWindowCommand) isEnabled.
@@ -29,6 +30,12 @@ MiFameBrowserTest >> testActivateActionButtons [
 	{ MiInspectCommand . MiPropagateCommand . MiDragWindowCommand }
 	do: [ :cmdClass | self assert: (self actionButton: cmdClass) isEnabled ].
 
+]
+
+{ #category : #'tests - opening' }
+MiFameBrowserTest >> testBrowserFollowsPrivatelBus [
+
+	self assert: browser containedBrowser privateBus equals: browser privateBus
 ]
 
 { #category : #tests }

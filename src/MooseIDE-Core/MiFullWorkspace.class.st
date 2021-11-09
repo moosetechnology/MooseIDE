@@ -91,7 +91,7 @@ MiFullWorkspace >> desiredWindowSize [
 
 { #category : #actions }
 MiFullWorkspace >> followEntity: anEntity [
-    self freezeDuring: [privateBus globallySelect: anEntity]
+    "self freezeDuring: [privateBus globallySelect: anEntity]"
 ]
 
 { #category : #initialization }

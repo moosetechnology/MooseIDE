@@ -80,7 +80,7 @@ MiWindowPresenter >> updateBusButton [
 MiWindowPresenter >> updateReceivingModeButtons [
 
 	(self toolbarCommandGroup commandOrGroupNamed: 'Receiving Mode')
-		commands do: [ :cmd | 
+		commands do: [ :cmd |
 			cmd updateIconForMode: presenter receivingMode ]
 ]
 

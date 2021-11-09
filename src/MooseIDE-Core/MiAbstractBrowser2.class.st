@@ -158,7 +158,7 @@ MiAbstractBrowser2 >> followPrivateBus: aBus [
 	(self privateBus = aBus) ifTrue: [ ^ self ].
 	self privateBus: aBus.
 	aBus registerBrowser: self.
-	self selectEntity: aBus logger mostRecentEntity
+	self propagatePrivately: aBus logger mostRecentEntity
 ]
 
 { #category : #actions }
@@ -215,7 +215,9 @@ MiAbstractBrowser2 >> privateBus: aBus [
 ]
 
 { #category : #accessing }
-MiAbstractBrowser2 >> selectEntity: anEntity [
+MiAbstractBrowser2 >> propagatePrivately: anEntity [
+	"propagating inside to outside"
+	
 
 	MiFollowMode browser: self actOnEntity: anEntity.
 

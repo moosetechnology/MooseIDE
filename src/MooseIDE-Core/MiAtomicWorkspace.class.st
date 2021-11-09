@@ -32,6 +32,7 @@ MiAtomicWorkspace >> canHighlight [
 
 { #category : #testing }
 MiAtomicWorkspace >> canPropagate [
+
 	^self containedBrowser canPropagate
 ]
 
@@ -53,7 +54,7 @@ MiAtomicWorkspace >> containedBrowser [
 
 { #category : #accessing }
 MiAtomicWorkspace >> containedBrowser: aMiBrowser [
-
+	self containedBrowser unfollowPrivateBus.
 	browserContainer install: aMiBrowser.
 	self updateWindow
 ]
@@ -70,12 +71,6 @@ MiAtomicWorkspace >> dragBrowser [
 ]
 
 { #category : #actions }
-MiAtomicWorkspace >> followEntity: anEntity [
-
-	^self containedBrowser followEntity: anEntity 
-]
-
-{ #category : #actions }
 MiAtomicWorkspace >> highlightEntity: anEntity [
 	self containedBrowser highlightEntity: anEntity 
 ]
@@ -83,6 +78,11 @@ MiAtomicWorkspace >> highlightEntity: anEntity [
 { #category : #testing }
 MiAtomicWorkspace >> ifAutonomous: aBlock [
 	^self containedBrowser ifAutonomous: aBlock 
+]
+
+{ #category : #api }
+MiAtomicWorkspace >> initialExtent [
+	^self containedBrowser desiredWindowSize
 ]
 
 { #category : #initialization }
@@ -132,15 +132,6 @@ MiAtomicWorkspace >> noteThatWidgetHasBeenReinstalled: aMiBrowser [
 	self window close
 ]
 
-{ #category : #'private - accessing' }
-MiAtomicWorkspace >> selectEntity: anEntity [
-
-	"I am used by the Mi Application. You should use #globallySelect: anEntity that will transmit the message to me and the other browsers"
-
-	receivingMode browser: self containedBrowser actOnEntity: anEntity.
-	self updateToolbar
-]
-
 { #category : #actions }
 MiAtomicWorkspace >> showHelp [
 
@@ -150,6 +141,11 @@ MiAtomicWorkspace >> showHelp [
 		bePositionRight;
 		presenter: (MiHelpPopup owner: help on: self containedBrowser);
 		popup
+]
+
+{ #category : #accessing }
+MiAtomicWorkspace >> title [
+	^self containedBrowser windowTitle
 ]
 
 { #category : #'private - updating' }

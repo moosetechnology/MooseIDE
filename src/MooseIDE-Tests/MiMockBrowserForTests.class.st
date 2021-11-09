@@ -104,6 +104,11 @@ MiMockBrowserForTests >> needUpdate: whatever [
 ]
 
 { #category : #accessing }
+MiMockBrowserForTests >> propagatePrivately: anEntity [
+	selected := anEntity 
+]
+
+{ #category : #accessing }
 MiMockBrowserForTests >> selectedItem: anObject [
 
 	selected := anObject
