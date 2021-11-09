@@ -105,8 +105,6 @@ MiAbstractBrowser2 >> adaptToDropInto: aBrowserContainer [
 		ifNotNil: [:myContainer | myContainer owner noteThatWidgetHasBeenReinstalled: self].
 	self owner: aBrowserContainer.
 
-	self unfollowPrivateBus.
-	self followPrivateBus: aBrowserContainer ownerPrivateBus
 ]
 
 { #category : #testing }

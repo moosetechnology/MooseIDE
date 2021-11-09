@@ -68,6 +68,26 @@ MiAbstractWorkspace >> canEditBuses [
 	^ true
 ]
 
+{ #category : #testing }
+MiAbstractWorkspace >> canFollow [
+	^self containedBrowsers anySatisfy: [ :browser | browser canFollow ]
+]
+
+{ #category : #testing }
+MiAbstractWorkspace >> canHighlight [
+	^self containedBrowsers anySatisfy: [ :browser | browser canHighlight ]
+]
+
+{ #category : #testing }
+MiAbstractWorkspace >> canPropagate [
+		^self containedBrowsers anySatisfy: [ :browser | browser canPropagate ]
+]
+
+{ #category : #accessing }
+MiAbstractWorkspace >> containedBrowsers [
+	self subclassResponsibility 
+]
+
 { #category : #buses }
 MiAbstractWorkspace >> followBus: aBus [
 
@@ -130,9 +150,26 @@ MiAbstractWorkspace >> initializeWindow: aMiWindowPresenter [
 
 ]
 
+{ #category : #'as yet unclassified' }
+MiAbstractWorkspace >> install: aMiBrowser inContainer: aMiDropInContainer [
+	aMiDropInContainer installedPresenter
+		ifNotNil: [ :previousBrowser | previousBrowser unfollowPrivateBus].
+	aMiDropInContainer install: aMiBrowser.
+	
+	aMiBrowser unfollowPrivateBus.
+	aMiBrowser followPrivateBus: aMiDropInContainer ownerPrivateBus.
+
+	self updateWindow
+]
+
 { #category : #testing }
 MiAbstractWorkspace >> isMiBrowser [
 	^ true
+]
+
+{ #category : #testing }
+MiAbstractWorkspace >> needUpdate: anEntity [
+	^self containedBrowsers anySatisfy: [ :browser | browser needUpdate: anEntity ]
 ]
 
 { #category : #'instance creation' }

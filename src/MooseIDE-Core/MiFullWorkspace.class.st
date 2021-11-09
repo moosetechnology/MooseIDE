@@ -72,10 +72,13 @@ MiFullWorkspace class >> windowSize [
 	^ 1400 @ 600
 ]
 
-{ #category : #testing }
-MiFullWorkspace >> canFollow [
-
-	^true
+{ #category : #'accessing - private tests' }
+MiFullWorkspace >> at: anInteger putBrowser: aMiBrowser [
+	"only use for tests !"
+	| containerMap |
+	containerMap := {  1 -> left . 2 -> middle . 3 -> right . 4 -> downLeft . 5 -> downMiddle . 6 -> downRight }
+	asDictionary.
+	self install: aMiBrowser inContainer: (containerMap at: anInteger)
 ]
 
 { #category : #testing }
@@ -84,14 +87,16 @@ MiFullWorkspace >> canReceiveEntity: anObject [
 	^true
 ]
 
+{ #category : #accessing }
+MiFullWorkspace >> containedBrowsers [
+	^{left . middle . right . downRight . downMiddle . downLeft}
+	select: [ :browserContainer | browserContainer installedPresenter notNil ]
+	thenCollect: [ :browserContainer | browserContainer installedPresenter ]
+]
+
 { #category : #'private - updating' }
 MiFullWorkspace >> desiredWindowSize [
 	^self class windowSize
-]
-
-{ #category : #actions }
-MiFullWorkspace >> followEntity: anEntity [
-    "self freezeDuring: [privateBus globallySelect: anEntity]"
 ]
 
 { #category : #initialization }
@@ -113,10 +118,16 @@ MiFullWorkspace >> newContainer [
 	   borderWidth: 2;
 	   "dropEnabled: true;
 	   wantsDrop: [ :transfer :destination | 
-		   self shouldAcceptTransfer: transfer into: destination ];
+		   self shouldAcceptTransfer: transfer into: destination ];"
 	   acceptDrop: [ :transfer :destination | 
-		   self installTransfer: transfer into: destination ] ;"
+		   "self installTransfer: transfer into: destination"
+			self install: transfer passenger inContainer: destination owner ] ;
 		yourself
+]
+
+{ #category : #removing }
+MiFullWorkspace >> noteThatWidgetHasBeenReinstalled: aMiBrowser [
+
 ]
 
 { #category : #'private - updating' }

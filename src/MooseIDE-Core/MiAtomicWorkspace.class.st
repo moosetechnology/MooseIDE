@@ -19,24 +19,6 @@ MiAtomicWorkspace class >> open [
 ]
 
 { #category : #testing }
-MiAtomicWorkspace >> canFollow [
-
-	^self containedBrowser canFollow
-]
-
-{ #category : #testing }
-MiAtomicWorkspace >> canHighlight [
-
-	^self containedBrowser canHighlight
-]
-
-{ #category : #testing }
-MiAtomicWorkspace >> canPropagate [
-
-	^self containedBrowser canPropagate
-]
-
-{ #category : #testing }
 MiAtomicWorkspace >> canReceiveEntity: anObject [
 	^self containedBrowser canReceiveEntity: anObject 
 ]
@@ -54,9 +36,12 @@ MiAtomicWorkspace >> containedBrowser [
 
 { #category : #accessing }
 MiAtomicWorkspace >> containedBrowser: aMiBrowser [
-	self containedBrowser unfollowPrivateBus.
-	browserContainer install: aMiBrowser.
-	self updateWindow
+	self install: aMiBrowser inContainer: browserContainer
+]
+
+{ #category : #accessing }
+MiAtomicWorkspace >> containedBrowsers [
+	^{ self containedBrowser }
 ]
 
 { #category : #actions }
@@ -116,12 +101,6 @@ MiAtomicWorkspace >> model [
 { #category : #accessing }
 MiAtomicWorkspace >> model: anObject [
 	self containedBrowser model: anObject
-]
-
-{ #category : #testing }
-MiAtomicWorkspace >> needUpdate: anEntity [
-
-	^self containedBrowser needUpdate: anEntity
 ]
 
 { #category : #removing }
