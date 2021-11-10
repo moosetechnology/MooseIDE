@@ -143,7 +143,8 @@ MiQueriesBrowser >> initializeQueryCodePresenter [
 MiQueriesBrowser >> initializeResultTreePresenter [
 
 	queryResultTreePresenter := self instantiate: QueryResultTreePresenter.
-	queryResultTreePresenter updateForEntities: self queryResultEntities
+	queryResultTreePresenter updateForEntities: self queryResultEntities.
+	queryResultTreePresenter whenSelectionChangedDo: [ self sendEntitiesToPrivateBus ]
 ]
 
 { #category : #accessing }
@@ -201,7 +202,8 @@ MiQueriesBrowser >> selectQuery: aQuery [
 
 	selectedQuery := aQuery.
 	queryResultTreePresenter updateForQuery: aQuery.
-	queryCodePresenter updateForQuery: aQuery
+	queryCodePresenter updateForQuery: aQuery.
+	self sendEntitiesToPrivateBus
 ]
 
 { #category : #accessing }

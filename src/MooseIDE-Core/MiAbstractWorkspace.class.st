@@ -215,7 +215,7 @@ MiAbstractWorkspace >> privateBus [
 ]
 
 { #category : #buses }
-MiAbstractWorkspace >> propagatePrivately: anEntity [
+MiAbstractWorkspace >> receiveFromPrivateBus: anEntity [
 	"propagating on privateBus as no effect on workspace,
 	 the privateBus takes care of propagating to contained browser(s)"
 	

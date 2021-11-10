@@ -156,7 +156,16 @@ MiAbstractBrowser2 >> followPrivateBus: aBus [
 	(self privateBus = aBus) ifTrue: [ ^ self ].
 	self privateBus: aBus.
 	aBus registerBrowser: self.
-	self propagatePrivately: aBus logger mostRecentEntity
+	self receiveFromPrivateBus: aBus logger mostRecentEntity
+]
+
+{ #category : #actions }
+MiAbstractBrowser2 >> freezeDuring: aBlock [
+	| previousMode |
+	previousMode := receivingMode.
+	receivingMode := MiFreezeMode.
+
+	aBlock ensure: [ receivingMode := previousMode ]
 ]
 
 { #category : #actions }
@@ -213,7 +222,7 @@ MiAbstractBrowser2 >> privateBus: aBus [
 ]
 
 { #category : #accessing }
-MiAbstractBrowser2 >> propagatePrivately: anEntity [
+MiAbstractBrowser2 >> receiveFromPrivateBus: anEntity [
 	"If this browser is not in a workspace, it may have no receivingMode and this will crash
 	 This is the expected behaviour"
 	receivingMode browser: self actOnEntity: anEntity.
@@ -230,6 +239,15 @@ MiAbstractBrowser2 >> receivingMode [
 MiAbstractBrowser2 >> receivingMode: aReceivingMode [
 
 	receivingMode := aReceivingMode
+]
+
+{ #category : #accessing }
+MiAbstractBrowser2 >> sendEntitiesToPrivateBus [
+	"An automatic propagate on the privateBus"
+	self miSelectedItem
+		ifNotNil: [ :entities |
+			self freezeDuring: [ self privateBus globallySelect: entities ]
+		]
 ]
 
 { #category : #'accessing - model' }

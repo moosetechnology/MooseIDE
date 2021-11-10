@@ -19,5 +19,5 @@ MiPrivateBus >> initialize [
 { #category : #actions }
 MiPrivateBus >> refreshBrowsersWith: anEntity [
 
-	self browsers do: [ :browser | browser propagatePrivately: anEntity ]
+	self browsers do: [ :browser | browser receiveFromPrivateBus: anEntity ]
 ]
