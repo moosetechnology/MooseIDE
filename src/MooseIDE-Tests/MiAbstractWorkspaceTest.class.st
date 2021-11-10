@@ -14,9 +14,10 @@ MiAbstractWorkspaceTest >> testPropagatesInsideOut [
 	| bus mockEntity |
 	mockEntity := MooseEntity new.
 	bus := browser buses anyOne.
-	bus stub.
 
 	browser privateBus globallySelect: mockEntity.
+	self assert: bus mostRecentEntity isNil.
 
-	"bus should receive globallySelect: mockEntity."
+	(self actionButton: MiPropagateCommand) execute.
+	self assert: bus mostRecentEntity equals: mockEntity.
 ]
