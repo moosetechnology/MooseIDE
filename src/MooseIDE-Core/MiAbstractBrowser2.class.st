@@ -243,7 +243,9 @@ MiAbstractBrowser2 >> receivingMode: aReceivingMode [
 
 { #category : #accessing }
 MiAbstractBrowser2 >> sendEntitiesToPrivateBus [
-	"An automatic propagate on the privateBus"
+	"An automatic propagate on the privateBus
+	 There should always be a privateBus, but some tests create presenters outside of their browser"
+	self privateBus ifNil: [ ^self ].
 	self miSelectedItem
 		ifNotNil: [ :entities |
 			self freezeDuring: [ self privateBus globallySelect: entities ]
