@@ -131,6 +131,11 @@ MiAbstractBrowser >> buses [
 ]
 
 { #category : #testing }
+MiAbstractBrowser >> canBeDragged [
+	^false
+]
+
+{ #category : #testing }
 MiAbstractBrowser >> canEditBuses [
 
 	^ true

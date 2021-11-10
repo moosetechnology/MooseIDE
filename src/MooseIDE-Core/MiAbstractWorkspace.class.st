@@ -63,6 +63,12 @@ MiAbstractWorkspace >> buses [
 ]
 
 { #category : #testing }
+MiAbstractWorkspace >> canBeDragged [
+	"This could be removed once all browsers use the new infrastructure and can all be dragged"
+	^true
+]
+
+{ #category : #testing }
 MiAbstractWorkspace >> canEditBuses [
 
 	^ true
@@ -166,7 +172,7 @@ MiAbstractWorkspace >> initializeWindow: aMiWindowPresenter [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #actions }
 MiAbstractWorkspace >> install: aMiBrowser inContainer: aMiDropInContainer [
 	"remove previous containedBrowser from privateBus
 	 remove aMiBrowser from its former privateBus

@@ -22,6 +22,13 @@ MiDragWindowCommand class >> defaultName [
 	^ 'Drag me'
 ]
 
+{ #category : #testing }
+MiDragWindowCommand >> canBeExecuted [
+	"This could be removed once all browsers use the new infrastructure and can all be dragged"
+
+	^ self context canBeDragged
+]
+
 { #category : #executing }
 MiDragWindowCommand >> execute [
 	self context dragBrowser

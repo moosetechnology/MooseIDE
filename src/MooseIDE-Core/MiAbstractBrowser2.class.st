@@ -11,7 +11,7 @@ Class {
 
 { #category : #specs }
 MiAbstractBrowser2 class >> actionsCommandGroupFor: presenter [
-
+1halt.
 	^ CmCommandGroup forSpec
 		  name: 'Actions';
 		  register:
