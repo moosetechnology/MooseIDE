@@ -126,7 +126,8 @@ MiAbstractWorkspace >> freezeDuring: aBlock [
 
 { #category : #actions }
 MiAbstractWorkspace >> highlightEntity: anEntity [
-	self containedBrowsers do: [ :containedBrowser | containedBrowser highlightEntity: anEntity ]
+	"In HighlightMode, we propagate the entity to the containedBrowsers that are in the same mode and will act accrodingly"
+	self followEntity: anEntity
 ]
 
 { #category : #initialization }
@@ -215,8 +216,8 @@ MiAbstractWorkspace >> privateBus [
 
 { #category : #buses }
 MiAbstractWorkspace >> propagatePrivately: anEntity [
-	"propagating on privateBus we don't do anything,
-	 the privateBus takes care of the contained browser(s)"
+	"propagating on privateBus as no effect on workspace,
+	 the privateBus takes care of propagating to contained browser(s)"
 	
 ]
 
