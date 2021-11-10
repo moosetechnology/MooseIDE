@@ -46,6 +46,11 @@ MiBus >> logger [
 ]
 
 { #category : #accessing }
+MiBus >> mostRecentEntity [
+	^ self logger mostRecentEntity
+]
+
+{ #category : #accessing }
 MiBus >> name [
 	^ name
 ]
