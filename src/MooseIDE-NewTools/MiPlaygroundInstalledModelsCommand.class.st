@@ -13,6 +13,12 @@ MiPlaygroundInstalledModelsCommand class >> defaultDescription [
 	^ 'Add a model to the playground'
 ]
 
+{ #category : #initialization }
+MiPlaygroundInstalledModelsCommand class >> defaultIconName [
+
+	^ #mooseMetamodelGroup
+]
+
 { #category : #default }
 MiPlaygroundInstalledModelsCommand class >> defaultName [
 
@@ -23,7 +29,6 @@ MiPlaygroundInstalledModelsCommand class >> defaultName [
 MiPlaygroundInstalledModelsCommand >> asSpecCommand [
 
 	^ super asSpecCommand
-		  iconName: #mooseMetamodelGroup from: MooseIcons;
 		  beDisplayedOnRightSide;
 		  yourself
 ]
