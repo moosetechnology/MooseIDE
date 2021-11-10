@@ -182,10 +182,10 @@ MiAbstractBrowserTest >> testCanOpenOnObject [
 { #category : #'tests - receiving' }
 MiAbstractBrowserTest >> testDoNotPropagateWhenReceivingInFollowMode [
 
-	browser privateReceivingMode: MiFollowMode.
+	browser receivingMode: MiFollowMode.
 	self mooseObjects do: [ :object | 
 		browser selectEntity: object.
-		self assertEmpty: self bus logger logs ]
+		self assert: self bus mostRecentEntity isNil ]
 ]
 
 { #category : #'tests - receiving' }
@@ -194,7 +194,7 @@ MiAbstractBrowserTest >> testDoNotPropagateWhenReceivingInFreezeMode [
 	browser privateReceivingMode: MiFreezeMode.
 	self mooseObjects do: [ :object | 
 		browser selectEntity: object.
-		self assertEmpty: self bus logger logs ]
+		self assert: self bus mostRecentEntity isNil ]
 ]
 
 { #category : #'tests - receiving' }
@@ -203,7 +203,7 @@ MiAbstractBrowserTest >> testDoNotPropagateWhenReceivingInHighlightMode [
 	browser privateReceivingMode: MiHighlightMode.
 	self mooseObjects do: [ :object | 
 		browser selectEntity: object.
-		self assertEmpty: self bus logger logs ]
+		self assert: self bus mostRecentEntity isNil ]
 ]
 
 { #category : #'tests - buses' }
