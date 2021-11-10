@@ -1,6 +1,6 @@
 "
 I handle the toolbar and the buses for the MiBrowsers.
-I am an empty shell containing a MiBrowser
+I am an empty shell containing a MiBrowser therefore I should not be created by myself, but rather created on a regular MiBrowser
 
 "
 Class {

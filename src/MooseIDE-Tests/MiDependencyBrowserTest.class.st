@@ -21,17 +21,18 @@ MiDependencyBrowserTest >> setUp [
 
 { #category : #tests }
 MiDependencyBrowserTest >> testActivateActionButtons [
-	{ MiInspectCommand . MiPropagateCommand }
+	{ MiInspectCommand . MiPropagateCommand . MiDragWindowCommand }
 	do: [ :cmdClass | self deny: (self actionButton: cmdClass) isEnabled ].
-	self assert: (self actionButton: MiDragWindowCommand) isEnabled.
 
 	browser selectEntity: (MooseGroup with: entityToSelect).
-	{ MiInspectCommand . MiPropagateCommand . MiDragWindowCommand }
+	{ MiInspectCommand . MiPropagateCommand }
 	do: [ :cmdClass | self assert: (self actionButton: cmdClass) isEnabled ].
+	self deny: (self actionButton: MiDragWindowCommand) isEnabled.
 
 	browser diagram canvas shapes anyOne click.
-	{ MiInspectCommand . MiPropagateCommand . MiDragWindowCommand }
+	{ MiInspectCommand . MiPropagateCommand }
 	do: [ :cmdClass | self assert: (self actionButton: cmdClass) isEnabled ].
+	self deny: (self actionButton: MiDragWindowCommand) isEnabled.
 
 ]
 
