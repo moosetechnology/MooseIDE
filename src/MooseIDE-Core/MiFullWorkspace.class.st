@@ -130,19 +130,6 @@ MiFullWorkspace >> noteThatWidgetHasBeenReinstalled: aMiBrowser [
 
 ]
 
-{ #category : #'private - updating' }
-MiFullWorkspace >> updateTitle [
-	self hasWindow
-		ifTrue: [ self window title: self windowTitle]
-
-]
-
-{ #category : #'private - updating' }
-MiFullWorkspace >> updateWindowSize [
-	^self desiredWindowSize
-
-]
-
 { #category : #initialization }
 MiFullWorkspace >> windowTitle [
 	^self class title

@@ -1,11 +1,11 @@
 "
 I am a mock browser for the tests of MiWorkspaces
 
-Could have done it Mocketry, but it was not working :-(
+I allow to set directly some properties like canPropagate for ease of testing
 "
 Class {
 	#name : #MiMockBrowserForTests,
-	#superclass : #MiNullBrowser,
+	#superclass : #MiAbstractBrowser2,
 	#instVars : [
 		'canFollow',
 		'canHighlight',
@@ -81,6 +81,12 @@ MiMockBrowserForTests >> canReceiveEntity: whatever [
 	^canReceive
 ]
 
+{ #category : #actions }
+MiMockBrowserForTests >> followEntity: anEntity [
+
+	selected := anEntity
+]
+
 { #category : #initialization }
 MiMockBrowserForTests >> initialize [
 	super initialize.
@@ -101,11 +107,6 @@ MiMockBrowserForTests >> miSelectedItem [
 MiMockBrowserForTests >> needUpdate: whatever [
 
 	^toUpdate
-]
-
-{ #category : #accessing }
-MiMockBrowserForTests >> propagatePrivately: anEntity [
-	selected := anEntity 
 ]
 
 { #category : #accessing }

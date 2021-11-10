@@ -80,11 +80,21 @@ MiAbstractWorkspace >> canHighlight [
 
 { #category : #testing }
 MiAbstractWorkspace >> canPropagate [
-		^self containedBrowsers anySatisfy: [ :browser | browser canPropagate ]
+	^self containedBrowsers anySatisfy: [ :browser | browser canPropagate ]
+]
+
+{ #category : #testing }
+MiAbstractWorkspace >> canReceiveEntity: anObject [
+	^self containedBrowsers anySatisfy: [ :browser | browser canReceiveEntity: anObject ]
 ]
 
 { #category : #accessing }
 MiAbstractWorkspace >> containedBrowsers [
+	self subclassResponsibility 
+]
+
+{ #category : #'private - updating' }
+MiAbstractWorkspace >> desiredWindowSize [
 	self subclassResponsibility 
 ]
 
@@ -112,6 +122,11 @@ MiAbstractWorkspace >> freezeDuring: aBlock [
 	receivingMode := MiFreezeMode.
 
 	aBlock ensure: [ receivingMode := previousMode ]
+]
+
+{ #category : #actions }
+MiAbstractWorkspace >> highlightEntity: anEntity [
+	self containedBrowsers do: [ :containedBrowser | containedBrowser highlightEntity: anEntity ]
 ]
 
 { #category : #initialization }
@@ -152,19 +167,30 @@ MiAbstractWorkspace >> initializeWindow: aMiWindowPresenter [
 
 { #category : #'as yet unclassified' }
 MiAbstractWorkspace >> install: aMiBrowser inContainer: aMiDropInContainer [
+	"remove previous containedBrowser from privateBus
+	 remove aMiBrowser from its former privateBus
+	 puts aMiBrowser on receiver's privateBus (need to set receiving mode for this)
+	 puts aMiBrowser in aMiDropInContainer and redisplay window"
 	aMiDropInContainer installedPresenter
 		ifNotNil: [ :previousBrowser | previousBrowser unfollowPrivateBus].
+
+	aMiBrowser unfollowPrivateBus.
+	aMiBrowser receivingMode: self receivingMode.
+	aMiBrowser followPrivateBus: self privateBus.
+
 	aMiDropInContainer install: aMiBrowser.
 	
-	aMiBrowser unfollowPrivateBus.
-	aMiBrowser followPrivateBus: aMiDropInContainer ownerPrivateBus.
-
 	self updateWindow
 ]
 
 { #category : #testing }
 MiAbstractWorkspace >> isMiBrowser [
 	^ true
+]
+
+{ #category : #accessing }
+MiAbstractWorkspace >> miSelectedItem [
+	^privateBus mostRecentEntity
 ]
 
 { #category : #testing }
@@ -202,8 +228,11 @@ MiAbstractWorkspace >> receivingMode [
 
 { #category : #accessing }
 MiAbstractWorkspace >> receivingMode: aReceivingMode [
+	"for Follow and Highlight, we need to update containedBrowsers,
+	for Frozen, it is handled by the workspace, so it makes no difference"
+	receivingMode := aReceivingMode.
+	self containedBrowsers do: [ :containedBrowser | containedBrowser receivingMode: aReceivingMode ]
 
-	receivingMode := aReceivingMode
 ]
 
 { #category : #'private - updating' }
@@ -238,7 +267,9 @@ MiAbstractWorkspace >> unfollowBus: aBus [
 
 { #category : #'private - updating' }
 MiAbstractWorkspace >> updateTitle [
-	self subclassResponsibility 
+	self hasWindow
+		ifTrue: [ self window title: self windowTitle]
+	
 ]
 
 { #category : #'private - updating' }
@@ -257,5 +288,11 @@ MiAbstractWorkspace >> updateWindow [
 
 { #category : #'private - updating' }
 MiAbstractWorkspace >> updateWindowSize [
+		self hasWindow
+		ifTrue: [ self window resize: self desiredWindowSize ]
+]
+
+{ #category : #'private - updating' }
+MiAbstractWorkspace >> windowTitle [
 	self subclassResponsibility 
 ]

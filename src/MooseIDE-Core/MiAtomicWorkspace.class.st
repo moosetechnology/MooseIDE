@@ -18,11 +18,6 @@ MiAtomicWorkspace class >> open [
 	^super open
 ]
 
-{ #category : #testing }
-MiAtomicWorkspace >> canReceiveEntity: anObject [
-	^self containedBrowser canReceiveEntity: anObject 
-]
-
 { #category : #accessing }
 MiAtomicWorkspace >> containedBrowser [
 
@@ -44,6 +39,11 @@ MiAtomicWorkspace >> containedBrowsers [
 	^{ self containedBrowser }
 ]
 
+{ #category : #'private - updating' }
+MiAtomicWorkspace >> desiredWindowSize [
+	^self containedBrowser desiredWindowSize
+]
+
 { #category : #actions }
 MiAtomicWorkspace >> dragBrowser [
 	| dragButton |
@@ -53,11 +53,6 @@ MiAtomicWorkspace >> dragBrowser [
 		yourself.
 	dragButton startDragging.
 
-]
-
-{ #category : #actions }
-MiAtomicWorkspace >> highlightEntity: anEntity [
-	self containedBrowser highlightEntity: anEntity 
 ]
 
 { #category : #testing }
@@ -88,12 +83,6 @@ MiAtomicWorkspace >> initializeWindow: aMiWindowPresenter [
 ]
 
 { #category : #accessing }
-MiAtomicWorkspace >> miSelectedItem [
-
-	^self containedBrowser miSelectedItem 
-]
-
-{ #category : #accessing }
 MiAtomicWorkspace >> model [
 	^self containedBrowser model
 ]
@@ -113,8 +102,8 @@ MiAtomicWorkspace >> noteThatWidgetHasBeenReinstalled: aMiBrowser [
 
 { #category : #actions }
 MiAtomicWorkspace >> showHelp [
-
 	| help |
+
 	(help := self newPopover)
 		relativeTo: self window toolbar;
 		bePositionRight;
@@ -123,19 +112,6 @@ MiAtomicWorkspace >> showHelp [
 ]
 
 { #category : #accessing }
-MiAtomicWorkspace >> title [
+MiAtomicWorkspace >> windowTitle [
 	^self containedBrowser windowTitle
-]
-
-{ #category : #'private - updating' }
-MiAtomicWorkspace >> updateTitle [
-	self hasWindow
-		ifTrue: [ self window title: self containedBrowser windowTitle]
-	
-]
-
-{ #category : #'private - updating' }
-MiAtomicWorkspace >> updateWindowSize [
-		self hasWindow
-		ifTrue: [ self window resize: self containedBrowser desiredWindowSize ]
 ]

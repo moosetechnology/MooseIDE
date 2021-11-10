@@ -214,11 +214,22 @@ MiAbstractBrowser2 >> privateBus: aBus [
 
 { #category : #accessing }
 MiAbstractBrowser2 >> propagatePrivately: anEntity [
-	"propagating inside to outside"
-	
+	"If this browser is not in a workspace, it may have no receivingMode and this will crash
+	 This is the expected behaviour"
+	receivingMode browser: self actOnEntity: anEntity.
 
-	MiFollowMode browser: self actOnEntity: anEntity.
+]
 
+{ #category : #accessing }
+MiAbstractBrowser2 >> receivingMode [
+
+	^ receivingMode
+]
+
+{ #category : #accessing }
+MiAbstractBrowser2 >> receivingMode: aReceivingMode [
+
+	receivingMode := aReceivingMode
 ]
 
 { #category : #'accessing - model' }
