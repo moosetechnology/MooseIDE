@@ -43,12 +43,21 @@ MiFullWorkspace class >> defaultSpec [
 ]
 
 { #category : #'world menu' }
+MiFullWorkspace class >> helpMessage [
+	^ (self comment lines copyUpTo: '')
+		fold: [ :s1 :s2 | s1 , Character cr asString , s2 ]
+]
+
+{ #category : #'world menu' }
 MiFullWorkspace class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	(aBuilder item: self midasBrowserMenuLabel)
 		order: 5;
 		parent: #Moose;
-		icon: MooseIcons mooseIcon
+		label: self title;
+		icon: MooseIcons mooseIcon;
+		help: self helpMessage;
+		action: [ self open ]
 ]
 
 { #category : #'world menu' }
