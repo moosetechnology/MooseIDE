@@ -10,7 +10,7 @@ Allows the addition of a comment for each entity.
 "
 Class {
 	#name : #MiExportBrowser,
-	#superclass : #MiAbstractBrowser,
+	#superclass : #MiAbstractBrowser2,
 	#instVars : [
 		'toolbar',
 		'commentDictionary',
