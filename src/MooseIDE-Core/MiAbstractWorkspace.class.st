@@ -52,6 +52,11 @@ MiAbstractWorkspace class >> open [
 		  yourself
 ]
 
+{ #category : #icons }
+MiAbstractWorkspace class >> taskbarIcon [
+	^MooseIcons mooseIcon
+]
+
 { #category : #specs }
 MiAbstractWorkspace class >> windowSize [
 	^ 500 @ 400
