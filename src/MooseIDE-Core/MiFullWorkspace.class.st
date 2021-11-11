@@ -109,6 +109,11 @@ MiFullWorkspace >> desiredWindowSize [
 ]
 
 { #category : #initialization }
+MiFullWorkspace >> initialExtent [
+	^self class windowSize
+]
+
+{ #category : #initialization }
 MiFullWorkspace >> initializePresenters [
 
 	super initializePresenters.
@@ -140,6 +145,6 @@ MiFullWorkspace >> noteThatWidgetHasBeenReinstalled: aMiBrowser [
 ]
 
 { #category : #initialization }
-MiFullWorkspace >> windowTitle [
+MiFullWorkspace >> title [
 	^self class title
 ]

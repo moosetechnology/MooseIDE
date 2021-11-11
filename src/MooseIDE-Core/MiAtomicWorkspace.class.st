@@ -60,7 +60,7 @@ MiAtomicWorkspace >> ifAutonomous: aBlock [
 	^self containedBrowser ifAutonomous: aBlock 
 ]
 
-{ #category : #api }
+{ #category : #initialization }
 MiAtomicWorkspace >> initialExtent [
 	^self containedBrowser desiredWindowSize
 ]
@@ -70,16 +70,6 @@ MiAtomicWorkspace >> initializePresenters [
 	super initializePresenters.
 	browserContainer := self newContainer.
 	self initializeLayout.
-]
-
-{ #category : #initialization }
-MiAtomicWorkspace >> initializeWindow: aMiWindowPresenter [
-
-	super initializeWindow: aMiWindowPresenter.
-
-	aMiWindowPresenter initialExtent: self containedBrowser desiredWindowSize.
-	aMiWindowPresenter title: self containedBrowser windowTitle.
-
 ]
 
 { #category : #accessing }
@@ -111,7 +101,7 @@ MiAtomicWorkspace >> showHelp [
 		popup
 ]
 
-{ #category : #accessing }
-MiAtomicWorkspace >> windowTitle [
+{ #category : #initialization }
+MiAtomicWorkspace >> title [
 	^self containedBrowser windowTitle
 ]

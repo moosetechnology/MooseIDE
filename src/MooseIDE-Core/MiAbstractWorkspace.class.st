@@ -275,7 +275,7 @@ MiAbstractWorkspace >> unfollowBus: aBus [
 { #category : #'private - updating' }
 MiAbstractWorkspace >> updateTitle [
 	self hasWindow
-		ifTrue: [ self window title: self windowTitle]
+		ifTrue: [ self window title: self title]
 	
 ]
 
@@ -297,9 +297,4 @@ MiAbstractWorkspace >> updateWindow [
 MiAbstractWorkspace >> updateWindowSize [
 		self hasWindow
 		ifTrue: [ self window resize: self desiredWindowSize ]
-]
-
-{ #category : #'private - updating' }
-MiAbstractWorkspace >> windowTitle [
-	self subclassResponsibility 
 ]
