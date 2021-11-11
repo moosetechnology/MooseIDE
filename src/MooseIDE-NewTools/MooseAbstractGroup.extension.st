@@ -15,20 +15,18 @@ MooseAbstractGroup >> customNavigationItems [
 
 { #category : #'*MooseIDE-NewTools' }
 MooseAbstractGroup >> details [
-	^ String
-		streamContents: [ :s | 
-			| typeName |
-			typeName := self entities commonSuperclass mooseDescription name.
-			s
-				print: self size;
-				space.
-			self
-				ifEmpty: [ s << 'entities' ]
-				ifNotEmpty: [ s
-						<<
-							(self size > 1
-								ifTrue: [ typeName asEnglishPlural ]
-								ifFalse: [ typeName ]) ] ]
+
+	^ String streamContents: [ :s | 
+		  | typeName |
+		  typeName := self entities commonSuperclass mooseDescription name 
+			              ifNil: [ '' ].
+		  s
+			  print: self size;
+			  space.
+		  self ifEmpty: [ s << 'entities' ] ifNotEmpty: [ 
+			  s << (self size > 1
+				   ifTrue: [ typeName asEnglishPlural ]
+				   ifFalse: [ typeName ]) ] ]
 ]
 
 { #category : #'*MooseIDE-NewTools' }
