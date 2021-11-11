@@ -26,7 +26,7 @@ MiPropertyBrowserTest >> testActivateActionButtons [
 MiPropertyBrowserTest >> testMiSelectedItem [
 
 	| entityToSelect |
-	self assert: browser miSelectedItem isNil.
+	self should: [browser miSelectedItem] raise: MiNoSelectedElementToPropagateException.
 
 	entityToSelect := FamixStClass named: 'TestClass'.
 	browser selectEntity: entityToSelect.
