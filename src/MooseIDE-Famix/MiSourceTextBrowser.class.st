@@ -54,6 +54,11 @@ MiSourceTextBrowser class >> title [
 	^ 'Source code'
 ]
 
+{ #category : #specs }
+MiSourceTextBrowser class >> windowSize [
+	^ 600 @ 700
+]
+
 { #category : #testing }
 MiSourceTextBrowser >> canReceiveEntity: anObject [
 
