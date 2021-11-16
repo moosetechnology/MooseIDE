@@ -72,21 +72,21 @@ MiTreeMap >> initialize [
 
 { #category : #helpers }
 MiTreeMap >> nodeFor: anEntity [
+
 	| com |
 	com := base copy.
 	com model: anEntity.
 	com border: (self borderFor: anEntity).
 	com announcer: base announcer.
 	com color: (self colorFor: anEntity).
-	com
-		@
-			(RSMenuActivable new
-				menuDo: [ :menu :box | 
-					menu
-						add: 'Inspect'
-						target: box model
-						selector: #inspect
-						argument: #() ]).
+	com @ (RSMenuActivable new menuDo: [ :menu :box | 
+		 menu
+			 add: 'Inspect'
+			 target: MiInspectorBrowser
+			 selector: #inspect:forBuses:
+			 argumentList: { 
+					 box model.
+					 self owner buses } ]).
 	^ com
 ]
 
