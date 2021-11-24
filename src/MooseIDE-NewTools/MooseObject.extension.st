@@ -66,7 +66,7 @@ MooseObject >> navigationItemsFromPragmas [
 		                            [ :pragma | 
 		                            pragma argumentNamed: #navigation ]
 			                            ascending) collect: [ :pragma | 
-		                           pragma
+		                           pragma inspectorToString
 		                           ->
 			                           ([ 
 			                            self mooseInterestingEntity perform:
