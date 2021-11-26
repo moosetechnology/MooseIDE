@@ -1,0 +1,25 @@
+name: Daily-development
+
+on:
+  schedule:
+    - cron:  '0 0 * * *'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      PROJECT_NAME: Midas-development
+    strategy:
+      matrix:
+        smalltalk: [ Pharo64-9.0 ]
+    name: ${{ matrix.smalltalk }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: hpi-swa/setup-smalltalkCI@v1
+        with:
+          smalltalk-image: ${{ matrix.smalltalk }}
+      - run: smalltalkci -s ${{ matrix.smalltalk }}
+        shell: bash
+        timeout-minutes: 15
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
