@@ -34,9 +34,7 @@ MiHierarchicalVisualization >> initialize [
 
 	super initialize.
 	rootNode := HNode new name: 'Root'.
-	builder := HSimpleVisualizationBuilder new
-		           rootNode: rootNode;
-		           container: self canvas
+
 ]
 
 { #category : #running }
@@ -54,9 +52,10 @@ MiHierarchicalVisualization >> nodeFor: entity [
 
 	| node |
 	node := HNode new
-		        name: entity name;
-		        color: self nodeColor;
-		        yourself.
+		name: entity name ;
+		color: self nodeColor ;
+		iconName: entity defaultMooseIconName ;
+		yourself.
 
 	node addAll: ((childrenBlock value: entity) collect: [ :child | 
 			 (self nodeFor: child) collapse ]).
@@ -68,8 +67,10 @@ MiHierarchicalVisualization >> run [
 
 	super run.
 	builder := HSimpleVisualizationBuilder new
-		           rootNode: rootNode;
-		           container: self canvas.
+		nodeStyler: MiNodeStyler new ;
+		rootNode: rootNode ;
+		container: self canvas ;
+		yourself.
 	builder build.
 	self canvas zoomToFit
 ]
