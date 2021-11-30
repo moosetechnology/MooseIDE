@@ -5,7 +5,8 @@ Class {
 	#name : #MiHierarchicalMapBrowser,
 	#superclass : #MiAbstractBrowser,
 	#instVars : [
-		'visualization'
+		'visualization',
+		'menu'
 	],
 	#category : #'MooseIDE-Dependency-HierarchicalMap'
 }
@@ -28,6 +29,12 @@ MiHierarchicalMapBrowser class >> title [
 	^ 'Hierarchical Map'
 ]
 
+{ #category : #accessing }
+MiHierarchicalMapBrowser class >> windowSize [
+
+	^ 850 @ 520
+]
+
 { #category : #testing }
 MiHierarchicalMapBrowser >> canReceiveEntity: anEntity [
 
@@ -37,8 +44,15 @@ MiHierarchicalMapBrowser >> canReceiveEntity: anEntity [
 { #category : #actions }
 MiHierarchicalMapBrowser >> followEntity: anEntity [
 
-	model entities: (anEntity asMooseGroup).
-	visualization run
+	model entities: anEntity asMooseGroup.
+	self updatePresenter.
+	self showMenu
+]
+
+{ #category : #'as yet unclassified' }
+MiHierarchicalMapBrowser >> hideMenu [
+
+	self layout remove: menu
 ]
 
 { #category : #initialization }
@@ -54,6 +68,7 @@ MiHierarchicalMapBrowser >> initialize [
 MiHierarchicalMapBrowser >> initializeLayout [
 
 	self layout: (SpBoxLayout newLeftToRight
+			 spacing: 4;
 			 add: visualization;
 			 yourself)
 ]
@@ -64,6 +79,7 @@ MiHierarchicalMapBrowser >> initializePresenters [
 	visualization := MiHierarchicalMap
 		                 owner: self
 		                 on: model.
+	menu := MiHierarchicalMapMenu owner: self.
 	self initializeLayout
 ]
 
@@ -71,4 +87,25 @@ MiHierarchicalMapBrowser >> initializePresenters [
 MiHierarchicalMapBrowser >> miSelectedItem [
 
 	^ model entities mooseInterestingEntity
+]
+
+{ #category : #'as yet unclassified' }
+MiHierarchicalMapBrowser >> showMenu [
+
+	self layout
+		remove: visualization;
+		add: menu width: 300;
+		add: visualization
+]
+
+{ #category : #initialization }
+MiHierarchicalMapBrowser >> updatePresenter [ 
+
+	menu updatePresenter
+]
+
+{ #category : #initialization }
+MiHierarchicalMapBrowser >> visualization [
+
+	^ visualization
 ]

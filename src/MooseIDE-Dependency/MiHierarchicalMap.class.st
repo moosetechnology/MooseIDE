@@ -17,14 +17,16 @@ Class {
 MiHierarchicalMap >> initialize [
 
 	super initialize.
-	builder := MiHierarchicalMapBuilder new
-		           mapModel: owner model;
-		           container: self canvas;
-		           yourself
+	
 ]
 
 { #category : #running }
 MiHierarchicalMap >> run [
-
-	builder build
+	super run.
+	builder := MiHierarchicalMapBuilder new
+			mapModel: owner model;
+		           container: self canvas;
+		           yourself.
+	builder build.
+	self canvas zoomToFit
 ]

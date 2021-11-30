@@ -25,7 +25,23 @@ MiHierarchicalMapBuilder >> build [
 			            (self elements collect: [ :e | 
 					             self buildNodeFromEntity: e ]);
 		            yourself.
+	self buildLegend.
 	super build
+]
+
+{ #category : #building }
+MiHierarchicalMapBuilder >> buildLegend [
+	| legend |
+	legend := RSLegend new
+		container: self canvas ;
+		title: 'Dynamic tags' ;
+		onDemand: 'Legend' ;
+		yourself.
+	mapModel dynamicTags do: [ :dt |
+		legend text: dt name withBoxColor: (dt color)
+	].
+	legend build.
+
 ]
 
 { #category : #building }
