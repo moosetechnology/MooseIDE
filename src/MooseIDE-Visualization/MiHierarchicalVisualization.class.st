@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'rootNode',
 		'builder',
-		'childrenBlock'
+		'childrenBlock',
+		'visualizationTheme'
 	],
 	#category : #'MooseIDE-Visualization'
 }
@@ -34,7 +35,13 @@ MiHierarchicalVisualization >> initialize [
 
 	super initialize.
 	rootNode := HNode new name: 'Root'.
+	visualizationTheme := MiVisualizationTheme new
 
+]
+
+{ #category : #running }
+MiHierarchicalVisualization >> mooseIconNameFor: anEntity [
+	^self visualizationTheme mooseIconNameFor: anEntity
 ]
 
 { #category : #running }
@@ -54,7 +61,7 @@ MiHierarchicalVisualization >> nodeFor: entity [
 	node := HNode new
 		name: entity name ;
 		color: self nodeColor ;
-		iconName: entity defaultMooseIconName ;
+		iconName: (self mooseIconNameFor: entity) ;
 		yourself.
 
 	node addAll: ((childrenBlock value: entity) collect: [ :child | 
@@ -73,4 +80,14 @@ MiHierarchicalVisualization >> run [
 		yourself.
 	builder build.
 	self canvas zoomToFit
+]
+
+{ #category : #accessing }
+MiHierarchicalVisualization >> visualizationTheme [
+	^visualizationTheme
+]
+
+{ #category : #accessing }
+MiHierarchicalVisualization >> visualizationTheme: anObject [
+	visualizationTheme := anObject
 ]
