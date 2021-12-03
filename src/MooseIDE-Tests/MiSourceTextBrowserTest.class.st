@@ -30,3 +30,11 @@ MiSourceTextBrowserTest >> testMiSelectedItem [
 
 	self assert: browser miSelectedItem equals: entityToSelect
 ]
+
+{ #category : #tests }
+MiSourceTextBrowserTest >> testShowNoSourceCodeMessage [
+
+	browser selectEntity: (FamixStClass named: 'TestClass').
+	self assert: browser sourceText text equals: 'There is no source code to show for TestClass'
+
+]
