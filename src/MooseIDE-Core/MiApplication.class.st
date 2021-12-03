@@ -103,6 +103,7 @@ MiApplication >> start [
 
 { #category : #actions }
 MiApplication >> updateOverviewBrowsers [
+
 	(self windows
 		collect: #presenter
 		thenSelect: [ :presenter | presenter class == MiOverviewBrowser ])
