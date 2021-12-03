@@ -44,19 +44,6 @@ Class {
 }
 
 { #category : #specs }
-MiAbstractBrowser class >> actionsCommandGroupFor: presenter [
-
-	^ CmCommandGroup forSpec
-		  name: 'Actions';
-		  register:
-			  (MiPropagateCommand forSpecContext: presenter)
-				  beDisplayedOnRightSide;
-		  register:
-			  (MiInspectCommand forSpecContext: presenter)
-				  beDisplayedOnRightSide
-]
-
-{ #category : #specs }
 MiAbstractBrowser class >> defaultSpec [
 
 	^ SpBoxLayout newVertical
