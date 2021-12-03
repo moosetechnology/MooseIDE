@@ -21,7 +21,7 @@ MiQueriesBrowserTest >> setUp [
 
 	super setUp.
 	helper := FQTestsHelper current.
-	browser selectEntity: helper classesAndMethods
+	browser receiveEntity: helper classesAndMethods
 ]
 
 { #category : #tests }
