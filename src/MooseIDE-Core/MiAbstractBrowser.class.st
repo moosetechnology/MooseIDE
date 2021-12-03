@@ -143,6 +143,14 @@ MiAbstractBrowser >> canFollow [
 ]
 
 { #category : #testing }
+MiAbstractBrowser >> canFollowEntity: anObject [
+
+	"whether the browser accepts to deal with anObject"
+
+	self subclassResponsibility
+]
+
+{ #category : #testing }
 MiAbstractBrowser >> canHighlight [
 
 	"Override to retrun true if you want to give your browser a highlight behavior. 
@@ -159,14 +167,6 @@ MiAbstractBrowser >> canPropagate [
 	entity := self miSelectedItem.
 	^ entity isMooseObject and: [ 
 		  entity asMooseGroup isNotEmpty or: [ entity isMooseModel ] ]
-]
-
-{ #category : #testing }
-MiAbstractBrowser >> canReceiveEntity: anObject [
-
-	"whether the browser accepts to deal with anObject"
-
-	self subclassResponsibility
 ]
 
 { #category : #buses }

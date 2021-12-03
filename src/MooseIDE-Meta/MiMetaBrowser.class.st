@@ -60,7 +60,7 @@ MiMetaBrowser class >> windowSize [
 ]
 
 { #category : #testing }
-MiMetaBrowser >> canReceiveEntity: anObject [
+MiMetaBrowser >> canFollowEntity: anObject [
 
 	^ anObject isMooseObject
 ]

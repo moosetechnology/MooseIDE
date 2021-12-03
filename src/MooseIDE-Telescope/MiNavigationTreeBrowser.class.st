@@ -36,7 +36,7 @@ MiNavigationTreeBrowser class >> title [
 ]
 
 { #category : #testing }
-MiNavigationTreeBrowser >> canReceiveEntity: anObject [
+MiNavigationTreeBrowser >> canFollowEntity: anObject [
 	^ anObject isMooseObject
 ]
 

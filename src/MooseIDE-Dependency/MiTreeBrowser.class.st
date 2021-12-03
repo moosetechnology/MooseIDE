@@ -52,7 +52,7 @@ MiTreeBrowser class >> title [
 ]
 
 { #category : #testing }
-MiTreeBrowser >> canReceiveEntity: anObject [
+MiTreeBrowser >> canFollowEntity: anObject [
 
 	^ anObject usesFamixTrait: TEntityMetaLevelDependency
 ]

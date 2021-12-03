@@ -29,7 +29,7 @@ MiHierarchicalVisualizationBrowser class >> title [
 ]
 
 { #category : #testing }
-MiHierarchicalVisualizationBrowser >> canReceiveEntity: anObject [
+MiHierarchicalVisualizationBrowser >> canFollowEntity: anObject [
 
 	^ anObject isMooseObject
 ]
