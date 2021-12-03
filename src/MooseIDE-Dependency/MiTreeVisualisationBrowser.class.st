@@ -70,7 +70,7 @@ MiTreeVisualisationBrowser >> followEntity: anEntity [
 	model root: anEntity.
 	diagram
 		run;
-		selectEntity: anEntity
+		receiveEntity: anEntity
 ]
 
 { #category : #actions }

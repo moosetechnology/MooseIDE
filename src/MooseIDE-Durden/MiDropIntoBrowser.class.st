@@ -141,7 +141,7 @@ MiDropIntoBrowser >> propagate: aWidget [
 	newSelection := miSelectedItem.
 	newSelection ifNil: [ ^ self ].
 	(self allPresentersBut: aWidget) do: [ :w | 
-		w selectEntity: newSelection.
+		w receiveEntity: newSelection.
 		miSelectedItem := newSelection ].
 
 	self propagate.
@@ -149,9 +149,9 @@ MiDropIntoBrowser >> propagate: aWidget [
 ]
 
 { #category : #'instance creation' }
-MiDropIntoBrowser >> selectEntity: anEntity [
+MiDropIntoBrowser >> receiveEntity: anEntity [
 
-	self allPresenters do: [ :p | p selectEntity: anEntity ]
+	self allPresenters do: [ :p | p receiveEntity: anEntity ]
 ]
 
 { #category : #'instance creation' }

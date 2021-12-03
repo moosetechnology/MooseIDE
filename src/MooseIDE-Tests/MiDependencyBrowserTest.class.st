@@ -24,7 +24,7 @@ MiDependencyBrowserTest >> testActivateActionButtons [
 
 	browser actionButtons do: [ :button | self deny: button isEnabled ].
 
-	browser selectEntity: (MooseGroup with: entityToSelect).
+	browser receiveEntity: (MooseGroup with: entityToSelect).
 	browser actionButtons do: [ :button | self assert: button isEnabled ].
 
 	browser diagram canvas shapes anyOne click.
@@ -36,7 +36,7 @@ MiDependencyBrowserTest >> testMiSelectedItem [
 
 	self assert: browser miSelectedItem isMooseObject.
 
-	browser selectEntity: (MooseGroup with: entityToSelect).
+	browser receiveEntity: (MooseGroup with: entityToSelect).
 	self assert: browser miSelectedItem isMooseObject.
 	self assert: browser miSelectedItem anyOne equals: entityToSelect.
 
