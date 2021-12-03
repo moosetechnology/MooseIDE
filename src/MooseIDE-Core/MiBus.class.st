@@ -51,7 +51,7 @@ MiBus >> name: anObject [
 
 { #category : #actions }
 MiBus >> refreshBrowsersWith: anEntity [
-	self browsers do: [ :browser | browser selectEntity: anEntity ]
+	self browsers do: [ :browser | browser receiveEntity: anEntity ]
 ]
 
 { #category : #actions }

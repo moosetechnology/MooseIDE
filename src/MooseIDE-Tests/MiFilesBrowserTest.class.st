@@ -27,13 +27,13 @@ MiFilesBrowserTest >> testActivateActionButtons [
 
 	browser actionButtons do: [ :button | self deny: button isEnabled ].
 
-	browser selectEntity: entityToSelect.
+	browser receiveEntity: entityToSelect.
 	browser actionButtons do: [ :button | self assert: button isEnabled ]
 ]
 
 { #category : #tests }
 MiFilesBrowserTest >> testMiSelectedItem [
 
-	browser selectEntity: entityToSelect.
+	browser receiveEntity: entityToSelect.
 	self assert: browser miSelectedItem equals: entityToSelect
 ]

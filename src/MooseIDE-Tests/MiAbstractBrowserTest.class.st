@@ -176,7 +176,7 @@ MiAbstractBrowserTest >> testDoNotPropagateWhenReceivingInFollowMode [
 
 	browser privateReceivingMode: MiFollowMode.
 	self mooseObjects do: [ :object | 
-		browser selectEntity: object.
+		browser receiveEntity: object.
 		self assertEmpty: self bus logger logs ]
 ]
 
@@ -185,7 +185,7 @@ MiAbstractBrowserTest >> testDoNotPropagateWhenReceivingInFreezeMode [
 
 	browser privateReceivingMode: MiFreezeMode.
 	self mooseObjects do: [ :object | 
-		browser selectEntity: object.
+		browser receiveEntity: object.
 		self assertEmpty: self bus logger logs ]
 ]
 
@@ -194,7 +194,7 @@ MiAbstractBrowserTest >> testDoNotPropagateWhenReceivingInHighlightMode [
 
 	browser privateReceivingMode: MiHighlightMode.
 	self mooseObjects do: [ :object | 
-		browser selectEntity: object.
+		browser receiveEntity: object.
 		self assertEmpty: self bus logger logs ]
 ]
 
@@ -218,7 +218,7 @@ MiAbstractBrowserTest >> testFollowBusTriggersSelectEntity [
 	self bus globallySelect: propagatedEntity.
 	
 	browser followBus: self bus.
-	browser should receive selectEntity: propagatedEntity
+	browser should receive receiveEntity: propagatedEntity
 ]
 
 { #category : #'tests - actions' }

@@ -176,7 +176,7 @@ MiAbstractBrowser >> followBus: aBus [
 	self buses add: aBus.
 	aBus registerBrowser: self.
 	self window ifNotNil: [ :window | window updateBusButton ].
-	self selectEntity: aBus logger mostRecentEntity
+	self receiveEntity: aBus logger mostRecentEntity
 ]
 
 { #category : #actions }
@@ -260,6 +260,15 @@ MiAbstractBrowser >> needUpdate: anEntity [
 	^ anEntity ~= model selected
 ]
 
+{ #category : #'private - accessing' }
+MiAbstractBrowser >> receiveEntity: anEntity [
+
+	"I am used by the Mi Application. You should use #globallySelect: anEntity that will transmit the message to me and the other browsers"
+
+	receivingMode browser: self actOnEntity: anEntity.
+	self updateToolbar
+]
+
 { #category : #accessing }
 MiAbstractBrowser >> receivingMode [
 
@@ -270,15 +279,6 @@ MiAbstractBrowser >> receivingMode [
 MiAbstractBrowser >> receivingMode: aReceivingMode [
 
 	receivingMode := aReceivingMode
-]
-
-{ #category : #'private - accessing' }
-MiAbstractBrowser >> selectEntity: anEntity [
-
-	"I am used by the Mi Application. You should use #globallySelect: anEntity that will transmit the message to me and the other browsers"
-
-	receivingMode browser: self actOnEntity: anEntity.
-	self updateToolbar
 ]
 
 { #category : #initialization }
