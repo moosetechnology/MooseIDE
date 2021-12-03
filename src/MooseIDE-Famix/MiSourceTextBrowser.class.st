@@ -76,7 +76,7 @@ MiSourceTextBrowser >> followEntity: anEntity [
 { #category : #initialization }
 MiSourceTextBrowser >> initializePresenters [
 
-	sourceText := self newText
+	sourceText := self newText beNotEditable 
 ]
 
 { #category : #accessing }
