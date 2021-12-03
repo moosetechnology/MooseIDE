@@ -11,6 +11,6 @@ Class {
 { #category : #action }
 MiFollowMode class >> browser: aBrowser actOnEntity: anEntity [
 
-	(aBrowser canReceiveEntity: anEntity) ifFalse: [ ^ self ].
+	(aBrowser canFollowEntity: anEntity) ifFalse: [ ^ self ].
 	^ aBrowser followEntity: anEntity
 ]

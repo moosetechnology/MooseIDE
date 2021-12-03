@@ -61,6 +61,12 @@ MiTreeVisualisation >> newLabel: name [
 		  yourself
 ]
 
+{ #category : #accessing }
+MiTreeVisualisation >> receiveEntity: anEntity [
+
+	(self canvas nodes shapeFromModel: anEntity) click
+]
+
 { #category : #running }
 MiTreeVisualisation >> run [
 
@@ -71,10 +77,4 @@ MiTreeVisualisation >> run [
 				 self boxCompositeFor: entity ])
 		inCanvas: self canvas.
 	self canvas zoomToFit
-]
-
-{ #category : #accessing }
-MiTreeVisualisation >> selectEntity: anEntity [
-
-	(self canvas nodes shapeFromModel: anEntity) click
 ]

@@ -60,7 +60,7 @@ MiSourceTextBrowser class >> windowSize [
 ]
 
 { #category : #testing }
-MiSourceTextBrowser >> canReceiveEntity: anObject [
+MiSourceTextBrowser >> canFollowEntity: anObject [
 
 	^ anObject usesFamixTrait: FamixTSourceEntity
 ]

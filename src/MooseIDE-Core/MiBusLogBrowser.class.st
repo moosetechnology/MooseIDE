@@ -63,7 +63,7 @@ MiBusLogBrowser >> canEditBuses [
 ]
 
 { #category : #testing }
-MiBusLogBrowser >> canReceiveEntity: anObject [
+MiBusLogBrowser >> canFollowEntity: anObject [
 
 	^ true
 ]

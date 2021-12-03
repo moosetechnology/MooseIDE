@@ -122,9 +122,9 @@ MiDraggableDefaultBrowser >> propagate: aWidget [
 ]
 
 { #category : #initialization }
-MiDraggableDefaultBrowser >> selectEntity: anEntity [
+MiDraggableDefaultBrowser >> receiveEntity: anEntity [
 
-	widget selectEntity: anEntity.
+	widget receiveEntity: anEntity.
 
 ]
 

@@ -14,7 +14,7 @@ MiUMLBrowserTest >> testActivateActionButtons [
 
 	browser actionButtons do: [ :button | self deny: button isEnabled ].
 
-	browser selectEntity: (FamixStClass named: 'TestClass').
+	browser receiveEntity: (FamixStClass named: 'TestClass').
 
 	browser actionButtons do: [ :button | self assert: button isEnabled ]
 ]

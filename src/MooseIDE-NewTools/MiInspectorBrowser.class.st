@@ -85,7 +85,7 @@ MiInspectorBrowser >> beFrozen [
 ]
 
 { #category : #testing }
-MiInspectorBrowser >> canReceiveEntity: anEntity [
+MiInspectorBrowser >> canFollowEntity: anEntity [
 
 	"Returns true because all object can be inspected with this Midas inspector. It can be changed in future acording to new needs."
 

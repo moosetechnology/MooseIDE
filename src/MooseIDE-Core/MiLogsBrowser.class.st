@@ -39,19 +39,19 @@ MiLogsBrowser class >> title [
 ]
 
 { #category : #testing }
+MiLogsBrowser >> canFollowEntity: anObject [
+
+	"Subpresenters are MiBrowsers. They are responsible for entities reception"
+
+	^ false
+]
+
+{ #category : #testing }
 MiLogsBrowser >> canPropagate [
 
 	^ self miSelectedItem isMooseObject and: [ 
 		  self miSelectedItem asMooseGroup isNotEmpty or: [ 
 			  self miSelectedItem isMooseModel ] ]
-]
-
-{ #category : #testing }
-MiLogsBrowser >> canReceiveEntity: anObject [
-
-	"Subpresenters are MiBrowsers. They are responsible for entities reception"
-
-	^ false
 ]
 
 { #category : #buses }
