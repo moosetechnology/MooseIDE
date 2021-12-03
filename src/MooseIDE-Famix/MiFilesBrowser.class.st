@@ -59,7 +59,7 @@ MiFilesBrowser class >> title [
 ]
 
 { #category : #testing }
-MiFilesBrowser >> canReceiveEntity: anObject [
+MiFilesBrowser >> canFollowEntity: anObject [
 
 	^ anObject isMooseObject and: [ 
 		  anObject isMooseModel and: [ 

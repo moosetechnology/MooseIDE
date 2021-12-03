@@ -75,7 +75,7 @@ MiTagBrowser >> accept: anObject [
 ]
 
 { #category : #testing }
-MiTagBrowser >> canReceiveEntity: anObject [
+MiTagBrowser >> canFollowEntity: anObject [
 	^ anObject isCollection
 		and: [ anObject
 				anySatisfy: [ :a | a usesFamixTrait: FamixTNamedEntity ] ]

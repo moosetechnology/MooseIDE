@@ -35,7 +35,7 @@ MiDistributionMapBrowser class >> title [
 ]
 
 { #category : #testing }
-MiDistributionMapBrowser >> canReceiveEntity: anObject [
+MiDistributionMapBrowser >> canFollowEntity: anObject [
 	^ anObject isMooseObject
 ]
 

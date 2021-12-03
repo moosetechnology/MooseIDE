@@ -52,16 +52,16 @@ MiUMLBrowser class >> title [
 ]
 
 { #category : #testing }
-MiUMLBrowser >> canHighlight [
-
-	^ true
-]
-
-{ #category : #testing }
-MiUMLBrowser >> canReceiveEntity: anObject [
+MiUMLBrowser >> canFollowEntity: anObject [
 
 	^ anObject isMooseObject and: [ 
 		  anObject asMooseSpecializedGroup isKindOf: FamixTypeGroup ]
+]
+
+{ #category : #testing }
+MiUMLBrowser >> canHighlight [
+
+	^ true
 ]
 
 { #category : #actions }
