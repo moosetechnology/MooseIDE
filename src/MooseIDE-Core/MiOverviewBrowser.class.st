@@ -134,7 +134,8 @@ MiOverviewBrowser >> initializeBrowsersList [
 		propagateNaturalHeight: true;
 		items: self openedBrowsers;
 		sortingBlock: [ :a :b | a toolbarLabel < b toolbarLabel ];
-		whenSelectionChangedDo: [ :selection | selection selectedItem ifNotNil: [ :object | object highlightWindow] ]
+		whenSelectionChangedDo: [ :selection |
+			selection selectedItem ifNotNil: [ :object | object highlightWindow] ] 
 ]
 
 { #category : #initialization }
@@ -288,14 +289,6 @@ MiOverviewBrowser >> showHelp [
 		relativeTo: helpButton;
 		presenter: (MiHelpPopup on: self);
 		popup
-]
-
-{ #category : #updating }
-MiOverviewBrowser >> update [
-
-	super update.
-
-	self updateBrowsersListItems
 ]
 
 { #category : #api }
