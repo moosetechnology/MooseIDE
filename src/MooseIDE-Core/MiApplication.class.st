@@ -103,10 +103,11 @@ MiApplication >> start [
 
 { #category : #actions }
 MiApplication >> updateOverviewBrowsers [
+
 	(self windows
-		collect: #presenter
+		collect: [ :each | each presenter]
 		thenSelect: [ :presenter | presenter class == MiOverviewBrowser ])
-		do: #update
+		do: [ :each | each updateBrowsersListItems]
 ]
 
 { #category : #windows }

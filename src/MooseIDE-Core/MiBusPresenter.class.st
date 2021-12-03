@@ -7,15 +7,6 @@ Class {
 	#category : #'MooseIDE-Core-Overview'
 }
 
-{ #category : #specs }
-MiBusPresenter class >> defaultSpec [
-	^ SpBoxLayout newHorizontal
-		add: #nameLabel;
-		add: SpNullPresenter new;
-		add: #loggerButton expand: false;
-		yourself
-]
-
 { #category : #actions }
 MiBusPresenter >> activateItem: aBrowser [
 	aBrowser followBus: model
@@ -27,13 +18,24 @@ MiBusPresenter >> deactivateItem: aBrowser [
 ]
 
 { #category : #initialization }
+MiBusPresenter >> initializeLayout [
+
+	self layout: (SpBoxLayout newHorizontal
+		add: nameLabel;
+		add: SpNullPresenter new;
+		add: loggerButton expand: false;
+		yourself)
+]
+
+{ #category : #initialization }
 MiBusPresenter >> initializePresenters [
 
 	super initializePresenters.
 	loggerButton := self newButton
 		                iconName: #history;
 		                label: 'Open logger';
-		                action: [ MiBusLogBrowser openForBus: model ]
+		                action: [ MiBusLogBrowser openForBus: model ].
+	self initializeLayout
 ]
 
 { #category : #settings }
