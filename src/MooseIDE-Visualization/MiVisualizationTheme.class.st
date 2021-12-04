@@ -9,7 +9,7 @@ Class {
 
 { #category : #initialization }
 MiVisualizationTheme >> defaultIconTheme [
-	{  
+	^{  
 		FamixTClass -> #famixClass .
 		FamixTMethod -> #famixMethod .
 		FamixTNamespace -> #famixNamespace .
@@ -18,23 +18,35 @@ MiVisualizationTheme >> defaultIconTheme [
 		FamixTAnnotationType -> #famixAnnotationType .
 		FamixTFunction -> #famixFunction .
 		MooseEntity -> #mooseIcon
-	} do: [:assoc | iconTheme at: assoc key put: assoc value ]
+	}
+]
+
+{ #category : #accessing }
+MiVisualizationTheme >> iconTheme [
+
+	^ iconTheme
+]
+
+{ #category : #accessing }
+MiVisualizationTheme >> iconTheme: anObject [
+
+	iconTheme := anObject
 ]
 
 { #category : #initialization }
 MiVisualizationTheme >> initialize [
 	super initialize.
 	
-	iconTheme := Dictionary new.
-	self defaultIconTheme
+	self iconTheme: self defaultIconTheme
 ]
 
-{ #category : #running }
+{ #category : #api }
 MiVisualizationTheme >> mooseIconNameFor: anEntity [
-	self flag: 'should use double dispatch instead of #iskindof:'.
-	
-	iconTheme keysAndValuesDo: [ :k :v |
-		(anEntity class usesTrait: k) ifTrue: [ ^ v ]
+	| usedTraits |
+	self flag: 'should find a better way to match traits to icon (some kind of double dispatch?)'.
+	usedTraits := anEntity class allTraits.
+	iconTheme do: [:assoc |
+		(usedTraits includes: assoc key) ifTrue: [ ^assoc value ]
 	].
 	^nil
 ]
