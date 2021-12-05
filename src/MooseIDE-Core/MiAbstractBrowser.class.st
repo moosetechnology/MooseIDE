@@ -107,6 +107,12 @@ MiAbstractBrowser class >> open [
 		  yourself
 ]
 
+{ #category : #accessing }
+MiAbstractBrowser class >> taskbarIcon [
+	^MooseIcons mooseIcon
+
+]
+
 { #category : #specs }
 MiAbstractBrowser class >> windowSize [
 	^ 500 @ 400
