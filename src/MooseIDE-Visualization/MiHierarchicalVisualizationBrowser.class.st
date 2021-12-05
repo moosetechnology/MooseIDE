@@ -50,3 +50,8 @@ MiHierarchicalVisualizationBrowser >> initializePresenters [
 			ifTrue: [ el children ]
 			ifFalse: [ {  } ] ]
 ]
+
+{ #category : #accessing }
+MiHierarchicalVisualizationBrowser >> miSelectedItem [
+	^nil
+]
