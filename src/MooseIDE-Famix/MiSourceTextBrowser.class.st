@@ -69,7 +69,7 @@ MiSourceTextBrowser >> canFollowEntity: anObject [
 MiSourceTextBrowser >> followEntity: anEntity [
 
 	model selected: anEntity.
-	self text: (model sourceText ifEmpty: [ self noSourceCodeMessageFor: anEntity ]).
+	self text: model formatedSource.
 	self updateWindowTitleWith: anEntity name
 ]
 
@@ -86,14 +86,7 @@ MiSourceTextBrowser >> miSelectedItem [
 ]
 
 { #category : #actions }
-MiSourceTextBrowser >> noSourceCodeMessageFor: anEntity [
-
-	^ 'There is no source code to show for {1}' format: { anEntity name }
-]
-
-{ #category : #actions }
 MiSourceTextBrowser >> text: aText [
-
 	sourceText text: aText
 ]
 
