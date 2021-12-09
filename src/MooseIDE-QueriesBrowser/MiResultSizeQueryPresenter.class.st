@@ -8,7 +8,8 @@ Class {
 		'subqueriesDropList',
 		'comparatorDropList',
 		'valueInputField',
-		'process'
+		'process',
+		'delayer'
 	],
 	#category : #'MooseIDE-QueriesBrowser-Configuration presenters'
 }

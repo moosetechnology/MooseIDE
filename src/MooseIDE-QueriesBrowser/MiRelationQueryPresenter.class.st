@@ -41,15 +41,13 @@ MiRelationQueryPresenter >> initializePresenters [
 MiRelationQueryPresenter >> initializeRelationsDropList [
 
 	relationsList := self query availableRelationNames
-		                 ifEmpty: [ 
-		                 self noParameterMessage: 'No relations available' ]
-		                 ifNotEmpty: [ :relationNames | 
-			                 self newDropList
-				                 items: relationNames;
-				                 whenSelectedItemChangedDo: [ 
-					                 :selectedRelationName | 
-					                 query relationName: selectedRelationName.
-					                 self notifyQueryChanged ] ]
+		ifEmpty: [ self noParameterMessage: 'No relations available' ]
+		ifNotEmpty: [ :relationNames | 
+			self newDropList
+				items: relationNames;
+				whenSelectedItemChangedDo: [ :selectedRelationName | 
+					query relationName: selectedRelationName.
+					self notifyQueryChanged ] ]
 ]
 
 { #category : #layout }
@@ -58,9 +56,9 @@ MiRelationQueryPresenter >> newLayout [
 	| padding |
 	padding := 5.
 	^ SpBoxLayout newLeftToRight
-		  add: relationsList
-		  expand: false
-		  fill: true
-		  padding: padding;
-		  yourself
+		add: relationsList
+		expand: false
+		fill: true
+		padding: padding;
+		yourself
 ]
