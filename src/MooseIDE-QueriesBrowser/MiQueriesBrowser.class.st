@@ -89,6 +89,12 @@ MiQueriesBrowser >> followEntity: anEntity [
 ]
 
 { #category : #initialization }
+MiQueriesBrowser >> initialize [ 
+	super initialize.
+	application registerProducer: self for: FQAbstractQuery 
+]
+
+{ #category : #initialization }
 MiQueriesBrowser >> initializeLayout [
 
 	| tempLayout |
@@ -144,6 +150,11 @@ MiQueriesBrowser >> initializeResultTreePresenter [
 
 	queryResultTreePresenter := self instantiate: QueryResultTreePresenter.
 	queryResultTreePresenter updateForEntities: self queryResultEntities
+]
+
+{ #category : #brokerage }
+MiQueriesBrowser >> itemsFor: aClass [
+	^rootQuery allChildren select: [ :query | query isKindOf: aClass ]
 ]
 
 { #category : #accessing }
