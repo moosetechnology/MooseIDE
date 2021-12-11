@@ -37,6 +37,12 @@ MiBrokerageTest >> testProducedDoesNotMatchConsumeSuperClass [
 ]
 
 { #category : #tests }
+MiBrokerageTest >> testProducedItemNoConsumer [
+	application consumeItem: #blah.
+	mockConsumer should not receive consume: Any.
+]
+
+{ #category : #tests }
 MiBrokerageTest >> testProducedMatchConsumeClassUseTrait [
 	self assert: (application produced: FAMIXSourcedEntity matchConsumed: FamixTWithComments)
 
@@ -71,6 +77,24 @@ MiBrokerageTest >> testRegisterConsumer [
 ]
 
 { #category : #tests }
+MiBrokerageTest >> testRegisterConsumerConsumesAllItems [
+	"allItems produced by mockProducer are 42 and 25
+	 when registering mockProducer the mockConsumer is invited to comsume these 2 numbers
+	and no other one (33 here)"
+
+	(mockProducer stub itemsFor: Integer) willReturn: #(42 25). 
+	application registerProducer: mockProducer for: Integer.
+
+	application registerConsumer: mockConsumer for: Integer.
+
+	mockConsumer should receive consume: 42.
+	mockConsumer should receive consume: 25.
+	mockConsumer should not receive consume: 33.
+	
+
+]
+
+{ #category : #tests }
 MiBrokerageTest >> testRegisterConsumerForSiblingClass [
 	self assert: (application consumersOf: LargeNegativeInteger) size equals: 0.
 
@@ -97,6 +121,23 @@ MiBrokerageTest >> testRegisterProducer [
 	application registerProducer: mockProducer for: Integer.
 
 	self assert: (application producersOf: Integer) size equals: 1.
+
+]
+
+{ #category : #tests }
+MiBrokerageTest >> testRegisterProducerConsumesAllItems [
+	"allItems produced by mockProducer are 42 and 25
+	 when registering mockProducer the mockConsumer is invited to comsume these 2 numbers
+	and no other one (33 here)"
+	application registerConsumer: mockConsumer for: Integer.
+
+	(mockProducer stub itemsFor: Integer) willReturn: #(42 25). 
+	application registerProducer: mockProducer for: Integer.
+
+	mockConsumer should receive consume: 42.
+	mockConsumer should receive consume: 25.
+	mockConsumer should not receive consume: 33.
+	
 
 ]
 
