@@ -135,6 +135,12 @@ MiApplication >> initialize [
 	producers  := Dictionary new.
 ]
 
+{ #category : #brokerage }
+MiApplication >> itemsFor: aClass [
+	^(self producersOf: aClass)
+		flatCollect: [ :producer | producer itemsFor: aClass ]
+]
+
 { #category : #'private - factory' }
 MiApplication >> newIconProvider [
 
@@ -164,15 +170,13 @@ MiApplication >> producersOf: aClass [
 { #category : #brokerage }
 MiApplication >> registerConsumer: aConsumer for: aClass [
 	"adds a consumer to the list of consumers for given aClass"
-	self add: aConsumer toDictionary: consumers for: aClass.
-	self consumer: aConsumer requestFor: aClass
+	self add: aConsumer toDictionary: consumers for: aClass
 ]
 
 { #category : #brokerage }
 MiApplication >> registerProducer: aProducer for: aClass [
-	"adds a producer to the list of cproducers for given aClass"
-	self add: aProducer toDictionary: producers for: aClass.
-	self consumeItemsFrom: aProducer ofType: aClass
+	"adds a producer to the list of producers for given aClass"
+	self add: aProducer toDictionary: producers for: aClass
 ]
 
 { #category : #private }

@@ -31,6 +31,34 @@ MiBrokerageTest >> testConsumeItemWithConsumer [
 ]
 
 { #category : #tests }
+MiBrokerageTest >> testItemsForNoProducers [
+	self assertCollection: (application itemsFor: Integer) hasSameElements: #()
+
+]
+
+{ #category : #tests }
+MiBrokerageTest >> testItemsForOneProducer [
+	(mockProducer stub itemsFor: Integer) willReturn: #(42 25).
+	application registerProducer: mockProducer for: Integer.
+	self assertCollection: (application itemsFor: Integer) hasSameElements: #(42 25)
+
+]
+
+{ #category : #tests }
+MiBrokerageTest >> testItemsForTwoProducers [
+	| otherProducer |
+	(mockProducer stub itemsFor: Integer) willReturn: #(42).
+	application registerProducer: mockProducer for: Integer.
+
+	otherProducer := Mock named: 'anotherProducer'.
+	(otherProducer stub itemsFor: Integer) willReturn: #(25).
+	application registerProducer: otherProducer for: Integer.
+
+	self assertCollection: (application itemsFor: Integer) hasSameElements: #(42 25)
+
+]
+
+{ #category : #tests }
 MiBrokerageTest >> testProducedDoesNotMatchConsumeSuperClass [
 	self deny: (application produced: Integer matchConsumed: LargeNegativeInteger)
 
@@ -77,24 +105,6 @@ MiBrokerageTest >> testRegisterConsumer [
 ]
 
 { #category : #tests }
-MiBrokerageTest >> testRegisterConsumerConsumesAllItems [
-	"allItems produced by mockProducer are 42 and 25
-	 when registering mockProducer the mockConsumer is invited to comsume these 2 numbers
-	and no other one (33 here)"
-
-	(mockProducer stub itemsFor: Integer) willReturn: #(42 25). 
-	application registerProducer: mockProducer for: Integer.
-
-	application registerConsumer: mockConsumer for: Integer.
-
-	mockConsumer should receive consume: 42.
-	mockConsumer should receive consume: 25.
-	mockConsumer should not receive consume: 33.
-	
-
-]
-
-{ #category : #tests }
 MiBrokerageTest >> testRegisterConsumerForSiblingClass [
 	self assert: (application consumersOf: LargeNegativeInteger) size equals: 0.
 
@@ -121,23 +131,6 @@ MiBrokerageTest >> testRegisterProducer [
 	application registerProducer: mockProducer for: Integer.
 
 	self assert: (application producersOf: Integer) size equals: 1.
-
-]
-
-{ #category : #tests }
-MiBrokerageTest >> testRegisterProducerConsumesAllItems [
-	"allItems produced by mockProducer are 42 and 25
-	 when registering mockProducer the mockConsumer is invited to comsume these 2 numbers
-	and no other one (33 here)"
-	application registerConsumer: mockConsumer for: Integer.
-
-	(mockProducer stub itemsFor: Integer) willReturn: #(42 25). 
-	application registerProducer: mockProducer for: Integer.
-
-	mockConsumer should receive consume: 42.
-	mockConsumer should receive consume: 25.
-	mockConsumer should not receive consume: 33.
-	
 
 ]
 
