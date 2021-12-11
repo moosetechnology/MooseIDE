@@ -63,6 +63,12 @@ MiQueriesBrowser class >> windowSize [
 	^ 650 @ 420
 ]
 
+{ #category : #'window control' }
+MiQueriesBrowser >> browserClosed [
+	super browserClosed.
+	application unregisterProducer: self
+]
+
 { #category : #testing }
 MiQueriesBrowser >> canFollowEntity: anObject [
 
