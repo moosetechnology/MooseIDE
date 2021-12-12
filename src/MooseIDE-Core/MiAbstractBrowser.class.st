@@ -118,6 +118,11 @@ MiAbstractBrowser class >> windowSize [
 	^ 500 @ 400
 ]
 
+{ #category : #'window control' }
+MiAbstractBrowser >> browserClosed [
+	buses do: [ :bus | bus unregisterBrowser: self ]
+]
+
 { #category : #accessing }
 MiAbstractBrowser >> buses [
 	^ buses
@@ -221,7 +226,7 @@ MiAbstractBrowser >> initializeWindow: aMiWindowPresenter [
 	aMiWindowPresenter buildToolbar.
 
 	aMiWindowPresenter whenClosedDo: [ 
-		self buses do: [ :bus | bus unregisterBrowser: self ] ].
+		self browserClosed ].
 
 	aMiWindowPresenter initialExtent: self class windowSize
 ]
