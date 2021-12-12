@@ -94,6 +94,12 @@ MiQueriesBrowserTest >> testInitializePresenters [
 ]
 
 { #category : #tests }
+MiQueriesBrowserTest >> testRegisterAtStartup [
+
+	self assert: (browser application producersOf: FQAbstractQuery) size equals: 1.
+]
+
+{ #category : #tests }
 MiQueriesBrowserTest >> testRemoveNAryQuery [
 
 	| unionQuery firstParent |
@@ -145,6 +151,12 @@ MiQueriesBrowserTest >> testSelectQuery [
 MiQueriesBrowserTest >> testSetModelBeforeInitialization [
 
 	self assert: browser rootQuery class equals: FQRootQuery
+]
+
+{ #category : #tests }
+MiQueriesBrowserTest >> testUnregisterAtClose [
+	browser window close.
+	self assert: (browser application producersOf: FQAbstractQuery) size equals: 0.
 ]
 
 { #category : #defaults }
