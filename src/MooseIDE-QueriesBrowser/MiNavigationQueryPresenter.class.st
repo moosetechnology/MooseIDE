@@ -56,6 +56,7 @@ MiNavigationQueryPresenter >> initializeDirectionsDropList [
 
 	directionDropList := self newDropList.
 	directionDropList
+		startWithoutSelection;
 		items: self query class directionStrategies;
 		display: #label;
 		whenSelectedItemChangedDo: [ :selectedDirection | 
