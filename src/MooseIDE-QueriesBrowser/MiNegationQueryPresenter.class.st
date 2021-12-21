@@ -56,6 +56,7 @@ MiNegationQueryPresenter >> initializeQueryDropListPresenter [
 
 	subqueryDropListPresenter := self newDropList.
 	subqueryDropListPresenter
+		startWithoutSelection;
 		items: owner allQueryPresentersExceptSelf;
 		display: [ :each | each name ];
 		whenSelectedItemChangedDo: [ :item | self computeQueryAction: item ]

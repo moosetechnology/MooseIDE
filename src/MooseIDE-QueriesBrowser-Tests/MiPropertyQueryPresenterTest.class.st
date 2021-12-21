@@ -18,9 +18,6 @@ MiPropertyQueryPresenterTest >> assertPropertiesDropList [
 	self
 		assertCollection: presenter propertyDropList listItems
 		hasSameElements: presenter query availableProperties.
-	self
-		assert: presenter query property
-		equals: presenter propertyDropList selectedItem
 ]
 
 { #category : #running }
@@ -31,9 +28,6 @@ MiPropertyQueryPresenterTest >> queryClass [
 { #category : #tests }
 MiPropertyQueryPresenterTest >> testMatchesQuery [
 
-	self
-		assert: presenter query property
-		equals: presenter propertyDropList selectedItem.
 	presenter propertyDropList selectIndex: 2.
 	self
 		assert: presenter query property
