@@ -9,9 +9,11 @@ Class {
 	#superclass : #MiAbstractBrowser,
 	#instVars : [
 		'mainPresenter',
-		'tagDetailsPage',
 		'tagModel',
-		'tagManagementPage'
+		'tagManagementPage',
+		'tagIntentPage',
+		'tagExtentPage',
+		'tagIsIntent'
 	],
 	#category : #'MooseIDE-Tagging-Browser'
 }
@@ -81,38 +83,58 @@ MiTagBrowser >> canFollowEntity: anObject [
 				anySatisfy: [ :a | a usesFamixTrait: FamixTNamedEntity ] ]
 ]
 
+{ #category : #initialization }
+MiTagBrowser >> descriptionPage [
+
+	^ self tagIsIntent
+		  ifTrue: [ self instantiate: MiTagIntentPage on: self ]
+		  ifFalse: [ self instantiate: MiTagExtentPage on: self ]
+]
+
 { #category : #actions }
 MiTagBrowser >> followEntity: anEntity [
 
 	tagModel entities: anEntity.
-	tagDetailsPage resetContent
+]
+
+{ #category : #initialization }
+MiTagBrowser >> initialize [
+	super initialize.
+	tagIsIntent := true
 ]
 
 { #category : #initialization }
 MiTagBrowser >> initializePresenters [
 
+	| tagDescriptionPage |
 	self initializeTagManagementPage.
-	self initializeTagDetailsPage.
+	tagIntentPage := self instantiate: MiTagIntentPage on: self.
+	tagExtentPage := self instantiate: MiTagExtentPage on: self.
+	tagDescriptionPage := self newNotebookPage
+		title: 'Tag description' ;
+		presenterProvider: [
+			self descriptionPage
+				onBrowserPageRedisplay ;
+				yourself
+		] ;
+		yourself.
 	mainPresenter := self newNotebook
-		                 addPage: tagManagementPage;
-		                 addPage: tagDetailsPage;
-		                 yourself
-]
-
-{ #category : #initialization }
-MiTagBrowser >> initializeTagDetailsPage [
-
-	tagDetailsPage := self
-		                  newTagPage: MiTagDetailPage
-		                  title: 'Tag details'
+		whenSelectedPageChangedDo: [ :newPage :oldPage  |
+			newPage = tagDescriptionPage
+			ifTrue: [ tagDescriptionPage resetContent ] ] ;
+		addPage: tagManagementPage;
+		addPage: tagDescriptionPage;
+		yourself
 ]
 
 { #category : #initialization }
 MiTagBrowser >> initializeTagManagementPage [
 
-	tagManagementPage := self
-		                     newTagPage: MiTagManagementPage
-		                     title: 'Manage tags'
+	tagManagementPage := self newNotebookPage
+		title: MiTagManagementPage defaultTitle ;
+		presenterProvider: [
+			self instantiate: MiTagManagementPage on: self ];
+		yourself
 ]
 
 { #category : #accessing }
@@ -121,28 +143,22 @@ MiTagBrowser >> miSelectedItem [
 	^ tagModel entities
 ]
 
-{ #category : #initialization }
-MiTagBrowser >> newTagPage: aMiPresenterClass title: aString [
-
-	^ self newNotebookPage
-		  title: aString;
-		  presenterProvider: [ 
-			  (self instantiate: aMiPresenterClass on: self)
-				  onBrowserPageRedisplay;
-				  yourself ];
-		  yourself
-]
-
-{ #category : #actions }
-MiTagBrowser >> newTagSelected [
-	tagDetailsPage resetContent
-]
-
 { #category : #'accessing - model' }
 MiTagBrowser >> setModelBeforeInitialization: aTagModel [
 
 	tagModel := aTagModel.
 	tagModel tagBrowser: self
+]
+
+{ #category : #actions }
+MiTagBrowser >> tagDefinedBytIntent: aBoolean [
+	tagIsIntent := aBoolean
+]
+
+{ #category : #initialization }
+MiTagBrowser >> tagIsIntent [
+	^tagIsIntent
+	"self tagModel isIntentTag"
 ]
 
 { #category : #accessing }

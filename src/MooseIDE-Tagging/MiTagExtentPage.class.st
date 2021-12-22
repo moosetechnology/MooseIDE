@@ -1,9 +1,11 @@
 "
-The page of the TagBrowser showing the entities in the tag and allowing to add or remove entities
+The page of the TagBrowser notebook showing the entities in the tag and allowing to add or remove entities
+
+This is the so called _Extent description_ of the tag
 "
 Class {
-	#name : #MiTagDetailPage,
-	#superclass : #MiPresenter,
+	#name : #MiTagExtentPage,
+	#superclass : #MiAbstractTagNotebookPage,
 	#instVars : [
 		'incomingEntitiesFilteringList',
 		'taggedEntitiesLabel',
@@ -18,7 +20,7 @@ Class {
 }
 
 { #category : #specs }
-MiTagDetailPage class >> defaultSpec [
+MiTagExtentPage class >> defaultSpec [
 	^SpBoxLayout newVertical
 		add: (SpBoxLayout newHorizontal
 			add: 'Entities queried:' ;
@@ -30,13 +32,18 @@ MiTagDetailPage class >> defaultSpec [
 		yourself
 ]
 
+{ #category : #accessing }
+MiTagExtentPage class >> defaultTitle [
+	^'Tag Extent'
+]
+
 { #category : #specs }
-MiTagDetailPage class >> filler [
+MiTagExtentPage class >> filler [
 	^SpNullPresenter new
 ]
 
 { #category : #specs }
-MiTagDetailPage class >> mainContentLayout [
+MiTagExtentPage class >> mainContentLayout [
 
 	^ SpBoxLayout newHorizontal
 		  add: #incomingEntitiesFilteringList;
@@ -56,13 +63,13 @@ MiTagDetailPage class >> mainContentLayout [
 ]
 
 { #category : #specs }
-MiTagDetailPage class >> middleColumnWidth [
+MiTagExtentPage class >> middleColumnWidth [
 
 	^ 25
 ]
 
 { #category : #action }
-MiTagDetailPage >> add [
+MiTagExtentPage >> add [
 
 	self currentTag ifNil: [ ^ self ].
 
@@ -72,7 +79,7 @@ MiTagDetailPage >> add [
 ]
 
 { #category : #action }
-MiTagDetailPage >> addAll [
+MiTagExtentPage >> addAll [
 
 	self currentTag ifNil: [ ^ self ].
 	incomingEntitiesFilteringList items do: [ :entity | 
@@ -81,13 +88,13 @@ MiTagDetailPage >> addAll [
 ]
 
 { #category : #accessing }
-MiTagDetailPage >> currentTag [
+MiTagExtentPage >> currentTag [
 
 	^ self tagModel currentTag
 ]
 
 { #category : #initialization }
-MiTagDetailPage >> initializeButtons [
+MiTagExtentPage >> initializeButtons [
 
 	addButton := self newButton
 		          label: ' > ';
@@ -104,7 +111,7 @@ MiTagDetailPage >> initializeButtons [
 ]
 
 { #category : #initialization }
-MiTagDetailPage >> initializePresenters [
+MiTagExtentPage >> initializePresenters [
 
 	taggedEntitiesLabel := self newLabel label: 'Entities in tag:'.
 	incomingEntitiesFilteringList := self newFilteringList
@@ -119,7 +126,7 @@ MiTagDetailPage >> initializePresenters [
 ]
 
 { #category : #refreshing }
-MiTagDetailPage >> onBrowserPageRedisplay [
+MiTagExtentPage >> onBrowserPageRedisplay [
 
 	taggedEntitiesLabel
 		label: 
@@ -130,18 +137,18 @@ MiTagDetailPage >> onBrowserPageRedisplay [
 ]
 
 { #category : #refreshing }
-MiTagDetailPage >> refreshEntitiesList [
+MiTagExtentPage >> refreshEntitiesList [
 
 	incomingEntitiesFilteringList items: self tagModel entities
 ]
 
 { #category : #refreshing }
-MiTagDetailPage >> refreshTaggedEntitiesList [
+MiTagExtentPage >> refreshTaggedEntitiesList [
 	taggedEntitiesFilteringList items: self taggedEntities
 ]
 
 { #category : #action }
-MiTagDetailPage >> remove [
+MiTagExtentPage >> remove [
 
 	self currentTag ifNil: [ ^ self ].
 	taggedEntitiesFilteringList selectedItem ifNotNil: [ :entity | 
@@ -150,7 +157,7 @@ MiTagDetailPage >> remove [
 ]
 
 { #category : #action }
-MiTagDetailPage >> removeAll [
+MiTagExtentPage >> removeAll [
 
 	self currentTag ifNil: [ ^ self ].
 	taggedEntitiesFilteringList items do: [ :entity | 
@@ -159,19 +166,19 @@ MiTagDetailPage >> removeAll [
 ]
 
 { #category : #initialization }
-MiTagDetailPage >> setModelBeforeInitialization: aTagBrowser [
+MiTagExtentPage >> setModelBeforeInitialization: aTagBrowser [
 
 	tagBrowser := aTagBrowser
 ]
 
 { #category : #accessing }
-MiTagDetailPage >> tagModel [
+MiTagExtentPage >> tagModel [
 
 	^ tagBrowser tagModel
 ]
 
 { #category : #accessing }
-MiTagDetailPage >> taggedEntities [
+MiTagExtentPage >> taggedEntities [
 
 	^ self tagModel entitiesTaggedWithCurrentTag
 ]
