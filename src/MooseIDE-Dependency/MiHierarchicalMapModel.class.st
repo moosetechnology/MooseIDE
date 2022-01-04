@@ -1,8 +1,8 @@
 "
 I am a model of a hierarchical map.
 I am responsible for:
-	- holding a property list
-	- holding elements to display on the hierarchical map.
+- holding a property list
+- holding elements to display on the hierarchical map.
 "
 Class {
 	#name : #MiHierarchicalMapModel,
@@ -10,7 +10,8 @@ Class {
 	#instVars : [
 		'entities',
 		'dynamicTags',
-		'childrenBlock'
+		'childrenBlock',
+		'colorScale'
 	],
 	#category : #'MooseIDE-Dependency-HierarchicalMap'
 }
@@ -43,6 +44,12 @@ MiHierarchicalMapModel class >> defaultDynamicTags [
 		  self defaultDynamicTagIsDead }
 ]
 
+{ #category : #adding }
+MiHierarchicalMapModel >> addDynamicTag: aTag [
+
+	dynamicTags add: aTag
+]
+
 { #category : #accessing }
 MiHierarchicalMapModel >> childrenBlock [
 
@@ -60,14 +67,16 @@ MiHierarchicalMapModel >> colorFor: anEntity [
 	
 	| dt |
 	dt :=  (self dynamicTagFor: anEntity).
-	^ dt color ifNil: [ self colorForDynamicTag:  dt]
+	^ self colorForDynamicTag:  dt
 ]
 
 { #category : #'as yet unclassified' }
 MiHierarchicalMapModel >> colorForDynamicTag: aDynamicTag [
-	
-	self flag: 'Model should have a color map and automatically handle colors.'.
-	^ Color green
+
+	self flag:
+		'Model should have a color map and automatically handle colors.'.
+	aDynamicTag color ifNotNil: [ :color | ^ color ].
+	^ colorScale scale: aDynamicTag name
 ]
 
 { #category : #'as yet unclassified' }
@@ -100,4 +109,39 @@ MiHierarchicalMapModel >> entities [
 MiHierarchicalMapModel >> entities: anObject [
 
 	entities := anObject
+]
+
+{ #category : #accessing }
+MiHierarchicalMapModel >> indexOfDynamicTagFor: anEntity [
+
+	dynamicTags doWithIndex: [ :dt :i | 
+		(dt isApplicableTo: anEntity) ifTrue: [ ^ i ] ].
+	^ 0
+]
+
+{ #category : #accessing }
+MiHierarchicalMapModel >> initialize [
+
+	super initialize.
+	dynamicTags := OrderedCollection new.
+	colorScale := RSQualitativeColorPalette new set312
+]
+
+{ #category : #'as yet unclassified' }
+MiHierarchicalMapModel >> numberOfchildrenWithProperty: aProp forNode: node [
+	
+	^ (childrenBlock value: node) count: [ :child  |  aProp isApplicableTo: child]
+]
+
+{ #category : #'as yet unclassified' }
+MiHierarchicalMapModel >> orderOuterNodes: aCollectionOfNodes [ 
+	| engine partVectors |
+	aCollectionOfNodes ifEmpty: [^#()].
+
+	partVectors :=  aCollectionOfNodes asOrderedCollection collect: [:node |
+		MalSimilarityItem with: node
+			andAll: (dynamicTags collect: [:aProp | self numberOfchildrenWithProperty: aProp forNode: node]) ].
+	engine := MalClusterEngine with: partVectors.
+	engine hierarchicalClusteringUsing: #completeLinkage.
+	^ engine dendrogram orderLeafs collect: #item.
 ]

@@ -13,20 +13,16 @@ Class {
 	#category : #'MooseIDE-Dependency-HierarchicalMap'
 }
 
-{ #category : #initialization }
-MiHierarchicalMap >> initialize [
-
-	super initialize.
-	
-]
-
 { #category : #running }
 MiHierarchicalMap >> run [
+
 	super run.
 	builder := MiHierarchicalMapBuilder new
-			mapModel: owner model;
+		           mapModel: owner model;
 		           container: self canvas;
 		           yourself.
 	builder build.
-	self canvas zoomToFit
+	self canvas
+		zoomToFit;
+		zoomToFit
 ]

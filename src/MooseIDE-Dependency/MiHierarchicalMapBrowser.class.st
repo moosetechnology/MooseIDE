@@ -6,10 +6,19 @@ Class {
 	#superclass : #MiAbstractBrowser,
 	#instVars : [
 		'visualization',
-		'menu'
+		'layoutWithMenu',
+		'layoutWithoutMenu',
+		'settings',
+		'settingsToggle'
 	],
 	#category : #'MooseIDE-Dependency-HierarchicalMap'
 }
+
+{ #category : #accessing }
+MiHierarchicalMapBrowser class >> mapClass [
+
+	^ MiHierarchicalMap
+]
 
 { #category : #'instance creation' }
 MiHierarchicalMapBrowser class >> newModel [
@@ -26,7 +35,7 @@ MiHierarchicalMapBrowser class >> open [
 { #category : #accessing }
 MiHierarchicalMapBrowser class >> title [
 
-	^ 'Hierarchical Map'
+	^ 'Hierarchical map'
 ]
 
 { #category : #accessing }
@@ -35,40 +44,46 @@ MiHierarchicalMapBrowser class >> windowSize [
 	^ 850 @ 520
 ]
 
+{ #category : #initialization }
+MiHierarchicalMapBrowser >> addmenuButtonToCanvas [
+
+	self canvas addShape: settingsToggle.
+	settingsToggle setAsFixed.
+	settingsToggle translateTopLeftTo: 5 @ 0.
+]
+
 { #category : #testing }
 MiHierarchicalMapBrowser >> canReceiveEntity: anEntity [
 
 	^ anEntity isMooseObject
 ]
 
+{ #category : #initialization }
+MiHierarchicalMapBrowser >> canvas [
+
+	^ visualization canvas
+]
+
 { #category : #actions }
 MiHierarchicalMapBrowser >> followEntity: anEntity [
 
 	model entities: anEntity asMooseGroup.
-	self updatePresenter.
 	self showMenu
 ]
 
 { #category : #'as yet unclassified' }
 MiHierarchicalMapBrowser >> hideMenu [
 
-	self layout remove: menu
-]
-
-{ #category : #initialization }
-MiHierarchicalMapBrowser >> initialize [
-
-	super initialize.
-	model
-		dynamicTags: MiHierarchicalMapModel defaultDynamicTags;
-		childrenBlock: [ :e | e children ]
+	settingsToggle text: '> Show settings'.
+	settingsToggle translateTopLeftTo: 5 @ 0.
+	self layout remove: settings
 ]
 
 { #category : #initialization }
 MiHierarchicalMapBrowser >> initializeLayout [
 
 	self layout: (SpBoxLayout newLeftToRight
-			 spacing: 4;
+			 spacing: 3;
 			 add: visualization;
 			 yourself)
 ]
@@ -76,10 +91,9 @@ MiHierarchicalMapBrowser >> initializeLayout [
 { #category : #initialization }
 MiHierarchicalMapBrowser >> initializePresenters [
 
-	visualization := MiHierarchicalMap
-		                 owner: self
-		                 on: model.
-	menu := MiHierarchicalMapMenu owner: self.
+	visualization := self class mapClass owner: self.
+	settings := MiHierarchicalMapSettings owner: self.
+	settingsToggle := RSLabel new when: RSMouseClick do: [ self toggleMenu ].
 	self initializeLayout
 ]
 
@@ -92,16 +106,20 @@ MiHierarchicalMapBrowser >> miSelectedItem [
 { #category : #'as yet unclassified' }
 MiHierarchicalMapBrowser >> showMenu [
 
+	settingsToggle text: '< Hide settings'.
+	settingsToggle translateTopLeftTo: 5 @ 0.
 	self layout
-		remove: visualization;
-		add: menu width: 300;
+		removeAll;
+		add: settings width: self class windowSize x / 3;
 		add: visualization
 ]
 
-{ #category : #initialization }
-MiHierarchicalMapBrowser >> updatePresenter [ 
+{ #category : #'as yet unclassified' }
+MiHierarchicalMapBrowser >> toggleMenu [
 
-	menu updatePresenter
+	(self layout presenters includes: settings)
+		ifTrue: [ self hideMenu ]
+		ifFalse: [ self showMenu ]
 ]
 
 { #category : #initialization }
