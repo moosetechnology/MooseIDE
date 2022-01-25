@@ -53,7 +53,7 @@ MiTagBrowserModel >> currentTag [
 { #category : #accessing }
 MiTagBrowserModel >> currentTag: anObject [
 	currentTag := anObject.
-	tagBrowser newTagSelected
+	"tagBrowser newTagSelected"
 ]
 
 { #category : #accessing }

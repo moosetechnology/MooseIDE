@@ -3,36 +3,22 @@ The page of the TagBrowser allowing to create, select, or remove tags
 "
 Class {
 	#name : #MiTagManagementPage,
-	#superclass : #MiPresenter,
+	#superclass : #MiAbstractTagNotebookPage,
 	#instVars : [
 		'rgbColorChooser',
 		'tagManagement',
+		'toggleIntentExtent',
 		'descriptionText',
 		'categoryManagement',
-		'tagBrowser'
+		'tagBrowser',
+		'virtualTag'
 	],
 	#category : #'MooseIDE-Tagging-Browser'
 }
 
-{ #category : #specs }
-MiTagManagementPage class >> defaultSpec [
-
-	^ SpBoxLayout newTopToBottom
-		  add: (SpBoxLayout newLeftToRight
-				   add: (SpBoxLayout newTopToBottom
-						    add: 'Category' expand: false;
-						    add: #categoryManagement;
-						    yourself);
-				   add: (SpBoxLayout newTopToBottom
-						    add: 'Tag' expand: false;
-						    add: #tagManagement;
-						    yourself);
-				   yourself);
-		  add: 'Description:' expand: false;
-		  add: #descriptionText;
-		  add: 'Color:' expand: false;
-		  add: #rgbColorChooser expand: false;
-		  yourself
+{ #category : #accessing }
+MiTagManagementPage class >> defaultTitle [
+	^'Tag Management'
 ]
 
 { #category : #action }
@@ -54,6 +40,12 @@ MiTagManagementPage >> createTag [
 ]
 
 { #category : #initialization }
+MiTagManagementPage >> initialize [
+	super initialize.
+	virtualTag := true
+]
+
+{ #category : #initialization }
 MiTagManagementPage >> initializeCategoryManagementPart [
 	categoryManagement := (self instantiate: SpAddRemoveListPresenter)
 		nameDisplayBlock: [ :object | object "because categories are not implemented yet" ] ;
@@ -70,11 +62,38 @@ MiTagManagementPage >> initializeColorChooserPart [
 ]
 
 { #category : #initialization }
+MiTagManagementPage >> initializeLayout [ 
+	self layout: (SpBoxLayout newTopToBottom
+		  add: (SpBoxLayout newLeftToRight
+				   add: (SpBoxLayout newTopToBottom
+						    add: 'Category' expand: false;
+						    add: categoryManagement;
+						    yourself);
+				   add: (SpBoxLayout newTopToBottom
+						    add: 'Tag' expand: false;
+						    add: tagManagement;
+						    yourself);
+				   yourself);
+			add: (SpBoxLayout newLeftToRight
+				add: 'Tag description (I)ntent / (E)xtent:' expand: false ;
+				add: toggleIntentExtent height: self class toolbarHeight ;
+				yourself)
+			expand: false ;
+		  add: 'Description:' expand: false;
+		  add: descriptionText;
+		  add: 'Color:' expand: false;
+		  add: rgbColorChooser expand: false;
+		  yourself)
+]
+
+{ #category : #initialization }
 MiTagManagementPage >> initializePresenters [
 
 	self initializeCategoryManagementPart.
 	self initializeTagManagementPart.
-	self initializeColorChooserPart
+	self initializeColorChooserPart.
+
+	self initializeLayout 
 ]
 
 { #category : #initialization }
@@ -86,6 +105,21 @@ MiTagManagementPage >> initializeTagManagementPart [
 		yourself.
 
 	descriptionText := self newText.
+	self initializeToggleIntentExtent.
+
+]
+
+{ #category : #initialization }
+MiTagManagementPage >> initializeToggleIntentExtent [
+	| initialState |
+	initialState := true.
+	toggleIntentExtent := self newToggleButton
+		help: '(I)ntent: enter boolean property' , String cr , '(E)xtent enter a list of entities' ;
+		state: initialState ;
+		whenChangedDo: [ :state | self tagDefinedBytIntent: state ]	;
+		yourself.
+	self tagDefinedBytIntent: initialState.
+
 
 ]
 
@@ -124,6 +158,20 @@ MiTagManagementPage >> removeTag [
 MiTagManagementPage >> setModelBeforeInitialization: aTagBrowser [
 
 	tagBrowser := aTagBrowser
+]
+
+{ #category : #accessing }
+MiTagManagementPage >> tagDefinedBytIntent [
+	^virtualTag
+]
+
+{ #category : #accessing }
+MiTagManagementPage >> tagDefinedBytIntent: aBoolean [
+	virtualTag := aBoolean.
+	toggleIntentExtent label: (aBoolean 
+		ifTrue: [ 'I' ]
+		ifFalse: [ 'E' ]).
+	tagBrowser tagDefinedBytIntent: aBoolean
 ]
 
 { #category : #accessing }
