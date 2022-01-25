@@ -15,7 +15,9 @@ Class {
 { #category : #action }
 MiTagManagementPage >> deleteCurrentTag [
 
-	self tagModel deleteCurrentTag.
+	|tag|
+	tag := self tagModel deleteCurrentTag.
+	self owner application consumeItem: tag.
 	descriptionPage hide.
 	self refreshTagList
 ]

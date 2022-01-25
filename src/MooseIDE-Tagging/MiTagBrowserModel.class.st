@@ -63,8 +63,12 @@ MiTagBrowserModel >> deleteCurrentCategory [
 
 { #category : #accessing }
 MiTagBrowserModel >> deleteCurrentTag [
+
+	|tag|
+	tag := currentTag.
 	currentTag remove.
-	self currentTag: nil
+	self currentTag: nil.
+	^ tag
 ]
 
 { #category : #accessing }

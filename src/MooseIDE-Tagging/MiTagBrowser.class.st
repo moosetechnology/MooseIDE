@@ -68,6 +68,13 @@ MiTagBrowser class >> windowSize [
 	^ 700 @ 475
 ]
 
+{ #category : #initialization }
+MiTagBrowser >> browserClosed [
+
+	super browserClosed.
+	application unregisterProducer: self
+]
+
 { #category : #testing }
 MiTagBrowser >> canFollowEntity: anObject [
 	^ anObject isCollection
@@ -89,7 +96,9 @@ MiTagBrowser >> createTag: name description: aText color: aColor [
 	(aText notNil and: [ aText isNotEmpty ]) ifTrue: [ 
 		newTag description: aText ].
 	aColor notNil ifTrue: [ newTag color: aColor ].
-	tagManagementPage refreshTagList
+	tagManagementPage refreshTagList.
+	application consumeItem: newTag
+	
 ]
 
 { #category : #actions }
@@ -101,8 +110,9 @@ MiTagBrowser >> followEntity: anEntity [
 
 { #category : #initialization }
 MiTagBrowser >> initialize [
+
 	super initialize.
-	tagIsIntent := true
+	application registerProducer: self for: FamixTag
 ]
 
 { #category : #initialization }
@@ -119,6 +129,12 @@ MiTagBrowser >> initializePresenters [
 	tagCreationForm := MiTagCreationForm owner: self.
 	tagManagementPage := MiTagManagementPage owner: self.
 	self initializeLayout
+]
+
+{ #category : #brokerage }
+MiTagBrowser >> itemsFor: aClass [
+
+	^ tagModel allTags
 ]
 
 { #category : #accessing }
