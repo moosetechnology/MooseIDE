@@ -83,10 +83,12 @@ MiDistributionMapBuilder >> buildCompositeFullNodeIn: shape [
 	shape propertyAt: #background put: titleBox.
 	childrenShapes := self childrenFor: node.
 	self layoutOn: childrenShapes parent: node.
+	
 
 	shape schildren: childrenShapes.
 	childrenShapes do: [ :child | child sparent: shape ].
 	children := childrenShapes asShape padding: 3.
+	childrenShapes ifEmpty: [ children extent: self emptyBoxExtent].
 	childrenShapes do: [ :child | child model position: child position ].
 	title width: children width.
 	
@@ -168,6 +170,12 @@ MiDistributionMapBuilder >> elementWidth [
 ]
 
 { #category : #hooks }
+MiDistributionMapBuilder >> emptyBoxExtent [
+
+	^ 30@20
+]
+
+{ #category : #hooks }
 MiDistributionMapBuilder >> layoutOn: aGroupOfShapes parent: shape [
 	aGroupOfShapes ifEmpty: [ ^ self ].
 	self relayout: aGroupOfShapes parent: shape.
@@ -208,4 +216,32 @@ MiDistributionMapBuilder >> relayout: aGroupOfShapes parent: shape [
 				 ifTrue: [ 10 ]
 				 ifFalse: [ 3 ]);
 		on: aGroupOfShapes
+]
+
+{ #category : #accessing }
+MiDistributionMapBuilder >> renderIn: aCanvas [
+
+	| rootShapes |
+	aCanvas color: Smalltalk ui theme backgroundColor.
+	rootShapes := rootNode children 
+		collect: [:child | (self shapeFor: child) sparent: aCanvas ]
+		as: RSGroup.
+	aCanvas addAll: rootShapes.
+	self layoutOn: rootShapes parent: rootNode
+]
+
+{ #category : #accessing }
+MiDistributionMapBuilder >> shapeFor: node [
+
+	| shape |
+	shape := RSComposite new
+		model: node;
+		announcer: self nodeAnnouncer;
+		yourself.
+	
+	(node level = 1) 
+		ifTrue: [ self buildCompositeFullNodeIn: shape ]
+		ifFalse: [ self buildCompositeEmptyNodeIn: shape ].
+	
+	^ shape 
 ]
