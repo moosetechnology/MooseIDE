@@ -202,7 +202,7 @@ MiApplication >> start [
 MiApplication >> unregisterConsumer: aConsumer [
 	"removes aConsumer from all lists of consumers for any class"
 	consumers do: [ :consumerList |
-		consumerList remove: aConsumer
+		consumerList remove: aConsumer ifAbsent: [  ]
 	]
 
 ]
@@ -211,7 +211,7 @@ MiApplication >> unregisterConsumer: aConsumer [
 MiApplication >> unregisterProducer: aProducer [
 	"removes aProducer from all lists of producers for any class"
 	producers do: [ :producerList |
-		producerList remove: aProducer
+		producerList remove: aProducer ifAbsent: [  ]
 	]
 
 ]
