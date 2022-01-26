@@ -178,7 +178,8 @@ MiTagBrowser >> setModelBeforeInitialization: aTagModel [
 { #category : #initialization }
 MiTagBrowser >> setTagTo: aTag [
 
-	self tagModel currentTag: aTag
+	self tagModel currentTag: aTag.
+	self updateToolbar
 ]
 
 { #category : #testing }
