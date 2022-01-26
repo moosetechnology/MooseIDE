@@ -5,93 +5,77 @@ Class {
 	#name : #MiTagManagementPage,
 	#superclass : #MiPresenter,
 	#instVars : [
-		'rgbColorChooser',
-		'tagManagement',
-		'descriptionText',
 		'categoryManagement',
-		'tagBrowser'
+		'tagList',
+		'descriptionPage'
 	],
 	#category : #'MooseIDE-Tagging-Browser'
 }
 
-{ #category : #specs }
-MiTagManagementPage class >> defaultSpec [
-
-	^ SpBoxLayout newTopToBottom
-		  add: (SpBoxLayout newLeftToRight
-				   add: (SpBoxLayout newTopToBottom
-						    add: 'Category' expand: false;
-						    add: #categoryManagement;
-						    yourself);
-				   add: (SpBoxLayout newTopToBottom
-						    add: 'Tag' expand: false;
-						    add: #tagManagement;
-						    yourself);
-				   yourself);
-		  add: 'Description:' expand: false;
-		  add: #descriptionText;
-		  add: 'Color:' expand: false;
-		  add: #rgbColorChooser expand: false;
-		  yourself
-]
-
 { #category : #action }
-MiTagManagementPage >> createCategory [
-	| newCat |
-	newCat := self tagModel addCategory: categoryManagement nameEntered.
-	categoryManagement clearName.
-	self refreshCategoryList.
-	categoryManagement selectName: newCat
-]
+MiTagManagementPage >> deleteCurrentTag [
 
-{ #category : #action }
-MiTagManagementPage >> createTag [
-	|newTag |
-	newTag := self tagModel addTag: tagManagement nameEntered.
-	tagManagement clearName.
-	self refreshTagList.
-	tagManagement selectName: newTag
+	|tag|
+	tag := self tagModel deleteCurrentTag.
+	self owner application consumeItem: tag.
+	descriptionPage hide.
+	self refreshTagList
 ]
 
 { #category : #initialization }
-MiTagManagementPage >> initializeCategoryManagementPart [
-	categoryManagement := (self instantiate: SpAddRemoveListPresenter)
-		nameDisplayBlock: [ :object | object "because categories are not implemented yet" ] ;
-		whenSelectedNameChangedDo: [ :cat | self tagModel currentCategory: cat ] ;
-		addNameAction: [ self createCategory ] ;
-		delNameAction: [ self removeCategory ] ;
-		yourself
+MiTagManagementPage >> initialize [
+
+	super initialize
 ]
 
 { #category : #initialization }
-MiTagManagementPage >> initializeColorChooserPart [
+MiTagManagementPage >> initializeLayout [
 
-	rgbColorChooser := self instantiate: SpRGBChooser
+	| sep |
+	(sep := SpRoassalPresenter new) canvas color: (Color
+			 r: 40
+			 g: 40
+			 b: 40
+			 range: 255) translucent.
+
+	self layout: (SpBoxLayout newLeftToRight
+			 spacing: 4;
+			 add: (SpBoxLayout newTopToBottom
+					  spacing: 3;
+					  add: (SpBoxLayout newLeftToRight
+							   add: 'Tags' asPresenter;
+							   hAlignCenter;
+							   yourself)
+					  expand: false;
+					  add: tagList;
+					  yourself)
+			 width: 200;
+			 add: sep width: 2;
+			 add: descriptionPage;
+			 yourself)
 ]
 
 { #category : #initialization }
 MiTagManagementPage >> initializePresenters [
 
-	self initializeCategoryManagementPart.
-	self initializeTagManagementPart.
-	self initializeColorChooserPart
-]
-
-{ #category : #initialization }
-MiTagManagementPage >> initializeTagManagementPart [
-	tagManagement := (self instantiate: SpAddRemoveListPresenter)
-		whenSelectedNameChangedDo: [ :tag | self tagModel currentTag: tag ];
-		addNameAction: [ self createTag ];
-		delNameAction: [ self removeTag ];
-		yourself.
-
-	descriptionText := self newText.
-
+	descriptionPage := MiTagExtentPage owner: self.
+	descriptionPage hide.
+	tagList := self instantiate: MiTagListPresenter.
+	tagList display: [ :aTag | aTag name ].
+	tagList list
+		displayIcon: [ :aTag | self tagModel iconForTag: aTag ];
+		whenSelectionChangedDo: [ :selection | 
+			selection selectedItem ifNotNil: [ :item | self setTagTo: item ] ].
+	tagList addButton action: [ self owner openTagCreationForm ].
+	self initializeLayout
 ]
 
 { #category : #refreshing }
-MiTagManagementPage >> onBrowserPageRedisplay [
-	"nothing to do"
+MiTagManagementPage >> refresh [
+
+	self refreshTagList.
+	descriptionPage refreshEntitiesList.
+	descriptionPage refreshTaggedEntitiesList
 ]
 
 { #category : #refreshing }
@@ -103,7 +87,8 @@ MiTagManagementPage >> refreshCategoryList [
 { #category : #refreshing }
 MiTagManagementPage >> refreshTagList [
 
-	tagManagement refreshList: self tagModel allTags
+	tagList items:
+		(self tagModel allTags sort: [ :t1 :t2 | t1 name <= t2 name ])
 ]
 
 { #category : #action }
@@ -114,20 +99,18 @@ MiTagManagementPage >> removeCategory [
 ]
 
 { #category : #action }
-MiTagManagementPage >> removeTag [
+MiTagManagementPage >> setTagTo: aTag [
 
-	self tagModel deleteCurrentTag.
-	self refreshTagList
-]
-
-{ #category : #initialization }
-MiTagManagementPage >> setModelBeforeInitialization: aTagBrowser [
-
-	tagBrowser := aTagBrowser
+	self owner setTagTo: aTag.
+	descriptionPage setTag: aTag.
+	descriptionPage show.
+	descriptionPage refreshEntitiesList.
+	descriptionPage refreshTaggedEntitiesList.
+	self update
 ]
 
 { #category : #accessing }
 MiTagManagementPage >> tagModel [
 
-	^ tagBrowser tagModel
+	^ self owner tagModel
 ]
