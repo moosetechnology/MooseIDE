@@ -78,9 +78,8 @@ MiTagBrowser >> browserClosed [
 
 { #category : #testing }
 MiTagBrowser >> canFollowEntity: anObject [
-	^ anObject isCollection
-		and: [ anObject
-				anySatisfy: [ :a | a usesFamixTrait: FamixTNamedEntity ] ]
+
+	^ anObject isMooseObject
 ]
 
 { #category : #initialization }
