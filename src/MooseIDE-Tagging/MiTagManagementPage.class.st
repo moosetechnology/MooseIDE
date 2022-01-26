@@ -17,7 +17,7 @@ MiTagManagementPage >> deleteCurrentTag [
 
 	|tag|
 	tag := self tagModel deleteCurrentTag.
-	self owner application consumeItem: tag.
+	self owner application removeItem: tag.
 	descriptionPage hide.
 	self refreshTagList
 ]
@@ -89,6 +89,12 @@ MiTagManagementPage >> refreshTagList [
 
 	tagList items:
 		(self tagModel allTags sort: [ :t1 :t2 | t1 name <= t2 name ])
+]
+
+{ #category : #initialization }
+MiTagManagementPage >> refreshTaggedEntitiesList [
+
+	descriptionPage refreshTaggedEntitiesList
 ]
 
 { #category : #action }

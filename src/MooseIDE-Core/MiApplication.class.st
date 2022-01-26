@@ -186,6 +186,13 @@ MiApplication >> registerWindow: aWindow [
 	self updateOverviewBrowsers
 ]
 
+{ #category : #brokerage }
+MiApplication >> removeItem: anItem [
+	(self consumersOf: anItem class) do: [ :aConsumer |
+		aConsumer remove: anItem
+	]
+]
+
 { #category : #running }
 MiApplication >> start [
 	"we will see"
