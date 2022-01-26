@@ -8,16 +8,6 @@ Class {
 	#category : #'MooseIDE-Core-Overview'
 }
 
-{ #category : #specs }
-MiBrowserPresenter class >> defaultSpec [
-	^ SpBoxLayout newHorizontal
-		add: #nameLabel;
-		add: SpNullPresenter new;
-		add: #topButton expand: false;
-		add: #closeButton expand: false;
-		yourself
-]
-
 { #category : #actions }
 MiBrowserPresenter >> activateItem: aBus [
 	model followBus: aBus
@@ -31,6 +21,17 @@ MiBrowserPresenter >> deactivateItem: aBus [
 { #category : #actions }
 MiBrowserPresenter >> highlightWindow [
 	model window beep
+]
+
+{ #category : #initialization }
+MiBrowserPresenter >> initializeLayout [
+
+	self layout: (SpBoxLayout newHorizontal
+		add: nameLabel;
+		add: SpNullPresenter new;
+		add: topButton expand: false;
+		add: closeButton expand: false;
+		yourself)
 ]
 
 { #category : #initialization }
@@ -49,7 +50,9 @@ MiBrowserPresenter >> initializePresenters [
 		               iconName: #delete;
 		               label: 'Close';
 		               action: [ model window close ];
-		               yourself
+		               yourself.
+		
+	self initializeLayout
 ]
 
 { #category : #settings }

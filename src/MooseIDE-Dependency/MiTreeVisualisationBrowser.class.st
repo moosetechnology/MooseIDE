@@ -52,16 +52,16 @@ MiTreeVisualisationBrowser class >> title [
 ]
 
 { #category : #testing }
-MiTreeVisualisationBrowser >> canHighlight [
-
-	^ true
-]
-
-{ #category : #testing }
-MiTreeVisualisationBrowser >> canReceiveEntity: anEntity [
+MiTreeVisualisationBrowser >> canFollowEntity: anEntity [
 
 	^ (anEntity usesFamixTrait: TEntityMetaLevelDependency) and: [ 
 		  self needUpdate: anEntity ]
+]
+
+{ #category : #testing }
+MiTreeVisualisationBrowser >> canHighlight [
+
+	^ true
 ]
 
 { #category : #actions }
@@ -70,7 +70,7 @@ MiTreeVisualisationBrowser >> followEntity: anEntity [
 	model root: anEntity.
 	diagram
 		run;
-		selectEntity: anEntity
+		receiveEntity: anEntity
 ]
 
 { #category : #actions }

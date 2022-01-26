@@ -87,7 +87,7 @@ MiExportBrowser >> addCommentsColumn [
 ]
 
 { #category : #testing }
-MiExportBrowser >> canReceiveEntity: anObject [
+MiExportBrowser >> canFollowEntity: anObject [
 
 	^ true
 ]

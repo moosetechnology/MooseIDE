@@ -60,7 +60,7 @@ MiSourceTextBrowser class >> windowSize [
 ]
 
 { #category : #testing }
-MiSourceTextBrowser >> canReceiveEntity: anObject [
+MiSourceTextBrowser >> canFollowEntity: anObject [
 
 	^ anObject usesFamixTrait: FamixTSourceEntity
 ]
@@ -69,14 +69,14 @@ MiSourceTextBrowser >> canReceiveEntity: anObject [
 MiSourceTextBrowser >> followEntity: anEntity [
 
 	model selected: anEntity.
-	self text: model sourceText.
+	self text: model formatedSource.
 	self updateWindowTitleWith: anEntity name
 ]
 
 { #category : #initialization }
 MiSourceTextBrowser >> initializePresenters [
 
-	sourceText := self newText
+	sourceText := self newText beNotEditable 
 ]
 
 { #category : #accessing }
@@ -87,7 +87,6 @@ MiSourceTextBrowser >> miSelectedItem [
 
 { #category : #actions }
 MiSourceTextBrowser >> text: aText [
-
 	sourceText text: aText
 ]
 

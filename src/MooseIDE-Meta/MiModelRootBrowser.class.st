@@ -84,7 +84,7 @@ MiModelRootBrowser class >> windowSize [
 ]
 
 { #category : #testing }
-MiModelRootBrowser >> canReceiveEntity: anObject [
+MiModelRootBrowser >> canFollowEntity: anObject [
 	^ false
 ]
 

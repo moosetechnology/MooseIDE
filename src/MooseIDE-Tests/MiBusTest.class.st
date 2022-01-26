@@ -44,7 +44,7 @@ MiBusTest >> testGloballySelect [
 
 	bus globallySelect: entity.
 	self assert: bus logger mostRecentEntity identicalTo: entity.
-	browser should receive selectEntity: entity.
+	browser should receive receiveEntity: entity.
 ]
 
 { #category : #tests }

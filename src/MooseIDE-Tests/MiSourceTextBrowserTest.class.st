@@ -14,7 +14,7 @@ MiSourceTextBrowserTest >> testActivateActionButtons [
 
 	browser actionButtons do: [ :button | self deny: button isEnabled ].
 
-	browser selectEntity: (FamixStClass named: 'TestClass').
+	browser receiveEntity: (FamixStClass named: 'TestClass').
 
 	browser actionButtons do: [ :button | self assert: button isEnabled ]
 ]
@@ -29,4 +29,12 @@ MiSourceTextBrowserTest >> testMiSelectedItem [
 	browser followEntity: entityToSelect.
 
 	self assert: browser miSelectedItem equals: entityToSelect
+]
+
+{ #category : #tests }
+MiSourceTextBrowserTest >> testShowNoSourceCodeMessage [
+
+	browser receiveEntity: (FamixStClass named: 'TestClass').
+	self assert: browser sourceText text equals: 'There is no source code to show for TestClass'
+
 ]
