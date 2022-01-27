@@ -72,20 +72,27 @@ MiTagBrowser class >> windowSize [
 MiTagBrowser >> browserClosed [
 
 	super browserClosed.
-	application unregisterProducer: self
+	application unregisterProducer: self.
+	application unregisterConsumer: self
 ]
 
 { #category : #testing }
 MiTagBrowser >> canFollowEntity: anObject [
-	^ anObject isCollection
-		and: [ anObject
-				anySatisfy: [ :a | a usesFamixTrait: FamixTNamedEntity ] ]
+
+	^ anObject isMooseObject
 ]
 
 { #category : #initialization }
 MiTagBrowser >> closeTagCreationForm [
 
 	self layout replace: tagCreationForm with: tagManagementPage
+]
+
+{ #category : #testing }
+MiTagBrowser >> consume: aTagAssociation [
+
+	self tagModel currentTag = aTagAssociation tag ifTrue: [ 
+		tagManagementPage refreshTaggedEntitiesList ]
 ]
 
 { #category : #testing }
@@ -104,7 +111,9 @@ MiTagBrowser >> createTag: name description: aText color: aColor [
 { #category : #actions }
 MiTagBrowser >> followEntity: anEntity [
 
-	tagModel entities: anEntity.
+	tagModel entities: (anEntity isCollection
+			 ifTrue: [ anEntity ]
+			 ifFalse: [ anEntity asMooseGroup ]).
 	tagManagementPage refresh
 ]
 
@@ -112,7 +121,8 @@ MiTagBrowser >> followEntity: anEntity [
 MiTagBrowser >> initialize [
 
 	super initialize.
-	application registerProducer: self for: FamixTag
+	application registerProducer: self for: FamixTag.
+	application registerConsumer: self for: FamixTagAssociation
 ]
 
 { #category : #initialization }
@@ -140,7 +150,9 @@ MiTagBrowser >> itemsFor: aClass [
 { #category : #accessing }
 MiTagBrowser >> miSelectedItem [
 
-	^ tagModel entities
+	^ tagModel currentTag
+		  ifNil: [ ^ nil ]
+		  ifNotNil: [ :tag | tag taggedEntities asMooseGroup ]
 ]
 
 { #category : #initialization }
@@ -148,6 +160,12 @@ MiTagBrowser >> openTagCreationForm [
 
 	tagCreationForm reset.
 	self layout replace: tagManagementPage with: tagCreationForm
+]
+
+{ #category : #testing }
+MiTagBrowser >> remove: aTagAssociation [
+
+	tagManagementPage refreshTaggedEntitiesList 
 ]
 
 { #category : #'accessing - model' }
@@ -160,7 +178,8 @@ MiTagBrowser >> setModelBeforeInitialization: aTagModel [
 { #category : #initialization }
 MiTagBrowser >> setTagTo: aTag [
 
-	self tagModel currentTag: aTag
+	self tagModel currentTag: aTag.
+	self updateToolbar
 ]
 
 { #category : #testing }
