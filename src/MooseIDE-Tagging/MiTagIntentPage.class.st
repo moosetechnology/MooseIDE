@@ -5,7 +5,7 @@ This is the so called _Intent description_ of the tag
 "
 Class {
 	#name : #MiTagIntentPage,
-	#superclass : #MiAbstractTagNotebookPage,
+	#superclass : #MiPresenter,
 	#instVars : [
 		'queryList',
 		'selectedQuery',
@@ -15,11 +15,6 @@ Class {
 	],
 	#category : #'MooseIDE-Tagging-Browser'
 }
-
-{ #category : #accessing }
-MiTagIntentPage class >> defaultTitle [
-	^'Tag Intent'
-]
 
 { #category : #initialization }
 MiTagIntentPage >> initializeLayout [
