@@ -14,7 +14,7 @@ Class {
 		'addAllButton',
 		'removeButton',
 		'removeAllButton',
-		'tagBrowser',
+		'tagModel',
 		'tagDescription'
 	],
 	#category : #'MooseIDE-Tagging-Browser'
@@ -119,7 +119,7 @@ MiTagExtentPage >> initializePresenters [
 		                               displayIcon: [ :entity | 
 			                               entity mooseIcon ];
 		                               yourself.
-	tagDescription := self instantiate: MiTagDescription.
+	tagDescription := self instantiate: MiTagDescription on: tagModel.
 	self refreshTaggedEntitiesList.
 	self initializeButtons.
 	self initializeLayout
@@ -168,7 +168,7 @@ MiTagExtentPage >> removeAll [
 { #category : #initialization }
 MiTagExtentPage >> setModelBeforeInitialization: aTagBrowser [
 
-	tagBrowser := aTagBrowser
+	tagModel := aTagBrowser
 ]
 
 { #category : #accessing }
@@ -181,7 +181,7 @@ MiTagExtentPage >> setTag: aTag [
 { #category : #accessing }
 MiTagExtentPage >> tagModel [
 
-	^ self owner tagModel
+	^ tagModel
 ]
 
 { #category : #accessing }

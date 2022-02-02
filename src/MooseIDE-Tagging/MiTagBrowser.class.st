@@ -91,21 +91,21 @@ MiTagBrowser >> closeTagCreationForm [
 { #category : #testing }
 MiTagBrowser >> consume: aTagAssociation [
 
-	self tagModel currentTag = aTagAssociation tag ifTrue: [ 
+	tagModel currentTag = aTagAssociation tag ifTrue: [ 
 		tagManagementPage refreshTaggedEntitiesList ]
 ]
 
 { #category : #testing }
-MiTagBrowser >> createTag: name description: aText color: aColor [
+MiTagBrowser >> createTag: name description: aText color: aColor category: aCategory [
 
 	| newTag |
-	newTag := self tagModel addTag: name.
+	newTag := tagModel addTag: name.
 	(aText notNil and: [ aText isNotEmpty ]) ifTrue: [ 
 		newTag description: aText ].
-	aColor notNil ifTrue: [ newTag color: aColor ].
+	aColor ifNotNil: [ newTag color: aColor ].
 	tagManagementPage refreshTagList.
+	aCategory ifNotNil: [ aCategory addTag: newTag ].
 	application consumeItem: newTag
-	
 ]
 
 { #category : #actions }
@@ -136,8 +136,8 @@ MiTagBrowser >> initializeLayout [
 { #category : #initialization }
 MiTagBrowser >> initializePresenters [
 
-	tagCreationForm := MiTagCreationForm owner: self.
-	tagManagementPage := MiTagManagementPage owner: self.
+	tagCreationForm := self instantiate: MiTagCreationForm on: tagModel.
+	tagManagementPage := self instantiate: MiTagManagementPage on: tagModel.
 	self initializeLayout
 ]
 
@@ -155,11 +155,20 @@ MiTagBrowser >> miSelectedItem [
 		  ifNotNil: [ :tag | tag taggedEntities asMooseGroup ]
 ]
 
+{ #category : #testing }
+MiTagBrowser >> newTagSelected [
+
+	self updateToolbar
+]
+
 { #category : #initialization }
 MiTagBrowser >> openTagCreationForm [
 
-	tagCreationForm reset.
-	self layout replace: tagManagementPage with: tagCreationForm
+	tagCreationForm
+		reset;
+		updateCategories.
+	self layout replace: tagManagementPage with: tagCreationForm.
+	tagCreationForm update
 ]
 
 { #category : #testing }
@@ -179,7 +188,6 @@ MiTagBrowser >> setModelBeforeInitialization: aTagModel [
 MiTagBrowser >> setTagTo: aTag [
 
 	self tagModel currentTag: aTag.
-	self updateToolbar
 ]
 
 { #category : #testing }

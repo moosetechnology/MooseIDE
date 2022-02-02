@@ -5,7 +5,8 @@ Class {
 		'tagFormPresenter',
 		'tagNameLabel',
 		'tagDescriptionText',
-		'tagDescriptionButton'
+		'tagDescriptionButton',
+		'tagModel'
 	],
 	#category : #'MooseIDE-Tagging-Browser'
 }
@@ -58,12 +59,18 @@ MiTagDescription >> initializePresenters [
 ]
 
 { #category : #initialization }
+MiTagDescription >> setModelBeforeInitialization: aTagModel [
+
+	tagModel := aTagModel
+]
+
+{ #category : #initialization }
 MiTagDescription >> setTag: aTag [
 
 	tagNameLabel label: aTag name.
 	tagDescriptionText text: 'Description: ' , (aTag description
 			 ifNotNil: [ :text | text ]
 			 ifNil: [ 'No description.' ]).
-	tagFormPresenter image: (self owner tagModel iconForTag: aTag).
+	tagFormPresenter image: (tagModel iconForTag: aTag).
 	self update
 ]
