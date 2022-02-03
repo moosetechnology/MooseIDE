@@ -56,6 +56,11 @@ MiTagDescription >> initializePresenters [
 				                         icon: (self iconNamed: #help);
 				                         yourself);
 		                        addItem: (self newToolbarButton
+				                         icon: (self iconNamed: #smallCogState3);
+				                         help: 'Edit tag';
+				                         action: [ self owner editCurrentTag ];
+				                         yourself);
+		                        addItem: (self newToolbarButton
 				                         icon: (self iconNamed: #delete);
 				                         help: 'Delete Tag';
 				                         action: [ self owner deleteCurrentTag ];
@@ -63,6 +68,12 @@ MiTagDescription >> initializePresenters [
 		                        yourself.
 	tagFormPresenter := self newImage.
 	self initializeLayout
+]
+
+{ #category : #initialization }
+MiTagDescription >> refresh [
+
+	self setTag: tagModel currentTag
 ]
 
 { #category : #initialization }
@@ -74,6 +85,7 @@ MiTagDescription >> setModelBeforeInitialization: aTagModel [
 { #category : #initialization }
 MiTagDescription >> setTag: aTag [
 
+	aTag ifNil: [ ^self ].
 	tagNameLabel label: aTag name.
 	tagDescriptionText text: (aTag description
 			 ifNotNil: [ :text | text ]

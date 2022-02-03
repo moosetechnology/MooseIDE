@@ -99,6 +99,14 @@ MiTagBrowserModel >> entitiesTaggedWithCurrentTag [
 ]
 
 { #category : #accessing }
+MiTagBrowserModel >> getTagNamed: tagName [
+
+	^ [ self mooseModel findTagNamed: tagName ]
+		  on: NotFound
+		  do: [ nil ]
+]
+
+{ #category : #accessing }
 MiTagBrowserModel >> iconForTag: aTag [
 
 	| arr |

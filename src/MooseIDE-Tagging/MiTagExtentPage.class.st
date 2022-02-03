@@ -51,6 +51,12 @@ MiTagExtentPage >> deleteCurrentTag [
 	self owner deleteCurrentTag
 ]
 
+{ #category : #action }
+MiTagExtentPage >> editCurrentTag [
+
+	self owner editCurrentTag
+]
+
 { #category : #initialization }
 MiTagExtentPage >> initializeButtons [
 
@@ -137,9 +143,24 @@ MiTagExtentPage >> onBrowserPageRedisplay [
 ]
 
 { #category : #refreshing }
+MiTagExtentPage >> refresh [
+
+	self refreshTagDescription.
+	self refreshEntitiesList. 
+	self refreshTaggedEntitiesList.
+	
+]
+
+{ #category : #refreshing }
 MiTagExtentPage >> refreshEntitiesList [
 	
 	incomingEntitiesFilteringList items: self tagModel entities
+]
+
+{ #category : #refreshing }
+MiTagExtentPage >> refreshTagDescription [
+
+	tagDescription refresh
 ]
 
 { #category : #refreshing }

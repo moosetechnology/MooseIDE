@@ -1,39 +1,46 @@
-"
-A tag creation form.
-"
 Class {
-	#name : #MiTagCreationForm,
-	#superclass : #MiPresenter,
-	#instVars : [
-		'nameField',
-		'descriptionField',
-		'addButton',
-		'clearButton',
-		'colorPicker',
-		'tagModel',
-		'categorySelection'
-	],
+	#name : #MiTagEditionForm,
+	#superclass : #MiTagCreationForm,
 	#category : #'MooseIDE-Tagging-Browser'
 }
 
 { #category : #initialization }
-MiTagCreationForm >> checkFormInputs [
+MiTagEditionForm >> checkFormInputs [
 
 	nameField text ifEmpty: [ ^ false ].
+	(tagModel getTagNamed: nameField text) ifNotNil: [ :tag | 
+		tagModel currentTag = tag ifFalse: [ ^ false ] ].
 	^ true
 ]
 
 { #category : #initialization }
-MiTagCreationForm >> connectPresenters [
+MiTagEditionForm >> connectPresenters [
 
 	clearButton action: [ 
 		self reset.
-		self owner closeTagCreationForm ].
-	addButton action: [ self submit ].
+		self owner closeTagEditionForm ].
+	addButton action: [ self submit ]
+]
+
+{ #category : #accessing }
+MiTagEditionForm >> fillFormWithTag: aTag [
+
+	aTag ifNil: [ ^ self ].
+	aTag name ifNotNil: [ :name | nameField text: name ].
+	aTag description ifNotNil: [ :desc | descriptionField text: desc ].
+	aTag color ifNotNil: [ :color | colorPicker setColor: color ].
+	aTag categories ifNotEmpty: [ 
+		categorySelection selectItem: aTag categories first ]
+]
+
+{ #category : #accessing }
+MiTagEditionForm >> fillWithCurrentTag [
+
+	self fillFormWithTag: tagModel currentTag
 ]
 
 { #category : #initialization }
-MiTagCreationForm >> initializeLayout [
+MiTagEditionForm >> initializeLayout [
 
 	| sep colorPickerWidth headerLayout inputFieldsLayout formLayout |
 	colorPickerWidth := 240.
@@ -50,7 +57,7 @@ MiTagCreationForm >> initializeLayout [
 				                 yourself)
 		                width: colorPickerWidth;
 		                add: (SpBoxLayout newLeftToRight
-				                 add: 'Create Tag' asPresenter;
+				                 add: 'Edit Tag' asPresenter;
 				                 hAlignCenter;
 				                 yourself);
 		                yourself.
@@ -101,61 +108,21 @@ MiTagCreationForm >> initializeLayout [
 ]
 
 { #category : #initialization }
-MiTagCreationForm >> initializePresenters [
+MiTagEditionForm >> initializePresenters [
 
-	nameField := self newTextInput.
-	descriptionField := self newText.
-	addButton := self newButton
-		             label: 'Add';
-		             icon: (self iconNamed: #glamorousAccept);
-		             yourself.
-	clearButton := self newButton
-		               label: 'Cancel';
-		               icon: (self iconNamed: #delete);
-		               yourself.
-	(colorPicker := self instantiate: MiColorPicker) setColor:
-		Color random.
-	categorySelection := self newDropList
-		                     sortingBlock: [ :c1 :c2 | 
-			                     c1 model ifNil: [ true ] ifNotNil: [ 
-					                     c2 model
-						                     ifNil: [ false ]
-						                     ifNotNil: [ c1 model name < c2 model name ] ] ];
-		                     display: [ :cat | 
-			                     cat ifNil: [ '' ] ifNotNil: [ cat name ] ];
-		                     yourself.
-	self initializeLayout
+	super initializePresenters.
+	addButton label: 'Edit'
 ]
 
 { #category : #initialization }
-MiTagCreationForm >> reset [
-
-	colorPicker setColor: Color random.
-	nameField text: ''.
-	descriptionField text: ''.
-	categorySelection resetSelection
-]
-
-{ #category : #initialization }
-MiTagCreationForm >> setModelBeforeInitialization: aTagModel [
-
-	tagModel := aTagModel
-]
-
-{ #category : #initialization }
-MiTagCreationForm >> submit [
+MiTagEditionForm >> submit [
 
 	self checkFormInputs ifFalse: [ ^ self ].
+	
 	self owner
-		createTag: nameField text
+		editCurrentTag: nameField text
 		description: descriptionField text
 		color: colorPicker color
 		category: categorySelection selectedItem.
-	self owner closeTagCreationForm
-]
-
-{ #category : #private }
-MiTagCreationForm >> updateCategories [
-
-	categorySelection items: { nil }, tagModel allCategories
+	self owner closeTagEditionForm
 ]

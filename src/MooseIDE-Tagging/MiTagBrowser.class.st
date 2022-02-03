@@ -13,7 +13,8 @@ Class {
 		'tagIntentPage',
 		'tagExtentPage',
 		'tagIsIntent',
-		'tagCreationForm'
+		'tagCreationForm',
+		'tagEditionForm'
 	],
 	#category : #'MooseIDE-Tagging-Browser'
 }
@@ -88,6 +89,12 @@ MiTagBrowser >> closeTagCreationForm [
 	self layout replace: tagCreationForm with: tagManagementPage
 ]
 
+{ #category : #initialization }
+MiTagBrowser >> closeTagEditionForm [
+
+	self layout replace: tagEditionForm with: tagManagementPage
+]
+
 { #category : #testing }
 MiTagBrowser >> consume: aTagAssociation [
 
@@ -104,8 +111,29 @@ MiTagBrowser >> createTag: name description: aText color: aColor category: aCate
 		newTag description: aText ].
 	aColor ifNotNil: [ newTag color: aColor ].
 	tagManagementPage refreshTagList.
-	aCategory ifNotNil: [ aCategory addTag: newTag ].
+	aCategory ifNotNil: [ 
+		aCategory addTag: newTag.
+		newTag addCategory: aCategory ].
 	application consumeItem: newTag
+]
+
+{ #category : #actions }
+MiTagBrowser >> editCurrentTag: name description: description color: color category: category [
+
+	| tag |
+	tag := tagModel currentTag.
+	tag ifNil: [ ^ false ].
+
+	(name isNil or: [ name isEmpty ]) ifTrue: [ ^ false ].
+
+	tag name: name.
+	tag description: description.
+	tag color: color.
+	tag categories ifNotEmpty: [ 
+		tag removeCategory: tag categories first ].
+	tag addCategory: category.
+	tagManagementPage refresh.
+	^ true
 ]
 
 { #category : #actions }
@@ -138,6 +166,7 @@ MiTagBrowser >> initializePresenters [
 
 	tagCreationForm := self instantiate: MiTagCreationForm on: tagModel.
 	tagManagementPage := self instantiate: MiTagManagementPage on: tagModel.
+	tagEditionForm := self instantiate: MiTagEditionForm on: tagModel. 
 	self initializeLayout
 ]
 
@@ -169,6 +198,17 @@ MiTagBrowser >> openTagCreationForm [
 		updateCategories.
 	self layout replace: tagManagementPage with: tagCreationForm.
 	tagCreationForm update
+]
+
+{ #category : #initialization }
+MiTagBrowser >> openTagEditionForm [
+
+	tagEditionForm
+		reset;
+		updateCategories.
+	self layout replace: tagManagementPage with: tagEditionForm.
+	tagEditionForm fillWithCurrentTag.
+	tagEditionForm update
 ]
 
 { #category : #testing }

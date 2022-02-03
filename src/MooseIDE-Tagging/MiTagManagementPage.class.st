@@ -23,6 +23,12 @@ MiTagManagementPage >> deleteCurrentTag [
 	self refreshTagList
 ]
 
+{ #category : #action }
+MiTagManagementPage >> editCurrentTag [
+
+	self owner openTagEditionForm
+]
+
 { #category : #initialization }
 MiTagManagementPage >> initializeLayout [
 
@@ -69,6 +75,7 @@ MiTagManagementPage >> initializePresenters [
 { #category : #refreshing }
 MiTagManagementPage >> refresh [
 
+	self refreshDescriptionPage.
 	self refreshTagList.
 	self refreshCategoryList.
 	descriptionPage refreshEntitiesList.
@@ -79,6 +86,12 @@ MiTagManagementPage >> refresh [
 MiTagManagementPage >> refreshCategoryList [
 
 	categoryManagement refreshCategoryList
+]
+
+{ #category : #refreshing }
+MiTagManagementPage >> refreshDescriptionPage [
+
+	descriptionPage refresh
 ]
 
 { #category : #refreshing }
