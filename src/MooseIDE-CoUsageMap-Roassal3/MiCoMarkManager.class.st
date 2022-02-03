@@ -98,7 +98,9 @@ MiCoMarkManager >> createGlobalMenuOn: menu [
 			selector: #automaticColor
 			argumentList: #())
 		icon: (self iconNamed: #smallPaint).
-	menu addMorphBack: 'Method group threshold:' asStringMorph.
+	menu addMorphBack: (('Threshold for 75% strategy:' asStringMorph)
+		width: 200;
+		yourself).
 	menu addMorphBack: self newSlider.
 ]
 

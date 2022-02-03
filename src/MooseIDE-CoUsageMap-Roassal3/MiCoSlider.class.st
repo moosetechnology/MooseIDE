@@ -10,7 +10,8 @@ Class {
 		'value',
 		'getValueSelector',
 		'setValueSelector',
-		'model'
+		'model',
+		'label'
 	],
 	#category : #'MooseIDE-CoUsageMap-Roassal3'
 }
@@ -49,7 +50,13 @@ MiCoSlider >> renderIn: aCanvas [
 		cornerRadius: radius;
 		isFixed: true;
 		yourself.
+	label := RSLabel new
+		color: Color red;
+		isFixed: true;
+		text: 123;
+		yourself.
 	aCanvas addShape: bar.
+	aCanvas addShape: label.
 	value := self valueFromModel.
 	self resizeSlider: aCanvas.
 	aCanvas 
@@ -74,9 +81,13 @@ MiCoSlider >> resizeSlider: evt [
 		1 -> gray. }.
 	paint start: extent x / -2 @0.
 	paint stop: extent x / 2 @ 0.
+	label text: (value * 100) asInteger asString, '%'.
+	label position: extent / 2.
+	
 	bar paint: paint.
 	bar extent: extent.
-	RSHorizontalLineLayout new gapSize: 0; on: evt canvas fixedShapes.
+	bar position: extent / 2.
+	
 	
 ]
 
