@@ -30,7 +30,7 @@ MiCoMarkManager >> automaticColorForMethod: aMiCoMethod [
 		groupedBy: [ :att | att tag ].
 	groupsByTag ifEmpty: [
 		 "nothing to compare" ^ self ].
-	self strategies do: [ :strat | |  |
+	self strategies do: [ :strat |
 		strat
 			method: aMiCoMethod;
 			groupsByTag: groupsByTag.
@@ -48,7 +48,7 @@ MiCoMarkManager >> automaticColorForMethod: aMiCoMethod [
 	
 ]
 
-{ #category : #public }
+{ #category : #private }
 MiCoMarkManager >> changeTagsDuring: aBlockClosure [
 	| lastTag |
 	lastTag := self lastTagSelected.
@@ -79,7 +79,7 @@ MiCoMarkManager >> conflictTag [
 	^ self coUsageMap legendTag conflictTag
 ]
 
-{ #category : #public }
+{ #category : #'building - menus' }
 MiCoMarkManager >> contractLabel: aString [
 	| contractor |
 	contractor := LbCContractor new.
@@ -98,10 +98,13 @@ MiCoMarkManager >> createGlobalMenuOn: menu [
 			selector: #automaticColor
 			argumentList: #())
 		icon: (self iconNamed: #smallPaint).
-	menu addMorphBack: (('Threshold for 75% strategy:' asStringMorph)
-		width: 200;
-		yourself).
-	menu addMorphBack: self newSlider.
+	menu addLine.
+	(menu
+		add: 'Settings'
+			target: self
+			selector: #openSettingsBrowser
+			argumentList: #())
+		icon: (self iconNamed: #configuration)
 ]
 
 { #category : #'building - menus' }
@@ -114,6 +117,7 @@ MiCoMarkManager >> createMenuOn: menu for: aShape [
 
 { #category : #'building - menus' }
 MiCoMarkManager >> fixMenuMouseFocus: evt [
+	self flag: #todo.
 	evt morph currentWorld activeHand newMouseFocus: evt morph owner
 ]
 
@@ -146,6 +150,7 @@ MiCoMarkManager >> lastTagSelected: aMiCoTag [
 { #category : #'building - menus' }
 MiCoMarkManager >> newSlider [
 	| canvas morph |
+	self flag: #TODO.
 	canvas := RSCanvas new.
 	MiCoSlider new
 		container: canvas;
@@ -170,13 +175,23 @@ MiCoMarkManager >> onShape: aShape [
 ]
 
 { #category : #public }
+MiCoMarkManager >> openSettingsBrowser [
+	| browser window |
+	browser := SettingBrowser new
+		changePackageSet: (RPackage organizer 
+		packageNamed: MiCoUsageMapSettings package name) asOrderedCollection;
+	yourself.
+	window := browser open.
+	window position: (self currentWorld extent - window extent) // 2.
+	browser expandAll.
+]
+
+{ #category : #public }
 MiCoMarkManager >> removeTag: aMiCoTag [
 	self changeTagsDuring: [ 
 		self coUsageMap miMethods, self coUsageMap miAttributes
 			select: [:each | each tag = aMiCoTag ]
-			thenDo: [:each | 
-				each traceCr.
-				self setTag: nil onAttribute: each ].
+			thenDo: [:each | self setTag: nil onAttribute: each ].
 	]
 ]
 
@@ -221,4 +236,12 @@ MiCoMarkManager >> subMenuTagsFor: aMiCoAttribute subMenu: menu [
 MiCoMarkManager >> tagColorFrom: aMicoTag [
 	aMicoTag ifNil: [ ^ Color white ].
 	^ aMicoTag color
+]
+
+{ #category : #public }
+MiCoMarkManager >> threshold75: aNumber [
+	self strategies 
+		detect: [ :strat | strat class = MiCo75PercentageMarkStrategy ]
+		ifFound: [ :strat | strat threshold: aNumber ]
+		ifNone: [  ]
 ]

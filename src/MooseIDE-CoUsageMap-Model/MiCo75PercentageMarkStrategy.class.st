@@ -27,7 +27,7 @@ MiCo75PercentageMarkStrategy >> computeTag [
 { #category : #initialization }
 MiCo75PercentageMarkStrategy >> initialize [
 	super initialize.
-	self threshold: 0.75
+	self threshold: MiCoUsageMapSettings threshold75PercentGroup/100.0
 ]
 
 { #category : #hooks }

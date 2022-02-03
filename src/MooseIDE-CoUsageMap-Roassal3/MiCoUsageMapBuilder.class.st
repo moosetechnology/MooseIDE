@@ -12,7 +12,9 @@ Class {
 		'miAttributes',
 		'methodAttributeTester',
 		'legendTagVisualization',
-		'markManager'
+		'markManager',
+		'innerBox',
+		'containerBox'
 	],
 	#category : #'MooseIDE-CoUsageMap-Roassal3'
 }
@@ -24,18 +26,16 @@ MiCoUsageMapBuilder >> attributeNamed: aByteString [
 
 { #category : #hooks }
 MiCoUsageMapBuilder >> attributeShapeFor: att method: met [
+	| size |
+	size := MiCoUsageMapSettings innerBoxSize.
 	^ RSBox new
 		model: att;
-		width: (att numberOfUsesOn: met) * 5;
+		width: (att numberOfUsesOn: met) * size;
+		height: size;
 		color: (self markManager tagColorFrom: att tag);
 		border: (RSBorder new color: Color black; joinMiter);
-		addInteraction: self markManager;
-		when: RSMouseEnter send: #highlight: to: self;
-		when: RSMouseLeave send: #unhighlight: to: self;
-		addInteraction: (RSMorphicPopupInteraction new
-			morphBuilder: [:model | 
-				self createAttributeTextMorphFor: model method: met ];
-			yourself);
+		propertyAt: #method put: met;
+		announcer: innerBox announcer;
 		yourself.
 ]
 
@@ -145,6 +145,8 @@ MiCoUsageMapBuilder >> initialize [
 		methodAttributeTester: self defaultTester;
 		legendTag: self defaultLegendTagVisualization;
 		markManager: self defaultMarkManager.
+		
+	self initializeShapes.
 ]
 
 { #category : #initialization }
@@ -178,6 +180,30 @@ MiCoUsageMapBuilder >> initializeReferences [
 ]
 
 { #category : #initialization }
+MiCoUsageMapBuilder >> initializeShapes [
+	"all this interaction will produce an announcer that we can reuse for new shapes"
+	innerBox := RSBox new
+		addInteraction: self markManager;
+		when: RSMouseEnter send: #highlight: to: self;
+		when: RSMouseLeave send: #unhighlight: to: self;
+		addInteraction: (RSMorphicPopupInteraction new
+			model: #yourself;
+			morphBuilder: [:shape | 
+				self 
+					createAttributeTextMorphFor: shape model
+					method: (shape propertyAt: #method) ];
+			yourself).
+	
+	containerBox := RSBox new
+		addInteraction: self markManager;
+		addInteraction: (RSMorphicPopupInteraction new
+			morphBuilder: [:model | self createMethodTextMorphFor: model ];
+			yourself);
+		yourself.
+	
+]
+
+{ #category : #initialization }
 MiCoUsageMapBuilder >> initializeValues [
 	self 
 		initializeAttributes;
@@ -185,6 +211,31 @@ MiCoUsageMapBuilder >> initializeValues [
 		initializeReferences.
 	miMethods sort: self defaultSortBlock
 	
+]
+
+{ #category : #public }
+MiCoUsageMapBuilder >> innerBoxSize: size [
+	self canvas nodes do: [ :node | 
+		| met body label |
+		met := node model.
+		label := node children first.
+		body := node children second.
+		body children do: [ :child | 
+			| att |
+			att := child model.
+			child width: (att numberOfUsesOn: met) * size.
+			child height: size.
+		 ].
+		RSFlowLayout on: body children.
+		body adjustToChildren; padding: 10.
+		RSVerticalLineLayout new
+			alignCenter;
+			gapSize: 0;
+			on: { label. body }.
+		node adjustToChildren.
+	].
+	self defaultLayout on: self canvas nodes.
+	self canvas signalUpdate.
 ]
 
 { #category : #hooks }
@@ -267,10 +318,7 @@ MiCoUsageMapBuilder >> methodShapeFor: met [
 		model: met;
 		addAll: { label. body };
 		adjustToChildren;
-		addInteraction: self markManager;
-		addInteraction: (RSMorphicPopupInteraction new
-			morphBuilder: [:model | self createMethodTextMorphFor: model ];
-			yourself);
+		announcer: containerBox announcer;
 		yourself
 ]
 
@@ -371,6 +419,13 @@ MiCoUsageMapBuilder >> selectedBoxBorder [
 { #category : #accessing }
 MiCoUsageMapBuilder >> tagNamed: aString [ 
 	^ self legendTag tagNamed: aString
+]
+
+{ #category : #public }
+MiCoUsageMapBuilder >> threshold75: aNumber [
+	self assert: (aNumber between: 0 and: 100) description: 'use number between 0 and 100'.
+	self markManager threshold75: aNumber / 100.0. 
+	
 ]
 
 { #category : #highlighting }
