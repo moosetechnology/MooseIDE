@@ -44,7 +44,14 @@ MiTagDescription >> initializePresenters [
 	tagDescriptionButton := self newToolbar
 		                        beIcons;
 		                        addItem: (self newToolbarPopoverButton
-				                         content: tagDescriptionText;
+				                         content: (SpPresenter new
+						                          layout: (SpBoxLayout newLeftToRight
+								                           add: tagDescriptionText
+								                           withConstraints: [ :const | 
+									                           const
+										                           width: 300;
+										                           height: 200 ]);
+						                          yourself);
 				                         help: 'Tag desciption';
 				                         icon: (self iconNamed: #help);
 				                         yourself);
@@ -68,9 +75,9 @@ MiTagDescription >> setModelBeforeInitialization: aTagModel [
 MiTagDescription >> setTag: aTag [
 
 	tagNameLabel label: aTag name.
-	tagDescriptionText text: 'Description: ' , (aTag description
+	tagDescriptionText text: (aTag description
 			 ifNotNil: [ :text | text ]
-			 ifNil: [ 'No description.' ]).
+			 ifNil: [ 'No description on this tag.' ]).
 	tagFormPresenter image: (tagModel iconForTag: aTag).
 	self update
 ]
