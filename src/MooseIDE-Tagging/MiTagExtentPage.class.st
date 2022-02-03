@@ -5,7 +5,7 @@ This is the so called _Extent description_ of the tag
 "
 Class {
 	#name : #MiTagExtentPage,
-	#superclass : #MiAbstractTagNotebookPage,
+	#superclass : #MiPresenter,
 	#instVars : [
 		'incomingEntitiesFilteringList',
 		'taggedEntitiesLabel',
@@ -14,59 +14,11 @@ Class {
 		'addAllButton',
 		'removeButton',
 		'removeAllButton',
-		'tagBrowser'
+		'tagBrowser',
+		'tagDescription'
 	],
 	#category : #'MooseIDE-Tagging-Browser'
 }
-
-{ #category : #specs }
-MiTagExtentPage class >> defaultSpec [
-	^SpBoxLayout newVertical
-		add: (SpBoxLayout newHorizontal
-			add: 'Entities queried:' ;
-			add: self filler withConstraints: [:constraints | constraints width: self middleColumnWidth ] ; 
-			add: #taggedEntitiesLabel ;
-			yourself)
-		withConstraints: [:constraints | constraints height: self toolbarHeight ]  ;
-		add: self mainContentLayout ;
-		yourself
-]
-
-{ #category : #accessing }
-MiTagExtentPage class >> defaultTitle [
-	^'Tag Extent'
-]
-
-{ #category : #specs }
-MiTagExtentPage class >> filler [
-	^SpNullPresenter new
-]
-
-{ #category : #specs }
-MiTagExtentPage class >> mainContentLayout [
-
-	^ SpBoxLayout newHorizontal
-		  add: #incomingEntitiesFilteringList;
-		  add: (SpBoxLayout newVertical
-				   spacing: 5;
-				   add: self filler expand: true;
-				   add: #addButton expand: false;
-				   add: #addAllButton expand: false;
-				   add: #removeButton expand: false;
-				   add: #removeAllButton expand: false;
-				   add: self filler expand: true;
-				   yourself)
-		  withConstraints: [ :constraints | 
-		  constraints width: self middleColumnWidth ];
-		  add: #taggedEntitiesFilteringList;
-		  yourself
-]
-
-{ #category : #specs }
-MiTagExtentPage class >> middleColumnWidth [
-
-	^ 25
-]
 
 { #category : #action }
 MiTagExtentPage >> add [
@@ -94,6 +46,12 @@ MiTagExtentPage >> currentTag [
 ]
 
 { #category : #initialization }
+MiTagExtentPage >> deleteCurrentTag [
+
+	self owner deleteCurrentTag
+]
+
+{ #category : #initialization }
 MiTagExtentPage >> initializeButtons [
 
 	addButton := self newButton
@@ -111,18 +69,60 @@ MiTagExtentPage >> initializeButtons [
 ]
 
 { #category : #initialization }
+MiTagExtentPage >> initializeLayout [
+
+	self layout: (SpBoxLayout newVertical
+			 spacing: 10;
+			 add: tagDescription expand: false;
+			 add: (SpBoxLayout newHorizontal
+					  spacing: 3;
+					  add: (SpBoxLayout newTopToBottom
+							   spacing: 2;
+							   add: 'Entities queried:' expand: false;
+							   add: incomingEntitiesFilteringList;
+							   yourself);
+					  add: (SpBoxLayout newVertical
+							   spacing: 5;
+							   add: SpNullPresenter new expand: true;
+							   add: addButton expand: false;
+							   add: addAllButton expand: false;
+							   add: removeButton expand: false;
+							   add: removeAllButton expand: false;
+							   add: SpNullPresenter new expand: true;
+							   yourself)
+					  width: 35;
+					  add: (SpBoxLayout newTopToBottom
+							   spacing: 2;
+							   add: 'Entities in tag:' expand: false;
+							   add: taggedEntitiesFilteringList;
+							   yourself);
+					  yourself);
+			 yourself)
+]
+
+{ #category : #initialization }
 MiTagExtentPage >> initializePresenters [
 
 	taggedEntitiesLabel := self newLabel label: 'Entities in tag:'.
 	incomingEntitiesFilteringList := self newFilteringList
-		                                 display: [ :entity | entity name ];
+		                                 display: [ :entity | 
+			                                 String streamContents: [ :s | 
+					                                 entity displayStringOn: s ] ];
+		                                 displayIcon: [ :entity | 
+			                                 entity mooseIcon ];
 		                                 yourself.
 	self refreshEntitiesList.
 	taggedEntitiesFilteringList := self newFilteringList
-		                            display: [ :entity | entity name ];
-		                            yourself.
+		                               display: [ :entity | 
+			                               String streamContents: [ :s | 
+					                               entity displayStringOn: s ] ];
+		                               displayIcon: [ :entity | 
+			                               entity mooseIcon ];
+		                               yourself.
+	tagDescription := self instantiate: MiTagDescription.
 	self refreshTaggedEntitiesList.
-	self initializeButtons
+	self initializeButtons.
+	self initializeLayout
 ]
 
 { #category : #refreshing }
@@ -138,7 +138,7 @@ MiTagExtentPage >> onBrowserPageRedisplay [
 
 { #category : #refreshing }
 MiTagExtentPage >> refreshEntitiesList [
-
+	
 	incomingEntitiesFilteringList items: self tagModel entities
 ]
 
@@ -172,9 +172,16 @@ MiTagExtentPage >> setModelBeforeInitialization: aTagBrowser [
 ]
 
 { #category : #accessing }
+MiTagExtentPage >> setTag: aTag [
+
+	tagDescription setTag: aTag.
+	self update
+]
+
+{ #category : #accessing }
 MiTagExtentPage >> tagModel [
 
-	^ tagBrowser tagModel
+	^ self owner tagModel
 ]
 
 { #category : #accessing }

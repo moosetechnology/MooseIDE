@@ -8,12 +8,12 @@ Class {
 	#name : #MiTagBrowser,
 	#superclass : #MiAbstractBrowser,
 	#instVars : [
-		'mainPresenter',
 		'tagModel',
 		'tagManagementPage',
 		'tagIntentPage',
 		'tagExtentPage',
-		'tagIsIntent'
+		'tagIsIntent',
+		'tagCreationForm'
 	],
 	#category : #'MooseIDE-Tagging-Browser'
 }
@@ -68,79 +68,104 @@ MiTagBrowser class >> windowSize [
 	^ 700 @ 475
 ]
 
-{ #category : #testing }
-MiTagBrowser >> accept: anObject [
+{ #category : #initialization }
+MiTagBrowser >> browserClosed [
 
-	^ (anObject isCollection and: [ 
-		   anObject anySatisfy: [ :a | a usesFamixTrait: FamixTNamedEntity ] ]) 
-		  or: [ anObject isMooseModel ]
+	super browserClosed.
+	application unregisterProducer: self.
+	application unregisterConsumer: self
 ]
 
 { #category : #testing }
 MiTagBrowser >> canFollowEntity: anObject [
-	^ anObject isCollection
-		and: [ anObject
-				anySatisfy: [ :a | a usesFamixTrait: FamixTNamedEntity ] ]
+
+	^ anObject isMooseObject
 ]
 
 { #category : #initialization }
-MiTagBrowser >> descriptionPage [
+MiTagBrowser >> closeTagCreationForm [
 
-	^ self tagIsIntent
-		  ifTrue: [ self instantiate: MiTagIntentPage on: self ]
-		  ifFalse: [ self instantiate: MiTagExtentPage on: self ]
+	self layout replace: tagCreationForm with: tagManagementPage
+]
+
+{ #category : #testing }
+MiTagBrowser >> consume: aTagAssociation [
+
+	self tagModel currentTag = aTagAssociation tag ifTrue: [ 
+		tagManagementPage refreshTaggedEntitiesList ]
+]
+
+{ #category : #testing }
+MiTagBrowser >> createTag: name description: aText color: aColor [
+
+	| newTag |
+	newTag := self tagModel addTag: name.
+	(aText notNil and: [ aText isNotEmpty ]) ifTrue: [ 
+		newTag description: aText ].
+	aColor notNil ifTrue: [ newTag color: aColor ].
+	tagManagementPage refreshTagList.
+	application consumeItem: newTag
+	
 ]
 
 { #category : #actions }
 MiTagBrowser >> followEntity: anEntity [
 
-	tagModel entities: anEntity.
+	tagModel entities: (anEntity isCollection
+			 ifTrue: [ anEntity ]
+			 ifFalse: [ anEntity asMooseGroup ]).
+	tagManagementPage refresh
 ]
 
 { #category : #initialization }
 MiTagBrowser >> initialize [
+
 	super initialize.
-	tagIsIntent := true
+	application registerProducer: self for: FamixTag.
+	application registerConsumer: self for: FamixTagAssociation
+]
+
+{ #category : #initialization }
+MiTagBrowser >> initializeLayout [
+
+	self layout: (SpBoxLayout newLeftToRight
+			 add: tagManagementPage;
+			 yourself)
 ]
 
 { #category : #initialization }
 MiTagBrowser >> initializePresenters [
 
-	| tagDescriptionPage |
-	self initializeTagManagementPage.
-	tagIntentPage := self instantiate: MiTagIntentPage on: self.
-	tagExtentPage := self instantiate: MiTagExtentPage on: self.
-	tagDescriptionPage := self newNotebookPage
-		title: 'Tag description' ;
-		presenterProvider: [
-			self descriptionPage
-				onBrowserPageRedisplay ;
-				yourself
-		] ;
-		yourself.
-	mainPresenter := self newNotebook
-		whenSelectedPageChangedDo: [ :newPage :oldPage  |
-			newPage = tagDescriptionPage
-			ifTrue: [ tagDescriptionPage resetContent ] ] ;
-		addPage: tagManagementPage;
-		addPage: tagDescriptionPage;
-		yourself
+	tagCreationForm := MiTagCreationForm owner: self.
+	tagManagementPage := MiTagManagementPage owner: self.
+	self initializeLayout
 ]
 
-{ #category : #initialization }
-MiTagBrowser >> initializeTagManagementPage [
+{ #category : #brokerage }
+MiTagBrowser >> itemsFor: aClass [
 
-	tagManagementPage := self newNotebookPage
-		title: MiTagManagementPage defaultTitle ;
-		presenterProvider: [
-			self instantiate: MiTagManagementPage on: self ];
-		yourself
+	^ tagModel allTags
 ]
 
 { #category : #accessing }
 MiTagBrowser >> miSelectedItem [
 
-	^ tagModel entities
+	^ tagModel currentTag
+		  ifNil: [ ^ nil ]
+		  ifNotNil: [ :tag | tag taggedEntities asMooseGroup ]
+]
+
+{ #category : #initialization }
+MiTagBrowser >> openTagCreationForm [
+
+	tagCreationForm reset.
+	self layout replace: tagManagementPage with: tagCreationForm
+]
+
+{ #category : #testing }
+MiTagBrowser >> remove: aTagAssociation [
+
+	tagManagementPage refreshTaggedEntitiesList 
 ]
 
 { #category : #'accessing - model' }
@@ -150,18 +175,15 @@ MiTagBrowser >> setModelBeforeInitialization: aTagModel [
 	tagModel tagBrowser: self
 ]
 
-{ #category : #actions }
-MiTagBrowser >> tagDefinedBytIntent: aBoolean [
-	tagIsIntent := aBoolean
-]
-
 { #category : #initialization }
-MiTagBrowser >> tagIsIntent [
-	^tagIsIntent
-	"self tagModel isIntentTag"
+MiTagBrowser >> setTagTo: aTag [
+
+	self tagModel currentTag: aTag.
+	self updateToolbar
 ]
 
-{ #category : #accessing }
-MiTagBrowser >> tagModel [ 
-	^tagModel
+{ #category : #testing }
+MiTagBrowser >> tagModel [
+
+	^ tagModel
 ]
