@@ -131,7 +131,7 @@ MiTagBrowser >> editCurrentTag: name description: description color: color categ
 	tag color: color.
 	tag categories ifNotEmpty: [ 
 		tag removeCategory: tag categories first ].
-	tag addCategory: category.
+	category ifNotNil: [ tag addCategory: category ].
 	tagManagementPage refresh.
 	^ true
 ]
