@@ -72,9 +72,10 @@ MiTagBrowserModel >> deleteCurrentCategory [
 { #category : #accessing }
 MiTagBrowserModel >> deleteCurrentTag [
 
-	|tag|
+	| tag |
 	tag := currentTag.
-	currentTag remove.
+	tag remove.
+	tag categories ifNotEmpty: [ tag categories first removeTag: tag ].
 	self currentTag: nil.
 	^ tag
 ]
