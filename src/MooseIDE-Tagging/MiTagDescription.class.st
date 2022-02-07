@@ -24,12 +24,14 @@ MiTagDescription >> initializeLayout [
 			 spacing: 1;
 			 add: (SpBoxLayout newLeftToRight
 					  vAlignCenter;
+					hAlignStart;
+					  add: (SpBoxLayout newLeftToRight
+							   hAlignStart;
+							   add: tagDescriptionButton expand: false;
+							   yourself);
 					  spacing: 5;
 					  add: tagFormPresenter expand: false;
-					  add: tagNameLabel expand: false;
-					  add: (SpBoxLayout newLeftToRight hAlignEnd
-							   add: tagDescriptionButton
-							   expand: false);
+					  add: tagNameLabel;
 					  yourself)
 			 expand: false;
 			 add: sep height: 2;
