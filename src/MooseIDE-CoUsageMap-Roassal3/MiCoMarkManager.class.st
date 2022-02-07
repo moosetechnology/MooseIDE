@@ -111,14 +111,7 @@ MiCoMarkManager >> createGlobalMenuOn: menu [
 MiCoMarkManager >> createMenuOn: menu for: aShape [
 	aShape isShape
 		ifTrue: [ aShape model createMenuOn: menu markManager: self ]
-		ifFalse: [ self createGlobalMenuOn: menu ].
-	
-]
-
-{ #category : #'building - menus' }
-MiCoMarkManager >> fixMenuMouseFocus: evt [
-	self flag: #todo.
-	evt morph currentWorld activeHand newMouseFocus: evt morph owner
+		ifFalse: [ self createGlobalMenuOn: menu ]
 ]
 
 { #category : #'building - menus' }
@@ -145,27 +138,6 @@ MiCoMarkManager >> lastTagSelected [
 { #category : #accessing }
 MiCoMarkManager >> lastTagSelected: aMiCoTag [ 
 	lastTagSelected := aMiCoTag
-]
-
-{ #category : #'building - menus' }
-MiCoMarkManager >> newSlider [
-	| canvas morph |
-	self flag: #TODO.
-	canvas := RSCanvas new.
-	MiCoSlider new
-		container: canvas;
-		getValueSelector: #threshold;
-		setValueSelector: #threshold:;
-		model: (self strategies detect: [ :s | s class = MiCo75PercentageMarkStrategy ]);
-		build.
-	canvas color: Color transparent.
-	morph := canvas createMorph.
-	morph extent: 200@15.
-	canvas 
-		when: RSMouseClick send: #fixMenuMouseFocus: to: self;
-		when: RSMouseDragEnd send: #fixMenuMouseFocus: to: self;
-		when: RSMouseMove send: #fixMenuMouseFocus: to: self.
-	^ morph
 ]
 
 { #category : #hooks }
@@ -213,22 +185,24 @@ MiCoMarkManager >> strategies [
 
 { #category : #'building - menus' }
 MiCoMarkManager >> subMenuTagsFor: aMiCoAttribute subMenu: menu [
-	self coUsageMap legendTag tags do: [ :aMiCoTag |
-		(menu 
-			add: aMiCoTag name
-				target: self
-				selector: #setTag:onAttribute:
-				argumentList: { aMiCoTag. aMiCoAttribute })
-			icon: (self iconFormFor: aMiCoTag) ].
-	aMiCoAttribute tag ifNotNil: [ 
-		menu addLine.
-		(menu 
-			add: 'Remove tag'
-				target: self
-				selector: #setTag:onAttribute:
-				argumentList: { nil. aMiCoAttribute })
-			icon: (self iconNamed: 'remove')
-		 ].
+	self coUsageMap legendTag tags
+		select: [ :aMiCoTag | aMiCoTag isHidden not ]
+		thenDo: [ :aMiCoTag |
+			(menu 
+				add: aMiCoTag name
+					target: self
+					selector: #setTag:onAttribute:
+					argumentList: { aMiCoTag. aMiCoAttribute })
+				icon: (self iconFormFor: aMiCoTag) ].
+		aMiCoAttribute tag ifNotNil: [ 
+			menu addLine.
+			(menu 
+				add: 'Remove tag'
+					target: self
+					selector: #setTag:onAttribute:
+					argumentList: { nil. aMiCoAttribute })
+				icon: (self iconNamed: 'remove')
+			 ].
 	^ menu
 ]
 

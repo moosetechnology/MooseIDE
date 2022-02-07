@@ -8,7 +8,8 @@ Class {
 		'name',
 		'color',
 		'description',
-		'references'
+		'references',
+		'isHidden'
 	],
 	#category : #'MooseIDE-CoUsageMap-Model'
 }
@@ -42,7 +43,17 @@ MiCoTag >> description: aString [
 MiCoTag >> initialize [
 	super initialize.
 	references := OrderedCollection new: 5.
-	
+	isHidden := false.
+]
+
+{ #category : #accessing }
+MiCoTag >> isHidden [
+	^ isHidden
+]
+
+{ #category : #accessing }
+MiCoTag >> isHidden: aBoolean [
+	isHidden := aBoolean
 ]
 
 { #category : #accessing }
@@ -68,4 +79,9 @@ MiCoTag >> references [
 { #category : #'add-remove' }
 MiCoTag >> removeReference: aMiCoAttribute [ 
 	references remove: aMiCoAttribute
+]
+
+{ #category : #public }
+MiCoTag >> toggleVisibility [
+	isHidden := isHidden not
 ]

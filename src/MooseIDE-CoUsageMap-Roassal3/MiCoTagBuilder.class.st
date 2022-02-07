@@ -2,7 +2,7 @@
 TODO
 "
 Class {
-	#name : #MiCoTagVisualization,
+	#name : #MiCoTagBuilder,
 	#superclass : #RSAbstractContainerBuilder,
 	#instVars : [
 		'tags',
@@ -12,17 +12,17 @@ Class {
 }
 
 { #category : #adding }
-MiCoTagVisualization >> addTag: aMiCoTag [ 
+MiCoTagBuilder >> addTag: aMiCoTag [ 
 	tags add: aMiCoTag
 ]
 
 { #category : #hooks }
-MiCoTagVisualization >> boxLabelExtent [
+MiCoTagBuilder >> boxLabelExtent [
 	^ 25@15
 ]
 
 { #category : #public }
-MiCoTagVisualization >> conflicTag: aString tags: aCollection colorPalette: aNSOrdinalScale [ 
+MiCoTagBuilder >> conflicTag: aString tags: aCollection colorPalette: aNSOrdinalScale [ 
 	self conflictTag: (MiCoTag new name: aString; yourself).
 	aCollection do: [:str |
 		self addTag: (MiCoTag new name: str; yourself) ].
@@ -31,28 +31,45 @@ MiCoTagVisualization >> conflicTag: aString tags: aCollection colorPalette: aNSO
 ]
 
 { #category : #accessing }
-MiCoTagVisualization >> conflictTag [
+MiCoTagBuilder >> conflictTag [
 	^ conflictTag
 ]
 
 { #category : #accessing }
-MiCoTagVisualization >> conflictTag: aMiCoTag [ 
+MiCoTagBuilder >> conflictTag: aMiCoTag [ 
 	conflictTag := aMiCoTag
 ]
 
 { #category : #public }
-MiCoTagVisualization >> conflictTag: aString tags: aCollection [ 
+MiCoTagBuilder >> conflictTag: aString tags: aCollection [ 
 	self conflicTag: aString tags: aCollection colorPalette: NSScale category20
 ]
 
+{ #category : #highlighting }
+MiCoTagBuilder >> highlight: evt [
+	| shape |
+	self unhighlight: evt.
+	shape := evt shape.
+	shape border: (RSBorder new width: 2; color: Color gray).
+	evt canvas propertyAt: #tagCheck put: shape.
+	evt signalUpdate.
+]
+
+{ #category : #hooks }
+MiCoTagBuilder >> iconFor: aMiCoTag [
+	^ self iconNamed: (aMiCoTag isHidden  
+		ifTrue: [ #checkboxUnselected ]
+		ifFalse: [ #checkboxSelected ])
+]
+
 { #category : #initialization }
-MiCoTagVisualization >> initialize [
+MiCoTagBuilder >> initialize [
 	super initialize.
 	tags := OrderedCollection new: 5
 ]
 
 { #category : #hooks }
-MiCoTagVisualization >> legendShapeRenderIn: aCanvas [
+MiCoTagBuilder >> legendShapeRenderIn: aCanvas [
 	| legendShape |
 	legendShape := shapes asShape
 		padding: 10;
@@ -70,7 +87,7 @@ MiCoTagVisualization >> legendShapeRenderIn: aCanvas [
 ]
 
 { #category : #hooks }
-MiCoTagVisualization >> moveLegend: legendShape toCornerIn: aCanvas [
+MiCoTagBuilder >> moveLegend: legendShape toCornerIn: aCanvas [
 	RSLocation new
 		inner;
 		top;
@@ -81,7 +98,7 @@ MiCoTagVisualization >> moveLegend: legendShape toCornerIn: aCanvas [
 ]
 
 { #category : #public }
-MiCoTagVisualization >> removeOldLegend [
+MiCoTagBuilder >> removeOldLegend [
 	| canvas legendShape |
 	
 	canvas := self canvas.
@@ -98,7 +115,7 @@ MiCoTagVisualization >> removeOldLegend [
 ]
 
 { #category : #hooks }
-MiCoTagVisualization >> renderIn: aCanvas [
+MiCoTagBuilder >> renderIn: aCanvas [
 	| tagShapes |
 	shapes := RSGroup new.
 	
@@ -111,11 +128,12 @@ MiCoTagVisualization >> renderIn: aCanvas [
 	RSVerticalLineLayout new
 		gapSize: 2;
 		on: shapes.
+	shapes last translateBy: 0@15.
 	self legendShapeRenderIn: aCanvas.
 ]
 
 { #category : #hooks }
-MiCoTagVisualization >> shapeBoxDescription [
+MiCoTagBuilder >> shapeBoxDescription [
 
 	| box marker arrow label |
 	box := RSBox new
@@ -144,13 +162,13 @@ MiCoTagVisualization >> shapeBoxDescription [
 ]
 
 { #category : #accessing }
-MiCoTagVisualization >> tagNamed: aString [ 
+MiCoTagBuilder >> tagNamed: aString [ 
 	^ self tags detect: [ :tag | tag name = aString ] ifNone: [ nil ]
 ]
 
 { #category : #hooks }
-MiCoTagVisualization >> tagShapeFor: aMiCoTag [ 
-	| label box |
+MiCoTagBuilder >> tagShapeFor: aMiCoTag [ 
+	| label box check shape |
 	label := RSLabel new
 		text: aMiCoTag name;
 		color: Color black;
@@ -159,17 +177,30 @@ MiCoTagVisualization >> tagShapeFor: aMiCoTag [
 		extent: self boxLabelExtent;
 		color: aMiCoTag color;
 		yourself.
-	RSHorizontalLineLayout new gapSize: 5; on: { box. label }.
-	^ { box. label } asGroup asShape
+	check := RSBitmap new
+		model: aMiCoTag;
+		form: (self iconFor: aMiCoTag);
+		when: RSMouseEnter send: #highlight: to: self; 
+		when: RSMouseLeave send: #unhighlight: to: self; 
+		when: RSMouseClick send: #toggleTag: to: self; 
+		yourself.
+	shape := { check. box. label } asGroup asShape.
+	aMiCoTag == conflictTag ifTrue: [ 
+		check announcer: nil.
+		check form: (self iconNamed: #empty) ].
+		
+	RSHorizontalLineLayout new gapSize: 5; alignMiddle; on: shape children.
+	shape adjustToChildren.
+	^ shape
 ]
 
 { #category : #accessing }
-MiCoTagVisualization >> tags [
+MiCoTagBuilder >> tags [
 	^ tags
 ]
 
 { #category : #hooks }
-MiCoTagVisualization >> titleShape [
+MiCoTagBuilder >> titleShape [
 	^ RSLabel new
 		text: 'Legend';
 		color: Color black;
@@ -179,7 +210,7 @@ MiCoTagVisualization >> titleShape [
 ]
 
 { #category : #events }
-MiCoTagVisualization >> toggleLegend: evt [
+MiCoTagBuilder >> toggleLegend: evt [
 
 	| legendShape isCollapse |
 	legendShape := evt shape.
@@ -192,5 +223,26 @@ MiCoTagVisualization >> toggleLegend: evt [
 	legendShape adjustToChildren.
 	legendShape padding: 10.
 	self moveLegend: legendShape toCornerIn: evt canvas.
+	evt signalUpdate.
+]
+
+{ #category : #events }
+MiCoTagBuilder >> toggleTag: evt [
+	| shape tag |
+	shape := evt shape.
+	tag := shape model.
+	tag toggleVisibility.
+	shape form: (self iconFor: tag).
+	evt signalUpdate.
+	
+	
+]
+
+{ #category : #highlighting }
+MiCoTagBuilder >> unhighlight: evt [
+	evt canvas
+		propertyAt: #tagCheck
+		ifPresent: [ :s | s border: nil ];
+		removeKey: #tagCheck.
 	evt signalUpdate.
 ]

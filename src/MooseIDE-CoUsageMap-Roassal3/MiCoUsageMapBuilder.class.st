@@ -11,10 +11,10 @@ Class {
 		'miMethods',
 		'miAttributes',
 		'methodAttributeTester',
-		'legendTagVisualization',
 		'markManager',
 		'innerBox',
-		'containerBox'
+		'containerBox',
+		'legendTagBuilder'
 	],
 	#category : #'MooseIDE-CoUsageMap-Roassal3'
 }
@@ -83,7 +83,7 @@ MiCoUsageMapBuilder >> defaultLayout [
 
 { #category : #default }
 MiCoUsageMapBuilder >> defaultLegendTagVisualization [
-	^ MiCoTagVisualization new
+	^ MiCoTagBuilder new
 ]
 
 { #category : #default }
@@ -251,12 +251,12 @@ MiCoUsageMapBuilder >> labelShapeFor: met [
 
 { #category : #accessing }
 MiCoUsageMapBuilder >> legendTag [
-	^ legendTagVisualization
+	^ legendTagBuilder
 ]
 
 { #category : #accessing }
-MiCoUsageMapBuilder >> legendTag: aMiCoTagVisualization [ 
-	legendTagVisualization := aMiCoTagVisualization
+MiCoUsageMapBuilder >> legendTag: aMiCoTagBuilder [ 
+	legendTagBuilder := aMiCoTagBuilder
 ]
 
 { #category : #accessing }

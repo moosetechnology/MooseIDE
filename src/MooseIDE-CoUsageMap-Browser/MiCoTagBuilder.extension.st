@@ -1,7 +1,7 @@
-Extension { #name : #MiCoTagVisualization }
+Extension { #name : #MiCoTagBuilder }
 
 { #category : #'*MooseIDE-CoUsageMap-Browser' }
-MiCoTagVisualization >> tagsFromMooseModel: aMooseModel [
+MiCoTagBuilder >> tagsFromMooseModel: aMooseModel [
 	| ctag group |
 	self removeOldLegend.
 	ctag := aMooseModel tagNamed: 'Need work'.

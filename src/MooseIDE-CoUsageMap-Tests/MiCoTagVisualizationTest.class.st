@@ -11,7 +11,7 @@ MiCoTagVisualizationTest >> test01Legend [
 	v := MiCoUsageMapBuilder new.
 	class := MiCoTestClass.
 	v godClass: class.
-	legendTag := MiCoTagVisualization new.
+	legendTag := MiCoTagBuilder new.
 	v
 		legendTag: legendTag;
 		build.
