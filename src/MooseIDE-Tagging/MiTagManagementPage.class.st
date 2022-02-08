@@ -8,7 +8,9 @@ Class {
 		'categoryManagement',
 		'tagList',
 		'descriptionPage',
-		'tagModel'
+		'tagModel',
+		'tagButton',
+		'dynamicTagButton'
 	],
 	#category : #'MooseIDE-Tagging-Browser'
 }
@@ -21,6 +23,12 @@ MiTagManagementPage >> deleteCurrentTag [
 	self owner application removeItem: tag.
 	descriptionPage hide.
 	self refreshTagList
+]
+
+{ #category : #accessing }
+MiTagManagementPage >> descriptionPage [
+
+	^ descriptionPage
 ]
 
 { #category : #action }

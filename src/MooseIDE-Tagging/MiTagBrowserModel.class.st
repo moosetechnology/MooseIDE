@@ -6,7 +6,8 @@ Class {
 		'currentCategory',
 		'mooseModel',
 		'tagBrowser',
-		'entities'
+		'entities',
+		'dynamicTags'
 	],
 	#category : #'MooseIDE-Tagging-Browser'
 }

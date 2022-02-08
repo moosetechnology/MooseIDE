@@ -117,6 +117,12 @@ MiTagBrowser >> createTag: name description: aText color: aColor category: aCate
 	application consumeItem: newTag
 ]
 
+{ #category : #'as yet unclassified' }
+MiTagBrowser >> descriptionPage [
+
+	^ tagManagementPage descriptionPage
+]
+
 { #category : #actions }
 MiTagBrowser >> editCurrentTag: name description: description color: color category: category [
 
