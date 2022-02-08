@@ -36,8 +36,10 @@ Class {
 
 { #category : #specs }
 MiFameExtension class >> defaultSpec [
+
 	^ SpBoxLayout newVertical
-		add: #fameDescription
+		  add: #fameDescription;
+		  yourself
 ]
 
 { #category : #initialization }
@@ -66,7 +68,7 @@ MiFameExtension >> model: anObject [
 	fameDescription ifNotNil: [ :fd | fd items: model mooseDescription allComplexProperties ]
 ]
 
-{ #category : #initialization }
+{ #category : #'accessing - model' }
 MiFameExtension >> setModelBeforeInitialization: aModel [
 	self model: aModel
 ]

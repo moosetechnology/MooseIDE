@@ -22,7 +22,7 @@ MiFameBrowser class >> defaultSpec [
 		yourself
 ]
 
-{ #category : #specs }
+{ #category : #'world menu' }
 MiFameBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	<miBrowsers>
@@ -35,44 +35,68 @@ MiFameBrowser class >> menuCommandOn: aBuilder [
 		action: [ self open ]
 ]
 
-{ #category : #specs }
+{ #category : #'instance creation' }
 MiFameBrowser class >> open [
 	<script>
 	^ super open
 ]
 
-{ #category : #initialization }
+{ #category : #specs }
 MiFameBrowser class >> title [
 	^ 'Fame'
 ]
 
 { #category : #testing }
-MiFameBrowser >> canReceiveEntity: anObject [
-	^ anObject isMooseObject
+MiFameBrowser >> canFollowEntity: anObject [
+
+	^ anObject isMooseEntity
 ]
 
 { #category : #actions }
 MiFameBrowser >> followEntity: anEntity [
 
+	model := anEntity.
 	fameDescription items: anEntity mooseDescription allComplexProperties.
 	self updateWindowTitleWith: anEntity name
 ]
 
 { #category : #initialization }
 MiFameBrowser >> initializePresenters [
-	super initializePresenters.
-	self flag: 'This currently duplicated code from Midas-NewTools. We have to thing about a good way to integrate all browser inside the inspector'.
+
 	fameDescription := self newTable.
 	fameDescription
-		items: (self model mooseDescription allComplexProperties sorted: #name ascending);
-		addColumn: (SpStringTableColumn title: 'Name' evaluated: [ :item | item name ]) yourself;
-		addColumn: (SpStringTableColumn title: 'Type' evaluated: [ :item | item type name ]) yourself;
-		addColumn: (SpStringTableColumn title: 'Opposite' evaluated: [ :item | item opposite ifNil: [ '' ] ifNotNil: [ :opposite | opposite name ] ]) yourself;
-		addColumn: (SpStringTableColumn title: 'Derived?' evaluated: [ :item | item isDerived ]) yourself;
-		addColumn: (SpStringTableColumn title: 'Container?' evaluated: [ :item | item isContainer ]) yourself;
-		addColumn: (SpStringTableColumn title: 'IsTarget?' evaluated: [ :item | item isTarget ]) yourself;
-		addColumn: (SpStringTableColumn title: 'IsSource?' evaluated: [ :item | item isSource ]) yourself;
+		items: (self model mooseDescription allComplexProperties sorted:
+					 #name ascending);
+		addColumn:
+			(SpStringTableColumn title: 'Name' evaluated: [ :item | item name ])
+				yourself;
+		addColumn: (SpStringTableColumn
+				 title: 'Type'
+				 evaluated: [ :item | item type name ]) yourself;
+		addColumn:
+			(SpStringTableColumn title: 'Opposite' evaluated: [ :item | 
+					 item opposite
+						 ifNil: [ '' ]
+						 ifNotNil: [ :opposite | opposite name ] ]) yourself;
+		addColumn: (SpStringTableColumn
+				 title: 'Derived?'
+				 evaluated: [ :item | item isDerived ]) yourself;
+		addColumn: (SpStringTableColumn
+				 title: 'Container?'
+				 evaluated: [ :item | item isContainer ]) yourself;
+		addColumn: (SpStringTableColumn
+				 title: 'IsTarget?'
+				 evaluated: [ :item | item isTarget ]) yourself;
+		addColumn: (SpStringTableColumn
+				 title: 'IsSource?'
+				 evaluated: [ :item | item isSource ]) yourself;
 		beResizable
+]
+
+{ #category : #accessing }
+MiFameBrowser >> miSelectedItem [
+
+	^ model
 ]
 
 { #category : #actions }

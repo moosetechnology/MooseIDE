@@ -40,9 +40,17 @@ MiDependencyBrowser class >> open [
 	^ super open
 ]
 
-{ #category : #TOREMOVE }
+{ #category : #specs }
 MiDependencyBrowser class >> title [
 	^ 'Dependency'
+]
+
+{ #category : #testing }
+MiDependencyBrowser >> canFollowEntity: anObject [
+
+	^ anObject isCollection and: [ 
+		  anObject anySatisfy: [ :a | 
+			  a usesFamixTrait: TEntityMetaLevelDependency ] ]
 ]
 
 { #category : #testing }
@@ -51,18 +59,11 @@ MiDependencyBrowser >> canHighlight [
 	^ true
 ]
 
-{ #category : #testing }
-MiDependencyBrowser >> canReceiveEntity: anObject [
-	^ anObject isCollection
-		and: [ anObject
-				anySatisfy: [ :a | a usesFamixTrait: TEntityMetaLevelDependency ] ]
-]
-
 { #category : #actions }
 MiDependencyBrowser >> followEntity: anEntity [
 
 	diagram
-		entities: (anEntity asCollection select: [ :a | 
+		entities: (anEntity asMooseGroup select: [ :a | 
 					 a usesFamixTrait: TEntityMetaLevelDependency ]);
 		run
 ]
@@ -75,11 +76,12 @@ MiDependencyBrowser >> highlightEntity: anEntity [
 
 { #category : #initialization }
 MiDependencyBrowser >> initializePresenters [
-	super initializePresenters.
+
 	diagram := self instantiate: MiDependencyVisualization
 ]
 
 { #category : #accessing }
 MiDependencyBrowser >> miSelectedItem [
-	^ diagram selected
+
+	^ diagram selected ifNil: [ diagram entities ]
 ]

@@ -4,7 +4,7 @@ Class {
 	#category : #'MooseIDE-Core-Command'
 }
 
-{ #category : #initialization }
+{ #category : #default }
 MiLoggerRemoveLogCommand class >> defaultIconName [
 
 	^ #smallDelete
@@ -12,15 +12,18 @@ MiLoggerRemoveLogCommand class >> defaultIconName [
 
 { #category : #default }
 MiLoggerRemoveLogCommand class >> defaultName [
-	^ 'Remove entry'
+
+	^ 'Remove selected log'
 ]
 
 { #category : #testing }
 MiLoggerRemoveLogCommand >> canBeExecuted [
-	^ self context miSelectedLog isNotNil
+
+	^ self context miSelectedItem isNotNil
 ]
 
-{ #category : #testing }
+{ #category : #executing }
 MiLoggerRemoveLogCommand >> execute [
-	^ self context removeLog: self context miSelectedLog
+
+	^ self context removeSelectedLog
 ]

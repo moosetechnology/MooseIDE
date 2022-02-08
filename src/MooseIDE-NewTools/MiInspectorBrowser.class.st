@@ -80,11 +80,12 @@ MiInspectorBrowser class >> windowSize [
 { #category : #actions }
 MiInspectorBrowser >> beFrozen [
 
-	buttonFreeze state: true
+	self receivingMode: MiFreezeMode.
+	self window updateReceivingModeButtons
 ]
 
 { #category : #testing }
-MiInspectorBrowser >> canReceiveEntity: anEntity [
+MiInspectorBrowser >> canFollowEntity: anEntity [
 
 	"Returns true because all object can be inspected with this Midas inspector. It can be changed in future acording to new needs."
 
@@ -102,7 +103,6 @@ MiInspectorBrowser >> followEntity: anEntity [
 { #category : #initialization }
 MiInspectorBrowser >> initializePresenters [
 
-	super initializePresenters.
 	miInspector := self instantiate: MiInspector on: self model
 ]
 

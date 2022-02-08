@@ -21,7 +21,7 @@ MiTreeBrowser class >> defaultSpec [
 		yourself
 ]
 
-{ #category : #specs }
+{ #category : #'world menu' }
 MiTreeBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	<miBrowsers>
@@ -34,45 +34,41 @@ MiTreeBrowser class >> menuCommandOn: aBuilder [
 		action: [ self open ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'instance creation' }
 MiTreeBrowser class >> newModel [
+
 	^ MiTreeBrowserModel new
 ]
 
-{ #category : #specs }
+{ #category : #'instance creation' }
 MiTreeBrowser class >> open [
 	<script>
 	^ super open
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #specs }
 MiTreeBrowser class >> title [
 	^ 'Tree'
 ]
 
-{ #category : #'as yet unclassified' }
-MiTreeBrowser >> canReceiveEntity: anObject [
+{ #category : #testing }
+MiTreeBrowser >> canFollowEntity: anObject [
+
 	^ anObject usesFamixTrait: TEntityMetaLevelDependency
 ]
 
 { #category : #actions }
 MiTreeBrowser >> followEntity: anEntity [
 
-	self model selected: anEntity.
 	self model root: anEntity.
-	self refresh
+	self model selected: anEntity.
+
+	self refreshTree
 ]
 
-{ #category : #'as yet unclassified' }
-MiTreeBrowser >> initialize [
-	super initialize.
-	model := MiTreeBrowserModel new
-]
-
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 MiTreeBrowser >> initializePresenters [
 
-	super initializePresenters.
 	tree := self newTreeTable.
 	tree
 		addColumn: (SpCompositeTableColumn new
@@ -84,25 +80,24 @@ MiTreeBrowser >> initializePresenters [
 		children: [ :aClass | aClass children asOrderedCollection ];
 		beMultipleSelection;
 		beResizable.
-	tree whenSelectionChangedDo: [ :selected | 
+	tree whenSelectedItemChangedDo: [ :entityOrGroup | 
 		self freezeDuring: [ 
-			| selectedEntity |
-			selectedEntity := self miSelectedItem.
-			model selected: selectedEntity.
-			self buses do: [ :bus | bus globallySelect: selectedEntity ] ] ]
+			model selected: entityOrGroup mooseInterestingEntity.
+			self buses do: [ :bus | bus globallySelect: entityOrGroup ] ] ]
 ]
 
 { #category : #accessing }
 MiTreeBrowser >> miSelectedItem [
 
-	| selection |
-	selection := tree selection.
-	^ selection selectedItems size = 1
-		  ifTrue: [ selection selectedItem ]
-		  ifFalse: [ MooseGroup withAll: selection selectedItems ]
+	^ model selected
 ]
 
-{ #category : #'as yet unclassified' }
-MiTreeBrowser >> refresh [
-	tree roots: { self model root }
+{ #category : #actions }
+MiTreeBrowser >> refreshTree [
+
+	tree
+		roots: { self model root };
+		expandPath: #( 1 ).
+
+	self freezeDuring: [ tree selectItem: model root ]
 ]

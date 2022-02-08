@@ -9,7 +9,7 @@ MiExportToJSONCommand class >> defaultDescription [
 	^ 'Export this model to JSON'
 ]
 
-{ #category : #initialization }
+{ #category : #default }
 MiExportToJSONCommand class >> defaultIconName [
 
 	^ #mooseExportJson

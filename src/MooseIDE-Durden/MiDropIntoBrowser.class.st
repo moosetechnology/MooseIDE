@@ -23,11 +23,6 @@ Class {
 }
 
 { #category : #specs }
-MiDropIntoBrowser class >> currentApplication [
-	^ MiApplication current
-]
-
-{ #category : #specs }
 MiDropIntoBrowser class >> defaultSpec [
 
 	^ SpBoxLayout newTopToBottom
@@ -60,9 +55,10 @@ MiDropIntoBrowser class >> menuCommandOn: aBuilder [
 ]
 
 { #category : #specs }
-MiDropIntoBrowser class >> open [ 
-	<script> 
-	self new openWithSpec 
+MiDropIntoBrowser class >> open [
+
+	<script>
+	self new openWithSpec
 ]
 
 { #category : #specs }
@@ -99,7 +95,6 @@ MiDropIntoBrowser >> followAction [
 { #category : #initialization }
 MiDropIntoBrowser >> initializePresenters [
 
-	super initializePresenters.
 	toolbar := self newToolbar.
 	status := self newStatusBar.
 	left := self newContainer.
@@ -129,7 +124,7 @@ MiDropIntoBrowser >> miSelectedItem [
 { #category : #'instance creation' }
 MiDropIntoBrowser >> newContainer [
 
-	^ ((self instantiate: SpDropInContainer)
+	^ ((self instantiate: SpSingleDropInContainer)
 		   borderWidth: 2;
 		   dropEnabled: true;
 		   wantsDrop: [ :transfer :destination | 
@@ -146,7 +141,7 @@ MiDropIntoBrowser >> propagate: aWidget [
 	newSelection := miSelectedItem.
 	newSelection ifNil: [ ^ self ].
 	(self allPresentersBut: aWidget) do: [ :w | 
-		w selectEntity: newSelection.
+		w receiveEntity: newSelection.
 		miSelectedItem := newSelection ].
 
 	self propagate.
@@ -154,9 +149,9 @@ MiDropIntoBrowser >> propagate: aWidget [
 ]
 
 { #category : #'instance creation' }
-MiDropIntoBrowser >> selectEntity: anEntity [
+MiDropIntoBrowser >> receiveEntity: anEntity [
 
-	self allPresenters do: [ :p | p selectEntity: anEntity ]
+	self allPresenters do: [ :p | p receiveEntity: anEntity ]
 ]
 
 { #category : #'instance creation' }

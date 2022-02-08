@@ -11,8 +11,7 @@ Class {
 		'queryNotebookPresenter',
 		'selectedQuery',
 		'rootQuery',
-		'queriesListPresenter',
-		'busMooseEntities'
+		'queriesListPresenter'
 	],
 	#category : #'MooseIDE-QueriesBrowser-Main presenters'
 }
@@ -64,8 +63,14 @@ MiQueriesBrowser class >> windowSize [
 	^ 650 @ 420
 ]
 
+{ #category : #'window control' }
+MiQueriesBrowser >> browserClosed [
+	super browserClosed.
+	application unregisterProducer: self
+]
+
 { #category : #testing }
-MiQueriesBrowser >> canReceiveEntity: anObject [
+MiQueriesBrowser >> canFollowEntity: anObject [
 
 	^ anObject isMooseObject and: [ 
 		  (anObject asMooseGroup allUsing: FamixTNamedEntity) isNotEmpty ]
@@ -74,11 +79,12 @@ MiQueriesBrowser >> canReceiveEntity: anObject [
 { #category : #actions }
 MiQueriesBrowser >> followEntity: anEntity [
 
+	| busMooseEntities |
 	"Create a group in case that only one entity was received from the bus"
 	busMooseEntities := anEntity asMooseGroup allUsing: FamixTNamedEntity.
 		
 	"Create the new root query"
-	self resetRootQueryEntities.
+	self resetRootQueryForEntities: busMooseEntities.
 
 	"Update window's title"
 	self window
@@ -86,6 +92,12 @@ MiQueriesBrowser >> followEntity: anEntity [
 
 	"Update the all the sub presenters with this new query"
 	queriesListPresenter followNewEntity
+]
+
+{ #category : #initialization }
+MiQueriesBrowser >> initialize [ 
+	super initialize.
+	application registerProducer: self for: FQAbstractQuery 
 ]
 
 { #category : #initialization }
@@ -119,7 +131,6 @@ MiQueriesBrowser >> initializeNotebookPresenter [
 { #category : #initialization }
 MiQueriesBrowser >> initializePresenters [
 
-	super initializePresenters.
 	self initializeQueryCodePresenter.
 	self initializeResultTreePresenter.
 	self initializeNotebookPresenter.
@@ -137,14 +148,19 @@ MiQueriesBrowser >> initializeQueryBuilder [
 { #category : #initialization }
 MiQueriesBrowser >> initializeQueryCodePresenter [
 
-	queryCodePresenter := self instantiate: MiQueryCodePresenter
+	queryCodePresenter := self instantiate: QueryCodePresenter
 ]
 
 { #category : #initialization }
 MiQueriesBrowser >> initializeResultTreePresenter [
 
-	queryResultTreePresenter := self instantiate: MiResultTreePresenter.
+	queryResultTreePresenter := self instantiate: QueryResultTreePresenter.
 	queryResultTreePresenter updateForEntities: self queryResultEntities
+]
+
+{ #category : #brokerage }
+MiQueriesBrowser >> itemsFor: aClass [
+	^rootQuery allChildren select: [ :query | query isKindOf: aClass ]
 ]
 
 { #category : #accessing }
@@ -183,7 +199,7 @@ MiQueriesBrowser >> removeQuery: aQuery [
 ]
 
 { #category : #'api - actions' }
-MiQueriesBrowser >> resetRootQueryEntities [
+MiQueriesBrowser >> resetRootQueryForEntities: busMooseEntities [
 
 	rootQuery
 		resetResult;
@@ -211,7 +227,7 @@ MiQueriesBrowser >> selectedQuery [
 	^ selectedQuery
 ]
 
-{ #category : #'accessing model' }
+{ #category : #'accessing - model' }
 MiQueriesBrowser >> setModelBeforeInitialization: aRootQuery [
 
 	rootQuery := aRootQuery.

@@ -16,3 +16,9 @@ TEntityMetaLevelDependency >> miTreeExtension [
 		  roots: { self };
 		  beResizable
 ]
+
+{ #category : #'*MooseIDE-Dependency' }
+TEntityMetaLevelDependency >> rootsForTreeMap [
+
+	^ self asMooseGroup
+]

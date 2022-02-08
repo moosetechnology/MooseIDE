@@ -19,13 +19,15 @@ Class {
 }
 
 { #category : #'world menu' }
-MiModelRootBrowser class >> buildCommandsGroupWith: presenterInstance forRoot: rootCommandGroup [
-	super
-		buildCommandsGroupWith: presenterInstance
-		forRoot: rootCommandGroup.
-	rootCommandGroup
-		register: (MiModelExportCommand asCommandGroupWith: presenterInstance);
-		register: (MiModelUtilityCommand asCommandGroupWith: presenterInstance)
+MiModelRootBrowser class >> buildModelCommandsGroupWith: presenterInstance [
+
+	^ CmCommandGroup forSpec beRoot
+		  register: (MiInspectCommand forSpecContext: presenterInstance);
+		  register: (MiPropagateCommand forSpecContext: presenterInstance);
+		  register:
+			  (MiModelExportCommand asCommandGroupWith: presenterInstance);
+		  register:
+			  (MiModelUtilityCommand asCommandGroupWith: presenterInstance)
 ]
 
 { #category : #specs }
@@ -39,7 +41,7 @@ MiModelRootBrowser class >> defaultSpec [
 		  yourself
 ]
 
-{ #category : #specs }
+{ #category : #'world menu' }
 MiModelRootBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	<miBrowsers>
@@ -57,19 +59,20 @@ MiModelRootBrowser class >> newModel [
 	^ MiModelRootBrowserModel new
 ]
 
-{ #category : #specs }
+{ #category : #'instance creation' }
 MiModelRootBrowser class >> open [
 	<script>
 	^ super open
 ]
 
-{ #category : #initialization }
+{ #category : #specs }
 MiModelRootBrowser class >> title [
 	^ 'Models browser'
 ]
 
-{ #category : #'updating screen' }
+{ #category : #updating }
 MiModelRootBrowser class >> updateAll [
+
 	self allInstances
 		select: [ :browser | browser window isOpen ]
 		thenDo: [ :browser | browser updateList ]
@@ -81,7 +84,7 @@ MiModelRootBrowser class >> windowSize [
 ]
 
 { #category : #testing }
-MiModelRootBrowser >> canReceiveEntity: anObject [
+MiModelRootBrowser >> canFollowEntity: anObject [
 	^ false
 ]
 
@@ -96,19 +99,26 @@ MiModelRootBrowser >> followEntity: anEntity [
 { #category : #initialization }
 MiModelRootBrowser >> initializeList [
 
-	modelFilteringList := self newFilteringList
-		                      items: MooseModel root;
-		                      display: [ :mooseModel | mooseModel name ];
-		                      yourself.
+	modelFilteringList := self newFilteringList.
+
+	modelFilteringList items: MooseModel root.
+	MooseModel root ifNotEmpty: [ :root | 
+		modelFilteringList selectItem: root anyOne.
+		model selected: root anyOne ].
+
+	modelFilteringList display: [ :mooseModel | mooseModel name ].
+
 	modelFilteringList listPresenter
-		contextMenu: [ self rootCommandsGroup asMenuPresenter ];
+		contextMenu: [ 
+			(self class buildModelCommandsGroupWith: self) asMenuPresenter ];
 		whenSelectionChangedDo: [ :selected | 
-			model selected: selected selectedItem ]
+			model selected: selected selectedItem.
+			self updateToolbar ]
 ]
 
 { #category : #initialization }
 MiModelRootBrowser >> initializePresenters [
-	super initializePresenters.
+
 	self initializeToolbar.
 	self initializeList
 ]
@@ -116,7 +126,7 @@ MiModelRootBrowser >> initializePresenters [
 { #category : #initialization }
 MiModelRootBrowser >> initializeToolbar [
 
-	toolbar := (MPImportCommand asCommandGroupForSpecContext: self)
+	toolbar := (MiImportCommand asCommandGroupForSpecContext: self)
 		        asToolbarPresenter beIcons.
 	toolbar addItem: self refreshToolbarButton
 ]
@@ -124,7 +134,7 @@ MiModelRootBrowser >> initializeToolbar [
 { #category : #accessing }
 MiModelRootBrowser >> miSelectedItem [
 
-	^ modelFilteringList selectedItem
+	^ self selected
 ]
 
 { #category : #initialization }
@@ -162,5 +172,6 @@ MiModelRootBrowser >> updateList [
 		| selected |
 		selected := self selected.
 		modelFilteringList listPresenter updateList.
-		modelFilteringList selectItem: selected ]
+		modelFilteringList selectItem:
+			(selected ifNil: [ modelFilteringList items first ]) ]
 ]

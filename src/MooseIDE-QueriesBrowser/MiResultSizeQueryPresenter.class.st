@@ -7,7 +7,9 @@ Class {
 	#instVars : [
 		'subqueriesDropList',
 		'comparatorDropList',
-		'valueInputField'
+		'valueInputField',
+		'process',
+		'delayer'
 	],
 	#category : #'MooseIDE-QueriesBrowser-Configuration presenters'
 }
@@ -35,8 +37,18 @@ MiResultSizeQueryPresenter >> configureFor: aQuery [
 	comparatorDropList selectItem: aQuery comparator.
 	valueInputField number: aQuery valueToCompare.
 	subqueriesDropList selectItem:
-		(owner parentQueryListPresenter findPresenterForQuery: aQuery innerQuery).
+		(owner queriesListPresenter findPresenterForQuery: aQuery innerQuery).
 	query := aQuery
+]
+
+{ #category : #initialization }
+MiResultSizeQueryPresenter >> initialize [
+
+	super initialize.
+	delayer := InputProcessingWaiter new.
+	owner queriesListPresenter announcer
+		when: QueriesListChangedAnnouncement
+		do: [ self queryPresentersListChanged ]
 ]
 
 { #category : #initialization }
@@ -78,7 +90,13 @@ MiResultSizeQueryPresenter >> initializeValueInput [
 	valueInputField
 		placeholder: 'Value';
 		whenNumberChangedDo: [ :newNumber | 
-			self computeQueryAction: newNumber ]
+			delayer waitAndRun: [ self computeQueryAction: newNumber ] ]
+]
+
+{ #category : #testing }
+MiResultSizeQueryPresenter >> isQueryUsed: aQuery [
+
+	^ subqueriesDropList selectedItem = aQuery
 ]
 
 { #category : #layout }
@@ -100,7 +118,6 @@ MiResultSizeQueryPresenter >> queryPresentersListChanged [
 	newAvailableQueries := owner allQueryPresentersExceptSelf.
 	previouslySelectedQuery := subqueriesDropList selectedItem.
 	(newAvailableQueries includes: previouslySelectedQuery)
-		ifTrue: [ 
-		subqueriesDropList updateItemsKeepingSelection: newAvailableQueries ]
+		ifTrue: [ subqueriesDropList updateItemsKeepingSelection: newAvailableQueries ]
 		ifFalse: [ subqueriesDropList items: newAvailableQueries ]
 ]

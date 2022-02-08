@@ -10,8 +10,10 @@ Class {
 
 { #category : #specs }
 MiPropertyExtension class >> defaultSpec [
+
 	^ SpBoxLayout newVertical
-		add: #properties
+		  add: #properties;
+		  yourself
 ]
 
 { #category : #initialization }
@@ -43,7 +45,7 @@ MiPropertyExtension >> model: anObject [
 	properties ifNotNil: [ :p | p items: model mooseDescription allPrimitiveProperties ]
 ]
 
-{ #category : #initialization }
+{ #category : #'accessing - model' }
 MiPropertyExtension >> setModelBeforeInitialization: aModel [
 	self model: aModel
 ]

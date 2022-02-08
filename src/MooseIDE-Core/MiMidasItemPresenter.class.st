@@ -24,7 +24,7 @@ MiMidasItemPresenter >> initializePresenters [
 	nameLabel := self newLabel label: self toolbarLabel
 ]
 
-{ #category : #'accessing model' }
+{ #category : #'accessing - model' }
 MiMidasItemPresenter >> setModelBeforeInitialization: aBusOrBrowser [
 	model := aBusOrBrowser
 ]

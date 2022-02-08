@@ -18,12 +18,12 @@ Class {
 	#category : #'MooseIDE-Meta-MetaBrowser'
 }
 
-{ #category : #specs }
+{ #category : #'world menu' }
 MiMetaBrowser class >> helpMessage [
 	^ 'Meta description in a metamodel'
 ]
 
-{ #category : #specs }
+{ #category : #'world menu' }
 MiMetaBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	<miBrowsers>
@@ -34,6 +34,12 @@ MiMetaBrowser class >> menuCommandOn: aBuilder [
 		order: 4;
 		help: (self helpMessage);
 		action: [ self open ]
+]
+
+{ #category : #'instance creation' }
+MiMetaBrowser class >> newModel [
+
+	^ MiMetaBrowserModel new
 ]
 
 { #category : #'instance creation' }
@@ -54,7 +60,7 @@ MiMetaBrowser class >> windowSize [
 ]
 
 { #category : #testing }
-MiMetaBrowser >> canReceiveEntity: anObject [
+MiMetaBrowser >> canFollowEntity: anObject [
 
 	^ anObject isMooseObject
 ]
@@ -62,12 +68,9 @@ MiMetaBrowser >> canReceiveEntity: anObject [
 { #category : #initialization }
 MiMetaBrowser >> followEntity: anEntity [
 
-	", anEntity metamodel traits"
-
-	(self updateCommentOf: anEntity mooseDescription).
 	entities roots: (anEntity metamodel classes select: [ :class | 
 			 class superclass fullName = 'Moose.Entity' ]).
-	self updatePropertyFromMooseDescription: anEntity mooseDescription.
+	self selected: anEntity mooseDescription.
 	map
 		rootEntities: anEntity metamodel classes;
 		run
@@ -101,9 +104,7 @@ MiMetaBrowser >> initializeEntities [
 		children: [ :aMetaClass | aMetaClass subclasses ];
 		display: [ :aMetaClass | aMetaClass name ].
 	entities whenSelectedItemChangedDo: [ :element | 
-		element ifNotNil: [ 
-			self updatePropertyFromMooseDescription: element.
-			self updateCommentOf: element ] ]
+		element ifNotNil: [ self selected: element ] ]
 ]
 
 { #category : #initialization }
@@ -132,15 +133,12 @@ MiMetaBrowser >> initializeLayout [
 MiMetaBrowser >> initializeMap [
 
 	map := self instantiate: MiUML.
-	map miUMLModelDescriptor: RSUMLClassDescriptor new forFame.
-	map whenSelectedItemChangedDo: [ :element | 
-		self updatePropertyFromMooseDescription: element.
-		self updateCommentOf: element ]
+	map miUMLModelDescriptor: RSUMLClassDescriptor new forFame
 ]
 
 { #category : #initialization }
 MiMetaBrowser >> initializePresenters [
-	super initializePresenters.
+
 	self initializeCommentNoteBook.
 	self initializeEntities.
 	self initializeProperties.
@@ -181,16 +179,31 @@ MiMetaBrowser >> initializeProperties [
 		addPageTitle: 'Properties' provider: [ propertiesPropertiesTable ]
 ]
 
-{ #category : #initialization }
-MiMetaBrowser >> updateCommentOf: aMooseDescription [
+{ #category : #accessing }
+MiMetaBrowser >> miSelectedItem [
 
-	aMooseDescription isFM3Property
+	^ model selected
+]
+
+{ #category : #enumerating }
+MiMetaBrowser >> selected: anEntity [
+
+	model selected: anEntity.
+	self updateCommentOf: anEntity.
+	self updateProperty.
+	self window updateToolbar
+]
+
+{ #category : #initialization }
+MiMetaBrowser >> updateCommentOf: mooseDescription [
+
+	mooseDescription isFM3Property
 		ifTrue: [ 
-			comment text: aMooseDescription comment.
-			getterCode text: aMooseDescription compiledMethod sourceCode.
+			comment text: mooseDescription comment.
+			getterCode text: mooseDescription compiledMethod sourceCode.
 			setterCode text:
-				((aMooseDescription implementingClass lookupSelector:
-					  (aMooseDescription implementingSelector , ':') asSymbol)
+				((mooseDescription implementingClass lookupSelector:
+					  (mooseDescription implementingSelector , ':') asSymbol)
 					 ifNil: [ '' ]
 					 ifNotNil: [ :method | method compiledMethod sourceCode ]).
 			commentNoteBook pages: { 
@@ -199,17 +212,16 @@ MiMetaBrowser >> updateCommentOf: aMooseDescription [
 			setterCode text ifNotEmpty: [ 
 				commentNoteBook addPage: commentSetterPage ] ]
 		ifFalse: [ 
-			comment text: (aMooseDescription implementingClass
+			comment text: (mooseDescription implementingClass
 					 ifNil: [ 'No Comment' ]
 					 ifNotNil: [ :class | class comment ]).
 			commentNoteBook pages: { commentCommentPage } ]
 ]
 
 { #category : #initialization }
-MiMetaBrowser >> updatePropertyFromMooseDescription: aMooseDescription [
+MiMetaBrowser >> updateProperty [
 
-	propertiesRelationsTable items:
-		aMooseDescription allComplexProperties.
+	propertiesRelationsTable items: model selected allComplexProperties.
 	propertiesPropertiesTable items:
-		aMooseDescription allPrimitiveProperties
+		model selected allPrimitiveProperties
 ]

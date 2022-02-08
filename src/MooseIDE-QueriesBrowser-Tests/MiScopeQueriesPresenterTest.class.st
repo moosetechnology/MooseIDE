@@ -81,10 +81,6 @@ MiScopeQueriesPresenterTest >> testDropListMatchesForOtherDirection [
 { #category : #tests }
 MiScopeQueriesPresenterTest >> testDropListMatchesQuery [
 
-	self
-		assert: presenter scopesDropList selectedItem
-		equals: presenter query scope.
-
 	presenter scopesDropList selectItem:
 		(presenter query availableScopes detect: [ :scope | 
 			 presenter query scope ~~ scope ]).
@@ -103,7 +99,7 @@ MiScopeQueriesPresenterTest >> testNoScopesForADirection [
 
 	self
 		assert: presenter scopesDropList class
-		identicalTo: MiNoPossibleQueryPresenter
+		identicalTo: NoPossibleQueryPresenter
 ]
 
 { #category : #tests }
@@ -128,7 +124,7 @@ MiScopeQueriesPresenterTest >> testPresentersOnImpossibleQuery [
 
 	self
 		assert: presenter scopesDropList class
-		identicalTo: MiNoPossibleQueryPresenter
+		identicalTo: NoPossibleQueryPresenter
 ]
 
 { #category : #tests }
@@ -169,10 +165,6 @@ MiScopeQueriesPresenterTest >> testRadioButtonsMatchAvailableDirections [
 
 { #category : #tests }
 MiScopeQueriesPresenterTest >> testRadioButtonsMatchQuery [
-
-	self
-		assert: presenter directionsDropList selectedItem label
-		equals: presenter query directionStrategy label.
 
 	self selectNonSelectedDirection.
 	self

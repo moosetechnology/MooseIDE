@@ -4,13 +4,13 @@ Class {
 	#category : #'MooseIDE-Core-Command'
 }
 
-{ #category : #initialization }
+{ #category : #default }
 MiCommand class >> defaultIconName [
 
 	^ ''
 ]
 
-{ #category : #initialization }
+{ #category : #default }
 MiCommand class >> defaultShortcut [
 
 	^ nil
@@ -20,6 +20,12 @@ MiCommand class >> defaultShortcut [
 MiCommand class >> isAbstract [
 
 	^ self = MiCommand
+]
+
+{ #category : #converting }
+MiCommand >> application [
+
+	^ context application
 ]
 
 { #category : #converting }
@@ -41,5 +47,5 @@ MiCommand >> asSpecCommand [
 { #category : #converting }
 MiCommand >> iconProvider [
 
-	^ context application iconProvider
+	^ self application iconProvider
 ]

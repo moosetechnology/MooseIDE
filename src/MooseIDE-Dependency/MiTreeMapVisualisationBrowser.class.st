@@ -22,7 +22,7 @@ MiTreeMapVisualisationBrowser class >> defaultSpec [
 		yourself
 ]
 
-{ #category : #specs }
+{ #category : #'world menu' }
 MiTreeMapVisualisationBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	<miBrowsers>
@@ -35,15 +35,27 @@ MiTreeMapVisualisationBrowser class >> menuCommandOn: aBuilder [
 		action: [ self open ]
 ]
 
-{ #category : #specs }
+{ #category : #'instance creation' }
+MiTreeMapVisualisationBrowser class >> newModel [
+
+	^ MiTreeMapVisualisationModel new
+]
+
+{ #category : #'instance creation' }
 MiTreeMapVisualisationBrowser class >> open [
 	<script>
 	^ super open
 ]
 
-{ #category : #accessing }
+{ #category : #specs }
 MiTreeMapVisualisationBrowser class >> title [
 	^ 'Tree Map Visualization'
+]
+
+{ #category : #testing }
+MiTreeMapVisualisationBrowser >> canFollowEntity: anObject [
+
+	^ anObject isMooseObject and: [ anObject rootsForTreeMap isNotEmpty ]
 ]
 
 { #category : #testing }
@@ -52,28 +64,11 @@ MiTreeMapVisualisationBrowser >> canHighlight [
 	^ true
 ]
 
-{ #category : #testing }
-MiTreeMapVisualisationBrowser >> canReceiveEntity: anObject [
-	^ anObject isMooseObject and: [ anObject rootsForTreeMap isNotEmpty ]
-]
-
-{ #category : #accessing }
-MiTreeMapVisualisationBrowser >> diagram [
-	^ diagram
-]
-
-{ #category : #accessing }
-MiTreeMapVisualisationBrowser >> diagram: anObject [
-	diagram := anObject
-]
-
 { #category : #actions }
 MiTreeMapVisualisationBrowser >> followEntity: anEntity [
 
-	diagram
-		unHighlight;
-		rootEntities: anEntity rootsForTreeMap;
-		run
+	model entities: anEntity rootsForTreeMap.
+	diagram run
 ]
 
 { #category : #actions }
@@ -84,11 +79,12 @@ MiTreeMapVisualisationBrowser >> highlightEntity: anEntity [
 
 { #category : #initialization }
 MiTreeMapVisualisationBrowser >> initializePresenters [
-	super initializePresenters.
-	diagram := self instantiate: MiTreeMap.
-	diagram
-		childrenBlock: [ :el | 
-			(el usesFamixTrait: TEntityMetaLevelDependency)
-				ifTrue: [ el children ]
-				ifFalse: [ {} ] ]
+
+	diagram := self instantiate: MiTreeMap
+]
+
+{ #category : #accessing }
+MiTreeMapVisualisationBrowser >> miSelectedItem [
+
+	^ model entities mooseInterestingEntity
 ]

@@ -21,7 +21,7 @@ MiModelUtilityCommand class >> defaultDescription [
 	^ 'Utility'
 ]
 
-{ #category : #defaults }
+{ #category : #default }
 MiModelUtilityCommand class >> defaultIconName [
 	^ #blank
 ]

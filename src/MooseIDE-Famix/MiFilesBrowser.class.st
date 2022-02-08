@@ -29,7 +29,7 @@ MiFilesBrowser class >> defaultSpec [
 		yourself
 ]
 
-{ #category : #specs }
+{ #category : #'world menu' }
 MiFilesBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	<miBrowsers>
@@ -42,30 +42,32 @@ MiFilesBrowser class >> menuCommandOn: aBuilder [
 		action: [ self open ]
 ]
 
-{ #category : #initialization }
+{ #category : #'instance creation' }
 MiFilesBrowser class >> newModel [
 	^ MiFilesModel new
 ]
 
-{ #category : #specs }
+{ #category : #'instance creation' }
 MiFilesBrowser class >> open [
 	<script>
 	^ super open
 ]
 
-{ #category : #TOREMOVE }
+{ #category : #specs }
 MiFilesBrowser class >> title [
 	^ 'Files'
 ]
 
 { #category : #testing }
-MiFilesBrowser >> canReceiveEntity: anObject [
-	^ (anObject isKindOf: MooseModel) and:
-	 [ anObject rootFolder isNotNil and:
-	 [ anObject rootFolder asFileReference exists ]  ]
+MiFilesBrowser >> canFollowEntity: anObject [
+
+	^ anObject isMooseObject and: [ 
+		  anObject isMooseModel and: [ 
+			  anObject rootFolder isNotNil and: [ 
+				  anObject rootFolder asFileReference exists ] ] ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 MiFilesBrowser >> computeItemsInFileReference: aFileReference [
 	"isChildOf: can bug see issue https://github.com/pharo-project/pharo/issues/5720"
 
@@ -95,30 +97,30 @@ MiFilesBrowser >> followEntity: anEntity [
 
 { #category : #initialization }
 MiFilesBrowser >> initializePresenters [
-	super initializePresenters.
+
 	self initializeTreeTable.
 	treeEntity := self newTreeTable.
 	treeEntity
-		addColumn:
-			(SpCompositeTableColumn new
-				addColumn:
-					((SpImageTableColumn evaluated: #midasIcon)
-						width: 20;
-						yourself);
-				addColumn: (SpStringTableColumn evaluated: #name);
-				yourself);
+		addColumn: (SpCompositeTableColumn new
+				 addColumn: ((SpImageTableColumn evaluated: #midasIcon)
+						  width: 20;
+						  yourself);
+				 addColumn: (SpStringTableColumn evaluated: #name);
+				 yourself);
 		children: [ :aClass | aClass children asOrderedCollection ];
 		beMultipleSelection;
 		beResizable.
-	treeEntity
-		whenSelectionChangedDo: [ :selected | 
-			selected selectedItems
-				ifNotEmpty: [ self
-						freezeDuring: [ selected selectedItems size = 1
-								ifTrue: [ self buses do: [ :bus | bus globallySelect: selected selectedItem ] ]
-								ifFalse: [ | mooseGroup |
-									mooseGroup := MooseGroup withAll: selected selectedItems.
-									self buses do: [ :bus | bus globallySelect: mooseGroup ] ] ] ] ]
+	treeEntity whenSelectionChangedDo: [ :selected | 
+		selected selectedItems ifNotEmpty: [ 
+			self freezeDuring: [ 
+				selected selectedItems size = 1
+					ifTrue: [ 
+					self buses do: [ :bus | 
+						bus globallySelect: selected selectedItem ] ]
+					ifFalse: [ 
+						| mooseGroup |
+						mooseGroup := MooseGroup withAll: selected selectedItems.
+						self buses do: [ :bus | bus globallySelect: mooseGroup ] ] ] ] ]
 ]
 
 { #category : #initialization }
@@ -135,12 +137,21 @@ MiFilesBrowser >> initializeTreeTable [
 		beResizable
 ]
 
-{ #category : #refreshing }
-MiFilesBrowser >> refresh [
-	tree items: {self model fileReference parent} , self model fileReference directories , self model fileReference files
+{ #category : #accessing }
+MiFilesBrowser >> miSelectedItem [
+
+	^ model mooseModel
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #refreshing }
+MiFilesBrowser >> refresh [
+
+	tree items: { self model fileReference parent }
+		, self model fileReference directories
+		, self model fileReference files
+]
+
+{ #category : #actions }
 MiFilesBrowser >> selectFileReference: aFileReference [
 	self model fileReference: aFileReference.
 	self refresh

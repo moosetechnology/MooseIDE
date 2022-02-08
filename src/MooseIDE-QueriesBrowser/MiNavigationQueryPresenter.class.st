@@ -7,7 +7,8 @@ Class {
 	#instVars : [
 		'directionDropList',
 		'associationsButton',
-		'associationsList'
+		'associationsList',
+		'selectedAssociationsLabel'
 	],
 	#category : #'MooseIDE-QueriesBrowser-Configuration presenters'
 }
@@ -46,9 +47,8 @@ MiNavigationQueryPresenter >> initializeAssociationsList [
 		display: [ :item | item mooseDescription name asString ];
 		items: self query availableAssociations;
 		selectItems: self query associations;
-		onActivation: [ :association | self computeQueryAction: association ];
-		onDeactivation: [ :association | 
-			self computeQueryAction: association ]
+		onActivation: [ :association | self selectAssociationAction: association ];
+		onDeactivation: [ :association | self selectAssociationAction: association ]
 ]
 
 { #category : #initialization }
@@ -56,10 +56,18 @@ MiNavigationQueryPresenter >> initializeDirectionsDropList [
 
 	directionDropList := self newDropList.
 	directionDropList
+		startWithoutSelection;
 		items: self query class directionStrategies;
 		display: #label;
 		whenSelectedItemChangedDo: [ :selectedDirection | 
 			self updateDirection: selectedDirection ]
+]
+
+{ #category : #initialization }
+MiNavigationQueryPresenter >> initializeLabel [
+
+	selectedAssociationsLabel := self newLabel.
+	self updateLabel
 ]
 
 { #category : #initialization }
@@ -68,6 +76,7 @@ MiNavigationQueryPresenter >> initializePresenters [
 	self initializeDirectionsDropList.
 	self initializeAssociationsList.
 	self initializeAssociationsButton.
+	self initializeLabel.
 	self initializeLayout
 ]
 
@@ -78,7 +87,7 @@ MiNavigationQueryPresenter >> newAssociationsButton [
 			ifEmpty: [ self noParameterMessage: 'association' ]
 			ifNotEmpty: [ 
 				self newButton
-					label: 'Select Associations...';
+					label: 'Select Associations';
 					action: [ self showAssociationsPopover ];
 				yourself ]
 ]
@@ -95,9 +104,17 @@ MiNavigationQueryPresenter >> newLayout [
 		padding: padding;
 		add: associationsButton withConstraints: [ :constraints | 
 			constraints
-				width: 150;
+				width: 125;
 				padding: padding ];
+		add: selectedAssociationsLabel;
 		yourself
+]
+
+{ #category : #actions }
+MiNavigationQueryPresenter >> selectAssociationAction: association [
+
+	self updateLabel.
+	self computeQueryAction: association
 ]
 
 { #category : #initialization }
@@ -120,6 +137,25 @@ MiNavigationQueryPresenter >> updateDirection: selectedDirection [
 	self initializeLayout.
 
 	self notifyQueryChanged
+]
+
+{ #category : #actions }
+MiNavigationQueryPresenter >> updateLabel [
+	
+	| selectedAssociationsString names reducedNames |
+	names := associationsList selectedItems collect: [ :each |
+		each mooseDescription name asString ].
+	reducedNames := names size > 2
+	ifTrue: [
+		names collect: [ :each |
+			LbCContractor new
+				usingPriorities;
+				removeVowels;
+				ellipsisUpTo: 8;
+				reduce: each ] ]
+	ifFalse: [ names ].
+	selectedAssociationsString := reducedNames joinUsing: ', '.
+	selectedAssociationsLabel label: selectedAssociationsString
 ]
 
 { #category : #actions }

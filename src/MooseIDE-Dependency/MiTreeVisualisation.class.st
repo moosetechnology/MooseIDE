@@ -1,15 +1,12 @@
 Class {
 	#name : #MiTreeVisualisation,
 	#superclass : #MiAbstractVisualization,
-	#instVars : [
-		'selected',
-		'entities'
-	],
 	#category : #'MooseIDE-Dependency-Tree'
 }
 
 { #category : #running }
 MiTreeVisualisation >> boxCompositeFor: cls [
+
 	| label box |
 	box := self newBox.
 	label := self newLabel: cls name.
@@ -17,77 +14,67 @@ MiTreeVisualisation >> boxCompositeFor: cls [
 		above;
 		move: box on: label.
 	^ RSComposite new
-		shapes:
-			{label.
-			box};
-		model: cls;
-		@ RSDraggable;
-		addInteraction: (MiSelection on: [ :entity | self selected: entity ]);
-		yourself
+		  shapes: { 
+				  label.
+				  box };
+		  model: cls;
+		  @ RSDraggable;
+		  addInteraction:
+			  (MiSelection on: [ :entity | self owner model selected: entity ]);
+		  yourself
 ]
 
 { #category : #running }
 MiTreeVisualisation >> connectBoxes: boxes inCanvas: canvas [
+
 	self canvas addAll: boxes.
 	RSEdgeBuilder line
 		canvas: canvas;
 		shapes: boxes;
 		withVerticalAttachPoint;
-		connectToAll: [ :a | 
-			(a usesFamixTrait: TEntityMetaLevelDependency)
-				ifTrue: [ a children ]
-				ifFalse: [ {} ] ].
+		connectToAll: [ :entity | entity children ].
 	RSTreeLayout on: boxes
-]
-
-{ #category : #accessing }
-MiTreeVisualisation >> entities [
-	^ entities
-]
-
-{ #category : #accessing }
-MiTreeVisualisation >> entities: anObject [
-	entities := anObject
 ]
 
 { #category : #updating }
 MiTreeVisualisation >> highlightShapes [
-	self canvas nodes
-		do:
-			[ :box | box shapes do: [ :shape | shape color: (self colorFor: box model) ] ]
+
+	self canvas nodes do: [ :box | 
+		box shapes do: [ :shape | shape color: (self colorFor: box model) ] ]
 ]
 
 { #category : #running }
 MiTreeVisualisation >> newBox [
+
 	^ RSBox new
-		size: 100;
-		color: self theme selectionColor;
-		yourself
+		  size: 100;
+		  color: self theme selectionColor;
+		  yourself
 ]
 
 { #category : #running }
 MiTreeVisualisation >> newLabel: name [
+
 	^ RSLabel new
-		text: name;
-		color: self theme textColor;
-		yourself
+		  text: name;
+		  color: self theme textColor;
+		  yourself
+]
+
+{ #category : #accessing }
+MiTreeVisualisation >> receiveEntity: anEntity [
+
+	(self canvas nodes shapeFromModel: anEntity) click
 ]
 
 { #category : #running }
 MiTreeVisualisation >> run [
+
 	super run.
+	self unHighlight.
 	self
-		connectBoxes: (entities collect: [ :cls | self boxCompositeFor: cls ])
+		connectBoxes: (self owner model entities collect: [ :entity | 
+				 self boxCompositeFor: entity ])
 		inCanvas: self canvas.
 	self canvas zoomToFit
-]
-
-{ #category : #accessing }
-MiTreeVisualisation >> selected [
-	^ selected
-]
-
-{ #category : #accessing }
-MiTreeVisualisation >> selected: anObject [
-	selected := anObject
 ]

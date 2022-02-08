@@ -25,7 +25,7 @@ MiMooseModelBrowser class >> defaultSpec [
 		yourself
 ]
 
-{ #category : #specs }
+{ #category : #'world menu' }
 MiMooseModelBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	<miBrowsers>
@@ -50,13 +50,13 @@ MiMooseModelBrowser class >> newModel [
 	^ MiMooseModelBrowserModel model: self mostRecentModel
 ]
 
-{ #category : #specs }
+{ #category : #'instance creation' }
 MiMooseModelBrowser class >> open [
 	<script>
 	^ super open
 ]
 
-{ #category : #initialization }
+{ #category : #specs }
 MiMooseModelBrowser class >> title [
 	^ 'MooseModel'
 ]
@@ -67,7 +67,7 @@ MiMooseModelBrowser class >> windowSize [
 ]
 
 { #category : #testing }
-MiMooseModelBrowser >> canReceiveEntity: anEntity [
+MiMooseModelBrowser >> canFollowEntity: anEntity [
 
 	^ (anEntity isKindOf: MooseModel) and: [ self needUpdate: anEntity ]
 ]
@@ -105,49 +105,51 @@ MiMooseModelBrowser >> followEntity: aMooseModel [
 
 { #category : #initialization }
 MiMooseModelBrowser >> initializePresenters [
-	super initializePresenters.
+
 	self initializeTable.
-	"self initializeSearchField."
-	modelPresenter
-		whenSelectionChangedDo: [ :selected | self selectionAction: selected ]
+	self initializeSearchField
 ]
 
 { #category : #initialization }
 MiMooseModelBrowser >> initializeSearchField [
+
 	searchField := self newTextInput
-		placeholder: 'TODO: Search...';
-		yourself.
-	searchField acceptOnCR: true.
-	searchField whenTextIsAcceptedDo: [ :text | modelPresenter searchFor: text ]
+		               placeholder: 'TODO: Search...';
+		               yourself.
+
+	searchField whenSubmitDo: [ :text | modelPresenter searchFor: text ]
 ]
 
 { #category : #initialization }
 MiMooseModelBrowser >> initializeTable [
+
 	| title |
 	modelPresenter := self newTreeTable.
 	title := 'Source code components'.
 	modelPresenter
-		addColumn:
-			(SpCompositeTableColumn new
-				title: title;
-				addColumn:
-					((SpImageTableColumn evaluated: #midasIcon)
-						width: 20;
-						yourself);
-				addColumn: (SpStringTableColumn evaluated: #name);
-				yourself);
+		addColumn: (SpCompositeTableColumn new
+				 title: title;
+				 addColumn: ((SpImageTableColumn evaluated: #midasIcon)
+						  width: 20;
+						  yourself);
+				 addColumn: (SpStringTableColumn evaluated: #name);
+				 yourself);
 		children: [ :class | self childrenOf: class ];
 		beResizable;
 		beMultipleSelection;
 		lazilyComputeChildren;
-		contextMenu: [ self rootCommandsGroup asMenuPresenter ].
-	self computeModelPresenterRoot
+		contextMenu: [ 
+			(self rootCommandsGroup commandOrGroupNamed: 'Actions') beRoot
+				asMenuPresenter ].
+	self computeModelPresenterRoot.
+	modelPresenter whenSelectedItemChangedDo: [ :selectedItem | 
+		self selectionAction: selectedItem ]
 ]
 
 { #category : #accessing }
 MiMooseModelBrowser >> miSelectedItem [
 
-	^ modelPresenter selection selectedItems mooseInterestingEntity
+	^ model selected
 ]
 
 { #category : #accessing }
@@ -166,16 +168,18 @@ MiMooseModelBrowser >> selectedObject [
 ]
 
 { #category : #actions }
-MiMooseModelBrowser >> selectionAction: selection [
+MiMooseModelBrowser >> selectionAction: selectedItem [
+
 	| entities |
-	entities := (MooseGroup withAll: selection selectedItems)
-		select: #isMooseEntity.
+	entities := selectedItem isFM3Class
+		            ifTrue: [ 
+		            model model allMatching: selectedItem implementingClass ]
+		            ifFalse: [ 
+		            selectedItem asMooseGroup select: #isMooseEntity ].
 	entities ifEmpty: [ ^ self ].
-	model
-		selected:
-			(entities size = 1
-				ifTrue: [ entities anyOne ]
-				ifFalse: [ entities ]).
+
+	model selected: entities mooseInterestingEntity.
+
 	self buses do: [ :bus | bus globallySelect: model selected ]
 ]
 

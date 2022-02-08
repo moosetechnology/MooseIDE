@@ -17,7 +17,9 @@ Class {
 	#instVars : [
 		'propertyDropList',
 		'valueInputField',
-		'comparatorDropList'
+		'comparatorDropList',
+		'process',
+		'delayer'
 	],
 	#category : #'MooseIDE-QueriesBrowser-Configuration presenters'
 }
@@ -25,6 +27,8 @@ Class {
 { #category : #initialization }
 MiPropertyQueryPresenter >> initializePresenters [
 
+	delayer := InputProcessingWaiter new.
+		
 	query availableProperties
 		ifNotEmpty: [ 
 			propertyDropList := self newPropertyDropList.
@@ -40,6 +44,7 @@ MiPropertyQueryPresenter >> initializePresenters [
 MiPropertyQueryPresenter >> newComparatorDropList [
 
 	^ self newDropList
+		  startWithoutSelection;
 		  items: self query class comparators;
 		  display: [ :prop | prop asString ];
 		  whenSelectedItemChangedDo: [ :prop | 
@@ -56,6 +61,7 @@ MiPropertyQueryPresenter >> newPropertyDropList [
 	"self query availableProperties always returns as a first element that the query has a property. So, if we sort if we need to update the property of the query"
 	query property: sortedProperties first.
 	^ self newDropList
+		startWithoutSelection;
 		items: sortedProperties;
 		display: [ :prop | prop asString ];
 		whenSelectedItemChangedDo: [ :property | self updateProperty: property ];

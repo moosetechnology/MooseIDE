@@ -37,6 +37,10 @@ MiComparativeQueryPresenterTest >> testMatchesQuery [
 		assert: presenter query comparator
 		equals: presenter comparatorDropList selectedItem.
 	presenter valueInputField text: self valueInput.
+	
+	"Emulate the waiting that the UI has. When the user types something, there is a delay before computing the result."	
+	(InputProcessingWaiter delayBeforeProcessing + 100 milliSeconds) wait.
+	
 	self
 		assert: presenter query valueToCompare asString
 		equals: presenter valueInputField text

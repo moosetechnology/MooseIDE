@@ -49,7 +49,7 @@ MiAbstractBrowserTest >> mooseObjects [
 	^ { 
 		  MooseEntity new.
 		  MooseGroup new.
-		  (MooseGroup with: MooseEntity new).
+		  (MooseModel with: MooseEntity new) entities asMooseGroup.
 		  MooseModel new.
 		  (MooseModel with: MooseEntity new) }
 ]
@@ -126,7 +126,8 @@ MiAbstractBrowserTest >> testCanOpenOnMooseEntity [
 MiAbstractBrowserTest >> testCanOpenOnMooseGroup [
 
 	| newBrowser |
-	self bus globallySelect: (MooseGroup with: MooseEntity new).
+	self bus globallySelect:
+		(MooseModel with: MooseEntity new) entities asMooseGroup.
 	self
 		shouldnt: [ 
 			newBrowser := self browserClass openForTests.
@@ -175,7 +176,7 @@ MiAbstractBrowserTest >> testDoNotPropagateWhenReceivingInFollowMode [
 
 	browser privateReceivingMode: MiFollowMode.
 	self mooseObjects do: [ :object | 
-		browser selectEntity: object.
+		browser receiveEntity: object.
 		self assertEmpty: self bus logger logs ]
 ]
 
@@ -184,7 +185,7 @@ MiAbstractBrowserTest >> testDoNotPropagateWhenReceivingInFreezeMode [
 
 	browser privateReceivingMode: MiFreezeMode.
 	self mooseObjects do: [ :object | 
-		browser selectEntity: object.
+		browser receiveEntity: object.
 		self assertEmpty: self bus logger logs ]
 ]
 
@@ -193,7 +194,7 @@ MiAbstractBrowserTest >> testDoNotPropagateWhenReceivingInHighlightMode [
 
 	browser privateReceivingMode: MiHighlightMode.
 	self mooseObjects do: [ :object | 
-		browser selectEntity: object.
+		browser receiveEntity: object.
 		self assertEmpty: self bus logger logs ]
 ]
 
@@ -217,7 +218,7 @@ MiAbstractBrowserTest >> testFollowBusTriggersSelectEntity [
 	self bus globallySelect: propagatedEntity.
 	
 	browser followBus: self bus.
-	browser should receive selectEntity: propagatedEntity
+	browser should receive receiveEntity: propagatedEntity
 ]
 
 { #category : #'tests - actions' }

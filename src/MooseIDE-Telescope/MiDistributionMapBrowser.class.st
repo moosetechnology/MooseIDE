@@ -11,7 +11,7 @@ Class {
 	#category : #'MooseIDE-Telescope-DistributionMap'
 }
 
-{ #category : #'instance creation' }
+{ #category : #'world menu' }
 MiDistributionMapBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	<miBrowsers>
@@ -35,7 +35,7 @@ MiDistributionMapBrowser class >> title [
 ]
 
 { #category : #testing }
-MiDistributionMapBrowser >> canReceiveEntity: anObject [
+MiDistributionMapBrowser >> canFollowEntity: anObject [
 	^ anObject isMooseObject
 ]
 

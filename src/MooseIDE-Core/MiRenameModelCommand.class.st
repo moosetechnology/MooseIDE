@@ -9,7 +9,7 @@ MiRenameModelCommand class >> defaultDescription [
 	^ 'Rename this model'
 ]
 
-{ #category : #defaults }
+{ #category : #default }
 MiRenameModelCommand class >> defaultIconName [
 	^ #edit
 ]

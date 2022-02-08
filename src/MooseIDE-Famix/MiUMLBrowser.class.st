@@ -21,7 +21,7 @@ MiUMLBrowser class >> defaultSpec [
 		yourself
 ]
 
-{ #category : #specs }
+{ #category : #'world menu' }
 MiUMLBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	<miBrowsers>
@@ -34,15 +34,28 @@ MiUMLBrowser class >> menuCommandOn: aBuilder [
 		action: [ self open ]
 ]
 
-{ #category : #specs }
+{ #category : #'instance creation' }
+MiUMLBrowser class >> newModel [
+
+	^ MiUMLModel new
+]
+
+{ #category : #'instance creation' }
 MiUMLBrowser class >> open [
 	<script>
 	^ super open
 ]
 
-{ #category : #TOREMOVE }
+{ #category : #specs }
 MiUMLBrowser class >> title [
 	^ 'UML'
+]
+
+{ #category : #testing }
+MiUMLBrowser >> canFollowEntity: anObject [
+
+	^ anObject isMooseObject and: [ 
+		  anObject asMooseSpecializedGroup isKindOf: FamixTypeGroup ]
 ]
 
 { #category : #testing }
@@ -51,21 +64,14 @@ MiUMLBrowser >> canHighlight [
 	^ true
 ]
 
-{ #category : #testing }
-MiUMLBrowser >> canReceiveEntity: anObject [
-	"can't use isType because it can be a MooseModel (that does not answer isType)"
-
-	anObject isMooseObject
-		ifFalse: [ ^ false ].
-	^ (anObject isKindOf: FamixTypeGroup)
-		or: [ anObject isOfType: FamixTType ]
-]
-
 { #category : #actions }
 MiUMLBrowser >> followEntity: anEntity [
 
+	model
+		entities: anEntity asMooseSpecializedGroup;
+		unselectAll.
 	diagram
-		rootEntities: anEntity asMooseGroup specialize;
+		rootEntities: model entities;
 		run
 ]
 
@@ -77,11 +83,18 @@ MiUMLBrowser >> highlightEntity: anEntity [
 
 { #category : #initialization }
 MiUMLBrowser >> initializePresenters [
-	super initializePresenters.
+
 	diagram := self instantiate: MiUML
 ]
 
 { #category : #accessing }
 MiUMLBrowser >> miSelectedItem [
-	^ diagram selected
+
+	^ (model selected ifNil: [ model entities ]) mooseInterestingEntity
+]
+
+{ #category : #accessing }
+MiUMLBrowser >> selected: anEntity [
+
+	model selected: anEntity
 ]

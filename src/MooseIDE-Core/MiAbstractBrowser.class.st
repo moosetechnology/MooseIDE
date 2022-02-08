@@ -37,13 +37,6 @@ Class {
 	#superclass : #MiPresenter,
 	#instVars : [
 		'model',
-		'buttonFreeze',
-		'buttonFollow',
-		'buttonHighlight',
-		'buttonPropagate',
-		'buttonInspect',
-		'buttonHelp',
-		'busButton',
 		'buses',
 		'receivingMode'
 	],
@@ -51,28 +44,9 @@ Class {
 }
 
 { #category : #specs }
-MiAbstractBrowser class >> buildCommandsGroupWith: presenterInstance forRoot: rootCommandGroup [
-	rootCommandGroup register: (MiPropagateCommand forSpecContext: presenterInstance).
-	rootCommandGroup register: (MiInspectCommand forSpecContext: presenterInstance)
-]
-
-{ #category : #specs }
 MiAbstractBrowser class >> defaultSpec [
+
 	^ SpBoxLayout newVertical
-		add:
-			(SpBoxLayout newHorizontal
-				add: #buttonFollow width: 65;
-				add: #buttonFreeze width: 60;
-				add: #buttonHighlight width: 80;
-				add: SpBoxLayout newHorizontal expand: true;
-				add: #busButton;
-				add: SpBoxLayout newHorizontal expand: true;
-				add: #buttonInspect width: self iconWidth;
-				add: #buttonPropagate expand: false;
-				add: #buttonHelp width: self iconWidth;
-				yourself)
-			withConstraints: [ :constraints | constraints height: self toolbarHeight ];
-		yourself
 ]
 
 { #category : #'world menu' }
@@ -133,9 +107,20 @@ MiAbstractBrowser class >> open [
 		  yourself
 ]
 
+{ #category : #accessing }
+MiAbstractBrowser class >> taskbarIcon [
+	^MooseIcons mooseIcon
+
+]
+
 { #category : #specs }
 MiAbstractBrowser class >> windowSize [
 	^ 500 @ 400
+]
+
+{ #category : #'window control' }
+MiAbstractBrowser >> browserClosed [
+	buses do: [ :bus | bus unregisterBrowser: self ]
 ]
 
 { #category : #accessing }
@@ -144,9 +129,23 @@ MiAbstractBrowser >> buses [
 ]
 
 { #category : #testing }
+MiAbstractBrowser >> canEditBuses [
+
+	^ true
+]
+
+{ #category : #testing }
 MiAbstractBrowser >> canFollow [
 
 	^ true
+]
+
+{ #category : #testing }
+MiAbstractBrowser >> canFollowEntity: anObject [
+
+	"whether the browser accepts to deal with anObject"
+
+	self subclassResponsibility
 ]
 
 { #category : #testing }
@@ -159,11 +158,13 @@ MiAbstractBrowser >> canHighlight [
 ]
 
 { #category : #testing }
-MiAbstractBrowser >> canReceiveEntity: anObject [
+MiAbstractBrowser >> canPropagate [
 
-	"whether the browser accepts to deal with anObject"
+	| entity |
 
-	self subclassResponsibility
+	entity := self miSelectedItem.
+	^ entity isMooseObject and: [ 
+		  entity asMooseGroup isNotEmpty or: [ entity isMooseModel ] ]
 ]
 
 { #category : #buses }
@@ -172,8 +173,8 @@ MiAbstractBrowser >> followBus: aBus [
 	(self buses includes: aBus) ifTrue: [ ^ self ].
 	self buses add: aBus.
 	aBus registerBrowser: self.
-	self updateBusButton.
-	self selectEntity: aBus logger mostRecentEntity
+	self window ifNotNil: [ :window | window updateBusButton ].
+	self receiveEntity: aBus logger mostRecentEntity
 ]
 
 { #category : #actions }
@@ -202,56 +203,32 @@ MiAbstractBrowser >> highlightEntity: anEntity [
 	
 ]
 
+{ #category : #testing }
+MiAbstractBrowser >> ifAutonomous: aBlock [
+
+	self owner isNotNil and: [ 
+		self owner isWindowPresenter ifTrue: aBlock ]
+]
+
 { #category : #initialization }
 MiAbstractBrowser >> initialize [
 
 	super initialize.
-	self setDefaultState.
+	self setDefaultReceivingMode.
 	buses := Set new
 ]
 
 { #category : #initialization }
-MiAbstractBrowser >> initializePresenters [
+MiAbstractBrowser >> initializeWindow: aMiWindowPresenter [
 
-	super initializePresenters.
-	self initializeReceivingModeButtons.
+	super initializeWindow: aMiWindowPresenter.
 
-	busButton := (MiEditBusCommand forSpecContext: self)
-		             asButtonPresenter.
+	aMiWindowPresenter buildToolbar.
 
-	buttonPropagate := (MiPropagateCommand forSpecContext: self)
-		                   asButtonPresenter.
+	aMiWindowPresenter whenClosedDo: [ 
+		self browserClosed ].
 
-	buttonInspect := (MiInspectCommand forSpecContext: self)
-		                 asButtonPresenter.
-
-	buttonHelp := (MiHelpCommand forSpecContext: self) asButtonPresenter
-]
-
-{ #category : #initialization }
-MiAbstractBrowser >> initializeReceivingModeButtons [
-
-	buttonFreeze := MiFreezeMode newRadioButtonIn: self.
-	buttonFollow := MiFollowMode newRadioButtonIn: self.
-	buttonHighlight := MiHighlightMode newRadioButtonIn: self.
-
-	buttonFollow associatedRadioButtons: { 
-			buttonFreeze.
-			buttonFollow.
-			buttonHighlight }
-]
-
-{ #category : #initialization }
-MiAbstractBrowser >> initializeWindow: aWindowPresenter [
-
-	super initializeWindow: aWindowPresenter.
-
-	aWindowPresenter whenClosedDo: [ 
-		self buses do: [ :bus | bus unregisterBrowser: self ].
-		self application windowClosed: aWindowPresenter.
-		self application updateOverviewBrowsers ].
-
-	aWindowPresenter initialExtent: self class windowSize
+	aMiWindowPresenter initialExtent: self class windowSize
 ]
 
 { #category : #testing }
@@ -261,6 +238,7 @@ MiAbstractBrowser >> isMiBrowser [
 
 { #category : #accessing }
 MiAbstractBrowser >> miSelectedItem [
+
 	^ (MiNoSelectedElementToPropagateException browser: self) signal
 ]
 
@@ -280,14 +258,19 @@ MiAbstractBrowser >> needUpdate: anEntity [
 	^ anEntity ~= model selected
 ]
 
-{ #category : #buses }
-MiAbstractBrowser >> openBusEditor [
+{ #category : #'private - accessing' }
+MiAbstractBrowser >> receiveEntity: anEntity [
 
-	| popup |
-	(popup := self newPopover)
-		relativeTo: busButton;
-		presenter: (MiBusesPopup owner: popup on: self);
-		popup
+	"I am used by the Mi Application. You should use #globallySelect: anEntity that will transmit the message to me and the other browsers"
+
+	receivingMode browser: self actOnEntity: anEntity.
+	self updateToolbar
+]
+
+{ #category : #accessing }
+MiAbstractBrowser >> receivingMode [
+
+	^ receivingMode
 ]
 
 { #category : #accessing }
@@ -296,21 +279,13 @@ MiAbstractBrowser >> receivingMode: aReceivingMode [
 	receivingMode := aReceivingMode
 ]
 
-{ #category : #'private - accessing' }
-MiAbstractBrowser >> selectEntity: anEntity [
-
-	"I am used by the Mi Application. You should use #globallySelect: anEntity that will transmit the message to me and the other browsers"
-
-	receivingMode browser: self actOnEntity: anEntity
-]
-
 { #category : #initialization }
-MiAbstractBrowser >> setDefaultState [
+MiAbstractBrowser >> setDefaultReceivingMode [
 
-	buttonFollow state: true
+	self receivingMode: MiFollowMode
 ]
 
-{ #category : #'accessing model' }
+{ #category : #'accessing - model' }
 MiAbstractBrowser >> setModelBeforeInitialization: aModel [
 	model := aModel
 ]
@@ -320,7 +295,8 @@ MiAbstractBrowser >> showHelp [
 
 	| help |
 	(help := self newPopover)
-		relativeTo: buttonHelp;
+		relativeTo: self window toolbar;
+		bePositionRight;
 		presenter: (MiHelpPopup owner: help on: self);
 		popup
 ]
@@ -331,24 +307,11 @@ MiAbstractBrowser >> unfollowBus: aBus [
 	(self buses includes: aBus) ifFalse: [ ^ self ].
 	self buses remove: aBus.
 	aBus unregisterBrowser: self.
-	self updateBusButton
+	self window ifNotNil: [ :window | window updateBusButton ]
 ]
 
-{ #category : #buses }
-MiAbstractBrowser >> updateBusButton [
+{ #category : #actions }
+MiAbstractBrowser >> updateToolbar [
 
-	busButton label: (self buses ifEmpty: [ 'No bus' ] ifNotEmpty: [ 
-			 self buses size = 1
-				 ifTrue: [ 'Bus: ' , self buses anyOne name ]
-				 ifFalse: [ self buses size asString , ' buses' ] ]).
-
-	busButton help: (String streamContents: [ :s | 
-			 self buses do: [ :bus | 
-				 s
-					 << '- ';
-					 << bus name;
-					 cr ].
-			 s << 'Click to edit' ]).
-
-	self update
+	self window ifNotNil: [ :window | window updateToolbar ]
 ]

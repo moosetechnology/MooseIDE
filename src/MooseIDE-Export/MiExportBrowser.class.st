@@ -15,7 +15,8 @@ Class {
 		'toolbar',
 		'commentDictionary',
 		'entitiesTable',
-		'commentsButton'
+		'commentsButton',
+		'commentsAreShown'
 	],
 	#category : #'MooseIDE-Export-Browser'
 }
@@ -85,6 +86,12 @@ MiExportBrowser >> addCommentsColumn [
 	entitiesTable refresh
 ]
 
+{ #category : #testing }
+MiExportBrowser >> canFollowEntity: anObject [
+
+	^ true
+]
+
 { #category : #initialization }
 MiExportBrowser >> columnChoiceButton [
 
@@ -108,15 +115,25 @@ MiExportBrowser >> commentOf: anEntity [
 	^ commentDictionary at: anEntity ifAbsent: ''
 ]
 
+{ #category : #accessing }
+MiExportBrowser >> commentsAreShown [
+
+	^ commentsAreShown ifNil: [ commentsAreShown := false ]
+]
+
+{ #category : #accessing }
+MiExportBrowser >> commentsAreShown: anObject [
+
+	commentsAreShown := anObject
+]
+
 { #category : #initialization }
 MiExportBrowser >> commentsButton [
 
-	^ commentsButton := self newToolbarToggleButton
+	^ commentsButton := self newToolbarButton
 		                    label: 'Toggle comments';
 		                    icon: (self iconNamed: #edit);
-		                    action: [ :state :button |  ];
-		                    whenSelectedDo: [ self addCommentsColumn ];
-		                    whenUnselectedDo: [ self removeCommentsColumn ]
+		                    action: [ :button | self toggleCommentsColumn ]
 ]
 
 { #category : #accessing }
@@ -178,7 +195,6 @@ MiExportBrowser >> followEntity: anEntity [
 { #category : #initialization }
 MiExportBrowser >> initializePresenters [
 
-	super initializePresenters.
 	self initializeToolbar.
 	self initializeTable
 ]
@@ -256,6 +272,18 @@ MiExportBrowser >> showsProperty: aFM3Property [
 
 	^ entitiesTable columns anySatisfy: [ :column | 
 		  column title = aFM3Property name ]
+]
+
+{ #category : #'columns management' }
+MiExportBrowser >> toggleCommentsColumn [
+
+	self commentsAreShown
+		ifTrue: [ 
+			self removeCommentsColumn.
+			self commentsAreShown: false ]
+		ifFalse: [ 
+			self addCommentsColumn.
+			self commentsAreShown: true ]
 ]
 
 { #category : #'columns management' }

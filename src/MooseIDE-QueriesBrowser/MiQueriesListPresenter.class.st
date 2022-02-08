@@ -11,15 +11,13 @@ Class {
 	#instVars : [
 		'componentListPresenter',
 		'queryCounter',
-		'addRootQueryButton',
 		'progressNotificationPresenter',
 		'spinnerMorph',
-		'parentQueryBrowser',
 		'queryItemsPresenters',
-		'saveQueriesButton',
 		'loadQueriesButton',
 		'loadQueriesList',
-		'clearQueriesButton'
+		'queriesBrowser',
+		'queryToolBar'
 	],
 	#category : #'MooseIDE-QueriesBrowser-Main presenters'
 }
@@ -32,7 +30,7 @@ MiQueriesListPresenter >> addNewChildQueryAction: query [
 	indexToInsert := queryItemsPresenters findFirst: [ :each | 
 		                 each query = query ].
 	queryItemsPresenters add: newPresenter afterIndex: indexToInsert.
-	parentQueryBrowser selectQuery: query.
+	queriesBrowser selectQuery: query.
 	self updateComponentList
 ]
 
@@ -43,41 +41,26 @@ MiQueriesListPresenter >> addNewFirstLevelQuery [
 	self updateComponentList
 ]
 
+{ #category : #actions }
+MiQueriesListPresenter >> addNewManualQuery [
+	
+	| newPresenter |
+	newPresenter := MiQueryListItemPresenter
+		newManualQueryOn: queriesBrowser rootQuery
+		owner: self
+		queriesListPresenter: self.
+	newPresenter setQueryNumber: queryCounter.
+	queryCounter := queryCounter + 1.
+
+	queryItemsPresenters add: newPresenter.
+	self updateComponentList
+]
+
 { #category : #accessing }
 MiQueriesListPresenter >> availableQueryTypes [
 
 	^ FQAbstractQuery allSubclasses select: [ :each | 
 		  each isAvailableForQueriesSize: queryItemsPresenters size ]
-]
-
-{ #category : #actions }
-MiQueriesListPresenter >> constructQueriesWithFile: aFile [
-
-	| newQueries |
-	
-	[ self enableProgressNotification ] asJob run.
-	
-	aFile readStreamDo: [ :stream | 
-		newQueries := STON fromStream: stream ].
-
-	"Put the root query as the parent for the first level unary queries"
-	newQueries do: [ :each | 
-		each parent ifNil: [ 
-			each parent: parentQueryBrowser rootQuery ] ].
-
-	"We cannot use a collect here because we need to keep track of how many queries we are creating
-	iteration by iteration"
-	newQueries do: [ :each | 
-		| newPresenter|
-		newPresenter := each parent
-			ifNil: [ self createNewQueryPresenter: parentQueryBrowser rootQuery ]
-			ifNotNil: [ self createNewQueryPresenter: each parent ].
-		newPresenter configureFor: each.
-		queryItemsPresenters add: newPresenter ].
-
-	self updateComponentList.
-	
-	self disableProgressNotification
 ]
 
 { #category : #'api - actions' }
@@ -87,7 +70,7 @@ MiQueriesListPresenter >> createNewQueryPresenter: query [
 	newPresenter := MiQueryListItemPresenter
 		                on: query
 		                owner: self
-		                parentPresenter: self.
+		                queriesListPresenter: self.
 	newPresenter setQueryNumber: queryCounter.
 	queryCounter := queryCounter + 1.
 	^ newPresenter
@@ -117,8 +100,8 @@ MiQueriesListPresenter >> enableProgressNotification [
 				addMorphFront: morph;
 				yourself);
 			yourself.
-	parentQueryBrowser window ifNotNil: [ 
-		queriesBrowserMorph := parentQueryBrowser window window.
+	queriesBrowser window ifNotNil: [ 
+		queriesBrowserMorph := queriesBrowser window window.
 		spinnerMorph position:
 			queriesBrowserMorph extent / 2 + queriesBrowserMorph position.
 		spinnerMorph openInWorld ].
@@ -146,7 +129,7 @@ MiQueriesListPresenter >> followNewEntity [
 		thenDo: [ :each | 
 			each query resetResult.
 			(each query parent isNotNil and: [ each query parent isRootQuery ]) 
-				ifTrue: [ each query parent: parentQueryBrowser rootQuery ] ]
+				ifTrue: [ each query parent: queriesBrowser rootQuery ] ]
 ]
 
 { #category : #initialization }
@@ -157,38 +140,6 @@ MiQueriesListPresenter >> initialize [
 ]
 
 { #category : #initialization }
-MiQueriesListPresenter >> initializeButtons [
-
-	| saveCommand |
-	addRootQueryButton := self newButton.
-	addRootQueryButton
-		icon: (self iconNamed: #smallAdd);
-		action: [ self addNewFirstLevelQuery ].
-
-	saveCommand := MiSaveQueriesCommand new.
-	saveCommand
-		context: self;
-		afterCreationAction: [ 
-			"self reinitializeQueryPresenters.
-			parentQueryBrowser resetRootQueryEntities" ].
-	saveQueriesButton := saveCommand asSpecCommand asButtonPresenter.
-	saveQueriesButton
-		label: '';
-		icon: (self iconNamed: MiSaveQueriesCommand iconName).
-
-	loadQueriesButton := self newButton.
-	loadQueriesButton
-		icon: (self iconNamed: #smallLoadProject);
-		action: [ self showLoadQueriesPopover ];
-		help: 'Load a set of queries into the browser'.
-	clearQueriesButton := self newButton.
-	clearQueriesButton
-		icon: (self iconNamed: #smallUpdate);
-		action: [ self reinitializeQueryPresenters  ];
-		label: 'Clear queries'
-]
-
-{ #category : #initialization }
 MiQueriesListPresenter >> initializeComponentListPresenter [
 
 	componentListPresenter := self newComponentList.
@@ -196,42 +147,26 @@ MiQueriesListPresenter >> initializeComponentListPresenter [
 		activateOnSingleClick;
 		propagateNaturalHeight: true;
 		whenSelectedDo: [ :selectedPresenter | 
-			parentQueryBrowser selectQuery: selectedPresenter query ]
+			queriesBrowser selectQuery: selectedPresenter query ]
 ]
 
 { #category : #initialization }
 MiQueriesListPresenter >> initializeLayout [
 
 	self layout: (SpBoxLayout newTopToBottom
-		add: (SpBoxLayout newLeftToRight
-			spacing: 5;
-			add: addRootQueryButton width: self class iconWidth;
-			add: clearQueriesButton expand: false;
-			addLast: loadQueriesButton withConstraints: [ :c | c width: self class iconWidth ];
-			addLast: saveQueriesButton withConstraints: [ :c | c width: self class iconWidth ];
-			yourself)
-		expand: false;
+		add: queryToolBar expand: false;
 		add: componentListPresenter;
 		add: progressNotificationPresenter expand: false;
 		yourself)
 ]
 
 { #category : #initialization }
-MiQueriesListPresenter >> initializeLoadQueries [
-
-	loadQueriesList := self instantiate: MiLoadQueriesPresenter.
-	loadQueriesList okAction: [ 
-		self constructQueriesWithFile: loadQueriesList selectedFile ]
-]
-
-{ #category : #initialization }
 MiQueriesListPresenter >> initializePresenters [
 
 	queryItemsPresenters := OrderedCollection empty.
-	self initializeButtons.
 	self initializeComponentListPresenter.
 	self initializeProgressPresenter.
-	self initializeLoadQueries.
+	self initializeQueryToolbar.
 	self initializeLayout
 ]
 
@@ -242,18 +177,38 @@ MiQueriesListPresenter >> initializeProgressPresenter [
 	spinnerMorph := SpSpinnerMorph new
 ]
 
+{ #category : #initialization }
+MiQueriesListPresenter >> initializeQueryToolbar [
+
+	queryToolBar := self instantiate: MiQueriesBrowserToolbar on: self
+]
+
+{ #category : #testing }
+MiQueriesListPresenter >> isQueryUsed: aQuery [
+
+	^ (queryItemsPresenters collect: #queryConfiguratorPresenter)
+			anySatisfy: [ :queryPresenter | 
+				queryPresenter isQueryUsed: aQuery ]
+]
+
 { #category : #actions }
 MiQueriesListPresenter >> newFirstLevelQueryPresenter [
 
 	"This is a query that is a direct child of a FQRootQuery"
 
-	^ self createNewQueryPresenter: parentQueryBrowser rootQuery
+	^ self createNewQueryPresenter: queriesBrowser rootQuery
+]
+
+{ #category : #accessing }
+MiQueriesListPresenter >> queriesBrowser [
+
+	^ queriesBrowser
 ]
 
 { #category : #'api - actions' }
 MiQueriesListPresenter >> queryChangedUpdate: query [
 
-	parentQueryBrowser selectQuery: query
+	queriesBrowser selectQuery: query
 ]
 
 { #category : #accessing }
@@ -266,8 +221,9 @@ MiQueriesListPresenter >> queryItemsPresenters [
 MiQueriesListPresenter >> reinitializeQueryPresenters [
 
 	queryCounter := 1.
+	self announcer subscriptions reset.
 	queryItemsPresenters := OrderedCollection new.
-	self updateComponentList
+	componentListPresenter presenters: queryItemsPresenters
 ]
 
 { #category : #actions }
@@ -284,7 +240,7 @@ MiQueriesListPresenter >> removePresentersAssociatedWith: nodeQuery [
 { #category : #'api - actions' }
 MiQueriesListPresenter >> removeQueryAction: aQueryCreationPresenter [
 
-	parentQueryBrowser removeQuery: aQueryCreationPresenter query.
+	queriesBrowser removeQuery: aQueryCreationPresenter query.
 	queryItemsPresenters remove: aQueryCreationPresenter.
 	self removePresentersAssociatedWith: aQueryCreationPresenter query.
 	self updateComponentList
@@ -293,7 +249,7 @@ MiQueriesListPresenter >> removeQueryAction: aQueryCreationPresenter [
 { #category : #'accessing - model' }
 MiQueriesListPresenter >> setModelBeforeInitialization: aQueryBrowserPresenter [
 
-	parentQueryBrowser := aQueryBrowserPresenter
+	queriesBrowser := aQueryBrowserPresenter
 ]
 
 { #category : #actions }
@@ -317,8 +273,5 @@ MiQueriesListPresenter >> updateComponentList [
 { #category : #update }
 MiQueriesListPresenter >> updateSubqueriesListPresenter [
 
-	"Maybe we should change this to use announcements"
-
-	queryItemsPresenters do: [ :queryCreationPresenter | 
-		queryCreationPresenter queryPresentersListChanged ]
+	self announcer announce: QueriesListChangedAnnouncement new
 ]

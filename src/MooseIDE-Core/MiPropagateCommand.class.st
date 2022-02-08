@@ -28,7 +28,8 @@ MiPropagateCommand class >> defaultName [
 
 { #category : #testing }
 MiPropagateCommand >> canBeExecuted [
-	^ self context miSelectedItem isMooseObject
+
+	^ self context canPropagate
 ]
 
 { #category : #freezing }
@@ -36,7 +37,7 @@ MiPropagateCommand >> doNotFreezeBrowser [
 	shouldFreezeBrowser := false
 ]
 
-{ #category : #testing }
+{ #category : #executing }
 MiPropagateCommand >> execute [
 	shouldFreezeBrowser
 		ifTrue: [ self context freezeDuring: [ self propagate ] ]

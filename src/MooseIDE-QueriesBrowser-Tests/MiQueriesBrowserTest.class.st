@@ -21,7 +21,7 @@ MiQueriesBrowserTest >> setUp [
 
 	super setUp.
 	helper := FQTestsHelper current.
-	browser selectEntity: helper classesAndMethods
+	browser receiveEntity: helper classesAndMethods
 ]
 
 { #category : #tests }
@@ -83,14 +83,20 @@ MiQueriesBrowserTest >> testInitializePresenters [
 	self assert: browser layout isNotNil.
 	self
 		assert: browser queryCodePresenter class
-		equals: MiQueryCodePresenter.
+		equals: QueryCodePresenter.
 	self assert: browser queryCodePresenter text isNotEmpty.
 	self
 		assert: browser queryResultTreePresenter class
-		equals: MiResultTreePresenter.
+		equals: QueryResultTreePresenter.
 	self
 		assertCollection: browser queryResultEntities
 		hasSameElements: helper classesAndMethods
+]
+
+{ #category : #tests }
+MiQueriesBrowserTest >> testRegisterAtStartup [
+
+	self assert: (browser application producersOf: FQAbstractQuery) size equals: 1.
 ]
 
 { #category : #tests }
@@ -145,6 +151,12 @@ MiQueriesBrowserTest >> testSelectQuery [
 MiQueriesBrowserTest >> testSetModelBeforeInitialization [
 
 	self assert: browser rootQuery class equals: FQRootQuery
+]
+
+{ #category : #tests }
+MiQueriesBrowserTest >> testUnregisterAtClose [
+	browser window close.
+	self assert: (browser application producersOf: FQAbstractQuery) size equals: 0.
 ]
 
 { #category : #defaults }

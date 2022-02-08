@@ -38,6 +38,7 @@ MiSelection >> on: aBlock [
 
 { #category : #hooks }
 MiSelection >> onShape: aShape [
+
 	aShape model ifNil: [ ^ self ].
 	aShape when: RSMouseClick do: [ self selection: aShape ]
 ]

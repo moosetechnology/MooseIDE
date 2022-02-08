@@ -45,8 +45,10 @@ MiNavigationBrowser class >> buildCommandsGroupWith: presenter forRoot: aCmComma
 
 { #category : #specs }
 MiNavigationBrowser class >> defaultSpec [
+
 	^ SpBoxLayout newVertical
-		add: #navigation
+		  add: #navigation;
+		  yourself
 ]
 
 { #category : #initialization }
@@ -92,7 +94,7 @@ MiNavigationBrowser >> initializePresenters [
 					  evaluated: [ :el | el value midasIcon ];
 					  yourself);
 			 addColumn: (SpStringTableColumn new
-					  evaluated: [ :el | el key inspectorToString ];
+					  evaluated: [ :el | el key ];
 					  yourself);
 			 yourself).
 	navigation whenActivatedDo: [ :selection | 
@@ -136,7 +138,7 @@ MiNavigationBrowser >> selectedObject [
 	^ navigation selection selectedItem value
 ]
 
-{ #category : #accessing }
+{ #category : #'accessing - model' }
 MiNavigationBrowser >> setModelBeforeInitialization: anInspectionModel [ 
 
 	model := anInspectionModel

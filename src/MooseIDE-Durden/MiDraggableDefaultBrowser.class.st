@@ -10,11 +10,6 @@ Class {
 }
 
 { #category : #specs }
-MiDraggableDefaultBrowser class >> currentApplication [
-	^ MiApplication current
-]
-
-{ #category : #specs }
 MiDraggableDefaultBrowser class >> defaultSpec [
 	^ SpBoxLayout newVertical
 		add:
@@ -88,8 +83,6 @@ MiDraggableDefaultBrowser >> followAction [
 { #category : #initialization }
 MiDraggableDefaultBrowser >> initializePresenters [
 
-	super initializePresenters.
-	
 	self widgetClass ifNotNil: [ 
 		widget := self instantiate: self widgetClass ]
 ]
@@ -129,9 +122,9 @@ MiDraggableDefaultBrowser >> propagate: aWidget [
 ]
 
 { #category : #initialization }
-MiDraggableDefaultBrowser >> selectEntity: anEntity [
+MiDraggableDefaultBrowser >> receiveEntity: anEntity [
 
-	widget selectEntity: anEntity.
+	widget receiveEntity: anEntity.
 
 ]
 

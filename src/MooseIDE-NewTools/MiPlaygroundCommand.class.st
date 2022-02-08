@@ -1,5 +1,11 @@
 Class {
 	#name : #MiPlaygroundCommand,
-	#superclass : #CmCommand,
+	#superclass : #MiCommand,
 	#category : #'MooseIDE-NewTools-Playground'
 }
+
+{ #category : #accessing }
+MiPlaygroundCommand >> application [
+
+	^ MiApplication current
+]

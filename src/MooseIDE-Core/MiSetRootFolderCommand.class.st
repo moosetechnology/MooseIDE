@@ -4,7 +4,7 @@ Class {
 	#category : #'MooseIDE-Core-Command'
 }
 
-{ #category : #defaults }
+{ #category : #default }
 MiSetRootFolderCommand class >> defaultIconName [
 	^ #glamorousFolder
 ]

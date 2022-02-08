@@ -70,7 +70,7 @@ MooseSmalltalkPackagesSelector >> initializeWindow: aWindowPresenter [
 		initialExtent: 450 @ 400
 ]
 
-{ #category : #'accessing model' }
+{ #category : #'accessing - model' }
 MooseSmalltalkPackagesSelector >> setModelBeforeInitialization: anImportPresenter [
 
 	importer := anImportPresenter

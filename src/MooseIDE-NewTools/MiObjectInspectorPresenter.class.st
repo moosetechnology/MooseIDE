@@ -20,7 +20,7 @@ MiObjectInspectorPresenter >> allPages [
 	^ allPagesWithoutBreakpointsPage
 ]
 
-{ #category : #'private factory' }
+{ #category : #'private - factory' }
 MiObjectInspectorPresenter >> newInspectionForContext: aContext [
 
 	^ MiObjectContextPresenter on: (StObjectContextModel new

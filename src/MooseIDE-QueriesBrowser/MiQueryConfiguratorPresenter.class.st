@@ -39,6 +39,12 @@ MiQueryConfiguratorPresenter >> initializeLayout [
 	self layout: self newLayout
 ]
 
+{ #category : #testing }
+MiQueryConfiguratorPresenter >> isQueryUsed: aQuery [
+
+	^ false
+]
+
 { #category : #layout }
 MiQueryConfiguratorPresenter >> newLayout [
 
@@ -48,7 +54,7 @@ MiQueryConfiguratorPresenter >> newLayout [
 { #category : #update }
 MiQueryConfiguratorPresenter >> noParameterMessage: aParameterName [
 
-	^ self instantiate: MiNoPossibleQueryPresenter on: aParameterName
+	^ self instantiate: NoPossibleQueryPresenter on: aParameterName
 ]
 
 { #category : #transmissions }
@@ -58,19 +64,14 @@ MiQueryConfiguratorPresenter >> notifyQueryChanged [
 ]
 
 { #category : #accessing }
-MiQueryConfiguratorPresenter >> query [
-	^ query
+MiQueryConfiguratorPresenter >> queriesBrowser [
+
+	^ owner queriesBrowser
 ]
 
-{ #category : #'api - actions' }
-MiQueryConfiguratorPresenter >> queryPresentersListChanged [
-
-	"This method is trigerred when the list of queries presenters in MiQueryBuilderPresenter change. This can happen when the user adds or removes a new query from the queries list.
-	The default behavior is to do nothing. This method must be overriden if a subclass wants to do something specific"
-
-	"Maybe we should change this to use announcements"
-
-	
+{ #category : #accessing }
+MiQueryConfiguratorPresenter >> query [
+	^ query
 ]
 
 { #category : #'accessing - model' }

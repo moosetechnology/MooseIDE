@@ -31,8 +31,17 @@ MiNegationQueryPresenter >> computeQuery: selectedPresenter [
 MiNegationQueryPresenter >> configureFor: aQuery [
 
 	subqueryDropListPresenter selectItem:
-		(owner parentQueryListPresenter findPresenterForQuery: aQuery queryToNegate).
+		(owner queriesListPresenter findPresenterForQuery: aQuery queryToNegate).
 	query := aQuery
+]
+
+{ #category : #initialization }
+MiNegationQueryPresenter >> initialize [
+
+	super initialize.
+	owner queriesListPresenter announcer
+		when: QueriesListChangedAnnouncement
+		do: [ self queryPresentersListChanged ]
 ]
 
 { #category : #initialization }
@@ -47,9 +56,16 @@ MiNegationQueryPresenter >> initializeQueryDropListPresenter [
 
 	subqueryDropListPresenter := self newDropList.
 	subqueryDropListPresenter
+		startWithoutSelection;
 		items: owner allQueryPresentersExceptSelf;
 		display: [ :each | each name ];
 		whenSelectedItemChangedDo: [ :item | self computeQueryAction: item ]
+]
+
+{ #category : #testing }
+MiNegationQueryPresenter >> isQueryUsed: aQuery [
+
+	^ subqueryDropListPresenter selectedItem = aQuery
 ]
 
 { #category : #layout }
@@ -69,8 +85,6 @@ MiNegationQueryPresenter >> queryPresentersListChanged [
 	newAvailableQueries := owner allQueryPresentersExceptSelf.
 	previouslySelectedQuery := subqueryDropListPresenter selectedItem.
 	(newAvailableQueries includes: previouslySelectedQuery)
-		ifTrue: [ 
-			subqueryDropListPresenter updateItemsKeepingSelection:
-				newAvailableQueries ]
+		ifTrue: [ subqueryDropListPresenter updateItemsKeepingSelection: newAvailableQueries ]
 		ifFalse: [ subqueryDropListPresenter items: newAvailableQueries ]
 ]

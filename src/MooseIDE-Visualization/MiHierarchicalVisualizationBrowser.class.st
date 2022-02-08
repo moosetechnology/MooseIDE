@@ -22,14 +22,14 @@ MiHierarchicalVisualizationBrowser class >> open [
 	super open
 ]
 
-{ #category : #accessing }
+{ #category : #specs }
 MiHierarchicalVisualizationBrowser class >> title [
 
 	^ 'Hierarchical Visualization'
 ]
 
 { #category : #testing }
-MiHierarchicalVisualizationBrowser >> canReceiveEntity: anObject [
+MiHierarchicalVisualizationBrowser >> canFollowEntity: anObject [
 
 	^ anObject isMooseObject
 ]
@@ -44,10 +44,14 @@ MiHierarchicalVisualizationBrowser >> followEntity: anEntity [
 { #category : #initialization }
 MiHierarchicalVisualizationBrowser >> initializePresenters [
 
-	super initializePresenters.
 	diagram := self instantiate: MiHierarchicalVisualization.
 	diagram childrenBlock: [ :el | 
 		(el usesFamixTrait: TEntityMetaLevelDependency)
 			ifTrue: [ el children ]
 			ifFalse: [ {  } ] ]
+]
+
+{ #category : #accessing }
+MiHierarchicalVisualizationBrowser >> miSelectedItem [
+	^nil
 ]

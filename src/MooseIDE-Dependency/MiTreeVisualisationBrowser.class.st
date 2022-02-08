@@ -21,7 +21,7 @@ MiTreeVisualisationBrowser class >> defaultSpec [
 		yourself
 ]
 
-{ #category : #specs }
+{ #category : #'world menu' }
 MiTreeVisualisationBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	<miBrowsers>
@@ -34,15 +34,28 @@ MiTreeVisualisationBrowser class >> menuCommandOn: aBuilder [
 		action: [ self open ]
 ]
 
-{ #category : #specs }
+{ #category : #'instance creation' }
+MiTreeVisualisationBrowser class >> newModel [
+
+	^ MiTreeVisualizationModel new
+]
+
+{ #category : #'instance creation' }
 MiTreeVisualisationBrowser class >> open [
 	<script>
 	^ super open
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #specs }
 MiTreeVisualisationBrowser class >> title [
 	^ 'Tree Visualisation'
+]
+
+{ #category : #testing }
+MiTreeVisualisationBrowser >> canFollowEntity: anEntity [
+
+	^ (anEntity usesFamixTrait: TEntityMetaLevelDependency) and: [ 
+		  self needUpdate: anEntity ]
 ]
 
 { #category : #testing }
@@ -51,19 +64,13 @@ MiTreeVisualisationBrowser >> canHighlight [
 	^ true
 ]
 
-{ #category : #testing }
-MiTreeVisualisationBrowser >> canReceiveEntity: anEntity [
-
-	^ anEntity isMooseObject and: [ self needUpdate: anEntity ]
-]
-
 { #category : #actions }
 MiTreeVisualisationBrowser >> followEntity: anEntity [
 
-	diagram entities: anEntity asMooseGroup.
+	model root: anEntity.
 	diagram
-		unHighlight;
-		run
+		run;
+		receiveEntity: anEntity
 ]
 
 { #category : #actions }
@@ -74,17 +81,12 @@ MiTreeVisualisationBrowser >> highlightEntity: anEntity [
 
 { #category : #initialization }
 MiTreeVisualisationBrowser >> initializePresenters [
-	super initializePresenters.
+
 	diagram := self instantiate: MiTreeVisualisation
 ]
 
 { #category : #accessing }
 MiTreeVisualisationBrowser >> miSelectedItem [
-	^ diagram selected
-]
 
-{ #category : #testing }
-MiTreeVisualisationBrowser >> needUpdate: anEntity [
-
-	^ anEntity ~= diagram selected
+	^ model selected
 ]

@@ -43,19 +43,28 @@ MiNAryQueryPresenter >> configureFor: aQuery [
 
 	"We know that the NAry query has at last two subqueries"
 	subqueryDropLists first selectItem:
-		(owner parentQueryListPresenter findPresenterForQuery: aQuery subqueries first).
+		(owner queriesListPresenter findPresenterForQuery: aQuery subqueries first).
 	subqueryDropLists second selectItem:
-		(owner parentQueryListPresenter findPresenterForQuery: aQuery subqueries second).
+		(owner queriesListPresenter findPresenterForQuery: aQuery subqueries second).
 	
 	"Add the rest of the subqueries if they exist"
 	aQuery subqueries from: 3 to: aQuery subqueries size do: [ :each |
 		self addSubqueryPresenter.
 		subqueryDropLists last selectItem:
-			(owner parentQueryListPresenter findPresenterForQuery: each) ].
+			(owner queriesListPresenter findPresenterForQuery: each) ].
 
 	query := aQuery.
 	self initializeLayout
 
+]
+
+{ #category : #initialization }
+MiNAryQueryPresenter >> initialize [
+
+	super initialize.
+	owner queriesListPresenter announcer
+		when: QueriesListChangedAnnouncement
+		do: [ self queryPresentersListChanged ]
 ]
 
 { #category : #initialization }
@@ -81,6 +90,13 @@ MiNAryQueryPresenter >> initializePresenters [
 			                     self newSubqueryDropList.
 			                     self newSubqueryDropList }.
 	self initializeLayout
+]
+
+{ #category : #testing }
+MiNAryQueryPresenter >> isQueryUsed: aQuery [
+
+	^ subqueryDropLists anySatisfy: [ :dropList | 
+		dropList selectedItem = aQuery ]
 ]
 
 { #category : #actions }
@@ -137,8 +153,7 @@ MiNAryQueryPresenter >> queryPresentersListChanged [
 	subqueryDropLists do: [ :dropList | 
 		previouslySelectedQuery := dropList selectedItem.
 		(newAvailableQueries includes: previouslySelectedQuery)
-			ifTrue: [ 
-			dropList updateItemsKeepingSelection: newAvailableQueries ]
+			ifTrue: [ dropList updateItemsKeepingSelection: newAvailableQueries ]
 			ifFalse: [ dropList items: newAvailableQueries ] ]
 ]
 

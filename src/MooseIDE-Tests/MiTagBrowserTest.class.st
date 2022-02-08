@@ -32,7 +32,7 @@ MiTagBrowserTest >> setUp [
 
 	helper := FQTestsHelper current.
 	browser followEntity: helper classesAndMethods.
-	detailsPage := browser tagDetailsPage retrievePresenter
+	detailsPage := browser descriptionPage
 ]
 
 { #category : #tests }
@@ -47,11 +47,6 @@ MiTagBrowserTest >> testNoTagDetailPageAddDoNothing [
 	self
 		assert: (entities select: #isTagged) size
 		equals: self numberOfTaggedEntities
-]
-
-{ #category : #tests }
-MiTagBrowserTest >> testNoTagDetailPageLabel [
-	self assert: (detailsPage taggedEntitiesLabel label beginsWith: '!*!')
 ]
 
 { #category : #tests }
