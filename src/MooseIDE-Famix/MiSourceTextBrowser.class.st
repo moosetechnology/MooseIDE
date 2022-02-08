@@ -81,7 +81,7 @@ MiSourceTextBrowser >> externalEditor: anObject [
 { #category : #actions }
 MiSourceTextBrowser >> followEntity: anEntity [
 
-	model selected: anEntity.
+	model displayedEntity: anEntity.
 	self text: model formatedSource.
 	self updateWindowTitleWith: anEntity name.
 
@@ -103,6 +103,12 @@ MiSourceTextBrowser >> miSelectedItem [
 { #category : #actions }
 MiSourceTextBrowser >> sendTextTo: anExternalTool [
 	anExternalTool new open: model selected
+]
+
+{ #category : #initialization }
+MiSourceTextBrowser >> setModelBeforeInitialization: aModel [
+	super setModelBeforeInitialization: aModel.
+	aModel browser: self
 ]
 
 { #category : #actions }
