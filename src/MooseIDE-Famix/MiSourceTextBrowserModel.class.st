@@ -28,7 +28,7 @@ MiSourceTextBrowserModel >> displayedEntity [
 { #category : #accessing }
 MiSourceTextBrowserModel >> displayedEntity: anObject [
 	displayed := anObject.
-	selected := nil
+	selected := anObject
 ]
 
 { #category : #formatting }
