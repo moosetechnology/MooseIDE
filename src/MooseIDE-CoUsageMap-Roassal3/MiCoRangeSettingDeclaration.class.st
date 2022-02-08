@@ -1,7 +1,7 @@
 Class {
 	#name : #MiCoRangeSettingDeclaration,
 	#superclass : #RangeSettingDeclaration,
-	#category : #'MooseIDE-CoUsageMap-Roassal3'
+	#category : #'MooseIDE-CoUsageMap-Roassal3-Util'
 }
 
 { #category : #'user interface' }

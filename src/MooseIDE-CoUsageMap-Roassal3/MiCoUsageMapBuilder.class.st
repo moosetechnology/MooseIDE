@@ -16,7 +16,7 @@ Class {
 		'containerBox',
 		'legendTagBuilder'
 	],
-	#category : #'MooseIDE-CoUsageMap-Roassal3'
+	#category : #'MooseIDE-CoUsageMap-Roassal3-Core'
 }
 
 { #category : #accessing }
@@ -72,6 +72,11 @@ MiCoUsageMapBuilder >> createMethodTextMorphFor: model [
 		borderWidth: 1;
 		margins: 15;
 		yourself
+]
+
+{ #category : #default }
+MiCoUsageMapBuilder >> defaultInnerSortBlock [
+	^ [ :att1 :att2 | att1 name < att2 name ].
 ]
 
 { #category : #default }
@@ -173,10 +178,9 @@ MiCoUsageMapBuilder >> initializeReferences [
 			counter := self methodAttributeTester numberOfUsesOf: att on: met.
 			counter > 0 ifTrue: [ 
 				att method: met counter: counter.
-				met addAttribute: att.
-				 ].
-			 ].
-		 ].
+				met addAttribute: att ]
+		]
+	]
 ]
 
 { #category : #initialization }
@@ -204,12 +208,28 @@ MiCoUsageMapBuilder >> initializeShapes [
 ]
 
 { #category : #initialization }
+MiCoUsageMapBuilder >> initializeSort [
+	| block |
+	[ miMethods sort: MiCoUsageMapSettings outerBoxSortBlockCompiled ]
+	on: Error 
+	do: [ :ex | miMethods sort: self defaultSortBlock ].
+	
+	block := MiCoUsageMapSettings innerBoxSortBlockCompiled.
+	miMethods do: [ :met |
+		[ met usedAttributes sort: block ]
+		on: Error
+		do: [ :ex | met usedAttributes sort: self defaultInnerSortBlock ]
+	]
+]
+
+{ #category : #initialization }
 MiCoUsageMapBuilder >> initializeValues [
 	self 
 		initializeAttributes;
 		initializeMethods;
-		initializeReferences.
-	miMethods sort: self defaultSortBlock
+		initializeReferences;
+		initializeSort.
+	
 	
 ]
 

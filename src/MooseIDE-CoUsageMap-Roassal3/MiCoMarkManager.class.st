@@ -10,7 +10,7 @@ Class {
 		'strategies',
 		'lastTagSelected'
 	],
-	#category : #'MooseIDE-CoUsageMap-Roassal3'
+	#category : #'MooseIDE-CoUsageMap-Roassal3-Core'
 }
 
 { #category : #public }
@@ -104,7 +104,14 @@ MiCoMarkManager >> createGlobalMenuOn: menu [
 			target: self
 			selector: #openSettingsBrowser
 			argumentList: #())
+		icon: (self iconNamed: #configuration).
+	(menu
+		add: 'Block Settings'
+			target: MiCoUsageMapSettings
+			selector: #openBlocksSettings
+			argumentList: #())
 		icon: (self iconNamed: #configuration)
+	
 ]
 
 { #category : #'building - menus' }
@@ -208,7 +215,7 @@ MiCoMarkManager >> subMenuTagsFor: aMiCoAttribute subMenu: menu [
 
 { #category : #accessing }
 MiCoMarkManager >> tagColorFrom: aMicoTag [
-	aMicoTag ifNil: [ ^ Color white ].
+	aMicoTag ifNil: [ ^ Color colorFrom: 'f5f5f5' ].
 	^ aMicoTag color
 ]
 

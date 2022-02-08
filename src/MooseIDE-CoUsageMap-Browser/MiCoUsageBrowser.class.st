@@ -6,11 +6,17 @@ Class {
 	#superclass : #MiAbstractBrowser,
 	#instVars : [
 		'coUsageMap',
-		'classModel',
-		'coUsageMapSettings'
+		'classModel'
 	],
 	#category : #'MooseIDE-CoUsageMap-Browser'
 }
+
+{ #category : #specs }
+MiCoUsageBrowser class >> defaultSpec [
+	^ SpBoxLayout newLeftToRight
+		add: #coUsageMap;
+		yourself
+]
 
 { #category : #'world menu' }
 MiCoUsageBrowser class >> menuCommandOn: aBuilder [
@@ -72,23 +78,11 @@ MiCoUsageBrowser >> followEntity: anEntity [
 ]
 
 { #category : #initialization }
-MiCoUsageBrowser >> initializeLayout [
-
-	self layout: (SpBoxLayout newLeftToRight
-			 spacing: 3;
-			 add: coUsageMapSettings width: 250;
-			 add: coUsageMap;
-			 yourself)
-]
-
-{ #category : #initialization }
 MiCoUsageBrowser >> initializePresenters [
 
 	coUsageMap := self instantiate: MiCoUsageMapVisualization.
 	application registerConsumer: coUsageMap for: FamixTag.
 	application registerProducer: coUsageMap for: FamixTagAssociation.
-	coUsageMapSettings := self instantiate: MiCoUsageMapSettingsPresenter.
-	self initializeLayout
 ]
 
 { #category : #actions }

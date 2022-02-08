@@ -8,7 +8,7 @@ Class {
 		'tags',
 		'conflictTag'
 	],
-	#category : #'MooseIDE-CoUsageMap-Roassal3'
+	#category : #'MooseIDE-CoUsageMap-Roassal3-Core'
 }
 
 { #category : #adding }
