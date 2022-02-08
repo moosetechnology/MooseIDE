@@ -9,6 +9,29 @@ MiSourceTextBrowserTest >> browserClass [
 	^ MiSourceTextBrowser
 ]
 
+{ #category : #running }
+MiSourceTextBrowserTest >> stubImmediateAnchorText: aString [
+	^FAMIXSourceTextAnchor new
+		source: aString 
+		yourself.
+
+]
+
+{ #category : #running }
+MiSourceTextBrowserTest >> stubIndexedAnchorText: aString [
+	^self stubIndexedAnchorText: aString positions: 1@(aString size)
+]
+
+{ #category : #running }
+MiSourceTextBrowserTest >> stubIndexedAnchorText: aString positions: startEndPos [
+	^FamixStubIndexedFileAnchor new
+		source: aString ;
+		startPos: startEndPos x ;
+		endPos: startEndPos y ;
+		yourself.
+
+]
+
 { #category : #tests }
 MiSourceTextBrowserTest >> testActivateActionButtons [
 
@@ -19,7 +42,7 @@ MiSourceTextBrowserTest >> testActivateActionButtons [
 	browser actionButtons do: [ :button | self assert: button isEnabled ]
 ]
 
-{ #category : #tests }
+{ #category : #'tests - externalEditor' }
 MiSourceTextBrowserTest >> testFollowEntityPassesOnToToolbar [
 	| toolbar wasCalled |
 	wasCalled := false.
@@ -32,10 +55,100 @@ MiSourceTextBrowserTest >> testFollowEntityPassesOnToToolbar [
 	self assert: wasCalled
 ]
 
-{ #category : #tests }
+{ #category : #'tests - externalEditor' }
 MiSourceTextBrowserTest >> testHasExternalEditorEmacs [
 
 	self assert: browser externalEditor equals: MiSourceTextExternalEditorEmacs 
+]
+
+{ #category : #'tests - highlighting' }
+MiSourceTextBrowserTest >> testHighlightChildNotIndexedAnchor [
+	| entity |
+	entity := FamixStClass new
+		name: 'aClass' ;
+		sourceAnchor: (self stubImmediateAnchorText: 
+'code of aClass {
+	code of aMethod()
+}').
+	FamixStMethod new
+		name: 'aMethod' ;
+		parentType: entity ;
+		sourceAnchor: (self stubImmediateAnchorText: '	code of aMethod()' ).
+		
+	browser followEntity: entity.
+
+	self assert: browser sourceText text unembellished.
+]
+
+{ #category : #'tests - highlighting' }
+MiSourceTextBrowserTest >> testHighlightChildWithIndexedFileAnchor [
+	| entity |
+	entity := FamixStClass new
+		name: 'aClass' ;
+		sourceAnchor: (self stubIndexedAnchorText: 
+'code of aClass {
+	code of aMethod()
+}').
+	FamixStMethod new
+		name: 'aMethod' ;
+		parentType: entity ;
+		sourceAnchor: (self stubIndexedAnchorText: #whatever positions: 18@36 ).
+		
+	browser followEntity: entity.
+
+	self deny: browser sourceText text unembellished.
+	self assert: (browser sourceText text attributesAt: 20) isEmpty.
+	self deny: (browser sourceText text attributesAt: 30) isEmpty.
+	self assert: ((browser sourceText text attributesAt: 30) anySatisfy: [ :att | att mayActOnEvent: MouseEvent new ])
+]
+
+{ #category : #'tests - highlighting' }
+MiSourceTextBrowserTest >> testHighlightChildWithNoAnchor [
+	| entity |
+	entity := FamixStClass new
+		name: 'aClass' ;
+		sourceAnchor: (self stubIndexedAnchorText: 
+'code of aClass {
+	code of aMethod()
+}').
+	FamixStMethod new
+		name: 'aMethod' ;
+		parentType: entity.
+		
+	browser followEntity: entity.
+
+	self assert: browser sourceText text unembellished.
+]
+
+{ #category : #'tests - highlighting' }
+MiSourceTextBrowserTest >> testHighlightNoAnchor [
+	| entity |
+	entity := FamixStClass new
+		name: 'aClass'.
+	FamixStMethod new
+		name: 'aMethod' ;
+		parentType: entity.
+		
+	browser followEntity: entity.
+
+	self assert: browser sourceText text equals: 'There is no source code to show for aClass'.
+	self deny: browser sourceText text unembellished.
+	self deny: (browser sourceText text attributesAt: 1) isEmpty.
+]
+
+{ #category : #'tests - highlighting' }
+MiSourceTextBrowserTest >> testHighlightNoChild [
+	| entity |
+	entity := FamixStClass new
+		name: 'aClass' ;
+		sourceAnchor: (self stubIndexedAnchorText: 
+'code of aClass {
+	code of aMethod()
+}' ).
+		
+	browser followEntity: entity.
+	
+	self assert: browser sourceText text unembellished 
 ]
 
 { #category : #tests }
@@ -58,7 +171,7 @@ MiSourceTextBrowserTest >> testShowNoSourceCodeMessage [
 
 ]
 
-{ #category : #tests }
+{ #category : #'tests - externalEditor' }
 MiSourceTextBrowserTest >> testToolbarAutoTransmit [
 	| toolbar editor entity received |
 	toolbar := browser toolBarExternalEditor.

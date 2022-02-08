@@ -19,6 +19,18 @@ MiSourceTextBrowserModel >> browser: aMiBrowser [
 	browser := aMiBrowser 
 ]
 
+{ #category : #formatting }
+MiSourceTextBrowserModel >> createSourceTextReference [
+
+	^(displayed sourceText
+		ifEmpty: [ MiSourceTextVoidReference new ]
+		ifNotEmpty: [ MiSourceTextReference new
+			referenceText: displayed sourceText ])
+		referenceEntity: displayed;
+		textBrowser: self;
+		yourself
+]
+
 { #category : #accessing }
 MiSourceTextBrowserModel >> displayedEntity [
 	"the entity which source code is shown in the browser"
@@ -33,20 +45,10 @@ MiSourceTextBrowserModel >> displayedEntity: anObject [
 
 { #category : #formatting }
 MiSourceTextBrowserModel >> formatSource [
-	| textFormater|
-	textFormater :=
-		(displayed sourceText ifEmpty: [MiSourceTextVoidReference] ifNotEmpty: [MiSourceTextReference])
-			new
-			referenceText: displayed sourceText ;
-			referenceEntity: displayed ;
-			textBrowser: self ;
-			yourself.
-
-	^textFormater
-		gatherHighlights ;
-		applyHighlights ;
+	^self createSourceTextReference
+		gatherHighlights;
+		applyHighlights;
 		yourself
-
 ]
 
 { #category : #formatting }

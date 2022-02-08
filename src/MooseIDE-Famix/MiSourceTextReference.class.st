@@ -15,36 +15,35 @@ MiSourceTextReference >> addHighlight: aSourceTextHighlight [
 	highlights add: aSourceTextHighlight
 ]
 
-{ #category : #api }
-MiSourceTextReference >> applyHighlights [
-	highlights do: #apply
+{ #category : #'highlight creation' }
+MiSourceTextReference >> addIdentifierHighlightFor: aChildEntity interval: childInterval [
+	^MiSourceTextIdentifierHighlight new
+			referenceSource: self ;
+			highlightedEntity: aChildEntity ;
+			setInterval: childInterval ;
+			yourself
 ]
 
 { #category : #'highlight creation' }
-MiSourceTextReference >> createIdentifierHighlightFor: aChildEntity interval: childInterval [
-	^MiSourceTextIdentifierHighlight new
-		referenceSource: self ;
-		highlightedEntity: aChildEntity ;
-		setInterval: childInterval ;
+MiSourceTextReference >> addNullHighlightFor: aChildEntity [
+	^MiSourceTextNullHighlight new
+		referenceSource: self;
+		highlightedEntity: aChildEntity;
 		yourself
 ]
 
 { #category : #'highlight creation' }
-MiSourceTextReference >> createNullHighlightFor: aChildEntity [
-
-	^ MiSourceTextNullHighlight new
-		  referenceSource: self;
-		  highlightedEntity: aChildEntity;
-		  yourself
-]
-
-{ #category : #'highlight creation' }
-MiSourceTextReference >> createTagHighlightFor: aChildEntity interval: childInterval [
+MiSourceTextReference >> addTagHighlightFor: aChildEntity interval: childInterval [
 	^MiSourceTextTagHighlight new
 		referenceSource: self ;
 		highlightedEntity: aChildEntity ;
 		interval: childInterval ;
 		yourself
+]
+
+{ #category : #api }
+MiSourceTextReference >> applyHighlights [
+	highlights do: #apply
 ]
 
 { #category : #api }
@@ -56,18 +55,17 @@ MiSourceTextReference >> gatherHighlights [
 
 { #category : #api }
 MiSourceTextReference >> gatherHighlightsFor: aChildEntity [
+
 	self referenceEntity sourceAnchor
 	ifNotNil: [ :referenceAnchor |
-		(referenceAnchor childInterval: aChildEntity)
+		(referenceAnchor textIntervalForChild: aChildEntity)
 		ifNotNil: [ :childInterval | 
-			self addHighlight:
-				(self createIdentifierHighlightFor: aChildEntity interval: childInterval).
+			self addIdentifierHighlightFor: aChildEntity interval: childInterval.
 			aChildEntity children do: [ :childChild |
 				self gatherHighlightsFor: childChild
 			].
 			aChildEntity tags do: [ :childTag |
-			self addHighlight:
-				(self createTagHighlightFor: childTag interval: childInterval).
+				self addTagHighlightFor: childTag interval: childInterval.
 			].
 		]
 	]
