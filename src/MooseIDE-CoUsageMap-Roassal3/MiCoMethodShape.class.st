@@ -8,6 +8,11 @@ Class {
 }
 
 { #category : #accessing }
+MiCoMethodShape >> attributeShapes [
+	^ self children second children
+]
+
+{ #category : #accessing }
 MiCoMethodShape >> color: aColor [
 	self children size > 1 
 		ifTrue: [ self children second color: aColor ]

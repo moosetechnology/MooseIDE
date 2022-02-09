@@ -436,6 +436,29 @@ MiCoUsageMapBuilder >> selectedBoxBorder [
 		yourself.
 ]
 
+{ #category : #public }
+MiCoUsageMapBuilder >> sortShapes [
+	| block children tBlock |
+	block := MiCoUsageMapSettings outerBoxSortBlockCompiled.
+	tBlock := [ :a :b | block value: a model value: b model ].
+	
+	children := self canvas children.
+	[ children sort: tBlock.
+	] on: Error
+	do: [ :ex | 
+		block := self defaultSortBlock.
+		children sort: tBlock ].
+	block := MiCoUsageMapSettings innerBoxSortBlockCompiled.
+	children do: [ :node |
+		[ node attributeShapes sort: tBlock ]
+		on: Error
+		do: [ :ex | 
+			block := self defaultInnerSortBlock.
+			node attributeShapes sort: block ]
+	].
+
+]
+
 { #category : #accessing }
 MiCoUsageMapBuilder >> tagNamed: aString [ 
 	^ self legendTag tagNamed: aString
@@ -465,5 +488,22 @@ MiCoUsageMapBuilder >> updateShapeColors [
 	self canvas allChildren
 		select: [ :shape | shape model notNil ]
 		thenDo: [ :shape | shape color: (self markManager tagColorFrom: shape model tag) ].
+	self canvas signalUpdate.
+]
+
+{ #category : #public }
+MiCoUsageMapBuilder >> updateShapeLayout [
+	| children |
+	self sortShapes.
+	children := self canvas children.
+	children do: [ :child | 
+		RSFlowLayout on: child attributeShapes.
+		child children second adjustToChildren; padding: 10.
+		RSVerticalLineLayout new
+			alignCenter;
+			gapSize: 0;
+			on: child children.
+		child adjustToChildren ].
+	self defaultLayout on: self canvas children.
 	self canvas signalUpdate.
 ]

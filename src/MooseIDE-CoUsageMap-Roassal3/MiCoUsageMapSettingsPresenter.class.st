@@ -17,11 +17,11 @@ Class {
 MiCoUsageMapSettingsPresenter class >> defaultSpec [
 	^ SpBoxLayout newTopToBottom
 		spacing: 3;
-		add: 'Children block: ' asPresenter expand: false;
+		add: 'Children block:' asPresenter expand: false;
 		add: #childrenTextInput;
-		add: 'Children sort block: ' asPresenter expand: false;
+		add: 'Outer box sort block:' asPresenter expand: false;
 		add: #sortOuterBoxTextInput;
-		add: 'Inner box sort block: ' asPresenter expand: false;
+		add: 'Inner box sort block:' asPresenter expand: false;
 		add: #sortInnerBoxTextInput;
 		add: (SpBoxLayout newLeftToRight
 			hAlignCenter;
@@ -36,19 +36,19 @@ MiCoUsageMapSettingsPresenter >> initializePresenters [
 	| cls |
 	cls := MiCoUsageMapSettings.
 	childrenTextInput := self newCode
-		text: cls childrenBlock;
-		whenSubmitDo: [ :text | cls childrenBlock: text ];
+		text: cls childrenBlockText;
+		whenSubmitDo: [ :text | cls childrenBlockText: text ];
 		yourself.
 	sortOuterBoxTextInput := self newCode
-		text: cls outerBoxSortBlock;
-		whenSubmitDo: [ :text | cls outerBoxSortBlock: text ];
+		text: cls outerBoxSortBlockText;
+		whenSubmitDo: [ :text | cls outerBoxSortBlockText: text ];
 		yourself.
 	sortInnerBoxTextInput := self newCode
-		text: cls innerBoxSortBlock;
-		whenSubmitDo: [ :text | cls innerBoxSortBlock: text ];
+		text: cls innerBoxSortBlockText;
+		whenSubmitDo: [ :text | cls innerBoxSortBlockText: text ];
 		yourself.
 	button := self newButton
-		label: 'Apply';
+		label: 'Apply all';
 		action: [ 
 			childrenTextInput triggerSubmitAction.
 			sortOuterBoxTextInput triggerSubmitAction.

@@ -70,14 +70,24 @@ MiCoTagBuilder >> initialize [
 
 { #category : #hooks }
 MiCoTagBuilder >> legendShapeRenderIn: aCanvas [
-	| legendShape |
+	| legendShape h |
+	h := RSHighlightable new
+		when: RSHighlightEvent do: [ :evt | 
+			evt shape border color: Color blue.
+			evt signalUpdate ];
+		when: RSUnHighlightEvent do: [ :evt | 
+			evt shape border color: Color lightGray.
+			 evt signalUpdate ].
+	
 	legendShape := shapes asShape
 		padding: 10;
 		color: (Color white alpha: 0.8);
 		isFixed: true;
 		border: (RSBorder new color: Color lightGray; width: 0.5);
 		when: RSMouseClick send: #toggleLegend: to: self;
+		addInteraction: h;
 		yourself.
+	
 	aCanvas 
 		when: RSExtentChangedEvent 
 		do: [ :evt | self moveLegend: legendShape toCornerIn: evt canvas ].

@@ -7,9 +7,9 @@ Class {
 	#classInstVars : [
 		'innerBoxSize',
 		'threshold75',
-		'childrenBlock',
-		'outerBoxSortBlock',
-		'innerBoxSortBlock'
+		'childrenBlockText',
+		'outerBoxSortBlockText',
+		'innerBoxSortBlockText'
 	],
 	#category : #'MooseIDE-CoUsageMap-Model'
 }
@@ -39,19 +39,19 @@ MiCoUsageMapSettings class >> browsingSettings02On: aBuilder [
 		description: 'Alls settings concerned with co usage map browser'
 ]
 
-{ #category : #accessing }
-MiCoUsageMapSettings class >> childrenBlock [
-	^ childrenBlock ifNil: [ self defaultChildrenBlock ]
-]
-
-{ #category : #accessing }
-MiCoUsageMapSettings class >> childrenBlock: aBlock [
-	childrenBlock := aBlock
-]
-
 { #category : #'accessing - computed' }
 MiCoUsageMapSettings class >> childrenBlockCompiled [
-	^ self compiledBlock: self childrenBlock onError: self defaultChildrenBlock
+	^ self compiledBlock: self childrenBlockText onError: self defaultChildrenBlockText
+]
+
+{ #category : #accessing }
+MiCoUsageMapSettings class >> childrenBlockText [
+	^ childrenBlockText ifNil: [ self defaultChildrenBlockText ]
+]
+
+{ #category : #accessing }
+MiCoUsageMapSettings class >> childrenBlockText: aString [
+	childrenBlockText := aString
 ]
 
 { #category : #'accessing - computed' }
@@ -64,7 +64,7 @@ MiCoUsageMapSettings class >> compiledBlock: aString onError: defaultString [
 ]
 
 { #category : #'accessing - defaults' }
-MiCoUsageMapSettings class >> defaultChildrenBlock [
+MiCoUsageMapSettings class >> defaultChildrenBlockText [
 	^ '[:node | #() ]'
 ]
 
@@ -74,12 +74,12 @@ MiCoUsageMapSettings class >> defaultInnerBoxSize [
 ]
 
 { #category : #'accessing - defaults' }
-MiCoUsageMapSettings class >> defaultInnerBoxSortBlock [
+MiCoUsageMapSettings class >> defaultInnerBoxSortBlockText [
 	^ '[:a :b | a name < b name ]'
 ]
 
 { #category : #'accessing - defaults' }
-MiCoUsageMapSettings class >> defaultOuterBoxSortBlock [
+MiCoUsageMapSettings class >> defaultOuterBoxSortBlockText [
 	^ '[:a :b |
 | s1 s2| 
 s1 := a usedAttributes size.
@@ -105,40 +105,42 @@ MiCoUsageMapSettings class >> innerBoxSize: aNumber [
 	self browserDo: [ :b | b innerBoxSize: aNumber ]
 ]
 
-{ #category : #accessing }
-MiCoUsageMapSettings class >> innerBoxSortBlock [
-	^ innerBoxSortBlock ifNil: [ self defaultInnerBoxSortBlock ]
-]
-
-{ #category : #accessing }
-MiCoUsageMapSettings class >> innerBoxSortBlock: aBlock [
-	innerBoxSortBlock := aBlock
-]
-
 { #category : #'accessing - computed' }
 MiCoUsageMapSettings class >> innerBoxSortBlockCompiled [
-	^ self compiledBlock: self innerBoxSortBlock onError: self defaultInnerBoxSortBlock
+	^ self compiledBlock: self innerBoxSortBlockText onError: self defaultInnerBoxSortBlockText
 ]
 
 { #category : #accessing }
-MiCoUsageMapSettings class >> outerBoxSortBlock [
-	^ outerBoxSortBlock ifNil: [ self defaultOuterBoxSortBlock ]
+MiCoUsageMapSettings class >> innerBoxSortBlockText [
+	^ innerBoxSortBlockText ifNil: [ self defaultInnerBoxSortBlockText ]
 ]
 
 { #category : #accessing }
-MiCoUsageMapSettings class >> outerBoxSortBlock: aBlock [
-	outerBoxSortBlock := aBlock
+MiCoUsageMapSettings class >> innerBoxSortBlockText: aString [
+	innerBoxSortBlockText := aString.
+	self browserDo: [ :b | b updateShapeLayout ]
 ]
 
 { #category : #'accessing - computed' }
 MiCoUsageMapSettings class >> outerBoxSortBlockCompiled [
-	^ self compiledBlock: self outerBoxSortBlock onError: self defaultOuterBoxSortBlock
+	^ self compiledBlock: self outerBoxSortBlockText onError: self defaultOuterBoxSortBlockText
+]
+
+{ #category : #accessing }
+MiCoUsageMapSettings class >> outerBoxSortBlockText [
+	^ outerBoxSortBlockText ifNil: [ self defaultOuterBoxSortBlockText ]
+]
+
+{ #category : #accessing }
+MiCoUsageMapSettings class >> outerBoxSortBlockText: aString [
+	outerBoxSortBlockText := aString.
+	self browserDo: [ :b | b updateShapeLayout ]
 ]
 
 { #category : #initialization }
 MiCoUsageMapSettings class >> reset [
 	<script>
-	innerBoxSize := threshold75 := childrenBlock := outerBoxSortBlock := innerBoxSortBlock := nil
+	innerBoxSize := threshold75 := childrenBlockText := outerBoxSortBlockText := innerBoxSortBlockText := nil
 ]
 
 { #category : #accessing }
