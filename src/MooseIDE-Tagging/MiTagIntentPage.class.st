@@ -5,60 +5,42 @@ This is the so called _Intent description_ of the tag
 "
 Class {
 	#name : #MiTagIntentPage,
-	#superclass : #MiPresenter,
+	#superclass : #MiTagPage,
 	#instVars : [
 		'queryList',
 		'selectedQuery',
 		'txtLowValue',
-		'txtHighValue',
-		'tagBrowser'
+		'txtHighValue'
 	],
 	#category : #'MooseIDE-Tagging-Browser'
 }
 
 { #category : #initialization }
-MiTagIntentPage >> initializeLayout [
-	self layout: (SpBoxLayout newTopToBottom
-		add: 'Available queries' ;
-		add: queryList ;
-		add: 'Selected query:' ;
-		add: selectedQuery ;
-		add: 'For values between:' ;
-		add: (SpBoxLayout newLeftToRight
-			add: txtLowValue expand: false ;
-			add: 'and:' ;
-			add: txtHighValue expand: false ;
-			yourself ) ;
-		yourself)
+MiTagIntentPage >> initialize [
 
+	super initialize.
+	application registerConsumer: self for: FQAbstractQuery
+]
+
+{ #category : #initialization }
+MiTagIntentPage >> initializeLayout [
+
+	super initializeLayout.
+	self layout add: queryList expand: false
 ]
 
 { #category : #initialization }
 MiTagIntentPage >> initializePresenters [
+
 	super initializePresenters.
 
-	txtLowValue := self newText
-		placeholder: 'Min.value';
-		yourself.
-	txtHighValue := self newTextInput
-		placeholder: 'Max.value';
-		yourself.
-
-	queryList := self newFilteringList
-		"display: [ :entity | entity name ];"
-		yourself.
-	self refreshQueryList.
-	
-	selectedQuery := self newText 
-		enabled: false ;
-		yourself.
-		
-	self initializeLayout .
+	self initializeLayout
 ]
 
-{ #category : #refreshing }
-MiTagIntentPage >> onBrowserPageRedisplay [
-	"nothing to do"
+{ #category : #accessing }
+MiTagIntentPage >> refresh [
+
+	
 ]
 
 { #category : #initialization }

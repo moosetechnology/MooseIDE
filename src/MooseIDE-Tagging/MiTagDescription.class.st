@@ -92,6 +92,6 @@ MiTagDescription >> setTag: aTag [
 	tagDescriptionText text: (aTag description
 			 ifNotNil: [ :text | text ]
 			 ifNil: [ 'No description on this tag.' ]).
-	tagFormPresenter image: (tagModel iconForTag: aTag).
+	tagFormPresenter image: (tagModel class iconForTag: aTag).
 	self update
 ]

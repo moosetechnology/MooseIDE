@@ -5,7 +5,7 @@ This is the so called _Extent description_ of the tag
 "
 Class {
 	#name : #MiTagExtentPage,
-	#superclass : #MiPresenter,
+	#superclass : #MiTagPage,
 	#instVars : [
 		'incomingEntitiesFilteringList',
 		'taggedEntitiesLabel',
@@ -13,9 +13,7 @@ Class {
 		'addButton',
 		'addAllButton',
 		'removeButton',
-		'removeAllButton',
-		'tagModel',
-		'tagDescription'
+		'removeAllButton'
 	],
 	#category : #'MooseIDE-Tagging-Browser'
 }
@@ -77,31 +75,28 @@ MiTagExtentPage >> initializeButtons [
 { #category : #initialization }
 MiTagExtentPage >> initializeLayout [
 
-	self layout: (SpBoxLayout newVertical
-			 spacing: 10;
-			 add: tagDescription expand: false;
-			 add: (SpBoxLayout newHorizontal
-					  spacing: 3;
-					  add: (SpBoxLayout newTopToBottom
-							   spacing: 2;
-							   add: 'Entities queried:' expand: false;
-							   add: incomingEntitiesFilteringList;
-							   yourself);
-					  add: (SpBoxLayout newVertical
-							   spacing: 5;
-							   add: SpNullPresenter new expand: true;
-							   add: addButton expand: false;
-							   add: addAllButton expand: false;
-							   add: removeButton expand: false;
-							   add: removeAllButton expand: false;
-							   add: SpNullPresenter new expand: true;
-							   yourself)
-					  width: 35;
-					  add: (SpBoxLayout newTopToBottom
-							   spacing: 2;
-							   add: 'Entities in tag:' expand: false;
-							   add: taggedEntitiesFilteringList;
-							   yourself);
+	super initializeLayout.
+	self layout add: (SpBoxLayout newHorizontal
+			 spacing: 3;
+			 add: (SpBoxLayout newTopToBottom
+					  spacing: 2;
+					  add: 'Entities queried:' expand: false;
+					  add: incomingEntitiesFilteringList;
+					  yourself);
+			 add: (SpBoxLayout newVertical
+					  spacing: 5;
+					  add: SpNullPresenter new expand: true;
+					  add: addButton expand: false;
+					  add: addAllButton expand: false;
+					  add: removeButton expand: false;
+					  add: removeAllButton expand: false;
+					  add: SpNullPresenter new expand: true;
+					  yourself)
+			 width: 35;
+			 add: (SpBoxLayout newTopToBottom
+					  spacing: 2;
+					  add: 'Entities in tag:' expand: false;
+					  add: taggedEntitiesFilteringList;
 					  yourself);
 			 yourself)
 ]
@@ -109,6 +104,7 @@ MiTagExtentPage >> initializeLayout [
 { #category : #initialization }
 MiTagExtentPage >> initializePresenters [
 
+	super initializePresenters.
 	taggedEntitiesLabel := self newLabel label: 'Entities in tag:'.
 	incomingEntitiesFilteringList := self newFilteringList
 		                                 display: [ :entity | 
@@ -125,7 +121,6 @@ MiTagExtentPage >> initializePresenters [
 		                               displayIcon: [ :entity | 
 			                               entity mooseIcon ];
 		                               yourself.
-	tagDescription := self instantiate: MiTagDescription on: tagModel.
 	self refreshTaggedEntitiesList.
 	self initializeButtons.
 	self initializeLayout
@@ -158,12 +153,6 @@ MiTagExtentPage >> refreshEntitiesList [
 ]
 
 { #category : #refreshing }
-MiTagExtentPage >> refreshTagDescription [
-
-	tagDescription refresh
-]
-
-{ #category : #refreshing }
 MiTagExtentPage >> refreshTaggedEntitiesList [
 	taggedEntitiesFilteringList items: self taggedEntities
 ]
@@ -184,12 +173,6 @@ MiTagExtentPage >> removeAll [
 	taggedEntitiesFilteringList items do: [ :entity | 
 		self tagModel untagEntity: entity ].
 	self refreshTaggedEntitiesList
-]
-
-{ #category : #initialization }
-MiTagExtentPage >> setModelBeforeInitialization: aTagBrowser [
-
-	tagModel := aTagBrowser
 ]
 
 { #category : #accessing }
