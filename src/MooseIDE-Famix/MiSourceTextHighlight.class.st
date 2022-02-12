@@ -9,11 +9,6 @@ Class {
 	#category : #'MooseIDE-Famix-SourceText'
 }
 
-{ #category : #formatting }
-MiSourceTextHighlight >> apply [
-	self subclassResponsibility 
-]
-
 { #category : #accessing }
 MiSourceTextHighlight >> from [
 
@@ -73,13 +68,12 @@ MiSourceTextHighlight >> referenceText [
 ]
 
 { #category : #accessing }
-MiSourceTextHighlight >> textBrowser [
-
-	^ self referenceSource textBrowser
-]
-
-{ #category : #accessing }
 MiSourceTextHighlight >> to [
 
 	^ interval last
+]
+
+{ #category : #formatting }
+MiSourceTextHighlight >> toRoassal [
+	self subclassResponsibility 
 ]

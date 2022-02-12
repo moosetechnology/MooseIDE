@@ -4,7 +4,6 @@ Class {
 	#instVars : [
 		'referenceText',
 		'referenceEntity',
-		'textBrowser',
 		'highlights'
 	],
 	#category : #'MooseIDE-Famix-SourceText'
@@ -42,11 +41,6 @@ MiSourceTextReference >> addTagHighlightFor: aChildEntity interval: childInterva
 ]
 
 { #category : #api }
-MiSourceTextReference >> applyHighlights [
-	highlights do: #apply
-]
-
-{ #category : #api }
 MiSourceTextReference >> gatherHighlights [
 	self referenceEntity children do: [ :child |
 		self gatherHighlightsFor: child
@@ -69,6 +63,11 @@ MiSourceTextReference >> gatherHighlightsFor: aChildEntity [
 			].
 		]
 	]
+]
+
+{ #category : #accessing }
+MiSourceTextReference >> highlights [
+	^highlights
 ]
 
 { #category : #initialization }
@@ -100,16 +99,4 @@ MiSourceTextReference >> referenceText [
 MiSourceTextReference >> referenceText: anObject [
 
 	referenceText := anObject asText
-]
-
-{ #category : #accessing }
-MiSourceTextReference >> textBrowser [
-
-	^ textBrowser
-]
-
-{ #category : #accessing }
-MiSourceTextReference >> textBrowser: anObject [
-
-	textBrowser := anObject
 ]

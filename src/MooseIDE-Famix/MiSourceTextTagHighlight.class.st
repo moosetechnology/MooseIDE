@@ -5,7 +5,9 @@ Class {
 }
 
 { #category : #formatting }
-MiSourceTextTagHighlight >> apply [
-	self referenceText
-		addAttribute: (TextBackgroundColor color: (self highlightedEntity color)) from: self from to: self to
+MiSourceTextTagHighlight >> toRoassal [
+	^RSTagEmphasisAttribute new
+		from: self from ;
+		to: self to ;
+		yourself
 ]

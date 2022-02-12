@@ -9,7 +9,8 @@ Class {
 	#instVars : [
 		'displayed',
 		'selected',
-		'browser'
+		'browser',
+		'textReference'
 	],
 	#category : #'MooseIDE-Famix-SourceText'
 }
@@ -22,13 +23,12 @@ MiSourceTextBrowserModel >> browser: aMiBrowser [
 { #category : #formatting }
 MiSourceTextBrowserModel >> createSourceTextReference [
 
-	^(displayed sourceText
+	textReference := (displayed sourceText
 		ifEmpty: [ MiSourceTextVoidReference new ]
 		ifNotEmpty: [ MiSourceTextReference new
-			referenceText: displayed sourceText ])
-		referenceEntity: displayed;
-		textBrowser: self;
-		yourself
+			referenceText: displayed sourceText ]).
+	textReference referenceEntity: displayed.
+	^textReference
 ]
 
 { #category : #accessing }
@@ -47,13 +47,7 @@ MiSourceTextBrowserModel >> displayedEntity: anObject [
 MiSourceTextBrowserModel >> formatSource [
 	^self createSourceTextReference
 		gatherHighlights;
-		applyHighlights;
 		yourself
-]
-
-{ #category : #formatting }
-MiSourceTextBrowserModel >> formatedSource [
-	^self formatSource referenceText
 ]
 
 { #category : #formatting }
@@ -74,6 +68,11 @@ MiSourceTextBrowserModel >> highlightInterval: aTextInterval inText: mainText [
 			addAttribute: (TextBackgroundColor color: (tag color)) from: start to: end
 	]
 
+]
+
+{ #category : #accessing }
+MiSourceTextBrowserModel >> highlights [
+	^textReference highlights
 ]
 
 { #category : #formatting }

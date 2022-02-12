@@ -82,7 +82,9 @@ MiSourceTextBrowser >> externalEditor: anObject [
 MiSourceTextBrowser >> followEntity: anEntity [
 
 	model displayedEntity: anEntity.
-	self text: model formatedSource.
+	model formatSource.
+	sourceText run.
+
 	self updateWindowTitleWith: anEntity name.
 
 	toolBarExternalEditor newEntity.
@@ -91,7 +93,7 @@ MiSourceTextBrowser >> followEntity: anEntity [
 { #category : #initialization }
 MiSourceTextBrowser >> initializePresenters [
 	toolBarExternalEditor := self instantiate: MiSourceTextToolBar on: self.
-	sourceText := self newText beNotEditable 
+	sourceText := self instantiate: MiSourceTextRoassalRenderer on: model.
 ]
 
 { #category : #accessing }
@@ -109,6 +111,11 @@ MiSourceTextBrowser >> sendTextTo: anExternalTool [
 MiSourceTextBrowser >> setModelBeforeInitialization: aModel [
 	super setModelBeforeInitialization: aModel.
 	aModel browser: self
+]
+
+{ #category : #actions }
+MiSourceTextBrowser >> text [
+	^sourceText text
 ]
 
 { #category : #actions }
