@@ -27,7 +27,9 @@ MiSourceTextBrowserModel >> createSourceTextReference [
 		ifEmpty: [ MiSourceTextVoidReference new ]
 		ifNotEmpty: [ MiSourceTextReference new
 			referenceText: displayed sourceText ]).
-	textReference referenceEntity: displayed.
+	textReference
+		referenceEntity: displayed ;
+		uiModel: self.
 	^textReference
 ]
 

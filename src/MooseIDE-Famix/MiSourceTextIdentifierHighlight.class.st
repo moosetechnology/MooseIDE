@@ -24,5 +24,6 @@ MiSourceTextIdentifierHighlight >> toRoassal [
 	^RSLinkEmphasisAttribute new
 		from: self from ;
 		to: self to ;
+		on: RSMouseClick do: [ :event | uiModel selected: self highlightedEntity ] ;
 		yourself
 ]
