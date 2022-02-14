@@ -9,13 +9,12 @@ BaselineOfMooseIDE >> baseline: spec [
 
 	<baseline>
 	spec for: #common do: [ "Dependencies"
-		
-		self tylerDurden: spec. 
+		self tylerDurden: spec.
 		self famixQueries: spec.
 		self telescope: spec.
 		self labelContractor: spec.
 		self hierarchicalVisualizations: spec.
-		
+
 		"Packages"
 		self definePackages: spec.
 
@@ -31,7 +30,9 @@ BaselineOfMooseIDE >> baseline: spec [
 				with: [ spec requires: #( 'FamixTagging' ) ] ].
 
 		"Register custom tools"
-		spec postLoadDoIt: #registerCustomTools ]
+		spec
+			postLoadDoIt: #registerCustomTools;
+			postLoadDoIt: #resetMiApplication ]
 ]
 
 { #category : #accessing }
@@ -134,6 +135,12 @@ BaselineOfMooseIDE >> labelContractor: spec [
 BaselineOfMooseIDE >> registerCustomTools [
 
 	(Smalltalk classNamed: #MiPlayground) register
+]
+
+{ #category : #actions }
+BaselineOfMooseIDE >> resetMiApplication [
+
+	(Smalltalk classNamed: #MiApplication) reset
 ]
 
 { #category : #dependencies }
