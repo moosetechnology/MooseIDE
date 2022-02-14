@@ -32,7 +32,7 @@ BaselineOfMooseIDE >> baseline: spec [
 		"Register custom tools"
 		spec
 			postLoadDoIt: #registerCustomTools;
-			postLoadDoIt: #resetMiApplication ]
+			postLoadDoIt: #resetMiApplications ]
 ]
 
 { #category : #accessing }
@@ -138,9 +138,10 @@ BaselineOfMooseIDE >> registerCustomTools [
 ]
 
 { #category : #actions }
-BaselineOfMooseIDE >> resetMiApplication [
+BaselineOfMooseIDE >> resetMiApplications [
 
-	(Smalltalk classNamed: #MiApplication) reset
+	(Smalltalk classNamed: #MiApplication) reset.
+	(Smalltalk classNamed: #MiTestApplication) reset
 ]
 
 { #category : #dependencies }
