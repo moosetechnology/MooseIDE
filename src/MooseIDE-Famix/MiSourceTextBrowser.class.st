@@ -11,17 +11,18 @@ Class {
 	#name : #MiSourceTextBrowser,
 	#superclass : #MiAbstractFamixBrowser,
 	#instVars : [
-		'sourceText'
+		'sourceText',
+		'toolBarExternalEditor'
 	],
 	#category : #'MooseIDE-Famix-SourceText'
 }
 
 { #category : #specs }
 MiSourceTextBrowser class >> defaultSpec [
-
-	^ super defaultSpec
-		  add: #sourceText;
-		  yourself
+	^super defaultSpec
+		add: #toolBarExternalEditor height: self toolbarHeight ;
+		add: #sourceText expand: true ;
+		yourself
 ]
 
 { #category : #'world menu' }
@@ -65,17 +66,31 @@ MiSourceTextBrowser >> canFollowEntity: anObject [
 	^ anObject usesFamixTrait: FamixTSourceEntity
 ]
 
+{ #category : #'private - testing' }
+MiSourceTextBrowser >> externalEditor [
+	"only for testing"
+	^toolBarExternalEditor externalEditor 
+]
+
+{ #category : #'private - testing' }
+MiSourceTextBrowser >> externalEditor: anObject [
+	"only for testing"
+	toolBarExternalEditor externalEditor: anObject
+]
+
 { #category : #actions }
 MiSourceTextBrowser >> followEntity: anEntity [
 
-	model selected: anEntity.
+	model displayedEntity: anEntity.
 	self text: model formatedSource.
-	self updateWindowTitleWith: anEntity name
+	self updateWindowTitleWith: anEntity name.
+
+	toolBarExternalEditor newEntity.
 ]
 
 { #category : #initialization }
 MiSourceTextBrowser >> initializePresenters [
-
+	toolBarExternalEditor := self instantiate: MiSourceTextToolBar on: self.
 	sourceText := self newText beNotEditable 
 ]
 
@@ -86,8 +101,31 @@ MiSourceTextBrowser >> miSelectedItem [
 ]
 
 { #category : #actions }
+MiSourceTextBrowser >> sendTextTo: anExternalTool [
+	anExternalTool new open: model selected
+]
+
+{ #category : #initialization }
+MiSourceTextBrowser >> setModelBeforeInitialization: aModel [
+	super setModelBeforeInitialization: aModel.
+	aModel browser: self
+]
+
+{ #category : #actions }
 MiSourceTextBrowser >> text: aText [
 	sourceText text: aText
+]
+
+{ #category : #'private - testing' }
+MiSourceTextBrowser >> toolBarExternalEditor [
+	"only for testing"
+	^toolBarExternalEditor
+]
+
+{ #category : #'private - testing' }
+MiSourceTextBrowser >> toolBarExternalEditor: anObject [
+	"only for testing"
+	toolBarExternalEditor := anObject
 ]
 
 { #category : #actions }
