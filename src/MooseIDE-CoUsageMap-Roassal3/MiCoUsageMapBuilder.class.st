@@ -485,9 +485,11 @@ MiCoUsageMapBuilder >> unhighlight: evt [
 
 { #category : #public }
 MiCoUsageMapBuilder >> updateShapeColors [
+	| mm |
+	mm := self markManager.
 	self canvas allChildren
 		select: [ :shape | shape model notNil ]
-		thenDo: [ :shape | shape color: (self markManager tagColorFrom: shape model tag) ].
+		thenDo: [ :shape | shape color: (mm tagColorFrom: shape model tag) ].
 	self canvas signalUpdate.
 ]
 

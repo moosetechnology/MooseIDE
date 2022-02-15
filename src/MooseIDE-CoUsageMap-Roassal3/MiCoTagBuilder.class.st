@@ -69,48 +69,32 @@ MiCoTagBuilder >> initialize [
 ]
 
 { #category : #hooks }
-MiCoTagBuilder >> legendShapeRenderIn: aCanvas [
-	| legendShape h |
-	h := RSHighlightable new
+MiCoTagBuilder >> legendDo: aShape [
+	| highlight |
+	highlight := RSHighlightable new
 		when: RSHighlightEvent do: [ :evt | 
 			evt shape border color: Color blue.
 			evt signalUpdate ];
 		when: RSUnHighlightEvent do: [ :evt | 
 			evt shape border color: Color lightGray.
 			 evt signalUpdate ].
-	
-	legendShape := shapes asShape
+	aShape shapes last translateBy: 0@15.
+	aShape
+		adjustToChildren;
 		padding: 10;
-		color: (Color white alpha: 0.8);
-		isFixed: true;
+		color: ((Color colorFrom: 'f4f4f4') alpha: 0.9);
 		border: (RSBorder new color: Color lightGray; width: 0.5);
-		when: RSMouseClick send: #toggleLegend: to: self;
-		addInteraction: h;
-		yourself.
-	
-	aCanvas 
-		when: RSExtentChangedEvent 
-		do: [ :evt | self moveLegend: legendShape toCornerIn: evt canvas ].
-	
-	aCanvas addShape: legendShape.
-	self moveLegend: legendShape toCornerIn: aCanvas.
+		addInteraction: highlight
 ]
 
-{ #category : #hooks }
-MiCoTagBuilder >> moveLegend: legendShape toCornerIn: aCanvas [
-	RSLocation new
-		inner;
-		top;
-		right;
-		offset: -10 @ 10;
-		move: legendShape on: (0 asPoint corner: aCanvas extent).
-
+{ #category : #accessing }
+MiCoTagBuilder >> legendTitle [
+	^ 'Legend'
 ]
 
 { #category : #public }
 MiCoTagBuilder >> removeOldLegend [
 	| canvas legendShape |
-	
 	canvas := self canvas.
 	legendShape := canvas fixedShapes 
 		detect: [ :shape | shape class = RSComposite ] 
@@ -126,25 +110,28 @@ MiCoTagBuilder >> removeOldLegend [
 
 { #category : #hooks }
 MiCoTagBuilder >> renderIn: aCanvas [
-	| tagShapes |
+	| tagShapes legend |
+	legend := RSLegend new
+		container: aCanvas;
+		yourself.
 	shapes := RSGroup new.
-	
-	shapes add: self titleShape.
 	conflictTag ifNotNil: [ shapes add: (self tagShapeFor: conflictTag) ].
 	tagShapes := self tags collect: [ :tag | self tagShapeFor: tag ].
 	shapes addAll: tagShapes.
 	shapes add: self shapeBoxDescription.
-	
-	RSVerticalLineLayout new
-		gapSize: 2;
-		on: shapes.
-	shapes last translateBy: 0@15.
-	self legendShapeRenderIn: aCanvas.
+	legend shapes ifNotNil:[ :collection | collection addAll: shapes].
+	legend layout vertical gapSize: 2.
+	legend defaultTitle
+		color: Color black;
+		fontSize: 12.
+	legend 
+		legendDo: [ :l | self legendDo: l ];
+		beFixedWithTitle: self legendTitle;
+		build.
 ]
 
 { #category : #hooks }
 MiCoTagBuilder >> shapeBoxDescription [
-
 	| box marker arrow label |
 	box := RSBox new
 		border: (RSBorder new color: Color black; width: 2);
@@ -166,9 +153,8 @@ MiCoTagBuilder >> shapeBoxDescription [
 		color: Color black;
 		yourself. 
 	RSVerticalLineLayout new gapSize: 5; on: { box. arrow }.
-	RSHorizontalLineLayout new gapSize: 5; on: { { box. arrow } asGroup. label }.
+	RSHorizontalLineLayout new gapSize: 5; on: { label. { box. arrow } asGroup }.
 	^ { box. arrow. label } asGroup asShape
-		
 ]
 
 { #category : #accessing }
@@ -207,33 +193,6 @@ MiCoTagBuilder >> tagShapeFor: aMiCoTag [
 { #category : #accessing }
 MiCoTagBuilder >> tags [
 	^ tags
-]
-
-{ #category : #hooks }
-MiCoTagBuilder >> titleShape [
-	^ RSLabel new
-		text: 'Legend';
-		color: Color black;
-		fontSize: 12;
-		bold;
-		yourself 
-]
-
-{ #category : #events }
-MiCoTagBuilder >> toggleLegend: evt [
-
-	| legendShape isCollapse |
-	legendShape := evt shape.
-	isCollapse := legendShape children size = 1.
-	legendShape children copy do: [:child | child remove ].
-	isCollapse 
-		ifTrue: [ legendShape addAll: shapes ]
-		ifFalse: [ legendShape add: self titleShape ].
-	
-	legendShape adjustToChildren.
-	legendShape padding: 10.
-	self moveLegend: legendShape toCornerIn: evt canvas.
-	evt signalUpdate.
 ]
 
 { #category : #events }

@@ -2,13 +2,13 @@ Extension { #name : #FamixTag }
 
 { #category : #'*MooseIDE-CoUsageMap-Browser' }
 FamixTag >> addReference: aMiCoTaggedObject [
-
-	| tagAssociation |
-	self tagEntity: aMiCoTaggedObject rawObject.
-	tagAssociation := (aMiCoTaggedObject rawObject allTagAssociations 
-		                   select: [ :asso | asso tag = self ]) first.
-	aMiCoTaggedObject application ifNotNil: [ :app | 
-		app consumeItem: tagAssociation ]
+	| tagAssociation tags |
+	tags := aMiCoTaggedObject rawObject allTagAssociations 
+		select: [ :asso | asso tag = self ].
+	tags ifNotEmpty: [ ^ self ].
+	tagAssociation := self tagEntity: aMiCoTaggedObject rawObject.
+	aMiCoTaggedObject application 
+		ifNotNil: [ :app | app consumeItem: tagAssociation ]
 ]
 
 { #category : #'*MooseIDE-CoUsageMap-Browser' }
@@ -26,12 +26,13 @@ FamixTag >> asMiCoTag [
 { #category : #'*MooseIDE-CoUsageMap-Browser' }
 FamixTag >> removeReference: aMiCoTaggedObject [
 	| tagAssociation app |
-	tagAssociation :=  aMiCoTaggedObject rawObject allTagAssociations 
+	tagAssociation := aMiCoTaggedObject rawObject allTagAssociations 
 		detect: [ :assoc | assoc tag = self ]
 		ifNone: [ nil ].
-	aMiCoTaggedObject rawObject removeTag: self.
-	app := aMiCoTaggedObject application.
-	(app notNil and: [ tagAssociation notNil ])
-		ifTrue: [ app removeItem: tagAssociation  ]
 	
+	app := aMiCoTaggedObject application.
+	(app notNil and: [ tagAssociation notNil ]) ifTrue: [
+		app removeItem: tagAssociation ].
+	
+	aMiCoTaggedObject rawObject removeTag: self.
 ]

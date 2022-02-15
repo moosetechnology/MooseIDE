@@ -38,15 +38,18 @@ MiCoTaggedObject >> printOn: s [
 	s nextPutAll: name
 ]
 
+{ #category : #private }
+MiCoTaggedObject >> privateTag: aTag [
+	tag := aTag
+]
+
 { #category : #accessing }
 MiCoTaggedObject >> rawObject [
-
 	^ rawObject
 ]
 
 { #category : #accessing }
 MiCoTaggedObject >> rawObject: anObject [
-
 	rawObject := anObject
 ]
 
@@ -59,6 +62,5 @@ MiCoTaggedObject >> tag [
 MiCoTaggedObject >> tag: aMiCoTag [
 	tag ifNotNil: [ tag removeReference: self ].
 	tag := aMiCoTag.
-	tag ifNotNil: [ tag addReference: self ].
-	
+	tag ifNotNil: [ tag addReference: self ]
 ]
