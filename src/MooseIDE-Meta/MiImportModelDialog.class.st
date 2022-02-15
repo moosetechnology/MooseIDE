@@ -1,5 +1,8 @@
+"
+Abstract class for model import dialogs
+"
 Class {
-	#name : #MooseImportForm,
+	#name : #MiImportModelDialog,
 	#superclass : #SpPresenter,
 	#instVars : [
 		'originBrowser'
@@ -7,14 +10,19 @@ Class {
 	#category : #'MooseIDE-Meta-Import'
 }
 
+{ #category : #opening }
+MiImportModelDialog class >> open [
+	^ self subclassResponsibility
+]
+
 { #category : #initialization }
-MooseImportForm class >> windowExtent [
+MiImportModelDialog class >> windowExtent [
 
 	self subclassResponsibility
 ]
 
 { #category : #action }
-MooseImportForm >> importModel: aDialog [
+MiImportModelDialog >> importModel: aDialog [
 
 	| mooseModel |
 	[ mooseModel := self privateImportModel ] onErrorDo: [ :err | 
@@ -35,7 +43,7 @@ MooseImportForm >> importModel: aDialog [
 ]
 
 { #category : #initialization }
-MooseImportForm >> initializeDialogWindow: aDialog [
+MiImportModelDialog >> initializeDialogWindow: aDialog [
 
 	aDialog initialExtent: self class windowExtent.
 	aDialog addButton: 'Import' do: [ :dialog | 
@@ -44,19 +52,19 @@ MooseImportForm >> initializeDialogWindow: aDialog [
 ]
 
 { #category : #action }
-MooseImportForm >> privateImportModel [
+MiImportModelDialog >> privateImportModel [
 
 	self subclassResponsibility
 ]
 
-{ #category : #'accessing model' }
-MooseImportForm >> setModelBeforeInitialization: aBrowserOrMoosePanel [
+{ #category : #'accessing - model' }
+MiImportModelDialog >> setModelBeforeInitialization: aBrowserOrMoosePanel [
 
 	originBrowser := aBrowserOrMoosePanel
 ]
 
 { #category : #action }
-MooseImportForm >> updateBrowserWith: mooseModel [
+MiImportModelDialog >> updateBrowserWith: mooseModel [
 
 	originBrowser ifNotNil: [ 
 		originBrowser updateForNewModel: mooseModel ]
