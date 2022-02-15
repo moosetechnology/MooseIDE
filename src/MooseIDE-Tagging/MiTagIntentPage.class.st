@@ -5,63 +5,47 @@ This is the so called _Intent description_ of the tag
 "
 Class {
 	#name : #MiTagIntentPage,
-	#superclass : #MiPresenter,
+	#superclass : #MiTagPage,
 	#instVars : [
-		'queryList',
 		'selectedQuery',
 		'txtLowValue',
-		'txtHighValue',
-		'tagBrowser'
+		'txtHighValue'
 	],
 	#category : #'MooseIDE-Tagging-Browser'
 }
 
 { #category : #initialization }
 MiTagIntentPage >> initializeLayout [
-	self layout: (SpBoxLayout newTopToBottom
-		add: 'Available queries' ;
-		add: queryList ;
-		add: 'Selected query:' ;
-		add: selectedQuery ;
-		add: 'For values between:' ;
-		add: (SpBoxLayout newLeftToRight
-			add: txtLowValue expand: false ;
-			add: 'and:' ;
-			add: txtHighValue expand: false ;
-			yourself ) ;
-		yourself)
 
+	super initializeLayout.
+	self layout add: selectedQuery expand: false
 ]
 
 { #category : #initialization }
 MiTagIntentPage >> initializePresenters [
+
 	super initializePresenters.
-
-	txtLowValue := self newText
-		placeholder: 'Min.value';
-		yourself.
-	txtHighValue := self newTextInput
-		placeholder: 'Max.value';
-		yourself.
-
-	queryList := self newFilteringList
-		"display: [ :entity | entity name ];"
-		yourself.
-	self refreshQueryList.
-	
-	selectedQuery := self newText 
-		enabled: false ;
-		yourself.
-		
-	self initializeLayout .
+	selectedQuery := self newLabel.
+	self initializeLayout
 ]
 
-{ #category : #refreshing }
-MiTagIntentPage >> onBrowserPageRedisplay [
-	"nothing to do"
+{ #category : #accessing }
+MiTagIntentPage >> refresh [
+
+	super refresh.
+	selectedQuery label: (String streamContents: [ :aStream | 
+			 tagModel currentTag query storeWithParentsOn: aStream ])
 ]
 
 { #category : #initialization }
 MiTagIntentPage >> refreshQueryList [
 	^#()
+]
+
+{ #category : #initialization }
+MiTagIntentPage >> setTag: aTag [
+
+	super setTag: aTag.
+	selectedQuery label: (String streamContents: [ :aStream | 
+			 aTag query storeWithParentsOn: aStream ])
 ]

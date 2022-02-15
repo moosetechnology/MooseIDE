@@ -5,7 +5,7 @@ This is the so called _Extent description_ of the tag
 "
 Class {
 	#name : #MiTagExtentPage,
-	#superclass : #MiPresenter,
+	#superclass : #MiTagPage,
 	#instVars : [
 		'incomingEntitiesFilteringList',
 		'taggedEntitiesLabel',
@@ -13,9 +13,7 @@ Class {
 		'addButton',
 		'addAllButton',
 		'removeButton',
-		'removeAllButton',
-		'tagBrowser',
-		'tagDescription'
+		'removeAllButton'
 	],
 	#category : #'MooseIDE-Tagging-Browser'
 }
@@ -46,12 +44,6 @@ MiTagExtentPage >> currentTag [
 ]
 
 { #category : #initialization }
-MiTagExtentPage >> deleteCurrentTag [
-
-	self owner deleteCurrentTag
-]
-
-{ #category : #initialization }
 MiTagExtentPage >> initializeButtons [
 
 	addButton := self newButton
@@ -71,31 +63,28 @@ MiTagExtentPage >> initializeButtons [
 { #category : #initialization }
 MiTagExtentPage >> initializeLayout [
 
-	self layout: (SpBoxLayout newVertical
-			 spacing: 10;
-			 add: tagDescription expand: false;
-			 add: (SpBoxLayout newHorizontal
-					  spacing: 3;
-					  add: (SpBoxLayout newTopToBottom
-							   spacing: 2;
-							   add: 'Entities queried:' expand: false;
-							   add: incomingEntitiesFilteringList;
-							   yourself);
-					  add: (SpBoxLayout newVertical
-							   spacing: 5;
-							   add: SpNullPresenter new expand: true;
-							   add: addButton expand: false;
-							   add: addAllButton expand: false;
-							   add: removeButton expand: false;
-							   add: removeAllButton expand: false;
-							   add: SpNullPresenter new expand: true;
-							   yourself)
-					  width: 35;
-					  add: (SpBoxLayout newTopToBottom
-							   spacing: 2;
-							   add: 'Entities in tag:' expand: false;
-							   add: taggedEntitiesFilteringList;
-							   yourself);
+	super initializeLayout.
+	self layout add: (SpBoxLayout newHorizontal
+			 spacing: 3;
+			 add: (SpBoxLayout newTopToBottom
+					  spacing: 2;
+					  add: 'Entities queried:' expand: false;
+					  add: incomingEntitiesFilteringList;
+					  yourself);
+			 add: (SpBoxLayout newVertical
+					  spacing: 5;
+					  add: SpNullPresenter new expand: true;
+					  add: addButton expand: false;
+					  add: addAllButton expand: false;
+					  add: removeButton expand: false;
+					  add: removeAllButton expand: false;
+					  add: SpNullPresenter new expand: true;
+					  yourself)
+			 width: 35;
+			 add: (SpBoxLayout newTopToBottom
+					  spacing: 2;
+					  add: 'Entities in tag:' expand: false;
+					  add: taggedEntitiesFilteringList;
 					  yourself);
 			 yourself)
 ]
@@ -103,6 +92,7 @@ MiTagExtentPage >> initializeLayout [
 { #category : #initialization }
 MiTagExtentPage >> initializePresenters [
 
+	super initializePresenters.
 	taggedEntitiesLabel := self newLabel label: 'Entities in tag:'.
 	incomingEntitiesFilteringList := self newFilteringList
 		                                 display: [ :entity | 
@@ -119,7 +109,6 @@ MiTagExtentPage >> initializePresenters [
 		                               displayIcon: [ :entity | 
 			                               entity mooseIcon ];
 		                               yourself.
-	tagDescription := self instantiate: MiTagDescription.
 	self refreshTaggedEntitiesList.
 	self initializeButtons.
 	self initializeLayout
@@ -134,6 +123,15 @@ MiTagExtentPage >> onBrowserPageRedisplay [
 				ifNil: [ '!*! No tag selected !*!' ]
 				ifNotNil: [ :tag | 'Entities in tag [' , tag name , ']:' ]
 			)
+]
+
+{ #category : #refreshing }
+MiTagExtentPage >> refresh [
+
+	super refresh.
+	self refreshEntitiesList. 
+	self refreshTaggedEntitiesList.
+	
 ]
 
 { #category : #refreshing }
@@ -165,23 +163,17 @@ MiTagExtentPage >> removeAll [
 	self refreshTaggedEntitiesList
 ]
 
-{ #category : #initialization }
-MiTagExtentPage >> setModelBeforeInitialization: aTagBrowser [
-
-	tagBrowser := aTagBrowser
-]
-
 { #category : #accessing }
 MiTagExtentPage >> setTag: aTag [
 
-	tagDescription setTag: aTag.
+	super setTag: aTag.
 	self update
 ]
 
 { #category : #accessing }
 MiTagExtentPage >> tagModel [
 
-	^ self owner tagModel
+	^ tagModel
 ]
 
 { #category : #accessing }

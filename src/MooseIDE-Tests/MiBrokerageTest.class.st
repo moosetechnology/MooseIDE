@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'application',
 		'mockProducer',
-		'mockConsumer'
+		'mockConsumer',
+		'mockProducerConsumer'
 	],
 	#category : #'MooseIDE-Tests-Application'
 }
@@ -13,7 +14,18 @@ Class {
 MiBrokerageTest >> setUp [
 	application := MiTestApplication new.
 	mockConsumer := Mock named: 'consumer'.
-	mockProducer := Mock named: 'producer'
+	mockProducer := Mock named: 'producer'.
+	mockProducerConsumer := Mock named: 'producerConsomer'
+]
+
+{ #category : #tests }
+MiBrokerageTest >> testConsumeItemFromProducerConsumerShouldNotConsumeItsOwnItem [
+
+	application registerProducer: mockProducerConsumer for: Integer.
+	application registerConsumer: mockProducerConsumer for: Integer.
+	application consumeItem: 42 from: mockProducerConsumer.
+
+	mockConsumer should not receive consume: 42
 ]
 
 { #category : #tests }
@@ -135,6 +147,30 @@ MiBrokerageTest >> testRegisterProducer [
 ]
 
 { #category : #tests }
+MiBrokerageTest >> testRemoveItemFromProducerConsumerShouldNotRemoveItsOwnItem [
+
+	application registerProducer: mockProducerConsumer for: Integer.
+	application registerConsumer: mockProducerConsumer for: Integer.
+	application removeItem: 42 from: mockProducerConsumer.
+
+	mockConsumer should not receive remove: 42
+]
+
+{ #category : #tests }
+MiBrokerageTest >> testRemoveItemNoConsumer [
+	application removeItem: #blah.
+	mockConsumer should not receive remove: Any.
+]
+
+{ #category : #tests }
+MiBrokerageTest >> testRemoveItemWithConsumer [
+	application registerConsumer: mockConsumer for: Integer. 
+	application removeItem: 42.
+
+	mockConsumer should receive remove: 42.
+]
+
+{ #category : #tests }
 MiBrokerageTest >> testUnregisterConsumer [
 	application registerConsumer: mockConsumer for: Integer.
 	self assert: (application consumersOf: Integer) size equals: 1.
@@ -152,4 +188,28 @@ MiBrokerageTest >> testUnregisterProducer [
 	application unregisterProducer: mockProducer.
 	self assert: (application producersOf: Integer) size equals: 0.
 
+]
+
+{ #category : #tests }
+MiBrokerageTest >> testUpdateItemFromProducerConsumerShouldNotUpdateItsOwnItem [
+
+	application registerProducer: mockProducerConsumer for: Integer.
+	application registerConsumer: mockProducerConsumer for: Integer.
+	application updateItem: 42 from: mockProducerConsumer.
+
+	mockConsumer should not receive update: 42
+]
+
+{ #category : #tests }
+MiBrokerageTest >> testUpdateItemNoConsumer [
+	application updateItem: #blah.
+	mockConsumer should not receive update: Any.
+]
+
+{ #category : #tests }
+MiBrokerageTest >> testUpdateItemWithConsumer [
+	application registerConsumer: mockConsumer for: Integer. 
+	application updateItem: 42.
+
+	mockConsumer should receive update: 42.
 ]

@@ -13,7 +13,8 @@ Class {
 		'tagIntentPage',
 		'tagExtentPage',
 		'tagIsIntent',
-		'tagCreationForm'
+		'tagCreationForm',
+		'tagEditionForm'
 	],
 	#category : #'MooseIDE-Tagging-Browser'
 }
@@ -85,27 +86,99 @@ MiTagBrowser >> canFollowEntity: anObject [
 { #category : #initialization }
 MiTagBrowser >> closeTagCreationForm [
 
-	self layout replace: tagCreationForm with: tagManagementPage
+	self layout child: tagManagementPage
+]
+
+{ #category : #initialization }
+MiTagBrowser >> closeTagEditionForm [
+
+	self layout child: tagManagementPage
 ]
 
 { #category : #testing }
 MiTagBrowser >> consume: aTagAssociation [
 
-	self tagModel currentTag = aTagAssociation tag ifTrue: [ 
+	tagModel currentTag = aTagAssociation tag ifTrue: [ 
 		tagManagementPage refreshTaggedEntitiesList ]
 ]
 
 { #category : #testing }
-MiTagBrowser >> createTag: name description: aText color: aColor [
+MiTagBrowser >> createDynamicTag: name description: aText color: aColor category: aCategory query: aQuery [
 
 	| newTag |
-	newTag := self tagModel addTag: name.
+	(name notNil and: [ name isNotEmpty ]) ifFalse: [ ^ self ].
+	newTag := MiDynamicTag new.
 	(aText notNil and: [ aText isNotEmpty ]) ifTrue: [ 
 		newTag description: aText ].
-	aColor notNil ifTrue: [ newTag color: aColor ].
+	newTag name: name.
+	aColor ifNotNil: [ newTag color: aColor ].
+
+	aCategory ifNotNil: [ newTag category: aCategory ].
+
+	aQuery
+		ifNotNil: [ newTag query: aQuery ]
+		ifNil: [ newTag query: FQNullQuery new ].
+	application consumeItem: newTag.
+	tagModel addDynamicTag: newTag.
+	tagManagementPage refreshTagList
+]
+
+{ #category : #testing }
+MiTagBrowser >> createTag: name description: aText color: aColor category: aCategory [
+
+	| newTag |
+	newTag := tagModel addTag: name.
+	(aText notNil and: [ aText isNotEmpty ]) ifTrue: [ 
+		newTag description: aText ].
+	aColor ifNotNil: [ newTag color: aColor ].
 	tagManagementPage refreshTagList.
+	aCategory ifNotNil: [ 
+		aCategory addTag: newTag.
+		newTag addCategory: aCategory ].
 	application consumeItem: newTag
-	
+]
+
+{ #category : #accessing }
+MiTagBrowser >> descriptionPage [
+
+	^ tagManagementPage descriptionPage
+]
+
+{ #category : #actions }
+MiTagBrowser >> editCurrentDynamicTag: name description: description color: color category: category query: query [
+
+	| tag |
+	tag := tagModel currentTag.
+	tag ifNil: [ ^ false ].
+
+	(name isNil or: [ name isEmpty ]) ifTrue: [ ^ false ].
+
+	tag name: name.
+	tag description: description.
+	tag color: color.
+	category ifNotNil: [ tag category: category ].
+	tag query: query.
+	tagManagementPage refresh.
+	^ true
+]
+
+{ #category : #actions }
+MiTagBrowser >> editCurrentTag: name description: description color: color category: category [
+
+	| tag |
+	tag := tagModel currentTag.
+	tag ifNil: [ ^ false ].
+
+	(name isNil or: [ name isEmpty ]) ifTrue: [ ^ false ].
+
+	tag name: name.
+	tag description: description.
+	tag color: color.
+	tag categories ifNotEmpty: [ 
+		tag removeCategory: tag categories first ].
+	category ifNotNil: [ tag addCategory: category ].
+	tagManagementPage refresh.
+	^ true
 ]
 
 { #category : #actions }
@@ -121,6 +194,7 @@ MiTagBrowser >> followEntity: anEntity [
 MiTagBrowser >> initialize [
 
 	super initialize.
+	application registerProducer: self for: MiDynamicTag.
 	application registerProducer: self for: FamixTag.
 	application registerConsumer: self for: FamixTagAssociation
 ]
@@ -128,16 +202,15 @@ MiTagBrowser >> initialize [
 { #category : #initialization }
 MiTagBrowser >> initializeLayout [
 
-	self layout: (SpBoxLayout newLeftToRight
-			 add: tagManagementPage;
-			 yourself)
+	self layout: (SpScrollableLayout with: tagManagementPage )
 ]
 
 { #category : #initialization }
 MiTagBrowser >> initializePresenters [
 
-	tagCreationForm := MiTagCreationForm owner: self.
-	tagManagementPage := MiTagManagementPage owner: self.
+	tagCreationForm := self instantiate: MiTagCreationForm on: tagModel.
+	tagManagementPage := MiTagManagementPage newApplication: self application owner: self model: tagModel.
+	tagEditionForm := self instantiate: MiTagEditionForm on: tagModel. 
 	self initializeLayout
 ]
 
@@ -155,11 +228,30 @@ MiTagBrowser >> miSelectedItem [
 		  ifNotNil: [ :tag | tag taggedEntities asMooseGroup ]
 ]
 
+{ #category : #testing }
+MiTagBrowser >> newTagSelected [
+
+	self updateToolbar
+]
+
 { #category : #initialization }
 MiTagBrowser >> openTagCreationForm [
 
-	tagCreationForm reset.
-	self layout replace: tagManagementPage with: tagCreationForm
+	tagCreationForm
+		reset;
+		updateCategories.
+	self layout child: tagCreationForm
+]
+
+{ #category : #initialization }
+MiTagBrowser >> openTagEditionForm [
+
+	tagEditionForm
+		reset;
+		updateCategories.
+	self layout child: tagEditionForm.
+	tagEditionForm fillWithCurrentTag.
+	tagEditionForm update
 ]
 
 { #category : #testing }
@@ -179,7 +271,6 @@ MiTagBrowser >> setModelBeforeInitialization: aTagModel [
 MiTagBrowser >> setTagTo: aTag [
 
 	self tagModel currentTag: aTag.
-	self updateToolbar
 ]
 
 { #category : #testing }

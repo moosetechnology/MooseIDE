@@ -5,7 +5,9 @@ Class {
 		'tagFormPresenter',
 		'tagNameLabel',
 		'tagDescriptionText',
-		'tagDescriptionButton'
+		'tagDescriptionButton',
+		'tagModel',
+		'tagMenu'
 	],
 	#category : #'MooseIDE-Tagging-Browser'
 }
@@ -23,12 +25,14 @@ MiTagDescription >> initializeLayout [
 			 spacing: 1;
 			 add: (SpBoxLayout newLeftToRight
 					  vAlignCenter;
+					hAlignStart;
+					  add: (SpBoxLayout newLeftToRight
+							   hAlignStart;
+							   add: tagDescriptionButton expand: false;
+							   yourself);
 					  spacing: 5;
 					  add: tagFormPresenter expand: false;
-					  add: tagNameLabel expand: false;
-					  add: (SpBoxLayout newLeftToRight hAlignEnd
-							   add: tagDescriptionButton
-							   expand: false);
+					  add: tagNameLabel;
 					  yourself)
 			 expand: false;
 			 add: sep height: 2;
@@ -40,17 +44,39 @@ MiTagDescription >> initializePresenters [
 
 	tagNameLabel := self newLabel.
 	tagDescriptionText := self newText beNotEditable.
+	tagMenu := self newMenu.
+	tagMenu addItem: [ :item | 
+		item
+			name: 'Edit tag';
+			icon: (self iconNamed: #edit);
+			action: [ self owner editCurrentTag ] ].
+	tagMenu addItem: [ :item | 
+		item
+			name: 'Delete tag';
+			icon: (self iconNamed: #glamorousClose);
+			action: [ self owner deleteCurrentTag ] ].
 	tagDescriptionButton := self newToolbar
 		                        beIcons;
 		                        addItem: (self newToolbarPopoverButton
-				                         content: tagDescriptionText;
+				                         content: (SpPresenter new
+						                          layout: (SpBoxLayout newTopToBottom
+								                           add: 'Description:' asPresenter
+								                           expand: false;
+								                           add: tagDescriptionText
+								                           withConstraints: [ :const | 
+									                           const
+										                           width: 300;
+										                           height: 200 ]);
+						                          yourself);
 				                         help: 'Tag desciption';
 				                         icon: (self iconNamed: #help);
 				                         yourself);
 		                        addItem: (self newToolbarButton
-				                         icon: (self iconNamed: #delete);
-				                         help: 'Delete Tag';
-				                         action: [ self owner deleteCurrentTag ];
+				                         help: 'Tag menu';
+				                         icon: (self iconNamed: #arrowDown);
+				                         action: [ 
+					                         tagMenu openWithSpecAt:
+							                         self currentHand position ];
 				                         yourself);
 		                        yourself.
 	tagFormPresenter := self newImage.
@@ -58,12 +84,25 @@ MiTagDescription >> initializePresenters [
 ]
 
 { #category : #initialization }
+MiTagDescription >> refresh [
+
+	self setTag: tagModel currentTag
+]
+
+{ #category : #initialization }
+MiTagDescription >> setModelBeforeInitialization: aTagModel [
+
+	tagModel := aTagModel
+]
+
+{ #category : #initialization }
 MiTagDescription >> setTag: aTag [
 
+	aTag ifNil: [ ^self ].
 	tagNameLabel label: aTag name.
-	tagDescriptionText text: 'Description: ' , (aTag description
+	tagDescriptionText text: (aTag description
 			 ifNotNil: [ :text | text ]
-			 ifNil: [ 'No description.' ]).
-	tagFormPresenter image: (self owner tagModel iconForTag: aTag).
+			 ifNil: [ 'No description on this tag.' ]).
+	tagFormPresenter image: (tagModel class iconForTag: aTag).
 	self update
 ]
