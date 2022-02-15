@@ -14,7 +14,7 @@ Class {
 		'unselectAllButton',
 		'unselectButton'
 	],
-	#category : #'MooseIDE-Meta-Import'
+	#category : #'MooseIDE-Core-Widgets'
 }
 
 { #category : #specs }
@@ -133,6 +133,14 @@ MiListSelector >> selectAll [
 MiListSelector >> selectedItems [
 
 	^ selectedList listPresenter items
+]
+
+{ #category : #accessing }
+MiListSelector >> selectedItems: aCollection [
+
+	selectedList listPresenter items: aCollection.
+	initialList listPresenter items:
+		initialList listPresenter items \ aCollection
 ]
 
 { #category : #accessing }

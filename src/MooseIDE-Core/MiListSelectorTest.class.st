@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'selector'
 	],
-	#category : #'MooseIDE-Meta-Import'
+	#category : #'MooseIDE-Core-Widgets'
 }
 
 { #category : #accessing }
@@ -51,6 +51,19 @@ MiListSelectorTest >> testEmptyIntialList [
 	self selectButton click.
 	self assert: selector selectedItems isEmpty.
 	self assert: self initialList items isEmpty
+]
+
+{ #category : #tests }
+MiListSelectorTest >> testPreselectedItemsAreNotDuplicatedInInitialList [
+
+	| preselected |
+	preselected := #( 2 3 10 ).
+
+	selector initialItems: self initialCollection.
+
+	selector selectedItems: preselected.
+
+	self denyCollection: self initialList items includesAny: preselected
 ]
 
 { #category : #tests }
