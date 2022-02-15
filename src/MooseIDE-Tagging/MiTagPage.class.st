@@ -9,6 +9,18 @@ Class {
 }
 
 { #category : #initialization }
+MiTagPage >> deleteCurrentTag [
+
+	self owner deleteCurrentTag
+]
+
+{ #category : #action }
+MiTagPage >> editCurrentTag [
+
+	self owner editCurrentTag
+]
+
+{ #category : #initialization }
 MiTagPage >> initializeLayout [
 
 	self layout: (SpBoxLayout newTopToBottom
@@ -25,7 +37,7 @@ MiTagPage >> initializePresenters [
 { #category : #accessing }
 MiTagPage >> refresh [
 
-	self subclassResponsibility
+	self refreshTagDescription
 ]
 
 { #category : #accessing }
@@ -38,4 +50,10 @@ MiTagPage >> refreshTagDescription [
 MiTagPage >> setModelBeforeInitialization: aModel [
 
 	tagModel := aModel
+]
+
+{ #category : #initialization }
+MiTagPage >> setTag: aTag [
+
+	tagDescription setTag: aTag.
 ]

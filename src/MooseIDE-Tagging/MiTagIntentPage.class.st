@@ -7,7 +7,6 @@ Class {
 	#name : #MiTagIntentPage,
 	#superclass : #MiTagPage,
 	#instVars : [
-		'queryList',
 		'selectedQuery',
 		'txtLowValue',
 		'txtHighValue'
@@ -16,34 +15,37 @@ Class {
 }
 
 { #category : #initialization }
-MiTagIntentPage >> initialize [
-
-	super initialize.
-	application registerConsumer: self for: FQAbstractQuery
-]
-
-{ #category : #initialization }
 MiTagIntentPage >> initializeLayout [
 
 	super initializeLayout.
-	self layout add: queryList expand: false
+	self layout add: selectedQuery expand: false
 ]
 
 { #category : #initialization }
 MiTagIntentPage >> initializePresenters [
 
 	super initializePresenters.
-
+	selectedQuery := self newLabel.
 	self initializeLayout
 ]
 
 { #category : #accessing }
 MiTagIntentPage >> refresh [
 
-	
+	super refresh.
+	selectedQuery label: (String streamContents: [ :aStream | 
+			 tagModel currentTag query storeWithParentsOn: aStream ])
 ]
 
 { #category : #initialization }
 MiTagIntentPage >> refreshQueryList [
 	^#()
+]
+
+{ #category : #initialization }
+MiTagIntentPage >> setTag: aTag [
+
+	super setTag: aTag.
+	selectedQuery label: (String streamContents: [ :aStream | 
+			 aTag query storeWithParentsOn: aStream ])
 ]

@@ -26,11 +26,10 @@ MiTagEditionForm >> connectPresenters [
 MiTagEditionForm >> fillFormWithTag: aTag [
 
 	aTag ifNil: [ ^ self ].
-	aTag name ifNotNil: [ :name | nameField text: name ].
-	aTag description ifNotNil: [ :desc | descriptionField text: desc ].
-	aTag color ifNotNil: [ :color | colorPicker setColor: color ].
-	aTag categories ifNotEmpty: [ 
-		categorySelection selectItem: aTag categories first ]
+	aTag isIntent
+		ifTrue: [ self setDynamicTag: aTag ]
+		ifFalse: [ self setTag: aTag ].
+	
 ]
 
 { #category : #accessing }
@@ -75,19 +74,53 @@ MiTagEditionForm >> formLayout [
 MiTagEditionForm >> initializePresenters [
 
 	super initializePresenters.
+	extentButton hide.
+	intentButton hide. 
 	submitButton label: 'Edit'.
+]
+
+{ #category : #accessing }
+MiTagEditionForm >> setDynamicTag: aTag [
+
+	self setIntentForm.
+	aTag name ifNotNil: [ :name | nameField text: name ].
+	aTag description ifNotNil: [ :desc | descriptionField text: desc ].
+	aTag color ifNotNil: [ :color | colorPicker setColor: color ].
+	aTag category ifNotNil: [ 
+		categorySelection selectItem: aTag category ].
+	aTag query ifNotNil: [ queryList selectItem: aTag query ]
+]
+
+{ #category : #accessing }
+MiTagEditionForm >> setTag: aTag [
+
+	self setExtentForm.
+	aTag name ifNotNil: [ :name | nameField text: name ].
+	aTag description ifNotNil: [ :desc | descriptionField text: desc ].
+	aTag color ifNotNil: [ :color | colorPicker setColor: color ].
+	aTag categories ifNotEmpty: [ 
+		categorySelection selectItem: aTag categories first ]
 ]
 
 { #category : #initialization }
 MiTagEditionForm >> submit [
 
 	self checkFormInputs ifFalse: [ ^ self ].
-	
-	self owner
-		editCurrentTag: nameField text
-		description: descriptionField text
-		color: colorPicker color
-		category: categorySelection selectedItem.
+	tagModel currentTag isIntent
+		ifTrue: [ 
+			self owner
+				editCurrentDynamicTag: nameField text
+				description: descriptionField text
+				color: colorPicker color
+				category: categorySelection selectedItem
+				query: queryList selectedItem ]
+		ifFalse: [ 
+			self owner
+				editCurrentTag: nameField text
+				description: descriptionField text
+				color: colorPicker color
+				category: categorySelection selectedItem ].
+
 	self owner closeTagEditionForm
 ]
 

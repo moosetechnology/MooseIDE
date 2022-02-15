@@ -10,7 +10,9 @@ Class {
 		'descriptionPage',
 		'tagModel',
 		'tagButton',
-		'dynamicTagButton'
+		'dynamicTagButton',
+		'tagDescriptionPage',
+		'dynamicTagDescriptionPage'
 	],
 	#category : #'MooseIDE-Tagging-Browser'
 }
@@ -60,6 +62,11 @@ MiTagManagementPage >> initializeLayout [
 					  spacing: 5;
 					  add: categoryManagement expand: false;
 					  add: (SpBoxLayout newLeftToRight
+							   add: 'Tag list' asPresenter;
+							   hAlignCenter;
+							   yourself)
+					  expand: false;
+					  add: (SpBoxLayout newLeftToRight
 							   spacing: 3;
 							   add: tagButton;
 							   add: dynamicTagButton;
@@ -79,16 +86,21 @@ MiTagManagementPage >> initializePresenters [
 	categoryManagement := self
 		                      instantiate: MiTagCategoriesPresenter
 		                      on: tagModel.
-	descriptionPage := self instantiate: MiTagExtentPage on: tagModel.
+	
+	tagDescriptionPage := self instantiate: MiTagExtentPage on: tagModel.
+	dynamicTagDescriptionPage := self
+		                             instantiate: MiTagIntentPage
+		                             on: tagModel.
+	descriptionPage := tagDescriptionPage.
 	descriptionPage hide.
 
 	tagButton := self newToggleButton
 		             state: true;
-		             label: 'Tags';
+		             label: 'Extent';
 		             yourself.
 	dynamicTagButton := self newToggleButton
 		                    state: false;
-		                    label: 'Dynamic tags';
+		                    label: 'Intent';
 		                    yourself.
 
 	tagList := self instantiate: MiTagListPresenter.
@@ -103,14 +115,24 @@ MiTagManagementPage >> initializePresenters [
 	self initializeLayout
 ]
 
+{ #category : #action }
+MiTagManagementPage >> preparePageFor: aTag [
+
+	aTag isIntent ifTrue: [ 
+		self layout replace: descriptionPage with: dynamicTagDescriptionPage.
+		descriptionPage := dynamicTagDescriptionPage.
+		^ self ].
+	self layout replace: descriptionPage with: tagDescriptionPage.
+	descriptionPage := tagDescriptionPage
+]
+
 { #category : #refreshing }
 MiTagManagementPage >> refresh [
 
 	self refreshDescriptionPage.
 	self refreshTagList.
 	self refreshCategoryList.
-	descriptionPage refreshEntitiesList.
-	descriptionPage refreshTaggedEntitiesList.
+	descriptionPage refresh.
 ]
 
 { #category : #refreshing }
@@ -176,10 +198,10 @@ MiTagManagementPage >> setModelBeforeInitialization: aTagModel [
 MiTagManagementPage >> setTagTo: aTag [
 
 	self owner setTagTo: aTag.
+	self preparePageFor: aTag.
 	descriptionPage setTag: aTag.
 	descriptionPage show.
-	descriptionPage refreshEntitiesList.
-	descriptionPage refreshTaggedEntitiesList.
+	descriptionPage refresh.
 	self update
 ]
 

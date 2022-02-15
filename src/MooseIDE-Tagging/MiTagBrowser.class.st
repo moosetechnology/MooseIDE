@@ -145,6 +145,24 @@ MiTagBrowser >> descriptionPage [
 ]
 
 { #category : #actions }
+MiTagBrowser >> editCurrentDynamicTag: name description: description color: color category: category query: query [
+
+	| tag |
+	tag := tagModel currentTag.
+	tag ifNil: [ ^ false ].
+
+	(name isNil or: [ name isEmpty ]) ifTrue: [ ^ false ].
+
+	tag name: name.
+	tag description: description.
+	tag color: color.
+	category ifNotNil: [ tag category: category ].
+	tag query: query.
+	tagManagementPage refresh.
+	^ true
+]
+
+{ #category : #actions }
 MiTagBrowser >> editCurrentTag: name description: description color: color category: category [
 
 	| tag |
@@ -190,7 +208,7 @@ MiTagBrowser >> initializeLayout [
 { #category : #initialization }
 MiTagBrowser >> initializePresenters [
 
-	tagCreationForm := self instantiate: MiDynamicTagCreationForm on: tagModel.
+	tagCreationForm := self instantiate: MiTagCreationForm on: tagModel.
 	tagManagementPage := MiTagManagementPage newApplication: self application owner: self model: tagModel.
 	tagEditionForm := self instantiate: MiTagEditionForm on: tagModel. 
 	self initializeLayout

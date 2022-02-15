@@ -44,18 +44,6 @@ MiTagExtentPage >> currentTag [
 ]
 
 { #category : #initialization }
-MiTagExtentPage >> deleteCurrentTag [
-
-	self owner deleteCurrentTag
-]
-
-{ #category : #action }
-MiTagExtentPage >> editCurrentTag [
-
-	self owner editCurrentTag
-]
-
-{ #category : #initialization }
 MiTagExtentPage >> initializeButtons [
 
 	addButton := self newButton
@@ -140,7 +128,7 @@ MiTagExtentPage >> onBrowserPageRedisplay [
 { #category : #refreshing }
 MiTagExtentPage >> refresh [
 
-	self refreshTagDescription.
+	super refresh.
 	self refreshEntitiesList. 
 	self refreshTaggedEntitiesList.
 	
@@ -178,7 +166,7 @@ MiTagExtentPage >> removeAll [
 { #category : #accessing }
 MiTagExtentPage >> setTag: aTag [
 
-	tagDescription setTag: aTag.
+	super setTag: aTag.
 	self update
 ]
 

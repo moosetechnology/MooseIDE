@@ -55,6 +55,12 @@ MiDynamicTag >> isApplicableTo: anObject [
 	^ [ query value: anObject ] onErrorDo: [ ^ false ]
 ]
 
+{ #category : #testing }
+MiDynamicTag >> isIntent [
+
+	^ true
+]
+
 { #category : #accessing }
 MiDynamicTag >> name [
 

@@ -186,7 +186,9 @@ MiTagBrowserModel >> deleteCurrentTag [
 
 	| tag |
 	tag := currentTag.
-	tag remove.
+	tag isIntent ifTrue: [ 
+		dynamicTags remove: tag.
+		^ tag ]. tag remove.
 	tag categories ifNotEmpty: [ tag categories first removeTag: tag ].
 	self currentTag: nil.
 	^ tag
