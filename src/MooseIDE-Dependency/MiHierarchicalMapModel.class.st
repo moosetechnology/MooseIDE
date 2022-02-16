@@ -50,6 +50,12 @@ MiHierarchicalMapModel >> addDynamicTag: aTag [
 	dynamicTags add: aTag
 ]
 
+{ #category : #adding }
+MiHierarchicalMapModel >> addDynamicTags: aCollection [
+
+	dynamicTags addAll: aCollection
+]
+
 { #category : #accessing }
 MiHierarchicalMapModel >> childrenBlock [
 

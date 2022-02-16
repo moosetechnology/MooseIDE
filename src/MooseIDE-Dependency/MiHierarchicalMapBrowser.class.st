@@ -52,6 +52,19 @@ MiHierarchicalMapBrowser >> addmenuButtonToCanvas [
 	settingsToggle translateTopLeftTo: 5 @ 0.
 ]
 
+{ #category : #initialization }
+MiHierarchicalMapBrowser >> browserClosed [
+
+	super browserClosed.
+	application unregisterConsumer: settings
+]
+
+{ #category : #actions }
+MiHierarchicalMapBrowser >> canFollowEntity: anEntity [
+
+	^ anEntity isMooseObject
+]
+
 { #category : #testing }
 MiHierarchicalMapBrowser >> canReceiveEntity: anEntity [
 
@@ -71,12 +84,19 @@ MiHierarchicalMapBrowser >> followEntity: anEntity [
 	self showMenu
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #actions }
 MiHierarchicalMapBrowser >> hideMenu [
 
 	settingsToggle text: '> Show settings'.
 	settingsToggle translateTopLeftTo: 5 @ 0.
 	self layout remove: settings
+]
+
+{ #category : #initialization }
+MiHierarchicalMapBrowser >> initialize [
+
+	super initialize.
+	application registerConsumer: settings for: MiDynamicTag
 ]
 
 { #category : #initialization }
@@ -103,7 +123,7 @@ MiHierarchicalMapBrowser >> miSelectedItem [
 	^ model entities mooseInterestingEntity
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #actions }
 MiHierarchicalMapBrowser >> showMenu [
 
 	settingsToggle text: '< Hide settings'.
@@ -114,7 +134,7 @@ MiHierarchicalMapBrowser >> showMenu [
 		add: visualization
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #actions }
 MiHierarchicalMapBrowser >> toggleMenu [
 
 	(self layout presenters includes: settings)

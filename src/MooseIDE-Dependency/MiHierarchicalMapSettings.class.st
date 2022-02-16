@@ -24,6 +24,13 @@ MiHierarchicalMapSettings >> addDynamicTag: aTag [
 	dynamicTagList items: self model dynamicTags
 ]
 
+{ #category : #initialization }
+MiHierarchicalMapSettings >> addDynamicTags: aCollection [
+
+	self model addDynamicTags: aCollection.
+	dynamicTagList items: self model dynamicTags
+]
+
 { #category : #'as yet unclassified' }
 MiHierarchicalMapSettings >> closeTagCreationForm [
 
@@ -98,6 +105,7 @@ MiHierarchicalMapSettings >> model [
 { #category : #'as yet unclassified' }
 MiHierarchicalMapSettings >> openTagCreationForm [
 
+	tagCreateForm setTags.
 	self owner layout replace: self with: tagCreateForm
 ]
 
