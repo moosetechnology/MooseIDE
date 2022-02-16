@@ -217,7 +217,9 @@ MiTagBrowser >> initializePresenters [
 { #category : #brokerage }
 MiTagBrowser >> itemsFor: aClass [
 
-	^ tagModel allTags
+	aClass = MiDynamicTag ifTrue: [ ^ tagModel dynamicTags ].
+	aClass = FamixTag ifTrue: [ ^ tagModel allTags ].
+	^ #(  )
 ]
 
 { #category : #accessing }
