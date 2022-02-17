@@ -11,8 +11,8 @@ Class {
 	#name : #MiSourceTextBrowser,
 	#superclass : #MiAbstractFamixBrowser,
 	#instVars : [
-		'sourceText',
-		'toolBarExternalEditor'
+		'toolBarExternalEditor',
+		'textRenderer'
 	],
 	#category : #'MooseIDE-Famix-SourceText'
 }
@@ -21,7 +21,7 @@ Class {
 MiSourceTextBrowser class >> defaultSpec [
 	^super defaultSpec
 		add: #toolBarExternalEditor height: self toolbarHeight ;
-		add: #sourceText expand: true ;
+		add: #textRenderer expand: true ;
 		yourself
 ]
 
@@ -66,6 +66,11 @@ MiSourceTextBrowser >> canFollowEntity: anObject [
 	^ anObject usesFamixTrait: FamixTSourceEntity
 ]
 
+{ #category : #actions }
+MiSourceTextBrowser >> editExternally: anExternalTool [
+	anExternalTool new open: model selected
+]
+
 { #category : #'private - testing' }
 MiSourceTextBrowser >> externalEditor [
 	"only for testing"
@@ -82,8 +87,7 @@ MiSourceTextBrowser >> externalEditor: anObject [
 MiSourceTextBrowser >> followEntity: anEntity [
 
 	model displayedEntity: anEntity.
-	model formatSource.
-	sourceText run.
+	textRenderer renderText.
 
 	self updateWindowTitleWith: anEntity name.
 
@@ -92,8 +96,10 @@ MiSourceTextBrowser >> followEntity: anEntity [
 
 { #category : #initialization }
 MiSourceTextBrowser >> initializePresenters [
+
 	toolBarExternalEditor := self instantiate: MiSourceTextToolBar on: self.
-	sourceText := self instantiate: MiSourceTextRoassalRenderer on: model.
+	"self withRoassalRenderer."
+	self withSpecRenderer.
 ]
 
 { #category : #accessing }
@@ -102,25 +108,10 @@ MiSourceTextBrowser >> miSelectedItem [
 	^ model selected
 ]
 
-{ #category : #actions }
-MiSourceTextBrowser >> sendTextTo: anExternalTool [
-	anExternalTool new open: model selected
-]
-
 { #category : #initialization }
 MiSourceTextBrowser >> setModelBeforeInitialization: aModel [
 	super setModelBeforeInitialization: aModel.
 	aModel browser: self
-]
-
-{ #category : #actions }
-MiSourceTextBrowser >> text [
-	^sourceText text
-]
-
-{ #category : #actions }
-MiSourceTextBrowser >> text: aText [
-	sourceText text: aText
 ]
 
 { #category : #'private - testing' }
@@ -140,4 +131,16 @@ MiSourceTextBrowser >> updateWindowTitleWith: aName [
 
 	self withWindowDo: [ :window | 
 		window title: self class title , ' of ' , aName ]
+]
+
+{ #category : #formatting }
+MiSourceTextBrowser >> withRoassalRenderer [
+
+	textRenderer := self instantiate: MiSourceTextRoassalRenderer on: model
+]
+
+{ #category : #formatting }
+MiSourceTextBrowser >> withSpecRenderer [
+
+	textRenderer := self instantiate: MiSourceTextSpecRenderer on: model
 ]

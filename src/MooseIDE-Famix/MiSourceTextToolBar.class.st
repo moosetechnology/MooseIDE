@@ -24,7 +24,7 @@ MiSourceTextToolBar >> autoTransmit: aBoolean [
 
 { #category : #action }
 MiSourceTextToolBar >> editExternally [
-	sourceTextBrowser sendTextTo: self externalEditor
+	sourceTextBrowser editExternally: self externalEditor
 ]
 
 { #category : #accessing }

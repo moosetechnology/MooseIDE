@@ -4,6 +4,11 @@ Class {
 	#category : #'MooseIDE-Famix-SourceText'
 }
 
+{ #category : #formatting }
+MiSourceTextIdentifierHighlight >> applyTo: aRenderer [
+	aRenderer applyIdentifierHighlight: self
+]
+
 { #category : #api }
 MiSourceTextIdentifierHighlight >> setInterval: anInterval [
 	"sets the interval to the 1st line containing the entity identifier"
@@ -17,13 +22,4 @@ MiSourceTextIdentifierHighlight >> setInterval: anInterval [
 			from: myStart
 			to: (myStart + self highlightedEntity name size - 1))
 
-]
-
-{ #category : #formatting }
-MiSourceTextIdentifierHighlight >> toRoassal [
-	^RSLinkEmphasisAttribute new
-		from: self from ;
-		to: self to ;
-		on: RSMouseClick do: [ :event | uiModel selected: self highlightedEntity ] ;
-		yourself
 ]

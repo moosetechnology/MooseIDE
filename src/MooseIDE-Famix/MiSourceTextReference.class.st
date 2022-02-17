@@ -4,8 +4,7 @@ Class {
 	#instVars : [
 		'referenceText',
 		'referenceEntity',
-		'highlights',
-		'uiModel'
+		'highlights'
 	],
 	#category : #'MooseIDE-Famix-SourceText'
 }
@@ -21,7 +20,6 @@ MiSourceTextReference >> addIdentifierHighlightFor: aChildEntity interval: child
 		referenceSource: self ;
 		highlightedEntity: aChildEntity ;
 		setInterval: childInterval ;
-		uiModel: uiModel ;
 		yourself
 ]
 
@@ -30,7 +28,6 @@ MiSourceTextReference >> addNullHighlightFor: aChildEntity [
 	^MiSourceTextNullHighlight new
 		referenceSource: self;
 		highlightedEntity: aChildEntity;
-		uiModel: uiModel ;
 		yourself
 ]
 
@@ -40,7 +37,6 @@ MiSourceTextReference >> addTagHighlightFor: aChildEntity interval: childInterva
 		referenceSource: self ;
 		highlightedEntity: aChildEntity ;
 		interval: childInterval ;
-		uiModel: uiModel ;
 		yourself
 ]
 
@@ -89,8 +85,7 @@ MiSourceTextReference >> referenceEntity [
 
 { #category : #accessing }
 MiSourceTextReference >> referenceEntity: anObject [
-
-	referenceEntity := anObject
+	referenceEntity := anObject.
 ]
 
 { #category : #accessing }
@@ -101,11 +96,5 @@ MiSourceTextReference >> referenceText [
 
 { #category : #accessing }
 MiSourceTextReference >> referenceText: anObject [
-
 	referenceText := anObject asText
-]
-
-{ #category : #accessing }
-MiSourceTextReference >> uiModel: aBrowser [
-	uiModel := aBrowser 
 ]

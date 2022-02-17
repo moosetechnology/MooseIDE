@@ -2,11 +2,40 @@ Class {
 	#name : #MiSourceTextRoassalRenderer,
 	#superclass : #MiAbstractVisualization,
 	#instVars : [
-		'model',
-		'roassalTextRenderer'
+		'roassalTextRenderer',
+		'model'
 	],
 	#category : #'MooseIDE-Famix-SourceText'
 }
+
+{ #category : #formatting }
+MiSourceTextRoassalRenderer >> applyIdentifierHighlight: aHighlight [
+	^RSLinkEmphasisAttribute new
+		from: aHighlight from ;
+		to: aHighlight to ;
+		on: RSMouseClick do: [ :event | self browser selected: aHighlight highlightedEntity ] ;
+		yourself
+]
+
+{ #category : #formatting }
+MiSourceTextRoassalRenderer >> applyRawHighlight: aHighlight [
+
+]
+
+{ #category : #formatting }
+MiSourceTextRoassalRenderer >> applyTagHighlight: aHighlight [
+	^RSTagEmphasisAttribute new
+		from: aHighlight from ;
+		to: aHighlight to ;
+		color: aHighlight highlightedEntity color ; 
+		on: RSMouseClick do: [ :event | self browser selected: aHighlight highlightedEntity ] ;
+		yourself
+]
+
+{ #category : #accessing }
+MiSourceTextRoassalRenderer >> browser [
+	^model browser
+]
 
 { #category : #highlighting }
 MiSourceTextRoassalRenderer >> highlightShapes [
@@ -21,24 +50,14 @@ MiSourceTextRoassalRenderer >> initialize [
 	roassalTextRenderer := RSAttributedText new.
 ]
 
-{ #category : #accessing }
-MiSourceTextRoassalRenderer >> model [
-	^model
-]
-
-{ #category : #accessing }
-MiSourceTextRoassalRenderer >> model: aSourceTextModel [
-	model := aSourceTextModel 
-]
-
-{ #category : #initialization }
-MiSourceTextRoassalRenderer >> run [
+{ #category : #highlighting }
+MiSourceTextRoassalRenderer >> renderText [
 	roassalTextRenderer text: model sourceText.
-	model highlights do: [ :hlght | roassalTextRenderer addAttribute: hlght toRoassal ].
+	model highlights do: [ :hlght | hlght applyTo: self ].
 	roassalTextRenderer renderIn: self canvas
 ]
 
-{ #category : #accessing }
+{ #category : #initialization }
 MiSourceTextRoassalRenderer >> setModelBeforeInitialization: aModel [
 	model := aModel
 ]

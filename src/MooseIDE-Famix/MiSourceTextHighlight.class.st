@@ -4,11 +4,15 @@ Class {
 	#instVars : [
 		'referenceSource',
 		'interval',
-		'highlightedEntity',
-		'uiModel'
+		'highlightedEntity'
 	],
 	#category : #'MooseIDE-Famix-SourceText'
 }
+
+{ #category : #formatting }
+MiSourceTextHighlight >> applyTo: aRenderer [
+	self subclassResponsibility 
+]
 
 { #category : #accessing }
 MiSourceTextHighlight >> from [
@@ -72,14 +76,4 @@ MiSourceTextHighlight >> referenceText [
 MiSourceTextHighlight >> to [
 
 	^ interval last
-]
-
-{ #category : #formatting }
-MiSourceTextHighlight >> toRoassal [
-	self subclassResponsibility 
-]
-
-{ #category : #accessing }
-MiSourceTextHighlight >> uiModel: aBrowser [
-	uiModel := aBrowser
 ]

@@ -16,6 +16,11 @@ Class {
 }
 
 { #category : #accessing }
+MiSourceTextBrowserModel >> browser [
+	^browser
+]
+
+{ #category : #accessing }
 MiSourceTextBrowserModel >> browser: aMiBrowser [
 	browser := aMiBrowser 
 ]
@@ -27,9 +32,7 @@ MiSourceTextBrowserModel >> createSourceTextReference [
 		ifEmpty: [ MiSourceTextVoidReference new ]
 		ifNotEmpty: [ MiSourceTextReference new
 			referenceText: displayed sourceText ]).
-	textReference
-		referenceEntity: displayed ;
-		uiModel: self.
+	textReference referenceEntity: displayed.
 	^textReference
 ]
 
@@ -42,34 +45,14 @@ MiSourceTextBrowserModel >> displayedEntity [
 { #category : #accessing }
 MiSourceTextBrowserModel >> displayedEntity: anObject [
 	displayed := anObject.
-	selected := anObject
+	selected := anObject.
+	self formatSource 
 ]
 
 { #category : #formatting }
 MiSourceTextBrowserModel >> formatSource [
-	^self createSourceTextReference
-		gatherHighlights;
-		yourself
-]
-
-{ #category : #formatting }
-MiSourceTextBrowserModel >> highlightInterval: aTextInterval inText: mainText [
-	| start end childEntity |
-	start := aTextInterval first.
-	end := aTextInterval last.
-	childEntity := aTextInterval entity.
-	mainText
-		addAttribute: TextEmphasis underlined from: start to: end ;
-		addAttribute: TextEmphasis italic from: start to: end ;
-		addAttribute: (TextDoIt new
-			actOnClickBlock: [ self selected: childEntity ])  from: start to: end
-		"addAttribute: TextColor black  from: start to: end ".
-				
-	childEntity tags do: [ :tag |
-		mainText
-			addAttribute: (TextBackgroundColor color: (tag color)) from: start to: end
-	]
-
+	self createSourceTextReference
+		gatherHighlights
 ]
 
 { #category : #accessing }
@@ -106,5 +89,5 @@ MiSourceTextBrowserModel >> selectedEntity [
 
 { #category : #accessing }
 MiSourceTextBrowserModel >> sourceText [
-	^ displayed sourceText
+	^ textReference referenceText
 ]

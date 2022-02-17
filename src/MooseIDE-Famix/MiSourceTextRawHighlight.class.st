@@ -7,6 +7,11 @@ Class {
 	#category : #'MooseIDE-Famix-SourceText'
 }
 
+{ #category : #formatting }
+MiSourceTextRawHighlight >> applyTo: aRenderer [
+	aRenderer applyRawHighlight: self
+]
+
 { #category : #accessing }
 MiSourceTextRawHighlight >> attribute: aTextAttribute [
 	attribute := aTextAttribute
