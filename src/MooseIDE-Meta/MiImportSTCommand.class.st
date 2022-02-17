@@ -31,5 +31,5 @@ MiImportSTCommand class >> defaultName [
 { #category : #accessing }
 MiImportSTCommand class >> importForm [
 
-	^ MooseImportFromSmalltalkForm
+	^ MiImportModelFromSmalltalkDialog
 ]

@@ -44,6 +44,7 @@ MiRelationQueryPresenter >> initializeRelationsDropList [
 		ifEmpty: [ self noParameterMessage: 'No relations available' ]
 		ifNotEmpty: [ :relationNames | 
 			self newDropList
+				startWithoutSelection;
 				items: relationNames;
 				whenSelectedItemChangedDo: [ :selectedRelationName | 
 					query relationName: selectedRelationName.

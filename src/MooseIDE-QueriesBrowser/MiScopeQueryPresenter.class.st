@@ -36,6 +36,7 @@ MiScopeQueryPresenter >> initializeDirectionsDropList [
 
 	directionsDropList := self newDropList.
 	directionsDropList
+		startWithoutSelection;
 		items: self query directionStrategies;
 		display: #label;
 		whenSelectedItemChangedDo: [ :selectedDirection | 
@@ -73,6 +74,7 @@ MiScopeQueryPresenter >> newLayout [
 MiScopeQueryPresenter >> scopesDropListForScopes: scopes [
 
 	^ self newDropList
+		  startWithoutSelection;
 		  items: scopes;
 		  display: [ :item | item mooseDescription name asEnglishPlural ];
 		  selectItem: self query scope;

@@ -7,7 +7,10 @@ Class {
 	#instVars : [
 		'categoryManagement',
 		'tagList',
-		'descriptionPage'
+		'descriptionPage',
+		'tagModel',
+		'tagButton',
+		'dynamicTagButton'
 	],
 	#category : #'MooseIDE-Tagging-Browser'
 }
@@ -16,16 +19,22 @@ Class {
 MiTagManagementPage >> deleteCurrentTag [
 
 	|tag|
-	tag := self tagModel deleteCurrentTag.
+	tag := tagModel deleteCurrentTag.
 	self owner application removeItem: tag.
 	descriptionPage hide.
 	self refreshTagList
 ]
 
-{ #category : #initialization }
-MiTagManagementPage >> initialize [
+{ #category : #accessing }
+MiTagManagementPage >> descriptionPage [
 
-	super initialize
+	^ descriptionPage
+]
+
+{ #category : #action }
+MiTagManagementPage >> editCurrentTag [
+
+	self owner openTagEditionForm
 ]
 
 { #category : #initialization }
@@ -41,7 +50,7 @@ MiTagManagementPage >> initializeLayout [
 	self layout: (SpBoxLayout newLeftToRight
 			 spacing: 4;
 			 add: (SpBoxLayout newTopToBottom
-					  spacing: 3;
+					  add: categoryManagement expand: false;
 					  add: (SpBoxLayout newLeftToRight
 							   add: 'Tags' asPresenter;
 							   hAlignCenter;
@@ -58,7 +67,8 @@ MiTagManagementPage >> initializeLayout [
 { #category : #initialization }
 MiTagManagementPage >> initializePresenters [
 
-	descriptionPage := MiTagExtentPage owner: self.
+	categoryManagement := self instantiate: MiTagCategoriesPresenter on: tagModel.
+	descriptionPage := self instantiate: MiTagExtentPage on: tagModel.
 	descriptionPage hide.
 	tagList := self instantiate: MiTagListPresenter.
 	tagList display: [ :aTag | aTag name ].
@@ -73,22 +83,33 @@ MiTagManagementPage >> initializePresenters [
 { #category : #refreshing }
 MiTagManagementPage >> refresh [
 
+	self refreshDescriptionPage.
 	self refreshTagList.
+	self refreshCategoryList.
 	descriptionPage refreshEntitiesList.
-	descriptionPage refreshTaggedEntitiesList
+	descriptionPage refreshTaggedEntitiesList.
 ]
 
 { #category : #refreshing }
 MiTagManagementPage >> refreshCategoryList [
 
-	categoryManagement refreshList: self tagModel allCategories
+	categoryManagement refreshCategoryList
+]
+
+{ #category : #refreshing }
+MiTagManagementPage >> refreshDescriptionPage [
+
+	descriptionPage refresh
 ]
 
 { #category : #refreshing }
 MiTagManagementPage >> refreshTagList [
 
-	tagList items:
-		(self tagModel allTags sort: [ :t1 :t2 | t1 name <= t2 name ])
+	| sortingBlock |
+	sortingBlock := [ :t1 :t2 | t1 name <= t2 name ].
+	tagList items: (tagModel currentCategory
+			 ifNil: [ self tagModel allTags sort: sortingBlock ]
+			 ifNotNil: [ :currentTag | currentTag markedTags asMooseGroup ])
 ]
 
 { #category : #initialization }
@@ -102,6 +123,12 @@ MiTagManagementPage >> removeCategory [
 
 	self tagModel deleteCurrentCategory.
 	self refreshCategoryList
+]
+
+{ #category : #initialization }
+MiTagManagementPage >> setModelBeforeInitialization: aTagModel [
+
+	tagModel := aTagModel
 ]
 
 { #category : #action }
@@ -118,5 +145,5 @@ MiTagManagementPage >> setTagTo: aTag [
 { #category : #accessing }
 MiTagManagementPage >> tagModel [
 
-	^ self owner tagModel
+	^ tagModel
 ]

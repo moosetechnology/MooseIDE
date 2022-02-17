@@ -1,23 +1,6 @@
 (updated on oct. 13, 2021)
 
-# QueryBrowser
-
-## Result list
-
-bottom list is currently sorted by "kind of entities" and is "read-only"
-
-- we want also a hierarchical tree of entities:
-```
-  > package1
-    > class11
-	> class12
-	  method121
-	  method122
-  > package2
-```
-(note: with workspace browser, this part could be detached from the QueryBrowser to become a simple EntityListPresenter ...)
-
-# Durden workspace
+# Moose workspace
 
 (Santi's stuff)
 It allows to group several tools in one window.
@@ -51,6 +34,8 @@ This tool can ask the QueryBrowser, what are the queries available and allow to 
 
 Possibility to define tags from properties
 
+Add "virtual tags"
+
 # Hierarchical Map with properties
 
 Displays incoming entities in a hierarchicalView https://github.com/ObjectProfile/HierarchicalVisualizations
@@ -62,17 +47,6 @@ For each displayed entity, if it matches one property query, will give the color
 If an entity match several queries, 2 options:
 - give a specific color (black, gray, red)
 - choose the first one
-
-# Distribution Map
-
-We want a distribution map browser
-
-Probably based on the prototype in https://github.com/NicolasAnquetil/HierarchicalVisualizations, not on the telescope one
-
-Will work somehow like the **Hierarchical Map with properties** for the properties, but the Distribution map wants exaclty 2 levels of entities: Containers and members
-So we need to force this:
-- entities coming from the bus should be of that form => user responsible for selectyng the right entities with the proper query
-- entities coming from the bu are the containers and the tool accept one query that will produce members for each of these incoming container
 
 # Favorites Browser
 
@@ -91,18 +65,9 @@ Possibly accept colored properties (with only 2 metrics with width and height)
 
 Starting at a given level, containement is not shown as a tree, but as a HierarchicalVisualization
 
-# Double Dispatch buses
-
-When a tool wants to send an entity on a bus, it should ask this entity what bus to use.
-Their will be buses specialiazed for all types of entities (including a generic bus "specialized" for MooseEntity)
-
-And when a tool is expecting entities of a special type, it should ask the class of this entity what bus can carry it and then ask the application for available buses of this type.
-
-We will still be able to have several buses for the same type (see issue: (https://github.com/moosetechnology/MooseIDE/issues/320)[https://github.com/moosetechnology/MooseIDE/issues/320]
-
 # Propagation strategy buses
 
-We could have at least 3 kind of buses:
+We could have different kinds of buses:
 
 - push bus: when data is written on the bus, it immediately transmits it to all tools attached to it
 - delayed bus: when data is written on the bus, it stores it and only transmits when there is an explicit "flush" from the producer (allow to work with the "Propagate" button of the tools)

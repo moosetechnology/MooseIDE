@@ -31,5 +31,5 @@ MiImportMSECommand class >> defaultName [
 { #category : #accessing }
 MiImportMSECommand class >> importForm [
 
-	^ MooseImportFromMSEForm
+	^ MiImportModelFromMSEDialog
 ]

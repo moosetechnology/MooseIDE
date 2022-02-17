@@ -3,9 +3,11 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'currentTag',
+		'currentCategory',
 		'mooseModel',
 		'tagBrowser',
-		'entities'
+		'entities',
+		'dynamicTags'
 	],
 	#category : #'MooseIDE-Tagging-Browser'
 }
@@ -13,6 +15,7 @@ Class {
 { #category : #accessing }
 MiTagBrowserModel >> addCategory: aName [
 
+	self mooseModel createTagCategoryNamed: aName
 ]
 
 { #category : #accessing }
@@ -23,24 +26,30 @@ MiTagBrowserModel >> addTag: aName [
 
 { #category : #accessing }
 MiTagBrowserModel >> allCategories [
-	^#( '*Not implemented yet*' )
+
+	^ self mooseModel
+		  ifNil: [ #(  ) ]
+		  ifNotNil: [ :model | model allTagCategories ]
 ]
 
 { #category : #accessing }
 MiTagBrowserModel >> allTags [
 
-	^self mooseModel
-		ifNil: [ #() ]
-		ifNotNil: [ :model | model allTags ]
+	^ self mooseModel
+		  ifNil: [ #(  ) ]
+		  ifNotNil: [ :model | model allTags ]
 ]
 
 { #category : #accessing }
 MiTagBrowserModel >> currentCategory [
-	^ nil
+
+	^ currentCategory
 ]
 
 { #category : #accessing }
-MiTagBrowserModel >> currentCategory: anObject [
+MiTagBrowserModel >> currentCategory: aCategory [
+
+	currentCategory := aCategory
 
 ]
 
@@ -53,7 +62,7 @@ MiTagBrowserModel >> currentTag [
 { #category : #accessing }
 MiTagBrowserModel >> currentTag: anObject [
 	currentTag := anObject.
-	"tagBrowser newTagSelected"
+	tagBrowser newTagSelected
 ]
 
 { #category : #accessing }
@@ -64,9 +73,10 @@ MiTagBrowserModel >> deleteCurrentCategory [
 { #category : #accessing }
 MiTagBrowserModel >> deleteCurrentTag [
 
-	|tag|
+	| tag |
 	tag := currentTag.
-	currentTag remove.
+	tag remove.
+	tag categories ifNotEmpty: [ tag categories first removeTag: tag ].
 	self currentTag: nil.
 	^ tag
 ]
@@ -88,6 +98,14 @@ MiTagBrowserModel >> entitiesTaggedWithCurrentTag [
 
 	self currentTag ifNil: [ ^ #(  ) ].
 	^ self mooseModel entitiesTaggedWith: self currentTag
+]
+
+{ #category : #accessing }
+MiTagBrowserModel >> getTagNamed: tagName [
+
+	^ [ self mooseModel findTagNamed: tagName ]
+		  on: NotFound
+		  do: [ nil ]
 ]
 
 { #category : #accessing }
@@ -151,7 +169,10 @@ MiTagBrowserModel >> iconForTag: aTag [
 { #category : #accessing }
 MiTagBrowserModel >> mooseModel [
 
-	^ mooseModel ifNil: [ mooseModel := self entities anyOne mooseModel ]
+	^ mooseModel ifNil: [ 
+		  self entities
+			  ifEmpty: [ nil ]
+			  ifNotEmpty: [ mooseModel := self entities anyOne mooseModel ] ]
 ]
 
 { #category : #accessing }
