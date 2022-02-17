@@ -11,5 +11,6 @@ MiSourceTextExternalEditorVSCodium class >> editorName [
 
 { #category : #'file support' }
 MiSourceTextExternalEditorVSCodium >> openFile: aFileReference [
-	LibC uniqueInstance runCommand: 'codium ' , aFileReference fullName 
+
+	MiExternalEditorOpenner open: aFileReference fullName using: 'codium'
 ]
