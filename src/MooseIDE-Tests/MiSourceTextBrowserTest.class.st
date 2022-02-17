@@ -77,7 +77,7 @@ MiSourceTextBrowserTest >> testHighlightChildNotIndexedAnchor [
 		
 	browser followEntity: entity.
 
-	self assert: browser sourceText text unembellished.
+	self assert: browser sourceText unembellished.
 ]
 
 { #category : #'tests - highlighting' }
@@ -96,10 +96,10 @@ MiSourceTextBrowserTest >> testHighlightChildWithIndexedFileAnchor [
 		
 	browser followEntity: entity.
 
-	self deny: browser sourceText text unembellished.
-	self assert: (browser sourceText text attributesAt: 20) isEmpty.
-	self deny: (browser sourceText text attributesAt: 30) isEmpty.
-	self assert: ((browser sourceText text attributesAt: 30) anySatisfy: [ :att | att mayActOnEvent: MouseEvent new ])
+	self deny: browser sourceText unembellished.
+	self assert: (browser sourceText attributesAt: 20) isEmpty.
+	self deny: (browser sourceText attributesAt: 30) isEmpty.
+	self assert: ((browser sourceText attributesAt: 30) anySatisfy: [ :att | att mayActOnEvent: MouseEvent new ])
 ]
 
 { #category : #'tests - highlighting' }
@@ -117,7 +117,7 @@ MiSourceTextBrowserTest >> testHighlightChildWithNoAnchor [
 		
 	browser followEntity: entity.
 
-	self assert: browser sourceText text unembellished.
+	self assert: browser sourceText unembellished.
 ]
 
 { #category : #'tests - highlighting' }
@@ -131,9 +131,9 @@ MiSourceTextBrowserTest >> testHighlightNoAnchor [
 		
 	browser followEntity: entity.
 
-	self assert: browser sourceText text equals: 'There is no source code to show for aClass'.
-	self deny: browser sourceText text unembellished.
-	self deny: (browser sourceText text attributesAt: 1) isEmpty.
+	self assert: browser sourceText equals: 'There is no source code to show for aClass'.
+	self deny: browser sourceText unembellished.
+	self deny: (browser sourceText attributesAt: 1) isEmpty.
 ]
 
 { #category : #'tests - highlighting' }
@@ -148,7 +148,7 @@ MiSourceTextBrowserTest >> testHighlightNoChild [
 		
 	browser followEntity: entity.
 	
-	self assert: browser sourceText text unembellished 
+	self assert: browser sourceText unembellished 
 ]
 
 { #category : #tests }
@@ -167,7 +167,7 @@ MiSourceTextBrowserTest >> testMiSelectedItem [
 MiSourceTextBrowserTest >> testShowNoSourceCodeMessage [
 
 	browser receiveEntity: (FamixStClass named: 'TestClass').
-	self assert: browser sourceText text equals: 'There is no source code to show for TestClass'
+	self assert: browser sourceText equals: 'There is no source code to show for TestClass'
 
 ]
 
