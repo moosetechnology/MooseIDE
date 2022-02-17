@@ -1,3 +1,7 @@
+"
+A special subclass for entities without sourceCode.
+
+"
 Class {
 	#name : #MiSourceTextVoidReference,
 	#superclass : #MiSourceTextReference,
@@ -7,10 +11,9 @@ Class {
 { #category : #api }
 MiSourceTextVoidReference >> gatherHighlights [
 	self addHighlight:
-		(MiSourceTextRawHighlight new
+		(MiSourceTextErrorHighlight new
 			referenceSource: self;
 			highlightedEntity: nil;
-			attribute: TextColor red ;
 			interval: (Interval from: 1 to: 35) ;
 			yourself)
 ]
