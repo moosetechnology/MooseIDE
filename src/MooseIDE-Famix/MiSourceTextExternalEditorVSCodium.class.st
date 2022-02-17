@@ -1,3 +1,6 @@
+"
+External source text editor using the VSCodium editor
+"
 Class {
 	#name : #MiSourceTextExternalEditorVSCodium,
 	#superclass : #MiSourceTextFileExternalEditor,

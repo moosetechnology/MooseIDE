@@ -1,3 +1,7 @@
+"
+Abstract class for all external source text editors working on file (for entities stored in files like Java classes)
+
+"
 Class {
 	#name : #MiSourceTextFileExternalEditor,
 	#superclass : #MiSourceTextExternalEditor,

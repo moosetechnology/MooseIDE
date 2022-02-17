@@ -114,6 +114,11 @@ MiSourceTextBrowser >> setModelBeforeInitialization: aModel [
 	aModel browser: self
 ]
 
+{ #category : #accessing }
+MiSourceTextBrowser >> sourceText [
+	^model sourceText
+]
+
 { #category : #'private - testing' }
 MiSourceTextBrowser >> toolBarExternalEditor [
 	"only for testing"

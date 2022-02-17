@@ -1,7 +1,9 @@
 "
 I am a model for the SourceTextBrowser
 
-I take care of getting the source code for an entity and formatting it or setting hyperlinks
+I take care of getting the source code for an entity and ""formatting"" it (actually finding where to apply formats: the highlights)
+
+I also keep the displayedEntity and the selectedEntity (in the source code) if any
 "
 Class {
 	#name : #MiSourceTextBrowserModel,

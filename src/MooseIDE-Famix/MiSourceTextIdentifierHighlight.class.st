@@ -1,3 +1,7 @@
+"
+Concrete class for highlighting an identifier in the text
+
+"
 Class {
 	#name : #MiSourceTextIdentifierHighlight,
 	#superclass : #MiSourceTextHighlight,

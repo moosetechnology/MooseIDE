@@ -1,3 +1,7 @@
+"
+This class could possibly be merged with MiSourceTextBrowserModel
+It contains the entity to display, its source code, and it can compute the list of highlights to apply on the text
+"
 Class {
 	#name : #MiSourceTextReference,
 	#superclass : #Object,

@@ -1,3 +1,6 @@
+"
+External source text editor using the Emacs editor
+"
 Class {
 	#name : #MiSourceTextExternalEditorEmacs,
 	#superclass : #MiSourceTextFileExternalEditor,

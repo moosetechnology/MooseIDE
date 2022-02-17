@@ -1,3 +1,14 @@
+"
+Abstract class for all highlights that we may apply on a portion of text.
+
+These highlights are ""conceptual"" (e.g. ErrorHighlight)
+How these highlights are displayed depends on the MiSourceTextXXXRenderer
+
+An highlight applies:
+- on a #referenceSource text
+- from a #highlightesEntity
+- on an #interval (from/to) of this text
+"
 Class {
 	#name : #MiSourceTextHighlight,
 	#superclass : #Object,
