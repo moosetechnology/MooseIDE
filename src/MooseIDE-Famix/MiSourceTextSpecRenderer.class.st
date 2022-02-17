@@ -1,15 +1,33 @@
+"
+A renderer of highlighted source text using Spec SpTextPresenter.
+Ideally it would be subclass of a MiSourceTextAbstractRenderer, but it also need to inherit from SpTextPresenter
+
+A renderer has a MiSourceTextBrowserModel and a browser.
+It can #renderText by applying the highlights of its #model
+"
 Class {
 	#name : #MiSourceTextSpecRenderer,
 	#superclass : #SpTextPresenter,
 	#instVars : [
-		'model'
+		'model',
+		'formatingText'
 	],
 	#category : #'MooseIDE-Famix-SourceText'
 }
 
 { #category : #formatting }
+MiSourceTextSpecRenderer >> applyErrorHighlight: aHighlight [
+	formatingText 
+		addAttribute: TextColor red
+		from: aHighlight from
+		to: aHighlight to ;
+		yourself
+
+]
+
+{ #category : #formatting }
 MiSourceTextSpecRenderer >> applyIdentifierHighlight: aHighlight [
-	self text 
+	formatingText 
 		addAttribute: TextEmphasis underlined
 		from: aHighlight from
 		to: aHighlight to ;
@@ -31,7 +49,7 @@ MiSourceTextSpecRenderer >> applyIdentifierHighlight: aHighlight [
 
 { #category : #formatting }
 MiSourceTextSpecRenderer >> applyTagHighlight: aHighlight [
-	self text
+	formatingText
 		addAttribute: (TextBackgroundColor color: (aHighlight highlightedEntity color))
 		from: aHighlight from
 		to: aHighlight to
@@ -60,11 +78,9 @@ MiSourceTextSpecRenderer >> model: aSourceTextModel [
 
 { #category : #rendering }
 MiSourceTextSpecRenderer >> renderText [
-	| tmp |
-	self text: model sourceText.
-	tmp := self text.
+	formatingText := model sourceText.
 	model highlights do: [ :hlght | hlght applyTo: self ].
-	self text: tmp
+	self text: formatingText
 
 ]
 
