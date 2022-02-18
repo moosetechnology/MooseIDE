@@ -17,26 +17,32 @@ Class {
 
 { #category : #formatting }
 MiSourceTextRoassalRenderer >> applyErrorHighlight: aHighlight [
+	roassalTextRenderer
+		addAttribute: (RSForgroundColorEmphasisAttribute new)
+		from: aHighlight from
+		to: aHighlight to
 
 ]
 
 { #category : #formatting }
 MiSourceTextRoassalRenderer >> applyIdentifierHighlight: aHighlight [
-	^RSLinkEmphasisAttribute new
-		from: aHighlight from ;
-		to: aHighlight to ;
-		on: RSMouseClick do: [ :event | self browser selected: aHighlight highlightedEntity ] ;
-		yourself
+	roassalTextRenderer
+		addAttribute: (RSLinkEmphasisAttribute new
+			on: RSMouseClick do: [ :event | model selected: aHighlight highlightedEntity ])
+		from: aHighlight from
+		to: aHighlight to
+
 ]
 
 { #category : #formatting }
 MiSourceTextRoassalRenderer >> applyTagHighlight: aHighlight [
-	^RSTagEmphasisAttribute new
-		from: aHighlight from ;
-		to: aHighlight to ;
-		color: aHighlight highlightedEntity color ; 
-		on: RSMouseClick do: [ :event | self browser selected: aHighlight highlightedEntity ] ;
-		yourself
+	roassalTextRenderer
+		addAttribute: (RSTagEmphasisAttribute new
+			color: aHighlight highlightedEntity color ; 
+			on: RSMouseClick do: [ :event | model selected: aHighlight highlightedEntity])
+		from: aHighlight from
+		to: aHighlight to
+
 ]
 
 { #category : #accessing }

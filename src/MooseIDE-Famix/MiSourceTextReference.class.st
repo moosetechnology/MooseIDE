@@ -100,5 +100,5 @@ MiSourceTextReference >> referenceText [
 
 { #category : #accessing }
 MiSourceTextReference >> referenceText: anObject [
-	referenceText := anObject asText
+	referenceText := anObject
 ]

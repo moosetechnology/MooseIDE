@@ -37,7 +37,7 @@ MiSourceTextSpecRenderer >> applyIdentifierHighlight: aHighlight [
 		to: aHighlight to ;
 
 		addAttribute:
-			(TextDoIt new actOnClickBlock: [ self browser selected: aHighlight highlightedEntity ])
+			(TextDoIt new actOnClickBlock: [ model selected: aHighlight highlightedEntity ])
 		from: aHighlight from
 		to: aHighlight to ;
 
@@ -78,7 +78,7 @@ MiSourceTextSpecRenderer >> model: aSourceTextModel [
 
 { #category : #rendering }
 MiSourceTextSpecRenderer >> renderText [
-	formatingText := model sourceText.
+	formatingText := model sourceText asText.
 	model highlights do: [ :hlght | hlght applyTo: self ].
 	self text: formatingText
 
