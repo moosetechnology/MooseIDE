@@ -1,5 +1,6 @@
 "
-todo
+Presenter created to edit the children block, outer boxes sort block, and inner boxes sort block.
+This interacts directly with MiCoUsageMapSettings
 "
 Class {
 	#name : #MiCoUsageMapSettingsPresenter,

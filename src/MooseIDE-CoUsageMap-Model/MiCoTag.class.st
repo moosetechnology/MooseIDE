@@ -1,5 +1,7 @@
 "
-TODO
+A tag is a representation of a new idea, can be used by MiCoAttributes and MiCoMethods
+Users can define a new class of tags, but they will rewrite addReference: and removeReference:
+
 "
 Class {
 	#name : #MiCoTag,

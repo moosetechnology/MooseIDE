@@ -1,5 +1,5 @@
 "
-TODO
+I am a singleton, I store global values for settings used by CoUsageMapBuilder
 "
 Class {
 	#name : #MiCoUsageMapSettings,

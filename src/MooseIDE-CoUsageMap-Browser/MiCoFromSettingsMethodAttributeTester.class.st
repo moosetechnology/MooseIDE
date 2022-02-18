@@ -1,5 +1,6 @@
 "
-TODO
+I use the block text from MiCoUsageMapSettingsPresenter, stored in MiCoUsageMapSettings
+If there is an error with the user input, I will return an empy list
 "
 Class {
 	#name : #MiCoFromSettingsMethodAttributeTester,

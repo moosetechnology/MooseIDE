@@ -1,5 +1,5 @@
 "
-TODO
+If there is only one box in the container, container will take the inner box tag
 "
 Class {
 	#name : #MiCoOneGroupMarkStrategy,

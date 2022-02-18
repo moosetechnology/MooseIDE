@@ -1,5 +1,15 @@
 "
-TODO
+Main builder of packages with *CoUsageMap*.
+
+I create a Roassal canvas with boxes,
+Outer boxes are container, or representation of methods from a class
+Inner boxes are content, or representation of attributes from a class used from a method.
+
+Note: an attribute can be used by different methods.
+
+Width of each attbute is the number of uses of that attribute in that container or method.
+
+Check MiCoUsageMapExamples or tests to get more info
 "
 Class {
 	#name : #MiCoUsageMapBuilder,

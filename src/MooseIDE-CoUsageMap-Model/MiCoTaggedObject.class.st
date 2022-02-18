@@ -1,5 +1,7 @@
 "
-TODO
+Base of Attribute and Methods of one clase, these objects recives tag:
+But also this objects are a wrapper for the real object from users domain.
+Then use rawObject to access to the real object model
 "
 Class {
 	#name : #MiCoTaggedObject,

@@ -1,5 +1,5 @@
 "
-TODO
+Custom CoUsageMap adapted to work with moose entities and browsers 
 "
 Class {
 	#name : #MiCoUsageMapMooseBuilder,

@@ -1,5 +1,5 @@
 "
-TODO
+Utility class to customize a composite shape from roassal
 "
 Class {
 	#name : #MiCoMethodShape,

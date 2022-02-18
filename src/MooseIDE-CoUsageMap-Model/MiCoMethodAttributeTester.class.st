@@ -1,5 +1,5 @@
 "
-TODO
+Used to obtain a list of inner models and their number of uses on the current method.
 "
 Class {
 	#name : #MiCoMethodAttributeTester,

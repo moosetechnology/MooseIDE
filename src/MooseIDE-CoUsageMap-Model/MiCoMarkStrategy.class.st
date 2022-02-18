@@ -1,5 +1,6 @@
 "
-TODO
+Abstract class used by MiCoMarkManager.
+Users should create a new subclass in order to have new strats for the selection of the tag for a method
 "
 Class {
 	#name : #MiCoMarkStrategy,

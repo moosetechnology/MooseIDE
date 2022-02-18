@@ -1,5 +1,6 @@
 "
-TODO
+This strategy uses the tag of the bigger group, categorized by tag.
+Also uses a threshold from MiCoUsageMapSettings
 "
 Class {
 	#name : #MiCo75PercentageMarkStrategy,

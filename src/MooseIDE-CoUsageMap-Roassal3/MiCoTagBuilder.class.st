@@ -1,5 +1,5 @@
 "
-TODO
+This builder from roassal creates shapes that represent tags
 "
 Class {
 	#name : #MiCoTagBuilder,
