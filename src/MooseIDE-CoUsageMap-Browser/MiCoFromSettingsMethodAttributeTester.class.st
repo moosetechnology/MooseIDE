@@ -1,11 +1,14 @@
+"
+TODO
+"
 Class {
-	#name : #MiCoMooseMethodAttributeTester,
+	#name : #MiCoFromSettingsMethodAttributeTester,
 	#superclass : #MiCoMethodAttributeTester,
-	#category : #'MooseIDE-CoUsageMap-Browser'
+	#category : #'MooseIDE-CoUsageMap-Model'
 }
 
-{ #category : #public }
-MiCoMooseMethodAttributeTester >> numberOfUsesOf: aMiCoAttribute on: aMiCoMethod [
+{ #category : #'as yet unclassified' }
+MiCoFromSettingsMethodAttributeTester >> numberOfUsesOf: aMiCoAttribute on: aMiCoMethod [
 	| attribute method |
 	attribute := aMiCoAttribute rawObject.
 	method := aMiCoMethod rawObject.

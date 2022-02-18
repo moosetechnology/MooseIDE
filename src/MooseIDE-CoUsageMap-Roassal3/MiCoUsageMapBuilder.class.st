@@ -7,14 +7,13 @@ Class {
 	#instVars : [
 		'godClass',
 		'methods',
-		'attributes',
 		'miMethods',
 		'miAttributes',
 		'methodAttributeTester',
 		'markManager',
+		'legendTagBuilder',
 		'innerBox',
-		'containerBox',
-		'legendTagBuilder'
+		'containerBox'
 	],
 	#category : #'MooseIDE-CoUsageMap-Roassal3-Core'
 }
@@ -39,12 +38,12 @@ MiCoUsageMapBuilder >> attributeShapeFor: att method: met [
 		yourself.
 ]
 
-{ #category : #accessing }
+{ #category : #'as yet unclassified' }
 MiCoUsageMapBuilder >> attributes [
 	^ attributes
 ]
 
-{ #category : #accessing }
+{ #category : #'as yet unclassified' }
 MiCoUsageMapBuilder >> attributes: aCollection [
 	attributes := aCollection
 ]
@@ -154,7 +153,7 @@ MiCoUsageMapBuilder >> initialize [
 	self initializeShapes.
 ]
 
-{ #category : #initialization }
+{ #category : #'as yet unclassified' }
 MiCoUsageMapBuilder >> initializeAttributes [
 	miAttributes := self attributes collect: [ :att |
 		MiCoAttribute new

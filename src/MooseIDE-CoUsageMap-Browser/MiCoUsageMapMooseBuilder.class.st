@@ -27,7 +27,7 @@ MiCoUsageMapMooseBuilder >> defaultTester [
 	^ MiCoMooseMethodAttributeTester new
 ]
 
-{ #category : #initialization }
+{ #category : #'as yet unclassified' }
 MiCoUsageMapMooseBuilder >> initializeAttributes [
 	| tags |
 	miAttributes := attributes collect: [ :att |
@@ -40,7 +40,7 @@ MiCoUsageMapMooseBuilder >> initializeAttributes [
 			yourself ] as: OrderedCollection
 ]
 
-{ #category : #initialization }
+{ #category : #'as yet unclassified' }
 MiCoUsageMapMooseBuilder >> initializeMethods [
 	| tags |
 	miMethods := methods collect: [ :met |

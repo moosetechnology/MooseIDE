@@ -7,7 +7,7 @@ Class {
 	#category : #'MooseIDE-CoUsageMap-Model'
 }
 
-{ #category : #public }
+{ #category : #'as yet unclassified' }
 MiCoPharoMethodAttributeTester >> numberOfUsesOf: aMiCoAttribute on: aMiCoMethod [
 	| name method result |
 	name := aMiCoAttribute name.

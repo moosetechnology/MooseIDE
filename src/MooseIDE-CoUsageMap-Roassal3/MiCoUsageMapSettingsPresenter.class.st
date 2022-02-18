@@ -3,7 +3,7 @@ todo
 "
 Class {
 	#name : #MiCoUsageMapSettingsPresenter,
-	#superclass : #MiPresenter,
+	#superclass : #SpPresenter,
 	#instVars : [
 		'childrenTextInput',
 		'sortOuterBoxTextInput',

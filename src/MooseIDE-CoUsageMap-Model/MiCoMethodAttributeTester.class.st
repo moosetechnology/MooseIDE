@@ -7,7 +7,7 @@ Class {
 	#category : #'MooseIDE-CoUsageMap-Model'
 }
 
-{ #category : #public }
+{ #category : #'as yet unclassified' }
 MiCoMethodAttributeTester >> numberOfUsesOf: aMiCoAttribute on: aMiCoMethod [
 	"returns a number"
 	^ self subclassResponsibility
