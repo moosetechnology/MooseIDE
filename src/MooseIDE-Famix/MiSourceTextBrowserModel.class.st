@@ -132,17 +132,7 @@ MiSourceTextBrowserModel >> noSourceCodeFor: anEntity [
 	displayedText := ('There is no source code to show for {1}'
 		format: { anEntity name }).
 
-	self addErrorHighlightInterval: (Interval from: 1 to: 35)
-]
-
-{ #category : #formatting }
-MiSourceTextBrowserModel >> noSourceCodeMessageFor: anEntity [
-	| text |
-	text := ('There is no source code to show for {1}'
-		format: { anEntity name })
-		asText.
-	text addAttribute: (TextColor red) from: 1 to: 35.
-	^text
+	self addErrorHighlightInterval: (Interval from: 37 to: displayedText size)
 ]
 
 { #category : #accessing }

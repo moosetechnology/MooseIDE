@@ -135,7 +135,7 @@ MiSourceTextBrowserTest >> testHighlightNoAnchor [
 	displayedText := browser textRenderer formatedText.
 	self assert: displayedText equals: 'There is no source code to show for aClass'.
 	self deny: displayedText unembellished.
-	self deny: (displayedText attributesAt: 1) isEmpty.
+	self deny: (displayedText attributesAt: (displayedText size)) isEmpty.
 ]
 
 { #category : #'tests - highlighting' }
