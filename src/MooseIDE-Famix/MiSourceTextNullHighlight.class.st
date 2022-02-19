@@ -17,11 +17,6 @@ MiSourceTextNullHighlight >> from [
 	^0
 ]
 
-{ #category : #formatting }
-MiSourceTextNullHighlight >> rawText [
-	^''
-]
-
 { #category : #'instance creation' }
 MiSourceTextNullHighlight >> to [
 	^0

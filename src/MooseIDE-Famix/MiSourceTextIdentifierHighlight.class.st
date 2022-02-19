@@ -14,10 +14,10 @@ MiSourceTextIdentifierHighlight >> applyTo: aRenderer [
 ]
 
 { #category : #api }
-MiSourceTextIdentifierHighlight >> setInterval: anInterval [
+MiSourceTextIdentifierHighlight >> setInterval: anInterval in: aString [
 	"sets the interval to the 1st line containing the entity identifier"
 	| myStart |
-	myStart := self referenceText
+	myStart := aString
 		findString: self highlightedEntity name
 		startingAt: anInterval first.
 .

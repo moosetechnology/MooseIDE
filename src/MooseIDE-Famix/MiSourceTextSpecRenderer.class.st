@@ -10,14 +10,14 @@ Class {
 	#superclass : #SpTextPresenter,
 	#instVars : [
 		'model',
-		'formatingText'
+		'formatedText'
 	],
 	#category : #'MooseIDE-Famix-SourceText'
 }
 
 { #category : #formatting }
 MiSourceTextSpecRenderer >> applyErrorHighlight: aHighlight [
-	formatingText 
+	formatedText 
 		addAttribute: TextColor red
 		from: aHighlight from
 		to: aHighlight to ;
@@ -27,7 +27,7 @@ MiSourceTextSpecRenderer >> applyErrorHighlight: aHighlight [
 
 { #category : #formatting }
 MiSourceTextSpecRenderer >> applyIdentifierHighlight: aHighlight [
-	formatingText 
+	formatedText 
 		addAttribute: TextEmphasis underlined
 		from: aHighlight from
 		to: aHighlight to ;
@@ -37,7 +37,7 @@ MiSourceTextSpecRenderer >> applyIdentifierHighlight: aHighlight [
 		to: aHighlight to ;
 
 		addAttribute:
-			(TextDoIt new actOnClickBlock: [ model selected: aHighlight highlightedEntity ])
+			(TextDoIt new actOnClickBlock: [ model selectedEntity: aHighlight highlightedEntity ])
 		from: aHighlight from
 		to: aHighlight to ;
 
@@ -49,7 +49,7 @@ MiSourceTextSpecRenderer >> applyIdentifierHighlight: aHighlight [
 
 { #category : #formatting }
 MiSourceTextSpecRenderer >> applyTagHighlight: aHighlight [
-	formatingText
+	formatedText
 		addAttribute: (TextBackgroundColor color: (aHighlight highlightedEntity color))
 		from: aHighlight from
 		to: aHighlight to
@@ -58,6 +58,11 @@ MiSourceTextSpecRenderer >> applyTagHighlight: aHighlight [
 { #category : #accessing }
 MiSourceTextSpecRenderer >> browser [
 	^self model browser
+]
+
+{ #category : #'private - testing' }
+MiSourceTextSpecRenderer >> formatedText [
+	^formatedText 
 ]
 
 { #category : #initialization }
@@ -78,9 +83,9 @@ MiSourceTextSpecRenderer >> model: aSourceTextModel [
 
 { #category : #rendering }
 MiSourceTextSpecRenderer >> renderText [
-	formatingText := model sourceText asText.
+	formatedText := model displayedText asText.
 	model highlights do: [ :hlght | hlght applyTo: self ].
-	self text: formatingText
+	self text: formatedText
 
 ]
 

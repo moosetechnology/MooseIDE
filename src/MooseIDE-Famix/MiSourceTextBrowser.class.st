@@ -68,7 +68,7 @@ MiSourceTextBrowser >> canFollowEntity: anObject [
 
 { #category : #actions }
 MiSourceTextBrowser >> editExternally: anExternalTool [
-	anExternalTool new open: model selected
+	anExternalTool new open: model selectedEntity
 ]
 
 { #category : #'private - testing' }
@@ -105,7 +105,7 @@ MiSourceTextBrowser >> initializePresenters [
 { #category : #accessing }
 MiSourceTextBrowser >> miSelectedItem [
 
-	^ model selected
+	^ model selectedEntity
 ]
 
 { #category : #initialization }
@@ -114,9 +114,9 @@ MiSourceTextBrowser >> setModelBeforeInitialization: aModel [
 	aModel browser: self
 ]
 
-{ #category : #accessing }
-MiSourceTextBrowser >> sourceText [
-	^model sourceText
+{ #category : #'private - testing' }
+MiSourceTextBrowser >> textRenderer [
+	^textRenderer
 ]
 
 { #category : #'private - testing' }

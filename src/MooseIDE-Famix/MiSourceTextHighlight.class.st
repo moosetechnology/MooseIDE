@@ -13,7 +13,6 @@ Class {
 	#name : #MiSourceTextHighlight,
 	#superclass : #Object,
 	#instVars : [
-		'referenceSource',
 		'interval',
 		'highlightedEntity'
 	],
@@ -53,34 +52,6 @@ MiSourceTextHighlight >> interval [
 MiSourceTextHighlight >> interval: anObject [
 
 	interval := anObject
-]
-
-{ #category : #formatting }
-MiSourceTextHighlight >> rawText [
-	^self referenceText copyFrom: self from to: self to
-]
-
-{ #category : #accessing }
-MiSourceTextHighlight >> referenceEntity [
-	^self referenceSource referenceEntity
-]
-
-{ #category : #accessing }
-MiSourceTextHighlight >> referenceSource [
-
-	^ referenceSource
-]
-
-{ #category : #accessing }
-MiSourceTextHighlight >> referenceSource: anObject [
-
-	referenceSource := anObject.
-	referenceSource addHighlight: self
-]
-
-{ #category : #accessing }
-MiSourceTextHighlight >> referenceText [
-	^self referenceSource referenceText
 ]
 
 { #category : #accessing }

@@ -28,7 +28,7 @@ MiSourceTextRoassalRenderer >> applyErrorHighlight: aHighlight [
 MiSourceTextRoassalRenderer >> applyIdentifierHighlight: aHighlight [
 	roassalTextRenderer
 		addAttribute: (RSLinkEmphasisAttribute new
-			on: RSMouseClick do: [ :event | model selected: aHighlight highlightedEntity ])
+			on: RSMouseClick do: [ :event | model selectedEntity: aHighlight highlightedEntity ])
 		from: aHighlight from
 		to: aHighlight to
 
@@ -39,7 +39,7 @@ MiSourceTextRoassalRenderer >> applyTagHighlight: aHighlight [
 	roassalTextRenderer
 		addAttribute: (RSTagEmphasisAttribute new
 			color: aHighlight highlightedEntity color ; 
-			on: RSMouseClick do: [ :event | model selected: aHighlight highlightedEntity])
+			on: RSMouseClick do: [ :event | model selectedEntity: aHighlight highlightedEntity])
 		from: aHighlight from
 		to: aHighlight to
 
@@ -65,7 +65,7 @@ MiSourceTextRoassalRenderer >> initialize [
 
 { #category : #highlighting }
 MiSourceTextRoassalRenderer >> renderText [
-	roassalTextRenderer text: model sourceText.
+	roassalTextRenderer text: model displayedText.
 	model highlights do: [ :hlght | hlght applyTo: self ].
 	roassalTextRenderer renderIn: self canvas
 ]
