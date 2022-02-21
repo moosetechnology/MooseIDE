@@ -2,19 +2,19 @@
 Dialog used to import JSON models
 "
 Class {
-	#name : #MooseImportFromJSONForm,
-	#superclass : #MooseImportFromMSEForm,
+	#name : #MiImportModelFromJSONDialog,
+	#superclass : #MiImportModelFromMSEDialog,
 	#category : #'MooseIDE-Meta-Import'
 }
 
 { #category : #specs }
-MooseImportFromJSONForm class >> title [
+MiImportModelFromJSONDialog class >> title [
 
 	^ 'Import model from JSON file'
 ]
 
 { #category : #action }
-MooseImportFromJSONForm >> privateImportModel [
+MiImportModelFromJSONDialog >> privateImportModel [
 
 	^ mooseModelDroplist selectedItem new importFromJSON
 ]

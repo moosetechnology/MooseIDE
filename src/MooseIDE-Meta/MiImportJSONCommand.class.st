@@ -31,5 +31,5 @@ MiImportJSONCommand class >> defaultName [
 { #category : #accessing }
 MiImportJSONCommand class >> importForm [
 
-	^ MooseImportFromJSONForm
+	^ MiImportModelFromJSONDialog
 ]
