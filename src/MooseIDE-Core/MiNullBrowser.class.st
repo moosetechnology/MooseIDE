@@ -33,13 +33,13 @@ MiNullBrowser >> canFollow [
 ]
 
 { #category : #testing }
-MiNullBrowser >> canPropagate [
+MiNullBrowser >> canFollowEntity: anObject [
 
 	^ false
 ]
 
 { #category : #testing }
-MiNullBrowser >> canReceiveEntity: anObject [
+MiNullBrowser >> canPropagate [
 
 	^ false
 ]

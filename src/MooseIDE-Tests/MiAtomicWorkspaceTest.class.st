@@ -80,9 +80,9 @@ MiAtomicWorkspaceTest >> testDelegatesCanPropagate [
 { #category : #tests }
 MiAtomicWorkspaceTest >> testDelegatesCanReceiveEntity [
 
-	self deny: (browser canReceiveEntity: nil).
+	self deny: (browser canFollowEntity: nil).
 	mockBrowser canReceive: true.
-	self assert: (browser canReceiveEntity: nil).
+	self assert: (browser canFollowEntity: nil).
 ]
 
 { #category : #tests }

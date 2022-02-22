@@ -101,6 +101,14 @@ MiAbstractBrowser2 >> canFollow [
 ]
 
 { #category : #testing }
+MiAbstractBrowser2 >> canFollowEntity: anObject [
+
+	"whether the browser accepts to deal with anObject"
+
+	self subclassResponsibility
+]
+
+{ #category : #testing }
 MiAbstractBrowser2 >> canHighlight [
 
 	"Override to retrun true if you want to give your browser a highlight behavior. 
@@ -116,14 +124,6 @@ MiAbstractBrowser2 >> canPropagate [
 	entity := self miSelectedItem.
 	^ entity isMooseObject and: [ 
 		  entity asMooseGroup isNotEmpty or: [ entity isMooseModel ] ]
-]
-
-{ #category : #testing }
-MiAbstractBrowser2 >> canReceiveEntity: anObject [
-
-	"whether the browser accepts to deal with anObject"
-
-	self subclassResponsibility
 ]
 
 { #category : #private }
@@ -208,6 +208,15 @@ MiAbstractBrowser2 >> privateBus: aBus [
 	privateBus := aBus
 ]
 
+{ #category : #testing }
+MiAbstractBrowser2 >> receiveEntity: anEntity [
+
+	"I am used by the Mi Application. You should use #globallySelect: anEntity that will transmit the message to me and the other browsers"
+
+	receivingMode browser: self actOnEntity: anEntity.
+	self updateToolbar
+]
+
 { #category : #accessing }
 MiAbstractBrowser2 >> receiveFromPrivateBus: anEntity [
 	"If this browser is not in a workspace, it may have no receivingMode and this will crash
@@ -251,6 +260,12 @@ MiAbstractBrowser2 >> unfollowPrivateBus [
 	
 	self privateBus unregisterBrowser: self.
 	self privateBus: nil.
+]
+
+{ #category : #actions }
+MiAbstractBrowser2 >> updateToolbar [
+
+	self window ifNotNil: [ :window | window updateToolbar ]
 ]
 
 { #category : #private }

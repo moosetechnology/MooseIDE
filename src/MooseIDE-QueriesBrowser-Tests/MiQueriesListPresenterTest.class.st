@@ -29,7 +29,7 @@ MiQueriesListPresenterTest >> setUp [
 	| helper |
 	super setUp.
 	helper := FQTestsHelper current.
-	browser := MiQueriesBrowser openForTests.
+	browser := MiQueriesBrowser openForTests containedBrowser.
 	browser receiveEntity: helper classesAndMethods.
 	presenter := MiQueriesListPresenter on: browser
 ]

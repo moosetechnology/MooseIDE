@@ -24,10 +24,11 @@ MiQueryListItemPresenterTest >> setUp [
 	helper := FQTestsHelper current.
 	browser := MiQueriesBrowser openForTests.
 	browser receiveEntity: helper classesAndMethods.
-	parentPresenter := MiQueriesListPresenter on: browser.
+	parentPresenter := MiQueriesListPresenter on:
+		                   browser containedBrowser.
 
 	presenter := MiQueryListItemPresenter
-		             on: browser rootQuery
+		             on: browser containedBrowser rootQuery
 		             owner: parentPresenter
 		             queriesListPresenter: parentPresenter.
 	presenter setQueryNumber: 1.

@@ -85,6 +85,11 @@ MiAbstractWorkspace >> canFollow [
 ]
 
 { #category : #testing }
+MiAbstractWorkspace >> canFollowEntity: anObject [
+	^self containedBrowsers anySatisfy: [ :browser | browser canFollowEntity: anObject ]
+]
+
+{ #category : #testing }
 MiAbstractWorkspace >> canHighlight [
 	^self containedBrowsers anySatisfy: [ :browser | browser canHighlight ]
 ]
@@ -92,11 +97,6 @@ MiAbstractWorkspace >> canHighlight [
 { #category : #testing }
 MiAbstractWorkspace >> canPropagate [
 	^self containedBrowsers anySatisfy: [ :browser | browser canPropagate ]
-]
-
-{ #category : #testing }
-MiAbstractWorkspace >> canReceiveEntity: anObject [
-	^self containedBrowsers anySatisfy: [ :browser | browser canReceiveEntity: anObject ]
 ]
 
 { #category : #accessing }

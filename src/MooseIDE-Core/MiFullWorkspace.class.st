@@ -91,7 +91,7 @@ MiFullWorkspace >> at: anInteger putBrowser: aMiBrowser [
 ]
 
 { #category : #testing }
-MiFullWorkspace >> canReceiveEntity: anObject [
+MiFullWorkspace >> canFollowEntity: anObject [
 	"accepts all entities, the children browsers will decide for themselves if they accept or not"
 	^true
 ]

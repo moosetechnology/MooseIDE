@@ -29,7 +29,7 @@ MiSourceTextBrowserTest >> testFollowEntityPassesOnToToolbar [
 	toolbar := Mock named: 'mock toolbar'.
 	toolbar stub newEntity will: [ wasCalled := true ].
 
-	browser toolBarExternalEditor: toolbar.
+	browser containedBrowser toolBarExternalEditor: toolbar.
 	
 	browser followEntity: (FamixStClass named: 'TestClass').
 	self assert: wasCalled
@@ -38,7 +38,9 @@ MiSourceTextBrowserTest >> testFollowEntityPassesOnToToolbar [
 { #category : #tests }
 MiSourceTextBrowserTest >> testHasExternalEditorEmacs [
 
-	self assert: browser externalEditor equals: MiSourceTextExternalEditorEmacs 
+	self
+		assert: browser containedBrowser externalEditor
+		equals: MiSourceTextExternalEditorEmacs
 ]
 
 { #category : #tests }
@@ -57,14 +59,15 @@ MiSourceTextBrowserTest >> testMiSelectedItem [
 MiSourceTextBrowserTest >> testShowNoSourceCodeMessage [
 
 	browser receiveEntity: (FamixStClass named: 'TestClass').
-	self assert: browser sourceText text equals: 'There is no source code to show for TestClass'
-
+	self
+		assert: browser containedBrowser sourceText text
+		equals: 'There is no source code to show for TestClass'
 ]
 
 { #category : #tests }
 MiSourceTextBrowserTest >> testToolbarAutoTransmit [
 	| toolbar editor entity received |
-	toolbar := browser toolBarExternalEditor.
+	toolbar := browser containedBrowser toolBarExternalEditor.
 	entity := FamixStClass named: 'TestClass'.
 	received := #nothing.
 

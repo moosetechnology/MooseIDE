@@ -39,7 +39,7 @@ MiFullWorkspaceTest >> testCanChangeContainedBrowsers [
 
 { #category : #tests }
 MiFullWorkspaceTest >> testCanReceiveEntity [
-	self assert: (browser canReceiveEntity: nil).
+	self assert: (browser canFollowEntity: nil).
 
 ]
 

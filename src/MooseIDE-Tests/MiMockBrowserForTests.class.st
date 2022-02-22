@@ -40,6 +40,12 @@ MiMockBrowserForTests >> canFollow: anObject [
 ]
 
 { #category : #accessing }
+MiMockBrowserForTests >> canFollowEntity: whatever [
+
+	^canReceive
+]
+
+{ #category : #accessing }
 MiMockBrowserForTests >> canHighlight [
 
 	^canHighlight
@@ -73,12 +79,6 @@ MiMockBrowserForTests >> canReceive [
 MiMockBrowserForTests >> canReceive: anObject [
 
 	canReceive := anObject
-]
-
-{ #category : #accessing }
-MiMockBrowserForTests >> canReceiveEntity: whatever [
-
-	^canReceive
 ]
 
 { #category : #actions }
