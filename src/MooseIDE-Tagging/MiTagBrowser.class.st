@@ -74,7 +74,8 @@ MiTagBrowser >> browserClosed [
 
 	super browserClosed.
 	application unregisterProducer: self.
-	application unregisterConsumer: self
+	application unregisterConsumer: self.
+	application unregisterConsumer: tagCreationForm
 ]
 
 { #category : #testing }
@@ -196,7 +197,8 @@ MiTagBrowser >> initialize [
 	super initialize.
 	application registerProducer: self for: MiDynamicTag.
 	application registerProducer: self for: FamixTag.
-	application registerConsumer: self for: FamixTagAssociation
+	application registerConsumer: self for: FamixTagAssociation.
+	application registerConsumer: tagCreationForm for: FQAbstractQuery
 ]
 
 { #category : #initialization }
