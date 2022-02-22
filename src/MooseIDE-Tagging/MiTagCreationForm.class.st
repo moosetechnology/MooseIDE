@@ -43,6 +43,12 @@ MiTagCreationForm >> connectPresenters [
 	submitButton action: [ self submit ]
 ]
 
+{ #category : #brokerage }
+MiTagCreationForm >> consume: aQuery [
+
+	self updateQueryList
+]
+
 { #category : #initialization }
 MiTagCreationForm >> fetchQueries [
 
@@ -178,6 +184,12 @@ MiTagCreationForm >> initializePresenters [
 		                    yourself.
 	self updateQueryList.
 	self initializeLayout
+]
+
+{ #category : #brokerage }
+MiTagCreationForm >> remove: aQuery [
+
+	self updateQueryList
 ]
 
 { #category : #initialization }
