@@ -13,6 +13,13 @@ Class {
 }
 
 { #category : #initialization }
+MiDynamicTagCreationForm >> addTag: aTag [
+
+	tagList model items add: aTag.
+	tagList refresh
+]
+
+{ #category : #initialization }
 MiDynamicTagCreationForm >> checkFormInputs [
 
 	tagList selectedItems ifEmpty: [ ^ false ].
@@ -47,10 +54,20 @@ MiDynamicTagCreationForm >> initializeLayout [
 { #category : #initialization }
 MiDynamicTagCreationForm >> initializePresenters [
 
-	tagList := self newList beMultipleSelection.
+	(tagList := self newList)
+		beMultipleSelection;
+		display: [ :dt | dt name ];
+		displayIcon: [ :dt | MiTagBrowserModel iconForTag: dt ].
 	submitButton := self newButton label: 'Add'.
 	cancelButton := self newButton label: 'Cancel'.
 	self initializeLayout
+]
+
+{ #category : #initialization }
+MiDynamicTagCreationForm >> removeTag: aTag [
+
+	tagList model items remove: aTag.
+	tagList refresh
 ]
 
 { #category : #initialization }

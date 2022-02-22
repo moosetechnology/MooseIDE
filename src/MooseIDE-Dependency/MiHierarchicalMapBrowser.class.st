@@ -9,7 +9,8 @@ Class {
 		'layoutWithMenu',
 		'layoutWithoutMenu',
 		'settings',
-		'settingsToggle'
+		'settingsToggle',
+		'tagCreateForm'
 	],
 	#category : #'MooseIDE-Dependency-HierarchicalMap'
 }
@@ -44,6 +45,13 @@ MiHierarchicalMapBrowser class >> windowSize [
 	^ 850 @ 520
 ]
 
+{ #category : #adding }
+MiHierarchicalMapBrowser >> addDynamicTags: aCollection [
+
+	aCollection do: [ :dt | self model addDynamicTag: dt ].
+	settings refreshTagList
+]
+
 { #category : #initialization }
 MiHierarchicalMapBrowser >> addmenuButtonToCanvas [
 
@@ -56,7 +64,7 @@ MiHierarchicalMapBrowser >> addmenuButtonToCanvas [
 MiHierarchicalMapBrowser >> browserClosed [
 
 	super browserClosed.
-	application unregisterConsumer: settings
+	application unregisterConsumer: self
 ]
 
 { #category : #actions }
@@ -75,6 +83,18 @@ MiHierarchicalMapBrowser >> canReceiveEntity: anEntity [
 MiHierarchicalMapBrowser >> canvas [
 
 	^ visualization canvas
+]
+
+{ #category : #initialization }
+MiHierarchicalMapBrowser >> closeTagCreationForm [
+
+	self layout replace: tagCreateForm with: settings
+]
+
+{ #category : #brokerage }
+MiHierarchicalMapBrowser >> consume: aTag [
+
+	tagCreateForm addTag: aTag
 ]
 
 { #category : #actions }
@@ -96,7 +116,7 @@ MiHierarchicalMapBrowser >> hideMenu [
 MiHierarchicalMapBrowser >> initialize [
 
 	super initialize.
-	application registerConsumer: settings for: MiDynamicTag
+	application registerConsumer: self for: MiDynamicTag
 ]
 
 { #category : #initialization }
@@ -114,6 +134,7 @@ MiHierarchicalMapBrowser >> initializePresenters [
 	visualization := self class mapClass owner: self.
 	settings := MiHierarchicalMapSettings owner: self.
 	settingsToggle := RSLabel new when: RSMouseClick do: [ self toggleMenu ].
+	tagCreateForm := MiDynamicTagCreationForm owner: self.
 	self initializeLayout
 ]
 
@@ -121,6 +142,20 @@ MiHierarchicalMapBrowser >> initializePresenters [
 MiHierarchicalMapBrowser >> miSelectedItem [
 
 	^ model entities mooseInterestingEntity
+]
+
+{ #category : #initialization }
+MiHierarchicalMapBrowser >> openTagCreationForm [
+
+	tagCreateForm setTags.
+	self layout replace: settings with: tagCreateForm.
+	self update
+]
+
+{ #category : #brokerage }
+MiHierarchicalMapBrowser >> remove: aTag [
+
+	tagCreateForm removeTag: aTag
 ]
 
 { #category : #actions }

@@ -51,8 +51,8 @@ MiDynamicTag >> description: anObject [
 MiDynamicTag >> isApplicableTo: anObject [
 
 	"The query should accept one parameter (anObject) and return a boolean."
-	self flag: 'should be more discriminent on the error that we want to catch.'.
-	^ [ query value: anObject ] onErrorDo: [ ^ false ]
+
+	^ (query runOn: anObject asMooseGroup) isNotEmpty
 ]
 
 { #category : #testing }

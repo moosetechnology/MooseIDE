@@ -10,7 +10,6 @@ Class {
 	#superclass : #MiPresenter,
 	#instVars : [
 		'submitButton',
-		'tagCreateForm',
 		'childrenBlockArea',
 		'dynamicTagList'
 	],
@@ -18,30 +17,10 @@ Class {
 }
 
 { #category : #initialization }
-MiHierarchicalMapSettings >> addDynamicTag: aTag [
-
-	self model addDynamicTag: aTag.
-	dynamicTagList items: self model dynamicTags
-]
-
-{ #category : #initialization }
-MiHierarchicalMapSettings >> addDynamicTags: aCollection [
-
-	self model addDynamicTags: aCollection.
-	dynamicTagList items: self model dynamicTags
-]
-
-{ #category : #'as yet unclassified' }
-MiHierarchicalMapSettings >> closeTagCreationForm [
-
-	self owner layout replace: tagCreateForm with: self
-]
-
-{ #category : #initialization }
 MiHierarchicalMapSettings >> connectPresenters [
 
 	submitButton action: [ self submit ].
-	dynamicTagList addButton action: [ self openTagCreationForm ]
+	dynamicTagList addButton action: [ self owner openTagCreationForm ]
 ]
 
 { #category : #initialization }
@@ -51,13 +30,6 @@ MiHierarchicalMapSettings >> fillModelWithCurrentSettings [
 			 source: childrenBlockArea text;
 			 logged: false;
 			 evaluate)
-]
-
-{ #category : #initialization }
-MiHierarchicalMapSettings >> iconForDynamicTag: aDynamicTag [
-
-	^ (Form extent: 10 @ 10 depth: 32) fillColor:
-		  (self model colorForDynamicTag: aDynamicTag)
 ]
 
 { #category : #initialization }
@@ -76,7 +48,6 @@ MiHierarchicalMapSettings >> initializeLayout [
 MiHierarchicalMapSettings >> initializePresenters [
 
 	super initializePresenters.
-	tagCreateForm := MiDynamicTagCreationForm owner: self.
 	submitButton := self newButton
 		                label: 'Draw';
 		                yourself.
@@ -90,7 +61,8 @@ MiHierarchicalMapSettings >> initializePresenters [
 	dynamicTagList := SpEditableListPresenter new
 		                  display: [ :dt | dt name ];
 		                  items: self owner model dynamicTags;
-		                  displayIcon: [ :dt | self iconForDynamicTag: dt ];
+		                  displayIcon: [ :dt | 
+			                  MiTagBrowserModel iconForTag: dt ];
 		                  title: 'Properties';
 		                  yourself.
 	self initializeLayout
@@ -102,11 +74,10 @@ MiHierarchicalMapSettings >> model [
 	^ self owner model
 ]
 
-{ #category : #'as yet unclassified' }
-MiHierarchicalMapSettings >> openTagCreationForm [
+{ #category : #refreshing }
+MiHierarchicalMapSettings >> refreshTagList [
 
-	tagCreateForm setTags.
-	self owner layout replace: self with: tagCreateForm
+	dynamicTagList items: self model dynamicTags
 ]
 
 { #category : #initialization }

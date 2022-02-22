@@ -47,6 +47,7 @@ MiHierarchicalMapModel class >> defaultDynamicTags [
 { #category : #adding }
 MiHierarchicalMapModel >> addDynamicTag: aTag [
 
+	(dynamicTags includes: aTag) ifTrue: [ ^ self ].
 	dynamicTags add: aTag
 ]
 
