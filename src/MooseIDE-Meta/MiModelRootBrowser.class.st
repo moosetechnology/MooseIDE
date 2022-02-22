@@ -127,7 +127,7 @@ MiModelRootBrowser >> initializePresenters [
 MiModelRootBrowser >> initializeToolbar [
 
 	toolbar := (MiImportCommand asCommandGroupForSpecContext: self)
-		        asToolbarPresenter beIcons.
+		           asToolbarPresenter beIcons.
 	toolbar addItem: self refreshToolbarButton
 ]
 

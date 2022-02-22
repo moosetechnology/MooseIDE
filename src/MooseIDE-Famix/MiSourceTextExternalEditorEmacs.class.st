@@ -11,5 +11,5 @@ MiSourceTextExternalEditorEmacs class >> editorName [
 
 { #category : #'file support' }
 MiSourceTextExternalEditorEmacs >> openFile: aFileReference [
-	LibC uniqueInstance runCommand: 'emacs ' , aFileReference fullName 
+	MiExternalEditorOpenner open: aFileReference fullName using: 'emacs'
 ]
