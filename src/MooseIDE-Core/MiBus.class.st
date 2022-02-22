@@ -1,3 +1,9 @@
+"
+I am a MooseEntity bus connected to MooseIDE browsers.
+Browsers write entities in me and I propagate them to all my browsers.
+
+I store each entity on a Logger
+"
 Class {
 	#name : #MiBus,
 	#superclass : #Object,
@@ -37,6 +43,11 @@ MiBus >> initialize [
 { #category : #accessing }
 MiBus >> logger [
 	^ logger
+]
+
+{ #category : #accessing }
+MiBus >> mostRecentEntity [
+	^ self logger mostRecentEntity
 ]
 
 { #category : #accessing }

@@ -8,7 +8,7 @@ Shows the metadescription of a MooseObject.
 "
 Class {
 	#name : #MiFameBrowser,
-	#superclass : #MiAbstractBrowser,
+	#superclass : #MiAbstractBrowser2,
 	#instVars : [
 		'fameDescription'
 	],

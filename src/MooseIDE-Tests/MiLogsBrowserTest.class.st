@@ -30,11 +30,14 @@ MiLogsBrowserTest >> tearDown [
 
 { #category : #tests }
 MiLogsBrowserTest >> testActivateActionButtons [
-
-	browser actionButtons do: [ :button | self deny: button isEnabled ].
+	{ MiInspectCommand . MiPropagateCommand . MiDragWindowCommand }
+	do: [ :cmdClass | self deny: (self actionButton: cmdClass) isEnabled ].
 
 	self bus globallySelect: entityToSelect.
-	browser actionButtons do: [ :button | self assert: button isEnabled ]
+	{ MiInspectCommand . MiPropagateCommand }
+	do: [ :cmdClass | self assert: (self actionButton: cmdClass) isEnabled ].
+	self deny: (self actionButton: MiDragWindowCommand) isEnabled.
+
 ]
 
 { #category : #tests }

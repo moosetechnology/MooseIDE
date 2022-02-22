@@ -129,6 +129,11 @@ MiAbstractBrowser >> buses [
 ]
 
 { #category : #testing }
+MiAbstractBrowser >> canBeDragged [
+	^false
+]
+
+{ #category : #testing }
 MiAbstractBrowser >> canEditBuses [
 
 	^ true
@@ -205,7 +210,7 @@ MiAbstractBrowser >> highlightEntity: anEntity [
 
 { #category : #testing }
 MiAbstractBrowser >> ifAutonomous: aBlock [
-
+	self flag: 'specific to MiLogBrowser ?'.
 	self owner isNotNil and: [ 
 		self owner isWindowPresenter ifTrue: aBlock ]
 ]

@@ -25,45 +25,64 @@ MiQueriesBrowserTest >> setUp [
 ]
 
 { #category : #tests }
+MiQueriesBrowserTest >> testActivateActionButtons [
+	self skip.
+	{ MiInspectCommand . MiPropagateCommand }
+	do: [ :cmdClass | self deny: (self actionButton: cmdClass) isEnabled ].
+	self assert: (self actionButton: MiDragWindowCommand) isEnabled.
+
+	self bus globallySelect: helper methods.
+	{ MiInspectCommand . MiPropagateCommand . MiDragWindowCommand }
+	do: [ :cmdClass | self assert: (self actionButton: cmdClass) isEnabled ].
+
+]
+
+{ #category : #tests }
 MiQueriesBrowserTest >> testAddNewNAryQuery [
 
 	| unionQuery |
 	unionQuery := self unionQuery.
-	browser rootQuery addChild: unionQuery.
-	browser selectQuery: unionQuery.
-	self assert: (browser rootQuery children includes: unionQuery).
-	self assert: browser selectedQuery equals: unionQuery.
+	browser containedBrowser rootQuery addChild: unionQuery.
+	browser containedBrowser selectQuery: unionQuery.
+	self assert: (browser containedBrowser rootQuery children includes: unionQuery).
+	self assert: browser containedBrowser selectedQuery equals: unionQuery.
 	self
-		assertCollection: browser queryResultTreePresenter items
+		assertCollection: browser containedBrowser queryResultTreePresenter items
 		hasSameElements: unionQuery result
+]
+
+{ #category : #tests }
+MiQueriesBrowserTest >> testBrowserFollowsPrivatelBus [
+
+	self assert: browser containedBrowser privateBus equals: browser privateBus
 ]
 
 { #category : #'tests - actions' }
 MiQueriesBrowserTest >> testFollowEntity [
 
 	| previousResult newResult |
-	browser queriesListPresenter addNewFirstLevelQuery.
+	browser containedBrowser queriesListPresenter addNewFirstLevelQuery.
 	"Modify the query to not have an empty result"
-	browser queriesListPresenter queryItemsPresenters first 
+	browser containedBrowser queriesListPresenter queryItemsPresenters first 
 		updateQueryConfiguratorPresenterFor: FQBooleanQuery.
-	browser queriesListPresenter queryItemsPresenters first
+	browser containedBrowser queriesListPresenter queryItemsPresenters first
 		queryConfiguratorPresenter query property: #isDead.
 
-	browser queriesListPresenter addNewChildQueryAction:
-		browser queriesListPresenter queryItemsPresenters first query.
+	browser containedBrowser queriesListPresenter addNewChildQueryAction:
+		browser containedBrowser queriesListPresenter queryItemsPresenters first query.
 	"Modify the query to not have an empty result"
-	browser queriesListPresenter queryItemsPresenters second 
+	browser containedBrowser queriesListPresenter queryItemsPresenters second 
 		updateQueryConfiguratorPresenterFor: FQStringQuery.
-	browser queriesListPresenter queryItemsPresenters second
+	browser containedBrowser queriesListPresenter queryItemsPresenters second
 		queryConfiguratorPresenter query
 		property: #name;
 		comparator: #includesSubstring:;
 		valueToCompare: ''.
 
-	previousResult := (browser queriesListPresenter queryItemsPresenters 
+	previousResult := (browser containedBrowser queriesListPresenter queryItemsPresenters 
 		                   collect: #query) collect: #result.
 	self bus globallySelect: helper methods.
-	newResult := (browser queriesListPresenter queryItemsPresenters 
+	newResult := (browser containedBrowser queriesListPresenter queryItemsPresenters 
 		              collect: #query) collect: #result.
 	"When a new entity is received from the bus we need to keep the same queries but
 	update the result of the queries with the new entity"
@@ -77,19 +96,19 @@ MiQueriesBrowserTest >> testFollowEntity [
 MiQueriesBrowserTest >> testInitializePresenters [
 
 	self
-		assertCollection: browser queryResultEntities
+		assertCollection: browser containedBrowser queryResultEntities
 		hasSameElements: helper classesAndMethods.
 
-	self assert: browser layout isNotNil.
+	self assert: browser containedBrowser layout isNotNil.
 	self
-		assert: browser queryCodePresenter class
+		assert: browser containedBrowser queryCodePresenter class
 		equals: QueryCodePresenter.
-	self assert: browser queryCodePresenter text isNotEmpty.
+	self assert: browser containedBrowser queryCodePresenter text isNotEmpty.
 	self
-		assert: browser queryResultTreePresenter class
+		assert: browser containedBrowser queryResultTreePresenter class
 		equals: QueryResultTreePresenter.
 	self
-		assertCollection: browser queryResultEntities
+		assertCollection: browser containedBrowser queryResultEntities
 		hasSameElements: helper classesAndMethods
 ]
 
@@ -104,10 +123,10 @@ MiQueriesBrowserTest >> testRemoveNAryQuery [
 
 	| unionQuery firstParent |
 	unionQuery := self unionQuery.
-	browser rootQuery addChild: unionQuery.
+	browser containedBrowser rootQuery addChild: unionQuery.
 	firstParent := unionQuery subqueries first.
-	browser removeQuery: unionQuery.
-	self deny: (browser rootQuery children includes: unionQuery)
+	browser containedBrowser removeQuery: unionQuery.
+	self deny: (browser containedBrowser rootQuery children includes: unionQuery)
 ]
 
 { #category : #tests }
@@ -115,16 +134,16 @@ MiQueriesBrowserTest >> testRemoveQuery [
 
 	| query query2 |
 	query := FQBooleanQuery new property: #isAbstract.
-	query beChildOf: browser rootQuery.
+	query beChildOf: browser containedBrowser rootQuery.
 	query2 := FQBooleanQuery new property: #isStub.
 	query2 beChildOf: query.
 
-	browser removeQuery: query.
-	self deny: (browser rootQuery children includes: query).
-	self deny: (browser rootQuery children includes: query2).
+	browser containedBrowser removeQuery: query.
+	self deny: (browser containedBrowser rootQuery children includes: query).
+	self deny: (browser containedBrowser rootQuery children includes: query2).
 	self
-		assertCollection: browser queryResultTreePresenter items
-		hasSameElements: browser queryResultEntities
+		assertCollection: browser containedBrowser queryResultTreePresenter items
+		hasSameElements: browser containedBrowser queryResultEntities
 ]
 
 { #category : #tests }
@@ -132,17 +151,17 @@ MiQueriesBrowserTest >> testSelectQuery [
 
 	| query previousCurrentQuery |
 	query := (FQBooleanQuery property: #isDead) beChildOf:
-		         browser rootQuery.
-	previousCurrentQuery := browser selectedQuery.
-	browser selectQuery: query.
-	self deny: previousCurrentQuery equals: browser selectedQuery.
-	self assert: browser selectedQuery equals: query.
+		         browser containedBrowser rootQuery.
+	previousCurrentQuery := browser containedBrowser selectedQuery.
+	browser containedBrowser selectQuery: query.
+	self deny: previousCurrentQuery equals: browser containedBrowser selectedQuery.
+	self assert: browser containedBrowser selectedQuery equals: query.
 	self
-		assertCollection: browser queryResultTreePresenter items
+		assertCollection: browser containedBrowser queryResultTreePresenter items
 		hasSameElements: query result.
 	"Check if the code presenter changed its text to the new query"
 	self
-		assert: browser queryCodePresenter text
+		assert: browser containedBrowser queryCodePresenter text
 		equals: (EFFormatter format: (RBParser parseExpression:
 					  (String streamContents: [ :s | query storeOn: s ])))
 ]
@@ -150,7 +169,7 @@ MiQueriesBrowserTest >> testSelectQuery [
 { #category : #tests }
 MiQueriesBrowserTest >> testSetModelBeforeInitialization [
 
-	self assert: browser rootQuery class equals: FQRootQuery
+	self assert: browser containedBrowser rootQuery class equals: FQRootQuery
 ]
 
 { #category : #tests }
@@ -168,8 +187,8 @@ MiQueriesBrowserTest >> unionQuery [
 		           (FQTypeQuery new type: FamixStClass) }.
 	union := FQUnionQuery new.
 	subqueries do: [ :parent | 
-		parent beChildOf: browser rootQuery.
-		browser selectQuery: parent.
+		parent beChildOf: browser containedBrowser rootQuery.
+		browser containedBrowser selectQuery: parent.
 		parent addChild: union ].
 	union subqueries: subqueries.
 	^ union

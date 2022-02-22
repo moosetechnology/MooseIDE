@@ -81,7 +81,7 @@ MiQueryListItemPresenterTest >> testIndentationSpacesPresenters [
 	self assert: presenter indentationSpacesPresenters size equals: 0.
 
 	lowQuery1 := FQStringQuery new.
-	lowQuery1 beChildOf: browser rootQuery.
+	lowQuery1 beChildOf: browser containedBrowser rootQuery.
 	presenter parentQuery: lowQuery1.
 	self assert: presenter indentationSpacesPresenters size equals: 1.
 

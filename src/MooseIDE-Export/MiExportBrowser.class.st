@@ -10,13 +10,12 @@ Allows the addition of a comment for each entity.
 "
 Class {
 	#name : #MiExportBrowser,
-	#superclass : #MiAbstractBrowser,
+	#superclass : #MiAbstractBrowser2,
 	#instVars : [
 		'toolbar',
 		'commentDictionary',
 		'entitiesTable',
-		'commentsButton',
-		'commentsAreShown'
+		'commentsButton'
 	],
 	#category : #'MooseIDE-Export-Browser'
 }

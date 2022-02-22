@@ -13,6 +13,9 @@ MiWindowPresenter class >> actionsCommandGroupFor: aPresenter [
 	^ CmCommandGroup forSpec
 		  name: 'Actions';
 		  register:
+			  (MiDragWindowCommand forSpecContext: aPresenter)
+				  beDisplayedOnRightSide;
+		  register:
 			  (MiPropagateCommand forSpecContext: aPresenter)
 				  beDisplayedOnRightSide;
 		  register:
@@ -77,8 +80,8 @@ MiWindowPresenter >> updateBusButton [
 MiWindowPresenter >> updateReceivingModeButtons [
 
 	(self toolbarCommandGroup commandOrGroupNamed: 'Receiving Mode')
-		commands do: [ :cmd | 
-		cmd updateIconForMode: presenter receivingMode ]
+		commands do: [ :cmd |
+			cmd updateIconForMode: presenter receivingMode ]
 ]
 
 { #category : #toolbar }

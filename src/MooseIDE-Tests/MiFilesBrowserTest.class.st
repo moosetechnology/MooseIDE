@@ -24,11 +24,14 @@ MiFilesBrowserTest >> setUp [
 
 { #category : #tests }
 MiFilesBrowserTest >> testActivateActionButtons [
+	{ MiInspectCommand . MiPropagateCommand }
+	do: [ :cmdClass | self deny: (self actionButton: cmdClass) isEnabled ].
+	self assert: (self actionButton: MiDragWindowCommand) isEnabled.
 
-	browser actionButtons do: [ :button | self deny: button isEnabled ].
+	browser selectEntity: entityToSelect.
+	{ MiInspectCommand . MiPropagateCommand . MiDragWindowCommand }
+	do: [ :cmdClass | self assert: (self actionButton: cmdClass) isEnabled ].
 
-	browser receiveEntity: entityToSelect.
-	browser actionButtons do: [ :button | self assert: button isEnabled ]
 ]
 
 { #category : #tests }

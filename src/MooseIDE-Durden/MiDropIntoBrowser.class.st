@@ -124,7 +124,7 @@ MiDropIntoBrowser >> miSelectedItem [
 { #category : #'instance creation' }
 MiDropIntoBrowser >> newContainer [
 
-	^ ((self instantiate: SpSingleDropInContainer)
+	^ ((self instantiate: MiSingleDropInContainer)
 		   borderWidth: 2;
 		   dropEnabled: true;
 		   wantsDrop: [ :transfer :destination | 

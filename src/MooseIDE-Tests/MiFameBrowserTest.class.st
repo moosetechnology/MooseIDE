@@ -22,17 +22,27 @@ MiFameBrowserTest >> setUp [
 { #category : #tests }
 MiFameBrowserTest >> testActivateActionButtons [
 
-	browser actionButtons do: [ :button | self deny: button isEnabled ].
+	{ MiInspectCommand . MiPropagateCommand }
+	do: [ :cmdClass | self deny: (self actionButton: cmdClass) isEnabled ].
+	self assert: (self actionButton: MiDragWindowCommand) isEnabled.
 
-	browser receiveEntity: entityToSelect.
-	browser actionButtons do: [ :button | self assert: button isEnabled ]
+	browser selectEntity: entityToSelect.
+	{ MiInspectCommand . MiPropagateCommand . MiDragWindowCommand }
+	do: [ :cmdClass | self assert: (self actionButton: cmdClass) isEnabled ].
+
+]
+
+{ #category : #'tests - opening' }
+MiFameBrowserTest >> testBrowserFollowsPrivatelBus [
+
+	self assert: browser containedBrowser privateBus equals: browser privateBus
 ]
 
 { #category : #tests }
 MiFameBrowserTest >> testMiSelectedItem [
 
-	self assert: browser miSelectedItem isNil.
+	self should: [browser miSelectedItem] raise: MiNoSelectedElementToPropagateException.
 
-	browser receiveEntity: entityToSelect.
+	browser selectEntity: entityToSelect.
 	self assert: browser miSelectedItem equals: entityToSelect
 ]

@@ -13,22 +13,24 @@ MiExportBrowserTest >> browserClass [
 { #category : #tests }
 MiExportBrowserTest >> testActivateActionButtons [
 
-	browser actionButtons do: [ :button | self deny: button isEnabled ].
+	{ MiInspectCommand . MiPropagateCommand }
+	do: [ :cmdClass | self deny: (self actionButton: cmdClass) isEnabled ].
+	self assert: (self actionButton: MiDragWindowCommand) isEnabled.
 
-	browser receiveEntity: (FamixStClass named: 'TestClass').
+	browser selectEntity: (FamixStClass named: 'TestClass').
 
-	browser actionButtons do: [ :button | self assert: button isEnabled ]
+	{ MiInspectCommand . MiPropagateCommand . MiDragWindowCommand }
+	do: [ :cmdClass | self assert: (self actionButton: cmdClass) isEnabled ].
 ]
 
 { #category : #tests }
 MiExportBrowserTest >> testMiSelectedItem [
 
 	| entityToSelect |
-	self assert: browser miSelectedItem isEmpty.
+	self should: [browser miSelectedItem] raise: MiNoSelectedElementToPropagateException.
 
 	entityToSelect := FamixStClass named: 'TestClass'.
 	browser followEntity: entityToSelect.
 
-	self assert: browser miSelectedItem size equals: 1.
-	self assert: browser miSelectedItem anyOne equals: entityToSelect
+	self assert: browser miSelectedItem equals: entityToSelect
 ]
