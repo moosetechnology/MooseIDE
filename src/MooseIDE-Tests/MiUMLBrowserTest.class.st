@@ -15,7 +15,7 @@ MiUMLBrowserTest >> testActivateActionButtons [
 	do: [ :cmdClass | self deny: (self actionButton: cmdClass) isEnabled ].
 	self assert: (self actionButton: MiDragWindowCommand) isEnabled.
 
-	browser selectEntity: (FamixStClass named: 'TestClass').
+	browser receiveEntity: (FamixStClass named: 'TestClass').
 
 	{ MiInspectCommand . MiPropagateCommand . MiDragWindowCommand }
 	do: [ :cmdClass | self assert: (self actionButton: cmdClass) isEnabled ].
@@ -29,7 +29,7 @@ MiUMLBrowserTest >> testMiSelectedItem [
 	self should: [browser miSelectedItem] raise: MiNoSelectedElementToPropagateException.
 
 	entityToSelect := FamixStClass named: 'TestClass'.
-	browser selectEntity: entityToSelect.
+	browser receiveEntity: entityToSelect.
 
 	self assert: browser miSelectedItem equals: entityToSelect
 ]

@@ -28,7 +28,7 @@ MiFilesBrowserTest >> testActivateActionButtons [
 	do: [ :cmdClass | self deny: (self actionButton: cmdClass) isEnabled ].
 	self assert: (self actionButton: MiDragWindowCommand) isEnabled.
 
-	browser selectEntity: entityToSelect.
+	browser receiveEntity: entityToSelect.
 	{ MiInspectCommand . MiPropagateCommand . MiDragWindowCommand }
 	do: [ :cmdClass | self assert: (self actionButton: cmdClass) isEnabled ].
 

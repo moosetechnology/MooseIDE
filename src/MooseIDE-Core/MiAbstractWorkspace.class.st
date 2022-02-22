@@ -116,7 +116,7 @@ MiAbstractWorkspace >> followBus: aBus [
 	self buses add: aBus.
 	aBus registerBrowser: self.
 	self window ifNotNil: [ :window | window updateBusButton ].
-	self selectEntity: aBus logger mostRecentEntity
+	self receiveEntity: aBus logger mostRecentEntity
 ]
 
 { #category : #actions }
@@ -226,6 +226,15 @@ MiAbstractWorkspace >> privateBus [
 	^privateBus
 ]
 
+{ #category : #accessing }
+MiAbstractWorkspace >> receiveEntity: anEntity [
+
+	"I am used by the Mi Application. You should use #globallySelect: anEntity that will transmit the message to me and the other browsers"
+
+	receivingMode browser: self actOnEntity: anEntity.
+	self updateToolbar
+]
+
 { #category : #buses }
 MiAbstractWorkspace >> receiveFromPrivateBus: anEntity [
 	"propagating on privateBus as no effect on workspace,
@@ -252,15 +261,6 @@ MiAbstractWorkspace >> receivingMode: aReceivingMode [
 MiAbstractWorkspace >> resetLayout [
 
 	^self initializeLayout 
-]
-
-{ #category : #accessing }
-MiAbstractWorkspace >> selectEntity: anEntity [
-
-	"I am used by the Mi Application. You should use #globallySelect: anEntity that will transmit the message to me and the other browsers"
-
-	receivingMode browser: self actOnEntity: anEntity.
-	self updateToolbar
 ]
 
 { #category : #initialization }

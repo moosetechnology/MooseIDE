@@ -14,7 +14,7 @@ MiTreeBrowserTest >> testActivateActionButtons [
 	{ MiInspectCommand . MiPropagateCommand . MiDragWindowCommand }
 	do: [ :cmdClass | self deny: (self actionButton: cmdClass) isEnabled ].
 
-	browser selectEntity: (FamixStClass named: 'TestClass').
+	browser receiveEntity: (FamixStClass named: 'TestClass').
 
 	{ MiInspectCommand . MiPropagateCommand }
 	do: [ :cmdClass | self assert: (self actionButton: cmdClass) isEnabled ].

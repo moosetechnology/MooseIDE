@@ -24,7 +24,7 @@ MiDependencyBrowserTest >> testActivateActionButtons [
 	{ MiInspectCommand . MiPropagateCommand . MiDragWindowCommand }
 	do: [ :cmdClass | self deny: (self actionButton: cmdClass) isEnabled ].
 
-	browser selectEntity: (MooseGroup with: entityToSelect).
+	browser receiveEntity: (MooseGroup with: entityToSelect).
 	{ MiInspectCommand . MiPropagateCommand }
 	do: [ :cmdClass | self assert: (self actionButton: cmdClass) isEnabled ].
 	self deny: (self actionButton: MiDragWindowCommand) isEnabled.

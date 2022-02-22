@@ -8,7 +8,7 @@ MiAbstractWorkspace >> busButton [
 ]
 
 { #category : #'*MooseIDE-Tests' }
-MiAbstractWorkspace classSide >> openForTests [
+MiAbstractWorkspace class >> openForTests [
 
 	^ (self
 		   newApplication: MiTestApplication current
