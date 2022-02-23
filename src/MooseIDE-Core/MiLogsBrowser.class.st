@@ -11,12 +11,12 @@ Class {
 	#category : #'MooseIDE-Core-Logger'
 }
 
-{ #category : #specs }
-MiLogsBrowser class >> defaultSpec [
-	^super defaultSpec
-		add: #mainPresenter ;
-		yourself
+{ #category : #layout }
+MiLogsBrowser class >> defaultLayout [
 
+	^ super defaultLayout
+		  add: #mainPresenter;
+		  yourself
 ]
 
 { #category : #'world menu' }

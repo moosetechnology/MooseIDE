@@ -24,8 +24,8 @@ MiMorphicDragMeAdapter >> newButton [
 { #category : #accessing }
 MiMorphicDragMeAdapter >> performAction: event [
 
-	transferMorph := self model transferPassenger buildWithSpec.
-	transferMorph dragHand: event hand .
+	transferMorph := self model transferPassenger build.
+	transferMorph dragHand: event hand.
 	transferMorph
 		align: transferMorph draggedMorph topLeft
 		with: event position.

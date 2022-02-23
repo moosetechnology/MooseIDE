@@ -9,8 +9,8 @@ Class {
 	#category : #'MooseIDE-Core-Browser'
 }
 
-{ #category : #specs }
-MiAbstractBrowser2 class >> defaultSpec [
+{ #category : #layout }
+MiAbstractBrowser2 class >> defaultLayout [
 
 	^ SpBoxLayout newVertical
 ]
@@ -66,13 +66,15 @@ MiAbstractBrowser2 class >> newModel [
 
 { #category : #'instance creation' }
 MiAbstractBrowser2 class >> open [
-	self flag: 'CodeSmell: Application is set in the MiAtomicWorkspace and the MiAbstractBrowser'.
-	^MiAtomicWorkspace new
-		application: self currentApplication;
-		containedBrowser: (self on: self newModel) ;
-		openWithSpec ;
-		followBus: self currentApplication defaultBus;
-		yourself
+
+	self flag:
+		'CodeSmell: Application is set in the MiAtomicWorkspace and the MiAbstractBrowser'.
+	^ MiAtomicWorkspace new
+		  application: self currentApplication;
+		  containedBrowser: (self on: self newModel);
+		  open;
+		  followBus: self currentApplication defaultBus;
+		  yourself
 ]
 
 { #category : #specs }
@@ -92,6 +94,12 @@ MiAbstractBrowser2 >> adaptToDropInto: aBrowserContainer [
 		ifNotNil: [:myContainer | myContainer owner noteThatWidgetHasBeenReinstalled: self].
 	self owner: aBrowserContainer.
 
+]
+
+{ #category : #'window control' }
+MiAbstractBrowser2 >> browserClosed [
+
+	
 ]
 
 { #category : #testing }

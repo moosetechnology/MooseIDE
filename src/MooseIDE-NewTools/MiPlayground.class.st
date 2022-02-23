@@ -39,9 +39,10 @@ MiPlayground class >> menuLabel [
 ]
 
 { #category : #'instance creation' }
-MiPlayground class >> open [ 
+MiPlayground class >> open [
+
 	<script>
-	^ self new openWithSpec
+	^ self new open
 ]
 
 { #category : #'private - factory' }

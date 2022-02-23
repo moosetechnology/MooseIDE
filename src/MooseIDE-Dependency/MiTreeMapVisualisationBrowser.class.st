@@ -15,11 +15,12 @@ Class {
 	#category : #'MooseIDE-Dependency-TreeMap'
 }
 
-{ #category : #specs }
-MiTreeMapVisualisationBrowser class >> defaultSpec [
-	^ super defaultSpec
-		add: #diagram;
-		yourself
+{ #category : #layout }
+MiTreeMapVisualisationBrowser class >> defaultLayout [
+
+	^ super defaultLayout
+		  add: #diagram;
+		  yourself
 ]
 
 { #category : #'world menu' }

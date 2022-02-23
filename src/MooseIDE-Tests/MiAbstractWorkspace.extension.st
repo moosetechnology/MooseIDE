@@ -13,7 +13,7 @@ MiAbstractWorkspace class >> openForTests [
 	^ (self
 		   newApplication: MiTestApplication current
 		   model: self newModel)
-		  openWithSpec;
+		  open;
 		  followBus: MiTestApplication current defaultBus;
 		  yourself
 ]

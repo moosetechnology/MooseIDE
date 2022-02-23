@@ -42,7 +42,7 @@ MiEditBusCommand >> busesList [
 	| busesList |
 	busesList := SpFilteringSelectableListPresenter new.
 	busesList layout: (SpBoxLayout newTopToBottom
-			 add: SpFilteringSelectableListPresenter defaultSpec
+			 add: SpFilteringSelectableListPresenter defaultLayout
 			 withConstraints: [ :c | 
 				 c
 					 height: 120;

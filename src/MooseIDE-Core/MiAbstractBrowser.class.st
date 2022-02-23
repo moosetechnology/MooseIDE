@@ -43,8 +43,8 @@ Class {
 	#category : #'MooseIDE-Core-Browser'
 }
 
-{ #category : #specs }
-MiAbstractBrowser class >> defaultSpec [
+{ #category : #layout }
+MiAbstractBrowser class >> defaultLayout [
 
 	^ SpBoxLayout newVertical
 ]
@@ -102,7 +102,7 @@ MiAbstractBrowser class >> newModel [
 MiAbstractBrowser class >> open [
 
 	^ (self on: self newModel)
-		  openWithSpec;
+		  open;
 		  followBus: self currentApplication defaultBus;
 		  yourself
 ]

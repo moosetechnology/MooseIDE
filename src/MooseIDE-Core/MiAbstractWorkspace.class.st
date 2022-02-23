@@ -25,8 +25,8 @@ MiAbstractWorkspace class >> actionsCommandGroupFor: presenter [
 				  beDisplayedOnRightSide
 ]
 
-{ #category : #specs }
-MiAbstractWorkspace class >> defaultSpec [
+{ #category : #layout }
+MiAbstractWorkspace class >> defaultLayout [
 
 	^SpBoxLayout newVertical
 		add: #browserContainer ;
@@ -45,9 +45,10 @@ MiAbstractWorkspace class >> newModel [
 
 { #category : #'instance creation' }
 MiAbstractWorkspace class >> open [
+
 	<script: 'MiAtomicWorkspace open'>
 	^ (self on: self newModel)
-		  openWithSpec;
+		  open;
 		  followBus: self currentApplication defaultBus;
 		  yourself
 ]
@@ -155,7 +156,7 @@ MiAbstractWorkspace >> initialize [
 { #category : #initialization }
 MiAbstractWorkspace >> initializeLayout [
 
-	self layout: self class defaultSpec
+	self layout: self class defaultLayout
 ]
 
 { #category : #initialization }
@@ -173,8 +174,8 @@ MiAbstractWorkspace >> initializeWindow: aMiWindowPresenter [
 	aMiWindowPresenter buildToolbar.
 
 	aMiWindowPresenter whenClosedDo: [ 
-		self buses do: [ :bus | bus unregisterBrowser: self ] ].
-
+		self containedBrowsers do: [ :browser | browser browserClosed ].
+		self buses do: [ :bus | bus unregisterBrowser: self ] ]
 ]
 
 { #category : #actions }

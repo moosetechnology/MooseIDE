@@ -14,11 +14,12 @@ Class {
 	#category : #'MooseIDE-Famix-UML'
 }
 
-{ #category : #specs }
-MiUMLBrowser class >> defaultSpec [
-	^ super defaultSpec
-		add: #diagram;
-		yourself
+{ #category : #layout }
+MiUMLBrowser class >> defaultLayout [
+
+	^ super defaultLayout
+		  add: #diagram;
+		  yourself
 ]
 
 { #category : #'world menu' }

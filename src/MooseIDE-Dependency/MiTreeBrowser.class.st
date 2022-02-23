@@ -14,11 +14,12 @@ Class {
 	#category : #'MooseIDE-Dependency-Tree'
 }
 
-{ #category : #specs }
-MiTreeBrowser class >> defaultSpec [
-	^ super defaultSpec
-		add: #tree;
-		yourself
+{ #category : #layout }
+MiTreeBrowser class >> defaultLayout [
+
+	^ super defaultLayout
+		  add: #tree;
+		  yourself
 ]
 
 { #category : #'world menu' }

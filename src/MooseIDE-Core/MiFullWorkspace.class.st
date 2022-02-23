@@ -15,8 +15,8 @@ Class {
 	#category : #'MooseIDE-Core-workspace'
 }
 
-{ #category : #specs }
-MiFullWorkspace class >> defaultSpec [
+{ #category : #layout }
+MiFullWorkspace class >> defaultLayout [
 	| myLayout |
 	myLayout := SpBoxLayout newTopToBottom.
 	myLayout

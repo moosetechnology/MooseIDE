@@ -14,11 +14,12 @@ Class {
 	#category : #'MooseIDE-Dependency-Dependency'
 }
 
-{ #category : #'world menu' }
-MiDependencyBrowser class >> defaultSpec [
-	^ super defaultSpec
-		add: #diagram;
-		yourself
+{ #category : #layout }
+MiDependencyBrowser class >> defaultLayout [
+
+	^ super defaultLayout
+		  add: #diagram;
+		  yourself
 ]
 
 { #category : #'world menu' }
