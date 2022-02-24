@@ -16,7 +16,7 @@ MiImportFileStructureCommand class >> defaultName [
 	^ 'Import file model from file system'
 ]
 
-{ #category : #hooks }
+{ #category : #executing }
 MiImportFileStructureCommand >> execute [
 
 	MooseModel new

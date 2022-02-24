@@ -9,22 +9,23 @@ Class {
 	#category : #'MooseIDE-Durden'
 }
 
-{ #category : #specs }
-MiDraggableDefaultBrowser class >> defaultSpec [
+{ #category : #layout }
+MiDraggableDefaultBrowser class >> defaultLayout [
+
 	^ SpBoxLayout newVertical
-		add:
-			(SpBoxLayout newHorizontal
-				add: #buttonFollow width: 65;
-				add: #buttonFreeze width: 60;
-				add: #buttonHighlight width: 80;
-				add: SpBoxLayout newHorizontal expand: true;
-				add: #busButton;
-				add: SpBoxLayout newHorizontal expand: true;
-				add: #buttonInspect width: self iconWidth;
-				add: #buttonPropagate expand: false;
-				add: #buttonHelp width: self iconWidth;
-				yourself)
-			withConstraints: [ :constraints | constraints height: self toolbarHeight ];
+		  add: (SpBoxLayout newHorizontal
+				   add: #buttonFollow width: 65;
+				   add: #buttonFreeze width: 60;
+				   add: #buttonHighlight width: 80;
+				   add: SpBoxLayout newHorizontal expand: true;
+				   add: #busButton;
+				   add: SpBoxLayout newHorizontal expand: true;
+				   add: #buttonInspect width: self iconWidth;
+				   add: #buttonPropagate expand: false;
+				   add: #buttonHelp width: self iconWidth;
+				   yourself)
+		  withConstraints: [ :constraints | 
+		  constraints height: self toolbarHeight ];
 		  add: #widget;
 		  yourself
 ]
@@ -47,7 +48,7 @@ MiDraggableDefaultBrowser class >> runMeWith: aClass following: aBus [
 
 	^ (self on: self newModel)
 		  widgetClass: aClass;
-		  openWithSpec;
+		  open;
 		  followBus: aBus;
 		  yourself
 ]

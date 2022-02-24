@@ -22,8 +22,8 @@ Class {
 	#category : #'MooseIDE-Durden'
 }
 
-{ #category : #specs }
-MiDropIntoBrowser class >> defaultSpec [
+{ #category : #layout }
+MiDropIntoBrowser class >> defaultLayout [
 
 	^ SpBoxLayout newTopToBottom
 		  add: #toolbar height: self toolbarHeight;
@@ -31,16 +31,20 @@ MiDropIntoBrowser class >> defaultSpec [
 				   add: (SpPanedLayout newLeftToRight
 						    add: (SpPanedLayout newLeftToRight
 								     add: #left;
-								     add: #middle);
+								     add: #middle;
+								     yourself);
 						    add: #right;
 						    yourself);
 				   add: (SpPanedLayout newLeftToRight
 						    add: (SpPanedLayout newLeftToRight
 								     add: #downLeft;
-								     add: #downMiddle);
+								     add: #downMiddle;
+								     yourself);
 						    add: #downRight;
-						    yourself));
-		  add: #status height: self toolbarHeight
+						    yourself);
+				   yourself);
+		  add: #status height: self toolbarHeight;
+		  yourself
 ]
 
 { #category : #specs }
@@ -54,11 +58,11 @@ MiDropIntoBrowser class >> menuCommandOn: aBuilder [
 		action: [ self open ]
 ]
 
-{ #category : #specs }
+{ #category : #'instance creation' }
 MiDropIntoBrowser class >> open [
 
 	<script>
-	self new openWithSpec
+	self new open
 ]
 
 { #category : #specs }

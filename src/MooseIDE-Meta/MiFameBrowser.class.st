@@ -15,11 +15,12 @@ Class {
 	#category : #'MooseIDE-Meta-FameBrowser'
 }
 
-{ #category : #specs }
-MiFameBrowser class >> defaultSpec [
-	^ super defaultSpec
-		add: #fameDescription;
-		yourself
+{ #category : #layout }
+MiFameBrowser class >> defaultLayout [
+
+	^ super defaultLayout
+		  add: #fameDescription;
+		  yourself
 ]
 
 { #category : #'world menu' }

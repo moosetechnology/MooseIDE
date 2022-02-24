@@ -19,13 +19,6 @@ Class {
 	#category : #'MooseIDE-Tagging-Browser'
 }
 
-{ #category : #specs }
-MiTagBrowser class >> defaultSpec [
-	^super defaultSpec
-		add: #mainPresenter;
-		yourself
-]
-
 { #category : #'world menu' }
 MiTagBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>

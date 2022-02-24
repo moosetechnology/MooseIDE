@@ -34,8 +34,8 @@ Class {
 	#category : #'MooseIDE-NewTools-Inspector tabs'
 }
 
-{ #category : #specs }
-MiFameExtension class >> defaultSpec [
+{ #category : #layout }
+MiFameExtension class >> defaultLayout [
 
 	^ SpBoxLayout newVertical
 		  add: #fameDescription;

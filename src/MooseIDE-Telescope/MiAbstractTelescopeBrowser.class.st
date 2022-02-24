@@ -7,11 +7,12 @@ Class {
 	#category : #'MooseIDE-Telescope-Butterfly'
 }
 
-{ #category : #specs }
-MiAbstractTelescopeBrowser class >> defaultSpec [
-	^ super defaultSpec
-		add: #diagram;
-		yourself
+{ #category : #layout }
+MiAbstractTelescopeBrowser class >> defaultLayout [
+
+	^ super defaultLayout
+		  add: #diagram;
+		  yourself
 ]
 
 { #category : #testing }

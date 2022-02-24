@@ -10,8 +10,8 @@ Class {
 	#category : #'MooseIDE-Meta-Import'
 }
 
-{ #category : #specs }
-MiImportModelFromMSEDialog class >> defaultSpec [
+{ #category : #layout }
+MiImportModelFromMSEDialog class >> defaultLayout [
 
 	^ SpBoxLayout newVertical
 		  add: #mooseModelDroplist

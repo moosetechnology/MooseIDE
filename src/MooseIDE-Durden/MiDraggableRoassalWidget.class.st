@@ -11,12 +11,13 @@ Class {
 	#category : #'MooseIDE-Durden'
 }
 
-{ #category : #specs }
-MiDraggableRoassalWidget class >> defaultSpec [
-	^ super defaultSpec
-		add: #viewport;
-		add: #refresh height: self toolbarHeight; 
-		yourself
+{ #category : #layout }
+MiDraggableRoassalWidget class >> defaultLayout [
+
+	^ super defaultLayout
+		  add: #viewport;
+		  add: #refresh height: self toolbarHeight;
+		  yourself
 ]
 
 { #category : #specs }

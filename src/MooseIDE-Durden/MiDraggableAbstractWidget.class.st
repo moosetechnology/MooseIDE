@@ -22,7 +22,7 @@ MiDraggableAbstractWidget class >> adapterName [
 ]
 
 { #category : #commands }
-MiDraggableAbstractWidget class >> basicDefaultSpec [
+MiDraggableAbstractWidget class >> basicDefaultLayout [
 
 	^ SpBoxLayout newVertical
 		  add: (SpBoxLayout newLeftToRight
@@ -40,10 +40,10 @@ MiDraggableAbstractWidget class >> buildCommandsGroupWith: presenterInstance for
 	rootCommandGroup register: (MiInspectCommand forSpecContext: presenterInstance)
 ]
 
-{ #category : #commands }
-MiDraggableAbstractWidget class >> defaultSpec [
+{ #category : #layout }
+MiDraggableAbstractWidget class >> defaultLayout [
 
-	^ self basicDefaultSpec
+	^ self basicDefaultLayout
 ]
 
 { #category : #commands }

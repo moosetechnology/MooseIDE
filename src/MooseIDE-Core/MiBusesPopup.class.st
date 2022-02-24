@@ -18,8 +18,8 @@ Class {
 	#category : #'MooseIDE-Core-Browser'
 }
 
-{ #category : #specs }
-MiBusesPopup class >> defaultSpec [
+{ #category : #layout }
+MiBusesPopup class >> defaultLayout [
 
 	^ SpBoxLayout newTopToBottom
 		  add: #busesList;

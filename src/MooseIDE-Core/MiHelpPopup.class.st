@@ -9,8 +9,8 @@ Class {
 	#category : #'MooseIDE-Core-Browser'
 }
 
-{ #category : #specs }
-MiHelpPopup class >> defaultSpec [
+{ #category : #layout }
+MiHelpPopup class >> defaultLayout [
 	^ SpBoxLayout newHorizontal
 		borderWidth: 5;
 		add:

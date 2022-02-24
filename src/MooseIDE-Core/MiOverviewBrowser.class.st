@@ -75,8 +75,9 @@ MiOverviewBrowser class >> menuCommandOn: aBuilder [
 
 { #category : #specs }
 MiOverviewBrowser class >> open [
+
 	<script>
-	self new openWithSpec
+	self new open
 ]
 
 { #category : #specs }
@@ -109,6 +110,12 @@ MiOverviewBrowser >> browsersMenu [
 	(self collectMenuItems: browsersMenu)
 		do: [ :item | self replaceMenuItemAction: item ].
 	^ browsersMenu
+]
+
+{ #category : #accessing }
+MiOverviewBrowser >> buses [
+
+	^ self application buses
 ]
 
 { #category : #toolbar }

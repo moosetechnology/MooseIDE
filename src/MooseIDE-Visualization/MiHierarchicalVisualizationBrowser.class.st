@@ -7,10 +7,10 @@ Class {
 	#category : #'MooseIDE-Visualization'
 }
 
-{ #category : #specs }
-MiHierarchicalVisualizationBrowser class >> defaultSpec [
+{ #category : #layout }
+MiHierarchicalVisualizationBrowser class >> defaultLayout [
 
-	^ super defaultSpec
+	^ super defaultLayout
 		  add: #diagram;
 		  yourself
 ]

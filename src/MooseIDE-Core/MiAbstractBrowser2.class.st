@@ -102,6 +102,14 @@ MiAbstractBrowser2 >> browserClosed [
 	
 ]
 
+{ #category : #accessing }
+MiAbstractBrowser2 >> buses [
+
+	self flag:
+		'Method present for compatibility reason. Should probably be removed'.
+	^ {  }
+]
+
 { #category : #testing }
 MiAbstractBrowser2 >> canFollow [
 

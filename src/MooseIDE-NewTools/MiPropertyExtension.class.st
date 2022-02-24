@@ -8,8 +8,8 @@ Class {
 	#category : #'MooseIDE-NewTools-Inspector tabs'
 }
 
-{ #category : #specs }
-MiPropertyExtension class >> defaultSpec [
+{ #category : #layout }
+MiPropertyExtension class >> defaultLayout [
 
 	^ SpBoxLayout newVertical
 		  add: #properties;

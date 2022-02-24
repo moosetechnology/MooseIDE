@@ -8,11 +8,12 @@ Class {
 	#category : #'MooseIDE-Core-Browser'
 }
 
-{ #category : #specs }
-MiNullBrowser class >> defaultSpec [ 
-	^super defaultSpec 
-		add: ('I am a ' , self name) ;
-		yourself
+{ #category : #layout }
+MiNullBrowser class >> defaultLayout [
+
+	^ super defaultLayout
+		  add: 'I am a ' , self name;
+		  yourself
 ]
 
 { #category : #accessing }

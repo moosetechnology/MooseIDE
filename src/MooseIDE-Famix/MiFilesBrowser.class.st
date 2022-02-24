@@ -18,15 +18,15 @@ Class {
 	#category : #'MooseIDE-Famix-FilesBrowser'
 }
 
-{ #category : #specs }
-MiFilesBrowser class >> defaultSpec [
-	^ super defaultSpec
-		add:
-			(SpBoxLayout newHorizontal
-				add: #tree;
-				add: #treeEntity;
-				yourself);
-		yourself
+{ #category : #layout }
+MiFilesBrowser class >> defaultLayout [
+
+	^ super defaultLayout
+		  add: (SpBoxLayout newHorizontal
+				   add: #tree;
+				   add: #treeEntity;
+				   yourself);
+		  yourself
 ]
 
 { #category : #'world menu' }

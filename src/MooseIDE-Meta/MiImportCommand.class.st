@@ -47,8 +47,8 @@ MiImportCommand class >> isAbstract [
 	^ self = MiImportCommand
 ]
 
-{ #category : #hooks }
+{ #category : #executing }
 MiImportCommand >> execute [
 
-	(self class importForm on: self context) openDialogWithSpec
+	(self class importForm on: self context) openDialog
 ]

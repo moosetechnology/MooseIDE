@@ -4,8 +4,8 @@ Class {
 	#category : #'MooseIDE-Tagging-Browser'
 }
 
-{ #category : #specs }
-MiTagListPresenter class >> defaultSpec [
+{ #category : #layout }
+MiTagListPresenter class >> defaultLayout [
 
 	^ SpBoxLayout newTopToBottom
 		  add: #addButton expand: false;

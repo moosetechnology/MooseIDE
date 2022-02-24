@@ -14,8 +14,8 @@ Class {
 	#category : #'MooseIDE-NewTools-Playground'
 }
 
-{ #category : #specs }
-MiPlaygroundModelsPresenter class >> defaultSpec [
+{ #category : #layout }
+MiPlaygroundModelsPresenter class >> defaultLayout [
 
 	^ SpPanedLayout newLeftToRight
 		  positionOfSlider: 30 percent;
