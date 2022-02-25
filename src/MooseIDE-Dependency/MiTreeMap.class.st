@@ -49,6 +49,17 @@ MiTreeMap >> colorFor: aNode [
 	^ (super colorFor: aNode) alpha: 0.4
 ]
 
+{ #category : #helpers }
+MiTreeMap >> createPopupMorphFor: model [
+	^ model asString asTextMorph
+		fontName: 'Bitmap DejaVu Sans' pointSize: 11;
+		backgroundColor: (Smalltalk ui theme backgroundColor alpha: 0.8);
+		borderColor: Color black;
+		borderWidth: 1;
+		margins: 15;
+		yourself
+]
+
 { #category : #highlighting }
 MiTreeMap >> highlightShapes [
 	self visibleShapes
@@ -62,24 +73,12 @@ MiTreeMap >> initialize [
 
 	super initialize.
 	base := RSComposite new
-		        draggable;
-		        popup;
-		        when: RSMouseLeftClick
-		        do: [ :evt | self processEvent: evt ].
-
-	childrenBlock := [ :entity | entity children ]
-]
-
-{ #category : #helpers }
-MiTreeMap >> nodeFor: anEntity [
-
-	| com |
-	com := base copy.
-	com model: anEntity.
-	com border: (self borderFor: anEntity).
-	com announcer: base announcer.
-	com color: (self colorFor: anEntity).
-	com @ (RSMenuActivable new menuDo: [ :menu :box | 
+		draggable;
+		addInteraction: (RSMorphicPopupInteraction new
+			morphBuilder: [:model | self createPopupMorphFor: model ]);
+		when: RSMouseLeftClick
+		 	do: [ :evt | self processEvent: evt ].
+	base @ (RSMenuActivable new menuDo: [ :menu :box | 
 		 menu
 			 add: 'Inspect'
 			 target: MiInspectorBrowser
@@ -87,6 +86,17 @@ MiTreeMap >> nodeFor: anEntity [
 			 argumentList: { 
 					 box model.
 					 self owner buses } ]).
+	childrenBlock := [ :entity | entity children ]
+]
+
+{ #category : #helpers }
+MiTreeMap >> nodeFor: anEntity [
+	| com |
+	com := base copy.
+	com model: anEntity.
+	com border: (self borderFor: anEntity).
+	com announcer: base announcer.
+	com color: (self colorFor: anEntity).
 	^ com
 ]
 
