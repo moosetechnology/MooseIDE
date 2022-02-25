@@ -66,7 +66,7 @@ MiTreeMapVisualisationBrowser >> canHighlight [
 
 { #category : #actions }
 MiTreeMapVisualisationBrowser >> followEntity: anEntity [
-
+	self window title: self class title, '-' , anEntity name.
 	model entities: anEntity rootsForTreeMap.
 	diagram run
 ]
