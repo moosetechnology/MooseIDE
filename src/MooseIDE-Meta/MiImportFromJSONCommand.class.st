@@ -1,35 +1,35 @@
 Class {
-	#name : #MiImportJSONCommand,
+	#name : #MiImportFromJSONCommand,
 	#superclass : #MiImportCommand,
 	#category : #'MooseIDE-Meta-Import'
 }
 
 { #category : #default }
-MiImportJSONCommand class >> defaultDescription [
+MiImportFromJSONCommand class >> defaultDescription [
 
 	^ 'Import model from JSON file'
 ]
 
 { #category : #default }
-MiImportJSONCommand class >> defaultIcon [
+MiImportFromJSONCommand class >> defaultIcon [
 
 	^ MooseIcons mooseImportJson
 ]
 
 { #category : #default }
-MiImportJSONCommand class >> defaultIconName [
+MiImportFromJSONCommand class >> defaultIconName [
 
 	^ #mooseImportJson
 ]
 
 { #category : #default }
-MiImportJSONCommand class >> defaultName [
+MiImportFromJSONCommand class >> defaultName [
 
 	^ 'Import from JSON'
 ]
 
 { #category : #accessing }
-MiImportJSONCommand class >> importForm [
+MiImportFromJSONCommand class >> importForm [
 
 	^ MiImportModelFromJSONDialog
 ]
