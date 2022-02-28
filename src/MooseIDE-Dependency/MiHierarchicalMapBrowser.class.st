@@ -94,7 +94,7 @@ MiHierarchicalMapBrowser >> closeTagCreationForm [
 { #category : #brokerage }
 MiHierarchicalMapBrowser >> consume: aTag [
 
-	tagCreateForm addTag: aTag
+	tagCreateForm setTags
 ]
 
 { #category : #actions }

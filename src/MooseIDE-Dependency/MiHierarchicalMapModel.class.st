@@ -89,9 +89,10 @@ MiHierarchicalMapModel >> colorForDynamicTag: aDynamicTag [
 { #category : #'as yet unclassified' }
 MiHierarchicalMapModel >> dynamicTagFor: anEntity [
 
+	1halt.
 	^ self dynamicTags
 		  detect: [ :dt | dt isApplicableTo: anEntity ]
-		  ifNone: [ MiNullDynamicTag new ]
+		  ifNone: [ nil ]
 ]
 
 { #category : #accessing }

@@ -199,7 +199,8 @@ MiTagCreationForm >> reset [
 	nameField text: ''.
 	descriptionField text: ''.
 	categorySelection resetSelection.
-	queryList resetSelection
+	queryList resetSelection.
+	self updateQueryList
 ]
 
 { #category : #private }

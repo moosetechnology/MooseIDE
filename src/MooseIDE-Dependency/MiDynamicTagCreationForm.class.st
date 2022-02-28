@@ -42,7 +42,10 @@ MiDynamicTagCreationForm >> initializeLayout [
 					  add: 'Select tags' asPresenter;
 					  yourself)
 			 expand: false;
-			 add: tagList;
+			 add: tagList
+			 expand: true
+			 fill: true
+			 padding: 10;
 			 add: (SpBoxLayout newLeftToRight
 					  add: cancelButton;
 					  add: submitButton;
@@ -79,7 +82,8 @@ MiDynamicTagCreationForm >> reset [
 { #category : #initialization }
 MiDynamicTagCreationForm >> setTags [
 
-	tagList items: (self root application itemsFor: MiDynamicTag) asMooseGroup
+	tagList items: (self root application itemsFor: MiDynamicTag) asMooseGroup.
+	tagList refresh
 ]
 
 { #category : #initialization }
@@ -89,4 +93,16 @@ MiDynamicTagCreationForm >> submit [
 	self owner addDynamicTags: tagList selectedItems.
 	self reset.
 	self owner closeTagCreationForm
+]
+
+{ #category : #accessing }
+MiDynamicTagCreationForm >> tagList [
+
+	^ tagList
+]
+
+{ #category : #accessing }
+MiDynamicTagCreationForm >> tagList: anObject [
+
+	^ tagList := anObject
 ]
