@@ -40,6 +40,18 @@ MiTagManagementPage >> descriptionPage [
 	^ descriptionPage
 ]
 
+{ #category : #accessing }
+MiTagManagementPage >> dynamicTagButton [
+
+	^ dynamicTagButton
+]
+
+{ #category : #accessing }
+MiTagManagementPage >> dynamicTagDescriptionPage [
+
+	^ dynamicTagDescriptionPage
+]
+
 { #category : #action }
 MiTagManagementPage >> editCurrentTag [
 
@@ -203,6 +215,18 @@ MiTagManagementPage >> setTagTo: aTag [
 	descriptionPage show.
 	descriptionPage refresh.
 	self update
+]
+
+{ #category : #accessing }
+MiTagManagementPage >> tagButton [
+
+	^ tagButton
+]
+
+{ #category : #accessing }
+MiTagManagementPage >> tagList [
+
+	^ tagList
 ]
 
 { #category : #accessing }

@@ -119,7 +119,6 @@ MiTagBrowser >> createDynamicTag: name description: aText color: aColor category
 	aQuery
 		ifNotNil: [ newTag query: aQuery ]
 		ifNil: [ newTag query: FQNullQuery new ].
-	
 	tagModel addDynamicTag: newTag.
 	application consumeItem: newTag.
 	tagManagementPage refreshTagList
@@ -276,6 +275,18 @@ MiTagBrowser >> setModelBeforeInitialization: aTagModel [
 MiTagBrowser >> setTagTo: aTag [
 
 	self tagModel currentTag: aTag.
+]
+
+{ #category : #accessing }
+MiTagBrowser >> tagCreationForm [
+
+	^ tagCreationForm
+]
+
+{ #category : #accessing }
+MiTagBrowser >> tagManagementPage [
+
+	^ tagManagementPage
 ]
 
 { #category : #testing }

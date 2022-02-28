@@ -26,17 +26,28 @@ MiTagCreationForm >> cancel [
 	self owner closeTagCreationForm
 ]
 
+{ #category : #accessing }
+MiTagCreationForm >> cancelButton [
+
+	^ cancelButton
+]
+
+{ #category : #accessing }
+MiTagCreationForm >> categorySelection [
+
+	^ categorySelection
+]
+
 { #category : #initialization }
 MiTagCreationForm >> checkFormInputs [
 
 	nameField text ifEmpty: [ ^ false ].
-	(isIntent and: [queryList selectedItem]) ifNil: [ ^ false ].
 	^ true
 ]
 
 { #category : #private }
 MiTagCreationForm >> connectPresenters [
-
+	
 	extentButton action: [ self setExtentForm ].
 	intentButton action: [ self setIntentForm ].
 	cancelButton action: [ self cancel ].
@@ -47,6 +58,12 @@ MiTagCreationForm >> connectPresenters [
 MiTagCreationForm >> consume: aQuery [
 
 	self updateQueryList
+]
+
+{ #category : #accessing }
+MiTagCreationForm >> extentButton [
+
+	^ extentButton
 ]
 
 { #category : #initialization }
@@ -186,6 +203,30 @@ MiTagCreationForm >> initializePresenters [
 	self initializeLayout
 ]
 
+{ #category : #accessing }
+MiTagCreationForm >> intentButton [
+
+	^ intentButton
+]
+
+{ #category : #accessing }
+MiTagCreationForm >> nameField [
+
+	^ nameField
+]
+
+{ #category : #accessing }
+MiTagCreationForm >> queryList [
+
+	^ queryList
+]
+
+{ #category : #accessing }
+MiTagCreationForm >> queryListLabeled [
+
+	^ queryListLabeled
+]
+
 { #category : #brokerage }
 MiTagCreationForm >> remove: aQuery [
 
@@ -268,6 +309,12 @@ MiTagCreationForm >> submit [
 				category: categorySelection selectedItem
 				query: queryList selectedItem ].
 	self owner closeTagCreationForm
+]
+
+{ #category : #accessing }
+MiTagCreationForm >> submitButton [
+
+	^ submitButton
 ]
 
 { #category : #private }
