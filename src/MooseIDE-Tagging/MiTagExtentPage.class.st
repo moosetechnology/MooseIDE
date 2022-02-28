@@ -22,10 +22,10 @@ Class {
 MiTagExtentPage >> add [
 
 	self currentTag ifNil: [ ^ self ].
-
 	incomingEntitiesFilteringList selectedItem ifNotNil: [ :entity | 
 		self tagModel tagEntityNotYourself: entity ].
-	self refreshTaggedEntitiesList
+	self refreshTaggedEntitiesList.
+	self refreshEntitiesList
 ]
 
 { #category : #action }
@@ -137,7 +137,7 @@ MiTagExtentPage >> refresh [
 { #category : #refreshing }
 MiTagExtentPage >> refreshEntitiesList [
 	
-	incomingEntitiesFilteringList items: self tagModel entities
+	incomingEntitiesFilteringList items: self tagModel entities asCollection  \ self taggedEntities asCollection
 ]
 
 { #category : #refreshing }
@@ -151,7 +151,8 @@ MiTagExtentPage >> remove [
 	self currentTag ifNil: [ ^ self ].
 	taggedEntitiesFilteringList selectedItem ifNotNil: [ :entity | 
 		self tagModel untagEntity: entity ].
-	self refreshTaggedEntitiesList
+	self refreshTaggedEntitiesList.
+	self refreshEntitiesList
 ]
 
 { #category : #action }
@@ -160,7 +161,8 @@ MiTagExtentPage >> removeAll [
 	self currentTag ifNil: [ ^ self ].
 	taggedEntitiesFilteringList items do: [ :entity | 
 		self tagModel untagEntity: entity ].
-	self refreshTaggedEntitiesList
+	self refreshTaggedEntitiesList.
+	self refreshEntitiesList
 ]
 
 { #category : #accessing }
