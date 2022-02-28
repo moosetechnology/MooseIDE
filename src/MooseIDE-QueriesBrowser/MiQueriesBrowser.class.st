@@ -195,7 +195,8 @@ MiQueriesBrowser >> removeChild: childToRemove fromParent: aParent [
 { #category : #'api - actions' }
 MiQueriesBrowser >> removeQuery: aQuery [
 
-	self removeChild: aQuery fromParent: rootQuery
+	self removeChild: aQuery fromParent: rootQuery.
+	application removeItem: aQuery
 ]
 
 { #category : #'api - actions' }

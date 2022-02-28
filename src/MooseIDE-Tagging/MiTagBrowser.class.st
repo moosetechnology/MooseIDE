@@ -277,6 +277,18 @@ MiTagBrowser >> setTagTo: aTag [
 	self tagModel currentTag: aTag.
 ]
 
+{ #category : #accessing }
+MiTagBrowser >> tagCreationForm [
+
+	^ tagCreationForm
+]
+
+{ #category : #accessing }
+MiTagBrowser >> tagManagementPage [
+
+	^ tagManagementPage
+]
+
 { #category : #testing }
 MiTagBrowser >> tagModel [
 
