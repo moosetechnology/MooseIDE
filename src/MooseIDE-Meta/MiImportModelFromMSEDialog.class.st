@@ -29,6 +29,7 @@ MiImportModelFromMSEDialog class >> open [
 
 { #category : #specs }
 MiImportModelFromMSEDialog class >> title [
+
 	^ 'Import model from MSE file'
 ]
 
