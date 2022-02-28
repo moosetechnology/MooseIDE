@@ -113,8 +113,7 @@ MiImportModelFromFileDialog >> initializePresenters [
 			                      (MooseModel withAllSubclasses reject: [ 
 					                       :model | 
 					                       model isDeprecated or: [ 
-							                       model isTestModel ] ]);
-		                      selectItem: MooseModel;
+							                       model canBeImportedFromFile not ] ]);
 		                      yourself.
 	filePathInput := self newTextInput placeholder:
 		                 FileLocator home asFileReference pathString.
