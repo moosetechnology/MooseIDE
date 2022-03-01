@@ -29,6 +29,7 @@ MiImportModelFromMSEDialog class >> open [
 
 { #category : #specs }
 MiImportModelFromMSEDialog class >> title [
+
 	^ 'Import model from MSE file'
 ]
 
@@ -43,11 +44,12 @@ MiImportModelFromMSEDialog >> initializePresenters [
 
 	super initializePresenters.
 	mooseModelDroplist := self newDropList
-		items:
-			(MooseModel withAllSubclasses reject: [ :model | 
-				model isDeprecated or: [ model isTestModel ] ]);
-		selectItem: MooseModel;
-		yourself
+		                      items:
+			                      (MooseModel withAllSubclasses reject: [ 
+					                       :model | 
+					                       model isDeprecated or: [ 
+							                       model canBeImportedFromFile not ] ]);
+		                      yourself
 ]
 
 { #category : #action }

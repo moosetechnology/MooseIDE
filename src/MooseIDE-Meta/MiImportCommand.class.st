@@ -19,9 +19,8 @@ Class {
 MiImportCommand class >> addToSpCommandGroup: aSpCommandGroup forSpecContext: aPresenter [
 
 	{ 
-		MiImportMSECommand.
-		MiImportSTCommand.
-		MiImportJSONCommand } do: [ :cmd | 
+		MiImportFromFileCommand.
+		MiImportFromSTCommand } do: [ :cmd | 
 		aSpCommandGroup register: ((cmd forSpecContext: aPresenter)
 				 iconName: cmd defaultIconName;
 				 yourself) ].

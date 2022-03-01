@@ -22,10 +22,10 @@ MiMooseModelBrowserTests >> browserClass [
 
 { #category : #running }
 MiMooseModelBrowserTests >> setUp [
-
+	super setUp.
 	savedRoot := MooseModelRoot installedRoot.
 	MooseModelRoot resetRoot.
-	super setUp
+	
 ]
 
 { #category : #running }
