@@ -9,8 +9,7 @@ Class {
 		'modelNameInput',
 		'rootFolderInput',
 		'rootFolderButton',
-		'modelFile',
-		'rootFolder'
+		'modelFile'
 	],
 	#category : #'MooseIDE-Meta-Import'
 }
@@ -33,7 +32,13 @@ MiImportModelFromFileDialog class >> title [
 { #category : #accessing }
 MiImportModelFromFileDialog class >> windowExtent [
 
-	^ 500 @ 220
+	^ 600 @ 220
+]
+
+{ #category : #action }
+MiImportModelFromFileDialog >> defaultDirectory [
+
+	^ FileLocator home
 ]
 
 { #category : #action }
@@ -44,11 +49,22 @@ MiImportModelFromFileDialog >> getModelFile [
 		              chooseExistingFileReference:
 		              'Select your model source file, MSE or JSON'
 		              extensions: #( 'mse' 'json' )
-		              path: FileLocator home.
+		              path:
+			              (modelFile
+				               ifNil: [ self defaultDirectory ]
+				               ifNotNil: [ 
+					               modelFile isFile
+						               ifTrue: [ modelFile parent ]
+						               ifFalse: [ modelFile ] ]).
 
-	chosenFile ifNotNil: [ 
-		self modelFile: chosenFile.
-		self updateSubpresenters ]
+	chosenFile ifNotNil: [ self updateForModelFile: chosenFile ]
+]
+
+{ #category : #action }
+MiImportModelFromFileDialog >> getModelFileFromTextInput [
+
+	filePathInput text ifNotEmpty: [ 
+		self updateForModelFile: filePathInput text asFileReference ]
 ]
 
 { #category : #action }
@@ -58,11 +74,47 @@ MiImportModelFromFileDialog >> getRootFolder [
 	chosenDirectory := UIManager default
 		                   chooseDirectory:
 		                   'Select your model root directory'
-		                   path:
-		                   (modelFile parent ifNil: [ FileLocator home ]).
+		                   path: (modelFile
+				                    ifNotNil: [ modelFile parent ]
+				                    ifNil: [ self defaultDirectory ]).
+
 	chosenDirectory ifNotNil: [ 
-		self rootFolder: chosenDirectory.
 		rootFolderInput text: chosenDirectory asFileReference pathString ]
+]
+
+{ #category : #action }
+MiImportModelFromFileDialog >> importModel [
+
+	| rootFolder mooseModel |
+	
+	"If rootFolderInput isEmpty, rootFolder will be nil. That is expected."
+	rootFolderInput text ifNotEmpty: [ 
+		rootFolder := rootFolderInput text asFileReference.
+		rootFolder isDirectory ifFalse: [ 
+			self error: 'Your root folder path is incorrect' ] ].
+
+	mooseModel := super importModel.
+	mooseModel ifNotNil: [ mooseModel rootFolder: rootFolder ].
+	^ mooseModel
+]
+
+{ #category : #initialization }
+MiImportModelFromFileDialog >> initializeFilePathWidgets [
+
+	filePathInput := self newTextInput
+		                 placeholder:
+			                 self defaultDirectory asFileReference pathString;
+		                 whenSubmitDo: [ self getModelFileFromTextInput ];
+		                 help:
+			                 'Tip: to choose a file in the directory of this Pharo image, type ''local/path/to/myFile.mse''';
+		                 yourself.
+
+	filePathInput eventHandler whenFocusLostDo: [ 
+		self getModelFileFromTextInput ].
+
+	filePathButton := self newButton
+		                  action: [ self getModelFile ];
+		                  icon: (self iconNamed: #open)
 ]
 
 { #category : #initialization }
@@ -84,21 +136,21 @@ MiImportModelFromFileDialog >> initializeLayout [
 					  spacing: spacing;
 					  add: 'File path:' width: labelWidth;
 					  add: filePathInput;
-					  add: filePathButton width: 25;
+					  add: filePathButton width: size;
 					  yourself)
 			 height: size;
 			 add: (SpBoxLayout newLeftToRight
 					  spacing: spacing;
 					  add: 'Model name:' width: labelWidth;
 					  add: modelNameInput;
-					  add: self newNullPresenter width: 25;
+					  add: self newNullPresenter width: size;
 					  yourself)
 			 height: size;
 			 add: (SpBoxLayout newLeftToRight
 					  spacing: spacing;
 					  add: 'Root folder (optional):' width: labelWidth;
 					  add: rootFolderInput;
-					  add: rootFolderButton width: 25;
+					  add: rootFolderButton width: size;
 					  yourself)
 			 height: size;
 			 yourself)
@@ -108,6 +160,7 @@ MiImportModelFromFileDialog >> initializeLayout [
 MiImportModelFromFileDialog >> initializePresenters [
 
 	super initializePresenters.
+
 	mooseModelDroplist := self newDropList
 		                      items:
 			                      (MooseModel withAllSubclasses reject: [ 
@@ -115,12 +168,11 @@ MiImportModelFromFileDialog >> initializePresenters [
 					                       model isDeprecated or: [ 
 							                       model canBeImportedFromFile not ] ]);
 		                      yourself.
-	filePathInput := self newTextInput placeholder:
-		                 FileLocator home asFileReference pathString.
-	filePathButton := self newButton
-		                  action: [ self getModelFile ];
-		                  icon: (self iconNamed: #open).
+
+	self initializeFilePathWidgets.
+
 	modelNameInput := self newTextInput placeholder: 'MooseModel'.
+
 	rootFolderInput := self newTextInput.
 	rootFolderButton := self newButton
 		                    action: [ self getRootFolder ];
@@ -128,17 +180,15 @@ MiImportModelFromFileDialog >> initializePresenters [
 	self initializeLayout
 ]
 
-{ #category : #accessing }
-MiImportModelFromFileDialog >> modelFile: aFile [
-
-	modelFile := aFile
-]
-
 { #category : #action }
 MiImportModelFromFileDialog >> privateImportModel [
 
 	| model stream |
 	model := mooseModelDroplist selectedItem new.
+
+	(modelFile isFile and: [ 
+		 { 'mse'. 'json' } includes: modelFile extension ]) ifFalse: [ 
+		self error: 'Your model file path is incorrect: please specify a MSE or JSON file' ].
 
 	stream := modelFile readStream.
 	modelFile extension = 'mse' ifTrue: [ 
@@ -153,19 +203,9 @@ MiImportModelFromFileDialog >> privateImportModel [
 ]
 
 { #category : #accessing }
-MiImportModelFromFileDialog >> rootFolder: aFolder [
+MiImportModelFromFileDialog >> updateForModelFile: aFile [
 
-	rootFolder := aFolder
-]
-
-{ #category : #initialization }
-MiImportModelFromFileDialog >> setRootFolderIfAvailableForModel: aModel [
-
-	rootFolder ifNotNil: [ aModel rootFolder: rootFolder fullName ]
-]
-
-{ #category : #action }
-MiImportModelFromFileDialog >> updateSubpresenters [
+	modelFile := aFile.
 
 	filePathInput text: modelFile asFileReference pathString.
 	modelNameInput text: modelFile basenameWithoutExtension

@@ -27,8 +27,7 @@ MiImportModelFromFileDialogTest >> testAddingFilePathUpdatesFilePathInput [
 	| jsonFile |
 	jsonFile := FileLocator home / 'nonExistingFile' / 'myModel.json'.
 
-	dialog modelFile: jsonFile.
-	dialog updateSubpresenters.
+	dialog updateForModelFile: jsonFile.
 
 	self
 		assert: (dialog presenterAt: #filePathInput) text
@@ -41,8 +40,7 @@ MiImportModelFromFileDialogTest >> testAddingFilePathUpdatesModelName [
 	| jsonFile |
 	jsonFile := FileLocator home / 'nonExistingFile' / 'myModel.json'.
 
-	dialog modelFile: jsonFile.
-	dialog updateSubpresenters.
+	dialog updateForModelFile: jsonFile.
 
 	self
 		assert: (dialog presenterAt: #modelNameInput) text
