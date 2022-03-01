@@ -208,5 +208,16 @@ MiImportModelFromFileDialog >> updateForModelFile: aFile [
 	modelFile := aFile.
 
 	filePathInput text: modelFile asFileReference pathString.
-	modelNameInput text: modelFile basenameWithoutExtension
+	modelNameInput text: modelFile basenameWithoutExtension.
+	rootFolderInput text: modelFile asFileReference parent pathString.
+
+]
+
+{ #category : #action }
+MiImportModelFromFileDialog >> validateImportForm [
+	"checks that required fields are properly filled in"
+	filePathInput text ifEmpty: [ Error signal: 'Please choose an input file' ].
+	filePathInput text asFileReference exists ifFalse: [ Error signal: 'File path not found' ].
+	modelNameInput text ifEmpty: [ Error signal: 'Please name the model' ].
+	rootFolderInput text asFileReference isDirectory ifFalse: [ Error signal: 'Root folder path is not a directory' ].
 ]

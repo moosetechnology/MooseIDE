@@ -39,6 +39,10 @@ MiImportModelDialog >> importModel [
 MiImportModelDialog >> importModelThenCloseDialogWindow: aDialog [
 
 	| mooseModel |
+	[self validateImportForm]  onErrorDo: [ :err | 
+		UIManager default alert: 'Invalid input: ' , err messageText.
+		^ self ].
+
 	mooseModel := [ self importModel ] onErrorDo: [ :err | 
 		              UIManager default alert:
 			              'Import error: ' , err messageText.
@@ -77,4 +81,10 @@ MiImportModelDialog >> updateBrowserWith: mooseModel [
 
 	originBrowser ifNotNil: [ 
 		originBrowser updateForNewModel: mooseModel ]
+]
+
+{ #category : #action }
+MiImportModelDialog >> validateImportForm [
+	"checks that required fields are properly filled in"
+	self subclassResponsibility 
 ]
