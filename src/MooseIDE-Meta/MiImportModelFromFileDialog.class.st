@@ -208,13 +208,6 @@ MiImportModelFromFileDialog >> updateForModelFile: aFile [
 	modelFile := aFile.
 
 	filePathInput text: modelFile asFileReference pathString.
-	modelNameInput text: modelFile basenameWithoutExtension
-]
-
-{ #category : #action }
-MiImportModelFromFileDialog >> updateSubpresenters [
-
-	filePathInput text: modelFile asFileReference pathString.
 	modelNameInput text: modelFile basenameWithoutExtension.
 	rootFolderInput text: modelFile asFileReference parent pathString.
 
