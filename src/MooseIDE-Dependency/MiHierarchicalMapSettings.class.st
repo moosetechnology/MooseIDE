@@ -11,7 +11,8 @@ Class {
 	#instVars : [
 		'submitButton',
 		'childrenBlockArea',
-		'dynamicTagList'
+		'dynamicTagList',
+		'childrenQueryDropList'
 	],
 	#category : #'MooseIDE-Dependency-HierarchicalMap'
 }
@@ -23,21 +24,31 @@ MiHierarchicalMapSettings >> connectPresenters [
 	dynamicTagList addButton action: [ self owner openTagCreationForm ]
 ]
 
+{ #category : #brokerage }
+MiHierarchicalMapSettings >> consume: aQuery [
+
+	childrenQueryDropList items: self fetchQueries.
+]
+
+{ #category : #initialization }
+MiHierarchicalMapSettings >> fetchQueries [
+
+	^ (self root application itemsFor: FQAbstractQuery)
+		  asOrderedCollection select: [ :query | query isValid ]
+]
+
 { #category : #initialization }
 MiHierarchicalMapSettings >> fillModelWithCurrentSettings [
 
-	self model childrenBlock: (Smalltalk compiler
-			 source: childrenBlockArea text;
-			 logged: false;
-			 evaluate)
+	self model childrenQuery: childrenQueryDropList selectedItem
 ]
 
 { #category : #initialization }
 MiHierarchicalMapSettings >> initializeLayout [
 
 	self layout: (SpBoxLayout newTopToBottom
-			 add: (self newLabel label: 'Children block:') expand: false;
-			 add: childrenBlockArea;
+			 add: (self newLabel label: 'Children query:') expand: false;
+			 add: childrenQueryDropList expand: false;
 			 add: 'Properties:' asPresenter expand: false;
 			 add: dynamicTagList;
 			 add: submitButton expand: false;
@@ -49,8 +60,12 @@ MiHierarchicalMapSettings >> initializePresenters [
 
 	super initializePresenters.
 	submitButton := self newButton
-		                label: 'Draw';
+		                label: 'Apply';
 		                yourself.
+	childrenQueryDropList := self newDropList
+		                         startWithoutSelection;
+		                         items: self fetchQueries;
+		                         yourself.
 	childrenBlockArea := self newCode
 		                     withoutLineNumbers;
 		                     text: (self owner model childrenBlock
@@ -80,10 +95,17 @@ MiHierarchicalMapSettings >> refreshTagList [
 	dynamicTagList items: self model dynamicTags
 ]
 
+{ #category : #brokerage }
+MiHierarchicalMapSettings >> remove: aQuery [
+
+	childrenQueryDropList items: self fetchQueries
+]
+
 { #category : #initialization }
 MiHierarchicalMapSettings >> submit [
 
 	| ow |
+	childrenQueryDropList selectedItem ifNil: [ ^self ].
 	ow := self owner.
 	self fillModelWithCurrentSettings.
 	ow visualization run.

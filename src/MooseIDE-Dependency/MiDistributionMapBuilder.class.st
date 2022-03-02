@@ -134,7 +134,7 @@ MiDistributionMapBuilder >> buildNodeFromEntity: anEntity [
 		  name:
 			  (String streamContents: [ :s | anEntity displayStringOn: s ]);
 		  rawModel: anEntity;
-		  addAll: ((self childrenBlock value: anEntity) collect: [ :n | 
+		  addAll: ((self mapModel childrenFor: anEntity) collect: [ :n | 
 					   HNode new
 						   name: (String streamContents: [ :s | n displayStringOn: s ]);
 						   rawModel: n;

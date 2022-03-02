@@ -64,7 +64,8 @@ MiHierarchicalMapBrowser >> addmenuButtonToCanvas [
 MiHierarchicalMapBrowser >> browserClosed [
 
 	super browserClosed.
-	application unregisterConsumer: self
+	application unregisterConsumer: self.
+	application unregisterConsumer: settings
 ]
 
 { #category : #actions }
@@ -109,14 +110,16 @@ MiHierarchicalMapBrowser >> hideMenu [
 
 	settingsToggle text: '> Show settings'.
 	settingsToggle translateTopLeftTo: 5 @ 0.
-	self layout remove: settings
+	self layout remove: settings.
+	self update
 ]
 
 { #category : #initialization }
 MiHierarchicalMapBrowser >> initialize [
 
 	super initialize.
-	application registerConsumer: self for: MiDynamicTag
+	application registerConsumer: self for: MiDynamicTag.
+	application registerConsumer: settings for: FQAbstractQuery
 ]
 
 { #category : #initialization }
@@ -166,7 +169,9 @@ MiHierarchicalMapBrowser >> showMenu [
 	self layout
 		removeAll;
 		add: settings width: self class windowSize x / 3;
-		add: visualization
+		add: visualization.
+
+	self update
 ]
 
 { #category : #actions }

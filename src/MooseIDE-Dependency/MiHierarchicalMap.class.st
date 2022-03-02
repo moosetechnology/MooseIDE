@@ -13,6 +13,12 @@ Class {
 	#category : #'MooseIDE-Dependency-HierarchicalMap'
 }
 
+{ #category : #highlighting }
+MiHierarchicalMap >> highlightShapes [
+	
+
+]
+
 { #category : #running }
 MiHierarchicalMap >> run [
 

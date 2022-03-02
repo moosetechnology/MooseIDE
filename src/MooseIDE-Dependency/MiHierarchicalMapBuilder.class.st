@@ -146,13 +146,13 @@ MiHierarchicalMapBuilder >> buildLegend [
 
 { #category : #building }
 MiHierarchicalMapBuilder >> buildNodeFromEntity: anEntity [
-	
+
 	^ HNode new
 		  name:
 			  (String streamContents: [ :s | anEntity displayStringOn: s ]);
 		  rawModel: anEntity;
-		  addAll:
-			  ((self childrenBlock value: anEntity) collect: [ :e | self buildNodeFromEntity: e ]);
+		  addAll: ((self mapModel childrenFor: anEntity) collect: [ :e | 
+					   self buildNodeFromEntity: e ]);
 		  collapse;
 		  yourself
 ]

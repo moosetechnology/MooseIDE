@@ -11,7 +11,8 @@ Class {
 		'entities',
 		'dynamicTags',
 		'childrenBlock',
-		'colorScale'
+		'colorScale',
+		'childrenQuery'
 	],
 	#category : #'MooseIDE-Dependency-HierarchicalMap'
 }
@@ -69,6 +70,24 @@ MiHierarchicalMapModel >> childrenBlock: anObject [
 	childrenBlock := anObject
 ]
 
+{ #category : #accessing }
+MiHierarchicalMapModel >> childrenFor: anEntity [
+
+	^ childrenQuery runOn: anEntity asMooseGroup
+]
+
+{ #category : #accessing }
+MiHierarchicalMapModel >> childrenQuery [
+
+	^ childrenQuery
+]
+
+{ #category : #accessing }
+MiHierarchicalMapModel >> childrenQuery: anObject [
+
+	childrenQuery := anObject
+]
+
 { #category : #'as yet unclassified' }
 MiHierarchicalMapModel >> colorFor: anEntity [
 	
@@ -89,10 +108,9 @@ MiHierarchicalMapModel >> colorForDynamicTag: aDynamicTag [
 { #category : #'as yet unclassified' }
 MiHierarchicalMapModel >> dynamicTagFor: anEntity [
 
-	1halt.
 	^ self dynamicTags
 		  detect: [ :dt | dt isApplicableTo: anEntity ]
-		  ifNone: [ nil ]
+		  ifNone: [ MiNullDynamicTag new ]
 ]
 
 { #category : #accessing }
@@ -138,7 +156,7 @@ MiHierarchicalMapModel >> initialize [
 { #category : #'as yet unclassified' }
 MiHierarchicalMapModel >> numberOfchildrenWithProperty: aProp forNode: node [
 	
-	^ (childrenBlock value: node) count: [ :child  |  aProp isApplicableTo: child]
+	^ (childrenQuery runOn: node asMooseGroup) count: [ :child  |  aProp isApplicableTo: child]
 ]
 
 { #category : #'as yet unclassified' }
