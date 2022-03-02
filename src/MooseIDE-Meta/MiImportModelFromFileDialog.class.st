@@ -74,9 +74,10 @@ MiImportModelFromFileDialog >> getRootFolder [
 	chosenDirectory := UIManager default
 		                   chooseDirectory:
 		                   'Select your model root directory'
-		                   path: (modelFile
-				                    ifNotNil: [ modelFile parent ]
-				                    ifNil: [ self defaultDirectory ]).
+		                   path: (rootFolderInput text ifEmpty: [ 
+				                    modelFile
+					                    ifNotNil: [ modelFile parent ]
+					                    ifNil: [ self defaultDirectory ] ]).
 
 	chosenDirectory ifNotNil: [ 
 		rootFolderInput text: chosenDirectory asFileReference pathString ]
