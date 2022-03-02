@@ -5,7 +5,7 @@ If there is an error with the user input, I will return an empy list
 Class {
 	#name : #MiCoFromSettingsMethodAttributeTester,
 	#superclass : #MiCoMethodAttributeTester,
-	#category : #'MooseIDE-CoUsageMap-Model'
+	#category : #'MooseIDE-CoUsageMap-Browser'
 }
 
 { #category : #'as yet unclassified' }
