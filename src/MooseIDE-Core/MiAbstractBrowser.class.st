@@ -44,19 +44,6 @@ Class {
 }
 
 { #category : #specs }
-MiAbstractBrowser class >> actionsCommandGroupFor: presenter [
-
-	^ CmCommandGroup forSpec
-		  name: 'Actions';
-		  register:
-			  (MiPropagateCommand forSpecContext: presenter)
-				  beDisplayedOnRightSide;
-		  register:
-			  (MiInspectCommand forSpecContext: presenter)
-				  beDisplayedOnRightSide
-]
-
-{ #category : #specs }
 MiAbstractBrowser class >> defaultSpec [
 
 	^ SpBoxLayout newVertical
@@ -120,9 +107,20 @@ MiAbstractBrowser class >> open [
 		  yourself
 ]
 
+{ #category : #accessing }
+MiAbstractBrowser class >> taskbarIcon [
+	^MooseIcons mooseIcon
+
+]
+
 { #category : #specs }
 MiAbstractBrowser class >> windowSize [
 	^ 500 @ 400
+]
+
+{ #category : #'window control' }
+MiAbstractBrowser >> browserClosed [
+	buses do: [ :bus | bus unregisterBrowser: self ]
 ]
 
 { #category : #accessing }
@@ -140,6 +138,14 @@ MiAbstractBrowser >> canEditBuses [
 MiAbstractBrowser >> canFollow [
 
 	^ true
+]
+
+{ #category : #testing }
+MiAbstractBrowser >> canFollowEntity: anObject [
+
+	"whether the browser accepts to deal with anObject"
+
+	self subclassResponsibility
 ]
 
 { #category : #testing }
@@ -161,14 +167,6 @@ MiAbstractBrowser >> canPropagate [
 		  entity asMooseGroup isNotEmpty or: [ entity isMooseModel ] ]
 ]
 
-{ #category : #testing }
-MiAbstractBrowser >> canReceiveEntity: anObject [
-
-	"whether the browser accepts to deal with anObject"
-
-	self subclassResponsibility
-]
-
 { #category : #buses }
 MiAbstractBrowser >> followBus: aBus [
 
@@ -176,7 +174,7 @@ MiAbstractBrowser >> followBus: aBus [
 	self buses add: aBus.
 	aBus registerBrowser: self.
 	self window ifNotNil: [ :window | window updateBusButton ].
-	self selectEntity: aBus logger mostRecentEntity
+	self receiveEntity: aBus logger mostRecentEntity
 ]
 
 { #category : #actions }
@@ -228,7 +226,7 @@ MiAbstractBrowser >> initializeWindow: aMiWindowPresenter [
 	aMiWindowPresenter buildToolbar.
 
 	aMiWindowPresenter whenClosedDo: [ 
-		self buses do: [ :bus | bus unregisterBrowser: self ] ].
+		self browserClosed ].
 
 	aMiWindowPresenter initialExtent: self class windowSize
 ]
@@ -260,6 +258,15 @@ MiAbstractBrowser >> needUpdate: anEntity [
 	^ anEntity ~= model selected
 ]
 
+{ #category : #'private - accessing' }
+MiAbstractBrowser >> receiveEntity: anEntity [
+
+	"I am used by the Mi Application. You should use #globallySelect: anEntity that will transmit the message to me and the other browsers"
+
+	receivingMode browser: self actOnEntity: anEntity.
+	self updateToolbar
+]
+
 { #category : #accessing }
 MiAbstractBrowser >> receivingMode [
 
@@ -270,15 +277,6 @@ MiAbstractBrowser >> receivingMode [
 MiAbstractBrowser >> receivingMode: aReceivingMode [
 
 	receivingMode := aReceivingMode
-]
-
-{ #category : #'private - accessing' }
-MiAbstractBrowser >> selectEntity: anEntity [
-
-	"I am used by the Mi Application. You should use #globallySelect: anEntity that will transmit the message to me and the other browsers"
-
-	receivingMode browser: self actOnEntity: anEntity.
-	self updateToolbar
 ]
 
 { #category : #initialization }

@@ -170,6 +170,7 @@ MiQueryListItemPresenter >> initializeQueryTypesDropList [
 	queryTypesDropListPresenter := self newDropList.
 	sortedItems := queriesListPresenter availableQueryTypes sorted: #label ascending.
 	queryTypesDropListPresenter
+		startWithoutSelection;
 		items: sortedItems;
 		display: [ :queryClass | queryClass label ];
 		whenSelectedItemChangedDo: [ :queryClass | 

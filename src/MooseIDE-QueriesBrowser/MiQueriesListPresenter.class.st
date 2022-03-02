@@ -221,8 +221,9 @@ MiQueriesListPresenter >> queryItemsPresenters [
 MiQueriesListPresenter >> reinitializeQueryPresenters [
 
 	queryCounter := 1.
+	self announcer subscriptions reset.
 	queryItemsPresenters := OrderedCollection new.
-	self updateComponentList
+	componentListPresenter presenters: queryItemsPresenters
 ]
 
 { #category : #actions }

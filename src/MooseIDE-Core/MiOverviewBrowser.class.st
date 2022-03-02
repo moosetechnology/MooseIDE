@@ -10,13 +10,15 @@ Class {
 	#name : #MiOverviewBrowser,
 	#superclass : #MiPresenter,
 	#instVars : [
-		'mainPresenter',
 		'busesButton',
 		'browsersButton',
 		'chkOpenInPage',
 		'helpButton',
 		'browsersPage',
-		'busesPage'
+		'busesPage',
+		'browsersListPresenter',
+		'busesListPresenter',
+		'mainPresenter'
 	],
 	#category : #'MooseIDE-Core-Overview'
 }
@@ -42,21 +44,6 @@ MiOverviewBrowser class >> busesTabHeight [
 { #category : #height }
 MiOverviewBrowser class >> defaultHeight [
 	^ 400
-]
-
-{ #category : #specs }
-MiOverviewBrowser class >> defaultSpec [
-	^ SpBoxLayout newVertical
-		add:
-			(SpBoxLayout newHorizontal
-				add: #busesButton width: self buttonWidth ;
-				add: #browsersButton expand: false ;
-				add: #chkOpenInPage expand: false ;
-				add: SpNullPresenter new expand: true ;
-				add: #helpButton width: self iconWidth)
-			height: self toolbarHeight ;
-		add: #mainPresenter;
-		yourself
 ]
 
 { #category : #height }
@@ -99,35 +86,18 @@ MiOverviewBrowser class >> title [
 
 { #category : #presenters }
 MiOverviewBrowser >> addBrowser: aMiPresenterClass asPage: aString [
+
 	| spPage |
 	spPage := self
 		pageNamed: aString
 		presenter: [ (aMiPresenterClass owner: self on: aMiPresenterClass newModel)
 			followBus: self application defaultBus ;
-			yourself
-		].
+			yourself ].
+
 	spPage beCloseable.
-	self addPage: spPage.
+	
+	mainPresenter addPage: spPage.
 	^spPage
-]
-
-{ #category : #initialization }
-MiOverviewBrowser >> addPage: aPage [
-	mainPresenter addPage: aPage
-]
-
-{ #category : #presenters }
-MiOverviewBrowser >> browsersList [
-
-	^ [ 
-	  self newComponentList
-		  propagateNaturalHeight: true;
-		  items:
-			  (self application browsers asOrderedCollection collect: [ 
-					   :browser | MiBrowserPresenter on: browser ]);
-		  sortingBlock: [ :a :b | a toolbarLabel < b toolbarLabel ];
-		  whenSelectionChangedDo: [ :selection | 
-			  selection selectedItem highlightWindow ] ]
 ]
 
 { #category : #toolbar }
@@ -139,29 +109,6 @@ MiOverviewBrowser >> browsersMenu [
 	(self collectMenuItems: browsersMenu)
 		do: [ :item | self replaceMenuItemAction: item ].
 	^ browsersMenu
-]
-
-{ #category : #presenters }
-MiOverviewBrowser >> browsersPage [
-	^browsersPage
-		ifNil: [ browsersPage := self pageNamed: 'Browsers' presenter: self browsersList ]
-]
-
-{ #category : #presenters }
-MiOverviewBrowser >> busesList [
-
-	^ [ 
-	  self newComponentList
-		  propagateNaturalHeight: true;
-		  items:
-			  (self application buses collect: [ :bus | MiBusPresenter on: bus ]);
-		  sortingBlock: [ :a :b | a toolbarLabel < b toolbarLabel ] ]
-]
-
-{ #category : #presenters }
-MiOverviewBrowser >> busesPage [
-	^busesPage
-		ifNil: [ busesPage := self pageNamed: 'Buses' presenter: self busesList ]
 ]
 
 { #category : #toolbar }
@@ -181,36 +128,101 @@ MiOverviewBrowser >> collectMenuItems: aMenuPresenter [
 ]
 
 { #category : #initialization }
-MiOverviewBrowser >> initializeMainPresenter [
+MiOverviewBrowser >> initializeBrowsersList [
+
+	browsersListPresenter := self newComponentList
+		propagateNaturalHeight: true;
+		items: self openedBrowsers;
+		sortingBlock: [ :a :b | a toolbarLabel < b toolbarLabel ];
+		whenSelectionChangedDo: [ :selection |
+			selection selectedItem ifNotNil: [ :object | object highlightWindow] ] 
+]
+
+{ #category : #initialization }
+MiOverviewBrowser >> initializeBrowsersPage [
+
+	self initializeBrowsersList.
+	
+	browsersPage := self
+		pageNamed: 'Browsers'
+		presenter: [ browsersListPresenter ]
+]
+
+{ #category : #initialization }
+MiOverviewBrowser >> initializeBusesList [
+
+	 busesListPresenter :=  self newComponentList
+		  propagateNaturalHeight: true;
+		  items: (self application buses collect: [ :bus | MiBusPresenter on: bus ]);
+		  sortingBlock: [ :a :b | a toolbarLabel < b toolbarLabel ] 
+]
+
+{ #category : #initialization }
+MiOverviewBrowser >> initializeBusesPage [
+
+	self initializeBusesList.
+	busesPage := self pageNamed: 'Buses' presenter: [ busesListPresenter ]
+]
+
+{ #category : #initialization }
+MiOverviewBrowser >> initializeLayout [
+
+	| tempLayout |
+	tempLayout := SpBoxLayout newVertical
+		add: (SpBoxLayout newHorizontal
+			add: busesButton width: self class buttonWidth;
+			add: browsersButton expand: false;
+			add: chkOpenInPage expand: false;
+			add: SpNullPresenter new expand: true;
+			add: helpButton width: self class iconWidth)
+		height: self class toolbarHeight;
+		add: mainPresenter;
+		yourself.
+		
+	self layout: tempLayout
+]
+
+{ #category : #initialization }
+MiOverviewBrowser >> initializeNotebook [
+
 	mainPresenter := self newNotebook.
-	self addPage: self browsersPage.
-	self addPage: self busesPage
+	
+	self initializeBrowsersPage.
+	self initializeBusesPage.
+	
+	mainPresenter addPage: browsersPage.
+	mainPresenter addPage: busesPage
 ]
 
 { #category : #initialization }
 MiOverviewBrowser >> initializePresenters [
-	super initializePresenters.
+
 	self initializeToolbar.
-	self initializeMainPresenter
+	self initializeNotebook.
+	self initializeLayout
 ]
 
-{ #category : #toolbar }
+{ #category : #initialization }
 MiOverviewBrowser >> initializeToolbar [
+
 	busesButton := self newButton
 		iconName: #smallAdd;
 		label: 'Add Bus';
 		action: [ self openBusEditor ];
 		yourself.
+	
 	browsersButton := self newMenuBar
 		addItem: [ :item | 
 			item
 				icon: MooseIcons mooseIcon;
 				name: 'Open new browser';
 				subMenu: self browsersMenu ].
+
 	chkOpenInPage := self newCheckBox 
 		label: 'Open in page' ;
 		labelOnRight ;
 		yourself.
+	
 	helpButton := self newButton
 		iconName: #help;
 		help: self class comment;
@@ -220,16 +232,25 @@ MiOverviewBrowser >> initializeToolbar [
 
 { #category : #initialization }
 MiOverviewBrowser >> initializeWindow: aWindowPresenter [
+
 	super initializeWindow: aWindowPresenter.
 	aWindowPresenter initialExtent: 500 @ self class height
 ]
 
 { #category : #toolbar }
 MiOverviewBrowser >> openBusEditor [
+
 	self newPopover
 		relativeTo: busesButton;
 		presenter: (MiBusesPopup on: self);
 		popup
+]
+
+{ #category : #presenters }
+MiOverviewBrowser >> openedBrowsers [
+
+	^ self application browsers asOrderedCollection collect: [ :browser | 
+		  MiBrowserPresenter on: browser ]
 ]
 
 { #category : #presenters }
@@ -268,4 +289,10 @@ MiOverviewBrowser >> showHelp [
 		relativeTo: helpButton;
 		presenter: (MiHelpPopup on: self);
 		popup
+]
+
+{ #category : #api }
+MiOverviewBrowser >> updateBrowsersListItems [
+
+	browsersListPresenter items: self openedBrowsers
 ]

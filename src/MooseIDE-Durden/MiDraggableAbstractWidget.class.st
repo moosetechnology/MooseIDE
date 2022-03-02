@@ -216,7 +216,7 @@ MiDraggableAbstractWidget >> propagate [
 ]
 
 { #category : #accessing }
-MiDraggableAbstractWidget >> selectEntity: anEntity [
+MiDraggableAbstractWidget >> receiveEntity: anEntity [
 
 	anEntity ifNil: [ ^ self ].
 	(self accept: anEntity) ifFalse: [ ^ self ].

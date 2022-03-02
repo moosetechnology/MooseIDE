@@ -46,7 +46,7 @@ MiPropertyBrowser class >> title [
 ]
 
 { #category : #initialization }
-MiPropertyBrowser >> canReceiveEntity: anObject [
+MiPropertyBrowser >> canFollowEntity: anObject [
 	^ anObject isMooseObject
 ]
 

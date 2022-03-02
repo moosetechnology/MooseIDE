@@ -46,17 +46,17 @@ MiDependencyBrowser class >> title [
 ]
 
 { #category : #testing }
-MiDependencyBrowser >> canHighlight [
-
-	^ true
-]
-
-{ #category : #testing }
-MiDependencyBrowser >> canReceiveEntity: anObject [
+MiDependencyBrowser >> canFollowEntity: anObject [
 
 	^ anObject isCollection and: [ 
 		  anObject anySatisfy: [ :a | 
 			  a usesFamixTrait: TEntityMetaLevelDependency ] ]
+]
+
+{ #category : #testing }
+MiDependencyBrowser >> canHighlight [
+
+	^ true
 ]
 
 { #category : #actions }

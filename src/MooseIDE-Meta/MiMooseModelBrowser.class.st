@@ -67,7 +67,7 @@ MiMooseModelBrowser class >> windowSize [
 ]
 
 { #category : #testing }
-MiMooseModelBrowser >> canReceiveEntity: anEntity [
+MiMooseModelBrowser >> canFollowEntity: anEntity [
 
 	^ (anEntity isKindOf: MooseModel) and: [ self needUpdate: anEntity ]
 ]

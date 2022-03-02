@@ -29,7 +29,7 @@ MiHierarchicalVisualizationBrowser class >> title [
 ]
 
 { #category : #testing }
-MiHierarchicalVisualizationBrowser >> canReceiveEntity: anObject [
+MiHierarchicalVisualizationBrowser >> canFollowEntity: anObject [
 
 	^ anObject isMooseObject
 ]
@@ -49,4 +49,9 @@ MiHierarchicalVisualizationBrowser >> initializePresenters [
 		(el usesFamixTrait: TEntityMetaLevelDependency)
 			ifTrue: [ el children ]
 			ifFalse: [ {  } ] ]
+]
+
+{ #category : #accessing }
+MiHierarchicalVisualizationBrowser >> miSelectedItem [
+	^nil
 ]

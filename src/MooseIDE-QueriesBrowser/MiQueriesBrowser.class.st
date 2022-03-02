@@ -63,8 +63,14 @@ MiQueriesBrowser class >> windowSize [
 	^ 650 @ 420
 ]
 
+{ #category : #'window control' }
+MiQueriesBrowser >> browserClosed [
+	super browserClosed.
+	application unregisterProducer: self
+]
+
 { #category : #testing }
-MiQueriesBrowser >> canReceiveEntity: anObject [
+MiQueriesBrowser >> canFollowEntity: anObject [
 
 	^ anObject isMooseObject and: [ 
 		  (anObject asMooseGroup allUsing: FamixTNamedEntity) isNotEmpty ]
@@ -86,6 +92,12 @@ MiQueriesBrowser >> followEntity: anEntity [
 
 	"Update the all the sub presenters with this new query"
 	queriesListPresenter followNewEntity
+]
+
+{ #category : #initialization }
+MiQueriesBrowser >> initialize [ 
+	super initialize.
+	application registerProducer: self for: FQAbstractQuery 
 ]
 
 { #category : #initialization }
@@ -144,6 +156,11 @@ MiQueriesBrowser >> initializeResultTreePresenter [
 
 	queryResultTreePresenter := self instantiate: QueryResultTreePresenter.
 	queryResultTreePresenter updateForEntities: self queryResultEntities
+]
+
+{ #category : #brokerage }
+MiQueriesBrowser >> itemsFor: aClass [
+	^rootQuery allChildren select: [ :query | query isKindOf: aClass ]
 ]
 
 { #category : #accessing }

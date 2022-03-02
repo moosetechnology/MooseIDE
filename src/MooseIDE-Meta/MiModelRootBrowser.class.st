@@ -84,7 +84,7 @@ MiModelRootBrowser class >> windowSize [
 ]
 
 { #category : #testing }
-MiModelRootBrowser >> canReceiveEntity: anObject [
+MiModelRootBrowser >> canFollowEntity: anObject [
 	^ false
 ]
 
@@ -127,7 +127,7 @@ MiModelRootBrowser >> initializePresenters [
 MiModelRootBrowser >> initializeToolbar [
 
 	toolbar := (MiImportCommand asCommandGroupForSpecContext: self)
-		        asToolbarPresenter beIcons.
+		           asToolbarPresenter beIcons.
 	toolbar addItem: self refreshToolbarButton
 ]
 

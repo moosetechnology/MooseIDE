@@ -53,20 +53,20 @@ MiTreeMapVisualisationBrowser class >> title [
 ]
 
 { #category : #testing }
+MiTreeMapVisualisationBrowser >> canFollowEntity: anObject [
+
+	^ anObject isMooseObject and: [ anObject rootsForTreeMap isNotEmpty ]
+]
+
+{ #category : #testing }
 MiTreeMapVisualisationBrowser >> canHighlight [
 
 	^ true
 ]
 
-{ #category : #testing }
-MiTreeMapVisualisationBrowser >> canReceiveEntity: anObject [
-
-	^ anObject isMooseObject and: [ anObject rootsForTreeMap isNotEmpty ]
-]
-
 { #category : #actions }
 MiTreeMapVisualisationBrowser >> followEntity: anEntity [
-
+	self window title: self class title, '-' , anEntity name.
 	model entities: anEntity rootsForTreeMap.
 	diagram run
 ]

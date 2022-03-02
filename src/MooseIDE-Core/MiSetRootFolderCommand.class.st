@@ -16,7 +16,13 @@ MiSetRootFolderCommand class >> defaultName [
 
 { #category : #executing }
 MiSetRootFolderCommand >> execute [
-	(UITheme builder
-		chooseDirectory: 'Choose the root folder for the sources of ' , self model name)
-		ifNotNil: [ :folder | self model rootFolder: folder fullName ]
+
+	| file |
+	file := UIManager default
+		        chooseExistingFileReference:
+		        'Choose the root folder for the sources of '
+		        , self model name
+		        extensions: #( 'mse' )
+		        path: FileLocator home.
+	file ifNotNil: [ :folder | self model rootFolder: folder fullName ]
 ]

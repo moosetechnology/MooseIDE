@@ -47,7 +47,7 @@ MiFameBrowser class >> title [
 ]
 
 { #category : #testing }
-MiFameBrowser >> canReceiveEntity: anObject [
+MiFameBrowser >> canFollowEntity: anObject [
 
 	^ anObject isMooseEntity
 ]
