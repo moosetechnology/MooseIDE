@@ -90,7 +90,7 @@ BaselineOfMooseIDE >> definePackages: spec [
 		package: 'MooseIDE-CoUsageMap-Browser' with: [ 
 			spec requires:
 					#( 'MooseIDE-Core' 'MooseIDE-Visualization'
-					   'MooseIDE-CoUsageMap-Roassal3' ) ];
+					   'MooseIDE-CoUsageMap-Roassal3' 'FamixTagging' ) ];
 		package: 'MooseIDE-CoUsageMap-Examples'
 		with: [ spec requires: #( 'MooseIDE-CoUsageMap-Roassal3' ) ];
 		package: 'MooseIDE-CoUsageMap-Model';
