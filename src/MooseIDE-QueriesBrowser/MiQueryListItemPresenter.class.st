@@ -266,7 +266,7 @@ MiQueryListItemPresenter >> updateQueryConfiguratorPresenterFor: queryClass [
 	| newQuery |
 	"Create the new query"
 	newQuery := self newQueryForClass: queryClass.
-
+	self root application consumeItem: newQuery.
 	"Instantiate the configuration presenter with the new created query"
 	self instantiateConfiguratorPresenterForQuery: newQuery.
 

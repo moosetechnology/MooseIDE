@@ -17,12 +17,6 @@ MiTagCategoriesPresenterTest >> presenterOwner [
 ]
 
 { #category : #tests }
-MiTagCategoriesPresenterTest >> testCanNotDeleteDefaultCategoryInDropList [
-
-	self skip
-]
-
-{ #category : #tests }
 MiTagCategoriesPresenterTest >> testCloseCategoryCreationForm [
 
 	presenter addCategoryButton click.
