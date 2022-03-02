@@ -172,17 +172,16 @@ MiDraggableAbstractWidget >> iconFor: anEntity [
 MiDraggableAbstractWidget >> initializePresenters [
 
 	super initializePresenters.
-	dragMe := self instantiate: SpDragMe.
+	dragMe := self instantiate: MiDragMePresenter.
 	dragMe passenger: self.
 	dragMe label: 'Drag'.
 	dragMeOut := self newButton.
 	dragMeOut action: [ 
-		owner noteThatWidgetHasBeenClosed: self. 
+		owner noteThatWidgetHasBeenClosed: self.
 		MiDraggableDefaultBrowser new
 			widget: self;
-			openWithSpec.
- ].
-	dragMeOut label:'->'.
+			openWithSpec ].
+	dragMeOut label: '->'.
 	close := self newButton.
 	close label: 'X'
 ]

@@ -41,11 +41,11 @@ MiAbstractDropInContainer >> ensureNoLoopWith: aSp [
 MiAbstractDropInContainer >> initializePresenters [
 
 	super initializePresenters.
-	dragHere := self instantiate: SpDragHere.
+	dragHere := self instantiate: MiDragHerePresenter.
 	dragHere borderWidth: 2.
 	dragHere dropInto: self.
 	self borderWidth: 2.
-	self wantsDrop: [ :transfer :destination |
+	self wantsDrop: [ :transfer :destination | 
 		self shouldAcceptTransfer: transfer into: destination ].
 	self acceptDrop: [ :transfer :destination | 
 		self installTransfer: transfer into: destination ]

@@ -46,13 +46,16 @@ MiAtomicWorkspace >> desiredWindowSize [
 
 { #category : #actions }
 MiAtomicWorkspace >> dragBrowser [
-	| dragButton |
-	self flag: 'Unfortunately, this is specific to Morphic. should find a way to be more generic'.
-	dragButton := MiMorphicDragMeAdapter new
-		adapt: (SpDragMe new passenger: self containedBrowser) ;
-		yourself.
-	dragButton startDragging.
 
+	| dragButton |
+	self flag:
+		'Unfortunately, this is specific to Morphic. should find a way to be more generic'.
+	dragButton := MiMorphicDragMeAdapter new
+		              adapt:
+			              (MiDragMePresenter new passenger:
+					               self containedBrowser);
+		              yourself.
+	dragButton startDragging
 ]
 
 { #category : #testing }
