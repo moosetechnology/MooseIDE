@@ -9,7 +9,6 @@ BaselineOfMooseIDE >> baseline: spec [
 
 	<baseline>
 	spec for: #common do: [ "Dependencies"
-		self tylerDurden: spec.
 		self famixQueries: spec.
 		self telescope: spec.
 		self labelContractor: spec.
@@ -85,7 +84,7 @@ BaselineOfMooseIDE >> definePackages: spec [
 		package: 'MooseIDE-ColorPalette';
 		package: 'MooseIDE-ColorPalette-Tests'
 		with: [ spec requires: #( 'MooseIDE-ColorPalette' ) ];
-		package: 'MooseIDE-Durden' with: [ spec requires: #( 'Durden' ) ]
+		package: 'MooseIDE-Durden'
 ]
 
 { #category : #dependencies }
@@ -149,11 +148,4 @@ BaselineOfMooseIDE >> telescope: spec [
 	spec
 		baseline: 'TelescopeRoassal3'
 		with: [ spec repository: 'github://TelescopeSt/TelescopeRoassal3' ]
-]
-
-{ #category : #dependencies }
-BaselineOfMooseIDE >> tylerDurden: spec [
-	spec
-		package: 'Durden'
-		with: [ spec repository: 'github://pharo-contributions/Durden' ]
 ]
