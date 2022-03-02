@@ -20,7 +20,7 @@ New Tools for Moose
 
 ```smalltalk
 [ Metacello new
-    baseline: 'Moose';
+    baseline: 'MooseIDE';
     repository: 'github://moosetechnology/MooseIDE:development/src';
     load ]
     on: MCMergeOrLoadWarning
