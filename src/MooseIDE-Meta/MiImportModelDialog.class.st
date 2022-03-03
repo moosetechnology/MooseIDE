@@ -30,7 +30,7 @@ MiImportModelDialog >> importModel [
 	"Check if the model is empty. We are using size to optimize the code."
 	(mooseModel size - (mooseModel allUsing: FamixTSourceLanguage) size)
 		isZero ifTrue: [ 
-		self error: 'You must select at least one package.' ].
+		self error: 'Something is wrong, the imported model appears to be empty' ].
 
 	^ mooseModel
 ]

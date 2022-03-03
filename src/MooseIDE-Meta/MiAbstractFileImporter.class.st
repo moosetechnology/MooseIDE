@@ -11,7 +11,7 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'model',
-		'stream'
+		'inputFile'
 	],
 	#category : #'MooseIDE-Meta-Import'
 }
@@ -35,6 +35,19 @@ MiAbstractFileImporter class >> importerFor: aFileReference [
 		ifNone: [ nil ]
 ]
 
+{ #category : #executing }
+MiAbstractFileImporter class >> knownExtensions [
+	^self withAllSubclasses
+		collect: [ :clazz | clazz fileExtension ]
+		thenReject: [ :ext | ext isNil ]
+]
+
+{ #category : #accessing }
+MiAbstractFileImporter >> inputFile: anObject [
+
+	inputFile := anObject
+]
+
 { #category : #accessing }
 MiAbstractFileImporter >> model [
 
@@ -50,10 +63,4 @@ MiAbstractFileImporter >> model: anObject [
 { #category : #running }
 MiAbstractFileImporter >> run [
 	self subclassResponsibility 
-]
-
-{ #category : #accessing }
-MiAbstractFileImporter >> stream: anObject [
-
-	stream := anObject
 ]

@@ -46,9 +46,8 @@ MiImportModelFromFileDialog >> getModelFile [
 
 	| chosenFile |
 	chosenFile := UIManager default
-		              chooseExistingFileReference:
-		              'Select your model source file, MSE or JSON'
-		              extensions: #( 'mse' 'json' )
+		              chooseExistingFileReference: 'Select your model source file'
+		              extensions: MiAbstractFileImporter knownExtensions
 		              path:
 			              (modelFile
 				               ifNil: [ self defaultDirectory ]
@@ -184,19 +183,18 @@ MiImportModelFromFileDialog >> initializePresenters [
 { #category : #action }
 MiImportModelFromFileDialog >> privateImportModel [
 
-	| model stream |
+	| model importer |
+
+	importer := MiAbstractFileImporter importerFor: modelFile.
+	importer ifNil: [ 
+		self error: 'No importer found for this input file' ].
+
 	model := mooseModelDroplist selectedItem new.
 
-	(modelFile isFile and: [ 
-		 { 'mse'. 'json' } includes: modelFile extension ]) ifFalse: [ 
-		self error: 'Your model file path is incorrect: please specify a MSE or JSON file' ].
-
-	stream := modelFile readStream.
-	modelFile extension = 'mse' ifTrue: [ 
-		model importFromMSEStream: stream ].
-	modelFile extension = 'json' ifTrue: [ 
-		model importFromJSONStream: stream ].
-	stream close.
+	importer new
+		model: model ;
+		inputFile: modelFile ;
+		run.
 
 	model name: (modelNameInput text ifEmpty: [ 'MooseModel' ]).
 
