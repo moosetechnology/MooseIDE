@@ -30,8 +30,8 @@ MiModelRootBrowser class >> buildModelCommandsGroupWith: presenterInstance [
 			  (MiModelUtilityCommand asCommandGroupWith: presenterInstance)
 ]
 
-{ #category : #specs }
-MiModelRootBrowser class >> defaultSpec [
+{ #category : #layout }
+MiModelRootBrowser class >> defaultLayout [
 
 	^ super defaultSpec
 		  add: #toolbar
