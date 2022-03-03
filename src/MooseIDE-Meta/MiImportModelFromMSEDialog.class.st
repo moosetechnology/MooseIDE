@@ -20,23 +20,10 @@ MiImportModelFromMSEDialog class >> defaultLayout [
 		  yourself
 ]
 
-{ #category : #opening }
-MiImportModelFromMSEDialog class >> open [
-
-	<script>
-	^ self new openDialogWithSpec
-]
-
 { #category : #specs }
 MiImportModelFromMSEDialog class >> title [
 
 	^ 'Import model from MSE file'
-]
-
-{ #category : #initialization }
-MiImportModelFromMSEDialog class >> windowExtent [
-
-	^ 300 @ (self toolbarHeight + self buttonHeight * 2)
 ]
 
 { #category : #initialization }
@@ -50,10 +37,4 @@ MiImportModelFromMSEDialog >> initializePresenters [
 					                       model isDeprecated or: [ 
 							                       model canBeImportedFromFile not ] ]);
 		                      yourself
-]
-
-{ #category : #action }
-MiImportModelFromMSEDialog >> privateImportModel [
-
-	^ mooseModelDroplist selectedItem new importFromMSE
 ]

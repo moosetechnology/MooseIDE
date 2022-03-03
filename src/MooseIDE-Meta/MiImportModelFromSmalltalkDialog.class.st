@@ -291,3 +291,11 @@ MiImportModelFromSmalltalkDialog >> simpleLayout [
 
 	^ self class defaultSpec
 ]
+
+{ #category : #action }
+MiImportModelFromSmalltalkDialog >> validateImportForm [
+	"checks that required fields are properly filled in"
+	packagesSelector selectedItems ifEmpty: [ Error signal: 'Please select at least one package' ].
+	modelNameField text ifEmpty: [ Error signal: 'Please name the model' ].
+
+]

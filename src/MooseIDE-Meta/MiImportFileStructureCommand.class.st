@@ -4,18 +4,6 @@ Class {
 	#category : #'MooseIDE-Meta-Import'
 }
 
-{ #category : #default }
-MiImportFileStructureCommand class >> defaultIcon [
-
-	^ nil
-]
-
-{ #category : #default }
-MiImportFileStructureCommand class >> defaultName [
-
-	^ 'Import file model from file system'
-]
-
 { #category : #executing }
 MiImportFileStructureCommand >> execute [
 
