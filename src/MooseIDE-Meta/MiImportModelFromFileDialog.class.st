@@ -19,7 +19,7 @@ MiImportModelFromFileDialog class >> open [
 
 	<script>
 	^ self new
-		  openDialogWithSpec;
+		  openDialog;
 		  yourself
 ]
 

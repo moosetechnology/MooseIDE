@@ -16,8 +16,8 @@ Class {
 	#category : #'MooseIDE-Meta-MooseModelBrowser'
 }
 
-{ #category : #specs }
-MiMooseModelBrowser class >> defaultSpec [
+{ #category : #layout }
+MiMooseModelBrowser class >> defaultLayout [
 	^ super defaultSpec
 	"	add: #searchField
 			withConstraints: [ :constraints | constraints height: self toolbarHeight ];"

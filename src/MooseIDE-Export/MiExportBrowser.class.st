@@ -27,8 +27,8 @@ MiExportBrowser class >> commentColumnTitle [
 	^ 'Comment'
 ]
 
-{ #category : #specs }
-MiExportBrowser class >> defaultSpec [
+{ #category : #layout }
+MiExportBrowser class >> defaultLayout [
 
 	^ super defaultSpec
 		  add: #toolbar height: self toolbarHeight;

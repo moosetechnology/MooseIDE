@@ -34,13 +34,15 @@ MiPresenter >> isMiBrowser [
 
 { #category : #'scripting - widgets' }
 MiPresenter >> newSelectableListForPopoverExtent: aPoint [
-
-	^ SpFilteringSelectableListPresenter new layout:
+	self flag: 'why not a #instantiate: here ?'.
+	^ SpFilteringSelectableListPresenter new
+		layout:
 		  (self newBoxLayoutTopToBottom
-			   add: SpFilteringSelectableListPresenter defaultSpec
+			   add: SpFilteringSelectableListPresenter defaultLayout
 			   withConstraints: [ :c | 
 				   c
 					   height: aPoint x;
 					   width: aPoint y ];
-			   yourself)
+			   yourself) ;
+		yourself
 ]
