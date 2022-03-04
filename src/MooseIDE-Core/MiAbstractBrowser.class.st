@@ -102,7 +102,7 @@ MiAbstractBrowser class >> newModel [
 MiAbstractBrowser class >> open [
 
 	^ (self on: self newModel)
-		  openWithSpec;
+		  open;
 		  followBus: self currentApplication defaultBus;
 		  yourself
 ]

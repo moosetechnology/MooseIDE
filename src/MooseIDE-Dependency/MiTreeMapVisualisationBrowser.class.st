@@ -15,8 +15,8 @@ Class {
 	#category : #'MooseIDE-Dependency-TreeMap'
 }
 
-{ #category : #specs }
-MiTreeMapVisualisationBrowser class >> defaultSpec [
+{ #category : #layout }
+MiTreeMapVisualisationBrowser class >> defaultLayout [
 	^ super defaultSpec
 		add: #diagram;
 		yourself

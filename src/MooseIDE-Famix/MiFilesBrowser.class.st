@@ -18,8 +18,8 @@ Class {
 	#category : #'MooseIDE-Famix-FilesBrowser'
 }
 
-{ #category : #specs }
-MiFilesBrowser class >> defaultSpec [
+{ #category : #layout }
+MiFilesBrowser class >> defaultLayout [
 	^ super defaultSpec
 		add:
 			(SpBoxLayout newHorizontal
