@@ -3,7 +3,7 @@ I am used in the manual query condigurator presenter. I have a code presenter in
 "
 Class {
 	#name : #QueryCompilerPresenter,
-	#superclass : #SpPresenter,
+	#superclass : #MiPresenter,
 	#instVars : [
 		'submitButton',
 		'codePresenter',
