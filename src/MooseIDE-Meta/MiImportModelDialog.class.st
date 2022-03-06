@@ -3,7 +3,7 @@ Abstract class for model import dialogs
 "
 Class {
 	#name : #MiImportModelDialog,
-	#superclass : #SpPresenter,
+	#superclass : #MiPresenter,
 	#instVars : [
 		'originBrowser'
 	],

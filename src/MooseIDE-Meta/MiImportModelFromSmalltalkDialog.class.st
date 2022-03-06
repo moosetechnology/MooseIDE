@@ -21,8 +21,8 @@ Class {
 	#category : #'MooseIDE-Meta-Import'
 }
 
-{ #category : #specs }
-MiImportModelFromSmalltalkDialog class >> defaultSpec [
+{ #category : #layout }
+MiImportModelFromSmalltalkDialog class >> defaultLayout [
 
 	^ SpBoxLayout newTopToBottom
 		  spacing: 10;

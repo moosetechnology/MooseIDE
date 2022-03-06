@@ -11,8 +11,8 @@ Class {
 	#category : #'MooseIDE-CoUsageMap-Browser'
 }
 
-{ #category : #specs }
-MiCoUsageBrowser class >> defaultSpec [
+{ #category : #layout }
+MiCoUsageBrowser class >> defaultLayout [
 	^ SpBoxLayout newLeftToRight
 		add: #coUsageMap;
 		yourself
