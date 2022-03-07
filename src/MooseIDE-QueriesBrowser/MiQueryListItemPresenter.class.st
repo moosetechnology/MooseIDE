@@ -5,7 +5,7 @@ I manage all the logic related of changing dynamically this configuration presen
 "
 Class {
 	#name : #MiQueryListItemPresenter,
-	#superclass : #SpPresenter,
+	#superclass : #MiPresenter,
 	#instVars : [
 		'queryTypesDropListPresenter',
 		'parentQuery',

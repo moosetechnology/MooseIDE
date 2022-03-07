@@ -30,8 +30,8 @@ MiModelRootBrowser class >> buildModelCommandsGroupWith: presenterInstance [
 			  (MiModelUtilityCommand asCommandGroupWith: presenterInstance)
 ]
 
-{ #category : #specs }
-MiModelRootBrowser class >> defaultSpec [
+{ #category : #layout }
+MiModelRootBrowser class >> defaultLayout [
 
 	^ super defaultSpec
 		  add: #toolbar
@@ -127,7 +127,7 @@ MiModelRootBrowser >> initializePresenters [
 MiModelRootBrowser >> initializeToolbar [
 
 	toolbar := (MiImportCommand asCommandGroupForSpecContext: self)
-		        asToolbarPresenter beIcons.
+		           asToolbarPresenter beIcons.
 	toolbar addItem: self refreshToolbarButton
 ]
 

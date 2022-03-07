@@ -14,8 +14,8 @@ Class {
 	#category : #'MooseIDE-Meta-PropertyBrowser'
 }
 
-{ #category : #specs }
-MiPropertyBrowser class >> defaultSpec [
+{ #category : #layout }
+MiPropertyBrowser class >> defaultLayout [
 	^ super defaultSpec
 		add: #properties;
 		yourself

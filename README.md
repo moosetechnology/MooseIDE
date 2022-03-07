@@ -16,13 +16,20 @@ New Tools for Moose
 
 ![Screen capture of Pharo Launcher to make MooseIDE image](https://user-images.githubusercontent.com/33934979/124268297-9e46f000-db39-11eb-8626-ab578dd16ffb.png)
 
-### From a Pharo Image
+### From a Pharo 10 Image
 
 ```smalltalk
-[ Metacello new
-    baseline: 'Moose';
-    repository: 'github://moosetechnology/MooseIDE:development/src';
-    load ]
-    on: MCMergeOrLoadWarning
-    do: [ :warning | warning load ]
+Metacello new
+  baseline: 'MooseIDE';
+  repository: 'github://moosetechnology/MooseIDE:development/src';
+  load
+```
+
+### From a Pharo 9 Image
+
+```smalltalk
+Metacello new
+  baseline: 'MooseIDE';
+  repository: 'github://moosetechnology/MooseIDE:v9.x.x/src';
+  load
 ```

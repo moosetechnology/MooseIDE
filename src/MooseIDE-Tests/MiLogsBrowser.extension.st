@@ -5,7 +5,7 @@ MiLogsBrowser class >> openForTests [
 
 	^ (self newApplication: MiTestApplication current)
 		  followBuses: MiTestApplication current buses;
-		  openWithSpec;
+		  open;
 		  updateToolbars;
 		  yourself
 ]

@@ -7,7 +7,7 @@ I manage all the logic related to showing all the queries. Also, I update myself
 "
 Class {
 	#name : #MiQueriesListPresenter,
-	#superclass : #SpPresenter,
+	#superclass : #MiPresenter,
 	#instVars : [
 		'componentListPresenter',
 		'queryCounter',

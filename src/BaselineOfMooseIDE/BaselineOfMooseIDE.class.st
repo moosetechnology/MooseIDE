@@ -9,13 +9,12 @@ BaselineOfMooseIDE >> baseline: spec [
 
 	<baseline>
 	spec for: #common do: [ "Dependencies"
-		
-		self tylerDurden: spec. 
+		self tylerDurden: spec.
 		self famixQueries: spec.
 		self telescope: spec.
 		self labelContractor: spec.
 		self hierarchicalVisualizations: spec.
-		
+
 		"Packages"
 		self definePackages: spec.
 
@@ -28,13 +27,14 @@ BaselineOfMooseIDE >> baseline: spec [
 				package: 'MooseIDE-Meta'
 				with: [ spec requires: #( 'MooseIDE-Core' ) ];
 				package: 'MooseIDE-Tagging'
+				with: [ spec requires: #( 'FamixTagging' ) ];
+				package: 'MooseIDE-CoUsageMap-Browser'
 				with: [ spec requires: #( 'FamixTagging' ) ] ].
 
-		"Groups"
-		self defineGroups: spec.
-
 		"Register custom tools"
-		spec postLoadDoIt: #registerCustomTools ]
+		spec
+			postLoadDoIt: #registerCustomTools;
+			postLoadDoIt: #resetMiApplications ]
 ]
 
 { #category : #accessing }
@@ -47,20 +47,6 @@ BaselineOfMooseIDE >> customProjectAttributes [
 ]
 
 { #category : #baselines }
-BaselineOfMooseIDE >> defineGroups: spec [
-
-	spec
-		group: 'default'
-		with: #( 'MooseIDE-Core' 'MooseIDE-Visualization'
-			   'MooseIDE-Meta' 'MooseIDE-Tests' 'MooseIDE-Dependency'
-			   'MooseIDE-Famix' 'MooseIDE-Tagging' 'MooseIDE-Telescope'
-			   'MooseIDE-Export' 'MooseIDE-NewTools' 'MooseIDE-NewTools-Tests'
-			   'MooseIDE-QueriesBrowser' 'MooseIDE-QueriesBrowser-Tests'
-			   'MooseIDE-ColorPalette' 'MooseIDE-ColorPalette-Tests'
-			   'MooseIDE-Durden' )
-]
-
-{ #category : #baselines }
 BaselineOfMooseIDE >> definePackages: spec [
 
 	spec
@@ -68,7 +54,7 @@ BaselineOfMooseIDE >> definePackages: spec [
 		with: [ spec requires: #( 'LabelContractor' ) ];
 		package: 'MooseIDE-Visualization' with: [ 
 			spec requires:
-					#( 'TelescopeRoassal3' 'HierarchicalVisualizations' ) ];
+					#( 'MooseIDE-Core' 'TelescopeRoassal3' 'HierarchicalVisualizations' ) ];
 		package: 'MooseIDE-Meta'
 		with: [ spec requires: #( 'MooseIDE-Core' ) ];
 		package: 'MooseIDE-Tests'
@@ -101,7 +87,19 @@ BaselineOfMooseIDE >> definePackages: spec [
 		package: 'MooseIDE-ColorPalette';
 		package: 'MooseIDE-ColorPalette-Tests'
 		with: [ spec requires: #( 'MooseIDE-ColorPalette' ) ];
-		package: 'MooseIDE-Durden' with: [ spec requires: #( 'Durden' ) ]
+		package: 'MooseIDE-Durden'
+		with: [ spec requires: #( 'MooseIDE-Core' 'Durden' ) ];
+		package: 'MooseIDE-CoUsageMap-Browser' with: [ 
+			spec requires:
+					#( 'MooseIDE-Core' 'MooseIDE-Visualization'
+					   'MooseIDE-CoUsageMap-Roassal3' ) ];
+		package: 'MooseIDE-CoUsageMap-Examples'
+		with: [ spec requires: #( 'MooseIDE-CoUsageMap-Roassal3' ) ];
+		package: 'MooseIDE-CoUsageMap-Model';
+		package: 'MooseIDE-CoUsageMap-Roassal3'
+		with: [ spec requires: #( 'MooseIDE-CoUsageMap-Model' ) ];
+		package: 'MooseIDE-CoUsageMap-Tests'
+		with: [ spec requires: #( 'MooseIDE-CoUsageMap-Examples' ) ]
 ]
 
 { #category : #dependencies }
@@ -151,6 +149,13 @@ BaselineOfMooseIDE >> labelContractor: spec [
 BaselineOfMooseIDE >> registerCustomTools [
 
 	(Smalltalk classNamed: #MiPlayground) register
+]
+
+{ #category : #actions }
+BaselineOfMooseIDE >> resetMiApplications [
+
+	(Smalltalk classNamed: #MiApplication) reset.
+	(Smalltalk classNamed: #MiTestApplication) reset
 ]
 
 { #category : #dependencies }

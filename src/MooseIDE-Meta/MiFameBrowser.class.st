@@ -15,8 +15,8 @@ Class {
 	#category : #'MooseIDE-Meta-FameBrowser'
 }
 
-{ #category : #specs }
-MiFameBrowser class >> defaultSpec [
+{ #category : #layout }
+MiFameBrowser class >> defaultLayout [
 	^ super defaultSpec
 		add: #fameDescription;
 		yourself
