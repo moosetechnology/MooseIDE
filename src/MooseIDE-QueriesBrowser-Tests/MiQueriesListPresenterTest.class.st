@@ -31,7 +31,7 @@ MiQueriesListPresenterTest >> setUp [
 	helper := FQTestsHelper current.
 	browser := MiQueriesBrowser openForTests.
 	browser receiveEntity: helper classesAndMethods.
-	presenter := MiQueriesListPresenter on: browser
+	presenter := browser instantiate: MiQueriesListPresenter on: browser
 ]
 
 { #category : #running }

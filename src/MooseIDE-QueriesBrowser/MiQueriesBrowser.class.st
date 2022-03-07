@@ -141,8 +141,9 @@ MiQueriesBrowser >> initializePresenters [
 { #category : #initialization }
 MiQueriesBrowser >> initializeQueryBuilder [
 
-	queriesListPresenter := self instantiate:
-		                         (MiQueriesListPresenter on: self)
+	queriesListPresenter := self
+		                        instantiate: MiQueriesListPresenter
+		                        on: self
 ]
 
 { #category : #initialization }
