@@ -5,7 +5,7 @@ This is the so called _Extent description_ of the tag
 "
 Class {
 	#name : #MiTagExtentPage,
-	#superclass : #MiPresenter,
+	#superclass : #MiTagPage,
 	#instVars : [
 		'incomingEntitiesFilteringList',
 		'taggedEntitiesLabel',
@@ -13,9 +13,7 @@ Class {
 		'addButton',
 		'addAllButton',
 		'removeButton',
-		'removeAllButton',
-		'tagModel',
-		'tagDescription'
+		'removeAllButton'
 	],
 	#category : #'MooseIDE-Tagging-Browser'
 }
@@ -24,10 +22,10 @@ Class {
 MiTagExtentPage >> add [
 
 	self currentTag ifNil: [ ^ self ].
-
 	incomingEntitiesFilteringList selectedItem ifNotNil: [ :entity | 
 		self tagModel tagEntityNotYourself: entity ].
-	self refreshTaggedEntitiesList
+	self refreshTaggedEntitiesList.
+	self refreshEntitiesList
 ]
 
 { #category : #action }
@@ -43,18 +41,6 @@ MiTagExtentPage >> addAll [
 MiTagExtentPage >> currentTag [
 
 	^ self tagModel currentTag
-]
-
-{ #category : #initialization }
-MiTagExtentPage >> deleteCurrentTag [
-
-	self owner deleteCurrentTag
-]
-
-{ #category : #action }
-MiTagExtentPage >> editCurrentTag [
-
-	self owner editCurrentTag
 ]
 
 { #category : #initialization }
@@ -77,31 +63,28 @@ MiTagExtentPage >> initializeButtons [
 { #category : #initialization }
 MiTagExtentPage >> initializeLayout [
 
-	self layout: (SpBoxLayout newVertical
-			 spacing: 10;
-			 add: tagDescription expand: false;
-			 add: (SpBoxLayout newHorizontal
-					  spacing: 3;
-					  add: (SpBoxLayout newTopToBottom
-							   spacing: 2;
-							   add: 'Entities queried:' expand: false;
-							   add: incomingEntitiesFilteringList;
-							   yourself);
-					  add: (SpBoxLayout newVertical
-							   spacing: 5;
-							   add: SpNullPresenter new expand: true;
-							   add: addButton expand: false;
-							   add: addAllButton expand: false;
-							   add: removeButton expand: false;
-							   add: removeAllButton expand: false;
-							   add: SpNullPresenter new expand: true;
-							   yourself)
-					  width: 35;
-					  add: (SpBoxLayout newTopToBottom
-							   spacing: 2;
-							   add: 'Entities in tag:' expand: false;
-							   add: taggedEntitiesFilteringList;
-							   yourself);
+	super initializeLayout.
+	self layout add: (SpBoxLayout newHorizontal
+			 spacing: 3;
+			 add: (SpBoxLayout newTopToBottom
+					  spacing: 2;
+					  add: 'Entities queried:' expand: false;
+					  add: incomingEntitiesFilteringList;
+					  yourself);
+			 add: (SpBoxLayout newVertical
+					  spacing: 5;
+					  add: SpNullPresenter new expand: true;
+					  add: addButton expand: false;
+					  add: addAllButton expand: false;
+					  add: removeButton expand: false;
+					  add: removeAllButton expand: false;
+					  add: SpNullPresenter new expand: true;
+					  yourself)
+			 width: 35;
+			 add: (SpBoxLayout newTopToBottom
+					  spacing: 2;
+					  add: 'Entities in tag:' expand: false;
+					  add: taggedEntitiesFilteringList;
 					  yourself);
 			 yourself)
 ]
@@ -109,6 +92,7 @@ MiTagExtentPage >> initializeLayout [
 { #category : #initialization }
 MiTagExtentPage >> initializePresenters [
 
+	super initializePresenters.
 	taggedEntitiesLabel := self newLabel label: 'Entities in tag:'.
 	incomingEntitiesFilteringList := self newFilteringList
 		                                 display: [ :entity | 
@@ -125,7 +109,6 @@ MiTagExtentPage >> initializePresenters [
 		                               displayIcon: [ :entity | 
 			                               entity mooseIcon ];
 		                               yourself.
-	tagDescription := self instantiate: MiTagDescription on: tagModel.
 	self refreshTaggedEntitiesList.
 	self initializeButtons.
 	self initializeLayout
@@ -145,7 +128,7 @@ MiTagExtentPage >> onBrowserPageRedisplay [
 { #category : #refreshing }
 MiTagExtentPage >> refresh [
 
-	self refreshTagDescription.
+	super refresh.
 	self refreshEntitiesList. 
 	self refreshTaggedEntitiesList.
 	
@@ -154,13 +137,7 @@ MiTagExtentPage >> refresh [
 { #category : #refreshing }
 MiTagExtentPage >> refreshEntitiesList [
 	
-	incomingEntitiesFilteringList items: self tagModel entities
-]
-
-{ #category : #refreshing }
-MiTagExtentPage >> refreshTagDescription [
-
-	tagDescription refresh
+	incomingEntitiesFilteringList items: self tagModel entities asCollection  \ self taggedEntities asCollection
 ]
 
 { #category : #refreshing }
@@ -174,7 +151,8 @@ MiTagExtentPage >> remove [
 	self currentTag ifNil: [ ^ self ].
 	taggedEntitiesFilteringList selectedItem ifNotNil: [ :entity | 
 		self tagModel untagEntity: entity ].
-	self refreshTaggedEntitiesList
+	self refreshTaggedEntitiesList.
+	self refreshEntitiesList
 ]
 
 { #category : #action }
@@ -183,19 +161,14 @@ MiTagExtentPage >> removeAll [
 	self currentTag ifNil: [ ^ self ].
 	taggedEntitiesFilteringList items do: [ :entity | 
 		self tagModel untagEntity: entity ].
-	self refreshTaggedEntitiesList
-]
-
-{ #category : #initialization }
-MiTagExtentPage >> setModelBeforeInitialization: aTagBrowser [
-
-	tagModel := aTagBrowser
+	self refreshTaggedEntitiesList.
+	self refreshEntitiesList
 ]
 
 { #category : #accessing }
 MiTagExtentPage >> setTag: aTag [
 
-	tagDescription setTag: aTag.
+	super setTag: aTag.
 	self update
 ]
 
