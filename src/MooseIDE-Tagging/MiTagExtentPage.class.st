@@ -98,16 +98,16 @@ MiTagExtentPage >> initializePresenters [
 		                                 display: [ :entity | 
 			                                 String streamContents: [ :s | 
 					                                 entity displayStringOn: s ] ];
-		                                 displayIcon: [ :entity | 
-			                                 entity mooseIcon ];
+		                                 "displayIcon: [ :entity | 
+			                                 entity mooseIcon ];"
 		                                 yourself.
 	self refreshEntitiesList.
 	taggedEntitiesFilteringList := self newFilteringList
 		                               display: [ :entity | 
 			                               String streamContents: [ :s | 
 					                               entity displayStringOn: s ] ];
-		                               displayIcon: [ :entity | 
-			                               entity mooseIcon ];
+		                               "displayIcon: [ :entity | 
+			                               entity mooseIcon ];"
 		                               yourself.
 	self refreshTaggedEntitiesList.
 	self initializeButtons.

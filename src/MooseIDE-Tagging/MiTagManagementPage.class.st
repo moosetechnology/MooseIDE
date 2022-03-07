@@ -12,7 +12,8 @@ Class {
 		'tagButton',
 		'dynamicTagButton',
 		'tagDescriptionPage',
-		'dynamicTagDescriptionPage'
+		'dynamicTagDescriptionPage',
+		'addTagButton'
 	],
 	#category : #'MooseIDE-Tagging-Browser'
 }
@@ -84,6 +85,7 @@ MiTagManagementPage >> initializeLayout [
 							   add: dynamicTagButton;
 							   yourself)
 					  expand: false;
+					  add: addTagButton height: 25;
 					  add: tagList;
 					  yourself)
 			 width: 200;
@@ -98,7 +100,7 @@ MiTagManagementPage >> initializePresenters [
 	categoryManagement := self
 		                      instantiate: MiTagCategoriesPresenter
 		                      on: tagModel.
-	
+
 	tagDescriptionPage := self instantiate: MiTagExtentPage on: tagModel.
 	dynamicTagDescriptionPage := self
 		                             instantiate: MiTagIntentPage
@@ -115,13 +117,14 @@ MiTagManagementPage >> initializePresenters [
 		                    label: 'Intent';
 		                    yourself.
 
-	tagList := self instantiate: MiTagListPresenter.
+	tagList := self newList.
 	tagList display: [ :aTag | aTag name ].
-	tagList list
+	tagList
 		displayIcon: [ :aTag | self tagModel class iconForTag: aTag ];
 		whenSelectionChangedDo: [ :selection | 
 			selection selectedItem ifNotNil: [ :item | self setTagTo: item ] ].
-	tagList addButton action: [ self owner openTagCreationForm ].
+	addTagButton := self newButton icon: (Smalltalk iconNamed: #smallAdd).
+	addTagButton action: [ self owner openTagCreationForm ].
 
 
 	self initializeLayout
