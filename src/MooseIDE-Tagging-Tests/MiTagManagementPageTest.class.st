@@ -21,7 +21,7 @@ MiTagManagementPageTest >> testAddTagUpdatingTagList [
 
 	self createExtentTag: 'Tag001'.
 	presenter refreshTagList.
-	self assert: presenter tagList list items size equals: 1
+	self assert: presenter tagList items size equals: 1
 ]
 
 { #category : #tests }
@@ -30,7 +30,7 @@ MiTagManagementPageTest >> testCurrentTagAfterSelectionInTagList [
 	self createExtentTag: 'Tag001'.
 	presenter refreshTagList.
 	self assert: presenter tagModel currentTag isNil.
-	presenter tagList list selectIndex: 1.
+	presenter tagList selectIndex: 1.
 	self assert: presenter tagModel currentTag notNil
 ]
 
@@ -39,16 +39,16 @@ MiTagManagementPageTest >> testDeleteCurrentTagAfterSelectionInTagList [
 
 	self createExtentTag: 'Tag001'.
 	presenter refreshTagList.
-	presenter tagList list selectIndex: 1.
+	presenter tagList selectIndex: 1.
 	presenter deleteCurrentTag.
-	self assert: presenter tagList list items size equals: 0
+	self assert: presenter tagList items size equals: 0
 ]
 
 { #category : #tests }
 MiTagManagementPageTest >> testOpenTagCreationForm [
 
 	self deny: browser layout child equals: browser tagCreationForm.
-	presenter tagList addButton click.
+	presenter addTagButton click.
 	self assert: browser layout child equals: browser tagCreationForm
 ]
 
@@ -59,7 +59,7 @@ MiTagManagementPageTest >> testShowExtentTagsOnlyInTagList [
 	self createExtentTag: 'Tag002'.
 	self createIntentTag: 'Tag003'.
 	presenter refreshTagList.
-	self assert: presenter tagList list items size equals: 2
+	self assert: presenter tagList items size equals: 2
 ]
 
 { #category : #tests }
@@ -70,7 +70,7 @@ MiTagManagementPageTest >> testShowIntentAndExtentTagsInTagList [
 	self createIntentTag: 'Tag003'.
 	presenter dynamicTagButton click.
 	presenter refreshTagList.
-	self assert: presenter tagList list items size equals: 3
+	self assert: presenter tagList items size equals: 3
 ]
 
 { #category : #tests }
@@ -82,11 +82,11 @@ MiTagManagementPageTest >> testShowIntentTagsOnlyInTagList [
 	presenter tagButton click.
 	presenter dynamicTagButton click.
 	presenter refreshTagList.
-	self assert: presenter tagList list items size equals: 1
+	self assert: presenter tagList items size equals: 1
 ]
 
 { #category : #tests }
 MiTagManagementPageTest >> testTagListIsEmpty [
 
-	self assert: presenter tagList list items isEmpty
+	self assert: presenter tagList items isEmpty
 ]
