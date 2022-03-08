@@ -78,11 +78,13 @@ MiTagCategoriesPresenter >> initializePresenters [
 	categoryCreationForm := self
 		                        instantiate: MiTagCategoryCreationForm
 		                        on: tagModel.
-	mainPresenter := MiPresenter new layout: (SpBoxLayout newLeftToRight
-			                  add: categoryDropList;
-			                  add: addCategoryButton
-			                  width: addCategoryButton icon width + 10;
-			                  yourself).
+	mainPresenter := MiPresenter new
+		                 layout: (SpBoxLayout newLeftToRight
+				                  add: categoryDropList;
+				                  add: addCategoryButton
+				                  width: addCategoryButton icon width + 10;
+				                  yourself);
+		                 yourself.
 	self initializeLayout
 ]
 
