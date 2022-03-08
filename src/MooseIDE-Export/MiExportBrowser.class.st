@@ -30,7 +30,7 @@ MiExportBrowser class >> commentColumnTitle [
 { #category : #layout }
 MiExportBrowser class >> defaultLayout [
 
-	^ super defaultSpec
+	^ super defaultLayout
 		  add: #toolbar height: self toolbarHeight;
 		  add: #entitiesTable;
 		  yourself

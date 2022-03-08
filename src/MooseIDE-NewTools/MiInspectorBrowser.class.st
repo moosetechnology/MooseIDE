@@ -14,7 +14,7 @@ Class {
 { #category : #layout }
 MiInspectorBrowser class >> defaultLayout [
 
-	^ super defaultSpec
+	^ super defaultLayout
 		  add: #miInspector;
 		  yourself
 ]

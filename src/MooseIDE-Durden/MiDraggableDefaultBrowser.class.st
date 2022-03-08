@@ -10,7 +10,7 @@ Class {
 }
 
 { #category : #specs }
-MiDraggableDefaultBrowser class >> defaultSpec [
+MiDraggableDefaultBrowser class >> defaultLayout [
 	^ SpBoxLayout newVertical
 		add:
 			(SpBoxLayout newHorizontal

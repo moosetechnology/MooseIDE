@@ -19,7 +19,7 @@ Class {
 }
 
 { #category : #specs }
-MiBusesPopup class >> defaultSpec [
+MiBusesPopup class >> defaultLayout [
 
 	^ SpBoxLayout newTopToBottom
 		  add: #busesList;

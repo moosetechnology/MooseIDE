@@ -18,7 +18,7 @@ Class {
 
 { #category : #layout }
 MiMooseModelBrowser class >> defaultLayout [
-	^ super defaultSpec
+	^ super defaultLayout
 	"	add: #searchField
 			withConstraints: [ :constraints | constraints height: self toolbarHeight ];"
 		add: #modelPresenter;

@@ -19,7 +19,7 @@ Class {
 
 { #category : #layout }
 MiSourceTextBrowser class >> defaultLayout [
-	^super defaultSpec
+	^super defaultLayout
 		add: #toolBarExternalEditor height: self toolbarHeight ;
 		add: #sourceText expand: true ;
 		yourself

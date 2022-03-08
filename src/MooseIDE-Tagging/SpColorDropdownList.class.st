@@ -14,7 +14,7 @@ Class {
 }
 
 { #category : #specs }
-SpColorDropdownList class >> defaultSpec [
+SpColorDropdownList class >> defaultLayout [
 
 	^ SpBoxLayout newTopToBottom
 		  add: (SpBoxLayout newLeftToRight

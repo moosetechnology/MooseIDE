@@ -44,7 +44,7 @@ Class {
 }
 
 { #category : #specs }
-MiAbstractBrowser class >> defaultSpec [
+MiAbstractBrowser class >> defaultLayout [
 
 	^ SpBoxLayout newVertical
 ]

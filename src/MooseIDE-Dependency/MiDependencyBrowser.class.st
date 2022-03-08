@@ -16,7 +16,7 @@ Class {
 
 { #category : #layout }
 MiDependencyBrowser class >> defaultLayout [
-	^ super defaultSpec
+	^ super defaultLayout
 		add: #diagram;
 		yourself
 ]

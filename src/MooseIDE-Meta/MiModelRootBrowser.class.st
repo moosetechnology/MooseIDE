@@ -33,7 +33,7 @@ MiModelRootBrowser class >> buildModelCommandsGroupWith: presenterInstance [
 { #category : #layout }
 MiModelRootBrowser class >> defaultLayout [
 
-	^ super defaultSpec
+	^ super defaultLayout
 		  add: #toolbar
 		  withConstraints: [ :constraints | 
 			  constraints height: self toolbarHeight ];

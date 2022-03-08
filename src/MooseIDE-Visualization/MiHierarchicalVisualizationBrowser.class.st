@@ -8,9 +8,9 @@ Class {
 }
 
 { #category : #specs }
-MiHierarchicalVisualizationBrowser class >> defaultSpec [
+MiHierarchicalVisualizationBrowser class >> defaultLayout [
 
-	^ super defaultSpec
+	^ super defaultLayout
 		  add: #diagram;
 		  yourself
 ]

@@ -41,7 +41,7 @@ MiDraggableAbstractWidget class >> buildCommandsGroupWith: presenterInstance for
 ]
 
 { #category : #commands }
-MiDraggableAbstractWidget class >> defaultSpec [
+MiDraggableAbstractWidget class >> defaultLayout [
 
 	^ self basicDefaultSpec
 ]

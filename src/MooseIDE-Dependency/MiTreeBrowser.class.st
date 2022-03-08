@@ -16,7 +16,7 @@ Class {
 
 { #category : #layout }
 MiTreeBrowser class >> defaultLayout [
-	^ super defaultSpec
+	^ super defaultLayout
 		add: #tree;
 		yourself
 ]

@@ -16,7 +16,7 @@ Class {
 
 { #category : #layout }
 MiPropertyBrowser class >> defaultLayout [
-	^ super defaultSpec
+	^ super defaultLayout
 		add: #properties;
 		yourself
 ]

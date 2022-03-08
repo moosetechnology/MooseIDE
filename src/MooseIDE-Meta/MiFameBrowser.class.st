@@ -17,7 +17,7 @@ Class {
 
 { #category : #layout }
 MiFameBrowser class >> defaultLayout [
-	^ super defaultSpec
+	^ super defaultLayout
 		add: #fameDescription;
 		yourself
 ]
