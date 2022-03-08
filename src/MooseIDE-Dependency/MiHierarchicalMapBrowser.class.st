@@ -161,6 +161,12 @@ MiHierarchicalMapBrowser >> remove: aTag [
 	tagCreateForm removeTag: aTag
 ]
 
+{ #category : #accessing }
+MiHierarchicalMapBrowser >> settings [
+
+	^ settings
+]
+
 { #category : #actions }
 MiHierarchicalMapBrowser >> showMenu [
 
