@@ -21,6 +21,19 @@ MiHierarchicalMapBrowser class >> mapClass [
 	^ MiHierarchicalMap
 ]
 
+{ #category : #'world menu' }
+MiHierarchicalMapBrowser class >> menuCommandOn: aBuilder [
+	<worldMenu>
+	<miBrowsers>
+	^(aBuilder item: #HierarchicalMapBrowser)
+		parent: self midasBrowserMenuLabel;
+		label: self title;
+		help: self helpMessage;
+		order: 5;
+		action: [ self open ] ;
+		yourself
+]
+
 { #category : #'instance creation' }
 MiHierarchicalMapBrowser class >> newModel [
 
