@@ -16,6 +16,19 @@ MiDMBrowser class >> mapClass [
 	^ MiDM
 ]
 
+{ #category : #'world menu' }
+MiDMBrowser class >> menuCommandOn: aBuilder [
+	<worldMenu>
+	<miBrowsers>
+	^(aBuilder item: #DMBrowser)
+		parent: self midasBrowserMenuLabel;
+		label: self title;
+		help: self helpMessage;
+		order: 5;
+		action: [ self open ] ;
+		yourself
+]
+
 { #category : #'instance creation' }
 MiDMBrowser class >> open [
 	<script>
