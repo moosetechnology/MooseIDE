@@ -16,7 +16,7 @@ Class {
 { #category : #specs }
 MiDragMePresenter class >> adapterName [
 
-	^ #SpMorphicDragMeAdapter
+	^ #MiMorphicDragMeAdapter
 ]
 
 { #category : #accessing }

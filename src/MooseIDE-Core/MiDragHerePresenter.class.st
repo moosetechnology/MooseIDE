@@ -15,7 +15,7 @@ Class {
 
 { #category : #specs }
 MiDragHerePresenter class >> adapterName [ 
-	 ^ #SpMorphicDragHereAdapter
+	 ^ #MiMorphicDragHereAdapter
 ]
 
 { #category : #'changing suspended state' }
