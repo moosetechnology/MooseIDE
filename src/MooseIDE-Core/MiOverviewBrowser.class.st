@@ -75,8 +75,9 @@ MiOverviewBrowser class >> menuCommandOn: aBuilder [
 
 { #category : #specs }
 MiOverviewBrowser class >> open [
+
 	<script>
-	self new openWithSpec
+	self new open
 ]
 
 { #category : #specs }

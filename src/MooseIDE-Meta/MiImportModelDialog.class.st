@@ -3,7 +3,7 @@ Abstract class for model import dialogs
 "
 Class {
 	#name : #MiImportModelDialog,
-	#superclass : #SpPresenter,
+	#superclass : #MiPresenter,
 	#instVars : [
 		'originBrowser'
 	],
@@ -22,32 +22,45 @@ MiImportModelDialog class >> windowExtent [
 ]
 
 { #category : #action }
-MiImportModelDialog >> importModel: aDialog [
+MiImportModelDialog >> importModel [
 
 	| mooseModel |
-	[ mooseModel := self privateImportModel ] onErrorDo: [ :err | 
-		UIManager default alert: 'Import error: ' , err messageText.
-		^ self ].
+	mooseModel := self privateImportModel.
 
 	"Check if the model is empty. We are using size to optimize the code."
 	(mooseModel size - (mooseModel allUsing: FamixTSourceLanguage) size)
 		isZero ifTrue: [ 
-		UIManager default alert: 'You must select at least one package.'.
+		self error: 'Something is wrong, the imported model appears to be empty' ].
+
+	^ mooseModel
+]
+
+{ #category : #action }
+MiImportModelDialog >> importModelThenCloseDialogWindow: aDialog [
+
+	| mooseModel |
+	[self validateImportForm]  onErrorDo: [ :err | 
+		UIManager default alert: 'Invalid input: ' , err messageText.
 		^ self ].
 
-	mooseModel install.
-	self updateBrowserWith: mooseModel.
+	mooseModel := [ self importModel ] onErrorDo: [ :err | 
+		              UIManager default alert:
+			              'Import error: ' , err messageText.
+		              nil ].
 
-	"Close the dialog when the model was succefully installed"
-	aDialog close
+	mooseModel ifNotNil: [ 
+		mooseModel install.
+		aDialog close.
+		self updateBrowserWith: mooseModel ]
 ]
 
 { #category : #initialization }
 MiImportModelDialog >> initializeDialogWindow: aDialog [
 
 	aDialog initialExtent: self class windowExtent.
-	aDialog addButton: 'Import' do: [ :dialog | 
-		self importModel: dialog ].
+	aDialog
+		addButton: 'Import'
+		do: [ :dialog | self importModelThenCloseDialogWindow: dialog ].
 	aDialog addButton: 'Cancel' do: [ :dialog | dialog close ]
 ]
 
@@ -68,4 +81,10 @@ MiImportModelDialog >> updateBrowserWith: mooseModel [
 
 	originBrowser ifNotNil: [ 
 		originBrowser updateForNewModel: mooseModel ]
+]
+
+{ #category : #action }
+MiImportModelDialog >> validateImportForm [
+	"checks that required fields are properly filled in"
+	self subclassResponsibility 
 ]

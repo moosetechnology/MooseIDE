@@ -17,8 +17,8 @@ Class {
 	#category : #'MooseIDE-Core-Widgets'
 }
 
-{ #category : #specs }
-MiListSelector class >> defaultSpec [
+{ #category : #layout }
+MiListSelector class >> defaultLayout [
 
 	^ SpBoxLayout newLeftToRight
 		  add: #initialList;

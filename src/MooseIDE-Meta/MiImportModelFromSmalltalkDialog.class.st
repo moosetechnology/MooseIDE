@@ -21,8 +21,8 @@ Class {
 	#category : #'MooseIDE-Meta-Import'
 }
 
-{ #category : #specs }
-MiImportModelFromSmalltalkDialog class >> defaultSpec [
+{ #category : #layout }
+MiImportModelFromSmalltalkDialog class >> defaultLayout [
 
 	^ SpBoxLayout newTopToBottom
 		  spacing: 10;
@@ -290,4 +290,12 @@ MiImportModelFromSmalltalkDialog >> showAdvancedSettings [
 MiImportModelFromSmalltalkDialog >> simpleLayout [
 
 	^ self class defaultSpec
+]
+
+{ #category : #action }
+MiImportModelFromSmalltalkDialog >> validateImportForm [
+	"checks that required fields are properly filled in"
+	packagesSelector selectedItems ifEmpty: [ Error signal: 'Please select at least one package' ].
+	modelNameField text ifEmpty: [ Error signal: 'Please name the model' ].
+
 ]

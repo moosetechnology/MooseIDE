@@ -3,7 +3,7 @@ I am the toolbar for the queries browser that containts the buttons for adding a
 "
 Class {
 	#name : #MiQueriesBrowserToolbar,
-	#superclass : #SpPresenter,
+	#superclass : #MiPresenter,
 	#instVars : [
 		'addRootQueryButton',
 		'saveQueriesButton',

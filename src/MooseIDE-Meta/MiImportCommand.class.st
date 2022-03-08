@@ -19,9 +19,8 @@ Class {
 MiImportCommand class >> addToSpCommandGroup: aSpCommandGroup forSpecContext: aPresenter [
 
 	{ 
-		MiImportMSECommand.
-		MiImportSTCommand.
-		MiImportJSONCommand } do: [ :cmd | 
+		MiImportFromFileCommand.
+		MiImportFromSTCommand } do: [ :cmd | 
 		aSpCommandGroup register: ((cmd forSpecContext: aPresenter)
 				 iconName: cmd defaultIconName;
 				 yourself) ].
@@ -47,8 +46,8 @@ MiImportCommand class >> isAbstract [
 	^ self = MiImportCommand
 ]
 
-{ #category : #hooks }
+{ #category : #execution }
 MiImportCommand >> execute [
 
-	(self class importForm on: self context) openDialogWithSpec
+	(self class importForm on: self context) openDialog
 ]

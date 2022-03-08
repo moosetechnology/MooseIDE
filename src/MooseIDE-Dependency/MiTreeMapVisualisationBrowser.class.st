@@ -15,8 +15,8 @@ Class {
 	#category : #'MooseIDE-Dependency-TreeMap'
 }
 
-{ #category : #specs }
-MiTreeMapVisualisationBrowser class >> defaultSpec [
+{ #category : #layout }
+MiTreeMapVisualisationBrowser class >> defaultLayout [
 	^ super defaultSpec
 		add: #diagram;
 		yourself
@@ -66,7 +66,7 @@ MiTreeMapVisualisationBrowser >> canHighlight [
 
 { #category : #actions }
 MiTreeMapVisualisationBrowser >> followEntity: anEntity [
-
+	self window title: self class title, '-' , anEntity name.
 	model entities: anEntity rootsForTreeMap.
 	diagram run
 ]

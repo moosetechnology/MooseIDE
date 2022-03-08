@@ -3,7 +3,7 @@ Load a set of already saved queries into the queries browser
 "
 Class {
 	#name : #LoadQueriesPresenter,
-	#superclass : #SpPresenter,
+	#superclass : #MiPresenter,
 	#instVars : [
 		'filteringListPresenter',
 		'closeButton'

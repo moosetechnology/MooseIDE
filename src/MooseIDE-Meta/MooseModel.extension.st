@@ -1,6 +1,7 @@
 Extension { #name : #MooseModel }
 
 { #category : #'*MooseIDE-Meta' }
-MooseModel class >> isTestModel [
+MooseModel class >> canBeImportedFromFile [
+
 	^ false
 ]

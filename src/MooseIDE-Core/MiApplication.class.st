@@ -15,7 +15,8 @@ Class {
 
 { #category : #'instance creation' }
 MiApplication class >> current [
-	^ Current ifNil: [ Current := self new ]
+	^ Current ifNil: [ Current := self new
+  		yourself. ]
 ]
 
 { #category : #accessing }
