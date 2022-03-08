@@ -35,7 +35,7 @@ MiColorPicker class >> openExemple [
 
 	<script>
 	^ self new
-		  openWithSpec;
+		  open;
 		  yourself
 ]
 

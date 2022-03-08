@@ -56,5 +56,6 @@ MiCoUsageMapSettings class >> buttonSettingLabel [
 
 { #category : #'*MooseIDE-CoUsageMap-Roassal3' }
 MiCoUsageMapSettings class >> openBlocksSettings [
-	MiCoUsageMapSettingsPresenter new openWithSpec
+
+	MiCoUsageMapSettingsPresenter new open
 ]

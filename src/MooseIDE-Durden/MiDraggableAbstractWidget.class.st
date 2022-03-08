@@ -180,7 +180,7 @@ MiDraggableAbstractWidget >> initializePresenters [
 		owner noteThatWidgetHasBeenClosed: self. 
 		MiDraggableDefaultBrowser new
 			widget: self;
-			openWithSpec.
+			open.
  ].
 	dragMeOut label:'->'.
 	close := self newButton.

@@ -58,7 +58,7 @@ MiDropIntoBrowser class >> menuCommandOn: aBuilder [
 MiDropIntoBrowser class >> open [
 
 	<script>
-	self new openWithSpec
+	self new open
 ]
 
 { #category : #specs }
