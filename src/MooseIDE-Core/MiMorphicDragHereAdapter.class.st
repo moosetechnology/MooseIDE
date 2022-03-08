@@ -1,3 +1,6 @@
+"
+I am a morphic adapter that puts together the DragHere morph with a SpDragHere spec widget
+"
 Class {
 	#name : #MiMorphicDragHereAdapter,
 	#superclass : #SpMorphicContainerAdapter,
@@ -10,7 +13,7 @@ Class {
 { #category : #factory }
 MiMorphicDragHereAdapter >> buildWidget [
 
-	^ DragHere new
+	^ MiDragHereMorph new
 		  changeProportionalLayout;
 		  vResizing: #spaceFill;
 		  hResizing: #spaceFill;
