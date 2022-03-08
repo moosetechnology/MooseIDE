@@ -53,7 +53,7 @@ BaselineOfMooseIDE >> definePackages: spec [
 		with: [ spec requires: #( 'LabelContractor' ) ];
 		package: 'MooseIDE-Visualization' with: [ 
 			spec requires:
-					#( 'TelescopeRoassal3' 'HierarchicalVisualizations' ) ];
+					#( 'MooseIDE-Core' 'TelescopeRoassal3' 'HierarchicalVisualizations' ) ];
 		package: 'MooseIDE-Meta'
 		with: [ spec requires: #( 'MooseIDE-Core' ) ];
 		package: 'MooseIDE-Tests'
@@ -86,7 +86,8 @@ BaselineOfMooseIDE >> definePackages: spec [
 		package: 'MooseIDE-ColorPalette';
 		package: 'MooseIDE-ColorPalette-Tests'
 		with: [ spec requires: #( 'MooseIDE-ColorPalette' ) ];
-		package: 'MooseIDE-Durden';
+		package: 'MooseIDE-Durden'
+		with: [ spec requires: #( 'MooseIDE-Core' ) ];
 		package: 'MooseIDE-CoUsageMap-Browser' with: [ 
 			spec requires:
 					#( 'MooseIDE-Core' 'MooseIDE-Visualization'
