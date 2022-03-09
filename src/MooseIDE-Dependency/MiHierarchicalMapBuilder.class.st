@@ -151,8 +151,10 @@ MiHierarchicalMapBuilder >> buildNodeFromEntity: anEntity [
 		  name:
 			  (String streamContents: [ :s | anEntity displayStringOn: s ]);
 		  rawModel: anEntity;
-		  addAll: ((self mapModel childrenFor: anEntity) collect: [ :e | 
-					   self buildNodeFromEntity: e ]);
+		  addAll: ((self mapModel childrenFor: anEntity)
+				   collect: [ :e | 
+					   anEntity == e ifFalse: [ self buildNodeFromEntity: e ] ]
+				   thenSelect: [ :e | e isNotNil ]);
 		  collapse;
 		  yourself
 ]
