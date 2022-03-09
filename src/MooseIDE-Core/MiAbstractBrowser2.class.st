@@ -96,6 +96,12 @@ MiAbstractBrowser2 >> adaptToDropInto: aBrowserContainer [
 
 ]
 
+{ #category : #converting }
+MiAbstractBrowser2 >> asDraggableMorph [
+
+	^ StringMorph contents: self title
+]
+
 { #category : #'window control' }
 MiAbstractBrowser2 >> browserClosed [
 
