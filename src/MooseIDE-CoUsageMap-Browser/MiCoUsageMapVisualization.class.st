@@ -59,6 +59,11 @@ MiCoUsageMapVisualization >> itemsFor: aClass key: key [
 	^ self perform: key with: aClass
 ]
 
+{ #category : #actions }
+MiCoUsageMapVisualization >> openSettingsBrowser [
+	coUsageMap markManager openSettingsBrowser
+]
+
 { #category : #brokerage }
 MiCoUsageMapVisualization >> remove: anObject [
 	anObject class = FamixTag
