@@ -20,8 +20,8 @@ Class {
 }
 
 { #category : #specs }
-MiTagBrowser class >> defaultSpec [
-	^super defaultSpec
+MiTagBrowser class >> defaultLayout [
+	^super defaultLayout
 		add: #mainPresenter;
 		yourself
 ]

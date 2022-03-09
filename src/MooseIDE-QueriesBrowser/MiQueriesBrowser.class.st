@@ -107,7 +107,7 @@ MiQueriesBrowser >> initializeLayout [
 	tempLayout := SpBoxLayout newTopToBottom
 		              spacing: 5;
 		              yourself.
-	tempLayout add: self class defaultSpec expand: false.
+	tempLayout add: self class defaultLayout expand: false.
 	tempLayout add: (SpPanedLayout new
 			 add: queriesListPresenter;
 			 add: queryNotebookPresenter;

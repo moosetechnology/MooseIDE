@@ -17,7 +17,7 @@ Class {
 }
 
 { #category : #specs }
-MiColorPicker class >> defaultSpec [
+MiColorPicker class >> defaultLayout [
 
 	^ SpBoxLayout newTopToBottom
 		  add: #colorPicker expand: false;
@@ -35,7 +35,7 @@ MiColorPicker class >> openExemple [
 
 	<script>
 	^ self new
-		  openWithSpec;
+		  open;
 		  yourself
 ]
 

@@ -24,7 +24,7 @@ MiCoUsageMapMooseBuilder >> application: anObject [
 
 { #category : #default }
 MiCoUsageMapMooseBuilder >> defaultTester [
-	^ MiCoMooseMethodAttributeTester new
+	^ MiCoFromSettingsMethodAttributeTester new
 ]
 
 { #category : #'as yet unclassified' }

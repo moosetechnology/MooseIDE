@@ -36,6 +36,38 @@ MiTagBrowserTest >> setUp [
 ]
 
 { #category : #tests }
+MiTagBrowserTest >> testIsConsumerOfFQAbstractQuery [
+
+	self assert:
+		((browser application consumersOf: FQAbstractQuery) anySatisfy: [ :elt | 
+			 elt = browser tagCreationForm ])
+]
+
+{ #category : #tests }
+MiTagBrowserTest >> testIsConsumerOfTagAssociation [
+
+	self assert:
+		((browser application consumersOf: FamixTagAssociation) anySatisfy: [ :elt | 
+			 elt = browser ])
+]
+
+{ #category : #tests }
+MiTagBrowserTest >> testIsProducerOfDynamicTag [
+
+	self assert:
+		((browser application producersOf: MiDynamicTag) anySatisfy: [ :elt | 
+			 elt = browser ])
+]
+
+{ #category : #tests }
+MiTagBrowserTest >> testIsProducerOfFamixTags [
+
+	self assert:
+		((browser application producersOf: FamixTag) anySatisfy: [ :elt | 
+			 elt = browser ])
+]
+
+{ #category : #tests }
 MiTagBrowserTest >> testNoTagDetailPageAddDoNothing [
 
 	| entities |

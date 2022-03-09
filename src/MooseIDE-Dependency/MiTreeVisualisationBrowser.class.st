@@ -16,7 +16,7 @@ Class {
 
 { #category : #layout }
 MiTreeVisualisationBrowser class >> defaultLayout [
-	^ super defaultSpec
+	^ super defaultLayout
 		add: #diagram;
 		yourself
 ]

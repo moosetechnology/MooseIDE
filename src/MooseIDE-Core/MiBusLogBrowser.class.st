@@ -38,7 +38,7 @@ MiBusLogBrowser class >> menuCommandGroupFor: presenter [
 MiBusLogBrowser class >> openForBus: aBus [
 
 	^ (self forBus: aBus)
-		  openWithSpec;
+		  open;
 		  updateToolbars;
 		  yourself
 ]

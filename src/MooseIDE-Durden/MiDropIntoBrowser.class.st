@@ -23,7 +23,7 @@ Class {
 }
 
 { #category : #specs }
-MiDropIntoBrowser class >> defaultSpec [
+MiDropIntoBrowser class >> defaultLayout [
 
 	^ SpBoxLayout newTopToBottom
 		  add: #toolbar height: self toolbarHeight;
@@ -58,7 +58,7 @@ MiDropIntoBrowser class >> menuCommandOn: aBuilder [
 MiDropIntoBrowser class >> open [
 
 	<script>
-	self new openWithSpec
+	self new open
 ]
 
 { #category : #specs }

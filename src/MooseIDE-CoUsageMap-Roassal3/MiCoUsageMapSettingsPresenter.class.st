@@ -15,7 +15,7 @@ Class {
 }
 
 { #category : #specs }
-MiCoUsageMapSettingsPresenter class >> defaultSpec [
+MiCoUsageMapSettingsPresenter class >> defaultLayout [
 	^ SpBoxLayout newTopToBottom
 		spacing: 3;
 		add: 'Children block:' asPresenter expand: false;

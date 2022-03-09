@@ -16,7 +16,7 @@ Class {
 
 { #category : #layout }
 MiUMLBrowser class >> defaultLayout [
-	^ super defaultSpec
+	^ super defaultLayout
 		add: #diagram;
 		yourself
 ]

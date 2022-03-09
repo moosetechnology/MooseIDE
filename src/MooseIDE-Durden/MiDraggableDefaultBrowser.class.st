@@ -10,7 +10,7 @@ Class {
 }
 
 { #category : #specs }
-MiDraggableDefaultBrowser class >> defaultSpec [
+MiDraggableDefaultBrowser class >> defaultLayout [
 	^ SpBoxLayout newVertical
 		add:
 			(SpBoxLayout newHorizontal
@@ -47,7 +47,7 @@ MiDraggableDefaultBrowser class >> runMeWith: aClass following: aBus [
 
 	^ (self on: self newModel)
 		  widgetClass: aClass;
-		  openWithSpec;
+		  open;
 		  followBus: aBus;
 		  yourself
 ]

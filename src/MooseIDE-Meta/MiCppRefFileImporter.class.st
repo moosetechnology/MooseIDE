@@ -7,10 +7,18 @@ Class {
 	#category : #'MooseIDE-Meta-Import'
 }
 
+{ #category : #executing }
+MiCppRefFileImporter class >> fileExtension [
+	^'ref'
+]
+
 { #category : #running }
 MiCppRefFileImporter >> run [
-	"CPPSCSVImporter
-		runOn: nil ""actually not used""
-		withRefFile: inputFile
-		withModel: model"
+	Smalltalk at: #FamixCppCSVImporter
+		ifPresent: [ :cls | 
+			cls 
+				runOn: nil 
+				withRefFile: inputFile
+				withModel: model ].
+		
 ]

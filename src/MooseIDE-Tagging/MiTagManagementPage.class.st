@@ -18,6 +18,12 @@ Class {
 	#category : #'MooseIDE-Tagging-Browser'
 }
 
+{ #category : #accessing }
+MiTagManagementPage >> addTagButton [
+
+	^ addTagButton
+]
+
 { #category : #initialization }
 MiTagManagementPage >> connectPresenters [
 
