@@ -10,7 +10,7 @@ Class {
 	#instVars : [
 		'dropInto'
 	],
-	#category : #'MooseIDE-Core-workspace'
+	#category : #'MooseIDE-Core-Workspace'
 }
 
 { #category : #specs }

@@ -7,7 +7,7 @@ Class {
 	#instVars : [
 		'transferMorph'
 	],
-	#category : #'MooseIDE-Core-workspace'
+	#category : #'MooseIDE-Core-Workspace'
 }
 
 { #category : #factory }

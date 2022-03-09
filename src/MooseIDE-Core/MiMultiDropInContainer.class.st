@@ -8,7 +8,7 @@ Class {
 		'presenters',
 		'newLayoutBlock'
 	],
-	#category : #'MooseIDE-Core-workspace'
+	#category : #'MooseIDE-Core-Workspace'
 }
 
 { #category : #initialization }

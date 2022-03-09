@@ -8,7 +8,7 @@ Class {
 		'onPrompteForDragging',
 		'onPrompteForAccepting'
 	],
-	#category : #'MooseIDE-Core-workspace'
+	#category : #'MooseIDE-Core-Workspace'
 }
 
 { #category : #'as yet unclassified' }

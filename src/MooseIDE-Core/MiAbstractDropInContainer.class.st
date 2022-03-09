@@ -8,7 +8,7 @@ Class {
 		'dragHere',
 		'installingStrategy'
 	],
-	#category : #'MooseIDE-Core-workspace'
+	#category : #'MooseIDE-Core-Workspace'
 }
 
 { #category : #initialization }

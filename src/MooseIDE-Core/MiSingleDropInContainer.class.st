@@ -7,7 +7,7 @@ Class {
 	#instVars : [
 		'presenter'
 	],
-	#category : #'MooseIDE-Core-workspace'
+	#category : #'MooseIDE-Core-Workspace'
 }
 
 { #category : #initialization }

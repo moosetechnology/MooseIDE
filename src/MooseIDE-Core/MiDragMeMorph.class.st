@@ -7,7 +7,7 @@ Class {
 	#instVars : [
 		'draggingAction'
 	],
-	#category : #'MooseIDE-Core-workspace'
+	#category : #'MooseIDE-Core-Workspace'
 }
 
 { #category : #accessing }
