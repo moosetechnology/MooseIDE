@@ -256,6 +256,13 @@ MiAbstractBrowserTest >> testHighlightEntity [
 		self assertHighlightActionFor: mooseObject ]
 ]
 
+{ #category : #'tests - opening' }
+MiAbstractBrowserTest >> testSettingsAction [
+	"must be redefined in browsers that do have settings"
+
+	self deny: browser hasSettings
+]
+
 { #category : #'tests - buses' }
 MiAbstractBrowserTest >> testUnfollowBus [
 

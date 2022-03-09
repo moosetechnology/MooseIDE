@@ -77,6 +77,11 @@ MiCoUsageBrowser >> followEntity: anEntity [
 	coUsageMap run
 ]
 
+{ #category : #testing }
+MiCoUsageBrowser >> hasSettings [ 
+	^true
+]
+
 { #category : #initialization }
 MiCoUsageBrowser >> initializePresenters [
 
@@ -90,4 +95,9 @@ MiCoUsageBrowser >> initializePresenters [
 MiCoUsageBrowser >> miSelectedItem [
 
 	^ classModel
+]
+
+{ #category : #actions }
+MiCoUsageBrowser >> settings [ 
+	coUsageMap openSettingsBrowser
 ]

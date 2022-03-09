@@ -29,6 +29,8 @@ MiWindowPresenter class >> buildCommandsGroupWith: aPresenter forRoot: rootComma
 		register: (MiEditBusCommand forSpecContext: aPresenter);
 		register:
 			(MiHelpCommand forSpecContext: aPresenter) beDisplayedOnRightSide;
+		register:
+			(MiSettingsCommand forSpecContext: aPresenter) beDisplayedOnRightSide;
 		register: (self actionsCommandGroupFor: aPresenter)
 ]
 
