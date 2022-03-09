@@ -1,5 +1,6 @@
 "
 Access point to configure the settings of a browser
+Browsers should implement #hasSetting (to return true) and #settings to open the settings presenter
 
 "
 Class {
