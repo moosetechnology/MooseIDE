@@ -43,13 +43,17 @@ MiAbstractWorkspace class >> taskbarIcon [
 
 { #category : #buses }
 MiAbstractWorkspace >> buses [
+
 	^ buses
 ]
 
 { #category : #testing }
 MiAbstractWorkspace >> canBeDragged [
-	"This could be removed once all browsers use the new infrastructure and can all be dragged"
-	^true
+
+	self flag:
+		'This could be removed once all browsers use the new infrastructure and can all be dragged'.
+
+	^ true
 ]
 
 { #category : #testing }
@@ -60,22 +64,29 @@ MiAbstractWorkspace >> canEditBuses [
 
 { #category : #testing }
 MiAbstractWorkspace >> canFollow [
-	^self containedBrowsers anySatisfy: [ :browser | browser canFollow ]
+
+	^ self containedBrowsers anySatisfy: [ :browser | browser canFollow ]
 ]
 
 { #category : #testing }
 MiAbstractWorkspace >> canFollowEntity: anObject [
-	^self containedBrowsers anySatisfy: [ :browser | browser canFollowEntity: anObject ]
+
+	^ self containedBrowsers anySatisfy: [ :browser | 
+		  browser canFollowEntity: anObject ]
 ]
 
 { #category : #testing }
 MiAbstractWorkspace >> canHighlight [
-	^self containedBrowsers anySatisfy: [ :browser | browser canHighlight ]
+
+	^ self containedBrowsers anySatisfy: [ :browser | 
+		  browser canHighlight ]
 ]
 
 { #category : #testing }
 MiAbstractWorkspace >> canPropagate [
-	^self containedBrowsers anySatisfy: [ :browser | browser canPropagate ]
+
+	^ self containedBrowsers anySatisfy: [ :browser | 
+		  browser canPropagate ]
 ]
 
 { #category : #accessing }
@@ -85,22 +96,27 @@ MiAbstractWorkspace >> containedBrowsers [
 
 { #category : #'private - updating' }
 MiAbstractWorkspace >> desiredWindowSize [
-	self subclassResponsibility 
+
+	self subclassResponsibility
 ]
 
 { #category : #buses }
 MiAbstractWorkspace >> followBus: aBus [
 
 	(self buses includes: aBus) ifTrue: [ ^ self ].
+
 	self buses add: aBus.
 	aBus registerBrowser: self.
-	self window ifNotNil: [ :window | window updateBusButton ].
+
+	self withWindowDo: [ :window | window updateBusButton ].
+
 	self receiveEntity: aBus logger mostRecentEntity
 ]
 
 { #category : #actions }
 MiAbstractWorkspace >> followEntity: anEntity [
-	^self privateBus globallySelect: anEntity 
+
+	^ self privateBus globallySelect: anEntity
 ]
 
 { #category : #actions }
@@ -116,7 +132,9 @@ MiAbstractWorkspace >> freezeDuring: aBlock [
 
 { #category : #actions }
 MiAbstractWorkspace >> highlightEntity: anEntity [
-	"In HighlightMode, we propagate the entity to the containedBrowsers that are in the same mode and will act accrodingly"
+
+	"In HighlightMode, we propagate the entity to the containedBrowsers that are in the same mode and will act accordingly"
+
 	self followEntity: anEntity
 ]
 
@@ -133,8 +151,8 @@ MiAbstractWorkspace >> initialize [
 
 { #category : #initialization }
 MiAbstractWorkspace >> initializePrivateBus [
-	privateBus := MiPrivateBus new
-		name: 'workspace bus'.
+
+	privateBus := MiPrivateBus new name: 'workspace bus'.
 	privateBus registerBrowser: self
 ]
 
@@ -147,7 +165,9 @@ MiAbstractWorkspace >> initializeWindow: aMiWindowPresenter [
 
 	aMiWindowPresenter whenClosedDo: [ 
 		self containedBrowsers do: [ :browser | browser browserClosed ].
-		self buses do: [ :bus | bus unregisterBrowser: self ] ]
+		self buses do: [ :bus | bus unregisterBrowser: self ] ].
+
+	aMiWindowPresenter initialExtent: self windowSize
 ]
 
 { #category : #actions }
@@ -173,28 +193,34 @@ MiAbstractWorkspace >> install: aMiBrowser inContainer: aMiDropInContainer [
 
 { #category : #testing }
 MiAbstractWorkspace >> isMiBrowser [
+
 	^ true
 ]
 
 { #category : #accessing }
 MiAbstractWorkspace >> miSelectedItem [
-	^privateBus mostRecentEntity
-		ifNil: [ (MiNoSelectedElementToPropagateException browser: self) signal ]
+
+	^ privateBus mostRecentEntity ifNil: [ 
+		  (MiNoSelectedElementToPropagateException browser: self) signal ]
 ]
 
 { #category : #testing }
 MiAbstractWorkspace >> needUpdate: anEntity [
-	^self containedBrowsers anySatisfy: [ :browser | browser needUpdate: anEntity ]
+
+	^ self containedBrowsers anySatisfy: [ :browser | 
+		  browser needUpdate: anEntity ]
 ]
 
 { #category : #'instance creation' }
 MiAbstractWorkspace >> newContainer [
-	^self instantiate: MiSingleDropInContainer
+
+	^ self instantiate: MiSingleDropInContainer
 ]
 
 { #category : #buses }
 MiAbstractWorkspace >> privateBus [
-	^privateBus
+
+	^ privateBus
 ]
 
 { #category : #accessing }
@@ -208,8 +234,10 @@ MiAbstractWorkspace >> receiveEntity: anEntity [
 
 { #category : #buses }
 MiAbstractWorkspace >> receiveFromPrivateBus: anEntity [
-	"propagating on privateBus as no effect on workspace,
-	 the privateBus takes care of propagating to contained browser(s)"
+
+	"Propagating on privateBus has no effect on workspace:
+	the privateBus takes care of propagating to contained browser(s)"
+
 	
 ]
 
@@ -221,11 +249,13 @@ MiAbstractWorkspace >> receivingMode [
 
 { #category : #accessing }
 MiAbstractWorkspace >> receivingMode: aReceivingMode [
-	"for Follow and Highlight, we need to update containedBrowsers,
-	for Frozen, it is handled by the workspace, so it makes no difference"
-	receivingMode := aReceivingMode.
-	self containedBrowsers do: [ :containedBrowser | containedBrowser receivingMode: aReceivingMode ]
 
+	"for Follow and Highlight, we need to update containedBrowsers.
+	For Frozen, it is handled by the workspace, so it makes no difference"
+
+	receivingMode := aReceivingMode.
+	self containedBrowsers do: [ :containedBrowser | 
+		containedBrowser receivingMode: aReceivingMode ]
 ]
 
 { #category : #initialization }
@@ -234,19 +264,15 @@ MiAbstractWorkspace >> setDefaultReceivingMode [
 	self receivingMode: MiFollowMode
 ]
 
-{ #category : #'private - updating' }
-MiAbstractWorkspace >> shouldResizeWindowOnInstall [
-
-	^ self subclassResponsibility
-]
-
 { #category : #buses }
 MiAbstractWorkspace >> unfollowBus: aBus [
 
 	(self buses includes: aBus) ifFalse: [ ^ self ].
+
 	self buses remove: aBus.
 	aBus unregisterBrowser: self.
-	self window ifNotNil: [ :window | window updateBusButton ]
+
+	self withWindowDo: [ :window | window updateBusButton ]
 ]
 
 { #category : #'private - updating' }
@@ -259,4 +285,10 @@ MiAbstractWorkspace >> updateWindow [
 MiAbstractWorkspace >> updateWindowToolbar [
 
 	self withWindowDo: [ :window | window updateToolbar ]
+]
+
+{ #category : #specs }
+MiAbstractWorkspace >> windowSize [
+
+	self subclassResponsibility
 ]

@@ -11,53 +11,57 @@ Class {
 	#category : #'MooseIDE-Core-Workspace'
 }
 
-{ #category : #initialization }
+{ #category : #'drag and drop' }
 MiAbstractDropInContainer >> acceptDrop: aBlock [
 
 	dragHere acceptDrop: aBlock
 ]
 
 { #category : #accessing }
-MiAbstractDropInContainer >> borderWidth: anInteger [ 
-	 dragHere borderWidth: anInteger.
-	dragHere borderColor: Color black .
+MiAbstractDropInContainer >> borderWidth: anInteger [
+
+	dragHere borderWidth: anInteger.
+	dragHere borderColor: Color black
 ]
 
 { #category : #'drag and drop' }
-MiAbstractDropInContainer >> dropEnabled: aBoolean [ 
-	dragHere dropEnabled: aBoolean 
+MiAbstractDropInContainer >> dropEnabled: aBoolean [
+
+	dragHere dropEnabled: aBoolean
 ]
 
-{ #category : #initialization }
+{ #category : #actions }
 MiAbstractDropInContainer >> ensureNoLoopWith: aSp [
-	| current | 
-	current := self. 
+
+	| current |
+	current := self.
 	[ current isNil ] whileFalse: [ 
-		current owner = aSp ifTrue: [ ^ self error: 'Invalid looping composition' ].
-		current := current owner. 
-	]
+		current owner = aSp ifTrue: [ 
+			^ self error: 'Invalid looping composition' ].
+		current := current owner ]
 ]
 
 { #category : #initialization }
 MiAbstractDropInContainer >> initializePresenters [
 
-	super initializePresenters.
 	dragHere := self instantiate: MiDragHerePresenter.
-	dragHere borderWidth: 2.
 	dragHere dropInto: self.
+
 	self borderWidth: 2.
+
 	self wantsDrop: [ :transfer :destination | 
 		self shouldAcceptTransfer: transfer into: destination ].
 	self acceptDrop: [ :transfer :destination | 
 		self installTransfer: transfer into: destination ]
 ]
 
-{ #category : #initialization }
+{ #category : #actions }
 MiAbstractDropInContainer >> install: aPresenter [
-	self subclassResponsibility 
+
+	self subclassResponsibility
 ]
 
-{ #category : #initialization }
+{ #category : #actions }
 MiAbstractDropInContainer >> installTransfer: transfer into: destination [
 
 	| installed passengerOwner |
@@ -70,40 +74,43 @@ MiAbstractDropInContainer >> installTransfer: transfer into: destination [
 	passengerOwner noteThatWidgetHasBeenClosed: self
 ]
 
-{ #category : #initialization }
-MiAbstractDropInContainer >> isDropInContainer [	
+{ #category : #testing }
+MiAbstractDropInContainer >> isDropInContainer [
+
 	^ true
 ]
 
-{ #category : #initialization }
+{ #category : #layout }
 MiAbstractDropInContainer >> newLayout [
-	^ self subclassResponsibility 
+
+	^ self subclassResponsibility
 ]
 
-{ #category : #initialization }
+{ #category : #updating }
 MiAbstractDropInContainer >> noteThatWidgetHasBeenClosed: aPresenter [
-	^ self subclassResponsibility 
+
+	self flag:
+		'To remove or to be used when we can remove a presenter from workspace'.
+
+	^ self subclassResponsibility
 ]
 
-{ #category : #'as yet unclassified' }
-MiAbstractDropInContainer >> ownerPrivateBus [
-	^owner privateBus
-]
-
-{ #category : #initialization }
+{ #category : #layout }
 MiAbstractDropInContainer >> resetLayout [
 
-	layout := self newLayout.
+	self layout: self newLayout
 ]
 
-{ #category : #initialization }
+{ #category : #testing }
 MiAbstractDropInContainer >> shouldAcceptTransfer: aTransfer into: aDestination [
 
 	(aTransfer isKindOf: SpTransferMorph) ifFalse: [ ^ false ].
+
 	^ aTransfer passenger canBeAdaptedToDropInto: aDestination
 ]
 
-{ #category : #initialization }
+{ #category : #'drag and drop' }
 MiAbstractDropInContainer >> wantsDrop: aBlock [
- 	dragHere wantsDrop: aBlock
+
+	dragHere wantsDrop: aBlock
 ]

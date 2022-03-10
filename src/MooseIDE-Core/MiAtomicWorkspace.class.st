@@ -22,12 +22,11 @@ MiAtomicWorkspace class >> open [
 { #category : #accessing }
 MiAtomicWorkspace >> containedBrowser [
 
-	^ browserContainer installedPresenter
-		ifNil: [ | presenter |
-			presenter := MiNullBrowser new.
-			browserContainer install: presenter.
-			presenter
-		]
+	^ browserContainer installedPresenter ifNil: [ 
+		  | presenter |
+		  presenter := MiNullBrowser new.
+		  browserContainer install: presenter.
+		  presenter ]
 ]
 
 { #category : #accessing }
@@ -38,7 +37,8 @@ MiAtomicWorkspace >> containedBrowser: aMiBrowser [
 
 { #category : #accessing }
 MiAtomicWorkspace >> containedBrowsers [
-	^{ self containedBrowser }
+
+	^ { self containedBrowser }
 ]
 
 { #category : #layout }
@@ -70,12 +70,8 @@ MiAtomicWorkspace >> dragBrowser [
 
 { #category : #testing }
 MiAtomicWorkspace >> ifAutonomous: aBlock [
-	^self containedBrowser ifAutonomous: aBlock 
-]
 
-{ #category : #initialization }
-MiAtomicWorkspace >> initialExtent [
-	^self containedBrowser desiredWindowSize
+	^ self containedBrowser ifAutonomous: aBlock
 ]
 
 { #category : #initialization }
@@ -87,18 +83,20 @@ MiAtomicWorkspace >> initializePresenters [
 
 { #category : #accessing }
 MiAtomicWorkspace >> model [
-	^self containedBrowser model
+
+	^ self containedBrowser model
 ]
 
 { #category : #accessing }
 MiAtomicWorkspace >> model: anObject [
+
 	self containedBrowser model: anObject
 ]
 
 { #category : #removing }
 MiAtomicWorkspace >> noteThatWidgetHasBeenReinstalled: aMiBrowser [
-	self containedBrowser = aMiBrowser
-		ifFalse: [ ^self ].
+
+	self containedBrowser = aMiBrowser ifFalse: [ ^ self ].
 
 	self window close
 ]
@@ -107,12 +105,6 @@ MiAtomicWorkspace >> noteThatWidgetHasBeenReinstalled: aMiBrowser [
 MiAtomicWorkspace >> resetLayout [
 
 	self layout: self defaultLayout
-]
-
-{ #category : #asserting }
-MiAtomicWorkspace >> shouldResizeWindowOnInstall [
-
-	^ true
 ]
 
 { #category : #actions }
@@ -144,13 +136,17 @@ MiAtomicWorkspace >> updateWindow [
 { #category : #'private - updating' }
 MiAtomicWorkspace >> updateWindowSize [
 
-	self shouldResizeWindowOnInstall ifTrue: [ 
-		self withWindowDo: [ :window | 
-			window resize: self desiredWindowSize ] ]
+	self withWindowDo: [ :window | window resize: self desiredWindowSize ]
 ]
 
 { #category : #'private - updating' }
 MiAtomicWorkspace >> updateWindowTitle [
 
 	self withWindowDo: [ :window | window title: self title ]
+]
+
+{ #category : #specs }
+MiAtomicWorkspace >> windowSize [
+
+	^ self containedBrowser desiredWindowSize
 ]

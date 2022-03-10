@@ -14,14 +14,13 @@ Class {
 MiSingleDropInContainer >> initializePresenters [
 
 	super initializePresenters.
-
-	self resetLayout.
+	self resetLayout
 ]
 
-{ #category : #initialization }
+{ #category : #actions }
 MiSingleDropInContainer >> install: aPresenter [
 
-	"note: called by the default #acceptDrop: block"
+	"Note: called by the default #acceptDrop block. See #installTransfer:into: "
 
 	presenter := aPresenter adaptToDropInto: self.
 	layout removeAll.
@@ -41,27 +40,24 @@ MiSingleDropInContainer >> installedPresenters [
 	^ presenter ifNil: [ {  } ] ifNotNil: [ { presenter } ]
 ]
 
-{ #category : #initialization }
+{ #category : #layout }
 MiSingleDropInContainer >> newLayout [
 
 	^ SpBoxLayout newTopToBottom
 ]
 
-{ #category : #initialization }
+{ #category : #updating }
 MiSingleDropInContainer >> noteThatWidgetHasBeenClosed: aPresenter [
 
-	self flag:
-		'To remove or to be used when we can remove a presenter from workspace'.
 	presenter = aPresenter ifFalse: [ ^ self ].
-
 	presenter := nil.
 	layout removeAll.
 	layout add: dragHere
 ]
 
-{ #category : #initialization }
+{ #category : #layout }
 MiSingleDropInContainer >> resetLayout [
 
-	layout := self newLayout.
+	super resetLayout.
 	layout add: (presenter ifNotNil: [ presenter ] ifNil: [ dragHere ])
 ]

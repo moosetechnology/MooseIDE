@@ -17,8 +17,9 @@ Class {
 
 { #category : #'world menu' }
 MiFullWorkspace class >> helpMessage [
-	^ (self comment lines copyUpTo: '')
-		fold: [ :s1 :s2 | s1 , Character cr asString , s2 ]
+
+	^ (self comment lines copyUpTo: '') fold: [ :s1 :s2 | 
+		  s1 , Character cr asString , s2 ]
 ]
 
 { #category : #'world menu' }
@@ -78,7 +79,7 @@ MiFullWorkspace >> at: anInteger putBrowser: aMiBrowser [
 { #category : #testing }
 MiFullWorkspace >> canFollowEntity: anObject [
 
-	"accepts all entities, the children browsers will decide for themselves if they accept or not"
+	"Accepts all entities, the contained browsers will decide for themselves if they accept or not"
 
 	^ true
 ]
@@ -134,12 +135,6 @@ MiFullWorkspace >> desiredWindowSize [
 ]
 
 { #category : #initialization }
-MiFullWorkspace >> initialExtent [
-
-	^ self class windowSize
-]
-
-{ #category : #initialization }
 MiFullWorkspace >> initializePresenters [
 
 	super initializePresenters.
@@ -168,14 +163,14 @@ MiFullWorkspace >> noteThatWidgetHasBeenReinstalled: aMiBrowser [
 	
 ]
 
-{ #category : #asserting }
-MiFullWorkspace >> shouldResizeWindowOnInstall [
-
-	^ false
-]
-
 { #category : #initialization }
 MiFullWorkspace >> title [
 
 	^ self class title
+]
+
+{ #category : #specs }
+MiFullWorkspace >> windowSize [
+
+	^ self class windowSize
 ]

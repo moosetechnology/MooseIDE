@@ -11,14 +11,14 @@ Class {
 	#category : #'MooseIDE-Core-Workspace'
 }
 
-{ #category : #initialization }
+{ #category : #layout }
 MiMultiDropInContainer >> beLeftToRight [
 
 	newLayoutBlock := [ SpBoxLayout newLeftToRight ].
 	self resetLayout
 ]
 
-{ #category : #initialization }
+{ #category : #layout }
 MiMultiDropInContainer >> beTopToBottom [
 
 	newLayoutBlock := [ SpBoxLayout newTopToBottom ].
@@ -33,34 +33,37 @@ MiMultiDropInContainer >> initializePresenters [
 	self beTopToBottom
 ]
 
-{ #category : #initialization }
+{ #category : #actions }
 MiMultiDropInContainer >> install: aPresenter [
 
 	| newPresenter |
 	newPresenter := aPresenter adaptToDropInto: self.
 	presenters add: newPresenter.
+
 	layout removeAll.
 	presenters do: [ :p | layout add: p ].
+
 	self shouldHideDragHere ifFalse: [ layout add: dragHere height: 10 ].
+
 	^ newPresenter
 ]
 
 { #category : #accessing }
 MiMultiDropInContainer >> installedPresenters [
 
-	^ presenters flatCollect: [ :a | 
-		  (a respondsTo: #installedPresenters)
-			  ifTrue: [ a installedPresenters ]
-			  ifFalse: [ { a } ] ]
+	^ presenters flatCollect: [ :presenter | 
+		  presenter isDropInContainer
+			  ifTrue: [ presenter installedPresenters ]
+			  ifFalse: [ { presenter } ] ]
 ]
 
-{ #category : #initialization }
+{ #category : #layout }
 MiMultiDropInContainer >> newLayout [
 
 	^ newLayoutBlock value
 ]
 
-{ #category : #initialization }
+{ #category : #updating }
 MiMultiDropInContainer >> noteThatWidgetHasBeenClosed: aPresenter [
 
 	self flag:
@@ -77,7 +80,7 @@ MiMultiDropInContainer >> noteThatWidgetHasBeenClosed: aPresenter [
 			ifNotEmpty: [ layout add: dragHere height: 10 ] ]
 ]
 
-{ #category : #initialization }
+{ #category : #layout }
 MiMultiDropInContainer >> resetLayout [
 
 	super resetLayout.
@@ -85,7 +88,7 @@ MiMultiDropInContainer >> resetLayout [
 	layout add: dragHere
 ]
 
-{ #category : #initialization }
+{ #category : #testing }
 MiMultiDropInContainer >> shouldHideDragHere [
 
 	^ presenters anySatisfy: [ :p | p isDropInContainer ]
