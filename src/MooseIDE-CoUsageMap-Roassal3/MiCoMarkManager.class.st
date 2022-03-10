@@ -102,12 +102,6 @@ MiCoMarkManager >> createGlobalMenuOn: menu [
 		icon: (self iconNamed: #smallPaint).
 	menu addLine.
 	(menu
-		add: 'Settings'
-			target: self
-			selector: #openSettingsBrowser
-			argumentList: #())
-		icon: (self iconNamed: #configuration).
-	(menu
 		add: 'Block Settings'
 			target: MiCoUsageMapSettings
 			selector: #openBlocksSettings

@@ -6,7 +6,7 @@ Class {
 	#superclass : #MiAbstractBrowser,
 	#instVars : [
 		'coUsageMap',
-		'classModel'
+		'collectionModel'
 	],
 	#category : #'MooseIDE-CoUsageMap-Browser'
 }
@@ -57,34 +57,32 @@ MiCoUsageBrowser >> browserClosed [
 
 { #category : #testing }
 MiCoUsageBrowser >> canFollowEntity: anEntity [
-	^ anEntity isClass
+	^ anEntity isCollection
 ]
 
 { #category : #accessing }
-MiCoUsageBrowser >> classModel [
-
-	^ classModel
+MiCoUsageBrowser >> collectionModel [
+	^ collectionModel
 ]
 
 { #category : #accessing }
-MiCoUsageBrowser >> classModel: anObject [
-	classModel := anObject
+MiCoUsageBrowser >> collectionModel: anObject [
+	collectionModel := anObject
 ]
 
 { #category : #actions }
 MiCoUsageBrowser >> followEntity: anEntity [
-	classModel := anEntity.
+	self collectionModel: anEntity.
 	coUsageMap run
 ]
 
 { #category : #testing }
 MiCoUsageBrowser >> hasSettings [ 
-	^true
+	^ true
 ]
 
 { #category : #initialization }
 MiCoUsageBrowser >> initializePresenters [
-
 	coUsageMap := self instantiate: MiCoUsageMapVisualization.
 	application registerConsumer: coUsageMap for: FamixTag.
 	application registerConsumer: coUsageMap for: FamixTagAssociation.
@@ -93,8 +91,7 @@ MiCoUsageBrowser >> initializePresenters [
 
 { #category : #actions }
 MiCoUsageBrowser >> miSelectedItem [
-
-	^ classModel
+	^ collectionModel
 ]
 
 { #category : #actions }

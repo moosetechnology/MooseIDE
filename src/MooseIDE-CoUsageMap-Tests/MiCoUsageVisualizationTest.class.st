@@ -45,7 +45,7 @@ MiCoUsageVisualizationTest >> test02MethodsAttributes [
 		build.
 	self
 		assert: v miMethods size equals: class methods size;
-		assert: v miAttributes size equals: class instVarNames size.
+		assert: v miAttributes size equals: class instVarNames size-1."because one attribute is not used"
 	method := v methodNamed: #method1.
 	self
 		assert: method class equals: MiCoMethod;
@@ -59,8 +59,8 @@ MiCoUsageVisualizationTest >> test02MethodsAttributes [
 	self assert: attribute usedInMethods size equals: 2.
 	attribute := v attributeNamed: #var4.
 	self assert: attribute usedInMethods size equals: 1.
-	attribute := v attributeNamed: #var5.
-	self assert: attribute usedInMethods size equals: 0
+	"var5 is not used"
+	self should: [v attributeNamed: #var5] raise: Error.
 ]
 
 { #category : #tests }

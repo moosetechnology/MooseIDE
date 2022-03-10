@@ -17,8 +17,8 @@ Class {
 { #category : #private }
 MiCoUsageMapSettings class >> browserDo: aBlock [
 	Smalltalk globals 
-		at: #MiCoUsageMapMooseBuilder
-		ifPresent: [ :cls | cls allInstancesDo: aBlock ]
+		at: #MiCoUsageMapBuilder
+		ifPresent: [ :cls | cls withAllSubclassesDo: [ :each | each allInstancesDo: aBlock ]  ]
 		ifAbsent: [ "nothing" ]
 ]
 
@@ -51,7 +51,8 @@ MiCoUsageMapSettings class >> childrenBlockText [
 
 { #category : #accessing }
 MiCoUsageMapSettings class >> childrenBlockText: aString [
-	childrenBlockText := aString
+	childrenBlockText := aString.
+	self browserDo: [ :b | b updateChildren ].
 ]
 
 { #category : #'accessing - computed' }
@@ -65,7 +66,16 @@ MiCoUsageMapSettings class >> compiledBlock: aString onError: defaultString [
 
 { #category : #'accessing - defaults' }
 MiCoUsageMapSettings class >> defaultChildrenBlockText [
-	^ '[:node | #() ]'
+	^ '[ :node |
+"this code is for a method, but you can change it"
+| bag |
+bag := Bag withAll: (node accesses 
+	select: [ :slotLink | slotLink variable isAttribute ]
+	thenCollect: [ :slotLink | slotLink variable ]).
+"you should return a list of associations
+key = inner object, in this case the inner Attribute
+value = number of uses of key"
+bag valuesAndCounts associations ]'
 ]
 
 { #category : #'accessing - defaults' }
@@ -141,6 +151,12 @@ MiCoUsageMapSettings class >> outerBoxSortBlockText: aString [
 MiCoUsageMapSettings class >> reset [
 	<script>
 	innerBoxSize := threshold75 := childrenBlockText := outerBoxSortBlockText := innerBoxSortBlockText := nil
+]
+
+{ #category : #initialization }
+MiCoUsageMapSettings class >> resetText [
+	<script>
+	childrenBlockText := outerBoxSortBlockText := innerBoxSortBlockText := nil
 ]
 
 { #category : #accessing }
