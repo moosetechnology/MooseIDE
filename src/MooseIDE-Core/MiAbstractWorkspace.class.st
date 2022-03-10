@@ -180,19 +180,22 @@ MiAbstractWorkspace >> initializeWindow: aMiWindowPresenter [
 
 { #category : #actions }
 MiAbstractWorkspace >> install: aMiBrowser inContainer: aMiDropInContainer [
-	"remove previous containedBrowser from privateBus
-	 remove aMiBrowser from its former privateBus
-	 puts aMiBrowser on receiver's privateBus (need to set receiving mode for this)
-	 puts aMiBrowser in aMiDropInContainer and redisplay window"
-	aMiDropInContainer installedPresenter
-		ifNotNil: [ :previousBrowser | previousBrowser unfollowPrivateBus].
 
+	"Remove previous containedBrowser from privateBus."
+	aMiDropInContainer installedPresenter ifNotNil: [ :previousBrowser | 
+		previousBrowser unfollowPrivateBus ].
+
+	"Remove aMiBrowser from its former privateBus."
 	aMiBrowser unfollowPrivateBus.
+
+	"Puts aMiBrowser on receiver's privateBus (need to set receiving mode for this)."
 	aMiBrowser receivingMode: self receivingMode.
 	aMiBrowser followPrivateBus: self privateBus.
 
+	"Puts aMiBrowser in aMiDropInContainer."
 	aMiDropInContainer install: aMiBrowser.
-	
+
+	"Redisplay window"
 	self updateWindow
 ]
 
@@ -215,11 +218,6 @@ MiAbstractWorkspace >> needUpdate: anEntity [
 { #category : #'instance creation' }
 MiAbstractWorkspace >> newContainer [
 	^self instantiate: MiSingleDropInContainer
-]
-
-{ #category : #'private - updating' }
-MiAbstractWorkspace >> noteThatWidgetHasBeenClosed: aBrowser [
-	self shouldBeImplemented
 ]
 
 { #category : #buses }
@@ -270,6 +268,12 @@ MiAbstractWorkspace >> setDefaultReceivingMode [
 	self receivingMode: MiFollowMode
 ]
 
+{ #category : #'private - updating' }
+MiAbstractWorkspace >> shouldResizeWindowOnInstall [
+
+	^ self subclassResponsibility
+]
+
 { #category : #buses }
 MiAbstractWorkspace >> unfollowBus: aBus [
 
@@ -294,6 +298,7 @@ MiAbstractWorkspace >> updateToolbar [
 
 { #category : #'private - updating' }
 MiAbstractWorkspace >> updateWindow [
+
 	self updateTitle.
 	self updateWindowSize.
 	self updateToolbar.
@@ -302,6 +307,8 @@ MiAbstractWorkspace >> updateWindow [
 
 { #category : #'private - updating' }
 MiAbstractWorkspace >> updateWindowSize [
-		self hasWindow
-		ifTrue: [ self window resize: self desiredWindowSize ]
+
+	self shouldResizeWindowOnInstall ifTrue: [ 
+		self withWindowDo: [ :window | 
+			window resize: self desiredWindowSize ] ]
 ]

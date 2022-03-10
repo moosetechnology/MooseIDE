@@ -13,7 +13,8 @@ Class {
 
 { #category : #initialization }
 MiAbstractDropInContainer >> acceptDrop: aBlock [
- 	dragHere acceptDrop: aBlock
+
+	dragHere acceptDrop: aBlock
 ]
 
 { #category : #accessing }
@@ -57,19 +58,16 @@ MiAbstractDropInContainer >> install: aPresenter [
 ]
 
 { #category : #initialization }
-MiAbstractDropInContainer >> installTransfer: transfer [
-
-	self installTransfer: transfer into: self
-]
-
-{ #category : #initialization }
 MiAbstractDropInContainer >> installTransfer: transfer into: destination [
-	| installed passengerOwner | 
-	self ensureNoLoopWith: transfer passenger. 
+
+	| installed passengerOwner |
+	self ensureNoLoopWith: transfer passenger.
 	passengerOwner := transfer passenger owner.
-	installed := (self install: transfer passenger).
+
+	installed := self install: transfer passenger.
 	installed owner: self.
-	passengerOwner noteThatWidgetHasBeenClosed: self.
+
+	passengerOwner noteThatWidgetHasBeenClosed: self
 ]
 
 { #category : #initialization }

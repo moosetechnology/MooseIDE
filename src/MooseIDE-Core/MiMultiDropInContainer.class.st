@@ -1,5 +1,5 @@
 "
-I accept dropped presenters and i extend my surgace for 
+I accept dropped presenters and I extend my surface for it
 "
 Class {
 	#name : #MiMultiDropInContainer,
@@ -60,12 +60,17 @@ MiMultiDropInContainer >> newLayout [
 	^ newLayoutBlock value
 ]
 
-{ #category : #testing }
+{ #category : #initialization }
 MiMultiDropInContainer >> noteThatWidgetHasBeenClosed: aPresenter [
 
+	self flag:
+		'To remove or to be used when we can remove a presenter from workspace'.
 	presenters remove: aPresenter.
+
 	layout removeAll.
+
 	presenters do: [ :p | layout add: p ].
+
 	(presenters anySatisfy: [ :p | p isDropInContainer ]) ifFalse: [ 
 		presenters
 			ifEmpty: [ layout add: dragHere ]

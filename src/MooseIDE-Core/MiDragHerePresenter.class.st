@@ -34,9 +34,3 @@ MiDragHerePresenter >> initialize [
 MiDragHerePresenter >> install: aPresenter [
 	^ dropInto install: aPresenter
 ]
-
-{ #category : #testing }
-MiDragHerePresenter >> noteThatWidgetHasBeenClosed: anAlceSourceCodeWidget [
-	self flag: 'to remove ?'.
-	dropInto noteThatWidgetHasBeenClosed: anAlceSourceCodeWidget
-]

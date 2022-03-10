@@ -89,11 +89,12 @@ MiAbstractBrowser2 class >> windowSize [
 
 { #category : #opening }
 MiAbstractBrowser2 >> adaptToDropInto: aBrowserContainer [
-	"set new owner and follow its internal bus"
-	self owner 
-		ifNotNil: [:myContainer | myContainer owner noteThatWidgetHasBeenReinstalled: self].
-	self owner: aBrowserContainer.
 
+	"set new owner and follow its internal bus"
+
+	self owner ifNotNil: [ :myContainer | 
+		myContainer owner noteThatWidgetHasBeenReinstalled: self ].
+	self owner: aBrowserContainer
 ]
 
 { #category : #converting }
@@ -114,6 +115,12 @@ MiAbstractBrowser2 >> buses [
 	self flag:
 		'Method present for compatibility reason. Should probably be removed'.
 	^ {  }
+]
+
+{ #category : #testing }
+MiAbstractBrowser2 >> canBeAdaptedToDropInto: aContainer [
+
+	^ true
 ]
 
 { #category : #testing }

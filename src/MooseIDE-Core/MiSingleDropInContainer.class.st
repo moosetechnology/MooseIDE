@@ -20,6 +20,7 @@ MiSingleDropInContainer >> initializePresenters [
 
 { #category : #initialization }
 MiSingleDropInContainer >> install: aPresenter [
+
 	"note: called by the default #acceptDrop: block"
 
 	presenter := aPresenter adaptToDropInto: self.
@@ -42,13 +43,16 @@ MiSingleDropInContainer >> installedPresenters [
 
 { #category : #initialization }
 MiSingleDropInContainer >> newLayout [
-	^ SpBoxLayout newTopToBottom 
+
+	^ SpBoxLayout newTopToBottom
 ]
 
-{ #category : #testing }
+{ #category : #initialization }
 MiSingleDropInContainer >> noteThatWidgetHasBeenClosed: aPresenter [
 
-	presenter = aPresenter ifFalse: [ ^self ].
+	self flag:
+		'To remove or to be used when we can remove a presenter from workspace'.
+	presenter = aPresenter ifFalse: [ ^ self ].
 
 	presenter := nil.
 	layout removeAll.

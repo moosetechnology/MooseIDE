@@ -51,6 +51,7 @@ MiFullWorkspace class >> helpMessage [
 
 { #category : #'world menu' }
 MiFullWorkspace class >> menuCommandOn: aBuilder [
+
 	<worldMenu>
 	(aBuilder item: self midasBrowserMenuLabel)
 		order: 5;
@@ -155,10 +156,7 @@ MiFullWorkspace >> newContainer [
 
 	^ super newContainer
 		  borderWidth: 2;
-		  "dropEnabled: true;
-	   wantsDrop: [ :transfer :destination | 
-		   self shouldAcceptTransfer: transfer into: destination ];"
-		  acceptDrop: [ :transfer :destination | "self installTransfer: transfer into: destination" 
+		  acceptDrop: [ :transfer :destination | 
 			  self install: transfer passenger inContainer: destination owner ];
 		  yourself
 ]
@@ -167,6 +165,12 @@ MiFullWorkspace >> newContainer [
 MiFullWorkspace >> noteThatWidgetHasBeenReinstalled: aMiBrowser [
 
 	
+]
+
+{ #category : #asserting }
+MiFullWorkspace >> shouldResizeWindowOnInstall [
+
+	^ false
 ]
 
 { #category : #initialization }

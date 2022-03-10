@@ -93,6 +93,12 @@ MiAtomicWorkspace >> noteThatWidgetHasBeenReinstalled: aMiBrowser [
 	self window close
 ]
 
+{ #category : #asserting }
+MiAtomicWorkspace >> shouldResizeWindowOnInstall [
+
+	^ true
+]
+
 { #category : #actions }
 MiAtomicWorkspace >> showHelp [
 	| help |
