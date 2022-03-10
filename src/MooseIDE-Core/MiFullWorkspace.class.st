@@ -60,22 +60,6 @@ MiFullWorkspace class >> windowSize [
 	^ 800 @ 600
 ]
 
-{ #category : #'accessing - private tests' }
-MiFullWorkspace >> at: anInteger putBrowser: aMiBrowser [
-
-	"only use for tests !"
-
-	| containerMap |
-	containerMap := { 
-		                (1 -> left).
-		                (2 -> middle).
-		                (3 -> right).
-		                (4 -> downLeft).
-		                (5 -> downMiddle).
-		                (6 -> downRight) } asDictionary.
-	self install: aMiBrowser inContainer: (containerMap at: anInteger)
-]
-
 { #category : #testing }
 MiFullWorkspace >> canFollowEntity: anObject [
 

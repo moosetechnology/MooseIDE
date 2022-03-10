@@ -19,11 +19,14 @@ MiAtomicWorkspaceTest >> browserClass [
 
 { #category : #running }
 MiAtomicWorkspaceTest >> setUp [
+
+	self flag:
+		'#browser is actually a workspace. To fix when all browsers are draggable'.
+
 	super setUp.
 
 	mockBrowser := MiMockBrowserForTests new.
 	browser containedBrowser: mockBrowser
-
 ]
 
 { #category : #tests }
