@@ -10,9 +10,7 @@ MiAbstractWorkspace >> busButton [
 { #category : #'*MooseIDE-Tests' }
 MiAbstractWorkspace class >> openForTests [
 
-	^ (self
-		   newApplication: MiTestApplication current
-		   model: self newModel)
+	^ (self newApplication: MiTestApplication current)
 		  open;
 		  followBus: MiTestApplication current defaultBus;
 		  yourself

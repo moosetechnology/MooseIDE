@@ -15,34 +15,6 @@ Class {
 	#category : #'MooseIDE-Core-Workspace'
 }
 
-{ #category : #layout }
-MiFullWorkspace class >> defaultLayout [
-
-	| positionBeforeRightPanels |
-	positionBeforeRightPanels := 0.66. "Approximatey 2/3"
-
-	^ SpBoxLayout newTopToBottom
-		  add: (SpPanedLayout newTopToBottom
-				   add: (SpPanedLayout newLeftToRight
-						    add: (SpPanedLayout newLeftToRight
-								     add: #left;
-								     add: #middle;
-								     yourself);
-						    positionOfSlider: positionBeforeRightPanels;
-						    add: #right;
-						    yourself);
-				   add: (SpPanedLayout newLeftToRight
-						    add: (SpPanedLayout newLeftToRight
-								     add: #downLeft;
-								     add: #downMiddle;
-								     yourself);
-						    positionOfSlider: positionBeforeRightPanels;
-						    add: #downRight;
-						    yourself);
-				   yourself);
-		  yourself
-]
-
 { #category : #'world menu' }
 MiFullWorkspace class >> helpMessage [
 	^ (self comment lines copyUpTo: '')
@@ -70,8 +42,9 @@ MiFullWorkspace class >> midasBrowserMenuLabel [
 
 { #category : #'instance creation' }
 MiFullWorkspace class >> open [
+
 	<script: 'MiFullWorkspace open'>
-	^super open
+	^ super open
 ]
 
 { #category : #accessing }
@@ -124,6 +97,34 @@ MiFullWorkspace >> containedBrowsers [
 		  browserContainer installedPresenter notNil ]
 		  thenCollect: [ :browserContainer | 
 		  browserContainer installedPresenter ]
+]
+
+{ #category : #layout }
+MiFullWorkspace >> defaultLayout [
+
+	| positionBeforeRightPanels |
+	positionBeforeRightPanels := 0.66. "Approximatey 2/3"
+
+	^ SpBoxLayout newTopToBottom
+		  add: (SpPanedLayout newTopToBottom
+				   add: (SpPanedLayout newLeftToRight
+						    add: (SpPanedLayout newLeftToRight
+								     add: #left;
+								     add: #middle;
+								     yourself);
+						    positionOfSlider: positionBeforeRightPanels;
+						    add: #right;
+						    yourself);
+				   add: (SpPanedLayout newLeftToRight
+						    add: (SpPanedLayout newLeftToRight
+								     add: #downLeft;
+								     add: #downMiddle;
+								     yourself);
+						    positionOfSlider: positionBeforeRightPanels;
+						    add: #downRight;
+						    yourself);
+				   yourself);
+		  yourself
 ]
 
 { #category : #'private - updating' }

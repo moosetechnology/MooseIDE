@@ -13,41 +13,23 @@ Class {
 	#category : #'MooseIDE-Core-Workspace'
 }
 
-{ #category : #specs }
-MiAbstractWorkspace class >> actionsCommandGroupFor: presenter [
-	^ CmCommandGroup forSpec
-		  name: 'Actions';
-		  register:
-			  (MiPropagateCommand forSpecContext: presenter)
-				  beDisplayedOnRightSide;
-		  register:
-			  (MiInspectCommand forSpecContext: presenter)
-				  beDisplayedOnRightSide
-]
-
 { #category : #layout }
 MiAbstractWorkspace class >> defaultLayout [
 
-	^SpBoxLayout newVertical
-		add: #browserContainer ;
-		yourself
+	^ self subclassResponsibility
 ]
 
 { #category : #testing }
-MiAbstractWorkspace class >> isAbstract [ 
-	^ self == MiAbstractWorkspace
-]
+MiAbstractWorkspace class >> isAbstract [
 
-{ #category : #'instance creation' }
-MiAbstractWorkspace class >> newModel [ 
-	^nil
+	^ self == MiAbstractWorkspace
 ]
 
 { #category : #'instance creation' }
 MiAbstractWorkspace class >> open [
 
 	<script: 'MiAtomicWorkspace open'>
-	^ (self on: self newModel)
+	^ (self newApplication: self currentApplication)
 		  open;
 		  followBus: self currentApplication defaultBus;
 		  yourself
@@ -55,12 +37,8 @@ MiAbstractWorkspace class >> open [
 
 { #category : #icons }
 MiAbstractWorkspace class >> taskbarIcon [
-	^MooseIcons mooseIcon
-]
 
-{ #category : #specs }
-MiAbstractWorkspace class >> windowSize [
-	^ 500 @ 400
+	^ MooseIcons mooseIcon
 ]
 
 { #category : #buses }
@@ -154,12 +132,6 @@ MiAbstractWorkspace >> initialize [
 ]
 
 { #category : #initialization }
-MiAbstractWorkspace >> initializeLayout [
-
-	self layout: self class defaultLayout
-]
-
-{ #category : #initialization }
 MiAbstractWorkspace >> initializePrivateBus [
 	privateBus := MiPrivateBus new
 		name: 'workspace bus'.
@@ -231,7 +203,7 @@ MiAbstractWorkspace >> receiveEntity: anEntity [
 	"I am used by the Mi Application. You should use #globallySelect: anEntity that will transmit the message to me and the other browsers"
 
 	receivingMode browser: self actOnEntity: anEntity.
-	self updateToolbar
+	self updateWindowToolbar
 ]
 
 { #category : #buses }
@@ -256,12 +228,6 @@ MiAbstractWorkspace >> receivingMode: aReceivingMode [
 
 ]
 
-{ #category : #'private - updating' }
-MiAbstractWorkspace >> resetLayout [
-
-	^self initializeLayout 
-]
-
 { #category : #initialization }
 MiAbstractWorkspace >> setDefaultReceivingMode [
 
@@ -284,31 +250,13 @@ MiAbstractWorkspace >> unfollowBus: aBus [
 ]
 
 { #category : #'private - updating' }
-MiAbstractWorkspace >> updateTitle [
-	self hasWindow
-		ifTrue: [ self window title: self title]
-	
-]
-
-{ #category : #'private - updating' }
-MiAbstractWorkspace >> updateToolbar [
-
-	self window ifNotNil: [ :window | window updateToolbar ]
-]
-
-{ #category : #'private - updating' }
 MiAbstractWorkspace >> updateWindow [
 
-	self updateTitle.
-	self updateWindowSize.
-	self updateToolbar.
-	self resetLayout
+	self updateWindowToolbar
 ]
 
 { #category : #'private - updating' }
-MiAbstractWorkspace >> updateWindowSize [
+MiAbstractWorkspace >> updateWindowToolbar [
 
-	self shouldResizeWindowOnInstall ifTrue: [ 
-		self withWindowDo: [ :window | 
-			window resize: self desiredWindowSize ] ]
+	self withWindowDo: [ :window | window updateToolbar ]
 ]

@@ -14,8 +14,9 @@ Class {
 
 { #category : #'instance creation' }
 MiAtomicWorkspace class >> open [
-	<script: 'MiAtomicWorkspace open'>
-	^super open
+
+	<script>
+	^ super open
 ]
 
 { #category : #accessing }
@@ -31,12 +32,21 @@ MiAtomicWorkspace >> containedBrowser [
 
 { #category : #accessing }
 MiAtomicWorkspace >> containedBrowser: aMiBrowser [
+
 	self install: aMiBrowser inContainer: browserContainer
 ]
 
 { #category : #accessing }
 MiAtomicWorkspace >> containedBrowsers [
 	^{ self containedBrowser }
+]
+
+{ #category : #layout }
+MiAtomicWorkspace >> defaultLayout [
+
+	^ SpBoxLayout newVertical
+		  add: #browserContainer;
+		  yourself
 ]
 
 { #category : #'private - updating' }
@@ -70,9 +80,9 @@ MiAtomicWorkspace >> initialExtent [
 
 { #category : #initialization }
 MiAtomicWorkspace >> initializePresenters [
+
 	super initializePresenters.
-	browserContainer := self newContainer.
-	self initializeLayout.
+	browserContainer := self newContainer
 ]
 
 { #category : #accessing }
@@ -93,6 +103,12 @@ MiAtomicWorkspace >> noteThatWidgetHasBeenReinstalled: aMiBrowser [
 	self window close
 ]
 
+{ #category : #'private - updating' }
+MiAtomicWorkspace >> resetLayout [
+
+	self layout: self defaultLayout
+]
+
 { #category : #asserting }
 MiAtomicWorkspace >> shouldResizeWindowOnInstall [
 
@@ -101,8 +117,8 @@ MiAtomicWorkspace >> shouldResizeWindowOnInstall [
 
 { #category : #actions }
 MiAtomicWorkspace >> showHelp [
-	| help |
 
+	| help |
 	(help := self newPopover)
 		relativeTo: self window toolbar;
 		bePositionRight;
@@ -113,4 +129,28 @@ MiAtomicWorkspace >> showHelp [
 { #category : #initialization }
 MiAtomicWorkspace >> title [
 	^self containedBrowser windowTitle
+]
+
+{ #category : #'private - updating' }
+MiAtomicWorkspace >> updateWindow [
+
+	super updateWindow.
+
+	self updateWindowTitle.
+	self updateWindowSize.
+	self resetLayout
+]
+
+{ #category : #'private - updating' }
+MiAtomicWorkspace >> updateWindowSize [
+
+	self shouldResizeWindowOnInstall ifTrue: [ 
+		self withWindowDo: [ :window | 
+			window resize: self desiredWindowSize ] ]
+]
+
+{ #category : #'private - updating' }
+MiAtomicWorkspace >> updateWindowTitle [
+
+	self withWindowDo: [ :window | window title: self title ]
 ]
