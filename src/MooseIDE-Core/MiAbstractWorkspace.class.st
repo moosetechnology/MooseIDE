@@ -124,6 +124,12 @@ MiAbstractWorkspace >> freezeDuring: aBlock [
 	aBlock ensure: [ receivingMode := previousMode ]
 ]
 
+{ #category : #testing }
+MiAbstractWorkspace >> hasSettings [
+
+	^ false
+]
+
 { #category : #actions }
 MiAbstractWorkspace >> highlightEntity: anEntity [
 
