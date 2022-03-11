@@ -112,12 +112,6 @@ MiFullWorkspace >> defaultLayout [
 		  yourself
 ]
 
-{ #category : #'private - updating' }
-MiFullWorkspace >> desiredWindowSize [
-
-	^ self class windowSize
-]
-
 { #category : #initialization }
 MiFullWorkspace >> initializePresenters [
 
@@ -153,7 +147,7 @@ MiFullWorkspace >> title [
 	^ self class title
 ]
 
-{ #category : #specs }
+{ #category : #'private - updating' }
 MiFullWorkspace >> windowSize [
 
 	^ self class windowSize

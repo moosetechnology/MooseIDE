@@ -109,14 +109,6 @@ MiAbstractBrowser2 >> browserClosed [
 	
 ]
 
-{ #category : #accessing }
-MiAbstractBrowser2 >> buses [
-
-	self flag:
-		'Method present for compatibility reason. Should probably be removed'.
-	^ {  }
-]
-
 { #category : #testing }
 MiAbstractBrowser2 >> canBeAdaptedToDropInto: aContainer [
 
@@ -155,11 +147,6 @@ MiAbstractBrowser2 >> canPropagate [
 		  entity asMooseGroup isNotEmpty or: [ entity isMooseModel ] ]
 ]
 
-{ #category : #private }
-MiAbstractBrowser2 >> desiredWindowSize [
-	^self class windowSize
-]
-
 { #category : #actions }
 MiAbstractBrowser2 >> followEntity: anEntity [
 
@@ -169,7 +156,8 @@ MiAbstractBrowser2 >> followEntity: anEntity [
 { #category : #buses }
 MiAbstractBrowser2 >> followPrivateBus: aBus [
 
-	(self privateBus = aBus) ifTrue: [ ^ self ].
+	self privateBus = aBus ifTrue: [ ^ self ].
+
 	self privateBus: aBus.
 	aBus registerBrowser: self.
 	self receiveFromPrivateBus: aBus logger mostRecentEntity
@@ -177,6 +165,7 @@ MiAbstractBrowser2 >> followPrivateBus: aBus [
 
 { #category : #actions }
 MiAbstractBrowser2 >> freezeDuring: aBlock [
+
 	| previousMode |
 	previousMode := receivingMode.
 	receivingMode := MiFreezeMode.
@@ -198,6 +187,12 @@ MiAbstractBrowser2 >> ifAutonomous: aBlock [
 	self flag: 'specific to MiLogBrowser ?'.
 	self owner isNotNil and: [ 
 		self owner isWindowPresenter ifTrue: aBlock ]
+]
+
+{ #category : #testing }
+MiAbstractBrowser2 >> isDropInContainer [
+
+	^ false
 ]
 
 { #category : #testing }
@@ -229,11 +224,13 @@ MiAbstractBrowser2 >> needUpdate: anEntity [
 
 { #category : #buses }
 MiAbstractBrowser2 >> privateBus [
-	^privateBus
+
+	^ privateBus
 ]
 
 { #category : #buses }
 MiAbstractBrowser2 >> privateBus: aBus [
+
 	privateBus := aBus
 ]
 
@@ -248,10 +245,11 @@ MiAbstractBrowser2 >> receiveEntity: anEntity [
 
 { #category : #accessing }
 MiAbstractBrowser2 >> receiveFromPrivateBus: anEntity [
+
 	"If this browser is not in a workspace, it may have no receivingMode and this will crash
 	 This is the expected behaviour"
-	receivingMode browser: self actOnEntity: anEntity.
 
+	receivingMode browser: self actOnEntity: anEntity
 ]
 
 { #category : #accessing }
@@ -268,17 +266,18 @@ MiAbstractBrowser2 >> receivingMode: aReceivingMode [
 
 { #category : #accessing }
 MiAbstractBrowser2 >> sendEntitiesToPrivateBus [
-	"An automatic propagate on the privateBus
+
+	"An automatic propagation on the privateBus.
 	 There should always be a privateBus, but some tests create presenters outside of their browser"
-	self privateBus ifNil: [ ^self ].
-	self miSelectedItem
-		ifNotNil: [ :entities |
-			self freezeDuring: [ self privateBus globallySelect: entities ]
-		]
+
+	self privateBus ifNil: [ ^ self ].
+	self miSelectedItem ifNotNil: [ :entities | 
+		self freezeDuring: [ self privateBus globallySelect: entities ] ]
 ]
 
 { #category : #'accessing - model' }
 MiAbstractBrowser2 >> setModelBeforeInitialization: aModel [
+
 	model := aModel
 ]
 
@@ -294,10 +293,17 @@ MiAbstractBrowser2 >> unfollowPrivateBus [
 { #category : #actions }
 MiAbstractBrowser2 >> updateToolbar [
 
-	self window ifNotNil: [ :window | window updateToolbar ]
+	self withWindowDo: [ :window | window updateToolbar ]
+]
+
+{ #category : #private }
+MiAbstractBrowser2 >> windowSize [
+
+	^ self class windowSize
 ]
 
 { #category : #private }
 MiAbstractBrowser2 >> windowTitle [
-	^self class title
+
+	^ self class title
 ]

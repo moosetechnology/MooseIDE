@@ -64,10 +64,9 @@ BaselineOfMooseIDE >> definePackages: spec [
 		package: 'MooseIDE-Famix'
 		with: [ 
 			spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' ) ];
-		package: 'MooseIDE-Tagging' with: [ 
-			spec requires:
-					#( 'MooseIDE-Core' 'MooseIDE-Visualization'
-					   'FamixTagging' ) ];
+		package: 'MooseIDE-Tagging'
+		with: [ 
+			spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' ) ];
 		package: 'MooseIDE-Telescope'
 		with: [ 
 			spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' ) ];
@@ -90,7 +89,7 @@ BaselineOfMooseIDE >> definePackages: spec [
 		package: 'MooseIDE-CoUsageMap-Browser' with: [ 
 			spec requires:
 					#( 'MooseIDE-Core' 'MooseIDE-Visualization'
-					   'MooseIDE-CoUsageMap-Roassal3' 'FamixTagging' ) ];
+					   'MooseIDE-CoUsageMap-Roassal3' ) ];
 		package: 'MooseIDE-CoUsageMap-Examples'
 		with: [ spec requires: #( 'MooseIDE-CoUsageMap-Roassal3' ) ];
 		package: 'MooseIDE-CoUsageMap-Model';

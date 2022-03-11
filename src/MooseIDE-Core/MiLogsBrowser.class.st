@@ -39,7 +39,7 @@ MiLogsBrowser class >> open [
 	<script>
 	^ (self on: self newModel)
 		  followBuses: self currentApplication buses;
-		  openWithSpec;
+		  open;
 		  updateToolbars;
 		  yourself
 ]

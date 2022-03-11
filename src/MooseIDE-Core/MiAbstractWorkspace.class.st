@@ -94,12 +94,6 @@ MiAbstractWorkspace >> containedBrowsers [
 	self subclassResponsibility 
 ]
 
-{ #category : #'private - updating' }
-MiAbstractWorkspace >> desiredWindowSize [
-
-	self subclassResponsibility
-]
-
 { #category : #buses }
 MiAbstractWorkspace >> followBus: aBus [
 
@@ -287,7 +281,7 @@ MiAbstractWorkspace >> updateWindowToolbar [
 	self withWindowDo: [ :window | window updateToolbar ]
 ]
 
-{ #category : #specs }
+{ #category : #'private - updating' }
 MiAbstractWorkspace >> windowSize [
 
 	self subclassResponsibility

@@ -49,11 +49,6 @@ MiAtomicWorkspace >> defaultLayout [
 		  yourself
 ]
 
-{ #category : #'private - updating' }
-MiAtomicWorkspace >> desiredWindowSize [
-	^self containedBrowser desiredWindowSize
-]
-
 { #category : #actions }
 MiAtomicWorkspace >> dragBrowser [
 
@@ -136,7 +131,7 @@ MiAtomicWorkspace >> updateWindow [
 { #category : #'private - updating' }
 MiAtomicWorkspace >> updateWindowSize [
 
-	self withWindowDo: [ :window | window resize: self desiredWindowSize ]
+	self withWindowDo: [ :window | window resize: self windowSize ]
 ]
 
 { #category : #'private - updating' }
@@ -145,8 +140,8 @@ MiAtomicWorkspace >> updateWindowTitle [
 	self withWindowDo: [ :window | window title: self title ]
 ]
 
-{ #category : #specs }
+{ #category : #'private - updating' }
 MiAtomicWorkspace >> windowSize [
 
-	^ self containedBrowser desiredWindowSize
+	^ self containedBrowser windowSize
 ]
