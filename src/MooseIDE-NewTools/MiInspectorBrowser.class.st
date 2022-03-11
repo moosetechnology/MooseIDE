@@ -31,12 +31,18 @@ MiInspectorBrowser class >> inspect: anObject [
 { #category : #api }
 MiInspectorBrowser class >> inspect: anObject forBuses: buses [
 
-	| newInstance |
-	newInstance := self on: anObject.
-	newInstance open.
-	newInstance beFrozen.
-	buses do: [ :aBus | newInstance followBus: aBus ].
-	^ newInstance
+	| workspace |
+	workspace := MiAtomicWorkspace new.
+	workspace receivingMode: MiFreezeMode.
+
+	buses do: [ :aBus | workspace followBus: aBus ].
+
+	workspace containedBrowser: (self on: anObject).
+	workspace
+		open;
+		updateReceivingModeButtons.
+
+	^ workspace
 ]
 
 { #category : #'world menu' }
@@ -76,13 +82,6 @@ MiInspectorBrowser class >> title [
 MiInspectorBrowser class >> windowSize [
 
 	^ 700 @ 500
-]
-
-{ #category : #actions }
-MiInspectorBrowser >> beFrozen [
-
-	self receivingMode: MiFreezeMode.
-	self window updateReceivingModeButtons
 ]
 
 { #category : #testing }

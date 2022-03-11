@@ -184,6 +184,7 @@ MiAbstractBrowser2 >> highlightEntity: anEntity [
 
 { #category : #testing }
 MiAbstractBrowser2 >> ifAutonomous: aBlock [
+
 	self flag: 'specific to MiLogBrowser ?'.
 	self owner isNotNil and: [ 
 		self owner isWindowPresenter ifTrue: aBlock ]
@@ -197,6 +198,7 @@ MiAbstractBrowser2 >> isDropInContainer [
 
 { #category : #testing }
 MiAbstractBrowser2 >> isMiBrowser [
+
 	^ true
 ]
 

@@ -58,5 +58,6 @@ MiNullBrowser >> miSelectedItem [
 
 { #category : #actions }
 MiNullBrowser >> needUpdate: anEntity [
-	^false
+
+	^ false
 ]

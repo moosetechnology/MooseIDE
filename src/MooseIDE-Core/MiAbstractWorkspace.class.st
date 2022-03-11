@@ -29,7 +29,7 @@ MiAbstractWorkspace class >> isAbstract [
 MiAbstractWorkspace class >> open [
 
 	<script: 'MiAtomicWorkspace open'>
-	^ (self newApplication: self currentApplication)
+	^ self new
 		  open;
 		  followBus: self currentApplication defaultBus;
 		  yourself
@@ -267,6 +267,12 @@ MiAbstractWorkspace >> unfollowBus: aBus [
 	aBus unregisterBrowser: self.
 
 	self withWindowDo: [ :window | window updateBusButton ]
+]
+
+{ #category : #'private - updating' }
+MiAbstractWorkspace >> updateReceivingModeButtons [
+
+	self withWindowDo: [ :window | window updateReceivingModeButtons ]
 ]
 
 { #category : #'private - updating' }

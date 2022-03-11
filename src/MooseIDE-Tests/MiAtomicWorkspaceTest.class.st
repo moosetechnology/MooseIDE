@@ -14,7 +14,8 @@ Class {
 
 { #category : #running }
 MiAtomicWorkspaceTest >> browserClass [
-	^MiAtomicWorkspace
+
+	^ MiAtomicWorkspace
 ]
 
 { #category : #running }
@@ -31,13 +32,12 @@ MiAtomicWorkspaceTest >> setUp [
 
 { #category : #tests }
 MiAtomicWorkspaceTest >> testCanChangeContainedBrowser [
+
 	| nullBrowser |
-	
 	nullBrowser := MiNullBrowser new.
 	browser containedBrowser: nullBrowser.
-	
-		self assert: browser containedBrowser equals: nullBrowser
 
+	self assert: browser containedBrowser equals: nullBrowser
 ]
 
 { #category : #tests }
@@ -116,8 +116,12 @@ MiAtomicWorkspaceTest >> testPropagatesReceivingMode [
 
 { #category : #tests }
 MiAtomicWorkspaceTest >> testWindowSizeChangesWithContainedBrowser [
+
 	"Workspace first created with a MiNullBrowser and changing the containedBrowser does not changes the windowSize"
-	self assert: browser window initialExtent equals: MiNullBrowser windowSize
+
+	self
+		assert: browser window initialExtent
+		equals: MiNullBrowser windowSize
 ]
 
 { #category : #tests }
