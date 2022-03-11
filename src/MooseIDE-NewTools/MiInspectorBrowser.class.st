@@ -33,14 +33,14 @@ MiInspectorBrowser class >> inspect: anObject forBuses: buses [
 
 	| workspace |
 	workspace := MiAtomicWorkspace new.
-	workspace receivingMode: MiFreezeMode.
+	workspace
+		open;
+		receivingMode: MiFreezeMode;
+		updateReceivingModeButtons.
 
 	buses do: [ :aBus | workspace followBus: aBus ].
 
 	workspace containedBrowser: (self on: anObject).
-	workspace
-		open;
-		updateReceivingModeButtons.
 
 	^ workspace
 ]
