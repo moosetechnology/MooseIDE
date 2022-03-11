@@ -12,7 +12,8 @@ Class {
 	#name : #MiHierarchicalMapBuilder,
 	#superclass : #HSimpleVisualizationBuilder,
 	#instVars : [
-		'mapModel'
+		'mapModel',
+		'nodeMooseIDDict'
 	],
 	#category : #'MooseIDE-Dependency-HierarchicalMap'
 }
@@ -44,6 +45,7 @@ MiHierarchicalMapBuilder >> build [
 					             self buildNodeFromEntity: e ]);
 		            yourself.
 	self buildLegend.
+	self setDependencies.
 	super build
 ]
 
@@ -147,16 +149,19 @@ MiHierarchicalMapBuilder >> buildLegend [
 { #category : #building }
 MiHierarchicalMapBuilder >> buildNodeFromEntity: anEntity [
 
-	^ HNode new
-		  name:
-			  (String streamContents: [ :s | anEntity displayStringOn: s ]);
-		  rawModel: anEntity;
-		  addAll: ((self mapModel childrenFor: anEntity)
-				   collect: [ :e | 
-					   anEntity == e ifFalse: [ self buildNodeFromEntity: e ] ]
-				   thenSelect: [ :e | e isNotNil ]);
-		  collapse;
-		  yourself
+	| node |
+	node := HNode new
+		        name:
+			        (String streamContents: [ :s | anEntity displayStringOn: s ]);
+		        rawModel: anEntity;
+		        addAll: ((self mapModel childrenFor: anEntity)
+				         collect: [ :e | 
+					         anEntity == e ifFalse: [ self buildNodeFromEntity: e ] ]
+				         thenSelect: [ :e | e isNotNil ]);
+		        collapse;
+		        yourself.
+	nodeMooseIDDict at: anEntity mooseID put: node.
+	^ node
 ]
 
 { #category : #accessing }
@@ -183,6 +188,13 @@ MiHierarchicalMapBuilder >> elements [
 	^ mapModel entities
 ]
 
+{ #category : #initialization }
+MiHierarchicalMapBuilder >> initialize [
+
+	super initialize.
+	nodeMooseIDDict := Dictionary new
+]
+
 { #category : #accessing }
 MiHierarchicalMapBuilder >> mapModel [
 
@@ -193,6 +205,24 @@ MiHierarchicalMapBuilder >> mapModel [
 MiHierarchicalMapBuilder >> mapModel: anObject [
 
 	mapModel := anObject
+]
+
+{ #category : #building }
+MiHierarchicalMapBuilder >> setDependencies [
+
+	self setDependenciesFor: rootNode
+]
+
+{ #category : #building }
+MiHierarchicalMapBuilder >> setDependenciesFor: aNode [
+
+	| incoming |
+	aNode children do: [ :child | self setDependenciesFor: child ].
+	aNode == rootNode ifTrue: [ ^ self ].
+	incoming := aNode rawModel queryAllLocal: #in.
+	incoming do: [ :e | 
+		(nodeMooseIDDict at: e source mooseID ifAbsent: [ nil ]) ifNotNil: [ :hNode | 
+			hNode dependencyTo: aNode ] ]
 ]
 
 { #category : #accessing }
