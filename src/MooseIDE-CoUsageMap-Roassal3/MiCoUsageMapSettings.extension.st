@@ -1,7 +1,7 @@
 Extension { #name : #MiCoUsageMapSettings }
 
 { #category : #'*MooseIDE-CoUsageMap-Roassal3' }
-MiCoUsageMapSettings classSide >> browsingBlockSettings: aBuilder [
+MiCoUsageMapSettings class >> browsingBlockSettings: aBuilder [
 	<systemsettings>
 	(aBuilder group: #ShowBlockSettings)
 		target: self;
@@ -19,7 +19,7 @@ MiCoUsageMapSettings classSide >> browsingBlockSettings: aBuilder [
 ]
 
 { #category : #'*MooseIDE-CoUsageMap-Roassal3' }
-MiCoUsageMapSettings classSide >> browsingSettingInnerSize: aBuilder [
+MiCoUsageMapSettings class >> browsingSettingInnerSize: aBuilder [
 	<systemsettings>
 	(aBuilder miRange: #innerBoxSize)
 		parent: #CoUsageMap;
@@ -33,7 +33,7 @@ MiCoUsageMapSettings classSide >> browsingSettingInnerSize: aBuilder [
 ]
 
 { #category : #'*MooseIDE-CoUsageMap-Roassal3' }
-MiCoUsageMapSettings classSide >> browsingSettingThreshold: aBuilder [
+MiCoUsageMapSettings class >> browsingSettingThreshold: aBuilder [
 	<systemsettings>
 	(aBuilder miRange: #threshold75PercentGroup)
 		parent: #CoUsageMap;
@@ -48,13 +48,14 @@ When the container has several attributes of different colors, the color is chos
 ]
 
 { #category : #'*MooseIDE-CoUsageMap-Roassal3' }
-MiCoUsageMapSettings classSide >> buttonSettingLabel [
+MiCoUsageMapSettings class >> buttonSettingLabel [
 	^ 'Blocks Settings'
 		
 
 ]
 
 { #category : #'*MooseIDE-CoUsageMap-Roassal3' }
-MiCoUsageMapSettings classSide >> openBlocksSettings [
-	MiCoUsageMapSettingsPresenter new openWithSpec
+MiCoUsageMapSettings class >> openBlocksSettings [
+
+	MiCoUsageMapSettingsPresenter new open
 ]

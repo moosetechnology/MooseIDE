@@ -16,21 +16,20 @@ MiTagEditionForm >> checkFormInputs [
 { #category : #initialization }
 MiTagEditionForm >> connectPresenters [
 
-	clearButton action: [ 
+	cancelButton action: [ 
 		self reset.
 		self owner closeTagEditionForm ].
-	addButton action: [ self submit ]
+	submitButton action: [ self submit ]
 ]
 
 { #category : #accessing }
 MiTagEditionForm >> fillFormWithTag: aTag [
 
 	aTag ifNil: [ ^ self ].
-	aTag name ifNotNil: [ :name | nameField text: name ].
-	aTag description ifNotNil: [ :desc | descriptionField text: desc ].
-	aTag color ifNotNil: [ :color | colorPicker setColor: color ].
-	aTag categories ifNotEmpty: [ 
-		categorySelection selectItem: aTag categories first ]
+	aTag isIntent
+		ifTrue: [ self setDynamicTag: aTag ]
+		ifFalse: [ self setTag: aTag ].
+	
 ]
 
 { #category : #accessing }
@@ -40,89 +39,93 @@ MiTagEditionForm >> fillWithCurrentTag [
 ]
 
 { #category : #initialization }
-MiTagEditionForm >> initializeLayout [
+MiTagEditionForm >> formLayout [
 
-	| sep colorPickerWidth headerLayout inputFieldsLayout formLayout |
-	colorPickerWidth := 240.
-	(sep := SpRoassalPresenter new) canvas color: (Color
-			 r: 40
-			 g: 40
-			 b: 40
-			 range: 255) translucent.
-
-	headerLayout := SpBoxLayout newLeftToRight
-		                add: (SpBoxLayout newLeftToRight
-				                 add: 'Tag Color' asPresenter;
-				                 hAlignCenter;
-				                 yourself)
-		                width: colorPickerWidth;
-		                add: (SpBoxLayout newLeftToRight
-				                 add: 'Edit Tag' asPresenter;
-				                 hAlignCenter;
-				                 yourself);
-		                yourself.
-
-	inputFieldsLayout := SpBoxLayout newTopToBottom
-		                     spacing: 10;
-		                     add: (SpBoxLayout newLeftToRight
-				                      spacing: 5;
-				                      add: (SpBoxLayout newTopToBottom
-						                       add: 'Name' asPresenter expand: false;
-						                       add: nameField expand: false;
-						                       yourself);
-				                      add: (SpBoxLayout newTopToBottom
-						                       add: 'Category (optional)';
-						                       add: categorySelection;
-						                       yourself)
-				                      width: 200;
-				                      yourself)
-		                     expand: false;
-		                     add: (SpBoxLayout newTopToBottom
-				                      add: 'Description (optional)' asPresenter
-				                      expand: false;
-				                      add: descriptionField height: 150;
-				                      yourself)
-		                     expand: false;
-		                     add: (SpBoxLayout newLeftToRight
-				                      vAlignEnd;
-				                      spacing: 10;
-				                      add: clearButton;
-				                      add: addButton;
-				                      yourself);
-		                     yourself.
-
-	formLayout := SpBoxLayout newLeftToRight
-		              spacing: 10;
-		              add: colorPicker width: colorPickerWidth;
-		              add: sep width: 2;
-		              add: inputFieldsLayout
-		              expand: true
-		              fill: true
-		              padding: 10;
-		              yourself.
-	self layout: (SpBoxLayout newTopToBottom
-			 spacing: 5;
-			 add: headerLayout expand: false;
-			 add: formLayout;
-			 yourself)
+	^ SpBoxLayout newTopToBottom
+		  spacing: 10;
+		  add: (SpBoxLayout newLeftToRight
+				   spacing: 5;
+				   add: (SpBoxLayout newTopToBottom
+						    add: 'Name' asPresenter expand: false;
+						    add: nameField expand: false;
+						    yourself);
+				   add: (SpBoxLayout newTopToBottom
+						    add: 'Category (optional)';
+						    add: categorySelection;
+						    yourself)
+				   width: 200;
+				   yourself)
+		  expand: false;
+		  add: (SpBoxLayout newTopToBottom
+				   add: 'Description (optional)' asPresenter expand: false;
+				   add: descriptionField height: 150;
+				   yourself)
+		  expand: false;
+		  add: (SpBoxLayout newLeftToRight
+				   vAlignEnd;
+				   spacing: 10;
+				   add: cancelButton;
+				   add: submitButton;
+				   yourself);
+		  yourself
 ]
 
 { #category : #initialization }
 MiTagEditionForm >> initializePresenters [
 
 	super initializePresenters.
-	addButton label: 'Edit'
+	extentButton hide.
+	intentButton hide. 
+	submitButton label: 'Edit'.
+]
+
+{ #category : #accessing }
+MiTagEditionForm >> setDynamicTag: aTag [
+
+	self setIntentForm.
+	aTag name ifNotNil: [ :name | nameField text: name ].
+	aTag description ifNotNil: [ :desc | descriptionField text: desc ].
+	aTag color ifNotNil: [ :color | colorPicker setColor: color ].
+	aTag category ifNotNil: [ 
+		categorySelection selectItem: aTag category ].
+	aTag query ifNotNil: [ queryList selectItem: aTag query ]
+]
+
+{ #category : #accessing }
+MiTagEditionForm >> setTag: aTag [
+
+	self setExtentForm.
+	aTag name ifNotNil: [ :name | nameField text: name ].
+	aTag description ifNotNil: [ :desc | descriptionField text: desc ].
+	aTag color ifNotNil: [ :color | colorPicker setColor: color ].
+	aTag categories ifNotEmpty: [ 
+		categorySelection selectItem: aTag categories first ]
 ]
 
 { #category : #initialization }
 MiTagEditionForm >> submit [
 
 	self checkFormInputs ifFalse: [ ^ self ].
-	
-	self owner
-		editCurrentTag: nameField text
-		description: descriptionField text
-		color: colorPicker color
-		category: categorySelection selectedItem.
+	tagModel currentTag isIntent
+		ifTrue: [ 
+			self owner
+				editCurrentDynamicTag: nameField text
+				description: descriptionField text
+				color: colorPicker color
+				category: categorySelection selectedItem
+				query: queryList selectedItem ]
+		ifFalse: [ 
+			self owner
+				editCurrentTag: nameField text
+				description: descriptionField text
+				color: colorPicker color
+				category: categorySelection selectedItem ].
+
 	self owner closeTagEditionForm
+]
+
+{ #category : #accessing }
+MiTagEditionForm >> title [
+
+	^ 'Edit tag'
 ]

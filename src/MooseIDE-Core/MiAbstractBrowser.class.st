@@ -199,6 +199,12 @@ MiAbstractBrowser >> freezeDuring: aBlock [
 	aBlock ensure: [ receivingMode := previousMode ]
 ]
 
+{ #category : #testing }
+MiAbstractBrowser >> hasSettings [
+
+	^false
+]
+
 { #category : #actions }
 MiAbstractBrowser >> highlightEntity: anEntity [
 
@@ -293,6 +299,13 @@ MiAbstractBrowser >> setDefaultReceivingMode [
 { #category : #'accessing - model' }
 MiAbstractBrowser >> setModelBeforeInitialization: aModel [
 	model := aModel
+]
+
+{ #category : #actions }
+MiAbstractBrowser >> settings [
+	"not used if #hasSettings is false"
+
+	self subclassResponsibility 
 ]
 
 { #category : #actions }

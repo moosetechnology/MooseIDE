@@ -11,6 +11,12 @@ Class {
 	#category : #'MooseIDE-Tagging-ColorPicker'
 }
 
+{ #category : #specs }
+MiColorCodePresenter class >> defaultLayout [
+
+	^ SpBoxLayout new
+]
+
 { #category : #initialization }
 MiColorCodePresenter >> connectPresenters [
 

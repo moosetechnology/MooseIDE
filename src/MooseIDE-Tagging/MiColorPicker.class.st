@@ -17,6 +17,20 @@ Class {
 }
 
 { #category : #specs }
+MiColorPicker class >> defaultLayout [
+
+	^ SpBoxLayout newTopToBottom
+		  add: #colorPicker expand: false;
+		  add: #colorSlider expand: false;
+		  add: (SpBoxLayout newLeftToRight
+				   add: #rCode;
+				   add: #gCode;
+				   add: #bCode;
+				   yourself) expand: false;
+		  yourself
+]
+
+{ #category : #specs }
 MiColorPicker class >> openExemple [
 
 	<script>

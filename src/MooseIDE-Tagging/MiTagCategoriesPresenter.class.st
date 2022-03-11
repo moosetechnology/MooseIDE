@@ -11,6 +11,24 @@ Class {
 	#category : #'MooseIDE-Tagging-Browser'
 }
 
+{ #category : #accessing }
+MiTagCategoriesPresenter >> addCategoryButton [
+
+	^ addCategoryButton
+]
+
+{ #category : #accessing }
+MiTagCategoriesPresenter >> categoryCreationForm [
+
+	^ categoryCreationForm
+]
+
+{ #category : #accessing }
+MiTagCategoriesPresenter >> categoryDropList [
+
+	^ categoryDropList
+]
+
 { #category : #initialization }
 MiTagCategoriesPresenter >> closeCategoryCreationForm [
 
@@ -45,7 +63,6 @@ MiTagCategoriesPresenter >> initializeLayout [
 MiTagCategoriesPresenter >> initializePresenters [
 
 	categoryDropList := self newDropList
-		                    items: tagModel allCategories;
 		                    sortingBlock: [ :c1 :c2 | 
 			                    c1 model ifNil: [ true ] ifNotNil: [ 
 					                    c2 model
@@ -56,15 +73,18 @@ MiTagCategoriesPresenter >> initializePresenters [
 				                    ifNil: [ 'All categories' ]
 				                    ifNotNil: [ category name ] ];
 		                    yourself.
+	self refreshCategoryList.
 	addCategoryButton := self newButton icon: (self iconNamed: #smallAdd).
 	categoryCreationForm := self
 		                        instantiate: MiTagCategoryCreationForm
 		                        on: tagModel.
-	mainPresenter := MiPresenter new layout: (SpBoxLayout newLeftToRight
-			                  add: categoryDropList;
-			                  add: addCategoryButton
-			                  width: addCategoryButton icon width + 10;
-			                  yourself).
+	mainPresenter := MiPresenter new
+		                 layout: (SpBoxLayout newLeftToRight
+				                  add: categoryDropList;
+				                  add: addCategoryButton
+				                  width: addCategoryButton icon width + 10;
+				                  yourself);
+		                 yourself.
 	self initializeLayout
 ]
 
@@ -78,7 +98,8 @@ MiTagCategoriesPresenter >> openCategoryCreationForm [
 { #category : #initialization }
 MiTagCategoriesPresenter >> refreshCategoryList [
 
-	categoryDropList items: { nil } , tagModel allCategories
+	categoryDropList items: { nil } , tagModel allCategories.
+	categoryDropList selectIndex: 1
 ]
 
 { #category : #initialization }

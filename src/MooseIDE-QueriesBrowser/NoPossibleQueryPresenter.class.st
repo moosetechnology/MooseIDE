@@ -3,7 +3,7 @@ I am a presenter that only shows the message 'No property available' when a inva
 "
 Class {
 	#name : #NoPossibleQueryPresenter,
-	#superclass : #SpPresenter,
+	#superclass : #MiPresenter,
 	#instVars : [
 		'textToDisplay',
 		'label',

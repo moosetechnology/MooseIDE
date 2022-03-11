@@ -46,16 +46,15 @@ MiImportModelFromFileDialog >> getModelFile [
 
 	| chosenFile |
 	chosenFile := UIManager default
-		              chooseExistingFileReference:
-		              'Select your model source file, MSE or JSON'
-		              extensions: #( 'mse' 'json' )
-		              path:
-			              (modelFile
-				               ifNil: [ self defaultDirectory ]
-				               ifNotNil: [ 
-					               modelFile isFile
-						               ifTrue: [ modelFile parent ]
-						               ifFalse: [ modelFile ] ]).
+		chooseExistingFileReference: 'Select your model source file'
+		extensions: MiAbstractFileImporter knownExtensions
+		path:
+			(modelFile
+				ifNil: [ self defaultDirectory ]
+				ifNotNil: [ 
+					modelFile isFile
+						ifTrue: [ modelFile parent ]
+						ifFalse: [ modelFile ] ]).
 
 	chosenFile ifNotNil: [ self updateForModelFile: chosenFile ]
 ]
@@ -102,19 +101,17 @@ MiImportModelFromFileDialog >> importModel [
 MiImportModelFromFileDialog >> initializeFilePathWidgets [
 
 	filePathInput := self newTextInput
-		                 placeholder:
-			                 self defaultDirectory asFileReference pathString;
-		                 whenSubmitDo: [ self getModelFileFromTextInput ];
-		                 help:
-			                 'Tip: to choose a file in the directory of this Pharo image, type ''local/path/to/myFile.mse''';
-		                 yourself.
+		placeholder: self defaultDirectory asFileReference pathString;
+		whenSubmitDo: [ self getModelFileFromTextInput ];
+		help: 'Tip: to choose a file in the directory of this Pharo image, type ''local/path/to/myFile.mse''';
+		yourself.
 
 	filePathInput eventHandler whenFocusLostDo: [ 
 		self getModelFileFromTextInput ].
 
 	filePathButton := self newButton
-		                  action: [ self getModelFile ];
-		                  icon: (self iconNamed: #open)
+		action: [ self getModelFile ];
+		icon: (self iconNamed: #open)
 ]
 
 { #category : #initialization }
@@ -162,12 +159,11 @@ MiImportModelFromFileDialog >> initializePresenters [
 	super initializePresenters.
 
 	mooseModelDroplist := self newDropList
-		                      items:
-			                      (MooseModel withAllSubclasses reject: [ 
-					                       :model | 
-					                       model isDeprecated or: [ 
-							                       model canBeImportedFromFile not ] ]);
-		                      yourself.
+		items:
+			(MooseModel withAllSubclasses reject: [ :model | 
+				model isDeprecated or:
+				[ model canBeImportedFromFile not ] ]) ;
+			yourself.
 
 	self initializeFilePathWidgets.
 
@@ -175,27 +171,26 @@ MiImportModelFromFileDialog >> initializePresenters [
 
 	rootFolderInput := self newTextInput.
 	rootFolderButton := self newButton
-		                    action: [ self getRootFolder ];
-		                    icon: (self iconNamed: #open).
+		action: [ self getRootFolder ];
+		icon: (self iconNamed: #open).
 	self initializeLayout
 ]
 
 { #category : #action }
 MiImportModelFromFileDialog >> privateImportModel [
 
-	| model stream |
+	| model importer |
+
+	importer := MiAbstractFileImporter importerFor: modelFile.
+	importer ifNil: [ 
+		self error: 'No importer found for this input file' ].
+
 	model := mooseModelDroplist selectedItem new.
 
-	(modelFile isFile and: [ 
-		 { 'mse'. 'json' } includes: modelFile extension ]) ifFalse: [ 
-		self error: 'Your model file path is incorrect: please specify a MSE or JSON file' ].
-
-	stream := modelFile readStream.
-	modelFile extension = 'mse' ifTrue: [ 
-		model importFromMSEStream: stream ].
-	modelFile extension = 'json' ifTrue: [ 
-		model importFromJSONStream: stream ].
-	stream close.
+	importer new
+		model: model ;
+		inputFile: modelFile ;
+		run.
 
 	model name: (modelNameInput text ifEmpty: [ 'MooseModel' ]).
 
