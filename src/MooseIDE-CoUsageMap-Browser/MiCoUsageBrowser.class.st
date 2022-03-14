@@ -57,7 +57,7 @@ MiCoUsageBrowser >> browserClosed [
 
 { #category : #testing }
 MiCoUsageBrowser >> canFollowEntity: anEntity [
-	^ anEntity isCollection
+	^ anEntity isCollection and: [ anEntity isMooseModel not ]
 ]
 
 { #category : #accessing }

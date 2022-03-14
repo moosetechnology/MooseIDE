@@ -44,7 +44,8 @@ MiCoUsageMapVisualization >> highlightShapes [
 { #category : #initialization }
 MiCoUsageMapVisualization >> initialize [
 	super initialize.
-	self script: [ :canvas | canvas ]
+	self script: [ :canvas | canvas ].
+	coUsageMap := MiCoUsageMapMooseBuilder new
 ]
 
 { #category : #actions }
@@ -67,7 +68,7 @@ MiCoUsageMapVisualization >> removeTag: aTag [
 	legendTag := coUsageMap legendTag.
 	
 	"updating legend"
-	legendTag tagsFromMooseModel: self owner classModel mooseModel.
+	legendTag tagsFromMooseModel: self owner collectionModel mooseModel.
 	legendTag build.
 	
 	coUsageMap markManager removeTag: aTag.
@@ -91,7 +92,7 @@ MiCoUsageMapVisualization >> run [
 	| model |
 	super run.
 	model := self owner collectionModel.
-	coUsageMap := MiCoUsageMapMooseBuilder new
+	coUsageMap 
 		container: self canvas;
 		methods: model;
 		application: self owner application.
