@@ -76,6 +76,13 @@ MiAtomicWorkspace >> initializePresenters [
 	browserContainer := self newContainer
 ]
 
+{ #category : #actions }
+MiAtomicWorkspace >> install: aMiBrowser inContainer: aMiDropInContainer [
+
+	super install: aMiBrowser inContainer: aMiDropInContainer.
+	aMiBrowser sendEntitiesToPrivateBus
+]
+
 { #category : #accessing }
 MiAtomicWorkspace >> model [
 
@@ -94,6 +101,12 @@ MiAtomicWorkspace >> noteThatWidgetHasBeenReinstalled: aMiBrowser [
 	self containedBrowser = aMiBrowser ifFalse: [ ^ self ].
 
 	self window close
+]
+
+{ #category : #buses }
+MiAtomicWorkspace >> receiveFromPrivateBus: anEntity [
+
+	self updateWindow
 ]
 
 { #category : #'private - updating' }
@@ -115,7 +128,8 @@ MiAtomicWorkspace >> showHelp [
 
 { #category : #initialization }
 MiAtomicWorkspace >> title [
-	^self containedBrowser windowTitle
+
+	^ self containedBrowser windowTitle
 ]
 
 { #category : #'private - updating' }

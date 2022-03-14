@@ -27,7 +27,7 @@ MiExportBrowserTest >> testActivateActionButtons [
 MiExportBrowserTest >> testMiSelectedItem [
 
 	| entityToSelect |
-	self should: [browser miSelectedItem] raise: MiNoSelectedElementToPropagateException.
+	self assert: browser miSelectedItem isEmpty.
 
 	entityToSelect := FamixStClass named: 'TestClass'.
 	browser followEntity: entityToSelect.

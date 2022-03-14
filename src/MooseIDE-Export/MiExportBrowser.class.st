@@ -15,7 +15,8 @@ Class {
 		'toolbar',
 		'commentDictionary',
 		'entitiesTable',
-		'commentsButton'
+		'commentsButton',
+		'commentsAreShown'
 	],
 	#category : #'MooseIDE-Export-Browser'
 }
@@ -88,7 +89,7 @@ MiExportBrowser >> addCommentsColumn [
 { #category : #testing }
 MiExportBrowser >> canFollowEntity: anObject [
 
-	^ true
+	^ anObject isMooseObject
 ]
 
 { #category : #initialization }

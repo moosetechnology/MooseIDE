@@ -29,29 +29,34 @@ MiModelRootBrowserTest >> tearDown [
 
 { #category : #tests }
 MiModelRootBrowserTest >> testActivateActionButtons [
+
 	| newModel |
-	{ MiInspectCommand . MiPropagateCommand . MiDragWindowCommand }
-	do: [ :cmdClass | self deny: (self actionButton: cmdClass) isEnabled ].
+	{ 
+		MiInspectCommand.
+		MiPropagateCommand } do: [ :cmdClass | 
+		self deny: (self actionButton: cmdClass) isEnabled ].
+	self assert: (self actionButton: MiDragWindowCommand) isEnabled.
 
 	newModel := MooseModel new.
 	MooseModel root add: newModel.
-	browser updateForNewModel: newModel.
+	browser containedBrowser updateForNewModel: newModel.
 
-	{ MiInspectCommand . MiPropagateCommand }
-	do: [ :cmdClass | self assert: (self actionButton: cmdClass) isEnabled ].
-	self deny: (self actionButton: MiDragWindowCommand) isEnabled.
-
+	{ 
+		MiInspectCommand.
+		MiPropagateCommand.
+		MiDragWindowCommand } do: [ :cmdClass | 
+		self assert: (self actionButton: cmdClass) isEnabled ]
 ]
 
 { #category : #tests }
 MiModelRootBrowserTest >> testMiSelectedItem [
 
 	| newModel |
-	self assert: browser miSelectedItem isNil.
+	self assert: browser containedBrowser miSelectedItem isNil.
 
 	newModel := MooseModel new.
 	MooseModel root add: newModel.
-	browser updateForNewModel: newModel.
+	browser containedBrowser updateForNewModel: newModel.
 
-	self assert: browser miSelectedItem equals: newModel
+	self assert: browser containedBrowser miSelectedItem equals: newModel
 ]

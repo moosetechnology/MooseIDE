@@ -14,10 +14,10 @@ MiAbstractBrowserTest class >> isAbstract [
 
 { #category : #running }
 MiAbstractBrowserTest >> actionButton: aCommandClass [
-	^((browser window toolbarCommandGroup commandOrGroupNamed: 'Actions')
-		commands
-		detect: [ :spCmd | spCmd decoratedCommand class = aCommandClass ])
-			presenter
+
+	^ ((browser window toolbarCommandGroup commandOrGroupNamed: 'Actions')
+		   commands detect: [ :spCmd | 
+		   spCmd decoratedCommand class = aCommandClass ]) presenter
 ]
 
 { #category : #running }

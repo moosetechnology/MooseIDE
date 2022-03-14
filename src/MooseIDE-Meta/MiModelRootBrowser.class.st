@@ -10,7 +10,7 @@ Shows installed models and allows model installation.
 "
 Class {
 	#name : #MiModelRootBrowser,
-	#superclass : #MiAbstractBrowser,
+	#superclass : #MiAbstractBrowser2,
 	#instVars : [
 		'toolbar',
 		'modelFilteringList'
@@ -101,11 +101,6 @@ MiModelRootBrowser >> initializeList [
 
 	modelFilteringList := self newFilteringList.
 
-	modelFilteringList items: MooseModel root.
-	MooseModel root ifNotEmpty: [ :root | 
-		modelFilteringList selectItem: root anyOne.
-		model selected: root anyOne ].
-
 	modelFilteringList display: [ :mooseModel | mooseModel name ].
 
 	modelFilteringList listPresenter
@@ -113,7 +108,12 @@ MiModelRootBrowser >> initializeList [
 			(self class buildModelCommandsGroupWith: self) asMenuPresenter ];
 		whenSelectionChangedDo: [ :selected | 
 			model selected: selected selectedItem.
-			self updateToolbar ]
+			self sendEntitiesToPrivateBus.
+			self updateToolbar ].
+
+	modelFilteringList items: MooseModel root.
+	MooseModel root ifNotEmpty: [ :root | 
+		modelFilteringList selectItem: root anyOne ]
 ]
 
 { #category : #initialization }
