@@ -27,28 +27,32 @@ MiCoUsageMapMooseBuilder >> defaultTester [
 	^ MiCoFromSettingsMethodAttributeTester new
 ]
 
-{ #category : #'as yet unclassified' }
-MiCoUsageMapMooseBuilder >> initializeAttributes [
+{ #category : #'instance creation' }
+MiCoUsageMapMooseBuilder >> newAttributeFor: anObject [
 	| tags |
-	miAttributes := attributes collect: [ :att |
-		tags := att allTagAssociations collect: [ :asso | asso tag ].
-		MiCoAttribute new
-			name: att name;
-			rawObject: att;
-			tag: (tags ifEmpty: [ nil ] ifNotEmpty: [ tags anyOne ]) ;
-			application: self application;
-			yourself ] as: OrderedCollection
+	tags := anObject allTagAssociations collect: [ :asso | asso tag ].
+	tags := tags
+		ifEmpty: [ nil ]
+		ifNotEmpty: [ tags anyOne ].
+	^ MiCoAttribute new
+		name: anObject name;
+		rawObject: anObject;
+		tag: tags;
+		application: self application;
+		yourself
 ]
 
-{ #category : #'as yet unclassified' }
-MiCoUsageMapMooseBuilder >> initializeMethods [
+{ #category : #'instance creation' }
+MiCoUsageMapMooseBuilder >> newMethodFor: anObject [
 	| tags |
-	miMethods := methods collect: [ :met |
-		tags := met allTagAssociations collect: [ :asso | asso tag ].
-		MiCoMethod new
-			name: met name;
-			rawObject: met;
-			tag: (tags ifEmpty: [ nil ] ifNotEmpty: [ tags anyOne ]) ;
-			application: self application;
-			yourself ] as: OrderedCollection.
+	tags := anObject allTagAssociations collect: [ :asso | asso tag ].
+	tags := tags
+		ifEmpty: [ nil ]
+		ifNotEmpty: [ tags anyOne ].
+	^ MiCoMethod new
+		name: anObject name;
+		rawObject: anObject;
+		tag: tags;
+		application: self application;
+		yourself
 ]

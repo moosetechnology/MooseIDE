@@ -102,12 +102,6 @@ MiCoMarkManager >> createGlobalMenuOn: menu [
 		icon: (self iconNamed: #smallPaint).
 	menu addLine.
 	(menu
-		add: 'Settings'
-			target: self
-			selector: #openSettingsBrowser
-			argumentList: #())
-		icon: (self iconNamed: #configuration).
-	(menu
 		add: 'Block Settings'
 			target: MiCoUsageMapSettings
 			selector: #openBlocksSettings
@@ -136,7 +130,7 @@ MiCoMarkManager >> initialize [
 	strategies := (MiCoMarkStrategy subclasses collect: #new) sorted: [ :a :b | a order < b order ].
 	menuInteraction := RSMenuActivable new
 		menuDo: [ :menu :aShape | self createMenuOn: menu for: aShape ];
-		yourself.
+		yourself
 ]
 
 { #category : #accessing }
@@ -151,8 +145,9 @@ MiCoMarkManager >> lastTagSelected: aMiCoTag [
 
 { #category : #hooks }
 MiCoMarkManager >> onShape: aShape [
-	aShape addInteraction: menuInteraction.
-	aShape when: RSMouseClick send: #clickOn: to: self.
+	aShape
+		addInteraction: menuInteraction;
+		when: RSMouseLeftClick send: #clickOn: to: self.
 ]
 
 { #category : #public }

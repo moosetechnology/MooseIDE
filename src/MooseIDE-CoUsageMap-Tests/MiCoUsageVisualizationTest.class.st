@@ -45,7 +45,7 @@ MiCoUsageVisualizationTest >> test02MethodsAttributes [
 		build.
 	self
 		assert: v miMethods size equals: class methods size;
-		assert: v miAttributes size equals: class instVarNames size.
+		assert: v miAttributes size equals: class instVarNames size-1."because one attribute is not used"
 	method := v methodNamed: #method1.
 	self
 		assert: method class equals: MiCoMethod;
@@ -59,8 +59,8 @@ MiCoUsageVisualizationTest >> test02MethodsAttributes [
 	self assert: attribute usedInMethods size equals: 2.
 	attribute := v attributeNamed: #var4.
 	self assert: attribute usedInMethods size equals: 1.
-	attribute := v attributeNamed: #var5.
-	self assert: attribute usedInMethods size equals: 0
+	"var5 is not used"
+	self should: [v attributeNamed: #var5] raise: Error.
 ]
 
 { #category : #tests }
@@ -95,19 +95,19 @@ MiCoUsageVisualizationTest >> test04Highlight [
 		tags: { 'Frame'. 'Connection' }.
 	v build.
 	attribute := v attributeNamed: #var2.
-	border := v selectedBoxBorder.
+	border := v highlightManager selectedBoxBorder.
 	shapes := v canvas deepShapesFromModel: attribute.
 	event := RSMouseEnter new
 		shape: shapes first;
 		yourself.
-	v highlight: event.
+	shapes first announce: event.
 	self assert: (shapes allSatisfy: [ :shape | 
 			 shape border color = border color and: [ 
 				 shape border width = border width ] ]).
 	event := RSMouseLeave new
 		shape: shapes first;
 		yourself.
-	v unhighlight: event.
+	shapes first announce: event.
 	self deny: (shapes allSatisfy: [ :shape | 
 			 shape border color = border color and: [ 
 				 shape border width = border width ] ])
@@ -129,4 +129,24 @@ MiCoUsageVisualizationTest >> test05MethodAttributePopup [
 	v
 		createAttributeTextMorphFor: attribute method: method;
 		createMethodTextMorphFor: method
+]
+
+{ #category : #tests }
+MiCoUsageVisualizationTest >> test06ExtentChanged [
+
+	| v |
+	v := MiCoUsageMapBuilder new.
+	v godClass: Morph.
+	v legendTag
+		conflictTag: 'need work'
+		tags: { 'Frame'. 'Connection' }.
+	v build.
+	self assert: v canvas extent x equals: 500.
+	self assert: (v canvas encompassingRectangle width between: 400 and: 500).
+	v canvas extent: 700 asPoint.
+	self assert: v canvas extent x equals: 700.
+	self assert: (v canvas encompassingRectangle width between: 600 and: 700).
+	v canvas camera scale: 0.5.
+	v canvas extent: 500 asPoint.
+	self assert: (v canvas encompassingRectangle width between: 900 and: 1000).
 ]

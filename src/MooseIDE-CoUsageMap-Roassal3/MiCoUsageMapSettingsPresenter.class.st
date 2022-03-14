@@ -9,7 +9,8 @@ Class {
 		'childrenTextInput',
 		'sortOuterBoxTextInput',
 		'sortInnerBoxTextInput',
-		'button'
+		'button',
+		'resetButton'
 	],
 	#category : #'MooseIDE-CoUsageMap-Roassal3-Settings'
 }
@@ -21,15 +22,40 @@ MiCoUsageMapSettingsPresenter class >> defaultLayout [
 		add: 'Children block:' asPresenter expand: false;
 		add: #childrenTextInput;
 		add: 'Outer box sort block:' asPresenter expand: false;
-		add: #sortOuterBoxTextInput;
+		add: #sortOuterBoxTextInput height: 150;
 		add: 'Inner box sort block:' asPresenter expand: false;
-		add: #sortInnerBoxTextInput;
+		add: #sortInnerBoxTextInput height: 50;
 		add: (SpBoxLayout newLeftToRight
 			hAlignCenter;
 			borderWidth: 5;
-			addLast: #button expand: false;
+			addLast: (SpBoxLayout newLeftToRight
+				add: #button;
+				add: #resetButton;
+				yourself) expand: false;
 			yourself) expand: false;
 		yourself
+]
+
+{ #category : #initialization }
+MiCoUsageMapSettingsPresenter >> initializeButtons [
+	| cls |
+	cls := MiCoUsageMapSettings.
+	button := self newButton
+		label: 'Apply all';
+		action: [ 
+			childrenTextInput triggerSubmitAction.
+			sortOuterBoxTextInput triggerSubmitAction.
+			sortInnerBoxTextInput triggerSubmitAction  ].
+	resetButton := self newButton
+		label: 'Reset text fields';
+		action: [ 
+			cls resetText.
+			childrenTextInput text: cls childrenBlockText.
+			sortOuterBoxTextInput text: cls outerBoxSortBlockText.
+			sortInnerBoxTextInput text: cls innerBoxSortBlockText.
+			 ]
+		
+		
 ]
 
 { #category : #initialization }
@@ -48,14 +74,7 @@ MiCoUsageMapSettingsPresenter >> initializePresenters [
 		text: cls innerBoxSortBlockText;
 		whenSubmitDo: [ :text | cls innerBoxSortBlockText: text ];
 		yourself.
-	button := self newButton
-		label: 'Apply all';
-		action: [ 
-			childrenTextInput triggerSubmitAction.
-			sortOuterBoxTextInput triggerSubmitAction.
-			sortInnerBoxTextInput triggerSubmitAction  ]
-		
-	
+	self initializeButtons
 ]
 
 { #category : #initialization }

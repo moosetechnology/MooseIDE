@@ -100,7 +100,6 @@ MiModelRootBrowser >> followEntity: anEntity [
 MiModelRootBrowser >> initializeList [
 
 	modelFilteringList := self newFilteringList.
-
 	modelFilteringList items: MooseModel root.
 	MooseModel root ifNotEmpty: [ :root | 
 		modelFilteringList selectItem: root anyOne.
