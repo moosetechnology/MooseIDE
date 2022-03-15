@@ -19,14 +19,26 @@ Class {
 		'methods',
 		'miMethods',
 		'miAttributes',
-		'methodAttributeTester',
 		'markManager',
 		'legendTagBuilder',
 		'innerBox',
-		'containerBox'
+		'containerBox',
+		'methodAttributeCounter',
+		'highlightManager'
 	],
-	#category : #'MooseIDE-CoUsageMap-Roassal3-Core'
+	#category : #'MooseIDE-CoUsageMap-Roassal3'
 }
+
+{ #category : #hooks }
+MiCoUsageMapBuilder >> applyLayout [
+	| canvas |
+	canvas := self canvas.
+	RSFlowLayout new
+		maxWidth: canvas extent x * (1/ canvas camera scale);
+		gapSize: 20;
+		on: canvas nodes.
+	
+]
 
 { #category : #accessing }
 MiCoUsageMapBuilder >> attributeNamed: aByteString [
@@ -42,20 +54,10 @@ MiCoUsageMapBuilder >> attributeShapeFor: att method: met [
 		width: (att numberOfUsesOn: met) * size;
 		height: size;
 		color: (self markManager tagColorFrom: att tag);
-		border: (RSBorder new color: Color black; joinMiter);
+		border: (self highlightManager defaultBoxBorder);
 		propertyAt: #method put: met;
 		announcer: innerBox announcer;
 		yourself.
-]
-
-{ #category : #'as yet unclassified' }
-MiCoUsageMapBuilder >> attributes [
-	^ attributes
-]
-
-{ #category : #'as yet unclassified' }
-MiCoUsageMapBuilder >> attributes: aCollection [
-	attributes := aCollection
 ]
 
 { #category : #accessing }
@@ -84,15 +86,13 @@ MiCoUsageMapBuilder >> createMethodTextMorphFor: model [
 ]
 
 { #category : #default }
-MiCoUsageMapBuilder >> defaultInnerSortBlock [
-	^ [ :att1 :att2 | att1 name < att2 name ].
+MiCoUsageMapBuilder >> defaultHighlightManager [
+	^ MiCoHighlightManager new
 ]
 
 { #category : #default }
-MiCoUsageMapBuilder >> defaultLayout [
-	^ RSFlowLayout new
-		gapSize: 20;
-		yourself
+MiCoUsageMapBuilder >> defaultInnerSortBlock [
+	^ [ :att1 :att2 | att1 name < att2 name ].
 ]
 
 { #category : #default }
@@ -124,7 +124,13 @@ MiCoUsageMapBuilder >> defaultSortBlock [
 
 { #category : #default }
 MiCoUsageMapBuilder >> defaultTester [
-	^ MiCoPharoMethodAttributeTester new
+	^ MiCoPharoMethodAttributeCounter new
+]
+
+{ #category : #accessing }
+MiCoUsageMapBuilder >> getOrCreateAttributeFor: object [
+	^ self miAttributes detect: [ :att | att rawObject = object ]
+		ifNone: [ miAttributes add: (self newAttributeFor: object).]
 ]
 
 { #category : #accessing }
@@ -135,60 +141,51 @@ MiCoUsageMapBuilder >> godClass [
 { #category : #accessing }
 MiCoUsageMapBuilder >> godClass: aClass [
 	godClass := aClass.
-	self attributes: aClass instVarNames.
 	self methods: aClass methods.
 ]
 
-{ #category : #highlighting }
-MiCoUsageMapBuilder >> highlight: evt [
-	| border attributeShapes | 
-	attributeShapes := evt canvas deepShapesFromModel: evt shape model.
-	evt canvas propertyAt: #highlighShapes put: attributeShapes.
-	border := self selectedBoxBorder.
-	attributeShapes do: [ :shape | shape border: border ].
-	evt signalUpdate.
-	
+{ #category : #accessing }
+MiCoUsageMapBuilder >> highlightManager [
+	^ highlightManager
+]
+
+{ #category : #accessing }
+MiCoUsageMapBuilder >> highlightManager: aMiCoHighlightManager [
+	highlightManager := aMiCoHighlightManager
 ]
 
 { #category : #initialization }
 MiCoUsageMapBuilder >> initialize [
 	super initialize.
 	self
-		attributes: #();
 		methods: #();
-		methodAttributeTester: self defaultTester;
+		methodAttributeCounter: self defaultTester;
 		legendTag: self defaultLegendTagVisualization;
-		markManager: self defaultMarkManager.
-		
-	self initializeShapes.
-]
-
-{ #category : #'as yet unclassified' }
-MiCoUsageMapBuilder >> initializeAttributes [
-	miAttributes := self attributes collect: [ :att |
-		MiCoAttribute new
-			name: att asString;
-			yourself ] as: OrderedCollection
+		markManager: self defaultMarkManager;
+		highlightManager: self defaultHighlightManager;
+		initializeShapes
 ]
 
 { #category : #initialization }
 MiCoUsageMapBuilder >> initializeMethods [
-	miMethods := self methods collect: [ :met | 
-		MiCoMethod new
-			name: met selector;
-			rawObject: met;
-			yourself ] as: OrderedCollection.
+	miMethods := self methods 
+		collect: [ :met | self newMethodFor: met ]
+		as: OrderedCollection.
 ]
 
 { #category : #initialization }
 MiCoUsageMapBuilder >> initializeReferences [
+	miAttributes := OrderedCollection new.
 	self miMethods do: [ :met | 
-		self miAttributes do: [ :att | | counter | 
-			counter := self methodAttributeTester numberOfUsesOf: att on: met.
-			counter > 0 ifTrue: [ 
-				att method: met counter: counter.
-				met addAttribute: att ]
-		]
+		| associations |
+		associations := self methodAttributeCounter associationsListIn: met.
+		associations
+			select: [ :asso | asso value > 0 ]
+			thenDo: [ :asso| | att |
+				att := self getOrCreateAttributeFor: asso key.
+				met addAttribute: att.
+				att method: met counter: asso value.
+			].
 	]
 ]
 
@@ -197,8 +194,7 @@ MiCoUsageMapBuilder >> initializeShapes [
 	"all this interaction will produce an announcer that we can reuse for new shapes"
 	innerBox := RSBox new
 		addInteraction: self markManager;
-		when: RSMouseEnter send: #highlight: to: self;
-		when: RSMouseLeave send: #unhighlight: to: self;
+		addInteraction: self highlightManager;
 		addInteraction: (RSMorphicPopupInteraction new
 			model: #yourself;
 			morphBuilder: [:shape | 
@@ -207,8 +203,9 @@ MiCoUsageMapBuilder >> initializeShapes [
 					method: (shape propertyAt: #method) ];
 			yourself).
 	
-	containerBox := RSBox new
+	containerBox := RSComposite new
 		addInteraction: self markManager;
+		addInteraction: self highlightManager;
 		addInteraction: (RSMorphicPopupInteraction new
 			morphBuilder: [:model | self createMethodTextMorphFor: model ];
 			yourself);
@@ -220,21 +217,20 @@ MiCoUsageMapBuilder >> initializeShapes [
 MiCoUsageMapBuilder >> initializeSort [
 	| block |
 	[ miMethods sort: MiCoUsageMapSettings outerBoxSortBlockCompiled ]
-	on: Error 
-	do: [ :ex | miMethods sort: self defaultSortBlock ].
+	onErrorDo: [ :ex | miMethods sort: self defaultSortBlock ].
 	
 	block := MiCoUsageMapSettings innerBoxSortBlockCompiled.
 	miMethods do: [ :met |
 		[ met usedAttributes sort: block ]
-		on: Error
-		do: [ :ex | met usedAttributes sort: self defaultInnerSortBlock ]
+		onErrorDo: [ :ex |
+			block := self defaultInnerSortBlock.
+			met usedAttributes sort: block ]
 	]
 ]
 
 { #category : #initialization }
 MiCoUsageMapBuilder >> initializeValues [
-	self 
-		initializeAttributes;
+	self
 		initializeMethods;
 		initializeReferences;
 		initializeSort.
@@ -242,7 +238,7 @@ MiCoUsageMapBuilder >> initializeValues [
 	
 ]
 
-{ #category : #public }
+{ #category : #update }
 MiCoUsageMapBuilder >> innerBoxSize: size [
 	self canvas nodes do: [ :node | 
 		| met body label |
@@ -263,7 +259,7 @@ MiCoUsageMapBuilder >> innerBoxSize: size [
 			on: { label. body }.
 		node adjustToChildren.
 	].
-	self defaultLayout on: self canvas nodes.
+	self applyLayout.
 	self canvas signalUpdate.
 ]
 
@@ -275,7 +271,7 @@ MiCoUsageMapBuilder >> labelShapeFor: met [
 		color: Color black;
 		yourself.
 	self resizeLabelIfNecessary: label.
-	^ label.
+	^ label
 ]
 
 { #category : #accessing }
@@ -305,13 +301,13 @@ MiCoUsageMapBuilder >> maxLabelWidth [
 ]
 
 { #category : #accessing }
-MiCoUsageMapBuilder >> methodAttributeTester [
-	^ methodAttributeTester
+MiCoUsageMapBuilder >> methodAttributeCounter [
+	^ methodAttributeCounter
 ]
 
 { #category : #accessing }
-MiCoUsageMapBuilder >> methodAttributeTester: aMiCoMethodAttributeTester [
-	methodAttributeTester := aMiCoMethodAttributeTester
+MiCoUsageMapBuilder >> methodAttributeCounter: aMiCoMethodAttributeCounter [
+	methodAttributeCounter := aMiCoMethodAttributeCounter
 ]
 
 { #category : #hooks }
@@ -371,29 +367,30 @@ MiCoUsageMapBuilder >> miMethods [
 	^ miMethods
 ]
 
-{ #category : #opening }
+{ #category : #'instance creation' }
+MiCoUsageMapBuilder >> newAttributeFor: object [
+	^ MiCoAttribute new
+		name: object asString;
+		rawObject: object;
+		yourself
+]
+
+{ #category : #'instance creation' }
+MiCoUsageMapBuilder >> newMethodFor: met [
+	^ MiCoMethod new
+		name: met selector;
+		rawObject: met;
+		yourself
+]
+
+{ #category : #public }
 MiCoUsageMapBuilder >> open [
-	| window morph scrollPane |
-	true ifTrue: [ 
-		^ super open
-			extent: 1000@ 800;
-			setLabel:  (godClass
-				ifNil: [ 'Empty' ]
-				ifNotNil: ['God Class - ', godClass name ]);
-			yourself ].
-	self build.
-	morph := self canvas createMorph.
-	morph extent: self canvas fixedShapes encompassingRectangle extent+50.
-	window := SystemWindow new.
-	scrollPane := ScrollPane new.
-	scrollPane scroller addMorph: morph.
-	window addMorph: scrollPane frame: (0@0 corner: 1@1).
-	window extent: 1000@ 800.
-	window openInWorld.
-	window setLabel: (godClass
-		ifNil: [ 'Empty' ]
-		ifNotNil: ['God Class - ', godClass name ]).
-	^ window
+	^ super open
+		extent: 1000@ 800;
+		setLabel:  (godClass
+			ifNil: [ 'Empty' ]
+			ifNotNil: ['God Class - ', godClass name ]);
+		yourself 
 ]
 
 { #category : #hooks }
@@ -402,13 +399,15 @@ MiCoUsageMapBuilder >> renderIn: aCanvas [
 	
 	shapes := self miMethods collect: [ :met | self methodShapeFor: met ].
 	aCanvas addAll: shapes.
-	self defaultLayout on: shapes.
+	self applyLayout.
 	self legendTag
 		container: aCanvas;
 		build.
-	
-	aCanvas addInteraction: self markManager.
-	aCanvas @ self canvasController
+	aCanvas 
+		when: RSExtentChangedEvent send: #applyLayout to: self;
+		addInteraction: self highlightManager;
+		addInteraction: self markManager;
+		addInteraction: self canvasController
 ]
 
 { #category : #hooks }
@@ -436,15 +435,6 @@ MiCoUsageMapBuilder >> resizeLabelIfNecessary: label [
 	label scaleBy: scale @ 1.
 ]
 
-{ #category : #highlighting }
-MiCoUsageMapBuilder >> selectedBoxBorder [
-	^ RSBorder new 
-		color: Color orange;
-		width: 3;
-		joinMiter;
-		yourself.
-]
-
 { #category : #public }
 MiCoUsageMapBuilder >> sortShapes [
 	| block children tBlock |
@@ -452,18 +442,17 @@ MiCoUsageMapBuilder >> sortShapes [
 	tBlock := [ :a :b | block value: a model value: b model ].
 	
 	children := self canvas children.
-	[ children sort: tBlock.
-	] on: Error
-	do: [ :ex | 
+	[ children sort: tBlock ]
+	onErrorDo: [ :ex | 
 		block := self defaultSortBlock.
 		children sort: tBlock ].
+	
 	block := MiCoUsageMapSettings innerBoxSortBlockCompiled.
 	children do: [ :node |
 		[ node attributeShapes sort: tBlock ]
-		on: Error
-		do: [ :ex | 
+		onErrorDo: [ :ex | 
 			block := self defaultInnerSortBlock.
-			node attributeShapes sort: block ]
+			node attributeShapes sort: tBlock ]
 	].
 
 ]
@@ -473,26 +462,26 @@ MiCoUsageMapBuilder >> tagNamed: aString [
 	^ self legendTag tagNamed: aString
 ]
 
-{ #category : #public }
+{ #category : #update }
 MiCoUsageMapBuilder >> threshold75: aNumber [
 	self assert: (aNumber between: 0 and: 100) description: 'use number between 0 and 100'.
 	self markManager threshold75: aNumber / 100.0. 
 	
 ]
 
-{ #category : #highlighting }
-MiCoUsageMapBuilder >> unhighlight: evt [
-	| border attributeShapes key |
-	key := #highlighShapes.
-	attributeShapes := evt canvas propertyAt: key ifAbsent: [ #() ].
-	border := RSBorder new color: Color black; joinMiter.
-	attributeShapes do: [ :shape | shape border: border ].
-	evt canvas removeKey: key.
-	evt signalUpdate.
-	
+{ #category : #update }
+MiCoUsageMapBuilder >> updateChildren [
+	| canvas |
+	canvas := self canvas.
+	canvas nodes copy do: #remove.
+	self initializeValues.
+	shapes := self miMethods collect: [ :met | self methodShapeFor: met ].
+	canvas addAll: shapes.
+	self applyLayout.
+	canvas signalUpdate.
 ]
 
-{ #category : #public }
+{ #category : #update }
 MiCoUsageMapBuilder >> updateShapeColors [
 	| mm |
 	mm := self markManager.
@@ -502,7 +491,7 @@ MiCoUsageMapBuilder >> updateShapeColors [
 	self canvas signalUpdate.
 ]
 
-{ #category : #public }
+{ #category : #update }
 MiCoUsageMapBuilder >> updateShapeLayout [
 	| children |
 	self sortShapes.
@@ -515,6 +504,6 @@ MiCoUsageMapBuilder >> updateShapeLayout [
 			gapSize: 0;
 			on: child children.
 		child adjustToChildren ].
-	self defaultLayout on: self canvas children.
+	self applyLayout.
 	self canvas signalUpdate.
 ]

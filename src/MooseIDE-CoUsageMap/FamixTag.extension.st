@@ -1,17 +1,18 @@
 Extension { #name : #FamixTag }
 
-{ #category : #'*MooseIDE-CoUsageMap-Browser' }
+{ #category : #'*MooseIDE-CoUsageMap' }
 FamixTag >> addReference: aMiCoTaggedObject [
-	| tagAssociation tags |
+	| tagAssociation tags entity |
 	tags := aMiCoTaggedObject rawObject allTagAssociations 
 		select: [ :asso | asso tag = self ].
 	tags ifNotEmpty: [ ^ self ].
-	tagAssociation := self tagEntity: aMiCoTaggedObject rawObject.
+	entity := aMiCoTaggedObject rawObject.
+	tagAssociation := FamixTagEntityAssociation newForEntity: entity tag: self.
 	aMiCoTaggedObject application 
 		ifNotNil: [ :app | app consumeItem: tagAssociation ]
 ]
 
-{ #category : #'*MooseIDE-CoUsageMap-Browser' }
+{ #category : #'*MooseIDE-CoUsageMap' }
 FamixTag >> asMiCoTag [
 	"self flag: 'TODO'.
 	^ MiCoTag new
@@ -23,7 +24,7 @@ FamixTag >> asMiCoTag [
 	^ self
 ]
 
-{ #category : #'*MooseIDE-CoUsageMap-Browser' }
+{ #category : #'*MooseIDE-CoUsageMap' }
 FamixTag >> removeReference: aMiCoTaggedObject [
 	| tagAssociation app |
 	tagAssociation := aMiCoTaggedObject rawObject allTagAssociations 

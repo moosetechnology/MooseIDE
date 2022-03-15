@@ -124,3 +124,54 @@ MiCoMarkManagerTest >> test05ClickLastTag [
 		assert: attribute1 tag equals: tag;
 		assert: (shapes allSatisfy: [ :shape | shape color = tag color ])
 ]
+
+{ #category : #tests }
+MiCoMarkManagerTest >> test06SelectInnerBox [
+
+	| v class attribute1 attribute2 method shape1 shape2 default selected |
+	v := MiCoUsageMapBuilder new.
+	class := MiCoTestClass.
+	v godClass: class.
+	v legendTag
+		conflictTag: 'need work'
+		tags: { 'Frame'. 'Connection' }.
+	v build.
+	attribute1 := v attributeNamed: #var1.
+	attribute2 := v attributeNamed: #var2.
+	method := v methodNamed: #method1.
+	shape1 := v canvas deepShapeFromModel: attribute1.
+	shape2 := v canvas deepShapeFromModel: attribute2.
+	default := v highlightManager defaultBoxBorder color.
+	selected := v highlightManager selectedBoxBorder color.
+	
+	self assert: shape1 border color equals: default.
+	shape1 announce: (RSMouseEnter new shape: shape1).
+	self assert: shape1 border color equals: selected.
+	shape1 announce: (RSMouseLeave new shape: shape1).
+	self assert: shape1 border color equals: default.
+	
+	shape1 announce: (RSMouseLeftClick new shape: shape1).
+	self assert: shape1 border color equals: selected.
+	
+	shape2 announce: (RSMouseEnter new shape: shape2).
+	self assert: shape1 border color equals: selected.
+	self assert: shape2 border color equals: default.
+	
+	shape2 announce: (RSMouseLeave new shape: shape2).
+	self assert: shape1 border color equals: selected.
+	self assert: shape2 border color equals: default.	
+	
+	shape2 announce: (RSMouseLeftClick new shape: shape2).
+	self assert: shape1 border color equals: default.
+	self assert: shape2 border color equals: selected.
+	
+	v canvas announce: (RSMouseLeftClick new shape: v canvas).
+	self assert: shape1 border color equals: default.
+	self assert: shape2 border color equals: default.
+	
+	shape1 announce: (RSMouseEnter new shape: shape1).
+	self assert: shape1 border color equals: selected.
+	shape1 announce: (RSMouseLeave new shape: shape1).
+	self assert: shape1 border color equals: default.
+
+]

@@ -9,11 +9,11 @@ Class {
 		'tagList',
 		'descriptionPage',
 		'tagModel',
-		'tagButton',
-		'dynamicTagButton',
 		'tagDescriptionPage',
 		'dynamicTagDescriptionPage',
-		'addTagButton'
+		'addTagButton',
+		'btnIsExtent',
+		'btnIsIntent'
 	],
 	#category : #'MooseIDE-Tagging-Browser'
 }
@@ -27,8 +27,8 @@ MiTagManagementPage >> addTagButton [
 { #category : #initialization }
 MiTagManagementPage >> connectPresenters [
 
-	tagButton action: [ self refreshTagList ].
-	dynamicTagButton action: [ self refreshTagList ]
+	btnIsExtent action: [ self refreshTagList ].
+	btnIsIntent action: [ self refreshTagList ]
 ]
 
 { #category : #action }
@@ -50,7 +50,7 @@ MiTagManagementPage >> descriptionPage [
 { #category : #accessing }
 MiTagManagementPage >> dynamicTagButton [
 
-	^ dynamicTagButton
+	^ btnIsIntent
 ]
 
 { #category : #accessing }
@@ -87,8 +87,8 @@ MiTagManagementPage >> initializeLayout [
 					  expand: false;
 					  add: (SpBoxLayout newLeftToRight
 							   spacing: 3;
-							   add: tagButton;
-							   add: dynamicTagButton;
+							   add: btnIsExtent;
+							   add: btnIsIntent;
 							   yourself)
 					  expand: false;
 					  add: addTagButton height: 25;
@@ -104,24 +104,24 @@ MiTagManagementPage >> initializeLayout [
 MiTagManagementPage >> initializePresenters [
 
 	categoryManagement := self
-		                      instantiate: MiTagCategoriesPresenter
-		                      on: tagModel.
+		instantiate: MiTagCategoriesPresenter
+		on: tagModel.
 
 	tagDescriptionPage := self instantiate: MiTagExtentPage on: tagModel.
 	dynamicTagDescriptionPage := self
-		                             instantiate: MiTagIntentPage
-		                             on: tagModel.
+		instantiate: MiTagIntentPage
+		on: tagModel.
 	descriptionPage := tagDescriptionPage.
 	descriptionPage hide.
 
-	tagButton := self newToggleButton
-		             state: true;
-		             label: 'Extent';
-		             yourself.
-	dynamicTagButton := self newToggleButton
-		                    state: false;
-		                    label: 'Intent';
-		                    yourself.
+	btnIsExtent := self newToggleButton
+		state: true;
+		label: 'Extent';
+		yourself.
+	btnIsIntent := self newToggleButton
+		state: false;
+		label: 'Intent';
+		yourself.
 
 	tagList := self newList.
 	tagList display: [ :aTag | aTag name ].
@@ -171,29 +171,28 @@ MiTagManagementPage >> refreshDescriptionPage [
 { #category : #refreshing }
 MiTagManagementPage >> refreshTagList [
 
-	| sortingBlock ts dts t dt |
+	| sortingBlock isExtent isIntent extentTags intentTags |
 	sortingBlock := [ :t1 :t2 | t1 name <= t2 name ].
 
-	ts := tagButton state.
-	dts := dynamicTagButton state.
-	t := [ 
+	isExtent := btnIsExtent state.
+	isIntent := btnIsIntent state.
+	extentTags := [ 
 	     tagModel currentCategory
 		     ifNil: [ self tagModel allTags ]
 		     ifNotNil: [ :currentTag | currentTag markedTags asMooseGroup ] ].
-	dt := [ 
+	intentTags := [ 
 	      tagModel currentCategory
 		      ifNil: [ self tagModel dynamicTags ]
 		      ifNotNil: [ :currentCat | 
 			      self tagModel dynamicTags select: [ :tag | 
 				      tag category = currentCat ] ] ].
-	ts & dts ifTrue: [ 
-		tagList items: (t value , dt value sort: sortingBlock).
-		^ self ].
-	ts not & dts not ifTrue: [ 
-		tagList items: #(  ).
-		^ self ].
-	ts ifTrue: [ tagList items: (t value sort: sortingBlock) ].
-	dts ifTrue: [ tagList items: (dt value sort: sortingBlock) ]
+	
+	tagList items:
+		( (isExtent ifTrue: [ extentTags value ] ifFalse: [ #() ]) 
+		  ,
+		  (isIntent ifTrue: [ intentTags value ] ifFalse: [ #() ])
+		sort: sortingBlock )
+
 ]
 
 { #category : #initialization }
@@ -224,12 +223,6 @@ MiTagManagementPage >> setTagTo: aTag [
 	descriptionPage show.
 	descriptionPage refresh.
 	self update
-]
-
-{ #category : #accessing }
-MiTagManagementPage >> tagButton [
-
-	^ tagButton
 ]
 
 { #category : #accessing }

@@ -8,7 +8,7 @@ Class {
 		'tags',
 		'conflictTag'
 	],
-	#category : #'MooseIDE-CoUsageMap-Roassal3-Core'
+	#category : #'MooseIDE-CoUsageMap-Roassal3'
 }
 
 { #category : #adding }
@@ -193,6 +193,19 @@ MiCoTagBuilder >> tagShapeFor: aMiCoTag [
 { #category : #accessing }
 MiCoTagBuilder >> tags [
 	^ tags
+]
+
+{ #category : #'public - moose' }
+MiCoTagBuilder >> tagsFromMooseModel: aMooseModel [
+	| ctag group |
+	aMooseModel ifNil: [ ^ self ].
+	self removeOldLegend.
+	ctag := aMooseModel tagNamed: 'Need work'.
+	group := aMooseModel allTags sorted: [ :a :b | a name < b name ].
+	self conflictTag: ctag asMiCoTag.
+	group 
+		reject: [ :tag | tag = ctag ] 
+		thenDo: [ :tag | self addTag: tag asMiCoTag ].
 ]
 
 { #category : #events }

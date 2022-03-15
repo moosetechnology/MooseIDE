@@ -10,11 +10,9 @@ Class {
 { #category : #examples }
 MiCoUsageMapExamples >> example01Empty [
 	<script: 'self new example01Empty open '>
-	| v attributes methods |
-	attributes := #().
+	| v methods |
 	methods := #().
 	v := MiCoUsageMapBuilder new.
-	v attributes: attributes.
 	v methods: methods.
 	^ v
 ]

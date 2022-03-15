@@ -25,6 +25,11 @@ MiCoTaggedObject >> application: anObject [
 	application := anObject
 ]
 
+{ #category : #'building - menus' }
+MiCoTaggedObject >> createMenuOn: aMenuMorph markManager: aMiCoMarkManager [
+	self subclassResponsibility
+]
+
 { #category : #accessing }
 MiCoTaggedObject >> name [
 	^ name

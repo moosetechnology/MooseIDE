@@ -12,6 +12,7 @@ Class {
 
 { #category : #brokerage }
 MiCoUsageMapVisualization >> consume: anItem [
+	anItem class name traceCr.
 	anItem class = FamixTag
 		ifTrue: [ self consumeTag: anItem ]
 		ifFalse: [ self consumeTagAssociation: anItem ]
@@ -27,6 +28,7 @@ MiCoUsageMapVisualization >> consumeTagAssociation: aFamixTagAssociation [
 	| entity tag miCoObject |
 	entity := aFamixTagAssociation entity.
 	tag := aFamixTagAssociation tag.
+	self identityHash traceCr.
 	miCoObject := coUsageMap miMethods , coUsageMap miAttributes 
 		detect: [ :each | each rawObject = entity and: [ each tag ~= tag ] ] ifNone: [ nil ].
 	miCoObject ifNil: [ ^ self ].
@@ -41,27 +43,14 @@ MiCoUsageMapVisualization >> highlightShapes [
 
 { #category : #initialization }
 MiCoUsageMapVisualization >> initialize [
-
 	super initialize.
-	self script: [ :canvas | canvas ]
-]
-
-{ #category : #initialization }
-MiCoUsageMapVisualization >> itemsFor: aClass [
-	
-	aClass = FamixTag
-		ifTrue: [ { "a group o tags" } ]
-		ifFalse: [ { "a group o assoiations" } ].
-]
-
-{ #category : #initialization }
-MiCoUsageMapVisualization >> itemsFor: aClass key: key [
-	^ self perform: key with: aClass
+	self script: [ :canvas | canvas ].
+	coUsageMap := MiCoUsageMapMooseBuilder new
 ]
 
 { #category : #actions }
 MiCoUsageMapVisualization >> openSettingsBrowser [
-	coUsageMap markManager openSettingsBrowser
+	^ coUsageMap markManager openSettingsBrowser
 ]
 
 { #category : #brokerage }
@@ -79,7 +68,7 @@ MiCoUsageMapVisualization >> removeTag: aTag [
 	legendTag := coUsageMap legendTag.
 	
 	"updating legend"
-	legendTag tagsFromMooseModel: self owner classModel mooseModel.
+	legendTag tagsFromMooseModel: self owner collectionModel mooseModel.
 	legendTag build.
 	
 	coUsageMap markManager removeTag: aTag.
@@ -102,11 +91,10 @@ MiCoUsageMapVisualization >> removeTagAssociation: aFamixTagAssociation [
 MiCoUsageMapVisualization >> run [
 	| model |
 	super run.
-	model := self owner classModel.
-	coUsageMap := MiCoUsageMapMooseBuilder new
+	model := self owner collectionModel.
+	coUsageMap 
 		container: self canvas;
-		attributes: model attributes;
-		methods: model methods;
+		methods: model;
 		application: self owner application.
 	self updateLegend.
 	coUsageMap build.
@@ -116,7 +104,7 @@ MiCoUsageMapVisualization >> run [
 MiCoUsageMapVisualization >> updateLegend [
 	| legendTag |
 	legendTag := coUsageMap legendTag.
-	legendTag tagsFromMooseModel: self owner classModel mooseModel.
+	legendTag tagsFromMooseModel: self owner collectionModel mooseModel.
 	legendTag build.
 	coUsageMap updateShapeColors.
 ]
