@@ -47,7 +47,8 @@ MiHierarchicalMapSettings >> fillModelWithCurrentSettings [
 	self model childrenQuery: childrenQueryDropList selectedItem.
 	self model showAllLinks: linksCheckbox state.
 	self model associationTypes:
-		associationList selectedItems asOrderedCollection
+		associationList selectedItems asOrderedCollection.
+	self model tags: tagList selectedItems asOrderedCollection
 ]
 
 { #category : #initialization }
@@ -58,6 +59,7 @@ MiHierarchicalMapSettings >> initializeLayout [
 		add: (self newLabel label: 'Children query:') expand: false;
 		add: childrenQueryDropList expand: false;
 		add: linksCheckbox expand: false;
+		add: 'Chose tags to add:' asPresenter expand: false;
 		add: tagList.
 	(rightLayout := SpBoxLayout newTopToBottom) add: associationList.
 	(mainLayout := SpBoxLayout newLeftToRight)

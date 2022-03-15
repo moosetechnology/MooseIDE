@@ -19,6 +19,13 @@ Class {
 	#category : #'MooseIDE-Dependency-HierarchicalMap'
 }
 
+{ #category : #building }
+MiHierarchicalMapBuilder >> addTags [
+
+	rootNode addAll: (mapModel tags collect: [ :e | 
+					             self buildNodeFromEntity: e ])
+]
+
 { #category : #'public - hooks' }
 MiHierarchicalMapBuilder >> borderFor: node [
 
@@ -48,10 +55,11 @@ MiHierarchicalMapBuilder >> build [
 			            (self elements collect: [ :e | 
 					             self buildNodeFromEntity: e ]);
 		            yourself.
-
+	
 	self buildLegend.
 	super build.
-	self updateWithModelSettings
+	self updateWithModelSettings.
+	self addTags.
 ]
 
 { #category : #accessing }
@@ -282,7 +290,8 @@ MiHierarchicalMapBuilder >> updateWithModelSettings [
 	mapModel showAllLinks
 		ifFalse: [ rootNode hideAllLinks ]
 		ifTrue: [ rootNode showAllLinks ].
-	self rebuildLines: self canvas
+	self rebuildLines: self canvas.
+	self addTags
 ]
 
 { #category : #accessing }

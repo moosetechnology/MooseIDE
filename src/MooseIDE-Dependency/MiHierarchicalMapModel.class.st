@@ -216,3 +216,15 @@ MiHierarchicalMapModel >> showAllLinks: anObject [
 
 	showAllLinks := anObject
 ]
+
+{ #category : #accessing }
+MiHierarchicalMapModel >> tags [
+
+	^ tags
+]
+
+{ #category : #accessing }
+MiHierarchicalMapModel >> tags: anObject [
+
+	tags := anObject
+]
