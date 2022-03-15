@@ -48,12 +48,6 @@ MiTagManagementPage >> descriptionPage [
 ]
 
 { #category : #accessing }
-MiTagManagementPage >> dynamicTagButton [
-
-	^ btnIsIntent
-]
-
-{ #category : #accessing }
 MiTagManagementPage >> dynamicTagDescriptionPage [
 
 	^ dynamicTagDescriptionPage
@@ -63,6 +57,12 @@ MiTagManagementPage >> dynamicTagDescriptionPage [
 MiTagManagementPage >> editCurrentTag [
 
 	self owner openTagEditionForm
+]
+
+{ #category : #accessing }
+MiTagManagementPage >> extentTagButton [
+
+	^ btnIsExtent
 ]
 
 { #category : #initialization }
@@ -134,6 +134,12 @@ MiTagManagementPage >> initializePresenters [
 
 
 	self initializeLayout
+]
+
+{ #category : #accessing }
+MiTagManagementPage >> intentTagButton [
+
+	^ btnIsIntent
 ]
 
 { #category : #action }

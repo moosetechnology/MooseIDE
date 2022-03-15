@@ -68,7 +68,7 @@ MiTagManagementPageTest >> testShowIntentAndExtentTagsInTagList [
 	self createExtentTag: 'Tag001'.
 	self createExtentTag: 'Tag002'.
 	self createIntentTag: 'Tag003'.
-	presenter dynamicTagButton click.
+	presenter intentTagButton click.
 	presenter refreshTagList.
 	self assert: presenter tagList items size equals: 3
 ]
@@ -79,8 +79,8 @@ MiTagManagementPageTest >> testShowIntentTagsOnlyInTagList [
 	self createExtentTag: 'Tag001'.
 	self createExtentTag: 'Tag002'.
 	self createIntentTag: 'Tag003'.
-	presenter tagButton click.
-	presenter dynamicTagButton click.
+	presenter extentTagButton click. "disable Extent Tags"
+	presenter intentTagButton click. "enable Intent tags"
 	presenter refreshTagList.
 	self assert: presenter tagList items size equals: 1
 ]
