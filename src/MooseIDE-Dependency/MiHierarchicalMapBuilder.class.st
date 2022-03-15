@@ -13,7 +13,8 @@ Class {
 	#superclass : #HSimpleVisualizationBuilder,
 	#instVars : [
 		'mapModel',
-		'nodeMooseIDDict'
+		'nodeMooseIDDict',
+		'allEntities'
 	],
 	#category : #'MooseIDE-Dependency-HierarchicalMap'
 }
@@ -39,14 +40,18 @@ MiHierarchicalMapBuilder >> borderFor: node [
 { #category : #building }
 MiHierarchicalMapBuilder >> build [
 
+	rootNode ifNotNil: [ 
+		self updateWithModelSettings.
+		^ self ].
 	rootNode := HNode new
 		            addAll:
 			            (self elements collect: [ :e | 
 					             self buildNodeFromEntity: e ]);
 		            yourself.
+
 	self buildLegend.
-	self setDependencies.
-	super build
+	super build.
+	self updateWithModelSettings
 ]
 
 { #category : #accessing }
@@ -139,10 +144,8 @@ MiHierarchicalMapBuilder >> buildLegend [
 				          color: Color white;
 				          padding: 10 ];
 		          yourself.
-	mapModel dynamicTags do: [ :dt | 
-		legend
-			text: dt name
-			withBoxColor: (self mapModel colorForDynamicTag: dt) ].
+	mapModel assocTypeToColorDict keysAndValuesDo: [ :type :color | 
+		legend text: type name withBoxColor: color ].
 	legend build
 ]
 
@@ -161,6 +164,7 @@ MiHierarchicalMapBuilder >> buildNodeFromEntity: anEntity [
 		        collapse;
 		        yourself.
 	nodeMooseIDDict at: anEntity mooseID put: node.
+	allEntities add: anEntity.
 	^ node
 ]
 
@@ -192,7 +196,8 @@ MiHierarchicalMapBuilder >> elements [
 MiHierarchicalMapBuilder >> initialize [
 
 	super initialize.
-	nodeMooseIDDict := Dictionary new
+	nodeMooseIDDict := Dictionary new.
+	allEntities := MooseGroup new.
 ]
 
 { #category : #accessing }
@@ -207,6 +212,24 @@ MiHierarchicalMapBuilder >> mapModel: anObject [
 	mapModel := anObject
 ]
 
+{ #category : #rendering }
+MiHierarchicalMapBuilder >> renderLinesIn: aCanvas [
+
+	super renderLinesIn: aCanvas.
+	aCanvas lines do: [ :line | 
+		| incomings |
+		incomings := line to model rawModel queryAllLocal: #in.
+		(incomings
+			 detect: [ :e | line from model rawModel = e source ]
+			 ifNone: [ nil ]) ifNotNil: [ :assoc | 
+			| types |
+			types := assoc class traits & mapModel associationTypes.
+			line color: (types ifEmpty: [ Color red ] ifNotEmpty: [ 
+					 mapModel assocTypeToColorDict
+						 at: types anyOne
+						 ifAbsent: [ Color random ] ]) ] ]
+]
+
 { #category : #building }
 MiHierarchicalMapBuilder >> setDependencies [
 
@@ -217,12 +240,16 @@ MiHierarchicalMapBuilder >> setDependencies [
 MiHierarchicalMapBuilder >> setDependenciesFor: aNode [
 
 	| incoming |
+
 	aNode children do: [ :child | self setDependenciesFor: child ].
 	aNode == rootNode ifTrue: [ ^ self ].
 	incoming := aNode rawModel queryAllLocal: #in.
 	incoming do: [ :e | 
-		(nodeMooseIDDict at: e source mooseID ifAbsent: [ nil ]) ifNotNil: [ :hNode | 
-			hNode dependencyTo: aNode ] ]
+		(nodeMooseIDDict at: e source mooseID ifAbsent: [ nil ]) ifNotNil: [ 
+			:hNode | 
+			(mapModel associationTypes anySatisfy: [ :t | 
+				 e class traits anySatisfy: [ :tr | tr = t ] ]) ifTrue: [ 
+				hNode dependencyTo: aNode ] ] ]
 ]
 
 { #category : #accessing }
@@ -246,6 +273,16 @@ MiHierarchicalMapBuilder >> shapeFor: node [
 	shapes add: shape.
 	^ shape 
 	
+]
+
+{ #category : #building }
+MiHierarchicalMapBuilder >> updateWithModelSettings [
+	
+	self setDependencies.
+	mapModel showAllLinks
+		ifFalse: [ rootNode hideAllLinks ]
+		ifTrue: [ rootNode showAllLinks ].
+	self rebuildLines: self canvas
 ]
 
 { #category : #accessing }

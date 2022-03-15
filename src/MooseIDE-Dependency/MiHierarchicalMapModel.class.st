@@ -12,7 +12,12 @@ Class {
 		'dynamicTags',
 		'childrenBlock',
 		'colorScale',
-		'childrenQuery'
+		'childrenQuery',
+		'showAllLinks',
+		'associationTypes',
+		'tags',
+		'colorPalette',
+		'assocTypeToColorDict'
 	],
 	#category : #'MooseIDE-Dependency-HierarchicalMap'
 }
@@ -56,6 +61,30 @@ MiHierarchicalMapModel >> addDynamicTag: aTag [
 MiHierarchicalMapModel >> addDynamicTags: aCollection [
 
 	dynamicTags addAll: aCollection
+]
+
+{ #category : #accessing }
+MiHierarchicalMapModel >> assocTypeToColorDict [
+
+	^ assocTypeToColorDict
+]
+
+{ #category : #accessing }
+MiHierarchicalMapModel >> associationTypes [
+
+	^ associationTypes
+]
+
+{ #category : #accessing }
+MiHierarchicalMapModel >> associationTypes: aCollection [
+
+	
+	associationTypes := aCollection.
+	assocTypeToColorDict := Dictionary new.
+	aCollection doWithIndex: [ :type :i | 
+		i <= colorPalette size
+			ifTrue: [ assocTypeToColorDict at: type put: (colorPalette at: i) ]
+			ifFalse: [ assocTypeToColorDict at: type put: Color random ] ]
 ]
 
 { #category : #accessing }
@@ -149,6 +178,10 @@ MiHierarchicalMapModel >> indexOfDynamicTagFor: anEntity [
 MiHierarchicalMapModel >> initialize [
 
 	super initialize.
+	showAllLinks := false.
+	colorPalette := (RSQualitativeColorPalette new paired12) range asOrderedCollection.
+	associationTypes := OrderedCollection new.
+	tags := OrderedCollection new.
 	dynamicTags := OrderedCollection new.
 	colorScale := RSQualitativeColorPalette new set312
 ]
@@ -170,4 +203,16 @@ MiHierarchicalMapModel >> orderOuterNodes: aCollectionOfNodes [
 	engine := MalClusterEngine with: partVectors.
 	engine hierarchicalClusteringUsing: #completeLinkage.
 	^ engine dendrogram orderLeafs collect: #item.
+]
+
+{ #category : #accessing }
+MiHierarchicalMapModel >> showAllLinks [
+
+	^ showAllLinks
+]
+
+{ #category : #accessing }
+MiHierarchicalMapModel >> showAllLinks: anObject [
+
+	showAllLinks := anObject
 ]

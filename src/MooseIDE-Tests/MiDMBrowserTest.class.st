@@ -15,7 +15,7 @@ MiDMBrowserTest >> testIsConsumerOfFQAbstractQuery [
 
 	self assert:
 		((browser application consumersOf: FQAbstractQuery) anySatisfy: [ 
-			 :elt | elt = browser settings ])
+			 :elt | elt = browser settingsPresenter ])
 ]
 
 { #category : #tests }
