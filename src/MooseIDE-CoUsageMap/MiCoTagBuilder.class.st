@@ -198,6 +198,7 @@ MiCoTagBuilder >> tags [
 { #category : #'public - moose' }
 MiCoTagBuilder >> tagsFromMooseModel: aMooseModel [
 	| ctag group |
+	aMooseModel ifNil: [ ^ self ].
 	self removeOldLegend.
 	ctag := aMooseModel tagNamed: 'Need work'.
 	group := aMooseModel allTags sorted: [ :a :b | a name < b name ].

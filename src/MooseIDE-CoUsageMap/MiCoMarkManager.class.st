@@ -160,6 +160,7 @@ MiCoMarkManager >> openSettingsBrowser [
 	window := browser open.
 	window position: (self currentWorld extent - window extent) // 2.
 	browser expandAll.
+	^ window
 ]
 
 { #category : #public }
