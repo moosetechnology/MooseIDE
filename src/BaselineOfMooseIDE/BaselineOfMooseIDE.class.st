@@ -68,6 +68,8 @@ BaselineOfMooseIDE >> definePackages: spec [
 		package: 'MooseIDE-Tagging'
 		with: [ 
 			spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' ) ];
+		package: 'MooseIDE-Tagging-Tests'
+		with: [ spec requires: #( 'MooseIDE-Tagging' ) ];
 		package: 'MooseIDE-Telescope'
 		with: [ 
 			spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' ) ];
