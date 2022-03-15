@@ -89,13 +89,12 @@ BaselineOfMooseIDE >> definePackages: spec [
 		with: [ spec requires: #( 'MooseIDE-ColorPalette' ) ];
 		package: 'MooseIDE-Durden'
 		with: [ spec requires: #( 'MooseIDE-Core' 'Durden' ) ];
-		
-		package: 'MooseIDE-CoUsageMap' with: [ 
+		package: 'MooseIDE-CoUsageMap'
+		with: [ 
 			spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' ) ];
 		package: 'MooseIDE-CoUsageMap-Tests'
-		with: [ spec requires: #( 'MooseIDE-CoUsageMap' ) ]
-		
-	
+		with: [ spec requires: #( 'MooseIDE-CoUsageMap'
+				   'MooseIDE-Tests' ) ]
 ]
 
 { #category : #dependencies }
