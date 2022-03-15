@@ -25,7 +25,7 @@ MiCoTaggedObject >> application: anObject [
 	application := anObject
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'building - menus' }
 MiCoTaggedObject >> createMenuOn: aMenuMorph markManager: aMiCoMarkManager [
 	self subclassResponsibility
 ]

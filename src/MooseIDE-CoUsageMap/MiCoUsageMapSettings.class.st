@@ -22,7 +22,7 @@ MiCoUsageMapSettings class >> browserDo: aBlock [
 		ifAbsent: [ "nothing" ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #settings }
 MiCoUsageMapSettings class >> browsingBlockSettings: aBuilder [
 	<systemsettings>
 	(aBuilder group: #ShowBlockSettings)
@@ -40,7 +40,7 @@ MiCoUsageMapSettings class >> browsingBlockSettings: aBuilder [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #settings }
 MiCoUsageMapSettings class >> browsingSettingInnerSize: aBuilder [
 	<systemsettings>
 	(aBuilder miRange: #innerBoxSize)
@@ -54,7 +54,7 @@ MiCoUsageMapSettings class >> browsingSettingInnerSize: aBuilder [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #settings }
 MiCoUsageMapSettings class >> browsingSettingThreshold: aBuilder [
 	<systemsettings>
 	(aBuilder miRange: #threshold75PercentGroup)
@@ -86,7 +86,7 @@ MiCoUsageMapSettings class >> browsingSettings02On: aBuilder [
 		description: 'Alls settings concerned with co usage map browser'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 MiCoUsageMapSettings class >> buttonSettingLabel [
 	^ 'Blocks Settings'
 		
@@ -185,7 +185,7 @@ MiCoUsageMapSettings class >> innerBoxSortBlockText: aString [
 	self browserDo: [ :b | b updateShapeLayout ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #opening }
 MiCoUsageMapSettings class >> openBlocksSettings [
 
 	MiCoUsageMapSettingsPresenter new open

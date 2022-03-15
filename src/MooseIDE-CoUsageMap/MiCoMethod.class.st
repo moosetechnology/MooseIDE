@@ -15,7 +15,7 @@ MiCoMethod >> addAttribute: aMiCoAttribute [
 	usedAttributes add: aMiCoAttribute
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'building - menus' }
 MiCoMethod >> conflictTagSubMenuWith: aMiCoMarkManager [
 	| subMenu conflictTag |
 	subMenu := MenuMorph new.
@@ -33,7 +33,7 @@ MiCoMethod >> conflictTagSubMenuWith: aMiCoMarkManager [
 	^ subMenu
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'building - menus' }
 MiCoMethod >> createMenuOn: aMenuMorph markManager: aMiCoMarkManager [
 	| subMenu |	
 	subMenu := aMiCoMarkManager 

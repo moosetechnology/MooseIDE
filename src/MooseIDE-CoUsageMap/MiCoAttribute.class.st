@@ -15,7 +15,7 @@ MiCoAttribute >> asStringForMethod: aMicoMethod [
 	^ String streamContents: [:s | self printForMethod: aMicoMethod on: s] 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'building - menus' }
 MiCoAttribute >> createMenuOn: aMenuMorph markManager: aMiCoMarkManager [
 	aMenuMorph
 		addTitle: 'Var: <', (aMiCoMarkManager contractLabel: self name),'>';
