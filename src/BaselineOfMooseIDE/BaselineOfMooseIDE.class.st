@@ -28,7 +28,7 @@ BaselineOfMooseIDE >> baseline: spec [
 				with: [ spec requires: #( 'MooseIDE-Core' ) ];
 				package: 'MooseIDE-Tagging'
 				with: [ spec requires: #( 'FamixTagging' ) ];
-				package: 'MooseIDE-CoUsageMap-Browser'
+				package: 'MooseIDE-CoUsageMap'
 				with: [ spec requires: #( 'FamixTagging' ) ] ].
 
 		"Register custom tools"
@@ -89,17 +89,13 @@ BaselineOfMooseIDE >> definePackages: spec [
 		with: [ spec requires: #( 'MooseIDE-ColorPalette' ) ];
 		package: 'MooseIDE-Durden'
 		with: [ spec requires: #( 'MooseIDE-Core' 'Durden' ) ];
-		package: 'MooseIDE-CoUsageMap-Browser' with: [ 
-			spec requires:
-					#( 'MooseIDE-Core' 'MooseIDE-Visualization'
-					   'MooseIDE-CoUsageMap-Roassal3' ) ];
-		package: 'MooseIDE-CoUsageMap-Examples'
-		with: [ spec requires: #( 'MooseIDE-CoUsageMap-Roassal3' ) ];
-		package: 'MooseIDE-CoUsageMap-Model';
-		package: 'MooseIDE-CoUsageMap-Roassal3'
-		with: [ spec requires: #( 'MooseIDE-CoUsageMap-Model' ) ];
+		
+		package: 'MooseIDE-CoUsageMap' with: [ 
+			spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' ) ];
 		package: 'MooseIDE-CoUsageMap-Tests'
-		with: [ spec requires: #( 'MooseIDE-CoUsageMap-Examples' ) ]
+		with: [ spec requires: #( 'MooseIDE-CoUsageMap' ) ]
+		
+	
 ]
 
 { #category : #dependencies }
