@@ -2,7 +2,7 @@
 This browser is to see dependencies between methods and attributes and mark them with tags
 "
 Class {
-	#name : #MiCoUsageBrowser,
+	#name : #MiCoUsageMapBrowser,
 	#superclass : #MiAbstractBrowser,
 	#instVars : [
 		'coUsageMap',
@@ -12,14 +12,14 @@ Class {
 }
 
 { #category : #layout }
-MiCoUsageBrowser class >> defaultLayout [
+MiCoUsageMapBrowser class >> defaultLayout [
 	^ SpBoxLayout newLeftToRight
 		add: #coUsageMap;
 		yourself
 ]
 
 { #category : #'world menu' }
-MiCoUsageBrowser class >> menuCommandOn: aBuilder [
+MiCoUsageMapBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	<miBrowsers>
 	^(aBuilder item: #FilesBrowser)
@@ -32,23 +32,23 @@ MiCoUsageBrowser class >> menuCommandOn: aBuilder [
 ]
 
 { #category : #'instance creation' }
-MiCoUsageBrowser class >> open [
+MiCoUsageMapBrowser class >> open [
 	<script>
 	^ super open
 ]
 
-{ #category : #accessing }
-MiCoUsageBrowser class >> title [ 
+{ #category : #specs }
+MiCoUsageMapBrowser class >> title [ 
 	^ 'Co Usage Map'
 ]
 
-{ #category : #accessing }
-MiCoUsageBrowser class >> windowSize [
+{ #category : #specs }
+MiCoUsageMapBrowser class >> windowSize [
 	^ 800@600
 ]
 
-{ #category : #testing }
-MiCoUsageBrowser >> browserClosed [
+{ #category : #'window control' }
+MiCoUsageMapBrowser >> browserClosed [
 
 	super browserClosed.
 	application unregisterConsumer: coUsageMap.
@@ -56,33 +56,38 @@ MiCoUsageBrowser >> browserClosed [
 ]
 
 { #category : #testing }
-MiCoUsageBrowser >> canFollowEntity: anEntity [
+MiCoUsageMapBrowser >> canFollowEntity: anEntity [
 	^ anEntity isCollection and: [ anEntity isMooseModel not ]
 ]
 
 { #category : #accessing }
-MiCoUsageBrowser >> collectionModel [
+MiCoUsageMapBrowser >> coUsageMap [
+	^ coUsageMap
+]
+
+{ #category : #accessing }
+MiCoUsageMapBrowser >> collectionModel [
 	^ collectionModel
 ]
 
 { #category : #accessing }
-MiCoUsageBrowser >> collectionModel: anObject [
+MiCoUsageMapBrowser >> collectionModel: anObject [
 	collectionModel := anObject
 ]
 
 { #category : #actions }
-MiCoUsageBrowser >> followEntity: anEntity [
+MiCoUsageMapBrowser >> followEntity: anEntity [
 	self collectionModel: anEntity.
 	coUsageMap run
 ]
 
 { #category : #testing }
-MiCoUsageBrowser >> hasSettings [ 
+MiCoUsageMapBrowser >> hasSettings [ 
 	^ true
 ]
 
 { #category : #initialization }
-MiCoUsageBrowser >> initializePresenters [
+MiCoUsageMapBrowser >> initializePresenters [
 	coUsageMap := self instantiate: MiCoUsageMapVisualization.
 	application registerConsumer: coUsageMap for: FamixTag.
 	application registerConsumer: coUsageMap for: FamixTagAssociation.
@@ -90,11 +95,11 @@ MiCoUsageBrowser >> initializePresenters [
 ]
 
 { #category : #actions }
-MiCoUsageBrowser >> miSelectedItem [
+MiCoUsageMapBrowser >> miSelectedItem [
 	^ collectionModel
 ]
 
 { #category : #actions }
-MiCoUsageBrowser >> settings [ 
-	coUsageMap openSettingsBrowser
+MiCoUsageMapBrowser >> settings [ 
+	^ coUsageMap openSettingsBrowser
 ]

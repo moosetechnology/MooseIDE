@@ -15,6 +15,18 @@ MiCoAttribute >> asStringForMethod: aMicoMethod [
 	^ String streamContents: [:s | self printForMethod: aMicoMethod on: s] 
 ]
 
+{ #category : #'building - menus' }
+MiCoAttribute >> createMenuOn: aMenuMorph markManager: aMiCoMarkManager [
+	aMenuMorph
+		addTitle: 'Var: <', (aMiCoMarkManager contractLabel: self name),'>';
+		add: 'Tags' 
+			subMenu: (aMiCoMarkManager subMenuTagsFor: self subMenu: MenuMorph new);
+		add: 'Inspect'
+			target: self rawObject
+			selector: #inspect
+			argument: #() 
+]
+
 { #category : #initialization }
 MiCoAttribute >> initialize [
 	super initialize.

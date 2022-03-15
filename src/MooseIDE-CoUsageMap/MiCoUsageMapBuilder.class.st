@@ -26,7 +26,7 @@ Class {
 		'methodAttributeCounter',
 		'highlightManager'
 	],
-	#category : #'MooseIDE-CoUsageMap-Roassal3-Core'
+	#category : #'MooseIDE-CoUsageMap-Roassal3'
 }
 
 { #category : #hooks }

@@ -53,12 +53,12 @@ MiSelection >> putShadowOn: aShape [
 		paint: self shadowColor;
 		yourself.
 	aShape parent addShape: shadow before: aShape.
-	aShape topParent propertyAt: self key put: shadow
+	aShape canvas propertyAt: self key put: shadow
 ]
 
 { #category : #hooks }
 MiSelection >> removeShadowOn: aShape [
-	aShape topParent
+	aShape canvas
 		propertyAt: self key
 		ifPresent: [ :shadow |shadow remove ].
 ]

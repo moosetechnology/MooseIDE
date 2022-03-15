@@ -8,7 +8,7 @@ Class {
 		'selectedInnerBox',
 		'highlight'
 	],
-	#category : #'MooseIDE-CoUsageMap-Roassal3-Core'
+	#category : #'MooseIDE-CoUsageMap-Roassal3'
 }
 
 { #category : #'accessing - computed' }

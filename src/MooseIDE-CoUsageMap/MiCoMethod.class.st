@@ -1,6 +1,21 @@
-Extension { #name : #MiCoMethod }
+"
+Model for methods
+"
+Class {
+	#name : #MiCoMethod,
+	#superclass : #MiCoTaggedObject,
+	#instVars : [
+		'usedAttributes'
+	],
+	#category : #'MooseIDE-CoUsageMap-Model'
+}
 
-{ #category : #'*MooseIDE-CoUsageMap-Roassal3' }
+{ #category : #adding }
+MiCoMethod >> addAttribute: aMiCoAttribute [
+	usedAttributes add: aMiCoAttribute
+]
+
+{ #category : #'building - menus' }
 MiCoMethod >> conflictTagSubMenuWith: aMiCoMarkManager [
 	| subMenu conflictTag |
 	subMenu := MenuMorph new.
@@ -18,7 +33,7 @@ MiCoMethod >> conflictTagSubMenuWith: aMiCoMarkManager [
 	^ subMenu
 ]
 
-{ #category : #'*MooseIDE-CoUsageMap-Roassal3' }
+{ #category : #'building - menus' }
 MiCoMethod >> createMenuOn: aMenuMorph markManager: aMiCoMarkManager [
 	| subMenu |	
 	subMenu := aMiCoMarkManager 
@@ -33,4 +48,20 @@ MiCoMethod >> createMenuOn: aMenuMorph markManager: aMiCoMarkManager [
 			target: self rawObject
 			selector: #inspect
 			argument: #()
+]
+
+{ #category : #initialization }
+MiCoMethod >> initialize [
+	super initialize.
+	usedAttributes := OrderedCollection new: 5.
+]
+
+{ #category : #accessing }
+MiCoMethod >> usedAttributes [
+	^ usedAttributes
+]
+
+{ #category : #accessing }
+MiCoMethod >> usedAttributes: aCollection [
+	usedAttributes := aCollection
 ]

@@ -50,7 +50,7 @@ MiCoUsageMapVisualization >> initialize [
 
 { #category : #actions }
 MiCoUsageMapVisualization >> openSettingsBrowser [
-	coUsageMap markManager openSettingsBrowser
+	^ coUsageMap markManager openSettingsBrowser
 ]
 
 { #category : #brokerage }

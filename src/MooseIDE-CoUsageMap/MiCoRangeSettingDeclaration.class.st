@@ -4,7 +4,7 @@ utility class to create a new widged made in roassal. This widget is used in Sys
 Class {
 	#name : #MiCoRangeSettingDeclaration,
 	#superclass : #RangeSettingDeclaration,
-	#category : #'MooseIDE-CoUsageMap-Roassal3-Util'
+	#category : #'MooseIDE-CoUsageMap-Roassal3'
 }
 
 { #category : #'user interface' }

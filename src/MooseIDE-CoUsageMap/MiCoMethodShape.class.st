@@ -4,7 +4,7 @@ Utility class to customize a composite shape from roassal
 Class {
 	#name : #MiCoMethodShape,
 	#superclass : #RSComposite,
-	#category : #'MooseIDE-CoUsageMap-Roassal3-Util'
+	#category : #'MooseIDE-CoUsageMap-Roassal3'
 }
 
 { #category : #accessing }

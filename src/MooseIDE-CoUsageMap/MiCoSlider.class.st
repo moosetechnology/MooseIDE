@@ -16,7 +16,7 @@ Class {
 		'quantum',
 		'scale'
 	],
-	#category : #'MooseIDE-CoUsageMap-Roassal3-Settings'
+	#category : #'MooseIDE-CoUsageMap-Roassal3'
 }
 
 { #category : #accessing }
