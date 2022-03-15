@@ -37,6 +37,24 @@ MiCoUsageMapBrowser class >> open [
 	^ super open
 ]
 
+{ #category : #specs }
+MiCoUsageMapBrowser class >> title [ 
+	^ 'Co Usage Map'
+]
+
+{ #category : #specs }
+MiCoUsageMapBrowser class >> windowSize [
+	^ 800@600
+]
+
+{ #category : #'window control' }
+MiCoUsageMapBrowser >> browserClosed [
+
+	super browserClosed.
+	application unregisterConsumer: coUsageMap.
+	application unregisterProducer: coUsageMap
+]
+
 { #category : #testing }
 MiCoUsageMapBrowser >> canFollowEntity: anEntity [
 	^ anEntity isCollection and: [ anEntity isMooseModel not ]
