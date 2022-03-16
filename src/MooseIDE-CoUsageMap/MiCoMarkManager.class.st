@@ -163,6 +163,12 @@ MiCoMarkManager >> openSettingsBrowser [
 	^ window
 ]
 
+{ #category : #dependencies }
+MiCoMarkManager >> release [
+	super release.
+	self class instVarNames do: [ :n | self instVarNamed: n put: nil ]
+]
+
 { #category : #public }
 MiCoMarkManager >> removeTag: aMiCoTag [
 	self changeTagsDuring: [ 

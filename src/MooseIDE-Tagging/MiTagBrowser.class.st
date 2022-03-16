@@ -97,10 +97,14 @@ MiTagBrowser >> closeTagEditionForm [
 ]
 
 { #category : #testing }
-MiTagBrowser >> consume: aTagAssociation [
-
-	tagModel currentTag = aTagAssociation tag ifTrue: [ 
-		tagManagementPage refreshTaggedEntitiesList ]
+MiTagBrowser >> consume: anObject [
+	anObject class = FamixTag ifTrue: [ 
+		tagManagementPage refreshTagList
+	].
+	
+	anObject class = FamixTagAssociation ifTrue: [ 
+		tagModel currentTag = anObject tag 
+			ifTrue: [ tagManagementPage refreshTaggedEntitiesList ] ]
 ]
 
 { #category : #testing }
@@ -179,6 +183,7 @@ MiTagBrowser >> editCurrentTag: name description: description color: color categ
 		tag removeCategory: tag categories first ].
 	category ifNotNil: [ tag addCategory: category ].
 	tagManagementPage refresh.
+	self application updateItem: tag.
 	^ true
 ]
 
@@ -197,6 +202,7 @@ MiTagBrowser >> initialize [
 	super initialize.
 	application registerProducer: self for: MiDynamicTag.
 	application registerProducer: self for: FamixTag.
+	application registerConsumer: self for: FamixTag.
 	application registerConsumer: self for: FamixTagAssociation.
 	application registerConsumer: tagCreationForm for: FQAbstractQuery
 ]
