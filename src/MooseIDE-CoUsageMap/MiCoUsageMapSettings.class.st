@@ -58,7 +58,7 @@ MiCoUsageMapSettings class >> browsingSettingInnerSize: aBuilder [
 
 { #category : #settings }
 MiCoUsageMapSettings class >> browsingSettingTagNeedWorkColor: aBuilder [
-	"<systemsettings>"
+	<systemsettings>
 	(aBuilder setting: #tagNeedWorkColor)
 		parent: #CoUsageMap;
 		target: self;
@@ -70,7 +70,7 @@ MiCoUsageMapSettings class >> browsingSettingTagNeedWorkColor: aBuilder [
 
 { #category : #settings }
 MiCoUsageMapSettings class >> browsingSettingTagNeedWorkName: aBuilder [
-	"<systemsettings>"
+	<systemsettings>
 	(aBuilder setting: #tagNeedWorkName)
 		parent: #CoUsageMap;
 		target: self;
@@ -274,7 +274,12 @@ MiCoUsageMapSettings class >> tagNeedWorkName [
 
 { #category : #accessing }
 MiCoUsageMapSettings class >> tagNeedWorkName: aString [
-	tagNeedWorkName := aString
+	(aString isNil or: [ aString trimmed isEmpty ]) ifTrue: [ ^ self ].
+	tagNeedWorkName := aString.
+	"self browserDo: [ :browser | 
+		browser conflictTag ifNotNil: [ :tag | tag name: aString ].
+		browser updateLegend.
+		]"
 ]
 
 { #category : #accessing }

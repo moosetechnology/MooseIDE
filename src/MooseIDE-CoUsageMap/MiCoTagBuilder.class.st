@@ -36,7 +36,7 @@ MiCoTagBuilder >> conflictTag [
 ]
 
 { #category : #accessing }
-MiCoTagBuilder >> conflictTag: aMiCoTag [ 
+MiCoTagBuilder >> conflictTag: aMiCoTag [
 	conflictTag := aMiCoTag
 ]
 
@@ -162,18 +162,6 @@ MiCoTagBuilder >> tagNamed: aString [
 	^ self tags detect: [ :tag | tag name = aString ] ifNone: [ nil ]
 ]
 
-{ #category : #'public - moose' }
-MiCoTagBuilder >> tagNeedWorkFrom: aMooseModel [
-	| name cls |
-	cls := MiCoUsageMapSettings.
-	name := cls tagNeedWorkName.
-	
-	^ [ aMooseModel findTagNamed: name ]
-		on: NotFound
-		do: [ (aMooseModel createTagNamed: name)
-			color: cls tagNeedWorkColor ]
-]
-
 { #category : #hooks }
 MiCoTagBuilder >> tagShapeFor: aMiCoTag [ 
 	| label box check shape |
@@ -205,19 +193,6 @@ MiCoTagBuilder >> tagShapeFor: aMiCoTag [
 { #category : #accessing }
 MiCoTagBuilder >> tags [
 	^ tags
-]
-
-{ #category : #'public - moose' }
-MiCoTagBuilder >> tagsFromMooseModel: aMooseModel [
-	| ctag group |
-	aMooseModel ifNil: [ ^ self ].
-	self removeOldLegend.
-	ctag := self tagNeedWorkFrom: aMooseModel.
-	group := aMooseModel allTags sorted: [ :a :b | a name < b name ].
-	self conflictTag: ctag asMiCoTag.
-	group 
-		reject: [ :tag | tag = ctag ] 
-		thenDo: [ :tag | self addTag: tag asMiCoTag ].
 ]
 
 { #category : #events }
