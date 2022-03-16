@@ -15,6 +15,11 @@ MiCoMethod >> addAttribute: aMiCoAttribute [
 	usedAttributes add: aMiCoAttribute
 ]
 
+{ #category : #accessing }
+MiCoMethod >> children [
+	^ usedAttributes 
+]
+
 { #category : #'building - menus' }
 MiCoMethod >> conflictTagSubMenuWith: aMiCoMarkManager [
 	| subMenu conflictTag |

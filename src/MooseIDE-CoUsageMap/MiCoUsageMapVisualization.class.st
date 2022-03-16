@@ -12,7 +12,6 @@ Class {
 
 { #category : #brokerage }
 MiCoUsageMapVisualization >> consume: anItem [
-	anItem class name traceCr.
 	anItem class = FamixTag
 		ifTrue: [ self consumeTag: anItem ]
 		ifFalse: [ self consumeTagAssociation: anItem ]

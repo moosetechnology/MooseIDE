@@ -114,8 +114,8 @@ MiCoUsageMapBuilder >> defaultMaxLabelWidth [
 MiCoUsageMapBuilder >> defaultSortBlock [
 	^ [ :met1 :met2 | 
 		| size1 size2 |
-		size1 := met1 usedAttributes size.
-		size2 := met2 usedAttributes size.
+		size1 := met1 children size.
+		size2 := met2 children size.
 		size1 = size2 
 			ifTrue: [ met1 name < met2 name ]
 			ifFalse: [ size1 > size2 ]
@@ -214,28 +214,10 @@ MiCoUsageMapBuilder >> initializeShapes [
 ]
 
 { #category : #initialization }
-MiCoUsageMapBuilder >> initializeSort [
-	| block |
-	[ miMethods sort: MiCoUsageMapSettings outerBoxSortBlockCompiled ]
-	onErrorDo: [ :ex | miMethods sort: self defaultSortBlock ].
-	
-	block := MiCoUsageMapSettings innerBoxSortBlockCompiled.
-	miMethods do: [ :met |
-		[ met usedAttributes sort: block ]
-		onErrorDo: [ :ex |
-			block := self defaultInnerSortBlock.
-			met usedAttributes sort: block ]
-	]
-]
-
-{ #category : #initialization }
 MiCoUsageMapBuilder >> initializeValues [
 	self
 		initializeMethods;
-		initializeReferences;
-		initializeSort.
-	
-	
+		initializeReferences
 ]
 
 { #category : #update }
@@ -399,6 +381,7 @@ MiCoUsageMapBuilder >> renderIn: aCanvas [
 	
 	shapes := self miMethods collect: [ :met | self methodShapeFor: met ].
 	aCanvas addAll: shapes.
+	self sortShapes.
 	self applyLayout.
 	self legendTag
 		container: aCanvas;
@@ -440,7 +423,6 @@ MiCoUsageMapBuilder >> sortShapes [
 	| block children tBlock |
 	block := MiCoUsageMapSettings outerBoxSortBlockCompiled.
 	tBlock := [ :a :b | block value: a model value: b model ].
-	
 	children := self canvas children.
 	[ children sort: tBlock ]
 	onErrorDo: [ :ex | 
@@ -453,7 +435,7 @@ MiCoUsageMapBuilder >> sortShapes [
 		onErrorDo: [ :ex | 
 			block := self defaultInnerSortBlock.
 			node attributeShapes sort: tBlock ]
-	].
+	]
 
 ]
 
@@ -477,6 +459,7 @@ MiCoUsageMapBuilder >> updateChildren [
 	self initializeValues.
 	shapes := self miMethods collect: [ :met | self methodShapeFor: met ].
 	canvas addAll: shapes.
+	self sortShapes.
 	self applyLayout.
 	canvas signalUpdate.
 ]
