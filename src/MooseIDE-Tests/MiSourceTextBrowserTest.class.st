@@ -24,13 +24,13 @@ MiSourceTextBrowserTest >> testActivateActionButtons [
 
 { #category : #tests }
 MiSourceTextBrowserTest >> testFollowEntityPassesOnToToolbar [
-	| toolbar wasCalled |
-	wasCalled := false.
-	toolbar := Mock named: 'mock toolbar'.
-	toolbar stub newEntity will: [ wasCalled := true ].
 
-	browser containedBrowser toolBarExternalEditor: toolbar.
-	
+	| wasCalled |
+	wasCalled := false.
+
+	browser containedBrowser toolBarExternalEditor stub newEntity will: [ 
+		wasCalled := true ].
+
 	browser followEntity: (FamixStClass named: 'TestClass').
 	self assert: wasCalled
 ]
