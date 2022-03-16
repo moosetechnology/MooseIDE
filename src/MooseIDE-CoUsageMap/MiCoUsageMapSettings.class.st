@@ -9,7 +9,9 @@ Class {
 		'threshold75',
 		'childrenBlockText',
 		'outerBoxSortBlockText',
-		'innerBoxSortBlockText'
+		'innerBoxSortBlockText',
+		'tagNeedWorkColor',
+		'tagNeedWorkName'
 	],
 	#category : #'MooseIDE-CoUsageMap-Model'
 }
@@ -52,6 +54,31 @@ MiCoUsageMapSettings class >> browsingSettingInnerSize: aBuilder [
 		default: self defaultInnerBoxSize;
 		range: (2 to: 50)
 
+]
+
+{ #category : #settings }
+MiCoUsageMapSettings class >> browsingSettingTagNeedWorkColor: aBuilder [
+	"<systemsettings>"
+	(aBuilder setting: #tagNeedWorkColor)
+		parent: #CoUsageMap;
+		target: self;
+		order: 11;
+		label: 'Conflict tag color';
+		description: 'It will be used as default color for conflicts in co-usage-map browser';
+		default: self defaultTagNeedWorkName
+]
+
+{ #category : #settings }
+MiCoUsageMapSettings class >> browsingSettingTagNeedWorkName: aBuilder [
+	"<systemsettings>"
+	(aBuilder setting: #tagNeedWorkName)
+		parent: #CoUsageMap;
+		target: self;
+		order: 10;
+		label: 'Conflict tag name';
+		description: 'It will be used as default name for conflicts in co-usage-map browser';
+		ghostHelp: 'tag name';
+		default: self defaultTagNeedWorkName
 ]
 
 { #category : #settings }
@@ -120,16 +147,16 @@ MiCoUsageMapSettings class >> compiledBlock: aString onError: defaultString [
 
 { #category : #'accessing - defaults' }
 MiCoUsageMapSettings class >> defaultChildrenBlockText [
-	^ '[ :node |
-"this code is for a method, but you can change it"
+	^ '[ :entity |
+"this code is for entity method, but you can change it"
 | bag |
-bag := Bag withAll: (node accesses 
+bag := Bag withAll: (entity accesses 
 	select: [ :slotLink | slotLink variable isAttribute ]
 	thenCollect: [ :slotLink | slotLink variable ]).
-"you should return a list of associations
+"you should return a Bag
 key = inner object, in this case the inner Attribute
 value = number of uses of key"
-bag valuesAndCounts associations ]'
+bag ]'
 ]
 
 { #category : #'accessing - defaults' }
@@ -139,18 +166,29 @@ MiCoUsageMapSettings class >> defaultInnerBoxSize [
 
 { #category : #'accessing - defaults' }
 MiCoUsageMapSettings class >> defaultInnerBoxSortBlockText [
-	^ '[:a :b | a name < b name ]'
+	^ '[:entityA :entityB | entityA name < entityB name ]'
 ]
 
 { #category : #'accessing - defaults' }
 MiCoUsageMapSettings class >> defaultOuterBoxSortBlockText [
-	^ '[:a :b |
-| s1 s2| 
-s1 := a usedAttributes size.
-s2 := b usedAttributes size.
-s1 = s2
-	ifTrue: [a name < b name ]
-	ifFalse: [ s1 > s2] ]'
+	^ '[:containerA :containerB |
+"containers are MiCoMethod instances"
+| sizeA sizeB |
+sizeA := containerA children size.
+sizeB := containerB children size.
+sizeA = sizeB
+	ifTrue: [ containerA name < containerB name ]
+	ifFalse: [ sizeA > sizeB ] ]'
+]
+
+{ #category : #'accessing - defaults' }
+MiCoUsageMapSettings class >> defaultTagNeedWorkColor [
+	^ MDLColor red
+]
+
+{ #category : #'accessing - defaults' }
+MiCoUsageMapSettings class >> defaultTagNeedWorkName [
+	^ 'Need work'
 ]
 
 { #category : #'accessing - defaults' }
@@ -217,6 +255,26 @@ MiCoUsageMapSettings class >> reset [
 MiCoUsageMapSettings class >> resetText [
 	<script>
 	childrenBlockText := outerBoxSortBlockText := innerBoxSortBlockText := nil
+]
+
+{ #category : #accessing }
+MiCoUsageMapSettings class >> tagNeedWorkColor [
+	^ tagNeedWorkColor ifNil: [ self defaultTagNeedWorkColor ]
+]
+
+{ #category : #accessing }
+MiCoUsageMapSettings class >> tagNeedWorkColor: aColor [
+	tagNeedWorkColor := MDLColor r: aColor red g: aColor green b: aColor blue alpha: aColor alpha
+]
+
+{ #category : #accessing }
+MiCoUsageMapSettings class >> tagNeedWorkName [
+	^ tagNeedWorkName ifNil: [ self defaultTagNeedWorkName ]
+]
+
+{ #category : #accessing }
+MiCoUsageMapSettings class >> tagNeedWorkName: aString [
+	tagNeedWorkName := aString
 ]
 
 { #category : #accessing }

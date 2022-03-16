@@ -22,7 +22,7 @@ MiCoUsageMapSettingsPresenter class >> defaultLayout [
 		add: 'Children block:' asPresenter expand: false;
 		add: #childrenTextInput;
 		add: 'Outer box sort block:' asPresenter expand: false;
-		add: #sortOuterBoxTextInput height: 150;
+		add: #sortOuterBoxTextInput height: 170;
 		add: 'Inner box sort block:' asPresenter expand: false;
 		add: #sortInnerBoxTextInput height: 50;
 		add: (SpBoxLayout newLeftToRight
