@@ -9,7 +9,6 @@ Class {
 		'layoutWithMenu',
 		'layoutWithoutMenu',
 		'settings',
-		'settingsToggle',
 		'tagCreateForm'
 	],
 	#category : #'MooseIDE-Dependency-HierarchicalMap'
@@ -66,14 +65,6 @@ MiHierarchicalMapBrowser >> addDynamicTags: aCollection [
 ]
 
 { #category : #initialization }
-MiHierarchicalMapBrowser >> addmenuButtonToCanvas [
-
-	self canvas addShape: settingsToggle.
-	settingsToggle setAsFixed.
-	settingsToggle translateTopLeftTo: 5 @ 0.
-]
-
-{ #category : #initialization }
 MiHierarchicalMapBrowser >> browserClosed [
 
 	super browserClosed.
@@ -108,40 +99,40 @@ MiHierarchicalMapBrowser >> closeTagCreationForm [
 { #category : #brokerage }
 MiHierarchicalMapBrowser >> consume: aTag [
 
-	tagCreateForm setTags
+	settings setTags
 ]
 
 { #category : #actions }
 MiHierarchicalMapBrowser >> followEntity: anEntity [
 
 	model entities: anEntity asMooseGroup.
-	self showMenu
+	settings updateSettings
+]
+
+{ #category : #testing }
+MiHierarchicalMapBrowser >> hasSettings [
+
+	^ true
 ]
 
 { #category : #actions }
 MiHierarchicalMapBrowser >> hideMenu [
 
-	settingsToggle text: '> Show settings'.
-	settingsToggle translateTopLeftTo: 5 @ 0.
-	self layout remove: settings.
-	self update
+	self layout child: visualization
 ]
 
 { #category : #initialization }
 MiHierarchicalMapBrowser >> initialize [
 
 	super initialize.
-	application registerConsumer: self for: MiDynamicTag.
+	application registerConsumer: self for: FamixTag.
 	application registerConsumer: settings for: FQAbstractQuery
 ]
 
 { #category : #initialization }
 MiHierarchicalMapBrowser >> initializeLayout [
 
-	self layout: (SpBoxLayout newLeftToRight
-			 spacing: 3;
-			 add: visualization;
-			 yourself)
+	self layout: (SpScrollableLayout with: visualization)
 ]
 
 { #category : #initialization }
@@ -149,8 +140,8 @@ MiHierarchicalMapBrowser >> initializePresenters [
 
 	visualization := self class mapClass owner: self.
 	settings := MiHierarchicalMapSettings owner: self.
-	settingsToggle := RSLabel new when: RSMouseClick do: [ self toggleMenu ].
-	tagCreateForm := MiDynamicTagCreationForm owner: self.
+	settings setTags.
+	tagCreateForm := MiDynamicTagSelectionForm owner: self.
 	self initializeLayout
 ]
 
@@ -177,20 +168,19 @@ MiHierarchicalMapBrowser >> remove: aTag [
 { #category : #accessing }
 MiHierarchicalMapBrowser >> settings [
 
+	self showMenu
+]
+
+{ #category : #accessing }
+MiHierarchicalMapBrowser >> settingsPresenter [
+
 	^ settings
 ]
 
 { #category : #actions }
 MiHierarchicalMapBrowser >> showMenu [
 
-	settingsToggle text: '< Hide settings'.
-	settingsToggle translateTopLeftTo: 5 @ 0.
-	self layout
-		removeAll;
-		add: settings width: self class windowSize x / 3;
-		add: visualization.
-
-	self update
+	self layout child: settings
 ]
 
 { #category : #actions }

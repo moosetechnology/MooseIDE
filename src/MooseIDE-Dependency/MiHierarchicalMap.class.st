@@ -13,6 +13,12 @@ Class {
 	#category : #'MooseIDE-Dependency-HierarchicalMap'
 }
 
+{ #category : #accessing }
+MiHierarchicalMap >> builder [
+
+	^ builder
+]
+
 { #category : #highlighting }
 MiHierarchicalMap >> highlightShapes [
 	
@@ -31,4 +37,10 @@ MiHierarchicalMap >> run [
 	self canvas
 		zoomToFit;
 		zoomToFit
+]
+
+{ #category : #updating }
+MiHierarchicalMap >> update [
+
+	builder ifNil: [ self run ] ifNotNil: [ builder build ]
 ]
