@@ -23,7 +23,7 @@ Class {
 MiHierarchicalMapBuilder >> addTags [
 
 	rootNode addAll: (mapModel tags collect: [ :e | 
-					             self buildNodeFromEntity: e ])
+					             self buildNodeFromTag: e ])
 ]
 
 { #category : #'public - hooks' }
@@ -55,11 +55,11 @@ MiHierarchicalMapBuilder >> build [
 			            (self elements collect: [ :e | 
 					             self buildNodeFromEntity: e ]);
 		            yourself.
-	
+	self addTags.
 	self buildLegend.
 	super build.
 	self updateWithModelSettings.
-	self addTags.
+	
 ]
 
 { #category : #accessing }
@@ -144,7 +144,7 @@ MiHierarchicalMapBuilder >> buildLegend [
 	| legend |
 	legend := RSLegend new
 		          container: self canvas;
-		          title: 'Dynamic tags';
+		          title: 'Links';
 		          onDemand: 'Legend';
 		          legendDo: [ :l | 
 			          l
@@ -176,6 +176,16 @@ MiHierarchicalMapBuilder >> buildNodeFromEntity: anEntity [
 	^ node
 ]
 
+{ #category : #building }
+MiHierarchicalMapBuilder >> buildNodeFromTag: aTag [
+
+	^ HNode new
+		  name: (String streamContents: [ :s | aTag displayStringOn: s ]);
+		  rawModel: aTag;
+		  color: aTag color;
+		  yourself
+]
+
 { #category : #accessing }
 MiHierarchicalMapBuilder >> childrenBlock [
 
@@ -185,7 +195,7 @@ MiHierarchicalMapBuilder >> childrenBlock [
 { #category : #accessing }
 MiHierarchicalMapBuilder >> colorFor: node [
 
-	^ mapModel colorFor: node rawModel
+	^ node color ifNil: [ Color gray ] ifNotNil: [ :e | e ]
 ]
 
 { #category : #accessing }
@@ -248,7 +258,9 @@ MiHierarchicalMapBuilder >> setDependencies [
 MiHierarchicalMapBuilder >> setDependenciesFor: aNode [
 
 	| incoming |
-
+	aNode rawModel class == FamixTag ifTrue: [ 
+		self setDependenciesForTag: aNode.
+		^ self ].
 	aNode children do: [ :child | self setDependenciesFor: child ].
 	aNode == rootNode ifTrue: [ ^ self ].
 	incoming := aNode rawModel queryAllLocal: #in.
@@ -258,6 +270,14 @@ MiHierarchicalMapBuilder >> setDependenciesFor: aNode [
 			(mapModel associationTypes anySatisfy: [ :t | 
 				 e class traits anySatisfy: [ :tr | tr = t ] ]) ifTrue: [ 
 				hNode dependencyTo: aNode ] ] ]
+]
+
+{ #category : #building }
+MiHierarchicalMapBuilder >> setDependenciesForTag: aTagNode [
+
+	aTagNode rawModel taggedEntities do: [ :e | 
+		(nodeMooseIDDict at: e mooseID ifAbsent: [ nil ]) ifNotNil: [ :hNode | 
+			aTagNode dependencyTo: hNode ] ]
 ]
 
 { #category : #accessing }
@@ -290,8 +310,7 @@ MiHierarchicalMapBuilder >> updateWithModelSettings [
 	mapModel showAllLinks
 		ifFalse: [ rootNode hideAllLinks ]
 		ifTrue: [ rootNode showAllLinks ].
-	self rebuildLines: self canvas.
-	self addTags
+	self rebuildLines: self canvas
 ]
 
 { #category : #accessing }

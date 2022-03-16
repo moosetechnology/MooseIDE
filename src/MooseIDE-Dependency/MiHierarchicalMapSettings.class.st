@@ -147,7 +147,8 @@ MiHierarchicalMapSettings >> submit [
 MiHierarchicalMapSettings >> updateSettings [
 
 	| mooseGroup |
-	mooseGroup := self model entities asMooseGroup.
+	mooseGroup := self model entities asMooseGroup allUsing: TEntityMetaLevelDependency.
+	mooseGroup ifEmpty: [ ^self ].
 	associationList
 		items: (mooseGroup allEntityTypes flatCollectAsSet: [ :class | 
 					 class allIncomingAssociationTypesIn: mooseGroup metamodel ])

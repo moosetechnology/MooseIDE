@@ -101,6 +101,5 @@ MiDistributionMapSettings >> submit [
 	childrenQueryDropList selectedItem ifNil: [ ^self ].
 	ow := self owner.
 	self fillModelWithCurrentSettings.
-	ow visualization run.
-	ow addmenuButtonToCanvas
+	ow visualization run
 ]

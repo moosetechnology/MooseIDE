@@ -25,3 +25,9 @@ MiDMBrowserTest >> testIsConsumerOfMiDynamicTag [
 		((browser application consumersOf: MiDynamicTag) anySatisfy: [ 
 			 :elt | elt = browser ])
 ]
+
+{ #category : #tests }
+MiDMBrowserTest >> testSettingsAction [
+
+	self assert: browser hasSettings
+]

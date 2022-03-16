@@ -9,9 +9,7 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'entities',
-		'dynamicTags',
 		'childrenBlock',
-		'colorScale',
 		'childrenQuery',
 		'showAllLinks',
 		'associationTypes',
@@ -48,19 +46,6 @@ MiHierarchicalMapModel class >> defaultDynamicTags [
 	^ { 
 		  self defaultDynamicTagIsStub .
 		  self defaultDynamicTagIsDead }
-]
-
-{ #category : #adding }
-MiHierarchicalMapModel >> addDynamicTag: aTag [
-
-	(dynamicTags includes: aTag) ifTrue: [ ^ self ].
-	dynamicTags add: aTag
-]
-
-{ #category : #adding }
-MiHierarchicalMapModel >> addDynamicTags: aCollection [
-
-	dynamicTags addAll: aCollection
 ]
 
 { #category : #accessing }
@@ -117,41 +102,10 @@ MiHierarchicalMapModel >> childrenQuery: anObject [
 	childrenQuery := anObject
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #private }
 MiHierarchicalMapModel >> colorFor: anEntity [
-	
-	| dt |
-	dt :=  (self dynamicTagFor: anEntity).
-	^ self colorForDynamicTag:  dt
-]
 
-{ #category : #'as yet unclassified' }
-MiHierarchicalMapModel >> colorForDynamicTag: aDynamicTag [
-
-	self flag:
-		'Model should have a color map and automatically handle colors.'.
-	aDynamicTag color ifNotNil: [ :color | ^ color ].
-	^ colorScale scale: aDynamicTag name
-]
-
-{ #category : #'as yet unclassified' }
-MiHierarchicalMapModel >> dynamicTagFor: anEntity [
-
-	^ self dynamicTags
-		  detect: [ :dt | dt isApplicableTo: anEntity ]
-		  ifNone: [ MiNullDynamicTag new ]
-]
-
-{ #category : #accessing }
-MiHierarchicalMapModel >> dynamicTags [
-
-	^ dynamicTags
-]
-
-{ #category : #accessing }
-MiHierarchicalMapModel >> dynamicTags: anObject [
-
-	dynamicTags := anObject
+	^ Color gray
 ]
 
 { #category : #accessing }
@@ -167,42 +121,13 @@ MiHierarchicalMapModel >> entities: anObject [
 ]
 
 { #category : #accessing }
-MiHierarchicalMapModel >> indexOfDynamicTagFor: anEntity [
-
-	dynamicTags doWithIndex: [ :dt :i | 
-		(dt isApplicableTo: anEntity) ifTrue: [ ^ i ] ].
-	^ 0
-]
-
-{ #category : #accessing }
 MiHierarchicalMapModel >> initialize [
 
 	super initialize.
 	showAllLinks := false.
 	colorPalette := (RSQualitativeColorPalette new paired12) range asOrderedCollection.
 	associationTypes := OrderedCollection new.
-	tags := OrderedCollection new.
-	dynamicTags := OrderedCollection new.
-	colorScale := RSQualitativeColorPalette new set312
-]
-
-{ #category : #'as yet unclassified' }
-MiHierarchicalMapModel >> numberOfchildrenWithProperty: aProp forNode: node [
-	
-	^ (childrenQuery runOn: node asMooseGroup) count: [ :child  |  aProp isApplicableTo: child]
-]
-
-{ #category : #'as yet unclassified' }
-MiHierarchicalMapModel >> orderOuterNodes: aCollectionOfNodes [ 
-	| engine partVectors |
-	aCollectionOfNodes ifEmpty: [^#()].
-
-	partVectors :=  aCollectionOfNodes asOrderedCollection collect: [:node |
-		MalSimilarityItem with: node
-			andAll: (dynamicTags collect: [:aProp | self numberOfchildrenWithProperty: aProp forNode: node]) ].
-	engine := MalClusterEngine with: partVectors.
-	engine hierarchicalClusteringUsing: #completeLinkage.
-	^ engine dendrogram orderLeafs collect: #item.
+	tags := OrderedCollection new
 ]
 
 { #category : #accessing }

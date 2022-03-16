@@ -8,7 +8,10 @@ I am responsible for :
 "
 Class {
 	#name : #MiDistributionMapBuilder,
-	#superclass : #MiHierarchicalMapBuilder,
+	#superclass : #HSimpleVisualizationBuilder,
+	#instVars : [
+		'mapModel'
+	],
 	#category : #'MooseIDE-Dependency-DistributionMap'
 }
 
@@ -128,6 +131,27 @@ MiDistributionMapBuilder >> buildCompositeFullNodeIn: shape [
 ]
 
 { #category : #building }
+MiDistributionMapBuilder >> buildLegend [
+
+	| legend |
+	legend := RSLegend new
+		          container: self canvas;
+		          title: 'Dynamic tags';
+		          onDemand: 'Legend';
+		          legendDo: [ :l | 
+			          l
+				          border: RSBorder new;
+				          color: Color white;
+				          padding: 10 ];
+		          yourself.
+	mapModel dynamicTags do: [ :dt | 
+		legend
+			text: dt name
+			withBoxColor: (self mapModel colorForDynamicTag: dt) ].
+	legend build
+]
+
+{ #category : #building }
 MiDistributionMapBuilder >> buildNodeFromEntity: anEntity [
 	
 	^ HNode new
@@ -169,6 +193,12 @@ MiDistributionMapBuilder >> elementWidth [
 	^ 10
 ]
 
+{ #category : #accessing }
+MiDistributionMapBuilder >> elements [
+
+	^ mapModel entities
+]
+
 { #category : #hooks }
 MiDistributionMapBuilder >> emptyBoxExtent [
 
@@ -181,6 +211,18 @@ MiDistributionMapBuilder >> layoutOn: aGroupOfShapes parent: shape [
 	self relayout: aGroupOfShapes parent: shape.
 	
 	
+]
+
+{ #category : #accessing }
+MiDistributionMapBuilder >> mapModel [
+
+	^ mapModel
+]
+
+{ #category : #accessing }
+MiDistributionMapBuilder >> mapModel: anObject [
+
+	mapModel := anObject
 ]
 
 { #category : #accessing }

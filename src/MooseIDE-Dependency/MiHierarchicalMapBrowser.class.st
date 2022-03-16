@@ -141,7 +141,7 @@ MiHierarchicalMapBrowser >> initializePresenters [
 	visualization := self class mapClass owner: self.
 	settings := MiHierarchicalMapSettings owner: self.
 	settings setTags.
-	tagCreateForm := MiDynamicTagCreationForm owner: self.
+	tagCreateForm := MiDynamicTagSelectionForm owner: self.
 	self initializeLayout
 ]
 
@@ -174,7 +174,7 @@ MiHierarchicalMapBrowser >> settings [
 { #category : #accessing }
 MiHierarchicalMapBrowser >> settingsPresenter [
 
-	
+	^ settings
 ]
 
 { #category : #actions }
