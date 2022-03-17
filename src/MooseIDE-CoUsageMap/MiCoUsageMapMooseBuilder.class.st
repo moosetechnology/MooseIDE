@@ -5,7 +5,8 @@ Class {
 	#name : #MiCoUsageMapMooseBuilder,
 	#superclass : #MiCoUsageMapBuilder,
 	#instVars : [
-		'application'
+		'application',
+		'visualization'
 	],
 	#category : #'MooseIDE-CoUsageMap-Browser'
 }
@@ -55,4 +56,20 @@ MiCoUsageMapMooseBuilder >> newMethodFor: anObject [
 		tag: tags;
 		application: self application;
 		yourself
+]
+
+{ #category : #update }
+MiCoUsageMapMooseBuilder >> updateLegend [
+	visualization ifNil: [ ^ self ].
+	visualization updateLegend
+]
+
+{ #category : #accessing }
+MiCoUsageMapMooseBuilder >> visualization [
+	^ visualization
+]
+
+{ #category : #accessing }
+MiCoUsageMapMooseBuilder >> visualization: aMiCoUsageMapVisualization [
+	visualization := aMiCoUsageMapVisualization
 ]
