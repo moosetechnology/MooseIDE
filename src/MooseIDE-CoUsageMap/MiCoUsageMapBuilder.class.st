@@ -65,6 +65,11 @@ MiCoUsageMapBuilder >> canvasController [
 	^ RSCanvasController simple
 ]
 
+{ #category : #accessing }
+MiCoUsageMapBuilder >> conflictTag [
+	^ self legendTag conflictTag
+]
+
 { #category : #'popup - hooks' }
 MiCoUsageMapBuilder >> createAttributeTextMorphFor: att method: met [
 	^ (att asStringForMethod: met) asTextMorph
@@ -375,6 +380,12 @@ MiCoUsageMapBuilder >> open [
 		yourself 
 ]
 
+{ #category : #dependencies }
+MiCoUsageMapBuilder >> release [
+	super release.
+	self class instVarNames do: [ :n | self instVarNamed: n put: nil ]
+]
+
 { #category : #hooks }
 MiCoUsageMapBuilder >> renderIn: aCanvas [
 	self initializeValues.
@@ -462,6 +473,10 @@ MiCoUsageMapBuilder >> updateChildren [
 	self sortShapes.
 	self applyLayout.
 	canvas signalUpdate.
+]
+
+{ #category : #update }
+MiCoUsageMapBuilder >> updateLegend [
 ]
 
 { #category : #update }

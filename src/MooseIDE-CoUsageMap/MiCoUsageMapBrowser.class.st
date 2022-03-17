@@ -90,6 +90,7 @@ MiCoUsageMapBrowser >> hasSettings [
 MiCoUsageMapBrowser >> initializePresenters [
 	coUsageMap := self instantiate: MiCoUsageMapVisualization.
 	application registerConsumer: coUsageMap for: FamixTag.
+	application registerProducer: coUsageMap for: FamixTag.
 	application registerConsumer: coUsageMap for: FamixTagAssociation.
 	application registerProducer: coUsageMap for: FamixTagAssociation.
 ]
@@ -97,6 +98,11 @@ MiCoUsageMapBrowser >> initializePresenters [
 { #category : #actions }
 MiCoUsageMapBrowser >> miSelectedItem [
 	^ collectionModel
+]
+
+{ #category : #dependencies }
+MiCoUsageMapBrowser >> release [
+	self class instVarNames do: [ :n | self instVarNamed: n put: nil ]
 ]
 
 { #category : #actions }
