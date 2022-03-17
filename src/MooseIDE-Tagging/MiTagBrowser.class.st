@@ -185,9 +185,10 @@ MiTagBrowser >> editCurrentTag: name description: description color: color categ
 { #category : #actions }
 MiTagBrowser >> followEntity: anEntity [
 
-	tagModel entities: (anEntity isCollection
-			 ifTrue: [ anEntity ]
-			 ifFalse: [ anEntity asMooseGroup ]).
+	tagModel entities: anEntity asMooseGroup.
+	tagModel mooseModel
+		ifNil: [ self showNoMooseModel ]
+		ifNotNil: [ self closeTagCreationForm ].
 	tagManagementPage refresh
 ]
 
@@ -204,7 +205,10 @@ MiTagBrowser >> initialize [
 { #category : #initialization }
 MiTagBrowser >> initializeLayout [
 
-	self layout: (SpScrollableLayout with: tagManagementPage )
+	self layout: (SpScrollableLayout with: tagManagementPage).
+	"At start browser has no moose model"
+	self showNoMooseModel
+	
 ]
 
 { #category : #initialization }
@@ -275,6 +279,26 @@ MiTagBrowser >> setModelBeforeInitialization: aTagModel [
 MiTagBrowser >> setTagTo: aTag [
 
 	self tagModel currentTag: aTag.
+]
+
+{ #category : #actions }
+MiTagBrowser >> settings [
+	
+]
+
+{ #category : #initialization }
+MiTagBrowser >> showNoMooseModel [
+
+	self layout child: (SpPresenter new
+			 layout: (SpBoxLayout newTopToBottom
+					  vAlignCenter;
+					  hAlignCenter;
+					  add: 'No available moose model in selected buses.' asPresenter;
+					  add:
+						  'Propagate entities or moose model on selected buses.'
+							  asPresenter;
+					  yourself);
+			 yourself)
 ]
 
 { #category : #accessing }
