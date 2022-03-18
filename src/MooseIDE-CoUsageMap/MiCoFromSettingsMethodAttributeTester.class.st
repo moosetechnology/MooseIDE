@@ -9,8 +9,7 @@ Class {
 }
 
 { #category : #public }
-MiCoFromSettingsMethodAttributeTester >> associationsListIn: aMiCoMethod [
-	^ [ (MiCoUsageMapSettings childrenBlockCompiled 
-		value: aMiCoMethod rawObject) valuesAndCounts associations ]
+MiCoFromSettingsMethodAttributeTester >> allAttributesFor: aMiCoMethod [
+	^ [ MiCoUsageMapSettings childrenBlockCompiled value: aMiCoMethod rawObject ]
 	onErrorDo: [ :ex | ex traceCr. #() ].
 ]
