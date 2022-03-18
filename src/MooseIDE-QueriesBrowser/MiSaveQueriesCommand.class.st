@@ -67,8 +67,13 @@ MiSaveQueriesCommand >> copyQueriesReferencesOf: queries [
 MiSaveQueriesCommand >> createFile: fileName [
 
 	| file |
-	file := (self class path , fileName , '.ston') asFileReference.
+	file := UIManager default
+		        chooseForSaveFileReference: 'Choose directory'
+		        extensions: #( 'ston' )
+		        path: (self class path , fileName , '.ston') asFileReference.
+
 	file ensureCreateFile.
+
 	^ file
 ]
 
@@ -80,15 +85,18 @@ MiSaveQueriesCommand >> execute [
 		            request: 'Name of the file: '
 		            initialAnswer: ''.
 	"If the user pressed the cancel button"
-	(fileName isNil or: [ fileName isEmpty ]) ifTrue: [ 
+	fileName ifNil: [ ^ self ].
+
+	"If user did not provide any file name"
+	fileName ifEmpty: [ 
 		UIManager inform: 'You need to specify a name for the file.'.
 		^ self ].
 
 	[ :job | 
-		job title: 'Saving queries on disk'.
-		file := self createFile: fileName.
-		self write: self queriesToStore toFile: file.
-		self triggerAfterCreationAction ] asJob run
+	job title: 'Saving queries on disk'.
+	file := self createFile: fileName.
+	self write: self queriesToStore toFile: file.
+	self triggerAfterCreationAction ] asJob run
 ]
 
 { #category : #initialization }
