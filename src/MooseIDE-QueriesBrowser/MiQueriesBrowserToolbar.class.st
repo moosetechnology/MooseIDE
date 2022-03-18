@@ -19,31 +19,26 @@ Class {
 { #category : #actions }
 MiQueriesBrowserToolbar >> constructQueriesWithFile: aFile [
 
-	| newQueries loadedQueries |
-	
-	[ queryListPresenter enableProgressNotification ] asJob run.
-	
+	| newQueries |
 	aFile readStreamDo: [ :stream | 
 		newQueries := STON fromStream: stream ].
 
 	"Put the root query as the parent for the first level unary queries"
 	newQueries do: [ :each | 
-		each parent ifNil: [ 
+		each parent ifNil: [ "This works only for subclasses of FQUnaryQuery: " 
 			each parent: queryListPresenter queriesBrowser rootQuery ] ].
 
-	loadedQueries := newQueries collect: [ :each | 
-		| newPresenter|
-		newPresenter := each parent
-			ifNil: [
-				queryListPresenter createNewQueryPresenter: queryListPresenter queriesBrowser rootQuery ]
-			ifNotNil: [ queryListPresenter createNewQueryPresenter: each parent ].
-		newPresenter configureFor: each ].
-	
-	queryListPresenter queryItemsPresenters addAll: loadedQueries.
+	newQueries do: [ :each | 
+		| newPresenter |
+		newPresenter := queryListPresenter createNewQueryPresenter:
+			                (each parent
+				                 ifNil: [ 
+				                 queryListPresenter queriesBrowser rootQuery ]
+				                 ifNotNil: [ each parent ]).
+		newPresenter configureFor: each.
+		queryListPresenter queryItemsPresenters add: newPresenter ].
 
-	queryListPresenter updateComponentList.
-	
-	queryListPresenter disableProgressNotification
+	queryListPresenter updateComponentList
 ]
 
 { #category : #initialization }
@@ -99,6 +94,7 @@ MiQueriesBrowserToolbar >> initializeLoadQueries [
 
 	loadQueriesList := self instantiate: LoadQueriesPresenter.
 	loadQueriesList okAction: [ 
+		loadQueriesList owner dismiss.
 		self constructQueriesWithFile: loadQueriesList selectedFile ]
 ]
 
