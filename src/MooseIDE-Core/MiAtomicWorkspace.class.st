@@ -84,6 +84,12 @@ MiAtomicWorkspace >> install: aMiBrowser inContainer: aMiDropInContainer [
 ]
 
 { #category : #accessing }
+MiAtomicWorkspace >> miSelectedItem [
+
+	^ self containedBrowser miSelectedItem
+]
+
+{ #category : #accessing }
 MiAtomicWorkspace >> model [
 
 	^ self containedBrowser model

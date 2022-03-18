@@ -8,7 +8,7 @@ Shows entities in a MooseModel grouped by entity type.
 "
 Class {
 	#name : #MiMooseModelBrowser,
-	#superclass : #MiAbstractBrowser,
+	#superclass : #MiAbstractBrowser2,
 	#instVars : [
 		'modelPresenter',
 		'searchField'
@@ -75,25 +75,27 @@ MiMooseModelBrowser >> canFollowEntity: anEntity [
 
 { #category : #initialization }
 MiMooseModelBrowser >> childrenOf: class [
+
 	^ class isFM3Class
-		ifTrue: [ class implementingClass isTrait
-				ifTrue: [ {} ]
-				ifFalse: [ (model model allWithSubTypesOf: class implementingClass)
-						sorted: #name ascending ] ]
-		ifFalse: [ {} ]
+		  ifTrue: [ 
+			  class implementingClass isTrait
+				  ifTrue: [ {  } ]
+				  ifFalse: [ 
+					  (model model allWithSubTypesOf: class implementingClass) 
+						  sorted: #name ascending ] ]
+		  ifFalse: [ {  } ]
 ]
 
 { #category : #initialization }
 MiMooseModelBrowser >> computeModelPresenterRoot [
-	model model ifNil: [ ^self ].
 
-	modelPresenter
-		roots:
-			((model model metamodel classes
-				reject: [ :a | 
-					a implementingClass isTrait
-						or: [ (model model allWithSubTypesOf: a implementingClass) isEmpty ] ])
-				sorted: #name ascending)
+	model model ifNil: [ ^ self ].
+
+	modelPresenter roots:
+		((model model metamodel classes reject: [ :a | 
+			  a implementingClass isTrait or: [ 
+				  (model model allWithSubTypesOf: a implementingClass) isEmpty ] ]) 
+			 sorted: #name ascending)
 ]
 
 { #category : #actions }
@@ -155,17 +157,14 @@ MiMooseModelBrowser >> miSelectedItem [
 
 { #category : #accessing }
 MiMooseModelBrowser >> modelPresenter [
+
 	^ modelPresenter
 ]
 
 { #category : #accessing }
 MiMooseModelBrowser >> selected [
-	^ model selected
-]
 
-{ #category : #accessing }
-MiMooseModelBrowser >> selectedObject [
-	^ modelPresenter selection selectedItem
+	^ model selected
 ]
 
 { #category : #actions }
@@ -181,17 +180,18 @@ MiMooseModelBrowser >> selectionAction: selectedItem [
 
 	model selected: entities mooseInterestingEntity.
 
-	self buses do: [ :bus | bus globallySelect: model selected ]
+	self sendEntitiesToPrivateBus
 ]
 
 { #category : #initialization }
 MiMooseModelBrowser >> setModelPresenterSelection [
+
 	modelPresenter selectItem: modelPresenter roots first
 ]
 
 { #category : #actions }
 MiMooseModelBrowser >> updateWindowTitle [
-	self
-		withWindowDo:
-			[ :window | window title: self class title , ' (' , model model name , ')' ]
+
+	self withWindowDo: [ :window | 
+		window title: self class title , ' (' , model model name , ')' ]
 ]

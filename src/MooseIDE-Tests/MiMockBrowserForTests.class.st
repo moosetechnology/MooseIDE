@@ -89,12 +89,13 @@ MiMockBrowserForTests >> followEntity: anEntity [
 
 { #category : #initialization }
 MiMockBrowserForTests >> initialize [
+
 	super initialize.
 	canFollow := false.
 	canHighlight := false.
 	canPropagate := false.
 	canReceive := false.
-	toUpdate := false.
+	toUpdate := false
 ]
 
 { #category : #accessing }

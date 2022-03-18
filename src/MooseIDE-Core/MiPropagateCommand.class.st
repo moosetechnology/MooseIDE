@@ -39,6 +39,7 @@ MiPropagateCommand >> doNotFreezeBrowser [
 
 { #category : #executing }
 MiPropagateCommand >> execute [
+
 	shouldFreezeBrowser
 		ifTrue: [ self context freezeDuring: [ self propagate ] ]
 		ifFalse: [ self propagate ]

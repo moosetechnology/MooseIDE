@@ -106,6 +106,21 @@ MiAtomicWorkspaceTest >> testPrivateBusPropagatesToContainedBrowser [
 ]
 
 { #category : #tests }
+MiAtomicWorkspaceTest >> testPropagatesPrivateBusToOutsideBus [
+
+	| bus mockEntity |
+	mockEntity := MooseEntity new.
+	bus := browser buses anyOne.
+	mockBrowser canReceive: true.
+
+	browser privateBus globallySelect: mockEntity.
+	self assert: bus mostRecentEntity isNil.
+
+	(self actionButton: MiPropagateCommand) execute.
+	self assert: bus mostRecentEntity equals: mockEntity
+]
+
+{ #category : #tests }
 MiAtomicWorkspaceTest >> testPropagatesReceivingMode [
 	{ MiHighlightCommand . MiFreezeCommand  . MiFollowCommand }
 	do: [ :mode |

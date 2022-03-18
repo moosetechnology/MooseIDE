@@ -26,7 +26,7 @@ MiUMLBrowserTest >> testActivateActionButtons [
 MiUMLBrowserTest >> testMiSelectedItem [
 
 	| entityToSelect |
-	self should: [browser miSelectedItem] raise: MiNoSelectedElementToPropagateException.
+	self assert: browser miSelectedItem isNil.
 
 	entityToSelect := FamixStClass named: 'TestClass'.
 	browser receiveEntity: entityToSelect.

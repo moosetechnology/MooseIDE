@@ -221,7 +221,7 @@ MiExportBrowser >> initializeToolbar [
 { #category : #accessing }
 MiExportBrowser >> miSelectedItem [
 
-	^ entitiesTable items
+	^ entitiesTable items mooseInterestingEntity
 ]
 
 { #category : #'columns management' }

@@ -37,9 +37,13 @@ MiMooseModelBrowserTests >> tearDown [
 
 { #category : #tests }
 MiMooseModelBrowserTests >> testActivateActionButtons [
+
 	| newModel |
-	{ MiInspectCommand . MiPropagateCommand . MiDragWindowCommand }
-	do: [ :cmdClass | self deny: (self actionButton: cmdClass) isEnabled ].
+	{ 
+		MiInspectCommand.
+		MiPropagateCommand } do: [ :cmdClass | 
+		self deny: (self actionButton: cmdClass) isEnabled ].
+	self assert: (self actionButton: MiDragWindowCommand) isEnabled.
 
 	newModel := FamixStModel new.
 	newModel addAll: { 
@@ -47,20 +51,26 @@ MiMooseModelBrowserTests >> testActivateActionButtons [
 			(FamixStClass named: 'Class2') }.
 	MooseModel root add: newModel.
 	browser receiveEntity: newModel.
-	
-	{ MiInspectCommand . MiPropagateCommand . MiDragWindowCommand }
-	do: [ :cmdClass | self deny: (self actionButton: cmdClass) isEnabled ].
 
-	browser modelPresenter clickAtPath: #( 1 ).
-	{ MiInspectCommand . MiPropagateCommand }
-	do: [ :cmdClass | self assert: (self actionButton: cmdClass) isEnabled ].
-	self deny: (self actionButton: MiDragWindowCommand) isEnabled.
+	{ 
+		MiInspectCommand.
+		MiPropagateCommand } do: [ :cmdClass | 
+		self deny: (self actionButton: cmdClass) isEnabled ].
+	self assert: (self actionButton: MiDragWindowCommand) isEnabled.
 
-	browser modelPresenter clickAtPath: #( 1 1 ).
-	{ MiInspectCommand . MiPropagateCommand }
-	do: [ :cmdClass | self assert: (self actionButton: cmdClass) isEnabled ].
-	self deny: (self actionButton: MiDragWindowCommand) isEnabled.
+	browser containedBrowser modelPresenter clickAtPath: #( 1 ).
+	{ 
+		MiInspectCommand.
+		MiPropagateCommand } do: [ :cmdClass | 
+		self assert: (self actionButton: cmdClass) isEnabled ].
+	self assert: (self actionButton: MiDragWindowCommand) isEnabled.
 
+	browser containedBrowser modelPresenter clickAtPath: #( 1 1 ).
+	{ 
+		MiInspectCommand.
+		MiPropagateCommand.
+		MiDragWindowCommand } do: [ :cmdClass | 
+		self assert: (self actionButton: cmdClass) isEnabled ]
 ]
 
 { #category : #tests }
@@ -77,12 +87,12 @@ MiMooseModelBrowserTests >> testMiSelectedItem [
 	browser followEntity: newModel.
 	self assert: browser miSelectedItem isNil.
 
-	browser modelPresenter clickAtPath: #( 1 ).
+	browser containedBrowser modelPresenter clickAtPath: #( 1 ).
 	self
 		assertCollection: browser miSelectedItem
 		hasSameElements: newModel allModelClasses.
 
-	browser modelPresenter clickAtPath: #( 1 1 ).
+	browser containedBrowser modelPresenter clickAtPath: #( 1 1 ).
 	self
 		assert: browser miSelectedItem
 		equals: (newModel allModelClasses sorted: #name ascending) first

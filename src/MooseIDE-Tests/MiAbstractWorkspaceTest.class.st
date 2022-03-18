@@ -23,6 +23,7 @@ MiAbstractWorkspaceTest >> testFollowModePropagatesOutsideBusToPrivateBus [
 
 { #category : #tests }
 MiAbstractWorkspaceTest >> testFreezeModeDoesNotPropagateOutsideBusToPrivateBus [
+
 	| bus mockEntity |
 	mockEntity := MooseEntity new.
 	bus := browser buses anyOne.
@@ -30,7 +31,7 @@ MiAbstractWorkspaceTest >> testFreezeModeDoesNotPropagateOutsideBusToPrivateBus 
 	browser containedBrowsers do: [ :each | each canReceive: true ].
 
 	bus globallySelect: mockEntity.
-	self assert: browser privateBus mostRecentEntity isNil.
+	self assert: browser privateBus mostRecentEntity isNil
 ]
 
 { #category : #tests }

@@ -125,6 +125,13 @@ MiFullWorkspace >> initializePresenters [
 	downLeft := self newContainer
 ]
 
+{ #category : #actions }
+MiFullWorkspace >> install: aMiBrowser inContainer: aMiDropInContainer [
+
+	super install: aMiBrowser inContainer: aMiDropInContainer.
+	aMiBrowser receiveFromPrivateBus: privateBus logger mostRecentEntity
+]
+
 { #category : #initialization }
 MiFullWorkspace >> newContainer [
 

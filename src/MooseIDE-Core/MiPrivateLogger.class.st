@@ -11,9 +11,10 @@ Class {
 
 { #category : #'instance creation' }
 MiPrivateLogger >> newLogFor: anEntity [
+
 	^ self mostRecentEntity == anEntity
-		ifTrue: [ self mostRecentLog ]
-		ifFalse: [
-			self clean.
-			logs addFirst: (MiSelectedEntityLog new entity: anEntity) ]
+		  ifTrue: [ self mostRecentLog ]
+		  ifFalse: [ 
+			  self clean.
+			  logs addFirst: (MiSelectedEntityLog new entity: anEntity) ]
 ]

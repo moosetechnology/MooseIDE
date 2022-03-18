@@ -41,7 +41,7 @@ MiFameBrowserTest >> testBrowserFollowsPrivatelBus [
 { #category : #tests }
 MiFameBrowserTest >> testMiSelectedItem [
 
-	self should: [browser miSelectedItem] raise: MiNoSelectedElementToPropagateException.
+	self assert: browser miSelectedItem isNil.
 
 	browser receiveEntity: entityToSelect.
 	self assert: browser miSelectedItem equals: entityToSelect

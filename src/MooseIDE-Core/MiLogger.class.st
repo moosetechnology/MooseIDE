@@ -10,6 +10,12 @@ Class {
 	#category : #'MooseIDE-Core-Logger'
 }
 
+{ #category : #'as yet unclassified' }
+MiLogger >> activateNewLogFor: anEntity in: aBus [
+
+	^ (self newLogFor: anEntity) activateIn: aBus
+]
+
 { #category : #api }
 MiLogger >> clean [
 	logs removeAll
@@ -19,14 +25,6 @@ MiLogger >> clean [
 MiLogger >> initialize [
 	super initialize.
 	logs := OrderedCollection new
-]
-
-{ #category : #accessing }
-MiLogger >> lastEntity [
-	self
-		deprecated: 'Use #mostRecentEntity instead'
-		transformWith: '`@receiver lastEntity' -> '`@receiver mostRecentEntity'.
-	^ self mostRecentEntity
 ]
 
 { #category : #accessing }

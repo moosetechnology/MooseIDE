@@ -159,8 +159,7 @@ MiAbstractBrowser2 >> followPrivateBus: aBus [
 	self privateBus = aBus ifTrue: [ ^ self ].
 
 	self privateBus: aBus.
-	aBus registerBrowser: self.
-	self receiveFromPrivateBus: aBus logger mostRecentEntity
+	aBus registerBrowser: self
 ]
 
 { #category : #actions }

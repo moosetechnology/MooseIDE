@@ -12,8 +12,15 @@ Class {
 
 { #category : #initialization }
 MiPrivateBus >> initialize [
+
 	super initialize.
 	logger := MiPrivateLogger new
+]
+
+{ #category : #accessing }
+MiPrivateBus >> logger: aPrivateLogger [
+
+	logger := aPrivateLogger
 ]
 
 { #category : #actions }

@@ -264,6 +264,14 @@ MiAbstractBrowserTest >> testHighlightEntity [
 		self assertHighlightActionFor: mooseObject ]
 ]
 
+{ #category : #tests }
+MiAbstractBrowserTest >> testPrivateBusAlwaysReceivesSomething [
+
+	self
+		shouldnt: [ browser miSelectedItem ]
+		raise: MiDesynchronizedPrivateBusException
+]
+
 { #category : #'tests - opening' }
 MiAbstractBrowserTest >> testSettingsAction [
 	"must be redefined in browsers that do have settings"

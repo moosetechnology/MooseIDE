@@ -29,8 +29,9 @@ MiBus >> browsers [
 
 { #category : #actions }
 MiBus >> globallySelect: anEntity [
-	anEntity
-		ifNotNil: [ (self logger newLogFor: anEntity) activateIn: self ]
+
+	anEntity ifNotNil: [ 
+		self logger activateNewLogFor: anEntity in: self ]
 ]
 
 { #category : #initialization }
