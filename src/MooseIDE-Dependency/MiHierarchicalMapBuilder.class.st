@@ -236,16 +236,17 @@ MiHierarchicalMapBuilder >> renderLinesIn: aCanvas [
 	super renderLinesIn: aCanvas.
 	aCanvas lines do: [ :line | 
 		| incomings |
-		incomings := line to model rawModel queryAllLocal: #in.
-		(incomings
-			 detect: [ :e | line from model rawModel = e source ]
-			 ifNone: [ nil ]) ifNotNil: [ :assoc | 
-			| types |
-			types := assoc class traits & mapModel associationTypes.
-			line color: (types ifEmpty: [ Color red ] ifNotEmpty: [ 
-					 mapModel assocTypeToColorDict
-						 at: types anyOne
-						 ifAbsent: [ Color random ] ]) ] ]
+		line to model rawModel class == FamixTag ifFalse: [ 
+			incomings := line to model rawModel queryAllLocal: #in.
+			(incomings
+				 detect: [ :e | line from model rawModel = e source ]
+				 ifNone: [ nil ]) ifNotNil: [ :assoc | 
+				| types |
+				types := assoc class traits & mapModel associationTypes.
+				line color: (types ifEmpty: [ Color red ] ifNotEmpty: [ 
+						 mapModel assocTypeToColorDict
+							 at: types anyOne
+							 ifAbsent: [ Color random ] ]) ] ] ]
 ]
 
 { #category : #building }

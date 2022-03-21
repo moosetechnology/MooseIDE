@@ -106,7 +106,8 @@ MiHierarchicalMapBrowser >> consume: aTag [
 MiHierarchicalMapBrowser >> followEntity: anEntity [
 
 	model entities: anEntity asMooseGroup.
-	settings updateSettings
+	settings updateSettings.
+	self showMenu
 ]
 
 { #category : #testing }
