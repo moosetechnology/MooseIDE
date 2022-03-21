@@ -34,7 +34,8 @@ MiTagIntentPage >> refresh [
 
 	super refresh.
 	selectedQuery label: (String streamContents: [ :aStream | 
-			 tagModel currentTag query storeWithParentsOn: aStream ])
+			 tagModel currentTag query storeWithParentsOn: aStream ]).
+	self update
 ]
 
 { #category : #initialization }

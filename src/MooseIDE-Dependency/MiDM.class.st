@@ -12,6 +12,11 @@ Class {
 	#category : #'MooseIDE-Dependency-DistributionMap'
 }
 
+{ #category : #highlighting }
+MiDM >> highlightShapes [
+	
+]
+
 { #category : #running }
 MiDM >> run [
 
