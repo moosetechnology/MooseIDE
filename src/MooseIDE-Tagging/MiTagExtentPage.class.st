@@ -131,6 +131,7 @@ MiTagExtentPage >> refresh [
 	super refresh.
 	self refreshEntitiesList. 
 	self refreshTaggedEntitiesList.
+	self update
 	
 ]
 
