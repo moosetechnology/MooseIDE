@@ -149,14 +149,12 @@ MiCoUsageMapSettings class >> compiledBlock: aString onError: defaultString [
 MiCoUsageMapSettings class >> defaultChildrenBlockText [
 	^ '[ :entity |
 "this code is for entity method, but you can change it"
-| bag |
-bag := Bag withAll: (entity accesses 
+"you should return all the inner entities even with duplicates"
+
+entity accesses 
 	select: [ :slotLink | slotLink variable isAttribute ]
-	thenCollect: [ :slotLink | slotLink variable ]).
-"you should return a Bag
-key = inner object, in this case the inner Attribute
-value = number of uses of key"
-bag ]'
+	thenCollect: [ :slotLink | slotLink variable ]
+ ]'
 ]
 
 { #category : #'accessing - defaults' }

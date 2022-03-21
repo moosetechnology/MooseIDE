@@ -182,15 +182,15 @@ MiCoUsageMapBuilder >> initializeMethods [
 MiCoUsageMapBuilder >> initializeReferences [
 	miAttributes := OrderedCollection new.
 	self miMethods do: [ :met | 
-		| associations |
-		associations := self methodAttributeCounter associationsListIn: met.
-		associations
-			select: [ :asso | asso value > 0 ]
-			thenDo: [ :asso| | att |
-				att := self getOrCreateAttributeFor: asso key.
+		| bag |
+		bag := Bag withAll: (self methodAttributeCounter allAttributesFor: met).
+		bag doWithOccurrences: [ :attribute :count | | att |
+			count > 0 ifTrue: [ 
+				att := self getOrCreateAttributeFor: attribute.
 				met addAttribute: att.
-				att method: met counter: asso value.
+				att method: met counter: count.
 			].
+		].
 	]
 ]
 

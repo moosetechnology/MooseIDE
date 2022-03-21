@@ -8,8 +8,8 @@ Class {
 }
 
 { #category : #public }
-MiCoMethodAttributeCounter >> associationsListIn: aMiCoMethod [
-	"should return a list of associations, for each association:
+MiCoMethodAttributeCounter >> allAttributesFor: aMiCoMethod [
+	"should return a list of associations(a Bag), for each association:
 	key is the object
 	value is the number of uses of that object is used by aMiCoMethod"
 	^ self subclassResponsibility
