@@ -90,8 +90,7 @@ MiNAryQueryPresenterTest >> testNormalQueryInitialization [
 
 	presenter subqueryDropLists first selectIndex: 1.
 	presenter subqueryDropLists second selectIndex: 2.
-	self assert: presenter query class identicalTo: self queryClass.
-	self assert: presenter query isValid
+	self assert: presenter query class identicalTo: self queryClass
 ]
 
 { #category : #tests }
