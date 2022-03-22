@@ -95,6 +95,7 @@ MiInspectorBrowser >> canFollowEntity: anEntity [
 { #category : #actions }
 MiInspectorBrowser >> followEntity: anEntity [
 
+	anEntity ifNil: [ ^ self ].
 	self model: anEntity.
 	miInspector model: self model.
 	self updateWindowTitle: self window
