@@ -199,7 +199,7 @@ MiQueryListItemPresenter >> newQueryForClass: queryClass [
 	(parentQuery children includes: self query) ifTrue: [ 
 		parentQuery removeChild: self query ].
 
-	newQuery := queryClass defaultForParent: parentQuery.
+	newQuery := queryClass new parent: parentQuery.
 	parentQuery addChild: newQuery.
 	^ newQuery
 ]

@@ -28,7 +28,7 @@ Class {
 MiPropertyQueryPresenter >> initializePresenters [
 
 	delayer := InputProcessingWaiter new.
-		
+
 	query availableProperties
 		ifNotEmpty: [ 
 			propertyDropList := self newPropertyDropList.
@@ -57,15 +57,16 @@ MiPropertyQueryPresenter >> newComparatorDropList [
 MiPropertyQueryPresenter >> newPropertyDropList [
 
 	| sortedProperties |
-	sortedProperties := self query availableProperties sorted: #asString ascending.
-	"self query availableProperties always returns as a first element that the query has a property. So, if we sort if we need to update the property of the query"
-	query property: sortedProperties first.
+	sortedProperties := self query availableProperties sorted:
+		                    #asString ascending.
+
 	^ self newDropList
-		startWithoutSelection;
-		items: sortedProperties;
-		display: [ :prop | prop asString ];
-		whenSelectedItemChangedDo: [ :property | self updateProperty: property ];
-		yourself
+		  startWithoutSelection;
+		  items: sortedProperties;
+		  display: [ :prop | prop asString ];
+		  whenSelectedItemChangedDo: [ :property | 
+			  self updateProperty: property ];
+		  yourself
 ]
 
 { #category : #initialization }
