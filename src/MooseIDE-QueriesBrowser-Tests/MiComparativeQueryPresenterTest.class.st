@@ -75,13 +75,12 @@ MiComparativeQueryPresenterTest >> testQueryValidity [
 	super testQueryValidity.
 
 	self resetPresenterWithEntities: helper classesAndMethods.
-	presenter propertyDropList selectIndex: 2.
-	self deny: presenter query isValid.
 
+	presenter propertyDropList selectIndex: 2.
 	presenter comparatorDropList selectIndex: 2.
 	self deny: presenter query isValid.
 
-	presenter valueInputField number: self valueInput.
+	presenter valueInputField text: self valueInput.
 	self assert: presenter query isValid
 ]
 
