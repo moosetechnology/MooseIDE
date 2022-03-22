@@ -45,6 +45,8 @@ MiNavigationQueryPresenterTest >> testPresenters [
 	self
 		assertCollection: presenter directionDropList items
 		hasSameElements: presenter query class directionStrategies.
+
+	(presenter presenterAt: #directionDropList) selectIndex: 2.
 	self
 		assert: presenter associationsButton class
 		equals: SpButtonPresenter
@@ -66,7 +68,7 @@ MiNavigationQueryPresenterTest >> testPresentersOnImpossibleQuery [
 { #category : #tests }
 MiNavigationQueryPresenterTest >> testQueryValidity [
 
-	self assert: presenter query isValid.
+	self deny: presenter query isValid.
 	self resetPresenterWithEntities:
 		helper entitiesWithNoIncomingAssociations.
 	self deny: presenter query isValid.
@@ -78,6 +80,7 @@ MiNavigationQueryPresenterTest >> testQueryValidity [
 MiNavigationQueryPresenterTest >> testUpdateQueryWithSelectedAssociations [
 
 	| associationsRemoved |
+	presenter query beDefaultForParent.
 	associationsRemoved := presenter query availableAssociations 
 		                       removeFirst: 2.
 	presenter updateQueryWithSelectedAssociations: associationsRemoved.
