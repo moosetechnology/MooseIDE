@@ -59,20 +59,25 @@ MiNAryQueryPresenterTest >> queryClass [
 MiNAryQueryPresenterTest >> resetPresenterWithEntities: aMooseGroup [
 
 	| builder superPresenter |
-	browser := MiQueriesBrowser on: (FQRootQuery new
-			            result: aMooseGroup;
-			            yourself).
+	browser := MiQueriesBrowser
+		           newApplication: MiTestApplication current
+		           model: (FQRootQuery new
+				            result: aMooseGroup;
+				            yourself).
 	builder := browser instantiate: MiQueriesListPresenter on: browser.
-	
+
 	builder addNewFirstLevelQuery.
-	builder queryItemsPresenters last queryTypesDropList selectItem: FQBooleanQuery.
-	
+	builder queryItemsPresenters last queryTypesDropList selectItem:
+		FQBooleanQuery.
+
 	builder addNewFirstLevelQuery.
-	builder queryItemsPresenters last queryTypesDropList selectItem: FQBooleanQuery.
-	
+	builder queryItemsPresenters last queryTypesDropList selectItem:
+		FQBooleanQuery.
+
 	builder addNewFirstLevelQuery.
-	builder queryItemsPresenters last queryTypesDropList selectItem: FQBooleanQuery.
-	
+	builder queryItemsPresenters last queryTypesDropList selectItem:
+		FQBooleanQuery.
+
 	superPresenter := builder componentList items third.
 	superPresenter queryTypesDropList selectItem: self queryClass.
 	presenter := superPresenter queryConfiguratorPresenter
