@@ -48,7 +48,7 @@ MiScopeQueryPresenter >> initializeDirectionsDropList [
 { #category : #initialization }
 MiScopeQueryPresenter >> initializePresenters [
 
-	self setScopesDropList.
+	scopesDropList := self newDropList.
 	self initializeDirectionsDropList.
 	self initializeLayout
 ]
