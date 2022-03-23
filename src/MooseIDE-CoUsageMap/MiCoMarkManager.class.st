@@ -26,8 +26,7 @@ MiCoMarkManager >> automaticColor [
 
 { #category : #public }
 MiCoMarkManager >> automaticColorForMethod: aMiCoMethod [
-	| groupsByTag conflictTag |
-	conflictTag := self conflictTag.
+	| groupsByTag |
 	groupsByTag := aMiCoMethod usedAttributes 
 		groupedBy: [ :att | att tag ].
 	groupsByTag ifEmpty: [
@@ -40,9 +39,7 @@ MiCoMarkManager >> automaticColorForMethod: aMiCoMethod [
 			self setTag: tag onAttribute: aMiCoMethod.
 			^ self ].
 	].
-	(groupsByTag size = 1 and: [ groupsByTag keys anyOne isNil])
-		ifTrue: [ self setTag: nil onAttribute: aMiCoMethod. ]
-		ifFalse: [ self setTag: conflictTag onAttribute: aMiCoMethod].
+	self setTag: nil onAttribute: aMiCoMethod.
 	
 	
 	
@@ -74,11 +71,6 @@ MiCoMarkManager >> coUsageMap [
 { #category : #accessing }
 MiCoMarkManager >> coUsageMap: aMiCoCoUsageMapVisualization [
 	coUsageMap := aMiCoCoUsageMapVisualization
-]
-
-{ #category : #accessing }
-MiCoMarkManager >> conflictTag [
-	^ self coUsageMap legendTag conflictTag
 ]
 
 { #category : #'building - menus' }

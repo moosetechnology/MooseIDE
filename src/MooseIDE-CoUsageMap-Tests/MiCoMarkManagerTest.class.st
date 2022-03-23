@@ -10,7 +10,7 @@ MiCoMarkManagerTest >> test01ColorASingleMethod [
 	| v attribute tag shapes tagColor method4 method5 |
 	v := MiCoUsageMapBuilder new.
 	v godClass: MiCoTestClass.
-	v legendTag conflictTag: 'conflic' tags: { 'base'. 'simple' }.
+	v legendTag tagsWithPalette: { 'base'. 'simple' }.
 	v build.
 	attribute := v attributeNamed: #var6.
 	tag := v tagNamed: 'base'.
@@ -37,7 +37,7 @@ MiCoMarkManagerTest >> test02OpenMenu [
 	| v attribute method |
 	v := MiCoUsageMapBuilder new.
 	v godClass: MiCoTestClass.
-	v legendTag conflictTag: 'conflic' tags: { 'base'. 'simple' }.
+	v legendTag tagsWithPalette: { 'base'. 'simple' }.
 	v build.
 	attribute := v attributeNamed: #var2.
 	method := v methodNamed: #method1.
@@ -55,9 +55,7 @@ MiCoMarkManagerTest >> test03MarkingAttributes [
 	v := MiCoUsageMapBuilder new.
 	class := MiCoTestClass.
 	v godClass: class.
-	v legendTag
-		conflictTag: 'need work'
-		tags: { 'Frame'. 'Connection' }.
+	v legendTag tagsWithPalette: { 'Frame'. 'Connection' }.
 	v build.
 	tag := v tagNamed: 'Frame'.
 	attribute := v attributeNamed: 'var2'.
@@ -74,9 +72,7 @@ MiCoMarkManagerTest >> test04ClickLastTag [
 	v := MiCoUsageMapBuilder new.
 	class := MiCoTestClass.
 	v godClass: class.
-	v legendTag
-		conflictTag: 'need work'
-		tags: { 'Frame'. 'Connection' }.
+	v legendTag tagsWithPalette: { 'Frame'. 'Connection' }.
 	v build.
 	self assert: v markManager lastTagSelected isNil.
 	attribute := v attributeNamed: #var2.
@@ -97,9 +93,7 @@ MiCoMarkManagerTest >> test05ClickLastTag [
 	v := MiCoUsageMapBuilder new.
 	class := MiCoTestClass.
 	v godClass: class.
-	v legendTag
-		conflictTag: 'need work'
-		tags: { 'Frame'. 'Connection' }.
+	v legendTag tagsWithPalette: { 'Frame'. 'Connection' }.
 	v build.
 	attribute1 := v attributeNamed: #var1.
 	attribute2 := v attributeNamed: #var2.
@@ -127,14 +121,11 @@ MiCoMarkManagerTest >> test05ClickLastTag [
 
 { #category : #tests }
 MiCoMarkManagerTest >> test06SelectInnerBox [
-
 	| v class attribute1 attribute2 method shape1 shape2 default selected |
 	v := MiCoUsageMapBuilder new.
 	class := MiCoTestClass.
 	v godClass: class.
-	v legendTag
-		conflictTag: 'need work'
-		tags: { 'Frame'. 'Connection' }.
+	v legendTag tagsWithPalette: { 'Frame'. 'Connection' }.
 	v build.
 	attribute1 := v attributeNamed: #var1.
 	attribute2 := v attributeNamed: #var2.

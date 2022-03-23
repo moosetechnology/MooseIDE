@@ -9,8 +9,6 @@ Class {
 		'childrenBlockText',
 		'outerBoxSortBlockText',
 		'innerBoxSortBlockText',
-		'tagNeedWorkColor',
-		'tagNeedWorkName',
 		'innerBoxRange',
 		'innerBoxScaleType',
 		'innerBoxHeight'
@@ -84,31 +82,6 @@ MiCoUsageMapSettings class >> browsingSettingInnerSize: aBuilder [
 		default: self defaultInnerBoxHeight;
 		range: (2 to: 50)
 
-]
-
-{ #category : #settings }
-MiCoUsageMapSettings class >> browsingSettingTagNeedWorkColor: aBuilder [
-	<systemsettings>
-	(aBuilder setting: #tagNeedWorkColor)
-		parent: #CoUsageMap;
-		target: self;
-		order: 11;
-		label: 'Conflict tag color';
-		description: 'It will be used as default color for conflicts in co-usage-map browser';
-		default: self defaultTagNeedWorkName
-]
-
-{ #category : #settings }
-MiCoUsageMapSettings class >> browsingSettingTagNeedWorkName: aBuilder [
-	<systemsettings>
-	(aBuilder setting: #tagNeedWorkName)
-		parent: #CoUsageMap;
-		target: self;
-		order: 10;
-		label: 'Conflict tag name';
-		description: 'It will be used as default name for conflicts in co-usage-map browser';
-		ghostHelp: 'tag name';
-		default: self defaultTagNeedWorkName
 ]
 
 { #category : #settings }
@@ -220,16 +193,6 @@ sizeA = sizeB
 ]
 
 { #category : #'accessing - defaults' }
-MiCoUsageMapSettings class >> defaultTagNeedWorkColor [
-	^ MDLColor red
-]
-
-{ #category : #'accessing - defaults' }
-MiCoUsageMapSettings class >> defaultTagNeedWorkName [
-	^ 'Need work'
-]
-
-{ #category : #'accessing - defaults' }
 MiCoUsageMapSettings class >> defaultThreshold75 [
 	^ 75
 ]
@@ -316,31 +279,6 @@ MiCoUsageMapSettings class >> reset [
 MiCoUsageMapSettings class >> resetText [
 	<script>
 	childrenBlockText := outerBoxSortBlockText := innerBoxSortBlockText := nil
-]
-
-{ #category : #accessing }
-MiCoUsageMapSettings class >> tagNeedWorkColor [
-	^ tagNeedWorkColor ifNil: [ self defaultTagNeedWorkColor ]
-]
-
-{ #category : #accessing }
-MiCoUsageMapSettings class >> tagNeedWorkColor: aColor [
-	tagNeedWorkColor := MDLColor r: aColor red g: aColor green b: aColor blue alpha: aColor alpha
-]
-
-{ #category : #accessing }
-MiCoUsageMapSettings class >> tagNeedWorkName [
-	^ tagNeedWorkName ifNil: [ self defaultTagNeedWorkName ]
-]
-
-{ #category : #accessing }
-MiCoUsageMapSettings class >> tagNeedWorkName: aString [
-	(aString isNil or: [ aString trimmed isEmpty ]) ifTrue: [ ^ self ].
-	tagNeedWorkName := aString.
-	"self browserDo: [ :browser | 
-		browser conflictTag ifNotNil: [ :tag | tag name: aString ].
-		browser updateLegend.
-		]"
 ]
 
 { #category : #accessing }
