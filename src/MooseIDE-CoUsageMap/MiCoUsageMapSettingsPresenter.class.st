@@ -12,7 +12,7 @@ Class {
 		'button',
 		'resetButton'
 	],
-	#category : #'MooseIDE-CoUsageMap-Roassal3'
+	#category : #'MooseIDE-CoUsageMap-Settings'
 }
 
 { #category : #specs }

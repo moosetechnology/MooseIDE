@@ -60,7 +60,7 @@ MiCoMarkManager >> changeTagsDuring: aBlockClosure [
 
 { #category : #events }
 MiCoMarkManager >> clickOn: aRSMouseClick [ 
-	aRSMouseClick commandKeyPressed ifFalse: [ ^ self ].
+	aRSMouseClick metaKeyPressed ifFalse: [ ^ self ].
 	lastTagSelected ifNil: [ ^ self ].
 	self setTag: lastTagSelected onAttribute: aRSMouseClick shape model.
 	aRSMouseClick signalUpdate
