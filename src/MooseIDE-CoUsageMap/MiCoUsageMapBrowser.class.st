@@ -90,7 +90,6 @@ MiCoUsageMapBrowser >> hasSettings [
 MiCoUsageMapBrowser >> initializePresenters [
 	coUsageMap := self instantiate: MiCoUsageMapVisualization.
 	application registerConsumer: coUsageMap for: FamixTag.
-	application registerProducer: coUsageMap for: FamixTag.
 	application registerConsumer: coUsageMap for: FamixTagAssociation.
 	application registerProducer: coUsageMap for: FamixTagAssociation.
 ]
