@@ -35,16 +35,16 @@ MiCoAttribute >> numberOfUsesOn: aMiCoMethod [
 MiCoAttribute >> printForMethod: aMicoMethod on: stream [
 	| n numberOfUsers |
 	stream 
-		nextPutAll: 'Accesses for ';
-		nextPutAll: name;
-		nextPutAll: ':';
+		<< 'Accesses for ';
+		<< name;
+		<< ':';
 		crlf; crlf.
 	n := self numberOfUsesOn: aMicoMethod.
 	n printOn: stream.
 	stream 
-		nextPutAll: ' access from this method(';
-		nextPutAll: aMicoMethod name;
-		nextPutAll: ')'.
+		<< ' access from this container(';
+		<< aMicoMethod name;
+		<< ')'.
 	numberOfUsers := self usedInMethods size - 1.
 	numberOfUsers <= 0 ifTrue: [ ^ self ].
 	n := self usedInMethods sum - n.
@@ -52,9 +52,9 @@ MiCoAttribute >> printForMethod: aMicoMethod on: stream [
 	stream crlf.
 	n printOn: stream.
 	
-	stream nextPutAll: ' access from '.
+	stream << ' access from '.
 	numberOfUsers printOn: stream.
-	stream nextPutAll: ' local method'.
+	stream << ' local container'.
 	numberOfUsers > 1 
 		ifTrue: [ stream nextPutAll: 's' ]
 	

@@ -74,7 +74,7 @@ MiCoUsageMapBuilder >> conflictTag [
 { #category : #'popup - hooks' }
 MiCoUsageMapBuilder >> createAttributeTextMorphFor: att method: met [
 	^ (att asStringForMethod: met) asTextMorph
-		backgroundColor: (Smalltalk ui theme backgroundColor alpha: 0.8);
+		backgroundColor: (Smalltalk ui theme backgroundColor alpha: 0.9);
 		borderColor: Color black;
 		borderWidth: 1;
 		margins: 15;
@@ -84,7 +84,7 @@ MiCoUsageMapBuilder >> createAttributeTextMorphFor: att method: met [
 { #category : #'popup - hooks' }
 MiCoUsageMapBuilder >> createMethodTextMorphFor: model [
 	^ model asString asTextMorph
-		backgroundColor: (Smalltalk ui theme backgroundColor alpha: 0.8);
+		backgroundColor: (Smalltalk ui theme backgroundColor alpha: 0.9);
 		borderColor: Color black;
 		borderWidth: 1;
 		margins: 15;
