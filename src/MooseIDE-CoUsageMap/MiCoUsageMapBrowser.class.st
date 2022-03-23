@@ -1,5 +1,26 @@
 "
-This browser is to see dependencies between methods and attributes and mark them with tags
+Use this browser with a moose collection entity.
+Use settings to configure it.
+In order to navigate across the visualization
+
+Controls:
+
+* Mouse over, to highlight common inner boxes
+* Mouse click, to keep the highlight
+* right click over a box, to use the menu
+* right click over the view to use the general menu
+
+* Mouse left drag,
+* Arrrow keys,
+* Scrolls bars, to change the view's position
+* M, to collapse or expand the window
+* I, to zoom in
+* O, to zoom out
+* Moouse Wheel, to zoom in/out
+* S, to search
+* R, to reset the search
+
+
 "
 Class {
 	#name : #MiCoUsageMapBrowser,
