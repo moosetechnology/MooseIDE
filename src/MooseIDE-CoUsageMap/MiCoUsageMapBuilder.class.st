@@ -481,12 +481,14 @@ MiCoUsageMapBuilder >> updateInnerBoxSize [
 	self canvas nodes do: [ :node | 
 		| met body label |
 		met := node model.
-		label := node children first.
+		label := node shapes first.
 		node children size > 1 ifTrue: [ 
-			node children second remove ].
+			body := node children second.
+			body remove.
+			body withAllChildren do: [ :each | each announcer: nil ] ].
 		
 		body := self methodBodyShapeFor: met.
-		node addShape: body.
+		node add: body.
 		RSVerticalLineLayout new
 			alignCenter;
 			gapSize: 0;
