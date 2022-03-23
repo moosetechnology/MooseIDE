@@ -88,7 +88,6 @@ MiCoMarkManagerTest >> test04ClickLastTag [
 
 { #category : #tests }
 MiCoMarkManagerTest >> test05ClickLastTag [
-
 	| v class attribute1 attribute2 method tag shapes tagColor event |
 	v := MiCoUsageMapBuilder new.
 	class := MiCoTestClass.
@@ -113,7 +112,9 @@ MiCoMarkManagerTest >> test05ClickLastTag [
 		assert: (shapes allSatisfy: [ :shape | shape color = tagColor ]).
 	event := RSMouseClick new.
 	event shape: shapes first.
-	v markManager clickOn: (event commandKeyPressed: true).
+	event commandKeyPressed: true.
+	event controlKeyPressed: true.
+	v markManager clickOn: event.
 	self
 		assert: attribute1 tag equals: tag;
 		assert: (shapes allSatisfy: [ :shape | shape color = tag color ])
