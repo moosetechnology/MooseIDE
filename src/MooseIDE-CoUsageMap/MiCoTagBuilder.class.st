@@ -82,6 +82,7 @@ MiCoTagBuilder >> legendDo: aShape [
 	aShape
 		adjustToChildren;
 		padding: 10;
+		when: RSMouseMove send: #yourself to: self;
 		color: ((Color colorFrom: 'f4f4f4') alpha: 0.9);
 		border: (RSBorder new color: Color lightGray; width: 0.5);
 		addInteraction: highlight
@@ -181,9 +182,6 @@ MiCoTagBuilder >> tagShapeFor: aMiCoTag [
 		when: RSMouseClick send: #toggleTag: to: self; 
 		yourself.
 	shape := { check. box. label } asGroup asShape.
-	aMiCoTag == conflictTag ifTrue: [ 
-		check announcer: nil.
-		check form: (self iconNamed: #empty) ].
 		
 	RSHorizontalLineLayout new gapSize: 5; alignMiddle; on: shape children.
 	shape adjustToChildren.

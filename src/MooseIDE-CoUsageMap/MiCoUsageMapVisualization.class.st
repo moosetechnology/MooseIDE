@@ -47,6 +47,16 @@ MiCoUsageMapVisualization >> initialize [
 	coUsageMap visualization: self.
 ]
 
+{ #category : #brokerage }
+MiCoUsageMapVisualization >> itemsFor: aClass [
+	| model |
+	model := self owner collectionModel mooseModel.
+	
+	aClass = FamixTagAssociation ifTrue: [ ^ model allTagAssociations ].
+	aClass = FamixTag ifTrue: [ ^ model allTags ].
+	^ #(  )
+]
+
 { #category : #actions }
 MiCoUsageMapVisualization >> openSettingsBrowser [
 	^ coUsageMap markManager openSettingsBrowser

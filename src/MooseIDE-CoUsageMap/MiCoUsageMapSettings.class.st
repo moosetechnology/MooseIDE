@@ -305,13 +305,14 @@ MiCoUsageMapSettings class >> outerBoxSortBlockText: aString [
 	self browserDo: [ :b | b updateShapeLayout ]
 ]
 
-{ #category : #initialization }
+{ #category : #'class initialization' }
 MiCoUsageMapSettings class >> reset [
 	<script>
-	innerBoxSize := threshold75 := childrenBlockText := outerBoxSortBlockText := innerBoxSortBlockText := nil
+	innerBoxHeight := threshold75 := childrenBlockText := outerBoxSortBlockText := 
+	innerBoxSortBlockText := innerBoxRange := nil
 ]
 
-{ #category : #initialization }
+{ #category : #'class initialization' }
 MiCoUsageMapSettings class >> resetText [
 	<script>
 	childrenBlockText := outerBoxSortBlockText := innerBoxSortBlockText := nil
