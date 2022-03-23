@@ -42,7 +42,10 @@ MiResultSizeQueryPresenterTest >> configureInnerQuery [
 MiResultSizeQueryPresenterTest >> createNewQuery [
 
 	self configureInnerQuery.
-	^ FQResultSizeQuery new
+	^ FQResultSizeQuery
+		  innerQuery: innerQuery
+		  comparator: #>
+		  valueToCompare: 2
 ]
 
 { #category : #running }

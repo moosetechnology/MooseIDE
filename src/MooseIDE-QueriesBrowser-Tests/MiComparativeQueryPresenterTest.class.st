@@ -78,7 +78,6 @@ MiComparativeQueryPresenterTest >> testQueryValidity [
 	self deny: presenter query isValid.
 
 	presenter comparatorDropList selectIndex: 2.
-	self halt.
 	self deny: presenter query isValid.
 
 	presenter valueInputField text: self valueInput.
