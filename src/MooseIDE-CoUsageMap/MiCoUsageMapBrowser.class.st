@@ -9,6 +9,7 @@ Controls:
 * Mouse click, to keep the highlight
 * right click over a box, to use the menu
 * right click over the view to use the general menu
+* command+click to use the last tag.
 
 * Mouse left drag,
 * Arrrow keys,
