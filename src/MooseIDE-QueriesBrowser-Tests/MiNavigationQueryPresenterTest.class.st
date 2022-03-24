@@ -69,9 +69,18 @@ MiNavigationQueryPresenterTest >> testPresentersOnImpossibleQuery [
 MiNavigationQueryPresenterTest >> testQueryValidity [
 
 	self deny: presenter query isValid.
+
+	(presenter presenterAt: #directionDropList) selectIndex: 1.
+	self deny: presenter query isValid.
+
+	(presenter presenterAt: #associationsList) activateItem:
+		presenter query availableAssociations anyOne.
+	self assert: presenter query isValid.
+
 	self resetPresenterWithEntities:
 		helper entitiesWithNoIncomingAssociations.
 	self deny: presenter query isValid.
+
 	self resetPresenterWithEntities: helper noEntities.
 	self deny: presenter query isValid
 ]
