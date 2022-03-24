@@ -54,9 +54,8 @@ MiStringQueryPresenter >> newLayout [
 MiStringQueryPresenter >> newValueInputField [
 
 	^ self newTextInput
-		placeholder: 'Pattern';
-		autoAccept: true;
-		whenTextChangedDo: [ :pattern |
-			delayer waitAndRun: [ self computeQueryAction: pattern ] ];
-		yourself
+		  placeholder: 'Pattern';
+		  whenTextChangedDo: [ :pattern | 
+			  delayer waitAndRun: [ self computeQueryAction: pattern ] ];
+		  yourself
 ]

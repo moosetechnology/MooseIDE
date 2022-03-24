@@ -68,18 +68,6 @@ MiPropertyQueryPresenterTest >> testQueryMatchesOwnerQuery [
 ]
 
 { #category : #tests }
-MiPropertyQueryPresenterTest >> testQueryValidity [
-
-	self assert: presenter query isValid.
-
-	presenter propertyDropList selectIndex: 2.
-	self assert: presenter query isValid.
-
-	self resetPresenterWithEntities: helper noEntities.
-	self deny: presenter query isValid
-]
-
-{ #category : #tests }
 MiPropertyQueryPresenterTest >> testUpdateDoesNotChangeOwnerPresenter [
 
 	presenter propertyDropList selectIndex: 2.

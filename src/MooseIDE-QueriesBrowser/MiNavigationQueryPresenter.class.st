@@ -47,8 +47,10 @@ MiNavigationQueryPresenter >> initializeAssociationsList [
 		display: [ :item | item mooseDescription name asString ];
 		items: self query availableAssociations;
 		selectItems: self query associations;
-		onActivation: [ :association | self selectAssociationAction: association ];
-		onDeactivation: [ :association | self selectAssociationAction: association ]
+		onActivation: [ :association | 
+			self selectAssociationAction: association ];
+		onDeactivation: [ :association | 
+			self selectAssociationAction: association ]
 ]
 
 { #category : #initialization }

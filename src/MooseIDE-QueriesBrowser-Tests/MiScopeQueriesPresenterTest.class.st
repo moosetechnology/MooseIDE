@@ -81,6 +81,7 @@ MiScopeQueriesPresenterTest >> testDropListMatchesForOtherDirection [
 { #category : #tests }
 MiScopeQueriesPresenterTest >> testDropListMatchesQuery [
 
+	presenter directionsDropList selectIndex: 1. 
 	presenter scopesDropList selectItem:
 		(presenter query availableScopes detect: [ :scope | 
 			 presenter query scope ~~ scope ]).
@@ -117,7 +118,8 @@ MiScopeQueriesPresenterTest >> testPresenters [
 MiScopeQueriesPresenterTest >> testPresentersOnImpossibleQuery [
 
 	self resetPresenterWithEntities: helper noEntities.
-
+	presenter query directionStrategy: nil.
+	presenter setScopesDropList.
 	self
 		assert: presenter directionsDropList class
 		identicalTo: SpDropListPresenter.
@@ -130,6 +132,9 @@ MiScopeQueriesPresenterTest >> testPresentersOnImpossibleQuery [
 { #category : #tests }
 MiScopeQueriesPresenterTest >> testQueryValidity [
 
+	presenter directionsDropList selectItem: FQScopeDown.
+	presenter scopesDropList selectItem:
+		presenter scopesDropList items anyOne.
 	self assert: presenter query isValid.
 
 	self selectNonSelectedDirection.
