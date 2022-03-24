@@ -41,8 +41,8 @@ MiCoAttributeTest >> test03PopupMessage [
 		assert: (attribute asStringForMethod: method)
 		equals: ('Accesses for var1:
 
-3 access from this container(method1)
-9 access from 3 local containers'
+3 access from this method(method1)
+9 access from 3 local methods'
 				 copyReplaceAll: String cr
 				 with: String crlf).
 	attribute := MiCoAttribute new.
@@ -53,7 +53,7 @@ MiCoAttributeTest >> test03PopupMessage [
 		assert: (attribute asStringForMethod: method)
 		equals: ('Accesses for var2:
 
-4 access from this container(method5)'
+4 access from this method(method5)'
 				 copyReplaceAll: String cr
 				 with: String crlf).
 	attribute := MiCoAttribute new.
@@ -65,8 +65,8 @@ MiCoAttributeTest >> test03PopupMessage [
 		assert: (attribute asStringForMethod: method)
 		equals: ('Accesses for var2:
 
-4 access from this container(method5)
-9 access from 1 local container'
+4 access from this method(method5)
+9 access from 1 local method'
 				 copyReplaceAll: String cr
 				 with: String crlf)
 ]

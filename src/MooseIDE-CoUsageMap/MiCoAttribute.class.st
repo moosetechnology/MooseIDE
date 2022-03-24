@@ -26,14 +26,19 @@ MiCoAttribute >> method: aMiCoMethod counter: aNumber [
 	usedInMethods at: aMiCoMethod put: aNumber
 ]
 
+{ #category : #accessing }
+MiCoAttribute >> methodName [
+	^ 'method'
+]
+
 { #category : #public }
 MiCoAttribute >> numberOfUsesOn: aMiCoMethod [
 	^ usedInMethods at: aMiCoMethod
 ]
 
-{ #category : #converting }
+{ #category : #printing }
 MiCoAttribute >> printForMethod: aMicoMethod on: stream [
-	| n numberOfUsers |
+	| n numberOfUsers containerName |
 	stream 
 		<< 'Accesses for ';
 		<< name;
@@ -41,8 +46,11 @@ MiCoAttribute >> printForMethod: aMicoMethod on: stream [
 		crlf; crlf.
 	n := self numberOfUsesOn: aMicoMethod.
 	n printOn: stream.
+	containerName := self methodName.
 	stream 
-		<< ' access from this container(';
+		<< ' access from this ';
+		<< containerName;
+		<< '(';
 		<< aMicoMethod name;
 		<< ')'.
 	numberOfUsers := self usedInMethods size - 1.
@@ -54,7 +62,8 @@ MiCoAttribute >> printForMethod: aMicoMethod on: stream [
 	
 	stream << ' access from '.
 	numberOfUsers printOn: stream.
-	stream << ' local container'.
+	stream << ' local '; << containerName.
+	
 	numberOfUsers > 1 
 		ifTrue: [ stream nextPutAll: 's' ]
 	
