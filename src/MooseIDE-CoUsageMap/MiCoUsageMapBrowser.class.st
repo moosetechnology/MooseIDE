@@ -1,5 +1,10 @@
 "
-This browser is to see dependencies between methods and attributes and mark them with tags
+This browser shows dependencies between ""container entities"" (e.g. methods) and ""used entities"" (e.g. attributes) and it allows to mark entities with tags.
+
+Keyboard shortcuts:
+- arrows, to move the visualization around
+- 'S' to search entities on their names (several search can be applied)
+- 'R', to reset (remove) all previous searches
 "
 Class {
 	#name : #MiCoUsageMapBrowser,
