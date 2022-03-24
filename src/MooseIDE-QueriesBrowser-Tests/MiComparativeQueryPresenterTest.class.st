@@ -72,15 +72,21 @@ MiComparativeQueryPresenterTest >> testPresentersOnImpossibleQuery [
 { #category : #tests }
 MiComparativeQueryPresenterTest >> testQueryValidity [
 
-	super testQueryValidity.
+	self deny: presenter query isValid.
 
-	self resetPresenterWithEntities: helper classesAndMethods.
+	presenter propertyDropList selectIndex: 2.
+	self deny: presenter query isValid.
 
 	presenter comparatorDropList selectIndex: 2.
-	self assert: presenter query isValid.
+	self deny: presenter query isValid.
 
 	presenter valueInputField text: self valueInput.
-	self assert: presenter query isValid
+	"The input field has a delay before it processes the change."
+	(Delay forSeconds: 1) wait.
+	self assert: presenter query isValid.
+
+	self resetPresenterWithEntities: helper noEntities.
+	self deny: presenter query isValid
 ]
 
 { #category : #running }

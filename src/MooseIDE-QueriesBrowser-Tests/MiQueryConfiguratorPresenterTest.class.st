@@ -99,7 +99,8 @@ MiQueryConfiguratorPresenterTest >> testIsQueryUsed [
 MiQueryConfiguratorPresenterTest >> testNormalQueryInitialization [
 
 	self assert: presenter query class identicalTo: self queryClass.
-	self assert: presenter query isValid
+	self flag: 'Remove this next line: a query now may be invalid'
+	"self assert: presenter query isValid"
 ]
 
 { #category : #tests }

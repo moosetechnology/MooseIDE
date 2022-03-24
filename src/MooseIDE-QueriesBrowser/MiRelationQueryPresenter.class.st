@@ -41,14 +41,15 @@ MiRelationQueryPresenter >> initializePresenters [
 MiRelationQueryPresenter >> initializeRelationsDropList [
 
 	relationsList := self query availableRelationNames
-		ifEmpty: [ self noParameterMessage: 'No relations available' ]
-		ifNotEmpty: [ :relationNames | 
-			self newDropList
-				startWithoutSelection;
-				items: relationNames;
-				whenSelectedItemChangedDo: [ :selectedRelationName | 
-					query relationName: selectedRelationName.
-					self notifyQueryChanged ] ]
+		                 ifEmpty: [ 
+		                 self noParameterMessage: 'No relations available' ]
+		                 ifNotEmpty: [ :relationNames | 
+			                 self newDropList
+				                 startWithoutSelection;
+				                 items: relationNames;
+				                 whenSelectedItemChangedDo: [ 
+					                 :selectedRelationName | 
+					                 self computeQueryAction: selectedRelationName ] ]
 ]
 
 { #category : #layout }
