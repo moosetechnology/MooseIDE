@@ -157,7 +157,7 @@ MiCoUsageMapSettings class >> defaultChildrenBlockText [
 entity accesses 
 	select: [ :slotLink | slotLink variable isAttribute ]
 	thenCollect: [ :slotLink | slotLink variable ]
- ]'
+]'
 ]
 
 { #category : #'accessing - defaults' }
@@ -177,7 +177,14 @@ MiCoUsageMapSettings class >> defaultInnerBoxScaleType [
 
 { #category : #'accessing - defaults' }
 MiCoUsageMapSettings class >> defaultInnerBoxSortBlockText [
-	^ '[:entityA :entityB | entityA name < entityB name ]'
+	^ '[:entityA :entityB |
+	| sizeA sizeB |
+	sizeA := entityA numberOfUses.
+	sizeB := entityB numberOfUses.
+	sizeA = sizeB
+		ifTrue: [ entityA name < entityB name ]
+		ifFalse: [ sizeA > sizeB ]
+]'
 ]
 
 { #category : #'accessing - defaults' }
@@ -185,8 +192,8 @@ MiCoUsageMapSettings class >> defaultOuterBoxSortBlockText [
 	^ '[:containerA :containerB |
 "containers are MiCoMethod instances"
 | sizeA sizeB |
-sizeA := containerA children size.
-sizeB := containerB children size.
+sizeA := containerA numberOfChildren.
+sizeB := containerB numberOfChildren.
 sizeA = sizeB
 	ifTrue: [ containerA name < containerB name ]
 	ifFalse: [ sizeA > sizeB ] ]'

@@ -80,6 +80,6 @@ MiCoUsageMapSettingsPresenter >> initializePresenters [
 { #category : #initialization }
 MiCoUsageMapSettingsPresenter >> initializeWindow: aWindowPresenter [
 	aWindowPresenter 
-		initialExtent: 500@600;
+		initialExtent: 500@700;
 		title: 'Blocks Settings - Co Usage Map'
 ]

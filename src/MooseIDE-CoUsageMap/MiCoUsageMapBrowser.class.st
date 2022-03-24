@@ -66,7 +66,7 @@ MiCoUsageMapBrowser class >> title [
 
 { #category : #specs }
 MiCoUsageMapBrowser class >> windowSize [
-	^ 800@600
+	^ 800@700
 ]
 
 { #category : #'window control' }

@@ -27,6 +27,11 @@ MiCoMethod >> initialize [
 ]
 
 { #category : #accessing }
+MiCoMethod >> numberOfChildren [
+	^ self children size
+]
+
+{ #category : #accessing }
 MiCoMethod >> type [
 	^ 'Container'
 ]

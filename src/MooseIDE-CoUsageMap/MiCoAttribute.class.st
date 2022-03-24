@@ -31,6 +31,11 @@ MiCoAttribute >> methodName [
 	^ 'method'
 ]
 
+{ #category : #accessing }
+MiCoAttribute >> numberOfUses [
+	^ self usedInMethods size
+]
+
 { #category : #public }
 MiCoAttribute >> numberOfUsesOn: aMiCoMethod [
 	^ usedInMethods at: aMiCoMethod

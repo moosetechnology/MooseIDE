@@ -14,6 +14,5 @@ MiCoMooseAttibute >> methodName [
 
 { #category : #public }
 MiCoMooseAttibute >> numberOfUsesOn: aMiCoMethod [
-	
 	^ usedInMethods sum
 ]
