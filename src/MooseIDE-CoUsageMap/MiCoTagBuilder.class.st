@@ -5,7 +5,8 @@ Class {
 	#name : #MiCoTagBuilder,
 	#superclass : #RSAbstractContainerBuilder,
 	#instVars : [
-		'tags'
+		'tags',
+		'coUsageMap'
 	],
 	#category : #'MooseIDE-CoUsageMap-Roassal3'
 }
@@ -18,6 +19,16 @@ MiCoTagBuilder >> addTag: aMiCoTag [
 { #category : #hooks }
 MiCoTagBuilder >> boxLabelExtent [
 	^ 25@15
+]
+
+{ #category : #accessing }
+MiCoTagBuilder >> coUsageMap [
+	^ coUsageMap
+]
+
+{ #category : #accessing }
+MiCoTagBuilder >> coUsageMap: aMiCoUsageMapBuilder [
+	coUsageMap := aMiCoUsageMapBuilder
 ]
 
 { #category : #highlighting }
@@ -187,6 +198,7 @@ MiCoTagBuilder >> toggleTag: evt [
 	tag := shape model.
 	tag toggleVisibility.
 	shape form: (self iconFor: tag).
+	coUsageMap updateShapeColors.
 	evt signalUpdate.
 	
 	

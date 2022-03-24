@@ -260,7 +260,8 @@ MiCoUsageMapBuilder >> legendTag [
 
 { #category : #accessing }
 MiCoUsageMapBuilder >> legendTag: aMiCoTagBuilder [ 
-	legendTagBuilder := aMiCoTagBuilder
+	legendTagBuilder := aMiCoTagBuilder.
+	legendTagBuilder coUsageMap: self.
 ]
 
 { #category : #accessing }

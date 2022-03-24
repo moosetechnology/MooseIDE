@@ -210,9 +210,9 @@ MiCoMarkManager >> subMenuTagsFor: aMiCoAttribute subMenu: menu [
 ]
 
 { #category : #accessing }
-MiCoMarkManager >> tagColorFrom: aMicoTag [
-	aMicoTag ifNil: [ ^ Color colorFrom: 'f5f5f5' ].
-	^ aMicoTag color
+MiCoMarkManager >> tagColorFrom: aMiCoTag [
+	(aMiCoTag isNil or: [aMiCoTag isHidden ]) ifTrue: [ ^ Color colorFrom: 'f5f5f5' ].
+	^ aMiCoTag color
 ]
 
 { #category : #public }
