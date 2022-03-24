@@ -1,4 +1,5 @@
 "
+This browser shows dependencies between ""container entities"" (e.g. methods) and ""used entities"" (e.g. attributes) and it allows to mark entities with tags.
 Use this browser with a moose collection entity.
 Use settings to configure it.
 In order to navigate across the visualization
@@ -11,17 +12,15 @@ Controls:
 * right click over the view to use the general menu
 * command+click to use the last tag.
 
-* Mouse left drag,
-* Arrrow keys,
+* Mouse left drag
+* Arrrow keys to move the visualization around
 * Scrolls bars, to change the view's position
 * M, to collapse or expand the window
 * I, to zoom in
 * O, to zoom out
 * Moouse Wheel, to zoom in/out
-* S, to search
-* R, to reset the search
-
-
+* S, to search entities on their names (several search can be applied)
+* R, to reset (remove) all previous searches
 "
 Class {
 	#name : #MiCoUsageMapBrowser,

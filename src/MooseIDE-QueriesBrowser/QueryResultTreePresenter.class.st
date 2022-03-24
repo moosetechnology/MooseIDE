@@ -85,9 +85,8 @@ QueryResultTreePresenter >> updateForEntities: entities [
 
 { #category : #update }
 QueryResultTreePresenter >> updateForQuery: aQuery [
-	self
-		updateForEntities:
-			(aQuery isValid
-				ifTrue: [ aQuery result ]
-				ifFalse: [ MooseGroup new ])
+
+	self updateForEntities: (aQuery isValid
+			 ifTrue: [ aQuery result ]
+			 ifFalse: [ MooseGroup new ])
 ]

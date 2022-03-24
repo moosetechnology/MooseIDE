@@ -21,14 +21,9 @@ MiResultSizeQueryPresenter class >> dropListWidth [
 ]
 
 { #category : #actions }
-MiResultSizeQueryPresenter >> computeQuery: anObject [
+MiResultSizeQueryPresenter >> computeQuery: num [
 
-	subqueriesDropList items ifNotEmpty: [ 
-		self query
-			innerQuery: subqueriesDropList selectedItem query;
-			comparator: comparatorDropList selectedItem;
-			valueToCompare: valueInputField number;
-			resetResult ]
+	self query valueToCompare: num
 ]
 
 { #category : #'api - actions' }
@@ -56,10 +51,11 @@ MiResultSizeQueryPresenter >> initializeComparatorsDropList [
 
 	comparatorDropList := self newDropList.
 	comparatorDropList
+		startWithoutSelection;
 		items: FQNumericQuery comparators;
 		display: [ :comparator | comparator asString ];
 		whenSelectedItemChangedDo: [ :comparator | 
-			self computeQueryAction: comparator ]
+			query comparator: comparator ]
 ]
 
 { #category : #initialization }
@@ -76,10 +72,12 @@ MiResultSizeQueryPresenter >> initializeSubqueriesDropList [
 
 	subqueriesDropList := self newDropList.
 	subqueriesDropList
+		startWithoutSelection;
 		items: owner allQueryPresentersExceptSelf;
 		display: [ :each | each name ];
-		whenSelectedItemChangedDo: [ :subQuery | 
-			self computeQueryAction: subQuery ];
+		whenSelectedItemChangedDo: [ :subQueryPresenter | 
+			subQueryPresenter ifNotNil: [ 
+					self query innerQuery: subQueryPresenter query ] ];
 		help: 'The inner query can only be Scope or Navigation query'
 ]
 

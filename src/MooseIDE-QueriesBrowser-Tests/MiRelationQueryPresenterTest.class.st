@@ -54,7 +54,7 @@ MiRelationQueryPresenterTest >> testPresentersOnImpossibleQuery [
 { #category : #tests }
 MiRelationQueryPresenterTest >> testQueryValidity [
 
-	self assert: presenter query isValid.
+	self deny: presenter query isValid.
 
 	presenter relationsList selectIndex: 2.
 	self assert: presenter query isValid.
