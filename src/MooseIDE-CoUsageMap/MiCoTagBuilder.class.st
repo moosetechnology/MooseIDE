@@ -149,7 +149,7 @@ MiCoTagBuilder >> shapeBoxDescription [
 		marker: marker;
 		yourself.
 	label := RSLabel new
-		text: 'Number of accesses';
+		text: 'Number of links';
 		color: Color black;
 		yourself. 
 	RSVerticalLineLayout new gapSize: 5; on: { box. arrow }.
