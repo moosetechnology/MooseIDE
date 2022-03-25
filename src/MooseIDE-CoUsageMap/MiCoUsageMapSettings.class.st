@@ -32,7 +32,7 @@ MiCoUsageMapSettings class >> browsingBlockSettings: aBuilder [
 		parent: #CoUsageMap;
 		order: 101;
 		label: 'Blocks settings';
-		description: 'Recives 2 outer nodes, returns if it should swap nodes';
+		description: 'Receives 2 outer nodes, returns if it should swap nodes';
 		dialog: [ PluggableButtonMorph
 			on: self
 			getState: nil
