@@ -24,7 +24,8 @@ Class {
 		'innerBox',
 		'containerBox',
 		'methodAttributeCounter',
-		'highlightManager'
+		'highlightManager',
+		'widthScale'
 	],
 	#category : #'MooseIDE-CoUsageMap-Roassal3'
 }
@@ -47,12 +48,12 @@ MiCoUsageMapBuilder >> attributeNamed: aByteString [
 
 { #category : #hooks }
 MiCoUsageMapBuilder >> attributeShapeFor: att method: met [
-	| size |
-	size := MiCoUsageMapSettings innerBoxSize.
+	| height |
+	height := MiCoUsageMapSettings innerBoxHeight.
 	^ RSBox new
 		model: att;
-		width: (att numberOfUsesOn: met) * size;
-		height: size;
+		width: (widthScale scale: (att numberOfUsesOn: met));
+		height: height;
 		color: (self markManager tagColorFrom: att tag);
 		border: (self highlightManager defaultBoxBorder);
 		propertyAt: #method put: met;
@@ -73,7 +74,7 @@ MiCoUsageMapBuilder >> conflictTag [
 { #category : #'popup - hooks' }
 MiCoUsageMapBuilder >> createAttributeTextMorphFor: att method: met [
 	^ (att asStringForMethod: met) asTextMorph
-		backgroundColor: (Smalltalk ui theme backgroundColor alpha: 0.8);
+		backgroundColor: (Smalltalk ui theme backgroundColor alpha: 0.9);
 		borderColor: Color black;
 		borderWidth: 1;
 		margins: 15;
@@ -83,7 +84,7 @@ MiCoUsageMapBuilder >> createAttributeTextMorphFor: att method: met [
 { #category : #'popup - hooks' }
 MiCoUsageMapBuilder >> createMethodTextMorphFor: model [
 	^ model asString asTextMorph
-		backgroundColor: (Smalltalk ui theme backgroundColor alpha: 0.8);
+		backgroundColor: (Smalltalk ui theme backgroundColor alpha: 0.9);
 		borderColor: Color black;
 		borderWidth: 1;
 		margins: 15;
@@ -195,6 +196,21 @@ MiCoUsageMapBuilder >> initializeReferences [
 ]
 
 { #category : #initialization }
+MiCoUsageMapBuilder >> initializeScale [
+	| allAttributesUses range scaleType cls |
+	allAttributesUses := self miMethods flatCollect: [ :met | 
+		met usedAttributes collect: [ :att | att numberOfUsesOn: met ] ].
+	cls := MiCoUsageMapSettings.
+	range := cls innerBoxRange.
+	scaleType := cls innerBoxScaleType.
+	
+	widthScale := (scaleType value: NSScale)
+		range: {range first. range last}.
+	allAttributesUses ifEmpty: [ ^ self ].
+	widthScale domain: {allAttributesUses min. allAttributesUses max}.
+]
+
+{ #category : #initialization }
 MiCoUsageMapBuilder >> initializeShapes [
 	"all this interaction will produce an announcer that we can reuse for new shapes"
 	innerBox := RSBox new
@@ -222,32 +238,8 @@ MiCoUsageMapBuilder >> initializeShapes [
 MiCoUsageMapBuilder >> initializeValues [
 	self
 		initializeMethods;
-		initializeReferences
-]
-
-{ #category : #update }
-MiCoUsageMapBuilder >> innerBoxSize: size [
-	self canvas nodes do: [ :node | 
-		| met body label |
-		met := node model.
-		label := node children first.
-		body := node children second.
-		body children do: [ :child | 
-			| att |
-			att := child model.
-			child width: (att numberOfUsesOn: met) * size.
-			child height: size.
-		 ].
-		RSFlowLayout on: body children.
-		body adjustToChildren; padding: 10.
-		RSVerticalLineLayout new
-			alignCenter;
-			gapSize: 0;
-			on: { label. body }.
-		node adjustToChildren.
-	].
-	self applyLayout.
-	self canvas signalUpdate.
+		initializeReferences;
+		initializeScale.
 ]
 
 { #category : #hooks }
@@ -268,7 +260,8 @@ MiCoUsageMapBuilder >> legendTag [
 
 { #category : #accessing }
 MiCoUsageMapBuilder >> legendTag: aMiCoTagBuilder [ 
-	legendTagBuilder := aMiCoTagBuilder
+	legendTagBuilder := aMiCoTagBuilder.
+	legendTagBuilder coUsageMap: self.
 ]
 
 { #category : #accessing }
@@ -476,6 +469,38 @@ MiCoUsageMapBuilder >> updateChildren [
 ]
 
 { #category : #update }
+MiCoUsageMapBuilder >> updateInnerBoxSize [
+	| range cls newScale scaleType |
+	cls := MiCoUsageMapSettings.
+	range := cls innerBoxRange.
+	scaleType := cls innerBoxScaleType.
+	widthScale ifNil: [ ^ self ].
+	newScale := (scaleType value: NSScale)
+		domain: widthScale domain;
+		range: {range first. range last}.
+	widthScale := newScale.
+	self canvas nodes do: [ :node | 
+		| met body label |
+		met := node model.
+		label := node shapes first.
+		node children size > 1 ifTrue: [ 
+			body := node children second.
+			body remove.
+			body withAllChildren do: [ :each | each announcer: nil ] ].
+		
+		body := self methodBodyShapeFor: met.
+		node add: body.
+		RSVerticalLineLayout new
+			alignCenter;
+			gapSize: 0;
+			on: { label. body }.
+		node adjustToChildren.
+	].
+	self applyLayout.
+	self canvas signalUpdate.
+]
+
+{ #category : #update }
 MiCoUsageMapBuilder >> updateLegend [
 ]
 
@@ -493,7 +518,7 @@ MiCoUsageMapBuilder >> updateShapeColors [
 MiCoUsageMapBuilder >> updateShapeLayout [
 	| children |
 	self sortShapes.
-	children := self canvas children.
+	children := self canvas nodes.
 	children do: [ :child | 
 		RSFlowLayout on: child attributeShapes.
 		child children second adjustToChildren; padding: 10.
