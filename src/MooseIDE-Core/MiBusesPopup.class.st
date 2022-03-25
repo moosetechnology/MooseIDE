@@ -76,5 +76,6 @@ MiBusesPopup >> useTextInputForBusCreation [
 		busesList filterInputPresenter clearContent.
 		busesList
 			items: self application buses;
-			selectItems: browser buses copy ]
+			selectItems: browser buses copy ].
+	1halt.
 ]

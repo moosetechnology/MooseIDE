@@ -48,11 +48,13 @@ MiApplication >> browsers [
 
 { #category : #buses }
 MiApplication >> busNamed: aName [
+
 	^ buses
 		detect: [ :b | b name = aName ]
 		ifNone: [ | bus |
 			bus := MiBus named: aName.
 			buses add: bus.
+			defaultBus := bus.
 			self updateOverviewBrowsers.
 			bus ]
 ]

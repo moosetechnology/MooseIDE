@@ -233,15 +233,16 @@ MiAbstractBrowserTest >> testFollowEntity [
 { #category : #'tests - buses' }
 MiAbstractBrowserTest >> testFollowOtherBus [
 
-	| otherBus |
+	| otherBus oldDefaultBus |
+	oldDefaultBus := self bus.
 	otherBus := self application busNamed: 'Other bus'.
 	browser followBus: otherBus.
 
 	self assertCollection: browser buses hasSameElements: { 
 			self bus.
-			otherBus }.
+			oldDefaultBus }.
 
-	self assert: (otherBus browsers includes: browser).
+	self assert: (oldDefaultBus browsers includes: browser).
 	self assert: (self bus browsers includes: browser).
 
 	self assert: browser busButton label equals: '2 buses'
