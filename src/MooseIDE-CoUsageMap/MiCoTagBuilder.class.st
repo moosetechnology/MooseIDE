@@ -6,7 +6,7 @@ Class {
 	#superclass : #RSAbstractContainerBuilder,
 	#instVars : [
 		'tags',
-		'conflictTag'
+		'coUsageMap'
 	],
 	#category : #'MooseIDE-CoUsageMap-Roassal3'
 }
@@ -21,28 +21,14 @@ MiCoTagBuilder >> boxLabelExtent [
 	^ 25@15
 ]
 
-{ #category : #public }
-MiCoTagBuilder >> conflicTag: aString tags: aCollection colorPalette: aNSOrdinalScale [ 
-	self conflictTag: (MiCoTag new name: aString; yourself).
-	aCollection do: [:str |
-		self addTag: (MiCoTag new name: str; yourself) ].
-	{ conflictTag  }, self tags do: [ :tag |
-		tag color: (aNSOrdinalScale scale: tag) ]
+{ #category : #accessing }
+MiCoTagBuilder >> coUsageMap [
+	^ coUsageMap
 ]
 
 { #category : #accessing }
-MiCoTagBuilder >> conflictTag [
-	^ conflictTag
-]
-
-{ #category : #accessing }
-MiCoTagBuilder >> conflictTag: aMiCoTag [
-	conflictTag := aMiCoTag
-]
-
-{ #category : #public }
-MiCoTagBuilder >> conflictTag: aString tags: aCollection [ 
-	self conflicTag: aString tags: aCollection colorPalette: NSScale category20
+MiCoTagBuilder >> coUsageMap: aMiCoUsageMapBuilder [
+	coUsageMap := aMiCoUsageMapBuilder
 ]
 
 { #category : #highlighting }
@@ -82,6 +68,7 @@ MiCoTagBuilder >> legendDo: aShape [
 	aShape
 		adjustToChildren;
 		padding: 10;
+		when: RSMouseMove send: #yourself to: self;
 		color: ((Color colorFrom: 'f4f4f4') alpha: 0.9);
 		border: (RSBorder new color: Color lightGray; width: 0.5);
 		addInteraction: highlight
@@ -100,7 +87,6 @@ MiCoTagBuilder >> removeOldLegend [
 		detect: [ :shape | shape class = RSComposite ] 
 		ifNone: [ nil ].
 	legendShape ifNil: [ ^ self ].
-	conflictTag := nil.
 	tags := OrderedCollection new.
 	canvas removeInteractionIfPresent: self class.
 	legendShape remove.
@@ -115,7 +101,6 @@ MiCoTagBuilder >> renderIn: aCanvas [
 		container: aCanvas;
 		yourself.
 	shapes := RSGroup new.
-	conflictTag ifNotNil: [ shapes add: (self tagShapeFor: conflictTag) ].
 	tagShapes := self tags collect: [ :tag | self tagShapeFor: tag ].
 	shapes addAll: tagShapes.
 	shapes add: self shapeBoxDescription.
@@ -181,9 +166,6 @@ MiCoTagBuilder >> tagShapeFor: aMiCoTag [
 		when: RSMouseClick send: #toggleTag: to: self; 
 		yourself.
 	shape := { check. box. label } asGroup asShape.
-	aMiCoTag == conflictTag ifTrue: [ 
-		check announcer: nil.
-		check form: (self iconNamed: #empty) ].
 		
 	RSHorizontalLineLayout new gapSize: 5; alignMiddle; on: shape children.
 	shape adjustToChildren.
@@ -195,6 +177,20 @@ MiCoTagBuilder >> tags [
 	^ tags
 ]
 
+{ #category : #public }
+MiCoTagBuilder >> tags: aCollection colorPalette: aNSOrdinalScale [
+	aCollection do: [:str |
+		self addTag: (MiCoTag new 
+			name: str;
+			color: (aNSOrdinalScale scale: str);
+			yourself) ].
+]
+
+{ #category : #public }
+MiCoTagBuilder >> tagsWithPalette: aCollection [ 
+	self tags: aCollection colorPalette: NSScale category20
+]
+
 { #category : #events }
 MiCoTagBuilder >> toggleTag: evt [
 	| shape tag |
@@ -202,6 +198,7 @@ MiCoTagBuilder >> toggleTag: evt [
 	tag := shape model.
 	tag toggleVisibility.
 	shape form: (self iconFor: tag).
+	coUsageMap updateShapeColors.
 	evt signalUpdate.
 	
 	

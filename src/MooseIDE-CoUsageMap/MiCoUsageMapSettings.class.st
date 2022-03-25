@@ -5,15 +5,15 @@ Class {
 	#name : #MiCoUsageMapSettings,
 	#superclass : #Object,
 	#classInstVars : [
-		'innerBoxSize',
 		'threshold75',
 		'childrenBlockText',
 		'outerBoxSortBlockText',
 		'innerBoxSortBlockText',
-		'tagNeedWorkColor',
-		'tagNeedWorkName'
+		'innerBoxRange',
+		'innerBoxScaleType',
+		'innerBoxHeight'
 	],
-	#category : #'MooseIDE-CoUsageMap-Model'
+	#category : #'MooseIDE-CoUsageMap-Settings'
 }
 
 { #category : #private }
@@ -43,42 +43,45 @@ MiCoUsageMapSettings class >> browsingBlockSettings: aBuilder [
 ]
 
 { #category : #settings }
+MiCoUsageMapSettings class >> browsingSettingInnerBoxRange: aBuilder [
+	<systemsettings>
+	
+	(aBuilder miDualRange: #innerBoxRange)
+		parent: #CoUsageMap;
+		target: self;
+		order: 4;
+		label: 'Range for inner boxes';
+		description: 'Use this to change the minimun and maximun size of the inner boxes';
+		default: self defaultInnerBoxRange;
+		range: (5 to: 100)
+
+]
+
+{ #category : #settings }
+MiCoUsageMapSettings class >> browsingSettingInnerScale: aBuilder [
+	<systemsettings>
+	(aBuilder pickOne: #innerBoxScaleType)
+		parent: #CoUsageMap;
+		domainValues: #(linear symlog);
+		target: self;
+		order: 3;
+		label: 'Inner box width scale';
+		description: 'Choose between different types of scales';
+		default: self defaultInnerBoxScaleType
+]
+
+{ #category : #settings }
 MiCoUsageMapSettings class >> browsingSettingInnerSize: aBuilder [
 	<systemsettings>
-	(aBuilder miRange: #innerBoxSize)
+	(aBuilder miRange: #innerBoxHeight)
 		parent: #CoUsageMap;
 		target: self;
 		order: 1;
-		label: 'Inner box size';
-		description: 'Will change the size of the inner box for co usage map visualization';
-		default: self defaultInnerBoxSize;
+		label: 'Inner box height';
+		description: 'Will change the height of the inner box for co usage map visualization';
+		default: self defaultInnerBoxHeight;
 		range: (2 to: 50)
 
-]
-
-{ #category : #settings }
-MiCoUsageMapSettings class >> browsingSettingTagNeedWorkColor: aBuilder [
-	<systemsettings>
-	(aBuilder setting: #tagNeedWorkColor)
-		parent: #CoUsageMap;
-		target: self;
-		order: 11;
-		label: 'Conflict tag color';
-		description: 'It will be used as default color for conflicts in co-usage-map browser';
-		default: self defaultTagNeedWorkName
-]
-
-{ #category : #settings }
-MiCoUsageMapSettings class >> browsingSettingTagNeedWorkName: aBuilder [
-	<systemsettings>
-	(aBuilder setting: #tagNeedWorkName)
-		parent: #CoUsageMap;
-		target: self;
-		order: 10;
-		label: 'Conflict tag name';
-		description: 'It will be used as default name for conflicts in co-usage-map browser';
-		ghostHelp: 'tag name';
-		default: self defaultTagNeedWorkName
 ]
 
 { #category : #settings }
@@ -154,17 +157,34 @@ MiCoUsageMapSettings class >> defaultChildrenBlockText [
 entity accesses 
 	select: [ :slotLink | slotLink variable isAttribute ]
 	thenCollect: [ :slotLink | slotLink variable ]
- ]'
+]'
 ]
 
 { #category : #'accessing - defaults' }
-MiCoUsageMapSettings class >> defaultInnerBoxSize [
-	^ 5
+MiCoUsageMapSettings class >> defaultInnerBoxHeight [
+	^ 10
+]
+
+{ #category : #'accessing - defaults' }
+MiCoUsageMapSettings class >> defaultInnerBoxRange [
+	^ #(5 100)
+]
+
+{ #category : #'accessing - defaults' }
+MiCoUsageMapSettings class >> defaultInnerBoxScaleType [
+	^ #linear
 ]
 
 { #category : #'accessing - defaults' }
 MiCoUsageMapSettings class >> defaultInnerBoxSortBlockText [
-	^ '[:entityA :entityB | entityA name < entityB name ]'
+	^ '[:entityA :entityB |
+	| sizeA sizeB |
+	sizeA := entityA numberOfUses.
+	sizeB := entityB numberOfUses.
+	sizeA = sizeB
+		ifTrue: [ entityA name < entityB name ]
+		ifFalse: [ sizeA > sizeB ]
+]'
 ]
 
 { #category : #'accessing - defaults' }
@@ -172,21 +192,11 @@ MiCoUsageMapSettings class >> defaultOuterBoxSortBlockText [
 	^ '[:containerA :containerB |
 "containers are MiCoMethod instances"
 | sizeA sizeB |
-sizeA := containerA children size.
-sizeB := containerB children size.
+sizeA := containerA numberOfChildren.
+sizeB := containerB numberOfChildren.
 sizeA = sizeB
 	ifTrue: [ containerA name < containerB name ]
 	ifFalse: [ sizeA > sizeB ] ]'
-]
-
-{ #category : #'accessing - defaults' }
-MiCoUsageMapSettings class >> defaultTagNeedWorkColor [
-	^ MDLColor red
-]
-
-{ #category : #'accessing - defaults' }
-MiCoUsageMapSettings class >> defaultTagNeedWorkName [
-	^ 'Need work'
 ]
 
 { #category : #'accessing - defaults' }
@@ -195,14 +205,36 @@ MiCoUsageMapSettings class >> defaultThreshold75 [
 ]
 
 { #category : #accessing }
-MiCoUsageMapSettings class >> innerBoxSize [
-	^ innerBoxSize ifNil: [ self defaultInnerBoxSize ].
+MiCoUsageMapSettings class >> innerBoxHeight [
+	^ innerBoxHeight ifNil: [ self defaultInnerBoxHeight ].
 ]
 
 { #category : #accessing }
-MiCoUsageMapSettings class >> innerBoxSize: aNumber [
-	innerBoxSize := aNumber.
-	self browserDo: [ :b | b innerBoxSize: aNumber ]
+MiCoUsageMapSettings class >> innerBoxHeight: aNumber [
+	innerBoxHeight := aNumber.
+	self updateBrowserInnerBoxSize
+]
+
+{ #category : #accessing }
+MiCoUsageMapSettings class >> innerBoxRange [
+	^ innerBoxRange ifNil: [ self defaultInnerBoxRange ]
+]
+
+{ #category : #accessing }
+MiCoUsageMapSettings class >> innerBoxRange: anInterval [
+	innerBoxRange := anInterval.
+	self updateBrowserInnerBoxSize
+]
+
+{ #category : #accessing }
+MiCoUsageMapSettings class >> innerBoxScaleType [
+	^ innerBoxScaleType ifNil: [ self defaultInnerBoxScaleType ]
+]
+
+{ #category : #accessing }
+MiCoUsageMapSettings class >> innerBoxScaleType: aString [
+	innerBoxScaleType := aString.
+	self updateBrowserInnerBoxSize
 ]
 
 { #category : #'accessing - computed' }
@@ -243,41 +275,17 @@ MiCoUsageMapSettings class >> outerBoxSortBlockText: aString [
 	self browserDo: [ :b | b updateShapeLayout ]
 ]
 
-{ #category : #initialization }
+{ #category : #'class initialization' }
 MiCoUsageMapSettings class >> reset [
 	<script>
-	innerBoxSize := threshold75 := childrenBlockText := outerBoxSortBlockText := innerBoxSortBlockText := nil
+	innerBoxHeight := threshold75 := childrenBlockText := outerBoxSortBlockText := 
+	innerBoxSortBlockText := innerBoxRange := nil
 ]
 
-{ #category : #initialization }
+{ #category : #'class initialization' }
 MiCoUsageMapSettings class >> resetText [
 	<script>
 	childrenBlockText := outerBoxSortBlockText := innerBoxSortBlockText := nil
-]
-
-{ #category : #accessing }
-MiCoUsageMapSettings class >> tagNeedWorkColor [
-	^ tagNeedWorkColor ifNil: [ self defaultTagNeedWorkColor ]
-]
-
-{ #category : #accessing }
-MiCoUsageMapSettings class >> tagNeedWorkColor: aColor [
-	tagNeedWorkColor := MDLColor r: aColor red g: aColor green b: aColor blue alpha: aColor alpha
-]
-
-{ #category : #accessing }
-MiCoUsageMapSettings class >> tagNeedWorkName [
-	^ tagNeedWorkName ifNil: [ self defaultTagNeedWorkName ]
-]
-
-{ #category : #accessing }
-MiCoUsageMapSettings class >> tagNeedWorkName: aString [
-	(aString isNil or: [ aString trimmed isEmpty ]) ifTrue: [ ^ self ].
-	tagNeedWorkName := aString.
-	"self browserDo: [ :browser | 
-		browser conflictTag ifNotNil: [ :tag | tag name: aString ].
-		browser updateLegend.
-		]"
 ]
 
 { #category : #accessing }
@@ -289,4 +297,9 @@ MiCoUsageMapSettings class >> threshold75PercentGroup [
 MiCoUsageMapSettings class >> threshold75PercentGroup: aNumber [
 	threshold75 := aNumber.
 	self browserDo: [ :b | b threshold75: threshold75 ]
+]
+
+{ #category : #private }
+MiCoUsageMapSettings class >> updateBrowserInnerBoxSize [
+	self browserDo: [ :browser | browser updateInnerBoxSize ]
 ]

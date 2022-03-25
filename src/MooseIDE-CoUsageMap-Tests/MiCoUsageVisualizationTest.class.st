@@ -90,9 +90,7 @@ MiCoUsageVisualizationTest >> test04Highlight [
 	v := MiCoUsageMapBuilder new.
 	class := MiCoTestClass.
 	v godClass: class.
-	v legendTag
-		conflictTag: 'need work'
-		tags: { 'Frame'. 'Connection' }.
+	v legendTag tagsWithPalette: { 'Frame'. 'Connection' }.
 	v build.
 	attribute := v attributeNamed: #var2.
 	border := v highlightManager selectedBoxBorder.
@@ -120,9 +118,7 @@ MiCoUsageVisualizationTest >> test05MethodAttributePopup [
 	v := MiCoUsageMapBuilder new.
 	class := MiCoTestClass.
 	v godClass: class.
-	v legendTag
-		conflictTag: 'need work'
-		tags: { 'Frame'. 'Connection' }.
+	v legendTag tagsWithPalette: { 'Frame'. 'Connection' }.
 	v build.
 	attribute := v attributeNamed: #var2.
 	method := v methodNamed: #method1.
@@ -133,13 +129,10 @@ MiCoUsageVisualizationTest >> test05MethodAttributePopup [
 
 { #category : #tests }
 MiCoUsageVisualizationTest >> test06ExtentChanged [
-
 	| v |
 	v := MiCoUsageMapBuilder new.
 	v godClass: Morph.
-	v legendTag
-		conflictTag: 'need work'
-		tags: { 'Frame'. 'Connection' }.
+	v legendTag tagsWithPalette: { 'Frame'. 'Connection' }.
 	v build.
 	self assert: v canvas extent x equals: 500.
 	self assert: (v canvas encompassingRectangle width between: 400 and: 500).

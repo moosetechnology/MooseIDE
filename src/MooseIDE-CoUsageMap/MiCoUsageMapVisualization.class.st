@@ -27,7 +27,6 @@ MiCoUsageMapVisualization >> consumeTagAssociation: aFamixTagAssociation [
 	| entity tag miCoObject |
 	entity := aFamixTagAssociation entity.
 	tag := aFamixTagAssociation tag.
-	self identityHash traceCr.
 	miCoObject := coUsageMap miMethods , coUsageMap miAttributes 
 		detect: [ :each | each rawObject = entity and: [ each tag ~= tag ] ] ifNone: [ nil ].
 	miCoObject ifNil: [ ^ self ].
@@ -46,6 +45,16 @@ MiCoUsageMapVisualization >> initialize [
 	self script: [ :canvas | canvas ].
 	coUsageMap := MiCoUsageMapMooseBuilder new.
 	coUsageMap visualization: self.
+]
+
+{ #category : #brokerage }
+MiCoUsageMapVisualization >> itemsFor: aClass [
+	| model |
+	model := self owner collectionModel mooseModel.
+	
+	aClass = FamixTagAssociation ifTrue: [ ^ model allTagAssociations ].
+	aClass = FamixTag ifTrue: [ ^ model allTags ].
+	^ #(  )
 ]
 
 { #category : #actions }
@@ -101,33 +110,13 @@ MiCoUsageMapVisualization >> run [
 ]
 
 { #category : #brokerage }
-MiCoUsageMapVisualization >> tagNeedWorkFrom: aMooseModel [
-	| name cls |
-	cls := MiCoUsageMapSettings.
-	name := cls tagNeedWorkName.
-	
-	^ [ aMooseModel findTagNamed: name ]
-		on: NotFound
-		do: [ | newTag |
-			newTag := (aMooseModel createTagNamed: name)
-				color: cls tagNeedWorkColor;
-				yourself.
-			self owner application consumeItem: newTag from: self.
-			newTag ]
-]
-
-{ #category : #brokerage }
 MiCoUsageMapVisualization >> tagsFromMooseModel: aMooseModel [
-	| ctag group legendTag |
+	| group legendTag |
 	aMooseModel ifNil: [ ^ self ]. 
 	legendTag := coUsageMap legendTag.
 	legendTag removeOldLegend.
-	ctag := self tagNeedWorkFrom: aMooseModel.
 	group := aMooseModel allTags sorted: [ :a :b | a name < b name ].
-	legendTag conflictTag: ctag asMiCoTag.
-	group 
-		reject: [ :tag | tag = ctag ] 
-		thenDo: [ :tag | legendTag addTag: tag asMiCoTag ].
+	group do: [ :tag | legendTag addTag: tag asMiCoTag ].
 ]
 
 { #category : #brokerage }

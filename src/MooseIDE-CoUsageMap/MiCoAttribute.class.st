@@ -15,18 +15,6 @@ MiCoAttribute >> asStringForMethod: aMicoMethod [
 	^ String streamContents: [:s | self printForMethod: aMicoMethod on: s] 
 ]
 
-{ #category : #'building - menus' }
-MiCoAttribute >> createMenuOn: aMenuMorph markManager: aMiCoMarkManager [
-	aMenuMorph
-		addTitle: 'Var: <', (aMiCoMarkManager contractLabel: self name),'>';
-		add: 'Tags' 
-			subMenu: (aMiCoMarkManager subMenuTagsFor: self subMenu: MenuMorph new);
-		add: 'Inspect'
-			target: self rawObject
-			selector: #inspect
-			argument: #() 
-]
-
 { #category : #initialization }
 MiCoAttribute >> initialize [
 	super initialize.
@@ -38,25 +26,38 @@ MiCoAttribute >> method: aMiCoMethod counter: aNumber [
 	usedInMethods at: aMiCoMethod put: aNumber
 ]
 
+{ #category : #accessing }
+MiCoAttribute >> methodName [
+	^ 'method'
+]
+
+{ #category : #accessing }
+MiCoAttribute >> numberOfUses [
+	^ self usedInMethods size
+]
+
 { #category : #public }
 MiCoAttribute >> numberOfUsesOn: aMiCoMethod [
 	^ usedInMethods at: aMiCoMethod
 ]
 
-{ #category : #converting }
+{ #category : #printing }
 MiCoAttribute >> printForMethod: aMicoMethod on: stream [
-	| n numberOfUsers |
+	| n numberOfUsers containerName |
 	stream 
-		nextPutAll: 'Accesses for ';
-		nextPutAll: name;
-		nextPutAll: ':';
+		<< 'Accesses for ';
+		<< name;
+		<< ':';
 		crlf; crlf.
 	n := self numberOfUsesOn: aMicoMethod.
 	n printOn: stream.
+	containerName := self methodName.
 	stream 
-		nextPutAll: ' access from this method(';
-		nextPutAll: aMicoMethod name;
-		nextPutAll: ')'.
+		<< ' access from this ';
+		<< containerName;
+		<< '(';
+		<< aMicoMethod name;
+		<< ')'.
 	numberOfUsers := self usedInMethods size - 1.
 	numberOfUsers <= 0 ifTrue: [ ^ self ].
 	n := self usedInMethods sum - n.
@@ -64,13 +65,19 @@ MiCoAttribute >> printForMethod: aMicoMethod on: stream [
 	stream crlf.
 	n printOn: stream.
 	
-	stream nextPutAll: ' access from '.
+	stream << ' access from '.
 	numberOfUsers printOn: stream.
-	stream nextPutAll: ' local method'.
+	stream << ' local '; << containerName.
+	
 	numberOfUsers > 1 
 		ifTrue: [ stream nextPutAll: 's' ]
 	
 	
+]
+
+{ #category : #accessing }
+MiCoAttribute >> type [
+	^ 'Inner entity'
 ]
 
 { #category : #accessing }

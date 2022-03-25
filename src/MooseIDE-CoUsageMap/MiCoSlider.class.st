@@ -6,7 +6,6 @@ Class {
 	#superclass : #RSAbstractContainerBuilder,
 	#instVars : [
 		'bar',
-		'radius',
 		'value',
 		'getValueSelector',
 		'setValueSelector',
@@ -16,7 +15,7 @@ Class {
 		'quantum',
 		'scale'
 	],
-	#category : #'MooseIDE-CoUsageMap-Slider'
+	#category : #'MooseIDE-CoUsageMap-Settings'
 }
 
 { #category : #accessing }
@@ -33,8 +32,8 @@ MiCoSlider >> getValueSelector: aString [
 { #category : #initialization }
 MiCoSlider >> initialize [
 	super initialize.
+	
 	self
-		radius: 10;
 		value: 0.5;
 		min: 0;
 		max: 1.
@@ -48,9 +47,8 @@ MiCoSlider >> max [
 ]
 
 { #category : #accessing }
-MiCoSlider >> max: anObject [
-
-	max := anObject
+MiCoSlider >> max: aNumber [
+	max := aNumber
 ]
 
 { #category : #accessing }
@@ -60,9 +58,8 @@ MiCoSlider >> min [
 ]
 
 { #category : #accessing }
-MiCoSlider >> min: anObject [
-
-	min := anObject
+MiCoSlider >> min: aNumber [
+	min := aNumber
 ]
 
 { #category : #accessing }
@@ -92,12 +89,7 @@ MiCoSlider >> quantum: anObject [
 
 { #category : #accessing }
 MiCoSlider >> radius [
-	^ radius
-]
-
-{ #category : #accessing }
-MiCoSlider >> radius: aNumber [
-	radius := aNumber
+	^ 10
 ]
 
 { #category : #hooks }
@@ -105,7 +97,7 @@ MiCoSlider >> renderIn: aCanvas [
 	aCanvas color: Color transparent.
 	bar := RSBox new
 		color: Color lightGray;
-		cornerRadius: radius;
+		cornerRadius: self radius;
 		isFixed: true;
 		yourself.
 	aCanvas addShape: bar.
@@ -171,7 +163,7 @@ MiCoSlider >> updateValue: evt [
 	| w newValue |
 	w := evt canvas extent x.
 	newValue := (evt camera fromSpaceToPixel: evt position) x/ w.
-	newValue := (newValue min: 1) max: 0.
+	newValue := newValue min: 1 max: 0.
 	value := newValue.
 	self valueFromModel: value.
 	self resizeSlider: evt.
