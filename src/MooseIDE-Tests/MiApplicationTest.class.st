@@ -82,3 +82,9 @@ MiApplicationTest >> testDeleteBusNamed [
 	self deny: (self application buses includes: bus).
 	self assert: self application buses size equals: initialSize - 1
 ]
+
+{ #category : #tests }
+MiApplicationTest >> testLogger [
+	self assert: (self application logger isKindOf: MiLogger).
+	self assert: self application defaultBus logger equals: self application logger
+]
