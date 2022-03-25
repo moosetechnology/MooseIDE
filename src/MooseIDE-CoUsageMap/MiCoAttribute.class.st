@@ -45,7 +45,7 @@ MiCoAttribute >> numberOfUsesOn: aMiCoMethod [
 MiCoAttribute >> printForMethod: aMicoMethod on: stream [
 	| n numberOfUsers containerName |
 	stream 
-		<< 'Accesses for ';
+		<< 'Links for ';
 		<< name;
 		<< ':';
 		crlf; crlf.
@@ -53,7 +53,7 @@ MiCoAttribute >> printForMethod: aMicoMethod on: stream [
 	n printOn: stream.
 	containerName := self methodName.
 	stream 
-		<< ' access from this ';
+		<< ' links from this ';
 		<< containerName;
 		<< '(';
 		<< aMicoMethod name;
@@ -65,7 +65,7 @@ MiCoAttribute >> printForMethod: aMicoMethod on: stream [
 	stream crlf.
 	n printOn: stream.
 	
-	stream << ' access from '.
+	stream << ' links from '.
 	numberOfUsers printOn: stream.
 	stream << ' local '; << containerName.
 	
