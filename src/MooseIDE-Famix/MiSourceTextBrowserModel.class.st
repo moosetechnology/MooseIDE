@@ -20,9 +20,12 @@ Class {
 
 { #category : #highlights }
 MiSourceTextBrowserModel >> addErrorHighlightInterval: anInterval [
-	self addHighlight: (MiSourceTextErrorHighlight new
+	| highlight |
+	highlight := MiSourceTextErrorHighlight new
 		interval: anInterval ;
-		yourself)
+		yourself.
+	self addHighlight: highlight.
+	^highlight
 ]
 
 { #category : #highlights }
@@ -31,26 +34,37 @@ MiSourceTextBrowserModel >> addHighlight: aSourceTextHighlight [
 ]
 
 { #category : #highlights }
-MiSourceTextBrowserModel >> addIdentifierHighlightFor: aChildEntity interval: childInterval in: aString [
-	self addHighlight: (MiSourceTextIdentifierHighlight new
+MiSourceTextBrowserModel >> addIdentifierHighlightFor: aChildEntity interval: childInterval [
+	| highlight |
+	highlight := MiSourceTextIdentifierHighlight new
 		highlightedEntity: aChildEntity ;
-		setInterval: childInterval in: aString ;
-		yourself)
+		interval: childInterval ;
+		restrictIntervalTo: aChildEntity name in: self displayedText ;
+		yourself.
+	self addHighlight: highlight.
+	^highlight 
 ]
 
 { #category : #highlights }
 MiSourceTextBrowserModel >> addNullHighlightFor: aChildEntity [
-	self addHighlight: (MiSourceTextNullHighlight new
+	| highlight |
+	highlight := MiSourceTextNullHighlight new
 		highlightedEntity: aChildEntity;
-		yourself)
+		yourself.
+	self addHighlight: highlight.
+	^highlight
 ]
 
 { #category : #highlights }
 MiSourceTextBrowserModel >> addTagHighlightFor: aChildEntity interval: childInterval [
-	self addHighlight: (MiSourceTextTagHighlight new
+	| highlight |
+	highlight := MiSourceTextTagHighlight new
 		highlightedEntity: aChildEntity ;
 		interval: childInterval ;
-		yourself)
+		yourself.
+	self addHighlight: highlight.
+	^highlight
+
 ]
 
 { #category : #accessing }
@@ -93,31 +107,77 @@ MiSourceTextBrowserModel >> formatSource: aString [
 { #category : #highlights }
 MiSourceTextBrowserModel >> gatherHighlights [
 	self displayedEntity children do: [ :child |
-		self gatherHighlightsFor: child
+		self gatherHighlightsForEntity: child
 	]
 ]
 
 { #category : #highlights }
-MiSourceTextBrowserModel >> gatherHighlightsFor: aChildEntity [
+MiSourceTextBrowserModel >> gatherHighlightsForEntity: aChildEntity [
 
 	self displayedEntity sourceAnchor
 	ifNotNil: [ :referenceAnchor |
-		(referenceAnchor textIntervalForChild: aChildEntity)
+		(self identifierIntervalFor: aChildEntity inside: referenceAnchor)
 		ifNotNil: [ :childInterval | 
-			self addIdentifierHighlightFor: aChildEntity interval: childInterval in: displayedText.
-			aChildEntity children do: [ :childChild |
-				self gatherHighlightsFor: childChild
-			].
+			self addIdentifierHighlightFor: aChildEntity interval: childInterval.
 			aChildEntity tags do: [ :childTag |
-				self addTagHighlightFor: childTag interval: childInterval.
-			].
-		]
+				(self addTagHighlightFor: childTag interval: childInterval)
+					restrictIntervalTo: aChildEntity name in: self displayedText.
+			]
+		].
+		aChildEntity children do: [ :childChild |
+			self gatherHighlightsForEntity: childChild ].
+
+		aChildEntity queryAllOutgoing do: [:mseAssoc |
+			mseAssoc allTargets do: [ :target |
+				target tags do: [ :assocTag |
+					(referenceAnchor textIntervalForChild: mseAssoc)
+					ifNotNil: [ :assocInterval |
+						self addTagHighlightFor: assocTag interval: assocInterval.
+					]
+				]
+			]
+		].
+		"-- Not sure, but it may be that highlighting associations (just above) is enough --
+
+		aChildEntity outgoingMSEProperties do: [:prop |
+			prop isChildrenProperty ifFalse: [
+				prop isContainer ifFalse: [ 
+					(aChildEntity perform: (prop implementingSelector)) do: [ :assoc |
+						assoc allTargets do: [ :target |
+							target tags do: [ :assocTag |
+								(referenceAnchor textIntervalForChild: assoc)
+								ifNotNil: [ :assocInterval |
+									self addTagHighlightFor: assocTag interval: assocInterval.
+								]
+							]
+						]
+					]
+				]
+			]
+		]"
 	]
 ]
 
 { #category : #accessing }
 MiSourceTextBrowserModel >> highlights [
 	^highlights
+]
+
+{ #category : #highlights }
+MiSourceTextBrowserModel >> identifierIntervalFor: aChildEntity inside: referenceAnchor [
+	"returns the interval in #displayedText for the 1st line containing aChildEntity identifier
+	 referenceanchor is the anchor of the #displayedEntity and is used to find where aChildEntity
+	 is within #displayedText"
+	^(referenceAnchor textIntervalForChild: aChildEntity)
+	ifNotNil: [ :childInterval | | childStart |
+		childStart := displayedText
+			findString: aChildEntity name
+			startingAt: childInterval first.
+
+		Interval
+			from: childStart
+			to: (childStart + aChildEntity name size - 1)
+  ]
 ]
 
 { #category : #initialization }

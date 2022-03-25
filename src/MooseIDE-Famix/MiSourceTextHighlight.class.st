@@ -54,6 +54,21 @@ MiSourceTextHighlight >> interval: anObject [
 	interval := anObject
 ]
 
+{ #category : #api }
+MiSourceTextHighlight >> restrictIntervalTo: aName in: aString [
+	"sets the interval to the 1st line containing aName in aString"
+	| myStart |
+	myStart := aString
+		findString: aName
+		startingAt: interval first.
+
+	self interval:
+		(Interval
+			from: myStart
+			to: (myStart + aName size - 1))
+
+]
+
 { #category : #accessing }
 MiSourceTextHighlight >> to [
 
