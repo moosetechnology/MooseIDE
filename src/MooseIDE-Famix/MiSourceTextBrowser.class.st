@@ -17,11 +17,11 @@ Class {
 	#category : #'MooseIDE-Famix-SourceText'
 }
 
-{ #category : #layout }
+{ #category : #specs }
 MiSourceTextBrowser class >> defaultLayout [
 	^super defaultLayout
 		add: #toolBarExternalEditor height: self toolbarHeight ;
-		add: #sourceText expand: true ;
+		add: #textRenderer expand: true ;
 		yourself
 ]
 
