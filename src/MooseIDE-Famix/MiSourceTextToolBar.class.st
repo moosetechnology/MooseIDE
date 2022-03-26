@@ -1,3 +1,8 @@
+"
+A spec presenter for the toolbar of external editors
+
+It looks for availableMiSourceTextExternalEditors, offer the choice to the user and can send the code of the displayed entity (in the browser) to this external editor, either on demand or automatically
+"
 Class {
 	#name : #MiSourceTextToolBar,
 	#superclass : #SpPresenter,
@@ -24,7 +29,7 @@ MiSourceTextToolBar >> autoTransmit: aBoolean [
 
 { #category : #action }
 MiSourceTextToolBar >> editExternally [
-	sourceTextBrowser sendTextTo: self externalEditor
+	sourceTextBrowser editExternally: self externalEditor
 ]
 
 { #category : #accessing }

@@ -1,8 +1,18 @@
+"
+Abstract class for all highlights that we may apply on a portion of text.
+
+These highlights are ""conceptual"" (e.g. ErrorHighlight)
+How these highlights are displayed depends on the MiSourceTextXXXRenderer
+
+An highlight applies:
+- on a #referenceSource text
+- from a #highlightesEntity
+- on an #interval (from/to) of this text
+"
 Class {
 	#name : #MiSourceTextHighlight,
 	#superclass : #Object,
 	#instVars : [
-		'referenceSource',
 		'interval',
 		'highlightedEntity'
 	],
@@ -10,7 +20,7 @@ Class {
 }
 
 { #category : #formatting }
-MiSourceTextHighlight >> apply [
+MiSourceTextHighlight >> applyTo: aRenderer [
 	self subclassResponsibility 
 ]
 
@@ -44,38 +54,19 @@ MiSourceTextHighlight >> interval: anObject [
 	interval := anObject
 ]
 
-{ #category : #formatting }
-MiSourceTextHighlight >> rawText [
-	^self referenceText copyFrom: self from to: self to
-]
+{ #category : #api }
+MiSourceTextHighlight >> restrictIntervalTo: aName in: aString [
+	"sets the interval to the 1st line containing aName in aString"
+	| myStart |
+	myStart := aString
+		findString: aName
+		startingAt: interval first.
 
-{ #category : #accessing }
-MiSourceTextHighlight >> referenceEntity [
-	^self referenceSource referenceEntity
-]
+	self interval:
+		(Interval
+			from: myStart
+			to: (myStart + aName size - 1))
 
-{ #category : #accessing }
-MiSourceTextHighlight >> referenceSource [
-
-	^ referenceSource
-]
-
-{ #category : #accessing }
-MiSourceTextHighlight >> referenceSource: anObject [
-
-	referenceSource := anObject.
-	referenceSource addHighlight: self
-]
-
-{ #category : #accessing }
-MiSourceTextHighlight >> referenceText [
-	^self referenceSource referenceText
-]
-
-{ #category : #accessing }
-MiSourceTextHighlight >> textBrowser [
-
-	^ self referenceSource textBrowser
 ]
 
 { #category : #accessing }
