@@ -21,6 +21,7 @@ MiQueryConfiguratorPresenter >> computeQueryAction: anObject [
 
 	[ owner enableProgressNotification ] asJob run.
 	self computeQuery: anObject.
+	self root application consumeItem: query.
 	self notifyQueryChanged.
 	owner disableProgressNotification
 ]
