@@ -124,6 +124,7 @@ MiTagManagementPage >> initializePresenters [
 		yourself.
 
 	tagList := self newList.
+	tagList contextMenu: self tagListMenu.
 	tagList display: [ :aTag | aTag name ].
 	tagList
 		displayIcon: [ :aTag | self tagModel class iconForTag: aTag ];
@@ -235,6 +236,24 @@ MiTagManagementPage >> setTagTo: aTag [
 MiTagManagementPage >> tagList [
 
 	^ tagList
+]
+
+{ #category : #initialization }
+MiTagManagementPage >> tagListMenu [
+
+	^ self newMenu
+		  addGroup: [ :aGroup | 
+			  aGroup
+				  addItem: [ :anItem | 
+					  anItem
+						  name: 'Edit tag';
+						  iconName: #edit;
+						  action: [ self editCurrentTag ] ];
+				  addItem: [ :anItem | 
+					  anItem
+						  name: 'Delete';
+						  iconName: #glamorousClose;
+						  action: [ self deleteCurrentTag ] ] ]
 ]
 
 { #category : #accessing }
