@@ -27,8 +27,12 @@ MiTagManagementPage >> addTagButton [
 { #category : #initialization }
 MiTagManagementPage >> connectPresenters [
 
-	btnIsExtent action: [ self refreshTagList ].
-	btnIsIntent action: [ self refreshTagList ]
+	btnIsExtent whenChangedDo: [ 
+		self setIconForButton: btnIsExtent.
+		self refreshTagList ].
+	btnIsIntent whenChangedDo: [ 
+		self setIconForButton: btnIsIntent.
+		self refreshTagList ]
 ]
 
 { #category : #action }
@@ -89,9 +93,9 @@ MiTagManagementPage >> initializeLayout [
 							   spacing: 3;
 							   add: btnIsExtent;
 							   add: btnIsIntent;
+							   add: addTagButton width: 30;
 							   yourself)
 					  expand: false;
-					  add: addTagButton height: 25;
 					  add: tagList;
 					  yourself)
 			 width: 200;
@@ -116,10 +120,12 @@ MiTagManagementPage >> initializePresenters [
 
 	btnIsExtent := self newToggleButton
 		state: true;
+		icon: (Smalltalk ui icons iconNamed: #checkboxSelected);
 		label: 'Extent';
 		yourself.
 	btnIsIntent := self newToggleButton
 		state: false;
+		icon: (Smalltalk ui icons iconNamed: #checkboxUnselected);
 		label: 'Intent';
 		yourself.
 
@@ -213,6 +219,14 @@ MiTagManagementPage >> removeCategory [
 
 	self tagModel deleteCurrentCategory.
 	self refreshCategoryList
+]
+
+{ #category : #initialization }
+MiTagManagementPage >> setIconForButton: aBtn [
+
+	aBtn icon: (Smalltalk ui icons iconNamed: (aBtn state
+				  ifTrue: [ #checkboxSelected ]
+				  ifFalse: [ #checkboxUnselected ]))
 ]
 
 { #category : #initialization }
