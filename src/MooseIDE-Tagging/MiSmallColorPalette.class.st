@@ -72,7 +72,9 @@ MiSmallColorPalette >> initializePresenters [
 		                  yourself.
 	paletteDropList := self newDropList
 		                   help: 'Select a palette';
-		                   items: RSColorPalette allSubclasses;
+		                   items:
+			                   (RSColorPalette allSubclasses sort: [ :a :b | 
+					                    a name < b name ]);
 		                   display: [ :paletteClass | 
 			                   paletteClass paletteName ];
 		                   whenSelectedItemChangedDo: [ :palette | 
@@ -108,7 +110,7 @@ MiSmallColorPalette >> setPalette: selectedItem [
 
 	currentPalette := selectedItem.
 	hueSetDropList
-		items: currentPalette methods;
+		items: (currentPalette methods sort: [ :a :b | a name < b name ]);
 		selectIndex: (currentPalette = RSQualitativeColorPalette
 				 ifTrue: [ 21 ]
 				 ifFalse: [ 1 ])
