@@ -7,7 +7,7 @@ Class {
 { #category : #running }
 MiHierarchicalMapBrowserTest >> browserClass [
 
-	^ MiHierarchicalMapBrowser
+	^ MiArchitecturalMapBrowser
 ]
 
 { #category : #tests }

@@ -2,7 +2,7 @@
 I am a browser that display a hieracical map.
 "
 Class {
-	#name : #MiHierarchicalMapBrowser,
+	#name : #MiArchitecturalMapBrowser,
 	#superclass : #MiAbstractBrowser,
 	#instVars : [
 		'visualization',
@@ -11,17 +11,17 @@ Class {
 		'settings',
 		'tagCreateForm'
 	],
-	#category : #'MooseIDE-Dependency-HierarchicalMap'
+	#category : #'MooseIDE-Dependency-ArchitecturalMap'
 }
 
 { #category : #accessing }
-MiHierarchicalMapBrowser class >> mapClass [
+MiArchitecturalMapBrowser class >> mapClass [
 
-	^ MiHierarchicalMap
+	^ MiArchitecturalMap
 ]
 
 { #category : #'world menu' }
-MiHierarchicalMapBrowser class >> menuCommandOn: aBuilder [
+MiArchitecturalMapBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	<miBrowsers>
 	^(aBuilder item: #HierarchicalMapBrowser)
@@ -34,38 +34,38 @@ MiHierarchicalMapBrowser class >> menuCommandOn: aBuilder [
 ]
 
 { #category : #'instance creation' }
-MiHierarchicalMapBrowser class >> newModel [
+MiArchitecturalMapBrowser class >> newModel [
 
-	^ MiHierarchicalMapModel new
+	^ MiArchitecturalMapModel new
 ]
 
 { #category : #accessing }
-MiHierarchicalMapBrowser class >> open [
+MiArchitecturalMapBrowser class >> open [
 	<script>
 	super open
 ]
 
 { #category : #accessing }
-MiHierarchicalMapBrowser class >> title [
+MiArchitecturalMapBrowser class >> title [
 
-	^ 'Hierarchical map'
+	^ 'Architectural map'
 ]
 
 { #category : #accessing }
-MiHierarchicalMapBrowser class >> windowSize [
+MiArchitecturalMapBrowser class >> windowSize [
 
 	^ 850 @ 520
 ]
 
 { #category : #adding }
-MiHierarchicalMapBrowser >> addDynamicTags: aCollection [
+MiArchitecturalMapBrowser >> addDynamicTags: aCollection [
 
 	aCollection do: [ :dt | self model addDynamicTag: dt ].
 	settings refreshTagList
 ]
 
 { #category : #initialization }
-MiHierarchicalMapBrowser >> browserClosed [
+MiArchitecturalMapBrowser >> browserClosed [
 
 	super browserClosed.
 	application unregisterConsumer: self.
@@ -73,37 +73,37 @@ MiHierarchicalMapBrowser >> browserClosed [
 ]
 
 { #category : #actions }
-MiHierarchicalMapBrowser >> canFollowEntity: anEntity [
+MiArchitecturalMapBrowser >> canFollowEntity: anEntity [
 
 	^ anEntity isMooseObject
 ]
 
 { #category : #testing }
-MiHierarchicalMapBrowser >> canReceiveEntity: anEntity [
+MiArchitecturalMapBrowser >> canReceiveEntity: anEntity [
 
 	^ anEntity isMooseObject
 ]
 
 { #category : #initialization }
-MiHierarchicalMapBrowser >> canvas [
+MiArchitecturalMapBrowser >> canvas [
 
 	^ visualization canvas
 ]
 
 { #category : #initialization }
-MiHierarchicalMapBrowser >> closeTagCreationForm [
+MiArchitecturalMapBrowser >> closeTagCreationForm [
 
 	self layout replace: tagCreateForm with: settings
 ]
 
 { #category : #brokerage }
-MiHierarchicalMapBrowser >> consume: aTag [
+MiArchitecturalMapBrowser >> consume: aTag [
 
 	settings setTags
 ]
 
 { #category : #actions }
-MiHierarchicalMapBrowser >> followEntity: anEntity [
+MiArchitecturalMapBrowser >> followEntity: anEntity [
 
 	model entities: anEntity asMooseGroup.
 	settings updateSettings.
@@ -111,19 +111,19 @@ MiHierarchicalMapBrowser >> followEntity: anEntity [
 ]
 
 { #category : #testing }
-MiHierarchicalMapBrowser >> hasSettings [
+MiArchitecturalMapBrowser >> hasSettings [
 
 	^ true
 ]
 
 { #category : #actions }
-MiHierarchicalMapBrowser >> hideMenu [
+MiArchitecturalMapBrowser >> hideMenu [
 
 	self layout child: visualization
 ]
 
 { #category : #initialization }
-MiHierarchicalMapBrowser >> initialize [
+MiArchitecturalMapBrowser >> initialize [
 
 	super initialize.
 	application registerConsumer: self for: FamixTag.
@@ -131,29 +131,29 @@ MiHierarchicalMapBrowser >> initialize [
 ]
 
 { #category : #initialization }
-MiHierarchicalMapBrowser >> initializeLayout [
+MiArchitecturalMapBrowser >> initializeLayout [
 
 	self layout: (SpScrollableLayout with: visualization)
 ]
 
 { #category : #initialization }
-MiHierarchicalMapBrowser >> initializePresenters [
+MiArchitecturalMapBrowser >> initializePresenters [
 
 	visualization := self class mapClass owner: self.
-	settings := MiHierarchicalMapSettings owner: self.
+	settings := MiArchitecturalMapSettings owner: self.
 	settings setTags.
 	tagCreateForm := MiDynamicTagSelectionForm owner: self.
 	self initializeLayout
 ]
 
 { #category : #accessing }
-MiHierarchicalMapBrowser >> miSelectedItem [
+MiArchitecturalMapBrowser >> miSelectedItem [
 
 	^ model entities mooseInterestingEntity
 ]
 
 { #category : #initialization }
-MiHierarchicalMapBrowser >> openTagCreationForm [
+MiArchitecturalMapBrowser >> openTagCreationForm [
 
 	tagCreateForm setTags.
 	self layout replace: settings with: tagCreateForm.
@@ -161,31 +161,31 @@ MiHierarchicalMapBrowser >> openTagCreationForm [
 ]
 
 { #category : #brokerage }
-MiHierarchicalMapBrowser >> remove: aTag [
+MiArchitecturalMapBrowser >> remove: aTag [
 
 	tagCreateForm removeTag: aTag
 ]
 
 { #category : #accessing }
-MiHierarchicalMapBrowser >> settings [
+MiArchitecturalMapBrowser >> settings [
 
 	self showMenu
 ]
 
 { #category : #accessing }
-MiHierarchicalMapBrowser >> settingsPresenter [
+MiArchitecturalMapBrowser >> settingsPresenter [
 
 	^ settings
 ]
 
 { #category : #actions }
-MiHierarchicalMapBrowser >> showMenu [
+MiArchitecturalMapBrowser >> showMenu [
 
 	self layout child: settings
 ]
 
 { #category : #actions }
-MiHierarchicalMapBrowser >> toggleMenu [
+MiArchitecturalMapBrowser >> toggleMenu [
 
 	(self layout presenters includes: settings)
 		ifTrue: [ self hideMenu ]
@@ -193,7 +193,7 @@ MiHierarchicalMapBrowser >> toggleMenu [
 ]
 
 { #category : #initialization }
-MiHierarchicalMapBrowser >> visualization [
+MiArchitecturalMapBrowser >> visualization [
 
 	^ visualization
 ]

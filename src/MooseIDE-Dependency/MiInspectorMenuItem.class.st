@@ -1,7 +1,7 @@
 Class {
 	#name : #MiInspectorMenuItem,
 	#superclass : #HAbstractMenuItem,
-	#category : #'MooseIDE-Dependency-HierarchicalMap'
+	#category : #'MooseIDE-Dependency-ArchitecturalMap'
 }
 
 { #category : #accessing }

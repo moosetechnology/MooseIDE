@@ -5,7 +5,7 @@ I am responsible for:
 - holding elements to display on the hierarchical map.
 "
 Class {
-	#name : #MiHierarchicalMapModel,
+	#name : #MiArchitecturalMapModel,
 	#superclass : #Object,
 	#instVars : [
 		'entities',
@@ -17,11 +17,11 @@ Class {
 		'colorPalette',
 		'assocTypeToColorDict'
 	],
-	#category : #'MooseIDE-Dependency-HierarchicalMap'
+	#category : #'MooseIDE-Dependency-ArchitecturalMap'
 }
 
 { #category : #'as yet unclassified' }
-MiHierarchicalMapModel class >> defaultDynamicTagIsDead [
+MiArchitecturalMapModel class >> defaultDynamicTagIsDead [
 
 	^ MiDynamicTag new
 		  color: Color black ;
@@ -31,7 +31,7 @@ MiHierarchicalMapModel class >> defaultDynamicTagIsDead [
 ]
 
 { #category : #'as yet unclassified' }
-MiHierarchicalMapModel class >> defaultDynamicTagIsStub [
+MiArchitecturalMapModel class >> defaultDynamicTagIsStub [
 
 	^ MiDynamicTag new
 		  color: Color yellow ;
@@ -41,7 +41,7 @@ MiHierarchicalMapModel class >> defaultDynamicTagIsStub [
 ]
 
 { #category : #'as yet unclassified' }
-MiHierarchicalMapModel class >> defaultDynamicTags [
+MiArchitecturalMapModel class >> defaultDynamicTags [
 
 	^ { 
 		  self defaultDynamicTagIsStub .
@@ -49,19 +49,19 @@ MiHierarchicalMapModel class >> defaultDynamicTags [
 ]
 
 { #category : #accessing }
-MiHierarchicalMapModel >> assocTypeToColorDict [
+MiArchitecturalMapModel >> assocTypeToColorDict [
 
 	^ assocTypeToColorDict
 ]
 
 { #category : #accessing }
-MiHierarchicalMapModel >> associationTypes [
+MiArchitecturalMapModel >> associationTypes [
 
 	^ associationTypes
 ]
 
 { #category : #accessing }
-MiHierarchicalMapModel >> associationTypes: aCollection [
+MiArchitecturalMapModel >> associationTypes: aCollection [
 
 	
 	associationTypes := aCollection.
@@ -73,55 +73,55 @@ MiHierarchicalMapModel >> associationTypes: aCollection [
 ]
 
 { #category : #accessing }
-MiHierarchicalMapModel >> childrenBlock [
+MiArchitecturalMapModel >> childrenBlock [
 
 	^ childrenBlock
 ]
 
 { #category : #accessing }
-MiHierarchicalMapModel >> childrenBlock: anObject [
+MiArchitecturalMapModel >> childrenBlock: anObject [
 
 	childrenBlock := anObject
 ]
 
 { #category : #accessing }
-MiHierarchicalMapModel >> childrenFor: anEntity [
+MiArchitecturalMapModel >> childrenFor: anEntity [
 
 	^ childrenQuery runOn: anEntity asMooseGroup
 ]
 
 { #category : #accessing }
-MiHierarchicalMapModel >> childrenQuery [
+MiArchitecturalMapModel >> childrenQuery [
 
 	^ childrenQuery
 ]
 
 { #category : #accessing }
-MiHierarchicalMapModel >> childrenQuery: anObject [
+MiArchitecturalMapModel >> childrenQuery: anObject [
 
 	childrenQuery := anObject
 ]
 
 { #category : #private }
-MiHierarchicalMapModel >> colorFor: anEntity [
+MiArchitecturalMapModel >> colorFor: anEntity [
 
 	^ Color gray
 ]
 
 { #category : #accessing }
-MiHierarchicalMapModel >> entities [
+MiArchitecturalMapModel >> entities [
 
 	^ entities
 ]
 
 { #category : #accessing }
-MiHierarchicalMapModel >> entities: anObject [
+MiArchitecturalMapModel >> entities: anObject [
 
 	entities := anObject
 ]
 
 { #category : #accessing }
-MiHierarchicalMapModel >> initialize [
+MiArchitecturalMapModel >> initialize [
 
 	super initialize.
 	showAllLinks := false.
@@ -131,25 +131,25 @@ MiHierarchicalMapModel >> initialize [
 ]
 
 { #category : #accessing }
-MiHierarchicalMapModel >> showAllLinks [
+MiArchitecturalMapModel >> showAllLinks [
 
 	^ showAllLinks
 ]
 
 { #category : #accessing }
-MiHierarchicalMapModel >> showAllLinks: anObject [
+MiArchitecturalMapModel >> showAllLinks: anObject [
 
 	showAllLinks := anObject
 ]
 
 { #category : #accessing }
-MiHierarchicalMapModel >> tags [
+MiArchitecturalMapModel >> tags [
 
 	^ tags
 ]
 
 { #category : #accessing }
-MiHierarchicalMapModel >> tags: anObject [
+MiArchitecturalMapModel >> tags: anObject [
 
 	tags := anObject
 ]
