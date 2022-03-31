@@ -28,7 +28,21 @@ Class {
 MiPropertyQueryPresenter >> configureFor: aQuery [
 
 	query := aQuery.
-	aQuery isValid ifTrue: [ self initializePresentersForValidQuery ]
+	self initializePresentersForValidQuery.
+
+	self configurePropertyDroplistFor: aQuery
+]
+
+{ #category : #'api - actions' }
+MiPropertyQueryPresenter >> configurePropertyDroplistFor: aQuery [
+
+	| queryProperty |
+	queryProperty := aQuery property.
+
+	(propertyDropList items includes: queryProperty) ifFalse: [ 
+		propertyDropList items: propertyDropList items , { queryProperty } ].
+
+	propertyDropList selectItem: queryProperty
 ]
 
 { #category : #initialization }

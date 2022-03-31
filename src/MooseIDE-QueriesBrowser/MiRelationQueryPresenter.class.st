@@ -19,9 +19,9 @@ MiRelationQueryPresenter class >> title [
 { #category : #'api - actions' }
 MiRelationQueryPresenter >> configureFor: aQuery [
 
+	query := aQuery.
 	relationsList selectItem: aQuery relationName.
-	query relationName: aQuery relationName.
-	query := aQuery
+	query relationName: aQuery relationName
 ]
 
 { #category : #actions }
@@ -38,18 +38,25 @@ MiRelationQueryPresenter >> initializePresenters [
 ]
 
 { #category : #initialization }
+MiRelationQueryPresenter >> initializeRelationDroplistForValidQueryRelations: relationNames [
+
+	^ self newDropList
+		  startWithoutSelection;
+		  items: relationNames;
+		  whenSelectedItemChangedDo: [ :selectedRelationName | 
+			  self computeQueryAction: selectedRelationName ]
+]
+
+{ #category : #initialization }
 MiRelationQueryPresenter >> initializeRelationsDropList [
 
 	relationsList := self query availableRelationNames
 		                 ifEmpty: [ 
 		                 self noParameterMessage: 'No relations available' ]
 		                 ifNotEmpty: [ :relationNames | 
-			                 self newDropList
-				                 startWithoutSelection;
-				                 items: relationNames;
-				                 whenSelectedItemChangedDo: [ 
-					                 :selectedRelationName | 
-					                 self computeQueryAction: selectedRelationName ] ]
+			                 self 
+				                 initializeRelationDroplistForValidQueryRelations:
+				                 relationNames ]
 ]
 
 { #category : #layout }

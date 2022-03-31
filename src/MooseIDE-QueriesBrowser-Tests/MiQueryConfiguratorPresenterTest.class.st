@@ -31,6 +31,14 @@ MiQueryConfiguratorPresenterTest >> createNewQuery [
 	self subclassResponsibility
 ]
 
+{ #category : #tests }
+MiQueryConfiguratorPresenterTest >> createNewQueryWithoutInput [
+
+	^ self createNewQuery
+		  parent: FQRootQuery new;
+		  yourself
+]
+
 { #category : #running }
 MiQueryConfiguratorPresenterTest >> queryClass [
 	^ self subclassResponsibility
@@ -81,6 +89,25 @@ MiQueryConfiguratorPresenterTest >> testConfigureFor [
 	
 	presenter := browser queriesListPresenter queryItemsPresenters last queryConfiguratorPresenter.
 	
+	self assertSubpresentersAreConfigured.
+	self assert: presenter query equals: newQuery
+]
+
+{ #category : #tests }
+MiQueryConfiguratorPresenterTest >> testConfigureForWithNoEntities [
+
+	| newQuery |
+	browser queriesListPresenter reinitializeQueryPresenters.
+
+	newQuery := self createNewQueryWithoutInput.
+
+	browser queriesListPresenter addNewFirstLevelQuery.
+	browser queriesListPresenter queryItemsPresenters last configureFor:
+		newQuery.
+
+	presenter := browser queriesListPresenter queryItemsPresenters last
+		             queryConfiguratorPresenter.
+
 	self assertSubpresentersAreConfigured.
 	self assert: presenter query equals: newQuery
 ]

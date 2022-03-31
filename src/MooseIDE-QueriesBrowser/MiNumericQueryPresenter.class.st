@@ -12,10 +12,8 @@ MiNumericQueryPresenter >> configureFor: aQuery [
 
 	super configureFor: aQuery.
 
-	propertyDropList selectItem: aQuery property.
 	comparatorDropList selectItem: aQuery comparator.
-	valueInputField number: aQuery valueToCompare.
-	query := aQuery
+	valueInputField number: aQuery valueToCompare
 ]
 
 { #category : #actions }

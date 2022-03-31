@@ -7,15 +7,6 @@ Class {
 	#category : #'MooseIDE-QueriesBrowser-Configuration presenters'
 }
 
-{ #category : #'api - actions' }
-MiBooleanQueryPresenter >> configureFor: aQuery [
-
-	super configureFor: aQuery.
-
-	propertyDropList selectItem: aQuery property.
-	query := aQuery
-]
-
 { #category : #actions }
 MiBooleanQueryPresenter >> configureQuery: aProperty [
 
