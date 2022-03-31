@@ -11,8 +11,6 @@ Class {
 	#instVars : [
 		'componentListPresenter',
 		'queryCounter',
-		'progressNotificationPresenter',
-		'spinnerMorph',
 		'queryItemsPresenters',
 		'loadQueriesButton',
 		'loadQueriesList',
@@ -76,38 +74,6 @@ MiQueriesListPresenter >> createNewQueryPresenter: query [
 	^ newPresenter
 ]
 
-{ #category : #'api - actions' }
-MiQueriesListPresenter >> disableProgressNotification [
-
-	progressNotificationPresenter := SpNullPresenter new.
-	spinnerMorph delete.
-	self initializeLayout
-]
-
-{ #category : #'api - actions' }
-MiQueriesListPresenter >> enableProgressNotification [
-
-	| queriesBrowserMorph font morph |
-	font := LogicalFont
-			familyName: StandardFonts defaultFont familyName
-			pointSize: 12.
-	morph := StringMorph
-			contents: 'Computing...'
-			font: font
-			emphasis: TextEmphasis italic.
-	progressNotificationPresenter := SpMorphPresenter new
-			morph: (PanelMorph new
-				addMorphFront: morph;
-				yourself);
-			yourself.
-	queriesBrowser window ifNotNil: [ 
-		queriesBrowserMorph := queriesBrowser window window.
-		spinnerMorph position:
-			queriesBrowserMorph extent / 2 + queriesBrowserMorph position.
-		spinnerMorph openInWorld ].
-	self initializeLayout
-]
-
 { #category : #accessing }
 MiQueriesListPresenter >> famixQueries [
 
@@ -154,10 +120,10 @@ MiQueriesListPresenter >> initializeComponentListPresenter [
 MiQueriesListPresenter >> initializeLayout [
 
 	self layout: (SpBoxLayout newTopToBottom
-		add: queryToolBar expand: false;
-		add: componentListPresenter;
-		add: progressNotificationPresenter expand: false;
-		yourself)
+			 spacing: 1;
+			 add: queryToolBar expand: false;
+			 add: componentListPresenter;
+			 yourself)
 ]
 
 { #category : #initialization }
@@ -165,16 +131,8 @@ MiQueriesListPresenter >> initializePresenters [
 
 	queryItemsPresenters := OrderedCollection empty.
 	self initializeComponentListPresenter.
-	self initializeProgressPresenter.
 	self initializeQueryToolbar.
 	self initializeLayout
-]
-
-{ #category : #initialization }
-MiQueriesListPresenter >> initializeProgressPresenter [
-
-	progressNotificationPresenter := SpNullPresenter new.
-	spinnerMorph := SpSpinnerMorph new
 ]
 
 { #category : #initialization }

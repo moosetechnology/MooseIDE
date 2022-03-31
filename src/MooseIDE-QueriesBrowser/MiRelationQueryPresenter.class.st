@@ -16,18 +16,18 @@ MiRelationQueryPresenter class >> title [
 	^ 'Relation Query'
 ]
 
-{ #category : #actions }
-MiRelationQueryPresenter >> computeQuery: anObject [
-
-	self query relationName: anObject
-]
-
 { #category : #'api - actions' }
 MiRelationQueryPresenter >> configureFor: aQuery [
 
 	relationsList selectItem: aQuery relationName.
 	query relationName: aQuery relationName.
 	query := aQuery
+]
+
+{ #category : #actions }
+MiRelationQueryPresenter >> configureQuery: anObject [
+
+	self query relationName: anObject
 ]
 
 { #category : #initialization }

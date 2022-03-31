@@ -78,18 +78,6 @@ MiQueryListItemPresenter >> configureFor: aQuery [
 	queryConfiguratorPresenter configureFor: aQuery
 ]
 
-{ #category : #'api - actions' }
-MiQueryListItemPresenter >> disableProgressNotification [
-
-	queriesListPresenter disableProgressNotification
-]
-
-{ #category : #'api - actions' }
-MiQueryListItemPresenter >> enableProgressNotification [
-
-	queriesListPresenter enableProgressNotification
-]
-
 { #category : #accessing }
 MiQueryListItemPresenter >> indentationSpacesPresenters [
 

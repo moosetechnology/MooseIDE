@@ -37,7 +37,6 @@ MiTypeQueryPresenterTest >> testImpossibleQueryInitialization [
 
 	self resetPresenterWithEntities: helper noEntities.
 	self assert: presenter query class identicalTo: self queryClass.
-	"Famix queries changed. Now the type query can be empty and can have no types."
 	self deny: presenter query isValid
 ]
 

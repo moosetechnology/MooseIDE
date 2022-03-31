@@ -10,6 +10,15 @@ Class {
 	#category : #'MooseIDE-QueriesBrowser-Commands'
 }
 
+{ #category : #'as yet unclassified' }
+MiSaveQueriesCommand class >> chooseStonFiles [
+
+	UIManager default
+		chooseForSaveFileReference: 'Choose directory'
+		extensions: #( 'ston' )
+		path: self class path asFileReference
+]
+
 { #category : #'accessing - defaults' }
 MiSaveQueriesCommand class >> defaultDescription [
 
@@ -40,8 +49,8 @@ MiSaveQueriesCommand class >> stonFiles [
 	| fileReference allFiles stonFiles |
 	fileReference := self path asFileReference.
 	allFiles := fileReference exists
-		ifTrue: [ fileReference files ]
-		ifFalse: [ #( ) ].
+		            ifTrue: [ fileReference files ]
+		            ifFalse: [ #(  ) ].
 	stonFiles := allFiles select: [ :each | 
 		             each basename endsWith: '.ston' ].
 	^ stonFiles

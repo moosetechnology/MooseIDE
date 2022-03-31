@@ -18,19 +18,19 @@ MiNavigationQueryPresenter class >> title [
 	^ 'Navigation Query'
 ]
 
-{ #category : #actions }
-MiNavigationQueryPresenter >> computeQuery: association [
-
-	self updateQueryWithSelectedAssociations:
-		associationsList selectedItems
-]
-
 { #category : #'api - actions' }
 MiNavigationQueryPresenter >> configureFor: aQuery [
 
 	directionDropList selectItem: aQuery directionStrategy.
 	associationsList selectItems: aQuery associations.
 	query := aQuery
+]
+
+{ #category : #actions }
+MiNavigationQueryPresenter >> configureQuery: association [
+
+	self updateQueryWithSelectedAssociations:
+		associationsList selectedItems
 ]
 
 { #category : #initialization }

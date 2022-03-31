@@ -16,19 +16,22 @@ MiScopeQueryPresenter class >> title [
 	^ 'Scope Query'
 ]
 
-{ #category : #actions }
-MiScopeQueryPresenter >> computeQuery: scope [
-
-	scope ifNil: [ ^ self ].
-	self query scope: scope
-]
-
 { #category : #'api - actions' }
 MiScopeQueryPresenter >> configureFor: aQuery [
 
+	| queryScope |
+	query := aQuery.
+	queryScope := aQuery scope.
 	directionsDropList selectItem: aQuery directionStrategy.
-	scopesDropList selectItem: aQuery scope.
-	query := aQuery
+	self setScopesDropList.
+	scopesDropList selectItem: queryScope
+]
+
+{ #category : #actions }
+MiScopeQueryPresenter >> configureQuery: scope [
+
+	scope ifNil: [ ^ self ].
+	self query scope: scope
 ]
 
 { #category : #initialization }

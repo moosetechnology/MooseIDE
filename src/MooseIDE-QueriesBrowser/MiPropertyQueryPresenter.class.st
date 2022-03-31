@@ -24,20 +24,32 @@ Class {
 	#category : #'MooseIDE-QueriesBrowser-Configuration presenters'
 }
 
+{ #category : #'api - actions' }
+MiPropertyQueryPresenter >> configureFor: aQuery [
+
+	query := aQuery.
+	aQuery isValid ifTrue: [ self initializePresentersForValidQuery ]
+]
+
 { #category : #initialization }
 MiPropertyQueryPresenter >> initializePresenters [
 
 	delayer := InputProcessingWaiter new.
 
 	query availableProperties
-		ifNotEmpty: [ 
-			propertyDropList := self newPropertyDropList.
-			comparatorDropList := self newComparatorDropList.
-			valueInputField := self newValueInputField ]
+		ifNotEmpty: [ self initializePresentersForValidQuery ]
 		ifEmpty: [ 
 			propertyDropList := self noParameterMessage: 'property'.
 			comparatorDropList := self newNullPresenter.
 			valueInputField := self newNullPresenter ]
+]
+
+{ #category : #initialization }
+MiPropertyQueryPresenter >> initializePresentersForValidQuery [
+
+	propertyDropList := self newPropertyDropList.
+	comparatorDropList := self newComparatorDropList.
+	valueInputField := self newValueInputField
 ]
 
 { #category : #initialization }

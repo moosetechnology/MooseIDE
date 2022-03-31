@@ -18,18 +18,18 @@ MiTypeQueryPresenter class >> title [
 	^ 'Type Query'
 ]
 
-{ #category : #actions }
-MiTypeQueryPresenter >> computeQuery: aType [
-
-	self updateQueryWithSelectedTypes: typesList selectedItems
-]
-
 { #category : #'api - actions' }
 MiTypeQueryPresenter >> configureFor: aQuery [
 
 	typesList selectItems: aQuery types.
 	query types: aQuery types.
 	query := aQuery
+]
+
+{ #category : #actions }
+MiTypeQueryPresenter >> configureQuery: aType [
+
+	self updateQueryWithSelectedTypes: typesList selectedItems
 ]
 
 { #category : #initialization }

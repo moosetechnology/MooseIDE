@@ -73,10 +73,14 @@ MiQueryConfiguratorPresenterTest >> testConfigureFor [
 
 	| newQuery |
 	browser queriesListPresenter reinitializeQueryPresenters.
+	
 	newQuery := self createNewQuery.
+	
 	browser queriesListPresenter addNewFirstLevelQuery.
 	browser queriesListPresenter queryItemsPresenters last configureFor: newQuery.
+	
 	presenter := browser queriesListPresenter queryItemsPresenters last queryConfiguratorPresenter.
+	
 	self assertSubpresentersAreConfigured.
 	self assert: presenter query equals: newQuery
 ]

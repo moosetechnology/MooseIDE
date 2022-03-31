@@ -7,17 +7,19 @@ Class {
 	#category : #'MooseIDE-QueriesBrowser-Configuration presenters'
 }
 
-{ #category : #actions }
-MiBooleanQueryPresenter >> computeQuery: aProperty [
-
-	self updateProperty: aProperty
-]
-
 { #category : #'api - actions' }
 MiBooleanQueryPresenter >> configureFor: aQuery [
 
+	super configureFor: aQuery.
+
 	propertyDropList selectItem: aQuery property.
 	query := aQuery
+]
+
+{ #category : #actions }
+MiBooleanQueryPresenter >> configureQuery: aProperty [
+
+	self updateProperty: aProperty
 ]
 
 { #category : #initialization }
@@ -33,7 +35,8 @@ MiBooleanQueryPresenter >> initializePresenters [
 
 { #category : #initialization }
 MiBooleanQueryPresenter >> newComparatorDropList [
-	^ self newNullPresenter 
+
+	^ self newNullPresenter
 ]
 
 { #category : #layout }
@@ -52,7 +55,7 @@ MiBooleanQueryPresenter >> newLayout [
 { #category : #initialization }
 MiBooleanQueryPresenter >> newValueInputField [
 
-	"Boolean queries do not have a value to comapre to (only a comparator: #not or #yourself)"
+	"Boolean queries do not have a value to compare to (only a comparator: #not or #yourself)"
 
 	^ self newNullPresenter
 ]
