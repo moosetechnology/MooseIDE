@@ -80,6 +80,7 @@ MiDynamicTagSelectionForm >> reset [
 MiDynamicTagSelectionForm >> setTags [
 
 	tagList items: ((self root application itemsFor: MiDynamicTag)
+		 , (self root application itemsFor: FamixTag)
 		 \ self owner model dynamicTags) asMooseGroup.
 	tagList refresh
 ]
