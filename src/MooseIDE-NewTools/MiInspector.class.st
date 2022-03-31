@@ -10,6 +10,14 @@ Class {
 	#category : #'MooseIDE-NewTools-Inspector'
 }
 
+{ #category : #initialization }
+MiInspector >> initializePresenters [
+	super initializePresenters.
+
+	millerList millerListPresenter
+		whenColumnsChangedDo: [self owner updateToolbar].
+]
+
 { #category : #'private - factory' }
 MiInspector >> newInspectorFor: aModel [
 
