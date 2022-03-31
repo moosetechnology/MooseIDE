@@ -24,7 +24,7 @@ MiArchitecturalMapBrowser class >> mapClass [
 MiArchitecturalMapBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	<miBrowsers>
-	^(aBuilder item: #HierarchicalMapBrowser)
+	^(aBuilder item: #MiArchitecturalMapBrowser)
 		parent: self midasBrowserMenuLabel;
 		label: self title;
 		help: self helpMessage;

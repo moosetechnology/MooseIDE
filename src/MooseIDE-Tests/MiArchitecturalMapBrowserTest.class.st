@@ -1,17 +1,17 @@
 Class {
-	#name : #MiHierarchicalMapBrowserTest,
+	#name : #MiArchitecturalMapBrowserTest,
 	#superclass : #MiAbstractBrowserTest,
 	#category : #'MooseIDE-Tests-Browsers'
 }
 
 { #category : #running }
-MiHierarchicalMapBrowserTest >> browserClass [
+MiArchitecturalMapBrowserTest >> browserClass [
 
 	^ MiArchitecturalMapBrowser
 ]
 
 { #category : #tests }
-MiHierarchicalMapBrowserTest >> testIsConsumerOfFQAbstractQuery [
+MiArchitecturalMapBrowserTest >> testIsConsumerOfFQAbstractQuery [
 
 	self assert:
 		((browser application consumersOf: FQAbstractQuery) anySatisfy: [ 
@@ -19,7 +19,7 @@ MiHierarchicalMapBrowserTest >> testIsConsumerOfFQAbstractQuery [
 ]
 
 { #category : #tests }
-MiHierarchicalMapBrowserTest >> testIsConsumerOfFamixTag [
+MiArchitecturalMapBrowserTest >> testIsConsumerOfFamixTag [
 
 	self assert:
 		((browser application consumersOf: FamixTag) anySatisfy: [ 
@@ -27,7 +27,7 @@ MiHierarchicalMapBrowserTest >> testIsConsumerOfFamixTag [
 ]
 
 { #category : #tests }
-MiHierarchicalMapBrowserTest >> testSettingsAction [
+MiArchitecturalMapBrowserTest >> testSettingsAction [
 
 	self assert: browser hasSettings
 ]
