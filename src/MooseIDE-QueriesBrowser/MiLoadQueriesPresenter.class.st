@@ -33,6 +33,12 @@ MiLoadQueriesPresenter class >> iconName [
 	^ #smallLoadProject
 ]
 
+{ #category : #accessing }
+MiLoadQueriesPresenter class >> tilte [
+
+	^ self defaultName
+]
+
 { #category : #initialization }
 MiLoadQueriesPresenter >> acceptAction [
 

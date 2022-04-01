@@ -16,6 +16,12 @@ MiSaveQueriesCommand class >> defaultDescription [
 	^ 'Save all current queries on disk as a STON file'
 ]
 
+{ #category : #default }
+MiSaveQueriesCommand class >> defaultIconName [
+
+	^ #smallSaveAs
+]
+
 { #category : #'accessing - defaults' }
 MiSaveQueriesCommand class >> defaultName [
 
