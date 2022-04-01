@@ -57,6 +57,20 @@ MiBusTest >> testRegisterBrowser [
 ]
 
 { #category : #tests }
+MiBusTest >> testSoleBusLoggger [
+	| otherBus |
+	
+	otherBus := self application busNamed: 'bus2'.
+	[self assert: bus logger notNil.
+	self assert: otherBus logger notNil.
+	self assert: bus logger equals: otherBus logger.
+	otherBus logger: MiLogger new.
+	self deny: bus logger equals: otherBus logger.]
+	ensure: [ self application deleteBus: otherBus ].
+	
+]
+
+{ #category : #tests }
 MiBusTest >> testUnregisterBrowser [
 	| browser |
 	browser := self mockBrowser.

@@ -31,12 +31,17 @@ MiBus >> globallySelect: anEntity [
 MiBus >> initialize [
 	super initialize.
 	browsers := Set new.
-	logger := MiLogger new
 ]
 
 { #category : #accessing }
 MiBus >> logger [
+	logger ifNil: [ self logger: MiLogger new ].
 	^ logger
+]
+
+{ #category : #accessing }
+MiBus >> logger: aMiLogger [
+	logger := aMiLogger
 ]
 
 { #category : #accessing }

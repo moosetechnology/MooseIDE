@@ -4,6 +4,7 @@ Class {
 	#instVars : [
 		'buses',
 		'defaultBus',
+		'logger',
 		'producers',
 		'consumers'
 	],
@@ -53,6 +54,7 @@ MiApplication >> busNamed: aName [
 		detect: [ :b | b name = aName ]
 		ifNone: [ | bus |
 			bus := MiBus named: aName.
+			bus logger: self logger.
 			buses add: bus.
 			self defaultBus: bus.
 			self updateOverviewBrowsers.
@@ -142,6 +144,7 @@ MiApplication >> initialize [
 	super initialize.
 
 	buses := OrderedCollection new.
+	logger := MiLogger new.
 	defaultBus := self busNamed: self class defaultBusName.
 	
 	consumers := Dictionary new.
@@ -153,6 +156,11 @@ MiApplication >> itemsFor: aClass [
 
 	^ (self producersOf: aClass) flatCollect: [ :producer | 
 		  producer itemsFor: aClass ]
+]
+
+{ #category : #accessing }
+MiApplication >> logger [
+	^ logger
 ]
 
 { #category : #'private - factory' }
