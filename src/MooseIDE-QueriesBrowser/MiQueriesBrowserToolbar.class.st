@@ -16,31 +16,6 @@ Class {
 	#category : #'MooseIDE-QueriesBrowser-Main presenters'
 }
 
-{ #category : #actions }
-MiQueriesBrowserToolbar >> constructQueriesWithFile: aFile [
-
-	| newQueries |
-	aFile readStreamDo: [ :stream | 
-		newQueries := STON fromStream: stream ].
-
-	"Put the root query as the parent for the first level unary queries"
-	newQueries do: [ :each | 
-		each parent ifNil: [ "This works only for subclasses of FQUnaryQuery: " 
-			each parent: queryListPresenter queriesBrowser rootQuery ] ].
-
-	newQueries do: [ :each | 
-		| newPresenter |
-		newPresenter := queryListPresenter createNewQueryPresenter:
-			                (each parent
-				                 ifNil: [ 
-				                 queryListPresenter queriesBrowser rootQuery ]
-				                 ifNotNil: [ each parent ]).
-		newPresenter configureFor: each.
-		queryListPresenter queryItemsPresenters add: newPresenter ].
-
-	queryListPresenter updateComponentList
-]
-
 { #category : #initialization }
 MiQueriesBrowserToolbar >> initializeButtons [
 
@@ -90,19 +65,9 @@ MiQueriesBrowserToolbar >> initializeLayout [
 ]
 
 { #category : #initialization }
-MiQueriesBrowserToolbar >> initializeLoadQueries [
-
-	loadQueriesList := self instantiate: LoadQueriesPresenter.
-	loadQueriesList okAction: [ 
-		loadQueriesList owner dismiss.
-		self constructQueriesWithFile: loadQueriesList selectedFile ]
-]
-
-{ #category : #initialization }
 MiQueriesBrowserToolbar >> initializePresenters [
 
 	self initializeButtons.
-	self initializeLoadQueries.
 	self initializeLayout
 ]
 
@@ -115,10 +80,9 @@ MiQueriesBrowserToolbar >> setModelBeforeInitialization: aQueryListPresenter [
 { #category : #actions }
 MiQueriesBrowserToolbar >> showLoadQueriesPopover [
 
-	loadQueriesList resetItems.
 	self newPopover
 		relativeTo: loadQueriesButton;
-		presenter: loadQueriesList;
+		presenter: (MiLoadQueriesPresenter on: queryListPresenter);
 		bePositionLeft;
 		popup
 ]

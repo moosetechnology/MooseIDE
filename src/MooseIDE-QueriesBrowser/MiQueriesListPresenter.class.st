@@ -61,6 +61,26 @@ MiQueriesListPresenter >> availableQueryTypes [
 		  each isAvailableForQueriesSize: queryItemsPresenters size ]
 ]
 
+{ #category : #actions }
+MiQueriesListPresenter >> constructQueries: acollectionsOfQueries [
+
+	"Put the root query as the parent for the first level unary queries"
+
+	acollectionsOfQueries do: [ :each | 
+		each parent ifNil: [ "This works only for subclasses of FQUnaryQuery: " 
+			each parent: self queriesBrowser rootQuery ] ].
+
+	acollectionsOfQueries do: [ :each | 
+		| newPresenter |
+		newPresenter := self createNewQueryPresenter: (each parent
+				                 ifNil: [ self queriesBrowser rootQuery ]
+				                 ifNotNil: [ each parent ]).
+		newPresenter configureFor: each.
+		self queryItemsPresenters add: newPresenter ].
+
+	self updateComponentList
+]
+
 { #category : #'api - actions' }
 MiQueriesListPresenter >> createNewQueryPresenter: query [
 
@@ -208,17 +228,6 @@ MiQueriesListPresenter >> removeQueryAction: aQueryCreationPresenter [
 MiQueriesListPresenter >> setModelBeforeInitialization: aQueryBrowserPresenter [
 
 	queriesBrowser := aQueryBrowserPresenter
-]
-
-{ #category : #actions }
-MiQueriesListPresenter >> showLoadQueriesPopover [
-
-	loadQueriesList resetItems.
-	self newPopover
-		relativeTo: loadQueriesButton;
-		presenter: loadQueriesList;
-		bePositionLeft;
-		popup
 ]
 
 { #category : #update }
