@@ -60,12 +60,13 @@ MiEditBusCommand >> busesList [
 	busesList filterInputPresenter placeholder: '+ New bus'.
 	busesList itemFilter: [ :each :pattern | 
 		true "We do not want to filter anything" ].
+    
 	busesList filterInputPresenter whenSubmitDo: [ :busName |
 		context followBus:
 			(self application busNamed: busName).
 		busesList filterInputPresenter clearContent.
 		busesList items: self application buses.
-		busesList selectItems: context buses copy  ].
+		busesList selectItems: context buses copy ].
 	^ busesList
 ]
 
