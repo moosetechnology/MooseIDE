@@ -19,29 +19,25 @@ Class {
 { #category : #initialization }
 MiQueriesBrowserToolbar >> initializeButtons [
 
-	| saveCommand |
 	addRootQueryButton := self newButton.
 	addRootQueryButton
 		icon: (self iconNamed: #smallAdd);
 		action: [ queryListPresenter addNewFirstLevelQuery ].
 
-	saveCommand := MiSaveQueriesCommand new.
-	saveCommand context: queryListPresenter.
-	saveQueriesButton := saveCommand asSpecCommand asButtonPresenter.
-	saveQueriesButton
-		label: '';
-		icon: (self iconNamed: MiSaveQueriesCommand iconName).
+	saveQueriesButton := (MiSaveQueriesCommand forSpecContext:
+		                      queryListPresenter) asButtonPresenter.
 
 	loadQueriesButton := self newButton.
 	loadQueriesButton
 		icon: (self iconNamed: #smallLoadProject);
-		action: [ self showLoadQueriesPopover ];
+		action: [ 
+			(MiLoadQueriesPresenter on: queryListPresenter) openDialog ];
 		help: 'Load a set of queries into the browser'.
 
 	clearQueriesButton := self newButton.
 	clearQueriesButton
 		icon: (self iconNamed: #smallUpdate);
-		action: [ queryListPresenter reinitializeQueryPresenters  ];
+		action: [ queryListPresenter reinitializeQueryPresenters ];
 		label: 'Clear queries'.
 
 	addManualQueryButton := self newButton.
@@ -75,14 +71,4 @@ MiQueriesBrowserToolbar >> initializePresenters [
 MiQueriesBrowserToolbar >> setModelBeforeInitialization: aQueryListPresenter [
 
 	queryListPresenter := aQueryListPresenter
-]
-
-{ #category : #actions }
-MiQueriesBrowserToolbar >> showLoadQueriesPopover [
-
-	self newPopover
-		relativeTo: loadQueriesButton;
-		presenter: (MiLoadQueriesPresenter on: queryListPresenter);
-		bePositionLeft;
-		popup
 ]

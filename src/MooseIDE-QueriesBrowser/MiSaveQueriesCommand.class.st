@@ -3,9 +3,9 @@ I am a command that saves all current queries on disk as a STON file. The path i
 "
 Class {
 	#name : #MiSaveQueriesCommand,
-	#superclass : #CmCommand,
-	#instVars : [
-		'afterCreationAction'
+	#superclass : #MiCommand,
+	#classVars : [
+		'Directory'
 	],
 	#category : #'MooseIDE-QueriesBrowser-Commands'
 }
@@ -31,19 +31,19 @@ MiSaveQueriesCommand class >> defaultPath [
 { #category : #'accessing - defaults' }
 MiSaveQueriesCommand class >> directory [
 
-	^ directory ifNil: [ directory := self defaultPath asFileReference ]
+	^ Directory ifNil: [ Directory := self defaultPath asFileReference ]
 ]
 
 { #category : #'accessing - defaults' }
-MiSaveQueriesCommand class >> iconName [
+MiSaveQueriesCommand class >> directory: aDirectory [
 
-	^ #smallSaveAs
+	Directory := aDirectory
 ]
 
 { #category : #accessing }
-MiSaveQueriesCommand >> afterCreationAction: aBlock [
+MiSaveQueriesCommand class >> path [
 
-	afterCreationAction := aBlock
+	^ self directory pathString , '/'
 ]
 
 { #category : #actions }
@@ -73,7 +73,7 @@ MiSaveQueriesCommand >> createFile: fileName [
 { #category : #executing }
 MiSaveQueriesCommand >> execute [
 
-	| fileName file |
+	| fileName |
 	fileName := UIManager default
 		            request: 'Name of the file: '
 		            initialAnswer: ''.
@@ -81,22 +81,13 @@ MiSaveQueriesCommand >> execute [
 	fileName ifNil: [ ^ self ].
 
 	"If user did not provide any file name"
-	fileName ifEmpty: [
+	fileName ifEmpty: [ 
 		UIManager inform: 'You need to specify a name for the file.'.
 		^ self ].
 
-	[ :job |
+	[ :job | 
 	job title: 'Saving queries on disk'.
-	file := self createFile: fileName.
-	self write: self queriesToStore toFile: file.
-	self triggerAfterCreationAction ] asJob run
-]
-
-{ #category : #initialization }
-MiSaveQueriesCommand >> initialize [
-
-	super initialize.
-	afterCreationAction := [  ]
+	self write: self queriesToStore toFileNamed: fileName ] asJob run
 ]
 
 { #category : #sorting }
@@ -181,15 +172,25 @@ MiSaveQueriesCommand >> topologicalSortForQueries: queries [
 	^ sortedQueries
 ]
 
-{ #category : #executing }
-MiSaveQueriesCommand >> triggerAfterCreationAction [
-
-	afterCreationAction value
-]
-
 { #category : #'write on disk' }
 MiSaveQueriesCommand >> write: queriesToStore toFile: file [
 
 	file writeStreamDo: [ :stream |
 		STON put: queriesToStore onStream: stream ]
+]
+
+{ #category : #'write on disk' }
+MiSaveQueriesCommand >> write: queriesToStore toFileNamed: aFilename [
+
+	| file |
+	file := UIManager default
+		        chooseForSaveFileReference: 'Choose directory'
+		        extensions: #( 'ston' )
+		        path:
+		        (self class path , aFilename , '.ston') asFileReference.
+
+	file ifNotNil: [ 
+		file ensureCreateFile.
+		file writeStreamDo: [ :stream | 
+			STON put: queriesToStore onStream: stream ] ]
 ]

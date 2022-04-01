@@ -8,9 +8,7 @@ Class {
 	#superclass : #MiPresenter,
 	#instVars : [
 		'filteringListPresenter',
-		'closeButton',
 		'directoryPathInput',
-		'directory',
 		'directorySelectionButton',
 		'queriesListPresenter'
 	],
@@ -39,42 +37,31 @@ MiLoadQueriesPresenter class >> iconName [
 MiLoadQueriesPresenter >> acceptAction [
 
 	^ [ 
-	  owner dismiss.
+	  self withWindowDo: [ :window | window close ].
 	  queriesListPresenter constructQueries: self loadQueries ]
 ]
 
 { #category : #actions }
 MiLoadQueriesPresenter >> chooseDirectory [
 
-	| newDirectory popupOwner |
-	"Opening the file tool will dismiss the popup. We need to open it again."
-	popupOwner := owner.
-
+	| newDirectory |
 	newDirectory := UIManager default
 		                chooseDirectory: 'Select saved queries folder'
-		                path: directory.
+		                path: MiSaveQueriesCommand directory.
 
 	newDirectory ifNotNil: [ 
 		self setDirectory: newDirectory.
-		directoryPathInput text: newDirectory pathString ].
-
-	popupOwner popup
+		directoryPathInput text: newDirectory pathString ]
 ]
 
 { #category : #initialization }
-MiLoadQueriesPresenter >> initialize [
+MiLoadQueriesPresenter >> initializeDialogWindow: aDialogWindow [
 
-	directory := MiSaveQueriesCommand directory.
-	super initialize
-]
-
-{ #category : #initialization }
-MiLoadQueriesPresenter >> initializeButton [
-
-	closeButton := self newButton.
-	closeButton
-		label: 'Ok';
-		action: self acceptAction
+	aDialogWindow initialExtent: 250 @ 300.
+	aDialogWindow title: self class title.
+	aDialogWindow
+		addButton: 'Ok' do: self acceptAction;
+		addButton: 'Cancel' do: [ :dialog | dialog close ]
 ]
 
 { #category : #initialization }
@@ -96,8 +83,7 @@ MiLoadQueriesPresenter >> initializeLayout [
 					  add: directorySelectionButton width: 25;
 					  yourself)
 			 height: self class toolbarHeight;
-			 add: filteringListPresenter width: 200; "This forces the popover to have this width"
-			 add: closeButton expand: false;
+			 add: filteringListPresenter;
 			 yourself)
 ]
 
@@ -107,7 +93,10 @@ MiLoadQueriesPresenter >> initializeList [
 	filteringListPresenter := self newFilteringList.
 
 	filteringListPresenter
-		items: (directory allChildrenMatching: '*.ston');
+		items: (MiSaveQueriesCommand directory exists
+				 ifTrue: [ 
+					 MiSaveQueriesCommand directory allChildrenMatching: '*.ston' ]
+				 ifFalse: [ #(  ) ]);
 		display: [ :each | each basename withoutPeriodSuffix ].
 
 	filteringListPresenter listPresenter sortingBlock:
@@ -122,7 +111,7 @@ MiLoadQueriesPresenter >> initializeList [
 MiLoadQueriesPresenter >> initializePathInputField [
 
 	directoryPathInput := self newTextInput
-		                      placeholder: directory pathString;
+		                      placeholder: MiSaveQueriesCommand directory pathString;
 		                      whenSubmitDo: [ 
 			                      directoryPathInput text ifNotEmpty: [ 
 					                      self setDirectory:
@@ -136,7 +125,7 @@ MiLoadQueriesPresenter >> initializePresenters [
 	self initializePathInputField.
 	self initializeDirectorySelectionButton.
 	self initializeList.
-	self initializeButton.
+
 	self initializeLayout
 ]
 
@@ -162,9 +151,9 @@ MiLoadQueriesPresenter >> setDirectory: aFileReference [
 		filteringListPresenter items: #(  ).
 		^ self ].
 
-	directory := aFileReference.
+	MiSaveQueriesCommand directory: aFileReference.
 	filteringListPresenter items:
-		(directory allChildrenMatching: '*.ston')
+		(MiSaveQueriesCommand directory allChildrenMatching: '*.ston')
 ]
 
 { #category : #'accessing - model' }
