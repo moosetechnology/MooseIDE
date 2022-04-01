@@ -170,11 +170,16 @@ MiAbstractBrowser >> canPropagate [
 { #category : #buses }
 MiAbstractBrowser >> followBus: aBus [
 
-	(self buses includes: aBus) ifTrue: [ ^ self ].
+	(self buses includes: aBus)
+	ifTrue: [ 
+		application defaultBus: aBus.
+		^ self ].
+	
 	self buses add: aBus.
 	aBus registerBrowser: self.
 	self window ifNotNil: [ :window | window updateBusButton ].
-	self receiveEntity: aBus logger mostRecentEntity
+	self receiveEntity: aBus logger mostRecentEntity.
+	application defaultBus: aBus
 ]
 
 { #category : #actions }
