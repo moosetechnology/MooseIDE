@@ -54,7 +54,7 @@ MiApplication >> busNamed: aName [
 		ifNone: [ | bus |
 			bus := MiBus named: aName.
 			buses add: bus.
-			defaultBus := bus.
+			self defaultBus: bus.
 			self updateOverviewBrowsers.
 			bus ]
 ]
@@ -107,6 +107,12 @@ MiApplication >> consumersOf: aClass [
 MiApplication >> defaultBus [
 
 	^ defaultBus
+]
+
+{ #category : #buses }
+MiApplication >> defaultBus: aMiBus [
+
+	defaultBus := aMiBus 
 ]
 
 { #category : #showing }
