@@ -230,6 +230,18 @@ MiHierarchicalMapBuilder >> mapModel: anObject [
 	mapModel := anObject
 ]
 
+{ #category : #accessing }
+MiHierarchicalMapBuilder >> menuInteraction [
+	^ menuInteraction ifNil: [ 
+		menuInteraction := RSMenuActivable new
+			menuDo: [ :menu :aShape | HAbstractMenuItem 
+				buildForMooseIn: menu 
+				shape: aShape 
+				visualization: self ];
+			yourself 
+	]
+]
+
 { #category : #rendering }
 MiHierarchicalMapBuilder >> renderLinesIn: aCanvas [
 

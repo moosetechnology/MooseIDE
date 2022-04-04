@@ -208,6 +208,23 @@ MiAbstractBrowserTest >> testFollowBus [
 ]
 
 { #category : #'tests - buses' }
+MiAbstractBrowserTest >> testFollowBusSetsDefaultBus [
+
+	self assert: browser application defaultBus name equals: 'Test' .
+
+	browser application busNamed: 'aNewBus'.
+	self assert: browser application defaultBus name equals: 'aNewBus' .
+
+	browser application busNamed: 'Test'.
+	self assert: browser application defaultBus name equals: 'aNewBus' .
+	
+	browser followBus: (browser application busNamed: 'Test').
+	self assert: browser application defaultBus name equals: 'Test' .
+	
+	
+]
+
+{ #category : #'tests - buses' }
 MiAbstractBrowserTest >> testFollowBusTriggersSelectEntity [
 
 	| propagatedEntity |
@@ -233,15 +250,16 @@ MiAbstractBrowserTest >> testFollowEntity [
 { #category : #'tests - buses' }
 MiAbstractBrowserTest >> testFollowOtherBus [
 
-	| otherBus |
+	| otherBus oldDefaultBus |
+	oldDefaultBus := self bus.
 	otherBus := self application busNamed: 'Other bus'.
 	browser followBus: otherBus.
 
 	self assertCollection: browser buses hasSameElements: { 
 			self bus.
-			otherBus }.
+			oldDefaultBus }.
 
-	self assert: (otherBus browsers includes: browser).
+	self assert: (oldDefaultBus browsers includes: browser).
 	self assert: (self bus browsers includes: browser).
 
 	self assert: browser busButton label equals: '2 buses'

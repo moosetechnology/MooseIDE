@@ -198,10 +198,15 @@ MiQueriesListPresenter >> queryItemsPresenters [
 { #category : #actions }
 MiQueriesListPresenter >> reinitializeQueryPresenters [
 
+	| anItem |
 	queryCounter := 1.
 	self announcer subscriptions reset.
 	queryItemsPresenters := OrderedCollection new.
-	componentListPresenter presenters: queryItemsPresenters
+	componentListPresenter presenters: queryItemsPresenters.
+	self owner rootQuery children ifEmpty: [ ^ self ].
+	anItem := self owner rootQuery children anyOne.
+	self owner rootQuery children removeAll.
+	self owner application removeItem: anItem
 ]
 
 { #category : #actions }

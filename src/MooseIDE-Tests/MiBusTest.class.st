@@ -29,7 +29,8 @@ MiBusTest >> setUp [
 
 { #category : #running }
 MiBusTest >> tearDown [
-	self application deleteBus: bus.
+
+	self application class reset.
 	super tearDown
 ]
 

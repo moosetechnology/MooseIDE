@@ -163,7 +163,8 @@ MiQueriesBrowser >> initializeResultTreePresenter [
 
 { #category : #brokerage }
 MiQueriesBrowser >> itemsFor: aClass [
-	^rootQuery children select: [ :query | query isKindOf: aClass ]
+	
+	^ rootQuery allChildren select: [ :query | query isKindOf: aClass ]
 ]
 
 { #category : #accessing }

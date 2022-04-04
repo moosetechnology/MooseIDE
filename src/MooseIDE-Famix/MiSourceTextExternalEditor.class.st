@@ -1,3 +1,11 @@
+"
+Abstract class for all external source text editors
+
+It provides an abstract #open: method to open an external editor on a Famix entity
+
+It also has a class side method #allExternalEditors to discover all available concrete sub-classes in the system.
+
+"
 Class {
 	#name : #MiSourceTextExternalEditor,
 	#superclass : #Object,

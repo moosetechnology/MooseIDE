@@ -39,10 +39,10 @@ MiCoAttributeTest >> test03PopupMessage [
 		method: (MiCoMethod new name: #method8) counter: 2.
 	self
 		assert: (attribute asStringForMethod: method)
-		equals: ('Accesses for var1:
+		equals: ('Links for var1:
 
-3 access from this method(method1)
-9 access from 3 local methods'
+3 links from this method(method1)
+9 links from 3 local methods'
 				 copyReplaceAll: String cr
 				 with: String crlf).
 	attribute := MiCoAttribute new.
@@ -51,9 +51,9 @@ MiCoAttributeTest >> test03PopupMessage [
 		method: (method := MiCoMethod new name: #method5) counter: 4.
 	self
 		assert: (attribute asStringForMethod: method)
-		equals: ('Accesses for var2:
+		equals: ('Links for var2:
 
-4 access from this method(method5)'
+4 links from this method(method5)'
 				 copyReplaceAll: String cr
 				 with: String crlf).
 	attribute := MiCoAttribute new.
@@ -63,10 +63,10 @@ MiCoAttributeTest >> test03PopupMessage [
 		method: (MiCoMethod new name: #method6) counter: 9.
 	self
 		assert: (attribute asStringForMethod: method)
-		equals: ('Accesses for var2:
+		equals: ('Links for var2:
 
-4 access from this method(method5)
-9 access from 1 local method'
+4 links from this method(method5)
+9 links from 1 local method'
 				 copyReplaceAll: String cr
 				 with: String crlf)
 ]
