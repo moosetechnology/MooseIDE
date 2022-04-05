@@ -3,7 +3,7 @@ Presenter created to edit the children block, outer boxes sort block, and inner 
 This interacts directly with MiCoUsageMapSettings
 "
 Class {
-	#name : #MiCoUsageMapSettingsPresenter,
+	#name : #MiCoUsageMapBlockSettingsPresenter,
 	#superclass : #SpPresenter,
 	#instVars : [
 		'childrenTextInput',
@@ -16,7 +16,7 @@ Class {
 }
 
 { #category : #layout }
-MiCoUsageMapSettingsPresenter class >> defaultLayout [
+MiCoUsageMapBlockSettingsPresenter class >> defaultLayout [
 	^ SpBoxLayout newTopToBottom
 		spacing: 3;
 		add: 'Children block:' asPresenter expand: false;
@@ -37,7 +37,7 @@ MiCoUsageMapSettingsPresenter class >> defaultLayout [
 ]
 
 { #category : #initialization }
-MiCoUsageMapSettingsPresenter >> initializeButtons [
+MiCoUsageMapBlockSettingsPresenter >> initializeButtons [
 	| cls |
 	cls := MiCoUsageMapSettings.
 	button := self newButton
@@ -59,7 +59,7 @@ MiCoUsageMapSettingsPresenter >> initializeButtons [
 ]
 
 { #category : #initialization }
-MiCoUsageMapSettingsPresenter >> initializePresenters [
+MiCoUsageMapBlockSettingsPresenter >> initializePresenters [
 	| cls |
 	cls := MiCoUsageMapSettings.
 	childrenTextInput := self newCode
@@ -78,7 +78,7 @@ MiCoUsageMapSettingsPresenter >> initializePresenters [
 ]
 
 { #category : #initialization }
-MiCoUsageMapSettingsPresenter >> initializeWindow: aWindowPresenter [
+MiCoUsageMapBlockSettingsPresenter >> initializeWindow: aWindowPresenter [
 	aWindowPresenter 
 		initialExtent: 500@700;
 		title: 'Blocks Settings - Co Usage Map'

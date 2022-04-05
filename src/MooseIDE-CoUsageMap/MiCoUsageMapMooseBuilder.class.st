@@ -28,6 +28,12 @@ MiCoUsageMapMooseBuilder >> defaultTester [
 	^ MiCoFromSettingsMethodAttributeTester new
 ]
 
+{ #category : #initialization }
+MiCoUsageMapMooseBuilder >> initialize [
+	super initialize.
+	shouldUseProgressBar := true.
+]
+
 { #category : #'instance creation' }
 MiCoUsageMapMooseBuilder >> newAttributeFor: anObject [
 	| tags |

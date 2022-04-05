@@ -256,7 +256,7 @@ MiCoUsageMapSettings class >> innerBoxSortBlockText: aString [
 { #category : #opening }
 MiCoUsageMapSettings class >> openBlocksSettings [
 
-	MiCoUsageMapSettingsPresenter new open
+	MiCoUsageMapBlockSettingsPresenter new open
 ]
 
 { #category : #'accessing - computed' }

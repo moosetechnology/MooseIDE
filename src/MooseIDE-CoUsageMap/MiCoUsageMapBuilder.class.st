@@ -25,7 +25,8 @@ Class {
 		'containerBox',
 		'methodAttributeCounter',
 		'highlightManager',
-		'widthScale'
+		'widthScale',
+		'shouldUseProgressBar'
 	],
 	#category : #'MooseIDE-CoUsageMap-Roassal3'
 }
@@ -163,6 +164,7 @@ MiCoUsageMapBuilder >> highlightManager: aMiCoHighlightManager [
 { #category : #initialization }
 MiCoUsageMapBuilder >> initialize [
 	super initialize.
+	shouldUseProgressBar := false.
 	self
 		methods: #();
 		methodAttributeCounter: self defaultTester;
@@ -373,6 +375,19 @@ MiCoUsageMapBuilder >> open [
 		yourself 
 ]
 
+{ #category : #public }
+MiCoUsageMapBuilder >> openSettingsBrowser [
+	| browser window |
+	browser := SettingBrowser new
+		changePackageSet: (RPackage organizer 
+		packageNamed: MiCoUsageMapSettings package name) asOrderedCollection;
+	yourself.
+	window := browser open.
+	window position: (self currentWorld extent - window extent) // 2.
+	browser expandAll.
+	^ window
+]
+
 { #category : #dependencies }
 MiCoUsageMapBuilder >> release [
 	super release.
@@ -380,16 +395,29 @@ MiCoUsageMapBuilder >> release [
 ]
 
 { #category : #hooks }
+MiCoUsageMapBuilder >> renderAsync: aCanvas [
+	[ :aJob | self renderIn: aCanvas job: aJob ] runAsRoassalJobOn: aCanvas.
+]
+
+{ #category : #hooks }
 MiCoUsageMapBuilder >> renderIn: aCanvas [
-	[ :aJob | 
-	aJob currentValue: 0; title: 'reading objects'.
+	self shouldUseProgressBar
+		ifTrue: [ self renderAsync: aCanvas ]
+		ifFalse: [ self renderIn: aCanvas job: MiJob new ].
+	
+]
+
+{ #category : #hooks }
+MiCoUsageMapBuilder >> renderIn: aCanvas job: aJob [
+	aJob currentValue: 0; title: 'Reading entities'.
 	self initializeValues.
-	aJob currentValue: 50; title: 'rendering objects'.
+	aJob currentValue: 50; title: 'Rendering entities'.
 	shapes := self miMethods collect: [ :met | self methodShapeFor: met ].
 	aCanvas addAll: shapes.
 	self sortShapes.
+	aJob currentValue: 85; title: 'Applying layout'.
 	self applyLayout.
-	aJob currentValue: 80; title: 'adding decorators'.
+	aJob currentValue: 90; title: ''.
 	self legendTag
 		container: aCanvas;
 		build.
@@ -397,7 +425,7 @@ MiCoUsageMapBuilder >> renderIn: aCanvas [
 		when: RSExtentChangedEvent send: #applyLayout to: self;
 		addInteraction: self highlightManager;
 		addInteraction: self markManager;
-		addInteraction: self canvasController] asJob run
+		addInteraction: self canvasController
 ]
 
 { #category : #hooks }
@@ -423,6 +451,11 @@ MiCoUsageMapBuilder >> resizeLabelIfNecessary: label [
 		flag := flag not.
 	 ].
 	label scaleBy: scale @ 1.
+]
+
+{ #category : #testing }
+MiCoUsageMapBuilder >> shouldUseProgressBar [
+	^ shouldUseProgressBar
 ]
 
 { #category : #public }

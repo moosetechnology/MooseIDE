@@ -59,7 +59,7 @@ MiCoUsageMapVisualization >> itemsFor: aClass [
 
 { #category : #actions }
 MiCoUsageMapVisualization >> openSettingsBrowser [
-	^ coUsageMap markManager openSettingsBrowser
+	^ coUsageMap openSettingsBrowser
 ]
 
 { #category : #brokerage }
