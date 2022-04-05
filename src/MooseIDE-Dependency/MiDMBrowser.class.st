@@ -124,6 +124,7 @@ MiDMBrowser >> initialize [
 
 	super initialize.
 	application registerConsumer: self for: MiDynamicTag.
+	application registerConsumer: self for: FamixTag.
 	application registerConsumer: settings for: FQAbstractQuery
 ]
 

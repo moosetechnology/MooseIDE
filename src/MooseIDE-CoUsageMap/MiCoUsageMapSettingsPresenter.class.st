@@ -12,10 +12,10 @@ Class {
 		'button',
 		'resetButton'
 	],
-	#category : #'MooseIDE-CoUsageMap-Roassal3'
+	#category : #'MooseIDE-CoUsageMap-Settings'
 }
 
-{ #category : #specs }
+{ #category : #layout }
 MiCoUsageMapSettingsPresenter class >> defaultLayout [
 	^ SpBoxLayout newTopToBottom
 		spacing: 3;
@@ -24,7 +24,7 @@ MiCoUsageMapSettingsPresenter class >> defaultLayout [
 		add: 'Outer box sort block:' asPresenter expand: false;
 		add: #sortOuterBoxTextInput height: 170;
 		add: 'Inner box sort block:' asPresenter expand: false;
-		add: #sortInnerBoxTextInput height: 50;
+		add: #sortInnerBoxTextInput height: 170;
 		add: (SpBoxLayout newLeftToRight
 			hAlignCenter;
 			borderWidth: 5;
@@ -80,6 +80,6 @@ MiCoUsageMapSettingsPresenter >> initializePresenters [
 { #category : #initialization }
 MiCoUsageMapSettingsPresenter >> initializeWindow: aWindowPresenter [
 	aWindowPresenter 
-		initialExtent: 500@600;
+		initialExtent: 500@700;
 		title: 'Blocks Settings - Co Usage Map'
 ]

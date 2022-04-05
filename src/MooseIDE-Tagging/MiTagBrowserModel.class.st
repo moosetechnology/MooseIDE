@@ -262,11 +262,23 @@ MiTagBrowserModel >> tagBrowser: anObject [
 
 { #category : #accessing }
 MiTagBrowserModel >> tagEntityNotYourself: anEntity [
-	self currentTag = anEntity
-	ifFalse: [self currentTag tagEntity: anEntity]
+
+	| assoc |
+	self currentTag = anEntity ifTrue: [ ^ self ].
+	assoc := FamixTagEntityAssociation
+		         newForEntity: anEntity
+		         tag: self currentTag.
+	tagBrowser application consumeItem: assoc
 ]
 
 { #category : #accessing }
 MiTagBrowserModel >> untagEntity: anEntity [
-	anEntity removeTag: self currentTag
+
+	| assoc |
+	assoc := anEntity allTagAssociations
+		         detect: [ :a | a tag = self currentTag ]
+		         ifNone: [ nil ].
+	assoc ifNil: [ ^ self ].
+	tagBrowser application removeItem: assoc.
+	assoc remove
 ]

@@ -20,6 +20,11 @@ MiObjectInspectorPresenter >> allPages [
 	^ allPagesWithoutBreakpointsPage
 ]
 
+{ #category : #private }
+MiObjectInspectorPresenter >> miBrowser [
+	^self owner owner owner owner
+]
+
 { #category : #'private - factory' }
 MiObjectInspectorPresenter >> newInspectionForContext: aContext [
 
@@ -28,4 +33,11 @@ MiObjectInspectorPresenter >> newInspectionForContext: aContext [
 			   inspectedObject: self inspectedObject;
 			   context: aContext;
 			   yourself)
+]
+
+{ #category : #accessing }
+MiObjectInspectorPresenter >> refreshContent [
+
+	super refreshContent.
+	self miBrowser updateToolbar
 ]

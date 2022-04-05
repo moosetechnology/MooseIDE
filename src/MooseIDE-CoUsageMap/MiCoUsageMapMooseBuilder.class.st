@@ -35,7 +35,7 @@ MiCoUsageMapMooseBuilder >> newAttributeFor: anObject [
 	tags := tags
 		ifEmpty: [ nil ]
 		ifNotEmpty: [ tags anyOne ].
-	^ MiCoAttribute new
+	^ MiCoMooseAttibute new
 		name: anObject name;
 		rawObject: anObject;
 		tag: tags;

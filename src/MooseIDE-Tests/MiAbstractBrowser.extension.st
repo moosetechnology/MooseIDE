@@ -32,3 +32,11 @@ MiAbstractBrowser >> privateReceivingMode: aMiBrowserReceivingMode [
 
 	receivingMode := aMiBrowserReceivingMode
 ]
+
+{ #category : #'*MooseIDE-Tests' }
+MiAbstractBrowser >> toolbarButton: aLabel [
+
+	^(self window toolbarCommandGroup allCommands
+		collect: #presenter)
+		detect: [ :button | button label = aLabel ]
+]
