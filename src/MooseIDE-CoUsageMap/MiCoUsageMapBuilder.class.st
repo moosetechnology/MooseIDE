@@ -381,12 +381,15 @@ MiCoUsageMapBuilder >> release [
 
 { #category : #hooks }
 MiCoUsageMapBuilder >> renderIn: aCanvas [
+	[ :aJob | 
+	aJob currentValue: 0; title: 'reading objects'.
 	self initializeValues.
-	
+	aJob currentValue: 50; title: 'rendering objects'.
 	shapes := self miMethods collect: [ :met | self methodShapeFor: met ].
 	aCanvas addAll: shapes.
 	self sortShapes.
 	self applyLayout.
+	aJob currentValue: 80; title: 'adding decorators'.
 	self legendTag
 		container: aCanvas;
 		build.
@@ -394,7 +397,7 @@ MiCoUsageMapBuilder >> renderIn: aCanvas [
 		when: RSExtentChangedEvent send: #applyLayout to: self;
 		addInteraction: self highlightManager;
 		addInteraction: self markManager;
-		addInteraction: self canvasController
+		addInteraction: self canvasController] asJob run
 ]
 
 { #category : #hooks }
