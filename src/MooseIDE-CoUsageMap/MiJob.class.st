@@ -26,6 +26,16 @@ MiJob >> canvas: aRSCanvas [
 	canvas := aRSCanvas
 ]
 
+{ #category : #utilities }
+MiJob >> cleanCanvas [
+	label remove.
+	backLine remove.
+	frontLine remove.
+	background remove.
+	canvas removeInteractionIfPresent: self class.
+	canvas notifyExtentChanged.
+]
+
 { #category : #accessing }
 MiJob >> currentValue: aNumber [
 	currentValue := aNumber.
@@ -36,6 +46,37 @@ MiJob >> currentValue: aNumber [
 MiJob >> initialize [
 	super initialize.
 	currentValue := 0
+]
+
+{ #category : #utilities }
+MiJob >> newLine [
+	^ RSLine new
+		width: 20;
+		capRound;
+		isFixed: true;
+		yourself
+]
+
+{ #category : #utilities }
+MiJob >> prepareForRendering [
+	background := RSBox new isFixed: true; color: Color white.
+	label := RSLabel new isFixed: true.
+	backLine := self newLine color: Color gray.
+	frontLine := self newLine color: Smalltalk ui theme selectionColor.
+	canvas camera 
+		position: 0@0;
+		scale: 1.
+	canvas 
+		addShape: background;
+		addShape: label;
+		addShape: backLine;
+		addShape: frontLine.
+	canvas
+		when: RSExtentChangedEvent
+		send: #update
+		to: self.
+	
+	self update
 ]
 
 { #category : #running }
