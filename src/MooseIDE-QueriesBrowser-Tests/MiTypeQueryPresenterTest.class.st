@@ -7,7 +7,14 @@ Class {
 { #category : #tests }
 MiTypeQueryPresenterTest >> assertSubpresentersAreConfigured [
 
-	self assertCollection: presenter typesList selectedItems hasSameElements: self createNewQuery types
+	self
+		assertCollection: presenter typesList items
+		includesAll: self createNewQuery types.
+	self
+		assertCollection: presenter typesList selectedItems
+		hasSameElements: self createNewQuery types.
+
+	self assert: presenter typesButton class equals: SpButtonPresenter
 ]
 
 { #category : #running }
