@@ -39,7 +39,7 @@ MiLoadQueriesPresenter class >> tilte [
 	^ self defaultName
 ]
 
-{ #category : #initialization }
+{ #category : #actions }
 MiLoadQueriesPresenter >> acceptAction [
 
 	^ [ 

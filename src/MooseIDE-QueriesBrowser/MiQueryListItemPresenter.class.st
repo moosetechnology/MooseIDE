@@ -75,7 +75,8 @@ MiQueryListItemPresenter >> beForManualQuery [
 MiQueryListItemPresenter >> configureFor: aQuery [
 
 	queryTypesDropListPresenter selectItem: aQuery class.
-	queryConfiguratorPresenter configureFor: aQuery
+	queryConfiguratorPresenter configureFor: aQuery.
+	queryConfiguratorPresenter initializeLayout
 ]
 
 { #category : #accessing }

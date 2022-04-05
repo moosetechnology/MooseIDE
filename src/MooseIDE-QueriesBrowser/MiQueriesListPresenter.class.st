@@ -76,6 +76,7 @@ MiQueriesListPresenter >> constructQueries: acollectionsOfQueries [
 				                 ifNil: [ self queriesBrowser rootQuery ]
 				                 ifNotNil: [ each parent ]).
 		newPresenter configureFor: each.
+
 		self queryItemsPresenters add: newPresenter ].
 
 	self updateComponentList
