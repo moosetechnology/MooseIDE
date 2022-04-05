@@ -20,6 +20,43 @@ Class {
 	#category : #'MooseIDE-Dependency-ArchitecturalMap'
 }
 
+{ #category : #adding }
+MiArchitecturalMapBuilder >> addIncomingEntitiesFor: anHNode [
+
+	"Add to the visualization incoming entities"
+
+	| node incomingLinks |
+	node := anHNode rawModel.
+	node isTag ifTrue: [ 
+		anHNode children do: [ :c | self addIncomingEntitiesFor: c ].
+		^ self ].
+	incomingLinks := node queryAllLocal: #in.
+
+	incomingLinks do: [ :e | 
+		| n |
+		e source parentType ~= node parentType ifTrue: [ 
+			n := self addNode: e source.
+			n dependencyTo: anHNode ] ]
+]
+
+{ #category : #adding }
+MiArchitecturalMapBuilder >> addNode: mooseEntity [
+
+	| node parentNode |
+	nodeMooseIDDict at: mooseEntity mooseID ifPresent: [ :n | ^ n ].
+	node := HNode new
+		        name:
+			        (String streamContents: [ :s | 
+					         mooseEntity displayStringOn: s ]);
+		        rawModel: mooseEntity;
+		        yourself.
+
+	parentNode := self parentNodeFor: node.
+	nodeMooseIDDict at: mooseEntity mooseID put: node.
+	parentNode add: node.
+	^ node
+]
+
 { #category : #building }
 MiArchitecturalMapBuilder >> addTags [
 
@@ -355,12 +392,30 @@ MiArchitecturalMapBuilder >> mapModel: anObject [
 MiArchitecturalMapBuilder >> menuInteraction [
 	^ menuInteraction ifNil: [ 
 		menuInteraction := RSMenuActivable new
-			menuDo: [ :menu :aShape | HAbstractMenuItem 
-				buildForMooseIn: menu 
+			menuDo: [ :menu :aShape | MiArchitecturalMenuItem 
+				buildIn: menu 
 				shape: aShape 
 				visualization: self ];
 			yourself 
 	]
+]
+
+{ #category : #adding }
+MiArchitecturalMapBuilder >> parentNodeFor: anHNode [
+	"Search for parent node in the node dictionary, add it if not present."
+	| parentNode parent |
+	parent := anHNode rawModel parentType.
+	parentNode := nodeMooseIDDict at: parent mooseID ifAbsent: [ nil ].
+	parentNode ifNotNil: [ ^ parentNode ].
+	parentNode := HNode new
+		              rawModel: parent;
+		              name:
+			              (String streamContents: [ :s | 
+					               parent displayStringOn: s ]);
+		              yourself.
+	rootNode add: parentNode.
+	nodeMooseIDDict at: parent mooseID put: parentNode.
+	^ parentNode
 ]
 
 { #category : #initialization }
