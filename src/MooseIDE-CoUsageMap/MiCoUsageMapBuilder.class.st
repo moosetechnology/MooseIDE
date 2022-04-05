@@ -417,7 +417,7 @@ MiCoUsageMapBuilder >> renderIn: aCanvas job: aJob [
 	self sortShapes.
 	aJob currentValue: 85; title: 'Applying layout'.
 	self applyLayout.
-	aJob currentValue: 90; title: ''.
+	aJob currentValue: 90; title: 'Adding decorations'.
 	self legendTag
 		container: aCanvas;
 		build.
