@@ -6,12 +6,14 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'block',
-		'canvas',
 		'label',
 		'backLine',
 		'frontLine',
 		'currentValue',
-		'background'
+		'background',
+		'canvas',
+		'newCanvas',
+		'morph'
 	],
 	#category : #'MooseIDE-CoUsageMap-Roassal3'
 }
@@ -32,8 +34,15 @@ MiJob >> cleanCanvas [
 	backLine remove.
 	frontLine remove.
 	background remove.
-	canvas removeInteractionIfPresent: self class.
-	canvas notifyExtentChanged.
+	newCanvas removeInteractionIfPresent: self class.
+	
+	morph canvas: canvas.
+	canvas morph: morph.
+	canvas extent: morph extent.
+	morph := nil.
+	newCanvas := nil.
+	
+	
 ]
 
 { #category : #accessing }
@@ -63,15 +72,19 @@ MiJob >> prepareForRendering [
 	label := RSLabel new isFixed: true.
 	backLine := self newLine color: Color gray.
 	frontLine := self newLine color: Smalltalk ui theme selectionColor.
-	canvas camera 
+	newCanvas := RSCanvas new.
+	morph := canvas morph.
+	morph canvas: newCanvas.
+	newCanvas morph: morph.
+	newCanvas camera 
 		position: 0@0;
-		scale: 1.
-	canvas 
+		scale: 1. 
+	newCanvas 
 		addShape: background;
 		addShape: label;
 		addShape: backLine;
 		addShape: frontLine.
-	canvas
+	newCanvas
 		when: RSExtentChangedEvent
 		send: #update
 		to: self.
@@ -89,16 +102,16 @@ MiJob >> run [
 
 { #category : #accessing }
 MiJob >> title: aString [
-	canvas ifNil: [ ^ self ].
+	newCanvas ifNil: [ ^ self ].
 	label text: aString.
-	canvas signalUpdate.
+	newCanvas signalUpdate.
 ]
 
 { #category : #update }
 MiJob >> update [
 	| visibleRect delta from to scale |
-	canvas ifNil: [ ^ self ].
-	visibleRect := 0@0 extent: canvas extent.
+	newCanvas ifNil: [ ^ self ].
+	visibleRect := 0@0 extent: newCanvas extent.
 	background fromRectangle: visibleRect.
 	
 	visibleRect := (-20 @ 0) asMargin expandRectangle: visibleRect.
@@ -113,7 +126,7 @@ MiJob >> update [
 		clamp: true;
 		yourself.
 	frontLine startPoint: from; endPoint: (scale scale: currentValue).
-	canvas signalUpdate.
+	newCanvas signalUpdate.
 	
 	
 	

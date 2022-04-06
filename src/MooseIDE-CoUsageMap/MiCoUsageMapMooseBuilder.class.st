@@ -8,7 +8,7 @@ Class {
 		'application',
 		'visualization'
 	],
-	#category : #'MooseIDE-CoUsageMap-Browser'
+	#category : #'MooseIDE-CoUsageMap-Roassal3'
 }
 
 { #category : #accessing }
@@ -26,12 +26,6 @@ MiCoUsageMapMooseBuilder >> application: anObject [
 { #category : #default }
 MiCoUsageMapMooseBuilder >> defaultTester [
 	^ MiCoFromSettingsMethodAttributeTester new
-]
-
-{ #category : #initialization }
-MiCoUsageMapMooseBuilder >> initialize [
-	super initialize.
-	shouldUseProgressBar := true.
 ]
 
 { #category : #'instance creation' }
@@ -62,6 +56,11 @@ MiCoUsageMapMooseBuilder >> newMethodFor: anObject [
 		tag: tags;
 		application: self application;
 		yourself
+]
+
+{ #category : #testing }
+MiCoUsageMapMooseBuilder >> shouldUseProgressBar [
+	^ true
 ]
 
 { #category : #update }

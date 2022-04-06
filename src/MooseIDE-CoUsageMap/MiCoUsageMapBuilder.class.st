@@ -25,8 +25,7 @@ Class {
 		'containerBox',
 		'methodAttributeCounter',
 		'highlightManager',
-		'widthScale',
-		'shouldUseProgressBar'
+		'widthScale'
 	],
 	#category : #'MooseIDE-CoUsageMap-Roassal3'
 }
@@ -164,7 +163,6 @@ MiCoUsageMapBuilder >> highlightManager: aMiCoHighlightManager [
 { #category : #initialization }
 MiCoUsageMapBuilder >> initialize [
 	super initialize.
-	shouldUseProgressBar := false.
 	self
 		methods: #();
 		methodAttributeCounter: self defaultTester;
@@ -397,6 +395,7 @@ MiCoUsageMapBuilder >> release [
 { #category : #hooks }
 MiCoUsageMapBuilder >> renderAsync: aCanvas [
 	[ :aJob | self renderIn: aCanvas job: aJob ] runAsRoassalJobOn: aCanvas.
+	"[ :aJob | self renderIn: aCanvas job: aJob ] asJob run."
 ]
 
 { #category : #hooks }
@@ -425,7 +424,7 @@ MiCoUsageMapBuilder >> renderIn: aCanvas job: aJob [
 		when: RSExtentChangedEvent send: #applyLayout to: self;
 		addInteraction: self highlightManager;
 		addInteraction: self markManager;
-		addInteraction: self canvasController
+		addInteraction: self canvasController.
 ]
 
 { #category : #hooks }
@@ -455,7 +454,7 @@ MiCoUsageMapBuilder >> resizeLabelIfNecessary: label [
 
 { #category : #testing }
 MiCoUsageMapBuilder >> shouldUseProgressBar [
-	^ shouldUseProgressBar
+	^ false
 ]
 
 { #category : #public }
