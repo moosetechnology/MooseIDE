@@ -31,7 +31,6 @@ MiArchitecturalMapBuilder >> addIncomingEntitiesFor: anHNode [
 		anHNode children do: [ :c | self addIncomingEntitiesFor: c ].
 		^ self ].
 	incomingLinks := node queryAllLocal: #in.
-	node name = 'VarsAnonyme28443' ifTrue: [ 1 halt ].
 	incomingLinks do: [ :e | 
 		| n |
 		e source belongsTo ~= node belongsTo ifTrue: [ 
@@ -504,9 +503,7 @@ MiArchitecturalMapBuilder >> shapeFor: node [
 		removeInteractionIfPresent: self class;
 		when: HNodeAddedEvent do: [ :evt | self rebuildRootShape: shape ];
 		when: HCollapseEvent do: [ :evt | self rebuildShape: shape ];
-		when: HExpandEvent do: [ :evt | 
-			self rebuildRootShape: shape.
-			self zoomOutFor: shape ];
+		when: HExpandEvent do: [ :evt | self rebuildRootShape: shape ];
 		when: HNodeChangedEvent do: [ :evt | self rebuildShape: shape ].
 	shapes add: shape.
 	^ shape
@@ -520,12 +517,4 @@ MiArchitecturalMapBuilder >> updateWithModelSettings [
 		ifFalse: [ rootNode hideAllLinks ]
 		ifTrue: [ rootNode showAllLinks ].
 	self rebuildLines: self canvas
-]
-
-{ #category : #accessing }
-MiArchitecturalMapBuilder >> zoomOutFor: aShape [
-
-	| camera |
-	camera := self canvas camera.
-	camera scale: 1.0
 ]
