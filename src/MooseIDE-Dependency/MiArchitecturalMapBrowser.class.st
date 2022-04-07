@@ -107,7 +107,6 @@ MiArchitecturalMapBrowser >> followEntity: anEntity [
 
 	model entities: anEntity asMooseGroup.
 	settings updateSettings.
-	self showMenu
 ]
 
 { #category : #testing }
@@ -143,7 +142,8 @@ MiArchitecturalMapBrowser >> initializePresenters [
 	settings := MiArchitecturalMapSettings owner: self.
 	settings setTags.
 	tagCreateForm := MiDynamicTagSelectionForm owner: self.
-	self initializeLayout
+	self initializeLayout.
+	self showMenu
 ]
 
 { #category : #accessing }

@@ -31,10 +31,10 @@ MiArchitecturalMapBuilder >> addIncomingEntitiesFor: anHNode [
 		anHNode children do: [ :c | self addIncomingEntitiesFor: c ].
 		^ self ].
 	incomingLinks := node queryAllLocal: #in.
-
+	node name = 'VarsAnonyme28443' ifTrue: [ 1 halt ].
 	incomingLinks do: [ :e | 
 		| n |
-		e source parentType ~= node parentType ifTrue: [ 
+		e source belongsTo ~= node belongsTo ifTrue: [ 
 			n := self addNode: e source.
 			n dependencyTo: anHNode ] ]
 ]
@@ -55,6 +55,33 @@ MiArchitecturalMapBuilder >> addNode: mooseEntity [
 	nodeMooseIDDict at: mooseEntity mooseID put: node.
 	parentNode add: node.
 	^ node
+]
+
+{ #category : #adding }
+MiArchitecturalMapBuilder >> addOutgoingEntitiesFor: anHNode [
+
+	"Add to the visualization incoming entities"
+
+	| node incomingLinks |
+	node := anHNode rawModel.
+	node isTag ifTrue: [ 
+		anHNode children do: [ :c | self addOutgoingEntitiesFor: c ].
+		^ self ].
+	incomingLinks := node queryAllLocal: #out.
+	incomingLinks do: [ :e | 
+		self addOutgoingNodes: e target asCollection from: anHNode ]
+]
+
+{ #category : #adding }
+MiArchitecturalMapBuilder >> addOutgoingNodes: aCollection from: anHNode [
+
+	| node |
+	node := anHNode rawModel.
+	aCollection do: [ :mooseEntity | 
+		| n |
+		mooseEntity belongsTo ~= node belongsTo ifTrue: [ 
+			n := self addNode: mooseEntity.
+			anHNode dependencyTo: n ] ]
 ]
 
 { #category : #building }
@@ -363,14 +390,6 @@ MiArchitecturalMapBuilder >> groupTagElements: aTag [
 MiArchitecturalMapBuilder >> initialize [
 
 	super initialize.
-	self linkStyler: (HLinkStyler new
-			 lineBuilder: (RSLineBuilder line
-					  attachPoint: (RSBorderAttachPoint new endOffset: 5);
-					  markerEnd: (RSShapeFactory arrow size: 15);
-					  width: 3;
-					  color: Color yellow translucent;
-					  yourself);
-			 yourself).
 	nodeMooseIDDict := Dictionary new.
 	allEntities := MooseGroup new.
 	tagNodes := OrderedCollection new
@@ -402,9 +421,13 @@ MiArchitecturalMapBuilder >> menuInteraction [
 
 { #category : #adding }
 MiArchitecturalMapBuilder >> parentNodeFor: anHNode [
+
 	"Search for parent node in the node dictionary, add it if not present."
+
 	| parentNode parent |
-	parent := anHNode rawModel parentType.
+	parent := anHNode rawModel belongsTo
+		          ifNil: [ rootNode ]
+		          ifNotNil: [ :p | p ].
 	parentNode := nodeMooseIDDict at: parent mooseID ifAbsent: [ nil ].
 	parentNode ifNotNil: [ ^ parentNode ].
 	parentNode := HNode new
@@ -432,20 +455,10 @@ MiArchitecturalMapBuilder >> relayout: aGroupOfShapes parent: shape [
 { #category : #rendering }
 MiArchitecturalMapBuilder >> renderLinesIn: aCanvas [
 
-	super renderLinesIn: aCanvas
-	"aCanvas lines do: [ :line | 
-		| incomings |
-		line to model rawModel class == FamixTag ifFalse: [ 
-			incomings := line to model rawModel queryAllLocal: #in.
-			(incomings
-				 detect: [ :e | line from model rawModel = e source ]
-				 ifNone: [ nil ]) ifNotNil: [ :assoc | 
-				| types |
-				types := assoc class traits & mapModel associationTypes.
-				line color: (types ifEmpty: [ Color red ] ifNotEmpty: [ 
-						 mapModel assocTypeToColorDict
-							 at: types anyOne
-							 ifAbsent: [ Color random ] ]) ] ] ]"
+	super renderLinesIn: aCanvas.
+	aCanvas lines do: [ :line |
+		(line to model hasTagAncestor or: [ line to model rawModel isTag ]) ifTrue: [ line color: Color yellow ].
+		(line from model hasTagAncestor or: [ line from model rawModel isTag ]) ifTrue: [ line color: Color cyan ] ]
 ]
 
 { #category : #building }
