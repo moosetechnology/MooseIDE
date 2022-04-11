@@ -121,31 +121,36 @@ MiArchitecturalMapBuilder >> build [
 	self addTags.
 	self setDependencies.
 	self buildLegend.
-	super build.
-	self updateWithModelSettings
+	self renderIn: self container.
+	self updateWithModelSettings.
+	^ self container
 ]
 
 { #category : #accessing }
 MiArchitecturalMapBuilder >> buildCompositeEmptyNodeIn: shape [
-	| node box rect |
+
+	| node box rect entity group |
 	node := shape model.
-	shape addAll: (self nodeStyler labelAndIconFor: node).
+	entity := node rawModel.
+	(entity notNil and: [ entity isTag not ]) ifTrue: [  ].
+	group := self labelAndTagFor: node.
+	shape addAll: group.
 	rect := shape children encompassingRectangle.
-	box := RSBox new 
-		model: node;
-		position: rect floatCenter;
-		extent: rect extent + 10;
-		cornerRadius: self fullCornerRadius;
-		color: (self colorFor: node);
-		border: (self borderFor: node);
-		yourself.
-	
-	box when: RSMouseDoubleClick do: [ :e | node expandCollapse  ] .
+	box := RSBox new
+		       model: node;
+		       position: rect floatCenter;
+		       extent: rect extent + 10;
+		       cornerRadius: self fullCornerRadius;
+		       color: (self colorFor: node);
+		       border: (self borderFor: node);
+		       yourself.
+
+	box when: RSMouseDoubleClick do: [ :e | node expandCollapse ].
 	shape add: box.
 	box pushBack.
-	shape schildren: #().
-	
-	shape 
+	shape schildren: #(  ).
+
+	shape
 		propertyAt: #background put: box;
 		adjustToChildren
 ]
@@ -155,7 +160,7 @@ MiArchitecturalMapBuilder >> buildCompositeFullNodeIn: shape [
 	| childrenShapes node titleGroup title titleBox children 
 	boxChildren titleRadius boxChildrenRadius list |
 	node := shape model.
-	titleGroup := self nodeStyler labelAndIconFor: node.
+	titleGroup := self labelAndTagFor: node.
 	titleBox := RSBox new
 		extent: titleGroup extent + 10;
 		color: ((self colorFor: node) alpha: 0.7);
@@ -395,6 +400,27 @@ MiArchitecturalMapBuilder >> initialize [
 ]
 
 { #category : #accessing }
+MiArchitecturalMapBuilder >> labelAndTagFor: node [
+
+	| group entity |
+	group := self nodeStyler labelAndIconFor: node.
+	entity := node rawModel.
+	(entity notNil and: [ entity isTag not and: [ entity isTagged ] ]) 
+		ifTrue: [
+			| tag |
+			tag := entity allTags anyOne.
+			group addFirst: (RSCircle new
+					 color: tag color;
+					 radius: 7;
+					 yourself) ].
+	
+	RSHorizontalLineLayout new
+		alignMiddle;
+		on: group.
+	^ group
+]
+
+{ #category : #accessing }
 MiArchitecturalMapBuilder >> mapModel [
 
 	^ mapModel
@@ -434,6 +460,7 @@ MiArchitecturalMapBuilder >> parentNodeFor: anHNode [
 		              name:
 			              (String streamContents: [ :s | 
 					               parent displayStringOn: s ]);
+		              collapse;
 		              yourself.
 	rootNode add: parentNode.
 	nodeMooseIDDict at: parent mooseID put: parentNode.
@@ -449,6 +476,28 @@ MiArchitecturalMapBuilder >> relayout: aGroupOfShapes parent: shape [
 			on: aGroupOfShapes. 
 		^ self ].
 	shape layout on: aGroupOfShapes.
+]
+
+{ #category : #accessing }
+MiArchitecturalMapBuilder >> renderIn: aCanvas [
+	| rootShapes |
+	aCanvas color: Smalltalk ui theme backgroundColor.
+	shapes := RSGroup new.
+	rootShapes := rootNode children 
+		collect: [:child | (self shapeFor: child) sparent: aCanvas ]
+		as: RSGroup.
+	aCanvas schildren: rootShapes.
+	aCanvas addAll: rootShapes.
+	aCanvas @ self menuInteraction.
+	rootNode when: HNodeAddedEvent do: [ :evt | | newShape |
+		newShape := (self shapeFor: evt newChild) sparent: aCanvas.
+		newShape position: aCanvas camera position.
+		rootShapes add: newShape.
+		aCanvas add: newShape.
+		 ].
+	self renderLinesIn: aCanvas.
+	self layoutOn: rootShapes parent: rootNode.
+	
 ]
 
 { #category : #rendering }
@@ -501,7 +550,7 @@ MiArchitecturalMapBuilder >> shapeFor: node [
 
 	node
 		removeInteractionIfPresent: self class;
-		when: HNodeAddedEvent do: [ :evt | self rebuildRootShape: shape ];
+		when: HNodeAddedEvent do: [ :evt |self rebuildRootShape: shape ];
 		when: HCollapseEvent do: [ :evt | self rebuildShape: shape ];
 		when: HExpandEvent do: [ :evt | self rebuildRootShape: shape ];
 		when: HNodeChangedEvent do: [ :evt | self rebuildShape: shape ].

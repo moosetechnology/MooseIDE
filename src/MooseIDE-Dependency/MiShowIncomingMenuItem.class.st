@@ -16,7 +16,8 @@ MiShowIncomingMenuItem >> canBeExecuted [
 { #category : #accessing }
 MiShowIncomingMenuItem >> execute [
 
-	visualization addIncomingEntitiesFor: shape model
+	visualization addIncomingEntitiesFor: shape model.
+	visualization container signalUpdate
 ]
 
 { #category : #accessing }
