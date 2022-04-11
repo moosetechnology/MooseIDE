@@ -16,7 +16,7 @@ MiShowOutgoingMenuItem >> canBeExecuted [
 { #category : #execution }
 MiShowOutgoingMenuItem >> execute [
 
-	visualization addOutgoingEntitiesFor: shape model
+	visualization addOutgoingsFor: shape model
 ]
 
 { #category : #accessing }

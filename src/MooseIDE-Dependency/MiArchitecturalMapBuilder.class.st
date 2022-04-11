@@ -15,7 +15,8 @@ Class {
 		'mapModel',
 		'nodeMooseIDDict',
 		'allEntities',
-		'tagNodes'
+		'tagNodes',
+		'nodesToAdd'
 	],
 	#category : #'MooseIDE-Dependency-ArchitecturalMap'
 }
@@ -39,6 +40,16 @@ MiArchitecturalMapBuilder >> addIncomingEntitiesFor: anHNode [
 ]
 
 { #category : #adding }
+MiArchitecturalMapBuilder >> addIncomingsFor: anHNode [
+
+	self addIncomingEntitiesFor: anHNode.
+	nodesToAdd valuesDo: [ :node | rootNode add: node ].
+	nodesToAdd := Dictionary new.
+	self renderLinesIn: self container.
+	self container signalUpdate
+]
+
+{ #category : #adding }
 MiArchitecturalMapBuilder >> addNode: mooseEntity [
 
 	| node parentNode |
@@ -59,15 +70,15 @@ MiArchitecturalMapBuilder >> addNode: mooseEntity [
 { #category : #adding }
 MiArchitecturalMapBuilder >> addOutgoingEntitiesFor: anHNode [
 
-	"Add to the visualization incoming entities"
+	"Add to the visualization outgoing entities"
 
-	| node incomingLinks |
+	| node outgoingLinks |
 	node := anHNode rawModel.
 	node isTag ifTrue: [ 
 		anHNode children do: [ :c | self addOutgoingEntitiesFor: c ].
 		^ self ].
-	incomingLinks := node queryAllLocal: #out.
-	incomingLinks do: [ :e | 
+	outgoingLinks := node queryAllLocal: #out.
+	outgoingLinks do: [ :e | 
 		self addOutgoingNodes: e target asCollection from: anHNode ]
 ]
 
@@ -81,6 +92,16 @@ MiArchitecturalMapBuilder >> addOutgoingNodes: aCollection from: anHNode [
 		mooseEntity belongsTo ~= node belongsTo ifTrue: [ 
 			n := self addNode: mooseEntity.
 			anHNode dependencyTo: n ] ]
+]
+
+{ #category : #adding }
+MiArchitecturalMapBuilder >> addOutgoingsFor: anHNode [
+
+	self addOutgoingEntitiesFor: anHNode.
+	nodesToAdd valuesDo: [ :node | rootNode add: node ].
+	nodesToAdd := Dictionary new.
+	self renderLinesIn: self container.
+	self container signalUpdate
 ]
 
 { #category : #building }
@@ -396,7 +417,8 @@ MiArchitecturalMapBuilder >> initialize [
 	super initialize.
 	nodeMooseIDDict := Dictionary new.
 	allEntities := MooseGroup new.
-	tagNodes := OrderedCollection new
+	tagNodes := OrderedCollection new.
+	nodesToAdd := Dictionary new
 ]
 
 { #category : #accessing }
@@ -462,7 +484,8 @@ MiArchitecturalMapBuilder >> parentNodeFor: anHNode [
 					               parent displayStringOn: s ]);
 		              collapse;
 		              yourself.
-	rootNode add: parentNode.
+	
+	nodesToAdd at: parent mooseID put: parentNode.
 	nodeMooseIDDict at: parent mooseID put: parentNode.
 	^ parentNode
 ]
