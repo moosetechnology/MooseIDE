@@ -118,6 +118,11 @@ MiCoUsageMapBuilder >> defaultMaxLabelWidth [
 ]
 
 { #category : #default }
+MiCoUsageMapBuilder >> defaultSettings [
+	^ MiCoUsageMapSettings
+]
+
+{ #category : #default }
 MiCoUsageMapBuilder >> defaultSortBlock [
 	^ [ :met1 :met2 | 
 		| size1 size2 |
@@ -170,6 +175,7 @@ MiCoUsageMapBuilder >> initialize [
 		legendTag: self defaultLegendTagVisualization;
 		markManager: self defaultMarkManager;
 		highlightManager: self defaultHighlightManager;
+		settings: self defaultSettings;		
 		initializeShapes
 ]
 
