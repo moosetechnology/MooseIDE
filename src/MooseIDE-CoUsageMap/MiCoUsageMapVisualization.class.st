@@ -5,7 +5,8 @@ Class {
 	#name : #MiCoUsageMapVisualization,
 	#superclass : #MiAbstractVisualization,
 	#instVars : [
-		'coUsageMap'
+		'coUsageMap',
+		'settings'
 	],
 	#category : #'MooseIDE-CoUsageMap-Browser'
 }
@@ -104,9 +105,20 @@ MiCoUsageMapVisualization >> run [
 	coUsageMap 
 		container: self canvas;
 		methods: model;
+		settings: self settings;
 		application: self owner application.
 	self updateLegend.
 	coUsageMap build.
+]
+
+{ #category : #accessing }
+MiCoUsageMapVisualization >> settings [
+	^ settings
+]
+
+{ #category : #accessing }
+MiCoUsageMapVisualization >> settings: anObject [
+	settings := anObject
 ]
 
 { #category : #brokerage }
@@ -124,6 +136,11 @@ MiCoUsageMapVisualization >> update: anObject [
 	self consume: anObject
 ]
 
+{ #category : #update }
+MiCoUsageMapVisualization >> updateChildren [
+	coUsageMap updateChildren
+]
+
 { #category : #brokerage }
 MiCoUsageMapVisualization >> updateLegend [
 	| legendTag |
@@ -131,4 +148,9 @@ MiCoUsageMapVisualization >> updateLegend [
 	self tagsFromMooseModel: self owner collectionModel mooseModel.
 	legendTag build.
 	coUsageMap updateShapeColors.
+]
+
+{ #category : #update }
+MiCoUsageMapVisualization >> updateShapeLayout [
+	coUsageMap updateShapeLayout
 ]

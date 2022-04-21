@@ -9,12 +9,9 @@ MiCoUsageExamplesTest >> testAllExamples [
 
 	| inst errors |
 	inst := MiCoUsageMapExamples new.
-	errors := inst class methods select: [ :arg1 | 
-		        (arg1 selector beginsWith: 'example') and: [ 
-			        [ 
-			        inst perform: arg1 selector.
-			        false ]
-				        on: Error
-				        do: [ :arg2 | true ] ] ].
+	errors := inst class methods select: [ :each | 
+		(each selector beginsWith: 'example') and: [ 
+			[ inst perform: each selector. false ]
+			onErrorDo:[ :ex | true ] ] ].
 	self assert: errors isEmpty description: 'should run without errors'
 ]

@@ -136,7 +136,7 @@ MiCoUsageMapSettings class >> childrenBlockText [
 { #category : #accessing }
 MiCoUsageMapSettings class >> childrenBlockText: aString [
 	childrenBlockText := aString.
-	self browserDo: [ :b | b updateChildren ].
+	"self browserDo: [ :b | b updateChildren ]."
 ]
 
 { #category : #'accessing - computed' }
@@ -212,7 +212,7 @@ MiCoUsageMapSettings class >> innerBoxHeight [
 { #category : #accessing }
 MiCoUsageMapSettings class >> innerBoxHeight: aNumber [
 	innerBoxHeight := aNumber.
-	self updateBrowserInnerBoxSize
+	"self updateBrowserInnerBoxSize"
 ]
 
 { #category : #accessing }
@@ -223,7 +223,7 @@ MiCoUsageMapSettings class >> innerBoxRange [
 { #category : #accessing }
 MiCoUsageMapSettings class >> innerBoxRange: anInterval [
 	innerBoxRange := anInterval.
-	self updateBrowserInnerBoxSize
+	"self updateBrowserInnerBoxSize"
 ]
 
 { #category : #accessing }
@@ -234,7 +234,7 @@ MiCoUsageMapSettings class >> innerBoxScaleType [
 { #category : #accessing }
 MiCoUsageMapSettings class >> innerBoxScaleType: aString [
 	innerBoxScaleType := aString.
-	self updateBrowserInnerBoxSize
+	"self updateBrowserInnerBoxSize"
 ]
 
 { #category : #'accessing - computed' }
@@ -250,13 +250,14 @@ MiCoUsageMapSettings class >> innerBoxSortBlockText [
 { #category : #accessing }
 MiCoUsageMapSettings class >> innerBoxSortBlockText: aString [
 	innerBoxSortBlockText := aString.
-	self browserDo: [ :b | b updateShapeLayout ]
+	"self browserDo: [ :b | b updateShapeLayout ]"
 ]
 
 { #category : #opening }
 MiCoUsageMapSettings class >> openBlocksSettings [
-
-	MiCoUsageMapBlockSettingsPresenter new open
+	MiCoUsageMapBlockSettingsPresenter new 
+		settings: self;
+		open
 ]
 
 { #category : #'accessing - computed' }
@@ -272,7 +273,7 @@ MiCoUsageMapSettings class >> outerBoxSortBlockText [
 { #category : #accessing }
 MiCoUsageMapSettings class >> outerBoxSortBlockText: aString [
 	outerBoxSortBlockText := aString.
-	self browserDo: [ :b | b updateShapeLayout ]
+	"self browserDo: [ :b | b updateShapeLayout ]"
 ]
 
 { #category : #'class initialization' }
@@ -296,7 +297,7 @@ MiCoUsageMapSettings class >> threshold75PercentGroup [
 { #category : #accessing }
 MiCoUsageMapSettings class >> threshold75PercentGroup: aNumber [
 	threshold75 := aNumber.
-	self browserDo: [ :b | b threshold75: threshold75 ]
+	"self browserDo: [ :b | b threshold75: threshold75 ]"
 ]
 
 { #category : #private }

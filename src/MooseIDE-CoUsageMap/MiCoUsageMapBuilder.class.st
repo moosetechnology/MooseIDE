@@ -25,7 +25,8 @@ Class {
 		'containerBox',
 		'methodAttributeCounter',
 		'highlightManager',
-		'widthScale'
+		'widthScale',
+		'settings'
 	],
 	#category : #'MooseIDE-CoUsageMap-Roassal3'
 }
@@ -287,7 +288,8 @@ MiCoUsageMapBuilder >> methodAttributeCounter [
 
 { #category : #accessing }
 MiCoUsageMapBuilder >> methodAttributeCounter: aMiCoMethodAttributeCounter [
-	methodAttributeCounter := aMiCoMethodAttributeCounter
+	methodAttributeCounter := aMiCoMethodAttributeCounter.
+	methodAttributeCounter settings: self settings.
 ]
 
 { #category : #hooks }
@@ -413,9 +415,9 @@ MiCoUsageMapBuilder >> renderIn: aCanvas job: aJob [
 	aJob currentValue: 50; title: 'Rendering entities'.
 	shapes := self miMethods collect: [ :met | self methodShapeFor: met ].
 	aCanvas addAll: shapes.
-	self sortShapes.
+	
 	aJob currentValue: 85; title: 'Applying layout'.
-	self applyLayout.
+	self updateShapeLayout.
 	aJob currentValue: 90; title: 'Adding decorations'.
 	self legendTag
 		container: aCanvas;
@@ -452,6 +454,17 @@ MiCoUsageMapBuilder >> resizeLabelIfNecessary: label [
 	label scaleBy: scale @ 1.
 ]
 
+{ #category : #accessing }
+MiCoUsageMapBuilder >> settings [
+	^ settings "ifNil: [ MiCoUsageMapSettings ]"
+]
+
+{ #category : #accessing }
+MiCoUsageMapBuilder >> settings: anObject [
+	settings := anObject.
+	methodAttributeCounter settings: self settings.
+]
+
 { #category : #testing }
 MiCoUsageMapBuilder >> shouldUseProgressBar [
 	^ false
@@ -460,18 +473,17 @@ MiCoUsageMapBuilder >> shouldUseProgressBar [
 { #category : #public }
 MiCoUsageMapBuilder >> sortShapes [
 	| block children tBlock |
-	block := MiCoUsageMapSettings outerBoxSortBlockCompiled.
+	block := self settings outerBoxSortBlockCompiled.
 	tBlock := [ :a :b | block value: a model value: b model ].
 	children := self canvas children.
 	[ children sort: tBlock ]
 	onErrorDo: [ :ex | 
 		block := self defaultSortBlock.
 		children sort: tBlock ].
-	
-	block := MiCoUsageMapSettings innerBoxSortBlockCompiled.
+	block := self settings innerBoxSortBlockCompiled.
 	children do: [ :node |
 		[ node attributeShapes sort: tBlock ]
-		onErrorDo: [ :ex | 
+		onErrorDo: [ :ex |
 			block := self defaultInnerSortBlock.
 			node attributeShapes sort: tBlock ]
 	]

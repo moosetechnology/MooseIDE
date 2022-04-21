@@ -27,15 +27,18 @@ Class {
 	#superclass : #MiAbstractBrowser,
 	#instVars : [
 		'coUsageMap',
-		'collectionModel'
+		'collectionModel',
+		'settings'
 	],
 	#category : #'MooseIDE-CoUsageMap-Browser'
 }
 
-{ #category : #layout }
+{ #category : #specs }
 MiCoUsageMapBrowser class >> defaultLayout [
-	^ SpBoxLayout newLeftToRight
-		add: #coUsageMap;
+	^ SpPanedLayout newLeftToRight
+		first: #settings;
+		second: #coUsageMap;
+		positionOfSlider: 350;
 		yourself
 ]
 
@@ -65,15 +68,16 @@ MiCoUsageMapBrowser class >> title [
 
 { #category : #specs }
 MiCoUsageMapBrowser class >> windowSize [
-	^ 800@700
+	^ 900@700
 ]
 
 { #category : #'window control' }
 MiCoUsageMapBrowser >> browserClosed [
-
 	super browserClosed.
 	application unregisterConsumer: coUsageMap.
-	application unregisterProducer: coUsageMap
+	application unregisterProducer: coUsageMap.
+	settings coUsageMap: nil.
+	coUsageMap settings: nil.
 ]
 
 { #category : #testing }
@@ -96,6 +100,17 @@ MiCoUsageMapBrowser >> collectionModel: anObject [
 	collectionModel := anObject
 ]
 
+{ #category : #initialization }
+MiCoUsageMapBrowser >> connectPresenters [
+	settings coUsageMap: coUsageMap.
+	coUsageMap settings: settings.
+]
+
+{ #category : #accessing }
+MiCoUsageMapBrowser >> defaultSettings [
+	^ MiCoUsageMapInstanceSettingsPresenter new
+]
+
 { #category : #actions }
 MiCoUsageMapBrowser >> followEntity: anEntity [
 	self collectionModel: anEntity.
@@ -110,6 +125,7 @@ MiCoUsageMapBrowser >> hasSettings [
 { #category : #initialization }
 MiCoUsageMapBrowser >> initializePresenters [
 	coUsageMap := self instantiate: MiCoUsageMapVisualization.
+	settings := self instantiate: MiCoUsageMapInstanceSettingsPresenter.
 	application registerConsumer: coUsageMap for: FamixTag.
 	application registerConsumer: coUsageMap for: FamixTagAssociation.
 	application registerProducer: coUsageMap for: FamixTagAssociation.
