@@ -6,7 +6,8 @@ Class {
 	#superclass : #SpPresenter,
 	#instVars : [
 		'slider',
-		'text'
+		'text',
+		'sliderBuilder'
 	],
 	#category : #'MooseIDE-CoUsageMap-Settings'
 }
@@ -22,11 +23,35 @@ MiCoSliderPresenter class >> defaultLayout [
 		yourself
 ]
 
+{ #category : #accessing }
+MiCoSliderPresenter >> get: anObject [
+	sliderBuilder getValueSelector: anObject
+]
+
 { #category : #initialization }
 MiCoSliderPresenter >> initializePresenters [
-	| sliderBuilder |
 	text := self newTextInput.
 	slider := self instantiate: SpRoassalPresenter.
 	sliderBuilder := MiCoSlider new.
 	sliderBuilder renderIn: slider canvas.
+]
+
+{ #category : #accessing }
+MiCoSliderPresenter >> model: anObject [
+	sliderBuilder model: anObject
+]
+
+{ #category : #accessing }
+MiCoSliderPresenter >> range: anObject [
+	sliderBuilder
+		min: anObject first;
+		max: anObject last;
+		quantum: anObject increment;
+		updateValue.
+	
+]
+
+{ #category : #accessing }
+MiCoSliderPresenter >> set: anObject [
+	sliderBuilder setValueSelector: anObject
 ]

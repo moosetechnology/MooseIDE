@@ -4,14 +4,13 @@ This interacts directly with MiCoUsageMapSettings
 "
 Class {
 	#name : #MiCoUsageMapBlockSettingsPresenter,
-	#superclass : #SpPresenter,
+	#superclass : #MiCoUsageMapAbstractSettingsPresenter,
 	#instVars : [
 		'childrenTextInput',
 		'sortOuterBoxTextInput',
 		'sortInnerBoxTextInput',
 		'button',
-		'resetButton',
-		'settings'
+		'resetButton'
 	],
 	#category : #'MooseIDE-CoUsageMap-Settings'
 }
@@ -87,15 +86,4 @@ MiCoUsageMapBlockSettingsPresenter >> initializeWindow: aWindowPresenter [
 	aWindowPresenter 
 		initialExtent: 500@700;
 		title: 'Blocks Settings - Co Usage Map'
-]
-
-{ #category : #accessing }
-MiCoUsageMapBlockSettingsPresenter >> settings [
-	^ settings
-]
-
-{ #category : #accessing }
-MiCoUsageMapBlockSettingsPresenter >> settings: anObject [
-	settings := anObject.
-	self connectPresenters.
 ]

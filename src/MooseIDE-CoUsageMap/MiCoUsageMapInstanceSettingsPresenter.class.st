@@ -5,11 +5,8 @@ Class {
 	#name : #MiCoUsageMapInstanceSettingsPresenter,
 	#superclass : #SpPresenter,
 	#instVars : [
+		'generalSettings',
 		'blockSettings',
-		'threshold',
-		'innerBoxHeight',
-		'innerBoxWidthScale',
-		'rangeInnerWidth',
 		'coUsageMap',
 		'properties'
 	],
@@ -18,27 +15,9 @@ Class {
 
 { #category : #layout }
 MiCoUsageMapInstanceSettingsPresenter class >> defaultLayout [
-	| blockSettings generalSettings |
-	blockSettings := SpScrollableLayout with:
-		(SpBoxLayout newTopToBottom
-			add: #blockSettings;
-			yourself).
-	generalSettings := SpScrollableLayout with:
-		(SpBoxLayout newTopToBottom
-			spacing: 3;
-			add: 'Threshold percent per group' asPresenter expand: false;
-			add: #threshold expand: false;
-			add: 'Inner box height' asPresenter expand: false;
-			add: #innerBoxHeight expand: false;
-			add: 'Inner box width scale' asPresenter expand: false;
-			add: #innerBoxWidthScale expand: false;
-			add: 'Range for inner boxes' asPresenter expand: false;
-			add: #rangeInnerWidth expand: false;
-			yourself
-			).
 	^ SpTabLayout new
-		add: generalSettings label: 'General Settings';
-		add: blockSettings label: 'Block Settings';
+		add: (SpScrollableLayout with: #generalSettings) label: 'General Settings';
+		add: (SpScrollableLayout with: #blockSettings) label: 'Block Settings';
 		yourself
 ]
 
@@ -76,19 +55,25 @@ MiCoUsageMapInstanceSettingsPresenter >> compiledBlock: aString onError: default
 ]
 
 { #category : #initialization }
-MiCoUsageMapInstanceSettingsPresenter >> connectPresenters [
-	innerBoxWidthScale items: #(linear symlog).
-]
-
-{ #category : #initialization }
 MiCoUsageMapInstanceSettingsPresenter >> initializePresenters [
 	properties := Dictionary new.
 	blockSettings := self instantiate: MiCoUsageMapBlockSettingsPresenter.
 	blockSettings settings: self.
-	threshold := self instantiate: MiCoSliderPresenter.
-	innerBoxHeight := self instantiate: MiCoSliderPresenter.
-	innerBoxWidthScale := self newDropList.
-	rangeInnerWidth := self instantiate: MiCoDualSliderPresenter.
+	generalSettings := self instantiate: MiCoUsageMapGeneralSettingsPresenter.
+	generalSettings settings: self
+]
+
+{ #category : #properties }
+MiCoUsageMapInstanceSettingsPresenter >> innerBoxHeight [
+	^ properties 
+		at: #innerBoxHeight 
+		ifAbsentPut: [ self settingsClass innerBoxHeight ].
+]
+
+{ #category : #properties }
+MiCoUsageMapInstanceSettingsPresenter >> innerBoxHeight: anObject [
+	properties at: #innerBoxHeight put: anObject.
+	coUsageMap updateInnerBoxSize
 ]
 
 { #category : #properties }
@@ -130,4 +115,19 @@ MiCoUsageMapInstanceSettingsPresenter >> outerBoxSortBlockText: aString [
 { #category : #properties }
 MiCoUsageMapInstanceSettingsPresenter >> settingsClass [
 	^ MiCoUsageMapSettings
+]
+
+{ #category : #properties }
+MiCoUsageMapInstanceSettingsPresenter >> threshold75PercentGroup [
+	^ properties 
+		at: #threshold75PercentGroup 
+		ifAbsentPut: [ self settingsClass threshold75PercentGroup ].
+]
+
+{ #category : #properties }
+MiCoUsageMapInstanceSettingsPresenter >> threshold75PercentGroup: anObject [
+	properties 
+		at: #threshold75PercentGroup 
+		put: anObject.
+	coUsageMap threshold75: anObject.
 ]
