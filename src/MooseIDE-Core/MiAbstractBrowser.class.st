@@ -8,15 +8,15 @@ I provide a toolBar with:
 Concrete browsers can use my instance variable #model (it can be initialized with #initializeModel).
 They should override:
 Instance side:
-	- #accept: | which entities the browser can receive
-	- #followAction | what to do with the received entity in Follow mode
-	- #highlightAction | what to do with the received entity in Highlight mode
+	- #canFollowEntity: | which entities the browser can receive
+	- #followEntity | what to do with the received entity in Follow mode
+	- #highlightEntity | what to do with the received entity in Highlight mode
 	- #miSelectedItem | entity (or entities) to propagate
 Class side:	
 	- #title | The browser window title
 	- #menuCommandOn: | To be integrated into Midas Browsers menu
 Spec2 methods: 
-	#initializePresenters, #defaultSpec, ...
+	#initializePresenters, #defaultLayout, ...
 
 Please comment your browser as follow: 
 *************************************************
