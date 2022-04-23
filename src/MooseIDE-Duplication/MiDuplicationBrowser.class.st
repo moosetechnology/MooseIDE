@@ -42,6 +42,12 @@ MiDuplicationBrowser class >> title [
 	^ 'Duplication browser'
 ]
 
+{ #category : #specs }
+MiDuplicationBrowser class >> windowSize [
+
+	^ 1000 @ 400
+]
+
 { #category : #testing }
 MiDuplicationBrowser >> canFollowEntity: anObject [
 
@@ -58,12 +64,23 @@ MiDuplicationBrowser >> followEntity: entityCollection [
 	model entities: entityCollection
 ]
 
+{ #category : #formatting }
+MiDuplicationBrowser >> formatReplicatedFragment: replicatedFragment [
+
+	"number of replicas and summarization of replicated fragment code"
+
+	^ replicatedFragment replicas size asString , ':'
+	  ,
+		  (replicatedFragment replicas anyOne codeText
+			   withSeparatorsCompacted truncateWithElipsisTo: 25)
+]
+
 { #category : #actions }
 MiDuplicationBrowser >> hasSettings [
 	^true
 ]
 
-{ #category : #private }
+{ #category : #formatting }
 MiDuplicationBrowser >> highlightReplicatedEntity: replicas [
 replicas do: [ :replica |
 		lstEntities selectItem: replica entity]
@@ -71,14 +88,16 @@ replicas do: [ :replica |
 
 { #category : #initialization }
 MiDuplicationBrowser >> initializeLayout [
+
 	self layout: (SpBoxLayout newLeftToRight
-		add: lstEntities ;
-		add: (SpBoxLayout newTopToBottom 
-			add: btnRun expand: false ;
-			add: lstReplicatedFragments ;
-			yourself) ;
-		add: panCodes ;
-		yourself)
+			 add: lstEntities width: 150;
+			 add: (SpBoxLayout newTopToBottom
+					  add: btnRun expand: false;
+					  add: lstReplicatedFragments;
+					  yourself)
+			 width: 150;
+			 add: panCodes expand: true;
+			 yourself)
 ]
 
 { #category : #initialization }
@@ -93,10 +112,11 @@ MiDuplicationBrowser >> initializeListReplicatedFragments [
 
 	lstReplicatedFragments := self newList.
 	lstReplicatedFragments display: [ :replicatedFragment | 
-		replicatedFragment replicas anyOne codeText withSeparatorsCompacted 
-			truncateWithElipsisTo: 20 ].
+		self formatReplicatedFragment: replicatedFragment ].
 	lstReplicatedFragments whenSelectionChangedDo: [ :selection | 
-		selection selectedItem ifNotNil: [ :selectedItem | model selectedFragment: selectedItem ] ]
+		self resetReplicas.
+		selection selectedItem
+			ifNotNil: [ :selectedItem | model selectedFragment: selectedItem ] ]
 ]
 
 { #category : #initialization }
@@ -109,7 +129,9 @@ MiDuplicationBrowser >> initializePresenter [
 
 	btnRun := self newButton
 		          label: 'Run';
-		          action: [ self resetReplicas ].
+		          action: [ 
+			          self resetReplicas.
+			          model findReplicas ].
 
 	panCodes := self newNotebook.
 
@@ -124,9 +146,9 @@ MiDuplicationBrowser >> newCodePage: replica [
 
 { #category : #api }
 MiDuplicationBrowser >> resetReplicas [
+
 	lstEntities unselectAll.
 	panCodes removeAll.
-	model findReplicas
 ]
 
 { #category : #initialization }
@@ -160,7 +182,8 @@ MiDuplicationBrowser >> showReplicas: replicas [
 MiDuplicationBrowser >> showReplicatedEntityCode: replicas [
 
 	replicas do: [ :replica | 
-		panCodes addPage: (self newCodePage: replica) ]
+		panCodes addPage: (self newCodePage: replica) ].
+	panCodes selectPageIndex: 1
 ]
 
 { #category : #api }
