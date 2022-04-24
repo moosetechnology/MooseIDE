@@ -22,6 +22,7 @@ BaselineOfMooseIDE >> baseline: spec [
 		spec for: #NeedsMoose do: [ 
 			self famix: spec.
 			self famixTagging: spec.
+			self famixReplication: spec.
 			spec
 				package: 'MooseIDE-Core' with: [ spec requires: #( 'Famix' ) ];
 				package: 'MooseIDE-Meta'
@@ -98,7 +99,7 @@ BaselineOfMooseIDE >> definePackages: spec [
 		with: [ spec requires: #( 'MooseIDE-CoUsageMap'
 				   'MooseIDE-Tests' ) ];
 		package: 'MooseIDE-Duplication'
-		with: [ spec requires: #( 'MooseIDE-Core' ) ]
+		with: [ spec requires: #( 'MooseIDE-Core' 'FamixReplication' ) ]
 ]
 
 { #category : #dependencies }
@@ -115,6 +116,15 @@ BaselineOfMooseIDE >> famixQueries: spec [
 	spec
 		baseline: 'FamixQueries'
 		with: [ spec repository: 'github://moosetechnology/FamixQueries' ]
+]
+
+{ #category : #dependencies }
+BaselineOfMooseIDE >> famixReplication: spec [
+
+	spec
+		baseline: 'FamixReplication'
+		with: [ 
+		spec repository: 'github://moosetechnology/FamixReplication/src' ]
 ]
 
 { #category : #dependencies }
