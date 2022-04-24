@@ -87,6 +87,12 @@ MiDuplicationBrowser >> hasSettings [
 	^ false
 ]
 
+{ #category : #api }
+MiDuplicationBrowser >> highlightEntities: entities [
+
+	lstEntities selectItems: entities
+]
+
 { #category : #initialization }
 MiDuplicationBrowser >> initializeLayout [
 
@@ -156,7 +162,7 @@ MiDuplicationBrowser >> miSelectedItem [
 	^ model selectedEntity
 ]
 
-{ #category : #private }
+{ #category : #utilities }
 MiDuplicationBrowser >> newCodePage: replica [
 	^MiDuplicationBrowserPage forReplica: replica
 		
@@ -173,12 +179,6 @@ MiDuplicationBrowser >> resetReplicas [
 
 	lstEntities unselectAll.
 	panCodes removeAll.
-]
-
-{ #category : #actions }
-MiDuplicationBrowser >> selectReplicatedEntity: replicas [
-	model selectedEntity: (replicas collect: #entity).
-	model selectedEntity do: [ :entity | lstEntities selectItem: entity ]
 ]
 
 { #category : #initialization }
@@ -203,13 +203,6 @@ MiDuplicationBrowser >> showEntities: entities [
 
 { #category : #api }
 MiDuplicationBrowser >> showReplicas: replicas [
-
-	self selectReplicatedEntity: replicas.
-	self showReplicatedEntityCode: replicas
-]
-
-{ #category : #private }
-MiDuplicationBrowser >> showReplicatedEntityCode: replicas [
 
 	replicas do: [ :replica | 
 		panCodes addPage: (self newCodePage: replica) ].

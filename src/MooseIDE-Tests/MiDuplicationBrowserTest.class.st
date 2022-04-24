@@ -96,6 +96,39 @@ MiDuplicationBrowserTest >> testFormatReplicatedFragment [
 ]
 
 { #category : #tests }
+MiDuplicationBrowserTest >> testHighlightEntities [
+
+	| entities |
+	entities := { 
+		            (self method: 'method1').
+		            (self method: 'method2') }.
+	browser showEntities: entities.
+
+	self assertEmpty: browser lstEntities selectedItems.
+
+	browser highlightEntities: entities.
+	self assert: browser lstEntities selectedItems size equals: 2
+]
+
+{ #category : #tests }
+MiDuplicationBrowserTest >> testMiSelectedItem [
+
+	| entities |
+	entities := { 
+		            (self method: 'method1').
+		            (self method: 'method2') } asMooseGroup.
+
+	browser model entities: entities.
+
+	self assertEmpty: browser miSelectedItem.
+	self deny: browser canPropagate.
+
+	browser model selectedEntity: entities.
+	self assert: browser miSelectedItem size equals: 2.
+	self assert: browser canPropagate
+]
+
+{ #category : #tests }
 MiDuplicationBrowserTest >> testResetReplicas [
 
 	browser showReplicas: self replicatedFragment replicas.
@@ -103,20 +136,6 @@ MiDuplicationBrowserTest >> testResetReplicas [
 
 	browser resetReplicas.
 	self assertEmpty: browser panCodes pages
-]
-
-{ #category : #tests }
-MiDuplicationBrowserTest >> testSelectReplicatedEntity [
-
-	| replicatedFragment |
-	replicatedFragment := self replicatedFragment.
-	browser showEntities: (replicatedFragment replicas collect: #entity).
-
-	self assert: browser lstEntities items size equals: 2.
-	self assertEmpty: browser lstEntities selectedItems.
-
-	browser selectReplicatedEntity: replicatedFragment replicas.
-	self assert: browser lstEntities selectedItems size equals: 2
 ]
 
 { #category : #tests }

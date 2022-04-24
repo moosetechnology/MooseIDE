@@ -102,15 +102,17 @@ MiDuplicationBrowserModel >> selectedEntity [
 
 { #category : #accessing }
 MiDuplicationBrowserModel >> selectedEntity: anEntity [
+
 	selectedEntity := anEntity.
-	browser updateToolbar 
+	browser highlightEntities: selectedEntity.
+	browser updateToolbar
 ]
 
 { #category : #api }
 MiDuplicationBrowserModel >> selectedFragment: aReplicatedFragment [
-	browser showReplicas: aReplicatedFragment replicas
 
-	
+	self selectedEntity: (aReplicatedFragment replicas collect: #entity) asMooseGroup.
+	browser showReplicas: aReplicatedFragment replicas
 ]
 
 { #category : #accessing }
