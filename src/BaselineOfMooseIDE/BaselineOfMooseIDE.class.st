@@ -124,7 +124,7 @@ BaselineOfMooseIDE >> famixReplication: spec [
 	spec
 		baseline: 'FamixReplication'
 		with: [ 
-		spec repository: 'github://moosetechnology/FamixReplication/src' ]
+		spec repository: 'github://moosetechnology/FamixReplication' ]
 ]
 
 { #category : #dependencies }
