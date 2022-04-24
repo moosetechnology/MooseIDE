@@ -96,7 +96,17 @@ MiDuplicationBrowserTest >> testFormatReplicatedFragment [
 ]
 
 { #category : #tests }
-MiDuplicationBrowserTest >> testHighlightReplicatedEntity [
+MiDuplicationBrowserTest >> testResetReplicas [
+
+	browser showReplicas: self replicatedFragment replicas.
+	self assert: browser panCodes pages size equals: 2.
+
+	browser resetReplicas.
+	self assertEmpty: browser panCodes pages
+]
+
+{ #category : #tests }
+MiDuplicationBrowserTest >> testSelectReplicatedEntity [
 
 	| replicatedFragment |
 	replicatedFragment := self replicatedFragment.
@@ -105,18 +115,8 @@ MiDuplicationBrowserTest >> testHighlightReplicatedEntity [
 	self assert: browser lstEntities items size equals: 2.
 	self assertEmpty: browser lstEntities selectedItems.
 
-	browser highlightReplicatedEntity: replicatedFragment replicas.
+	browser selectReplicatedEntity: replicatedFragment replicas.
 	self assert: browser lstEntities selectedItems size equals: 2
-]
-
-{ #category : #tests }
-MiDuplicationBrowserTest >> testResetReplicas [
-
-	browser showReplicas: self replicatedFragment replicas.
-	self assert: browser panCodes pages size equals: 2.
-
-	browser resetReplicas.
-	self assertEmpty: browser panCodes pages
 ]
 
 { #category : #tests }

@@ -13,7 +13,8 @@ Class {
 		'repDetector',
 		'entities',
 		'replicatedFragments',
-		'settings'
+		'settings',
+		'selectedEntity'
 	],
 	#category : #'MooseIDE-Duplication'
 }
@@ -63,7 +64,9 @@ MiDuplicationBrowserModel >> findReplicas [
 
 { #category : #initialization }
 MiDuplicationBrowserModel >> initialize [
-	entities := #().
+
+	entities := #(  ).
+	selectedEntity := #().
 	settings := MiDuplicationBrowserSettings new
 ]
 
@@ -89,6 +92,18 @@ MiDuplicationBrowserModel >> newRepConfig [
 MiDuplicationBrowserModel >> replicatedFragments [
 
 	^ replicatedFragments
+]
+
+{ #category : #accessing }
+MiDuplicationBrowserModel >> selectedEntity [
+
+	^selectedEntity
+]
+
+{ #category : #accessing }
+MiDuplicationBrowserModel >> selectedEntity: anEntity [
+	selectedEntity := anEntity.
+	browser updateToolbar 
 ]
 
 { #category : #api }
