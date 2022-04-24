@@ -96,7 +96,9 @@ BaselineOfMooseIDE >> definePackages: spec [
 			spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' ) ];
 		package: 'MooseIDE-CoUsageMap-Tests'
 		with: [ spec requires: #( 'MooseIDE-CoUsageMap'
-				   'MooseIDE-Tests' ) ]
+				   'MooseIDE-Tests' ) ];
+		package: 'MooseIDE-Duplication'
+		with: [ spec requires: #( 'MooseIDE-Core' ) ]
 ]
 
 { #category : #dependencies }
