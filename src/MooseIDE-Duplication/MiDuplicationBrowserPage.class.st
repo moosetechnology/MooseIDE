@@ -20,30 +20,15 @@ MiDuplicationBrowserPage class >> forReplica: aReplica [
 ]
 
 { #category : #private }
-MiDuplicationBrowserPage >> findLinePos: lineNumber in: aString [
-
-	| pos currentLine |
-	pos := 1.
-	currentLine := 0.
-	aString lines do: [ :aLine | 
-		currentLine := currentLine + 1.
-		currentLine < lineNumber
-			ifTrue: [ pos := pos + aLine size + 1 ]
-			ifFalse: [ ^ pos ] ].
-	^ pos
-]
-
-{ #category : #private }
 MiDuplicationBrowserPage >> formatReplicaText [
 
-	| text highlightStart highlightEnd |
+	| text highlightInterval |
 	text := replica entity sourceText.
-	highlightStart := self highlightingStart: text.
-	highlightEnd := self highlightingEnd: text.
+	highlightInterval := self linesToCharPos: (replica startLine to: replica endLine) in: text.
 	^ text asText
 		  addAttribute: (TextBackgroundColor color: self highlightingColor)
-		  from: highlightStart
-		  to: highlightEnd;
+		  from: highlightInterval first
+		  to: highlightInterval last;
 		  yourself
 ]
 
@@ -51,17 +36,6 @@ MiDuplicationBrowserPage >> formatReplicaText [
 MiDuplicationBrowserPage >> highlightingColor [
 
 	^ Color veryVeryLightGray
-]
-
-{ #category : #private }
-MiDuplicationBrowserPage >> highlightingEnd: aText [
-	"search for pos of next line and remove one character (end-of-line)"
-	^ (self findLinePos: replica endLine + 1 in: aText) - 1
-]
-
-{ #category : #private }
-MiDuplicationBrowserPage >> highlightingStart: aText [
-	^self findLinePos: replica startLine in: aText
 ]
 
 { #category : #initialization }
@@ -73,6 +47,36 @@ MiDuplicationBrowserPage >> initialize [
 	self presenterProvider: [ SpTextPresenter new
 			text: self textContent ;
 			yourself ]
+]
+
+{ #category : #private }
+MiDuplicationBrowserPage >> intervalAsCharPos: lineInterval [
+	"copied from FamixTFileNavigation >> #intervalAsCharPos"
+	| start end index |
+	index := 0.
+	start := 1.
+	end := 0.
+	self completeText lineIndicesDo: [ :lineStart :lineEnd :y | 
+		index := index + 1.
+		self startLine = index ifTrue: [ start := lineStart ].
+		self endLine = index ifTrue: [ end := lineEnd ] ].
+	^ start to: end
+]
+
+{ #category : #private }
+MiDuplicationBrowserPage >> linesToCharPos: lineInterval in: aString [
+
+	"copied from FamixTFileNavigation >> #intervalAsCharPos"
+
+	| start end index |
+	index := 0.
+	start := 1.
+	end := 0.
+	aString lineIndicesDo: [ :lineStart :lineEnd :y | 
+		index := index + 1.
+		lineInterval first = index ifTrue: [ start := lineStart ].
+		lineInterval last = index ifTrue: [ end := lineEnd ] ].
+	^ start to: end
 ]
 
 { #category : #accessing }

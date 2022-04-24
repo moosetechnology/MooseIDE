@@ -62,7 +62,8 @@ MiDuplicationBrowserModel >> findReplicas [
 ]
 
 { #category : #initialization }
-MiDuplicationBrowserModel >> initialize [ 
+MiDuplicationBrowserModel >> initialize [
+	entities := #().
 	settings := MiDuplicationBrowserSettings new
 ]
 

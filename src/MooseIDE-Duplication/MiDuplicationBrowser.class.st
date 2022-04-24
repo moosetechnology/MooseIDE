@@ -48,6 +48,12 @@ MiDuplicationBrowser class >> windowSize [
 	^ 1000 @ 400
 ]
 
+{ #category : #'accessing - private tests' }
+MiDuplicationBrowser >> btnRun [
+
+	^ btnRun
+]
+
 { #category : #testing }
 MiDuplicationBrowser >> canFollowEntity: anObject [
 
@@ -64,7 +70,7 @@ MiDuplicationBrowser >> followEntity: entityCollection [
 	model entities: entityCollection
 ]
 
-{ #category : #formatting }
+{ #category : #utilities }
 MiDuplicationBrowser >> formatReplicatedFragment: replicatedFragment [
 
 	"number of replicas and summarization of replicated fragment code"
@@ -77,7 +83,8 @@ MiDuplicationBrowser >> formatReplicatedFragment: replicatedFragment [
 
 { #category : #actions }
 MiDuplicationBrowser >> hasSettings [
-	^true
+	self flag: 'Implement settings for duplication browser'.
+	^ false
 ]
 
 { #category : #formatting }
@@ -138,10 +145,27 @@ MiDuplicationBrowser >> initializePresenter [
 	self initializeLayout
 ]
 
+{ #category : #'accessing - private tests' }
+MiDuplicationBrowser >> lstEntities [
+	^lstEntities 
+]
+
+{ #category : #'accessing - private tests' }
+MiDuplicationBrowser >> lstReplicatedFragments [
+
+	^ lstReplicatedFragments 
+]
+
 { #category : #private }
 MiDuplicationBrowser >> newCodePage: replica [
 	^MiDuplicationBrowserPage forReplica: replica
 		
+]
+
+{ #category : #'accessing - private tests' }
+MiDuplicationBrowser >> panCodes [
+
+	^ panCodes
 ]
 
 { #category : #api }
