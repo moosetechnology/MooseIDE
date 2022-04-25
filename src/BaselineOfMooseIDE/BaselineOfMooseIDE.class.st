@@ -14,6 +14,7 @@ BaselineOfMooseIDE >> baseline: spec [
 		self telescope: spec.
 		self labelContractor: spec.
 		self hierarchicalVisualizations: spec.
+		self famixReplication: spec.
 
 		"Packages"
 		self definePackages: spec.
@@ -22,7 +23,6 @@ BaselineOfMooseIDE >> baseline: spec [
 		spec for: #NeedsMoose do: [ 
 			self famix: spec.
 			self famixTagging: spec.
-			self famixReplication: spec.
 			spec
 				package: 'MooseIDE-Core' with: [ spec requires: #( 'Famix' ) ];
 				package: 'MooseIDE-Meta'
