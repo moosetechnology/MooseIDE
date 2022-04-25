@@ -3,13 +3,11 @@ simple slider presenter based on roassal
 "
 Class {
 	#name : #MiCoSliderPresenter,
-	#superclass : #SpPresenter,
+	#superclass : #MiCoAbstractSliderPresenter,
 	#instVars : [
-		'slider',
-		'text',
-		'sliderBuilder'
+		'text'
 	],
-	#category : #'MooseIDE-CoUsageMap-Settings'
+	#category : #'MooseIDE-CoUsageMap-Sliders'
 }
 
 { #category : #layout }
@@ -23,35 +21,34 @@ MiCoSliderPresenter class >> defaultLayout [
 		yourself
 ]
 
-{ #category : #accessing }
-MiCoSliderPresenter >> get: anObject [
-	sliderBuilder getValueSelector: anObject
+{ #category : #initialization }
+MiCoSliderPresenter >> defaultSlider [
+	^ MiCoSlider new
 ]
 
 { #category : #initialization }
 MiCoSliderPresenter >> initializePresenters [
-	text := self newTextInput.
-	slider := self instantiate: SpRoassalPresenter.
-	sliderBuilder := MiCoSlider new.
-	sliderBuilder renderIn: slider canvas.
-]
-
-{ #category : #accessing }
-MiCoSliderPresenter >> model: anObject [
-	sliderBuilder model: anObject
+	super initializePresenters.
+	text := self newNumberInput.
+	sliderBuilder 
+		getValueSelector: #realValue;
+		setValueSelector: #realValue:
 ]
 
 { #category : #accessing }
 MiCoSliderPresenter >> range: anObject [
-	sliderBuilder
-		min: anObject first;
-		max: anObject last;
-		quantum: anObject increment;
-		updateValue.
-	
+	super range: anObject.
+	text 
+		text: self realValue asString;
+		beInteger;
+		minimum: anObject first;
+		maximum: anObject last;
+		whenNumberChangedDo: [ :number | self realValue: number ].
+		
 ]
 
-{ #category : #accessing }
-MiCoSliderPresenter >> set: anObject [
-	sliderBuilder setValueSelector: anObject
+{ #category : #private }
+MiCoSliderPresenter >> setValue: anObject [
+	super setValue: anObject.
+	text text: self realValue asString
 ]

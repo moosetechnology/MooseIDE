@@ -3,15 +3,12 @@ Dual slider presenter for co usage map
 "
 Class {
 	#name : #MiCoDualSliderPresenter,
-	#superclass : #SpPresenter,
+	#superclass : #MiCoAbstractSliderPresenter,
 	#instVars : [
-		'slider',
-		'text',
 		'leftText',
-		'sliderBuilder',
 		'rightText'
 	],
-	#category : #'MooseIDE-CoUsageMap-Settings'
+	#category : #'MooseIDE-CoUsageMap-Sliders'
 }
 
 { #category : #layout }
@@ -28,10 +25,64 @@ MiCoDualSliderPresenter class >> defaultLayout [
 ]
 
 { #category : #initialization }
+MiCoDualSliderPresenter >> defaultSlider [
+	^ MiCoDualSlider new
+]
+
+{ #category : #initialization }
 MiCoDualSliderPresenter >> initializePresenters [
-	leftText := self newTextInput.
-	slider := self instantiate: SpRoassalPresenter.
-	sliderBuilder := MiCoDualSlider new.
-	sliderBuilder renderIn: slider canvas.
-	rightText := self newTextInput.
+	super initializePresenters.
+	leftText := self newNumberInput.
+	rightText := self newNumberInput.
+	
+	sliderBuilder 
+		getMax: #maxValue;
+		setMax: #maxValue:;
+		getMin: #minValue;
+		setMin: #minValue:
+]
+
+{ #category : #accessing }
+MiCoDualSliderPresenter >> maxValue [
+	^ self realValue last
+]
+
+{ #category : #accessing }
+MiCoDualSliderPresenter >> maxValue: anObject [
+	self realValue: (self realValue first to: anObject)
+]
+
+{ #category : #accessing }
+MiCoDualSliderPresenter >> minValue [
+	^ self realValue first
+]
+
+{ #category : #accessing }
+MiCoDualSliderPresenter >> minValue: anObject [
+	self realValue: (anObject to: self realValue last)
+]
+
+{ #category : #accessing }
+MiCoDualSliderPresenter >> range: anInterval [
+	super range: anInterval.
+	leftText
+		text: self realValue first asString;
+		beInteger;
+		minimum: anInterval first;
+		maximum: anInterval last;
+		whenNumberChangedDo: [:number | self minValue: number ].
+		
+	rightText
+		text: self realValue last asString;
+		beInteger;
+		minimum: anInterval first;
+		maximum: anInterval last;
+		whenNumberChangedDo: [:number | self maxValue: number ].
+]
+
+{ #category : #private }
+MiCoDualSliderPresenter >> setValue: anObject [
+	super setValue: anObject.
+	leftText text: self realValue first asString.
+	rightText text: self realValue last asString.	
 ]

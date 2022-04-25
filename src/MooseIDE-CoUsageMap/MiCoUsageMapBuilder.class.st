@@ -50,7 +50,7 @@ MiCoUsageMapBuilder >> attributeNamed: aByteString [
 { #category : #hooks }
 MiCoUsageMapBuilder >> attributeShapeFor: att method: met [
 	| height |
-	height := MiCoUsageMapSettings innerBoxHeight.
+	height := self settings innerBoxHeight.
 	^ RSBox new
 		model: att;
 		width: (widthScale scale: (att numberOfUsesOn: met));
@@ -99,7 +99,7 @@ MiCoUsageMapBuilder >> defaultHighlightManager [
 
 { #category : #default }
 MiCoUsageMapBuilder >> defaultInnerSortBlock [
-	^ [ :att1 :att2 | att1 name < att2 name ].
+	^ [ :att1 :att2 :method | att1 name < att2 name ].
 ]
 
 { #category : #default }
@@ -305,7 +305,7 @@ MiCoUsageMapBuilder >> methodBodyShapeFor: met [
 		self
 			attributeShapeFor: att
 			method: met ].
-	RSFlowLayout on: attributesShapes.
+	"RSFlowLayout on: attributesShapes."
 	^ attributesShapes asGroup asShape
 		padding: 10;
 		color: (self markManager tagColorFrom: met tag);
@@ -416,6 +416,7 @@ MiCoUsageMapBuilder >> renderIn: aCanvas [
 
 { #category : #hooks }
 MiCoUsageMapBuilder >> renderIn: aCanvas job: aJob [
+	aCanvas aaFast.
 	aJob currentValue: 0; title: 'Reading entities'.
 	self initializeValues.
 	aJob currentValue: 50; title: 'Rendering entities'.
@@ -488,7 +489,9 @@ MiCoUsageMapBuilder >> sortShapes [
 		children sort: tBlock ].
 	block := self settings innerBoxSortBlockCompiled.
 	children do: [ :node |
-		[ node attributeShapes sort: tBlock ]
+		tBlock := [ :a :b | 
+			block value: a model value: b model value: node model ].
+		[ node attributeShapes sort: tBlock  ]
 		onErrorDo: [ :ex |
 			block := self defaultInnerSortBlock.
 			node attributeShapes sort: tBlock ]
@@ -523,16 +526,15 @@ MiCoUsageMapBuilder >> updateChildren [
 
 { #category : #update }
 MiCoUsageMapBuilder >> updateInnerBoxSize [
-	| range cls newScale scaleType |
-	cls := MiCoUsageMapSettings.
-	range := cls innerBoxRange.
-	scaleType := cls innerBoxScaleType.
+	| range newScale scaleType |
+	range := self settings innerBoxRange.
+	scaleType := self settings innerBoxScaleType.
 	widthScale ifNil: [ ^ self ].
 	newScale := (scaleType value: NSScale)
 		domain: widthScale domain;
 		range: {range first. range last}.
 	widthScale := newScale.
-	self canvas nodes do: [ :node | 
+	self canvas nodes do: [ :node |
 		| met body label |
 		met := node model.
 		label := node shapes first.
@@ -549,8 +551,7 @@ MiCoUsageMapBuilder >> updateInnerBoxSize [
 			on: { label. body }.
 		node adjustToChildren.
 	].
-	self applyLayout.
-	self canvas signalUpdate.
+	self updateShapeLayout
 ]
 
 { #category : #update }

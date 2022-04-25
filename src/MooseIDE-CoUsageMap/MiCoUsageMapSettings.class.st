@@ -48,7 +48,7 @@ MiCoUsageMapSettings class >> browsingSettingInnerScale: aBuilder [
 	<systemsettings>
 	(aBuilder pickOne: #innerBoxScaleType)
 		parent: #CoUsageMap;
-		domainValues: #(linear symlog);
+		domainValues: self scaleTypes;
 		target: self;
 		order: 3;
 		label: 'Inner box width scale';
@@ -162,10 +162,10 @@ MiCoUsageMapSettings class >> defaultInnerBoxScaleType [
 
 { #category : #'accessing - defaults' }
 MiCoUsageMapSettings class >> defaultInnerBoxSortBlockText [
-	^ '[:entityA :entityB |
+	^ '[:entityA :entityB :container |
 	| sizeA sizeB |
-	sizeA := entityA numberOfUses.
-	sizeB := entityB numberOfUses.
+	sizeA := entityA numberOfUsesOn: container.
+	sizeB := entityB numberOfUsesOn: container.
 	sizeA = sizeB
 		ifTrue: [ entityA name < entityB name ]
 		ifFalse: [ sizeA > sizeB ]
@@ -274,6 +274,11 @@ MiCoUsageMapSettings class >> resetText [
 		removeKey: #childrenBlockText;
 		removeKey: #outerBoxSortBlockText;
 		removeKey: #innerBoxSortBlockText
+]
+
+{ #category : #accessing }
+MiCoUsageMapSettings class >> scaleTypes [
+	^ #(linear symlog)
 ]
 
 { #category : #accessing }

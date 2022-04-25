@@ -77,6 +77,34 @@ MiCoUsageMapInstanceSettingsPresenter >> innerBoxHeight: anObject [
 ]
 
 { #category : #properties }
+MiCoUsageMapInstanceSettingsPresenter >> innerBoxRange [
+	^ properties 
+		at: #innerBoxRange 
+		ifAbsentPut: [ self settingsClass innerBoxRange ].
+]
+
+{ #category : #properties }
+MiCoUsageMapInstanceSettingsPresenter >> innerBoxRange: anInterval [
+	properties at: #innerBoxRange put: anInterval.
+	coUsageMap updateInnerBoxSize
+	
+]
+
+{ #category : #properties }
+MiCoUsageMapInstanceSettingsPresenter >> innerBoxScaleType [
+	^ properties 
+		at: #innerBoxScaleType 
+		ifAbsentPut: [ self settingsClass innerBoxScaleType ].
+]
+
+{ #category : #properties }
+MiCoUsageMapInstanceSettingsPresenter >> innerBoxScaleType: aString [
+	properties at: #innerBoxScaleType put: aString.
+	coUsageMap updateInnerBoxSize
+	
+]
+
+{ #category : #properties }
 MiCoUsageMapInstanceSettingsPresenter >> innerBoxSortBlockCompiled [
 	^ self 
 		compiledBlock: self innerBoxSortBlockText 
@@ -110,6 +138,19 @@ MiCoUsageMapInstanceSettingsPresenter >> outerBoxSortBlockText [
 MiCoUsageMapInstanceSettingsPresenter >> outerBoxSortBlockText: aString [
 	properties at: #outerBoxSortBlockText put: aString.
 	self coUsageMap updateShapeLayout.
+]
+
+{ #category : #properties }
+MiCoUsageMapInstanceSettingsPresenter >> resetText [
+	properties
+		removeKey: #childrenBlockText;
+		removeKey: #outerBoxSortBlockText;
+		removeKey: #innerBoxSortBlockText
+]
+
+{ #category : #accessing }
+MiCoUsageMapInstanceSettingsPresenter >> scaleTypes [
+	^ self settingsClass scaleTypes
 ]
 
 { #category : #properties }

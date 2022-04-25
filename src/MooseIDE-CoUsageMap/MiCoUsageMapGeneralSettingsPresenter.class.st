@@ -34,7 +34,11 @@ MiCoUsageMapGeneralSettingsPresenter >> connectPresenters [
 	| set |
 	set := self settings.
 	set ifNil: [ ^ self ].
-	innerBoxWidthScale items: #(linear symlog).
+	innerBoxWidthScale 
+		items: set scaleTypes;
+		selectItem: set innerBoxScaleType;
+		whenSelectedItemChangedDo: [:item | set innerBoxScaleType: item ].
+	
 	threshold 
 		model: set;
 		get: #threshold75PercentGroup;
@@ -45,8 +49,11 @@ MiCoUsageMapGeneralSettingsPresenter >> connectPresenters [
 		get: #innerBoxHeight;
 		set: #innerBoxHeight:;
 		range: (2 to: 50).
-	
-		
+	rangeInnerWidth
+		model: set;
+		get: #innerBoxRange;
+		set: #innerBoxRange:;
+		range: (5 to: 100)
 ]
 
 { #category : #initialization }
