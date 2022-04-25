@@ -14,6 +14,7 @@ BaselineOfMooseIDE >> baseline: spec [
 		self telescope: spec.
 		self labelContractor: spec.
 		self hierarchicalVisualizations: spec.
+		self famixReplication: spec.
 
 		"Packages"
 		self definePackages: spec.
@@ -96,7 +97,9 @@ BaselineOfMooseIDE >> definePackages: spec [
 			spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' ) ];
 		package: 'MooseIDE-CoUsageMap-Tests'
 		with: [ spec requires: #( 'MooseIDE-CoUsageMap'
-				   'MooseIDE-Tests' ) ]
+				   'MooseIDE-Tests' ) ];
+		package: 'MooseIDE-Duplication'
+		with: [ spec requires: #( 'MooseIDE-Core' 'FamixReplication' ) ]
 ]
 
 { #category : #dependencies }
@@ -113,6 +116,15 @@ BaselineOfMooseIDE >> famixQueries: spec [
 	spec
 		baseline: 'FamixQueries'
 		with: [ spec repository: 'github://moosetechnology/FamixQueries' ]
+]
+
+{ #category : #dependencies }
+BaselineOfMooseIDE >> famixReplication: spec [
+
+	spec
+		baseline: 'FamixReplication'
+		with: [ 
+		spec repository: 'github://moosetechnology/FamixReplication' ]
 ]
 
 { #category : #dependencies }
