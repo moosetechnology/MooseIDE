@@ -11,7 +11,6 @@ MiCoUsageMapBrowserTest >> browserClass [
 
 { #category : #tests }
 MiCoUsageMapBrowserTest >> testConsumerProducer [
-	self class name traceCr.
 	self assert: ((browser application consumersOf: FamixTag) 
 		anySatisfy: [ :each | each = browser coUsageMap ]).
 	
