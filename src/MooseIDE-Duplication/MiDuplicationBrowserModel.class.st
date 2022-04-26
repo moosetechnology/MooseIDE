@@ -122,6 +122,11 @@ MiDuplicationBrowserModel >> initialize [
 	settings := MiDuplicationBrowserSettings new
 ]
 
+{ #category : #api }
+MiDuplicationBrowserModel >> isSelected: anEntity [
+	^selectedEntity includes: anEntity 
+]
+
 { #category : #private }
 MiDuplicationBrowserModel >> newDetector [
 	^FamixRepDetector new

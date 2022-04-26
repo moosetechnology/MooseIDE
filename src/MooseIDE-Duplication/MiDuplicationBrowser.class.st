@@ -90,7 +90,7 @@ MiDuplicationBrowser >> hasSettings [
 { #category : #api }
 MiDuplicationBrowser >> highlightEntities: entities [
 
-	lstEntities selectItems: entities
+	"lstEntities selectItems: entities"
 ]
 
 { #category : #initialization }
@@ -109,9 +109,14 @@ MiDuplicationBrowser >> initializeLayout [
 
 { #category : #initialization }
 MiDuplicationBrowser >> initializeListEntities [
+
 	lstEntities := self newList.
 	lstEntities beMultipleSelection.
-	lstEntities display: [ :entity | entity name ]
+	lstEntities display: [ :entity | entity name ].
+	lstEntities displayIcon: [ :entity | 
+		self iconNamed: ((model isSelected: entity)
+			ifTrue: [ #testGreen ]
+			ifFalse: [ #glamorousGrayCircleEmpty ]) ]
 ]
 
 { #category : #initialization }
