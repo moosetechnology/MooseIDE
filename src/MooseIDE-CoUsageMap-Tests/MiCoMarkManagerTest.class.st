@@ -8,7 +8,6 @@ Class {
 MiCoMarkManagerTest >> test01ColorASingleMethod [
 
 	| v attribute tag shapes tagColor method4 method5 |
-	#MiCoMarkManagerTest traceCr.
 	v := MiCoUsageMapBuilder new.
 	v godClass: MiCoTestClass.
 	v legendTag tagsWithPalette: { 'base'. 'simple' }.

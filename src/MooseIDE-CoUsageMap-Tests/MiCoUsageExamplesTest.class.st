@@ -8,7 +8,6 @@ Class {
 MiCoUsageExamplesTest >> testAllExamples [
 
 	| inst errors |
-	#MiCoUsageExamplesTest traceCr.
 	inst := MiCoUsageMapExamples new.
 	errors := inst class methods select: [ :each | 
 		(each selector beginsWith: 'example') and: [ 

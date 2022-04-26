@@ -8,7 +8,6 @@ Class {
 MiCoUsageVisualizationTest >> test00Basic [
 
 	| v class window |
-	#MiCoUsageVisualizationTest traceCr.
 	v := MiCoUsageMapBuilder new.
 	self assert: v settings notNil.
 	self assert: v canvas nodes size equals: 0.

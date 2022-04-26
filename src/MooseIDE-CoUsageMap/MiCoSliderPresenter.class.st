@@ -49,6 +49,8 @@ MiCoSliderPresenter >> range: anObject [
 
 { #category : #private }
 MiCoSliderPresenter >> setValue: anObject [
-	super setValue: anObject.
+	| newValue |
+	newValue := anObject min: sliderBuilder max max: sliderBuilder min.
+	super setValue: newValue.
 	text text: self realValue asString
 ]

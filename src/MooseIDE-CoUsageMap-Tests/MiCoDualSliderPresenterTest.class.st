@@ -10,7 +10,6 @@ Class {
 { #category : #tests }
 MiCoDualSliderPresenterTest >> testBasic [
 	| slider value |
-	self class name traceCr.
 	slider := MiCoDualSliderPresenter new.
 	slider model: OrderedCollection new.
 	value := ValueHolder new.

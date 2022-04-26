@@ -8,7 +8,6 @@ Class {
 MiCoTagVisualizationTest >> test01Legend [
 
 	| v class legendTag tag1 tag2 |
-	#MiCoTagVisualizationTest traceCr.
 	v := MiCoUsageMapBuilder new.
 	class := MiCoTestClass.
 	v godClass: class.
