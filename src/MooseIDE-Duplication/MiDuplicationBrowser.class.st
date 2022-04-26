@@ -117,13 +117,14 @@ MiDuplicationBrowser >> initializeListEntities [
 { #category : #initialization }
 MiDuplicationBrowser >> initializeListReplicatedFragments [
 
-	lstReplicatedFragments := self newList.
+	lstReplicatedFragments := self newTree.
 	lstReplicatedFragments display: [ :replicatedFragment | 
 		self formatReplicatedFragment: replicatedFragment ].
+	lstReplicatedFragments children: [ :replicatedFragment | model childrenFragments: replicatedFragment ].
 	lstReplicatedFragments whenSelectionChangedDo: [ :selection | 
 		self resetReplicas.
-		selection selectedItem
-			ifNotNil: [ :selectedItem | model selectedFragment: selectedItem ] ]
+		selection selectedItem ifNotNil: [ :selectedItem | 
+			model selectedFragment: selectedItem ] ]
 ]
 
 { #category : #initialization }

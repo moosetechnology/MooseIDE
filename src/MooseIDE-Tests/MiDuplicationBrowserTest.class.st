@@ -29,12 +29,18 @@ MiDuplicationBrowserTest >> method: aName withSource: lineInterval [
 { #category : #running }
 MiDuplicationBrowserTest >> replicaFor: anEntity source: lineInterval [
 
-	^ (FamixReplica
-		   from: lineInterval first
-		   to: lineInterval last
-		   for: anEntity)
-		  fileAnchor: (FamixRepTestSourceTextAnchor source: anEntity sourceText);
-		  yourself
+	| replica |
+	replica := (FamixReplica
+		            from: lineInterval first
+		            to: lineInterval last
+		            for: anEntity)
+		           fileAnchor:
+			           (FamixRepTestSourceTextAnchor source:
+					            anEntity sourceText);
+		           yourself.
+
+	anEntity addReplica: replica.
+	^ replica
 ]
 
 { #category : #running }
@@ -47,12 +53,10 @@ MiDuplicationBrowserTest >> replicatedFragment [
 
 	method := self method: 'method1' withSource: (1 to: 5).
 	replica := self replicaFor: method source: (3 to: 5).
-	method addReplica: replica.
 	fragment addReplica: replica.
 
-	method := self method: 'method1' withSource: (3 to: 8).
+	method := self method: 'method2' withSource: (3 to: 8).
 	replica := self replicaFor: method source: (1 to: 3).
-	method addReplica: replica.
 	fragment addReplica: replica.
 
 	^ fragment
