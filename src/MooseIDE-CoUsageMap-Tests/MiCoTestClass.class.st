@@ -12,7 +12,7 @@ Class {
 		'var5',
 		'var6'
 	],
-	#category : #'MooseIDE-CoUsageMap-Tests'
+	#category : #'MooseIDE-CoUsageMap-Tests-Model'
 }
 
 { #category : #accessing }

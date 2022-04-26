@@ -49,7 +49,9 @@ MiCoDualSliderPresenter >> maxValue [
 
 { #category : #accessing }
 MiCoDualSliderPresenter >> maxValue: anObject [
-	self realValue: (self realValue first to: anObject)
+	| newMax |
+	newMax := anObject min: sliderBuilder max max: self realValue first.
+	self realValue: (self realValue first to: newMax)
 ]
 
 { #category : #accessing }
@@ -59,7 +61,9 @@ MiCoDualSliderPresenter >> minValue [
 
 { #category : #accessing }
 MiCoDualSliderPresenter >> minValue: anObject [
-	self realValue: (anObject to: self realValue last)
+	| newMin |
+	newMin := anObject min: self realValue last max: sliderBuilder min.
+	self realValue: (newMin to: self realValue last)
 ]
 
 { #category : #accessing }

@@ -1,13 +1,14 @@
 Class {
 	#name : #MiCoUsageExamplesTest,
 	#superclass : #TestCase,
-	#category : #'MooseIDE-CoUsageMap-Tests'
+	#category : #'MooseIDE-CoUsageMap-Tests-Browser'
 }
 
 { #category : #tests }
 MiCoUsageExamplesTest >> testAllExamples [
 
 	| inst errors |
+	#MiCoUsageExamplesTest traceCr.
 	inst := MiCoUsageMapExamples new.
 	errors := inst class methods select: [ :each | 
 		(each selector beginsWith: 'example') and: [ 

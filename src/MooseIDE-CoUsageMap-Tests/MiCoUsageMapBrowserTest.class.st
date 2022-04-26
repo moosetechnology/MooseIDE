@@ -1,7 +1,7 @@
 Class {
 	#name : #MiCoUsageMapBrowserTest,
 	#superclass : #MiAbstractBrowserTest,
-	#category : #'MooseIDE-CoUsageMap-Tests'
+	#category : #'MooseIDE-CoUsageMap-Tests-Browser'
 }
 
 { #category : #running }
@@ -11,6 +11,7 @@ MiCoUsageMapBrowserTest >> browserClass [
 
 { #category : #tests }
 MiCoUsageMapBrowserTest >> testConsumerProducer [
+	#MiCoUsageMapBrowserTest traceCr.
 	self assert: ((browser application consumersOf: FamixTag) 
 		anySatisfy: [ :each | each = browser coUsageMap ]).
 	
