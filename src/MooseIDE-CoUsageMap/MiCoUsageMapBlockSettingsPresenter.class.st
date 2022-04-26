@@ -3,8 +3,8 @@ Presenter created to edit the children block, outer boxes sort block, and inner 
 This interacts directly with MiCoUsageMapSettings
 "
 Class {
-	#name : #MiCoUsageMapSettingsPresenter,
-	#superclass : #SpPresenter,
+	#name : #MiCoUsageMapBlockSettingsPresenter,
+	#superclass : #MiCoUsageMapAbstractSettingsPresenter,
 	#instVars : [
 		'childrenTextInput',
 		'sortOuterBoxTextInput',
@@ -16,11 +16,11 @@ Class {
 }
 
 { #category : #layout }
-MiCoUsageMapSettingsPresenter class >> defaultLayout [
+MiCoUsageMapBlockSettingsPresenter class >> defaultLayout [
 	^ SpBoxLayout newTopToBottom
 		spacing: 3;
 		add: 'Children block:' asPresenter expand: false;
-		add: #childrenTextInput;
+		add: #childrenTextInput height: 200;
 		add: 'Outer box sort block:' asPresenter expand: false;
 		add: #sortOuterBoxTextInput height: 170;
 		add: 'Inner box sort block:' asPresenter expand: false;
@@ -37,9 +37,17 @@ MiCoUsageMapSettingsPresenter class >> defaultLayout [
 ]
 
 { #category : #initialization }
-MiCoUsageMapSettingsPresenter >> initializeButtons [
-	| cls |
-	cls := MiCoUsageMapSettings.
+MiCoUsageMapBlockSettingsPresenter >> connectPresenters [
+	| set |
+	set := self settings.
+	set ifNil: [ ^ self ].
+	childrenTextInput text: set childrenBlockText.
+	sortOuterBoxTextInput text: set outerBoxSortBlockText.
+	sortInnerBoxTextInput text: set innerBoxSortBlockText.
+]
+
+{ #category : #initialization }
+MiCoUsageMapBlockSettingsPresenter >> initializeButtons [
 	button := self newButton
 		label: 'Apply all';
 		action: [ 
@@ -48,37 +56,33 @@ MiCoUsageMapSettingsPresenter >> initializeButtons [
 			sortInnerBoxTextInput triggerSubmitAction  ].
 	resetButton := self newButton
 		label: 'Reset text fields';
-		action: [ 
-			cls resetText.
-			childrenTextInput text: cls childrenBlockText.
-			sortOuterBoxTextInput text: cls outerBoxSortBlockText.
-			sortInnerBoxTextInput text: cls innerBoxSortBlockText.
+		action: [ | set |
+			set := self settings.
+			set resetText.
+			childrenTextInput text: set childrenBlockText.
+			sortOuterBoxTextInput text: set outerBoxSortBlockText.
+			sortInnerBoxTextInput text: set innerBoxSortBlockText.
 			 ]
 		
 		
 ]
 
 { #category : #initialization }
-MiCoUsageMapSettingsPresenter >> initializePresenters [
-	| cls |
-	cls := MiCoUsageMapSettings.
+MiCoUsageMapBlockSettingsPresenter >> initializePresenters [
 	childrenTextInput := self newCode
-		text: cls childrenBlockText;
-		whenSubmitDo: [ :text | cls childrenBlockText: text ];
+		whenSubmitDo: [ :text | self settings childrenBlockText: text ];
 		yourself.
 	sortOuterBoxTextInput := self newCode
-		text: cls outerBoxSortBlockText;
-		whenSubmitDo: [ :text | cls outerBoxSortBlockText: text ];
+		whenSubmitDo: [ :text | self settings outerBoxSortBlockText: text ];
 		yourself.
 	sortInnerBoxTextInput := self newCode
-		text: cls innerBoxSortBlockText;
-		whenSubmitDo: [ :text | cls innerBoxSortBlockText: text ];
+		whenSubmitDo: [ :text | self settings innerBoxSortBlockText: text ];
 		yourself.
 	self initializeButtons
 ]
 
 { #category : #initialization }
-MiCoUsageMapSettingsPresenter >> initializeWindow: aWindowPresenter [
+MiCoUsageMapBlockSettingsPresenter >> initializeWindow: aWindowPresenter [
 	aWindowPresenter 
 		initialExtent: 500@700;
 		title: 'Blocks Settings - Co Usage Map'

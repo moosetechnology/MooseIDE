@@ -1,7 +1,7 @@
 Class {
 	#name : #MiCoMarkManagerTest,
 	#superclass : #TestCase,
-	#category : #'MooseIDE-CoUsageMap-Tests'
+	#category : #'MooseIDE-CoUsageMap-Tests-Browser'
 }
 
 { #category : #tests }

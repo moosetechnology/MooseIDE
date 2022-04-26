@@ -3,24 +3,17 @@ Basic slider inspired in sliders from mobile phones
 "
 Class {
 	#name : #MiCoSlider,
-	#superclass : #RSAbstractContainerBuilder,
+	#superclass : #MiCoAbstractSlider,
 	#instVars : [
-		'bar',
 		'value',
 		'getValueSelector',
-		'setValueSelector',
-		'model',
-		'min',
-		'max',
-		'quantum',
-		'scale'
+		'setValueSelector'
 	],
-	#category : #'MooseIDE-CoUsageMap-Settings'
+	#category : #'MooseIDE-CoUsageMap-Sliders'
 }
 
 { #category : #accessing }
 MiCoSlider >> getValueSelector [
-
 	^ getValueSelector
 ]
 
@@ -32,59 +25,19 @@ MiCoSlider >> getValueSelector: aString [
 { #category : #initialization }
 MiCoSlider >> initialize [
 	super initialize.
-	
+	min := 0.
+	max := 1.
 	self
 		value: 0.5;
-		min: 0;
-		max: 1.
+		initializeScale
 	
 ]
 
-{ #category : #accessing }
-MiCoSlider >> max [
-
-	^ max
-]
-
-{ #category : #accessing }
-MiCoSlider >> max: aNumber [
-	max := aNumber
-]
-
-{ #category : #accessing }
-MiCoSlider >> min [
-
-	^ min
-]
-
-{ #category : #accessing }
-MiCoSlider >> min: aNumber [
-	min := aNumber
-]
-
-{ #category : #accessing }
-MiCoSlider >> model [
-
-	^ model
-]
-
-{ #category : #accessing }
-MiCoSlider >> model: anObject [
-	model ifNotNil: [model removeDependent: self].
-	anObject ifNotNil: [anObject addDependent: self].
-	model := anObject.
-]
-
-{ #category : #accessing }
-MiCoSlider >> quantum [
-
-	^ quantum
-]
-
-{ #category : #accessing }
-MiCoSlider >> quantum: anObject [
-
-	quantum := anObject
+{ #category : #initialization }
+MiCoSlider >> initializeScale [
+	scale := NSScale linear
+		domain: { min. max };
+		range: #(0 1).
 ]
 
 { #category : #accessing }
@@ -94,46 +47,32 @@ MiCoSlider >> radius [
 
 { #category : #hooks }
 MiCoSlider >> renderIn: aCanvas [
+	self initializeScale.
 	aCanvas color: Color transparent.
-	bar := RSBox new
-		color: Color lightGray;
-		cornerRadius: self radius;
-		isFixed: true;
-		yourself.
-	aCanvas addShape: bar.
-	scale := NSScale linear
-		domain: { min. max };
-		range: #(0 1).
+	aCanvas 
+		addShape: self backLine;
+		addShape: self rangeLine.
+	
 	value := self valueFromModel.
 	self resizeSlider: aCanvas.
 	aCanvas 
 		when: RSExtentChangedEvent send: #resizeSlider: to: self;
 		when: RSMouseClick send: #updateValue: to: self;
-		when: RSMouseDragging send: #updateValue: to: self.
-		
+		when: RSMouseDragging send: #updateValue: to: self
 ]
 
 { #category : #events }
 MiCoSlider >> resizeSlider: evt [
-	| extent w h paint blue gray |
+	| extent w h minPoint maxPoint valuePoint winScale |
 	extent := evt canvas extent.
-	w := extent x.
+	w := extent x - self lineGap.
 	h := extent y.
-	blue := Smalltalk ui theme selectionColor darker.
-	gray := Color lightGray.
-	paint := LinearGradientPaint fromArray: { 
-		0 -> blue.
-		value -> blue.
-		value -> gray.
-		1 -> gray. }.
-	paint start: extent x / -2 @0.
-	paint stop: extent x / 2 @ 0.
-	
-	bar paint: paint.
-	bar extent: extent.
-	bar position: extent / 2.
-	
-	
+	winScale := NSScale linear range: { w/ -2 @ 0. w/2 @ 0 }.
+	minPoint := winScale scale: 0.
+	maxPoint := winScale scale: 1.
+	valuePoint := winScale scale: value.
+	backLine startPoint: minPoint; endPoint: maxPoint.
+	rangeLine startPoint: minPoint; endPoint: valuePoint.
 ]
 
 { #category : #accessing }
@@ -160,9 +99,10 @@ MiCoSlider >> updateValue [
 
 { #category : #events }
 MiCoSlider >> updateValue: evt [
-	| w newValue |
-	w := evt canvas extent x.
-	newValue := (evt camera fromSpaceToPixel: evt position) x/ w.
+	| w newValue winScale |
+	w := evt canvas extent x-self lineGap.
+	winScale := NSScale linear clamp; range: { w/ -2 @ 0. w/2 @ 0 }.
+	newValue := (winScale invert: evt position) x.
 	newValue := newValue min: 1 max: 0.
 	value := newValue.
 	self valueFromModel: value.

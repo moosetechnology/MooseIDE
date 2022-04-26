@@ -4,6 +4,9 @@ Used to obtain a list of inner models and their number of uses on the current me
 Class {
 	#name : #MiCoMethodAttributeCounter,
 	#superclass : #Object,
+	#instVars : [
+		'settings'
+	],
 	#category : #'MooseIDE-CoUsageMap-Model'
 }
 
@@ -13,4 +16,14 @@ MiCoMethodAttributeCounter >> allAttributesFor: aMiCoMethod [
 	key is the object
 	value is the number of uses of that object is used by aMiCoMethod"
 	^ self subclassResponsibility
+]
+
+{ #category : #accessing }
+MiCoMethodAttributeCounter >> settings [
+	^ settings
+]
+
+{ #category : #accessing }
+MiCoMethodAttributeCounter >> settings: anObject [
+	settings := anObject
 ]

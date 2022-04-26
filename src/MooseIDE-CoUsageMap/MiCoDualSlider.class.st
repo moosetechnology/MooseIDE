@@ -3,52 +3,19 @@ Similar is a dual slider to manage ranges between 2 values
 "
 Class {
 	#name : #MiCoDualSlider,
-	#superclass : #RSAbstractContainerBuilder,
+	#superclass : #MiCoAbstractSlider,
 	#instVars : [
 		'minValue',
 		'maxValue',
 		'minButton',
 		'maxButton',
-		'model',
-		'scale',
-		'quantum',
-		'min',
-		'max',
 		'getMin',
 		'setMin',
 		'getMax',
-		'setMax',
-		'backLine',
-		'rangeLine'
+		'setMax'
 	],
-	#category : #'MooseIDE-CoUsageMap-Settings'
+	#category : #'MooseIDE-CoUsageMap-Sliders'
 }
-
-{ #category : #hooks }
-MiCoDualSlider >> backLine [
-	| paint width |
-	backLine ifNotNil: [ ^ backLine ].
-	width := 15.
-	paint := self backPaint.
-	paint 
-		start: 0@ width / -2;
-		stop: 0 @ width / 2.
-	^ backLine := RSLine new
-		startPoint: 0@0;
-		endPoint: 100@0;
-		width: width;
-		color: paint;
-		capRound;
-		yourself
-		
-]
-
-{ #category : #hooks }
-MiCoDualSlider >> backPaint [
-	^ LinearGradientPaint fromArray:
-		{0->'cfd9df'. 
-		1->'e2ebf0' }.
-]
 
 { #category : #'default values' }
 MiCoDualSlider >> defaultMaxValue [
@@ -107,21 +74,6 @@ MiCoDualSlider >> initialize [
 		
 ]
 
-{ #category : #accessing }
-MiCoDualSlider >> lineGap [
-	^ 25
-]
-
-{ #category : #accessing }
-MiCoDualSlider >> max [
-	^ max
-]
-
-{ #category : #accessing }
-MiCoDualSlider >> max: aNumber [
-	max := aNumber
-]
-
 { #category : #hooks }
 MiCoDualSlider >> maxButton [
 	^ maxButton := self newButton
@@ -152,16 +104,6 @@ MiCoDualSlider >> maxValueFromModel: aNumber [
 	model ifNil: [ ^ self ].
 	setMax ifNil: [ ^ self ].
 	model perform: setMax with: ((scale invert: aNumber) roundTo: quantum)
-]
-
-{ #category : #accessing }
-MiCoDualSlider >> min [
-	^ min
-]
-
-{ #category : #accessing }
-MiCoDualSlider >> min: aNumber [
-	min := aNumber
 ]
 
 { #category : #hooks }
@@ -197,11 +139,6 @@ MiCoDualSlider >> minValueFromModel: aNumber [
 	model perform: setMin with: ((scale invert: aNumber) roundTo: quantum)
 ]
 
-{ #category : #accessing }
-MiCoDualSlider >> model: anObject [
-	model := anObject
-]
-
 { #category : #hooks }
 MiCoDualSlider >> newButton [
 	| size paint |
@@ -216,37 +153,6 @@ MiCoDualSlider >> newButton [
 		color: paint;
 		size: size;
 		yourself
-]
-
-{ #category : #accessing }
-MiCoDualSlider >> quantum: aNumber [
-	quantum := aNumber
-]
-
-{ #category : #hooks }
-MiCoDualSlider >> rangeLine [
-	| width paint |
-	rangeLine ifNotNil: [ ^ rangeLine ].
-	width := 15.
-	paint := self rangePaint.
-	paint 
-		start: 0@width / -2;
-		stop: 0 @ width / 2.
-	
-	^ rangeLine :=  RSLine new
-		startPoint: 0@0;
-		endPoint: 100@0;
-		width: width;
-		color: paint;
-		capRound;
-		yourself
-]
-
-{ #category : #hooks }
-MiCoDualSlider >> rangePaint [
-	^ LinearGradientPaint fromArray:
-		{0->'a1c4fd'. 
-		1->'c2e9fb' }
 ]
 
 { #category : #hooks }
