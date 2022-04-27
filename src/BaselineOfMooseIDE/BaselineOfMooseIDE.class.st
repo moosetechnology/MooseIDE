@@ -60,8 +60,9 @@ BaselineOfMooseIDE >> definePackages: spec [
 					#( 'MooseIDE-Core' 'TelescopeRoassal3' 'HierarchicalVisualizations' ) ];
 		package: 'MooseIDE-Meta'
 		with: [ spec requires: #( 'MooseIDE-Core' ) ];
-		package: 'MooseIDE-Tests'
-		with: [ spec requires: #( 'MooseIDE-Core' 'MooseIDE-Tagging' ) ];
+		package: 'MooseIDE-Tests' with: [ 
+			spec requires:
+					#( 'MooseIDE-Core' 'MooseIDE-Dependency' 'MooseIDE-Tagging' ) ];
 		package: 'MooseIDE-Dependency'
 		with: [ 
 			spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' ) ];
