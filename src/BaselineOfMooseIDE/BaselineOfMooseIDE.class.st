@@ -30,6 +30,8 @@ BaselineOfMooseIDE >> baseline: spec [
 				package: 'MooseIDE-Tagging'
 				with: [ spec requires: #( 'FamixTagging' ) ];
 				package: 'MooseIDE-CoUsageMap'
+				with: [ spec requires: #( 'FamixTagging' ) ];
+				package: 'MooseIDE-Dependency'
 				with: [ spec requires: #( 'FamixTagging' ) ] ].
 
 		"Register custom tools"
