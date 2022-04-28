@@ -52,12 +52,13 @@ MiDuplicationBrowserModelTest >> replicaFor: anEntity source: lineInterval inFra
 MiDuplicationBrowserModelTest >> setUp [
 
 	model := MiDuplicationBrowserModel new.
+	model browser: Mock new.
 
 	"to simplify building the test mode;l, all methods are the same"
 	method1 := self method: 'method1' withSource: (1 to: 8).
 	method2 := self method: 'method2' withSource: (1 to: 8).
 	method3 := self method: 'method2' withSource: (1 to: 8).
-	
+
 	fragment1 := FamixReplicatedFragment new
 		             fragmentName: 'fragment1';
 		             yourself.
@@ -75,8 +76,7 @@ MiDuplicationBrowserModelTest >> setUp [
 	self replicaFor: method1 source: (2 to: 6) inFragment: fragment2.
 	self replicaFor: method2 source: (2 to: 6) inFragment: fragment2.
 
-	self replicaFor: method2 source: (1 to: 8) inFragment: fragment3.
-
+	self replicaFor: method2 source: (1 to: 8) inFragment: fragment3
 ]
 
 { #category : #running }
@@ -191,4 +191,16 @@ MiDuplicationBrowserModelTest >> testRootFragments [
 		assertCollection: (model rootFragments)
 		hasSameElements: { fragment1 }.
 
+]
+
+{ #category : #tests }
+MiDuplicationBrowserModelTest >> testSelectedFragment [
+	model entities: { method1 . method2 . method3 }.
+	self assertEmpty: model selectedEntity.
+
+	model selectedFragment: fragment2.
+	self assert: model selectedEntity size equals: 2.
+	self assert: (model isSelected: method1).
+	self assert: (model isSelected: method2).
+	self deny: (model isSelected: method3).
 ]

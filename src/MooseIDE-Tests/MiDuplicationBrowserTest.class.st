@@ -100,21 +100,6 @@ MiDuplicationBrowserTest >> testFormatReplicatedFragment [
 ]
 
 { #category : #tests }
-MiDuplicationBrowserTest >> testHighlightEntities [
-
-	| entities |
-	entities := { 
-		            (self method: 'method1').
-		            (self method: 'method2') }.
-	browser showEntities: entities.
-
-	self assertEmpty: browser lstEntities selectedItems.
-
-	browser highlightEntities: entities.
-	self assert: browser lstEntities selectedItems size equals: 2
-]
-
-{ #category : #tests }
 MiDuplicationBrowserTest >> testMiSelectedItem [
 
 	| entities |
@@ -167,12 +152,17 @@ MiDuplicationBrowserTest >> testShowReplicas [
 
 { #category : #tests }
 MiDuplicationBrowserTest >> testShowReplicatedFragments [
+	| fragment |
+	fragment := self replicatedFragment.
+	browser model replicatedFragments: Dictionary new.
+	browser model replicatedFragments
+		at: fragment
+		put: #(  ).
 
-	self assertEmpty: browser lstReplicatedFragments items.
-
-	browser showReplicatedFragments: { self replicatedFragment }.
-	self assert: browser lstReplicatedFragments items size equals: 1.
+	self assertEmpty: browser lstReplicatedFragments roots.
+	browser showReplicatedFragments: { fragment }.
+	self assert: browser lstReplicatedFragments roots size equals: 1.
 	self
-		assert: browser lstReplicatedFragments items first fragmentName
-		equals: 'testFragment'
+		assert: browser lstReplicatedFragments roots first
+		equals: fragment
 ]
