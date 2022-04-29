@@ -44,12 +44,6 @@ MiDuplicationBrowserModel >> childrenFragments: aFragment [
 ]
 
 { #category : #private }
-MiDuplicationBrowserModel >> codeCleanerClass [
-	"could also ask the mooseModel ?"
-	^self settings codeCleanerClass
-]
-
-{ #category : #private }
 MiDuplicationBrowserModel >> currentMooseModel [
 	^entities anyOne mooseModel
 ]
@@ -141,7 +135,7 @@ MiDuplicationBrowserModel >> newRepConfig [
 		  minimumNumberOfReplicas: settings minNumberOfReplicas;
 		  minimumNumberOfLines: settings minNumberOfLines;
 		  minimumNumberOfCharacters: settings minNumberOfCharacters;
-		  sourcesCleaner: self codeCleanerClass new;
+		  sourcesCleaner: settings codeCleanerClass new;
 		  yourself
 ]
 
@@ -181,19 +175,17 @@ MiDuplicationBrowserModel >> selectedEntity: anEntity [
 
 { #category : #api }
 MiDuplicationBrowserModel >> selectedFragment: aReplicatedFragment [
+	| allReplicas |
+	allReplicas := (aReplicatedFragment replicas size > settings maxReplicasShowed)
+		ifTrue: [ aReplicatedFragment replicas first: settings maxReplicasShowed ]
+		ifFalse: [ aReplicatedFragment replicas ].
 
 	self selectedEntity: (aReplicatedFragment replicas collect: #entity) asMooseGroup.
-	browser showReplicas: aReplicatedFragment replicas
+	browser showReplicas: allReplicas
 ]
 
 { #category : #accessing }
 MiDuplicationBrowserModel >> settings [
 
 	^ settings
-]
-
-{ #category : #accessing }
-MiDuplicationBrowserModel >> settings: anObject [
-
-	settings := anObject
 ]

@@ -83,8 +83,7 @@ MiDuplicationBrowser >> formatReplicatedFragment: replicatedFragment [
 
 { #category : #actions }
 MiDuplicationBrowser >> hasSettings [
-	self flag: 'Implement settings for duplication browser'.
-	^ false
+	^ true
 ]
 
 { #category : #api }
@@ -195,9 +194,7 @@ MiDuplicationBrowser >> setModelBeforeInitialization: aModel [
 
 { #category : #actions }
 MiDuplicationBrowser >> settings [
-	"settings for duplication algorithm"
-
-	self shouldBeImplemented  
+	(MiDuplicationSettingsBrowser on: model settings) open.
 ]
 
 { #category : #api }
