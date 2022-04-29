@@ -14,7 +14,7 @@ Class {
 		'entities',
 		'replicatedFragments',
 		'settings',
-		'selectedEntity'
+		'selectedEntities'
 	],
 	#category : #'MooseIDE-Duplication'
 }
@@ -112,13 +112,14 @@ MiDuplicationBrowserModel >> hierarchyOfReplicatedFragment: aCollectionOfFragmen
 MiDuplicationBrowserModel >> initialize [
 
 	entities := #(  ).
-	selectedEntity := #().
+	selectedEntities := #().
+	replicatedFragments := Dictionary new.
 	settings := MiDuplicationBrowserSettings new
 ]
 
 { #category : #api }
 MiDuplicationBrowserModel >> isSelected: anEntity [
-	^selectedEntity includes: anEntity 
+	^selectedEntities includes: anEntity 
 ]
 
 { #category : #private }
@@ -137,6 +138,31 @@ MiDuplicationBrowserModel >> newRepConfig [
 		  minimumNumberOfCharacters: settings minNumberOfCharacters;
 		  sourcesCleaner: settings codeCleanerClass new;
 		  yourself
+]
+
+{ #category : #api }
+MiDuplicationBrowserModel >> numberOfEntities [
+	^entities size
+]
+
+{ #category : #api }
+MiDuplicationBrowserModel >> numberOfEntitiesInReplicas [
+	^(replicatedFragments keys flatCollectAsSet: [ :fragment | fragment replicas collect: #entity ]) size
+]
+
+{ #category : #api }
+MiDuplicationBrowserModel >> numberOfFragments [
+	^replicatedFragments size
+]
+
+{ #category : #api }
+MiDuplicationBrowserModel >> numberOfSelectedEntities [
+	^selectedEntities size
+]
+
+{ #category : #api }
+MiDuplicationBrowserModel >> numberOfSelectedFragments [
+	^browser lstReplicatedFragments selectedItems size
 ]
 
 { #category : #accessing }
@@ -160,27 +186,28 @@ MiDuplicationBrowserModel >> rootFragments [
 ]
 
 { #category : #accessing }
-MiDuplicationBrowserModel >> selectedEntity [
+MiDuplicationBrowserModel >> selectedEntities [
 
-	^selectedEntity
+	^selectedEntities
 ]
 
 { #category : #accessing }
-MiDuplicationBrowserModel >> selectedEntity: anEntity [
+MiDuplicationBrowserModel >> selectedEntities: entityCollection [
 
-	selectedEntity := anEntity.
-	browser highlightEntities: selectedEntity.
+	selectedEntities := entityCollection.
+	browser highlightEntities: selectedEntities.
 	browser updateToolbar
 ]
 
 { #category : #api }
-MiDuplicationBrowserModel >> selectedFragment: aReplicatedFragment [
+MiDuplicationBrowserModel >> selectedFragment: selectedFragments [
 	| allReplicas |
-	allReplicas := (aReplicatedFragment replicas size > settings maxReplicasShowed)
-		ifTrue: [ aReplicatedFragment replicas first: settings maxReplicasShowed ]
-		ifFalse: [ aReplicatedFragment replicas ].
+	allReplicas := (selectedFragments flatCollect: #replicas).
+	(allReplicas size > settings maxReplicasShowed)
+		ifTrue: [ allReplicas first: settings maxReplicasShowed ]
+		ifFalse: [ allReplicas ].
 
-	self selectedEntity: (aReplicatedFragment replicas collect: #entity) asMooseGroup.
+	self selectedEntities: (allReplicas collectAsSet: #entity) asMooseGroup.
 	browser showReplicas: allReplicas
 ]
 
