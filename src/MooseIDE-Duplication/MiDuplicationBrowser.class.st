@@ -9,7 +9,7 @@ Class {
 		'btnRun',
 		'panCodes',
 		'lstReplicatedFragments',
-		'infoBar'
+		'statusBar'
 	],
 	#category : #'MooseIDE-Duplication'
 }
@@ -107,7 +107,7 @@ MiDuplicationBrowser >> initializeLayout [
 			add: panCodes expand: true;
 			yourself)
 		expand: true ;
-		add: infoBar expand: false ;
+		add: statusBar expand: false ;
 		yourself)
 ]
 
@@ -140,9 +140,9 @@ MiDuplicationBrowser >> initializeListReplicatedFragments [
 ]
 
 { #category : #initialization }
-MiDuplicationBrowser >> initializePresenter [
+MiDuplicationBrowser >> initializePresenters [
 
-	super initializePresenter.
+	super initializePresenters.
 
 	self initializeListEntities.
 	self initializeListReplicatedFragments.
@@ -155,8 +155,8 @@ MiDuplicationBrowser >> initializePresenter [
 
 	panCodes := self newNotebook.
 	
-	infoBar := self newLabel.
-	self updateInfoBar.
+	statusBar := self newLabel.
+	self updateStatusBar.
 
 	self initializeLayout
 ]
@@ -213,7 +213,7 @@ MiDuplicationBrowser >> showEntities: entities [
 
 	self resetReplicas.
 	lstEntities items: entities.
-	self updateInfoBar.
+	self updateStatusBar.
 ]
 
 { #category : #api }
@@ -223,7 +223,7 @@ MiDuplicationBrowser >> showReplicas: replicas [
 		panCodes addPage: (self newCodePage: replica) ].
 	replicas ifNotEmpty: [panCodes selectPageIndex: 1].
 	
-	self updateInfoBar.
+	self updateStatusBar.
 ]
 
 { #category : #api }
@@ -231,12 +231,17 @@ MiDuplicationBrowser >> showReplicatedFragments: replicatedFragments [
 
 	lstReplicatedFragments items: replicatedFragments.
 	
-	self updateInfoBar.
+	self updateStatusBar.
+]
+
+{ #category : #'accessing - private tests' }
+MiDuplicationBrowser >> statusBarText [
+	^statusBar label
 ]
 
 { #category : #utilities }
-MiDuplicationBrowser >> updateInfoBar [
-	String streamContents: [ :stream |
+MiDuplicationBrowser >> updateStatusBar [
+	^String streamContents: [ :stream |
 		stream
 			<< 'Searched entities: ' ;
 			<< model numberOfEntities asString ;
@@ -248,6 +253,6 @@ MiDuplicationBrowser >> updateInfoBar [
 			<< model numberOfSelectedEntities asString ;
 			<< ' | Selected clones: ' ;
 			<< model numberOfSelectedFragments asString.
-		infoBar label: stream contents
+		statusBar label: stream contents
 	]
 ]

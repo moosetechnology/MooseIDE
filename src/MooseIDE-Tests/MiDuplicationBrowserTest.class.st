@@ -112,7 +112,7 @@ MiDuplicationBrowserTest >> testMiSelectedItem [
 	self assertEmpty: browser miSelectedItem.
 	self deny: browser canPropagate.
 
-	browser model selectedEntity: entities.
+	browser model selectedEntities: entities.
 	self assert: browser miSelectedItem size equals: 2.
 	self assert: browser canPropagate
 ]
@@ -125,6 +125,12 @@ MiDuplicationBrowserTest >> testResetReplicas [
 
 	browser resetReplicas.
 	self assertEmpty: browser panCodes pages
+]
+
+{ #category : #'tests - opening' }
+MiDuplicationBrowserTest >> testSettingsAction [
+
+	self assert: browser hasSettings
 ]
 
 { #category : #tests }
@@ -154,7 +160,6 @@ MiDuplicationBrowserTest >> testShowReplicas [
 MiDuplicationBrowserTest >> testShowReplicatedFragments [
 	| fragment |
 	fragment := self replicatedFragment.
-	browser model replicatedFragments: Dictionary new.
 	browser model replicatedFragments
 		at: fragment
 		put: #(  ).
@@ -165,4 +170,36 @@ MiDuplicationBrowserTest >> testShowReplicatedFragments [
 	self
 		assert: browser lstReplicatedFragments roots first
 		equals: fragment
+]
+
+{ #category : #tests }
+MiDuplicationBrowserTest >> testUpdateStatusBar [
+
+	| fragment |
+	self
+		assert: browser statusBarText
+		equals:
+		'Searched entities: 0 | Number of clones: 0 | Entities with clones: 0 | Selected entities: 0 | Selected clones: 0'.
+
+	browser followEntity: { 
+			(self method: 'method1').
+			(self method: 'method2') }.
+	self
+		assert: browser statusBarText
+		equals:
+		'Searched entities: 2 | Number of clones: 0 | Entities with clones: 0 | Selected entities: 0 | Selected clones: 0'.
+	fragment := self replicatedFragment.
+
+	browser model replicatedFragments at: fragment put: #(  ).
+	browser updateStatusBar.
+	self
+		assert: browser statusBarText
+		equals:
+		'Searched entities: 2 | Number of clones: 1 | Entities with clones: 2 | Selected entities: 0 | Selected clones: 0'.
+
+	browser model selectedFragment: { fragment }.
+	self
+		assert: browser updateStatusBar
+		equals:
+		'Searched entities: 2 | Number of clones: 1 | Entities with clones: 2 | Selected entities: 2 | Selected clones: 0'
 ]

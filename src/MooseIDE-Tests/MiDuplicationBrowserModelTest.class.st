@@ -196,10 +196,10 @@ MiDuplicationBrowserModelTest >> testRootFragments [
 { #category : #tests }
 MiDuplicationBrowserModelTest >> testSelectedFragment [
 	model entities: { method1 . method2 . method3 }.
-	self assertEmpty: model selectedEntity.
+	self assertEmpty: model selectedEntities.
 
-	model selectedFragment: fragment2.
-	self assert: model selectedEntity size equals: 2.
+	model selectedFragment: {fragment2}.
+	self assert: model selectedEntities size equals: 2.
 	self assert: (model isSelected: method1).
 	self assert: (model isSelected: method2).
 	self deny: (model isSelected: method3).
