@@ -5,24 +5,10 @@ Class {
 	#name : #MiCoUsageMapSettings,
 	#superclass : #Object,
 	#classInstVars : [
-		'threshold75',
-		'childrenBlockText',
-		'outerBoxSortBlockText',
-		'innerBoxSortBlockText',
-		'innerBoxRange',
-		'innerBoxScaleType',
-		'innerBoxHeight'
+		'properties'
 	],
 	#category : #'MooseIDE-CoUsageMap-Settings'
 }
-
-{ #category : #private }
-MiCoUsageMapSettings class >> browserDo: aBlock [
-	Smalltalk globals 
-		at: #MiCoUsageMapBuilder
-		ifPresent: [ :cls | cls withAllSubclassesDo: [ :each | each allInstancesDo: aBlock ]  ]
-		ifAbsent: [ "nothing" ]
-]
 
 { #category : #settings }
 MiCoUsageMapSettings class >> browsingBlockSettings: aBuilder [
@@ -62,7 +48,7 @@ MiCoUsageMapSettings class >> browsingSettingInnerScale: aBuilder [
 	<systemsettings>
 	(aBuilder pickOne: #innerBoxScaleType)
 		parent: #CoUsageMap;
-		domainValues: #(linear symlog);
+		domainValues: self scaleTypes;
 		target: self;
 		order: 3;
 		label: 'Inner box width scale';
@@ -130,13 +116,12 @@ MiCoUsageMapSettings class >> childrenBlockCompiled [
 
 { #category : #accessing }
 MiCoUsageMapSettings class >> childrenBlockText [
-	^ childrenBlockText ifNil: [ self defaultChildrenBlockText ]
+	^ self propertiesMap at: #childrenBlockText ifAbsent: [ self defaultChildrenBlockText ]
 ]
 
 { #category : #accessing }
 MiCoUsageMapSettings class >> childrenBlockText: aString [
-	childrenBlockText := aString.
-	self browserDo: [ :b | b updateChildren ].
+	self propertiesMap at: #childrenBlockText put: aString
 ]
 
 { #category : #'accessing - computed' }
@@ -177,10 +162,10 @@ MiCoUsageMapSettings class >> defaultInnerBoxScaleType [
 
 { #category : #'accessing - defaults' }
 MiCoUsageMapSettings class >> defaultInnerBoxSortBlockText [
-	^ '[:entityA :entityB |
+	^ '[:entityA :entityB :container |
 	| sizeA sizeB |
-	sizeA := entityA numberOfUses.
-	sizeB := entityB numberOfUses.
+	sizeA := entityA numberOfUsesOn: container.
+	sizeB := entityB numberOfUsesOn: container.
 	sizeA = sizeB
 		ifTrue: [ entityA name < entityB name ]
 		ifFalse: [ sizeA > sizeB ]
@@ -206,35 +191,32 @@ MiCoUsageMapSettings class >> defaultThreshold75 [
 
 { #category : #accessing }
 MiCoUsageMapSettings class >> innerBoxHeight [
-	^ innerBoxHeight ifNil: [ self defaultInnerBoxHeight ].
+	^ self propertiesMap at: #innerBoxHeight ifAbsent: [ self defaultInnerBoxHeight ].
 ]
 
 { #category : #accessing }
 MiCoUsageMapSettings class >> innerBoxHeight: aNumber [
-	innerBoxHeight := aNumber.
-	self updateBrowserInnerBoxSize
+	self propertiesMap at: #innerBoxHeight put: aNumber
 ]
 
 { #category : #accessing }
 MiCoUsageMapSettings class >> innerBoxRange [
-	^ innerBoxRange ifNil: [ self defaultInnerBoxRange ]
+	^ self propertiesMap at: #innerBoxRange ifAbsent: [ self defaultInnerBoxRange ]
 ]
 
 { #category : #accessing }
 MiCoUsageMapSettings class >> innerBoxRange: anInterval [
-	innerBoxRange := anInterval.
-	self updateBrowserInnerBoxSize
+	self propertiesMap at: #innerBoxRange put: anInterval
 ]
 
 { #category : #accessing }
 MiCoUsageMapSettings class >> innerBoxScaleType [
-	^ innerBoxScaleType ifNil: [ self defaultInnerBoxScaleType ]
+	^ self propertiesMap at: #innerBoxScaleType ifAbsent: [ self defaultInnerBoxScaleType ]
 ]
 
 { #category : #accessing }
 MiCoUsageMapSettings class >> innerBoxScaleType: aString [
-	innerBoxScaleType := aString.
-	self updateBrowserInnerBoxSize
+	self propertiesMap at: #innerBoxScaleType put: aString
 ]
 
 { #category : #'accessing - computed' }
@@ -244,19 +226,19 @@ MiCoUsageMapSettings class >> innerBoxSortBlockCompiled [
 
 { #category : #accessing }
 MiCoUsageMapSettings class >> innerBoxSortBlockText [
-	^ innerBoxSortBlockText ifNil: [ self defaultInnerBoxSortBlockText ]
+	^ self propertiesMap at: #innerBoxSortBlockText ifAbsent: [ self defaultInnerBoxSortBlockText ]
 ]
 
 { #category : #accessing }
 MiCoUsageMapSettings class >> innerBoxSortBlockText: aString [
-	innerBoxSortBlockText := aString.
-	self browserDo: [ :b | b updateShapeLayout ]
+	self propertiesMap at: #innerBoxSortBlockText put: aString
 ]
 
 { #category : #opening }
 MiCoUsageMapSettings class >> openBlocksSettings [
-
-	MiCoUsageMapSettingsPresenter new open
+	MiCoUsageMapBlockSettingsPresenter new 
+		settings: self;
+		open
 ]
 
 { #category : #'accessing - computed' }
@@ -266,40 +248,45 @@ MiCoUsageMapSettings class >> outerBoxSortBlockCompiled [
 
 { #category : #accessing }
 MiCoUsageMapSettings class >> outerBoxSortBlockText [
-	^ outerBoxSortBlockText ifNil: [ self defaultOuterBoxSortBlockText ]
+	^ self propertiesMap at: #outerBoxSortBlockText ifAbsent: [ self defaultOuterBoxSortBlockText ]
 ]
 
 { #category : #accessing }
 MiCoUsageMapSettings class >> outerBoxSortBlockText: aString [
-	outerBoxSortBlockText := aString.
-	self browserDo: [ :b | b updateShapeLayout ]
+	self propertiesMap at: #outerBoxSortBlockText put: aString
+]
+
+{ #category : #private }
+MiCoUsageMapSettings class >> propertiesMap [
+	^ properties ifNil: [ properties := Dictionary new ]
 ]
 
 { #category : #'class initialization' }
 MiCoUsageMapSettings class >> reset [
 	<script>
-	innerBoxHeight := threshold75 := childrenBlockText := outerBoxSortBlockText := 
-	innerBoxSortBlockText := innerBoxRange := nil
+	properties := nil
 ]
 
 { #category : #'class initialization' }
 MiCoUsageMapSettings class >> resetText [
 	<script>
-	childrenBlockText := outerBoxSortBlockText := innerBoxSortBlockText := nil
+	self propertiesMap
+		removeKey: #childrenBlockText;
+		removeKey: #outerBoxSortBlockText;
+		removeKey: #innerBoxSortBlockText
+]
+
+{ #category : #accessing }
+MiCoUsageMapSettings class >> scaleTypes [
+	^ #(linear symlog)
 ]
 
 { #category : #accessing }
 MiCoUsageMapSettings class >> threshold75PercentGroup [
-	^ threshold75 ifNil: [ self defaultThreshold75 ]
+	^ self propertiesMap at: #threshold75 ifAbsent: [ self defaultThreshold75 ]
 ]
 
 { #category : #accessing }
 MiCoUsageMapSettings class >> threshold75PercentGroup: aNumber [
-	threshold75 := aNumber.
-	self browserDo: [ :b | b threshold75: threshold75 ]
-]
-
-{ #category : #private }
-MiCoUsageMapSettings class >> updateBrowserInnerBoxSize [
-	self browserDo: [ :browser | browser updateInnerBoxSize ]
+	self propertiesMap at: #threshold75 put: aNumber
 ]

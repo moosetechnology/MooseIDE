@@ -9,7 +9,7 @@ Class {
 		'leftText',
 		'rightText'
 	],
-	#category : #'MooseIDE-CoUsageMap-Settings'
+	#category : #'MooseIDE-CoUsageMap-Sliders'
 }
 
 { #category : #accessing }

@@ -8,7 +8,7 @@ Class {
 		'application',
 		'visualization'
 	],
-	#category : #'MooseIDE-CoUsageMap-Browser'
+	#category : #'MooseIDE-CoUsageMap-Roassal3'
 }
 
 { #category : #accessing }
@@ -56,6 +56,11 @@ MiCoUsageMapMooseBuilder >> newMethodFor: anObject [
 		tag: tags;
 		application: self application;
 		yourself
+]
+
+{ #category : #testing }
+MiCoUsageMapMooseBuilder >> shouldUseProgressBar [
+	^ true
 ]
 
 { #category : #update }
