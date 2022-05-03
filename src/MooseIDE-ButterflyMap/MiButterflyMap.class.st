@@ -7,7 +7,7 @@ Class {
 	#instVars : [
 		'builder'
 	],
-	#category : #'MooseIDE-ButterflyMap'
+	#category : #'MooseIDE-ButterflyMap-Browser'
 }
 
 { #category : #running }

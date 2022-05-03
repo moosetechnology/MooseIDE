@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'visualization'
 	],
-	#category : #'MooseIDE-ButterflyMap'
+	#category : #'MooseIDE-ButterflyMap-Browser'
 }
 
 { #category : #accessing }
@@ -40,7 +40,7 @@ MiButterflyMapBrowser class >> windowSize [
 { #category : #testing }
 MiButterflyMapBrowser >> canFollowEntity: anObject [
 
-	^ anObject isMooseObject
+	^ anObject isMooseEntity
 ]
 
 { #category : #actions }

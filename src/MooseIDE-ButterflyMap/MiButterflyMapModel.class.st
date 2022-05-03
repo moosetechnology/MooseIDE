@@ -3,12 +3,16 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'currentEntity',
-		'level',
-		'incomings',
-		'outgoings'
+		'level'
 	],
-	#category : #'MooseIDE-ButterflyMap'
+	#category : #'MooseIDE-ButterflyMap-Model'
 }
+
+{ #category : #accessing }
+MiButterflyMapModel >> childrenFor: anEntity [
+
+	^ anEntity children
+]
 
 { #category : #accessing }
 MiButterflyMapModel >> currentEntity [
@@ -22,40 +26,11 @@ MiButterflyMapModel >> currentEntity: anObject [
 	currentEntity := anObject
 ]
 
-{ #category : #accessing }
-MiButterflyMapModel >> incomings [
-
-	^ incomings
-]
-
-{ #category : #'as yet unclassified' }
-MiButterflyMapModel >> incomingsFor: anEntity [
-
-	^ (anEntity queryAll: #in)
-		  collect: [ :assoc | assoc source ]
-		  as: OrderedCollection
-]
-
-{ #category : #'as yet unclassified' }
-MiButterflyMapModel >> incomingsForLevel: aLevel [
-
-	incomings size >= aLevel ifTrue: [ ^ incomings at: aLevel ].
-	incomings size + 1 to: aLevel do: [ :lvl | 
-		lvl = 1
-			ifTrue: [ incomings add: (self incomingsFor: self currentEntity) ]
-			ifFalse: [ 
-				(incomings at: lvl - 1)
-					flatCollect: [ :e | self incomingsFor: e ]
-					as: OrderedCollection ] ]
-]
-
 { #category : #initialization }
 MiButterflyMapModel >> initialize [
 
 	super initialize.
-	level := 1.
-	incomings := OrderedCollection new.
-	outgoings := OrderedCollection new
+	level := 1
 ]
 
 { #category : #accessing }
@@ -68,10 +43,4 @@ MiButterflyMapModel >> level [
 MiButterflyMapModel >> level: anObject [
 
 	level := anObject
-]
-
-{ #category : #accessing }
-MiButterflyMapModel >> outgoings [
-
-	^ outgoings
 ]
