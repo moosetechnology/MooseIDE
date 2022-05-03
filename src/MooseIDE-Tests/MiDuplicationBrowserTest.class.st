@@ -102,10 +102,15 @@ MiDuplicationBrowserTest >> testFormatReplicatedFragment [
 { #category : #tests }
 MiDuplicationBrowserTest >> testHighlightEntity [
 
-	| method1 method2 |
+	| method1 method2 fragment replica |
 	method1 := self method: 'method1'.
 	method2 := self method: 'method2'.
-
+	fragment := FamixReplicatedFragment new
+		            fragmentName: 'fragment1';
+		            yourself.
+	replica := FamixReplica new
+		entity: method1 ;
+		yourself.
 	browser followEntity: { 
 			method1.
 			method2 }.
@@ -113,9 +118,7 @@ MiDuplicationBrowserTest >> testHighlightEntity [
 	self assertEmpty: browser model selectedEntities.
 
 	browser highlightEntity: { method2 }.
-	self
-		assert: browser model selectedEntities size
-		equals: 2
+	self assert: browser model selectedEntities size equals: 2
 ]
 
 { #category : #tests }
@@ -179,7 +182,7 @@ MiDuplicationBrowserTest >> testShowReplicas [
 MiDuplicationBrowserTest >> testShowReplicatedFragments [
 	| fragment |
 	fragment := self replicatedFragment.
-	browser model replicatedFragments
+	browser model replicatedFragmentsHierarchy
 		at: fragment
 		put: #(  ).
 
@@ -209,7 +212,7 @@ MiDuplicationBrowserTest >> testUpdateStatusBar [
 		'Searched entities: 2 | Number of clones: 0 | Entities with clones: 0 | Selected entities: 0 | Selected clones: 0'.
 	fragment := self replicatedFragment.
 
-	browser model replicatedFragments at: fragment put: #(  ).
+	browser model replicatedFragmentsHierarchy at: fragment put: #(  ).
 	browser updateStatusBar.
 	self
 		assert: browser statusBarText
