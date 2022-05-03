@@ -179,6 +179,22 @@ MiDuplicationBrowserModelTest >> testHierarchyOfReplicatedFragment [
 ]
 
 { #category : #tests }
+MiDuplicationBrowserModelTest >> testHighlightEntity [
+
+	| selectedFragments |
+	(model browser stub selectedFragments: Any) will: [ 
+		:receivedFragments | selectedFragments := receivedFragments ].
+
+	self assert: selectedFragments isNil.
+
+	model highlightEntity: { method1 }.
+	self assert: selectedFragments isCollection.
+	self assertCollection: selectedFragments hasSameElements: { 
+			fragment1.
+			fragment2 }
+]
+
+{ #category : #tests }
 MiDuplicationBrowserModelTest >> testRootFragments [
 
 	model replicatedFragmentsHierarchy: (model hierarchyOfReplicatedFragment: { 
@@ -196,7 +212,7 @@ MiDuplicationBrowserModelTest >> testSelectedFragment [
 	model entities: { method1 . method2 . method3 }.
 	self assertEmpty: model selectedEntities.
 
-	model selectedFragment: {fragment2}.
+	model selectedFragments: {fragment2}.
 	self assert: model selectedEntities size equals: 2.
 	self assert: (model isSelected: method1).
 	self assert: (model isSelected: method2).

@@ -146,7 +146,7 @@ MiDuplicationBrowser >> initializeListReplicatedFragments [
 
 	lstReplicatedFragments whenSelectionChangedDo: [ :selection | 
 		self resetReplicas.
-		model selectedFragment: selection selectedItems ]
+		model selectedFragments: selection selectedItems ]
 ]
 
 { #category : #initialization }

@@ -100,28 +100,6 @@ MiDuplicationBrowserTest >> testFormatReplicatedFragment [
 ]
 
 { #category : #tests }
-MiDuplicationBrowserTest >> testHighlightEntity [
-
-	| method1 method2 fragment replica |
-	method1 := self method: 'method1'.
-	method2 := self method: 'method2'.
-	fragment := FamixReplicatedFragment new
-		            fragmentName: 'fragment1';
-		            yourself.
-	replica := FamixReplica new
-		entity: method1 ;
-		yourself.
-	browser followEntity: { 
-			method1.
-			method2 }.
-
-	self assertEmpty: browser model selectedEntities.
-
-	browser highlightEntity: { method2 }.
-	self assert: browser model selectedEntities size equals: 2
-]
-
-{ #category : #tests }
 MiDuplicationBrowserTest >> testMiSelectedItem [
 
 	| entities |
@@ -219,7 +197,7 @@ MiDuplicationBrowserTest >> testUpdateStatusBar [
 		equals:
 		'Searched entities: 2 | Number of clones: 1 | Entities with clones: 2 | Selected entities: 0 | Selected clones: 0'.
 
-	browser model selectedFragment: { fragment }.
+	browser model selectedFragments: { fragment }.
 	self
 		assert: browser updateStatusBar
 		equals:
