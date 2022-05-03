@@ -12,9 +12,9 @@ Class {
 		'browser',
 		'repDetector',
 		'entities',
-		'replicatedFragments',
 		'settings',
-		'selectedEntities'
+		'selectedEntities',
+		'replicatedFragmentsHierarchy'
 	],
 	#category : #'MooseIDE-Duplication'
 }
@@ -40,7 +40,7 @@ MiDuplicationBrowserModel >> browser: anObject [
 { #category : #api }
 MiDuplicationBrowserModel >> childrenFragments: aFragment [
 
-	^ replicatedFragments at: aFragment
+	^ replicatedFragmentsHierarchy at: aFragment
 ]
 
 { #category : #private }
@@ -68,14 +68,15 @@ MiDuplicationBrowserModel >> entities [
 { #category : #accessing }
 MiDuplicationBrowserModel >> entities: aCollection [
 
-	entities := aCollection.
-	browser showEntities: aCollection
+	entities := aCollection asOrderedCollection sorted: [ :a :b | 
+		            a name < b name ].
+	browser showEntities: entities
 ]
 
 { #category : #api }
 MiDuplicationBrowserModel >> findReplicas [
 
-	replicatedFragments := self hierarchyOfReplicatedFragment:
+	replicatedFragmentsHierarchy := self hierarchyOfReplicatedFragment:
 		                       (self newDetector runOn: entities)
 			                       replicatedFragments.
 	browser showReplicatedFragments: (self rootFragments)
@@ -108,12 +109,21 @@ MiDuplicationBrowserModel >> hierarchyOfReplicatedFragment: aCollectionOfFragmen
 	^ hierarchy
 ]
 
+{ #category : #api }
+MiDuplicationBrowserModel >> highlightEntity: entitiesToHighlight [
+
+	browser selectFragments:
+		(replicatedFragmentsHierarchy keys select: [ :fragment | 
+			 fragment replicas anySatisfy: [ :replica | 
+				 entitiesToHighlight includes: replica entity ] ])
+]
+
 { #category : #initialization }
 MiDuplicationBrowserModel >> initialize [
 
 	entities := #(  ).
 	selectedEntities := #().
-	replicatedFragments := Dictionary new.
+	replicatedFragmentsHierarchy := Dictionary new.
 	settings := MiDuplicationBrowserSettings new
 ]
 
@@ -147,12 +157,12 @@ MiDuplicationBrowserModel >> numberOfEntities [
 
 { #category : #api }
 MiDuplicationBrowserModel >> numberOfEntitiesInReplicas [
-	^(replicatedFragments keys flatCollectAsSet: [ :fragment | fragment replicas collect: #entity ]) size
+	^(replicatedFragmentsHierarchy keys flatCollectAsSet: [ :fragment | fragment replicas collect: #entity ]) size
 ]
 
 { #category : #api }
 MiDuplicationBrowserModel >> numberOfFragments [
-	^replicatedFragments size
+	^replicatedFragmentsHierarchy size
 ]
 
 { #category : #api }
@@ -165,23 +175,23 @@ MiDuplicationBrowserModel >> numberOfSelectedFragments [
 	^browser lstReplicatedFragments selectedItems size
 ]
 
-{ #category : #accessing }
-MiDuplicationBrowserModel >> replicatedFragments [
+{ #category : #'accessing - testing' }
+MiDuplicationBrowserModel >> replicatedFragmentsHierarchy [
 
-	^ replicatedFragments
+	^ replicatedFragmentsHierarchy
 ]
 
 { #category : #'accessing - testing' }
-MiDuplicationBrowserModel >> replicatedFragments: aCollection [
+MiDuplicationBrowserModel >> replicatedFragmentsHierarchy: aCollection [
 
-	replicatedFragments := aCollection
+	replicatedFragmentsHierarchy := aCollection
 ]
 
 { #category : #api }
 MiDuplicationBrowserModel >> rootFragments [
 	| children |
-	children := replicatedFragments associations flatCollect: #value.
-	^replicatedFragments keys reject: [ :fragment | children includes: fragment]
+	children := replicatedFragmentsHierarchy associations flatCollect: #value.
+	^replicatedFragmentsHierarchy keys reject: [ :fragment | children includes: fragment]
 	
 ]
 
@@ -195,19 +205,21 @@ MiDuplicationBrowserModel >> selectedEntities [
 MiDuplicationBrowserModel >> selectedEntities: entityCollection [
 
 	selectedEntities := entityCollection.
-	browser highlightEntities: selectedEntities.
+	"browser highlightEntity: selectedEntities."
 	browser updateToolbar
 ]
 
 { #category : #api }
 MiDuplicationBrowserModel >> selectedFragment: selectedFragments [
+
 	| allReplicas |
-	allReplicas := (selectedFragments flatCollect: #replicas).
-	(allReplicas size > settings maxReplicasShowed)
+	allReplicas := selectedFragments flatCollect: #replicas.
+	allReplicas size > settings maxReplicasShowed
 		ifTrue: [ allReplicas first: settings maxReplicasShowed ]
 		ifFalse: [ allReplicas ].
 
-	self selectedEntities: (allReplicas collectAsSet: #entity) asMooseGroup.
+	self selectedEntities:
+		(allReplicas collectAsSet: #entity) asMooseGroup.
 	browser showReplicas: allReplicas
 ]
 

@@ -100,6 +100,25 @@ MiDuplicationBrowserTest >> testFormatReplicatedFragment [
 ]
 
 { #category : #tests }
+MiDuplicationBrowserTest >> testHighlightEntity [
+
+	| method1 method2 |
+	method1 := self method: 'method1'.
+	method2 := self method: 'method2'.
+
+	browser followEntity: { 
+			method1.
+			method2 }.
+
+	self assertEmpty: browser model selectedEntities.
+
+	browser highlightEntity: { method2 }.
+	self
+		assert: browser model selectedEntities size
+		equals: 2
+]
+
+{ #category : #tests }
 MiDuplicationBrowserTest >> testMiSelectedItem [
 
 	| entities |

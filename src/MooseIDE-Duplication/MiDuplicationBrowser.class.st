@@ -65,6 +65,11 @@ MiDuplicationBrowser >> canFollowEntity: anObject [
 				  do: [ false ] ] ]
 ]
 
+{ #category : #testing }
+MiDuplicationBrowser >> canHighlight [
+	^true
+]
+
 { #category : #actions }
 MiDuplicationBrowser >> followEntity: entityCollection [
 
@@ -88,9 +93,11 @@ MiDuplicationBrowser >> hasSettings [
 ]
 
 { #category : #api }
-MiDuplicationBrowser >> highlightEntities: entities [
+MiDuplicationBrowser >> highlightEntity: entities [
 
-	"lstEntities selectItems: entities"
+	model highlightEntity: entities
+
+	
 ]
 
 { #category : #initialization }
@@ -119,8 +126,11 @@ MiDuplicationBrowser >> initializeListEntities [
 	lstEntities display: [ :entity | entity name ].
 	lstEntities displayIcon: [ :entity | 
 		self iconNamed: ((model isSelected: entity)
-			ifTrue: [ #testGreen ]
-			ifFalse: [ #glamorousGrayCircleEmpty ]) ]
+				 ifTrue: [ #testGreen ]
+				 ifFalse: [ #glamorousGrayCircleEmpty ]) ].
+
+	lstEntities whenSelectionChangedDo: [ :selection | 
+		model highlightEntity: selection selectedItems ]
 ]
 
 { #category : #initialization }
@@ -161,6 +171,13 @@ MiDuplicationBrowser >> initializePresenters [
 	self initializeLayout
 ]
 
+{ #category : #utilities }
+MiDuplicationBrowser >> list: collection1 hasSameElements: collection2 [
+	(collection1 size = collection2 size)
+		ifFalse: [ ^false ].
+	^collection1 allSatisfy: [ :elt | collection2 includes: elt ]
+]
+
 { #category : #'accessing - private tests' }
 MiDuplicationBrowser >> lstEntities [
 	^lstEntities 
@@ -195,6 +212,17 @@ MiDuplicationBrowser >> resetReplicas [
 
 	lstEntities unselectAll.
 	panCodes removeAll.
+]
+
+{ #category : #api }
+MiDuplicationBrowser >> selectFragments: selectedFragments [
+
+	(self
+		 list: lstReplicatedFragments selectedItems
+		 hasSameElements: selectedFragments) ifTrue: [ ^ self ].
+
+	lstReplicatedFragments unselectAll.
+	lstReplicatedFragments selectItems: selectedFragments
 ]
 
 { #category : #initialization }

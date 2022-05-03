@@ -120,7 +120,7 @@ MiDuplicationBrowserModelTest >> testAncestorsOfIn [
 { #category : #tests }
 MiDuplicationBrowserModelTest >> testChildrenFragments [
 
-	model replicatedFragments: (model hierarchyOfReplicatedFragment: { 
+	model replicatedFragmentsHierarchy: (model hierarchyOfReplicatedFragment: { 
 				 fragment1.
 				 fragment2.
 				 fragment3 }).
@@ -131,8 +131,7 @@ MiDuplicationBrowserModelTest >> testChildrenFragments [
 	self
 		assertCollection: (model childrenFragments: fragment2)
 		hasSameElements: { fragment3 }.
-	self
-		assertEmpty: (model childrenFragments: fragment3)
+	self assertEmpty: (model childrenFragments: fragment3)
 ]
 
 { #category : #tests }
@@ -182,15 +181,14 @@ MiDuplicationBrowserModelTest >> testHierarchyOfReplicatedFragment [
 { #category : #tests }
 MiDuplicationBrowserModelTest >> testRootFragments [
 
-	model replicatedFragments: (model hierarchyOfReplicatedFragment: { 
+	model replicatedFragmentsHierarchy: (model hierarchyOfReplicatedFragment: { 
 				 fragment1.
 				 fragment2.
 				 fragment3 }).
 
 	self
-		assertCollection: (model rootFragments)
-		hasSameElements: { fragment1 }.
-
+		assertCollection: model rootFragments
+		hasSameElements: { fragment1 }
 ]
 
 { #category : #tests }
