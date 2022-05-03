@@ -14,6 +14,7 @@ BaselineOfMooseIDE >> baseline: spec [
 		self telescope: spec.
 		self labelContractor: spec.
 		self hierarchicalVisualizations: spec.
+		self famixReplication: spec.
 
 		"Packages"
 		self definePackages: spec.
@@ -29,6 +30,8 @@ BaselineOfMooseIDE >> baseline: spec [
 				package: 'MooseIDE-Tagging'
 				with: [ spec requires: #( 'FamixTagging' ) ];
 				package: 'MooseIDE-CoUsageMap'
+				with: [ spec requires: #( 'FamixTagging' ) ];
+				package: 'MooseIDE-Dependency'
 				with: [ spec requires: #( 'FamixTagging' ) ] ].
 
 		"Register custom tools"
@@ -57,8 +60,9 @@ BaselineOfMooseIDE >> definePackages: spec [
 					#( 'MooseIDE-Core' 'TelescopeRoassal3' 'HierarchicalVisualizations' ) ];
 		package: 'MooseIDE-Meta'
 		with: [ spec requires: #( 'MooseIDE-Core' ) ];
-		package: 'MooseIDE-Tests'
-		with: [ spec requires: #( 'MooseIDE-Core' 'MooseIDE-Tagging' ) ];
+		package: 'MooseIDE-Tests' with: [ 
+			spec requires:
+					#( 'MooseIDE-Core' 'MooseIDE-Dependency' 'MooseIDE-Tagging' ) ];
 		package: 'MooseIDE-Dependency'
 		with: [ 
 			spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' ) ];
@@ -96,7 +100,9 @@ BaselineOfMooseIDE >> definePackages: spec [
 			spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' ) ];
 		package: 'MooseIDE-CoUsageMap-Tests'
 		with: [ spec requires: #( 'MooseIDE-CoUsageMap'
-				   'MooseIDE-Tests' ) ]
+				   'MooseIDE-Tests' ) ];
+		package: 'MooseIDE-Duplication'
+		with: [ spec requires: #( 'MooseIDE-Core' 'FamixReplication' ) ]
 ]
 
 { #category : #dependencies }
@@ -113,6 +119,15 @@ BaselineOfMooseIDE >> famixQueries: spec [
 	spec
 		baseline: 'FamixQueries'
 		with: [ spec repository: 'github://moosetechnology/FamixQueries' ]
+]
+
+{ #category : #dependencies }
+BaselineOfMooseIDE >> famixReplication: spec [
+
+	spec
+		baseline: 'FamixReplication'
+		with: [ 
+		spec repository: 'github://moosetechnology/FamixReplication' ]
 ]
 
 { #category : #dependencies }

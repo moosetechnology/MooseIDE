@@ -11,7 +11,7 @@ MiSourceTextBrowserTest >> browserClass [
 
 { #category : #running }
 MiSourceTextBrowserTest >> stubImmediateAnchorText: aString [
-	^FAMIXSourceTextAnchor new
+	^FamixTest1SourceTextAnchor new
 		source: aString 
 		yourself.
 
