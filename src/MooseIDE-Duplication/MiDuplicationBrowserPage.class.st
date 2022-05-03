@@ -44,9 +44,13 @@ MiDuplicationBrowserPage >> initialize [
 	super initialize.
 
 	self beCloseable.
-	self presenterProvider: [ SpTextPresenter new
-			text: self textContent ;
-			yourself ]
+	self presenterProvider: [
+		SpMorphPresenter new 
+        morph: (RubScrolledTextMorph new 
+            setText: self textContent;
+            in: [ :this | this textArea readOnly: true ];
+            yourself);
+        yourself ]
 ]
 
 { #category : #private }

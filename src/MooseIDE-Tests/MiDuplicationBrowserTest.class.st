@@ -29,12 +29,18 @@ MiDuplicationBrowserTest >> method: aName withSource: lineInterval [
 { #category : #running }
 MiDuplicationBrowserTest >> replicaFor: anEntity source: lineInterval [
 
-	^ (FamixReplica
-		   from: lineInterval first
-		   to: lineInterval last
-		   for: anEntity)
-		  fileAnchor: (FamixRepTestSourceTextAnchor source: anEntity sourceText);
-		  yourself
+	| replica |
+	replica := (FamixReplica
+		            from: lineInterval first
+		            to: lineInterval last
+		            for: anEntity)
+		           fileAnchor:
+			           (FamixRepTestSourceTextAnchor source:
+					            anEntity sourceText);
+		           yourself.
+
+	anEntity addReplica: replica.
+	^ replica
 ]
 
 { #category : #running }
@@ -47,12 +53,10 @@ MiDuplicationBrowserTest >> replicatedFragment [
 
 	method := self method: 'method1' withSource: (1 to: 5).
 	replica := self replicaFor: method source: (3 to: 5).
-	method addReplica: replica.
 	fragment addReplica: replica.
 
-	method := self method: 'method1' withSource: (3 to: 8).
+	method := self method: 'method2' withSource: (3 to: 8).
 	replica := self replicaFor: method source: (1 to: 3).
-	method addReplica: replica.
 	fragment addReplica: replica.
 
 	^ fragment
@@ -96,21 +100,6 @@ MiDuplicationBrowserTest >> testFormatReplicatedFragment [
 ]
 
 { #category : #tests }
-MiDuplicationBrowserTest >> testHighlightEntities [
-
-	| entities |
-	entities := { 
-		            (self method: 'method1').
-		            (self method: 'method2') }.
-	browser showEntities: entities.
-
-	self assertEmpty: browser lstEntities selectedItems.
-
-	browser highlightEntities: entities.
-	self assert: browser lstEntities selectedItems size equals: 2
-]
-
-{ #category : #tests }
 MiDuplicationBrowserTest >> testMiSelectedItem [
 
 	| entities |
@@ -123,7 +112,7 @@ MiDuplicationBrowserTest >> testMiSelectedItem [
 	self assertEmpty: browser miSelectedItem.
 	self deny: browser canPropagate.
 
-	browser model selectedEntity: entities.
+	browser model selectedEntities: entities.
 	self assert: browser miSelectedItem size equals: 2.
 	self assert: browser canPropagate
 ]
@@ -136,6 +125,12 @@ MiDuplicationBrowserTest >> testResetReplicas [
 
 	browser resetReplicas.
 	self assertEmpty: browser panCodes pages
+]
+
+{ #category : #'tests - opening' }
+MiDuplicationBrowserTest >> testSettingsAction [
+
+	self assert: browser hasSettings
 ]
 
 { #category : #tests }
@@ -163,12 +158,48 @@ MiDuplicationBrowserTest >> testShowReplicas [
 
 { #category : #tests }
 MiDuplicationBrowserTest >> testShowReplicatedFragments [
+	| fragment |
+	fragment := self replicatedFragment.
+	browser model replicatedFragmentsHierarchy
+		at: fragment
+		put: #(  ).
 
-	self assertEmpty: browser lstReplicatedFragments items.
-
-	browser showReplicatedFragments: { self replicatedFragment }.
-	self assert: browser lstReplicatedFragments items size equals: 1.
+	self assertEmpty: browser lstReplicatedFragments roots.
+	browser showReplicatedFragments: { fragment }.
+	self assert: browser lstReplicatedFragments roots size equals: 1.
 	self
-		assert: browser lstReplicatedFragments items first fragmentName
-		equals: 'testFragment'
+		assert: browser lstReplicatedFragments roots first
+		equals: fragment
+]
+
+{ #category : #tests }
+MiDuplicationBrowserTest >> testUpdateStatusBar [
+
+	| fragment |
+	self
+		assert: browser statusBarText
+		equals:
+		'Searched entities: 0 | Number of clones: 0 | Entities with clones: 0 | Selected entities: 0 | Selected clones: 0'.
+
+	browser followEntity: { 
+			(self method: 'method1').
+			(self method: 'method2') }.
+	self
+		assert: browser statusBarText
+		equals:
+		'Searched entities: 2 | Number of clones: 0 | Entities with clones: 0 | Selected entities: 0 | Selected clones: 0'.
+	fragment := self replicatedFragment.
+
+	browser model replicatedFragmentsHierarchy at: fragment put: #(  ).
+	browser updateStatusBar.
+	self
+		assert: browser statusBarText
+		equals:
+		'Searched entities: 2 | Number of clones: 1 | Entities with clones: 2 | Selected entities: 0 | Selected clones: 0'.
+
+	browser model selectedFragments: { fragment }.
+	self
+		assert: browser updateStatusBar
+		equals:
+		'Searched entities: 2 | Number of clones: 1 | Entities with clones: 2 | Selected entities: 2 | Selected clones: 0'
 ]

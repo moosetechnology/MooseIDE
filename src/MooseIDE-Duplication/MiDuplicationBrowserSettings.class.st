@@ -5,7 +5,8 @@ Class {
 		'minNumberOfReplicas',
 		'minNumberOfLines',
 		'minNumberOfCharacters',
-		'codeCleanerClass'
+		'codeCleanerClass',
+		'maxReplicasShowed'
 	],
 	#category : #'MooseIDE-Duplication'
 }
@@ -28,7 +29,18 @@ MiDuplicationBrowserSettings >> initialize [
 	minNumberOfReplicas := 2.
 	minNumberOfLines := 10.
 	minNumberOfCharacters := 80.
-	codeCleanerClass := FamixRepCLikeCleaner "temporarily, for testing, should be: FamixRepSourcesCleaner"
+	codeCleanerClass := FamixRepCLikeCleaner.
+	maxReplicasShowed := 10
+]
+
+{ #category : #accessing }
+MiDuplicationBrowserSettings >> maxReplicasShowed [
+	^maxReplicasShowed
+]
+
+{ #category : #accessing }
+MiDuplicationBrowserSettings >> maxReplicasShowed: anInteger [
+	maxReplicasShowed := 1 max: anInteger 
 ]
 
 { #category : #accessing }
@@ -38,9 +50,9 @@ MiDuplicationBrowserSettings >> minNumberOfCharacters [
 ]
 
 { #category : #accessing }
-MiDuplicationBrowserSettings >> minNumberOfCharacters: anObject [
+MiDuplicationBrowserSettings >> minNumberOfCharacters: aNumber [
 
-	minNumberOfCharacters := anObject
+	minNumberOfCharacters := 1 max: aNumber
 ]
 
 { #category : #accessing }
@@ -50,9 +62,9 @@ MiDuplicationBrowserSettings >> minNumberOfLines [
 ]
 
 { #category : #accessing }
-MiDuplicationBrowserSettings >> minNumberOfLines: anObject [
+MiDuplicationBrowserSettings >> minNumberOfLines: aNumber [
 
-	minNumberOfLines := anObject
+	minNumberOfLines := 1 max: aNumber
 ]
 
 { #category : #accessing }
@@ -62,7 +74,7 @@ MiDuplicationBrowserSettings >> minNumberOfReplicas [
 ]
 
 { #category : #accessing }
-MiDuplicationBrowserSettings >> minNumberOfReplicas: anObject [
+MiDuplicationBrowserSettings >> minNumberOfReplicas: aNumber [
 
-	minNumberOfReplicas := anObject
+	minNumberOfReplicas := 2 max: aNumber
 ]

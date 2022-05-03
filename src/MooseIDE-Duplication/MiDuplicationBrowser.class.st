@@ -8,7 +8,8 @@ Class {
 		'lstEntities',
 		'btnRun',
 		'panCodes',
-		'lstReplicatedFragments'
+		'lstReplicatedFragments',
+		'statusBar'
 	],
 	#category : #'MooseIDE-Duplication'
 }
@@ -64,6 +65,11 @@ MiDuplicationBrowser >> canFollowEntity: anObject [
 				  do: [ false ] ] ]
 ]
 
+{ #category : #testing }
+MiDuplicationBrowser >> canHighlight [
+	^true
+]
+
 { #category : #actions }
 MiDuplicationBrowser >> followEntity: entityCollection [
 
@@ -83,53 +89,70 @@ MiDuplicationBrowser >> formatReplicatedFragment: replicatedFragment [
 
 { #category : #actions }
 MiDuplicationBrowser >> hasSettings [
-	self flag: 'Implement settings for duplication browser'.
-	^ false
+	^ true
 ]
 
 { #category : #api }
-MiDuplicationBrowser >> highlightEntities: entities [
+MiDuplicationBrowser >> highlightEntity: entities [
 
-	lstEntities selectItems: entities
+	model highlightEntity: entities
+
+	
 ]
 
 { #category : #initialization }
 MiDuplicationBrowser >> initializeLayout [
 
-	self layout: (SpBoxLayout newLeftToRight
-			 add: lstEntities width: 150;
-			 add: (SpBoxLayout newTopToBottom
-					  add: btnRun expand: false;
-					  add: lstReplicatedFragments;
-					  yourself)
-			 width: 150;
-			 add: panCodes expand: true;
-			 yourself)
+	self layout: (SpBoxLayout newTopToBottom
+		add: (SpBoxLayout newLeftToRight
+			add: lstEntities width: 150;
+			add: (SpBoxLayout newTopToBottom
+				add: btnRun expand: false;
+				add: lstReplicatedFragments;
+				yourself)
+			width: 150;
+			add: panCodes expand: true;
+			yourself)
+		expand: true ;
+		add: statusBar expand: false ;
+		yourself)
 ]
 
 { #category : #initialization }
 MiDuplicationBrowser >> initializeListEntities [
+
 	lstEntities := self newList.
 	lstEntities beMultipleSelection.
-	lstEntities display: [ :entity | entity name ]
+	lstEntities display: [ :entity | entity name ].
+	lstEntities displayIcon: [ :entity | 
+		self iconNamed: ((model isSelected: entity)
+				 ifTrue: [ #testGreen ]
+				 ifFalse: [ #glamorousGrayCircleEmpty ]) ].
+
+	lstEntities whenSelectionChangedDo: [ :selection | 
+		model highlightEntity: selection selectedItems ]
 ]
 
 { #category : #initialization }
 MiDuplicationBrowser >> initializeListReplicatedFragments [
 
-	lstReplicatedFragments := self newList.
+	lstReplicatedFragments := self newTree.
+	lstReplicatedFragments beMultipleSelection.
+
 	lstReplicatedFragments display: [ :replicatedFragment | 
 		self formatReplicatedFragment: replicatedFragment ].
+
+	lstReplicatedFragments children: [ :replicatedFragment | model childrenFragments: replicatedFragment ].
+
 	lstReplicatedFragments whenSelectionChangedDo: [ :selection | 
 		self resetReplicas.
-		selection selectedItem
-			ifNotNil: [ :selectedItem | model selectedFragment: selectedItem ] ]
+		model selectedFragments: selection selectedItems ]
 ]
 
 { #category : #initialization }
-MiDuplicationBrowser >> initializePresenter [
+MiDuplicationBrowser >> initializePresenters [
 
-	super initializePresenter.
+	super initializePresenters.
 
 	self initializeListEntities.
 	self initializeListReplicatedFragments.
@@ -141,8 +164,18 @@ MiDuplicationBrowser >> initializePresenter [
 			          model findReplicas ].
 
 	panCodes := self newNotebook.
+	
+	statusBar := self newLabel.
+	self updateStatusBar.
 
 	self initializeLayout
+]
+
+{ #category : #utilities }
+MiDuplicationBrowser >> list: collection1 hasSameElements: collection2 [
+	(collection1 size = collection2 size)
+		ifFalse: [ ^false ].
+	^collection1 allSatisfy: [ :elt | collection2 includes: elt ]
 ]
 
 { #category : #'accessing - private tests' }
@@ -159,7 +192,7 @@ MiDuplicationBrowser >> lstReplicatedFragments [
 { #category : #accessing }
 MiDuplicationBrowser >> miSelectedItem [
 
-	^ model selectedEntity
+	^ model selectedEntities
 ]
 
 { #category : #utilities }
@@ -181,6 +214,17 @@ MiDuplicationBrowser >> resetReplicas [
 	panCodes removeAll.
 ]
 
+{ #category : #api }
+MiDuplicationBrowser >> selectFragments: selectedFragments [
+
+	(self
+		 list: lstReplicatedFragments selectedItems
+		 hasSameElements: selectedFragments) ifTrue: [ ^ self ].
+
+	lstReplicatedFragments unselectAll.
+	lstReplicatedFragments selectItems: selectedFragments
+]
+
 { #category : #initialization }
 MiDuplicationBrowser >> setModelBeforeInitialization: aModel [
 	super setModelBeforeInitialization: aModel.
@@ -189,16 +233,15 @@ MiDuplicationBrowser >> setModelBeforeInitialization: aModel [
 
 { #category : #actions }
 MiDuplicationBrowser >> settings [
-	"settings for duplication algorithm"
-
-	self shouldBeImplemented  
+	(MiDuplicationSettingsBrowser on: model settings) open.
 ]
 
 { #category : #api }
 MiDuplicationBrowser >> showEntities: entities [
 
 	self resetReplicas.
-	lstEntities items: entities
+	lstEntities items: entities.
+	self updateStatusBar.
 ]
 
 { #category : #api }
@@ -206,11 +249,38 @@ MiDuplicationBrowser >> showReplicas: replicas [
 
 	replicas do: [ :replica | 
 		panCodes addPage: (self newCodePage: replica) ].
-	panCodes selectPageIndex: 1
+	replicas ifNotEmpty: [panCodes selectPageIndex: 1].
+	
+	self updateStatusBar.
 ]
 
 { #category : #api }
 MiDuplicationBrowser >> showReplicatedFragments: replicatedFragments [
 
-	lstReplicatedFragments items: replicatedFragments
+	lstReplicatedFragments items: replicatedFragments.
+	
+	self updateStatusBar.
+]
+
+{ #category : #'accessing - private tests' }
+MiDuplicationBrowser >> statusBarText [
+	^statusBar label
+]
+
+{ #category : #utilities }
+MiDuplicationBrowser >> updateStatusBar [
+	^String streamContents: [ :stream |
+		stream
+			<< 'Searched entities: ' ;
+			<< model numberOfEntities asString ;
+			<< ' | Number of clones: ' ;
+			<< model numberOfFragments asString ;
+			<< ' | Entities with clones: ' ;
+			<< model numberOfEntitiesInReplicas asString ;
+			<< ' | Selected entities: ' ;
+			<< model numberOfSelectedEntities asString ;
+			<< ' | Selected clones: ' ;
+			<< model numberOfSelectedFragments asString.
+		statusBar label: stream contents
+	]
 ]
