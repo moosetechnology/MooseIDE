@@ -34,9 +34,7 @@ BaselineOfMooseIDE >> baseline: spec [
 				with: [ spec requires: #( 'FamixTagging' ) ] ].
 
 		"Register custom tools"
-		spec
-			postLoadDoIt: #registerCustomTools;
-			postLoadDoIt: #resetMiApplications ]
+		spec postLoadDoIt: #registerCustomTools ]
 ]
 
 { #category : #accessing }
@@ -157,13 +155,6 @@ BaselineOfMooseIDE >> labelContractor: spec [
 BaselineOfMooseIDE >> registerCustomTools [
 
 	(Smalltalk classNamed: #MiPlayground) register
-]
-
-{ #category : #actions }
-BaselineOfMooseIDE >> resetMiApplications [
-
-	(Smalltalk classNamed: #MiApplication) reset.
-	(Smalltalk classNamed: #MiTestApplication) reset
 ]
 
 { #category : #dependencies }
