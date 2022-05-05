@@ -75,19 +75,8 @@ MiQueryListItemPresenter >> beForManualQuery [
 MiQueryListItemPresenter >> configureFor: aQuery [
 
 	queryTypesDropListPresenter selectItem: aQuery class.
-	queryConfiguratorPresenter configureFor: aQuery
-]
-
-{ #category : #'api - actions' }
-MiQueryListItemPresenter >> disableProgressNotification [
-
-	queriesListPresenter disableProgressNotification
-]
-
-{ #category : #'api - actions' }
-MiQueryListItemPresenter >> enableProgressNotification [
-
-	queriesListPresenter enableProgressNotification
+	queryConfiguratorPresenter configureFor: aQuery.
+	queryConfiguratorPresenter initializeLayout
 ]
 
 { #category : #accessing }

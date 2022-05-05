@@ -20,12 +20,6 @@ MiResultSizeQueryPresenter class >> dropListWidth [
 	^ 57
 ]
 
-{ #category : #actions }
-MiResultSizeQueryPresenter >> computeQuery: num [
-
-	self query valueToCompare: num
-]
-
 { #category : #'api - actions' }
 MiResultSizeQueryPresenter >> configureFor: aQuery [
 
@@ -34,6 +28,12 @@ MiResultSizeQueryPresenter >> configureFor: aQuery [
 	subqueriesDropList selectItem:
 		(owner queriesListPresenter findPresenterForQuery: aQuery innerQuery).
 	query := aQuery
+]
+
+{ #category : #actions }
+MiResultSizeQueryPresenter >> configureQuery: num [
+
+	self query valueToCompare: num
 ]
 
 { #category : #initialization }

@@ -7,10 +7,21 @@ Class {
 { #category : #tests }
 MiNavigationQueryPresenterTest >> assertSubpresentersAreConfigured [
 
-	self assert: presenter directionDropList selectedItem equals: self createNewQuery directionStrategy.
+	self
+		assert: presenter directionDropList selectedItem
+		equals: self createNewQuery directionStrategy.
+
+
+	self
+		assertCollection: presenter associationsList items
+		includesAll: self createNewQuery associations.
 	self
 		assertCollection: presenter associationsList selectedItems
-		hasSameElements: self createNewQuery associations
+		hasSameElements: self createNewQuery associations.
+
+	self
+		assert: presenter associationsButton class
+		equals: SpButtonPresenter
 ]
 
 { #category : #running }

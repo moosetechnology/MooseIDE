@@ -7,19 +7,19 @@ Class {
 	#category : #'MooseIDE-QueriesBrowser-Configuration presenters'
 }
 
-{ #category : #actions }
-MiNumericQueryPresenter >> computeQuery: num [
-
-	self query valueToCompare: num
-]
-
 { #category : #'api - actions' }
 MiNumericQueryPresenter >> configureFor: aQuery [
 
-	propertyDropList selectItem: aQuery property.
+	super configureFor: aQuery.
+
 	comparatorDropList selectItem: aQuery comparator.
-	valueInputField number: aQuery valueToCompare.
-	query := aQuery
+	valueInputField number: aQuery valueToCompare
+]
+
+{ #category : #actions }
+MiNumericQueryPresenter >> configureQuery: num [
+
+	self query valueToCompare: num
 ]
 
 { #category : #initialization }

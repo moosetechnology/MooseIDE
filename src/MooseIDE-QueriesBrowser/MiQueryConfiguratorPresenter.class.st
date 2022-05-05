@@ -11,25 +11,23 @@ Class {
 }
 
 { #category : #actions }
-MiQueryConfiguratorPresenter >> computeQuery: anObject [
-
-	self subclassResponsibility
-]
-
-{ #category : #actions }
 MiQueryConfiguratorPresenter >> computeQueryAction: anObject [
 
-	[ owner enableProgressNotification ] asJob run.
-	self computeQuery: anObject.
-	self root application consumeItem: query.
-	self notifyQueryChanged.
-	owner disableProgressNotification
+	self configureQuery: anObject.
+  self root application consumeItem: query.
+	self notifyQueryChanged
 ]
 
 { #category : #'api - actions' }
 MiQueryConfiguratorPresenter >> configureFor: aQuery [
 
 	"You should always do `query := aQuery` at the end of this method for all subclasses"
+
+	self subclassResponsibility
+]
+
+{ #category : #actions }
+MiQueryConfiguratorPresenter >> configureQuery: anObject [
 
 	self subclassResponsibility
 ]
