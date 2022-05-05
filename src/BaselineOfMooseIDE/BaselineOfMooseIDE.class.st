@@ -11,7 +11,6 @@ BaselineOfMooseIDE >> baseline: spec [
 	spec for: #common do: [ "Dependencies"
 		self tylerDurden: spec.
 		self famixQueries: spec.
-		self telescope: spec.
 		self labelContractor: spec.
 		self hierarchicalVisualizations: spec.
 		self famixReplication: spec.
@@ -165,13 +164,6 @@ BaselineOfMooseIDE >> resetMiApplications [
 
 	(Smalltalk classNamed: #MiApplication) reset.
 	(Smalltalk classNamed: #MiTestApplication) reset
-]
-
-{ #category : #dependencies }
-BaselineOfMooseIDE >> telescope: spec [
-	spec
-		baseline: 'TelescopeRoassal3'
-		with: [ spec repository: 'github://TelescopeSt/TelescopeRoassal3' ]
 ]
 
 { #category : #dependencies }
