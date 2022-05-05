@@ -124,13 +124,13 @@ MiImportModelFromSmalltalkDialog >> hideAdvancedSettings [
 { #category : #action }
 MiImportModelFromSmalltalkDialog >> importingContext [
 
-	^ MooseImportingContext new importMaximum
+	^ importingContext
 ]
 
 { #category : #initialization }
 MiImportModelFromSmalltalkDialog >> initialize [
 
-	importingContext := MooseImportingContext new.
+	importingContext := MooseImportingContext new importMaximum.
 	entitiesToImport := MooseImportingContext entityDependencies keys
 		                    asSet.
 	contextCheckBoxes := OrderedCollection new.
