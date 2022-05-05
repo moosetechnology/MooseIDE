@@ -11,7 +11,6 @@ BaselineOfMooseIDE >> baseline: spec [
 	spec for: #common do: [ "Dependencies"
 		self tylerDurden: spec.
 		self famixQueries: spec.
-		self telescope: spec.
 		self labelContractor: spec.
 		self hierarchicalVisualizations: spec.
 		self famixReplication: spec.
@@ -55,9 +54,9 @@ BaselineOfMooseIDE >> definePackages: spec [
 	spec
 		package: 'MooseIDE-Core'
 		with: [ spec requires: #( 'LabelContractor' ) ];
-		package: 'MooseIDE-Visualization' with: [ 
-			spec requires:
-					#( 'MooseIDE-Core' 'TelescopeRoassal3' 'HierarchicalVisualizations' ) ];
+		package: 'MooseIDE-Visualization'
+		with: [ 
+			spec requires: #( 'MooseIDE-Core' 'HierarchicalVisualizations' ) ];
 		package: 'MooseIDE-Meta'
 		with: [ spec requires: #( 'MooseIDE-Core' ) ];
 		package: 'MooseIDE-Tests' with: [ 
@@ -74,9 +73,6 @@ BaselineOfMooseIDE >> definePackages: spec [
 			spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' ) ];
 		package: 'MooseIDE-Tagging-Tests'
 		with: [ spec requires: #( 'MooseIDE-Tagging' ) ];
-		package: 'MooseIDE-Telescope'
-		with: [ 
-			spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' ) ];
 		package: 'MooseIDE-QueriesBrowser'
 		with: [ spec requires: #( 'MooseIDE-Core' 'FamixQueries' ) ];
 		package: 'MooseIDE-QueriesBrowser-Tests'
@@ -168,13 +164,6 @@ BaselineOfMooseIDE >> resetMiApplications [
 
 	(Smalltalk classNamed: #MiApplication) reset.
 	(Smalltalk classNamed: #MiTestApplication) reset
-]
-
-{ #category : #dependencies }
-BaselineOfMooseIDE >> telescope: spec [
-	spec
-		baseline: 'TelescopeRoassal3'
-		with: [ spec repository: 'github://TelescopeSt/TelescopeRoassal3' ]
 ]
 
 { #category : #dependencies }
