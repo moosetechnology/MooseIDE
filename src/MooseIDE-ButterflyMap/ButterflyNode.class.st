@@ -49,7 +49,7 @@ ButterflyNode >> childrenBlock: anObject [
 	childrenBlock := anObject
 ]
 
-{ #category : #adding }
+{ #category : #accessing }
 ButterflyNode >> depth [
 
 	| q source depth i j |
@@ -62,12 +62,12 @@ ButterflyNode >> depth [
 	[ q isNotEmpty ] whileTrue: [ 
 		source := q removeLast.
 		i := i - 1.
+		source children do: [ :child | q addFirst: child ].
+		j := j + source children size.
 		i <= 0 ifTrue: [ "Here we reached an new level"
 			i := j.
 			j := 0.
-			depth := depth + 1 ].
-		source children do: [ :child | q addFirst: child ].
-		j := j + source children size ].
+			depth := depth + 1 ] ].
 	^ depth
 ]
 
@@ -92,6 +92,14 @@ ButterflyNode >> generateChildren [
 				 entity: e;
 				 yourself) ].
 	^ children
+]
+
+{ #category : #adding }
+ButterflyNode >> generateChildrenFor: anEntity [
+
+	anEntity = entity
+		ifTrue: [ self generateChildren ]
+		ifFalse: [ children copy do: [ :c | c generateChildrenFor: anEntity ] ]
 ]
 
 { #category : #initialization }
@@ -129,7 +137,7 @@ ButterflyNode >> layers [
 	^ layers
 ]
 
-{ #category : #adding }
+{ #category : #accessing }
 ButterflyNode >> level [
 
 	parent ifNil: [ ^ 0 ].
@@ -152,7 +160,11 @@ ButterflyNode >> parent: anObject [
 ButterflyNode >> remove [
 
 	parent ifNil: [ ^ self ].
-	parent remove: self
+	parent remove: self.
+	entity model remove.
+	entity connectedLines copy do: #remove.
+	entity remove.
+	children copy do: #remove
 ]
 
 { #category : #removing }
@@ -161,14 +173,43 @@ ButterflyNode >> remove: aBNode [
 	children remove: aBNode
 ]
 
-{ #category : #adding }
-ButterflyNode >> removeLevel [
+{ #category : #removing }
+ButterflyNode >> removeChildren [
 
-	(self level = self root depth) ifTrue: [ self remove.  ].
-	children do: #removeLevel
+	children copy do: #remove
 ]
 
-{ #category : #adding }
+{ #category : #removing }
+ButterflyNode >> removeChildrenFor: anEntity [
+
+	anEntity = entity
+		ifTrue: [ self removeChildren ]
+		ifFalse: [ children copy do: [ :c | c removeChildrenFor: anEntity ] ]
+]
+
+{ #category : #removing }
+ButterflyNode >> removeLevel [
+
+	self removeLevel: self root depth
+]
+
+{ #category : #removing }
+ButterflyNode >> removeLevel: anInteger [
+
+	self level = anInteger
+		ifTrue: [ self remove ]
+		ifFalse: [ children copy do: [ :c | c removeLevel: anInteger ] ]
+]
+
+{ #category : #removing }
+ButterflyNode >> removeSubNode: anEntity [
+
+	anEntity = entity
+		ifTrue: [ self remove ]
+		ifFalse: [ children copy do: [ :c | c removeSubNode: anEntity ] ]
+]
+
+{ #category : #accessing }
 ButterflyNode >> root [
 
 	parent ifNil: [ ^ self ].

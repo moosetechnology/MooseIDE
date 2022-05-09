@@ -33,6 +33,6 @@ MiButterflyMenuItem class >> classFor: aRoassalShape [
 			  (aRoassalShape canvas selectedShapes notEmpty and: [ 
 				   aRoassalShape canvas selectedShapes includes: aRoassalShape ])
 				  ifTrue: [ HGroupMenuItem ]
-				  ifFalse: [ HNodeMenuItem ] ]
+				  ifFalse: [ MiButterflyNodeMenuItem ] ]
 		  ifFalse: [ HLineMenuItem ]
 ]

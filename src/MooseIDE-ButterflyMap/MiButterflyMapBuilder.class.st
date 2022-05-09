@@ -16,7 +16,14 @@ Class {
 MiButterflyMapBuilder >> addLevel [
 
 	butterfly addLevel.
-	self updateShapes.
+	self updateShapes
+]
+
+{ #category : #adding }
+MiButterflyMapBuilder >> addNodesFor: aShape [
+
+	butterfly generateChildrenFor: aShape.
+	self updateShapes
 ]
 
 { #category : #building }
@@ -35,6 +42,7 @@ MiButterflyMapBuilder >> buildButterflyNodes [
 
 	| node |
 	node := centralNode rawModel.
+	centralNode color: (Color fromHexString: '4EC8B0').
 	centralShape := (self shapeFor: centralNode) sparent: self container.
 	butterfly := ButterflyTree new
 		             root: centralShape;
@@ -81,12 +89,13 @@ MiButterflyMapBuilder >> buildNodeFromEntity: anEntity [
 { #category : #rendering }
 MiButterflyMapBuilder >> buildShapes [
 
-	| allShapes leftLayers rightLayers layout |
+	| allShapes leftLayers rightLayers layout layoutLeft |
 	incomingGroups := OrderedCollection new.
 	outgoingGroups := OrderedCollection new.
 	leftLayers := butterfly leftTree layers.
 	rightLayers := butterfly rightTree layers.
-	layout := RSVerticalLineLayout new.
+	(layout := RSVerticalLineLayout new) alignRight.
+	layoutLeft := RSVerticalLineLayout new alignLeft; yourself.
 	allShapes := OrderedCollection new.
 	leftLayers do: [ :layer | 
 		allShapes addAll: layer.
@@ -95,9 +104,27 @@ MiButterflyMapBuilder >> buildShapes [
 
 	rightLayers do: [ :layer |
 		allShapes addAll: layer.
-		layout on: layer.
+		layoutLeft on: layer.
 		outgoingGroups add: layer ].
 	^ allShapes
+]
+
+{ #category : #accessing }
+MiButterflyMapBuilder >> centralNode [
+
+	^ centralNode
+]
+
+{ #category : #accessing }
+MiButterflyMapBuilder >> centralNode: anObject [
+
+	centralNode := anObject
+]
+
+{ #category : #building }
+MiButterflyMapBuilder >> colorFor: node [
+
+	^ node color ifNil: [ Color fromHexString: '6DAFDC' ] ifNotNil: [ :color | color ]
 ]
 
 { #category : #building }
@@ -106,7 +133,8 @@ MiButterflyMapBuilder >> initialize [
 	super initialize.
 	self linkStyler: (HLinkStyler new
 			 lineBuilder:
-				 (RSLineBuilder arrowedLineWithOffset: 0.5) withHorizontalAttachPoint;
+				 (RSLineBuilder arrowedLineWithOffset: 0.5)
+					 withHorizontalAttachPoint;
 			 yourself).
 	shapes := RSGroup new.
 	incomingGroups := OrderedCollection new.
@@ -148,76 +176,81 @@ MiButterflyMapBuilder >> menuInteraction [
 
 { #category : #hooks }
 MiButterflyMapBuilder >> nodeAnnouncer [
+
 	"plug new events here"
+
 	baseNode ifNotNil: [ ^ baseNode announcer ].
 	baseNode := RSComposite new
-		@ self nodeStyler popup;
-		@ (HGhostDraggable new 
-			color: Smalltalk ui theme caretColor);
-		@ self menuInteraction;
-		@ self highlightable;
-		@ (RSNodeOnTopWhenPositionChanged new);
-		@ (HUpdateSelectionBox new);
-		@ (HResizeParentWhenChildMoves new nodeStyler: self nodeStyler);
-		yourself.
+		            @ self nodeStyler popup;
+		            @ RSDraggable new;
+		            @ self menuInteraction;
+		            @ self highlightable;
+		            @ RSNodeOnTopWhenPositionChanged new;
+		            @ HUpdateSelectionBox new;
+		            @
+			            (HResizeParentWhenChildMoves new nodeStyler:
+					             self nodeStyler);
+		            yourself.
 	^ baseNode announcer
-	
 ]
 
-{ #category : #adding }
+{ #category : #removing }
 MiButterflyMapBuilder >> removeLevel [
 	
-	1halt.
+	
 	butterfly removeLevel.
 	self updateShapes.
-	"[ :shape |
-	shape model remove.
-	shape connectedLines do: #remove.
-	shape remove  ]"
-	"mapModel level: mapModel level - 1.
-	mapModel level traceCr.
-	incomingGroups last do: [ :shape | 
-		rootNode children remove: shape model.
-		shape model removeAllLinks.
-		mooseNodeDictLeft
-			removeKey: shape model rawModel mooseID.
-		shape connectedLines do: #remove.
-		shape remove ].
-	incomingGroups removeLast.
+]
 
-	outgoingGroups last do: [ :shape | 
-		rootNode children remove: shape model.
-		shape model removeAllLinks.
-		mooseNodeDictRight
-			removeKey: shape model rawModel mooseID.
-		shape connectedLines do: #remove.
-		shape remove ].
-	outgoingGroups removeLast.
-	self container signalUpdate"
+{ #category : #removing }
+MiButterflyMapBuilder >> removeNode: aShape [
+
+	butterfly remove: aShape.
+	self updateShapes
+]
+
+{ #category : #removing }
+MiButterflyMapBuilder >> removeNodesFor: aShape [
+
+	butterfly removeChildrenFor: aShape.
+	self updateShapes
 ]
 
 { #category : #rendering }
 MiButterflyMapBuilder >> renderIn: aCanvas [
 
-	| rootShapes |
 	aCanvas color: Smalltalk ui theme backgroundColor.
-	rootShapes := self buildShapes , { centralShape }.
-	aCanvas schildren: rootShapes.
-	aCanvas addAll: rootShapes.
+	"RSZoomToFitCanvasInteraction new animatedZoomToFit: aCanvas."
 	aCanvas @ self menuInteraction.
-	self renderLinesIn: aCanvas.
-	self layoutButterfly.
+	self updateShapes
 ]
 
-{ #category : #adding }
+{ #category : #rendering }
+MiButterflyMapBuilder >> renderLinesIn: aCanvas [
+	
+	self lineBuilder
+		canvas: aCanvas;
+		shapes: shapes;
+		connectFromAll: #dependentsFromLinks
+]
+
+{ #category : #updating }
+MiButterflyMapBuilder >> updateCentralNode: anEntity [ 
+	
+	self mapModel currentEntity: anEntity.
+	self build
+]
+
+{ #category : #rendering }
 MiButterflyMapBuilder >> updateShapes [
 
-	| allShapes leftLayers rightLayers layout |
+	| allShapes leftLayers rightLayers layout rightLayout |
 	incomingGroups := OrderedCollection new.
 	outgoingGroups := OrderedCollection new.
 	leftLayers := butterfly leftTree layers.
 	rightLayers := butterfly rightTree layers.
-	layout := RSVerticalLineLayout new.
+	layout := RSVerticalLineLayout new alignRight; yourself.
+	rightLayout := RSVerticalLineLayout new alignLeft; yourself.
 	allShapes := OrderedCollection new.
 	leftLayers do: [ :layer | 
 		allShapes addAll: layer.
@@ -226,11 +259,13 @@ MiButterflyMapBuilder >> updateShapes [
 
 	rightLayers do: [ :layer | 
 		allShapes addAll: layer.
-		layout on: layer.
+		rightLayout on: layer.
 		outgoingGroups add: layer ].
 
-	self container addAll: allShapes.
+	self container addAll: allShapes , { centralShape }.
 	self container schildren: allShapes , { centralShape }.
 	self renderLinesIn: self container.
-	self layoutButterfly
+	self layoutButterfly.
+	self container signalUpdate.
+	self container zoomToFit
 ]

@@ -29,10 +29,8 @@ MiButterflyMap >> run [
 		           mapModel: owner model;
 		           container: self canvas;
 		           yourself.
-	builder build.
-	self canvas
-		zoomToFit;
-		zoomToFit
+	self canvas @ (builder elasticBoxFor: self canvas).
+	builder build
 ]
 
 { #category : #running }

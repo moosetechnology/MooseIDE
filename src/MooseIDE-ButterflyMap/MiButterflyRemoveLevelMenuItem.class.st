@@ -13,7 +13,7 @@ MiButterflyRemoveLevelMenuItem >> execute [
 { #category : #execution }
 MiButterflyRemoveLevelMenuItem >> label [
 
-	^ 'Remove level'
+	^ 'Remove external layer'
 ]
 
 { #category : #execution }

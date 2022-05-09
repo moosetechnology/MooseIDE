@@ -2,7 +2,8 @@ Class {
 	#name : #MiButterflyMapBrowser,
 	#superclass : #MiAbstractBrowser,
 	#instVars : [
-		'visualization'
+		'visualization',
+		'settings'
 	],
 	#category : #'MooseIDE-ButterflyMap-Browser'
 }
@@ -44,24 +45,43 @@ MiButterflyMapBrowser >> canFollowEntity: anObject [
 ]
 
 { #category : #actions }
+MiButterflyMapBrowser >> closeSettings [
+
+	self layout child: visualization
+]
+
+{ #category : #actions }
 MiButterflyMapBrowser >> followEntity: anEntity [
 
 	model currentEntity: anEntity.
 	visualization run
 ]
 
+{ #category : #actions }
+MiButterflyMapBrowser >> hasSettings [
+
+	^ true
+]
+
+{ #category : #initialization }
+MiButterflyMapBrowser >> initialize [
+
+	super initialize.
+	self application registerConsumer: settings for: FQAbstractQuery
+]
+
 { #category : #initialization }
 MiButterflyMapBrowser >> initializeLayout [
 
-	self layout: (SpBoxLayout newLeftToRight
-			 add: visualization;
-			 yourself)
+	self layout: (SpScrollableLayout with: visualization)
 ]
 
 { #category : #initialization }
 MiButterflyMapBrowser >> initializePresenters [
 
 	visualization := self class mapClass owner: self.
+	settings := MiButterflyMapSettings owner: self.
+	model browser: self.
 	self initializeLayout
 ]
 
@@ -72,6 +92,19 @@ MiButterflyMapBrowser >> miSelectedItem [
 ]
 
 { #category : #actions }
+MiButterflyMapBrowser >> openSettings [
+
+	self layout child: settings
+]
+
+{ #category : #actions }
 MiButterflyMapBrowser >> settings [
 	
+	self openSettings
+]
+
+{ #category : #accessing }
+MiButterflyMapBrowser >> visualization [
+
+	^ visualization
 ]

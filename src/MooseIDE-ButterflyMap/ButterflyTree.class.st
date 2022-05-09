@@ -20,6 +20,13 @@ ButterflyTree >> addLevel [
 	rightTree addLevel
 ]
 
+{ #category : #adding }
+ButterflyTree >> generateChildrenFor: aShape [
+
+	leftTree generateChildrenFor: aShape.
+	rightTree generateChildrenFor: aShape
+]
+
 { #category : #accessing }
 ButterflyTree >> lBlock [
 
@@ -52,11 +59,29 @@ ButterflyTree >> rBlock: anObject [
 	rightTree childrenBlock: rBlock
 ]
 
-{ #category : #adding }
+{ #category : #removing }
+ButterflyTree >> remove: anEntity [
+
+	leftTree removeSubNode: anEntity.
+	rightTree removeSubNode: anEntity 
+]
+
+{ #category : #removing }
+ButterflyTree >> removeChildrenFor: aShape [
+
+	leftTree removeChildrenFor: aShape.
+	rightTree removeChildrenFor: aShape
+]
+
+{ #category : #removing }
 ButterflyTree >> removeLevel [
 
-	leftTree removeLevel.
-	rightTree removeLevel
+	| maxLevel |
+	maxLevel := leftTree depth max: rightTree depth.
+	maxLevel <= 1 ifTrue: [ ^ self ].
+	leftTree depth < maxLevel ifFalse: [ leftTree removeLevel: maxLevel ].
+	rightTree depth < maxLevel ifFalse: [ 
+		rightTree removeLevel: maxLevel ]
 ]
 
 { #category : #accessing }

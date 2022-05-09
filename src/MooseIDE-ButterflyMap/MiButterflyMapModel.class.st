@@ -3,15 +3,57 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'currentEntity',
-		'level'
+		'browser',
+		'childrenBlock',
+		'childrenQuery',
+		'leftEntitiesQuery',
+		'leftEntitiesBlock',
+		'rightEntitiesQuery',
+		'rightEntitiesBlock'
 	],
 	#category : #'MooseIDE-ButterflyMap-Model'
 }
 
 { #category : #accessing }
+MiButterflyMapModel >> browser [
+
+	^ browser
+]
+
+{ #category : #accessing }
+MiButterflyMapModel >> browser: anObject [
+
+	browser := anObject
+]
+
+{ #category : #accessing }
+MiButterflyMapModel >> childrenBlock [
+
+	^ childrenBlock
+]
+
+{ #category : #accessing }
+MiButterflyMapModel >> childrenBlock: anObject [
+
+	childrenBlock := anObject
+]
+
+{ #category : #accessing }
 MiButterflyMapModel >> childrenFor: anEntity [
 
 	^ anEntity children
+]
+
+{ #category : #accessing }
+MiButterflyMapModel >> childrenQuery [
+
+	^ childrenQuery
+]
+
+{ #category : #accessing }
+MiButterflyMapModel >> childrenQuery: anObject [
+
+	childrenQuery := anObject
 ]
 
 { #category : #accessing }
@@ -26,21 +68,50 @@ MiButterflyMapModel >> currentEntity: anObject [
 	currentEntity := anObject
 ]
 
-{ #category : #initialization }
-MiButterflyMapModel >> initialize [
+{ #category : #accessing }
+MiButterflyMapModel >> leftEntitiesBlock [
 
-	super initialize.
-	level := 1
+	^ leftEntitiesBlock
 ]
 
 { #category : #accessing }
-MiButterflyMapModel >> level [
+MiButterflyMapModel >> leftEntitiesBlock: anObject [
 
-	^ level
+	leftEntitiesBlock := anObject
 ]
 
 { #category : #accessing }
-MiButterflyMapModel >> level: anObject [
+MiButterflyMapModel >> leftEntitiesQuery [
 
-	level := anObject
+	^ leftEntitiesQuery
+]
+
+{ #category : #accessing }
+MiButterflyMapModel >> leftEntitiesQuery: anObject [
+
+	leftEntitiesQuery := anObject
+]
+
+{ #category : #accessing }
+MiButterflyMapModel >> rightEntitiesBlock [
+
+	^ rightEntitiesBlock
+]
+
+{ #category : #accessing }
+MiButterflyMapModel >> rightEntitiesBlock: anObject [
+
+	rightEntitiesBlock := anObject
+]
+
+{ #category : #accessing }
+MiButterflyMapModel >> rightEntitiesQuery [
+
+	^ rightEntitiesQuery
+]
+
+{ #category : #accessing }
+MiButterflyMapModel >> rightEntitiesQuery: anObject [
+
+	rightEntitiesQuery := anObject
 ]

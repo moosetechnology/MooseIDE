@@ -13,7 +13,7 @@ MiButterflyAddLevelMenuItem >> execute [
 { #category : #accessing }
 MiButterflyAddLevelMenuItem >> label [
 
-	^ 'Add level'
+	^ 'Add layer'
 ]
 
 { #category : #accessing }
