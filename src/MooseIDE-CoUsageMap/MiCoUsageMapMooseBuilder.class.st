@@ -5,9 +5,10 @@ Class {
 	#name : #MiCoUsageMapMooseBuilder,
 	#superclass : #MiCoUsageMapBuilder,
 	#instVars : [
-		'application'
+		'application',
+		'visualization'
 	],
-	#category : #'MooseIDE-CoUsageMap-Browser'
+	#category : #'MooseIDE-CoUsageMap-Roassal3'
 }
 
 { #category : #accessing }
@@ -34,7 +35,7 @@ MiCoUsageMapMooseBuilder >> newAttributeFor: anObject [
 	tags := tags
 		ifEmpty: [ nil ]
 		ifNotEmpty: [ tags anyOne ].
-	^ MiCoAttribute new
+	^ MiCoMooseAttibute new
 		name: anObject name;
 		rawObject: anObject;
 		tag: tags;
@@ -55,4 +56,25 @@ MiCoUsageMapMooseBuilder >> newMethodFor: anObject [
 		tag: tags;
 		application: self application;
 		yourself
+]
+
+{ #category : #testing }
+MiCoUsageMapMooseBuilder >> shouldUseProgressBar [
+	^ true
+]
+
+{ #category : #update }
+MiCoUsageMapMooseBuilder >> updateLegend [
+	visualization ifNil: [ ^ self ].
+	visualization updateLegend
+]
+
+{ #category : #accessing }
+MiCoUsageMapMooseBuilder >> visualization [
+	^ visualization
+]
+
+{ #category : #accessing }
+MiCoUsageMapMooseBuilder >> visualization: aMiCoUsageMapVisualization [
+	visualization := aMiCoUsageMapVisualization
 ]

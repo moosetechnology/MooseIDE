@@ -1,7 +1,7 @@
 Class {
 	#name : #MiCoTagTest,
 	#superclass : #TestCase,
-	#category : #'MooseIDE-CoUsageMap-Tests'
+	#category : #'MooseIDE-CoUsageMap-Tests-Model'
 }
 
 { #category : #tests }

@@ -76,6 +76,13 @@ MiQueriesBrowser >> canFollowEntity: anObject [
 		  (anObject asMooseGroup allUsing: FamixTNamedEntity) isNotEmpty ]
 ]
 
+{ #category : #'api - actions' }
+MiQueriesBrowser >> enableProgressNotification [
+
+	queryResultTreePresenter := self instantiate: MiSpinnerPresenter.
+	queryNotebookPresenter resetAllPageContents
+]
+
 { #category : #actions }
 MiQueriesBrowser >> followEntity: anEntity [
 
@@ -103,16 +110,10 @@ MiQueriesBrowser >> initialize [
 { #category : #initialization }
 MiQueriesBrowser >> initializeLayout [
 
-	| tempLayout |
-	tempLayout := SpBoxLayout newTopToBottom
-		              spacing: 5;
-		              yourself.
-	tempLayout add: self class defaultLayout expand: false.
-	tempLayout add: (SpPanedLayout new
+	self layout: (SpPanedLayout new
 			 add: queriesListPresenter;
 			 add: queryNotebookPresenter;
-			 yourself).
-	self layout: tempLayout
+			 yourself)
 ]
 
 { #category : #initialization }
@@ -162,7 +163,8 @@ MiQueriesBrowser >> initializeResultTreePresenter [
 
 { #category : #brokerage }
 MiQueriesBrowser >> itemsFor: aClass [
-	^rootQuery children select: [ :query | query isKindOf: aClass ]
+	
+	^ rootQuery allChildren select: [ :query | query isKindOf: aClass ]
 ]
 
 { #category : #accessing }
@@ -172,10 +174,8 @@ MiQueriesBrowser >> miSelectedItem [
 	selected := queryResultTreePresenter miSelectedItem
 		            ifEmpty: [ selectedQuery result ]
 		            ifNotEmpty: [ queryResultTreePresenter miSelectedItem ].
-	selected := selected specialize.
-	^ selected size = 1
-		  ifTrue: [ selected anyOne ]
-		  ifFalse: [ selected ]
+
+	^ selected mooseInterestingEntity
 ]
 
 { #category : #accessing }
@@ -236,4 +236,29 @@ MiQueriesBrowser >> setModelBeforeInitialization: aRootQuery [
 
 	rootQuery := aRootQuery.
 	selectedQuery := aRootQuery
+]
+
+{ #category : #actions }
+MiQueriesBrowser >> showResultOfQuery: aQuery [
+
+	| result |
+	self enableProgressNotification.
+
+	result := aQuery result.
+
+	queryResultTreePresenter := self instantiate:
+		                            QueryResultTreePresenter.
+	queryResultTreePresenter updateForEntities: result.
+
+	"This will sho the correct queryResultTreePresenter:"
+	queryNotebookPresenter resetAllPageContents
+]
+
+{ #category : #actions }
+MiQueriesBrowser >> updateResultPresenterForQuery: aQuery [
+
+	aQuery isValid
+		ifTrue: [ self showResultOfQuery: aQuery ]
+		ifFalse: [ 
+		queryResultTreePresenter updateForEntities: MooseGroup new ]
 ]

@@ -113,6 +113,15 @@ BaselineOfMooseIDE >> famixQueries: spec [
 ]
 
 { #category : #dependencies }
+BaselineOfMooseIDE >> famixReplication: spec [
+
+	spec
+		baseline: 'FamixReplication'
+		with: [ 
+		spec repository: 'github://moosetechnology/FamixReplication' ]
+]
+
+{ #category : #dependencies }
 BaselineOfMooseIDE >> famixTagging: spec [
 
 	spec
@@ -143,18 +152,4 @@ BaselineOfMooseIDE >> labelContractor: spec [
 BaselineOfMooseIDE >> registerCustomTools [
 
 	(Smalltalk classNamed: #MiPlayground) register
-]
-
-{ #category : #actions }
-BaselineOfMooseIDE >> resetMiApplications [
-
-	(Smalltalk classNamed: #MiApplication) reset.
-	(Smalltalk classNamed: #MiTestApplication) reset
-]
-
-{ #category : #dependencies }
-BaselineOfMooseIDE >> telescope: spec [
-	spec
-		baseline: 'TelescopeRoassal3'
-		with: [ spec repository: 'github://TelescopeSt/TelescopeRoassal3' ]
 ]

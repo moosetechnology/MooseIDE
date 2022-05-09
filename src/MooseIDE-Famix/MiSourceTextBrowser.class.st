@@ -11,8 +11,8 @@ Class {
 	#name : #MiSourceTextBrowser,
 	#superclass : #MiAbstractFamixBrowser,
 	#instVars : [
-		'sourceText',
-		'toolBarExternalEditor'
+		'toolBarExternalEditor',
+		'textRenderer'
 	],
 	#category : #'MooseIDE-Famix-SourceText'
 }
@@ -67,6 +67,11 @@ MiSourceTextBrowser >> canFollowEntity: anObject [
 	^ anObject usesFamixTrait: FamixTSourceEntity
 ]
 
+{ #category : #actions }
+MiSourceTextBrowser >> editExternally: anExternalTool [
+	anExternalTool new open: model selectedEntity
+]
+
 { #category : #'private - testing' }
 MiSourceTextBrowser >> externalEditor [
 	"only for testing"
@@ -83,7 +88,8 @@ MiSourceTextBrowser >> externalEditor: anObject [
 MiSourceTextBrowser >> followEntity: anEntity [
 
 	model displayedEntity: anEntity.
-	self text: model formatedSource.
+	textRenderer renderText.
+
 	self updateWindowTitleWith: anEntity name.
 
 	toolBarExternalEditor newEntity.
@@ -91,19 +97,16 @@ MiSourceTextBrowser >> followEntity: anEntity [
 
 { #category : #initialization }
 MiSourceTextBrowser >> initializePresenters [
+
 	toolBarExternalEditor := self instantiate: MiSourceTextToolBar on: self.
-	sourceText := self newText beNotEditable 
+	"self withRoassalRenderer."
+	self withSpecRenderer.
 ]
 
 { #category : #accessing }
 MiSourceTextBrowser >> miSelectedItem [
 
-	^ model selected
-]
-
-{ #category : #actions }
-MiSourceTextBrowser >> sendTextTo: anExternalTool [
-	anExternalTool new open: model selected
+	^ model selectedEntity
 ]
 
 { #category : #initialization }
@@ -112,9 +115,9 @@ MiSourceTextBrowser >> setModelBeforeInitialization: aModel [
 	aModel browser: self
 ]
 
-{ #category : #actions }
-MiSourceTextBrowser >> text: aText [
-	sourceText text: aText
+{ #category : #'private - testing' }
+MiSourceTextBrowser >> textRenderer [
+	^textRenderer
 ]
 
 { #category : #'private - testing' }
@@ -134,4 +137,16 @@ MiSourceTextBrowser >> updateWindowTitleWith: aName [
 
 	self withWindowDo: [ :window | 
 		window title: self class title , ' of ' , aName ]
+]
+
+{ #category : #formatting }
+MiSourceTextBrowser >> withRoassalRenderer [
+
+	textRenderer := self instantiate: MiSourceTextRoassalRenderer on: model
+]
+
+{ #category : #formatting }
+MiSourceTextBrowser >> withSpecRenderer [
+
+	textRenderer := self instantiate: MiSourceTextSpecRenderer on: model
 ]

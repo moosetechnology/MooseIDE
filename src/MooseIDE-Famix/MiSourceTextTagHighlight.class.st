@@ -1,3 +1,8 @@
+"
+Concrete class for highlighting a tagged entity in the text.
+
+It does not know the tag, the #highlightedEntity must know it
+"
 Class {
 	#name : #MiSourceTextTagHighlight,
 	#superclass : #MiSourceTextHighlight,
@@ -5,7 +10,6 @@ Class {
 }
 
 { #category : #formatting }
-MiSourceTextTagHighlight >> apply [
-	self referenceText
-		addAttribute: (TextBackgroundColor color: (self highlightedEntity color)) from: self from to: self to
+MiSourceTextTagHighlight >> applyTo: aRenderer [
+	aRenderer applyTagHighlight: self
 ]

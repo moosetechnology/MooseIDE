@@ -5,14 +5,14 @@ Class {
 	#name : #MiCoUsageMapVisualization,
 	#superclass : #MiAbstractVisualization,
 	#instVars : [
-		'coUsageMap'
+		'coUsageMap',
+		'settings'
 	],
 	#category : #'MooseIDE-CoUsageMap-Browser'
 }
 
 { #category : #brokerage }
 MiCoUsageMapVisualization >> consume: anItem [
-	anItem class name traceCr.
 	anItem class = FamixTag
 		ifTrue: [ self consumeTag: anItem ]
 		ifFalse: [ self consumeTagAssociation: anItem ]
@@ -28,7 +28,6 @@ MiCoUsageMapVisualization >> consumeTagAssociation: aFamixTagAssociation [
 	| entity tag miCoObject |
 	entity := aFamixTagAssociation entity.
 	tag := aFamixTagAssociation tag.
-	self identityHash traceCr.
 	miCoObject := coUsageMap miMethods , coUsageMap miAttributes 
 		detect: [ :each | each rawObject = entity and: [ each tag ~= tag ] ] ifNone: [ nil ].
 	miCoObject ifNil: [ ^ self ].
@@ -45,12 +44,23 @@ MiCoUsageMapVisualization >> highlightShapes [
 MiCoUsageMapVisualization >> initialize [
 	super initialize.
 	self script: [ :canvas | canvas ].
-	coUsageMap := MiCoUsageMapMooseBuilder new
+	coUsageMap := MiCoUsageMapMooseBuilder new.
+	coUsageMap visualization: self.
+]
+
+{ #category : #brokerage }
+MiCoUsageMapVisualization >> itemsFor: aClass [
+	| model |
+	model := self owner collectionModel mooseModel.
+	
+	aClass = FamixTagAssociation ifTrue: [ ^ model allTagAssociations ].
+	aClass = FamixTag ifTrue: [ ^ model allTags ].
+	^ #(  )
 ]
 
 { #category : #actions }
 MiCoUsageMapVisualization >> openSettingsBrowser [
-	^ coUsageMap markManager openSettingsBrowser
+	^ coUsageMap openSettingsBrowser
 ]
 
 { #category : #brokerage }
@@ -68,7 +78,7 @@ MiCoUsageMapVisualization >> removeTag: aTag [
 	legendTag := coUsageMap legendTag.
 	
 	"updating legend"
-	legendTag tagsFromMooseModel: self owner collectionModel mooseModel.
+	self tagsFromMooseModel: self owner collectionModel mooseModel.
 	legendTag build.
 	
 	coUsageMap markManager removeTag: aTag.
@@ -95,16 +105,62 @@ MiCoUsageMapVisualization >> run [
 	coUsageMap 
 		container: self canvas;
 		methods: model;
+		settings: self settings;
 		application: self owner application.
 	self updateLegend.
 	coUsageMap build.
+]
+
+{ #category : #accessing }
+MiCoUsageMapVisualization >> settings [
+	^ settings
+]
+
+{ #category : #accessing }
+MiCoUsageMapVisualization >> settings: anObject [
+	settings := anObject
+]
+
+{ #category : #brokerage }
+MiCoUsageMapVisualization >> tagsFromMooseModel: aMooseModel [
+	| group legendTag |
+	aMooseModel ifNil: [ ^ self ]. 
+	legendTag := coUsageMap legendTag.
+	legendTag removeOldLegend.
+	group := aMooseModel allTags sorted: [ :a :b | a name < b name ].
+	group do: [ :tag | legendTag addTag: tag asMiCoTag ].
+]
+
+{ #category : #update }
+MiCoUsageMapVisualization >> threshold75: aNumber [
+	coUsageMap threshold75: aNumber
+]
+
+{ #category : #brokerage }
+MiCoUsageMapVisualization >> update: anObject [
+	self consume: anObject
+]
+
+{ #category : #update }
+MiCoUsageMapVisualization >> updateChildren [
+	coUsageMap updateChildren
+]
+
+{ #category : #update }
+MiCoUsageMapVisualization >> updateInnerBoxSize [
+	coUsageMap updateInnerBoxSize
 ]
 
 { #category : #brokerage }
 MiCoUsageMapVisualization >> updateLegend [
 	| legendTag |
 	legendTag := coUsageMap legendTag.
-	legendTag tagsFromMooseModel: self owner collectionModel mooseModel.
+	self tagsFromMooseModel: self owner collectionModel mooseModel.
 	legendTag build.
 	coUsageMap updateShapeColors.
+]
+
+{ #category : #update }
+MiCoUsageMapVisualization >> updateShapeLayout [
+	coUsageMap updateShapeLayout
 ]

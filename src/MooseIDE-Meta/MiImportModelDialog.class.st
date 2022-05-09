@@ -53,10 +53,12 @@ MiImportModelDialog >> importModelThenCloseDialogWindow: aDialog [
 { #category : #initialization }
 MiImportModelDialog >> initializeDialogWindow: aDialog [
 
+	| button |
+	button := nil. 
 	aDialog initialExtent: self class windowExtent.
-	aDialog
+	button := aDialog
 		addButton: 'Import'
-		do: [ :dialog | self importModelThenCloseDialogWindow: dialog ].
+		do: [ :dialog | self importModelThenCloseDialogWindow: dialog. button disable].
 	aDialog addButton: 'Cancel' do: [ :dialog | dialog close ]
 ]
 

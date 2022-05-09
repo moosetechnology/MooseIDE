@@ -1,7 +1,7 @@
 Class {
 	#name : #MiCoUsageVisualizationTest,
 	#superclass : #TestCase,
-	#category : #'MooseIDE-CoUsageMap-Tests'
+	#category : #'MooseIDE-CoUsageMap-Tests-Browser'
 }
 
 { #category : #tests }
@@ -9,6 +9,7 @@ MiCoUsageVisualizationTest >> test00Basic [
 
 	| v class window |
 	v := MiCoUsageMapBuilder new.
+	self assert: v settings notNil.
 	self assert: v canvas nodes size equals: 0.
 	class := ZnUrl.
 	v godClass: class.
@@ -90,9 +91,7 @@ MiCoUsageVisualizationTest >> test04Highlight [
 	v := MiCoUsageMapBuilder new.
 	class := MiCoTestClass.
 	v godClass: class.
-	v legendTag
-		conflictTag: 'need work'
-		tags: { 'Frame'. 'Connection' }.
+	v legendTag tagsWithPalette: { 'Frame'. 'Connection' }.
 	v build.
 	attribute := v attributeNamed: #var2.
 	border := v highlightManager selectedBoxBorder.
@@ -120,9 +119,7 @@ MiCoUsageVisualizationTest >> test05MethodAttributePopup [
 	v := MiCoUsageMapBuilder new.
 	class := MiCoTestClass.
 	v godClass: class.
-	v legendTag
-		conflictTag: 'need work'
-		tags: { 'Frame'. 'Connection' }.
+	v legendTag tagsWithPalette: { 'Frame'. 'Connection' }.
 	v build.
 	attribute := v attributeNamed: #var2.
 	method := v methodNamed: #method1.
@@ -133,13 +130,10 @@ MiCoUsageVisualizationTest >> test05MethodAttributePopup [
 
 { #category : #tests }
 MiCoUsageVisualizationTest >> test06ExtentChanged [
-
 	| v |
 	v := MiCoUsageMapBuilder new.
 	v godClass: Morph.
-	v legendTag
-		conflictTag: 'need work'
-		tags: { 'Frame'. 'Connection' }.
+	v legendTag tagsWithPalette: { 'Frame'. 'Connection' }.
 	v build.
 	self assert: v canvas extent x equals: 500.
 	self assert: (v canvas encompassingRectangle width between: 400 and: 500).

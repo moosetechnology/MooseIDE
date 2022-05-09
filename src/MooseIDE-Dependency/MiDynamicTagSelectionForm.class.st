@@ -2,39 +2,39 @@
 I am a dynamic tag creation form.
 "
 Class {
-	#name : #MiDynamicTagCreationForm,
+	#name : #MiDynamicTagSelectionForm,
 	#superclass : #MiPresenter,
 	#instVars : [
 		'cancelButton',
 		'submitButton',
 		'tagList'
 	],
-	#category : #'MooseIDE-Dependency-HierarchicalMap'
+	#category : #'MooseIDE-Dependency-DistributionMap'
 }
 
 { #category : #initialization }
-MiDynamicTagCreationForm >> addTag: aTag [
+MiDynamicTagSelectionForm >> addTag: aTag [
 
 	tagList model items add: aTag.
 	tagList refresh
 ]
 
 { #category : #initialization }
-MiDynamicTagCreationForm >> checkFormInputs [
+MiDynamicTagSelectionForm >> checkFormInputs [
 
 	tagList selectedItems ifEmpty: [ ^ false ].
 	^ true
 ]
 
 { #category : #initialization }
-MiDynamicTagCreationForm >> connectPresenters [
+MiDynamicTagSelectionForm >> connectPresenters [
 
 	cancelButton action: [ self owner closeTagCreationForm ].
 	submitButton action: [ self submit ]
 ]
 
 { #category : #initialization }
-MiDynamicTagCreationForm >> initializeLayout [
+MiDynamicTagSelectionForm >> initializeLayout [
 
 	self layout: (SpBoxLayout newTopToBottom
 			 add: (SpBoxLayout newLeftToRight
@@ -52,7 +52,7 @@ MiDynamicTagCreationForm >> initializeLayout [
 ]
 
 { #category : #initialization }
-MiDynamicTagCreationForm >> initializePresenters [
+MiDynamicTagSelectionForm >> initializePresenters [
 
 	(tagList := self newList)
 		beMultipleSelection;
@@ -64,28 +64,29 @@ MiDynamicTagCreationForm >> initializePresenters [
 ]
 
 { #category : #initialization }
-MiDynamicTagCreationForm >> removeTag: aTag [
+MiDynamicTagSelectionForm >> removeTag: aTag [
 
 	tagList model items remove: aTag.
 	tagList refresh
 ]
 
 { #category : #initialization }
-MiDynamicTagCreationForm >> reset [
+MiDynamicTagSelectionForm >> reset [
 
 	tagList unselectAll.
 ]
 
 { #category : #initialization }
-MiDynamicTagCreationForm >> setTags [
+MiDynamicTagSelectionForm >> setTags [
 
 	tagList items: ((self root application itemsFor: MiDynamicTag)
+		 , (self root application itemsFor: FamixTag)
 		 \ self owner model dynamicTags) asMooseGroup.
 	tagList refresh
 ]
 
 { #category : #initialization }
-MiDynamicTagCreationForm >> submit [
+MiDynamicTagSelectionForm >> submit [
 
 	self checkFormInputs ifFalse: [ ^ self ].
 	self owner addDynamicTags: tagList selectedItems.
@@ -94,13 +95,13 @@ MiDynamicTagCreationForm >> submit [
 ]
 
 { #category : #accessing }
-MiDynamicTagCreationForm >> tagList [
+MiDynamicTagSelectionForm >> tagList [
 
 	^ tagList
 ]
 
 { #category : #accessing }
-MiDynamicTagCreationForm >> tagList: anObject [
+MiDynamicTagSelectionForm >> tagList: anObject [
 
 	^ tagList := anObject
 ]

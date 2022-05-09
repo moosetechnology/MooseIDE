@@ -19,3 +19,33 @@ MiInspectorBrowserTest >> browserClass [
 
 	^ MiInspectorBrowser
 ]
+
+{ #category : #tests }
+MiInspectorBrowserTest >> testCanPropagateMooseEntity [
+
+	browser followEntity: MooseEntity new.
+
+	self assert: browser canPropagate.
+	self assert: (browser toolbarButton: 'Propagate') isEnabled
+
+]
+
+{ #category : #tests }
+MiInspectorBrowserTest >> testCanPropagateMooseGroup [
+
+	browser followEntity: self mooseObjects asMooseGroup.
+
+	self assert: browser canPropagate.
+	self assert: (browser toolbarButton: 'Propagate') isEnabled
+
+]
+
+{ #category : #tests }
+MiInspectorBrowserTest >> testCannotPropagatePharoCollection [
+
+	browser followEntity: self mooseObjects.
+
+	self deny: browser canPropagate.
+	self deny: (browser toolbarButton: 'Propagate') isEnabled
+
+]

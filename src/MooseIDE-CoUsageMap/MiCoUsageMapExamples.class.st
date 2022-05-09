@@ -23,8 +23,7 @@ MiCoUsageMapExamples >> example02RandomGodClass [
 	| v |
 	v := MiCoUsageMapBuilder new.
 	v godClass: self randomGodClass.
-	v legendTag
-		conflictTag: 'need work' tags: { 'Frame'. 'Connection'. 'Test'. 'Base' }.
+	v legendTag tagsWithPalette: { 'Frame'. 'Connection'. 'Test'. 'Base' }.
 	^ v
 ]
 
@@ -34,8 +33,7 @@ MiCoUsageMapExamples >> example03SystemWindow [
 	| v |
 	v := MiCoUsageMapBuilder new.
 	v godClass: SystemWindow.
-	v legendTag
-		conflictTag: 'need work' tags: { 'Frame'. 'Connection'. 'Test'. 'Base' }.
+	v legendTag tagsWithPalette: { 'Frame'. 'Connection'. 'Test'. 'Base' }.
 	^ v
 ]
 
@@ -45,8 +43,7 @@ MiCoUsageMapExamples >> example04PNGReadWriter [
 	| v |
 	v := MiCoUsageMapBuilder new.
 	v godClass: PNGReadWriter.
-	v legendTag
-		conflictTag: 'need work' tags: { 'Frame'. 'Connection'. 'Test'. 'Base' }.
+	v legendTag tagsWithPalette: { 'Frame'. 'Connection'. 'Test'. 'Base' }.
 	^ v
 ]
 
@@ -56,8 +53,7 @@ MiCoUsageMapExamples >> example05FileList [
 	| v |
 	v := MiCoUsageMapBuilder new.
 	v godClass: FileList.
-	v legendTag
-		conflictTag: 'need work' tags: { 'Frame'. 'Connection'. 'Test'. 'Base' }.
+	v legendTag tagsWithPalette: { 'Frame'. 'Connection'. 'Test'. 'Base' }.
 	^ v
 ]
 
@@ -67,8 +63,7 @@ MiCoUsageMapExamples >> example06MCClassDefinition [
 	| v |
 	v := MiCoUsageMapBuilder new.
 	v godClass: MCClassDefinition.
-	v legendTag
-		conflictTag: 'need work' tags: { 'Frame'. 'Connection'. 'Test'. 'Base' }.
+	v legendTag tagsWithPalette: { 'Frame'. 'Connection'. 'Test'. 'Base' }.
 	^ v
 ]
 

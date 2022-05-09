@@ -48,11 +48,13 @@ MiApplication >> browsers [
 
 { #category : #buses }
 MiApplication >> busNamed: aName [
+
 	^ buses
 		detect: [ :b | b name = aName ]
 		ifNone: [ | bus |
 			bus := MiBus named: aName.
 			buses add: bus.
+			self defaultBus: bus.
 			self updateOverviewBrowsers.
 			bus ]
 ]
@@ -105,6 +107,12 @@ MiApplication >> consumersOf: aClass [
 MiApplication >> defaultBus [
 
 	^ defaultBus
+]
+
+{ #category : #buses }
+MiApplication >> defaultBus: aMiBus [
+
+	defaultBus := aMiBus 
 ]
 
 { #category : #showing }
@@ -166,6 +174,7 @@ MiApplication >> produced: producedClass matchConsumed: consumedClass [
 MiApplication >> producersOf: aClass [
 
 	| foundProducers |
+	
 	foundProducers := Set new.
 	producers keysDo: [ :producedClass | 
 		(self produced: producedClass matchConsumed: aClass) ifTrue: [ 

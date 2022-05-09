@@ -9,13 +9,11 @@ Class {
 }
 
 { #category : #public }
-MiCoPharoMethodAttributeCounter >> associationsListIn: aMiCoMethod [
-	| bag method result |
+MiCoPharoMethodAttributeCounter >> allAttributesFor: aMiCoMethod [
+	| method result |
 	method := aMiCoMethod rawObject.
-	bag := Bag new.
 	result := RBGenericNodeVisitor
 		visit: method ast
 		select: [ :node| node isInstanceVariable ].
-	bag addAll: (result collect: [:node | node name ]).
-	^ bag valuesAndCounts associations
+	^ result collect: [:node | node name ]
 ]

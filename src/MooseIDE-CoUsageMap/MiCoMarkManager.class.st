@@ -26,8 +26,7 @@ MiCoMarkManager >> automaticColor [
 
 { #category : #public }
 MiCoMarkManager >> automaticColorForMethod: aMiCoMethod [
-	| groupsByTag conflictTag |
-	conflictTag := self conflictTag.
+	| groupsByTag |
 	groupsByTag := aMiCoMethod usedAttributes 
 		groupedBy: [ :att | att tag ].
 	groupsByTag ifEmpty: [
@@ -40,9 +39,7 @@ MiCoMarkManager >> automaticColorForMethod: aMiCoMethod [
 			self setTag: tag onAttribute: aMiCoMethod.
 			^ self ].
 	].
-	(groupsByTag size = 1 and: [ groupsByTag keys anyOne isNil])
-		ifTrue: [ self setTag: nil onAttribute: aMiCoMethod. ]
-		ifFalse: [ self setTag: conflictTag onAttribute: aMiCoMethod].
+	self setTag: nil onAttribute: aMiCoMethod.
 	
 	
 	
@@ -60,7 +57,7 @@ MiCoMarkManager >> changeTagsDuring: aBlockClosure [
 
 { #category : #events }
 MiCoMarkManager >> clickOn: aRSMouseClick [ 
-	aRSMouseClick commandKeyPressed ifFalse: [ ^ self ].
+	aRSMouseClick metaKeyPressed ifFalse: [ ^ self ].
 	lastTagSelected ifNil: [ ^ self ].
 	self setTag: lastTagSelected onAttribute: aRSMouseClick shape model.
 	aRSMouseClick signalUpdate
@@ -74,11 +71,6 @@ MiCoMarkManager >> coUsageMap [
 { #category : #accessing }
 MiCoMarkManager >> coUsageMap: aMiCoCoUsageMapVisualization [
 	coUsageMap := aMiCoCoUsageMapVisualization
-]
-
-{ #category : #accessing }
-MiCoMarkManager >> conflictTag [
-	^ self coUsageMap legendTag conflictTag
 ]
 
 { #category : #'building - menus' }
@@ -102,9 +94,9 @@ MiCoMarkManager >> createGlobalMenuOn: menu [
 		icon: (self iconNamed: #smallPaint).
 	menu addLine.
 	(menu
-		add: 'Block Settings'
-			target: MiCoUsageMapSettings
-			selector: #openBlocksSettings
+		add: 'Settings'
+			target: coUsageMap
+			selector: #openSettingsBrowser
 			argumentList: #())
 		icon: (self iconNamed: #configuration)
 	
@@ -150,17 +142,10 @@ MiCoMarkManager >> onShape: aShape [
 		when: RSMouseLeftClick send: #clickOn: to: self.
 ]
 
-{ #category : #public }
-MiCoMarkManager >> openSettingsBrowser [
-	| browser window |
-	browser := SettingBrowser new
-		changePackageSet: (RPackage organizer 
-		packageNamed: MiCoUsageMapSettings package name) asOrderedCollection;
-	yourself.
-	window := browser open.
-	window position: (self currentWorld extent - window extent) // 2.
-	browser expandAll.
-	^ window
+{ #category : #dependencies }
+MiCoMarkManager >> release [
+	super release.
+	self class instVarNames do: [ :n | self instVarNamed: n put: nil ]
 ]
 
 { #category : #public }
@@ -212,9 +197,9 @@ MiCoMarkManager >> subMenuTagsFor: aMiCoAttribute subMenu: menu [
 ]
 
 { #category : #accessing }
-MiCoMarkManager >> tagColorFrom: aMicoTag [
-	aMicoTag ifNil: [ ^ Color colorFrom: 'f5f5f5' ].
-	^ aMicoTag color
+MiCoMarkManager >> tagColorFrom: aMiCoTag [
+	(aMiCoTag isNil or: [aMiCoTag isHidden ]) ifTrue: [ ^ Color colorFrom: 'f5f5f5' ].
+	^ aMiCoTag color
 ]
 
 { #category : #public }
