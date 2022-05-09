@@ -10,7 +10,6 @@ BaselineOfMooseIDE >> baseline: spec [
 	<baseline>
 	spec for: #common do: [ "Dependencies"
 		self famixQueries: spec.
-		self telescope: spec.
 		self labelContractor: spec.
 		self hierarchicalVisualizations: spec.
 
@@ -28,12 +27,12 @@ BaselineOfMooseIDE >> baseline: spec [
 				package: 'MooseIDE-Tagging'
 				with: [ spec requires: #( 'FamixTagging' ) ];
 				package: 'MooseIDE-CoUsageMap'
+				with: [ spec requires: #( 'FamixTagging' ) ];
+				package: 'MooseIDE-Dependency'
 				with: [ spec requires: #( 'FamixTagging' ) ] ].
 
 		"Register custom tools"
-		spec
-			postLoadDoIt: #registerCustomTools;
-			postLoadDoIt: #resetMiApplications ]
+		spec postLoadDoIt: #registerCustomTools ]
 ]
 
 { #category : #accessing }
@@ -51,13 +50,14 @@ BaselineOfMooseIDE >> definePackages: spec [
 	spec
 		package: 'MooseIDE-Core'
 		with: [ spec requires: #( 'LabelContractor' ) ];
-		package: 'MooseIDE-Visualization' with: [ 
-			spec requires:
-					#( 'MooseIDE-Core' 'TelescopeRoassal3' 'HierarchicalVisualizations' ) ];
+		package: 'MooseIDE-Visualization'
+		with: [ 
+			spec requires: #( 'MooseIDE-Core' 'HierarchicalVisualizations' ) ];
 		package: 'MooseIDE-Meta'
 		with: [ spec requires: #( 'MooseIDE-Core' ) ];
-		package: 'MooseIDE-Tests'
-		with: [ spec requires: #( 'MooseIDE-Core' 'MooseIDE-Tagging' ) ];
+		package: 'MooseIDE-Tests' with: [ 
+			spec requires:
+					#( 'MooseIDE-Core' 'MooseIDE-Dependency' 'MooseIDE-Tagging' ) ];
 		package: 'MooseIDE-Dependency'
 		with: [ 
 			spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' ) ];
@@ -69,9 +69,6 @@ BaselineOfMooseIDE >> definePackages: spec [
 			spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' ) ];
 		package: 'MooseIDE-Tagging-Tests'
 		with: [ spec requires: #( 'MooseIDE-Tagging' ) ];
-		package: 'MooseIDE-Telescope'
-		with: [ 
-			spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' ) ];
 		package: 'MooseIDE-QueriesBrowser'
 		with: [ spec requires: #( 'MooseIDE-Core' 'FamixQueries' ) ];
 		package: 'MooseIDE-QueriesBrowser-Tests'
@@ -93,7 +90,9 @@ BaselineOfMooseIDE >> definePackages: spec [
 			spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' ) ];
 		package: 'MooseIDE-CoUsageMap-Tests'
 		with: [ spec requires: #( 'MooseIDE-CoUsageMap'
-				   'MooseIDE-Tests' ) ]
+				   'MooseIDE-Tests' ) ];
+		package: 'MooseIDE-Duplication'
+		with: [ spec requires: #( 'MooseIDE-Core' 'FamixReplication' ) ]
 ]
 
 { #category : #dependencies }
