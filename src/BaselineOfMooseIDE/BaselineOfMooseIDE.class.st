@@ -12,6 +12,7 @@ BaselineOfMooseIDE >> baseline: spec [
 		self famixQueries: spec.
 		self labelContractor: spec.
 		self hierarchicalVisualizations: spec.
+		self famixReplication: spec.
 
 		"Packages"
 		self definePackages: spec.
