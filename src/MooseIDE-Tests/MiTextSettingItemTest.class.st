@@ -20,7 +20,7 @@ MiTextSettingItemTest >> someOtherValue [
 ]
 
 { #category : #tests }
-MiTextSettingItemTest >> testFDateValue [
+MiTextSettingItemTest >> testDateValue [
 	settingItem setValue: '22 February 2022'.
 	self assert: settingItem getValue equals: '22 February 2022'.
 

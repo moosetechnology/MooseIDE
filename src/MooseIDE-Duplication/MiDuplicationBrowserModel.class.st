@@ -297,8 +297,8 @@ MiDuplicationBrowserModel >> selectedFragments: selectedFragments [
 
 	| allReplicas |
 	allReplicas := selectedFragments flatCollect: #replicas.
-	allReplicas size > settings maxReplicasShowed
-		ifTrue: [ allReplicas first: settings maxReplicasShowed ]
+	allReplicas size > (settings getItemValue: self maxReplicasShowed)
+		ifTrue: [ allReplicas first: (settings getItemValue: self maxReplicasShowed) ]
 		ifFalse: [ allReplicas ].
 
 	self selectedEntities:

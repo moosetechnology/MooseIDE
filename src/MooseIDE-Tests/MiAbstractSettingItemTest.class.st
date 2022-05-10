@@ -7,6 +7,11 @@ Class {
 	#category : #'MooseIDE-Tests-Settings'
 }
 
+{ #category : #testing }
+MiAbstractSettingItemTest class >> isAbstract [
+	^ self == MiAbstractSettingItemTest
+]
+
 { #category : #running }
 MiAbstractSettingItemTest >> initialValue [
 	self subclassResponsibility 
@@ -51,7 +56,7 @@ MiAbstractSettingItemTest >> testConfirmValue [
 	self assert: settingItem getValue equals: self someOtherValue.
 	
 	settingItem resetValue.
-	self assert: settingItem getValue equals: self someOtherValue.
+	self assert: settingItem getValue equals: self initialValue .
 ]
 
 { #category : #tests }
