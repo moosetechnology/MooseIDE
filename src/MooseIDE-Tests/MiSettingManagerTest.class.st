@@ -7,6 +7,14 @@ Class {
 	#category : #'MooseIDE-Tests-Settings'
 }
 
+{ #category : #running }
+MiSettingManagerTest >> setUp [ 
+	super setUp.
+
+	settingManager := MiSettingsPresenter new.
+	
+]
+
 { #category : #tests }
 MiSettingManagerTest >> testAddItemNamed [
 	| settingItem |
