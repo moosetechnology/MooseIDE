@@ -18,7 +18,7 @@ MiTextSettingItem >> dateValue [
 
 { #category : #convertion }
 MiTextSettingItem >> floatValue [
-	valueFromString := #asFloat
+	valueFromString := [ :aString | Float readFrom: aString]
 ]
 
 { #category : #tests }
