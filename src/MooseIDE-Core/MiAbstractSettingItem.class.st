@@ -13,7 +13,6 @@ Class {
 	#instVars : [
 		'label',
 		'help',
-		'name',
 		'presenter',
 		'oldValue'
 	],
@@ -51,7 +50,7 @@ MiAbstractSettingItem >> confirmValue [
 	oldValue := self getValue
 ]
 
-{ #category : #tests }
+{ #category : #accessing }
 MiAbstractSettingItem >> getValue [
 
 	self subclassResponsibility
@@ -82,24 +81,12 @@ MiAbstractSettingItem >> label: anObject [
 ]
 
 { #category : #accessing }
-MiAbstractSettingItem >> name [
-
-	^ name
-]
-
-{ #category : #accessing }
-MiAbstractSettingItem >> name: anObject [
-
-	name := anObject
-]
-
-{ #category : #accessing }
 MiAbstractSettingItem >> owner: aPresenter [
 
 	self presenter owner: aPresenter
 ]
 
-{ #category : #tests }
+{ #category : #accessing }
 MiAbstractSettingItem >> presenter [
 
 	^ presenter
@@ -111,7 +98,7 @@ MiAbstractSettingItem >> resetValue [
 	self setValue: oldValue
 ]
 
-{ #category : #tests }
+{ #category : #accessing }
 MiAbstractSettingItem >> setValue: anObject [
 
 	self subclassResponsibility

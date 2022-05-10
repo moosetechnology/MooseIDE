@@ -21,7 +21,7 @@ MiTextSettingItem >> floatValue [
 	valueFromString := [ :aString | Float readFrom: aString]
 ]
 
-{ #category : #tests }
+{ #category : #accessing }
 MiTextSettingItem >> getValue [
 
 	^ valueFromString value: presenter text
@@ -42,7 +42,7 @@ MiTextSettingItem >> integerValue [
 	valueFromString := #asInteger
 ]
 
-{ #category : #tests }
+{ #category : #accessing }
 MiTextSettingItem >> setValue: anObject [
 
 	presenter text: anObject asString

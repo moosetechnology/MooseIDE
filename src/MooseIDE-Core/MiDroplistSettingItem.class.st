@@ -7,7 +7,7 @@ Class {
 	#category : #'MooseIDE-Core-Settings'
 }
 
-{ #category : #tests }
+{ #category : #accessing }
 MiDroplistSettingItem >> getValue [
 
 	^presenter selectedItem
@@ -22,13 +22,13 @@ MiDroplistSettingItem >> initialize [
 		yourself.
 ]
 
-{ #category : #tests }
+{ #category : #accessing }
 MiDroplistSettingItem >> possibleValues: aCollection [
 	presenter items: aCollection.
 	self setValue: aCollection anyOne
 ]
 
-{ #category : #tests }
+{ #category : #accessing }
 MiDroplistSettingItem >> setValue: anObject [
 
 	presenter selectItem: anObject 
