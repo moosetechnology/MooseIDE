@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'settingItem'
 	],
-	#category : #'MooseIDE-Tests-Browsers'
+	#category : #'MooseIDE-Tests-Settings'
 }
 
 { #category : #running }

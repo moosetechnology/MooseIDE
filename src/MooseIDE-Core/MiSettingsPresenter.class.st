@@ -19,15 +19,7 @@ MiSettingsPresenter >> addItem: anItem named: aName [
 
 { #category : #'instance creation' }
 MiSettingsPresenter >> buildPresenter [
-	self layout "ifNotNil: [ ^self ].
-
-	self layout: SpBoxLayout newTopToBottom.
-	settingItems valuesDo: [ :item | self layout add: item buildLayout ].
-	self layout add: (SpBoxLayout newLeftToRight
-			 add: btnCancel;
-			 add: btnReset;
-			 add: btnOk;
-			 yourself)"
+	self layout
 ]
 
 { #category : #initialization }
