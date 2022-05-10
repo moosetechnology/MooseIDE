@@ -1,3 +1,12 @@
+"
+Represents a generic setting item. A setting item holds a value and necessary information to display the item on one line in a MiSettingsManager:
+
+- label for the settingItem
+- presenter for showing/changing the setting value
+- help on the settingItem
+
+Class side has some factory methods
+"
 Class {
 	#name : #MiAbstractSettingItem,
 	#superclass : #Object,
@@ -10,6 +19,19 @@ Class {
 	],
 	#category : #'MooseIDE-Core-Settings'
 }
+
+{ #category : #'instance creation' }
+MiAbstractSettingItem class >> droplistSetting [
+	^MiDroplistSettingItem new
+		yourself
+]
+
+{ #category : #'instance creation' }
+MiAbstractSettingItem class >> integerSetting [
+	^MiTextSettingItem new
+		integerValue ;
+		yourself
+]
 
 { #category : #'api - building' }
 MiAbstractSettingItem >> buildLayout [

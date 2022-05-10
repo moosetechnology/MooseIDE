@@ -19,6 +19,7 @@ MiSettingsPresenter >> addItem: anItem named: aName [
 
 { #category : #'instance creation' }
 MiSettingsPresenter >> buildPresenter [
+	self layout "ifNotNil: [ ^self ].
 
 	self layout: SpBoxLayout newTopToBottom.
 	settingItems valuesDo: [ :item | self layout add: item buildLayout ].
@@ -26,7 +27,7 @@ MiSettingsPresenter >> buildPresenter [
 			 add: btnCancel;
 			 add: btnReset;
 			 add: btnOk;
-			 yourself)
+			 yourself)"
 ]
 
 { #category : #initialization }
@@ -45,6 +46,19 @@ MiSettingsPresenter >> connectPresenters [
 		self resetItems.
 		self window close ].
 	btnReset action: [ self resetItems ]
+]
+
+{ #category : #layout }
+MiSettingsPresenter >> defaultLayout [
+	| tmpLayout |
+	tmpLayout := SpBoxLayout newTopToBottom.
+	settingItems valuesDo: [ :item | tmpLayout add: item buildLayout ].
+	tmpLayout add: (SpBoxLayout newLeftToRight
+			 add: btnCancel;
+			 add: btnReset;
+			 add: btnOk;
+			 yourself).
+	^tmpLayout
 ]
 
 { #category : #accessing }
