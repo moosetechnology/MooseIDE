@@ -20,9 +20,23 @@ Class {
 }
 
 { #category : #'instance creation' }
+MiAbstractSettingItem class >> buttonWithCodeSetting [
+	^MiButtonCodeSettingItem new
+]
+
+{ #category : #'instance creation' }
+MiAbstractSettingItem class >> buttonWithEditableListSetting [
+	^MiButtonEditablelistSettingItem new
+]
+
+{ #category : #'instance creation' }
+MiAbstractSettingItem class >> checkboxSetting [
+	^MiCheckboxSettingItem new
+]
+
+{ #category : #'instance creation' }
 MiAbstractSettingItem class >> droplistSetting [
 	^MiDroplistSettingItem new
-		yourself
 ]
 
 { #category : #'instance creation' }

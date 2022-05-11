@@ -21,13 +21,6 @@ Class {
 	#category : #'MooseIDE-Dependency-HierarchicalMap'
 }
 
-{ #category : #initialization }
-MiHierarchicalMapSettings >> connectPresenters [
-
-	submitButton action: [ self submit ].
-	closeButton action: [ self owner hideMenu ]
-]
-
 { #category : #brokerage }
 MiHierarchicalMapSettings >> consume: aQuery [
 

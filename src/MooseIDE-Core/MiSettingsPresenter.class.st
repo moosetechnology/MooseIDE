@@ -56,7 +56,7 @@ MiSettingsPresenter >> defaultLayout [
 { #category : #accessing }
 MiSettingsPresenter >> getItemValue: aString [
 
-	^ (settingItems at: aString) getValue
+	^ (self itemNamed: aString) getValue
 ]
 
 { #category : #initialization }
@@ -80,7 +80,12 @@ MiSettingsPresenter >> initializeWindow: aMiWindowPresenter [
 	super initializeWindow: aMiWindowPresenter.
 
 	aMiWindowPresenter initialExtent:
-		400 @ (settingItems size * self settingItemHeight)
+		400 @ (settingItems size + 1 * self settingItemHeight)
+]
+
+{ #category : #initialization }
+MiSettingsPresenter >> itemNamed: aName [
+	^settingItems at: aName ifAbsent: [ MiNoSuchSettingItem signal ]
 ]
 
 { #category : #'instance creation' }
@@ -99,7 +104,7 @@ MiSettingsPresenter >> resetItems [
 { #category : #accessing }
 MiSettingsPresenter >> setItem: itemName value: aValue [ 
 	
-	(settingItems at: itemName) setValue: aValue
+	(self itemNamed: itemName) setValue: aValue
 ]
 
 { #category : #initialization }

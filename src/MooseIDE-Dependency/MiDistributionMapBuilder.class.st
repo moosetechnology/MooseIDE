@@ -147,7 +147,7 @@ MiDistributionMapBuilder >> buildLegend [
 	mapModel dynamicTags do: [ :dt | 
 		legend
 			text: dt name
-			withBoxColor: (self mapModel colorForDynamicTag: dt) ].
+			withBoxColor: (self mapModel colorForTag: dt) ].
 	legend build
 ]
 

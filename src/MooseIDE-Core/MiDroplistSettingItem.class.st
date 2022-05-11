@@ -23,6 +23,11 @@ MiDroplistSettingItem >> initialize [
 ]
 
 { #category : #accessing }
+MiDroplistSettingItem >> possibleValues [
+	^presenter items
+]
+
+{ #category : #accessing }
 MiDroplistSettingItem >> possibleValues: aCollection [
 	presenter items: aCollection.
 	self setValue: aCollection anyOne
