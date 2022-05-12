@@ -26,6 +26,6 @@ MiButtonEditablelistSettingItem >> listToString: aCollection [
 
 { #category : #accessing }
 MiButtonEditablelistSettingItem >> setValue: aCollection [
-
+	secondaryPresenter display: displayBlock.
 	secondaryPresenter items: aCollection
 ]

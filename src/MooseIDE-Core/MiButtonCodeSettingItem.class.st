@@ -23,6 +23,7 @@ MiButtonCodeSettingItem >> initializeSecondaryPresenter [
 ]
 
 { #category : #accessing }
-MiButtonCodeSettingItem >> setValue: aText [
-	secondaryPresenter text: aText
+MiButtonCodeSettingItem >> setValue: aValue [
+
+	secondaryPresenter text: (displayBlock value: aValue)
 ]

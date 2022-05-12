@@ -14,7 +14,8 @@ Class {
 		'label',
 		'help',
 		'presenter',
-		'oldValue'
+		'oldValue',
+		'displayBlock'
 	],
 	#category : #'MooseIDE-Core-Settings'
 }
@@ -65,6 +66,12 @@ MiAbstractSettingItem >> confirmValue [
 ]
 
 { #category : #accessing }
+MiAbstractSettingItem >> displayBlock: anObject [
+	"a block with 1 argument (a value) used to display the Value in the Presenter"
+	displayBlock := anObject
+]
+
+{ #category : #accessing }
 MiAbstractSettingItem >> getValue [
 
 	self subclassResponsibility
@@ -80,6 +87,13 @@ MiAbstractSettingItem >> help [
 MiAbstractSettingItem >> help: anObject [
 
 	help := anObject
+]
+
+{ #category : #initialization }
+MiAbstractSettingItem >> initialize [ 
+	super initialize.
+
+	displayBlock := #asString
 ]
 
 { #category : #accessing }
