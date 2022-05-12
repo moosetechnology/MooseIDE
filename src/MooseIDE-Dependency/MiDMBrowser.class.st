@@ -97,22 +97,13 @@ MiDMBrowser >> consume: aTag [
 MiDMBrowser >> followEntity: anEntity [
 
 	model entities: anEntity asMooseGroup.
-	self showMenu
+	visualization run
 ]
 
 { #category : #testing }
 MiDMBrowser >> hasSettings [
 
 	^ true
-]
-
-{ #category : #initialization }
-MiDMBrowser >> initialize [
-
-	super initialize.
-	application registerConsumer: self for: MiDynamicTag.
-	application registerConsumer: self for: FamixTag.
-	"application registerConsumer: settings for: FQAbstractQuery"
 ]
 
 { #category : #initialization }
@@ -128,8 +119,7 @@ MiDMBrowser >> initializeLayout [
 MiDMBrowser >> initializePresenters [
 
 	visualization := self class mapClass owner: self.
-	"settings := MiDistributionMapSettings owner: self."
-	tagCreateForm := MiDynamicTagSelectionForm owner: self.
+	"tagCreateForm := MiDynamicTagSelectionForm owner: self."
 	self initializeLayout
 ]
 

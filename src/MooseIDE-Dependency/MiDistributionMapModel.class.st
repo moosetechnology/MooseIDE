@@ -106,7 +106,14 @@ MiDistributionMapModel >> fetchChildrenQueries [
 ]
 
 { #category : #accessing }
-MiDistributionMapModel >> indexOfDynamicTagFor: anEntity [
+MiDistributionMapModel >> fetchTags [
+
+	^ (browser application itemsFor: FamixTag) asOrderedCollection 
+		  sorted: [ :t1 :t2 | t1 name < t2 name ]
+]
+
+{ #category : #accessing }
+MiDistributionMapModel >> indexOfTagFor: anEntity [
 
 	self tagsSetting doWithIndex: [ :dt :i | 
 		(dt isApplicableTo: anEntity) ifTrue: [ ^ i ] ].
@@ -209,15 +216,31 @@ MiDistributionMapModel >> resetChildrenQuerySetting [
 ]
 
 { #category : #settings }
+MiDistributionMapModel >> resetTagSetting [
+
+	| settingTags environmentTags |
+	settingTags := (settings itemNamed: #tags) getValue.
+	environmentTags := self fetchTags.
+
+	(self collection: environmentTags hasSameElementHas: settingTags) 
+		ifTrue: [ ^ self ].
+
+	(settings itemNamed: #tags) setValue: environmentTags.
+
+]
+
+{ #category : #settings }
 MiDistributionMapModel >> settings [
+
 	self resetChildrenQuerySetting.
-	^settings
+	self resetTagSetting.
+	^ settings
 ]
 
 { #category : #querying }
 MiDistributionMapModel >> tagFor: anEntity [
 
-	^ self dynamicTags
+	^ self tagsSetting
 		  detect: [ :dt | dt isApplicableTo: anEntity ]
 		  ifNone: [ MiNullDynamicTag new ]
 ]
