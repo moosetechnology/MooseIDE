@@ -32,12 +32,7 @@ MiScopeQueriesPresenterTest >> createNewQuery [
 { #category : #testing }
 MiScopeQueriesPresenterTest >> expectedFailures [
 
-	^ #( 
-	#testChangingDirectionChangesAvailableScopes
-	#testDropListMatchesForOtherDirection
-	#testQueryValidity
-	#testRadioButtonsMatchQuery 
-	 )
+	^ #( #testQueryValidity )
 ]
 
 { #category : #running }
