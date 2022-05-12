@@ -391,6 +391,32 @@ MiArchitecturalMapBuilder >> cornerRadius [
 ]
 
 { #category : #accessing }
+MiArchitecturalMapBuilder >> createMultiTagBoxSized: aSize [
+
+	| cp |
+	cp := RSComposite new.
+	cp addAll: ({ 
+			 Color red.
+			 Color cyan.
+			 Color green.
+			 Color yellow } collect: [ :color | 
+			 RSBox new
+				 size: aSize / 2;
+				 color: color;
+				 yourself ]).
+	RSGridLayout new
+		lineItemsCount: 2;
+		gapSize: 0;
+		on: cp children.
+	cp adjustToChildren.
+	cp border: (RSBorder new
+			 color: Color black;
+			 width: 1;
+			 yourself).
+	^ cp
+]
+
+{ #category : #accessing }
 MiArchitecturalMapBuilder >> elements [
 
 	^ mapModel entities
@@ -428,14 +454,26 @@ MiArchitecturalMapBuilder >> labelAndTagFor: node [
 	group := self nodeStyler labelAndIconFor: node.
 	entity := node rawModel.
 	(entity notNil and: [ entity isTag not and: [ entity isTagged ] ]) 
-		ifTrue: [
+		ifTrue: [ 
 			| tag |
-			tag := entity allTags anyOne.
+			tag := entity allTags first.
 			group addFirst: (RSCircle new
 					 color: tag color;
 					 radius: 7;
 					 yourself) ].
-	
+	node children ifNotEmpty: [ 
+		| tags |
+		tags := Set new.
+		node children do: [ :child | 
+			child rawModel isTagged ifTrue: [ 
+				tags add: child rawModel allTags first ] ].
+		tags size = 1 ifTrue: [ 
+			group addLast: (RSBox new
+					 color: tags anyOne color;
+					 size: 14;
+					 yourself) ].
+		tags size > 1 ifTrue: [ 
+			group addLast: (self createMultiTagBoxSized: 14) ] ].
 	RSHorizontalLineLayout new
 		alignMiddle;
 		on: group.
@@ -527,9 +565,12 @@ MiArchitecturalMapBuilder >> renderIn: aCanvas [
 MiArchitecturalMapBuilder >> renderLinesIn: aCanvas [
 
 	super renderLinesIn: aCanvas.
-	aCanvas lines do: [ :line |
-		(line to model hasTagAncestor or: [ line to model rawModel isTag ]) ifTrue: [ line color: Color yellow ].
-		(line from model hasTagAncestor or: [ line from model rawModel isTag ]) ifTrue: [ line color: Color cyan ] ]
+	aCanvas lines do: [ :line | 
+		(line to model hasTagAncestor or: [ line to model rawModel isTag ]) 
+			ifTrue: [ line color: Color yellow ].
+		(line from model hasTagAncestor or: [ 
+			 line from model rawModel isTag ]) ifTrue: [ 
+			line color: Color cyan ] ]
 ]
 
 { #category : #building }
