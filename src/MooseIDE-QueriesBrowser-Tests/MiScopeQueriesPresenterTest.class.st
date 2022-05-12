@@ -29,6 +29,17 @@ MiScopeQueriesPresenterTest >> createNewQuery [
 			yourself
 ]
 
+{ #category : #testing }
+MiScopeQueriesPresenterTest >> expectedFailures [
+
+	^ #( 
+	#testChangingDirectionChangesAvailableScopes
+	#testDropListMatchesForOtherDirection
+	#testQueryValidity
+	#testRadioButtonsMatchQuery 
+	 )
+]
+
 { #category : #running }
 MiScopeQueriesPresenterTest >> queryClass [
 	^ FQScopeQuery

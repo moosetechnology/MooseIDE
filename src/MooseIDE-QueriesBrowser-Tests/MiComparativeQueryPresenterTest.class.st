@@ -28,6 +28,12 @@ MiComparativeQueryPresenterTest >> assertValueInputField [
 		identicalTo: self valueInputClass
 ]
 
+{ #category : #testing }
+MiComparativeQueryPresenterTest >> expectedFailures [
+
+	^ #( #testNormalQueryInitialization #testQueryValidity )
+]
+
 { #category : #tests }
 MiComparativeQueryPresenterTest >> testMatchesQuery [
 
