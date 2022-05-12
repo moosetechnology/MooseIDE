@@ -31,6 +31,15 @@ MiQueryConfiguratorPresenterTest >> createNewQuery [
 	self subclassResponsibility
 ]
 
+{ #category : #testing }
+MiQueryConfiguratorPresenterTest >> expectedFailures [
+
+	^ #( #testNormalQueryInitialization #testQueryValidity
+	     #testChangingDirectionChangesAvailableScopes
+	     #testDropListMatchesForOtherDirection
+	     #testRadioButtonsMatchQuery #testImpossibleQueryInitialization )
+]
+
 { #category : #running }
 MiQueryConfiguratorPresenterTest >> queryClass [
 	^ self subclassResponsibility
