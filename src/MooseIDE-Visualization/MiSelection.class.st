@@ -45,22 +45,23 @@ MiSelection >> onShape: aShape [
 
 { #category : #hooks }
 MiSelection >> putShadowOn: aShape [
+
 	| shadow |
 	shadow := RSBox new
-		fromRectangle:
-			(aShape encompassingRectangle
-				expandBy: aShape extent * self marginPercentage);
-		paint: self shadowColor;
-		yourself.
+		          fromRectangle: (aShape encompassingRectangle expandBy:
+					           aShape extent * self marginPercentage);
+		          paint: self shadowColor;
+		          yourself.
 	aShape parent addShape: shadow before: aShape.
-	aShape topParent propertyAt: self key put: shadow
+	aShape canvas propertyAt: self key put: shadow
 ]
 
 { #category : #hooks }
 MiSelection >> removeShadowOn: aShape [
-	aShape topParent
+
+	aShape canvas
 		propertyAt: self key
-		ifPresent: [ :shadow |shadow remove ].
+		ifPresent: [ :shadow | shadow remove ]
 ]
 
 { #category : #hooks }
