@@ -141,14 +141,22 @@ MiDistributionMapModel >> itemChildrenQuery [
 
 { #category : #settings }
 MiDistributionMapModel >> itemColorForNoTag [
+
 	| colors |
-	colors := RSQualitativeColorPalette new set312 range.
-	^MiAbstractSettingItem droplistSetting
-		possibleValues:  colors ;
-		setValue: colors anyOne ;
-		label: 'Color for entities without property' ;
-		help: 'Color to use when none of the properties apply to an entity' ;
-		yourself
+	colors := {Color black} , RSQualitativeColorPalette new set312 range.
+
+	^ MiAbstractSettingItem droplistSetting
+		  displayBlock: [ :color :listItem | 
+			  listItem icon: (Morph new
+						   color: color;
+						   asFormOfSize: 20 @ 20).
+			  color asHexString ];
+		  possibleValues: colors;
+		  setValue: colors anyOne;
+		  label: 'Color for entities without property';
+		  help:
+		  'Color to use when none of the properties apply to an entity';
+		  yourself
 ]
 
 { #category : #settings }
