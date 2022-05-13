@@ -10,10 +10,8 @@ BaselineOfMooseIDE >> baseline: spec [
 	<baseline>
 	spec for: #common do: [ "Dependencies"
 		self tylerDurden: spec.
-		self famixQueries: spec.
 		self labelContractor: spec.
 		self hierarchicalVisualizations: spec.
-		self famixReplication: spec.
 
 		"Packages"
 		self definePackages: spec.
@@ -22,6 +20,8 @@ BaselineOfMooseIDE >> baseline: spec [
 		spec for: #NeedsMoose do: [ 
 			self famix: spec.
 			self famixTagging: spec.
+			self famixQueries: spec.
+			self famixReplication: spec.
 			spec
 				package: 'MooseIDE-Core' with: [ spec requires: #( 'Famix' ) ];
 				package: 'MooseIDE-Meta'
@@ -31,7 +31,13 @@ BaselineOfMooseIDE >> baseline: spec [
 				package: 'MooseIDE-CoUsageMap'
 				with: [ spec requires: #( 'FamixTagging' ) ];
 				package: 'MooseIDE-Dependency'
-				with: [ spec requires: #( 'FamixTagging' ) ] ].
+				with: [ spec requires: #( 'FamixTagging' ) ];
+				package: 'MooseIDE-QueriesBrowser'
+				with: [ spec requires: #( 'FamixQueries' ) ];
+				package: 'MooseIDE-NewTools'
+				with: [ spec requires: #( 'FamixQueries' ) ];
+				package: 'MooseIDE-Duplication'
+				with: [ spec requires: #( 'FamixReplication' ) ] ].
 
 		"Register custom tools"
 		spec postLoadDoIt: #registerCustomTools ]
