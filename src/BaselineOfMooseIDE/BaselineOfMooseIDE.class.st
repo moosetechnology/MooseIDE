@@ -78,7 +78,7 @@ BaselineOfMooseIDE >> definePackages: spec [
 		package: 'MooseIDE-Tagging-Tests'
 		with: [ spec requires: #( 'MooseIDE-Tagging' ) ];
 		package: 'MooseIDE-QueriesBrowser'
-		with: [ spec requires: #( 'MooseIDE-Core' 'FamixQueries' ) ];
+		with: [ spec requires: #( 'MooseIDE-Core' ) ];
 		package: 'MooseIDE-QueriesBrowser-Tests'
 		with: [ 
 			spec requires: #( 'MooseIDE-QueriesBrowser'
@@ -102,7 +102,7 @@ BaselineOfMooseIDE >> definePackages: spec [
 		with: [ spec requires: #( 'MooseIDE-CoUsageMap'
 				   'MooseIDE-Tests' ) ];
 		package: 'MooseIDE-Duplication'
-		with: [ spec requires: #( 'MooseIDE-Core' 'FamixReplication' ) ]
+		with: [ spec requires: #( 'MooseIDE-Core' ) ]
 ]
 
 { #category : #dependencies }
