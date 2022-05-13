@@ -84,8 +84,7 @@ BaselineOfMooseIDE >> definePackages: spec [
 			spec requires: #( 'MooseIDE-QueriesBrowser'
 				   'MooseIDE-Tests' ) ];
 		package: 'MooseIDE-NewTools'
-		with: [ 
-			spec requires: #( 'MooseIDE-Meta' 'MooseIDE-Core' 'FamixQueries' ) ];
+		with: [ spec requires: #( 'MooseIDE-Meta' 'MooseIDE-Core' ) ];
 		package: 'MooseIDE-NewTools-Tests'
 		with: [ spec requires: #( 'MooseIDE-NewTools' 'MooseIDE-Tests' ) ];
 		package: 'MooseIDE-Export'
