@@ -41,7 +41,7 @@ MiScopeQueryPresenter >> initializeDirectionsDropList [
 	directionsDropList
 		startWithoutSelection;
 		items: self query directionStrategies;
-		display: #label;
+		display: [:item | item label];
 		whenSelectedItemChangedDo: [ :selectedDirection | 
 			self query resetAndChangeDirection: selectedDirection.
 			self updateAccordingToDirection.
