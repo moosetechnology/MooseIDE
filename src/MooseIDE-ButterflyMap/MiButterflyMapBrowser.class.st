@@ -53,8 +53,7 @@ MiButterflyMapBrowser >> closeSettings [
 { #category : #actions }
 MiButterflyMapBrowser >> followEntity: anEntity [
 
-	model currentEntity: anEntity.
-	visualization run
+	self model currentEntity: anEntity
 ]
 
 { #category : #actions }
@@ -95,6 +94,19 @@ MiButterflyMapBrowser >> miSelectedItem [
 MiButterflyMapBrowser >> openSettings [
 
 	self layout child: settings
+]
+
+{ #category : #running }
+MiButterflyMapBrowser >> run [
+
+	self visualization run
+]
+
+{ #category : #initialization }
+MiButterflyMapBrowser >> setModelBeforeInitialization: aModel [
+
+	model := aModel.
+	model browser: self
 ]
 
 { #category : #actions }

@@ -247,10 +247,15 @@ MiButterflyMapBuilder >> updateShapes [
 	| allShapes leftLayers rightLayers layout rightLayout |
 	incomingGroups := OrderedCollection new.
 	outgoingGroups := OrderedCollection new.
+
 	leftLayers := butterfly leftTree layers.
 	rightLayers := butterfly rightTree layers.
-	layout := RSVerticalLineLayout new alignRight; yourself.
-	rightLayout := RSVerticalLineLayout new alignLeft; yourself.
+	layout := RSVerticalLineLayout new
+		          alignRight;
+		          yourself.
+	rightLayout := RSVerticalLineLayout new
+		               alignLeft;
+		               yourself.
 	allShapes := OrderedCollection new.
 	leftLayers do: [ :layer | 
 		allShapes addAll: layer.

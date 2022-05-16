@@ -65,7 +65,8 @@ MiButterflyMapModel >> currentEntity [
 { #category : #accessing }
 MiButterflyMapModel >> currentEntity: anObject [
 
-	currentEntity := anObject
+	currentEntity := anObject.
+	browser run
 ]
 
 { #category : #accessing }

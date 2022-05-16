@@ -22,6 +22,12 @@ MiButterflyMap >> highlightShapes [
 ]
 
 { #category : #running }
+MiButterflyMap >> model [
+
+	^ self owner model
+]
+
+{ #category : #running }
 MiButterflyMap >> run [
 
 	super run.
