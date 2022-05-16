@@ -11,12 +11,13 @@ Class {
 }
 
 { #category : #initialization }
-MiButtonSettingItem >> initialize [ 
+MiButtonSettingItem >> initialize [
+
 	super initialize.
 
 	presenter := SpButtonPresenter new.
 	presenter label: 'Change'.
-	presenter action: [ secondaryPresenter open ].
+	presenter action: [ secondaryPresenter openModal ].
 
 	self initializeSecondaryPresenter
 ]
