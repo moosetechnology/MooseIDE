@@ -84,6 +84,12 @@ MiButterflyMapBrowser >> initializePresenters [
 	self initializeLayout
 ]
 
+{ #category : #brokerage }
+MiButterflyMapBrowser >> itemsFor: aClass [
+
+	^ self application itemsFor: aClass
+]
+
 { #category : #accessing }
 MiButterflyMapBrowser >> miSelectedItem [
 
@@ -112,7 +118,7 @@ MiButterflyMapBrowser >> setModelBeforeInitialization: aModel [
 { #category : #actions }
 MiButterflyMapBrowser >> settings [
 	
-	self openSettings
+	self model openSettings
 ]
 
 { #category : #accessing }

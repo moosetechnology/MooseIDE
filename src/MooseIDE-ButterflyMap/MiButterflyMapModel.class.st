@@ -9,10 +9,20 @@ Class {
 		'leftEntitiesQuery',
 		'leftEntitiesBlock',
 		'rightEntitiesQuery',
-		'rightEntitiesBlock'
+		'rightEntitiesBlock',
+		'settings',
+		'defaultChildrenQuery',
+		'defaultLeftEntitiesQuery',
+		'defaultRightEntitiesQuery'
 	],
 	#category : #'MooseIDE-ButterflyMap-Model'
 }
+
+{ #category : #accessing }
+MiButterflyMapModel >> allPossibleQueries [
+
+	^ (self browser itemsFor: FQAbstractQuery) asOrderedCollection
+]
 
 { #category : #accessing }
 MiButterflyMapModel >> browser [
@@ -23,7 +33,8 @@ MiButterflyMapModel >> browser [
 { #category : #accessing }
 MiButterflyMapModel >> browser: anObject [
 
-	browser := anObject
+	browser := anObject.
+	self initializeSettings
 ]
 
 { #category : #accessing }
@@ -41,19 +52,13 @@ MiButterflyMapModel >> childrenBlock: anObject [
 { #category : #accessing }
 MiButterflyMapModel >> childrenFor: anEntity [
 
-	^ anEntity children
+	^ self getChildrenQuery runOn: anEntity asMooseGroup
 ]
 
 { #category : #accessing }
 MiButterflyMapModel >> childrenQuery [
 
-	^ childrenQuery
-]
-
-{ #category : #accessing }
-MiButterflyMapModel >> childrenQuery: anObject [
-
-	childrenQuery := anObject
+	^ #childrenQuery
 ]
 
 { #category : #accessing }
@@ -70,49 +75,103 @@ MiButterflyMapModel >> currentEntity: anObject [
 ]
 
 { #category : #accessing }
-MiButterflyMapModel >> leftEntitiesBlock [
+MiButterflyMapModel >> defaultChildrenQuery [
 
-	^ leftEntitiesBlock
+	^ defaultChildrenQuery ifNil: [ 
+		  defaultChildrenQuery := FQBooleanQuery new property: #isAbstract ]
 ]
 
 { #category : #accessing }
-MiButterflyMapModel >> leftEntitiesBlock: anObject [
+MiButterflyMapModel >> defaultLeftEntitiesQuery [
 
-	leftEntitiesBlock := anObject
+	^ defaultLeftEntitiesQuery ifNil: [ 
+		  defaultLeftEntitiesQuery := FQBooleanQuery new property: #isAbstract ]
+]
+
+{ #category : #accessing }
+MiButterflyMapModel >> defaultRightEntitiesQuery [
+
+	^ defaultRightEntitiesQuery ifNil: [ 
+		  defaultRightEntitiesQuery := FQBooleanQuery new property:
+			                               #isAbstract ]
+]
+
+{ #category : #accessing }
+MiButterflyMapModel >> getChildrenQuery [
+
+	^ settings getItemValue: self childrenQuery
+]
+
+{ #category : #accessing }
+MiButterflyMapModel >> initializeSettings [
+
+	settings := MiSettingsPresenter new
+		            addItem: self itemChildrenQuery
+		            named: self childrenQuery;
+		addItem: self itemLeftEntitiesQuery named: self leftEntitiesQuery;
+		addItem: self itemRightEntitiesQuery named: self rightEntitiesQuery;
+		            yourself
+]
+
+{ #category : #accessing }
+MiButterflyMapModel >> itemChildrenQuery [
+
+	^ MiAbstractSettingItem droplistSetting
+		  possibleValues:
+			  { self defaultChildrenQuery } , self allPossibleQueries;
+		  setValue: self defaultChildrenQuery;
+		  label: 'Node children query';
+		  help:
+			  'The query computing children for each node in order to get inner elements.';
+		  yourself
+]
+
+{ #category : #accessing }
+MiButterflyMapModel >> itemLeftEntitiesQuery [
+
+	^ MiAbstractSettingItem droplistSetting
+		  possibleValues:
+			  { self defaultLeftEntitiesQuery} , self allPossibleQueries;
+		  setValue: self defaultLeftEntitiesQuery;
+		  label: 'Left entities query';
+		  help:
+			  'The query computing left entities from the central entity.';
+		  yourself
+]
+
+{ #category : #accessing }
+MiButterflyMapModel >> itemRightEntitiesQuery [
+
+	^ MiAbstractSettingItem droplistSetting
+		  possibleValues:
+			  { self defaultRightEntitiesQuery } , self allPossibleQueries;
+		  setValue: self defaultRightEntitiesQuery;
+		  label: 'Right entities query';
+		  help:
+			  'The query computing right entities from the central entity.';
+		  yourself
 ]
 
 { #category : #accessing }
 MiButterflyMapModel >> leftEntitiesQuery [
 
-	^ leftEntitiesQuery
+	^ #leftEntitiesQuery
 ]
 
-{ #category : #accessing }
-MiButterflyMapModel >> leftEntitiesQuery: anObject [
+{ #category : #actions }
+MiButterflyMapModel >> openSettings [
 
-	leftEntitiesQuery := anObject
-]
-
-{ #category : #accessing }
-MiButterflyMapModel >> rightEntitiesBlock [
-
-	^ rightEntitiesBlock
-]
-
-{ #category : #accessing }
-MiButterflyMapModel >> rightEntitiesBlock: anObject [
-
-	rightEntitiesBlock := anObject
+	settings open
 ]
 
 { #category : #accessing }
 MiButterflyMapModel >> rightEntitiesQuery [
 
-	^ rightEntitiesQuery
+	^ #rightEntitiesQuery
 ]
 
 { #category : #accessing }
-MiButterflyMapModel >> rightEntitiesQuery: anObject [
+MiButterflyMapModel >> settings [
 
-	rightEntitiesQuery := anObject
+	^ settings
 ]
