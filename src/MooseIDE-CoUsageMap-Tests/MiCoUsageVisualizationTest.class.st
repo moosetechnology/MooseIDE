@@ -1,7 +1,7 @@
 Class {
 	#name : #MiCoUsageVisualizationTest,
 	#superclass : #TestCase,
-	#category : #'MooseIDE-CoUsageMap-Tests'
+	#category : #'MooseIDE-CoUsageMap-Tests-Browser'
 }
 
 { #category : #tests }
@@ -9,6 +9,7 @@ MiCoUsageVisualizationTest >> test00Basic [
 
 	| v class window |
 	v := MiCoUsageMapBuilder new.
+	self assert: v settings notNil.
 	self assert: v canvas nodes size equals: 0.
 	class := ZnUrl.
 	v godClass: class.

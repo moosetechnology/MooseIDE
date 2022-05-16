@@ -8,5 +8,5 @@ Class {
 MiModelNavigationBrowser >> itemsFor: anEntity [
 
 	^ anEntity navigationItemsFromPragmas
-	  , anEntity navigationItemsFromAttributes
+	  , anEntity navigationItemsFromMetamodel
 ]

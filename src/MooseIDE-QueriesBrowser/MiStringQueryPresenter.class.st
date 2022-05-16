@@ -7,19 +7,19 @@ Class {
 	#category : #'MooseIDE-QueriesBrowser-Configuration presenters'
 }
 
-{ #category : #actions }
-MiStringQueryPresenter >> computeQuery: pattern [
-
-	self query valueToCompare: pattern
-]
-
 { #category : #'api - actions' }
 MiStringQueryPresenter >> configureFor: aQuery [
 
-	propertyDropList selectItem: aQuery property.
+	super configureFor: aQuery.
+
 	comparatorDropList selectItem: aQuery comparator.
-	valueInputField text: aQuery valueToCompare.
-	query := aQuery
+	valueInputField text: aQuery valueToCompare
+]
+
+{ #category : #actions }
+MiStringQueryPresenter >> configureQuery: pattern [
+
+	self query valueToCompare: pattern
 ]
 
 { #category : #initialization }

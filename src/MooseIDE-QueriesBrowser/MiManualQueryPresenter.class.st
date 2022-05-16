@@ -21,13 +21,13 @@ MiManualQueryPresenter >> compileQuery [
 	self notifyQueryChanged
 ]
 
-{ #category : #actions }
-MiManualQueryPresenter >> computeQuery: queryString [
-]
-
 { #category : #'api - actions' }
 MiManualQueryPresenter >> configureFor: aQuery [
 
+]
+
+{ #category : #actions }
+MiManualQueryPresenter >> configureQuery: queryString [
 ]
 
 { #category : #initialization }

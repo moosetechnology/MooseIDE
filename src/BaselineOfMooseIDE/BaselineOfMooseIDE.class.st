@@ -10,8 +10,6 @@ BaselineOfMooseIDE >> baseline: spec [
 	<baseline>
 	spec for: #common do: [ "Dependencies"
 		self tylerDurden: spec.
-		self famixQueries: spec.
-		self telescope: spec.
 		self labelContractor: spec.
 		self hierarchicalVisualizations: spec.
 
@@ -22,6 +20,8 @@ BaselineOfMooseIDE >> baseline: spec [
 		spec for: #NeedsMoose do: [ 
 			self famix: spec.
 			self famixTagging: spec.
+			self famixQueries: spec.
+			self famixReplication: spec.
 			spec
 				package: 'MooseIDE-Core' with: [ spec requires: #( 'Famix' ) ];
 				package: 'MooseIDE-Meta'
@@ -29,12 +29,18 @@ BaselineOfMooseIDE >> baseline: spec [
 				package: 'MooseIDE-Tagging'
 				with: [ spec requires: #( 'FamixTagging' ) ];
 				package: 'MooseIDE-CoUsageMap'
-				with: [ spec requires: #( 'FamixTagging' ) ] ].
+				with: [ spec requires: #( 'FamixTagging' ) ];
+				package: 'MooseIDE-Dependency'
+				with: [ spec requires: #( 'FamixTagging' ) ];
+				package: 'MooseIDE-QueriesBrowser'
+				with: [ spec requires: #( 'FamixQueries' ) ];
+				package: 'MooseIDE-NewTools'
+				with: [ spec requires: #( 'FamixQueries' ) ];
+				package: 'MooseIDE-Duplication'
+				with: [ spec requires: #( 'FamixReplication' ) ] ].
 
 		"Register custom tools"
-		spec
-			postLoadDoIt: #registerCustomTools;
-			postLoadDoIt: #resetMiApplications ]
+		spec postLoadDoIt: #registerCustomTools ]
 ]
 
 { #category : #accessing }
@@ -52,13 +58,14 @@ BaselineOfMooseIDE >> definePackages: spec [
 	spec
 		package: 'MooseIDE-Core'
 		with: [ spec requires: #( 'LabelContractor' ) ];
-		package: 'MooseIDE-Visualization' with: [ 
-			spec requires:
-					#( 'MooseIDE-Core' 'TelescopeRoassal3' 'HierarchicalVisualizations' ) ];
+		package: 'MooseIDE-Visualization'
+		with: [ 
+			spec requires: #( 'MooseIDE-Core' 'HierarchicalVisualizations' ) ];
 		package: 'MooseIDE-Meta'
 		with: [ spec requires: #( 'MooseIDE-Core' ) ];
-		package: 'MooseIDE-Tests'
-		with: [ spec requires: #( 'MooseIDE-Core' 'MooseIDE-Tagging' ) ];
+		package: 'MooseIDE-Tests' with: [ 
+			spec requires:
+					#( 'MooseIDE-Core' 'MooseIDE-Dependency' 'MooseIDE-Tagging' ) ];
 		package: 'MooseIDE-Dependency'
 		with: [ 
 			spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' ) ];
@@ -70,18 +77,14 @@ BaselineOfMooseIDE >> definePackages: spec [
 			spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' ) ];
 		package: 'MooseIDE-Tagging-Tests'
 		with: [ spec requires: #( 'MooseIDE-Tagging' ) ];
-		package: 'MooseIDE-Telescope'
-		with: [ 
-			spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' ) ];
 		package: 'MooseIDE-QueriesBrowser'
-		with: [ spec requires: #( 'MooseIDE-Core' 'FamixQueries' ) ];
+		with: [ spec requires: #( 'MooseIDE-Core' ) ];
 		package: 'MooseIDE-QueriesBrowser-Tests'
 		with: [ 
 			spec requires: #( 'MooseIDE-QueriesBrowser'
 				   'MooseIDE-Tests' ) ];
 		package: 'MooseIDE-NewTools'
-		with: [ 
-			spec requires: #( 'MooseIDE-Meta' 'MooseIDE-Core' 'FamixQueries' ) ];
+		with: [ spec requires: #( 'MooseIDE-Meta' 'MooseIDE-Core' ) ];
 		package: 'MooseIDE-NewTools-Tests'
 		with: [ spec requires: #( 'MooseIDE-NewTools' 'MooseIDE-Tests' ) ];
 		package: 'MooseIDE-Export'
@@ -96,7 +99,9 @@ BaselineOfMooseIDE >> definePackages: spec [
 			spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' ) ];
 		package: 'MooseIDE-CoUsageMap-Tests'
 		with: [ spec requires: #( 'MooseIDE-CoUsageMap'
-				   'MooseIDE-Tests' ) ]
+				   'MooseIDE-Tests' ) ];
+		package: 'MooseIDE-Duplication'
+		with: [ spec requires: #( 'MooseIDE-Core' ) ]
 ]
 
 { #category : #dependencies }
@@ -113,6 +118,15 @@ BaselineOfMooseIDE >> famixQueries: spec [
 	spec
 		baseline: 'FamixQueries'
 		with: [ spec repository: 'github://moosetechnology/FamixQueries' ]
+]
+
+{ #category : #dependencies }
+BaselineOfMooseIDE >> famixReplication: spec [
+
+	spec
+		baseline: 'FamixReplication'
+		with: [ 
+		spec repository: 'github://moosetechnology/FamixReplication' ]
 ]
 
 { #category : #dependencies }
@@ -146,20 +160,6 @@ BaselineOfMooseIDE >> labelContractor: spec [
 BaselineOfMooseIDE >> registerCustomTools [
 
 	(Smalltalk classNamed: #MiPlayground) register
-]
-
-{ #category : #actions }
-BaselineOfMooseIDE >> resetMiApplications [
-
-	(Smalltalk classNamed: #MiApplication) reset.
-	(Smalltalk classNamed: #MiTestApplication) reset
-]
-
-{ #category : #dependencies }
-BaselineOfMooseIDE >> telescope: spec [
-	spec
-		baseline: 'TelescopeRoassal3'
-		with: [ spec repository: 'github://TelescopeSt/TelescopeRoassal3' ]
 ]
 
 { #category : #dependencies }

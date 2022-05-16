@@ -94,9 +94,9 @@ MiCoMarkManager >> createGlobalMenuOn: menu [
 		icon: (self iconNamed: #smallPaint).
 	menu addLine.
 	(menu
-		add: 'Block Settings'
-			target: MiCoUsageMapSettings
-			selector: #openBlocksSettings
+		add: 'Settings'
+			target: coUsageMap
+			selector: #openSettingsBrowser
 			argumentList: #())
 		icon: (self iconNamed: #configuration)
 	
@@ -140,19 +140,6 @@ MiCoMarkManager >> onShape: aShape [
 	aShape
 		addInteraction: menuInteraction;
 		when: RSMouseLeftClick send: #clickOn: to: self.
-]
-
-{ #category : #public }
-MiCoMarkManager >> openSettingsBrowser [
-	| browser window |
-	browser := SettingBrowser new
-		changePackageSet: (RPackage organizer 
-		packageNamed: MiCoUsageMapSettings package name) asOrderedCollection;
-	yourself.
-	window := browser open.
-	window position: (self currentWorld extent - window extent) // 2.
-	browser expandAll.
-	^ window
 ]
 
 { #category : #dependencies }

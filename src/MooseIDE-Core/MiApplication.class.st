@@ -174,6 +174,7 @@ MiApplication >> produced: producedClass matchConsumed: consumedClass [
 MiApplication >> producersOf: aClass [
 
 	| foundProducers |
+	
 	foundProducers := Set new.
 	producers keysDo: [ :producedClass | 
 		(self produced: producedClass matchConsumed: aClass) ifTrue: [ 

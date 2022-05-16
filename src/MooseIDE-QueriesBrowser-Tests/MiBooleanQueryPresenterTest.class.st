@@ -7,7 +7,9 @@ Class {
 { #category : #tests }
 MiBooleanQueryPresenterTest >> assertSubpresentersAreConfigured [
 
-	self assert: presenter propertyDropList selectedItem equals: self createNewQuery property
+	self
+		assert: presenter propertyDropList selectedItem
+		equals: self createNewQuery property
 ]
 
 { #category : #running }
