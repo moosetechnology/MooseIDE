@@ -2,11 +2,9 @@ Class {
 	#name : #MiDistributionMapModel,
 	#superclass : #Object,
 	#instVars : [
+		'browser',
 		'entities',
-		'dynamicTags',
-		'childrenBlock',
-		'colorScale',
-		'childrenQuery'
+		'settings'
 	],
 	#category : #'MooseIDE-Dependency-DistributionMap'
 }
@@ -39,84 +37,53 @@ MiDistributionMapModel class >> defaultDynamicTags [
 		  self defaultDynamicTagIsDead }
 ]
 
-{ #category : #adding }
-MiDistributionMapModel >> addDynamicTag: aTag [
+{ #category : #'accessing - tests' }
+MiDistributionMapModel >> browser [
 
-	(dynamicTags includes: aTag) ifTrue: [ ^ self ].
-	dynamicTags add: aTag
-]
-
-{ #category : #adding }
-MiDistributionMapModel >> addDynamicTags: aCollection [
-
-	dynamicTags addAll: aCollection
+	^ browser
 ]
 
 { #category : #accessing }
-MiDistributionMapModel >> childrenBlock [
+MiDistributionMapModel >> browser: anObject [
 
-	^ childrenBlock
-]
-
-{ #category : #accessing }
-MiDistributionMapModel >> childrenBlock: anObject [
-
-	childrenBlock := anObject
+	browser := anObject
 ]
 
 { #category : #accessing }
 MiDistributionMapModel >> childrenFor: anEntity [
 
-	^ childrenQuery runOn: anEntity asMooseGroup
+	^ self childrenQuerySetting runOn: anEntity asMooseGroup
 ]
 
-{ #category : #accessing }
-MiDistributionMapModel >> childrenQuery [
-
-	^ childrenQuery
+{ #category : #settings }
+MiDistributionMapModel >> childrenQuerySetting [
+	^settings getItemValue: #childrenQuery
 ]
 
-{ #category : #accessing }
-MiDistributionMapModel >> childrenQuery: anObject [
-
-	childrenQuery := anObject
+{ #category : #utilities }
+MiDistributionMapModel >> collection: collection1 hasSameElementHas: collection2 [
+	^((collection1 size = collection2 size)
+	and: [ collection1 allSatisfy: [ :each | collection2 includes: each ] ])
 ]
 
 { #category : #querying }
 MiDistributionMapModel >> colorFor: anEntity [
 	
 	| dt |
-	dt :=  (self dynamicTagFor: anEntity).
-	^ self colorForDynamicTag:  dt
+	dt :=  (self tagFor: anEntity).
+	^ self colorForTag:  dt
+]
+
+{ #category : #settings }
+MiDistributionMapModel >> colorForNoTagSetting [
+	^settings getItemValue: #colorForNoTag
 ]
 
 { #category : #querying }
-MiDistributionMapModel >> colorForDynamicTag: aDynamicTag [
+MiDistributionMapModel >> colorForTag: aTag [
 
-	self flag:
-		'Model should have a color map and automatically handle colors.'.
-	aDynamicTag color ifNotNil: [ :color | ^ color ].
-	^ colorScale scale: aDynamicTag name
-]
-
-{ #category : #querying }
-MiDistributionMapModel >> dynamicTagFor: anEntity [
-
-	^ self dynamicTags
-		  detect: [ :dt | dt isApplicableTo: anEntity ]
-		  ifNone: [ MiNullDynamicTag new ]
-]
-
-{ #category : #accessing }
-MiDistributionMapModel >> dynamicTags [
-
-	^ dynamicTags
-]
-
-{ #category : #accessing }
-MiDistributionMapModel >> dynamicTags: anObject [
-
-	dynamicTags := anObject
+	aTag color ifNotNil: [ :color | ^ color ].
+	^self colorForNoTagSetting
 ]
 
 { #category : #accessing }
@@ -132,25 +99,87 @@ MiDistributionMapModel >> entities: anObject [
 ]
 
 { #category : #accessing }
-MiDistributionMapModel >> indexOfDynamicTagFor: anEntity [
+MiDistributionMapModel >> fetchChildrenQueries [
 
-	dynamicTags doWithIndex: [ :dt :i | 
+	^(browser application itemsFor: FQAbstractQuery)
+		  asOrderedCollection select: [ :query | query isValid ]
+]
+
+{ #category : #accessing }
+MiDistributionMapModel >> fetchTags [
+
+	^ (browser application itemsFor: FamixTag) asOrderedCollection 
+		  sorted: [ :t1 :t2 | t1 name < t2 name ]
+]
+
+{ #category : #accessing }
+MiDistributionMapModel >> indexOfTagFor: anEntity [
+
+	self tagsSetting doWithIndex: [ :dt :i | 
 		(dt isApplicableTo: anEntity) ifTrue: [ ^ i ] ].
 	^ 0
 ]
 
-{ #category : #accessing }
+{ #category : #initialization }
 MiDistributionMapModel >> initialize [
 
 	super initialize.
-	dynamicTags := OrderedCollection new.
-	colorScale := RSQualitativeColorPalette new set312
+	self initializeSettings 
+
+]
+
+{ #category : #initialization }
+MiDistributionMapModel >> initializeSettings [ 
+	settings := MiSettingsPresenter new
+		"addItem: self itemChildrenBlock 		named: #childrenBlock ;"
+		addItem: self itemColorForNoTag	named: #colorForNoTag ;
+		addItem: self itemChildrenQuery 	named: #childrenQuery ;
+		addItem: self itemTags 				named: #tags ;
+		yourself.
+]
+
+{ #category : #settings }
+MiDistributionMapModel >> itemChildrenQuery [
+	^MiAbstractSettingItem droplistSetting
+		label: 'Children query' ;
+		help: 'The query giving all the children of any displayed entity' ;
+		yourself
+]
+
+{ #category : #settings }
+MiDistributionMapModel >> itemColorForNoTag [
+
+	| colors |
+	colors := {Color black} , RSQualitativeColorPalette new set312 range.
+
+	^ MiAbstractSettingItem droplistSetting
+		  displayBlock: [ :color :listItem | 
+			  listItem icon: (Morph new
+						   color: color;
+						   asFormOfSize: 20 @ 20).
+			  color asHexString ];
+		  possibleValues: colors;
+		  setValue: colors anyOne;
+		  label: 'Color for entities without property';
+		  help:
+		  'Color to use when none of the properties apply to an entity';
+		  yourself
+]
+
+{ #category : #settings }
+MiDistributionMapModel >> itemTags [
+	^MiAbstractSettingItem buttonWithEditableListSetting
+		label: 'Tags' ;
+		help: 'The tags used as properties to display.
+If an entity has several tags, it will get the color of the first of its tags appearing in the list' ;
+		yourself
 ]
 
 { #category : #querying }
 MiDistributionMapModel >> numberOfchildrenWithProperty: aProp forNode: node [
 	
-	^ (childrenQuery runOn: node asMooseGroup) count: [ :child  |  aProp isApplicableTo: child]
+	^(self childrenQuerySetting runOn: node asMooseGroup)
+	count: [ :child  |  aProp isApplicableTo: child]
 ]
 
 { #category : #querying }
@@ -160,8 +189,63 @@ MiDistributionMapModel >> orderOuterNodes: aCollectionOfNodes [
 
 	partVectors :=  aCollectionOfNodes asOrderedCollection collect: [:node |
 		MalSimilarityItem with: node
-			andAll: (dynamicTags collect: [:aProp | self numberOfchildrenWithProperty: aProp forNode: node]) ].
+			andAll: (self tagsSetting collect: [:aProp | self numberOfchildrenWithProperty: aProp forNode: node]) ].
 	engine := MalClusterEngine with: partVectors.
 	engine hierarchicalClusteringUsing: #completeLinkage.
 	^ engine dendrogram orderLeafs collect: #item.
+]
+
+{ #category : #settings }
+MiDistributionMapModel >> resetChildrenQuerySetting [
+	| settingQueries environmentQueries currentSelected |
+
+	settingQueries := (settings itemNamed: #childrenQuery) possibleValues.
+	environmentQueries := self fetchChildrenQueries.
+
+	(self collection: environmentQueries hasSameElementHas: settingQueries)
+	ifTrue: [ ^self ].
+
+	currentSelected := self childrenQuerySetting.
+
+	(settings itemNamed: #childrenQuery) possibleValues: environmentQueries.
+
+	(environmentQueries includes: currentSelected)
+	ifTrue: [ settings setItem: #childrenQuery value: currentSelected ]
+	ifFalse: [ settings setItem: #childrenQuery value: environmentQueries anyOne ]
+
+]
+
+{ #category : #settings }
+MiDistributionMapModel >> resetTagSetting [
+
+	| settingTags environmentTags |
+	settingTags := (settings itemNamed: #tags) getValue.
+	environmentTags := self fetchTags.
+
+	(self collection: environmentTags hasSameElementHas: settingTags) 
+		ifTrue: [ ^ self ].
+
+	(settings itemNamed: #tags) setValue: environmentTags.
+
+]
+
+{ #category : #settings }
+MiDistributionMapModel >> settings [
+
+	self resetChildrenQuerySetting.
+	self resetTagSetting.
+	^ settings
+]
+
+{ #category : #querying }
+MiDistributionMapModel >> tagFor: anEntity [
+
+	^ self tagsSetting
+		  detect: [ :dt | dt isApplicableTo: anEntity ]
+		  ifNone: [ MiNullDynamicTag new ]
+]
+
+{ #category : #settings }
+MiDistributionMapModel >> tagsSetting [
+	^settings getItemValue: #tags
 ]

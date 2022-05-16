@@ -13,11 +13,13 @@ Class {
 
 { #category : #convertion }
 MiTextSettingItem >> dateValue [
+	"converter form the displayed text to a Date"
 	valueFromString := [ :aString | Date fromString: aString ]
 ]
 
 { #category : #convertion }
 MiTextSettingItem >> floatValue [
+	"converter form the displayed text to a float"
 	valueFromString := [ :aString | Float readFrom: aString]
 ]
 
@@ -39,23 +41,25 @@ MiTextSettingItem >> initialize [
 
 { #category : #convertion }
 MiTextSettingItem >> integerValue [
+	"converter form the displayed text to an integer"
 	valueFromString := #asInteger
 ]
 
 { #category : #accessing }
 MiTextSettingItem >> setValue: anObject [
 
-	presenter text: anObject asString
+	presenter text: (displayBlock value: anObject)
 ]
 
 { #category : #convertion }
 MiTextSettingItem >> stringValue [
+	"converter form the displayed text to a string"
 	valueFromString := #yourself
 ]
 
 { #category : #convertion }
 MiTextSettingItem >> valueFromString: aBlock [
-	"aBlock with one argument (a string) used to convert the text in the presenter in 
+	"aBlock with one argument (a string) used to convert the text in the presenter to 
 	 a value with the right type.
 	There are some default setters: #floatValue, #integerValue, #dateValue, #stringValue"
 	valueFromString := aBlock 

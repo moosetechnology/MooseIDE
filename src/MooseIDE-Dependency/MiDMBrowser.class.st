@@ -58,7 +58,7 @@ MiDMBrowser class >> windowSize [
 MiDMBrowser >> addDynamicTags: aCollection [
 
 	aCollection do: [ :dt | self model addDynamicTag: dt ].
-	settings refreshTagList
+	"settings refreshTagList"
 ]
 
 { #category : #initialization }
@@ -66,7 +66,7 @@ MiDMBrowser >> browserClosed [
 
 	super browserClosed.
 	application unregisterConsumer: self.
-	application unregisterConsumer: settings
+	"application unregisterConsumer: settings"
 ]
 
 { #category : #actions }
@@ -87,12 +87,6 @@ MiDMBrowser >> canvas [
 	^ visualization canvas
 ]
 
-{ #category : #initialization }
-MiDMBrowser >> closeTagCreationForm [
-
-	self layout replace: tagCreateForm with: settings
-]
-
 { #category : #brokerage }
 MiDMBrowser >> consume: aTag [
 
@@ -103,29 +97,13 @@ MiDMBrowser >> consume: aTag [
 MiDMBrowser >> followEntity: anEntity [
 
 	model entities: anEntity asMooseGroup.
-	self showMenu
+	visualization run
 ]
 
 { #category : #testing }
 MiDMBrowser >> hasSettings [
 
 	^ true
-]
-
-{ #category : #actions }
-MiDMBrowser >> hideMenu [
-
-	self layout remove: settings.
-	self update
-]
-
-{ #category : #initialization }
-MiDMBrowser >> initialize [
-
-	super initialize.
-	application registerConsumer: self for: MiDynamicTag.
-	application registerConsumer: self for: FamixTag.
-	application registerConsumer: settings for: FQAbstractQuery
 ]
 
 { #category : #initialization }
@@ -141,8 +119,7 @@ MiDMBrowser >> initializeLayout [
 MiDMBrowser >> initializePresenters [
 
 	visualization := self class mapClass owner: self.
-	settings := MiDistributionMapSettings owner: self.
-	tagCreateForm := MiDynamicTagSelectionForm owner: self.
+	"tagCreateForm := MiDynamicTagSelectionForm owner: self."
 	self initializeLayout
 ]
 
@@ -152,49 +129,23 @@ MiDMBrowser >> miSelectedItem [
 	^ model entities mooseInterestingEntity
 ]
 
-{ #category : #initialization }
-MiDMBrowser >> openTagCreationForm [
-
-	tagCreateForm setTags.
-	self layout replace: settings with: tagCreateForm.
-	self update
-]
-
 { #category : #brokerage }
 MiDMBrowser >> remove: aTag [
 
 	tagCreateForm removeTag: aTag
 ]
 
+{ #category : #initialization }
+MiDMBrowser >> setModelBeforeInitialization: aModel [
+
+	super setModelBeforeInitialization: aModel.
+	aModel browser: self
+]
+
 { #category : #accessing }
 MiDMBrowser >> settings [
 
-	self showMenu
-]
-
-{ #category : #accessing }
-MiDMBrowser >> settingsPresenter [
-
-	^ settings
-]
-
-{ #category : #actions }
-MiDMBrowser >> showMenu [
-
-	self layout
-		removeAll;
-		add: settings width: self class windowSize x / 3;
-		add: visualization.
-
-	self update
-]
-
-{ #category : #actions }
-MiDMBrowser >> toggleMenu [
-
-	(self layout presenters includes: settings)
-		ifTrue: [ self hideMenu ]
-		ifFalse: [ self showMenu ]
+	model settings open
 ]
 
 { #category : #initialization }

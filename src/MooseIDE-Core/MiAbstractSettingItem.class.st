@@ -14,15 +14,30 @@ Class {
 		'label',
 		'help',
 		'presenter',
-		'oldValue'
+		'oldValue',
+		'displayBlock'
 	],
 	#category : #'MooseIDE-Core-Settings'
 }
 
 { #category : #'instance creation' }
+MiAbstractSettingItem class >> buttonWithCodeSetting [
+	^MiButtonCodeSettingItem new
+]
+
+{ #category : #'instance creation' }
+MiAbstractSettingItem class >> buttonWithEditableListSetting [
+	^MiButtonEditablelistSettingItem new
+]
+
+{ #category : #'instance creation' }
+MiAbstractSettingItem class >> checkboxSetting [
+	^MiCheckboxSettingItem new
+]
+
+{ #category : #'instance creation' }
 MiAbstractSettingItem class >> droplistSetting [
 	^MiDroplistSettingItem new
-		yourself
 ]
 
 { #category : #'instance creation' }
@@ -51,6 +66,12 @@ MiAbstractSettingItem >> confirmValue [
 ]
 
 { #category : #accessing }
+MiAbstractSettingItem >> displayBlock: anObject [
+	"a block with 1 argument (a value) used to display the Value in the Presenter"
+	displayBlock := anObject
+]
+
+{ #category : #accessing }
 MiAbstractSettingItem >> getValue [
 
 	self subclassResponsibility
@@ -66,6 +87,13 @@ MiAbstractSettingItem >> help [
 MiAbstractSettingItem >> help: anObject [
 
 	help := anObject
+]
+
+{ #category : #initialization }
+MiAbstractSettingItem >> initialize [ 
+	super initialize.
+
+	displayBlock := #asString
 ]
 
 { #category : #accessing }
