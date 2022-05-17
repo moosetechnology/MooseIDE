@@ -82,6 +82,8 @@ MiSourceTextBrowserModel >> displayedEntity [
 MiSourceTextBrowserModel >> displayedEntity: anObject [
 	displayedEntity := anObject.
 	selectedEntity := anObject.
+	self resetHighlights.
+
 	self formatSource 
 ]
 
@@ -184,7 +186,7 @@ MiSourceTextBrowserModel >> identifierIntervalFor: aChildEntity inside: referenc
 MiSourceTextBrowserModel >> initialize [
 	super initialize.
 	
-	highlights := OrderedCollection new
+	self resetHighlights
 ]
 
 { #category : #formatting }
@@ -193,6 +195,12 @@ MiSourceTextBrowserModel >> noSourceCodeFor: anEntity [
 		format: { anEntity name }).
 
 	self addErrorHighlightInterval: (Interval from: 37 to: displayedText size)
+]
+
+{ #category : #accessing }
+MiSourceTextBrowserModel >> resetHighlights [
+
+	highlights := OrderedCollection new
 ]
 
 { #category : #accessing }
