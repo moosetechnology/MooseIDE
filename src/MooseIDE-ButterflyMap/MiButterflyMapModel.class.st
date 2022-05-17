@@ -85,15 +85,24 @@ MiButterflyMapModel >> defaultChildrenQuery [
 MiButterflyMapModel >> defaultLeftEntitiesQuery [
 
 	^ defaultLeftEntitiesQuery ifNil: [ 
-		  defaultLeftEntitiesQuery := FQBooleanQuery new property: #isAbstract ]
+		  defaultLeftEntitiesQuery := FQNavigationQuery new
+			                              directionStrategy:
+				                              FQLocalIncomingNavigation;
+			                              associationStrategy:
+				                              FQAllNavigationAssociations new;
+			                              yourself ]
 ]
 
 { #category : #accessing }
 MiButterflyMapModel >> defaultRightEntitiesQuery [
 
 	^ defaultRightEntitiesQuery ifNil: [ 
-		  defaultRightEntitiesQuery := FQBooleanQuery new property:
-			                               #isAbstract ]
+		  defaultRightEntitiesQuery := FQNavigationQuery new
+			                              directionStrategy:
+				                              FQLocalOutgoingNavigation;
+			                              associationStrategy:
+				                              FQAllNavigationAssociations new;
+			                              yourself ]
 ]
 
 { #category : #accessing }
@@ -102,14 +111,29 @@ MiButterflyMapModel >> getChildrenQuery [
 	^ settings getItemValue: self childrenQuery
 ]
 
+{ #category : #actions }
+MiButterflyMapModel >> getLeftEntitiesQuery [
+
+	^ settings getItemValue: self leftEntitiesQuery
+]
+
+{ #category : #actions }
+MiButterflyMapModel >> getRightEntitiesQuery [
+
+	^ settings getItemValue: self rightEntitiesQuery
+]
+
 { #category : #accessing }
 MiButterflyMapModel >> initializeSettings [
 
 	settings := MiSettingsPresenter new
+		            ownerTool: self;
 		            addItem: self itemChildrenQuery
 		            named: self childrenQuery;
-		addItem: self itemLeftEntitiesQuery named: self leftEntitiesQuery;
-		addItem: self itemRightEntitiesQuery named: self rightEntitiesQuery;
+		            addItem: self itemLeftEntitiesQuery
+		            named: self leftEntitiesQuery;
+		            addItem: self itemRightEntitiesQuery
+		            named: self rightEntitiesQuery;
 		            yourself
 ]
 
@@ -153,6 +177,12 @@ MiButterflyMapModel >> itemRightEntitiesQuery [
 ]
 
 { #category : #accessing }
+MiButterflyMapModel >> leftEntitiesFor: anEntity [
+
+	^ self getLeftEntitiesQuery runOn: anEntity asMooseGroup
+]
+
+{ #category : #accessing }
 MiButterflyMapModel >> leftEntitiesQuery [
 
 	^ #leftEntitiesQuery
@@ -165,6 +195,12 @@ MiButterflyMapModel >> openSettings [
 ]
 
 { #category : #accessing }
+MiButterflyMapModel >> rightEntitiesFor: anEntity [
+
+	^ self getRightEntitiesQuery runOn: anEntity asMooseGroup
+]
+
+{ #category : #accessing }
 MiButterflyMapModel >> rightEntitiesQuery [
 
 	^ #rightEntitiesQuery
@@ -174,4 +210,16 @@ MiButterflyMapModel >> rightEntitiesQuery [
 MiButterflyMapModel >> settings [
 
 	^ settings
+]
+
+{ #category : #accessing }
+MiButterflyMapModel >> settingsChanged: aBoolean [
+
+	aBoolean ifTrue: [ browser run ]
+]
+
+{ #category : #accessing }
+MiButterflyMapModel >> toolName [
+
+	^ self browser title
 ]

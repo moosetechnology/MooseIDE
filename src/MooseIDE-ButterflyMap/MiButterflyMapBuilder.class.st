@@ -49,7 +49,7 @@ MiButterflyMapBuilder >> buildButterflyNodes [
 		             yourself.
 
 	butterfly lBlock: [ :e | 
-		e model rawModel allClients collect: [ :c | 
+		(self mapModel leftEntitiesFor: e model rawModel) collect: [ :c | 
 			| hNode shape |
 			hNode := self buildNodeFromEntity: c.
 			rootNode add: hNode.
@@ -58,7 +58,7 @@ MiButterflyMapBuilder >> buildButterflyNodes [
 			shape sparent: self container.
 			shape ] ].
 	butterfly rBlock: [ :e | 
-		e model rawModel allProviders collect: [ :p | 
+		(self mapModel rightEntitiesFor: e model rawModel) collect: [ :p | 
 			| hNode shape |
 			hNode := self buildNodeFromEntity: p.
 			rootNode add: hNode.
