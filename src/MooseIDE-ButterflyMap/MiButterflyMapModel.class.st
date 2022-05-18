@@ -96,12 +96,10 @@ MiButterflyMapModel >> defaultLeftEntitiesQuery [
 MiButterflyMapModel >> defaultRightEntitiesQuery [
 
 	^ defaultRightEntitiesQuery ifNil: [ 
-		  defaultRightEntitiesQuery := FQNavigationQuery new
-			                              directionStrategy:
-				                              FQLocalOutgoingNavigation;
-			                              associationStrategy:
-				                              FQAllNavigationAssociations new;
-			                              yourself ]
+		  defaultRightEntitiesQuery := FQNavigationQuery new outgoing
+			                               associationStrategy:
+				                               FQAllNavigationAssociations new;
+			                               yourself ]
 ]
 
 { #category : #accessing }
