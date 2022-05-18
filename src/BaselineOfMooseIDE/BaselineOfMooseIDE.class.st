@@ -101,7 +101,10 @@ BaselineOfMooseIDE >> definePackages: spec [
 		with: [ spec requires: #( 'MooseIDE-CoUsageMap'
 				   'MooseIDE-Tests' ) ];
 		package: 'MooseIDE-Duplication'
-		with: [ spec requires: #( 'MooseIDE-Core' ) ]
+		with: [ spec requires: #( 'MooseIDE-Core' ) ];
+		package: 'MooseIDE-ButterflyMap';
+		package: 'MooseIDE-ButterflyMap-Tests'
+		with: [ spec requires: #( 'MooseIDE-ButterflyMap' ) ]
 ]
 
 { #category : #dependencies }
