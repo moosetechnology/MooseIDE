@@ -12,6 +12,7 @@ BaselineOfMooseIDE >> baseline: spec [
 		self tylerDurden: spec.
 		self labelContractor: spec.
 		self hierarchicalVisualizations: spec.
+		self famixQueries: spec.
 
 		"Packages"
 		self definePackages: spec.
@@ -20,7 +21,6 @@ BaselineOfMooseIDE >> baseline: spec [
 		spec for: #NeedsMoose do: [ 
 			self famix: spec.
 			self famixTagging: spec.
-			self famixQueries: spec.
 			self famixReplication: spec.
 			spec
 				package: 'MooseIDE-Core' with: [ spec requires: #( 'Famix' ) ];
@@ -32,8 +32,6 @@ BaselineOfMooseIDE >> baseline: spec [
 				with: [ spec requires: #( 'FamixTagging' ) ];
 				package: 'MooseIDE-Dependency'
 				with: [ spec requires: #( 'FamixTagging' ) ];
-				package: 'MooseIDE-QueriesBrowser'
-				with: [ spec requires: #( 'FamixQueries' ) ];
 				package: 'MooseIDE-NewTools'
 				with: [ spec requires: #( 'FamixQueries' ) ];
 				package: 'MooseIDE-Duplication'
@@ -78,7 +76,7 @@ BaselineOfMooseIDE >> definePackages: spec [
 		package: 'MooseIDE-Tagging-Tests'
 		with: [ spec requires: #( 'MooseIDE-Tagging' ) ];
 		package: 'MooseIDE-QueriesBrowser'
-		with: [ spec requires: #( 'MooseIDE-Core' ) ];
+		with: [ spec requires: #( 'MooseIDE-Core' 'FamixQueries' ) ];
 		package: 'MooseIDE-QueriesBrowser-Tests'
 		with: [ 
 			spec requires: #( 'MooseIDE-QueriesBrowser'
