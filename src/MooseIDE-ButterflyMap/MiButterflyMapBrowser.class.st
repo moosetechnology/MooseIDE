@@ -15,6 +15,19 @@ MiButterflyMapBrowser class >> mapClass [
 ]
 
 { #category : #accessing }
+MiButterflyMapBrowser class >> menuCommandOn: aBuilder [
+	<worldMenu>
+	<miBrowsers>
+	^(aBuilder item: #ButterflyMapBrowser)
+		parent: self midasBrowserMenuLabel;
+		label: self title;
+		help: self helpMessage;
+		order: 5;
+		action: [ self open ] ;
+		yourself
+]
+
+{ #category : #accessing }
 MiButterflyMapBrowser class >> newModel [
 
 	^ MiButterflyMapModel new
