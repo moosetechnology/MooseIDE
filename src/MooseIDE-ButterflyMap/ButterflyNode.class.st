@@ -113,6 +113,8 @@ ButterflyNode >> initialize [
 { #category : #accessing }
 ButterflyNode >> layers [
 
+	"Return all levels of this tree, exept current node. Return a collection of collections."
+
 	| q source layers i j layer |
 	layers := OrderedCollection new.
 	layer := RSGroup new.

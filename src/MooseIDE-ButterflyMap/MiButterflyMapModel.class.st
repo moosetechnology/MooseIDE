@@ -78,16 +78,15 @@ MiButterflyMapModel >> currentEntity: anObject [
 MiButterflyMapModel >> defaultChildrenQuery [
 
 	^ defaultChildrenQuery ifNil: [ 
-		  defaultChildrenQuery := FQBooleanQuery new property: #isAbstract ]
+		  defaultChildrenQuery := FQCollectScriptQuery new script: [ :each | 
+			                          each children ] ]
 ]
 
 { #category : #accessing }
 MiButterflyMapModel >> defaultLeftEntitiesQuery [
 
 	^ defaultLeftEntitiesQuery ifNil: [ 
-		  defaultLeftEntitiesQuery := FQNavigationQuery new
-			                              directionStrategy:
-				                              FQLocalIncomingNavigation;
+		  defaultLeftEntitiesQuery := FQNavigationQuery incoming
 			                              associationStrategy:
 				                              FQAllNavigationAssociations new;
 			                              yourself ]
