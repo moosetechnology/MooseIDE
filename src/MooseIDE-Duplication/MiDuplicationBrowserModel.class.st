@@ -43,6 +43,11 @@ MiDuplicationBrowserModel >> childrenFragments: aFragment [
 	^ replicatedFragmentsHierarchy at: aFragment
 ]
 
+{ #category : #settings }
+MiDuplicationBrowserModel >> codeCleanerClass [
+	^#codeCleanerClass
+]
+
 { #category : #private }
 MiDuplicationBrowserModel >> currentMooseModel [
 	^entities anyOne mooseModel
@@ -123,12 +128,91 @@ MiDuplicationBrowserModel >> initialize [
 	entities := #(  ).
 	selectedEntities := #().
 	replicatedFragmentsHierarchy := Dictionary new.
-	settings := MiDuplicationBrowserSettings new
+
+	self initializeSettings 
+]
+
+{ #category : #initialization }
+MiDuplicationBrowserModel >> initializeSettings [ 
+	settings := MiSettingsPresenter new
+		addItem: self itemMinNumberOfLines 		named: self minNumberOfLines ;
+		addItem: self itemMinNumberOfCharacters named: self minNumberOfCharacters ;
+		addItem: self itemMinNumberOfReplicas 	named: self minNumberOfReplicas ;
+		addItem: self itemCodeCleanerClass 		named: self codeCleanerClass ;
+		addItem: self itemMaxReplicasShowed 		named: self maxReplicasShowed ;
+		yourself
+	
 ]
 
 { #category : #api }
 MiDuplicationBrowserModel >> isSelected: anEntity [
 	^selectedEntities includes: anEntity 
+]
+
+{ #category : #settings }
+MiDuplicationBrowserModel >> itemCodeCleanerClass [
+	^MiAbstractSettingItem droplistSetting
+		possibleValues: FamixRepSourcesCleaner allAvailableCleaners ;
+		setValue: FamixRepCLikeCleaner ;
+		label: 'Code cleaning startegy' ;
+		help: 'The cleaner used to clean the code before detecting duplication. The cleaner removes extra whitespaces and/or comments. Cleaners are programming language specific.' ;
+		yourself
+]
+
+{ #category : #settings }
+MiDuplicationBrowserModel >> itemMaxReplicasShowed [
+	^MiAbstractSettingItem integerSetting
+		setValue: 10 ;
+		label: 'Maximum number of tab shown' ;
+		help: 'Maximum number of entities shown in the browser. If a code snippet is duplicated too many times, will only show that much occurences.' ;
+		yourself
+]
+
+{ #category : #settings }
+MiDuplicationBrowserModel >> itemMinNumberOfCharacters [
+	^MiAbstractSettingItem integerSetting
+		setValue: 80 ;
+		label: 'Minimum number of character' ;
+		help: 'Minimum number of characters in duplicated fragment. Code fragments that are too small are not interesting.' ;
+		yourself
+]
+
+{ #category : #settings }
+MiDuplicationBrowserModel >> itemMinNumberOfLines [
+	^MiAbstractSettingItem integerSetting
+		setValue: 10 ;
+		label: 'Minimum number of line' ;
+		help: 'Minimum number of lines of code in a duplicated code snipet. The larger, the less duplicated snippets found.' ;
+		yourself
+]
+
+{ #category : #settings }
+MiDuplicationBrowserModel >> itemMinNumberOfReplicas [
+	^MiAbstractSettingItem integerSetting
+		setValue: 2 ;
+		label: 'Minimum number of replica' ;
+		help: 'The minimum number of times a code snippet is duplicated. Cannot be less than 2. The larger, the less duplicated snippets found.' ;
+		yourself
+]
+
+{ #category : #settings }
+MiDuplicationBrowserModel >> maxReplicasShowed [
+	^#maxReplicasShowed
+]
+
+{ #category : #settings }
+MiDuplicationBrowserModel >> minNumberOfCharacters [
+	^#minNumberOfCharacters
+]
+
+{ #category : #settings }
+MiDuplicationBrowserModel >> minNumberOfLines [
+	^#minNumberOfLines
+]
+
+{ #category : #settings }
+MiDuplicationBrowserModel >> minNumberOfReplicas [
+	^#minNumberOfReplicas
 ]
 
 { #category : #private }
@@ -213,8 +297,8 @@ MiDuplicationBrowserModel >> selectedFragments: selectedFragments [
 
 	| allReplicas |
 	allReplicas := selectedFragments flatCollect: #replicas.
-	allReplicas size > settings maxReplicasShowed
-		ifTrue: [ allReplicas first: settings maxReplicasShowed ]
+	allReplicas size > (settings getItemValue: self maxReplicasShowed)
+		ifTrue: [ allReplicas first: (settings getItemValue: self maxReplicasShowed) ]
 		ifFalse: [ allReplicas ].
 
 	self selectedEntities:
