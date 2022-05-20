@@ -8,8 +8,11 @@ Class {
 MiTagEditionForm >> checkFormInputs [
 
 	nameField text ifEmpty: [ ^ false ].
-	(tagModel getTagNamed: nameField text) ifNotNil: [ :tag | 
-		tagModel currentTag = tag ifFalse: [ ^ false ] ].
+	tagModel currentTag isIntent ifFalse: [ 
+		(tagModel getTagNamed: nameField text) ifNotNil: [ :tag | 
+			tagModel currentTag = tag ifFalse: [ ^ false ] ] ].
+
+
 	^ true
 ]
 
