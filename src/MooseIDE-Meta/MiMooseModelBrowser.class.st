@@ -32,7 +32,7 @@ MiMooseModelBrowser class >> menuCommandOn: aBuilder [
 	(aBuilder item: #MooseModelBrowser)
 		parent: (self metaBrowsersMenuLabel);
 		label: (self title);
-		icon: (self iconNamed: #mooseNavigation);
+		icon: (self iconNamed: self menuIconName);
 		order: 2;
 		help: (self helpMessage);
 		action: [ self open ]

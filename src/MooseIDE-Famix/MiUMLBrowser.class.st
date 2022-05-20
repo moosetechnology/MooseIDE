@@ -28,7 +28,7 @@ MiUMLBrowser class >> menuCommandOn: aBuilder [
 	(aBuilder item: #UMLVisualisationBrowser)
 		parent: (self toolbarFamixName);
 		label: (self title);
-		icon: (self iconNamed: #mooseUml);
+		icon: (self iconNamed: self menuIconName);
 		order: 4;
 		help: (self helpMessage);
 		action: [ self open ]

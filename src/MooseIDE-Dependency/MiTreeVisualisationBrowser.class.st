@@ -23,13 +23,14 @@ MiTreeVisualisationBrowser class >> defaultLayout [
 
 { #category : #'world menu' }
 MiTreeVisualisationBrowser class >> menuCommandOn: aBuilder [
+
 	<worldMenu>
 	<miBrowsers>
 	(aBuilder item: #TreeVisualisationBrowser)
 		parent: self toolbarDependencyName;
 		label: self title;
 		order: 2.0;
-		icon: (self iconNamed: #mooseTree);
+		icon: (self iconNamed: self menuIconName);
 		help: self helpMessage;
 		action: [ self open ]
 ]

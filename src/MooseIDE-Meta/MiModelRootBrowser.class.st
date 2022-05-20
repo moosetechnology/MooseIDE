@@ -48,7 +48,7 @@ MiModelRootBrowser class >> menuCommandOn: aBuilder [
 	(aBuilder item: #ModelRootBrowser)
 		parent: #Moose ;
 		label: self title ;
-		icon: (self iconNamed: #mooseNavigation) ;
+		icon: (self iconNamed: self menuIconName) ;
 		order: 2 ;
 		help: self helpMessage ;
 		action: [ self open ]

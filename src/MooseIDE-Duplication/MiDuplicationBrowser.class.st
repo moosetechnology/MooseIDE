@@ -21,7 +21,7 @@ MiDuplicationBrowser class >> menuCommandOn: aBuilder [
 	(aBuilder item: #SpecializedBrowser)
 		parent: self midasBrowserMenuLabel;
 		label: self title;
-		icon: (self iconNamed: #smallCopy);
+		icon: (self iconNamed: self menuIconName);
 		help: self helpMessage;
 		action: [ self open ]
 ]

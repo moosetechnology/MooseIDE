@@ -32,7 +32,7 @@ MiSourceTextBrowser class >> menuCommandOn: aBuilder [
 	(aBuilder item: #SourceTextBrowser)
 		parent: (self toolbarFamixName) ;
 		label: (self title) ;
-		icon: (self iconNamed: #mooseSourceText);
+		icon: (self iconNamed: self menuIconName);
 		order: 1 ;
 		help: (self helpMessage);
 		action: [ self open ]

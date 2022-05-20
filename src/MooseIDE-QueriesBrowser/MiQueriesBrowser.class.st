@@ -24,7 +24,7 @@ MiQueriesBrowser class >> menuCommandOn: aBuilder [
 	(aBuilder item: #QueriesBrowser)
 		parent: #Moose;
 		label: self title;
-		icon: (self iconNamed: #mooseTree);
+		icon: (self iconNamed: self menuIconName);
 		order: 3;
 		help: self helpMessage;
 		action: [ self open ]

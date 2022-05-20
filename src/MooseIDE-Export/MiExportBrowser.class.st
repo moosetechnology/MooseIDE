@@ -44,7 +44,7 @@ MiExportBrowser class >> menuCommandOn: aBuilder [
 	(aBuilder item: #Exporter)
 		parent: #Moose;
 		label: self title;
-		icon: (self iconNamed: #smallExport);
+		icon: (self iconNamed: self menuIconName);
 		order: 6;
 		help: self helpMessage;
 		action: [ self open ]

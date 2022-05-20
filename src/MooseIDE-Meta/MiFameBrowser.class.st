@@ -29,7 +29,7 @@ MiFameBrowser class >> menuCommandOn: aBuilder [
 	(aBuilder item: #Fame)
 		parent: (self metaBrowsersMenuLabel);
 		label: (self title);
-		icon: (self iconNamed: #mooseFame);
+		icon: (self iconNamed: self menuIconName);
 		order: 4;
 		help: (self helpMessage);
 		action: [ self open ]

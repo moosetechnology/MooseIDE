@@ -46,7 +46,7 @@ MiInspectorBrowser class >> menuCommandOn: aBuilder [
 	(aBuilder item: #Inspector)
 		parent: #Moose;
 		label: self title;
-		icon: (self iconNamed: #smallInspectIt);
+		icon: (self iconNamed: self menuIconName);
 		order: 5;
 		help: self helpMessage;
 		action: [ self open ]

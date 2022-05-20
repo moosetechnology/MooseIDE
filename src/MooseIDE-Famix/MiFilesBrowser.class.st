@@ -36,7 +36,7 @@ MiFilesBrowser class >> menuCommandOn: aBuilder [
 	(aBuilder item: #FilesBrowser)
 		parent: (self toolbarFamixName);
 		label: (self title);
-		icon: (self iconNamed: #mooseFolder);
+		icon: (self iconNamed: self menuIconName);
 		help: (self helpMessage);
 		order: 3;
 		action: [ self open ]
