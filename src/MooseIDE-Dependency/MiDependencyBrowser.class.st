@@ -14,6 +14,12 @@ Class {
 	#category : #'MooseIDE-Dependency-Dependency'
 }
 
+{ #category : #adding }
+MiDependencyBrowser class >> addToMiBrowsersMenu: aMenuGroupPresenter [
+
+	aMenuGroupPresenter addItem: [ :item | item label: self title ]
+]
+
 { #category : #layout }
 MiDependencyBrowser class >> defaultLayout [
 	^ super defaultLayout

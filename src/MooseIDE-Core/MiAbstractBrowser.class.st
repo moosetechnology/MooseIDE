@@ -43,6 +43,14 @@ Class {
 	#category : #'MooseIDE-Core-Browser'
 }
 
+{ #category : #adding }
+MiAbstractBrowser class >> addToMiBrowsersMenu: aMenuPresenter [
+
+	"self subclassResponsibility "
+
+	
+]
+
 { #category : #specs }
 MiAbstractBrowser class >> defaultLayout [
 
@@ -84,6 +92,16 @@ MiAbstractBrowser class >> menuMetaCommandOn: aBuilder [
 { #category : #'world menu' }
 MiAbstractBrowser class >> metaBrowsersMenuLabel [
 	^ #Meta
+]
+
+{ #category : #menu }
+MiAbstractBrowser class >> miBrowsersMenuPresenter [
+
+	| menu |
+	menu := SpMenuPresenter new.
+	self subclassesDo: [ :browserClass | 
+		browserClass addToMiBrowsersMenu: menu ].
+	^ menu
 ]
 
 { #category : #'world menu' }

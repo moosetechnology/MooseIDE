@@ -14,6 +14,12 @@ Class {
 	#category : #'MooseIDE-Dependency-Tree'
 }
 
+{ #category : #adding }
+MiTreeBrowser class >> addToMiBrowsersMenu: aMenuGroupPresenter [
+
+	aMenuGroupPresenter addItem: [ :item | item label: self title ]
+]
+
 { #category : #layout }
 MiTreeBrowser class >> defaultLayout [
 	^ super defaultLayout

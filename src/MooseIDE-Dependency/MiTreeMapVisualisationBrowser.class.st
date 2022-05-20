@@ -15,6 +15,12 @@ Class {
 	#category : #'MooseIDE-Dependency-TreeMap'
 }
 
+{ #category : #adding }
+MiTreeMapVisualisationBrowser class >> addToMiBrowsersMenu: aMenuGroupPresenter [
+
+	aMenuGroupPresenter addItem: [ :item | item label: self title ]
+]
+
 { #category : #layout }
 MiTreeMapVisualisationBrowser class >> defaultLayout [
 	^ super defaultLayout

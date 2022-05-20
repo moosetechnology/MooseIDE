@@ -104,11 +104,10 @@ MiOverviewBrowser >> addBrowser: aMiPresenterClass asPage: aString [
 { #category : #toolbar }
 MiOverviewBrowser >> browsersMenu [
 	| browsersMenu |
-	browsersMenu := SpMenuPresenter new
-		addAllFromPragma: 'miBrowsers' target: self.
+	browsersMenu := MiAbstractBrowser miBrowsersMenuPresenter.
 
-	(self collectMenuItems: browsersMenu)
-		do: [ :item | self replaceMenuItemAction: item ].
+"	(self collectMenuItems: browsersMenu)
+		do: [ :item | self replaceMenuItemAction: item ]."
 	^ browsersMenu
 ]
 

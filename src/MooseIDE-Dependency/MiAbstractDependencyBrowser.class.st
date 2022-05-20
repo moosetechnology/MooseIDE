@@ -26,9 +26,35 @@ Class {
 	#category : #'MooseIDE-Dependency-Dependency'
 }
 
+{ #category : #'world menu' }
+MiAbstractDependencyBrowser class >> addToMiBrowsersMenu: aMenuPresenter [
+
+	aMenuPresenter addItem: [ :item | 
+		| subMenu |
+		subMenu := SpMenuPresenter new.
+		self subclassesDo: [ :browserClass | 
+			browserClass addToMiBrowsersSubMenu: subMenu ].
+		item
+			name: 'Dependency';
+			subMenu: subMenu ]
+]
+
+{ #category : #adding }
+MiAbstractDependencyBrowser class >> addToMiBrowsersSubMenu: aMenuGroupPresenter [
+
+	aMenuGroupPresenter addItem: [ :item | item name: self title ]
+]
+
 { #category : #testing }
 MiAbstractDependencyBrowser class >> isAbstract [ 
 	^ self == MiAbstractDependencyBrowser
+]
+
+{ #category : #'world menu' }
+MiAbstractDependencyBrowser class >> localMenuGroupIn: aMenuPresenter [
+
+	^ aMenuPresenter menuGroups detect: [ :group | 
+		  group label = 'Dependency' ]
 ]
 
 { #category : #'world menu' }
