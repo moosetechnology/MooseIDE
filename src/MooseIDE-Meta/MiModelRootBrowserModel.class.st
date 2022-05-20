@@ -28,17 +28,82 @@ Class {
 	#name : #MiModelRootBrowserModel,
 	#superclass : #Object,
 	#instVars : [
-		'selected'
+		'mooseModelsList',
+		'selected',
+		'browser'
 	],
 	#category : #'MooseIDE-Meta-ModelRootBrowser'
 }
 
 { #category : #accessing }
+MiModelRootBrowserModel >> availableMooseModels [
+
+	^ MooseModel root allModels
+]
+
+{ #category : #accessing }
+MiModelRootBrowserModel >> browser: aBrowser [
+	browser := aBrowser
+]
+
+{ #category : #testing }
+MiModelRootBrowserModel >> canPropagate [
+	^ selected isMooseObject
+]
+
+{ #category : #updating }
+MiModelRootBrowserModel >> getAllModelRootBrowsers [
+	^browser application allBrowsers: MiModelRootBrowser
+]
+
+{ #category : #initialization }
+MiModelRootBrowserModel >> initialize [
+
+	super initialize.
+	mooseModelsList := self availableMooseModels
+]
+
+{ #category : #'accessing - tests' }
+MiModelRootBrowserModel >> mooseModelsList [
+
+	^mooseModelsList
+]
+
+{ #category : #'accessing - tests' }
+MiModelRootBrowserModel >> mooseModelsList: aList [
+
+	mooseModelsList := aList
+]
+
+{ #category : #'accessing - tests' }
+MiModelRootBrowserModel >> rawSelectedMooseModel [
+^selected
+]
+
+{ #category : #accessing }
 MiModelRootBrowserModel >> selected [
-	^ selected
+
+	^ selected ifNotNil: [ :selectedModel | 
+		  (selectedModel reject: [ :each | each isStub ]) asMooseGroup ]
 ]
 
 { #category : #accessing }
 MiModelRootBrowserModel >> selected: anObject [
-	selected := anObject
+	selected := anObject.
+	browser updateToolbar.
+	browser showSelectedItem: anObject
+]
+
+{ #category : #updating }
+MiModelRootBrowserModel >> updateForNewModel: aMooseModel [
+	self getAllModelRootBrowsers do: [:modelBrowser | modelBrowser updateList ].
+	self selected: aMooseModel
+]
+
+{ #category : #updating }
+MiModelRootBrowserModel >> updateMooseModelsList [
+
+	mooseModelsList := self availableMooseModels.
+		browser listOfMooseModels: mooseModelsList.
+		browser showSelectedItem: selected
 ]
