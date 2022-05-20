@@ -95,6 +95,11 @@ MiModelRootBrowser >> followEntity: anEntity [
 	
 ]
 
+{ #category : #testing }
+MiModelRootBrowser >> hasSettings [
+	^ true
+]
+
 { #category : #initialization }
 MiModelRootBrowser >> initializeList [
 
@@ -156,6 +161,17 @@ MiModelRootBrowser >> refreshToolbarButton [
 MiModelRootBrowser >> setModelBeforeInitialization: aModel [
 	super setModelBeforeInitialization: aModel.
 	aModel browser: self
+]
+
+{ #category : #actions }
+MiModelRootBrowser >> settings [
+
+	model openSettings
+]
+
+{ #category : #'accessing - tests' }
+MiModelRootBrowser >> settingsItem [
+	^ model settings
 ]
 
 { #category : #actions }

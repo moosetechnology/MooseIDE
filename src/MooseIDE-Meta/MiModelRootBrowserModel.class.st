@@ -30,7 +30,8 @@ Class {
 	#instVars : [
 		'mooseModelsList',
 		'selected',
-		'browser'
+		'browser',
+		'settings'
 	],
 	#category : #'MooseIDE-Meta-ModelRootBrowser'
 }
@@ -60,7 +61,20 @@ MiModelRootBrowserModel >> getAllModelRootBrowsers [
 MiModelRootBrowserModel >> initialize [
 
 	super initialize.
-	mooseModelsList := self availableMooseModels
+	mooseModelsList := self availableMooseModels.
+
+	self initializeSettings 
+]
+
+{ #category : #initialization }
+MiModelRootBrowserModel >> initializeSettings [ 
+	settings := MiSettingsPresenter new.
+	settings	addItem: (MiCheckboxSettingItem new
+		setValue: true ;
+		label: 'Filter out stubs?' ;
+		help: 'When propagating the model should it filter out the stub entities or pass them along' ;
+		yourself)
+		named: #filterStubsSetting
 ]
 
 { #category : #'accessing - tests' }
@@ -75,6 +89,11 @@ MiModelRootBrowserModel >> mooseModelsList: aList [
 	mooseModelsList := aList
 ]
 
+{ #category : #keymaps }
+MiModelRootBrowserModel >> openSettings [ 
+	settings open
+]
+
 { #category : #'accessing - tests' }
 MiModelRootBrowserModel >> rawSelectedMooseModel [
 ^selected
@@ -83,8 +102,11 @@ MiModelRootBrowserModel >> rawSelectedMooseModel [
 { #category : #accessing }
 MiModelRootBrowserModel >> selected [
 
-	^ selected ifNotNil: [ :selectedModel | 
-		  (selectedModel reject: [ :each | each isStub ]) asMooseGroup ]
+	^ (settings getItemValue: #filterStubsSetting)
+		  ifTrue: [ 
+			  selected ifNotNil: [ :selectedModel | 
+				  (selectedModel reject: [ :each | each isStub ]) asMooseGroup ] ]
+		  ifFalse: [ selected ]
 ]
 
 { #category : #accessing }
@@ -92,6 +114,11 @@ MiModelRootBrowserModel >> selected: anObject [
 	selected := anObject.
 	browser updateToolbar.
 	browser showSelectedItem: anObject
+]
+
+{ #category : #'accessing - tests' }
+MiModelRootBrowserModel >> settings [
+	^ settings
 ]
 
 { #category : #updating }

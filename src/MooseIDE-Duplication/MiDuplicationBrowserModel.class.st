@@ -258,6 +258,11 @@ MiDuplicationBrowserModel >> numberOfSelectedFragments [
 	^browser lstReplicatedFragments selectedItems size
 ]
 
+{ #category : #accessing }
+MiDuplicationBrowserModel >> openSettings [ 
+	settings open
+]
+
 { #category : #'accessing - testing' }
 MiDuplicationBrowserModel >> replicatedFragmentsHierarchy [
 

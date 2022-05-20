@@ -234,7 +234,7 @@ MiDuplicationBrowser >> setModelBeforeInitialization: aModel [
 { #category : #actions }
 MiDuplicationBrowser >> settings [
 
-	model settings open
+	model openSettings
 ]
 
 { #category : #api }
