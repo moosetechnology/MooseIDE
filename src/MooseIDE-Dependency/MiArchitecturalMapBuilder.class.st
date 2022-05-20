@@ -178,42 +178,46 @@ MiArchitecturalMapBuilder >> buildCompositeEmptyNodeIn: shape [
 
 { #category : #accessing }
 MiArchitecturalMapBuilder >> buildCompositeFullNodeIn: shape [
-	| childrenShapes node titleGroup title titleBox children 
-	boxChildren titleRadius boxChildrenRadius list |
+
+	| childrenShapes node titleGroup title titleBox children boxChildren titleRadius boxChildrenRadius list |
 	node := shape model.
 	titleGroup := self labelAndTagFor: node.
 	titleBox := RSBox new
-		extent: titleGroup extent + 10;
-		color: ((self colorFor: node) alpha: 0.7);
-		position: titleGroup position;
-		yourself.
+		            extent: titleGroup extent + 10;
+		            color: ((self colorFor: node) alpha: 0.7);
+		            position: titleGroup position;
+		            yourself.
 	title := RSComposite new
-		add: titleBox; 
-		addAll: titleGroup;
-		adjustToChildren;
-		yourself.
-	title when: RSMouseDoubleClick do: [ :e | node expandCollapse  ] .
+		         add: titleBox;
+		         addAll: titleGroup;
+		         adjustToChildren;
+		         yourself.
+	title when: RSMouseDoubleClick do: [ :e | node expandCollapse ].
 	shape propertyAt: #background put: titleBox.
 	childrenShapes := self childrenFor: node.
 	self layoutOn: childrenShapes parent: node.
-	
+
 	shape schildren: childrenShapes.
 	childrenShapes do: [ :child | child sparent: shape ].
-	children := childrenShapes asShape
-		padding: 6.
+	children := childrenShapes asShape padding: 6.
 	childrenShapes do: [ :child | child model position: child position ].
 	title width < children width
-		ifTrue: [ titleBox width: children width. title adjustToChildren ]
+		ifTrue: [ 
+			titleBox width: children width.
+			title adjustToChildren ]
 		ifFalse: [ children width: title width ].
 	boxChildren := self boxChildrenFor: node.
 	titleRadius := self topCornerRadius.
 	boxChildrenRadius := self bottomCornerRadius.
-	list := { title. children }.
+	list := { 
+		        title.
+		        children }.
 	self nodeStyler position = #below ifTrue: [ 
 		titleRadius := self bottomCornerRadius.
 		boxChildrenRadius := self topCornerRadius.
-		list := { children. title }.
-		 ].
+		list := { 
+			        children.
+			        title } ].
 	RSVerticalLineLayout new
 		gapSize: 0;
 		on: list.
@@ -221,10 +225,12 @@ MiArchitecturalMapBuilder >> buildCompositeFullNodeIn: shape [
 	boxChildren
 		cornerRadius: boxChildrenRadius;
 		fromRectangle: children encompassingRectangle.
-	
-	shape add: title; add: boxChildren; add: children.
-	shape adjustToChildren.
-	
+
+	shape
+		add: title;
+		add: boxChildren;
+		add: children.
+	shape adjustToChildren
 ]
 
 { #category : #building }
@@ -314,25 +320,6 @@ MiArchitecturalMapBuilder >> buildLegend [
 ]
 
 { #category : #building }
-MiArchitecturalMapBuilder >> buildNodeFromEntity: anEntity [
-
-	| node |
-	node := HNode new
-		        name:
-			        (String streamContents: [ :s | anEntity displayStringOn: s ]);
-		        rawModel: anEntity;
-		        addAll: ((self mapModel childrenFor: anEntity)
-				         collect: [ :e | 
-					         anEntity == e ifFalse: [ self buildNodeFromEntity: e ] ]
-				         thenSelect: [ :e | e isNotNil ]);
-		        collapse;
-		        yourself.
-	nodeMooseIDDict at: anEntity mooseID put: node.
-	allEntities add: anEntity.
-	^ node
-]
-
-{ #category : #building }
 MiArchitecturalMapBuilder >> buildNodeFromEntity: anEntity register: aBoolean [
 
 	| node |
@@ -340,9 +327,12 @@ MiArchitecturalMapBuilder >> buildNodeFromEntity: anEntity register: aBoolean [
 		        name:
 			        (String streamContents: [ :s | anEntity displayStringOn: s ]);
 		        rawModel: anEntity;
-		        addAll: ((self mapModel childrenFor: anEntity)
+		        addAll:
+			        (((self mapModel childrenFor: anEntity) sort: [ :c1 :c2 | 
+					          c1 name < c2 name ])
 				         collect: [ :e | 
-					         anEntity == e ifFalse: [ self buildNodeFromEntity: e register: aBoolean ] ]
+					         anEntity == e ifFalse: [ 
+							         self buildNodeFromEntity: e register: aBoolean ] ]
 				         thenSelect: [ :e | e isNotNil ]);
 		        collapse;
 		        yourself.
@@ -544,7 +534,7 @@ MiArchitecturalMapBuilder >> renderIn: aCanvas [
 	| rootShapes |
 	aCanvas color: Smalltalk ui theme backgroundColor.
 	shapes := RSGroup new.
-	rootShapes := rootNode children 
+	rootShapes := (rootNode children sort: [ :c1 :c2 | c1 name < c2 name])
 		collect: [:child | (self shapeFor: child) sparent: aCanvas ]
 		as: RSGroup.
 	aCanvas schildren: rootShapes.
