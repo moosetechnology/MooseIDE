@@ -19,6 +19,12 @@ Class {
 	#category : #'MooseIDE-Meta-ModelRootBrowser'
 }
 
+{ #category : #menu }
+MiModelRootBrowser class >> addItemOrSubMenuToMiBrowsersMenu: aRootMenu defaultSubMenu: aSubMenu [
+
+	self addToMiBrowsersMenu: aRootMenu
+]
+
 { #category : #'world menu' }
 MiModelRootBrowser class >> buildModelCommandsGroupWith: presenterInstance [
 
@@ -49,10 +55,22 @@ MiModelRootBrowser class >> menuCommandOn: aBuilder [
 	(aBuilder item: #ModelRootBrowser)
 		parent: #Moose ;
 		label: self title ;
-		icon: (self iconNamed: #mooseNavigation) ;
-		order: 2 ;
+		icon: (self iconNamed: self menuIconName) ;
+		order: self menuPriority ;
 		help: self helpMessage ;
 		action: [ self open ]
+]
+
+{ #category : #menu }
+MiModelRootBrowser class >> menuIconName [
+
+	^ #mooseNavigation
+]
+
+{ #category : #menu }
+MiModelRootBrowser class >> menuPriority [
+
+	^ 2
 ]
 
 { #category : #'instance creation' }

@@ -28,9 +28,15 @@ MiHierarchicalMapBrowser class >> menuCommandOn: aBuilder [
 		parent: self midasBrowserMenuLabel;
 		label: self title;
 		help: self helpMessage;
-		order: 5;
+		order: self menuPriority;
 		action: [ self open ] ;
 		yourself
+]
+
+{ #category : #menu }
+MiHierarchicalMapBrowser class >> menuPriority [
+
+	^ 5
 ]
 
 { #category : #'instance creation' }

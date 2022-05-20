@@ -16,6 +16,12 @@ Class {
 	#category : #'MooseIDE-QueriesBrowser-Main presenters'
 }
 
+{ #category : #menu }
+MiQueriesBrowser class >> addItemOrSubMenuToMiBrowsersMenu: aRootMenu defaultSubMenu: aSubMenu [
+
+	self addToMiBrowsersMenu: aRootMenu
+]
+
 { #category : #'world menu' }
 MiQueriesBrowser class >> menuCommandOn: aBuilder [
 
@@ -24,10 +30,22 @@ MiQueriesBrowser class >> menuCommandOn: aBuilder [
 	(aBuilder item: #QueriesBrowser)
 		parent: #Moose;
 		label: self title;
-		icon: (self iconNamed: #mooseTree);
-		order: 3;
+		icon: (self iconNamed: self menuIconName);
+		order: self menuPriority;
 		help: self helpMessage;
 		action: [ self open ]
+]
+
+{ #category : #menu }
+MiQueriesBrowser class >> menuIconName [
+
+	^ #mooseTree
+]
+
+{ #category : #menu }
+MiQueriesBrowser class >> menuPriority [
+
+	^ 3
 ]
 
 { #category : #'instance creation' }
