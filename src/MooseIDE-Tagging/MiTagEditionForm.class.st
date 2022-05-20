@@ -71,6 +71,12 @@ MiTagEditionForm >> formLayout [
 ]
 
 { #category : #initialization }
+MiTagEditionForm >> formTitle [
+
+	^ 'Edit tag'
+]
+
+{ #category : #initialization }
 MiTagEditionForm >> initializePresenters [
 
 	super initializePresenters.

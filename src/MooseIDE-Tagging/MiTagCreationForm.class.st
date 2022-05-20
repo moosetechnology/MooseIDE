@@ -73,6 +73,12 @@ MiTagCreationForm >> fetchQueries [
 ]
 
 { #category : #initialization }
+MiTagCreationForm >> formTitle [
+
+	^ 'Create tag'
+]
+
+{ #category : #initialization }
 MiTagCreationForm >> initialize [
 
 	super initialize.
@@ -103,7 +109,7 @@ MiTagCreationForm >> initializeLayout [
 				                 yourself)
 		                width: colorPickerWidth;
 		                add: (SpBoxLayout newLeftToRight
-				                 add: 'Create tag' asPresenter;
+				                 add: self formTitle asPresenter;
 				                 hAlignCenter;
 				                 yourself);
 		                yourself.
