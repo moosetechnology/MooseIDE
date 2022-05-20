@@ -44,13 +44,21 @@ Class {
 }
 
 { #category : #menu }
-MiAbstractBrowser class >> addItemOrSubMenuToMiBrowsersMenu: aMenuPresenter [
+MiAbstractBrowser class >> addItemOrSubMenuToMiBrowsersMenu: aRootMenu defaultSubMenu: aSubMenu [
 
-	self addToMiBrowsersMenu: aMenuPresenter
+	self addToMiBrowsersMenu: aSubMenu
 ]
 
 { #category : #menu }
-MiAbstractBrowser class >> addToMiBrowsersMenu: aMenuGroupPresenter [
+MiAbstractBrowser class >> addToMiBrowsersMenu: aMenuPresenter [
+
+	"Override with an empty method if you don't want your browser in Moose menu"
+
+	self buildItemInMenu: aMenuPresenter
+]
+
+{ #category : #menu }
+MiAbstractBrowser class >> buildItemInMenu: aMenuGroupPresenter [
 
 	"Override with an empty method if you don't want your browser in Moose menu"
 
@@ -66,6 +74,12 @@ MiAbstractBrowser class >> addToMiBrowsersMenu: aMenuGroupPresenter [
 MiAbstractBrowser class >> defaultLayout [
 
 	^ SpBoxLayout newVertical
+]
+
+{ #category : #menu }
+MiAbstractBrowser class >> defaultSubMenuLabel [
+
+	^ 'Specialized Browsers'
 ]
 
 { #category : #'world menu' }
@@ -126,12 +140,22 @@ MiAbstractBrowser class >> metaBrowsersMenuLabel [
 { #category : #menu }
 MiAbstractBrowser class >> miBrowsersMenuPresenter [
 
-	| menu |
-	menu := SpMenuPresenter new.
+	| rootMenu defaultSubMenu |
+	rootMenu := SpMenuPresenter new.
+	defaultSubMenu := SpMenuPresenter new.
+
 	(self subclasses sortAscending: [ :browserClass | 
 		 browserClass menuPriority ]) do: [ :browserClass | 
-		browserClass addItemOrSubMenuToMiBrowsersMenu: menu ].
-	^ menu
+		browserClass
+			addItemOrSubMenuToMiBrowsersMenu: rootMenu
+			defaultSubMenu: defaultSubMenu ].
+
+	rootMenu addItem: [ :item | 
+		item
+			name: self defaultSubMenuLabel;
+			subMenu: defaultSubMenu ].
+
+	^ rootMenu
 ]
 
 { #category : #'world menu' }

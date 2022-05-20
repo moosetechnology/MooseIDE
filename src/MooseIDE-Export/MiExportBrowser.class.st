@@ -21,6 +21,12 @@ Class {
 	#category : #'MooseIDE-Export-Browser'
 }
 
+{ #category : #menu }
+MiExportBrowser class >> addItemOrSubMenuToMiBrowsersMenu: aRootMenu defaultSubMenu: aSubMenu [
+
+	self addToMiBrowsersMenu: aRootMenu
+]
+
 { #category : #actions }
 MiExportBrowser class >> commentColumnTitle [
 

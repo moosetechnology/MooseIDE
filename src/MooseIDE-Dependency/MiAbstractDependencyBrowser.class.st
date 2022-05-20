@@ -26,10 +26,10 @@ Class {
 	#category : #'MooseIDE-Dependency-Dependency'
 }
 
-{ #category : #'world menu' }
-MiAbstractDependencyBrowser class >> addItemOrSubMenuToMiBrowsersMenu: aMenuPresenter [
+{ #category : #menu }
+MiAbstractDependencyBrowser class >> addItemOrSubMenuToMiBrowsersMenu: aRootMenu defaultSubMenu: aSubMenu [
 
-	aMenuPresenter addItem: [ :item | 
+	aSubMenu addItem: [ :item | 
 		| subMenu |
 		subMenu := SpMenuPresenter new.
 		self subclassesDo: [ :browserClass | 
@@ -37,12 +37,6 @@ MiAbstractDependencyBrowser class >> addItemOrSubMenuToMiBrowsersMenu: aMenuPres
 		item
 			name: self subMenuLabel;
 			subMenu: subMenu ]
-]
-
-{ #category : #adding }
-MiAbstractDependencyBrowser class >> addToMiBrowsersSubMenu: aMenuGroupPresenter [
-
-	aMenuGroupPresenter addItem: [ :item | item name: self title ]
 ]
 
 { #category : #testing }

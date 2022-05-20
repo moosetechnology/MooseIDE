@@ -7,6 +7,12 @@ Class {
 	#category : #'MooseIDE-Core-Logger'
 }
 
+{ #category : #menu }
+MiLogsBrowser class >> addItemOrSubMenuToMiBrowsersMenu: aRootMenu defaultSubMenu: aSubMenu [
+
+	self addToMiBrowsersMenu: aRootMenu
+]
+
 { #category : #'world menu' }
 MiLogsBrowser class >> menuCommandOn: aBuilder [
 

@@ -4,10 +4,10 @@ Class {
 	#category : #'MooseIDE-Famix-Browser'
 }
 
-{ #category : #adding }
-MiAbstractFamixBrowser class >> addItemOrSubMenuToMiBrowsersMenu: aMenuPresenter [
+{ #category : #menu }
+MiAbstractFamixBrowser class >> addItemOrSubMenuToMiBrowsersMenu: aRootMenu defaultSubMenu: aSubMenu [
 
-	aMenuPresenter addItem: [ :item | 
+	aSubMenu addItem: [ :item | 
 		| subMenu |
 		subMenu := SpMenuPresenter new.
 		self subclassesDo: [ :browserClass | 

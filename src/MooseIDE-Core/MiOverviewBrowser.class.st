@@ -106,7 +106,7 @@ MiOverviewBrowser >> browsersMenu [
 	| browsersMenu |
 	browsersMenu := MiAbstractBrowser miBrowsersMenuPresenter.
 
-"	(self collectMenuItems: browsersMenu)
+	"(self collectMenuItems: browsersMenu)
 		do: [ :item | self replaceMenuItemAction: item ]."
 	^ browsersMenu
 ]

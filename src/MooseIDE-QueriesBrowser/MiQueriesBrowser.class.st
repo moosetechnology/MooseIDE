@@ -16,6 +16,12 @@ Class {
 	#category : #'MooseIDE-QueriesBrowser-Main presenters'
 }
 
+{ #category : #menu }
+MiQueriesBrowser class >> addItemOrSubMenuToMiBrowsersMenu: aRootMenu defaultSubMenu: aSubMenu [
+
+	self addToMiBrowsersMenu: aRootMenu
+]
+
 { #category : #'world menu' }
 MiQueriesBrowser class >> menuCommandOn: aBuilder [
 
