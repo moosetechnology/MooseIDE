@@ -34,6 +34,12 @@ MiUMLBrowser class >> menuCommandOn: aBuilder [
 		action: [ self open ]
 ]
 
+{ #category : #menu }
+MiUMLBrowser class >> menuIconName [
+
+	^ #mooseUml
+]
+
 { #category : #'instance creation' }
 MiUMLBrowser class >> newModel [
 

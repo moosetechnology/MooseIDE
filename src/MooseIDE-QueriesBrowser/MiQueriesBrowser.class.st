@@ -30,6 +30,12 @@ MiQueriesBrowser class >> menuCommandOn: aBuilder [
 		action: [ self open ]
 ]
 
+{ #category : #menu }
+MiQueriesBrowser class >> menuIconName [
+
+	^ #mooseTree
+]
+
 { #category : #'instance creation' }
 MiQueriesBrowser class >> newModel [
 

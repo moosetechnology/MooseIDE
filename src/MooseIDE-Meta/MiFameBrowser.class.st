@@ -35,6 +35,12 @@ MiFameBrowser class >> menuCommandOn: aBuilder [
 		action: [ self open ]
 ]
 
+{ #category : #menu }
+MiFameBrowser class >> menuIconName [
+
+	^ #mooseFame
+]
+
 { #category : #'instance creation' }
 MiFameBrowser class >> open [
 	<script>

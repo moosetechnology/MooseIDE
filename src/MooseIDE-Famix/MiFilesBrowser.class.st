@@ -42,6 +42,12 @@ MiFilesBrowser class >> menuCommandOn: aBuilder [
 		action: [ self open ]
 ]
 
+{ #category : #menu }
+MiFilesBrowser class >> menuIconName [
+
+	^ #mooseFolder
+]
+
 { #category : #'instance creation' }
 MiFilesBrowser class >> newModel [
 	^ MiFilesModel new

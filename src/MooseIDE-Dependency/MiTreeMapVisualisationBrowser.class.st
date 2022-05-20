@@ -35,6 +35,12 @@ MiTreeMapVisualisationBrowser class >> menuCommandOn: aBuilder [
 		action: [ self open ]
 ]
 
+{ #category : #menu }
+MiTreeMapVisualisationBrowser class >> menuIconName [
+
+	^ #mooseTreeMap
+]
+
 { #category : #'instance creation' }
 MiTreeMapVisualisationBrowser class >> newModel [
 

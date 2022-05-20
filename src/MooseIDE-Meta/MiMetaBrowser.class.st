@@ -36,6 +36,12 @@ MiMetaBrowser class >> menuCommandOn: aBuilder [
 		action: [ self open ]
 ]
 
+{ #category : #menu }
+MiMetaBrowser class >> menuIconName [
+
+	^ #mooseFame
+]
+
 { #category : #'instance creation' }
 MiMetaBrowser class >> newModel [
 

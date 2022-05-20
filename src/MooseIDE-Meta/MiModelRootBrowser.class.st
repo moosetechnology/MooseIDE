@@ -54,6 +54,12 @@ MiModelRootBrowser class >> menuCommandOn: aBuilder [
 		action: [ self open ]
 ]
 
+{ #category : #menu }
+MiModelRootBrowser class >> menuIconName [
+
+	^ #mooseNavigation
+]
+
 { #category : #'instance creation' }
 MiModelRootBrowser class >> newModel [
 	^ MiModelRootBrowserModel new

@@ -52,6 +52,12 @@ MiInspectorBrowser class >> menuCommandOn: aBuilder [
 		action: [ self open ]
 ]
 
+{ #category : #menu }
+MiInspectorBrowser class >> menuIconName [
+
+	^ #smallInspectIt
+]
+
 { #category : #'instance creation' }
 MiInspectorBrowser class >> newModel [
 

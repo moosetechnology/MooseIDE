@@ -26,6 +26,12 @@ MiDuplicationBrowser class >> menuCommandOn: aBuilder [
 		action: [ self open ]
 ]
 
+{ #category : #menu }
+MiDuplicationBrowser class >> menuIconName [
+
+	^ #smallCopy
+]
+
 { #category : #'instance creation' }
 MiDuplicationBrowser class >> newModel [
 

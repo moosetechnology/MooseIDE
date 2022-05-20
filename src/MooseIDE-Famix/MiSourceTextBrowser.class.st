@@ -38,6 +38,12 @@ MiSourceTextBrowser class >> menuCommandOn: aBuilder [
 		action: [ self open ]
 ]
 
+{ #category : #menu }
+MiSourceTextBrowser class >> menuIconName [
+
+	^ #mooseSourceText
+]
+
 { #category : #'instance creation' }
 MiSourceTextBrowser class >> newModel [
 

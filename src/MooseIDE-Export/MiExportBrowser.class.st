@@ -50,6 +50,12 @@ MiExportBrowser class >> menuCommandOn: aBuilder [
 		action: [ self open ]
 ]
 
+{ #category : #menu }
+MiExportBrowser class >> menuIconName [
+
+	^ #smallExport
+]
+
 { #category : #'instance creation' }
 MiExportBrowser class >> open [
 

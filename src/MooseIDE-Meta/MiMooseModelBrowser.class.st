@@ -38,6 +38,12 @@ MiMooseModelBrowser class >> menuCommandOn: aBuilder [
 		action: [ self open ]
 ]
 
+{ #category : #menu }
+MiMooseModelBrowser class >> menuIconName [
+
+	^ #mooseNavigation
+]
+
 { #category : #'instance creation' }
 MiMooseModelBrowser class >> mostRecentModel [
 	^ self currentApplication defaultBus logger mostRecentEntity

@@ -35,7 +35,7 @@ MiDependencyBrowser class >> menuCommandOn: aBuilder [
 		action: [ self open ]
 ]
 
-{ #category : #'world menu' }
+{ #category : #menu }
 MiDependencyBrowser class >> menuIconName [
 
 	^ #mooseTree

@@ -34,6 +34,12 @@ MiPropertyBrowser class >> menuCommandOn: aBuilder [
 		action: [ self open ]
 ]
 
+{ #category : #menu }
+MiPropertyBrowser class >> menuIconName [
+
+	^ #mooseProperties
+]
+
 { #category : #'instance creation' }
 MiPropertyBrowser class >> open [
 	<script>
