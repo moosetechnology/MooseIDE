@@ -88,6 +88,12 @@ MiModelRootBrowser >> canFollowEntity: anObject [
 	^ false
 ]
 
+{ #category : #testing }
+MiModelRootBrowser >> canPropagate [
+
+	^ self miSelectedItem isMooseObject
+]
+
 { #category : #actions }
 MiModelRootBrowser >> followEntity: anEntity [
 
@@ -133,7 +139,13 @@ MiModelRootBrowser >> initializeToolbar [
 { #category : #accessing }
 MiModelRootBrowser >> miSelectedItem [
 
-	^ self selected
+	^ self selected ifNotNil: [ :selectedModel | 
+		  (selectedModel reject: [ :each | each isStub ]) asMooseGroup ]
+]
+
+{ #category : #'accessing - tests' }
+MiModelRootBrowser >> modelFilteringList [
+	^ modelFilteringList
 ]
 
 { #category : #initialization }
