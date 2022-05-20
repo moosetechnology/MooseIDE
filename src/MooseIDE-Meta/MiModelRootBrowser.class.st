@@ -13,7 +13,8 @@ Class {
 	#superclass : #MiAbstractBrowser,
 	#instVars : [
 		'toolbar',
-		'modelFilteringList'
+		'modelFilteringList',
+		'blockWhenSelection'
 	],
 	#category : #'MooseIDE-Meta-ModelRootBrowser'
 }
@@ -70,14 +71,6 @@ MiModelRootBrowser class >> title [
 	^ 'Models browser'
 ]
 
-{ #category : #updating }
-MiModelRootBrowser class >> updateAll [
-
-	self allInstances
-		select: [ :browser | browser window isOpen ]
-		thenDo: [ :browser | browser updateList ]
-]
-
 { #category : #specs }
 MiModelRootBrowser class >> windowSize [
 	^ 600 @ 400
@@ -91,7 +84,7 @@ MiModelRootBrowser >> canFollowEntity: anObject [
 { #category : #testing }
 MiModelRootBrowser >> canPropagate [
 
-	^ self miSelectedItem isMooseObject
+	^model canPropagate
 ]
 
 { #category : #actions }
@@ -106,19 +99,15 @@ MiModelRootBrowser >> followEntity: anEntity [
 MiModelRootBrowser >> initializeList [
 
 	modelFilteringList := self newFilteringList.
-	modelFilteringList items: MooseModel root.
-	MooseModel root ifNotEmpty: [ :root | 
-		modelFilteringList selectItem: root anyOne.
-		model selected: root anyOne ].
+	self listOfMooseModels: model mooseModelsList.
 
 	modelFilteringList display: [ :mooseModel | mooseModel name ].
 
-	modelFilteringList listPresenter
-		contextMenu: [ 
-			(self class buildModelCommandsGroupWith: self) asMenuPresenter ];
-		whenSelectionChangedDo: [ :selected | 
-			model selected: selected selectedItem.
-			self updateToolbar ]
+	modelFilteringList listPresenter contextMenu: [ 
+		(self class buildModelCommandsGroupWith: self) asMenuPresenter ].
+	blockWhenSelection := [ :selected | 
+	                      model selected: selected selectedItem ].
+	modelFilteringList whenSelectionChangedDo: blockWhenSelection
 ]
 
 { #category : #initialization }
@@ -136,11 +125,16 @@ MiModelRootBrowser >> initializeToolbar [
 	toolbar addItem: self refreshToolbarButton
 ]
 
+{ #category : #updating }
+MiModelRootBrowser >> listOfMooseModels: aList [
+modelFilteringList items: aList
+	
+]
+
 { #category : #accessing }
 MiModelRootBrowser >> miSelectedItem [
 
-	^ self selected ifNotNil: [ :selectedModel | 
-		  (selectedModel reject: [ :each | each isStub ]) asMooseGroup ]
+	^model selected
 ]
 
 { #category : #'accessing - tests' }
@@ -158,31 +152,24 @@ MiModelRootBrowser >> refreshToolbarButton [
 		  yourself
 ]
 
-{ #category : #accessing }
-MiModelRootBrowser >> selected [
-	^ model selected
-]
-
-{ #category : #accessing }
-MiModelRootBrowser >> selectedObject [
-
-	^ modelFilteringList selectedItem
+{ #category : #actions }
+MiModelRootBrowser >> showSelectedItem: anItem [
+	"This method is intended to show what item is selected
+	It is called by the MiModelRootBrowserModel so it should take care to not call it again"
+	modelFilteringList whenSelectionChangedDo: [ :ignored | "ignored to avoid calling the MiModelRootBrowserModel again"
+		 ].
+	modelFilteringList selectItem: anItem.
+	modelFilteringList whenSelectionChangedDo: blockWhenSelection
 ]
 
 { #category : #updating }
 MiModelRootBrowser >> updateForNewModel: aModel [
+	model updateForNewModel: aModel
 
-	self class updateAll.
-	modelFilteringList selectItem: aModel
 ]
 
 { #category : #updating }
 MiModelRootBrowser >> updateList [
 
-	self freezeDuring: [ 
-		| selected |
-		selected := self selected.
-		modelFilteringList listPresenter updateList.
-		modelFilteringList selectItem:
-			(selected ifNil: [ modelFilteringList items first ]) ]
+	model updateMooseModelsList
 ]

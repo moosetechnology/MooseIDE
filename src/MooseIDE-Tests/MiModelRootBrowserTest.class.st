@@ -75,3 +75,67 @@ MiModelRootBrowserTest >> testMiSelectedItemWithoutStub [
 
 	
 ]
+
+{ #category : #tests }
+MiModelRootBrowserTest >> testUpdateForNewModel [
+
+	| newModel |
+	MooseModel root add: (FamixStModel new
+			 name: 'model1';
+			 yourself).
+	browser updateList.
+
+	self assert: browser model mooseModelsList size equals: 1.
+self assert: browser model rawSelectedMooseModel isNil.
+	newModel := FamixStModel new
+		            name: 'model2';
+		            yourself.
+	MooseModel root add: newModel.
+	browser updateForNewModel: newModel.
+
+	self assert: browser model mooseModelsList size equals: 2.
+	self assert: browser model rawSelectedMooseModel equals: newModel
+]
+
+{ #category : #tests }
+MiModelRootBrowserTest >> testUpdateForNewModelMultipleBrowsers [
+
+	| browser2 newModel |
+	MooseModel root add: (FamixStModel new
+			 name: 'model1';
+			 yourself).
+	browser2 := self browserClass openForTests.
+	browser updateList.
+
+	self assert: browser model mooseModelsList size equals: 1.
+	self assert: browser model rawSelectedMooseModel isNil.
+
+	self assert: browser2 model mooseModelsList size equals: 1.
+	self assert: browser2 model rawSelectedMooseModel isNil.
+
+	newModel := FamixStModel new
+		            name: 'model2';
+		            yourself.
+	MooseModel root add: newModel.
+	browser updateForNewModel: newModel.
+
+	self assert: browser model mooseModelsList size equals: 2.
+	self assert: browser model rawSelectedMooseModel equals: newModel.
+
+	self assert: browser2 model mooseModelsList size equals: 2.
+	self assert: browser2 model rawSelectedMooseModel isNil.
+	
+browser2 window close
+]
+
+{ #category : #tests }
+MiModelRootBrowserTest >> testUpdateList [
+
+	self assertEmpty: browser model mooseModelsList.
+
+	MooseModel root add: FamixStModel new.
+
+	browser updateList.
+
+	self assert: browser model mooseModelsList size equals: 1
+]
