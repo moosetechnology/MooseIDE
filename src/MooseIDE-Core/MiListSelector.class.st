@@ -12,7 +12,8 @@ Class {
 		'selectButton',
 		'selectAllButton',
 		'unselectAllButton',
-		'unselectButton'
+		'unselectButton',
+		'onSelectionChangeBlock'
 	],
 	#category : #'MooseIDE-Core-Widgets'
 }
@@ -55,6 +56,12 @@ MiListSelector >> addSelected [
 		(initialList listPresenter items \ selectedItems)
 ]
 
+{ #category : #initialization }
+MiListSelector >> evaluateOnChange [
+
+	^ onSelectionChangeBlock value: selectedList listPresenter items
+]
+
 { #category : #accessing }
 MiListSelector >> initialItems: aCollection [
 
@@ -70,18 +77,27 @@ MiListSelector >> initialListHeader: aString [
 { #category : #initialization }
 MiListSelector >> initializeButtons [
 
+	onSelectionChangeBlock := [ :items  ].
 	selectButton := self newButton
-		             label: '>';
-		             action: [ self addSelected ].
+		                label: '>';
+		                action: [ 
+			                self addSelected.
+			                self evaluateOnChange ].
 	selectAllButton := self newButton
-		                label: '>>>';
-		                action: [ self selectAll ].
+		                   label: '>>>';
+		                   action: [ 
+			                   self selectAll.
+			                   self evaluateOnChange ].
 	unselectButton := self newButton
-		                label: '<';
-		                action: [ self removeSelected ].
+		                  label: '<';
+		                  action: [ 
+			                  self removeSelected.
+			                  self evaluateOnChange ].
 	unselectAllButton := self newButton
-		                   label: '<<<';
-		                   action: [ self unselectAll ]
+		                     label: '<<<';
+		                     action: [ 
+			                     self unselectAll.
+			                     self evaluateOnChange ]
 ]
 
 { #category : #initialization }
@@ -156,4 +172,9 @@ MiListSelector >> unselectAll [
 		initialList listPresenter items , selectedList listPresenter items.
 
 	selectedList listPresenter items: {  }
+]
+
+{ #category : #selection }
+MiListSelector >> whenSelectionChangedDo: aBlock [
+	 onSelectionChangeBlock := aBlock.
 ]
