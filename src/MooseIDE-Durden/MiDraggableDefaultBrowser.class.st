@@ -9,6 +9,14 @@ Class {
 	#category : #'MooseIDE-Durden'
 }
 
+{ #category : #adding }
+MiDraggableDefaultBrowser class >> addToMiBrowsersMenu: aMenuGroupPresenter [
+
+	"Do not appear in menu"
+
+	
+]
+
 { #category : #specs }
 MiDraggableDefaultBrowser class >> defaultLayout [
 	^ SpBoxLayout newVertical

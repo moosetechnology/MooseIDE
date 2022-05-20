@@ -9,6 +9,14 @@ Class {
 	#category : #'MooseIDE-Core-Logger'
 }
 
+{ #category : #adding }
+MiBusLogBrowser class >> addToMiBrowsersMenu: aMenuGroupPresenter [
+
+	"Do not appear in menu"
+
+	
+]
+
 { #category : #'instance creation' }
 MiBusLogBrowser class >> forBus: aBus [
 

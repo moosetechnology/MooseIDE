@@ -27,15 +27,15 @@ Class {
 }
 
 { #category : #'world menu' }
-MiAbstractDependencyBrowser class >> addToMiBrowsersMenu: aMenuPresenter [
+MiAbstractDependencyBrowser class >> addItemOrSubMenuToMiBrowsersMenu: aMenuPresenter [
 
 	aMenuPresenter addItem: [ :item | 
 		| subMenu |
 		subMenu := SpMenuPresenter new.
 		self subclassesDo: [ :browserClass | 
-			browserClass addToMiBrowsersSubMenu: subMenu ].
+			browserClass addToMiBrowsersMenu: subMenu ].
 		item
-			name: 'Dependency';
+			name: self subMenuLabel;
 			subMenu: subMenu ]
 ]
 
@@ -54,17 +54,24 @@ MiAbstractDependencyBrowser class >> isAbstract [
 MiAbstractDependencyBrowser class >> localMenuGroupIn: aMenuPresenter [
 
 	^ aMenuPresenter menuGroups detect: [ :group | 
-		  group label = 'Dependency' ]
+		  group label = self subMenuLabel ]
 ]
 
 { #category : #'world menu' }
 MiAbstractDependencyBrowser class >> menuCommandOn: aBuilder [
+
 	<worldMenu>
 	<miBrowsers>
 	(aBuilder item: self toolbarDependencyName)
-		parent: (self midasBrowserMenuLabel) ;
-		order: 30 ;
-		label: 'Dependency'
+		parent: self midasBrowserMenuLabel;
+		order: 30;
+		label: self subMenuLabel
+]
+
+{ #category : #'world menu' }
+MiAbstractDependencyBrowser class >> subMenuLabel [
+
+	^ 'Dependency'
 ]
 
 { #category : #'world menu' }

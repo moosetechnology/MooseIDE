@@ -43,12 +43,23 @@ Class {
 	#category : #'MooseIDE-Core-Browser'
 }
 
-{ #category : #adding }
-MiAbstractBrowser class >> addToMiBrowsersMenu: aMenuPresenter [
+{ #category : #menu }
+MiAbstractBrowser class >> addItemOrSubMenuToMiBrowsersMenu: aMenuPresenter [
 
-	"self subclassResponsibility "
+	self addToMiBrowsersMenu: aMenuPresenter
+]
 
-	
+{ #category : #menu }
+MiAbstractBrowser class >> addToMiBrowsersMenu: aMenuGroupPresenter [
+
+	"Override with an empty method if you don't want your browser in Moose menu"
+
+	aMenuGroupPresenter addItem: [ :item | 
+		item
+			name: self title;
+			action: [ self open ];
+			help: self helpMessage;
+			icon: self menuIcon ]
 ]
 
 { #category : #specs }
@@ -78,6 +89,18 @@ MiAbstractBrowser class >> menuCommandOn: aBuilder [
 		icon: MooseIcons mooseIcon
 ]
 
+{ #category : #menu }
+MiAbstractBrowser class >> menuIcon [
+
+	^ self iconNamed: self menuIconName
+]
+
+{ #category : #menu }
+MiAbstractBrowser class >> menuIconName [
+
+	^ #blank
+]
+
 { #category : #'world menu' }
 MiAbstractBrowser class >> menuMetaCommandOn: aBuilder [
 	"need to be a separate method because of #miBrowsers pragma"
@@ -100,7 +123,7 @@ MiAbstractBrowser class >> miBrowsersMenuPresenter [
 	| menu |
 	menu := SpMenuPresenter new.
 	self subclassesDo: [ :browserClass | 
-		browserClass addToMiBrowsersMenu: menu ].
+		browserClass addItemOrSubMenuToMiBrowsersMenu: menu ].
 	^ menu
 ]
 

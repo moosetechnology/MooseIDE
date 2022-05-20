@@ -14,12 +14,6 @@ Class {
 	#category : #'MooseIDE-Dependency-Dependency'
 }
 
-{ #category : #adding }
-MiDependencyBrowser class >> addToMiBrowsersMenu: aMenuGroupPresenter [
-
-	aMenuGroupPresenter addItem: [ :item | item label: self title ]
-]
-
 { #category : #layout }
 MiDependencyBrowser class >> defaultLayout [
 	^ super defaultLayout
@@ -29,15 +23,22 @@ MiDependencyBrowser class >> defaultLayout [
 
 { #category : #'world menu' }
 MiDependencyBrowser class >> menuCommandOn: aBuilder [
+
 	<worldMenu>
 	<miBrowsers>
 	(aBuilder item: #DependencyVisualisationBrowser)
 		parent: self toolbarDependencyName;
 		label: self title;
 		order: 0;
-		icon: (self iconNamed: #mooseTree);
+		icon: (self iconNamed: self menuIconName);
 		help: self helpMessage;
 		action: [ self open ]
+]
+
+{ #category : #'world menu' }
+MiDependencyBrowser class >> menuIconName [
+
+	^ #mooseTree
 ]
 
 { #category : #'world menu' }
