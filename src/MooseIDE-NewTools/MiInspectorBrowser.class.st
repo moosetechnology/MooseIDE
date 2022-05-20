@@ -47,7 +47,7 @@ MiInspectorBrowser class >> menuCommandOn: aBuilder [
 		parent: #Moose;
 		label: self title;
 		icon: (self iconNamed: self menuIconName);
-		order: 5;
+		order: self menuPriority;
 		help: self helpMessage;
 		action: [ self open ]
 ]
@@ -56,6 +56,12 @@ MiInspectorBrowser class >> menuCommandOn: aBuilder [
 MiInspectorBrowser class >> menuIconName [
 
 	^ #smallInspectIt
+]
+
+{ #category : #menu }
+MiInspectorBrowser class >> menuPriority [
+
+	^ 5
 ]
 
 { #category : #'instance creation' }

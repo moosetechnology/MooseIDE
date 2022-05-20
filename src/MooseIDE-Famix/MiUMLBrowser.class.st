@@ -29,7 +29,7 @@ MiUMLBrowser class >> menuCommandOn: aBuilder [
 		parent: (self toolbarFamixName);
 		label: (self title);
 		icon: (self iconNamed: self menuIconName);
-		order: 4;
+		order: self menuPriority;
 		help: (self helpMessage);
 		action: [ self open ]
 ]
@@ -38,6 +38,12 @@ MiUMLBrowser class >> menuCommandOn: aBuilder [
 MiUMLBrowser class >> menuIconName [
 
 	^ #mooseUml
+]
+
+{ #category : #menu }
+MiUMLBrowser class >> menuPriority [
+
+	^ 4
 ]
 
 { #category : #'instance creation' }

@@ -112,6 +112,12 @@ MiAbstractBrowser class >> menuMetaCommandOn: aBuilder [
 		icon: MooseIcons mooseIcon
 ]
 
+{ #category : #menu }
+MiAbstractBrowser class >> menuPriority [
+
+	^ 100
+]
+
 { #category : #'world menu' }
 MiAbstractBrowser class >> metaBrowsersMenuLabel [
 	^ #Meta
@@ -122,7 +128,8 @@ MiAbstractBrowser class >> miBrowsersMenuPresenter [
 
 	| menu |
 	menu := SpMenuPresenter new.
-	self subclassesDo: [ :browserClass | 
+	(self subclasses sortAscending: [ :browserClass | 
+		 browserClass menuPriority ]) do: [ :browserClass | 
 		browserClass addItemOrSubMenuToMiBrowsersMenu: menu ].
 	^ menu
 ]

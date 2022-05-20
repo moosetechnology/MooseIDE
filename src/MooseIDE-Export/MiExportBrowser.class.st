@@ -45,7 +45,7 @@ MiExportBrowser class >> menuCommandOn: aBuilder [
 		parent: #Moose;
 		label: self title;
 		icon: (self iconNamed: self menuIconName);
-		order: 6;
+		order: self menuPriority;
 		help: self helpMessage;
 		action: [ self open ]
 ]
@@ -54,6 +54,12 @@ MiExportBrowser class >> menuCommandOn: aBuilder [
 MiExportBrowser class >> menuIconName [
 
 	^ #smallExport
+]
+
+{ #category : #menu }
+MiExportBrowser class >> menuPriority [
+
+	^ 6
 ]
 
 { #category : #'instance creation' }

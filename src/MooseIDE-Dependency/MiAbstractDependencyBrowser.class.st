@@ -64,8 +64,14 @@ MiAbstractDependencyBrowser class >> menuCommandOn: aBuilder [
 	<miBrowsers>
 	(aBuilder item: self toolbarDependencyName)
 		parent: self midasBrowserMenuLabel;
-		order: 30;
+		order: self menuPriority;
 		label: self subMenuLabel
+]
+
+{ #category : #'world menu' }
+MiAbstractDependencyBrowser class >> menuPriority [
+
+	^ 30
 ]
 
 { #category : #'world menu' }

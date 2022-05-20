@@ -25,7 +25,7 @@ MiQueriesBrowser class >> menuCommandOn: aBuilder [
 		parent: #Moose;
 		label: self title;
 		icon: (self iconNamed: self menuIconName);
-		order: 3;
+		order: self menuPriority;
 		help: self helpMessage;
 		action: [ self open ]
 ]
@@ -34,6 +34,12 @@ MiQueriesBrowser class >> menuCommandOn: aBuilder [
 MiQueriesBrowser class >> menuIconName [
 
 	^ #mooseTree
+]
+
+{ #category : #menu }
+MiQueriesBrowser class >> menuPriority [
+
+	^ 3
 ]
 
 { #category : #'instance creation' }

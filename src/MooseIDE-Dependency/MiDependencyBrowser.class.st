@@ -29,7 +29,7 @@ MiDependencyBrowser class >> menuCommandOn: aBuilder [
 	(aBuilder item: #DependencyVisualisationBrowser)
 		parent: self toolbarDependencyName;
 		label: self title;
-		order: 0;
+		order: self menuPriority;
 		icon: (self iconNamed: self menuIconName);
 		help: self helpMessage;
 		action: [ self open ]
@@ -39,6 +39,12 @@ MiDependencyBrowser class >> menuCommandOn: aBuilder [
 MiDependencyBrowser class >> menuIconName [
 
 	^ #mooseTree
+]
+
+{ #category : #menu }
+MiDependencyBrowser class >> menuPriority [
+
+	^ 0
 ]
 
 { #category : #'world menu' }

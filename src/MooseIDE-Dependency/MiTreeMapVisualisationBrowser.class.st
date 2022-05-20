@@ -32,7 +32,7 @@ MiTreeMapVisualisationBrowser class >> menuCommandOn: aBuilder [
 		label: self title;
 		icon: (self iconNamed: self menuIconName);
 		help: self helpMessage;
-		order: 3.0;
+		order: self menuPriority;
 		action: [ self open ]
 ]
 
@@ -40,6 +40,12 @@ MiTreeMapVisualisationBrowser class >> menuCommandOn: aBuilder [
 MiTreeMapVisualisationBrowser class >> menuIconName [
 
 	^ #mooseTreeMap
+]
+
+{ #category : #menu }
+MiTreeMapVisualisationBrowser class >> menuPriority [
+
+	^ 3.0
 ]
 
 { #category : #'instance creation' }

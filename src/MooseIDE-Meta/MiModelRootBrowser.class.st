@@ -49,7 +49,7 @@ MiModelRootBrowser class >> menuCommandOn: aBuilder [
 		parent: #Moose ;
 		label: self title ;
 		icon: (self iconNamed: self menuIconName) ;
-		order: 2 ;
+		order: self menuPriority ;
 		help: self helpMessage ;
 		action: [ self open ]
 ]
@@ -58,6 +58,12 @@ MiModelRootBrowser class >> menuCommandOn: aBuilder [
 MiModelRootBrowser class >> menuIconName [
 
 	^ #mooseNavigation
+]
+
+{ #category : #menu }
+MiModelRootBrowser class >> menuPriority [
+
+	^ 2
 ]
 
 { #category : #'instance creation' }

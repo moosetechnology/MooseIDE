@@ -38,7 +38,7 @@ MiFilesBrowser class >> menuCommandOn: aBuilder [
 		label: (self title);
 		icon: (self iconNamed: self menuIconName);
 		help: (self helpMessage);
-		order: 3;
+		order: self menuPriority;
 		action: [ self open ]
 ]
 
@@ -46,6 +46,12 @@ MiFilesBrowser class >> menuCommandOn: aBuilder [
 MiFilesBrowser class >> menuIconName [
 
 	^ #mooseFolder
+]
+
+{ #category : #menu }
+MiFilesBrowser class >> menuPriority [
+
+	^ 3
 ]
 
 { #category : #'instance creation' }

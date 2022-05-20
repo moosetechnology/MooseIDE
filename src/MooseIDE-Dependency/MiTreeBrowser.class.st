@@ -29,7 +29,7 @@ MiTreeBrowser class >> menuCommandOn: aBuilder [
 	(aBuilder item: #TreeBrowser)
 		parent: self toolbarDependencyName;
 		label: self title;
-		order: 1.0;
+		order: self menuPriority;
 		icon: (self iconNamed: self menuIconName);
 		help: self helpMessage;
 		action: [ self open ]
@@ -39,6 +39,12 @@ MiTreeBrowser class >> menuCommandOn: aBuilder [
 MiTreeBrowser class >> menuIconName [
 
 	^ #mooseTree
+]
+
+{ #category : #menu }
+MiTreeBrowser class >> menuPriority [
+
+	^ 1.0
 ]
 
 { #category : #'instance creation' }

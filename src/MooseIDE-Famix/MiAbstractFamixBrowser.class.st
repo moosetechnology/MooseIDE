@@ -29,8 +29,14 @@ MiAbstractFamixBrowser class >> menuCommandOn: aBuilder [
 	<miBrowsers>
 	(aBuilder item: #MooseIDEFamixBrowser)
 		parent: self midasBrowserMenuLabel;
-		order: 40;
+		order: self menuPriority;
 		label: self subMenuLabel
+]
+
+{ #category : #'world menu' }
+MiAbstractFamixBrowser class >> menuPriority [
+
+	^ 40
 ]
 
 { #category : #'world menu' }
