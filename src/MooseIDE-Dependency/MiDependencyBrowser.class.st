@@ -23,15 +23,28 @@ MiDependencyBrowser class >> defaultLayout [
 
 { #category : #'world menu' }
 MiDependencyBrowser class >> menuCommandOn: aBuilder [
+
 	<worldMenu>
 	<miBrowsers>
 	(aBuilder item: #DependencyVisualisationBrowser)
 		parent: self toolbarDependencyName;
 		label: self title;
-		order: 0;
-		icon: (self iconNamed: #mooseTree);
+		order: self menuPriority;
+		icon: (self iconNamed: self menuIconName);
 		help: self helpMessage;
 		action: [ self open ]
+]
+
+{ #category : #menu }
+MiDependencyBrowser class >> menuIconName [
+
+	^ #mooseTree
+]
+
+{ #category : #menu }
+MiDependencyBrowser class >> menuPriority [
+
+	^ 0
 ]
 
 { #category : #'world menu' }

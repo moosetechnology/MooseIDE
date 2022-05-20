@@ -32,10 +32,22 @@ MiMooseModelBrowser class >> menuCommandOn: aBuilder [
 	(aBuilder item: #MooseModelBrowser)
 		parent: (self metaBrowsersMenuLabel);
 		label: (self title);
-		icon: (self iconNamed: #mooseNavigation);
-		order: 2;
+		icon: (self iconNamed: self menuIconName);
+		order: self menuPriority;
 		help: (self helpMessage);
 		action: [ self open ]
+]
+
+{ #category : #menu }
+MiMooseModelBrowser class >> menuIconName [
+
+	^ #mooseNavigation
+]
+
+{ #category : #menu }
+MiMooseModelBrowser class >> menuPriority [
+
+	^ 2
 ]
 
 { #category : #'instance creation' }

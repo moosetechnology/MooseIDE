@@ -20,9 +20,15 @@ MiSystemComplexityBrowser class >> menuCommandOn: aBuilder [
 		  parent: self midasBrowserMenuLabel;
 		  label: self title;
 		  help: self helpMessage;
-		  order: 6;
+		  order: self menuPriority;
 		  action: [ self open ];
 		  yourself
+]
+
+{ #category : #menu }
+MiSystemComplexityBrowser class >> menuPriority [
+
+	^ 6
 ]
 
 { #category : #'instance creation' }

@@ -32,10 +32,22 @@ MiSourceTextBrowser class >> menuCommandOn: aBuilder [
 	(aBuilder item: #SourceTextBrowser)
 		parent: (self toolbarFamixName) ;
 		label: (self title) ;
-		icon: (self iconNamed: #mooseSourceText);
-		order: 1 ;
+		icon: (self iconNamed: self menuIconName);
+		order: self menuPriority ;
 		help: (self helpMessage);
 		action: [ self open ]
+]
+
+{ #category : #menu }
+MiSourceTextBrowser class >> menuIconName [
+
+	^ #mooseSourceText
+]
+
+{ #category : #menu }
+MiSourceTextBrowser class >> menuPriority [
+
+	^ 1
 ]
 
 { #category : #'instance creation' }
