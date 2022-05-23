@@ -36,6 +36,12 @@ MiAbstractSettingItem class >> checkboxSetting [
 ]
 
 { #category : #'instance creation' }
+MiAbstractSettingItem class >> colorSetting [
+
+	^ MiColorSettingItem new
+]
+
+{ #category : #'instance creation' }
 MiAbstractSettingItem class >> droplistSetting [
 	^MiDroplistSettingItem new
 ]
@@ -55,7 +61,7 @@ MiAbstractSettingItem >> buildLayout [
 		  add: (label asPresenter
 				   help: help;
 				   yourself);
-		  add: self presenter;
+		  add: self presenter width: 250;
 		  yourself
 ]
 
