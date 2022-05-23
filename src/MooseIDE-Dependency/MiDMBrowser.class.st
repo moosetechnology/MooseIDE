@@ -64,7 +64,8 @@ MiDMBrowser >> addDynamicTags: aCollection [
 { #category : #actions }
 MiDMBrowser >> availableQueries [
 
-	^ self application itemsFor: FQAbstractQuery
+	^ (self application itemsFor: FQAbstractQuery) asOrderedCollection 
+		  select: [ :q | q isValid ]
 ]
 
 { #category : #initialization }
@@ -103,7 +104,7 @@ MiDMBrowser >> consume: aTag [
 MiDMBrowser >> followEntity: anEntity [
 
 	model entities: anEntity asMooseGroup.
-	visualization run
+	self runVisualization
 ]
 
 { #category : #testing }
@@ -139,6 +140,12 @@ MiDMBrowser >> miSelectedItem [
 MiDMBrowser >> remove: aTag [
 
 	tagCreateForm removeTag: aTag
+]
+
+{ #category : #actions }
+MiDMBrowser >> runVisualization [
+
+	visualization run
 ]
 
 { #category : #initialization }

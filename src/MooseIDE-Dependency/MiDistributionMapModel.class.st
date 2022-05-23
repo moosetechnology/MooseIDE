@@ -93,14 +93,15 @@ MiDistributionMapModel >> colorForNoTagSetting [
 MiDistributionMapModel >> colorForTag: aTag [
 
 	aTag color ifNotNil: [ :color | ^ color ].
-	^self colorForNoTagSetting
+
+	^ self colorForNoTagSetting
 ]
 
 { #category : #accessing }
 MiDistributionMapModel >> defaultChildrenQuery [
 
 	^ defaultChildrenQuery ifNil: [ 
-		  defaultChildrenQuery := FQScopeQuery down ]
+		  defaultChildrenQuery := FQScopeQuery down scope: FamixTClass]
 ]
 
 { #category : #accessing }
@@ -246,7 +247,7 @@ MiDistributionMapModel >> settings [
 { #category : #accessing }
 MiDistributionMapModel >> settingsChanged: aBoolean [
 
-	
+	aBoolean ifTrue: [ browser runVisualization ]
 ]
 
 { #category : #querying }
