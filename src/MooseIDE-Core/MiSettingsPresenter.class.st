@@ -51,15 +51,23 @@ MiSettingsPresenter >> connectPresenters [
 
 { #category : #layout }
 MiSettingsPresenter >> defaultLayout [
-	| tmpLayout |
-	tmpLayout := SpBoxLayout newTopToBottom.
-	settingItems valuesDo: [ :item | tmpLayout add: item buildLayout ].
-	tmpLayout add: (SpBoxLayout newLeftToRight
-			 add: btnCancel;
-			 add: btnReset;
-			 add: btnOk;
-			 yourself).
-	^tmpLayout
+
+	| tmpLayout tmpLayout2 |
+	tmpLayout := SpBoxLayout newTopToBottom
+		             spacing: self itemSpacing;
+		             vAlignCenter;
+		             yourself.
+	settingItems valuesDo: [ :item | 
+		tmpLayout add: item buildLayout expand: false ].
+	tmpLayout2 := SpBoxLayout newLeftToRight
+		              add: btnCancel;
+		              add: btnReset;
+		              add: btnOk;
+		              yourself.
+	^ SpBoxLayout newTopToBottom
+		  add: (SpScrollableLayout new child: tmpLayout);
+		  add: tmpLayout2 expand: false;
+		  yourself
 ]
 
 { #category : #accessing }
@@ -71,7 +79,8 @@ MiSettingsPresenter >> getItemValue: aString [
 { #category : #'morphic ui' }
 MiSettingsPresenter >> initialExtent [
 
-	^ 200 @ (10 max: settingItems size) + 1 * self settingItemHeight
+	^ 470 @ ((10 min: settingItems size) + 1 * self settingItemHeight
+	   + (settingItems size - 1 * self itemSpacing))
 ]
 
 { #category : #initialization }
@@ -94,13 +103,18 @@ MiSettingsPresenter >> initializePresenters [
 MiSettingsPresenter >> initializeWindow: aWindowPresenter [
 
 	super initializeWindow: aWindowPresenter.
-	aWindowPresenter title: ownerTool toolName , ' settings'.
-	aWindowPresenter initialExtent: self initialExtent
+	aWindowPresenter title: ownerTool toolName , ' settings'
 ]
 
 { #category : #accessing }
 MiSettingsPresenter >> itemNamed: aName [
 	^settingItems at: aName ifAbsent: [ MiNoSuchSettingItem signal ]
+]
+
+{ #category : #accessing }
+MiSettingsPresenter >> itemSpacing [
+
+	^ 2
 ]
 
 { #category : #'instance creation' }
