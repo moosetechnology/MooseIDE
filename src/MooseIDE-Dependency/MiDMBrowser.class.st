@@ -61,6 +61,12 @@ MiDMBrowser >> addDynamicTags: aCollection [
 	"settings refreshTagList"
 ]
 
+{ #category : #actions }
+MiDMBrowser >> availableQueries [
+
+	^ self application itemsFor: FQAbstractQuery
+]
+
 { #category : #initialization }
 MiDMBrowser >> browserClosed [
 

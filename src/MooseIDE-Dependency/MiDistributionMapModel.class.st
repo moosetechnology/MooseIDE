@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'browser',
 		'entities',
-		'settings'
+		'settings',
+		'defaultChildrenQuery'
 	],
 	#category : #'MooseIDE-Dependency-DistributionMap'
 }
@@ -37,6 +38,12 @@ MiDistributionMapModel class >> defaultDynamicTags [
 		  self defaultDynamicTagIsDead }
 ]
 
+{ #category : #settings }
+MiDistributionMapModel >> availableQueries [
+
+	^ { self defaultChildrenQuery } , browser availableQueries
+]
+
 { #category : #'accessing - tests' }
 MiDistributionMapModel >> browser [
 
@@ -46,7 +53,9 @@ MiDistributionMapModel >> browser [
 { #category : #accessing }
 MiDistributionMapModel >> browser: anObject [
 
-	browser := anObject
+	browser := anObject.
+
+	self initializeSettings
 ]
 
 { #category : #accessing }
@@ -57,7 +66,8 @@ MiDistributionMapModel >> childrenFor: anEntity [
 
 { #category : #settings }
 MiDistributionMapModel >> childrenQuerySetting [
-	^settings getItemValue: #childrenQuery
+
+	^ settings getItemValue: #childrenQuery
 ]
 
 { #category : #utilities }
@@ -84,6 +94,13 @@ MiDistributionMapModel >> colorForTag: aTag [
 
 	aTag color ifNotNil: [ :color | ^ color ].
 	^self colorForNoTagSetting
+]
+
+{ #category : #accessing }
+MiDistributionMapModel >> defaultChildrenQuery [
+
+	^ defaultChildrenQuery ifNil: [ 
+		  defaultChildrenQuery := FQScopeQuery down ]
 ]
 
 { #category : #accessing }
@@ -121,48 +138,37 @@ MiDistributionMapModel >> indexOfTagFor: anEntity [
 ]
 
 { #category : #initialization }
-MiDistributionMapModel >> initialize [
+MiDistributionMapModel >> initializeSettings [
 
-	super initialize.
-	self initializeSettings 
-
-]
-
-{ #category : #initialization }
-MiDistributionMapModel >> initializeSettings [ 
 	settings := MiSettingsPresenter new
-		"addItem: self itemChildrenBlock 		named: #childrenBlock ;"
-		addItem: self itemColorForNoTag	named: #colorForNoTag ;
-		addItem: self itemChildrenQuery 	named: #childrenQuery ;
-		addItem: self itemTags 				named: #tags ;
-		yourself.
+		            ownerTool: self;
+		            "addItem: self itemChildrenBlock 		named: #childrenBlock ;"
+		            addItem: self itemColorForNoTag
+		            named: #colorForNoTag;
+		            addItem: self itemChildrenQuery named: #childrenQuery;
+		            addItem: self itemTags named: #tags;
+		            yourself
 ]
 
 { #category : #settings }
 MiDistributionMapModel >> itemChildrenQuery [
-	^MiAbstractSettingItem droplistSetting
-		label: 'Children query' ;
-		help: 'The query giving all the children of any displayed entity' ;
-		yourself
+
+	^ MiAbstractSettingItem droplistSetting
+		  possibleValues: self availableQueries;
+		  setValue: self defaultChildrenQuery;
+		  label: 'Children query';
+		  help: 'The query giving all the children of any displayed entity';
+		  yourself
 ]
 
 { #category : #settings }
 MiDistributionMapModel >> itemColorForNoTag [
 
-	| colors |
-	colors := {Color black} , RSQualitativeColorPalette new set312 range.
-
-	^ MiAbstractSettingItem droplistSetting
-		  displayBlock: [ :color :listItem | 
-			  listItem icon: (Morph new
-						   color: color;
-						   asFormOfSize: 20 @ 20).
-			  color asHexString ];
-		  possibleValues: colors;
-		  setValue: colors anyOne;
+	^ MiAbstractSettingItem colorSetting
+		  setValue: Color gray;
 		  label: 'Color for entities without property';
 		  help:
-		  'Color to use when none of the properties apply to an entity';
+			  'Color to use when none of the properties apply to an entity';
 		  yourself
 ]
 
@@ -200,7 +206,7 @@ MiDistributionMapModel >> resetChildrenQuerySetting [
 	| settingQueries environmentQueries currentSelected |
 
 	settingQueries := (settings itemNamed: #childrenQuery) possibleValues.
-	environmentQueries := self fetchChildrenQueries.
+	environmentQueries := self availableQueries.
 
 	(self collection: environmentQueries hasSameElementHas: settingQueries)
 	ifTrue: [ ^self ].
@@ -237,6 +243,12 @@ MiDistributionMapModel >> settings [
 	^ settings
 ]
 
+{ #category : #accessing }
+MiDistributionMapModel >> settingsChanged: aBoolean [
+
+	
+]
+
 { #category : #querying }
 MiDistributionMapModel >> tagFor: anEntity [
 
@@ -248,4 +260,10 @@ MiDistributionMapModel >> tagFor: anEntity [
 { #category : #settings }
 MiDistributionMapModel >> tagsSetting [
 	^settings getItemValue: #tags
+]
+
+{ #category : #accessing }
+MiDistributionMapModel >> toolName [
+
+	^ browser title
 ]
