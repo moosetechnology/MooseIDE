@@ -11,6 +11,12 @@ Class {
 	#category : #'MooseIDE-NewTools-Inspector'
 }
 
+{ #category : #menu }
+MiInspectorBrowser class >> addItemOrSubMenuToMiBrowsersMenu: aRootMenu defaultSubMenu: aSubMenu [
+
+	self addToMiBrowsersMenu: aRootMenu
+]
+
 { #category : #layout }
 MiInspectorBrowser class >> defaultLayout [
 
@@ -53,10 +59,22 @@ MiInspectorBrowser class >> menuCommandOn: aBuilder [
 	(aBuilder item: #Inspector)
 		parent: #Moose;
 		label: self title;
-		icon: (self iconNamed: #smallInspectIt);
-		order: 5;
+		icon: (self iconNamed: self menuIconName);
+		order: self menuPriority;
 		help: self helpMessage;
 		action: [ self open ]
+]
+
+{ #category : #menu }
+MiInspectorBrowser class >> menuIconName [
+
+	^ #smallInspectIt
+]
+
+{ #category : #menu }
+MiInspectorBrowser class >> menuPriority [
+
+	^ 5
 ]
 
 { #category : #'instance creation' }

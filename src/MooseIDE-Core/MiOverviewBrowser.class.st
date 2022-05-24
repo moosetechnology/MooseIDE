@@ -104,8 +104,7 @@ MiOverviewBrowser >> addBrowser: aMiPresenterClass asPage: aString [
 { #category : #toolbar }
 MiOverviewBrowser >> browsersMenu [
 	| browsersMenu |
-	browsersMenu := SpMenuPresenter new
-		addAllFromPragma: 'miBrowsers' target: self.
+	browsersMenu := MiAbstractBrowser miBrowsersMenuPresenter.
 
 	(self collectMenuItems: browsersMenu)
 		do: [ :item | self replaceMenuItemAction: item ].
@@ -270,24 +269,17 @@ MiOverviewBrowser >> pageNamed: aName presenter: aComponentList [
 
 { #category : #toolbar }
 MiOverviewBrowser >> replaceMenuItemAction: aMenuItem [
-	| browserClass pageName itemAction |
+
+	| browserClass itemAction |
 	itemAction := aMenuItem action.
 
-	itemAction selector ifNil: [ 
-		aMenuItem action: [ "empty action to avoid errors when selecting subMenu labels" ].
-		^ self
-	].
-
-	browserClass := itemAction receiver outerContext receiver.
-	pageName := aMenuItem name.
-	aMenuItem action: [
+	aMenuItem action: [ 
 		chkOpenInPage state
-		ifTrue: [
-			self addBrowser: browserClass asPage: pageName.
-			mainPresenter selectPage: mainPresenter pages last ]
-		ifFalse: [
-			itemAction value ]
-	]
+			ifTrue: [ 
+				browserClass := itemAction receiver.
+				self addBrowser: browserClass asPage: browserClass title.
+				mainPresenter selectPage: mainPresenter pages last ]
+			ifFalse: [ itemAction value ] ]
 ]
 
 { #category : #toolbar }

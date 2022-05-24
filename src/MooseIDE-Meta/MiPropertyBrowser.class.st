@@ -29,10 +29,22 @@ MiPropertyBrowser class >> menuCommandOn: aBuilder [
 	(aBuilder item: #PropertyBrowser)
 		parent: (self metaBrowsersMenuLabel);
 		label: (self title);
-		icon: (self iconNamed: #mooseProperties);
-		order: 3;
+		icon: (self iconNamed: self menuIconName);
+		order: self menuPriority;
 		help: (self helpMessage);
 		action: [ self open ]
+]
+
+{ #category : #menu }
+MiPropertyBrowser class >> menuIconName [
+
+	^ #mooseProperties
+]
+
+{ #category : #menu }
+MiPropertyBrowser class >> menuPriority [
+
+	^ 3
 ]
 
 { #category : #'instance creation' }

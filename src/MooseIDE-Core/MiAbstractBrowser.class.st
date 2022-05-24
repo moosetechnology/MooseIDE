@@ -43,10 +43,43 @@ Class {
 	#category : #'MooseIDE-Core-Browser'
 }
 
+{ #category : #menu }
+MiAbstractBrowser class >> addItemOrSubMenuToMiBrowsersMenu: aRootMenu defaultSubMenu: aSubMenu [
+
+	self addToMiBrowsersMenu: aSubMenu
+]
+
+{ #category : #menu }
+MiAbstractBrowser class >> addToMiBrowsersMenu: aMenuPresenter [
+
+	"Override with an empty method if you don't want your browser in Moose menu"
+
+	self buildItemInMenu: aMenuPresenter
+]
+
+{ #category : #menu }
+MiAbstractBrowser class >> buildItemInMenu: aMenuGroupPresenter [
+
+	"Override with an empty method if you don't want your browser in Moose menu"
+
+	aMenuGroupPresenter addItem: [ :item | 
+		item
+			name: self title;
+			action: [ self open ];
+			help: self helpMessage;
+			icon: self menuIcon ]
+]
+
 { #category : #layout }
 MiAbstractBrowser class >> defaultLayout [
 
 	^ SpBoxLayout newVertical
+]
+
+{ #category : #menu }
+MiAbstractBrowser class >> defaultSubMenuLabel [
+
+	^ 'Specialized Browsers'
 ]
 
 { #category : #'world menu' }
@@ -70,6 +103,18 @@ MiAbstractBrowser class >> menuCommandOn: aBuilder [
 		icon: MooseIcons mooseIcon
 ]
 
+{ #category : #menu }
+MiAbstractBrowser class >> menuIcon [
+
+	^ self iconNamed: self menuIconName
+]
+
+{ #category : #menu }
+MiAbstractBrowser class >> menuIconName [
+
+	^ #blank
+]
+
 { #category : #'world menu' }
 MiAbstractBrowser class >> menuMetaCommandOn: aBuilder [
 	"need to be a separate method because of #miBrowsers pragma"
@@ -81,9 +126,36 @@ MiAbstractBrowser class >> menuMetaCommandOn: aBuilder [
 		icon: MooseIcons mooseIcon
 ]
 
+{ #category : #menu }
+MiAbstractBrowser class >> menuPriority [
+
+	^ 100
+]
+
 { #category : #'world menu' }
 MiAbstractBrowser class >> metaBrowsersMenuLabel [
 	^ #Meta
+]
+
+{ #category : #menu }
+MiAbstractBrowser class >> miBrowsersMenuPresenter [
+
+	| rootMenu defaultSubMenu |
+	rootMenu := SpMenuPresenter new.
+	defaultSubMenu := SpMenuPresenter new.
+
+	(self subclasses sortAscending: [ :browserClass | 
+		 browserClass menuPriority ]) do: [ :browserClass | 
+		browserClass
+			addItemOrSubMenuToMiBrowsersMenu: rootMenu
+			defaultSubMenu: defaultSubMenu ].
+
+	rootMenu addItem: [ :item | 
+		item
+			name: self defaultSubMenuLabel;
+			subMenu: defaultSubMenu ].
+
+	^ rootMenu
 ]
 
 { #category : #'world menu' }

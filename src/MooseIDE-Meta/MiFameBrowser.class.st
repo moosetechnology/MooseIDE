@@ -30,10 +30,22 @@ MiFameBrowser class >> menuCommandOn: aBuilder [
 	(aBuilder item: #Fame)
 		parent: (self metaBrowsersMenuLabel);
 		label: (self title);
-		icon: (self iconNamed: #mooseFame);
-		order: 4;
+		icon: (self iconNamed: self menuIconName);
+		order: self menuPriority;
 		help: (self helpMessage);
 		action: [ self open ]
+]
+
+{ #category : #menu }
+MiFameBrowser class >> menuIconName [
+
+	^ #mooseFame
+]
+
+{ #category : #menu }
+MiFameBrowser class >> menuPriority [
+
+	^ 4
 ]
 
 { #category : #'instance creation' }

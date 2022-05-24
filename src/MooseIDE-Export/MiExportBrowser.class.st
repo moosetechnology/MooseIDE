@@ -21,6 +21,12 @@ Class {
 	#category : #'MooseIDE-Export-Browser'
 }
 
+{ #category : #menu }
+MiExportBrowser class >> addItemOrSubMenuToMiBrowsersMenu: aRootMenu defaultSubMenu: aSubMenu [
+
+	self addToMiBrowsersMenu: aRootMenu
+]
+
 { #category : #actions }
 MiExportBrowser class >> commentColumnTitle [
 
@@ -44,10 +50,22 @@ MiExportBrowser class >> menuCommandOn: aBuilder [
 	(aBuilder item: #Exporter)
 		parent: #Moose;
 		label: self title;
-		icon: (self iconNamed: #smallExport);
-		order: 6;
+		icon: (self iconNamed: self menuIconName);
+		order: self menuPriority;
 		help: self helpMessage;
 		action: [ self open ]
+]
+
+{ #category : #menu }
+MiExportBrowser class >> menuIconName [
+
+	^ #smallExport
+]
+
+{ #category : #menu }
+MiExportBrowser class >> menuPriority [
+
+	^ 6
 ]
 
 { #category : #'instance creation' }

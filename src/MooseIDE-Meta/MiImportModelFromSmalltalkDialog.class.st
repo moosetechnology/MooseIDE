@@ -47,7 +47,7 @@ MiImportModelFromSmalltalkDialog class >> fullWindowExtent [
 MiImportModelFromSmalltalkDialog class >> open [
 
 	<script>
-	^ self new openDialogWithSpec
+	^ self new openDialog
 ]
 
 { #category : #specs }
@@ -171,6 +171,16 @@ MiImportModelFromSmalltalkDialog >> initializeConfigurationCheckBoxes [
 		whenActivatedDo: [ importingContext computeTypeOfAttributes ];
 		whenDeactivatedDo: [ importingContext doNotComputeTypeOfAttributes ];
 		yourself
+]
+
+{ #category : #initialization }
+MiImportModelFromSmalltalkDialog >> initializeDialogWindow: aDialog [
+
+	| importButton |
+	super initializeDialogWindow: aDialog. 
+	importButton := (aDialog buttons select: [ :button | button label = 'Import'  ]) first.
+	importButton disable.
+	packagesSelector whenSelectionChangedDo: [ :items | items ifEmpty: [ importButton disable ] ifNotEmpty: [ importButton enable]].
 ]
 
 { #category : #initialization }

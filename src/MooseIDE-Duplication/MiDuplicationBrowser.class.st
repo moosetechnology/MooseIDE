@@ -21,9 +21,15 @@ MiDuplicationBrowser class >> menuCommandOn: aBuilder [
 	(aBuilder item: #SpecializedBrowser)
 		parent: self midasBrowserMenuLabel;
 		label: self title;
-		icon: (self iconNamed: #smallCopy);
+		icon: (self iconNamed: self menuIconName);
 		help: self helpMessage;
 		action: [ self open ]
+]
+
+{ #category : #menu }
+MiDuplicationBrowser class >> menuIconName [
+
+	^ #smallCopy
 ]
 
 { #category : #'instance creation' }
@@ -234,7 +240,7 @@ MiDuplicationBrowser >> setModelBeforeInitialization: aModel [
 { #category : #actions }
 MiDuplicationBrowser >> settings [
 
-	model settings open
+	model openSettings
 ]
 
 { #category : #api }
