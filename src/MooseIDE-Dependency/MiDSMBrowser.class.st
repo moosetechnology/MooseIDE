@@ -32,6 +32,11 @@ MiDSMBrowser class >> menuCommandOn: aBuilder [
 ]
 
 { #category : #'instance creation' }
+MiDSMBrowser class >> newModel [
+	^MiDSMBrowserModel new
+]
+
+{ #category : #'instance creation' }
 MiDSMBrowser class >> open [
 
 	<script>
@@ -47,9 +52,7 @@ MiDSMBrowser class >> title [
 { #category : #testing }
 MiDSMBrowser >> canFollowEntity: anObject [
 
-	^ anObject isCollection and: [ 
-		  anObject allSatisfy: [ :a | 
-			  a usesFamixTrait: TEntityMetaLevelDependency ] ].
+	^model canFollowEntity: anObject
 ]
 
 { #category : #testing }
@@ -66,27 +69,29 @@ MiDSMBrowser >> diagram [
 
 { #category : #actions }
 MiDSMBrowser >> followEntity: anEntity [
-
-	diagram
-		entities: (anEntity asMooseGroup select: [ :a | 
-					 a usesFamixTrait: TEntityMetaLevelDependency ]);
-		run
+	model followEntity: anEntity
 ]
 
 { #category : #actions }
 MiDSMBrowser >> highlightEntity: anEntity [
 
-	diagram highlightEntities: anEntity asCollection
+	model highlightEntity: anEntity
 ]
 
 { #category : #initialization }
 MiDSMBrowser >> initializePresenters [
 
-	diagram := self instantiate: MiDSMVisualization
+	diagram := self instantiate: MiDSMVisualization.
+	diagram model: model
 ]
 
 { #category : #accessing }
 MiDSMBrowser >> miSelectedItem [
 
-	^ diagram selected ifNil: [ diagram entities ]
+	^model selectedEntities
+]
+
+{ #category : #api }
+MiDSMBrowser >> showDSM [
+	diagram run
 ]
