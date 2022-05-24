@@ -1,10 +1,13 @@
+"
+A MooseIDE browser showing a DSM (Dependency Structural Matrix)
+"
 Class {
 	#name : #MiDSMBrowser,
 	#superclass : #MiAbstractDependencyBrowser,
 	#instVars : [
 		'diagram'
 	],
-	#category : #'MooseIDE-Dependency-Dependency'
+	#category : #'MooseIDE-Dependency-DSM'
 }
 
 { #category : #specs }
