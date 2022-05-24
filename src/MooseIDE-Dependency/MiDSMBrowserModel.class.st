@@ -44,6 +44,15 @@ MiDSMBrowserModel >> canFollowEntity: anObject [
 ]
 
 { #category : #accessing }
+MiDSMBrowserModel >> colorForX: xEntity y: yEntity [
+	(self isDiagonalX: xEntity y: yEntity)
+	ifTrue: [ ^Color veryLightGray ].
+	(self isDependantX: xEntity onY: yEntity)
+	ifTrue: [ ^Color colorFrom: '#4d79ff' ].
+	^Color r: 0.9 g: 0.9 b: 0.9 "extremely light gray"
+]
+
+{ #category : #accessing }
 MiDSMBrowserModel >> entities [
 	^ entities
 ]

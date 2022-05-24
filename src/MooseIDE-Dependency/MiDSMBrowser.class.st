@@ -91,6 +91,12 @@ MiDSMBrowser >> miSelectedItem [
 	^model selectedEntities
 ]
 
+{ #category : #'accessing - model' }
+MiDSMBrowser >> setModelBeforeInitialization: aModel [
+	super setModelBeforeInitialization: aModel.
+	aModel browser: self
+]
+
 { #category : #api }
 MiDSMBrowser >> showDSM [
 	diagram run
