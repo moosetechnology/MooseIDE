@@ -238,7 +238,7 @@ MiQueriesBrowser >> rootQuery [
 MiQueriesBrowser >> selectQuery: aQuery [
 
 	selectedQuery := aQuery.
-	queryResultTreePresenter updateForQuery: aQuery.
+	self updateResultPresenterForQuery: aQuery.
 	queryCodePresenter updateForQuery: aQuery.
 	self sendEntitiesToPrivateBus
 ]

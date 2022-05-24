@@ -244,6 +244,12 @@ MiAbstractBrowser >> canPropagate [
 		  entity asMooseGroup isNotEmpty or: [ entity isMooseModel ] ]
 ]
 
+{ #category : #accessing }
+MiAbstractBrowser >> containedBrowser [
+
+	^ self
+]
+
 { #category : #buses }
 MiAbstractBrowser >> followBus: aBus [
 

@@ -97,7 +97,9 @@ MiAbstractWorkspace >> containedBrowsers [
 { #category : #buses }
 MiAbstractWorkspace >> followBus: aBus [
 
-	(self buses includes: aBus) ifTrue: [ ^ self ].
+	(self buses includes: aBus) ifTrue: [ 
+		application defaultBus: aBus.
+		^ self ].
 
 	self buses add: aBus.
 	aBus registerBrowser: self.

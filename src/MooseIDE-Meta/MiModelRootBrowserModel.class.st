@@ -123,7 +123,9 @@ MiModelRootBrowserModel >> settings [
 
 { #category : #updating }
 MiModelRootBrowserModel >> updateForNewModel: aMooseModel [
-	self getAllModelRootBrowsers do: [:modelBrowser | modelBrowser updateList ].
+
+	self getAllModelRootBrowsers do: [ :modelBrowser | 
+		modelBrowser updateList ].
 	self selected: aMooseModel
 ]
 

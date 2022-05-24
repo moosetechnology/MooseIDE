@@ -43,7 +43,10 @@ MiApplication >> add: anObject toDictionary: aDictionary for: aKey [
 
 { #category : #accessing }
 MiApplication >> allBrowsers: aMiClass [
-	^self browsers select: [ :aBrowser | aBrowser isKindOf: aMiClass ]
+
+	^ self browsers
+		  collect: #containedBrowser
+		  thenSelect: [ :aBrowser | aBrowser isKindOf: aMiClass ]
 ]
 
 { #category : #accessing }

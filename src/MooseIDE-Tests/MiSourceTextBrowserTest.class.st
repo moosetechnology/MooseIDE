@@ -82,80 +82,89 @@ MiSourceTextBrowserTest >> testHighlightChildNotIndexedAnchor [
 		
 	browser followEntity: entity.
 
-	self assert: browser textRenderer formatedText unembellished.
+	self assert: browser containedBrowser textRenderer formatedText unembellished.
 ]
 
 { #category : #'tests - highlighting' }
 MiSourceTextBrowserTest >> testHighlightChildWithIndexedFileAnchor [
+
 	| entity displayedText |
 	entity := FamixStClass new
-		name: 'aClass' ;
-		sourceAnchor: (self stubIndexedAnchorText: 
-'code of aClass {
+		          name: 'aClass';
+		          sourceAnchor:
+			          (self stubIndexedAnchorText: 'code of aClass {
 	code of aMethod()
 }').
 	FamixStMethod new
-		name: 'aMethod' ;
-		parentType: entity ;
-		sourceAnchor: (self stubIndexedAnchorText: #whatever positions: 18@36 ).
-		
+		name: 'aMethod';
+		parentType: entity;
+		sourceAnchor:
+			(self stubIndexedAnchorText: #whatever positions: 18 @ 36).
+
 	browser followEntity: entity.
 
-	displayedText := browser textRenderer formatedText.
+	displayedText := browser containedBrowser textRenderer formatedText.
 	self deny: displayedText unembellished.
 	self assert: (displayedText attributesAt: 20) isEmpty.
 	self deny: (displayedText attributesAt: 30) isEmpty.
-	self assert: ((displayedText attributesAt: 30) anySatisfy: [ :att | att mayActOnEvent: MouseEvent new ])
+	self assert: ((displayedText attributesAt: 30) anySatisfy: [ :att | 
+			 att mayActOnEvent: MouseEvent new ])
 ]
 
 { #category : #'tests - highlighting' }
 MiSourceTextBrowserTest >> testHighlightChildWithNoAnchor [
+
 	| entity |
 	entity := FamixStClass new
-		name: 'aClass' ;
-		sourceAnchor: (self stubIndexedAnchorText: 
-'code of aClass {
+		          name: 'aClass';
+		          sourceAnchor:
+			          (self stubIndexedAnchorText: 'code of aClass {
 	code of aMethod()
 }').
 	FamixStMethod new
-		name: 'aMethod' ;
+		name: 'aMethod';
 		parentType: entity.
-		
+
 	browser followEntity: entity.
 
-	self assert: browser textRenderer formatedText unembellished.
+	self assert:
+		browser containedBrowser textRenderer formatedText unembellished
 ]
 
 { #category : #'tests - highlighting' }
 MiSourceTextBrowserTest >> testHighlightNoAnchor [
+
 	| entity displayedText |
-	entity := FamixStClass new
-		name: 'aClass'.
+	entity := FamixStClass new name: 'aClass'.
 	FamixStMethod new
-		name: 'aMethod' ;
+		name: 'aMethod';
 		parentType: entity.
-		
+
 	browser followEntity: entity.
 
-	displayedText := browser textRenderer formatedText.
-	self assert: displayedText equals: 'There is no source code to show for aClass'.
+	displayedText := browser containedBrowser textRenderer formatedText.
+	self
+		assert: displayedText
+		equals: 'There is no source code to show for aClass'.
 	self deny: displayedText unembellished.
-	self deny: (displayedText attributesAt: (displayedText size)) isEmpty.
+	self deny: (displayedText attributesAt: displayedText size) isEmpty
 ]
 
 { #category : #'tests - highlighting' }
 MiSourceTextBrowserTest >> testHighlightNoChild [
+
 	| entity |
 	entity := FamixStClass new
-		name: 'aClass' ;
-		sourceAnchor: (self stubIndexedAnchorText: 
-'code of aClass {
+		          name: 'aClass';
+		          sourceAnchor:
+			          (self stubIndexedAnchorText: 'code of aClass {
 	code of aMethod()
-}' ).
-		
+}').
+
 	browser followEntity: entity.
-	
-	self assert: browser textRenderer formatedText unembellished 
+
+	self assert:
+		browser containedBrowser textRenderer formatedText unembellished
 ]
 
 { #category : #tests }
@@ -175,7 +184,7 @@ MiSourceTextBrowserTest >> testShowNoSourceCodeMessage [
 
 	browser receiveEntity: (FamixStClass named: 'TestClass').
 	self
-		assert: browser containedBrowser sourceText text
+		assert: browser model displayedText
 		equals: 'There is no source code to show for TestClass'
 ]
 

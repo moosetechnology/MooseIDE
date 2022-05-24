@@ -13,7 +13,8 @@ Class {
 	#superclass : #MiAbstractBrowser2,
 	#instVars : [
 		'toolbar',
-		'modelFilteringList'
+		'modelFilteringList',
+		'blockWhenSelection'
 	],
 	#category : #'MooseIDE-Meta-ModelRootBrowser'
 }
@@ -121,20 +122,15 @@ MiModelRootBrowser >> hasSettings [
 MiModelRootBrowser >> initializeList [
 
 	modelFilteringList := self newFilteringList.
+	self listOfMooseModels: model mooseModelsList.
 
 	modelFilteringList display: [ :mooseModel | mooseModel name ].
 
-	modelFilteringList listPresenter
-		contextMenu: [ 
-			(self class buildModelCommandsGroupWith: self) asMenuPresenter ];
-		whenSelectionChangedDo: [ :selected | 
-			model selected: selected selectedItem.
-			self sendEntitiesToPrivateBus.
-			self updateToolbar ].
-
-	modelFilteringList items: MooseModel root.
-	MooseModel root ifNotEmpty: [ :root | 
-		modelFilteringList selectItem: root anyOne ]
+	modelFilteringList listPresenter contextMenu: [ 
+		(self class buildModelCommandsGroupWith: self) asMenuPresenter ].
+	blockWhenSelection := [ :selected | 
+	                      model selected: selected selectedItem ].
+	modelFilteringList whenSelectionChangedDo: blockWhenSelection
 ]
 
 { #category : #initialization }
