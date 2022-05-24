@@ -82,12 +82,17 @@ MiModelRootBrowserTest >> testFilterStubsSettingsWithoutStub [
 MiModelRootBrowserTest >> testMiSelectedItem [
 
 	| newModel |
-	self assert: browser containedBrowser miSelectedItem isNil.
+	self
+		should: [ browser miSelectedItem ]
+		raise: MiNoSelectedElementToPropagateException.
 
 	newModel := MooseModel new.
-	MooseModel root add: newModel.
+	newModel install.
 	browser containedBrowser updateForNewModel: newModel.
 
+	self
+		shouldnt: [ browser miSelectedItem ]
+		raise: MiNoSelectedElementToPropagateException.
 	self deny: browser miSelectedItem isNil
 ]
 

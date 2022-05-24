@@ -20,6 +20,17 @@ MiMooseModelBrowserTests >> browserClass [
 	^ MiMooseModelBrowser
 ]
 
+{ #category : #tests }
+MiMooseModelBrowserTests >> newModel [
+
+	| newModel |
+	newModel := FamixStModel new.
+	newModel addAll: { 
+			(FamixStClass named: 'Class1').
+			(FamixStClass named: 'Class2') }.
+	^ newModel
+]
+
 { #category : #running }
 MiMooseModelBrowserTests >> setUp [
 	super setUp.
@@ -37,52 +48,55 @@ MiMooseModelBrowserTests >> tearDown [
 
 { #category : #tests }
 MiMooseModelBrowserTests >> testActivateActionButtons [
-	| newModel |
-	{ MiInspectCommand . MiPropagateCommand . MiDragWindowCommand }
-	do: [ :cmdClass | self deny: (self actionButton: cmdClass) isEnabled ].
 
-	newModel := FamixStModel new.
-	newModel addAll: { 
-			(FamixStClass named: 'Class1').
-			(FamixStClass named: 'Class2') }.
-	MooseModel root add: newModel.
-	browser receiveEntity: newModel.
-	
-	{ MiInspectCommand . MiPropagateCommand . MiDragWindowCommand }
-	do: [ :cmdClass | self deny: (self actionButton: cmdClass) isEnabled ].
+	{ 
+		MiInspectCommand.
+		MiPropagateCommand } do: [ :cmdClass | 
+		self deny: (self actionButton: cmdClass) isEnabled ].
+	self assert: (self actionButton: MiDragWindowCommand) isEnabled.
 
-	browser modelPresenter clickAtPath: #( 1 ).
-	{ MiInspectCommand . MiPropagateCommand }
-	do: [ :cmdClass | self assert: (self actionButton: cmdClass) isEnabled ].
-	self deny: (self actionButton: MiDragWindowCommand) isEnabled.
+	browser receiveEntity: self newModel.
 
-	browser modelPresenter clickAtPath: #( 1 1 ).
-	{ MiInspectCommand . MiPropagateCommand }
-	do: [ :cmdClass | self assert: (self actionButton: cmdClass) isEnabled ].
-	self deny: (self actionButton: MiDragWindowCommand) isEnabled.
+	{ 
+		MiInspectCommand.
+		MiPropagateCommand } do: [ :cmdClass | 
+		self deny: (self actionButton: cmdClass) isEnabled ].
+	self assert: (self actionButton: MiDragWindowCommand) isEnabled.
 
+	browser containedBrowser modelPresenter clickAtPath: #( 1 ).
+	{ 
+		MiInspectCommand.
+		MiPropagateCommand.
+		MiDragWindowCommand } do: [ :cmdClass | 
+		self assert: (self actionButton: cmdClass) isEnabled ].
+
+	browser containedBrowser modelPresenter clickAtPath: #( 1 1 ).
+	{ 
+		MiInspectCommand.
+		MiPropagateCommand.
+		MiDragWindowCommand } do: [ :cmdClass | 
+		self assert: (self actionButton: cmdClass) isEnabled ]
 ]
 
 { #category : #tests }
 MiMooseModelBrowserTests >> testMiSelectedItem [
 
 	| newModel |
-	self assert: browser miSelectedItem isNil.
+	self
+		should: [ browser miSelectedItem ]
+		raise: MiNoSelectedElementToPropagateException.
 
-	newModel := FamixStModel new.
-	newModel addAll: { 
-			(FamixStClass named: 'Class1').
-			(FamixStClass named: 'Class2') }.
-	MooseModel root add: newModel.
-	browser followEntity: newModel.
-	self assert: browser miSelectedItem isNil.
+	newModel := self newModel.
+	browser receiveEntity: newModel.
 
-	browser modelPresenter clickAtPath: #( 1 ).
+	self assert: browser miSelectedItem equals: newModel.
+	
+	browser containedBrowser modelPresenter clickAtPath: #( 1 ).
 	self
 		assertCollection: browser miSelectedItem
 		hasSameElements: newModel allModelClasses.
-
-	browser modelPresenter clickAtPath: #( 1 1 ).
+	
+	browser containedBrowser modelPresenter clickAtPath: #( 1 1 ).
 	self
 		assert: browser miSelectedItem
 		equals: (newModel allModelClasses sorted: #name ascending) first

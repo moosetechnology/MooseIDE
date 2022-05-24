@@ -333,7 +333,8 @@ MiAbstractBrowser >> isMiBrowser [
 { #category : #accessing }
 MiAbstractBrowser >> miSelectedItem [
 
-	^ (MiNoSelectedElementToPropagateException browser: self) signal
+	(MiNoSelectedElementToPropagateException browser: self) signal.
+	^ nil
 ]
 
 { #category : #accessing }

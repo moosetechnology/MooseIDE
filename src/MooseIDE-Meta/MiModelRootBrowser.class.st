@@ -204,8 +204,9 @@ MiModelRootBrowser >> showSelectedItem: anItem [
 
 { #category : #updating }
 MiModelRootBrowser >> updateForNewModel: aModel [
-	model updateForNewModel: aModel
 
+	model updateForNewModel: aModel.
+	self sendEntitiesToPrivateBus
 ]
 
 { #category : #updating }

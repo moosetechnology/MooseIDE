@@ -8,7 +8,7 @@ Shows entities in a MooseModel grouped by entity type.
 "
 Class {
 	#name : #MiMooseModelBrowser,
-	#superclass : #MiAbstractBrowser,
+	#superclass : #MiAbstractBrowser2,
 	#instVars : [
 		'modelPresenter',
 		'searchField'
@@ -193,7 +193,7 @@ MiMooseModelBrowser >> selectionAction: selectedItem [
 
 	model selected: entities mooseInterestingEntity.
 
-	self buses do: [ :bus | bus globallySelect: model selected ]
+	self sendEntitiesToPrivateBus
 ]
 
 { #category : #initialization }
