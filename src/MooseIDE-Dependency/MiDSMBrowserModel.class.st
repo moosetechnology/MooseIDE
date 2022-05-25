@@ -6,8 +6,7 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'browser',
-		'entities',
-		'relationsForX'
+		'graph'
 	],
 	#category : #'MooseIDE-Dependency-DSM'
 }
@@ -25,14 +24,19 @@ MiDSMBrowserModel >> browser: anObject [
 ]
 
 { #category : #utilities }
-MiDSMBrowserModel >> cacheDependencies: aCollection [
+MiDSMBrowserModel >> buildGraph [
 	"RSDSM conventions: X entities are at the top of the matricx, Y entities at the left
 	We choose to say that there is a relation from X to Y if Y depends on X"
-	relationsForX := Dictionary new.
-	aCollection do: [ :each | 
-		relationsForX
-			at: each
-			put: ((each queryAllIncoming withoutSelfLoops atScope: each class) intersection: entities) ]
+	| entities |
+	entities := self entities.
+	entities do: [ :entity |
+		graph
+			edges: { entity }
+			from: #yourself
+			toAll: [ :sourceEntity |
+				(sourceEntity queryAllIncoming withoutSelfLoops atScope: sourceEntity class) intersection: entities
+			]
+	]
 ]
 
 { #category : #testing }
@@ -48,23 +52,41 @@ MiDSMBrowserModel >> colorForX: xEntity y: yEntity [
 	(self isDiagonalX: xEntity y: yEntity)
 	ifTrue: [ ^Color veryLightGray ].
 	(self isDependantX: xEntity onY: yEntity)
-	ifTrue: [ ^Color colorFrom: '#4d79ff' ].
-	^Color r: 0.9 g: 0.9 b: 0.9 "extremely light gray"
+	ifFalse: [ ^Color r: 0.9 g: 0.9 b: 0.9 "extremely light gray" ].
+	(self isInCycleX: xEntity y: yEntity)
+	ifTrue: [ ^Color lightRed ].
+	^Color colorFrom: '#4d79ff'
+]
+
+{ #category : #utilities }
+MiDSMBrowserModel >> computeSCCs [
+	graph run
 ]
 
 { #category : #accessing }
 MiDSMBrowserModel >> entities [
-	^ entities
+	^graph nodes collect: #model
+]
+
+{ #category : #utilities }
+MiDSMBrowserModel >> entitiesOrdered [
+	^(graph nodes sorted: [ :a :b |
+		(a adjacentNodes size < b adjacentNodes size)
+		ifTrue: [ true ]
+		ifFalse: [ (a adjacentNodes size = b adjacentNodes size)
+			ifTrue: [ a model name < b model name ]
+			ifFalse: [ false ] ]
+	]) collect: #model
 ]
 
 { #category : #actions }
-MiDSMBrowserModel >> followEntity: anEntity [
-	entities := anEntity asMooseGroup select: [ :e | 
-		e usesFamixTrait: TEntityMetaLevelDependency ].
-	self cacheDependencies: entities.
-	entities := self orderEntities: entities.
-	entities ifNotEmpty: [
-		browser showDSM]
+MiDSMBrowserModel >> followEntity: aCollection [
+	self newGraph.
+	graph nodes: (aCollection asMooseGroup select: [ :e | 
+		e usesFamixTrait: TEntityMetaLevelDependency ]).
+	self buildGraph.
+	self computeSCCs.
+	browser buildDSM
 ]
 
 { #category : #actions }
@@ -74,14 +96,15 @@ MiDSMBrowserModel >> highlightEntity: anEntity [
 ]
 
 { #category : #initialization }
-MiDSMBrowserModel >> initialize [
+MiDSMBrowserModel >> initialize [ 
 	super initialize.
-	entities := #()
+	self newGraph 
 ]
 
 { #category : #testing }
 MiDSMBrowserModel >> isDependantX: xEntity onY: yEntity [
-	^(relationsForX at: xEntity) includes: yEntity
+
+	^(self relationsForX: xEntity) includes: yEntity
 ]
 
 { #category : #testing }
@@ -90,22 +113,21 @@ MiDSMBrowserModel >> isDiagonalX: xEntity y: yEntity [
 
 ]
 
-{ #category : #utilities }
-MiDSMBrowserModel >> orderEntities: aCollection [
-	^aCollection sorted: [ :a :b || dependenciesA dependenciesB |
-		dependenciesA := (relationsForX at: a) size.
-		dependenciesB := (relationsForX at: b) size.
-		(dependenciesA < dependenciesB)
-		ifTrue: [ true ]
-		ifFalse: [ (dependenciesA = dependenciesB)
-			ifTrue: [ a name < b name ]
-			ifFalse: [ false ] ]
-	]
+{ #category : #testing }
+MiDSMBrowserModel >> isInCycleX: xEntity y: yEntity [
+
+	^(graph findNode: xEntity) cycleNodes anySatisfy: [ :node | node model = yEntity ]
+]
+
+{ #category : #initialization }
+MiDSMBrowserModel >> newGraph [
+	graph := AITarjan new.
 ]
 
 { #category : #accessing }
 MiDSMBrowserModel >> relationsForX: anEntity [
-	^relationsForX at: anEntity
+
+	^(graph findNode: anEntity) adjacentNodes collect: #model
 ]
 
 { #category : #accessing }

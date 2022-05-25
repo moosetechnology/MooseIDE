@@ -49,6 +49,11 @@ MiDSMBrowser class >> title [
 	^ 'DSM'
 ]
 
+{ #category : #api }
+MiDSMBrowser >> buildDSM [
+	diagram run
+]
+
 { #category : #testing }
 MiDSMBrowser >> canFollowEntity: anObject [
 
@@ -95,9 +100,4 @@ MiDSMBrowser >> miSelectedItem [
 MiDSMBrowser >> setModelBeforeInitialization: aModel [
 	super setModelBeforeInitialization: aModel.
 	aModel browser: self
-]
-
-{ #category : #api }
-MiDSMBrowser >> showDSM [
-	diagram run
 ]

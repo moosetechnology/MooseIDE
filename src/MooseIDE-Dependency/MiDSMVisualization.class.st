@@ -12,18 +12,22 @@ Class {
 
 { #category : #accessing }
 MiDSMVisualization >> createDSM: aRSCanvas [
-	| dsm |
+	| dsm entities |
 	"change legend by adding #noLegend to RSCanvasController new
 	and add RSLegend new ..."
+	
+	entities := model entitiesOrdered.
+	entities ifEmpty: [ ^self ].
+	
 	aRSCanvas addInteraction: RSCanvasController new.
 	dsm := RSDSM new.
 	dsm labelShapeX textBlock: #name.
 	dsm labelShapeY textBlock: #name.
 	dsm container: aRSCanvas.
-	dsm objects: model entities.
+	dsm objects: entities.
 	dsm dependency: [ :entity | model relationsForX: entity ].
 	dsm color: [ :tuple | model colorForX: tuple key y: tuple value ].
-	dsm objects ifNotEmpty: [ dsm build ]
+	dsm build
 ]
 
 { #category : #initialization }
