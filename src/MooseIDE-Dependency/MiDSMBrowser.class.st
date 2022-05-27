@@ -87,7 +87,7 @@ MiDSMBrowser >> highlightEntity: anEntity [
 MiDSMBrowser >> initializePresenters [
 
 	diagram := self instantiate: MiDSMVisualization.
-	diagram model: model
+	diagram viewModel: model
 ]
 
 { #category : #accessing }

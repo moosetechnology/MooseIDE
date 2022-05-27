@@ -6,10 +6,23 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'browser',
-		'graph'
+		'graph',
+		'nodeDictionary',
+		'nodeColors'
 	],
 	#category : #'MooseIDE-Dependency-DSM'
 }
+
+{ #category : #accessing }
+MiDSMBrowserModel >> associationsSCCFor: anEntity [
+
+	| graphNode scc |
+	graphNode := self findNode: anEntity.
+	scc := { graphNode } , graphNode cycleNodes.
+	^ (scc flatCollect: [ :src | 
+		   scc collect: [ :tgt | src model -> tgt model ] ]) select: [ 
+		  :assoc | self isDependantX: assoc key onY: assoc value ]
+]
 
 { #category : #accessing }
 MiDSMBrowserModel >> browser [
@@ -24,7 +37,7 @@ MiDSMBrowserModel >> browser: anObject [
 ]
 
 { #category : #utilities }
-MiDSMBrowserModel >> buildGraph [
+MiDSMBrowserModel >> buildGraphEdges [
 	"RSDSM conventions: X entities are at the top of the matricx, Y entities at the left
 	We choose to say that there is a relation from X to Y if Y depends on X"
 	| entities |
@@ -34,9 +47,18 @@ MiDSMBrowserModel >> buildGraph [
 			edges: { entity }
 			from: #yourself
 			toAll: [ :sourceEntity |
-				(sourceEntity queryAllIncoming withoutSelfLoops atScope: sourceEntity class) intersection: entities
+				(sourceEntity queryAllIncoming atScope: sourceEntity class) intersection: entities
 			]
 	]
+]
+
+{ #category : #actions }
+MiDSMBrowserModel >> buildGraphNodes: aCollection [
+
+	graph nodes: (aCollection asMooseGroup select: [ :e | 
+			 e usesFamixTrait: TEntityMetaLevelDependency ]).
+	nodeDictionary := Dictionary new: aCollection size.
+	graph nodes do: [ :node | nodeDictionary at: node model put: node ]
 ]
 
 { #category : #testing }
@@ -49,18 +71,37 @@ MiDSMBrowserModel >> canFollowEntity: anObject [
 
 { #category : #accessing }
 MiDSMBrowserModel >> colorForX: xEntity y: yEntity [
-	(self isDiagonalX: xEntity y: yEntity)
-	ifTrue: [ ^Color veryLightGray ].
-	(self isDependantX: xEntity onY: yEntity)
-	ifFalse: [ ^Color r: 0.9 g: 0.9 b: 0.9 "extremely light gray" ].
-	(self isInCycleX: xEntity y: yEntity)
-	ifTrue: [ ^Color lightRed ].
-	^Color colorFrom: '#4d79ff'
+
+	(self isDiagonalX: xEntity y: yEntity) ifTrue: [ 
+		^ self diagonalCellColor ].
+	(self isDependantX: xEntity onY: yEntity) ifFalse: [ 
+		^ self defaultCellColor ].
+	(self isInCycleX: xEntity y: yEntity) ifTrue: [ ^ self sccColor ].
+	^ self dependencyColor
 ]
 
 { #category : #utilities }
 MiDSMBrowserModel >> computeSCCs [
+	"run tarjan"
 	graph run
+]
+
+{ #category : #settings }
+MiDSMBrowserModel >> defaultCellColor [
+
+	^ nodeColors at: #defaultCell
+]
+
+{ #category : #settings }
+MiDSMBrowserModel >> dependencyColor [
+	"a 'nice' blue for cells with dependency"
+	^ nodeColors at: #dependency
+]
+
+{ #category : #settings }
+MiDSMBrowserModel >> diagonalCellColor [
+
+	^nodeColors at: #diagonalCell
 ]
 
 { #category : #accessing }
@@ -79,14 +120,29 @@ MiDSMBrowserModel >> entitiesOrdered [
 	]) collect: #model
 ]
 
+{ #category : #testing }
+MiDSMBrowserModel >> findNode: anEntity [
+
+	^ "graph findNode: anEntity"
+	nodeDictionary at: anEntity
+]
+
 { #category : #actions }
 MiDSMBrowserModel >> followEntity: aCollection [
+
 	self newGraph.
-	graph nodes: (aCollection asMooseGroup select: [ :e | 
-		e usesFamixTrait: TEntityMetaLevelDependency ]).
-	self buildGraph.
+	self buildGraphNodes: aCollection.
+	self buildGraphEdges.
 	self computeSCCs.
 	browser buildDSM
+]
+
+{ #category : #accessing }
+MiDSMBrowserModel >> highlightColorForX: xEntity y: yEntity [
+
+	(self isInCycleX: xEntity y: yEntity) ifFalse: [ 
+		^ self colorForX: xEntity y: yEntity ].
+	^ self highlightSCCColor
 ]
 
 { #category : #actions }
@@ -95,10 +151,31 @@ MiDSMBrowserModel >> highlightEntity: anEntity [
 	"browser highlightEntities: anEntity asCollection"
 ]
 
+{ #category : #settings }
+MiDSMBrowserModel >> highlightSCCColor [
+
+	^ nodeColors at: #highlightSCC
+]
+
 { #category : #initialization }
 MiDSMBrowserModel >> initialize [ 
 	super initialize.
-	self newGraph 
+	self initializeColors.
+	self newGraph.
+]
+
+{ #category : #initialization }
+MiDSMBrowserModel >> initializeColors [
+	nodeColors := Dictionary new: 5.
+
+	nodeColors at: #diagonalCell put: Color veryLightGray.
+	nodeColors at: #scc put: Color lightRed.
+	nodeColors at: #highlightSCC put: Color red.
+	"extremely light gray for cell not in diagonal and not in dependency"
+	nodeColors at: #defaultCell put: (Color r: 0.9 g: 0.9 b: 0.9).
+	"a 'nice' blue for cells with dependency"
+	nodeColors at: #dependency put: (Color colorFrom: '#4d79ff').
+
 ]
 
 { #category : #testing }
@@ -116,7 +193,8 @@ MiDSMBrowserModel >> isDiagonalX: xEntity y: yEntity [
 { #category : #testing }
 MiDSMBrowserModel >> isInCycleX: xEntity y: yEntity [
 
-	^(graph findNode: xEntity) cycleNodes anySatisfy: [ :node | node model = yEntity ]
+	^ (self findNode: xEntity) cycleNodes anySatisfy: [ :node | 
+		  node model = yEntity ]
 ]
 
 { #category : #initialization }
@@ -127,7 +205,13 @@ MiDSMBrowserModel >> newGraph [
 { #category : #accessing }
 MiDSMBrowserModel >> relationsForX: anEntity [
 
-	^(graph findNode: anEntity) adjacentNodes collect: #model
+	^ (self findNode: anEntity) adjacentNodes collect: #model
+]
+
+{ #category : #settings }
+MiDSMBrowserModel >> sccColor [
+
+	^ nodeColors at: #scc
 ]
 
 { #category : #accessing }
