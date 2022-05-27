@@ -101,3 +101,8 @@ MiDSMBrowser >> setModelBeforeInitialization: aModel [
 	super setModelBeforeInitialization: aModel.
 	aModel browser: self
 ]
+
+{ #category : #api }
+MiDSMBrowser >> showSCC: aCollection [
+	diagram showSCC: aCollection 
+]
