@@ -8,7 +8,8 @@ Class {
 		'browser',
 		'graph',
 		'nodeDictionary',
-		'nodeColors'
+		'nodeColors',
+		'orderedNodes'
 	],
 	#category : #'MooseIDE-Dependency-DSM'
 }
@@ -25,7 +26,7 @@ MiDSMBrowserModel >> browser: anObject [
 	browser := anObject
 ]
 
-{ #category : #utilities }
+{ #category : #buildGraph }
 MiDSMBrowserModel >> buildGraphEdges [
 	"We choose to say that there is a relation from line to column if line depends on column"
 	| entities |
@@ -41,7 +42,7 @@ MiDSMBrowserModel >> buildGraphEdges [
 	]
 ]
 
-{ #category : #utilities }
+{ #category : #buildGraph }
 MiDSMBrowserModel >> buildGraphNodes: aCollection [
 
 	graph nodes: (aCollection asMooseGroup select: [ :e | 
@@ -68,7 +69,7 @@ MiDSMBrowserModel >> colorForTuple: tuple [
 	^ self dependencyColor
 ]
 
-{ #category : #utilities }
+{ #category : #buildGraph }
 MiDSMBrowserModel >> computeSCCs [
 	"run tarjan"
 	graph run
@@ -113,6 +114,7 @@ MiDSMBrowserModel >> followEntity: aCollection [
 	self newGraph.
 	self buildGraphNodes: aCollection.
 	self buildGraphEdges.
+	self orderNodes.
 	self computeSCCs.
 	browser buildDSM
 ]
@@ -162,18 +164,44 @@ MiDSMBrowserModel >> isDiagonal: tuple [
 
 ]
 
-{ #category : #initialization }
+{ #category : #buildGraph }
 MiDSMBrowserModel >> newGraph [
 	graph := AITarjan new.
+	orderedNodes := #()
 ]
 
-{ #category : #api }
+{ #category : #accessing }
 MiDSMBrowserModel >> nodesOrdered [
+	^orderedNodes
+]
 
-	^graph nodes sorted: [ :nodeA :nodeB | 
-		nodeA adjacentNodes size < nodeB adjacentNodes size or: [ 
-			nodeA adjacentNodes size = nodeB adjacentNodes size and: [ 
-				nodeA model name < nodeB model name ] ] ]
+{ #category : #buildGraph }
+MiDSMBrowserModel >> orderNodes [
+	"ordering edges on:
+	- number of combined in and out dependencies
+	- if equal, number of out dependencies
+	- if also equal, then name"
+	| incomingEdges |
+	incomingEdges := Dictionary new: graph nodes size.
+	graph nodes do: [ :node | incomingEdges at: node put: Set new ].
+	graph nodes do: [ :node |
+		node adjacentNodes do: [ :adjacent || incomings |
+			incomings := incomingEdges at: adjacent.
+			incomings add: node.
+			incomingEdges at: adjacent put: incomings
+		].
+	].
+	orderedNodes := graph nodes sorted: [ :nodeA :nodeB || outA inA outB inB|
+		outA := nodeA adjacentNodes size.
+		inA := (incomingEdges at: nodeA) size.
+		outB := nodeB adjacentNodes size.
+		inB := (incomingEdges at: nodeB) size.
+		
+		(inA + outA) < (inB + outB)
+		or: [ (inA + outA) = (inB + outB)
+			ifTrue: [ outA < outB
+				or: [ outA = outB and: [nodeA model name < nodeB model name] ] ]
+			ifFalse: [ false ] ] ]
 ]
 
 { #category : #settings }

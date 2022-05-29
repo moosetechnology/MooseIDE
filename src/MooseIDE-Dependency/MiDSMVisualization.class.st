@@ -35,9 +35,9 @@ MiDSMVisualization >> createDSM: aRSCanvas [
 	aRSCanvas addInteraction: RSCanvasController new.
 	dsm := MiRSDSM new.
 	dsm owner: self.
-	dsm setShouldFeedX.
-	dsm labelShapeX textBlock: [ :columnModel | viewModel displayValueForNode: columnModel].
-	dsm labelShapeY textBlock: [ :rowModel | viewModel displayValueForNode: rowModel].
+	dsm setShouldFeedY.
+	dsm labelShapeX textBlock: [ :columnNode | viewModel displayValueForNode: columnNode].
+	dsm labelShapeY textBlock: [ :rowNode | viewModel displayValueForNode: rowNode ].
 	dsm container: aRSCanvas.
 	dsm objects: entities.
 	dsm color: [ :tuple | self cellColor: tuple ].
@@ -55,16 +55,23 @@ MiDSMVisualization >> initialize [
 	self script: [ :canvas | self createDSM: canvas ].
 	
 	"optimization cache"
-	lastSCCShapes := #()
+	lastSCCShapes := nil -> #()
 ]
 
 { #category : #private }
 MiDSMVisualization >> sccShapesIncluding: aRSShape [
+"Transcript
+	show: '    ';
+	show: (aRSShape model key model name) ;
+	show: ' -> ';
+	show: (aRSShape model value model name)."
 
-	(lastSCCShapes includes: aRSShape) ifFalse: [ 
-		lastSCCShapes := aRSShape canvas deepShapesFromModels:
-			(viewModel sccTuplesForTuple: aRSShape model) ].
-	^ lastSCCShapes
+	(lastSCCShapes key = aRSShape model key) ifFalse: [ 
+		"Transcript show: ' - NOT found' ; cr."
+		lastSCCShapes := aRSShape model key -> (aRSShape canvas deepShapesFromModels:
+			(viewModel sccTuplesForTuple: aRSShape model)) ]
+		"ifTrue: [ Transcript show: ' - found' ; cr ]".
+	^ lastSCCShapes value
 ]
 
 { #category : #initialization }
