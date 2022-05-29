@@ -6,8 +6,10 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'browser',
-		'entities',
-		'relationsForX'
+		'graph',
+		'nodeDictionary',
+		'nodeColors',
+		'orderedNodes'
 	],
 	#category : #'MooseIDE-Dependency-DSM'
 }
@@ -24,15 +26,29 @@ MiDSMBrowserModel >> browser: anObject [
 	browser := anObject
 ]
 
-{ #category : #utilities }
-MiDSMBrowserModel >> cacheDependencies: aCollection [
-	"RSDSM conventions: X entities are at the top of the matricx, Y entities at the left
-	We choose to say that there is a relation from X to Y if Y depends on X"
-	relationsForX := Dictionary new.
-	aCollection do: [ :each | 
-		relationsForX
-			at: each
-			put: ((each queryAllIncoming withoutSelfLoops atScope: each class) intersection: entities) ]
+{ #category : #buildGraph }
+MiDSMBrowserModel >> buildGraphEdges [
+	"We choose to say that there is a relation from line to column if line depends on column"
+	| entities |
+	entities := self entities.
+	entities do: [ :entity |
+		graph
+			edges: { entity }
+			from: #yourself
+			toAll: [ :sourceEntity |
+				"removed call to #withoutSelfLoop because it is too expansive to compute"
+				(sourceEntity queryAllOutgoing atScope: sourceEntity class) intersection: entities
+			]
+	]
+]
+
+{ #category : #buildGraph }
+MiDSMBrowserModel >> buildGraphNodes: aCollection [
+
+	graph nodes: (aCollection asMooseGroup select: [ :e | 
+			 e usesFamixTrait: TEntityMetaLevelDependency ]).
+	nodeDictionary := Dictionary new: aCollection size.
+	graph nodes do: [ :node | nodeDictionary at: node model put: node ]
 ]
 
 { #category : #testing }
@@ -43,28 +59,64 @@ MiDSMBrowserModel >> canFollowEntity: anObject [
 			  a usesFamixTrait: TEntityMetaLevelDependency ] ].
 ]
 
-{ #category : #accessing }
-MiDSMBrowserModel >> colorForX: xEntity y: yEntity [
-	(self isDiagonalX: xEntity y: yEntity)
-	ifTrue: [ ^Color veryLightGray ].
-	(self isDependantX: xEntity onY: yEntity)
-	ifTrue: [ ^Color colorFrom: '#4d79ff' ].
-	^Color r: 0.9 g: 0.9 b: 0.9 "extremely light gray"
+{ #category : #api }
+MiDSMBrowserModel >> colorForTuple: tuple [
+
+	(self isDiagonal: tuple) ifTrue: [ ^self diagonalColor ].
+	(self isDependency: tuple) ifFalse: [ ^self defaultColor ].
+
+	(self isCycle: tuple) ifTrue: [ ^ self sccColor ].
+	^ self dependencyColor
+]
+
+{ #category : #buildGraph }
+MiDSMBrowserModel >> computeSCCs [
+	"run tarjan"
+	graph run
+]
+
+{ #category : #settings }
+MiDSMBrowserModel >> defaultColor [
+
+	^ nodeColors at: #defaultCell
+]
+
+{ #category : #settings }
+MiDSMBrowserModel >> dependencyColor [
+	"a 'nice' blue for cells with dependency"
+	^ nodeColors at: #dependency
+]
+
+{ #category : #settings }
+MiDSMBrowserModel >> diagonalColor [
+
+	^nodeColors at: #diagonalCell
+]
+
+{ #category : #api }
+MiDSMBrowserModel >> displayValueForNode: aNode [
+	^aNode model name
+]
+
+{ #category : #api }
+MiDSMBrowserModel >> displayValueForTuple: tuple [
+	^(self displayValueForNode: tuple key), ' -> ' , (self displayValueForNode: tuple value)
 ]
 
 { #category : #accessing }
 MiDSMBrowserModel >> entities [
-	^ entities
+	^graph nodes collect: #model
 ]
 
 { #category : #actions }
-MiDSMBrowserModel >> followEntity: anEntity [
-	entities := anEntity asMooseGroup select: [ :e | 
-		e usesFamixTrait: TEntityMetaLevelDependency ].
-	self cacheDependencies: entities.
-	entities := self orderEntities: entities.
-	entities ifNotEmpty: [
-		browser showDSM]
+MiDSMBrowserModel >> followEntity: aCollection [
+
+	self newGraph.
+	self buildGraphNodes: aCollection.
+	self buildGraphEdges.
+	self orderNodes.
+	self computeSCCs.
+	browser buildDSM
 ]
 
 { #category : #actions }
@@ -74,41 +126,125 @@ MiDSMBrowserModel >> highlightEntity: anEntity [
 ]
 
 { #category : #initialization }
-MiDSMBrowserModel >> initialize [
+MiDSMBrowserModel >> initialize [ 
 	super initialize.
-	entities := #()
+	self initializeColors.
+	self newGraph.
+]
+
+{ #category : #initialization }
+MiDSMBrowserModel >> initializeColors [
+	nodeColors := Dictionary new: 5.
+
+	nodeColors at: #diagonalCell put: Color veryLightGray.
+	nodeColors at: #scc put: Color lightRed.
+	nodeColors at: #showSCC put: Color red.
+	"extremely light gray for cell not in diagonal and not in dependency"
+	nodeColors at: #defaultCell put: (Color r: 0.9 g: 0.9 b: 0.9).
+	"a 'nice' blue for cells with dependency"
+	nodeColors at: #dependency put: (Color colorFrom: '#4d79ff').
+
 ]
 
 { #category : #testing }
-MiDSMBrowserModel >> isDependantX: xEntity onY: yEntity [
-	^(relationsForX at: xEntity) includes: yEntity
+MiDSMBrowserModel >> isCycle: tuple [
+
+	^tuple key cycleNodes includes: tuple value
 ]
 
 { #category : #testing }
-MiDSMBrowserModel >> isDiagonalX: xEntity y: yEntity [
-	^xEntity = yEntity
+MiDSMBrowserModel >> isDependency: tuple [
+
+	^tuple key adjacentNodes includes: tuple value
+]
+
+{ #category : #testing }
+MiDSMBrowserModel >> isDiagonal: tuple [
+	^tuple key = tuple value
 
 ]
 
-{ #category : #utilities }
-MiDSMBrowserModel >> orderEntities: aCollection [
-	^aCollection sorted: [ :a :b || dependenciesA dependenciesB |
-		dependenciesA := (relationsForX at: a) size.
-		dependenciesB := (relationsForX at: b) size.
-		(dependenciesA < dependenciesB)
-		ifTrue: [ true ]
-		ifFalse: [ (dependenciesA = dependenciesB)
-			ifTrue: [ a name < b name ]
-			ifFalse: [ false ] ]
-	]
+{ #category : #buildGraph }
+MiDSMBrowserModel >> newGraph [
+	graph := AITarjan new.
+	orderedNodes := #()
 ]
 
 { #category : #accessing }
-MiDSMBrowserModel >> relationsForX: anEntity [
-	^relationsForX at: anEntity
+MiDSMBrowserModel >> nodesOrdered [
+	^orderedNodes
+]
+
+{ #category : #buildGraph }
+MiDSMBrowserModel >> orderNodes [
+	"ordering edges on:
+	- number of combined in and out dependencies
+	- if equal, number of out dependencies
+	- if also equal, then name"
+	| incomingEdges |
+	incomingEdges := Dictionary new: graph nodes size.
+	graph nodes do: [ :node | incomingEdges at: node put: Set new ].
+	graph nodes do: [ :node |
+		node adjacentNodes do: [ :adjacent || incomings |
+			incomings := incomingEdges at: adjacent.
+			incomings add: node.
+			incomingEdges at: adjacent put: incomings
+		].
+	].
+	orderedNodes := graph nodes sorted: [ :nodeA :nodeB || outA inA outB inB|
+		outA := nodeA adjacentNodes size.
+		inA := (incomingEdges at: nodeA) size.
+		outB := nodeB adjacentNodes size.
+		inB := (incomingEdges at: nodeB) size.
+		
+		(inA + outA) < (inB + outB)
+		or: [ (inA + outA) = (inB + outB)
+			ifTrue: [ outA < outB
+				or: [ outA = outB and: [nodeA model name < nodeB model name] ] ]
+			ifFalse: [ false ] ] ]
+]
+
+{ #category : #settings }
+MiDSMBrowserModel >> sccColor [
+
+	^ nodeColors at: #scc
+]
+
+{ #category : #api }
+MiDSMBrowserModel >> sccTuplesForTuple: tuple [
+	"gets the SCC owning tuple, then collects all tuples in this SCC
+	 where row entity depends on column entity"
+	| scc graphNode |
+	graphNode := tuple key.
+	scc := { graphNode } , graphNode cycleNodes.
+	^(scc size = 1)
+		ifTrue: [ #() ]
+		ifFalse: [
+			scc flatCollect: [ :rowNode |
+				rowNode adjacentNodes
+					collect: [ :columnNode | rowNode -> columnNode ]
+					thenSelect: [ :sccTuple | self isCycle: sccTuple ]
+			]
+		]
 ]
 
 { #category : #accessing }
 MiDSMBrowserModel >> selectedEntities [
 	^#()
+]
+
+{ #category : #settings }
+MiDSMBrowserModel >> showSCCColor [
+
+	^ nodeColors at: #showSCC
+]
+
+{ #category : #api }
+MiDSMBrowserModel >> showSCCColorForTuple: tuple [
+	"same as #colorForX:y: but highlighting SCCs"
+	(self isDiagonal: tuple) ifTrue: [ ^self diagonalColor ].
+	(self isDependency: tuple) ifFalse: [ ^self defaultColor ].
+
+	(self isCycle: tuple) ifTrue: [ ^ self showSCCColor ].
+	^ self dependencyColor
 ]

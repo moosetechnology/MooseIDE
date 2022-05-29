@@ -49,6 +49,11 @@ MiDSMBrowser class >> title [
 	^ 'DSM'
 ]
 
+{ #category : #api }
+MiDSMBrowser >> buildDSM [
+	diagram run
+]
+
 { #category : #testing }
 MiDSMBrowser >> canFollowEntity: anObject [
 
@@ -82,7 +87,7 @@ MiDSMBrowser >> highlightEntity: anEntity [
 MiDSMBrowser >> initializePresenters [
 
 	diagram := self instantiate: MiDSMVisualization.
-	diagram model: model
+	diagram viewModel: model
 ]
 
 { #category : #accessing }
@@ -98,6 +103,6 @@ MiDSMBrowser >> setModelBeforeInitialization: aModel [
 ]
 
 { #category : #api }
-MiDSMBrowser >> showDSM [
-	diagram run
+MiDSMBrowser >> showSCC: aCollection [
+	diagram showSCC: aCollection 
 ]
