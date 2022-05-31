@@ -1,72 +1,51 @@
+"
+A visualization of a RSDSM inside a MooseIDE browser
+"
 Class {
 	#name : #MiDSMVisualization,
 	#superclass : #MiAbstractVisualization,
 	#instVars : [
-		'entities',
-		'selected',
-		'incomingDependencies',
-		'outgoingDependencies'
+		'viewModel',
+		'lastSCCShapes',
+		'lastHighlighted',
+		'lastUnhighlighted'
 	],
-	#category : #'MooseIDE-Dependency-Dependency'
+	#category : #'MooseIDE-Dependency-DSM'
 }
 
-{ #category : #utilities }
-MiDSMVisualization >> collectDependencies [
-
-	incomingDependencies := Dictionary new.
-	outgoingDependencies := Dictionary new.
-	self entities do: [ :each | 
-		incomingDependencies
-			at: each
-			put: (each queryAllIncoming withoutSelfLoops atScope: each class)
-					asOrderedCollection.
-		outgoingDependencies
-			at: each
-			put: (each queryAllOutgoing withoutSelfLoops atScope: each class)
-					asOrderedCollection ]
+{ #category : #coloring }
+MiDSMVisualization >> cellColor: tuple [
+	^viewModel colorForTuple: tuple
 ]
 
-{ #category : #accessing }
-MiDSMVisualization >> createDSM: aRSCanvas [
-	| dsm |
-	self flag: #FIXME. "We still need fill correctly objects and dependency with incomingDependencies and outgoingDependencies calculated in #collectDependencies"
-	entities ifEmpty: [ ^ self ].
-	self collectDependencies.
+{ #category : #coloring }
+MiDSMVisualization >> cellShowSCCColor: tuple [
+	^viewModel showSCCColorForTuple: tuple
+]
 
+{ #category : #initialization }
+MiDSMVisualization >> createDSM: aRSCanvas [
+	| dsm entities |
+	"change legend by adding #noLegend to RSCanvasController new
+	and add RSLegend new ..."
+	
+	entities := viewModel nodesOrdered.
+	entities ifEmpty: [ ^self ].
+	
 	aRSCanvas addInteraction: RSCanvasController new.
-	dsm := RSDSM new.
-	dsm labelShapeX textBlock: #name.
-	dsm labelShapeY textBlock: #name.
+	dsm := MiRSDSM new.
+	dsm owner: self.
+	dsm setShouldFeedY.
+	dsm labelShapeX textBlock: [ :columnNode | viewModel displayValueForNode: columnNode].
+	dsm labelShapeY textBlock: [ :rowNode | viewModel displayValueForNode: rowNode ].
 	dsm container: aRSCanvas.
 	dsm objects: entities.
-	dsm dependency: [ :entity | self dependenciesFrom: entity ].
-	dsm build
-]
+	dsm color: [ :tuple | self cellColor: tuple ].
 
-{ #category : #utility }
-MiDSMVisualization >> dependenciesFrom: entity [
+	dsm build.
 
-	"entity name = #String ifTrue: [ 1 halt ]."
+	self setInteractions: dsm.
 
-	^ entity allProviders
-]
-
-{ #category : #accessing }
-MiDSMVisualization >> entities [
-
-	^ entities
-]
-
-{ #category : #accessing }
-MiDSMVisualization >> entities: anObject [
-
-	entities := anObject
-]
-
-{ #category : #highlighting }
-MiDSMVisualization >> highlightShapes [
-
-	^ #(  )
 ]
 
 { #category : #initialization }
@@ -74,17 +53,61 @@ MiDSMVisualization >> initialize [
 
 	super initialize.
 	self script: [ :canvas | self createDSM: canvas ].
-	entities := MooseGroup new
+	
+	"optimization cache"
+	lastSCCShapes := nil -> #()
+]
+
+{ #category : #private }
+MiDSMVisualization >> sccShapesIncluding: aRSShape [
+"Transcript
+	show: '    ';
+	show: (aRSShape model key model name) ;
+	show: ' -> ';
+	show: (aRSShape model value model name)."
+
+	(lastSCCShapes key = aRSShape model key) ifFalse: [ 
+		"Transcript show: ' - NOT found' ; cr."
+		lastSCCShapes := aRSShape model key -> (aRSShape canvas deepShapesFromModels:
+			(viewModel sccTuplesForTuple: aRSShape model)) ]
+		"ifTrue: [ Transcript show: ' - found' ; cr ]".
+	^ lastSCCShapes value
+]
+
+{ #category : #initialization }
+MiDSMVisualization >> setInteractions: dsm [
+	|   |
+	dsm shapes @ (RSPopup text: [:tuple | viewModel displayValueForTuple: tuple ]).
+
+	"sccHighlight := RSHighlightable new.
+	sccHighlight
+		when: RSHighlightEvent do: [ :evt | evt shape color: (self cellHighlightColor: evt shape model) ].
+	sccHighlight
+		when: RSUnHighlightEvent do: [ :evt | evt shape color: (self cellColor: evt shape model) ].
+	sccHighlight highlightShapes: [ :shape | self sccShapesIncluding: shape ].
+	currentCanvas @ sccHighlight"
+	
+	"RSInspectableInteraction reset.
+	inspect := RSInspectableInteraction new.
+	""highligtable := inspectable highlightable.
+	highligtable highlightColor: Color green.""
+	inspect inspectShapeBlock: [ :tuple | viewModel selected: tuple ].
+	dsm shapes @ inspect"
+]
+
+{ #category : #utilities }
+MiDSMVisualization >> shapeFor: tuple [
+	currentCanvas deepShapeFromModel: tuple
+]
+
+{ #category : #coloring }
+MiDSMVisualization >> showSCC: aCollection [
+	aCollection do: [ :tuple |
+		(self shapeFor: tuple) color: (viewModel showSCCColorForTuple: tuple)
+	]
 ]
 
 { #category : #accessing }
-MiDSMVisualization >> selected [
-
-	^ selected
-]
-
-{ #category : #accessing }
-MiDSMVisualization >> selected: anObject [
-
-	selected := anObject
+MiDSMVisualization >> viewModel: aDSMModel [
+	viewModel := aDSMModel
 ]
