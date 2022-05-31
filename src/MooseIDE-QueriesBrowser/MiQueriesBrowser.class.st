@@ -174,9 +174,7 @@ MiQueriesBrowser >> initializeQueryCodePresenter [
 { #category : #initialization }
 MiQueriesBrowser >> initializeResultTreePresenter [
 
-	queryResultTreePresenter := self instantiate: QueryResultTreePresenter.
-	queryResultTreePresenter updateForEntities: self queryResultEntities.
-	queryResultTreePresenter whenSelectionChangedDo: [ self sendEntitiesToPrivateBus ]
+	self resetQueryResultTreePresenterOn: self queryResultEntities
 ]
 
 { #category : #brokerage }
@@ -219,6 +217,16 @@ MiQueriesBrowser >> removeQuery: aQuery [
 	application removeItem: aQuery
 ]
 
+{ #category : #actions }
+MiQueriesBrowser >> resetQueryResultTreePresenterOn: result [
+
+	queryResultTreePresenter := self instantiate:
+		                            QueryResultTreePresenter.
+	queryResultTreePresenter updateForEntities: result.
+	queryResultTreePresenter whenSelectionChangedDo: [ 
+		self sendEntitiesToPrivateBus ]
+]
+
 { #category : #'api - actions' }
 MiQueriesBrowser >> resetRootQueryForEntities: busMooseEntities [
 
@@ -259,14 +267,9 @@ MiQueriesBrowser >> setModelBeforeInitialization: aRootQuery [
 { #category : #actions }
 MiQueriesBrowser >> showResultOfQuery: aQuery [
 
-	| result |
 	self enableProgressNotification.
 
-	result := aQuery result.
-
-	queryResultTreePresenter := self instantiate:
-		                            QueryResultTreePresenter.
-	queryResultTreePresenter updateForEntities: result.
+	self resetQueryResultTreePresenterOn: aQuery result.
 
 	"This will sho the correct queryResultTreePresenter:"
 	queryNotebookPresenter resetAllPageContents

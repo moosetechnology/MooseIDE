@@ -113,6 +113,28 @@ MiQueriesBrowserTest >> testInitializePresenters [
 ]
 
 { #category : #tests }
+MiQueriesBrowserTest >> testPropagateSelectedResult [
+
+	| selectedEntity |
+	self
+		assertCollection: browser miSelectedItem
+		hasSameElements: helper classesAndMethods.
+
+	browser containedBrowser queryResultTreePresenter selectItem:
+		FamixStClass.
+
+	self
+		assertCollection: browser miSelectedItem
+		hasSameElements: helper classesAndMethods.
+
+	selectedEntity := helper classesAndMethods anyOne.
+	browser containedBrowser queryResultTreePresenter selectItem:
+		selectedEntity.
+
+	self assert: browser miSelectedItem equals: selectedEntity
+]
+
+{ #category : #tests }
 MiQueriesBrowserTest >> testRegisterAtStartup [
 
 	self assert: (browser application producersOf: FQAbstractQuery) size equals: 1.

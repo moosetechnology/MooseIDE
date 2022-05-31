@@ -48,11 +48,11 @@ QueryResultTreePresenter >> initialize [
 	super initialize.
 
 	self
-		whenRootsChangedDo: [ sortedEntitiesCache := IdentityDictionary new ] ;
+		whenRootsChangedDo: [ sortedEntitiesCache := IdentityDictionary new ];
 		addColumn: (SpStringTableColumn
 				 title: self class headerTitle
-				 evaluated: [ :item | self stringForItem: item ]) ;
-		children: [ :item | self childrenOf: item ] ;
+				 evaluated: [ :item | self stringForItem: item ]);
+		children: [ :item | self childrenOf: item ];
 		beMultipleSelection
 ]
 
@@ -70,12 +70,6 @@ QueryResultTreePresenter >> miSelectedItem [
 			   ifTrue: [ item entities ]
 			   ifFalse: [ item ] ]) flattened copyWithoutDuplicates
 		  asMooseGroup
-]
-
-{ #category : #accessing }
-QueryResultTreePresenter >> queriesBrowser [
-
-	^ owner owner
 ]
 
 { #category : #naming }
