@@ -46,3 +46,21 @@ MiInspectorBrowserTest >> testCannotPropagatePharoCollection [
 	self deny: browser canPropagate.
 	self deny: (self actionButton: MiPropagateCommand) isEnabled
 ]
+
+{ #category : #tests }
+MiInspectorBrowserTest >> testPropagateRightPane [
+
+	| entity |
+	entity := MooseEntity new.
+
+	browser followEntity: (MooseModel new
+			 add: entity;
+			 yourself).
+
+	"Select entity on the first page, to open it in a second page"
+	browser containedBrowser miInspector millerList millerListPresenter
+		changeSelection: entity
+		from: browser containedBrowser miInspector firstPage.
+
+	self assert: browser miSelectedItem equals: entity
+]
