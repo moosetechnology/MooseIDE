@@ -138,6 +138,7 @@ MiInspectorBrowser >> miSelectedItem [
 
 	| lastInspectorPage |
 	lastInspectorPage := miInspector millerList pages last.
+
 	^ lastInspectorPage model inspectedObject
 ]
 
@@ -149,5 +150,6 @@ MiInspectorBrowser >> updateWindowTitle: aWindow [
 		         { ([ self model displayString ]
 			          on: Error
 			          do: [ :e | e printString ]) }.
+
 	aWindow ifNotNil: [ aWindow title: title ]
 ]

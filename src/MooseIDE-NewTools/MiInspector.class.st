@@ -12,10 +12,12 @@ Class {
 
 { #category : #initialization }
 MiInspector >> initializePresenters [
+
 	super initializePresenters.
 
-	millerList millerListPresenter
-		whenColumnsChangedDo: [self owner updateToolbar].
+	millerList millerListPresenter whenColumnsChangedDo: [ 
+		self owner updateToolbar.
+		self owner sendEntitiesToPrivateBus ]
 ]
 
 { #category : #'private - factory' }
