@@ -44,59 +44,61 @@ MiModelRootBrowserModel >> availableMooseModels [
 
 { #category : #accessing }
 MiModelRootBrowserModel >> browser: aBrowser [
+
 	browser := aBrowser
 ]
 
 { #category : #testing }
 MiModelRootBrowserModel >> canPropagate [
+
 	^ selected isMooseObject
 ]
 
 { #category : #updating }
 MiModelRootBrowserModel >> getAllModelRootBrowsers [
-	^browser application allBrowsers: MiModelRootBrowser
+
+	^ browser application allBrowsers: MiModelRootBrowser
 ]
 
 { #category : #initialization }
 MiModelRootBrowserModel >> initialize [
 
 	super initialize.
-	mooseModelsList := self availableMooseModels.
 
-	self initializeSettings 
+	mooseModelsList := self availableMooseModels.
+	self initializeSettings
 ]
 
 { #category : #initialization }
-MiModelRootBrowserModel >> initializeSettings [ 
+MiModelRootBrowserModel >> initializeSettings [
+
 	settings := MiSettingsPresenter new.
-	settings	addItem: (MiCheckboxSettingItem new
-		setValue: true ;
-		label: 'Filter out stubs?' ;
-		help: 'When propagating the model should it filter out the stub entities or pass them along' ;
-		yourself)
+	settings
+		addItem: (MiCheckboxSettingItem new
+				 setValue: true;
+				 label: 'Filter out stubs?';
+				 help:
+					 'When propagating the model should it filter out the stub entities or pass them along';
+				 yourself)
 		named: #filterStubsSetting
 ]
 
 { #category : #'accessing - tests' }
 MiModelRootBrowserModel >> mooseModelsList [
 
-	^mooseModelsList
-]
-
-{ #category : #'accessing - tests' }
-MiModelRootBrowserModel >> mooseModelsList: aList [
-
-	mooseModelsList := aList
+	^ mooseModelsList
 ]
 
 { #category : #keymaps }
-MiModelRootBrowserModel >> openSettings [ 
+MiModelRootBrowserModel >> openSettings [
+
 	settings open
 ]
 
 { #category : #'accessing - tests' }
 MiModelRootBrowserModel >> rawSelectedMooseModel [
-^selected
+
+	^ selected
 ]
 
 { #category : #accessing }
@@ -111,28 +113,26 @@ MiModelRootBrowserModel >> selected [
 
 { #category : #accessing }
 MiModelRootBrowserModel >> selected: anObject [
-	selected := anObject.
-	browser updateToolbar.
-	browser showSelectedItem: anObject
+
+	selected := anObject
 ]
 
 { #category : #'accessing - tests' }
 MiModelRootBrowserModel >> settings [
+
 	^ settings
 ]
 
 { #category : #updating }
 MiModelRootBrowserModel >> updateForNewModel: aMooseModel [
 
+	self selected: aMooseModel.
 	self getAllModelRootBrowsers do: [ :modelBrowser | 
-		modelBrowser updateList ].
-	self selected: aMooseModel
+		modelBrowser updateList ]
 ]
 
 { #category : #updating }
 MiModelRootBrowserModel >> updateMooseModelsList [
 
-	mooseModelsList := self availableMooseModels.
-		browser listOfMooseModels: mooseModelsList.
-		browser showSelectedItem: selected
+	mooseModelsList := self availableMooseModels
 ]

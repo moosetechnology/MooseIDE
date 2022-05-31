@@ -4,7 +4,7 @@ I accept a FamixTypeGroup.
 "
 Class {
 	#name : #MiSystemComplexityBrowser,
-	#superclass : #MiAbstractBrowser,
+	#superclass : #MiAbstractBrowser2,
 	#instVars : [
 		'visualization'
 	],

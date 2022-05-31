@@ -13,8 +13,7 @@ Class {
 	#superclass : #MiAbstractBrowser2,
 	#instVars : [
 		'toolbar',
-		'modelFilteringList',
-		'blockWhenSelection'
+		'modelFilteringList'
 	],
 	#category : #'MooseIDE-Meta-ModelRootBrowser'
 }
@@ -102,7 +101,7 @@ MiModelRootBrowser >> canFollowEntity: anObject [
 { #category : #testing }
 MiModelRootBrowser >> canPropagate [
 
-	^model canPropagate
+	^ model canPropagate
 ]
 
 { #category : #actions }
@@ -128,9 +127,11 @@ MiModelRootBrowser >> initializeList [
 
 	modelFilteringList listPresenter contextMenu: [ 
 		(self class buildModelCommandsGroupWith: self) asMenuPresenter ].
-	blockWhenSelection := [ :selected | 
-	                      model selected: selected selectedItem ].
-	modelFilteringList whenSelectionChangedDo: blockWhenSelection
+
+	modelFilteringList whenSelectionChangedDo: [ :selected | 
+		model selected: selected selectedItem.
+		self sendEntitiesToPrivateBus.
+		self updateToolbar ]
 ]
 
 { #category : #initialization }
@@ -150,14 +151,14 @@ MiModelRootBrowser >> initializeToolbar [
 
 { #category : #updating }
 MiModelRootBrowser >> listOfMooseModels: aList [
-modelFilteringList items: aList
-	
+
+	modelFilteringList items: aList
 ]
 
 { #category : #accessing }
 MiModelRootBrowser >> miSelectedItem [
 
-	^model selected
+	^ model selected
 ]
 
 { #category : #'accessing - tests' }
@@ -192,16 +193,6 @@ MiModelRootBrowser >> settingsItem [
 	^ model settings
 ]
 
-{ #category : #actions }
-MiModelRootBrowser >> showSelectedItem: anItem [
-	"This method is intended to show what item is selected
-	It is called by the MiModelRootBrowserModel so it should take care to not call it again"
-	modelFilteringList whenSelectionChangedDo: [ :ignored | "ignored to avoid calling the MiModelRootBrowserModel again"
-		 ].
-	modelFilteringList selectItem: anItem.
-	modelFilteringList whenSelectionChangedDo: blockWhenSelection
-]
-
 { #category : #updating }
 MiModelRootBrowser >> updateForNewModel: aModel [
 
@@ -212,5 +203,13 @@ MiModelRootBrowser >> updateForNewModel: aModel [
 { #category : #updating }
 MiModelRootBrowser >> updateList [
 
-	model updateMooseModelsList
+	| selectedItem |
+	selectedItem := model rawSelectedMooseModel.
+	model updateMooseModelsList.
+
+	modelFilteringList items: model mooseModelsList.
+
+	modelFilteringList selectItem: (selectedItem
+			 ifNotNil: [ selectedItem ]
+			 ifNil: [ model mooseModelsList at: 1 ifAbsent: [ nil ] ])
 ]

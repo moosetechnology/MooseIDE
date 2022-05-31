@@ -130,26 +130,28 @@ MiModelRootBrowserTest >> testSettingsAction [
 { #category : #tests }
 MiModelRootBrowserTest >> testUpdateForNewModel [
 
-	| newModel |
-	MooseModel root add: (FamixStModel new
-			 name: 'model1';
-			 yourself).
+	| model1 model2 |
+	model1 := FamixStModel new
+		          name: 'model1';
+		          yourself.
+	MooseModel root add: model1.
+	
 	browser containedBrowser updateList.
-
-	self assert: browser model mooseModelsList size equals: 1.
-	self assert: browser model rawSelectedMooseModel isNil.
-	newModel := FamixStModel new
-		            name: 'model2';
-		            yourself.
-	MooseModel root add: newModel.
-	browser containedBrowser updateForNewModel: newModel.
+	
+	model2 := FamixStModel new
+		          name: 'model2';
+		          yourself.
+	MooseModel root add: model2.
+	browser containedBrowser updateForNewModel: model2.
 
 	self
-		assert: browser containedBrowser model mooseModelsList size
-		equals: 2.
+		assertCollection: browser model mooseModelsList
+		hasSameElements: { 
+				model1.
+				model2 }.
 	self
 		assert: browser containedBrowser model rawSelectedMooseModel
-		equals: newModel
+		equals: model2
 ]
 
 { #category : #tests }
@@ -186,11 +188,21 @@ MiModelRootBrowserTest >> testUpdateForNewModelMultipleBrowsers [
 { #category : #tests }
 MiModelRootBrowserTest >> testUpdateList [
 
+	| model |
 	self assertEmpty: browser model mooseModelsList.
 
-	MooseModel root add: FamixStModel new.
+	model := FamixStModel new.
+	MooseModel root add: model.
 
 	browser containedBrowser updateList.
 
-	self assert: browser model mooseModelsList size equals: 1
+	self
+		assertCollection: browser model mooseModelsList
+		hasSameElements: { model }.
+	self
+		assert: (browser containedBrowser presenterAt: #modelFilteringList)
+				listPresenter selectedItem
+		equals: model.
+
+	self assert: browser model rawSelectedMooseModel equals: model
 ]
