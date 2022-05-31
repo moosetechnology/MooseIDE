@@ -5,15 +5,33 @@ Class {
 }
 
 { #category : #accessing }
-MiButtonEditablelistSettingItem >> getValue [
+MiButtonEditablelistSettingItem >> display: aBlock [
 
-	^secondaryPresenter items
+	secondaryPresenter display: aBlock
+]
+
+{ #category : #accessing }
+MiButtonEditablelistSettingItem >> displayBlock: aBlock [
+
+	secondaryPresenter displayIcon: aBlock
+]
+
+{ #category : #accessing }
+MiButtonEditablelistSettingItem >> displayIcon: aBlock [
+
+	secondaryPresenter displayIcon: aBlock
+]
+
+{ #category : #accessing }
+MiButtonEditablelistSettingItem >> getValue [
+	
+	^ secondaryPresenter items
 ]
 
 { #category : #initialization }
 MiButtonEditablelistSettingItem >> initializeSecondaryPresenter [
 
-	secondaryPresenter := SpEditableListPresenter new.
+	secondaryPresenter := MiEditableListSelector new.
 	presenter help: (self listToString: secondaryPresenter items).
 
 ]
@@ -25,7 +43,19 @@ MiButtonEditablelistSettingItem >> listToString: aCollection [
 ]
 
 { #category : #accessing }
+MiButtonEditablelistSettingItem >> possibleValues [
+
+	^ secondaryPresenter allItems
+]
+
+{ #category : #accessing }
+MiButtonEditablelistSettingItem >> possibleValues: aCollection [
+
+	secondaryPresenter allItems: aCollection
+]
+
+{ #category : #accessing }
 MiButtonEditablelistSettingItem >> setValue: aCollection [
-	secondaryPresenter display: displayBlock.
+
 	secondaryPresenter items: aCollection
 ]

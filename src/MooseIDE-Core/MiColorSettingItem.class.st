@@ -1,3 +1,6 @@
+"
+I am a setting item which open a color picker to set a color.
+"
 Class {
 	#name : #MiColorSettingItem,
 	#superclass : #MiAbstractSettingItem,
