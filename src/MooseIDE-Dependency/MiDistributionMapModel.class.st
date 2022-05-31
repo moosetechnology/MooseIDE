@@ -126,7 +126,8 @@ MiDistributionMapModel >> fetchChildrenQueries [
 { #category : #accessing }
 MiDistributionMapModel >> fetchTags [
 
-	^ (browser application itemsFor: FamixTag) asOrderedCollection 
+	^ ((browser application itemsFor: MiDynamicTag)
+	   , (browser application itemsFor: FamixTag)) asOrderedCollection 
 		  sorted: [ :t1 :t2 | t1 name < t2 name ]
 ]
 
@@ -175,11 +176,15 @@ MiDistributionMapModel >> itemColorForNoTag [
 
 { #category : #settings }
 MiDistributionMapModel >> itemTags [
-	^MiAbstractSettingItem buttonWithEditableListSetting
-		label: 'Tags' ;
-		help: 'The tags used as properties to display.
-If an entity has several tags, it will get the color of the first of its tags appearing in the list' ;
-		yourself
+
+	^ MiAbstractSettingItem buttonWithEditableListSetting
+		  possibleValues: self fetchTags;
+		  displayIcon: [ :tag | MiTagBrowserModel iconForTag: tag ];
+		  display: [ :tag | tag name ];
+		  label: 'Tags';
+		  help: 'The tags used as properties to display.
+If an entity has several tags, it will get the color of the first of its tags appearing in the list';
+		  yourself
 ]
 
 { #category : #querying }
@@ -232,7 +237,7 @@ MiDistributionMapModel >> resetTagSetting [
 	(self collection: environmentTags hasSameElementHas: settingTags) 
 		ifTrue: [ ^ self ].
 
-	(settings itemNamed: #tags) setValue: environmentTags.
+	(settings itemNamed: #tags) possibleValues: environmentTags.
 
 ]
 

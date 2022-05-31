@@ -2,11 +2,7 @@ Class {
 	#name : #MiDMBrowser,
 	#superclass : #MiAbstractBrowser,
 	#instVars : [
-		'visualization',
-		'layoutWithMenu',
-		'layoutWithoutMenu',
-		'settings',
-		'tagCreateForm'
+		'visualization'
 	],
 	#category : #'MooseIDE-Dependency-DistributionMap'
 }
@@ -72,8 +68,7 @@ MiDMBrowser >> availableQueries [
 MiDMBrowser >> browserClosed [
 
 	super browserClosed.
-	application unregisterConsumer: self.
-	"application unregisterConsumer: settings"
+	application unregisterConsumer: self
 ]
 
 { #category : #actions }
@@ -92,12 +87,6 @@ MiDMBrowser >> canReceiveEntity: anEntity [
 MiDMBrowser >> canvas [
 
 	^ visualization canvas
-]
-
-{ #category : #brokerage }
-MiDMBrowser >> consume: aTag [
-
-	tagCreateForm setTags
 ]
 
 { #category : #actions }
@@ -126,7 +115,6 @@ MiDMBrowser >> initializeLayout [
 MiDMBrowser >> initializePresenters [
 
 	visualization := self class mapClass owner: self.
-	"tagCreateForm := MiDynamicTagSelectionForm owner: self."
 	self initializeLayout
 ]
 
@@ -134,12 +122,6 @@ MiDMBrowser >> initializePresenters [
 MiDMBrowser >> miSelectedItem [
 
 	^ model entities mooseInterestingEntity
-]
-
-{ #category : #brokerage }
-MiDMBrowser >> remove: aTag [
-
-	tagCreateForm removeTag: aTag
 ]
 
 { #category : #actions }
