@@ -101,7 +101,8 @@ MiDistributionMapModel >> colorForTag: aTag [
 MiDistributionMapModel >> defaultChildrenQuery [
 
 	^ defaultChildrenQuery ifNil: [ 
-		  defaultChildrenQuery := FQScopeQuery down scope: FamixTClass]
+		  defaultChildrenQuery := FQCollectScriptQuery script: [ :entity | 
+			                          entity children ] ]
 ]
 
 { #category : #accessing }

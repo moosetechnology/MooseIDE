@@ -1,9 +1,15 @@
+"
+I am a Butterfly map. I can show incoming and outgoing dependencies from a central entity. It allows to navigate through several level of dependencies.
+I accept a moose entity that is the central entity.
+By default entities at left are all clients of the central entity, right ones are providers of the central entity. You can change these rules and custom the semantics of your butterfly map by playing with its settings.
+
+
+"
 Class {
 	#name : #MiButterflyMapBrowser,
 	#superclass : #MiAbstractBrowser,
 	#instVars : [
-		'visualization',
-		'settings'
+		'visualization'
 	],
 	#category : #'MooseIDE-ButterflyMap-Browser'
 }
@@ -58,12 +64,6 @@ MiButterflyMapBrowser >> canFollowEntity: anObject [
 ]
 
 { #category : #actions }
-MiButterflyMapBrowser >> closeSettings [
-
-	self layout child: visualization
-]
-
-{ #category : #actions }
 MiButterflyMapBrowser >> followEntity: anEntity [
 
 	self model currentEntity: anEntity
@@ -78,8 +78,7 @@ MiButterflyMapBrowser >> hasSettings [
 { #category : #initialization }
 MiButterflyMapBrowser >> initialize [
 
-	super initialize.
-	self application registerConsumer: settings for: FQAbstractQuery
+	super initialize
 ]
 
 { #category : #initialization }
@@ -92,7 +91,6 @@ MiButterflyMapBrowser >> initializeLayout [
 MiButterflyMapBrowser >> initializePresenters [
 
 	visualization := self class mapClass owner: self.
-	settings := MiButterflyMapSettings owner: self.
 	model browser: self.
 	self initializeLayout
 ]
@@ -107,12 +105,6 @@ MiButterflyMapBrowser >> itemsFor: aClass [
 MiButterflyMapBrowser >> miSelectedItem [
 
 	^ model currentEntity
-]
-
-{ #category : #actions }
-MiButterflyMapBrowser >> openSettings [
-
-	self layout child: settings
 ]
 
 { #category : #running }

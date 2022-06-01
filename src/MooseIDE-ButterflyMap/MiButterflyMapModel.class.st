@@ -86,20 +86,16 @@ MiButterflyMapModel >> defaultChildrenQuery [
 MiButterflyMapModel >> defaultLeftEntitiesQuery [
 
 	^ defaultLeftEntitiesQuery ifNil: [ 
-		  defaultLeftEntitiesQuery := FQNavigationQuery incoming
-			                              associationStrategy:
-				                              FQAllNavigationAssociations new;
-			                              yourself ]
+		  defaultLeftEntitiesQuery := FQCollectScriptQuery script: [ :entity | 
+			                              entity allProviders ] ]
 ]
 
 { #category : #accessing }
 MiButterflyMapModel >> defaultRightEntitiesQuery [
 
 	^ defaultRightEntitiesQuery ifNil: [ 
-		  defaultRightEntitiesQuery := FQNavigationQuery outgoing
-			                               associationStrategy:
-				                               FQAllNavigationAssociations new;
-			                               yourself ]
+		  defaultRightEntitiesQuery := FQCollectScriptQuery script: [ 
+			                               :entity | entity allClients ] ]
 ]
 
 { #category : #accessing }
