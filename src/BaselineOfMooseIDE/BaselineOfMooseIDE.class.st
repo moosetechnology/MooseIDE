@@ -13,6 +13,7 @@ BaselineOfMooseIDE >> baseline: spec [
 		self labelContractor: spec.
 		self hierarchicalVisualizations: spec.
 		self famixQueries: spec.
+		self mooseCritics: spec.
 
 		"Packages"
 		self definePackages: spec.
@@ -152,6 +153,15 @@ BaselineOfMooseIDE >> labelContractor: spec [
 		baseline: 'LabelContractor'
 		with: [ 
 		spec repository: 'github://moosetechnology/LabelContractor/src' ]
+]
+
+{ #category : #dependencies }
+BaselineOfMooseIDE >> mooseCritics: spec [
+
+	spec
+		baseline: 'MooseCritics'
+		with: [ 
+		spec repository: 'github://moosetechnology/MooseCritics/src' ]
 ]
 
 { #category : #actions }
