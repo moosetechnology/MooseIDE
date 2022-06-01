@@ -1,6 +1,6 @@
 Class {
 	#name : #MiMetaBrowser,
-	#superclass : #MiAbstractBrowser,
+	#superclass : #MiAbstractBrowser2,
 	#instVars : [
 		'commentNoteBook',
 		'entities',
