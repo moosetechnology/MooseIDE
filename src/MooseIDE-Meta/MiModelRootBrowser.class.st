@@ -131,7 +131,9 @@ MiModelRootBrowser >> initializeList [
 	modelFilteringList whenSelectionChangedDo: [ :selected | 
 		model selected: selected selectedItem.
 		self sendEntitiesToPrivateBus.
-		self updateToolbar ]
+		self updateToolbar ].
+	modelFilteringList items ifNotEmpty: [ :models | 
+		modelFilteringList selectItem: models first ]
 ]
 
 { #category : #initialization }
