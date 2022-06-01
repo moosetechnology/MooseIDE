@@ -161,7 +161,7 @@ BaselineOfMooseIDE >> mooseCritics: spec [
 	spec
 		baseline: 'MooseCritics'
 		with: [ 
-		spec repository: 'github://moosetechnology/MooseCritics/src' ]
+		spec repository: 'github://moosetechnology/Moose-Critics/src' ]
 ]
 
 { #category : #actions }
