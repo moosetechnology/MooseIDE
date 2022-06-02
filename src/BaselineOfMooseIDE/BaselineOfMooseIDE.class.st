@@ -103,7 +103,7 @@ BaselineOfMooseIDE >> definePackages: spec [
 		package: 'MooseIDE-Duplication'
 		with: [ spec requires: #( 'MooseIDE-Core' ) ];
 		package: 'MooseIDE-ButterflyMap'
-		with: [ spec requires: #( 'MooseIDE-Cor' 'MoosIDE-Visualization' ) ];
+		with: [ spec requires: #( 'MooseIDE-Core' 'MoosIDE-Visualization' ) ];
 		package: 'MooseIDE-ButterflyMap-Tests'
 		with: [ spec requires: #( 'MooseIDE-ButterflyMap' ) ]
 ]
