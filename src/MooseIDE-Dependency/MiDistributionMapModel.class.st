@@ -196,16 +196,22 @@ MiDistributionMapModel >> numberOfchildrenWithProperty: aProp forNode: node [
 ]
 
 { #category : #querying }
-MiDistributionMapModel >> orderOuterNodes: aCollectionOfNodes [ 
-	| engine partVectors |
-	aCollectionOfNodes ifEmpty: [^#()].
+MiDistributionMapModel >> orderOuterNodes: aCollectionOfNodes [
 
-	partVectors :=  aCollectionOfNodes asOrderedCollection collect: [:node |
-		MalSimilarityItem with: node
-			andAll: (self tagsSetting collect: [:aProp | self numberOfchildrenWithProperty: aProp forNode: node]) ].
-	engine := MalClusterEngine with: partVectors.
+	| engine partVectors |
+	aCollectionOfNodes ifEmpty: [ ^ #(  ) ].
+
+	partVectors := aCollectionOfNodes asOrderedCollection collect: [ 
+		               :node | 
+		               AISimilarityItem
+			               with: node
+			               andAll: (self tagsSetting collect: [ :aProp | 
+					                self
+						                numberOfchildrenWithProperty: aProp
+						                forNode: node ]) ].
+	engine := AIClusterEngine with: partVectors.
 	engine hierarchicalClusteringUsing: #completeLinkage.
-	^ engine dendrogram orderLeafs collect: #item.
+	^ engine dendrogram orderLeafs collect: #item
 ]
 
 { #category : #settings }
