@@ -201,14 +201,14 @@ MiDistributionMapModel >> orderOuterNodes: aCollectionOfNodes [
 	| engine partVectors |
 	aCollectionOfNodes ifEmpty: [ ^ #(  ) ].
 
-	partVectors := aCollectionOfNodes asOrderedCollection collect: [ 
+	partVectors := aCollectionOfNodes collect: [ 
 		               :node | 
 		               AISimilarityItem
 			               with: node
 			               andAll: (self tagsSetting collect: [ :aProp | 
 					                self
 						                numberOfchildrenWithProperty: aProp
-						                forNode: node ]) ].
+						                forNode: node ]) ] as: Array.
 	engine := AIClusterEngine with: partVectors.
 	engine hierarchicalClusteringUsing: #completeLinkage.
 	^ engine dendrogram orderLeafs collect: #item
