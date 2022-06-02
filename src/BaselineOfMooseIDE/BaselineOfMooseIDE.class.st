@@ -22,6 +22,7 @@ BaselineOfMooseIDE >> baseline: spec [
 			self famix: spec.
 			self famixTagging: spec.
 			self famixReplication: spec.
+			self pharoAIHierachicalClustering: spec.
 			spec
 				package: 'MooseIDE-Core' with: [ spec requires: #( 'Famix' ) ];
 				package: 'MooseIDE-Meta'
@@ -99,7 +100,11 @@ BaselineOfMooseIDE >> definePackages: spec [
 		with: [ spec requires: #( 'MooseIDE-CoUsageMap'
 				   'MooseIDE-Tests' ) ];
 		package: 'MooseIDE-Duplication'
-		with: [ spec requires: #( 'MooseIDE-Core' ) ]
+		with: [ spec requires: #( 'MooseIDE-Core' ) ];
+		package: 'MooseIDE-ButterflyMap'
+		with: [ spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' ) ];
+		package: 'MooseIDE-ButterflyMap-Tests'
+		with: [ spec requires: #( 'MooseIDE-ButterflyMap' ) ]
 ]
 
 { #category : #dependencies }
@@ -152,6 +157,15 @@ BaselineOfMooseIDE >> labelContractor: spec [
 		baseline: 'LabelContractor'
 		with: [ 
 		spec repository: 'github://moosetechnology/LabelContractor/src' ]
+]
+
+{ #category : #dependencies }
+BaselineOfMooseIDE >> pharoAIHierachicalClustering: spec [
+
+	spec
+		baseline: 'AIHierarchicalClustering'
+		with: [ 
+		spec repository: 'github://pharo-ai/hierarchical-clustering/src' ]
 ]
 
 { #category : #actions }

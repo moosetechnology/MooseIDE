@@ -1,17 +1,17 @@
 Class {
-	#name : #MiDMBrowserTest,
+	#name : #MiButterflyMapBrowserTest,
 	#superclass : #MiAbstractBrowserTest,
 	#category : #'MooseIDE-Tests-Browsers'
 }
 
 { #category : #running }
-MiDMBrowserTest >> browserClass [
+MiButterflyMapBrowserTest >> browserClass [
 
-	^ MiDMBrowser
+	^ MiButterflyMapBrowser
 ]
 
 { #category : #tests }
-MiDMBrowserTest >> testSettingsAction [
+MiButterflyMapBrowserTest >> testSettingsAction [
 
 	self assert: browser hasSettings
 ]

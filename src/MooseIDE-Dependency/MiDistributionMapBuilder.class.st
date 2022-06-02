@@ -144,10 +144,10 @@ MiDistributionMapBuilder >> buildLegend [
 				          color: Color white;
 				          padding: 10 ];
 		          yourself.
-	mapModel dynamicTags do: [ :dt | 
+	mapModel tagsSetting do: [ :dt | 
 		legend
 			text: dt name
-			withBoxColor: (self mapModel colorForDynamicTag: dt) ].
+			withBoxColor: (self mapModel colorForTag: dt) ].
 	legend build
 ]
 
@@ -167,15 +167,15 @@ MiDistributionMapBuilder >> buildNodeFromEntity: anEntity [
 		  yourself
 ]
 
-{ #category : #building }
+{ #category : #'public - hooks' }
 MiDistributionMapBuilder >> childrenFor: node [
 
 	| groups dts |
-	dts := mapModel dynamicTags.
+	dts := mapModel tagsSetting.
 	groups := OrderedCollection new.
 	dts size + 1 timesRepeat: [ groups add: OrderedCollection new ].
 	node children do: [ :child | 
-		(groups at: (1 + (mapModel indexOfDynamicTagFor: child rawModel))) 
+		(groups at: (1 + (mapModel indexOfTagFor: child rawModel))) 
 			add: (self shapeFor: child) ].
 	^ groups flatCollect: [ :child | child ] as: RSGroup.
 ]
