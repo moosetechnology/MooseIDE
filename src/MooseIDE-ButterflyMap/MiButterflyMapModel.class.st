@@ -87,7 +87,7 @@ MiButterflyMapModel >> defaultLeftEntitiesQuery [
 
 	^ defaultLeftEntitiesQuery ifNil: [ 
 		  defaultLeftEntitiesQuery := FQCollectScriptQuery script: [ :entity | 
-			                              entity allProviders ] ]
+			                              entity allClients ] ]
 ]
 
 { #category : #accessing }
@@ -95,7 +95,7 @@ MiButterflyMapModel >> defaultRightEntitiesQuery [
 
 	^ defaultRightEntitiesQuery ifNil: [ 
 		  defaultRightEntitiesQuery := FQCollectScriptQuery script: [ 
-			                               :entity | entity allClients ] ]
+			                               :entity | entity allProviders ] ]
 ]
 
 { #category : #accessing }
