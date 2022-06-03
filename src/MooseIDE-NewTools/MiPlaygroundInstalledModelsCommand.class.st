@@ -41,6 +41,6 @@ MiPlaygroundInstalledModelsCommand >> execute [
 		                   newApplication: context application
 		                   model: context.
 
-	modelsPresenter openDialogWithSpec okAction: [ 
+	modelsPresenter openDialog okAction: [ 
 		self context addModelExpression: modelsPresenter codeToAdd ]
 ]

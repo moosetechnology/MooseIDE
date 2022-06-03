@@ -1,7 +1,7 @@
 Class {
 	#name : #MiCoUsageMapBrowserTest,
 	#superclass : #MiAbstractBrowserTest,
-	#category : #'MooseIDE-CoUsageMap-Tests'
+	#category : #'MooseIDE-CoUsageMap-Tests-Browser'
 }
 
 { #category : #running }

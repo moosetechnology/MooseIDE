@@ -16,6 +16,12 @@ Class {
 	#category : #'MooseIDE-QueriesBrowser-Main presenters'
 }
 
+{ #category : #menu }
+MiQueriesBrowser class >> addItemOrSubMenuToMiBrowsersMenu: aRootMenu defaultSubMenu: aSubMenu [
+
+	self addToMiBrowsersMenu: aRootMenu
+]
+
 { #category : #'world menu' }
 MiQueriesBrowser class >> menuCommandOn: aBuilder [
 
@@ -24,10 +30,22 @@ MiQueriesBrowser class >> menuCommandOn: aBuilder [
 	(aBuilder item: #QueriesBrowser)
 		parent: #Moose;
 		label: self title;
-		icon: (self iconNamed: #mooseTree);
-		order: 3;
+		icon: (self iconNamed: self menuIconName);
+		order: self menuPriority;
 		help: self helpMessage;
 		action: [ self open ]
+]
+
+{ #category : #menu }
+MiQueriesBrowser class >> menuIconName [
+
+	^ #mooseTree
+]
+
+{ #category : #menu }
+MiQueriesBrowser class >> menuPriority [
+
+	^ 3
 ]
 
 { #category : #'instance creation' }
@@ -76,6 +94,13 @@ MiQueriesBrowser >> canFollowEntity: anObject [
 		  (anObject asMooseGroup allUsing: FamixTNamedEntity) isNotEmpty ]
 ]
 
+{ #category : #'api - actions' }
+MiQueriesBrowser >> enableProgressNotification [
+
+	queryResultTreePresenter := self instantiate: MiSpinnerPresenter.
+	queryNotebookPresenter resetAllPageContents
+]
+
 { #category : #actions }
 MiQueriesBrowser >> followEntity: anEntity [
 
@@ -103,16 +128,10 @@ MiQueriesBrowser >> initialize [
 { #category : #initialization }
 MiQueriesBrowser >> initializeLayout [
 
-	| tempLayout |
-	tempLayout := SpBoxLayout newTopToBottom
-		              spacing: 5;
-		              yourself.
-	tempLayout add: self class defaultLayout expand: false.
-	tempLayout add: (SpPanedLayout new
+	self layout: (SpPanedLayout new
 			 add: queriesListPresenter;
 			 add: queryNotebookPresenter;
-			 yourself).
-	self layout: tempLayout
+			 yourself)
 ]
 
 { #category : #initialization }
@@ -155,7 +174,8 @@ MiQueriesBrowser >> initializeQueryCodePresenter [
 { #category : #initialization }
 MiQueriesBrowser >> initializeResultTreePresenter [
 
-	queryResultTreePresenter := self instantiate: QueryResultTreePresenter.
+	queryResultTreePresenter := self instantiate:
+		                            QueryResultTreePresenter.
 	queryResultTreePresenter updateForEntities: self queryResultEntities
 ]
 
@@ -172,10 +192,8 @@ MiQueriesBrowser >> miSelectedItem [
 	selected := queryResultTreePresenter miSelectedItem
 		            ifEmpty: [ selectedQuery result ]
 		            ifNotEmpty: [ queryResultTreePresenter miSelectedItem ].
-	selected := selected specialize.
-	^ selected size = 1
-		  ifTrue: [ selected anyOne ]
-		  ifFalse: [ selected ]
+
+	^ selected mooseInterestingEntity
 ]
 
 { #category : #accessing }
@@ -220,7 +238,7 @@ MiQueriesBrowser >> rootQuery [
 MiQueriesBrowser >> selectQuery: aQuery [
 
 	selectedQuery := aQuery.
-	queryResultTreePresenter updateForQuery: aQuery.
+	self updateResultPresenterForQuery: aQuery.
 	queryCodePresenter updateForQuery: aQuery
 ]
 
@@ -235,4 +253,29 @@ MiQueriesBrowser >> setModelBeforeInitialization: aRootQuery [
 
 	rootQuery := aRootQuery.
 	selectedQuery := aRootQuery
+]
+
+{ #category : #actions }
+MiQueriesBrowser >> showResultOfQuery: aQuery [
+
+	| result |
+	self enableProgressNotification.
+
+	result := aQuery result.
+
+	queryResultTreePresenter := self instantiate:
+		                            QueryResultTreePresenter.
+	queryResultTreePresenter updateForEntities: result.
+
+	"This will sho the correct queryResultTreePresenter:"
+	queryNotebookPresenter resetAllPageContents
+]
+
+{ #category : #actions }
+MiQueriesBrowser >> updateResultPresenterForQuery: aQuery [
+
+	aQuery isValid
+		ifTrue: [ self showResultOfQuery: aQuery ]
+		ifFalse: [ 
+		queryResultTreePresenter updateForEntities: MooseGroup new ]
 ]

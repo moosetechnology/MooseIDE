@@ -22,6 +22,14 @@ Class {
 	#category : #'MooseIDE-Durden'
 }
 
+{ #category : #adding }
+MiDropIntoBrowser class >> addToMiBrowsersMenu: aMenuGroupPresenter [
+
+	"Do not appear in menu"
+
+	
+]
+
 { #category : #specs }
 MiDropIntoBrowser class >> defaultLayout [
 

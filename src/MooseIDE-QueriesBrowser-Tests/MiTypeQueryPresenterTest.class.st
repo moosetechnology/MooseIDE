@@ -7,7 +7,14 @@ Class {
 { #category : #tests }
 MiTypeQueryPresenterTest >> assertSubpresentersAreConfigured [
 
-	self assertCollection: presenter typesList selectedItems hasSameElements: self createNewQuery types
+	self
+		assertCollection: presenter typesList items
+		includesAll: self createNewQuery types.
+	self
+		assertCollection: presenter typesList selectedItems
+		hasSameElements: self createNewQuery types.
+
+	self assert: presenter typesButton class equals: SpButtonPresenter
 ]
 
 { #category : #running }
@@ -37,7 +44,6 @@ MiTypeQueryPresenterTest >> testImpossibleQueryInitialization [
 
 	self resetPresenterWithEntities: helper noEntities.
 	self assert: presenter query class identicalTo: self queryClass.
-	"Famix queries changed. Now the type query can be empty and can have no types."
 	self deny: presenter query isValid
 ]
 

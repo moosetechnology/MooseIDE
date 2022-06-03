@@ -47,7 +47,7 @@ MiImportModelFromSmalltalkDialog class >> fullWindowExtent [
 MiImportModelFromSmalltalkDialog class >> open [
 
 	<script>
-	^ self new openDialogWithSpec
+	^ self new openDialog
 ]
 
 { #category : #specs }
@@ -124,13 +124,13 @@ MiImportModelFromSmalltalkDialog >> hideAdvancedSettings [
 { #category : #action }
 MiImportModelFromSmalltalkDialog >> importingContext [
 
-	^ MooseImportingContext new importMaximum
+	^ importingContext
 ]
 
 { #category : #initialization }
 MiImportModelFromSmalltalkDialog >> initialize [
 
-	importingContext := MooseImportingContext new.
+	importingContext := MooseImportingContext new importMaximum.
 	entitiesToImport := MooseImportingContext entityDependencies keys
 		                    asSet.
 	contextCheckBoxes := OrderedCollection new.
@@ -171,6 +171,16 @@ MiImportModelFromSmalltalkDialog >> initializeConfigurationCheckBoxes [
 		whenActivatedDo: [ importingContext computeTypeOfAttributes ];
 		whenDeactivatedDo: [ importingContext doNotComputeTypeOfAttributes ];
 		yourself
+]
+
+{ #category : #initialization }
+MiImportModelFromSmalltalkDialog >> initializeDialogWindow: aDialog [
+
+	| importButton |
+	super initializeDialogWindow: aDialog. 
+	importButton := (aDialog buttons select: [ :button | button label = 'Import'  ]) first.
+	importButton disable.
+	packagesSelector whenSelectionChangedDo: [ :items | items ifEmpty: [ importButton disable ] ifNotEmpty: [ importButton enable]].
 ]
 
 { #category : #initialization }

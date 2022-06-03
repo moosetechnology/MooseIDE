@@ -208,6 +208,23 @@ MiAbstractBrowserTest >> testFollowBus [
 ]
 
 { #category : #'tests - buses' }
+MiAbstractBrowserTest >> testFollowBusSetsDefaultBus [
+
+	self assert: browser application defaultBus name equals: 'Test' .
+
+	browser application busNamed: 'aNewBus'.
+	self assert: browser application defaultBus name equals: 'aNewBus' .
+
+	browser application busNamed: 'Test'.
+	self assert: browser application defaultBus name equals: 'aNewBus' .
+	
+	browser followBus: (browser application busNamed: 'Test').
+	self assert: browser application defaultBus name equals: 'Test' .
+	
+	
+]
+
+{ #category : #'tests - buses' }
 MiAbstractBrowserTest >> testFollowBusTriggersSelectEntity [
 
 	| propagatedEntity |

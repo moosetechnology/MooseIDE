@@ -18,25 +18,37 @@ MiNavigationQueryPresenter class >> title [
 	^ 'Navigation Query'
 ]
 
+{ #category : #'api - actions' }
+MiNavigationQueryPresenter >> configureFor: aQuery [
+
+	| queryAssociations |
+	query := aQuery.
+	queryAssociations := aQuery associations.
+
+	directionDropList selectItem: aQuery directionStrategy.
+
+	associationsButton := self newAssociationsButton.
+
+	associationsList items: associationsList items | queryAssociations.
+
+	queryAssociations do: [ :assoc | 
+		associationsList activateItem: assoc ]
+]
+
 { #category : #actions }
-MiNavigationQueryPresenter >> computeQuery: association [
+MiNavigationQueryPresenter >> configureQuery: association [
 
 	self updateQueryWithSelectedAssociations:
 		associationsList selectedItems
 ]
 
-{ #category : #'api - actions' }
-MiNavigationQueryPresenter >> configureFor: aQuery [
-
-	directionDropList selectItem: aQuery directionStrategy.
-	associationsList selectItems: aQuery associations.
-	query := aQuery
-]
-
 { #category : #initialization }
 MiNavigationQueryPresenter >> initializeAssociationsButton [
 
-	associationsButton := self newAssociationsButton
+	associationsButton := self query availableAssociations
+		                      ifEmpty: [ 
+		                      self noParameterMessage: 'association' ]
+		                      ifNotEmpty: [ self newAssociationsButton ]
 ]
 
 { #category : #initialization }
@@ -50,7 +62,10 @@ MiNavigationQueryPresenter >> initializeAssociationsList [
 		onActivation: [ :association | 
 			self selectAssociationAction: association ];
 		onDeactivation: [ :association | 
-			self selectAssociationAction: association ]
+			self selectAssociationAction: association ].
+
+	self query associations do: [ :assoc | 
+		associationsList activateItem: assoc ]
 ]
 
 { #category : #initialization }
@@ -60,7 +75,7 @@ MiNavigationQueryPresenter >> initializeDirectionsDropList [
 	directionDropList
 		startWithoutSelection;
 		items: self query class directionStrategies;
-		display: #label;
+		display: [ :each | each label];
 		whenSelectedItemChangedDo: [ :selectedDirection | 
 			self updateDirection: selectedDirection ]
 ]
@@ -85,13 +100,10 @@ MiNavigationQueryPresenter >> initializePresenters [
 { #category : #initialization }
 MiNavigationQueryPresenter >> newAssociationsButton [
 
-	^  self query availableAssociations
-			ifEmpty: [ self noParameterMessage: 'association' ]
-			ifNotEmpty: [ 
-				self newButton
-					label: 'Select Associations';
-					action: [ self showAssociationsPopover ];
-				yourself ]
+	^ self newButton
+		  label: 'Select Associations';
+		  action: [ self showAssociationsPopover ];
+		  yourself
 ]
 
 { #category : #layout }
@@ -121,8 +133,7 @@ MiNavigationQueryPresenter >> selectAssociationAction: association [
 
 { #category : #initialization }
 MiNavigationQueryPresenter >> showAssociationsPopover [
-			
-	associationsList items: self query availableAssociations.
+
 	self newPopover
 		relativeTo: associationsButton;
 		presenter: associationsList;
@@ -135,7 +146,8 @@ MiNavigationQueryPresenter >> updateDirection: selectedDirection [
 
 	self query resetAndChangeDirection: selectedDirection.
 
-	associationsButton := self newAssociationsButton.
+	self initializeAssociationsList.
+	self initializeAssociationsButton.
 	self initializeLayout.
 
 	self notifyQueryChanged

@@ -7,6 +7,12 @@ Class {
 	#category : #'MooseIDE-Core-Logger'
 }
 
+{ #category : #menu }
+MiLogsBrowser class >> addItemOrSubMenuToMiBrowsersMenu: aRootMenu defaultSubMenu: aSubMenu [
+
+	self addToMiBrowsersMenu: aRootMenu
+]
+
 { #category : #'world menu' }
 MiLogsBrowser class >> menuCommandOn: aBuilder [
 
@@ -15,10 +21,16 @@ MiLogsBrowser class >> menuCommandOn: aBuilder [
 	(aBuilder item: #Logger)
 		parent: #Moose;
 		label: self title;
-		order: 4;
+		order: self menuPriority;
 		help: self helpMessage;
 		action: [ self open ];
 		withSeparatorAfter
+]
+
+{ #category : #menu }
+MiLogsBrowser class >> menuPriority [
+
+	^ 4
 ]
 
 { #category : #'instance creation' }

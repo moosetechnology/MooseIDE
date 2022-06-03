@@ -13,10 +13,17 @@ Class {
 	#superclass : #MiAbstractBrowser,
 	#instVars : [
 		'toolbar',
-		'modelFilteringList'
+		'modelFilteringList',
+		'blockWhenSelection'
 	],
 	#category : #'MooseIDE-Meta-ModelRootBrowser'
 }
+
+{ #category : #menu }
+MiModelRootBrowser class >> addItemOrSubMenuToMiBrowsersMenu: aRootMenu defaultSubMenu: aSubMenu [
+
+	self addToMiBrowsersMenu: aRootMenu
+]
 
 { #category : #'world menu' }
 MiModelRootBrowser class >> buildModelCommandsGroupWith: presenterInstance [
@@ -48,10 +55,22 @@ MiModelRootBrowser class >> menuCommandOn: aBuilder [
 	(aBuilder item: #ModelRootBrowser)
 		parent: #Moose ;
 		label: self title ;
-		icon: (self iconNamed: #mooseNavigation) ;
-		order: 2 ;
+		icon: (self iconNamed: self menuIconName) ;
+		order: self menuPriority ;
 		help: self helpMessage ;
 		action: [ self open ]
+]
+
+{ #category : #menu }
+MiModelRootBrowser class >> menuIconName [
+
+	^ #mooseNavigation
+]
+
+{ #category : #menu }
+MiModelRootBrowser class >> menuPriority [
+
+	^ 2
 ]
 
 { #category : #'instance creation' }
@@ -70,14 +89,6 @@ MiModelRootBrowser class >> title [
 	^ 'Models browser'
 ]
 
-{ #category : #updating }
-MiModelRootBrowser class >> updateAll [
-
-	self allInstances
-		select: [ :browser | browser window isOpen ]
-		thenDo: [ :browser | browser updateList ]
-]
-
 { #category : #specs }
 MiModelRootBrowser class >> windowSize [
 	^ 600 @ 400
@@ -88,6 +99,12 @@ MiModelRootBrowser >> canFollowEntity: anObject [
 	^ false
 ]
 
+{ #category : #testing }
+MiModelRootBrowser >> canPropagate [
+
+	^model canPropagate
+]
+
 { #category : #actions }
 MiModelRootBrowser >> followEntity: anEntity [
 
@@ -96,23 +113,24 @@ MiModelRootBrowser >> followEntity: anEntity [
 	
 ]
 
+{ #category : #testing }
+MiModelRootBrowser >> hasSettings [
+	^ true
+]
+
 { #category : #initialization }
 MiModelRootBrowser >> initializeList [
 
 	modelFilteringList := self newFilteringList.
-	modelFilteringList items: MooseModel root.
-	MooseModel root ifNotEmpty: [ :root | 
-		modelFilteringList selectItem: root anyOne.
-		model selected: root anyOne ].
+	self listOfMooseModels: model mooseModelsList.
 
 	modelFilteringList display: [ :mooseModel | mooseModel name ].
 
-	modelFilteringList listPresenter
-		contextMenu: [ 
-			(self class buildModelCommandsGroupWith: self) asMenuPresenter ];
-		whenSelectionChangedDo: [ :selected | 
-			model selected: selected selectedItem.
-			self updateToolbar ]
+	modelFilteringList listPresenter contextMenu: [ 
+		(self class buildModelCommandsGroupWith: self) asMenuPresenter ].
+	blockWhenSelection := [ :selected | 
+	                      model selected: selected selectedItem ].
+	modelFilteringList whenSelectionChangedDo: blockWhenSelection
 ]
 
 { #category : #initialization }
@@ -130,10 +148,21 @@ MiModelRootBrowser >> initializeToolbar [
 	toolbar addItem: self refreshToolbarButton
 ]
 
+{ #category : #updating }
+MiModelRootBrowser >> listOfMooseModels: aList [
+modelFilteringList items: aList
+	
+]
+
 { #category : #accessing }
 MiModelRootBrowser >> miSelectedItem [
 
-	^ self selected
+	^model selected
+]
+
+{ #category : #'accessing - tests' }
+MiModelRootBrowser >> modelFilteringList [
+	^ modelFilteringList
 ]
 
 { #category : #initialization }
@@ -146,31 +175,41 @@ MiModelRootBrowser >> refreshToolbarButton [
 		  yourself
 ]
 
-{ #category : #accessing }
-MiModelRootBrowser >> selected [
-	^ model selected
+{ #category : #'accessing - model' }
+MiModelRootBrowser >> setModelBeforeInitialization: aModel [
+	super setModelBeforeInitialization: aModel.
+	aModel browser: self
 ]
 
-{ #category : #accessing }
-MiModelRootBrowser >> selectedObject [
+{ #category : #actions }
+MiModelRootBrowser >> settings [
 
-	^ modelFilteringList selectedItem
+	model openSettings
+]
+
+{ #category : #'accessing - tests' }
+MiModelRootBrowser >> settingsItem [
+	^ model settings
+]
+
+{ #category : #actions }
+MiModelRootBrowser >> showSelectedItem: anItem [
+	"This method is intended to show what item is selected
+	It is called by the MiModelRootBrowserModel so it should take care to not call it again"
+	modelFilteringList whenSelectionChangedDo: [ :ignored | "ignored to avoid calling the MiModelRootBrowserModel again"
+		 ].
+	modelFilteringList selectItem: anItem.
+	modelFilteringList whenSelectionChangedDo: blockWhenSelection
 ]
 
 { #category : #updating }
 MiModelRootBrowser >> updateForNewModel: aModel [
+	model updateForNewModel: aModel
 
-	self class updateAll.
-	modelFilteringList selectItem: aModel
 ]
 
 { #category : #updating }
 MiModelRootBrowser >> updateList [
 
-	self freezeDuring: [ 
-		| selected |
-		selected := self selected.
-		modelFilteringList listPresenter updateList.
-		modelFilteringList selectItem:
-			(selected ifNil: [ modelFilteringList items first ]) ]
+	model updateMooseModelsList
 ]

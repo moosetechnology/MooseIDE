@@ -13,7 +13,7 @@ MiNullDynamicTag >> category [
 { #category : #accessing }
 MiNullDynamicTag >> color [
 
-	^ Color gray
+	^ nil
 ]
 
 { #category : #accessing }

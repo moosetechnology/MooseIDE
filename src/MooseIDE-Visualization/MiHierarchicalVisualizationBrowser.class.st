@@ -7,6 +7,14 @@ Class {
 	#category : #'MooseIDE-Visualization'
 }
 
+{ #category : #menu }
+MiHierarchicalVisualizationBrowser class >> addToMiBrowsersMenu: aMenuGroupPresenter [
+
+	"Do not appear in menu"
+
+	
+]
+
 { #category : #specs }
 MiHierarchicalVisualizationBrowser class >> defaultLayout [
 

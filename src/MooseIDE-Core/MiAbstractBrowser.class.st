@@ -8,15 +8,15 @@ I provide a toolBar with:
 Concrete browsers can use my instance variable #model (it can be initialized with #initializeModel).
 They should override:
 Instance side:
-	- #accept: | which entities the browser can receive
-	- #followAction | what to do with the received entity in Follow mode
-	- #highlightAction | what to do with the received entity in Highlight mode
+	- #canFollowEntity: | which entities the browser can receive
+	- #followEntity | what to do with the received entity in Follow mode
+	- #highlightEntity | what to do with the received entity in Highlight mode
 	- #miSelectedItem | entity (or entities) to propagate
 Class side:	
 	- #title | The browser window title
 	- #menuCommandOn: | To be integrated into Midas Browsers menu
 Spec2 methods: 
-	#initializePresenters, #defaultSpec, ...
+	#initializePresenters, #defaultLayout, ...
 
 Please comment your browser as follow: 
 *************************************************
@@ -43,10 +43,43 @@ Class {
 	#category : #'MooseIDE-Core-Browser'
 }
 
+{ #category : #menu }
+MiAbstractBrowser class >> addItemOrSubMenuToMiBrowsersMenu: aRootMenu defaultSubMenu: aSubMenu [
+
+	self addToMiBrowsersMenu: aSubMenu
+]
+
+{ #category : #menu }
+MiAbstractBrowser class >> addToMiBrowsersMenu: aMenuPresenter [
+
+	"Override with an empty method if you don't want your browser in Moose menu"
+
+	self buildItemInMenu: aMenuPresenter
+]
+
+{ #category : #menu }
+MiAbstractBrowser class >> buildItemInMenu: aMenuGroupPresenter [
+
+	"Override with an empty method if you don't want your browser in Moose menu"
+
+	aMenuGroupPresenter addItem: [ :item | 
+		item
+			name: self title;
+			action: [ self open ];
+			help: self helpMessage;
+			icon: self menuIcon ]
+]
+
 { #category : #specs }
 MiAbstractBrowser class >> defaultLayout [
 
 	^ SpBoxLayout newVertical
+]
+
+{ #category : #menu }
+MiAbstractBrowser class >> defaultSubMenuLabel [
+
+	^ 'Specialized Browsers'
 ]
 
 { #category : #'world menu' }
@@ -70,6 +103,18 @@ MiAbstractBrowser class >> menuCommandOn: aBuilder [
 		icon: MooseIcons mooseIcon
 ]
 
+{ #category : #menu }
+MiAbstractBrowser class >> menuIcon [
+
+	^ self iconNamed: self menuIconName
+]
+
+{ #category : #menu }
+MiAbstractBrowser class >> menuIconName [
+
+	^ #blank
+]
+
 { #category : #'world menu' }
 MiAbstractBrowser class >> menuMetaCommandOn: aBuilder [
 	"need to be a separate method because of #miBrowsers pragma"
@@ -81,9 +126,36 @@ MiAbstractBrowser class >> menuMetaCommandOn: aBuilder [
 		icon: MooseIcons mooseIcon
 ]
 
+{ #category : #menu }
+MiAbstractBrowser class >> menuPriority [
+
+	^ 100
+]
+
 { #category : #'world menu' }
 MiAbstractBrowser class >> metaBrowsersMenuLabel [
 	^ #Meta
+]
+
+{ #category : #menu }
+MiAbstractBrowser class >> miBrowsersMenuPresenter [
+
+	| rootMenu defaultSubMenu |
+	rootMenu := SpMenuPresenter new.
+	defaultSubMenu := SpMenuPresenter new.
+
+	(self subclasses sortAscending: [ :browserClass | 
+		 browserClass menuPriority ]) do: [ :browserClass | 
+		browserClass
+			addItemOrSubMenuToMiBrowsersMenu: rootMenu
+			defaultSubMenu: defaultSubMenu ].
+
+	rootMenu addItem: [ :item | 
+		item
+			name: self defaultSubMenuLabel;
+			subMenu: defaultSubMenu ].
+
+	^ rootMenu
 ]
 
 { #category : #'world menu' }
@@ -170,11 +242,16 @@ MiAbstractBrowser >> canPropagate [
 { #category : #buses }
 MiAbstractBrowser >> followBus: aBus [
 
-	(self buses includes: aBus) ifTrue: [ ^ self ].
+	(self buses includes: aBus)
+	ifTrue: [ 
+		application defaultBus: aBus.
+		^ self ].
+	
 	self buses add: aBus.
 	aBus registerBrowser: self.
 	self window ifNotNil: [ :window | window updateBusButton ].
-	self receiveEntity: aBus logger mostRecentEntity
+	self receiveEntity: aBus logger mostRecentEntity.
+	application defaultBus: aBus
 ]
 
 { #category : #actions }

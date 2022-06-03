@@ -42,6 +42,11 @@ MiApplication >> add: anObject toDictionary: aDictionary for: aKey [
 ]
 
 { #category : #accessing }
+MiApplication >> allBrowsers: aMiClass [
+	^self browsers select: [ :aBrowser | aBrowser isKindOf: aMiClass ]
+]
+
+{ #category : #accessing }
 MiApplication >> browsers [
 	^ self windows collect: #presenter thenSelect: #isMiBrowser
 ]
@@ -54,7 +59,7 @@ MiApplication >> busNamed: aName [
 		ifNone: [ | bus |
 			bus := MiBus named: aName.
 			buses add: bus.
-			defaultBus := bus.
+			self defaultBus: bus.
 			self updateOverviewBrowsers.
 			bus ]
 ]
@@ -107,6 +112,12 @@ MiApplication >> consumersOf: aClass [
 MiApplication >> defaultBus [
 
 	^ defaultBus
+]
+
+{ #category : #buses }
+MiApplication >> defaultBus: aMiBus [
+
+	defaultBus := aMiBus 
 ]
 
 { #category : #showing }
@@ -168,6 +179,7 @@ MiApplication >> produced: producedClass matchConsumed: consumedClass [
 MiApplication >> producersOf: aClass [
 
 	| foundProducers |
+	
 	foundProducers := Set new.
 	producers keysDo: [ :producedClass | 
 		(self produced: producedClass matchConsumed: aClass) ifTrue: [ 

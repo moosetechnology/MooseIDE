@@ -16,57 +16,28 @@ Class {
 	#category : #'MooseIDE-QueriesBrowser-Main presenters'
 }
 
-{ #category : #actions }
-MiQueriesBrowserToolbar >> constructQueriesWithFile: aFile [
-
-	| newQueries |
-	aFile readStreamDo: [ :stream | 
-		newQueries := STON fromStream: stream ].
-
-	"Put the root query as the parent for the first level unary queries"
-	newQueries do: [ :each | 
-		each parent ifNil: [ "This works only for subclasses of FQUnaryQuery: " 
-			each parent: queryListPresenter queriesBrowser rootQuery ] ].
-
-	newQueries do: [ :each | 
-		| newPresenter |
-		newPresenter := queryListPresenter createNewQueryPresenter:
-			                (each parent
-				                 ifNil: [ 
-				                 queryListPresenter queriesBrowser rootQuery ]
-				                 ifNotNil: [ each parent ]).
-		newPresenter configureFor: each.
-		queryListPresenter queryItemsPresenters add: newPresenter ].
-
-	queryListPresenter updateComponentList
-]
-
 { #category : #initialization }
 MiQueriesBrowserToolbar >> initializeButtons [
 
-	| saveCommand |
 	addRootQueryButton := self newButton.
 	addRootQueryButton
 		icon: (self iconNamed: #smallAdd);
 		action: [ queryListPresenter addNewFirstLevelQuery ].
 
-	saveCommand := MiSaveQueriesCommand new.
-	saveCommand context: queryListPresenter.
-	saveQueriesButton := saveCommand asSpecCommand asButtonPresenter.
-	saveQueriesButton
-		label: '';
-		icon: (self iconNamed: MiSaveQueriesCommand iconName).
+	saveQueriesButton := (MiSaveQueriesCommand forSpecContext:
+		                      queryListPresenter) asButtonPresenter.
 
 	loadQueriesButton := self newButton.
 	loadQueriesButton
 		icon: (self iconNamed: #smallLoadProject);
-		action: [ self showLoadQueriesPopover ];
+		action: [ 
+			(MiLoadQueriesPresenter on: queryListPresenter) openDialog ];
 		help: 'Load a set of queries into the browser'.
 
 	clearQueriesButton := self newButton.
 	clearQueriesButton
 		icon: (self iconNamed: #smallUpdate);
-		action: [ queryListPresenter reinitializeQueryPresenters  ];
+		action: [ queryListPresenter reinitializeQueryPresenters ];
 		label: 'Clear queries'.
 
 	addManualQueryButton := self newButton.
@@ -90,19 +61,9 @@ MiQueriesBrowserToolbar >> initializeLayout [
 ]
 
 { #category : #initialization }
-MiQueriesBrowserToolbar >> initializeLoadQueries [
-
-	loadQueriesList := self instantiate: LoadQueriesPresenter.
-	loadQueriesList okAction: [ 
-		loadQueriesList owner dismiss.
-		self constructQueriesWithFile: loadQueriesList selectedFile ]
-]
-
-{ #category : #initialization }
 MiQueriesBrowserToolbar >> initializePresenters [
 
 	self initializeButtons.
-	self initializeLoadQueries.
 	self initializeLayout
 ]
 
@@ -110,15 +71,4 @@ MiQueriesBrowserToolbar >> initializePresenters [
 MiQueriesBrowserToolbar >> setModelBeforeInitialization: aQueryListPresenter [
 
 	queryListPresenter := aQueryListPresenter
-]
-
-{ #category : #actions }
-MiQueriesBrowserToolbar >> showLoadQueriesPopover [
-
-	loadQueriesList resetItems.
-	self newPopover
-		relativeTo: loadQueriesButton;
-		presenter: loadQueriesList;
-		bePositionLeft;
-		popup
 ]

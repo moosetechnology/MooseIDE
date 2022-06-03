@@ -10,6 +10,12 @@ Class {
 	#category : #'MooseIDE-Tagging-ColorPicker'
 }
 
+{ #category : #'as yet unclassified' }
+MiSmallColorPalette class >> allColorPalettes [
+	^RSColorPalette allSubclasses
+		sort: [ :a :b | a name < b name ]
+]
+
 { #category : #initialization }
 MiSmallColorPalette >> boxFromColor: aColor [
 
@@ -72,9 +78,7 @@ MiSmallColorPalette >> initializePresenters [
 		                  yourself.
 	paletteDropList := self newDropList
 		                   help: 'Select a palette';
-		                   items:
-			                   (RSColorPalette allSubclasses sort: [ :a :b | 
-					                    a name < b name ]);
+		                   items: self class allColorPalettes;
 		                   display: [ :paletteClass | 
 			                   paletteClass paletteName ];
 		                   whenSelectedItemChangedDo: [ :palette | 
