@@ -1,11 +1,10 @@
 Class {
 	#name : #MiTagBrowserModel,
-	#superclass : #Object,
+	#superclass : #MiAbstractModel,
 	#instVars : [
 		'currentTag',
 		'currentCategory',
 		'mooseModel',
-		'tagBrowser',
 		'entities',
 		'dynamicTags'
 	],
@@ -173,7 +172,7 @@ MiTagBrowserModel >> currentTag [
 { #category : #accessing }
 MiTagBrowserModel >> currentTag: anObject [
 	currentTag := anObject.
-	tagBrowser newTagSelected
+	browser newTagSelected
 ]
 
 { #category : #accessing }
@@ -249,18 +248,6 @@ MiTagBrowserModel >> mooseModel: anAlcixModel [
 ]
 
 { #category : #accessing }
-MiTagBrowserModel >> tagBrowser [
-
-	^ tagBrowser
-]
-
-{ #category : #accessing }
-MiTagBrowserModel >> tagBrowser: anObject [
-
-	tagBrowser := anObject
-]
-
-{ #category : #accessing }
 MiTagBrowserModel >> tagEntityNotYourself: anEntity [
 
 	| assoc |
@@ -268,7 +255,7 @@ MiTagBrowserModel >> tagEntityNotYourself: anEntity [
 	assoc := FamixTagEntityAssociation
 		         newForEntity: anEntity
 		         tag: self currentTag.
-	tagBrowser application consumeItem: assoc
+	browser application consumeItem: assoc
 ]
 
 { #category : #accessing }
@@ -279,6 +266,6 @@ MiTagBrowserModel >> untagEntity: anEntity [
 		         detect: [ :a | a tag = self currentTag ]
 		         ifNone: [ nil ].
 	assoc ifNil: [ ^ self ].
-	tagBrowser application removeItem: assoc.
+	browser application removeItem: assoc.
 	assoc remove
 ]

@@ -111,10 +111,8 @@ MiTagManagementPage >> initializePresenters [
 		instantiate: MiTagCategoriesPresenter
 		on: tagModel.
 
-	tagDescriptionPage := self instantiate: MiTagExtentPage on: tagModel.
-	dynamicTagDescriptionPage := self
-		instantiate: MiTagIntentPage
-		on: tagModel.
+	tagDescriptionPage := self instantiate: MiTagExtentPage.
+	dynamicTagDescriptionPage := self instantiate: MiTagIntentPage.
 	descriptionPage := tagDescriptionPage.
 	descriptionPage hide.
 
@@ -133,7 +131,7 @@ MiTagManagementPage >> initializePresenters [
 	tagList contextMenu: self tagListMenu.
 	tagList display: [ :aTag | aTag name ].
 	tagList
-		displayIcon: [ :aTag | self tagModel class iconForTag: aTag ];
+		displayIcon: [ :aTag | self model class iconForTag: aTag ];
 		whenSelectionChangedDo: [ :selection | 
 			selection selectedItem ifNotNil: [ :item | self setTagTo: item ] ].
 	addTagButton := self newButton icon: (Smalltalk iconNamed: #smallAdd).
@@ -147,6 +145,12 @@ MiTagManagementPage >> initializePresenters [
 MiTagManagementPage >> intentTagButton [
 
 	^ btnIsIntent
+]
+
+{ #category : #accessing }
+MiTagManagementPage >> model [
+
+	^ owner model
 ]
 
 { #category : #action }
@@ -191,13 +195,13 @@ MiTagManagementPage >> refreshTagList [
 	isIntent := btnIsIntent state.
 	extentTags := [ 
 	     tagModel currentCategory
-		     ifNil: [ self tagModel allTags ]
+		     ifNil: [ self model allTags ]
 		     ifNotNil: [ :currentTag | currentTag markedTags asMooseGroup ] ].
 	intentTags := [ 
 	      tagModel currentCategory
-		      ifNil: [ self tagModel dynamicTags ]
+		      ifNil: [ self model dynamicTags ]
 		      ifNotNil: [ :currentCat | 
-			      self tagModel dynamicTags select: [ :tag | 
+			      self model dynamicTags select: [ :tag | 
 				      tag category = currentCat ] ] ].
 	
 	tagList items:
@@ -217,7 +221,7 @@ MiTagManagementPage >> refreshTaggedEntitiesList [
 { #category : #action }
 MiTagManagementPage >> removeCategory [
 
-	self tagModel deleteCurrentCategory.
+	self model deleteCurrentCategory.
 	self refreshCategoryList
 ]
 
@@ -273,5 +277,5 @@ MiTagManagementPage >> tagListMenu [
 { #category : #accessing }
 MiTagManagementPage >> tagModel [
 
-	^ tagModel
+	^ owner model
 ]

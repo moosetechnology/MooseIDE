@@ -250,7 +250,7 @@ MiQueriesBrowser >> selectedQuery [
 
 { #category : #'accessing - model' }
 MiQueriesBrowser >> setModelBeforeInitialization: aRootQuery [
-
+	self flag: 'Does not match default Model/Browser organization'.
 	rootQuery := aRootQuery.
 	selectedQuery := aRootQuery
 ]

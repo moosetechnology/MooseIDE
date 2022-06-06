@@ -1,6 +1,6 @@
 Class {
 	#name : #MiTreeVisualizationModel,
-	#superclass : #Object,
+	#superclass : #MiAbstractModel,
 	#instVars : [
 		'selected',
 		'root'

@@ -6,7 +6,7 @@ I am responsible for:
 "
 Class {
 	#name : #MiHierarchicalMapModel,
-	#superclass : #Object,
+	#superclass : #MiAbstractModel,
 	#instVars : [
 		'entities',
 		'childrenBlock',
