@@ -175,12 +175,6 @@ MiModelRootBrowser >> refreshToolbarButton [
 		  yourself
 ]
 
-{ #category : #'accessing - model' }
-MiModelRootBrowser >> setModelBeforeInitialization: aModel [
-	super setModelBeforeInitialization: aModel.
-	aModel browser: self
-]
-
 { #category : #actions }
 MiModelRootBrowser >> settings [
 

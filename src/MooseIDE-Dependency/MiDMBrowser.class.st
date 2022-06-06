@@ -136,13 +136,6 @@ MiDMBrowser >> runVisualization [
 	visualization run
 ]
 
-{ #category : #initialization }
-MiDMBrowser >> setModelBeforeInitialization: aModel [
-
-	super setModelBeforeInitialization: aModel.
-	aModel browser: self
-]
-
 { #category : #accessing }
 MiDMBrowser >> settings [
 

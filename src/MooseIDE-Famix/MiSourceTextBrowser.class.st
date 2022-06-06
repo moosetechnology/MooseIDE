@@ -120,12 +120,6 @@ MiSourceTextBrowser >> miSelectedItem [
 	^ model selectedEntity
 ]
 
-{ #category : #initialization }
-MiSourceTextBrowser >> setModelBeforeInitialization: aModel [
-	super setModelBeforeInitialization: aModel.
-	aModel browser: self
-]
-
 { #category : #'private - testing' }
 MiSourceTextBrowser >> textRenderer [
 	^textRenderer

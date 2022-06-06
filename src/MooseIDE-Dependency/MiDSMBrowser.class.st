@@ -96,12 +96,6 @@ MiDSMBrowser >> miSelectedItem [
 	^model selectedEntities
 ]
 
-{ #category : #'accessing - model' }
-MiDSMBrowser >> setModelBeforeInitialization: aModel [
-	super setModelBeforeInitialization: aModel.
-	aModel browser: self
-]
-
 { #category : #api }
 MiDSMBrowser >> showSCC: aCollection [
 	diagram showSCC: aCollection 
