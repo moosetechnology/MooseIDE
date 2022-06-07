@@ -1,3 +1,6 @@
+"
+A MiSettingItem which value is given by an editable list. It allows to chose an ordered list of elements from a set of elements (all possible values).
+"
 Class {
 	#name : #MiButtonEditablelistSettingItem,
 	#superclass : #MiButtonSettingItem,

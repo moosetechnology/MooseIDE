@@ -31,6 +31,11 @@ MiAbstractSettingItem class >> buttonWithEditableListSetting [
 ]
 
 { #category : #'instance creation' }
+MiAbstractSettingItem class >> buttonWithSelectableListSetting [
+	^MiButtonSelectableListSettingItem new
+]
+
+{ #category : #'instance creation' }
 MiAbstractSettingItem class >> checkboxSetting [
 	^MiCheckboxSettingItem new
 ]
