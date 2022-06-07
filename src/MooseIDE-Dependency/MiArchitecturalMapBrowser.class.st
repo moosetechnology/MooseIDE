@@ -5,11 +5,7 @@ Class {
 	#name : #MiArchitecturalMapBrowser,
 	#superclass : #MiAbstractBrowser,
 	#instVars : [
-		'visualization',
-		'layoutWithMenu',
-		'layoutWithoutMenu',
-		'settings',
-		'tagCreateForm'
+		'visualization'
 	],
 	#category : #'MooseIDE-Dependency-ArchitecturalMap'
 }
@@ -57,19 +53,11 @@ MiArchitecturalMapBrowser class >> windowSize [
 	^ 850 @ 520
 ]
 
-{ #category : #adding }
-MiArchitecturalMapBrowser >> addDynamicTags: aCollection [
+{ #category : #actions }
+MiArchitecturalMapBrowser >> availableQueries [
 
-	aCollection do: [ :dt | self model addDynamicTag: dt ].
-	settings refreshTagList
-]
-
-{ #category : #initialization }
-MiArchitecturalMapBrowser >> browserClosed [
-
-	super browserClosed.
-	application unregisterConsumer: self.
-	application unregisterConsumer: settings
+	^ (self application itemsFor: FQAbstractQuery) asOrderedCollection 
+		  select: [ :q | q isValid ]
 ]
 
 { #category : #actions }
@@ -91,42 +79,22 @@ MiArchitecturalMapBrowser >> canvas [
 ]
 
 { #category : #initialization }
-MiArchitecturalMapBrowser >> closeTagCreationForm [
+MiArchitecturalMapBrowser >> fetchTags [
 
-	self layout replace: tagCreateForm with: settings
-]
-
-{ #category : #brokerage }
-MiArchitecturalMapBrowser >> consume: aTag [
-
-	settings setTags
+	^ (self application itemsFor: FamixTag) asOrderedCollection
 ]
 
 { #category : #actions }
 MiArchitecturalMapBrowser >> followEntity: anEntity [
 
 	model entities: anEntity asMooseGroup.
-	settings updateSettings.
+	self runVisualization
 ]
 
 { #category : #testing }
 MiArchitecturalMapBrowser >> hasSettings [
 
 	^ true
-]
-
-{ #category : #actions }
-MiArchitecturalMapBrowser >> hideMenu [
-
-	self layout child: visualization
-]
-
-{ #category : #initialization }
-MiArchitecturalMapBrowser >> initialize [
-
-	super initialize.
-	application registerConsumer: self for: FamixTag.
-	application registerConsumer: settings for: FQAbstractQuery
 ]
 
 { #category : #initialization }
@@ -139,11 +107,7 @@ MiArchitecturalMapBrowser >> initializeLayout [
 MiArchitecturalMapBrowser >> initializePresenters [
 
 	visualization := self class mapClass owner: self.
-	settings := MiArchitecturalMapSettings owner: self.
-	settings setTags.
-	tagCreateForm := MiDynamicTagSelectionForm owner: self.
-	self initializeLayout.
-	self showMenu
+	self initializeLayout
 ]
 
 { #category : #accessing }
@@ -153,43 +117,28 @@ MiArchitecturalMapBrowser >> miSelectedItem [
 ]
 
 { #category : #initialization }
-MiArchitecturalMapBrowser >> openTagCreationForm [
+MiArchitecturalMapBrowser >> run [
 
-	tagCreateForm setTags.
-	self layout replace: settings with: tagCreateForm.
-	self update
+	visualization run
 ]
 
-{ #category : #brokerage }
-MiArchitecturalMapBrowser >> remove: aTag [
+{ #category : #actions }
+MiArchitecturalMapBrowser >> runVisualization [ 
 
-	tagCreateForm removeTag: aTag
+	visualization run
+]
+
+{ #category : #initialization }
+MiArchitecturalMapBrowser >> setModelBeforeInitialization: aModel [
+
+	super setModelBeforeInitialization: aModel.
+	aModel browser: self
 ]
 
 { #category : #accessing }
 MiArchitecturalMapBrowser >> settings [
 
-	self showMenu
-]
-
-{ #category : #accessing }
-MiArchitecturalMapBrowser >> settingsPresenter [
-
-	^ settings
-]
-
-{ #category : #actions }
-MiArchitecturalMapBrowser >> showMenu [
-
-	self layout child: settings
-]
-
-{ #category : #actions }
-MiArchitecturalMapBrowser >> toggleMenu [
-
-	(self layout presenters includes: settings)
-		ifTrue: [ self hideMenu ]
-		ifFalse: [ self showMenu ]
+	model openSettings
 ]
 
 { #category : #initialization }
