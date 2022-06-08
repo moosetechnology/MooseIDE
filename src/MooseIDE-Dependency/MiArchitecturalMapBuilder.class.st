@@ -34,7 +34,7 @@ MiArchitecturalMapBuilder >> addIncomingEntitiesFor: anHNode [
 	incomingLinks := node queryAllLocal: #in.
 	incomingLinks do: [ :e | 
 		| n |
-		e source belongsTo ~= node belongsTo ifTrue: [ 
+		(e source parents intersection: node parents) ifEmpty: [ 
 			n := self addNode: e source.
 			n dependencyTo: anHNode ] ]
 ]
@@ -89,7 +89,7 @@ MiArchitecturalMapBuilder >> addOutgoingNodes: aCollection from: anHNode [
 	node := anHNode rawModel.
 	aCollection do: [ :mooseEntity | 
 		| n |
-		mooseEntity belongsTo ~= node belongsTo ifTrue: [ 
+		(mooseEntity parents intersection: node parents) ifEmpty: [ 
 			n := self addNode: mooseEntity.
 			anHNode dependencyTo: n ] ]
 ]
@@ -500,9 +500,9 @@ MiArchitecturalMapBuilder >> parentNodeFor: anHNode [
 	"Search for parent node in the node dictionary, add it if not present."
 
 	| parentNode parent |
-	parent := anHNode rawModel belongsTo
-		          ifNil: [ rootNode ]
-		          ifNotNil: [ :p | p ].
+	parent := anHNode rawModel parents
+		          ifEmpty: [ rootNode ]
+		          ifNotEmpty: [ :parents | parents anyOne ].
 	parentNode := nodeMooseIDDict at: parent mooseID ifAbsent: [ nil ].
 	parentNode ifNotNil: [ ^ parentNode ].
 	parentNode := HNode new
@@ -512,7 +512,7 @@ MiArchitecturalMapBuilder >> parentNodeFor: anHNode [
 					               parent displayStringOn: s ]);
 		              collapse;
 		              yourself.
-	
+
 	nodesToAdd at: parent mooseID put: parentNode.
 	nodeMooseIDDict at: parent mooseID put: parentNode.
 	^ parentNode
