@@ -5,42 +5,41 @@ Handle interactions.
 
 "
 Class {
-	#name : #MiHierarchicalMap,
+	#name : #MiArchitecturalMap,
 	#superclass : #MiAbstractVisualization,
 	#instVars : [
 		'builder'
 	],
-	#category : #'MooseIDE-Dependency-HierarchicalMap'
+	#category : #'MooseIDE-Dependency-ArchitecturalMap'
 }
 
 { #category : #accessing }
-MiHierarchicalMap >> builder [
+MiArchitecturalMap >> builder [
 
 	^ builder
 ]
 
 { #category : #highlighting }
-MiHierarchicalMap >> highlightShapes [
+MiArchitecturalMap >> highlightShapes [
 	
 
 ]
 
 { #category : #running }
-MiHierarchicalMap >> run [
+MiArchitecturalMap >> run [
 
 	super run.
-	builder := MiHierarchicalMapBuilder new
+	builder := MiArchitecturalMapBuilder new
 		           mapModel: owner model;
 		           container: self canvas;
 		           yourself.
-	builder build.
-	self canvas
-		zoomToFit;
-		zoomToFit
+	self canvas @ (builder elasticBoxFor: self canvas).
+
+	builder build
 ]
 
 { #category : #updating }
-MiHierarchicalMap >> update [
+MiArchitecturalMap >> update [
 
 	builder ifNil: [ self run ] ifNotNil: [ builder build ]
 ]

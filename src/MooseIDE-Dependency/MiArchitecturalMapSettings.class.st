@@ -6,7 +6,7 @@ Settings are :
 	- dynamic tags
 "
 Class {
-	#name : #MiHierarchicalMapSettings,
+	#name : #MiArchitecturalMapSettings,
 	#superclass : #MiPresenter,
 	#instVars : [
 		'submitButton',
@@ -18,31 +18,31 @@ Class {
 		'associationList',
 		'tagList'
 	],
-	#category : #'MooseIDE-Dependency-HierarchicalMap'
+	#category : #'MooseIDE-Dependency-ArchitecturalMap'
 }
 
 { #category : #initialization }
-MiHierarchicalMapSettings >> connectPresenters [
+MiArchitecturalMapSettings >> connectPresenters [
 
 	submitButton action: [ self submit ].
 	closeButton action: [ self owner hideMenu ]
 ]
 
 { #category : #brokerage }
-MiHierarchicalMapSettings >> consume: aQuery [
+MiArchitecturalMapSettings >> consume: aQuery [
 
 	childrenQueryDropList items: self fetchQueries.
 ]
 
 { #category : #initialization }
-MiHierarchicalMapSettings >> fetchQueries [
+MiArchitecturalMapSettings >> fetchQueries [
 
 	^ (self root application itemsFor: FQAbstractQuery)
 		  asOrderedCollection select: [ :query | query isValid ]
 ]
 
 { #category : #initialization }
-MiHierarchicalMapSettings >> fillModelWithCurrentSettings [
+MiArchitecturalMapSettings >> fillModelWithCurrentSettings [
 
 	self model childrenQuery: childrenQueryDropList selectedItem.
 	self model showAllLinks: linksCheckbox state.
@@ -52,7 +52,7 @@ MiHierarchicalMapSettings >> fillModelWithCurrentSettings [
 ]
 
 { #category : #initialization }
-MiHierarchicalMapSettings >> initializeLayout [
+MiArchitecturalMapSettings >> initializeLayout [
 
 	| mainLayout leftLayout rightLayout |
 	(leftLayout := SpBoxLayout newTopToBottom)
@@ -85,7 +85,7 @@ MiHierarchicalMapSettings >> initializeLayout [
 ]
 
 { #category : #initialization }
-MiHierarchicalMapSettings >> initializePresenters [
+MiArchitecturalMapSettings >> initializePresenters [
 
 	super initializePresenters.
 	associationList := self instantiate:
@@ -116,26 +116,26 @@ MiHierarchicalMapSettings >> initializePresenters [
 ]
 
 { #category : #initialization }
-MiHierarchicalMapSettings >> model [
+MiArchitecturalMapSettings >> model [
 
 	^ self owner model
 ]
 
 { #category : #brokerage }
-MiHierarchicalMapSettings >> remove: aQuery [
+MiArchitecturalMapSettings >> remove: aQuery [
 
 	childrenQueryDropList items: self fetchQueries
 ]
 
 { #category : #initialization }
-MiHierarchicalMapSettings >> setTags [
+MiArchitecturalMapSettings >> setTags [
 
 	tagList items:
 		(self root application itemsFor: FamixTag) asMooseGroup
 ]
 
 { #category : #initialization }
-MiHierarchicalMapSettings >> submit [
+MiArchitecturalMapSettings >> submit [
 
 	childrenQueryDropList selectedItem ifNil: [ ^ self ].
 	self fillModelWithCurrentSettings.
@@ -144,7 +144,7 @@ MiHierarchicalMapSettings >> submit [
 ]
 
 { #category : #updating }
-MiHierarchicalMapSettings >> updateSettings [
+MiArchitecturalMapSettings >> updateSettings [
 
 	| mooseGroup |
 	mooseGroup := self model entities asMooseGroup allUsing: TEntityMetaLevelDependency.
