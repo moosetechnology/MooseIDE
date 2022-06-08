@@ -71,7 +71,7 @@ MiTagBrowserTest >> testIsProducerOfFamixTags [
 MiTagBrowserTest >> testNoTagDetailPageAddDoNothing [
 
 	| entities |
-	entities := detailsPage tagModel mooseModel entities.
+	entities := detailsPage model mooseModel entities.
 	self assert: entities size equals: self mooseModelSize.
 
 	detailsPage addAll.
@@ -85,11 +85,11 @@ MiTagBrowserTest >> testNoTagDetailPageAddDoNothing [
 MiTagBrowserTest >> testTagDetailPageAddEntityToTag [
 
 	| entities tag |
-	entities := detailsPage tagModel mooseModel entities.
+	entities := detailsPage model mooseModel entities.
 	self assert: entities size equals: self mooseModelSize.
 
-	tag := detailsPage tagModel addTag: 'aTag'.
-	detailsPage tagModel currentTag: tag.
+	tag := detailsPage model addTag: 'aTag'.
+	detailsPage model currentTag: tag.
 	detailsPage addAll.
 
 	self
@@ -101,7 +101,7 @@ MiTagBrowserTest >> testTagDetailPageAddEntityToTag [
 MiTagBrowserTest >> testTagModelInitialization [
 
 	| specModel |
-	specModel := detailsPage tagModel.
+	specModel := detailsPage model.
 	self assert: specModel isNotNil.
 	self assert: specModel mooseModel isNotNil.
 	self assert: specModel mooseModel size equals: self mooseModelSize

@@ -1,8 +1,7 @@
 Class {
 	#name : #MiDistributionMapModel,
-	#superclass : #Object,
+	#superclass : #MiAbstractModel,
 	#instVars : [
-		'browser',
 		'entities',
 		'settings',
 		'defaultChildrenQuery'

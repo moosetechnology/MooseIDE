@@ -1,6 +1,6 @@
 Class {
 	#name : #MiTreeBrowserModel,
-	#superclass : #Object,
+	#superclass : #MiAbstractModel,
 	#instVars : [
 		'selected',
 		'root'

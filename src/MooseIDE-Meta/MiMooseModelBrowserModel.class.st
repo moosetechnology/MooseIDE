@@ -1,6 +1,6 @@
 Class {
 	#name : #MiMooseModelBrowserModel,
-	#superclass : #Object,
+	#superclass : #MiAbstractModel,
 	#instVars : [
 		'selected',
 		'model'

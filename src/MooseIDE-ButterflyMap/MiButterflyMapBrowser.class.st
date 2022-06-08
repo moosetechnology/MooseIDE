@@ -113,13 +113,6 @@ MiButterflyMapBrowser >> run [
 	self visualization run
 ]
 
-{ #category : #initialization }
-MiButterflyMapBrowser >> setModelBeforeInitialization: aModel [
-
-	model := aModel.
-	model browser: self
-]
-
 { #category : #actions }
 MiButterflyMapBrowser >> settings [
 	

@@ -2,8 +2,7 @@ Class {
 	#name : #MiTagPage,
 	#superclass : #MiPresenter,
 	#instVars : [
-		'tagDescription',
-		'tagModel'
+		'tagDescription'
 	],
 	#category : #'MooseIDE-Tagging-Browser'
 }
@@ -31,7 +30,12 @@ MiTagPage >> initializeLayout [
 { #category : #initialization }
 MiTagPage >> initializePresenters [
 	
-	tagDescription := self instantiate: MiTagDescription on: tagModel
+	tagDescription := self instantiate: MiTagDescription on: self model
+]
+
+{ #category : #accessing }
+MiTagPage >> model [
+	^owner model
 ]
 
 { #category : #accessing }
@@ -44,12 +48,6 @@ MiTagPage >> refresh [
 MiTagPage >> refreshTagDescription [
 
 	tagDescription refresh
-]
-
-{ #category : #initialization }
-MiTagPage >> setModelBeforeInitialization: aModel [
-
-	tagModel := aModel
 ]
 
 { #category : #initialization }
