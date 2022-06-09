@@ -1,3 +1,7 @@
+"
+I am a model for MiInspectorBrowser.
+I store the object to inspect.
+"
 Class {
 	#name : #MiInspectorModel,
 	#superclass : #MiAbstractModel,
