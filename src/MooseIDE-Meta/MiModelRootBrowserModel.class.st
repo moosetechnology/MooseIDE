@@ -26,11 +26,10 @@ Internal Representation and Key Implementation Points.
 "
 Class {
 	#name : #MiModelRootBrowserModel,
-	#superclass : #Object,
+	#superclass : #MiAbstractModel,
 	#instVars : [
 		'mooseModelsList',
 		'selected',
-		'browser',
 		'settings'
 	],
 	#category : #'MooseIDE-Meta-ModelRootBrowser'
@@ -68,7 +67,8 @@ MiModelRootBrowserModel >> initialize [
 
 { #category : #initialization }
 MiModelRootBrowserModel >> initializeSettings [ 
-	settings := MiSettingsPresenter new.
+
+	settings := super initializeSettings.
 	settings	addItem: (MiCheckboxSettingItem new
 		setValue: true ;
 		label: 'Filter out stubs?' ;
