@@ -22,3 +22,17 @@ MiAbstractModel >> browser: anObject [
 
 	browser := anObject
 ]
+
+{ #category : #initialization }
+MiAbstractModel >> initializeSettings [
+
+	^MiSettingsPresenter new
+		ownerTool: self;
+		yourself
+]
+
+{ #category : #accessing }
+MiAbstractModel >> toolName [
+
+	^ browser title
+]

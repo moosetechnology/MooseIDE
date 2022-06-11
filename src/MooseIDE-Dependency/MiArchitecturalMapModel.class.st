@@ -6,9 +6,8 @@ I am responsible for:
 "
 Class {
 	#name : #MiArchitecturalMapModel,
-	#superclass : #Object,
+	#superclass : #MiAbstractModel,
 	#instVars : [
-		'browser',
 		'entities',
 		'childrenBlock',
 		'colorPalette',
@@ -155,8 +154,7 @@ MiArchitecturalMapModel >> initialize [
 { #category : #initialization }
 MiArchitecturalMapModel >> initializeSettings [
 
-	settings := MiSettingsPresenter new
-		            ownerTool: self;
+	settings := super initializeSettings
 						addItem: self itemChildrenQuery named: #childrenQuery;
 						addItem: self itemTags named: #tags;
 						addItem: self itemAssociationTypes named: #associationTypes;
@@ -200,6 +198,11 @@ MiArchitecturalMapModel >> itemTags [
 MiArchitecturalMapModel >> openSettings [
 
 	settings open
+]
+
+{ #category : #'accessing - tests' }
+MiArchitecturalMapModel >> settings [
+	^settings
 ]
 
 { #category : #initialization }

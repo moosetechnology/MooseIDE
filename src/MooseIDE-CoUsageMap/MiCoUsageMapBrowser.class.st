@@ -91,6 +91,14 @@ MiCoUsageMapBrowser >> canFollowEntity: anEntity [
 	^ anEntity isCollection and: [ anEntity isMooseModel not ]
 ]
 
+{ #category : #'private - for tests' }
+MiCoUsageMapBrowser >> closeSettings [
+	"to close the settings window when testing
+	Should not be used otherwise"
+
+	coUsageMap closeSettingsBrowser
+]
+
 { #category : #accessing }
 MiCoUsageMapBrowser >> coUsageMap [
 	^ coUsageMap

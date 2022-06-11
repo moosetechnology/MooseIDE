@@ -142,8 +142,7 @@ MiDistributionMapModel >> indexOfTagFor: anEntity [
 { #category : #initialization }
 MiDistributionMapModel >> initializeSettings [
 
-	settings := MiSettingsPresenter new
-		            ownerTool: self;
+	settings := super initializeSettings
 		            "addItem: self itemChildrenBlock 		named: #childrenBlock ;"
 		            addItem: self itemColorForNoTag
 		            named: #colorForNoTag;
@@ -272,10 +271,4 @@ MiDistributionMapModel >> tagFor: anEntity [
 { #category : #settings }
 MiDistributionMapModel >> tagsSetting [
 	^settings getItemValue: #tags
-]
-
-{ #category : #accessing }
-MiDistributionMapModel >> toolName [
-
-	^ browser title
 ]
