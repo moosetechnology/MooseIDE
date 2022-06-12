@@ -224,10 +224,10 @@ MiDuplicationBrowserModel >> newDetector [
 MiDuplicationBrowserModel >> newRepConfig [
 
 	^ FamixRepConfiguration new
-		  minimumNumberOfReplicas: settings minNumberOfReplicas;
-		  minimumNumberOfLines: settings minNumberOfLines;
-		  minimumNumberOfCharacters: settings minNumberOfCharacters;
-		  sourcesCleaner: settings codeCleanerClass new;
+		  minimumNumberOfReplicas: (settings getItemValue: self minNumberOfReplicas) ;
+		  minimumNumberOfLines: (settings getItemValue: self minNumberOfLines) ;
+		  minimumNumberOfCharacters: (settings getItemValue: self minNumberOfCharacters) ;
+		  sourcesCleaner: (settings getItemValue: self codeCleanerClass) new;
 		  yourself
 ]
 
