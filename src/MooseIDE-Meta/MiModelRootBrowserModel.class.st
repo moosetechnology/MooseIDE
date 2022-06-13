@@ -69,16 +69,14 @@ MiModelRootBrowserModel >> initialize [
 ]
 
 { #category : #initialization }
-MiModelRootBrowserModel >> initializeSettings [
+MiModelRootBrowserModel >> initializeSettings [ 
 
-	settings := MiSettingsPresenter new.
-	settings
-		addItem: (MiCheckboxSettingItem new
-				 setValue: true;
-				 label: 'Filter out stubs?';
-				 help:
-					 'When propagating the model should it filter out the stub entities or pass them along';
-				 yourself)
+	settings := super initializeSettings.
+	settings	addItem: (MiCheckboxSettingItem new
+		setValue: true ;
+		label: 'Filter out stubs?' ;
+		help: 'When propagating the model should it filter out the stub entities or pass them along' ;
+		yourself)
 		named: #filterStubsSetting
 ]
 
@@ -120,6 +118,12 @@ MiModelRootBrowserModel >> selected: anObject [
 MiModelRootBrowserModel >> settings [
 
 	^ settings
+]
+
+{ #category : #accessing }
+MiModelRootBrowserModel >> settingsChanged: aBoolean [
+
+	browser sendEntitiesToPrivateBus
 ]
 
 { #category : #updating }

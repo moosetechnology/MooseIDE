@@ -46,7 +46,8 @@ MiInspectorBrowser class >> inspect: anObject forBuses: buses [
 
 	buses do: [ :aBus | workspace followBus: aBus ].
 
-	workspace containedBrowser: (self on: anObject).
+	workspace containedBrowser:
+		(self on: (self newModel entity: anObject)).
 
 	^ workspace
 ]
@@ -147,9 +148,8 @@ MiInspectorBrowser >> updateWindowTitle: aWindow [
 
 	| title |
 	title := self class title , ' on {1}' format:
-		         { ([ self model displayString ]
+		         { ([ self model entity displayString ]
 			          on: Error
 			          do: [ :e | e printString ]) }.
-
 	aWindow ifNotNil: [ aWindow title: title ]
 ]
