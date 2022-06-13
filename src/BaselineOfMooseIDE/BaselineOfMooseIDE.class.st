@@ -13,6 +13,7 @@ BaselineOfMooseIDE >> baseline: spec [
 		self labelContractor: spec.
 		self hierarchicalVisualizations: spec.
 		self famixQueries: spec.
+		self pharoAIHierachicalClustering: spec.
 
 		"Packages"
 		self definePackages: spec.
@@ -22,7 +23,6 @@ BaselineOfMooseIDE >> baseline: spec [
 			self famix: spec.
 			self famixTagging: spec.
 			self famixReplication: spec.
-			self pharoAIHierachicalClustering: spec.
 			spec
 				package: 'MooseIDE-Core' with: [ spec requires: #( 'Famix' ) ];
 				package: 'MooseIDE-Meta'
@@ -65,9 +65,10 @@ BaselineOfMooseIDE >> definePackages: spec [
 		package: 'MooseIDE-Tests' with: [ 
 			spec requires:
 					#( 'MooseIDE-Core' 'MooseIDE-Dependency' 'MooseIDE-Tagging' ) ];
-		package: 'MooseIDE-Dependency'
-		with: [ 
-			spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' ) ];
+		package: 'MooseIDE-Dependency' with: [ 
+			spec requires:
+					#( 'MooseIDE-Core' 'MooseIDE-Visualization'
+					   'AIHierarchicalClustering' ) ];
 		package: 'MooseIDE-Famix'
 		with: [ 
 			spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' ) ];
@@ -102,7 +103,8 @@ BaselineOfMooseIDE >> definePackages: spec [
 		package: 'MooseIDE-Duplication'
 		with: [ spec requires: #( 'MooseIDE-Core' ) ];
 		package: 'MooseIDE-ButterflyMap'
-		with: [ spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' ) ];
+		with: [ 
+			spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' ) ];
 		package: 'MooseIDE-ButterflyMap-Tests'
 		with: [ spec requires: #( 'MooseIDE-ButterflyMap' ) ]
 ]
