@@ -147,6 +147,15 @@ MiAbstractBrowser2 >> canPropagate [
 		  entity asMooseGroup isNotEmpty or: [ entity isMooseModel ] ]
 ]
 
+{ #category : #'private - for tests' }
+MiAbstractBrowser2 >> closeSettings [
+
+	"to close the settings window when testing
+	Should not be used otherwise"
+
+	self hasSettings ifTrue: [ self model settings window close ]
+]
+
 { #category : #actions }
 MiAbstractBrowser2 >> followEntity: anEntity [
 
@@ -284,9 +293,12 @@ MiAbstractBrowser2 >> sendEntitiesToPrivateBus [
 ]
 
 { #category : #'accessing - model' }
-MiAbstractBrowser2 >> setModelBeforeInitialization: aModel [
+MiAbstractBrowser2 >> setModelBeforeInitialization: aBrowserModel [
 
-	model := aModel
+	aBrowserModel ifNil: [ ^ self ].
+
+	model := aBrowserModel.
+	model browser: self
 ]
 
 { #category : #accessing }

@@ -19,6 +19,12 @@ MiAtomicWorkspace class >> open [
 	^ super open
 ]
 
+{ #category : #'private - for tests' }
+MiAtomicWorkspace >> closeSettings [
+
+	self containedBrowser closeSettings
+]
+
 { #category : #accessing }
 MiAtomicWorkspace >> containedBrowser [
 

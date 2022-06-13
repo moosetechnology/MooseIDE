@@ -9,10 +9,10 @@ BaselineOfMooseIDE >> baseline: spec [
 
 	<baseline>
 	spec for: #common do: [ "Dependencies"
-		self famixQueries: spec.
 		self labelContractor: spec.
 		self hierarchicalVisualizations: spec.
-		self famixReplication: spec.
+		self famixQueries: spec.
+		self pharoAIHierachicalClustering: spec.
 
 		"Packages"
 		self definePackages: spec.
@@ -21,6 +21,7 @@ BaselineOfMooseIDE >> baseline: spec [
 		spec for: #NeedsMoose do: [ 
 			self famix: spec.
 			self famixTagging: spec.
+			self famixReplication: spec.
 			spec
 				package: 'MooseIDE-Core' with: [ spec requires: #( 'Famix' ) ];
 				package: 'MooseIDE-Meta'
@@ -30,7 +31,11 @@ BaselineOfMooseIDE >> baseline: spec [
 				package: 'MooseIDE-CoUsageMap'
 				with: [ spec requires: #( 'FamixTagging' ) ];
 				package: 'MooseIDE-Dependency'
-				with: [ spec requires: #( 'FamixTagging' ) ] ].
+				with: [ spec requires: #( 'FamixTagging' ) ];
+				package: 'MooseIDE-NewTools'
+				with: [ spec requires: #( 'FamixQueries' ) ];
+				package: 'MooseIDE-Duplication'
+				with: [ spec requires: #( 'FamixReplication' ) ] ].
 
 		"Register custom tools"
 		spec postLoadDoIt: #registerCustomTools ]
@@ -59,9 +64,10 @@ BaselineOfMooseIDE >> definePackages: spec [
 		package: 'MooseIDE-Tests' with: [ 
 			spec requires:
 					#( 'MooseIDE-Core' 'MooseIDE-Dependency' 'MooseIDE-Tagging' ) ];
-		package: 'MooseIDE-Dependency'
-		with: [ 
-			spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' ) ];
+		package: 'MooseIDE-Dependency' with: [ 
+			spec requires:
+					#( 'MooseIDE-Core' 'MooseIDE-Visualization'
+					   'AIHierarchicalClustering' ) ];
 		package: 'MooseIDE-Famix'
 		with: [ 
 			spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' ) ];
@@ -77,8 +83,7 @@ BaselineOfMooseIDE >> definePackages: spec [
 			spec requires: #( 'MooseIDE-QueriesBrowser'
 				   'MooseIDE-Tests' ) ];
 		package: 'MooseIDE-NewTools'
-		with: [ 
-			spec requires: #( 'MooseIDE-Meta' 'MooseIDE-Core' 'FamixQueries' ) ];
+		with: [ spec requires: #( 'MooseIDE-Meta' 'MooseIDE-Core' ) ];
 		package: 'MooseIDE-NewTools-Tests'
 		with: [ spec requires: #( 'MooseIDE-NewTools' 'MooseIDE-Tests' ) ];
 		package: 'MooseIDE-Export'
@@ -86,6 +91,8 @@ BaselineOfMooseIDE >> definePackages: spec [
 		package: 'MooseIDE-ColorPalette';
 		package: 'MooseIDE-ColorPalette-Tests'
 		with: [ spec requires: #( 'MooseIDE-ColorPalette' ) ];
+		package: 'MooseIDE-Durden'
+		with: [ spec requires: #( 'MooseIDE-Core' 'Durden' ) ];
 		package: 'MooseIDE-CoUsageMap'
 		with: [ 
 			spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' ) ];
@@ -93,7 +100,12 @@ BaselineOfMooseIDE >> definePackages: spec [
 		with: [ spec requires: #( 'MooseIDE-CoUsageMap'
 				   'MooseIDE-Tests' ) ];
 		package: 'MooseIDE-Duplication'
-		with: [ spec requires: #( 'MooseIDE-Core' 'FamixReplication' ) ]
+		with: [ spec requires: #( 'MooseIDE-Core' ) ];
+		package: 'MooseIDE-ButterflyMap'
+		with: [ 
+			spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' ) ];
+		package: 'MooseIDE-ButterflyMap-Tests'
+		with: [ spec requires: #( 'MooseIDE-ButterflyMap' ) ]
 ]
 
 { #category : #dependencies }
