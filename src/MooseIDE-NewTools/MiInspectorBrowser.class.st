@@ -80,7 +80,7 @@ MiInspectorBrowser class >> menuPriority [
 { #category : #'instance creation' }
 MiInspectorBrowser class >> newModel [
 
-	^ self currentApplication defaultBus logger mostRecentEntity
+	^ MiInspectorModel new
 ]
 
 { #category : #'instance creation' }
@@ -114,8 +114,8 @@ MiInspectorBrowser >> canFollowEntity: anEntity [
 MiInspectorBrowser >> followEntity: anEntity [
 
 	anEntity ifNil: [ ^ self ].
-	self model: anEntity.
-	miInspector model: self model.
+	self model entity: anEntity.
+	miInspector model: self model entity.
 	self updateWindowTitle: self window.
 	self updateToolbar
 ]
@@ -123,7 +123,7 @@ MiInspectorBrowser >> followEntity: anEntity [
 { #category : #initialization }
 MiInspectorBrowser >> initializePresenters [
 
-	miInspector := self instantiate: MiInspector on: self model
+	miInspector := self instantiate: MiInspector on: self model entity
 ]
 
 { #category : #initialization }

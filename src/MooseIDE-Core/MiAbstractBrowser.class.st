@@ -5,8 +5,9 @@ I provide a toolBar with:
 	- Buttons to inspect and propagate the current selection.
 	- A help button that shows the class comment for each browser. 
 
-Concrete browsers can use my instance variable #model (it can be initialized with #initializeModel).
-They should override:
+Concrete browsers should use my instance variable #model (MVC model, not Moose model).
+It is created by the default #open method on class side. 
+The model should inherit from MiAbstractModel and override:
 Instance side:
 	- #canFollowEntity: | which entities the browser can receive
 	- #followEntity | what to do with the received entity in Follow mode
@@ -165,7 +166,7 @@ MiAbstractBrowser class >> midasBrowserMenuLabel [
 
 { #category : #'instance creation' }
 MiAbstractBrowser class >> newModel [
-	"Override to return a model for your browser"
+	"Override to return a model (in the MVC sense) for your browser"
 
 	^ nil
 ]
@@ -242,6 +243,15 @@ MiAbstractBrowser >> canPropagate [
 	entity := self miSelectedItem.
 	^ entity isMooseObject and: [ 
 		  entity asMooseGroup isNotEmpty or: [ entity isMooseModel ] ]
+]
+
+{ #category : #'private - for tests' }
+MiAbstractBrowser >> closeSettings [
+	"to close the settings window when testing
+	Should not be used otherwise"
+
+	self hasSettings 
+	ifTrue: [ self model settings window close]
 ]
 
 { #category : #accessing }
@@ -380,9 +390,12 @@ MiAbstractBrowser >> setDefaultReceivingMode [
 	self receivingMode: MiFollowMode
 ]
 
-{ #category : #'accessing - model' }
-MiAbstractBrowser >> setModelBeforeInitialization: aModel [
-	model := aModel
+{ #category : #initialization }
+MiAbstractBrowser >> setModelBeforeInitialization: aBrowserModel [
+	aBrowserModel ifNil: [ ^self ].
+
+	model := aBrowserModel.
+	model browser: self
 ]
 
 { #category : #actions }

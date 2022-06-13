@@ -26,11 +26,10 @@ Internal Representation and Key Implementation Points.
 "
 Class {
 	#name : #MiModelRootBrowserModel,
-	#superclass : #Object,
+	#superclass : #MiAbstractModel,
 	#instVars : [
 		'mooseModelsList',
 		'selected',
-		'browser',
 		'settings'
 	],
 	#category : #'MooseIDE-Meta-ModelRootBrowser'

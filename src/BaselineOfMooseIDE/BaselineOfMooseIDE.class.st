@@ -148,6 +148,15 @@ BaselineOfMooseIDE >> labelContractor: spec [
 		spec repository: 'github://moosetechnology/LabelContractor/src' ]
 ]
 
+{ #category : #dependencies }
+BaselineOfMooseIDE >> pharoAIHierachicalClustering: spec [
+
+	spec
+		baseline: 'AIHierarchicalClustering'
+		with: [ 
+		spec repository: 'github://pharo-ai/hierarchical-clustering/src' ]
+]
+
 { #category : #actions }
 BaselineOfMooseIDE >> registerCustomTools [
 

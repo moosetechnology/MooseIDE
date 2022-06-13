@@ -2,15 +2,17 @@ Class {
 	#name : #MiSettingsPresenter,
 	#superclass : #SpPresenter,
 	#instVars : [
+		'ownerTool',
 		'settingItems',
 		'btnCancel',
 		'btnOk',
-		'btnReset'
+		'btnReset',
+		'settingsChanged'
 	],
 	#category : #'MooseIDE-Core-Settings'
 }
 
-{ #category : #initialization }
+{ #category : #accessing }
 MiSettingsPresenter >> addItem: anItem named: aName [
 
 	anItem owner: self.
@@ -22,10 +24,17 @@ MiSettingsPresenter >> buildPresenter [
 	self layout
 ]
 
-{ #category : #initialization }
+{ #category : #actions }
+MiSettingsPresenter >> closeSettings [
+	self window close.
+	ownerTool settingsChanged: settingsChanged 
+]
+
+{ #category : #actions }
 MiSettingsPresenter >> confirmItems [
 
-	settingItems valuesDo: [ :item | item confirmValue ]
+	settingItems valuesDo: [ :item | item confirmValue ].
+	settingsChanged := true
 ]
 
 { #category : #initialization }
@@ -33,30 +42,45 @@ MiSettingsPresenter >> connectPresenters [
 
 	btnOk action: [ 
 		self confirmItems.
-		self window close ].
+		self closeSettings ].
 	btnCancel action: [ 
 		self resetItems.
-		self window close ].
+		self closeSettings ].
 	btnReset action: [ self resetItems ]
 ]
 
 { #category : #layout }
 MiSettingsPresenter >> defaultLayout [
-	| tmpLayout |
-	tmpLayout := SpBoxLayout newTopToBottom.
-	settingItems valuesDo: [ :item | tmpLayout add: item buildLayout ].
-	tmpLayout add: (SpBoxLayout newLeftToRight
-			 add: btnCancel;
-			 add: btnReset;
-			 add: btnOk;
-			 yourself).
-	^tmpLayout
+
+	| tmpLayout tmpLayout2 |
+	tmpLayout := SpBoxLayout newTopToBottom
+		             spacing: self itemSpacing;
+		             vAlignCenter;
+		             yourself.
+	settingItems valuesDo: [ :item | 
+		tmpLayout add: item buildLayout expand: false ].
+	tmpLayout2 := SpBoxLayout newLeftToRight
+		              add: btnCancel;
+		              add: btnReset;
+		              add: btnOk;
+		              yourself.
+	^ SpBoxLayout newTopToBottom
+		  add: (SpScrollableLayout new child: tmpLayout);
+		  add: tmpLayout2 expand: false;
+		  yourself
 ]
 
 { #category : #accessing }
 MiSettingsPresenter >> getItemValue: aString [
 
-	^ (settingItems at: aString) getValue
+	^ (self itemNamed: aString) getValue
+]
+
+{ #category : #'morphic ui' }
+MiSettingsPresenter >> initialExtent [
+
+	^ 470 @ ((10 min: settingItems size) + 1 * self settingItemHeight
+	   + (settingItems size - 1 * self itemSpacing))
 ]
 
 { #category : #initialization }
@@ -64,6 +88,7 @@ MiSettingsPresenter >> initialize [
 
 	super initialize.
 	settingItems := OrderedDictionary new.
+	settingsChanged := false
 ]
 
 { #category : #initialization }
@@ -75,22 +100,44 @@ MiSettingsPresenter >> initializePresenters [
 ]
 
 { #category : #initialization }
-MiSettingsPresenter >> initializeWindow: aMiWindowPresenter [
+MiSettingsPresenter >> initializeWindow: aWindowPresenter [
 
-	super initializeWindow: aMiWindowPresenter.
+	super initializeWindow: aWindowPresenter.
+	aWindowPresenter title: ownerTool toolName , ' settings'
+]
 
-	aMiWindowPresenter initialExtent:
-		400 @ (settingItems size * self settingItemHeight)
+{ #category : #accessing }
+MiSettingsPresenter >> itemNamed: aName [
+	^settingItems at: aName ifAbsent: [ MiNoSuchSettingItem signal ]
+]
+
+{ #category : #accessing }
+MiSettingsPresenter >> itemSpacing [
+
+	^ 2
 ]
 
 { #category : #'instance creation' }
 MiSettingsPresenter >> open [
 
 	self buildPresenter.
+	settingsChanged := false.
 	super open
 ]
 
-{ #category : #initialization }
+{ #category : #accessing }
+MiSettingsPresenter >> ownerTool [
+
+	^ ownerTool
+]
+
+{ #category : #accessing }
+MiSettingsPresenter >> ownerTool: anObject [
+
+	ownerTool := anObject
+]
+
+{ #category : #actions }
 MiSettingsPresenter >> resetItems [
 
 	settingItems valuesDo: [ :item | item resetValue ]
@@ -99,17 +146,22 @@ MiSettingsPresenter >> resetItems [
 { #category : #accessing }
 MiSettingsPresenter >> setItem: itemName value: aValue [ 
 	
-	(settingItems at: itemName) setValue: aValue
+	(self itemNamed: itemName) setValue: aValue
 ]
 
-{ #category : #initialization }
+{ #category : #accessing }
 MiSettingsPresenter >> settingItemHeight [
 
-	^ self class toolbarHeight + 20
+	^ self class toolbarHeight + 10
 ]
 
-{ #category : #initialization }
+{ #category : #'accessing - tests' }
 MiSettingsPresenter >> settingItems [
 
 	^ settingItems
+]
+
+{ #category : #accessing }
+MiSettingsPresenter >> settingsChanged [
+	^settingsChanged
 ]

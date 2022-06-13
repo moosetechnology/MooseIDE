@@ -21,12 +21,9 @@ MiCoUsageMapBrowserTest >> testConsumerProducer [
 		anySatisfy: [ :each | each = browser coUsageMap ])
 ]
 
-{ #category : #'tests - opening' }
+{ #category : #tests }
 MiCoUsageMapBrowserTest >> testSettingsAction [
 	"must be redefined in browsers that do have settings"
 
-	| window |
-	window := browser settings.
-	self assert: (window class inheritsFrom: SystemWindow).
-	window close
+	self assert: browser hasSettings
 ]

@@ -7,10 +7,8 @@ Instance variables:
 "
 Class {
 	#name : #MiDuplicationBrowserModel,
-	#superclass : #Object,
+	#superclass : #MiAbstractModel,
 	#instVars : [
-		'browser',
-		'repDetector',
 		'entities',
 		'settings',
 		'selectedEntities',
@@ -134,7 +132,7 @@ MiDuplicationBrowserModel >> initialize [
 
 { #category : #initialization }
 MiDuplicationBrowserModel >> initializeSettings [ 
-	settings := MiSettingsPresenter new
+	settings := super initializeSettings
 		addItem: self itemMinNumberOfLines 		named: self minNumberOfLines ;
 		addItem: self itemMinNumberOfCharacters named: self minNumberOfCharacters ;
 		addItem: self itemMinNumberOfReplicas 	named: self minNumberOfReplicas ;
@@ -226,10 +224,10 @@ MiDuplicationBrowserModel >> newDetector [
 MiDuplicationBrowserModel >> newRepConfig [
 
 	^ FamixRepConfiguration new
-		  minimumNumberOfReplicas: settings minNumberOfReplicas;
-		  minimumNumberOfLines: settings minNumberOfLines;
-		  minimumNumberOfCharacters: settings minNumberOfCharacters;
-		  sourcesCleaner: settings codeCleanerClass new;
+		  minimumNumberOfReplicas: (settings getItemValue: self minNumberOfReplicas) ;
+		  minimumNumberOfLines: (settings getItemValue: self minNumberOfLines) ;
+		  minimumNumberOfCharacters: (settings getItemValue: self minNumberOfCharacters) ;
+		  sourcesCleaner: (settings getItemValue: self codeCleanerClass) new;
 		  yourself
 ]
 

@@ -179,6 +179,19 @@ MiAbstractBrowserTest >> testCanOpenOnObject [
 		raise: Error
 ]
 
+{ #category : #'tests - opening' }
+MiAbstractBrowserTest >> testCanOpenSettings [
+
+	browser hasSettings ifFalse: [ self skip ].
+
+	self
+		shouldnt: [ 
+			browser settings. ]
+		raise: Error.
+
+	[ browser closeSettings ] on: Error do: [ "nothing -- ensuring settings window is closed" ]
+]
+
 { #category : #'tests - receiving' }
 MiAbstractBrowserTest >> testDoNotPropagateWhenReceivingInFollowMode [
 

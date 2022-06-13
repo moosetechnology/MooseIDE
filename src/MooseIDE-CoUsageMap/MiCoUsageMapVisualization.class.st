@@ -11,6 +11,11 @@ Class {
 	#category : #'MooseIDE-CoUsageMap-Browser'
 }
 
+{ #category : #'private - for tests' }
+MiCoUsageMapVisualization >> closeSettingsBrowser [
+	settings close
+]
+
 { #category : #brokerage }
 MiCoUsageMapVisualization >> consume: anItem [
 	anItem class = FamixTag
@@ -60,7 +65,7 @@ MiCoUsageMapVisualization >> itemsFor: aClass [
 
 { #category : #actions }
 MiCoUsageMapVisualization >> openSettingsBrowser [
-	^ coUsageMap openSettingsBrowser
+	settings := coUsageMap openSettingsBrowser
 ]
 
 { #category : #brokerage }

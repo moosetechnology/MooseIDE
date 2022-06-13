@@ -231,12 +231,6 @@ MiDuplicationBrowser >> selectFragments: selectedFragments [
 	lstReplicatedFragments selectItems: selectedFragments
 ]
 
-{ #category : #initialization }
-MiDuplicationBrowser >> setModelBeforeInitialization: aModel [
-	super setModelBeforeInitialization: aModel.
-	aModel browser: self
-]
-
 { #category : #actions }
 MiDuplicationBrowser >> settings [
 

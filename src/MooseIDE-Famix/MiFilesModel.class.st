@@ -1,6 +1,6 @@
 Class {
 	#name : #MiFilesModel,
-	#superclass : #Object,
+	#superclass : #MiAbstractModel,
 	#instVars : [
 		'fileReference',
 		'mooseModel'
