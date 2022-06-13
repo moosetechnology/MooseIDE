@@ -64,6 +64,12 @@ MiAtomicWorkspace >> dragBrowser [
 ]
 
 { #category : #testing }
+MiAtomicWorkspace >> hasSettings [
+
+	^ self containedBrowser hasSettings
+]
+
+{ #category : #testing }
 MiAtomicWorkspace >> ifAutonomous: aBlock [
 
 	^ self containedBrowser ifAutonomous: aBlock
@@ -113,6 +119,12 @@ MiAtomicWorkspace >> receiveFromPrivateBus: anEntity [
 MiAtomicWorkspace >> resetLayout [
 
 	self layout: self defaultLayout
+]
+
+{ #category : #accessing }
+MiAtomicWorkspace >> settings [
+
+	^ self containedBrowser settings
 ]
 
 { #category : #actions }

@@ -173,6 +173,12 @@ MiAbstractBrowser2 >> freezeDuring: aBlock [
 	aBlock ensure: [ receivingMode := previousMode ]
 ]
 
+{ #category : #testing }
+MiAbstractBrowser2 >> hasSettings [
+
+	^ false
+]
+
 { #category : #actions }
 MiAbstractBrowser2 >> highlightEntity: anEntity [
 
@@ -281,6 +287,14 @@ MiAbstractBrowser2 >> sendEntitiesToPrivateBus [
 MiAbstractBrowser2 >> setModelBeforeInitialization: aModel [
 
 	model := aModel
+]
+
+{ #category : #accessing }
+MiAbstractBrowser2 >> settings [
+
+	"Not used if #hasSettings is false"
+
+	self subclassResponsibility
 ]
 
 { #category : #buses }
