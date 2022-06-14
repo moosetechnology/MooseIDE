@@ -127,6 +127,17 @@ MiDuplicationBrowserTest >> testResetReplicas [
 	self assertEmpty: browser panCodes pages
 ]
 
+{ #category : #tests }
+MiDuplicationBrowserTest >> testSelectEntity [
+	"issue https://github.com/moosetechnology/MooseIDE/issues/655"
+
+	browser model entities: { 
+		(self method: 'method1').
+		(self method: 'method2') } asMooseGroup.
+
+	self shouldnt: (browser lstEntities selectIndex: 1) raise: Error.
+]
+
 { #category : #'tests - opening' }
 MiDuplicationBrowserTest >> testSettingsAction [
 

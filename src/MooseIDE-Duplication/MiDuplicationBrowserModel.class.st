@@ -115,7 +115,7 @@ MiDuplicationBrowserModel >> hierarchyOfReplicatedFragment: aCollectionOfFragmen
 { #category : #api }
 MiDuplicationBrowserModel >> highlightEntity: entitiesToHighlight [
 
-	browser selectedFragments:
+	self selectedFragments:
 		(entitiesToHighlight flatCollectAsSet: [ :entity | 
 			 entity replicas collect: #replicatedFragment ])
 ]
