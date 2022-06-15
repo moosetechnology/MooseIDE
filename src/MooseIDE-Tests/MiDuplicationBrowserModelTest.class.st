@@ -182,7 +182,7 @@ MiDuplicationBrowserModelTest >> testHierarchyOfReplicatedFragment [
 MiDuplicationBrowserModelTest >> testHighlightEntity [
 
 	| selectedFragments |
-	(model browser stub selectedFragments: Any) will: [ 
+	(model browser stub selectFragments: Any) will: [ 
 		:receivedFragments | selectedFragments := receivedFragments ].
 
 	self assert: selectedFragments isNil.
