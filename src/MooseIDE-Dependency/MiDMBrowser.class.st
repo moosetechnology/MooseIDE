@@ -139,7 +139,7 @@ MiDMBrowser >> runVisualization [
 { #category : #accessing }
 MiDMBrowser >> settings [
 
-	model settings open
+	^model settings open
 ]
 
 { #category : #initialization }
