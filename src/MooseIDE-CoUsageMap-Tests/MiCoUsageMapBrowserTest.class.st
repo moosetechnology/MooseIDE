@@ -27,3 +27,24 @@ MiCoUsageMapBrowserTest >> testSettingsAction [
 
 	self assert: browser hasSettings
 ]
+
+{ #category : #tests }
+MiCoUsageMapBrowserTest >> testSettingsClickCancel [
+	"skipping for now because settings are handled in a very special way"
+
+	self skip.
+]
+
+{ #category : #tests }
+MiCoUsageMapBrowserTest >> testSettingsClickOK [
+	"overrind and skipping for now because settings are handled in a very special way"
+
+	self skip.
+]
+
+{ #category : #tests }
+MiCoUsageMapBrowserTest >> testSettingsClickReset [
+	"overrind and skipping for now because settings are handled in a very special way"
+
+	self skip.
+]

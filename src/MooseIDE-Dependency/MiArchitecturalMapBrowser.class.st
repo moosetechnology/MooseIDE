@@ -138,7 +138,7 @@ MiArchitecturalMapBrowser >> setModelBeforeInitialization: aModel [
 { #category : #accessing }
 MiArchitecturalMapBrowser >> settings [
 
-	model openSettings
+	^model openSettings
 ]
 
 { #category : #initialization }

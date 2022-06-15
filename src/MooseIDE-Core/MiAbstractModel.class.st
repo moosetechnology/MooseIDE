@@ -32,6 +32,11 @@ MiAbstractModel >> initializeSettings [
 ]
 
 { #category : #accessing }
+MiAbstractModel >> settingsChanged: aBoolean [
+	"by default don't do anything"
+]
+
+{ #category : #accessing }
 MiAbstractModel >> toolName [
 
 	^ browser title

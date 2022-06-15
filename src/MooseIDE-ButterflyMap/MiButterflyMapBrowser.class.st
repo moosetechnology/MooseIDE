@@ -116,7 +116,7 @@ MiButterflyMapBrowser >> run [
 { #category : #actions }
 MiButterflyMapBrowser >> settings [
 	
-	self model openSettings
+	^self model openSettings
 ]
 
 { #category : #accessing }

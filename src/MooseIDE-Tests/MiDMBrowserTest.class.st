@@ -15,3 +15,16 @@ MiDMBrowserTest >> testSettingsAction [
 
 	self assert: browser hasSettings
 ]
+
+{ #category : #tests }
+MiDMBrowserTest >> testSettingsClickOK [
+	"overriding to setup the right context"
+
+	browser model entities: #().
+	self
+		shouldnt: [ 
+			browser settings.
+			browser model settings buttonOk click ]
+		raise: Error.
+
+]

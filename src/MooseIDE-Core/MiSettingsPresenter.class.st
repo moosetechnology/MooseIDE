@@ -24,6 +24,24 @@ MiSettingsPresenter >> buildPresenter [
 	self layout
 ]
 
+{ #category : #'accessing - tests' }
+MiSettingsPresenter >> buttonCancel [
+
+	^ btnCancel
+]
+
+{ #category : #'accessing - tests' }
+MiSettingsPresenter >> buttonOk [
+
+	^ btnOk
+]
+
+{ #category : #'accessing - tests' }
+MiSettingsPresenter >> buttonReset [
+
+	^ btnReset
+]
+
 { #category : #actions }
 MiSettingsPresenter >> closeSettings [
 	self window close.

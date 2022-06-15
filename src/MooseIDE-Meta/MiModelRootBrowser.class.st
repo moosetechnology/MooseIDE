@@ -178,7 +178,7 @@ MiModelRootBrowser >> refreshToolbarButton [
 { #category : #actions }
 MiModelRootBrowser >> settings [
 
-	model openSettings
+	^model openSettings
 ]
 
 { #category : #'accessing - tests' }

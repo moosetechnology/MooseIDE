@@ -234,7 +234,7 @@ MiDuplicationBrowser >> selectFragments: selectedFragments [
 { #category : #actions }
 MiDuplicationBrowser >> settings [
 
-	model openSettings
+	^model openSettings
 ]
 
 { #category : #api }
