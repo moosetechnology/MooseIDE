@@ -50,3 +50,9 @@ MiBooleanQueryPresenter >> newValueInputField [
 
 	^ self newNullPresenter
 ]
+
+{ #category : #actions }
+MiBooleanQueryPresenter >> updateProperty: property [
+
+	self query property: property.
+]
