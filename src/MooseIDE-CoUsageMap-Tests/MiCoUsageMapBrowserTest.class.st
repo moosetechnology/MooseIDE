@@ -11,14 +11,18 @@ MiCoUsageMapBrowserTest >> browserClass [
 
 { #category : #tests }
 MiCoUsageMapBrowserTest >> testConsumerProducer [
-	self assert: ((browser application consumersOf: FamixTag) 
-		anySatisfy: [ :each | each = browser coUsageMap ]).
-	
-	self assert: ((browser application consumersOf: FamixTagAssociation) 
-		anySatisfy: [ :each | each = browser coUsageMap ]).
-	
-	self assert: ((browser application producersOf: FamixTagAssociation)
-		anySatisfy: [ :each | each = browser coUsageMap ])
+
+	self assert:
+		((browser application consumersOf: FamixTag) anySatisfy: [ :each | 
+			 each = browser containedBrowser coUsageMap ]).
+
+	self assert:
+		((browser application consumersOf: FamixTagAssociation) anySatisfy: [ 
+			 :each | each = browser containedBrowser coUsageMap ]).
+
+	self assert:
+		((browser application producersOf: FamixTagAssociation) anySatisfy: [ 
+			 :each | each = browser containedBrowser coUsageMap ])
 ]
 
 { #category : #tests }

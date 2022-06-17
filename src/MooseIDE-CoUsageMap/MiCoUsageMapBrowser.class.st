@@ -24,7 +24,7 @@ Controls:
 "
 Class {
 	#name : #MiCoUsageMapBrowser,
-	#superclass : #MiAbstractBrowser,
+	#superclass : #MiAbstractBrowser2,
 	#instVars : [
 		'coUsageMap',
 		'collectionModel',
