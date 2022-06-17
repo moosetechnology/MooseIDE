@@ -7,7 +7,7 @@ By default entities at left are all clients of the central entity, right ones ar
 "
 Class {
 	#name : #MiButterflyMapBrowser,
-	#superclass : #MiAbstractBrowser,
+	#superclass : #MiAbstractBrowser2,
 	#instVars : [
 		'visualization'
 	],
