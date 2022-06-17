@@ -3,7 +3,7 @@ A MooseIDE browser to present code clones
 "
 Class {
 	#name : #MiDuplicationBrowser,
-	#superclass : #MiAbstractBrowser,
+	#superclass : #MiAbstractBrowser2,
 	#instVars : [
 		'lstEntities',
 		'btnRun',

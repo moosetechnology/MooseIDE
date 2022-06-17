@@ -292,7 +292,8 @@ MiDuplicationBrowserModel >> selectedEntities: entityCollection [
 
 	selectedEntities := entityCollection.
 	"browser highlightEntity: selectedEntities."
-	browser updateToolbar
+	browser updateToolbar.
+	browser sendEntitiesToPrivateBus
 ]
 
 { #category : #api }
