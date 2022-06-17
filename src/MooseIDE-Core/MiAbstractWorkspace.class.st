@@ -203,7 +203,8 @@ MiAbstractWorkspace >> isMiBrowser [
 MiAbstractWorkspace >> miSelectedItem [
 
 	^ privateBus mostRecentEntity ifNil: [ 
-		  (MiNoSelectedElementToPropagateException browser: self) signal ]
+		  (MiNoSelectedElementToPropagateException browser: self) signal.
+		  nil ]
 ]
 
 { #category : #testing }

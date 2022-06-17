@@ -21,19 +21,27 @@ MiDependencyBrowserTest >> setUp [
 
 { #category : #tests }
 MiDependencyBrowserTest >> testActivateActionButtons [
-	{ MiInspectCommand . MiPropagateCommand . MiDragWindowCommand }
-	do: [ :cmdClass | self deny: (self actionButton: cmdClass) isEnabled ].
+
+	{ 
+		MiInspectCommand.
+		MiPropagateCommand } do: [ :cmdClass | 
+		self deny: (self actionButton: cmdClass) isEnabled ].
+	self assert: (self actionButton: MiDragWindowCommand) isEnabled.
 
 	browser receiveEntity: (MooseGroup with: entityToSelect).
-	{ MiInspectCommand . MiPropagateCommand }
-	do: [ :cmdClass | self assert: (self actionButton: cmdClass) isEnabled ].
-	self deny: (self actionButton: MiDragWindowCommand) isEnabled.
+	{ 
+		MiInspectCommand.
+		MiPropagateCommand.
+		MiDragWindowCommand } do: [ :cmdClass | 
+		self assert: (self actionButton: cmdClass) isEnabled ].
 
-	browser diagram canvas shapes anyOne click.
-	{ MiInspectCommand . MiPropagateCommand }
-	do: [ :cmdClass | self assert: (self actionButton: cmdClass) isEnabled ].
-	self deny: (self actionButton: MiDragWindowCommand) isEnabled.
 
+	browser containedBrowser diagram canvas shapes anyOne click.
+	{ 
+		MiInspectCommand.
+		MiPropagateCommand.
+		MiDragWindowCommand } do: [ :cmdClass | 
+		self assert: (self actionButton: cmdClass) isEnabled ]
 ]
 
 { #category : #tests }
@@ -45,6 +53,6 @@ MiDependencyBrowserTest >> testMiSelectedItem [
 	self assert: browser miSelectedItem isMooseObject.
 	self assert: browser miSelectedItem anyOne equals: entityToSelect.
 
-	browser diagram canvas shapes anyOne click.
+	browser containedBrowser diagram canvas shapes anyOne click.
 	self assert: browser miSelectedItem equals: entityToSelect
 ]

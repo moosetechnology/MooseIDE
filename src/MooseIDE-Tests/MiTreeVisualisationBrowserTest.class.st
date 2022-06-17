@@ -11,15 +11,20 @@ MiTreeVisualisationBrowserTest >> browserClass [
 
 { #category : #tests }
 MiTreeVisualisationBrowserTest >> testActivateActionButtons [
-	{ MiInspectCommand . MiPropagateCommand . MiDragWindowCommand }
-	do: [ :cmdClass | self deny: (self actionButton: cmdClass) isEnabled ].
+
+	{ 
+		MiInspectCommand.
+		MiPropagateCommand } do: [ :cmdClass | 
+		self deny: (self actionButton: cmdClass) isEnabled ].
+	self assert: (self actionButton: MiDragWindowCommand) isEnabled.
 
 	browser receiveEntity: (FamixStClass named: 'TestClass').
 
-	{ MiInspectCommand . MiPropagateCommand }
-	do: [ :cmdClass | self assert: (self actionButton: cmdClass) isEnabled ].
-	self deny: (self actionButton: MiDragWindowCommand) isEnabled.
-
+	{ 
+		MiInspectCommand.
+		MiPropagateCommand.
+		MiDragWindowCommand } do: [ :cmdClass | 
+		self assert: (self actionButton: cmdClass) isEnabled ]
 ]
 
 { #category : #tests }

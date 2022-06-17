@@ -183,7 +183,9 @@ MiDependencyVisualization >> shapeForEntity: node [
 		         draggable;
 		         addInteraction: ((MiSelection on: [ :entity | 
 					           self selected: entity.
-					           owner updateToolbar ]) marginPercentage: 0.5);
+					           owner updateToolbar.
+					           owner sendEntitiesToPrivateBus ]) marginPercentage:
+					          0.5);
 		         yourself.
 	self makeHighlightable: shape.
 	^ shape

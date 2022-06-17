@@ -19,8 +19,9 @@ MiTreeVisualisation >> boxCompositeFor: cls [
 				  box };
 		  model: cls;
 		  @ RSDraggable;
-		  addInteraction:
-			  (MiSelection on: [ :entity | self owner model selected: entity ]);
+		  addInteraction: (MiSelection on: [ :entity | 
+					   self owner model selected: entity.
+					   self owner sendEntitiesToPrivateBus ]);
 		  yourself
 ]
 

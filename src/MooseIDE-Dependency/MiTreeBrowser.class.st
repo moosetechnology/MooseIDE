@@ -95,9 +95,8 @@ MiTreeBrowser >> initializePresenters [
 		beMultipleSelection;
 		beResizable.
 	tree whenSelectedItemChangedDo: [ :entityOrGroup | 
-		self freezeDuring: [ 
-			model selected: entityOrGroup mooseInterestingEntity.
-			self buses do: [ :bus | bus globallySelect: entityOrGroup ] ] ]
+		model selected: entityOrGroup mooseInterestingEntity.
+		self sendEntitiesToPrivateBus ]
 ]
 
 { #category : #accessing }
