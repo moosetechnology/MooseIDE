@@ -1,6 +1,6 @@
 Class {
 	#name : #MiDMBrowser,
-	#superclass : #MiAbstractBrowser,
+	#superclass : #MiAbstractBrowser2,
 	#instVars : [
 		'visualization'
 	],

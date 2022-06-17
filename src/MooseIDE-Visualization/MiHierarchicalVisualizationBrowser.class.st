@@ -1,6 +1,6 @@
 Class {
 	#name : #MiHierarchicalVisualizationBrowser,
-	#superclass : #MiAbstractBrowser,
+	#superclass : #MiAbstractBrowser2,
 	#instVars : [
 		'diagram'
 	],

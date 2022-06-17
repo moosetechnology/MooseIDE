@@ -3,7 +3,7 @@ I am a browser that display a hieracical map.
 "
 Class {
 	#name : #MiArchitecturalMapBrowser,
-	#superclass : #MiAbstractBrowser,
+	#superclass : #MiAbstractBrowser2,
 	#instVars : [
 		'visualization'
 	],
