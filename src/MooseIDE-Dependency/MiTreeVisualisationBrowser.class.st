@@ -1,7 +1,7 @@
 "
 Shows the containment tree (direct relations for now) between entities, as a roassal visualization.
 
-- Follow: Receives a MooseGroup.
+- Follow: Receives a MooseEntity using FamixTEntityMetalevelDependency.
 - Highlight: Entities if present.
 - Propagate: The selected entity if there is one.
 "
