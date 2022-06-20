@@ -14,6 +14,7 @@ BaselineOfMooseIDE >> baseline: spec [
 		self hierarchicalVisualizations: spec.
 		self famixQueries: spec.
 		self pharoAIHierachicalClustering: spec.
+		self stonCustomizer: spec.
 
 		"Packages"
 		self definePackages: spec.
@@ -36,7 +37,11 @@ BaselineOfMooseIDE >> baseline: spec [
 				package: 'MooseIDE-NewTools'
 				with: [ spec requires: #( 'FamixQueries' ) ];
 				package: 'MooseIDE-Duplication'
-				with: [ spec requires: #( 'FamixReplication' ) ] ].
+				with: [ spec requires: #( 'FamixReplication' ) ];
+				package: 'Famix-CriticBrowser-Entities'
+				with: [ spec requires: 'Famix' ];
+				package: 'Famix-CriticBrowser-Generator'
+				with: [ spec requires: 'Famix' ] ].
 
 		"Register custom tools"
 		spec postLoadDoIt: #registerCustomTools ]
@@ -49,6 +54,20 @@ BaselineOfMooseIDE >> customProjectAttributes [
 		  detect: [ :package | package name = 'BaselineOfFamix' ]
 		  ifFound: [ #(  ) ]
 		  ifNone: [ #( #NeedsMoose ) ]
+]
+
+{ #category : #baselines }
+BaselineOfMooseIDE >> defineMooseCriticsPackages: spec [
+
+	spec
+		package: 'MooseIDE-CriticBrowser'
+		with: [ spec requires: #( 'STONCustomizer' ) ];
+		package: 'MooseIDE-CriticBrowser-Tests'
+		with: [ spec requires: 'MooseIDE-CriticBrowser' ];
+		package: 'Famix-CriticBrowser-Entities';
+		package: 'Famix-CriticBrowser-Generator';
+		package: 'Famix-CriticBrowser-Tests'
+		with: [ spec requires: 'Famix-CriticBrowser-Entities' ]
 ]
 
 { #category : #baselines }
@@ -106,7 +125,9 @@ BaselineOfMooseIDE >> definePackages: spec [
 		with: [ 
 			spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' ) ];
 		package: 'MooseIDE-ButterflyMap-Tests'
-		with: [ spec requires: #( 'MooseIDE-ButterflyMap' ) ]
+		with: [ spec requires: #( 'MooseIDE-ButterflyMap' ) ].
+		
+	self defineMooseCriticsPackages: spec
 ]
 
 { #category : #dependencies }
@@ -174,6 +195,15 @@ BaselineOfMooseIDE >> pharoAIHierachicalClustering: spec [
 BaselineOfMooseIDE >> registerCustomTools [
 
 	(Smalltalk classNamed: #MiPlayground) register
+]
+
+{ #category : #dependencies }
+BaselineOfMooseIDE >> stonCustomizer: spec [
+
+	spec
+		baseline: 'STONCustomizer'
+		with: [ 
+		spec repository: 'github://jecisc/STONCustomizer:v1.x.x/src' ]
 ]
 
 { #category : #dependencies }
