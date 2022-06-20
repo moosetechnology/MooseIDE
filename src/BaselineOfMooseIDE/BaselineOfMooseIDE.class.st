@@ -64,7 +64,8 @@ BaselineOfMooseIDE >> defineMooseCriticsPackages: spec [
 			spec requires: #( 'MooseIDE-Core' 'Famix-CriticBrowser-Entities'
 					   'STONCustomizer' ) ];
 		package: 'MooseIDE-CriticBrowser-Tests'
-		with: [ spec requires: 'MooseIDE-CriticBrowser' ];
+		with: [ 
+			spec requires: #( 'MooseIDE-Tests' 'MooseIDE-CriticBrowser' ) ];
 		package: 'Famix-CriticBrowser-Entities';
 		package: 'Famix-CriticBrowser-Generator';
 		package: 'Famix-CriticBrowser-Tests'
