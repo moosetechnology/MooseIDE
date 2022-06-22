@@ -26,10 +26,13 @@ MiPlayground class >> initialize [
 MiPlayground class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
-	^ (MooseModel developerTool: self menuCommandOn: aBuilder)
-		  order: 10;
+	^ aBuilder
+		  item: self menuLabel;
+		  parent: #Moose;
+		  label: self menuLabel;
+		  icon: MooseIcons mooseIcon;
 		  help: 'Playground enhanced for usage in Moose';
-		  yourself
+		  order: 10
 ]
 
 { #category : #'world menu' }
