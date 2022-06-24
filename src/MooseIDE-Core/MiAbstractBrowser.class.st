@@ -346,16 +346,15 @@ MiAbstractBrowser >> closeSettings [
 { #category : #buses }
 MiAbstractBrowser >> followBus: aBus [
 
-	(self buses includes: aBus)
-	ifTrue: [ 
-		application defaultBus: aBus.
-		^ self ].
-	
-	self buses add: aBus.
-	aBus registerBrowser: self.
-	self window ifNotNil: [ :window | window updateBusButton ].
-	self receiveEntity: aBus logger mostRecentEntity.
-	application defaultBus: aBus
+	  (self buses includes: aBus) ifTrue: [ 
+		  application defaultBus: aBus.
+		  ^ self ].
+
+	  self buses add: aBus.
+	  aBus registerBrowser: self.
+	  self window ifNotNil: [ :window | window updateBusButton ].
+	  self receiveEntity: aBus logger mostRecentEntity.
+	  application defaultBus: aBus
 ]
 
 { #category : #actions }

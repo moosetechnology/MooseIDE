@@ -34,7 +34,7 @@ MiBusPresenter >> initializePresenters [
 	loggerButton := self newButton
 		                iconName: #history;
 		                label: 'Open logger';
-		                action: [ MiBusLogBrowser openForBus: model ].
+		                action: [ MiBusLogBrowser openForBus: model application: application ].
 	self initializeLayout
 ]
 

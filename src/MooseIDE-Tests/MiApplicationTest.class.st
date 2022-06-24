@@ -15,7 +15,8 @@ MiApplicationTest >> alternativeBusName [
 
 { #category : #running }
 MiApplicationTest >> application [
-	^ MiTestApplication current
+
+	  ^ application
 ]
 
 { #category : #running }
@@ -26,15 +27,10 @@ MiApplicationTest >> busName [
 
 { #category : #running }
 MiApplicationTest >> setUp [
-	super setUp.
-	bus := self application busNamed: self busName
-]
 
-{ #category : #running }
-MiApplicationTest >> tearDown [
-
-	self application class reset.
-	super tearDown
+	  super setUp.
+	  application := MiTestApplication new.
+	  bus := self application busNamed: self busName
 ]
 
 { #category : #tests }

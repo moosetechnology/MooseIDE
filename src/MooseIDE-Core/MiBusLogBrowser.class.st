@@ -18,9 +18,11 @@ MiBusLogBrowser class >> addToMiBrowsersMenu: aMenuGroupPresenter [
 ]
 
 { #category : #'instance creation' }
-MiBusLogBrowser class >> forBus: aBus [
+MiBusLogBrowser class >> forBus: aBus application: anApplication [
 
-	^ self new followBus: aBus
+	  ^ (self newApplication: anApplication)
+		    followBus: aBus;
+		    yourself
 ]
 
 { #category : #commands }
@@ -43,12 +45,12 @@ MiBusLogBrowser class >> menuCommandGroupFor: presenter [
 ]
 
 { #category : #'instance creation' }
-MiBusLogBrowser class >> openForBus: aBus [
+MiBusLogBrowser class >> openForBus: aBus application: anApplication [
 
-	^ (self forBus: aBus)
-		  open;
-		  updateToolbars;
-		  yourself
+	  ^ (self forBus: aBus application: anApplication)
+		    open;
+		    updateToolbars;
+		    yourself
 ]
 
 { #category : #commands }
