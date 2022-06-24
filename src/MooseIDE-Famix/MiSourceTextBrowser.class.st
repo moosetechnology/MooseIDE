@@ -9,7 +9,7 @@ Shows the source text of an entity if it has one.
 "
 Class {
 	#name : #MiSourceTextBrowser,
-	#superclass : #MiAbstractFamixBrowser,
+	#superclass : #MiAbstractBrowser,
 	#instVars : [
 		'toolBarExternalEditor',
 		'textRenderer'
@@ -19,35 +19,36 @@ Class {
 
 { #category : #specs }
 MiSourceTextBrowser class >> defaultLayout [
-	^super defaultLayout
-		add: #toolBarExternalEditor height: self toolbarHeight ;
-		add: #textRenderer expand: true ;
-		yourself
+
+	^ super defaultLayout
+		  add: #toolBarExternalEditor height: self toolbarHeight;
+		  add: #textRenderer expand: true;
+		  yourself
 ]
 
 { #category : #'world menu' }
 MiSourceTextBrowser class >> menuCommandOn: aBuilder [
+
 	<worldMenu>
-	<miBrowsers>
-	(aBuilder item: #SourceTextBrowser)
-		parent: (self toolbarFamixName) ;
-		label: (self title) ;
-		icon: (self iconNamed: self menuIconName);
-		order: self menuPriority ;
-		help: (self helpMessage);
-		action: [ self open ]
+	^ self buildMenuItemIn: aBuilder
 ]
 
-{ #category : #menu }
+{ #category : #'world menu' }
 MiSourceTextBrowser class >> menuIconName [
 
 	^ #mooseSourceText
 ]
 
-{ #category : #menu }
+{ #category : #'world menu' }
+MiSourceTextBrowser class >> menuItem [
+
+	^ #SourceTextBrowser
+]
+
+{ #category : #'world menu' }
 MiSourceTextBrowser class >> menuPriority [
 
-	^ 1
+	^ self menuCodeToolsPriority + 1
 ]
 
 { #category : #'instance creation' }
@@ -58,17 +59,20 @@ MiSourceTextBrowser class >> newModel [
 
 { #category : #'instance creation' }
 MiSourceTextBrowser class >> open [
+
 	<script>
 	^ super open
 ]
 
 { #category : #specs }
 MiSourceTextBrowser class >> title [
+
 	^ 'Source code'
 ]
 
 { #category : #specs }
 MiSourceTextBrowser class >> windowSize [
+
 	^ 600 @ 700
 ]
 

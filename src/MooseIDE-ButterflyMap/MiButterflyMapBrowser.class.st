@@ -20,38 +20,44 @@ MiButterflyMapBrowser class >> mapClass [
 	^ MiButterflyMap
 ]
 
-{ #category : #accessing }
+{ #category : #'world menu' }
 MiButterflyMapBrowser class >> menuCommandOn: aBuilder [
+
 	<worldMenu>
-	<miBrowsers>
-	^(aBuilder item: #ButterflyMapBrowser)
-		parent: self midasBrowserMenuLabel;
-		label: self title;
-		help: self helpMessage;
-		order: 5;
-		action: [ self open ] ;
-		yourself
+	^ self buildMenuItemIn: aBuilder
 ]
 
-{ #category : #accessing }
+{ #category : #'world menu' }
+MiButterflyMapBrowser class >> menuItem [
+
+	^ #ButterflyMapBrowser
+]
+
+{ #category : #'world menu' }
+MiButterflyMapBrowser class >> menuPriority [
+
+	^ self menuVisualizationToolsPriority + 2
+]
+
+{ #category : #'instance creation' }
 MiButterflyMapBrowser class >> newModel [
 
 	^ MiButterflyMapModel new
 ]
 
-{ #category : #accessing }
+{ #category : #'instance creation' }
 MiButterflyMapBrowser class >> open [
 	<script>
 	super open
 ]
 
-{ #category : #accessing }
+{ #category : #specs }
 MiButterflyMapBrowser class >> title [
 
 	^ 'Butterfly map'
 ]
 
-{ #category : #accessing }
+{ #category : #specs }
 MiButterflyMapBrowser class >> windowSize [
 
 	^ 850 @ 520

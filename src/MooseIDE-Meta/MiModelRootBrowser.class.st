@@ -25,7 +25,7 @@ MiModelRootBrowser class >> addItemOrSubMenuToMiBrowsersMenu: aRootMenu defaultS
 	self addToMiBrowsersMenu: aRootMenu
 ]
 
-{ #category : #'world menu' }
+{ #category : #commands }
 MiModelRootBrowser class >> buildModelCommandsGroupWith: presenterInstance [
 
 	^ CmCommandGroup forSpec beRoot
@@ -50,47 +50,51 @@ MiModelRootBrowser class >> defaultLayout [
 
 { #category : #'world menu' }
 MiModelRootBrowser class >> menuCommandOn: aBuilder [
+
 	<worldMenu>
-	<miBrowsers>
-	(aBuilder item: #ModelRootBrowser)
-		parent: #Moose ;
-		label: self title ;
-		icon: (self iconNamed: self menuIconName) ;
-		order: self menuPriority ;
-		help: self helpMessage ;
-		action: [ self open ]
+	^ self buildMenuItemIn: aBuilder
 ]
 
-{ #category : #menu }
+{ #category : #'world menu' }
 MiModelRootBrowser class >> menuIconName [
 
 	^ #mooseNavigation
 ]
 
-{ #category : #menu }
+{ #category : #'world menu' }
+MiModelRootBrowser class >> menuItem [
+
+	^ #ModelRootBrowser
+]
+
+{ #category : #'world menu' }
 MiModelRootBrowser class >> menuPriority [
 
-	^ 2
+	^ self menuMainToolsPriority + 2
 ]
 
 { #category : #'instance creation' }
 MiModelRootBrowser class >> newModel [
+
 	^ MiModelRootBrowserModel new
 ]
 
 { #category : #'instance creation' }
 MiModelRootBrowser class >> open [
+
 	<script>
 	^ super open
 ]
 
 { #category : #specs }
 MiModelRootBrowser class >> title [
+
 	^ 'Models browser'
 ]
 
 { #category : #specs }
 MiModelRootBrowser class >> windowSize [
+
 	^ 600 @ 400
 ]
 

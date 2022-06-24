@@ -71,6 +71,21 @@ MiAbstractBrowser class >> buildItemInMenu: aMenuGroupPresenter [
 			icon: self menuIcon ]
 ]
 
+{ #category : #'world menu' }
+MiAbstractBrowser class >> buildMenuItemIn: aBuilder [
+
+	"Method used in subclasses"
+
+	^ (aBuilder item: self menuItem)
+		  parent: self menuParent;
+		  label: self menuLabel;
+		  icon: self menuIcon;
+		  help: self helpMessage;
+		  order: self menuPriority;
+		  action: [ self open ];
+		  yourself
+]
+
 { #category : #specs }
 MiAbstractBrowser class >> defaultLayout [
 
@@ -83,10 +98,17 @@ MiAbstractBrowser class >> defaultSubMenuLabel [
 	^ 'Specialized Browsers'
 ]
 
+{ #category : #'menu organization' }
+MiAbstractBrowser class >> famixMenuRoot [
+
+	^ #Famix
+]
+
 { #category : #'world menu' }
 MiAbstractBrowser class >> helpMessage [
-	^ (self comment lines copyUpTo: '')
-		fold: [ :s1 :s2 | s1 , Character cr asString , s2 ]
+
+	^ (self comment lines copyUpTo: '') fold: [ :s1 :s2 | 
+		  s1 , Character cr asString , s2 ]
 ]
 
 { #category : #testing }
@@ -94,48 +116,94 @@ MiAbstractBrowser class >> isAbstract [
 	^ self == MiAbstractBrowser
 ]
 
+{ #category : #'menu organization' }
+MiAbstractBrowser class >> menuCodeToolsPriority [
+
+	^ 20
+]
+
 { #category : #'world menu' }
 MiAbstractBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
-	(aBuilder item: self midasBrowserMenuLabel)
-		order: 8;
-		parent: #Moose;
-		icon: MooseIcons mooseIcon
+
+	"Library > Famix > Old browsers"
+	(aBuilder item: self oldBrowserMenuRoot)
+		parent: self famixMenuRoot;
+		icon: self menuIcon;
+		order: self oldBrowserMenuPriority.
+
+	"Library > Famix > Old browsers > Meta"
+	(aBuilder item: self oldMetaBrowsersMenuRoot)
+		parent: self oldBrowserMenuRoot;
+		icon: self menuIcon;
+		order: self oldMetaBrowsersMenuPriority
 ]
 
-{ #category : #menu }
+{ #category : #'world menu' }
 MiAbstractBrowser class >> menuIcon [
 
 	^ self iconNamed: self menuIconName
 ]
 
-{ #category : #menu }
+{ #category : #'world menu' }
 MiAbstractBrowser class >> menuIconName [
+
+	"Override if needed"
 
 	^ #blank
 ]
 
 { #category : #'world menu' }
-MiAbstractBrowser class >> menuMetaCommandOn: aBuilder [
-	"need to be a separate method because of #miBrowsers pragma"
-	<worldMenu>
-	<miBrowsers>
-	(aBuilder item: self metaBrowsersMenuLabel)
-		order: 100;
-		parent: (self midasBrowserMenuLabel);
-		icon: MooseIcons mooseIcon
+MiAbstractBrowser class >> menuItem [
+
+	self subclassResponsibility
 ]
 
-{ #category : #menu }
+{ #category : #'world menu' }
+MiAbstractBrowser class >> menuLabel [
+
+	"Override if necessary"
+
+	^ self title
+]
+
+{ #category : #'menu organization' }
+MiAbstractBrowser class >> menuMainToolsPriority [
+
+	^ 0
+]
+
+{ #category : #'menu organization' }
+MiAbstractBrowser class >> menuMetaToolsPriority [
+
+	^ 40
+]
+
+{ #category : #'world menu' }
+MiAbstractBrowser class >> menuParent [
+
+	"Override if necessary"
+
+	^ self mooseMenuRoot
+]
+
+{ #category : #'menu organization' }
+MiAbstractBrowser class >> menuPharoToolsPriority [
+
+	^ 30
+]
+
+{ #category : #'world menu' }
 MiAbstractBrowser class >> menuPriority [
 
 	^ 100
 ]
 
-{ #category : #'world menu' }
-MiAbstractBrowser class >> metaBrowsersMenuLabel [
-	^ #Meta
+{ #category : #'menu organization' }
+MiAbstractBrowser class >> menuVisualizationToolsPriority [
+
+	^ 10
 ]
 
 { #category : #menu }
@@ -159,9 +227,10 @@ MiAbstractBrowser class >> miBrowsersMenuPresenter [
 	^ rootMenu
 ]
 
-{ #category : #'world menu' }
-MiAbstractBrowser class >> midasBrowserMenuLabel [
-	^ #'Specialized Browsers'
+{ #category : #'menu organization' }
+MiAbstractBrowser class >> mooseMenuRoot [
+
+	^ #Moose
 ]
 
 { #category : #'instance creation' }
@@ -169,6 +238,30 @@ MiAbstractBrowser class >> newModel [
 	"Override to return a model (in the MVC sense) for your browser"
 
 	^ nil
+]
+
+{ #category : #'menu organization' }
+MiAbstractBrowser class >> oldBrowserMenuPriority [
+
+	^ 30
+]
+
+{ #category : #'menu organization' }
+MiAbstractBrowser class >> oldBrowserMenuRoot [
+
+	^ #'Old browsers'
+]
+
+{ #category : #'menu organization' }
+MiAbstractBrowser class >> oldMetaBrowsersMenuPriority [
+
+	^ 100
+]
+
+{ #category : #'menu organization' }
+MiAbstractBrowser class >> oldMetaBrowsersMenuRoot [
+
+	^ #Meta
 ]
 
 { #category : #'instance creation' }
@@ -188,6 +281,7 @@ MiAbstractBrowser class >> taskbarIcon [
 
 { #category : #specs }
 MiAbstractBrowser class >> windowSize [
+
 	^ 500 @ 400
 ]
 

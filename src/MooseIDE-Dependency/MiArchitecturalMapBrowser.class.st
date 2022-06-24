@@ -18,15 +18,21 @@ MiArchitecturalMapBrowser class >> mapClass [
 
 { #category : #'world menu' }
 MiArchitecturalMapBrowser class >> menuCommandOn: aBuilder [
+
 	<worldMenu>
-	<miBrowsers>
-	^(aBuilder item: #MiArchitecturalMapBrowser)
-		parent: self midasBrowserMenuLabel;
-		label: self title;
-		help: self helpMessage;
-		order: 5;
-		action: [ self open ] ;
-		yourself
+	^ self buildMenuItemIn: aBuilder
+]
+
+{ #category : #'world menu' }
+MiArchitecturalMapBrowser class >> menuItem [
+
+	^ #MiArchitecturalMapBrowser
+]
+
+{ #category : #'world menu' }
+MiArchitecturalMapBrowser class >> menuPriority [
+
+	^ self menuVisualizationToolsPriority + 1
 ]
 
 { #category : #'instance creation' }
@@ -35,19 +41,19 @@ MiArchitecturalMapBrowser class >> newModel [
 	^ MiArchitecturalMapModel new
 ]
 
-{ #category : #accessing }
+{ #category : #'instance creation' }
 MiArchitecturalMapBrowser class >> open [
 	<script>
 	super open
 ]
 
-{ #category : #accessing }
+{ #category : #specs }
 MiArchitecturalMapBrowser class >> title [
 
 	^ 'Architectural map'
 ]
 
-{ #category : #accessing }
+{ #category : #specs }
 MiArchitecturalMapBrowser class >> windowSize [
 
 	^ 850 @ 520

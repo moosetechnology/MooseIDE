@@ -25,23 +25,28 @@ MiTreeBrowser class >> defaultLayout [
 MiTreeBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
-	<miBrowsers>
-	(aBuilder item: #TreeBrowser)
-		parent: self toolbarDependencyName;
-		label: self title;
-		order: self menuPriority;
-		icon: (self iconNamed: self menuIconName);
-		help: self helpMessage;
-		action: [ self open ]
+	^ self buildMenuItemIn: aBuilder
 ]
 
-{ #category : #menu }
+{ #category : #'world menu' }
 MiTreeBrowser class >> menuIconName [
 
 	^ #mooseTree
 ]
 
-{ #category : #menu }
+{ #category : #'world menu' }
+MiTreeBrowser class >> menuItem [
+
+	^ #TreeBrowser
+]
+
+{ #category : #'world menu' }
+MiTreeBrowser class >> menuParent [
+
+	^ self dependencyMenuRoot
+]
+
+{ #category : #'world menu' }
 MiTreeBrowser class >> menuPriority [
 
 	^ 1.0
@@ -61,6 +66,7 @@ MiTreeBrowser class >> open [
 
 { #category : #specs }
 MiTreeBrowser class >> title [
+
 	^ 'Tree'
 ]
 

@@ -35,46 +35,50 @@ Class {
 
 { #category : #specs }
 MiCoUsageMapBrowser class >> defaultLayout [
+
 	^ SpPanedLayout newLeftToRight
-		first: #settings;
-		second: #coUsageMap;
-		positionOfSlider: 350;
-		yourself
+		  first: #settings;
+		  second: #coUsageMap;
+		  positionOfSlider: 350;
+		  yourself
 ]
 
 { #category : #'world menu' }
 MiCoUsageMapBrowser class >> menuCommandOn: aBuilder [
+
 	<worldMenu>
-	<miBrowsers>
-	^(aBuilder item: #FilesBrowser)
-		parent: self midasBrowserMenuLabel;
-		label: self title;
-		help: self helpMessage;
-		order: self menuPriority;
-		action: [ self open ] ;
-		yourself
+	^ self buildMenuItemIn: aBuilder
 ]
 
-{ #category : #menu }
+{ #category : #'world menu' }
+MiCoUsageMapBrowser class >> menuItem [
+
+	^ #FilesBrowser
+]
+
+{ #category : #'world menu' }
 MiCoUsageMapBrowser class >> menuPriority [
 
-	^ 5
+	^ self menuVisualizationToolsPriority + 3
 ]
 
 { #category : #'instance creation' }
 MiCoUsageMapBrowser class >> open [
+
 	<script>
 	^ super open
 ]
 
 { #category : #specs }
-MiCoUsageMapBrowser class >> title [ 
+MiCoUsageMapBrowser class >> title [
+
 	^ 'Co Usage Map'
 ]
 
 { #category : #specs }
 MiCoUsageMapBrowser class >> windowSize [
-	^ 900@700
+
+	^ 900 @ 700
 ]
 
 { #category : #'window control' }

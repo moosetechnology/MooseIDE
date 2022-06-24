@@ -18,33 +18,38 @@ Class {
 
 { #category : #layout }
 MiMooseModelBrowser class >> defaultLayout [
+
 	^ super defaultLayout
-	"	add: #searchField
-			withConstraints: [ :constraints | constraints height: self toolbarHeight ];"
-		add: #modelPresenter;
-		yourself
+		  add: #modelPresenter;
+		  yourself
 ]
 
 { #category : #'world menu' }
 MiMooseModelBrowser class >> menuCommandOn: aBuilder [
+
 	<worldMenu>
-	<miBrowsers>
-	(aBuilder item: #MooseModelBrowser)
-		parent: (self metaBrowsersMenuLabel);
-		label: (self title);
-		icon: (self iconNamed: self menuIconName);
-		order: self menuPriority;
-		help: (self helpMessage);
-		action: [ self open ]
+	^ self buildMenuItemIn: aBuilder
 ]
 
-{ #category : #menu }
+{ #category : #'world menu' }
 MiMooseModelBrowser class >> menuIconName [
 
 	^ #mooseNavigation
 ]
 
-{ #category : #menu }
+{ #category : #'world menu' }
+MiMooseModelBrowser class >> menuItem [
+
+	^ #MooseModelBrowser
+]
+
+{ #category : #'world menu' }
+MiMooseModelBrowser class >> menuParent [
+
+	^ self oldMetaBrowsersMenuRoot
+]
+
+{ #category : #'world menu' }
 MiMooseModelBrowser class >> menuPriority [
 
 	^ 2
@@ -52,29 +57,34 @@ MiMooseModelBrowser class >> menuPriority [
 
 { #category : #'instance creation' }
 MiMooseModelBrowser class >> mostRecentModel [
+
 	^ self currentApplication defaultBus logger mostRecentEntity
-		ifNotNil: [ :entity | entity mooseModel ]
-		ifNil: [ MooseModel new ]
+		  ifNotNil: [ :entity | entity mooseModel ]
+		  ifNil: [ MooseModel new ]
 ]
 
 { #category : #'instance creation' }
 MiMooseModelBrowser class >> newModel [
+
 	^ MiMooseModelBrowserModel model: self mostRecentModel
 ]
 
 { #category : #'instance creation' }
 MiMooseModelBrowser class >> open [
+
 	<script>
 	^ super open
 ]
 
 { #category : #specs }
 MiMooseModelBrowser class >> title [
+
 	^ 'MooseModel'
 ]
 
 { #category : #specs }
 MiMooseModelBrowser class >> windowSize [
+
 	^ 600 @ 400
 ]
 

@@ -48,26 +48,25 @@ MiInspectorBrowser class >> inspect: anObject forBuses: buses [
 MiInspectorBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
-	<miBrowsers>
-	(aBuilder item: #Inspector)
-		parent: #Moose;
-		label: self title;
-		icon: (self iconNamed: self menuIconName);
-		order: self menuPriority;
-		help: self helpMessage;
-		action: [ self open ]
+	^ self buildMenuItemIn: aBuilder
 ]
 
-{ #category : #menu }
+{ #category : #'world menu' }
 MiInspectorBrowser class >> menuIconName [
 
 	^ #smallInspectIt
 ]
 
-{ #category : #menu }
+{ #category : #'world menu' }
+MiInspectorBrowser class >> menuItem [
+
+	^ #Inspector
+]
+
+{ #category : #'world menu' }
 MiInspectorBrowser class >> menuPriority [
 
-	^ 5
+	^ self menuPharoToolsPriority + 1
 ]
 
 { #category : #'instance creation' }
