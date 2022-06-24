@@ -10,7 +10,7 @@ Allows to explore the root folder of a model (left panel) and shows the entities
 "
 Class {
 	#name : #MiFilesBrowser,
-	#superclass : #MiAbstractFamixBrowser,
+	#superclass : #MiAbstractBrowser,
 	#instVars : [
 		'tree',
 		'treeEntity'
@@ -20,35 +20,41 @@ Class {
 
 { #category : #layout }
 MiFilesBrowser class >> defaultLayout [
+
 	^ super defaultLayout
-		add:
-			(SpBoxLayout newHorizontal
-				add: #tree;
-				add: #treeEntity;
-				yourself);
-		yourself
+		  add: (SpBoxLayout newHorizontal
+				   add: #tree;
+				   add: #treeEntity;
+				   yourself);
+		  yourself
 ]
 
 { #category : #'world menu' }
 MiFilesBrowser class >> menuCommandOn: aBuilder [
+
 	<worldMenu>
-	<miBrowsers>
-	(aBuilder item: #FilesBrowser)
-		parent: (self toolbarFamixName);
-		label: (self title);
-		icon: (self iconNamed: self menuIconName);
-		help: (self helpMessage);
-		order: self menuPriority;
-		action: [ self open ]
+	^ self buildMenuItemIn: aBuilder
 ]
 
-{ #category : #menu }
+{ #category : #'world menu' }
 MiFilesBrowser class >> menuIconName [
 
 	^ #mooseFolder
 ]
 
-{ #category : #menu }
+{ #category : #'world menu' }
+MiFilesBrowser class >> menuItem [
+
+	^ #FilesBrowser
+]
+
+{ #category : #'world menu' }
+MiFilesBrowser class >> menuParent [
+
+	^ self oldBrowserMenuRoot
+]
+
+{ #category : #'world menu' }
 MiFilesBrowser class >> menuPriority [
 
 	^ 3
@@ -56,17 +62,20 @@ MiFilesBrowser class >> menuPriority [
 
 { #category : #'instance creation' }
 MiFilesBrowser class >> newModel [
+
 	^ MiFilesModel new
 ]
 
 { #category : #'instance creation' }
 MiFilesBrowser class >> open [
+
 	<script>
 	^ super open
 ]
 
 { #category : #specs }
 MiFilesBrowser class >> title [
+
 	^ 'Files'
 ]
 

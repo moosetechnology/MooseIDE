@@ -26,26 +26,25 @@ MiQueriesBrowser class >> addItemOrSubMenuToMiBrowsersMenu: aRootMenu defaultSub
 MiQueriesBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
-	<miBrowsers>
-	(aBuilder item: #QueriesBrowser)
-		parent: #Moose;
-		label: self title;
-		icon: (self iconNamed: self menuIconName);
-		order: self menuPriority;
-		help: self helpMessage;
-		action: [ self open ]
+	^ self buildMenuItemIn: aBuilder
 ]
 
-{ #category : #menu }
+{ #category : #'world menu' }
 MiQueriesBrowser class >> menuIconName [
 
 	^ #mooseTree
 ]
 
-{ #category : #menu }
+{ #category : #'world menu' }
+MiQueriesBrowser class >> menuItem [
+
+	^ #QueriesBrowser
+]
+
+{ #category : #'world menu' }
 MiQueriesBrowser class >> menuPriority [
 
-	^ 3
+	^ self menuMainToolsPriority + 3
 ]
 
 { #category : #'instance creation' }

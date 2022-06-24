@@ -20,15 +20,33 @@ MiDSMBrowser class >> defaultLayout [
 
 { #category : #'world menu' }
 MiDSMBrowser class >> menuCommandOn: aBuilder [
+
 	<worldMenu>
-	<miBrowsers>
-	(aBuilder item: #DSMVisualisationBrowser)
-		parent: self toolbarDependencyName;
-		label: self title;
-		order: 0;
-		icon: (self iconNamed: #mooseTree);
-		help: self helpMessage;
-		action: [ self open ]
+	^ self buildMenuItemIn: aBuilder
+]
+
+{ #category : #'world menu' }
+MiDSMBrowser class >> menuIconName [
+
+	^ #mooseTree
+]
+
+{ #category : #'world menu' }
+MiDSMBrowser class >> menuItem [
+
+	^ #DSMVisualisationBrowser
+]
+
+{ #category : #'world menu' }
+MiDSMBrowser class >> menuLabel [
+
+	^ 'Dependency Structural Matrix'
+]
+
+{ #category : #'world menu' }
+MiDSMBrowser class >> menuPriority [
+
+	^ self menuVisualizationToolsPriority + 4
 ]
 
 { #category : #'instance creation' }

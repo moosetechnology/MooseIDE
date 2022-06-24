@@ -14,22 +14,29 @@ Class {
 	#category : #'MooseIDE-Duplication'
 }
 
-{ #category : #accessing }
+{ #category : #'world menu' }
 MiDuplicationBrowser class >> menuCommandOn: aBuilder [
+
 	<worldMenu>
-	<miBrowsers>
-	(aBuilder item: #SpecializedBrowser)
-		parent: self midasBrowserMenuLabel;
-		label: self title;
-		icon: (self iconNamed: self menuIconName);
-		help: self helpMessage;
-		action: [ self open ]
+	^ (self buildMenuItemIn: aBuilder) withSeparatorAfter
 ]
 
-{ #category : #menu }
+{ #category : #'world menu' }
 MiDuplicationBrowser class >> menuIconName [
 
 	^ #smallCopy
+]
+
+{ #category : #'world menu' }
+MiDuplicationBrowser class >> menuItem [
+
+	^ #SpecializedBrowser
+]
+
+{ #category : #'world menu' }
+MiDuplicationBrowser class >> menuPriority [
+
+	^ self menuCodeToolsPriority + 2
 ]
 
 { #category : #'instance creation' }
@@ -38,13 +45,13 @@ MiDuplicationBrowser class >> newModel [
 	^ MiDuplicationBrowserModel new
 ]
 
-{ #category : #accessing }
+{ #category : #'instance creation' }
 MiDuplicationBrowser class >> open [
 	<script>
 	^ super open
 ]
 
-{ #category : #accessing }
+{ #category : #specs }
 MiDuplicationBrowser class >> title [
 	^ 'Duplication browser'
 ]

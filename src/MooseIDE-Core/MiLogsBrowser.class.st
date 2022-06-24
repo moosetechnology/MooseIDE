@@ -17,20 +17,19 @@ MiLogsBrowser class >> addItemOrSubMenuToMiBrowsersMenu: aRootMenu defaultSubMen
 MiLogsBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
-	<miBrowsers>
-	(aBuilder item: #Logger)
-		parent: #Moose;
-		label: self title;
-		order: self menuPriority;
-		help: self helpMessage;
-		action: [ self open ];
-		withSeparatorAfter
+	^ self buildMenuItemIn: aBuilder
 ]
 
-{ #category : #menu }
+{ #category : #'world menu' }
+MiLogsBrowser class >> menuItem [
+
+	^ #Logger
+]
+
+{ #category : #'world menu' }
 MiLogsBrowser class >> menuPriority [
 
-	^ 4
+	^ self menuMetaToolsPriority + 1
 ]
 
 { #category : #'instance creation' }

@@ -32,7 +32,9 @@ MiPlayground class >> menuCommandOn: aBuilder [
 		  label: self menuLabel;
 		  icon: MooseIcons mooseIcon;
 		  help: 'Playground enhanced for usage in Moose';
-		  order: 10
+		  order: MiAbstractBrowser menuPharoToolsPriority + 2;
+		  withSeparatorAfter;
+		  yourself
 ]
 
 { #category : #'world menu' }

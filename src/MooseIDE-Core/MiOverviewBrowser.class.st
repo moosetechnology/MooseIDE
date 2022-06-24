@@ -25,52 +25,89 @@ Class {
 
 { #category : #height }
 MiOverviewBrowser class >> browsersTabHeight [
+
 	^ self currentApplication browsers size * self toolbarHeight
-		+
-			(self currentApplication browsers size
-				* (1 max: self currentApplication buses size)
-				* self tableLineHeight)
+	  + (self currentApplication browsers size
+		   * (1 max: self currentApplication buses size)
+		   * self tableLineHeight)
 ]
 
 { #category : #height }
 MiOverviewBrowser class >> busesTabHeight [
+
 	^ self currentApplication buses size * self toolbarHeight
-		+
-			(self currentApplication buses size
-				* (1 max: self currentApplication browsers size)
-				* self tableLineHeight)
+	  + (self currentApplication buses size
+		   * (1 max: self currentApplication browsers size)
+		   * self tableLineHeight)
 ]
 
 { #category : #height }
 MiOverviewBrowser class >> defaultHeight [
+
 	^ 400
 ]
 
 { #category : #height }
 MiOverviewBrowser class >> emptyBrowserHeight [
+
 	^ 75
 ]
 
 { #category : #height }
 MiOverviewBrowser class >> height [
+
 	^ (self busesTabHeight max: self browsersTabHeight)
-		+ self emptyBrowserHeight max: self defaultHeight
+	  + self emptyBrowserHeight max: self defaultHeight
 ]
 
 { #category : #'world menu' }
 MiOverviewBrowser class >> helpMessage [
-	^ (self comment lines copyUpTo: '')
-		fold: [ :s1 :s2 | s1 , Character cr asString , s2 ]
+
+	^ (self comment lines copyUpTo: '') fold: [ :s1 :s2 | 
+		  s1 , Character cr asString , s2 ]
 ]
 
 { #category : #'world menu' }
 MiOverviewBrowser class >> menuCommandOn: aBuilder [
+
 	<worldMenu>
-	(aBuilder item: #'Moose IDE Overview')
-		order: 1 ;
-		parent: #Moose ;
-		action: [ self open ] ;
-		help: self helpMessage
+	(aBuilder item: self menuItem)
+		parent: self menuParent;
+		label: self menuLabel;
+		icon: self menuIcon;
+		help: self helpMessage;
+		action: [ self open ];
+		order: self menuPriority
+]
+
+{ #category : #'world menu' }
+MiOverviewBrowser class >> menuIcon [
+
+	^ MooseIcons mooseIcon
+]
+
+{ #category : #'world menu' }
+MiOverviewBrowser class >> menuItem [
+
+	^ #MiOverview
+]
+
+{ #category : #'world menu' }
+MiOverviewBrowser class >> menuLabel [
+
+	^ self title
+]
+
+{ #category : #'world menu' }
+MiOverviewBrowser class >> menuParent [
+
+	^ MiAbstractBrowser menuParent
+]
+
+{ #category : #'world menu' }
+MiOverviewBrowser class >> menuPriority [
+
+	^ MiAbstractBrowser menuMainToolsPriority + 1
 ]
 
 { #category : #specs }
@@ -82,6 +119,7 @@ MiOverviewBrowser class >> open [
 
 { #category : #specs }
 MiOverviewBrowser class >> title [
+
 	^ 'MooseIDE Overview'
 ]
 

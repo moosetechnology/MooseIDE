@@ -15,20 +15,19 @@ Class {
 MiSystemComplexityBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
-	<miBrowsers>
-	^ (aBuilder item: #SystemComplexityBrowser)
-		  parent: self midasBrowserMenuLabel;
-		  label: self title;
-		  help: self helpMessage;
-		  order: self menuPriority;
-		  action: [ self open ];
-		  yourself
+	^ (self buildMenuItemIn: aBuilder) withSeparatorAfter
 ]
 
-{ #category : #menu }
+{ #category : #'world menu' }
+MiSystemComplexityBrowser class >> menuItem [
+
+	^ #SystemComplexityBrowser
+]
+
+{ #category : #'world menu' }
 MiSystemComplexityBrowser class >> menuPriority [
 
-	^ 6
+	^ self menuVisualizationToolsPriority + 6
 ]
 
 { #category : #'instance creation' }

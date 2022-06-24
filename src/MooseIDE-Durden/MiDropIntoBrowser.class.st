@@ -52,17 +52,6 @@ MiDropIntoBrowser class >> defaultLayout [
 ]
 
 { #category : #specs }
-MiDropIntoBrowser class >> menuCommandOn: aBuilder [ 
-	<worldMenu>
-	<miBrowsers>
-	(aBuilder item: #dropInMooseBrowser)
-		parent: #Moose;
-		label: (self title);
-		help: (self helpMessage); 
-		action: [ self open ]
-]
-
-{ #category : #specs }
 MiDropIntoBrowser class >> open [
 
 	<script>

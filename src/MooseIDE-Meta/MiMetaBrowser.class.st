@@ -20,32 +20,33 @@ Class {
 
 { #category : #'world menu' }
 MiMetaBrowser class >> helpMessage [
+
 	^ 'Meta description in a metamodel'
 ]
 
 { #category : #'world menu' }
 MiMetaBrowser class >> menuCommandOn: aBuilder [
+
 	<worldMenu>
-	<miBrowsers>
-	(aBuilder item: #MetaBrowser)
-		parent: (self metaBrowsersMenuLabel);
-		label: (self title);
-		icon: (self iconNamed: self menuIconName);
-		order: self menuPriority;
-		help: (self helpMessage);
-		action: [ self open ]
+	^ self buildMenuItemIn: aBuilder
 ]
 
-{ #category : #menu }
+{ #category : #'world menu' }
 MiMetaBrowser class >> menuIconName [
 
 	^ #mooseFame
 ]
 
-{ #category : #menu }
+{ #category : #'world menu' }
+MiMetaBrowser class >> menuItem [
+
+	^ #MetaBrowser
+]
+
+{ #category : #'world menu' }
 MiMetaBrowser class >> menuPriority [
 
-	^ 4
+	^ self menuMetaToolsPriority + 3
 ]
 
 { #category : #'instance creation' }
@@ -62,6 +63,7 @@ MiMetaBrowser class >> open [
 
 { #category : #specs }
 MiMetaBrowser class >> title [
+
 	^ 'Meta Browser'
 ]
 

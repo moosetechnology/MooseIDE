@@ -17,31 +17,38 @@ Class {
 
 { #category : #layout }
 MiFameBrowser class >> defaultLayout [
+
 	^ super defaultLayout
-		add: #fameDescription;
-		yourself
+		  add: #fameDescription;
+		  yourself
 ]
 
 { #category : #'world menu' }
 MiFameBrowser class >> menuCommandOn: aBuilder [
+
 	<worldMenu>
-	<miBrowsers>
-	(aBuilder item: #Fame)
-		parent: (self metaBrowsersMenuLabel);
-		label: (self title);
-		icon: (self iconNamed: self menuIconName);
-		order: self menuPriority;
-		help: (self helpMessage);
-		action: [ self open ]
+	^ self buildMenuItemIn: aBuilder
 ]
 
-{ #category : #menu }
+{ #category : #'world menu' }
 MiFameBrowser class >> menuIconName [
 
 	^ #mooseFame
 ]
 
-{ #category : #menu }
+{ #category : #'world menu' }
+MiFameBrowser class >> menuItem [
+
+	^ #Fame
+]
+
+{ #category : #'world menu' }
+MiFameBrowser class >> menuParent [
+
+	^ self oldMetaBrowsersMenuRoot
+]
+
+{ #category : #'world menu' }
 MiFameBrowser class >> menuPriority [
 
 	^ 4

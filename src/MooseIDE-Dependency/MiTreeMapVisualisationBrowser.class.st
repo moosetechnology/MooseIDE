@@ -26,23 +26,28 @@ MiTreeMapVisualisationBrowser class >> defaultLayout [
 MiTreeMapVisualisationBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
-	<miBrowsers>
-	(aBuilder item: #TreeMapVisualisationBrowser)
-		parent: self toolbarDependencyName;
-		label: self title;
-		icon: (self iconNamed: self menuIconName);
-		help: self helpMessage;
-		order: self menuPriority;
-		action: [ self open ]
+	^ self buildMenuItemIn: aBuilder
 ]
 
-{ #category : #menu }
+{ #category : #'world menu' }
 MiTreeMapVisualisationBrowser class >> menuIconName [
 
 	^ #mooseTreeMap
 ]
 
-{ #category : #menu }
+{ #category : #'world menu' }
+MiTreeMapVisualisationBrowser class >> menuItem [
+
+	^ #TreeMapVisualisationBrowser
+]
+
+{ #category : #'world menu' }
+MiTreeMapVisualisationBrowser class >> menuParent [
+
+	^ self dependencyMenuRoot
+]
+
+{ #category : #'world menu' }
 MiTreeMapVisualisationBrowser class >> menuPriority [
 
 	^ 3.0
@@ -62,6 +67,7 @@ MiTreeMapVisualisationBrowser class >> open [
 
 { #category : #specs }
 MiTreeMapVisualisationBrowser class >> title [
+
 	^ 'Tree Map Visualization'
 ]
 

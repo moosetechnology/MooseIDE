@@ -17,35 +17,37 @@ Class {
 
 { #category : #specs }
 MiTagBrowser class >> defaultLayout [
-	^super defaultLayout
-		add: #mainPresenter;
-		yourself
+
+	^ super defaultLayout
+		  add: #mainPresenter;
+		  yourself
 ]
 
 { #category : #'world menu' }
 MiTagBrowser class >> menuCommandOn: aBuilder [
+
 	<worldMenu>
-	<miBrowsers>
-	^(aBuilder item: #FilesBrowser)
-		parent: self midasBrowserMenuLabel;
-		label: self title;
-		help: self helpMessage;
-		order: self menuPriority;
-		action: [ self open ] ;
-		yourself
+	^ self buildMenuItemIn: aBuilder
 ]
 
-{ #category : #menu }
+{ #category : #'world menu' }
+MiTagBrowser class >> menuItem [
+
+	^ #FilesBrowser
+]
+
+{ #category : #'world menu' }
 MiTagBrowser class >> menuPriority [
 
-	^ 5
+	^ self menuMainToolsPriority + 4
 ]
 
 { #category : #'instance creation' }
 MiTagBrowser class >> mostRecentModel [
+
 	^ self currentApplication defaultBus logger mostRecentEntity
-		ifNotNil: [ :entity | entity mooseModel ]
-		ifNil: [ MooseModel new ]
+		  ifNotNil: [ :entity | entity mooseModel ]
+		  ifNil: [ MooseModel new ]
 ]
 
 { #category : #'instance creation' }
@@ -62,6 +64,7 @@ MiTagBrowser class >> open [
 
 { #category : #specs }
 MiTagBrowser class >> title [
+
 	^ 'Tag browser'
 ]
 

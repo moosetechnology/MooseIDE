@@ -7,7 +7,7 @@ Shows UML of the received entities.
 "
 Class {
 	#name : #MiUMLBrowser,
-	#superclass : #MiAbstractFamixBrowser,
+	#superclass : #MiAbstractBrowser,
 	#instVars : [
 		'diagram'
 	],
@@ -16,31 +16,38 @@ Class {
 
 { #category : #layout }
 MiUMLBrowser class >> defaultLayout [
+
 	^ super defaultLayout
-		add: #diagram;
-		yourself
+		  add: #diagram;
+		  yourself
 ]
 
 { #category : #'world menu' }
 MiUMLBrowser class >> menuCommandOn: aBuilder [
+
 	<worldMenu>
-	<miBrowsers>
-	(aBuilder item: #UMLVisualisationBrowser)
-		parent: (self toolbarFamixName);
-		label: (self title);
-		icon: (self iconNamed: self menuIconName);
-		order: self menuPriority;
-		help: (self helpMessage);
-		action: [ self open ]
+	^ self buildMenuItemIn: aBuilder
 ]
 
-{ #category : #menu }
+{ #category : #'world menu' }
 MiUMLBrowser class >> menuIconName [
 
 	^ #mooseUml
 ]
 
-{ #category : #menu }
+{ #category : #'world menu' }
+MiUMLBrowser class >> menuItem [
+
+	^ #UMLVisualisationBrowser
+]
+
+{ #category : #'world menu' }
+MiUMLBrowser class >> menuParent [
+
+	^ self oldBrowserMenuRoot
+]
+
+{ #category : #'world menu' }
 MiUMLBrowser class >> menuPriority [
 
 	^ 4
@@ -54,12 +61,14 @@ MiUMLBrowser class >> newModel [
 
 { #category : #'instance creation' }
 MiUMLBrowser class >> open [
+
 	<script>
 	^ super open
 ]
 
 { #category : #specs }
 MiUMLBrowser class >> title [
+
 	^ 'UML'
 ]
 

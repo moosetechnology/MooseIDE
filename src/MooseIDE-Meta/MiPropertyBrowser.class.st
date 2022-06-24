@@ -16,31 +16,38 @@ Class {
 
 { #category : #layout }
 MiPropertyBrowser class >> defaultLayout [
+
 	^ super defaultLayout
-		add: #properties;
-		yourself
+		  add: #properties;
+		  yourself
 ]
 
 { #category : #'world menu' }
 MiPropertyBrowser class >> menuCommandOn: aBuilder [
+
 	<worldMenu>
-	<miBrowsers>
-	(aBuilder item: #PropertyBrowser)
-		parent: (self metaBrowsersMenuLabel);
-		label: (self title);
-		icon: (self iconNamed: self menuIconName);
-		order: self menuPriority;
-		help: (self helpMessage);
-		action: [ self open ]
+	^ self buildMenuItemIn: aBuilder
 ]
 
-{ #category : #menu }
+{ #category : #'world menu' }
 MiPropertyBrowser class >> menuIconName [
 
 	^ #mooseProperties
 ]
 
-{ #category : #menu }
+{ #category : #'world menu' }
+MiPropertyBrowser class >> menuItem [
+
+	^ #PropertyBrowser
+]
+
+{ #category : #'world menu' }
+MiPropertyBrowser class >> menuParent [
+
+	^ self oldMetaBrowsersMenuRoot
+]
+
+{ #category : #'world menu' }
 MiPropertyBrowser class >> menuPriority [
 
 	^ 3
@@ -48,12 +55,14 @@ MiPropertyBrowser class >> menuPriority [
 
 { #category : #'instance creation' }
 MiPropertyBrowser class >> open [
+
 	<script>
 	^ super open
 ]
 
 { #category : #specs }
 MiPropertyBrowser class >> title [
+
 	^ 'Properties'
 ]
 

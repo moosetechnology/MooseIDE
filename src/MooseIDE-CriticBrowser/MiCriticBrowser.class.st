@@ -32,13 +32,19 @@ Class {
 MiCriticBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
-	<miBrowsers>
-	(aBuilder item: #SpecializedBrowser)
-		parent: self midasBrowserMenuLabel;
-		label: self title;
-		icon: (self iconNamed: self menuIconName);
-		help: self helpMessage;
-		action: [ self open ]
+	^ (self buildMenuItemIn: aBuilder) withSeparatorAfter
+]
+
+{ #category : #'world menu' }
+MiCriticBrowser class >> menuItem [
+
+	^ #MiCrtiticsBrowser
+]
+
+{ #category : #'world menu' }
+MiCriticBrowser class >> menuPriority [
+
+	^ self menuMainToolsPriority + 7
 ]
 
 { #category : #'instance creation' }
@@ -53,7 +59,8 @@ MiCriticBrowser class >> open [
 ]
 
 { #category : #specs }
-MiCriticBrowser class >> title [ 
+MiCriticBrowser class >> title [
+
 	^ 'Model Critic Browser'
 ]
 

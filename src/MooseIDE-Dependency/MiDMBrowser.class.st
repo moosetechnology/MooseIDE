@@ -15,21 +15,21 @@ MiDMBrowser class >> mapClass [
 
 { #category : #'world menu' }
 MiDMBrowser class >> menuCommandOn: aBuilder [
+
 	<worldMenu>
-	<miBrowsers>
-	^(aBuilder item: #DMBrowser)
-		parent: self midasBrowserMenuLabel;
-		label: self title;
-		help: self helpMessage;
-		order: self menuPriority;
-		action: [ self open ] ;
-		yourself
+	^ self buildMenuItemIn: aBuilder
 ]
 
-{ #category : #menu }
+{ #category : #'world menu' }
+MiDMBrowser class >> menuItem [
+
+	^ #DMBrowser
+]
+
+{ #category : #'world menu' }
 MiDMBrowser class >> menuPriority [
 
-	^ 5
+	^ self menuVisualizationToolsPriority + 5
 ]
 
 { #category : #'instance creation' }
@@ -38,19 +38,19 @@ MiDMBrowser class >> newModel [
 	^ MiDistributionMapModel new
 ]
 
-{ #category : #accessing }
+{ #category : #'instance creation' }
 MiDMBrowser class >> open [
 	<script>
 	super open
 ]
 
-{ #category : #accessing }
+{ #category : #specs }
 MiDMBrowser class >> title [
 
 	^ 'Distribution map'
 ]
 
-{ #category : #accessing }
+{ #category : #specs }
 MiDMBrowser class >> windowSize [
 
 	^ 850 @ 520
