@@ -33,6 +33,7 @@ MiPlayground class >> menuCommandOn: aBuilder [
 		  icon: MooseIcons mooseIcon;
 		  help: 'Playground enhanced for usage in Moose';
 		  order: MiAbstractBrowser menuPharoToolsPriority + 2;
+		  action: [ self open ];
 		  withSeparatorAfter;
 		  yourself
 ]
