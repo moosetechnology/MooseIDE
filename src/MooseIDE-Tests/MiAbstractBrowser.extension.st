@@ -15,13 +15,11 @@ MiAbstractBrowser >> busButton [
 ]
 
 { #category : #'*MooseIDE-Tests' }
-MiAbstractBrowser class >> openForTests [
+MiAbstractBrowser class >> openForTests: aTestApplication [
 
-	^ (self
-		   newApplication: MiTestApplication current
-		   model: self newModel)
+	^ (self newApplication: aTestApplication model: self newModel)
 		  open;
-		  followBus: MiTestApplication current defaultBus;
+		  followBus: aTestApplication defaultBus;
 		  yourself
 ]
 

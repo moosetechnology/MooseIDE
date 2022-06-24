@@ -68,15 +68,16 @@ MiLogsBrowser >> canPropagate [
 { #category : #buses }
 MiLogsBrowser >> followBus: aBus [
 
-	| busPage |
-	super followBus: aBus.
+	  | busPage |
+	  super followBus: aBus.
 
-	mainPresenter addPage: (busPage := SpNotebookPage
-			            title: aBus name
-			            provider: [ MiBusLogBrowser forBus: aBus ]).
+	  mainPresenter addPage: (busPage := SpNotebookPage
+			              title: aBus name
+			              provider: [ 
+			              MiBusLogBrowser forBus: aBus application: application ]).
 
-	self window ifNotNil: [ mainPresenter selectPage: busPage ].
-	busPage activePresenter ifNotNil: #updateToolbars
+	  self window ifNotNil: [ mainPresenter selectPage: busPage ].
+	  busPage activePresenter ifNotNil: #updateToolbars
 ]
 
 { #category : #buses }

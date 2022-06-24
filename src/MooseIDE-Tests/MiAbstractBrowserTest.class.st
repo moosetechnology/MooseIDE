@@ -2,7 +2,8 @@ Class {
 	#name : #MiAbstractBrowserTest,
 	#superclass : #TestCase,
 	#instVars : [
-		'browser'
+		'browser',
+		'application'
 	],
 	#category : #'MooseIDE-Tests-Browsers'
 }
@@ -15,7 +16,7 @@ MiAbstractBrowserTest class >> isAbstract [
 { #category : #running }
 MiAbstractBrowserTest >> application [
 
-	^ MiTestApplication current
+	  ^ application
 ]
 
 { #category : #'tests - actions' }
@@ -57,13 +58,15 @@ MiAbstractBrowserTest >> mooseObjects [
 { #category : #running }
 MiAbstractBrowserTest >> setUp [
 
-	super setUp.
-	MiTestApplication reset.
-	browser := self browserClass openForTests
+	  super setUp.
+	  application := MiTestApplication new.
+	  application defaultBus: self bus.
+	  browser := self browserClass openForTests: self application
 ]
 
 { #category : #running }
 MiAbstractBrowserTest >> tearDown [
+
 	browser window ifNotNil: [ :window | window close ].
 	self application deleteBus: self bus.
 	super tearDown
@@ -81,7 +84,7 @@ MiAbstractBrowserTest >> testCanOpenOnEmptyBus [
 	| newBrowser |
 	self
 		shouldnt: [ 
-			newBrowser := self browserClass openForTests.
+			newBrowser := self browserClass openForTests: self application.
 			newBrowser window close ]
 		raise: Error
 ]
@@ -93,7 +96,7 @@ MiAbstractBrowserTest >> testCanOpenOnEmptyMooseGroup [
 	self bus globallySelect: MooseGroup new.
 	self
 		shouldnt: [ 
-			newBrowser := self browserClass openForTests.
+			newBrowser := self browserClass openForTests: self application.
 			newBrowser window close ]
 		raise: Error
 ]
@@ -105,7 +108,7 @@ MiAbstractBrowserTest >> testCanOpenOnEmptyMooseModel [
 	self bus globallySelect: MooseModel new.
 	self
 		shouldnt: [ 
-			newBrowser := self browserClass openForTests.
+			newBrowser := self browserClass openForTests: self application.
 			newBrowser window close ]
 		raise: Error
 ]
@@ -117,7 +120,7 @@ MiAbstractBrowserTest >> testCanOpenOnMooseEntity [
 	self bus globallySelect: MooseEntity new.
 	self
 		shouldnt: [ 
-			newBrowser := self browserClass openForTests.
+			newBrowser := self browserClass openForTests: self application.
 			newBrowser window close ]
 		raise: Error
 ]
@@ -130,7 +133,7 @@ MiAbstractBrowserTest >> testCanOpenOnMooseGroup [
 		(MooseModel with: MooseEntity new) entities asMooseGroup.
 	self
 		shouldnt: [ 
-			newBrowser := self browserClass openForTests.
+			newBrowser := self browserClass openForTests: self application.
 			newBrowser window close ]
 		raise: Error
 ]
@@ -142,7 +145,7 @@ MiAbstractBrowserTest >> testCanOpenOnMooseModel [
 	self bus globallySelect: (MooseModel with: MooseEntity new).
 	self
 		shouldnt: [ 
-			newBrowser := self browserClass openForTests.
+			newBrowser := self browserClass openForTests: self application.
 			newBrowser window close ]
 		raise: Error
 ]
@@ -154,7 +157,7 @@ MiAbstractBrowserTest >> testCanOpenOnNil [
 	self bus globallySelect: nil.
 	self
 		shouldnt: [ 
-			newBrowser := self browserClass openForTests.
+			newBrowser := self browserClass openForTests: self application.
 			newBrowser window close ]
 		raise: Error
 ]
@@ -166,7 +169,7 @@ MiAbstractBrowserTest >> testCanOpenOnObject [
 	self bus globallySelect: Object new.
 	self
 		shouldnt: [ 
-			newBrowser := self browserClass openForTests.
+			newBrowser := self browserClass openForTests: self application.
 			newBrowser window close ]
 		raise: Error
 ]

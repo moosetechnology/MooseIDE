@@ -7,7 +7,7 @@ Class {
 		'producers',
 		'consumers'
 	],
-	#classInstVars : [
+	#classVars : [
 		'Current'
 	],
 	#category : #'MooseIDE-Core-Application'
@@ -15,12 +15,13 @@ Class {
 
 { #category : #'instance creation' }
 MiApplication class >> current [
-	^ Current ifNil: [ Current := self new
-  		yourself. ]
+
+	  ^ Current ifNil: [ Current := self new yourself ]
 ]
 
 { #category : #accessing }
 MiApplication class >> defaultBusName [
+
 	^ 'Default'
 ]
 
@@ -54,14 +55,13 @@ MiApplication >> browsers [
 { #category : #buses }
 MiApplication >> busNamed: aName [
 
-	^ buses
-		detect: [ :b | b name = aName ]
-		ifNone: [ | bus |
-			bus := MiBus named: aName.
-			buses add: bus.
-			self defaultBus: bus.
-			self updateOverviewBrowsers.
-			bus ]
+	  ^ buses detect: [ :b | b name = aName ] ifNone: [ 
+		    | bus |
+		    bus := MiBus named: aName.
+		    buses add: bus.
+		    self defaultBus: bus.
+		    self updateOverviewBrowsers.
+		    bus ]
 ]
 
 { #category : #accessing }
@@ -117,7 +117,7 @@ MiApplication >> defaultBus [
 { #category : #buses }
 MiApplication >> defaultBus: aMiBus [
 
-	defaultBus := aMiBus 
+	  defaultBus := aMiBus
 ]
 
 { #category : #showing }

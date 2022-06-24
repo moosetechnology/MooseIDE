@@ -50,20 +50,14 @@ MiTagPresenterTest >> presenterOwner [
 { #category : #running }
 MiTagPresenterTest >> setUp [
 
-	| mooseModel |
-	super setUp.
-	mooseModel := MooseModel with: MooseEntity new.
-	browser := MiTagBrowser
-		           newApplication: MiTestApplication current
-		           model: MiTagBrowserModel new.
-	browser receiveEntity: mooseModel.
-	presenter := self presenterOwner
-		             instantiate: self presenterClass
-		             on: browser tagModel
-]
-
-{ #category : #running }
-MiTagPresenterTest >> tearDown [
-
-	MiTestApplication reset
+	  | mooseModel |
+	  super setUp.
+	  mooseModel := MooseModel with: MooseEntity new.
+	  browser := MiTagBrowser
+		             newApplication: MiTestApplication new
+		             model: MiTagBrowserModel new.
+	  browser receiveEntity: mooseModel.
+	  presenter := self presenterOwner
+		               instantiate: self presenterClass
+		               on: browser tagModel
 ]

@@ -134,7 +134,7 @@ MiModelRootBrowserTest >> testUpdateForNewModelMultipleBrowsers [
 	MooseModel root add: (FamixStModel new
 			 name: 'model1';
 			 yourself).
-	browser2 := self browserClass openForTests.
+	browser2 := self browserClass openForTests: self application.
 	browser updateList.
 
 	self assert: browser model mooseModelsList size equals: 1.
@@ -154,8 +154,8 @@ MiModelRootBrowserTest >> testUpdateForNewModelMultipleBrowsers [
 
 	self assert: browser2 model mooseModelsList size equals: 2.
 	self assert: browser2 model rawSelectedMooseModel isNil.
-	
-browser2 window close
+
+	browser2 window close
 ]
 
 { #category : #tests }
