@@ -32,9 +32,14 @@ MiCoTaggedObject >> createMenuOn: aMenuMorph markManager: aMiCoMarkManager [
 		add: 'Tags' 
 			subMenu: (aMiCoMarkManager subMenuTagsFor: self subMenu: MenuMorph new);
 		add: 'Inspect'
-			target: self rawObject
-			selector: #inspect
-			argument: #()
+			target: self
+			selector: #mooseInspect:
+			argument: self rawObject
+]
+
+{ #category : #inspector }
+MiCoTaggedObject >> mooseInspect: anObject [ 
+	MiInspectorBrowser inspect: anObject
 ]
 
 { #category : #accessing }
