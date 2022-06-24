@@ -43,6 +43,12 @@ MiTagExtentPage >> currentTag [
 	^ self model currentTag
 ]
 
+{ #category : #accessing }
+MiTagExtentPage >> incomingEntitiesFilteringList [
+
+	^ incomingEntitiesFilteringList
+]
+
 { #category : #initialization }
 MiTagExtentPage >> initializeButtons [
 
@@ -137,8 +143,12 @@ MiTagExtentPage >> refresh [
 
 { #category : #refreshing }
 MiTagExtentPage >> refreshEntitiesList [
-	
-	incomingEntitiesFilteringList items: self model entities asCollection  \ self taggedEntities asCollection
+
+	| sortedEntities untaggedEntities |
+	untaggedEntities := self model entities asCollection
+	                    \ self taggedEntities asCollection.
+	sortedEntities := untaggedEntities sort: [ :a :b | a name < b name ].
+	incomingEntitiesFilteringList items: sortedEntities
 ]
 
 { #category : #refreshing }
@@ -176,5 +186,6 @@ MiTagExtentPage >> setTag: aTag [
 { #category : #accessing }
 MiTagExtentPage >> taggedEntities [
 
-	^ self model entitiesTaggedWithCurrentTag
+	^ self model entitiesTaggedWithCurrentTag sort: [ :a :b | 
+		  a name < b name ]
 ]
