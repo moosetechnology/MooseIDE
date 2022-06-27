@@ -6,7 +6,8 @@ Class {
 	#superclass : #MiQueryConfiguratorPresenter,
 	#instVars : [
 		'scopesDropList',
-		'directionsDropList'
+		'directionsDropList',
+		'recursiveCheckbox'
 	],
 	#category : #'MooseIDE-QueriesBrowser-Configuration presenters'
 }
@@ -52,8 +53,23 @@ MiScopeQueryPresenter >> initializeDirectionsDropList [
 MiScopeQueryPresenter >> initializePresenters [
 
 	scopesDropList := self newDropList.
+	self initializeRecursiveCheckbox.
 	self initializeDirectionsDropList.
 	self initializeLayout
+]
+
+{ #category : #initialization }
+MiScopeQueryPresenter >> initializeRecursiveCheckbox [
+
+	recursiveCheckbox := self newCheckBox
+		                     label: 'Recursive';
+		                     help:
+			                     'Activate this to recursively look for result in hierarchy.';
+		                     whenChangedDo: [ :state | 
+			                     self query recursive: state.
+			                     self query computeResult.
+			                     self notifyQueryChanged ];
+		                     yourself
 ]
 
 { #category : #layout }
@@ -70,6 +86,7 @@ MiScopeQueryPresenter >> newLayout [
 		  expand: false
 		  fill: true
 		  padding: padding;
+		  add: recursiveCheckbox width: 30;
 		  yourself
 ]
 
