@@ -4,13 +4,33 @@ Class {
 	#instVars : [
 		'addButton',
 		'closeButton',
-		'mainWindow',
-		'ruleTitle',
-		'codePresenter',
-		'ruleSummary'
+		'contextTitle',
+		'contextSummary',
+		'codeInput',
+		'mainWindow'
 	],
 	#category : #'MooseIDE-CriticBrowser'
 }
+
+{ #category : #'instance creation' }
+MiCriticBrowserAddContextPresenter class >> on: aWindowPresenter [
+	^ self new
+		setMainWindow: aWindowPresenter;
+		yourself.
+]
+
+{ #category : #adding }
+MiCriticBrowserAddContextPresenter >> addButtonAction [
+
+	codeInput text ifNotNil: [ 
+		"owner addRule: (FamixCBContext
+				 named: contextTitle text
+				 on: codeInput text
+				 summary: contextSummary text)" ].
+	contextTitle text: ''.
+	codeInput text: '[ :collection | ]'.
+	contextSummary text: ''.
+]
 
 { #category : #layout }
 MiCriticBrowserAddContextPresenter >> defaultLayout [
@@ -19,17 +39,17 @@ MiCriticBrowserAddContextPresenter >> defaultLayout [
 	
 	titlePane := SpBoxLayout newTopToBottom
 		add: ('Rule name : ' asPresenter) expand: false;
-		add: ruleTitle expand: false;
+		add: contextTitle expand: false;
 		yourself.
 	
 	codeBlock := SpBoxLayout newTopToBottom 
 		add: ('Input for context selection :' asPresenter) expand: false; 
-		add: codePresenter;
+		add: codeInput;
 		yourself.
 		
 	summaryPane := SpBoxLayout newTopToBottom
 		add: ('Summary of the context :' asPresenter) expand: false;
-		add: ruleSummary expand: true;
+		add: contextSummary expand: true;
 		yourself.
 	
 	^ SpBoxLayout newTopToBottom
@@ -49,7 +69,7 @@ MiCriticBrowserAddContextPresenter >> initializeButtons [
 	addButton := self newButton.
 	closeButton := self newButton.
 	
-	addButton label: 'Add query';
+	addButton label: 'Add context';
 		icon: (self iconNamed: #smallAdd);
 		action: [ self addButtonAction ].
 		
@@ -70,11 +90,11 @@ MiCriticBrowserAddContextPresenter >> initializePresenters [
 	
 	self initializeButtons.
 	
-	ruleTitle := self newTextInput.
-	ruleSummary := self newText.
-	codePresenter := self newCode.
+	contextTitle := self newTextInput.
+	contextSummary := self newText.
+	codeInput := self newCode.
 	
-	codePresenter text: '[ :collection | ]'.
+	codeInput text: '[ :collection | ]'.
 	
 ]
 
@@ -84,4 +104,9 @@ MiCriticBrowserAddContextPresenter >> initializeWindow: aWindowPresenter [
 	aWindowPresenter
 		title: self defaultTitle;
 		initialExtent: 1280 @ 720
+]
+
+{ #category : #initialization }
+MiCriticBrowserAddContextPresenter >> setMainWindow: aWindowPresenter [
+	mainWindow := aWindowPresenter
 ]

@@ -23,7 +23,9 @@ Class {
 		'rulesEditorPresenter',
 		'openRulesMakerButton',
 		'rules',
-		'expandMenu'
+		'expandMenu',
+		'contextMakerPresenter',
+		'openContextMakerButton'
 	],
 	#category : #'MooseIDE-CriticBrowser'
 }
@@ -114,6 +116,7 @@ MiCriticBrowser >> defaultLayout [
 			add: inspectButton expand: false;
 			addLast: importButton;
 			addLast: exportButton;
+			addLast: openContextMakerButton;
 			addLast: openRulesMakerButton;
 			spacing: 5; 
 			addLast: runButton;
@@ -221,11 +224,17 @@ MiCriticBrowser >> initializeButtons [
 	runButton := self newButton.
 	importButton := self newButton.
 	exportButton := self newButton.
+	openContextMakerButton := self newButton.
 	
 	openRulesMakerButton
 		label: 'Add rules';
 		icon: (self iconNamed: #smallAdd);
 		action: [ addRulesPresenter openDialog ].
+	
+	openContextMakerButton
+		label: 'Add context';
+		icon: (self iconNamed: #smallAdd);
+		action: [ contextMakerPresenter openDialog ].
 	
 	runButton 
 		label: 'Run';
@@ -317,12 +326,14 @@ MiCriticBrowser >> initializePresenters [
 	
 	addRulesPresenter := MiCriticBrowserAddRulesPresenter on: self.
 	rulesEditorPresenter := MiCriticBrowserEditRulePresenter on: self.
+	contextMakerPresenter := MiCriticBrowserAddContextPresenter on: self.
 	
 	self focusOrder
 			add: rules;
 			add: rulesResult;
 			add: inspectButton;
 			add: openRulesMakerButton;
+			add: openContextMakerButton;
 			add: runButton.
 ]
 
