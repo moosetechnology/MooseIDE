@@ -169,7 +169,9 @@ MiExportBrowser >> commonPropertiesIn: aMooseGroup [
 MiExportBrowser >> defaultTableColumns [
 
 	^ { 
-		  ((SpStringTableColumn title: 'Name' evaluated: #name)
+		  ((SpStringTableColumn 
+				title: 'Name' 
+				evaluated: [ :entity | String streamContents: [ :s | entity displayStringOn: s ] ])
 			   beSortable;
 			   yourself).
 		  ((SpStringTableColumn
