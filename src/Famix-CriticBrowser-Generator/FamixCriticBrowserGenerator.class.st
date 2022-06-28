@@ -70,6 +70,11 @@ FamixCriticBrowserGenerator >> defineRelations [
 		*-
 	((rule property: #violations)
 			comment: 'Every violation of this rule.').
+	((violation property: #violatedRule)
+			comment: 'Condition violated by this entity.')
+		*-
+	((condition property: #violations)
+			comment: 'Every violation of this condition.').
 			
 	((violation property: #violatingEntity)
 			comment: 'Entity raising this violation.')
