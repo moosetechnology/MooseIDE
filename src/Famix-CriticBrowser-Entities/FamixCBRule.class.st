@@ -4,9 +4,9 @@ Class {
 	#traits : 'FamixTNamedEntity',
 	#classTraits : 'FamixTNamedEntity classTrait',
 	#instVars : [
+		'#query',
 		'#summary => FMProperty',
-		'#violations => FMMany type: #FamixCBViolation opposite: #violatedRule',
-		'#query'
+		'#violations => FMMany type: #FamixCBViolation opposite: #violatedRule'
 	],
 	#category : #'Famix-CriticBrowser-Entities-Entities'
 }
