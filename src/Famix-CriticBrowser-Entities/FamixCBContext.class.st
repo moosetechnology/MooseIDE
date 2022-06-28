@@ -71,3 +71,10 @@ FamixCBContext >> entities: anObject [
 	<generated>
 	entities := anObject
 ]
+
+{ #category : #running }
+FamixCBContext >> runOn: aCollection [
+
+	entities := (contextBlock value: aCollection).
+	children do: [ :c | c runOn: entities ] 
+]
