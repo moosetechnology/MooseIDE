@@ -27,6 +27,15 @@ FamixCBCondition class >> named: aString on: aQuery [
 		yourself
 ]
 
+{ #category : #'instance creation' }
+FamixCBCondition class >> named: aString on: aQuery summary: aSummary [
+	^ self new
+		name: aString;
+		query: aQuery;
+		summary: aSummary;
+		yourself
+]
+
 { #category : #adding }
 FamixCBCondition >> addViolation: anObject [
 	<generated>

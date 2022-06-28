@@ -21,10 +21,10 @@ FamixCBContextTest >> testRunOn [
 	entityInvalid name: 'invalideMaisContexte'.
 	
 	context := FamixCBContext new.
-	context contextBlock: [ :col | col select: [ :el | el isClass ] ].
+	context contextBlock: '[ :col | col select: [ :el | el isClass ] ]'.
 	
 	childContext := FamixCBContext new.
-	childContext contextBlock: [ :col | col select: [ :el | el name endsWith: 'Contexte' ] ].
+	childContext contextBlock: '[ :col | col select: [ :el | el name endsWith: ''Contexte'' ] ]'.
 	
 	context addChild: childContext.
 	context runOn: { contextEntity. entity. childContextEntity. entityInvalid }.

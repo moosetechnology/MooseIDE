@@ -20,6 +20,15 @@ FamixCBContext class >> annotation [
 	^self
 ]
 
+{ #category : #'instance creation' }
+FamixCBContext class >> named: aString on: anObject summary: aSummary [
+	^ self new
+		name: aString;
+		contextBlock: anObject;
+		summary: aSummary;
+		yourself
+]
+
 { #category : #adding }
 FamixCBContext >> addChild: anObject [
 	^ self children add: anObject
@@ -53,8 +62,8 @@ FamixCBContext >> contextBlock [
 
 { #category : #accessing }
 FamixCBContext >> contextBlock: anObject [
-	<generated>
-	contextBlock := anObject
+
+	contextBlock := Smalltalk compiler evaluate: anObject
 ]
 
 { #category : #accessing }
