@@ -6,11 +6,10 @@ Class {
 	#superclass : #TestCase,
 	#instVars : [
 		'model',
-		'rule',
-		'stubRule',
-		'deadRule',
 		'stubEntity',
-		'deadEntity'
+		'deadEntity',
+		'stubCondition',
+		'deadCondition'
 	],
 	#category : #'MooseIDE-CriticBrowser-Tests'
 }
@@ -18,35 +17,19 @@ Class {
 { #category : #initialization }
 MiCriticBrowserModelTest >> setUp [
 	model := MiCriticBrowserModel new.
-	stubRule := FamixCBRule named: 'test1' on: (MiCriticBrowserPharoCodeQuery on: '[ :entity | entity isStub ]'). 
-	deadRule := FamixCBRule named: 'test2' on: (MiCriticBrowserPharoCodeQuery on: '[ :entity | entity isDead ]').
+	stubCondition := FamixCBCondition named: 'test1' on: (MiCriticBrowserPharoCodeQuery on: '[ :entity | entity isStub ]'). 
+	deadCondition := FamixCBCondition named: 'test2' on: (MiCriticBrowserPharoCodeQuery on: '[ :entity | entity isDead ]').
+	model rootContext addChild: stubCondition.
+	model rootContext addChild: deadCondition.
 	stubEntity := FamixStMethod named: 'test1'.
 	deadEntity := FamixStMethod named: 'test2'.
 	stubEntity isStub: true
 ]
 
-{ #category : #tests }
-MiCriticBrowserModelTest >> testAddRule [
-	model addRule: 'test'.
-	self assert: model rules size equals: 0.
-	model addRule: stubRule.
-	self assert: model rules size equals: 1 
-]
-
-{ #category : #test }
-MiCriticBrowserModelTest >> testDeleteRule [
-	model addRule: stubRule.
-	model runRules.
-	model deleteRule: stubRule.
-	self assert: model rules size equals: 0.
-	self assert: (model violations includesKey: stubRule) equals: false
-]
-
 { #category : #test }
 MiCriticBrowserModelTest >> testGetAllViolations [
 	model setEntities: { stubEntity. deadEntity } asMooseGroup.
-	model addRule: stubRule; addRule: deadRule.
-	model runRules.
+	model run.
 	self assert: model getAllViolations class equals: FamixCBViolationGroup.
 	self assertCollection: model getAllViolations allEntities includesAll: { stubEntity. deadEntity }  
 	
@@ -54,23 +37,22 @@ MiCriticBrowserModelTest >> testGetAllViolations [
 
 { #category : #test }
 MiCriticBrowserModelTest >> testRemoveRuleViolations [
-	model addRule: stubRule.
-	self assert: (model violations includesKey: stubRule) equals: false.
+	self assert: (model violations includesKey: stubCondition) equals: false.
 	model setEntities: { } asMooseGroup.
-	model runRules.
-	self assert: (model violations includesKey: stubRule) equals: true.
-	model removeRuleViolations: stubRule.
-	self assert: (model violations includesKey: stubRule) equals: false.
+	model run.
+	self assert: (model violations includesKey: stubCondition) equals: true.
+	model removeRuleViolations: stubCondition.
+	self assert: (model violations includesKey: stubCondition) equals: false.
 	
 ]
 
 { #category : #tests }
 MiCriticBrowserModelTest >> testRunRules [	
-	model setEntities: { stubEntity. deadEntity } asMooseGroup; addRule: stubRule; addRule: deadRule.
-	model runRules.
+	model setEntities: { stubEntity. deadEntity } asMooseGroup.
+	model run.
 	self assert: model violations size equals: 2.
-	self assertCollection: ((model violationsOf: stubRule) allEntities) includesAll: {stubEntity}.
-	self assertCollection: ((model violationsOf: deadRule) allEntities) includesAll: { stubEntity. deadEntity }.
+	self assertCollection: ((model violationsOf: stubCondition) allEntities) includesAll: {stubEntity}.
+	self assertCollection: ((model violationsOf: deadCondition) allEntities) includesAll: { stubEntity. deadEntity }.
 	
 ]
 
@@ -109,17 +91,15 @@ MiCriticBrowserModelTest >> testSetOutput [
 { #category : #test }
 MiCriticBrowserModelTest >> testViolationsOf [
 	model setEntities: { stubEntity. deadEntity } asMooseGroup.
-	model addRule: stubRule.
-	model runRules.
-	self assert: (model violationsOf: stubRule) class equals: FamixCBViolationGroup.
+	model run.
+	self assert: (model violationsOf: stubCondition) class equals: FamixCBViolationGroup.
 	self assertCollection: model getAllViolations allEntities includesAll: { stubEntity }
 ]
 
 { #category : #test }
 MiCriticBrowserModelTest >> testViolationsOfCollection [
 	model setEntities: { stubEntity. deadEntity } asMooseGroup.
-	model addRule: stubRule; addRule: deadRule.
-	model runRules.
-	self assert: (model violationsOfCollection: { stubRule. deadRule }) class equals: FamixCBViolationGroup.
-	self assertCollection: (model violationsOfCollection: { stubRule. deadRule }) allEntities includesAll: { stubEntity. deadEntity }
+	model run.
+	self assert: (model violationsOfCollection: { stubCondition. deadCondition }) class equals: FamixCBViolationGroup.
+	self assertCollection: (model violationsOfCollection: { stubCondition. deadCondition }) allEntities includesAll: { stubEntity. deadEntity }
 ]

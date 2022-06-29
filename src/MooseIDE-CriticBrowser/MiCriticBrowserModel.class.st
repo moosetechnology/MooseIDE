@@ -6,29 +6,15 @@ Class {
 	#superclass : #MiAbstractModel,
 	#instVars : [
 		'entities',
-		'rules',
+		'rootContext',
 		'violations'
 	],
 	#category : #'MooseIDE-CriticBrowser'
 }
 
 { #category : #adding }
-MiCriticBrowserModel >> addContext: aContext [
-	rules add: aContext
-]
-
-{ #category : #accessing }
-MiCriticBrowserModel >> addRule: aRule [
-
-	((aRule class inheritsFrom: FamixCBRule) or: [ aRule class = FamixCBRule ]) ifTrue: [ rules add: aRule ]
-]
-
-{ #category : #deleting }
-MiCriticBrowserModel >> deleteRule: aFamixCBRule [
-
-	(rules indexOf: aFamixCBRule) = 0 ifTrue: [ ^ self ].
-	rules remove: aFamixCBRule.
-	violations removeKey: aFamixCBRule ifAbsent: [ ^ self ]
+MiCriticBrowserModel >> addRootContext: aContext [
+	rootContext := aContext
 ]
 
 { #category : #accessing }
@@ -51,31 +37,24 @@ MiCriticBrowserModel >> initialize [
 
 	super initialize.
 	entities := MooseGroup new.
-	rules := OrderedCollection new.
-	violations := Dictionary new.
+	rootContext := (FamixCBRootContext named: 'Root context (all entities)' on: '[ :col | col ]').
+	violations := Dictionary new
 ]
 
 { #category : #removing }
-MiCriticBrowserModel >> removeRuleViolations: aRule [
-	violations removeKey: aRule ifAbsent: [  ].
+MiCriticBrowserModel >> removeRuleViolations: aCondition [
+	violations removeKey: aCondition ifAbsent: [  ].
 ]
 
 { #category : #accessing }
-MiCriticBrowserModel >> rules [
-
-	^ rules
+MiCriticBrowserModel >> rootContext [
+	^ rootContext
 ]
 
 { #category : #running }
 MiCriticBrowserModel >> run [
-	rules do: [ :context | context runOn: entities ]
-]
-
-{ #category : #execution }
-MiCriticBrowserModel >> runRules [
-"run on the entities every query in the model, and stores in output the result of each query linked to a key (the query)"
-	rules do: [ :each | violations at: each put: (each runOn: entities) ].
-	
+	rootContext runOnTree: entities.
+	violations := rootContext getAllViolations
 ]
 
 { #category : #accessing }
@@ -92,10 +71,10 @@ MiCriticBrowserModel >> violations [
 ]
 
 { #category : #accessing }
-MiCriticBrowserModel >> violationsOf: aFamixCBRule [
+MiCriticBrowserModel >> violationsOf: aCondition [
 "returns violations for a given rule"
-	(violations includesKey: aFamixCBRule)
-		ifTrue: [ ^ self violations at: aFamixCBRule ]
+	(violations includesKey: aCondition)
+		ifTrue: [ ^ self violations at: aCondition ]
 ]
 
 { #category : #accessing }
@@ -103,6 +82,6 @@ MiCriticBrowserModel >> violationsOfCollection: aCollection [
 "returns violations for a given set of rules"
 	| result |
 	result := FamixCBViolationGroup new.
-	aCollection do: [ :rule | result := result , (self violationsOf: rule) ].
+	aCollection do: [ :condition | result := result , (self violationsOf: condition) ].
 	^ result 
 ]
