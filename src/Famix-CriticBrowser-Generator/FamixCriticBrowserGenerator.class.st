@@ -70,6 +70,7 @@ FamixCriticBrowserGenerator >> defineRelations [
 		*-
 	((rule property: #violations)
 			comment: 'Every violation of this rule.').
+			
 	((violation property: #violatedRule)
 			comment: 'Condition violated by this entity.')
 		*-
@@ -86,7 +87,13 @@ FamixCriticBrowserGenerator >> defineRelations [
 			comment: 'Every child context or condition of this context.')
 		-*
 	((tRuleComponent property: #parent)
-			comment: 'Parent context, if it exists.')
+			comment: 'Parent context, if it exists.').
+			
+	((context property: #entities)
+			comment: 'Every entity that is a part of the context.')
+		*-*
+	(((self remoteTrait: #TNamedEntity withPrefix: #Famix) property: #contexts)
+			comment: 'Every context that the entity is a part of.')
 ]
 
 { #category : #definition }

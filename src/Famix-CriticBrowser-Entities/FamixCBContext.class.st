@@ -34,6 +34,12 @@ FamixCBContext >> addChild: anObject [
 	^ self children add: anObject
 ]
 
+{ #category : #adding }
+FamixCBContext >> addEntity: anObject [
+	<generated>
+	^ self entities add: anObject
+]
+
 { #category : #accessing }
 FamixCBContext >> children [
 	"Relation named: #children type: #FamixCBTRuleComponent opposite: #parent"

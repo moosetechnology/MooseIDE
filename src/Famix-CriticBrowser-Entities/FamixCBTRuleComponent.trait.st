@@ -4,8 +4,8 @@ I allow a rule component to be named and summarized.
 Trait {
 	#name : #FamixCBTRuleComponent,
 	#instVars : [
-		'#summary => FMProperty',
-		'#parent => FMOne type: #FamixCBContext opposite: #children'
+		'#parent => FMOne type: #FamixCBContext opposite: #children',
+		'#summary => FMProperty'
 	],
 	#traits : 'FamixTNamedEntity',
 	#classTraits : 'FamixTNamedEntity classTrait',
