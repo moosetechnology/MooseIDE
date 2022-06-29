@@ -9,6 +9,25 @@ Class {
 
 { #category : #tests }
 FamixCBContextTest >> testRunOn [
+	| contextEntity entity context |
+	contextEntity := FamixJavaClass new.
+	entity := FamixJavaParameter new.
+	
+	entity name: 'invalide'.
+	contextEntity name: 'Invalide'.
+	
+	context := FamixCBContext new.
+	context contextBlock: '[ :col | col select: [ :el | el isClass ] ]'.
+	
+	context runOn: { contextEntity. entity. }.
+	self assert: context entities size equals: 1.
+	self assert: context entities anyOne equals: contextEntity.
+	
+	
+]
+
+{ #category : #tests }
+FamixCBContextTest >> testRunOnTree [
 	| contextEntity childContextEntity entity entityInvalid context childContext |
 	contextEntity := FamixJavaClass new.
 	childContextEntity := FamixJavaClass new.
@@ -27,7 +46,7 @@ FamixCBContextTest >> testRunOn [
 	childContext contextBlock: '[ :col | col select: [ :el | el name endsWith: ''Contexte'' ] ]'.
 	
 	context addChild: childContext.
-	context runOn: { contextEntity. entity. childContextEntity. entityInvalid }.
+	context runOnTree: { contextEntity. entity. childContextEntity. entityInvalid }.
 	self assert: context entities size equals: 2.
 	self assertCollection: context entities hasSameElements: { contextEntity. childContextEntity }.
 	self assert: childContext entities size equals: 1.

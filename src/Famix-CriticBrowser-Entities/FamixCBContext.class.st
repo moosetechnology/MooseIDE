@@ -98,6 +98,12 @@ FamixCBContext >> entities: anObject [
 { #category : #running }
 FamixCBContext >> runOn: aCollection [
 
-	entities := (contextBlock value: aCollection).
-	children do: [ :c | c runOn: entities ] 
+	entities := (contextBlock value: aCollection)
+]
+
+{ #category : #running }
+FamixCBContext >> runOnTree: aCollection [
+
+	self runOn: aCollection.
+	children do: [ :child | child runOnTree: entities ]
 ]
