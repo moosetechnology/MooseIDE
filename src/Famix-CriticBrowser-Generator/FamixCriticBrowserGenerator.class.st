@@ -3,7 +3,6 @@ Class {
 	#superclass : #FamixMetamodelGenerator,
 	#instVars : [
 		'violation',
-		'rule',
 		'context',
 		'condition',
 		'tRuleComponent',
@@ -34,7 +33,6 @@ FamixCriticBrowserGenerator >> defineClasses [
 	super defineClasses.
 	
 	violation := builder newClassNamed: #Violation.
-	rule := builder newClassNamed: #Rule.
 	rootContext := builder newClassNamed: #RootContext.
 	context := builder newClassNamed: #Context.
 	condition := builder newClassNamed: #Condition
@@ -42,7 +40,6 @@ FamixCriticBrowserGenerator >> defineClasses [
 
 { #category : #definition }
 FamixCriticBrowserGenerator >> defineHierarchy [
-	rule --|> #TNamedEntity.
 	tRuleComponent --|> #TNamedEntity.
 	context --|> tRuleComponent.
 	rootContext --|> context.
@@ -52,8 +49,6 @@ FamixCriticBrowserGenerator >> defineHierarchy [
 
 { #category : #definition }
 FamixCriticBrowserGenerator >> defineProperties [
-	((rule property: #summary type: #String) 
-		comment: 'A rule can have an explanatory summary').
 	((tRuleComponent property: #summary type: #String) 
 		comment: 'A rule component can have an explanatory summary').
 	((context property: #entities type: #Object)
