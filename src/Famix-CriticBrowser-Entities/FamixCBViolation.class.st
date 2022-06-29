@@ -2,7 +2,7 @@ Class {
 	#name : #FamixCBViolation,
 	#superclass : #FamixCBEntity,
 	#instVars : [
-		'#violatedRule => FMOne type: #FamixCBRule opposite: #violations'
+		'#violatedCondition => FMOne type: #FamixCBCondition opposite: #violations'
 	],
 	#category : #'Famix-CriticBrowser-Entities-Entities'
 }
@@ -38,19 +38,19 @@ FamixCBViolation >> mooseNameOn: aStream [
 ]
 
 { #category : #accessing }
-FamixCBViolation >> violatedRule [
-	"Relation named: #violatedRule type: #FamixCBRule opposite: #violations"
+FamixCBViolation >> violatedCondition [
+	"Relation named: #violatedCondition type: #FamixCBCondition opposite: #violations"
 
 	<generated>
-	<FMComment: 'Rule violated by this entity.'>
-	^ violatedRule
+	<FMComment: 'Condition violated by this entity.'>
+	^ violatedCondition
 ]
 
 { #category : #accessing }
-FamixCBViolation >> violatedRule: anObject [
+FamixCBViolation >> violatedCondition: anObject [
 
 	<generated>
-	violatedRule := anObject
+	violatedCondition := anObject
 ]
 
 { #category : #accessing }

@@ -5,8 +5,7 @@ Class {
 	#classTraits : 'FamixTNamedEntity classTrait',
 	#instVars : [
 		'#query',
-		'#summary => FMProperty',
-		'#violations => FMMany type: #FamixCBViolation opposite: #violatedRule'
+		'#summary => FMProperty'
 	],
 	#category : #'Famix-CriticBrowser-Entities-Entities'
 }
@@ -40,12 +39,6 @@ FamixCBRule class >> named: aString on: aQuery summary: aSummary [
 { #category : #ston }
 FamixCBRule class >> stonAllInstVarNames [
 	^ super stonAllInstVarNames \ #(#mooseID #mooseModel #cache #entityAttributes #violations)
-]
-
-{ #category : #adding }
-FamixCBRule >> addViolation: anObject [
-	<generated>
-	^ self violations add: anObject
 ]
 
 { #category : #accessing }
@@ -98,21 +91,4 @@ FamixCBRule >> summary [
 FamixCBRule >> summary: anObject [
 	<generated>
 	summary := anObject
-]
-
-{ #category : #accessing }
-FamixCBRule >> violations [
-	"Relation named: #violations type: #FamixCBViolation opposite: #violatedRule"
-
-	<generated>
-	<FMComment: 'Every violation of this rule.'>
-	<derived>
-	^ violations
-]
-
-{ #category : #accessing }
-FamixCBRule >> violations: anObject [
-
-	<generated>
-	violations value: anObject
 ]

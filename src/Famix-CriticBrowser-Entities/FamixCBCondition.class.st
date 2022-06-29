@@ -5,7 +5,7 @@ Class {
 	#classTraits : 'FamixCBTRuleComponent classTrait',
 	#instVars : [
 		'#query => FMProperty',
-		'#violations => FMMany type: #FamixCBViolation opposite: #violatedRule'
+		'#violations => FMMany type: #FamixCBViolation opposite: #violatedCondition'
 	],
 	#category : #'Famix-CriticBrowser-Entities-Entities'
 }
@@ -67,7 +67,7 @@ FamixCBCondition >> runOn: aCollection [
 
 { #category : #accessing }
 FamixCBCondition >> violations [
-	"Relation named: #violations type: #FamixCBViolation opposite: #violatedRule"
+	"Relation named: #violations type: #FamixCBViolation opposite: #violatedCondition"
 
 	<generated>
 	<FMComment: 'Every violation of this condition.'>

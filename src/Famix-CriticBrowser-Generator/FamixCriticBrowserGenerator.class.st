@@ -67,14 +67,8 @@ FamixCriticBrowserGenerator >> defineProperties [
 { #category : #definition }
 FamixCriticBrowserGenerator >> defineRelations [
 	super defineRelations.
-	
-	((violation property: #violatedRule)
-			comment: 'Rule violated by this entity.')
-		*-
-	((rule property: #violations)
-			comment: 'Every violation of this rule.').
 			
-	((violation property: #violatedRule)
+	((violation property: #violatedCondition)
 			comment: 'Condition violated by this entity.')
 		*-
 	((condition property: #violations)
