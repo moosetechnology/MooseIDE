@@ -21,6 +21,14 @@ FamixCBContext class >> annotation [
 ]
 
 { #category : #'instance creation' }
+FamixCBContext class >> named: aString on: anObject [
+	^ self new
+		name: aString;
+		contextBlock: anObject;
+		yourself
+]
+
+{ #category : #'instance creation' }
 FamixCBContext class >> named: aString on: anObject summary: aSummary [
 	^ self new
 		name: aString;

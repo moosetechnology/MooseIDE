@@ -6,7 +6,8 @@ Class {
 		'rule',
 		'context',
 		'condition',
-		'tRuleComponent'
+		'tRuleComponent',
+		'rootContext'
 	],
 	#category : #'Famix-CriticBrowser-Generator'
 }
@@ -34,6 +35,7 @@ FamixCriticBrowserGenerator >> defineClasses [
 	
 	violation := builder newClassNamed: #Violation.
 	rule := builder newClassNamed: #Rule.
+	rootContext := builder newClassNamed: #RootContext.
 	context := builder newClassNamed: #Context.
 	condition := builder newClassNamed: #Condition
 ]
@@ -43,6 +45,7 @@ FamixCriticBrowserGenerator >> defineHierarchy [
 	rule --|> #TNamedEntity.
 	tRuleComponent --|> #TNamedEntity.
 	context --|> tRuleComponent.
+	rootContext --|> context.
 	condition --|> tRuleComponent
 	
 ]
