@@ -23,9 +23,9 @@ FamixCBViolation class >> annotationFamixCBViolationGroup [
 ]
 
 { #category : #initialization }
-FamixCBViolation class >> rule: aFamixCBRule violatedBy: anEntity [
+FamixCBViolation class >> condition: aCondition violatedBy: anEntity [
 	^ self new 
-		violatedRule: aFamixCBRule;
+		violatedCondition: aCondition;
 		violatingEntity: anEntity;
 		yourself
 ]
@@ -34,7 +34,7 @@ FamixCBViolation class >> rule: aFamixCBRule violatedBy: anEntity [
 FamixCBViolation >> mooseNameOn: aStream [
 	self violatingEntity ifNotNil: [ aStream nextPutAll: self violatingEntity name ].
 	aStream nextPutAll: ' -> '.
-	self violatedRule ifNotNil: [ aStream nextPutAll: self violatedRule name ]
+	self violatedCondition ifNotNil: [ aStream nextPutAll: self violatedCondition name ]
 ]
 
 { #category : #accessing }
