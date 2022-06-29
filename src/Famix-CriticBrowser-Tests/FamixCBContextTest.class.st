@@ -7,6 +7,28 @@ Class {
 	#category : #'Famix-CriticBrowser-Tests'
 }
 
+{ #category : #test }
+FamixCBContextTest >> testPutViolationsInto [
+	| entity entityViolating context condition violations |
+	
+	entity := FamixJavaParameter new.
+	entityViolating := FamixJavaParameter new.
+	entity name: 'valide'.
+	entityViolating name: 'violation'.
+	
+	context := FamixCBContext named: 'context' on: '[ :col | col ]'.
+	condition := FamixCBCondition named: 'Condition root' on: (MiCriticBrowserPharoCodeQuery on: '[ :entity | entity name = ''violation'' ]').
+	context addChild: condition.
+	
+	violations := Dictionary new.
+	context runOnTree: { entity. entityViolating }.
+	context putViolationsInto: violations.
+	
+	self assertCollection: violations keys hasSameElements: { condition. }.
+	self assert: (violations at: condition) size equals: 1.
+	self assert: (violations at: condition) anyOne violatingEntity equals: entityViolating.
+]
+
 { #category : #tests }
 FamixCBContextTest >> testRunOn [
 	| contextEntity entity context |

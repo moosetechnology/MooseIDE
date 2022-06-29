@@ -12,3 +12,12 @@ FamixCBRootContext class >> annotation [
 	<generated>
 	^self
 ]
+
+{ #category : #accessing }
+FamixCBRootContext >> getAllViolations [
+	| res |
+	res := Dictionary new.
+	self putViolationsInto: res.
+	^ res
+	
+]

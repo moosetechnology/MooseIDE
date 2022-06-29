@@ -7,22 +7,37 @@ Class {
 	#category : #'Famix-CriticBrowser-Tests'
 }
 
+{ #category : #test }
+FamixCBConditionTest >> testPutViolationsInto [
+	| condition violatingEntity dict |
+	condition := FamixCBCondition named: 'test1' on: ((MiCriticBrowserPharoCodeQuery on: '[ :entity | entity isStub ]')).
+	violatingEntity := FamixJavaMethod new. violatingEntity isStub: true.
+	dict := Dictionary new.
+	
+	condition runOn: { violatingEntity }.
+	condition putViolationsInto: dict.
+	self assert: dict keys size equals: 1.
+	self assert: dict keys anyOne equals: condition.
+	self assert: (dict at: condition) class equals: FamixCBViolationGroup.
+	self assert: (dict at: condition) size equals: 1.
+	self assert: (dict at: condition) anyOne violatingEntity equals: violatingEntity
+]
+
 { #category : #tests }
 FamixCBConditionTest >> testQuery [
-	self should: [ FamixCBRule named: 'test' on: 'test' ] raise: NotAValidQuery.
-	self shouldnt: [ FamixCBRule named: 'test' on: (MiCriticBrowserPharoCodeQuery new) ] raise: NotAValidQuery
+	self should: [ FamixCBCondition named: 'test' on: 'test' ] raise: NotAValidQuery.
+	self shouldnt: [ FamixCBCondition named: 'test' on: (MiCriticBrowserPharoCodeQuery new) ] raise: NotAValidQuery
 ]
 
 { #category : #test }
 FamixCBConditionTest >> testRunOn [
-	| condition entity stubEntity res |
+	| condition entity stubEntity |
 	condition := FamixCBCondition named: 'test1' on: ((MiCriticBrowserPharoCodeQuery on: '[ :entity | entity isStub ]')).
 	entity := FamixJavaMethod new.
 	stubEntity := FamixJavaMethod new. stubEntity isStub: true.
-	res := condition runOn: { entity. stubEntity } asMooseGroup.
-	self assert: (res class) equals: FamixCBViolationGroup.
-	self assert: (res size) equals: 1.
-	self assert: ((res at: 1) class) equals: FamixCBViolation.
-	self assert: ((res at: 1) violatingEntity) equals: stubEntity.
-	self assert: ((res at: 1) violatedRule) equals: condition
+	
+	condition runOn: { entity. stubEntity }.
+	self assert: condition violations size equals: 1.
+	self assert: condition violations anyOne violatingEntity equals: stubEntity.
+	self assert: condition violations anyOne violatedCondition equals: condition
 ]
