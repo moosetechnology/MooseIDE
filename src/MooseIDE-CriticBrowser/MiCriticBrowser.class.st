@@ -244,7 +244,7 @@ MiCriticBrowser >> initializeButtons [
 	inspectButton 
 		label: 'Inspect model';
 		icon: (self iconNamed: #glamorousInspect);
-		action: [ self model entities inspect ].
+		action: [ self model inspect ].
 		
 	importButton
 		label: 'Import rules';
@@ -300,6 +300,24 @@ MiCriticBrowser >> initializeMenu [
 			name: 'Delete rule';
 			icon: (self iconNamed: #smallDelete);
 			action: [ self deleteSelectedRule. self updateRulesList ]
+		];
+				addItem: [ :item |
+		item
+			name: 'Add context';
+			icon: (self iconNamed: #smallAdd);
+			action: [ 
+				contextMakerPresenter setParentContext: rules selectedItem.
+				contextMakerPresenter openDialog
+				]
+		];
+				addItem: [ :item |
+		item
+			name: 'Add condition';
+			icon: (self iconNamed: #smallAdd);
+			action: [ 
+				addRulesPresenter setParentContext: rules selectedItem.
+				addRulesPresenter openDialog
+				]
 		].
 	expandMenu := self newMenu.
 	expandMenu addItem: [ :item | 

@@ -7,7 +7,8 @@ Class {
 		'contextTitle',
 		'contextSummary',
 		'codeInput',
-		'mainWindow'
+		'mainWindow',
+		'parentContext'
 	],
 	#category : #'MooseIDE-CriticBrowser'
 }
@@ -23,10 +24,10 @@ MiCriticBrowserAddContextPresenter class >> on: aWindowPresenter [
 MiCriticBrowserAddContextPresenter >> addButtonAction [
 
 	codeInput text ifNotNil: [ 
-		"owner addRule: (FamixCBContext
-				 named: contextTitle text
-				 on: codeInput text
-				 summary: contextSummary text)" ].
+		parentContext addChild: (FamixCBContext
+				 							named: contextTitle text
+				 							on: codeInput text
+				 							summary: contextSummary text) ].
 	contextTitle text: ''.
 	codeInput text: '[ :collection | ]'.
 	contextSummary text: ''.
@@ -109,4 +110,10 @@ MiCriticBrowserAddContextPresenter >> initializeWindow: aWindowPresenter [
 { #category : #initialization }
 MiCriticBrowserAddContextPresenter >> setMainWindow: aWindowPresenter [
 	mainWindow := aWindowPresenter
+]
+
+{ #category : #initialization }
+MiCriticBrowserAddContextPresenter >> setParentContext: aContext [
+	parentContext := aContext
+	
 ]

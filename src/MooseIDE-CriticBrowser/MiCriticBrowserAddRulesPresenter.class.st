@@ -8,7 +8,8 @@ Class {
 		'addButton',
 		'closeButton',
 		'mainWindow',
-		'queryPresenter'
+		'queryPresenter',
+		'parentContext'
 	],
 	#category : #'MooseIDE-CriticBrowser'
 }
@@ -104,6 +105,11 @@ MiCriticBrowserAddRulesPresenter >> remove: aQuery [
 MiCriticBrowserAddRulesPresenter >> setMainWindow: aWindowPresenter [
 	mainWindow := aWindowPresenter.
 	self initializeMainPresenter
+]
+
+{ #category : #initialization }
+MiCriticBrowserAddRulesPresenter >> setParentContext: aContext [
+	parentContext := aContext
 ]
 
 { #category : #updating }

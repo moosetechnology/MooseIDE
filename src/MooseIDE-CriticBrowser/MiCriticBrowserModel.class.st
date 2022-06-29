@@ -12,6 +12,11 @@ Class {
 	#category : #'MooseIDE-CriticBrowser'
 }
 
+{ #category : #adding }
+MiCriticBrowserModel >> addContext: aContext [
+	rules add: aContext
+]
+
 { #category : #accessing }
 MiCriticBrowserModel >> addRule: aRule [
 
@@ -59,6 +64,11 @@ MiCriticBrowserModel >> removeRuleViolations: aRule [
 MiCriticBrowserModel >> rules [
 
 	^ rules
+]
+
+{ #category : #running }
+MiCriticBrowserModel >> run [
+	rules do: [ :context | context runOn: entities ]
 ]
 
 { #category : #execution }
