@@ -93,6 +93,11 @@ MiCriticBrowser >> children: aCollection for: aTreePresenter [
 		ifFalse: [ {  } ]
 ]
 
+{ #category : #'as yet unclassified' }
+MiCriticBrowser >> childrenForContext: aRuleComponent [
+	^ (aRuleComponent class = FamixCBCondition) ifFalse: [ aRuleComponent children asOrderedCollection ] ifTrue: [ {  } ]
+]
+
 { #category : #layout }
 MiCriticBrowser >> defaultLayout [	
 	^ SpBoxLayout newTopToBottom
@@ -270,8 +275,9 @@ MiCriticBrowser >> initializeLists [
 		whenActivatedDo: [ :each | each selectedItem inspect ].
 	
 	rules
-		items: self model rules;
+		items: { self model rootContext };
 		display: [ :each | self displayRule: each ];
+		children: [ :each | self childrenForContext: each ];
 		contextMenu: editMenu;
 		beMultipleSelection;
 		whenMultiSelectionChangedDo: [ (model violations) ifNotEmpty: [ self selectedRules ] ].
@@ -459,6 +465,5 @@ MiCriticBrowser >> updateResultList: aCollection [
 
 { #category : #'updating screen' }
 MiCriticBrowser >> updateRulesList [
-	rules roots: self model rules.
-	rules refresh
+	self rules updateRootsKeepingSelection: (self rules roots)
 ]

@@ -29,9 +29,9 @@ MiCriticBrowserTest >> browserClass [
 { #category : #running }
 MiCriticBrowserTest >> setUp [
 	super setUp.
-	stubRule := FamixCBRule named: 'test1' on: ((MiCriticBrowserPharoCodeQuery on: '[ :entity | entity isStub ]')).
-	deadRule := FamixCBRule named: 'test2' on: ((MiCriticBrowserPharoCodeQuery on: '[ :entity | entity isDead ]')).
-	queriesBrowserRule := FamixCBRule named: 'test3' on: (MiCriticBrowserFQQuery on: (FQBooleanQuery property: #isDead)).
+	stubRule := FamixCBCondition named: 'test1' on: ((MiCriticBrowserPharoCodeQuery on: '[ :entity | entity isStub ]')).
+	deadRule := FamixCBCondition named: 'test2' on: ((MiCriticBrowserPharoCodeQuery on: '[ :entity | entity isDead ]')).
+	queriesBrowserRule := FamixCBCondition named: 'test3' on: (MiCriticBrowserFQQuery on: (FQBooleanQuery property: #isDead)).
 	queriesBrowserRule query query parent: (FQTypeQuery types: { FamixStMethod } ).
 	stubEntity := FamixStMethod new.
 	stubEntity name: 'test1'; isStub: true.
@@ -53,6 +53,13 @@ MiCriticBrowserTest >> testChildrenFor [
 	
 	browser updateResultList: browser model getAllViolations.
 	self assert: (browser children: (browser rulesResult roots anyOne) for: (browser rulesResult)) anyOne violatingEntity equals: entity
+]
+
+{ #category : #tests }
+MiCriticBrowserTest >> testChildrenForContext [
+	browser model rootContext addChild: stubRule.
+	self assert: (browser childrenForContext: browser rules roots anyOne) size equals: 1.
+	self assert: (browser childrenForContext: browser rules roots anyOne) anyOne equals: stubRule
 ]
 
 { #category : #test }
@@ -206,12 +213,4 @@ MiCriticBrowserTest >> testUpdateResultList [
 	
 	browser updateResultList: FamixCBViolationGroup new.
 	self assert: (browser rulesResult roots flatten size) equals: 0
-]
-
-{ #category : #tests }
-MiCriticBrowserTest >> testUpdateRulesList [
-	self assert: browser rules roots size equals: 0.
-	browser model addRule: stubRule.
-	browser updateRulesList.
-	self assert: browser rules roots size equals: 1
 ]
