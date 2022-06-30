@@ -23,15 +23,16 @@ MiCriticBrowserRulesMakerPresenter >> addButtonAction [
 	codeButton state 
 		ifTrue: [ self addInputtedCodeRule ] 
 		ifFalse: [ self addInputtedFQRule ].
-	ruleTitle text: ''
+	ruleTitle text: ''.
+	ruleSummary text: ''
 ]
 
 { #category : #adding }
 MiCriticBrowserRulesMakerPresenter >> addInputtedCodeRule [
 	codeInput text ifNotNil: 
 		[ 
-		owner addRule: 
-			(FamixCBRule named: (ruleTitle text) 
+		owner addCondition: 
+			(FamixCBCondition named: (ruleTitle text) 
 							on: (MiCriticBrowserPharoCodeQuery on: (codeInput text))
 							summary: ruleSummary text) 
 		].
@@ -42,8 +43,8 @@ MiCriticBrowserRulesMakerPresenter >> addInputtedCodeRule [
 MiCriticBrowserRulesMakerPresenter >> addInputtedFQRule [
 	queryDroplist selectedItem ifNotNil: 
 		[ 
-		owner addRule: 
-			(FamixCBRule named: (ruleTitle text) 
+		owner addCondition: 
+			(FamixCBCondition named: (ruleTitle text) 
 							on: (MiCriticBrowserFQQuery on: (queryDroplist selectedItem))
 							summary: ruleSummary text) 
 		]
@@ -107,13 +108,13 @@ MiCriticBrowserRulesMakerPresenter >> defaultTitle [
 ]
 
 { #category : #editing }
-MiCriticBrowserRulesMakerPresenter >> editRule: aRule [
-	aRule name: ruleTitle text.
-	aRule query: (codeButton state 
+MiCriticBrowserRulesMakerPresenter >> editRule: aCondition [
+	aCondition name: ruleTitle text.
+	aCondition query: (codeButton state 
 		ifTrue: [ MiCriticBrowserPharoCodeQuery on: (codeInput text) ] 
 		ifFalse: [ MiCriticBrowserFQQuery on: queryDroplist selectedItem ]).
-	aRule summary: ruleSummary text.
-	owner hasBeenEdited: aRule
+	aCondition summary: ruleSummary text.
+	owner hasBeenEdited: aCondition
 ]
 
 { #category : #filling }
