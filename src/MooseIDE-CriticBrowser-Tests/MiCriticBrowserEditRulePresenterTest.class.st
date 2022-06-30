@@ -18,7 +18,7 @@ MiCriticBrowserEditRulePresenterTest >> browserClass [
 { #category : #initialization }
 MiCriticBrowserEditRulePresenterTest >> setUp [
 	super setUp.
-	rulesEditor := browser rulesEditorPresenter.
+	rulesEditor := browser rulesEditorPresenter
 ]
 
 { #category : #test }
@@ -28,15 +28,15 @@ MiCriticBrowserEditRulePresenterTest >> testHasBeenEdited [
 	stubEntity := FamixStMethod new.
 	stubEntity name: 'test1'; isStub: true.
 	
-	browser model addRule: rule.
+	browser model rootContext addChild: rule.
 	browser model setEntities: { stubEntity } asMooseGroup.
-	browser model runRules.
+	browser model run.
 	self assert: (browser model violations includesKey: rule) equals: true.
 	browser updateRulesList.
-	self assert: browser rules roots anyOne name equals: 'test'.
+	self assert: browser model rootContext children anyOne name equals: 'test'.
 	
 	rule name: 'test édité'.
 	rulesEditor hasBeenEdited: rule.
 	self assert: (browser model violations includesKey: rule) equals: false.
-	self assert: browser rules roots anyOne name equals: 'test édité'
+	self assert: browser model rootContext children anyOne name equals: 'test édité'
 ]
