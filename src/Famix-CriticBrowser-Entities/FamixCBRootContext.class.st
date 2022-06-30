@@ -21,3 +21,9 @@ FamixCBRootContext >> getAllViolations [
 	^ res
 	
 ]
+
+{ #category : #removing }
+FamixCBRootContext >> removeSelfFromTree [
+
+	^ self
+]

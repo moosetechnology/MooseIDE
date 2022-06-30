@@ -8,6 +8,20 @@ Class {
 }
 
 { #category : #test }
+FamixCBContextTest >> testAddChild [
+	| context condition childContext |
+	context := FamixCBContext named: 'context' on: '[ :col | col ]'.
+	condition := FamixCBCondition named: 'Condition root' on: (MiCriticBrowserPharoCodeQuery on: '[ :entity | entity name = ''violation'' ]').
+	childContext := FamixCBContext named: 'child context' on: '[ :col | col select: [ :el | el isClass ] ]'.
+	
+	context addChild: condition; addChild: childContext.
+	self assert: context children size equals: 2.
+	self assertCollection: context children hasSameElements: { condition. childContext }.
+	self assert: condition parent equals: context.
+	self assert: childContext parent equals: context
+]
+
+{ #category : #test }
 FamixCBContextTest >> testPutViolationsInto [
 	| entity entityViolating context condition violations |
 	
@@ -27,6 +41,21 @@ FamixCBContextTest >> testPutViolationsInto [
 	self assertCollection: violations keys hasSameElements: { condition. }.
 	self assert: (violations at: condition) size equals: 1.
 	self assert: (violations at: condition) anyOne violatingEntity equals: entityViolating.
+]
+
+{ #category : #test }
+FamixCBContextTest >> testRemoveChild [
+	| context condition childContext |
+	context := FamixCBContext named: 'context' on: '[ :col | col ]'.
+	condition := FamixCBCondition named: 'Condition root' on: (MiCriticBrowserPharoCodeQuery on: '[ :entity | entity name = ''violation'' ]').
+	childContext := FamixCBContext named: 'child context' on: '[ :col | col select: [ :el | el isClass ] ]'.
+	
+	context addChild: condition; addChild: childContext.
+	self assert: context children size equals: 2.
+	context removeChild: condition.
+	self assert: context children size equals: 1.
+	self assert: context children anyOne equals: childContext.
+	self assert: condition parent equals: nil
 ]
 
 { #category : #tests }

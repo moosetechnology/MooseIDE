@@ -38,8 +38,8 @@ FamixCBContext class >> named: aString on: anObject summary: aSummary [
 ]
 
 { #category : #adding }
-FamixCBContext >> addChild: anObject [
-	^ self children add: anObject
+FamixCBContext >> addChild: aRuleComponent [
+	aRuleComponent parent: self
 ]
 
 { #category : #adding }
@@ -99,6 +99,14 @@ FamixCBContext >> entities: anObject [
 FamixCBContext >> putViolationsInto: aDictionary [
 	children do: [ :child | child putViolationsInto: aDictionary ]
 
+]
+
+{ #category : #removing }
+FamixCBContext >> removeChild: aRuleComponent [
+
+	(children includes: aRuleComponent) ifFalse: [ ^ self ].
+	children remove: aRuleComponent.
+	aRuleComponent parent: nil
 ]
 
 { #category : #running }

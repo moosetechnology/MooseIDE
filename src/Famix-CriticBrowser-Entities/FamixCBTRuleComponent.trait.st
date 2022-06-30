@@ -37,6 +37,12 @@ FamixCBTRuleComponent >> parent: anObject [
 	parent := anObject
 ]
 
+{ #category : #removing }
+FamixCBTRuleComponent >> removeSelfFromTree [
+
+	self parent removeChild: self
+]
+
 { #category : #accessing }
 FamixCBTRuleComponent >> summary [
 
