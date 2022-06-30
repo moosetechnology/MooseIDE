@@ -137,6 +137,7 @@ MiCriticBrowser >> defaultTitle [
 { #category : #deleting }
 MiCriticBrowser >> deleteSelectedRule [
 	rules selectedItems do: [ :rule | model deleteRuleComponent: rule ].
+	rules roots: { model rootContext }.
 	self updateRulesList
 ]
 
@@ -466,5 +467,5 @@ MiCriticBrowser >> updateResultList: aCollection [
 
 { #category : #'updating screen' }
 MiCriticBrowser >> updateRulesList [
-	self rules updateRootsKeepingSelection: self rules roots
+	self rules updateRootsKeepingSelection: { model rootContext } 
 ]

@@ -66,6 +66,7 @@ FamixCBCondition >> query: aQuery [
 
 { #category : #running }
 FamixCBCondition >> runOn: aCollection [
+	
 	((self query runOnCollection: aCollection) do: 
 		[ :each | self addViolation: (FamixCBViolation condition: self violatedBy: each) ]).
 ]
