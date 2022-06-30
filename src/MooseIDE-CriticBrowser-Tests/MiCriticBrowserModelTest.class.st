@@ -27,6 +27,14 @@ MiCriticBrowserModelTest >> setUp [
 ]
 
 { #category : #test }
+MiCriticBrowserModelTest >> testDeleteRuleComponent [
+	self assert: model rootContext children size equals: 2.
+	model deleteRuleComponent: stubCondition.
+	self assert: model rootContext children size equals: 1.
+	self assert: model rootContext children anyOne equals: deadCondition
+]
+
+{ #category : #test }
 MiCriticBrowserModelTest >> testGetAllViolations [
 	model setEntities: { stubEntity. deadEntity } asMooseGroup.
 	model run.

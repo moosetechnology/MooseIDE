@@ -17,6 +17,14 @@ MiCriticBrowserModel >> addRootContext: aContext [
 	rootContext := aContext
 ]
 
+{ #category : #'as yet unclassified' }
+MiCriticBrowserModel >> deleteRuleComponent: aRuleComponent [
+	aRuleComponent removeSelfFromTree.
+	self removeRuleViolations: aRuleComponent
+	
+
+]
+
 { #category : #accessing }
 MiCriticBrowserModel >> entities [
 
@@ -73,8 +81,9 @@ MiCriticBrowserModel >> violations [
 { #category : #accessing }
 MiCriticBrowserModel >> violationsOf: aCondition [
 "returns violations for a given rule"
-	(violations includesKey: aCondition)
-		ifTrue: [ ^ self violations at: aCondition ]
+	^ (violations includesKey: aCondition)
+		ifTrue: [ self violations at: aCondition ]
+		ifFalse: [ MooseGroup new ]
 ]
 
 { #category : #accessing }

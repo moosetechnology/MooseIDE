@@ -136,7 +136,8 @@ MiCriticBrowser >> defaultTitle [
 
 { #category : #deleting }
 MiCriticBrowser >> deleteSelectedRule [
-	rules selectedItems do: [ :rule | model deleteRule: rule ] 
+	rules selectedItems do: [ :rule | model deleteRuleComponent: rule ].
+	self updateRulesList
 ]
 
 { #category : #'updating screen' }
@@ -409,7 +410,7 @@ MiCriticBrowser >> runButton [
 { #category : #'buttons actions' }
 MiCriticBrowser >> runButtonAction [
 "executes the queries on the entities stored in the model, then prints the results"
-	self model runRules.
+	self model run.
 	self updateResultList: model getAllViolations.
 	self updateRulesList
 ]
@@ -465,5 +466,5 @@ MiCriticBrowser >> updateResultList: aCollection [
 
 { #category : #'updating screen' }
 MiCriticBrowser >> updateRulesList [
-	self rules updateRootsKeepingSelection: (self rules roots)
+	self rules updateRootsKeepingSelection: self rules roots
 ]

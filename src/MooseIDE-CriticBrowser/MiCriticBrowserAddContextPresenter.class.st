@@ -31,6 +31,7 @@ MiCriticBrowserAddContextPresenter >> addButtonAction [
 	contextTitle text: ''.
 	codeInput text: '[ :collection | ]'.
 	contextSummary text: ''.
+	mainWindow updateRulesList
 ]
 
 { #category : #layout }
