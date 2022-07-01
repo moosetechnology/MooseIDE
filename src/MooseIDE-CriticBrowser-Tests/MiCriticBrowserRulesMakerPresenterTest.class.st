@@ -22,14 +22,15 @@ MiCriticBrowserRulesMakerPresenterTest >> setUp [
 	browser addRulesPresenter setParentContext: browser model rootContext.
 	addQueryPresenter := browser addRulesPresenter queryPresenter.
 	editQueryPresenter := browser rulesEditorPresenter queryPresenter.
-	browser openRulesMakerButton performAction
+	browser addRulesPresenter openDialog
+	
 
 ]
 
 { #category : #running }
 MiCriticBrowserRulesMakerPresenterTest >> tearDown [
 	super tearDown.
-	addQueryPresenter delete
+	browser addRulesPresenter window close
 ]
 
 { #category : #test }
