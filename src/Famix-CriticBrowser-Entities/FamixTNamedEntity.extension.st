@@ -18,6 +18,12 @@ FamixTNamedEntity >> contexts: anObject [
 	self contexts value: anObject
 ]
 
+{ #category : #'*Famix-CriticBrowser-Entities' }
+FamixTNamedEntity >> removeViolation: aViolation [
+	self violations remove: aViolation ifAbsent: [ ^ self ].
+	aViolation violatedCondition ifNotNil: [ aViolation violatedCondition removeViolation: aViolation ]
+]
+
 { #category : #'*Famix-CriticBrowser-Entities-accessing' }
 FamixTNamedEntity >> violations [
 	"Relation named: #violations type: #FamixCBViolation opposite: #violatingEntity"

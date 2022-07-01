@@ -30,11 +30,22 @@ FamixCBViolation class >> condition: aCondition violatedBy: anEntity [
 		yourself
 ]
 
+{ #category : #comparing }
+FamixCBViolation >> = anObject [
+	self class = anObject class ifFalse: [ ^ false ].
+	^ self violatingEntity = anObject violatingEntity and: [ violatedCondition = anObject violatedCondition ]
+]
+
+{ #category : #comparing }
+FamixCBViolation >> hash [
+	^ self violatingEntity hash + violatedCondition 
+]
+
 { #category : #printing }
 FamixCBViolation >> mooseNameOn: aStream [
-	self violatingEntity ifNotNil: [ aStream nextPutAll: self violatingEntity name ].
+	self violatingEntity ifNotNil: [ self violatingEntity displayStringOn: aStream ].
 	aStream nextPutAll: ' -> '.
-	self violatedCondition ifNotNil: [ aStream nextPutAll: self violatedCondition name ]
+	self violatedCondition ifNotNil: [ self violatedCondition displayStringOn: aStream ]
 ]
 
 { #category : #accessing }

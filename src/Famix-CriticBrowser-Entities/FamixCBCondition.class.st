@@ -39,7 +39,7 @@ FamixCBCondition class >> named: aString on: aQuery summary: aSummary [
 { #category : #adding }
 FamixCBCondition >> addViolation: anObject [
 	<generated>
-	^ self violations add: anObject
+	self violations add: anObject
 ]
 
 { #category : #'as yet unclassified' }
@@ -62,6 +62,17 @@ FamixCBCondition >> query: aQuery [
 	(aQuery class inheritsFrom: MiCriticBrowserAbstractQuery) 
 		ifTrue: [ query := aQuery ]
 		ifFalse: [ self error: NotAValidQuery signal ]
+]
+
+{ #category : #'*Famix-CriticBrowser-Entities' }
+FamixCBCondition >> removeAllViolations [
+	[ violations isNotEmpty ] whileTrue: [ self removeViolation: violations anyOne ]
+]
+
+{ #category : #'*Famix-CriticBrowser-Entities' }
+FamixCBCondition >> removeViolation: aViolation [
+	self violations remove: aViolation ifAbsent: [ ^ self ].
+	aViolation violatingEntity ifNotNil: [ aViolation violatingEntity removeViolation: aViolation ]
 ]
 
 { #category : #running }

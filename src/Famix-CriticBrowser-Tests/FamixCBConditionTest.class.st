@@ -4,14 +4,39 @@ A FamixCBConditionTest is a test class for testing the behavior of FamixCBCondit
 Class {
 	#name : #FamixCBConditionTest,
 	#superclass : #TestCase,
+	#instVars : [
+		'condition',
+		'violatingEntity',
+		'violation',
+		'entity'
+	],
 	#category : #'Famix-CriticBrowser-Tests'
 }
 
-{ #category : #test }
-FamixCBConditionTest >> testPutViolationsInto [
-	| condition violatingEntity dict |
+{ #category : #running }
+FamixCBConditionTest >> setUp [
+	super setUp.
+	
 	condition := FamixCBCondition named: 'test1' on: ((MiCriticBrowserPharoCodeQuery on: '[ :entity | entity isStub ]')).
 	violatingEntity := FamixJavaMethod new. violatingEntity isStub: true.
+	violation := FamixCBViolation condition: condition violatedBy: violatingEntity.
+	entity := FamixJavaMethod new.
+]
+
+{ #category : #test }
+FamixCBConditionTest >> testAddViolation [
+
+	condition addViolation: (FamixCBViolation condition: condition violatedBy: violatingEntity).
+	self assert: condition violations size equals: 1.
+	condition addViolation: (FamixCBViolation condition: condition violatedBy: violatingEntity).
+	self assert: condition violations size equals: 1.
+	condition addViolation: (FamixCBViolation condition: condition violatedBy: FamixJavaClass new).
+	self assert: condition violations size equals: 2.
+]
+
+{ #category : #test }
+FamixCBConditionTest >> testPutViolationsInto [
+	| dict |
 	dict := Dictionary new.
 	
 	condition runOn: { violatingEntity }.
@@ -27,6 +52,26 @@ FamixCBConditionTest >> testPutViolationsInto [
 FamixCBConditionTest >> testQuery [
 	self should: [ FamixCBCondition named: 'test' on: 'test' ] raise: NotAValidQuery.
 	self shouldnt: [ FamixCBCondition named: 'test' on: (MiCriticBrowserPharoCodeQuery new) ] raise: NotAValidQuery
+]
+
+{ #category : #test }
+FamixCBConditionTest >> testRemoveAllViolations [
+	| violation2 violation3 violation4 |
+	violation2 := FamixCBViolation condition: condition violatedBy: FamixJavaClass new.
+	violation3 := FamixCBViolation condition: condition violatedBy: FamixJavaAttribute new.
+	violation4 := FamixCBViolation condition: condition violatedBy: FamixJavaParameter new.
+
+	condition removeAllViolations.
+	self assert: condition violations size equals: 0
+]
+
+{ #category : #test }
+FamixCBConditionTest >> testRemoveViolation [
+	
+	condition addViolation: violation .
+	condition removeViolation: violation.
+	self assert: (condition violations includes: violation) equals: false.
+	self assert: (violatingEntity violations includes: violation) equals: false
 ]
 
 { #category : #test }
