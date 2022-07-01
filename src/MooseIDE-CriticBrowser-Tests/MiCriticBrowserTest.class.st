@@ -76,23 +76,21 @@ MiCriticBrowserTest >> testDeleteSelectedRule [
 
 { #category : #test }
 MiCriticBrowserTest >> testExportRulesToStream [
-	| fileReference writeStream readStream stonReader rule1 rule2 rule3 |
-	browser model addRule: deadRule; addRule: stubRule; addRule: queriesBrowserRule.
+	| fileReference writeStream readStream stonReader root |
+	browser model rootContext addChild: deadRule; addChild: stubRule; addChild: queriesBrowserRule.
 	fileReference := (FileSystem memory root / 'rules.ston') asFileReference.
 	writeStream := fileReference writeStream.
-	browser exportRules: (browser model rules) toStream: writeStream.
+	browser exportRules: (browser model rootContext) toStream: writeStream.
 	writeStream close.
 	
 	readStream := fileReference readStream.
 	stonReader := STONReader on: fileReference readStream.
-	rule1 := stonReader parseObject.
-	rule2 := stonReader parseObject.
-	rule3 := stonReader parseObject.
+	root := stonReader parseObject.
 	readStream close.
-	self assert: rule1 class equals: FamixCBRule.
-	self assert: rule1 query equals: '[ :entity | entity isDead ]'.
-	self assert: rule2 query equals: '[ :entity | entity isStub ]'.
-	self assert: rule3 query equals: '(FQTypeQuery types: {FamixStMethod}) --> (FQBooleanQuery property: #isDead)'.
+	self assert: root class equals: FamixCBRootContext.
+	self assert: root children size equals: 3.
+	"self assert: root children  query equals: '[ :entity | entity isStub ]'.
+	self assert: rule3 query equals: '(FQTypeQuery types: {FamixStMethod}) --> (FQBooleanQuery property: #isDead)'."
 	stonReader close
 	
 ]

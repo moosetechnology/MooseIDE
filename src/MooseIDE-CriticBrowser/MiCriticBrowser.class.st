@@ -168,8 +168,8 @@ MiCriticBrowser >> exportRules: aCollectionOfRules [
 ]
 
 { #category : #'load and saving' }
-MiCriticBrowser >> exportRules: aCollectionOfRules toStream: aStream [
-	aCollectionOfRules do: [ :rule | SCExporter export: rule onStream: aStream ]
+MiCriticBrowser >> exportRules: aRootContext toStream: aStream [
+	SCExporter export: aRootContext onStream: aStream
 ]
 
 { #category : #actions }

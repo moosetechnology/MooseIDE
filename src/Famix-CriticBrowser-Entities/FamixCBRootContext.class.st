@@ -27,3 +27,8 @@ FamixCBRootContext >> removeSelfFromTree [
 
 	^ self
 ]
+
+{ #category : #'ston persistence' }
+FamixCBRootContext >> stonOn: stonWriter [
+	self children do: [ :child | child stonOn: stonWriter ]
+]

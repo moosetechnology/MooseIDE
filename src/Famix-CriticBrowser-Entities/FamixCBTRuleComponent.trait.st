@@ -21,6 +21,11 @@ FamixCBTRuleComponent classSide >> annotation [
 	^self
 ]
 
+{ #category : #ston }
+FamixCBTRuleComponent classSide >> stonAllInstVarNames [ 
+	^ super stonAllInstVarNames \ {#mooseID . #cache . #entityAttributes . #mooseName . #mooseModel . #entities . #violations . #contexts . #parent}
+]
+
 { #category : #accessing }
 FamixCBTRuleComponent >> parent [
 	"Relation named: #parent type: #FamixCBContext opposite: #children"

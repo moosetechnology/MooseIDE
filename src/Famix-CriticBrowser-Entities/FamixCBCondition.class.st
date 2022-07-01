@@ -92,6 +92,23 @@ FamixCBCondition >> runOnTree: aCollection [
 	self runOn: aCollection
 ]
 
+{ #category : #'ston persistence' }
+FamixCBCondition >> stonOn: stonWriter [
+	stonWriter
+		writeObject: self
+		streamMap: [ :dictionary | 
+			self class stonAllInstVarNames
+				do: [ :each | 
+					(self instVarNamed: each)
+						ifNotNil: [ :value | 
+							dictionary
+								at: each asSymbol
+								put:
+									((value class inheritsFrom: MiCriticBrowserAbstractQuery)
+										ifTrue: [ value convertToSTONString ]
+										ifFalse: [ value ]) ] ] ]
+]
+
 { #category : #accessing }
 FamixCBCondition >> violations [
 	"Relation named: #violations type: #FamixCBViolation opposite: #violatedCondition"
