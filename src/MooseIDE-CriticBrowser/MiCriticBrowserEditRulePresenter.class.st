@@ -51,10 +51,9 @@ MiCriticBrowserEditRulePresenter >> fetchQueries [
 ]
 
 { #category : #testing }
-MiCriticBrowserEditRulePresenter >> hasBeenEdited: aRule [
-	mainWindow model removeRuleViolations: aRule.
-	mainWindow updateRulesList.
-	mainWindow updateResultList: mainWindow model getAllViolations
+MiCriticBrowserEditRulePresenter >> hasBeenEdited: aRuleComponent [
+	mainWindow model hasBeenEdited: aRuleComponent.
+	
 ]
 
 { #category : #initialization }

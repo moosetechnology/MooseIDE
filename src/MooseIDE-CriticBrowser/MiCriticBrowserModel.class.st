@@ -40,6 +40,14 @@ MiCriticBrowserModel >> getAllViolations [
 	^ result
 ]
 
+{ #category : #testing }
+MiCriticBrowserModel >> hasBeenEdited: aRuleComponent [
+	self removeRuleViolations: aRuleComponent.
+	aRuleComponent removeAllViolations.
+	browser updateRulesList.
+	browser updateResultList: self getAllViolations
+]
+
 { #category : #initialization }
 MiCriticBrowserModel >> initialize [ 
 

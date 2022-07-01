@@ -9,14 +9,16 @@ Class {
 		'stubEntity',
 		'deadEntity',
 		'stubCondition',
-		'deadCondition'
+		'deadCondition',
+		'browser'
 	],
 	#category : #'MooseIDE-CriticBrowser-Tests'
 }
 
 { #category : #initialization }
 MiCriticBrowserModelTest >> setUp [
-	model := MiCriticBrowserModel new.
+	browser := MiCriticBrowser on: MiCriticBrowser newModel.
+	model := browser model.
 	stubCondition := FamixCBCondition named: 'test1' on: (MiCriticBrowserPharoCodeQuery on: '[ :entity | entity isStub ]'). 
 	deadCondition := FamixCBCondition named: 'test2' on: (MiCriticBrowserPharoCodeQuery on: '[ :entity | entity isDead ]').
 	model rootContext addChild: stubCondition.
@@ -41,6 +43,20 @@ MiCriticBrowserModelTest >> testGetAllViolations [
 	self assert: model getAllViolations class equals: FamixCBViolationGroup.
 	self assertCollection: model getAllViolations allEntities includesAll: { stubEntity. deadEntity }  
 	
+]
+
+{ #category : #test }
+MiCriticBrowserModelTest >> testHasBeenEdited [
+
+	model setEntities: { stubEntity } asMooseGroup.
+	model run.
+	self assert: (model violations includesKey: stubCondition) equals: true.
+	self assert: model rootContext children anyOne name equals: 'test1'.
+	
+	stubCondition name: 'test édité'.
+	model hasBeenEdited: stubCondition.
+	self assert: (model violations includesKey: stubCondition) equals: false.
+	self assert: model rootContext children anyOne name equals: 'test édité'
 ]
 
 { #category : #test }
