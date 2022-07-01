@@ -3,21 +3,26 @@ A MiCriticBrowserModelTest is a test class for testing the behavior of MiCriticB
 "
 Class {
 	#name : #MiCriticBrowserModelTest,
-	#superclass : #TestCase,
+	#superclass : #MiAbstractBrowserTest,
 	#instVars : [
 		'model',
 		'stubEntity',
 		'deadEntity',
 		'stubCondition',
-		'deadCondition',
-		'browser'
+		'deadCondition'
 	],
 	#category : #'MooseIDE-CriticBrowser-Tests'
 }
 
+{ #category : #running }
+MiCriticBrowserModelTest >> browserClass [
+	^ MiCriticBrowser
+]
+
 { #category : #initialization }
 MiCriticBrowserModelTest >> setUp [
-	browser := MiCriticBrowser on: MiCriticBrowser newModel.
+	super setUp.
+
 	model := browser model.
 	stubCondition := FamixCBCondition named: 'test1' on: (MiCriticBrowserPharoCodeQuery on: '[ :entity | entity isStub ]'). 
 	deadCondition := FamixCBCondition named: 'test2' on: (MiCriticBrowserPharoCodeQuery on: '[ :entity | entity isDead ]').
