@@ -19,6 +19,12 @@ MiCriticBrowserModelTest >> browserClass [
 	^ MiCriticBrowser
 ]
 
+{ #category : #removing }
+MiCriticBrowserModelTest >> removeAllFromRootContext [
+
+	[ model rootContext children isNotEmpty ] whileTrue: [ model removeChild: model rootContext children anyOne fromContext: model rootContext ].
+]
+
 { #category : #initialization }
 MiCriticBrowserModelTest >> setUp [
 	super setUp.
@@ -26,11 +32,35 @@ MiCriticBrowserModelTest >> setUp [
 	model := browser model.
 	stubCondition := FamixCBCondition named: 'test1' on: (MiCriticBrowserPharoCodeQuery on: '[ :entity | entity isStub ]'). 
 	deadCondition := FamixCBCondition named: 'test2' on: (MiCriticBrowserPharoCodeQuery on: '[ :entity | entity isDead ]').
-	model rootContext addChild: stubCondition.
-	model rootContext addChild: deadCondition.
+	model addChild: stubCondition toContext: model rootContext.
+	model addChild: deadCondition toContext: model rootContext.
 	stubEntity := FamixStMethod named: 'test1'.
 	deadEntity := FamixStMethod named: 'test2'.
 	stubEntity isStub: true
+]
+
+{ #category : #tests }
+MiCriticBrowserModelTest >> testAddChildToContext [
+
+	self removeAllFromRootContext.
+	model addChild: stubCondition toContext: model rootContext. 
+	self assert: model ruleComponents size equals: 1.
+	self assert: model ruleComponents anyOne equals: stubCondition.
+	self assert: model rootContext children anyOne equals: stubCondition
+	
+]
+
+{ #category : #tests }
+MiCriticBrowserModelTest >> testCreateHierarchyTree [
+	| context tree |
+	self removeAllFromRootContext.
+	context := FamixCBContext named: 'child context' on: '[ :col | col allClasses ]'. 
+	model addChild: stubCondition toContext: model rootContext.
+	model addChild: context toContext: model rootContext.
+	model addChild: deadCondition toContext: context.
+	tree := model createHierarchyTree.
+	self assert: tree size equals: 3.
+	self assert: tree equals: { 0. 0. 2 } asOrderedCollection
 ]
 
 { #category : #tests }
@@ -62,6 +92,15 @@ MiCriticBrowserModelTest >> testHasBeenEdited [
 	model hasBeenEdited: stubCondition.
 	self assert: (model violations includesKey: stubCondition) equals: false.
 	self assert: model rootContext children anyOne name equals: 'test édité'
+]
+
+{ #category : #tests }
+MiCriticBrowserModelTest >> testRemoveChildFromContext [
+
+	model removeChild: stubCondition fromContext: model rootContext.
+	self assert: model ruleComponents size equals: 1.
+	self assert: model rootContext children size equals: 1.
+	self assert: model rootContext children anyOne equals: deadCondition.
 ]
 
 { #category : #tests }

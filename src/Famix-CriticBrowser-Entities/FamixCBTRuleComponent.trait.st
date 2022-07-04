@@ -23,7 +23,7 @@ FamixCBTRuleComponent classSide >> annotation [
 
 { #category : #ston }
 FamixCBTRuleComponent classSide >> stonAllInstVarNames [ 
-	^ super stonAllInstVarNames \ {#mooseID . #cache . #entityAttributes . #mooseName . #mooseModel . #entities . #violations . #contexts . #parent}
+	^ super stonAllInstVarNames \ {#mooseID . #cache . #entityAttributes . #mooseName . #mooseModel . #entities . #violations . #contexts . #parent . #children }
 ]
 
 { #category : #accessing }

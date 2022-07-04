@@ -7,22 +7,39 @@ Class {
 	#instVars : [
 		'entities',
 		'rootContext',
+		'ruleComponents',
 		'violations'
 	],
 	#category : #'MooseIDE-CriticBrowser'
 }
 
 { #category : #adding }
-MiCriticBrowserModel >> addRootContext: aContext [
-	rootContext := aContext
+MiCriticBrowserModel >> addChild: aRuleComponent toContext: aContext [
+	(aContext = rootContext or: [ ruleComponents includes: aContext ]) ifFalse: [ ^ self ].
+	aContext addChild: aRuleComponent.
+	ruleComponents add: aRuleComponent
+	
+]
+
+{ #category : #adding }
+MiCriticBrowserModel >> addChildToRootContext: aRuleComponent [
+	rootContext addChild: aRuleComponent.
+	ruleComponents add: aRuleComponent
+	
+]
+
+{ #category : #'as yet unclassified' }
+MiCriticBrowserModel >> createHierarchyTree [
+"creates a list with the index of the parent of each rule component in the ruleComponents
+ used to export the rules (and represents the hierarchy)"
+	^ ruleComponents collect: [ :el | ruleComponents indexOf: el parent ]
 ]
 
 { #category : #'as yet unclassified' }
 MiCriticBrowserModel >> deleteRuleComponent: aRuleComponent [
 	aRuleComponent removeSelfFromTree.
-	self removeRuleViolations: aRuleComponent
-	
-
+	self removeRuleViolations: aRuleComponent.
+	ruleComponents remove: aRuleComponent ifAbsent: [  ]
 ]
 
 { #category : #accessing }
@@ -54,7 +71,16 @@ MiCriticBrowserModel >> initialize [
 	super initialize.
 	entities := MooseGroup new.
 	rootContext := (FamixCBRootContext named: 'Root context (all entities)' on: '[ :col | col ]').
+	ruleComponents := OrderedCollection new.
 	violations := Dictionary new
+]
+
+{ #category : #adding }
+MiCriticBrowserModel >> removeChild: aRuleComponent fromContext: aContext [
+	(aContext = rootContext or: [ ruleComponents includes: aContext ]) ifFalse: [ ^ self ].
+	aContext removeChild: aRuleComponent.
+	ruleComponents remove: aRuleComponent ifAbsent: [  ].
+	
 ]
 
 { #category : #removing }
@@ -65,6 +91,12 @@ MiCriticBrowserModel >> removeRuleViolations: aCondition [
 { #category : #accessing }
 MiCriticBrowserModel >> rootContext [
 	^ rootContext
+]
+
+{ #category : #'accessing - tests' }
+MiCriticBrowserModel >> ruleComponents [
+"used for testing purposes, do not access outside of tests"
+	^ ruleComponents
 ]
 
 { #category : #running }
