@@ -15,7 +15,7 @@ Class {
 		'ruleTitle',
 		'ruleSummary'
 	],
-	#category : #'MooseIDE-CriticBrowser'
+	#category : #'MooseIDE-CriticBrowser-Presenters'
 }
 
 { #category : #adding }

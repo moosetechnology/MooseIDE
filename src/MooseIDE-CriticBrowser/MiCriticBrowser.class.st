@@ -25,7 +25,7 @@ Class {
 		'expandMenu',
 		'contextMakerPresenter'
 	],
-	#category : #'MooseIDE-CriticBrowser'
+	#category : #'MooseIDE-CriticBrowser-Browser'
 }
 
 { #category : #'world menu' }

@@ -10,7 +10,7 @@ Class {
 		'ruleComponents',
 		'violations'
 	],
-	#category : #'MooseIDE-CriticBrowser'
+	#category : #'MooseIDE-CriticBrowser-Model'
 }
 
 { #category : #adding }

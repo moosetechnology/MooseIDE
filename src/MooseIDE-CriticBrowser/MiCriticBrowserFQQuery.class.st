@@ -4,7 +4,7 @@ I am a handler for queries coming from the MooseIDE Queries Browser, meant to be
 Class {
 	#name : #MiCriticBrowserFQQuery,
 	#superclass : #MiCriticBrowserAbstractQuery,
-	#category : #'MooseIDE-CriticBrowser'
+	#category : #'MooseIDE-CriticBrowser-Queries'
 }
 
 { #category : #converting }

@@ -10,7 +10,7 @@ Class {
 		'mainWindow',
 		'parentContext'
 	],
-	#category : #'MooseIDE-CriticBrowser'
+	#category : #'MooseIDE-CriticBrowser-Presenters'
 }
 
 { #category : #'instance creation' }
