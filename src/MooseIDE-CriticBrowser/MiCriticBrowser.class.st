@@ -74,7 +74,8 @@ MiCriticBrowser >> addRulesPresenter [
 MiCriticBrowser >> browserClosed [
 	super browserClosed.
 	application unregisterConsumer: addRulesPresenter.
-	application unregisterConsumer: rulesEditorPresenter
+	application unregisterConsumer: rulesEditorPresenter.
+	model removeAllViolations
 ]
 
 { #category : #testing }

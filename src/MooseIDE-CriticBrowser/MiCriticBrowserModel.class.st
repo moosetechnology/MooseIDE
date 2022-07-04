@@ -75,6 +75,11 @@ MiCriticBrowserModel >> initialize [
 	violations := Dictionary new
 ]
 
+{ #category : #removing }
+MiCriticBrowserModel >> removeAllViolations [
+	rootContext removeAllViolationsFromTree
+]
+
 { #category : #adding }
 MiCriticBrowserModel >> removeChild: aRuleComponent fromContext: aContext [
 	(aContext = rootContext or: [ ruleComponents includes: aContext ]) ifFalse: [ ^ self ].
