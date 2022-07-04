@@ -125,7 +125,7 @@ FamixCBContext >> runOn: aCollection [
 { #category : #running }
 FamixCBContext >> runOnTree: aCollection [
 
-	self runOn: aCollection.
+	entities ifNil: [ self runOn: aCollection ].
 	children do: [ :child | child runOnTree: entities ]
 ]
 
