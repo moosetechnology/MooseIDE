@@ -458,5 +458,6 @@ MiCriticBrowser >> updateResultList: aCollection [
 
 { #category : #'updating screen' }
 MiCriticBrowser >> updateRulesList [
-	self rules updateRootsKeepingSelection: self rules roots 
+	self rules updateRootsKeepingSelection: self rules roots.
+	self rules expandAll 
 ]
