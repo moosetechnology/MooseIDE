@@ -33,7 +33,7 @@ MiCriticBrowserModelTest >> setUp [
 	stubEntity isStub: true
 ]
 
-{ #category : #test }
+{ #category : #tests }
 MiCriticBrowserModelTest >> testDeleteRuleComponent [
 	self assert: model rootContext children size equals: 2.
 	model deleteRuleComponent: stubCondition.
@@ -41,7 +41,7 @@ MiCriticBrowserModelTest >> testDeleteRuleComponent [
 	self assert: model rootContext children anyOne equals: deadCondition
 ]
 
-{ #category : #test }
+{ #category : #tests }
 MiCriticBrowserModelTest >> testGetAllViolations [
 	model setEntities: { stubEntity. deadEntity } asMooseGroup.
 	model run.
@@ -50,7 +50,7 @@ MiCriticBrowserModelTest >> testGetAllViolations [
 	
 ]
 
-{ #category : #test }
+{ #category : #tests }
 MiCriticBrowserModelTest >> testHasBeenEdited [
 
 	model setEntities: { stubEntity } asMooseGroup.
@@ -64,7 +64,7 @@ MiCriticBrowserModelTest >> testHasBeenEdited [
 	self assert: model rootContext children anyOne name equals: 'test édité'
 ]
 
-{ #category : #test }
+{ #category : #tests }
 MiCriticBrowserModelTest >> testRemoveRuleViolations [
 	self assert: (model violations includesKey: stubCondition) equals: false.
 	model setEntities: { } asMooseGroup.
@@ -85,7 +85,7 @@ MiCriticBrowserModelTest >> testRunRules [
 	
 ]
 
-{ #category : #test }
+{ #category : #tests }
 MiCriticBrowserModelTest >> testSetEntities [
 	| entityA entityB group |
 	entityA := FamixStMethod new. 
@@ -105,7 +105,7 @@ MiCriticBrowserModelTest >> testSetEntities [
 	
 ]
 
-{ #category : #test }
+{ #category : #tests }
 MiCriticBrowserModelTest >> testSetOutput [
 	| entityA |
 	entityA := FamixStMethod new. 
@@ -117,7 +117,7 @@ MiCriticBrowserModelTest >> testSetOutput [
 	self assert: model entities class equals: MooseGroup
 ]
 
-{ #category : #test }
+{ #category : #tests }
 MiCriticBrowserModelTest >> testViolationsOf [
 	model setEntities: { stubEntity. deadEntity } asMooseGroup.
 	model run.
@@ -125,7 +125,7 @@ MiCriticBrowserModelTest >> testViolationsOf [
 	self assertCollection: model getAllViolations allEntities includesAll: { stubEntity }
 ]
 
-{ #category : #test }
+{ #category : #tests }
 MiCriticBrowserModelTest >> testViolationsOfCollection [
 	model setEntities: { stubEntity. deadEntity } asMooseGroup.
 	model run.
