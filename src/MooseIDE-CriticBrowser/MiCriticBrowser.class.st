@@ -23,7 +23,8 @@ Class {
 		'rulesEditorPresenter',
 		'rules',
 		'expandMenu',
-		'contextMakerPresenter'
+		'addContextsPresenter',
+		'contextEditorPresenter'
 	],
 	#category : #'MooseIDE-CriticBrowser-Browser'
 }
@@ -65,6 +66,12 @@ MiCriticBrowser class >> title [
 ]
 
 { #category : #'accessing - testing' }
+MiCriticBrowser >> addContextsPresenter [
+"used for testing purposes, do not access outside of tests"
+	^ addContextsPresenter
+]
+
+{ #category : #'accessing - testing' }
 MiCriticBrowser >> addRulesPresenter [
 "used for testing purposes, do not access outside of tests"
 	^ addRulesPresenter
@@ -95,6 +102,12 @@ MiCriticBrowser >> children: aCollection for: aTreePresenter [
 { #category : #'as yet unclassified' }
 MiCriticBrowser >> childrenForContext: aRuleComponent [
 	^ (aRuleComponent class = FamixCBCondition) ifFalse: [ aRuleComponent children asOrderedCollection ] ifTrue: [ {  } ]
+]
+
+{ #category : #'accessing - testing' }
+MiCriticBrowser >> contextEditorPresenter [
+"used for testing purposes, do not access outside of tests"
+	^ contextEditorPresenter
 ]
 
 { #category : #layout }
@@ -313,8 +326,8 @@ MiCriticBrowser >> initializeMenu [
 			name: 'Add context';
 			icon: (self iconNamed: #smallAdd);
 			action: [ 
-				contextMakerPresenter setParentContext: rules selectedItem.
-				contextMakerPresenter openDialog
+				addContextsPresenter setParentContext: rules selectedItem.
+				addContextsPresenter openDialog
 				]
 		];
 				addItem: [ :item |
@@ -351,7 +364,8 @@ MiCriticBrowser >> initializePresenters [
 	
 	addRulesPresenter := MiCriticBrowserAddRulesPresenter on: self.
 	rulesEditorPresenter := MiCriticBrowserEditRulePresenter on: self.
-	contextMakerPresenter := MiCriticBrowserAddContextPresenter on: self.
+	addContextsPresenter := MiCriticBrowserAddContextsPresenter on: self.
+	contextEditorPresenter := MiCriticBrowserEditContextPresenter on: self.
 	
 	self focusOrder
 			add: rules;

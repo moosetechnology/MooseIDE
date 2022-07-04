@@ -1,5 +1,5 @@
 Class {
-	#name : #MiCriticBrowserAddContextPresenter,
+	#name : #MiCriticBrowserContextMakerPresenter,
 	#superclass : #MiPresenter,
 	#instVars : [
 		'addButton',
@@ -13,29 +13,39 @@ Class {
 	#category : #'MooseIDE-CriticBrowser-Presenters'
 }
 
-{ #category : #'instance creation' }
-MiCriticBrowserAddContextPresenter class >> on: aWindowPresenter [
-	^ self new
-		setMainWindow: aWindowPresenter;
-		yourself.
-]
-
 { #category : #adding }
-MiCriticBrowserAddContextPresenter >> addButtonAction [
+MiCriticBrowserContextMakerPresenter >> addButtonAction [
 
 	codeInput text ifNotNil: [ 
-		parentContext addChild: (FamixCBContext
+		owner addContext: (FamixCBContext
 				 							named: contextTitle text
 				 							on: codeInput text
 				 							summary: contextSummary text) ].
 	contextTitle text: ''.
 	codeInput text: '[ :collection | ]'.
-	contextSummary text: ''.
-	mainWindow updateRulesList
+	contextSummary text: ''
+]
+
+{ #category : #accessing }
+MiCriticBrowserContextMakerPresenter >> codeInput [ 
+"used for testing purposes, do not access outside of tests"
+	^ codeInput
+]
+
+{ #category : #accessing }
+MiCriticBrowserContextMakerPresenter >> contextSummary [
+"used for testing purposes, do not access outside of tests"
+	^ contextSummary
+]
+
+{ #category : #accessing }
+MiCriticBrowserContextMakerPresenter >> contextTitle [
+"used for testing purposes, do not access outside of tests"
+	^ contextTitle
 ]
 
 { #category : #layout }
-MiCriticBrowserAddContextPresenter >> defaultLayout [
+MiCriticBrowserContextMakerPresenter >> defaultLayout [
 	
 	| titlePane codeBlock summaryPane |
 	
@@ -62,12 +72,27 @@ MiCriticBrowserAddContextPresenter >> defaultLayout [
 ]
 
 { #category : #accessing }
-MiCriticBrowserAddContextPresenter >> defaultTitle [
+MiCriticBrowserContextMakerPresenter >> defaultTitle [
 	^ 'Context builder'
 ]
 
+{ #category : #'as yet unclassified' }
+MiCriticBrowserContextMakerPresenter >> editContext: aContext [
+	aContext name: contextTitle text.
+	aContext contextBlock: codeInput text.
+	aContext summary: contextSummary text.
+	owner hasBeenEdited: aContext
+]
+
+{ #category : #'as yet unclassified' }
+MiCriticBrowserContextMakerPresenter >> fillContextToEdit: aContext [
+	contextTitle text: aContext name.
+	contextSummary text: aContext summary.
+	codeInput text: aContext contextBlock asString
+]
+
 { #category : #initialization }
-MiCriticBrowserAddContextPresenter >> initializeButtons [
+MiCriticBrowserContextMakerPresenter >> initializeButtons [
 	addButton := self newButton.
 	closeButton := self newButton.
 	
@@ -81,14 +106,14 @@ MiCriticBrowserAddContextPresenter >> initializeButtons [
 ]
 
 { #category : #initialization }
-MiCriticBrowserAddContextPresenter >> initializeDialogWindow: aDialogWindowPresenter [
+MiCriticBrowserContextMakerPresenter >> initializeDialogWindow: aDialogWindowPresenter [
 	aDialogWindowPresenter 
 		addButton: addButton;
 		addButton: closeButton
 ]
 
 { #category : #initialization }
-MiCriticBrowserAddContextPresenter >> initializePresenters [
+MiCriticBrowserContextMakerPresenter >> initializePresenters [
 	
 	self initializeButtons.
 	
@@ -101,7 +126,7 @@ MiCriticBrowserAddContextPresenter >> initializePresenters [
 ]
 
 { #category : #initialization }
-MiCriticBrowserAddContextPresenter >> initializeWindow: aWindowPresenter [	
+MiCriticBrowserContextMakerPresenter >> initializeWindow: aWindowPresenter [	
 	super initializeWindow: aWindowPresenter.
 	aWindowPresenter
 		title: self defaultTitle;
@@ -109,12 +134,12 @@ MiCriticBrowserAddContextPresenter >> initializeWindow: aWindowPresenter [
 ]
 
 { #category : #initialization }
-MiCriticBrowserAddContextPresenter >> setMainWindow: aWindowPresenter [
+MiCriticBrowserContextMakerPresenter >> setMainWindow: aWindowPresenter [
 	mainWindow := aWindowPresenter
 ]
 
 { #category : #initialization }
-MiCriticBrowserAddContextPresenter >> setParentContext: aContext [
+MiCriticBrowserContextMakerPresenter >> setParentContext: aContext [
 	parentContext := aContext
 	
 ]
