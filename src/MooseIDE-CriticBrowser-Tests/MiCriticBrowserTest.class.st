@@ -7,7 +7,8 @@ Class {
 		'queriesBrowserRule',
 		'basicEntity',
 		'stubEntity',
-		'rootContext'
+		'rootContext',
+		'childContext'
 	],
 	#category : #'MooseIDE-CriticBrowser-Tests'
 }
@@ -27,6 +28,12 @@ MiCriticBrowserTest >> browserClass [
 	^ MiCriticBrowser 
 ]
 
+{ #category : #removing }
+MiCriticBrowserTest >> removeAllFromRootContext [
+
+	[ browser model rootContext children isNotEmpty ] whileTrue: [ browser model removeChild: browser model rootContext children anyOne fromContext: browser model rootContext ].
+]
+
 { #category : #running }
 MiCriticBrowserTest >> setUp [
 	super setUp.
@@ -41,6 +48,7 @@ MiCriticBrowserTest >> setUp [
 	basicEntity name: 'test2'.
 	
 	rootContext := browser model rootContext.
+	childContext := FamixCBContext named: 'Classes context' on: '[ :col | col allClasses ]'
 ]
 
 { #category : #test }
@@ -76,21 +84,32 @@ MiCriticBrowserTest >> testDeleteSelectedRule [
 
 { #category : #test }
 MiCriticBrowserTest >> testExportRulesToStream [
-	| fileReference writeStream readStream stonReader root |
-	browser model rootContext addChild: deadRule; addChild: stubRule; addChild: queriesBrowserRule.
+	| fileReference writeStream readStream stonReader cont cond1 cond2 cond3 hierarchy |
+	
+	browser model addChildToRootContext: childContext; addChildToRootContext: stubRule; addChildToRootContext: queriesBrowserRule.
+	browser model addChild: deadRule toContext: childContext.
+	
 	fileReference := (FileSystem memory root / 'rules.ston') asFileReference.
 	writeStream := fileReference writeStream.
-	browser exportRules: (browser model rootContext) toStream: writeStream.
+	browser exportRulesToStream: writeStream.
 	writeStream close.
-	
 	readStream := fileReference readStream.
 	stonReader := STONReader on: fileReference readStream.
-	root := stonReader parseObject.
+	
+	cont := stonReader parseObject.
+	cond1 := stonReader parseObject.
+	cond2 := stonReader parseObject.
+	cond3 := stonReader parseObject.
+	hierarchy := stonReader parseObject.
 	readStream close.
-	self assert: root class equals: FamixCBRootContext.
-	self assert: root children size equals: 3.
-	"self assert: root children  query equals: '[ :entity | entity isStub ]'.
-	self assert: rule3 query equals: '(FQTypeQuery types: {FamixStMethod}) --> (FQBooleanQuery property: #isDead)'."
+	
+	self assert: cont class equals: FamixCBContext.
+	self assert: ({ cond1 . cond2 . cond3 } allSatisfy: [ :c | c class = FamixCBCondition ]) equals: true.
+	self assert: cond1 query equals: '[ :entity | entity isStub ]'.
+	self assert: cond2 query equals: '(FQTypeQuery types: {FamixStMethod}) --> (FQBooleanQuery property: #isDead)'.
+	self assert: cond3 query equals: '[ :entity | entity isDead ]'.
+	self assert: hierarchy equals: { 0. 0. 0. 1 } asOrderedCollection.
+	
 	stonReader close
 	
 ]
@@ -112,20 +131,19 @@ MiCriticBrowserTest >> testFollowEntity [
 { #category : #test }
 MiCriticBrowserTest >> testImportRulesFromStream [
 	| fileReference writeStream readStream |
-	browser model addRule: deadRule; addRule: stubRule; addRule: queriesBrowserRule.
-	browser model setEntities: { stubEntity. basicEntity } asMooseGroup.
+	browser model addChildToRootContext: childContext; addChildToRootContext: stubRule; addChildToRootContext: queriesBrowserRule.
+	browser model addChild: deadRule toContext: childContext.
+	
 	fileReference := (FileSystem memory root / 'rules.ston') asFileReference.
 	writeStream := fileReference writeStream.
-	browser exportRules: (browser model rules) toStream: writeStream.
+	browser exportRulesToStream: writeStream.
 	writeStream close.
 	
-	browser model rules removeAll.
+	self removeAllFromRootContext.
 	readStream := fileReference readStream.
 	browser importRulesFromStream: readStream.
 	readStream close.
-	self assertCollection: ((browser model rules at: 1) runOn: browser model entities) allEntities includesAll: { basicEntity. stubEntity }.
-	self assertCollection: ((browser model rules at: 2) runOn: browser model entities) allEntities includesAll: { stubEntity }.
-	self assertCollection: ((browser model rules at: 3) runOn: browser model entities) allEntities includesAll: { stubEntity }.
+	self assert: browser model rootContext children size equals: 3
 
 ]
 

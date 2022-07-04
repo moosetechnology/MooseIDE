@@ -168,8 +168,10 @@ MiCriticBrowser >> exportRules: aCollectionOfRules [
 ]
 
 { #category : #'load and saving' }
-MiCriticBrowser >> exportRules: aRootContext toStream: aStream [
-	SCExporter export: aRootContext onStream: aStream
+MiCriticBrowser >> exportRulesToStream: aStream [
+	model ruleComponents do: 
+		[ :el | SCExporter export: el onStream: aStream ].
+	SCExporter export: model createHierarchyTree onStream: aStream
 ]
 
 { #category : #actions }
@@ -197,19 +199,31 @@ MiCriticBrowser >> importRules [
 { #category : #'load and saving' }
 MiCriticBrowser >> importRulesFromStream: aStream [
 "import rules from a ston rules file opened on a stream"
-	| reader rulesCollection |
+	| reader rulesCollection hierarchy index |
 	reader := STONReader on: aStream.
 	rulesCollection := OrderedCollection new.
 	[ reader atEnd ] whileFalse: [ rulesCollection add: reader parseObject ].
-	rulesCollection do: [ :rule | 
-		| temp | 
-		temp := Smalltalk compiler evaluate: rule query.
+	hierarchy := rulesCollection removeLast.
+	reader close.
+
+	(rulesCollection select: [ :rc | rc class = FamixCBCondition ]) do: [ :cond |
+		| temp |
+		temp := Smalltalk compiler evaluate: cond query.
 		(temp class = FullBlockClosure) 
-			ifTrue: [ rule query: (MiCriticBrowserPharoCodeQuery on: rule query) ]
-			ifFalse: [ rule query: (MiCriticBrowserFQQuery on: temp) ].
-		model addRule: rule
+			ifTrue: [ cond query: (MiCriticBrowserPharoCodeQuery on: cond query) ]
+			ifFalse: [ cond query: (MiCriticBrowserFQQuery on: temp) ]. 
 	].
-	reader close
+	(rulesCollection select: [ :rc | rc class = FamixCBContext ]) do: [ :cont |
+		cont contextBlock: cont contextBlock.
+	].
+
+	index := 1.
+	hierarchy do: [ :parentIndex | 
+		parentIndex = 0 
+			ifTrue: [ model addChildToRootContext: (rulesCollection at: index) ]
+			ifFalse: [ model addChild: (rulesCollection at: index) toContext: (rulesCollection at: parentIndex) ].
+		index := index + 1. 
+	].
 	
 ]
 
