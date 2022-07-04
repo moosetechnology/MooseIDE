@@ -161,7 +161,7 @@ MiCriticBrowserModelTest >> testViolationsOf [
 	model setEntities: { stubEntity. deadEntity } asMooseGroup.
 	model run.
 	self assert: (model violationsOf: stubCondition) class equals: FamixCBViolationGroup.
-	self assertCollection: model getAllViolations allEntities includesAll: { stubEntity }
+	self assertCollection: (model violationsOf: stubCondition) allEntities hasSameElements: { stubEntity }
 ]
 
 { #category : #tests }
