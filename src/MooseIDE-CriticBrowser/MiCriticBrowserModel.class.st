@@ -125,11 +125,19 @@ MiCriticBrowserModel >> violations [
 ]
 
 { #category : #accessing }
-MiCriticBrowserModel >> violationsOf: aCondition [
-"returns violations for a given rule"
-	^ (violations includesKey: aCondition)
-		ifTrue: [ self violations at: aCondition ]
-		ifFalse: [ MooseGroup new ]
+MiCriticBrowserModel >> violationsOf: aRuleComponent [
+"returns violations for a given condition or childs of the selected context"
+	^ (aRuleComponent class inheritsFromOrEqualTo: FamixCBContext)
+		ifTrue: 
+			[ | group |
+			group := MooseGroup new.
+			aRuleComponent children do: [ :child | group addAll: (self violationsOf: child) ].
+			group specialize
+			]
+		ifFalse:
+			[ 
+			self violations at: aRuleComponent ifAbsent: [ MooseGroup new ]
+			]
 ]
 
 { #category : #accessing }

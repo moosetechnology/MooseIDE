@@ -146,7 +146,7 @@ MiCriticBrowser >> defaultTitle [
 
 { #category : #deleting }
 MiCriticBrowser >> deleteSelectedRule [
-	rules selectedItems do: [ :rule | model deleteRuleComponent: rule ].
+	model deleteRuleComponent: rules selectedItem.
 	rules roots: { model rootContext }.
 	self updateRulesList
 ]
@@ -293,8 +293,8 @@ MiCriticBrowser >> initializeLists [
 		display: [ :each | self displayRule: each ];
 		children: [ :each | self childrenForContext: each ];
 		contextMenu: editMenu;
-		beMultipleSelection;
-		whenMultiSelectionChangedDo: [ (model violations) ifNotEmpty: [ self selectedRules ] ].
+		beSingleSelection;
+		whenSelectionChangedDo: [ (model violations) ifNotEmpty: [ self selectedRules ] ].
 	
 	rulesResult
 		display: [ :each | self stringForItem: each ];
@@ -392,9 +392,9 @@ MiCriticBrowser >> initializeWindow: aWindowPresenter [
 
 { #category : #accessing }
 MiCriticBrowser >> miSelectedItem [ 
-	^ self rules selectedItems 
-		ifEmpty: [ model getAllViolations ] 
-		ifNotEmpty: [ model violationsOfCollection: (self rules selectedItems) ]
+	^ self rules selectedItem 
+		ifNil: [ model getAllViolations ] 
+		ifNotNil: [ model violationsOf: (self rules selectedItem) ]
 ]
 
 { #category : #'accessing - testing' }
@@ -432,10 +432,10 @@ MiCriticBrowser >> runButtonAction [
 { #category : #'selected object' }
 MiCriticBrowser >> selectedRules [
 "shows in the output list only the entities validating the selected queries (or the complete output if no query is selected)"
-	(rules selectedItems) 
-		ifNotEmpty: [
-			self updateResultList: (model violationsOfCollection: (rules selectedItems)) ]
-		ifEmpty: [ 
+	(rules selectedItem) 
+		ifNotNil: [
+			self updateResultList: (model violationsOf: rules selectedItem) ]
+		ifNil: [ 
 			self updateResultList: model getAllViolations ]
 ]
 
