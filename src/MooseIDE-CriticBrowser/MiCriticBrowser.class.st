@@ -306,60 +306,58 @@ MiCriticBrowser >> initializeLists [
 
 { #category : #initialization }
 MiCriticBrowser >> initializeMenu [
+
 	editMenu := self newMenu.
-	editMenu addItem: [ :item | 
-		item
-			name: 'Edit rule';
-			icon: (self iconNamed: #glamorousEdit);
-			action: [
-				(rules selectedItem class = FamixCBCondition) ifTrue:
-					[
-					rulesEditorPresenter setRuleToEdit: rules selectedItem.
-					rulesEditorPresenter openDialog
-					].
-				(rules selectedItem class = FamixCBContext) ifTrue:
-					[ 
-					contextEditorPresenter setContextToEdit: rules selectedItem.
-					contextEditorPresenter openDialog
-					]
-					] ];
-				addItem: [ :item | 
-		item
-			name: 'Delete rule';
-			icon: (self iconNamed: #smallDelete);
-			action: [ self deleteSelectedRule. self updateRulesList ]
-		];
-				addItem: [ :item |
-		item
-			name: 'Add context';
-			icon: (self iconNamed: #smallAdd);
-			action: [ 
-				addContextsPresenter setParentContext: rules selectedItem.
-				addContextsPresenter openDialog
-				]
-		];
-				addItem: [ :item |
-		item
-			name: 'Add condition';
-			icon: (self iconNamed: #smallAdd);
-			action: [ 
-				addRulesPresenter setParentContext: rules selectedItem.
-				addRulesPresenter openDialog
-				]
-		].
+	editMenu
+		addItem: [ :item | 
+			item
+				name: 'Edit rule';
+				icon: (self iconNamed: #glamorousEdit);
+				action: [ 
+					rules selectedItem class = FamixCBCondition
+						ifTrue: [ 
+							rulesEditorPresenter setRuleToEdit: rules selectedItem.
+							rulesEditorPresenter openDialog ]
+						ifFalse: [ 
+							contextEditorPresenter setContextToEdit: rules selectedItem.
+							contextEditorPresenter openDialog ] ];
+				enabled: [ (rules selectedItem class ~= FamixCBRootContext) ] ];
+		addItem: [ :item | 
+			item
+				name: 'Delete rule';
+				icon: (self iconNamed: #smallDelete);
+				action: [ 
+					self deleteSelectedRule.
+					self updateRulesList ];
+				enabled: [ rules selectedItem class ~= FamixCBRootContext ] ];
+		addItem: [ :item | 
+			item
+				name: 'Add context';
+				icon: (self iconNamed: #smallAdd);
+				action: [ 
+					addContextsPresenter setParentContext: rules selectedItem.
+					addContextsPresenter openDialog ];
+				enabled: [ (rules selectedItem class ~= FamixCBCondition) ] ];
+		addItem: [ :item | 
+			item
+				name: 'Add condition';
+				icon: (self iconNamed: #smallAdd);
+				action: [ 
+					addRulesPresenter setParentContext: rules selectedItem.
+					addRulesPresenter openDialog ];
+				enabled: [ (rules selectedItem class ~= FamixCBCondition) ] ].
 	expandMenu := self newMenu.
-	expandMenu addItem: [ :item | 
-		item
-			name: 'Collapse all';
-			icon: ((self iconNamed: #windowMenuInactive) rotateBy: -90);
-			action: [ rulesResult collapseAll ]
-		];
-	addItem: [ :item | 
-		item
-			name: 'Expand all';
-			icon: ((self iconNamed: #windowMenuInactive) rotateBy: 360);
-			action: [ rulesResult expandAll ] 
-			].
+	expandMenu
+		addItem: [ :item | 
+			item
+				name: 'Collapse all';
+				icon: ((self iconNamed: #windowMenuInactive) rotateBy: -90);
+				action: [ rulesResult collapseAll ] ];
+		addItem: [ :item | 
+			item
+				name: 'Expand all';
+				icon: ((self iconNamed: #windowMenuInactive) rotateBy: 360);
+				action: [ rulesResult expandAll ] ]
 ]
 
 { #category : #initialization }
