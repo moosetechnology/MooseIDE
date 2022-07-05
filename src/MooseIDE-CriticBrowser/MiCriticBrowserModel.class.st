@@ -30,6 +30,14 @@ MiCriticBrowserModel >> addChildToRootContext: aRuleComponent [
 ]
 
 { #category : #'as yet unclassified' }
+MiCriticBrowserModel >> contextOf: aRuleComponent [
+
+	^ (aRuleComponent class inheritsFromOrEqualTo: FamixCBContext)
+		  ifTrue: [ aRuleComponent entities ifNil: [ entities ] ]
+		  ifFalse: [ self contextOf: aRuleComponent parent ]
+]
+
+{ #category : #'as yet unclassified' }
 MiCriticBrowserModel >> createHierarchyTree [
 "creates a list with the index of the parent of each rule component in the ruleComponents
  used to export the rules (and represents the hierarchy)"

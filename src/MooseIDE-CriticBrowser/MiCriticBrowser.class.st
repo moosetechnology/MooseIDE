@@ -191,7 +191,7 @@ MiCriticBrowser >> exportRulesToStream: aStream [
 { #category : #actions }
 MiCriticBrowser >> followEntity: anEntity [
 	self model setEntities: (anEntity asMooseGroup).
-	self updateEntitiesList 
+	self updateEntitiesList: model entities
 ]
 
 { #category : #'load and saving' }
@@ -432,9 +432,11 @@ MiCriticBrowser >> selectedRules [
 "shows in the output list only the entities validating the selected queries (or the complete output if no query is selected)"
 	(rules selectedItem) 
 		ifNotNil: [
-			self updateResultList: (model violationsOf: rules selectedItem) ]
+			self updateResultList: (model violationsOf: rules selectedItem).
+			self updateEntitiesList: (model contextOf: rules selectedItem)]
 		ifNil: [ 
-			self updateResultList: model getAllViolations ]
+			self updateResultList: model getAllViolations.
+			self updateEntitiesList: model entities ]
 ]
 
 { #category : #naming }
@@ -445,10 +447,10 @@ MiCriticBrowser >> stringForItem: item [
 ]
 
 { #category : #'updating screen' }
-MiCriticBrowser >> updateEntitiesList [
+MiCriticBrowser >> updateEntitiesList: aCollection [
 	| roots |
-	roots := (model entities allEntityTypes collect: [ :type | 
-		           model entities allWithType: type ]) asOrderedCollection.
+	roots := (aCollection allEntityTypes collect: [ :type | 
+		           aCollection allWithType: type ]) asOrderedCollection.
 	roots do: [ :group | group description: group details ].
 	entitiesList roots:
 		(roots sort: [ :group | group description onlyLetters ] ascending).

@@ -185,8 +185,13 @@ MiCriticBrowserTest >> testRunButtonAction [
 
 { #category : #test }
 MiCriticBrowserTest >> testSelectedRules [
-	browser model setEntities: { stubEntity. basicEntity } asMooseGroup.
-	rootContext addChild: stubRule; addChild: deadRule.
+	| classEntity methodsContext |
+	classEntity := FamixJavaClass named: 'Test'.
+	methodsContext := FamixCBContext named: 'Methods' on: '[ :col | col allMethods ]'.
+	browser model setEntities: { stubEntity. basicEntity. classEntity } asMooseGroup.
+	browser model addChild: stubRule toContext: rootContext.
+	browser model addChild: methodsContext toContext: rootContext.
+	browser model addChild: deadRule toContext: methodsContext.
 	browser model run.
 	browser updateRulesList.
 	browser updateResultList: browser model getAllViolations.
@@ -194,11 +199,13 @@ MiCriticBrowserTest >> testSelectedRules [
 	browser rules selectItem: stubRule.
 	self assert: browser rulesResult roots flatten size equals: 1.
 	self assert: browser rulesResult roots flatten anyOne violatingEntity equals: stubEntity.
+	self assertCollection: browser entitiesList roots flatten hasSameElements: { stubEntity. basicEntity. classEntity }.
 	
 	browser rules unselectItem: stubRule.
 	browser rules selectItem: deadRule.
 	self assert: browser rulesResult roots flatten size equals: 2.
-	self assertCollection: browser rulesResult roots flatten asMooseGroup specialize allEntities includesAll: { stubEntity. basicEntity }.
+	self assertCollection: browser rulesResult roots flatten asMooseGroup specialize allEntities hasSameElements: { stubEntity. basicEntity }.
+	self assertCollection: browser entitiesList roots flatten hasSameElements: { stubEntity. basicEntity }.
 	
 ]
 
@@ -217,7 +224,7 @@ MiCriticBrowserTest >> testUnselectPrintsCompleteOutput [
 { #category : #test }
 MiCriticBrowserTest >> testUpdateEntitiesList [
 	browser model setEntities: stubEntity.
-	browser updateEntitiesList.
+	browser updateEntitiesList: browser model entities.
 	self assert: (browser entitiesList roots flatten size) equals: 1
 ]
 

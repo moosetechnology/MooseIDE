@@ -50,6 +50,23 @@ MiCriticBrowserModelTest >> testAddChildToContext [
 	
 ]
 
+{ #category : #test }
+MiCriticBrowserModelTest >> testContextOf [
+	| classes methods classEntity |
+	classes := FamixCBContext named: 'Classes' on: '[ :col | col allClasses ]'.
+	methods := FamixCBContext named: 'Methods' on: '[ :col | col allMethods ]'.
+	model addChild: classes toContext: model rootContext.
+	model addChild: methods toContext: model rootContext.
+	model addChild: stubCondition toContext: methods.
+	
+	classEntity := FamixJavaClass named: 'Test'. 
+	model setEntities: { stubEntity. deadEntity. classEntity } asMooseGroup.
+	model run.
+	self assertCollection: (model contextOf: model rootContext) hasSameElements: model entities.
+	self assertCollection: (model contextOf: classes) hasSameElements: { classEntity }.
+	self assertCollection: (model contextOf: stubCondition) hasSameElements: { stubEntity. deadEntity }.
+]
+
 { #category : #tests }
 MiCriticBrowserModelTest >> testCreateHierarchyTree [
 	| context tree |
@@ -115,7 +132,7 @@ MiCriticBrowserModelTest >> testRemoveRuleViolations [
 ]
 
 { #category : #tests }
-MiCriticBrowserModelTest >> testRunRules [	
+MiCriticBrowserModelTest >> testRun [	
 	model setEntities: { stubEntity. deadEntity } asMooseGroup.
 	model run.
 	self assert: model violations size equals: 2.
