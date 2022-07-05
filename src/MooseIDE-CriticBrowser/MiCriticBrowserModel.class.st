@@ -115,7 +115,7 @@ MiCriticBrowserModel >> ruleComponents [
 
 { #category : #running }
 MiCriticBrowserModel >> run [
-	rootContext runOnTree: entities.
+	rootContext runDownTree: entities.
 	violations := rootContext getAllViolations
 ]
 

@@ -32,7 +32,7 @@ FamixCBRootContextTest >> testGetAllViolations [
 	rootContext addChild: childContext.
 	rootContext addChild: condition.
 	childContext addChild: childCondition.
-	rootContext runOnTree: { contextEntity. entity. childEntityViolating. entityViolating }.
+	rootContext runDownTree: { contextEntity. entity. childEntityViolating. entityViolating }.
 	violations := rootContext getAllViolations.
 	self assert: violations class equals: Dictionary.
 	self assertCollection: violations keys hasSameElements: { condition. childCondition }.

@@ -81,15 +81,15 @@ FamixCBCondition >> removeViolation: aViolation [
 ]
 
 { #category : #running }
+FamixCBCondition >> runDownTree: aCollection [
+	self runOn: aCollection
+]
+
+{ #category : #running }
 FamixCBCondition >> runOn: aCollection [
 	
 	((self query runOnCollection: aCollection) do: 
 		[ :each | self addViolation: (FamixCBViolation condition: self violatedBy: each) ]).
-]
-
-{ #category : #running }
-FamixCBCondition >> runOnTree: aCollection [
-	self runOn: aCollection
 ]
 
 { #category : #'ston persistence' }

@@ -58,7 +58,7 @@ FamixCBContextTest >> testPutViolationsInto [
 	
 	violations := Dictionary new.
 	context addChild: condition.
-	context runOnTree: { entity. violatingEntity }.
+	context runDownTree: { entity. violatingEntity }.
 	context putViolationsInto: violations.
 	
 	self assertCollection: violations keys hasSameElements: { condition. }.
@@ -90,25 +90,25 @@ FamixCBContextTest >> testRemoveChild [
 ]
 
 { #category : #tests }
-FamixCBContextTest >> testRunOn [
-	
-	context runOn: { contextEntity. entity. }.
-	self assert: context entities size equals: 1.
-	self assert: context entities anyOne equals: contextEntity.
-	
-	
-]
-
-{ #category : #tests }
-FamixCBContextTest >> testRunOnTree [
+FamixCBContextTest >> testRunDownTree [
 	
 	context addChild: childContext.
-	context runOnTree: { contextEntity. entity. childContextEntity. entityInvalid }.
+	context runDownTree: { contextEntity. entity. childContextEntity. entityInvalid }.
 	
 	self assert: context entities size equals: 2.
 	self assertCollection: context entities hasSameElements: { contextEntity. childContextEntity }.
 	self assert: childContext entities size equals: 1.
 	self assert: childContext entities anyOne equals: childContextEntity
+	
+	
+]
+
+{ #category : #tests }
+FamixCBContextTest >> testRunOn [
+	
+	context runOn: { contextEntity. entity. }.
+	self assert: context entities size equals: 1.
+	self assert: context entities anyOne equals: contextEntity.
 	
 	
 ]

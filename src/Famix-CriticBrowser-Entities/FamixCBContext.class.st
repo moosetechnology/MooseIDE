@@ -117,16 +117,16 @@ FamixCBContext >> removeChild: aRuleComponent [
 ]
 
 { #category : #running }
-FamixCBContext >> runOn: aCollection [
+FamixCBContext >> runDownTree: aCollection [
 
-	entities := (contextBlock value: aCollection)
+	entities ifNil: [ self runOn: aCollection ].
+	children do: [ :child | child runDownTree: entities ]
 ]
 
 { #category : #running }
-FamixCBContext >> runOnTree: aCollection [
+FamixCBContext >> runOn: aCollection [
 
-	entities ifNil: [ self runOn: aCollection ].
-	children do: [ :child | child runOnTree: entities ]
+	entities := (contextBlock value: aCollection)
 ]
 
 { #category : #'ston persistence' }
