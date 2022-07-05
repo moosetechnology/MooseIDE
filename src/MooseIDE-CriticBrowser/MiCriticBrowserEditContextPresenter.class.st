@@ -7,7 +7,9 @@ Class {
 		'contextPresenter',
 		'mainWindow',
 		'parentContext',
-		'contextToEdit'
+		'contextToEdit',
+		'editButton',
+		'cancelButton'
 	],
 	#category : #'MooseIDE-CriticBrowser-Presenters'
 }
@@ -52,6 +54,20 @@ MiCriticBrowserEditContextPresenter >> hasBeenEdited: aRuleComponent [
 MiCriticBrowserEditContextPresenter >> initializeMainPresenter [
 "must be called after mainWindow has been set, not before"
 	contextPresenter := self instantiate: MiCriticBrowserContextMakerPresenter on: mainWindow model
+]
+
+{ #category : #initialization }
+MiCriticBrowserEditContextPresenter >> initializePresenters [ 
+	editButton := self newButton.
+	cancelButton := self newButton.
+	
+	editButton label: 'Edit rule';
+		icon: (self iconNamed: #glamorousEdit);
+		action: [ self editButtonAction ].
+		
+	cancelButton label: 'Cancel edit';
+		icon: (self iconNamed: #glamorousClose);
+		action: [ self window close ]
 ]
 
 { #category : #initialization }

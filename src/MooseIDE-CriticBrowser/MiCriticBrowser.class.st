@@ -311,9 +311,17 @@ MiCriticBrowser >> initializeMenu [
 		item
 			name: 'Edit rule';
 			icon: (self iconNamed: #glamorousEdit);
-			action: [ 
-				rulesEditorPresenter setRuleToEdit: rules selectedItem.
-				rulesEditorPresenter openDialog
+			action: [
+				(rules selectedItem class = FamixCBCondition) ifTrue:
+					[
+					rulesEditorPresenter setRuleToEdit: rules selectedItem.
+					rulesEditorPresenter openDialog
+					].
+				(rules selectedItem class = FamixCBContext) ifTrue:
+					[ 
+					contextEditorPresenter setContextToEdit: rules selectedItem.
+					contextEditorPresenter openDialog
+					]
 					] ];
 				addItem: [ :item | 
 		item

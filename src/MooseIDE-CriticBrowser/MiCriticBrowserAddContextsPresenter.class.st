@@ -19,9 +19,13 @@ MiCriticBrowserAddContextsPresenter class >> on: aWindowPresenter [
 ]
 
 { #category : #adding }
+MiCriticBrowserAddContextsPresenter >> addButtonAction [
+	contextPresenter addButtonAction
+]
+
+{ #category : #adding }
 MiCriticBrowserAddContextsPresenter >> addContext: aContext [
-	parentContext addChild: aContext.
-	mainWindow updateRulesList
+	mainWindow model addChild: aContext toContext: parentContext 
 ]
 
 { #category : #accessing }
@@ -43,9 +47,30 @@ MiCriticBrowserAddContextsPresenter >> defaultTitle [
 ]
 
 { #category : #initialization }
+MiCriticBrowserAddContextsPresenter >> initializeDialogWindow: aDialogWindowPresenter [
+	aDialogWindowPresenter 
+		addButton: addButton;
+		addButton: closeButton
+]
+
+{ #category : #initialization }
 MiCriticBrowserAddContextsPresenter >> initializeMainPresenter [
 "must be called after mainWindow has been set, not before"
 	contextPresenter := self instantiate: MiCriticBrowserContextMakerPresenter on: mainWindow model
+]
+
+{ #category : #initialization }
+MiCriticBrowserAddContextsPresenter >> initializePresenters [
+	addButton := self newButton.
+	closeButton := self newButton.
+	
+	addButton label: 'Add query';
+		icon: (self iconNamed: #smallAdd);
+		action: [ self addButtonAction ].
+		
+	closeButton label: 'Close';
+		icon: (self iconNamed: #glamorousClose);
+		action: [ self window close ]
 ]
 
 { #category : #initialization }

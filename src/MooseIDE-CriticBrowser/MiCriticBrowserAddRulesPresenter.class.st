@@ -28,8 +28,7 @@ MiCriticBrowserAddRulesPresenter >> addButtonAction [
 
 { #category : #adding }
 MiCriticBrowserAddRulesPresenter >> addCondition: aFamixCBCondition [ 
-	parentContext addChild: aFamixCBCondition.
-	mainWindow updateRulesList
+	mainWindow model addChild: aFamixCBCondition toContext: parentContext
 ]
 
 { #category : #initialization }
