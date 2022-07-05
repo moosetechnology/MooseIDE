@@ -167,7 +167,7 @@ MiCriticBrowser >> entitiesList [
 ]
 
 { #category : #'load and saving' }
-MiCriticBrowser >> exportRules: aCollectionOfRules [
+MiCriticBrowser >> exportRules [
 "opens an UI to choose where to save the rules, before opening a stream and saving on the chosen file"
 	| fileReference |
 	fileReference := UITheme builder
@@ -177,7 +177,7 @@ MiCriticBrowser >> exportRules: aCollectionOfRules [
 	fileReference
 		ifNotNil: [ fileReference
 				writeStreamDo: [ :stream | 
-					self exportRules: aCollectionOfRules toStream: stream.
+					self exportRulesToStream: stream.
 					Notification signal: 'Save successful!' ] ]
 ]
 
@@ -273,7 +273,7 @@ MiCriticBrowser >> initializeButtons [
 	exportButton
 		label: 'Export rules';
 		icon: (self iconNamed: #smallSave);
-		action: [ self exportRules: model rules ]
+		action: [ self exportRules ]
 ]
 
 { #category : #initialization }
