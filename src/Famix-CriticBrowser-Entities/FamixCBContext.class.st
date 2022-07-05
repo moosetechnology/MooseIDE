@@ -129,6 +129,13 @@ FamixCBContext >> runOn: aCollection [
 	entities := (contextBlock value: aCollection)
 ]
 
+{ #category : #'as yet unclassified' }
+FamixCBContext >> runUpTree: aCollection [
+
+	entities ifNil: [ self runOn: (parent runUpTree: aCollection) ].
+	^ entities
+]
+
 { #category : #'ston persistence' }
 FamixCBContext >> stonOn: stonWriter [
 	stonWriter

@@ -92,6 +92,11 @@ FamixCBCondition >> runOn: aCollection [
 		[ :each | self addViolation: (FamixCBViolation condition: self violatedBy: each) ]).
 ]
 
+{ #category : #'as yet unclassified' }
+FamixCBCondition >> runUpTree: aCollection [
+	self runOn: (parent runUpTree: aCollection)
+]
+
 { #category : #'ston persistence' }
 FamixCBCondition >> stonOn: stonWriter [
 	stonWriter

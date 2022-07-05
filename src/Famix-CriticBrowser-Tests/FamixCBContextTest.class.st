@@ -112,3 +112,16 @@ FamixCBContextTest >> testRunOn [
 	
 	
 ]
+
+{ #category : #test }
+FamixCBContextTest >> testRunUpTree [
+	| rootContext |
+	rootContext := FamixCBRootContext named: 'test' on: '[ :col | col ]'.
+	rootContext addChild: context.
+	context addChild: condition.
+	
+	condition runUpTree: { contextEntity. violatingEntity. entity } asMooseGroup specialize.
+	self assert: condition violations size equals: 1.
+	self assert: condition violations anyOne violatingEntity equals: violatingEntity.
+	self assert: condition violations anyOne violatedCondition equals: condition
+]

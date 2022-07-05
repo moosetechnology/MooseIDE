@@ -28,6 +28,11 @@ FamixCBRootContext >> removeSelfFromTree [
 	^ self
 ]
 
+{ #category : #'as yet unclassified' }
+FamixCBRootContext >> runUpTree: aCollection [
+	^ aCollection
+]
+
 { #category : #'ston persistence' }
 FamixCBRootContext >> stonOn: stonWriter [
 	self children do: [ :child | child stonOn: stonWriter ]
