@@ -51,6 +51,13 @@ MiCriticBrowserEditContextPresenter >> hasBeenEdited: aRuleComponent [
 ]
 
 { #category : #initialization }
+MiCriticBrowserEditContextPresenter >> initializeDialogWindow: aDialogWindowPresenter [
+	aDialogWindowPresenter 
+		addButton: editButton;
+		addButton: cancelButton
+]
+
+{ #category : #initialization }
 MiCriticBrowserEditContextPresenter >> initializeMainPresenter [
 "must be called after mainWindow has been set, not before"
 	contextPresenter := self instantiate: MiCriticBrowserContextMakerPresenter on: mainWindow model
@@ -61,7 +68,7 @@ MiCriticBrowserEditContextPresenter >> initializePresenters [
 	editButton := self newButton.
 	cancelButton := self newButton.
 	
-	editButton label: 'Edit rule';
+	editButton label: 'Edit context';
 		icon: (self iconNamed: #glamorousEdit);
 		action: [ self editButtonAction ].
 		
@@ -81,7 +88,7 @@ MiCriticBrowserEditContextPresenter >> initializeWindow: aWindowPresenter [
 { #category : #initialization }
 MiCriticBrowserEditContextPresenter >> setContextToEdit: aContext [
 	contextToEdit := aContext.
-	contextPresenter fillRuleToEdit: contextToEdit
+	contextPresenter fillContextToEdit: contextToEdit
 ]
 
 { #category : #initialization }

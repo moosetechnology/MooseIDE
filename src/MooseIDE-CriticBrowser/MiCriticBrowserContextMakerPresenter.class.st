@@ -22,7 +22,7 @@ MiCriticBrowserContextMakerPresenter >> addButtonAction [
 				 							on: codeInput text
 				 							summary: contextSummary text) ].
 	contextTitle text: ''.
-	codeInput text: '[ :collection | ]'.
+	codeInput text: '[ :collection | collection ]'.
 	contextSummary text: ''
 ]
 
@@ -121,7 +121,7 @@ MiCriticBrowserContextMakerPresenter >> initializePresenters [
 	contextSummary := self newText.
 	codeInput := self newCode.
 	
-	codeInput text: '[ :collection | ]'.
+	codeInput text: '[ :collection | collection ]'.
 	
 ]
 

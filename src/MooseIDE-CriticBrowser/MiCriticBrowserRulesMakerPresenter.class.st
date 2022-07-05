@@ -36,7 +36,7 @@ MiCriticBrowserRulesMakerPresenter >> addInputtedCodeRule [
 							on: (MiCriticBrowserPharoCodeQuery on: (codeInput text))
 							summary: ruleSummary text) 
 		].
-	codeInput text: '[ :entity | ]'
+	codeInput text: '[ :entity | entity ]'
 ]
 
 { #category : #adding }
@@ -150,7 +150,7 @@ MiCriticBrowserRulesMakerPresenter >> initializePresenters [
 	codeInput := self newCode.
 	queryDroplist := self newDropList.
 	
-	codeInput text: '[ :entity | ]'.
+	codeInput text: '[ :entity | entity ]'.
 	
 	codePresenter := MiPresenter new 
 		layout: (SpBoxLayout newTopToBottom 

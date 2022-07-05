@@ -23,7 +23,8 @@ MiCriticBrowserAddRulesPresenter class >> on: aWindowPresenter [
 
 { #category : #adding }
 MiCriticBrowserAddRulesPresenter >> addButtonAction [
-	queryPresenter addButtonAction
+	queryPresenter addButtonAction.
+	self window close
 ]
 
 { #category : #adding }
@@ -72,7 +73,7 @@ MiCriticBrowserAddRulesPresenter >> initializePresenters [
 	addButton := self newButton.
 	closeButton := self newButton.
 	
-	addButton label: 'Add query';
+	addButton label: 'Add condition';
 		icon: (self iconNamed: #smallAdd);
 		action: [ self addButtonAction ].
 		

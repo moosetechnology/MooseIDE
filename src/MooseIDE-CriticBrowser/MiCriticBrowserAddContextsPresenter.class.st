@@ -20,7 +20,8 @@ MiCriticBrowserAddContextsPresenter class >> on: aWindowPresenter [
 
 { #category : #adding }
 MiCriticBrowserAddContextsPresenter >> addButtonAction [
-	contextPresenter addButtonAction
+	contextPresenter addButtonAction.
+	self window close
 ]
 
 { #category : #adding }
@@ -64,7 +65,7 @@ MiCriticBrowserAddContextsPresenter >> initializePresenters [
 	addButton := self newButton.
 	closeButton := self newButton.
 	
-	addButton label: 'Add query';
+	addButton label: 'Add context';
 		icon: (self iconNamed: #smallAdd);
 		action: [ self addButtonAction ].
 		
