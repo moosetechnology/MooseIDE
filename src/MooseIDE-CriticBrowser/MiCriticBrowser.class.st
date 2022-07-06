@@ -443,7 +443,7 @@ MiCriticBrowser >> selectedRules [
 MiCriticBrowser >> stringForItem: item [
 "returns string to describe an item or a root regrouping entities of the same type"
 	(rulesResult roots includes: item) ifTrue: [ ^ item description ].
-	^ item mooseName
+	^ String streamContents: [ :s | item displayStringOn: s ]
 ]
 
 { #category : #'updating screen' }
