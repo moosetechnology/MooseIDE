@@ -51,9 +51,7 @@ MiCriticBrowserModel >> createHierarchyTree [
 
 { #category : #'as yet unclassified' }
 MiCriticBrowserModel >> deleteRuleComponent: aRuleComponent [
-	aRuleComponent removeSelfFromTree.
-	self removeRuleViolations: aRuleComponent.
-	ruleComponents remove: aRuleComponent ifAbsent: [  ]
+	self removeChild: aRuleComponent fromContext: aRuleComponent parent 
 ]
 
 { #category : #accessing }
@@ -97,14 +95,18 @@ MiCriticBrowserModel >> removeAllViolations [
 { #category : #adding }
 MiCriticBrowserModel >> removeChild: aRuleComponent fromContext: aContext [
 	(aContext = rootContext or: [ ruleComponents includes: aContext ]) ifFalse: [ ^ self ].
-	aContext removeChild: aRuleComponent.
+	aRuleComponent removeSelfFromTree.
 	ruleComponents remove: aRuleComponent ifAbsent: [  ].
+	self removeRuleViolations: aRuleComponent
 	
 ]
 
 { #category : #removing }
-MiCriticBrowserModel >> removeRuleViolations: aCondition [
-	violations removeKey: aCondition ifAbsent: [  ].
+MiCriticBrowserModel >> removeRuleViolations: aRuleComponent [
+
+	aRuleComponent class = FamixCBContext
+		ifTrue: [ aRuleComponent children do: [ :child | self removeRuleViolations: child ] ]
+		ifFalse: [ violations removeKey: aRuleComponent ifAbsent: [  ] ] 
 ]
 
 { #category : #accessing }

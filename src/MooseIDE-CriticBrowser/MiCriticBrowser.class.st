@@ -146,6 +146,7 @@ MiCriticBrowser >> defaultTitle [
 MiCriticBrowser >> deleteSelectedRule [
 	model deleteRuleComponent: rules selectedItem.
 	rules roots: { model rootContext }.
+	self updateResultList: model getAllViolations.
 	self updateRulesList
 ]
 

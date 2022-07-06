@@ -29,12 +29,11 @@ FamixCBViolationGroup >> stringForCBDescription [
 		  | typeName |
 		  typeName := self allViolatingEntitiesType size = 1 
 				ifTrue: [ self entities anyOne violatingEntity mooseDescription name ]
-				ifFalse: [ '' ].
+				ifFalse: [ 'entity' ].
 		  s
 			  print: self size;
-			  space.
-		  self ifEmpty: [ s << 'entities' ] ifNotEmpty: [ 
-			  s << (self size > 1
+			  space;
+		  << (self size > 1
 				   ifTrue: [ typeName asEnglishPlural ]
-				   ifFalse: [ typeName ]) ] ]
+				   ifFalse: [ typeName ]) ] 
 ]
