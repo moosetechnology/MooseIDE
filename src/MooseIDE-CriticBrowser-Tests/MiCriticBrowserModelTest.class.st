@@ -51,6 +51,16 @@ MiCriticBrowserModelTest >> testAddChildToContext [
 ]
 
 { #category : #test }
+MiCriticBrowserModelTest >> testAddViolationsFor [
+	
+	self assert: model violations keys size equals: 0.
+	stubCondition runOn: { stubEntity. deadEntity }.
+	model addViolationsFor: stubCondition.
+	self assert: model violations keys size equals: 1.
+	self assert: model violations keys anyOne equals: stubCondition
+]
+
+{ #category : #test }
 MiCriticBrowserModelTest >> testContextOf [
 	| classes methods classEntity |
 	classes := FamixCBContext named: 'Classes' on: '[ :col | col allClasses ]'.
@@ -139,6 +149,15 @@ MiCriticBrowserModelTest >> testRun [
 	self assertCollection: ((model violationsOf: stubCondition) allEntities) includesAll: {stubEntity}.
 	self assertCollection: ((model violationsOf: deadCondition) allEntities) includesAll: { stubEntity. deadEntity }.
 	
+]
+
+{ #category : #test }
+MiCriticBrowserModelTest >> testRunCondition [
+	
+	self assert: model violations keys size equals: 0.
+	model runCondition: stubCondition.
+	self assert: model violations keys size equals: 1.
+	self assert: model violations keys anyOne equals: stubCondition
 ]
 
 { #category : #tests }

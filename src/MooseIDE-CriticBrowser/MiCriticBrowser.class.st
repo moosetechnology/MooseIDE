@@ -345,7 +345,16 @@ MiCriticBrowser >> initializeMenu [
 				action: [ 
 					addRulesPresenter setParentContext: rules selectedItem.
 					addRulesPresenter openDialog ];
-				enabled: [ (rules selectedItem class ~= FamixCBCondition) ] ].
+				enabled: [ (rules selectedItem class ~= FamixCBCondition) ] ];
+		addItem: [ :item | 
+			item
+				name: 'Run condition';
+				icon: (self iconNamed: #glamorousPlay);
+				action: [ 
+					model runCondition: rules selectedItem.
+					self updateRulesList.
+					self updateResultList: model getAllViolations ];
+				enabled: [ (rules selectedItem class = FamixCBCondition) ] ].
 	expandMenu := self newMenu.
 	expandMenu
 		addItem: [ :item | 

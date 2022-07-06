@@ -29,6 +29,11 @@ MiCriticBrowserModel >> addChildToRootContext: aRuleComponent [
 	
 ]
 
+{ #category : #adding }
+MiCriticBrowserModel >> addViolationsFor: aCondition [
+	violations at: aCondition put: aCondition violations asMooseGroup specialize
+]
+
 { #category : #'as yet unclassified' }
 MiCriticBrowserModel >> contextOf: aRuleComponent [
 
@@ -117,6 +122,14 @@ MiCriticBrowserModel >> ruleComponents [
 MiCriticBrowserModel >> run [
 	rootContext runDownTree: entities.
 	violations := rootContext getAllViolations
+]
+
+{ #category : #'as yet unclassified' }
+MiCriticBrowserModel >> runCondition: aCondition [
+	aCondition runUpTree: entities.
+	self addViolationsFor: aCondition
+	
+	
 ]
 
 { #category : #accessing }
