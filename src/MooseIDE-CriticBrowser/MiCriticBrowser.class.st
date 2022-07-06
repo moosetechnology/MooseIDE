@@ -16,7 +16,6 @@ Class {
 		'editMenu',
 		'runButton',
 		'rulesResult',
-		'inspectButton',
 		'importButton',
 		'exportButton',
 		'addRulesPresenter',
@@ -278,24 +277,30 @@ MiCriticBrowser >> initializeButtons [
 
 { #category : #initialization }
 MiCriticBrowser >> initializeLists [
+
 	entitiesList := self newTree.
 	rules := self newTree.
 	rulesResult := self newTree.
-	
-	entitiesList 
+
+	entitiesList
 		display: [ :each | self stringForItem: each ];
 		children: [ :each | self children: each for: entitiesList ];
 		activateOnDoubleClick;
 		whenActivatedDo: [ :each | each selectedItem inspect ].
-	
+
 	rules
 		items: { self model rootContext };
 		display: [ :each | self displayRule: each ];
+		displayIcon: [ :each | 
+			each class = FamixCBCondition
+				ifTrue: [ self iconNamed: #radioButtonOn ]
+				ifFalse: [ self iconNamed: #radioButtonSelected ] ];
 		children: [ :each | self childrenForContext: each ];
 		contextMenu: editMenu;
 		beSingleSelection;
-		whenSelectionChangedDo: [ (model violations) ifNotEmpty: [ self selectedRules ] ].
-	
+		whenSelectionChangedDo: [ 
+			model violations ifNotEmpty: [ self selectedRules ] ].
+
 	rulesResult
 		display: [ :each | self stringForItem: each ];
 		children: [ :each | self children: each for: rulesResult ];
