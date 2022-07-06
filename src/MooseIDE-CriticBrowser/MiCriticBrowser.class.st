@@ -129,7 +129,6 @@ MiCriticBrowser >> defaultLayout [
 			yourself);
 		yourself);
 		add: (SpBoxLayout newLeftToRight
-			add: inspectButton expand: false;
 			addLast: importButton;
 			addLast: exportButton;
 			spacing: 5; 
@@ -249,7 +248,6 @@ MiCriticBrowser >> initialize [
 
 { #category : #initialization }
 MiCriticBrowser >> initializeButtons [
-	inspectButton := self newButton.
 	runButton := self newButton.
 	importButton := self newButton.
 	exportButton := self newButton.
@@ -258,11 +256,6 @@ MiCriticBrowser >> initializeButtons [
 		label: 'Run';
 		icon: (self iconNamed: #glamorousPlay);
 		action: [ self runButtonAction ].
-	
-	inspectButton 
-		label: 'Inspect model';
-		icon: (self iconNamed: #glamorousInspect);
-		action: [ self model inspect ].
 		
 	importButton
 		label: 'Import rules';
@@ -390,7 +383,6 @@ MiCriticBrowser >> initializePresenters [
 	self focusOrder
 			add: rules;
 			add: rulesResult;
-			add: inspectButton;
 			add: runButton.
 ]
 
