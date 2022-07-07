@@ -61,7 +61,7 @@ MiCriticBrowser class >> open [
 { #category : #specs }
 MiCriticBrowser class >> title [
 
-	^ 'Model Critic Browser'
+	^ 'Moose Critic Browser'
 ]
 
 { #category : #'accessing - testing' }
