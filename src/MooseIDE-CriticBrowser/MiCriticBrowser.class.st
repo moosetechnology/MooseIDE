@@ -139,7 +139,7 @@ MiCriticBrowser >> defaultLayout [
 
 { #category : #accessing }
 MiCriticBrowser >> defaultTitle [
-	^ 'Model Critic Browser'
+	^ self class title
 ]
 
 { #category : #deleting }
