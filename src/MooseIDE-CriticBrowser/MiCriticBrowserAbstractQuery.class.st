@@ -7,7 +7,7 @@ Class {
 	#instVars : [
 		'query'
 	],
-	#category : #'MooseIDE-CriticBrowser'
+	#category : #'MooseIDE-CriticBrowser-Queries'
 }
 
 { #category : #'instance creation' }

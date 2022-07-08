@@ -19,25 +19,29 @@ MiCriticBrowserRulesMakerPresenterTest >> browserClass [
 { #category : #running }
 MiCriticBrowserRulesMakerPresenterTest >> setUp [
 	super setUp.
+	browser addRulesPresenter setParentContext: browser model rootContext.
 	addQueryPresenter := browser addRulesPresenter queryPresenter.
 	editQueryPresenter := browser rulesEditorPresenter queryPresenter.
-	browser openRulesMakerButton performAction
+	browser addRulesPresenter openDialog
+	
 
 ]
 
 { #category : #running }
 MiCriticBrowserRulesMakerPresenterTest >> tearDown [
 	super tearDown.
-	addQueryPresenter delete
+	browser addRulesPresenter window close
 ]
 
 { #category : #test }
 MiCriticBrowserRulesMakerPresenterTest >> testAddInputtedCodeRule [
 	addQueryPresenter codeButtonAction.
+	addQueryPresenter ruleTitle text: 'test'.
 	addQueryPresenter codeInput text: '[ :entity | entity isDead ]'.
 	addQueryPresenter addButtonAction.
 	
-	self assert: browser model rules size equals: 1
+	self assert: browser model rootContext children size equals: 1.
+	self assert: browser model rootContext children anyOne name equals: 'test'
 ]
 
 { #category : #test }
@@ -45,11 +49,13 @@ MiCriticBrowserRulesMakerPresenterTest >> testAddInputtedFQRule [
 	| query |
 	query := FQBooleanQuery property: #isStub.
 	addQueryPresenter queriesBrowserButton click.
+	addQueryPresenter ruleTitle text: 'test'.
 	addQueryPresenter queryDroplist items: { query }.
 	addQueryPresenter queryDroplist selectItem: query.
 	addQueryPresenter addButtonAction.
 	
-	self assert: browser model rules size equals: 1.
+	self assert: browser model rootContext children size equals: 1.
+	self assert: browser model rootContext children anyOne name equals: 'test'.
 ]
 
 { #category : #test }
@@ -62,7 +68,7 @@ MiCriticBrowserRulesMakerPresenterTest >> testCodeButtonAction [
 { #category : #test }
 MiCriticBrowserRulesMakerPresenterTest >> testEditRule [
 	| rule newTitle newQuery newSummary |
-	rule := FamixCBRule named: 'test' on: (MiCriticBrowserPharoCodeQuery on: '[ :entity | entity isStub ]') summary: 'règle utilisée pour un test'.
+	rule := FamixCBCondition named: 'test' on: (MiCriticBrowserPharoCodeQuery on: '[ :entity | entity isStub ]') summary: 'règle utilisée pour un test'.
 	newTitle := 'test édité'.
 	newQuery := '[ :entity | entity isDead ]'.
 	newSummary := 'règle modifiée pour un test'.
@@ -82,8 +88,8 @@ MiCriticBrowserRulesMakerPresenterTest >> testEditRule [
 { #category : #test }
 MiCriticBrowserRulesMakerPresenterTest >> testFillRuleToEdit [
 	| rule queriesBrowserRule |
-	rule := FamixCBRule named: 'test' on: (MiCriticBrowserPharoCodeQuery on: '[ :entity | entity isStub ]') summary: 'règle utilisée pour un test'.
-	queriesBrowserRule := FamixCBRule named: 'test2' on: (MiCriticBrowserFQQuery on: (FQBooleanQuery property: #isDead)) summary: 'autre règle utilisée pour un test'.
+	rule := FamixCBCondition named: 'test' on: (MiCriticBrowserPharoCodeQuery on: '[ :entity | entity isStub ]') summary: 'règle utilisée pour un test'.
+	queriesBrowserRule := FamixCBCondition named: 'test2' on: (MiCriticBrowserFQQuery on: (FQBooleanQuery property: #isDead)) summary: 'autre règle utilisée pour un test'.
 	
 	addQueryPresenter codeButtonAction.
 	addQueryPresenter fillRuleToEdit: rule.

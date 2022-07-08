@@ -6,24 +6,52 @@ Class {
 	#superclass : #MiAbstractModel,
 	#instVars : [
 		'entities',
-		'rules',
+		'rootContext',
+		'ruleComponents',
 		'violations'
 	],
-	#category : #'MooseIDE-CriticBrowser'
+	#category : #'MooseIDE-CriticBrowser-Model'
 }
 
-{ #category : #accessing }
-MiCriticBrowserModel >> addRule: aRule [
-
-	((aRule class inheritsFrom: FamixCBRule) or: [ aRule class = FamixCBRule ]) ifTrue: [ rules add: aRule ]
+{ #category : #adding }
+MiCriticBrowserModel >> addChild: aRuleComponent toContext: aContext [
+	(aContext = rootContext or: [ ruleComponents includes: aContext ]) ifFalse: [ ^ self ].
+	aContext addChild: aRuleComponent.
+	ruleComponents add: aRuleComponent.
+	browser updateRulesList
+	
 ]
 
-{ #category : #deleting }
-MiCriticBrowserModel >> deleteRule: aFamixCBRule [
+{ #category : #adding }
+MiCriticBrowserModel >> addChildToRootContext: aRuleComponent [
+	rootContext addChild: aRuleComponent.
+	ruleComponents add: aRuleComponent
+	
+]
 
-	(rules indexOf: aFamixCBRule) = 0 ifTrue: [ ^ self ].
-	rules remove: aFamixCBRule.
-	violations removeKey: aFamixCBRule ifAbsent: [ ^ self ]
+{ #category : #adding }
+MiCriticBrowserModel >> addViolationsFor: aCondition [
+	violations at: aCondition put: aCondition violations asMooseGroup specialize
+]
+
+{ #category : #'as yet unclassified' }
+MiCriticBrowserModel >> contextOf: aRuleComponent [
+
+	^ (aRuleComponent class inheritsFromOrEqualTo: FamixCBContext)
+		  ifTrue: [ aRuleComponent entities ifNil: [ entities ] ]
+		  ifFalse: [ self contextOf: aRuleComponent parent ]
+]
+
+{ #category : #'as yet unclassified' }
+MiCriticBrowserModel >> createHierarchyTree [
+"creates a list with the index of the parent of each rule component in the ruleComponents
+ used to export the rules (and represents the hierarchy)"
+	^ ruleComponents collect: [ :el | ruleComponents indexOf: el parent ]
+]
+
+{ #category : #'as yet unclassified' }
+MiCriticBrowserModel >> deleteRuleComponent: aRuleComponent [
+	self removeChild: aRuleComponent fromContext: aRuleComponent parent 
 ]
 
 { #category : #accessing }
@@ -41,30 +69,75 @@ MiCriticBrowserModel >> getAllViolations [
 	^ result
 ]
 
+{ #category : #testing }
+MiCriticBrowserModel >> hasBeenEdited: aRuleComponent [
+	self removeRuleViolations: aRuleComponent.
+	aRuleComponent resetExecutionOfTree.
+	browser updateRulesList.
+	browser updateResultList: self getAllViolations
+]
+
 { #category : #initialization }
 MiCriticBrowserModel >> initialize [ 
 
 	super initialize.
 	entities := MooseGroup new.
-	rules := OrderedCollection new.
-	violations := Dictionary new.
+	rootContext := (FamixCBRootContext named: 'Root context (all entities)' on: '[ :col | col ]').
+	ruleComponents := OrderedCollection new.
+	violations := Dictionary new
 ]
 
 { #category : #removing }
-MiCriticBrowserModel >> removeRuleViolations: aRule [
-	violations removeKey: aRule ifAbsent: [  ].
+MiCriticBrowserModel >> removeAllViolations [
+	rootContext removeAllViolationsFromTree
+]
+
+{ #category : #removing }
+MiCriticBrowserModel >> removeBranchFromRuleComponents: aRuleComponent [
+
+	ruleComponents remove: aRuleComponent ifAbsent: [  ].
+	aRuleComponent class = FamixCBContext ifTrue: [ aRuleComponent children do: [ :child | self removeBranchFromRuleComponents: child ] ]
+]
+
+{ #category : #adding }
+MiCriticBrowserModel >> removeChild: aRuleComponent fromContext: aContext [
+	(aContext = rootContext or: [ ruleComponents includes: aContext ]) ifFalse: [ ^ self ].
+	aRuleComponent removeSelfFromTree.
+	self removeBranchFromRuleComponents: aRuleComponent.
+	self removeRuleViolations: aRuleComponent
+	
+]
+
+{ #category : #removing }
+MiCriticBrowserModel >> removeRuleViolations: aRuleComponent [
+
+	aRuleComponent class = FamixCBContext
+		ifTrue: [ aRuleComponent children do: [ :child | self removeRuleViolations: child ] ]
+		ifFalse: [ violations removeKey: aRuleComponent ifAbsent: [  ] ] 
 ]
 
 { #category : #accessing }
-MiCriticBrowserModel >> rules [
-
-	^ rules
+MiCriticBrowserModel >> rootContext [
+	^ rootContext
 ]
 
-{ #category : #execution }
-MiCriticBrowserModel >> runRules [
-"run on the entities every query in the model, and stores in output the result of each query linked to a key (the query)"
-	rules do: [ :each | violations at: each put: (each runOn: entities) ].
+{ #category : #'accessing - tests' }
+MiCriticBrowserModel >> ruleComponents [
+"used for testing purposes, do not access outside of tests"
+	^ ruleComponents
+]
+
+{ #category : #running }
+MiCriticBrowserModel >> run [
+	rootContext runDownTree: entities.
+	violations := rootContext getAllViolations
+]
+
+{ #category : #'as yet unclassified' }
+MiCriticBrowserModel >> runCondition: aCondition [
+	aCondition runUpTree: entities.
+	self addViolationsFor: aCondition
+	
 	
 ]
 
@@ -82,10 +155,19 @@ MiCriticBrowserModel >> violations [
 ]
 
 { #category : #accessing }
-MiCriticBrowserModel >> violationsOf: aFamixCBRule [
-"returns violations for a given rule"
-	(violations includesKey: aFamixCBRule)
-		ifTrue: [ ^ self violations at: aFamixCBRule ]
+MiCriticBrowserModel >> violationsOf: aRuleComponent [
+"returns violations for a given condition or childs of the selected context"
+	^ (aRuleComponent class inheritsFromOrEqualTo: FamixCBContext)
+		ifTrue: 
+			[ | group |
+			group := MooseGroup new.
+			aRuleComponent children do: [ :child | group addAll: (self violationsOf: child) ].
+			group specialize
+			]
+		ifFalse:
+			[ 
+			self violations at: aRuleComponent ifAbsent: [ MooseGroup new ]
+			]
 ]
 
 { #category : #accessing }
@@ -93,6 +175,6 @@ MiCriticBrowserModel >> violationsOfCollection: aCollection [
 "returns violations for a given set of rules"
 	| result |
 	result := FamixCBViolationGroup new.
-	aCollection do: [ :rule | result := result , (self violationsOf: rule) ].
+	aCollection do: [ :condition | result := result , (self violationsOf: condition) ].
 	^ result 
 ]

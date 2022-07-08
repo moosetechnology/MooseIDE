@@ -2,7 +2,7 @@ Class {
 	#name : #FamixCBViolation,
 	#superclass : #FamixCBEntity,
 	#instVars : [
-		'#violatedRule => FMOne type: #FamixCBRule opposite: #violations'
+		'#violatedCondition => FMOne type: #FamixCBCondition opposite: #violations'
 	],
 	#category : #'Famix-CriticBrowser-Entities-Entities'
 }
@@ -23,34 +23,45 @@ FamixCBViolation class >> annotationFamixCBViolationGroup [
 ]
 
 { #category : #initialization }
-FamixCBViolation class >> rule: aFamixCBRule violatedBy: anEntity [
+FamixCBViolation class >> condition: aCondition violatedBy: anEntity [
 	^ self new 
-		violatedRule: aFamixCBRule;
+		violatedCondition: aCondition;
 		violatingEntity: anEntity;
 		yourself
 ]
 
+{ #category : #comparing }
+FamixCBViolation >> = anObject [
+	self class = anObject class ifFalse: [ ^ false ].
+	^ self violatingEntity = anObject violatingEntity and: [ violatedCondition = anObject violatedCondition ]
+]
+
+{ #category : #comparing }
+FamixCBViolation >> hash [
+	^ self violatingEntity hash + violatedCondition 
+]
+
 { #category : #printing }
 FamixCBViolation >> mooseNameOn: aStream [
-	self violatingEntity ifNotNil: [ aStream nextPutAll: self violatingEntity name ].
+	self violatingEntity ifNotNil: [ self violatingEntity displayStringOn: aStream ].
 	aStream nextPutAll: ' -> '.
-	self violatedRule ifNotNil: [ aStream nextPutAll: self violatedRule name ]
+	self violatedCondition ifNotNil: [ self violatedCondition displayStringOn: aStream ]
 ]
 
 { #category : #accessing }
-FamixCBViolation >> violatedRule [
-	"Relation named: #violatedRule type: #FamixCBRule opposite: #violations"
+FamixCBViolation >> violatedCondition [
+	"Relation named: #violatedCondition type: #FamixCBCondition opposite: #violations"
 
 	<generated>
-	<FMComment: 'Rule violated by this entity.'>
-	^ violatedRule
+	<FMComment: 'Condition violated by this entity.'>
+	^ violatedCondition
 ]
 
 { #category : #accessing }
-FamixCBViolation >> violatedRule: anObject [
+FamixCBViolation >> violatedCondition: anObject [
 
 	<generated>
-	violatedRule := anObject
+	violatedCondition := anObject
 ]
 
 { #category : #accessing }

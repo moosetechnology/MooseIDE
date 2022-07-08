@@ -4,7 +4,7 @@ I am NotAValidQuery, an error raised when a Rule is instantiated with a query no
 Class {
 	#name : #NotAValidQuery,
 	#superclass : #Error,
-	#category : #'MooseIDE-CriticBrowser'
+	#category : #'MooseIDE-CriticBrowser-Queries'
 }
 
 { #category : #accessing }

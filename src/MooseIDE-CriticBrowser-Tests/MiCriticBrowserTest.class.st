@@ -6,7 +6,9 @@ Class {
 		'deadRule',
 		'queriesBrowserRule',
 		'basicEntity',
-		'stubEntity'
+		'stubEntity',
+		'rootContext',
+		'childContext'
 	],
 	#category : #'MooseIDE-CriticBrowser-Tests'
 }
@@ -26,19 +28,27 @@ MiCriticBrowserTest >> browserClass [
 	^ MiCriticBrowser 
 ]
 
+{ #category : #removing }
+MiCriticBrowserTest >> removeAllFromRootContext [
+
+	[ browser model rootContext children isNotEmpty ] whileTrue: [ browser model removeChild: browser model rootContext children anyOne fromContext: browser model rootContext ].
+]
+
 { #category : #running }
 MiCriticBrowserTest >> setUp [
 	super setUp.
-	stubRule := FamixCBRule named: 'test1' on: ((MiCriticBrowserPharoCodeQuery on: '[ :entity | entity isStub ]')).
-	deadRule := FamixCBRule named: 'test2' on: ((MiCriticBrowserPharoCodeQuery on: '[ :entity | entity isDead ]')).
-	queriesBrowserRule := FamixCBRule named: 'test3' on: (MiCriticBrowserFQQuery on: (FQBooleanQuery property: #isDead)).
+	stubRule := FamixCBCondition named: 'test1' on: ((MiCriticBrowserPharoCodeQuery on: '[ :entity | entity isStub ]')).
+	deadRule := FamixCBCondition named: 'test2' on: ((MiCriticBrowserPharoCodeQuery on: '[ :entity | entity isDead ]')).
+	queriesBrowserRule := FamixCBCondition named: 'test3' on: (MiCriticBrowserFQQuery on: (FQBooleanQuery property: #isDead)).
 	queriesBrowserRule query query parent: (FQTypeQuery types: { FamixStMethod } ).
+	
 	stubEntity := FamixStMethod new.
 	stubEntity name: 'test1'; isStub: true.
 	basicEntity := FamixStMethod new.
-	basicEntity name: 'test2'
+	basicEntity name: 'test2'.
 	
-
+	rootContext := browser model rootContext.
+	childContext := FamixCBContext named: 'Classes context' on: '[ :col | col allClasses ]'
 ]
 
 { #category : #test }
@@ -46,44 +56,60 @@ MiCriticBrowserTest >> testChildrenFor [
 	| entity |
 	entity := FamixStMethod new.
 	entity name: 'test'; isStub: true.
+	rootContext addChild: stubRule.
 	browser model 
 		setEntities: entity;
-		addRule: stubRule;
-		runRules.
+		run.
 	
 	browser updateResultList: browser model getAllViolations.
 	self assert: (browser children: (browser rulesResult roots anyOne) for: (browser rulesResult)) anyOne violatingEntity equals: entity
 ]
 
+{ #category : #tests }
+MiCriticBrowserTest >> testChildrenForContext [
+	browser model rootContext addChild: stubRule.
+	self assert: (browser childrenForContext: browser rules roots anyOne) size equals: 1.
+	self assert: (browser childrenForContext: browser rules roots anyOne) anyOne equals: stubRule
+]
+
 { #category : #test }
 MiCriticBrowserTest >> testDeleteSelectedRule [
-	browser model addRule: stubRule; addRule: deadRule.
+	rootContext addChild: stubRule; addChild: deadRule.
 	browser updateRulesList.
+	self assert: browser model rootContext children size equals: 2.
 	browser rules selectItem: stubRule.
-	self assert: browser model rules size equals: 2.
 	browser deleteSelectedRule.
-	self assert: browser model rules size equals: 1
+	self assert: browser model rootContext children size equals: 1
 ]
 
 { #category : #test }
 MiCriticBrowserTest >> testExportRulesToStream [
-	| fileReference writeStream readStream stonReader rule1 rule2 rule3 |
-	browser model addRule: deadRule; addRule: stubRule; addRule: queriesBrowserRule.
+	| fileReference writeStream readStream stonReader cont cond1 cond2 cond3 hierarchy |
+	
+	browser model addChildToRootContext: childContext; addChildToRootContext: stubRule; addChildToRootContext: queriesBrowserRule.
+	browser model addChild: deadRule toContext: childContext.
+	
 	fileReference := (FileSystem memory root / 'rules.ston') asFileReference.
 	writeStream := fileReference writeStream.
-	browser exportRules: (browser model rules) toStream: writeStream.
+	browser exportRulesToStream: writeStream.
 	writeStream close.
-	
 	readStream := fileReference readStream.
 	stonReader := STONReader on: fileReference readStream.
-	rule1 := stonReader parseObject.
-	rule2 := stonReader parseObject.
-	rule3 := stonReader parseObject.
+	
+	cont := stonReader parseObject.
+	cond1 := stonReader parseObject.
+	cond2 := stonReader parseObject.
+	cond3 := stonReader parseObject.
+	hierarchy := stonReader parseObject.
 	readStream close.
-	self assert: rule1 class equals: FamixCBRule.
-	self assert: rule1 query equals: '[ :entity | entity isDead ]'.
-	self assert: rule2 query equals: '[ :entity | entity isStub ]'.
-	self assert: rule3 query equals: '(FQTypeQuery types: {FamixStMethod}) --> (FQBooleanQuery property: #isDead)'.
+	
+	self assert: cont class equals: FamixCBContext.
+	self assert: ({ cond1 . cond2 . cond3 } allSatisfy: [ :c | c class = FamixCBCondition ]) equals: true.
+	self assert: cond1 query equals: '[ :entity | entity isStub ]'.
+	self assert: cond2 query equals: '(FQTypeQuery types: {FamixStMethod}) --> (FQBooleanQuery property: #isDead)'.
+	self assert: cond3 query equals: '[ :entity | entity isDead ]'.
+	self assert: hierarchy equals: { 0. 0. 0. 1 } asOrderedCollection.
+	
 	stonReader close
 	
 ]
@@ -105,20 +131,19 @@ MiCriticBrowserTest >> testFollowEntity [
 { #category : #test }
 MiCriticBrowserTest >> testImportRulesFromStream [
 	| fileReference writeStream readStream |
-	browser model addRule: deadRule; addRule: stubRule; addRule: queriesBrowserRule.
-	browser model setEntities: { stubEntity. basicEntity } asMooseGroup.
+	browser model addChildToRootContext: childContext; addChildToRootContext: stubRule; addChildToRootContext: queriesBrowserRule.
+	browser model addChild: deadRule toContext: childContext.
+	
 	fileReference := (FileSystem memory root / 'rules.ston') asFileReference.
 	writeStream := fileReference writeStream.
-	browser exportRules: (browser model rules) toStream: writeStream.
+	browser exportRulesToStream: writeStream.
 	writeStream close.
 	
-	browser model rules removeAll.
+	self removeAllFromRootContext.
 	readStream := fileReference readStream.
 	browser importRulesFromStream: readStream.
 	readStream close.
-	self assertCollection: ((browser model rules at: 1) runOn: browser model entities) allEntities includesAll: { basicEntity. stubEntity }.
-	self assertCollection: ((browser model rules at: 2) runOn: browser model entities) allEntities includesAll: { stubEntity }.
-	self assertCollection: ((browser model rules at: 3) runOn: browser model entities) allEntities includesAll: { stubEntity }.
+	self assert: browser model rootContext children size equals: 3
 
 ]
 
@@ -132,10 +157,10 @@ MiCriticBrowserTest >> testMiSelectedItem [
 	entityStub isStub: true.
 	
 	"propagating the entity for the model to receive it"
+	rootContext addChild: stubRule.
 	(browser model) 
 		setEntities: {entity. entityStub} asMooseGroup; 
-		addRule: stubRule;
-		runRules.
+		run.
 	browser updateResultList: browser model getAllViolations.
 		
 	self assert: browser miSelectedItem size equals: 1.
@@ -151,36 +176,43 @@ MiCriticBrowserTest >> testModelStartsEmpty [
 { #category : #test }
 MiCriticBrowserTest >> testRunButtonAction [
 	browser model setEntities: { stubEntity } asMooseGroup.
-	browser model addRule: stubRule.
+	rootContext addChild: stubRule.
 	browser runButton performAction.
 	
-	self assert: browser model violations size equals: 1 
+	self assert: browser model violations size equals: 1
 	
 ]
 
 { #category : #test }
 MiCriticBrowserTest >> testSelectedRules [
-	browser model setEntities: { stubEntity. basicEntity } asMooseGroup.
-	browser model addRule: stubRule; addRule: deadRule.
-	browser model runRules.
+	| classEntity methodsContext |
+	classEntity := FamixJavaClass named: 'Test'.
+	methodsContext := FamixCBContext named: 'Methods' on: '[ :col | col allMethods ]'.
+	browser model setEntities: { stubEntity. basicEntity. classEntity } asMooseGroup.
+	browser model addChild: stubRule toContext: rootContext.
+	browser model addChild: methodsContext toContext: rootContext.
+	browser model addChild: deadRule toContext: methodsContext.
+	browser model run.
 	browser updateRulesList.
 	browser updateResultList: browser model getAllViolations.
 	
 	browser rules selectItem: stubRule.
 	self assert: browser rulesResult roots flatten size equals: 1.
 	self assert: browser rulesResult roots flatten anyOne violatingEntity equals: stubEntity.
+	self assertCollection: browser entitiesList roots flatten hasSameElements: { stubEntity. basicEntity. classEntity }.
 	
 	browser rules unselectItem: stubRule.
 	browser rules selectItem: deadRule.
 	self assert: browser rulesResult roots flatten size equals: 2.
-	self assertCollection: browser rulesResult roots flatten asMooseGroup specialize allEntities includesAll: { stubEntity. basicEntity }.
+	self assertCollection: browser rulesResult roots flatten asMooseGroup specialize allEntities hasSameElements: { stubEntity. basicEntity }.
+	self assertCollection: browser entitiesList roots flatten hasSameElements: { stubEntity. basicEntity }.
 	
 ]
 
 { #category : #tests }
 MiCriticBrowserTest >> testUnselectPrintsCompleteOutput [
 	browser model setEntities: { stubEntity. basicEntity } asMooseGroup.
-	browser model addRule: stubRule; addRule: deadRule.
+	rootContext addChild: stubRule; addChild: deadRule.
 	browser runButtonAction.
 	
 	browser rules selectItem: stubRule.
@@ -192,26 +224,15 @@ MiCriticBrowserTest >> testUnselectPrintsCompleteOutput [
 { #category : #test }
 MiCriticBrowserTest >> testUpdateEntitiesList [
 	browser model setEntities: stubEntity.
-	
-	browser updateEntitiesList.
+	browser updateEntitiesList: browser model entities.
 	self assert: (browser entitiesList roots flatten size) equals: 1
 ]
 
 { #category : #test }
 MiCriticBrowserTest >> testUpdateResultList [
-	browser model addRule: stubRule; setEntities: { stubEntity } asMooseGroup; runRules. 
-	
-	browser updateResultList: browser model getAllViolations.
+	browser updateResultList: { FamixCBViolation condition: stubRule violatedBy: stubEntity } asMooseGroup specialize.
 	self assert: (browser rulesResult roots flatten size) equals: 1.
 	
 	browser updateResultList: FamixCBViolationGroup new.
 	self assert: (browser rulesResult roots flatten size) equals: 0
-]
-
-{ #category : #tests }
-MiCriticBrowserTest >> testUpdateRulesList [
-	self assert: browser rules roots size equals: 0.
-	browser model addRule: stubRule.
-	browser updateRulesList.
-	self assert: browser rules roots size equals: 1
 ]

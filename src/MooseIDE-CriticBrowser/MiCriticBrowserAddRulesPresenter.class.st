@@ -8,9 +8,10 @@ Class {
 		'addButton',
 		'closeButton',
 		'mainWindow',
-		'queryPresenter'
+		'queryPresenter',
+		'parentContext'
 	],
-	#category : #'MooseIDE-CriticBrowser'
+	#category : #'MooseIDE-CriticBrowser-Presenters'
 }
 
 { #category : #'instance creation' }
@@ -22,13 +23,13 @@ MiCriticBrowserAddRulesPresenter class >> on: aWindowPresenter [
 
 { #category : #adding }
 MiCriticBrowserAddRulesPresenter >> addButtonAction [
-	queryPresenter addButtonAction
+	queryPresenter addButtonAction.
+	self window close
 ]
 
 { #category : #adding }
-MiCriticBrowserAddRulesPresenter >> addRule: aRule [
-	mainWindow model addRule: aRule.
-	mainWindow updateRulesList
+MiCriticBrowserAddRulesPresenter >> addCondition: aFamixCBCondition [ 
+	mainWindow model addChild: aFamixCBCondition toContext: parentContext
 ]
 
 { #category : #initialization }
@@ -72,7 +73,7 @@ MiCriticBrowserAddRulesPresenter >> initializePresenters [
 	addButton := self newButton.
 	closeButton := self newButton.
 	
-	addButton label: 'Add query';
+	addButton label: 'Add condition';
 		icon: (self iconNamed: #smallAdd);
 		action: [ self addButtonAction ].
 		
@@ -104,6 +105,11 @@ MiCriticBrowserAddRulesPresenter >> remove: aQuery [
 MiCriticBrowserAddRulesPresenter >> setMainWindow: aWindowPresenter [
 	mainWindow := aWindowPresenter.
 	self initializeMainPresenter
+]
+
+{ #category : #initialization }
+MiCriticBrowserAddRulesPresenter >> setParentContext: aContext [
+	parentContext := aContext
 ]
 
 { #category : #updating }

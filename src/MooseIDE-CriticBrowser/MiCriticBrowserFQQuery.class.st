@@ -4,7 +4,7 @@ I am a handler for queries coming from the MooseIDE Queries Browser, meant to be
 Class {
 	#name : #MiCriticBrowserFQQuery,
 	#superclass : #MiCriticBrowserAbstractQuery,
-	#category : #'MooseIDE-CriticBrowser'
+	#category : #'MooseIDE-CriticBrowser-Queries'
 }
 
 { #category : #converting }
@@ -24,8 +24,18 @@ MiCriticBrowserFQQuery >> runOn: aGroupOfEntities [
 
 { #category : #running }
 MiCriticBrowserFQQuery >> runOnCollection: aCollection [
-	^ (query parent class = FQRootQuery or: [ query parent isNil ])
-		ifTrue: [ query runOn: aCollection ]
-		ifFalse: [ | parentQuery | parentQuery := self class on: query parent.
-											query runOn: (parentQuery runOnCollection: aCollection) ]
+
+	^ (query class inheritsFromOrEqualTo: FQNAryQuery)
+		  ifTrue: [ 
+			  | queries |
+			  queries := query subqueries collect: [ :sq | self class on: sq ].
+			  query runOn:
+				  (queries collect: [ :q | q runOnCollection: aCollection ]) ]
+		  ifFalse: [ 
+			  (query parent class = FQRootQuery or: [ query parent isNil ])
+				  ifTrue: [ query runOn: aCollection ]
+				  ifFalse: [ 
+					  | parentQuery |
+					  parentQuery := self class on: query parent.
+					  query runOn: (parentQuery runOnCollection: aCollection) ] ]
 ]

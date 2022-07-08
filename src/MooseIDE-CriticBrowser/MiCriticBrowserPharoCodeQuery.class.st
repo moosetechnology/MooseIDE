@@ -4,7 +4,7 @@ I am a handler for queries written in Pharo code, meant to be used by a rule in 
 Class {
 	#name : #MiCriticBrowserPharoCodeQuery,
 	#superclass : #MiCriticBrowserAbstractQuery,
-	#category : #'MooseIDE-CriticBrowser'
+	#category : #'MooseIDE-CriticBrowser-Queries'
 }
 
 { #category : #converting }

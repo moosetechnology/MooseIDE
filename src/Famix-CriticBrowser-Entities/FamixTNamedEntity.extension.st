@@ -1,6 +1,30 @@
 Extension { #name : #FamixTNamedEntity }
 
 { #category : #'*Famix-CriticBrowser-Entities-accessing' }
+FamixTNamedEntity >> contexts [
+	"Relation named: #contexts type: #FamixCBContext opposite: #entities"
+
+	<generated>
+	<FMComment: 'Every context that the entity is a part of.'>
+	<FMProperty: #contexts type: #FamixCBContext opposite: #entities>
+	<package: #'Famix-CriticBrowser-Entities'>
+	^ self attributeAt: #contexts ifAbsentPut: [ FMMultiMultivalueLink on: self opposite: #entities ]
+]
+
+{ #category : #'*Famix-CriticBrowser-Entities-accessing' }
+FamixTNamedEntity >> contexts: anObject [
+
+	<generated>
+	self contexts value: anObject
+]
+
+{ #category : #'*Famix-CriticBrowser-Entities' }
+FamixTNamedEntity >> removeViolation: aViolation [
+	self violations remove: aViolation ifAbsent: [ ^ self ].
+	aViolation violatedCondition ifNotNil: [ aViolation violatedCondition removeViolation: aViolation ]
+]
+
+{ #category : #'*Famix-CriticBrowser-Entities-accessing' }
 FamixTNamedEntity >> violations [
 	"Relation named: #violations type: #FamixCBViolation opposite: #violatingEntity"
 
