@@ -56,8 +56,7 @@ MiCriticBrowserRulesMakerPresenter >> codeButtonAction [
 		removeAll;
 		add: ('Input for code query :' asPresenter) expand: false;
 		add: codePresenter.
-	codeInput show. queryDroplist hide.
-	codeInput text: '[ :entity | ]'.
+	codeInput show. queryDroplist hide
 ]
 
 { #category : #'accessing - tests' }
