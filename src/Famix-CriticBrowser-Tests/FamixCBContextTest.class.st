@@ -67,18 +67,6 @@ FamixCBContextTest >> testPutViolationsInto [
 ]
 
 { #category : #test }
-FamixCBContextTest >> testRemoveAllViolationsFromTree [
-	
-	context addChild: childContext.
-	childContext addChild: condition.
-	condition addViolation: (FamixCBViolation condition: condition violatedBy: violatingEntity).
-	self assert: condition violations size equals: 1.
-	self assert: condition violations anyOne violatingEntity equals: violatingEntity.
-	context removeAllViolationsFromTree.
-	self assert: condition violations size equals: 0.
-]
-
-{ #category : #test }
 FamixCBContextTest >> testRemoveChild [
 	
 	context addChild: condition; addChild: childContext.
@@ -87,6 +75,20 @@ FamixCBContextTest >> testRemoveChild [
 	self assert: context children size equals: 1.
 	self assert: context children anyOne equals: childContext.
 	self assert: condition parent equals: nil
+]
+
+{ #category : #test }
+FamixCBContextTest >> testResetExecutionOfTree [
+	
+	context addChild: childContext.
+	childContext addChild: condition.
+	condition addViolation: (FamixCBViolation condition: condition violatedBy: violatingEntity).
+	self assert: condition violations size equals: 1.
+	self assert: condition violations anyOne violatingEntity equals: violatingEntity.
+	context removeAllViolationsFromTree.
+	self assert: condition violations size equals: 0.
+	self assert: context entities equals: nil.
+	self assert: childContext entities equals: nil
 ]
 
 { #category : #tests }

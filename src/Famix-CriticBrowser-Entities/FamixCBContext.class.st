@@ -116,6 +116,13 @@ FamixCBContext >> removeChild: aRuleComponent [
 	aRuleComponent removeAllViolationsFromTree
 ]
 
+{ #category : #removing }
+FamixCBContext >> resetExecutionOfTree [
+	entities := nil.
+	children do: [ :child | child resetExecutionOfTree ]
+
+]
+
 { #category : #running }
 FamixCBContext >> runDownTree: aCollection [
 

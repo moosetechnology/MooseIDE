@@ -80,6 +80,11 @@ FamixCBCondition >> removeViolation: aViolation [
 	aViolation violatingEntity ifNotNil: [ aViolation violatingEntity removeViolation: aViolation ]
 ]
 
+{ #category : #'*Famix-CriticBrowser-Entities' }
+FamixCBCondition >> resetExecutionOfTree [ 
+	self removeAllViolations
+]
+
 { #category : #running }
 FamixCBCondition >> runDownTree: aCollection [
 	self runOn: aCollection
