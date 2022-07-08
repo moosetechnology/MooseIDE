@@ -92,11 +92,18 @@ MiCriticBrowserModel >> removeAllViolations [
 	rootContext removeAllViolationsFromTree
 ]
 
+{ #category : #removing }
+MiCriticBrowserModel >> removeBranchFromRuleComponents: aRuleComponent [
+
+	ruleComponents remove: aRuleComponent ifAbsent: [  ].
+	aRuleComponent class = FamixCBContext ifTrue: [ aRuleComponent children do: [ :child | self removeBranchFromRuleComponents: child ] ]
+]
+
 { #category : #adding }
 MiCriticBrowserModel >> removeChild: aRuleComponent fromContext: aContext [
 	(aContext = rootContext or: [ ruleComponents includes: aContext ]) ifFalse: [ ^ self ].
 	aRuleComponent removeSelfFromTree.
-	ruleComponents remove: aRuleComponent ifAbsent: [  ].
+	self removeBranchFromRuleComponents: aRuleComponent.
 	self removeRuleViolations: aRuleComponent
 	
 ]

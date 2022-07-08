@@ -121,6 +121,21 @@ MiCriticBrowserModelTest >> testHasBeenEdited [
 	self assert: model rootContext children anyOne name equals: 'test édité'
 ]
 
+{ #category : #test }
+MiCriticBrowserModelTest >> testRemoveBranchFromRuleComponents [
+
+	| context tree |
+	self removeAllFromRootContext.
+	context := FamixCBContext named: 'child context' on: '[ :col | col allClasses ]'.
+	model addChild: stubCondition toContext: model rootContext.
+	model addChild: context toContext: model rootContext.
+	model addChild: deadCondition toContext: context.
+	self assert: model ruleComponents size equals: 3.
+	model removeBranchFromRuleComponents: context.
+	self assert: model ruleComponents size equals: 1.
+	self assert: model ruleComponents anyOne equals: stubCondition
+]
+
 { #category : #tests }
 MiCriticBrowserModelTest >> testRemoveChildFromContext [
 
