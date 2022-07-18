@@ -81,7 +81,7 @@ MiCriticBrowser >> browserClosed [
 	super browserClosed.
 	application unregisterConsumer: addRulesPresenter.
 	application unregisterConsumer: rulesEditorPresenter.
-	model removeAllViolations
+	model resetResults
 ]
 
 { #category : #testing }
@@ -190,7 +190,9 @@ MiCriticBrowser >> exportRulesToStream: aStream [
 { #category : #actions }
 MiCriticBrowser >> followEntity: anEntity [
 	self model setEntities: (anEntity asMooseGroup).
-	self updateEntitiesList: model entities
+	self updateEntitiesList: model entities.
+	self updateRulesList.
+	self updateResultList: {  }
 ]
 
 { #category : #'load and saving' }

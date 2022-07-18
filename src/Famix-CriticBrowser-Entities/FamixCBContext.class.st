@@ -102,18 +102,12 @@ FamixCBContext >> putViolationsInto: aDictionary [
 ]
 
 { #category : #removing }
-FamixCBContext >> removeAllViolationsFromTree [
-	children do: [ :child | child removeAllViolationsFromTree ]
-
-]
-
-{ #category : #removing }
 FamixCBContext >> removeChild: aRuleComponent [
 
 	(children includes: aRuleComponent) ifFalse: [ ^ self ].
 	children remove: aRuleComponent.
 	aRuleComponent parent: nil.
-	aRuleComponent removeAllViolationsFromTree
+	aRuleComponent resetExecutionOfTree
 ]
 
 { #category : #removing }

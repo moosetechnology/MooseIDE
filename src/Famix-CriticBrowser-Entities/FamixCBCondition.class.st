@@ -70,11 +70,6 @@ FamixCBCondition >> removeAllViolations [
 ]
 
 { #category : #'*Famix-CriticBrowser-Entities' }
-FamixCBCondition >> removeAllViolationsFromTree [ 
-	self removeAllViolations
-]
-
-{ #category : #'*Famix-CriticBrowser-Entities' }
 FamixCBCondition >> removeViolation: aViolation [
 	self violations remove: aViolation ifAbsent: [ ^ self ].
 	aViolation violatingEntity ifNotNil: [ aViolation violatingEntity removeViolation: aViolation ]
