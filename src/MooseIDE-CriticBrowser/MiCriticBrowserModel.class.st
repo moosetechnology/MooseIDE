@@ -88,11 +88,6 @@ MiCriticBrowserModel >> initialize [
 ]
 
 { #category : #removing }
-MiCriticBrowserModel >> removeAllViolations [
-	rootContext removeAllViolationsFromTree
-]
-
-{ #category : #removing }
 MiCriticBrowserModel >> removeBranchFromRuleComponents: aRuleComponent [
 
 	ruleComponents remove: aRuleComponent ifAbsent: [  ].
@@ -114,6 +109,12 @@ MiCriticBrowserModel >> removeRuleViolations: aRuleComponent [
 	aRuleComponent class = FamixCBContext
 		ifTrue: [ aRuleComponent children do: [ :child | self removeRuleViolations: child ] ]
 		ifFalse: [ violations removeKey: aRuleComponent ifAbsent: [  ] ] 
+]
+
+{ #category : #removing }
+MiCriticBrowserModel >> resetResults [
+	rootContext resetExecutionOfTree.
+	violations := Dictionary new
 ]
 
 { #category : #accessing }
@@ -144,8 +145,10 @@ MiCriticBrowserModel >> runCondition: aCondition [
 { #category : #accessing }
 MiCriticBrowserModel >> setEntities: aMooseObject [
 	entities := aMooseObject isCollection
-		ifTrue: [ aMooseObject allUsing: FamixTNamedEntity ]
+		ifTrue: [ (aMooseObject allUsing: FamixTNamedEntity) sort: [ :a :b | a name < b name ] ]
 		ifFalse: [ ({aMooseObject} asMooseGroup) allUsing: FamixTNamedEntity ].
+	self resetResults
+	
 ]
 
 { #category : #accessing }
