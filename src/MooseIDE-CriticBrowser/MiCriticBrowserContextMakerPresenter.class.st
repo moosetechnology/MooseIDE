@@ -1,3 +1,6 @@
+"
+Class implementing the presenter used to input contexts, using Pharo code blocks.
+"
 Class {
 	#name : #MiCriticBrowserContextMakerPresenter,
 	#superclass : #MiPresenter,

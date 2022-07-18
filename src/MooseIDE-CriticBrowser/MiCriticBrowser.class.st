@@ -100,6 +100,7 @@ MiCriticBrowser >> children: aCollection for: aTreePresenter [
 
 { #category : #'as yet unclassified' }
 MiCriticBrowser >> childrenForContext: aRuleComponent [
+"content of children block for rules list"
 	^ (aRuleComponent class = FamixCBCondition) ifFalse: [ aRuleComponent children asOrderedCollection ] ifTrue: [ {  } ]
 ]
 
@@ -189,7 +190,7 @@ MiCriticBrowser >> exportRulesToStream: aStream [
 
 { #category : #actions }
 MiCriticBrowser >> followEntity: anEntity [
-	self model setEntities: (anEntity asMooseGroup).
+	self model setEntities: anEntity.
 	self updateEntitiesList: model entities.
 	self updateRulesList.
 	self updateResultList: {  }
