@@ -96,6 +96,11 @@ FamixCBContext >> entities: anObject [
 ]
 
 { #category : #'as yet unclassified' }
+FamixCBContext >> putConditionsInto: aCollection [
+	children do: [ :child | child putConditionsInto: aCollection ]
+]
+
+{ #category : #'as yet unclassified' }
 FamixCBContext >> putViolationsInto: aDictionary [
 	children do: [ :child | child putViolationsInto: aDictionary ]
 

@@ -53,6 +53,15 @@ FamixCBContextTest >> testAddChild [
 ]
 
 { #category : #test }
+FamixCBContextTest >> testPutConditionsInto [
+	| conditions |
+	context addChild: condition.
+	conditions := OrderedCollection new.
+	context putConditionsInto: conditions.
+	self assertCollection: conditions hasSameElements: { condition. }
+]
+
+{ #category : #test }
 FamixCBContextTest >> testPutViolationsInto [
 	| violations |
 	

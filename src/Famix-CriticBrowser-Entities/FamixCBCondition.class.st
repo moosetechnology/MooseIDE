@@ -43,6 +43,11 @@ FamixCBCondition >> addViolation: anObject [
 ]
 
 { #category : #'as yet unclassified' }
+FamixCBCondition >> putConditionsInto: aCollection [
+  aCollection add: self
+]
+
+{ #category : #'as yet unclassified' }
 FamixCBCondition >> putViolationsInto: aDictionary [
 	aDictionary at: self put: violations asMooseGroup specialize
 ]

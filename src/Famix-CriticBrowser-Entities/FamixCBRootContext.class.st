@@ -13,6 +13,14 @@ FamixCBRootContext class >> annotation [
 	^self
 ]
 
+{ #category : #'as yet unclassified' }
+FamixCBRootContext >> getAllConditions [
+	| res |
+	res := OrderedCollection new.
+	children do: [ :child | child putConditionsInto: res ].
+	^ res
+]
+
 { #category : #accessing }
 FamixCBRootContext >> getAllViolations [
 	| res |
