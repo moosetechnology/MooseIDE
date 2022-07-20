@@ -11,3 +11,16 @@ CBMultipleTagsGenerationStrategy >> createTagFor: aCondition [
 		description: aCondition summary;
 		rule: aCondition.
 ]
+
+{ #category : #'as yet unclassified' }
+CBMultipleTagsGenerationStrategy >> generateTags: anObject [
+
+	| tags |
+	tags := OrderedCollection new.
+	anObject class = FamixCBCondition
+		ifTrue: [ tags add: (self createTagFor: anObject) ]
+		ifFalse: [ 
+			anObject getAllConditions do: [ :cond | 
+				tags add: (self createTagFor: cond) ] ].
+	 ^ tags
+]
