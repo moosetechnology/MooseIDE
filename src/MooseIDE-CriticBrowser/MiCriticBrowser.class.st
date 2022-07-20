@@ -79,6 +79,7 @@ MiCriticBrowser >> addRulesPresenter [
 { #category : #'window control' }
 MiCriticBrowser >> browserClosed [
 	super browserClosed.
+	application unregisterProducer: self.
 	application unregisterConsumer: addRulesPresenter.
 	application unregisterConsumer: rulesEditorPresenter.
 	model resetResults
@@ -246,6 +247,7 @@ MiCriticBrowser >> importRulesFromStream: aStream [
 { #category : #initialization }
 MiCriticBrowser >> initialize [
 	super initialize.
+	application registerProducer: self for: FamixCBCondition.
 	application registerConsumer: addRulesPresenter for: FQAbstractQuery.
 	application registerConsumer: rulesEditorPresenter for: FQAbstractQuery
 ]
@@ -396,6 +398,12 @@ MiCriticBrowser >> initializeWindow: aWindowPresenter [
 	aWindowPresenter
 		title: self defaultTitle;
 		initialExtent: 1280 @ 560
+]
+
+{ #category : #brokerage }
+MiCriticBrowser >> itemsFor: aClass [
+
+	^ model rootContext getAllConditions
 ]
 
 { #category : #accessing }

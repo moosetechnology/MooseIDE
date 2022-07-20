@@ -15,17 +15,24 @@ Class {
 
 { #category : #adding }
 MiCriticBrowserModel >> addChild: aRuleComponent toContext: aContext [
-	(aContext = rootContext or: [ ruleComponents includes: aContext ]) ifFalse: [ ^ self ].
+
+	(aContext = rootContext or: [ ruleComponents includes: aContext ]) 
+		ifFalse: [ ^ self ].
 	aContext addChild: aRuleComponent.
 	ruleComponents add: aRuleComponent.
-	browser updateRulesList
-	
+	browser updateRulesList.
+
+	aRuleComponent class = FamixCBCondition ifTrue: [ 
+		browser application consumeItem: aRuleComponent ]
 ]
 
 { #category : #adding }
 MiCriticBrowserModel >> addChildToRootContext: aRuleComponent [
 	rootContext addChild: aRuleComponent.
-	ruleComponents add: aRuleComponent
+	ruleComponents add: aRuleComponent.
+	
+	aRuleComponent class = FamixCBCondition ifTrue: [ 
+		browser application consumeItem: aRuleComponent ]
 	
 ]
 
@@ -71,10 +78,17 @@ MiCriticBrowserModel >> getAllViolations [
 
 { #category : #testing }
 MiCriticBrowserModel >> hasBeenEdited: aRuleComponent [
+
 	self removeRuleViolations: aRuleComponent.
 	aRuleComponent resetExecutionOfTree.
 	browser updateRulesList.
-	browser updateResultList: self getAllViolations
+	browser updateResultList: self getAllViolations.
+
+	aRuleComponent class = FamixCBCondition
+		ifTrue: [ browser application updateItem: aRuleComponent ]
+		ifFalse: [ 
+			aRuleComponent getAllConditions do: [ :cond | 
+				browser application updateItem: cond ] ]
 ]
 
 { #category : #initialization }
@@ -96,10 +110,16 @@ MiCriticBrowserModel >> removeBranchFromRuleComponents: aRuleComponent [
 
 { #category : #adding }
 MiCriticBrowserModel >> removeChild: aRuleComponent fromContext: aContext [
-	(aContext = rootContext or: [ ruleComponents includes: aContext ]) ifFalse: [ ^ self ].
+	(aContext ~= rootContext or: [ ruleComponents includes: aContext ]) ifFalse: [ ^ self ].
 	aRuleComponent removeSelfFromTree.
 	self removeBranchFromRuleComponents: aRuleComponent.
-	self removeRuleViolations: aRuleComponent
+	self removeRuleViolations: aRuleComponent.
+	
+	aRuleComponent class = FamixCBCondition
+		ifTrue: [ browser application removeItem: aRuleComponent ]
+		ifFalse: [ 
+			aRuleComponent getAllConditions do: [ :cond | 
+				browser application removeItem: cond ] ]
 	
 ]
 
