@@ -125,21 +125,20 @@ FamixCBContext >> resetExecutionOfTree [
 { #category : #running }
 FamixCBContext >> runDownTree: aCollection [
 
-	entities ifNil: [ self runOn: aCollection ].
+	self runOn: aCollection.
 	children do: [ :child | child runDownTree: entities ]
 ]
 
 { #category : #running }
 FamixCBContext >> runOn: aCollection [
 
-	entities := (contextBlock value: aCollection) sort: [ :a :b | a name < b name ]
+	^ entities := (contextBlock value: aCollection) sort: [ :a :b | a name < b name ]
 ]
 
 { #category : #'as yet unclassified' }
 FamixCBContext >> runUpTree: aCollection [
 
-	entities ifNil: [ self runOn: (parent runUpTree: aCollection) ].
-	^ entities
+	^ self runOn: (parent runUpTree: aCollection)
 ]
 
 { #category : #'ston persistence' }

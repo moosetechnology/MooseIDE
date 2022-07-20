@@ -93,8 +93,9 @@ FamixCBCondition >> runDownTree: aCollection [
 { #category : #running }
 FamixCBCondition >> runOn: aCollection [
 	
+	self removeAllViolations.
 	((self query runOnCollection: aCollection) do: 
-		[ :each | self addViolation: (FamixCBViolation condition: self violatedBy: each) ]).
+		[ :each | self addViolation: (FamixCBViolation condition: self violatedBy: each) ])
 ]
 
 { #category : #'as yet unclassified' }
