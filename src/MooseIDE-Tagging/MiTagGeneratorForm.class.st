@@ -10,15 +10,37 @@ Class {
 		'singleTagButton',
 		'multipleTagsButton',
 		'graduatedTagsButton',
-		'tagModel'
+		'tagModel',
+		'currentStrategy'
 	],
 	#category : #'MooseIDE-Tagging-Browser'
 }
 
 { #category : #initialization }
+MiTagGeneratorForm >> connectPresenters [
+	
+	singleTagButton action: [ self setCBSingleTagForm ].
+	multipleTagsButton action: [ self setCBMultipleTagsForm ].
+	graduatedTagsButton action: [ self setCBGraduatedTagsForm ]
+]
+
+{ #category : #accessing }
+MiTagGeneratorForm >> currentStrategy [
+
+	^ currentStrategy
+]
+
+{ #category : #initialization }
 MiTagGeneratorForm >> formTitle [
 
 	^ 'Generate tags'
+]
+
+{ #category : #initialization }
+MiTagGeneratorForm >> initialize [
+
+	super initialize.
+	currentStrategy := CBOneTagGenerationStrategy
 ]
 
 { #category : #initialization }
@@ -120,12 +142,53 @@ MiTagGeneratorForm >> initializePresenters [
 	self initializeLayout
 ]
 
+{ #category : #'as yet unclassified' }
+MiTagGeneratorForm >> putAllButtonsStateToFalseExcept: aButton [
+	| buttons |
+	buttons := { singleTagButton. multipleTagsButton. graduatedTagsButton } asOrderedCollection.
+	buttons remove: aButton ifAbsent: [  ].
+	buttons do: [ :button | button state: false ]
+]
+
 { #category : #initialization }
 MiTagGeneratorForm >> reset [
 
 	nameField text: ''.
 	descriptionField text: ''.
 	categorySelection resetSelection
+]
+
+{ #category : #initialization }
+MiTagGeneratorForm >> setCBGraduatedTagsForm [
+
+	currentStrategy = CBGraduatedTagsGenerationStrategy ifTrue: [ 
+		graduatedTagsButton state: true.
+		^ self ].
+	currentStrategy := CBGraduatedTagsGenerationStrategy.
+	self putAllButtonsStateToFalseExcept: graduatedTagsButton.
+	self update
+]
+
+{ #category : #initialization }
+MiTagGeneratorForm >> setCBMultipleTagsForm [
+
+	currentStrategy = CBMultipleTagsGenerationStrategy ifTrue: [ 
+		multipleTagsButton state: true.
+		^ self ].
+	currentStrategy := CBMultipleTagsGenerationStrategy.
+	self putAllButtonsStateToFalseExcept: multipleTagsButton.
+	self update
+]
+
+{ #category : #initialization }
+MiTagGeneratorForm >> setCBSingleTagForm [
+
+	currentStrategy = CBOneTagGenerationStrategy ifTrue: [ 
+		singleTagButton state: true.
+		^ self ].
+	currentStrategy := CBOneTagGenerationStrategy.
+	self putAllButtonsStateToFalseExcept: singleTagButton.
+	self update
 ]
 
 { #category : #initialization }
