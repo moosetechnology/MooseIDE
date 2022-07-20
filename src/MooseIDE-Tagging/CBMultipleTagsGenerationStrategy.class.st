@@ -17,10 +17,11 @@ CBMultipleTagsGenerationStrategy >> generateTags: anObject [
 
 	| tags |
 	tags := OrderedCollection new.
-	anObject class = FamixCBCondition
+	"anObject class = FamixCBCondition
 		ifTrue: [ tags add: (self createTagFor: anObject) ]
 		ifFalse: [ 
 			anObject getAllConditions do: [ :cond | 
-				tags add: (self createTagFor: cond) ] ].
+				tags add: (self createTagFor: cond) ] ]."
+	anObject do: [ :cond | tags add: (self createTagFor: cond) ].
 	 ^ tags
 ]

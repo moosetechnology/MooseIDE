@@ -31,6 +31,7 @@ MiTagGeneratorForm >> connectPresenters [
 	multipleTagsButton action: [ self setCBMultipleTagsForm ].
 	graduatedTagsButton action: [ self setCBGraduatedTagsForm ].
 	cancelButton action: [ self cancel ].
+	submitButton action: [ self submit ]
 ]
 
 { #category : #brokerage }
@@ -251,7 +252,9 @@ MiTagGeneratorForm >> submit [
 		            description: descriptionField text;
 		            category: categorySelection selectedItem.
 		
-	"tags := strategy generateTags: nil"
+	tags := strategy generateTags: conditionList items.
+	tags do: [ :tag | owner model addDynamicTag: tag ].
+	self owner closeTagGeneratorForm
 		
 	
 ]

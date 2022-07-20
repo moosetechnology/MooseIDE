@@ -84,3 +84,9 @@ MiCriticDynamicTag >> rule: anObject [
 
 	rule := anObject
 ]
+
+{ #category : #accessing }
+MiCriticDynamicTag >> taggedEntities [
+
+	^ #()
+]
