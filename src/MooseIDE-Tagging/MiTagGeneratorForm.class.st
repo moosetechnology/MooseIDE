@@ -10,24 +10,47 @@ Class {
 		'singleTagButton',
 		'multipleTagsButton',
 		'graduatedTagsButton',
+		'conditionList',
 		'tagModel',
 		'currentStrategy'
 	],
 	#category : #'MooseIDE-Tagging-Browser'
 }
 
+{ #category : #actions }
+MiTagGeneratorForm >> cancel [
+
+	self reset.
+	self owner closeTagGeneratorForm
+]
+
 { #category : #initialization }
 MiTagGeneratorForm >> connectPresenters [
 	
 	singleTagButton action: [ self setCBSingleTagForm ].
 	multipleTagsButton action: [ self setCBMultipleTagsForm ].
-	graduatedTagsButton action: [ self setCBGraduatedTagsForm ]
+	graduatedTagsButton action: [ self setCBGraduatedTagsForm ].
+	cancelButton action: [ self cancel ].
+]
+
+{ #category : #brokerage }
+MiTagGeneratorForm >> consume: aCondition [
+	
+	self updateConditionsList
+
+	
 ]
 
 { #category : #accessing }
 MiTagGeneratorForm >> currentStrategy [
 
 	^ currentStrategy
+]
+
+{ #category : #'as yet unclassified' }
+MiTagGeneratorForm >> fetchConditions [
+
+	^ (self owner application itemsFor: FamixCBCondition) asOrderedCollection
 ]
 
 { #category : #initialization }
@@ -45,9 +68,15 @@ MiTagGeneratorForm >> initialize [
 
 { #category : #initialization }
 MiTagGeneratorForm >> initializeLayout [
-	| headerLayout formLayout mainLayout |
+	| sep headerLayout formLayout mainLayout conditionListWidth |
 	self layout: (SpBoxLayout newTopToBottom spacing: 5).
-
+	conditionListWidth := 240.
+	(sep := SpRoassalPresenter new) canvas color: (Color
+			 r: 40
+			 g: 40
+			 b: 40
+			 range: 255) translucent.
+	
 	headerLayout := (SpBoxLayout newLeftToRight
 				                 add: self formTitle asPresenter;
 				                 hAlignCenter;
@@ -76,7 +105,11 @@ MiTagGeneratorForm >> initializeLayout [
 		              expand: true;
 		              yourself.
 
-	mainLayout := SpBoxLayout newTopToBottom
+	mainLayout := SpBoxLayout newLeftToRight
+							spacing: 10;
+							add: conditionList width: conditionListWidth;
+							add: sep width: 2;
+							add: (SpBoxLayout newTopToBottom
 				               spacing: 4;
 				               add: (SpBoxLayout newLeftToRight
 						                add: singleTagButton;
@@ -92,7 +125,7 @@ MiTagGeneratorForm >> initializeLayout [
 						                add: submitButton;
 						                yourself)
 				               expand: false;
-				               yourself;
+				               yourself);
 		              yourself.
 	self layout
 		add: headerLayout expand: false;
@@ -120,6 +153,9 @@ MiTagGeneratorForm >> initializePresenters [
 		                     yourself.
 	descriptionField := self newText.
 	
+	conditionList := self newList
+		             display: [ :cond | cond name ] yourself.
+	
 	singleTagButton := self newToggleButton
 		                state: true;
 		                label: 'Single tag';
@@ -139,7 +175,8 @@ MiTagGeneratorForm >> initializePresenters [
 		                label: 'Cancel';
 		                yourself.
 		
-	self initializeLayout
+	self initializeLayout.
+	self updateConditionsList
 ]
 
 { #category : #'as yet unclassified' }
@@ -148,6 +185,14 @@ MiTagGeneratorForm >> putAllButtonsStateToFalseExcept: aButton [
 	buttons := { singleTagButton. multipleTagsButton. graduatedTagsButton } asOrderedCollection.
 	buttons remove: aButton ifAbsent: [  ].
 	buttons do: [ :button | button state: false ]
+]
+
+{ #category : #brokerage }
+MiTagGeneratorForm >> remove: aCondition [
+	
+	self updateConditionsList
+
+	
 ]
 
 { #category : #initialization }
@@ -197,8 +242,36 @@ MiTagGeneratorForm >> setModelBeforeInitialization: aTagModel [
 	tagModel := aTagModel
 ]
 
+{ #category : #initialization }
+MiTagGeneratorForm >> submit [
+
+	| strategy tags |
+	strategy := currentStrategy new
+		            name: nameField text;
+		            description: descriptionField text;
+		            category: categorySelection selectedItem.
+		
+	"tags := strategy generateTags: nil"
+		
+	
+]
+
+{ #category : #brokerage }
+MiTagGeneratorForm >> update: aCondition [
+	
+	self updateConditionsList
+
+	
+]
+
 { #category : #private }
 MiTagGeneratorForm >> updateCategories [
 
 	categorySelection items: { nil }, tagModel allCategories
+]
+
+{ #category : #accessing }
+MiTagGeneratorForm >> updateConditionsList [
+
+	conditionList items: self fetchConditions
 ]

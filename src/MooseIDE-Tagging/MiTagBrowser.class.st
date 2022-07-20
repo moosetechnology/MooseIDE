@@ -81,7 +81,8 @@ MiTagBrowser >> browserClosed [
 	super browserClosed.
 	application unregisterProducer: self.
 	application unregisterConsumer: self.
-	application unregisterConsumer: tagCreationForm
+	application unregisterConsumer: tagCreationForm.
+	application unregisterConsumer: tagGenerationForm
 ]
 
 { #category : #testing }
@@ -98,6 +99,12 @@ MiTagBrowser >> closeTagCreationForm [
 
 { #category : #initialization }
 MiTagBrowser >> closeTagEditionForm [
+
+	self layout child: tagManagementPage
+]
+
+{ #category : #initialization }
+MiTagBrowser >> closeTagGeneratorForm [
 
 	self layout child: tagManagementPage
 ]
@@ -211,7 +218,8 @@ MiTagBrowser >> initialize [
 	application registerProducer: self for: FamixTag.
 	application registerConsumer: self for: FamixTag.
 	application registerConsumer: self for: FamixTagAssociation.
-	application registerConsumer: tagCreationForm for: FQAbstractQuery
+	application registerConsumer: tagCreationForm for: FQAbstractQuery.
+	application registerConsumer: tagGenerationForm for: FamixCBCondition
 ]
 
 { #category : #initialization }

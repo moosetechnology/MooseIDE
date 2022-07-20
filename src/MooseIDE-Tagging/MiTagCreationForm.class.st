@@ -96,11 +96,6 @@ MiTagCreationForm >> initializeLayout [
 			 g: 40
 			 b: 40
 			 range: 255) translucent.
-	(sep := SpRoassalPresenter new) canvas color: (Color
-			 r: 40
-			 g: 40
-			 b: 40
-			 range: 255) translucent.
 
 	headerLayout := SpBoxLayout newLeftToRight
 		                add: (SpBoxLayout newLeftToRight
