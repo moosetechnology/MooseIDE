@@ -96,6 +96,14 @@ FamixCBContext >> entities: anObject [
 ]
 
 { #category : #'as yet unclassified' }
+FamixCBContext >> getAllConditions [
+	| res |
+	res := OrderedCollection new.
+	children do: [ :child | child putConditionsInto: res ].
+	^ res
+]
+
+{ #category : #'as yet unclassified' }
 FamixCBContext >> putConditionsInto: aCollection [
 	children do: [ :child | child putConditionsInto: aCollection ]
 ]
