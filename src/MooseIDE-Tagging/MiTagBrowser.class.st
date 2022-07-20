@@ -10,7 +10,8 @@ Class {
 	#instVars : [
 		'tagManagementPage',
 		'tagCreationForm',
-		'tagEditionForm'
+		'tagEditionForm',
+		'tagGenerationForm'
 	],
 	#category : #'MooseIDE-Tagging-Browser'
 }
@@ -228,6 +229,7 @@ MiTagBrowser >> initializePresenters [
 	tagCreationForm := self instantiate: MiTagCreationForm on: model.
 	tagManagementPage := MiTagManagementPage newApplication: self application owner: self model: model.
 	tagEditionForm := self instantiate: MiTagEditionForm on: model. 
+	tagGenerationForm := self instantiate: MiTagGeneratorForm on: model.
 	self initializeLayout
 ]
 
@@ -271,6 +273,15 @@ MiTagBrowser >> openTagEditionForm [
 	self layout child: tagEditionForm.
 	tagEditionForm fillWithCurrentTag.
 	tagEditionForm update
+]
+
+{ #category : #'as yet unclassified' }
+MiTagBrowser >> openTagGenerationForm [
+
+	tagGenerationForm
+		reset;
+		updateCategories.
+	self layout child: tagGenerationForm
 ]
 
 { #category : #testing }
