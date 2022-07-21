@@ -7,7 +7,7 @@ Class {
 { #category : #'as yet unclassified' }
 CBMultipleTagsGenerationStrategy >> createTagFor: aCondition [
 
-	^ MiCriticDynamicTag new
+	^ MiCriticTag new
 		  name: aCondition name;
 		  description: aCondition summary;
 		  rule: aCondition;

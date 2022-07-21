@@ -52,7 +52,7 @@ MiDynamicTag >> isApplicableTo: anObject [
 
 	"The query should accept one parameter (anObject) and return a boolean."
 
-	^ (query runOn: anObject asMooseGroup) isNotEmpty
+	^ self subclassResponsibility
 ]
 
 { #category : #testing }
@@ -71,18 +71,6 @@ MiDynamicTag >> name [
 MiDynamicTag >> name: anObject [
 
 	name := anObject
-]
-
-{ #category : #accessing }
-MiDynamicTag >> query [
-
-	^ query
-]
-
-{ #category : #accessing }
-MiDynamicTag >> query: anObject [
-
-	query := anObject
 ]
 
 { #category : #accessing }

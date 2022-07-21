@@ -31,7 +31,7 @@ MiTagIntentPage >> initializePresenters [
 MiTagIntentPage >> refresh [
 
 	super refresh.
-	self model currentTag class = MiCriticDynamicTag
+	self model currentTag class = MiCriticTag
 		ifTrue: [ selectedObject label: self model currentTag rule name ]
 		ifFalse: [ 
 			selectedObject label: (String streamContents: [ :aStream | 
@@ -48,7 +48,7 @@ MiTagIntentPage >> refreshQueryList [
 MiTagIntentPage >> setTag: aTag [
 
 	super setTag: aTag.
-	aTag class = MiCriticDynamicTag
+	aTag class = MiCriticTag
 		ifTrue: [ selectedObject label: aTag rule name ]
 		ifFalse: [ 
 			selectedObject label: (String streamContents: [ :aStream | 

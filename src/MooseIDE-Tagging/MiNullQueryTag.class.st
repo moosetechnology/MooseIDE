@@ -1,41 +1,41 @@
 Class {
-	#name : #MiNullDynamicTag,
-	#superclass : #MiDynamicTag,
+	#name : #MiNullQueryTag,
+	#superclass : #MiQueryTag,
 	#category : #'MooseIDE-Tagging-Browser'
 }
 
 { #category : #accessing }
-MiNullDynamicTag >> category [
+MiNullQueryTag >> category [
 
 	^ nil
 ]
 
 { #category : #accessing }
-MiNullDynamicTag >> color [
+MiNullQueryTag >> color [
 
 	^ nil
 ]
 
 { #category : #accessing }
-MiNullDynamicTag >> description [
+MiNullQueryTag >> description [
 
 	^ nil
 ]
 
 { #category : #accessing }
-MiNullDynamicTag >> isApplicableTo: aQuery [
+MiNullQueryTag >> isApplicableTo: aQuery [
 
 	^ false
 ]
 
 { #category : #accessing }
-MiNullDynamicTag >> name [
+MiNullQueryTag >> name [
 	
 	^ 'null dynamic tag'
 ]
 
 { #category : #accessing }
-MiNullDynamicTag >> query [
+MiNullQueryTag >> query [
 
 	^ FQNullQuery new
 ]

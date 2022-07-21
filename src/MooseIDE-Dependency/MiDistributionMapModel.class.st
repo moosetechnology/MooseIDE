@@ -265,7 +265,7 @@ MiDistributionMapModel >> tagFor: anEntity [
 
 	^ self tagsSetting
 		  detect: [ :dt | dt isApplicableTo: anEntity ]
-		  ifNone: [ MiNullDynamicTag new ]
+		  ifNone: [ MiNullQueryTag new ]
 ]
 
 { #category : #settings }

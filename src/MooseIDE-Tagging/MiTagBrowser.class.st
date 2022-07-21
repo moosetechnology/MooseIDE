@@ -126,7 +126,7 @@ MiTagBrowser >> createDynamicTag: name description: aText color: aColor category
 	| newTag |
 	(name notNil and: [ name isNotEmpty ]) ifFalse: [ ^ self ].
 	newTag := aQuery class = FamixCBCondition
-		          ifTrue: [ MiCriticDynamicTag new ]
+		          ifTrue: [ MiCriticTag new ]
 		          ifFalse: [ MiDynamicTag new ].
 	(aText notNil and: [ aText isNotEmpty ]) ifTrue: [ 
 		newTag description: aText ].
