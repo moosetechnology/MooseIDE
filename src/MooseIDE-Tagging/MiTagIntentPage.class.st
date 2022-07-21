@@ -7,9 +7,7 @@ Class {
 	#name : #MiTagIntentPage,
 	#superclass : #MiTagPage,
 	#instVars : [
-		'selectedQuery',
-		'txtLowValue',
-		'txtHighValue'
+		'selectedObject'
 	],
 	#category : #'MooseIDE-Tagging-Browser'
 }
@@ -18,14 +16,14 @@ Class {
 MiTagIntentPage >> initializeLayout [
 
 	super initializeLayout.
-	self layout add: selectedQuery expand: false
+	self layout add: selectedObject expand: false
 ]
 
 { #category : #initialization }
 MiTagIntentPage >> initializePresenters [
 
 	super initializePresenters.
-	selectedQuery := self newLabel.
+	selectedObject := self newLabel.
 	self initializeLayout
 ]
 
@@ -33,8 +31,11 @@ MiTagIntentPage >> initializePresenters [
 MiTagIntentPage >> refresh [
 
 	super refresh.
-	selectedQuery label: (String streamContents: [ :aStream | 
-			 self model currentTag query storeWithParentsOn: aStream ]).
+	self model currentTag class = MiCriticDynamicTag
+		ifTrue: [ selectedObject label: self model currentTag rule name ]
+		ifFalse: [ 
+			selectedObject label: (String streamContents: [ :aStream | 
+					 self model currentTag query storeWithParentsOn: aStream ]) ].
 	self update
 ]
 
@@ -47,6 +48,9 @@ MiTagIntentPage >> refreshQueryList [
 MiTagIntentPage >> setTag: aTag [
 
 	super setTag: aTag.
-	selectedQuery label: (String streamContents: [ :aStream | 
-			 aTag query storeWithParentsOn: aStream ])
+	aTag class = MiCriticDynamicTag
+		ifTrue: [ selectedObject label: aTag rule name ]
+		ifFalse: [ 
+			selectedObject label: (String streamContents: [ :aStream | 
+					 aTag query storeWithParentsOn: aStream ]) ]
 ]

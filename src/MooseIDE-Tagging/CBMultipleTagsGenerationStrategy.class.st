@@ -6,10 +6,16 @@ Class {
 
 { #category : #'as yet unclassified' }
 CBMultipleTagsGenerationStrategy >> createTagFor: aCondition [
-	^ MiCriticDynamicTag new 
-		name: aCondition name;
-		description: aCondition summary;
-		rule: aCondition.
+
+	^ MiCriticDynamicTag new
+		  name: aCondition name;
+		  description: aCondition summary;
+		  rule: aCondition;
+		  color: (Color
+				   r: 26
+				   g: 188
+				   b: 156
+				   range: 255)
 ]
 
 { #category : #'as yet unclassified' }

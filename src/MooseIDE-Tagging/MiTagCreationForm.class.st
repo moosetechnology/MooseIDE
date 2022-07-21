@@ -55,7 +55,7 @@ MiTagCreationForm >> connectPresenters [
 ]
 
 { #category : #brokerage }
-MiTagCreationForm >> consume: aQuery [
+MiTagCreationForm >> consume: anObject [
 
 	self updateQueryList
 ]
@@ -70,6 +70,12 @@ MiTagCreationForm >> extentButton [
 MiTagCreationForm >> fetchQueries [
 
 	^ (self owner application itemsFor: FQAbstractQuery) asOrderedCollection
+]
+
+{ #category : #initialization }
+MiTagCreationForm >> fetchRules [
+
+	^ (self owner application itemsFor: FamixCBCondition) asOrderedCollection
 ]
 
 { #category : #initialization }
@@ -195,7 +201,7 @@ MiTagCreationForm >> initializePresenters [
 			             [ :query | self stringForQuery: query ] yourself.
 	queryListLabeled := MiPresenter new
 		                    layout: (SpBoxLayout newTopToBottom
-				                     add: 'Query' asPresenter expand: false;
+				                     add: 'Query / Conditions' asPresenter expand: false;
 				                     add: queryList expand: false;
 				                     yourself);
 		                    hide;
@@ -229,7 +235,7 @@ MiTagCreationForm >> queryListLabeled [
 ]
 
 { #category : #brokerage }
-MiTagCreationForm >> remove: aQuery [
+MiTagCreationForm >> remove: anObject [
 
 	self updateQueryList
 ]
@@ -279,9 +285,12 @@ MiTagCreationForm >> setModelBeforeInitialization: aTagModel [
 MiTagCreationForm >> stringForQuery: aQuery [
 
 	| queryText contractor |
-	queryText := aQuery ifNil: [ '' ] ifNotNil: [ 
-		             String streamContents: [ :aStream | 
-			             aQuery storeWithParentsOn: aStream ] ].
+	queryText := aQuery class = FamixCBCondition
+		             ifTrue: [ aQuery name ]
+		             ifFalse: [ 
+			             aQuery ifNil: [ '' ] ifNotNil: [ 
+				             String streamContents: [ :aStream | 
+					             aQuery storeWithParentsOn: aStream ] ] ].
 	contractor := LbCContractor new addStrategy:
 		              (LbCEllipsisStrategy new
 			               separator: '...';
@@ -318,6 +327,12 @@ MiTagCreationForm >> submitButton [
 	^ submitButton
 ]
 
+{ #category : #brokerage }
+MiTagCreationForm >> update: anObject [
+
+	self updateQueryList
+]
+
 { #category : #private }
 MiTagCreationForm >> updateCategories [
 
@@ -327,5 +342,5 @@ MiTagCreationForm >> updateCategories [
 { #category : #accessing }
 MiTagCreationForm >> updateQueryList [
 
-	queryList items: { nil } , self fetchQueries
+	queryList items: { nil } , self fetchQueries , self fetchRules
 ]
