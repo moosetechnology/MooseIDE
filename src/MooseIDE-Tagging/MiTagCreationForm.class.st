@@ -14,7 +14,8 @@ Class {
 		'isIntent',
 		'formLayout',
 		'queryList',
-		'queryListLabeled'
+		'queryListLabeled',
+		'isEditing'
 	],
 	#category : #'MooseIDE-Tagging-Browser'
 }
@@ -87,8 +88,9 @@ MiTagCreationForm >> formTitle [
 { #category : #initialization }
 MiTagCreationForm >> initialize [
 
-	super initialize.
+	isEditing := false.
 	isIntent := false.
+	super initialize.
 ]
 
 { #category : #initialization }
@@ -342,5 +344,11 @@ MiTagCreationForm >> updateCategories [
 { #category : #accessing }
 MiTagCreationForm >> updateQueryList [
 
-	queryList items: { nil } , self fetchQueries , self fetchRules
+	isEditing
+		ifTrue: [ 
+			owner model currentTag class = MiCriticTag
+				ifTrue: [ queryList items: { nil } , self fetchRules ]
+				ifFalse: [ queryList items: { nil } , self fetchQueries ] ]
+		ifFalse: [ 
+		queryList items: { nil } , self fetchQueries , self fetchRules ]
 ]

@@ -37,7 +37,9 @@ MiTagEditionForm >> fillFormWithTag: aTag [
 
 { #category : #accessing }
 MiTagEditionForm >> fillWithCurrentTag [
-
+	
+	isEditing := true.
+	self updateQueryList.
 	self fillFormWithTag: tagModel currentTag
 ]
 
@@ -97,7 +99,10 @@ MiTagEditionForm >> setDynamicTag: aTag [
 	aTag color ifNotNil: [ :color | colorPicker setColor: color ].
 	aTag category ifNotNil: [ 
 		categorySelection selectItem: aTag category ].
-	aTag query ifNotNil: [ queryList selectItem: aTag query ]
+	aTag class = MiCriticTag
+		ifTrue: [ queryList selectItem: aTag rule ]
+		ifFalse: [ 
+		aTag query ifNotNil: [ queryList selectItem: aTag query ] ]
 ]
 
 { #category : #accessing }

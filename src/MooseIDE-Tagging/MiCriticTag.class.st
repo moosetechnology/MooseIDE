@@ -12,7 +12,8 @@ MiCriticTag >> isApplicableTo: anObject [
 
 	"The query should accept one parameter (anObject) and return a boolean."
 
-	^ (rule runUpTree: anObject asMooseGroup) isNotEmpty
+	(rule runUpTree: anObject asMooseGroup). 
+	^ rule violations isNotEmpty
 ]
 
 { #category : #accessing }

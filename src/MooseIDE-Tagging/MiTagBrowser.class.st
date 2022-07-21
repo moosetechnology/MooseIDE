@@ -180,7 +180,9 @@ MiTagBrowser >> editCurrentDynamicTag: name description: description color: colo
 	tag description: description.
 	tag color: color.
 	category ifNotNil: [ tag category: category ].
-	tag query: query.
+	tag class = MiCriticTag
+		ifTrue: [ tag rule: query ]
+		ifFalse: [ tag query: query ].
 	tagManagementPage refresh.
 	^ true
 ]
