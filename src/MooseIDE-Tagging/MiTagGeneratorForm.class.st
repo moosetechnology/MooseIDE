@@ -7,12 +7,12 @@ Class {
 		'nameField',
 		'categorySelection',
 		'descriptionField',
-		'singleTagButton',
 		'multipleTagsButton',
-		'graduatedTagsButton',
 		'conditionList',
 		'tagModel',
-		'currentStrategy'
+		'currentStrategy',
+		'gradualTagsButton',
+		'uniqueTagButton'
 	],
 	#category : #'MooseIDE-Tagging-Browser'
 }
@@ -27,9 +27,9 @@ MiTagGeneratorForm >> cancel [
 { #category : #initialization }
 MiTagGeneratorForm >> connectPresenters [
 	
-	singleTagButton action: [ self setCBSingleTagForm ].
+	uniqueTagButton action: [ self setCBSingleTagForm ].
 	multipleTagsButton action: [ self setCBMultipleTagsForm ].
-	graduatedTagsButton action: [ self setCBGraduatedTagsForm ].
+	gradualTagsButton action: [ self setCBGraduatedTagsForm ].
 	cancelButton action: [ self cancel ].
 	submitButton action: [ self submit ]
 ]
@@ -113,9 +113,9 @@ MiTagGeneratorForm >> initializeLayout [
 							add: (SpBoxLayout newTopToBottom
 				               spacing: 4;
 				               add: (SpBoxLayout newLeftToRight
-						                add: singleTagButton;
+						                add: uniqueTagButton;
 						                add: multipleTagsButton;
-											add: graduatedTagsButton; 
+											add: gradualTagsButton; 
 						                yourself)
 				               expand: false;
 				               add: formLayout expand: true fill: true;
@@ -157,17 +157,17 @@ MiTagGeneratorForm >> initializePresenters [
 	conditionList := self newList
 		             display: [ :cond | cond name ] yourself.
 	
-	singleTagButton := self newToggleButton
+	uniqueTagButton := self newToggleButton
 		                state: true;
-		                label: 'Single tag';
+		                label: 'Unique tag';
 		                yourself.
 	multipleTagsButton := self newToggleButton
 		                state: false;
 		                label: 'Multiple tags';
 		                yourself.
-	graduatedTagsButton := self newToggleButton
+	gradualTagsButton := self newToggleButton
 		                state: false;
-		                label: 'Graduated tags';
+		                label: 'Gradual tags';
 		                yourself.
 	submitButton := self newButton
 		                label: 'Generate';
@@ -183,7 +183,7 @@ MiTagGeneratorForm >> initializePresenters [
 { #category : #'as yet unclassified' }
 MiTagGeneratorForm >> putAllButtonsStateToFalseExcept: aButton [
 	| buttons |
-	buttons := { singleTagButton. multipleTagsButton. graduatedTagsButton } asOrderedCollection.
+	buttons := { uniqueTagButton. multipleTagsButton. gradualTagsButton } asOrderedCollection.
 	buttons remove: aButton ifAbsent: [  ].
 	buttons do: [ :button | button state: false ]
 ]
@@ -208,10 +208,10 @@ MiTagGeneratorForm >> reset [
 MiTagGeneratorForm >> setCBGraduatedTagsForm [
 
 	currentStrategy = CBGraduatedTagsGenerationStrategy ifTrue: [ 
-		graduatedTagsButton state: true.
+		gradualTagsButton state: true.
 		^ self ].
 	currentStrategy := CBGraduatedTagsGenerationStrategy.
-	self putAllButtonsStateToFalseExcept: graduatedTagsButton.
+	self putAllButtonsStateToFalseExcept: gradualTagsButton.
 	self update
 ]
 
@@ -230,10 +230,10 @@ MiTagGeneratorForm >> setCBMultipleTagsForm [
 MiTagGeneratorForm >> setCBSingleTagForm [
 
 	currentStrategy = CBOneTagGenerationStrategy ifTrue: [ 
-		singleTagButton state: true.
+		uniqueTagButton state: true.
 		^ self ].
 	currentStrategy := CBOneTagGenerationStrategy.
-	self putAllButtonsStateToFalseExcept: singleTagButton.
+	self putAllButtonsStateToFalseExcept: uniqueTagButton.
 	self update
 ]
 
