@@ -18,6 +18,7 @@ Class {
 		'rulesResult',
 		'importButton',
 		'exportButton',
+		'generateButton',
 		'addRulesPresenter',
 		'rulesEditorPresenter',
 		'rules',
@@ -91,6 +92,11 @@ MiCriticBrowser >> canFollowEntity: anEntity [
 	^ anEntity isMooseObject
 ]
 
+{ #category : #testing }
+MiCriticBrowser >> canGenerate [
+	^ model rootContext getAllConditions isNotEmpty
+]
+
 { #category : #api }
 MiCriticBrowser >> children: aCollection for: aTreePresenter [
 "provides content of the children block for the collection root for a given tree presenter"
@@ -131,6 +137,7 @@ MiCriticBrowser >> defaultLayout [
 			yourself);
 		yourself);
 		add: (SpBoxLayout newLeftToRight
+			addLast: generateButton;
 			addLast: importButton;
 			addLast: exportButton;
 			spacing: 5; 
@@ -257,6 +264,7 @@ MiCriticBrowser >> initializeButtons [
 	runButton := self newButton.
 	importButton := self newButton.
 	exportButton := self newButton.
+	generateButton := (MiOpenTagGeneratorCommand forSpecContext: self) configureAsButton buildPresenter.
 	
 	runButton 
 		label: 'Run';
@@ -402,6 +410,12 @@ MiCriticBrowser >> initializeWindow: aWindowPresenter [
 
 { #category : #brokerage }
 MiCriticBrowser >> itemsFor: aClass [
+
+	^ model rootContext getAllConditions
+]
+
+{ #category : #'as yet unclassified' }
+MiCriticBrowser >> itemsForGeneration [
 
 	^ model rootContext getAllConditions
 ]

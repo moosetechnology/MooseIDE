@@ -4,15 +4,13 @@ Class {
 	#instVars : [
 		'submitButton',
 		'cancelButton',
-		'nameField',
 		'categorySelection',
-		'descriptionField',
 		'multipleTagsButton',
-		'conditionList',
 		'tagModel',
 		'currentStrategy',
 		'gradualTagsButton',
-		'uniqueTagButton'
+		'uniqueTagButton',
+		'itemChooser'
 	],
 	#category : #'MooseIDE-Tagging-Browser'
 }
@@ -34,24 +32,10 @@ MiTagGeneratorForm >> connectPresenters [
 	submitButton action: [ self submit ]
 ]
 
-{ #category : #brokerage }
-MiTagGeneratorForm >> consume: aCondition [
-	
-	self updateConditionsList
-
-	
-]
-
 { #category : #accessing }
 MiTagGeneratorForm >> currentStrategy [
 
 	^ currentStrategy
-]
-
-{ #category : #'as yet unclassified' }
-MiTagGeneratorForm >> fetchConditions [
-
-	^ (self owner application itemsFor: FamixCBCondition) asOrderedCollection
 ]
 
 { #category : #initialization }
@@ -69,64 +53,37 @@ MiTagGeneratorForm >> initialize [
 
 { #category : #initialization }
 MiTagGeneratorForm >> initializeLayout [
-	| sep headerLayout formLayout mainLayout conditionListWidth |
-	self layout: (SpBoxLayout newTopToBottom spacing: 5).
-	conditionListWidth := 240.
-	(sep := SpRoassalPresenter new) canvas color: (Color
-			 r: 40
-			 g: 40
-			 b: 40
-			 range: 255) translucent.
-	
-	headerLayout := (SpBoxLayout newLeftToRight
-				                 add: self formTitle asPresenter;
-				                 hAlignCenter;
-				                 yourself).
 
-	formLayout := SpBoxLayout newTopToBottom
-		              spacing: 5;
+	| headerLayout mainLayout |
+	self layout: (SpBoxLayout newTopToBottom spacing: 5).
+
+	headerLayout := SpBoxLayout newLeftToRight
+		                add: self formTitle asPresenter;
+		                hAlignCenter;
+		                yourself.
+
+	mainLayout := SpBoxLayout newTopToBottom
+		              spacing: 4;
 		              add: (SpBoxLayout newLeftToRight
-				               spacing: 5;
-				               add: (SpBoxLayout newTopToBottom
-						                add: 'Name' asPresenter expand: false;
-						                add: nameField expand: false;
-						                yourself);
-				               add: (SpBoxLayout newTopToBottom
-						                add: 'Category (optional)';
-						                add: categorySelection;
-						                yourself)
-				               width: 200;
+				               add: uniqueTagButton;
+				               add: multipleTagsButton;
+				               add: gradualTagsButton;
 				               yourself)
 		              expand: false;
 		              add: (SpBoxLayout newTopToBottom
-				               add: 'Description (optional)' asPresenter
-				               expand: false;
-				               add: descriptionField;
+				               add: 'Category (optional)';
+				               add: categorySelection;
 				               yourself)
-		              expand: true;
-		              yourself.
-
-	mainLayout := SpBoxLayout newLeftToRight
-							spacing: 10;
-							add: conditionList width: conditionListWidth;
-							add: sep width: 2;
-							add: (SpBoxLayout newTopToBottom
-				               spacing: 4;
-				               add: (SpBoxLayout newLeftToRight
-						                add: uniqueTagButton;
-						                add: multipleTagsButton;
-											add: gradualTagsButton; 
-						                yourself)
-				               expand: false;
-				               add: formLayout expand: true fill: true;
-				               add: (SpBoxLayout newLeftToRight
-						                vAlignEnd;
-						                spacing: 10;
-						                add: cancelButton;
-						                add: submitButton;
-						                yourself)
-				               expand: false;
-				               yourself);
+		              expand: false;
+		              add: itemChooser expand: true fill: true;
+		              add: (SpBoxLayout newLeftToRight
+				               vAlignEnd;
+				               spacing: 10;
+				               add: cancelButton;
+				               add: submitButton;
+				               yourself)
+		              expand: false;
+		              yourself;
 		              yourself.
 	self layout
 		add: headerLayout expand: false;
@@ -136,13 +93,16 @@ MiTagGeneratorForm >> initializeLayout [
 { #category : #'as yet unclassified' }
 MiTagGeneratorForm >> initializePresenters [
 
+	itemChooser := SpChooserPresenter
+		               sourceItems: {  }
+		               chosenItems: {  }
+		               displayBlock: [ :each | each name ].
 	submitButton := self newButton
 		                label: 'Add';
 		                yourself.
 	cancelButton := self newButton
 		                label: 'Cancel';
 		                yourself.
-	nameField := self newTextInput.
 	categorySelection := self newDropList
 		                     sortingBlock: [ :c1 :c2 | 
 			                     c1 model ifNil: [ true ] ifNotNil: [ 
@@ -152,32 +112,33 @@ MiTagGeneratorForm >> initializePresenters [
 		                     display: [ :cat | 
 			                     cat ifNil: [ '' ] ifNotNil: [ cat name ] ];
 		                     yourself.
-	descriptionField := self newText.
-	
-	conditionList := self newList
-		             display: [ :cond | cond name ] yourself.
-	
+
 	uniqueTagButton := self newToggleButton
-		                state: true;
-		                label: 'Unique tag';
-		                yourself.
+		                   state: true;
+		                   label: 'Unique tag';
+		                   yourself.
 	multipleTagsButton := self newToggleButton
-		                state: false;
-		                label: 'Multiple tags';
-		                yourself.
+		                      state: false;
+		                      label: 'Multiple tags';
+		                      yourself.
 	gradualTagsButton := self newToggleButton
-		                state: false;
-		                label: 'Gradual tags';
-		                yourself.
+		                     state: false;
+		                     label: 'Gradual tags';
+		                     yourself.
 	submitButton := self newButton
 		                label: 'Generate';
 		                yourself.
 	cancelButton := self newButton
 		                label: 'Cancel';
 		                yourself.
-		
-	self initializeLayout.
-	self updateConditionsList
+
+	self initializeLayout
+]
+
+{ #category : #accessing }
+MiTagGeneratorForm >> itemChooser [
+
+	^ itemChooser
 ]
 
 { #category : #'as yet unclassified' }
@@ -188,20 +149,12 @@ MiTagGeneratorForm >> putAllButtonsStateToFalseExcept: aButton [
 	buttons do: [ :button | button state: false ]
 ]
 
-{ #category : #brokerage }
-MiTagGeneratorForm >> remove: aCondition [
-	
-	self updateConditionsList
-
-	
-]
-
 { #category : #initialization }
 MiTagGeneratorForm >> reset [
 
-	nameField text: ''.
-	descriptionField text: ''.
-	categorySelection resetSelection
+	categorySelection resetSelection.
+	itemChooser sourceItems: {  }.
+	itemChooser targetList items: {  }.
 ]
 
 { #category : #initialization }
@@ -244,26 +197,23 @@ MiTagGeneratorForm >> setModelBeforeInitialization: aTagModel [
 ]
 
 { #category : #initialization }
+MiTagGeneratorForm >> setSourceItems: aCollection [
+	itemChooser
+		sourceItems: aCollection
+		
+]
+
+{ #category : #initialization }
 MiTagGeneratorForm >> submit [
 
 	| strategy tags |
 	strategy := currentStrategy new
-		            name: nameField text;
-		            description: descriptionField text;
 		            category: categorySelection selectedItem.
 		
-	tags := strategy generateTags: conditionList items.
+	tags := strategy generateTags: itemChooser chosenItems.
 	tags do: [ :tag | owner model addDynamicTag: tag ].
 	self owner closeTagGeneratorForm
 		
-	
-]
-
-{ #category : #brokerage }
-MiTagGeneratorForm >> update: aCondition [
-	
-	self updateConditionsList
-
 	
 ]
 
@@ -271,10 +221,4 @@ MiTagGeneratorForm >> update: aCondition [
 MiTagGeneratorForm >> updateCategories [
 
 	categorySelection items: { nil }, tagModel allCategories
-]
-
-{ #category : #accessing }
-MiTagGeneratorForm >> updateConditionsList [
-
-	conditionList items: self fetchConditions
 ]

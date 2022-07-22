@@ -23,11 +23,20 @@ MiTagGeneratorFormTest >> presenterOwner [
 MiTagGeneratorFormTest >> setUp [
 
 	super setUp.
-	browser openTagGenerationForm.
+	browser openTagGenerationFormFor: {  }.
+]
+
+{ #category : #test }
+MiTagGeneratorFormTest >> testSetSourceItems [
+	| condition condition2 |
+	condition := FamixCBCondition named: 'test' on: (MiCriticBrowserPharoCodeQuery on: '[ :entity | entity isDead ]').
+	condition2 := FamixCBCondition named: 'test2' on: (MiCriticBrowserPharoCodeQuery on: '[ :entity | entity isStub ]').
+	presenter setSourceItems: { condition. condition2 }.
+	self assertCollection: presenter itemChooser sourceList items hasSameElements: { condition. condition2 }
 ]
 
 { #category : #tests }
-MiTagGeneratorFormTest >> testStrategyChangesWhenButtonPress [
+MiTagGeneratorFormTest >> testputAllButtonsStateToFalseExcept [
 	self assert: presenter currentStrategy equals: CBOneTagGenerationStrategy.
 	presenter setCBMultipleTagsForm.
 	self assert: presenter currentStrategy equals: CBMultipleTagsGenerationStrategy.

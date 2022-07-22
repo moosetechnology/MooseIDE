@@ -127,7 +127,7 @@ MiTagBrowser >> createDynamicTag: name description: aText color: aColor category
 	(name notNil and: [ name isNotEmpty ]) ifFalse: [ ^ self ].
 	newTag := aQuery class = FamixCBCondition
 		          ifTrue: [ MiCriticTag new ]
-		          ifFalse: [ MiDynamicTag new ].
+		          ifFalse: [ MiQueryTag new ].
 	(aText notNil and: [ aText isNotEmpty ]) ifTrue: [ 
 		newTag description: aText ].
 	newTag name: name.
@@ -292,11 +292,12 @@ MiTagBrowser >> openTagEditionForm [
 ]
 
 { #category : #'as yet unclassified' }
-MiTagBrowser >> openTagGenerationForm [
+MiTagBrowser >> openTagGenerationFormFor: aCollection [
 
 	tagGenerationForm
 		reset;
-		updateCategories.
+		updateCategories;
+		setSourceItems: aCollection.
 	self layout child: tagGenerationForm
 ]
 
@@ -336,6 +337,12 @@ MiTagBrowser >> showNoMooseModel [
 MiTagBrowser >> tagCreationForm [
 
 	^ tagCreationForm
+]
+
+{ #category : #accessing }
+MiTagBrowser >> tagGenerationForm [
+
+	^ tagGenerationForm
 ]
 
 { #category : #accessing }

@@ -52,6 +52,16 @@ MiCriticBrowserTest >> setUp [
 ]
 
 { #category : #test }
+MiCriticBrowserTest >> testCanGenerate [
+
+	self assert: browser canGenerate equals: false.
+	browser model addChildToRootContext: childContext.
+	self assert: browser canGenerate equals: false.
+	browser model addChildToRootContext: deadRule.
+	self assert: browser canGenerate equals: true
+]
+
+{ #category : #test }
 MiCriticBrowserTest >> testChildrenFor [
 	| entity |
 	entity := FamixStMethod new.

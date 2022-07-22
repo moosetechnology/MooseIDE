@@ -13,8 +13,7 @@ Class {
 		'dynamicTagDescriptionPage',
 		'addTagButton',
 		'btnIsExtent',
-		'btnIsIntent',
-		'generateTagsButton'
+		'btnIsIntent'
 	],
 	#category : #'MooseIDE-Tagging-Browser'
 }
@@ -97,7 +96,6 @@ MiTagManagementPage >> initializeLayout [
 							   add: addTagButton width: 30;
 							   yourself)
 					  expand: false;
-					  add: generateTagsButton expand: false;
 					  add: tagList;
 					  yourself)
 			 width: 200;
@@ -138,12 +136,6 @@ MiTagManagementPage >> initializePresenters [
 			selection selectedItem ifNotNil: [ :item | self setTagTo: item ] ].
 	addTagButton := self newButton icon: (Smalltalk iconNamed: #smallAdd).
 	addTagButton action: [ self owner openTagCreationForm ].
-	
-	generateTagsButton := self newButton.
-	generateTagsButton 
-		label: 'Generate tags';
-		icon: (self iconNamed: #smallAdd);
-		action: [ self owner openTagGenerationForm ].
 
 	self initializeLayout
 ]
