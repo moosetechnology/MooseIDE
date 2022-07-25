@@ -81,8 +81,7 @@ MiTagBrowser >> browserClosed [
 	super browserClosed.
 	application unregisterProducer: self.
 	application unregisterConsumer: self.
-	application unregisterConsumer: tagCreationForm.
-	application unregisterConsumer: tagGenerationForm
+	application unregisterConsumer: tagCreationForm
 ]
 
 { #category : #testing }
@@ -226,8 +225,7 @@ MiTagBrowser >> initialize [
 	application registerConsumer: self for: FamixTag.
 	application registerConsumer: self for: FamixTagAssociation.
 	application registerConsumer: tagCreationForm for: FQAbstractQuery.
-	application registerConsumer: tagCreationForm for: FamixCBCondition.
-	application registerConsumer: tagGenerationForm for: FamixCBCondition
+	application registerConsumer: tagCreationForm for: FamixCBCondition
 ]
 
 { #category : #initialization }
@@ -298,6 +296,17 @@ MiTagBrowser >> openTagGenerationFormFor: aCollection [
 		reset;
 		updateCategories;
 		setSourceItems: aCollection.
+	self layout child: tagGenerationForm
+]
+
+{ #category : #'as yet unclassified' }
+MiTagBrowser >> openTagGenerationFormFor: aCollection generating: aClass [
+
+	tagGenerationForm
+		reset;
+		updateCategories;
+		setSourceItems: aCollection;
+		setTagClass: aClass.
 	self layout child: tagGenerationForm
 ]
 

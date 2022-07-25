@@ -11,7 +11,8 @@ Class {
 		'category',
 		'name',
 		'description',
-		'color'
+		'color',
+		'tagClass'
 	],
 	#category : #'MooseIDE-Tagging-Generation'
 }
@@ -68,4 +69,16 @@ GenerationStrategy >> name [
 GenerationStrategy >> name: anObject [
 
 	name := anObject
+]
+
+{ #category : #accessing }
+GenerationStrategy >> tagClass [
+
+	^ tagClass
+]
+
+{ #category : #accessing }
+GenerationStrategy >> tagClass: anObject [
+
+	tagClass := anObject
 ]

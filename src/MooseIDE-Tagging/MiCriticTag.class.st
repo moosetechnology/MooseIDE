@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'rule'
 	],
-	#category : #'MooseIDE-Tagging-Browser'
+	#category : #'MooseIDE-Tagging-DynamicTags'
 }
 
 { #category : #testing }
@@ -12,8 +12,8 @@ MiCriticTag >> isApplicableTo: anObject [
 
 	"The query should accept one parameter (anObject) and return a boolean."
 
-	(rule runUpTree: anObject asMooseGroup). 
-	^ rule violations isNotEmpty
+	(evaluatingObject runUpTree: anObject asMooseGroup). 
+	^ evaluatingObject violations isNotEmpty
 ]
 
 { #category : #accessing }
@@ -22,14 +22,8 @@ MiCriticTag >> label [
 	^ self name
 ]
 
-{ #category : #accessing }
-MiCriticTag >> rule [
-
-	^ rule
-]
-
-{ #category : #accessing }
-MiCriticTag >> rule: anObject [
-
-	rule := anObject
+{ #category : #'as yet unclassified' }
+MiCriticTag >> typeOfEvaluatingObject [
+"returns the class needed for evaluating objects"
+	^ FamixCBCondition
 ]

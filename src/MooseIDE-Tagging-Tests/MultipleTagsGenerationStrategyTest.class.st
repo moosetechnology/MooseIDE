@@ -2,7 +2,7 @@
 A CBMultipleTagsGenerationStrategyTest is a test class for testing the behavior of CBMultipleTagsGenerationStrategy
 "
 Class {
-	#name : #CBMultipleTagsGenerationStrategyTest,
+	#name : #MultipleTagsGenerationStrategyTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'strategy',
@@ -16,10 +16,11 @@ Class {
 }
 
 { #category : #running }
-CBMultipleTagsGenerationStrategyTest >> setUp [
+MultipleTagsGenerationStrategyTest >> setUp [
 	super setUp.
 	
-	strategy := CBMultipleTagsGenerationStrategy new.
+	strategy := MultipleTagsGenerationStrategy new
+		tagClass: MiCriticTag.
 	
 	context := FamixCBRootContext named: 'root' on: '[ :col | col ]'.
 	condition := FamixCBCondition named: 'test1' on: ((MiCriticBrowserPharoCodeQuery on: '[ :entity | entity isStub ]')).
@@ -31,15 +32,15 @@ CBMultipleTagsGenerationStrategyTest >> setUp [
 ]
 
 { #category : #'as yet unclassified' }
-CBMultipleTagsGenerationStrategyTest >> tag: aTag ofCondition: aCondition [
+MultipleTagsGenerationStrategyTest >> tag: aTag ofCondition: aCondition [
 
 	self assert: aTag name equals: aCondition name.
 	self assert: aTag description equals: aCondition summary.
-	self assert: aTag rule equals: aCondition
+	self assert: aTag evaluatingObject equals: aCondition
 ]
 
 { #category : #test }
-CBMultipleTagsGenerationStrategyTest >> testCreateTagFor [
+MultipleTagsGenerationStrategyTest >> testCreateTagFor [
 	| tag |
 	tag := strategy createTagFor: condition. 
 	self tag: tag ofCondition: condition 
@@ -49,7 +50,7 @@ CBMultipleTagsGenerationStrategyTest >> testCreateTagFor [
 ]
 
 { #category : #test }
-CBMultipleTagsGenerationStrategyTest >> testGenerateTags [
+MultipleTagsGenerationStrategyTest >> testGenerateTags [
 	| tags |
 	tags := strategy generateTags: context getAllConditions.
 	self assert: tags size equals: 2.

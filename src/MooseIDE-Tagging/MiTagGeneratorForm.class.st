@@ -10,7 +10,8 @@ Class {
 		'currentStrategy',
 		'gradualTagsButton',
 		'uniqueTagButton',
-		'itemChooser'
+		'itemChooser',
+		'tagClass'
 	],
 	#category : #'MooseIDE-Tagging-Browser'
 }
@@ -48,7 +49,7 @@ MiTagGeneratorForm >> formTitle [
 MiTagGeneratorForm >> initialize [
 
 	super initialize.
-	currentStrategy := CBOneTagGenerationStrategy
+	currentStrategy := OneTagGenerationStrategy
 ]
 
 { #category : #initialization }
@@ -160,10 +161,10 @@ MiTagGeneratorForm >> reset [
 { #category : #initialization }
 MiTagGeneratorForm >> setCBGradualTagsForm [
 
-	currentStrategy = CBGradualTagsGenerationStrategy ifTrue: [ 
+	currentStrategy = GradualTagsGenerationStrategy ifTrue: [ 
 		gradualTagsButton state: true.
 		^ self ].
-	currentStrategy := CBGradualTagsGenerationStrategy.
+	currentStrategy := GradualTagsGenerationStrategy.
 	self putAllButtonsStateToFalseExcept: gradualTagsButton.
 	self update
 ]
@@ -171,10 +172,10 @@ MiTagGeneratorForm >> setCBGradualTagsForm [
 { #category : #initialization }
 MiTagGeneratorForm >> setCBMultipleTagsForm [
 
-	currentStrategy = CBMultipleTagsGenerationStrategy ifTrue: [ 
+	currentStrategy = MultipleTagsGenerationStrategy ifTrue: [ 
 		multipleTagsButton state: true.
 		^ self ].
-	currentStrategy := CBMultipleTagsGenerationStrategy.
+	currentStrategy := MultipleTagsGenerationStrategy.
 	self putAllButtonsStateToFalseExcept: multipleTagsButton.
 	self update
 ]
@@ -182,10 +183,10 @@ MiTagGeneratorForm >> setCBMultipleTagsForm [
 { #category : #initialization }
 MiTagGeneratorForm >> setCBSingleTagForm [
 
-	currentStrategy = CBOneTagGenerationStrategy ifTrue: [ 
+	currentStrategy = OneTagGenerationStrategy ifTrue: [ 
 		uniqueTagButton state: true.
 		^ self ].
-	currentStrategy := CBOneTagGenerationStrategy.
+	currentStrategy := OneTagGenerationStrategy.
 	self putAllButtonsStateToFalseExcept: uniqueTagButton.
 	self update
 ]
@@ -204,11 +205,18 @@ MiTagGeneratorForm >> setSourceItems: aCollection [
 ]
 
 { #category : #initialization }
+MiTagGeneratorForm >> setTagClass: aClass [
+"set the class to give to the generating strategy"
+	tagClass := aClass.
+]
+
+{ #category : #initialization }
 MiTagGeneratorForm >> submit [
 
 	| strategy tags |
 	strategy := currentStrategy new
-		            category: categorySelection selectedItem.
+		            category: categorySelection selectedItem;
+						tagClass: tagClass.
 		
 	tags := strategy generateTags: itemChooser chosenItems.
 	tags do: [ :tag | owner model addDynamicTag: tag ].

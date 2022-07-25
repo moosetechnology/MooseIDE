@@ -3,12 +3,12 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'name',
-		'query',
 		'color',
 		'description',
-		'category'
+		'category',
+		'evaluatingObject'
 	],
-	#category : #'MooseIDE-Tagging-Browser'
+	#category : #'MooseIDE-Tagging-DynamicTags'
 }
 
 { #category : #accessing }
@@ -47,6 +47,19 @@ MiDynamicTag >> description: anObject [
 	description := anObject
 ]
 
+{ #category : #accessing }
+MiDynamicTag >> evaluatingObject [
+
+	^ evaluatingObject
+]
+
+{ #category : #accessing }
+MiDynamicTag >> evaluatingObject: anObject [
+
+	(anObject class inheritsFromOrEqualTo: self typeOfEvaluatingObject) ifFalse: [ self error: IncorrectTypeOfEvaluatingObject signal ].
+	evaluatingObject := anObject
+]
+
 { #category : #testing }
 MiDynamicTag >> isApplicableTo: anObject [
 
@@ -83,4 +96,10 @@ MiDynamicTag >> name: anObject [
 MiDynamicTag >> taggedEntities [
 
 	^ #()
+]
+
+{ #category : #'as yet unclassified' }
+MiDynamicTag >> typeOfEvaluatingObject [
+"returns the class needed for evaluating objects"
+	^ self subclassResponsibility
 ]

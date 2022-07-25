@@ -1,6 +1,6 @@
 Class {
-	#name : #CBMultipleTagsGenerationStrategy,
-	#superclass : #CBGenerationStrategy,
+	#name : #MultipleTagsGenerationStrategy,
+	#superclass : #GenerationStrategy,
 	#instVars : [
 		'colors',
 		'currentColor'
@@ -9,13 +9,13 @@ Class {
 }
 
 { #category : #accessing }
-CBMultipleTagsGenerationStrategy class >> colorPalette [ 
+MultipleTagsGenerationStrategy class >> colorPalette [ 
 
 	^ RSQualitativeColorPalette new accent8.
 ]
 
 { #category : #public }
-CBMultipleTagsGenerationStrategy >> assignColor [
+MultipleTagsGenerationStrategy >> assignColor [
 
 	colors ifEmpty: [ 
 		colors := self class colorPalette range asOrderedCollection ].
@@ -23,17 +23,17 @@ CBMultipleTagsGenerationStrategy >> assignColor [
 ]
 
 { #category : #'as yet unclassified' }
-CBMultipleTagsGenerationStrategy >> createTagFor: aCondition [
+MultipleTagsGenerationStrategy >> createTagFor: anEvaluatingObject [
 
-	^ MiCriticTag new
-		  name: aCondition name;
-		  description: aCondition summary;
-		  rule: aCondition;
+	^ self tagClass new
+		  name: anEvaluatingObject name;
+		  description: anEvaluatingObject summary;
+		  evaluatingObject: anEvaluatingObject;
 		  color: self assignColor
 ]
 
 { #category : #'as yet unclassified' }
-CBMultipleTagsGenerationStrategy >> generateTags: anObject [
+MultipleTagsGenerationStrategy >> generateTags: anObject [
 
 	| tags |
 	tags := OrderedCollection new.
@@ -47,7 +47,7 @@ CBMultipleTagsGenerationStrategy >> generateTags: anObject [
 ]
 
 { #category : #initialization }
-CBMultipleTagsGenerationStrategy >> initialize [ 
+MultipleTagsGenerationStrategy >> initialize [ 
 
 	super initialize.
 	colors := self class colorPalette range asOrderedCollection

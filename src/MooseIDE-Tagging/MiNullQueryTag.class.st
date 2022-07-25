@@ -1,7 +1,7 @@
 Class {
 	#name : #MiNullQueryTag,
 	#superclass : #MiQueryTag,
-	#category : #'MooseIDE-Tagging-Browser'
+	#category : #'MooseIDE-Tagging-DynamicTags'
 }
 
 { #category : #accessing }

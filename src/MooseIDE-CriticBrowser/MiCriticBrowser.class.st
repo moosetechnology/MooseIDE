@@ -478,6 +478,12 @@ MiCriticBrowser >> stringForItem: item [
 	^ String streamContents: [ :s | item displayStringOn: s ]
 ]
 
+{ #category : #'as yet unclassified' }
+MiCriticBrowser >> typeForDynamicTags [
+"return the class to use when generating tags"
+	^ MiCriticTag
+]
+
 { #category : #'updating screen' }
 MiCriticBrowser >> updateEntitiesList: aCollection [
 	| roots |
