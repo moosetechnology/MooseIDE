@@ -14,6 +14,14 @@ CBMultipleTagsGenerationStrategy class >> colorPalette [
 	^ RSQualitativeColorPalette new accent8.
 ]
 
+{ #category : #public }
+CBMultipleTagsGenerationStrategy >> assignColor [
+
+	colors ifEmpty: [ 
+		colors := self class colorPalette range asOrderedCollection ].
+	^ colors removeFirst
+]
+
 { #category : #'as yet unclassified' }
 CBMultipleTagsGenerationStrategy >> createTagFor: aCondition [
 
@@ -21,9 +29,7 @@ CBMultipleTagsGenerationStrategy >> createTagFor: aCondition [
 		  name: aCondition name;
 		  description: aCondition summary;
 		  rule: aCondition;
-		  color: (colors remove: colors first ifAbsent: [ 
-					   colors := self class colorPalette range.
-					   colors remove: colors first ])
+		  color: self assignColor
 ]
 
 { #category : #'as yet unclassified' }

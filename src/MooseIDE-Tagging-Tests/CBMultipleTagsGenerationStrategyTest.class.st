@@ -51,7 +51,7 @@ CBMultipleTagsGenerationStrategyTest >> testCreateTagFor [
 { #category : #test }
 CBMultipleTagsGenerationStrategyTest >> testGenerateTags [
 	| tags |
-	tags := strategy generateTags: context.
+	tags := strategy generateTags: context getAllConditions.
 	self assert: tags size equals: 2.
 	self tag: (tags at: 1) ofCondition: condition.
 	self tag: (tags at: 2) ofCondition: condition2 
