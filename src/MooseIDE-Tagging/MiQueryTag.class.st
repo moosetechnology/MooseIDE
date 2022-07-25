@@ -13,6 +13,13 @@ MiQueryTag >> isApplicableTo: anObject [
 ]
 
 { #category : #accessing }
+MiQueryTag >> label [
+	"returns label for printing in intent page"
+	^ String streamContents: [ :aStream | 
+		  self query storeWithParentsOn: aStream ]
+]
+
+{ #category : #accessing }
 MiQueryTag >> query [
 
 	^ query

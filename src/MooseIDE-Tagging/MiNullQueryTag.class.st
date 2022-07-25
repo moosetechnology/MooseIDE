@@ -29,6 +29,12 @@ MiNullQueryTag >> isApplicableTo: aQuery [
 ]
 
 { #category : #accessing }
+MiNullQueryTag >> label [
+
+	^ self name
+]
+
+{ #category : #accessing }
 MiNullQueryTag >> name [
 	
 	^ 'null dynamic tag'

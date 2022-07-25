@@ -27,7 +27,7 @@ MiTagGeneratorForm >> connectPresenters [
 	
 	uniqueTagButton action: [ self setCBSingleTagForm ].
 	multipleTagsButton action: [ self setCBMultipleTagsForm ].
-	gradualTagsButton action: [ self setCBGraduatedTagsForm ].
+	gradualTagsButton action: [ self setCBGradualTagsForm ].
 	cancelButton action: [ self cancel ].
 	submitButton action: [ self submit ]
 ]
@@ -158,12 +158,12 @@ MiTagGeneratorForm >> reset [
 ]
 
 { #category : #initialization }
-MiTagGeneratorForm >> setCBGraduatedTagsForm [
+MiTagGeneratorForm >> setCBGradualTagsForm [
 
-	currentStrategy = CBGraduatedTagsGenerationStrategy ifTrue: [ 
+	currentStrategy = CBGradualTagsGenerationStrategy ifTrue: [ 
 		gradualTagsButton state: true.
 		^ self ].
-	currentStrategy := CBGraduatedTagsGenerationStrategy.
+	currentStrategy := CBGradualTagsGenerationStrategy.
 	self putAllButtonsStateToFalseExcept: gradualTagsButton.
 	self update
 ]

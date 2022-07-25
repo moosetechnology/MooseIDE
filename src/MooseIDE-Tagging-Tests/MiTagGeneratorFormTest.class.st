@@ -40,8 +40,8 @@ MiTagGeneratorFormTest >> testputAllButtonsStateToFalseExcept [
 	self assert: presenter currentStrategy equals: CBOneTagGenerationStrategy.
 	presenter setCBMultipleTagsForm.
 	self assert: presenter currentStrategy equals: CBMultipleTagsGenerationStrategy.
-	presenter setCBGraduatedTagsForm.
-	self assert: presenter currentStrategy equals: CBGraduatedTagsGenerationStrategy.
+	presenter setCBGradualTagsForm.
+	self assert: presenter currentStrategy equals: CBGradualTagsGenerationStrategy.
 	presenter setCBSingleTagForm.
 	self assert: presenter currentStrategy equals: CBOneTagGenerationStrategy.
 ]

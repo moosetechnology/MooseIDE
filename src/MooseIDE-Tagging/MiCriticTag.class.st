@@ -17,6 +17,12 @@ MiCriticTag >> isApplicableTo: anObject [
 ]
 
 { #category : #accessing }
+MiCriticTag >> label [
+"returns label for printing in intent page"
+	^ self name
+]
+
+{ #category : #accessing }
 MiCriticTag >> rule [
 
 	^ rule

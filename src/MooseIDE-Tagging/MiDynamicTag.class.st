@@ -62,6 +62,12 @@ MiDynamicTag >> isIntent [
 ]
 
 { #category : #accessing }
+MiDynamicTag >> label [
+"returns label for printing in intent page"
+	^ self subclassResponsibility
+]
+
+{ #category : #accessing }
 MiDynamicTag >> name [
 
 	^ name

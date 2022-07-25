@@ -1,5 +1,5 @@
 Class {
-	#name : #CBGraduatedTagsGenerationStrategy,
+	#name : #CBGradualTagsGenerationStrategy,
 	#superclass : #CBGenerationStrategy,
 	#category : #'MooseIDE-Tagging-Generation'
 }
