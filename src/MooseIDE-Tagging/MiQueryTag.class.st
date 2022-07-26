@@ -16,7 +16,7 @@ MiQueryTag >> isApplicableTo: anObject [
 MiQueryTag >> label [
 	"returns label for printing in intent page"
 	^ String streamContents: [ :aStream | 
-		  self query storeWithParentsOn: aStream ]
+		  self evaluatingObject storeWithParentsOn: aStream ]
 ]
 
 { #category : #'as yet unclassified' }

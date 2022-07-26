@@ -32,7 +32,7 @@ MiTagPresenterTest >> createIntentTag: aName [
 		description: nil
 		color: Color blue
 		category: nil
-		query: nil
+		evaluatingObject: nil
 ]
 
 { #category : #helpers }

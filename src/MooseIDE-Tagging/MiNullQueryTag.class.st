@@ -23,6 +23,12 @@ MiNullQueryTag >> description [
 ]
 
 { #category : #accessing }
+MiNullQueryTag >> evaluatingObject [
+
+	^ FQNullQuery new
+]
+
+{ #category : #accessing }
 MiNullQueryTag >> isApplicableTo: aQuery [
 
 	^ false
@@ -38,10 +44,4 @@ MiNullQueryTag >> label [
 MiNullQueryTag >> name [
 	
 	^ 'null dynamic tag'
-]
-
-{ #category : #accessing }
-MiNullQueryTag >> query [
-
-	^ FQNullQuery new
 ]

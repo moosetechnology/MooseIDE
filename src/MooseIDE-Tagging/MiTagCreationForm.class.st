@@ -319,7 +319,7 @@ MiTagCreationForm >> submit [
 				description: descriptionField text
 				color: colorPicker color
 				category: categorySelection selectedItem
-				query: queryList selectedItem ].
+				evaluatingObject: queryList selectedItem ].
 	self owner closeTagCreationForm
 ]
 

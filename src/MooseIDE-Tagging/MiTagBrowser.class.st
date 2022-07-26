@@ -120,11 +120,11 @@ MiTagBrowser >> consume: anObject [
 ]
 
 { #category : #testing }
-MiTagBrowser >> createDynamicTag: name description: aText color: aColor category: aCategory query: aQuery [
+MiTagBrowser >> createDynamicTag: name description: aText color: aColor category: aCategory evaluatingObject: anObject [
 
 	| newTag |
 	(name notNil and: [ name isNotEmpty ]) ifFalse: [ ^ self ].
-	newTag := aQuery class = FamixCBCondition
+	newTag := anObject class = FamixCBCondition
 		          ifTrue: [ MiCriticTag new ]
 		          ifFalse: [ MiQueryTag new ].
 	(aText notNil and: [ aText isNotEmpty ]) ifTrue: [ 
@@ -133,12 +133,8 @@ MiTagBrowser >> createDynamicTag: name description: aText color: aColor category
 	aColor ifNotNil: [ newTag color: aColor ].
 
 	aCategory ifNotNil: [ newTag category: aCategory ].
-
-	aQuery
-		ifNotNil: [ 
-			aQuery class = FamixCBCondition
-				ifTrue: [ newTag rule: aQuery ]
-				ifFalse: [ newTag query: aQuery ] ]
+	anObject
+		ifNotNil: [ newTag evaluatingObject: anObject ]
 		ifNil: [ newTag query: FQNullQuery new ].
 	model addDynamicTag: newTag.
 	application consumeItem: newTag.
