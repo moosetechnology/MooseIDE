@@ -7,8 +7,6 @@ Class {
 	#instVars : [
 		'strategy',
 		'condition',
-		'violatingEntity',
-		'entity',
 		'condition2',
 		'context'
 	],
@@ -26,9 +24,6 @@ MultipleTagsGenerationStrategyTest >> setUp [
 	condition := FamixCBCondition named: 'test1' on: ((MiCriticBrowserPharoCodeQuery on: '[ :entity | entity isStub ]')).
 	condition2 := FamixCBCondition named: 'test2' on: ((MiCriticBrowserPharoCodeQuery on: '[ :entity | entity isDead ]')).
 	context addChild: condition; addChild: condition2.
-	
-	violatingEntity := FamixJavaMethod new. violatingEntity isStub: true.
-	entity := FamixJavaMethod new.
 ]
 
 { #category : #'as yet unclassified' }

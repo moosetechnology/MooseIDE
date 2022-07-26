@@ -27,7 +27,9 @@ MultipleTagsGenerationStrategy >> createTagFor: anEvaluatingObject [
 
 	^ self tagClass new
 		  name: anEvaluatingObject name;
-		  description: anEvaluatingObject summary;
+		  description: (anEvaluatingObject class = FamixCBCondition
+				   ifTrue: [ anEvaluatingObject summary ]
+				   ifFalse: [ '' ]);
 		  evaluatingObject: anEvaluatingObject;
 		  color: self assignColor
 ]
@@ -37,12 +39,7 @@ MultipleTagsGenerationStrategy >> generateTags: anObject [
 
 	| tags |
 	tags := OrderedCollection new.
-	"anObject class = FamixCBCondition
-		ifTrue: [ tags add: (self createTagFor: anObject) ]
-		ifFalse: [ 
-			anObject getAllConditions do: [ :cond | 
-				tags add: (self createTagFor: cond) ] ]."
-	anObject do: [ :cond | tags add: (self createTagFor: cond) ].
+	anObject collect: [ :cond | tags add: (self createTagFor: cond) ].
 	 ^ tags
 ]
 
