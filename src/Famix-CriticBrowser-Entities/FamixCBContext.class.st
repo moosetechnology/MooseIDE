@@ -43,6 +43,12 @@ FamixCBContext >> addChild: aRuleComponent [
 ]
 
 { #category : #adding }
+FamixCBContext >> addChildren: anObject [
+	<generated>
+	^ self children add: anObject
+]
+
+{ #category : #adding }
 FamixCBContext >> addEntity: anObject [
 	<generated>
 	^ self entities add: anObject

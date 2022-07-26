@@ -39,7 +39,7 @@ FamixCBCondition class >> named: aString on: aQuery summary: aSummary [
 { #category : #adding }
 FamixCBCondition >> addViolation: anObject [
 	<generated>
-	self violations add: anObject
+	^ self violations add: anObject
 ]
 
 { #category : #'as yet unclassified' }
