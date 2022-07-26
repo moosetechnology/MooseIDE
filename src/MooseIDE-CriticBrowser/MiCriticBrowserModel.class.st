@@ -145,7 +145,7 @@ MiCriticBrowserModel >> runCondition: aCondition [
 { #category : #accessing }
 MiCriticBrowserModel >> setEntities: aMooseObject [
 	entities := aMooseObject isCollection
-		ifTrue: [ (aMooseObject allUsing: FamixTNamedEntity) sort: [ :a :b | a name < b name ] ]
+		ifTrue: [ (aMooseObject allUsing: FamixTNamedEntity) ]
 		ifFalse: [ ({aMooseObject} asMooseGroup) allUsing: FamixTNamedEntity ].
 	self resetResults
 	

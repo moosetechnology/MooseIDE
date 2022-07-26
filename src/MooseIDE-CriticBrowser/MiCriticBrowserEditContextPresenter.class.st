@@ -1,3 +1,6 @@
+"
+Dialog window called to edit a context, uses the ContextMakerPresenter.
+"
 Class {
 	#name : #MiCriticBrowserEditContextPresenter,
 	#superclass : #MiPresenter,

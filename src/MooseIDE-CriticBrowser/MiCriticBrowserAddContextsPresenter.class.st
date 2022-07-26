@@ -1,3 +1,6 @@
+"
+Dialog window used to add new contexts, uses the ContextMakerPresenter.
+"
 Class {
 	#name : #MiCriticBrowserAddContextsPresenter,
 	#superclass : #MiPresenter,

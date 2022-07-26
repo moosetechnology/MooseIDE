@@ -43,6 +43,12 @@ FamixCBContext >> addChild: aRuleComponent [
 ]
 
 { #category : #adding }
+FamixCBContext >> addChildren: anObject [
+	<generated>
+	^ self children add: anObject
+]
+
+{ #category : #adding }
 FamixCBContext >> addEntity: anObject [
 	<generated>
 	^ self entities add: anObject
@@ -127,7 +133,7 @@ FamixCBContext >> runDownTree: aCollection [
 { #category : #running }
 FamixCBContext >> runOn: aCollection [
 
-	entities := (contextBlock value: aCollection)
+	entities := (contextBlock value: aCollection) sort: [ :a :b | a name < b name ]
 ]
 
 { #category : #'as yet unclassified' }
