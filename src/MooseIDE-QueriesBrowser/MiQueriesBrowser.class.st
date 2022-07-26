@@ -11,7 +11,8 @@ Class {
 		'queryNotebookPresenter',
 		'selectedQuery',
 		'rootQuery',
-		'queriesListPresenter'
+		'queriesListPresenter',
+		'button'
 	],
 	#category : #'MooseIDE-QueriesBrowser-Main presenters'
 }
@@ -93,6 +94,11 @@ MiQueriesBrowser >> canFollowEntity: anObject [
 		  (anObject asMooseGroup allUsing: FamixTNamedEntity) isNotEmpty ]
 ]
 
+{ #category : #testing }
+MiQueriesBrowser >> canGenerate [
+	^ true
+]
+
 { #category : #'api - actions' }
 MiQueriesBrowser >> enableProgressNotification [
 
@@ -127,9 +133,10 @@ MiQueriesBrowser >> initialize [
 { #category : #initialization }
 MiQueriesBrowser >> initializeLayout [
 
-	self layout: (SpPanedLayout new
+	self layout: (SpBoxLayout newTopToBottom
 			 add: queriesListPresenter;
 			 add: queryNotebookPresenter;
+			 add: button;
 			 yourself)
 ]
 
@@ -153,6 +160,7 @@ MiQueriesBrowser >> initializePresenters [
 	self initializeResultTreePresenter.
 	self initializeNotebookPresenter.
 	self initializeQueryBuilder.
+	button := (MiOpenTagGeneratorCommand forSpecContext: self) configureAsButton buildPresenter.
 	self initializeLayout
 ]
 
@@ -182,6 +190,12 @@ MiQueriesBrowser >> initializeResultTreePresenter [
 MiQueriesBrowser >> itemsFor: aClass [
 	
 	^ rootQuery allChildren select: [ :query | query isKindOf: aClass ]
+]
+
+{ #category : #'as yet unclassified' }
+MiQueriesBrowser >> itemsForGeneration [
+
+	^ rootQuery allChildren
 ]
 
 { #category : #accessing }
@@ -268,6 +282,12 @@ MiQueriesBrowser >> showResultOfQuery: aQuery [
 
 	"This will sho the correct queryResultTreePresenter:"
 	queryNotebookPresenter resetAllPageContents
+]
+
+{ #category : #'as yet unclassified' }
+MiQueriesBrowser >> typeForDynamicTags [
+"return the class to use when generating tags"
+	^ MiQueryTag
 ]
 
 { #category : #actions }

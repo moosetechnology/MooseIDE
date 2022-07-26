@@ -33,3 +33,13 @@ GradualTagsGenerationStrategyTest >> testCreateQueryTagFor [
 	tag := strategy createQueryTagFor: query. 
 	self tag: tag ofQuery: query 
 ]
+
+{ #category : #test }
+GradualTagsGenerationStrategyTest >> testGenerateQueryTags [
+	| tags |
+	tags := strategy generateTags: { query. query2 }.
+	self assert: tags size equals: 2.
+	self tag: (tags at: 1) ofQuery: query.
+	self tag: (tags at: 2) ofQuery: query2 
+	 
+]

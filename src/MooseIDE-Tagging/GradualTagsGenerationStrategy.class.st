@@ -34,6 +34,18 @@ GradualTagsGenerationStrategy >> createQueryTagFor: anEvaluatingObject [
 		  color: self assignColor
 ]
 
+{ #category : #'as yet unclassified' }
+GradualTagsGenerationStrategy >> generateQueryTags: anObject [
+	
+	^ anObject collect: [ :query | self createQueryTagFor: query ]
+]
+
+{ #category : #'as yet unclassified' }
+GradualTagsGenerationStrategy >> generateTags: anObject [
+	
+	tagClass = MiQueryTag ifTrue: [ ^ self generateQueryTags: anObject ]
+]
+
 { #category : #initialization }
 GradualTagsGenerationStrategy >> initialize [ 
 
