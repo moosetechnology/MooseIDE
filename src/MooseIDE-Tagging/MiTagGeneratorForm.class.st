@@ -216,7 +216,8 @@ MiTagGeneratorForm >> submit [
 	| strategy tags |
 	strategy := currentStrategy new
 		            category: categorySelection selectedItem;
-						tagClass: tagClass.
+						tagClass: tagClass;
+						entities: owner model entities.
 		
 	tags := strategy generateTags: itemChooser chosenItems.
 	tags do: [ :tag | owner model addDynamicTag: tag ].

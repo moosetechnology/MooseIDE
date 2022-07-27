@@ -136,7 +136,7 @@ MiQueriesBrowser >> initializeLayout [
 	self layout: (SpBoxLayout newTopToBottom
 			 add: queriesListPresenter;
 			 add: queryNotebookPresenter;
-			 add: button;
+			 add: button expand: false;
 			 yourself)
 ]
 

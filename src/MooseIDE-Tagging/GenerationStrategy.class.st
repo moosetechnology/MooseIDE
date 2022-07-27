@@ -12,7 +12,8 @@ Class {
 		'name',
 		'description',
 		'color',
-		'tagClass'
+		'tagClass',
+		'entities'
 	],
 	#category : #'MooseIDE-Tagging-Generation'
 }
@@ -51,6 +52,18 @@ GenerationStrategy >> description [
 GenerationStrategy >> description: anObject [
 
 	description := anObject
+]
+
+{ #category : #accessing }
+GenerationStrategy >> entities [
+
+	^ entities
+]
+
+{ #category : #accessing }
+GenerationStrategy >> entities: anObject [
+
+	entities := anObject
 ]
 
 { #category : #'as yet unclassified' }

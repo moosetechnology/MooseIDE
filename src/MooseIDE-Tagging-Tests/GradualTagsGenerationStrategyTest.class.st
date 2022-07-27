@@ -4,7 +4,12 @@ Class {
 	#instVars : [
 		'strategy',
 		'query',
-		'query2'
+		'query2',
+		'context',
+		'condition',
+		'condition2',
+		'violatingEntity',
+		'entity'
 	],
 	#category : #'MooseIDE-Tagging-Tests'
 }
@@ -17,7 +22,19 @@ GradualTagsGenerationStrategyTest >> setUp [
 		tagClass: MiQueryTag.
 	
 	query := FQBooleanQuery property: #isStub.
-	query2 := FQBooleanQuery property: #isDead
+	query2 := FQBooleanQuery property: #isDead.
+	
+	context := FamixCBRootContext named: 'root' on: '[ :col | col ]'.
+	condition := FamixCBCondition named: 'test1' on: ((MiCriticBrowserPharoCodeQuery on: '[ :entity | entity isStub ]')).
+	condition2 := FamixCBCondition named: 'test2' on: ((MiCriticBrowserPharoCodeQuery on: '[ :entity | entity isDead ]')).
+	context addChild: condition; addChild: condition2.
+	
+	violatingEntity := FamixJavaMethod new isStub: true.
+	entity := FamixJavaMethod new.
+]
+
+{ #category : #'as yet unclassified' }
+GradualTagsGenerationStrategyTest >> staticTag: aDictionary ofCondition: aCondition [
 ]
 
 { #category : #'as yet unclassified' }
@@ -32,6 +49,20 @@ GradualTagsGenerationStrategyTest >> testCreateQueryTagFor [
 	| tag |
 	tag := strategy createQueryTagFor: query. 
 	self tag: tag ofQuery: query 
+]
+
+{ #category : #test }
+GradualTagsGenerationStrategyTest >> testGenerateCriticTags [
+	| tags |
+	strategy tagClass: MiCriticTag.
+	strategy entities: { entity. violatingEntity }.
+	tags := strategy generateCriticTags: { condition. condition2 }.
+	self assert: ((tags at: 1) at: 'name') equals: 'Nb of violations = 1'.
+	self assertCollection: ((tags at: 1) at: 'toTag') hasSameElements: {entity}.
+	self assert: ((tags at: 2) at: 'name') equals: 'Nb of violations = 2'.
+	self assertCollection: ((tags at: 2) at: 'toTag') hasSameElements: {violatingEntity}.
+	
+	
 ]
 
 { #category : #test }
