@@ -75,6 +75,21 @@ MiTagBrowser class >> windowSize [
 	^ 700 @ 475
 ]
 
+{ #category : #adding }
+MiTagBrowser >> addGeneratedStaticTags: aCollection [
+
+	aCollection do: [ :dict | 
+		| tag |
+		tag := self
+			       createTag: (dict at: 'name')
+			       description: ''
+			       color: (dict at: 'color')
+			       category: (dict at: 'category').
+		model currentTag: tag.
+		(dict at: 'toTag') do: [ :entity | model tagEntityNotYourself: entity. ]
+		 ]
+]
+
 { #category : #initialization }
 MiTagBrowser >> browserClosed [
 
@@ -153,7 +168,8 @@ MiTagBrowser >> createTag: name description: aText color: aColor category: aCate
 	aCategory ifNotNil: [ 
 		aCategory addTag: newTag.
 		newTag addCategory: aCategory ].
-	application consumeItem: newTag
+	application consumeItem: newTag.
+	^ newTag
 ]
 
 { #category : #accessing }

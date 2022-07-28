@@ -43,7 +43,7 @@ GradualTagsGenerationStrategy >> createQueryTagFor: anEvaluatingObject [
 
 { #category : #'as yet unclassified' }
 GradualTagsGenerationStrategy >> dictForStaticTagWithName: aString color: aColor entities: aCollection [
-	^ Dictionary newFrom: { 'name' -> aString. 'color' -> aColor. 'toTag' -> aCollection }
+	^ Dictionary newFrom: { 'name' -> aString. 'color' -> aColor. 'category' -> category. 'toTag' -> aCollection }
 ]
 
 { #category : #'as yet unclassified' }

@@ -31,6 +31,7 @@ MultipleTagsGenerationStrategy >> createTagFor: anEvaluatingObject [
 				   ifTrue: [ anEvaluatingObject summary ]
 				   ifFalse: [ '' ]);
 		  evaluatingObject: anEvaluatingObject;
+		  category: category;
 		  color: self assignColor
 ]
 
