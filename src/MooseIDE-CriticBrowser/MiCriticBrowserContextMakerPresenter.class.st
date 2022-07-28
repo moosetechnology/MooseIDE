@@ -58,7 +58,7 @@ MiCriticBrowserContextMakerPresenter >> defaultLayout [
 		yourself.
 	
 	codeBlock := SpBoxLayout newTopToBottom 
-		add: ('Input for context selection :' asPresenter) expand: false; 
+		add: ('Input for context block :' asPresenter) expand: false; 
 		add: codeInput;
 		yourself.
 		
