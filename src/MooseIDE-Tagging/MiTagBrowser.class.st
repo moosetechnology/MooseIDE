@@ -150,7 +150,7 @@ MiTagBrowser >> createDynamicTag: name description: aText color: aColor category
 	aCategory ifNotNil: [ newTag category: aCategory ].
 	anObject
 		ifNotNil: [ newTag evaluatingObject: anObject ]
-		ifNil: [ newTag query: FQNullQuery new ].
+		ifNil: [ newTag evaluatingObject: FQNullQuery new ].
 	model addDynamicTag: newTag.
 	application consumeItem: newTag.
 	tagManagementPage refreshTagList
