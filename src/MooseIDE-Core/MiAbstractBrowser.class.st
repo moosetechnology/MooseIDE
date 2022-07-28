@@ -316,6 +316,12 @@ MiAbstractBrowser >> canFollowEntity: anObject [
 ]
 
 { #category : #testing }
+MiAbstractBrowser >> canGenerate [
+"set to true if your browser can be used to generate tags"
+	^ false
+]
+
+{ #category : #testing }
 MiAbstractBrowser >> canHighlight [
 
 	"Override to retrun true if you want to give your browser a highlight behavior. 
@@ -422,6 +428,13 @@ MiAbstractBrowser >> isMiBrowser [
 	^ true
 ]
 
+{ #category : #actions }
+MiAbstractBrowser >> itemsForGeneration [
+	"not used if #canGenerate is false"
+
+	self subclassResponsibility 
+]
+
 { #category : #accessing }
 MiAbstractBrowser >> miSelectedItem [
 
@@ -495,6 +508,13 @@ MiAbstractBrowser >> showHelp [
 		bePositionRight;
 		presenter: (MiHelpPopup owner: help on: self);
 		popup
+]
+
+{ #category : #actions }
+MiAbstractBrowser >> typeForDynamicTags [
+	"not used if #canGenerate is false"
+
+	self subclassResponsibility 
 ]
 
 { #category : #buses }

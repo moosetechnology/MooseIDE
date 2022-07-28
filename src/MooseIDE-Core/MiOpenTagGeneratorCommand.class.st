@@ -10,6 +10,18 @@ Class {
 	#category : #'MooseIDE-Core-Command'
 }
 
+{ #category : #'accessing - defaults' }
+MiOpenTagGeneratorCommand class >> defaultDescription [
+
+	^ 'Generate tags using instances produced by this browser'
+]
+
+{ #category : #initialization }
+MiOpenTagGeneratorCommand class >> defaultIconName [
+
+	^ 'add'
+]
+
 { #category : #default }
 MiOpenTagGeneratorCommand class >> defaultName [
 
@@ -18,7 +30,7 @@ MiOpenTagGeneratorCommand class >> defaultName [
 
 { #category : #testing }
 MiOpenTagGeneratorCommand >> canBeExecuted [
-	^ self context canGenerate
+	^ self context itemsForGeneration isNotEmpty
 ]
 
 { #category : #executing }

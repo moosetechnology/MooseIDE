@@ -52,16 +52,6 @@ MiCriticBrowserTest >> setUp [
 ]
 
 { #category : #test }
-MiCriticBrowserTest >> testCanGenerate [
-
-	self assert: browser canGenerate equals: false.
-	browser model addChildToRootContext: childContext.
-	self assert: browser canGenerate equals: false.
-	browser model addChildToRootContext: deadRule.
-	self assert: browser canGenerate equals: true
-]
-
-{ #category : #test }
 MiCriticBrowserTest >> testChildrenFor [
 	| entity |
 	entity := FamixStMethod new.
@@ -155,6 +145,18 @@ MiCriticBrowserTest >> testImportRulesFromStream [
 	readStream close.
 	self assert: browser model rootContext children size equals: 3
 
+]
+
+{ #category : #test }
+MiCriticBrowserTest >> testItemsForGeneration [
+
+	self assert: browser itemsForGeneration isEmpty equals: true.
+	browser model addChildToRootContext: childContext.
+	self assert: browser itemsForGeneration isEmpty equals: true.
+	browser model addChildToRootContext: deadRule.
+	self assert: browser itemsForGeneration isEmpty equals: false.
+	self assert: browser itemsForGeneration size equals: 1.
+	self assert: browser itemsForGeneration anyOne equals: deadRule
 ]
 
 { #category : #test }

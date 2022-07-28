@@ -18,7 +18,6 @@ Class {
 		'rulesResult',
 		'importButton',
 		'exportButton',
-		'generateButton',
 		'addRulesPresenter',
 		'rulesEditorPresenter',
 		'rules',
@@ -94,7 +93,7 @@ MiCriticBrowser >> canFollowEntity: anEntity [
 
 { #category : #testing }
 MiCriticBrowser >> canGenerate [
-	^ model rootContext getAllConditions isNotEmpty
+	^ true
 ]
 
 { #category : #api }
@@ -137,7 +136,6 @@ MiCriticBrowser >> defaultLayout [
 			yourself);
 		yourself);
 		add: (SpBoxLayout newLeftToRight
-			addLast: generateButton;
 			addLast: importButton;
 			addLast: exportButton;
 			spacing: 5; 
@@ -264,7 +262,6 @@ MiCriticBrowser >> initializeButtons [
 	runButton := self newButton.
 	importButton := self newButton.
 	exportButton := self newButton.
-	generateButton := (MiOpenTagGeneratorCommand forSpecContext: self) configureAsButton buildPresenter.
 	
 	runButton 
 		label: 'Run';
@@ -519,5 +516,6 @@ MiCriticBrowser >> updateResultList: aCollection [
 { #category : #'updating screen' }
 MiCriticBrowser >> updateRulesList [
 	self rules updateRootsKeepingSelection: self rules roots.
-	self rules expandAll 
+	self updateToolbar.
+	self rules expandAll
 ]

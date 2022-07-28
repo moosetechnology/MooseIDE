@@ -28,11 +28,7 @@ MiCriticBrowserModel >> addChild: aRuleComponent toContext: aContext [
 
 { #category : #adding }
 MiCriticBrowserModel >> addChildToRootContext: aRuleComponent [
-	rootContext addChild: aRuleComponent.
-	ruleComponents add: aRuleComponent.
-	
-	aRuleComponent class = FamixCBCondition ifTrue: [ 
-		browser application consumeItem: aRuleComponent ]
+	self addChild: aRuleComponent toContext: rootContext
 	
 ]
 
@@ -110,7 +106,7 @@ MiCriticBrowserModel >> removeBranchFromRuleComponents: aRuleComponent [
 
 { #category : #adding }
 MiCriticBrowserModel >> removeChild: aRuleComponent fromContext: aContext [
-	(aContext ~= rootContext or: [ ruleComponents includes: aContext ]) ifFalse: [ ^ self ].
+	(aContext = rootContext or: [ ruleComponents includes: aContext ]) ifFalse: [ ^ self ].
 	aRuleComponent removeSelfFromTree.
 	self removeBranchFromRuleComponents: aRuleComponent.
 	self removeRuleViolations: aRuleComponent.

@@ -281,6 +281,15 @@ MiAbstractBrowserTest >> testFollowOtherBus [
 	self assert: browser busButton label equals: '2 buses'
 ]
 
+{ #category : #'tests - opening' }
+MiAbstractBrowserTest >> testGenerationTypeForDynamicTags [
+
+	browser canGenerate ifFalse: [ self skip ].
+
+	self assert: (browser typeForDynamicTags inheritsFrom: MiDynamicTag) equals: true
+
+]
+
 { #category : #'tests - actions' }
 MiAbstractBrowserTest >> testHighlightEntity [
 

@@ -11,8 +11,7 @@ Class {
 		'queryNotebookPresenter',
 		'selectedQuery',
 		'rootQuery',
-		'queriesListPresenter',
-		'button'
+		'queriesListPresenter'
 	],
 	#category : #'MooseIDE-QueriesBrowser-Main presenters'
 }
@@ -136,7 +135,6 @@ MiQueriesBrowser >> initializeLayout [
 	self layout: (SpBoxLayout newTopToBottom
 			 add: queriesListPresenter;
 			 add: queryNotebookPresenter;
-			 add: button expand: false;
 			 yourself)
 ]
 
@@ -160,7 +158,6 @@ MiQueriesBrowser >> initializePresenters [
 	self initializeResultTreePresenter.
 	self initializeNotebookPresenter.
 	self initializeQueryBuilder.
-	button := (MiOpenTagGeneratorCommand forSpecContext: self) configureAsButton buildPresenter.
 	self initializeLayout
 ]
 
@@ -195,7 +192,7 @@ MiQueriesBrowser >> itemsFor: aClass [
 { #category : #'as yet unclassified' }
 MiQueriesBrowser >> itemsForGeneration [
 
-	^ rootQuery allChildren
+	^ rootQuery allChildren select: [ :query | query isValid ]
 ]
 
 { #category : #accessing }
@@ -252,7 +249,8 @@ MiQueriesBrowser >> selectQuery: aQuery [
 
 	selectedQuery := aQuery.
 	self updateResultPresenterForQuery: aQuery.
-	queryCodePresenter updateForQuery: aQuery
+	queryCodePresenter updateForQuery: aQuery.
+	self updateToolbar
 ]
 
 { #category : #accessing }

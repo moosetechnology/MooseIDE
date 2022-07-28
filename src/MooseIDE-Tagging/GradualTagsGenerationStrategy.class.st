@@ -37,6 +37,7 @@ GradualTagsGenerationStrategy >> createQueryTagFor: anEvaluatingObject [
 
 	^ MiQueryTag new
 		  name: anEvaluatingObject name;
+		  category: category;
 		  evaluatingObject: anEvaluatingObject;
 		  color: self assignColor
 ]

@@ -33,6 +33,10 @@ MiWindowPresenter class >> buildCommandsGroupWith: aPresenter forRoot: rootComma
 	aPresenter hasSettings ifTrue: [ 
 		rootCommandGroup register:
 			(MiSettingsCommand forSpecContext: aPresenter)
+				beDisplayedOnRightSide ].
+	aPresenter canGenerate ifTrue: [ 
+		rootCommandGroup register:
+			(MiOpenTagGeneratorCommand forSpecContext: aPresenter)
 				beDisplayedOnRightSide ]
 ]
 
