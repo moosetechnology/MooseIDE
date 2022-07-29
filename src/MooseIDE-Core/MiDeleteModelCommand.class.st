@@ -27,5 +27,5 @@ MiDeleteModelCommand >> execute [
 				, '?')
 		ifFalse: [ ^ self ].
 	self model remove.
-	self context update
+	self context updateList
 ]
