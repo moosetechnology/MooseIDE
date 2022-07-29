@@ -20,9 +20,9 @@ MiBusLogBrowser class >> addToMiBrowsersMenu: aMenuGroupPresenter [
 { #category : #'instance creation' }
 MiBusLogBrowser class >> forBus: aBus application: anApplication [
 
-	  ^ (self newApplication: anApplication)
-		    followBus: aBus;
-		    yourself
+	^ (self newApplication: anApplication)
+		  followBus: aBus;
+		  yourself
 ]
 
 { #category : #commands }
@@ -47,10 +47,13 @@ MiBusLogBrowser class >> menuCommandGroupFor: presenter [
 { #category : #'instance creation' }
 MiBusLogBrowser class >> openForBus: aBus application: anApplication [
 
-	  ^ (self forBus: aBus application: anApplication)
-		    open;
-		    updateToolbars;
-		    yourself
+	| busLogPresenter |
+	busLogPresenter := (self forBus: aBus application: anApplication)
+		                   open;
+		                   updateToolbars;
+		                   yourself.
+	busLogPresenter owner title: 'Logs of bus: ' , aBus name.
+	^ busLogPresenter
 ]
 
 { #category : #commands }
@@ -83,14 +86,6 @@ MiBusLogBrowser >> clearLogs [
 
 	self logger clean.
 	self updateList
-]
-
-{ #category : #buses }
-MiBusLogBrowser >> followBus: aBus [
-
-	super followBus: aBus.
-	self ifAutonomous: [ 
-		self window title: 'Logs of bus: ' , buses anyOne name ]
 ]
 
 { #category : #actions }
