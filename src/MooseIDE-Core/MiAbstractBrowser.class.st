@@ -428,6 +428,12 @@ MiAbstractBrowser >> miSelectedItem [
 	^ (MiNoSelectedElementToPropagateException browser: self) signal
 ]
 
+{ #category : #asserting }
+MiAbstractBrowser >> miTransformedSelectedItem [
+	"Not used if shouldPropagateFilter returns false."
+	^ self miSelectedItem
+]
+
 { #category : #accessing }
 MiAbstractBrowser >> model [
 	^ model
@@ -484,6 +490,12 @@ MiAbstractBrowser >> settings [
 	"not used if #hasSettings is false"
 
 	self subclassResponsibility 
+]
+
+{ #category : #asserting }
+MiAbstractBrowser >> shouldPropagateTransformedSelectedItem [
+
+	^ false
 ]
 
 { #category : #actions }

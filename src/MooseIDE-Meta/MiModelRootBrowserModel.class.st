@@ -51,6 +51,12 @@ MiModelRootBrowserModel >> canPropagate [
 	^ selected isMooseObject
 ]
 
+{ #category : #accessing }
+MiModelRootBrowserModel >> filterStubsSetting [
+
+ ^ settings getItemValue: #filterStubsSetting
+]
+
 { #category : #updating }
 MiModelRootBrowserModel >> getAllModelRootBrowsers [
 	^browser application allBrowsers: MiModelRootBrowser
@@ -102,11 +108,7 @@ MiModelRootBrowserModel >> rawSelectedMooseModel [
 { #category : #accessing }
 MiModelRootBrowserModel >> selected [
 
-	^ (settings getItemValue: #filterStubsSetting)
-		  ifTrue: [ 
-			  selected ifNotNil: [ :selectedModel | 
-				  (selectedModel reject: [ :each | each isStub ]) asMooseGroup ] ]
-		  ifFalse: [ selected ]
+	^ selected
 ]
 
 { #category : #accessing }

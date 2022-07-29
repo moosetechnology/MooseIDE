@@ -160,8 +160,14 @@ modelFilteringList items: aList
 
 { #category : #accessing }
 MiModelRootBrowser >> miSelectedItem [
+ 	
+	^ model selected
+]
 
-	^model selected
+{ #category : #accessing }
+MiModelRootBrowser >> miTransformedSelectedItem [
+
+	^ (model selected reject: [ :each | each isStub ]) asMooseGroup
 ]
 
 { #category : #'accessing - tests' }
@@ -188,6 +194,12 @@ MiModelRootBrowser >> settings [
 { #category : #'accessing - tests' }
 MiModelRootBrowser >> settingsItem [
 	^ model settings
+]
+
+{ #category : #asserting }
+MiModelRootBrowser >> shouldPropagateTransformedSelectedItem [
+
+	^ model filterStubsSetting
 ]
 
 { #category : #actions }

@@ -52,13 +52,16 @@ MiPropagateCommand >> initialize [
 
 { #category : #testing }
 MiPropagateCommand >> propagate [
+
 	| selectedItem |
-	selectedItem := [ self context miSelectedItem ]
-		on: MiNoSelectedElementToPropagateException
-		do: [ :exception | 
-			exception signal.
-			^ self ].
-	selectedItem isMooseObject
-		ifFalse: [ ^ self ].
+	selectedItem := [ 
+	                self context shouldPropagateTransformedSelectedItem
+		                ifFalse: [ self context miSelectedItem ]
+		                ifTrue: [ self context miTransformedSelectedItem ] ]
+		                on: MiNoSelectedElementToPropagateException
+		                do: [ :exception | 
+			                exception signal.
+			                ^ self ].
+	selectedItem isMooseObject ifFalse: [ ^ self ].
 	self context buses do: [ :bus | bus globallySelect: selectedItem ]
 ]
