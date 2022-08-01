@@ -43,13 +43,22 @@ ContinuousQueryBuilderTest >> setUp [
 ]
 
 { #category : #test }
-ContinuousQueryBuilderTest >> testBuildSelectBlockOfIndex [
+ContinuousQueryBuilderTest >> testBuildNameForIndex [
+
+	self assert: (strategy buildNameForIndex: 1) equals: 'cyclomaticComplexity <= 5'.
+	self assert: (strategy buildNameForIndex: 2) equals: 'cyclomaticComplexity <= 15'.
+	self assert: (strategy buildNameForIndex: 3) equals: 'cyclomaticComplexity <= 25'.
+	self assert: (strategy buildNameForIndex: 4) equals: 'cyclomaticComplexity <= 50'.
+]
+
+{ #category : #test }
+ContinuousQueryBuilderTest >> testBuildSelectBlockForIndex [
 
 	| query1 query2 |
-	query1 := strategy buildSelectBlockOfIndex: 1.
+	query1 := strategy buildSelectBlockForIndex: 1.
 	self assertCollection: ({ selectedMethod. notSelectedMethod } select: query1) hasSameElements: { selectedMethod }.
 	
 	strategy property: property2.
-	query2 := strategy buildSelectBlockOfIndex: 2.
+	query2 := strategy buildSelectBlockForIndex: 2.
 	self assertCollection: ({ selectedClass. notSelectedClass } select: query2) hasSameElements: { selectedClass }
 ]

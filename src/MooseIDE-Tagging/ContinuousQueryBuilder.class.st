@@ -5,10 +5,24 @@ Class {
 		'property',
 		'bounds',
 		'comparator',
-		'color'
+		'colors'
 	],
 	#category : #'MooseIDE-Tagging-TagBuilder'
 }
+
+{ #category : #accessing }
+ContinuousQueryBuilder class >> colorPalette [
+
+	^ RSColorPalette sequential gnbu9
+]
+
+{ #category : #public }
+ContinuousQueryBuilder >> assignColor [
+
+	colors ifEmpty: [ 
+		colors := self class colorPalette range asOrderedCollection ].
+	^ colors removeFirst
+]
 
 { #category : #accessing }
 ContinuousQueryBuilder >> bounds [
@@ -23,21 +37,42 @@ ContinuousQueryBuilder >> bounds: anObject [
 ]
 
 { #category : #'as yet unclassified' }
-ContinuousQueryBuilder >> buildSelectBlockOfIndex: anInt [
+ContinuousQueryBuilder >> buildNameForIndex: anInt [
+	
+	^ property, ' ', comparator, ' ', (bounds at: anInt) asString.
+]
 
+{ #category : #'as yet unclassified' }
+ContinuousQueryBuilder >> buildSelectBlockForIndex: anInt [
+"build query part of the tag, using the bound at index anInt"
 	^ Smalltalk compiler evaluate: '[ :entity | entity ' , property, comparator, (bounds at: anInt) asString, ']'
 ]
 
-{ #category : #accessing }
-ContinuousQueryBuilder >> color [
+{ #category : #'model-building' }
+ContinuousQueryBuilder >> buildTags [
 
-	^ color
+	| tags index |
+	index := 1.
+	tags := bounds collect: [ :bound | 
+		        | dict |
+		        dict := Dictionary new.
+		        dict at: 'name' put: (self buildNameForIndex: index).
+		        dict at: 'query' put: (self buildSelectBlockForIndex: index).
+		        dict at: 'color' put: self assignColor.
+		        index := index + 1 ].
+	^ tags
 ]
 
 { #category : #accessing }
-ContinuousQueryBuilder >> color: anObject [
+ContinuousQueryBuilder >> colors [
 
-	color := anObject
+	^ colors
+]
+
+{ #category : #accessing }
+ContinuousQueryBuilder >> colors: anObject [
+
+	^ colors := anObject
 ]
 
 { #category : #accessing }
