@@ -59,7 +59,8 @@ ContinuousQueryBuilder >> buildTags [
 		        dict at: 'name' put: (self buildNameForIndex: index).
 		        dict at: 'query' put: (self buildSelectBlockForIndex: index).
 		        dict at: 'color' put: self assignColor.
-		        index := index + 1 ].
+		        index := index + 1.
+		        dict ].
 	^ tags
 ]
 
@@ -85,6 +86,13 @@ ContinuousQueryBuilder >> comparator [
 ContinuousQueryBuilder >> comparator: anObject [
 
 	comparator := anObject
+]
+
+{ #category : #initialization }
+ContinuousQueryBuilder >> initialize [
+	
+	super initialize.
+	colors := self class colorPalette range asOrderedCollection
 ]
 
 { #category : #accessing }

@@ -134,6 +134,17 @@ MiTagBrowserModel >> addTag: aName [
 	^self mooseModel tagNamed: aName
 ]
 
+{ #category : #adding }
+MiTagBrowserModel >> addTagsFromTagBuilder: aCollection [
+
+	aCollection do: [ :dict | 
+		| tag |
+		tag := self addTag: (dict at: 'name').
+		tag color: (dict at: 'color').
+		self currentTag: tag.
+		 ]
+]
+
 { #category : #accessing }
 MiTagBrowserModel >> allCategories [
 

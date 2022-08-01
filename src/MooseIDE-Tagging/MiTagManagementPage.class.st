@@ -12,6 +12,7 @@ Class {
 		'tagDescriptionPage',
 		'dynamicTagDescriptionPage',
 		'addTagButton',
+		'buildTagButton',
 		'btnIsExtent',
 		'btnIsIntent'
 	],
@@ -96,6 +97,7 @@ MiTagManagementPage >> initializeLayout [
 							   add: addTagButton width: 30;
 							   yourself)
 					  expand: false;
+					  add: buildTagButton expand: false;
 					  add: tagList;
 					  yourself)
 			 width: 200;
@@ -136,7 +138,9 @@ MiTagManagementPage >> initializePresenters [
 			selection selectedItem ifNotNil: [ :item | self setTagTo: item ] ].
 	addTagButton := self newButton icon: (Smalltalk iconNamed: #smallAdd).
 	addTagButton action: [ self owner openTagCreationForm ].
-
+	
+	buildTagButton := self newButton icon: (Smalltalk iconNamed: #smallAdd).
+	buildTagButton label: 'Build tags'; action: [ self owner openTagBuilderForm ].
 
 	self initializeLayout
 ]

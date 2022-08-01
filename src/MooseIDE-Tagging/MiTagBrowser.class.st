@@ -10,7 +10,8 @@ Class {
 	#instVars : [
 		'tagManagementPage',
 		'tagCreationForm',
-		'tagEditionForm'
+		'tagEditionForm',
+		'tagBuilderForm'
 	],
 	#category : #'MooseIDE-Tagging-Browser'
 }
@@ -87,6 +88,12 @@ MiTagBrowser >> browserClosed [
 MiTagBrowser >> canFollowEntity: anObject [
 
 	^ anObject isMooseObject
+]
+
+{ #category : #initialization }
+MiTagBrowser >> closeTagBuilderForm [
+
+	self layout child: tagManagementPage
 ]
 
 { #category : #initialization }
@@ -228,6 +235,7 @@ MiTagBrowser >> initializePresenters [
 	tagCreationForm := self instantiate: MiTagCreationForm on: model.
 	tagManagementPage := MiTagManagementPage newApplication: self application owner: self model: model.
 	tagEditionForm := self instantiate: MiTagEditionForm on: model. 
+	tagBuilderForm := self instantiate: MiTagBuilderForm on: model.
 	self initializeLayout
 ]
 
@@ -251,6 +259,15 @@ MiTagBrowser >> miSelectedItem [
 MiTagBrowser >> newTagSelected [
 
 	self updateToolbar
+]
+
+{ #category : #initialization }
+MiTagBrowser >> openTagBuilderForm [
+
+	tagBuilderForm
+		reset;
+		updateCategories.
+	self layout child: tagBuilderForm
 ]
 
 { #category : #initialization }
