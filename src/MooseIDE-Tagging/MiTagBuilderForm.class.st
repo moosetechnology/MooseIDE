@@ -11,7 +11,9 @@ Class {
 		'continuousButton',
 		'discreetButton',
 		'propertyInput',
-		'boundsDroplist'
+		'boundsDroplist',
+		'comparatorDroplist',
+		'boundsPresenterList'
 	],
 	#category : #'MooseIDE-Tagging-Browser'
 }
@@ -54,7 +56,7 @@ MiTagBuilderForm >> initialize [
 { #category : #initialization }
 MiTagBuilderForm >> initializeLayout [
 
-	| headerLayout mainLayout |
+	| headerLayout mainLayout gridLayout ind |
 	self layout: (SpBoxLayout newTopToBottom spacing: 5).
 
 	headerLayout := SpBoxLayout newLeftToRight
@@ -62,11 +64,22 @@ MiTagBuilderForm >> initializeLayout [
 		                hAlignCenter;
 		                yourself.
 
+	gridLayout := SpGridLayout new.
+	ind := 0.
+	boundsPresenterList do: [ :presenter | 
+		gridLayout add: presenter at: ind % 3 + 1 @ (ind // 3 + 1).
+		ind := ind + 1 ].
+
 	formLayout := SpBoxLayout newTopToBottom
 		              spacing: 5;
 		              add: (SpBoxLayout newTopToBottom
 				               add: 'Property' expand: false;
 				               add: propertyInput expand: false;
+				               yourself)
+		              expand: false;
+		              add: (SpBoxLayout newTopToBottom
+				               add: 'Comparator';
+				               add: comparatorDroplist;
 				               yourself)
 		              expand: false;
 		              add: (SpBoxLayout newTopToBottom
@@ -79,6 +92,7 @@ MiTagBuilderForm >> initializeLayout [
 				               add: categorySelection;
 				               yourself)
 		              expand: false;
+		              add: gridLayout;
 		              yourself.
 
 	mainLayout := SpBoxLayout newTopToBottom
@@ -119,7 +133,7 @@ MiTagBuilderForm >> initializePresenters [
 	cancelButton := self newButton
 		                label: 'Cancel';
 		                yourself.
-		
+
 	categorySelection := self newDropList
 		                     sortingBlock: [ :c1 :c2 | 
 			                     c1 model ifNil: [ true ] ifNotNil: [ 
@@ -129,9 +143,36 @@ MiTagBuilderForm >> initializePresenters [
 		                     display: [ :cat | 
 			                     cat ifNil: [ '' ] ifNotNil: [ cat name ] ];
 		                     yourself.
-	boundsDroplist := self newDropList items: { { 1. 2. 3. 5. 10. 25. 50. 100. 500. } }.
-	
+
+	boundsDroplist := self newDropList
+		                  items: { 
+				                  { 1. 2. 3. 5. 10. 25. 50. 100. 500 }.
+				                  { 1. 5. 10. 25. 50. 100. 250. 500. 1000 } };
+		                  whenSelectedItemChangedDo: [ :item | 
+			                  | i |
+			                  i := 1.
+			                  boundsPresenterList do: [ :presenter | 
+					                  presenter setBound: (item at: i).
+					                  i := i + 1 ] ];
+		                  yourself.
+
+	comparatorDroplist := self newDropList
+		                      items: { #=. #~=. #<. #<=. #>. #>= };
+		                      whenSelectedItemChangedDo: [ :item | 
+			                      boundsPresenterList do: [ :presenter | 
+					                      presenter setComparator: item ] ];
+		                      yourself.
+
 	propertyInput := self newTextInput.
+
+	boundsPresenterList := OrderedCollection new.
+	1 to: 9 do: [ :i | 
+		| presenter |
+		presenter := self instantiate: MiTagBoundPresenter on: tagModel.
+		boundsPresenterList add: presenter.
+		presenter
+			setBound: (boundsDroplist selectedItem at: i);
+			setComparator: #= ].
 
 	self initializeLayout
 ]
