@@ -178,6 +178,7 @@ MiTagBuilderForm >> submit [
 		
 	tags := strategy buildTags.
 	tagModel addTagsFromTagBuilder: tags.
+	owner closeTagBuilderForm
 ]
 
 { #category : #private }

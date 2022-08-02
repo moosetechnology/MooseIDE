@@ -9,51 +9,72 @@ Class {
 		'selectedClass1',
 		'selectedClass2',
 		'notSelectedClass',
-		'method'
+		'method',
+		'browser',
+		'application',
+		'bus'
 	],
 	#category : #'MooseIDE-Tagging-Tests-Browser'
 }
 
 { #category : #running }
 MiTagBrowserModelTest >> setUp [
+
 	super setUp.
-	
+
 	"Put here a common initialization logic for tests"
-	
-	model := MiTagBrowserModel new.
-	
+
+	application := MiTestApplication new.
+	bus := application defaultBus.
+	application defaultBus: bus.
+	browser := MiTagBrowser openForTests: application.
+	model := browser model.
+
 	selectedClass1 := FamixJavaClass new numberOfMethods: 3.
 	selectedClass2 := FamixJavaClass new numberOfMethods: 12.
 	notSelectedClass := FamixJavaClass new numberOfMethods: 42.
-	method := FamixJavaMethod new. 
+	method := FamixJavaMethod new
+]
+
+{ #category : #running }
+MiTagBrowserModelTest >> tearDown [
+
+	browser window ifNotNil: [ :window | window close ].
+	application deleteBus: bus.
+	super tearDown
 ]
 
 { #category : #test }
 MiTagBrowserModelTest >> testAddTagsFromTagBuilder [
 
-	| dictsForTags |
-	model entities: { 
-			selectedClass1.
-			selectedClass2.
-			notSelectedClass.
-			method } asMooseGroup.
+	| dictsForTags mooseModel |
+	mooseModel := FamixJavaModel new.
+	mooseModel
+		add: selectedClass1;
+		add: selectedClass2;
+		add: notSelectedClass;
+		add: method.
+
+	model entities: mooseModel.
+
 
 	dictsForTags := { 
 		                (Dictionary newFrom: { 
 				                 ('name' -> 'numberOfMethods <= 5').
-				                 ('color' -> Color fromString: '7BCCC4').
+				                 ('color' -> (Color fromString: '7BCCC4')).
 				                 ('query'
-				                  -> [ :entity | entity cyclomaticComplexity <= 5 ]) }).
+				                  -> [ :entity | entity numberOfMethods <= 5 ]) }).
 		                (Dictionary newFrom: { 
 				                 ('name' -> 'numberOfMethods <= 15').
-				                 ('color' -> Color fromString: '4EB3D3').
+				                 ('color' -> (Color fromString: '4EB3D3')).
 				                 ('query'
 				                  -> [ :entity | 
-				                  entity cyclomaticComplexity <= 15 ]) }) }.
+				                  entity numberOfMethods <= 15 ]) }) }.
 
 	self
 		shouldnt: (model addTagsFromTagBuilder: dictsForTags)
-		raise: MessageNotUnderstood
-	
-	
+		raise: MessageNotUnderstood.
+		
+	self assertCollection: (model getTagNamed: 'numberOfMethods <= 5') taggedEntities hasSameElements: { selectedClass1 }.
+	self assertCollection: (model getTagNamed: 'numberOfMethods <= 15') taggedEntities hasSameElements: { selectedClass1. selectedClass2 }
 ]
