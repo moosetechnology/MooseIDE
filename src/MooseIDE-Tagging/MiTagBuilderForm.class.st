@@ -214,9 +214,12 @@ MiTagBuilderForm >> submit [
 	| strategy tags |
 	strategy := currentStrategy new
 		            property: propertyInput text;
-		            comparator: #<=;
-		            bounds: boundsDroplist selectedItem.
-		
+		            comparator:
+			            (boundsPresenterList collect: [ :presenter | 
+					             presenter submitValues at: 'comparator' ]);
+		            bounds: (boundsPresenterList collect: [ :presenter | 
+					             presenter submitValues at: 'bound' ]).
+
 	tags := strategy buildTags.
 	tagModel addTagsFromTagBuilder: tags.
 	owner closeTagBuilderForm

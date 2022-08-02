@@ -39,13 +39,13 @@ ContinuousQueryBuilder >> bounds: anObject [
 { #category : #'as yet unclassified' }
 ContinuousQueryBuilder >> buildNameForIndex: anInt [
 	
-	^ property, ' ', comparator, ' ', (bounds at: anInt) asString.
+	^ property, ' ', (comparator at: anInt), ' ', (bounds at: anInt) asString.
 ]
 
 { #category : #'as yet unclassified' }
 ContinuousQueryBuilder >> buildSelectBlockForIndex: anInt [
 "build query part of the tag, using the bound at index anInt"
-	^ Smalltalk compiler evaluate: '[ :entity | entity ' , property, comparator, (bounds at: anInt) asString, ']'
+	^ Smalltalk compiler evaluate: '[ :entity | entity ' , property, (comparator at: anInt), (bounds at: anInt) asString, ']'
 ]
 
 { #category : #'model-building' }
