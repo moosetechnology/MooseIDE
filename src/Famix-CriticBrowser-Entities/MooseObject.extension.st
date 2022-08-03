@@ -1,7 +1,7 @@
-Extension { #name : #FamixTNamedEntity }
+Extension { #name : #MooseObject }
 
 { #category : #'*Famix-CriticBrowser-Entities-accessing' }
-FamixTNamedEntity >> contexts [
+MooseObject >> contexts [
 	"Relation named: #contexts type: #FamixCBContext opposite: #entities"
 
 	<generated>
@@ -12,33 +12,32 @@ FamixTNamedEntity >> contexts [
 ]
 
 { #category : #'*Famix-CriticBrowser-Entities-accessing' }
-FamixTNamedEntity >> contexts: anObject [
+MooseObject >> contexts: anObject [
 
 	<generated>
 	self contexts value: anObject
 ]
 
-{ #category : #'*Famix-CriticBrowser-Entities' }
-FamixTNamedEntity >> removeViolation: aViolation [
+{ #category : #'*Famix-CriticBrowser-Entities-accessing' }
+MooseObject >> removeViolation: aViolation [
 	self violations remove: aViolation ifAbsent: [ ^ self ].
 	aViolation violatedCondition ifNotNil: [ aViolation violatedCondition removeViolation: aViolation ]
 ]
 
 { #category : #'*Famix-CriticBrowser-Entities-accessing' }
-FamixTNamedEntity >> violations [
+MooseObject >> violations [
 	"Relation named: #violations type: #FamixCBViolation opposite: #violatingEntity"
 
 	<generated>
 	<FMComment: 'Every violation raised by this entity.'>
 	<derived>
-	<source>
 	<FMProperty: #violations type: #FamixCBViolation opposite: #violatingEntity>
 	<package: #'Famix-CriticBrowser-Entities'>
 	^ self attributeAt: #violations ifAbsentPut: [ FMMultivalueLink on: self opposite: #violatingEntity: ]
 ]
 
 { #category : #'*Famix-CriticBrowser-Entities-accessing' }
-FamixTNamedEntity >> violations: anObject [
+MooseObject >> violations: anObject [
 
 	<generated>
 	self violations value: anObject

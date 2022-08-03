@@ -6,7 +6,8 @@ Class {
 		'context',
 		'condition',
 		'tRuleComponent',
-		'rootContext'
+		'rootContext',
+		'mooseObject'
 	],
 	#category : #'Famix-CriticBrowser-Generator'
 }
@@ -25,17 +26,20 @@ FamixCriticBrowserGenerator class >> prefix [
 
 { #category : #accessing }
 FamixCriticBrowserGenerator class >> submetamodels [
-	^ { FamixGenerator }
+	^ { FamixGenerator . MooseModelGenerator }
 ]
 
 { #category : #definition }
 FamixCriticBrowserGenerator >> defineClasses [
+
 	super defineClasses.
-	
+
 	violation := builder newClassNamed: #Violation.
 	rootContext := builder newClassNamed: #RootContext.
 	context := builder newClassNamed: #Context.
-	condition := builder newClassNamed: #Condition
+	condition := builder newClassNamed: #Condition.
+
+	mooseObject := self remoteEntity: #Object withPrefix: #Moose
 ]
 
 { #category : #definition }
@@ -72,7 +76,7 @@ FamixCriticBrowserGenerator >> defineRelations [
 	((violation property: #violatingEntity)
 			comment: 'Entity raising this violation.')
 		*-
-	(((self remoteTrait: #TNamedEntity withPrefix: #Famix) property: #violations)
+	((mooseObject property: #violations)
 			comment: 'Every violation raised by this entity.').
 			
 	((context property: #children)
@@ -84,7 +88,7 @@ FamixCriticBrowserGenerator >> defineRelations [
 	((context property: #entities)
 			comment: 'Every entity that is a part of the context.')
 		*-*
-	(((self remoteTrait: #TNamedEntity withPrefix: #Famix) property: #contexts)
+	((mooseObject property: #contexts)
 			comment: 'Every context that the entity is a part of.')
 ]
 
