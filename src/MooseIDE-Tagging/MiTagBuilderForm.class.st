@@ -13,7 +13,9 @@ Class {
 		'propertyInput',
 		'boundsDroplist',
 		'comparatorDroplist',
-		'boundsPresenterList'
+		'boundsPresenterList',
+		'typeDroplist',
+		'propertyDroplist'
 	],
 	#category : #'MooseIDE-Tagging-Browser'
 }
@@ -46,6 +48,12 @@ MiTagBuilderForm >> formTitle [
 	^ 'Build tags'
 ]
 
+{ #category : #'as yet unclassified' }
+MiTagBuilderForm >> getTypes [
+
+	^ tagModel entities allEntityTypes
+]
+
 { #category : #initialization }
 MiTagBuilderForm >> initialize [
 
@@ -73,17 +81,22 @@ MiTagBuilderForm >> initializeLayout [
 	formLayout := SpBoxLayout newTopToBottom
 		              spacing: 5;
 		              add: (SpBoxLayout newTopToBottom
-				               add: 'Property' expand: false;
-				               add: propertyInput expand: false;
+				               add: 'Type' expand: false;
+				               add: typeDroplist expand: false;
 				               yourself)
 		              expand: false;
 		              add: (SpBoxLayout newTopToBottom
-				               add: 'Comparator';
+				               add: 'Property' expand: false;
+				               add: propertyDroplist expand: false;
+				               yourself)
+		              expand: false;
+		              add: (SpBoxLayout newTopToBottom
+				               add: 'Default comparators';
 				               add: comparatorDroplist;
 				               yourself)
 		              expand: false;
 		              add: (SpBoxLayout newTopToBottom
-				               add: 'Bounds';
+				               add: 'Default bounds';
 				               add: boundsDroplist;
 				               yourself)
 		              expand: false;
@@ -92,8 +105,10 @@ MiTagBuilderForm >> initializeLayout [
 				               add: categorySelection;
 				               yourself)
 		              expand: false;
-		              add: gridLayout;
-		              yourself.
+		              add: (SpBoxLayout newTopToBottom
+				               add: 'Produced queries :' expand: false;
+				               add: gridLayout;
+				               yourself).
 
 	mainLayout := SpBoxLayout newTopToBottom
 		              spacing: 10;
@@ -163,7 +178,11 @@ MiTagBuilderForm >> initializePresenters [
 					                      presenter setComparator: item ] ];
 		                      yourself.
 
-	propertyInput := self newTextInput.
+	typeDroplist := self newDropList
+		                whenSelectedItemChangedDo: [ self updatePropertyDroplist ];
+		                yourself.
+
+	propertyDroplist := self newDropList.
 
 	boundsPresenterList := OrderedCollection new.
 	1 to: 9 do: [ :i | 
@@ -180,7 +199,9 @@ MiTagBuilderForm >> initializePresenters [
 { #category : #initialization }
 MiTagBuilderForm >> reset [
 
-	categorySelection resetSelection
+	categorySelection resetSelection.
+	self setTypeDroplist
+	
 	
 ]
 
@@ -208,17 +229,27 @@ MiTagBuilderForm >> setModelBeforeInitialization: aTagModel [
 	tagModel := aTagModel
 ]
 
+{ #category : #'as yet unclassified' }
+MiTagBuilderForm >> setTypeDroplist [
+
+	typeDroplist items: tagModel entities allEntityTypes asOrderedCollection
+]
+
 { #category : #initialization }
 MiTagBuilderForm >> submit [
 
-	| strategy tags |
+	| strategy tags boundsAndComp |
+	boundsAndComp := boundsPresenterList
+		                 collect: [ :pres | pres submitValues ]
+		                 thenSelect: [ :dict | (dict at: 'bound') ~= '' ].
 	strategy := currentStrategy new
-		            property: propertyInput text;
+		            type: typeDroplist selectedItem;
+		            property: propertyDroplist selectedItem;
 		            comparator:
-			            (boundsPresenterList collect: [ :presenter | 
-					             presenter submitValues at: 'comparator' ]);
-		            bounds: (boundsPresenterList collect: [ :presenter | 
-					             presenter submitValues at: 'bound' ]).
+			            (boundsAndComp collect: [ :dict | 
+					             dict at: 'comparator' ]);
+		            bounds:
+			            (boundsAndComp collect: [ :dict | dict at: 'bound' ]).
 
 	tags := strategy buildTags.
 	tagModel addTagsFromTagBuilder: tags.
@@ -229,4 +260,12 @@ MiTagBuilderForm >> submit [
 MiTagBuilderForm >> updateCategories [
 
 	categorySelection items: { nil }, tagModel allCategories
+]
+
+{ #category : #'as yet unclassified' }
+MiTagBuilderForm >> updatePropertyDroplist [
+
+	propertyDroplist items:
+		((typeDroplist selectedItem famePropertiesOfType: FM3Number) 
+			 collect: [ :prop | prop name ])
 ]

@@ -14,7 +14,7 @@ Class {
 		'application',
 		'bus'
 	],
-	#category : #'MooseIDE-Tagging-Tests-Browser'
+	#category : #'MooseIDE-Tagging-Tests'
 }
 
 { #category : #running }
@@ -62,19 +62,28 @@ MiTagBrowserModelTest >> testAddTagsFromTagBuilder [
 		                (Dictionary newFrom: { 
 				                 ('name' -> 'numberOfMethods <= 5').
 				                 ('color' -> (Color fromString: '7BCCC4')).
+				                 ('type' -> FamixJavaClass).
 				                 ('query'
 				                  -> [ :entity | entity numberOfMethods <= 5 ]) }).
 		                (Dictionary newFrom: { 
 				                 ('name' -> 'numberOfMethods <= 15').
 				                 ('color' -> (Color fromString: '4EB3D3')).
+				                 ('type' -> FamixJavaClass).
 				                 ('query'
-				                  -> [ :entity | 
-				                  entity numberOfMethods <= 15 ]) }) }.
+				                  -> [ :entity | entity numberOfMethods <= 15 ]) }) }.
 
 	self
 		shouldnt: (model addTagsFromTagBuilder: dictsForTags)
 		raise: MessageNotUnderstood.
-		
-	self assertCollection: (model getTagNamed: 'numberOfMethods <= 5') taggedEntities hasSameElements: { selectedClass1 }.
-	self assertCollection: (model getTagNamed: 'numberOfMethods <= 15') taggedEntities hasSameElements: { selectedClass1. selectedClass2 }
+
+	self
+		assertCollection:
+		(model getTagNamed: 'numberOfMethods <= 5') taggedEntities
+		hasSameElements: { selectedClass1 }.
+	self
+		assertCollection:
+		(model getTagNamed: 'numberOfMethods <= 15') taggedEntities
+		hasSameElements: { 
+				selectedClass1.
+				selectedClass2 }
 ]

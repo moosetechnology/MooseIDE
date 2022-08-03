@@ -142,11 +142,13 @@ MiTagBrowserModel >> addTagsFromTagBuilder: aCollection [
 		tag := self addTag: (dict at: 'name').
 		tag color: (dict at: 'color').
 		self currentTag: tag.
+		
 		toTag := OrderedCollection new.
-		entities do: [ :entity | 
+		(entities allWithType: (dict at: 'type')) do: [ :entity | 
 			([ (dict at: 'query') value: entity ]
 				 on: MessageNotUnderstood
 				 do: [ false ]) ifTrue: [ toTag add: entity ] ].
+			
 		toTag do: [ :entity | self tagEntityNotYourself: entity ] ]
 ]
 

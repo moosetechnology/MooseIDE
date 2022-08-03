@@ -42,5 +42,5 @@ MiTagBoundPresenter >> setComparator: aSymbol [
 { #category : #accessing }
 MiTagBoundPresenter >> submitValues [
 
-	^ Dictionary newFrom: { 'comparator' -> comparatorDroplist selectedItem. 'bound' -> boundInput text asInteger }
+	^ Dictionary newFrom: { 'comparator' -> comparatorDroplist selectedItem. 'bound' -> boundInput text }
 ]

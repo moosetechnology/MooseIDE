@@ -5,7 +5,8 @@ Class {
 		'property',
 		'bounds',
 		'comparator',
-		'colors'
+		'colors',
+		'type'
 	],
 	#category : #'MooseIDE-Tagging-TagBuilder'
 }
@@ -57,6 +58,7 @@ ContinuousQueryBuilder >> buildTags [
 		        | dict |
 		        dict := Dictionary new.
 		        dict at: 'name' put: (self buildNameForIndex: index).
+		        dict at: 'type' put: type.
 		        dict at: 'query' put: (self buildSelectBlockForIndex: index).
 		        dict at: 'color' put: self assignColor.
 		        index := index + 1.
@@ -105,4 +107,16 @@ ContinuousQueryBuilder >> property [
 ContinuousQueryBuilder >> property: anObject [
 
 	property := anObject
+]
+
+{ #category : #accessing }
+ContinuousQueryBuilder >> type [
+
+	^ type
+]
+
+{ #category : #accessing }
+ContinuousQueryBuilder >> type: anObject [
+
+	type := anObject
 ]
