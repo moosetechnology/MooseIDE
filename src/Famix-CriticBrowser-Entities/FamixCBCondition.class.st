@@ -69,7 +69,7 @@ FamixCBCondition >> removeAllViolations [
 	[ violations isNotEmpty ] whileTrue: [ self removeViolation: violations anyOne ]
 ]
 
-{ #category : #'*Famix-CriticBrowser-Entities' }
+{ #category : #'as yet unclassified' }
 FamixCBCondition >> removeViolation: aViolation [
 	self violations remove: aViolation ifAbsent: [ ^ self ].
 	aViolation violatingEntity ifNotNil: [ aViolation violatingEntity removeViolation: aViolation ]

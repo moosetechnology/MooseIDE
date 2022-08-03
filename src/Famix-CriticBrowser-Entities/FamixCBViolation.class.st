@@ -66,11 +66,11 @@ FamixCBViolation >> violatedCondition: anObject [
 
 { #category : #accessing }
 FamixCBViolation >> violatingEntity [
-	"Relation named: #violatingEntity type: #FamixTNamedEntity opposite: #violations"
+	"Relation named: #violatingEntity type: #MooseObject opposite: #violations"
 
 	<generated>
 	<FMComment: 'Entity raising this violation.'>
-	<FMProperty: #violatingEntity type: #FamixTNamedEntity opposite: #violations>
+	<FMProperty: #violatingEntity type: #MooseObject opposite: #violations>
 	^ self attributeAt: #violatingEntity ifAbsent: [ nil ]
 ]
 
