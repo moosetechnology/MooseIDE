@@ -443,7 +443,7 @@ MiCriticBrowser >> selectedRules [
 	(rules selectedItem) 
 		ifNotNil: [
 			self updateResultList: (model violationsOf: rules selectedItem).
-			self updateEntitiesList: (model contextOf: rules selectedItem)]
+			self updateEntitiesList: (model contextOf: rules selectedItem) asMooseGroup]
 		ifNil: [ 
 			self updateResultList: model getAllViolations.
 			self updateEntitiesList: model entities ]
