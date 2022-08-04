@@ -37,11 +37,9 @@ MiTagGeneratorFormTest >> testSetSourceItems [
 
 { #category : #tests }
 MiTagGeneratorFormTest >> testputAllButtonsStateToFalseExcept [
-	self assert: presenter currentStrategy equals: OneTagGenerationStrategy.
-	presenter setMultipleTagsForm.
 	self assert: presenter currentStrategy equals: MultipleTagsGenerationStrategy.
 	presenter setGradualTagsForm.
 	self assert: presenter currentStrategy equals: GradualTagsGenerationStrategy.
-	presenter setSingleTagForm.
-	self assert: presenter currentStrategy equals: OneTagGenerationStrategy.
+	presenter setMultipleTagsForm.
+	self assert: presenter currentStrategy equals: MultipleTagsGenerationStrategy.
 ]

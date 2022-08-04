@@ -49,7 +49,7 @@ MiTagGeneratorForm >> formTitle [
 MiTagGeneratorForm >> initialize [
 
 	super initialize.
-	currentStrategy := OneTagGenerationStrategy
+	currentStrategy := MultipleTagsGenerationStrategy
 ]
 
 { #category : #initialization }
@@ -91,7 +91,7 @@ MiTagGeneratorForm >> initializeLayout [
 		add: mainLayout
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 MiTagGeneratorForm >> initializePresenters [
 
 	itemChooser := SpChooserPresenter
@@ -115,16 +115,22 @@ MiTagGeneratorForm >> initializePresenters [
 		                     yourself.
 
 	uniqueTagButton := self newToggleButton
-		                   state: true;
+		                   state: false;
 		                   label: 'Unique tag';
+		                   help:
+			                   'TODO : Creates one tag, tagging every evaluated entity';
 		                   yourself.
 	multipleTagsButton := self newToggleButton
-		                      state: false;
+		                      state: true;
 		                      label: 'Multiple tags';
+		                      help:
+			                      'Creates one tag by evaluating object, named by it and with different colors';
 		                      yourself.
 	gradualTagsButton := self newToggleButton
 		                     state: false;
 		                     label: 'Gradual tags';
+		                     help:
+			                     'Creates several tags using a gradual palette';
 		                     yourself.
 	submitButton := self newButton
 		                label: 'Generate';
@@ -142,7 +148,7 @@ MiTagGeneratorForm >> itemChooser [
 	^ itemChooser
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #states }
 MiTagGeneratorForm >> putAllButtonsStateToFalseExcept: aButton [
 	| buttons |
 	buttons := { uniqueTagButton. multipleTagsButton. gradualTagsButton } asOrderedCollection.
@@ -189,11 +195,7 @@ MiTagGeneratorForm >> setMultipleTagsForm [
 { #category : #initialization }
 MiTagGeneratorForm >> setSingleTagForm [
 
-	currentStrategy = OneTagGenerationStrategy ifTrue: [ 
-		uniqueTagButton state: true.
-		^ self ].
-	currentStrategy := OneTagGenerationStrategy.
-	self putAllButtonsStateToFalseExcept: uniqueTagButton.
+	uniqueTagButton state: false.
 	self update
 ]
 
