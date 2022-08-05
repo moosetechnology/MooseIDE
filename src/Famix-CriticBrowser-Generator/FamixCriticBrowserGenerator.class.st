@@ -61,6 +61,8 @@ FamixCriticBrowserGenerator >> defineProperties [
 		comment: 'Block to execute to get the context''s entities').
 	((condition property: #query type: #Object)
 		comment: 'Block to execute to find violations to the condition within the parent context').
+	((condition property: #severity type: #Object)
+		comment: 'Severity for the violations of this condition').
 ]
 
 { #category : #definition }

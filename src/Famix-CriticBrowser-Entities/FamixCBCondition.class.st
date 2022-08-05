@@ -5,6 +5,7 @@ Class {
 	#classTraits : 'FamixCBTRuleComponent classTrait',
 	#instVars : [
 		'#query => FMProperty',
+		'#severity => FMProperty',
 		'#violations => FMMany type: #FamixCBViolation opposite: #violatedCondition'
 	],
 	#category : #'Famix-CriticBrowser-Entities-Entities'
@@ -95,6 +96,21 @@ FamixCBCondition >> runOn: aCollection [
 { #category : #'as yet unclassified' }
 FamixCBCondition >> runUpTree: aCollection [
 	self runOn: (parent runUpTree: aCollection)
+]
+
+{ #category : #accessing }
+FamixCBCondition >> severity [
+
+	<FMProperty: #severity type: #Object>
+	<generated>
+	<FMComment: 'Severity for the violations of this condition'>
+	^ severity
+]
+
+{ #category : #accessing }
+FamixCBCondition >> severity: anObject [
+	<generated>
+	severity := anObject
 ]
 
 { #category : #'ston persistence' }
