@@ -10,12 +10,10 @@ Class {
 		'currentStrategy',
 		'continuousButton',
 		'discreetButton',
-		'propertyInput',
-		'boundsDroplist',
-		'comparatorDroplist',
-		'boundsPresenterList',
 		'typeDroplist',
-		'propertyDroplist'
+		'propertyDroplist',
+		'boundsInput',
+		'paletteChooser'
 	],
 	#category : #'MooseIDE-Tagging-Browser'
 }
@@ -64,22 +62,28 @@ MiTagBuilderForm >> initialize [
 { #category : #initialization }
 MiTagBuilderForm >> initializeLayout [
 
-	| headerLayout mainLayout gridLayout ind |
+	| sep colorPickerWidth headerLayout mainLayout |
 	self layout: (SpBoxLayout newTopToBottom spacing: 5).
+
+	colorPickerWidth := 240.
+	(sep := SpRoassalPresenter new) canvas color: (Color
+			 r: 40
+			 g: 40
+			 b: 40
+			 range: 255) translucent.
 
 	headerLayout := SpBoxLayout newLeftToRight
 		                add: self formTitle asPresenter;
 		                hAlignCenter;
 		                yourself.
 
-	gridLayout := SpGridLayout new.
-	ind := 0.
-	boundsPresenterList do: [ :presenter | 
-		gridLayout add: presenter at: ind % 3 + 1 @ (ind // 3 + 1).
-		ind := ind + 1 ].
-
 	formLayout := SpBoxLayout newTopToBottom
 		              spacing: 5;
+		              add: (SpBoxLayout newTopToBottom
+				               add: 'Category (optional)';
+				               add: categorySelection;
+				               yourself)
+		              expand: false;
 		              add: (SpBoxLayout newTopToBottom
 				               add: 'Type' expand: false;
 				               add: typeDroplist expand: false;
@@ -91,24 +95,10 @@ MiTagBuilderForm >> initializeLayout [
 				               yourself)
 		              expand: false;
 		              add: (SpBoxLayout newTopToBottom
-				               add: 'Default comparators';
-				               add: comparatorDroplist;
+				               add: 'Bounds input (expects an Array)' expand: false;
+				               add: boundsInput;
 				               yourself)
-		              expand: false;
-		              add: (SpBoxLayout newTopToBottom
-				               add: 'Default bounds';
-				               add: boundsDroplist;
-				               yourself)
-		              expand: false;
-		              add: (SpBoxLayout newTopToBottom
-				               add: 'Category (optional)';
-				               add: categorySelection;
-				               yourself)
-		              expand: false;
-		              add: (SpBoxLayout newTopToBottom
-				               add: 'Produced queries :' expand: false;
-				               add: gridLayout;
-				               yourself).
+		              yourself.
 
 	mainLayout := SpBoxLayout newTopToBottom
 		              spacing: 10;
@@ -117,7 +107,11 @@ MiTagBuilderForm >> initializeLayout [
 				               add: discreetButton;
 				               yourself)
 		              expand: false;
-		              add: formLayout expand: true fill: true;
+		              add: (SpBoxLayout newLeftToRight
+				               spacing: 10;
+				               add: paletteChooser width: colorPickerWidth;
+				               add: sep width: 2;
+				               add: formLayout expand: true fill: true);
 		              add: (SpBoxLayout newLeftToRight
 				               vAlignEnd;
 				               spacing: 10;
@@ -148,6 +142,8 @@ MiTagBuilderForm >> initializePresenters [
 	cancelButton := self newButton
 		                label: 'Cancel';
 		                yourself.
+		
+	paletteChooser := self instantiate: MiSmallColorPalette.
 
 	categorySelection := self newDropList
 		                     sortingBlock: [ :c1 :c2 | 
@@ -158,40 +154,14 @@ MiTagBuilderForm >> initializePresenters [
 		                     display: [ :cat | 
 			                     cat ifNil: [ '' ] ifNotNil: [ cat name ] ];
 		                     yourself.
-
-	boundsDroplist := self newDropList
-		                  items: { 
-				                  { 1. 2. 3. 5. 10. 25. 50. 100. 500 }.
-				                  { 1. 5. 10. 25. 50. 100. 250. 500. 1000 } };
-		                  whenSelectedItemChangedDo: [ :item | 
-			                  | i |
-			                  i := 1.
-			                  boundsPresenterList do: [ :presenter | 
-					                  presenter setBound: (item at: i).
-					                  i := i + 1 ] ];
-		                  yourself.
-
-	comparatorDroplist := self newDropList
-		                      items: { #=. #~=. #<. #<=. #>. #>= };
-		                      whenSelectedItemChangedDo: [ :item | 
-			                      boundsPresenterList do: [ :presenter | 
-					                      presenter setComparator: item ] ];
-		                      yourself.
+		
+	boundsInput := self newCode text: '{ 1. 2. 3. 5. 10. 25. 50. 100. 500 }'; yourself.
 
 	typeDroplist := self newDropList
 		                whenSelectedItemChangedDo: [ self updatePropertyDroplist ];
 		                yourself.
 
 	propertyDroplist := self newDropList.
-
-	boundsPresenterList := OrderedCollection new.
-	1 to: 9 do: [ :i | 
-		| presenter |
-		presenter := self instantiate: MiTagBoundPresenter on: tagModel.
-		boundsPresenterList add: presenter.
-		presenter
-			setBound: (boundsDroplist selectedItem at: i);
-			setComparator: #= ].
 
 	self initializeLayout
 ]
@@ -238,18 +208,11 @@ MiTagBuilderForm >> setTypeDroplist [
 { #category : #initialization }
 MiTagBuilderForm >> submit [
 
-	| strategy tags boundsAndComp |
-	boundsAndComp := boundsPresenterList
-		                 collect: [ :pres | pres submitValues ]
-		                 thenSelect: [ :dict | (dict at: 'bound') ~= '' ].
+	| strategy tags |
 	strategy := currentStrategy new
 		            type: typeDroplist selectedItem;
 		            property: propertyDroplist selectedItem;
-		            comparator:
-			            (boundsAndComp collect: [ :dict | 
-					             dict at: 'comparator' ]);
-		            bounds:
-			            (boundsAndComp collect: [ :dict | dict at: 'bound' ]).
+		            bounds: (Smalltalk compiler evaluate: boundsInput text).
 
 	tags := strategy buildTags.
 	tagModel addTagsFromTagBuilder: tags.
