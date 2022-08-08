@@ -114,7 +114,6 @@ FamixCBContext >> removeChild: aRuleComponent [
 
 	(children includes: aRuleComponent) ifFalse: [ ^ self ].
 	children remove: aRuleComponent.
-	1halt.
 	aRuleComponent setParentToNilIfNeeded.
 	aRuleComponent resetExecutionOfTree
 ]
