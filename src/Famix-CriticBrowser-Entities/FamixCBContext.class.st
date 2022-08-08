@@ -135,7 +135,7 @@ FamixCBContext >> runDownTree: aCollection [
 { #category : #running }
 FamixCBContext >> runOn: aCollection [
 
-	entities := contextBlock value: aCollection
+	self entities: (contextBlock value: aCollection)
 
 ]
 
