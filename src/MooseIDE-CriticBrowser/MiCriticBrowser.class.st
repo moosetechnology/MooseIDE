@@ -100,8 +100,14 @@ MiCriticBrowser >> children: aCollection for: aTreePresenter [
 
 { #category : #'as yet unclassified' }
 MiCriticBrowser >> childrenForContext: aRuleComponent [
-"content of children block for rules list"
-	^ (aRuleComponent class = FamixCBCondition) ifFalse: [ aRuleComponent children asOrderedCollection ] ifTrue: [ {  } ]
+
+	"content of children block for rules list"
+
+	^ aRuleComponent class = FamixCBCondition
+		  ifFalse: [ 
+			  aRuleComponent children sorted: [ :a :b | 
+				  a printString < b printString ] ]
+		  ifTrue: [ {  } ]
 ]
 
 { #category : #'accessing - testing' }
@@ -300,7 +306,7 @@ MiCriticBrowser >> initializeLists [
 
 	rulesResult
 		display: [ :each | self stringForItem: each ];
-		children: [ :each | self children: each for: rulesResult ];
+		children: [ :each | (self sortedChildren: each for: rulesResult) ];
 		contextMenu: expandMenu;
 		activateOnDoubleClick;
 		whenActivatedDo: [ :each | each selectedItem inspect ]
@@ -447,6 +453,15 @@ MiCriticBrowser >> selectedRules [
 		ifNil: [ 
 			self updateResultList: model getAllViolations.
 			self updateEntitiesList: model entities ]
+]
+
+{ #category : #api }
+MiCriticBrowser >> sortedChildren: each for: aTreePresenter [
+
+	"provides content of the children block for the collection root for a given tree presenter"
+
+	^ (self children: each for: aTreePresenter) sorted: [ :a :b | 
+		  a printString < b printString ]
 ]
 
 { #category : #naming }
