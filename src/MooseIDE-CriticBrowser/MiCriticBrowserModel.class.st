@@ -65,7 +65,7 @@ MiCriticBrowserModel >> getAllViolations [
 "returns violations of every rule"
 	| result |
 	result := FamixCBViolationGroup new.
-	violations do: [ :each | result := result , each ].
+	violations do: [ :each | result addAll: each ].
 	^ result
 ]
 

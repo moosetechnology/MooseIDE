@@ -135,7 +135,8 @@ FamixCBContext >> runDownTree: aCollection [
 { #category : #running }
 FamixCBContext >> runOn: aCollection [
 
-	self entities: ((contextBlock value: aCollection) sort: [ :a :b | a name < b name ])
+	entities := contextBlock value: aCollection
+
 ]
 
 { #category : #'as yet unclassified' }

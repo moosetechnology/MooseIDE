@@ -30,9 +30,8 @@ FamixCBRootContext >> removeSelfFromTree [
 
 { #category : #running }
 FamixCBRootContext >> runOn: aCollection [
-	self entities: (aCollection sort: [ :a :b | a mooseName < b mooseName ])
 
-	
+	entities := aCollection
 ]
 
 { #category : #'as yet unclassified' }
