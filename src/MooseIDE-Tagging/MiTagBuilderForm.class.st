@@ -97,7 +97,7 @@ MiTagBuilderForm >> initializeLayout [
 		              add: (SpBoxLayout newTopToBottom
 				               add: 'Bounds input (expects an Array)' expand: false;
 				               add: boundsInput;
-				               yourself)
+				               yourself);
 		              yourself.
 
 	mainLayout := SpBoxLayout newTopToBottom
@@ -212,7 +212,8 @@ MiTagBuilderForm >> submit [
 	strategy := currentStrategy new
 		            type: typeDroplist selectedItem;
 		            property: propertyDroplist selectedItem;
-		            bounds: (Smalltalk compiler evaluate: boundsInput text).
+		            bounds: (Smalltalk compiler evaluate: boundsInput text);
+						chosenPalette: paletteChooser selectedHueSet.
 
 	tags := strategy buildTags.
 	tagModel addTagsFromTagBuilder: tags.

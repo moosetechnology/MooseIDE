@@ -4,24 +4,18 @@ Class {
 	#instVars : [
 		'property',
 		'bounds',
-		'comparator',
 		'colors',
+		'chosenPalette',
 		'type'
 	],
 	#category : #'MooseIDE-Tagging-TagBuilder'
 }
 
-{ #category : #accessing }
-ContinuousQueryBuilder class >> colorPalette [
-
-	^ RSColorPalette sequential gnbu9
-]
-
 { #category : #public }
 ContinuousQueryBuilder >> assignColor [
 
 	colors ifEmpty: [ 
-		colors := self class colorPalette range asOrderedCollection ].
+		colors := chosenPalette copy asOrderedCollection ].
 	^ colors removeFirst
 ]
 
@@ -38,15 +32,31 @@ ContinuousQueryBuilder >> bounds: anObject [
 ]
 
 { #category : #'as yet unclassified' }
-ContinuousQueryBuilder >> buildNameForIndex: anInt [
-	
-	^ property, ' ', (comparator at: anInt), ' ', (bounds at: anInt) asString.
+ContinuousQueryBuilder >> buildDictForBound: anInt andComparator: aString [
+
+	| dict |
+	dict := Dictionary new.
+	dict
+		at: 'name'
+		put: (self buildNameForBound: anInt andComparator: aString).
+	dict at: 'type' put: type.
+	dict
+		at: 'query'
+		put: (self buildSelectBlockForBound: anInt andComparator: aString).
+	dict at: 'color' put: self assignColor.
+	^ dict
 ]
 
 { #category : #'as yet unclassified' }
-ContinuousQueryBuilder >> buildSelectBlockForIndex: anInt [
+ContinuousQueryBuilder >> buildNameForBound: anInt andComparator: aString [
+	
+	^ property, ' ', aString, ' ', anInt asString.
+]
+
+{ #category : #'as yet unclassified' }
+ContinuousQueryBuilder >> buildSelectBlockForBound: anInt andComparator: aString [
 "build query part of the tag, using the bound at index anInt"
-	^ Smalltalk compiler evaluate: '[ :entity | entity ' , property, (comparator at: anInt), (bounds at: anInt) asString, ']'
+	^ Smalltalk compiler evaluate: '[ :entity | entity ' , property, aString, anInt asString, ']'
 ]
 
 { #category : #'model-building' }
@@ -54,16 +64,22 @@ ContinuousQueryBuilder >> buildTags [
 
 	| tags index |
 	index := 1.
-	tags := bounds collect: [ :bound | 
-		        | dict |
-		        dict := Dictionary new.
-		        dict at: 'name' put: (self buildNameForIndex: index).
-		        dict at: 'type' put: type.
-		        dict at: 'query' put: (self buildSelectBlockForIndex: index).
-		        dict at: 'color' put: self assignColor.
-		        index := index + 1.
-		        dict ].
+	tags := (bounds collect: [ :bound | 
+		        self buildDictForBound: bound andComparator: '<=' ]) asOrderedCollection.
+	tags add: (self buildDictForBound: bounds last andComparator: '>').
 	^ tags
+]
+
+{ #category : #accessing }
+ContinuousQueryBuilder >> chosenPalette [
+
+	^ chosenPalette
+]
+
+{ #category : #accessing }
+ContinuousQueryBuilder >> chosenPalette: anObject [
+
+	chosenPalette := anObject
 ]
 
 { #category : #accessing }
@@ -78,23 +94,11 @@ ContinuousQueryBuilder >> colors: anObject [
 	^ colors := anObject
 ]
 
-{ #category : #accessing }
-ContinuousQueryBuilder >> comparator [
-
-	^ comparator
-]
-
-{ #category : #accessing }
-ContinuousQueryBuilder >> comparator: anObject [
-
-	comparator := anObject
-]
-
 { #category : #initialization }
 ContinuousQueryBuilder >> initialize [
 	
 	super initialize.
-	colors := self class colorPalette range asOrderedCollection
+	colors := OrderedCollection new
 ]
 
 { #category : #accessing }

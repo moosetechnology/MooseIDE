@@ -89,6 +89,18 @@ MiSmallColorPalette >> initializePresenters [
 	self initializeLayout
 ]
 
+{ #category : #accessing }
+MiSmallColorPalette >> selectedHueSet [
+
+	^ (currentPalette new perform: hueSetDropList selectedItem selector asSymbol) range.
+]
+
+{ #category : #accessing }
+MiSmallColorPalette >> selectedPalette [
+
+	^ hueSetDropList selectedItem
+]
+
 { #category : #initialization }
 MiSmallColorPalette >> setColorsGrid: method [
 
