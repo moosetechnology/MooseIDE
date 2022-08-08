@@ -30,7 +30,7 @@ FamixCBRootContext >> removeSelfFromTree [
 
 { #category : #running }
 FamixCBRootContext >> runOn: aCollection [
-	entities := aCollection sort: [ :a :b | a mooseName < b mooseName ]
+	self entities: (aCollection sort: [ :a :b | a mooseName < b mooseName ])
 
 	
 ]

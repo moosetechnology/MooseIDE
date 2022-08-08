@@ -300,6 +300,7 @@ MiCriticBrowser >> initializeLists [
 
 	rulesResult
 		display: [ :each | self stringForItem: each ];
+		displayIcon: [ :each | self iconNamed: each violatedRule severity iconName ];
 		children: [ :each | self children: each for: rulesResult ];
 		contextMenu: expandMenu;
 		activateOnDoubleClick;

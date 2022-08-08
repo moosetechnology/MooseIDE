@@ -53,16 +53,15 @@ FamixCriticBrowserGenerator >> defineHierarchy [
 
 { #category : #definition }
 FamixCriticBrowserGenerator >> defineProperties [
-	((tRuleComponent property: #summary type: #String) 
-		comment: 'A rule component can have an explanatory summary').
-	((context property: #entities type: #Object)
-		comment: 'Entities matching the context').
-	((context property: #contextBlock type: #Object)
-		comment: 'Block to execute to get the context''s entities').
-	((condition property: #query type: #Object)
-		comment: 'Block to execute to find violations to the condition within the parent context').
-	((condition property: #severity type: #Object)
-		comment: 'Severity for the violations of this condition').
+
+	(tRuleComponent property: #summary type: #String) comment:
+		'A rule component can have an explanatory summary'.
+	(context property: #contextBlock type: #Object) comment:
+		'Block to execute to get the context''s entities'.
+	(condition property: #query type: #Object) comment:
+		'Block to execute to find violations to the condition within the parent context'.
+	(condition property: #severity type: #Object) comment:
+		'Severity for the violations of this condition'
 ]
 
 { #category : #definition }

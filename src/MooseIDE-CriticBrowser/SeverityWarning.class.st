@@ -8,19 +8,19 @@ Class {
 }
 
 { #category : #accessing }
-SeverityWarning >> iconName [
+SeverityWarning class >> iconName [
 "name of the icon to use for violation printing in the UI (optional)"
 	^ 'smallWarning'
 ]
 
 { #category : #accessing }
-SeverityWarning >> level [
+SeverityWarning class >> level [
 "an Int (unique to each subclass) to define the level of severity"
 	^ 2
 ]
 
 { #category : #accessing }
-SeverityWarning >> name [
+SeverityWarning class >> title [
 "name of the severity (to print in UI)"
 	^ 'Warning'
 ]
