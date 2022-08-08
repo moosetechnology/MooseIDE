@@ -130,7 +130,7 @@ FamixCBContext >> resetExecutionOfTree [
 FamixCBContext >> runDownTree: aCollection [
 
 	self entities ifEmpty: [ self runOn: aCollection ].
-	children do: [ :child | child runDownTree: self entities ]
+	children do: [ :child | child runDownTree: self entities asMooseGroup ]
 ]
 
 { #category : #running }
