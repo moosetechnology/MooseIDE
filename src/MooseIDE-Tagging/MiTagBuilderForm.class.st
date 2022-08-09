@@ -1,3 +1,6 @@
+"
+I am a presenter used to build tags using a strategy, like the `ContinuousQueryBuilder` class.
+"
 Class {
 	#name : #MiTagBuilderForm,
 	#superclass : #MiPresenter,

@@ -1,3 +1,14 @@
+"
+I am a strategy used to build tags covering the full spectrum of a given numeric property.
+
+Using bounds (an array of Integer), a Famix type and a property for that given type, I create tags from queries built with every bound with the format `property <= bound`, along with an additional query of format `property > lastBound`.
+I also get a color palette from which I pick a color for every tag. If the number of tags is superior to the number of colors of my palette, I reset my palette and will give for the next tags the same colors of the first tags.
+
+Public API and Key Messages
+
+- buildTags
+- chosenPalette:, type:,  property:, bounds:
+"
 Class {
 	#name : #ContinuousQueryBuilder,
 	#superclass : #Object,
