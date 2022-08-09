@@ -7,6 +7,12 @@ Class {
 	#category : #'MooseIDE-Tagging-Generation'
 }
 
+{ #category : #'as yet unclassified' }
+GradualTagsGenerationStrategy class >> bounds [
+
+	^ { 1. 2. 3. 5. 10. }
+]
+
 { #category : #accessing }
 GradualTagsGenerationStrategy class >> colorPalette [
 
@@ -33,72 +39,79 @@ GradualTagsGenerationStrategy >> assignColor [
 ]
 
 { #category : #'as yet unclassified' }
-GradualTagsGenerationStrategy >> createQueryTagFor: anEvaluatingObject [
-
-	^ MiQueryTag new
-		  name: anEvaluatingObject name;
-		  category: category;
-		  evaluatingObject: anEvaluatingObject;
-		  color: self assignColor
-]
-
-{ #category : #'as yet unclassified' }
 GradualTagsGenerationStrategy >> dictForStaticTagWithName: aString color: aColor entities: aCollection [
-	^ Dictionary newFrom: { 'name' -> aString. 'color' -> aColor. 'category' -> category. 'toTag' -> aCollection }
+
+	^ Dictionary newFrom: { 
+			  ('name' -> aString).
+			  ('color' -> aColor).
+			  ('category' -> category).
+			  ('toTag' -> aCollection) }
 ]
 
 { #category : #'as yet unclassified' }
-GradualTagsGenerationStrategy >> generateCriticTags: anObject [
+GradualTagsGenerationStrategy >> generateBagForCriticTags: anObject [
 
-	| bagOfViolatingEntities range tags |
-	"fetch all violations"
-	bagOfViolatingEntities := Bag new.
+	| bagOfEntities |
+	bagOfEntities := Bag new.
 	anObject do: [ :cond | 
 		cond runUpTree: entities.
 		cond violations ifNotEmpty: [ 
-			bagOfViolatingEntities addAll:
+			bagOfEntities addAll:
 				cond violations asMooseGroup specialize allEntities ] ].
-
-	range := self class rangeForCriticsGeneration.
-	tags := OrderedCollection new.
-
-	"find entities to tag according to number of violations"
-	range keys do: [ :key | 
-		| fst snd toTag |
-		toTag := OrderedCollection new.
-		fst := (range at: key) first.
-		(range at: key) size = 1
-			ifTrue: [ 
-				bagOfViolatingEntities doWithOccurrences: [ :entity :value | 
-					value = fst ifTrue: [ toTag add: entity ] ] ]
-			ifFalse: [ 
-				snd := (range at: key) last.
-				bagOfViolatingEntities doWithOccurrences: [ :entity :value | 
-					(value > fst and: [ value <= snd ]) ifTrue: [ toTag add: entity ] ] ].
-
-		"creates the tag if there are entities to tag"
-		toTag ifNotEmpty: [ 
-			tags add: (self
-					 dictForStaticTagWithName: key
-					 color: self assignColor
-					 entities: toTag) ] ].
-
 	anObject do: [ :condition | condition removeAllViolations ].
-	^ tags
+	
+	^ bagOfEntities
 ]
 
 { #category : #'as yet unclassified' }
-GradualTagsGenerationStrategy >> generateQueryTags: anObject [
-	
-	^ anObject collect: [ :query | self createQueryTagFor: query ]
+GradualTagsGenerationStrategy >> generateBagForQueryTags: anObject [
+
+	| bagOfEntities |
+	bagOfEntities := Bag new.
+	anObject do: [ :query | 
+		| runnableQuery |
+		runnableQuery := MiCriticBrowserFQQuery on: query.
+		bagOfEntities addAll: (runnableQuery runOnCollection: entities) ].
+
+	^ bagOfEntities
 ]
 
 { #category : #'as yet unclassified' }
 GradualTagsGenerationStrategy >> generateTags: anObject [
 
-	^ tagClass = MiQueryTag
-		ifTrue: [ self generateQueryTags: anObject ]
-		ifFalse: [ self generateCriticTags: anObject ]
+	| bagOfEntities namePattern tags toTag |
+	"gets entities to tag"
+	tagClass = MiCriticTag
+		ifTrue: [ 
+			bagOfEntities := self generateBagForCriticTags: anObject.
+			namePattern := 'Nb of violations ' ]
+		ifFalse: [ 
+			bagOfEntities := self generateBagForQueryTags: anObject.
+			namePattern := 'Nb of times queried ' ].
+
+	tags := OrderedCollection new.
+	self class bounds do: [ :bound | 
+		toTag := OrderedCollection new.
+		bagOfEntities doWithOccurrences: [ :entity :value | 
+			value <= bound ifTrue: [ toTag add: entity ] ].
+
+		toTag ifNotEmpty: [ 
+			tags add: (self
+					 dictForStaticTagWithName: namePattern , '<= ' , bound asString
+					 color: self assignColor
+					 entities: toTag) ] ].
+
+	toTag := OrderedCollection new.
+	bagOfEntities doWithOccurrences: [ :entity :value | 
+		value > self class bounds last ifTrue: [ toTag add: entity ] ].
+	
+	tags add: (self
+			 dictForStaticTagWithName:
+			 namePattern , '> ' , self class bounds last asString
+			 color: self assignColor
+			 entities: toTag).
+
+	^ tags
 ]
 
 { #category : #initialization }
