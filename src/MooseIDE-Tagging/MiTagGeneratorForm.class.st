@@ -195,7 +195,11 @@ MiTagGeneratorForm >> setMultipleTagsForm [
 { #category : #initialization }
 MiTagGeneratorForm >> setSingleTagForm [
 
-	uniqueTagButton state: false.
+	currentStrategy = OneTagGenerationStrategy ifTrue: [ 
+		uniqueTagButton state: true.
+		^ self ].
+	currentStrategy := OneTagGenerationStrategy.
+	self putAllButtonsStateToFalseExcept: uniqueTagButton.
 	self update
 ]
 

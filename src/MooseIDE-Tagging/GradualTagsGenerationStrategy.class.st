@@ -58,7 +58,6 @@ GradualTagsGenerationStrategy >> generateBagForCriticTags: anObject [
 		cond violations ifNotEmpty: [ 
 			bagOfEntities addAll:
 				cond violations asMooseGroup specialize allEntities ] ].
-	anObject do: [ :condition | condition removeAllViolations ].
 	
 	^ bagOfEntities
 ]

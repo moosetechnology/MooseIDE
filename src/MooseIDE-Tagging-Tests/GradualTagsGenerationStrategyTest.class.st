@@ -88,10 +88,3 @@ GradualTagsGenerationStrategyTest >> testGenerateQueryTags [
 	self assertCollection: ((tags at: 2) at: 'toTag') hasSameElements: { stubEntity. entity }.
 	 
 ]
-
-{ #category : #tests }
-GradualTagsGenerationStrategyTest >> testGenerateTags [ 
-
-	self testGenerateQueryTags.
-	self testGenerateCriticTags
-]
