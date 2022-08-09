@@ -1,3 +1,6 @@
+"
+I create static tags tagging entities on the number of times they are positively evaluated by the provided evaluating objects.
+"
 Class {
 	#name : #GradualTagsGenerationStrategy,
 	#superclass : #GenerationStrategy,

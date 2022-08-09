@@ -1,9 +1,6 @@
 Class {
 	#name : #MiCriticTag,
 	#superclass : #MiDynamicTag,
-	#instVars : [
-		'rule'
-	],
 	#category : #'MooseIDE-Tagging-DynamicTags'
 }
 

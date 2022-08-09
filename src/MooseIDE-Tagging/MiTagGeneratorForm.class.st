@@ -1,3 +1,6 @@
+"
+I am a presenter used to generate tags using subclasses of `GenerationStrategy`.
+"
 Class {
 	#name : #MiTagGeneratorForm,
 	#superclass : #MiPresenter,

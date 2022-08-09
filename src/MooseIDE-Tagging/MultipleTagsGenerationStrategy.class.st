@@ -1,9 +1,11 @@
+"
+I create dynamic tags, one tag per evaluating object.
+"
 Class {
 	#name : #MultipleTagsGenerationStrategy,
 	#superclass : #GenerationStrategy,
 	#instVars : [
-		'colors',
-		'currentColor'
+		'colors'
 	],
 	#category : #'MooseIDE-Tagging-Generation'
 }

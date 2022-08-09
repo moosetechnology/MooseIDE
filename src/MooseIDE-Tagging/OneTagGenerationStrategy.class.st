@@ -1,3 +1,6 @@
+"
+I create a single static tag, tagging every entity that is positively evaluated by any of the provided evaluated object.
+"
 Class {
 	#name : #OneTagGenerationStrategy,
 	#superclass : #GenerationStrategy,
