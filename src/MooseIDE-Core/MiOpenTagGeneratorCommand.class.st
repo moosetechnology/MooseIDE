@@ -2,7 +2,7 @@
 Use me to generate tags from a Browser used to query entities of a model.
 I open a Tag Browser if none is opened, and open the generator form with every query item produced by the browser using me.
 
-Browsers should implement canGenerate, typeForDynamicTags and generate to use the generation command.
+Browsers should implement canGenerate, typeForDynamicTags and itemsForGeneration to use the generation command.
 "
 Class {
 	#name : #MiOpenTagGeneratorCommand,
