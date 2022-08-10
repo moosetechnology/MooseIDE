@@ -44,7 +44,7 @@ FamixCBCondition >> addViolation: anObject [
 
 { #category : #'as yet unclassified' }
 FamixCBCondition >> putViolationsInto: aDictionary [
-	aDictionary at: self put: violations asMooseGroup specialize
+	aDictionary at: self put: violations asMooseSpecializedGroup
 ]
 
 { #category : #accessing }
@@ -87,9 +87,9 @@ FamixCBCondition >> runDownTree: aCollection [
 
 { #category : #running }
 FamixCBCondition >> runOn: aCollection [
-	
-	((self query runOnCollection: aCollection) do: 
-		[ :each | self addViolation: (FamixCBViolation condition: self violatedBy: each) ]).
+
+	(self query runOnCollection: aCollection) do: [ :each | 
+		self addViolation: (FamixCBViolation new violatingEntity: each) ]
 ]
 
 { #category : #'as yet unclassified' }
