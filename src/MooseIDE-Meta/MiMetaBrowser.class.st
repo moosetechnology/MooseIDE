@@ -20,20 +20,33 @@ Class {
 
 { #category : #'world menu' }
 MiMetaBrowser class >> helpMessage [
+
 	^ 'Meta description in a metamodel'
 ]
 
 { #category : #'world menu' }
 MiMetaBrowser class >> menuCommandOn: aBuilder [
+
 	<worldMenu>
-	<miBrowsers>
-	(aBuilder item: #MetaBrowser)
-		parent: (self metaBrowsersMenuLabel);
-		label: (self title);
-		icon: (self iconNamed: #mooseFame);
-		order: 4;
-		help: (self helpMessage);
-		action: [ self open ]
+	^ self buildMenuItemIn: aBuilder
+]
+
+{ #category : #'world menu' }
+MiMetaBrowser class >> menuIconName [
+
+	^ #mooseFame
+]
+
+{ #category : #'world menu' }
+MiMetaBrowser class >> menuItem [
+
+	^ #MetaBrowser
+]
+
+{ #category : #'world menu' }
+MiMetaBrowser class >> menuPriority [
+
+	^ self menuMetaToolsPriority + 3
 ]
 
 { #category : #'instance creation' }
@@ -50,6 +63,7 @@ MiMetaBrowser class >> open [
 
 { #category : #specs }
 MiMetaBrowser class >> title [
+
 	^ 'Meta Browser'
 ]
 
@@ -111,7 +125,7 @@ MiMetaBrowser >> initializeEntities [
 MiMetaBrowser >> initializeLayout [
 
 	| toolbar left |
-	toolbar := self class defaultSpec.
+	toolbar := self class defaultLayout.
 	left := SpPanedLayout newTopToBottom
 		        add: (SpPanedLayout newLeftToRight
 				         add: entities;
@@ -138,7 +152,6 @@ MiMetaBrowser >> initializeMap [
 
 { #category : #initialization }
 MiMetaBrowser >> initializePresenters [
-
 	self initializeCommentNoteBook.
 	self initializeEntities.
 	self initializeProperties.

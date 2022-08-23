@@ -9,8 +9,16 @@ Class {
 	#category : #'MooseIDE-Durden'
 }
 
+{ #category : #adding }
+MiDraggableDefaultBrowser class >> addToMiBrowsersMenu: aMenuGroupPresenter [
+
+	"Do not appear in menu"
+
+	
+]
+
 { #category : #specs }
-MiDraggableDefaultBrowser class >> defaultSpec [
+MiDraggableDefaultBrowser class >> defaultLayout [
 	^ SpBoxLayout newVertical
 		add:
 			(SpBoxLayout newHorizontal
@@ -47,7 +55,7 @@ MiDraggableDefaultBrowser class >> runMeWith: aClass following: aBus [
 
 	^ (self on: self newModel)
 		  widgetClass: aClass;
-		  openWithSpec;
+		  open;
 		  followBus: aBus;
 		  yourself
 ]

@@ -14,24 +14,42 @@ Class {
 	#category : #'MooseIDE-Dependency-Tree'
 }
 
-{ #category : #specs }
-MiTreeVisualisationBrowser class >> defaultSpec [
-	^ super defaultSpec
+{ #category : #layout }
+MiTreeVisualisationBrowser class >> defaultLayout [
+	^ super defaultLayout
 		add: #diagram;
 		yourself
 ]
 
 { #category : #'world menu' }
 MiTreeVisualisationBrowser class >> menuCommandOn: aBuilder [
+
 	<worldMenu>
-	<miBrowsers>
-	(aBuilder item: #TreeVisualisationBrowser)
-		parent: self toolbarDependencyName;
-		label: self title;
-		order: 2.0;
-		icon: (self iconNamed: #mooseTree);
-		help: self helpMessage;
-		action: [ self open ]
+	^ self buildMenuItemIn: aBuilder
+]
+
+{ #category : #'world menu' }
+MiTreeVisualisationBrowser class >> menuIconName [
+
+	^ #mooseTree
+]
+
+{ #category : #'world menu' }
+MiTreeVisualisationBrowser class >> menuItem [
+
+	^ #TreeVisualisationBrowser
+]
+
+{ #category : #'world menu' }
+MiTreeVisualisationBrowser class >> menuParent [
+
+	^ self dependencyMenuRoot
+]
+
+{ #category : #'world menu' }
+MiTreeVisualisationBrowser class >> menuPriority [
+
+	^ 2.0
 ]
 
 { #category : #'instance creation' }

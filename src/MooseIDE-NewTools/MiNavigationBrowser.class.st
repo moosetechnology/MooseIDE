@@ -43,8 +43,8 @@ MiNavigationBrowser class >> buildCommandsGroupWith: presenter forRoot: aCmComma
 		register: (StInspectorInspectSelectedCommand forSpecContext: presenter)
 ]
 
-{ #category : #specs }
-MiNavigationBrowser class >> defaultSpec [
+{ #category : #layout }
+MiNavigationBrowser class >> defaultLayout [
 
 	^ SpBoxLayout newVertical
 		  add: #navigation;

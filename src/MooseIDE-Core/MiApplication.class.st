@@ -7,19 +7,18 @@ Class {
 		'producers',
 		'consumers'
 	],
-	#classInstVars : [
-		'Current'
-	],
 	#category : #'MooseIDE-Core-Application'
 }
 
 { #category : #'instance creation' }
 MiApplication class >> current [
-	^ Current ifNil: [ Current := self new ]
+
+	  ^ Current ifNil: [ Current := self new yourself ]
 ]
 
 { #category : #accessing }
 MiApplication class >> defaultBusName [
+
 	^ 'Default'
 ]
 
@@ -41,19 +40,25 @@ MiApplication >> add: anObject toDictionary: aDictionary for: aKey [
 ]
 
 { #category : #accessing }
+MiApplication >> allBrowsers: aMiClass [
+	^self browsers select: [ :aBrowser | aBrowser isKindOf: aMiClass ]
+]
+
+{ #category : #accessing }
 MiApplication >> browsers [
 	^ self windows collect: #presenter thenSelect: #isMiBrowser
 ]
 
 { #category : #buses }
 MiApplication >> busNamed: aName [
-	^ buses
-		detect: [ :b | b name = aName ]
-		ifNone: [ | bus |
-			bus := MiBus named: aName.
-			buses add: bus.
-			self updateOverviewBrowsers.
-			bus ]
+
+	  ^ buses detect: [ :b | b name = aName ] ifNone: [ 
+		    | bus |
+		    bus := MiBus named: aName.
+		    buses add: bus.
+		    self defaultBus: bus.
+		    self updateOverviewBrowsers.
+		    bus ]
 ]
 
 { #category : #accessing }
@@ -104,6 +109,12 @@ MiApplication >> consumersOf: aClass [
 MiApplication >> defaultBus [
 
 	^ defaultBus
+]
+
+{ #category : #buses }
+MiApplication >> defaultBus: aMiBus [
+
+	  defaultBus := aMiBus
 ]
 
 { #category : #showing }
@@ -165,6 +176,7 @@ MiApplication >> produced: producedClass matchConsumed: consumedClass [
 MiApplication >> producersOf: aClass [
 
 	| foundProducers |
+	
 	foundProducers := Set new.
 	producers keysDo: [ :producedClass | 
 		(self produced: producedClass matchConsumed: aClass) ifTrue: [ 

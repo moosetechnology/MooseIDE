@@ -15,7 +15,8 @@ MiApplicationTest >> alternativeBusName [
 
 { #category : #running }
 MiApplicationTest >> application [
-	^ MiTestApplication current
+
+	  ^ application
 ]
 
 { #category : #running }
@@ -26,15 +27,10 @@ MiApplicationTest >> busName [
 
 { #category : #running }
 MiApplicationTest >> setUp [
-	super setUp.
-	bus := self application busNamed: self busName
-]
 
-{ #category : #running }
-MiApplicationTest >> tearDown [
-
-	self application reset.
-	super tearDown
+	  super setUp.
+	  application := MiTestApplication new.
+	  bus := self application busNamed: self busName
 ]
 
 { #category : #tests }
@@ -60,12 +56,13 @@ MiApplicationTest >> testDefaultBus [
 
 { #category : #tests }
 MiApplicationTest >> testDeleteBus [
-	| initialSize |
+	| initialSize busToDelete |
+	busToDelete := self application buses first.
 	initialSize := self application buses size.
 
-	self application deleteBus: bus.
+	self application deleteBus: busToDelete.
 
-	self deny: (self application buses includes: bus).
+	self deny: (self application buses includes: busToDelete).
 	self assert: self application buses size equals: initialSize - 1
 ]
 
@@ -74,11 +71,11 @@ MiApplicationTest >> testDeleteBusNamed [
 
 	| initialSize |
 	initialSize := self application buses size.
-	self application deleteBusNamed: self busName.
+	
+	self application deleteBusNamed: self application class defaultBusName.
 
 	self deny:
 		(self application buses anySatisfy: [ :app | 
-			 app name = self busName ]).
-	self deny: (self application buses includes: bus).
+			 app name = self application class defaultBusName ]).
 	self assert: self application buses size equals: initialSize - 1
 ]

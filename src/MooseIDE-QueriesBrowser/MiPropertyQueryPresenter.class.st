@@ -24,20 +24,46 @@ Class {
 	#category : #'MooseIDE-QueriesBrowser-Configuration presenters'
 }
 
+{ #category : #'api - actions' }
+MiPropertyQueryPresenter >> configureFor: aQuery [
+
+	query := aQuery.
+	self initializePresentersForValidQuery.
+
+	self configurePropertyDroplistFor: aQuery
+]
+
+{ #category : #'api - actions' }
+MiPropertyQueryPresenter >> configurePropertyDroplistFor: aQuery [
+
+	| queryProperty |
+	queryProperty := aQuery property.
+
+	(propertyDropList items includes: queryProperty) ifFalse: [ 
+		propertyDropList items: propertyDropList items , { queryProperty } ].
+
+	propertyDropList selectItem: queryProperty
+]
+
 { #category : #initialization }
 MiPropertyQueryPresenter >> initializePresenters [
 
 	delayer := InputProcessingWaiter new.
-		
+
 	query availableProperties
-		ifNotEmpty: [ 
-			propertyDropList := self newPropertyDropList.
-			comparatorDropList := self newComparatorDropList.
-			valueInputField := self newValueInputField ]
+		ifNotEmpty: [ self initializePresentersForValidQuery ]
 		ifEmpty: [ 
 			propertyDropList := self noParameterMessage: 'property'.
 			comparatorDropList := self newNullPresenter.
 			valueInputField := self newNullPresenter ]
+]
+
+{ #category : #initialization }
+MiPropertyQueryPresenter >> initializePresentersForValidQuery [
+
+	propertyDropList := self newPropertyDropList.
+	comparatorDropList := self newComparatorDropList.
+	valueInputField := self newValueInputField
 ]
 
 { #category : #initialization }
@@ -57,15 +83,16 @@ MiPropertyQueryPresenter >> newComparatorDropList [
 MiPropertyQueryPresenter >> newPropertyDropList [
 
 	| sortedProperties |
-	sortedProperties := self query availableProperties sorted: #asString ascending.
-	"self query availableProperties always returns as a first element that the query has a property. So, if we sort if we need to update the property of the query"
-	query property: sortedProperties first.
+	sortedProperties := self query availableProperties sorted:
+		                    #asString ascending.
+
 	^ self newDropList
-		startWithoutSelection;
-		items: sortedProperties;
-		display: [ :prop | prop asString ];
-		whenSelectedItemChangedDo: [ :property | self updateProperty: property ];
-		yourself
+		  startWithoutSelection;
+		  items: sortedProperties;
+		  display: [ :prop | prop asString ];
+		  whenSelectedItemChangedDo: [ :property | 
+			  self updateProperty: property ];
+		  yourself
 ]
 
 { #category : #initialization }

@@ -33,29 +33,6 @@ MooseObject >> miPropertiesInspectorExtension [
 ]
 
 { #category : #'*MooseIDE-NewTools' }
-MooseObject >> navigationItemsFromAttributes [
-
-	| entity assocs attrs |
-	"returns associations in form name->object for navigation entities obtained from
-	the the meta-model attributes of the item"
-	entity := self mooseInterestingEntity.
-	attrs := entity allDeclaredProperties reject: [ :attribute | 
-		         attribute type isPrimitive ].
-	assocs := attrs collect: [ :anAttribute | 
-		          anAttribute name
-		          -> (entity perform: anAttribute compiledMethod selector) ].
-
-	"filter out nils and empty collections, sort"
-	^ (assocs reject: [ :association | 
-		   association value isNil or: [ 
-			   association value isCollection and: [ association value isEmpty ] ] ]) 
-		  sorted:
-			  [ :a | 
-			  a key formatForNavigationPresentation asLowercase asString ]
-				  ascending
-]
-
-{ #category : #'*MooseIDE-NewTools' }
 MooseObject >> navigationItemsFromPragmas [
 
 	| pragmaValueAssociations |

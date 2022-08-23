@@ -2,7 +2,8 @@ Class {
 	#name : #MiAbstractBrowserTest,
 	#superclass : #TestCase,
 	#instVars : [
-		'browser'
+		'browser',
+		'application'
 	],
 	#category : #'MooseIDE-Tests-Browsers'
 }
@@ -15,7 +16,7 @@ MiAbstractBrowserTest class >> isAbstract [
 { #category : #running }
 MiAbstractBrowserTest >> application [
 
-	^ MiTestApplication current
+	  ^ application
 ]
 
 { #category : #'tests - actions' }
@@ -57,13 +58,15 @@ MiAbstractBrowserTest >> mooseObjects [
 { #category : #running }
 MiAbstractBrowserTest >> setUp [
 
-	super setUp.
-	MiTestApplication reset.
-	browser := self browserClass openForTests
+	  super setUp.
+	  application := MiTestApplication new.
+	  application defaultBus: self bus.
+	  browser := self browserClass openForTests: self application
 ]
 
 { #category : #running }
 MiAbstractBrowserTest >> tearDown [
+
 	browser window ifNotNil: [ :window | window close ].
 	self application deleteBus: self bus.
 	super tearDown
@@ -81,7 +84,7 @@ MiAbstractBrowserTest >> testCanOpenOnEmptyBus [
 	| newBrowser |
 	self
 		shouldnt: [ 
-			newBrowser := self browserClass openForTests.
+			newBrowser := self browserClass openForTests: self application.
 			newBrowser window close ]
 		raise: Error
 ]
@@ -93,7 +96,7 @@ MiAbstractBrowserTest >> testCanOpenOnEmptyMooseGroup [
 	self bus globallySelect: MooseGroup new.
 	self
 		shouldnt: [ 
-			newBrowser := self browserClass openForTests.
+			newBrowser := self browserClass openForTests: self application.
 			newBrowser window close ]
 		raise: Error
 ]
@@ -105,7 +108,7 @@ MiAbstractBrowserTest >> testCanOpenOnEmptyMooseModel [
 	self bus globallySelect: MooseModel new.
 	self
 		shouldnt: [ 
-			newBrowser := self browserClass openForTests.
+			newBrowser := self browserClass openForTests: self application.
 			newBrowser window close ]
 		raise: Error
 ]
@@ -117,7 +120,7 @@ MiAbstractBrowserTest >> testCanOpenOnMooseEntity [
 	self bus globallySelect: MooseEntity new.
 	self
 		shouldnt: [ 
-			newBrowser := self browserClass openForTests.
+			newBrowser := self browserClass openForTests: self application.
 			newBrowser window close ]
 		raise: Error
 ]
@@ -130,7 +133,7 @@ MiAbstractBrowserTest >> testCanOpenOnMooseGroup [
 		(MooseModel with: MooseEntity new) entities asMooseGroup.
 	self
 		shouldnt: [ 
-			newBrowser := self browserClass openForTests.
+			newBrowser := self browserClass openForTests: self application.
 			newBrowser window close ]
 		raise: Error
 ]
@@ -142,7 +145,7 @@ MiAbstractBrowserTest >> testCanOpenOnMooseModel [
 	self bus globallySelect: (MooseModel with: MooseEntity new).
 	self
 		shouldnt: [ 
-			newBrowser := self browserClass openForTests.
+			newBrowser := self browserClass openForTests: self application.
 			newBrowser window close ]
 		raise: Error
 ]
@@ -154,7 +157,7 @@ MiAbstractBrowserTest >> testCanOpenOnNil [
 	self bus globallySelect: nil.
 	self
 		shouldnt: [ 
-			newBrowser := self browserClass openForTests.
+			newBrowser := self browserClass openForTests: self application.
 			newBrowser window close ]
 		raise: Error
 ]
@@ -166,9 +169,22 @@ MiAbstractBrowserTest >> testCanOpenOnObject [
 	self bus globallySelect: Object new.
 	self
 		shouldnt: [ 
-			newBrowser := self browserClass openForTests.
+			newBrowser := self browserClass openForTests: self application.
 			newBrowser window close ]
 		raise: Error
+]
+
+{ #category : #'tests - opening' }
+MiAbstractBrowserTest >> testCanOpenSettings [
+
+	browser hasSettings ifFalse: [ self skip ].
+
+	self
+		shouldnt: [ 
+			browser settings. ]
+		raise: Error.
+
+	[ browser closeSettings ] on: Error do: [ "nothing -- ensuring settings window is closed" ]
 ]
 
 { #category : #'tests - receiving' }
@@ -208,6 +224,23 @@ MiAbstractBrowserTest >> testFollowBus [
 ]
 
 { #category : #'tests - buses' }
+MiAbstractBrowserTest >> testFollowBusSetsDefaultBus [
+
+	self assert: browser application defaultBus name equals: 'Test' .
+
+	browser application busNamed: 'aNewBus'.
+	self assert: browser application defaultBus name equals: 'aNewBus' .
+
+	browser application busNamed: 'Test'.
+	self assert: browser application defaultBus name equals: 'aNewBus' .
+	
+	browser followBus: (browser application busNamed: 'Test').
+	self assert: browser application defaultBus name equals: 'Test' .
+	
+	
+]
+
+{ #category : #'tests - buses' }
 MiAbstractBrowserTest >> testFollowBusTriggersSelectEntity [
 
 	| propagatedEntity |
@@ -233,15 +266,16 @@ MiAbstractBrowserTest >> testFollowEntity [
 { #category : #'tests - buses' }
 MiAbstractBrowserTest >> testFollowOtherBus [
 
-	| otherBus |
+	| otherBus oldDefaultBus |
+	oldDefaultBus := self bus.
 	otherBus := self application busNamed: 'Other bus'.
 	browser followBus: otherBus.
 
 	self assertCollection: browser buses hasSameElements: { 
 			self bus.
-			otherBus }.
+			oldDefaultBus }.
 
-	self assert: (otherBus browsers includes: browser).
+	self assert: (oldDefaultBus browsers includes: browser).
 	self assert: (self bus browsers includes: browser).
 
 	self assert: browser busButton label equals: '2 buses'
@@ -254,6 +288,53 @@ MiAbstractBrowserTest >> testHighlightEntity [
 	self mooseObjects do: [ :mooseObject | 
 		self bus globallySelect: mooseObject.
 		self assertHighlightActionFor: mooseObject ]
+]
+
+{ #category : #'tests - opening' }
+MiAbstractBrowserTest >> testSettingsAction [
+	"must be redefined in browsers that do have settings"
+
+	self deny: browser hasSettings
+]
+
+{ #category : #'tests - opening' }
+MiAbstractBrowserTest >> testSettingsClickCancel [
+
+	browser hasSettings ifFalse: [ self skip ].
+
+	self
+		shouldnt: [ 
+			browser settings.
+			browser model settings buttonCancel click ]
+		raise: Error.
+
+]
+
+{ #category : #'tests - opening' }
+MiAbstractBrowserTest >> testSettingsClickOK [
+
+	browser hasSettings ifFalse: [ self skip ].
+
+	self
+		shouldnt: [ 
+			browser settings.
+			browser model settings buttonOk click ]
+		raise: Error.
+
+]
+
+{ #category : #'tests - opening' }
+MiAbstractBrowserTest >> testSettingsClickReset [
+
+	browser hasSettings ifFalse: [ self skip ].
+
+	self
+		shouldnt: [ 
+			browser settings.
+			browser model settings buttonReset click ]
+		raise: Error.
+
+	[ browser closeSettings ] on: Error do: [ "nothing -- ensuring settings window is closed as REset does not do it" ]
 ]
 
 { #category : #'tests - buses' }

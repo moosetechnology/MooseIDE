@@ -15,7 +15,7 @@ Class {
 }
 
 { #category : #specs }
-MiPlaygroundModelsPresenter class >> defaultSpec [
+MiPlaygroundModelsPresenter class >> defaultLayout [
 
 	^ SpPanedLayout newLeftToRight
 		  positionOfSlider: 30 percent;

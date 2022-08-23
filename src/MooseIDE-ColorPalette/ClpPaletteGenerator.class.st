@@ -53,29 +53,6 @@ ClpPaletteGenerator >> generatedPalette [
 	^ generatedPalette
 ]
 
-{ #category : #'gt-inspection' }
-ClpPaletteGenerator >> gtInspectorColorsIn: composite [
-	<gtInspectorPresentationOrder: 0>
-	
-	^ composite fastTable
-		title: 'Colors';
-		display: [ self generate asCollection ];
-		beMultiple;
-		enableElementIndex;
-		wantsAutomaticRefresh: true;
-		column: 'Index' evaluated: [ :color :idex | idex asString ] width: 50;
-		column: 'Color' evaluated: [ :color | BorderedMorph new color: color ] width: 52;
-		column: 'Code' evaluated: [ :color | GTObjectPrinter asTruncatedTextFrom: color asHexString asLowercase asSymbol ];
-		send: [ :result | 
-			result
-				ifNil: [ nil ]
-				ifNotNil: [ result size = 1
-						ifTrue: [ result anyOne ]
-						ifFalse: [ self species withAll: result ]
-					]
-			]
-]
-
 { #category : #initialization }
 ClpPaletteGenerator >> initialize [ 
 	
@@ -100,4 +77,11 @@ ClpPaletteGenerator >> numberOfColors [
 ClpPaletteGenerator >> numberOfColors: anInteger [
 
 	numberOfColors := anInteger
+]
+
+{ #category : #'gt-inspection' }
+ClpPaletteGenerator >> paletteInspectorExtension [
+
+	<inspectorPresentationOrder: 1 title: 'Palette'>
+	^ self generate paletteInspectorExtension
 ]

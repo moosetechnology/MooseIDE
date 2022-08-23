@@ -22,8 +22,16 @@ Class {
 	#category : #'MooseIDE-Durden'
 }
 
+{ #category : #adding }
+MiDropIntoBrowser class >> addToMiBrowsersMenu: aMenuGroupPresenter [
+
+	"Do not appear in menu"
+
+	
+]
+
 { #category : #specs }
-MiDropIntoBrowser class >> defaultSpec [
+MiDropIntoBrowser class >> defaultLayout [
 
 	^ SpBoxLayout newTopToBottom
 		  add: #toolbar height: self toolbarHeight;
@@ -44,21 +52,10 @@ MiDropIntoBrowser class >> defaultSpec [
 ]
 
 { #category : #specs }
-MiDropIntoBrowser class >> menuCommandOn: aBuilder [ 
-	<worldMenu>
-	<miBrowsers>
-	(aBuilder item: #dropInMooseBrowser)
-		parent: #Moose;
-		label: (self title);
-		help: (self helpMessage); 
-		action: [ self open ]
-]
-
-{ #category : #specs }
 MiDropIntoBrowser class >> open [
 
 	<script>
-	self new openWithSpec
+	self new open
 ]
 
 { #category : #specs }

@@ -27,10 +27,10 @@ MiExportBrowser class >> commentColumnTitle [
 	^ 'Comment'
 ]
 
-{ #category : #specs }
-MiExportBrowser class >> defaultSpec [
+{ #category : #layout }
+MiExportBrowser class >> defaultLayout [
 
-	^ super defaultSpec
+	^ super defaultLayout
 		  add: #toolbar height: self toolbarHeight;
 		  add: #entitiesTable;
 		  yourself
@@ -40,14 +40,25 @@ MiExportBrowser class >> defaultSpec [
 MiExportBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
-	<miBrowsers>
-	(aBuilder item: #Exporter)
-		parent: #Moose;
-		label: self title;
-		icon: (self iconNamed: #smallExport);
-		order: 6;
-		help: self helpMessage;
-		action: [ self open ]
+	^ self buildMenuItemIn: aBuilder
+]
+
+{ #category : #'world menu' }
+MiExportBrowser class >> menuIconName [
+
+	^ #smallExport
+]
+
+{ #category : #'world menu' }
+MiExportBrowser class >> menuItem [
+
+	^ #Exporter
+]
+
+{ #category : #'world menu' }
+MiExportBrowser class >> menuPriority [
+
+	^ self menuMetaToolsPriority + 2
 ]
 
 { #category : #'instance creation' }
@@ -158,7 +169,9 @@ MiExportBrowser >> commonPropertiesIn: aMooseGroup [
 MiExportBrowser >> defaultTableColumns [
 
 	^ { 
-		  ((SpStringTableColumn title: 'Name' evaluated: #name)
+		  ((SpStringTableColumn 
+				title: 'Name' 
+				evaluated: [ :entity | String streamContents: [ :s | entity displayStringOn: s ] ])
 			   beSortable;
 			   yourself).
 		  ((SpStringTableColumn

@@ -9,11 +9,31 @@ Class {
 		'tagList',
 		'descriptionPage',
 		'tagModel',
-		'tagButton',
-		'dynamicTagButton'
+		'tagDescriptionPage',
+		'dynamicTagDescriptionPage',
+		'addTagButton',
+		'btnIsExtent',
+		'btnIsIntent'
 	],
 	#category : #'MooseIDE-Tagging-Browser'
 }
+
+{ #category : #accessing }
+MiTagManagementPage >> addTagButton [
+
+	^ addTagButton
+]
+
+{ #category : #initialization }
+MiTagManagementPage >> connectPresenters [
+
+	btnIsExtent whenChangedDo: [ 
+		self setIconForButton: btnIsExtent.
+		self refreshTagList ].
+	btnIsIntent whenChangedDo: [ 
+		self setIconForButton: btnIsIntent.
+		self refreshTagList ]
+]
 
 { #category : #action }
 MiTagManagementPage >> deleteCurrentTag [
@@ -31,10 +51,22 @@ MiTagManagementPage >> descriptionPage [
 	^ descriptionPage
 ]
 
+{ #category : #accessing }
+MiTagManagementPage >> dynamicTagDescriptionPage [
+
+	^ dynamicTagDescriptionPage
+]
+
 { #category : #action }
 MiTagManagementPage >> editCurrentTag [
 
 	self owner openTagEditionForm
+]
+
+{ #category : #accessing }
+MiTagManagementPage >> extentTagButton [
+
+	^ btnIsExtent
 ]
 
 { #category : #initialization }
@@ -50,10 +82,18 @@ MiTagManagementPage >> initializeLayout [
 	self layout: (SpBoxLayout newLeftToRight
 			 spacing: 4;
 			 add: (SpBoxLayout newTopToBottom
+					  spacing: 5;
 					  add: categoryManagement expand: false;
 					  add: (SpBoxLayout newLeftToRight
-							   add: 'Tags' asPresenter;
+							   add: 'Tag list' asPresenter;
 							   hAlignCenter;
+							   yourself)
+					  expand: false;
+					  add: (SpBoxLayout newLeftToRight
+							   spacing: 3;
+							   add: btnIsExtent;
+							   add: btnIsIntent;
+							   add: addTagButton width: 30;
 							   yourself)
 					  expand: false;
 					  add: tagList;
@@ -67,17 +107,61 @@ MiTagManagementPage >> initializeLayout [
 { #category : #initialization }
 MiTagManagementPage >> initializePresenters [
 
-	categoryManagement := self instantiate: MiTagCategoriesPresenter on: tagModel.
-	descriptionPage := self instantiate: MiTagExtentPage on: tagModel.
+	categoryManagement := self
+		instantiate: MiTagCategoriesPresenter
+		on: tagModel.
+
+	tagDescriptionPage := self instantiate: MiTagExtentPage.
+	dynamicTagDescriptionPage := self instantiate: MiTagIntentPage.
+	descriptionPage := tagDescriptionPage.
 	descriptionPage hide.
-	tagList := self instantiate: MiTagListPresenter.
+
+	btnIsExtent := self newToggleButton
+		state: true;
+		icon: (Smalltalk ui icons iconNamed: #checkboxSelected);
+		label: 'Extent';
+		yourself.
+	btnIsIntent := self newToggleButton
+		state: false;
+		icon: (Smalltalk ui icons iconNamed: #checkboxUnselected);
+		label: 'Intent';
+		yourself.
+
+	tagList := self newList.
+	tagList contextMenu: self tagListMenu.
 	tagList display: [ :aTag | aTag name ].
-	tagList list
-		displayIcon: [ :aTag | self tagModel iconForTag: aTag ];
+	tagList
+		displayIcon: [ :aTag | self model class iconForTag: aTag ];
 		whenSelectionChangedDo: [ :selection | 
 			selection selectedItem ifNotNil: [ :item | self setTagTo: item ] ].
-	tagList addButton action: [ self owner openTagCreationForm ].
+	addTagButton := self newButton icon: (Smalltalk iconNamed: #smallAdd).
+	addTagButton action: [ self owner openTagCreationForm ].
+
+
 	self initializeLayout
+]
+
+{ #category : #accessing }
+MiTagManagementPage >> intentTagButton [
+
+	^ btnIsIntent
+]
+
+{ #category : #accessing }
+MiTagManagementPage >> model [
+
+	^ owner model
+]
+
+{ #category : #action }
+MiTagManagementPage >> preparePageFor: aTag [
+
+	aTag isIntent ifTrue: [ 
+		self layout replace: descriptionPage with: dynamicTagDescriptionPage.
+		descriptionPage := dynamicTagDescriptionPage.
+		^ self ].
+	self layout replace: descriptionPage with: tagDescriptionPage.
+	descriptionPage := tagDescriptionPage
 ]
 
 { #category : #refreshing }
@@ -86,8 +170,7 @@ MiTagManagementPage >> refresh [
 	self refreshDescriptionPage.
 	self refreshTagList.
 	self refreshCategoryList.
-	descriptionPage refreshEntitiesList.
-	descriptionPage refreshTaggedEntitiesList.
+	descriptionPage refresh.
 ]
 
 { #category : #refreshing }
@@ -105,11 +188,28 @@ MiTagManagementPage >> refreshDescriptionPage [
 { #category : #refreshing }
 MiTagManagementPage >> refreshTagList [
 
-	| sortingBlock |
+	| sortingBlock isExtent isIntent extentTags intentTags |
 	sortingBlock := [ :t1 :t2 | t1 name <= t2 name ].
-	tagList items: (tagModel currentCategory
-			 ifNil: [ self tagModel allTags sort: sortingBlock ]
-			 ifNotNil: [ :currentTag | currentTag markedTags asMooseGroup ])
+
+	isExtent := btnIsExtent state.
+	isIntent := btnIsIntent state.
+	extentTags := [ 
+	     tagModel currentCategory
+		     ifNil: [ self model allTags ]
+		     ifNotNil: [ :currentTag | currentTag markedTags asMooseGroup ] ].
+	intentTags := [ 
+	      tagModel currentCategory
+		      ifNil: [ self model dynamicTags ]
+		      ifNotNil: [ :currentCat | 
+			      self model dynamicTags select: [ :tag | 
+				      tag category = currentCat ] ] ].
+	
+	tagList items:
+		( (isExtent ifTrue: [ extentTags value ] ifFalse: [ #() ]) 
+		  ,
+		  (isIntent ifTrue: [ intentTags value ] ifFalse: [ #() ])
+		sort: sortingBlock )
+
 ]
 
 { #category : #initialization }
@@ -121,8 +221,16 @@ MiTagManagementPage >> refreshTaggedEntitiesList [
 { #category : #action }
 MiTagManagementPage >> removeCategory [
 
-	self tagModel deleteCurrentCategory.
+	self model deleteCurrentCategory.
 	self refreshCategoryList
+]
+
+{ #category : #initialization }
+MiTagManagementPage >> setIconForButton: aBtn [
+
+	aBtn icon: (Smalltalk ui icons iconNamed: (aBtn state
+				  ifTrue: [ #checkboxSelected ]
+				  ifFalse: [ #checkboxUnselected ]))
 ]
 
 { #category : #initialization }
@@ -135,15 +243,39 @@ MiTagManagementPage >> setModelBeforeInitialization: aTagModel [
 MiTagManagementPage >> setTagTo: aTag [
 
 	self owner setTagTo: aTag.
+	self preparePageFor: aTag.
 	descriptionPage setTag: aTag.
 	descriptionPage show.
-	descriptionPage refreshEntitiesList.
-	descriptionPage refreshTaggedEntitiesList.
+	descriptionPage refresh.
 	self update
+]
+
+{ #category : #accessing }
+MiTagManagementPage >> tagList [
+
+	^ tagList
+]
+
+{ #category : #initialization }
+MiTagManagementPage >> tagListMenu [
+
+	^ self newMenu
+		  addGroup: [ :aGroup | 
+			  aGroup
+				  addItem: [ :anItem | 
+					  anItem
+						  name: 'Edit tag';
+						  iconName: #edit;
+						  action: [ self editCurrentTag ] ];
+				  addItem: [ :anItem | 
+					  anItem
+						  name: 'Delete';
+						  iconName: #glamorousClose;
+						  action: [ self deleteCurrentTag ] ] ]
 ]
 
 { #category : #accessing }
 MiTagManagementPage >> tagModel [
 
-	^ tagModel
+	^ owner model
 ]

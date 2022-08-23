@@ -63,6 +63,6 @@ MiBusLogBrowserTest >> testOpenOnLatestEntity [
 
 	self bus globallySelect: entityToSelect.
 
-	newBrowser := self browserClass openForTests.
+	newBrowser := self browserClass openForTests: self application.
 	self assert: newBrowser miSelectedItem equals: entityToSelect
 ]

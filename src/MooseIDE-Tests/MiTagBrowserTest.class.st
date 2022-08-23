@@ -36,10 +36,42 @@ MiTagBrowserTest >> setUp [
 ]
 
 { #category : #tests }
+MiTagBrowserTest >> testIsConsumerOfFQAbstractQuery [
+
+	self assert:
+		((browser application consumersOf: FQAbstractQuery) anySatisfy: [ :elt | 
+			 elt = browser tagCreationForm ])
+]
+
+{ #category : #tests }
+MiTagBrowserTest >> testIsConsumerOfTagAssociation [
+
+	self assert:
+		((browser application consumersOf: FamixTagAssociation) anySatisfy: [ :elt | 
+			 elt = browser ])
+]
+
+{ #category : #tests }
+MiTagBrowserTest >> testIsProducerOfDynamicTag [
+
+	self assert:
+		((browser application producersOf: MiDynamicTag) anySatisfy: [ :elt | 
+			 elt = browser ])
+]
+
+{ #category : #tests }
+MiTagBrowserTest >> testIsProducerOfFamixTags [
+
+	self assert:
+		((browser application producersOf: FamixTag) anySatisfy: [ :elt | 
+			 elt = browser ])
+]
+
+{ #category : #tests }
 MiTagBrowserTest >> testNoTagDetailPageAddDoNothing [
 
 	| entities |
-	entities := detailsPage tagModel mooseModel entities.
+	entities := detailsPage model mooseModel entities.
 	self assert: entities size equals: self mooseModelSize.
 
 	detailsPage addAll.
@@ -53,11 +85,11 @@ MiTagBrowserTest >> testNoTagDetailPageAddDoNothing [
 MiTagBrowserTest >> testTagDetailPageAddEntityToTag [
 
 	| entities tag |
-	entities := detailsPage tagModel mooseModel entities.
+	entities := detailsPage model mooseModel entities.
 	self assert: entities size equals: self mooseModelSize.
 
-	tag := detailsPage tagModel addTag: 'aTag'.
-	detailsPage tagModel currentTag: tag.
+	tag := detailsPage model addTag: 'aTag'.
+	detailsPage model currentTag: tag.
 	detailsPage addAll.
 
 	self
@@ -69,7 +101,7 @@ MiTagBrowserTest >> testTagDetailPageAddEntityToTag [
 MiTagBrowserTest >> testTagModelInitialization [
 
 	| specModel |
-	specModel := detailsPage tagModel.
+	specModel := detailsPage model.
 	self assert: specModel isNotNil.
 	self assert: specModel mooseModel isNotNil.
 	self assert: specModel mooseModel size equals: self mooseModelSize

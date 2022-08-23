@@ -10,7 +10,7 @@ Class {
 }
 
 { #category : #specs }
-MiHelpPopup class >> defaultSpec [
+MiHelpPopup class >> defaultLayout [
 	^ SpBoxLayout newHorizontal
 		borderWidth: 5;
 		add:

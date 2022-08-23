@@ -35,7 +35,7 @@ Class {
 }
 
 { #category : #specs }
-MiFameExtension class >> defaultSpec [
+MiFameExtension class >> defaultLayout [
 
 	^ SpBoxLayout newVertical
 		  add: #fameDescription;

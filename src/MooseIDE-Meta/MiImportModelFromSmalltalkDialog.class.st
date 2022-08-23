@@ -21,8 +21,8 @@ Class {
 	#category : #'MooseIDE-Meta-Import'
 }
 
-{ #category : #specs }
-MiImportModelFromSmalltalkDialog class >> defaultSpec [
+{ #category : #layout }
+MiImportModelFromSmalltalkDialog class >> defaultLayout [
 
 	^ SpBoxLayout newTopToBottom
 		  spacing: 10;
@@ -47,7 +47,7 @@ MiImportModelFromSmalltalkDialog class >> fullWindowExtent [
 MiImportModelFromSmalltalkDialog class >> open [
 
 	<script>
-	^ self new openDialogWithSpec
+	^ self new openDialog
 ]
 
 { #category : #specs }
@@ -174,6 +174,16 @@ MiImportModelFromSmalltalkDialog >> initializeConfigurationCheckBoxes [
 ]
 
 { #category : #initialization }
+MiImportModelFromSmalltalkDialog >> initializeDialogWindow: aDialog [
+
+	| importButton |
+	super initializeDialogWindow: aDialog. 
+	importButton := (aDialog buttons select: [ :button | button label = 'Import'  ]) first.
+	importButton disable.
+	packagesSelector whenSelectionChangedDo: [ :items | items ifEmpty: [ importButton disable ] ifNotEmpty: [ importButton enable]].
+]
+
+{ #category : #initialization }
 MiImportModelFromSmalltalkDialog >> initializeEntitiesCheckBoxes [
 
 	| checkBoxesLayout |
@@ -289,7 +299,7 @@ MiImportModelFromSmalltalkDialog >> showAdvancedSettings [
 { #category : #'advanced settings' }
 MiImportModelFromSmalltalkDialog >> simpleLayout [
 
-	^ self class defaultSpec
+	^ self class defaultLayout
 ]
 
 { #category : #action }

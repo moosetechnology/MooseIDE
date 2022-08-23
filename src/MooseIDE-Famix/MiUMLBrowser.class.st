@@ -7,31 +7,50 @@ Shows UML of the received entities.
 "
 Class {
 	#name : #MiUMLBrowser,
-	#superclass : #MiAbstractFamixBrowser,
+	#superclass : #MiAbstractBrowser,
 	#instVars : [
 		'diagram'
 	],
 	#category : #'MooseIDE-Famix-UML'
 }
 
-{ #category : #specs }
-MiUMLBrowser class >> defaultSpec [
-	^ super defaultSpec
-		add: #diagram;
-		yourself
+{ #category : #layout }
+MiUMLBrowser class >> defaultLayout [
+
+	^ super defaultLayout
+		  add: #diagram;
+		  yourself
 ]
 
 { #category : #'world menu' }
 MiUMLBrowser class >> menuCommandOn: aBuilder [
+
 	<worldMenu>
-	<miBrowsers>
-	(aBuilder item: #UMLVisualisationBrowser)
-		parent: (self toolbarFamixName);
-		label: (self title);
-		icon: (self iconNamed: #mooseUml);
-		order: 4;
-		help: (self helpMessage);
-		action: [ self open ]
+	^ self buildMenuItemIn: aBuilder
+]
+
+{ #category : #'world menu' }
+MiUMLBrowser class >> menuIconName [
+
+	^ #mooseUml
+]
+
+{ #category : #'world menu' }
+MiUMLBrowser class >> menuItem [
+
+	^ #UMLVisualisationBrowser
+]
+
+{ #category : #'world menu' }
+MiUMLBrowser class >> menuParent [
+
+	^ self oldBrowserMenuRoot
+]
+
+{ #category : #'world menu' }
+MiUMLBrowser class >> menuPriority [
+
+	^ 4
 ]
 
 { #category : #'instance creation' }
@@ -42,12 +61,14 @@ MiUMLBrowser class >> newModel [
 
 { #category : #'instance creation' }
 MiUMLBrowser class >> open [
+
 	<script>
 	^ super open
 ]
 
 { #category : #specs }
 MiUMLBrowser class >> title [
+
 	^ 'UML'
 ]
 

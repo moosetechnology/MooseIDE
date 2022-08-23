@@ -1,10 +1,10 @@
 Extension { #name : #FamixTSourceEntity }
 
 { #category : #'*MooseIDE-Famix' }
-FamixTSourceEntity >> childInterval: aChildEntity [
+FamixTSourceEntity >> textIntervalForChild: aChildEntity [
 	"receiver is the parent of aChildEntity,
 	returns the child code interval within the receiver's source text"
 
 	^self sourceAnchor
-		ifNotNil: [ :anchor | anchor childInterval: aChildEntity ]
+		ifNotNil: [ :anchor | anchor textIntervalForChild: aChildEntity ]
 ]

@@ -7,18 +7,29 @@ Class {
 	#category : #'MooseIDE-Core-Logger'
 }
 
+{ #category : #menu }
+MiLogsBrowser class >> addItemOrSubMenuToMiBrowsersMenu: aRootMenu defaultSubMenu: aSubMenu [
+
+	self addToMiBrowsersMenu: aRootMenu
+]
+
 { #category : #'world menu' }
 MiLogsBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
-	<miBrowsers>
-	(aBuilder item: #Logger)
-		parent: #Moose;
-		label: self title;
-		order: 4;
-		help: self helpMessage;
-		action: [ self open ];
-		withSeparatorAfter
+	^ self buildMenuItemIn: aBuilder
+]
+
+{ #category : #'world menu' }
+MiLogsBrowser class >> menuItem [
+
+	^ #Logger
+]
+
+{ #category : #'world menu' }
+MiLogsBrowser class >> menuPriority [
+
+	^ self menuMetaToolsPriority + 1
 ]
 
 { #category : #'instance creation' }
@@ -27,7 +38,7 @@ MiLogsBrowser class >> open [
 	<script>
 	^ (self on: self newModel)
 		  followBuses: self currentApplication buses;
-		  openWithSpec;
+		  open;
 		  updateToolbars;
 		  yourself
 ]
@@ -57,15 +68,16 @@ MiLogsBrowser >> canPropagate [
 { #category : #buses }
 MiLogsBrowser >> followBus: aBus [
 
-	| busPage |
-	super followBus: aBus.
+	  | busPage |
+	  super followBus: aBus.
 
-	mainPresenter addPage: (busPage := SpNotebookPage
-			            title: aBus name
-			            provider: [ MiBusLogBrowser forBus: aBus ]).
+	  mainPresenter addPage: (busPage := SpNotebookPage
+			              title: aBus name
+			              provider: [ 
+			              MiBusLogBrowser forBus: aBus application: application ]).
 
-	self window ifNotNil: [ mainPresenter selectPage: busPage ].
-	busPage activePresenter ifNotNil: #updateToolbars
+	  self window ifNotNil: [ mainPresenter selectPage: busPage ].
+	  busPage activePresenter ifNotNil: #updateToolbars
 ]
 
 { #category : #buses }

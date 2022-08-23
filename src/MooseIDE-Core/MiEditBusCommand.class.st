@@ -42,7 +42,7 @@ MiEditBusCommand >> busesList [
 	| busesList |
 	busesList := SpFilteringSelectableListPresenter new.
 	busesList layout: (SpBoxLayout newTopToBottom
-			 add: SpFilteringSelectableListPresenter defaultSpec
+			 add: SpFilteringSelectableListPresenter defaultLayout
 			 withConstraints: [ :c | 
 				 c
 					 height: 120;
@@ -60,12 +60,13 @@ MiEditBusCommand >> busesList [
 	busesList filterInputPresenter placeholder: '+ New bus'.
 	busesList itemFilter: [ :each :pattern | 
 		true "We do not want to filter anything" ].
-	busesList filterInputPresenter whenSubmitDo: [ 
+    
+	busesList filterInputPresenter whenSubmitDo: [ :busName |
 		context followBus:
-			(self application busNamed: busesList filterInputPresenter text).
+			(self application busNamed: busName).
 		busesList filterInputPresenter clearContent.
 		busesList items: self application buses.
-		busesList selectItems: context buses copy  ].
+		busesList selectItems: context buses copy ].
 	^ busesList
 ]
 

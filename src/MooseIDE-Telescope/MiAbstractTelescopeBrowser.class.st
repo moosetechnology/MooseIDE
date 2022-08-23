@@ -8,8 +8,8 @@ Class {
 }
 
 { #category : #specs }
-MiAbstractTelescopeBrowser class >> defaultSpec [
-	^ super defaultSpec
+MiAbstractTelescopeBrowser class >> defaultLayout [
+	^ super defaultLayout
 		add: #diagram;
 		yourself
 ]

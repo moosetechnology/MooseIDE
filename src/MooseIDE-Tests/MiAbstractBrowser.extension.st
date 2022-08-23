@@ -15,13 +15,11 @@ MiAbstractBrowser >> busButton [
 ]
 
 { #category : #'*MooseIDE-Tests' }
-MiAbstractBrowser class >> openForTests [
+MiAbstractBrowser class >> openForTests: aTestApplication [
 
-	^ (self
-		   newApplication: MiTestApplication current
-		   model: self newModel)
-		  openWithSpec;
-		  followBus: MiTestApplication current defaultBus;
+	^ (self newApplication: aTestApplication model: self newModel)
+		  open;
+		  followBus: aTestApplication defaultBus;
 		  yourself
 ]
 
@@ -31,4 +29,12 @@ MiAbstractBrowser >> privateReceivingMode: aMiBrowserReceivingMode [
 	"DO NOT USE ME, I AM FOR TESTS"
 
 	receivingMode := aMiBrowserReceivingMode
+]
+
+{ #category : #'*MooseIDE-Tests' }
+MiAbstractBrowser >> toolbarButton: aLabel [
+
+	^(self window toolbarCommandGroup allCommands
+		collect: #presenter)
+		detect: [ :button | button label = aLabel ]
 ]

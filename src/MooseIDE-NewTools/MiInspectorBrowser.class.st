@@ -11,10 +11,16 @@ Class {
 	#category : #'MooseIDE-NewTools-Inspector'
 }
 
-{ #category : #specs }
-MiInspectorBrowser class >> defaultSpec [
+{ #category : #menu }
+MiInspectorBrowser class >> addItemOrSubMenuToMiBrowsersMenu: aRootMenu defaultSubMenu: aSubMenu [
 
-	^ super defaultSpec
+	self addToMiBrowsersMenu: aRootMenu
+]
+
+{ #category : #layout }
+MiInspectorBrowser class >> defaultLayout [
+
+	^ super defaultLayout
 		  add: #miInspector;
 		  yourself
 ]
@@ -31,8 +37,8 @@ MiInspectorBrowser class >> inspect: anObject [
 MiInspectorBrowser class >> inspect: anObject forBuses: buses [
 
 	| newInstance |
-	newInstance := self on: anObject.
-	newInstance openWithSpec.
+	newInstance := self on: (self newModel entity: anObject).
+	newInstance open.
 	newInstance beFrozen.
 	buses do: [ :aBus | newInstance followBus: aBus ].
 	^ newInstance
@@ -42,20 +48,31 @@ MiInspectorBrowser class >> inspect: anObject forBuses: buses [
 MiInspectorBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
-	<miBrowsers>
-	(aBuilder item: #Inspector)
-		parent: #Moose;
-		label: self title;
-		icon: (self iconNamed: #smallInspectIt);
-		order: 5;
-		help: self helpMessage;
-		action: [ self open ]
+	^ self buildMenuItemIn: aBuilder
+]
+
+{ #category : #'world menu' }
+MiInspectorBrowser class >> menuIconName [
+
+	^ #smallInspectIt
+]
+
+{ #category : #'world menu' }
+MiInspectorBrowser class >> menuItem [
+
+	^ #Inspector
+]
+
+{ #category : #'world menu' }
+MiInspectorBrowser class >> menuPriority [
+
+	^ self menuPharoToolsPriority + 1
 ]
 
 { #category : #'instance creation' }
 MiInspectorBrowser class >> newModel [
 
-	^ self currentApplication defaultBus logger mostRecentEntity
+	^ MiInspectorModel new
 ]
 
 { #category : #'instance creation' }
@@ -95,15 +112,17 @@ MiInspectorBrowser >> canFollowEntity: anEntity [
 { #category : #actions }
 MiInspectorBrowser >> followEntity: anEntity [
 
-	self model: anEntity.
-	miInspector model: self model.
-	self updateWindowTitle: self window
+	anEntity ifNil: [ ^ self ].
+	self model entity: anEntity.
+	miInspector model: self model entity.
+	self updateWindowTitle: self window.
+	self updateToolbar
 ]
 
 { #category : #initialization }
 MiInspectorBrowser >> initializePresenters [
 
-	miInspector := self instantiate: MiInspector on: self model
+	miInspector := self instantiate: MiInspector on: self model entity
 ]
 
 { #category : #initialization }
@@ -126,7 +145,7 @@ MiInspectorBrowser >> updateWindowTitle: aWindow [
 
 	| title |
 	title := self class title , ' on {1}' format:
-		         { ([ self model displayString ]
+		         { ([ self model entity displayString ]
 			          on: Error
 			          do: [ :e | e printString ]) }.
 	aWindow ifNotNil: [ aWindow title: title ]

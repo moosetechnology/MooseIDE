@@ -14,7 +14,7 @@ Class {
 }
 
 { #category : #specs }
-SpColorDropdownList class >> defaultSpec [
+SpColorDropdownList class >> defaultLayout [
 
 	^ SpBoxLayout newTopToBottom
 		  add: (SpBoxLayout newLeftToRight
@@ -26,7 +26,7 @@ SpColorDropdownList class >> defaultSpec [
 { #category : #specs }
 SpColorDropdownList class >> open [ 
 	<script> 
-	^ self new openWithSpec 
+	^ self new open
 ]
 
 { #category : #actions }
@@ -52,7 +52,7 @@ SpColorDropdownList >> initializePresenters [
 
 	colorList
 		display: [ :m | m color name capitalized ];
-		iconBlock: [ :e | e asForm ];
+		displayIcon: [ :e | e asForm ];
 		items:
 			((Color colors reject: [ :i | i name = 'unnamed' ]) collect: [ :c | 
 					 Morph new

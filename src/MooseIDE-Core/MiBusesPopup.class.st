@@ -19,7 +19,7 @@ Class {
 }
 
 { #category : #specs }
-MiBusesPopup class >> defaultSpec [
+MiBusesPopup class >> defaultLayout [
 
 	^ SpBoxLayout newTopToBottom
 		  add: #busesList;
@@ -47,7 +47,7 @@ MiBusesPopup >> initializePresenters [
 	busesList := self newSelectableListForPopoverExtent: 125 @ 150.
 	busesList display: [ :bus | bus name ].
 	busesList items: self application buses.
-	busesList selectItems: browser buses.
+	"busesList selectItems: browser buses."
 
 	busesList
 		onActivation: [ :bus | bus ifNotNil: [ browser followBus: bus ] ];

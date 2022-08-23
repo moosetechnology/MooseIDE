@@ -29,7 +29,11 @@ MiWindowPresenter class >> buildCommandsGroupWith: aPresenter forRoot: rootComma
 		register: (MiEditBusCommand forSpecContext: aPresenter);
 		register:
 			(MiHelpCommand forSpecContext: aPresenter) beDisplayedOnRightSide;
-		register: (self actionsCommandGroupFor: aPresenter)
+		register: (self actionsCommandGroupFor: aPresenter).
+	aPresenter hasSettings ifTrue: [ 
+		rootCommandGroup register:
+			(MiSettingsCommand forSpecContext: aPresenter)
+				beDisplayedOnRightSide ]
 ]
 
 { #category : #toolbar }

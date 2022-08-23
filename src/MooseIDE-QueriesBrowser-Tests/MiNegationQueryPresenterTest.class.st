@@ -48,10 +48,12 @@ MiNegationQueryPresenterTest >> queryClass [
 MiNegationQueryPresenterTest >> resetPresenterWithEntities: aMooseGroup [
 
 	| builder superPresenter |
-	browser := MiQueriesBrowser on: (FQRootQuery new
-			            result: aMooseGroup;
-			            yourself).
-	builder := MiQueriesListPresenter on: browser.
+	browser := MiQueriesBrowser
+		           newApplication: MiTestApplication current
+		           model: (FQRootQuery new
+				            result: aMooseGroup;
+				            yourself).
+	builder := browser instantiate: MiQueriesListPresenter on: browser.
 	builder
 		addNewFirstLevelQuery;
 		addNewFirstLevelQuery;

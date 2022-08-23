@@ -15,24 +15,42 @@ Class {
 	#category : #'MooseIDE-Dependency-TreeMap'
 }
 
-{ #category : #specs }
-MiTreeMapVisualisationBrowser class >> defaultSpec [
-	^ super defaultSpec
+{ #category : #layout }
+MiTreeMapVisualisationBrowser class >> defaultLayout [
+	^ super defaultLayout
 		add: #diagram;
 		yourself
 ]
 
 { #category : #'world menu' }
 MiTreeMapVisualisationBrowser class >> menuCommandOn: aBuilder [
+
 	<worldMenu>
-	<miBrowsers>
-	(aBuilder item: #TreeMapVisualisationBrowser)
-		parent: self toolbarDependencyName;
-		label: self title;
-		icon: (self iconNamed: #mooseTreeMap);
-		help: self helpMessage;
-		order: 3.0;
-		action: [ self open ]
+	^ self buildMenuItemIn: aBuilder
+]
+
+{ #category : #'world menu' }
+MiTreeMapVisualisationBrowser class >> menuIconName [
+
+	^ #mooseTreeMap
+]
+
+{ #category : #'world menu' }
+MiTreeMapVisualisationBrowser class >> menuItem [
+
+	^ #TreeMapVisualisationBrowser
+]
+
+{ #category : #'world menu' }
+MiTreeMapVisualisationBrowser class >> menuParent [
+
+	^ self dependencyMenuRoot
+]
+
+{ #category : #'world menu' }
+MiTreeMapVisualisationBrowser class >> menuPriority [
+
+	^ 3.0
 ]
 
 { #category : #'instance creation' }
@@ -49,6 +67,7 @@ MiTreeMapVisualisationBrowser class >> open [
 
 { #category : #specs }
 MiTreeMapVisualisationBrowser class >> title [
+
 	^ 'Tree Map Visualization'
 ]
 

@@ -1,8 +1,8 @@
 Extension { #name : #FamixTIndexedFileNavigation }
 
 { #category : #'*MooseIDE-Famix' }
-FamixTIndexedFileNavigation >> childInterval: aChildEntity [
-	"Assume parent anchor is a FamixTIndexedFileNavigation just like receiver"
+FamixTIndexedFileNavigation >> textIntervalForChild: aChildEntity [
+	"Assume child anchor is a FamixTIndexedFileNavigation just like receiver"
 
 	^aChildEntity sourceAnchor
 		ifNotNil: [ :anchor |

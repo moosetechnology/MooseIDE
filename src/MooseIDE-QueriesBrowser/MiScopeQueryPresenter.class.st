@@ -6,7 +6,8 @@ Class {
 	#superclass : #MiQueryConfiguratorPresenter,
 	#instVars : [
 		'scopesDropList',
-		'directionsDropList'
+		'directionsDropList',
+		'recursiveCheckbox'
 	],
 	#category : #'MooseIDE-QueriesBrowser-Configuration presenters'
 }
@@ -16,19 +17,22 @@ MiScopeQueryPresenter class >> title [
 	^ 'Scope Query'
 ]
 
-{ #category : #actions }
-MiScopeQueryPresenter >> computeQuery: scope [
-
-	scope ifNil: [ ^ self ].
-	self query scope: scope
-]
-
 { #category : #'api - actions' }
 MiScopeQueryPresenter >> configureFor: aQuery [
 
+	| queryScope |
+	query := aQuery.
+	queryScope := aQuery scope.
 	directionsDropList selectItem: aQuery directionStrategy.
-	scopesDropList selectItem: aQuery scope.
-	query := aQuery
+	scopesDropList := self scopesDropListForScopes: { aQuery scope }.
+	scopesDropList selectItem: queryScope
+]
+
+{ #category : #actions }
+MiScopeQueryPresenter >> configureQuery: scope [
+
+	scope ifNil: [ ^ self ].
+	self query scope: scope
 ]
 
 { #category : #initialization }
@@ -38,7 +42,7 @@ MiScopeQueryPresenter >> initializeDirectionsDropList [
 	directionsDropList
 		startWithoutSelection;
 		items: self query directionStrategies;
-		display: #label;
+		display: [ :item | item label];
 		whenSelectedItemChangedDo: [ :selectedDirection | 
 			self query resetAndChangeDirection: selectedDirection.
 			self updateAccordingToDirection.
@@ -48,9 +52,24 @@ MiScopeQueryPresenter >> initializeDirectionsDropList [
 { #category : #initialization }
 MiScopeQueryPresenter >> initializePresenters [
 
-	self setScopesDropList.
+	scopesDropList := self newDropList.
+	self initializeRecursiveCheckbox.
 	self initializeDirectionsDropList.
 	self initializeLayout
+]
+
+{ #category : #initialization }
+MiScopeQueryPresenter >> initializeRecursiveCheckbox [
+
+	recursiveCheckbox := self newCheckBox
+		                     label: 'Recursive';
+		                     help:
+			                     'Activate this to recursively look for result in hierarchy.';
+		                     whenChangedDo: [ :state | 
+			                     self query recursive: state.
+			                     self query computeResult.
+			                     self notifyQueryChanged ];
+		                     yourself
 ]
 
 { #category : #layout }
@@ -67,6 +86,7 @@ MiScopeQueryPresenter >> newLayout [
 		  expand: false
 		  fill: true
 		  padding: padding;
+		  add: recursiveCheckbox width: 30;
 		  yourself
 ]
 

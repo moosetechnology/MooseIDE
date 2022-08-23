@@ -9,33 +9,46 @@ Shows the source text of an entity if it has one.
 "
 Class {
 	#name : #MiSourceTextBrowser,
-	#superclass : #MiAbstractFamixBrowser,
+	#superclass : #MiAbstractBrowser,
 	#instVars : [
-		'sourceText',
-		'toolBarExternalEditor'
+		'toolBarExternalEditor',
+		'textRenderer'
 	],
 	#category : #'MooseIDE-Famix-SourceText'
 }
 
 { #category : #specs }
-MiSourceTextBrowser class >> defaultSpec [
-	^super defaultSpec
-		add: #toolBarExternalEditor height: self toolbarHeight ;
-		add: #sourceText expand: true ;
-		yourself
+MiSourceTextBrowser class >> defaultLayout [
+
+	^ super defaultLayout
+		  add: #toolBarExternalEditor height: self toolbarHeight;
+		  add: #textRenderer expand: true;
+		  yourself
 ]
 
 { #category : #'world menu' }
 MiSourceTextBrowser class >> menuCommandOn: aBuilder [
+
 	<worldMenu>
-	<miBrowsers>
-	(aBuilder item: #SourceTextBrowser)
-		parent: (self toolbarFamixName) ;
-		label: (self title) ;
-		icon: (self iconNamed: #mooseSourceText);
-		order: 1 ;
-		help: (self helpMessage);
-		action: [ self open ]
+	^ self buildMenuItemIn: aBuilder
+]
+
+{ #category : #'world menu' }
+MiSourceTextBrowser class >> menuIconName [
+
+	^ #mooseSourceText
+]
+
+{ #category : #'world menu' }
+MiSourceTextBrowser class >> menuItem [
+
+	^ #SourceTextBrowser
+]
+
+{ #category : #'world menu' }
+MiSourceTextBrowser class >> menuPriority [
+
+	^ self menuCodeToolsPriority + 1
 ]
 
 { #category : #'instance creation' }
@@ -46,17 +59,20 @@ MiSourceTextBrowser class >> newModel [
 
 { #category : #'instance creation' }
 MiSourceTextBrowser class >> open [
+
 	<script>
 	^ super open
 ]
 
 { #category : #specs }
 MiSourceTextBrowser class >> title [
+
 	^ 'Source code'
 ]
 
 { #category : #specs }
 MiSourceTextBrowser class >> windowSize [
+
 	^ 600 @ 700
 ]
 
@@ -64,6 +80,11 @@ MiSourceTextBrowser class >> windowSize [
 MiSourceTextBrowser >> canFollowEntity: anObject [
 
 	^ anObject usesFamixTrait: FamixTSourceEntity
+]
+
+{ #category : #actions }
+MiSourceTextBrowser >> editExternally: anExternalTool [
+	anExternalTool new open: model selectedEntity
 ]
 
 { #category : #'private - testing' }
@@ -82,7 +103,8 @@ MiSourceTextBrowser >> externalEditor: anObject [
 MiSourceTextBrowser >> followEntity: anEntity [
 
 	model displayedEntity: anEntity.
-	self text: model formatedSource.
+	textRenderer renderText.
+
 	self updateWindowTitleWith: anEntity name.
 
 	toolBarExternalEditor newEntity.
@@ -90,30 +112,21 @@ MiSourceTextBrowser >> followEntity: anEntity [
 
 { #category : #initialization }
 MiSourceTextBrowser >> initializePresenters [
+
 	toolBarExternalEditor := self instantiate: MiSourceTextToolBar on: self.
-	sourceText := self newText beNotEditable 
+	"self withRoassalRenderer."
+	self withSpecRenderer.
 ]
 
 { #category : #accessing }
 MiSourceTextBrowser >> miSelectedItem [
 
-	^ model selected
+	^ model selectedEntity
 ]
 
-{ #category : #actions }
-MiSourceTextBrowser >> sendTextTo: anExternalTool [
-	anExternalTool new open: model selected
-]
-
-{ #category : #initialization }
-MiSourceTextBrowser >> setModelBeforeInitialization: aModel [
-	super setModelBeforeInitialization: aModel.
-	aModel browser: self
-]
-
-{ #category : #actions }
-MiSourceTextBrowser >> text: aText [
-	sourceText text: aText
+{ #category : #'private - testing' }
+MiSourceTextBrowser >> textRenderer [
+	^textRenderer
 ]
 
 { #category : #'private - testing' }
@@ -133,4 +146,16 @@ MiSourceTextBrowser >> updateWindowTitleWith: aName [
 
 	self withWindowDo: [ :window | 
 		window title: self class title , ' of ' , aName ]
+]
+
+{ #category : #formatting }
+MiSourceTextBrowser >> withRoassalRenderer [
+
+	textRenderer := self instantiate: MiSourceTextRoassalRenderer on: model
+]
+
+{ #category : #formatting }
+MiSourceTextBrowser >> withSpecRenderer [
+
+	textRenderer := self instantiate: MiSourceTextSpecRenderer on: model
 ]

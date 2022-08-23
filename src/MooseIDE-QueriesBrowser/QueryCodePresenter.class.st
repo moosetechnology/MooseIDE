@@ -10,7 +10,7 @@ FQTypeQuery types: {
 "
 Class {
 	#name : #QueryCodePresenter,
-	#superclass : #SpPresenter,
+	#superclass : #MiPresenter,
 	#instVars : [
 		'code'
 	],

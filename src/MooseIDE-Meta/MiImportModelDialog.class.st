@@ -3,7 +3,7 @@ Abstract class for model import dialogs
 "
 Class {
 	#name : #MiImportModelDialog,
-	#superclass : #SpPresenter,
+	#superclass : #MiPresenter,
 	#instVars : [
 		'originBrowser'
 	],
@@ -30,7 +30,7 @@ MiImportModelDialog >> importModel [
 	"Check if the model is empty. We are using size to optimize the code."
 	(mooseModel size - (mooseModel allUsing: FamixTSourceLanguage) size)
 		isZero ifTrue: [ 
-		self error: 'You must select at least one package.' ].
+		self error: 'Something is wrong, the imported model appears to be empty' ].
 
 	^ mooseModel
 ]
@@ -38,29 +38,34 @@ MiImportModelDialog >> importModel [
 { #category : #action }
 MiImportModelDialog >> importModelThenCloseDialogWindow: aDialog [
 
-	| mooseModel |
+	| mooseModel aJob |
 	[self validateImportForm]  onErrorDo: [ :err | 
 		UIManager default alert: 'Invalid input: ' , err messageText.
 		^ self ].
 
+	aJob := [ :job |
+		job title: 'Importing model'.
 	mooseModel := [ self importModel ] onErrorDo: [ :err | 
 		              UIManager default alert:
 			              'Import error: ' , err messageText.
 		              nil ].
-
+	job currentValue: 50.
 	mooseModel ifNotNil: [ 
 		mooseModel install.
 		aDialog close.
-		self updateBrowserWith: mooseModel ]
+		self updateBrowserWith: mooseModel ]] asJob.
+	[ aJob run ] forkAt: Processor userBackgroundPriority.
 ]
 
 { #category : #initialization }
 MiImportModelDialog >> initializeDialogWindow: aDialog [
 
+	| button |
+	button := nil. 
 	aDialog initialExtent: self class windowExtent.
-	aDialog
+	button := aDialog
 		addButton: 'Import'
-		do: [ :dialog | self importModelThenCloseDialogWindow: dialog ].
+		do: [ :dialog | self importModelThenCloseDialogWindow: dialog. button disable].
 	aDialog addButton: 'Cancel' do: [ :dialog | dialog close ]
 ]
 
