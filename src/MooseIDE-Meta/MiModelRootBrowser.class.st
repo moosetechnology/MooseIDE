@@ -154,7 +154,8 @@ MiModelRootBrowser >> initializeToolbar [
 
 { #category : #updating }
 MiModelRootBrowser >> listOfMooseModels: aList [
-modelFilteringList items: aList
+
+	modelFilteringList items: aList.
 	
 ]
 
@@ -175,7 +176,7 @@ MiModelRootBrowser >> refreshToolbarButton [
 	^ SpToolbarButtonPresenter new
 		  icon: (self iconNamed: #smallUpdate);
 		  help: 'Refresh list';
-		  action: [ modelFilteringList listPresenter updateList ];
+		  action: [ self updateList ];
 		  yourself
 ]
 
@@ -188,16 +189,6 @@ MiModelRootBrowser >> settings [
 { #category : #'accessing - tests' }
 MiModelRootBrowser >> settingsItem [
 	^ model settings
-]
-
-{ #category : #actions }
-MiModelRootBrowser >> showSelectedItem: anItem [
-	"This method is intended to show what item is selected
-	It is called by the MiModelRootBrowserModel so it should take care to not call it again"
-	modelFilteringList whenSelectionChangedDo: [ :ignored | "ignored to avoid calling the MiModelRootBrowserModel again"
-		 ].
-	modelFilteringList selectItem: anItem.
-	modelFilteringList whenSelectionChangedDo: blockWhenSelection
 ]
 
 { #category : #updating }
