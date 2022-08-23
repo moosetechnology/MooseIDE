@@ -13,7 +13,8 @@ Class {
 		'queryDroplist',
 		'changeableBlock',
 		'ruleTitle',
-		'ruleSummary'
+		'ruleSummary',
+		'severityDroplist'
 	],
 	#category : #'MooseIDE-CriticBrowser-Presenters'
 }
@@ -29,25 +30,25 @@ MiCriticBrowserRulesMakerPresenter >> addButtonAction [
 
 { #category : #adding }
 MiCriticBrowserRulesMakerPresenter >> addInputtedCodeRule [
-	codeInput text ifNotNil: 
-		[ 
-		owner addCondition: 
-			(FamixCBCondition named: (ruleTitle text) 
-							on: (MiCriticBrowserPharoCodeQuery on: (codeInput text))
-							summary: ruleSummary text) 
-		].
+
+	codeInput text ifNotNil: [ 
+		owner addCondition: (FamixCBCondition
+				 named: ruleTitle text
+				 on: (MiCriticBrowserPharoCodeQuery on: codeInput text)
+				 summary: ruleSummary text
+				 severity: severityDroplist selectedItem) ].
 	codeInput text: '[ :entity | entity ]'
 ]
 
 { #category : #adding }
 MiCriticBrowserRulesMakerPresenter >> addInputtedFQRule [
-	queryDroplist selectedItem ifNotNil: 
-		[ 
-		owner addCondition: 
-			(FamixCBCondition named: (ruleTitle text) 
-							on: (MiCriticBrowserFQQuery on: (queryDroplist selectedItem))
-							summary: ruleSummary text) 
-		]
+
+	queryDroplist selectedItem ifNotNil: [ 
+		owner addCondition: (FamixCBCondition
+				 named: ruleTitle text
+				 on: (MiCriticBrowserFQQuery on: queryDroplist selectedItem)
+				 summary: ruleSummary text
+				 severity: severityDroplist selectedItem) ]
 ]
 
 { #category : #'buttons actions' }
@@ -68,7 +69,7 @@ MiCriticBrowserRulesMakerPresenter >> codeInput [
 { #category : #layout }
 MiCriticBrowserRulesMakerPresenter >> defaultLayout [
 	
-	| choiceBar titlePane summaryPane |
+	| choiceBar titlePane summaryPane severityPane |
 	
 	choiceBar := SpBoxLayout newLeftToRight 
 		add: codeButton;
@@ -79,6 +80,11 @@ MiCriticBrowserRulesMakerPresenter >> defaultLayout [
 	titlePane := SpBoxLayout newTopToBottom
 		add: ('Rule name : ' asPresenter) expand: false;
 		add: ruleTitle expand: false;
+		yourself.
+		
+	severityPane := SpBoxLayout newTopToBottom
+		add: ('Severity : ' asPresenter) expand: false;
+		add: severityDroplist expand: false;
 		yourself.
 	
 	changeableBlock := SpBoxLayout newTopToBottom 
@@ -95,6 +101,7 @@ MiCriticBrowserRulesMakerPresenter >> defaultLayout [
 		add: choiceBar expand: false;
 		spacing: 5;
 		add: titlePane expand: false;
+		add: severityPane expand: false;
 		add: changeableBlock;
 		add: summaryPane;
 		yourself
@@ -113,17 +120,20 @@ MiCriticBrowserRulesMakerPresenter >> editRule: aCondition [
 		ifTrue: [ MiCriticBrowserPharoCodeQuery on: (codeInput text) ] 
 		ifFalse: [ MiCriticBrowserFQQuery on: queryDroplist selectedItem ]).
 	aCondition summary: ruleSummary text.
+	aCondition severity: severityDroplist selectedItem.
 	owner hasBeenEdited: aCondition
 ]
 
 { #category : #filling }
 MiCriticBrowserRulesMakerPresenter >> fillRuleToEdit: aRule [
+
 	ruleTitle text: aRule name.
 	ruleSummary text: aRule summary.
-	(aRule query class = MiCriticBrowserPharoCodeQuery)
-		ifTrue: [codeInput text: aRule query query asString]
+	aRule severity ifNotNil: [ 
+		severityDroplist selectItem: aRule severity ].
+	aRule query class = MiCriticBrowserPharoCodeQuery
+		ifTrue: [ codeInput text: aRule query query asString ]
 		ifFalse: [ codeInput text: '[ :entity | entity ]' ]
-	
 ]
 
 { #category : #initialization }
@@ -141,31 +151,41 @@ MiCriticBrowserRulesMakerPresenter >> initializeButtons [
 
 { #category : #initialization }
 MiCriticBrowserRulesMakerPresenter >> initializePresenters [
-	
+
 	self initializeButtons.
-	
+
 	ruleTitle := self newTextInput.
 	ruleSummary := self newText.
 	codeInput := self newCode.
 	queryDroplist := self newDropList.
-	
+
 	codeInput text: '[ :entity | entity ]'.
-	
-	codePresenter := MiPresenter new 
-		layout: (SpBoxLayout newTopToBottom 
-						add: codeInput;
-						yourself); 
-		yourself.
-	
-	queryDroplist startWithoutSelection;
-					  items: owner fetchQueries;
-					  centered.
-	
-	queriesBrowserPresenter := MiPresenter new 
-		layout: (SpBoxLayout newTopToBottom 
-						add: queryDroplist expand: false; 
-						yourself);
-		yourself
+
+	codePresenter := MiPresenter new
+		                 layout: (SpBoxLayout newTopToBottom
+				                  add: codeInput;
+				                  yourself);
+		                 yourself.
+
+	queryDroplist
+		startWithoutSelection;
+		items: owner fetchQueries;
+		centered.
+
+	queriesBrowserPresenter := MiPresenter new
+		                           layout: (SpBoxLayout newTopToBottom
+				                            add: queryDroplist expand: false;
+				                            yourself);
+		                           yourself.
+
+	severityDroplist := self newDropList
+		                    items:
+			                    AbstractSeverity allSubclasses;
+		                    display: [ :item | 
+			                    item title , ' (Level = ' , item level asString, ')' ];
+		                    displayIcon: [ :item | 
+			                    self iconNamed: item iconName ];
+		                    sortingBlock: [ :a :b | a model level < b model level ]
 ]
 
 { #category : #initialization }

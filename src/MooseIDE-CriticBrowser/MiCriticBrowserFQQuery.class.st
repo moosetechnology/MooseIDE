@@ -26,16 +26,26 @@ MiCriticBrowserFQQuery >> runOn: aGroupOfEntities [
 MiCriticBrowserFQQuery >> runOnCollection: aCollection [
 
 	^ (query class inheritsFromOrEqualTo: FQNAryQuery)
-		  ifTrue: [ 
-			  | queries |
-			  queries := query subqueries collect: [ :sq | self class on: sq ].
-			  query runOn:
-				  (queries collect: [ :q | q runOnCollection: aCollection ]) ]
+		  ifTrue: [ self runOnNAryQuery: aCollection ]
 		  ifFalse: [ 
 			  (query parent class = FQRootQuery or: [ query parent isNil ])
 				  ifTrue: [ query runOn: aCollection ]
-				  ifFalse: [ 
-					  | parentQuery |
-					  parentQuery := self class on: query parent.
-					  query runOn: (parentQuery runOnCollection: aCollection) ] ]
+				  ifFalse: [ self runOnQueryWithParent: aCollection ] ]
+]
+
+{ #category : #'as yet unclassified' }
+MiCriticBrowserFQQuery >> runOnNAryQuery: aCollection [
+
+	| queries |
+	queries := query subqueries collect: [ :sq | self class on: sq ].
+	^ query runOn:
+		(queries collect: [ :q | q runOnCollection: aCollection ])
+]
+
+{ #category : #'as yet unclassified' }
+MiCriticBrowserFQQuery >> runOnQueryWithParent: aCollection [
+
+	| parentQuery |
+	parentQuery := self class on: query parent.
+	^ query runOn: (parentQuery runOnCollection: aCollection)
 ]

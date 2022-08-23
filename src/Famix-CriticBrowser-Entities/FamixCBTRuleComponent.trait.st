@@ -48,6 +48,12 @@ FamixCBTRuleComponent >> removeSelfFromTree [
 	self parent removeChild: self
 ]
 
+{ #category : #initialization }
+FamixCBTRuleComponent >> setParentToNilIfNeeded [
+
+	parent ifNotNil: [ self parent: nil ] 
+]
+
 { #category : #accessing }
 FamixCBTRuleComponent >> summary [
 

@@ -87,8 +87,8 @@ FamixCBContextTest >> testResetExecutionOfTree [
 	self assert: condition violations anyOne violatingEntity equals: violatingEntity.
 	context resetExecutionOfTree.
 	self assert: condition violations size equals: 0.
-	self assert: context entities equals: nil.
-	self assert: childContext entities equals: nil
+	self assert: context entities isEmpty equals: true.
+	self assert: childContext entities isEmpty equals: true
 ]
 
 { #category : #tests }

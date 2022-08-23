@@ -91,10 +91,23 @@ MiCriticBrowserFQQueryTest >> testConvertToSTONString [
 MiCriticBrowserFQQueryTest >> testRunOnCollection [
 	
 	self singleQuery.
-	self queryWithParent.
+	self testRunOnNAryQuery.
+	self testRunOnQueryWithParent
+]
+
+{ #category : #test }
+MiCriticBrowserFQQueryTest >> testRunOnNAryQuery [
+	
 	self substractionQuery.
 	self intersectionQuery.
 	self unionOfThreeQueries 
+
+]
+
+{ #category : #test }
+MiCriticBrowserFQQueryTest >> testRunOnQueryWithParent [
+	
+	self queryWithParent.
 
 ]
 
