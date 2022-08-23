@@ -135,10 +135,10 @@ MiArchitecturalMapBuilder >> build [
 	rootNode ifNotNil: [ 
 		self updateWithModelSettings.
 		^ self ].
-	rootNode := HNode new
-		            addAll: (self elements collect: [ :e | 
-					             self buildNodeFromEntity: e register: true ]);
-		            yourself.
+	rootNode := HNode new.
+	mapModel showBusEntities ifTrue: [ 
+		rootNode addAll: (self elements collect: [ :e | 
+				 self buildNodeFromEntity: e register: true ]) ].
 	self addTags.
 	self setDependencies.
 	self buildLegend.
