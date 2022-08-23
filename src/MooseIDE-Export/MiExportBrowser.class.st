@@ -18,7 +18,7 @@ Class {
 		'commentsButton',
 		'commentsAreShown'
 	],
-	#category : #'MooseIDE-Export-Browser'
+	#category : #'MooseIDE-Export-CSVExport'
 }
 
 { #category : #actions }
