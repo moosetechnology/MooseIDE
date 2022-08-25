@@ -391,7 +391,7 @@ MiAbstractBrowser >> highlightEntity: anEntity [
 
 { #category : #testing }
 MiAbstractBrowser >> ifAutonomous: aBlock [
-
+	
 	self owner isNotNil and: [ 
 		self owner isWindowPresenter ifTrue: aBlock ]
 ]

@@ -114,8 +114,7 @@ MiModelRootBrowserModel >> selected [
 { #category : #accessing }
 MiModelRootBrowserModel >> selected: anObject [
 	selected := anObject.
-	browser updateToolbar.
-	browser showSelectedItem: anObject
+	browser updateToolbar
 ]
 
 { #category : #'accessing - tests' }
@@ -133,6 +132,5 @@ MiModelRootBrowserModel >> updateForNewModel: aMooseModel [
 MiModelRootBrowserModel >> updateMooseModelsList [
 
 	mooseModelsList := self availableMooseModels.
-		browser listOfMooseModels: mooseModelsList.
-		browser showSelectedItem: selected
+	browser listOfMooseModels: mooseModelsList
 ]

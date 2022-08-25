@@ -155,6 +155,7 @@ MiArchitecturalMapModel >> initialize [
 MiArchitecturalMapModel >> initializeSettings [
 
 	settings := super initializeSettings
+						addItem: self itemShowBusEntities named: #showBusEntities;
 						addItem: self itemChildrenQuery named: #childrenQuery;
 						addItem: self itemTags named: #tags;
 						addItem: self itemAssociationTypes named: #associationTypes;
@@ -179,6 +180,17 @@ MiArchitecturalMapModel >> itemChildrenQuery [
 		  setValue: self defaultChildrenQuery;
 		  label: 'Children query';
 		  help: 'The query giving all the children of any displayed entity';
+		  yourself
+]
+
+{ #category : #accessing }
+MiArchitecturalMapModel >> itemShowBusEntities [
+
+	^ MiAbstractSettingItem checkboxSetting
+		  setValue: true;
+		  label: 'Show bus entities?';
+		  help:
+			  'If not checked, this will ignore entities in bus. Usefull when tags are added in the visualization.';
 		  yourself
 ]
 
@@ -215,6 +227,12 @@ MiArchitecturalMapModel >> settingsChanged: aBoolean [
 MiArchitecturalMapModel >> showAllLinks [
 
 	^ true
+]
+
+{ #category : #accessing }
+MiArchitecturalMapModel >> showBusEntities [
+
+	^ settings getItemValue: #showBusEntities
 ]
 
 { #category : #accessing }

@@ -5,8 +5,7 @@ Class {
 	#classTraits : 'FamixCBTRuleComponent classTrait',
 	#instVars : [
 		'#children => FMMany type: #FamixCBTRuleComponent opposite: #parent',
-		'#contextBlock => FMProperty',
-		'#entities => FMProperty'
+		'#contextBlock => FMProperty'
 	],
 	#category : #'Famix-CriticBrowser-Entities-Entities'
 }
@@ -88,17 +87,20 @@ FamixCBContext >> contextBlock: anObject [
 
 { #category : #accessing }
 FamixCBContext >> entities [
+	"Relation named: #entities type: #MooseObject opposite: #contexts"
 
-	<FMProperty: #entities type: #Object>
 	<generated>
-	<FMComment: 'Entities matching the context'>
-	^ entities
+	<FMComment: 'Every entity that is a part of the context.'>
+	<derived>
+	<FMProperty: #entities type: #MooseObject opposite: #contexts>
+	^ self attributeAt: #entities ifAbsentPut: [ FMMultiMultivalueLink on: self opposite: #contexts ]
 ]
 
 { #category : #accessing }
 FamixCBContext >> entities: anObject [
+
 	<generated>
-	entities := anObject
+	self entities value: anObject
 ]
 
 { #category : #'as yet unclassified' }
@@ -112,13 +114,13 @@ FamixCBContext >> removeChild: aRuleComponent [
 
 	(children includes: aRuleComponent) ifFalse: [ ^ self ].
 	children remove: aRuleComponent.
-	aRuleComponent parent: nil.
+	aRuleComponent setParentToNilIfNeeded.
 	aRuleComponent resetExecutionOfTree
 ]
 
 { #category : #removing }
 FamixCBContext >> resetExecutionOfTree [
-	entities := nil.
+	self entities removeAll.
 	children do: [ :child | child resetExecutionOfTree ]
 
 ]
@@ -126,21 +128,22 @@ FamixCBContext >> resetExecutionOfTree [
 { #category : #running }
 FamixCBContext >> runDownTree: aCollection [
 
-	entities ifNil: [ self runOn: aCollection ].
-	children do: [ :child | child runDownTree: entities ]
+	self entities ifEmpty: [ self runOn: aCollection ].
+	children do: [ :child | child runDownTree: self entities asMooseGroup ]
 ]
 
 { #category : #running }
 FamixCBContext >> runOn: aCollection [
 
-	entities := (contextBlock value: aCollection) sort: [ :a :b | a name < b name ]
+	self entities: (contextBlock value: aCollection)
+
 ]
 
 { #category : #'as yet unclassified' }
 FamixCBContext >> runUpTree: aCollection [
 
-	entities ifNil: [ self runOn: (parent runUpTree: aCollection) ].
-	^ entities
+	self entities ifEmpty: [ self runOn: (parent runUpTree: aCollection) ].
+	^ self entities
 ]
 
 { #category : #'ston persistence' }

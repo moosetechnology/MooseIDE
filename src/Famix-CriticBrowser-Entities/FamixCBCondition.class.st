@@ -5,6 +5,7 @@ Class {
 	#classTraits : 'FamixCBTRuleComponent classTrait',
 	#instVars : [
 		'#query => FMProperty',
+		'#severity => FMProperty',
 		'#violations => FMMany type: #FamixCBViolation opposite: #violatedCondition'
 	],
 	#category : #'Famix-CriticBrowser-Entities-Entities'
@@ -36,6 +37,16 @@ FamixCBCondition class >> named: aString on: aQuery summary: aSummary [
 		yourself
 ]
 
+{ #category : #'instance creation' }
+FamixCBCondition class >> named: aString on: aQuery summary: aSummary severity: aSeverity [
+	^ self new
+		name: aString;
+		query: aQuery;
+		summary: aSummary;
+		severity: aSeverity;
+		yourself
+]
+
 { #category : #adding }
 FamixCBCondition >> addViolation: anObject [
 	<generated>
@@ -44,7 +55,7 @@ FamixCBCondition >> addViolation: anObject [
 
 { #category : #'as yet unclassified' }
 FamixCBCondition >> putViolationsInto: aDictionary [
-	aDictionary at: self put: violations asMooseGroup specialize
+	aDictionary at: self put: violations asMooseSpecializedGroup
 ]
 
 { #category : #accessing }
@@ -69,7 +80,7 @@ FamixCBCondition >> removeAllViolations [
 	[ violations isNotEmpty ] whileTrue: [ self removeViolation: violations anyOne ]
 ]
 
-{ #category : #'*Famix-CriticBrowser-Entities' }
+{ #category : #'as yet unclassified' }
 FamixCBCondition >> removeViolation: aViolation [
 	self violations remove: aViolation ifAbsent: [ ^ self ].
 	aViolation violatingEntity ifNotNil: [ aViolation violatingEntity removeViolation: aViolation ]
@@ -87,14 +98,29 @@ FamixCBCondition >> runDownTree: aCollection [
 
 { #category : #running }
 FamixCBCondition >> runOn: aCollection [
-	
-	((self query runOnCollection: aCollection) do: 
-		[ :each | self addViolation: (FamixCBViolation condition: self violatedBy: each) ]).
+
+	(self query runOnCollection: aCollection) do: [ :each | 
+		self addViolation: (FamixCBViolation new violatingEntity: each) ]
 ]
 
 { #category : #'as yet unclassified' }
 FamixCBCondition >> runUpTree: aCollection [
 	self runOn: (parent runUpTree: aCollection)
+]
+
+{ #category : #accessing }
+FamixCBCondition >> severity [
+
+	<FMProperty: #severity type: #Object>
+	<generated>
+	<FMComment: 'Severity for the violations of this condition'>
+	^ severity
+]
+
+{ #category : #accessing }
+FamixCBCondition >> severity: anObject [
+	<generated>
+	severity := anObject
 ]
 
 { #category : #'ston persistence' }

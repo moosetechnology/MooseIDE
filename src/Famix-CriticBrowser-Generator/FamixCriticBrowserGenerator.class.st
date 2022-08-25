@@ -6,7 +6,8 @@ Class {
 		'context',
 		'condition',
 		'tRuleComponent',
-		'rootContext'
+		'rootContext',
+		'mooseObject'
 	],
 	#category : #'Famix-CriticBrowser-Generator'
 }
@@ -25,17 +26,20 @@ FamixCriticBrowserGenerator class >> prefix [
 
 { #category : #accessing }
 FamixCriticBrowserGenerator class >> submetamodels [
-	^ { FamixGenerator }
+	^ { FamixGenerator . MooseModelGenerator }
 ]
 
 { #category : #definition }
 FamixCriticBrowserGenerator >> defineClasses [
+
 	super defineClasses.
-	
+
 	violation := builder newClassNamed: #Violation.
 	rootContext := builder newClassNamed: #RootContext.
 	context := builder newClassNamed: #Context.
-	condition := builder newClassNamed: #Condition
+	condition := builder newClassNamed: #Condition.
+
+	mooseObject := self remoteEntity: #Object withPrefix: #Moose
 ]
 
 { #category : #definition }
@@ -49,14 +53,15 @@ FamixCriticBrowserGenerator >> defineHierarchy [
 
 { #category : #definition }
 FamixCriticBrowserGenerator >> defineProperties [
-	((tRuleComponent property: #summary type: #String) 
-		comment: 'A rule component can have an explanatory summary').
-	((context property: #entities type: #Object)
-		comment: 'Entities matching the context').
-	((context property: #contextBlock type: #Object)
-		comment: 'Block to execute to get the context''s entities').
-	((condition property: #query type: #Object)
-		comment: 'Block to execute to find violations to the condition within the parent context').
+
+	(tRuleComponent property: #summary type: #String) comment:
+		'A rule component can have an explanatory summary'.
+	(context property: #contextBlock type: #Object) comment:
+		'Block to execute to get the context''s entities'.
+	(condition property: #query type: #Object) comment:
+		'Block to execute to find violations to the condition within the parent context'.
+	(condition property: #severity type: #Object) comment:
+		'Severity for the violations of this condition'
 ]
 
 { #category : #definition }
@@ -72,7 +77,7 @@ FamixCriticBrowserGenerator >> defineRelations [
 	((violation property: #violatingEntity)
 			comment: 'Entity raising this violation.')
 		*-
-	(((self remoteTrait: #TNamedEntity withPrefix: #Famix) property: #violations)
+	((mooseObject property: #violations)
 			comment: 'Every violation raised by this entity.').
 			
 	((context property: #children)
@@ -84,7 +89,7 @@ FamixCriticBrowserGenerator >> defineRelations [
 	((context property: #entities)
 			comment: 'Every entity that is a part of the context.')
 		*-*
-	(((self remoteTrait: #TNamedEntity withPrefix: #Famix) property: #contexts)
+	((mooseObject property: #contexts)
 			comment: 'Every context that the entity is a part of.')
 ]
 

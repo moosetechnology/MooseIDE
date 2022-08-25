@@ -65,7 +65,7 @@ MiCriticBrowserModel >> getAllViolations [
 "returns violations of every rule"
 	| result |
 	result := FamixCBViolationGroup new.
-	violations do: [ :each | result := result , each ].
+	violations do: [ :each | result addAll: each ].
 	^ result
 ]
 
@@ -144,11 +144,11 @@ MiCriticBrowserModel >> runCondition: aCondition [
 
 { #category : #accessing }
 MiCriticBrowserModel >> setEntities: aMooseObject [
+
 	entities := aMooseObject isCollection
-		ifTrue: [ (aMooseObject allUsing: FamixTNamedEntity) ]
-		ifFalse: [ ({aMooseObject} asMooseGroup) allUsing: FamixTNamedEntity ].
+		            ifTrue: [ aMooseObject ]
+		            ifFalse: [ { aMooseObject } asMooseGroup ].
 	self resetResults
-	
 ]
 
 { #category : #accessing }

@@ -154,7 +154,8 @@ MiModelRootBrowser >> initializeToolbar [
 
 { #category : #updating }
 MiModelRootBrowser >> listOfMooseModels: aList [
-modelFilteringList items: aList
+
+	modelFilteringList items: aList.
 	
 ]
 
@@ -181,7 +182,7 @@ MiModelRootBrowser >> refreshToolbarButton [
 	^ SpToolbarButtonPresenter new
 		  icon: (self iconNamed: #smallUpdate);
 		  help: 'Refresh list';
-		  action: [ modelFilteringList listPresenter updateList ];
+		  action: [ self updateList ];
 		  yourself
 ]
 
