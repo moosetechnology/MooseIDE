@@ -56,6 +56,18 @@ MiBusLogBrowser class >> openForBus: aBus application: anApplication [
 	^ busLogPresenter
 ]
 
+{ #category : #'instance creation' }
+MiBusLogBrowser class >> openForTests: anApplication [
+
+	| busLogPresenter |
+	busLogPresenter := (self forBus: anApplication defaultBus application: anApplication)
+		                   open;
+		                   updateToolbars;
+		                   yourself.
+	busLogPresenter owner title: 'Logs of bus: ' , anApplication defaultBus name.
+	^ busLogPresenter
+]
+
 { #category : #commands }
 MiBusLogBrowser class >> propagateCommandFor: presenter [
 
