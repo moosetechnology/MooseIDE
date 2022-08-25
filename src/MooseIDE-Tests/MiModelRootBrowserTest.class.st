@@ -43,8 +43,8 @@ MiModelRootBrowserTest >> testActivateActionButtons [
 
 { #category : #tests }
 MiModelRootBrowserTest >> testFilterStubsSettingsWithoutStub [
-
 	| newModel |
+	self flag: 'to be relevant this test should call the propagate method of MiPropagateCommand. Using miTransformedSelectedItem and miSelectedItem hack this requirements'.
 	self assert: browser miSelectedItem isNil.
 
 	newModel := FamixStModel new.
@@ -55,8 +55,8 @@ MiModelRootBrowserTest >> testFilterStubsSettingsWithoutStub [
 	MooseModel root add: newModel.
 	browser updateForNewModel: newModel.
 
-	self assert: browser miSelectedItem size equals: 1.
-	self assert: browser miSelectedItem anyOne name equals: 'Class2'.
+	self assert: browser miTransformedSelectedItem  size equals: 1.
+	self assert: browser miTransformedSelectedItem anyOne name equals: 'Class2'.
 
 	browser settingsItem setItem: #filterStubsSetting value: false.
 	browser updateForNewModel: newModel.
@@ -82,6 +82,7 @@ MiModelRootBrowserTest >> testMiSelectedItem [
 MiModelRootBrowserTest >> testMiSelectedItemWithoutStub [
 
 	| newModel |
+	self flag: 'to be relevant this test should call the propagate method of MiPropagateCommand. Using miTransformedSelectedItem and miSelectedItem hack this requirements'.
 	self assert: browser miSelectedItem isNil.
 
 	newModel := FamixStModel new.
@@ -93,8 +94,8 @@ MiModelRootBrowserTest >> testMiSelectedItemWithoutStub [
 	MooseModel root add: newModel.
 	browser updateForNewModel: newModel.
 
-	self assert: browser miSelectedItem size equals: 1.
-	self assert: browser miSelectedItem anyOne name equals: 'Class2'
+	self assert: browser miTransformedSelectedItem  size equals: 1.
+	self assert: browser miTransformedSelectedItem anyOne name equals: 'Class2'
 	
 
 	
