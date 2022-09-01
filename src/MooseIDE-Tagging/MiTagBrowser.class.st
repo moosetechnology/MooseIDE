@@ -15,7 +15,7 @@ Class {
 	#category : #'MooseIDE-Tagging-Browser'
 }
 
-{ #category : #specs }
+{ #category : #layout }
 MiTagBrowser class >> defaultLayout [
 
 	^ super defaultLayout

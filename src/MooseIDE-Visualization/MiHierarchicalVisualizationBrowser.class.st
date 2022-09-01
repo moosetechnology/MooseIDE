@@ -15,7 +15,7 @@ MiHierarchicalVisualizationBrowser class >> addToMiBrowsersMenu: aMenuGroupPrese
 	
 ]
 
-{ #category : #specs }
+{ #category : #layout }
 MiHierarchicalVisualizationBrowser class >> defaultLayout [
 
 	^ super defaultLayout

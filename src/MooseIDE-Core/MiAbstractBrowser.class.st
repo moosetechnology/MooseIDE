@@ -86,7 +86,7 @@ MiAbstractBrowser class >> buildMenuItemIn: aBuilder [
 		  yourself
 ]
 
-{ #category : #specs }
+{ #category : #layout }
 MiAbstractBrowser class >> defaultLayout [
 
 	^ SpBoxLayout newVertical

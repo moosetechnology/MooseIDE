@@ -17,7 +17,7 @@ MiDraggableDefaultBrowser class >> addToMiBrowsersMenu: aMenuGroupPresenter [
 	
 ]
 
-{ #category : #specs }
+{ #category : #layout }
 MiDraggableDefaultBrowser class >> defaultLayout [
 	^ SpBoxLayout newVertical
 		add:
