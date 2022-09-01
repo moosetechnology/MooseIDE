@@ -30,7 +30,7 @@ MiDropIntoBrowser class >> addToMiBrowsersMenu: aMenuGroupPresenter [
 	
 ]
 
-{ #category : #specs }
+{ #category : #layout }
 MiDropIntoBrowser class >> defaultLayout [
 
 	^ SpBoxLayout newTopToBottom

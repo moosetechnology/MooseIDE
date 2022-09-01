@@ -17,7 +17,7 @@ Class {
 	#category : #'MooseIDE-Famix-SourceText'
 }
 
-{ #category : #specs }
+{ #category : #layout }
 MiSourceTextBrowser class >> defaultLayout [
 
 	^ super defaultLayout
