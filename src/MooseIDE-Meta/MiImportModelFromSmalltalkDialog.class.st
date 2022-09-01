@@ -78,10 +78,9 @@ MiImportModelFromSmalltalkDialog >> advancedSettingsLayout [
 	^ SpBoxLayout newTopToBottom
 		  spacing: 5;
 		  add: (SpGridLayout new
-				   add: #metamodelCheckBox at: 1 @ 1;
 				   add: #computeAttributesTypeCheckBox at: 2 @ 1;
-				   add: #classesAndMetaclassesCheckBox at: 1 @ 2;
-				   add: #importSubclassesCheckBox at: 2 @ 2)
+				   add: #classesAndMetaclassesCheckBox at: 1 @ 1;
+				   add: #importSubclassesCheckBox at: 1 @ 2)
 		  height: 80;
 		  add: 'Select context to import: '
 		  height: self class inputTextHeight;
@@ -147,11 +146,6 @@ MiImportModelFromSmalltalkDialog >> initializeAdvancedSettingsPresenters [
 { #category : #initialization }
 MiImportModelFromSmalltalkDialog >> initializeConfigurationCheckBoxes [
 
-	metamodelCheckBox := self newCheckBox
-		label: 'Use Compatibility Metamodel';
-		whenActivatedDo: [ self factoryClass: SmalltalkCompatibilityMetamodelFactory ];
-		whenDeactivatedDo: [ self factoryClass: SmalltalkMetamodelFactory ].
-	
 	classesAndMetaclassesCheckBox := self newCheckBox
 		label: 'Merge classes and metaclasses';
 		whenActivatedDo: [ importingContext mergeClassAndMetaclass ];
