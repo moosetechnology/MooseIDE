@@ -206,6 +206,12 @@ MiReportBrowser >> miSelectedItem [
 	^ model mooseModel
 ]
 
+{ #category : #accessing }
+MiReportBrowser >> mooseModel [
+
+	^ model mooseModel
+]
+
 { #category : #initialization }
 MiReportBrowser >> openPreview [
 
