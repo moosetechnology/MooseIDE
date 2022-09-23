@@ -1,10 +1,17 @@
+"
+I am the model of the report builder.
+"
 Class {
 	#name : #MiReportModel,
 	#superclass : #Object,
 	#instVars : [
 		'browser',
 		'mooseModel',
-		'textEdited'
+		'textEdited',
+		'textEditedSource',
+		'sourceText',
+		'needToUpdate',
+		'micDocument'
 	],
 	#category : #'MooseIDE-Export-Report'
 }
@@ -14,25 +21,42 @@ MiReportModel >> browser: aMiReportBrowser [
 	browser := aMiReportBrowser
 ]
 
-{ #category : #'as yet unclassified' }
-MiReportModel >> exportReportTo: aFile [
-	aFile ifNotNil: [
-		aFile writeStreamDo: [ :stream | textEdited printOn: stream ].
-		browser reportExported: aFile
-	].
+{ #category : #actions }
+MiReportModel >> checkTextEdited [
+
+	sourceText ifNil: [ 
+		self inform: 'There is no source to export.'.
+		^ false ].
+	^ true
 ]
 
-{ #category : #'as yet unclassified' }
-MiReportModel >> exportToText [
+{ #category : #actions }
+MiReportModel >> exportToHTML [
+
 	| aFile |
-	aFile := browser chooseTextFile: 'Chose export destination'
-		        extensions: #( 'md' )
-		        path: 'mooseReport.md'.
-	aFile ifNotNil: [
-		textEdited := browser getText.
-		aFile writeStreamDo: [ :stream | textEdited printOn: stream ].
-		browser reportExported: aFile
-	].
+	self checkTextEdited ifFalse: [ ^self ].
+	aFile := browser
+		         chooseTextFile: 'Chose export destination'
+		         extensions: #( 'html' )
+		         path: 'mooseReport.html'.
+	aFile ifNotNil: [ 
+		aFile writeStreamDo: [ :stream | 
+			stream nextPutAll: (MicHTMLVisitor asHTMLString: self generateMicrodown) ].
+		browser reportExported: aFile ]
+]
+
+{ #category : #actions }
+MiReportModel >> exportToText [
+
+	| aFile |
+	self checkTextEdited ifFalse: [ ^ self ].
+	aFile := browser
+		         chooseTextFile: 'Chose export destination'
+		         extensions: #( 'md' )
+		         path: 'mooseReport.md'.
+	aFile ifNotNil: [ 
+		aFile writeStreamDo: [ :stream | stream nextPutAll: self generateMicrodown ].
+		browser reportExported: aFile ]
 ]
 
 { #category : #actions }
@@ -40,8 +64,59 @@ MiReportModel >> followEntity: aMooseModel [
 	mooseModel := aMooseModel 
 ]
 
-{ #category : #'as yet unclassified' }
-MiReportModel >> previewReport [
-	textEdited := browser getText.
-	browser previewReport: textEdited
+{ #category : #actions }
+MiReportModel >> generateMicrodown [
+
+	needToUpdate ifFalse: [ ^ textEdited ].
+	needToUpdate := false.
+	micDocument := MiCodeEvaluator new
+		               model: mooseModel;
+		               visit: (Microdown parse: self sourceText).
+	self textEdited: (MiMicrodownPrettyPrinter new visit: micDocument).
+	^ textEdited
+]
+
+{ #category : #initialization }
+MiReportModel >> initialize [ 
+
+	super initialize.
+	needToUpdate := false.
+]
+
+{ #category : #accessing }
+MiReportModel >> micDocument [
+
+	^ micDocument
+]
+
+{ #category : #accessing }
+MiReportModel >> mooseModel [
+
+	^ mooseModel 
+]
+
+{ #category : #accessing }
+MiReportModel >> sourceText [
+
+	^ sourceText
+]
+
+{ #category : #accessing }
+MiReportModel >> sourceText: anObject [
+
+	needToUpdate := true.
+	sourceText := anObject
+]
+
+{ #category : #accessing }
+MiReportModel >> textEdited [
+
+	^ textEdited
+]
+
+{ #category : #accessing }
+MiReportModel >> textEdited: anObject [
+
+	textEdited := anObject.
+	browser renderText.
 ]
