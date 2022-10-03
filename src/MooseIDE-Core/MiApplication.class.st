@@ -7,6 +7,9 @@ Class {
 		'producers',
 		'consumers'
 	],
+	#classInstVars : [
+		'Current'
+	],
 	#category : #'MooseIDE-Core-Application'
 }
 

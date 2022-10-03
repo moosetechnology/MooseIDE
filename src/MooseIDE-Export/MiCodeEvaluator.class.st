@@ -63,6 +63,6 @@ MiCodeEvaluator >> model: anObject [
 { #category : #visiting }
 MiCodeEvaluator >> visitCode: aCodeBlock [
 
-	aCodeBlock isEvaluated ifTrue: [ 
+	aCodeBlock isEvaluated = 'true' ifTrue: [ 
 		self replaceCurrentNodeBy: (self evaluate: aCodeBlock) ] 
 ]
