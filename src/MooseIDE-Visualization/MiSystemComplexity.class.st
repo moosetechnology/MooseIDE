@@ -13,8 +13,10 @@ MiSystemComplexity >> run [
 	super run.
 	self script: [ :canvas | 
 		| builder |
-		builder := types systemComplexity.
-		builder canvas: canvas.
+		builder := MiSystemComplexityBuilder new
+			           container: canvas;
+			           types: types;
+			           yourself.
 		builder build.
 		canvas @ RSCanvasController new noLegend ]
 ]

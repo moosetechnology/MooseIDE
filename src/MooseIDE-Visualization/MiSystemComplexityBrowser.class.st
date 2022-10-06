@@ -31,6 +31,12 @@ MiSystemComplexityBrowser class >> menuPriority [
 ]
 
 { #category : #'instance creation' }
+MiSystemComplexityBrowser class >> newModel [
+
+	^ MiSystemComplexityModel new
+]
+
+{ #category : #'instance creation' }
 MiSystemComplexityBrowser class >> open [
 
 	<script>
@@ -43,6 +49,14 @@ MiSystemComplexityBrowser class >> title [
 	^ 'System complexity'
 ]
 
+{ #category : #actions }
+MiSystemComplexityBrowser >> buildVisualization [
+
+	visualization
+		types: model entities;
+		run
+]
+
 { #category : #testing }
 MiSystemComplexityBrowser >> canFollowEntity: anObject [
 
@@ -52,9 +66,13 @@ MiSystemComplexityBrowser >> canFollowEntity: anObject [
 { #category : #actions }
 MiSystemComplexityBrowser >> followEntity: aTypeGroup [
 
-	visualization
-		types: aTypeGroup;
-		run
+	model entities: aTypeGroup
+]
+
+{ #category : #actions }
+MiSystemComplexityBrowser >> hasSettings [
+
+	^ true
 ]
 
 { #category : #initialization }
@@ -76,4 +94,10 @@ MiSystemComplexityBrowser >> initializePresenters [
 MiSystemComplexityBrowser >> miSelectedItem [
 
 	^ visualization types
+]
+
+{ #category : #actions }
+MiSystemComplexityBrowser >> settings [
+	
+	model settings open
 ]
