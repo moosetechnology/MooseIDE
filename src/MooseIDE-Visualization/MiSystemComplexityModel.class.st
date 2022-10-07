@@ -5,7 +5,7 @@ Class {
 		'settings',
 		'entities'
 	],
-	#category : #'MooseIDE-Visualization'
+	#category : #'MooseIDE-Visualization-System Complexity'
 }
 
 { #category : #initialization }
@@ -98,8 +98,10 @@ MiSystemComplexityModel >> initializeSettings [
 		            addItem: self itemHeightMetric named: #heightMetric;
 		            addItem: self itemWidthMetric named: #widthMetric;
 		            addItem: self itemColorMetric named: #colorMetric;
-		            addItem: self itemColorRangeStart named: #colorRangeStart;
+		            addItem: self itemColorRangeStart
+		            named: #colorRangeStart;
 		            addItem: self itemColorRangeEnd named: #colorRangeEnd;
+		            addItem: self itemNameToDisplay named: #nameToDisplay;
 		            yourself
 ]
 
@@ -148,6 +150,17 @@ MiSystemComplexityModel >> itemHeightMetric [
 ]
 
 { #category : #initialization }
+MiSystemComplexityModel >> itemNameToDisplay [
+
+	^ MiAbstractSettingItem droplistSetting
+		  possibleValues: {#mooseName. #name};
+		  setValue: #name;
+		  label: 'Name to display:';
+		  help: 'Entity names type to display.';
+		  yourself
+]
+
+{ #category : #initialization }
 MiSystemComplexityModel >> itemWidthMetric [
 
 	^ MiAbstractSettingItem droplistSetting
@@ -156,6 +169,12 @@ MiSystemComplexityModel >> itemWidthMetric [
 		  label: 'Width metric:';
 		  help: 'The metric leading the normalization of boxes width.';
 		  yourself
+]
+
+{ #category : #initialization }
+MiSystemComplexityModel >> nameToDisplay [
+
+	^ settings getItemValue: #nameToDisplay
 ]
 
 { #category : #accessing }

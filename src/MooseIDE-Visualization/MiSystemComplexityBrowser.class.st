@@ -8,7 +8,7 @@ Class {
 	#instVars : [
 		'visualization'
 	],
-	#category : #'MooseIDE-Visualization'
+	#category : #'MooseIDE-Visualization-System Complexity'
 }
 
 { #category : #'world menu' }

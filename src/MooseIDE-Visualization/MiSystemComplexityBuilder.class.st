@@ -5,7 +5,7 @@ Class {
 		'mapModel',
 		'nodeMooseIDDict'
 	],
-	#category : #'MooseIDE-Visualization'
+	#category : #'MooseIDE-Visualization-System Complexity'
 }
 
 { #category : #building }
@@ -107,8 +107,7 @@ MiSystemComplexityBuilder >> buildNodeFromEntity: anEntity [
 	| node |
 	node := HNode new
 		        rawModel: anEntity;
-		        name:
-			        (String streamContents: [ :s | anEntity displayStringOn: s ]);
+		        name: (anEntity perform: self mapModel nameToDisplay);
 		        addAll:
 			        ((anEntity children asOrderedCollection sort: [ :c1 :c2 | 
 					          c1 name < c2 name ]) collect: [ :e | 
@@ -251,7 +250,6 @@ MiSystemComplexityBuilder >> rebuildShape: shape [
 		canvas camera
 			zoomToFit: canvas extent * 0.9
 			rectangle: canvas shapes encompassingRectangle ].
-	canvas camera position: newShape position.
 	canvas signalUpdate
 ]
 
