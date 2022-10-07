@@ -124,6 +124,17 @@ MiSystemComplexityBuilder >> colorBlock [
 	^ [ :e | e rawModel perform: mapModel colorMetric ]
 ]
 
+{ #category : #initialization }
+MiSystemComplexityBuilder >> colorFor: node [
+	^ Color fromHexString: '2980B9'
+]
+
+{ #category : #building }
+MiSystemComplexityBuilder >> cornerRadius [
+
+	^ 0
+]
+
 { #category : #building }
 MiSystemComplexityBuilder >> elements [
 
@@ -257,6 +268,7 @@ MiSystemComplexityBuilder >> rebuildShape: shape [
 MiSystemComplexityBuilder >> relayout: aGroupOfShapes parent: shape [
 
 	RSDominanceTreeLayout new
+		childrenSortBlock: [ :shapeA :shapeB | shapeA model name < shapeB model name ];
 		horizontalGap: 20;
 		on: aGroupOfShapes
 ]
