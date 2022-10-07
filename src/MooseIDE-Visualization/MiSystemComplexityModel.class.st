@@ -28,6 +28,24 @@ MiSystemComplexityModel >> browser: aBrowser [
 	self initializeSettings
 ]
 
+{ #category : #accessing }
+MiSystemComplexityModel >> colorMetric [
+
+	^ settings getItemValue: #colorMetric
+]
+
+{ #category : #initialization }
+MiSystemComplexityModel >> colorRangeEnd [
+
+	^ settings getItemValue: #colorRangeEnd
+]
+
+{ #category : #initialization }
+MiSystemComplexityModel >> colorRangeStart [
+
+	^ settings getItemValue: #colorRangeStart
+]
+
 { #category : #initialization }
 MiSystemComplexityModel >> defaultColorMetric [
 
@@ -60,6 +78,12 @@ MiSystemComplexityModel >> entities: aMooseGroup [
 	browser buildVisualization
 ]
 
+{ #category : #accessing }
+MiSystemComplexityModel >> heightMetric [
+
+	^ settings getItemValue: #heightMetric
+]
+
 { #category : #initialization }
 MiSystemComplexityModel >> initialize [
 
@@ -74,6 +98,8 @@ MiSystemComplexityModel >> initializeSettings [
 		            addItem: self itemHeightMetric named: #heightMetric;
 		            addItem: self itemWidthMetric named: #widthMetric;
 		            addItem: self itemColorMetric named: #colorMetric;
+		            addItem: self itemColorRangeStart named: #colorRangeStart;
+		            addItem: self itemColorRangeEnd named: #colorRangeEnd;
 		            yourself
 ]
 
@@ -83,8 +109,30 @@ MiSystemComplexityModel >> itemColorMetric [
 	^ MiAbstractSettingItem droplistSetting
 		  possibleValues: self availableMetrics;
 		  setValue: self defaultColorMetric;
-		  label: 'Color metric';
+		  label: 'Color metric:';
 		  help: 'The metric leading the normalization of boxes color.';
+		  yourself
+]
+
+{ #category : #initialization }
+MiSystemComplexityModel >> itemColorRangeEnd [
+
+	^ MiAbstractSettingItem colorSetting
+		  setValue: Color black;
+		  label: 'Color range end:';
+		  help:
+			  'End color for scaling color metric.';
+		  yourself
+]
+
+{ #category : #initialization }
+MiSystemComplexityModel >> itemColorRangeStart [
+
+	^ MiAbstractSettingItem colorSetting
+		  setValue: Color white;
+		  label: 'Color range start:';
+		  help:
+			  'Start color for scaling color metric.';
 		  yourself
 ]
 
@@ -94,7 +142,7 @@ MiSystemComplexityModel >> itemHeightMetric [
 	^ MiAbstractSettingItem droplistSetting
 		  possibleValues: self availableMetrics;
 		  setValue: self defaultHeightMetric;
-		  label: 'Height metric';
+		  label: 'Height metric:';
 		  help: 'The metric leading the normalization of boxes height.';
 		  yourself
 ]
@@ -105,7 +153,7 @@ MiSystemComplexityModel >> itemWidthMetric [
 	^ MiAbstractSettingItem droplistSetting
 		  possibleValues: self availableMetrics;
 		  setValue: self defaultWidthMetric;
-		  label: 'Width metric';
+		  label: 'Width metric:';
 		  help: 'The metric leading the normalization of boxes width.';
 		  yourself
 ]
@@ -116,10 +164,22 @@ MiSystemComplexityModel >> settings [
 	^ settings
 ]
 
+{ #category : #initialization }
+MiSystemComplexityModel >> settingsChanged: aBoolean [
+
+	aBoolean ifTrue: [ browser buildVisualization ]
+]
+
 { #category : #accessing }
 MiSystemComplexityModel >> updateSettings [
 
 	(settings itemNamed: #heightMetric) possibleValues: self availableMetrics; setValue: #numberOfMethods.
-	(settings itemNamed: #widthMetric) possibleValues: self availableMetrics.
-	(settings itemNamed: #colorMetric) possibleValues: self availableMetrics.
+	(settings itemNamed: #widthMetric) possibleValues: self availableMetrics; setValue: #numberOfAttributes.
+	(settings itemNamed: #colorMetric) possibleValues: self availableMetrics; setValue: #numberOfLinesOfCode.
+]
+
+{ #category : #accessing }
+MiSystemComplexityModel >> widthMetric [
+
+	^ settings getItemValue: #widthMetric
 ]

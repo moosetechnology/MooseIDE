@@ -3,7 +3,6 @@ Class {
 	#superclass : #HSimpleVisualizationBuilder,
 	#instVars : [
 		'mapModel',
-		'types',
 		'nodeMooseIDDict'
 	],
 	#category : #'MooseIDE-Visualization'
@@ -123,13 +122,13 @@ MiSystemComplexityBuilder >> buildNodeFromEntity: anEntity [
 { #category : #building }
 MiSystemComplexityBuilder >> colorBlock [
 
-	^ [ :e | e rawModel numberOfLinesOfCode ]
+	^ [ :e | e rawModel perform: mapModel colorMetric ]
 ]
 
 { #category : #building }
 MiSystemComplexityBuilder >> elements [
 
-	^ types entityStorage
+	^ self types entityStorage
 ]
 
 { #category : #initialization }
@@ -203,17 +202,18 @@ MiSystemComplexityBuilder >> normalizeShapes [
 	RSNormalizer width
 		shapes: canvasShapes;
 		scale: (NSScale linear range: { 20. 400 });
-		normalize: [ :type | type rawModel numberOfAttributes ].
+		normalize: [ :type | type rawModel perform: mapModel widthMetric ].
 	RSNormalizer height
 		shapes: canvasShapes;
 		scale: (NSScale linear range: { 20. 400 });
-		normalize: [ :type | type rawModel numberOfMethods ].
+		normalize: [ :type | type rawModel perform: mapModel heightMetric ].
 	RSNormalizer color
-		from: Color white;
-		to: Color black;
+		from: mapModel colorRangeStart;
+		to: mapModel colorRangeEnd;
 		shapes: canvasShapes;
 		normalize: self colorBlock.
-	canvasShapes do: [ :s | s model isExpanded ifTrue: [ s adjustToChildren ] ]
+	canvasShapes do: [ :s | 
+		s model isExpanded ifTrue: [ s adjustToChildren ] ]
 ]
 
 { #category : #building }
@@ -358,11 +358,5 @@ MiSystemComplexityBuilder >> shapeFor: node [
 { #category : #accessing }
 MiSystemComplexityBuilder >> types [
 
-	^ types
-]
-
-{ #category : #accessing }
-MiSystemComplexityBuilder >> types: anObject [
-
-	types := anObject
+	^ self mapModel entities
 ]

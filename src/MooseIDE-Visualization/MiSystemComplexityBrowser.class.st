@@ -52,9 +52,7 @@ MiSystemComplexityBrowser class >> title [
 { #category : #actions }
 MiSystemComplexityBrowser >> buildVisualization [
 
-	visualization
-		types: model entities;
-		run
+	visualization run
 ]
 
 { #category : #testing }
@@ -93,7 +91,7 @@ MiSystemComplexityBrowser >> initializePresenters [
 { #category : #accessing }
 MiSystemComplexityBrowser >> miSelectedItem [
 
-	^ visualization types
+	^ model entities
 ]
 
 { #category : #actions }

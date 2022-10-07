@@ -1,11 +1,14 @@
 Class {
 	#name : #MiSystemComplexity,
 	#superclass : #MiAbstractVisualization,
-	#instVars : [
-		'types'
-	],
 	#category : #'MooseIDE-Visualization'
 }
+
+{ #category : #accessing }
+MiSystemComplexity >> model [
+
+	^ self owner model
+]
 
 { #category : #running }
 MiSystemComplexity >> run [
@@ -15,20 +18,8 @@ MiSystemComplexity >> run [
 		| builder |
 		builder := MiSystemComplexityBuilder new
 			           container: canvas;
-			           types: types;
+			           mapModel: self model;
 			           yourself.
 		builder build.
 		canvas @ RSCanvasController new noLegend ]
-]
-
-{ #category : #accessing }
-MiSystemComplexity >> types [
-
-	^ types
-]
-
-{ #category : #accessing }
-MiSystemComplexity >> types: anObject [
-
-	types := anObject
 ]
