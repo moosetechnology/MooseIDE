@@ -15,6 +15,7 @@ MiSystemComplexityBuilder >> build [
 	self initializeRootNode.
 	self setDependencies.
 	self renderIn: self container.
+	self buildLegend.
 	^ self container
 ]
 
@@ -99,6 +100,27 @@ MiSystemComplexityBuilder >> buildCompositeFullNodeIn: shape [
 	shape add: title; add: boxChildren; add: children.
 	shape adjustToChildren.
 	
+]
+
+{ #category : #building }
+MiSystemComplexityBuilder >> buildLegend [
+	| legend |
+	legend := RSLegend new.
+	legend container: self container.
+	legend onDemand.
+	legend title: 'System complexity'.
+	legend text: ''.
+	legend
+		polymetricWidth: mapModel widthMetric
+		height: mapModel heightMetric
+		box: 'Class'.
+	legend
+		text: mapModel colorMetric
+		withFadingRamp:
+			{(0 -> mapModel colorRangeStart).
+			(1 -> mapModel colorRangeEnd)}.
+	legend text: 'Line = Inheritance'.
+	legend build
 ]
 
 { #category : #building }
