@@ -9,6 +9,24 @@ Class {
 }
 
 { #category : #building }
+MiSystemComplexityBuilder >> borderFor: node [
+
+	^ node hasChildren
+		  ifTrue: [ 
+			  RSBorder new
+				  width: 2;
+				  capSquare;
+				  joinMiter;
+				  color: Smalltalk ui theme textColor;
+				  dashArray: #( 5 10 );
+				  yourself ]
+		  ifFalse: [ 
+			  RSBorder new
+				  color: Color black translucent;
+				  yourself ]
+]
+
+{ #category : #building }
 MiSystemComplexityBuilder >> build [
 
 	
@@ -27,7 +45,7 @@ MiSystemComplexityBuilder >> buildCompositeEmptyNodeIn: shape [
 	node level <= 1 ifTrue: [ 
 		shape
 			color: Color black;
-			border: (RSBorder new color: Color black translucent).
+			border: (self borderFor: node).
 		shape schildren: #(  ).
 
 		^ self ].
