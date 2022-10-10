@@ -9,3 +9,9 @@ MiSystemComplexityBrowserTest >> browserClass [
 
 	^ MiSystemComplexityBrowser
 ]
+
+{ #category : #tests }
+MiSystemComplexityBrowserTest >> testSettingsAction [
+
+	self assert: browser hasSettings
+]
