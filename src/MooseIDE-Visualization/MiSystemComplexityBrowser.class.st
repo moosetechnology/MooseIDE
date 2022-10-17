@@ -8,7 +8,7 @@ Class {
 	#instVars : [
 		'visualization'
 	],
-	#category : #'MooseIDE-Visualization'
+	#category : #'MooseIDE-Visualization-System Complexity'
 }
 
 { #category : #'world menu' }
@@ -31,6 +31,12 @@ MiSystemComplexityBrowser class >> menuPriority [
 ]
 
 { #category : #'instance creation' }
+MiSystemComplexityBrowser class >> newModel [
+
+	^ MiSystemComplexityModel new
+]
+
+{ #category : #'instance creation' }
 MiSystemComplexityBrowser class >> open [
 
 	<script>
@@ -43,6 +49,12 @@ MiSystemComplexityBrowser class >> title [
 	^ 'System complexity'
 ]
 
+{ #category : #actions }
+MiSystemComplexityBrowser >> buildVisualization [
+
+	visualization run
+]
+
 { #category : #testing }
 MiSystemComplexityBrowser >> canFollowEntity: anObject [
 
@@ -52,9 +64,13 @@ MiSystemComplexityBrowser >> canFollowEntity: anObject [
 { #category : #actions }
 MiSystemComplexityBrowser >> followEntity: aTypeGroup [
 
-	visualization
-		types: aTypeGroup;
-		run
+	model entities: aTypeGroup
+]
+
+{ #category : #actions }
+MiSystemComplexityBrowser >> hasSettings [
+
+	^ true
 ]
 
 { #category : #initialization }
@@ -75,5 +91,11 @@ MiSystemComplexityBrowser >> initializePresenters [
 { #category : #accessing }
 MiSystemComplexityBrowser >> miSelectedItem [
 
-	^ visualization types
+	^ model entities
+]
+
+{ #category : #actions }
+MiSystemComplexityBrowser >> settings [
+	
+	model settings open
 ]

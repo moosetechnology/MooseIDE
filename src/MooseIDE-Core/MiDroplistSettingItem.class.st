@@ -38,7 +38,9 @@ MiDroplistSettingItem >> possibleValues [
 
 { #category : #accessing }
 MiDroplistSettingItem >> possibleValues: aCollection [
+
 	presenter items: aCollection.
+	aCollection ifEmpty: [ ^ self ].
 	self setValue: aCollection anyOne
 ]
 
