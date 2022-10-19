@@ -26,7 +26,8 @@ Class {
 		'renderer',
 		'previewOpened',
 		'showRawCheckbox',
-		'closePreviewButton'
+		'closePreviewButton',
+		'notebook'
 	],
 	#category : #'MooseIDE-Export-Report'
 }
@@ -143,8 +144,9 @@ MiReportBrowser >> initialize [
 MiReportBrowser >> initializeLayout [
 
 	self layout: (SpBoxLayout newTopToBottom
-			 add: toolbar expand: false;
-			 add: editor;
+			 add: (self newButton action: [ notebook addTextCell ])
+			 expand: false;
+			 add: (SpScrollableLayout with: notebook);
 			 yourself)
 ]
 
@@ -152,7 +154,7 @@ MiReportBrowser >> initializeLayout [
 MiReportBrowser >> initializePresenters [
 
 	self initializeToolbar.
-
+	notebook := self instantiate: MiNoteBookReport.
 	renderer := self newText
 		            beNotEditable;
 		            yourself.
