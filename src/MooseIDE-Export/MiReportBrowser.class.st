@@ -113,7 +113,8 @@ MiReportBrowser >> columnChoiceButton [
 { #category : #actions }
 MiReportBrowser >> followEntity: anEntity [
 
-	model followEntity: anEntity mooseModel
+	model followEntity: anEntity mooseModel.
+	notebook mooseModel: anEntity mooseModel
 ]
 
 { #category : #accessing }
@@ -143,9 +144,13 @@ MiReportBrowser >> initialize [
 { #category : #initialization }
 MiReportBrowser >> initializeLayout [
 
+	| sep |
+	sep := self newRoassal.
+	sep canvas color: Color gray translucent.
 	self layout: (SpBoxLayout newTopToBottom
-			 add: (self newButton action: [ notebook addTextCell ])
-			 expand: false;
+			 spacing: 1;
+			 add: toolbar expand: false;
+			 add: sep height: 1;
 			 add: (SpScrollableLayout with: notebook);
 			 yourself)
 ]
@@ -195,11 +200,17 @@ MiReportBrowser >> initializeToolbar [
 				            icon: (self iconNamed: #smallExport);
 				            action: [ model exportToText ];
 				            yourself);
-				addItem: (self newToolbarButton
+		           addItem: (self newToolbarButton
 				            label: 'Export to HTML';
 				            icon: (self iconNamed: #smallExport);
 				            action: [ model exportToHTML ];
-				            yourself)
+				            yourself);
+		           addItem: (self newToolbarButton
+				            label: 'Add cell';
+				            icon: (self iconNamed: #add);
+				            action: [ notebook addTextCell ];
+				            yourself);
+		           yourself
 ]
 
 { #category : #actions }

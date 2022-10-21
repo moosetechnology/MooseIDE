@@ -23,8 +23,13 @@ MiNoteBookTextCell >> initializePresenters [
 	cell := self newText.
 	cell whenTextChangedDo: [ self updateHeight ].
 	icon := self newButton
-		        icon: (MiApplication current iconNamed: #none);
+		        label: 'Mic';
 		        action: [ notebook transformToCodeCell: self ];
 		        yourself.
+	leftMenuCanvas canvas add: (RSLabel new
+			 text: 'Mic';
+			 color: Color black;
+			 when: RSMouseClick do: [ notebook transformToCodeCell: self ];
+			 yourself).
 	self initializeLayout
 ]

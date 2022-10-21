@@ -26,7 +26,20 @@ MiNoteBookCodeCell >> initializePresenters [
 		        yourself.
 	cell whenTextChangedDo: [ self updateHeight ].
 	icon := self newButton
-		        icon: (MiApplication current iconNamed: #mooseEvaluator);
+		        label: 'St';
 		        action: [ notebook transformToTextCell: self ].
+
+	leftMenuCanvas canvas add: (RSLabel new
+			 text: 'St';
+			 color: Color black;
+			 when: RSMouseClick do: [ notebook transformToTextCell: self ];
+			 yourself).
+	leftMenuCanvas canvas color: Color blue.
 	self initializeLayout
+]
+
+{ #category : #api }
+MiNoteBookCodeCell >> interactionModel: anEnvironment [
+
+	cell interactionModel: anEnvironment
 ]
