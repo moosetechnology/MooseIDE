@@ -34,7 +34,8 @@ MiTagExtentPage >> addAll [
 	self currentTag ifNil: [ ^ self ].
 	incomingEntitiesFilteringList items do: [ :entity | 
 		self model tagEntityNotYourself: entity ].
-	self refreshTaggedEntitiesList
+	self refreshTaggedEntitiesList.
+	self refreshEntitiesList
 ]
 
 { #category : #accessing }
