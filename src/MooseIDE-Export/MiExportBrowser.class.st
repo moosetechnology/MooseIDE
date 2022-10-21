@@ -16,7 +16,8 @@ Class {
 		'commentDictionary',
 		'entitiesTable',
 		'commentsButton',
-		'commentsAreShown'
+		'commentsAreShown',
+		'entitiesCountLabel'
 	],
 	#category : #'MooseIDE-Export-Browser'
 }
@@ -25,15 +26,6 @@ Class {
 MiExportBrowser class >> commentColumnTitle [
 
 	^ 'Comment'
-]
-
-{ #category : #layout }
-MiExportBrowser class >> defaultLayout [
-
-	^ super defaultLayout
-		  add: #toolbar height: self toolbarHeight;
-		  add: #entitiesTable;
-		  yourself
 ]
 
 { #category : #'world menu' }
@@ -200,16 +192,39 @@ Click to show in folder'
 { #category : #actions }
 MiExportBrowser >> followEntity: anEntity [
 
-	self updateEntitiesListWith: anEntity asMooseGroup.
-
+	| entities |
+	entities := anEntity asMooseGroup.
+	self updateEntitiesListWith: entities.
+	entitiesCountLabel label:
+		entities size asString , ' entit' , (entities size > 1
+			 ifTrue: 'ies'
+			 ifFalse: 'y').
 	commentDictionary := Dictionary new
+]
+
+{ #category : #initialization }
+MiExportBrowser >> initializeLayout [
+
+	self layout: (SpBoxLayout newTopToBottom
+			 add: (SpBoxLayout newLeftToRight
+					  add: toolbar expand: false;
+					  add: entitiesCountLabel withConstraints: [ :consts | 
+						  consts
+							  bePlacedAtEnd;
+							  expand: false ];
+					  yourself)
+			 height: self class toolbarHeight;
+			 add: entitiesTable;
+			 yourself)
 ]
 
 { #category : #initialization }
 MiExportBrowser >> initializePresenters [
 
+	entitiesCountLabel := self newLabel label: 'xxx'.
 	self initializeToolbar.
-	self initializeTable
+	self initializeTable.
+	self initializeLayout
 ]
 
 { #category : #initialization }
