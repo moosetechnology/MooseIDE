@@ -105,7 +105,7 @@ MiModelRootBrowserModel >> selected [
 	^ (settings getItemValue: #filterStubsSetting)
 		  ifTrue: [ 
 			  selected ifNotNil: [ :selectedModel | 
-				  (selectedModel reject: [ :each | each isStub ]) asMooseGroup ] ]
+				  MooseModel new addAll: (selectedModel reject: [ :each | each isStub ]); yourself  ] ]
 		  ifFalse: [ selected ]
 ]
 
