@@ -1,6 +1,6 @@
 "
-I am a browser showing a System Complexity visualization.
-I accept a FamixTypeGroup.
+I am a browser showing a System Complexity visualization on classes.
+I accept a MooseGroup.
 "
 Class {
 	#name : #MiSystemComplexityBrowser,
@@ -58,13 +58,18 @@ MiSystemComplexityBrowser >> buildVisualization [
 { #category : #testing }
 MiSystemComplexityBrowser >> canFollowEntity: anObject [
 
-	^ anObject isKindOf: FamixTypeGroup
+	^ anObject isKindOf: MooseGroup
 ]
 
 { #category : #actions }
-MiSystemComplexityBrowser >> followEntity: aTypeGroup [
+MiSystemComplexityBrowser >> followEntity: aMooseGroup [
 
-	model entities: aTypeGroup
+	| newGroup |
+	newGroup := aMooseGroup select: [ :e | e isClass ].
+	newGroup size < aMooseGroup size ifTrue: [ 
+		self inform:
+			(aMooseGroup size - newGroup size) asString , ' rejected entities.' ].
+	model entities: newGroup
 ]
 
 { #category : #actions }

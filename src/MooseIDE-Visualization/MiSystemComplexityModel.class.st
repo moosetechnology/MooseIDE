@@ -73,6 +73,7 @@ MiSystemComplexityModel >> entities [
 { #category : #accessing }
 MiSystemComplexityModel >> entities: aMooseGroup [
 
+	aMooseGroup ifEmpty: [ ^ self ].
 	entities := aMooseGroup.
 	self updateSettings.
 	browser buildVisualization
@@ -192,9 +193,15 @@ MiSystemComplexityModel >> settingsChanged: aBoolean [
 { #category : #accessing }
 MiSystemComplexityModel >> updateSettings [
 
-	(settings itemNamed: #heightMetric) possibleValues: self availableMetrics; setValue: #numberOfMethods.
-	(settings itemNamed: #widthMetric) possibleValues: self availableMetrics; setValue: #numberOfAttributes.
-	(settings itemNamed: #colorMetric) possibleValues: self availableMetrics; setValue: #numberOfLinesOfCode.
+	(settings itemNamed: #heightMetric)
+		possibleValues: self availableMetrics;
+		setValue: #numberOfMethods.
+	(settings itemNamed: #widthMetric)
+		possibleValues: self availableMetrics;
+		setValue: #numberOfAttributes.
+	(settings itemNamed: #colorMetric)
+		possibleValues: self availableMetrics;
+		setValue: #numberOfLinesOfCode
 ]
 
 { #category : #accessing }
