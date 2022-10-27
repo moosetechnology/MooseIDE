@@ -5,16 +5,29 @@ Class {
 		'menu',
 		'cellList',
 		'lastCellAdded',
-		'interactionModel'
+		'selectedCell',
+		'interactionModel',
+		'headerSep',
+		'mooseModel',
+		'cellLayout'
 	],
 	#category : #'MooseIDE-Export-Report'
 }
+
+{ #category : #adding }
+MiNoteBookReport >> add: aCell [
+
+	self layout add: aCell expand: false.
+	aCell announceDisplayed.
+	lastCellAdded takeKeyboardFocus
+]
 
 { #category : #adding }
 MiNoteBookReport >> addCodeCell [
 
 	lastCellAdded := self newCodeCell.
 	cellList addLast: lastCellAdded.
+	selectedCell := lastCellAdded.
 	self relayout
 ]
 
@@ -23,7 +36,8 @@ MiNoteBookReport >> addTextCell [
 
 	lastCellAdded := self newTextCell.
 	cellList addLast: lastCellAdded.
-	self relayout.
+	selectedCell := lastCellAdded.
+	self relayout
 ]
 
 { #category : #initialization }
@@ -31,6 +45,7 @@ MiNoteBookReport >> addTextCellAfter: aCell [
 
 	lastCellAdded := self newTextCell.
 	cellList add: lastCellAdded after: aCell.
+	selectedCell := lastCellAdded.
 	self relayout
 ]
 
@@ -39,7 +54,26 @@ MiNoteBookReport >> addTextCellBefore: aCell [
 
 	lastCellAdded := self newTextCell.
 	cellList add: lastCellAdded before: aCell.
+	selectedCell := lastCellAdded.
 	self relayout
+]
+
+{ #category : #accessing }
+MiNoteBookReport >> allModelCells [
+
+	^ cellList asOrderedCollection collect: [ :cell | cell asModelCell ]
+]
+
+{ #category : #accessing }
+MiNoteBookReport >> cellList [
+
+	^ cellList
+]
+
+{ #category : #accessing }
+MiNoteBookReport >> headerSep [
+
+	^ headerSep
 ]
 
 { #category : #initialization }
@@ -55,30 +89,76 @@ MiNoteBookReport >> initialize [
 { #category : #initialization }
 MiNoteBookReport >> initializeLayout [
 
-	self layout: (SpBoxLayout newTopToBottom
-			 add: (self newButton
-					  hide;
-					  yourself)
-			 expand: false;
-			 yourself)
+	cellLayout := SpBoxLayout newTopToBottom
+		              spacing: self layoutSpacing;
+		              yourself.
+	self layout: (SpScrollableLayout with: (SpBoxLayout newTopToBottom
+				  spacing: self layoutSpacing;
+				  add: headerSep height: 1;
+				  add: cellLayout;
+				  yourself))
 ]
 
 { #category : #initialization }
 MiNoteBookReport >> initializePresenters [
 
+	(headerSep := self newRoassal) canvas color: Color transparent.
 	self initializeLayout
+]
+
+{ #category : #accessing }
+MiNoteBookReport >> interactionModel [
+
+	^ interactionModel
+]
+
+{ #category : #initialization }
+MiNoteBookReport >> layoutSpacing [
+
+	^ 10
+]
+
+{ #category : #accessing }
+MiNoteBookReport >> model [
+
+	^ self owner model
 ]
 
 { #category : #accessing }
 MiNoteBookReport >> mooseModel [
 
-	self owner mooseModel
+	^ self owner mooseModel
 ]
 
 { #category : #accessing }
 MiNoteBookReport >> mooseModel: aMooseModel [
 
-	interactionModel addBinding: (WorkspaceVariable  key: #mooseModel value: aMooseModel)
+	(self model defaultBindings) do: [ 
+		:assoc | 
+		interactionModel addBinding:
+			(WorkspaceVariable key: assoc key asSymbol value: assoc value) ]
+]
+
+{ #category : #removing }
+MiNoteBookReport >> moveDown: aCell [
+
+	| idx |
+	idx := cellList indexOf: aCell.
+	idx >= cellList size ifTrue: [ ^ self ].
+	cellList swap: idx with: idx + 1.
+	selectedCell := aCell.
+	self relayout
+]
+
+{ #category : #removing }
+MiNoteBookReport >> moveUp: aCell [
+
+	| idx |
+	idx := cellList indexOf: aCell.
+	idx <= 1 ifTrue: [ ^ self ].
+	cellList swap: idx with: idx - 1.
+	selectedCell := aCell.
+	self relayout
 ]
 
 { #category : #initialization }
@@ -86,7 +166,6 @@ MiNoteBookReport >> newCodeCell [
 
 	^ (self instantiate: MiNoteBookCodeCell)
 		  notebook: self;
-		  interactionModel: interactionModel;
 		  yourself
 ]
 
@@ -99,19 +178,18 @@ MiNoteBookReport >> newTextCell [
 { #category : #adding }
 MiNoteBookReport >> relayout [
 
-	| newLayout width |
-	cellList size > 1 ifTrue: [ 
-		width := (cellList detect: [ :c | c textAreaWidth > 200 ]) textAreaWidth ].
+	| newLayout |
 	newLayout := SpBoxLayout newTopToBottom
-		             spacing: 5;
+		             spacing: self layoutSpacing;
 		             yourself.
 	cellList do: [ :cell | newLayout add: cell expand: false ].
-	self layout: newLayout.
-	cellList do: [ :cell | 
-		width
-			ifNil: [ cell updateHeight ]
-			ifNotNil: [ cell updateHeight: width ] ].
-	lastCellAdded takeKeyboardFocus
+
+	cellLayout removeAll.
+	cellLayout add: (SpPresenter new
+			 layout: newLayout;
+			 yourself).
+	cellList do: [ :cell | cell announceDisplayed ].
+	selectedCell ifNotNil: [ selectedCell takeKeyboardFocus ]
 ]
 
 { #category : #removing }
@@ -130,8 +208,8 @@ MiNoteBookReport >> transformToCodeCell: aCell [
 		                 yourself.
 	width := aCell textAreaWidth.
 	cellList at: (cellList indexOf: aCell) put: lastCellAdded.
-	self layout replace: aCell with: lastCellAdded.
-	lastCellAdded updateHeight: width
+	selectedCell := lastCellAdded.
+	self relayout
 ]
 
 { #category : #adding }
@@ -143,13 +221,18 @@ MiNoteBookReport >> transformToTextCell: aCell [
 		                 yourself.
 	width := aCell textAreaWidth.
 	cellList at: (cellList indexOf: aCell) put: lastCellAdded.
-	self layout replace: aCell with: lastCellAdded.
-	lastCellAdded updateHeight: width
+	selectedCell := lastCellAdded.
+	self relayout
 ]
 
 { #category : #removing }
 MiNoteBookReport >> updateAll [
 
-	self relayout.
-	lastCellAdded takeKeyboardFocus
+	cellList := LinkedList new.
+	self model cellList do: [ :c | 
+		cellList add: ((self instantiate: c presenterClass)
+				 notebook: self;
+				 yourself) ].
+	selectedCell := cellList last.
+	self relayout
 ]

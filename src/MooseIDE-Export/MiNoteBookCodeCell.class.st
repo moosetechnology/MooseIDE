@@ -4,6 +4,14 @@ Class {
 	#category : #'MooseIDE-Export-Report'
 }
 
+{ #category : #converting }
+MiNoteBookCodeCell >> asModelCell [
+
+	^ MiNoteBookCodeCellModel new
+		  text: cell text;
+		  yourself
+]
+
 { #category : #api }
 MiNoteBookCodeCell >> beCode [
 
@@ -23,18 +31,18 @@ MiNoteBookCodeCell >> initializePresenters [
 	cell := self newCode
 		        withoutLineNumbers;
 		        beForScripting;
+		        placeholder: 'Binded variables: mooseModel, printer, stream';
 		        yourself.
 	cell whenTextChangedDo: [ self updateHeight ].
 	icon := self newButton
-		        label: 'St';
+		        label: 'Code';
 		        action: [ notebook transformToTextCell: self ].
 
 	leftMenuCanvas canvas add: (RSLabel new
-			 text: 'St';
+			 text: 'Code';
 			 color: Color black;
 			 when: RSMouseClick do: [ notebook transformToTextCell: self ];
 			 yourself).
-	leftMenuCanvas canvas color: Color blue.
 	self initializeLayout
 ]
 
@@ -42,4 +50,11 @@ MiNoteBookCodeCell >> initializePresenters [
 MiNoteBookCodeCell >> interactionModel: anEnvironment [
 
 	cell interactionModel: anEnvironment
+]
+
+{ #category : #accessing }
+MiNoteBookCodeCell >> notebook: aNoteBook [
+
+	notebook := aNoteBook.
+	self interactionModel: notebook interactionModel
 ]

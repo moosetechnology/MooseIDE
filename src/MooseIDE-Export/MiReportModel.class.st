@@ -11,14 +11,23 @@ Class {
 		'textEditedSource',
 		'sourceText',
 		'needToUpdate',
-		'micDocument'
+		'micDocument',
+		'cellList',
+		'context'
 	],
 	#category : #'MooseIDE-Export-Report'
 }
 
 { #category : #accessing }
-MiReportModel >> browser: aMiReportBrowser [ 
-	browser := aMiReportBrowser
+MiReportModel >> cellList [
+
+	^ cellList
+]
+
+{ #category : #accessing }
+MiReportModel >> cellList: anObject [
+
+	cellList := anObject
 ]
 
 { #category : #actions }
@@ -28,6 +37,49 @@ MiReportModel >> checkTextEdited [
 		self inform: 'There is no source to export.'.
 		^ false ].
 	^ true
+]
+
+{ #category : #accessing }
+MiReportModel >> context [
+
+	^ context
+]
+
+{ #category : #initialization }
+MiReportModel >> defaultBindings [
+
+	^ { 
+		  ('mooseModel' -> mooseModel).
+		  ('stream' -> nil).
+		  ('printer' -> nil) }
+]
+
+{ #category : #initialization }
+MiReportModel >> defaultBindingsWithStream: aStream [
+
+	^ { 
+		  ('mooseModel' -> mooseModel).
+		  ('stream' -> aStream).
+		  ('printer' -> nil) }
+]
+
+{ #category : #actions }
+MiReportModel >> executeAllCells [
+
+	^ String streamContents: [ :s | 
+		  self initializeContextWithStream: s.
+		  cellList do: [ :cell | 
+			  cell printContentIn: s withContext: context.
+			  s nextPut: Character cr ] ]
+]
+
+{ #category : #actions }
+MiReportModel >> executeAllCellsAsTextCollection [
+
+	self initializeContext.
+	^ cellList collect: [ :cell | 
+		  String streamContents: [ :s | 
+			  cell printContentIn: s withContext: context ] ]
 ]
 
 { #category : #actions }
@@ -49,14 +101,11 @@ MiReportModel >> exportToHTML [
 MiReportModel >> exportToText [
 
 	| aFile |
-	self checkTextEdited ifFalse: [ ^ self ].
-	aFile := browser
-		         chooseTextFile: 'Chose export destination'
-		         extensions: #( 'md' )
-		         path: 'mooseReport.md'.
+	aFile := '/Users/slabsar/Documents/cells.ston' asFileReference.
+	aFile ensureCreateFile.
 	aFile ifNotNil: [ 
-		aFile writeStreamDo: [ :stream | stream nextPutAll: self generateMicrodown ].
-		browser reportExported: aFile ]
+		aFile writeStreamDo: [ :s | 
+		STON put: cellList onStream: s ] ]
 ]
 
 { #category : #actions }
@@ -76,11 +125,36 @@ MiReportModel >> generateMicrodown [
 	^ textEdited
 ]
 
+{ #category : #actions }
+MiReportModel >> importCellsFrom: aFileReference [
+
+	| cells |
+	cells := STON fromString: aFileReference contents.
+	cellList := cells.
+]
+
 { #category : #initialization }
-MiReportModel >> initialize [ 
+MiReportModel >> initialize [
 
 	super initialize.
 	needToUpdate := false.
+	cellList := OrderedCollection new
+]
+
+{ #category : #initialization }
+MiReportModel >> initializeContext [
+
+	context := CompilationContext new
+		           bindings: (self defaultBindings);
+		           yourself
+]
+
+{ #category : #initialization }
+MiReportModel >> initializeContextWithStream: aStream [
+
+	context := CompilationContext new
+		           bindings: (self defaultBindingsWithStream: aStream);
+		           yourself
 ]
 
 { #category : #accessing }
@@ -118,5 +192,4 @@ MiReportModel >> textEdited [
 MiReportModel >> textEdited: anObject [
 
 	textEdited := anObject.
-	browser renderText.
 ]

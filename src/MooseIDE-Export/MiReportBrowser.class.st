@@ -27,7 +27,8 @@ Class {
 		'previewOpened',
 		'showRawCheckbox',
 		'closePreviewButton',
-		'notebook'
+		'notebook',
+		'notebookPreview'
 	],
 	#category : #'MooseIDE-Export-Report'
 }
@@ -71,6 +72,13 @@ MiReportBrowser class >> title [
 	^ 'Report builder'
 ]
 
+{ #category : #initialization }
+MiReportBrowser >> addCells [
+
+	self updateModelCells.
+	^ model executeAllCells
+]
+
 { #category : #testing }
 MiReportBrowser >> canFollowEntity: anObject [
 
@@ -90,7 +98,8 @@ MiReportBrowser >> closePreview [
 
 	previewOpened ifFalse: [ ^ self ].
 	previewOpened := false.
-	self layout replaceAtIndex: 2 with: editor
+	self layout replaceAtIndex: 3 with: notebook.
+	notebook announceDisplayed.
 ]
 
 { #category : #initialization }
@@ -110,6 +119,13 @@ MiReportBrowser >> columnChoiceButton [
 	^ choiceButton
 ]
 
+{ #category : #initialization }
+MiReportBrowser >> exportToText [
+
+	self updateModelCells.
+	model exportToText
+]
+
 { #category : #actions }
 MiReportBrowser >> followEntity: anEntity [
 
@@ -127,8 +143,8 @@ MiReportBrowser >> importMicrodownFile [
 
 	| file |
 	file := UIManager default
-		chooseExistingFileReference: 'Select your a Microdown file.'
-		extensions: { 'md' }
+		chooseExistingFileReference: 'Select your notebook file.'
+		extensions: { 'ston' }
 		path: '.'.
 
 	file ifNotNil: [ self updateWithFile: file ]
@@ -151,7 +167,7 @@ MiReportBrowser >> initializeLayout [
 			 spacing: 1;
 			 add: toolbar expand: false;
 			 add: sep height: 1;
-			 add: (SpScrollableLayout with: notebook);
+			 add: notebook;
 			 yourself)
 ]
 
@@ -160,9 +176,11 @@ MiReportBrowser >> initializePresenters [
 
 	self initializeToolbar.
 	notebook := self instantiate: MiNoteBookReport.
+	notebookPreview := self instantiate: MiNoteBookPreview.
 	renderer := self newText
 		            beNotEditable;
 		            yourself.
+	self whenDisplayDo: [ notebook relayout ].
 	editor := self newCode
 		          withoutSyntaxHighlight;
 		          yourself.
@@ -193,12 +211,12 @@ MiReportBrowser >> initializeToolbar [
 		           addItem: (self newToolbarButton
 				            label: 'Preview';
 				            icon: (self iconNamed: #smallExport);
-				            action: [ self openPreview ];
+				            action: [ self preview ];
 				            yourself);
 		           addItem: (self newToolbarButton
 				            label: 'Export to text';
 				            icon: (self iconNamed: #smallExport);
-				            action: [ model exportToText ];
+				            action: [ self exportToText ];
 				            yourself);
 		           addItem: (self newToolbarButton
 				            label: 'Export to HTML';
@@ -211,6 +229,13 @@ MiReportBrowser >> initializeToolbar [
 				            action: [ notebook addTextCell ];
 				            yourself);
 		           yourself
+]
+
+{ #category : #initialization }
+MiReportBrowser >> initializeWindow: aMiWindowPresenter [
+
+	super initializeWindow: aMiWindowPresenter.
+	aMiWindowPresenter initialExtent: 1083.0 @ 697.0
 ]
 
 { #category : #actions }
@@ -228,24 +253,32 @@ MiReportBrowser >> mooseModel [
 { #category : #initialization }
 MiReportBrowser >> openPreview [
 
-	previewOpened ifTrue: [ 
-	model generateMicrodown.
-	^ self ].
+	| sep |
+	previewOpened ifTrue: [ ^ self ].
 	previewOpened := true.
-	self layout replaceAtIndex: 2 with: (SpPresenter new
-			 layout: (SpPanedLayout newLeftToRight
-					  add: editor;
-					  add: (SpBoxLayout newTopToBottom
-							   add: renderer;
-							   add: (SpBoxLayout newLeftToRight
-									    add: showRawCheckbox;
-									    add: closePreviewButton;
-									    yourself)
-							   expand: false;
-							   yourself);
+	sep := self newRoassal.
+	sep canvas color: Color gray translucent.
+	self layout replaceAtIndex: 3 with: (self newPresenter
+			 layout: (SpBoxLayout newLeftToRight
+					  beHomogeneous;
+					  spacing: 2;
+					  add: notebook;
+					  add: notebookPreview;
 					  yourself);
 			 yourself).
-	model generateMicrodown
+	self announceDisplayed
+]
+
+{ #category : #initialization }
+MiReportBrowser >> preview [
+
+	self openPreview.
+	self updateModelCells.
+
+	notebookPreview
+		updateWithStringCollection:
+		self model executeAllCellsAsTextCollection
+		andCells: notebook cellList
 ]
 
 { #category : #rendering }
@@ -273,9 +306,10 @@ MiReportBrowser >> selectedEntities [
 ]
 
 { #category : #initialization }
-MiReportBrowser >> setModelBeforeInitialization: aModel [
-	super setModelBeforeInitialization: aModel.
-	aModel browser: self
+MiReportBrowser >> setModelBeforeInitialization: aBrowserModel [
+	aBrowserModel ifNil: [ ^self ].
+
+	model := aBrowserModel.
 ]
 
 { #category : #actions }
@@ -285,7 +319,14 @@ MiReportBrowser >> settings [
 ]
 
 { #category : #initialization }
+MiReportBrowser >> updateModelCells [
+
+	model cellList: notebook allModelCells.
+]
+
+{ #category : #initialization }
 MiReportBrowser >> updateWithFile: aFileReference [
 
-	editor text: aFileReference contents
+	model importCellsFrom: aFileReference.
+	notebook updateAll.
 ]

@@ -10,15 +10,32 @@ Class {
 		'rightMenuCanvas',
 		'deleteButton',
 		'addCellBellowButton',
-		'addCellAboveButton'
+		'addCellAboveButton',
+		'moveCellUp',
+		'moveCellDown',
+		'previewCell'
 	],
 	#category : #'MooseIDE-Export-Report'
 }
+
+{ #category : #converting }
+MiNoteBookAbstractCell >> asModelCell [
+
+	self subclassResponsibility
+]
 
 { #category : #api }
 MiNoteBookAbstractCell >> beCode [
 
 	self subclassResponsibility
+]
+
+{ #category : #initialization }
+MiNoteBookAbstractCell >> beSelected [
+
+	leftMenuCanvas canvas color: self selectedColor.
+	rightMenuCanvas canvas color: self selectedColor.
+	previewCell ifNotNil: [ :c | c beSelected ]
 ]
 
 { #category : #api }
@@ -28,10 +45,36 @@ MiNoteBookAbstractCell >> beText [
 ]
 
 { #category : #initialization }
+MiNoteBookAbstractCell >> beUnselected [
+
+	leftMenuCanvas canvas color: self unselectedColor.
+	rightMenuCanvas canvas color: self unselectedColor
+]
+
+{ #category : #accessing }
+MiNoteBookAbstractCell >> cell [
+
+	^ cell
+]
+
+{ #category : #initialization }
+MiNoteBookAbstractCell >> createDescriptionFor: aString [
+
+	^ aString asTextMorph
+		  backgroundColor: (Color fromHexString: 'EAEAEA');
+		  borderColor: (Color fromHexString: '747474');
+		  textColor: (Color fromHexString: 'A5A5A5');
+		  borderWidth: 1;
+		  cornerStyle: #rounded;
+		  margins: 2;
+		  yourself
+]
+
+{ #category : #initialization }
 MiNoteBookAbstractCell >> initializeLayout [
 
 	self layout: (SpBoxLayout newLeftToRight
-			 add: leftMenuCanvas width: 30;
+			 add: leftMenuCanvas width: 80;
 			 add: cell;
 			 add: rightMenuCanvas width: 100;
 			 yourself)
@@ -41,33 +84,62 @@ MiNoteBookAbstractCell >> initializeLayout [
 MiNoteBookAbstractCell >> initializePresenters [
 
 	| buttons menu |
+	self whenDisplayDo: [ 
+		self withAdapterDo: [ 
+			self adapter children second textArea announcer
+				when: MorphGotFocus
+				do: [ self beSelected ].
+			self adapter children second textArea announcer
+				when: MorphLostFocus
+				do: [ self beUnselected ] ].
+		self updateHeight ].
 	removeButton := self newButton
 		                icon: (Smalltalk ui iconNamed: #remove);
 		                action: [ self remove ].
 	leftMenuCanvas := self newRoassal.
-	leftMenuCanvas canvas color: Color red.
+	leftMenuCanvas canvas color: self unselectedColor.
 	rightMenuCanvas := self newRoassal.
 	rightMenuCanvas canvas color: Color transparent.
-	deleteButton := RSBox new
-		                color: Color gray;
-		                size: 20;
+	deleteButton := RSBitmap new
+		                form: (self iconNamed: #mooseTrash);
+		                model: 'Delete';
+		                size: 16;
 		                yourself.
 	deleteButton when: RSMouseClick do: [ self remove ].
 
-	addCellBellowButton := RSBox new
-		                       color: Color gray;
-		                       size: 20;
+	addCellBellowButton := RSBitmap new
+		                       form: (self iconNamed: #mooseAddBellow);
+		                       model: 'Add after';
+		                       size: 16;
 		                       yourself.
-	addCellAboveButton := RSBox new
-		                      color: Color gray;
-		                      size: 20;
+	addCellAboveButton := RSBitmap new
+		                      form: (self iconNamed: #mooseAddAbove);
+		                      model: 'Add before';
+		                      size: 16;
 		                      yourself.
+	moveCellUp := RSBitmap new
+		              form: (self iconNamed: #mooseUp);
+		              model: 'Move up cell';
+		              size: 16;
+		              yourself.
+	moveCellDown := RSBitmap new
+		                form: (self iconNamed: #mooseDown);
+		                model: 'Move down cell';
+		                size: 16;
+		                yourself.
 	buttons := RSGroup withAll: { 
-			           deleteButton.
+			           moveCellUp.
+			           moveCellDown.
 			           addCellBellowButton.
-			           addCellAboveButton }.
+			           addCellAboveButton.
+
+			           deleteButton }.
+	buttons @ (RSMorphicPopupInteraction new
+		 morphBuilder: [ :model | self createDescriptionFor: model ];
+		 yourself).
 	RSHorizontalLineLayout new
 		alignMiddle;
+		horizontalGap: 2;
 		on: buttons.
 	menu := RSComposite new
 		        addAll: buttons;
@@ -79,12 +151,26 @@ MiNoteBookAbstractCell >> initializePresenters [
 	rightMenuCanvas canvas add: menu.
 	menu adjustToChildren.
 	menu padding: 10.
+	moveCellUp when: RSMouseClick do: [ self moveUp ].
+	moveCellDown when: RSMouseClick do: [ self moveDown ].
 	addCellBellowButton
 		when: RSMouseClick
 		do: [ notebook addTextCellAfter: self ].
 	addCellAboveButton
 		when: RSMouseClick
 		do: [ notebook addTextCellBefore: self ]
+]
+
+{ #category : #initialization }
+MiNoteBookAbstractCell >> moveDown [
+
+	notebook moveDown: self
+]
+
+{ #category : #initialization }
+MiNoteBookAbstractCell >> moveUp [
+	
+	notebook moveUp: self
 ]
 
 { #category : #accessing }
@@ -99,10 +185,28 @@ MiNoteBookAbstractCell >> notebook: anObject [
 	notebook := anObject
 ]
 
+{ #category : #accessing }
+MiNoteBookAbstractCell >> previewCell [
+
+	^ previewCell
+]
+
+{ #category : #accessing }
+MiNoteBookAbstractCell >> previewCell: anObject [
+
+	previewCell := anObject
+]
+
 { #category : #initialization }
 MiNoteBookAbstractCell >> remove [
 
 	notebook removeCell: self
+]
+
+{ #category : #initialization }
+MiNoteBookAbstractCell >> selectedColor [
+
+	^ Color fromHexString: '77A8C8'
 ]
 
 { #category : #protocol }
@@ -131,46 +235,28 @@ MiNoteBookAbstractCell >> textAreaWidth [
 ]
 
 { #category : #initialization }
-MiNoteBookAbstractCell >> updateHeight [
+MiNoteBookAbstractCell >> unselectedColor [
 
-	| textMorph height |
-	self layout adapter ifNil: [ ^ self ].
-	[ 
-	textMorph := self layout adapter children detect: [ :c | 
-		             c class = SpRubScrolledTextMorph ] ]
-		on: NotFound
-		do: [ ^ self ].
-		
-	textMorph scrollPane
-		vHideScrollbar;
-		vScrollbarShowNever.
-	height := (RubEditingArea new
-		           font: textMorph font;
-		           width: textMorph width;
-		           beWrapped;
-		           updateTextWith: cell text) height.
-	textMorph width traceCr.
-	textMorph owner owner height: height
+	^ Color transparent
 ]
 
 { #category : #initialization }
-MiNoteBookAbstractCell >> updateHeight: width [
+MiNoteBookAbstractCell >> updateHeight [
 
 	| textMorph height |
-	(self layout adapter isNil or: [ 
-		 self layout adapter children size < 2 ]) ifTrue: [ ^ self ].
-
-	textMorph := self layout adapter children second.
-	textMorph scrollPane
-		vHideScrollbar;
-		vScrollbarShowNever.
-	height:= (RubEditingArea new
-			 font: textMorph font;
-			 width: width;
-			 beWrapped;
-			 updateTextWith: cell text) height.
-	textMorph width traceCr.
-	textMorph owner owner height: height
+	UIManager default defer: [ 
+		notebook headerSep withAdapterDo: [ :a | 
+			cell withAdapterDo: [ :b | 
+				textMorph := b widget.
+				textMorph scrollPane
+					vHideScrollbar;
+					vScrollbarShowNever.
+				height := (RubEditingArea new
+					           font: textMorph font;
+					           width: a widget width - 182;
+					           beWrapped;
+					           updateTextWith: cell text) height.
+				self withAdapterDo: [ :c | c widget height: height + 2 ] ] ] ]
 ]
 
 { #category : #enumerating }
