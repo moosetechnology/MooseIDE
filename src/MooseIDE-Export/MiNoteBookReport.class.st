@@ -185,7 +185,7 @@ MiNoteBookReport >> relayout [
 	cellList do: [ :cell | newLayout add: cell expand: false ].
 
 	cellLayout removeAll.
-	cellLayout add: (SpPresenter new
+	cellLayout add: (self newPresenter
 			 layout: newLayout;
 			 yourself).
 	cellList do: [ :cell | cell announceDisplayed ].
@@ -197,6 +197,29 @@ MiNoteBookReport >> removeCell: aCell [
 
 	cellList remove: aCell.
 	self relayout
+]
+
+{ #category : #adding }
+MiNoteBookReport >> scrollTo: aMiNoteBookCell [
+
+	self layout withAdapterDo: [ :a | 
+		aMiNoteBookCell withAdapterDo: [ :b | 
+			a widget scrollToShow: b widget bounds ] ]
+]
+
+{ #category : #removing }
+MiNoteBookReport >> select: aCell [
+
+	selectedCell := aCell.
+	cellList do: [ :c | c unselect ].
+	selectedCell select
+]
+
+{ #category : #adding }
+MiNoteBookReport >> selectAndScrollTo: aMiNoteBookCell [
+
+	self select: aMiNoteBookCell.
+	self scrollTo: aMiNoteBookCell
 ]
 
 { #category : #adding }

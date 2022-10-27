@@ -10,9 +10,9 @@ Class {
 
 { #category : #actions }
 MiNoteBookCellPreview >> beSelected [
-
+	
 	self owner select: self.
-	"cell ifNotNil: [ :c | c beSelected ]"
+	
 ]
 
 { #category : #accessing }
@@ -45,7 +45,8 @@ MiNoteBookCellPreview >> initializePresenters [
 		textPresenter withAdapterDo: [ :a | 
 			a widget backgroundColor: self unselectedColor ] ].
 	self initializeLayout.
-	textPresenter eventHandler whenMouseDownDo: [ self beSelected ]
+	textPresenter eventHandler whenMouseDownDo: [ :anEvent | 
+		self selectMe ]
 ]
 
 { #category : #initialization }
@@ -61,6 +62,19 @@ MiNoteBookCellPreview >> select [
 
 	textPresenter withAdapterDo: [ :a | 
 		a widget backgroundColor: (Color fromHexString: '77A8C8') ]
+]
+
+{ #category : #'as yet unclassified' }
+MiNoteBookCellPreview >> selectAndScrollToMe [
+
+	self owner selectAndScrollTo: self
+]
+
+{ #category : #'as yet unclassified' }
+MiNoteBookCellPreview >> selectMe [
+
+	self owner select: self.
+	cell ifNotNil: [ :c | c selectAndScrollToMe ]
 ]
 
 { #category : #accessing }

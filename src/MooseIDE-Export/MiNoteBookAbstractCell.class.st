@@ -33,8 +33,7 @@ MiNoteBookAbstractCell >> beCode [
 { #category : #initialization }
 MiNoteBookAbstractCell >> beSelected [
 
-	leftMenuCanvas canvas color: self selectedColor.
-	rightMenuCanvas canvas color: self selectedColor.
+	notebook select: self.
 	previewCell ifNotNil: [ :c | c beSelected ]
 ]
 
@@ -88,10 +87,10 @@ MiNoteBookAbstractCell >> initializePresenters [
 		self withAdapterDo: [ 
 			self adapter children second textArea announcer
 				when: MorphGotFocus
-				do: [ self beSelected ].
-			self adapter children second textArea announcer
+				do: [ self selectMe ].
+			"self adapter children second textArea announcer
 				when: MorphLostFocus
-				do: [ self beUnselected ] ].
+				do: [ self beUnselected ]" ].
 		self updateHeight ].
 	removeButton := self newButton
 		                icon: (Smalltalk ui iconNamed: #remove);
@@ -204,6 +203,26 @@ MiNoteBookAbstractCell >> remove [
 ]
 
 { #category : #initialization }
+MiNoteBookAbstractCell >> select [
+
+	leftMenuCanvas canvas color: self selectedColor.
+	rightMenuCanvas canvas color: self selectedColor.
+]
+
+{ #category : #'as yet unclassified' }
+MiNoteBookAbstractCell >> selectAndScrollToMe [
+
+	notebook selectAndScrollTo: self
+]
+
+{ #category : #'as yet unclassified' }
+MiNoteBookAbstractCell >> selectMe [
+
+	notebook select: self.
+	previewCell ifNotNil: [ :c | c selectAndScrollToMe ]
+]
+
+{ #category : #initialization }
 MiNoteBookAbstractCell >> selectedColor [
 
 	^ Color fromHexString: '77A8C8'
@@ -232,6 +251,12 @@ MiNoteBookAbstractCell >> textAreaWidth [
 
 	self layout adapter ifNil: [ ^ -1 ].
 	^ self layout adapter children second width
+]
+
+{ #category : #initialization }
+MiNoteBookAbstractCell >> unselect [
+
+	self beUnselected
 ]
 
 { #category : #initialization }

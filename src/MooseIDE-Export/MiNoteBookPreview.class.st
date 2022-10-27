@@ -53,13 +53,25 @@ MiNoteBookPreview >> relayout [
 ]
 
 { #category : #actions }
+MiNoteBookPreview >> scrollTo: aMiNoteBookCellPreview [
+
+	self layout withAdapterDo: [ :a | 
+		aMiNoteBookCellPreview withAdapterDo: [ :b | 
+			a widget scrollToShow: b widget bounds ] ]
+]
+
+{ #category : #actions }
 MiNoteBookPreview >> select: aMiNoteBookCellPreview [
 
 	previewCells do: [ :c | c unselected ].
 	aMiNoteBookCellPreview select.
-	self layout withAdapterDo: [ :a | 
-		aMiNoteBookCellPreview withAdapterDo: [ :b | 
-			a widget scrollToShow: b widget bounds ] ]
+]
+
+{ #category : #actions }
+MiNoteBookPreview >> selectAndScrollTo: aMiNoteBookCellPreview [
+
+	self select: aMiNoteBookCellPreview.
+	self scrollTo: aMiNoteBookCellPreview
 ]
 
 { #category : #actions }
