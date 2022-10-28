@@ -3,10 +3,23 @@ Class {
 	#superclass : #MiPresenter,
 	#instVars : [
 		'previewCells',
-		'sep'
+		'sep',
+		'browser'
 	],
 	#category : #'MooseIDE-Export-Report'
 }
+
+{ #category : #accessing }
+MiNoteBookPreview >> browser [
+
+	^ browser
+]
+
+{ #category : #accessing }
+MiNoteBookPreview >> browser: anObject [
+
+	browser := anObject
+]
 
 { #category : #initialization }
 MiNoteBookPreview >> initialize [
@@ -40,8 +53,12 @@ MiNoteBookPreview >> newPreviewCellWith: aString [
 { #category : #initialization }
 MiNoteBookPreview >> relayout [
 
-	| newLayout |
+	| newLayout sep1 |
 	newLayout := SpBoxLayout newTopToBottom.
+	newLayout spacing: 10.
+	sep1 := self newRoassal.
+	sep1 canvas color: Color transparent.
+	newLayout add: sep1 height: 1.
 	previewCells do: [ :e | newLayout add: e expand: false ].
 	self layout: (SpScrollableLayout with: (SpBoxLayout newLeftToRight
 				  spacing: 6;

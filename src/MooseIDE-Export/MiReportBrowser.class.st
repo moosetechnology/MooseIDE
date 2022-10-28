@@ -176,7 +176,9 @@ MiReportBrowser >> initializePresenters [
 
 	self initializeToolbar.
 	notebook := self instantiate: MiNoteBookReport.
+	notebook browser: self.
 	notebookPreview := self instantiate: MiNoteBookPreview.
+	notebookPreview browser: self.
 	renderer := self newText
 		            beNotEditable;
 		            yourself.

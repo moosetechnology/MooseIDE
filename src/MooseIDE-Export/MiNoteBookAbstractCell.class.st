@@ -47,7 +47,9 @@ MiNoteBookAbstractCell >> beText [
 MiNoteBookAbstractCell >> beUnselected [
 
 	leftMenuCanvas canvas color: self unselectedColor.
-	rightMenuCanvas canvas color: self unselectedColor
+	leftMenuCanvas canvas signalUpdate.
+	rightMenuCanvas canvas color: self unselectedColor.
+	rightMenuCanvas canvas signalUpdate
 ]
 
 { #category : #accessing }
@@ -206,7 +208,9 @@ MiNoteBookAbstractCell >> remove [
 MiNoteBookAbstractCell >> select [
 
 	leftMenuCanvas canvas color: self selectedColor.
+	leftMenuCanvas canvas signalUpdate.
 	rightMenuCanvas canvas color: self selectedColor.
+	rightMenuCanvas canvas signalUpdate
 ]
 
 { #category : #'as yet unclassified' }
@@ -273,6 +277,9 @@ MiNoteBookAbstractCell >> updateHeight [
 		notebook headerSep withAdapterDo: [ :a | 
 			cell withAdapterDo: [ :b | 
 				textMorph := b widget.
+				textMorph
+					borderColor: Color gray translucent;
+					borderWidth: 1.
 				textMorph scrollPane
 					vHideScrollbar;
 					vScrollbarShowNever.

@@ -129,6 +129,7 @@ MiReportModel >> generateMicrodown [
 MiReportModel >> importCellsFrom: aFileReference [
 
 	| cells |
+	1halt.
 	cells := STON fromString: aFileReference contents.
 	cellList := cells.
 ]

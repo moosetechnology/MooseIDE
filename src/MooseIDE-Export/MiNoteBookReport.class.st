@@ -9,7 +9,8 @@ Class {
 		'interactionModel',
 		'headerSep',
 		'mooseModel',
-		'cellLayout'
+		'cellLayout',
+		'browser'
 	],
 	#category : #'MooseIDE-Export-Report'
 }
@@ -62,6 +63,18 @@ MiNoteBookReport >> addTextCellBefore: aCell [
 MiNoteBookReport >> allModelCells [
 
 	^ cellList asOrderedCollection collect: [ :cell | cell asModelCell ]
+]
+
+{ #category : #accessing }
+MiNoteBookReport >> browser [
+
+	^ browser
+]
+
+{ #category : #accessing }
+MiNoteBookReport >> browser: anObject [
+
+	browser := anObject
 ]
 
 { #category : #accessing }
@@ -121,7 +134,7 @@ MiNoteBookReport >> layoutSpacing [
 { #category : #accessing }
 MiNoteBookReport >> model [
 
-	^ self owner model
+	^ self browser model
 ]
 
 { #category : #accessing }
@@ -255,6 +268,7 @@ MiNoteBookReport >> updateAll [
 	self model cellList do: [ :c | 
 		cellList add: ((self instantiate: c presenterClass)
 				 notebook: self;
+				 text: c text;
 				 yourself) ].
 	selectedCell := cellList last.
 	self relayout
