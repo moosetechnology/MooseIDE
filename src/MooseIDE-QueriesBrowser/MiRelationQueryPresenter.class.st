@@ -35,8 +35,7 @@ MiRelationQueryPresenter >> configureQuery: anObject [
 MiRelationQueryPresenter >> initializeDropListForRelations: relationNames [
 
 	relationsList := relationNames
-		                 ifEmpty: [ 
-		                 self noParameterMessage: 'No relations available' ]
+		                 ifEmpty: [ self noParameterMessage: 'relations' ]
 		                 ifNotEmpty: [ 
 			                 self 
 				                 initializeRelationDroplistForValidQueryRelations:
