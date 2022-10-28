@@ -34,7 +34,7 @@ MiBusesPopup >> followNewBusNamed: aName [
 	newBus := self application busNamed: aName.
 
 	"Follow new bus"
-	browser isMiBrowser ifTrue: [ browser followBus: newBus ].
+	browser updateBusesPage.
 
 	"Update"
 	busesList filterInputPresenter clearContent.
@@ -47,7 +47,6 @@ MiBusesPopup >> initializePresenters [
 	busesList := self newSelectableListForPopoverExtent: 125 @ 150.
 	busesList display: [ :bus | bus name ].
 	busesList items: self application buses.
-	"busesList selectItems: browser buses."
 
 	busesList
 		onActivation: [ :bus | bus ifNotNil: [ browser followBus: bus ] ];
@@ -71,10 +70,8 @@ MiBusesPopup >> useTextInputForBusCreation [
 	busesList itemFilter: [ :each :pattern | 
 		true "We do not want to filter anything" ].
 
-	busesList filterInputPresenter whenSubmitDo: [ 
-		self followNewBusNamed: busesList filterInputPresenter text.
+	busesList filterInputPresenter whenSubmitDo: [ :busName | 
+		self followNewBusNamed: busName.
 		busesList filterInputPresenter clearContent.
-		busesList
-			items: self application buses;
-			selectItems: browser buses copy ]
+		busesList items: self application buses ]
 ]

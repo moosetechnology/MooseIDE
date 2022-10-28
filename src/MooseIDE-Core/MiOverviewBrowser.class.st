@@ -327,3 +327,10 @@ MiOverviewBrowser >> updateBrowsersListItems [
 
 	browsersListPresenter items: self openedBrowsers
 ]
+
+{ #category : #actions }
+MiOverviewBrowser >> updateBusesPage [
+
+	busesListPresenter items:
+		(self application buses collect: [ :bus | MiBusPresenter on: bus ])
+]
