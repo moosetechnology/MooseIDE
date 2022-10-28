@@ -168,16 +168,6 @@ MiImportModelFromSmalltalkDialog >> initializeConfigurationCheckBoxes [
 ]
 
 { #category : #initialization }
-MiImportModelFromSmalltalkDialog >> initializeDialogWindow: aDialog [
-
-	| importButton |
-	super initializeDialogWindow: aDialog. 
-	importButton := (aDialog buttons select: [ :button | button label = 'Import'  ]) first.
-	importButton disable.
-	packagesSelector whenSelectionChangedDo: [ :items | items ifEmpty: [ importButton disable ] ifNotEmpty: [ importButton enable]].
-]
-
-{ #category : #initialization }
 MiImportModelFromSmalltalkDialog >> initializeEntitiesCheckBoxes [
 
 	| checkBoxesLayout |
@@ -216,11 +206,8 @@ MiImportModelFromSmalltalkDialog >> initializePresenters [
 
 	modelNameField := self newTextInput text: 'MooseModel'.
 
-	packagesSelector := self instantiate: MiListSelector.
-	packagesSelector
-		initialListHeader: 'All packages in the system';
-		selectedListHeader: 'Packages in your model';
-		initialItems: RPackage organizer packageNames.
+	packagesSelector := self instantiate: SpChooserPresenter.
+	packagesSelector sourceItems: RPackage organizer packageNames.
 
 	advancedSettingsButton := self newToggleButton
 		label: 'Advanced settings';
@@ -269,7 +256,7 @@ MiImportModelFromSmalltalkDialog >> removeContext: aContext [
 { #category : #action }
 MiImportModelFromSmalltalkDialog >> selectedPackages [
 
-	^ packagesSelector selectedItems
+	^ packagesSelector chosenItems
 ]
 
 { #category : #action }
@@ -298,8 +285,9 @@ MiImportModelFromSmalltalkDialog >> simpleLayout [
 
 { #category : #action }
 MiImportModelFromSmalltalkDialog >> validateImportForm [
-	"checks that required fields are properly filled in"
-	packagesSelector selectedItems ifEmpty: [ Error signal: 'Please select at least one package' ].
-	modelNameField text ifEmpty: [ Error signal: 'Please name the model' ].
 
+	"checks that required fields are properly filled in"
+
+	packagesSelector chosenItems ifEmpty: [ Error signal: 'Please select at least one package' ].
+	modelNameField text ifEmpty: [ Error signal: 'Please name the model' ]
 ]
