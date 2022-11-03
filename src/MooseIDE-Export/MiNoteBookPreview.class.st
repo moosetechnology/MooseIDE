@@ -4,7 +4,11 @@ Class {
 	#instVars : [
 		'previewCells',
 		'sep',
-		'browser'
+		'browser',
+		'topMenu',
+		'closeButton',
+		'mainLayout',
+		'scrollLayout'
 	],
 	#category : #'MooseIDE-Export-Report'
 }
@@ -22,6 +26,12 @@ MiNoteBookPreview >> browser: anObject [
 ]
 
 { #category : #initialization }
+MiNoteBookPreview >> close [
+
+	browser closePreview
+]
+
+{ #category : #initialization }
 MiNoteBookPreview >> initialize [
 
 	super initialize.
@@ -31,8 +41,19 @@ MiNoteBookPreview >> initialize [
 { #category : #initialization }
 MiNoteBookPreview >> initializeLayout [
 
+	mainLayout := SpBoxLayout newTopToBottom
+		              add: self newRoassal;
+		              yourself.
+	scrollLayout := SpScrollableLayout with: (self newPresenter
+			                 layout: mainLayout;
+			                 yourself).
 	self layout: (SpBoxLayout newLeftToRight
+			 spacing: 6;
 			 add: sep width: 1;
+			 add: (SpBoxLayout newTopToBottom
+					  add: topMenu height: 16;
+					  add: scrollLayout;
+					  yourself);
 			 yourself)
 ]
 
@@ -41,38 +62,47 @@ MiNoteBookPreview >> initializePresenters [
 
 	sep := self newRoassal.
 	sep canvas color: Color gray translucent.
+	sep canvas when: RSExtentChangedEvent do: [ self updateHeight ].
+	topMenu := self newRoassal.
+	topMenu canvas color: Color transparent.
+	closeButton := RSBitmap new
+		               form: (Smalltalk ui icons iconNamed: #windowClose);
+		               model: 'Delete';
+		               size: 16;
+		               yourself.
+	topMenu canvas add: closeButton.
+	closeButton
+		setAsFixed;
+		translateBy: 8 @ 8.
+	closeButton when: RSMouseClick do: [ self close ].
+	self whenDisplayDo: [ self relayout ].
 	self initializeLayout
 ]
 
 { #category : #actions }
 MiNoteBookPreview >> newPreviewCellWith: aString [
 
-	^ (self instantiate: MiNoteBookCellPreview) text: aString
+	^ (self instantiate: MiNoteBookCellPreview)
+		  text: aString;
+		  parent: self;
+		  yourself
 ]
 
 { #category : #initialization }
 MiNoteBookPreview >> relayout [
 
-	| newLayout sep1 |
+	| newLayout |
 	newLayout := SpBoxLayout newTopToBottom.
-	newLayout spacing: 10.
-	sep1 := self newRoassal.
-	sep1 canvas color: Color transparent.
-	newLayout add: sep1 height: 1.
 	previewCells do: [ :e | newLayout add: e expand: false ].
-	self layout: (SpScrollableLayout with: (SpBoxLayout newLeftToRight
-				  spacing: 6;
-				  add: sep width: 1;
-				  add: newLayout;
-				  yourself)).
 
+	scrollLayout child layout: newLayout.
 	previewCells do: [ :e | e announceDisplayed ]
 ]
 
 { #category : #actions }
 MiNoteBookPreview >> scrollTo: aMiNoteBookCellPreview [
 
-	self layout withAdapterDo: [ :a | 
+	scrollLayout withAdapterDo: [ :a | 
 		aMiNoteBookCellPreview withAdapterDo: [ :b | 
 			a widget scrollToShow: b widget bounds ] ]
 ]
@@ -89,6 +119,12 @@ MiNoteBookPreview >> selectAndScrollTo: aMiNoteBookCellPreview [
 
 	self select: aMiNoteBookCellPreview.
 	self scrollTo: aMiNoteBookCellPreview
+]
+
+{ #category : #initialization }
+MiNoteBookPreview >> updateHeight [
+
+	previewCells do: [ :c | c updateHeight ]
 ]
 
 { #category : #actions }

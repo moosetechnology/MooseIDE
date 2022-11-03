@@ -62,11 +62,10 @@ MiNoteBookAbstractCell >> cell [
 MiNoteBookAbstractCell >> createDescriptionFor: aString [
 
 	^ aString asTextMorph
-		  backgroundColor: (Color fromHexString: 'EAEAEA');
-		  borderColor: (Color fromHexString: '747474');
-		  textColor: (Color fromHexString: 'A5A5A5');
+		  backgroundColor: (Color white alpha: 0.6);
+		  borderColor: Color gray;
+		  textColor: Color black;
 		  borderWidth: 1;
-		  cornerStyle: #rounded;
 		  margins: 2;
 		  yourself
 ]
@@ -89,10 +88,7 @@ MiNoteBookAbstractCell >> initializePresenters [
 		self withAdapterDo: [ 
 			self adapter children second textArea announcer
 				when: MorphGotFocus
-				do: [ self selectMe ].
-			"self adapter children second textArea announcer
-				when: MorphLostFocus
-				do: [ self beUnselected ]" ].
+				do: [ self selectMe ] ].
 		self updateHeight ].
 	removeButton := self newButton
 		                icon: (Smalltalk ui iconNamed: #remove);
@@ -213,13 +209,13 @@ MiNoteBookAbstractCell >> select [
 	rightMenuCanvas canvas signalUpdate
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #actions }
 MiNoteBookAbstractCell >> selectAndScrollToMe [
 
 	notebook selectAndScrollTo: self
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #actions }
 MiNoteBookAbstractCell >> selectMe [
 
 	notebook select: self.
@@ -272,10 +268,10 @@ MiNoteBookAbstractCell >> unselectedColor [
 { #category : #initialization }
 MiNoteBookAbstractCell >> updateHeight [
 
-	| textMorph height |
 	UIManager default defer: [ 
 		notebook headerSep withAdapterDo: [ :a | 
 			cell withAdapterDo: [ :b | 
+				| textMorph height width |
 				textMorph := b widget.
 				textMorph
 					borderColor: Color gray translucent;
@@ -283,9 +279,11 @@ MiNoteBookAbstractCell >> updateHeight [
 				textMorph scrollPane
 					vHideScrollbar;
 					vScrollbarShowNever.
+				width := a widget width.
+				textMorph scrollPane textArea withoutSelectionBar.
 				height := (RubEditingArea new
 					           font: textMorph font;
-					           width: a widget width - 182;
+					           width: width - 182;
 					           beWrapped;
 					           updateTextWith: cell text) height.
 				self withAdapterDo: [ :c | c widget height: height + 2 ] ] ] ]

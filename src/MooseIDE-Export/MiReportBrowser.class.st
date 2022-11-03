@@ -28,7 +28,9 @@ Class {
 		'showRawCheckbox',
 		'closePreviewButton',
 		'notebook',
-		'notebookPreview'
+		'notebookPreview',
+		'mainLayout',
+		'sep'
 	],
 	#category : #'MooseIDE-Export-Report'
 }
@@ -98,8 +100,8 @@ MiReportBrowser >> closePreview [
 
 	previewOpened ifFalse: [ ^ self ].
 	previewOpened := false.
-	self layout replaceAtIndex: 3 with: notebook.
-	notebook announceDisplayed.
+	mainLayout remove: notebookPreview.
+	notebook announceDisplayed
 ]
 
 { #category : #initialization }
@@ -160,14 +162,18 @@ MiReportBrowser >> initialize [
 { #category : #initialization }
 MiReportBrowser >> initializeLayout [
 
-	| sep |
 	sep := self newRoassal.
+	mainLayout := SpBoxLayout newLeftToRight
+		              beHomogeneous;
+		              spacing: 2;
+		              add: notebook;
+		              yourself.
 	sep canvas color: Color gray translucent.
 	self layout: (SpBoxLayout newTopToBottom
 			 spacing: 1;
 			 add: toolbar expand: false;
 			 add: sep height: 1;
-			 add: notebook;
+			 add: mainLayout;
 			 yourself)
 ]
 
@@ -175,6 +181,8 @@ MiReportBrowser >> initializeLayout [
 MiReportBrowser >> initializePresenters [
 
 	self initializeToolbar.
+	self whenDisplayDo: [ 
+		self window whenResizingDo: [ notebook updateHeight ] ].
 	notebook := self instantiate: MiNoteBookReport.
 	notebook browser: self.
 	notebookPreview := self instantiate: MiNoteBookPreview.
@@ -182,7 +190,6 @@ MiReportBrowser >> initializePresenters [
 	renderer := self newText
 		            beNotEditable;
 		            yourself.
-	self whenDisplayDo: [ notebook relayout ].
 	editor := self newCode
 		          withoutSyntaxHighlight;
 		          yourself.
@@ -255,19 +262,11 @@ MiReportBrowser >> mooseModel [
 { #category : #initialization }
 MiReportBrowser >> openPreview [
 
-	| sep |
 	previewOpened ifTrue: [ ^ self ].
 	previewOpened := true.
-	sep := self newRoassal.
-	sep canvas color: Color gray translucent.
-	self layout replaceAtIndex: 3 with: (self newPresenter
-			 layout: (SpBoxLayout newLeftToRight
-					  beHomogeneous;
-					  spacing: 2;
-					  add: notebook;
-					  add: notebookPreview;
-					  yourself);
-			 yourself).
+	mainLayout add: notebookPreview.
+	notebook announceDisplayed.
+	notebookPreview announceDisplayed.
 	self announceDisplayed
 ]
 
@@ -281,6 +280,12 @@ MiReportBrowser >> preview [
 		updateWithStringCollection:
 		self model executeAllCellsAsTextCollection
 		andCells: notebook cellList
+]
+
+{ #category : #accessing }
+MiReportBrowser >> previewOpened [
+
+	^ previewOpened
 ]
 
 { #category : #rendering }
@@ -305,6 +310,12 @@ Click to show in folder'.
 MiReportBrowser >> selectedEntities [
 
 	^ model mooseModel
+]
+
+{ #category : #accessing }
+MiReportBrowser >> sep [
+
+	^ sep
 ]
 
 { #category : #initialization }

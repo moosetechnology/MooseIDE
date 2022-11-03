@@ -83,6 +83,17 @@ MiNoteBookReport >> cellList [
 	^ cellList
 ]
 
+{ #category : #initialization }
+MiNoteBookReport >> defer: aBlock times: n [
+
+	n traceCr.
+	self withAdapterDo: [ :a | 
+		a widget defer: [ 
+			n <= 0
+				ifTrue: [ a widget defer: aBlock ]
+				ifFalse: [ self defer: aBlock times: n - 1 ] ] ]
+]
+
 { #category : #accessing }
 MiNoteBookReport >> headerSep [
 
@@ -116,6 +127,8 @@ MiNoteBookReport >> initializeLayout [
 MiNoteBookReport >> initializePresenters [
 
 	(headerSep := self newRoassal) canvas color: Color transparent.
+	headerSep canvas when: RSExtentChangedEvent do: [ self updateHeight ].
+	self whenDisplayDo: [ self updateHeight ].
 	self initializeLayout
 ]
 
@@ -192,6 +205,7 @@ MiNoteBookReport >> newTextCell [
 MiNoteBookReport >> relayout [
 
 	| newLayout |
+	
 	newLayout := SpBoxLayout newTopToBottom
 		             spacing: self layoutSpacing;
 		             yourself.
@@ -272,4 +286,10 @@ MiNoteBookReport >> updateAll [
 				 yourself) ].
 	selectedCell := cellList last.
 	self relayout
+]
+
+{ #category : #removing }
+MiNoteBookReport >> updateHeight [
+
+	cellList do: [ :c | c updateHeight ]
 ]

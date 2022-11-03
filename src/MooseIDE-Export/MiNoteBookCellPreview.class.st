@@ -3,7 +3,8 @@ Class {
 	#superclass : #MiPresenter,
 	#instVars : [
 		'textPresenter',
-		'cell'
+		'cell',
+		'parent'
 	],
 	#category : #'MooseIDE-Export-Report'
 }
@@ -11,7 +12,7 @@ Class {
 { #category : #actions }
 MiNoteBookCellPreview >> beSelected [
 	
-	self owner select: self.
+	self parent select: self.
 	
 ]
 
@@ -43,10 +44,10 @@ MiNoteBookCellPreview >> initializePresenters [
 	self whenDisplayDo: [ 
 		self updateHeight.
 		textPresenter withAdapterDo: [ :a | 
-			a widget backgroundColor: self unselectedColor ] ].
-	self initializeLayout.
-	textPresenter eventHandler whenMouseDownDo: [ :anEvent | 
-		self selectMe ]
+			UIManager default defer: [ 
+				a widget backgroundColor: self unselectedColor ] ] ].
+	self initializeLayout
+	
 ]
 
 { #category : #initialization }
@@ -57,6 +58,18 @@ MiNoteBookCellPreview >> morphFor: aPresenter from: aMorph [
 	^ self morphFor: aPresenter from: aMorph owner
 ]
 
+{ #category : #accessing }
+MiNoteBookCellPreview >> parent [
+
+	^ parent
+]
+
+{ #category : #accessing }
+MiNoteBookCellPreview >> parent: anObject [
+
+	parent := anObject
+]
+
 { #category : #actions }
 MiNoteBookCellPreview >> select [
 
@@ -64,16 +77,16 @@ MiNoteBookCellPreview >> select [
 		a widget backgroundColor: (Color fromHexString: '77A8C8') ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #actions }
 MiNoteBookCellPreview >> selectAndScrollToMe [
 
-	self owner selectAndScrollTo: self
+	self parent selectAndScrollTo: self
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #actions }
 MiNoteBookCellPreview >> selectMe [
 
-	self owner select: self.
+	self parent select: self.
 	cell ifNotNil: [ :c | c selectAndScrollToMe ]
 ]
 
@@ -98,9 +111,10 @@ MiNoteBookCellPreview >> unselectedColor [
 { #category : #initialization }
 MiNoteBookCellPreview >> updateHeight [
 
-	textPresenter withAdapterDo: [ :a | 
-		a widget defer: [
-			a widget scrollPane textArea height traceCr.
-			self withAdapterDo: [ :b | 
-				b widget height: a widget scrollPane textArea height ] ] ]
+	UIManager default defer: [ 
+		textPresenter withAdapterDo: [ :a | 
+			a widget defer: [ 
+				a widget scrollPane textArea withoutSelectionBar.
+				self withAdapterDo: [ :b | 
+					b widget height: a widget scrollPane textArea height ] ] ] ]
 ]
