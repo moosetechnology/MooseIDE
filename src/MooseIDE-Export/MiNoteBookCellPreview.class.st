@@ -40,14 +40,14 @@ MiNoteBookCellPreview >> initializeLayout [
 MiNoteBookCellPreview >> initializePresenters [
 
 	textPresenter := self newText.
-	textPresenter beNotEditable.
 	self whenDisplayDo: [ 
 		self updateHeight.
 		textPresenter withAdapterDo: [ :a | 
 			UIManager default defer: [ 
 				a widget backgroundColor: self unselectedColor ] ] ].
-	self initializeLayout
-	
+	self initializeLayout.
+	textPresenter eventHandler whenMouseDownDo: [ :anEvent | 
+		self selectMe ]
 ]
 
 { #category : #initialization }
@@ -85,7 +85,7 @@ MiNoteBookCellPreview >> selectAndScrollToMe [
 
 { #category : #actions }
 MiNoteBookCellPreview >> selectMe [
-
+	
 	self parent select: self.
 	cell ifNotNil: [ :c | c selectAndScrollToMe ]
 ]
