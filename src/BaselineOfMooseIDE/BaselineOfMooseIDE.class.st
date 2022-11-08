@@ -15,6 +15,7 @@ BaselineOfMooseIDE >> baseline: spec [
 		self famixQueries: spec.
 		self pharoAIHierachicalClustering: spec.
 		self stonCustomizer: spec.
+		self microdown: spec.
 
 		"Packages"
 		self definePackages: spec.
@@ -109,7 +110,7 @@ BaselineOfMooseIDE >> definePackages: spec [
 		package: 'MooseIDE-NewTools-Tests'
 		with: [ spec requires: #( 'MooseIDE-NewTools' 'MooseIDE-Tests' ) ];
 		package: 'MooseIDE-Export'
-		with: [ spec requires: #( 'MooseIDE-Core' ) ];
+		with: [ spec requires: #( 'MooseIDE-Core' 'Microdown' ) ];
 		package: 'MooseIDE-ColorPalette';
 		package: 'MooseIDE-ColorPalette-Tests'
 		with: [ spec requires: #( 'MooseIDE-ColorPalette' ) ];
@@ -182,6 +183,15 @@ BaselineOfMooseIDE >> labelContractor: spec [
 		baseline: 'LabelContractor'
 		with: [ 
 		spec repository: 'github://moosetechnology/LabelContractor/src' ]
+]
+
+{ #category : #dependencies }
+BaselineOfMooseIDE >> microdown: spec [
+
+	spec
+		baseline: 'Microdown'
+		with: [ 
+		spec repository: 'github://pillar-markup/Microdown:master/src' ]
 ]
 
 { #category : #dependencies }
