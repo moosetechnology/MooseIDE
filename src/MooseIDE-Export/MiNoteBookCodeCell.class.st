@@ -1,7 +1,10 @@
+"
+I am a code cell presenter. I allow user to code with the bindings given by the browser.
+"
 Class {
 	#name : #MiNoteBookCodeCell,
 	#superclass : #MiNoteBookAbstractCell,
-	#category : #'MooseIDE-Export-Report'
+	#category : #'MooseIDE-Export-Notebook'
 }
 
 { #category : #converting }

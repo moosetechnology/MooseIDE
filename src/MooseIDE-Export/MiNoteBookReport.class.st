@@ -1,3 +1,6 @@
+"
+I am the note book editor. I am responsible to manage cells (create, delete, move, update). 
+"
 Class {
 	#name : #MiNoteBookReport,
 	#superclass : #MiPresenter,
@@ -12,7 +15,7 @@ Class {
 		'cellLayout',
 		'browser'
 	],
-	#category : #'MooseIDE-Export-Report'
+	#category : #'MooseIDE-Export-Notebook'
 }
 
 { #category : #adding }

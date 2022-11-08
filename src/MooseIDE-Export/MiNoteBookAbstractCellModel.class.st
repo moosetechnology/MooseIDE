@@ -1,3 +1,7 @@
+"
+I am the abstract class of cell model. I am used by the report model to store text in a cell.
+And I am responsible to print the text I contain in a stream with a given context.
+"
 Class {
 	#name : #MiNoteBookAbstractCellModel,
 	#superclass : #Object,
@@ -5,7 +9,7 @@ Class {
 		'text',
 		'model'
 	],
-	#category : #'MooseIDE-Export-Report'
+	#category : #'MooseIDE-Export-Notebook'
 }
 
 { #category : #helpers }

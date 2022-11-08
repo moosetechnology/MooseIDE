@@ -1,3 +1,6 @@
+"
+I am a preview cell presenter. I am linked to a cell presenter and used to dispay its content in the preview area.
+"
 Class {
 	#name : #MiNoteBookCellPreview,
 	#superclass : #MiPresenter,
@@ -6,7 +9,7 @@ Class {
 		'cell',
 		'parent'
 	],
-	#category : #'MooseIDE-Export-Report'
+	#category : #'MooseIDE-Export-Notebook'
 }
 
 { #category : #actions }
@@ -39,7 +42,9 @@ MiNoteBookCellPreview >> initializeLayout [
 { #category : #initialization }
 MiNoteBookCellPreview >> initializePresenters [
 
-	textPresenter := self newText.
+	textPresenter := self newText
+		                 beNotEditable;
+		                 yourself.
 	self whenDisplayDo: [ 
 		self updateHeight.
 		textPresenter withAdapterDo: [ :a | 

@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'receiver'
 	],
-	#category : #'MooseIDE-Export-Report'
+	#category : #'MooseIDE-Export-Notebook'
 }
 
 { #category : #accessing }

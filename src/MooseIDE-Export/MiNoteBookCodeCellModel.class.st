@@ -1,7 +1,10 @@
+"
+I am a code cell model. I can execute a code with a given context.
+"
 Class {
 	#name : #MiNoteBookCodeCellModel,
 	#superclass : #MiNoteBookAbstractCellModel,
-	#category : #'MooseIDE-Export-Report'
+	#category : #'MooseIDE-Export-Notebook'
 }
 
 { #category : #helpers }

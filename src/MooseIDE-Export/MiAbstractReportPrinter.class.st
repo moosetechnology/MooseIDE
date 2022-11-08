@@ -8,7 +8,7 @@ Class {
 		'micBuilder',
 		'stream'
 	],
-	#category : #'MooseIDE-Export-Report'
+	#category : #'MooseIDE-Export-Notebook'
 }
 
 { #category : #printing }

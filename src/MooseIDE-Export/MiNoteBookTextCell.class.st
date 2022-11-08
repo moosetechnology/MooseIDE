@@ -1,7 +1,10 @@
+"
+I am a microdown cell presenter.
+"
 Class {
 	#name : #MiNoteBookTextCell,
 	#superclass : #MiNoteBookAbstractCell,
-	#category : #'MooseIDE-Export-Report'
+	#category : #'MooseIDE-Export-Notebook'
 }
 
 { #category : #converting }

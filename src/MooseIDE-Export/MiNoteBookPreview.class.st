@@ -1,3 +1,6 @@
+"
+I am a preview of the document. I am responsible to create preview cells and connect them with there cell presenters.
+"
 Class {
 	#name : #MiNoteBookPreview,
 	#superclass : #MiPresenter,
@@ -10,7 +13,7 @@ Class {
 		'mainLayout',
 		'scrollLayout'
 	],
-	#category : #'MooseIDE-Export-Report'
+	#category : #'MooseIDE-Export-Notebook'
 }
 
 { #category : #accessing }

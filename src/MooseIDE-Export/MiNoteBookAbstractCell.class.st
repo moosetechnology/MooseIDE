@@ -1,3 +1,7 @@
+"
+I am an abstract class for note book cells presenters.
+I am responsible to adapt my size according to the text contaied in my text presenter.
+"
 Class {
 	#name : #MiNoteBookAbstractCell,
 	#superclass : #MiPresenter,
@@ -15,7 +19,7 @@ Class {
 		'moveCellDown',
 		'previewCell'
 	],
-	#category : #'MooseIDE-Export-Report'
+	#category : #'MooseIDE-Export-Notebook'
 }
 
 { #category : #converting }

@@ -1,22 +1,45 @@
 "
 I am the model of the report builder.
+
+I store a collection of cell models.
+
+You can instantiate me with a moose notebook file (.ston):
+
+```
+builder := MiReportBuilder instantiateWith: '/path/to/notebook.ston' on: (MooseModel root at: 1).
+```
+
+Once a notebook is loaded, you can execute the notebook and export the reslut:
+
+```
+builder exportToTextAt: '/path/to/your/notebook.md' asFileReference
+```
+
+See export protocole (instance side) for more export methods.
 "
 Class {
 	#name : #MiReportModel,
 	#superclass : #Object,
 	#instVars : [
-		'browser',
 		'mooseModel',
-		'textEdited',
 		'textEditedSource',
-		'sourceText',
 		'needToUpdate',
 		'micDocument',
 		'cellList',
-		'context'
+		'context',
+		'generatedDocument'
 	],
-	#category : #'MooseIDE-Export-Report'
+	#category : #'MooseIDE-Export-Notebook'
 }
+
+{ #category : #initialization }
+MiReportModel class >> initializeWith: aFileReference on: aMooseModel [
+
+	^ self new
+		  importCellsFrom: aFileReference;
+		  followEntity: aMooseModel;
+		  yourself
+]
 
 { #category : #accessing }
 MiReportModel >> cellList [
@@ -25,18 +48,10 @@ MiReportModel >> cellList [
 ]
 
 { #category : #accessing }
-MiReportModel >> cellList: anObject [
+MiReportModel >> cellList: anOrderedCollection [
 
-	cellList := anObject
-]
-
-{ #category : #actions }
-MiReportModel >> checkTextEdited [
-
-	sourceText ifNil: [ 
-		self inform: 'There is no source to export.'.
-		^ false ].
-	^ true
+	needToUpdate := true.
+	cellList := anOrderedCollection
 ]
 
 { #category : #accessing }
@@ -66,79 +81,96 @@ MiReportModel >> defaultBindingsWithStream: aStream [
 { #category : #actions }
 MiReportModel >> executeAllCells [
 
-	^ String streamContents: [ :s | 
-		  self initializeContextWithStream: s.
-		  cellList do: [ :cell | 
-			  cell printContentIn: s withContext: context.
-			  s nextPut: Character cr ] ]
+	needToUpdate ifFalse: [ ^ generatedDocument ].
+	generatedDocument := String streamContents: [ :s | 
+		              self initializeContextWithStream: s.
+		              cellList do: [ :cell | 
+			              cell printContentIn: s withContext: context.
+			              s nextPut: Character cr ] ].
+	needToUpdate := false.
+	^ generatedDocument
 ]
 
 { #category : #actions }
 MiReportModel >> executeAllCellsAsTextCollection [
 
+	| textCollection |
 	self initializeContext.
-	^ cellList collect: [ :cell | 
-		  String streamContents: [ :s | 
-			  cell printContentIn: s withContext: context ] ]
+
+	generatedDocument := String streamContents: [ :p | 
+		              textCollection := cellList collect: [ :cell | 
+			                                | str |
+			                                str := String streamContents: [ :s | 
+				                                       cell
+					                                       printContentIn: s
+					                                       withContext: context ].
+			                                p nextPutAll: str.
+			                                p nextPut: Character cr.
+			                                str ] ].
+	^ textCollection
 ]
 
-{ #category : #actions }
-MiReportModel >> exportToHTML [
+{ #category : #export }
+MiReportModel >> exportDocumentAt: aFileReference [
 
-	| aFile |
-	self checkTextEdited ifFalse: [ ^self ].
-	aFile := browser
-		         chooseTextFile: 'Chose export destination'
-		         extensions: #( 'html' )
-		         path: 'mooseReport.html'.
-	aFile ifNotNil: [ 
-		aFile writeStreamDo: [ :stream | 
-			stream nextPutAll: (MicHTMLVisitor asHTMLString: self generateMicrodown) ].
-		browser reportExported: aFile ]
+	"Export the cell list in a ston file."
+
+	aFileReference ifNil: [ ^ self ].
+	aFileReference ensureDelete.
+	aFileReference ifNotNil: [ 
+		aFileReference writeStreamDo: [ :s | STON put: cellList onStream: s ] ]
 ]
 
-{ #category : #actions }
-MiReportModel >> exportToText [
+{ #category : #export }
+MiReportModel >> exportToHTMLAt: aFileReference [
 
-	| aFile |
-	aFile := '/Users/slabsar/Documents/cells.ston' asFileReference.
-	aFile ensureCreateFile.
-	aFile ifNotNil: [ 
-		aFile writeStreamDo: [ :s | 
-		STON put: cellList onStream: s ] ]
+	"This will use the microdown HTML visitor to export the document to HTML. So your document should respect Microdown specs."
+	aFileReference ifNil: [ ^ self ].
+	aFileReference writeStreamDo: [ :stream | 
+		stream nextPutAll: (MicHTMLVisitor asHTMLString: self generatedDocument) ]
+]
+
+{ #category : #export }
+MiReportModel >> exportToTextAt: aFileReference [
+
+	"Export the generated document, i.e., the resulting text of all cells execution."
+
+	aFileReference ifNil: [ ^ self ].
+	aFileReference ensureDelete.
+	aFileReference ifNotNil: [ 
+		aFileReference writeStreamDo: [ :s | s << generatedDocument ] ]
 ]
 
 { #category : #actions }
 MiReportModel >> followEntity: aMooseModel [
-	mooseModel := aMooseModel 
+
+	mooseModel := aMooseModel
 ]
 
-{ #category : #actions }
-MiReportModel >> generateMicrodown [
+{ #category : #accessing }
+MiReportModel >> generatedDocument [
 
-	needToUpdate ifFalse: [ ^ textEdited ].
-	needToUpdate := false.
-	micDocument := MiCodeEvaluator new
-		               model: mooseModel;
-		               visit: (Microdown parse: self sourceText).
-	self textEdited: (MiMicrodownPrettyPrinter new visit: micDocument).
-	^ textEdited
+	^ generatedDocument
+]
+
+{ #category : #accessing }
+MiReportModel >> generatedDocument: anObject [
+
+	generatedDocument := anObject.
 ]
 
 { #category : #actions }
 MiReportModel >> importCellsFrom: aFileReference [
 
-	| cells |
-	1halt.
-	cells := STON fromString: aFileReference contents.
-	cellList := cells.
+	aFileReference ifNil: [ ^ self ].
+	cellList := STON fromString: aFileReference contents
 ]
 
 { #category : #initialization }
 MiReportModel >> initialize [
 
 	super initialize.
-	needToUpdate := false.
+	needToUpdate := true.
 	cellList := OrderedCollection new
 ]
 
@@ -168,29 +200,4 @@ MiReportModel >> micDocument [
 MiReportModel >> mooseModel [
 
 	^ mooseModel 
-]
-
-{ #category : #accessing }
-MiReportModel >> sourceText [
-
-	^ sourceText
-]
-
-{ #category : #accessing }
-MiReportModel >> sourceText: anObject [
-
-	needToUpdate := true.
-	sourceText := anObject
-]
-
-{ #category : #accessing }
-MiReportModel >> textEdited [
-
-	^ textEdited
-]
-
-{ #category : #accessing }
-MiReportModel >> textEdited: anObject [
-
-	textEdited := anObject.
 ]

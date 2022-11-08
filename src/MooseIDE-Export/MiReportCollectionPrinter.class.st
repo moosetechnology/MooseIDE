@@ -4,7 +4,7 @@ I am a printer, used to print collections in a stream.
 Class {
 	#name : #MiReportCollectionPrinter,
 	#superclass : #MiAbstractReportPrinter,
-	#category : #'MooseIDE-Export-Report'
+	#category : #'MooseIDE-Export-Notebook'
 }
 
 { #category : #printing }
