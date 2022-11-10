@@ -566,7 +566,8 @@ MiArchitecturalMapBuilder >> renderLinesIn: aCanvas [
 { #category : #building }
 MiArchitecturalMapBuilder >> setDependencies [
 
-	tagNodes do: [ :tagNode | self setDependenciesForTag: tagNode ]
+	tagNodes do: [ :tagNode | self setDependenciesForTag: tagNode ].
+	allEntities do: [ :e | self setDependenciesForEntity: e ]
 ]
 
 { #category : #building }
@@ -578,6 +579,21 @@ MiArchitecturalMapBuilder >> setDependenciesFor: aNode [
 	incoming do: [ :e | 
 		(nodeMooseIDDict at: e source mooseID ifAbsent: [ nil ]) ifNotNil: [ 
 			:hNode | hNode dependencyTo: aNode ] ]
+]
+
+{ #category : #building }
+MiArchitecturalMapBuilder >> setDependenciesForEntity: anEntity [
+
+	| associationTypes |
+	associationTypes := mapModel associationTypes.
+
+	associationTypes do: [ :at | 
+		| assocs |
+		assocs := anEntity queryLocal: #in with: at.
+		assocs do: [ :e | 
+			(nodeMooseIDDict at: e source mooseID ifAbsent: [ nil ]) ifNotNil: [ 
+				:hNode | 
+				hNode dependencyTo: (nodeMooseIDDict at: anEntity mooseID) ] ] ]
 ]
 
 { #category : #building }

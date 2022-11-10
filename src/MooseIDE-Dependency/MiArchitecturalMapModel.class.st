@@ -69,6 +69,12 @@ MiArchitecturalMapModel >> assocTypeToColorDict [
 	^ assocTypeToColorDict
 ]
 
+{ #category : #accessing }
+MiArchitecturalMapModel >> associationTypes [
+
+	^ settings getItemValue: #associationTypes
+]
+
 { #category : #initialization }
 MiArchitecturalMapModel >> associationTypesSetting [
 
@@ -135,7 +141,8 @@ MiArchitecturalMapModel >> entities [
 { #category : #accessing }
 MiArchitecturalMapModel >> entities: anObject [
 
-	entities := anObject
+	entities := anObject.
+	self updateSettings
 ]
 
 { #category : #initialization }
@@ -245,4 +252,11 @@ MiArchitecturalMapModel >> tags [
 MiArchitecturalMapModel >> toolName [
 
 	^ browser title
+]
+
+{ #category : #updating }
+MiArchitecturalMapModel >> updateSettings [
+
+	(settings itemNamed: #associationTypes) possibleValues:
+		self allAssociationTypes
 ]
