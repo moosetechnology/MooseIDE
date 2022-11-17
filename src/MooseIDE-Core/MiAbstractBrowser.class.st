@@ -273,6 +273,17 @@ MiAbstractBrowser class >> open [
 		  yourself
 ]
 
+{ #category : #'instance creation' }
+MiAbstractBrowser class >> openOn: anEntity [
+
+	^ (self on: self newModel)
+		  open;
+		  receiveEntity: anEntity;
+		  beFrozen;
+		  followBus: self currentApplication defaultBus;
+		  yourself
+]
+
 { #category : #accessing }
 MiAbstractBrowser class >> taskbarIcon [
 	^MooseIcons mooseIcon
@@ -283,6 +294,13 @@ MiAbstractBrowser class >> taskbarIcon [
 MiAbstractBrowser class >> windowSize [
 
 	^ 500 @ 400
+]
+
+{ #category : #actions }
+MiAbstractBrowser >> beFrozen [
+
+	self receivingMode: MiFreezeMode.
+	self window updateReceivingModeButtons
 ]
 
 { #category : #'window control' }
