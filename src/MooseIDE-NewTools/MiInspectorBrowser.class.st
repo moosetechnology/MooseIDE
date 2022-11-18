@@ -94,13 +94,6 @@ MiInspectorBrowser class >> windowSize [
 	^ 700 @ 500
 ]
 
-{ #category : #actions }
-MiInspectorBrowser >> beFrozen [
-
-	self receivingMode: MiFreezeMode.
-	self window updateReceivingModeButtons
-]
-
 { #category : #testing }
 MiInspectorBrowser >> canFollowEntity: anEntity [
 
