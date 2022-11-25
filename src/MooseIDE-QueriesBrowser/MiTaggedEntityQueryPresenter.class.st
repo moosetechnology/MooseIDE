@@ -19,6 +19,12 @@ MiTaggedEntityQueryPresenter >> configureFor: aQuery [
 	query tagName: aQuery tagName
 ]
 
+{ #category : #actions }
+MiTaggedEntityQueryPresenter >> configureQuery: anObject [
+
+	self query tagName: anObject
+]
+
 { #category : #'api - actions' }
 MiTaggedEntityQueryPresenter >> initializeDropListForTags: aCollection [
 
@@ -28,6 +34,13 @@ MiTaggedEntityQueryPresenter >> initializeDropListForTags: aCollection [
 			                 self 
 				                 initializeRelationDroplistForValidQueryTags:
 				                 aCollection ]
+]
+
+{ #category : #initialization }
+MiTaggedEntityQueryPresenter >> initializePresenters [
+
+	self initializeDropListForTags: query availableTags.
+	self initializeLayout
 ]
 
 { #category : #'api - actions' }
