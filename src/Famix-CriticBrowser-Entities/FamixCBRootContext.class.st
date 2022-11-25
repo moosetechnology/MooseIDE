@@ -34,6 +34,13 @@ FamixCBRootContext >> runOn: aCollection [
 	self entities: aCollection
 ]
 
+{ #category : #running }
+FamixCBRootContext >> runOn: aCollection withCallback: aBlock [
+
+	aBlock value: self name.
+	self entities: aCollection
+]
+
 { #category : #'as yet unclassified' }
 FamixCBRootContext >> runUpTree: aCollection [
 	^ aCollection

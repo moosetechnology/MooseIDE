@@ -173,11 +173,13 @@ MiCriticBrowserTest >> testModelStartsEmpty [
 	self assert: (browser model entities isEmpty)
 ]
 
-{ #category : #test }
+{ #category : #tests }
 MiCriticBrowserTest >> testRunButtonAction [
 	browser model setEntities: { stubEntity } asMooseGroup.
 	rootContext addChild: stubRule.
-	browser runButton performAction.
+	
+	"runButtonAction without fork and updates"
+	browser model run.
 	
 	self assert: browser model violations size equals: 1
 	
@@ -213,7 +215,9 @@ MiCriticBrowserTest >> testSelectedRules [
 MiCriticBrowserTest >> testUnselectPrintsCompleteOutput [
 	browser model setEntities: { stubEntity. basicEntity } asMooseGroup.
 	rootContext addChild: stubRule; addChild: deadRule.
-	browser runButtonAction.
+	
+	"runButtonAction without fork and updates"
+	browser model run.
 	
 	browser rules selectItem: stubRule.
 	browser rules unselectAll.
