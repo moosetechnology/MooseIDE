@@ -3,6 +3,23 @@ I am a Butterfly map. I can show incoming and outgoing dependencies from a centr
 I accept a moose entity that is the central entity.
 By default entities at left are all clients of the central entity, right ones are providers of the central entity. You can change these rules and custom the semantics of your butterfly map by playing with its settings.
 
+Controls:
+
+* Mouse over to highlight common inner boxes
+* Mouse click to keep the highlight
+* right click over a box, to use the menu
+* right click over the view to use the general menu
+* command+click to use the last tag.
+
+* Mouse left to drag
+* Arrrow keys to move the visualization around
+* Scrolls bars to change the view's position
+* M to collapse or expand the window
+* I to zoom in
+* O to zoom out
+* Moouse Wheel to zoom in/out
+* S to search entities by their name (several search can be applied)
+* R to clear all searches
 
 "
 Class {
