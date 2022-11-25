@@ -131,7 +131,6 @@ MiArchitecturalMapBuilder >> borderFor: node [
 
 { #category : #building }
 MiArchitecturalMapBuilder >> build [
-
 	rootNode ifNotNil: [ 
 		self updateWithModelSettings.
 		^ self ].
@@ -140,7 +139,7 @@ MiArchitecturalMapBuilder >> build [
 		rootNode addAll: (self elements collect: [ :e | 
 				 self buildNodeFromEntity: e register: true ]) ].
 	self addTags.
-	self setDependencies.
+	"self setDependencies."
 	self buildLegend.
 	self renderIn: self container.
 	self updateWithModelSettings.
@@ -578,7 +577,7 @@ MiArchitecturalMapBuilder >> setDependenciesFor: aNode [
 	incoming := aNode rawModel queryAllLocal: #in.
 	incoming do: [ :e | 
 		(nodeMooseIDDict at: e source mooseID ifAbsent: [ nil ]) ifNotNil: [ 
-			:hNode | hNode dependencyTo: aNode ] ]
+			:hNode | hNode dependencyTo: aNode withModel: e ] ]
 ]
 
 { #category : #building }
@@ -586,14 +585,15 @@ MiArchitecturalMapBuilder >> setDependenciesForEntity: anEntity [
 
 	| associationTypes |
 	associationTypes := mapModel associationTypes.
-
 	associationTypes do: [ :at | 
 		| assocs |
 		assocs := anEntity queryLocal: #in with: at.
+		
 		assocs do: [ :e | 
-			(nodeMooseIDDict at: e source mooseID ifAbsent: [ nil ]) ifNotNil: [ 
-				:hNode | 
-				hNode dependencyTo: (nodeMooseIDDict at: anEntity mooseID) ] ] ]
+			nodeMooseIDDict at: e source mooseID ifPresent: [ :hNode |
+				hNode
+					dependencyTo: (nodeMooseIDDict at: anEntity mooseID)
+					withModel: e ] ] ]
 ]
 
 { #category : #building }
@@ -630,7 +630,6 @@ MiArchitecturalMapBuilder >> shapeFor: node [
 
 { #category : #building }
 MiArchitecturalMapBuilder >> updateWithModelSettings [
-	
 	self setDependencies.
 	mapModel showAllLinks
 		ifFalse: [ rootNode hideAllLinks ]
