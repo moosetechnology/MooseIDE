@@ -26,31 +26,29 @@ MiTaggedEntityQueryPresenter >> configureQuery: anObject [
 ]
 
 { #category : #'api - actions' }
-MiTaggedEntityQueryPresenter >> initializeDropListForTags: aCollection [
+MiTaggedEntityQueryPresenter >> initializeDropListForTags: tagNames [
 
-	tagList := aCollection
-		                 ifEmpty: [ self noParameterMessage: 'tags' ]
-		                 ifNotEmpty: [ 
-			                 self 
-				                 initializeRelationDroplistForValidQueryTags:
-				                 aCollection ]
+	tagList := tagNames
+		ifEmpty: [ self noParameterMessage: 'tags' ]
+		ifNotEmpty: [ 
+			self initializeRelationDroplistForValidQueryTags: tagNames ]
 ]
 
 { #category : #initialization }
 MiTaggedEntityQueryPresenter >> initializePresenters [
 
-	self initializeDropListForTags: query availableTags.
+	self initializeDropListForTags: query availableTagNames.
 	self initializeLayout
 ]
 
 { #category : #'api - actions' }
-MiTaggedEntityQueryPresenter >> initializeRelationDroplistForValidQueryTags: aCollection [
+MiTaggedEntityQueryPresenter >> initializeRelationDroplistForValidQueryTags: tagNames [
 
 	^ self newDropList
 		  startWithoutSelection;
-		  items: (aCollection collect: #name) ;
-		  whenSelectedItemChangedDo: [ :selectedTag | 
-			  self computeQueryAction: selectedTag ]
+		  items: tagNames ;
+		  whenSelectedItemChangedDo: [ :selectedTagName | 
+			  self computeQueryAction: selectedTagName ]
 ]
 
 { #category : #layout }
