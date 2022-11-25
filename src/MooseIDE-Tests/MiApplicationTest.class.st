@@ -79,3 +79,29 @@ MiApplicationTest >> testDeleteBusNamed [
 			 app name = self application class defaultBusName ]).
 	self assert: self application buses size equals: initialSize - 1
 ]
+
+{ #category : #tests }
+MiApplicationTest >> testMiPropagate [
+	| mooseModel buses originalMostRecentEntities newMostRecentEntities defaultBus |
+	
+	mooseModel := MooseModel new.
+	MooseEntity new mooseModel: mooseModel.
+	buses := MiApplication current  buses.
+	
+	self assert: buses isNotEmpty.
+	originalMostRecentEntities := buses collect: [ :b | b logger mostRecentEntity ]. 
+	
+	mooseModel entities miPropagate.
+	
+	newMostRecentEntities := buses collect: [ :b | b logger mostRecentEntity ]. 	 
+	self assert: originalMostRecentEntities allButFirst equals: newMostRecentEntities allButFirst .
+	
+	defaultBus := buses detect: [ :b | b name = MiApplication defaultBusName ].
+	
+	self assertCollection:  defaultBus logger mostRecentEntity hasSameElements: mooseModel entities  .
+
+	"Tear down: Removing the entity we propagated on the default bus"
+	
+	defaultBus logger removeLog: (defaultBus logger mostRecentLog ) .
+	
+]
