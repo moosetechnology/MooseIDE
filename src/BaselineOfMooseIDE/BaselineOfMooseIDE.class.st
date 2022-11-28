@@ -12,6 +12,7 @@ BaselineOfMooseIDE >> baseline: spec [
 		self tylerDurden: spec.
 		self labelContractor: spec.
 		self hierarchicalVisualizations: spec.
+		self roassal3: spec.
 		self famixQueries: spec.
 		self pharoAIHierachicalClustering: spec.
 		self stonCustomizer: spec.
@@ -90,7 +91,7 @@ BaselineOfMooseIDE >> definePackages: spec [
 		package: 'MooseIDE-Dependency' with: [ 
 			spec requires:
 					#( 'MooseIDE-Core' 'MooseIDE-Visualization'
-					   'AIHierarchicalClustering' ) ];
+					   'Roassal3' 'AIHierarchicalClustering' ) ];
 		package: 'MooseIDE-Famix'
 		with: [ 
 			spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' ) ];
@@ -129,7 +130,7 @@ BaselineOfMooseIDE >> definePackages: spec [
 			spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' ) ];
 		package: 'MooseIDE-ButterflyMap-Tests'
 		with: [ spec requires: #( 'MooseIDE-ButterflyMap' ) ].
-		
+
 	self defineMooseCriticsPackages: spec
 ]
 
@@ -207,6 +208,15 @@ BaselineOfMooseIDE >> pharoAIHierachicalClustering: spec [
 BaselineOfMooseIDE >> registerCustomTools [
 
 	(Smalltalk classNamed: #MiPlayground) register
+]
+
+{ #category : #dependencies }
+BaselineOfMooseIDE >> roassal3: spec [
+
+	spec
+		baseline: 'Roassal3'
+		with: [ 
+		spec repository: 'github://ObjectProfile/Roassal3:master/src' ]
 ]
 
 { #category : #dependencies }
