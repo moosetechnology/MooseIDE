@@ -21,7 +21,7 @@ MiQueryListItemPresenterTest >> setUp [
 	| parentPresenter |
 	super setUp.
 
-	helper := FQTestsHelper current.
+	helper := FQTestsHelper new.
 	browser := MiQueriesBrowser openForTests: MiTestApplication new.
 	browser receiveEntity: helper classesAndMethods.
 	parentPresenter := browser

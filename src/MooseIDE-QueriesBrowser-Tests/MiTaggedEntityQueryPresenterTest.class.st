@@ -28,6 +28,17 @@ MiTaggedEntityQueryPresenterTest >> createNewQuery [
 ]
 
 { #category : #running }
+MiTaggedEntityQueryPresenterTest >> createTestHelper [
+	| tag |
+	helper := super createTestHelper.
+
+	tag := FamixTag new name: 'classes' ; mooseModel: helper modelExample.
+	helper modelExample allModelClasses do: [ :c | tag tagEntity: c ].
+	
+	^helper
+]
+
+{ #category : #running }
 MiTaggedEntityQueryPresenterTest >> queryClass [
 	^ FQTaggedEntityQuery 
 ]
