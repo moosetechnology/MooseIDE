@@ -30,7 +30,7 @@ MiTagBrowserTest >> setUp [
 
 	super setUp.
 
-	helper := FQTestsHelper current.
+	helper := FQTestsHelper new.
 	browser followEntity: helper classesAndMethods.
 	detailsPage := browser descriptionPage
 ]

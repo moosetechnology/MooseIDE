@@ -82,26 +82,25 @@ MiApplicationTest >> testDeleteBusNamed [
 
 { #category : #tests }
 MiApplicationTest >> testMiPropagate [
-	| mooseModel buses originalMostRecentEntities newMostRecentEntities defaultBus |
+	| mooseModel defaultBus otherBuses originalMostRecentEntities newMostRecentEntities |
 	
 	mooseModel := MooseModel new.
 	MooseEntity new mooseModel: mooseModel.
-	buses := MiApplication current  buses.
-	
-	self assert: buses isNotEmpty.
-	originalMostRecentEntities := buses collect: [ :b | b logger mostRecentEntity ]. 
+	defaultBus :=  MiApplication current  buses 
+		detect: [ :b | b name = MiApplication defaultBusName ]
+		ifNone: [ self expectedFailures ].
+	otherBuses := MiApplication current  buses reject: [:b | b = defaultBus].
+
+	originalMostRecentEntities := otherBuses collect: [ :b | b logger mostRecentEntity ]. 
 	
 	mooseModel entities miPropagate.
 	
-	newMostRecentEntities := buses collect: [ :b | b logger mostRecentEntity ]. 	 
-	self assert: originalMostRecentEntities allButFirst equals: newMostRecentEntities allButFirst .
-	
-	defaultBus := buses detect: [ :b | b name = MiApplication defaultBusName ].
+	newMostRecentEntities := otherBuses collect: [ :b | b logger mostRecentEntity ]. 	 
+	self assertCollection: originalMostRecentEntities hasSameElements: newMostRecentEntities .
 	
 	self assertCollection:  defaultBus logger mostRecentEntity hasSameElements: mooseModel entities  .
 
 	"Tear down: Removing the entity we propagated on the default bus"
-	
 	defaultBus logger removeLog: (defaultBus logger mostRecentLog ) .
 	
 ]
