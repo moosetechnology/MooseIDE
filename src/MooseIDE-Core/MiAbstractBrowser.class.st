@@ -509,10 +509,12 @@ MiAbstractBrowser >> showHelp [
 
 	| help |
 	(help := self newPopover)
-		relativeTo: self window toolbar;
-		bePositionRight;
+		"the first right item in the toolbar is the Help buttton"
+		relativeTo: self window toolbar rightItems first;
+		bePositionLeft;
 		presenter: (MiHelpPopup owner: help on: self);
 		popup
+
 ]
 
 { #category : #buses }
