@@ -57,7 +57,7 @@ MiQueryConfiguratorPresenterTest >> resetPresenterWithEntities: aMooseGroup [
 MiQueryConfiguratorPresenterTest >> setUp [
 
 	super setUp.
-	helper := FQTestsHelper current.
+	helper := FQTestsHelper new.
 	self resetPresenterWithEntities: helper classesAndMethods
 ]
 
