@@ -52,7 +52,7 @@ BaselineOfMooseIDE >> definePackages: spec [
 		with: [ spec requires: #( 'LabelContractor' ) ];
 		package: 'MooseIDE-Visualization' with: [ 
 			spec requires:
-					#( 'MooseIDE - Core ' 'TelescopeRoassal3' 'HierarchicalVisualizations' ) ];
+					#( 'MooseIDE-Core ' 'TelescopeRoassal3' 'HierarchicalVisualizations' ) ];
 		package: 'MooseIDE-Meta'
 		with: [ spec requires: #( 'MooseIDE-Core' ) ];
 		package: 'MooseIDE-Tests'
