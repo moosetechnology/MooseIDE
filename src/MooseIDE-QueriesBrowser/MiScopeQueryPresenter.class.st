@@ -24,7 +24,7 @@ MiScopeQueryPresenter >> configureFor: aQuery [
 	query := aQuery.
 	queryScope := aQuery scope.
 	directionsDropList selectItem: aQuery directionStrategy.
-	scopesDropList := self scopesDropListForScopes: { aQuery scope }.
+	scopesDropList := self scopesDropListForScopes: { queryScope }.
 	scopesDropList selectItem: queryScope
 ]
 
