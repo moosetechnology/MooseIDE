@@ -290,7 +290,7 @@ MiExportBrowser >> showProperties: aCollectionOfFM3Properties [
 	aCollectionOfFM3Properties do: [ :property | 
 		self addColumnForProperty: property ].
 	
-	commentsButton isSelected ifTrue: [ self addCommentsColumn ].
+	self commentsAreShown ifTrue: [ self addCommentsColumn ].
 	
 	entitiesTable refresh
 ]
