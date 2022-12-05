@@ -1,3 +1,26 @@
+"
+## Scripting usages
+
+```st
+mooseModel := MooseModel root at: 1.
+
+exportBrowser := MiExportBrowser new.
+exportBrowserModel := MiExportModel new.
+
+exportBrowser model: exportBrowserModel.
+
+exportBrowser open.
+exportBrowser followEntity: mooseModel.
+
+exportBrowserModel addColumnForQuery: 
+	[ :entity | 'hello world' ]
+	withName: #HelloWorld.
+
+exportBrowser updateTable.
+
+exportBrowserModel removeColumnForQueryNamed: #HelloWorld.
+```
+"
 Class {
 	#name : #MiExportModel,
 	#superclass : #MiAbstractModel,
