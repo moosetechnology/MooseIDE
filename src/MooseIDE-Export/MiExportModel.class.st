@@ -9,10 +9,19 @@ Class {
 	#category : #'MooseIDE-Export-Browser'
 }
 
-{ #category : #api }
+{ #category : #'api - column property' }
 MiExportModel >> addColumnForProperty: aFM3Property [
 
 	columns add: (MiExportPropertyColumnModel forProperty: aFM3Property)
+]
+
+{ #category : #'api - column script' }
+MiExportModel >> addColumnForQuery: aBlock withName: queryName [
+
+	columns add: (MiExportQueryColumnModel new
+			 query: aBlock;
+			 name: queryName;
+			 yourself)
 ]
 
 { #category : #accessing }
@@ -46,10 +55,18 @@ MiExportModel >> initialize [
 	columns := OrderedCollection new
 ]
 
-{ #category : #api }
+{ #category : #'api - column property' }
 MiExportModel >> removeColumnForProperty: aFM3Property [
 
 	columns removeAllSuchThat: [ :column | 
 		(column isKindOf: MiExportPropertyColumnModel) and: [ 
 			column property = aFM3Property ] ]
+]
+
+{ #category : #'api - column script' }
+MiExportModel >> removeColumnForQueryNamed: queryName [
+
+	columns removeAllSuchThat: [ :column | 
+		(column isKindOf: MiExportQueryColumnModel) and: [ 
+			column name = queryName ] ]
 ]
