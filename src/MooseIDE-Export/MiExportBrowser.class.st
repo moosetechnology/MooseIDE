@@ -313,11 +313,9 @@ MiExportBrowser >> updateEntitiesListWith: aMooseGroup [
 
 	entitiesTable columns: self defaultTableColumns.
 	(self commonPropertiesIn: aMooseGroup) do: [ :property | 
-		entitiesTable addColumn: (SpStringTableColumn
-				 title: property name
-				 evaluated: [ :entity | 
-				 entity propertyNamed: property name ifAbsent: [ '-' ] ]) ].
-	entitiesTable items: aMooseGroup
+		self addColumnForProperty: property ].
+	entitiesTable items: aMooseGroup.
+	self updateTable 
 ]
 
 { #category : #'columns management' }
