@@ -32,7 +32,10 @@ MiExportAbstractColumnModel >> name: anObject [
 
 { #category : #api }
 MiExportAbstractColumnModel >> printValueFor: anEntity [
-	^ [self privatePrintValueFor: anEntity] on: Exception do: [ 'error' ]
+
+	^ [ self privatePrintValueFor: anEntity ]
+		  on: Exception
+		  do: [ 'error' ]
 ]
 
 { #category : #private }

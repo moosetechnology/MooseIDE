@@ -157,22 +157,6 @@ MiExportBrowser >> commonPropertiesIn: aMooseGroup [
 		  ifFalse: [ properties first: 5 ]
 ]
 
-{ #category : #'columns management' }
-MiExportBrowser >> defaultTableColumns [
-
-	^ { 
-		  ((SpStringTableColumn 
-				title: 'Name' 
-				evaluated: [ :entity | String streamContents: [ :s | entity displayStringOn: s ] ])
-			   beSortable;
-			   yourself).
-		  ((SpStringTableColumn
-			    title: 'Type'
-			    evaluated: [ :entity | entity mooseDescription name ])
-			   beSortable;
-			   yourself) }
-]
-
 { #category : #actions }
 MiExportBrowser >> exportEntitiesToCSV [
 
@@ -182,7 +166,7 @@ MiExportBrowser >> exportEntitiesToCSV [
 		        extensions: #( 'csv' )
 		        path: 'entities.csv'.
 	file ifNotNil: [ 
-		file writeStreamDo: [ :stream | entitiesTable asCSVOn: stream ].
+		file writeStreamDo: [ :stream | self model writeCSVOn: stream ].
 		UIManager default
 			inform: 'Entities exported.
 Click to show in folder'
@@ -230,7 +214,6 @@ MiExportBrowser >> initializePresenters [
 MiExportBrowser >> initializeTable [
 
 	entitiesTable := self newTable beResizable.
-	entitiesTable columns: self defaultTableColumns
 ]
 
 { #category : #initialization }
@@ -311,17 +294,15 @@ MiExportBrowser >> toggleCommentsColumn [
 { #category : #'columns management' }
 MiExportBrowser >> updateEntitiesListWith: aMooseGroup [
 
-	entitiesTable columns: self defaultTableColumns.
 	(self commonPropertiesIn: aMooseGroup) do: [ :property | 
 		self addColumnForProperty: property ].
-	entitiesTable items: aMooseGroup.
-	self updateTable 
+	self model entitiesList: aMooseGroup.
+	entitiesTable items: self model entitiesList.
+	self updateTable
 ]
 
 { #category : #'columns management' }
 MiExportBrowser >> updateTable [
-
-	entitiesTable columns: self defaultTableColumns.
 
 	self model columns do: [ :columnModel |
 		entitiesTable addColumn: (SpStringTableColumn

@@ -72,10 +72,37 @@ MiExportModel >> commentOf: anEntity [
 ]
 
 { #category : #initialization }
+MiExportModel >> defaultColumns [
+
+	^ { 
+		  (MiExportQueryColumnModel new
+			   query: [ :entity | 
+				   String streamContents: [ :s | entity displayStringOn: s ] ];
+			   name: #Name;
+			   yourself).
+		  (MiExportQueryColumnModel new
+			   query: [ :entity | entity mooseDescription name ];
+			   name: #Type;
+			   yourself) } asOrderedCollection
+]
+
+{ #category : #accessing }
+MiExportModel >> entitiesList [
+
+	^ entitiesList
+]
+
+{ #category : #accessing }
+MiExportModel >> entitiesList: anObject [
+
+	entitiesList := anObject
+]
+
+{ #category : #initialization }
 MiExportModel >> initialize [
 	super initialize.
 	commentDictionary := Dictionary new.
-	columns := OrderedCollection new
+	columns := self defaultColumns
 ]
 
 { #category : #'api - column property' }
@@ -92,4 +119,16 @@ MiExportModel >> removeColumnForQueryNamed: queryName [
 	columns removeAllSuchThat: [ :column | 
 		(column isKindOf: MiExportQueryColumnModel) and: [ 
 			column name = queryName ] ]
+]
+
+{ #category : #'api - export' }
+MiExportModel >> writeCSVOn: aStream [
+
+	| csvWriter |
+	csvWriter := NeoCSVWriter on: aStream.
+	csvWriter writeHeader:
+		(self columns collect: [ :column | column name ]).
+	self columns do: [ :column | 
+		csvWriter addField: [ :item | column printValueFor: item ] ].
+	csvWriter nextPutAll: self entitiesList
 ]
