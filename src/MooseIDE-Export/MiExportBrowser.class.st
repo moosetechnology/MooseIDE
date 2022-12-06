@@ -270,13 +270,6 @@ MiExportBrowser >> miSelectedItem [
 	^ entitiesTable items
 ]
 
-{ #category : #accessing }
-MiExportBrowser >> model: aModel [
-
-	super model: aModel.
-	aModel registerBrowser: self
-]
-
 { #category : #'columns management' }
 MiExportBrowser >> propertiesListForPopover [
 
@@ -313,6 +306,13 @@ MiExportBrowser >> removeCommentsColumn [
 	entitiesTable columns: (entitiesTable columns reject: [ :column | 
 			 column title = self class commentColumnTitle ]).
 	entitiesTable refresh
+]
+
+{ #category : #accessing }
+MiExportBrowser >> setModelBeforeInitialization: aBrowserModel [
+
+	super setModelBeforeInitialization: aBrowserModel.
+	aBrowserModel registerBrowser: self
 ]
 
 { #category : #testing }

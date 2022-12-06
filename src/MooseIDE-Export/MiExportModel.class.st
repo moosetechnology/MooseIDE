@@ -60,7 +60,6 @@ MiExportModel >> browsers [
 
 { #category : #events }
 MiExportModel >> columnAdded: aColumn [
-
 	self browsers do: [ :b | b columnAdded: aColumn ]
 ]
 
@@ -127,6 +126,7 @@ MiExportModel >> initialize [
 	super initialize.
 	commentDictionary := Dictionary new.
 	columns := self defaultColumns.
+	entitiesList := OrderedCollection new.
 	browsers := OrderedCollection new
 ]
 
