@@ -27,7 +27,8 @@ Class {
 	#instVars : [
 		'entitiesList',
 		'commentDictionary',
-		'columns'
+		'columns',
+		'browsers'
 	],
 	#category : #'MooseIDE-Export-Browser'
 }
@@ -35,16 +36,38 @@ Class {
 { #category : #'api - column property' }
 MiExportModel >> addColumnForProperty: aFM3Property [
 
-	columns add: (MiExportPropertyColumnModel forProperty: aFM3Property)
+	self columnAdded:
+		(columns add:
+			 (MiExportPropertyColumnModel forProperty: aFM3Property))
 ]
 
 { #category : #'api - column script' }
 MiExportModel >> addColumnForQuery: aBlock withName: queryName [
 
-	columns add: (MiExportQueryColumnModel new
-			 query: aBlock;
-			 name: queryName;
-			 yourself)
+	| newColumn |
+	newColumn := columns add: (MiExportQueryColumnModel new
+			              query: aBlock;
+			              name: queryName;
+			              yourself).
+	self columnAdded: newColumn
+]
+
+{ #category : #accessing }
+MiExportModel >> browsers [
+
+	^ browsers
+]
+
+{ #category : #events }
+MiExportModel >> columnAdded: aColumn [
+
+	self browsers do: [ :b | b columnAdded: aColumn ]
+]
+
+{ #category : #events }
+MiExportModel >> columnRemoved: aColumn [
+
+	self browsers do: [ :b | b columnRemoved: aColumn ]
 ]
 
 { #category : #accessing }
@@ -95,30 +118,50 @@ MiExportModel >> entitiesList [
 { #category : #accessing }
 MiExportModel >> entitiesList: anObject [
 
-	entitiesList := anObject
+	entitiesList := anObject.
+	self listEntityChanged
 ]
 
 { #category : #initialization }
 MiExportModel >> initialize [
 	super initialize.
 	commentDictionary := Dictionary new.
-	columns := self defaultColumns
+	columns := self defaultColumns.
+	browsers := OrderedCollection new
+]
+
+{ #category : #events }
+MiExportModel >> listEntityChanged [
+
+	self browsers do: [ :b | b listEntityChanged ]
+]
+
+{ #category : #accessing }
+MiExportModel >> registerBrowser: aBrowser [
+	browsers add: aBrowser
 ]
 
 { #category : #'api - column property' }
 MiExportModel >> removeColumnForProperty: aFM3Property [
 
-	columns removeAllSuchThat: [ :column | 
-		(column isKindOf: MiExportPropertyColumnModel) and: [ 
-			column property = aFM3Property ] ]
+	(columns removeAllSuchThat: [ :column | 
+		 (column isKindOf: MiExportPropertyColumnModel) and: [ 
+			 column property = aFM3Property ] ]) do: [ :removed | 
+		self columnRemoved: removed ]
 ]
 
 { #category : #'api - column script' }
 MiExportModel >> removeColumnForQueryNamed: queryName [
 
-	columns removeAllSuchThat: [ :column | 
-		(column isKindOf: MiExportQueryColumnModel) and: [ 
-			column name = queryName ] ]
+	(columns removeAllSuchThat: [ :column | 
+		 (column isKindOf: MiExportQueryColumnModel) and: [ 
+			 column name = queryName ] ]) do: [ :removed | 
+		self columnRemoved: removed ]
+]
+
+{ #category : #accessing }
+MiExportModel >> unregisterBrowser: aBrowser [
+	browsers remove: aBrowser
 ]
 
 { #category : #'api - export' }
