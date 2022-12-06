@@ -304,7 +304,8 @@ MiExportBrowser >> updateEntitiesListWith: aMooseGroup [
 { #category : #'columns management' }
 MiExportBrowser >> updateTable [
 
-	self model columns do: [ :columnModel |
+	entitiesTable columns: {  }.
+	self model columns do: [ :columnModel | 
 		entitiesTable addColumn: (SpStringTableColumn
 				 title: columnModel name
 				 evaluated: [ :entity | columnModel printValueFor: entity ])
