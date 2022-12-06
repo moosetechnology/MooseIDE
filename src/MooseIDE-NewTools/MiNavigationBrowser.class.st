@@ -81,7 +81,6 @@ MiNavigationBrowser >> hasOutputActivationPort [
 MiNavigationBrowser >> initializePresenters [
 
 	| items |
-	'initializePresenter' traceCr.
 	navigation := self newTable.
 	items := self filterEmptyValues: (self itemsFor: self model).
 	navigation
