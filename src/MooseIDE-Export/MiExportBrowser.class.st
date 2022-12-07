@@ -287,7 +287,7 @@ MiExportBrowser >> propertiesListForPopover [
 
 	list items: ((self miSelectedItem flatCollectAsSet: [ :entity | 
 			  entity mooseDescription allPrimitiveProperties ]) sorted:
-			 #name ascending).
+			 [ :property | self showsProperty: property ] descending, #name ascending).
 
 	list selectItems:
 		(list items select: [ :property | self showsProperty: property ]).
