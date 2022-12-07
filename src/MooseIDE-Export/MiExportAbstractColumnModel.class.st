@@ -18,6 +18,18 @@ MiExportAbstractColumnModel >> exportValueFor: anEntity [
 	^ self printValueFor: anEntity
 ]
 
+{ #category : #testing }
+MiExportAbstractColumnModel >> isPropertyColumn [
+
+	^ false
+]
+
+{ #category : #testing }
+MiExportAbstractColumnModel >> isQueryColumn [
+
+	^ false
+]
+
 { #category : #accessing }
 MiExportAbstractColumnModel >> name [
 

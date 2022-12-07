@@ -7,6 +7,12 @@ Class {
 	#category : #'MooseIDE-Export-Browser'
 }
 
+{ #category : #testing }
+MiExportQueryColumnModel >> isQueryColumn [
+
+	^ true
+]
+
 { #category : #accessing }
 MiExportQueryColumnModel >> privatePrintValueFor: anEntity [
 	^ query value: anEntity

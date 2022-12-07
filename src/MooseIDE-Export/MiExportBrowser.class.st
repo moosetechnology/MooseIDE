@@ -72,6 +72,15 @@ MiExportBrowser class >> title [
 ]
 
 { #category : #'columns management' }
+MiExportBrowser >> addColumn: aColumn [
+
+	(aColumn isKindOf: FM3Property)
+		ifTrue: [ self addColumnForProperty: aColumn ]
+		ifFalse: [ 
+		self model addColumnForQuery: aColumn query withName: aColumn name ]
+]
+
+{ #category : #'columns management' }
 MiExportBrowser >> addColumnForProperty: aFM3Property [
 	self model addColumnForProperty: aFM3Property.
 ]
@@ -279,20 +288,30 @@ MiExportBrowser >> propertiesListForPopover [
 	list
 		display: [ :property | property name ];
 		onActivation: [ :property | 
-			self addColumnForProperty: property.
+			self addColumn: property.
 			self updateTable ];
 		onDeactivation: [ :property | 
-			self removeColumnForProperty: property.
+			self removeColumn: property.
 			self updateTable ].
 
 	list items: ((self miSelectedItem flatCollectAsSet: [ :entity | 
-			  entity mooseDescription allPrimitiveProperties ]) sorted:
-			 [ :property | self showsProperty: property ] descending, #name ascending).
+			  entity mooseDescription allPrimitiveProperties ])
+		 , (self model columns reject: #isPropertyColumn) sorted:
+			 [ :property | self showsProperty: property ] descending
+			 , #name ascending).
 
 	list selectItems:
 		(list items select: [ :property | self showsProperty: property ]).
 
 	^ list
+]
+
+{ #category : #'columns management' }
+MiExportBrowser >> removeColumn: aColumn [
+
+	(aColumn isKindOf: FM3Property)
+		ifTrue: [ self model removeColumnForProperty: aColumn ]
+		ifFalse: [ self model removeColumnForQueryNamed: aColumn name ]
 ]
 
 { #category : #'columns management' }

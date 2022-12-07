@@ -16,6 +16,12 @@ MiExportPropertyColumnModel class >> forProperty: aFM3Property [
 		  yourself
 ]
 
+{ #category : #testing }
+MiExportPropertyColumnModel >> isPropertyColumn [
+
+	^ true
+]
+
 { #category : #private }
 MiExportPropertyColumnModel >> privatePrintValueFor: anEntity [
 	^ anEntity propertyNamed: self property name
