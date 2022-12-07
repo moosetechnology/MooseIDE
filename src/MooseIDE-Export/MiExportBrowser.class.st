@@ -308,13 +308,6 @@ MiExportBrowser >> removeCommentsColumn [
 	entitiesTable refresh
 ]
 
-{ #category : #accessing }
-MiExportBrowser >> setModelBeforeInitialization: aBrowserModel [
-
-	super setModelBeforeInitialization: aBrowserModel.
-	aBrowserModel registerBrowser: self
-]
-
 { #category : #testing }
 MiExportBrowser >> showsProperty: aFM3Property [
 

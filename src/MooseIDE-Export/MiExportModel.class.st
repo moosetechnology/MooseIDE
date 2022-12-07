@@ -27,8 +27,7 @@ Class {
 	#instVars : [
 		'entitiesList',
 		'commentDictionary',
-		'columns',
-		'browsers'
+		'columns'
 	],
 	#category : #'MooseIDE-Export-Browser'
 }
@@ -52,21 +51,16 @@ MiExportModel >> addColumnForQuery: aBlock withName: queryName [
 	self columnAdded: newColumn
 ]
 
-{ #category : #accessing }
-MiExportModel >> browsers [
-
-	^ browsers
-]
-
 { #category : #events }
 MiExportModel >> columnAdded: aColumn [
-	self browsers do: [ :b | b columnAdded: aColumn ]
+
+	self browser columnAdded: aColumn
 ]
 
 { #category : #events }
 MiExportModel >> columnRemoved: aColumn [
 
-	self browsers do: [ :b | b columnRemoved: aColumn ]
+	self browser columnRemoved: aColumn
 ]
 
 { #category : #accessing }
@@ -126,19 +120,13 @@ MiExportModel >> initialize [
 	super initialize.
 	commentDictionary := Dictionary new.
 	columns := self defaultColumns.
-	entitiesList := OrderedCollection new.
-	browsers := OrderedCollection new
+	entitiesList := OrderedCollection new
 ]
 
 { #category : #events }
 MiExportModel >> listEntityChanged [
 
-	self browsers do: [ :b | b listEntityChanged ]
-]
-
-{ #category : #accessing }
-MiExportModel >> registerBrowser: aBrowser [
-	browsers add: aBrowser
+	self browser listEntityChanged
 ]
 
 { #category : #'api - column property' }
@@ -157,11 +145,6 @@ MiExportModel >> removeColumnForQueryNamed: queryName [
 		 (column isKindOf: MiExportQueryColumnModel) and: [ 
 			 column name = queryName ] ]) do: [ :removed | 
 		self columnRemoved: removed ]
-]
-
-{ #category : #accessing }
-MiExportModel >> unregisterBrowser: aBrowser [
-	browsers remove: aBrowser
 ]
 
 { #category : #'api - export' }
