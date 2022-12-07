@@ -29,12 +29,6 @@ Class {
 	#category : #'MooseIDE-CriticBrowser-Browser'
 }
 
-{ #category : #private }
-MiCriticBrowser class >> dateAndTimeString [
-
-	^ DateAndTime now asStringYMDHM
-]
-
 { #category : #'world menu' }
 MiCriticBrowser class >> menuCommandOn: aBuilder [
 
@@ -452,12 +446,6 @@ MiCriticBrowser >> rulesResult [
 	^ rulesResult 
 ]
 
-{ #category : #'accessing - testing' }
-MiCriticBrowser >> runButton [
-"used for testing purposes, do not access outside of tests"
-	^ runButton
-]
-
 { #category : #'buttons actions' }
 MiCriticBrowser >> runButtonAction [
 	"executes the queries on the entities stored in the model, then prints the results"
@@ -488,11 +476,6 @@ MiCriticBrowser >> sortedChildren: each for: aTreePresenter [
 
 	^ (self children: each for: aTreePresenter) sorted: [ :a :b | 
 		  a printString < b printString ]
-]
-
-{ #category : #accessing }
-MiCriticBrowser >> statusLabel [ 
-	^ statusLabel 
 ]
 
 { #category : #naming }
@@ -543,7 +526,5 @@ MiCriticBrowser >> updateRulesList [
 { #category : #'buttons actions' }
 MiCriticBrowser >> updateStatusLabel: aString [
 
-	self statusLabel label: ('{1}: {2}' format: { 
-				 self class dateAndTimeString.
-				 aString })
+	statusLabel label: DateAndTime now asStringYMDHM , ': ' , aString
 ]
