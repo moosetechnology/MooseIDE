@@ -54,13 +54,13 @@ MiExportModel >> addColumnForQuery: aBlock withName: queryName [
 { #category : #events }
 MiExportModel >> columnAdded: aColumn [
 
-	self browser columnAdded: aColumn
+	self browser ifNotNil: [ :b | b columnAdded: aColumn ]
 ]
 
 { #category : #events }
 MiExportModel >> columnRemoved: aColumn [
 
-	self browser columnRemoved: aColumn
+	self browser ifNotNil: [ :b | b columnRemoved: aColumn ]
 ]
 
 { #category : #accessing }
@@ -126,7 +126,7 @@ MiExportModel >> initialize [
 { #category : #events }
 MiExportModel >> listEntityChanged [
 
-	self browser listEntityChanged
+	self browser ifNotNil: [ :b | b listEntityChanged ]
 ]
 
 { #category : #'api - column property' }
