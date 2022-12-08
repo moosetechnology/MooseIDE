@@ -148,13 +148,12 @@ MiArchitecturalMapBuilder >> build [
 	^ self container
 ]
 
-{ #category : #accessing }
+{ #category : #hooks }
 MiArchitecturalMapBuilder >> buildCompositeEmptyNodeIn: shape [
 
 	| node box rect entity group |
 	node := shape model.
 	entity := node rawModel.
-	(entity notNil and: [ entity isTag not ]) ifTrue: [  ].
 	group := self labelAndTagFor: node.
 	shape addAll: group.
 	rect := shape children encompassingRectangle.
@@ -166,8 +165,6 @@ MiArchitecturalMapBuilder >> buildCompositeEmptyNodeIn: shape [
 		       color: (self colorFor: node);
 		       border: (self borderFor: node);
 		       yourself.
-
-	box when: RSMouseDoubleClick do: [ :e | node expandCollapse ].
 	shape add: box.
 	box pushBack.
 	shape schildren: #(  ).
@@ -193,7 +190,6 @@ MiArchitecturalMapBuilder >> buildCompositeFullNodeIn: shape [
 		         addAll: titleGroup;
 		         adjustToChildren;
 		         yourself.
-	title when: RSMouseDoubleClick do: [ :e | node expandCollapse ].
 	shape propertyAt: #background put: titleBox.
 	childrenShapes := self childrenFor: node.
 	self layoutOn: childrenShapes parent: node.
@@ -355,7 +351,7 @@ MiArchitecturalMapBuilder >> childrenBlock [
 { #category : #accessing }
 MiArchitecturalMapBuilder >> colorFor: node [
 
-	^ node color ifNil: [ Color gray ] ifNotNil: [ :e | e ]
+	^ node color ifNil: [ Smalltalk ui theme baseColor ] 
 ]
 
 { #category : #accessing }
@@ -592,7 +588,7 @@ MiArchitecturalMapBuilder >> shapeFor: node [
 
 	node
 		removeInteractionIfPresent: self class;
-		when: HNodeAddedEvent do: [ :evt |self rebuildRootShape: shape ];
+		when: HNodeAddedEvent do: [ :evt | self rebuildRootShape: shape ];
 		when: HCollapseEvent do: [ :evt | self rebuildShape: shape ];
 		when: HExpandEvent do: [ :evt | self rebuildRootShape: shape ];
 		when: HNodeChangedEvent do: [ :evt | self rebuildShape: shape ].
