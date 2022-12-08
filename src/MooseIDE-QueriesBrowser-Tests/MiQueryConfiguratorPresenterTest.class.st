@@ -40,6 +40,11 @@ MiQueryConfiguratorPresenterTest >> createNewQueryWithoutInput [
 ]
 
 { #category : #running }
+MiQueryConfiguratorPresenterTest >> createTestHelper [
+	^FQTestsHelper new
+]
+
+{ #category : #running }
 MiQueryConfiguratorPresenterTest >> queryClass [
 	^ self subclassResponsibility
 ]
@@ -65,7 +70,9 @@ MiQueryConfiguratorPresenterTest >> resetPresenterWithEntities: aMooseGroup [
 MiQueryConfiguratorPresenterTest >> setUp [
 
 	super setUp.
-	helper := FQTestsHelper current.
+
+	helper := self createTestHelper.
+
 	self resetPresenterWithEntities: helper classesAndMethods
 ]
 

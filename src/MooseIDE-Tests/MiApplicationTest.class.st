@@ -33,6 +33,23 @@ MiApplicationTest >> setUp [
 	  bus := self application busNamed: self busName
 ]
 
+{ #category : #running }
+MiApplicationTest >> tearDown [
+
+	application unregisterForDropFilesEvent.
+	super tearDown.
+
+]
+
+{ #category : #tests }
+MiApplicationTest >> testApplicationIsRegisteredHandlers [
+	"MiTestApplication"
+	self assert: (ExternalDropHandler registeredHandlers includes: application).
+
+	MiApplication reset.
+	self assert: (ExternalDropHandler registeredHandlers includes: MiApplication current)
+]
+
 { #category : #tests }
 MiApplicationTest >> testBusNamed [
 	| initialSize newBus |
@@ -81,27 +98,89 @@ MiApplicationTest >> testDeleteBusNamed [
 ]
 
 { #category : #tests }
+MiApplicationTest >> testDoesNotAcceptExtension [
+	| handler fileDroped |
+	handler := Mock named: 'handler'.
+	application registerConsumer: handler for: DropFilesEvent.
+	(handler stub acceptsDropFileExtension: Any) willReturn: false.
+	(handler stub handleDropFile: Any) will: [:arg | fileDroped := arg].
+
+]
+
+{ #category : #tests }
+MiApplicationTest >> testDoesNotHandleNoneMooseFiles [
+	| handler |
+	handler := Mock named: handler.
+
+]
+
+{ #category : #tests }
+MiApplicationTest >> testDoesNotMatchExtension [
+	| handler |
+	handler := Mock named: 'handler'.
+	application registerConsumer: handler for: DropFilesEvent.
+	(handler stub acceptsDropFileExtension: Any) willReturn: false.
+
+	self deny: (application matchesExtension: #json).
+]
+
+{ #category : #tests }
+MiApplicationTest >> testHandleDropEvent [
+	| handler fileReference fileDroped |
+	handler := Mock named: 'handler'.
+	application registerConsumer: handler for: DropFilesEvent.
+	(handler stub acceptsDropFileExtension: Any) willReturn: true.
+	(handler stub handleDropFile: Any) will: [:arg | fileDroped := arg].
+
+	fileReference := 'a-file.json' asFileReference.
+	application handle: fileReference in: #whatever dropEvent: DropFilesEvent new.
+
+	self assert: fileDroped equals: fileReference
+]
+
+{ #category : #tests }
+MiApplicationTest >> testMatchExtension [
+	| handler |
+	handler := Mock named: 'handler'.
+	application registerConsumer: handler for: DropFilesEvent.
+	(handler stub acceptsDropFileExtension: Any) willReturn: true.
+
+	self assert: (application matchesExtension: #json).
+]
+
+{ #category : #tests }
 MiApplicationTest >> testMiPropagate [
-	| mooseModel buses originalMostRecentEntities newMostRecentEntities defaultBus |
+	| mooseModel defaultBus otherBuses originalMostRecentEntities newMostRecentEntities |
 	
 	mooseModel := MooseModel new.
 	MooseEntity new mooseModel: mooseModel.
-	buses := MiApplication current  buses.
-	
-	self assert: buses isNotEmpty.
-	originalMostRecentEntities := buses collect: [ :b | b logger mostRecentEntity ]. 
+	defaultBus :=  MiApplication current  buses 
+		detect: [ :b | b name = MiApplication defaultBusName ]
+		ifNone: [ self expectedFailures ].
+	otherBuses := MiApplication current  buses reject: [:b | b = defaultBus].
+
+	originalMostRecentEntities := otherBuses collect: [ :b | b logger mostRecentEntity ]. 
 	
 	mooseModel entities miPropagate.
 	
-	newMostRecentEntities := buses collect: [ :b | b logger mostRecentEntity ]. 	 
-	self assert: originalMostRecentEntities allButFirst equals: newMostRecentEntities allButFirst .
-	
-	defaultBus := buses detect: [ :b | b name = MiApplication defaultBusName ].
+	newMostRecentEntities := otherBuses collect: [ :b | b logger mostRecentEntity ]. 	 
+	self assertCollection: originalMostRecentEntities hasSameElements: newMostRecentEntities .
 	
 	self assertCollection:  defaultBus logger mostRecentEntity hasSameElements: mooseModel entities  .
 
 	"Tear down: Removing the entity we propagated on the default bus"
-	
 	defaultBus logger removeLog: (defaultBus logger mostRecentLog ) .
 	
+]
+
+{ #category : #tests }
+MiApplicationTest >> testOnlyOneApplicationRegisteredHandlers [
+	| oldApplication |
+	oldApplication := application.
+	self assert: (ExternalDropHandler registeredHandlers includes: oldApplication).
+
+	application := MiTestApplication new.
+	self deny: (ExternalDropHandler registeredHandlers includes: oldApplication).
+	self assert: (ExternalDropHandler registeredHandlers includes: application).
+
 ]

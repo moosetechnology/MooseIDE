@@ -26,7 +26,7 @@ SaveQueriesFixture >> exampleForCopyingQueries [
 
 	| root firstLevel secondLevel thirdLevel |
 	root := FQRootQuery new
-		result: FQTestsHelper current classesAndMethods;
+		result: FQTestsHelper new classesAndMethods;
 		yourself.
 	firstLevel := FQBooleanQuery property: #isStub.
 	firstLevel beChildOf: root.

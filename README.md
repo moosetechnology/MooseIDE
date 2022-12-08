@@ -30,6 +30,6 @@ Metacello new
 ```smalltalk
 Metacello new
   baseline: 'MooseIDE';
-  repository: 'github://moosetechnology/MooseIDE:v9.x.x/src';
+  repository: 'github://moosetechnology/MooseIDE:v2.x.x/src';
   load
 ```

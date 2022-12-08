@@ -135,12 +135,11 @@ MiArchitecturalMapBuilder >> build [
 		self updateWithModelSettings.
 		^ self ].
 	rootNode := HNode new.
-	mapModel showBusEntities ifTrue: [ 
-		rootNode addAll: (self elements collect: [ :e | 
-				 self buildNodeFromEntity: e register: true ]) ].
 	self addTags.
-	"self setDependencies."
-	self buildLegend.
+	mapModel showBusEntities ifTrue: [ 
+		rootNode addAll: (self elements
+				 collect: [ :e | self buildNodeFromEntity: e register: true ]
+				 thenReject: [ :e | e isNil ]) ].
 	self renderIn: self container.
 	self updateWithModelSettings.
 	^ self container
@@ -300,28 +299,10 @@ MiArchitecturalMapBuilder >> buildCompositeFullTagIn: shape [
 ]
 
 { #category : #building }
-MiArchitecturalMapBuilder >> buildLegend [
-
-	| legend |
-	legend := RSLegend new
-		          container: self canvas;
-		          title: 'Links';
-		          onDemand: 'Legend';
-		          legendDo: [ :l | 
-			          l
-				          border: RSBorder new;
-				          color: Color white;
-				          padding: 10 ];
-		          yourself.
-	mapModel assocTypeToColorDict keysAndValuesDo: [ :type :color | 
-		legend text: type name withBoxColor: color ].
-	legend build
-]
-
-{ #category : #building }
 MiArchitecturalMapBuilder >> buildNodeFromEntity: anEntity register: aBoolean [
 
 	| node |
+	nodeMooseIDDict at: anEntity mooseID ifPresent: [ ^ nil ].
 	node := HNode new
 		        name:
 			        (String streamContents: [ :s | anEntity displayStringOn: s ]);
@@ -352,7 +333,8 @@ MiArchitecturalMapBuilder >> buildNodeFromTag: aTag [
 		        rawModel: aTag;
 		        addAll: (aTag taggedEntities
 				         collect: [ :e | 
-					         aTag == e ifFalse: [ self buildNodeFromEntity: e register: false ] ]
+					         aTag == e ifFalse: [ 
+							         self buildNodeFromEntity: e register: true ] ]
 				         thenSelect: [ :e | e isNotNil ]);
 		        color: aTag color;
 		        collapse;
@@ -548,18 +530,6 @@ MiArchitecturalMapBuilder >> renderIn: aCanvas [
 	self renderLinesIn: aCanvas.
 	self layoutOn: rootShapes parent: rootNode.
 	
-]
-
-{ #category : #rendering }
-MiArchitecturalMapBuilder >> renderLinesIn: aCanvas [
-
-	super renderLinesIn: aCanvas.
-	aCanvas lines do: [ :line | 
-		(line to model hasTagAncestor or: [ line to model rawModel isTag ]) 
-			ifTrue: [ line color: Color yellow ].
-		(line from model hasTagAncestor or: [ 
-			 line from model rawModel isTag ]) ifTrue: [ 
-			line color: Color cyan ] ]
 ]
 
 { #category : #building }
