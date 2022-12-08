@@ -16,7 +16,7 @@ Class {
 { #category : #'instance creation' }
 MiApplication class >> current [
 
-	  ^ Current ifNil: [ Current := self new yourself ]
+	  ^ Current ifNil: [ Current := self new ]
 ]
 
 { #category : #accessing }
@@ -28,6 +28,7 @@ MiApplication class >> defaultBusName [
 { #category : #'instance creation' }
 MiApplication class >> reset [
 	<script>
+	Current ifNotNil: [ ExternalDropHandler registeredHandlers remove: Current ifAbsent: [ "nothing" ] ].
 	Current := nil
 ]
 
@@ -45,6 +46,18 @@ MiApplication >> add: anObject toDictionary: aDictionary for: aKey [
 { #category : #accessing }
 MiApplication >> allBrowsers: aMiClass [
 	^self browsers select: [ :aBrowser | aBrowser isKindOf: aMiClass ]
+]
+
+{ #category : #'drag and drop' }
+MiApplication >> beDropFilesHandler [
+	ExternalDropHandler registeredHandlers
+		detect: [ :handler | handler class = self class ]
+		ifOne: [ :handler |
+			(handler = self)
+			ifTrue: [ ^self ]
+			ifFalse: [ handler unregisterForDropFilesEvent ]
+	].
+	ExternalDropHandler registerHandler: self
 ]
 
 { #category : #accessing }
@@ -141,6 +154,14 @@ MiApplication >> deleteBusNamed: aName [
 		ifFound: [ :bus | self deleteBus: bus ]
 ]
 
+{ #category : #'drag and drop' }
+MiApplication >> handle: fileReference in: pasteUp dropEvent: anEvent [
+
+	((self consumersOf: anEvent class)
+		detect: [ :consumer | consumer acceptsDropFileExtension: fileReference extension ])
+			handleDropFile: fileReference
+]
+
 { #category : #initialization }
 MiApplication >> initialize [
 
@@ -148,9 +169,12 @@ MiApplication >> initialize [
 
 	buses := OrderedCollection new.
 	defaultBus := self busNamed: self class defaultBusName.
-	
+
 	consumers := Dictionary new.
 	producers  := Dictionary new.
+	
+	self beDropFilesHandler
+
 ]
 
 { #category : #brokerage }
@@ -158,6 +182,19 @@ MiApplication >> itemsFor: aClass [
 
 	^ (self producersOf: aClass) flatCollect: [ :producer | 
 		  producer itemsFor: aClass ]
+]
+
+{ #category : #'drag and drop' }
+MiApplication >> matchesExtension: anExtension [
+	"check that there is a consumer for DropFilesEvent and that it accept the extension"
+	^(self consumersOf: DropFilesEvent) anySatisfy: [ :consumer | consumer acceptsDropFileExtension: anExtension ].
+	
+]
+
+{ #category : #'drag and drop' }
+MiApplication >> matchesTypes: types [
+	"no check here, this is handled by #matchesExtension:"
+	^false
 ]
 
 { #category : #'private - factory' }
@@ -235,6 +272,11 @@ MiApplication >> unregisterConsumer: aConsumer [
 
 	consumers do: [ :consumerList | 
 		consumerList remove: aConsumer ifAbsent: [  ] ]
+]
+
+{ #category : #'drag and drop' }
+MiApplication >> unregisterForDropFilesEvent [
+	ExternalDropHandler registeredHandlers remove: self
 ]
 
 { #category : #brokerage }
