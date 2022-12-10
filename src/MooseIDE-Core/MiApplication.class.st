@@ -179,7 +179,9 @@ MiApplication >> initialize [
 
 	consumers := Dictionary new.
 	producers  := Dictionary new.
+
 	
+	dropFileHandlers := #().
 	self beDropFilesHandler
 
 ]
@@ -289,7 +291,8 @@ MiApplication >> unregisterConsumer: aConsumer [
 
 { #category : #'drag and drop support' }
 MiApplication >> unregisterForDropFilesEvent [
-	ExternalDropHandler registeredHandlers removeAll: dropFileHandlers
+	ExternalDropHandler registeredHandlers removeAll: dropFileHandlers.
+	dropFileHandlers := #()
 ]
 
 { #category : #brokerage }

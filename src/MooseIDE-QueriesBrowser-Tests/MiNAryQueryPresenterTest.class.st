@@ -83,7 +83,7 @@ MiNAryQueryPresenterTest >> queryClass [
 MiNAryQueryPresenterTest >> resetPresenterWithEntities: aMooseGroup [
 
 	browser := MiQueriesBrowser
-		           newApplication: MiTestApplication current
+		           newApplication: self application
 		           model: (FQRootQuery new
 				            result: aMooseGroup;
 				            yourself).

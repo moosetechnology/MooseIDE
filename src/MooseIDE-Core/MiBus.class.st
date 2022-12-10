@@ -1,3 +1,6 @@
+"
+I am a moose entity bus to which registered browsers can ""write"" and ""read"" entities
+"
 Class {
 	#name : #MiBus,
 	#superclass : #Object,

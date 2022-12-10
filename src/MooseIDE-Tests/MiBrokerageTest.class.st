@@ -1,8 +1,7 @@
 Class {
 	#name : #MiBrokerageTest,
-	#superclass : #TestCase,
+	#superclass : #MiAbstractApplicationTest,
 	#instVars : [
-		'application',
 		'mockProducer',
 		'mockConsumer',
 		'mockProducerConsumer'
@@ -12,7 +11,7 @@ Class {
 
 { #category : #initialization }
 MiBrokerageTest >> setUp [
-	application := MiTestApplication new.
+	super setUp.
 	mockConsumer := Mock named: 'consumer'.
 	mockProducer := Mock named: 'producer'.
 	mockProducerConsumer := Mock named: 'producerConsomer'

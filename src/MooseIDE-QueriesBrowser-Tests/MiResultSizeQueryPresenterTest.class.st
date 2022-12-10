@@ -59,7 +59,7 @@ MiResultSizeQueryPresenterTest >> resetPresenterWithEntities: aMooseGroup [
 
 	| builder superPresenter |
 	browser := MiQueriesBrowser
-		           newApplication: MiTestApplication current
+		           newApplication: self application
 		           model: (FQRootQuery new
 				            result: aMooseGroup;
 				            yourself).
