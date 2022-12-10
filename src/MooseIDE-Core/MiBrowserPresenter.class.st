@@ -10,17 +10,17 @@ Class {
 
 { #category : #actions }
 MiBrowserPresenter >> activateItem: aBus [
-	model followBus: aBus
+	midasModel followBus: aBus
 ]
 
 { #category : #actions }
 MiBrowserPresenter >> deactivateItem: aBus [
-	model unfollowBus: aBus
+	midasModel unfollowBus: aBus
 ]
 
 { #category : #actions }
 MiBrowserPresenter >> highlightWindow [
-	model window beep
+	midasModel window beep
 ]
 
 { #category : #initialization }
@@ -42,14 +42,14 @@ MiBrowserPresenter >> initializePresenters [
 		             iconName: #window;
 		             label: 'Put on top';
 		             action: [ 
-			             model window window
+			             midasModel window window
 				             expand;
 				             activate ];
 		             yourself.
 	closeButton := self newButton
 		               iconName: #delete;
 		               label: 'Close';
-		               action: [ model window close ];
+		               action: [ midasModel window close ];
 		               yourself.
 		
 	self initializeLayout
@@ -57,5 +57,5 @@ MiBrowserPresenter >> initializePresenters [
 
 { #category : #settings }
 MiBrowserPresenter >> toolbarLabel [
-	^ model title
+	^ midasModel title
 ]

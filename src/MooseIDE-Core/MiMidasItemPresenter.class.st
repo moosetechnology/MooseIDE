@@ -2,8 +2,8 @@ Class {
 	#name : #MiMidasItemPresenter,
 	#superclass : #MiPresenter,
 	#instVars : [
-		'model',
-		'nameLabel'
+		'nameLabel',
+		'midasModel'
 	],
 	#category : #'MooseIDE-Core-Overview'
 }
@@ -26,7 +26,7 @@ MiMidasItemPresenter >> initializePresenters [
 
 { #category : #'accessing - model' }
 MiMidasItemPresenter >> setModelBeforeInitialization: aBusOrBrowser [
-	model := aBusOrBrowser
+	midasModel := aBusOrBrowser
 ]
 
 { #category : #settings }
