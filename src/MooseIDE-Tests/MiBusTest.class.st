@@ -1,18 +1,11 @@
 Class {
 	#name : #MiBusTest,
-	#superclass : #TestCase,
+	#superclass : #MiAbstractApplicationTest,
 	#instVars : [
-		'bus',
-		'application'
+		'bus'
 	],
 	#category : #'MooseIDE-Tests-Application'
 }
-
-{ #category : #running }
-MiBusTest >> application [
-
-	  ^ application
-]
 
 { #category : #running }
 MiBusTest >> mockBrowser [
@@ -23,11 +16,10 @@ MiBusTest >> mockBrowser [
 	^ mockBrowser
 ]
 
-{ #category : #running }
+{ #category : #initialization }
 MiBusTest >> setUp [
-
 	  super setUp.
-	  application := MiTestApplication new.
+
 	  bus := self application defaultBus
 ]
 

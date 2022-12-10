@@ -1,6 +1,6 @@
 Class {
 	#name : #MiQueryConfiguratorPresenterTest,
-	#superclass : #TestCase,
+	#superclass : #MiAbstractApplicationTest,
 	#instVars : [
 		'helper',
 		'presenter',
@@ -54,7 +54,7 @@ MiQueryConfiguratorPresenterTest >> resetPresenterWithEntities: aMooseGroup [
 
 	| builder superPresenter |
 	browser := MiQueriesBrowser
-		           newApplication: MiTestApplication current
+		           newApplication: self application
 		           model: (FQRootQuery new
 				            result: aMooseGroup;
 				            yourself).

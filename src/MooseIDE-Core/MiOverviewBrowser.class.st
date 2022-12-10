@@ -287,8 +287,8 @@ MiOverviewBrowser >> openBusEditor [
 { #category : #presenters }
 MiOverviewBrowser >> openedBrowsers [
 
-	^ self application browsers asOrderedCollection collect: [ :browser | 
-		  MiBrowserPresenter on: browser ]
+	^ self application openedBrowsers asOrderedCollection
+		collect: [ :browser | MiBrowserPresenter on: browser ]
 ]
 
 { #category : #presenters }

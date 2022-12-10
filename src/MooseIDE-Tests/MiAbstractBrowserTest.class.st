@@ -1,9 +1,8 @@
 Class {
 	#name : #MiAbstractBrowserTest,
-	#superclass : #TestCase,
+	#superclass : #MiAbstractApplicationTest,
 	#instVars : [
-		'browser',
-		'application'
+		'browser'
 	],
 	#category : #'MooseIDE-Tests-Browsers'
 }
@@ -59,7 +58,7 @@ MiAbstractBrowserTest >> mooseObjects [
 MiAbstractBrowserTest >> setUp [
 
 	  super setUp.
-	  application := MiTestApplication new.
+
 	  application defaultBus: self bus.
 	  browser := self browserClass openForTests: self application
 ]
@@ -69,6 +68,7 @@ MiAbstractBrowserTest >> tearDown [
 
 	browser window ifNotNil: [ :window | window close ].
 	self application deleteBus: self bus.
+
 	super tearDown
 ]
 

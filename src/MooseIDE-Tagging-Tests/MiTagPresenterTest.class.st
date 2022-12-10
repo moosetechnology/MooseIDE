@@ -1,6 +1,6 @@
 Class {
 	#name : #MiTagPresenterTest,
-	#superclass : #TestCase,
+	#superclass : #MiAbstractApplicationTest,
 	#instVars : [
 		'browser',
 		'presenter'
@@ -54,7 +54,7 @@ MiTagPresenterTest >> setUp [
 	  super setUp.
 	  mooseModel := MooseModel with: MooseEntity new.
 	  browser := MiTagBrowser
-		             newApplication: MiTestApplication new
+		             newApplication: self application
 		             model: MiTagBrowserModel new.
 	  browser receiveEntity: mooseModel.
 	  presenter := self presenterOwner

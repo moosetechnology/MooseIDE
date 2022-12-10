@@ -1,6 +1,6 @@
 Class {
 	#name : #MiQueryListItemPresenterTest,
-	#superclass : #TestCase,
+	#superclass : #MiAbstractApplicationTest,
 	#instVars : [
 		'presenter',
 		'browser',
@@ -12,7 +12,7 @@ Class {
 { #category : #running }
 MiQueryListItemPresenterTest >> bus [
 
-	^ MiTestApplication current defaultBus
+	^ self application defaultBus
 ]
 
 { #category : #running }
@@ -22,7 +22,7 @@ MiQueryListItemPresenterTest >> setUp [
 	super setUp.
 
 	helper := FQTestsHelper new.
-	browser := MiQueriesBrowser openForTests: MiTestApplication new.
+	browser := MiQueriesBrowser openForTests: self application.
 	browser receiveEntity: helper classesAndMethods.
 	parentPresenter := browser
 		                   instantiate: MiQueriesListPresenter

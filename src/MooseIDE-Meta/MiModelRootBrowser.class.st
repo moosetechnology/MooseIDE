@@ -48,6 +48,11 @@ MiModelRootBrowser class >> defaultLayout [
 		  yourself
 ]
 
+{ #category : #testing }
+MiModelRootBrowser class >> isModelImporter [
+	^true
+]
+
 { #category : #'world menu' }
 MiModelRootBrowser class >> menuCommandOn: aBuilder [
 
@@ -117,9 +122,19 @@ MiModelRootBrowser >> followEntity: anEntity [
 	
 ]
 
+{ #category : #actions }
+MiModelRootBrowser >> handleDropFile: aFileReference [
+	self importFromFileUI handleDropFile: aFileReference
+]
+
 { #category : #testing }
 MiModelRootBrowser >> hasSettings [
 	^ true
+]
+
+{ #category : #accessing }
+MiModelRootBrowser >> importFromFileUI [
+	^MiImportFromFileCommand new execute presenter
 ]
 
 { #category : #initialization }
