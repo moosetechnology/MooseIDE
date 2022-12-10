@@ -116,6 +116,11 @@ MiAbstractBrowser class >> isAbstract [
 	^ self == MiAbstractBrowser
 ]
 
+{ #category : #testing }
+MiAbstractBrowser class >> isModelImporter [
+	^false
+]
+
 { #category : #'menu organization' }
 MiAbstractBrowser class >> menuCodeToolsPriority [
 
@@ -296,6 +301,11 @@ MiAbstractBrowser class >> windowSize [
 	^ 500 @ 400
 ]
 
+{ #category : #testing }
+MiAbstractBrowser >> acceptsDropFileExtension: aString [
+	^false
+]
+
 { #category : #actions }
 MiAbstractBrowser >> beFrozen [
 
@@ -438,6 +448,11 @@ MiAbstractBrowser >> initializeWindow: aMiWindowPresenter [
 { #category : #testing }
 MiAbstractBrowser >> isMiBrowser [
 	^ true
+]
+
+{ #category : #testing }
+MiAbstractBrowser >> isModelImporter [
+	^self class isModelImporter
 ]
 
 { #category : #accessing }

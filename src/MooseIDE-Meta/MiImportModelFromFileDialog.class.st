@@ -35,16 +35,6 @@ MiImportModelFromFileDialog class >> windowExtent [
 	^ 600 @ 220
 ]
 
-{ #category : #testing }
-MiImportModelFromFileDialog >> acceptsDropFileExtension: anExtension [
-	^#(json mse) includes: anExtension 
-]
-
-{ #category : #'window management' }
-MiImportModelFromFileDialog >> closingWindow [
-	application unregisterConsumer: self
-]
-
 { #category : #action }
 MiImportModelFromFileDialog >> defaultDirectory [
 
@@ -91,7 +81,7 @@ MiImportModelFromFileDialog >> getRootFolder [
 		rootFolderInput text: chosenDirectory asFileReference pathString ]
 ]
 
-{ #category : #'drag and drop' }
+{ #category : #action }
 MiImportModelFromFileDialog >> handleDropFile: aFileReference [
 	self updateForModelFile: aFileReference
 ]
@@ -110,13 +100,6 @@ MiImportModelFromFileDialog >> importModel [
 	mooseModel := super importModel.
 	mooseModel ifNotNil: [ mooseModel rootFolder: rootFolder ].
 	^ mooseModel
-]
-
-{ #category : #initialization }
-MiImportModelFromFileDialog >> initialize [
-	super initialize.
-	application registerConsumer: self for: DropFilesEvent.
-
 ]
 
 { #category : #initialization }
@@ -196,15 +179,6 @@ MiImportModelFromFileDialog >> initializePresenters [
 		action: [ self getRootFolder ];
 		icon: (self iconNamed: #open).
 	self initializeLayout
-]
-
-{ #category : #initialization }
-MiImportModelFromFileDialog >> initializeWindow: aWindowPresenter [
-	super initializeWindow: aWindowPresenter.
-
-	aWindowPresenter whenClosedDo: [ 
-		self closingWindow ].
-
 ]
 
 { #category : #action }

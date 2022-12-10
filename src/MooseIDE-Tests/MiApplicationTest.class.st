@@ -42,15 +42,6 @@ MiApplicationTest >> tearDown [
 ]
 
 { #category : #tests }
-MiApplicationTest >> testApplicationIsRegisteredHandlers [
-	"MiTestApplication"
-	self assert: (ExternalDropHandler registeredHandlers includes: application).
-
-	MiApplication reset.
-	self assert: (ExternalDropHandler registeredHandlers includes: MiApplication current)
-]
-
-{ #category : #tests }
 MiApplicationTest >> testBusNamed [
 	| initialSize newBus |
 	initialSize := self application buses size.
@@ -97,55 +88,37 @@ MiApplicationTest >> testDeleteBusNamed [
 	self assert: self application buses size equals: initialSize - 1
 ]
 
-{ #category : #tests }
-MiApplicationTest >> testDoesNotAcceptExtension [
-	| handler fileDroped |
-	handler := Mock named: 'handler'.
-	application registerConsumer: handler for: DropFilesEvent.
-	(handler stub acceptsDropFileExtension: Any) willReturn: false.
-	(handler stub handleDropFile: Any) will: [:arg | fileDroped := arg].
+{ #category : #'drag and drop tests' }
+MiApplicationTest >> testHandleJSONDropEvent [
+	"must reset (i.e. remove) MiApplication singleton instance
+	 for MiTestApplication special handling method to be asked to handle the drop"
+	| dropped wasHandled |
+	wasHandled := false.
+	dropped := Mock named: 'dropped'.
+	(dropped stub wasHandled) will: [ wasHandled := true].
+
+	MiApplication reset.
+	(ExternalDropHandler lookupExternalDropHandler: 'whatever.json' asFileReference)
+		handle: dropped in: nil dropEvent: nil.
+
+	self assert: wasHandled.
+	
+	"recreate MiApplication instance to go back to normal"
+	MiApplication current
+]
+
+{ #category : #'drag and drop tests' }
+MiApplicationTest >> testJSONRegisteredHandler [
+	"2 handlers: MiApplication & MiTestApplication"
+	self assert: (ExternalDropHandler registeredHandlers select: [:handler | handler extension = #json]) size equals: 2.
 
 ]
 
-{ #category : #tests }
-MiApplicationTest >> testDoesNotHandleNoneMooseFiles [
-	| handler |
-	handler := Mock named: handler.
+{ #category : #'drag and drop tests' }
+MiApplicationTest >> testMSERegisteredHandler [
+	"2 handlers: MiApplication & MiTestApplication"
+	self assert: (ExternalDropHandler registeredHandlers select: [:handler | handler extension = #mse]) size equals: 2.
 
-]
-
-{ #category : #tests }
-MiApplicationTest >> testDoesNotMatchExtension [
-	| handler |
-	handler := Mock named: 'handler'.
-	application registerConsumer: handler for: DropFilesEvent.
-	(handler stub acceptsDropFileExtension: Any) willReturn: false.
-
-	self deny: (application matchesExtension: #json).
-]
-
-{ #category : #tests }
-MiApplicationTest >> testHandleDropEvent [
-	| handler fileReference fileDroped |
-	handler := Mock named: 'handler'.
-	application registerConsumer: handler for: DropFilesEvent.
-	(handler stub acceptsDropFileExtension: Any) willReturn: true.
-	(handler stub handleDropFile: Any) will: [:arg | fileDroped := arg].
-
-	fileReference := 'a-file.json' asFileReference.
-	application handle: fileReference in: #whatever dropEvent: DropFilesEvent new.
-
-	self assert: fileDroped equals: fileReference
-]
-
-{ #category : #tests }
-MiApplicationTest >> testMatchExtension [
-	| handler |
-	handler := Mock named: 'handler'.
-	application registerConsumer: handler for: DropFilesEvent.
-	(handler stub acceptsDropFileExtension: Any) willReturn: true.
-
-	self assert: (application matchesExtension: #json).
 ]
 
 { #category : #tests }
@@ -173,14 +146,10 @@ MiApplicationTest >> testMiPropagate [
 	
 ]
 
-{ #category : #tests }
-MiApplicationTest >> testOnlyOneApplicationRegisteredHandlers [
-	| oldApplication |
-	oldApplication := application.
-	self assert: (ExternalDropHandler registeredHandlers includes: oldApplication).
-
-	application := MiTestApplication new.
-	self deny: (ExternalDropHandler registeredHandlers includes: oldApplication).
-	self assert: (ExternalDropHandler registeredHandlers includes: application).
-
+{ #category : #'drag and drop tests' }
+MiApplicationTest >> testMooseRootBrowserIsModelImporter [
+	| browser |
+	browser := application modelImporter.
+	self assert: browser class equals: MiModelRootBrowser.
+	browser window close
 ]
