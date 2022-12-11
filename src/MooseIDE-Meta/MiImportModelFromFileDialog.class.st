@@ -63,7 +63,7 @@ MiImportModelFromFileDialog >> defaultDirectory [
 	^ FileLocator home
 ]
 
-{ #category : #action }
+{ #category : #private }
 MiImportModelFromFileDialog >> getModelFile [
 
 	| chosenFile |
@@ -78,7 +78,10 @@ MiImportModelFromFileDialog >> getModelFile [
 						ifTrue: [ modelFile parent ]
 						ifFalse: [ modelFile ] ]).
 
-	chosenFile ifNotNil: [ self updateForModelFile: chosenFile ]
+	chosenFile ifNil: [ ^self ].
+	
+	modelFile := chosenFile.
+	self newModelFileEntered
 ]
 
 { #category : #private }
@@ -97,9 +100,16 @@ MiImportModelFromFileDialog >> getRootFolder [
 		rootFolderInput text: chosenDirectory asFileReference pathString ]
 ]
 
-{ #category : #action }
+{ #category : #private }
 MiImportModelFromFileDialog >> handleDropFile: aFileReference [
-	self updateForModelFile: aFileReference
+	[self updateForModelFile: aFileReference]
+	on: Error
+	do: [:err |
+		UIManager default alert: 'Error: ' , err messageText.
+		^self ].
+
+	self importModelThenCloseDialogWindow: owner
+	
 ]
 
 { #category : #action }
@@ -116,6 +126,12 @@ MiImportModelFromFileDialog >> importModel [
 	mooseModel := super importModel.
 	mooseModel ifNotNil: [ mooseModel rootFolder: rootFolder ].
 	^ mooseModel
+]
+
+{ #category : #private }
+MiImportModelFromFileDialog >> importerForFile [
+	^(MiAbstractFileImporter importerFor: modelFile)
+		ifNil: [ self error: 'No importer found for this input file' ]
 ]
 
 { #category : #initialization }
@@ -226,9 +242,11 @@ MiImportModelFromFileDialog >> metaModelForFile [
 
 { #category : #private }
 MiImportModelFromFileDialog >> newModelFileEntered [
-	filePathInput text ifEmpty: [ ^self ].
+	(modelFile notNil
+	and: [ modelFile fullName = filePathInput text ])
+	ifFalse: [ filePathInput text: modelFile fullName ].
 	
-	[ self updateForModelFile: filePathInput text asFileReference ]
+	[ self updateForModelFile: modelFile ]
 	on: Error
 	do: [ :err | UIManager default alert: err messageText. ]
 ]
@@ -238,9 +256,7 @@ MiImportModelFromFileDialog >> privateImportModel [
 
 	| model importer |
 
-	importer := MiAbstractFileImporter importerFor: modelFile.
-	importer ifNil: [ 
-		self error: 'No importer found for this input file' ].
+	importer := self importerForFile.
 
 	model := mooseModelDroplist selectedItem new.
 

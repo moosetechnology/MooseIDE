@@ -35,6 +35,11 @@ Class {
 	#category : #'MooseIDE-Meta-ModelRootBrowser'
 }
 
+{ #category : #updating }
+MiModelRootBrowserModel >> allModelRootBrowser [
+	^browser application allBrowsers: MiModelRootBrowser
+]
+
 { #category : #accessing }
 MiModelRootBrowserModel >> availableMooseModels [
 
@@ -49,11 +54,6 @@ MiModelRootBrowserModel >> browser: aBrowser [
 { #category : #testing }
 MiModelRootBrowserModel >> canPropagate [
 	^ selected isMooseObject
-]
-
-{ #category : #updating }
-MiModelRootBrowserModel >> getAllModelRootBrowsers [
-	^browser application allBrowsers: MiModelRootBrowser
 ]
 
 { #category : #initialization }
@@ -122,7 +122,7 @@ MiModelRootBrowserModel >> settings [
 
 { #category : #updating }
 MiModelRootBrowserModel >> updateForNewModel: aMooseModel [
-	self getAllModelRootBrowsers do: [:modelBrowser | modelBrowser updateList ].
+	self allModelRootBrowser do: [:modelBrowser | modelBrowser updateList ].
 	self selected: aMooseModel
 ]
 
