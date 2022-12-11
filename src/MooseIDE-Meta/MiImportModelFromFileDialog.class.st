@@ -57,7 +57,7 @@ MiImportModelFromFileDialog >> canImport: inputSample importer: importer metaMod
 
 ]
 
-{ #category : #action }
+{ #category : #accessing }
 MiImportModelFromFileDialog >> defaultDirectory [
 
 	^ FileLocator home
@@ -81,13 +81,7 @@ MiImportModelFromFileDialog >> getModelFile [
 	chosenFile ifNotNil: [ self updateForModelFile: chosenFile ]
 ]
 
-{ #category : #action }
-MiImportModelFromFileDialog >> getModelFileFromTextInput [
-	filePathInput text ifNotEmpty: [ 
-		self updateForModelFile: filePathInput text asFileReference ]
-]
-
-{ #category : #action }
+{ #category : #private }
 MiImportModelFromFileDialog >> getRootFolder [
 
 	| chosenDirectory |
@@ -112,7 +106,7 @@ MiImportModelFromFileDialog >> handleDropFile: aFileReference [
 MiImportModelFromFileDialog >> importModel [
 
 	| rootFolder mooseModel |
-	
+
 	"If rootFolderInput isEmpty, rootFolder will be nil. That is expected."
 	rootFolderInput text ifNotEmpty: [ 
 		rootFolder := rootFolderInput text asFileReference.
@@ -129,12 +123,12 @@ MiImportModelFromFileDialog >> initializeFilePathWidgets [
 
 	filePathInput := self newTextInput
 		placeholder: self defaultDirectory asFileReference pathString;
-		whenSubmitDo: [ self getModelFileFromTextInput ];
+		whenSubmitDo: [ self newModelFileEntered ];
 		help: 'Tip: to choose a file in the directory of this Pharo image, type ''local/path/to/myFile.mse''';
 		yourself.
 
 	filePathInput eventHandler whenFocusLostDo: [ 
-		self getModelFileFromTextInput ].
+		self newModelFileEntered ].
 
 	filePathButton := self newButton
 		action: [ self getModelFile ];
@@ -230,6 +224,15 @@ MiImportModelFromFileDialog >> metaModelForFile [
 	Error signal: 'No metamodel to import file'
 ]
 
+{ #category : #private }
+MiImportModelFromFileDialog >> newModelFileEntered [
+	filePathInput text ifEmpty: [ ^self ].
+	
+	[ self updateForModelFile: filePathInput text asFileReference ]
+	on: Error
+	do: [ :err | UIManager default alert: err messageText. ]
+]
+
 { #category : #action }
 MiImportModelFromFileDialog >> privateImportModel [
 
@@ -263,7 +266,7 @@ MiImportModelFromFileDialog >> updateForModelFile: aFile [
 	self metaModelForFile
 ]
 
-{ #category : #action }
+{ #category : #private }
 MiImportModelFromFileDialog >> validateImportForm [
 	"checks that required fields are properly filled in"
 	filePathInput text ifEmpty: [ Error signal: 'Please choose an input file' ].
