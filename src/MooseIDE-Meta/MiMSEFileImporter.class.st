@@ -14,7 +14,6 @@ MiMSEFileImporter class >> fileExtension [
 
 { #category : #running }
 MiMSEFileImporter >> run [
-	inputFile readStreamDo: [ :stream |
-		model importFromMSEStream: stream
-	]
+	[ model importFromMSEStream: inputStream ]
+	ensure: [ inputStream close ]
 ]

@@ -15,7 +15,6 @@ MiJSONFileImporter class >> fileExtension [
 
 { #category : #running }
 MiJSONFileImporter >> run [
-	inputFile readStreamDo: [ :stream |
-		model importFromJSONStream: stream
-	]
+	[ model importFromJSONStream: inputStream ]
+	ensure: [ inputStream close ]
 ]
