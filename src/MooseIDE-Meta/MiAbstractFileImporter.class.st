@@ -11,7 +11,7 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'model',
-		'inputFile'
+		'inputStream'
 	],
 	#category : #'MooseIDE-Meta-Import'
 }
@@ -43,9 +43,14 @@ MiAbstractFileImporter class >> knownExtensions [
 ]
 
 { #category : #accessing }
-MiAbstractFileImporter >> inputFile: anObject [
+MiAbstractFileImporter >> inputFile: aFileReference [
 
-	inputFile := anObject
+	inputStream := aFileReference readStream
+]
+
+{ #category : #accessing }
+MiAbstractFileImporter >> inputStream: aStream [
+	inputStream := aStream
 ]
 
 { #category : #accessing }
