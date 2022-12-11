@@ -14,11 +14,12 @@ MiCppRefFileImporter class >> fileExtension [
 
 { #category : #running }
 MiCppRefFileImporter >> run [
+	self flag: 'to be refactored as we do not have an input file but an input stream'.
 	Smalltalk at: #FamixCppCSVImporter
 		ifPresent: [ :cls | 
 			cls 
 				runOn: nil 
-				withRefFile: inputFile
+				withRefFile: inputStream
 				withModel: model ].
 		
 ]

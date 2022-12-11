@@ -124,7 +124,8 @@ MiModelRootBrowser >> followEntity: anEntity [
 
 { #category : #actions }
 MiModelRootBrowser >> handleDropFile: aFileReference [
-	self importFromFileUI handleDropFile: aFileReference
+	self importFromFileUI handleDropFile: aFileReference.
+
 ]
 
 { #category : #testing }
@@ -215,5 +216,5 @@ MiModelRootBrowser >> updateForNewModel: aModel [
 { #category : #updating }
 MiModelRootBrowser >> updateList [
 
-	model updateMooseModelsList
+	model updateMooseModelsList.
 ]
