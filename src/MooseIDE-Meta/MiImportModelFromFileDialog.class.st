@@ -35,6 +35,28 @@ MiImportModelFromFileDialog class >> windowExtent [
 	^ 600 @ 220
 ]
 
+{ #category : #'metamodel-guess' }
+MiImportModelFromFileDialog >> canImport: inputSample importer: importer metaModel: tmpModel [
+	"try import with the metamodel
+	 - on FMElementNotFound, some class was not found in the metamodel, it's a failure
+	 - on FMSyntaxError, we reached end of the stream (which is an excerpt of a file) so it is a success
+	 - on other Error, not sure what it is but assume failure
+	 - on no Error, could import the whole stream that was less than default sample size, so it is a success"
+
+	[importer
+		model: tmpModel ;
+		inputStream:  inputSample readStream ;
+		run]
+	on: Error
+	do: [:err |
+		(err class = FMElementNotFound) ifTrue: [ ^false ].
+		(err class = FMSyntaxError) ifTrue: [ ^true ].
+		^ false
+	].
+	^true
+
+]
+
 { #category : #action }
 MiImportModelFromFileDialog >> defaultDirectory [
 
@@ -181,6 +203,33 @@ MiImportModelFromFileDialog >> initializePresenters [
 	self initializeLayout
 ]
 
+{ #category : #'metamodel-guess' }
+MiImportModelFromFileDialog >> inputFileSample [
+	^modelFile readStreamDo: [ :inputStream |
+		(inputStream size < self inputSampleLength)
+		ifTrue: [ inputStream contents ]
+		ifFalse: [ inputStream next: self inputSampleLength ]
+	]
+]
+
+{ #category : #accessing }
+MiImportModelFromFileDialog >> inputSampleLength [
+	^1000
+]
+
+{ #category : #'metamodel-guess' }
+MiImportModelFromFileDialog >> metaModelForFile [
+	| importer inputSample |
+	importer := self importerForFile new.
+	inputSample := self inputFileSample.
+	mooseModelDroplist items do: [ :mmClass |
+		mooseModelDroplist selectItem: mmClass. 
+		(self canImport: inputSample importer: importer metaModel: mmClass new)
+		ifTrue: [ ^self ]
+	].
+	Error signal: 'No metamodel to import file'
+]
+
 { #category : #action }
 MiImportModelFromFileDialog >> privateImportModel [
 
@@ -202,15 +251,16 @@ MiImportModelFromFileDialog >> privateImportModel [
 	^ model
 ]
 
-{ #category : #accessing }
+{ #category : #private }
 MiImportModelFromFileDialog >> updateForModelFile: aFile [
-
+	"updates all fileds in the presenter according to new modelFile"
 	modelFile := aFile.
 
 	filePathInput text: modelFile asFileReference pathString.
 	modelNameInput text: modelFile basenameWithoutExtension.
 	rootFolderInput text: modelFile asFileReference parent pathString.
 
+	self metaModelForFile
 ]
 
 { #category : #action }
