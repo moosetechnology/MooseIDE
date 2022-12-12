@@ -16,7 +16,8 @@ Class {
 		'nodeMooseIDDict',
 		'allEntities',
 		'tagNodes',
-		'nodesToAdd'
+		'nodesToAdd',
+		'highlightShapes'
 	],
 	#category : #'MooseIDE-Dependency-ArchitecturalMap'
 }
@@ -404,6 +405,38 @@ MiArchitecturalMapBuilder >> groupTagElements: aTag [
 	^ classDict values
 ]
 
+{ #category : #accessing }
+MiArchitecturalMapBuilder >> highlightableLinkedShapes [
+
+	^ highlightShapes ifNil: [ 
+		  highlightShapes := RSHighlightable new
+			                     highlightShapes: [ :shape | 
+				                     | list |
+				                     list := Set new.
+				                     shape connectedLines do: [ :line | 
+						                     shape = line from
+							                     ifTrue: [ 
+								                     list add:
+										                     (line to propertyAt: #background) ]
+							                     ifFalse: [ 
+								                     list add:
+										                     (line from propertyAt: #background) ] ].
+				                     list asOrderedCollection ];
+			                     when: RSHighlightEvent do: [ :evt | 
+				                     | color |
+				                     color := Color fromHexString: '9DD0B3'.
+				                     highlightable
+					                     record: evt shape
+					                     selector: #color
+					                     value: color ];
+			                     when: RSUnHighlightEvent
+			                     do: [ :evt | 
+				                     highlightable
+					                     restore: evt shape
+					                     selector: #color ];
+			                     yourself ]
+]
+
 { #category : #initialization }
 MiArchitecturalMapBuilder >> initialize [
 
@@ -469,6 +502,29 @@ MiArchitecturalMapBuilder >> menuInteraction [
 				visualization: self ];
 			yourself 
 	]
+]
+
+{ #category : #accessing }
+MiArchitecturalMapBuilder >> nodeAnnouncer [
+
+	"plug new events here"
+
+	baseNode ifNotNil: [ ^ baseNode announcer ].
+	baseNode := RSComposite new
+		            @ self nodeStyler popup;
+		            @
+			            (HGhostDraggable new color:
+					             Smalltalk ui theme caretColor);
+		            @ self menuInteraction;
+		            @ self highlightable;
+		            @ self highlightableLinkedShapes;
+		            @ RSNodeOnTopWhenPositionChanged new;
+		            @ HUpdateSelectionBox new;
+		            @
+			            (HResizeParentWhenChildMoves new nodeStyler:
+					             self nodeStyler);
+		            yourself.
+	^ baseNode announcer
 ]
 
 { #category : #adding }
