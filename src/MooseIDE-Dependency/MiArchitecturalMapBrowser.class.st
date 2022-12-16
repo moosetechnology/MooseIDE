@@ -91,6 +91,11 @@ MiArchitecturalMapBrowser >> canFollowEntity: anEntity [
 ]
 
 { #category : #testing }
+MiArchitecturalMapBrowser >> canPropagate [
+	^true
+]
+
+{ #category : #testing }
 MiArchitecturalMapBrowser >> canReceiveEntity: anEntity [
 
 	^ anEntity isMooseObject
@@ -137,7 +142,11 @@ MiArchitecturalMapBrowser >> initializePresenters [
 { #category : #accessing }
 MiArchitecturalMapBrowser >> miSelectedItem [
 
-	^ model entities mooseInterestingEntity
+	^visualization canvas selectedShapes
+		ifEmpty: [ model entities mooseInterestingEntity ]
+		ifNotEmpty: [ :selectedShapes |
+			(selectedShapes collect: [:shape | shape model rawModel])
+				asMooseGroup ]
 ]
 
 { #category : #initialization }
