@@ -96,7 +96,7 @@ MiImportModelFromSmalltalkDialog >> advancedSettingsLayout [
 { #category : #action }
 MiImportModelFromSmalltalkDialog >> candidateClass [
 
-	^ CandidateListOperator
+	^ invocationStrategyDroplist selectedItem
 ]
 
 { #category : #accessing }
@@ -237,6 +237,7 @@ MiImportModelFromSmalltalkDialog >> privateImportModel [
 		model: mooseModel;
 		addFromPackagesNamed: self selectedPackages;
 		candidateClass: self candidateClass;
+		runCandidateOperator;
 		runWithProgress.
 
 	^ mooseModel

@@ -22,6 +22,20 @@ MiImportModelDialog class >> windowExtent [
 ]
 
 { #category : #action }
+MiImportModelDialog >> handleImportError: err [
+
+	| debug |
+	debug := SpConfirmDialog new
+		         title: 'Import error: ' , err messageText;
+		         label: 'Do you want to open the debugger?';
+		         acceptLabel: 'Yes';
+		         cancelLabel: 'No';
+		         openModal.
+	debug ifTrue: [ err defaultAction ].
+	^ nil
+]
+
+{ #category : #action }
 MiImportModelDialog >> importModel [
 
 	| mooseModel |
@@ -39,24 +53,21 @@ MiImportModelDialog >> importModel [
 MiImportModelDialog >> importModelThenCloseDialogWindow: aDialog [
 
 	| mooseModel aJob |
-	[self validateImportForm]  onErrorDo: [ :err | 
+	[ self validateImportForm ] onErrorDo: [ :err | 
 		UIManager default alert: 'Invalid input: ' , err messageText.
 		^ self ].
 
-	aJob := [ :job |
-		job title: 'Importing model'.
-		mooseModel := [ self importModel ]
-			onErrorDo: [ :err |
-				UIManager default alert: 'Import error: ' , err messageText.
-				nil ].
-		job currentValue: 50.
-		mooseModel ifNotNil: [ 
-			mooseModel install.
-			aDialog close.
-			self updateBrowserWith: mooseModel ]
-		] asJob.
+	aJob := [ :job | 
+	        job title: 'Importing model'.
+	        mooseModel := [ self importModel ] onErrorDo: [ :err | 
+		                      self handleImportError: err ].
+	        job currentValue: 50.
+	        mooseModel ifNotNil: [ 
+		        mooseModel install.
+		        aDialog close.
+		        self updateBrowserWith: mooseModel ] ] asJob.
 
-	[ aJob run ] forkAt: Processor userBackgroundPriority.
+	[ aJob run ] forkAt: Processor userBackgroundPriority
 ]
 
 { #category : #initialization }
