@@ -237,7 +237,6 @@ MiImportModelFromSmalltalkDialog >> privateImportModel [
 		model: mooseModel;
 		addFromPackagesNamed: self selectedPackages;
 		candidateClass: self candidateClass;
-		runCandidateOperator;
 		runWithProgress.
 
 	^ mooseModel
