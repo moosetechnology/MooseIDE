@@ -96,7 +96,7 @@ MiImportModelFromSmalltalkDialog >> advancedSettingsLayout [
 { #category : #action }
 MiImportModelFromSmalltalkDialog >> candidateClass [
 
-	^ invocationStrategyDroplist selectedItem
+	^ CandidateListOperator
 ]
 
 { #category : #accessing }
