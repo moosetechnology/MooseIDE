@@ -174,8 +174,7 @@ MiArchitecturalMapBrowser >> settings [
 	^model openSettings
 ]
 
-{ #category : #initialization }
+{ #category : #'accessing - private tests' }
 MiArchitecturalMapBrowser >> visualization [
-
-	^ visualization
+	^visualization
 ]
