@@ -405,6 +405,24 @@ MiArchitecturalMapBuilder >> groupTagElements: aTag [
 	^ classDict values
 ]
 
+{ #category : #private }
+MiArchitecturalMapBuilder >> highlightShape: aShape [
+
+	"(aShape propertyAt: #background) color: Color red."
+	aShape border: (RSBorder new width: 8; color: Color lightRed)
+]
+
+{ #category : #private }
+MiArchitecturalMapBuilder >> highlightShapesFor: entities [
+
+	self canvas selectedShapes do: [ :s | self unhighlightShape: s ].
+	shapes := entities
+		          collect: [ :e | self shapeFromEntity: e ]
+		          thenReject: [ :e | e isNil ].
+	shapes do: [ :s | self highlightShape: s ].
+	self canvas selectedShapes: shapes
+]
+
 { #category : #accessing }
 MiArchitecturalMapBuilder >> highlightableLinkedShapes [
 
@@ -651,6 +669,22 @@ MiArchitecturalMapBuilder >> shapeFor: node [
 		when: HNodeChangedEvent do: [ :evt | self rebuildShape: shape ].
 	shapes add: shape.
 	^ shape
+]
+
+{ #category : #private }
+MiArchitecturalMapBuilder >> shapeFromEntity: anEntity [
+    "search for the RSShape in the canvas that represent anEntity returns nil otherwise
+     each RSShape contains a HNode which contains an entity"
+
+    ^self canvas deepNodes
+    detect: [ :shape | shape model ifNil: [false] ifNotNil: [:shapeModel | shapeModel rawModel = anEntity] ]
+    ifNone: [ nil ]
+]
+
+{ #category : #private }
+MiArchitecturalMapBuilder >> unhighlightShape: aShape [
+
+	(aShape propertyAt: #background) color: (self colorFor: aShape model)
 ]
 
 { #category : #building }

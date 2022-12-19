@@ -91,6 +91,12 @@ MiArchitecturalMapBrowser >> canFollowEntity: anEntity [
 ]
 
 { #category : #testing }
+MiArchitecturalMapBrowser >> canHighlight [
+
+	^ true
+]
+
+{ #category : #testing }
 MiArchitecturalMapBrowser >> canPropagate [
 	^true
 ]
@@ -124,6 +130,12 @@ MiArchitecturalMapBrowser >> followEntity: anEntity [
 MiArchitecturalMapBrowser >> hasSettings [
 
 	^ true
+]
+
+{ #category : #testing }
+MiArchitecturalMapBrowser >> highlightEntity: anEntity [
+
+	visualization highlightEntities: anEntity
 ]
 
 { #category : #initialization }

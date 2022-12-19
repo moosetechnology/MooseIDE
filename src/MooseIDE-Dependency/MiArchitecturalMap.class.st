@@ -21,8 +21,8 @@ MiArchitecturalMap >> builder [
 
 { #category : #highlighting }
 MiArchitecturalMap >> highlightShapes [
-	
 
+	builder highlightShapesFor: highlightedEntities
 ]
 
 { #category : #running }
@@ -36,16 +36,6 @@ MiArchitecturalMap >> run [
 	self canvas @ (builder elasticBoxFor: self canvas).
 
 	builder build
-]
-
-{ #category : #searching }
-MiArchitecturalMap >> shapeFromEntity: anEntity [
-	"search for the RSShape in the canvas that represent anEntity returns nil otherwise
-	 each RSShape contains a HNode which contains an entity"
-
-	^self canvas deepNodes
-	detect: [ :shape | shape model ifNil: [false] ifNotNil: [:shapeModel | shapeModel rawModel = anEntity] ]
-	ifNone: [ nil ]
 ]
 
 { #category : #updating }
