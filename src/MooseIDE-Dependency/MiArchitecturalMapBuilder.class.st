@@ -408,7 +408,6 @@ MiArchitecturalMapBuilder >> groupTagElements: aTag [
 { #category : #private }
 MiArchitecturalMapBuilder >> highlightShape: aShape [
 
-	"(aShape propertyAt: #background) color: Color red."
 	aShape border: (RSBorder new width: 8; color: Color lightRed)
 ]
 
@@ -684,7 +683,7 @@ MiArchitecturalMapBuilder >> shapeFromEntity: anEntity [
 { #category : #private }
 MiArchitecturalMapBuilder >> unhighlightShape: aShape [
 
-	(aShape propertyAt: #background) color: (self colorFor: aShape model)
+	aShape border: nil
 ]
 
 { #category : #building }
