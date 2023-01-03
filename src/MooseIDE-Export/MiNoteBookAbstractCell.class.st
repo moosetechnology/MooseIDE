@@ -207,6 +207,7 @@ MiNoteBookAbstractCell >> remove [
 { #category : #initialization }
 MiNoteBookAbstractCell >> select [
 
+	self takeKeyboardFocus.
 	leftMenuCanvas canvas color: self selectedColor.
 	leftMenuCanvas canvas signalUpdate.
 	rightMenuCanvas canvas color: self selectedColor.
