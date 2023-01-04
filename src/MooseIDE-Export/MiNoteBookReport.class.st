@@ -208,7 +208,6 @@ MiNoteBookReport >> newTextCell [
 MiNoteBookReport >> relayout [
 
 	| newLayout |
-	
 	newLayout := SpBoxLayout newTopToBottom
 		             spacing: self layoutSpacing;
 		             yourself.
@@ -219,7 +218,8 @@ MiNoteBookReport >> relayout [
 			 layout: newLayout;
 			 yourself).
 	cellList do: [ :cell | cell announceDisplayed ].
-	selectedCell ifNotNil: [ selectedCell takeKeyboardFocus ]
+	self defer: [ 
+		selectedCell ifNotNil: [ self selectAndScrollTo: selectedCell ] ]
 ]
 
 { #category : #removing }
