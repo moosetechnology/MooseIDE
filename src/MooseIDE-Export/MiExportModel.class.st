@@ -48,7 +48,8 @@ MiExportModel >> addColumnForQuery: aBlock withName: queryName [
 			              query: aBlock;
 			              name: queryName;
 			              yourself).
-	self columnAdded: newColumn
+	self columnAdded: newColumn.
+	^ newColumn
 ]
 
 { #category : #events }
