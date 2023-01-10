@@ -207,6 +207,36 @@ MiApplication >> modelImporter [
 
 ]
 
+{ #category : #brokerage }
+MiApplication >> mooseStyleSheet [
+
+	^ SpStyleVariableSTONReader fromString: '.application [
+	   .titleLabel [
+			Font { 
+				#size: 18,
+				#bold: true
+			},
+			Geometry { #height: Reset }
+		],
+		.title1 [ Font { #size: 12, #bold: true }, Geometry { #height: Reset } ],
+		.hSep [ 
+			Geometry {
+				#height: 1
+			},
+			.vSep [ Geometry { #height: 25, #width: 1 } ],
+			Draw {
+				#color: #0000001F,
+				#backgroundColor: #0000001F
+			}
+		],
+		.itemList [
+			Container { #borderWidth: 1, #borderColor: #00000020 },
+			Draw { #backgroundColor: #00000010 },
+			Geometry { #height: 30 }
+		]
+]'
+]
+
 { #category : #'private - factory' }
 MiApplication >> newIconProvider [
 
@@ -278,6 +308,13 @@ MiApplication >> removeItem: anItem from: aProducer [
 { #category : #running }
 MiApplication >> start [
 	"we will see"
+]
+
+{ #category : #brokerage }
+MiApplication >> styleSheet [
+
+	^ SpStyle defaultStyleSheet
+	  , self mooseStyleSheet
 ]
 
 { #category : #brokerage }
