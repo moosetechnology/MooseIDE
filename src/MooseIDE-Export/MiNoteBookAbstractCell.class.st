@@ -78,7 +78,7 @@ MiNoteBookAbstractCell >> createDescriptionFor: aString [
 MiNoteBookAbstractCell >> initializeLayout [
 
 	self layout: (SpBoxLayout newLeftToRight
-			 add: leftMenuCanvas width: 80;
+			 add: leftMenuCanvas width: 30;
 			 add: cell;
 			 add: rightMenuCanvas width: 100;
 			 yourself)
