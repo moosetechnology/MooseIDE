@@ -3,7 +3,8 @@ Class {
 	#superclass : #HSimpleVisualizationBuilder,
 	#instVars : [
 		'mapModel',
-		'nodeMooseIDDict'
+		'nodeMooseIDDict',
+		'colorMetricThreshold'
 	],
 	#category : #'MooseIDE-Visualization-System Complexity'
 }
@@ -169,6 +170,18 @@ MiSystemComplexityBuilder >> colorFor: node [
 	^ Color fromHexString: '2980B9'
 ]
 
+{ #category : #accessing }
+MiSystemComplexityBuilder >> colorMetricThreshold [
+
+	^ colorMetricThreshold ifNil: [ colorMetricThreshold := 256 ]
+]
+
+{ #category : #accessing }
+MiSystemComplexityBuilder >> colorMetricThreshold: anObject [
+
+	colorMetricThreshold := anObject
+]
+
 { #category : #building }
 MiSystemComplexityBuilder >> cornerRadius [
 
@@ -245,6 +258,37 @@ MiSystemComplexityBuilder >> nodeAnnouncer [
 ]
 
 { #category : #building }
+MiSystemComplexityBuilder >> normalizeColor [
+
+	"Using a normalizer outputs too much difference when the elements are very homogeneous. Instead we would like to have the ability to throttle the difference, so we have to do a custom normalization."
+
+	| colorMetric min max scale |
+	colorMetric := mapModel colorMetric.
+	"start by calculating min and max metrics"
+	min := SmallInteger maxVal.
+	max := 0.
+	shapes do: [ :each | 
+		| metric |
+		metric := each model rawModel perform: colorMetric.
+		min := min min: metric.
+		max := max max: metric ].
+
+	scale := NSScale linear
+		         domain: { 
+				         min.
+				         (max - min > self colorMetricThreshold
+					          ifTrue: max
+					          ifFalse: [ max + max - min ]) };
+		         clamp: true;
+		         range: { 
+				         mapModel colorRangeStart.
+				         mapModel colorRangeEnd }.
+	shapes do: [ :each | 
+		each color:
+			(scale scale: (each model rawModel perform: colorMetric)) ]
+]
+
+{ #category : #building }
 MiSystemComplexityBuilder >> normalizeShapes [
 
 	| canvasShapes |
@@ -257,11 +301,9 @@ MiSystemComplexityBuilder >> normalizeShapes [
 		shapes: canvasShapes;
 		scale: (NSScale linear range: { 20. 400 });
 		normalize: [ :type | type rawModel perform: mapModel heightMetric ].
-	RSNormalizer color
-		from: mapModel colorRangeStart;
-		to: mapModel colorRangeEnd;
-		shapes: canvasShapes;
-		normalize: self colorBlock.
+
+	self normalizeColor.
+
 	canvasShapes do: [ :s | 
 		s model isExpanded ifTrue: [ s adjustToChildren ] ]
 ]
