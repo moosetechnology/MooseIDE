@@ -41,11 +41,13 @@ MiNoteBookCodeCell >> initializePresenters [
 		        label: 'Code';
 		        action: [ notebook transformToTextCell: self ].
 
-	leftMenuCanvas canvas add: (RSLabel new
-			 text: 'Code';
-			 color: Color black;
-			 when: RSMouseClick do: [ notebook transformToTextCell: self ];
-			 yourself).
+	leftMenuCanvas canvas
+		add: (RSLabel new
+				 text: '[ ]';
+				 bold;
+				 color: Color black;
+				 yourself);
+		when: RSMouseClick do: [ notebook transformToTextCell: self ].
 	self initializeLayout
 ]
 

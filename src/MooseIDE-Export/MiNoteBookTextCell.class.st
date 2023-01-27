@@ -37,10 +37,13 @@ MiNoteBookTextCell >> initializePresenters [
 		        label: 'Mic';
 		        action: [ notebook transformToCodeCell: self ];
 		        yourself.
-	leftMenuCanvas canvas add: (RSLabel new
-			 text: 'Microdown';
-			 color: Color black;
-			 when: RSMouseClick do: [ notebook transformToCodeCell: self ];
-			 yourself).
+	leftMenuCanvas canvas
+		add: (RSLabel new
+				 translateBy: 0 @ -3;
+				 text: 'μ';
+				 fontSize: 16;
+				 color: Color black;
+				 yourself);
+		when: RSMouseClick do: [ notebook transformToCodeCell: self ].
 	self initializeLayout
 ]
