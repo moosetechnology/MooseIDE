@@ -316,6 +316,7 @@ MiSystemComplexityBuilder >> normalizeMetric: metric threshold: threshold [
 		min := min min: value.
 		max := max max: value ].
 
+	"if difference is less than threshold, widen the domain by half of the difference in each direction"
 	^ NSScale linear
 		  clamp: true;
 		  domain: (max - min > threshold
