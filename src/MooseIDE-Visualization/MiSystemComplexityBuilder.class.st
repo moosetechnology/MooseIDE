@@ -304,26 +304,23 @@ MiSystemComplexityBuilder >> normalizeHeight [
 { #category : #building }
 MiSystemComplexityBuilder >> normalizeMetric: metric threshold: threshold [
 
-	"Using a normalizer outputs too much difference when the elements are very homogeneous. Instead we would like to have the ability to throttle the difference, so we have to do a custom normalization."
+	"Using a normalizer outputs too much difference when the elements are homogeneous. Instead we would like to have the ability to throttle the difference, so we have to do a custom normalization."
 
 	| min max |
-	"start by calculating min and max metrics"
+	"start by finding min and max metrics in model"
 	min := SmallInteger maxVal.
 	max := 0.
-	shapes do: [ :each | 
+	shapes do: [ :shape | 
 		| value |
-		value := each model rawModel perform: metric.
+		value := shape model rawModel perform: metric.
 		min := min min: value.
 		max := max max: value ].
 
-	"if difference is less than threshold, widen the domain by half of the difference in each direction"
+	"if difference is less than threshold, widen the domain by the difference in each direction, which reduces the range"
 	^ NSScale linear
 		  clamp: true;
 		  domain: (max - min > threshold
-				   ifTrue: [ 
-					   { 
-						   min.
-						   max } ]
+				   ifTrue: [ { min. max } ]
 				   ifFalse: [ 
 					   { 
 						   (min - max / 2 + min).
@@ -333,13 +330,11 @@ MiSystemComplexityBuilder >> normalizeMetric: metric threshold: threshold [
 { #category : #building }
 MiSystemComplexityBuilder >> normalizeShapes [
 
-	| canvasShapes |
-	canvasShapes := self container nodes.
 	self normalizeWidth.
 	self normalizeHeight.
 	self normalizeColor.
-	canvasShapes do: [ :s | 
-		s model isExpanded ifTrue: [ s adjustToChildren ] ]
+	self container nodes do: [ :canvasShape | 
+		canvasShape model isExpanded ifTrue: [ canvasShape adjustToChildren ] ]
 ]
 
 { #category : #building }
