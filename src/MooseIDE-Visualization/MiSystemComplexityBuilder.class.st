@@ -175,7 +175,7 @@ MiSystemComplexityBuilder >> colorFor: node [
 { #category : #accessing }
 MiSystemComplexityBuilder >> colorMetricThreshold [
 
-	^ colorMetricThreshold ifNil: [ colorMetricThreshold := 256 ]
+	^ colorMetricThreshold ifNil: [ colorMetricThreshold := 100 ]
 ]
 
 { #category : #accessing }
@@ -199,7 +199,7 @@ MiSystemComplexityBuilder >> elements [
 { #category : #accessing }
 MiSystemComplexityBuilder >> heightMetricThreshold [
 
-	^ heightMetricThreshold ifNil: [ heightMetricThreshold := 100 ]
+	^ heightMetricThreshold ifNil: [ heightMetricThreshold := 10 ]
 ]
 
 { #category : #accessing }
@@ -304,10 +304,10 @@ MiSystemComplexityBuilder >> normalizeHeight [
 { #category : #building }
 MiSystemComplexityBuilder >> normalizeMetric: metric threshold: threshold [
 
-	"Using a normalizer outputs too much difference when the elements are homogeneous. Instead we would like to have the ability to throttle the difference, so we have to do a custom normalization."
+	"When all elements are homogeneous, we want to show that the difference is small by making them look similar. They are considered homogeneous when the difference between the min and max values of the metric is below the threshold."
 
 	| min max |
-	"start by finding min and max metrics in model"
+	"start by finding min and max"
 	min := SmallInteger maxVal.
 	max := 0.
 	shapes do: [ :shape | 
@@ -316,9 +316,8 @@ MiSystemComplexityBuilder >> normalizeMetric: metric threshold: threshold [
 		min := min min: value.
 		max := max max: value ].
 
-	"if difference is less than threshold, widen the domain by the difference in each direction, which reduces the range"
+	"widen the domain by the difference if it is below the threshold, which reduces the effective range and thus makes the elements more similar"
 	^ NSScale linear
-		  clamp: true;
 		  domain: (max - min > threshold
 				   ifTrue: [ { min. max } ]
 				   ifFalse: [ 
@@ -499,7 +498,7 @@ MiSystemComplexityBuilder >> types [
 { #category : #accessing }
 MiSystemComplexityBuilder >> widthMetricThreshold [
 
-	^ widthMetricThreshold ifNil: [ widthMetricThreshold := 100 ]
+	^ widthMetricThreshold ifNil: [ widthMetricThreshold := 10 ]
 ]
 
 { #category : #accessing }
