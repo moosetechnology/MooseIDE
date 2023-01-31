@@ -365,5 +365,6 @@ MiReportBrowser >> updateModelCells [
 MiReportBrowser >> updateWithFile: aFileReference [
 
 	model importCellsFrom: aFileReference.
-	notebook updateAll.
+	self closePreview.
+	notebook updateAll
 ]
