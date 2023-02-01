@@ -3,7 +3,10 @@ Class {
 	#superclass : #HSimpleVisualizationBuilder,
 	#instVars : [
 		'mapModel',
-		'nodeMooseIDDict'
+		'nodeMooseIDDict',
+		'widthMetricThreshold',
+		'heightMetricThreshold',
+		'colorMetricThreshold'
 	],
 	#category : #'MooseIDE-Visualization-System Complexity'
 }
@@ -169,6 +172,18 @@ MiSystemComplexityBuilder >> colorFor: node [
 	^ Color fromHexString: '2980B9'
 ]
 
+{ #category : #accessing }
+MiSystemComplexityBuilder >> colorMetricThreshold [
+
+	^ colorMetricThreshold ifNil: [ colorMetricThreshold := 100 ]
+]
+
+{ #category : #accessing }
+MiSystemComplexityBuilder >> colorMetricThreshold: anObject [
+
+	colorMetricThreshold := anObject
+]
+
 { #category : #building }
 MiSystemComplexityBuilder >> cornerRadius [
 
@@ -179,6 +194,18 @@ MiSystemComplexityBuilder >> cornerRadius [
 MiSystemComplexityBuilder >> elements [
 
 	^ self types entityStorage
+]
+
+{ #category : #accessing }
+MiSystemComplexityBuilder >> heightMetricThreshold [
+
+	^ heightMetricThreshold ifNil: [ heightMetricThreshold := 10 ]
+]
+
+{ #category : #accessing }
+MiSystemComplexityBuilder >> heightMetricThreshold: anObject [
+
+	heightMetricThreshold := anObject
 ]
 
 { #category : #initialization }
@@ -245,25 +272,82 @@ MiSystemComplexityBuilder >> nodeAnnouncer [
 ]
 
 { #category : #building }
+MiSystemComplexityBuilder >> normalizeColor [
+
+	| colorMetric scale |
+	colorMetric := mapModel colorMetric.
+	scale := self
+		         normalizeMetric: colorMetric
+		         threshold: self colorMetricThreshold.
+	scale range: { 
+			mapModel colorRangeStart.
+			mapModel colorRangeEnd }.
+	shapes do: [ :each | 
+		each color:
+			(scale scale: (each model rawModel perform: colorMetric)) ]
+]
+
+{ #category : #building }
+MiSystemComplexityBuilder >> normalizeHeight [
+
+	| heightMetric scale |
+	heightMetric := mapModel heightMetric.
+	scale := self
+		         normalizeMetric: heightMetric
+		         threshold: self heightMetricThreshold.
+	scale range: { 20. 400 }.
+	shapes do: [ :each | 
+		each height:
+			(scale scale: (each model rawModel perform: heightMetric)) ]
+]
+
+{ #category : #building }
+MiSystemComplexityBuilder >> normalizeMetric: metric threshold: threshold [
+
+	"When all elements are homogeneous, we want to show that the difference is small by making them look similar. They are considered homogeneous when the difference between the min and max values of the metric is below the threshold."
+
+	| min max |
+	"start by finding min and max"
+	min := SmallInteger maxVal.
+	max := 0.
+	shapes do: [ :shape | 
+		| value |
+		value := shape model rawModel perform: metric.
+		min := min min: value.
+		max := max max: value ].
+
+	"widen the domain by the difference if it is below the threshold, which reduces the effective range and thus makes the elements more similar"
+	^ NSScale linear
+		  domain: (max - min > threshold
+				   ifTrue: [ { min. max } ]
+				   ifFalse: [ 
+					   { 
+						   (min - max / 2 + min).
+						   (max - min / 2 + max) } ])
+]
+
+{ #category : #building }
 MiSystemComplexityBuilder >> normalizeShapes [
 
-	| canvasShapes |
-	canvasShapes := self container nodes.
-	RSNormalizer width
-		shapes: canvasShapes;
-		scale: (NSScale linear range: { 20. 400 });
-		normalize: [ :type | type rawModel perform: mapModel widthMetric ].
-	RSNormalizer height
-		shapes: canvasShapes;
-		scale: (NSScale linear range: { 20. 400 });
-		normalize: [ :type | type rawModel perform: mapModel heightMetric ].
-	RSNormalizer color
-		from: mapModel colorRangeStart;
-		to: mapModel colorRangeEnd;
-		shapes: canvasShapes;
-		normalize: self colorBlock.
-	canvasShapes do: [ :s | 
-		s model isExpanded ifTrue: [ s adjustToChildren ] ]
+	self normalizeWidth.
+	self normalizeHeight.
+	self normalizeColor.
+	self container nodes do: [ :canvasShape | 
+		canvasShape model isExpanded ifTrue: [ canvasShape adjustToChildren ] ]
+]
+
+{ #category : #building }
+MiSystemComplexityBuilder >> normalizeWidth [
+
+	| widthMetric scale |
+	widthMetric := mapModel widthMetric.
+	scale := self
+		         normalizeMetric: widthMetric
+		         threshold: self widthMetricThreshold.
+	scale range: { 20. 400 }.
+	shapes do: [ :each | 
+		each width:
+			(scale scale: (each model rawModel perform: widthMetric)) ]
 ]
 
 { #category : #building }
@@ -409,4 +493,16 @@ MiSystemComplexityBuilder >> shapeFor: node [
 MiSystemComplexityBuilder >> types [
 
 	^ self mapModel entities
+]
+
+{ #category : #accessing }
+MiSystemComplexityBuilder >> widthMetricThreshold [
+
+	^ widthMetricThreshold ifNil: [ widthMetricThreshold := 10 ]
+]
+
+{ #category : #accessing }
+MiSystemComplexityBuilder >> widthMetricThreshold: anObject [
+
+	widthMetricThreshold := anObject
 ]
