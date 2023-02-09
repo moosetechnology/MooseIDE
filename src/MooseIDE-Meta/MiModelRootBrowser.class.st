@@ -181,6 +181,13 @@ MiModelRootBrowser >> miSelectedItem [
 	^model selected
 ]
 
+{ #category : #accessing }
+MiModelRootBrowser >> miSelectedModel [
+	"similar to #miSelectedItem but ignore the setting #filterStubsSetting"
+
+	^model selectedModel
+]
+
 { #category : #'accessing - tests' }
 MiModelRootBrowser >> modelFilteringList [
 	^ modelFilteringList
