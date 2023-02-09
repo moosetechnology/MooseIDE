@@ -104,15 +104,21 @@ MiModelRootBrowserModel >> selected [
 
 	^ (settings getItemValue: #filterStubsSetting)
 		  ifTrue: [ 
-			  selected ifNotNil: [ :selectedModel | 
+			  self selectedModel ifNotNil: [ :selectedModel | 
 				  (selectedModel reject: [ :each | each isStub ]) asMooseGroup ] ]
-		  ifFalse: [ selected ]
+		  ifFalse: [ self selectedModel ]
 ]
 
 { #category : #accessing }
 MiModelRootBrowserModel >> selected: anObject [
 	selected := anObject.
 	browser updateToolbar
+]
+
+{ #category : #accessing }
+MiModelRootBrowserModel >> selectedModel [
+
+	^selected
 ]
 
 { #category : #'accessing - tests' }
