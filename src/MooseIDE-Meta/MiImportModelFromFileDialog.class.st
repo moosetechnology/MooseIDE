@@ -219,11 +219,17 @@ MiImportModelFromFileDialog >> initializePresenters [
 
 { #category : #'metamodel-guess' }
 MiImportModelFromFileDialog >> inputFileSample [
-	^modelFile readStreamDo: [ :inputStream |
-		(inputStream size < self inputSampleLength)
-		ifTrue: [ inputStream contents ]
-		ifFalse: [ inputStream next: self inputSampleLength ]
-	]
+
+	^ modelFile readStreamDo: [ :inputStream | 
+		  | firstChar |
+		  firstChar := inputStream peek.
+		  inputStream size < self inputSampleLength
+			  ifTrue: [ inputStream contents ]
+			  ifFalse: [ 
+				  (inputStream next: self inputSampleLength)
+				  , (inputStream upTo: (firstChar = $(
+							    ifTrue: [ "mse" $) ]
+							    ifFalse: [ "json" $} ])) ] ]
 ]
 
 { #category : #accessing }
