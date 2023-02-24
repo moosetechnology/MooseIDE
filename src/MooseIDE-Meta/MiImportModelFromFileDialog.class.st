@@ -100,7 +100,7 @@ MiImportModelFromFileDialog >> getRootFolder [
 		rootFolderInput text: chosenDirectory asFileReference pathString ]
 ]
 
-{ #category : #private }
+{ #category : #action }
 MiImportModelFromFileDialog >> handleDropFile: aFileReference [
 	[self updateForModelFile: aFileReference]
 	on: Error
@@ -109,7 +109,7 @@ MiImportModelFromFileDialog >> handleDropFile: aFileReference [
 		^self ].	
 ]
 
-{ #category : #'private -testing' }
+{ #category : #action }
 MiImportModelFromFileDialog >> handleDropFileAndImport: aFileReference [
 	self handleDropFile: aFileReference. 
 
