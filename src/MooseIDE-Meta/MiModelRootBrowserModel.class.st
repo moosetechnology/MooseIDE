@@ -40,6 +40,11 @@ MiModelRootBrowserModel >> allModelRootBrowser [
 	^browser application allBrowsers: MiModelRootBrowser
 ]
 
+{ #category : #settings }
+MiModelRootBrowserModel >> autoImportSetting [
+	^ (settings getItemValue: #modelAutoImportSetting)
+]
+
 { #category : #accessing }
 MiModelRootBrowserModel >> availableMooseModels [
 
@@ -74,7 +79,14 @@ MiModelRootBrowserModel >> initializeSettings [
 		label: 'Filter out stubs?' ;
 		help: 'When propagating the model should it filter out the stub entities or pass them along' ;
 		yourself)
-		named: #filterStubsSetting
+		named: #filterStubsSetting.
+		
+	settings addItem: (MiCheckboxSettingItem new
+		setValue: false ;
+		label: 'Automatically import drag&drop files?' ;
+		help: 'When drag & drop model from file should it be automatically imported if possible or should it just configure the import dialog' ;
+		yourself)
+		named: #modelAutoImportSetting.
 ]
 
 { #category : #'accessing - tests' }
