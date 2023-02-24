@@ -124,7 +124,15 @@ MiModelRootBrowser >> followEntity: anEntity [
 
 { #category : #actions }
 MiModelRootBrowser >> handleDropFile: aFileReference [
+
 	self importFromFileUI handleDropFile: aFileReference.
+
+]
+
+{ #category : #'private testing' }
+MiModelRootBrowser >> handleDropFileAndImport: aFileReference [
+
+	self importFromFileUI handleDropFileAndImport: aFileReference.
 
 ]
 

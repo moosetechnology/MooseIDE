@@ -91,14 +91,15 @@ MiModelRootBrowserTest >> testHandleDropFileImportsModel [
 
 	self assertEmpty: browser model mooseModelsList.
 
-	browser handleDropFile: file.
+	browser handleDropFileAndImport: file.
+
 	"Must wait a bit to ensure model finishes importing.
 	 Also need to update list manually because only browsers in MiApplication are updated
 	 and this one is in MiApplicationTest"
 	[ 0.5 second wait.
 	  browser updateList ]
 	ensure: [ file delete ]. 
-
+	
 	self assert: browser model mooseModelsList size equals: 1.
 ]
 
