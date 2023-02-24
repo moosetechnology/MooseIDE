@@ -41,16 +41,11 @@ MooseObject >> navigationItemsFromPragmas [
 	pragmaValueAssociations := (self mooseInterestingEntity
 		                            navigationPragmas sorted:
 		                            [ :pragma | 
-		                            pragma argumentNamed: #navigation ]
+		                            pragma argumentNamed: #navigation: ]
 			                            ascending) collect: [ :pragma | 
 		                           pragma inspectorToString
-		                           ->
-			                           ([ 
-			                            self mooseInterestingEntity perform:
-				                            pragma methodSelector ] onErrorDo: [ 
-				                            nil ]) mooseInterestingEntity ].
+		                           -> pragma methodSelector ].
 
 	"filter out nils and empty collections, sort"
-	^ pragmaValueAssociations reject: [ :entity | 
-		  entity isNil or: [ entity isCollection and: [ entity isEmpty ] ] ]
+	^ pragmaValueAssociations reject: [ :entity | entity isNil ]
 ]

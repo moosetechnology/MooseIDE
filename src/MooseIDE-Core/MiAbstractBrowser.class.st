@@ -116,6 +116,11 @@ MiAbstractBrowser class >> isAbstract [
 	^ self == MiAbstractBrowser
 ]
 
+{ #category : #testing }
+MiAbstractBrowser class >> isModelImporter [
+	^false
+]
+
 { #category : #'menu organization' }
 MiAbstractBrowser class >> menuCodeToolsPriority [
 
@@ -296,6 +301,11 @@ MiAbstractBrowser class >> windowSize [
 	^ 500 @ 400
 ]
 
+{ #category : #testing }
+MiAbstractBrowser >> acceptsDropFileExtension: aString [
+	^false
+]
+
 { #category : #actions }
 MiAbstractBrowser >> beFrozen [
 
@@ -440,6 +450,11 @@ MiAbstractBrowser >> isMiBrowser [
 	^ true
 ]
 
+{ #category : #testing }
+MiAbstractBrowser >> isModelImporter [
+	^self class isModelImporter
+]
+
 { #category : #accessing }
 MiAbstractBrowser >> miSelectedItem [
 
@@ -509,10 +524,12 @@ MiAbstractBrowser >> showHelp [
 
 	| help |
 	(help := self newPopover)
-		relativeTo: self window toolbar;
-		bePositionRight;
+		"the first right item in the toolbar is the Help buttton"
+		relativeTo: self window toolbar rightItems first;
+		bePositionLeft;
 		presenter: (MiHelpPopup owner: help on: self);
 		popup
+
 ]
 
 { #category : #buses }

@@ -10,10 +10,9 @@ MiArchitecturalInspectorMenuItem >> canBeExecuted [
 	^ shape isShape
 ]
 
-{ #category : #accessing }
+{ #category : #execution }
 MiArchitecturalInspectorMenuItem >> execute [
-
-	MiInspectorBrowser inspect: shape model rawModel
+	shape inspectOnMoose
 ]
 
 { #category : #accessing }

@@ -1,6 +1,6 @@
 Class {
 	#name : #MiQueryConfiguratorPresenterTest,
-	#superclass : #TestCase,
+	#superclass : #MiAbstractApplicationTest,
 	#instVars : [
 		'helper',
 		'presenter',
@@ -40,6 +40,11 @@ MiQueryConfiguratorPresenterTest >> createNewQueryWithoutInput [
 ]
 
 { #category : #running }
+MiQueryConfiguratorPresenterTest >> createTestHelper [
+	^FQTestsHelper new
+]
+
+{ #category : #running }
 MiQueryConfiguratorPresenterTest >> queryClass [
 	^ self subclassResponsibility
 ]
@@ -49,7 +54,7 @@ MiQueryConfiguratorPresenterTest >> resetPresenterWithEntities: aMooseGroup [
 
 	| builder superPresenter |
 	browser := MiQueriesBrowser
-		           newApplication: MiTestApplication current
+		           newApplication: self application
 		           model: (FQRootQuery new
 				            result: aMooseGroup;
 				            yourself).
@@ -65,7 +70,9 @@ MiQueryConfiguratorPresenterTest >> resetPresenterWithEntities: aMooseGroup [
 MiQueryConfiguratorPresenterTest >> setUp [
 
 	super setUp.
-	helper := FQTestsHelper current.
+
+	helper := self createTestHelper.
+
 	self resetPresenterWithEntities: helper classesAndMethods
 ]
 

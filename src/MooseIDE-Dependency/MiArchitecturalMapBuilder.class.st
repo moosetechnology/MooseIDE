@@ -16,7 +16,8 @@ Class {
 		'nodeMooseIDDict',
 		'allEntities',
 		'tagNodes',
-		'nodesToAdd'
+		'nodesToAdd',
+		'highlightShapes'
 	],
 	#category : #'MooseIDE-Dependency-ArchitecturalMap'
 }
@@ -131,29 +132,26 @@ MiArchitecturalMapBuilder >> borderFor: node [
 
 { #category : #building }
 MiArchitecturalMapBuilder >> build [
-
 	rootNode ifNotNil: [ 
 		self updateWithModelSettings.
 		^ self ].
 	rootNode := HNode new.
-	mapModel showBusEntities ifTrue: [ 
-		rootNode addAll: (self elements collect: [ :e | 
-				 self buildNodeFromEntity: e register: true ]) ].
 	self addTags.
-	self setDependencies.
-	self buildLegend.
+	mapModel showBusEntities ifTrue: [ 
+		rootNode addAll: (self elements
+				 collect: [ :e | self buildNodeFromEntity: e register: true ]
+				 thenReject: [ :e | e isNil ]) ].
 	self renderIn: self container.
 	self updateWithModelSettings.
 	^ self container
 ]
 
-{ #category : #accessing }
+{ #category : #hooks }
 MiArchitecturalMapBuilder >> buildCompositeEmptyNodeIn: shape [
 
 	| node box rect entity group |
 	node := shape model.
 	entity := node rawModel.
-	(entity notNil and: [ entity isTag not ]) ifTrue: [  ].
 	group := self labelAndTagFor: node.
 	shape addAll: group.
 	rect := shape children encompassingRectangle.
@@ -165,8 +163,6 @@ MiArchitecturalMapBuilder >> buildCompositeEmptyNodeIn: shape [
 		       color: (self colorFor: node);
 		       border: (self borderFor: node);
 		       yourself.
-
-	box when: RSMouseDoubleClick do: [ :e | node expandCollapse ].
 	shape add: box.
 	box pushBack.
 	shape schildren: #(  ).
@@ -192,7 +188,6 @@ MiArchitecturalMapBuilder >> buildCompositeFullNodeIn: shape [
 		         addAll: titleGroup;
 		         adjustToChildren;
 		         yourself.
-	title when: RSMouseDoubleClick do: [ :e | node expandCollapse ].
 	shape propertyAt: #background put: titleBox.
 	childrenShapes := self childrenFor: node.
 	self layoutOn: childrenShapes parent: node.
@@ -301,28 +296,10 @@ MiArchitecturalMapBuilder >> buildCompositeFullTagIn: shape [
 ]
 
 { #category : #building }
-MiArchitecturalMapBuilder >> buildLegend [
-
-	| legend |
-	legend := RSLegend new
-		          container: self canvas;
-		          title: 'Links';
-		          onDemand: 'Legend';
-		          legendDo: [ :l | 
-			          l
-				          border: RSBorder new;
-				          color: Color white;
-				          padding: 10 ];
-		          yourself.
-	mapModel assocTypeToColorDict keysAndValuesDo: [ :type :color | 
-		legend text: type name withBoxColor: color ].
-	legend build
-]
-
-{ #category : #building }
 MiArchitecturalMapBuilder >> buildNodeFromEntity: anEntity register: aBoolean [
 
 	| node |
+	nodeMooseIDDict at: anEntity mooseID ifPresent: [ ^ nil ].
 	node := HNode new
 		        name:
 			        (String streamContents: [ :s | anEntity displayStringOn: s ]);
@@ -353,7 +330,8 @@ MiArchitecturalMapBuilder >> buildNodeFromTag: aTag [
 		        rawModel: aTag;
 		        addAll: (aTag taggedEntities
 				         collect: [ :e | 
-					         aTag == e ifFalse: [ self buildNodeFromEntity: e register: false ] ]
+					         aTag == e ifFalse: [ 
+							         self buildNodeFromEntity: e register: true ] ]
 				         thenSelect: [ :e | e isNotNil ]);
 		        color: aTag color;
 		        collapse;
@@ -371,7 +349,7 @@ MiArchitecturalMapBuilder >> childrenBlock [
 { #category : #accessing }
 MiArchitecturalMapBuilder >> colorFor: node [
 
-	^ node color ifNil: [ Color gray ] ifNotNil: [ :e | e ]
+	^ node color ifNil: [ Smalltalk ui theme baseColor ] 
 ]
 
 { #category : #accessing }
@@ -425,6 +403,38 @@ MiArchitecturalMapBuilder >> groupTagElements: aTag [
 		c add: e.
 		classDict at: e rawModel class put: c ].
 	^ classDict values
+]
+
+{ #category : #accessing }
+MiArchitecturalMapBuilder >> highlightableLinkedShapes [
+
+	^ highlightShapes ifNil: [ 
+		  highlightShapes := RSHighlightable new
+			                     highlightShapes: [ :shape | 
+				                     | list |
+				                     list := Set new.
+				                     shape connectedLines do: [ :line | 
+						                     shape = line from
+							                     ifTrue: [ 
+								                     list add:
+										                     (line to propertyAt: #background) ]
+							                     ifFalse: [ 
+								                     list add:
+										                     (line from propertyAt: #background) ] ].
+				                     list asOrderedCollection ];
+			                     when: RSHighlightEvent do: [ :evt | 
+				                     | color |
+				                     color := Color fromHexString: '9DD0B3'.
+				                     highlightable
+					                     record: evt shape
+					                     selector: #color
+					                     value: color ];
+			                     when: RSUnHighlightEvent
+			                     do: [ :evt | 
+				                     highlightable
+					                     restore: evt shape
+					                     selector: #color ];
+			                     yourself ]
 ]
 
 { #category : #initialization }
@@ -484,14 +494,40 @@ MiArchitecturalMapBuilder >> mapModel: anObject [
 
 { #category : #accessing }
 MiArchitecturalMapBuilder >> menuInteraction [
+
 	^ menuInteraction ifNil: [ 
-		menuInteraction := RSMenuActivable new
-			menuDo: [ :menu :aShape | MiArchitecturalMenuItem 
-				buildIn: menu 
-				shape: aShape 
-				visualization: self ];
-			yourself 
-	]
+		  menuInteraction := RSMenuActivable new
+			                     menuDo: [ :menu :aShape | 
+				                     HMenuBuilder new
+					                     menuItemStrategy:
+						                     MiArchitecturalMenuItemStrategy new;
+					                     buildIn: menu
+					                     shape: aShape
+					                     visualization: self ];
+			                     yourself ]
+]
+
+{ #category : #accessing }
+MiArchitecturalMapBuilder >> nodeAnnouncer [
+
+	"plug new events here"
+
+	baseNode ifNotNil: [ ^ baseNode announcer ].
+	baseNode := RSComposite new
+		            @ self nodeStyler popup;
+		            @
+			            (HGhostDraggable new color:
+					             Smalltalk ui theme caretColor);
+		            @ self menuInteraction;
+		            @ self highlightable;
+		            @ self highlightableLinkedShapes;
+		            @ RSNodeOnTopWhenPositionChanged new;
+		            @ HUpdateSelectionBox new;
+		            @
+			            (HResizeParentWhenChildMoves new nodeStyler:
+					             self nodeStyler);
+		            yourself.
+	^ baseNode announcer
 ]
 
 { #category : #adding }
@@ -551,18 +587,6 @@ MiArchitecturalMapBuilder >> renderIn: aCanvas [
 	
 ]
 
-{ #category : #rendering }
-MiArchitecturalMapBuilder >> renderLinesIn: aCanvas [
-
-	super renderLinesIn: aCanvas.
-	aCanvas lines do: [ :line | 
-		(line to model hasTagAncestor or: [ line to model rawModel isTag ]) 
-			ifTrue: [ line color: Color yellow ].
-		(line from model hasTagAncestor or: [ 
-			 line from model rawModel isTag ]) ifTrue: [ 
-			line color: Color cyan ] ]
-]
-
 { #category : #building }
 MiArchitecturalMapBuilder >> setDependencies [
 
@@ -578,7 +602,7 @@ MiArchitecturalMapBuilder >> setDependenciesFor: aNode [
 	incoming := aNode rawModel queryAllLocal: #in.
 	incoming do: [ :e | 
 		(nodeMooseIDDict at: e source mooseID ifAbsent: [ nil ]) ifNotNil: [ 
-			:hNode | hNode dependencyTo: aNode ] ]
+			:hNode | hNode dependencyTo: aNode withModel: e ] ]
 ]
 
 { #category : #building }
@@ -586,14 +610,15 @@ MiArchitecturalMapBuilder >> setDependenciesForEntity: anEntity [
 
 	| associationTypes |
 	associationTypes := mapModel associationTypes.
-
 	associationTypes do: [ :at | 
 		| assocs |
 		assocs := anEntity queryLocal: #in with: at.
+		
 		assocs do: [ :e | 
-			(nodeMooseIDDict at: e source mooseID ifAbsent: [ nil ]) ifNotNil: [ 
-				:hNode | 
-				hNode dependencyTo: (nodeMooseIDDict at: anEntity mooseID) ] ] ]
+			nodeMooseIDDict at: e source mooseID ifPresent: [ :hNode |
+				hNode
+					dependencyTo: (nodeMooseIDDict at: anEntity mooseID)
+					withModel: e ] ] ]
 ]
 
 { #category : #building }
@@ -620,7 +645,7 @@ MiArchitecturalMapBuilder >> shapeFor: node [
 
 	node
 		removeInteractionIfPresent: self class;
-		when: HNodeAddedEvent do: [ :evt |self rebuildRootShape: shape ];
+		when: HNodeAddedEvent do: [ :evt | self rebuildRootShape: shape ];
 		when: HCollapseEvent do: [ :evt | self rebuildShape: shape ];
 		when: HExpandEvent do: [ :evt | self rebuildRootShape: shape ];
 		when: HNodeChangedEvent do: [ :evt | self rebuildShape: shape ].
@@ -630,7 +655,6 @@ MiArchitecturalMapBuilder >> shapeFor: node [
 
 { #category : #building }
 MiArchitecturalMapBuilder >> updateWithModelSettings [
-	
 	self setDependencies.
 	mapModel showAllLinks
 		ifFalse: [ rootNode hideAllLinks ]

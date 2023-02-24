@@ -1,3 +1,7 @@
+"
+The spec application for Moose IDE.
+This is a singleton
+"
 Class {
 	#name : #MiApplication,
 	#superclass : #SpApplication,
@@ -5,7 +9,8 @@ Class {
 		'buses',
 		'defaultBus',
 		'producers',
-		'consumers'
+		'consumers',
+		'dropFileHandlers'
 	],
 	#classVars : [
 		'Current'
@@ -16,7 +21,7 @@ Class {
 { #category : #'instance creation' }
 MiApplication class >> current [
 
-	  ^ Current ifNil: [ Current := self new yourself ]
+	  ^ Current ifNil: [ Current := self new ]
 ]
 
 { #category : #accessing }
@@ -28,6 +33,7 @@ MiApplication class >> defaultBusName [
 { #category : #'instance creation' }
 MiApplication class >> reset [
 	<script>
+	Current ifNotNil: [ Current unregisterForDropFilesEvent ].
 	Current := nil
 ]
 
@@ -45,6 +51,22 @@ MiApplication >> add: anObject toDictionary: aDictionary for: aKey [
 { #category : #accessing }
 MiApplication >> allBrowsers: aMiClass [
 	^self browsers select: [ :aBrowser | aBrowser isKindOf: aMiClass ]
+]
+
+{ #category : #'drag and drop support' }
+MiApplication >> beDropFilesHandler [
+	dropFileHandlers := {
+		(ExternalDropHandler
+			type: nil
+			extension: #mse
+			action: [ :fileReference | self importModelFromFile: fileReference ])
+		.
+		(ExternalDropHandler
+			type: nil
+			extension: #json
+			action: [ :fileReference | self importModelFromFile: fileReference ])
+	}.
+	dropFileHandlers do: [ :handler | ExternalDropHandler registerHandler: handler ]
 ]
 
 { #category : #accessing }
@@ -141,6 +163,12 @@ MiApplication >> deleteBusNamed: aName [
 		ifFound: [ :bus | self deleteBus: bus ]
 ]
 
+{ #category : #'drag and drop support' }
+MiApplication >> importModelFromFile: aFileReference [
+
+	self modelImporter handleDropFile: aFileReference
+]
+
 { #category : #initialization }
 MiApplication >> initialize [
 
@@ -148,9 +176,20 @@ MiApplication >> initialize [
 
 	buses := OrderedCollection new.
 	defaultBus := self busNamed: self class defaultBusName.
-	
+
 	consumers := Dictionary new.
 	producers  := Dictionary new.
+
+	
+	dropFileHandlers := #().
+	self beDropFilesHandler
+
+]
+
+{ #category : #'drag and drop support' }
+MiApplication >> instantiateModelImporter [
+	^(MiAbstractBrowser withAllSubclasses detect: [ :aMiClass | aMiClass isModelImporter ])
+		open
 ]
 
 { #category : #brokerage }
@@ -160,10 +199,53 @@ MiApplication >> itemsFor: aClass [
 		  producer itemsFor: aClass ]
 ]
 
+{ #category : #'drag and drop support' }
+MiApplication >> modelImporter [
+	^self openedBrowsers
+		detect: [ :browser | browser isModelImporter ]
+		ifNone: [ self instantiateModelImporter ].
+
+]
+
+{ #category : #brokerage }
+MiApplication >> mooseStyleSheet [
+
+	^ SpStyleVariableSTONReader fromString: '.application [
+	   .titleLabel [
+			Font { 
+				#size: 18,
+				#bold: true
+			},
+			Geometry { #height: Reset }
+		],
+		.title1 [ Font { #size: 12, #bold: true }, Geometry { #height: Reset } ],
+		.hSep [ 
+			Geometry {
+				#height: 1
+			},
+			.vSep [ Geometry { #height: 25, #width: 1 } ],
+			Draw {
+				#color: #0000001F,
+				#backgroundColor: #0000001F
+			}
+		],
+		.itemList [
+			Container { #borderWidth: 1, #borderColor: #00000020 },
+			Draw { #backgroundColor: #00000010 },
+			Geometry { #height: 30 }
+		]
+]'
+]
+
 { #category : #'private - factory' }
 MiApplication >> newIconProvider [
 
 	^ MiIconProvider new
+]
+
+{ #category : #presenters }
+MiApplication >> openedBrowsers [
+	^self browsers
 ]
 
 { #category : #brokerage }
@@ -229,12 +311,25 @@ MiApplication >> start [
 ]
 
 { #category : #brokerage }
+MiApplication >> styleSheet [
+
+	^ SpStyle defaultStyleSheet
+	  , self mooseStyleSheet
+]
+
+{ #category : #brokerage }
 MiApplication >> unregisterConsumer: aConsumer [
 
 	"removes aConsumer from all lists of consumers for any class"
 
 	consumers do: [ :consumerList | 
 		consumerList remove: aConsumer ifAbsent: [  ] ]
+]
+
+{ #category : #'drag and drop support' }
+MiApplication >> unregisterForDropFilesEvent [
+	ExternalDropHandler registeredHandlers removeAll: dropFileHandlers.
+	dropFileHandlers := #()
 ]
 
 { #category : #brokerage }

@@ -1,5 +1,23 @@
 "
-I am a browser that display a hieracical map.
+I am a browser that displays an architectural map.
+
+Controls:
+
+* Mouse over to highlight common inner boxes
+* Mouse click to keep the highlight
+* right click over a box, to use the menu
+* right click over the view to use the general menu
+* command+click to use the last tag.
+
+* Mouse left to drag
+* Arrrow keys to move the visualization around
+* Scrolls bars to change the view's position
+* M to collapse or expand the window
+* I to zoom in
+* O to zoom out
+* Moouse Wheel to zoom in/out
+* S to search entities by their name (several search can be applied)
+* R to clear all searches
 "
 Class {
 	#name : #MiArchitecturalMapBrowser,
@@ -73,6 +91,11 @@ MiArchitecturalMapBrowser >> canFollowEntity: anEntity [
 ]
 
 { #category : #testing }
+MiArchitecturalMapBrowser >> canPropagate [
+	^true
+]
+
+{ #category : #testing }
 MiArchitecturalMapBrowser >> canReceiveEntity: anEntity [
 
 	^ anEntity isMooseObject
@@ -119,7 +142,11 @@ MiArchitecturalMapBrowser >> initializePresenters [
 { #category : #accessing }
 MiArchitecturalMapBrowser >> miSelectedItem [
 
-	^ model entities mooseInterestingEntity
+	^visualization canvas selectedShapes
+		ifEmpty: [ model entities mooseInterestingEntity ]
+		ifNotEmpty: [ :selectedShapes |
+			(selectedShapes collect: [:shape | shape model rawModel])
+				asMooseGroup ]
 ]
 
 { #category : #initialization }
@@ -147,8 +174,7 @@ MiArchitecturalMapBrowser >> settings [
 	^model openSettings
 ]
 
-{ #category : #initialization }
+{ #category : #'accessing - private tests' }
 MiArchitecturalMapBrowser >> visualization [
-
-	^ visualization
+	^visualization
 ]

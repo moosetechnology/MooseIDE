@@ -36,8 +36,9 @@ MiDSMBrowserModel >> buildGraphEdges [
 			edges: { entity }
 			from: #yourself
 			toAll: [ :sourceEntity |
-				"removed call to #withoutSelfLoop because it is too expansive to compute"
-				(sourceEntity queryAllOutgoing atScope: sourceEntity class) intersection: entities
+				"replaced call to #withoutSelfLoop (too expansive to compute) by intersection without sourcedEntity
+				 Note: intersection otherwise needed to restrict result to only entities in the model"
+				(sourceEntity queryAllOutgoing atScope: sourceEntity class) intersection: (entities reject: [:e | e = sourceEntity])
 			]
 	]
 ]
@@ -177,18 +178,18 @@ MiDSMBrowserModel >> nodesOrdered [
 
 { #category : #buildGraph }
 MiDSMBrowserModel >> orderNodes [
-	"ordering edges on:
-	- number of combined in and out dependencies
-	- if equal, number of out dependencies
-	- if also equal, then name"
+	"Store ordered nodes in #orderedNodes.
+	 Order is:
+	 - number of combined in and out dependencies
+	 - if equal, number of out dependencies
+	 - if also equal, then name"
 	| incomingEdges |
+
 	incomingEdges := Dictionary new: graph nodes size.
 	graph nodes do: [ :node | incomingEdges at: node put: Set new ].
 	graph nodes do: [ :node |
-		node adjacentNodes do: [ :adjacent || incomings |
-			incomings := incomingEdges at: adjacent.
-			incomings add: node.
-			incomingEdges at: adjacent put: incomings
+		node adjacentNodes do: [ :adjacent |
+			(incomingEdges at: adjacent) add: node
 		].
 	].
 	orderedNodes := graph nodes sorted: [ :nodeA :nodeB || outA inA outB inB|
@@ -201,7 +202,8 @@ MiDSMBrowserModel >> orderNodes [
 		or: [ (inA + outA) = (inB + outB)
 			ifTrue: [ outA < outB
 				or: [ outA = outB and: [nodeA model name < nodeB model name] ] ]
-			ifFalse: [ false ] ] ]
+			ifFalse: [ false ] ] ].
+
 ]
 
 { #category : #settings }

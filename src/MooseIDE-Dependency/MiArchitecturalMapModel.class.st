@@ -10,7 +10,6 @@ Class {
 	#instVars : [
 		'entities',
 		'childrenBlock',
-		'colorPalette',
 		'settings',
 		'defaultChildrenQuery'
 	],
@@ -55,18 +54,6 @@ MiArchitecturalMapModel >> allAssociationTypes [
 	^ (mooseGroup allEntityTypes flatCollectAsSet: [ :class | 
 		   class allIncomingAssociationTypesIn: mooseGroup metamodel ])
 		  asOrderedCollection
-]
-
-{ #category : #accessing }
-MiArchitecturalMapModel >> assocTypeToColorDict [
- 
-	| assocTypeToColorDict |
-	assocTypeToColorDict := Dictionary new.
-	self associationTypesSetting doWithIndex: [ :type :i | 
-		i <= colorPalette size
-			ifTrue: [ assocTypeToColorDict at: type put: (colorPalette at: i) ]
-			ifFalse: [ assocTypeToColorDict at: type put: Color random ] ].
-	^ assocTypeToColorDict
 ]
 
 { #category : #accessing }
@@ -154,8 +141,7 @@ MiArchitecturalMapModel >> fetchTags [
 { #category : #accessing }
 MiArchitecturalMapModel >> initialize [
 
-	super initialize.
-	colorPalette := (RSQualitativeColorPalette new paired12) range asOrderedCollection
+	super initialize
 ]
 
 { #category : #initialization }

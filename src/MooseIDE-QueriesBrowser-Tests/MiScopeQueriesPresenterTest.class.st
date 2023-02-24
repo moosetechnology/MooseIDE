@@ -138,7 +138,7 @@ MiScopeQueriesPresenterTest >> testQueryValidity [
 	self assert: presenter query isValid.
 
 	self selectNonSelectedDirection.
-	self assert: presenter query isValid.
+	self deny: presenter query isValid.
 
 	presenter scopesDropList selectItem:
 		(presenter scopesDropList listItems copyWithout:

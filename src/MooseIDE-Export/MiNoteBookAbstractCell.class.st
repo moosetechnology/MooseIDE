@@ -78,7 +78,7 @@ MiNoteBookAbstractCell >> createDescriptionFor: aString [
 MiNoteBookAbstractCell >> initializeLayout [
 
 	self layout: (SpBoxLayout newLeftToRight
-			 add: leftMenuCanvas width: 80;
+			 add: leftMenuCanvas width: 30;
 			 add: cell;
 			 add: rightMenuCanvas width: 100;
 			 yourself)
@@ -207,6 +207,7 @@ MiNoteBookAbstractCell >> remove [
 { #category : #initialization }
 MiNoteBookAbstractCell >> select [
 
+	self takeKeyboardFocus.
 	leftMenuCanvas canvas color: self selectedColor.
 	leftMenuCanvas canvas signalUpdate.
 	rightMenuCanvas canvas color: self selectedColor.

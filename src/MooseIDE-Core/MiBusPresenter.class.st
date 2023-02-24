@@ -9,12 +9,12 @@ Class {
 
 { #category : #actions }
 MiBusPresenter >> activateItem: aBrowser [
-	aBrowser followBus: model
+	aBrowser followBus: midasModel
 ]
 
 { #category : #actions }
 MiBusPresenter >> deactivateItem: aBrowser [
-	aBrowser unfollowBus: model
+	aBrowser unfollowBus: midasModel
 ]
 
 { #category : #initialization }
@@ -34,11 +34,11 @@ MiBusPresenter >> initializePresenters [
 	loggerButton := self newButton
 		                iconName: #history;
 		                label: 'Open logger';
-		                action: [ MiBusLogBrowser openForBus: model application: application ].
+		                action: [ MiBusLogBrowser openForBus: midasModel application: application ].
 	self initializeLayout
 ]
 
 { #category : #settings }
 MiBusPresenter >> toolbarLabel [
-	^ model name
+	^ midasModel name
 ]

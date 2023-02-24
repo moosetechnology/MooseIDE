@@ -48,6 +48,11 @@ MiModelRootBrowser class >> defaultLayout [
 		  yourself
 ]
 
+{ #category : #testing }
+MiModelRootBrowser class >> isModelImporter [
+	^true
+]
+
 { #category : #'world menu' }
 MiModelRootBrowser class >> menuCommandOn: aBuilder [
 
@@ -117,9 +122,33 @@ MiModelRootBrowser >> followEntity: anEntity [
 	
 ]
 
+{ #category : #actions }
+MiModelRootBrowser >> handleDropFile: aFileReference [
+	
+	self model autoImportSetting 
+		ifTrue: [self importFromFileUI handleDropFileAndImport: aFileReference.  ]
+		ifFalse: [self importFromFileUI handleDropFile: aFileReference].
+	
+	
+	
+
+]
+
+{ #category : #'private testing' }
+MiModelRootBrowser >> handleDropFileAndImport: aFileReference [
+
+	self importFromFileUI handleDropFileAndImport: aFileReference.
+
+]
+
 { #category : #testing }
 MiModelRootBrowser >> hasSettings [
 	^ true
+]
+
+{ #category : #accessing }
+MiModelRootBrowser >> importFromFileUI [
+	^MiImportFromFileCommand new execute presenter
 ]
 
 { #category : #initialization }
@@ -165,6 +194,13 @@ MiModelRootBrowser >> miSelectedItem [
 	^model selected
 ]
 
+{ #category : #accessing }
+MiModelRootBrowser >> miSelectedModel [
+	"similar to #miSelectedItem but ignore the setting #filterStubsSetting"
+
+	^model selectedModel
+]
+
 { #category : #'accessing - tests' }
 MiModelRootBrowser >> modelFilteringList [
 	^ modelFilteringList
@@ -200,5 +236,5 @@ MiModelRootBrowser >> updateForNewModel: aModel [
 { #category : #updating }
 MiModelRootBrowser >> updateList [
 
-	model updateMooseModelsList
+	model updateMooseModelsList.
 ]

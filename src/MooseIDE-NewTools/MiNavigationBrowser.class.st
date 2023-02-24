@@ -82,7 +82,6 @@ MiNavigationBrowser >> initializePresenters [
 
 	| items |
 	navigation := self newTable.
-
 	items := self filterEmptyValues: (self itemsFor: self model).
 	navigation
 		contextMenu: [ self rootCommandsGroup asMenuPresenter ];
@@ -103,7 +102,7 @@ MiNavigationBrowser >> initializePresenters [
 
 { #category : #initialization }
 MiNavigationBrowser >> itemsFor: anEntity [
-
+	
 	^ anEntity mooseDescription allComplexProperties
 		  collect: [ :property | 
 			  property name -> (anEntity propertyNamed: property name) ]
@@ -130,6 +129,7 @@ MiNavigationBrowser >> outputActivationPort [
 
 { #category : #accessing }
 MiNavigationBrowser >> selectedItem [
+	
 	^ navigation selection selectedItem value
 ]
 

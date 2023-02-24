@@ -1,3 +1,6 @@
+"
+I hold a icon set for Moose IDE
+"
 Class {
 	#name : #MiIconProvider,
 	#superclass : #SpIconProvider,

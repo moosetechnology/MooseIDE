@@ -39,22 +39,23 @@ MiImportModelDialog >> importModel [
 MiImportModelDialog >> importModelThenCloseDialogWindow: aDialog [
 
 	| mooseModel aJob |
-	[self validateImportForm]  onErrorDo: [ :err | 
+	[ self validateImportForm ] onErrorDo: [ :err | 
 		UIManager default alert: 'Invalid input: ' , err messageText.
 		^ self ].
 
-	aJob := [ :job |
-		job title: 'Importing model'.
-	mooseModel := [ self importModel ] onErrorDo: [ :err | 
-		              UIManager default alert:
-			              'Import error: ' , err messageText.
-		              nil ].
-	job currentValue: 50.
-	mooseModel ifNotNil: [ 
-		mooseModel install.
-		aDialog close.
-		self updateBrowserWith: mooseModel ]] asJob.
-	[ aJob run ] forkAt: Processor userBackgroundPriority.
+	aJob := [ :job | 
+	        job title: 'Importing model'.
+	        mooseModel := [ self importModel ] onErrorDo: [ :err | 
+		                      UIManager default alert:
+			                      'Import error: ' , err messageText.
+		                      nil ].
+	        job currentValue: 50.
+	        mooseModel ifNotNil: [ 
+		        mooseModel install.
+		        aDialog close.
+		        self updateBrowserWith: mooseModel ] ] asJob.
+
+	[ aJob run ] forkAt: Processor userBackgroundPriority
 ]
 
 { #category : #initialization }
@@ -84,8 +85,10 @@ MiImportModelDialog >> setModelBeforeInitialization: aBrowserOrMoosePanel [
 { #category : #action }
 MiImportModelDialog >> updateBrowserWith: mooseModel [
 
-	originBrowser ifNotNil: [ 
-		originBrowser updateForNewModel: mooseModel ]
+	originBrowser
+	ifNotNil: [ originBrowser updateForNewModel: mooseModel ]
+	ifNil: [ (MiApplication current allBrowsers: MiModelRootBrowser)
+		do: [ :browser | browser updateList ] ]
 ]
 
 { #category : #action }

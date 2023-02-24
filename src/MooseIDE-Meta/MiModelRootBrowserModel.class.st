@@ -35,6 +35,16 @@ Class {
 	#category : #'MooseIDE-Meta-ModelRootBrowser'
 }
 
+{ #category : #updating }
+MiModelRootBrowserModel >> allModelRootBrowser [
+	^browser application allBrowsers: MiModelRootBrowser
+]
+
+{ #category : #settings }
+MiModelRootBrowserModel >> autoImportSetting [
+	^ (settings getItemValue: #modelAutoImportSetting)
+]
+
 { #category : #accessing }
 MiModelRootBrowserModel >> availableMooseModels [
 
@@ -49,11 +59,6 @@ MiModelRootBrowserModel >> browser: aBrowser [
 { #category : #testing }
 MiModelRootBrowserModel >> canPropagate [
 	^ selected isMooseObject
-]
-
-{ #category : #updating }
-MiModelRootBrowserModel >> getAllModelRootBrowsers [
-	^browser application allBrowsers: MiModelRootBrowser
 ]
 
 { #category : #initialization }
@@ -74,7 +79,14 @@ MiModelRootBrowserModel >> initializeSettings [
 		label: 'Filter out stubs?' ;
 		help: 'When propagating the model should it filter out the stub entities or pass them along' ;
 		yourself)
-		named: #filterStubsSetting
+		named: #filterStubsSetting.
+		
+	settings addItem: (MiCheckboxSettingItem new
+		setValue: false ;
+		label: 'Automatically import drag&drop files?' ;
+		help: 'When drag & drop model from file should it be automatically imported if possible or should it just configure the import dialog' ;
+		yourself)
+		named: #modelAutoImportSetting.
 ]
 
 { #category : #'accessing - tests' }
@@ -104,15 +116,21 @@ MiModelRootBrowserModel >> selected [
 
 	^ (settings getItemValue: #filterStubsSetting)
 		  ifTrue: [ 
-			  selected ifNotNil: [ :selectedModel | 
+			  self selectedModel ifNotNil: [ :selectedModel | 
 				  (selectedModel reject: [ :each | each isStub ]) asMooseGroup ] ]
-		  ifFalse: [ selected ]
+		  ifFalse: [ self selectedModel ]
 ]
 
 { #category : #accessing }
 MiModelRootBrowserModel >> selected: anObject [
 	selected := anObject.
 	browser updateToolbar
+]
+
+{ #category : #accessing }
+MiModelRootBrowserModel >> selectedModel [
+
+	^selected
 ]
 
 { #category : #'accessing - tests' }
@@ -122,7 +140,7 @@ MiModelRootBrowserModel >> settings [
 
 { #category : #updating }
 MiModelRootBrowserModel >> updateForNewModel: aMooseModel [
-	self getAllModelRootBrowsers do: [:modelBrowser | modelBrowser updateList ].
+	self allModelRootBrowser do: [:modelBrowser | modelBrowser updateList ].
 	self selected: aMooseModel
 ]
 
