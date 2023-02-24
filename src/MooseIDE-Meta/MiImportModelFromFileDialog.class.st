@@ -106,10 +106,14 @@ MiImportModelFromFileDialog >> handleDropFile: aFileReference [
 	on: Error
 	do: [:err |
 		UIManager default alert: 'Error: ' , err messageText.
-		^self ].
+		^self ].	
+]
+
+{ #category : #'private -testing' }
+MiImportModelFromFileDialog >> handleDropFileAndImport: aFileReference [
+	self handleDropFile: aFileReference. 
 
 	self importModelThenCloseDialogWindow: owner
-	
 ]
 
 { #category : #action }
