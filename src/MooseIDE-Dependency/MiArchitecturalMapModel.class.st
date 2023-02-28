@@ -182,7 +182,7 @@ MiArchitecturalMapModel >> itemChildrenQuery [
 MiArchitecturalMapModel >> itemMegaMorphicSize [
 	^MiTextSettingItem integerSetting
 		setValue: 10 ;
-		label: 'Number of implementors for mega-morphic' ;
+		label: 'Mega-morphic limit' ;
 		help: 'How many implementors of a method make it mega-morphic?' ;
 		yourself
 ]
@@ -192,8 +192,8 @@ MiArchitecturalMapModel >> itemNoMegaMorphic [
 
 	^MiCheckboxSettingItem new
 		setValue: true ;
-		label: 'Ignore invocation of mega-morphic methods?' ;
-		help: 'When showing links for invocation, ignore invocations of mega-morphic methods' ;
+		label: 'Ignore mega-morphic invocations?' ;
+		help: 'In the dependencies, ignore invocations of mega-morphic methods' ;
 		yourself
 ]
 
