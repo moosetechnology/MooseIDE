@@ -130,16 +130,20 @@ MiImportModelFromFileDialog >> getRootFolder [
 		rootFolderInput text: chosenDirectory asFileReference pathString ]
 ]
 
-{ #category : #private }
+{ #category : #action }
 MiImportModelFromFileDialog >> handleDropFile: aFileReference [
 	[self updateForModelFile: aFileReference]
 	on: Error
 	do: [:err |
 		UIManager default alert: 'Error: ' , err messageText.
-		^self ].
+		^self ].	
+]
+
+{ #category : #action }
+MiImportModelFromFileDialog >> handleDropFileAndImport: aFileReference [
+	self handleDropFile: aFileReference. 
 
 	self importModelThenCloseDialogWindow: owner
-	
 ]
 
 { #category : #action }

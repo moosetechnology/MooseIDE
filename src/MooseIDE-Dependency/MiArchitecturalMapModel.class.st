@@ -44,7 +44,7 @@ MiArchitecturalMapModel class >> defaultDynamicTags [
 		  self defaultDynamicTagIsDead }
 ]
 
-{ #category : #initialization }
+{ #category : #accessing }
 MiArchitecturalMapModel >> allAssociationTypes [
 
 	| mooseGroup |
@@ -56,13 +56,13 @@ MiArchitecturalMapModel >> allAssociationTypes [
 		  asOrderedCollection
 ]
 
-{ #category : #accessing }
+{ #category : #settings }
 MiArchitecturalMapModel >> associationTypes [
 
 	^ settings getItemValue: #associationTypes
 ]
 
-{ #category : #initialization }
+{ #category : #settings }
 MiArchitecturalMapModel >> associationTypesSetting [
 
 	^ settings getItemValue: #associationTypes
@@ -74,7 +74,7 @@ MiArchitecturalMapModel >> availableQueries [
 	^ { self defaultChildrenQuery } , browser availableQueries
 ]
 
-{ #category : #initialization }
+{ #category : #accessing }
 MiArchitecturalMapModel >> browser: aBrowser [
 
 	browser := aBrowser.
@@ -99,7 +99,7 @@ MiArchitecturalMapModel >> childrenFor: anEntity [
 	^ self childrenQuerySetting runOn: anEntity asMooseGroup
 ]
 
-{ #category : #accessing }
+{ #category : #settings }
 MiArchitecturalMapModel >> childrenQuerySetting [
 
 	^ settings getItemValue: #childrenQuery
@@ -132,13 +132,13 @@ MiArchitecturalMapModel >> entities: anObject [
 	self updateSettings
 ]
 
-{ #category : #initialization }
+{ #category : #accessing }
 MiArchitecturalMapModel >> fetchTags [
 
 	^ browser fetchTags
 ]
 
-{ #category : #accessing }
+{ #category : #initialization }
 MiArchitecturalMapModel >> initialize [
 
 	super initialize
@@ -152,10 +152,12 @@ MiArchitecturalMapModel >> initializeSettings [
 						addItem: self itemChildrenQuery named: #childrenQuery;
 						addItem: self itemTags named: #tags;
 						addItem: self itemAssociationTypes named: #associationTypes;
+						addItem: self itemNoMegaMorphic named: #noMegaMorphic ;
+						addItem: self itemMegaMorphicSize named: #megaMorphicSize ;
 		            yourself
 ]
 
-{ #category : #initialization }
+{ #category : #settings }
 MiArchitecturalMapModel >> itemAssociationTypes [
 
 	^ MiAbstractSettingItem buttonWithSelectableListSetting
@@ -165,7 +167,7 @@ MiArchitecturalMapModel >> itemAssociationTypes [
 		  yourself
 ]
 
-{ #category : #accessing }
+{ #category : #settings }
 MiArchitecturalMapModel >> itemChildrenQuery [
 
 	^ MiAbstractSettingItem droplistSetting
@@ -176,7 +178,26 @@ MiArchitecturalMapModel >> itemChildrenQuery [
 		  yourself
 ]
 
-{ #category : #accessing }
+{ #category : #settings }
+MiArchitecturalMapModel >> itemMegaMorphicSize [
+	^MiTextSettingItem integerSetting
+		setValue: 10 ;
+		label: 'Mega-morphic limit' ;
+		help: 'How many implementors of a method make it mega-morphic?' ;
+		yourself
+]
+
+{ #category : #settings }
+MiArchitecturalMapModel >> itemNoMegaMorphic [
+
+	^MiCheckboxSettingItem new
+		setValue: true ;
+		label: 'Ignore mega-morphic invocations?' ;
+		help: 'In the dependencies, ignore invocations of mega-morphic methods' ;
+		yourself
+]
+
+{ #category : #settings }
 MiArchitecturalMapModel >> itemShowBusEntities [
 
 	^ MiAbstractSettingItem checkboxSetting
@@ -187,7 +208,7 @@ MiArchitecturalMapModel >> itemShowBusEntities [
 		  yourself
 ]
 
-{ #category : #initialization }
+{ #category : #settings }
 MiArchitecturalMapModel >> itemTags [
 
 	^ MiAbstractSettingItem buttonWithEditableListSetting
@@ -199,18 +220,29 @@ MiArchitecturalMapModel >> itemTags [
 		  yourself
 ]
 
-{ #category : #keymaps }
+{ #category : #settings }
+MiArchitecturalMapModel >> megaMorphicSize [
+	^settings getItemValue: #megaMorphicSize
+]
+
+{ #category : #settings }
+MiArchitecturalMapModel >> noMegaMorphic [
+
+	^ settings getItemValue: #noMegaMorphic
+]
+
+{ #category : #settings }
 MiArchitecturalMapModel >> openSettings [
 
 	settings open
 ]
 
-{ #category : #'accessing - tests' }
+{ #category : #settings }
 MiArchitecturalMapModel >> settings [
 	^settings
 ]
 
-{ #category : #initialization }
+{ #category : #settings }
 MiArchitecturalMapModel >> settingsChanged: aBoolean [
 
 	aBoolean ifTrue: [ browser run ]
@@ -222,25 +254,25 @@ MiArchitecturalMapModel >> showAllLinks [
 	^ true
 ]
 
-{ #category : #accessing }
+{ #category : #settings }
 MiArchitecturalMapModel >> showBusEntities [
 
 	^ settings getItemValue: #showBusEntities
 ]
 
-{ #category : #accessing }
+{ #category : #settings }
 MiArchitecturalMapModel >> tags [
 
 	^ settings getItemValue: #tags
 ]
 
-{ #category : #initialization }
+{ #category : #accessing }
 MiArchitecturalMapModel >> toolName [
 
 	^ browser title
 ]
 
-{ #category : #updating }
+{ #category : #settings }
 MiArchitecturalMapModel >> updateSettings [
 
 	(settings itemNamed: #associationTypes) possibleValues:

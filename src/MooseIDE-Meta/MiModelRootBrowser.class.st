@@ -124,7 +124,20 @@ MiModelRootBrowser >> followEntity: anEntity [
 
 { #category : #actions }
 MiModelRootBrowser >> handleDropFile: aFileReference [
-	self importFromFileUI handleDropFile: aFileReference.
+	
+	self model autoImportSetting 
+		ifTrue: [self importFromFileUI handleDropFileAndImport: aFileReference.  ]
+		ifFalse: [self importFromFileUI handleDropFile: aFileReference].
+	
+	
+	
+
+]
+
+{ #category : #'private testing' }
+MiModelRootBrowser >> handleDropFileAndImport: aFileReference [
+
+	self importFromFileUI handleDropFileAndImport: aFileReference.
 
 ]
 
@@ -179,6 +192,13 @@ MiModelRootBrowser >> listOfMooseModels: aList [
 MiModelRootBrowser >> miSelectedItem [
 
 	^model selected
+]
+
+{ #category : #accessing }
+MiModelRootBrowser >> miSelectedModel [
+	"similar to #miSelectedItem but ignore the setting #filterStubsSetting"
+
+	^model selectedModel
 ]
 
 { #category : #'accessing - tests' }
