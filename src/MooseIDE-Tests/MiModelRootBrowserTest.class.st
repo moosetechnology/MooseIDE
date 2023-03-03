@@ -9,17 +9,19 @@ Class {
 
 { #category : #running }
 MiModelRootBrowserTest >> browserClass [
+
 	^ MiModelRootBrowser
 ]
 
 { #category : #running }
 MiModelRootBrowserTest >> newModel: aString [
+
 	| model |
 	model := FamixStModel new
-		name: aString ;
-		yourself.
+		         name: aString;
+		         yourself.
 	MooseModel root add: model.
-	^model
+	^ model
 ]
 
 { #category : #running }
@@ -32,14 +34,16 @@ MiModelRootBrowserTest >> setUp [
 
 { #category : #tests }
 MiModelRootBrowserTest >> stModelFile [
+
 	"Creating an in-memory JSON file containing a class from FamixStModel"
+
 	| file model |
 	model := FamixStModel new.
 	FamixStClass named: 'AClass' model: model.
 
 	file := FileSystem workingDirectory / 'stModel.json'.
 	file writeStreamDo: [ :stream | model exportToJSONStream: stream ].
-	^file
+	^ file
 ]
 
 { #category : #running }

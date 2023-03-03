@@ -69,3 +69,9 @@ MiAbstractFileImporter >> model: anObject [
 MiAbstractFileImporter >> run [
 	self subclassResponsibility 
 ]
+
+{ #category : #'as yet unclassified' }
+MiAbstractFileImporter >> runFilteredBy: anImportingContext [
+
+	self subclassResponsibility
+]
