@@ -18,3 +18,11 @@ MiJSONFileImporter >> run [
 	[ model importFromJSONStream: inputStream ]
 	ensure: [ inputStream close ]
 ]
+
+{ #category : #running }
+MiJSONFileImporter >> runFilteredBy: anImportingContext [
+
+	[ model
+		importFromJSONStream: inputStream
+		filteredBy: anImportingContext ] ensure: [ inputStream close ]
+]

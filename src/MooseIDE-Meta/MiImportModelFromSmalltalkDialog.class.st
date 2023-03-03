@@ -37,7 +37,7 @@ MiImportModelFromSmalltalkDialog class >> defaultLayout [
 		  yourself
 ]
 
-{ #category : #initialization }
+{ #category : #accessing }
 MiImportModelFromSmalltalkDialog class >> fullWindowExtent [
 
 	^ 500 @ 700
@@ -55,7 +55,7 @@ MiImportModelFromSmalltalkDialog class >> title [
 	^ 'Import model from Pharo image'
 ]
 
-{ #category : #initialization }
+{ #category : #accessing }
 MiImportModelFromSmalltalkDialog class >> windowExtent [
 
 	^ 500 @ 400
