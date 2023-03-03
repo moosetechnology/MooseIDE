@@ -260,9 +260,15 @@ MiImportModelFromFileDialog >> initializePresenters [
 MiImportModelFromFileDialog >> inputFileSample [
 
 	^ modelFile readStreamDo: [ :inputStream | 
+		  | firstChar |
+		  firstChar := inputStream peek.
 		  inputStream size < self class inputSampleLength
 			  ifTrue: [ inputStream contents ]
-			  ifFalse: [ inputStream next: self class inputSampleLength ] ]
+			  ifFalse: [ 
+				  (inputStream next: self class inputSampleLength)
+				  , (inputStream upTo: (firstChar = $(
+							    ifTrue: [ "mse" $) ]
+							    ifFalse: [ "json" $} ])) ] ]
 ]
 
 { #category : #'metamodel-guess' }
@@ -284,13 +290,13 @@ MiImportModelFromFileDialog >> metaModelForFile [
 
 { #category : #private }
 MiImportModelFromFileDialog >> newModelFileEntered [
-	(modelFile notNil
-	and: [ modelFile fullName = filePathInput text ])
-	ifFalse: [ filePathInput text: modelFile fullName ].
-	
+
+	(modelFile notNil and: [ modelFile fullName = filePathInput text ]) 
+		ifFalse: [ filePathInput text: modelFile fullName ].
+
 	[ self updateForModelFile: modelFile ]
-	on: Error
-	do: [ :err | UIManager default alert: err messageText. ]
+		on: Error
+		do: [ :err | UIManager default alert: err messageText ]
 ]
 
 { #category : #action }
