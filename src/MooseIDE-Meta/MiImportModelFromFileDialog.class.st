@@ -11,9 +11,9 @@ Class {
 		'rootFolderButton',
 		'modelFile',
 		'importingContext',
-		'customEntitiesCheckbox',
-		'allEntitiesCheckbox',
-		'customEntities'
+		'customEntities',
+		'customEntitiesButton',
+		'allEntitiesButton'
 	],
 	#category : #'MooseIDE-Meta-Import'
 }
@@ -27,7 +27,7 @@ MiImportModelFromFileDialog class >> defaultDirectory [
 { #category : #accessing }
 MiImportModelFromFileDialog class >> fullWindowExtent [
 
-	^ self windowExtent + (0 @ FmxImportingPresenter windowExtent y)
+	^ self windowExtent + (0 @ MiImportingContextPresenter windowExtent y)
 ]
 
 { #category : #accessing }
@@ -83,7 +83,7 @@ MiImportModelFromFileDialog >> canImport: inputSample importer: importer metaMod
 MiImportModelFromFileDialog >> closeEntitiesChoice [
 
 	customEntities := self
-		                  instantiate: FmxImportingPresenter
+		                  instantiate: MiImportingContextPresenter
 		                  on: importingContext.
 
 	self withWindowDo: [ :window | 
@@ -172,25 +172,20 @@ MiImportModelFromFileDialog >> importerForFile [
 { #category : #initialization }
 MiImportModelFromFileDialog >> initializeEntitiesSelectionWidgets [
 
-	allEntitiesCheckbox := self newCheckBox
-		                       label: 'All Entities';
-		                       state: true;
-		                       whenActivatedDo: [ 
-			                       importingContext importMaximum.
-			                       customEntitiesCheckbox state: false ];
-		                       whenDeactivatedDo: [ 
-			                       customEntitiesCheckbox state: true ];
-		                       yourself.
+	allEntitiesButton := self newRadioButton
+		                     label: 'All Entities';
+		                     whenActivatedDo: [ 
+			                     importingContext importMaximum ];
+		                     yourself.
 
-	customEntitiesCheckbox := self newCheckBox
-		                          label: 'Custom Entities';
-		                          whenActivatedDo: [ 
-			                          self openEntitiesChoice.
-			                          allEntitiesCheckbox toggleState ];
-		                          whenDeactivatedDo: [ 
-			                          self closeEntitiesChoice.
-			                          allEntitiesCheckbox state: true ];
-		                          yourself
+	customEntitiesButton := self newRadioButton
+		                        label: 'Custom Entities';
+		                        whenActivatedDo: [ self openEntitiesChoice ];
+		                        whenDeactivatedDo: [ 
+			                        self closeEntitiesChoice ];
+		                        yourself.
+
+	allEntitiesButton associatedRadioButtons: { customEntitiesButton }
 ]
 
 { #category : #initialization }
@@ -303,7 +298,7 @@ MiImportModelFromFileDialog >> newModelFileEntered [
 MiImportModelFromFileDialog >> openEntitiesChoice [
 
 	customEntities := self
-		                  instantiate: FmxImportingPresenter
+		                  instantiate: MiImportingContextPresenter
 		                  on: importingContext.
 
 	self withWindowDo: [ :window | 
@@ -374,8 +369,8 @@ MiImportModelFromFileDialog >> simpleLayout [
 		  add: (SpBoxLayout newLeftToRight
 				   spacing: spacing;
 				   add: 'Entity types:' width: labelWidth;
-				   add: allEntitiesCheckbox;
-				   add: customEntitiesCheckbox;
+				   add: allEntitiesButton;
+				   add: customEntitiesButton;
 				   yourself)
 		  height: size;
 		  yourself
