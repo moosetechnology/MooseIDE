@@ -10,7 +10,15 @@ FamixCBEntity class >> annotation [
 	<FMClass: #Entity super: #MooseEntity>
 	<package: #'Famix-CriticBrowser-Entities'>
 	<generated>
+	<abstract>
 	^self
+]
+
+{ #category : #testing }
+FamixCBEntity class >> isAbstract [
+
+	<generated>
+	^ self == FamixCBEntity
 ]
 
 { #category : #meta }

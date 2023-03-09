@@ -234,7 +234,7 @@ MiApplication >> mooseStyleSheet [
 			Draw { #backgroundColor: #00000010 },
 			Geometry { #height: 30 }
 		],
-		.mooseContainer [ Container { #borderColor: #00000020, #borderWidth: 2, #padding: 5 } ]
+		.mooseContainer [ Container { #borderColor: #00000020, #borderWidth: 1, #padding: 5 } ]
 ]'
 ]
 

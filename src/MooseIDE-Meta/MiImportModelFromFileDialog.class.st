@@ -82,14 +82,17 @@ MiImportModelFromFileDialog >> canImport: inputSample importer: importer metaMod
 { #category : #action }
 MiImportModelFromFileDialog >> closeEntitiesChoice [
 
-	customEntities := self
-		                  instantiate: MiImportingContextPresenter
-		                  on: importingContext.
-
 	self withWindowDo: [ :window | 
 		window extent: self class windowExtent ].
 
 	self layout: self simpleLayout
+]
+
+{ #category : #initialization }
+MiImportModelFromFileDialog >> connectPresenters [
+
+	mooseModelDroplist whenSelectionChangedDo: [ 
+		customEntitiesButton state ifTrue: [ self openEntitiesChoice ] ]
 ]
 
 { #category : #private }
@@ -307,7 +310,7 @@ MiImportModelFromFileDialog >> openEntitiesChoice [
 	self layout: (self simpleLayout
 			 add: customEntities;
 			 yourself).
-			
+
 	"Add style AFTER #layout: or it will be applied to all sub-layouts"
 	customEntities addStyle: 'mooseContainer'
 ]

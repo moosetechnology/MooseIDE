@@ -101,10 +101,3 @@ FamixCriticBrowserGenerator >> defineTraits [
 		                  newTraitNamed: #TRuleComponent
 		                  comment: 'I allow a rule component to be named and summarized.'.
 ]
-
-{ #category : #initialization }
-FamixCriticBrowserGenerator >> initialize [
-
-	super initialize.
-	self notImportedFromFile
-]
