@@ -362,6 +362,12 @@ MiAbstractBrowser >> canPropagate [
 		  entity asMooseGroup isNotEmpty or: [ entity isMooseModel ] ]
 ]
 
+{ #category : #testing }
+MiAbstractBrowser >> canTagEntities [
+
+	^ true
+]
+
 { #category : #'private - for tests' }
 MiAbstractBrowser >> closeSettings [
 	"to close the settings window when testing
@@ -456,6 +462,13 @@ MiAbstractBrowser >> isModelImporter [
 ]
 
 { #category : #accessing }
+MiAbstractBrowser >> lastTagSelected [
+	^self model
+		ifNil: [ nil ]
+		ifNotNil: [ :model | model lastTagSelected]
+]
+
+{ #category : #accessing }
 MiAbstractBrowser >> miSelectedItem [
 
 	^ (MiNoSelectedElementToPropagateException browser: self) signal
@@ -530,6 +543,33 @@ MiAbstractBrowser >> showHelp [
 		presenter: (MiHelpPopup owner: help on: self);
 		popup
 
+]
+
+{ #category : #accessing }
+MiAbstractBrowser >> tagIcon [
+
+	^application iconProvider iconForTag: self lastTagSelected  
+]
+
+{ #category : #accessing }
+MiAbstractBrowser >> tagList [
+
+	^self model
+		ifNil: [ #() ]
+		ifNotNil: [ :model | model tagList ]
+]
+
+{ #category : #accessing }
+MiAbstractBrowser >> tagName [
+	^self lastTagSelected
+		ifNil: [ '' ]
+		ifNotNil: [ :tag | tag name ]
+]
+
+{ #category : #actions }
+MiAbstractBrowser >> tagSelectedEntities [
+	"put lastSelectedTag on currently selected entities"
+	self notYetImplemented
 ]
 
 { #category : #buses }

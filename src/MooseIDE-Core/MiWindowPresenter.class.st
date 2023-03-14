@@ -17,6 +17,9 @@ MiWindowPresenter class >> actionsCommandGroupFor: aPresenter [
 				  beDisplayedOnRightSide;
 		  register:
 			  (MiInspectCommand forSpecContext: aPresenter)
+				  beDisplayedOnRightSide;
+		  register:
+			  (MiTagCommand forSpecContext: aPresenter)
 				  beDisplayedOnRightSide
 ]
 
