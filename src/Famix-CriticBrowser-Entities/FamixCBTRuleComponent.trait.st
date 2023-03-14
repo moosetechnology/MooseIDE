@@ -18,7 +18,7 @@ FamixCBTRuleComponent classSide >> annotation [
 	<FMClass: #TRuleComponent super: #Object>
 	<package: #'Famix-CriticBrowser-Entities'>
 	<generated>
-	^self
+	^ self
 ]
 
 { #category : #ston }

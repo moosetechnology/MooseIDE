@@ -16,9 +16,3 @@ FamixCBModel class >> annotation [
 	<package: #'Famix-CriticBrowser-Entities'>
 	<generated>
 ]
-
-{ #category : #testing }
-FamixCBModel class >> canBeImportedFromFile [
-	<generated>
-	^true
-]

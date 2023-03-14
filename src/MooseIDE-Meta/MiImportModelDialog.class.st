@@ -15,7 +15,7 @@ MiImportModelDialog class >> open [
 	^ self subclassResponsibility
 ]
 
-{ #category : #initialization }
+{ #category : #accessing }
 MiImportModelDialog class >> windowExtent [
 
 	self subclassResponsibility

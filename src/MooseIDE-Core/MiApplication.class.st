@@ -207,7 +207,7 @@ MiApplication >> modelImporter [
 
 ]
 
-{ #category : #brokerage }
+{ #category : #style }
 MiApplication >> mooseStyleSheet [
 
 	^ SpStyleVariableSTONReader fromString: '.application [
@@ -233,7 +233,8 @@ MiApplication >> mooseStyleSheet [
 			Container { #borderWidth: 1, #borderColor: #00000020 },
 			Draw { #backgroundColor: #00000010 },
 			Geometry { #height: 30 }
-		]
+		],
+		.mooseContainer [ Container { #borderColor: #00000020, #borderWidth: 1, #padding: 5 } ]
 ]'
 ]
 
@@ -310,7 +311,7 @@ MiApplication >> start [
 	"we will see"
 ]
 
-{ #category : #brokerage }
+{ #category : #style }
 MiApplication >> styleSheet [
 
 	^ SpStyle defaultStyleSheet

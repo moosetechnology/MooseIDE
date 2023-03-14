@@ -610,21 +610,31 @@ MiArchitecturalMapBuilder >> setDependenciesForEntity: anEntity [
 
 	| associationTypes |
 	associationTypes := mapModel associationTypes.
+
 	associationTypes do: [ :at | 
 		| assocs |
 		assocs := anEntity queryLocal: #in with: at.
-		
-		assocs do: [ :e | 
-			nodeMooseIDDict at: e source mooseID ifPresent: [ :hNode |
-				hNode
-					dependencyTo: (nodeMooseIDDict at: anEntity mooseID)
-					withModel: e ] ] ]
+
+		assocs do: [ :dep | 
+			(dep isInvocation and:
+			[ mapModel noMegaMorphic and:
+			[ dep candidates size > mapModel megaMorphicSize ]])
+			ifFalse: [ self setDependency: dep forEntity: anEntity ] ] ]
 ]
 
 { #category : #building }
 MiArchitecturalMapBuilder >> setDependenciesForTag: aTagNode [
 
 	aTagNode children do: [ :child | self setDependenciesFor: child ]
+]
+
+{ #category : #building }
+MiArchitecturalMapBuilder >> setDependency: e forEntity: anEntity [
+
+	^ nodeMooseIDDict at: e source mooseID ifPresent: [ :hNode | 
+		  hNode
+			  dependencyTo: (nodeMooseIDDict at: anEntity mooseID)
+			  withModel: e ]
 ]
 
 { #category : #accessing }
