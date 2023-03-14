@@ -10,7 +10,7 @@ FamixCBRootContext class >> annotation [
 	<FMClass: #RootContext super: #FamixCBContext>
 	<package: #'Famix-CriticBrowser-Entities'>
 	<generated>
-	^self
+	^ self
 ]
 
 { #category : #accessing }

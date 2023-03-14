@@ -11,7 +11,7 @@ FamixCBEntity class >> annotation [
 	<package: #'Famix-CriticBrowser-Entities'>
 	<generated>
 	<abstract>
-	^self
+	^ self
 ]
 
 { #category : #testing }
