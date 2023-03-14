@@ -106,11 +106,11 @@ MiUMLBrowser >> canHighlight [
 { #category : #actions }
 MiUMLBrowser >> followEntity: anEntity [
 
-	model
+	specModel
 		entities: anEntity asMooseSpecializedGroup;
 		unselectAll.
 	diagram
-		rootEntities: model entities;
+		rootEntities: specModel entities;
 		run
 ]
 
@@ -129,11 +129,11 @@ MiUMLBrowser >> initializePresenters [
 { #category : #accessing }
 MiUMLBrowser >> miSelectedItem [
 
-	^ (model selected ifNil: [ model entities ]) mooseInterestingEntity
+	^ (specModel selected ifNil: [ specModel entities ]) mooseInterestingEntity
 ]
 
 { #category : #accessing }
 MiUMLBrowser >> selected: anEntity [
 
-	model selected: anEntity
+	specModel selected: anEntity
 ]

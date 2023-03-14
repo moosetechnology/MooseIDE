@@ -108,7 +108,7 @@ MiTagBrowser >> consume: anObject [
 	].
 	
 	anObject class = FamixTagAssociation ifTrue: [ 
-		model currentTag = anObject tag 
+		specModel currentTag = anObject tag 
 			ifTrue: [ tagManagementPage refreshTaggedEntitiesList ] ]
 ]
 
@@ -128,7 +128,7 @@ MiTagBrowser >> createDynamicTag: name description: aText color: aColor category
 	aQuery
 		ifNotNil: [ newTag query: aQuery ]
 		ifNil: [ newTag query: FQNullQuery new ].
-	model addDynamicTag: newTag.
+	specModel addDynamicTag: newTag.
 	application consumeItem: newTag.
 	tagManagementPage refreshTagList
 ]
@@ -137,7 +137,7 @@ MiTagBrowser >> createDynamicTag: name description: aText color: aColor category
 MiTagBrowser >> createTag: name description: aText color: aColor category: aCategory [
 
 	| newTag |
-	newTag := model addTag: name.
+	newTag := specModel addTag: name.
 	(aText notNil and: [ aText isNotEmpty ]) ifTrue: [ 
 		newTag description: aText ].
 	aColor ifNotNil: [ newTag color: aColor ].
@@ -158,7 +158,7 @@ MiTagBrowser >> descriptionPage [
 MiTagBrowser >> editCurrentDynamicTag: name description: description color: color category: category query: query [
 
 	| tag |
-	tag := model currentTag.
+	tag := specModel currentTag.
 	tag ifNil: [ ^ false ].
 
 	(name isNil or: [ name isEmpty ]) ifTrue: [ ^ false ].
@@ -176,7 +176,7 @@ MiTagBrowser >> editCurrentDynamicTag: name description: description color: colo
 MiTagBrowser >> editCurrentTag: name description: description color: color category: category [
 
 	| tag |
-	tag := model currentTag.
+	tag := specModel currentTag.
 	tag ifNil: [ ^ false ].
 
 	(name isNil or: [ name isEmpty ]) ifTrue: [ ^ false ].
@@ -195,8 +195,8 @@ MiTagBrowser >> editCurrentTag: name description: description color: color categ
 { #category : #actions }
 MiTagBrowser >> followEntity: anEntity [
 
-	model entities: anEntity asMooseGroup.
-	model mooseModel
+	specModel entities: anEntity asMooseGroup.
+	specModel mooseModel
 		ifNil: [ self showNoMooseModel ]
 		ifNotNil: [ self closeTagCreationForm ].
 	tagManagementPage refresh
@@ -225,24 +225,24 @@ MiTagBrowser >> initializeLayout [
 { #category : #initialization }
 MiTagBrowser >> initializePresenters [
 
-	tagCreationForm := self instantiate: MiTagCreationForm on: model.
-	tagManagementPage := MiTagManagementPage newApplication: self application owner: self model: model.
-	tagEditionForm := self instantiate: MiTagEditionForm on: model. 
+	tagCreationForm := self instantiate: MiTagCreationForm on: specModel.
+	tagManagementPage := MiTagManagementPage newApplication: self application owner: self model: specModel.
+	tagEditionForm := self instantiate: MiTagEditionForm on: specModel. 
 	self initializeLayout
 ]
 
 { #category : #brokerage }
 MiTagBrowser >> itemsFor: aClass [
 
-	aClass = MiDynamicTag ifTrue: [ ^ model dynamicTags ].
-	aClass = FamixTag ifTrue: [ ^ model allTags ].
+	aClass = MiDynamicTag ifTrue: [ ^ specModel dynamicTags ].
+	aClass = FamixTag ifTrue: [ ^ specModel allTags ].
 	^ #(  )
 ]
 
 { #category : #accessing }
 MiTagBrowser >> miSelectedItem [
 
-	^ model currentTag
+	^ specModel currentTag
 		  ifNil: [ ^ nil ]
 		  ifNotNil: [ :tag | tag taggedEntities asMooseGroup ]
 ]
@@ -320,5 +320,5 @@ MiTagBrowser >> tagManagementPage [
 { #category : #testing }
 MiTagBrowser >> tagModel [
 
-	^ model
+	^ specModel
 ]

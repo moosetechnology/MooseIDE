@@ -74,7 +74,7 @@ MiFameBrowser >> canFollowEntity: anObject [
 { #category : #actions }
 MiFameBrowser >> followEntity: anEntity [
 
-	model := anEntity.
+	specModel := anEntity.
 	fameDescription items: anEntity mooseDescription allComplexProperties.
 	self updateWindowTitleWith: anEntity name
 ]
@@ -115,7 +115,7 @@ MiFameBrowser >> initializePresenters [
 { #category : #accessing }
 MiFameBrowser >> miSelectedItem [
 
-	^ model
+	^ specModel
 ]
 
 { #category : #actions }

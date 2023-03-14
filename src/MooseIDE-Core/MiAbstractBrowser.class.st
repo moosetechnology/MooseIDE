@@ -37,9 +37,9 @@ Class {
 	#name : #MiAbstractBrowser,
 	#superclass : #MiPresenter,
 	#instVars : [
-		'model',
 		'buses',
-		'receivingMode'
+		'receivingMode',
+		'specModel'
 	],
 	#category : #'MooseIDE-Core-Browser'
 }
@@ -463,18 +463,18 @@ MiAbstractBrowser >> miSelectedItem [
 
 { #category : #accessing }
 MiAbstractBrowser >> model [
-	^ model
+	^ specModel
 ]
 
 { #category : #accessing }
 MiAbstractBrowser >> model: anObject [
-	model := anObject
+	specModel := anObject
 ]
 
 { #category : #testing }
 MiAbstractBrowser >> needUpdate: anEntity [
 
-	^ anEntity ~= model selected
+	^ anEntity ~= specModel selected
 ]
 
 { #category : #'private - accessing' }
@@ -508,8 +508,8 @@ MiAbstractBrowser >> setDefaultReceivingMode [
 MiAbstractBrowser >> setModelBeforeInitialization: aBrowserModel [
 	aBrowserModel ifNil: [ ^self ].
 
-	model := aBrowserModel.
-	model browser: self
+	specModel := aBrowserModel.
+	specModel browser: self
 ]
 
 { #category : #actions }

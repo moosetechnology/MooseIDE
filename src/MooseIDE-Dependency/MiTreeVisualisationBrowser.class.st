@@ -103,7 +103,7 @@ MiTreeVisualisationBrowser >> canHighlight [
 { #category : #actions }
 MiTreeVisualisationBrowser >> followEntity: anEntity [
 
-	model root: anEntity.
+	specModel root: anEntity.
 	diagram
 		run;
 		receiveEntity: anEntity
@@ -124,5 +124,5 @@ MiTreeVisualisationBrowser >> initializePresenters [
 { #category : #accessing }
 MiTreeVisualisationBrowser >> miSelectedItem [
 
-	^ model selected
+	^ specModel selected
 ]

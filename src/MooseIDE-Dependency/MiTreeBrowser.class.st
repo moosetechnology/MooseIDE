@@ -101,14 +101,14 @@ MiTreeBrowser >> initializePresenters [
 		beResizable.
 	tree whenSelectedItemChangedDo: [ :entityOrGroup | 
 		self freezeDuring: [ 
-			model selected: entityOrGroup mooseInterestingEntity.
+			specModel selected: entityOrGroup mooseInterestingEntity.
 			self buses do: [ :bus | bus globallySelect: entityOrGroup ] ] ]
 ]
 
 { #category : #accessing }
 MiTreeBrowser >> miSelectedItem [
 
-	^ model selected
+	^ specModel selected
 ]
 
 { #category : #actions }
@@ -118,5 +118,5 @@ MiTreeBrowser >> refreshTree [
 		roots: { self model root };
 		expandPath: #( 1 ).
 
-	self freezeDuring: [ tree selectItem: model root ]
+	self freezeDuring: [ tree selectItem: specModel root ]
 ]

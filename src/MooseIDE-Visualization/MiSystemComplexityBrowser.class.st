@@ -87,7 +87,7 @@ MiSystemComplexityBrowser >> followEntity: aMooseGroup [
 	newGroup size < aMooseGroup size ifTrue: [ 
 		self inform:
 			(aMooseGroup size - newGroup size) asString , ' rejected entities.' ].
-	model entities: newGroup
+	specModel entities: newGroup
 ]
 
 { #category : #actions }
@@ -114,11 +114,11 @@ MiSystemComplexityBrowser >> initializePresenters [
 { #category : #accessing }
 MiSystemComplexityBrowser >> miSelectedItem [
 
-	^ model entities
+	^ specModel entities
 ]
 
 { #category : #actions }
 MiSystemComplexityBrowser >> settings [
 	
-	model settings open
+	specModel settings open
 ]

@@ -161,7 +161,7 @@ MiFilesBrowser >> initializeTreeTable [
 { #category : #accessing }
 MiFilesBrowser >> miSelectedItem [
 
-	^ model mooseModel
+	^ specModel mooseModel
 ]
 
 { #category : #refreshing }
