@@ -18,7 +18,7 @@ MiSettingsCommand class >> defaultDescription [
 { #category : #default }
 MiSettingsCommand class >> defaultIconName [
 
-	^ ##smallConfiguration
+	^ #smallConfiguration
 ]
 
 { #category : #default }

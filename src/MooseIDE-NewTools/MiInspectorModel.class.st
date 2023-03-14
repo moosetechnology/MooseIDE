@@ -12,6 +12,12 @@ Class {
 }
 
 { #category : #accessing }
+MiInspectorModel >> entities [
+
+	^{ entity}
+]
+
+{ #category : #accessing }
 MiInspectorModel >> entity [
 
 	^ entity

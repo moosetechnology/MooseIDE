@@ -114,7 +114,7 @@ MiButterflyMapBrowser >> initializeLayout [
 MiButterflyMapBrowser >> initializePresenters [
 
 	visualization := self class mapClass owner: self.
-	model browser: self.
+	specModel browser: self.
 	self initializeLayout
 ]
 
@@ -127,7 +127,7 @@ MiButterflyMapBrowser >> itemsFor: aClass [
 { #category : #accessing }
 MiButterflyMapBrowser >> miSelectedItem [
 
-	^ model currentEntity
+	^ specModel currentEntity
 ]
 
 { #category : #running }
