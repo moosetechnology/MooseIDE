@@ -14,7 +14,9 @@ Class {
 { #category : #accessing }
 MiInspectorModel >> entities [
 
-	^{ entity}
+	^entity
+		ifNil: [ #() ]
+		ifNotNil: [ { entity} ]
 ]
 
 { #category : #accessing }

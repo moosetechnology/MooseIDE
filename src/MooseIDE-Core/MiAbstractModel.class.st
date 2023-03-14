@@ -52,9 +52,9 @@ MiAbstractModel >> settingsChanged: aBoolean [
 { #category : #accessing }
 MiAbstractModel >> tagList [
 
-	^self entities
-		ifEmpty: [ #() ]
-		ifNotEmpty: [ :entities | entities anyOne mooseModel allTags]
+	self entities ifNil: [ ^#() ].
+	self entities ifEmpty: [ ^#() ].
+	^self entities anyOne mooseModel allTags
 ]
 
 { #category : #accessing }

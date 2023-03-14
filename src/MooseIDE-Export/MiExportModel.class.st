@@ -104,6 +104,11 @@ MiExportModel >> defaultColumns [
 ]
 
 { #category : #accessing }
+MiExportModel >> entities [
+	^self entitiesList 
+]
+
+{ #category : #accessing }
 MiExportModel >> entitiesList [
 
 	^ entitiesList
