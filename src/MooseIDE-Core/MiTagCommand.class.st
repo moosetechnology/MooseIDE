@@ -86,7 +86,7 @@ MiTagCommand >> canBeExecuted [
 	^ self context canTagEntities
 ]
 
-{ #category : #testing }
+{ #category : #executing }
 MiTagCommand >> execute [
 
 	context tagSelectedEntities
