@@ -108,7 +108,7 @@ MiModelRootBrowserModel >> openSettings [
 
 { #category : #'accessing - tests' }
 MiModelRootBrowserModel >> rawSelectedMooseModel [
-^selected
+	^selected
 ]
 
 { #category : #accessing }

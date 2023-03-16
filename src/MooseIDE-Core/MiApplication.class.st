@@ -10,7 +10,8 @@ Class {
 		'defaultBus',
 		'producers',
 		'consumers',
-		'dropFileHandlers'
+		'dropFileHandlers',
+		'mooseModelsTag'
 	],
 	#classVars : [
 		'Current'
@@ -180,7 +181,8 @@ MiApplication >> initialize [
 	consumers := Dictionary new.
 	producers  := Dictionary new.
 
-	
+	mooseModelsTag := Dictionary new: 5.
+
 	dropFileHandlers := #().
 	self beDropFilesHandler
 
@@ -316,6 +318,21 @@ MiApplication >> styleSheet [
 
 	^ SpStyle defaultStyleSheet
 	  , self mooseStyleSheet
+]
+
+{ #category : #tags }
+MiApplication >> tagListForMooseModel: aMooseModel [
+	^aMooseModel allTags
+]
+
+{ #category : #tags }
+MiApplication >> tagSelected: aTag forMooseModel: aMooseModel [
+	mooseModelsTag at: aMooseModel put: aTag
+]
+
+{ #category : #tags }
+MiApplication >> tagSelectedForMooseModel: aMooseModel [
+	^mooseModelsTag at: aMooseModel ifAbsent: [ nil ]
 ]
 
 { #category : #brokerage }

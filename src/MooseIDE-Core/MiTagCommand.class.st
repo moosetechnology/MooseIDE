@@ -52,12 +52,16 @@ MiTagCommand >> buildToolbarButton: specCommand [
 
 	tagButton := SpToolbarMenuButtonPresenter new.
 
-	tagButton
-		help: self buttonHelp ;
-		action: [ self execute ] ;
-		menu: self buildTagMenu.
+	self canBeExecuted
+	ifFalse: [ self disableTagButton ]
+	ifTrue: [
+		tagButton
+			help: self buttonHelp ;
+			action: [ self execute ] ;
+			menu: self buildTagMenu.
 
-	self updateButton.
+			self updateButton
+	].
 
 	^tagButton 
 ]
@@ -72,7 +76,7 @@ right click to change tag'
 
 { #category : #accessing }
 MiTagCommand >> buttonIcon [
-	^self iconForTag: context lastTagSelected
+	^self iconForTag: context tagSelected
 ]
 
 { #category : #accessing }
@@ -84,6 +88,15 @@ MiTagCommand >> buttonLabel [
 MiTagCommand >> canBeExecuted [
 
 	^ self context canTagEntities
+]
+
+{ #category : #building }
+MiTagCommand >> disableTagButton [
+	tagButton
+			help: 'No tagging' ;
+			label: '--' ;
+			action: [  ] ;
+			disable
 ]
 
 { #category : #executing }
@@ -99,7 +112,7 @@ MiTagCommand >> iconForTag: aTag [
 
 { #category : #execution }
 MiTagCommand >> tagSelected: aTag [
-	context lastTagSelected: aTag.
+	context tagSelected: aTag.
 	self updateButton
 ]
 

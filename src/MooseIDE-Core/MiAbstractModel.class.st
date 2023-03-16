@@ -25,6 +25,20 @@ MiAbstractModel >> browser: anObject [
 ]
 
 { #category : #accessing }
+MiAbstractModel >> currentApplication [
+
+	^ MiApplication current
+]
+
+{ #category : #accessing }
+MiAbstractModel >> currentMooseModel [
+	self entities ifNil: [ ^nil ].
+	self entities ifEmpty: [ ^nil ].
+	^self entities anyOne mooseModel
+	
+]
+
+{ #category : #accessing }
 MiAbstractModel >> entities [
 	self subclassResponsibility 
 ]
@@ -38,20 +52,6 @@ MiAbstractModel >> initializeSettings [
 ]
 
 { #category : #accessing }
-MiAbstractModel >> lastTagSelected [
-
-	^lastTagSelected
-	ifNil: [ FamixTag new name: 'noTag' ; color: Color transparent ; yourself ]
-	ifNotNil: #yourself
-]
-
-{ #category : #accessing }
-MiAbstractModel >> lastTagSelected: anObject [
-
-	lastTagSelected := anObject
-]
-
-{ #category : #accessing }
 MiAbstractModel >> settingsChanged: aBoolean [
 	"by default don't do anything"
 ]
@@ -59,14 +59,24 @@ MiAbstractModel >> settingsChanged: aBoolean [
 { #category : #accessing }
 MiAbstractModel >> tagList [
 
-	self entities ifNil: [ ^#() ].
-	self entities ifEmpty: [ ^#() ].
-	^self entities anyOne mooseModel allTags
+	^self currentApplication tagListForMooseModel: self currentMooseModel 
+]
+
+{ #category : #accessing }
+MiAbstractModel >> tagSelected [
+
+	^self currentApplication tagSelectedForMooseModel: self currentMooseModel
+]
+
+{ #category : #accessing }
+MiAbstractModel >> tagSelected: aTag [
+
+	self currentApplication tagSelected: aTag forMooseModel: self currentMooseModel
 ]
 
 { #category : #actions }
 MiAbstractModel >> tagSelectedEntities [
-	UIManager  default inform: 'tagging selected entities with: ' , self lastTagSelected name
+	UIManager  default inform: 'tagging selected entities with: ' , self tagSelected name
 ]
 
 { #category : #accessing }

@@ -462,20 +462,6 @@ MiAbstractBrowser >> isModelImporter [
 ]
 
 { #category : #accessing }
-MiAbstractBrowser >> lastTagSelected [
-	^self model
-		ifNil: [ nil ]
-		ifNotNil: [ :model | model lastTagSelected]
-]
-
-{ #category : #accessing }
-MiAbstractBrowser >> lastTagSelected: aTag [
-	^self model
-		ifNil: [ nil ]
-		ifNotNil: [ :model | model lastTagSelected: aTag]
-]
-
-{ #category : #accessing }
 MiAbstractBrowser >> miSelectedItem [
 
 	^ (MiNoSelectedElementToPropagateException browser: self) signal
@@ -555,7 +541,7 @@ MiAbstractBrowser >> showHelp [
 { #category : #accessing }
 MiAbstractBrowser >> tagIcon [
 
-	^application iconProvider iconForTag: self lastTagSelected  
+	^application iconProvider iconForTag: self tagSelected  
 ]
 
 { #category : #accessing }
@@ -568,9 +554,23 @@ MiAbstractBrowser >> tagList [
 
 { #category : #accessing }
 MiAbstractBrowser >> tagName [
-	^self lastTagSelected
+	^self tagSelected
 		ifNil: [ '' ]
 		ifNotNil: [ :tag | tag name ]
+]
+
+{ #category : #accessing }
+MiAbstractBrowser >> tagSelected [
+	^self model
+		ifNil: [ nil ]
+		ifNotNil: [ :model | model tagSelected]
+]
+
+{ #category : #accessing }
+MiAbstractBrowser >> tagSelected: aTag [
+	^self model
+		ifNil: [ nil ]
+		ifNotNil: [ :model | model tagSelected: aTag]
 ]
 
 { #category : #actions }
