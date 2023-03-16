@@ -31,7 +31,8 @@ MiEditBusCommand >> asSpecCommand [
 			help: specCommand decoratedCommand help;
 			icon: specCommand icon;
 			content: [ self busesList ];
-			yourself ].
+			yourself
+	].
 
 	^ specCommand
 ]

@@ -24,6 +24,11 @@ MiAbstractModel >> browser: anObject [
 	browser := anObject
 ]
 
+{ #category : #accessing }
+MiAbstractModel >> entities [
+	self subclassResponsibility 
+]
+
 { #category : #initialization }
 MiAbstractModel >> initializeSettings [
 
@@ -35,7 +40,9 @@ MiAbstractModel >> initializeSettings [
 { #category : #accessing }
 MiAbstractModel >> lastTagSelected [
 
-	^ lastTagSelected
+	^lastTagSelected
+	ifNil: [ FamixTag new name: 'noTag' ; color: Color transparent ; yourself ]
+	ifNotNil: #yourself
 ]
 
 { #category : #accessing }

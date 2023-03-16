@@ -469,6 +469,13 @@ MiAbstractBrowser >> lastTagSelected [
 ]
 
 { #category : #accessing }
+MiAbstractBrowser >> lastTagSelected: aTag [
+	^self model
+		ifNil: [ nil ]
+		ifNotNil: [ :model | model lastTagSelected: aTag]
+]
+
+{ #category : #accessing }
 MiAbstractBrowser >> miSelectedItem [
 
 	^ (MiNoSelectedElementToPropagateException browser: self) signal

@@ -4,6 +4,9 @@ Use me to tag selected entities. One can also choose what tag to use
 Class {
 	#name : #MiTagCommand,
 	#superclass : #MiCommand,
+	#instVars : [
+		'tagButton'
+	],
 	#category : #'MooseIDE-Core-Command'
 }
 
@@ -27,15 +30,41 @@ MiTagCommand >> asSpecCommand [
 		description: self help;
 		yourself.
 
-	specCommand buildPresenterBlock: [ :cmd | 
-		SpToolbarPopoverButtonPresenter new
-			label: specCommand decoratedCommand label;
-			help: specCommand decoratedCommand help;
-			icon: (self iconProvider iconForTag: context lastTagSelected);
-			content: [ self tagsList ];
-			yourself ].
+	specCommand buildPresenterBlock: [ :cmd | self buildToolbarButton: cmd	].
 
 	^ specCommand
+]
+
+{ #category : #'as yet unclassified' }
+MiTagCommand >> buildTagMenu [
+	^[
+		SpMenuPresenter new
+			addGroup: [ :group | 
+				self tagsList do: [ :tag | 
+					group addItem: [ :item | 
+						item
+							name: tag name ;
+							action: [ self tagSelected: tag ] ;
+							yourself
+					] ]
+			];
+			yourself
+	]
+]
+
+{ #category : #converting }
+MiTagCommand >> buildToolbarButton: specCommand [
+
+	tagButton := SpToolbarMenuButtonPresenter new.
+
+	tagButton
+		help: self help ;
+		action: [ self execute ] ;
+		menu: self buildTagMenu.
+
+	self updateButton.
+
+	^tagButton 
 ]
 
 { #category : #testing }
@@ -54,13 +83,13 @@ MiTagCommand >> execute [
 MiTagCommand >> help [
 	self canBeExecuted ifFalse: [ ^'no tagging' ].
 
-	^ String streamContents: [ :s | 
-		  self context tagList do: [ :tag | 
-			  s
-				  << '- ';
-				  << tag name;
-				  cr ].
-		  s << 'Click to edit' ]
+	^'left click to tag
+right click to change tag'
+]
+
+{ #category : #converting }
+MiTagCommand >> icon [
+	^self iconProvider iconForTag: context lastTagSelected
 ]
 
 { #category : #accessing }
@@ -68,31 +97,20 @@ MiTagCommand >> label [
 	^context tagName
 ]
 
+{ #category : #converting }
+MiTagCommand >> tagSelected: aTag [
+	context lastTagSelected: aTag.
+	self updateButton
+]
+
 { #category : #accessing }
 MiTagCommand >> tagsList [
+	^context tagList.
 
-	| tagsList |
-	tagsList := SpFilteringListPresenter new.
-	tagsList layout: (SpBoxLayout newTopToBottom
-			 add: SpFilteringListPresenter defaultLayout
-			 withConstraints: [ :c | 
-				 c
-					 height: 120;
-					 width: 120 ];
-			 yourself).
-	tagsList display: [ :tag | tag name ].
-	tagsList items: context tagList.
+]
 
-	"Do not filter tags use text input for tag creation"
-	tagsList filterInputPresenter placeholder: '+ New tag'.
-	tagsList itemFilter: [ :each :pattern | 
-		true "We do not want to filter anything" ].
-    
-	"tagsList filterInputPresenter whenSubmitDo: [ :busName |
-		context followBus:
-			(self application busNamed: busName).
-		tagsList filterInputPresenter clearContent.
-		tagsList items: self application buses.
-		tagsList selectItems: context buses copy ]."
-	^ tagsList
+{ #category : #converting }
+MiTagCommand >> updateButton [
+	tagButton label: self label.
+	tagButton icon: self icon.
 ]
