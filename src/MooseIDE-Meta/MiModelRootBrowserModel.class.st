@@ -61,6 +61,11 @@ MiModelRootBrowserModel >> canPropagate [
 	^ selected isMooseObject
 ]
 
+{ #category : #accessing }
+MiModelRootBrowserModel >> currentMooseModel [
+	^self selectedModel
+]
+
 { #category : #initialization }
 MiModelRootBrowserModel >> initialize [
 
