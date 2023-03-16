@@ -575,8 +575,9 @@ MiAbstractBrowser >> tagName [
 
 { #category : #actions }
 MiAbstractBrowser >> tagSelectedEntities [
-	"put lastSelectedTag on currently selected entities"
-	self notYetImplemented
+
+	^self model
+		ifNotNil: [ :model | model tagSelectedEntities ]
 ]
 
 { #category : #buses }

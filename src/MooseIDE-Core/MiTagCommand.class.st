@@ -24,18 +24,12 @@ MiTagCommand class >> defaultName [
 { #category : #converting }
 MiTagCommand >> asSpecCommand [
 
-	| specCommand |
-	specCommand := super asSpecCommand
-		name: 'Tag';
-		description: self help;
-		yourself.
-
-	specCommand buildPresenterBlock: [ :cmd | self buildToolbarButton: cmd	].
-
-	^ specCommand
+	^super asSpecCommand
+		buildPresenterBlock: [ :cmd | self buildToolbarButton: cmd	] ;
+		yourself
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #building }
 MiTagCommand >> buildTagMenu [
 	^[
 		SpMenuPresenter new
@@ -44,6 +38,7 @@ MiTagCommand >> buildTagMenu [
 					group addItem: [ :item | 
 						item
 							name: tag name ;
+							icon: (self iconForTag: tag) ;
 							action: [ self tagSelected: tag ] ;
 							yourself
 					] ]
@@ -52,19 +47,37 @@ MiTagCommand >> buildTagMenu [
 	]
 ]
 
-{ #category : #converting }
+{ #category : #building }
 MiTagCommand >> buildToolbarButton: specCommand [
 
 	tagButton := SpToolbarMenuButtonPresenter new.
 
 	tagButton
-		help: self help ;
+		help: self buttonHelp ;
 		action: [ self execute ] ;
 		menu: self buildTagMenu.
 
 	self updateButton.
 
 	^tagButton 
+]
+
+{ #category : #accessing }
+MiTagCommand >> buttonHelp [
+	self canBeExecuted ifFalse: [ ^'no tagging' ].
+
+	^'left click to tag
+right click to change tag'
+]
+
+{ #category : #accessing }
+MiTagCommand >> buttonIcon [
+	^self iconForTag: context lastTagSelected
+]
+
+{ #category : #accessing }
+MiTagCommand >> buttonLabel [
+	^context tagName
 ]
 
 { #category : #testing }
@@ -80,24 +93,11 @@ MiTagCommand >> execute [
 ]
 
 { #category : #accessing }
-MiTagCommand >> help [
-	self canBeExecuted ifFalse: [ ^'no tagging' ].
-
-	^'left click to tag
-right click to change tag'
+MiTagCommand >> iconForTag: aTag [
+	^self iconProvider iconForTag: aTag
 ]
 
-{ #category : #converting }
-MiTagCommand >> icon [
-	^self iconProvider iconForTag: context lastTagSelected
-]
-
-{ #category : #accessing }
-MiTagCommand >> label [
-	^context tagName
-]
-
-{ #category : #converting }
+{ #category : #execution }
 MiTagCommand >> tagSelected: aTag [
 	context lastTagSelected: aTag.
 	self updateButton
@@ -109,8 +109,8 @@ MiTagCommand >> tagsList [
 
 ]
 
-{ #category : #converting }
+{ #category : #building }
 MiTagCommand >> updateButton [
-	tagButton label: self label.
-	tagButton icon: self icon.
+	tagButton label: self buttonLabel.
+	tagButton icon: self buttonIcon.
 ]

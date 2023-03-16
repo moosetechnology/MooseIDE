@@ -64,6 +64,11 @@ MiAbstractModel >> tagList [
 	^self entities anyOne mooseModel allTags
 ]
 
+{ #category : #actions }
+MiAbstractModel >> tagSelectedEntities [
+	UIManager  default inform: 'tagging selected entities with: ' , self lastTagSelected name
+]
+
 { #category : #accessing }
 MiAbstractModel >> toolName [
 
