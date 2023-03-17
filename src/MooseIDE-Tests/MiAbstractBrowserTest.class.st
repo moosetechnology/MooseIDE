@@ -187,6 +187,12 @@ MiAbstractBrowserTest >> testCanOpenSettings [
 	[ browser closeSettings ] on: Error do: [ "nothing -- ensuring settings window is closed" ]
 ]
 
+{ #category : #'tests - opening' }
+MiAbstractBrowserTest >> testCanTagEntities [
+
+	self assert: browser canTagEntities
+]
+
 { #category : #'tests - receiving' }
 MiAbstractBrowserTest >> testDoNotPropagateWhenReceivingInFollowMode [
 

@@ -13,13 +13,13 @@ MiTagBrowserTest >> browserClass [
 	^ MiTagBrowser
 ]
 
-{ #category : #tests }
+{ #category : #running }
 MiTagBrowserTest >> mooseModelSize [
 
 	^ helper classesAndMethods anyOne mooseModel size
 ]
 
-{ #category : #tests }
+{ #category : #running }
 MiTagBrowserTest >> numberOfTaggedEntities [
 
 	^ (helper classesAndMethods anyOne mooseModel select: #isTagged) size
@@ -33,6 +33,11 @@ MiTagBrowserTest >> setUp [
 	helper := FQTestsHelper new.
 	browser followEntity: helper classesAndMethods.
 	detailsPage := browser descriptionPage
+]
+
+{ #category : #'tests - opening' }
+MiTagBrowserTest >> testCanTagEntities [
+	self deny: browser canTagEntities 
 ]
 
 { #category : #tests }

@@ -326,12 +326,16 @@ MiApplication >> tagListForMooseModel: aMooseModel [
 ]
 
 { #category : #tags }
-MiApplication >> tagSelected: aTag forMooseModel: aMooseModel [
-	mooseModelsTag at: aMooseModel put: aTag
+MiApplication >> tagSelected: aTag [
+	"mooseModel is deduced from aTag itself"
+
+	aTag ifNotNil: [
+		mooseModelsTag at: aTag mooseModel put: aTag
+	]
 ]
 
 { #category : #tags }
-MiApplication >> tagSelectedForMooseModel: aMooseModel [
+MiApplication >> tagSelectedInMooseModel: aMooseModel [
 	^mooseModelsTag at: aMooseModel ifAbsent: [ nil ]
 ]
 

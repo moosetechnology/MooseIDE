@@ -65,13 +65,13 @@ MiAbstractModel >> tagList [
 { #category : #accessing }
 MiAbstractModel >> tagSelected [
 
-	^self currentApplication tagSelectedForMooseModel: self currentMooseModel
+	^self currentApplication tagSelectedInMooseModel: self currentMooseModel
 ]
 
 { #category : #accessing }
 MiAbstractModel >> tagSelected: aTag [
 
-	self currentApplication tagSelected: aTag forMooseModel: self currentMooseModel
+	self currentApplication tagSelected: aTag
 ]
 
 { #category : #actions }
