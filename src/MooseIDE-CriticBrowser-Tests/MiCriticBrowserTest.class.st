@@ -230,7 +230,7 @@ MiCriticBrowserTest >> testUpdateEntitiesList [
 
 { #category : #test }
 MiCriticBrowserTest >> testUpdateResultList [
-	browser updateResultList: { FamixCBViolation condition: stubRule violatedBy: stubEntity } asMooseGroup specialize.
+	browser updateResultList: { FamixCBViolation condition: stubRule violatedBy: stubEntity } asMooseSpecializedGroup.
 	self assert: (browser rulesResult roots flatten size) equals: 1.
 	
 	browser updateResultList: FamixCBViolationGroup new.
