@@ -48,7 +48,9 @@ MiDuplicationBrowserModel >> codeCleanerClass [
 
 { #category : #private }
 MiDuplicationBrowserModel >> currentMooseModel [
-	^entities anyOne mooseModel
+	^self entities
+		ifEmpty: [ nil ]
+		ifNotEmpty: [ :list | list anyOne mooseModel]
 ]
 
 { #category : #private }
