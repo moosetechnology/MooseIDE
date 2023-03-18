@@ -178,13 +178,12 @@ MiAbstractBrowserTest >> testCanOpenOnObject [
 MiAbstractBrowserTest >> testCanOpenSettings [
 
 	browser hasSettings ifFalse: [ self skip ].
-
-	self
-		shouldnt: [ 
-			browser settings. ]
-		raise: Error.
-
-	[ browser closeSettings ] on: Error do: [ "nothing -- ensuring settings window is closed" ]
+	"this should not raise an error"
+	browser settings.
+  "tear down"
+	[ browser closeSettings ]
+		on: Error
+		do: [ "nothing -- ensuring settings window is closed" ]
 ]
 
 { #category : #'tests - opening' }
