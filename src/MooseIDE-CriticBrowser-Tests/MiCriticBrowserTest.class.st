@@ -209,6 +209,18 @@ MiCriticBrowserTest >> testSelectedRules [
 	
 ]
 
+{ #category : #'tests - tags' }
+MiCriticBrowserTest >> testTagSelectedSetAndGet [
+	| model entity tag |
+	model := FamixRepTestModel new.
+	tag := model tagNamed: 'aTag'.
+	entity := FamixRepTestClass new name: 'aClass' ; mooseModel: model ; yourself.
+
+	browser followEntity: entity.
+	browser tagSelected: tag.
+	self assert: browser tagSelected equals: tag
+]
+
 { #category : #tests }
 MiCriticBrowserTest >> testUnselectPrintsCompleteOutput [
 	browser model setEntities: { stubEntity. basicEntity } asMooseGroup.

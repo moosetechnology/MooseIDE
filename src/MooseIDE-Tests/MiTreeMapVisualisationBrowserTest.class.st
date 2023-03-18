@@ -25,8 +25,20 @@ MiTreeMapVisualisationBrowserTest >> testMiSelectedItem [
 	| entityToSelect |
 	self assert: browser miSelectedItem isNil.
 
-	entityToSelect := FamixStClass named: 'TestClass'.
+	entityToSelect := FamixRepTestClass named: 'TestClass'.
 	browser receiveEntity: entityToSelect.
 
 	self assert: browser miSelectedItem equals: entityToSelect
+]
+
+{ #category : #'tests - tags' }
+MiTreeMapVisualisationBrowserTest >> testTagSelectedSetAndGet [
+	| model entity tag |
+	model := FamixRepTestModel new.
+	tag := model tagNamed: 'aTag'.
+	entity := FamixRepTestClass new name: 'aClass' ; mooseModel: model ; yourself.
+
+	browser followEntity: entity.
+	browser tagSelected: tag.
+	self assert: browser tagSelected equals: tag
 ]

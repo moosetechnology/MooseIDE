@@ -349,16 +349,9 @@ MiAbstractBrowserTest >> testTagSelectedAtInit [
 
 { #category : #'tests - tags' }
 MiAbstractBrowserTest >> testTagSelectedSetAndGet [
-	| model entity tag |
 	browser canTagEntities ifFalse: [ self skip ].
 
-	model := MooseModel new.
-	tag := model tagNamed: 'aTag'.
-	entity := FamixStClass new name: 'aClass' ; mooseModel: model ; yourself.
-
-	browser application defaultBus globallySelect: entity.
-	browser tagSelected: tag.
-	self assert: browser tagSelected equals: tag
+	self subclassResponsibility 
 ]
 
 { #category : #'tests - buses' }

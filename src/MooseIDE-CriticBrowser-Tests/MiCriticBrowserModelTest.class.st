@@ -207,6 +207,12 @@ MiCriticBrowserModelTest >> testSetOutput [
 	self assert: model entities class equals: MooseGroup
 ]
 
+{ #category : #'tests - tags' }
+MiCriticBrowserModelTest >> testTagSelectedSetAndGet [
+	"already tested in MiCriticBrowserTest"
+	self skip
+]
+
 { #category : #tests }
 MiCriticBrowserModelTest >> testViolationsOf [
 	model setEntities: { stubEntity. deadEntity } asMooseGroup.

@@ -70,3 +70,13 @@ MiArchitecturalMapBrowserTest >> testSettingsClickOK [
 		raise: Error.
 
 ]
+
+{ #category : #'tests - tags' }
+MiArchitecturalMapBrowserTest >> testTagSelectedSetAndGet [
+	| tag |
+	tag := entity1 mooseModel tagNamed: 'aTag'.
+	browser followEntity: { entity1 . entity2 . entity3 }.
+	browser tagSelected: tag.
+
+	self assert: browser tagSelected equals: tag
+]

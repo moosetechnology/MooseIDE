@@ -94,6 +94,12 @@ MiMooseModelBrowser >> canFollowEntity: anEntity [
 	^ (anEntity isKindOf: MooseModel) and: [ self needUpdate: anEntity ]
 ]
 
+{ #category : #testing }
+MiMooseModelBrowser >> canTagEntities [ 
+	self flag: 'Remove browser ? (issue #810)'.
+	^false
+]
+
 { #category : #initialization }
 MiMooseModelBrowser >> childrenOf: class [
 	^ class isFM3Class
