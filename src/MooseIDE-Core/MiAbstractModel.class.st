@@ -56,6 +56,11 @@ MiAbstractModel >> settingsChanged: aBoolean [
 	"by default don't do anything"
 ]
 
+{ #category : #actions }
+MiAbstractModel >> tagEntitiesSelected [
+	UIManager  default inform: 'tagging selected entities with: ' , self tagSelected name
+]
+
 { #category : #accessing }
 MiAbstractModel >> tagList [
 
@@ -72,11 +77,6 @@ MiAbstractModel >> tagSelected [
 MiAbstractModel >> tagSelected: aTag [
 
 	self currentApplication tagSelected: aTag
-]
-
-{ #category : #actions }
-MiAbstractModel >> tagSelectedEntities [
-	UIManager  default inform: 'tagging selected entities with: ' , self tagSelected name
 ]
 
 { #category : #accessing }
