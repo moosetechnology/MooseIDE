@@ -247,9 +247,9 @@ MiQueriesBrowser >> selectedQuery [
 	^ selectedQuery
 ]
 
-{ #category : #'accessing - model' }
+{ #category : #initialization }
 MiQueriesBrowser >> setModelBeforeInitialization: aRootQuery [
-	self flag: 'Does not match default Model/Browser organization'.
+	self flag: 'Does not follow default Model/Browser organization'.
 	rootQuery := aRootQuery.
 	selectedQuery := aRootQuery
 ]
