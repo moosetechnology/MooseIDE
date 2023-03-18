@@ -102,7 +102,7 @@ MiTagCommand >> disableTagButton [
 { #category : #executing }
 MiTagCommand >> execute [
 
-	context tagSelectedEntities
+	context tagEntitiesSelected
 ]
 
 { #category : #accessing }
