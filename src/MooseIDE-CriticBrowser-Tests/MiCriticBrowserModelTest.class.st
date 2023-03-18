@@ -175,6 +175,12 @@ MiCriticBrowserModelTest >> testRunCondition [
 	self assert: model violations keys anyOne equals: stubCondition
 ]
 
+{ #category : #'tests - tags' }
+MiCriticBrowserModelTest >> testSelectedTagSetAndGet [
+	"already tested in MiCriticBrowserTest"
+	self skip
+]
+
 { #category : #tests }
 MiCriticBrowserModelTest >> testSetEntities [
 	| entityA entityB group |
@@ -205,12 +211,6 @@ MiCriticBrowserModelTest >> testSetOutput [
 	
 	self assert: (model entities at:1) equals: entityA.
 	self assert: model entities class equals: MooseGroup
-]
-
-{ #category : #'tests - tags' }
-MiCriticBrowserModelTest >> testTagSelectedSetAndGet [
-	"already tested in MiCriticBrowserTest"
-	self skip
 ]
 
 { #category : #tests }

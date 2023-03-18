@@ -17,6 +17,17 @@ MiTagSelectedTest >> setUp [
 ]
 
 { #category : #tests }
+MiTagSelectedTest >> testSelectedTagSetAndGet [
+	| tag |
+	tag := model1 tagNamed: 'tag'.
+	
+	self assert: (application tagSelectedInMooseModel: model1) equals: nil.
+
+	application selectedTag: tag.
+	self assert: (application tagSelectedInMooseModel: model1) equals: tag.
+]
+
+{ #category : #tests }
 MiTagSelectedTest >> testTagListNoModels [
 
 	self assert: (application tagListForMooseModel: nil) isEmpty.
@@ -63,21 +74,10 @@ MiTagSelectedTest >> testTagSelectedOneTagSeveralModels [
 	| tag |
 	tag := model1 tagNamed: 'tag1'.
 
-	application tagSelected: tag.
+	application selectedTag: tag.
 
 	self assert: (application tagSelectedInMooseModel: model1) equals: tag.
 	self assert: (application tagSelectedInMooseModel: model2) equals: nil.
-]
-
-{ #category : #tests }
-MiTagSelectedTest >> testTagSelectedSetAndGet [
-	| tag |
-	tag := model1 tagNamed: 'tag'.
-	
-	self assert: (application tagSelectedInMooseModel: model1) equals: nil.
-
-	application tagSelected: tag.
-	self assert: (application tagSelectedInMooseModel: model1) equals: tag.
 ]
 
 { #category : #tests }
@@ -85,7 +85,7 @@ MiTagSelectedTest >> testTagSelectedSetNeedsModel [
 	| tag |
 	tag := model1 tagNamed: 'tag1'.
 
-	application tagSelected: tag.
+	application selectedTag: tag.
 
 	self assert: (application tagSelectedInMooseModel: nil) equals: nil.
 
@@ -97,10 +97,10 @@ MiTagSelectedTest >> testTagSelectedSeveralTagsOneModel [
 	tag1 := model1 tagNamed: 'tag1'.
 	tag2 := model1 tagNamed: 'tag2'.
 
-	application tagSelected: tag1.
+	application selectedTag: tag1.
 	self assert: (application tagSelectedInMooseModel: model1) equals: tag1.
 
-	application tagSelected: tag2.
+	application selectedTag: tag2.
 	self assert: (application tagSelectedInMooseModel: model1) equals: tag2.
 ]
 
@@ -110,8 +110,8 @@ MiTagSelectedTest >> testTagSelectedSeveralTagsSeveralModels [
 	tag1 := model1 tagNamed: 'tag1'.
 	tag2 := model2 tagNamed: 'tag2'.
 
-	application tagSelected: tag1.
-	application tagSelected: tag2.
+	application selectedTag: tag1.
+	application selectedTag: tag2.
 
 	self assert: (application tagSelectedInMooseModel: model1) equals: tag1.
 	self assert: (application tagSelectedInMooseModel: model2) equals: tag2.

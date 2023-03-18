@@ -192,6 +192,11 @@ MiAbstractBrowserTest >> testCanTagEntities [
 	self assert: browser canTagEntities
 ]
 
+{ #category : #'tests - tags' }
+MiAbstractBrowserTest >> testDefaultSelectedTagIsNil [
+	self assert: browser selectedTag isNil
+]
+
 { #category : #'tests - receiving' }
 MiAbstractBrowserTest >> testDoNotPropagateWhenReceivingInFollowMode [
 
@@ -295,6 +300,13 @@ MiAbstractBrowserTest >> testHighlightEntity [
 		self assertHighlightActionFor: mooseObject ]
 ]
 
+{ #category : #'tests - tags' }
+MiAbstractBrowserTest >> testSelectedTagSetAndGet [
+	browser canTagEntities ifFalse: [ self skip ].
+
+	self subclassResponsibility 
+]
+
 { #category : #'tests - opening' }
 MiAbstractBrowserTest >> testSettingsAction [
 	"must be redefined in browsers that do have settings"
@@ -340,18 +352,6 @@ MiAbstractBrowserTest >> testSettingsClickReset [
 		raise: Error.
 
 	[ browser closeSettings ] on: Error do: [ "nothing -- ensuring settings window is closed as REset does not do it" ]
-]
-
-{ #category : #'tests - tags' }
-MiAbstractBrowserTest >> testTagSelectedAtInit [
-	self assert: browser tagSelected isNil
-]
-
-{ #category : #'tests - tags' }
-MiAbstractBrowserTest >> testTagSelectedSetAndGet [
-	browser canTagEntities ifFalse: [ self skip ].
-
-	self subclassResponsibility 
 ]
 
 { #category : #'tests - buses' }

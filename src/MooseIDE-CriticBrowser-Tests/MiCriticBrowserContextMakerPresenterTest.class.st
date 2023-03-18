@@ -71,7 +71,7 @@ MiCriticBrowserContextMakerPresenterTest >> testFillContextToEdit [
 ]
 
 { #category : #'tests - tags' }
-MiCriticBrowserContextMakerPresenterTest >> testTagSelectedSetAndGet [
+MiCriticBrowserContextMakerPresenterTest >> testSelectedTagSetAndGet [
 	"already tested in MiCriticBrowserTest"
 	self skip
 ]

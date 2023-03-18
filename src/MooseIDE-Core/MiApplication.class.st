@@ -308,6 +308,15 @@ MiApplication >> removeItem: anItem from: aProducer [
 		aProducer = aConsumer ifFalse: [ aConsumer remove: anItem ] ]
 ]
 
+{ #category : #tags }
+MiApplication >> selectedTag: aTag [
+	"mooseModel is deduced from aTag itself"
+
+	aTag ifNotNil: [
+		mooseModelsTag at: aTag mooseModel put: aTag
+	]
+]
+
 { #category : #running }
 MiApplication >> start [
 	"we will see"
@@ -325,15 +334,6 @@ MiApplication >> tagListForMooseModel: aMooseModel [
 	^aMooseModel 
 		ifNil: [ #() ]
 		ifNotNil: [ aMooseModel allTags  ]
-]
-
-{ #category : #tags }
-MiApplication >> tagSelected: aTag [
-	"mooseModel is deduced from aTag itself"
-
-	aTag ifNotNil: [
-		mooseModelsTag at: aTag mooseModel put: aTag
-	]
 ]
 
 { #category : #tags }

@@ -111,7 +111,7 @@ MiCriticBrowserRulesMakerPresenterTest >> testQueriesBrowserButtonAction [
 ]
 
 { #category : #'tests - tags' }
-MiCriticBrowserRulesMakerPresenterTest >> testTagSelectedSetAndGet [
+MiCriticBrowserRulesMakerPresenterTest >> testSelectedTagSetAndGet [
 	"already tested in MiCriticBrowserTest"
 	self skip
 ]

@@ -39,7 +39,7 @@ MiTagCommand >> buildTagMenu [
 						item
 							name: tag name ;
 							icon: (self iconForTag: tag) ;
-							action: [ self tagSelected: tag ] ;
+							action: [ self selectedTag: tag ] ;
 							yourself
 					] ]
 			];
@@ -76,7 +76,7 @@ right click to change tag'
 
 { #category : #accessing }
 MiTagCommand >> buttonIcon [
-	^self iconForTag: context tagSelected
+	^self iconForTag: context selectedTag
 ]
 
 { #category : #accessing }
@@ -111,8 +111,8 @@ MiTagCommand >> iconForTag: aTag [
 ]
 
 { #category : #execution }
-MiTagCommand >> tagSelected: aTag [
-	context tagSelected: aTag.
+MiTagCommand >> selectedTag: aTag [
+	context selectedTag: aTag.
 	self updateButton
 ]
 

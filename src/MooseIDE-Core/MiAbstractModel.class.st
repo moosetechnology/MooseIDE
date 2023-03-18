@@ -52,31 +52,31 @@ MiAbstractModel >> initializeSettings [
 ]
 
 { #category : #accessing }
+MiAbstractModel >> selectedTag [
+
+	^self currentApplication tagSelectedInMooseModel: self currentMooseModel
+]
+
+{ #category : #accessing }
+MiAbstractModel >> selectedTag: aTag [
+
+	self currentApplication selectedTag: aTag
+]
+
+{ #category : #accessing }
 MiAbstractModel >> settingsChanged: aBoolean [
 	"by default don't do anything"
 ]
 
 { #category : #actions }
 MiAbstractModel >> tagEntitiesSelected [
-	UIManager  default inform: 'tagging selected entities with: ' , self tagSelected name
+	UIManager  default inform: 'tagging selected entities with: ' , self selectedTag name
 ]
 
 { #category : #accessing }
 MiAbstractModel >> tagList [
 
 	^self currentApplication tagListForMooseModel: self currentMooseModel 
-]
-
-{ #category : #accessing }
-MiAbstractModel >> tagSelected [
-
-	^self currentApplication tagSelectedInMooseModel: self currentMooseModel
-]
-
-{ #category : #accessing }
-MiAbstractModel >> tagSelected: aTag [
-
-	self currentApplication tagSelected: aTag
 ]
 
 { #category : #accessing }

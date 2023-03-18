@@ -504,6 +504,20 @@ MiAbstractBrowser >> receivingMode: aReceivingMode [
 	receivingMode := aReceivingMode
 ]
 
+{ #category : #accessing }
+MiAbstractBrowser >> selectedTag [
+	^self model
+		ifNil: [ nil ]
+		ifNotNil: [ :model | model selectedTag]
+]
+
+{ #category : #accessing }
+MiAbstractBrowser >> selectedTag: aTag [
+	^self model
+		ifNil: [ nil ]
+		ifNotNil: [ :model | model selectedTag: aTag]
+]
+
 { #category : #initialization }
 MiAbstractBrowser >> setDefaultReceivingMode [
 
@@ -548,7 +562,7 @@ MiAbstractBrowser >> tagEntitiesSelected [
 { #category : #accessing }
 MiAbstractBrowser >> tagIcon [
 
-	^application iconProvider iconForTag: self tagSelected  
+	^application iconProvider iconForTag: self selectedTag  
 ]
 
 { #category : #accessing }
@@ -561,23 +575,9 @@ MiAbstractBrowser >> tagList [
 
 { #category : #accessing }
 MiAbstractBrowser >> tagName [
-	^self tagSelected
+	^self selectedTag
 		ifNil: [ '' ]
 		ifNotNil: [ :tag | tag name ]
-]
-
-{ #category : #accessing }
-MiAbstractBrowser >> tagSelected [
-	^self model
-		ifNil: [ nil ]
-		ifNotNil: [ :model | model tagSelected]
-]
-
-{ #category : #accessing }
-MiAbstractBrowser >> tagSelected: aTag [
-	^self model
-		ifNil: [ nil ]
-		ifNotNil: [ :model | model tagSelected: aTag]
 ]
 
 { #category : #buses }
