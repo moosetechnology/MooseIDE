@@ -100,6 +100,12 @@ MiTreeVisualisationBrowser >> canHighlight [
 	^ true
 ]
 
+{ #category : #testing }
+MiTreeVisualisationBrowser >> canTagEntities [ 
+	self flag: 'Remove browser ? (issue #810)'.
+	^false
+]
+
 { #category : #actions }
 MiTreeVisualisationBrowser >> followEntity: anEntity [
 

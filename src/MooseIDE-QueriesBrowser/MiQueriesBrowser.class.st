@@ -93,6 +93,12 @@ MiQueriesBrowser >> canFollowEntity: anObject [
 		  (anObject asMooseGroup allUsing: FamixTNamedEntity) isNotEmpty ]
 ]
 
+{ #category : #testing }
+MiQueriesBrowser >> canTagEntities [ 
+	self flag: 'TODO, put browser in default Browser/Model pattern (issue #809) so that tagging can work'.
+	^false
+]
+
 { #category : #'api - actions' }
 MiQueriesBrowser >> enableProgressNotification [
 

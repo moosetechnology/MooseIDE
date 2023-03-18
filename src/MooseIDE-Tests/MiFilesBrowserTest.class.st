@@ -32,6 +32,11 @@ MiFilesBrowserTest >> testActivateActionButtons [
 ]
 
 { #category : #tests }
+MiFilesBrowserTest >> testCanTagEntities [
+	self deny: browser canTagEntities 
+]
+
+{ #category : #tests }
 MiFilesBrowserTest >> testMiSelectedItem [
 
 	browser receiveEntity: entityToSelect.

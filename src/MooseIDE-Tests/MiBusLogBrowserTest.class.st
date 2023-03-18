@@ -47,6 +47,11 @@ MiBusLogBrowserTest >> testActivateLocalActionButtons [
 ]
 
 { #category : #tests }
+MiBusLogBrowserTest >> testCanTagEntities [
+	self deny: browser canTagEntities 
+]
+
+{ #category : #tests }
 MiBusLogBrowserTest >> testMiSelectedItem [
 
 	self assert: browser miSelectedItem isNil.

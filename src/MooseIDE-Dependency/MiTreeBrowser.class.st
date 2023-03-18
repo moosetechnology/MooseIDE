@@ -76,6 +76,12 @@ MiTreeBrowser >> canFollowEntity: anObject [
 	^ anObject usesFamixTrait: TEntityMetaLevelDependency
 ]
 
+{ #category : #testing }
+MiTreeBrowser >> canTagEntities [ 
+	self flag: 'Remove browser ? (issue #810)'.
+	^false
+]
+
 { #category : #actions }
 MiTreeBrowser >> followEntity: anEntity [
 

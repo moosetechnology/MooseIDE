@@ -103,6 +103,12 @@ MiUMLBrowser >> canHighlight [
 	^ true
 ]
 
+{ #category : #testing }
+MiUMLBrowser >> canTagEntities [ 
+	self flag: 'Remove browser ? (issue #810)'.
+	^false
+]
+
 { #category : #actions }
 MiUMLBrowser >> followEntity: anEntity [
 

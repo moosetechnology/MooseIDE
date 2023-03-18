@@ -322,7 +322,9 @@ MiApplication >> styleSheet [
 
 { #category : #tags }
 MiApplication >> tagListForMooseModel: aMooseModel [
-	^aMooseModel allTags
+	^aMooseModel 
+		ifNil: [ #() ]
+		ifNotNil: [ aMooseModel allTags  ]
 ]
 
 { #category : #tags }

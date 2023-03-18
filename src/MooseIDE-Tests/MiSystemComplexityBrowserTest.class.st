@@ -11,6 +11,11 @@ MiSystemComplexityBrowserTest >> browserClass [
 ]
 
 { #category : #tests }
+MiSystemComplexityBrowserTest >> testCanTagEntities [
+	self deny: browser canTagEntities 
+]
+
+{ #category : #tests }
 MiSystemComplexityBrowserTest >> testSettingsAction [
 
 	self assert: browser hasSettings

@@ -186,7 +186,7 @@ MiAbstractBrowserTest >> testCanOpenSettings [
 		do: [ "nothing -- ensuring settings window is closed" ]
 ]
 
-{ #category : #'tests - opening' }
+{ #category : #'tests - tags' }
 MiAbstractBrowserTest >> testCanTagEntities [
 
 	self assert: browser canTagEntities
@@ -340,6 +340,25 @@ MiAbstractBrowserTest >> testSettingsClickReset [
 		raise: Error.
 
 	[ browser closeSettings ] on: Error do: [ "nothing -- ensuring settings window is closed as REset does not do it" ]
+]
+
+{ #category : #'tests - tags' }
+MiAbstractBrowserTest >> testTagSelectedAtInit [
+	self assert: browser tagSelected isNil
+]
+
+{ #category : #'tests - tags' }
+MiAbstractBrowserTest >> testTagSelectedSetAndGet [
+	| model entity tag |
+	browser canTagEntities ifFalse: [ self skip ].
+
+	model := MooseModel new.
+	tag := model tagNamed: 'aTag'.
+	entity := FamixStClass new name: 'aClass' ; mooseModel: model ; yourself.
+
+	browser application defaultBus globallySelect: entity.
+	browser tagSelected: tag.
+	self assert: browser tagSelected equals: tag
 ]
 
 { #category : #'tests - buses' }

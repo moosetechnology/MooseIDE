@@ -20,6 +20,11 @@ MiPropertyBrowserTest >> testActivateActionButtons [
 ]
 
 { #category : #tests }
+MiPropertyBrowserTest >> testCanTagEntities [
+	self deny: browser canTagEntities 
+]
+
+{ #category : #tests }
 MiPropertyBrowserTest >> testMiSelectedItem [
 
 	| entityToSelect |

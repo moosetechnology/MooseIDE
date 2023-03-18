@@ -88,6 +88,12 @@ MiFilesBrowser >> canFollowEntity: anObject [
 				  anObject rootFolder asFileReference exists ] ] ]
 ]
 
+{ #category : #testing }
+MiFilesBrowser >> canTagEntities [ 
+	self flag: 'Remove browser ? (issue #810)'.
+	^false
+]
+
 { #category : #initialization }
 MiFilesBrowser >> computeItemsInFileReference: aFileReference [
 	"isChildOf: can bug see issue https://github.com/pharo-project/pharo/issues/5720"

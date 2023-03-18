@@ -79,6 +79,12 @@ MiSystemComplexityBrowser >> canFollowEntity: anObject [
 	^ anObject isKindOf: MooseGroup
 ]
 
+{ #category : #testing }
+MiSystemComplexityBrowser >> canTagEntities [ 
+	self flag: 'No for now, but will need to be implemented'.
+	^false
+]
+
 { #category : #actions }
 MiSystemComplexityBrowser >> followEntity: aMooseGroup [
 

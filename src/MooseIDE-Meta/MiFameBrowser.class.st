@@ -71,6 +71,12 @@ MiFameBrowser >> canFollowEntity: anObject [
 	^ anObject isMooseEntity
 ]
 
+{ #category : #testing }
+MiFameBrowser >> canTagEntities [ 
+
+	^false
+]
+
 { #category : #actions }
 MiFameBrowser >> followEntity: anEntity [
 

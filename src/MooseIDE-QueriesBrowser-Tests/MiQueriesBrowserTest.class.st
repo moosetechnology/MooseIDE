@@ -38,6 +38,11 @@ MiQueriesBrowserTest >> testAddNewNAryQuery [
 		hasSameElements: unionQuery result
 ]
 
+{ #category : #tests }
+MiQueriesBrowserTest >> testCanTagEntities [
+	self deny: browser canTagEntities 
+]
+
 { #category : #'tests - actions' }
 MiQueriesBrowserTest >> testFollowEntity [
 
