@@ -31,7 +31,7 @@ MiCriticBrowserModel >> addChildToRootContext: aRuleComponent [
 
 { #category : #adding }
 MiCriticBrowserModel >> addViolationsFor: aCondition [
-	violations at: aCondition put: aCondition violations asMooseGroup specialize
+	violations at: aCondition put: aCondition violations asMooseSpecializedGroup
 ]
 
 { #category : #'as yet unclassified' }
@@ -163,9 +163,9 @@ MiCriticBrowserModel >> violationsOf: aRuleComponent [
 	^ (aRuleComponent class inheritsFromOrEqualTo: FamixCBContext)
 		ifTrue: 
 			[ | group |
-			group := MooseGroup new.
+			group := OrderedCollection new.
 			aRuleComponent children do: [ :child | group addAll: (self violationsOf: child) ].
-			group specialize
+			group asMooseSpecializedGroup
 			]
 		ifFalse:
 			[ 
@@ -178,6 +178,6 @@ MiCriticBrowserModel >> violationsOfCollection: aCollection [
 "returns violations for a given set of rules"
 	| result |
 	result := FamixCBViolationGroup new.
-	aCollection do: [ :condition | result := result , (self violationsOf: condition) ].
+	aCollection do: [ :condition | result addAll: (self violationsOf: condition) ].
 	^ result 
 ]
