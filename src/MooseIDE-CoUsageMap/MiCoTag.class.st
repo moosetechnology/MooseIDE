@@ -1,6 +1,5 @@
 "
-A tag is a representation of a new idea, can be used by MiCoAttributes and MiCoMethods
-Users can define a new class of tags, but they will rewrite addReference: and removeReference:
+Used only for testing, not in the ""real"" CoUsageMap
 
 "
 Class {
@@ -44,6 +43,7 @@ MiCoTag >> description: aString [
 { #category : #initialization }
 MiCoTag >> initialize [
 	super initialize.
+
 	references := OrderedCollection new: 5.
 	isHidden := false.
 ]

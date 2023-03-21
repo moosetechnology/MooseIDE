@@ -179,6 +179,7 @@ MiCoTagBuilder >> tags [
 
 { #category : #public }
 MiCoTagBuilder >> tags: aCollection colorPalette: aNSOrdinalScale [
+	self flag: 'used only for testing, not in real CoUsageMap'.
 	aCollection do: [:str |
 		self addTag: (MiCoTag new 
 			name: str;

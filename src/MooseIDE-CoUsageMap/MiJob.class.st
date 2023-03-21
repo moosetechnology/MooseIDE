@@ -94,7 +94,7 @@ MiJob >> prepareForRendering [
 
 { #category : #running }
 MiJob >> run [
-	^ [ 
+	^ [
 		self prepareForRendering.
 		block value: self.
 		self cleanCanvas ] fork

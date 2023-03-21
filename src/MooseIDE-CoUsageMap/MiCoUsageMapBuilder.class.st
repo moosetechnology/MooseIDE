@@ -152,6 +152,7 @@ MiCoUsageMapBuilder >> godClass [
 
 { #category : #accessing }
 MiCoUsageMapBuilder >> godClass: aClass [
+	self flag: 'used opnly for tests'.
 	godClass := aClass.
 	self methods: aClass methods.
 ]

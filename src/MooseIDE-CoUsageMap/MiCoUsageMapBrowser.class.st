@@ -131,6 +131,7 @@ MiCoUsageMapBrowser >> defaultSettings [
 
 { #category : #actions }
 MiCoUsageMapBrowser >> followEntity: anEntity [
+	self flag: 'collectionModel should be in a MVC-model of the browser :-('.
 	self collectionModel: anEntity.
 	coUsageMap run
 ]

@@ -196,7 +196,7 @@ MiQueriesBrowser >> miSelectedItem [
 	| selected |
 	selected := queryResultTreePresenter miSelectedItem
 		            ifEmpty: [ selectedQuery result ]
-		            ifNotEmpty: [ queryResultTreePresenter miSelectedItem ].
+		            ifNotEmpty: [ :items | items ].
 
 	^ selected mooseInterestingEntity
 ]

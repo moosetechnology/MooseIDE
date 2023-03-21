@@ -2,17 +2,17 @@
 similar to MiCoAttribute customized for moose necesities
 "
 Class {
-	#name : #MiCoMooseAttibute,
+	#name : #MiCoMooseAttribute,
 	#superclass : #MiCoAttribute,
-	#category : #'MooseIDE-CoUsageMap-Browser'
+	#category : #'MooseIDE-CoUsageMap-Model'
 }
 
 { #category : #accessing }
-MiCoMooseAttibute >> methodName [
+MiCoMooseAttribute >> methodName [
 	^ 'container'
 ]
 
 { #category : #public }
-MiCoMooseAttibute >> numberOfUsesOn: aMiCoMethod [
+MiCoMooseAttribute >> numberOfUsesOn: aMiCoMethod [
 	^ usedInMethods sum
 ]

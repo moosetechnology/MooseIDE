@@ -23,6 +23,12 @@ MiCoUsageMapMooseBuilder >> application: anObject [
 	application := anObject
 ]
 
+{ #category : #'private - testing' }
+MiCoUsageMapMooseBuilder >> buildForTest [
+	self renderIn: self container job: MiJob new.
+	^ self container
+]
+
 { #category : #default }
 MiCoUsageMapMooseBuilder >> defaultTester [
 	^ MiCoFromSettingsMethodAttributeTester new
@@ -35,7 +41,7 @@ MiCoUsageMapMooseBuilder >> newAttributeFor: anObject [
 	tags := tags
 		ifEmpty: [ nil ]
 		ifNotEmpty: [ tags anyOne ].
-	^ MiCoMooseAttibute new
+	^ MiCoMooseAttribute new
 		name: anObject name;
 		rawObject: anObject;
 		tag: tags;
