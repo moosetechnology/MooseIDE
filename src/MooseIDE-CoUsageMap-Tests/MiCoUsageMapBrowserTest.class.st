@@ -9,6 +9,12 @@ MiCoUsageMapBrowserTest >> browserClass [
 	^ MiCoUsageMapBrowser
 ]
 
+{ #category : #'tests - tags' }
+MiCoUsageMapBrowserTest >> testCanTagEntities [
+	self flag: 'no tagging for now'.
+	self deny: browser canTagEntities
+]
+
 { #category : #tests }
 MiCoUsageMapBrowserTest >> testConsumerProducer [
 	self assert: ((browser application consumersOf: FamixTag) 
@@ -24,6 +30,7 @@ MiCoUsageMapBrowserTest >> testConsumerProducer [
 { #category : #'tests - tags' }
 MiCoUsageMapBrowserTest >> testSelectedTagSetAndGet [
 	| model entity tag |
+	self skip.
 	model := FamixRepTestModel new.
 	tag := model tagNamed: 'aTag'.
 	entity := FamixRepTestClass new name: 'aClass' ; mooseModel: model ; yourself.
