@@ -177,9 +177,8 @@ MiCoTagBuilder >> tags [
 	^ tags
 ]
 
-{ #category : #public }
+{ #category : #'private - testing' }
 MiCoTagBuilder >> tags: aCollection colorPalette: aNSOrdinalScale [
-	self flag: 'used only for testing, not in real CoUsageMap'.
 	aCollection do: [:str |
 		self addTag: (FamixTag new 
 			name: str;
@@ -187,7 +186,7 @@ MiCoTagBuilder >> tags: aCollection colorPalette: aNSOrdinalScale [
 			yourself) ].
 ]
 
-{ #category : #public }
+{ #category : #'private - testing' }
 MiCoTagBuilder >> tagsWithPalette: aCollection [ 
 	self tags: aCollection colorPalette: NSScale category20
 ]

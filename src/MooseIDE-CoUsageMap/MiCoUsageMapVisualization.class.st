@@ -49,7 +49,7 @@ MiCoUsageMapVisualization >> highlightShapes [
 MiCoUsageMapVisualization >> initialize [
 	super initialize.
 	self script: [ :canvas | canvas ].
-	coUsageMap := MiCoUsageMapMooseBuilder new.
+	coUsageMap := MiCoUsageMapBuilder new.
 	coUsageMap visualization: self.
 ]
 

@@ -11,7 +11,7 @@ Class {
 MiCoMarkManagerTest >> setUp [
 	super setUp.
 
-	builder := MiCoUsageMapMooseBuilder new.
+	builder := MiCoUsageMapBuilder new.
 	builder methods: MiCoUsageTestFamixModel new allMethods.
 ]
 

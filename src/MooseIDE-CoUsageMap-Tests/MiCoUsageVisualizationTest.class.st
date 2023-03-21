@@ -8,7 +8,7 @@ Class {
 MiCoUsageVisualizationTest >> test00Basic [
 
 	| window builder |
-	builder := MiCoUsageMapMooseBuilder new.
+	builder := MiCoUsageMapBuilder new.
 	self assert: builder settings notNil.
 	self assert: builder canvas nodes size equals: 0.
 
@@ -19,7 +19,7 @@ MiCoUsageVisualizationTest >> test00Basic [
 { #category : #tests }
 MiCoUsageVisualizationTest >> test01Basic [
 	| builder |
-	builder := MiCoUsageMapMooseBuilder new.
+	builder := MiCoUsageMapBuilder new.
 	builder buildForTest.
 	self assert: builder canvas nodes size equals: 0.
 
@@ -34,7 +34,7 @@ MiCoUsageVisualizationTest >> test01Basic [
 MiCoUsageVisualizationTest >> test02MethodsAttributes [
 
 	| method builder |
-	builder := MiCoUsageMapMooseBuilder new.
+	builder := MiCoUsageMapBuilder new.
 	builder methods: MiCoUsageTestFamixModel new allMethods.
 	builder buildForTest.
 
@@ -54,7 +54,7 @@ MiCoUsageVisualizationTest >> test02MethodsAttributes [
 MiCoUsageVisualizationTest >> test03AttributeWidth [
 
 	| builder method attribute shapes |
-	builder := MiCoUsageMapMooseBuilder new.
+	builder := MiCoUsageMapBuilder new.
 	builder methods: MiCoUsageTestFamixModel new allMethods.
 	builder buildForTest.
 	
@@ -73,7 +73,7 @@ MiCoUsageVisualizationTest >> test03AttributeWidth [
 MiCoUsageVisualizationTest >> test04Highlight [
 
 	| builder attribute shapes border event |
-	builder := MiCoUsageMapMooseBuilder new.
+	builder := MiCoUsageMapBuilder new.
 	builder methods: MiCoUsageTestFamixModel new allMethods.
 	builder legendTag tagsWithPalette: { 'Frame'. 'Connection' }.
 	builder buildForTest.
@@ -102,7 +102,7 @@ MiCoUsageVisualizationTest >> test04Highlight [
 MiCoUsageVisualizationTest >> test05MethodAttributePopup [
 
 	| builder attribute method |
-	builder := MiCoUsageMapMooseBuilder new.
+	builder := MiCoUsageMapBuilder new.
 	builder methods: MiCoUsageTestFamixModel new allMethods.
 	builder legendTag tagsWithPalette: { 'Frame'. 'Connection' }.
 	builder buildForTest.
@@ -117,7 +117,7 @@ MiCoUsageVisualizationTest >> test05MethodAttributePopup [
 MiCoUsageVisualizationTest >> test06ExtentChanged [
 	"Note: size of canvas depends on number of methods, attributes, and accesses"
 	| builder |
-	builder := MiCoUsageMapMooseBuilder new.
+	builder := MiCoUsageMapBuilder new.
 	builder methods: MiCoUsageTestFamixModel new allMethods.
 	builder legendTag tagsWithPalette: { 'Frame'. 'Connection' }.
 	builder buildForTest.
