@@ -27,11 +27,6 @@ MiCoAttribute >> method: aMiCoMethod counter: aNumber [
 ]
 
 { #category : #accessing }
-MiCoAttribute >> methodName [
-	^ 'method'
-]
-
-{ #category : #accessing }
 MiCoAttribute >> numberOfUses [
 	^ self usedInMethods size
 ]
@@ -43,7 +38,7 @@ MiCoAttribute >> numberOfUsesOn: aMiCoMethod [
 
 { #category : #printing }
 MiCoAttribute >> printForMethod: aMicoMethod on: stream [
-	| n numberOfUsers containerName |
+	| n numberOfUsers |
 	stream 
 		<< 'Links for ';
 		<< name;
@@ -51,11 +46,8 @@ MiCoAttribute >> printForMethod: aMicoMethod on: stream [
 		crlf; crlf.
 	n := self numberOfUsesOn: aMicoMethod.
 	n printOn: stream.
-	containerName := self methodName.
 	stream 
-		<< ' links from this ';
-		<< containerName;
-		<< '(';
+		<< ' links from this container(';
 		<< aMicoMethod name;
 		<< ')'.
 	numberOfUsers := self usedInMethods size - 1.
@@ -67,7 +59,7 @@ MiCoAttribute >> printForMethod: aMicoMethod on: stream [
 	
 	stream << ' links from '.
 	numberOfUsers printOn: stream.
-	stream << ' local '; << containerName.
+	stream << ' local container'.
 	
 	numberOfUsers > 1 
 		ifTrue: [ stream nextPutAll: 's' ]

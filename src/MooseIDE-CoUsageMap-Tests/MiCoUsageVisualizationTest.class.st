@@ -41,7 +41,7 @@ MiCoUsageVisualizationTest >> test02MethodsAttributes [
 	method := builder methodNamed: #method1.
 	self assert: method class equals: MiCoMethod.
 	self assert: method usedAttributes size equals: 2.
-	self assert: method usedAttributes first class equals: MiCoMooseAttribute.
+	self assert: method usedAttributes first class equals: MiCoAttribute.
 
 	self assert: (builder methodNamed: #method2) usedAttributes size equals: 0.
 	self assert: (builder methodNamed: #method3) usedAttributes size equals: 3.

@@ -53,7 +53,7 @@ MiCoUsageMapBuilder >> attributeShapeFor: att method: met [
 	height := self settings innerBoxHeight.
 	^ RSBox new
 		model: att;
-		width: (widthScale scale: (att numberOfUsesOn: met));
+		width: (widthScale scale: (att numberOfUses));
 		height: height;
 		color: (self markManager tagColorFrom: att tag);
 		border: (self highlightManager defaultBoxBorder);
@@ -207,7 +207,7 @@ MiCoUsageMapBuilder >> initializeReferences [
 MiCoUsageMapBuilder >> initializeScale [
 	| allAttributesUses range scaleType cls |
 	allAttributesUses := self miMethods flatCollect: [ :met | 
-		met usedAttributes collect: [ :att | att numberOfUsesOn: met ] ].
+		met usedAttributes collect: [ :att | att numberOfUses ] ].
 	cls := MiCoUsageMapSettings.
 	range := cls innerBoxRange.
 	scaleType := cls innerBoxScaleType.
