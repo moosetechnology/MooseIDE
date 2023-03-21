@@ -181,7 +181,7 @@ MiCoTagBuilder >> tags [
 MiCoTagBuilder >> tags: aCollection colorPalette: aNSOrdinalScale [
 	self flag: 'used only for testing, not in real CoUsageMap'.
 	aCollection do: [:str |
-		self addTag: (MiCoTag new 
+		self addTag: (FamixTag new 
 			name: str;
 			color: (aNSOrdinalScale scale: str);
 			yourself) ].
