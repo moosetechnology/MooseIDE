@@ -4,7 +4,7 @@ A FamixStModel prebuilt with 6 attributes, 5 methods, and some accesses between 
 Class {
 	#name : #MiCoUsageTestFamixModel,
 	#superclass : #FamixStModel,
-	#category : #'MooseIDE-CoUsageMap-Tests-Model'
+	#category : #'MooseIDE-CoUsageMap-Tests-Resource'
 }
 
 { #category : #initialization }
