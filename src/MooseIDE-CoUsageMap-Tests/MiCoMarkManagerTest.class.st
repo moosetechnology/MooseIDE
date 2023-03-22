@@ -9,17 +9,24 @@ Class {
 
 { #category : #running }
 MiCoMarkManagerTest >> setUp [
+	| visualization |
 	super setUp.
 
+	visualization := Mock named: 'visualization'.
+	visualization stub specModel willReturn: visualization.
+	visualization stub tagList willReturn: OrderedCollection new.
+
 	builder := MiCoUsageMapBuilder new.
+	builder visualization: visualization.
 	builder methods: MiCoUsageTestFamixModel new allMethods.
+
 ]
 
 { #category : #tests }
 MiCoMarkManagerTest >> test01ColorASingleMethod [
 
 	| attribute tag shapes tagColor method4 method5 |
-	builder legendTag tagsWithPalette: { 'base'. 'simple' }.
+	builder legendTagBuilder tagsWithPalette: { 'base'. 'simple' }.
 	builder buildForTest.
 
 	attribute := builder attributeNamed: #var6.
@@ -47,7 +54,7 @@ MiCoMarkManagerTest >> test01ColorASingleMethod [
 MiCoMarkManagerTest >> test02OpenMenu [
 
 	| attribute method |
-	builder legendTag tagsWithPalette: { 'base'. 'simple' }.
+	builder legendTagBuilder tagsWithPalette: { 'base'. 'simple' }.
 	builder buildForTest.
 
 	attribute := builder attributeNamed: #var2.
@@ -63,7 +70,7 @@ MiCoMarkManagerTest >> test02OpenMenu [
 MiCoMarkManagerTest >> test03MarkingAttributes [
 
 	| attribute tag |
-	builder legendTag tagsWithPalette: { 'Frame'. 'Connection' }.
+	builder legendTagBuilder tagsWithPalette: { 'Frame'. 'Connection' }.
 	builder buildForTest.
 	tag := builder tagNamed: 'Frame'.
 	attribute := builder attributeNamed: 'var2'.
@@ -77,7 +84,7 @@ MiCoMarkManagerTest >> test03MarkingAttributes [
 MiCoMarkManagerTest >> test04ClickLastTag [
 
 	| attribute method tag |
-	builder legendTag tagsWithPalette: { 'Frame'. 'Connection' }.
+	builder legendTagBuilder tagsWithPalette: { 'Frame'. 'Connection' }.
 	builder buildForTest.
 	self assert: builder markManager lastTagSelected isNil.
 	attribute := builder attributeNamed: #var2.
@@ -94,7 +101,7 @@ MiCoMarkManagerTest >> test04ClickLastTag [
 { #category : #tests }
 MiCoMarkManagerTest >> test05ClickLastTag [
 	| attribute1 attribute2 method tag shapes tagColor event |
-	builder legendTag tagsWithPalette: { 'Frame'. 'Connection' }.
+	builder legendTagBuilder tagsWithPalette: { 'Frame'. 'Connection' }.
 	builder buildForTest.
 	attribute1 := builder attributeNamed: #var1.
 	attribute2 := builder attributeNamed: #var2.
@@ -125,7 +132,7 @@ MiCoMarkManagerTest >> test05ClickLastTag [
 { #category : #tests }
 MiCoMarkManagerTest >> test06SelectInnerBox [
 	| attribute1 attribute2 method shape1 shape2 default selected |
-	builder legendTag tagsWithPalette: { 'Frame'. 'Connection' }.
+	builder legendTagBuilder tagsWithPalette: { 'Frame'. 'Connection' }.
 	builder buildForTest.
 	attribute1 := builder attributeNamed: #var1.
 	attribute2 := builder attributeNamed: #var2.

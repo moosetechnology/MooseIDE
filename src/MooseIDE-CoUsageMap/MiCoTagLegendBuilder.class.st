@@ -2,37 +2,27 @@
 This builder from roassal creates shapes that represent tags in the legend
 "
 Class {
-	#name : #MiCoTagBuilder,
+	#name : #MiCoTagLegendBuilder,
 	#superclass : #RSAbstractContainerBuilder,
 	#instVars : [
 		'tags',
-		'coUsageMap'
+		'mapBuilder'
 	],
 	#category : #'MooseIDE-CoUsageMap-Roassal3'
 }
 
 { #category : #adding }
-MiCoTagBuilder >> addTag: aMiCoTag [ 
-	tags add: aMiCoTag
+MiCoTagLegendBuilder >> addTag: aTag [
+	self tags add: aTag
 ]
 
 { #category : #hooks }
-MiCoTagBuilder >> boxLabelExtent [
+MiCoTagLegendBuilder >> boxLabelExtent [
 	^ 25@15
 ]
 
-{ #category : #accessing }
-MiCoTagBuilder >> coUsageMap [
-	^ coUsageMap
-]
-
-{ #category : #accessing }
-MiCoTagBuilder >> coUsageMap: aMiCoUsageMapBuilder [
-	coUsageMap := aMiCoUsageMapBuilder
-]
-
 { #category : #highlighting }
-MiCoTagBuilder >> highlight: evt [
+MiCoTagLegendBuilder >> highlight: evt [
 	| shape |
 	self unhighlight: evt.
 	shape := evt shape.
@@ -42,20 +32,14 @@ MiCoTagBuilder >> highlight: evt [
 ]
 
 { #category : #hooks }
-MiCoTagBuilder >> iconFor: aMiCoTag [
-	^ self iconNamed: (aMiCoTag isHidden  
+MiCoTagLegendBuilder >> iconFor: aTag [
+	^ self iconNamed: (aTag isHidden  
 		ifTrue: [ #checkboxUnselected ]
 		ifFalse: [ #checkboxSelected ])
 ]
 
-{ #category : #initialization }
-MiCoTagBuilder >> initialize [
-	super initialize.
-	tags := OrderedCollection new: 5
-]
-
 { #category : #hooks }
-MiCoTagBuilder >> legendDo: aShape [
+MiCoTagLegendBuilder >> legendDo: aShape [
 	| highlight |
 	highlight := RSHighlightable new
 		when: RSHighlightEvent do: [ :evt | 
@@ -75,19 +59,30 @@ MiCoTagBuilder >> legendDo: aShape [
 ]
 
 { #category : #accessing }
-MiCoTagBuilder >> legendTitle [
+MiCoTagLegendBuilder >> legendTitle [
 	^ 'Legend'
 ]
 
+{ #category : #accessing }
+MiCoTagLegendBuilder >> mapBuilder [
+	self flag: 'interactions with MiCoUsageMapBuilder should go through specModel ?'.
+	^ mapBuilder
+]
+
+{ #category : #accessing }
+MiCoTagLegendBuilder >> mapBuilder: aMiCoUsageMapBuilder [
+	mapBuilder := aMiCoUsageMapBuilder
+]
+
 { #category : #public }
-MiCoTagBuilder >> removeOldLegend [
+MiCoTagLegendBuilder >> removeOldLegend [
 	| canvas legendShape |
 	canvas := self canvas.
 	legendShape := canvas fixedShapes 
 		detect: [ :shape | shape class = RSComposite ] 
 		ifNone: [ nil ].
 	legendShape ifNil: [ ^ self ].
-	tags := OrderedCollection new.
+	tags := nil.
 	canvas removeInteractionIfPresent: self class.
 	legendShape remove.
 	
@@ -95,7 +90,7 @@ MiCoTagBuilder >> removeOldLegend [
 ]
 
 { #category : #hooks }
-MiCoTagBuilder >> renderIn: aCanvas [
+MiCoTagLegendBuilder >> renderIn: aCanvas [
 	| tagShapes legend |
 	legend := RSLegend new
 		container: aCanvas;
@@ -116,7 +111,7 @@ MiCoTagBuilder >> renderIn: aCanvas [
 ]
 
 { #category : #hooks }
-MiCoTagBuilder >> shapeBoxDescription [
+MiCoTagLegendBuilder >> shapeBoxDescription [
 	| box marker arrow label |
 	box := RSBox new
 		border: (RSBorder new color: Color black; width: 2);
@@ -143,24 +138,31 @@ MiCoTagBuilder >> shapeBoxDescription [
 ]
 
 { #category : #accessing }
-MiCoTagBuilder >> tagNamed: aString [ 
+MiCoTagLegendBuilder >> specModel [
+	^ mapBuilder specModel
+]
+
+{ #category : #accessing }
+MiCoTagLegendBuilder >> tagNamed: aString [ 
 	^ self tags detect: [ :tag | tag name = aString ] ifNone: [ nil ]
 ]
 
 { #category : #hooks }
-MiCoTagBuilder >> tagShapeFor: aMiCoTag [ 
+MiCoTagLegendBuilder >> tagShapeFor: aTag [ 
 	| label box check shape |
 	label := RSLabel new
-		text: aMiCoTag name;
+		text: aTag name;
 		color: Color black;
 		yourself.
+
+	self flag: 'Should use "self iconProvider iconForTag: aTag" to get the icon for the tag'.
 	box := RSBox new
 		extent: self boxLabelExtent;
-		color: aMiCoTag color;
+		color: aTag color;
 		yourself.
 	check := RSBitmap new
-		model: aMiCoTag;
-		form: (self iconFor: aMiCoTag);
+		model: aTag;
+		form: (self iconFor: aTag);
 		when: RSMouseEnter send: #highlight: to: self; 
 		when: RSMouseLeave send: #unhighlight: to: self; 
 		when: RSMouseClick send: #toggleTag: to: self; 
@@ -173,12 +175,12 @@ MiCoTagBuilder >> tagShapeFor: aMiCoTag [
 ]
 
 { #category : #accessing }
-MiCoTagBuilder >> tags [
-	^ tags
+MiCoTagLegendBuilder >> tags [
+	^tags ifNil: [tags := self specModel tagList]
 ]
 
 { #category : #'private - testing' }
-MiCoTagBuilder >> tags: aCollection colorPalette: aNSOrdinalScale [
+MiCoTagLegendBuilder >> tags: aCollection colorPalette: aNSOrdinalScale [
 	aCollection do: [:str |
 		self addTag: (FamixTag new 
 			name: str;
@@ -187,25 +189,26 @@ MiCoTagBuilder >> tags: aCollection colorPalette: aNSOrdinalScale [
 ]
 
 { #category : #'private - testing' }
-MiCoTagBuilder >> tagsWithPalette: aCollection [ 
+MiCoTagLegendBuilder >> tagsWithPalette: aCollection [
+	tags := OrderedCollection new.
 	self tags: aCollection colorPalette: NSScale category20
 ]
 
 { #category : #events }
-MiCoTagBuilder >> toggleTag: evt [
+MiCoTagLegendBuilder >> toggleTag: evt [
 	| shape tag |
 	shape := evt shape.
 	tag := shape model.
 	tag toggleVisibility.
 	shape form: (self iconFor: tag).
-	coUsageMap updateShapeColors.
+	mapBuilder updateShapeColors.
 	evt signalUpdate.
 	
 	
 ]
 
 { #category : #highlighting }
-MiCoTagBuilder >> unhighlight: evt [
+MiCoTagLegendBuilder >> unhighlight: evt [
 	evt canvas
 		propertyAt: #tagCheck
 		ifPresent: [ :s | s border: nil ];

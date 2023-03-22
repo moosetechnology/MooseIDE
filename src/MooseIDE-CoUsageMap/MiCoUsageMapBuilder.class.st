@@ -1,5 +1,5 @@
 "
-Main builder of packages with *CoUsageMap*.
+Main builder for *CoUsageMap*.
 
 I create a Roassal canvas with boxes,
 Outer boxes are container, or representation of methods from a class
@@ -14,8 +14,8 @@ Class {
 	#name : #MiCoUsageMapBuilder,
 	#superclass : #RSAbstractContainerBuilder,
 	#instVars : [
-		'containerBox',
 		'highlightManager',
+		'containerBox',
 		'innerBox',
 		'legendTagBuilder',
 		'markManager',
@@ -24,9 +24,9 @@ Class {
 		'miAttributes',
 		'miMethods',
 		'settings',
-		'visualization',
 		'widthScale',
-		'application'
+		'application',
+		'visualization'
 	],
 	#category : #'MooseIDE-CoUsageMap-Roassal3'
 }
@@ -87,7 +87,7 @@ MiCoUsageMapBuilder >> canvasController [
 
 { #category : #accessing }
 MiCoUsageMapBuilder >> conflictTag [
-	^ self legendTag conflictTag
+	^ self legendTagBuilder conflictTag
 ]
 
 { #category : #'popup - hooks' }
@@ -121,11 +121,6 @@ MiCoUsageMapBuilder >> defaultInnerSortBlock [
 ]
 
 { #category : #default }
-MiCoUsageMapBuilder >> defaultLegendTagVisualization [
-	^ MiCoTagBuilder new
-]
-
-{ #category : #default }
 MiCoUsageMapBuilder >> defaultMarkManager [
 	^ MiCoMarkManager new
 ]
@@ -153,6 +148,11 @@ MiCoUsageMapBuilder >> defaultSortBlock [
 ]
 
 { #category : #default }
+MiCoUsageMapBuilder >> defaultTagLegendBuilder [
+	^ MiCoTagLegendBuilder new
+]
+
+{ #category : #default }
 MiCoUsageMapBuilder >> defaultTester [
 	^ MiCoFromSettingsMethodAttributeTester new
 ]
@@ -176,10 +176,11 @@ MiCoUsageMapBuilder >> highlightManager: aMiCoHighlightManager [
 { #category : #initialization }
 MiCoUsageMapBuilder >> initialize [
 	super initialize.
+
 	self
 		methods: #();
 		methodAttributeCounter: self defaultTester;
-		legendTag: self defaultLegendTagVisualization;
+		legendTagBuilder: self defaultTagLegendBuilder;
 		markManager: self defaultMarkManager;
 		highlightManager: self defaultHighlightManager;
 		settings: self defaultSettings;		
@@ -268,14 +269,14 @@ MiCoUsageMapBuilder >> labelShapeFor: met [
 ]
 
 { #category : #accessing }
-MiCoUsageMapBuilder >> legendTag [
+MiCoUsageMapBuilder >> legendTagBuilder [
 	^ legendTagBuilder
 ]
 
 { #category : #accessing }
-MiCoUsageMapBuilder >> legendTag: aMiCoTagBuilder [ 
-	legendTagBuilder := aMiCoTagBuilder.
-	legendTagBuilder coUsageMap: self.
+MiCoUsageMapBuilder >> legendTagBuilder: aMiCoTagLegendBuilder [ 
+	legendTagBuilder := aMiCoTagLegendBuilder.
+	legendTagBuilder mapBuilder: self.
 ]
 
 { #category : #accessing }
@@ -286,7 +287,7 @@ MiCoUsageMapBuilder >> markManager [
 { #category : #accessing }
 MiCoUsageMapBuilder >> markManager: aMiCoMarkManager [
 	markManager := aMiCoMarkManager.
-	markManager coUsageMap: self.
+	markManager mapBuilder: self.
 ]
 
 { #category : #accessing }
@@ -437,7 +438,7 @@ MiCoUsageMapBuilder >> renderIn: aCanvas job: aJob [
 	aJob currentValue: 85; title: 'Applying layout'.
 	self updateShapeLayout.
 	aJob currentValue: 90; title: 'Adding decorations'.
-	self legendTag
+	self legendTagBuilder
 		container: aCanvas;
 		build.
 	aCanvas 
@@ -511,8 +512,18 @@ MiCoUsageMapBuilder >> sortShapes [
 ]
 
 { #category : #accessing }
+MiCoUsageMapBuilder >> specModel [
+	^visualization specModel
+]
+
+{ #category : #accessing }
 MiCoUsageMapBuilder >> tagNamed: aString [ 
-	^ self legendTag tagNamed: aString
+	^ self legendTagBuilder tagNamed: aString
+]
+
+{ #category : #accessing }
+MiCoUsageMapBuilder >> tags [
+	^self specModel tagList
 ]
 
 { #category : #update }
@@ -601,12 +612,11 @@ MiCoUsageMapBuilder >> updateShapeLayout [
 
 { #category : #accessing }
 MiCoUsageMapBuilder >> visualization [
-
 	^ visualization
 ]
 
 { #category : #accessing }
 MiCoUsageMapBuilder >> visualization: aMiCoUsageMapVisualization [
 
-	visualization := aMiCoUsageMapVisualization
+	visualization := aMiCoUsageMapVisualization.
 ]

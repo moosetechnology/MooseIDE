@@ -1,14 +1,29 @@
 Class {
 	#name : #MiCoUsageVisualizationTest,
 	#superclass : #TestCase,
+	#instVars : [
+		'builder'
+	],
 	#category : #'MooseIDE-CoUsageMap-Tests-Browser'
 }
+
+{ #category : #running }
+MiCoUsageVisualizationTest >> setUp [
+	| visualization |
+	super setUp.
+	visualization := Mock named: 'visualization'.
+	visualization stub specModel willReturn: visualization.
+	visualization stub tagList willReturn: OrderedCollection new.
+
+	builder := MiCoUsageMapBuilder new.
+	builder visualization: visualization.
+
+]
 
 { #category : #tests }
 MiCoUsageVisualizationTest >> test00Basic [
 
-	| window builder |
-	builder := MiCoUsageMapBuilder new.
+	| window |
 	self assert: builder settings notNil.
 	self assert: builder canvas nodes size equals: 0.
 
@@ -18,8 +33,7 @@ MiCoUsageVisualizationTest >> test00Basic [
 
 { #category : #tests }
 MiCoUsageVisualizationTest >> test01Basic [
-	| builder |
-	builder := MiCoUsageMapBuilder new.
+
 	builder buildForTest.
 	self assert: builder canvas nodes size equals: 0.
 
@@ -33,8 +47,7 @@ MiCoUsageVisualizationTest >> test01Basic [
 { #category : #tests }
 MiCoUsageVisualizationTest >> test02MethodsAttributes [
 
-	| method builder |
-	builder := MiCoUsageMapBuilder new.
+	| method |
 	builder methods: MiCoUsageTestFamixModel new allMethods.
 	builder buildForTest.
 
@@ -53,8 +66,7 @@ MiCoUsageVisualizationTest >> test02MethodsAttributes [
 { #category : #tests }
 MiCoUsageVisualizationTest >> test03AttributeWidth [
 
-	| builder method attribute shapes |
-	builder := MiCoUsageMapBuilder new.
+	| method attribute shapes |
 	builder methods: MiCoUsageTestFamixModel new allMethods.
 	builder buildForTest.
 	
@@ -72,10 +84,9 @@ MiCoUsageVisualizationTest >> test03AttributeWidth [
 { #category : #tests }
 MiCoUsageVisualizationTest >> test04Highlight [
 
-	| builder attribute shapes border event |
-	builder := MiCoUsageMapBuilder new.
+	| attribute shapes border event |
 	builder methods: MiCoUsageTestFamixModel new allMethods.
-	builder legendTag tagsWithPalette: { 'Frame'. 'Connection' }.
+	builder legendTagBuilder tagsWithPalette: { 'Frame'. 'Connection' }.
 	builder buildForTest.
 	attribute := builder attributeNamed: #var2.
 	border := builder highlightManager selectedBoxBorder.
@@ -101,10 +112,9 @@ MiCoUsageVisualizationTest >> test04Highlight [
 { #category : #tests }
 MiCoUsageVisualizationTest >> test05MethodAttributePopup [
 
-	| builder attribute method |
-	builder := MiCoUsageMapBuilder new.
+	| attribute method |
 	builder methods: MiCoUsageTestFamixModel new allMethods.
-	builder legendTag tagsWithPalette: { 'Frame'. 'Connection' }.
+	builder legendTagBuilder tagsWithPalette: { 'Frame'. 'Connection' }.
 	builder buildForTest.
 	attribute := builder attributeNamed: #var2.
 	method := builder methodNamed: #method1.
@@ -116,10 +126,9 @@ MiCoUsageVisualizationTest >> test05MethodAttributePopup [
 { #category : #tests }
 MiCoUsageVisualizationTest >> test06ExtentChanged [
 	"Note: size of canvas depends on number of methods, attributes, and accesses"
-	| builder |
-	builder := MiCoUsageMapBuilder new.
+
 	builder methods: MiCoUsageTestFamixModel new allMethods.
-	builder legendTag tagsWithPalette: { 'Frame'. 'Connection' }.
+	builder legendTagBuilder tagsWithPalette: { 'Frame'. 'Connection' }.
 	builder buildForTest.
 	self assert: builder canvas extent x equals: 500.
 	self assert: (builder canvas encompassingRectangle width between: 400 and: 500).

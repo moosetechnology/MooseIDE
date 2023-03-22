@@ -9,9 +9,14 @@ Class {
 
 { #category : #running }
 MiCoTagVisualizationTest >> setUp [
+	| visualization |
 	super setUp.
+	visualization := Mock named: 'visualization'.
+	visualization stub specModel willReturn: visualization.
+	visualization stub tagList willReturn: OrderedCollection new.
 
 	builder := MiCoUsageMapBuilder new.
+	builder visualization: visualization.
 	builder methods: MiCoUsageTestFamixModel new allMethods.
 
 ]
@@ -21,7 +26,7 @@ MiCoTagVisualizationTest >> test01Legend [
 
 	| legendTag|
 	builder buildForTest.
-	legendTag := builder legendTag .
+	legendTag := builder legendTagBuilder.
 	self assert: legendTag shapes size equals: 1.
 
 	legendTag addTag: FamixTag new.
@@ -33,14 +38,14 @@ MiCoTagVisualizationTest >> test01Legend [
 { #category : #tests }
 MiCoTagVisualizationTest >> testToggleTag [
 	| tagShape |
-	builder legendTag addTag: FamixTag new.
+	builder legendTagBuilder addTag: FamixTag new.
 	builder buildForTest.
-	self assert: builder legendTag shapes size equals: 2.
+	self assert: builder legendTagBuilder shapes size equals: 2.
 
-	tagShape := builder legendTag shapes first.
+	tagShape := builder legendTagBuilder shapes first.
 	self assert: tagShape isComposite.
 	self assert: tagShape shapes size equals: 3.
 
-	builder legendTag toggleTag: (RSMouseClick new shape: tagShape shapes first).
+	builder legendTagBuilder toggleTag: (RSMouseClick new shape: tagShape shapes first).
 	
 ]

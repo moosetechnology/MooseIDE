@@ -9,22 +9,16 @@ MiCoUsageMapBrowserTest >> browserClass [
 	^ MiCoUsageMapBrowser
 ]
 
-{ #category : #'tests - tags' }
-MiCoUsageMapBrowserTest >> testCanTagEntities [
-	self flag: 'no tagging for now'.
-	self deny: browser canTagEntities
-]
-
 { #category : #tests }
 MiCoUsageMapBrowserTest >> testConsumerProducer [
 	self assert: ((browser application consumersOf: FamixTag) 
-		anySatisfy: [ :each | each = browser coUsageMap ]).
+		anySatisfy: [ :each | each = browser mapVisualization ]).
 	
 	self assert: ((browser application consumersOf: FamixTagAssociation) 
-		anySatisfy: [ :each | each = browser coUsageMap ]).
+		anySatisfy: [ :each | each = browser mapVisualization ]).
 	
 	self assert: ((browser application producersOf: FamixTagAssociation)
-		anySatisfy: [ :each | each = browser coUsageMap ])
+		anySatisfy: [ :each | each = browser mapVisualization ])
 ]
 
 { #category : #'tests - tags' }

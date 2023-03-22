@@ -333,7 +333,7 @@ MiApplication >> styleSheet [
 MiApplication >> tagListForMooseModel: aMooseModel [
 	^aMooseModel 
 		ifNil: [ #() ]
-		ifNotNil: [ aMooseModel allTags  ]
+		ifNotNil: [ aMooseModel allTags sorted: [ :a :b | a name < b name ] ]
 ]
 
 { #category : #tags }
