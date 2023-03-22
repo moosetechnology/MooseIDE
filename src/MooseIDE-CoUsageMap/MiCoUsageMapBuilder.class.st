@@ -14,7 +14,6 @@ Class {
 	#name : #MiCoUsageMapBuilder,
 	#superclass : #RSAbstractContainerBuilder,
 	#instVars : [
-		'application',
 		'containerBox',
 		'highlightManager',
 		'innerBox',
@@ -26,7 +25,8 @@ Class {
 		'miMethods',
 		'settings',
 		'visualization',
-		'widthScale'
+		'widthScale',
+		'application'
 	],
 	#category : #'MooseIDE-CoUsageMap-Roassal3'
 }
