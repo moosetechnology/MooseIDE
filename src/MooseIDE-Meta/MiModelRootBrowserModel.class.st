@@ -61,6 +61,11 @@ MiModelRootBrowserModel >> canPropagate [
 	^ selected isMooseObject
 ]
 
+{ #category : #accessing }
+MiModelRootBrowserModel >> currentMooseModel [
+	^self selectedModel
+]
+
 { #category : #initialization }
 MiModelRootBrowserModel >> initialize [
 
@@ -108,7 +113,7 @@ MiModelRootBrowserModel >> openSettings [
 
 { #category : #'accessing - tests' }
 MiModelRootBrowserModel >> rawSelectedMooseModel [
-^selected
+	^selected
 ]
 
 { #category : #accessing }

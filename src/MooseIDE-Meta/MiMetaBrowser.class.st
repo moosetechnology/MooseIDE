@@ -195,13 +195,13 @@ MiMetaBrowser >> initializeProperties [
 { #category : #accessing }
 MiMetaBrowser >> miSelectedItem [
 
-	^ model selected
+	^ specModel selected
 ]
 
 { #category : #enumerating }
 MiMetaBrowser >> selected: anEntity [
 
-	model selected: anEntity.
+	specModel selected: anEntity.
 	self updateCommentOf: anEntity.
 	self updateProperty.
 	self window updateToolbar
@@ -234,7 +234,7 @@ MiMetaBrowser >> updateCommentOf: mooseDescription [
 { #category : #initialization }
 MiMetaBrowser >> updateProperty [
 
-	propertiesRelationsTable items: model selected allComplexProperties.
+	propertiesRelationsTable items: specModel selected allComplexProperties.
 	propertiesPropertiesTable items:
-		model selected allPrimitiveProperties
+		specModel selected allPrimitiveProperties
 ]

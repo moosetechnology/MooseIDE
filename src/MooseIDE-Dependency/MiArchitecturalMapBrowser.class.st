@@ -116,7 +116,7 @@ MiArchitecturalMapBrowser >> fetchTags [
 { #category : #actions }
 MiArchitecturalMapBrowser >> followEntity: anEntity [
 
-	model entities: anEntity asMooseGroup.
+	specModel entities: anEntity asMooseGroup.
 	self runVisualization
 ]
 
@@ -143,7 +143,7 @@ MiArchitecturalMapBrowser >> initializePresenters [
 MiArchitecturalMapBrowser >> miSelectedItem [
 
 	^visualization canvas selectedShapes
-		ifEmpty: [ model entities mooseInterestingEntity ]
+		ifEmpty: [ specModel entities mooseInterestingEntity ]
 		ifNotEmpty: [ :selectedShapes |
 			(selectedShapes collect: [:shape | shape model rawModel])
 				asMooseGroup ]
@@ -171,7 +171,7 @@ MiArchitecturalMapBrowser >> setModelBeforeInitialization: aModel [
 { #category : #accessing }
 MiArchitecturalMapBrowser >> settings [
 
-	^model openSettings
+	^specModel openSettings
 ]
 
 { #category : #'accessing - private tests' }

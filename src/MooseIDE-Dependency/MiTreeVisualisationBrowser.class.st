@@ -100,10 +100,16 @@ MiTreeVisualisationBrowser >> canHighlight [
 	^ true
 ]
 
+{ #category : #testing }
+MiTreeVisualisationBrowser >> canTagEntities [ 
+	self flag: 'Remove browser ? (issue #810)'.
+	^false
+]
+
 { #category : #actions }
 MiTreeVisualisationBrowser >> followEntity: anEntity [
 
-	model root: anEntity.
+	specModel root: anEntity.
 	diagram
 		run;
 		receiveEntity: anEntity
@@ -124,5 +130,5 @@ MiTreeVisualisationBrowser >> initializePresenters [
 { #category : #accessing }
 MiTreeVisualisationBrowser >> miSelectedItem [
 
-	^ model selected
+	^ specModel selected
 ]

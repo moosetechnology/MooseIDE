@@ -94,14 +94,18 @@ MiApplicationTest >> testHandleJSONDropEvent [
 
 { #category : #'tests dragNDrop' }
 MiApplicationTest >> testJSONRegisteredHandler [
-	"2 handlers: MiApplication & MiTestApplication"
+	"There should be only 2 handlers: MiApplication & MiTestApplication
+	 Becareful, this test sometimes fails (more than 2 handlers) after other tests failed.
+	 This has to do with the other tests not unregistering the Applications."
 	self assert: (ExternalDropHandler registeredHandlers select: [:handler | handler extension = #json]) size equals: 2.
 
 ]
 
 { #category : #'tests dragNDrop' }
 MiApplicationTest >> testMSERegisteredHandler [
-	"2 handlers: MiApplication & MiTestApplication"
+	"There should be only 2 handlers: MiApplication & MiTestApplication
+	 Becareful, this test sometimes fails (more than 2 handlers) after other tests failed.
+	 This has to do with the other tests not unregistering the Applications."
 	self assert: (ExternalDropHandler registeredHandlers select: [:handler | handler extension = #mse]) size equals: 2.
 
 ]

@@ -9,6 +9,13 @@ Class {
 }
 
 { #category : #accessing }
+MiTreeBrowserModel >> entities [
+	^root
+		ifNil: [ #() ]
+		ifNotNil: [ { root } ]
+]
+
+{ #category : #accessing }
 MiTreeBrowserModel >> root [
 	^ root
 ]

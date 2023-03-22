@@ -1,5 +1,5 @@
 "
-This builder from roassal creates shapes that represent tags
+This builder from roassal creates shapes that represent tags in the legend
 "
 Class {
 	#name : #MiCoTagBuilder,
@@ -177,16 +177,16 @@ MiCoTagBuilder >> tags [
 	^ tags
 ]
 
-{ #category : #public }
+{ #category : #'private - testing' }
 MiCoTagBuilder >> tags: aCollection colorPalette: aNSOrdinalScale [
 	aCollection do: [:str |
-		self addTag: (MiCoTag new 
+		self addTag: (FamixTag new 
 			name: str;
 			color: (aNSOrdinalScale scale: str);
 			yourself) ].
 ]
 
-{ #category : #public }
+{ #category : #'private - testing' }
 MiCoTagBuilder >> tagsWithPalette: aCollection [ 
 	self tags: aCollection colorPalette: NSScale category20
 ]

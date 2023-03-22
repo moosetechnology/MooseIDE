@@ -102,7 +102,7 @@ MiDSMBrowser >> buildDSM [
 { #category : #testing }
 MiDSMBrowser >> canFollowEntity: anObject [
 
-	^model canFollowEntity: anObject
+	^specModel canFollowEntity: anObject
 ]
 
 { #category : #testing }
@@ -119,26 +119,26 @@ MiDSMBrowser >> diagram [
 
 { #category : #actions }
 MiDSMBrowser >> followEntity: anEntity [
-	model followEntity: anEntity
+	specModel followEntity: anEntity
 ]
 
 { #category : #actions }
 MiDSMBrowser >> highlightEntity: anEntity [
 
-	model highlightEntity: anEntity
+	specModel highlightEntity: anEntity
 ]
 
 { #category : #initialization }
 MiDSMBrowser >> initializePresenters [
 
 	diagram := self instantiate: MiDSMVisualization.
-	diagram viewModel: model
+	diagram viewModel: specModel
 ]
 
 { #category : #accessing }
 MiDSMBrowser >> miSelectedItem [
 
-	^model selectedEntities
+	^specModel selectedEntities
 ]
 
 { #category : #api }

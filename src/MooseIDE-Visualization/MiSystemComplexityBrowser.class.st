@@ -79,6 +79,12 @@ MiSystemComplexityBrowser >> canFollowEntity: anObject [
 	^ anObject isKindOf: MooseGroup
 ]
 
+{ #category : #testing }
+MiSystemComplexityBrowser >> canTagEntities [ 
+	self flag: 'No for now, but will need to be implemented'.
+	^false
+]
+
 { #category : #actions }
 MiSystemComplexityBrowser >> followEntity: aMooseGroup [
 
@@ -87,7 +93,7 @@ MiSystemComplexityBrowser >> followEntity: aMooseGroup [
 	newGroup size < aMooseGroup size ifTrue: [ 
 		self inform:
 			(aMooseGroup size - newGroup size) asString , ' rejected entities.' ].
-	model entities: newGroup
+	specModel entities: newGroup
 ]
 
 { #category : #actions }
@@ -114,11 +120,11 @@ MiSystemComplexityBrowser >> initializePresenters [
 { #category : #accessing }
 MiSystemComplexityBrowser >> miSelectedItem [
 
-	^ model entities
+	^ specModel entities
 ]
 
 { #category : #actions }
 MiSystemComplexityBrowser >> settings [
 	
-	model settings open
+	specModel settings open
 ]

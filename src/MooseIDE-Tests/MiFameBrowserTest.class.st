@@ -29,6 +29,11 @@ MiFameBrowserTest >> testActivateActionButtons [
 ]
 
 { #category : #tests }
+MiFameBrowserTest >> testCanTagEntities [
+	self deny: browser canTagEntities 
+]
+
+{ #category : #tests }
 MiFameBrowserTest >> testMiSelectedItem [
 
 	self assert: browser miSelectedItem isNil.

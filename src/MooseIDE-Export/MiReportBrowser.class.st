@@ -78,7 +78,7 @@ MiReportBrowser class >> title [
 MiReportBrowser >> addCells [
 
 	self updateModelCells.
-	^ model executeAllCells
+	^ specModel executeAllCells
 ]
 
 { #category : #testing }
@@ -126,14 +126,14 @@ MiReportBrowser >> exportDocument [
 
 	| aFile |
 	self updateModelCells.
-	model cellList ifEmpty: [ 
+	specModel cellList ifEmpty: [ 
 		self inform: 'Nothing to export'.
 		^ self ].
 	aFile := self
 		         chooseTextFile: 'Chose export destination'
 		         extensions: #( 'ston' )
 		         path: 'mooseNotebook.ston'.
-	aFile ifNotNil: [ model exportDocumentAt: aFile ]
+	aFile ifNotNil: [ specModel exportDocumentAt: aFile ]
 ]
 
 { #category : #actions }
@@ -141,7 +141,7 @@ MiReportBrowser >> exportToHTML [
 
 	| aFile |
 	self updateModelCells.
-	model cellList ifEmpty: [ 
+	specModel cellList ifEmpty: [ 
 		self inform: 'Nothing to export'.
 		^ self ].
 	aFile := self
@@ -149,7 +149,7 @@ MiReportBrowser >> exportToHTML [
 		         extensions: #( 'html' )
 		         path: 'mooseNotebook.html'.
 	aFile ifNil: [ ^ self ].
-	model exportToHTMLAt: aFile.
+	specModel exportToHTMLAt: aFile.
 	self reportExported: aFile
 ]
 
@@ -158,20 +158,20 @@ MiReportBrowser >> exportToText [
 
 	| aFile |
 	self updateModelCells.
-	model cellList ifEmpty: [ 
+	specModel cellList ifEmpty: [ 
 		self inform: 'Nothing to export'.
 		^ self ].
 	aFile := self
 		         chooseTextFile: 'Chose export destination'
 		         extensions: #( 'md' )
 		         path: 'mooseNotebook.md'.
-	aFile ifNotNil: [ model exportToTextAt: aFile ]
+	aFile ifNotNil: [ specModel exportToTextAt: aFile ]
 ]
 
 { #category : #actions }
 MiReportBrowser >> followEntity: anEntity [
 
-	model followEntity: anEntity mooseModel.
+	specModel followEntity: anEntity mooseModel.
 	notebook mooseModel: anEntity mooseModel
 ]
 
@@ -280,13 +280,13 @@ MiReportBrowser >> initializeWindow: aMiWindowPresenter [
 { #category : #actions }
 MiReportBrowser >> miSelectedItem [
 
-	^ model mooseModel
+	^ specModel mooseModel
 ]
 
 { #category : #accessing }
 MiReportBrowser >> mooseModel [
 
-	^ model mooseModel
+	^ specModel mooseModel
 ]
 
 { #category : #initialization }
@@ -333,7 +333,7 @@ Click to show in folder'.
 { #category : #accessing }
 MiReportBrowser >> selectedEntities [
 
-	^ model mooseModel
+	^ specModel mooseModel
 ]
 
 { #category : #accessing }
@@ -346,7 +346,7 @@ MiReportBrowser >> sep [
 MiReportBrowser >> setModelBeforeInitialization: aBrowserModel [
 	aBrowserModel ifNil: [ ^self ].
 
-	model := aBrowserModel.
+	specModel := aBrowserModel.
 ]
 
 { #category : #actions }
@@ -358,13 +358,13 @@ MiReportBrowser >> settings [
 { #category : #initialization }
 MiReportBrowser >> updateModelCells [
 
-	model cellList: notebook allModelCells.
+	specModel cellList: notebook allModelCells.
 ]
 
 { #category : #initialization }
 MiReportBrowser >> updateWithFile: aFileReference [
 
-	model importCellsFrom: aFileReference.
+	specModel importCellsFrom: aFileReference.
 	self closePreview.
 	notebook updateAll
 ]

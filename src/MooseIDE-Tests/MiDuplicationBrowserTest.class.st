@@ -138,6 +138,18 @@ MiDuplicationBrowserTest >> testSelectEntity [
 	self shouldnt: (browser lstEntities selectIndex: 1) raise: Error.
 ]
 
+{ #category : #'tests - tags' }
+MiDuplicationBrowserTest >> testSelectedTagSetAndGet [
+	| model entity tag |
+	model := FamixRepTestModel new.
+	tag := model tagNamed: 'aTag'.
+	entity := (self method: 'aMethod') mooseModel: model ; yourself.
+
+	browser followEntity: entity.
+	browser selectedTag: tag.
+	self assert: browser selectedTag equals: tag
+]
+
 { #category : #'tests - opening' }
 MiDuplicationBrowserTest >> testSettingsAction [
 

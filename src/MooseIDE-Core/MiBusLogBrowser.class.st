@@ -93,6 +93,12 @@ MiBusLogBrowser >> canFollowEntity: anObject [
 	^ true
 ]
 
+{ #category : #testing }
+MiBusLogBrowser >> canTagEntities [
+
+	^false
+]
+
 { #category : #actions }
 MiBusLogBrowser >> clearLogs [
 

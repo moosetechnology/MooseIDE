@@ -7,95 +7,80 @@ Class {
 { #category : #tests }
 MiCoUsageVisualizationTest >> test00Basic [
 
-	| v class window |
-	v := MiCoUsageMapBuilder new.
-	self assert: v settings notNil.
-	self assert: v canvas nodes size equals: 0.
-	class := ZnUrl.
-	v godClass: class.
-	window := v open.
+	| window builder |
+	builder := MiCoUsageMapBuilder new.
+	self assert: builder settings notNil.
+	self assert: builder canvas nodes size equals: 0.
+
+	window := builder open.
 	window delete
 ]
 
 { #category : #tests }
 MiCoUsageVisualizationTest >> test01Basic [
+	| builder |
+	builder := MiCoUsageMapBuilder new.
+	builder buildForTest.
+	self assert: builder canvas nodes size equals: 0.
 
-	| v class |
-	v := MiCoUsageMapBuilder new.
-	v build.
-	self assert: v canvas nodes size equals: 0.
-	class := ZnUrl.
-	v
-		godClass: class;
-		build.
-	self
-		assert: v godClass equals: class;
-		assert: v miMethods size equals: class methods size;
-		assert: v miAttributes size equals: class instVarNames size;
-		assert: v canvas nodes size equals: class methods size
+	builder methods: MiCoUsageTestFamixModel new allMethods.
+	builder buildForTest.
+	self assert: builder miMethods size equals: 5.
+	self assert: builder miAttributes size equals: 5. "var5 is not used"
+	self assert: builder canvas nodes size equals: 5
 ]
 
 { #category : #tests }
 MiCoUsageVisualizationTest >> test02MethodsAttributes [
 
-	| v class method attribute |
-	v := MiCoUsageMapBuilder new.
-	class := MiCoTestClass.
-	v
-		godClass: class;
-		build.
-	self
-		assert: v miMethods size equals: class methods size;
-		assert: v miAttributes size equals: class instVarNames size-1."because one attribute is not used"
-	method := v methodNamed: #method1.
-	self
-		assert: method class equals: MiCoMethod;
-		assert: method usedAttributes size equals: 2;
-		assert: method usedAttributes first class equals: MiCoAttribute.
-	method := v methodNamed: #method2.
-	self assert: method usedAttributes size equals: 0.
-	method := v methodNamed: #method3.
-	self assert: method usedAttributes size equals: 3.
-	attribute := v attributeNamed: #var2.
-	self assert: attribute usedInMethods size equals: 2.
-	attribute := v attributeNamed: #var4.
-	self assert: attribute usedInMethods size equals: 1.
-	"var5 is not used"
-	self should: [v attributeNamed: #var5] raise: Error.
+	| method builder |
+	builder := MiCoUsageMapBuilder new.
+	builder methods: MiCoUsageTestFamixModel new allMethods.
+	builder buildForTest.
+
+	method := builder methodNamed: #method1.
+	self assert: method class equals: MiCoMethod.
+	self assert: method usedAttributes size equals: 2.
+	self assert: method usedAttributes first class equals: MiCoAttribute.
+
+	self assert: (builder methodNamed: #method2) usedAttributes size equals: 0.
+	self assert: (builder methodNamed: #method3) usedAttributes size equals: 3.
+	self assert: (builder attributeNamed: #var2) usedInMethods size equals: 2.
+	self assert: (builder attributeNamed: #var4) usedInMethods size equals: 1.
+	self should: [builder attributeNamed: #var5] raise: Error.
 ]
 
 { #category : #tests }
 MiCoUsageVisualizationTest >> test03AttributeWidth [
 
-	| v class method attribute shapes |
-	v := MiCoUsageMapBuilder new.
-	class := MiCoTestClass.
-	v
-		godClass: class;
-		build.
-	attribute := v attributeNamed: #var1.
-	method := v methodNamed: #method1.
-	shapes := v canvas deepShapesFromModel: attribute.
-	self
-		assert: shapes size equals: attribute usedInMethods size;
-		assert: (attribute numberOfUsesOn: method) equals: 3.
-	attribute := v attributeNamed: #var4.
-	method := v methodNamed: #method3.
+	| builder method attribute shapes |
+	builder := MiCoUsageMapBuilder new.
+	builder methods: MiCoUsageTestFamixModel new allMethods.
+	builder buildForTest.
+	
+	attribute := builder attributeNamed: #var1.
+	method := builder methodNamed: #method1.
+	shapes := builder canvas deepShapesFromModel: attribute.
+	self assert: shapes size equals: 1.
+	self assert: (attribute numberOfUsesOn: method) equals: 3.
+
+	attribute := builder attributeNamed: #var4.
+	method := builder methodNamed: #method3.
 	self assert: (attribute numberOfUsesOn: method) equals: 1
 ]
 
 { #category : #tests }
 MiCoUsageVisualizationTest >> test04Highlight [
 
-	| v class attribute shapes border event |
-	v := MiCoUsageMapBuilder new.
-	class := MiCoTestClass.
-	v godClass: class.
-	v legendTag tagsWithPalette: { 'Frame'. 'Connection' }.
-	v build.
-	attribute := v attributeNamed: #var2.
-	border := v highlightManager selectedBoxBorder.
-	shapes := v canvas deepShapesFromModel: attribute.
+	| builder attribute shapes border event |
+	builder := MiCoUsageMapBuilder new.
+	builder methods: MiCoUsageTestFamixModel new allMethods.
+	builder legendTag tagsWithPalette: { 'Frame'. 'Connection' }.
+	builder buildForTest.
+	attribute := builder attributeNamed: #var2.
+	border := builder highlightManager selectedBoxBorder.
+	shapes := builder canvas deepShapesFromModel: attribute.
+
 	event := RSMouseEnter new
 		shape: shapes first;
 		yourself.
@@ -103,6 +88,7 @@ MiCoUsageVisualizationTest >> test04Highlight [
 	self assert: (shapes allSatisfy: [ :shape | 
 			 shape border color = border color and: [ 
 				 shape border width = border width ] ]).
+
 	event := RSMouseLeave new
 		shape: shapes first;
 		yourself.
@@ -115,32 +101,34 @@ MiCoUsageVisualizationTest >> test04Highlight [
 { #category : #tests }
 MiCoUsageVisualizationTest >> test05MethodAttributePopup [
 
-	| v class attribute method |
-	v := MiCoUsageMapBuilder new.
-	class := MiCoTestClass.
-	v godClass: class.
-	v legendTag tagsWithPalette: { 'Frame'. 'Connection' }.
-	v build.
-	attribute := v attributeNamed: #var2.
-	method := v methodNamed: #method1.
-	v
+	| builder attribute method |
+	builder := MiCoUsageMapBuilder new.
+	builder methods: MiCoUsageTestFamixModel new allMethods.
+	builder legendTag tagsWithPalette: { 'Frame'. 'Connection' }.
+	builder buildForTest.
+	attribute := builder attributeNamed: #var2.
+	method := builder methodNamed: #method1.
+	builder
 		createAttributeTextMorphFor: attribute method: method;
 		createMethodTextMorphFor: method
 ]
 
 { #category : #tests }
 MiCoUsageVisualizationTest >> test06ExtentChanged [
-	| v |
-	v := MiCoUsageMapBuilder new.
-	v godClass: Morph.
-	v legendTag tagsWithPalette: { 'Frame'. 'Connection' }.
-	v build.
-	self assert: v canvas extent x equals: 500.
-	self assert: (v canvas encompassingRectangle width between: 400 and: 500).
-	v canvas extent: 700 asPoint.
-	self assert: v canvas extent x equals: 700.
-	self assert: (v canvas encompassingRectangle width between: 600 and: 700).
-	v canvas camera scale: 0.5.
-	v canvas extent: 500 asPoint.
-	self assert: (v canvas encompassingRectangle width between: 900 and: 1000).
+	"Note: size of canvas depends on number of methods, attributes, and accesses"
+	| builder |
+	builder := MiCoUsageMapBuilder new.
+	builder methods: MiCoUsageTestFamixModel new allMethods.
+	builder legendTag tagsWithPalette: { 'Frame'. 'Connection' }.
+	builder buildForTest.
+	self assert: builder canvas extent x equals: 500.
+	self assert: (builder canvas encompassingRectangle width between: 400 and: 500).
+
+	builder canvas extent: 700 asPoint.
+	self assert: builder canvas extent x equals: 700.
+	self assert: (builder canvas encompassingRectangle width between: 600 and: 700).
+
+	builder canvas camera scale: 0.5.
+	builder canvas extent: 500 asPoint.
+	self assert: (builder canvas encompassingRectangle width between: 600 and: 700).
 ]

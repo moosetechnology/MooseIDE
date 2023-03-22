@@ -1,5 +1,5 @@
 "
-I use the MiCoUsageMapMooseBuilder like a bridge for the for the browser
+I use the MiCoUsageMapMooseBuilder like a bridge for the browser
 "
 Class {
 	#name : #MiCoUsageMapVisualization,
@@ -49,7 +49,7 @@ MiCoUsageMapVisualization >> highlightShapes [
 MiCoUsageMapVisualization >> initialize [
 	super initialize.
 	self script: [ :canvas | canvas ].
-	coUsageMap := MiCoUsageMapMooseBuilder new.
+	coUsageMap := MiCoUsageMapBuilder new.
 	coUsageMap visualization: self.
 ]
 

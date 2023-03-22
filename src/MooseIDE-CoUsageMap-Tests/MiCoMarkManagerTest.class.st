@@ -1,110 +1,112 @@
 Class {
 	#name : #MiCoMarkManagerTest,
 	#superclass : #TestCase,
+	#instVars : [
+		'builder'
+	],
 	#category : #'MooseIDE-CoUsageMap-Tests-Browser'
 }
+
+{ #category : #running }
+MiCoMarkManagerTest >> setUp [
+	super setUp.
+
+	builder := MiCoUsageMapBuilder new.
+	builder methods: MiCoUsageTestFamixModel new allMethods.
+]
 
 { #category : #tests }
 MiCoMarkManagerTest >> test01ColorASingleMethod [
 
-	| v attribute tag shapes tagColor method4 method5 |
-	v := MiCoUsageMapBuilder new.
-	v godClass: MiCoTestClass.
-	v legendTag tagsWithPalette: { 'base'. 'simple' }.
-	v build.
-	attribute := v attributeNamed: #var6.
-	tag := v tagNamed: 'base'.
-	tagColor := v markManager tagColorFrom: nil.
-	shapes := v canvas deepShapesFromModel: attribute.
-	self
-		assert: shapes size equals: 2;
-		assert: (shapes allSatisfy: [ :arg1 | arg1 color = tagColor ]).
-	v markManager setTag: tag onAttribute: attribute.
+	| attribute tag shapes tagColor method4 method5 |
+	builder legendTag tagsWithPalette: { 'base'. 'simple' }.
+	builder buildForTest.
+
+	attribute := builder attributeNamed: #var6.
+	shapes := builder canvas deepShapesFromModel: attribute.
+	self assert: shapes size equals: 2.
+
+	tag := builder tagNamed: 'base'.
+	tagColor := builder markManager tagColorFrom: nil.
+	self assert: (shapes allSatisfy: [ :arg1 | arg1 color = tagColor ]).
+
+	builder markManager setTag: tag onAttribute: attribute.
 	self assert: (shapes allSatisfy: [ :arg2 | arg2 color = tag color ]).
-	v markManager automaticColor.
-	method4 := v methodNamed: #method4.
-	method5 := v methodNamed: #method5.
+
+	builder markManager automaticColor.
+	method4 := builder methodNamed: #method4.
+	method5 := builder methodNamed: #method5.
 	self
-		assert: (v canvas shapeFromModel: method4) children second color
+		assert: (builder canvas shapeFromModel: method4) children second color
 		equals: tag color;
-		assert: (v canvas shapeFromModel: method5) children second color
+		assert: (builder canvas shapeFromModel: method5) children second color
 		equals: tag color
 ]
 
 { #category : #tests }
 MiCoMarkManagerTest >> test02OpenMenu [
 
-	| v attribute method |
-	v := MiCoUsageMapBuilder new.
-	v godClass: MiCoTestClass.
-	v legendTag tagsWithPalette: { 'base'. 'simple' }.
-	v build.
-	attribute := v attributeNamed: #var2.
-	method := v methodNamed: #method1.
-	attribute createMenuOn: MenuMorph new markManager: v markManager.
-	method createMenuOn: MenuMorph new markManager: v markManager.
-	v markManager
+	| attribute method |
+	builder legendTag tagsWithPalette: { 'base'. 'simple' }.
+	builder buildForTest.
+
+	attribute := builder attributeNamed: #var2.
+	method := builder methodNamed: #method1.
+	attribute createMenuOn: MenuMorph new markManager: builder markManager.
+	method createMenuOn: MenuMorph new markManager: builder markManager.
+	builder markManager
 		createGlobalMenuOn: MenuMorph new;
-		createMenuOn: MenuMorph new for: v canvas
+		createMenuOn: MenuMorph new for: builder canvas
 ]
 
 { #category : #tests }
 MiCoMarkManagerTest >> test03MarkingAttributes [
 
-	| v class attribute tag |
-	v := MiCoUsageMapBuilder new.
-	class := MiCoTestClass.
-	v godClass: class.
-	v legendTag tagsWithPalette: { 'Frame'. 'Connection' }.
-	v build.
-	tag := v tagNamed: 'Frame'.
-	attribute := v attributeNamed: 'var2'.
-	v markManager setTag: tag onAttribute: attribute.
+	| attribute tag |
+	builder legendTag tagsWithPalette: { 'Frame'. 'Connection' }.
+	builder buildForTest.
+	tag := builder tagNamed: 'Frame'.
+	attribute := builder attributeNamed: 'var2'.
+	builder markManager setTag: tag onAttribute: attribute.
 	self assert:
-		((v canvas deepShapesFromModel: attribute) allSatisfy: [ :shape | 
+		((builder canvas deepShapesFromModel: attribute) allSatisfy: [ :shape | 
 			 shape color = tag color ])
 ]
 
 { #category : #tests }
 MiCoMarkManagerTest >> test04ClickLastTag [
 
-	| v class attribute method tag |
-	v := MiCoUsageMapBuilder new.
-	class := MiCoTestClass.
-	v godClass: class.
-	v legendTag tagsWithPalette: { 'Frame'. 'Connection' }.
-	v build.
-	self assert: v markManager lastTagSelected isNil.
-	attribute := v attributeNamed: #var2.
-	method := v methodNamed: #method1.
-	tag := v tagNamed: 'Frame'.
-	v markManager setTag: tag onAttribute: attribute.
-	self assert: v markManager lastTagSelected notNil.
-	v markManager
+	| attribute method tag |
+	builder legendTag tagsWithPalette: { 'Frame'. 'Connection' }.
+	builder buildForTest.
+	self assert: builder markManager lastTagSelected isNil.
+	attribute := builder attributeNamed: #var2.
+	method := builder methodNamed: #method1.
+	tag := builder tagNamed: 'Frame'.
+	builder markManager setTag: tag onAttribute: attribute.
+	self assert: builder markManager lastTagSelected notNil.
+	builder markManager
 		lastTagSelected: nil;
 		setTag: tag onAttribute: method.
-	self assert: v markManager lastTagSelected notNil
+	self assert: builder markManager lastTagSelected notNil
 ]
 
 { #category : #tests }
 MiCoMarkManagerTest >> test05ClickLastTag [
-	| v class attribute1 attribute2 method tag shapes tagColor event |
-	v := MiCoUsageMapBuilder new.
-	class := MiCoTestClass.
-	v godClass: class.
-	v legendTag tagsWithPalette: { 'Frame'. 'Connection' }.
-	v build.
-	attribute1 := v attributeNamed: #var1.
-	attribute2 := v attributeNamed: #var2.
-	method := v methodNamed: #method1.
-	tag := v tagNamed: 'Frame'.
-	tagColor := v markManager tagColorFrom: nil.
-	shapes := v canvas deepShapesFromModel: attribute1.
-	v markManager clickOn: (RSMouseClick new shape: shapes first).
+	| attribute1 attribute2 method tag shapes tagColor event |
+	builder legendTag tagsWithPalette: { 'Frame'. 'Connection' }.
+	builder buildForTest.
+	attribute1 := builder attributeNamed: #var1.
+	attribute2 := builder attributeNamed: #var2.
+	method := builder methodNamed: #method1.
+	tag := builder tagNamed: 'Frame'.
+	tagColor := builder markManager tagColorFrom: nil.
+	shapes := builder canvas deepShapesFromModel: attribute1.
+	builder markManager clickOn: (RSMouseClick new shape: shapes first).
 	self
 		assert: attribute1 tag isNil;
 		assert: (shapes allSatisfy: [ :shape | shape color = tagColor ]).
-	v markManager
+	builder markManager
 		lastTagSelected: tag;
 		clickOn: (RSMouseClick new shape: shapes first).
 	self
@@ -114,7 +116,7 @@ MiCoMarkManagerTest >> test05ClickLastTag [
 	event shape: shapes first.
 	event commandKeyPressed: true.
 	event controlKeyPressed: true.
-	v markManager clickOn: event.
+	builder markManager clickOn: event.
 	self
 		assert: attribute1 tag equals: tag;
 		assert: (shapes allSatisfy: [ :shape | shape color = tag color ])
@@ -122,19 +124,16 @@ MiCoMarkManagerTest >> test05ClickLastTag [
 
 { #category : #tests }
 MiCoMarkManagerTest >> test06SelectInnerBox [
-	| v class attribute1 attribute2 method shape1 shape2 default selected |
-	v := MiCoUsageMapBuilder new.
-	class := MiCoTestClass.
-	v godClass: class.
-	v legendTag tagsWithPalette: { 'Frame'. 'Connection' }.
-	v build.
-	attribute1 := v attributeNamed: #var1.
-	attribute2 := v attributeNamed: #var2.
-	method := v methodNamed: #method1.
-	shape1 := v canvas deepShapeFromModel: attribute1.
-	shape2 := v canvas deepShapeFromModel: attribute2.
-	default := v highlightManager defaultBoxBorder color.
-	selected := v highlightManager selectedBoxBorder color.
+	| attribute1 attribute2 method shape1 shape2 default selected |
+	builder legendTag tagsWithPalette: { 'Frame'. 'Connection' }.
+	builder buildForTest.
+	attribute1 := builder attributeNamed: #var1.
+	attribute2 := builder attributeNamed: #var2.
+	method := builder methodNamed: #method1.
+	shape1 := builder canvas deepShapeFromModel: attribute1.
+	shape2 := builder canvas deepShapeFromModel: attribute2.
+	default := builder highlightManager defaultBoxBorder color.
+	selected := builder highlightManager selectedBoxBorder color.
 	
 	self assert: shape1 border color equals: default.
 	shape1 announce: (RSMouseEnter new shape: shape1).
@@ -157,7 +156,7 @@ MiCoMarkManagerTest >> test06SelectInnerBox [
 	self assert: shape1 border color equals: default.
 	self assert: shape2 border color equals: selected.
 	
-	v canvas announce: (RSMouseLeftClick new shape: v canvas).
+	builder canvas announce: (RSMouseLeftClick new shape: builder canvas).
 	self assert: shape1 border color equals: default.
 	self assert: shape2 border color equals: default.
 	

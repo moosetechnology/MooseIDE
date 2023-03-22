@@ -93,6 +93,12 @@ MiQueriesBrowser >> canFollowEntity: anObject [
 		  (anObject asMooseGroup allUsing: FamixTNamedEntity) isNotEmpty ]
 ]
 
+{ #category : #testing }
+MiQueriesBrowser >> canTagEntities [ 
+	self flag: 'TODO, put browser in default Browser/Model pattern (issue #809) so that tagging can work'.
+	^false
+]
+
 { #category : #'api - actions' }
 MiQueriesBrowser >> enableProgressNotification [
 
@@ -190,7 +196,7 @@ MiQueriesBrowser >> miSelectedItem [
 	| selected |
 	selected := queryResultTreePresenter miSelectedItem
 		            ifEmpty: [ selectedQuery result ]
-		            ifNotEmpty: [ queryResultTreePresenter miSelectedItem ].
+		            ifNotEmpty: [ :items | items ].
 
 	^ selected mooseInterestingEntity
 ]
@@ -247,9 +253,9 @@ MiQueriesBrowser >> selectedQuery [
 	^ selectedQuery
 ]
 
-{ #category : #'accessing - model' }
+{ #category : #initialization }
 MiQueriesBrowser >> setModelBeforeInitialization: aRootQuery [
-	self flag: 'Does not match default Model/Browser organization'.
+	self flag: 'Does not follow default Model/Browser organization'.
 	rootQuery := aRootQuery.
 	selectedQuery := aRootQuery
 ]

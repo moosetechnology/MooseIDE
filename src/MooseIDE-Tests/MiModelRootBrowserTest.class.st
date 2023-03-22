@@ -32,7 +32,7 @@ MiModelRootBrowserTest >> setUp [
 	super setUp
 ]
 
-{ #category : #tests }
+{ #category : #running }
 MiModelRootBrowserTest >> stModelFile [
 
 	"Creating an in-memory JSON file containing a class from FamixStModel"
@@ -64,6 +64,11 @@ MiModelRootBrowserTest >> testActivateActionButtons [
 	browser updateForNewModel: newModel.
 
 	browser actionButtons do: [ :button | self assert: button isEnabled ]
+]
+
+{ #category : #'tests - opening' }
+MiModelRootBrowserTest >> testCanTagEntities [
+	self deny: browser canTagEntities 
 ]
 
 { #category : #tests }

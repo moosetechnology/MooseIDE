@@ -20,6 +20,11 @@ MiUMLBrowserTest >> testActivateActionButtons [
 ]
 
 { #category : #tests }
+MiUMLBrowserTest >> testCanTagEntities [
+	self deny: browser canTagEntities 
+]
+
+{ #category : #tests }
 MiUMLBrowserTest >> testMiSelectedItem [
 
 	| entityToSelect |

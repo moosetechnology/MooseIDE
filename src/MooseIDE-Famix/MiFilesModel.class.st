@@ -9,6 +9,11 @@ Class {
 }
 
 { #category : #accessing }
+MiFilesModel >> entities [
+	^#()
+]
+
+{ #category : #accessing }
 MiFilesModel >> fileReference [
 	^ fileReference
 ]

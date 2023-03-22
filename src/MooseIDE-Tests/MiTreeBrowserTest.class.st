@@ -20,6 +20,11 @@ MiTreeBrowserTest >> testActivateActionButtons [
 ]
 
 { #category : #tests }
+MiTreeBrowserTest >> testCanTagEntities [
+	self deny: browser canTagEntities 
+]
+
+{ #category : #tests }
 MiTreeBrowserTest >> testMiSelectedItem [
 
 	| entityToSelect |

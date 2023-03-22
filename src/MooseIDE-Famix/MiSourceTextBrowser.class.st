@@ -84,7 +84,7 @@ MiSourceTextBrowser >> canFollowEntity: anObject [
 
 { #category : #actions }
 MiSourceTextBrowser >> editExternally: anExternalTool [
-	anExternalTool new open: model selectedEntity
+	anExternalTool new open: specModel selectedEntity
 ]
 
 { #category : #'private - testing' }
@@ -102,7 +102,7 @@ MiSourceTextBrowser >> externalEditor: anObject [
 { #category : #actions }
 MiSourceTextBrowser >> followEntity: anEntity [
 
-	model displayedEntity: anEntity.
+	specModel displayedEntity: anEntity.
 	textRenderer renderText.
 
 	self updateWindowTitleWith: anEntity name.
@@ -121,7 +121,7 @@ MiSourceTextBrowser >> initializePresenters [
 { #category : #accessing }
 MiSourceTextBrowser >> miSelectedItem [
 
-	^ model selectedEntity
+	^ specModel selectedEntity
 ]
 
 { #category : #'private - testing' }
@@ -151,11 +151,11 @@ MiSourceTextBrowser >> updateWindowTitleWith: aName [
 { #category : #formatting }
 MiSourceTextBrowser >> withRoassalRenderer [
 
-	textRenderer := self instantiate: MiSourceTextRoassalRenderer on: model
+	textRenderer := self instantiate: MiSourceTextRoassalRenderer on: specModel
 ]
 
 { #category : #formatting }
 MiSourceTextBrowser >> withSpecRenderer [
 
-	textRenderer := self instantiate: MiSourceTextSpecRenderer on: model
+	textRenderer := self instantiate: MiSourceTextSpecRenderer on: specModel
 ]

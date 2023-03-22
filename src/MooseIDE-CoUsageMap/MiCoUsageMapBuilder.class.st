@@ -7,29 +7,41 @@ Inner boxes are content, or representation of attributes from a class used from 
 
 Note: an attribute can be used by different methods.
 
-Width of each attbute is the number of uses of that attribute in that container or method.
+Width of each attbute is the total number of uses of that attribute in all containers (or methods).
 
-Check MiCoUsageMapExamples or tests to get more info
 "
 Class {
 	#name : #MiCoUsageMapBuilder,
 	#superclass : #RSAbstractContainerBuilder,
 	#instVars : [
-		'godClass',
-		'methods',
-		'miMethods',
-		'miAttributes',
-		'markManager',
-		'legendTagBuilder',
-		'innerBox',
 		'containerBox',
-		'methodAttributeCounter',
 		'highlightManager',
+		'innerBox',
+		'legendTagBuilder',
+		'markManager',
+		'methodAttributeCounter',
+		'methods',
+		'miAttributes',
+		'miMethods',
+		'settings',
+		'visualization',
 		'widthScale',
-		'settings'
+		'application'
 	],
 	#category : #'MooseIDE-CoUsageMap-Roassal3'
 }
+
+{ #category : #accessing }
+MiCoUsageMapBuilder >> application [
+
+	^ application
+]
+
+{ #category : #accessing }
+MiCoUsageMapBuilder >> application: anObject [
+
+	application := anObject
+]
 
 { #category : #hooks }
 MiCoUsageMapBuilder >> applyLayout [
@@ -53,13 +65,19 @@ MiCoUsageMapBuilder >> attributeShapeFor: att method: met [
 	height := self settings innerBoxHeight.
 	^ RSBox new
 		model: att;
-		width: (widthScale scale: (att numberOfUsesOn: met));
+		width: (widthScale scale: (att numberOfUses));
 		height: height;
 		color: (self markManager tagColorFrom: att tag);
 		border: (self highlightManager defaultBoxBorder);
 		propertyAt: #method put: met;
 		announcer: innerBox announcer;
 		yourself.
+]
+
+{ #category : #'private - testing' }
+MiCoUsageMapBuilder >> buildForTest [
+	self renderIn: self container job: MiJob new.
+	^ self container
 ]
 
 { #category : #accessing }
@@ -136,24 +154,13 @@ MiCoUsageMapBuilder >> defaultSortBlock [
 
 { #category : #default }
 MiCoUsageMapBuilder >> defaultTester [
-	^ MiCoPharoMethodAttributeCounter new
+	^ MiCoFromSettingsMethodAttributeTester new
 ]
 
 { #category : #accessing }
 MiCoUsageMapBuilder >> getOrCreateAttributeFor: object [
 	^ self miAttributes detect: [ :att | att rawObject = object ]
 		ifNone: [ miAttributes add: (self newAttributeFor: object).]
-]
-
-{ #category : #accessing }
-MiCoUsageMapBuilder >> godClass [
-	^ godClass
-]
-
-{ #category : #accessing }
-MiCoUsageMapBuilder >> godClass: aClass [
-	godClass := aClass.
-	self methods: aClass methods.
 ]
 
 { #category : #accessing }
@@ -206,7 +213,7 @@ MiCoUsageMapBuilder >> initializeReferences [
 MiCoUsageMapBuilder >> initializeScale [
 	| allAttributesUses range scaleType cls |
 	allAttributesUses := self miMethods flatCollect: [ :met | 
-		met usedAttributes collect: [ :att | att numberOfUsesOn: met ] ].
+		met usedAttributes collect: [ :att | att numberOfUses ] ].
 	cls := MiCoUsageMapSettings.
 	range := cls innerBoxRange.
 	scaleType := cls innerBoxScaleType.
@@ -356,29 +363,33 @@ MiCoUsageMapBuilder >> miMethods [
 ]
 
 { #category : #'instance creation' }
-MiCoUsageMapBuilder >> newAttributeFor: object [
+MiCoUsageMapBuilder >> newAttributeFor: anObject [
+	| tags |
+	tags := anObject allTagAssociations collect: [ :asso | asso tag ].
+	tags := tags
+		ifEmpty: [ nil ]
+		ifNotEmpty: [ tags anyOne ].
 	^ MiCoAttribute new
-		name: object asString;
-		rawObject: object;
+		name: anObject name;
+		rawObject: anObject;
+		tag: tags;
+		application: self application;
 		yourself
 ]
 
 { #category : #'instance creation' }
-MiCoUsageMapBuilder >> newMethodFor: met [
+MiCoUsageMapBuilder >> newMethodFor: anObject [
+	| tags |
+	tags := anObject allTagAssociations collect: [ :asso | asso tag ].
+	tags := tags
+		ifEmpty: [ nil ]
+		ifNotEmpty: [ tags anyOne ].
 	^ MiCoMethod new
-		name: met selector;
-		rawObject: met;
+		name: anObject name;
+		rawObject: anObject;
+		tag: tags;
+		application: self application;
 		yourself
-]
-
-{ #category : #public }
-MiCoUsageMapBuilder >> open [
-	^ super open
-		extent: 1000@ 800;
-		setLabel:  (godClass
-			ifNil: [ 'Empty' ]
-			ifNotNil: ['God Class - ', godClass name ]);
-		yourself 
 ]
 
 { #category : #public }
@@ -474,7 +485,7 @@ MiCoUsageMapBuilder >> settings: anObject [
 
 { #category : #testing }
 MiCoUsageMapBuilder >> shouldUseProgressBar [
-	^ false
+	^ true
 ]
 
 { #category : #public }
@@ -556,6 +567,9 @@ MiCoUsageMapBuilder >> updateInnerBoxSize [
 
 { #category : #update }
 MiCoUsageMapBuilder >> updateLegend [
+
+	visualization ifNil: [ ^ self ].
+	visualization updateLegend
 ]
 
 { #category : #update }
@@ -583,4 +597,16 @@ MiCoUsageMapBuilder >> updateShapeLayout [
 		child adjustToChildren ].
 	self applyLayout.
 	self canvas signalUpdate.
+]
+
+{ #category : #accessing }
+MiCoUsageMapBuilder >> visualization [
+
+	^ visualization
+]
+
+{ #category : #accessing }
+MiCoUsageMapBuilder >> visualization: aMiCoUsageMapVisualization [
+
+	visualization := aMiCoUsageMapVisualization
 ]

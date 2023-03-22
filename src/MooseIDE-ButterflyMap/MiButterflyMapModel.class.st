@@ -1,9 +1,8 @@
 Class {
 	#name : #MiButterflyMapModel,
-	#superclass : #Object,
+	#superclass : #MiAbstractModel,
 	#instVars : [
 		'currentEntity',
-		'browser',
 		'childrenBlock',
 		'childrenQuery',
 		'leftEntitiesQuery',
@@ -96,6 +95,14 @@ MiButterflyMapModel >> defaultRightEntitiesQuery [
 	^ defaultRightEntitiesQuery ifNil: [ 
 		  defaultRightEntitiesQuery := FQCollectScriptQuery script: [ 
 			                               :entity | entity allProviders ] ]
+]
+
+{ #category : #'plugin interface' }
+MiButterflyMapModel >> entities [
+	"should probably return all entities displayed and not only the central one"
+	^self currentEntity
+		ifNil: [ #() ]
+		ifNotNil: [ :entity | { entity } ]
 ]
 
 { #category : #accessing }

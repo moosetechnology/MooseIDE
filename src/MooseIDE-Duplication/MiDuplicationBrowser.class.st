@@ -86,7 +86,7 @@ MiDuplicationBrowser >> canHighlight [
 { #category : #actions }
 MiDuplicationBrowser >> followEntity: entityCollection [
 
-	model entities: entityCollection
+	specModel entities: entityCollection
 ]
 
 { #category : #utilities }
@@ -108,7 +108,7 @@ MiDuplicationBrowser >> hasSettings [
 { #category : #api }
 MiDuplicationBrowser >> highlightEntity: entities [
 
-	model highlightEntity: entities
+	specModel highlightEntity: entities
 
 	
 ]
@@ -138,12 +138,12 @@ MiDuplicationBrowser >> initializeListEntities [
 	lstEntities beMultipleSelection.
 	lstEntities display: [ :entity | entity name ].
 	lstEntities displayIcon: [ :entity | 
-		self iconNamed: ((model isSelected: entity)
+		self iconNamed: ((specModel isSelected: entity)
 				 ifTrue: [ #testGreen ]
 				 ifFalse: [ #glamorousGrayCircleEmpty ]) ].
 
 	lstEntities whenSelectionChangedDo: [ :selection | 
-		model highlightEntity: selection selectedItems ]
+		specModel highlightEntity: selection selectedItems ]
 ]
 
 { #category : #initialization }
@@ -155,11 +155,11 @@ MiDuplicationBrowser >> initializeListReplicatedFragments [
 	lstReplicatedFragments display: [ :replicatedFragment | 
 		self formatReplicatedFragment: replicatedFragment ].
 
-	lstReplicatedFragments children: [ :replicatedFragment | model childrenFragments: replicatedFragment ].
+	lstReplicatedFragments children: [ :replicatedFragment | specModel childrenFragments: replicatedFragment ].
 
 	lstReplicatedFragments whenSelectionChangedDo: [ :selection | 
 		self resetReplicas.
-		model selectedFragments: selection selectedItems ]
+		specModel selectedFragments: selection selectedItems ]
 ]
 
 { #category : #initialization }
@@ -174,7 +174,7 @@ MiDuplicationBrowser >> initializePresenters [
 		          label: 'Run';
 		          action: [ 
 			          self resetReplicas.
-			          model findReplicas ].
+			          specModel findReplicas ].
 
 	panCodes := self newNotebook.
 	
@@ -205,7 +205,7 @@ MiDuplicationBrowser >> lstReplicatedFragments [
 { #category : #accessing }
 MiDuplicationBrowser >> miSelectedItem [
 
-	^ model selectedEntities
+	^ specModel selectedEntities
 ]
 
 { #category : #utilities }
@@ -241,7 +241,7 @@ MiDuplicationBrowser >> selectFragments: selectedFragments [
 { #category : #actions }
 MiDuplicationBrowser >> settings [
 
-	^model openSettings
+	^specModel openSettings
 ]
 
 { #category : #api }
@@ -280,15 +280,15 @@ MiDuplicationBrowser >> updateStatusBar [
 	^String streamContents: [ :stream |
 		stream
 			<< 'Searched entities: ' ;
-			<< model numberOfEntities asString ;
+			<< specModel numberOfEntities asString ;
 			<< ' | Number of clones: ' ;
-			<< model numberOfFragments asString ;
+			<< specModel numberOfFragments asString ;
 			<< ' | Entities with clones: ' ;
-			<< model numberOfEntitiesInReplicas asString ;
+			<< specModel numberOfEntitiesInReplicas asString ;
 			<< ' | Selected entities: ' ;
-			<< model numberOfSelectedEntities asString ;
+			<< specModel numberOfSelectedEntities asString ;
 			<< ' | Selected clones: ' ;
-			<< model numberOfSelectedFragments asString.
+			<< specModel numberOfSelectedFragments asString.
 		statusBar label: stream contents
 	]
 ]

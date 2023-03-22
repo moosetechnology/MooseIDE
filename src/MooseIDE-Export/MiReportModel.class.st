@@ -19,7 +19,7 @@ See export protocole (instance side) for more export methods.
 "
 Class {
 	#name : #MiReportModel,
-	#superclass : #Object,
+	#superclass : #MiAbstractModel,
 	#instVars : [
 		'mooseModel',
 		'textEditedSource',
@@ -76,6 +76,11 @@ MiReportModel >> defaultBindingsWithStream: aStream [
 		  ('mooseModel' -> mooseModel).
 		  ('stream' -> aStream).
 		  ('printer' -> nil) }
+]
+
+{ #category : #accessing }
+MiReportModel >> entities [
+	^mooseModel 
 ]
 
 { #category : #actions }

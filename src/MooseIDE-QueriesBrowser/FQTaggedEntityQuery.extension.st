@@ -1,12 +1,12 @@
 Extension { #name : #FQTaggedEntityQuery }
 
 { #category : #'*MooseIDE-QueriesBrowser' }
-FQTaggedEntityQuery classSide >> isAvailableForQueriesSize: numberOfQueriesInPresenter [
+FQTaggedEntityQuery class >> isAvailableForQueriesSize: numberOfQueriesInPresenter [
 
 	^ true
 ]
 
 { #category : #'*MooseIDE-QueriesBrowser' }
-FQTaggedEntityQuery classSide >> miPresenterClass [
+FQTaggedEntityQuery class >> miPresenterClass [
 	^ MiTaggedEntityQueryPresenter
 ]

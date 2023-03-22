@@ -111,7 +111,13 @@ MiModelRootBrowser >> canFollowEntity: anObject [
 { #category : #testing }
 MiModelRootBrowser >> canPropagate [
 
-	^model canPropagate
+	^specModel canPropagate
+]
+
+{ #category : #testing }
+MiModelRootBrowser >> canTagEntities [
+	"manipulates models, not entities"
+	^false
 ]
 
 { #category : #actions }
@@ -155,14 +161,14 @@ MiModelRootBrowser >> importFromFileUI [
 MiModelRootBrowser >> initializeList [
 
 	modelFilteringList := self newFilteringList.
-	self listOfMooseModels: model mooseModelsList.
+	self listOfMooseModels: specModel mooseModelsList.
 
 	modelFilteringList display: [ :mooseModel | mooseModel name ].
 
 	modelFilteringList listPresenter contextMenu: [ 
 		(self class buildModelCommandsGroupWith: self) asMenuPresenter ].
 	blockWhenSelection := [ :selected | 
-	                      model selected: selected selectedItem ].
+	                      specModel selected: selected selectedItem ].
 	modelFilteringList whenSelectionChangedDo: blockWhenSelection
 ]
 
@@ -191,14 +197,14 @@ MiModelRootBrowser >> listOfMooseModels: aList [
 { #category : #accessing }
 MiModelRootBrowser >> miSelectedItem [
 
-	^model selected
+	^specModel selected
 ]
 
 { #category : #accessing }
 MiModelRootBrowser >> miSelectedModel [
 	"similar to #miSelectedItem but ignore the setting #filterStubsSetting"
 
-	^model selectedModel
+	^specModel selectedModel
 ]
 
 { #category : #'accessing - tests' }
@@ -219,22 +225,22 @@ MiModelRootBrowser >> refreshToolbarButton [
 { #category : #actions }
 MiModelRootBrowser >> settings [
 
-	^model openSettings
+	^specModel openSettings
 ]
 
 { #category : #'accessing - tests' }
 MiModelRootBrowser >> settingsItem [
-	^ model settings
+	^ specModel settings
 ]
 
 { #category : #updating }
 MiModelRootBrowser >> updateForNewModel: aModel [
-	model updateForNewModel: aModel
+	specModel updateForNewModel: aModel
 
 ]
 
 { #category : #updating }
 MiModelRootBrowser >> updateList [
 
-	model updateMooseModelsList.
+	specModel updateMooseModelsList.
 ]

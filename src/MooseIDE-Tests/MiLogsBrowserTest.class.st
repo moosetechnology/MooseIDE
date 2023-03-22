@@ -38,6 +38,11 @@ MiLogsBrowserTest >> testActivateActionButtons [
 ]
 
 { #category : #tests }
+MiLogsBrowserTest >> testCanTagEntities [
+	self deny: browser canTagEntities 
+]
+
+{ #category : #tests }
 MiLogsBrowserTest >> testMiSelectedItem [
 
 	self assert: browser miSelectedItem isNil.

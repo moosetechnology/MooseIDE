@@ -7,9 +7,8 @@ I also keep the displayedEntity and the selectedEntity (in the source code) if a
 "
 Class {
 	#name : #MiSourceTextBrowserModel,
-	#superclass : #Object,
+	#superclass : #MiAbstractModel,
 	#instVars : [
-		'browser',
 		'displayedEntity',
 		'displayedText',
 		'selectedEntity',
@@ -90,6 +89,13 @@ MiSourceTextBrowserModel >> displayedEntity: anObject [
 { #category : #accessing }
 MiSourceTextBrowserModel >> displayedText [
 	^displayedText
+]
+
+{ #category : #accessing }
+MiSourceTextBrowserModel >> entities [
+	^displayedEntity
+		ifNil: [ #() ]
+		ifNotNil: [ { displayedEntity } ]
 ]
 
 { #category : #formatting }

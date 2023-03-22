@@ -65,6 +65,12 @@ MiLogsBrowser >> canPropagate [
 			  self miSelectedItem isMooseModel ] ]
 ]
 
+{ #category : #testing }
+MiLogsBrowser >> canTagEntities [
+
+	^false
+]
+
 { #category : #buses }
 MiLogsBrowser >> followBus: aBus [
 

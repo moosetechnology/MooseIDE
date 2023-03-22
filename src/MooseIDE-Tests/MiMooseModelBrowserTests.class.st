@@ -56,6 +56,11 @@ MiMooseModelBrowserTests >> testActivateActionButtons [
 	browser actionButtons do: [ :button | self assert: button isEnabled ]
 ]
 
+{ #category : #'tests - tags' }
+MiMooseModelBrowserTests >> testCanTagEntities [
+	self deny: browser canTagEntities 
+]
+
 { #category : #tests }
 MiMooseModelBrowserTests >> testMiSelectedItem [
 

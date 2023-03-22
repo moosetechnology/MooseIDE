@@ -71,6 +71,12 @@ MiPropertyBrowser >> canFollowEntity: anObject [
 	^ anObject isMooseObject
 ]
 
+{ #category : #testing }
+MiPropertyBrowser >> canTagEntities [ 
+	self flag: 'Remove browser ? (issue #810)'.
+	^false
+]
+
 { #category : #actions }
 MiPropertyBrowser >> followEntity: anEntity [
 

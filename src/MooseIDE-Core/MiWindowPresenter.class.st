@@ -25,11 +25,13 @@ MiWindowPresenter class >> buildCommandsGroupWith: aPresenter forRoot: rootComma
 
 	rootCommandGroup
 		register:
-			(MiReceivingModeCommand asCommandGroupForSpecContext: aPresenter);
-		register: (MiEditBusCommand forSpecContext: aPresenter);
+			(MiReceivingModeCommand asCommandGroupForSpecContext: aPresenter) ;
+		register: (MiEditBusCommand forSpecContext: aPresenter) ;
+		register: (MiTagCommand forSpecContext: aPresenter) ;
 		register:
-			(MiHelpCommand forSpecContext: aPresenter) beDisplayedOnRightSide;
+			(MiHelpCommand forSpecContext: aPresenter) beDisplayedOnRightSide ;
 		register: (self actionsCommandGroupFor: aPresenter).
+
 	aPresenter hasSettings ifTrue: [ 
 		rootCommandGroup register:
 			(MiSettingsCommand forSpecContext: aPresenter)

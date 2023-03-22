@@ -1,7 +1,9 @@
 "
 I create a menu for each element and the main canvas in MiCoUsageMapBuilder.
 Mark means, put a tag into an attribute or method.
-My resposability is automatize the marking process. Check automaticColor, is related to MiCoMarkStrategy
+My resposability is automatize the marking process for methods.
+Check automaticColor
+Related to MiCoMarkStrategy
 "
 Class {
 	#name : #MiCoMarkManager,

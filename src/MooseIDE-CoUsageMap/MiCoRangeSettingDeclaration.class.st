@@ -1,10 +1,10 @@
 "
-utility class to create a new widged made in roassal. This widget is used in SystemSettings
+utility class to create a new widged made in Roassal. This widget is used in SystemSettings
 "
 Class {
 	#name : #MiCoRangeSettingDeclaration,
 	#superclass : #RangeSettingDeclaration,
-	#category : #'MooseIDE-CoUsageMap-Sliders'
+	#category : #'MooseIDE-CoUsageMap-Settings'
 }
 
 { #category : #'user interface' }
