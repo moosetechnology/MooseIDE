@@ -1,16 +1,18 @@
 "
-common class for sliders
+Abstract class for slider presenters
+
+TODO: Make generic for whole MooseIDE ?
 "
 Class {
 	#name : #MiCoAbstractSliderPresenter,
 	#superclass : #SpPresenter,
 	#instVars : [
-		'slider',
 		'sliderBuilder',
 		'get',
 		'set',
 		'model',
-		'flag'
+		'flag',
+		'slider'
 	],
 	#category : #'MooseIDE-CoUsageMap-Sliders'
 }

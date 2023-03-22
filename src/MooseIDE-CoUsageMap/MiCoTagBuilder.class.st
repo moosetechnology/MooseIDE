@@ -1,5 +1,5 @@
 "
-This builder from roassal creates shapes that represent tags
+This builder from roassal creates shapes that represent tags in the legend
 "
 Class {
 	#name : #MiCoTagBuilder,

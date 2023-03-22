@@ -1,5 +1,5 @@
 "
-Dual slider presenter for co usage map
+Dual slider presenter (for Spec) for MiCoDualSlider
 "
 Class {
 	#name : #MiCoDualSliderPresenter,

@@ -7,27 +7,26 @@ Inner boxes are content, or representation of attributes from a class used from 
 
 Note: an attribute can be used by different methods.
 
-Width of each attbute is the number of uses of that attribute in that container or method.
+Width of each attbute is the total number of uses of that attribute in all containers (or methods).
 
-Check MiCoUsageMapExamples or tests to get more info
 "
 Class {
 	#name : #MiCoUsageMapBuilder,
 	#superclass : #RSAbstractContainerBuilder,
 	#instVars : [
 		'application',
-		'visualization',
-		'methods',
-		'miMethods',
-		'miAttributes',
-		'markManager',
-		'legendTagBuilder',
-		'innerBox',
 		'containerBox',
-		'methodAttributeCounter',
 		'highlightManager',
-		'widthScale',
-		'settings'
+		'innerBox',
+		'legendTagBuilder',
+		'markManager',
+		'methodAttributeCounter',
+		'methods',
+		'miAttributes',
+		'miMethods',
+		'settings',
+		'visualization',
+		'widthScale'
 	],
 	#category : #'MooseIDE-CoUsageMap-Roassal3'
 }
@@ -568,6 +567,7 @@ MiCoUsageMapBuilder >> updateInnerBoxSize [
 
 { #category : #update }
 MiCoUsageMapBuilder >> updateLegend [
+
 	visualization ifNil: [ ^ self ].
 	visualization updateLegend
 ]
@@ -601,10 +601,12 @@ MiCoUsageMapBuilder >> updateShapeLayout [
 
 { #category : #accessing }
 MiCoUsageMapBuilder >> visualization [
+
 	^ visualization
 ]
 
 { #category : #accessing }
 MiCoUsageMapBuilder >> visualization: aMiCoUsageMapVisualization [
+
 	visualization := aMiCoUsageMapVisualization
 ]
