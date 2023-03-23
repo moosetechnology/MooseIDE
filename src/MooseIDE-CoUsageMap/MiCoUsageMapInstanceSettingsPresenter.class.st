@@ -7,8 +7,8 @@ Class {
 	#instVars : [
 		'generalSettings',
 		'blockSettings',
-		'coUsageMap',
-		'properties'
+		'properties',
+		'mapVisualization'
 	],
 	#category : #'MooseIDE-CoUsageMap-Settings'
 }
@@ -63,7 +63,7 @@ MiCoUsageMapInstanceSettingsPresenter >> innerBoxHeight [
 { #category : #properties }
 MiCoUsageMapInstanceSettingsPresenter >> innerBoxHeight: anObject [
 	properties at: #innerBoxHeight put: anObject.
-	coUsageMap updateInnerBoxSize
+	mapVisualization updateInnerBoxSize
 ]
 
 { #category : #properties }
@@ -76,7 +76,7 @@ MiCoUsageMapInstanceSettingsPresenter >> innerBoxRange [
 { #category : #properties }
 MiCoUsageMapInstanceSettingsPresenter >> innerBoxRange: anInterval [
 	properties at: #innerBoxRange put: anInterval.
-	coUsageMap updateInnerBoxSize
+	mapVisualization updateInnerBoxSize
 	
 ]
 
@@ -90,7 +90,7 @@ MiCoUsageMapInstanceSettingsPresenter >> innerBoxScaleType [
 { #category : #properties }
 MiCoUsageMapInstanceSettingsPresenter >> innerBoxScaleType: aString [
 	properties at: #innerBoxScaleType put: aString.
-	coUsageMap updateInnerBoxSize
+	mapVisualization updateInnerBoxSize
 	
 ]
 
@@ -114,12 +114,12 @@ MiCoUsageMapInstanceSettingsPresenter >> innerBoxSortBlockText: aString [
 
 { #category : #accessing }
 MiCoUsageMapInstanceSettingsPresenter >> mapVisualization [
-	^ coUsageMap
+	^ mapVisualization
 ]
 
 { #category : #accessing }
 MiCoUsageMapInstanceSettingsPresenter >> mapVisualization: aMiCoUsageMapVisualization [ 
-	coUsageMap := aMiCoUsageMapVisualization
+	mapVisualization := aMiCoUsageMapVisualization
 ]
 
 { #category : #properties }
@@ -170,5 +170,5 @@ MiCoUsageMapInstanceSettingsPresenter >> threshold75PercentGroup: anObject [
 	properties 
 		at: #threshold75PercentGroup 
 		put: anObject.
-	coUsageMap threshold75: anObject.
+	mapVisualization threshold75: anObject.
 ]
