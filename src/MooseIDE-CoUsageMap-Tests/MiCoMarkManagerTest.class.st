@@ -15,6 +15,7 @@ MiCoMarkManagerTest >> setUp [
 	visualization := Mock named: 'visualization'.
 	visualization stub specModel willReturn: visualization.
 	visualization stub tagList willReturn: OrderedCollection new.
+	visualization stub settings willReturn: MiCoUsageMapSettings.
 
 	builder := MiCoUsageMapBuilder new.
 	builder visualization: visualization.

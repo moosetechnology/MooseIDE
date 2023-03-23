@@ -13,6 +13,7 @@ MiCoTagVisualizationTest >> setUp [
 	super setUp.
 	visualization := Mock named: 'visualization'.
 	visualization stub specModel willReturn: visualization.
+	visualization stub settings willReturn: MiCoUsageMapSettings.
 
 	builder := MiCoUsageMapBuilder new.
 	builder visualization: visualization.

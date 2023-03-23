@@ -195,6 +195,9 @@ MiCoUsageMapBuilder >> initializeMethods [
 { #category : #initialization }
 MiCoUsageMapBuilder >> initializeReferences [
 	miAttributes := OrderedCollection new.
+
+	self methodAttributeCounter settings: self settings.
+	
 	self miMethods do: [ :met | 
 		| bag |
 		bag := Bag withAll: (self methodAttributeCounter allAttributesFor: met).
@@ -300,8 +303,7 @@ MiCoUsageMapBuilder >> methodAttributeCounter [
 
 { #category : #accessing }
 MiCoUsageMapBuilder >> methodAttributeCounter: aMiCoMethodAttributeCounter [
-	methodAttributeCounter := aMiCoMethodAttributeCounter.
-	methodAttributeCounter settings: self settings.
+	methodAttributeCounter := aMiCoMethodAttributeCounter
 ]
 
 { #category : #hooks }
@@ -391,19 +393,6 @@ MiCoUsageMapBuilder >> newMethodFor: anObject [
 		yourself
 ]
 
-{ #category : #public }
-MiCoUsageMapBuilder >> openSettingsBrowser [
-	| browser window |
-	browser := SettingBrowser new
-		changePackageSet: (RPackage organizer 
-		packageNamed: MiCoUsageMapSettings package name) asOrderedCollection;
-	yourself.
-	window := browser open.
-	window position: (self currentWorld extent - window extent) // 2.
-	browser expandAll.
-	^ window
-]
-
 { #category : #dependencies }
 MiCoUsageMapBuilder >> release [
 	super release.
@@ -473,7 +462,7 @@ MiCoUsageMapBuilder >> resizeLabelIfNecessary: label [
 
 { #category : #accessing }
 MiCoUsageMapBuilder >> settings [
-	^MiCoUsageMapSettings
+	^visualization settings
 ]
 
 { #category : #testing }

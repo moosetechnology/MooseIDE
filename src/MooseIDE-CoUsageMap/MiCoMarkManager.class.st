@@ -87,8 +87,8 @@ MiCoMarkManager >> createGlobalMenuOn: menu [
 	menu addLine.
 	(menu
 		add: 'Settings'
-			target: mapBuilder
-			selector: #openSettingsBrowser
+			target: mapBuilder visualization
+			selector: #openSettings
 			argumentList: #())
 		icon: (self iconNamed: #configuration)
 	

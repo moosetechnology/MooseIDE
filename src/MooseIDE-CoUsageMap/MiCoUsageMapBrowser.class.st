@@ -26,10 +26,7 @@ Class {
 	#name : #MiCoUsageMapBrowser,
 	#superclass : #MiAbstractBrowser,
 	#instVars : [
-		'collectionModel',
-		'settings',
-		'mapVisualization',
-		'settingsWindow'
+		'mapVisualization'
 	],
 	#category : #'MooseIDE-CoUsageMap-Browser'
 }
@@ -105,7 +102,7 @@ MiCoUsageMapBrowser >> closeSettings [
 	"to close the settings window when testing
 	Should not be used otherwise"
 
-	settingsWindow ifNotNil: [ settingsWindow close ]
+	specModel closeSettings 
 ]
 
 { #category : #accessing }
@@ -170,21 +167,7 @@ MiCoUsageMapBrowser >> release [
 
 { #category : #actions }
 MiCoUsageMapBrowser >> settings [ 
-	"For now, we handle settings here:
-	 - create the window 
-	 - subscribe to be informed when any window is closed closed
-	 - if this is the setting window that is closed
-	    - unsubscribe to ALL announcements
-	    - update the visualization"
-
-	settingsWindow := mapVisualization openSettingsBrowser.
-	self currentWorld announcer when: WindowClosed do: [ :annoucement |
-		(annoucement window = settingsWindow)
-		ifTrue: [
-			self currentWorld announcer unsubscribe: self.
-			self update
-		]
-	]
+	specModel openSettings
 ]
 
 { #category : #updating }

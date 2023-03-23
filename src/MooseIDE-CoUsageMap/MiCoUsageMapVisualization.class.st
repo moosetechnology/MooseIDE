@@ -60,8 +60,9 @@ MiCoUsageMapVisualization >> itemsFor: aClass [
 ]
 
 { #category : #actions }
-MiCoUsageMapVisualization >> openSettingsBrowser [
-	^mapBuilder openSettingsBrowser
+MiCoUsageMapVisualization >> openSettings [
+	"called from the visualization's globalMenu"
+	specModel openSettings
 ]
 
 { #category : #brokerage }
@@ -109,6 +110,11 @@ MiCoUsageMapVisualization >> run [
 		methods: model;
 		application: self owner application ;
 		build.
+]
+
+{ #category : #accessing }
+MiCoUsageMapVisualization >> settings [
+	^self specModel settings
 ]
 
 { #category : #accessing }
