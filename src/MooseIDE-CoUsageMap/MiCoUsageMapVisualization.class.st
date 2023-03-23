@@ -113,9 +113,8 @@ MiCoUsageMapVisualization >> run [
 		container: self canvas;
 		methods: model;
 		settings: self settings;
-		application: self owner application.
-	self updateLegend.
-	mapBuilder build.
+		application: self owner application ;
+		build.
 ]
 
 { #category : #accessing }
@@ -168,15 +167,6 @@ MiCoUsageMapVisualization >> updateChildren [
 { #category : #update }
 MiCoUsageMapVisualization >> updateInnerBoxSize [
 	mapBuilder updateInnerBoxSize
-]
-
-{ #category : #brokerage }
-MiCoUsageMapVisualization >> updateLegend [
-	| legendTag |
-	legendTag := mapBuilder legendTagBuilder.
-	legendTag removeOldLegend.
-	legendTag build.
-	mapBuilder updateShapeColors.
 ]
 
 { #category : #update }

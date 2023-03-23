@@ -580,7 +580,10 @@ MiCoUsageMapBuilder >> updateInnerBoxSize [
 MiCoUsageMapBuilder >> updateLegend [
 
 	visualization ifNil: [ ^ self ].
-	visualization updateLegend
+
+	legendTagBuilder removeOldLegend.
+	legendTagBuilder build.
+	self updateShapeColors.
 ]
 
 { #category : #update }
