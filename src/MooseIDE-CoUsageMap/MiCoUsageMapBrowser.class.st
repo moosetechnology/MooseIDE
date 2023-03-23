@@ -28,7 +28,8 @@ Class {
 	#instVars : [
 		'collectionModel',
 		'settings',
-		'mapVisualization'
+		'mapVisualization',
+		'settingsWindow'
 	],
 	#category : #'MooseIDE-CoUsageMap-Browser'
 }
@@ -36,10 +37,8 @@ Class {
 { #category : #layout }
 MiCoUsageMapBrowser class >> defaultLayout [
 
-	^ SpPanedLayout newLeftToRight
-		  first: #settings;
-		  second: #mapVisualization;
-		  positionOfSlider: 350;
+	^ SpBoxLayout newLeftToRight
+		  add: #mapVisualization
 		  yourself
 ]
 
@@ -91,8 +90,9 @@ MiCoUsageMapBrowser >> browserClosed [
 	super browserClosed.
 	application unregisterConsumer: mapVisualization.
 	application unregisterProducer: mapVisualization.
-	settings mapVisualization: nil.
-	mapVisualization settings: nil.
+	"settings mapVisualization: nil.
+	mapVisualization settings: nil."
+
 ]
 
 { #category : #testing }
@@ -105,7 +105,7 @@ MiCoUsageMapBrowser >> closeSettings [
 	"to close the settings window when testing
 	Should not be used otherwise"
 
-	mapVisualization closeSettingsBrowser
+	settingsWindow ifNotNil: [ settingsWindow close ]
 ]
 
 { #category : #accessing }
@@ -120,8 +120,8 @@ MiCoUsageMapBrowser >> collectionModel: anObject [
 
 { #category : #initialization }
 MiCoUsageMapBrowser >> connectPresenters [
-	settings mapVisualization: mapVisualization.
-	mapVisualization settings: settings.
+	"settings mapVisualization: mapVisualization.
+	mapVisualization settings: settings."
 ]
 
 { #category : #accessing }
@@ -144,8 +144,8 @@ MiCoUsageMapBrowser >> initializePresenters [
 	mapVisualization := self instantiate: MiCoUsageMapVisualization.
 	mapVisualization specModel: specModel.
 
-	self flag: 'this should be in MiCoUsageMapModel'.
-	settings := self instantiate: MiCoUsageMapInstanceSettingsPresenter.
+	"self flag: 'this should be in MiCoUsageMapModel'.
+	settings := self instantiate: MiCoUsageMapInstanceSettingsPresenter."
 	
 	self flag: 'this should be in MiCoUsageMapVisualization'.
 	application registerConsumer: mapVisualization for: FamixTag.
@@ -170,7 +170,21 @@ MiCoUsageMapBrowser >> release [
 
 { #category : #actions }
 MiCoUsageMapBrowser >> settings [ 
-	^ mapVisualization openSettingsBrowser
+	"For now, we handle settings here:
+	 - create the window 
+	 - subscribe to be informed when any window is closed closed
+	 - if this is the setting window that is closed
+	    - unsubscribe to ALL announcements
+	    - update the visualization"
+
+	settingsWindow := mapVisualization openSettingsBrowser.
+	self currentWorld announcer when: WindowClosed do: [ :annoucement |
+		(annoucement window = settingsWindow)
+		ifTrue: [
+			self currentWorld announcer unsubscribe: self.
+			self update
+		]
+	]
 ]
 
 { #category : #updating }

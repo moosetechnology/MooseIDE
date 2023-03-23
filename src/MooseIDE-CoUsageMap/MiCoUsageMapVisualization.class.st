@@ -6,16 +6,10 @@ Class {
 	#superclass : #MiAbstractVisualization,
 	#instVars : [
 		'specModel',
-		'settings',
 		'mapBuilder'
 	],
 	#category : #'MooseIDE-CoUsageMap-Browser'
 }
-
-{ #category : #'private - for tests' }
-MiCoUsageMapVisualization >> closeSettingsBrowser [
-	settings close
-]
 
 { #category : #brokerage }
 MiCoUsageMapVisualization >> consume: anItem [
@@ -67,7 +61,7 @@ MiCoUsageMapVisualization >> itemsFor: aClass [
 
 { #category : #actions }
 MiCoUsageMapVisualization >> openSettingsBrowser [
-	settings := mapBuilder openSettingsBrowser
+	^mapBuilder openSettingsBrowser
 ]
 
 { #category : #brokerage }
@@ -109,22 +103,12 @@ MiCoUsageMapVisualization >> run [
 	| model |
 	super run.
 	model := self owner collectionModel.
+	model ifNil: [ ^self ].
 	mapBuilder 
 		container: self canvas;
 		methods: model;
-		settings: self settings;
 		application: self owner application ;
 		build.
-]
-
-{ #category : #accessing }
-MiCoUsageMapVisualization >> settings [
-	^ settings
-]
-
-{ #category : #accessing }
-MiCoUsageMapVisualization >> settings: anObject [
-	settings := anObject
 ]
 
 { #category : #accessing }

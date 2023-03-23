@@ -23,7 +23,6 @@ Class {
 		'methods',
 		'miAttributes',
 		'miMethods',
-		'settings',
 		'widthScale',
 		'application',
 		'visualization'
@@ -183,7 +182,6 @@ MiCoUsageMapBuilder >> initialize [
 		legendTagBuilder: self defaultTagLegendBuilder;
 		markManager: self defaultMarkManager;
 		highlightManager: self defaultHighlightManager;
-		settings: self defaultSettings;		
 		initializeShapes
 ]
 
@@ -475,13 +473,7 @@ MiCoUsageMapBuilder >> resizeLabelIfNecessary: label [
 
 { #category : #accessing }
 MiCoUsageMapBuilder >> settings [
-	^ settings "ifNil: [ MiCoUsageMapSettings ]"
-]
-
-{ #category : #accessing }
-MiCoUsageMapBuilder >> settings: anObject [
-	settings := anObject.
-	methodAttributeCounter settings: self settings.
+	^MiCoUsageMapSettings
 ]
 
 { #category : #testing }

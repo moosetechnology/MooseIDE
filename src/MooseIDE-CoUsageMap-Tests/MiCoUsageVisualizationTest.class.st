@@ -131,7 +131,7 @@ MiCoUsageVisualizationTest >> test06ExtentChanged [
 	builder legendTagBuilder tagsWithPalette: { 'Frame'. 'Connection' }.
 	builder buildForTest.
 	self assert: builder canvas extent x equals: 500.
-	self assert: (builder canvas encompassingRectangle width between: 400 and: 500).
+	self assert: (builder canvas encompassingRectangle width between: 300 and: 400).
 
 	builder canvas extent: 700 asPoint.
 	self assert: builder canvas extent x equals: 700.
@@ -139,5 +139,5 @@ MiCoUsageVisualizationTest >> test06ExtentChanged [
 
 	builder canvas camera scale: 0.5.
 	builder canvas extent: 500 asPoint.
-	self assert: (builder canvas encompassingRectangle width between: 600 and: 700).
+	self assert: (builder canvas encompassingRectangle width between: 700 and: 800).
 ]
