@@ -175,7 +175,6 @@ MiCoUsageMapVisualization >> updateLegend [
 	| legendTag |
 	legendTag := mapBuilder legendTagBuilder.
 	legendTag removeOldLegend.
-	self specModel tagList do: [ :tag | legendTag addTag: tag asMiCoTag ].
 	legendTag build.
 	mapBuilder updateShapeColors.
 ]

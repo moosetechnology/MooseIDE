@@ -13,7 +13,6 @@ MiCoTagVisualizationTest >> setUp [
 	super setUp.
 	visualization := Mock named: 'visualization'.
 	visualization stub specModel willReturn: visualization.
-	visualization stub tagList willReturn: OrderedCollection new.
 
 	builder := MiCoUsageMapBuilder new.
 	builder visualization: visualization.
@@ -22,25 +21,33 @@ MiCoTagVisualizationTest >> setUp [
 ]
 
 { #category : #tests }
-MiCoTagVisualizationTest >> test01Legend [
-
-	| legendTag|
+MiCoTagVisualizationTest >> testEmptyLegend [
+	"Empty legend has one entry (at bottom) describing the size of the inner box"
 	builder buildForTest.
-	legendTag := builder legendTagBuilder.
-	self assert: legendTag shapes size equals: 1.
 
-	legendTag addTag: FamixTag new.
-	legendTag addTag: FamixTag new.
-	builder buildForTest.
-	self assert: legendTag shapes size equals: 3
+	self assert: builder legendTagBuilder shapes size equals: 1
+]
+
+{ #category : #tests }
+MiCoTagVisualizationTest >> testNotEmptyLegend [
+
+	"Empty legend has one entry for each tag + one (at bottom) describing the size of the inner box"
+
+	builder visualization stub tagList willReturn: { 
+			FamixTag new.
+			FamixTag new.
+			FamixTag new }.
+
+	builder buildForTest ; updateLegend.
+
+	self assert: builder legendTagBuilder shapes size equals: 4
 ]
 
 { #category : #tests }
 MiCoTagVisualizationTest >> testToggleTag [
 	| tagShape |
-	builder legendTagBuilder addTag: FamixTag new.
+	builder visualization stub tagList willReturn: { FamixTag new }.
 	builder buildForTest.
-	self assert: builder legendTagBuilder shapes size equals: 2.
 
 	tagShape := builder legendTagBuilder shapes first.
 	self assert: tagShape isComposite.
