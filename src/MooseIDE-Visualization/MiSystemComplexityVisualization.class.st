@@ -1,23 +1,23 @@
 Class {
-	#name : #MiSystemComplexity,
+	#name : #MiSystemComplexityVisualization,
 	#superclass : #MiAbstractVisualization,
 	#category : #'MooseIDE-Visualization-System Complexity'
 }
 
 { #category : #highlighting }
-MiSystemComplexity >> highlightShapes [
+MiSystemComplexityVisualization >> highlightShapes [
 	
 
 ]
 
 { #category : #accessing }
-MiSystemComplexity >> model [
+MiSystemComplexityVisualization >> model [
 
 	^ self owner model
 ]
 
 { #category : #running }
-MiSystemComplexity >> run [
+MiSystemComplexityVisualization >> run [
 
 	super run.
 	self script: [ :canvas | 

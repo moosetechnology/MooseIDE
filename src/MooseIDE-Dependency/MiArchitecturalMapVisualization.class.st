@@ -5,7 +5,7 @@ Handle interactions.
 
 "
 Class {
-	#name : #MiArchitecturalMap,
+	#name : #MiArchitecturalMapVisualization,
 	#superclass : #MiAbstractVisualization,
 	#instVars : [
 		'builder'
@@ -14,19 +14,19 @@ Class {
 }
 
 { #category : #accessing }
-MiArchitecturalMap >> builder [
+MiArchitecturalMapVisualization >> builder [
 
 	^ builder
 ]
 
 { #category : #highlighting }
-MiArchitecturalMap >> highlightShapes [
+MiArchitecturalMapVisualization >> highlightShapes [
 	
 
 ]
 
 { #category : #running }
-MiArchitecturalMap >> run [
+MiArchitecturalMapVisualization >> run [
 
 	super run.
 	builder := MiArchitecturalMapBuilder new
@@ -39,7 +39,7 @@ MiArchitecturalMap >> run [
 ]
 
 { #category : #searching }
-MiArchitecturalMap >> shapeFromEntity: anEntity [
+MiArchitecturalMapVisualization >> shapeFromEntity: anEntity [
 	"search for the RSShape in the canvas that represent anEntity returns nil otherwise
 	 each RSShape contains a HNode which contains an entity"
 
@@ -49,7 +49,7 @@ MiArchitecturalMap >> shapeFromEntity: anEntity [
 ]
 
 { #category : #updating }
-MiArchitecturalMap >> update [
+MiArchitecturalMapVisualization >> update [
 
 	builder ifNil: [ self run ] ifNotNil: [ builder build ]
 ]

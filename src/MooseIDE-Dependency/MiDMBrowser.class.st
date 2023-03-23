@@ -31,7 +31,7 @@ Class {
 { #category : #accessing }
 MiDMBrowser class >> mapClass [
 
-	^ MiDM
+	^ MiDMVisualization
 ]
 
 { #category : #'world menu' }

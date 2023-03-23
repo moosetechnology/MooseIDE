@@ -117,7 +117,7 @@ MiTreeMapVisualisationBrowser >> highlightEntity: anEntity [
 { #category : #initialization }
 MiTreeMapVisualisationBrowser >> initializePresenters [
 
-	diagram := self instantiate: MiTreeMap
+	diagram := self instantiate: MiTreeMapVisualization
 ]
 
 { #category : #accessing }

@@ -1,5 +1,5 @@
 Class {
-	#name : #MiTreeMap,
+	#name : #MiTreeMapVisualization,
 	#superclass : #MiAbstractVisualization,
 	#instVars : [
 		'base',
@@ -9,7 +9,7 @@ Class {
 }
 
 { #category : #helpers }
-MiTreeMap >> borderFor: anEntity [
+MiTreeMapVisualization >> borderFor: anEntity [
 	| children |
 	children := self childrenForEntity: anEntity.
 	children ifEmpty: [ ^ nil ].
@@ -21,7 +21,7 @@ MiTreeMap >> borderFor: anEntity [
 ]
 
 { #category : #helpers }
-MiTreeMap >> childrenForEntity: anEntity [
+MiTreeMapVisualization >> childrenForEntity: anEntity [
 
 	"should cache #colorFor: result as it might involve intensive computing"
 
@@ -32,25 +32,25 @@ MiTreeMap >> childrenForEntity: anEntity [
 ]
 
 { #category : #helpers }
-MiTreeMap >> childrenOf: shape in: collection [
+MiTreeMapVisualization >> childrenOf: shape in: collection [
 	collection add: shape.
 	shape shapes do: [ :child | self childrenOf: child in: collection ].
 	^ collection
 ]
 
 { #category : #running }
-MiTreeMap >> close: shape [
+MiTreeMapVisualization >> close: shape [
 	shape children copy do: #remove.
 	self update.
 ]
 
 { #category : #helpers }
-MiTreeMap >> colorFor: aNode [
+MiTreeMapVisualization >> colorFor: aNode [
 	^ (super colorFor: aNode) alpha: 0.4
 ]
 
 { #category : #helpers }
-MiTreeMap >> createPopupMorphFor: model [
+MiTreeMapVisualization >> createPopupMorphFor: model [
 	^ model asString asTextMorph
 		fontName: 'Bitmap DejaVu Sans' pointSize: 11;
 		backgroundColor: (Smalltalk ui theme backgroundColor alpha: 0.8);
@@ -61,7 +61,7 @@ MiTreeMap >> createPopupMorphFor: model [
 ]
 
 { #category : #highlighting }
-MiTreeMap >> highlightShapes [
+MiTreeMapVisualization >> highlightShapes [
 	self visibleShapes
 		do: [ :box | 
 			box color: (self colorFor: box model).
@@ -69,7 +69,7 @@ MiTreeMap >> highlightShapes [
 ]
 
 { #category : #initialization }
-MiTreeMap >> initialize [
+MiTreeMapVisualization >> initialize [
 
 	super initialize.
 	base := RSComposite new
@@ -90,7 +90,7 @@ MiTreeMap >> initialize [
 ]
 
 { #category : #helpers }
-MiTreeMap >> nodeFor: anEntity [
+MiTreeMapVisualization >> nodeFor: anEntity [
 	| com |
 	com := base copy.
 	com model: anEntity.
@@ -101,7 +101,7 @@ MiTreeMap >> nodeFor: anEntity [
 ]
 
 { #category : #running }
-MiTreeMap >> open: shape [
+MiTreeMapVisualization >> open: shape [
 	| children |
 	children := (self childrenForEntity: shape model) 
 						collect: [ :cls | self nodeFor: cls ].
@@ -110,7 +110,7 @@ MiTreeMap >> open: shape [
 ]
 
 { #category : #running }
-MiTreeMap >> processEvent: evt [
+MiTreeMapVisualization >> processEvent: evt [
 	| shape |
 	shape := evt shape.
 	shape children
@@ -119,7 +119,7 @@ MiTreeMap >> processEvent: evt [
 ]
 
 { #category : #updating }
-MiTreeMap >> relayout: shape [
+MiTreeMapVisualization >> relayout: shape [
 	shape propertyAt: #original put: shape encompassingRectangle.
 
 	shape shapes do: [ :s | self relayout: s ].
@@ -129,12 +129,12 @@ MiTreeMap >> relayout: shape [
 ]
 
 { #category : #helpers }
-MiTreeMap >> rootShapes [
+MiTreeMapVisualization >> rootShapes [
 	^ self canvas shapes ifNotEmpty: [ :shapes | shapes first shapes ]
 ]
 
 { #category : #running }
-MiTreeMap >> run [
+MiTreeMapVisualization >> run [
 
 	super run.
 	self unHighlight.
@@ -146,13 +146,13 @@ MiTreeMap >> run [
 ]
 
 { #category : #updating }
-MiTreeMap >> saveCurrent: shape [
+MiTreeMapVisualization >> saveCurrent: shape [
 	shape children do: [ :s | self saveCurrent: s].
 	shape propertyAt: #current put: shape encompassingRectangle.
 ]
 
 { #category : #updating }
-MiTreeMap >> scale: shape at: t [
+MiTreeMapVisualization >> scale: shape at: t [
 	| rect1 rect2 |
 	shape children do: [ :s | self scale: s at: t ].
 	rect1 := shape propertyAt: #original ifAbsent: [ ^ self].
@@ -165,7 +165,7 @@ MiTreeMap >> scale: shape at: t [
 ]
 
 { #category : #updating }
-MiTreeMap >> update [
+MiTreeMapVisualization >> update [
 	| first |
 	first := self canvas shapes first.
 	self relayout: first.
@@ -180,7 +180,7 @@ MiTreeMap >> update [
 ]
 
 { #category : #helpers }
-MiTreeMap >> visibleShapes [
+MiTreeMapVisualization >> visibleShapes [
 	^ self rootShapes
 		flatCollect: [ :shape | self childrenOf: shape in: OrderedCollection new ]
 ]

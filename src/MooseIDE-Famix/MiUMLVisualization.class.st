@@ -1,5 +1,5 @@
 Class {
-	#name : #MiUML,
+	#name : #MiUMLVisualization,
 	#superclass : #MiAbstractVisualization,
 	#instVars : [
 		'builder',
@@ -10,51 +10,51 @@ Class {
 }
 
 { #category : #highlighting }
-MiUML >> highlightShapes [
+MiUMLVisualization >> highlightShapes [
 
 	self canvas nodes do: [ :composite | 
 		composite shapes first color: (self colorFor: composite model) ]
 ]
 
 { #category : #initialization }
-MiUML >> initialize [
+MiUMLVisualization >> initialize [
 
 	super initialize.
 	rootEntities := #(  )
 ]
 
 { #category : #accessing }
-MiUML >> miUMLModelDescriptor [
+MiUMLVisualization >> miUMLModelDescriptor [
 
 	^ miUMLModelDescriptor ifNil: [ RSUMLClassDescriptor new forFamix ]
 ]
 
 { #category : #accessing }
-MiUML >> miUMLModelDescriptor: anObject [
+MiUMLVisualization >> miUMLModelDescriptor: anObject [
 
 	miUMLModelDescriptor := anObject
 ]
 
 { #category : #helpers }
-MiUML >> noHighlightColorFor: anEntity [
+MiUMLVisualization >> noHighlightColorFor: anEntity [
 
 	^ builder renderer boxColor
 ]
 
 { #category : #accessing }
-MiUML >> rootEntities [
+MiUMLVisualization >> rootEntities [
 
 	^ rootEntities
 ]
 
 { #category : #accessing }
-MiUML >> rootEntities: anObject [
+MiUMLVisualization >> rootEntities: anObject [
 
 	rootEntities := anObject
 ]
 
 { #category : #running }
-MiUML >> run [
+MiUMLVisualization >> run [
 
 	super run.
 	builder := RSUMLClassBuilder new.
