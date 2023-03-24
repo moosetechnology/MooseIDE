@@ -62,22 +62,41 @@ MiSaveQueriesCommandTest >> testPutChildrenInPlace [
 { #category : #tests }
 MiSaveQueriesCommandTest >> testTopologicalSortForQueries [
 
-	| query1 query2 complementQuery andQuery resultSize orQuery unSortedQueries
-		sortedQueries query3 complement2 |
+	| query1 query2 complementQuery andQuery resultSize orQuery unSortedQueries sortedQueries query3 complement2 |
 	query1 := FQBooleanQuery property: #isStub.
-	query2 := FQStringQuery property: #name comparator: #includesSubstring: valueToCompare: ''.
-	query3 := FQTypeQuery types: FamixStClass asOrderedCollection.
+	query2 := FQStringQuery
+		          property: #name
+		          comparator: #includesSubstring:
+		          valueToCompare: ''.
+	query3 := FQTypeQuery types: (OrderedCollection with: FamixStClass).
 	complementQuery := FQComplementQuery queryToNegate: query2.
 	complement2 := FQComplementQuery queryToNegate: query3.
-	resultSize := FQResultSizeQuery innerQuery: complementQuery comparator: #> valueToCompare: 9.
-	andQuery := FQIntersectionQuery subqueries: { query1. query2. resultSize }.
-	orQuery := FQUnionQuery subqueries: { andQuery. query1 . complement2}.
+	resultSize := FQResultSizeQuery
+		              innerQuery: complementQuery
+		              comparator: #>
+		              valueToCompare: 9.
+	andQuery := FQIntersectionQuery subqueries: {
+			            query1.
+			            query2.
+			            resultSize }.
+	orQuery := FQUnionQuery subqueries: {
+			           andQuery.
+			           query1.
+			           complement2 }.
 
-	unSortedQueries :=
-		{ orQuery. query1. query2. andQuery. resultSize. complementQuery. query3. complement2 } shuffle.
+	unSortedQueries := {
+		                   orQuery.
+		                   query1.
+		                   query2.
+		                   andQuery.
+		                   resultSize.
+		                   complementQuery.
+		                   query3.
+		                   complement2 } shuffle.
 	sortedQueries := saver topologicalSortForQueries: unSortedQueries.
 
-	self assert: (sortedQueries indexOf: complementQuery) < (sortedQueries indexOf: resultSize).
+	self assert: (sortedQueries indexOf: complementQuery)
+		< (sortedQueries indexOf: resultSize).
 	self assert: sortedQueries nextToLast equals: andQuery.
 	self assert: sortedQueries last equals: orQuery
 ]
