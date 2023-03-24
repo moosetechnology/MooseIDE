@@ -395,13 +395,15 @@ MiCoUsageMapBuilder >> newMethodFor: anObject [
 
 { #category : #public }
 MiCoUsageMapBuilder >> openSettingsBrowser [
+
 	| browser window |
 	browser := SettingBrowser new
-		changePackageSet: (RPackage organizer 
-		packageNamed: MiCoUsageMapSettings package name) asOrderedCollection;
-	yourself.
+		           changePackageSet: (OrderedCollection with:
+					            (RPackage organizer packageNamed:
+							             MiCoUsageMapSettings package name));
+		           yourself.
 	window := browser open.
-	window position: (self currentWorld extent - window extent) // 2.
+	window position: self currentWorld extent - window extent // 2.
 	browser expandAll.
 	^ window
 ]
