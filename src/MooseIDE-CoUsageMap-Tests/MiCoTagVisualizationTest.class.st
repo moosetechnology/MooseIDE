@@ -8,12 +8,18 @@ Class {
 }
 
 { #category : #running }
+MiCoTagVisualizationTest >> createTag: aName [
+	^builder visualization specModel currentMooseModel tagNamed: aName
+]
+
+{ #category : #running }
 MiCoTagVisualizationTest >> setUp [
 	| visualization |
 	super setUp.
-	visualization := Mock named: 'visualization'.
-	visualization stub specModel willReturn: visualization.
-	visualization stub settings willReturn: MiCoUsageMapSettings.
+
+	visualization := MiCoUsageMapVisualization new.
+	visualization specModel: MiCoUsageMapModel new.
+	visualization specModel collectionModel: MiCoUsageTestFamixModel new allMethods.
 
 	builder := MiCoUsageMapBuilder new.
 	builder visualization: visualization.
@@ -31,13 +37,11 @@ MiCoTagVisualizationTest >> testEmptyLegend [
 
 { #category : #tests }
 MiCoTagVisualizationTest >> testNotEmptyLegend [
-
 	"Empty legend has one entry for each tag + one (at bottom) describing the size of the inner box"
 
-	builder visualization stub tagList willReturn: { 
-			FamixTag new.
-			FamixTag new.
-			FamixTag new }.
+	self createTag: 'tag1'.
+	self createTag: 'tag2'.
+	self createTag: 'tag3'.
 
 	builder buildForTest ; updateLegend.
 
@@ -47,7 +51,8 @@ MiCoTagVisualizationTest >> testNotEmptyLegend [
 { #category : #tests }
 MiCoTagVisualizationTest >> testToggleTag [
 	| tagShape |
-	builder visualization stub tagList willReturn: { FamixTag new }.
+	
+	self createTag: 'aTag'.
 	builder buildForTest.
 
 	tagShape := builder legendTagBuilder shapes first.

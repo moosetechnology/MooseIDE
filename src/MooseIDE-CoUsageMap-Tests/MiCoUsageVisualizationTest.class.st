@@ -2,22 +2,26 @@ Class {
 	#name : #MiCoUsageVisualizationTest,
 	#superclass : #TestCase,
 	#instVars : [
-		'builder'
+		'builder',
+		'visualization'
 	],
 	#category : #'MooseIDE-CoUsageMap-Tests-Browser'
 }
 
 { #category : #running }
-MiCoUsageVisualizationTest >> setUp [
-	| visualization |
-	super setUp.
-	visualization := Mock named: 'visualization'.
-	visualization stub specModel willReturn: visualization.
-	visualization stub settings willReturn: MiCoUsageMapSettings.
-	visualization stub tagList willReturn: OrderedCollection new.
+MiCoUsageVisualizationTest >> createTag: aName [
+	^visualization specModel currentMooseModel tagNamed: aName
+]
 
-	builder := MiCoUsageMapBuilder new.
-	builder visualization: visualization.
+{ #category : #running }
+MiCoUsageVisualizationTest >> setUp [
+	super setUp.
+
+	visualization := MiCoUsageMapVisualization new.
+	visualization specModel: MiCoUsageMapModel new.
+	visualization specModel collectionModel: MiCoUsageTestFamixModel new allMethods.
+
+	builder := visualization mapBuilder.
 
 ]
 
@@ -132,7 +136,7 @@ MiCoUsageVisualizationTest >> test06ExtentChanged [
 	builder legendTagBuilder tagsWithPalette: { 'Frame'. 'Connection' }.
 	builder buildForTest.
 	self assert: builder canvas extent x equals: 500.
-	self assert: (builder canvas encompassingRectangle width between: 300 and: 400).
+	self assert: (builder canvas encompassingRectangle width between: 400 and: 500).
 
 	builder canvas extent: 700 asPoint.
 	self assert: builder canvas extent x equals: 700.
@@ -140,5 +144,11 @@ MiCoUsageVisualizationTest >> test06ExtentChanged [
 
 	builder canvas camera scale: 0.5.
 	builder canvas extent: 500 asPoint.
-	self assert: (builder canvas encompassingRectangle width between: 700 and: 800).
+	self assert: (builder canvas encompassingRectangle width between: 600 and: 700).
+]
+
+{ #category : #tests }
+MiCoUsageVisualizationTest >> testConsumeTag [
+
+	self shouldnt: (visualization consume: (self createTag: 'aTag')) raise: Error
 ]

@@ -59,6 +59,11 @@ MiCoUsageMapVisualization >> itemsFor: aClass [
 	^ #(  )
 ]
 
+{ #category : #'private - testing' }
+MiCoUsageMapVisualization >> mapBuilder [
+	^mapBuilder 
+]
+
 { #category : #actions }
 MiCoUsageMapVisualization >> openSettings [
 	"called from the visualization's globalMenu"
@@ -157,6 +162,15 @@ MiCoUsageMapVisualization >> updateChildren [
 { #category : #update }
 MiCoUsageMapVisualization >> updateInnerBoxSize [
 	mapBuilder updateInnerBoxSize
+]
+
+{ #category : #brokerage }
+MiCoUsageMapVisualization >> updateLegend [
+	| legendTag |
+	legendTag := mapBuilder legendTagBuilder.
+	legendTag removeOldLegend.
+	legendTag build.
+	mapBuilder updateShapeColors
 ]
 
 { #category : #update }
