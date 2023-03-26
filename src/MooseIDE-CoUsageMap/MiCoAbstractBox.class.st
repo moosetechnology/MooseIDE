@@ -9,32 +9,34 @@ Class {
 	#name : #MiCoAbstractBox,
 	#superclass : #Object,
 	#instVars : [
-		'tag',
-		'name',
-		'rawObject',
-		'application'
+		'mooseEntity'
 	],
 	#category : #'MooseIDE-CoUsageMap-Model'
 }
 
+{ #category : #accessing }
+MiCoAbstractBox >> mooseEntity [
+	^ mooseEntity
+]
+
+{ #category : #accessing }
+MiCoAbstractBox >> mooseEntity: anObject [
+	mooseEntity := anObject
+]
+
 { #category : #inspector }
-MiCoAbstractBox >> mooseInspect: anObject [ 
-	MiInspectorBrowser inspect: anObject
+MiCoAbstractBox >> mooseInspect [
+	MiInspectorBrowser inspect: self mooseEntity
 ]
 
 { #category : #accessing }
 MiCoAbstractBox >> name [
-	^ name
-]
-
-{ #category : #accessing }
-MiCoAbstractBox >> name: aString [
-	name := aString
+	^self mooseEntity name
 ]
 
 { #category : #printing }
 MiCoAbstractBox >> printOn: s [
-	s nextPutAll: name
+	s nextPutAll: self name
 ]
 
 { #category : #private }
@@ -43,25 +45,11 @@ MiCoAbstractBox >> privateTag: aTag [
 ]
 
 { #category : #accessing }
-MiCoAbstractBox >> rawObject [
-	^ rawObject
-]
-
-{ #category : #accessing }
-MiCoAbstractBox >> rawObject: anObject [
-	rawObject := anObject
-]
-
-{ #category : #accessing }
 MiCoAbstractBox >> tag [
-	^ tag
-]
-
-{ #category : #accessing }
-MiCoAbstractBox >> tag: aMiCoTag [
-	tag ifNotNil: [ tag removeReference: self ].
-	tag := aMiCoTag.
-	^tag ifNil: [ nil ] ifNotNil: [ tag addReference: self ]
+	self flag: 'handle multiple tags'.
+	^self mooseEntity allTags
+	ifEmpty: [ nil ]
+	ifNotEmpty: [ :tags | tags anyOne ]
 ]
 
 { #category : #accessing }

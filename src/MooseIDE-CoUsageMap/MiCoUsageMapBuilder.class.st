@@ -138,8 +138,8 @@ MiCoUsageMapBuilder >> defaultSettings [
 MiCoUsageMapBuilder >> defaultSortBlock [
 	^ [ :met1 :met2 | 
 		| size1 size2 |
-		size1 := met1 children size.
-		size2 := met2 children size.
+		size1 := met1 innerBoxes size.
+		size2 := met2 innerBoxes size.
 		size1 = size2 
 			ifTrue: [ met1 name < met2 name ]
 			ifFalse: [ size1 > size2 ]
@@ -158,7 +158,7 @@ MiCoUsageMapBuilder >> defaultTester [
 
 { #category : #accessing }
 MiCoUsageMapBuilder >> getOrCreateAttributeFor: object [
-	^ self miAttributes detect: [ :att | att rawObject = object ]
+	^ self miAttributes detect: [ :att | att mooseEntity = object ]
 		ifNone: [ miAttributes add: (self newAttributeFor: object).]
 ]
 
@@ -204,8 +204,8 @@ MiCoUsageMapBuilder >> initializeReferences [
 		bag doWithOccurrences: [ :attribute :count | | att |
 			count > 0 ifTrue: [ 
 				att := self getOrCreateAttributeFor: attribute.
-				met addAttribute: att.
-				att method: met counter: count.
+				met addInnerBox: att.
+				att containerBox: met numberOfUses: count.
 			].
 		].
 	]
@@ -215,7 +215,7 @@ MiCoUsageMapBuilder >> initializeReferences [
 MiCoUsageMapBuilder >> initializeScale [
 	| allAttributesUses range scaleType cls |
 	allAttributesUses := self miMethods flatCollect: [ :met | 
-		met usedAttributes collect: [ :att | att numberOfUses ] ].
+		met innerBoxes collect: [ :att | att numberOfUses ] ].
 	cls := MiCoUsageMapSettings.
 	range := cls innerBoxRange.
 	scaleType := cls innerBoxScaleType.
@@ -309,7 +309,7 @@ MiCoUsageMapBuilder >> methodAttributeCounter: aMiCoMethodAttributeCounter [
 { #category : #hooks }
 MiCoUsageMapBuilder >> methodBodyShapeFor: met [
 	| attributesShapes |
-	attributesShapes := met usedAttributes collect: [ :att | 
+	attributesShapes := met innerBoxes collect: [ :att | 
 		self
 			attributeShapeFor: att
 			method: met ].
@@ -371,9 +371,7 @@ MiCoUsageMapBuilder >> newAttributeFor: anObject [
 		ifEmpty: [ nil ]
 		ifNotEmpty: [ tags anyOne ].
 	^ MiCoInnerBox new
-		name: anObject name;
-		rawObject: anObject;
-		tag: tags;
+		mooseEntity: anObject;
 		yourself
 ]
 
@@ -385,9 +383,7 @@ MiCoUsageMapBuilder >> newMethodFor: anObject [
 		ifEmpty: [ nil ]
 		ifNotEmpty: [ tags anyOne ].
 	^ MiCoContainerBox new
-		name: anObject name;
-		rawObject: anObject;
-		tag: tags;
+		mooseEntity: anObject;
 		yourself
 ]
 

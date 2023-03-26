@@ -29,7 +29,7 @@ MiCoMenuManager >> automaticColor [
 { #category : #public }
 MiCoMenuManager >> automaticColorForMethod: aMiCoMethod [
 	| groupsByTag |
-	groupsByTag := aMiCoMethod usedAttributes 
+	groupsByTag := aMiCoMethod innerBoxes 
 		groupedBy: [ :att | att tag ].
 	groupsByTag ifEmpty: [
 		 "nothing to compare" ^ self ].
@@ -173,16 +173,22 @@ MiCoMenuManager >> removeTag: aMiCoTag [
 ]
 
 { #category : #public }
-MiCoMenuManager >> setTag: aMicoTag onAttribute: aMicoTaggedObject [
+MiCoMenuManager >> setTag: aTag onAttribute: aMicoTaggedObject [
 	| color |
-	(aMicoTaggedObject tag: aMicoTag)
+	self flag: 'should be in specModel'.
+	(self specModel tagEntity: aMicoTaggedObject mooseEntity with: aTag)
 	ifNotNil: [ :tagAssociation |
 		self mapBuilder specModel currentApplication consumeItem: tagAssociation ].
-	self lastTagSelected: aMicoTag.
-	color := self tagColorFrom: aMicoTag.
+	self lastTagSelected: aTag.
+	color := self tagColorFrom: aTag.
 	(self mapBuilder canvas deepShapesFromModel: aMicoTaggedObject) 
 		do: [ :shape | shape color: color ].
 	self mapBuilder canvas signalUpdate.
+]
+
+{ #category : #accessing }
+MiCoMenuManager >> specModel [
+	^mapBuilder specModel
 ]
 
 { #category : #accessing }

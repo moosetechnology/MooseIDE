@@ -12,13 +12,11 @@ MiCoMarkManagerTest >> setUp [
 	| visualization |
 	super setUp.
 
-	visualization := Mock named: 'visualization'.
-	visualization stub specModel willReturn: visualization.
-	visualization stub tagList willReturn: OrderedCollection new.
-	visualization stub settings willReturn: MiCoUsageMapSettings.
+	visualization := MiCoUsageMapVisualization new.
+	visualization specModel: MiCoUsageMapModel new.
+	visualization specModel collectionModel: MiCoUsageTestFamixModel new allMethods.
 
-	builder := MiCoUsageMapBuilder new.
-	builder visualization: visualization.
+	builder := visualization mapBuilder.
 	builder methods: MiCoUsageTestFamixModel new allMethods.
 
 ]
@@ -101,32 +99,40 @@ MiCoMarkManagerTest >> test04ClickLastTag [
 
 { #category : #tests }
 MiCoMarkManagerTest >> test05ClickLastTag [
-	| attribute1 attribute2 method tag shapes tagColor event |
+	| innerBox1 innerBox2 containerBox tag shapes tagColor event |
 	builder legendTagBuilder tagsWithPalette: { 'Frame'. 'Connection' }.
 	builder buildForTest.
-	attribute1 := builder attributeNamed: #var1.
-	attribute2 := builder attributeNamed: #var2.
-	method := builder methodNamed: #method1.
+
+	innerBox1 := builder attributeNamed: #var1.
+	innerBox2 := builder attributeNamed: #var2.
+	containerBox := builder methodNamed: #method1.
+
 	tag := builder tagNamed: 'Frame'.
 	tagColor := builder markManager tagColorFrom: nil.
-	shapes := builder canvas deepShapesFromModel: attribute1.
+
+	shapes := builder canvas deepShapesFromModel: innerBox1.
 	builder markManager clickOn: (RSMouseClick new shape: shapes first).
+
 	self
-		assert: attribute1 tag isNil;
+		assert: innerBox1 tag isNil;
 		assert: (shapes allSatisfy: [ :shape | shape color = tagColor ]).
+
 	builder markManager
 		lastTagSelected: tag;
 		clickOn: (RSMouseClick new shape: shapes first).
+
 	self
-		assert: attribute1 tag isNil;
+		assert: innerBox1 tag isNil;
 		assert: (shapes allSatisfy: [ :shape | shape color = tagColor ]).
+
 	event := RSMouseClick new.
 	event shape: shapes first.
 	event commandKeyPressed: true.
 	event controlKeyPressed: true.
 	builder markManager clickOn: event.
+
 	self
-		assert: attribute1 tag equals: tag;
+		assert: innerBox1 tag equals: tag;
 		assert: (shapes allSatisfy: [ :shape | shape color = tag color ])
 ]
 

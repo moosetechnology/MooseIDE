@@ -8,7 +8,7 @@ Class {
 		'settingsWindow',
 		'containerEntities'
 	],
-	#category : #'MooseIDE-CoUsageMap-Browser'
+	#category : #'MooseIDE-CoUsageMap-Model'
 }
 
 { #category : #'private - for tests' }
@@ -76,4 +76,11 @@ MiCoUsageMapModel >> openSettings [
 { #category : #accessing }
 MiCoUsageMapModel >> settings [
 	^MiCoUsageMapSettings
+]
+
+{ #category : #'as yet unclassified' }
+MiCoUsageMapModel >> tagEntity: aMooseEntity with: aTag [
+	aTag ifNotNil: [ aTag removeReference: aMooseEntity ].
+	^aTag ifNil: [ nil ] ifNotNil: [ aTag addReference: aMooseEntity ]
+
 ]

@@ -29,9 +29,9 @@ MiCoUsageMapVisualization >> consumeTagAssociation: aFamixTagAssociation [
 	entity := aFamixTagAssociation entity.
 	tag := aFamixTagAssociation tag.
 	miCoObject := mapBuilder miMethods , mapBuilder miAttributes 
-		detect: [ :each | each rawObject = entity and: [ each tag ~= tag ] ] ifNone: [ nil ].
+		detect: [ :each | each mooseEntity = entity and: [ each tag ~= tag ] ] ifNone: [ nil ].
 	miCoObject ifNil: [ ^ self ].
-	miCoObject tag: tag.
+	self specModel tagEntity: miCoObject mooseEntity with: tag.
 	mapBuilder updateShapeColors
 ]
 
@@ -97,7 +97,7 @@ MiCoUsageMapVisualization >> removeTagAssociation: aFamixTagAssociation [
 	| entity miCoObject |
 	entity := aFamixTagAssociation entity.
 	miCoObject := mapBuilder miMethods , mapBuilder miAttributes 
-		detect: [ :each | each rawObject = entity ] ifNone: [ nil ].
+		detect: [ :each | each mooseEntity = entity ] ifNone: [ nil ].
 	miCoObject ifNil: [ ^ self ].
 	"this avoids call the consumer producer system"
 	miCoObject privateTag: nil.

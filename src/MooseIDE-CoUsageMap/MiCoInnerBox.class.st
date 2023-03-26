@@ -5,54 +5,59 @@ Class {
 	#name : #MiCoInnerBox,
 	#superclass : #MiCoAbstractBox,
 	#instVars : [
-		'usedInMethods'
+		'usedInContainers'
 	],
 	#category : #'MooseIDE-CoUsageMap-Model'
 }
 
 { #category : #converting }
-MiCoInnerBox >> asStringForMethod: aMicoMethod [
-	^ String streamContents: [:s | self printForMethod: aMicoMethod on: s] 
+MiCoInnerBox >> asStringForMethod: containerBox [
+	^ String streamContents: [:s | self printForMethod: containerBox on: s] 
+]
+
+{ #category : #public }
+MiCoInnerBox >> containerBox: aMiCoMethod numberOfUses: aNumber [
+	usedInContainers at: aMiCoMethod put: aNumber
+]
+
+{ #category : #accessing }
+MiCoInnerBox >> containerBoxes [
+	^ usedInContainers
 ]
 
 { #category : #initialization }
 MiCoInnerBox >> initialize [
 	super initialize.
-	usedInMethods := Dictionary new.
-]
-
-{ #category : #public }
-MiCoInnerBox >> method: aMiCoMethod counter: aNumber [
-	usedInMethods at: aMiCoMethod put: aNumber
+	usedInContainers := Dictionary new.
 ]
 
 { #category : #accessing }
 MiCoInnerBox >> numberOfUses [
-	^ self usedInMethods size
+	^ self containerBoxes size
 ]
 
 { #category : #public }
-MiCoInnerBox >> numberOfUsesOn: aMiCoMethod [
-	^ usedInMethods at: aMiCoMethod
+MiCoInnerBox >> numberOfUsesOn: containerBox [
+	^ usedInContainers at: containerBox
 ]
 
 { #category : #printing }
-MiCoInnerBox >> printForMethod: aMicoMethod on: stream [
+MiCoInnerBox >> printForMethod: containerBox on: stream [
 	| n numberOfUsers |
 	stream 
-		<< 'Links for ';
-		<< name;
-		<< ':';
+		<< 'Links for <';
+		<< self name;
+		<< '>:';
 		crlf; crlf.
-	n := self numberOfUsesOn: aMicoMethod.
+	n := self numberOfUsesOn: containerBox.
 	n printOn: stream.
 	stream 
 		<< ' links from this container(';
-		<< aMicoMethod name;
+		<< containerBox name;
 		<< ')'.
-	numberOfUsers := self usedInMethods size - 1.
+	numberOfUsers := self containerBoxes size - 1.
 	numberOfUsers <= 0 ifTrue: [ ^ self ].
-	n := self usedInMethods sum - n.
+	n := self containerBoxes sum - n.
 	n <= 0 ifTrue: [ ^ self ].
 	stream crlf.
 	n printOn: stream.
@@ -70,14 +75,4 @@ MiCoInnerBox >> printForMethod: aMicoMethod on: stream [
 { #category : #accessing }
 MiCoInnerBox >> type [
 	^ 'Inner entity'
-]
-
-{ #category : #accessing }
-MiCoInnerBox >> usedInMethods [
-	^ usedInMethods
-]
-
-{ #category : #accessing }
-MiCoInnerBox >> usedInMethods: aCollection [
-	usedInMethods := aCollection
 ]

@@ -11,7 +11,7 @@ Class {
 { #category : #public }
 MiCoPharoMethodAttributeCounter >> allAttributesFor: aMiCoMethod [
 	| method result |
-	method := aMiCoMethod rawObject.
+	method := aMiCoMethod mooseEntity.
 	result := RBGenericNodeVisitor
 		visit: method ast
 		select: [ :node| node isInstanceVariable ].

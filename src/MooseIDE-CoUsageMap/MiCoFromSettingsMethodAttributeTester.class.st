@@ -10,6 +10,6 @@ Class {
 
 { #category : #public }
 MiCoFromSettingsMethodAttributeTester >> allAttributesFor: aMiCoMethod [
-	^ [ self settings childrenBlockCompiled value: aMiCoMethod rawObject ]
+	^ [ self settings childrenBlockCompiled value: aMiCoMethod mooseEntity ]
 	onErrorDo: [ :ex | ex traceCr. #() ].
 ]
