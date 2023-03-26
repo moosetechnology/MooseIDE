@@ -6,7 +6,7 @@ Check automaticColor
 Related to MiCoMarkStrategy
 "
 Class {
-	#name : #MiCoMarkManager,
+	#name : #MiCoMenuManager,
 	#superclass : #RSInteraction,
 	#instVars : [
 		'menuInteraction',
@@ -18,7 +18,7 @@ Class {
 }
 
 { #category : #public }
-MiCoMarkManager >> automaticColor [
+MiCoMenuManager >> automaticColor [
 	self changeTagsDuring: [ 
 		self mapBuilder miMethods 
 			do:[:met | self automaticColorForMethod: met ].
@@ -27,7 +27,7 @@ MiCoMarkManager >> automaticColor [
 ]
 
 { #category : #public }
-MiCoMarkManager >> automaticColorForMethod: aMiCoMethod [
+MiCoMenuManager >> automaticColorForMethod: aMiCoMethod [
 	| groupsByTag |
 	groupsByTag := aMiCoMethod usedAttributes 
 		groupedBy: [ :att | att tag ].
@@ -50,7 +50,7 @@ MiCoMarkManager >> automaticColorForMethod: aMiCoMethod [
 ]
 
 { #category : #private }
-MiCoMarkManager >> changeTagsDuring: aBlockClosure [
+MiCoMenuManager >> changeTagsDuring: aBlockClosure [
 	| lastTag |
 	lastTag := self lastTagSelected.
 	aBlockClosure value.
@@ -58,7 +58,7 @@ MiCoMarkManager >> changeTagsDuring: aBlockClosure [
 ]
 
 { #category : #events }
-MiCoMarkManager >> clickOn: aRSMouseClick [ 
+MiCoMenuManager >> clickOn: aRSMouseClick [ 
 	aRSMouseClick metaKeyPressed ifFalse: [ ^ self ].
 	lastTagSelected ifNil: [ ^ self ].
 	self setTag: lastTagSelected onAttribute: aRSMouseClick shape model.
@@ -66,7 +66,7 @@ MiCoMarkManager >> clickOn: aRSMouseClick [
 ]
 
 { #category : #'building - menus' }
-MiCoMarkManager >> contractLabel: aString [
+MiCoMenuManager >> contractLabel: aString [
 	| contractor |
 	contractor := LbCContractor new.
 	contractor  addStrategy: (LbCEllipsisStrategy new 
@@ -77,7 +77,7 @@ MiCoMarkManager >> contractLabel: aString [
 ]
 
 { #category : #'building - menus' }
-MiCoMarkManager >> createGlobalMenuOn: menu [
+MiCoMenuManager >> createGlobalMenuOn: menu [
 	(menu
 		add: 'Automatic color methods'
 			target: self
@@ -95,65 +95,76 @@ MiCoMarkManager >> createGlobalMenuOn: menu [
 ]
 
 { #category : #'building - menus' }
-MiCoMarkManager >> createMenuOn: menu for: aShape [
+MiCoMenuManager >> createMenu: aMenuMorph onBox: aMiCoBox [
+	aMenuMorph
+		addTitle: aMiCoBox type, ': <', (self contractLabel: aMiCoBox name),'>';
+		add: 'Tags' 
+			subMenu: (self subMenuTagsFor: aMiCoBox subMenu: MenuMorph new);
+		add: 'Inspect'
+			target: aMiCoBox
+			selector: #mooseInspect
+]
+
+{ #category : #'building - menus' }
+MiCoMenuManager >> createMenu: menu onShape: aShape [
 	aShape isShape
-		ifTrue: [ aShape model createMenuOn: menu markManager: self ]
+		ifTrue: [ self createMenu: menu onBox: aShape model ]
 		ifFalse: [ self createGlobalMenuOn: menu ]
 ]
 
 { #category : #'building - menus' }
-MiCoMarkManager >> iconFormFor: aMiCoTag [
+MiCoMenuManager >> iconFormFor: aMiCoTag [
 	^ (FormCanvas extent: 15 asPoint)
 		fillColor: aMiCoTag color;
 		form
 ]
 
 { #category : #initialization }
-MiCoMarkManager >> initialize [
+MiCoMenuManager >> initialize [
 	super initialize.
 	strategies := (MiCoMarkStrategy subclasses collect: #new) sorted: [ :a :b | a order < b order ].
 	menuInteraction := RSMenuActivable new
-		menuDo: [ :menu :aShape | self createMenuOn: menu for: aShape ];
+		menuDo: [ :menu :aShape | self createMenu: menu onShape: aShape ];
 		yourself
 ]
 
 { #category : #accessing }
-MiCoMarkManager >> lastTagSelected [
+MiCoMenuManager >> lastTagSelected [
 	^ lastTagSelected
 ]
 
 { #category : #accessing }
-MiCoMarkManager >> lastTagSelected: aMiCoTag [ 
+MiCoMenuManager >> lastTagSelected: aMiCoTag [ 
 	lastTagSelected := aMiCoTag
 ]
 
 { #category : #accessing }
-MiCoMarkManager >> mapBuilder [
+MiCoMenuManager >> mapBuilder [
 
 	^ mapBuilder
 ]
 
 { #category : #accessing }
-MiCoMarkManager >> mapBuilder: anObject [
+MiCoMenuManager >> mapBuilder: anObject [
 
 	mapBuilder := anObject
 ]
 
 { #category : #hooks }
-MiCoMarkManager >> onShape: aShape [
+MiCoMenuManager >> onShape: aShape [
 	aShape
 		addInteraction: menuInteraction;
 		when: RSMouseLeftClick send: #clickOn: to: self.
 ]
 
 { #category : #dependencies }
-MiCoMarkManager >> release [
+MiCoMenuManager >> release [
 	super release.
 	self class instVarNames do: [ :n | self instVarNamed: n put: nil ]
 ]
 
 { #category : #public }
-MiCoMarkManager >> removeTag: aMiCoTag [
+MiCoMenuManager >> removeTag: aMiCoTag [
 	self changeTagsDuring: [ 
 		self mapBuilder miMethods, self mapBuilder miAttributes
 			select: [:each | each tag = aMiCoTag ]
@@ -162,9 +173,11 @@ MiCoMarkManager >> removeTag: aMiCoTag [
 ]
 
 { #category : #public }
-MiCoMarkManager >> setTag: aMicoTag onAttribute: aMicoTaggedObject [
+MiCoMenuManager >> setTag: aMicoTag onAttribute: aMicoTaggedObject [
 	| color |
-	aMicoTaggedObject tag: aMicoTag.
+	(aMicoTaggedObject tag: aMicoTag)
+	ifNotNil: [ :tagAssociation |
+		self mapBuilder specModel currentApplication consumeItem: tagAssociation ].
 	self lastTagSelected: aMicoTag.
 	color := self tagColorFrom: aMicoTag.
 	(self mapBuilder canvas deepShapesFromModel: aMicoTaggedObject) 
@@ -173,12 +186,12 @@ MiCoMarkManager >> setTag: aMicoTag onAttribute: aMicoTaggedObject [
 ]
 
 { #category : #accessing }
-MiCoMarkManager >> strategies [
+MiCoMenuManager >> strategies [
 	^ strategies
 ]
 
 { #category : #'building - menus' }
-MiCoMarkManager >> subMenuTagsFor: aMiCoAttribute subMenu: menu [
+MiCoMenuManager >> subMenuTagsFor: aMiCoAttribute subMenu: menu [
 	self mapBuilder tags
 		select: [ :aMiCoTag | aMiCoTag isHidden not ]
 		thenDo: [ :aMiCoTag |
@@ -201,13 +214,13 @@ MiCoMarkManager >> subMenuTagsFor: aMiCoAttribute subMenu: menu [
 ]
 
 { #category : #accessing }
-MiCoMarkManager >> tagColorFrom: aMiCoTag [
+MiCoMenuManager >> tagColorFrom: aMiCoTag [
 	(aMiCoTag isNil or: [aMiCoTag isHidden ]) ifTrue: [ ^ Color colorFrom: 'f5f5f5' ].
 	^ aMiCoTag color
 ]
 
 { #category : #public }
-MiCoMarkManager >> threshold75: aNumber [
+MiCoMenuManager >> threshold75: aNumber [
 	self strategies 
 		detect: [ :strat | strat class = MiCo75PercentageMarkStrategy ]
 		ifFound: [ :strat | strat threshold: aNumber ]

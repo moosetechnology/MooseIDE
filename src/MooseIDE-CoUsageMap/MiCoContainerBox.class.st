@@ -2,8 +2,8 @@
 Model for methods
 "
 Class {
-	#name : #MiCoMethod,
-	#superclass : #MiCoTaggedObject,
+	#name : #MiCoContainerBox,
+	#superclass : #MiCoAbstractBox,
 	#instVars : [
 		'usedAttributes'
 	],
@@ -11,37 +11,37 @@ Class {
 }
 
 { #category : #adding }
-MiCoMethod >> addAttribute: aMiCoAttribute [
+MiCoContainerBox >> addAttribute: aMiCoAttribute [
 	usedAttributes add: aMiCoAttribute
 ]
 
 { #category : #accessing }
-MiCoMethod >> children [
+MiCoContainerBox >> children [
 	^ usedAttributes 
 ]
 
 { #category : #initialization }
-MiCoMethod >> initialize [
+MiCoContainerBox >> initialize [
 	super initialize.
 	usedAttributes := OrderedCollection new: 5.
 ]
 
 { #category : #accessing }
-MiCoMethod >> numberOfChildren [
+MiCoContainerBox >> numberOfChildren [
 	^ self children size
 ]
 
 { #category : #accessing }
-MiCoMethod >> type [
+MiCoContainerBox >> type [
 	^ 'Container'
 ]
 
 { #category : #accessing }
-MiCoMethod >> usedAttributes [
+MiCoContainerBox >> usedAttributes [
 	^ usedAttributes
 ]
 
 { #category : #accessing }
-MiCoMethod >> usedAttributes: aCollection [
+MiCoContainerBox >> usedAttributes: aCollection [
 	usedAttributes := aCollection
 ]

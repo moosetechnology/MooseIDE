@@ -2,14 +2,13 @@ Extension { #name : #FamixTag }
 
 { #category : #'*MooseIDE-CoUsageMap' }
 FamixTag >> addReference: aMiCoTaggedObject [
-	| tagAssociation tags entity |
+	| tags entity |
 	tags := aMiCoTaggedObject rawObject allTagAssociations 
 		select: [ :asso | asso tag = self ].
 	tags ifNotEmpty: [ ^ self ].
 	entity := aMiCoTaggedObject rawObject.
-	tagAssociation := FamixTagEntityAssociation newForEntity: entity tag: self.
-	aMiCoTaggedObject application 
-		ifNotNil: [ :app | app consumeItem: tagAssociation ]
+	^FamixTagEntityAssociation newForEntity: entity tag: self.
+
 ]
 
 { #category : #'*MooseIDE-CoUsageMap' }

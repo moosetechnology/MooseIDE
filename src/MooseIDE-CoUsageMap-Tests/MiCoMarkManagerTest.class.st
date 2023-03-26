@@ -60,11 +60,11 @@ MiCoMarkManagerTest >> test02OpenMenu [
 
 	attribute := builder attributeNamed: #var2.
 	method := builder methodNamed: #method1.
-	attribute createMenuOn: MenuMorph new markManager: builder markManager.
-	method createMenuOn: MenuMorph new markManager: builder markManager.
+	builder markManager createMenu: MenuMorph new onBox: attribute.
+	builder markManager createMenu: MenuMorph new onBox: method.
 	builder markManager
 		createGlobalMenuOn: MenuMorph new;
-		createMenuOn: MenuMorph new for: builder canvas
+		createMenu: MenuMorph new onShape: builder canvas
 ]
 
 { #category : #tests }

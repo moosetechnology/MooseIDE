@@ -121,7 +121,7 @@ MiCoUsageMapBuilder >> defaultInnerSortBlock [
 
 { #category : #default }
 MiCoUsageMapBuilder >> defaultMarkManager [
-	^ MiCoMarkManager new
+	^ MiCoMenuManager new
 ]
 
 { #category : #default }
@@ -370,11 +370,10 @@ MiCoUsageMapBuilder >> newAttributeFor: anObject [
 	tags := tags
 		ifEmpty: [ nil ]
 		ifNotEmpty: [ tags anyOne ].
-	^ MiCoAttribute new
+	^ MiCoInnerBox new
 		name: anObject name;
 		rawObject: anObject;
 		tag: tags;
-		application: self application;
 		yourself
 ]
 
@@ -385,11 +384,10 @@ MiCoUsageMapBuilder >> newMethodFor: anObject [
 	tags := tags
 		ifEmpty: [ nil ]
 		ifNotEmpty: [ tags anyOne ].
-	^ MiCoMethod new
+	^ MiCoContainerBox new
 		name: anObject name;
 		rawObject: anObject;
 		tag: tags;
-		application: self application;
 		yourself
 ]
 

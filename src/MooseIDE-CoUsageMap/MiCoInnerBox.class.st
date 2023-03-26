@@ -2,8 +2,8 @@
 Model for attributes
 "
 Class {
-	#name : #MiCoAttribute,
-	#superclass : #MiCoTaggedObject,
+	#name : #MiCoInnerBox,
+	#superclass : #MiCoAbstractBox,
 	#instVars : [
 		'usedInMethods'
 	],
@@ -11,33 +11,33 @@ Class {
 }
 
 { #category : #converting }
-MiCoAttribute >> asStringForMethod: aMicoMethod [
+MiCoInnerBox >> asStringForMethod: aMicoMethod [
 	^ String streamContents: [:s | self printForMethod: aMicoMethod on: s] 
 ]
 
 { #category : #initialization }
-MiCoAttribute >> initialize [
+MiCoInnerBox >> initialize [
 	super initialize.
 	usedInMethods := Dictionary new.
 ]
 
 { #category : #public }
-MiCoAttribute >> method: aMiCoMethod counter: aNumber [
+MiCoInnerBox >> method: aMiCoMethod counter: aNumber [
 	usedInMethods at: aMiCoMethod put: aNumber
 ]
 
 { #category : #accessing }
-MiCoAttribute >> numberOfUses [
+MiCoInnerBox >> numberOfUses [
 	^ self usedInMethods size
 ]
 
 { #category : #public }
-MiCoAttribute >> numberOfUsesOn: aMiCoMethod [
+MiCoInnerBox >> numberOfUsesOn: aMiCoMethod [
 	^ usedInMethods at: aMiCoMethod
 ]
 
 { #category : #printing }
-MiCoAttribute >> printForMethod: aMicoMethod on: stream [
+MiCoInnerBox >> printForMethod: aMicoMethod on: stream [
 	| n numberOfUsers |
 	stream 
 		<< 'Links for ';
@@ -68,16 +68,16 @@ MiCoAttribute >> printForMethod: aMicoMethod on: stream [
 ]
 
 { #category : #accessing }
-MiCoAttribute >> type [
+MiCoInnerBox >> type [
 	^ 'Inner entity'
 ]
 
 { #category : #accessing }
-MiCoAttribute >> usedInMethods [
+MiCoInnerBox >> usedInMethods [
 	^ usedInMethods
 ]
 
 { #category : #accessing }
-MiCoAttribute >> usedInMethods: aCollection [
+MiCoInnerBox >> usedInMethods: aCollection [
 	usedInMethods := aCollection
 ]

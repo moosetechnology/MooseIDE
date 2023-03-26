@@ -1,5 +1,5 @@
 Class {
-	#name : #MiCoTagVisualizationTest,
+	#name : #MiCoTagLegendTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'builder'
@@ -8,12 +8,12 @@ Class {
 }
 
 { #category : #running }
-MiCoTagVisualizationTest >> createTag: aName [
+MiCoTagLegendTest >> createTag: aName [
 	^builder visualization specModel currentMooseModel tagNamed: aName
 ]
 
 { #category : #running }
-MiCoTagVisualizationTest >> setUp [
+MiCoTagLegendTest >> setUp [
 	| visualization |
 	super setUp.
 
@@ -28,7 +28,7 @@ MiCoTagVisualizationTest >> setUp [
 ]
 
 { #category : #tests }
-MiCoTagVisualizationTest >> testEmptyLegend [
+MiCoTagLegendTest >> testEmptyLegend [
 	"Empty legend has one entry (at bottom) describing the size of the inner box"
 	builder buildForTest.
 
@@ -36,7 +36,7 @@ MiCoTagVisualizationTest >> testEmptyLegend [
 ]
 
 { #category : #tests }
-MiCoTagVisualizationTest >> testNotEmptyLegend [
+MiCoTagLegendTest >> testNotEmptyLegend [
 	"Empty legend has one entry for each tag + one (at bottom) describing the size of the inner box"
 
 	self createTag: 'tag1'.
@@ -49,7 +49,7 @@ MiCoTagVisualizationTest >> testNotEmptyLegend [
 ]
 
 { #category : #tests }
-MiCoTagVisualizationTest >> testToggleTag [
+MiCoTagLegendTest >> testToggleTag [
 	| tagShape |
 	
 	self createTag: 'aTag'.
