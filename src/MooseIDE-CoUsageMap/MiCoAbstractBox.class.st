@@ -1,8 +1,5 @@
 "
-Base of MiCoAttribute and MiCoMethods which are wrapper for the real object from users domain.
-Use #rawObject to access to the real object model.
-A MiCoTaggedObject receives tags
-
+Abstract calss for wrappers of container entities (eg. methods) and inner entities (eg. attributes)
 
 "
 Class {

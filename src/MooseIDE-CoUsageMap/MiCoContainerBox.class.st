@@ -1,5 +1,7 @@
 "
-Model for methods
+Model for the user entities, container boxes (eg. methods)
+
+Knows it #innerBoxes
 "
 Class {
 	#name : #MiCoContainerBox,

@@ -1,5 +1,7 @@
 "
-Model for attributes
+Model for the used entities, inner boxes (eg. attributes)
+
+Knows all the container boxes it is in and how many uses each one does
 "
 Class {
 	#name : #MiCoInnerBox,
