@@ -1,30 +1,12 @@
 Class {
 	#name : #MiCoTagLegendTest,
-	#superclass : #TestCase,
-	#instVars : [
-		'builder'
-	],
+	#superclass : #MiCoUsageAbstractTest,
 	#category : #'MooseIDE-CoUsageMap-Tests-Browser'
 }
 
 { #category : #running }
 MiCoTagLegendTest >> createTag: aName [
-	^builder visualization specModel currentMooseModel tagNamed: aName
-]
-
-{ #category : #running }
-MiCoTagLegendTest >> setUp [
-	| visualization |
-	super setUp.
-
-	visualization := MiCoUsageMapVisualization new.
-	visualization specModel: MiCoUsageMapModel new.
-	visualization specModel collectionModel: MiCoUsageTestFamixModel new allMethods.
-
-	builder := MiCoUsageMapBuilder new.
-	builder visualization: visualization.
-	builder methods: MiCoUsageTestFamixModel new allMethods.
-
+	^builder methods anyOne mooseModel tagNamed: aName
 ]
 
 { #category : #tests }

@@ -174,3 +174,8 @@ MiCoUsageMapBrowser >> settings [
 MiCoUsageMapBrowser >> update [
 	mapVisualization run
 ]
+
+{ #category : #public }
+MiCoUsageMapBrowser >> updateTagColorFor: anEntity [
+	mapVisualization updateTagColorFor: anEntity
+]

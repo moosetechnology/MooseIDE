@@ -31,6 +31,7 @@ MiCoUsageMapVisualization >> consumeTagAssociation: aFamixTagAssociation [
 	miCoObject := mapBuilder miMethods , mapBuilder miAttributes 
 		detect: [ :each | each mooseEntity = entity and: [ each tag ~= tag ] ] ifNone: [ nil ].
 	miCoObject ifNil: [ ^ self ].
+	self flag: 'tag-association already set, but need to show it in the map'.
 	self specModel tagEntity: miCoObject mooseEntity with: tag.
 	mapBuilder updateShapeColors
 ]
@@ -88,7 +89,7 @@ MiCoUsageMapVisualization >> removeTag: aTag [
 	self tagsFromMooseModel: self owner collectionModel mooseModel.
 	legendTag build.
 	
-	mapBuilder markManager removeTag: aTag.
+	mapBuilder menuManager removeTag: aTag.
 	canvas signalUpdate.
 ]
 
@@ -115,6 +116,11 @@ MiCoUsageMapVisualization >> run [
 		methods: model;
 		application: self owner application ;
 		build.
+]
+
+{ #category : #initialization }
+MiCoUsageMapVisualization >> setTag: aTag onEntity: mooseEntity [
+	specModel tagEntity: mooseEntity with: aTag
 ]
 
 { #category : #accessing }
@@ -176,4 +182,9 @@ MiCoUsageMapVisualization >> updateLegend [
 { #category : #update }
 MiCoUsageMapVisualization >> updateShapeLayout [
 	mapBuilder updateShapeLayout
+]
+
+{ #category : #update }
+MiCoUsageMapVisualization >> updateTagColorFor: anEntity [
+	mapBuilder updateTagColorFor: anEntity
 ]

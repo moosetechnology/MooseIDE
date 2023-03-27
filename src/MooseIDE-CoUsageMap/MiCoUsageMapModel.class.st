@@ -41,6 +41,17 @@ MiCoUsageMapModel >> followEntity: aCollection [
 ]
 
 { #category : #accessing }
+MiCoUsageMapModel >> lastTagSelected [
+	^lastTagSelected
+]
+
+{ #category : #accessing }
+MiCoUsageMapModel >> lastTagSelected: aTag [
+	lastTagSelected := aTag.
+	self flag: 'updateTagCommand button'
+]
+
+{ #category : #accessing }
 MiCoUsageMapModel >> miSelectedItem [
 	self flag: 'Should be the attribute currently selected ?'.
 	^ containerEntities
@@ -73,6 +84,14 @@ MiCoUsageMapModel >> openSettings [
 	]
 ]
 
+{ #category : #'as yet unclassified' }
+MiCoUsageMapModel >> removeTagOn: aMooseEntity [
+	aMooseEntity allTags
+		detect: [ :aTag | aTag isHidden not ]
+		ifOne: [ :aTag | aTag removeReference: aMooseEntity ]
+		ifNone: [ "nothing" ]
+]
+
 { #category : #accessing }
 MiCoUsageMapModel >> settings [
 	^MiCoUsageMapSettings
@@ -80,7 +99,14 @@ MiCoUsageMapModel >> settings [
 
 { #category : #'as yet unclassified' }
 MiCoUsageMapModel >> tagEntity: aMooseEntity with: aTag [
-	aTag ifNotNil: [ aTag removeReference: aMooseEntity ].
-	^aTag ifNil: [ nil ] ifNotNil: [ aTag addReference: aMooseEntity ]
+	self removeTagOn: aMooseEntity.
 
+	aTag ifNotNil: [ 	| tagAssociation |
+		tagAssociation := aTag addReference: aMooseEntity.
+		self currentApplication consumeItem: tagAssociation.
+
+		self lastTagSelected: aTag
+	].
+
+	browser updateTagColorFor: aMooseEntity
 ]

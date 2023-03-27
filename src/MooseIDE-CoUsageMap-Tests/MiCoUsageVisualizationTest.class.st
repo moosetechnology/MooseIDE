@@ -1,28 +1,12 @@
 Class {
 	#name : #MiCoUsageVisualizationTest,
-	#superclass : #TestCase,
-	#instVars : [
-		'builder',
-		'visualization'
-	],
+	#superclass : #MiCoUsageAbstractTest,
 	#category : #'MooseIDE-CoUsageMap-Tests-Browser'
 }
 
 { #category : #running }
 MiCoUsageVisualizationTest >> createTag: aName [
 	^visualization specModel currentMooseModel tagNamed: aName
-]
-
-{ #category : #running }
-MiCoUsageVisualizationTest >> setUp [
-	super setUp.
-
-	visualization := MiCoUsageMapVisualization new.
-	visualization specModel: MiCoUsageMapModel new.
-	visualization specModel collectionModel: MiCoUsageTestFamixModel new allMethods.
-
-	builder := visualization mapBuilder.
-
 ]
 
 { #category : #tests }
@@ -39,10 +23,6 @@ MiCoUsageVisualizationTest >> test00Basic [
 { #category : #tests }
 MiCoUsageVisualizationTest >> test01Basic [
 
-	builder buildForTest.
-	self assert: builder canvas nodes size equals: 0.
-
-	builder methods: MiCoUsageTestFamixModel new allMethods.
 	builder buildForTest.
 	self assert: builder miMethods size equals: 5.
 	self assert: builder miAttributes size equals: 5. "var5 is not used"
