@@ -1,16 +1,18 @@
 "
 I create a menu for each element and the main canvas in MiCoUsageMapBuilder.
 Mark means, put a tag into an attribute or method.
-My resposability is automatize the marking process. Check automaticColor, is related to MiCoMarkStrategy
+My resposability is automatize the marking process for methods.
+Check automaticColor
+Related to MiCoMarkStrategy
 "
 Class {
 	#name : #MiCoMarkManager,
 	#superclass : #RSInteraction,
 	#instVars : [
-		'coUsageMap',
 		'menuInteraction',
 		'strategies',
-		'lastTagSelected'
+		'lastTagSelected',
+		'mapBuilder'
 	],
 	#category : #'MooseIDE-CoUsageMap-Roassal3'
 }
@@ -18,7 +20,7 @@ Class {
 { #category : #public }
 MiCoMarkManager >> automaticColor [
 	self changeTagsDuring: [ 
-		self coUsageMap miMethods 
+		self mapBuilder miMethods 
 			do:[:met | self automaticColorForMethod: met ].
 	]
 	
@@ -63,16 +65,6 @@ MiCoMarkManager >> clickOn: aRSMouseClick [
 	aRSMouseClick signalUpdate
 ]
 
-{ #category : #accessing }
-MiCoMarkManager >> coUsageMap [
-	^ coUsageMap
-]
-
-{ #category : #accessing }
-MiCoMarkManager >> coUsageMap: aMiCoCoUsageMapVisualization [
-	coUsageMap := aMiCoCoUsageMapVisualization
-]
-
 { #category : #'building - menus' }
 MiCoMarkManager >> contractLabel: aString [
 	| contractor |
@@ -95,7 +87,7 @@ MiCoMarkManager >> createGlobalMenuOn: menu [
 	menu addLine.
 	(menu
 		add: 'Settings'
-			target: coUsageMap
+			target: mapBuilder
 			selector: #openSettingsBrowser
 			argumentList: #())
 		icon: (self iconNamed: #configuration)
@@ -135,6 +127,18 @@ MiCoMarkManager >> lastTagSelected: aMiCoTag [
 	lastTagSelected := aMiCoTag
 ]
 
+{ #category : #accessing }
+MiCoMarkManager >> mapBuilder [
+
+	^ mapBuilder
+]
+
+{ #category : #accessing }
+MiCoMarkManager >> mapBuilder: anObject [
+
+	mapBuilder := anObject
+]
+
 { #category : #hooks }
 MiCoMarkManager >> onShape: aShape [
 	aShape
@@ -151,7 +155,7 @@ MiCoMarkManager >> release [
 { #category : #public }
 MiCoMarkManager >> removeTag: aMiCoTag [
 	self changeTagsDuring: [ 
-		self coUsageMap miMethods, self coUsageMap miAttributes
+		self mapBuilder miMethods, self mapBuilder miAttributes
 			select: [:each | each tag = aMiCoTag ]
 			thenDo: [:each | self setTag: nil onAttribute: each ].
 	]
@@ -163,9 +167,9 @@ MiCoMarkManager >> setTag: aMicoTag onAttribute: aMicoTaggedObject [
 	aMicoTaggedObject tag: aMicoTag.
 	self lastTagSelected: aMicoTag.
 	color := self tagColorFrom: aMicoTag.
-	(self coUsageMap canvas deepShapesFromModel: aMicoTaggedObject) 
+	(self mapBuilder canvas deepShapesFromModel: aMicoTaggedObject) 
 		do: [ :shape | shape color: color ].
-	self coUsageMap canvas signalUpdate.
+	self mapBuilder canvas signalUpdate.
 ]
 
 { #category : #accessing }
@@ -175,7 +179,7 @@ MiCoMarkManager >> strategies [
 
 { #category : #'building - menus' }
 MiCoMarkManager >> subMenuTagsFor: aMiCoAttribute subMenu: menu [
-	self coUsageMap legendTag tags
+	self mapBuilder tags
 		select: [ :aMiCoTag | aMiCoTag isHidden not ]
 		thenDo: [ :aMiCoTag |
 			(menu 

@@ -119,7 +119,7 @@ MiDMBrowser >> canvas [
 { #category : #actions }
 MiDMBrowser >> followEntity: anEntity [
 
-	model entities: anEntity asMooseGroup.
+	specModel entities: anEntity asMooseGroup.
 	self runVisualization
 ]
 
@@ -148,7 +148,7 @@ MiDMBrowser >> initializePresenters [
 { #category : #accessing }
 MiDMBrowser >> miSelectedItem [
 
-	^ model entities mooseInterestingEntity
+	^ specModel entities mooseInterestingEntity
 ]
 
 { #category : #actions }
@@ -160,7 +160,7 @@ MiDMBrowser >> runVisualization [
 { #category : #accessing }
 MiDMBrowser >> settings [
 
-	^model settings open
+	^specModel settings open
 ]
 
 { #category : #initialization }

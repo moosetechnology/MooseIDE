@@ -1,5 +1,5 @@
 "
-Main builder of packages with *CoUsageMap*.
+Main builder for *CoUsageMap*.
 
 I create a Roassal canvas with boxes,
 Outer boxes are container, or representation of methods from a class
@@ -7,29 +7,41 @@ Inner boxes are content, or representation of attributes from a class used from 
 
 Note: an attribute can be used by different methods.
 
-Width of each attbute is the number of uses of that attribute in that container or method.
+Width of each attbute is the total number of uses of that attribute in all containers (or methods).
 
-Check MiCoUsageMapExamples or tests to get more info
 "
 Class {
 	#name : #MiCoUsageMapBuilder,
 	#superclass : #RSAbstractContainerBuilder,
 	#instVars : [
-		'godClass',
-		'methods',
-		'miMethods',
-		'miAttributes',
-		'markManager',
-		'legendTagBuilder',
-		'innerBox',
-		'containerBox',
-		'methodAttributeCounter',
 		'highlightManager',
+		'containerBox',
+		'innerBox',
+		'legendTagBuilder',
+		'markManager',
+		'methodAttributeCounter',
+		'methods',
+		'miAttributes',
+		'miMethods',
+		'settings',
 		'widthScale',
-		'settings'
+		'application',
+		'visualization'
 	],
 	#category : #'MooseIDE-CoUsageMap-Roassal3'
 }
+
+{ #category : #accessing }
+MiCoUsageMapBuilder >> application [
+
+	^ application
+]
+
+{ #category : #accessing }
+MiCoUsageMapBuilder >> application: anObject [
+
+	application := anObject
+]
 
 { #category : #hooks }
 MiCoUsageMapBuilder >> applyLayout [
@@ -53,13 +65,19 @@ MiCoUsageMapBuilder >> attributeShapeFor: att method: met [
 	height := self settings innerBoxHeight.
 	^ RSBox new
 		model: att;
-		width: (widthScale scale: (att numberOfUsesOn: met));
+		width: (widthScale scale: (att numberOfUses));
 		height: height;
 		color: (self markManager tagColorFrom: att tag);
 		border: (self highlightManager defaultBoxBorder);
 		propertyAt: #method put: met;
 		announcer: innerBox announcer;
 		yourself.
+]
+
+{ #category : #'private - testing' }
+MiCoUsageMapBuilder >> buildForTest [
+	self renderIn: self container job: MiJob new.
+	^ self container
 ]
 
 { #category : #accessing }
@@ -69,7 +87,7 @@ MiCoUsageMapBuilder >> canvasController [
 
 { #category : #accessing }
 MiCoUsageMapBuilder >> conflictTag [
-	^ self legendTag conflictTag
+	^ self legendTagBuilder conflictTag
 ]
 
 { #category : #'popup - hooks' }
@@ -103,11 +121,6 @@ MiCoUsageMapBuilder >> defaultInnerSortBlock [
 ]
 
 { #category : #default }
-MiCoUsageMapBuilder >> defaultLegendTagVisualization [
-	^ MiCoTagBuilder new
-]
-
-{ #category : #default }
 MiCoUsageMapBuilder >> defaultMarkManager [
 	^ MiCoMarkManager new
 ]
@@ -135,25 +148,19 @@ MiCoUsageMapBuilder >> defaultSortBlock [
 ]
 
 { #category : #default }
+MiCoUsageMapBuilder >> defaultTagLegendBuilder [
+	^ MiCoTagLegendBuilder new
+]
+
+{ #category : #default }
 MiCoUsageMapBuilder >> defaultTester [
-	^ MiCoPharoMethodAttributeCounter new
+	^ MiCoFromSettingsMethodAttributeTester new
 ]
 
 { #category : #accessing }
 MiCoUsageMapBuilder >> getOrCreateAttributeFor: object [
 	^ self miAttributes detect: [ :att | att rawObject = object ]
 		ifNone: [ miAttributes add: (self newAttributeFor: object).]
-]
-
-{ #category : #accessing }
-MiCoUsageMapBuilder >> godClass [
-	^ godClass
-]
-
-{ #category : #accessing }
-MiCoUsageMapBuilder >> godClass: aClass [
-	godClass := aClass.
-	self methods: aClass methods.
 ]
 
 { #category : #accessing }
@@ -169,10 +176,11 @@ MiCoUsageMapBuilder >> highlightManager: aMiCoHighlightManager [
 { #category : #initialization }
 MiCoUsageMapBuilder >> initialize [
 	super initialize.
+
 	self
 		methods: #();
 		methodAttributeCounter: self defaultTester;
-		legendTag: self defaultLegendTagVisualization;
+		legendTagBuilder: self defaultTagLegendBuilder;
 		markManager: self defaultMarkManager;
 		highlightManager: self defaultHighlightManager;
 		settings: self defaultSettings;		
@@ -206,7 +214,7 @@ MiCoUsageMapBuilder >> initializeReferences [
 MiCoUsageMapBuilder >> initializeScale [
 	| allAttributesUses range scaleType cls |
 	allAttributesUses := self miMethods flatCollect: [ :met | 
-		met usedAttributes collect: [ :att | att numberOfUsesOn: met ] ].
+		met usedAttributes collect: [ :att | att numberOfUses ] ].
 	cls := MiCoUsageMapSettings.
 	range := cls innerBoxRange.
 	scaleType := cls innerBoxScaleType.
@@ -261,14 +269,14 @@ MiCoUsageMapBuilder >> labelShapeFor: met [
 ]
 
 { #category : #accessing }
-MiCoUsageMapBuilder >> legendTag [
+MiCoUsageMapBuilder >> legendTagBuilder [
 	^ legendTagBuilder
 ]
 
 { #category : #accessing }
-MiCoUsageMapBuilder >> legendTag: aMiCoTagBuilder [ 
-	legendTagBuilder := aMiCoTagBuilder.
-	legendTagBuilder coUsageMap: self.
+MiCoUsageMapBuilder >> legendTagBuilder: aMiCoTagLegendBuilder [ 
+	legendTagBuilder := aMiCoTagLegendBuilder.
+	legendTagBuilder mapBuilder: self.
 ]
 
 { #category : #accessing }
@@ -279,7 +287,7 @@ MiCoUsageMapBuilder >> markManager [
 { #category : #accessing }
 MiCoUsageMapBuilder >> markManager: aMiCoMarkManager [
 	markManager := aMiCoMarkManager.
-	markManager coUsageMap: self.
+	markManager mapBuilder: self.
 ]
 
 { #category : #accessing }
@@ -356,40 +364,46 @@ MiCoUsageMapBuilder >> miMethods [
 ]
 
 { #category : #'instance creation' }
-MiCoUsageMapBuilder >> newAttributeFor: object [
+MiCoUsageMapBuilder >> newAttributeFor: anObject [
+	| tags |
+	tags := anObject allTagAssociations collect: [ :asso | asso tag ].
+	tags := tags
+		ifEmpty: [ nil ]
+		ifNotEmpty: [ tags anyOne ].
 	^ MiCoAttribute new
-		name: object asString;
-		rawObject: object;
+		name: anObject name;
+		rawObject: anObject;
+		tag: tags;
+		application: self application;
 		yourself
 ]
 
 { #category : #'instance creation' }
-MiCoUsageMapBuilder >> newMethodFor: met [
+MiCoUsageMapBuilder >> newMethodFor: anObject [
+	| tags |
+	tags := anObject allTagAssociations collect: [ :asso | asso tag ].
+	tags := tags
+		ifEmpty: [ nil ]
+		ifNotEmpty: [ tags anyOne ].
 	^ MiCoMethod new
-		name: met selector;
-		rawObject: met;
+		name: anObject name;
+		rawObject: anObject;
+		tag: tags;
+		application: self application;
 		yourself
 ]
 
 { #category : #public }
-MiCoUsageMapBuilder >> open [
-	^ super open
-		extent: 1000@ 800;
-		setLabel:  (godClass
-			ifNil: [ 'Empty' ]
-			ifNotNil: ['God Class - ', godClass name ]);
-		yourself 
-]
-
-{ #category : #public }
 MiCoUsageMapBuilder >> openSettingsBrowser [
+
 	| browser window |
 	browser := SettingBrowser new
-		changePackageSet: (RPackage organizer 
-		packageNamed: MiCoUsageMapSettings package name) asOrderedCollection;
-	yourself.
+		           changePackageSet: (OrderedCollection with:
+					            (RPackage organizer packageNamed:
+							             MiCoUsageMapSettings package name));
+		           yourself.
 	window := browser open.
-	window position: (self currentWorld extent - window extent) // 2.
+	window position: self currentWorld extent - window extent // 2.
 	browser expandAll.
 	^ window
 ]
@@ -426,7 +440,7 @@ MiCoUsageMapBuilder >> renderIn: aCanvas job: aJob [
 	aJob currentValue: 85; title: 'Applying layout'.
 	self updateShapeLayout.
 	aJob currentValue: 90; title: 'Adding decorations'.
-	self legendTag
+	self legendTagBuilder
 		container: aCanvas;
 		build.
 	aCanvas 
@@ -474,7 +488,7 @@ MiCoUsageMapBuilder >> settings: anObject [
 
 { #category : #testing }
 MiCoUsageMapBuilder >> shouldUseProgressBar [
-	^ false
+	^ true
 ]
 
 { #category : #public }
@@ -500,8 +514,18 @@ MiCoUsageMapBuilder >> sortShapes [
 ]
 
 { #category : #accessing }
+MiCoUsageMapBuilder >> specModel [
+	^visualization specModel
+]
+
+{ #category : #accessing }
 MiCoUsageMapBuilder >> tagNamed: aString [ 
-	^ self legendTag tagNamed: aString
+	^ self legendTagBuilder tagNamed: aString
+]
+
+{ #category : #accessing }
+MiCoUsageMapBuilder >> tags [
+	^self specModel tagList
 ]
 
 { #category : #update }
@@ -556,6 +580,9 @@ MiCoUsageMapBuilder >> updateInnerBoxSize [
 
 { #category : #update }
 MiCoUsageMapBuilder >> updateLegend [
+
+	visualization ifNil: [ ^ self ].
+	visualization updateLegend
 ]
 
 { #category : #update }
@@ -583,4 +610,15 @@ MiCoUsageMapBuilder >> updateShapeLayout [
 		child adjustToChildren ].
 	self applyLayout.
 	self canvas signalUpdate.
+]
+
+{ #category : #accessing }
+MiCoUsageMapBuilder >> visualization [
+	^ visualization
+]
+
+{ #category : #accessing }
+MiCoUsageMapBuilder >> visualization: aMiCoUsageMapVisualization [
+
+	visualization := aMiCoUsageMapVisualization.
 ]

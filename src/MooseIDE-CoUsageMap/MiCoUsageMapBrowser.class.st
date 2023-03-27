@@ -26,19 +26,19 @@ Class {
 	#name : #MiCoUsageMapBrowser,
 	#superclass : #MiAbstractBrowser,
 	#instVars : [
-		'coUsageMap',
 		'collectionModel',
-		'settings'
+		'settings',
+		'mapVisualization'
 	],
 	#category : #'MooseIDE-CoUsageMap-Browser'
 }
 
-{ #category : #specs }
+{ #category : #layout }
 MiCoUsageMapBrowser class >> defaultLayout [
 
 	^ SpPanedLayout newLeftToRight
 		  first: #settings;
-		  second: #coUsageMap;
+		  second: #mapVisualization;
 		  positionOfSlider: 350;
 		  yourself
 ]
@@ -63,6 +63,11 @@ MiCoUsageMapBrowser class >> menuPriority [
 ]
 
 { #category : #'instance creation' }
+MiCoUsageMapBrowser class >> newModel [
+	^MiCoUsageMapModel new
+]
+
+{ #category : #'instance creation' }
 MiCoUsageMapBrowser class >> open [
 
 	<script>
@@ -84,10 +89,10 @@ MiCoUsageMapBrowser class >> windowSize [
 { #category : #'window control' }
 MiCoUsageMapBrowser >> browserClosed [
 	super browserClosed.
-	application unregisterConsumer: coUsageMap.
-	application unregisterProducer: coUsageMap.
-	settings coUsageMap: nil.
-	coUsageMap settings: nil.
+	application unregisterConsumer: mapVisualization.
+	application unregisterProducer: mapVisualization.
+	settings mapVisualization: nil.
+	mapVisualization settings: nil.
 ]
 
 { #category : #testing }
@@ -100,28 +105,23 @@ MiCoUsageMapBrowser >> closeSettings [
 	"to close the settings window when testing
 	Should not be used otherwise"
 
-	coUsageMap closeSettingsBrowser
-]
-
-{ #category : #accessing }
-MiCoUsageMapBrowser >> coUsageMap [
-	^ coUsageMap
+	mapVisualization closeSettingsBrowser
 ]
 
 { #category : #accessing }
 MiCoUsageMapBrowser >> collectionModel [
-	^ collectionModel
+	^specModel collectionModel
 ]
 
 { #category : #accessing }
 MiCoUsageMapBrowser >> collectionModel: anObject [
-	collectionModel := anObject
+	specModel collectionModel: anObject
 ]
 
 { #category : #initialization }
 MiCoUsageMapBrowser >> connectPresenters [
-	settings coUsageMap: coUsageMap.
-	coUsageMap settings: settings.
+	settings mapVisualization: mapVisualization.
+	mapVisualization settings: settings.
 ]
 
 { #category : #accessing }
@@ -131,8 +131,7 @@ MiCoUsageMapBrowser >> defaultSettings [
 
 { #category : #actions }
 MiCoUsageMapBrowser >> followEntity: anEntity [
-	self collectionModel: anEntity.
-	coUsageMap run
+	self model followEntity: anEntity
 ]
 
 { #category : #testing }
@@ -142,16 +141,26 @@ MiCoUsageMapBrowser >> hasSettings [
 
 { #category : #initialization }
 MiCoUsageMapBrowser >> initializePresenters [
-	coUsageMap := self instantiate: MiCoUsageMapVisualization.
+	mapVisualization := self instantiate: MiCoUsageMapVisualization.
+	mapVisualization specModel: specModel.
+
+	self flag: 'this should be in MiCoUsageMapModel'.
 	settings := self instantiate: MiCoUsageMapInstanceSettingsPresenter.
-	application registerConsumer: coUsageMap for: FamixTag.
-	application registerConsumer: coUsageMap for: FamixTagAssociation.
-	application registerProducer: coUsageMap for: FamixTagAssociation.
+	
+	self flag: 'this should be in MiCoUsageMapVisualization'.
+	application registerConsumer: mapVisualization for: FamixTag.
+	application registerConsumer: mapVisualization for: FamixTagAssociation.
+	application registerProducer: mapVisualization for: FamixTagAssociation.
 ]
 
-{ #category : #actions }
+{ #category : #accessing }
+MiCoUsageMapBrowser >> mapVisualization [
+	^ mapVisualization
+]
+
+{ #category : #accessing }
 MiCoUsageMapBrowser >> miSelectedItem [
-	^ collectionModel
+	^ specModel miSelectedItem
 ]
 
 { #category : #dependencies }
@@ -161,5 +170,10 @@ MiCoUsageMapBrowser >> release [
 
 { #category : #actions }
 MiCoUsageMapBrowser >> settings [ 
-	^ coUsageMap openSettingsBrowser
+	^ mapVisualization openSettingsBrowser
+]
+
+{ #category : #updating }
+MiCoUsageMapBrowser >> update [
+	mapVisualization run
 ]

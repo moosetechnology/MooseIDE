@@ -1,5 +1,5 @@
 "
-Utility class to add a dual slider
+Utility class to add a dual slider (slider with two handles representing a min and a max on a scale)
 "
 Class {
 	#name : #MiCoDualRangeSettingDeclaration,
@@ -9,7 +9,7 @@ Class {
 		'leftText',
 		'rightText'
 	],
-	#category : #'MooseIDE-CoUsageMap-Sliders'
+	#category : #'MooseIDE-CoUsageMap-Settings'
 }
 
 { #category : #accessing }

@@ -16,6 +16,11 @@ MiMooseModelBrowserModel class >> model: aMooseModel [
 ]
 
 { #category : #accessing }
+MiMooseModelBrowserModel >> entities [
+	^self model
+]
+
+{ #category : #accessing }
 MiMooseModelBrowserModel >> model [
 	^ model
 ]

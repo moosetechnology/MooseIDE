@@ -48,7 +48,9 @@ MiDuplicationBrowserModel >> codeCleanerClass [
 
 { #category : #private }
 MiDuplicationBrowserModel >> currentMooseModel [
-	^entities anyOne mooseModel
+	^self entities
+		ifEmpty: [ nil ]
+		ifNotEmpty: [ :list | list anyOne mooseModel]
 ]
 
 { #category : #private }
@@ -71,7 +73,7 @@ MiDuplicationBrowserModel >> entities [
 { #category : #accessing }
 MiDuplicationBrowserModel >> entities: aCollection [
 
-	entities := aCollection asOrderedCollection sorted: [ :a :b | 
+	entities := aCollection asCollection sorted: [ :a :b |
 		            a name < b name ].
 	browser showEntities: entities
 ]

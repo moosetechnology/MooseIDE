@@ -98,7 +98,6 @@ MiSaveQueriesCommand >> execute [
 
 { #category : #sorting }
 MiSaveQueriesCommand >> putChildrenInPlace: topSortQueries [
-
 	"This method sorts the queries to put a query directly under its parent KEEPING the topological sorting"
 
 	| trees topSortCopy toBeAdded sortedTrees |
@@ -106,8 +105,10 @@ MiSaveQueriesCommand >> putChildrenInPlace: topSortQueries [
 	topSortCopy := topSortQueries copy asOrderedCollection.
 	toBeAdded := topSortCopy select: [ :each | each parent isNil ].
 	trees := toBeAdded collect: [ :each |
-		topSortCopy remove: each.
-		TreeQueryHolder tree: each asOrderedCollection index: (topSortQueries indexOf: each) ].
+		         topSortCopy remove: each.
+		         TreeQueryHolder
+			         tree: (OrderedCollection with: each)
+			         index: (topSortQueries indexOf: each) ].
 
 	[ topSortCopy isNotEmpty ] whileTrue: [
 		| toBeRemoved |
@@ -121,7 +122,7 @@ MiSaveQueriesCommand >> putChildrenInPlace: topSortQueries [
 					toBeRemoved add: each ] ].
 		topSortCopy removeAll: toBeRemoved ].
 
-	sortedTrees := trees sorted: [ :a :b | (a index) < (b index) ].
+	sortedTrees := trees sorted: [ :a :b | a index < b index ].
 	^ (sortedTrees collect: #tree) flattened
 ]
 

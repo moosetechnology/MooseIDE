@@ -1,5 +1,5 @@
 "
-Similar is a dual slider to manage ranges between 2 values
+slider with two handles representing a min and a max on a scale
 "
 Class {
 	#name : #MiCoDualSlider,

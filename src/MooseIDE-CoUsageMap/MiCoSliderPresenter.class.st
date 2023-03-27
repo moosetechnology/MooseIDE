@@ -1,5 +1,5 @@
 "
-simple slider presenter based on roassal
+Simple slider presenter (for Spec) for MiCoSlider
 "
 Class {
 	#name : #MiCoSliderPresenter,

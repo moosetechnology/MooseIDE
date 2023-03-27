@@ -1,5 +1,7 @@
 "
-Utility class to have a waiting message
+Utility class to have a waiting message while building the visualization
+
+TODO: remove and make a general infrstructure for all MooseIDE browsers
 "
 Class {
 	#name : #MiJob,
@@ -94,7 +96,7 @@ MiJob >> prepareForRendering [
 
 { #category : #running }
 MiJob >> run [
-	^ [ 
+	^ [
 		self prepareForRendering.
 		block value: self.
 		self cleanCanvas ] fork

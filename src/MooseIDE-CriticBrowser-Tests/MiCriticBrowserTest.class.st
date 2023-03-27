@@ -211,6 +211,18 @@ MiCriticBrowserTest >> testSelectedRules [
 	
 ]
 
+{ #category : #'tests - tags' }
+MiCriticBrowserTest >> testSelectedTagSetAndGet [
+	| model entity tag |
+	model := FamixRepTestModel new.
+	tag := model tagNamed: 'aTag'.
+	entity := FamixRepTestClass new name: 'aClass' ; mooseModel: model ; yourself.
+
+	browser followEntity: entity.
+	browser selectedTag: tag.
+	self assert: browser selectedTag equals: tag
+]
+
 { #category : #tests }
 MiCriticBrowserTest >> testUnselectPrintsCompleteOutput [
 	browser model setEntities: { stubEntity. basicEntity } asMooseGroup.
@@ -234,7 +246,7 @@ MiCriticBrowserTest >> testUpdateEntitiesList [
 
 { #category : #test }
 MiCriticBrowserTest >> testUpdateResultList [
-	browser updateResultList: { FamixCBViolation condition: stubRule violatedBy: stubEntity } asMooseGroup specialize.
+	browser updateResultList: { FamixCBViolation condition: stubRule violatedBy: stubEntity } asMooseSpecializedGroup.
 	self assert: (browser rulesResult roots flatten size) equals: 1.
 	
 	browser updateResultList: FamixCBViolationGroup new.

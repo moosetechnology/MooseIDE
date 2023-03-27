@@ -109,3 +109,9 @@ MiCriticBrowserRulesMakerPresenterTest >> testQueriesBrowserButtonAction [
 	self assert: addQueryPresenter codeInput isVisible equals: false.
 	self assert: addQueryPresenter queryDroplist isVisible equals: true
 ]
+
+{ #category : #'tests - tags' }
+MiCriticBrowserRulesMakerPresenterTest >> testSelectedTagSetAndGet [
+	"already tested in MiCriticBrowserTest"
+	self skip
+]

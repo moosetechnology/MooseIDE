@@ -37,9 +37,9 @@ Class {
 	#name : #MiAbstractBrowser,
 	#superclass : #MiPresenter,
 	#instVars : [
-		'model',
 		'buses',
-		'receivingMode'
+		'receivingMode',
+		'specModel'
 	],
 	#category : #'MooseIDE-Core-Browser'
 }
@@ -362,6 +362,12 @@ MiAbstractBrowser >> canPropagate [
 		  entity asMooseGroup isNotEmpty or: [ entity isMooseModel ] ]
 ]
 
+{ #category : #testing }
+MiAbstractBrowser >> canTagEntities [
+
+	^ true
+]
+
 { #category : #'private - for tests' }
 MiAbstractBrowser >> closeSettings [
 	"to close the settings window when testing
@@ -463,18 +469,18 @@ MiAbstractBrowser >> miSelectedItem [
 
 { #category : #accessing }
 MiAbstractBrowser >> model [
-	^ model
+	^ specModel
 ]
 
 { #category : #accessing }
 MiAbstractBrowser >> model: anObject [
-	model := anObject
+	specModel := anObject
 ]
 
 { #category : #testing }
 MiAbstractBrowser >> needUpdate: anEntity [
 
-	^ anEntity ~= model selected
+	^ anEntity ~= specModel selected
 ]
 
 { #category : #'private - accessing' }
@@ -498,6 +504,20 @@ MiAbstractBrowser >> receivingMode: aReceivingMode [
 	receivingMode := aReceivingMode
 ]
 
+{ #category : #accessing }
+MiAbstractBrowser >> selectedTag [
+	^self model
+		ifNil: [ nil ]
+		ifNotNil: [ :model | model selectedTag]
+]
+
+{ #category : #accessing }
+MiAbstractBrowser >> selectedTag: aTag [
+	^self model
+		ifNil: [ nil ]
+		ifNotNil: [ :model | model selectedTag: aTag]
+]
+
 { #category : #initialization }
 MiAbstractBrowser >> setDefaultReceivingMode [
 
@@ -508,8 +528,8 @@ MiAbstractBrowser >> setDefaultReceivingMode [
 MiAbstractBrowser >> setModelBeforeInitialization: aBrowserModel [
 	aBrowserModel ifNil: [ ^self ].
 
-	model := aBrowserModel.
-	model browser: self
+	specModel := aBrowserModel.
+	specModel browser: self
 ]
 
 { #category : #actions }
@@ -530,6 +550,34 @@ MiAbstractBrowser >> showHelp [
 		presenter: (MiHelpPopup owner: help on: self);
 		popup
 
+]
+
+{ #category : #actions }
+MiAbstractBrowser >> tagEntitiesSelected [
+
+	^self model
+		ifNotNil: [ :model | model tagEntitiesSelected ]
+]
+
+{ #category : #accessing }
+MiAbstractBrowser >> tagIcon [
+
+	^application iconProvider iconForTag: self selectedTag  
+]
+
+{ #category : #accessing }
+MiAbstractBrowser >> tagList [
+
+	^self model
+		ifNil: [ #() ]
+		ifNotNil: [ :model | model tagList ]
+]
+
+{ #category : #accessing }
+MiAbstractBrowser >> tagName [
+	^self selectedTag
+		ifNil: [ '' ]
+		ifNotNil: [ :tag | tag name ]
 ]
 
 { #category : #buses }

@@ -69,3 +69,9 @@ MiCriticBrowserContextMakerPresenterTest >> testFillContextToEdit [
 	self assert: addContextsPresenter codeInput text equals: context contextBlock asString.
 	self assert: addContextsPresenter contextSummary text equals: context summary.
 ]
+
+{ #category : #'tests - tags' }
+MiCriticBrowserContextMakerPresenterTest >> testSelectedTagSetAndGet [
+	"already tested in MiCriticBrowserTest"
+	self skip
+]

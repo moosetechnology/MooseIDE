@@ -1,5 +1,5 @@
 "
-Basic slider inspired in sliders from mobile phones
+Basic slider inspired from sliders from mobile phones
 "
 Class {
 	#name : #MiCoSlider,

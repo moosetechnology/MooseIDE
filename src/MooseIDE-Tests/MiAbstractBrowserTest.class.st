@@ -178,13 +178,23 @@ MiAbstractBrowserTest >> testCanOpenOnObject [
 MiAbstractBrowserTest >> testCanOpenSettings [
 
 	browser hasSettings ifFalse: [ self skip ].
+	"this should not raise an error"
+	browser settings.
+  "tear down"
+	[ browser closeSettings ]
+		on: Error
+		do: [ "nothing -- ensuring settings window is closed" ]
+]
 
-	self
-		shouldnt: [ 
-			browser settings. ]
-		raise: Error.
+{ #category : #'tests - tags' }
+MiAbstractBrowserTest >> testCanTagEntities [
 
-	[ browser closeSettings ] on: Error do: [ "nothing -- ensuring settings window is closed" ]
+	self assert: browser canTagEntities
+]
+
+{ #category : #'tests - tags' }
+MiAbstractBrowserTest >> testDefaultSelectedTagIsNil [
+	self assert: browser selectedTag isNil
 ]
 
 { #category : #'tests - receiving' }
@@ -288,6 +298,13 @@ MiAbstractBrowserTest >> testHighlightEntity [
 	self mooseObjects do: [ :mooseObject | 
 		self bus globallySelect: mooseObject.
 		self assertHighlightActionFor: mooseObject ]
+]
+
+{ #category : #'tests - tags' }
+MiAbstractBrowserTest >> testSelectedTagSetAndGet [
+	browser canTagEntities ifFalse: [ self skip ].
+
+	self subclassResponsibility 
 ]
 
 { #category : #'tests - opening' }

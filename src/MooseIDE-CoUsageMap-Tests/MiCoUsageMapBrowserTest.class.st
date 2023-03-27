@@ -12,13 +12,26 @@ MiCoUsageMapBrowserTest >> browserClass [
 { #category : #tests }
 MiCoUsageMapBrowserTest >> testConsumerProducer [
 	self assert: ((browser application consumersOf: FamixTag) 
-		anySatisfy: [ :each | each = browser coUsageMap ]).
+		anySatisfy: [ :each | each = browser mapVisualization ]).
 	
 	self assert: ((browser application consumersOf: FamixTagAssociation) 
-		anySatisfy: [ :each | each = browser coUsageMap ]).
+		anySatisfy: [ :each | each = browser mapVisualization ]).
 	
 	self assert: ((browser application producersOf: FamixTagAssociation)
-		anySatisfy: [ :each | each = browser coUsageMap ])
+		anySatisfy: [ :each | each = browser mapVisualization ])
+]
+
+{ #category : #'tests - tags' }
+MiCoUsageMapBrowserTest >> testSelectedTagSetAndGet [
+	| model entity tag |
+	self skip.
+	model := FamixRepTestModel new.
+	tag := model tagNamed: 'aTag'.
+	entity := FamixRepTestClass new name: 'aClass' ; mooseModel: model ; yourself.
+
+	browser followEntity: entity.
+	browser selectedTag: tag.
+	self assert: browser selectedTag equals: tag
 ]
 
 { #category : #tests }

@@ -1,7 +1,7 @@
 Class {
 	#name : #MiCoAttributeTest,
 	#superclass : #TestCase,
-	#category : #'MooseIDE-CoUsageMap-Tests-Model'
+	#category : #'MooseIDE-CoUsageMap-Tests-Browser'
 }
 
 { #category : #tests }
@@ -41,8 +41,8 @@ MiCoAttributeTest >> test03PopupMessage [
 		assert: (attribute asStringForMethod: method)
 		equals: ('Links for var1:
 
-3 links from this method(method1)
-9 links from 3 local methods'
+3 links from this container(method1)
+9 links from 3 local containers'
 				 copyReplaceAll: String cr
 				 with: String crlf).
 	attribute := MiCoAttribute new.
@@ -53,7 +53,7 @@ MiCoAttributeTest >> test03PopupMessage [
 		assert: (attribute asStringForMethod: method)
 		equals: ('Links for var2:
 
-4 links from this method(method5)'
+4 links from this container(method5)'
 				 copyReplaceAll: String cr
 				 with: String crlf).
 	attribute := MiCoAttribute new.
@@ -65,8 +65,8 @@ MiCoAttributeTest >> test03PopupMessage [
 		assert: (attribute asStringForMethod: method)
 		equals: ('Links for var2:
 
-4 links from this method(method5)
-9 links from 1 local method'
+4 links from this container(method5)
+9 links from 1 local container'
 				 copyReplaceAll: String cr
 				 with: String crlf)
 ]

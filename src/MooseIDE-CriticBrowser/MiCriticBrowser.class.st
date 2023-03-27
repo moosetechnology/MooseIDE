@@ -82,7 +82,7 @@ MiCriticBrowser >> browserClosed [
 	super browserClosed.
 	application unregisterConsumer: addRulesPresenter.
 	application unregisterConsumer: rulesEditorPresenter.
-	model resetResults
+	specModel resetResults
 ]
 
 { #category : #testing }
@@ -157,18 +157,18 @@ MiCriticBrowser >> defaultTitle [
 
 { #category : #deleting }
 MiCriticBrowser >> deleteSelectedRule [
-	model deleteRuleComponent: rules selectedItem.
-	rules roots: { model rootContext }.
-	self updateResultList: model getAllViolations.
+	specModel deleteRuleComponent: rules selectedItem.
+	rules roots: { specModel rootContext }.
+	self updateResultList: specModel getAllViolations.
 	self updateRulesList
 ]
 
 { #category : #'updating screen' }
 MiCriticBrowser >> displayRule: selectedQuery [
 "displays the queries, adding the number of entities they get if the query has been executed"
-	^ (model violations includesKey: selectedQuery) 
+	^ (specModel violations includesKey: selectedQuery) 
 	ifTrue: 
-		[ (selectedQuery name), ' (' , ((model violationsOf: selectedQuery) size asString) , ')'] 
+		[ (selectedQuery name), ' (' , ((specModel violationsOf: selectedQuery) size asString) , ')'] 
 	ifFalse: [ selectedQuery name ]
 ]
 
@@ -195,15 +195,15 @@ MiCriticBrowser >> exportRules [
 
 { #category : #'load and saving' }
 MiCriticBrowser >> exportRulesToStream: aStream [
-	model ruleComponents do: 
+	specModel ruleComponents do: 
 		[ :el | SCExporter export: el onStream: aStream ].
-	SCExporter export: model createHierarchyTree onStream: aStream
+	SCExporter export: specModel createHierarchyTree onStream: aStream
 ]
 
 { #category : #actions }
 MiCriticBrowser >> followEntity: anEntity [
 	self model setEntities: anEntity.
-	self updateEntitiesList: model entities.
+	self updateEntitiesList: specModel entities.
 	self updateRulesList.
 	self updateResultList: {  }
 ]
@@ -248,8 +248,8 @@ MiCriticBrowser >> importRulesFromStream: aStream [
 	index := 1.
 	hierarchy do: [ :parentIndex | 
 		parentIndex = 0 
-			ifTrue: [ model addChildToRootContext: (rulesCollection at: index) ]
-			ifFalse: [ model addChild: (rulesCollection at: index) toContext: (rulesCollection at: parentIndex) ].
+			ifTrue: [ specModel addChildToRootContext: (rulesCollection at: index) ]
+			ifFalse: [ specModel addChild: (rulesCollection at: index) toContext: (rulesCollection at: parentIndex) ].
 		index := index + 1. 
 	].
 	
@@ -308,7 +308,7 @@ MiCriticBrowser >> initializeLists [
 		contextMenu: editMenu;
 		beSingleSelection;
 		whenSelectionChangedDo: [ 
-			model violations ifNotEmpty: [ self selectedRules ] ].
+			specModel violations ifNotEmpty: [ self selectedRules ] ].
 
 	rulesResult
 		display: [ :each | self stringForItem: each ];
@@ -368,9 +368,9 @@ MiCriticBrowser >> initializeMenu [
 				name: 'Run condition';
 				icon: (self iconNamed: #glamorousPlay);
 				action: [ 
-					model runCondition: rules selectedItem.
+					specModel runCondition: rules selectedItem.
 					self updateRulesList.
-					self updateResultList: model getAllViolations ];
+					self updateResultList: specModel getAllViolations ];
 				enabled: [ (rules selectedItem class = FamixCBCondition) ] ].
 	expandMenu := self newMenu.
 	expandMenu
@@ -424,8 +424,8 @@ MiCriticBrowser >> initializeWindow: aWindowPresenter [
 { #category : #accessing }
 MiCriticBrowser >> miSelectedItem [ 
 	^ self rules selectedItem 
-		ifNil: [ model getAllViolations ] 
-		ifNotNil: [ model violationsOf: (self rules selectedItem) ]
+		ifNil: [ specModel getAllViolations ] 
+		ifNotNil: [ specModel violationsOf: (self rules selectedItem) ]
 ]
 
 { #category : #'accessing - testing' }
@@ -462,11 +462,11 @@ MiCriticBrowser >> selectedRules [
 "shows in the output list only the entities validating the selected queries (or the complete output if no query is selected)"
 	(rules selectedItem) 
 		ifNotNil: [
-			self updateResultList: (model violationsOf: rules selectedItem).
-			self updateEntitiesList: (model contextOf: rules selectedItem) asMooseGroup]
+			self updateResultList: (specModel violationsOf: rules selectedItem).
+			self updateEntitiesList: (specModel contextOf: rules selectedItem) asMooseGroup]
 		ifNil: [ 
-			self updateResultList: model getAllViolations.
-			self updateEntitiesList: model entities ]
+			self updateResultList: specModel getAllViolations.
+			self updateEntitiesList: specModel entities ]
 ]
 
 { #category : #api }

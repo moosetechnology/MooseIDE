@@ -1,5 +1,7 @@
 "
-Used to for based colors of these sliders
+Abstract class for sliders made with Roassal
+
+TODO: Make generic for whole MooseIDE ?
 "
 Class {
 	#name : #MiCoAbstractSlider,

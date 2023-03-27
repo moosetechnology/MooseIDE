@@ -53,7 +53,7 @@ MiQueryListItemPresenterTest >> testAllQueryPresentersExceptSelf [
 	self assert: presenter allQueryPresentersExceptSelf size equals: 2.
 	self
 		denyCollection: presenter allQueryPresentersExceptSelf
-		includesAny: presenter asOrderedCollection
+		includesAny: (OrderedCollection with: presenter)
 ]
 
 { #category : #tests }

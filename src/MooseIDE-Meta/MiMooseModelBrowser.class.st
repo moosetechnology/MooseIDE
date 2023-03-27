@@ -94,33 +94,39 @@ MiMooseModelBrowser >> canFollowEntity: anEntity [
 	^ (anEntity isKindOf: MooseModel) and: [ self needUpdate: anEntity ]
 ]
 
+{ #category : #testing }
+MiMooseModelBrowser >> canTagEntities [ 
+	self flag: 'Remove browser ? (issue #810)'.
+	^false
+]
+
 { #category : #initialization }
 MiMooseModelBrowser >> childrenOf: class [
 	^ class isFM3Class
 		ifTrue: [ class implementingClass isTrait
 				ifTrue: [ {} ]
-				ifFalse: [ (model model allWithSubTypesOf: class implementingClass)
+				ifFalse: [ (specModel model allWithSubTypesOf: class implementingClass)
 						sorted: #name ascending ] ]
 		ifFalse: [ {} ]
 ]
 
 { #category : #initialization }
 MiMooseModelBrowser >> computeModelPresenterRoot [
-	model model ifNil: [ ^self ].
+	specModel model ifNil: [ ^self ].
 
 	modelPresenter
 		roots:
-			((model model metamodel classes
+			((specModel model metamodel classes
 				reject: [ :a | 
 					a implementingClass isTrait
-						or: [ (model model allWithSubTypesOf: a implementingClass) isEmpty ] ])
+						or: [ (specModel model allWithSubTypesOf: a implementingClass) isEmpty ] ])
 				sorted: #name ascending)
 ]
 
 { #category : #actions }
 MiMooseModelBrowser >> followEntity: aMooseModel [
 
-	model model: aMooseModel.
+	specModel model: aMooseModel.
 	self computeModelPresenterRoot.
 	self updateWindowTitle
 ]
@@ -171,7 +177,7 @@ MiMooseModelBrowser >> initializeTable [
 { #category : #accessing }
 MiMooseModelBrowser >> miSelectedItem [
 
-	^ model selected
+	^ specModel selected
 ]
 
 { #category : #accessing }
@@ -181,7 +187,7 @@ MiMooseModelBrowser >> modelPresenter [
 
 { #category : #accessing }
 MiMooseModelBrowser >> selected [
-	^ model selected
+	^ specModel selected
 ]
 
 { #category : #accessing }
@@ -195,14 +201,14 @@ MiMooseModelBrowser >> selectionAction: selectedItem [
 	| entities |
 	entities := selectedItem isFM3Class
 		            ifTrue: [ 
-		            model model allMatching: selectedItem implementingClass ]
+		            specModel model allMatching: selectedItem implementingClass ]
 		            ifFalse: [ 
 		            selectedItem asMooseGroup select: #isMooseEntity ].
 	entities ifEmpty: [ ^ self ].
 
-	model selected: entities mooseInterestingEntity.
+	specModel selected: entities mooseInterestingEntity.
 
-	self buses do: [ :bus | bus globallySelect: model selected ]
+	self buses do: [ :bus | bus globallySelect: specModel selected ]
 ]
 
 { #category : #initialization }
@@ -214,5 +220,5 @@ MiMooseModelBrowser >> setModelPresenterSelection [
 MiMooseModelBrowser >> updateWindowTitle [
 	self
 		withWindowDo:
-			[ :window | window title: self class title , ' (' , model model name , ')' ]
+			[ :window | window title: self class title , ' (' , specModel model name , ')' ]
 ]

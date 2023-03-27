@@ -36,17 +36,7 @@ MiCoUsageMapInstanceSettingsPresenter >> childrenBlockText [
 { #category : #properties }
 MiCoUsageMapInstanceSettingsPresenter >> childrenBlockText: aString [
 	properties at: #childrenBlockText put: aString.
-	self coUsageMap updateChildren.
-]
-
-{ #category : #accessing }
-MiCoUsageMapInstanceSettingsPresenter >> coUsageMap [
-	^ coUsageMap
-]
-
-{ #category : #accessing }
-MiCoUsageMapInstanceSettingsPresenter >> coUsageMap: aMiCoUsageMapVisualization [ 
-	coUsageMap := aMiCoUsageMapVisualization
+	self mapVisualization updateChildren.
 ]
 
 { #category : #properties }
@@ -119,7 +109,17 @@ MiCoUsageMapInstanceSettingsPresenter >> innerBoxSortBlockText [
 { #category : #properties }
 MiCoUsageMapInstanceSettingsPresenter >> innerBoxSortBlockText: aString [
 	properties at: #innerBoxSortBlockText put: aString.
-	self coUsageMap updateShapeLayout.
+	self mapVisualization updateShapeLayout.
+]
+
+{ #category : #accessing }
+MiCoUsageMapInstanceSettingsPresenter >> mapVisualization [
+	^ coUsageMap
+]
+
+{ #category : #accessing }
+MiCoUsageMapInstanceSettingsPresenter >> mapVisualization: aMiCoUsageMapVisualization [ 
+	coUsageMap := aMiCoUsageMapVisualization
 ]
 
 { #category : #properties }
@@ -137,7 +137,7 @@ MiCoUsageMapInstanceSettingsPresenter >> outerBoxSortBlockText [
 { #category : #properties }
 MiCoUsageMapInstanceSettingsPresenter >> outerBoxSortBlockText: aString [
 	properties at: #outerBoxSortBlockText put: aString.
-	self coUsageMap updateShapeLayout.
+	self mapVisualization updateShapeLayout.
 ]
 
 { #category : #properties }

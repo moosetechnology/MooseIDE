@@ -1,52 +1,58 @@
 Class {
 	#name : #MiCoTagVisualizationTest,
 	#superclass : #TestCase,
+	#instVars : [
+		'builder'
+	],
 	#category : #'MooseIDE-CoUsageMap-Tests-Browser'
 }
 
-{ #category : #tests }
-MiCoTagVisualizationTest >> test01Legend [
+{ #category : #running }
+MiCoTagVisualizationTest >> setUp [
+	| visualization |
+	super setUp.
+	visualization := Mock named: 'visualization'.
+	visualization stub specModel willReturn: visualization.
 
-	| v class legendTag tag1 tag2 |
-	v := MiCoUsageMapBuilder new.
-	class := MiCoTestClass.
-	v godClass: class.
-	legendTag := MiCoTagBuilder new.
-	v
-		legendTag: legendTag;
-		build.
-	self assert: legendTag shapes size equals: 1.
-	tag1 := MiCoTag new
-		name: 'Frame';
-		color: Color lightBlue;
-		yourself.
-	legendTag addTag: tag1.
-	tag2 := MiCoTag new
-		name: 'Connection';
-		color: Color green;
-		yourself.
-	legendTag addTag: tag2.
-	v build.
-	self assert: legendTag shapes size equals: 3
+	builder := MiCoUsageMapBuilder new.
+	builder visualization: visualization.
+	builder methods: MiCoUsageTestFamixModel new allMethods.
+
+]
+
+{ #category : #tests }
+MiCoTagVisualizationTest >> testEmptyLegend [
+	"Empty legend has one entry (at bottom) describing the size of the inner box"
+	builder buildForTest.
+
+	self assert: builder legendTagBuilder shapes size equals: 1
+]
+
+{ #category : #tests }
+MiCoTagVisualizationTest >> testNotEmptyLegend [
+
+	"Empty legend has one entry for each tag + one (at bottom) describing the size of the inner box"
+
+	builder visualization stub tagList willReturn: { 
+			FamixTag new.
+			FamixTag new.
+			FamixTag new }.
+
+	builder buildForTest ; updateLegend.
+
+	self assert: builder legendTagBuilder shapes size equals: 4
 ]
 
 { #category : #tests }
 MiCoTagVisualizationTest >> testToggleTag [
-	| v class tag tagShape |
-	v := MiCoUsageMapBuilder new.
-	class := MiCoTestClass.
-	v godClass: class.
-	
-	tag := MiCoTag new
-		name: 'Frame';
-		color: Color lightBlue;
-		yourself.
-	v legendTag addTag: tag.
-	v build.
-	self assert: v legendTag shapes size equals: 2.
-	tagShape := v legendTag shapes first.
+	| tagShape |
+	builder visualization stub tagList willReturn: { FamixTag new }.
+	builder buildForTest.
+
+	tagShape := builder legendTagBuilder shapes first.
 	self assert: tagShape isComposite.
 	self assert: tagShape shapes size equals: 3.
-	v legendTag toggleTag: (RSMouseClick new shape: tagShape shapes first).
+
+	builder legendTagBuilder toggleTag: (RSMouseClick new shape: tagShape shapes first).
 	
 ]

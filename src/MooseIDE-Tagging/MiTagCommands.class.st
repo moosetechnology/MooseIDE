@@ -1,3 +1,6 @@
+"
+Abstract super class of the various tagging operations that can be performed in the TagBrowser
+"
 Class {
 	#name : #MiTagCommands,
 	#superclass : #CmCommand,
