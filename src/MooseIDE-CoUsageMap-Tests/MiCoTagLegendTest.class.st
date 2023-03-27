@@ -4,11 +4,6 @@ Class {
 	#category : #'MooseIDE-CoUsageMap-Tests-Browser'
 }
 
-{ #category : #running }
-MiCoTagLegendTest >> createTag: aName [
-	^builder methods anyOne mooseModel tagNamed: aName
-]
-
 { #category : #tests }
 MiCoTagLegendTest >> testEmptyLegend [
 	"Empty legend has one entry (at bottom) describing the size of the inner box"
@@ -21,9 +16,7 @@ MiCoTagLegendTest >> testEmptyLegend [
 MiCoTagLegendTest >> testNotEmptyLegend [
 	"Empty legend has one entry for each tag + one (at bottom) describing the size of the inner box"
 
-	self createTag: 'tag1'.
-	self createTag: 'tag2'.
-	self createTag: 'tag3'.
+	self tagsWithPalette: #( tag1 tag2 tag3).
 
 	builder buildForTest ; updateLegend.
 

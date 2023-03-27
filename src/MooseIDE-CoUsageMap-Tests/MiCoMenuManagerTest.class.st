@@ -8,7 +8,7 @@ Class {
 MiCoMenuManagerTest >> test02OpenMenu [
 
 	| attribute method |
-	builder legendTagBuilder tagsWithPalette: { 'base'. 'simple' }.
+	self tagsWithPalette: { 'base'. 'simple' }.
 	builder buildForTest.
 
 	attribute := builder attributeNamed: #var2.
@@ -23,7 +23,7 @@ MiCoMenuManagerTest >> test02OpenMenu [
 { #category : #tests }
 MiCoMenuManagerTest >> test06SelectInnerBox [
 	| attribute1 attribute2 method shape1 shape2 default selected |
-	builder legendTagBuilder tagsWithPalette: { 'Frame'. 'Connection' }.
+	self tagsWithPalette: { 'Frame'. 'Connection' }.
 	builder buildForTest.
 	attribute1 := builder attributeNamed: #var1.
 	attribute2 := builder attributeNamed: #var2.

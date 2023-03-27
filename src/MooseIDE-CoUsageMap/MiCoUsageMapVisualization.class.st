@@ -114,7 +114,6 @@ MiCoUsageMapVisualization >> run [
 	mapBuilder 
 		container: self canvas;
 		methods: model;
-		application: self owner application ;
 		build.
 ]
 

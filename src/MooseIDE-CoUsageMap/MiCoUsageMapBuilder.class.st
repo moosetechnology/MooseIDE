@@ -23,11 +23,9 @@ Class {
 		'miAttributes',
 		'miMethods',
 		'widthScale',
-		'application',
 		'visualization',
 		'menuManager',
-		'strategies',
-		'lastTagSelected'
+		'strategies'
 	],
 	#category : #'MooseIDE-CoUsageMap-Roassal3'
 }
@@ -35,13 +33,7 @@ Class {
 { #category : #accessing }
 MiCoUsageMapBuilder >> application [
 
-	^ application
-]
-
-{ #category : #accessing }
-MiCoUsageMapBuilder >> application: anObject [
-
-	application := anObject
+	^self specModel currentApplication
 ]
 
 { #category : #hooks }
@@ -234,6 +226,11 @@ MiCoUsageMapBuilder >> highlightManager: aMiCoHighlightManager [
 	highlightManager := aMiCoHighlightManager
 ]
 
+{ #category : #accessing }
+MiCoUsageMapBuilder >> iconForTag: aTag [
+	^self application iconForTag: aTag
+]
+
 { #category : #initialization }
 MiCoUsageMapBuilder >> initialize [
 	super initialize.
@@ -335,12 +332,12 @@ MiCoUsageMapBuilder >> labelShapeFor: met [
 { #category : #accessing }
 MiCoUsageMapBuilder >> lastTagSelected [
 	self flag: 'should be in specModel'.
-	^ lastTagSelected
+	^self application tagSelectedInMooseModel: self specModel currentMooseModel
 ]
 
 { #category : #accessing }
-MiCoUsageMapBuilder >> lastTagSelected: aMiCoTag [ 
-	lastTagSelected := aMiCoTag
+MiCoUsageMapBuilder >> lastTagSelected: aTag [ 
+	self application selectedTag: aTag
 ]
 
 { #category : #accessing }
@@ -463,10 +460,10 @@ MiCoUsageMapBuilder >> newInnerBoxFor: anObject [
 
 { #category : #events }
 MiCoUsageMapBuilder >> quickTaggingOn: entity [ 
-	lastTagSelected
+	self lastTagSelected
 	ifNil: [ ^ self ].
 
-	self setTag: lastTagSelected onAttribute: entity
+	self setTag: self lastTagSelected onAttribute: entity
 
 ]
 

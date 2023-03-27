@@ -4,11 +4,6 @@ Class {
 	#category : #'MooseIDE-CoUsageMap-Tests-Browser'
 }
 
-{ #category : #running }
-MiCoUsageVisualizationTest >> createTag: aName [
-	^visualization specModel currentMooseModel tagNamed: aName
-]
-
 { #category : #tests }
 MiCoUsageVisualizationTest >> test00Basic [
 
@@ -71,7 +66,7 @@ MiCoUsageVisualizationTest >> test04Highlight [
 
 	| attribute shapes border event |
 	builder methods: MiCoUsageTestFamixModel new allMethods.
-	builder legendTagBuilder tagsWithPalette: { 'Frame'. 'Connection' }.
+	self tagsWithPalette: { 'Frame'. 'Connection' }.
 	builder buildForTest.
 	attribute := builder attributeNamed: #var2.
 	border := builder highlightManager selectedBoxBorder.
@@ -99,7 +94,7 @@ MiCoUsageVisualizationTest >> test05MethodAttributePopup [
 
 	| attribute method |
 	builder methods: MiCoUsageTestFamixModel new allMethods.
-	builder legendTagBuilder tagsWithPalette: { 'Frame'. 'Connection' }.
+	self tagsWithPalette: { 'Frame'. 'Connection' }.
 	builder buildForTest.
 	attribute := builder attributeNamed: #var2.
 	method := builder methodNamed: #method1.
@@ -113,7 +108,7 @@ MiCoUsageVisualizationTest >> test06ExtentChanged [
 	"Note: size of canvas depends on number of methods, attributes, and accesses"
 
 	builder methods: MiCoUsageTestFamixModel new allMethods.
-	builder legendTagBuilder tagsWithPalette: { 'Frame'. 'Connection' }.
+	self tagsWithPalette: { 'Frame'. 'Connection' }.
 	builder buildForTest.
 	self assert: builder canvas extent x equals: 500.
 	self assert: (builder canvas encompassingRectangle width between: 400 and: 500).

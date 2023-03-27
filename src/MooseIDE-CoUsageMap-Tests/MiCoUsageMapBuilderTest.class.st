@@ -25,7 +25,7 @@ MiCoUsageMapBuilderTest >> setUp [
 MiCoUsageMapBuilderTest >> testAutomaticColorOfContainerBox [
 
 	| attribute tag method4 method5 |
-	builder legendTagBuilder tagsWithPalette: { 'base'. 'simple' }.
+	self tagsWithPalette: { 'base'. 'simple' }.
 	builder buildForTest.
 
 	attribute := builder attributeNamed: #var6.
@@ -46,7 +46,7 @@ MiCoUsageMapBuilderTest >> testAutomaticColorOfContainerBox [
 { #category : #tests }
 MiCoUsageMapBuilderTest >> testLastTagInitialization [
 
-	builder legendTagBuilder tagsWithPalette: { 'Frame'. 'Connection' }.
+	self tagsWithPalette: { 'Frame'. 'Connection' }.
 	builder buildForTest.
 
 	self assert: builder lastTagSelected isNil.
@@ -57,7 +57,7 @@ MiCoUsageMapBuilderTest >> testLastTagInitialization [
 MiCoUsageMapBuilderTest >> testLastTagWithTag [
 
 	| attribute method tag |
-	builder legendTagBuilder tagsWithPalette: { 'Frame'. 'Connection' }.
+	self tagsWithPalette: { 'Frame'. 'Connection' }.
 	builder buildForTest.
 
 	attribute := builder attributeNamed: #var2.
@@ -72,7 +72,7 @@ MiCoUsageMapBuilderTest >> testLastTagWithTag [
 { #category : #tests }
 MiCoUsageMapBuilderTest >> testQuickTaggingWithoutLastTag [
 	| innerBox shapes tagColor event |
-	builder legendTagBuilder tagsWithPalette: { 'Frame'. 'Connection' }.
+	self tagsWithPalette: { 'Frame'. 'Connection' }.
 	builder buildForTest.
 
 	innerBox := builder attributeNamed: #var1.
@@ -90,7 +90,7 @@ MiCoUsageMapBuilderTest >> testQuickTaggingWithoutLastTag [
 { #category : #tests }
 MiCoUsageMapBuilderTest >> testQuickTaggingWithoutMetaKey [
 	| innerBox shapes  event tag |
-	builder legendTagBuilder tagsWithPalette: { 'Frame'. 'Connection' }.
+	self tagsWithPalette: { 'Frame'. 'Connection' }.
 	builder buildForTest.
 
 	tag := builder tagNamed: 'Frame'.
@@ -113,7 +113,7 @@ MiCoUsageMapBuilderTest >> testQuickTaggingWithoutMetaKey [
 MiCoUsageMapBuilderTest >> testSeveralInnerBoxesColorWithTag [
 
 	| attribute shapes tag |
-	builder legendTagBuilder tagsWithPalette: { 'base'. 'simple' }.
+	self tagsWithPalette: { 'base'. 'simple' }.
 	builder buildForTest.
 
 	attribute := builder attributeNamed: #var6.

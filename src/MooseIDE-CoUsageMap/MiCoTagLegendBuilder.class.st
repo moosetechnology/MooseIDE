@@ -21,6 +21,13 @@ MiCoTagLegendBuilder >> boxLabelExtent [
 	^ 25@15
 ]
 
+{ #category : #hooks }
+MiCoTagLegendBuilder >> checkBoxFor: aTag [
+	^ self iconNamed: (aTag isHidden  
+		ifTrue: [ #checkboxUnselected ]
+		ifFalse: [ #checkboxSelected ])
+]
+
 { #category : #highlighting }
 MiCoTagLegendBuilder >> highlight: evt [
 	| shape |
@@ -29,13 +36,6 @@ MiCoTagLegendBuilder >> highlight: evt [
 	shape border: (RSBorder new width: 2; color: Color gray).
 	evt canvas propertyAt: #tagCheck put: shape.
 	evt signalUpdate.
-]
-
-{ #category : #hooks }
-MiCoTagLegendBuilder >> iconFor: aTag [
-	^ self iconNamed: (aTag isHidden  
-		ifTrue: [ #checkboxUnselected ]
-		ifFalse: [ #checkboxSelected ])
 ]
 
 { #category : #hooks }
@@ -149,25 +149,21 @@ MiCoTagLegendBuilder >> tagNamed: aString [
 
 { #category : #hooks }
 MiCoTagLegendBuilder >> tagShapeFor: aTag [ 
-	| label box check shape |
+	| label icon check shape |
 	label := RSLabel new
 		text: aTag name;
 		color: Color black;
 		yourself.
 
-	self flag: 'Should use "self iconProvider iconForTag: aTag" to get the icon for the tag'.
-	box := RSBox new
-		extent: self boxLabelExtent;
-		color: aTag color;
-		yourself.
+	icon := RSBitmap new form: (mapBuilder iconForTag: aTag).
 	check := RSBitmap new
 		model: aTag;
-		form: (self iconFor: aTag);
+		form: (self checkBoxFor: aTag);
 		when: RSMouseEnter send: #highlight: to: self; 
 		when: RSMouseLeave send: #unhighlight: to: self; 
 		when: RSMouseClick send: #toggleTag: to: self; 
 		yourself.
-	shape := { check. box. label } asGroup asShape.
+	shape := { check. icon. label } asGroup asShape.
 		
 	RSHorizontalLineLayout new gapSize: 5; alignMiddle; on: shape children.
 	shape adjustToChildren.
@@ -179,28 +175,13 @@ MiCoTagLegendBuilder >> tags [
 	^tags ifNil: [tags := self specModel tagList]
 ]
 
-{ #category : #'private - testing' }
-MiCoTagLegendBuilder >> tags: aCollection colorPalette: aNSOrdinalScale [
-	aCollection do: [:str |
-		self addTag: (FamixTag new 
-			name: str;
-			color: (aNSOrdinalScale scale: str);
-			yourself) ].
-]
-
-{ #category : #'private - testing' }
-MiCoTagLegendBuilder >> tagsWithPalette: aCollection [
-	tags := OrderedCollection new.
-	self tags: aCollection colorPalette: NSScale category20
-]
-
 { #category : #events }
 MiCoTagLegendBuilder >> toggleTag: evt [
 	| shape tag |
 	shape := evt shape.
 	tag := shape model.
 	tag toggleVisibility.
-	shape form: (self iconFor: tag).
+	shape form: (self checkBoxFor: tag).
 	mapBuilder updateShapeColors.
 	evt signalUpdate.
 	
