@@ -452,7 +452,7 @@ MiCriticBrowser >> runButtonAction [
 
 	[ self model run.
 	self updateStatusLabel: 'Updating display...'.
-	self updateResultList: model getAllViolations.
+	self updateResultList: specModel getAllViolations.
 	self updateRulesList.
 	self updateStatusLabel: 'Critics finished.' ] fork
 ]
