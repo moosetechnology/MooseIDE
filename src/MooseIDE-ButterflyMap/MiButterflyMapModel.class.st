@@ -20,7 +20,7 @@ Class {
 { #category : #accessing }
 MiButterflyMapModel >> allPossibleQueries [
 
-	^ (self browser itemsFor: FQAbstractQuery) asOrderedCollection
+	^ (self browser itemsFor: FQAbstractQuery) asCollection
 ]
 
 { #category : #accessing }
