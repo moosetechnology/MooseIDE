@@ -107,7 +107,7 @@ MiTagCommand >> execute [
 
 { #category : #accessing }
 MiTagCommand >> iconForTag: aTag [
-	^self iconProvider iconForTag: aTag
+	^self application iconForTag: aTag
 ]
 
 { #category : #execution }
