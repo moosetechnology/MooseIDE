@@ -120,7 +120,7 @@ MiCoUsageMapBuilder >> containerBoxShapeFor: met [
 		alignCenter;
 		gapSize: 0;
 		on: { label. body }.
-	^ MiCoMethodShape new
+	^ MiCoContainerShape new
 		model: met;
 		addAll: { label. body };
 		adjustToChildren;
@@ -562,10 +562,10 @@ MiCoUsageMapBuilder >> sortShapes [
 	children do: [ :node |
 		tBlock := [ :a :b | 
 			block value: a model value: b model value: node model ].
-		[ node attributeShapes sort: tBlock  ]
+		[ node innerBoxShapes sort: tBlock  ]
 		onErrorDo: [ :ex |
 			block := self defaultInnerSortBlock.
-			node attributeShapes sort: tBlock ]
+			node innerBoxShapes sort: tBlock ]
 	]
 
 ]
@@ -679,7 +679,7 @@ MiCoUsageMapBuilder >> updateShapeLayout [
 	self sortShapes.
 	children := self canvas nodes.
 	children do: [ :child | 
-		RSFlowLayout on: child attributeShapes.
+		RSFlowLayout on: child innerBoxShapes.
 		child children second adjustToChildren; padding: 10.
 		RSVerticalLineLayout new
 			alignCenter;
