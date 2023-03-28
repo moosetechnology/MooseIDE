@@ -67,10 +67,12 @@ MiCoUsageMapModel >> openSettings [
 	    - update the visualization"
 
 	| settingBrowser |
-	settingBrowser := SettingBrowser new
-		changePackageSet: (RPackage organizer 
-		packageNamed: MiCoUsageMapSettings package name) asOrderedCollection;
-	yourself.
+	settingBrowser := SettingBrowser new.
+	settingBrowser
+		changePackageSet:
+			(OrderedCollection with:
+				(RPackage organizer 
+					packageNamed: MiCoUsageMapSettings package name)).
 	settingsWindow := settingBrowser open.
 	settingsWindow position: (self currentWorld extent - settingsWindow extent) // 2.
 	settingBrowser expandAll.
