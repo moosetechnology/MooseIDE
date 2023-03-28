@@ -342,13 +342,6 @@ MiReportBrowser >> sep [
 	^ sep
 ]
 
-{ #category : #initialization }
-MiReportBrowser >> setModelBeforeInitialization: aBrowserModel [
-	aBrowserModel ifNil: [ ^self ].
-
-	specModel := aBrowserModel.
-]
-
 { #category : #actions }
 MiReportBrowser >> settings [
 	
