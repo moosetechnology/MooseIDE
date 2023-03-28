@@ -164,6 +164,11 @@ MiApplication >> deleteBusNamed: aName [
 		ifFound: [ :bus | self deleteBus: bus ]
 ]
 
+{ #category : #accessing }
+MiApplication >> iconForTag: aTag [
+	^self iconProvider iconForTag: aTag
+]
+
 { #category : #'drag and drop support' }
 MiApplication >> importModelFromFile: aFileReference [
 

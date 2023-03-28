@@ -5,65 +5,68 @@ Class {
 }
 
 { #category : #tests }
-MiCoAttributeTest >> test01Method [
-
-	| method |
-	method := MiCoMethod new.
-	method
-		name: #method1;
-		usedAttributes: #(  ).
-	self assert: method asString equals: #method1
+MiCoAttributeTest >> containerBoxOn: aName [
+	^MiCoContainerBox new mooseEntity: (FamixStMethod new name: aName)
 ]
 
 { #category : #tests }
-MiCoAttributeTest >> test02Attribute [
+MiCoAttributeTest >> innerBoxOn: aName [
+	^MiCoInnerBox new mooseEntity: (FamixStAttribute new name: aName)
+]
 
-	| attribute |
-	attribute := MiCoAttribute new.
-	attribute
-		name: #var1;
-		usedInMethods: #(  ).
-	self assert: attribute asString equals: #var1
+{ #category : #tests }
+MiCoAttributeTest >> test01ContainerBox [
+
+	| container |
+	container := self containerBoxOn: 'method1'.
+	self assert: container asString equals: 'method1'
+]
+
+{ #category : #tests }
+MiCoAttributeTest >> test02InnerBox [
+
+	| innerBox |
+	innerBox := self innerBoxOn: 'aVar'.
+	self assert: innerBox asString equals: 'aVar'
 ]
 
 { #category : #tests }
 MiCoAttributeTest >> test03PopupMessage [
 
-	| attribute method |
-	attribute := MiCoAttribute new.
-	attribute
-		name: #var1;
-		method: (method := MiCoMethod new name: #method1) counter: 3;
-		method: (MiCoMethod new name: #method2) counter: 6;
-		method: (MiCoMethod new name: #method3) counter: 1;
-		method: (MiCoMethod new name: #method8) counter: 2.
+	| innerBox containerBox |
+	containerBox := self containerBoxOn: 'method1'.
+	innerBox := self innerBoxOn: 'var1'.
+	innerBox
+		containerBox: containerBox numberOfUses: 3;
+		containerBox: (self containerBoxOn: 'method2') numberOfUses: 6;
+		containerBox: (self containerBoxOn: 'method3') numberOfUses: 1;
+		containerBox: (self containerBoxOn: 'method4') numberOfUses: 2.
 	self
-		assert: (attribute asStringForMethod: method)
-		equals: ('Links for var1:
+		assert: (innerBox asStringForContainerBox: containerBox)
+		equals: ('Links for <var1>:
 
 3 links from this container(method1)
 9 links from 3 local containers'
 				 copyReplaceAll: String cr
 				 with: String crlf).
-	attribute := MiCoAttribute new.
-	attribute
-		name: #var2;
-		method: (method := MiCoMethod new name: #method5) counter: 4.
+
+	innerBox := self innerBoxOn: 'var2'.
+	containerBox := self containerBoxOn: 'method5'.
+	innerBox
+		containerBox: containerBox numberOfUses: 4.
 	self
-		assert: (attribute asStringForMethod: method)
-		equals: ('Links for var2:
+		assert: (innerBox asStringForContainerBox: containerBox)
+		equals: ('Links for <var2>:
 
 4 links from this container(method5)'
 				 copyReplaceAll: String cr
 				 with: String crlf).
-	attribute := MiCoAttribute new.
-	attribute
-		name: #var2;
-		method: (method := MiCoMethod new name: #method5) counter: 4;
-		method: (MiCoMethod new name: #method6) counter: 9.
+
+	innerBox
+		containerBox: (self containerBoxOn: 'method6') numberOfUses: 9.
 	self
-		assert: (attribute asStringForMethod: method)
-		equals: ('Links for var2:
+		assert: (innerBox asStringForContainerBox: containerBox)
+		equals: ('Links for <var2>:
 
 4 links from this container(method5)
 9 links from 1 local container'

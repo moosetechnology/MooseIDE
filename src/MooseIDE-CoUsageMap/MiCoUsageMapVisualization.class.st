@@ -6,16 +6,10 @@ Class {
 	#superclass : #MiAbstractVisualization,
 	#instVars : [
 		'specModel',
-		'settings',
 		'mapBuilder'
 	],
 	#category : #'MooseIDE-CoUsageMap-Browser'
 }
-
-{ #category : #'private - for tests' }
-MiCoUsageMapVisualization >> closeSettingsBrowser [
-	settings close
-]
 
 { #category : #brokerage }
 MiCoUsageMapVisualization >> consume: anItem [
@@ -34,10 +28,11 @@ MiCoUsageMapVisualization >> consumeTagAssociation: aFamixTagAssociation [
 	| entity tag miCoObject |
 	entity := aFamixTagAssociation entity.
 	tag := aFamixTagAssociation tag.
-	miCoObject := mapBuilder miMethods , mapBuilder miAttributes 
-		detect: [ :each | each rawObject = entity and: [ each tag ~= tag ] ] ifNone: [ nil ].
+	miCoObject := mapBuilder containerBoxes , mapBuilder innerBoxes 
+		detect: [ :each | each mooseEntity = entity and: [ each tag ~= tag ] ] ifNone: [ nil ].
 	miCoObject ifNil: [ ^ self ].
-	miCoObject tag: tag.
+	self flag: 'tag-association already set, but need to show it in the map'.
+	self specModel tagEntity: miCoObject mooseEntity with: tag.
 	mapBuilder updateShapeColors
 ]
 
@@ -65,9 +60,15 @@ MiCoUsageMapVisualization >> itemsFor: aClass [
 	^ #(  )
 ]
 
+{ #category : #'private - testing' }
+MiCoUsageMapVisualization >> mapBuilder [
+	^mapBuilder 
+]
+
 { #category : #actions }
-MiCoUsageMapVisualization >> openSettingsBrowser [
-	settings := mapBuilder openSettingsBrowser
+MiCoUsageMapVisualization >> openSettings [
+	"called from the visualization's globalMenu"
+	specModel openSettings
 ]
 
 { #category : #brokerage }
@@ -88,7 +89,7 @@ MiCoUsageMapVisualization >> removeTag: aTag [
 	self tagsFromMooseModel: self owner collectionModel mooseModel.
 	legendTag build.
 	
-	mapBuilder markManager removeTag: aTag.
+	mapBuilder menuManager removeTag: aTag.
 	canvas signalUpdate.
 ]
 
@@ -96,8 +97,8 @@ MiCoUsageMapVisualization >> removeTag: aTag [
 MiCoUsageMapVisualization >> removeTagAssociation: aFamixTagAssociation [
 	| entity miCoObject |
 	entity := aFamixTagAssociation entity.
-	miCoObject := mapBuilder miMethods , mapBuilder miAttributes 
-		detect: [ :each | each rawObject = entity ] ifNone: [ nil ].
+	miCoObject := mapBuilder containerBoxes , mapBuilder innerBoxes 
+		detect: [ :each | each mooseEntity = entity ] ifNone: [ nil ].
 	miCoObject ifNil: [ ^ self ].
 	"this avoids call the consumer producer system"
 	miCoObject privateTag: nil.
@@ -109,23 +110,21 @@ MiCoUsageMapVisualization >> run [
 	| model |
 	super run.
 	model := self owner collectionModel.
+	model ifNil: [ ^self ].
 	mapBuilder 
 		container: self canvas;
-		methods: model;
-		settings: self settings;
-		application: self owner application.
-	self updateLegend.
-	mapBuilder build.
+		containerEntities: model;
+		build.
+]
+
+{ #category : #initialization }
+MiCoUsageMapVisualization >> setTag: aTag onEntity: mooseEntity [
+	specModel tagEntity: mooseEntity with: aTag
 ]
 
 { #category : #accessing }
 MiCoUsageMapVisualization >> settings [
-	^ settings
-]
-
-{ #category : #accessing }
-MiCoUsageMapVisualization >> settings: anObject [
-	settings := anObject
+	^self specModel settings
 ]
 
 { #category : #accessing }
@@ -176,10 +175,15 @@ MiCoUsageMapVisualization >> updateLegend [
 	legendTag := mapBuilder legendTagBuilder.
 	legendTag removeOldLegend.
 	legendTag build.
-	mapBuilder updateShapeColors.
+	mapBuilder updateShapeColors
 ]
 
 { #category : #update }
 MiCoUsageMapVisualization >> updateShapeLayout [
 	mapBuilder updateShapeLayout
+]
+
+{ #category : #update }
+MiCoUsageMapVisualization >> updateTagColorFor: anEntity [
+	mapBuilder updateTagColorFor: anEntity
 ]

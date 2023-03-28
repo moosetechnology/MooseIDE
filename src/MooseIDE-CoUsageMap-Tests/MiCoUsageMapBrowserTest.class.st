@@ -10,6 +10,18 @@ MiCoUsageMapBrowserTest >> browserClass [
 ]
 
 { #category : #tests }
+MiCoUsageMapBrowserTest >> testCanOpenSettings [
+
+	browser hasSettings ifFalse: [ self skip ].
+	"this should not raise an error"
+	browser settings.
+  "tear down"
+	[ browser closeSettings ]
+		on: Error
+		do: [ "nothing -- ensuring settings window is closed" ]
+]
+
+{ #category : #tests }
 MiCoUsageMapBrowserTest >> testConsumerProducer [
 	self assert: ((browser application consumersOf: FamixTag) 
 		anySatisfy: [ :each | each = browser mapVisualization ]).

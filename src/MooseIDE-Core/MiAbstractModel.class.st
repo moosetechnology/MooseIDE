@@ -27,7 +27,7 @@ MiAbstractModel >> browser: anObject [
 { #category : #accessing }
 MiAbstractModel >> currentApplication [
 
-	^ MiApplication current
+	^ browser application
 ]
 
 { #category : #accessing }

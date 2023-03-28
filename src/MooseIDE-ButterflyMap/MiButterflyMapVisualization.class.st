@@ -2,7 +2,7 @@
 Butterfly visualization.
 "
 Class {
-	#name : #MiButterflyMap,
+	#name : #MiButterflyMapVisualization,
 	#superclass : #MiAbstractVisualization,
 	#instVars : [
 		'builder'
@@ -11,24 +11,24 @@ Class {
 }
 
 { #category : #running }
-MiButterflyMap >> builder [
+MiButterflyMapVisualization >> builder [
 
 	^ builder
 ]
 
 { #category : #highlighting }
-MiButterflyMap >> highlightShapes [
+MiButterflyMapVisualization >> highlightShapes [
 	
 ]
 
 { #category : #running }
-MiButterflyMap >> model [
+MiButterflyMapVisualization >> model [
 
 	^ self owner model
 ]
 
 { #category : #running }
-MiButterflyMap >> run [
+MiButterflyMapVisualization >> run [
 
 	super run.
 	builder := MiButterflyMapBuilder new
@@ -40,7 +40,7 @@ MiButterflyMap >> run [
 ]
 
 { #category : #running }
-MiButterflyMap >> update [
+MiButterflyMapVisualization >> update [
 
 	builder ifNil: [ self run ] ifNotNil: [ builder build ]
 ]

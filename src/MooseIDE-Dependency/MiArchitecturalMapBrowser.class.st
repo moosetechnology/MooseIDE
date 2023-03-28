@@ -31,7 +31,7 @@ Class {
 { #category : #accessing }
 MiArchitecturalMapBrowser class >> mapClass [
 
-	^ MiArchitecturalMap
+	^ MiArchitecturalMapVisualization
 ]
 
 { #category : #'world menu' }

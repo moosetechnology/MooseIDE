@@ -34,7 +34,7 @@ Class {
 { #category : #accessing }
 MiButterflyMapBrowser class >> mapClass [
 
-	^ MiButterflyMap
+	^ MiButterflyMapVisualization
 ]
 
 { #category : #'world menu' }
