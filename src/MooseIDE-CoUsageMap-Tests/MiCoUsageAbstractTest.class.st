@@ -14,9 +14,15 @@ MiCoUsageAbstractTest >> applicationForTests [
 	^ MiTestApplication new
 ]
 
+{ #category : #'private - testing' }
+MiCoUsageAbstractTest >> buildForTest [
+	builder renderIn: builder container job: MiJob new.
+
+]
+
 { #category : #running }
 MiCoUsageAbstractTest >> createTag: aName [
-	^builder methods anyOne mooseModel tagNamed: aName
+	^builder containerEntities anyOne mooseModel tagNamed: aName
 ]
 
 { #category : #running }
@@ -33,7 +39,7 @@ MiCoUsageAbstractTest >> setUp [
 	visualization := browser mapVisualization.
 
 	builder := visualization mapBuilder.
-	builder methods: browser model collectionModel
+	builder containerEntities: browser model collectionModel
 ]
 
 { #category : #running }

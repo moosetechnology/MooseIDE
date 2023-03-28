@@ -26,15 +26,15 @@ MiCoUsageMapBuilderTest >> testAutomaticColorOfContainerBox [
 
 	| attribute tag method4 method5 |
 	self tagsWithPalette: { 'base'. 'simple' }.
-	builder buildForTest.
+	self buildForTest.
 
-	attribute := builder attributeNamed: #var6.
+	attribute := builder innerBoxNamed: #var6.
 	tag := builder tagNamed: 'base'.
-	builder setTag: tag onAttribute: attribute.
+	builder setTag: tag onInnerBox: attribute.
 
 	builder automaticColor.
-	method4 := builder methodNamed: #method4.
-	method5 := builder methodNamed: #method5.
+	method4 := builder containerBoxNamed: #method4.
+	method5 := builder containerBoxNamed: #method5.
 	self
 		assert: (builder canvas shapeFromModel: method4) children second color
 		equals: tag color.
@@ -47,7 +47,7 @@ MiCoUsageMapBuilderTest >> testAutomaticColorOfContainerBox [
 MiCoUsageMapBuilderTest >> testLastTagInitialization [
 
 	self tagsWithPalette: { 'Frame'. 'Connection' }.
-	builder buildForTest.
+	self buildForTest.
 
 	self assert: builder lastTagSelected isNil.
 
@@ -58,13 +58,13 @@ MiCoUsageMapBuilderTest >> testLastTagWithTag [
 
 	| attribute method tag |
 	self tagsWithPalette: { 'Frame'. 'Connection' }.
-	builder buildForTest.
+	self buildForTest.
 
-	attribute := builder attributeNamed: #var2.
-	method := builder methodNamed: #method1.
+	attribute := builder innerBoxNamed: #var2.
+	method := builder containerBoxNamed: #method1.
 	tag := builder tagNamed: 'Frame'.
 
-	builder setTag: tag onAttribute: attribute.
+	builder setTag: tag onInnerBox: attribute.
 	self assert: builder lastTagSelected equals: tag.
 
 ]
@@ -73,9 +73,9 @@ MiCoUsageMapBuilderTest >> testLastTagWithTag [
 MiCoUsageMapBuilderTest >> testQuickTaggingWithoutLastTag [
 	| innerBox shapes tagColor event |
 	self tagsWithPalette: { 'Frame'. 'Connection' }.
-	builder buildForTest.
+	self buildForTest.
 
-	innerBox := builder attributeNamed: #var1.
+	innerBox := builder innerBoxNamed: #var1.
 	shapes := builder canvas deepShapesFromModel: innerBox.
 	tagColor := builder tagColorFrom: nil.
 	event := RSMouseClick new shape: shapes first.
@@ -91,10 +91,10 @@ MiCoUsageMapBuilderTest >> testQuickTaggingWithoutLastTag [
 MiCoUsageMapBuilderTest >> testQuickTaggingWithoutMetaKey [
 	| innerBox shapes  event tag |
 	self tagsWithPalette: { 'Frame'. 'Connection' }.
-	builder buildForTest.
+	self buildForTest.
 
 	tag := builder tagNamed: 'Frame'.
-	innerBox := builder attributeNamed: #var1.
+	innerBox := builder innerBoxNamed: #var1.
 	shapes := builder canvas deepShapesFromModel: innerBox.
 	event := RSMouseClick new
 		shape: shapes first ;
@@ -114,13 +114,13 @@ MiCoUsageMapBuilderTest >> testSeveralInnerBoxesColorWithTag [
 
 	| attribute shapes tag |
 	self tagsWithPalette: { 'base'. 'simple' }.
-	builder buildForTest.
+	self buildForTest.
 
-	attribute := builder attributeNamed: #var6.
+	attribute := builder innerBoxNamed: #var6.
 	shapes := builder canvas deepShapesFromModel: attribute.
 
 	tag := builder tagNamed: 'base'.
-	builder setTag: tag onAttribute: attribute.
+	builder setTag: tag onInnerBox: attribute.
 	self assert: (shapes allSatisfy: [ :shape | shape color = tag color ]).
 
 ]
@@ -129,9 +129,9 @@ MiCoUsageMapBuilderTest >> testSeveralInnerBoxesColorWithTag [
 MiCoUsageMapBuilderTest >> testSeveralInnerBoxesColorWithoutTag [
 
 	| attribute shapes tagColor |
-	builder buildForTest.
+	self buildForTest.
 
-	attribute := builder attributeNamed: #var6.
+	attribute := builder innerBoxNamed: #var6.
 	shapes := builder canvas deepShapesFromModel: attribute.
 
 	tagColor := builder tagColorFrom: nil.
@@ -143,9 +143,9 @@ MiCoUsageMapBuilderTest >> testSeveralInnerBoxesColorWithoutTag [
 MiCoUsageMapBuilderTest >> testSeveralInnerBoxesForOneEntity [
 
 	| attribute shapes |
-	builder buildForTest.
+	self buildForTest.
 
-	attribute := builder attributeNamed: #var6.
+	attribute := builder innerBoxNamed: #var6.
 	shapes := builder canvas deepShapesFromModel: attribute.
 	self assert: shapes size equals: 2.
 

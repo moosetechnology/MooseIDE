@@ -13,7 +13,7 @@ Class {
 }
 
 { #category : #converting }
-MiCoInnerBox >> asStringForMethod: containerBox [
+MiCoInnerBox >> asStringForContainerBox: containerBox [
 	^ String streamContents: [:s | self printForMethod: containerBox on: s] 
 ]
 

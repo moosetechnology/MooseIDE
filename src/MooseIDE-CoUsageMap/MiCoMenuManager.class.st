@@ -1,15 +1,10 @@
 "
 I create a menu for each element and the main canvas in MiCoUsageMapBuilder.
-Mark means, put a tag into an attribute or method.
-My resposability is automatize the marking process for methods.
-Check automaticColor
-Related to MiCoMarkStrategy
 "
 Class {
 	#name : #MiCoMenuManager,
 	#superclass : #RSInteraction,
 	#instVars : [
-		'menuInteraction',
 		'mapBuilder'
 	],
 	#category : #'MooseIDE-CoUsageMap-Roassal3'
@@ -37,7 +32,7 @@ MiCoMenuManager >> contractLabel: aString [
 { #category : #'building - menus' }
 MiCoMenuManager >> createGlobalMenuOn: menu [
 	(menu
-		add: 'Automatic color methods'
+		add: 'Auto-coloring containers'
 			target: mapBuilder
 			selector: #automaticColor
 			argumentList: #())
@@ -54,13 +49,13 @@ MiCoMenuManager >> createGlobalMenuOn: menu [
 
 { #category : #'building - menus' }
 MiCoMenuManager >> createMenu: aMenuMorph onBox: aMiCoBox [
+
 	aMenuMorph
-		addTitle: aMiCoBox type, ': <', (self contractLabel: aMiCoBox name),'>';
-		add: 'Tags' 
-			subMenu: (self fillTagMenuFor: aMiCoBox inMenu: MenuMorph new);
-		add: 'Inspect'
-			target: aMiCoBox
-			selector: #mooseInspect
+		addTitle:
+			aMiCoBox type , ': <' , (self contractLabel: aMiCoBox name) , '>';
+		add: 'Tags'
+		subMenu: (self fillTagMenu: MenuMorph new for: aMiCoBox);
+		add: 'Inspect' target: aMiCoBox selector: #mooseInspect
 ]
 
 { #category : #'building - menus' }
@@ -70,25 +65,33 @@ MiCoMenuManager >> createMenu: menu onShape: aShape [
 		ifFalse: [ self createGlobalMenuOn: menu ]
 ]
 
+{ #category : #initialization }
+MiCoMenuManager >> defaultMenuInteraction [
+
+	^ RSMenuActivable new
+		  menuDo: [ :menu :aShape | self createMenu: menu onShape: aShape ];
+		  yourself
+]
+
 { #category : #'building - menus' }
-MiCoMenuManager >> fillTagMenuFor: innerBox inMenu: menu [
-	"Fill #menu on #innerBox with all tags (not hidden)"
+MiCoMenuManager >> fillTagMenu: menu for: aMiCoBox [
+	"Fill #menu on #aMiCoBox with all tag names (not hidden tags)"
 	self mapBuilder tags
 		select: [ :aTag | aTag isHidden not ]
 		thenDo: [ :aTag |
 			(menu 
 				add: aTag name
 					target: mapBuilder
-					selector: #setTag:onAttribute:
-					argumentList: { aTag . innerBox })
+					selector: #setTag:onInnerBox:
+					argumentList: { aTag . aMiCoBox })
 				icon: (self iconFormFor: aTag) ].
-		innerBox tag ifNotNil: [ 
+		aMiCoBox tag ifNotNil: [ 
 			menu addLine.
 			(menu 
 				add: 'Remove tag'
 					target: mapBuilder
-					selector: #setTag:onAttribute:
-					argumentList: { nil. innerBox })
+					selector: #setTag:onInnerBox:
+					argumentList: { nil. aMiCoBox })
 				icon: (self iconNamed: 'remove')
 			 ].
 	^ menu
@@ -99,15 +102,6 @@ MiCoMenuManager >> iconFormFor: aMiCoTag [
 	^ (FormCanvas extent: 15 asPoint)
 		fillColor: aMiCoTag color;
 		form
-]
-
-{ #category : #initialization }
-MiCoMenuManager >> initialize [
-	super initialize.
-
-	menuInteraction := RSMenuActivable new
-		menuDo: [ :menu :aShape | self createMenu: menu onShape: aShape ];
-		yourself
 ]
 
 { #category : #accessing }
@@ -125,7 +119,7 @@ MiCoMenuManager >> mapBuilder: anObject [
 { #category : #hooks }
 MiCoMenuManager >> onShape: aShape [
 	aShape
-		addInteraction: menuInteraction;
+		addInteraction: self defaultMenuInteraction ;
 		when: RSMouseLeftClick send: #clickOn: to: self
 ]
 
@@ -133,18 +127,4 @@ MiCoMenuManager >> onShape: aShape [
 MiCoMenuManager >> release [
 	super release.
 	self class instVarNames do: [ :n | self instVarNamed: n put: nil ]
-]
-
-{ #category : #public }
-MiCoMenuManager >> removeTag: aMiCoTag [
-	self changeTagsDuring: [ 
-		self mapBuilder miMethods, self mapBuilder miAttributes
-			select: [:each | each tag = aMiCoTag ]
-			thenDo: [:each | self setTag: nil onAttribute: each ].
-	]
-]
-
-{ #category : #accessing }
-MiCoMenuManager >> specModel [
-	^mapBuilder specModel
 ]

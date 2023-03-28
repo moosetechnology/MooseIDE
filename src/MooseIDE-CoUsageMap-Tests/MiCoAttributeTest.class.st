@@ -42,7 +42,7 @@ MiCoAttributeTest >> test03PopupMessage [
 		containerBox: (self containerBoxOn: 'method3') numberOfUses: 1;
 		containerBox: (self containerBoxOn: 'method4') numberOfUses: 2.
 	self
-		assert: (innerBox asStringForMethod: containerBox)
+		assert: (innerBox asStringForContainerBox: containerBox)
 		equals: ('Links for <var1>:
 
 3 links from this container(method1)
@@ -55,7 +55,7 @@ MiCoAttributeTest >> test03PopupMessage [
 	innerBox
 		containerBox: containerBox numberOfUses: 4.
 	self
-		assert: (innerBox asStringForMethod: containerBox)
+		assert: (innerBox asStringForContainerBox: containerBox)
 		equals: ('Links for <var2>:
 
 4 links from this container(method5)'
@@ -65,7 +65,7 @@ MiCoAttributeTest >> test03PopupMessage [
 	innerBox
 		containerBox: (self containerBoxOn: 'method6') numberOfUses: 9.
 	self
-		assert: (innerBox asStringForMethod: containerBox)
+		assert: (innerBox asStringForContainerBox: containerBox)
 		equals: ('Links for <var2>:
 
 4 links from this container(method5)

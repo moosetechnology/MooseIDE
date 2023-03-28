@@ -9,10 +9,10 @@ MiCoMenuManagerTest >> test02OpenMenu [
 
 	| attribute method |
 	self tagsWithPalette: { 'base'. 'simple' }.
-	builder buildForTest.
+	self buildForTest.
 
-	attribute := builder attributeNamed: #var2.
-	method := builder methodNamed: #method1.
+	attribute := builder innerBoxNamed: #var2.
+	method := builder containerBoxNamed: #method1.
 	builder menuManager createMenu: MenuMorph new onBox: attribute.
 	builder menuManager createMenu: MenuMorph new onBox: method.
 	builder menuManager
@@ -24,10 +24,10 @@ MiCoMenuManagerTest >> test02OpenMenu [
 MiCoMenuManagerTest >> test06SelectInnerBox [
 	| attribute1 attribute2 method shape1 shape2 default selected |
 	self tagsWithPalette: { 'Frame'. 'Connection' }.
-	builder buildForTest.
-	attribute1 := builder attributeNamed: #var1.
-	attribute2 := builder attributeNamed: #var2.
-	method := builder methodNamed: #method1.
+	self buildForTest.
+	attribute1 := builder innerBoxNamed: #var1.
+	attribute2 := builder innerBoxNamed: #var2.
+	method := builder containerBoxNamed: #method1.
 	shape1 := builder canvas deepShapeFromModel: attribute1.
 	shape2 := builder canvas deepShapeFromModel: attribute2.
 	default := builder highlightManager defaultBoxBorder color.

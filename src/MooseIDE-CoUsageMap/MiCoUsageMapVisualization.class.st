@@ -28,7 +28,7 @@ MiCoUsageMapVisualization >> consumeTagAssociation: aFamixTagAssociation [
 	| entity tag miCoObject |
 	entity := aFamixTagAssociation entity.
 	tag := aFamixTagAssociation tag.
-	miCoObject := mapBuilder miMethods , mapBuilder miAttributes 
+	miCoObject := mapBuilder containerBoxes , mapBuilder innerBoxes 
 		detect: [ :each | each mooseEntity = entity and: [ each tag ~= tag ] ] ifNone: [ nil ].
 	miCoObject ifNil: [ ^ self ].
 	self flag: 'tag-association already set, but need to show it in the map'.
@@ -97,7 +97,7 @@ MiCoUsageMapVisualization >> removeTag: aTag [
 MiCoUsageMapVisualization >> removeTagAssociation: aFamixTagAssociation [
 	| entity miCoObject |
 	entity := aFamixTagAssociation entity.
-	miCoObject := mapBuilder miMethods , mapBuilder miAttributes 
+	miCoObject := mapBuilder containerBoxes , mapBuilder innerBoxes 
 		detect: [ :each | each mooseEntity = entity ] ifNone: [ nil ].
 	miCoObject ifNil: [ ^ self ].
 	"this avoids call the consumer producer system"
@@ -113,7 +113,7 @@ MiCoUsageMapVisualization >> run [
 	model ifNil: [ ^self ].
 	mapBuilder 
 		container: self canvas;
-		methods: model;
+		containerEntities: model;
 		build.
 ]
 
