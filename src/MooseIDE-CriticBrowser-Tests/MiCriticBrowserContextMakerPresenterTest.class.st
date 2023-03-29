@@ -59,8 +59,8 @@ MiCriticBrowserContextMakerPresenterTest >> testEditContext [
 	editContextPresenter fillContextToEdit: context.
 	editContextPresenter contextTitle text: newTitle.
 	editContextPresenter codeInput text: newBlock.
-	"editContextPresenter contextSummary text: newSummary.
-	editContextPresenter editContext: context.
+	editContextPresenter contextSummary text: newSummary.
+	"editContextPresenter editContext: context.
 	self assert: context name equals: newTitle.
 	self assert: context contextBlock asString equals: newBlock.
 	self assert: context summary equals: newSummary"
