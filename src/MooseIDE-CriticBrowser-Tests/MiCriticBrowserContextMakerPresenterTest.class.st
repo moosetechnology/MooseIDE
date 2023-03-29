@@ -48,7 +48,7 @@ MiCriticBrowserContextMakerPresenterTest >> testAddInputtedCodeRule [
 { #category : #test }
 MiCriticBrowserContextMakerPresenterTest >> testEditContext [
 	| context newTitle newBlock newSummary |
-	self skip.
+
 	context := FamixCBContext named: 'test' on: '[ :col | col ]' summary: 'règle utilisée pour un test'.
 	newTitle := 'test édité'.
 	newBlock := '[ :col | col allClasses ]'.
@@ -67,7 +67,7 @@ MiCriticBrowserContextMakerPresenterTest >> testEditContext [
 { #category : #tests }
 MiCriticBrowserContextMakerPresenterTest >> testFillContextToEdit [
 	| context |
-
+self skip.
 	context := FamixCBContext named: 'test' on: '[ :col | col ]' summary: 'règle utilisée pour un test'.
 	
 	addContextsPresenter fillContextToEdit: context.
