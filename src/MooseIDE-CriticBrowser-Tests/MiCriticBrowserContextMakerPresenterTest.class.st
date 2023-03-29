@@ -67,7 +67,7 @@ MiCriticBrowserContextMakerPresenterTest >> testEditContext [
 { #category : #tests }
 MiCriticBrowserContextMakerPresenterTest >> testFillContextToEdit [
 	| context |
-	self skip.
+
 	context := FamixCBContext named: 'test' on: '[ :col | col ]' summary: 'règle utilisée pour un test'.
 	
 	addContextsPresenter fillContextToEdit: context.
