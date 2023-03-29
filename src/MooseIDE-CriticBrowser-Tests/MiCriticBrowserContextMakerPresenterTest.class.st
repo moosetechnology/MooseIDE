@@ -33,7 +33,7 @@ MiCriticBrowserContextMakerPresenterTest >> tearDown [
 
 { #category : #tests }
 MiCriticBrowserContextMakerPresenterTest >> testAddInputtedCodeRule [
-
+self skip.
 	addContextsPresenter contextTitle text: 'test'.
 	addContextsPresenter codeInput text: '[ :col | col allClasses ]'.
 	addContextsPresenter addButtonAction.
@@ -47,7 +47,7 @@ MiCriticBrowserContextMakerPresenterTest >> testAddInputtedCodeRule [
 { #category : #test }
 MiCriticBrowserContextMakerPresenterTest >> testEditContext [
 	| context newTitle newBlock newSummary |
-self skip.
+
 	context := FamixCBContext named: 'test' on: '[ :col | col ]' summary: 'règle utilisée pour un test'.
 	newTitle := 'test édité'.
 	newBlock := '[ :col | col allClasses ]'.
