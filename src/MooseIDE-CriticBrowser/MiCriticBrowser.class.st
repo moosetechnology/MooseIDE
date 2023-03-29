@@ -23,10 +23,17 @@ Class {
 		'rules',
 		'expandMenu',
 		'addContextsPresenter',
-		'contextEditorPresenter'
+		'contextEditorPresenter',
+		'statusLabel'
 	],
 	#category : #'MooseIDE-CriticBrowser-Browser'
 }
+
+{ #category : #private }
+MiCriticBrowser class >> dateAndTimeString [
+
+	^ DateAndTime now asStringYMDHM
+]
 
 { #category : #'world menu' }
 MiCriticBrowser class >> menuCommandOn: aBuilder [
@@ -136,10 +143,15 @@ MiCriticBrowser >> defaultLayout [
 			yourself);
 		yourself);
 		add: (SpBoxLayout newLeftToRight
-			addLast: importButton;
-			addLast: exportButton;
-			spacing: 5; 
-			addLast: runButton;
+			add: statusLabel;
+			add: (SpBoxLayout newLeftToRight 
+				addLast: importButton;
+				addLast: exportButton;
+				addLast: runButton;
+				hAlignEnd;
+				spacing: 5;
+				yourself);
+			vAlignCenter;
 			yourself) expand: false;
 	yourself
 ]
@@ -382,11 +394,12 @@ MiCriticBrowser >> initializeMenu [
 
 { #category : #initialization }
 MiCriticBrowser >> initializePresenters [
-	
+
 	super initializePresenters.
 	self initializeMenu.
 	self initializeLists.
 	self initializeButtons.
+	self initializeStatusLabel.
 	
 	addRulesPresenter := MiCriticBrowserAddRulesPresenter on: self.
 	rulesEditorPresenter := MiCriticBrowserEditRulePresenter on: self.
@@ -397,6 +410,13 @@ MiCriticBrowser >> initializePresenters [
 			add: rules;
 			add: rulesResult;
 			add: runButton.
+]
+
+{ #category : #initialization }
+MiCriticBrowser >> initializeStatusLabel [
+
+	statusLabel := self newLabel.
+	self updateStatusLabel: 'Critic Browser is ready to work!'
 ]
 
 { #category : #initialization }
@@ -432,18 +452,17 @@ MiCriticBrowser >> rulesResult [
 	^ rulesResult 
 ]
 
-{ #category : #'accessing - testing' }
-MiCriticBrowser >> runButton [
-"used for testing purposes, do not access outside of tests"
-	^ runButton
-]
-
 { #category : #'buttons actions' }
 MiCriticBrowser >> runButtonAction [
-"executes the queries on the entities stored in the model, then prints the results"
+
+	"executes the queries on the entities stored in the model, then prints the results"
+
+	[ 
 	self model run.
+	self updateStatusLabel: 'Updating display...'.
 	self updateResultList: specModel getAllViolations.
-	self updateRulesList
+	self updateRulesList.
+	self updateStatusLabel: 'Critics finished.' ] fork
 ]
 
 { #category : #'selected object' }
@@ -465,6 +484,12 @@ MiCriticBrowser >> sortedChildren: each for: aTreePresenter [
 
 	^ (self children: each for: aTreePresenter) sorted: [ :a :b | 
 		  a printString < b printString ]
+]
+
+{ #category : #accessing }
+MiCriticBrowser >> statusLabel [
+
+	^ statusLabel
 ]
 
 { #category : #naming }
@@ -510,4 +535,12 @@ MiCriticBrowser >> updateResultList: aCollection [
 MiCriticBrowser >> updateRulesList [
 	self rules updateRootsKeepingSelection: self rules roots.
 	self rules expandAll 
+]
+
+{ #category : #'buttons actions' }
+MiCriticBrowser >> updateStatusLabel: aString [
+
+	self statusLabel label: ('{1}: {2}' format: { 
+				 self class dateAndTimeString.
+				 aString })
 ]

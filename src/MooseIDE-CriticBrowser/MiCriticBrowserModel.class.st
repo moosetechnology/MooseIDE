@@ -131,8 +131,10 @@ MiCriticBrowserModel >> ruleComponents [
 { #category : #running }
 MiCriticBrowserModel >> run [
 
-	rootContext runDownTree: entities withCallback: [ :aName | 
-		"self browser updateStatusLabel: 'Running critic ' , aName , '.' "].
+	rootContext
+		runDownTree: entities
+		withCallback: [ :aName | 
+		self browser updateStatusLabel: 'Running ' , aName ].
 	violations := rootContext getAllViolations
 ]
 
