@@ -32,7 +32,7 @@ Class {
 { #category : #private }
 MiCriticBrowser class >> dateAndTimeString [
 
-	^ '2023-03-29 12:19'
+	^ DateAndTime now asStringYMDHM
 ]
 
 { #category : #'world menu' }

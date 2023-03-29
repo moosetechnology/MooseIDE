@@ -134,7 +134,7 @@ MiCriticBrowserModel >> run [
 	rootContext
 		runDownTree: entities
 		withCallback: [ :aName | 
-		self browser updateStatusLabel: 'Running ' , aName ].
+		"self browser updateStatusLabel: 'Running ' , aName "].
 	violations := rootContext getAllViolations
 ]
 
