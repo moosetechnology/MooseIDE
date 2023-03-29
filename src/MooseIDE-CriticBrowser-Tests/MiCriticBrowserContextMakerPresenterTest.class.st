@@ -57,8 +57,8 @@ MiCriticBrowserContextMakerPresenterTest >> testEditContext [
 	newSummary := 'contexte modifié pour un test'.
 
 	editContextPresenter fillContextToEdit: context.
-"	editContextPresenter contextTitle text: newTitle.
-	editContextPresenter codeInput text: newBlock.
+	editContextPresenter contextTitle text: newTitle.
+"	editContextPresenter codeInput text: newBlock.
 	editContextPresenter contextSummary text: newSummary.
 	editContextPresenter editContext: context.
 	self assert: context name equals: newTitle.
