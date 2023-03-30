@@ -214,6 +214,12 @@ MiCriticBrowser >> followEntity: anEntity [
 	self updateResultList: {  }
 ]
 
+{ #category : #initialization }
+MiCriticBrowser >> haltFuel [
+	FLDebuggerStackSerializer serializeStackFromContext: thisContext.
+	
+]
+
 { #category : #'load and saving' }
 MiCriticBrowser >> importRules [
 "opens an UI to choose what rules file to import, before opening a stream on it and importing the rules"
@@ -320,7 +326,9 @@ MiCriticBrowser >> initializeLists [
 		display: [ :each | self stringForItem: each ];
 		displayIcon: [ :each | 
 			each class = FamixCBViolation
-				ifTrue: [ self haltIf: [each violatedCondition severity isNil].
+				ifTrue: [" FLDebuggerStackSerializer serializeStackFromContext: thisContext.
+					Smalltalk quit."
+					self haltFuel.
 					self iconNamed: each violatedCondition severity iconName ]
 				ifFalse: [ self iconNamed: 'blank' ] ];
 		children: [ :each | self sortedChildren: each for: rulesResult ];
