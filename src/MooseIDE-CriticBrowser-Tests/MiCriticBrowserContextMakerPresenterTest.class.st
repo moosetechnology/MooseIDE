@@ -36,7 +36,7 @@ MiCriticBrowserContextMakerPresenterTest >> tearDown [
 
 { #category : #tests }
 MiCriticBrowserContextMakerPresenterTest >> testAddInputtedCodeRule [
-self skip.
+
 	addContextsPresenter contextTitle text: 'test'.
 	addContextsPresenter codeInput text: '[ :col | col allClasses ]'.
 	addContextsPresenter addButtonAction.
