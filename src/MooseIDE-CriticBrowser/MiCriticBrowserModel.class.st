@@ -152,6 +152,7 @@ MiCriticBrowserModel >> setEntities: aMooseObject [
 	entities := aMooseObject isCollection
 		            ifTrue: [ aMooseObject ]
 		            ifFalse: [ { aMooseObject } asMooseGroup ].
+self browser haltFuel.
 	self resetResults
 ]
 
