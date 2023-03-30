@@ -179,13 +179,14 @@ MiCriticBrowserRulesMakerPresenter >> initializePresenters [
 		                           yourself.
 
 	severityDroplist := self newDropList
-		                    items:
-			                    AbstractSeverity allSubclasses;
+		                    items: AbstractSeverity allSubclasses;
 		                    display: [ :item | 
-			                    item title , ' (Level = ' , item level asString, ')' ];
+			                    item title , ' (Level = ' , item level asString
+			                    , ')' ];
 		                    displayIcon: [ :item | 
-			                    MooseIcons mooseIcon"self iconNamed: item iconName" ];
-		                    sortingBlock: [ :a :b | a model level < b model level ]
+			                    self iconNamed: item iconName ];
+		                    sortingBlock: [ :a :b | 
+			                    a model level < b model level ]
 ]
 
 { #category : #initialization }
