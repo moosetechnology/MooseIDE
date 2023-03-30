@@ -318,10 +318,12 @@ MiCriticBrowser >> initializeLists [
 
 	rulesResult
 		display: [ :each | self stringForItem: each ];
-		displayIcon: [ :each |
-			each class = FamixCBViolation ifTrue: [ 
-					 MooseIcons mooseIcon"self iconNamed: each violatedCondition severity iconName" ] ifFalse: [ self iconNamed: 'blank' ] ];
-		children: [ :each | (self sortedChildren: each for: rulesResult) ];
+		displayIcon: [ :each | 
+			each class = FamixCBViolation
+				ifTrue: [ self haltIf: [each violatedCondition severity isNil].
+					self iconNamed: each violatedCondition severity iconName ]
+				ifFalse: [ self iconNamed: 'blank' ] ];
+		children: [ :each | self sortedChildren: each for: rulesResult ];
 		contextMenu: expandMenu;
 		activateOnDoubleClick;
 		whenActivatedDo: [ :each | each selectedItem inspect ]
