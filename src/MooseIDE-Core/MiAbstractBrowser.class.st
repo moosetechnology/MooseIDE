@@ -554,9 +554,8 @@ MiAbstractBrowser >> showHelp [
 
 { #category : #actions }
 MiAbstractBrowser >> tagEntitiesSelected [
-
-	^self model
-		ifNotNil: [ :model | model tagEntitiesSelected ]
+self halt.
+	^ self model ifNotNil: [ :model | model tagEntitiesSelected ]
 ]
 
 { #category : #accessing }
