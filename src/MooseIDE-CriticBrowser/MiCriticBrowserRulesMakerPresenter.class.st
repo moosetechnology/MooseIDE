@@ -184,7 +184,7 @@ MiCriticBrowserRulesMakerPresenter >> initializePresenters [
 		                    display: [ :item | 
 			                    item title , ' (Level = ' , item level asString, ')' ];
 		                    displayIcon: [ :item | 
-			                    self iconNamed: item iconName ];
+			                    self iconNamed: MooseIcons mooseIcon"item iconName" ];
 		                    sortingBlock: [ :a :b | a model level < b model level ]
 ]
 
