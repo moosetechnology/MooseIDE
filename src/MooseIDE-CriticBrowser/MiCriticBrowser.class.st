@@ -216,7 +216,7 @@ MiCriticBrowser >> followEntity: anEntity [
 
 { #category : #initialization }
 MiCriticBrowser >> haltFuel [
-	FLDebuggerStackSerializer serializeStackFromContext: thisContext.
+	FLDebuggerStackSerializer serializeStackFromContext: thisContext home.
 	
 ]
 
