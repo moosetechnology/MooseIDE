@@ -1,6 +1,6 @@
 Class {
 	#name : #MiTreeVisualizationModel,
-	#superclass : #Object,
+	#superclass : #MiAbstractModel,
 	#instVars : [
 		'selected',
 		'root'
@@ -11,7 +11,9 @@ Class {
 { #category : #'plugin interface' }
 MiTreeVisualizationModel >> entities [
 
-	^ { self root } , self root children asMooseGroup
+	^ self root
+		ifNil: [ #() ]
+		ifNotNil: [ :theRoot | { theRoot } , theRoot children asMooseGroup]
 ]
 
 { #category : #accessing }

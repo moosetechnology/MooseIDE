@@ -26,9 +26,21 @@ MiExportBrowserTest >> testMiSelectedItem [
 	| entityToSelect |
 	self assert: browser miSelectedItem isEmpty.
 
-	entityToSelect := FamixStClass named: 'TestClass'.
+	entityToSelect := FamixRepTestClass named: 'TestClass'.
 	browser followEntity: entityToSelect.
 
 	self assert: browser miSelectedItem size equals: 1.
 	self assert: browser miSelectedItem anyOne equals: entityToSelect
+]
+
+{ #category : #'tests - tags' }
+MiExportBrowserTest >> testSelectedTagSetAndGet [
+	| model entity tag |
+	model := FamixRepTestModel new.
+	tag := model tagNamed: 'aTag'.
+	entity := FamixRepTestClass new name: 'aClass' ; mooseModel: model ; yourself.
+
+	browser followEntity: entity.
+	browser selectedTag: tag.
+	self assert: browser selectedTag equals: tag
 ]

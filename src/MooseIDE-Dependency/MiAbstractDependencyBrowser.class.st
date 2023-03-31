@@ -26,6 +26,31 @@ Class {
 	#category : #'MooseIDE-Dependency-Dependency'
 }
 
+{ #category : #menu }
+MiAbstractDependencyBrowser class >> addItemOrSubMenuToMiBrowsersMenu: aRootMenu defaultSubMenu: aSubMenu [
+
+	aSubMenu addItem: [ :item | 
+		| subMenu |
+		subMenu := SpMenuPresenter new.
+		self subclassesDo: [ :browserClass | 
+			browserClass addToMiBrowsersMenu: subMenu ].
+		item
+			name: self depedencyMenuLabel;
+			subMenu: subMenu ]
+]
+
+{ #category : #'world menu' }
+MiAbstractDependencyBrowser class >> depedencyMenuLabel [
+
+	^ 'Dependency'
+]
+
+{ #category : #'world menu' }
+MiAbstractDependencyBrowser class >> dependencyMenuRoot [
+
+	^ #MooseIDEDependencyBrowsers
+]
+
 { #category : #testing }
 MiAbstractDependencyBrowser class >> isAbstract [ 
 	^ self == MiAbstractDependencyBrowser
@@ -33,15 +58,18 @@ MiAbstractDependencyBrowser class >> isAbstract [
 
 { #category : #'world menu' }
 MiAbstractDependencyBrowser class >> menuCommandOn: aBuilder [
+
+	"Build root for Dependency browsers"
+
 	<worldMenu>
-	<miBrowsers>
-	(aBuilder item: self toolbarDependencyName)
-		parent: (self midasBrowserMenuLabel) ;
-		order: 30 ;
-		label: 'Dependency'
+	(aBuilder item: self dependencyMenuRoot)
+		parent: self oldBrowserMenuRoot;
+		order: self menuPriority;
+		label: self depedencyMenuLabel
 ]
 
 { #category : #'world menu' }
-MiAbstractDependencyBrowser class >> toolbarDependencyName [
-	^ 'MooseIDEDependencyBrowser'
+MiAbstractDependencyBrowser class >> menuPriority [
+
+	^ 30
 ]

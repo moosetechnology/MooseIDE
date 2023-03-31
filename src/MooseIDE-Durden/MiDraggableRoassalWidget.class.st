@@ -12,8 +12,8 @@ Class {
 }
 
 { #category : #specs }
-MiDraggableRoassalWidget class >> defaultSpec [
-	^ super defaultSpec
+MiDraggableRoassalWidget class >> defaultLayout [
+	^ super defaultLayout
 		add: #viewport;
 		add: #refresh height: self toolbarHeight; 
 		yourself

@@ -7,12 +7,10 @@ I manage all the logic related to showing all the queries. Also, I update myself
 "
 Class {
 	#name : #MiQueriesListPresenter,
-	#superclass : #SpPresenter,
+	#superclass : #MiPresenter,
 	#instVars : [
 		'componentListPresenter',
 		'queryCounter',
-		'progressNotificationPresenter',
-		'spinnerMorph',
 		'queryItemsPresenters',
 		'loadQueriesButton',
 		'loadQueriesList',
@@ -63,6 +61,27 @@ MiQueriesListPresenter >> availableQueryTypes [
 		  each isAvailableForQueriesSize: queryItemsPresenters size ]
 ]
 
+{ #category : #actions }
+MiQueriesListPresenter >> constructQueries: acollectionsOfQueries [
+
+	"Put the root query as the parent for the first level unary queries"
+
+	acollectionsOfQueries do: [ :each | 
+		each parent ifNil: [ "This works only for subclasses of FQUnaryQuery: " 
+			each parent: self queriesBrowser rootQuery ] ].
+
+	acollectionsOfQueries do: [ :each | 
+		| newPresenter |
+		newPresenter := self createNewQueryPresenter: (each parent
+				                 ifNil: [ self queriesBrowser rootQuery ]
+				                 ifNotNil: [ each parent ]).
+		newPresenter configureFor: each.
+
+		self queryItemsPresenters add: newPresenter ].
+
+	self updateComponentList
+]
+
 { #category : #'api - actions' }
 MiQueriesListPresenter >> createNewQueryPresenter: query [
 
@@ -74,38 +93,6 @@ MiQueriesListPresenter >> createNewQueryPresenter: query [
 	newPresenter setQueryNumber: queryCounter.
 	queryCounter := queryCounter + 1.
 	^ newPresenter
-]
-
-{ #category : #'api - actions' }
-MiQueriesListPresenter >> disableProgressNotification [
-
-	progressNotificationPresenter := SpNullPresenter new.
-	spinnerMorph delete.
-	self initializeLayout
-]
-
-{ #category : #'api - actions' }
-MiQueriesListPresenter >> enableProgressNotification [
-
-	| queriesBrowserMorph font morph |
-	font := LogicalFont
-			familyName: StandardFonts defaultFont familyName
-			pointSize: 12.
-	morph := StringMorph
-			contents: 'Computing...'
-			font: font
-			emphasis: TextEmphasis italic.
-	progressNotificationPresenter := SpMorphPresenter new
-			morph: (PanelMorph new
-				addMorphFront: morph;
-				yourself);
-			yourself.
-	queriesBrowser window ifNotNil: [ 
-		queriesBrowserMorph := queriesBrowser window window.
-		spinnerMorph position:
-			queriesBrowserMorph extent / 2 + queriesBrowserMorph position.
-		spinnerMorph openInWorld ].
-	self initializeLayout
 ]
 
 { #category : #accessing }
@@ -154,10 +141,10 @@ MiQueriesListPresenter >> initializeComponentListPresenter [
 MiQueriesListPresenter >> initializeLayout [
 
 	self layout: (SpBoxLayout newTopToBottom
-		add: queryToolBar expand: false;
-		add: componentListPresenter;
-		add: progressNotificationPresenter expand: false;
-		yourself)
+			 spacing: 1;
+			 add: queryToolBar expand: false;
+			 add: componentListPresenter;
+			 yourself)
 ]
 
 { #category : #initialization }
@@ -165,16 +152,8 @@ MiQueriesListPresenter >> initializePresenters [
 
 	queryItemsPresenters := OrderedCollection empty.
 	self initializeComponentListPresenter.
-	self initializeProgressPresenter.
 	self initializeQueryToolbar.
 	self initializeLayout
-]
-
-{ #category : #initialization }
-MiQueriesListPresenter >> initializeProgressPresenter [
-
-	progressNotificationPresenter := SpNullPresenter new.
-	spinnerMorph := SpSpinnerMorph new
 ]
 
 { #category : #initialization }
@@ -220,10 +199,15 @@ MiQueriesListPresenter >> queryItemsPresenters [
 { #category : #actions }
 MiQueriesListPresenter >> reinitializeQueryPresenters [
 
+	| anItem |
 	queryCounter := 1.
 	self announcer subscriptions reset.
 	queryItemsPresenters := OrderedCollection new.
-	componentListPresenter presenters: queryItemsPresenters
+	componentListPresenter presenters: queryItemsPresenters.
+	self owner rootQuery children ifEmpty: [ ^ self ].
+	anItem := self owner rootQuery children anyOne.
+	self owner rootQuery children removeAll.
+	self owner application removeItem: anItem
 ]
 
 { #category : #actions }
@@ -250,17 +234,6 @@ MiQueriesListPresenter >> removeQueryAction: aQueryCreationPresenter [
 MiQueriesListPresenter >> setModelBeforeInitialization: aQueryBrowserPresenter [
 
 	queriesBrowser := aQueryBrowserPresenter
-]
-
-{ #category : #actions }
-MiQueriesListPresenter >> showLoadQueriesPopover [
-
-	loadQueriesList resetItems.
-	self newPopover
-		relativeTo: loadQueriesButton;
-		presenter: loadQueriesList;
-		bePositionLeft;
-		popup
 ]
 
 { #category : #update }

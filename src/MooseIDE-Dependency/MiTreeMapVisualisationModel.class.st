@@ -1,6 +1,6 @@
 Class {
 	#name : #MiTreeMapVisualisationModel,
-	#superclass : #Object,
+	#superclass : #MiAbstractModel,
 	#instVars : [
 		'entities'
 	],

@@ -33,9 +33,13 @@ QueryResultTreePresenter class >> headerTitle [
 
 { #category : #initialization }
 QueryResultTreePresenter >> childrenOf: item [
+
 	^ (self roots includes: item)
-		ifTrue: [ sortedEntitiesCache at: item ifAbsentPut: [ item entities sort: #name ascending ] ]
-		ifFalse: {}
+		  ifTrue: [ 
+			  sortedEntitiesCache
+				  at: item
+				  ifAbsentPut: [ item entities sort: #name ascending ] ]
+		  ifFalse: {  }
 ]
 
 { #category : #initialization }
@@ -54,20 +58,29 @@ QueryResultTreePresenter >> initialize [
 
 { #category : #'private - for tests' }
 QueryResultTreePresenter >> items [
+
 	^ self roots flatCollect: [ :root | self childrenOf: root ]
 ]
 
 { #category : #accessing }
 QueryResultTreePresenter >> miSelectedItem [
-	^ (self selectedItems
-		collect: [ :item | 
-			item isCollection
-				ifTrue: [ item entities ]
-				ifFalse: [ item ] ]) flattened copyWithoutDuplicates asMooseGroup
+
+	^ (self selectedItems collect: [ :item | 
+		   item isCollection
+			   ifTrue: [ item entities ]
+			   ifFalse: [ item ] ]) flattened copyWithoutDuplicates
+		  asMooseGroup
+]
+
+{ #category : #accessing }
+QueryResultTreePresenter >> queriesBrowser [
+
+	^ owner owner
 ]
 
 { #category : #naming }
 QueryResultTreePresenter >> stringForItem: item [
+
 	(self roots includes: item) ifTrue: [ ^ item description ].
 	^ item name
 ]
@@ -81,13 +94,4 @@ QueryResultTreePresenter >> updateForEntities: entities [
 	groups do: [ :group | group description: group details ].
 	self roots:
 		(groups sort: [ :group | group description onlyLetters ] ascending)
-]
-
-{ #category : #update }
-QueryResultTreePresenter >> updateForQuery: aQuery [
-	self
-		updateForEntities:
-			(aQuery isValid
-				ifTrue: [ aQuery result ]
-				ifFalse: [ MooseGroup new ])
 ]

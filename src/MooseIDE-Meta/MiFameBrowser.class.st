@@ -15,24 +15,43 @@ Class {
 	#category : #'MooseIDE-Meta-FameBrowser'
 }
 
-{ #category : #specs }
-MiFameBrowser class >> defaultSpec [
-	^ super defaultSpec
-		add: #fameDescription;
-		yourself
+{ #category : #layout }
+MiFameBrowser class >> defaultLayout [
+
+	^ super defaultLayout
+		  add: #fameDescription;
+		  yourself
 ]
 
 { #category : #'world menu' }
 MiFameBrowser class >> menuCommandOn: aBuilder [
+
 	<worldMenu>
-	<miBrowsers>
-	(aBuilder item: #Fame)
-		parent: (self metaBrowsersMenuLabel);
-		label: (self title);
-		icon: (self iconNamed: #mooseFame);
-		order: 4;
-		help: (self helpMessage);
-		action: [ self open ]
+	^ self buildMenuItemIn: aBuilder
+]
+
+{ #category : #'world menu' }
+MiFameBrowser class >> menuIconName [
+
+	^ #mooseFame
+]
+
+{ #category : #'world menu' }
+MiFameBrowser class >> menuItem [
+
+	^ #Fame
+]
+
+{ #category : #'world menu' }
+MiFameBrowser class >> menuParent [
+
+	^ self oldMetaBrowsersMenuRoot
+]
+
+{ #category : #'world menu' }
+MiFameBrowser class >> menuPriority [
+
+	^ 4
 ]
 
 { #category : #'instance creation' }
@@ -52,10 +71,16 @@ MiFameBrowser >> canFollowEntity: anObject [
 	^ anObject isMooseEntity
 ]
 
+{ #category : #testing }
+MiFameBrowser >> canTagEntities [ 
+
+	^false
+]
+
 { #category : #actions }
 MiFameBrowser >> followEntity: anEntity [
 
-	model := anEntity.
+	specModel := anEntity.
 	fameDescription items: anEntity mooseDescription allComplexProperties.
 	self updateWindowTitleWith: anEntity name
 ]
@@ -96,7 +121,7 @@ MiFameBrowser >> initializePresenters [
 { #category : #accessing }
 MiFameBrowser >> miSelectedItem [
 
-	^ model
+	^ specModel
 ]
 
 { #category : #actions }

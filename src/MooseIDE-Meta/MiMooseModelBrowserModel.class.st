@@ -1,6 +1,6 @@
 Class {
 	#name : #MiMooseModelBrowserModel,
-	#superclass : #Object,
+	#superclass : #MiAbstractModel,
 	#instVars : [
 		'selected',
 		'model'
@@ -13,6 +13,11 @@ MiMooseModelBrowserModel class >> model: aMooseModel [
 	^ self new
 		model: aMooseModel;
 		yourself
+]
+
+{ #category : #accessing }
+MiMooseModelBrowserModel >> entities [
+	^self model
 ]
 
 { #category : #accessing }

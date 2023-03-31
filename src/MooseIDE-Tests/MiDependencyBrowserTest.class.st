@@ -32,6 +32,11 @@ MiDependencyBrowserTest >> testActivateActionButtons [
 ]
 
 { #category : #tests }
+MiDependencyBrowserTest >> testCanTagEntities [
+	self deny: browser canTagEntities 
+]
+
+{ #category : #tests }
 MiDependencyBrowserTest >> testMiSelectedItem [
 
 	self assert: browser miSelectedItem isMooseObject.

@@ -7,13 +7,15 @@ name: CI
 on:
   pull_request:
     branches: [development]
+  pull_request_review:
+    types: [submitted]
 
 jobs:
   test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        smalltalk: [ Pharo64-9.0 ]
+        smalltalk: [ Pharo64-10 ]
     name: ${{ matrix.smalltalk }}
     steps:
       - uses: actions/checkout@v2

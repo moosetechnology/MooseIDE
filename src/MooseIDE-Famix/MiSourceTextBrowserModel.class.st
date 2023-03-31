@@ -1,18 +1,70 @@
 "
 I am a model for the SourceTextBrowser
 
-I take care of getting the source code for an entity and formatting it or setting hyperlinks
+I take care of getting the source code for an entity and ""formatting"" it (actually finding where to apply formats: the highlights)
+
+I also keep the displayedEntity and the selectedEntity (in the source code) if any
 "
 Class {
 	#name : #MiSourceTextBrowserModel,
-	#superclass : #Object,
+	#superclass : #MiAbstractModel,
 	#instVars : [
-		'displayed',
-		'selected',
-		'browser'
+		'displayedEntity',
+		'displayedText',
+		'selectedEntity',
+		'highlights'
 	],
 	#category : #'MooseIDE-Famix-SourceText'
 }
+
+{ #category : #highlights }
+MiSourceTextBrowserModel >> addErrorHighlightInterval: anInterval [
+	| highlight |
+	highlight := MiSourceTextErrorHighlight new
+		interval: anInterval ;
+		yourself.
+	self addHighlight: highlight.
+	^highlight
+]
+
+{ #category : #highlights }
+MiSourceTextBrowserModel >> addHighlight: aSourceTextHighlight [
+	highlights add: aSourceTextHighlight
+]
+
+{ #category : #highlights }
+MiSourceTextBrowserModel >> addIdentifierHighlightFor: aChildEntity interval: childInterval [
+	| highlight |
+	highlight := MiSourceTextIdentifierHighlight new
+		highlightedEntity: aChildEntity ;
+		interval: childInterval ;
+		restrictIntervalTo: aChildEntity name in: self displayedText ;
+		yourself.
+	self addHighlight: highlight.
+	^highlight 
+]
+
+{ #category : #highlights }
+MiSourceTextBrowserModel >> addNullHighlightFor: aChildEntity [
+	| highlight |
+	highlight := MiSourceTextNullHighlight new
+		highlightedEntity: aChildEntity;
+		yourself.
+	self addHighlight: highlight.
+	^highlight
+]
+
+{ #category : #highlights }
+MiSourceTextBrowserModel >> addTagHighlightFor: aChildEntity interval: childInterval [
+	| highlight |
+	highlight := MiSourceTextTagHighlight new
+		highlightedEntity: aChildEntity ;
+		interval: childInterval ;
+		yourself.
+	self addHighlight: highlight.
+	^highlight
+
+]
 
 { #category : #accessing }
 MiSourceTextBrowserModel >> browser: aMiBrowser [
@@ -22,86 +74,148 @@ MiSourceTextBrowserModel >> browser: aMiBrowser [
 { #category : #accessing }
 MiSourceTextBrowserModel >> displayedEntity [
 	"the entity which source code is shown in the browser"
-	^ displayed
+	^ displayedEntity
 ]
 
 { #category : #accessing }
 MiSourceTextBrowserModel >> displayedEntity: anObject [
-	displayed := anObject.
-	selected := anObject
+	displayedEntity := anObject.
+	selectedEntity := anObject.
+	self resetHighlights.
+
+	self formatSource 
+]
+
+{ #category : #accessing }
+MiSourceTextBrowserModel >> displayedText [
+	^displayedText
+]
+
+{ #category : #accessing }
+MiSourceTextBrowserModel >> entities [
+	^displayedEntity
+		ifNil: [ #() ]
+		ifNotNil: [ { displayedEntity } ]
 ]
 
 { #category : #formatting }
 MiSourceTextBrowserModel >> formatSource [
-	| textFormater|
-	textFormater :=
-		(displayed sourceText ifEmpty: [MiSourceTextVoidReference] ifNotEmpty: [MiSourceTextReference])
-			new
-			referenceText: displayed sourceText ;
-			referenceEntity: displayed ;
-			textBrowser: self ;
-			yourself.
-
-	^textFormater
-		gatherHighlights ;
-		applyHighlights ;
-		yourself
+	displayedEntity sourceText
+		ifEmpty: [ self noSourceCodeFor: displayedEntity ]
+		ifNotEmpty: [ :code | self formatSource: code ]
 
 ]
 
 { #category : #formatting }
-MiSourceTextBrowserModel >> formatedSource [
-	^self formatSource referenceText
+MiSourceTextBrowserModel >> formatSource: aString [
+	displayedText := aString.
+	self gatherHighlights
 ]
 
-{ #category : #formatting }
-MiSourceTextBrowserModel >> highlightInterval: aTextInterval inText: mainText [
-	| start end childEntity |
-	start := aTextInterval first.
-	end := aTextInterval last.
-	childEntity := aTextInterval entity.
-	mainText
-		addAttribute: TextEmphasis underlined from: start to: end ;
-		addAttribute: TextEmphasis italic from: start to: end ;
-		addAttribute: (TextDoIt new
-			actOnClickBlock: [ self selected: childEntity ])  from: start to: end
-		"addAttribute: TextColor black  from: start to: end ".
-				
-	childEntity tags do: [ :tag |
-		mainText
-			addAttribute: (TextBackgroundColor color: (tag color)) from: start to: end
+{ #category : #highlights }
+MiSourceTextBrowserModel >> gatherHighlights [
+	self displayedEntity children do: [ :child |
+		self gatherHighlightsForEntity: child
 	]
+]
 
+{ #category : #highlights }
+MiSourceTextBrowserModel >> gatherHighlightsForEntity: aChildEntity [
+
+	self displayedEntity sourceAnchor
+	ifNotNil: [ :referenceAnchor |
+		(self identifierIntervalFor: aChildEntity inside: referenceAnchor)
+		ifNotNil: [ :childInterval | 
+			self addIdentifierHighlightFor: aChildEntity interval: childInterval.
+			aChildEntity tags do: [ :childTag |
+				(self addTagHighlightFor: childTag interval: childInterval)
+					restrictIntervalTo: aChildEntity name in: self displayedText.
+			]
+		].
+		aChildEntity children do: [ :childChild |
+			self gatherHighlightsForEntity: childChild ].
+
+		aChildEntity queryAllOutgoing do: [:mseAssoc |
+			mseAssoc allTargets do: [ :target |
+				target tags do: [ :assocTag |
+					(referenceAnchor textIntervalForChild: mseAssoc)
+					ifNotNil: [ :assocInterval |
+						self addTagHighlightFor: assocTag interval: assocInterval.
+					]
+				]
+			]
+		].
+		"-- Not sure, but it may be that highlighting associations (just above) is enough --
+
+		aChildEntity outgoingMSEProperties do: [:prop |
+			prop isChildrenProperty ifFalse: [
+				prop isContainer ifFalse: [ 
+					(aChildEntity perform: (prop implementingSelector)) do: [ :assoc |
+						assoc allTargets do: [ :target |
+							target tags do: [ :assocTag |
+								(referenceAnchor textIntervalForChild: assoc)
+								ifNotNil: [ :assocInterval |
+									self addTagHighlightFor: assocTag interval: assocInterval.
+								]
+							]
+						]
+					]
+				]
+			]
+		]"
+	]
+]
+
+{ #category : #accessing }
+MiSourceTextBrowserModel >> highlights [
+	^highlights
+]
+
+{ #category : #highlights }
+MiSourceTextBrowserModel >> identifierIntervalFor: aChildEntity inside: referenceAnchor [
+	"returns the interval in #displayedText for the 1st line containing aChildEntity identifier
+	 referenceanchor is the anchor of the #displayedEntity and is used to find where aChildEntity
+	 is within #displayedText"
+	^(referenceAnchor textIntervalForChild: aChildEntity)
+	ifNotNil: [ :childInterval | | childStart |
+		childStart := displayedText
+			findString: aChildEntity name
+			startingAt: childInterval first.
+
+		Interval
+			from: childStart
+			to: (childStart + aChildEntity name size - 1)
+  ]
+]
+
+{ #category : #initialization }
+MiSourceTextBrowserModel >> initialize [
+	super initialize.
+	
+	self resetHighlights
 ]
 
 { #category : #formatting }
-MiSourceTextBrowserModel >> noSourceCodeMessageFor: anEntity [
-	| text |
-	text := ('There is no source code to show for {1}'
-		format: { anEntity name })
-		asText.
-	text addAttribute: (TextColor red) from: 1 to: 35.
-	^text
+MiSourceTextBrowserModel >> noSourceCodeFor: anEntity [
+	displayedText := ('There is no source code to show for {1}'
+		format: { anEntity name }).
+
+	self addErrorHighlightInterval: (Interval from: 37 to: displayedText size)
 ]
 
 { #category : #accessing }
-MiSourceTextBrowserModel >> selected [
-	"an entity selected (clicked upon) in the source code of the #displayedEntity"
-	^ selected
-]
+MiSourceTextBrowserModel >> resetHighlights [
 
-{ #category : #accessing }
-MiSourceTextBrowserModel >> selected: anEntity [
-	selected := anEntity.
-	browser updateToolbar 
+	highlights := OrderedCollection new
 ]
 
 { #category : #accessing }
 MiSourceTextBrowserModel >> selectedEntity [
-	^ selected
+	^selectedEntity
 ]
 
 { #category : #accessing }
-MiSourceTextBrowserModel >> sourceText [
-	^ displayed sourceText
+MiSourceTextBrowserModel >> selectedEntity: anEntity [
+	selectedEntity := anEntity.
+	browser updateToolbar 
 ]

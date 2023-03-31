@@ -7,10 +7,21 @@ Class {
 { #category : #tests }
 MiNavigationQueryPresenterTest >> assertSubpresentersAreConfigured [
 
-	self assert: presenter directionDropList selectedItem equals: self createNewQuery directionStrategy.
+	self
+		assert: presenter directionDropList selectedItem
+		equals: self createNewQuery directionStrategy.
+
+
+	self
+		assertCollection: presenter associationsList items
+		includesAll: self createNewQuery associations.
 	self
 		assertCollection: presenter associationsList selectedItems
-		hasSameElements: self createNewQuery associations
+		hasSameElements: self createNewQuery associations.
+
+	self
+		assert: presenter associationsButton class
+		equals: SpButtonPresenter
 ]
 
 { #category : #running }
@@ -45,6 +56,8 @@ MiNavigationQueryPresenterTest >> testPresenters [
 	self
 		assertCollection: presenter directionDropList items
 		hasSameElements: presenter query class directionStrategies.
+
+	(presenter presenterAt: #directionDropList) selectIndex: 2.
 	self
 		assert: presenter associationsButton class
 		equals: SpButtonPresenter
@@ -66,10 +79,19 @@ MiNavigationQueryPresenterTest >> testPresentersOnImpossibleQuery [
 { #category : #tests }
 MiNavigationQueryPresenterTest >> testQueryValidity [
 
+	self deny: presenter query isValid.
+
+	(presenter presenterAt: #directionDropList) selectIndex: 1.
+	self deny: presenter query isValid.
+
+	(presenter presenterAt: #associationsList) activateItem:
+		presenter query availableAssociations anyOne.
 	self assert: presenter query isValid.
+
 	self resetPresenterWithEntities:
 		helper entitiesWithNoIncomingAssociations.
 	self deny: presenter query isValid.
+
 	self resetPresenterWithEntities: helper noEntities.
 	self deny: presenter query isValid
 ]
@@ -78,6 +100,7 @@ MiNavigationQueryPresenterTest >> testQueryValidity [
 MiNavigationQueryPresenterTest >> testUpdateQueryWithSelectedAssociations [
 
 	| associationsRemoved |
+	presenter query beDefaultForParent.
 	associationsRemoved := presenter query availableAssociations 
 		                       removeFirst: 2.
 	presenter updateQueryWithSelectedAssociations: associationsRemoved.

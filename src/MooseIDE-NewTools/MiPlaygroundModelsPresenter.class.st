@@ -15,7 +15,7 @@ Class {
 }
 
 { #category : #specs }
-MiPlaygroundModelsPresenter class >> defaultSpec [
+MiPlaygroundModelsPresenter class >> defaultLayout [
 
 	^ SpPanedLayout newLeftToRight
 		  positionOfSlider: 30 percent;
@@ -37,8 +37,7 @@ MiPlaygroundModelsPresenter >> codeForModel: model [
 		  s
 			  << (model name asValidSelector copyWithout: $:);
 			  << ' := MooseModel root at: ';
-			  << (MooseModel root indexOf: model) asString;
-			  << '.' ]
+			  << (MooseModel root indexOf: model) asString ]
 ]
 
 { #category : #code }

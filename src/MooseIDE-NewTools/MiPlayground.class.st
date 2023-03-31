@@ -26,9 +26,15 @@ MiPlayground class >> initialize [
 MiPlayground class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
-	^ (MooseModel developerTool: self menuCommandOn: aBuilder)
-		  order: 10;
+	^ aBuilder
+		  item: self menuLabel;
+		  parent: #Moose;
+		  label: self menuLabel;
+		  icon: MooseIcons mooseIcon;
 		  help: 'Playground enhanced for usage in Moose';
+		  order: MiAbstractBrowser menuPharoToolsPriority + 2;
+		  action: [ self open ];
+		  withSeparatorAfter;
 		  yourself
 ]
 
@@ -39,9 +45,10 @@ MiPlayground class >> menuLabel [
 ]
 
 { #category : #'instance creation' }
-MiPlayground class >> open [ 
+MiPlayground class >> open [
+
 	<script>
-	^ self new openWithSpec
+	^ self new open
 ]
 
 { #category : #'private - factory' }

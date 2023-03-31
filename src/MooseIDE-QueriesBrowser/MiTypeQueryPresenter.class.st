@@ -18,18 +18,20 @@ MiTypeQueryPresenter class >> title [
 	^ 'Type Query'
 ]
 
-{ #category : #actions }
-MiTypeQueryPresenter >> computeQuery: aType [
-
-	self updateQueryWithSelectedTypes: typesList selectedItems
-]
-
 { #category : #'api - actions' }
 MiTypeQueryPresenter >> configureFor: aQuery [
 
+	typesButton := self newTypesButton.
+	typesList items: typesList items | aQuery types.
 	typesList selectItems: aQuery types.
 	query types: aQuery types.
 	query := aQuery
+]
+
+{ #category : #actions }
+MiTypeQueryPresenter >> configureQuery: aType [
+
+	self updateQueryWithSelectedTypes: typesList selectedItems
 ]
 
 { #category : #initialization }
@@ -51,17 +53,8 @@ MiTypeQueryPresenter >> initializePresenters [
 MiTypeQueryPresenter >> initializeTypesButton [
 
 	typesButton := self query availableTypes
-		ifEmpty: [ self noParameterMessage: 'type' ]
-		ifNotEmpty: [ 
-			self newButton
-				label: 'Select Types';
-				action: [ 
-					self newPopover
-					relativeTo: typesButton;
-					bePositionRight;
-					presenter: typesList;
-					popup ];
-				yourself ]
+		               ifEmpty: [ self noParameterMessage: 'type' ]
+		               ifNotEmpty: [ self newTypesButton ]
 ]
 
 { #category : #initialization }
@@ -95,6 +88,20 @@ MiTypeQueryPresenter >> newLayout [
 		padding: padding;
 		add: selectedTypesLabel;
 		yourself
+]
+
+{ #category : #initialization }
+MiTypeQueryPresenter >> newTypesButton [
+
+	^ self newButton
+		  label: 'Select Types';
+		  action: [ 
+			  self newPopover
+				  relativeTo: typesButton;
+				  bePositionRight;
+				  presenter: typesList;
+				  popup ];
+		  yourself
 ]
 
 { #category : #actions }

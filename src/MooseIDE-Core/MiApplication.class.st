@@ -1,3 +1,7 @@
+"
+The spec application for Moose IDE.
+This is a singleton
+"
 Class {
 	#name : #MiApplication,
 	#superclass : #SpApplication,
@@ -5,9 +9,11 @@ Class {
 		'buses',
 		'defaultBus',
 		'producers',
-		'consumers'
+		'consumers',
+		'dropFileHandlers',
+		'mooseModelsTag'
 	],
-	#classInstVars : [
+	#classVars : [
 		'Current'
 	],
 	#category : #'MooseIDE-Core-Application'
@@ -15,17 +21,20 @@ Class {
 
 { #category : #'instance creation' }
 MiApplication class >> current [
-	^ Current ifNil: [ Current := self new ]
+
+	  ^ Current ifNil: [ Current := self new ]
 ]
 
 { #category : #accessing }
 MiApplication class >> defaultBusName [
+
 	^ 'Default'
 ]
 
 { #category : #'instance creation' }
 MiApplication class >> reset [
 	<script>
+	Current ifNotNil: [ Current unregisterForDropFilesEvent ].
 	Current := nil
 ]
 
@@ -41,19 +50,41 @@ MiApplication >> add: anObject toDictionary: aDictionary for: aKey [
 ]
 
 { #category : #accessing }
+MiApplication >> allBrowsers: aMiClass [
+	^self browsers select: [ :aBrowser | aBrowser isKindOf: aMiClass ]
+]
+
+{ #category : #'drag and drop support' }
+MiApplication >> beDropFilesHandler [
+	dropFileHandlers := {
+		(ExternalDropHandler
+			type: nil
+			extension: #mse
+			action: [ :fileReference | self importModelFromFile: fileReference ])
+		.
+		(ExternalDropHandler
+			type: nil
+			extension: #json
+			action: [ :fileReference | self importModelFromFile: fileReference ])
+	}.
+	dropFileHandlers do: [ :handler | ExternalDropHandler registerHandler: handler ]
+]
+
+{ #category : #accessing }
 MiApplication >> browsers [
 	^ self windows collect: #presenter thenSelect: #isMiBrowser
 ]
 
 { #category : #buses }
 MiApplication >> busNamed: aName [
-	^ buses
-		detect: [ :b | b name = aName ]
-		ifNone: [ | bus |
-			bus := MiBus named: aName.
-			buses add: bus.
-			self updateOverviewBrowsers.
-			bus ]
+
+	  ^ buses detect: [ :b | b name = aName ] ifNone: [ 
+		    | bus |
+		    bus := MiBus named: aName.
+		    buses add: bus.
+		    self defaultBus: bus.
+		    self updateOverviewBrowsers.
+		    bus ]
 ]
 
 { #category : #accessing }
@@ -106,6 +137,12 @@ MiApplication >> defaultBus [
 	^ defaultBus
 ]
 
+{ #category : #buses }
+MiApplication >> defaultBus: aMiBus [
+
+	  defaultBus := aMiBus
+]
+
 { #category : #showing }
 MiApplication >> defaultWindowPresenterClass [
 
@@ -127,6 +164,17 @@ MiApplication >> deleteBusNamed: aName [
 		ifFound: [ :bus | self deleteBus: bus ]
 ]
 
+{ #category : #accessing }
+MiApplication >> iconForTag: aTag [
+	^self iconProvider iconForTag: aTag
+]
+
+{ #category : #'drag and drop support' }
+MiApplication >> importModelFromFile: aFileReference [
+
+	self modelImporter handleDropFile: aFileReference
+]
+
 { #category : #initialization }
 MiApplication >> initialize [
 
@@ -134,9 +182,21 @@ MiApplication >> initialize [
 
 	buses := OrderedCollection new.
 	defaultBus := self busNamed: self class defaultBusName.
-	
+
 	consumers := Dictionary new.
 	producers  := Dictionary new.
+
+	mooseModelsTag := Dictionary new: 5.
+
+	dropFileHandlers := #().
+	self beDropFilesHandler
+
+]
+
+{ #category : #'drag and drop support' }
+MiApplication >> instantiateModelImporter [
+	^(MiAbstractBrowser withAllSubclasses detect: [ :aMiClass | aMiClass isModelImporter ])
+		open
 ]
 
 { #category : #brokerage }
@@ -146,10 +206,54 @@ MiApplication >> itemsFor: aClass [
 		  producer itemsFor: aClass ]
 ]
 
+{ #category : #'drag and drop support' }
+MiApplication >> modelImporter [
+	^self openedBrowsers
+		detect: [ :browser | browser isModelImporter ]
+		ifNone: [ self instantiateModelImporter ].
+
+]
+
+{ #category : #style }
+MiApplication >> mooseStyleSheet [
+
+	^ SpStyleVariableSTONReader fromString: '.application [
+	   .titleLabel [
+			Font { 
+				#size: 18,
+				#bold: true
+			},
+			Geometry { #height: Reset }
+		],
+		.title1 [ Font { #size: 12, #bold: true }, Geometry { #height: Reset } ],
+		.hSep [ 
+			Geometry {
+				#height: 1
+			},
+			.vSep [ Geometry { #height: 25, #width: 1 } ],
+			Draw {
+				#color: #0000001F,
+				#backgroundColor: #0000001F
+			}
+		],
+		.itemList [
+			Container { #borderWidth: 1, #borderColor: #00000020 },
+			Draw { #backgroundColor: #00000010 },
+			Geometry { #height: 30 }
+		],
+		.mooseContainer [ Container { #borderColor: #00000020, #borderWidth: 1, #padding: 5 } ]
+]'
+]
+
 { #category : #'private - factory' }
 MiApplication >> newIconProvider [
 
 	^ MiIconProvider new
+]
+
+{ #category : #presenters }
+MiApplication >> openedBrowsers [
+	^self browsers
 ]
 
 { #category : #brokerage }
@@ -165,6 +269,7 @@ MiApplication >> produced: producedClass matchConsumed: consumedClass [
 MiApplication >> producersOf: aClass [
 
 	| foundProducers |
+	
 	foundProducers := Set new.
 	producers keysDo: [ :producedClass | 
 		(self produced: producedClass matchConsumed: aClass) ifTrue: [ 
@@ -208,9 +313,37 @@ MiApplication >> removeItem: anItem from: aProducer [
 		aProducer = aConsumer ifFalse: [ aConsumer remove: anItem ] ]
 ]
 
+{ #category : #tags }
+MiApplication >> selectedTag: aTag [
+	"mooseModel is deduced from aTag itself"
+
+	aTag ifNotNil: [
+		mooseModelsTag at: aTag mooseModel put: aTag
+	]
+]
+
 { #category : #running }
 MiApplication >> start [
 	"we will see"
+]
+
+{ #category : #style }
+MiApplication >> styleSheet [
+
+	^ SpStyle defaultStyleSheet
+	  , self mooseStyleSheet
+]
+
+{ #category : #tags }
+MiApplication >> tagListForMooseModel: aMooseModel [
+	^aMooseModel 
+		ifNil: [ #() ]
+		ifNotNil: [ aMooseModel allTags sorted: [ :a :b | a name < b name ] ]
+]
+
+{ #category : #tags }
+MiApplication >> tagSelectedInMooseModel: aMooseModel [
+	^mooseModelsTag at: aMooseModel ifAbsent: [ nil ]
 ]
 
 { #category : #brokerage }
@@ -220,6 +353,12 @@ MiApplication >> unregisterConsumer: aConsumer [
 
 	consumers do: [ :consumerList | 
 		consumerList remove: aConsumer ifAbsent: [  ] ]
+]
+
+{ #category : #'drag and drop support' }
+MiApplication >> unregisterForDropFilesEvent [
+	ExternalDropHandler registeredHandlers removeAll: dropFileHandlers.
+	dropFileHandlers := #()
 ]
 
 { #category : #brokerage }

@@ -12,7 +12,7 @@ Class {
 }
 
 { #category : #specs }
-MiColorCodePresenter class >> defaultSpec [
+MiColorCodePresenter class >> defaultLayout [
 
 	^ SpBoxLayout new
 ]

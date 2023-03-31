@@ -3,9 +3,9 @@ I am a command that saves all current queries on disk as a STON file. The path i
 "
 Class {
 	#name : #MiSaveQueriesCommand,
-	#superclass : #CmCommand,
-	#instVars : [
-		'afterCreationAction'
+	#superclass : #MiCommand,
+	#classVars : [
+		'Directory'
 	],
 	#category : #'MooseIDE-QueriesBrowser-Commands'
 }
@@ -16,6 +16,12 @@ MiSaveQueriesCommand class >> defaultDescription [
 	^ 'Save all current queries on disk as a STON file'
 ]
 
+{ #category : #default }
+MiSaveQueriesCommand class >> defaultIconName [
+
+	^ #smallSaveAs
+]
+
 { #category : #'accessing - defaults' }
 MiSaveQueriesCommand class >> defaultName [
 
@@ -23,34 +29,27 @@ MiSaveQueriesCommand class >> defaultName [
 ]
 
 { #category : #'accessing - defaults' }
-MiSaveQueriesCommand class >> iconName [
-
-	^ #smallSaveAs
-]
-
-{ #category : #'accessing - defaults' }
-MiSaveQueriesCommand class >> path [
+MiSaveQueriesCommand class >> defaultPath [
 
 	^ './pharo-local/queries-browser-saved-queries/'
 ]
 
-{ #category : #'as yet unclassified' }
-MiSaveQueriesCommand class >> stonFiles [
+{ #category : #'accessing - defaults' }
+MiSaveQueriesCommand class >> directory [
 
-	| fileReference allFiles stonFiles |
-	fileReference := self path asFileReference.
-	allFiles := fileReference exists
-		ifTrue: [ fileReference files ]
-		ifFalse: [ #( ) ].
-	stonFiles := allFiles select: [ :each | 
-		             each basename endsWith: '.ston' ].
-	^ stonFiles
+	^ Directory ifNil: [ Directory := self defaultPath asFileReference ]
+]
+
+{ #category : #'accessing - defaults' }
+MiSaveQueriesCommand class >> directory: aDirectory [
+
+	Directory := aDirectory
 ]
 
 { #category : #accessing }
-MiSaveQueriesCommand >> afterCreationAction: aBlock [
+MiSaveQueriesCommand class >> path [
 
-	afterCreationAction := aBlock
+	^ self directory pathString , '/'
 ]
 
 { #category : #actions }
@@ -67,40 +66,38 @@ MiSaveQueriesCommand >> copyQueriesReferencesOf: queries [
 MiSaveQueriesCommand >> createFile: fileName [
 
 	| file |
-	file := (self class path , fileName , '.ston') asFileReference.
+	file := UIManager default
+		        chooseForSaveFileReference: 'Choose directory'
+		        extensions: #( 'ston' )
+		        path: (self class path , fileName , '.ston') asFileReference.
+
 	file ensureCreateFile.
+
 	^ file
 ]
 
 { #category : #executing }
 MiSaveQueriesCommand >> execute [
 
-	| fileName file |
+	| fileName |
 	fileName := UIManager default
 		            request: 'Name of the file: '
 		            initialAnswer: ''.
 	"If the user pressed the cancel button"
-	(fileName isNil or: [ fileName isEmpty ]) ifTrue: [ 
+	fileName ifNil: [ ^ self ].
+
+	"If user did not provide any file name"
+	fileName ifEmpty: [ 
 		UIManager inform: 'You need to specify a name for the file.'.
 		^ self ].
 
 	[ :job | 
-		job title: 'Saving queries on disk'.
-		file := self createFile: fileName.
-		self write: self queriesToStore toFile: file.
-		self triggerAfterCreationAction ] asJob run
-]
-
-{ #category : #initialization }
-MiSaveQueriesCommand >> initialize [
-
-	super initialize.
-	afterCreationAction := [  ]
+	job title: 'Saving queries on disk'.
+	self write: self queriesToStore toFileNamed: fileName ] asJob run
 ]
 
 { #category : #sorting }
 MiSaveQueriesCommand >> putChildrenInPlace: topSortQueries [
-
 	"This method sorts the queries to put a query directly under its parent KEEPING the topological sorting"
 
 	| trees topSortCopy toBeAdded sortedTrees |
@@ -108,13 +105,15 @@ MiSaveQueriesCommand >> putChildrenInPlace: topSortQueries [
 	topSortCopy := topSortQueries copy asOrderedCollection.
 	toBeAdded := topSortCopy select: [ :each | each parent isNil ].
 	trees := toBeAdded collect: [ :each |
-		topSortCopy remove: each.
-		TreeQueryHolder tree: each asOrderedCollection index: (topSortQueries indexOf: each) ].
+		         topSortCopy remove: each.
+		         TreeQueryHolder
+			         tree: (OrderedCollection with: each)
+			         index: (topSortQueries indexOf: each) ].
 
-	[ topSortCopy isNotEmpty ] whileTrue: [ 
+	[ topSortCopy isNotEmpty ] whileTrue: [
 		| toBeRemoved |
 		toBeRemoved := OrderedCollection new.
-		topSortCopy do: [ :each | 
+		topSortCopy do: [ :each |
 			trees
 				detect: [ :tree | tree tree includes: each parent ]
 				ifFound: [ :tree |
@@ -123,14 +122,14 @@ MiSaveQueriesCommand >> putChildrenInPlace: topSortQueries [
 					toBeRemoved add: each ] ].
 		topSortCopy removeAll: toBeRemoved ].
 
-	sortedTrees := trees sorted: [ :a :b | (a index) < (b index) ].
+	sortedTrees := trees sorted: [ :a :b | a index < b index ].
 	^ (sortedTrees collect: #tree) flattened
 ]
 
 { #category : #actions }
 MiSaveQueriesCommand >> putNilAsParentForRootQuery: aQuery [
 
-	aQuery isUnaryQuery ifTrue: [ 
+	aQuery isUnaryQuery ifTrue: [
 		aQuery parent isRootQuery ifTrue: [ aQuery parent: nil ] ]
 ]
 
@@ -139,13 +138,13 @@ MiSaveQueriesCommand >> queriesToStore [
 
 	| queriesToStore topSortedQueries uiSortedQueries |
 	queriesToStore := self copyQueriesReferencesOf: self context famixQueries.
-	
+
 	"For the unary queries that have a root query as a parent we put the parent as nil.
 	Also we don't want to store the result of the queries"
-	queriesToStore do: [ :each | 
+	queriesToStore do: [ :each |
 		self resetResultFor: each.
 		self putNilAsParentForRootQuery: each ].
-	
+
 	topSortedQueries := self topologicalSortForQueries: queriesToStore.
 	uiSortedQueries := self putChildrenInPlace: topSortedQueries.
 	^ uiSortedQueries
@@ -170,25 +169,35 @@ MiSaveQueriesCommand >> topologicalSortForQueries: queries [
 	queriesWithDependencies :=
 		(queries select: [ :query | query dependencies isNotEmpty ]) asOrderedCollection.
 
-	[ queriesWithDependencies isNotEmpty ] whileTrue: [ 
+	[ queriesWithDependencies isNotEmpty ] whileTrue: [
 		| toBeAdded |
-		toBeAdded := queriesWithDependencies select: [ :firstQuery | 
-			firstQuery dependencies allSatisfy: [ :secondQuery | 
+		toBeAdded := queriesWithDependencies select: [ :firstQuery |
+			firstQuery dependencies allSatisfy: [ :secondQuery |
 				sortedQueries includes: secondQuery ] ].
 		sortedQueries addAll: toBeAdded.
 		queriesWithDependencies removeAll: toBeAdded ].
 	^ sortedQueries
 ]
 
-{ #category : #executing }
-MiSaveQueriesCommand >> triggerAfterCreationAction [
-
-	afterCreationAction value
-]
-
 { #category : #'write on disk' }
 MiSaveQueriesCommand >> write: queriesToStore toFile: file [
 
-	file writeStreamDo: [ :stream | 
+	file writeStreamDo: [ :stream |
 		STON put: queriesToStore onStream: stream ]
+]
+
+{ #category : #'write on disk' }
+MiSaveQueriesCommand >> write: queriesToStore toFileNamed: aFilename [
+
+	| file |
+	file := UIManager default
+		        chooseForSaveFileReference: 'Choose directory'
+		        extensions: #( 'ston' )
+		        path:
+		        (self class path , aFilename , '.ston') asFileReference.
+
+	file ifNotNil: [ 
+		file ensureCreateFile.
+		file writeStreamDo: [ :stream | 
+			STON put: queriesToStore onStream: stream ] ]
 ]

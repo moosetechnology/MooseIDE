@@ -9,7 +9,7 @@ Class {
 }
 
 { #category : #specs }
-MiPropertyExtension class >> defaultSpec [
+MiPropertyExtension class >> defaultLayout [
 
 	^ SpBoxLayout newVertical
 		  add: #properties;

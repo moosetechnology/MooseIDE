@@ -13,12 +13,19 @@ Class {
 	#superclass : #MiAbstractBrowser,
 	#instVars : [
 		'toolbar',
-		'modelFilteringList'
+		'modelFilteringList',
+		'blockWhenSelection'
 	],
 	#category : #'MooseIDE-Meta-ModelRootBrowser'
 }
 
-{ #category : #'world menu' }
+{ #category : #menu }
+MiModelRootBrowser class >> addItemOrSubMenuToMiBrowsersMenu: aRootMenu defaultSubMenu: aSubMenu [
+
+	self addToMiBrowsersMenu: aRootMenu
+]
+
+{ #category : #commands }
 MiModelRootBrowser class >> buildModelCommandsGroupWith: presenterInstance [
 
 	^ CmCommandGroup forSpec beRoot
@@ -30,10 +37,10 @@ MiModelRootBrowser class >> buildModelCommandsGroupWith: presenterInstance [
 			  (MiModelUtilityCommand asCommandGroupWith: presenterInstance)
 ]
 
-{ #category : #specs }
-MiModelRootBrowser class >> defaultSpec [
+{ #category : #layout }
+MiModelRootBrowser class >> defaultLayout [
 
-	^ super defaultSpec
+	^ super defaultLayout
 		  add: #toolbar
 		  withConstraints: [ :constraints | 
 			  constraints height: self toolbarHeight ];
@@ -41,51 +48,76 @@ MiModelRootBrowser class >> defaultSpec [
 		  yourself
 ]
 
+{ #category : #testing }
+MiModelRootBrowser class >> isModelImporter [
+	^true
+]
+
 { #category : #'world menu' }
 MiModelRootBrowser class >> menuCommandOn: aBuilder [
+
 	<worldMenu>
-	<miBrowsers>
-	(aBuilder item: #ModelRootBrowser)
-		parent: #Moose ;
-		label: self title ;
-		icon: (self iconNamed: #mooseNavigation) ;
-		order: 2 ;
-		help: self helpMessage ;
-		action: [ self open ]
+	^ self buildMenuItemIn: aBuilder
+]
+
+{ #category : #'world menu' }
+MiModelRootBrowser class >> menuIconName [
+
+	^ #mooseNavigation
+]
+
+{ #category : #'world menu' }
+MiModelRootBrowser class >> menuItem [
+
+	^ #ModelRootBrowser
+]
+
+{ #category : #'world menu' }
+MiModelRootBrowser class >> menuPriority [
+
+	^ self menuMainToolsPriority + 2
 ]
 
 { #category : #'instance creation' }
 MiModelRootBrowser class >> newModel [
+
 	^ MiModelRootBrowserModel new
 ]
 
 { #category : #'instance creation' }
 MiModelRootBrowser class >> open [
+
 	<script>
 	^ super open
 ]
 
 { #category : #specs }
 MiModelRootBrowser class >> title [
+
 	^ 'Models browser'
-]
-
-{ #category : #updating }
-MiModelRootBrowser class >> updateAll [
-
-	self allInstances
-		select: [ :browser | browser window isOpen ]
-		thenDo: [ :browser | browser updateList ]
 ]
 
 { #category : #specs }
 MiModelRootBrowser class >> windowSize [
+
 	^ 600 @ 400
 ]
 
 { #category : #testing }
 MiModelRootBrowser >> canFollowEntity: anObject [
 	^ false
+]
+
+{ #category : #testing }
+MiModelRootBrowser >> canPropagate [
+
+	^specModel canPropagate
+]
+
+{ #category : #testing }
+MiModelRootBrowser >> canTagEntities [
+	"manipulates models, not entities"
+	^false
 ]
 
 { #category : #actions }
@@ -96,24 +128,48 @@ MiModelRootBrowser >> followEntity: anEntity [
 	
 ]
 
+{ #category : #actions }
+MiModelRootBrowser >> handleDropFile: aFileReference [
+	
+	self model autoImportSetting 
+		ifTrue: [self importFromFileUI handleDropFileAndImport: aFileReference.  ]
+		ifFalse: [self importFromFileUI handleDropFile: aFileReference].
+	
+	
+	
+
+]
+
+{ #category : #'private testing' }
+MiModelRootBrowser >> handleDropFileAndImport: aFileReference [
+
+	self importFromFileUI handleDropFileAndImport: aFileReference.
+
+]
+
+{ #category : #testing }
+MiModelRootBrowser >> hasSettings [
+	^ true
+]
+
+{ #category : #accessing }
+MiModelRootBrowser >> importFromFileUI [
+	^MiImportFromFileCommand new execute presenter
+]
+
 { #category : #initialization }
 MiModelRootBrowser >> initializeList [
 
 	modelFilteringList := self newFilteringList.
-
-	modelFilteringList items: MooseModel root.
-	MooseModel root ifNotEmpty: [ :root | 
-		modelFilteringList selectItem: root anyOne.
-		model selected: root anyOne ].
+	self listOfMooseModels: specModel mooseModelsList.
 
 	modelFilteringList display: [ :mooseModel | mooseModel name ].
 
-	modelFilteringList listPresenter
-		contextMenu: [ 
-			(self class buildModelCommandsGroupWith: self) asMenuPresenter ];
-		whenSelectionChangedDo: [ :selected | 
-			model selected: selected selectedItem.
-			self updateToolbar ]
+	modelFilteringList listPresenter contextMenu: [ 
+		(self class buildModelCommandsGroupWith: self) asMenuPresenter ].
+	blockWhenSelection := [ :selected | 
+	                      specModel selected: selected selectedItem ].
+	modelFilteringList whenSelectionChangedDo: blockWhenSelection
 ]
 
 { #category : #initialization }
@@ -126,15 +182,37 @@ MiModelRootBrowser >> initializePresenters [
 { #category : #initialization }
 MiModelRootBrowser >> initializeToolbar [
 
-	toolbar := (MiImportCommand asCommandGroupForSpecContext: self)
-		           asToolbarPresenter beIcons.
+	toolbar := self newToolbar
+		           fillWith:
+			           (MiImportCommand asCommandGroupForSpecContext: self);
+		           beIcons;
+		           yourself.
 	toolbar addItem: self refreshToolbarButton
+]
+
+{ #category : #updating }
+MiModelRootBrowser >> listOfMooseModels: aList [
+
+	modelFilteringList items: aList.
+	
 ]
 
 { #category : #accessing }
 MiModelRootBrowser >> miSelectedItem [
 
-	^ self selected
+	^specModel selected
+]
+
+{ #category : #accessing }
+MiModelRootBrowser >> miSelectedModel [
+	"similar to #miSelectedItem but ignore the setting #filterStubsSetting"
+
+	^specModel selectedModel
+]
+
+{ #category : #'accessing - tests' }
+MiModelRootBrowser >> modelFilteringList [
+	^ modelFilteringList
 ]
 
 { #category : #initialization }
@@ -143,35 +221,29 @@ MiModelRootBrowser >> refreshToolbarButton [
 	^ SpToolbarButtonPresenter new
 		  icon: (self iconNamed: #smallUpdate);
 		  help: 'Refresh list';
-		  action: [ modelFilteringList listPresenter updateList ];
+		  action: [ self updateList ];
 		  yourself
 ]
 
-{ #category : #accessing }
-MiModelRootBrowser >> selected [
-	^ model selected
+{ #category : #actions }
+MiModelRootBrowser >> settings [
+
+	^specModel openSettings
 ]
 
-{ #category : #accessing }
-MiModelRootBrowser >> selectedObject [
-
-	^ modelFilteringList selectedItem
+{ #category : #'accessing - tests' }
+MiModelRootBrowser >> settingsItem [
+	^ specModel settings
 ]
 
 { #category : #updating }
 MiModelRootBrowser >> updateForNewModel: aModel [
+	specModel updateForNewModel: aModel
 
-	self class updateAll.
-	modelFilteringList selectItem: aModel
 ]
 
 { #category : #updating }
 MiModelRootBrowser >> updateList [
 
-	self freezeDuring: [ 
-		| selected |
-		selected := self selected.
-		modelFilteringList listPresenter updateList.
-		modelFilteringList selectItem:
-			(selected ifNil: [ modelFilteringList items first ]) ]
+	specModel updateMooseModelsList.
 ]

@@ -1,12 +1,19 @@
 Class {
 	#name : #MiTreeBrowserModel,
-	#superclass : #Object,
+	#superclass : #MiAbstractModel,
 	#instVars : [
 		'selected',
 		'root'
 	],
 	#category : #'MooseIDE-Dependency-Tree'
 }
+
+{ #category : #accessing }
+MiTreeBrowserModel >> entities [
+	^root
+		ifNil: [ #() ]
+		ifNotNil: [ { root } ]
+]
 
 { #category : #accessing }
 MiTreeBrowserModel >> root [

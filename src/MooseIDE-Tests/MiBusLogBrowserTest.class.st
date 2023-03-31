@@ -47,6 +47,11 @@ MiBusLogBrowserTest >> testActivateLocalActionButtons [
 ]
 
 { #category : #tests }
+MiBusLogBrowserTest >> testCanTagEntities [
+	self deny: browser canTagEntities 
+]
+
+{ #category : #tests }
 MiBusLogBrowserTest >> testMiSelectedItem [
 
 	self assert: browser miSelectedItem isNil.
@@ -63,6 +68,6 @@ MiBusLogBrowserTest >> testOpenOnLatestEntity [
 
 	self bus globallySelect: entityToSelect.
 
-	newBrowser := self browserClass openForTests.
+	newBrowser := self browserClass openForTests: self application.
 	self assert: newBrowser miSelectedItem equals: entityToSelect
 ]

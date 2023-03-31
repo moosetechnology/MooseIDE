@@ -1,12 +1,17 @@
 Class {
 	#name : #MiFilesModel,
-	#superclass : #Object,
+	#superclass : #MiAbstractModel,
 	#instVars : [
 		'fileReference',
 		'mooseModel'
 	],
 	#category : #'MooseIDE-Famix-FilesBrowser'
 }
+
+{ #category : #accessing }
+MiFilesModel >> entities [
+	^#()
+]
 
 { #category : #accessing }
 MiFilesModel >> fileReference [

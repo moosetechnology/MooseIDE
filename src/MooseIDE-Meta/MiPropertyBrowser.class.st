@@ -14,40 +14,67 @@ Class {
 	#category : #'MooseIDE-Meta-PropertyBrowser'
 }
 
-{ #category : #specs }
-MiPropertyBrowser class >> defaultSpec [
-	^ super defaultSpec
-		add: #properties;
-		yourself
+{ #category : #layout }
+MiPropertyBrowser class >> defaultLayout [
+
+	^ super defaultLayout
+		  add: #properties;
+		  yourself
 ]
 
 { #category : #'world menu' }
 MiPropertyBrowser class >> menuCommandOn: aBuilder [
+
 	<worldMenu>
-	<miBrowsers>
-	(aBuilder item: #PropertyBrowser)
-		parent: (self metaBrowsersMenuLabel);
-		label: (self title);
-		icon: (self iconNamed: #mooseProperties);
-		order: 3;
-		help: (self helpMessage);
-		action: [ self open ]
+	^ self buildMenuItemIn: aBuilder
+]
+
+{ #category : #'world menu' }
+MiPropertyBrowser class >> menuIconName [
+
+	^ #mooseProperties
+]
+
+{ #category : #'world menu' }
+MiPropertyBrowser class >> menuItem [
+
+	^ #PropertyBrowser
+]
+
+{ #category : #'world menu' }
+MiPropertyBrowser class >> menuParent [
+
+	^ self oldMetaBrowsersMenuRoot
+]
+
+{ #category : #'world menu' }
+MiPropertyBrowser class >> menuPriority [
+
+	^ 3
 ]
 
 { #category : #'instance creation' }
 MiPropertyBrowser class >> open [
+
 	<script>
 	^ super open
 ]
 
 { #category : #specs }
 MiPropertyBrowser class >> title [
+
 	^ 'Properties'
 ]
 
 { #category : #initialization }
 MiPropertyBrowser >> canFollowEntity: anObject [
 	^ anObject isMooseObject
+]
+
+{ #category : #testing }
+MiPropertyBrowser >> canTagEntities [ 
+	self flag: 'Remove browser ? (issue #810)'.
+	^false
 ]
 
 { #category : #actions }

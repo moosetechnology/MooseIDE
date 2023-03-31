@@ -1,6 +1,6 @@
 Class {
 	#name : #MiUMLModel,
-	#superclass : #Object,
+	#superclass : #MiAbstractModel,
 	#instVars : [
 		'entities',
 		'selected'

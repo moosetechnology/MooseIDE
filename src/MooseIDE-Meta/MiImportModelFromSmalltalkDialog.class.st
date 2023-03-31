@@ -21,8 +21,8 @@ Class {
 	#category : #'MooseIDE-Meta-Import'
 }
 
-{ #category : #specs }
-MiImportModelFromSmalltalkDialog class >> defaultSpec [
+{ #category : #layout }
+MiImportModelFromSmalltalkDialog class >> defaultLayout [
 
 	^ SpBoxLayout newTopToBottom
 		  spacing: 10;
@@ -37,7 +37,7 @@ MiImportModelFromSmalltalkDialog class >> defaultSpec [
 		  yourself
 ]
 
-{ #category : #initialization }
+{ #category : #accessing }
 MiImportModelFromSmalltalkDialog class >> fullWindowExtent [
 
 	^ 500 @ 700
@@ -47,7 +47,7 @@ MiImportModelFromSmalltalkDialog class >> fullWindowExtent [
 MiImportModelFromSmalltalkDialog class >> open [
 
 	<script>
-	^ self new openDialogWithSpec
+	^ self new openDialog
 ]
 
 { #category : #specs }
@@ -55,7 +55,7 @@ MiImportModelFromSmalltalkDialog class >> title [
 	^ 'Import model from Pharo image'
 ]
 
-{ #category : #initialization }
+{ #category : #accessing }
 MiImportModelFromSmalltalkDialog class >> windowExtent [
 
 	^ 500 @ 400
@@ -78,10 +78,9 @@ MiImportModelFromSmalltalkDialog >> advancedSettingsLayout [
 	^ SpBoxLayout newTopToBottom
 		  spacing: 5;
 		  add: (SpGridLayout new
-				   add: #metamodelCheckBox at: 1 @ 1;
 				   add: #computeAttributesTypeCheckBox at: 2 @ 1;
-				   add: #classesAndMetaclassesCheckBox at: 1 @ 2;
-				   add: #importSubclassesCheckBox at: 2 @ 2)
+				   add: #classesAndMetaclassesCheckBox at: 1 @ 1;
+				   add: #importSubclassesCheckBox at: 1 @ 2)
 		  height: 80;
 		  add: 'Select context to import: '
 		  height: self class inputTextHeight;
@@ -97,7 +96,7 @@ MiImportModelFromSmalltalkDialog >> advancedSettingsLayout [
 { #category : #action }
 MiImportModelFromSmalltalkDialog >> candidateClass [
 
-	^ CandidateListOperator
+	^ invocationStrategyDroplist selectedItem
 ]
 
 { #category : #accessing }
@@ -147,11 +146,6 @@ MiImportModelFromSmalltalkDialog >> initializeAdvancedSettingsPresenters [
 { #category : #initialization }
 MiImportModelFromSmalltalkDialog >> initializeConfigurationCheckBoxes [
 
-	metamodelCheckBox := self newCheckBox
-		label: 'Use Compatibility Metamodel';
-		whenActivatedDo: [ self factoryClass: SmalltalkCompatibilityMetamodelFactory ];
-		whenDeactivatedDo: [ self factoryClass: SmalltalkMetamodelFactory ].
-	
 	classesAndMetaclassesCheckBox := self newCheckBox
 		label: 'Merge classes and metaclasses';
 		whenActivatedDo: [ importingContext mergeClassAndMetaclass ];
@@ -212,11 +206,8 @@ MiImportModelFromSmalltalkDialog >> initializePresenters [
 
 	modelNameField := self newTextInput text: 'MooseModel'.
 
-	packagesSelector := self instantiate: MiListSelector.
-	packagesSelector
-		initialListHeader: 'All packages in the system';
-		selectedListHeader: 'Packages in your model';
-		initialItems: RPackage organizer packageNames.
+	packagesSelector := self instantiate: SpChooserPresenter.
+	packagesSelector sourceItems: RPackage organizer packageNames.
 
 	advancedSettingsButton := self newToggleButton
 		label: 'Advanced settings';
@@ -265,7 +256,7 @@ MiImportModelFromSmalltalkDialog >> removeContext: aContext [
 { #category : #action }
 MiImportModelFromSmalltalkDialog >> selectedPackages [
 
-	^ packagesSelector selectedItems
+	^ packagesSelector chosenItems
 ]
 
 { #category : #action }
@@ -289,13 +280,14 @@ MiImportModelFromSmalltalkDialog >> showAdvancedSettings [
 { #category : #'advanced settings' }
 MiImportModelFromSmalltalkDialog >> simpleLayout [
 
-	^ self class defaultSpec
+	^ self class defaultLayout
 ]
 
 { #category : #action }
 MiImportModelFromSmalltalkDialog >> validateImportForm [
-	"checks that required fields are properly filled in"
-	packagesSelector selectedItems ifEmpty: [ Error signal: 'Please select at least one package' ].
-	modelNameField text ifEmpty: [ Error signal: 'Please name the model' ].
 
+	"checks that required fields are properly filled in"
+
+	packagesSelector chosenItems ifEmpty: [ Error signal: 'Please select at least one package' ].
+	modelNameField text ifEmpty: [ Error signal: 'Please name the model' ]
 ]

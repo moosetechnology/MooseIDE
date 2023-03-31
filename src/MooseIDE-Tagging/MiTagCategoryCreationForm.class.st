@@ -10,6 +10,12 @@ Class {
 	#category : #'MooseIDE-Tagging-Browser'
 }
 
+{ #category : #accessing }
+MiTagCategoryCreationForm >> cancelButton [
+
+	^ cancelButton
+]
+
 { #category : #initialization }
 MiTagCategoryCreationForm >> connectPresenters [
 

@@ -71,6 +71,31 @@ GeneratedPalette >> nextColor [
 	^ color
 ]
 
+{ #category : #'gt-inspection' }
+GeneratedPalette >> paletteInspectorExtension [
+
+	<inspectorPresentationOrder: 1 title: 'Colors'>
+	| table |
+	table := SpTablePresenter new.
+	table addColumn: (SpIndexTableColumn new
+			 title: 'Index';
+			 sortFunction: #yourself ascending;
+			 beNotExpandable;
+			 yourself).
+	table addColumn:
+		(SpImageTableColumn title: 'Colors' evaluated: [ :color | 
+			 Morph new
+				 color: color;
+				 asFormOfSize: 50 @ 50 ]) beNotExpandable.
+	table addColumn: (SpStringTableColumn
+			 title: 'Code'
+			 evaluated: [ :color | color asHexString asLowercase asSymbol ]).
+
+	table items: self asCollection.
+
+	^ table
+]
+
 { #category : #accessing }
 GeneratedPalette >> previousColor [
 	

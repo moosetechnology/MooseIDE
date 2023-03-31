@@ -7,12 +7,12 @@ Class {
 	#category : #'MooseIDE-QueriesBrowser-Configuration presenters'
 }
 
-{ #category : #actions }
-MiNullQueryPresenter >> computeQuery: anObject [
-]
-
 { #category : #'api - actions' }
 MiNullQueryPresenter >> configureFor: aQuery [
+]
+
+{ #category : #actions }
+MiNullQueryPresenter >> configureQuery: anObject [
 ]
 
 { #category : #initialization }

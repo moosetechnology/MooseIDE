@@ -9,8 +9,8 @@ Class {
 	#category : #'MooseIDE-NewTools-Inspector tabs'
 }
 
-{ #category : #specs }
-MiSourceExtension class >> defaultSpec [
+{ #category : #layout }
+MiSourceExtension class >> defaultLayout [
 
 	^ SpBoxLayout newVertical
 		  add: #sourceText;

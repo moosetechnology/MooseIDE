@@ -8,5 +8,13 @@ Class {
 MiModelNavigationBrowser >> itemsFor: anEntity [
 
 	^ anEntity navigationItemsFromPragmas
-	  , anEntity navigationItemsFromAttributes
+]
+
+{ #category : #accessing }
+MiModelNavigationBrowser >> selectedItem [
+
+	^ ([ 
+	   self model mooseInterestingEntity perform:
+		   navigation selection selectedItem value ] onErrorDo: [ nil ])
+		  mooseInterestingEntity
 ]
