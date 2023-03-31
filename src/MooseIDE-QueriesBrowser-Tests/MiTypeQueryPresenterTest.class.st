@@ -34,13 +34,6 @@ MiTypeQueryPresenterTest >> createNewQuery [
 			yourself
 ]
 
-{ #category : #testing }
-MiTypeQueryPresenterTest >> expectedFailures [
-
-	^ #( #testImpossibleQueryInitialization
-	     #testNormalQueryInitialization #testQueryValidity )
-]
-
 { #category : #running }
 MiTypeQueryPresenterTest >> queryClass [
 	^ FQTypeQuery
