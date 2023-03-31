@@ -83,6 +83,7 @@ BaselineOfMooseIDE >> definePackages: spec [
 		package: 'MooseIDE-Visualization'
 		with: [ 
 			spec requires: #( 'MooseIDE-Core' 'HierarchicalVisualizations' ) ];
+
 		package: 'MooseIDE-Meta'
 		with: [ spec requires: #( 'MooseIDE-Core' ) ];
 		package: 'MooseIDE-Tests' with: [ 
@@ -140,7 +141,7 @@ BaselineOfMooseIDE >> famix: spec [
 	spec
 		baseline: 'Famix'
 		with: [ 
-		spec repository: 'github://moosetechnology/Famix:development/src' ]
+		spec repository: 'github://moosetechnology/Famix:v1.x.x/src' ]
 ]
 
 { #category : #dependencies }

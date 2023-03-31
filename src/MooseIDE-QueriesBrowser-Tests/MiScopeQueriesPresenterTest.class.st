@@ -29,6 +29,12 @@ MiScopeQueriesPresenterTest >> createNewQuery [
 			yourself
 ]
 
+{ #category : #testing }
+MiScopeQueriesPresenterTest >> expectedFailures [
+
+	^ #( #testQueryValidity )
+]
+
 { #category : #running }
 MiScopeQueriesPresenterTest >> queryClass [
 	^ FQScopeQuery

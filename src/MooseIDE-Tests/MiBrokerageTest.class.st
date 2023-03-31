@@ -85,6 +85,10 @@ MiBrokerageTest >> testProducedItemNoConsumer [
 MiBrokerageTest >> testProducedMatchConsumeClassUseTrait [
 	self assert: (application produced: FamixStMethod matchConsumed: FamixTWithComments)
 
+	self assert:
+		(application
+			 produced: FamixStMethod
+			 matchConsumed: FamixTWithComments)
 ]
 
 { #category : #tests }
