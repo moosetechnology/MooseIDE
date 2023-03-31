@@ -129,7 +129,7 @@ MiImportModelFromSmalltalkDialog >> importingContext [
 { #category : #initialization }
 MiImportModelFromSmalltalkDialog >> initialize [
 
-	importingContext := MooseImportingContext new importMaximum.
+	importingContext := MooseImportingContext new.
 	entitiesToImport := MooseImportingContext entityDependencies keys
 		                    asSet.
 	contextCheckBoxes := OrderedCollection new.
