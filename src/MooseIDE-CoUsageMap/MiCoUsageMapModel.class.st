@@ -6,7 +6,8 @@ Class {
 	#superclass : #MiAbstractModel,
 	#instVars : [
 		'settingsWindow',
-		'containerEntities'
+		'containerEntities',
+		'selectedEntity'
 	],
 	#category : #'MooseIDE-CoUsageMap-Model'
 }
@@ -53,8 +54,7 @@ MiCoUsageMapModel >> lastTagSelected: aTag [
 
 { #category : #accessing }
 MiCoUsageMapModel >> miSelectedItem [
-	self flag: 'Should be the attribute currently selected ?'.
-	^ containerEntities
+	^selectedEntity
 ]
 
 { #category : #actions }
@@ -86,7 +86,7 @@ MiCoUsageMapModel >> openSettings [
 	]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tagging }
 MiCoUsageMapModel >> removeTagOn: aMooseEntity [
 	aMooseEntity allTags
 		detect: [ :aTag | aTag isHidden not ]
@@ -95,11 +95,31 @@ MiCoUsageMapModel >> removeTagOn: aMooseEntity [
 ]
 
 { #category : #accessing }
+MiCoUsageMapModel >> selectedEntity [
+	^selectedEntity
+]
+
+{ #category : #accessing }
+MiCoUsageMapModel >> selectedEntity: aMooseEntity [
+
+	selectedEntity := aMooseEntity
+]
+
+{ #category : #accessing }
 MiCoUsageMapModel >> settings [
 	^MiCoUsageMapSettings
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tagging }
+MiCoUsageMapModel >> tagEntitiesSelected [ 
+	| tag entity |
+	(tag := self selectedTag) ifNil: [ ^self ].
+	(entity := self selectedEntity) ifNil: [ ^self ].
+	self tagEntity: entity with: tag
+	
+]
+
+{ #category : #tagging }
 MiCoUsageMapModel >> tagEntity: aMooseEntity with: aTag [
 	self removeTagOn: aMooseEntity.
 
@@ -107,7 +127,7 @@ MiCoUsageMapModel >> tagEntity: aMooseEntity with: aTag [
 		tagAssociation := aTag addReference: aMooseEntity.
 		self currentApplication consumeItem: tagAssociation.
 
-		self lastTagSelected: aTag
+		self selectedTag: aTag
 	].
 
 	browser updateTagColorFor: aMooseEntity

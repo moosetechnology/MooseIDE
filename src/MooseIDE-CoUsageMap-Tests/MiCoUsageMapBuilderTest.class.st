@@ -9,18 +9,6 @@ MiCoUsageMapBuilderTest >> browserClass [
 	^ MiCoUsageMapBrowser
 ]
 
-{ #category : #running }
-MiCoUsageMapBuilderTest >> setUp [
-	super setUp.
-
-	"browser collectionModel: MiCoUsageTestFamixModel new allMethods.
-
-	visualization := browser mapVisualization.
-	builder := visualization mapBuilder.
-	builder methods: browser collectionModel
-"
-]
-
 { #category : #tests }
 MiCoUsageMapBuilderTest >> testAutomaticColorOfContainerBox [
 
@@ -49,7 +37,7 @@ MiCoUsageMapBuilderTest >> testLastTagInitialization [
 	self tagsWithPalette: { 'Frame'. 'Connection' }.
 	self buildForTest.
 
-	self assert: builder lastTagSelected isNil.
+	self assert: visualization selectedTag isNil.
 
 ]
 
@@ -65,7 +53,7 @@ MiCoUsageMapBuilderTest >> testLastTagWithTag [
 	tag := builder tagNamed: 'Frame'.
 
 	builder setTag: tag onInnerBox: attribute.
-	self assert: builder lastTagSelected equals: tag.
+	self assert: visualization selectedTag equals: tag.
 
 ]
 
@@ -101,7 +89,7 @@ MiCoUsageMapBuilderTest >> testQuickTaggingWithoutMetaKey [
 		commandKeyPressed: true ;
 		controlKeyPressed: true.
 
-	builder lastTagSelected: tag.
+	visualization selectedTag: tag.
 	builder menuManager clickOn: event.
 
 	self assert: innerBox tag equals: tag.

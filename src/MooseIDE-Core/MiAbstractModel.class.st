@@ -70,7 +70,7 @@ MiAbstractModel >> settingsChanged: aBoolean [
 
 { #category : #actions }
 MiAbstractModel >> tagEntitiesSelected [
-	UIManager  default inform: 'tagging selected entities with: ' , self selectedTag name
+	UIManager  default inform: 'Unimplemented tagging (' , self selectedTag name, ') of selected entities'
 ]
 
 { #category : #accessing }

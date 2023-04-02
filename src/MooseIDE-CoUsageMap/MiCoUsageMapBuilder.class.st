@@ -81,9 +81,9 @@ MiCoUsageMapBuilder >> canvasController [
 { #category : #private }
 MiCoUsageMapBuilder >> changeTagsDuring: aBlockClosure [
 	| lastTag |
-	lastTag := self lastTagSelected.
+	lastTag := visualization selectedTag.
 	aBlockClosure value.
-	self lastTagSelected: lastTag
+	visualization selectedTag: lastTag
 ]
 
 { #category : #accessing }
@@ -252,7 +252,8 @@ MiCoUsageMapBuilder >> highlightManager [
 
 { #category : #accessing }
 MiCoUsageMapBuilder >> highlightManager: aMiCoHighlightManager [
-	highlightManager := aMiCoHighlightManager
+	highlightManager := aMiCoHighlightManager.
+	highlightManager mapBuilder: self.
 ]
 
 { #category : #accessing }
@@ -276,6 +277,7 @@ MiCoUsageMapBuilder >> initialize [
 
 { #category : #initialization }
 MiCoUsageMapBuilder >> initializeContainerBoxes [
+	self flag: 'move containerEntities into CoUsageMapModel?'.
 	containerBoxes := self containerEntities 
 		collect: [ :cont | self newContainerBoxFor: cont ]
 		as: OrderedCollection.
@@ -349,7 +351,7 @@ MiCoUsageMapBuilder >> initializeValues [
 
 { #category : #accessing }
 MiCoUsageMapBuilder >> innerBoxNamed: aByteString [
-	^ self innerBoxes detect: [ :contr | contr name = aByteString ]
+	^ self innerBoxes detect: [ :box | box name = aByteString ]
 ]
 
 { #category : #hooks }
@@ -381,17 +383,6 @@ MiCoUsageMapBuilder >> labelShapeFor: contr [
 		yourself.
 	self resizeLabelIfNecessary: label.
 	^ label
-]
-
-{ #category : #accessing }
-MiCoUsageMapBuilder >> lastTagSelected [
-	self flag: 'should be in specModel'.
-	^self application tagSelectedInMooseModel: self specModel currentMooseModel
-]
-
-{ #category : #accessing }
-MiCoUsageMapBuilder >> lastTagSelected: aTag [ 
-	self application selectedTag: aTag
 ]
 
 { #category : #accessing }
@@ -447,10 +438,10 @@ MiCoUsageMapBuilder >> newInnerBoxFor: anObject [
 
 { #category : #events }
 MiCoUsageMapBuilder >> quickTaggingOn: entity [ 
-	self lastTagSelected
-	ifNil: [ ^ self ].
-
-	self setTag: self lastTagSelected onInnerBox: entity
+	self flag: 'should be move to visualization along with #setTag:onInnerBox:'.
+	visualization selectedTag
+	ifNil: [ ^ self ]
+	ifNotNil: [ :tag | self setTag: tag onInnerBox: entity ]
 
 ]
 
@@ -530,11 +521,37 @@ MiCoUsageMapBuilder >> resizeLabelIfNecessary: label [
 	label scaleBy: scale @ 1.
 ]
 
+{ #category : #accessing }
+MiCoUsageMapBuilder >> selectedInnerEntity [
+
+	^visualization selectedInnerEntity
+]
+
+{ #category : #accessing }
+MiCoUsageMapBuilder >> selectedInnerShape [
+	| selectedEntity |
+	selectedEntity := visualization selectedInnerEntity.
+	self canvas children do: [:containerShape |
+		containerShape innerBoxShapes
+			detect: [ :innerShape |
+				innerShape model mooseEntity = selectedEntity ]
+			ifOne: [ :innerShape | ^innerShape ]
+			ifNone: [ nil ]
+		].
+
+	Error signal: 'Shape of selected entity not found'
+]
+
+{ #category : #accessing }
+MiCoUsageMapBuilder >> selectedInnerShape: anInnerShape [
+
+	^visualization selectedInnerEntity: (anInnerShape ifNil: [ nil ] ifNotNil: [anInnerShape model mooseEntity])
+]
+
 { #category : #initialization }
 MiCoUsageMapBuilder >> setTag: aTag onInnerBox: aBox [
-	"send to specModel through the MapVisualization"
-	self flag: 'lastTagSelected should be in specModel'.
-	self lastTagSelected: aTag.
+	self flag: 'should be move to visualization'.
+	visualization selectedTag: aTag.
 	visualization setTag: aTag onEntity: aBox mooseEntity
 ]
 

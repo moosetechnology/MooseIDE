@@ -117,6 +117,26 @@ MiCoUsageMapVisualization >> run [
 		build.
 ]
 
+{ #category : #accessing }
+MiCoUsageMapVisualization >> selectedInnerEntity [
+	^specModel selectedEntity
+]
+
+{ #category : #accessing }
+MiCoUsageMapVisualization >> selectedInnerEntity: aMooseEntity [
+	specModel selectedEntity: aMooseEntity
+]
+
+{ #category : #accessing }
+MiCoUsageMapVisualization >> selectedTag [
+	^specModel selectedTag
+]
+
+{ #category : #accessing }
+MiCoUsageMapVisualization >> selectedTag: aTag [
+	specModel selectedTag: aTag
+]
+
 { #category : #initialization }
 MiCoUsageMapVisualization >> setTag: aTag onEntity: mooseEntity [
 	specModel tagEntity: mooseEntity with: aTag
