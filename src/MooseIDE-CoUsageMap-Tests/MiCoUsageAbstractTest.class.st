@@ -8,12 +8,6 @@ Class {
 	#category : #'MooseIDE-CoUsageMap-Tests-Browser'
 }
 
-{ #category : #running }
-MiCoUsageAbstractTest >> applicationForTests [
-
-	^ MiTestApplication new
-]
-
 { #category : #'private - testing' }
 MiCoUsageAbstractTest >> buildForTest [
 	builder renderIn: builder container job: MiJob new.
@@ -32,8 +26,8 @@ MiCoUsageAbstractTest >> setUp [
 	super setUp.
 
 	browser := MiCoUsageMapBrowser
-		newApplication: self applicationForTests
-		model: self specModelForTests.
+		newApplication: MiTestApplication new
+		model: MiCoUsageMapModel new.
 	browser model collectionModel: MiCoUsageTestFamixModel new allMethods.
 
 	visualization := browser mapVisualization.
@@ -43,18 +37,8 @@ MiCoUsageAbstractTest >> setUp [
 ]
 
 { #category : #running }
-MiCoUsageAbstractTest >> specModelForTests [
-
-	^ MiCoUsageMapModel new
-]
-
-{ #category : #'private - testing' }
-MiCoUsageAbstractTest >> tags: aCollection colorPalette: aNSOrdinalScale [
-	aCollection do: [:str |
-		self addTag: (FamixTag new 
-			name: str;
-			color: (aNSOrdinalScale scale: str);
-			yourself) ].
+MiCoUsageAbstractTest >> specModel [
+	^visualization specModel
 ]
 
 { #category : #'private - testing' }

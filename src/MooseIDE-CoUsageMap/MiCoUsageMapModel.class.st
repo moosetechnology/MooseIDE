@@ -42,17 +42,6 @@ MiCoUsageMapModel >> followEntity: aCollection [
 ]
 
 { #category : #accessing }
-MiCoUsageMapModel >> lastTagSelected [
-	^lastTagSelected
-]
-
-{ #category : #accessing }
-MiCoUsageMapModel >> lastTagSelected: aTag [
-	lastTagSelected := aTag.
-	self flag: 'updateTagCommand button'
-]
-
-{ #category : #accessing }
 MiCoUsageMapModel >> miSelectedItem [
 	^selectedEntity
 ]
