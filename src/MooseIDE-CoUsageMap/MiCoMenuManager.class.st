@@ -14,7 +14,7 @@ Class {
 MiCoMenuManager >> clickOn: aRSMouseClick [ 
 	aRSMouseClick metaKeyPressed
 	  ifFalse: [ ^ self ].
-	mapBuilder quickTaggingOn: aRSMouseClick shape model.
+	mapBuilder specModel quickTaggingOn: aRSMouseClick shape model.
 	aRSMouseClick signalUpdate
 ]
 

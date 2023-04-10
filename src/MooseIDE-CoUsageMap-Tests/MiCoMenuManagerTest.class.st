@@ -8,11 +8,8 @@ Class {
 MiCoMenuManagerTest >> testOpenMenu [
 
 	| attribute method |
-	self tagsWithPalette: { 'base'. 'simple' }.
-	self buildForTest.
-
-	attribute := builder getInnerBoxNamed: #var2.
-	method := builder containerBoxNamed: #method1.
+	attribute := self specModel getInnerBoxNamed: #var2.
+	method := self specModel containerBoxNamed: #method1.
 	builder menuManager createMenu: MenuMorph new onBox: attribute.
 	builder menuManager createMenu: MenuMorph new onBox: method.
 	builder menuManager

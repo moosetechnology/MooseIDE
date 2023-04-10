@@ -36,11 +36,6 @@ MiCoAbstractBox >> printOn: s [
 	s nextPutAll: self name
 ]
 
-{ #category : #private }
-MiCoAbstractBox >> privateTag: aTag [
-	tag := aTag
-]
-
 { #category : #accessing }
 MiCoAbstractBox >> tag [
 	self flag: 'handle multiple tags'.

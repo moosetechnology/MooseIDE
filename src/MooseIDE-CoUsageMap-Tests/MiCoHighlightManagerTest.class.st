@@ -7,10 +7,8 @@ Class {
 { #category : #tests }
 MiCoHighlightManagerTest >> testDeselectGoesToModel [
 	| mooseEntity attribute1 shape1 |
-	self buildForTest.
-
 	mooseEntity := self specModel currentMooseModel entityNamed: #var1.
-	attribute1 := builder getInnerBoxNamed: #var1.
+	attribute1 := self specModel getInnerBoxNamed: #var1.
 	shape1 := builder canvas deepShapeFromModel: attribute1.
 
 	self specModel selectedEntity: mooseEntity.
@@ -26,9 +24,8 @@ MiCoHighlightManagerTest >> testDeselectGoesToModel [
 MiCoHighlightManagerTest >> testDeselectInnerBox [
 	| attribute1 shape1 default selected |
 	self tagsWithPalette: { 'Frame'. 'Connection' }.
-	self buildForTest.
 
-	attribute1 := builder getInnerBoxNamed: #var1.
+	attribute1 := self specModel getInnerBoxNamed: #var1.
 	shape1 := builder canvas deepShapeFromModel: attribute1.
 
 	default := builder highlightManager defaultBoxBorder color.
@@ -46,9 +43,8 @@ MiCoHighlightManagerTest >> testDeselectInnerBox [
 MiCoHighlightManagerTest >> testHighlight [
 	| attribute1 shape1 default selected |
 	self tagsWithPalette: { 'Frame'. 'Connection' }.
-	self buildForTest.
 
-	attribute1 := builder getInnerBoxNamed: #var1.
+	attribute1 := self specModel getInnerBoxNamed: #var1.
 	shape1 := builder canvas deepShapeFromModel: attribute1.
 	
 	default := builder highlightManager defaultBoxBorder color.
@@ -68,10 +64,9 @@ MiCoHighlightManagerTest >> testHighlight [
 MiCoHighlightManagerTest >> testNoHighlightWhenSelectedInnerBox [
 	| attribute1 shape1 default selected attribute2 shape2 |
 	self tagsWithPalette: { 'Frame'. 'Connection' }.
-	self buildForTest.
 
-	attribute1 := builder getInnerBoxNamed: #var1.
-	attribute2 := builder getInnerBoxNamed: #var2.
+	attribute1 := self specModel getInnerBoxNamed: #var1.
+	attribute2 := self specModel getInnerBoxNamed: #var2.
 	shape1 := builder canvas deepShapeFromModel: attribute1.
 	shape2 := builder canvas deepShapeFromModel: attribute2.
 
@@ -90,9 +85,7 @@ MiCoHighlightManagerTest >> testNoHighlightWhenSelectedInnerBox [
 { #category : #tests }
 MiCoHighlightManagerTest >> testSelectGoesToModel [
 	| attribute1 shape1 |
-	self buildForTest.
-
-	attribute1 := builder getInnerBoxNamed: #var1.
+	attribute1 := self specModel getInnerBoxNamed: #var1.
 	shape1 := builder canvas deepShapeFromModel: attribute1.
 
 	shape1 announce: (RSMouseLeftClick new shape: shape1).
@@ -106,9 +99,8 @@ MiCoHighlightManagerTest >> testSelectGoesToModel [
 MiCoHighlightManagerTest >> testSelectInnerBox [
 	| attribute1 shape1 default selected |
 	self tagsWithPalette: { 'Frame'. 'Connection' }.
-	self buildForTest.
 
-	attribute1 := builder getInnerBoxNamed: #var1.
+	attribute1 := self specModel getInnerBoxNamed: #var1.
 	shape1 := builder canvas deepShapeFromModel: attribute1.
 
 	default := builder highlightManager defaultBoxBorder color.

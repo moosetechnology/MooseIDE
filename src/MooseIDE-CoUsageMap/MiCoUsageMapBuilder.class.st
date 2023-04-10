@@ -244,6 +244,11 @@ MiCoUsageMapBuilder >> release [
 ]
 
 { #category : #hooks }
+MiCoUsageMapBuilder >> render [
+	self renderIn: self canvas
+]
+
+{ #category : #hooks }
 MiCoUsageMapBuilder >> renderIn: aCanvas [
 	shapes := self specModel containerBoxes  collect: [ :containerEntity | self containerBoxShapeFor: containerEntity ].
 	aCanvas addAll: shapes.

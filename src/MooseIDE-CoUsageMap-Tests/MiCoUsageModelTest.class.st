@@ -57,3 +57,43 @@ MiCoUsageModelTest >> test03AttributeWidth [
 	method := model containerBoxNamed: #method3.
 	self assert: (attribute numberOfUsesOn: method) equals: 1
 ]
+
+{ #category : #tests }
+MiCoUsageModelTest >> testAutomaticColorOfContainerBox [
+
+	| attribute tag |
+
+	attribute := model getInnerBoxNamed: #var6.
+	tag := model currentMooseModel tagNamed: 'aTag'.
+	model setTag: tag onInnerBox: attribute.
+
+	model automaticColor.
+
+	self
+		assertCollection: (model containerBoxNamed: #method4) mooseEntity allTags
+		hasSameElements: {tag}.
+	self
+		assertCollection: (model containerBoxNamed: #method5) mooseEntity allTags
+		hasSameElements: {tag}.
+
+]
+
+{ #category : #tests }
+MiCoUsageModelTest >> testLastTagInitialization [
+
+	self assert: model selectedTag isNil.
+
+]
+
+{ #category : #tests }
+MiCoUsageModelTest >> testLastTagWithTag [
+
+	| attribute tag |
+	attribute := model getInnerBoxNamed: #var2.
+	tag := model currentMooseModel tagNamed: 'aTag'.
+
+	model setTag: tag onInnerBox: attribute.
+
+	self assert: model selectedTag equals: tag.
+
+]

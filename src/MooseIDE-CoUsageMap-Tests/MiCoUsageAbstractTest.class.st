@@ -10,7 +10,9 @@ Class {
 
 { #category : #running }
 MiCoUsageAbstractTest >> createTag: aName [
-	^builder specModel currentMooseModel tagNamed: aName
+	^(builder specModel currentMooseModel tagNamed: aName)
+		color: (Color red) ;
+		yourself
 ]
 
 { #category : #running }

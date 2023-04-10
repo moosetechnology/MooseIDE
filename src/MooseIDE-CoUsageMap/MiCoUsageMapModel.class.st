@@ -21,8 +21,8 @@ Class {
 MiCoUsageMapModel >> automaticColor [
 
 	self changeTagsDuring: [ 
-		self containerEntities
-			do:[:met | self automaticColorForContainerBox: met ].
+		self containerBoxes
+			do: [:met | self automaticColorForContainerBox: met ].
 	]
 	
 ]
