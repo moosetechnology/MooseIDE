@@ -38,9 +38,9 @@ MiCoUsageVisualizationTest >> test02MethodsAttributes [
 
 	self assert: (builder containerBoxNamed: #method2) innerBoxes size equals: 0.
 	self assert: (builder containerBoxNamed: #method3) innerBoxes size equals: 3.
-	self assert: (builder innerBoxNamed: #var2) numberOfUses equals: 2.
-	self assert: (builder innerBoxNamed: #var4) numberOfUses equals: 1.
-	self should: [builder innerBoxNamed: #var5] raise: Error.
+	self assert: (builder getInnerBoxNamed: #var2) numberOfUses equals: 2.
+	self assert: (builder getInnerBoxNamed: #var4) numberOfUses equals: 1.
+	self should: [builder getInnerBoxNamed: #var5] raise: Error.
 ]
 
 { #category : #tests }
@@ -50,13 +50,13 @@ MiCoUsageVisualizationTest >> test03AttributeWidth [
 	builder containerEntities: MiCoUsageTestFamixModel new allMethods.
 	self buildForTest.
 	
-	attribute := builder innerBoxNamed: #var1.
+	attribute := builder getInnerBoxNamed: #var1.
 	method := builder containerBoxNamed: #method1.
 	shapes := builder canvas deepShapesFromModel: attribute.
 	self assert: shapes size equals: 1.
 	self assert: (attribute numberOfUsesOn: method) equals: 3.
 
-	attribute := builder innerBoxNamed: #var4.
+	attribute := builder getInnerBoxNamed: #var4.
 	method := builder containerBoxNamed: #method3.
 	self assert: (attribute numberOfUsesOn: method) equals: 1
 ]
@@ -68,7 +68,7 @@ MiCoUsageVisualizationTest >> test04Highlight [
 	builder containerEntities: MiCoUsageTestFamixModel new allMethods.
 	self tagsWithPalette: { 'Frame'. 'Connection' }.
 	self buildForTest.
-	attribute := builder innerBoxNamed: #var2.
+	attribute := builder getInnerBoxNamed: #var2.
 	border := builder highlightManager selectedBoxBorder.
 	shapes := builder canvas deepShapesFromModel: attribute.
 
@@ -96,10 +96,10 @@ MiCoUsageVisualizationTest >> test05MethodAttributePopup [
 	builder containerEntities: MiCoUsageTestFamixModel new allMethods.
 	self tagsWithPalette: { 'Frame'. 'Connection' }.
 	self buildForTest.
-	attribute := builder innerBoxNamed: #var2.
+	attribute := builder getInnerBoxNamed: #var2.
 	method := builder containerBoxNamed: #method1.
 	builder
-		createAttributeTextMorphFor: attribute method: method;
+		createInnerBoxTextMorphFor: attribute containerBox: method;
 		createContainerBoxTextMorphFor: method
 ]
 

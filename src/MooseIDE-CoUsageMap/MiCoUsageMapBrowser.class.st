@@ -176,6 +176,7 @@ MiCoUsageMapBrowser >> update [
 ]
 
 { #category : #public }
-MiCoUsageMapBrowser >> updateTagColorFor: anEntity [
-	mapVisualization updateTagColorFor: anEntity
+MiCoUsageMapBrowser >> updateBoxColor: aMiCoBox fromTags: tags [
+
+	mapVisualization updateBoxColor: aMiCoBox fromTags: tags
 ]

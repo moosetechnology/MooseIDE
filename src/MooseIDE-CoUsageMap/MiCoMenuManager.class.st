@@ -81,7 +81,7 @@ MiCoMenuManager >> fillTagMenu: menu for: aMiCoBox [
 		thenDo: [ :aTag |
 			(menu 
 				add: aTag name
-					target: mapBuilder
+					target: (mapBuilder specModel)
 					selector: #setTag:onInnerBox:
 					argumentList: { aTag . aMiCoBox })
 				icon: (self iconFormFor: aTag) ].

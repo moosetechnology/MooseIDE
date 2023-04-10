@@ -16,7 +16,7 @@ MiCoUsageMapBuilderTest >> testAutomaticColorOfContainerBox [
 	self tagsWithPalette: { 'base'. 'simple' }.
 	self buildForTest.
 
-	attribute := builder innerBoxNamed: #var6.
+	attribute := builder getInnerBoxNamed: #var6.
 	tag := builder tagNamed: 'base'.
 	builder setTag: tag onInnerBox: attribute.
 
@@ -48,7 +48,7 @@ MiCoUsageMapBuilderTest >> testLastTagWithTag [
 	self tagsWithPalette: { 'Frame'. 'Connection' }.
 	self buildForTest.
 
-	attribute := builder innerBoxNamed: #var2.
+	attribute := builder getInnerBoxNamed: #var2.
 	method := builder containerBoxNamed: #method1.
 	tag := builder tagNamed: 'Frame'.
 
@@ -63,9 +63,9 @@ MiCoUsageMapBuilderTest >> testQuickTaggingWithoutLastTag [
 	self tagsWithPalette: { 'Frame'. 'Connection' }.
 	self buildForTest.
 
-	innerBox := builder innerBoxNamed: #var1.
+	innerBox := builder getInnerBoxNamed: #var1.
 	shapes := builder canvas deepShapesFromModel: innerBox.
-	tagColor := builder tagColorFrom: nil.
+	tagColor := builder colorFromTags: nil.
 	event := RSMouseClick new shape: shapes first.
 
 	builder menuManager clickOn: event.
@@ -82,7 +82,7 @@ MiCoUsageMapBuilderTest >> testQuickTaggingWithoutMetaKey [
 	self buildForTest.
 
 	tag := builder tagNamed: 'Frame'.
-	innerBox := builder innerBoxNamed: #var1.
+	innerBox := builder getInnerBoxNamed: #var1.
 	shapes := builder canvas deepShapesFromModel: innerBox.
 	event := RSMouseClick new
 		shape: shapes first ;
@@ -104,7 +104,7 @@ MiCoUsageMapBuilderTest >> testSeveralInnerBoxesColorWithTag [
 	self tagsWithPalette: { 'base'. 'simple' }.
 	self buildForTest.
 
-	attribute := builder innerBoxNamed: #var6.
+	attribute := builder getInnerBoxNamed: #var6.
 	shapes := builder canvas deepShapesFromModel: attribute.
 
 	tag := builder tagNamed: 'base'.
@@ -119,10 +119,10 @@ MiCoUsageMapBuilderTest >> testSeveralInnerBoxesColorWithoutTag [
 	| attribute shapes tagColor |
 	self buildForTest.
 
-	attribute := builder innerBoxNamed: #var6.
+	attribute := builder getInnerBoxNamed: #var6.
 	shapes := builder canvas deepShapesFromModel: attribute.
 
-	tagColor := builder tagColorFrom: nil.
+	tagColor := builder colorFromTags: nil.
 	self assert: (shapes allSatisfy: [ :shape | shape color = tagColor ]).
 
 ]
@@ -133,7 +133,7 @@ MiCoUsageMapBuilderTest >> testSeveralInnerBoxesForOneEntity [
 	| attribute shapes |
 	self buildForTest.
 
-	attribute := builder innerBoxNamed: #var6.
+	attribute := builder getInnerBoxNamed: #var6.
 	shapes := builder canvas deepShapesFromModel: attribute.
 	self assert: shapes size equals: 2.
 

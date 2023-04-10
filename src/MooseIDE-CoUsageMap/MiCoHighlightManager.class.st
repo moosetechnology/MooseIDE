@@ -1,6 +1,6 @@
 "
 This class provides the highlight system for MiCoUsageMapBuilder
-There are two kinds:
+There are two kinds of Highlights:
 - highlight: when the mouse enters or leaves an inner box
 - select: when there is a mouse click on an inner box (kind-of permanent highlight)
 "
