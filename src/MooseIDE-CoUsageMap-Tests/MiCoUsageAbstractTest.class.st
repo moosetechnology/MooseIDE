@@ -8,15 +8,9 @@ Class {
 	#category : #'MooseIDE-CoUsageMap-Tests-Browser'
 }
 
-{ #category : #'private - testing' }
-MiCoUsageAbstractTest >> buildForTest [
-	builder renderIn: builder container job: MiJob new.
-
-]
-
 { #category : #running }
 MiCoUsageAbstractTest >> createTag: aName [
-	^builder containerEntities anyOne mooseModel tagNamed: aName
+	^builder specModel currentMooseModel tagNamed: aName
 ]
 
 { #category : #running }
@@ -28,12 +22,12 @@ MiCoUsageAbstractTest >> setUp [
 	browser := MiCoUsageMapBrowser
 		newApplication: MiTestApplication new
 		model: MiCoUsageMapModel new.
-	browser model collectionModel: MiCoUsageTestFamixModel new allMethods.
+	browser model followEntity: MiCoUsageTestFamixModel new allMethods.
 
 	visualization := browser mapVisualization.
 
 	builder := visualization mapBuilder.
-	builder containerEntities: browser model collectionModel
+	"builder containerEntities: browser model collectionModel"
 ]
 
 { #category : #running }

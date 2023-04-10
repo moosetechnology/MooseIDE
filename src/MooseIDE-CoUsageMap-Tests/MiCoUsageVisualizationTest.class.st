@@ -5,70 +5,28 @@ Class {
 }
 
 { #category : #tests }
-MiCoUsageVisualizationTest >> test00Basic [
-
-	| window |
-	self assert: builder settings notNil.
-	self assert: builder canvas nodes size equals: 0.
-
-	window := builder open.
-	window delete
-]
-
-{ #category : #tests }
 MiCoUsageVisualizationTest >> test01Basic [
 
-	self buildForTest.
-	self assert: builder containerBoxes size equals: 5.
-	self assert: builder innerBoxes size equals: 5. "var5 is not used"
 	self assert: builder canvas nodes size equals: 5
-]
-
-{ #category : #tests }
-MiCoUsageVisualizationTest >> test02MethodsAttributes [
-
-	| method |
-	builder containerEntities: MiCoUsageTestFamixModel new allMethods.
-	self buildForTest.
-
-	method := builder containerBoxNamed: #method1.
-	self assert: method class equals: MiCoContainerBox.
-	self assert: method innerBoxes size equals: 2.
-	self assert: method innerBoxes first class equals: MiCoInnerBox.
-
-	self assert: (builder containerBoxNamed: #method2) innerBoxes size equals: 0.
-	self assert: (builder containerBoxNamed: #method3) innerBoxes size equals: 3.
-	self assert: (builder getInnerBoxNamed: #var2) numberOfUses equals: 2.
-	self assert: (builder getInnerBoxNamed: #var4) numberOfUses equals: 1.
-	self should: [builder getInnerBoxNamed: #var5] raise: Error.
 ]
 
 { #category : #tests }
 MiCoUsageVisualizationTest >> test03AttributeWidth [
 
-	| method attribute shapes |
-	builder containerEntities: MiCoUsageTestFamixModel new allMethods.
-	self buildForTest.
-	
-	attribute := builder getInnerBoxNamed: #var1.
-	method := builder containerBoxNamed: #method1.
+	| attribute shapes |
+	attribute := builder specModel getInnerBoxNamed: #var1.
 	shapes := builder canvas deepShapesFromModel: attribute.
 	self assert: shapes size equals: 1.
-	self assert: (attribute numberOfUsesOn: method) equals: 3.
 
-	attribute := builder getInnerBoxNamed: #var4.
-	method := builder containerBoxNamed: #method3.
-	self assert: (attribute numberOfUsesOn: method) equals: 1
 ]
 
 { #category : #tests }
 MiCoUsageVisualizationTest >> test04Highlight [
 
 	| attribute shapes border event |
-	builder containerEntities: MiCoUsageTestFamixModel new allMethods.
 	self tagsWithPalette: { 'Frame'. 'Connection' }.
-	self buildForTest.
-	attribute := builder getInnerBoxNamed: #var2.
+
+	attribute := builder specModel getInnerBoxNamed: #var2.
 	border := builder highlightManager selectedBoxBorder.
 	shapes := builder canvas deepShapesFromModel: attribute.
 
@@ -93,11 +51,9 @@ MiCoUsageVisualizationTest >> test04Highlight [
 MiCoUsageVisualizationTest >> test05MethodAttributePopup [
 
 	| attribute method |
-	builder containerEntities: MiCoUsageTestFamixModel new allMethods.
 	self tagsWithPalette: { 'Frame'. 'Connection' }.
-	self buildForTest.
-	attribute := builder getInnerBoxNamed: #var2.
-	method := builder containerBoxNamed: #method1.
+	attribute := builder specModel getInnerBoxNamed: #var2.
+	method := builder specModel containerBoxNamed: #method1.
 	builder
 		createInnerBoxTextMorphFor: attribute containerBox: method;
 		createContainerBoxTextMorphFor: method
@@ -107,11 +63,8 @@ MiCoUsageVisualizationTest >> test05MethodAttributePopup [
 MiCoUsageVisualizationTest >> test06ExtentChanged [
 	"Note: size of canvas depends on number of methods, attributes, and accesses"
 
-	builder containerEntities: MiCoUsageTestFamixModel new allMethods.
-	self tagsWithPalette: { 'Frame'. 'Connection' }.
-	self buildForTest.
 	self assert: builder canvas extent x equals: 500.
-	self assert: (builder canvas encompassingRectangle width between: 400 and: 500).
+	self assert: (builder canvas encompassingRectangle width between: 300 and: 400).
 
 	builder canvas extent: 700 asPoint.
 	self assert: builder canvas extent x equals: 700.

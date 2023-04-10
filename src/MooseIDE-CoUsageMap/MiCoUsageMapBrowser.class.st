@@ -105,16 +105,6 @@ MiCoUsageMapBrowser >> closeSettings [
 	specModel closeSettings 
 ]
 
-{ #category : #accessing }
-MiCoUsageMapBrowser >> collectionModel [
-	^specModel collectionModel
-]
-
-{ #category : #accessing }
-MiCoUsageMapBrowser >> collectionModel: anObject [
-	specModel collectionModel: anObject
-]
-
 { #category : #initialization }
 MiCoUsageMapBrowser >> connectPresenters [
 	"settings mapVisualization: mapVisualization.

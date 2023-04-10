@@ -58,18 +58,6 @@ MiCoUsageMapModel >> closeSettings [
 ]
 
 { #category : #accessing }
-MiCoUsageMapModel >> collectionModel [
-
-	^ containerEntities
-]
-
-{ #category : #accessing }
-MiCoUsageMapModel >> collectionModel: anObject [
-
-	containerEntities := anObject
-]
-
-{ #category : #accessing }
 MiCoUsageMapModel >> containerBoxNamed: aByteString [
 	^ self containerBoxes detect: [ :contr | contr name = aByteString ]
 ]
@@ -134,7 +122,7 @@ MiCoUsageMapModel >> entities [
 
 { #category : #actions }
 MiCoUsageMapModel >> followEntity: aCollection [
-	self collectionModel: aCollection.
+	self containerEntities: aCollection.
 	self initializeValues.
 	browser update
 ]

@@ -53,7 +53,7 @@ MiCoUsageMapVisualization >> initialize [
 { #category : #brokerage }
 MiCoUsageMapVisualization >> itemsFor: aClass [
 	| model |
-	model := self owner collectionModel mooseModel.
+	model := self owner containerEntities mooseModel.
 	
 	aClass = FamixTagAssociation ifTrue: [ ^ model allTagAssociations ].
 	aClass = FamixTag ifTrue: [ ^ model allTags ].
@@ -86,7 +86,7 @@ MiCoUsageMapVisualization >> removeTag: aTag [
 	legendTag := mapBuilder legendTagBuilder.
 	
 	"updating legend"
-	self tagsFromMooseModel: self owner collectionModel mooseModel.
+	self tagsFromMooseModel: self specModel currentMooseModel.
 	legendTag build.
 	
 	mapBuilder menuManager removeTag: aTag.
@@ -109,7 +109,7 @@ MiCoUsageMapVisualization >> removeTagAssociation: aFamixTagAssociation [
 MiCoUsageMapVisualization >> run [
 	| mooseModel |
 	super run.
-	mooseModel := self owner collectionModel.
+	mooseModel := self specModel currentMooseModel.
 	mooseModel ifNil: [ ^self ].
 	mapBuilder 
 		container: self canvas;
