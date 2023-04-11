@@ -7,6 +7,12 @@ Class {
 	#category : #'MooseIDE-CoUsageMap-Tests-Resource'
 }
 
+{ #category : #testing }
+MiCoUsageTestFamixModel class >> canBeImportedFromFile [
+
+	^ false
+]
+
 { #category : #initialization }
 MiCoUsageTestFamixModel >> initialize [
 
