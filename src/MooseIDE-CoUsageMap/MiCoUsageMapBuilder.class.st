@@ -15,18 +15,12 @@ Class {
 	#superclass : #RSAbstractContainerBuilder,
 	#instVars : [
 		'highlightManager',
-		'containerBox',
-		'innerBox',
 		'legendTagBuilder',
-		'markManager',
-		'methodAttributeCounter',
-		'methods',
-		'miAttributes',
-		'miMethods',
-		'settings',
 		'widthScale',
-		'application',
-		'visualization'
+		'visualization',
+		'menuManager',
+		'innerBoxInteraction',
+		'containerBoxInteraction'
 	],
 	#category : #'MooseIDE-CoUsageMap-Roassal3'
 }
@@ -34,13 +28,7 @@ Class {
 { #category : #accessing }
 MiCoUsageMapBuilder >> application [
 
-	^ application
-]
-
-{ #category : #accessing }
-MiCoUsageMapBuilder >> application: anObject [
-
-	application := anObject
+	^self specModel currentApplication
 ]
 
 { #category : #hooks }
@@ -55,44 +43,57 @@ MiCoUsageMapBuilder >> applyLayout [
 ]
 
 { #category : #accessing }
-MiCoUsageMapBuilder >> attributeNamed: aByteString [
-	^ self miAttributes detect: [ :met | met name = aByteString ]
-]
-
-{ #category : #hooks }
-MiCoUsageMapBuilder >> attributeShapeFor: att method: met [
-	| height |
-	height := self settings innerBoxHeight.
-	^ RSBox new
-		model: att;
-		width: (widthScale scale: (att numberOfUses));
-		height: height;
-		color: (self markManager tagColorFrom: att tag);
-		border: (self highlightManager defaultBoxBorder);
-		propertyAt: #method put: met;
-		announcer: innerBox announcer;
-		yourself.
-]
-
-{ #category : #'private - testing' }
-MiCoUsageMapBuilder >> buildForTest [
-	self renderIn: self container job: MiJob new.
-	^ self container
-]
-
-{ #category : #accessing }
 MiCoUsageMapBuilder >> canvasController [
 	^ RSCanvasController simple
 ]
 
 { #category : #accessing }
-MiCoUsageMapBuilder >> conflictTag [
-	^ self legendTagBuilder conflictTag
+MiCoUsageMapBuilder >> colorFromTags: tags [
+	tags ifNil:  [ ^ Color colorFrom: 'f5f5f5' ].
+	(tags isCollection and: [ tags isEmpty ]) ifTrue: [ ^ Color colorFrom: 'f5f5f5' ].
+	(tags isCollection and: [ tags size = 1 ]) ifTrue: [ ^ self colorFromTags: tags anyOne ].
+	tags isCollection ifTrue: [ ^ Color black ].
+
+	(tags isTag and: [ tags isHidden ]) ifTrue: [ ^ Color colorFrom: 'f5f5f5' ].
+	tags isTag ifTrue: [ ^ tags color ].
+	^ Error signal: 'A famixTag was expected'
+]
+
+{ #category : #hooks }
+MiCoUsageMapBuilder >> containerBoxBodyShapeFor: containerBox [
+	| attributesShapes |
+	attributesShapes := containerBox innerBoxes collect: [ :innerBox | 
+		self
+			innerBoxShapeFor: innerBox
+			containerBox: containerBox ].
+	"RSFlowLayout on: attributesShapes."
+	^ attributesShapes asGroup asShape
+		padding: 10;
+		color: (self colorFromTags: containerBox tag);
+		border: (RSBorder new color: Color black; joinMiter);
+		yourself.
+]
+
+{ #category : #hooks }
+MiCoUsageMapBuilder >> containerBoxShapeFor: containerBox [
+	| label body |
+	label := self labelShapeFor: containerBox.
+	body := self containerBoxBodyShapeFor: containerBox.
+	RSVerticalLineLayout new
+		alignCenter;
+		gapSize: 0;
+		on: { label. body }.
+	^ MiCoContainerShape new
+		model: containerBox;
+		addAll: { label. body };
+		adjustToChildren;
+		announcer: containerBoxInteraction announcer;
+		yourself
 ]
 
 { #category : #'popup - hooks' }
-MiCoUsageMapBuilder >> createAttributeTextMorphFor: att method: met [
-	^ (att asStringForMethod: met) asTextMorph
+MiCoUsageMapBuilder >> createContainerBoxTextMorphFor: containerBox [
+	^ containerBox asString asTextMorph
 		backgroundColor: (Smalltalk ui theme backgroundColor alpha: 0.9);
 		borderColor: Color black;
 		borderWidth: 1;
@@ -101,8 +102,8 @@ MiCoUsageMapBuilder >> createAttributeTextMorphFor: att method: met [
 ]
 
 { #category : #'popup - hooks' }
-MiCoUsageMapBuilder >> createMethodTextMorphFor: model [
-	^ model asString asTextMorph
+MiCoUsageMapBuilder >> createInnerBoxTextMorphFor: innerBox containerBox: containerBox [
+	^ (innerBox asStringForContainerBox: containerBox) asTextMorph
 		backgroundColor: (Smalltalk ui theme backgroundColor alpha: 0.9);
 		borderColor: Color black;
 		borderWidth: 1;
@@ -116,51 +117,18 @@ MiCoUsageMapBuilder >> defaultHighlightManager [
 ]
 
 { #category : #default }
-MiCoUsageMapBuilder >> defaultInnerSortBlock [
-	^ [ :att1 :att2 :method | att1 name < att2 name ].
-]
-
-{ #category : #default }
-MiCoUsageMapBuilder >> defaultMarkManager [
-	^ MiCoMarkManager new
-]
-
-{ #category : #default }
 MiCoUsageMapBuilder >> defaultMaxLabelWidth [
 	^ 200
 ]
 
 { #category : #default }
-MiCoUsageMapBuilder >> defaultSettings [
-	^ MiCoUsageMapSettings
-]
-
-{ #category : #default }
-MiCoUsageMapBuilder >> defaultSortBlock [
-	^ [ :met1 :met2 | 
-		| size1 size2 |
-		size1 := met1 children size.
-		size2 := met2 children size.
-		size1 = size2 
-			ifTrue: [ met1 name < met2 name ]
-			ifFalse: [ size1 > size2 ]
-		 ].
+MiCoUsageMapBuilder >> defaultMenuManager [
+	^ MiCoMenuManager new
 ]
 
 { #category : #default }
 MiCoUsageMapBuilder >> defaultTagLegendBuilder [
 	^ MiCoTagLegendBuilder new
-]
-
-{ #category : #default }
-MiCoUsageMapBuilder >> defaultTester [
-	^ MiCoFromSettingsMethodAttributeTester new
-]
-
-{ #category : #accessing }
-MiCoUsageMapBuilder >> getOrCreateAttributeFor: object [
-	^ self miAttributes detect: [ :att | att rawObject = object ]
-		ifNone: [ miAttributes add: (self newAttributeFor: object).]
 ]
 
 { #category : #accessing }
@@ -170,7 +138,14 @@ MiCoUsageMapBuilder >> highlightManager [
 
 { #category : #accessing }
 MiCoUsageMapBuilder >> highlightManager: aMiCoHighlightManager [
-	highlightManager := aMiCoHighlightManager
+	highlightManager := aMiCoHighlightManager.
+	highlightManager mapBuilder: self.
+]
+
+{ #category : #accessing }
+MiCoUsageMapBuilder >> iconForTag: aTag [
+	self flag: 'move to model?'.
+	^self application iconForTag: aTag
 ]
 
 { #category : #initialization }
@@ -178,90 +153,57 @@ MiCoUsageMapBuilder >> initialize [
 	super initialize.
 
 	self
-		methods: #();
-		methodAttributeCounter: self defaultTester;
 		legendTagBuilder: self defaultTagLegendBuilder;
-		markManager: self defaultMarkManager;
+		menuManager: self defaultMenuManager;
 		highlightManager: self defaultHighlightManager;
-		settings: self defaultSettings;		
 		initializeShapes
-]
-
-{ #category : #initialization }
-MiCoUsageMapBuilder >> initializeMethods [
-	miMethods := self methods 
-		collect: [ :met | self newMethodFor: met ]
-		as: OrderedCollection.
-]
-
-{ #category : #initialization }
-MiCoUsageMapBuilder >> initializeReferences [
-	miAttributes := OrderedCollection new.
-	self miMethods do: [ :met | 
-		| bag |
-		bag := Bag withAll: (self methodAttributeCounter allAttributesFor: met).
-		bag doWithOccurrences: [ :attribute :count | | att |
-			count > 0 ifTrue: [ 
-				att := self getOrCreateAttributeFor: attribute.
-				met addAttribute: att.
-				att method: met counter: count.
-			].
-		].
-	]
-]
-
-{ #category : #initialization }
-MiCoUsageMapBuilder >> initializeScale [
-	| allAttributesUses range scaleType cls |
-	allAttributesUses := self miMethods flatCollect: [ :met | 
-		met usedAttributes collect: [ :att | att numberOfUses ] ].
-	cls := MiCoUsageMapSettings.
-	range := cls innerBoxRange.
-	scaleType := cls innerBoxScaleType.
-	
-	widthScale := (scaleType value: NSScale)
-		range: {range first. range last}.
-	allAttributesUses ifEmpty: [ ^ self ].
-	widthScale domain: {allAttributesUses min. allAttributesUses max}.
 ]
 
 { #category : #initialization }
 MiCoUsageMapBuilder >> initializeShapes [
 	"all this interaction will produce an announcer that we can reuse for new shapes"
-	innerBox := RSBox new
-		addInteraction: self markManager;
+	innerBoxInteraction := RSBox new
+		addInteraction: self menuManager;
 		addInteraction: self highlightManager;
 		addInteraction: (RSMorphicPopupInteraction new
 			model: #yourself;
 			morphBuilder: [:shape | 
 				self 
-					createAttributeTextMorphFor: shape model
-					method: (shape propertyAt: #method) ];
+					createInnerBoxTextMorphFor: shape model
+					containerBox: (shape propertyAt: #container) ];
 			yourself).
 	
-	containerBox := RSComposite new
-		addInteraction: self markManager;
+	containerBoxInteraction := RSComposite new
+		addInteraction: self menuManager;
 		addInteraction: self highlightManager;
 		addInteraction: (RSMorphicPopupInteraction new
-			morphBuilder: [:model | self createMethodTextMorphFor: model ];
+			morphBuilder: [:model | self createContainerBoxTextMorphFor: model ];
 			yourself);
 		yourself.
 	
 ]
 
-{ #category : #initialization }
-MiCoUsageMapBuilder >> initializeValues [
-	self
-		initializeMethods;
-		initializeReferences;
-		initializeScale.
+{ #category : #hooks }
+MiCoUsageMapBuilder >> innerBoxShapeFor: innerBox containerBox: containerBox [
+	| height |
+	height := self specModel innerBoxHeight.
+	widthScale := self specModel widthScale.
+	^ RSBox new
+		model: innerBox;
+		width: (widthScale scale: (innerBox numberOfUses));
+		height: height;
+		color: (self colorFromTags: innerBox tag);
+		border: (self highlightManager defaultBoxBorder);
+		propertyAt: #container put: containerBox;
+		announcer: innerBoxInteraction announcer;
+		yourself.
 ]
 
 { #category : #hooks }
-MiCoUsageMapBuilder >> labelShapeFor: met [
+MiCoUsageMapBuilder >> labelShapeFor: containerBox [
 	| label |
 	label := RSLabel new
-		text: met name;
+		text: containerBox name;
 		color: Color black;
 		yourself.
 	self resizeLabelIfNecessary: label.
@@ -280,130 +222,19 @@ MiCoUsageMapBuilder >> legendTagBuilder: aMiCoTagLegendBuilder [
 ]
 
 { #category : #accessing }
-MiCoUsageMapBuilder >> markManager [
-	^ markManager
-]
-
-{ #category : #accessing }
-MiCoUsageMapBuilder >> markManager: aMiCoMarkManager [
-	markManager := aMiCoMarkManager.
-	markManager mapBuilder: self.
-]
-
-{ #category : #accessing }
 MiCoUsageMapBuilder >> maxLabelWidth [
 	^ 200
 ]
 
 { #category : #accessing }
-MiCoUsageMapBuilder >> methodAttributeCounter [
-	^ methodAttributeCounter
+MiCoUsageMapBuilder >> menuManager [
+	^ menuManager
 ]
 
 { #category : #accessing }
-MiCoUsageMapBuilder >> methodAttributeCounter: aMiCoMethodAttributeCounter [
-	methodAttributeCounter := aMiCoMethodAttributeCounter.
-	methodAttributeCounter settings: self settings.
-]
-
-{ #category : #hooks }
-MiCoUsageMapBuilder >> methodBodyShapeFor: met [
-	| attributesShapes |
-	attributesShapes := met usedAttributes collect: [ :att | 
-		self
-			attributeShapeFor: att
-			method: met ].
-	"RSFlowLayout on: attributesShapes."
-	^ attributesShapes asGroup asShape
-		padding: 10;
-		color: (self markManager tagColorFrom: met tag);
-		border: (RSBorder new color: Color black; joinMiter);
-		yourself.
-]
-
-{ #category : #accessing }
-MiCoUsageMapBuilder >> methodNamed: aByteString [
-	^ self miMethods detect: [ :met | met name = aByteString ]
-]
-
-{ #category : #hooks }
-MiCoUsageMapBuilder >> methodShapeFor: met [
-	| label body |
-	label := self labelShapeFor: met.
-	body := self methodBodyShapeFor: met.
-	RSVerticalLineLayout new
-		alignCenter;
-		gapSize: 0;
-		on: { label. body }.
-	^ MiCoMethodShape new
-		model: met;
-		addAll: { label. body };
-		adjustToChildren;
-		announcer: containerBox announcer;
-		yourself
-]
-
-{ #category : #accessing }
-MiCoUsageMapBuilder >> methods [
-	^ methods
-]
-
-{ #category : #accessing }
-MiCoUsageMapBuilder >> methods: aCollection [
-	methods := aCollection
-]
-
-{ #category : #accessing }
-MiCoUsageMapBuilder >> miAttributes [
-	^ miAttributes
-]
-
-{ #category : #accessing }
-MiCoUsageMapBuilder >> miMethods [
-	^ miMethods
-]
-
-{ #category : #'instance creation' }
-MiCoUsageMapBuilder >> newAttributeFor: anObject [
-	| tags |
-	tags := anObject allTagAssociations collect: [ :asso | asso tag ].
-	tags := tags
-		ifEmpty: [ nil ]
-		ifNotEmpty: [ tags anyOne ].
-	^ MiCoAttribute new
-		name: anObject name;
-		rawObject: anObject;
-		tag: tags;
-		application: self application;
-		yourself
-]
-
-{ #category : #'instance creation' }
-MiCoUsageMapBuilder >> newMethodFor: anObject [
-	| tags |
-	tags := anObject allTagAssociations collect: [ :asso | asso tag ].
-	tags := tags
-		ifEmpty: [ nil ]
-		ifNotEmpty: [ tags anyOne ].
-	^ MiCoMethod new
-		name: anObject name;
-		rawObject: anObject;
-		tag: tags;
-		application: self application;
-		yourself
-]
-
-{ #category : #public }
-MiCoUsageMapBuilder >> openSettingsBrowser [
-	| browser window |
-	browser := SettingBrowser new
-		changePackageSet: (RPackage organizer 
-		packageNamed: MiCoUsageMapSettings package name) asOrderedCollection;
-	yourself.
-	window := browser open.
-	window position: (self currentWorld extent - window extent) // 2.
-	browser expandAll.
-	^ window
+MiCoUsageMapBuilder >> menuManager: aMiCoMenuManager [
+	menuManager := aMiCoMenuManager.
+	menuManager mapBuilder: self.
 ]
 
 { #category : #dependencies }
@@ -413,38 +244,23 @@ MiCoUsageMapBuilder >> release [
 ]
 
 { #category : #hooks }
-MiCoUsageMapBuilder >> renderAsync: aCanvas [
-	[ :aJob | self renderIn: aCanvas job: aJob ] runAsRoassalJobOn: aCanvas.
-	"[ :aJob | self renderIn: aCanvas job: aJob ] asJob run."
+MiCoUsageMapBuilder >> render [
+	self renderIn: self canvas
 ]
 
 { #category : #hooks }
 MiCoUsageMapBuilder >> renderIn: aCanvas [
-	self shouldUseProgressBar
-		ifTrue: [ self renderAsync: aCanvas ]
-		ifFalse: [ self renderIn: aCanvas job: MiJob new ].
-	
-]
-
-{ #category : #hooks }
-MiCoUsageMapBuilder >> renderIn: aCanvas job: aJob [
-	aCanvas aaFast.
-	aJob currentValue: 0; title: 'Reading entities'.
-	self initializeValues.
-	aJob currentValue: 50; title: 'Rendering entities'.
-	shapes := self miMethods collect: [ :met | self methodShapeFor: met ].
+	shapes := self specModel containerBoxes  collect: [ :containerEntity | self containerBoxShapeFor: containerEntity ].
 	aCanvas addAll: shapes.
 	
-	aJob currentValue: 85; title: 'Applying layout'.
 	self updateShapeLayout.
-	aJob currentValue: 90; title: 'Adding decorations'.
 	self legendTagBuilder
 		container: aCanvas;
 		build.
 	aCanvas 
 		when: RSExtentChangedEvent send: #applyLayout to: self;
 		addInteraction: self highlightManager;
-		addInteraction: self markManager;
+		addInteraction: self menuManager;
 		addInteraction: self canvasController.
 ]
 
@@ -474,14 +290,36 @@ MiCoUsageMapBuilder >> resizeLabelIfNecessary: label [
 ]
 
 { #category : #accessing }
-MiCoUsageMapBuilder >> settings [
-	^ settings "ifNil: [ MiCoUsageMapSettings ]"
+MiCoUsageMapBuilder >> selectedInnerEntity [
+
+	^visualization selectedInnerEntity
 ]
 
 { #category : #accessing }
-MiCoUsageMapBuilder >> settings: anObject [
-	settings := anObject.
-	methodAttributeCounter settings: self settings.
+MiCoUsageMapBuilder >> selectedInnerShape [
+	| selectedEntity |
+	selectedEntity := visualization selectedInnerEntity.
+	self canvas children do: [:containerShape |
+		containerShape innerBoxShapes
+			detect: [ :innerShape |
+				innerShape model mooseEntity = selectedEntity ]
+			ifOne: [ :innerShape | ^innerShape ]
+			ifNone: [ nil ]
+		].
+
+	Error signal: 'Shape of selected entity not found'
+]
+
+{ #category : #accessing }
+MiCoUsageMapBuilder >> selectedInnerShape: anInnerShape [
+
+	^visualization selectedInnerEntity: (anInnerShape ifNil: [ nil ] ifNotNil: [anInnerShape model mooseEntity])
+]
+
+{ #category : #accessing }
+MiCoUsageMapBuilder >> settings [
+self shouldNotImplement .
+	^visualization settings
 ]
 
 { #category : #testing }
@@ -492,21 +330,21 @@ MiCoUsageMapBuilder >> shouldUseProgressBar [
 { #category : #public }
 MiCoUsageMapBuilder >> sortShapes [
 	| block children tBlock |
-	block := self settings outerBoxSortBlockCompiled.
+	block := self specModel outerBoxSortBlockCompiled.
 	tBlock := [ :a :b | block value: a model value: b model ].
 	children := self canvas children.
 	[ children sort: tBlock ]
 	onErrorDo: [ :ex | 
-		block := self defaultSortBlock.
+		block := self specModel defaultSortBlock.
 		children sort: tBlock ].
-	block := self settings innerBoxSortBlockCompiled.
+	block := self specModel innerBoxSortBlockCompiled.
 	children do: [ :node |
 		tBlock := [ :a :b | 
 			block value: a model value: b model value: node model ].
-		[ node attributeShapes sort: tBlock  ]
+		[ node innerBoxShapes sort: tBlock  ]
 		onErrorDo: [ :ex |
-			block := self defaultInnerSortBlock.
-			node attributeShapes sort: tBlock ]
+			block := self specModel defaultInnerSortBlock.
+			node innerBoxShapes sort: tBlock ]
 	]
 
 ]
@@ -526,11 +364,14 @@ MiCoUsageMapBuilder >> tags [
 	^self specModel tagList
 ]
 
-{ #category : #update }
-MiCoUsageMapBuilder >> threshold75: aNumber [
-	self assert: (aNumber between: 0 and: 100) description: 'use number between 0 and 100'.
-	self markManager threshold75: aNumber / 100.0. 
-	
+{ #category : #public }
+MiCoUsageMapBuilder >> updateBoxColor: aMiCoBox fromTags: tags [
+	| tagColor |
+	tagColor := self colorFromTags: tags.
+	(self canvas deepShapesFromModel: aMiCoBox) 
+		do: [ :shape | shape color: tagColor ].
+	self canvas signalUpdate.
+
 ]
 
 { #category : #update }
@@ -539,7 +380,7 @@ MiCoUsageMapBuilder >> updateChildren [
 	canvas := self canvas.
 	canvas nodes copy do: #remove.
 	self initializeValues.
-	shapes := self miMethods collect: [ :met | self methodShapeFor: met ].
+	shapes := self containerBoxes collect: [ :met | self containerBoxShapeFor: met ].
 	canvas addAll: shapes.
 	self sortShapes.
 	self applyLayout.
@@ -565,7 +406,7 @@ MiCoUsageMapBuilder >> updateInnerBoxSize [
 			body remove.
 			body withAllChildren do: [ :each | each announcer: nil ] ].
 		
-		body := self methodBodyShapeFor: met.
+		body := self containerBoxBodyShapeFor: met.
 		node add: body.
 		RSVerticalLineLayout new
 			alignCenter;
@@ -579,17 +420,16 @@ MiCoUsageMapBuilder >> updateInnerBoxSize [
 { #category : #update }
 MiCoUsageMapBuilder >> updateLegend [
 
-	visualization ifNil: [ ^ self ].
-	visualization updateLegend
+	legendTagBuilder removeOldLegend.
+	legendTagBuilder build.
+	self updateShapeColors.
 ]
 
 { #category : #update }
 MiCoUsageMapBuilder >> updateShapeColors [
-	| mm |
-	mm := self markManager.
 	self canvas allChildren
 		select: [ :shape | shape model notNil ]
-		thenDo: [ :shape | shape color: (mm tagColorFrom: shape model tag) ].
+		thenDo: [ :shape | shape color: (self colorFromTags: shape model tag) ].
 	self canvas signalUpdate.
 ]
 
@@ -599,7 +439,7 @@ MiCoUsageMapBuilder >> updateShapeLayout [
 	self sortShapes.
 	children := self canvas nodes.
 	children do: [ :child | 
-		RSFlowLayout on: child attributeShapes.
+		RSFlowLayout on: child innerBoxShapes.
 		child children second adjustToChildren; padding: 10.
 		RSVerticalLineLayout new
 			alignCenter;

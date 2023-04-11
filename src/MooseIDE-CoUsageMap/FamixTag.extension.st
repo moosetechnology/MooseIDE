@@ -1,15 +1,13 @@
 Extension { #name : #FamixTag }
 
 { #category : #'*MooseIDE-CoUsageMap' }
-FamixTag >> addReference: aMiCoTaggedObject [
-	| tagAssociation tags entity |
-	tags := aMiCoTaggedObject rawObject allTagAssociations 
+FamixTag >> addReference: aMooseObject [
+	| tags |
+	tags := aMooseObject allTagAssociations 
 		select: [ :asso | asso tag = self ].
 	tags ifNotEmpty: [ ^ self ].
-	entity := aMiCoTaggedObject rawObject.
-	tagAssociation := FamixTagEntityAssociation newForEntity: entity tag: self.
-	aMiCoTaggedObject application 
-		ifNotNil: [ :app | app consumeItem: tagAssociation ]
+	^FamixTagEntityAssociation newForEntity: aMooseObject tag: self.
+
 ]
 
 { #category : #'*MooseIDE-CoUsageMap' }
@@ -25,15 +23,17 @@ FamixTag >> asMiCoTag [
 ]
 
 { #category : #'*MooseIDE-CoUsageMap' }
-FamixTag >> removeReference: aMiCoTaggedObject [
+FamixTag >> removeReference: aMooseObject [
 	| tagAssociation app |
-	tagAssociation := aMiCoTaggedObject rawObject allTagAssociations 
+	tagAssociation := aMooseObject allTagAssociations 
 		detect: [ :assoc | assoc tag = self ]
 		ifNone: [ nil ].
-	
+
+	self flag: 'need to tell Application that a tagAssociation was removed'.
+	"
 	app := aMiCoTaggedObject application.
 	(app notNil and: [ tagAssociation notNil ]) ifTrue: [
-		app removeItem: tagAssociation ].
+		app removeItem: tagAssociation ]."
 	
-	aMiCoTaggedObject rawObject removeTag: self.
+	aMooseObject removeTag: self.
 ]

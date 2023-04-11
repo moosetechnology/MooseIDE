@@ -26,8 +26,6 @@ Class {
 	#name : #MiCoUsageMapBrowser,
 	#superclass : #MiAbstractBrowser,
 	#instVars : [
-		'collectionModel',
-		'settings',
 		'mapVisualization'
 	],
 	#category : #'MooseIDE-CoUsageMap-Browser'
@@ -36,10 +34,8 @@ Class {
 { #category : #layout }
 MiCoUsageMapBrowser class >> defaultLayout [
 
-	^ SpPanedLayout newLeftToRight
-		  first: #settings;
-		  second: #mapVisualization;
-		  positionOfSlider: 350;
+	^ SpBoxLayout newLeftToRight
+		  add: #mapVisualization
 		  yourself
 ]
 
@@ -91,8 +87,9 @@ MiCoUsageMapBrowser >> browserClosed [
 	super browserClosed.
 	application unregisterConsumer: mapVisualization.
 	application unregisterProducer: mapVisualization.
-	settings mapVisualization: nil.
-	mapVisualization settings: nil.
+	"settings mapVisualization: nil.
+	mapVisualization settings: nil."
+
 ]
 
 { #category : #testing }
@@ -105,23 +102,13 @@ MiCoUsageMapBrowser >> closeSettings [
 	"to close the settings window when testing
 	Should not be used otherwise"
 
-	mapVisualization closeSettingsBrowser
-]
-
-{ #category : #accessing }
-MiCoUsageMapBrowser >> collectionModel [
-	^specModel collectionModel
-]
-
-{ #category : #accessing }
-MiCoUsageMapBrowser >> collectionModel: anObject [
-	specModel collectionModel: anObject
+	specModel closeSettings 
 ]
 
 { #category : #initialization }
 MiCoUsageMapBrowser >> connectPresenters [
-	settings mapVisualization: mapVisualization.
-	mapVisualization settings: settings.
+	"settings mapVisualization: mapVisualization.
+	mapVisualization settings: settings."
 ]
 
 { #category : #accessing }
@@ -144,8 +131,8 @@ MiCoUsageMapBrowser >> initializePresenters [
 	mapVisualization := self instantiate: MiCoUsageMapVisualization.
 	mapVisualization specModel: specModel.
 
-	self flag: 'this should be in MiCoUsageMapModel'.
-	settings := self instantiate: MiCoUsageMapInstanceSettingsPresenter.
+	"self flag: 'this should be in MiCoUsageMapModel'.
+	settings := self instantiate: MiCoUsageMapInstanceSettingsPresenter."
 	
 	self flag: 'this should be in MiCoUsageMapVisualization'.
 	application registerConsumer: mapVisualization for: FamixTag.
@@ -170,10 +157,16 @@ MiCoUsageMapBrowser >> release [
 
 { #category : #actions }
 MiCoUsageMapBrowser >> settings [ 
-	^ mapVisualization openSettingsBrowser
+	specModel openSettings
 ]
 
 { #category : #updating }
 MiCoUsageMapBrowser >> update [
 	mapVisualization run
+]
+
+{ #category : #public }
+MiCoUsageMapBrowser >> updateBoxColor: aMiCoBox fromTags: tags [
+
+	mapVisualization updateBoxColor: aMiCoBox fromTags: tags
 ]

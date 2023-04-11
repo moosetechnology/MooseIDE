@@ -113,7 +113,7 @@ MiSystemComplexityBrowser >> initializeLayout [
 { #category : #initialization }
 MiSystemComplexityBrowser >> initializePresenters [
 
-	visualization := self instantiate: MiSystemComplexity.
+	visualization := self instantiate: MiSystemComplexityVisualization.
 	self initializeLayout
 ]
 

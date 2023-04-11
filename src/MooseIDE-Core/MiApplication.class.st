@@ -31,10 +31,10 @@ MiApplication class >> defaultBusName [
 	^ 'Default'
 ]
 
-{ #category : #'instance creation' }
+{ #category : #'class initialization' }
 MiApplication class >> reset [
 	<script>
-	Current ifNotNil: [ Current unregisterForDropFilesEvent ].
+	Current ifNotNil: [ [Current unregisterForDropFilesEvent] onErrorDo: [ "ignore" ] ].
 	Current := nil
 ]
 
@@ -162,6 +162,11 @@ MiApplication >> deleteBusNamed: aName [
 	buses
 		detect: [ :bus | bus name = aName ]
 		ifFound: [ :bus | self deleteBus: bus ]
+]
+
+{ #category : #accessing }
+MiApplication >> iconForTag: aTag [
+	^self iconProvider iconForTag: aTag
 ]
 
 { #category : #'drag and drop support' }

@@ -20,7 +20,7 @@ MiCo75PercentageMarkStrategy >> computeTag [
 		group size > biggerGroup size ifTrue: [
 			tag := groupTag.
 			biggerGroup := group ] ].
-	^ (biggerGroup size / self method usedAttributes size) > self threshold 
+	^ (biggerGroup size / self method innerBoxes size) > self threshold 
 		ifTrue: [ tag ]
 		ifFalse: [ nil ]
 ]

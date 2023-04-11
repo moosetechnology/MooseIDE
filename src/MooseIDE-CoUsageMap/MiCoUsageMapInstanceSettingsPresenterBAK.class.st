@@ -1,20 +1,17 @@
-"
-I show an instance side settings for the current co usage map
-"
 Class {
-	#name : #MiCoUsageMapInstanceSettingsPresenter,
+	#name : #MiCoUsageMapInstanceSettingsPresenterBAK,
 	#superclass : #SpPresenter,
 	#instVars : [
 		'generalSettings',
 		'blockSettings',
-		'coUsageMap',
-		'properties'
+		'properties',
+		'mapVisualization'
 	],
 	#category : #'MooseIDE-CoUsageMap-Settings'
 }
 
 { #category : #layout }
-MiCoUsageMapInstanceSettingsPresenter class >> defaultLayout [
+MiCoUsageMapInstanceSettingsPresenterBAK class >> defaultLayout [
 	^ SpTabLayout new
 		add: (SpScrollableLayout with: #generalSettings) label: 'General Settings';
 		add: (SpScrollableLayout with: #blockSettings) label: 'Block Settings';
@@ -22,30 +19,30 @@ MiCoUsageMapInstanceSettingsPresenter class >> defaultLayout [
 ]
 
 { #category : #properties }
-MiCoUsageMapInstanceSettingsPresenter >> childrenBlockCompiled [
+MiCoUsageMapInstanceSettingsPresenterBAK >> childrenBlockCompiled [
 	^ self 
 		compiledBlock: self childrenBlockText 
 		onError: self settingsClass defaultChildrenBlockText
 ]
 
 { #category : #properties }
-MiCoUsageMapInstanceSettingsPresenter >> childrenBlockText [
+MiCoUsageMapInstanceSettingsPresenterBAK >> childrenBlockText [
 	^ properties at: #childrenBlockText ifAbsentPut: [ self settingsClass childrenBlockText ].
 ]
 
 { #category : #properties }
-MiCoUsageMapInstanceSettingsPresenter >> childrenBlockText: aString [
+MiCoUsageMapInstanceSettingsPresenterBAK >> childrenBlockText: aString [
 	properties at: #childrenBlockText put: aString.
 	self mapVisualization updateChildren.
 ]
 
 { #category : #properties }
-MiCoUsageMapInstanceSettingsPresenter >> compiledBlock: aString onError: defaultString [
+MiCoUsageMapInstanceSettingsPresenterBAK >> compiledBlock: aString onError: defaultString [
 	^ self settingsClass compiledBlock: aString onError: defaultString
 ]
 
 { #category : #initialization }
-MiCoUsageMapInstanceSettingsPresenter >> initializePresenters [
+MiCoUsageMapInstanceSettingsPresenterBAK >> initializePresenters [
 	properties := Dictionary new.
 	blockSettings := self instantiate: MiCoUsageMapBlockSettingsPresenter.
 	blockSettings settings: self.
@@ -54,94 +51,94 @@ MiCoUsageMapInstanceSettingsPresenter >> initializePresenters [
 ]
 
 { #category : #properties }
-MiCoUsageMapInstanceSettingsPresenter >> innerBoxHeight [
+MiCoUsageMapInstanceSettingsPresenterBAK >> innerBoxHeight [
 	^ properties 
 		at: #innerBoxHeight 
 		ifAbsentPut: [ self settingsClass innerBoxHeight ].
 ]
 
 { #category : #properties }
-MiCoUsageMapInstanceSettingsPresenter >> innerBoxHeight: anObject [
+MiCoUsageMapInstanceSettingsPresenterBAK >> innerBoxHeight: anObject [
 	properties at: #innerBoxHeight put: anObject.
-	coUsageMap updateInnerBoxSize
+	mapVisualization updateInnerBoxSize
 ]
 
 { #category : #properties }
-MiCoUsageMapInstanceSettingsPresenter >> innerBoxRange [
+MiCoUsageMapInstanceSettingsPresenterBAK >> innerBoxRange [
 	^ properties 
 		at: #innerBoxRange 
 		ifAbsentPut: [ self settingsClass innerBoxRange ].
 ]
 
 { #category : #properties }
-MiCoUsageMapInstanceSettingsPresenter >> innerBoxRange: anInterval [
+MiCoUsageMapInstanceSettingsPresenterBAK >> innerBoxRange: anInterval [
 	properties at: #innerBoxRange put: anInterval.
-	coUsageMap updateInnerBoxSize
+	mapVisualization updateInnerBoxSize
 	
 ]
 
 { #category : #properties }
-MiCoUsageMapInstanceSettingsPresenter >> innerBoxScaleType [
+MiCoUsageMapInstanceSettingsPresenterBAK >> innerBoxScaleType [
 	^ properties 
 		at: #innerBoxScaleType 
 		ifAbsentPut: [ self settingsClass innerBoxScaleType ].
 ]
 
 { #category : #properties }
-MiCoUsageMapInstanceSettingsPresenter >> innerBoxScaleType: aString [
+MiCoUsageMapInstanceSettingsPresenterBAK >> innerBoxScaleType: aString [
 	properties at: #innerBoxScaleType put: aString.
-	coUsageMap updateInnerBoxSize
+	mapVisualization updateInnerBoxSize
 	
 ]
 
 { #category : #properties }
-MiCoUsageMapInstanceSettingsPresenter >> innerBoxSortBlockCompiled [
+MiCoUsageMapInstanceSettingsPresenterBAK >> innerBoxSortBlockCompiled [
 	^ self 
 		compiledBlock: self innerBoxSortBlockText 
 		onError: self settingsClass defaultInnerBoxSortBlockText
 ]
 
 { #category : #properties }
-MiCoUsageMapInstanceSettingsPresenter >> innerBoxSortBlockText [
+MiCoUsageMapInstanceSettingsPresenterBAK >> innerBoxSortBlockText [
 	^ properties at: #innerBoxSortBlockText ifAbsentPut: [ self settingsClass innerBoxSortBlockText ].
 ]
 
 { #category : #properties }
-MiCoUsageMapInstanceSettingsPresenter >> innerBoxSortBlockText: aString [
+MiCoUsageMapInstanceSettingsPresenterBAK >> innerBoxSortBlockText: aString [
 	properties at: #innerBoxSortBlockText put: aString.
 	self mapVisualization updateShapeLayout.
 ]
 
 { #category : #accessing }
-MiCoUsageMapInstanceSettingsPresenter >> mapVisualization [
-	^ coUsageMap
+MiCoUsageMapInstanceSettingsPresenterBAK >> mapVisualization [
+	^ mapVisualization
 ]
 
 { #category : #accessing }
-MiCoUsageMapInstanceSettingsPresenter >> mapVisualization: aMiCoUsageMapVisualization [ 
-	coUsageMap := aMiCoUsageMapVisualization
+MiCoUsageMapInstanceSettingsPresenterBAK >> mapVisualization: aMiCoUsageMapVisualization [ 
+	mapVisualization := aMiCoUsageMapVisualization
 ]
 
 { #category : #properties }
-MiCoUsageMapInstanceSettingsPresenter >> outerBoxSortBlockCompiled [
+MiCoUsageMapInstanceSettingsPresenterBAK >> outerBoxSortBlockCompiled [
 	^ self 
 		compiledBlock: self outerBoxSortBlockText 
 		onError: self settingsClass defaultOuterBoxSortBlockText
 ]
 
 { #category : #properties }
-MiCoUsageMapInstanceSettingsPresenter >> outerBoxSortBlockText [
+MiCoUsageMapInstanceSettingsPresenterBAK >> outerBoxSortBlockText [
 	^ properties at: #outerBoxSortBlockText ifAbsentPut: [ self settingsClass outerBoxSortBlockText ].
 ]
 
 { #category : #properties }
-MiCoUsageMapInstanceSettingsPresenter >> outerBoxSortBlockText: aString [
+MiCoUsageMapInstanceSettingsPresenterBAK >> outerBoxSortBlockText: aString [
 	properties at: #outerBoxSortBlockText put: aString.
 	self mapVisualization updateShapeLayout.
 ]
 
 { #category : #properties }
-MiCoUsageMapInstanceSettingsPresenter >> resetText [
+MiCoUsageMapInstanceSettingsPresenterBAK >> resetText [
 	properties
 		removeKey: #childrenBlockText;
 		removeKey: #outerBoxSortBlockText;
@@ -149,26 +146,26 @@ MiCoUsageMapInstanceSettingsPresenter >> resetText [
 ]
 
 { #category : #accessing }
-MiCoUsageMapInstanceSettingsPresenter >> scaleTypes [
+MiCoUsageMapInstanceSettingsPresenterBAK >> scaleTypes [
 	^ self settingsClass scaleTypes
 ]
 
 { #category : #properties }
-MiCoUsageMapInstanceSettingsPresenter >> settingsClass [
+MiCoUsageMapInstanceSettingsPresenterBAK >> settingsClass [
 	^ MiCoUsageMapSettings
 ]
 
 { #category : #properties }
-MiCoUsageMapInstanceSettingsPresenter >> threshold75PercentGroup [
+MiCoUsageMapInstanceSettingsPresenterBAK >> threshold75PercentGroup [
 	^ properties 
 		at: #threshold75PercentGroup 
 		ifAbsentPut: [ self settingsClass threshold75PercentGroup ].
 ]
 
 { #category : #properties }
-MiCoUsageMapInstanceSettingsPresenter >> threshold75PercentGroup: anObject [
+MiCoUsageMapInstanceSettingsPresenterBAK >> threshold75PercentGroup: anObject [
 	properties 
 		at: #threshold75PercentGroup 
 		put: anObject.
-	coUsageMap threshold75: anObject.
+	mapVisualization threshold75: anObject.
 ]

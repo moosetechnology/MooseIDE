@@ -1,5 +1,6 @@
 "
-This builder from roassal creates shapes that represent tags in the legend
+Builds a legend for visualization with all tags in it.
+The legend allows to check/uncheck each tag individually
 "
 Class {
 	#name : #MiCoTagLegendBuilder,
@@ -21,8 +22,15 @@ MiCoTagLegendBuilder >> boxLabelExtent [
 	^ 25@15
 ]
 
+{ #category : #hooks }
+MiCoTagLegendBuilder >> checkBoxFor: aTag [
+	^ self iconNamed: (aTag isHidden  
+		ifTrue: [ #checkboxUnselected ]
+		ifFalse: [ #checkboxSelected ])
+]
+
 { #category : #highlighting }
-MiCoTagLegendBuilder >> highlight: evt [
+MiCoTagLegendBuilder >> highlightLegend: evt [
 	| shape |
 	self unhighlight: evt.
 	shape := evt shape.
@@ -32,10 +40,31 @@ MiCoTagLegendBuilder >> highlight: evt [
 ]
 
 { #category : #hooks }
-MiCoTagLegendBuilder >> iconFor: aTag [
-	^ self iconNamed: (aTag isHidden  
-		ifTrue: [ #checkboxUnselected ]
-		ifFalse: [ #checkboxSelected ])
+MiCoTagLegendBuilder >> legendBottomLine [
+	"explains the form of the innerBoxes (width based on number of dependencies)"
+	| box marker arrow label |
+	box := RSBox new
+		border: (RSBorder new color: Color black; width: 2);
+		extent: self boxLabelExtent;
+		color: Color white;
+		yourself.
+	marker := RSShapeFactory arrow
+		size: 10;
+		color: Color black;
+		yourself.
+	arrow := RSLine new
+		startPoint: 0@0;
+		endPoint: self boxLabelExtent x @ 0;
+		color: Color black;
+		marker: marker;
+		yourself.
+	label := RSLabel new
+		text: 'Number of links';
+		color: Color black;
+		yourself. 
+	RSVerticalLineLayout new gapSize: 5; on: { box. arrow }.
+	RSHorizontalLineLayout new gapSize: 5; on: { label. { box. arrow } asGroup }.
+	^ { box. arrow. label } asGroup asShape
 ]
 
 { #category : #hooks }
@@ -56,6 +85,32 @@ MiCoTagLegendBuilder >> legendDo: aShape [
 		color: ((Color colorFrom: 'f4f4f4') alpha: 0.9);
 		border: (RSBorder new color: Color lightGray; width: 0.5);
 		addInteraction: highlight
+]
+
+{ #category : #hooks }
+MiCoTagLegendBuilder >> legendTagLine: aTag [ 
+	| label icon checkBox line |
+	checkBox := RSBitmap new
+		model: aTag;
+		form: (self checkBoxFor: aTag);
+		when: RSMouseEnter send: #highlightLegend: to: self; 
+		when: RSMouseLeave send: #unhighlightLegend: to: self; 
+		when: RSMouseClick send: #toggleTag: to: self; 
+		yourself.
+	icon := RSBitmap new form: (mapBuilder iconForTag: aTag).
+	label := RSLabel new
+		text: aTag name;
+		color: Color black;
+		yourself.
+
+	line := { checkBox. icon. label } asGroup asShape.
+	RSHorizontalLineLayout new
+		gapSize: 5 ;
+		alignMiddle ;
+		on: line children.
+	line adjustToChildren.
+
+	^ line
 ]
 
 { #category : #accessing }
@@ -96,9 +151,9 @@ MiCoTagLegendBuilder >> renderIn: aCanvas [
 		container: aCanvas;
 		yourself.
 	shapes := RSGroup new.
-	tagShapes := self tags collect: [ :tag | self tagShapeFor: tag ].
+	tagShapes := self tags collect: [ :tag | self legendTagLine: tag ].
 	shapes addAll: tagShapes.
-	shapes add: self shapeBoxDescription.
+	shapes add: self legendBottomLine.
 	legend shapes ifNotNil:[ :collection | collection addAll: shapes].
 	legend layout vertical gapSize: 2.
 	legend defaultTitle
@@ -108,33 +163,6 @@ MiCoTagLegendBuilder >> renderIn: aCanvas [
 		legendDo: [ :l | self legendDo: l ];
 		beFixedWithTitle: self legendTitle;
 		build.
-]
-
-{ #category : #hooks }
-MiCoTagLegendBuilder >> shapeBoxDescription [
-	| box marker arrow label |
-	box := RSBox new
-		border: (RSBorder new color: Color black; width: 2);
-		extent: self boxLabelExtent;
-		color: Color white;
-		yourself.
-	marker := RSShapeFactory arrow
-		size: 10;
-		color: Color black;
-		yourself.
-	arrow := RSLine new
-		startPoint: 0@0;
-		endPoint: self boxLabelExtent x @ 0;
-		color: Color black;
-		marker: marker;
-		yourself.
-	label := RSLabel new
-		text: 'Number of links';
-		color: Color black;
-		yourself. 
-	RSVerticalLineLayout new gapSize: 5; on: { box. arrow }.
-	RSHorizontalLineLayout new gapSize: 5; on: { label. { box. arrow } asGroup }.
-	^ { box. arrow. label } asGroup asShape
 ]
 
 { #category : #accessing }
@@ -147,60 +175,19 @@ MiCoTagLegendBuilder >> tagNamed: aString [
 	^ self tags detect: [ :tag | tag name = aString ] ifNone: [ nil ]
 ]
 
-{ #category : #hooks }
-MiCoTagLegendBuilder >> tagShapeFor: aTag [ 
-	| label box check shape |
-	label := RSLabel new
-		text: aTag name;
-		color: Color black;
-		yourself.
-
-	self flag: 'Should use "self iconProvider iconForTag: aTag" to get the icon for the tag'.
-	box := RSBox new
-		extent: self boxLabelExtent;
-		color: aTag color;
-		yourself.
-	check := RSBitmap new
-		model: aTag;
-		form: (self iconFor: aTag);
-		when: RSMouseEnter send: #highlight: to: self; 
-		when: RSMouseLeave send: #unhighlight: to: self; 
-		when: RSMouseClick send: #toggleTag: to: self; 
-		yourself.
-	shape := { check. box. label } asGroup asShape.
-		
-	RSHorizontalLineLayout new gapSize: 5; alignMiddle; on: shape children.
-	shape adjustToChildren.
-	^ shape
-]
-
 { #category : #accessing }
 MiCoTagLegendBuilder >> tags [
 	^tags ifNil: [tags := self specModel tagList]
 ]
 
-{ #category : #'private - testing' }
-MiCoTagLegendBuilder >> tags: aCollection colorPalette: aNSOrdinalScale [
-	aCollection do: [:str |
-		self addTag: (FamixTag new 
-			name: str;
-			color: (aNSOrdinalScale scale: str);
-			yourself) ].
-]
-
-{ #category : #'private - testing' }
-MiCoTagLegendBuilder >> tagsWithPalette: aCollection [
-	tags := OrderedCollection new.
-	self tags: aCollection colorPalette: NSScale category20
-]
-
-{ #category : #events }
+{ #category : #hooks }
 MiCoTagLegendBuilder >> toggleTag: evt [
-	| shape tag |
-	shape := evt shape.
-	tag := shape model.
+	| checkBox tag |
+	checkBox := evt shape.
+	tag := checkBox model.
+	self flag: 'Hidding tag is part of its normal API ?!?'.
 	tag toggleVisibility.
-	shape form: (self iconFor: tag).
+	checkBox form: (self checkBoxFor: tag).
 	mapBuilder updateShapeColors.
 	evt signalUpdate.
 	
@@ -208,7 +195,7 @@ MiCoTagLegendBuilder >> toggleTag: evt [
 ]
 
 { #category : #highlighting }
-MiCoTagLegendBuilder >> unhighlight: evt [
+MiCoTagLegendBuilder >> unhighlightLegend: evt [
 	evt canvas
 		propertyAt: #tagCheck
 		ifPresent: [ :s | s border: nil ];
