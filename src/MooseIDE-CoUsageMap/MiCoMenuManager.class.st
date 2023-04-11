@@ -14,7 +14,7 @@ Class {
 MiCoMenuManager >> clickOn: aRSMouseClick [ 
 	aRSMouseClick metaKeyPressed
 	  ifFalse: [ ^ self ].
-	mapBuilder quickTaggingOn: aRSMouseClick shape model.
+	mapBuilder specModel quickTaggingOn: aRSMouseClick shape model.
 	aRSMouseClick signalUpdate
 ]
 
@@ -81,7 +81,7 @@ MiCoMenuManager >> fillTagMenu: menu for: aMiCoBox [
 		thenDo: [ :aTag |
 			(menu 
 				add: aTag name
-					target: mapBuilder
+					target: (mapBuilder specModel)
 					selector: #setTag:onInnerBox:
 					argumentList: { aTag . aMiCoBox })
 				icon: (self iconFormFor: aTag) ].

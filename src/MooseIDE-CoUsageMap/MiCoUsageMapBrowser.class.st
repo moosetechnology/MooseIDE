@@ -105,16 +105,6 @@ MiCoUsageMapBrowser >> closeSettings [
 	specModel closeSettings 
 ]
 
-{ #category : #accessing }
-MiCoUsageMapBrowser >> collectionModel [
-	^specModel collectionModel
-]
-
-{ #category : #accessing }
-MiCoUsageMapBrowser >> collectionModel: anObject [
-	specModel collectionModel: anObject
-]
-
 { #category : #initialization }
 MiCoUsageMapBrowser >> connectPresenters [
 	"settings mapVisualization: mapVisualization.
@@ -176,6 +166,7 @@ MiCoUsageMapBrowser >> update [
 ]
 
 { #category : #public }
-MiCoUsageMapBrowser >> updateTagColorFor: anEntity [
-	mapVisualization updateTagColorFor: anEntity
+MiCoUsageMapBrowser >> updateBoxColor: aMiCoBox fromTags: tags [
+
+	mapVisualization updateBoxColor: aMiCoBox fromTags: tags
 ]

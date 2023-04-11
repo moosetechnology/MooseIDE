@@ -31,10 +31,10 @@ MiApplication class >> defaultBusName [
 	^ 'Default'
 ]
 
-{ #category : #'instance creation' }
+{ #category : #'class initialization' }
 MiApplication class >> reset [
 	<script>
-	Current ifNotNil: [ Current unregisterForDropFilesEvent ].
+	Current ifNotNil: [ [Current unregisterForDropFilesEvent] onErrorDo: [ "ignore" ] ].
 	Current := nil
 ]
 
