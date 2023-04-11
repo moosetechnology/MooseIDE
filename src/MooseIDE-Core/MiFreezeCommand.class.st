@@ -10,7 +10,7 @@ Class {
 
 { #category : #default }
 MiFreezeCommand class >> defaultDescription [
-	^ 'a command that allows to ignores changes pushed by the bus'
+	^ 'A mode that allows to ignores changes pushed on the bus'
 ]
 
 { #category : #default }

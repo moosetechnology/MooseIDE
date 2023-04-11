@@ -10,7 +10,7 @@ Class {
 
 { #category : #default }
 MiFollowCommand class >> defaultDescription [
-	^ 'a command that allows to accept changes pushed by the bus'
+	^ 'A mode that allows to accept changes pushed on the bus'
 ]
 
 { #category : #default }

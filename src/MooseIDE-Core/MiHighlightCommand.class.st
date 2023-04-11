@@ -10,7 +10,7 @@ Class {
 
 { #category : #default }
 MiHighlightCommand class >> defaultDescription [
-	^ 'a command that allows to highlight changes that have been pushed by the bus last'
+	^ 'A mode that allows to highlight in current visualization/state changes just pushed on the bus'
 ]
 
 { #category : #default }
