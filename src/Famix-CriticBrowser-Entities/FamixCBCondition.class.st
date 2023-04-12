@@ -112,9 +112,8 @@ FamixCBCondition >> runUpTree: aCollection [
 FamixCBCondition >> severity [
 
 	<FMProperty: #severity type: #Object>
-	<generated>
 	<FMComment: 'Severity for the violations of this condition'>
-	^ severity
+	^ severity ifNil: [ AbstractSeverity allSubclasses detectMin: #level ]
 ]
 
 { #category : #accessing }
