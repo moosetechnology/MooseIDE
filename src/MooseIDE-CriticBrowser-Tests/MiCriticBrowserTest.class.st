@@ -173,6 +173,44 @@ MiCriticBrowserTest >> testModelStartsEmpty [
 	self assert: (browser model entities isEmpty)
 ]
 
+{ #category : #tests }
+MiCriticBrowserTest >> testMoveCondition [
+
+	| newContext |
+	browser model addChild: stubRule toContext: rootContext.
+	self assert: rootContext children size equals: 1.
+	newContext := FamixCBContext named: 'New context' on: '[ :e | e ]'.
+	browser model addChild: newContext toContext: rootContext.
+	self assert: rootContext children size equals: 2.
+
+	browser rules selectItem: stubRule.
+	browser moveCurrentRuleComponentToContext: newContext.
+	
+	self assert: rootContext children size equals: 1.
+	self deny: (rootContext children includes: stubRule).
+	self assert: (newContext children includes: stubRule).
+	self assert: stubRule parent equals: newContext
+]
+
+{ #category : #tests }
+MiCriticBrowserTest >> testMoveContext [
+
+	| newContext |
+	browser model addChild: childContext toContext: rootContext.
+	self assert: rootContext children size equals: 1.
+	newContext := FamixCBContext named: 'New context' on: '[ :e | e ]'.
+	browser model addChild: newContext toContext: rootContext.
+	self assert: rootContext children size equals: 2.
+
+	browser rules selectItem: childContext.
+	browser moveCurrentRuleComponentToContext: newContext.
+
+	self assert: rootContext children size equals: 1.
+	self deny: (rootContext children includes: childContext).
+	self assert: (newContext children includes: childContext).
+	self assert: childContext parent equals: newContext
+]
+
 { #category : #test }
 MiCriticBrowserTest >> testRunButtonAction [
 	browser model setEntities: { stubEntity } asMooseGroup.

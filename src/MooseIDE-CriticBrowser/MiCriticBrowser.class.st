@@ -82,6 +82,15 @@ MiCriticBrowser >> addRulesPresenter [
 	^ addRulesPresenter
 ]
 
+{ #category : #accessing }
+MiCriticBrowser >> allAvailableContexts [
+
+	^ { specModel rootContext }
+	  , (specModel ruleComponents select: [ :component | 
+			   component class = FamixCBContext ]) reject: [ :component | 
+		  component = rules selectedItem ]
+]
+
 { #category : #'window control' }
 MiCriticBrowser >> browserClosed [
 	super browserClosed.
@@ -374,6 +383,20 @@ MiCriticBrowser >> miSelectedItem [
 	^ self rules selectedItem 
 		ifNil: [ specModel getAllViolations ] 
 		ifNotNil: [ specModel violationsOf: (self rules selectedItem) ]
+]
+
+{ #category : #'buttons actions' }
+MiCriticBrowser >> moveCurrentRuleComponentToContext: aFamixCBContext [
+
+	| selectedRule |
+	selectedRule := rules selectedItem.
+	self deleteSelectedRule.
+
+	specModel
+		addChild: (selectedRule
+				 reset;
+				 yourself)
+		toContext: aFamixCBContext
 ]
 
 { #category : #initialization }
