@@ -15,11 +15,12 @@ Class {
 
 { #category : #adding }
 MiCriticBrowserModel >> addChild: aRuleComponent toContext: aContext [
-	(aContext = rootContext or: [ ruleComponents includes: aContext ]) ifFalse: [ ^ self ].
+
+	(aContext = rootContext or: [ ruleComponents includes: aContext ]) 
+		ifFalse: [ ^ self ].
 	aContext addChild: aRuleComponent.
 	ruleComponents add: aRuleComponent.
 	browser updateRulesList
-	
 ]
 
 { #category : #adding }

@@ -13,7 +13,6 @@ Class {
 	#superclass : #MiAbstractBrowser,
 	#instVars : [
 		'entitiesList',
-		'editMenu',
 		'runButton',
 		'rulesResult',
 		'importButton',
@@ -27,6 +26,13 @@ Class {
 	],
 	#category : #'MooseIDE-CriticBrowser-Browser'
 }
+
+{ #category : #'as yet unclassified' }
+MiCriticBrowser class >> buildRulesCommandsGroupWith: presenterInstance [
+
+	^ MiAbstractCriticBrowserCommand asCommandGroupWith:
+		  presenterInstance
+]
 
 { #category : #'world menu' }
 MiCriticBrowser class >> menuCommandOn: aBuilder [
@@ -299,17 +305,20 @@ MiCriticBrowser >> initializeLists [
 				ifTrue: [ self iconNamed: #radioButtonOn ]
 				ifFalse: [ self iconNamed: #radioButtonSelected ] ];
 		children: [ :each | self childrenForContext: each ];
-		contextMenu: editMenu;
+		contextMenu: [ 
+			(self class buildRulesCommandsGroupWith: self) asMenuPresenter ];
 		beSingleSelection;
 		whenSelectionChangedDo: [ 
 			specModel violations ifNotEmpty: [ self selectedRules ] ].
 
 	rulesResult
 		display: [ :each | self stringForItem: each ];
-		displayIcon: [ :each |
-			each class = FamixCBViolation ifTrue: [ 
-					self iconNamed: each violatedCondition severity iconName ] ifFalse: [ self iconNamed: 'blank' ] ];
-		children: [ :each | (self sortedChildren: each for: rulesResult) ];
+		displayIcon: [ :each | 
+			each class = FamixCBViolation
+				ifTrue: [ 
+					self iconNamed: each violatedCondition severity iconName ]
+				ifFalse: [ self iconNamed: 'blank' ] ];
+		children: [ :each | self sortedChildren: each for: rulesResult ];
 		contextMenu: expandMenu;
 		activateOnDoubleClick;
 		whenActivatedDo: [ :each | each selectedItem inspect ]
@@ -317,64 +326,6 @@ MiCriticBrowser >> initializeLists [
 
 { #category : #initialization }
 MiCriticBrowser >> initializeMenu [
-
-	editMenu := self newMenu.
-	editMenu
-		addItem: [ :item | 
-			item
-				name: 'Edit rule';
-				icon: (self iconNamed: #glamorousEdit);
-				action: [ 
-					rules selectedItem class = FamixCBCondition
-						ifTrue: [ 
-							rulesEditorPresenter setRuleToEdit: rules selectedItem.
-							rulesEditorPresenter openDialog ]
-						ifFalse: [ 
-							contextEditorPresenter setContextToEdit: rules selectedItem.
-							contextEditorPresenter openDialog ] ];
-				enabled: [ rules selectedItem class ~= FamixCBRootContext ] ];
-		addItem: [ :item | 
-			item
-				name: 'Delete rule';
-				icon: (self iconNamed: #smallDelete);
-				action: [ 
-					self deleteSelectedRule.
-					self updateRulesList ];
-				enabled: [ rules selectedItem class ~= FamixCBRootContext ] ];
-		addItem: [ :item | 
-			item
-				name: 'Add context';
-				icon: (self iconNamed: #smallAdd);
-				action: [ 
-					addContextsPresenter setParentContext: rules selectedItem.
-					addContextsPresenter openDialog ];
-				enabled: [ rules selectedItem class ~= FamixCBCondition ] ];
-		addItem: [ :item | 
-			item
-				name: 'Add condition';
-				icon: (self iconNamed: #smallAdd);
-				action: [ 
-					addRulesPresenter setParentContext: rules selectedItem.
-					addRulesPresenter openDialog ];
-				enabled: [ rules selectedItem class ~= FamixCBCondition ] ];
-		addItem: [ :item | 
-			item
-				name: 'Run condition';
-				icon: (self iconNamed: #glamorousPlay);
-				action: [ 
-					specModel runCondition: rules selectedItem.
-					self updateRulesList.
-					self updateResultList: specModel getAllViolations ];
-				enabled: [ rules selectedItem class = FamixCBCondition ] ];
-		addItem: [ :item | 
-			item
-				name: 'Move to context:';
-				icon: (self iconNamed: #glamorousRedo);
-				enabled: [ rules selectedItem class ~= FamixCBRootContext ];
-				subMenu: (self newMenu
-						 addItem: [ :i | i name: 'test' ];
-						 yourself) ].
-
 
 	expandMenu := self newMenu.
 	expandMenu
@@ -392,21 +343,22 @@ MiCriticBrowser >> initializeMenu [
 
 { #category : #initialization }
 MiCriticBrowser >> initializePresenters [
-	
+
 	super initializePresenters.
 	self initializeMenu.
 	self initializeLists.
 	self initializeButtons.
-	
+
 	addRulesPresenter := MiCriticBrowserAddRulesPresenter on: self.
 	rulesEditorPresenter := MiCriticBrowserEditRulePresenter on: self.
 	addContextsPresenter := MiCriticBrowserAddContextsPresenter on: self.
-	contextEditorPresenter := MiCriticBrowserEditContextPresenter on: self.
-	
+	contextEditorPresenter := MiCriticBrowserEditContextPresenter on:
+		                          self.
+
 	self focusOrder
-			add: rules;
-			add: rulesResult;
-			add: runButton.
+		add: rules;
+		add: rulesResult;
+		add: runButton
 ]
 
 { #category : #initialization }
@@ -422,6 +374,32 @@ MiCriticBrowser >> miSelectedItem [
 	^ self rules selectedItem 
 		ifNil: [ specModel getAllViolations ] 
 		ifNotNil: [ specModel violationsOf: (self rules selectedItem) ]
+]
+
+{ #category : #initialization }
+MiCriticBrowser >> openAddConditionDialog [
+
+	addRulesPresenter setParentContext: rules selectedItem.
+	^ addRulesPresenter openDialog
+]
+
+{ #category : #initialization }
+MiCriticBrowser >> openAddContextDialog [
+
+	addContextsPresenter setParentContext: rules selectedItem.
+	^ addContextsPresenter openDialog
+]
+
+{ #category : #initialization }
+MiCriticBrowser >> openEditRuleDialog [
+
+	^ rules selectedItem class = FamixCBCondition
+		  ifTrue: [ 
+			  rulesEditorPresenter setRuleToEdit: rules selectedItem.
+			  rulesEditorPresenter openDialog ]
+		  ifFalse: [ 
+			  contextEditorPresenter setContextToEdit: rules selectedItem.
+			  contextEditorPresenter openDialog ]
 ]
 
 { #category : #'accessing - testing' }
@@ -454,6 +432,14 @@ MiCriticBrowser >> runButtonAction [
 	self model run.
 	self updateResultList: specModel getAllViolations.
 	self updateRulesList
+]
+
+{ #category : #initialization }
+MiCriticBrowser >> runSelectedCondition [
+
+	specModel runCondition: rules selectedItem.
+	self updateRulesList.
+	^ self updateResultList: specModel getAllViolations
 ]
 
 { #category : #'selected object' }
@@ -518,6 +504,7 @@ MiCriticBrowser >> updateResultList: aCollection [
 
 { #category : #'updating screen' }
 MiCriticBrowser >> updateRulesList [
+
 	self rules updateRootsKeepingSelection: self rules roots.
-	self rules expandAll 
+	self rules expandAll
 ]
