@@ -332,7 +332,7 @@ MiCriticBrowser >> initializeMenu [
 						ifFalse: [ 
 							contextEditorPresenter setContextToEdit: rules selectedItem.
 							contextEditorPresenter openDialog ] ];
-				enabled: [ (rules selectedItem class ~= FamixCBRootContext) ] ];
+				enabled: [ rules selectedItem class ~= FamixCBRootContext ] ];
 		addItem: [ :item | 
 			item
 				name: 'Delete rule';
@@ -348,7 +348,7 @@ MiCriticBrowser >> initializeMenu [
 				action: [ 
 					addContextsPresenter setParentContext: rules selectedItem.
 					addContextsPresenter openDialog ];
-				enabled: [ (rules selectedItem class ~= FamixCBCondition) ] ];
+				enabled: [ rules selectedItem class ~= FamixCBCondition ] ];
 		addItem: [ :item | 
 			item
 				name: 'Add condition';
@@ -356,7 +356,7 @@ MiCriticBrowser >> initializeMenu [
 				action: [ 
 					addRulesPresenter setParentContext: rules selectedItem.
 					addRulesPresenter openDialog ];
-				enabled: [ (rules selectedItem class ~= FamixCBCondition) ] ];
+				enabled: [ rules selectedItem class ~= FamixCBCondition ] ];
 		addItem: [ :item | 
 			item
 				name: 'Run condition';
@@ -365,7 +365,17 @@ MiCriticBrowser >> initializeMenu [
 					specModel runCondition: rules selectedItem.
 					self updateRulesList.
 					self updateResultList: specModel getAllViolations ];
-				enabled: [ (rules selectedItem class = FamixCBCondition) ] ].
+				enabled: [ rules selectedItem class = FamixCBCondition ] ];
+		addItem: [ :item | 
+			item
+				name: 'Move to context:';
+				icon: (self iconNamed: #glamorousRedo);
+				enabled: [ rules selectedItem class ~= FamixCBRootContext ];
+				subMenu: (self newMenu
+						 addItem: [ :i | i name: 'test' ];
+						 yourself) ].
+
+
 	expandMenu := self newMenu.
 	expandMenu
 		addItem: [ :item | 
