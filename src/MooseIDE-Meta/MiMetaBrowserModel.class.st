@@ -1,11 +1,24 @@
 Class {
 	#name : #MiMetaBrowserModel,
-	#superclass : #Object,
+	#superclass : #MiAbstractModel,
 	#instVars : [
-		'selected'
+		'selected',
+		'entities'
 	],
 	#category : #'MooseIDE-Meta-MetaBrowser'
 }
+
+{ #category : #accessing }
+MiMetaBrowserModel >> entities [
+
+	^ entities
+]
+
+{ #category : #accessing }
+MiMetaBrowserModel >> entities: anObject [
+
+	entities := anObject
+]
 
 { #category : #accessing }
 MiMetaBrowserModel >> selected [
