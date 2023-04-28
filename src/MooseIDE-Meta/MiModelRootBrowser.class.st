@@ -161,7 +161,7 @@ MiModelRootBrowser >> importFromFileUI [
 MiModelRootBrowser >> initializeList [
 
 	modelFilteringList := self newFilteringList.
-	self listOfMooseModels: specModel mooseModelsList.
+	self listOfMooseModels: specModel entities.
 
 	modelFilteringList display: [ :mooseModel | mooseModel name ].
 
@@ -200,14 +200,15 @@ MiModelRootBrowser >> listOfMooseModels: aList [
 { #category : #accessing }
 MiModelRootBrowser >> miSelectedItem [
 
-	^specModel selected
+	^ specModel selectedModel
 ]
 
 { #category : #accessing }
 MiModelRootBrowser >> miSelectedModel [
+
 	"similar to #miSelectedItem but ignore the setting #filterStubsSetting"
 
-	^specModel selectedModel
+	^ specModel selected
 ]
 
 { #category : #'accessing - tests' }

@@ -8,7 +8,7 @@ Class {
 	#category : #'MooseIDE-Dependency-Tree'
 }
 
-{ #category : #'plugin interface' }
+{ #category : #accessing }
 MiTreeVisualizationModel >> entities [
 
 	^ self root

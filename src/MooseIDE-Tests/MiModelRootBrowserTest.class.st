@@ -98,7 +98,7 @@ MiModelRootBrowserTest >> testHandleDropFileImportsModel [
 	| file |
 	file := self stModelFile.
 
-	self assertEmpty: browser model mooseModelsList.
+	self assertEmpty: browser model entities.
 
 	browser handleDropFileAndImport: file.
 
@@ -109,7 +109,7 @@ MiModelRootBrowserTest >> testHandleDropFileImportsModel [
 	  browser updateList ]
 	ensure: [ file delete ]. 
 	
-	self assert: browser model mooseModelsList size equals: 1.
+	self assert: browser model entities size equals: 1.
 ]
 
 { #category : #tests }
@@ -156,14 +156,14 @@ MiModelRootBrowserTest >> testUpdateForNewModel [
 	self newModel: 'model1'.
 	browser updateList.
 
-	self assert: browser model mooseModelsList size equals: 1.
-	self assert: browser model rawSelectedMooseModel isNil.
+	self assert: browser model entities size equals: 1.
+	self assert: browser model selected isNil.
 
 	newModel := self newModel: 'model2'.
 	browser updateForNewModel: newModel.
 
-	self assert: browser model mooseModelsList size equals: 2.
-	self assert: browser model rawSelectedMooseModel equals: newModel
+	self assert: browser model entities size equals: 2.
+	self assert: browser model selected equals: newModel
 ]
 
 { #category : #tests }
@@ -174,20 +174,20 @@ MiModelRootBrowserTest >> testUpdateForNewModelMultipleBrowsers [
 	browser2 := self browserClass openForTests: self application.
 	browser updateList.
 
-	self assert: browser model mooseModelsList size equals: 1.
-	self assert: browser model rawSelectedMooseModel isNil.
+	self assert: browser model entities size equals: 1.
+	self assert: browser model selected isNil.
 
-	self assert: browser2 model mooseModelsList size equals: 1.
-	self assert: browser2 model rawSelectedMooseModel isNil.
+	self assert: browser2 model entities size equals: 1.
+	self assert: browser2 model selected isNil.
 
 	newModel := self newModel: 'model2'.
 	browser updateForNewModel: newModel.
 
-	self assert: browser model mooseModelsList size equals: 2.
-	self assert: browser model rawSelectedMooseModel equals: newModel.
+	self assert: browser model entities size equals: 2.
+	self assert: browser model selected equals: newModel.
 
-	self assert: browser2 model mooseModelsList size equals: 2.
-	self assert: browser2 model rawSelectedMooseModel isNil.
+	self assert: browser2 model entities size equals: 2.
+	self assert: browser2 model selected isNil.
 
 	browser2 window close
 ]
@@ -195,10 +195,10 @@ MiModelRootBrowserTest >> testUpdateForNewModelMultipleBrowsers [
 { #category : #tests }
 MiModelRootBrowserTest >> testUpdateList [
 
-	self assertEmpty: browser model mooseModelsList.
+	self assertEmpty: browser model entities.
 
 	self newModel: 'aModel'.
 	browser updateList.
 
-	self assert: browser model mooseModelsList size equals: 1
+	self assert: browser model entities size equals: 1
 ]
