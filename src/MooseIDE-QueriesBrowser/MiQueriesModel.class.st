@@ -4,17 +4,23 @@ Class {
 	#instVars : [
 		'entities'
 	],
-	#category : #'MooseIDE-Queries-Model'
+	#category : #'MooseIDE-QueriesBrowser-Model'
 }
 
 { #category : #'instance creation' }
 MiQueriesModel class >> newModel [
 
-	^ FQRootQuery new 
+	^ FQRootQuery new
 ]
 
 { #category : #accessing }
 MiQueriesModel >> entities [
 
 	^ entities ifNil: [ #(  ) ]
+]
+
+{ #category : #accessing }
+MiQueriesModel >> entities: anObject [
+
+	entities := anObject
 ]
