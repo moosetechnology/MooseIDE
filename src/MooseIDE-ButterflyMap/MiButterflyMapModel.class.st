@@ -97,7 +97,7 @@ MiButterflyMapModel >> defaultRightEntitiesQuery [
 			                               :entity | entity allProviders ] ]
 ]
 
-{ #category : #'plugin interface' }
+{ #category : #accessing }
 MiButterflyMapModel >> entities [
 	"should probably return all entities displayed and not only the central one"
 	^self currentEntity
