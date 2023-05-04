@@ -37,12 +37,14 @@ Class {
 
 { #category : #updating }
 MiModelRootBrowserModel >> allModelRootBrowser [
-	^browser application allBrowsers: MiModelRootBrowser
+
+	^ browser application allBrowsers: MiModelRootBrowser
 ]
 
 { #category : #settings }
 MiModelRootBrowserModel >> autoImportSetting [
-	^ (settings getItemValue: #modelAutoImportSetting)
+
+	^ settings getItemValue: #modelAutoImportSetting
 ]
 
 { #category : #accessing }
@@ -63,7 +65,20 @@ MiModelRootBrowserModel >> canPropagate [
 
 { #category : #accessing }
 MiModelRootBrowserModel >> currentMooseModel [
-	^self selectedModel
+
+	^ self selected
+]
+
+{ #category : #'accessing - tests' }
+MiModelRootBrowserModel >> entities [
+
+	^ mooseModelsList
+]
+
+{ #category : #'accessing - tests' }
+MiModelRootBrowserModel >> entities: aList [
+
+	mooseModelsList := aList
 ]
 
 { #category : #initialization }
@@ -94,36 +109,15 @@ MiModelRootBrowserModel >> initializeSettings [
 		named: #modelAutoImportSetting.
 ]
 
-{ #category : #'accessing - tests' }
-MiModelRootBrowserModel >> mooseModelsList [
-
-	^mooseModelsList
-]
-
-{ #category : #'accessing - tests' }
-MiModelRootBrowserModel >> mooseModelsList: aList [
-
-	mooseModelsList := aList
-]
-
 { #category : #keymaps }
 MiModelRootBrowserModel >> openSettings [ 
 	settings open
 ]
 
-{ #category : #'accessing - tests' }
-MiModelRootBrowserModel >> rawSelectedMooseModel [
-	^selected
-]
-
 { #category : #accessing }
 MiModelRootBrowserModel >> selected [
 
-	^ (settings getItemValue: #filterStubsSetting)
-		  ifTrue: [ 
-			  self selectedModel ifNotNil: [ :selectedModel | 
-				  (selectedModel reject: [ :each | each isStub ]) asMooseGroup ] ]
-		  ifFalse: [ self selectedModel ]
+	^ selected
 ]
 
 { #category : #accessing }
@@ -135,7 +129,11 @@ MiModelRootBrowserModel >> selected: anObject [
 { #category : #accessing }
 MiModelRootBrowserModel >> selectedModel [
 
-	^selected
+	^ (settings getItemValue: #filterStubsSetting)
+		  ifTrue: [ 
+			  self selected ifNotNil: [ :selectedModel | 
+				  (selectedModel reject: [ :each | each isStub ]) asMooseGroup ] ]
+		  ifFalse: [ self selected ]
 ]
 
 { #category : #'accessing - tests' }

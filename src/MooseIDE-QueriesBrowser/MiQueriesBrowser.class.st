@@ -50,7 +50,7 @@ MiQueriesBrowser class >> menuPriority [
 { #category : #'instance creation' }
 MiQueriesBrowser class >> newModel [
 
-	^ FQRootQuery new
+	^ MiQueriesModel newModel
 ]
 
 { #category : #'instance creation' }
