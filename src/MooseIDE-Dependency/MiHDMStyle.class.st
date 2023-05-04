@@ -1,3 +1,6 @@
+"
+I am the class responsible of building shapes for the distribution map.
+"
 Class {
 	#name : #MiHDMStyle,
 	#superclass : #HStyle,
@@ -155,6 +158,20 @@ MiHDMStyle >> labelAndIconFor: anHNode [
 	
 	RSHorizontalLineLayout new alignMiddle; on: group.
 	^ group
+]
+
+{ #category : #hooks }
+MiHDMStyle >> shapeFor: aHNode [
+
+	| shape |
+	shape := RSComposite new
+		         model: aHNode;
+		         yourself.
+	aHNode level = 1
+		ifTrue: [ self buildCompositeFullNodeIn: shape ]
+		ifFalse: [ self buildCompositeEmptyNodeIn: shape ].
+
+	^ shape
 ]
 
 { #category : #hooks }

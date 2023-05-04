@@ -1,3 +1,6 @@
+"
+I am the model of the distribution map. I am responsible for tag managment, data storage and element sorting.
+"
 Class {
 	#name : #MiDistributionMapModel,
 	#superclass : #MiAbstractModel,
@@ -60,7 +63,14 @@ MiDistributionMapModel >> browser: anObject [
 { #category : #accessing }
 MiDistributionMapModel >> childrenFor: anEntity [
 
-	^ self childrenQuerySetting runOn: anEntity asMooseGroup
+	| groups dts children |
+	children := self childrenQuerySetting runOn: anEntity asMooseGroup.
+	dts := self tagsSetting.
+	groups := OrderedCollection new.
+	dts size + 1 timesRepeat: [ groups add: OrderedCollection new ].
+	children do: [ :child | 
+		(groups at: 1 + (self indexOfTagFor: child)) add: child ].
+	^ groups flatCollect: [ :child | child ] as: OrderedCollection
 ]
 
 { #category : #settings }
