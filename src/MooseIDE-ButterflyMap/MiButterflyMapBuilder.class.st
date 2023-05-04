@@ -80,6 +80,7 @@ MiButterflyMapBuilder >> buildNodeFromEntity: anEntity [
 				         collect: [ :e | 
 					         anEntity == e ifFalse: [ self buildNodeFromEntity: e ] ]
 				         thenSelect: [ :e | e isNotNil ]);
+		        color: (Smalltalk ui theme baseColor alpha: 0.7);
 		        rawModel: anEntity;
 		        collapse;
 		        yourself.
@@ -181,15 +182,13 @@ MiButterflyMapBuilder >> nodeAnnouncer [
 
 	baseNode ifNotNil: [ ^ baseNode announcer ].
 	baseNode := RSComposite new
-		            @ self nodeStyler popup;
+		            @ self popup;
 		            @ RSDraggable new;
 		            @ self menuInteraction;
 		            @ self highlightable;
 		            @ RSNodeOnTopWhenPositionChanged new;
 		            @ HUpdateSelectionBox new;
-		            @
-			            (HResizeParentWhenChildMoves new nodeStyler:
-					             self nodeStyler);
+		            @ HResizeParentWhenChildMoves new;
 		            yourself.
 	^ baseNode announcer
 ]
@@ -230,7 +229,7 @@ MiButterflyMapBuilder >> renderLinesIn: aCanvas [
 	
 	self lineBuilder
 		canvas: aCanvas;
-		shapes: shapes;
+		shapes: aCanvas nodes;
 		connectFromAll: #dependentsFromLinks
 ]
 
@@ -267,6 +266,7 @@ MiButterflyMapBuilder >> updateShapes [
 		rightLayout on: layer.
 		outgoingGroups add: layer ].
 
+	self addInteractions: allShapes , { centralShape }.
 	self container addAll: allShapes , { centralShape }.
 	self container schildren: allShapes , { centralShape }.
 	self renderLinesIn: self container.

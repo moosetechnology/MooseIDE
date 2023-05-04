@@ -146,155 +146,6 @@ MiArchitecturalMapBuilder >> build [
 	^ self container
 ]
 
-{ #category : #hooks }
-MiArchitecturalMapBuilder >> buildCompositeEmptyNodeIn: shape [
-
-	| node box rect entity group |
-	node := shape model.
-	entity := node rawModel.
-	group := self labelAndTagFor: node.
-	shape addAll: group.
-	rect := shape children encompassingRectangle.
-	box := RSBox new
-		       model: node;
-		       position: rect floatCenter;
-		       extent: rect extent + 10;
-		       cornerRadius: self fullCornerRadius;
-		       color: (self colorFor: node);
-		       border: (self borderFor: node);
-		       yourself.
-	shape add: box.
-	box pushBack.
-	shape schildren: #(  ).
-
-	shape
-		propertyAt: #background put: box;
-		adjustToChildren
-]
-
-{ #category : #accessing }
-MiArchitecturalMapBuilder >> buildCompositeFullNodeIn: shape [
-
-	| childrenShapes node titleGroup title titleBox children boxChildren titleRadius boxChildrenRadius list |
-	node := shape model.
-	titleGroup := self labelAndTagFor: node.
-	titleBox := RSBox new
-		            extent: titleGroup extent + 10;
-		            color: ((self colorFor: node) alpha: 0.7);
-		            position: titleGroup position;
-		            yourself.
-	title := RSComposite new
-		         add: titleBox;
-		         addAll: titleGroup;
-		         adjustToChildren;
-		         yourself.
-	shape propertyAt: #background put: titleBox.
-	childrenShapes := self childrenFor: node.
-	self layoutOn: childrenShapes parent: node.
-
-	shape schildren: childrenShapes.
-	childrenShapes do: [ :child | child sparent: shape ].
-	children := childrenShapes asShape padding: 6.
-	childrenShapes do: [ :child | child model position: child position ].
-	title width < children width
-		ifTrue: [ 
-			titleBox width: children width.
-			title adjustToChildren ]
-		ifFalse: [ children width: title width ].
-	boxChildren := self boxChildrenFor: node.
-	titleRadius := self topCornerRadius.
-	boxChildrenRadius := self bottomCornerRadius.
-	list := { 
-		        title.
-		        children }.
-	self nodeStyler position = #below ifTrue: [ 
-		titleRadius := self bottomCornerRadius.
-		boxChildrenRadius := self topCornerRadius.
-		list := { 
-			        children.
-			        title } ].
-	RSVerticalLineLayout new
-		gapSize: 0;
-		on: list.
-	titleBox cornerRadius: titleRadius.
-	boxChildren
-		cornerRadius: boxChildrenRadius;
-		fromRectangle: children encompassingRectangle.
-
-	shape
-		add: title;
-		add: boxChildren;
-		add: children.
-	shape adjustToChildren
-]
-
-{ #category : #building }
-MiArchitecturalMapBuilder >> buildCompositeFullTagIn: shape [
-
-	| childrenShapes node titleGroup title titleBox children boxChildren titleRadius boxChildrenRadius list childrenGroups childrenShapesGroups |
-	node := shape model.
-	childrenGroups := self groupTagElements: node.
-	titleGroup := self nodeStyler labelAndIconFor: node.
-	titleBox := RSBox new
-		            extent: titleGroup extent + 10;
-		            color: ((self colorFor: node) alpha: 0.7);
-		            position: titleGroup position;
-		            yourself.
-	title := RSComposite new
-		         add: titleBox;
-		         addAll: titleGroup;
-		         adjustToChildren;
-		         yourself.
-	title when: RSMouseDoubleClick do: [ :e | node expandCollapse ].
-	shape propertyAt: #background put: titleBox.
-	childrenShapesGroups := RSGroup new.
-	childrenShapes := RSGroup new.
-	childrenGroups do: [ :group | 
-		| cs |
-		cs := group collect: [ :child | self shapeFor: child ] as: RSGroup.
-		childrenShapes addAll: cs ].
-
-	self layoutOn: childrenShapes parent: node.
-
-	shape schildren: childrenShapes.
-	childrenShapes do: [ :child | child sparent: shape ].
-
-
-	children := childrenShapes asShape padding: 6.
-	childrenShapes do: [ :child | child model position: child position ].
-	title width < children width
-		ifTrue: [ 
-			titleBox width: children width.
-			title adjustToChildren ]
-		ifFalse: [ children width: title width ].
-	boxChildren := self boxChildrenFor: node.
-	titleRadius := self topCornerRadius.
-	boxChildrenRadius := self bottomCornerRadius.
-	list := { 
-		        title.
-		        children }.
-	self nodeStyler position = #below ifTrue: [ 
-		titleRadius := self bottomCornerRadius.
-		boxChildrenRadius := self topCornerRadius.
-		list := { 
-			        children.
-			        title } ].
-	RSVerticalLineLayout new
-		gapSize: 0;
-		on: list.
-	titleBox cornerRadius: titleRadius.
-	boxChildren
-		color: (self colorFor: node);
-		cornerRadius: boxChildrenRadius;
-		fromRectangle: children encompassingRectangle.
-
-	shape
-		add: title;
-		add: boxChildren;
-		add: children.
-	shape adjustToChildren
-]
-
 { #category : #building }
 MiArchitecturalMapBuilder >> buildNodeFromEntity: anEntity register: aBoolean [
 
@@ -304,6 +155,7 @@ MiArchitecturalMapBuilder >> buildNodeFromEntity: anEntity register: aBoolean [
 		        name:
 			        (String streamContents: [ :s | anEntity displayStringOn: s ]);
 		        rawModel: anEntity;
+		        style: MiHArchitecturalMapStyle new;
 		        addAll:
 			        (((self mapModel childrenFor: anEntity) sort: [ :c1 :c2 | 
 					          c1 name < c2 name ])
@@ -514,7 +366,7 @@ MiArchitecturalMapBuilder >> nodeAnnouncer [
 
 	baseNode ifNotNil: [ ^ baseNode announcer ].
 	baseNode := RSComposite new
-		            @ self nodeStyler popup;
+		            @ self popup;
 		            @
 			            (HGhostDraggable new color:
 					             Smalltalk ui theme caretColor);
@@ -523,9 +375,7 @@ MiArchitecturalMapBuilder >> nodeAnnouncer [
 		            @ self highlightableLinkedShapes;
 		            @ RSNodeOnTopWhenPositionChanged new;
 		            @ HUpdateSelectionBox new;
-		            @
-			            (HResizeParentWhenChildMoves new nodeStyler:
-					             self nodeStyler);
+		            @ HResizeParentWhenChildMoves new;
 		            yourself.
 	^ baseNode announcer
 ]
@@ -563,28 +413,6 @@ MiArchitecturalMapBuilder >> relayout: aGroupOfShapes parent: shape [
 			on: aGroupOfShapes. 
 		^ self ].
 	shape layout on: aGroupOfShapes.
-]
-
-{ #category : #accessing }
-MiArchitecturalMapBuilder >> renderIn: aCanvas [
-	| rootShapes |
-	aCanvas color: Smalltalk ui theme backgroundColor.
-	shapes := RSGroup new.
-	rootShapes := (rootNode children sort: [ :c1 :c2 | c1 name < c2 name])
-		collect: [:child | (self shapeFor: child) sparent: aCanvas ]
-		as: RSGroup.
-	aCanvas schildren: rootShapes.
-	aCanvas addAll: rootShapes.
-	aCanvas @ self menuInteraction.
-	rootNode when: HNodeAddedEvent do: [ :evt | | newShape |
-		newShape := (self shapeFor: evt newChild) sparent: aCanvas.
-		newShape position: aCanvas camera position.
-		rootShapes add: newShape.
-		aCanvas add: newShape.
-		 ].
-	self renderLinesIn: aCanvas.
-	self layoutOn: rootShapes parent: rootNode.
-	
 ]
 
 { #category : #building }
@@ -640,27 +468,7 @@ MiArchitecturalMapBuilder >> setDependency: e forEntity: anEntity [
 { #category : #accessing }
 MiArchitecturalMapBuilder >> shapeFor: node [
 
-	| shape |
-	shape := RSComposite new
-		         model: node;
-		         announcer: self nodeAnnouncer;
-		         yourself.
-
-	(node isExpanded and: [ node hasChildren ])
-		ifTrue: [ 
-			node rawModel isTag
-				ifTrue: [ self buildCompositeFullTagIn: shape ]
-				ifFalse: [ self buildCompositeFullNodeIn: shape ] ]
-		ifFalse: [ self buildCompositeEmptyNodeIn: shape ].
-
-	node
-		removeInteractionIfPresent: self class;
-		when: HNodeAddedEvent do: [ :evt | self rebuildRootShape: shape ];
-		when: HCollapseEvent do: [ :evt | self rebuildShape: shape ];
-		when: HExpandEvent do: [ :evt | self rebuildRootShape: shape ];
-		when: HNodeChangedEvent do: [ :evt | self rebuildShape: shape ].
-	shapes add: shape.
-	^ shape
+	^ node asShape
 ]
 
 { #category : #building }
