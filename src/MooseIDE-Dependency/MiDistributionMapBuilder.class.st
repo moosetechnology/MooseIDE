@@ -10,7 +10,8 @@ Class {
 	#name : #MiDistributionMapBuilder,
 	#superclass : #HSimpleVisualizationBuilder,
 	#instVars : [
-		'mapModel'
+		'mapModel',
+		'nodeStyle'
 	],
 	#category : #'MooseIDE-Dependency-DistributionMap'
 }
@@ -153,11 +154,12 @@ MiDistributionMapBuilder >> buildLegend [
 
 { #category : #building }
 MiDistributionMapBuilder >> buildNodeFromEntity: anEntity [
-	
+
 	^ HNode new
 		  name:
 			  (String streamContents: [ :s | anEntity displayStringOn: s ]);
 		  rawModel: anEntity;
+		  style: MiHDMStyle new;
 		  addAll: ((self mapModel childrenFor: anEntity) collect: [ :n | 
 					   HNode new
 						   name: (String streamContents: [ :s | n displayStringOn: s ]);
@@ -205,6 +207,13 @@ MiDistributionMapBuilder >> emptyBoxExtent [
 	^ 30@20
 ]
 
+{ #category : #initialization }
+MiDistributionMapBuilder >> initialize [
+
+	super initialize.
+	nodeStyle := MiHDMStyle new
+]
+
 { #category : #hooks }
 MiDistributionMapBuilder >> layoutOn: aGroupOfShapes parent: shape [
 	aGroupOfShapes ifEmpty: [ ^ self ].
@@ -242,7 +251,7 @@ MiDistributionMapBuilder >> nodeAnnouncer [
 	"plug new events here"
 	baseNode ifNotNil: [ ^ baseNode announcer ].
 	baseNode := RSComposite new
-		@ self nodeStyler popup;
+		@ self popup;
 		@ self menuInteraction;
 		@ self highlightable;
 		@ (HUpdateSelectionBox new);
@@ -275,15 +284,5 @@ MiDistributionMapBuilder >> renderIn: aCanvas [
 { #category : #accessing }
 MiDistributionMapBuilder >> shapeFor: node [
 
-	| shape |
-	shape := RSComposite new
-		model: node;
-		announcer: self nodeAnnouncer;
-		yourself.
-	
-	(node level = 1) 
-		ifTrue: [ self buildCompositeFullNodeIn: shape ]
-		ifFalse: [ self buildCompositeEmptyNodeIn: shape ].
-	
-	^ shape 
+	^ node asShape
 ]
