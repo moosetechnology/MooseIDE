@@ -444,8 +444,8 @@ MiArchitecturalMapBuilder >> setDependenciesForEntity: anEntity [
 		assocs := anEntity queryLocal: #in with: at.
 
 		assocs do: [ :dep | 
-			(dep isInvocation and:
-			[ mapModel noMegaMorphic and:
+			(mapModel noMegaMorphic and:
+			[ dep isInvocation and:
 			[ dep candidates size > mapModel megaMorphicSize ]])
 			ifFalse: [ self setDependency: dep forEntity: anEntity ] ] ]
 ]
