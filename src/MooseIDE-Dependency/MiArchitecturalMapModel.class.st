@@ -191,7 +191,7 @@ MiArchitecturalMapModel >> itemMegaMorphicSize [
 MiArchitecturalMapModel >> itemNoMegaMorphic [
 
 	^MiCheckboxSettingItem new
-		setValue: true ;
+		setValue: false ;
 		label: 'Ignore mega-morphic invocations?' ;
 		help: 'In the dependencies, ignore invocations of mega-morphic methods' ;
 		yourself
