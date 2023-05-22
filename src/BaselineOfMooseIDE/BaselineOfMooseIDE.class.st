@@ -172,10 +172,9 @@ BaselineOfMooseIDE >> famixTagging: spec [
 { #category : #dependencies }
 BaselineOfMooseIDE >> hierarchicalVisualizations: spec [
 
-	spec
-		baseline: 'HierarchicalVisualizations'
-		with: [ 
-		spec repository: 'github://ObjectProfile/HierarchicalVisualizations:main/src' ]
+	spec baseline: 'HierarchicalVisualizations' with: [ 
+		spec repository:
+			'github://ObjectProfile/HierarchicalVisualizations:d6e8f46839f5236e7e32b619b1b78fcdfec5e9de/src' ]
 ]
 
 { #category : #dependencies }
