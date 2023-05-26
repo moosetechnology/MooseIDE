@@ -33,11 +33,9 @@ MiInspectCommand >> canBeExecuted [
 { #category : #executing }
 MiInspectCommand >> execute [
 
-	| selectedItem |
-	selectedItem := [ self context miSelectedItem ]
-		                on: MiNoSelectedElementToPropagateException
-		                do: [ :exception | 
-			                exception signal.
-			                ^ self ].
-	MiInspectorBrowser inspect: selectedItem forBuses: self context buses
+	[ self context miInspect ]
+		on: MiNoSelectedElementToPropagateException
+		do: [ :exception | 
+			exception signal.
+			^ self ]
 ]

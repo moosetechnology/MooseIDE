@@ -113,6 +113,43 @@ MiModelRootBrowserTest >> testHandleDropFileImportsModel [
 ]
 
 { #category : #tests }
+MiModelRootBrowserTest >> testMiInspectCommand [
+
+	| inspector result newModel |
+	newModel := self newModel: 'aModel'.
+	newModel add: FamixStClass new.
+	browser updateForNewModel: newModel.
+
+	inspector := Mock named: 'inspector'.
+	(inspector stub inspect: Any forBuses: Any) will: [ :object :buses | 
+		result := object ].
+
+	browser inspector: inspector.
+	browser miInspect.
+
+	self assert: result equals: newModel
+]
+
+{ #category : #tests }
+MiModelRootBrowserTest >> testMiInspectCommandWithoutStubFilter [
+
+	| inspector result newModel |
+	newModel := self newModel: 'aModel'.
+	newModel add: FamixStClass new.
+
+	browser updateForNewModel: newModel.
+	browser model settings setItem: #filterStubsSetting value: false.
+	inspector := Mock named: 'inspector'.
+	(inspector stub inspect: Any forBuses: Any) will: [ :object :buses | 
+		result := object ].
+
+	browser inspector: inspector.
+	browser miInspect.
+
+	self assert: result equals: newModel
+]
+
+{ #category : #tests }
 MiModelRootBrowserTest >> testMiSelectedItem [
 
 	| newModel |
