@@ -151,6 +151,12 @@ MiSystemComplexityBuilder >> mapModel: anObject [
 	mapModel := anObject
 ]
 
+{ #category : #accessing }
+MiSystemComplexityBuilder >> menuItemStrategy [
+
+	^ MiSystemComplexityMenuItemStrategy new
+]
+
 { #category : #building }
 MiSystemComplexityBuilder >> nodeAnnouncer [
 	"plug new events here"
