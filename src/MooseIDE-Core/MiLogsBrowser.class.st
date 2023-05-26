@@ -1,4 +1,6 @@
 "
+I am a bus log browser. I display logs of all buses, each one in a notebook.
+
 Accepted entities: Does not apply.
 "
 Class {
