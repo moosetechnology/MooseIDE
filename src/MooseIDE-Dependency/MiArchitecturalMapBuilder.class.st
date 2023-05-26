@@ -132,15 +132,14 @@ MiArchitecturalMapBuilder >> borderFor: node [
 
 { #category : #building }
 MiArchitecturalMapBuilder >> build [
+
 	rootNode ifNotNil: [ 
 		self updateWithModelSettings.
 		^ self ].
 	rootNode := HNode new.
 	self addTags.
 	mapModel showBusEntities ifTrue: [ 
-		rootNode addAll: (self elements
-				 collect: [ :e | self buildNodeFromEntity: e register: true ]
-				 thenReject: [ :e | e isNil ]) ].
+		rootNode addAll: self createRootNodes ].
 	self renderIn: self container.
 	self updateWithModelSettings.
 	^ self container
@@ -234,6 +233,14 @@ MiArchitecturalMapBuilder >> createMultiTagBoxSized: aSize [
 			 width: 1;
 			 yourself).
 	^ cp
+]
+
+{ #category : #building }
+MiArchitecturalMapBuilder >> createRootNodes [
+
+	^ (self elements
+		   collect: [ :e | self buildNodeFromEntity: e register: true ]
+		   thenReject: [ :e | e isNil ]) sort: [ :a :b | a name < b name ]
 ]
 
 { #category : #accessing }
