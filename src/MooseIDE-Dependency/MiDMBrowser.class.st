@@ -1,5 +1,6 @@
 "
 I am a browser that displays a distribution map.
+Accepted entities: any MooseEntity.
 
 Controls:
 

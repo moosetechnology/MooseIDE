@@ -1,7 +1,7 @@
 "
 Shows entities in a MooseModel grouped by entity type.
 
-- Follow: Receives a MooseModel.
+- Accepted entities: a MooseModel.
 - Highlight: <TODO>
 - Propagate: Selected entities if there are some.
 <TODO> Improvement: not a collection but a mooseGroup.

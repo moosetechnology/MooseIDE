@@ -1,8 +1,9 @@
 "
 This browser shows dependencies between ""container entities"" (e.g. methods) and ""used entities"" (e.g. attributes) and it allows to mark entities with tags.
-Use this browser with a moose collection entity.
 Use settings to configure it.
 In order to navigate across the visualization.
+
+Accepted entities: a MooseGroup.
 
 Controls:
 

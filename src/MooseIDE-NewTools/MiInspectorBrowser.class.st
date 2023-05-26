@@ -1,6 +1,8 @@
 "
 I am a custom MooseIDE inspector. I have as a sub-presenter an instance of `MiInspectorPresenter` which is at the same time a subclass of `StInspector`. I am just like Pharo's inspector just that I am connected to the `MiApplication` bus.
 I have implemented the methods: `followAction` and `miSelectedItem` in order to listen and propagate entries to the bus.
+
+Accepted entities: a MooseEntity
 "
 Class {
 	#name : #MiInspectorBrowser,

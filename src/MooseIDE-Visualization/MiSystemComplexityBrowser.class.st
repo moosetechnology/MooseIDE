@@ -1,6 +1,6 @@
 "
 I am a browser showing a System Complexity visualization on classes.
-I accept a MooseGroup.
+Accepted entities: a MooseGroup.
 
 Controls:
 

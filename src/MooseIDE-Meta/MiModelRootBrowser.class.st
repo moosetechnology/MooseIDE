@@ -2,7 +2,7 @@
 ** Moose IDE entrypoint **
 Shows installed models and allows model installation.
 
-- Follow: Nothing to do.
+- Accepted entities: Does not apply.
 - Highlight: <TODO> Could highlight the model containing the received entity.
 - Propagate: The selected model.
 

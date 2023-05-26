@@ -1,7 +1,9 @@
 "
 A tool to manage tags
 
-Allows to create new tag, give them name, put them in a hierarchy of tags, give them a color, and of course add or remove entities carrying a tag
+Allows to create new tag, give them name, put them in a hierarchy of tags, give them a color, and of course add or remove entities carrying a tag.
+
+Accepted entities: a MooseObject.
 
 "
 Class {

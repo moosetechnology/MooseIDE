@@ -1,6 +1,7 @@
 "
 I am a Butterfly map. I can show incoming and outgoing dependencies from a central entity. It allows to navigate through several level of dependencies.
-I accept a moose entity that is the central entity.
+Accepted entities: a moose entity that is the central entity.
+
 By default entities at left are all clients of the central entity, right ones are providers of the central entity. You can change these rules and custom the semantics of your butterfly map by playing with its settings.
 
 Controls:

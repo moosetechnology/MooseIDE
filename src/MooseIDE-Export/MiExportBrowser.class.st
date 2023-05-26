@@ -2,7 +2,7 @@
 Prepares the export of entities as CSV file.
 Allows the addition of a comment for each entity.
 
-- Follow: Accepts MooseObjects
+- Accepted entities: a MooseObject
 
 - Highlight: TODO
 
