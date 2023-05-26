@@ -345,18 +345,9 @@ MiArchitecturalMapBuilder >> mapModel: anObject [
 ]
 
 { #category : #accessing }
-MiArchitecturalMapBuilder >> menuInteraction [
+MiArchitecturalMapBuilder >> menuItemStrategy [
 
-	^ menuInteraction ifNil: [ 
-		  menuInteraction := RSMenuActivable new
-			                     menuDo: [ :menu :aShape | 
-				                     HMenuBuilder new
-					                     menuItemStrategy:
-						                     MiArchitecturalMenuItemStrategy new;
-					                     buildIn: menu
-					                     shape: aShape
-					                     visualization: self ];
-			                     yourself ]
+	^ MiArchitecturalMenuItemStrategy new
 ]
 
 { #category : #accessing }
