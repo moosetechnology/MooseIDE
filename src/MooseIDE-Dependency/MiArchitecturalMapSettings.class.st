@@ -21,13 +21,6 @@ Class {
 	#category : #'MooseIDE-Dependency-ArchitecturalMap'
 }
 
-{ #category : #initialization }
-MiArchitecturalMapSettings >> connectPresenters [
-
-	submitButton action: [ self submit ].
-	closeButton action: [ self owner hideMenu ]
-]
-
 { #category : #brokerage }
 MiArchitecturalMapSettings >> consume: aQuery [
 
@@ -39,16 +32,6 @@ MiArchitecturalMapSettings >> fetchQueries [
 
 	^ (self root application itemsFor: FQAbstractQuery)
 		  asOrderedCollection select: [ :query | query isValid ]
-]
-
-{ #category : #initialization }
-MiArchitecturalMapSettings >> fillModelWithCurrentSettings [
-
-	self model childrenQuery: childrenQueryDropList selectedItem.
-	self model showAllLinks: linksCheckbox state.
-	self model associationTypes:
-		associationList selectedItems asOrderedCollection.
-	self model tags: tagList selectedItems asOrderedCollection
 ]
 
 { #category : #initialization }
@@ -132,15 +115,6 @@ MiArchitecturalMapSettings >> setTags [
 
 	tagList items:
 		(self root application itemsFor: FamixTag) asMooseGroup
-]
-
-{ #category : #initialization }
-MiArchitecturalMapSettings >> submit [
-
-	childrenQueryDropList selectedItem ifNil: [ ^ self ].
-	self fillModelWithCurrentSettings.
-	self owner hideMenu.
-	self owner visualization update
 ]
 
 { #category : #updating }
