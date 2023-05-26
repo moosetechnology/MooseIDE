@@ -197,6 +197,12 @@ MiModelRootBrowser >> listOfMooseModels: aList [
 	
 ]
 
+{ #category : #'as yet unclassified' }
+MiModelRootBrowser >> miInspect [
+
+	self inspector inspect: self miSelectedModel forBuses: buses
+]
+
 { #category : #accessing }
 MiModelRootBrowser >> miSelectedItem [
 
