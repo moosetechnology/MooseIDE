@@ -1,6 +1,6 @@
 "
 I am a moose notebook browser.
-I accept any moose entity and get a moose model from it.
+Accepted entities: any moose entity that knows its moose model.
 
 There are two kind of cells:
  - Microdown cells.

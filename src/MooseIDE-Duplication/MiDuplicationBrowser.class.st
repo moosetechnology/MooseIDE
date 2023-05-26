@@ -1,5 +1,7 @@
 "
-A MooseIDE browser to present code clones
+A MooseIDE browser to present code clones.
+
+Accepted entities: A collection of entities with a source anchor.
 "
 Class {
 	#name : #MiDuplicationBrowser,

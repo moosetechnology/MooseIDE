@@ -2,7 +2,7 @@
 Root folder explorer.
 Allows to explore the root folder of a model (left panel) and shows the entities contained in each file (right panel).
 
-- Follow: Receives a MooseModel that has a root folder
+- Accepted entities: a MooseModel that has a root folder
 - Highlight: <TODO>
   Entities if present and visible.
   Could highlight the file owning a received entity.

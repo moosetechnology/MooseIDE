@@ -2,7 +2,7 @@
 ** Expert user **
 Shows the metadescription of a MooseObject.
 
-- Follow: Recevies a MooseObject.
+- Accepted entities: a MooseObject.
 - Highlight: Nothing to do.
 - Propagate: <TODO>
 "

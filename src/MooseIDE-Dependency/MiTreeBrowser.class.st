@@ -1,7 +1,7 @@
 "
 Shows the containment tree (direct relations for now) between the entities.
 
-- Follow: Accepts a MooseEntity using TEntityMetaLevelDependency.
+- Accepted entities: a MooseEntity using TEntityMetaLevelDependency.
 - Highlight: Entities if present.
 - Propagate: <TODO>
 "

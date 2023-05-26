@@ -1,7 +1,7 @@
 "
 Shows dependencies between entities (using #queryIncomingDependencies and #queryOutgoingDependencies).
 
-- Follow: Accepts a MooseGroup.
+- Accepted entities: a MooseGroup.
 - Highlight: Entites if present.
 - Propagate: The selected entity if there is one.
 

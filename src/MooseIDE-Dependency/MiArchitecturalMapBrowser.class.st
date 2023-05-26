@@ -1,5 +1,6 @@
 "
 I am a browser that displays an architectural map.
+Accepted entities: a MooseObject.
 
 Controls:
 

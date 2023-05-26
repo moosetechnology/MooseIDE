@@ -1,3 +1,6 @@
+"
+Accepted entities: Does not apply.
+"
 Class {
 	#name : #MiLogsBrowser,
 	#superclass : #MiAbstractBrowser,

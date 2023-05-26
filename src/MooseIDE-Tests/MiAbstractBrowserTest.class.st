@@ -291,6 +291,13 @@ MiAbstractBrowserTest >> testFollowOtherBus [
 	self assert: browser busButton label equals: '2 buses'
 ]
 
+{ #category : #tests }
+MiAbstractBrowserTest >> testHelpHasSomeInformation [
+
+	self assert:
+		(browser class comment includesSubstring: 'Accepted entities:')
+]
+
 { #category : #'tests - actions' }
 MiAbstractBrowserTest >> testHighlightEntity [
 

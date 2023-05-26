@@ -2,7 +2,7 @@
 Shows the containment (direct relations for now) between entities.
 Dynamic presentation: clicking on an entity shows the entities it contains.
 
-- Follow: Receives MooseObjects.
+- Accepted entities: a MooseObject.
 - Highlight: Entities if present.
 - Propagate: <TODO>.
 

@@ -1,7 +1,7 @@
 "
 Shows properties of a MooseObject.
 
-- Follow: Receives MooseObjects
+- Accepted entities: any MooseObject
 - Highlight: Nothing to do.
 - Propagate: The MooseObject it shows.
 "
