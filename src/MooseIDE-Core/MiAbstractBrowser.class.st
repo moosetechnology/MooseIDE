@@ -39,7 +39,8 @@ Class {
 	#instVars : [
 		'buses',
 		'receivingMode',
-		'specModel'
+		'specModel',
+		'inspector'
 	],
 	#category : #'MooseIDE-Core-Browser'
 }
@@ -435,6 +436,7 @@ MiAbstractBrowser >> initialize [
 
 	super initialize.
 	self setDefaultReceivingMode.
+	inspector := MiInspectorBrowser.
 	buses := Set new
 ]
 
@@ -451,6 +453,18 @@ MiAbstractBrowser >> initializeWindow: aMiWindowPresenter [
 	aMiWindowPresenter initialExtent: self class windowSize
 ]
 
+{ #category : #'private - for tests' }
+MiAbstractBrowser >> inspector [
+
+	^ inspector
+]
+
+{ #category : #accessing }
+MiAbstractBrowser >> inspector: anObject [
+
+	inspector := anObject
+]
+
 { #category : #testing }
 MiAbstractBrowser >> isMiBrowser [
 	^ true
@@ -459,6 +473,12 @@ MiAbstractBrowser >> isMiBrowser [
 { #category : #testing }
 MiAbstractBrowser >> isModelImporter [
 	^self class isModelImporter
+]
+
+{ #category : #'as yet unclassified' }
+MiAbstractBrowser >> miInspect [
+
+	self inspector inspect: self miSelectedItem forBuses: buses
 ]
 
 { #category : #accessing }
