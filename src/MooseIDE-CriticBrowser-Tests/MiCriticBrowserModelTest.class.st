@@ -50,7 +50,7 @@ MiCriticBrowserModelTest >> testAddChildToContext [
 	
 ]
 
-{ #category : #test }
+{ #category : #tests }
 MiCriticBrowserModelTest >> testAddViolationsFor [
 	
 	self assert: model violations keys size equals: 0.
@@ -60,7 +60,7 @@ MiCriticBrowserModelTest >> testAddViolationsFor [
 	self assert: model violations keys anyOne equals: stubCondition
 ]
 
-{ #category : #test }
+{ #category : #tests }
 MiCriticBrowserModelTest >> testContextOf [
 	| classes methods classEntity |
 	classes := FamixCBContext named: 'Classes' on: '[ :col | col allClasses ]'.
@@ -121,12 +121,14 @@ MiCriticBrowserModelTest >> testHasBeenEdited [
 	self assert: model rootContext children anyOne name equals: 'test édité'
 ]
 
-{ #category : #test }
+{ #category : #tests }
 MiCriticBrowserModelTest >> testRemoveBranchFromRuleComponents [
 
-	| context tree |
+	| context |
 	self removeAllFromRootContext.
-	context := FamixCBContext named: 'child context' on: '[ :col | col allClasses ]'.
+	context := FamixCBContext
+		           named: 'child context'
+		           on: '[ :col | col allClasses ]'.
 	model addChild: stubCondition toContext: model rootContext.
 	model addChild: context toContext: model rootContext.
 	model addChild: deadCondition toContext: context.
@@ -166,7 +168,7 @@ MiCriticBrowserModelTest >> testRun [
 	
 ]
 
-{ #category : #test }
+{ #category : #tests }
 MiCriticBrowserModelTest >> testRunCondition [
 	
 	self assert: model violations keys size equals: 0.

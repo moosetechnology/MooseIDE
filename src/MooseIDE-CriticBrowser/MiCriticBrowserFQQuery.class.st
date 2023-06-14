@@ -14,7 +14,7 @@ MiCriticBrowserFQQuery >> convertToSTONString [
 
 	| stream |
 	stream := String new writeStream.
-	query storeWithParentsOn: stream.
+	innerQuery storeWithParentsOn: stream.
 	^ stream contents
 ]
 
@@ -28,11 +28,11 @@ MiCriticBrowserFQQuery >> runOn: aGroupOfEntities [
 { #category : #running }
 MiCriticBrowserFQQuery >> runOnCollection: aCollection [
 
-	^ (query class inheritsFromOrEqualTo: FQNAryQuery)
+	^ (innerQuery class inheritsFromOrEqualTo: FQNAryQuery)
 		  ifTrue: [ self runOnNAryQuery: aCollection ]
 		  ifFalse: [
-			  (query parent class = FQRootQuery or: [ query parent isNil ])
-				  ifTrue: [ query runOn: aCollection ]
+			  (innerQuery parent class = FQRootQuery or: [ innerQuery parent isNil ])
+				  ifTrue: [ innerQuery runOn: aCollection ]
 				  ifFalse: [ self runOnQueryWithParent: aCollection ] ]
 ]
 
@@ -40,8 +40,8 @@ MiCriticBrowserFQQuery >> runOnCollection: aCollection [
 MiCriticBrowserFQQuery >> runOnNAryQuery: aCollection [
 
 	| queries |
-	queries := query subqueries collect: [ :sq | self class on: sq ].
-	^ query runOn:
+	queries := innerQuery subqueries collect: [ :sq | self class on: sq ].
+	^ innerQuery runOn:
 		  (queries collect: [ :q | q runOnCollection: aCollection ])
 ]
 
@@ -49,6 +49,6 @@ MiCriticBrowserFQQuery >> runOnNAryQuery: aCollection [
 MiCriticBrowserFQQuery >> runOnQueryWithParent: aCollection [
 
 	| parentQuery |
-	parentQuery := self class on: query parent.
-	^ query runOn: (parentQuery runOnCollection: aCollection)
+	parentQuery := self class on: innerQuery parent.
+	^ innerQuery runOn: (parentQuery runOnCollection: aCollection)
 ]

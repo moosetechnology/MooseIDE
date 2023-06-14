@@ -129,10 +129,10 @@ MiCriticBrowserRulesMakerPresenter >> fillRuleToEdit: aRule [
 
 	ruleTitle text: aRule name.
 	ruleSummary text: aRule summary.
-	aRule severity ifNotNil: [ 
+	aRule severity ifNotNil: [
 		severityDroplist selectItem: aRule severity ].
 	aRule query class = MiCriticBrowserPharoCodeQuery
-		ifTrue: [ codeInput text: aRule query query asString ]
+		ifTrue: [ codeInput text: aRule query innerQuery asString ]
 		ifFalse: [ codeInput text: '[ :entity | entity ]' ]
 ]
 

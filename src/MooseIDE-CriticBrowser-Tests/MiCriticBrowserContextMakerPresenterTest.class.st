@@ -16,7 +16,7 @@ MiCriticBrowserContextMakerPresenterTest >> browserClass [
 	^ MiCriticBrowser 
 ]
 
-{ #category : #initialization }
+{ #category : #running }
 MiCriticBrowserContextMakerPresenterTest >> setUp [
 	super setUp.
 	browser addContextsPresenter setParentContext: browser model rootContext.
@@ -41,7 +41,7 @@ MiCriticBrowserContextMakerPresenterTest >> testAddInputtedCodeRule [
 	self assert: browser model rootContext children anyOne name equals: 'test'
 ]
 
-{ #category : #test }
+{ #category : #tests }
 MiCriticBrowserContextMakerPresenterTest >> testEditContext [
 	| context newTitle newBlock newSummary |
 	context := FamixCBContext named: 'test' on: '[ :col | col ]' summary: 'règle utilisée pour un test'.

@@ -5,7 +5,7 @@ Class {
 	#name : #MiCriticBrowserAbstractQuery,
 	#superclass : #Object,
 	#instVars : [
-		'query'
+		'innerQuery'
 	],
 	#category : #'MooseIDE-CriticBrowser-Queries'
 }
@@ -14,7 +14,7 @@ Class {
 MiCriticBrowserAbstractQuery class >> on: aQuery [
 
 	^ self new
-		  query: aQuery;
+		  innerQuery: aQuery;
 		  yourself
 ]
 
@@ -27,15 +27,15 @@ MiCriticBrowserAbstractQuery >> convertToSTONString [
 ]
 
 { #category : #accessing }
-MiCriticBrowserAbstractQuery >> query [
+MiCriticBrowserAbstractQuery >> innerQuery [
 
-	^ query
+	^ innerQuery
 ]
 
 { #category : #accessing }
-MiCriticBrowserAbstractQuery >> query: anObject [
+MiCriticBrowserAbstractQuery >> innerQuery: anObject [
 
-	query := anObject
+	innerQuery := anObject
 ]
 
 { #category : #running }

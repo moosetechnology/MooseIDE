@@ -7,7 +7,7 @@ Class {
 	#category : #'MooseIDE-CriticBrowser-Tests'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #queries }
 MiCriticBrowserFQQueryTest >> intersectionQuery [
 
 	| query class stubClass method |
@@ -28,22 +28,43 @@ MiCriticBrowserFQQueryTest >> intersectionQuery [
 	self assertCollection: (query runOnCollection: { class. stubClass. method } asMooseGroup) hasSameElements: { stubClass }
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #queries }
 MiCriticBrowserFQQueryTest >> queryWithParent [
 
 	| query childQuery class stubClass method |
-	query := MiCriticBrowserFQQuery on: (FQTypeQuery types: { FamixJavaClass }).
-	childQuery := MiCriticBrowserFQQuery on: (FQBooleanQuery property: #isStub).
-	childQuery query parent: query query.
-	class := FamixJavaClass new. class name: 'Test'.
-	stubClass := FamixJavaClass new. stubClass name: 'TestStub'; stub: true.
-	method := FamixJavaMethod new. method name: 'methode'; stub: true.
-	
-	self assertCollection: (query runOnCollection: ({ class. stubClass. method } asMooseGroup) ) hasSameElements: { class. stubClass }. 
-	self assertCollection: (childQuery runOnCollection: ({ class. stubClass. method } asMooseGroup) ) hasSameElements: { stubClass }. 
+	query := MiCriticBrowserFQQuery on:
+		         (FQTypeQuery types: { FamixJavaClass }).
+	childQuery := MiCriticBrowserFQQuery on:
+		              (FQBooleanQuery property: #isStub).
+	childQuery innerQuery parent: query innerQuery.
+	class := FamixJavaClass new.
+	class name: 'Test'.
+	stubClass := FamixJavaClass new.
+	stubClass
+		name: 'TestStub';
+		stub: true.
+	method := FamixJavaMethod new.
+	method
+		name: 'methode';
+		stub: true.
+
+	self
+		assertCollection: (query runOnCollection: {
+					 class.
+					 stubClass.
+					 method } asMooseGroup)
+		hasSameElements: {
+				class.
+				stubClass }.
+	self
+		assertCollection: (childQuery runOnCollection: {
+					 class.
+					 stubClass.
+					 method } asMooseGroup)
+		hasSameElements: { stubClass }
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #queries }
 MiCriticBrowserFQQueryTest >> singleQuery [
 
 	| query class stubClass method |
@@ -55,7 +76,7 @@ MiCriticBrowserFQQueryTest >> singleQuery [
 	self assertCollection: (query runOnCollection: ({ class. stubClass. method } asMooseGroup) ) hasSameElements: { method. stubClass }. 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #queries }
 MiCriticBrowserFQQueryTest >> substractionQuery [
 
 	| query class stubClass method |
@@ -76,7 +97,7 @@ MiCriticBrowserFQQueryTest >> substractionQuery [
 	self assertCollection: (query runOnCollection: { class. stubClass. method } asMooseGroup) hasSameElements: { class }
 ]
 
-{ #category : #test }
+{ #category : #tests }
 MiCriticBrowserFQQueryTest >> testConvertToSTONString [
 	| queryFQ queryCB queryOutput |
 	queryFQ := FQBooleanQuery property: #isDead.
@@ -87,7 +108,7 @@ MiCriticBrowserFQQueryTest >> testConvertToSTONString [
 	
 ]
 
-{ #category : #test }
+{ #category : #tests }
 MiCriticBrowserFQQueryTest >> testRunOnCollection [
 	
 	self singleQuery.
@@ -95,7 +116,7 @@ MiCriticBrowserFQQueryTest >> testRunOnCollection [
 	self testRunOnQueryWithParent
 ]
 
-{ #category : #test }
+{ #category : #tests }
 MiCriticBrowserFQQueryTest >> testRunOnNAryQuery [
 	
 	self substractionQuery.
@@ -104,14 +125,14 @@ MiCriticBrowserFQQueryTest >> testRunOnNAryQuery [
 
 ]
 
-{ #category : #test }
+{ #category : #tests }
 MiCriticBrowserFQQueryTest >> testRunOnQueryWithParent [
 	
 	self queryWithParent.
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #queries }
 MiCriticBrowserFQQueryTest >> unionOfThreeQueries [
 
 	| query class stubClass method attribute |

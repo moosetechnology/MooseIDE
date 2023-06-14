@@ -12,20 +12,20 @@ MiCriticBrowserPharoCodeQuery >> convertToSTONString [
 	"Converts the query to a string used to save the query in STON format.
 	The string must return the query when evaluated by the Smalltalk compiler"
 
-	^ query asString
+	^ innerQuery asString
 ]
 
 { #category : #accessing }
-MiCriticBrowserPharoCodeQuery >> query: aString [
+MiCriticBrowserPharoCodeQuery >> innerQuery: aString [
 
-	query := self stringToFullBlockClosure: aString
+	innerQuery := self stringToFullBlockClosure: aString
 ]
 
 { #category : #running }
 MiCriticBrowserPharoCodeQuery >> runOn: anEntity [
 	"Runs the query on the input group of entities and returns the entities validating the query"
 
-	^ query value: anEntity
+	^ innerQuery value: anEntity
 ]
 
 { #category : #converting }

@@ -15,7 +15,7 @@ MiCriticBrowserPharoCodeQueryTest >> setUp [
 	handler := MiCriticBrowserPharoCodeQuery new.
 ]
 
-{ #category : #test }
+{ #category : #tests }
 MiCriticBrowserPharoCodeQueryTest >> testConvertToSTONString [
 	| query textQuery |
 	textQuery := '[ :entity | entity + 2 ]'.
