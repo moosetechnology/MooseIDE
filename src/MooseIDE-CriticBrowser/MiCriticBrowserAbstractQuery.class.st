@@ -12,14 +12,17 @@ Class {
 
 { #category : #'instance creation' }
 MiCriticBrowserAbstractQuery class >> on: aQuery [
-	^self new
-		query: aQuery ;
-		yourself
+
+	^ self new
+		  query: aQuery;
+		  yourself
 ]
 
 { #category : #converting }
 MiCriticBrowserAbstractQuery >> convertToSTONString [
-"converts the query to a string used to save the query in STON format, the string must return the query when evaluated by the Smalltalk compiler"
+	"Converts the query to a string used to save the query in STON format.
+	The string must return the query when evaluated by the Smalltalk compiler"
+
 	^ self subclassResponsibility
 ]
 
@@ -37,16 +40,17 @@ MiCriticBrowserAbstractQuery >> query: anObject [
 
 { #category : #running }
 MiCriticBrowserAbstractQuery >> runOn: aGroupOfEntities [
-"runs the query on the input group of entities, and returns the entities validating the query"
-	self subclassResponsibility  
+	"Runs the query on the input group of entities and returns the entities validating the query"
+
+	self subclassResponsibility
 ]
 
 { #category : #running }
 MiCriticBrowserAbstractQuery >> runOnCollection: aCollection [
-	^ aCollection select: [ :each | [ self runOn: each ] 
-		onErrorDo: [ :err | (err class = MessageNotUnderstood) 
-			ifTrue: [ false ] 
-			ifFalse: [ self error: err ] 
-		] ]
-	
+
+	^ aCollection select: [ :each |
+		  [ self runOn: each ] onErrorDo: [ :err |
+			  err class = MessageNotUnderstood
+				  ifTrue: [ false ]
+				  ifFalse: [ self error: err ] ] ]
 ]
