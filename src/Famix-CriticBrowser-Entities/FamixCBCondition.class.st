@@ -70,7 +70,7 @@ FamixCBCondition >> query [
 { #category : #accessing }
 FamixCBCondition >> query: aQuery [
 
-	(aQuery class inheritsFrom: MiCriticBrowserAbstractQuery) 
+	(aQuery class inheritsFrom: MiCriticBrowserAbstractQuery)
 		ifTrue: [ query := aQuery ]
 		ifFalse: [ self error: NotAValidQuery signal ]
 ]
@@ -124,19 +124,15 @@ FamixCBCondition >> severity: anObject [
 
 { #category : #'ston persistence' }
 FamixCBCondition >> stonOn: stonWriter [
-	stonWriter
-		writeObject: self
-		streamMap: [ :dictionary | 
-			self class stonAllInstVarNames
-				do: [ :each | 
-					(self instVarNamed: each)
-						ifNotNil: [ :value | 
-							dictionary
-								at: each asSymbol
-								put:
-									((value class inheritsFrom: MiCriticBrowserAbstractQuery)
-										ifTrue: [ value convertToSTONString ]
-										ifFalse: [ value ]) ] ] ]
+
+	stonWriter writeObject: self streamMap: [ :dictionary |
+		self class stonAllInstVarNames do: [ :each |
+			(self instVarNamed: each) ifNotNil: [ :value |
+				dictionary
+					at: each asSymbol
+					put: ((value class inheritsFrom: MiCriticBrowserAbstractQuery)
+							 ifTrue: [ value convertToSTONString ]
+							 ifFalse: [ value ]) ] ] ]
 ]
 
 { #category : #accessing }

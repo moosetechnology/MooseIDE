@@ -15,12 +15,20 @@ Class {
 
 { #category : #running }
 FamixCBConditionTest >> setUp [
+
 	super setUp.
-	
-	condition := FamixCBCondition named: 'test1' on: ((MiCriticBrowserPharoCodeQuery on: '[ :entity | entity isStub ]')).
-	violatingEntity := FamixJavaMethod new. violatingEntity isStub: true.
-	violation := FamixCBViolation condition: condition violatedBy: violatingEntity.
-	entity := FamixJavaMethod new.
+
+	condition := FamixCBCondition named: 'test1' on:
+		             (MiCriticBrowserPharoCodeQuery on: '[ :entity | entity isStub ]').
+
+	violatingEntity := FamixJavaMethod new.
+	violatingEntity isStub: true.
+
+	violation := FamixCBViolation
+		             condition: condition
+		             violatedBy: violatingEntity.
+
+	entity := FamixJavaMethod new
 ]
 
 { #category : #test }
@@ -50,8 +58,17 @@ FamixCBConditionTest >> testPutViolationsInto [
 
 { #category : #tests }
 FamixCBConditionTest >> testQuery [
-	self should: [ FamixCBCondition named: 'test' on: 'test' ] raise: NotAValidQuery.
-	self shouldnt: [ FamixCBCondition named: 'test' on: (MiCriticBrowserPharoCodeQuery new) ] raise: NotAValidQuery
+
+	self
+		should: [ FamixCBCondition named: 'test' on: 'test' ]
+		raise: NotAValidQuery.
+	
+	self
+		shouldnt: [
+			FamixCBCondition
+				named: 'test'
+				on: MiCriticBrowserPharoCodeQuery new ]
+		raise: NotAValidQuery
 ]
 
 { #category : #test }
