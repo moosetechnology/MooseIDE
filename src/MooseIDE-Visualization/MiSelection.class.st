@@ -6,7 +6,7 @@ Class {
 		'selectionAction',
 		'marginPercentage'
 	],
-	#category : #'MooseIDE-Visualization'
+	#category : #'MooseIDE-Visualization-Helpers'
 }
 
 { #category : #'instance creation' }

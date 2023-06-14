@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'highlightedEntities'
 	],
-	#category : #'MooseIDE-Visualization'
+	#category : #'MooseIDE-Visualization-Helpers'
 }
 
 { #category : #helpers }

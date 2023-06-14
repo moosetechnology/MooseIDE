@@ -4,7 +4,7 @@ Entry menu in HNode for 'Propagate' option
 Class {
 	#name : #HMiPropagateMenuItem,
 	#superclass : #HNodeMenuItem,
-	#category : #'MooseIDE-Core-Command'
+	#category : #'MooseIDE-Visualization-Helpers'
 }
 
 { #category : #testing }

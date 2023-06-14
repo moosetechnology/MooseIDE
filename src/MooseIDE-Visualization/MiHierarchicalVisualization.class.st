@@ -7,7 +7,7 @@ Class {
 		'childrenBlock',
 		'visualizationTheme'
 	],
-	#category : #'MooseIDE-Visualization'
+	#category : #'MooseIDE-Visualization-Hierarchical Visualization'
 }
 
 { #category : #accessing }
