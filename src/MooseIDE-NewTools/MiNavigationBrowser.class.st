@@ -96,8 +96,8 @@ MiNavigationBrowser >> initializePresenters [
 					  evaluated: [ :el | el key ];
 					  yourself);
 			 yourself).
-	navigation whenActivatedDo: [ :selection | 
-		activationBlock value: self ]
+	navigation whenActivatedDo: [ :selection |
+		activationBlock value: selection ]
 ]
 
 { #category : #initialization }

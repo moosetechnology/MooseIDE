@@ -5,6 +5,22 @@ Class {
 }
 
 { #category : #initialization }
+MiModelNavigationBrowser >> initializePresenters [
+
+	super initializePresenters.
+	navigation whenActivatedDo: [ :selection |
+		self inspectorObjectContextPresenter owner
+			changeSelection: (selection selectedItem value value: self model)
+			from: self inspectorObjectContextPresenter ]
+]
+
+{ #category : #initialization }
+MiModelNavigationBrowser >> inspectorObjectContextPresenter [
+
+	^ self owner owner owner owner
+]
+
+{ #category : #initialization }
 MiModelNavigationBrowser >> itemsFor: anEntity [
 
 	^ anEntity navigationItemsFromPragmas
