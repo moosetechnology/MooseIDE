@@ -1,7 +1,7 @@
 Class {
 	#name : #MiNodeStyler,
 	#superclass : #HNodeStyler,
-	#category : #'MooseIDE-Visualization'
+	#category : #'MooseIDE-Visualization-Helpers'
 }
 
 { #category : #accessing }

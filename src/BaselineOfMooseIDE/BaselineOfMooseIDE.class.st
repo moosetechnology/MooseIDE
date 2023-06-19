@@ -62,16 +62,22 @@ BaselineOfMooseIDE >> customProjectAttributes [
 BaselineOfMooseIDE >> defineMooseCriticsPackages: spec [
 
 	spec
-		package: 'MooseIDE-CriticBrowser' with: [ 
+		package: 'MooseIDE-CriticBrowser' with: [
 			spec requires: #( 'MooseIDE-Core' 'Famix-CriticBrowser-Entities'
 					   'STONCustomizer' ) ];
 		package: 'MooseIDE-CriticBrowser-Tests'
-		with: [ 
+		with: [
 			spec requires: #( 'MooseIDE-Tests' 'MooseIDE-CriticBrowser' ) ];
 		package: 'Famix-CriticBrowser-Entities';
 		package: 'Famix-CriticBrowser-Generator';
 		package: 'Famix-CriticBrowser-Tests'
-		with: [ spec requires: 'Famix-CriticBrowser-Entities' ]
+		with: [ spec requires: 'Famix-CriticBrowser-Entities' ].
+
+	spec
+		group: 'CriticBrowser-Metamodel'
+		with:
+			#( 'Famix-CriticBrowser-Entities' 'Famix-CriticBrowser-Generator'
+			   'Famix-CriticBrowser-Tests' )
 ]
 
 { #category : #baselines }
@@ -207,8 +213,10 @@ BaselineOfMooseIDE >> pharoAIHierachicalClustering: spec [
 
 { #category : #actions }
 BaselineOfMooseIDE >> registerCustomTools [
+	"MiPlayground could be absent if we load only a group"
 
-	(Smalltalk classNamed: #MiPlayground) register
+	(Smalltalk classNamed: #MiPlayground) ifNotNil: [ :miPlayground |
+		miPlayground register ]
 ]
 
 { #category : #dependencies }

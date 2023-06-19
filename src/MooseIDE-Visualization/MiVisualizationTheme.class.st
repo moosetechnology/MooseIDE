@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'iconTheme'
 	],
-	#category : #'MooseIDE-Visualization'
+	#category : #'MooseIDE-Visualization-Helpers'
 }
 
 { #category : #initialization }
