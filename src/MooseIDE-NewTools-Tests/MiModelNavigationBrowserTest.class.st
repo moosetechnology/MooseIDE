@@ -2,7 +2,7 @@ Class {
 	#name : #MiModelNavigationBrowserTest,
 	#superclass : #TestCase,
 	#instVars : [
-		'miInspector'
+		'miInspectorBrowser'
 	],
 	#category : #'MooseIDE-NewTools-Tests'
 }
@@ -12,37 +12,34 @@ MiModelNavigationBrowserTest >> setUp [
 
 	super setUp.
 
-	miInspector := MiInspectorBrowser openForTests:
+	miInspectorBrowser := MiInspectorBrowser openForTests:
 		               MiTestApplication current
 ]
 
 { #category : #running }
 MiModelNavigationBrowserTest >> tearDown [
 
-	miInspector window close.
+	miInspectorBrowser window close.
 	super tearDown
 ]
 
 { #category : #tests }
 MiModelNavigationBrowserTest >> testClickingOpensMooseGroup [
 
-	| inspectedModel navigationList |
+	| inspectedModel |
 	inspectedModel := FamixStModel new
 		                  newClassNamed: #C1;
 		                  newClassNamed: #C2;
 		                  yourself.
-	miInspector followEntity: inspectedModel.
+	miInspectorBrowser followEntity: inspectedModel.
+
+	self assert: miInspectorBrowser miSelectedItem equals: inspectedModel.
+
+
+	miInspectorBrowser miInspector firstPagePresenter navigation
+		clickAtIndex: 8.
 
 	self
-		assert: miInspector miInspector firstPage inspectedObject
-		equals: inspectedModel.
-
-	navigationList := (miInspector miInspector firstPage selectedPage
-		                   activePresenter presenterAt: #view) presenter
-		                  presenterAt: #navigation.
-	navigationList clickAtIndex: 8.
-
-	self
-		assert: miInspector miSelectedItem
+		assert: miInspectorBrowser miSelectedItem
 		equals: inspectedModel allClasses
 ]
