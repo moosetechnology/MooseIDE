@@ -18,8 +18,8 @@ MiModelNavigationBrowserTest >> setUp [
 
 { #category : #running }
 MiModelNavigationBrowserTest >> tearDown [
-"
-	miInspector window close."
+
+	miInspector window close.
 	super tearDown
 ]
 
