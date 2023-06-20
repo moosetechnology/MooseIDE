@@ -14,8 +14,9 @@ jobs:
   test:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
-        smalltalk: [ "Pharo64-10" ]
+        smalltalk: [ "Pharo64-10", "Pharo64-11" ]
     name: ${{ matrix.smalltalk }}
     steps:
       - uses: actions/checkout@v2
