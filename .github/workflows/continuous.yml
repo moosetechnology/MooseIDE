@@ -19,6 +19,7 @@ jobs:
     env:
       PROJECT_NAME: ${{ matrix.smalltalk }}-Midas
     strategy:
+      fail-fast: false
       matrix:
         smalltalk: [ "Pharo64-10", "Pharo64-11" ]
     name: ${{ matrix.smalltalk }}
