@@ -34,3 +34,9 @@ MiModelNavigationBrowser >> selectedItem [
 		   navigation selection selectedItem value ] onErrorDo: [ nil ])
 		  mooseInterestingEntity
 ]
+
+{ #category : #initialization }
+MiModelNavigationBrowser >> selectedObject [
+
+	^ navigation selection selectedItem value value: self model
+]
