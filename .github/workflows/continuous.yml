@@ -50,6 +50,6 @@ jobs:
         with:
           mode: update
           replace_assets: true
-          release_name: 'continuous'
+          tag_name: 'continuous'
           assets: ${{ env.PROJECT_NAME }}-${{ matrix.smalltalk }}.zip
           github_token: ${{ secrets.GITHUB_TOKEN }}
