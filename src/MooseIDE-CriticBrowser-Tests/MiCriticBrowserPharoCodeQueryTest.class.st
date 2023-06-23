@@ -12,20 +12,26 @@ Class {
 
 { #category : #tests }
 MiCriticBrowserPharoCodeQueryTest >> setUp [ 
-	handler := MiCriticBrowserPharoCodeQuery new.
+	handler := MiCriticBrowserAbstractQuery new.
 ]
 
 { #category : #tests }
 MiCriticBrowserPharoCodeQueryTest >> testConvertToSTONString [
+
 	| query textQuery |
 	textQuery := '[ :entity | entity + 2 ]'.
-	query := MiCriticBrowserPharoCodeQuery on: textQuery.
-	self assert: query convertToSTONString equals: textQuery
+	query := MiCriticBrowserAbstractQuery on: textQuery.
+	self
+		assert: query convertToSTONString
+		equals: ('(FQSelectScriptQuery script: {1})' format: { textQuery })
 ]
 
 { #category : #tests }
-MiCriticBrowserPharoCodeQueryTest >> testStringToFullBlockClosure [
-	| block |
-	block := handler stringToFullBlockClosure: '[ :entity | entity + 2 ]'.
-	self assert: (block value: 1) equals: 3 
+MiCriticBrowserPharoCodeQueryTest >> testStringAsValuable [
+
+	handler innerQuery: '[ :entity | entity odd ]'.
+	self assert: (handler innerQuery script value: 1).
+
+	handler innerQuery: '#odd'.
+	self assert: (handler innerQuery script value: 1)
 ]

@@ -41,12 +41,12 @@ MiCriticBrowserTest >> setUp [
 	stubRule := FamixCBCondition
 		            named: 'test1'
 		            on:
-		            (MiCriticBrowserPharoCodeQuery on:
+		            (MiCriticBrowserAbstractQuery on:
 			             '[ :entity | entity isStub ]').
 	deadRule := FamixCBCondition
 		            named: 'test2'
 		            on:
-		            (MiCriticBrowserPharoCodeQuery on:
+		            (MiCriticBrowserAbstractQuery on:
 			             '[ :entity | entity isDead ]').
 	queriesBrowserRule := FamixCBCondition
 		                      named: 'test3'
@@ -123,9 +123,9 @@ MiCriticBrowserTest >> testExportRulesToStream [
 	
 	self assert: cont class equals: FamixCBContext.
 	self assert: ({ cond1 . cond2 . cond3 } allSatisfy: [ :c | c class = FamixCBCondition ]) equals: true.
-	self assert: cond1 query equals: '[ :entity | entity isStub ]'.
+	self assert: cond1 query equals: '(FQSelectScriptQuery script: [ :entity | entity isStub ])'.
 	self assert: cond2 query equals: '(FQTypeQuery types: {FamixStMethod}) --> (FQBooleanQuery property: #isDead)'.
-	self assert: cond3 query equals: '[ :entity | entity isDead ]'.
+	self assert: cond3 query equals: '(FQSelectScriptQuery script: [ :entity | entity isDead ])'.
 	self assert: hierarchy equals: { 0. 0. 0. 1 } asOrderedCollection.
 	
 	stonReader close
@@ -148,21 +148,25 @@ MiCriticBrowserTest >> testFollowEntity [
 
 { #category : #tests }
 MiCriticBrowserTest >> testImportRulesFromStream [
+
 	| fileReference writeStream readStream |
-	browser model addChildToRootContext: childContext; addChildToRootContext: stubRule; addChildToRootContext: queriesBrowserRule.
+	browser model
+		addChildToRootContext: childContext;
+		addChildToRootContext: stubRule;
+		addChildToRootContext: queriesBrowserRule.
 	browser model addChild: deadRule toContext: childContext.
-	
-	fileReference := (FileSystem memory root / 'rules.ston') asFileReference.
+
+	fileReference := (FileSystem memory root / 'rules.ston')
+		                 asFileReference.
 	writeStream := fileReference writeStream.
 	browser exportRulesToStream: writeStream.
 	writeStream close.
-	
+
 	self removeAllFromRootContext.
 	readStream := fileReference readStream.
 	browser importRulesFromStream: readStream.
 	readStream close.
 	self assert: browser model rootContext children size equals: 3
-
 ]
 
 { #category : #tests }

@@ -30,8 +30,8 @@ MiCriticBrowserModelTest >> setUp [
 	super setUp.
 
 	model := browser model.
-	stubCondition := FamixCBCondition named: 'test1' on: (MiCriticBrowserPharoCodeQuery on: '[ :entity | entity isStub ]'). 
-	deadCondition := FamixCBCondition named: 'test2' on: (MiCriticBrowserPharoCodeQuery on: '[ :entity | entity isDead ]').
+	stubCondition := FamixCBCondition named: 'test1' on: (MiCriticBrowserAbstractQuery on: '[ :entity | entity isStub ]'). 
+	deadCondition := FamixCBCondition named: 'test2' on: (MiCriticBrowserAbstractQuery on: '[ :entity | entity isDead ]').
 	model addChild: stubCondition toContext: model rootContext.
 	model addChild: deadCondition toContext: model rootContext.
 	stubEntity := FamixStMethod named: 'test1'.

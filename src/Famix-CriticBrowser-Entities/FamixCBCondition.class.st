@@ -70,7 +70,7 @@ FamixCBCondition >> query [
 { #category : #accessing }
 FamixCBCondition >> query: aQuery [
 
-	(aQuery class inheritsFrom: MiCriticBrowserAbstractQuery)
+	(aQuery class inheritsFromOrEqualTo: MiCriticBrowserAbstractQuery)
 		ifTrue: [ query := aQuery ]
 		ifFalse: [ self error: NotAValidQuery signal ]
 ]
@@ -130,7 +130,7 @@ FamixCBCondition >> stonOn: stonWriter [
 			(self instVarNamed: each) ifNotNil: [ :value |
 				dictionary
 					at: each asSymbol
-					put: ((value class inheritsFrom: MiCriticBrowserAbstractQuery)
+					put: ((value class inheritsFromOrEqualTo: MiCriticBrowserAbstractQuery)
 							 ifTrue: [ value convertToSTONString ]
 							 ifFalse: [ value ]) ] ] ]
 ]

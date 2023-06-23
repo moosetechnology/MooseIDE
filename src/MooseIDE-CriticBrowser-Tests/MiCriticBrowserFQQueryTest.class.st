@@ -99,13 +99,13 @@ MiCriticBrowserFQQueryTest >> substractionQuery [
 
 { #category : #tests }
 MiCriticBrowserFQQueryTest >> testConvertToSTONString [
+
 	| queryFQ queryCB queryOutput |
 	queryFQ := FQBooleanQuery property: #isDead.
-	queryFQ parent: (FQTypeQuery types: { FamixJavaMethod } ).
+	queryFQ parent: (FQTypeQuery types: { FamixJavaMethod }).
 	queryCB := MiCriticBrowserFQQuery on: queryFQ.
 	queryOutput := '(FQTypeQuery types: {FamixJavaMethod}) --> (FQBooleanQuery property: #isDead)'.
 	self assert: queryCB convertToSTONString equals: queryOutput
-	
 ]
 
 { #category : #tests }

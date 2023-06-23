@@ -34,7 +34,7 @@ MiCriticBrowserRulesMakerPresenter >> addInputtedCodeRule [
 	codeInput text ifNotNil: [ 
 		owner addCondition: (FamixCBCondition
 				 named: ruleTitle text
-				 on: (MiCriticBrowserPharoCodeQuery on: codeInput text)
+				 on: (MiCriticBrowserAbstractQuery on: codeInput text)
 				 summary: ruleSummary text
 				 severity: severityDroplist selectedItem) ].
 	codeInput text: '[ :entity | entity ]'
@@ -117,7 +117,7 @@ MiCriticBrowserRulesMakerPresenter >> defaultTitle [
 MiCriticBrowserRulesMakerPresenter >> editRule: aCondition [
 	aCondition name: ruleTitle text.
 	aCondition query: (codeButton state 
-		ifTrue: [ MiCriticBrowserPharoCodeQuery on: (codeInput text) ] 
+		ifTrue: [ MiCriticBrowserAbstractQuery on: (codeInput text) ] 
 		ifFalse: [ MiCriticBrowserFQQuery on: queryDroplist selectedItem ]).
 	aCondition summary: ruleSummary text.
 	aCondition severity: severityDroplist selectedItem.
@@ -131,7 +131,7 @@ MiCriticBrowserRulesMakerPresenter >> fillRuleToEdit: aRule [
 	ruleSummary text: aRule summary.
 	aRule severity ifNotNil: [
 		severityDroplist selectItem: aRule severity ].
-	aRule query class = MiCriticBrowserPharoCodeQuery
+	aRule query class = MiCriticBrowserAbstractQuery
 		ifTrue: [ codeInput text: aRule query innerQuery asString ]
 		ifFalse: [ codeInput text: '[ :entity | entity ]' ]
 ]

@@ -72,7 +72,7 @@ MiCriticBrowserRulesMakerPresenterTest >> testEditRule [
 	rule := FamixCBCondition
 		        named: 'test'
 		        on:
-		        (MiCriticBrowserPharoCodeQuery on:
+		        (MiCriticBrowserAbstractQuery on:
 			         '[ :entity | entity isStub ]')
 		        summary: 'règle utilisée pour un test'.
 	newTitle := 'test édité'.
@@ -85,7 +85,7 @@ MiCriticBrowserRulesMakerPresenterTest >> testEditRule [
 	editQueryPresenter ruleSummary text: newSummary.
 	editQueryPresenter editRule: rule.
 	self assert: rule name equals: newTitle.
-	self assert: rule query innerQuery asString equals: newQuery.
+	self assert: rule query innerQuery script asString equals: newQuery.
 	self assert: rule summary equals: newSummary
 ]
 
@@ -96,7 +96,7 @@ MiCriticBrowserRulesMakerPresenterTest >> testFillRuleToEdit [
 	rule := FamixCBCondition
 		        named: 'test'
 		        on:
-		        (MiCriticBrowserPharoCodeQuery on:
+		        (MiCriticBrowserAbstractQuery on:
 			         '[ :entity | entity isStub ]')
 		        summary: 'règle utilisée pour un test'.
 	queriesBrowserRule := FamixCBCondition

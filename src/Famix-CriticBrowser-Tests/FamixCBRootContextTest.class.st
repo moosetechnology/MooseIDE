@@ -7,7 +7,7 @@ Class {
 	#category : #'Famix-CriticBrowser-Tests'
 }
 
-{ #category : #test }
+{ #category : #tests }
 FamixCBRootContextTest >> testGetAllViolations [
 	| contextEntity childEntityViolating entity entityViolating rootContext childContext condition childCondition violations |
 	contextEntity := FamixJavaClass new.
@@ -25,9 +25,9 @@ FamixCBRootContextTest >> testGetAllViolations [
 	
 	childContext := FamixCBContext named: 'Child of Root' on: '[ :col | col select: [ :el | el isClass ] ]'.
 	
-	condition := FamixCBCondition named: 'Condition root' on: (MiCriticBrowserPharoCodeQuery on: '[ :entity | (entity class = FamixJavaParameter) and: [ entity name = ''violation'' ] ]').
+	condition := FamixCBCondition named: 'Condition root' on: (MiCriticBrowserAbstractQuery on: '[ :entity | (entity class = FamixJavaParameter) and: [ entity name = ''violation'' ] ]').
 	
-	childCondition := FamixCBCondition named: 'Condition child' on: (MiCriticBrowserPharoCodeQuery on: '[ :entity | entity isClass and: [ entity name = ''Violation'' ] ]').
+	childCondition := FamixCBCondition named: 'Condition child' on: (MiCriticBrowserAbstractQuery on: '[ :entity | entity isClass and: [ entity name = ''Violation'' ] ]').
 	
 	rootContext addChild: childContext.
 	rootContext addChild: condition.

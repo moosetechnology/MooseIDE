@@ -18,7 +18,7 @@ MiCriticBrowserPharoCodeQuery >> convertToSTONString [
 { #category : #accessing }
 MiCriticBrowserPharoCodeQuery >> innerQuery: aString [
 
-	innerQuery := self stringToFullBlockClosure: aString
+	innerQuery := aString asValuable
 ]
 
 { #category : #running }
@@ -26,11 +26,4 @@ MiCriticBrowserPharoCodeQuery >> runOn: anEntity [
 	"Runs the query on the input group of entities and returns the entities validating the query"
 
 	^ innerQuery value: anEntity
-]
-
-{ #category : #converting }
-MiCriticBrowserPharoCodeQuery >> stringToFullBlockClosure: aString [
-	"Converts a string to a block (to run the query)"
-
-	^ Smalltalk compiler evaluate: aString
 ]

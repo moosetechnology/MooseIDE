@@ -23,7 +23,8 @@ MiCriticBrowserAbstractQuery >> convertToSTONString [
 	"Converts the query to a string used to save the query in STON format.
 	The string must return the query when evaluated by the Smalltalk compiler"
 
-	^ self subclassResponsibility
+	^ String streamContents: [ :stream |
+		  innerQuery storeWithParentsOn: stream ]
 ]
 
 { #category : #accessing }
@@ -35,7 +36,10 @@ MiCriticBrowserAbstractQuery >> innerQuery [
 { #category : #accessing }
 MiCriticBrowserAbstractQuery >> innerQuery: anObject [
 
-	innerQuery := anObject
+	innerQuery := anObject isString
+		              ifTrue: [
+		              FQSelectScriptQuery script: anObject asValuable ]
+		              ifFalse: [ anObject ]
 ]
 
 { #category : #running }
@@ -48,9 +52,29 @@ MiCriticBrowserAbstractQuery >> runOn: aGroupOfEntities [
 { #category : #running }
 MiCriticBrowserAbstractQuery >> runOnCollection: aCollection [
 
-	^ aCollection select: [ :each |
-		  [ self runOn: each ] onErrorDo: [ :err |
-			  err class = MessageNotUnderstood
-				  ifTrue: [ false ]
-				  ifFalse: [ self error: err ] ] ]
+	^ innerQuery isUnaryQuery
+		  ifTrue: [ self runOnUnaryQuery: aCollection ]
+		  ifFalse: [ self runOnNAryQuery: aCollection ]
+]
+
+{ #category : #running }
+MiCriticBrowserAbstractQuery >> runOnNAryQuery: aCollection [
+
+	^ innerQuery runOn: (innerQuery subqueries collect: [ :subQuery |
+			   (self class on: subQuery) runOnCollection: aCollection ])
+]
+
+{ #category : #running }
+MiCriticBrowserAbstractQuery >> runOnQueryWithParent: aCollection [
+
+	^ innerQuery runOn:
+		  ((self class on: innerQuery parent) runOnCollection: aCollection)
+]
+
+{ #category : #running }
+MiCriticBrowserAbstractQuery >> runOnUnaryQuery: aCollection [
+
+	^ (innerQuery parent isNil or: [ innerQuery parent isRootQuery ])
+		  ifTrue: [ innerQuery runOn: aCollection ]
+		  ifFalse: [ self runOnQueryWithParent: aCollection ]
 ]

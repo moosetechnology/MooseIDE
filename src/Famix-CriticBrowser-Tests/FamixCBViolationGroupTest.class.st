@@ -15,7 +15,7 @@ Class {
 
 { #category : #initialization }
 FamixCBViolationGroupTest >> setUp [
-	rule := FamixCBCondition named: 'test' on: (MiCriticBrowserPharoCodeQuery on: '[ :entity | true ]').
+	rule := FamixCBCondition named: 'test' on: (MiCriticBrowserAbstractQuery on: '[ :entity | true ]').
 	violation1 := FamixCBViolation condition: rule violatedBy: FamixJavaMethod new.
 	violation2 := FamixCBViolation condition: rule violatedBy: FamixJavaAttribute new.
 	group := { violation1. violation2 } asMooseGroup specialize.
