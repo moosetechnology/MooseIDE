@@ -94,7 +94,7 @@ BaselineOfMooseIDE >> definePackages: spec [
 		with: [ spec requires: #( 'MooseIDE-Core' ) ];
 		package: 'MooseIDE-Tests' with: [ 
 			spec requires:
-					#( 'MooseIDE-Core' 'MooseIDE-Dependency' 'MooseIDE-Tagging' ) ];
+					#( 'MooseIDE-Core' 'MooseIDE-Dependency' 'MooseIDE-Tagging' 'MooseIDE-Visualization' ) ];
 		package: 'MooseIDE-Dependency' with: [ 
 			spec requires:
 					#( 'MooseIDE-Core' 'MooseIDE-Visualization'

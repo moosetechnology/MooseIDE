@@ -27,6 +27,22 @@ Class {
 }
 
 { #category : #initialization }
+MiAbstractGroupNavigationBrowser >> initializePresenters [
+
+	super initializePresenters.
+	navigation whenActivatedDo: [ :selection |
+		self inspectorObjectContextPresenter owner
+			changeSelection: selection selectedItem value
+			from: self inspectorObjectContextPresenter ]
+]
+
+{ #category : #initialization }
+MiAbstractGroupNavigationBrowser >> inspectorObjectContextPresenter [
+
+	^ self owner owner owner owner
+]
+
+{ #category : #initialization }
 MiAbstractGroupNavigationBrowser >> itemsFor: anEntity [
 
 	^ anEntity collect: [ :entity | entity inspectorToString -> entity ]
