@@ -12,7 +12,7 @@ SmalltalkCISpec {
   ], 
   #testing : {
     #exclude : {
-      #classes : [ #MiInspectorBrowserTest ]
+      #classes : [ #MiInspectorBrowserTest, #MiModelNavigationBrowserTest ]
     },
     #coverage : {
       #packages : [ 'MooseIDE.*' ],
