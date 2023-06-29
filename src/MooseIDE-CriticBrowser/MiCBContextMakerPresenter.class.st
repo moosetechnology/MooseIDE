@@ -79,7 +79,7 @@ MiCBContextMakerPresenter >> defaultTitle [
 	^ 'Context builder'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #action }
 MiCBContextMakerPresenter >> editContext: aContext [
 	aContext name: contextTitle text.
 	aContext contextBlock: codeInput text.
@@ -87,7 +87,7 @@ MiCBContextMakerPresenter >> editContext: aContext [
 	owner hasBeenEdited: aContext
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #action }
 MiCBContextMakerPresenter >> fillContextToEdit: aContext [
 	contextTitle text: aContext name.
 	contextSummary text: aContext summary.

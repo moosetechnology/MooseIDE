@@ -7,13 +7,13 @@ Class {
 	#category : #'MooseIDE-CriticBrowser-Commands'
 }
 
-{ #category : #'accessing - defaults' }
+{ #category : #default }
 MiCBMoveToContextCommand class >> defaultIconName [
 
 	^ #glamorousRedo
 ]
 
-{ #category : #'accessing - defaults' }
+{ #category : #default }
 MiCBMoveToContextCommand class >> defaultName [
 
 	^ 'Move to context:'
@@ -64,7 +64,7 @@ MiCBMoveToContextCommand >> canBeExecuted [
 		  self context rules selectedItem class ~= FamixCBRootContext ]
 ]
 
-{ #category : #execution }
+{ #category : #executing }
 MiCBMoveToContextCommand >> execute [
 
 	self context moveCurrentRuleComponentToContext: self targetContext 

@@ -4,13 +4,13 @@ Class {
 	#category : #'MooseIDE-CriticBrowser-Commands'
 }
 
-{ #category : #'accessing - defaults' }
+{ #category : #default }
 MiCBEditRuleCommand class >> defaultIconName [
 
 	^ #glamorousEdit
 ]
 
-{ #category : #'accessing - defaults' }
+{ #category : #default }
 MiCBEditRuleCommand class >> defaultName [
 
 	^ 'Edit rule'

@@ -4,13 +4,13 @@ Class {
 	#category : #'MooseIDE-CriticBrowser-Commands'
 }
 
-{ #category : #'accessing - defaults' }
+{ #category : #default }
 MiCBRunConditionCommand class >> defaultIconName [
 
 	^ #glamorousPlay
 ]
 
-{ #category : #'accessing - defaults' }
+{ #category : #default }
 MiCBRunConditionCommand class >> defaultName [
 
 	^ 'Run condition'
@@ -28,7 +28,7 @@ MiCBRunConditionCommand >> canBeExecuted [
 	^ self context rules selectedItem class = FamixCBCondition
 ]
 
-{ #category : #execution }
+{ #category : #executing }
 MiCBRunConditionCommand >> execute [
 
 	self context runSelectedCondition

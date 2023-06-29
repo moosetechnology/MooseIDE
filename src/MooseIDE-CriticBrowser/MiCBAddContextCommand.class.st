@@ -4,13 +4,13 @@ Class {
 	#category : #'MooseIDE-CriticBrowser-Commands'
 }
 
-{ #category : #initialization }
+{ #category : #default }
 MiCBAddContextCommand class >> defaultIconName [
 
 	^ #smallAdd
 ]
 
-{ #category : #'accessing - defaults' }
+{ #category : #default }
 MiCBAddContextCommand class >> defaultName [
 
 	^ 'Add context'
@@ -28,7 +28,7 @@ MiCBAddContextCommand >> canBeExecuted [
 	^ self context rules selectedItem class ~= FamixCBCondition
 ]
 
-{ #category : #execution }
+{ #category : #executing }
 MiCBAddContextCommand >> execute [
 
 	self context openAddContextDialog

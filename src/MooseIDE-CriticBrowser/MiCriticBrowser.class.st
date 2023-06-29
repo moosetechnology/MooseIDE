@@ -27,7 +27,7 @@ Class {
 	#category : #'MooseIDE-CriticBrowser-Browser'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #commands }
 MiCriticBrowser class >> buildRulesCommandsGroupWith: presenterInstance [
 
 	^ MiAbstractCriticBrowserCommand asCommandGroupWith:
@@ -114,7 +114,7 @@ MiCriticBrowser >> children: aCollection for: aTreePresenter [
 		ifFalse: [ {  } ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #api }
 MiCriticBrowser >> childrenForContext: aRuleComponent [
 
 	"content of children block for rules list"

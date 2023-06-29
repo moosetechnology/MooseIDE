@@ -4,13 +4,13 @@ Class {
 	#category : #'MooseIDE-CriticBrowser-Commands'
 }
 
-{ #category : #'accessing - defaults' }
+{ #category : #default }
 MiCBDeleteRuleCommand class >> defaultIconName [
 
 	^ #smallDelete
 ]
 
-{ #category : #'accessing - defaults' }
+{ #category : #default }
 MiCBDeleteRuleCommand class >> defaultName [
 
 	^ 'Delete rule'
@@ -22,13 +22,13 @@ MiCBDeleteRuleCommand class >> priority [
 	^ 2
 ]
 
-{ #category : #execution }
+{ #category : #testing }
 MiCBDeleteRuleCommand >> canBeExecuted [
 
 	^ self context rules selectedItem class ~= FamixCBRootContext
 ]
 
-{ #category : #execution }
+{ #category : #executing }
 MiCBDeleteRuleCommand >> execute [
 
 	self context

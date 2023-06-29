@@ -5,11 +5,8 @@ Class {
 	#name : #MiCBEditContextPresenter,
 	#superclass : #MiPresenter,
 	#instVars : [
-		'addButton',
-		'closeButton',
 		'contextPresenter',
 		'mainWindow',
-		'parentContext',
 		'contextToEdit',
 		'editButton',
 		'cancelButton'

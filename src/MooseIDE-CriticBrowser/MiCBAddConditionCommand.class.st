@@ -4,13 +4,13 @@ Class {
 	#category : #'MooseIDE-CriticBrowser-Commands'
 }
 
-{ #category : #'accessing - defaults' }
+{ #category : #default }
 MiCBAddConditionCommand class >> defaultIconName [
 
 	^ #smallAdd
 ]
 
-{ #category : #'accessing - defaults' }
+{ #category : #default }
 MiCBAddConditionCommand class >> defaultName [
 
 	^ 'Add condition'
@@ -28,7 +28,7 @@ MiCBAddConditionCommand >> canBeExecuted [
 	^ self context rules selectedItem class ~= FamixCBCondition
 ]
 
-{ #category : #execution }
+{ #category : #executing }
 MiCBAddConditionCommand >> execute [
 
 	self context openAddConditionDialog
