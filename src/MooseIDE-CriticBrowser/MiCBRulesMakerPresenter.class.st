@@ -2,7 +2,7 @@
 Class implementing the presenter used to input queries, can use Pharo code or queries produced by the Queries Browser.
 "
 Class {
-	#name : #MiCriticBrowserRulesMakerPresenter,
+	#name : #MiCBRulesMakerPresenter,
 	#superclass : #MiPresenter,
 	#instVars : [
 		'codeButton',
@@ -20,7 +20,7 @@ Class {
 }
 
 { #category : #adding }
-MiCriticBrowserRulesMakerPresenter >> addButtonAction [
+MiCBRulesMakerPresenter >> addButtonAction [
 	codeButton state 
 		ifTrue: [ self addInputtedCodeRule ] 
 		ifFalse: [ self addInputtedFQRule ].
@@ -29,30 +29,30 @@ MiCriticBrowserRulesMakerPresenter >> addButtonAction [
 ]
 
 { #category : #adding }
-MiCriticBrowserRulesMakerPresenter >> addInputtedCodeRule [
+MiCBRulesMakerPresenter >> addInputtedCodeRule [
 
 	codeInput text ifNotNil: [ 
 		owner addCondition: (FamixCBCondition
 				 named: ruleTitle text
-				 on: (MiCriticBrowserAbstractQuery on: codeInput text)
+				 on: (MiCBScriptQueryHandler on: codeInput text)
 				 summary: ruleSummary text
 				 severity: severityDroplist selectedItem) ].
 	codeInput text: '[ :entity | entity ]'
 ]
 
 { #category : #adding }
-MiCriticBrowserRulesMakerPresenter >> addInputtedFQRule [
+MiCBRulesMakerPresenter >> addInputtedFQRule [
 
-	queryDroplist selectedItem ifNotNil: [ 
+	queryDroplist selectedItem ifNotNil: [
 		owner addCondition: (FamixCBCondition
 				 named: ruleTitle text
-				 on: (MiCriticBrowserFQQuery on: queryDroplist selectedItem)
+				 on: (MiCBQueryHandler on: queryDroplist selectedItem)
 				 summary: ruleSummary text
 				 severity: severityDroplist selectedItem) ]
 ]
 
 { #category : #'buttons actions' }
-MiCriticBrowserRulesMakerPresenter >> codeButtonAction [
+MiCBRulesMakerPresenter >> codeButtonAction [
 	changeableBlock 
 		removeAll;
 		add: ('Input for code query :' asPresenter) expand: false;
@@ -61,13 +61,13 @@ MiCriticBrowserRulesMakerPresenter >> codeButtonAction [
 ]
 
 { #category : #'accessing - tests' }
-MiCriticBrowserRulesMakerPresenter >> codeInput [
+MiCBRulesMakerPresenter >> codeInput [
 "used for testing purposes, do not access outside of tests"
 	^ codeInput
 ]
 
 { #category : #layout }
-MiCriticBrowserRulesMakerPresenter >> defaultLayout [
+MiCBRulesMakerPresenter >> defaultLayout [
 	
 	| choiceBar titlePane summaryPane severityPane |
 	
@@ -109,35 +109,34 @@ MiCriticBrowserRulesMakerPresenter >> defaultLayout [
 ]
 
 { #category : #accessing }
-MiCriticBrowserRulesMakerPresenter >> defaultTitle [
+MiCBRulesMakerPresenter >> defaultTitle [
 	^ 'Rules maker'
 ]
 
 { #category : #editing }
-MiCriticBrowserRulesMakerPresenter >> editRule: aCondition [
+MiCBRulesMakerPresenter >> editRule: aCondition [
+
 	aCondition name: ruleTitle text.
-	aCondition query: (codeButton state 
-		ifTrue: [ MiCriticBrowserAbstractQuery on: (codeInput text) ] 
-		ifFalse: [ MiCriticBrowserFQQuery on: queryDroplist selectedItem ]).
+	aCondition query: (codeButton state
+			 ifTrue: [ MiCBScriptQueryHandler on: codeInput text ]
+			 ifFalse: [ MiCBQueryHandler on: queryDroplist selectedItem ]).
 	aCondition summary: ruleSummary text.
 	aCondition severity: severityDroplist selectedItem.
 	owner hasBeenEdited: aCondition
 ]
 
 { #category : #filling }
-MiCriticBrowserRulesMakerPresenter >> fillRuleToEdit: aRule [
+MiCBRulesMakerPresenter >> fillRuleToEdit: aRule [
 
 	ruleTitle text: aRule name.
 	ruleSummary text: aRule summary.
 	aRule severity ifNotNil: [
 		severityDroplist selectItem: aRule severity ].
-	aRule query class = MiCriticBrowserAbstractQuery
-		ifTrue: [ codeInput text: aRule query innerQuery asString ]
-		ifFalse: [ codeInput text: '[ :entity | entity ]' ]
+	codeInput text: aRule query asRuleEditorString
 ]
 
 { #category : #initialization }
-MiCriticBrowserRulesMakerPresenter >> initializeButtons [
+MiCBRulesMakerPresenter >> initializeButtons [
 	codeButton := self newRadioButton.
 	queriesBrowserButton := self newRadioButton.
 	
@@ -150,7 +149,7 @@ MiCriticBrowserRulesMakerPresenter >> initializeButtons [
 ]
 
 { #category : #initialization }
-MiCriticBrowserRulesMakerPresenter >> initializePresenters [
+MiCBRulesMakerPresenter >> initializePresenters [
 
 	self initializeButtons.
 
@@ -180,7 +179,7 @@ MiCriticBrowserRulesMakerPresenter >> initializePresenters [
 
 	severityDroplist := self newDropList
 		                    items:
-			                    AbstractSeverity allSubclasses;
+			                    MiCBAbstractSeverity allSubclasses;
 		                    display: [ :item | 
 			                    item title , ' (Level = ' , item level asString, ')' ];
 		                    displayIcon: [ :item | 
@@ -189,7 +188,7 @@ MiCriticBrowserRulesMakerPresenter >> initializePresenters [
 ]
 
 { #category : #initialization }
-MiCriticBrowserRulesMakerPresenter >> initializeWindow: aWindowPresenter [	
+MiCBRulesMakerPresenter >> initializeWindow: aWindowPresenter [	
 	super initializeWindow: aWindowPresenter.
 	aWindowPresenter
 		title: self defaultTitle;
@@ -197,12 +196,12 @@ MiCriticBrowserRulesMakerPresenter >> initializeWindow: aWindowPresenter [
 ]
 
 { #category : #accessing }
-MiCriticBrowserRulesMakerPresenter >> queriesBrowserButton [
+MiCBRulesMakerPresenter >> queriesBrowserButton [
 	^ queriesBrowserButton
 ]
 
 { #category : #'buttons actions' }
-MiCriticBrowserRulesMakerPresenter >> queriesBrowserButtonAction [
+MiCBRulesMakerPresenter >> queriesBrowserButtonAction [
 	changeableBlock 
 		removeAll; 
 		add: ('Choose a query :' asPresenter) expand: false;
@@ -211,18 +210,18 @@ MiCriticBrowserRulesMakerPresenter >> queriesBrowserButtonAction [
 ]
 
 { #category : #'accessing - tests' }
-MiCriticBrowserRulesMakerPresenter >> queryDroplist [
+MiCBRulesMakerPresenter >> queryDroplist [
 	^ queryDroplist
 ]
 
 { #category : #'accessing - tests' }
-MiCriticBrowserRulesMakerPresenter >> ruleSummary [
+MiCBRulesMakerPresenter >> ruleSummary [
 "used for testing purposes, do not access outside of tests"
 	^ ruleSummary
 ]
 
 { #category : #'accessing - tests' }
-MiCriticBrowserRulesMakerPresenter >> ruleTitle [
+MiCBRulesMakerPresenter >> ruleTitle [
 "used for testing purposes, do not access outside of tests"
 	^ ruleTitle
 ]

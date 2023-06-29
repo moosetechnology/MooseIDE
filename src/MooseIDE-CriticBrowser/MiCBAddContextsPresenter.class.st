@@ -2,7 +2,7 @@
 Dialog window used to add new contexts, uses the ContextMakerPresenter.
 "
 Class {
-	#name : #MiCriticBrowserAddContextsPresenter,
+	#name : #MiCBAddContextsPresenter,
 	#superclass : #MiPresenter,
 	#instVars : [
 		'addButton',
@@ -15,56 +15,56 @@ Class {
 }
 
 { #category : #'instance creation' }
-MiCriticBrowserAddContextsPresenter class >> on: aWindowPresenter [
+MiCBAddContextsPresenter class >> on: aWindowPresenter [
 	^ self new
 		setMainWindow: aWindowPresenter;
 		yourself.
 ]
 
 { #category : #adding }
-MiCriticBrowserAddContextsPresenter >> addButtonAction [
+MiCBAddContextsPresenter >> addButtonAction [
 	contextPresenter addButtonAction.
 	self window close
 ]
 
 { #category : #adding }
-MiCriticBrowserAddContextsPresenter >> addContext: aContext [
+MiCBAddContextsPresenter >> addContext: aContext [
 	mainWindow model addChild: aContext toContext: parentContext 
 ]
 
 { #category : #accessing }
-MiCriticBrowserAddContextsPresenter >> contextPresenter [
+MiCBAddContextsPresenter >> contextPresenter [
 "used for test purposes, do not access outside of tests"
 	^ contextPresenter
 ]
 
 { #category : #layout }
-MiCriticBrowserAddContextsPresenter >> defaultLayout [
+MiCBAddContextsPresenter >> defaultLayout [
 	^ SpBoxLayout newTopToBottom
 		add: contextPresenter;
 		yourself
 ]
 
 { #category : #accessing }
-MiCriticBrowserAddContextsPresenter >> defaultTitle [
+MiCBAddContextsPresenter >> defaultTitle [
 	^ 'Context maker'
 ]
 
 { #category : #initialization }
-MiCriticBrowserAddContextsPresenter >> initializeDialogWindow: aDialogWindowPresenter [
+MiCBAddContextsPresenter >> initializeDialogWindow: aDialogWindowPresenter [
 	aDialogWindowPresenter 
 		addButton: addButton;
 		addButton: closeButton
 ]
 
 { #category : #initialization }
-MiCriticBrowserAddContextsPresenter >> initializeMainPresenter [
+MiCBAddContextsPresenter >> initializeMainPresenter [
 "must be called after mainWindow has been set, not before"
-	contextPresenter := self instantiate: MiCriticBrowserContextMakerPresenter on: mainWindow model
+	contextPresenter := self instantiate: MiCBContextMakerPresenter on: mainWindow model
 ]
 
 { #category : #initialization }
-MiCriticBrowserAddContextsPresenter >> initializePresenters [
+MiCBAddContextsPresenter >> initializePresenters [
 	addButton := self newButton.
 	closeButton := self newButton.
 	
@@ -78,7 +78,7 @@ MiCriticBrowserAddContextsPresenter >> initializePresenters [
 ]
 
 { #category : #initialization }
-MiCriticBrowserAddContextsPresenter >> initializeWindow: aWindowPresenter [	
+MiCBAddContextsPresenter >> initializeWindow: aWindowPresenter [	
 	super initializeWindow: aWindowPresenter.
 	aWindowPresenter
 		title: self defaultTitle;
@@ -86,12 +86,12 @@ MiCriticBrowserAddContextsPresenter >> initializeWindow: aWindowPresenter [
 ]
 
 { #category : #initialization }
-MiCriticBrowserAddContextsPresenter >> setMainWindow: aWindowPresenter [
+MiCBAddContextsPresenter >> setMainWindow: aWindowPresenter [
 	mainWindow := aWindowPresenter.
 	self initializeMainPresenter
 ]
 
 { #category : #initialization }
-MiCriticBrowserAddContextsPresenter >> setParentContext: aContext [
+MiCBAddContextsPresenter >> setParentContext: aContext [
 	parentContext := aContext
 ]

@@ -2,7 +2,7 @@
 A MiCriticBrowserQueryMakerPresenterTest is a test class for testing the behavior of MiCriticBrowserQueryMakerPresenter
 "
 Class {
-	#name : #MiCriticBrowserRulesMakerPresenterTest,
+	#name : #MiCBRulesMakerPresenterTest,
 	#superclass : #MiAbstractBrowserTest,
 	#instVars : [
 		'addQueryPresenter',
@@ -12,12 +12,12 @@ Class {
 }
 
 { #category : #running }
-MiCriticBrowserRulesMakerPresenterTest >> browserClass [
+MiCBRulesMakerPresenterTest >> browserClass [
 	^ MiCriticBrowser 
 ]
 
 { #category : #running }
-MiCriticBrowserRulesMakerPresenterTest >> setUp [
+MiCBRulesMakerPresenterTest >> setUp [
 	super setUp.
 	browser addRulesPresenter setParentContext: browser model rootContext.
 	addQueryPresenter := browser addRulesPresenter queryPresenter.
@@ -28,13 +28,13 @@ MiCriticBrowserRulesMakerPresenterTest >> setUp [
 ]
 
 { #category : #running }
-MiCriticBrowserRulesMakerPresenterTest >> tearDown [
+MiCBRulesMakerPresenterTest >> tearDown [
 	super tearDown.
 	browser addRulesPresenter window close
 ]
 
 { #category : #tests }
-MiCriticBrowserRulesMakerPresenterTest >> testAddInputtedCodeRule [
+MiCBRulesMakerPresenterTest >> testAddInputtedCodeRule [
 	addQueryPresenter codeButtonAction.
 	addQueryPresenter ruleTitle text: 'test'.
 	addQueryPresenter codeInput text: '[ :entity | entity isDead ]'.
@@ -45,7 +45,7 @@ MiCriticBrowserRulesMakerPresenterTest >> testAddInputtedCodeRule [
 ]
 
 { #category : #tests }
-MiCriticBrowserRulesMakerPresenterTest >> testAddInputtedFQRule [
+MiCBRulesMakerPresenterTest >> testAddInputtedFQRule [
 	| query |
 	query := FQBooleanQuery property: #isStub.
 	addQueryPresenter queriesBrowserButton click.
@@ -59,20 +59,20 @@ MiCriticBrowserRulesMakerPresenterTest >> testAddInputtedFQRule [
 ]
 
 { #category : #tests }
-MiCriticBrowserRulesMakerPresenterTest >> testCodeButtonAction [
+MiCBRulesMakerPresenterTest >> testCodeButtonAction [
 	addQueryPresenter codeButtonAction.
 	self assert: addQueryPresenter codeInput isVisible equals: true.
 	self assert: addQueryPresenter queryDroplist isVisible equals: false
 ]
 
 { #category : #tests }
-MiCriticBrowserRulesMakerPresenterTest >> testEditRule [
+MiCBRulesMakerPresenterTest >> testEditRule [
 
 	| rule newTitle newQuery newSummary |
 	rule := FamixCBCondition
 		        named: 'test'
 		        on:
-		        (MiCriticBrowserAbstractQuery on:
+		        (MiCBScriptQueryHandler on:
 			         '[ :entity | entity isStub ]')
 		        summary: 'règle utilisée pour un test'.
 	newTitle := 'test édité'.
@@ -85,24 +85,24 @@ MiCriticBrowserRulesMakerPresenterTest >> testEditRule [
 	editQueryPresenter ruleSummary text: newSummary.
 	editQueryPresenter editRule: rule.
 	self assert: rule name equals: newTitle.
-	self assert: rule query innerQuery script asString equals: newQuery.
+	self assert: rule query asRuleEditorString equals: newQuery.
 	self assert: rule summary equals: newSummary
 ]
 
 { #category : #tests }
-MiCriticBrowserRulesMakerPresenterTest >> testFillRuleToEdit [
+MiCBRulesMakerPresenterTest >> testFillRuleToEdit [
 
 	| rule queriesBrowserRule |
 	rule := FamixCBCondition
 		        named: 'test'
 		        on:
-		        (MiCriticBrowserAbstractQuery on:
+		        (MiCBScriptQueryHandler on:
 			         '[ :entity | entity isStub ]')
 		        summary: 'règle utilisée pour un test'.
 	queriesBrowserRule := FamixCBCondition
 		                      named: 'test2'
 		                      on:
-		                      (MiCriticBrowserFQQuery on:
+		                      (MiCBQueryHandler on:
 			                       (FQBooleanQuery property: #isDead))
 		                      summary: 'autre règle utilisée pour un test'.
 
@@ -111,7 +111,7 @@ MiCriticBrowserRulesMakerPresenterTest >> testFillRuleToEdit [
 	self assert: addQueryPresenter ruleTitle text equals: rule name.
 	self
 		assert: addQueryPresenter codeInput text
-		equals: rule query innerQuery asString.
+		equals: rule query asRuleEditorString.
 	self assert: addQueryPresenter ruleSummary text equals: rule summary.
 
 	addQueryPresenter fillRuleToEdit: queriesBrowserRule.
@@ -127,14 +127,14 @@ MiCriticBrowserRulesMakerPresenterTest >> testFillRuleToEdit [
 ]
 
 { #category : #tests }
-MiCriticBrowserRulesMakerPresenterTest >> testQueriesBrowserButtonAction [
+MiCBRulesMakerPresenterTest >> testQueriesBrowserButtonAction [
 	addQueryPresenter queriesBrowserButtonAction.
 	self assert: addQueryPresenter codeInput isVisible equals: false.
 	self assert: addQueryPresenter queryDroplist isVisible equals: true
 ]
 
 { #category : #'tests - tags' }
-MiCriticBrowserRulesMakerPresenterTest >> testSelectedTagSetAndGet [
+MiCBRulesMakerPresenterTest >> testSelectedTagSetAndGet [
 	"already tested in MiCriticBrowserTest"
 	self skip
 ]

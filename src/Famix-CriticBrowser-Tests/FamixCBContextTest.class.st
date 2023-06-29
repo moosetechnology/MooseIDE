@@ -19,23 +19,32 @@ Class {
 
 { #category : #running }
 FamixCBContextTest >> setUp [
+
 	super setUp.
-	
+
 	contextEntity := FamixJavaClass new.
 	childContextEntity := FamixJavaClass new.
 	entity := FamixJavaParameter new.
 	entityInvalid := FamixJavaParameter new.
 	violatingEntity := FamixJavaClass new.
-	
+
 	entity name: 'invalide'.
 	contextEntity name: 'Invalide'.
 	childContextEntity name: 'ValideContexte'.
 	entityInvalid name: 'invalideMaisContexte'.
 	violatingEntity name: 'Violation'.
-	
-	context := FamixCBContext named: 'Classes' on: '[ :col | col select: [ :el | el isClass ] ]'.
-	childContext := FamixCBContext named: 'Suffixe Contexte' on: '[ :col | col select: [ :el | el name endsWith: ''Contexte'' ] ]'.
-	condition := FamixCBCondition named: 'Condition classes' on: (MiCriticBrowserAbstractQuery on: '[ :entity | entity name = ''Violation'' ]').
+
+	context := FamixCBContext
+		           named: 'Classes'
+		           on: '[ :col | col select: [ :el | el isClass ] ]'.
+	childContext := FamixCBContext
+		                named: 'Suffixe Contexte'
+		                on:
+		                '[ :col | col select: [ :el | el name endsWith: ''Contexte'' ] ]'.
+	condition := FamixCBCondition
+		             named: 'Condition classes'
+		             on: (MiCBScriptQueryHandler on:
+				              '[ :entity | entity name = ''Violation'' ]')
 ]
 
 { #category : #test }
@@ -44,7 +53,7 @@ FamixCBContextTest >> testAddChild [
 	context := FamixCBContext named: 'context' on: '[ :col | col ]'.
 	condition := FamixCBCondition
 		             named: 'Condition root'
-		             on: (MiCriticBrowserAbstractQuery on:
+		             on: (MiCBQueryHandler on:
 				              '[ :entity | entity name = ''violation'' ]').
 	childContext := FamixCBContext
 		                named: 'child context'

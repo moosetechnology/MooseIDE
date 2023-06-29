@@ -2,7 +2,7 @@
 An abstract class to represent the query side of the model critic browser.
 "
 Class {
-	#name : #MiCriticBrowserAbstractQuery,
+	#name : #MiCBQueryHandler,
 	#superclass : #Object,
 	#instVars : [
 		'innerQuery'
@@ -11,7 +11,7 @@ Class {
 }
 
 { #category : #'instance creation' }
-MiCriticBrowserAbstractQuery class >> on: aQuery [
+MiCBQueryHandler class >> on: aQuery [
 
 	^ self new
 		  innerQuery: aQuery;
@@ -19,7 +19,13 @@ MiCriticBrowserAbstractQuery class >> on: aQuery [
 ]
 
 { #category : #converting }
-MiCriticBrowserAbstractQuery >> convertToSTONString [
+MiCBQueryHandler >> asRuleEditorString [
+
+	^ '[ :entity | entity ]'
+]
+
+{ #category : #converting }
+MiCBQueryHandler >> convertToSTONString [
 	"Converts the query to a string used to save the query in STON format.
 	The string must return the query when evaluated by the Smalltalk compiler"
 
@@ -28,29 +34,19 @@ MiCriticBrowserAbstractQuery >> convertToSTONString [
 ]
 
 { #category : #accessing }
-MiCriticBrowserAbstractQuery >> innerQuery [
+MiCBQueryHandler >> innerQuery [
 
 	^ innerQuery
 ]
 
 { #category : #accessing }
-MiCriticBrowserAbstractQuery >> innerQuery: anObject [
+MiCBQueryHandler >> innerQuery: anObject [
 
-	innerQuery := anObject isString
-		              ifTrue: [
-		              FQSelectScriptQuery script: anObject asValuable ]
-		              ifFalse: [ anObject ]
+	innerQuery := anObject
 ]
 
 { #category : #running }
-MiCriticBrowserAbstractQuery >> runOn: aGroupOfEntities [
-	"Runs the query on the input group of entities and returns the entities validating the query"
-
-	self subclassResponsibility
-]
-
-{ #category : #running }
-MiCriticBrowserAbstractQuery >> runOnCollection: aCollection [
+MiCBQueryHandler >> runOnCollection: aCollection [
 
 	^ innerQuery isUnaryQuery
 		  ifTrue: [ self runOnUnaryQuery: aCollection ]
@@ -58,21 +54,21 @@ MiCriticBrowserAbstractQuery >> runOnCollection: aCollection [
 ]
 
 { #category : #running }
-MiCriticBrowserAbstractQuery >> runOnNAryQuery: aCollection [
+MiCBQueryHandler >> runOnNAryQuery: aCollection [
 
 	^ innerQuery runOn: (innerQuery subqueries collect: [ :subQuery |
 			   (self class on: subQuery) runOnCollection: aCollection ])
 ]
 
 { #category : #running }
-MiCriticBrowserAbstractQuery >> runOnQueryWithParent: aCollection [
+MiCBQueryHandler >> runOnQueryWithParent: aCollection [
 
 	^ innerQuery runOn:
 		  ((self class on: innerQuery parent) runOnCollection: aCollection)
 ]
 
 { #category : #running }
-MiCriticBrowserAbstractQuery >> runOnUnaryQuery: aCollection [
+MiCBQueryHandler >> runOnUnaryQuery: aCollection [
 
 	^ (innerQuery parent isNil or: [ innerQuery parent isRootQuery ])
 		  ifTrue: [ innerQuery runOn: aCollection ]

@@ -86,10 +86,10 @@ MiCriticBrowser >> addRulesPresenter [
 MiCriticBrowser >> allAvailableContexts [
 
 	^ { specModel rootContext }
-	  , (specModel ruleComponents select: [ :component | 
-			   component class = FamixCBContext ]) reject: [ :component | 
-		  component = rules selectedItem or: [ 
-			  rules selectedItem children includes: component ] ]
+	  , (specModel ruleComponents select: [ :component |
+			   component class = FamixCBContext and: [
+				   component ~= rules selectedItem and: [
+					   (rules selectedItems children includes: component) not ] ] ])
 ]
 
 { #category : #'window control' }
@@ -236,33 +236,36 @@ MiCriticBrowser >> importRules [
 
 { #category : #'load and saving' }
 MiCriticBrowser >> importRulesFromStream: aStream [
-"import rules from a ston rules file opened on a stream"
+	"import rules from a ston rules file opened on a stream"
+
 	| reader rulesCollection hierarchy index |
 	reader := STONReader on: aStream.
 	rulesCollection := OrderedCollection new.
-	[ reader atEnd ] whileFalse: [ rulesCollection add: reader parseObject ].
+	[ reader atEnd ] whileFalse: [
+		rulesCollection add: reader parseObject ].
 	hierarchy := rulesCollection removeLast.
 	reader close.
 
-	(rulesCollection select: [ :rc | rc class = FamixCBCondition ]) do: [ :cond |
+	(rulesCollection select: [ :rc | rc class = FamixCBCondition ]) do: [
+		:cond |
 		| temp |
 		temp := Smalltalk compiler evaluate: cond query.
-		(temp class = FullBlockClosure) 
-			ifTrue: [ cond query: (MiCriticBrowserAbstractQuery on: cond query) ]
-			ifFalse: [ cond query: (MiCriticBrowserFQQuery on: temp) ]. 
-	].
-	(rulesCollection select: [ :rc | rc class = FamixCBContext ]) do: [ :cont |
-		cont contextBlock: cont contextBlock.
-	].
+		temp class = FullBlockClosure
+			ifTrue: [ cond query: (MiCBQueryHandler on: cond query) ]
+			ifFalse: [ cond query: (MiCBQueryHandler on: temp) ] ].
+	(rulesCollection select: [ :rc | rc class = FamixCBContext ]) do: [
+		:cont | cont contextBlock: cont contextBlock ].
 
 	index := 1.
-	hierarchy do: [ :parentIndex | 
-		parentIndex = 0 
-			ifTrue: [ specModel addChildToRootContext: (rulesCollection at: index) ]
-			ifFalse: [ specModel addChild: (rulesCollection at: index) toContext: (rulesCollection at: parentIndex) ].
-		index := index + 1. 
-	].
-	
+	hierarchy do: [ :parentIndex |
+		parentIndex = 0
+			ifTrue: [
+			specModel addChildToRootContext: (rulesCollection at: index) ]
+			ifFalse: [
+				specModel
+					addChild: (rulesCollection at: index)
+					toContext: (rulesCollection at: parentIndex) ].
+		index := index + 1 ]
 ]
 
 { #category : #initialization }
@@ -359,10 +362,10 @@ MiCriticBrowser >> initializePresenters [
 	self initializeLists.
 	self initializeButtons.
 
-	addRulesPresenter := MiCriticBrowserAddRulesPresenter on: self.
-	rulesEditorPresenter := MiCriticBrowserEditRulePresenter on: self.
-	addContextsPresenter := MiCriticBrowserAddContextsPresenter on: self.
-	contextEditorPresenter := MiCriticBrowserEditContextPresenter on:
+	addRulesPresenter := MiCBAddRulesPresenter on: self.
+	rulesEditorPresenter := MiCBEditRulePresenter on: self.
+	addContextsPresenter := MiCBAddContextsPresenter on: self.
+	contextEditorPresenter := MiCBEditContextPresenter on:
 		                          self.
 
 	self focusOrder

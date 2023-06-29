@@ -2,20 +2,20 @@
 A MiCriticBrowserFQQueryTest is a test class for testing the behavior of MiCriticBrowserFQQuery
 "
 Class {
-	#name : #MiCriticBrowserFQQueryTest,
+	#name : #MiCBQueryHandlerTest,
 	#superclass : #TestCase,
 	#category : #'MooseIDE-CriticBrowser-Tests'
 }
 
 { #category : #queries }
-MiCriticBrowserFQQueryTest >> intersectionQuery [
+MiCBQueryHandlerTest >> intersectionQuery [
 
 	| query class stubClass method |
-	query := MiCriticBrowserFQQuery on: (FQStringQuery
-		          property: #name
-		          comparator: #beginsWith:
-		          valueToCompare: 'Test')
-	         & (FQBooleanQuery property: #isStub).
+	query := MiCBQueryHandler on: (FQStringQuery
+			          property: #name
+			          comparator: #beginsWith:
+			          valueToCompare: 'Test')
+		         & (FQBooleanQuery property: #isStub).
 	class := FamixJavaClass new.
 	class name: 'Test'.
 	stubClass := FamixJavaClass new
@@ -25,16 +25,21 @@ MiCriticBrowserFQQueryTest >> intersectionQuery [
 		          name: 'methode';
 		          stub: true.
 
-	self assertCollection: (query runOnCollection: { class. stubClass. method } asMooseGroup) hasSameElements: { stubClass }
+	self
+		assertCollection: (query runOnCollection: {
+					 class.
+					 stubClass.
+					 method } asMooseGroup)
+		hasSameElements: { stubClass }
 ]
 
 { #category : #queries }
-MiCriticBrowserFQQueryTest >> queryWithParent [
+MiCBQueryHandlerTest >> queryWithParent [
 
 	| query childQuery class stubClass method |
-	query := MiCriticBrowserFQQuery on:
+	query := MiCBQueryHandler on:
 		         (FQTypeQuery types: { FamixJavaClass }).
-	childQuery := MiCriticBrowserFQQuery on:
+	childQuery := MiCBQueryHandler on:
 		              (FQBooleanQuery property: #isStub).
 	childQuery innerQuery parent: query innerQuery.
 	class := FamixJavaClass new.
@@ -65,10 +70,10 @@ MiCriticBrowserFQQueryTest >> queryWithParent [
 ]
 
 { #category : #queries }
-MiCriticBrowserFQQueryTest >> singleQuery [
+MiCBQueryHandlerTest >> singleQuery [
 
 	| query class stubClass method |
-	query := MiCriticBrowserFQQuery on: (FQBooleanQuery property: #isStub).
+	query := MiCBQueryHandler on: (FQBooleanQuery property: #isStub).
 	class := FamixJavaClass new. class name: 'Test'.
 	stubClass := FamixJavaClass new. stubClass name: 'TestStub'; stub: true.
 	method := FamixJavaMethod new. method name: 'methode'; stub: true.
@@ -77,14 +82,14 @@ MiCriticBrowserFQQueryTest >> singleQuery [
 ]
 
 { #category : #queries }
-MiCriticBrowserFQQueryTest >> substractionQuery [
+MiCBQueryHandlerTest >> substractionQuery [
 
 	| query class stubClass method |
-	query := MiCriticBrowserFQQuery on: (FQStringQuery
-		          property: #name
-		          comparator: #beginsWith:
-		          valueToCompare: 'Test')
-	         \ (FQBooleanQuery property: #isStub).
+	query := MiCBQueryHandler on: (FQStringQuery
+			          property: #name
+			          comparator: #beginsWith:
+			          valueToCompare: 'Test')
+		         \ (FQBooleanQuery property: #isStub).
 	class := FamixJavaClass new.
 	class name: 'Test'.
 	stubClass := FamixJavaClass new
@@ -94,22 +99,41 @@ MiCriticBrowserFQQueryTest >> substractionQuery [
 		          name: 'methode';
 		          stub: true.
 
-	self assertCollection: (query runOnCollection: { class. stubClass. method } asMooseGroup) hasSameElements: { class }
+	self
+		assertCollection: (query runOnCollection: {
+					 class.
+					 stubClass.
+					 method } asMooseGroup)
+		hasSameElements: { class }
 ]
 
 { #category : #tests }
-MiCriticBrowserFQQueryTest >> testConvertToSTONString [
+MiCBQueryHandlerTest >> testAsRuleEditorString [
 
-	| queryFQ queryCB queryOutput |
+	| queryFQ |
 	queryFQ := FQBooleanQuery property: #isDead.
 	queryFQ parent: (FQTypeQuery types: { FamixJavaMethod }).
-	queryCB := MiCriticBrowserFQQuery on: queryFQ.
-	queryOutput := '(FQTypeQuery types: {FamixJavaMethod}) --> (FQBooleanQuery property: #isDead)'.
-	self assert: queryCB convertToSTONString equals: queryOutput
+
+	self
+		assert: (MiCBQueryHandler on: queryFQ) asRuleEditorString
+		equals: '[ :entity | entity ]'
 ]
 
 { #category : #tests }
-MiCriticBrowserFQQueryTest >> testRunOnCollection [
+MiCBQueryHandlerTest >> testConvertToSTONString [
+
+	| queryFQ |
+	queryFQ := FQBooleanQuery property: #isDead.
+	queryFQ parent: (FQTypeQuery types: { FamixJavaMethod }).
+
+	self
+		assert: (MiCBQueryHandler on: queryFQ) convertToSTONString
+		equals:
+		'(FQTypeQuery types: {FamixJavaMethod}) --> (FQBooleanQuery property: #isDead)'
+]
+
+{ #category : #tests }
+MiCBQueryHandlerTest >> testRunOnCollection [
 	
 	self singleQuery.
 	self testRunOnNAryQuery.
@@ -117,7 +141,7 @@ MiCriticBrowserFQQueryTest >> testRunOnCollection [
 ]
 
 { #category : #tests }
-MiCriticBrowserFQQueryTest >> testRunOnNAryQuery [
+MiCBQueryHandlerTest >> testRunOnNAryQuery [
 	
 	self substractionQuery.
 	self intersectionQuery.
@@ -126,17 +150,17 @@ MiCriticBrowserFQQueryTest >> testRunOnNAryQuery [
 ]
 
 { #category : #tests }
-MiCriticBrowserFQQueryTest >> testRunOnQueryWithParent [
+MiCBQueryHandlerTest >> testRunOnQueryWithParent [
 	
 	self queryWithParent.
 
 ]
 
 { #category : #queries }
-MiCriticBrowserFQQueryTest >> unionOfThreeQueries [
+MiCBQueryHandlerTest >> unionOfThreeQueries [
 
 	| query class stubClass method attribute |
-	query := MiCriticBrowserFQQuery on: (FQStringQuery
+	query := MiCBQueryHandler on: (FQStringQuery
 			          property: #name
 			          comparator: #beginsWith:
 			          valueToCompare: 'Test')
@@ -151,5 +175,14 @@ MiCriticBrowserFQQueryTest >> unionOfThreeQueries [
 		          name: 'methode';
 		          stub: true.
 	attribute := FamixJavaAttribute new name: 'PasTest'.
-	self assertCollection: (query runOnCollection: { class. stubClass. method. attribute } asMooseGroup) hasSameElements: { class. stubClass. method. }
+	self
+		assertCollection: (query runOnCollection: {
+					 class.
+					 stubClass.
+					 method.
+					 attribute } asMooseGroup)
+		hasSameElements: {
+				class.
+				stubClass.
+				method }
 ]
