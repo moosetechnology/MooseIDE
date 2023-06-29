@@ -102,10 +102,11 @@ MiNavigationBrowser >> initializePresenters [
 
 { #category : #initialization }
 MiNavigationBrowser >> itemsFor: anEntity [
-	
+
 	^ anEntity mooseDescription allComplexProperties
 		  collect: [ :property | 
-			  property name -> (anEntity propertyNamed: property name) ]
+			  property name
+			  -> (anEntity propertyNamed: property name ifAbsent: [ nil ]) ]
 		  thenReject: [ :assoc | 
 			  assoc value isNil or: [ 
 				  assoc value isCollection and: [ assoc value isEmpty ] ] ]
