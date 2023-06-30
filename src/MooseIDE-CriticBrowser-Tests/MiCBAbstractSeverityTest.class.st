@@ -11,7 +11,7 @@ Class {
 MiCBAbstractSeverityTest >> testLevelValueIsDifferentForEverySubclass [
 
 	| levels |
-	levels := MiCBAbstractSeverity allSubclasses collect: [ :subclass |
+	levels := FamixCBAbstractSeverity allSubclasses collect: [ :subclass |
 		          subclass level ].
 
 	levels do: [ :lvl |

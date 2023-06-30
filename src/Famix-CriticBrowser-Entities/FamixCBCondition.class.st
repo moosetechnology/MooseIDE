@@ -113,7 +113,7 @@ FamixCBCondition >> severity [
 
 	<FMProperty: #severity type: #Object>
 	<FMComment: 'Severity for the violations of this condition'>
-	^ severity ifNil: [ MiCBAbstractSeverity allSubclasses detectMin: #level ]
+	^ severity ifNil: [ FamixCBAbstractSeverity allSubclasses detectMin: #level ]
 ]
 
 { #category : #accessing }

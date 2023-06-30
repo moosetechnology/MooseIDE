@@ -179,7 +179,7 @@ MiCBRulesMakerPresenter >> initializePresenters [
 
 	severityDroplist := self newDropList
 		                    items:
-			                    MiCBAbstractSeverity allSubclasses;
+			                    FamixCBAbstractSeverity allSubclasses;
 		                    display: [ :item | 
 			                    item title , ' (Level = ' , item level asString, ')' ];
 		                    displayIcon: [ :item | 
