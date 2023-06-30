@@ -4,7 +4,7 @@ I represent an Hint severity in MooseCritics.
 Class {
 	#name : #FamixCBHintSeverity,
 	#superclass : #FamixCBAbstractSeverity,
-	#category : #'Famix-CriticBrowser-Severities'
+	#category : #'Famix-CriticBrowser-ManualEntities-Severities'
 }
 
 { #category : #accessing }

@@ -2,16 +2,16 @@
 An abstract class to represent the query side of the model critic browser.
 "
 Class {
-	#name : #MiCBQueryHandler,
+	#name : #FamixCBQueryHandler,
 	#superclass : #Object,
 	#instVars : [
 		'innerQuery'
 	],
-	#category : #'MooseIDE-CriticBrowser-Queries'
+	#category : #'Famix-CriticBrowser-ManualEntities-QueryHandler'
 }
 
 { #category : #'instance creation' }
-MiCBQueryHandler class >> on: aQuery [
+FamixCBQueryHandler class >> on: aQuery [
 
 	^ self new
 		  innerQuery: aQuery;
@@ -19,34 +19,35 @@ MiCBQueryHandler class >> on: aQuery [
 ]
 
 { #category : #converting }
-MiCBQueryHandler >> asRuleEditorString [
+FamixCBQueryHandler >> asRuleEditorString [
 
 	^ '[ :entity | entity ]'
 ]
 
 { #category : #converting }
-MiCBQueryHandler >> convertToSTONString [
+FamixCBQueryHandler >> convertToSTONString [
+
 	"Converts the query to a string used to save the query in STON format.
 	The string must return the query when evaluated by the Smalltalk compiler"
 
-	^ String streamContents: [ :stream |
+	^ String streamContents: [ :stream | 
 		  innerQuery storeWithParentsOn: stream ]
 ]
 
 { #category : #accessing }
-MiCBQueryHandler >> innerQuery [
+FamixCBQueryHandler >> innerQuery [
 
 	^ innerQuery
 ]
 
 { #category : #accessing }
-MiCBQueryHandler >> innerQuery: anObject [
+FamixCBQueryHandler >> innerQuery: anObject [
 
 	innerQuery := anObject
 ]
 
 { #category : #running }
-MiCBQueryHandler >> runOnCollection: aCollection [
+FamixCBQueryHandler >> runOnCollection: aCollection [
 
 	^ innerQuery isUnaryQuery
 		  ifTrue: [ self runOnUnaryQuery: aCollection ]
@@ -54,21 +55,21 @@ MiCBQueryHandler >> runOnCollection: aCollection [
 ]
 
 { #category : #running }
-MiCBQueryHandler >> runOnNAryQuery: aCollection [
+FamixCBQueryHandler >> runOnNAryQuery: aCollection [
 
 	^ innerQuery runOn: (innerQuery subqueries collect: [ :subQuery |
 			   (self class on: subQuery) runOnCollection: aCollection ])
 ]
 
 { #category : #running }
-MiCBQueryHandler >> runOnQueryWithParent: aCollection [
+FamixCBQueryHandler >> runOnQueryWithParent: aCollection [
 
 	^ innerQuery runOn:
 		  ((self class on: innerQuery parent) runOnCollection: aCollection)
 ]
 
 { #category : #running }
-MiCBQueryHandler >> runOnUnaryQuery: aCollection [
+FamixCBQueryHandler >> runOnUnaryQuery: aCollection [
 
 	^ (innerQuery parent isNil or: [ innerQuery parent isRootQuery ])
 		  ifTrue: [ innerQuery runOn: aCollection ]

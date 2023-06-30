@@ -4,7 +4,7 @@ I represent an Information severity in MooseCritics.
 Class {
 	#name : #FamixCBInformationSeverity,
 	#superclass : #FamixCBAbstractSeverity,
-	#category : #'Famix-CriticBrowser-Severities'
+	#category : #'Famix-CriticBrowser-ManualEntities-Severities'
 }
 
 { #category : #accessing }

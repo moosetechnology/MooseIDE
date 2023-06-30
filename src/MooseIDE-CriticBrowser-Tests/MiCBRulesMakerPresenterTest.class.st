@@ -72,7 +72,7 @@ MiCBRulesMakerPresenterTest >> testEditRule [
 	rule := FamixCBCondition
 		        named: 'test'
 		        on:
-		        (MiCBScriptQueryHandler on:
+		        (FamixCBScriptQueryHandler on:
 			         '[ :entity | entity isStub ]')
 		        summary: 'règle utilisée pour un test'.
 	newTitle := 'test édité'.
@@ -96,13 +96,13 @@ MiCBRulesMakerPresenterTest >> testFillRuleToEdit [
 	rule := FamixCBCondition
 		        named: 'test'
 		        on:
-		        (MiCBScriptQueryHandler on:
+		        (FamixCBScriptQueryHandler on:
 			         '[ :entity | entity isStub ]')
 		        summary: 'règle utilisée pour un test'.
 	queriesBrowserRule := FamixCBCondition
 		                      named: 'test2'
 		                      on:
-		                      (MiCBQueryHandler on:
+		                      (FamixCBQueryHandler on:
 			                       (FQBooleanQuery property: #isDead))
 		                      summary: 'autre règle utilisée pour un test'.
 

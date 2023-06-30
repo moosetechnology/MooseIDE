@@ -4,7 +4,7 @@ I represent an Warning severity in MooseCritics.
 Class {
 	#name : #FamixCBWarningSeverity,
 	#superclass : #FamixCBAbstractSeverity,
-	#category : #'Famix-CriticBrowser-Severities'
+	#category : #'Famix-CriticBrowser-ManualEntities-Severities'
 }
 
 { #category : #accessing }

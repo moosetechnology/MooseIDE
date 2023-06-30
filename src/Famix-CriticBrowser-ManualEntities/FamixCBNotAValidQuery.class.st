@@ -2,13 +2,13 @@
 I am NotAValidQuery, an error raised when a Rule is instantiated with a query not inheriting from the class MiCriticBrowserAbstractQuery.
 "
 Class {
-	#name : #NotAValidQuery,
+	#name : #FamixCBNotAValidQuery,
 	#superclass : #Error,
-	#category : #'MooseIDE-CriticBrowser-Queries'
+	#category : #'Famix-CriticBrowser-ManualEntities-QueryHandler'
 }
 
 { #category : #accessing }
-NotAValidQuery >> messageText [
+FamixCBNotAValidQuery >> messageText [
 
 	^ 'A rule must have a query inheriting from MiCriticBrowserAbstractQuery'
 ]

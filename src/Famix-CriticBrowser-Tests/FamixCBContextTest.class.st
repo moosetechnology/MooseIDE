@@ -43,7 +43,7 @@ FamixCBContextTest >> setUp [
 		                '[ :col | col select: [ :el | el name endsWith: ''Contexte'' ] ]'.
 	condition := FamixCBCondition
 		             named: 'Condition classes'
-		             on: (MiCBScriptQueryHandler on:
+		             on: (FamixCBScriptQueryHandler on:
 				              '[ :entity | entity name = ''Violation'' ]')
 ]
 
@@ -53,7 +53,7 @@ FamixCBContextTest >> testAddChild [
 	context := FamixCBContext named: 'context' on: '[ :col | col ]'.
 	condition := FamixCBCondition
 		             named: 'Condition root'
-		             on: (MiCBQueryHandler on:
+		             on: (FamixCBQueryHandler on:
 				              '[ :entity | entity name = ''violation'' ]').
 	childContext := FamixCBContext
 		                named: 'child context'
