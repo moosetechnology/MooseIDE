@@ -13,7 +13,7 @@ Class {
 { #category : #tests }
 MiCBScriptQueryHandlerTest >> actualClass [
 
-	^ MiCBScriptQueryHandler
+	^ FamixCBScriptQueryHandler
 ]
 
 { #category : #tests }

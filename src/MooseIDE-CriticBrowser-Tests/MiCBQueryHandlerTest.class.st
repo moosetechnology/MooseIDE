@@ -11,7 +11,7 @@ Class {
 MiCBQueryHandlerTest >> intersectionQuery [
 
 	| query class stubClass method |
-	query := MiCBQueryHandler on: (FQStringQuery
+	query := FamixCBQueryHandler on: (FQStringQuery
 			          property: #name
 			          comparator: #beginsWith:
 			          valueToCompare: 'Test')
@@ -37,9 +37,9 @@ MiCBQueryHandlerTest >> intersectionQuery [
 MiCBQueryHandlerTest >> queryWithParent [
 
 	| query childQuery class stubClass method |
-	query := MiCBQueryHandler on:
+	query := FamixCBQueryHandler on:
 		         (FQTypeQuery types: { FamixJavaClass }).
-	childQuery := MiCBQueryHandler on:
+	childQuery := FamixCBQueryHandler on:
 		              (FQBooleanQuery property: #isStub).
 	childQuery innerQuery parent: query innerQuery.
 	class := FamixJavaClass new.
@@ -73,7 +73,7 @@ MiCBQueryHandlerTest >> queryWithParent [
 MiCBQueryHandlerTest >> singleQuery [
 
 	| query class stubClass method |
-	query := MiCBQueryHandler on: (FQBooleanQuery property: #isStub).
+	query := FamixCBQueryHandler on: (FQBooleanQuery property: #isStub).
 	class := FamixJavaClass new. class name: 'Test'.
 	stubClass := FamixJavaClass new. stubClass name: 'TestStub'; stub: true.
 	method := FamixJavaMethod new. method name: 'methode'; stub: true.
@@ -85,7 +85,7 @@ MiCBQueryHandlerTest >> singleQuery [
 MiCBQueryHandlerTest >> substractionQuery [
 
 	| query class stubClass method |
-	query := MiCBQueryHandler on: (FQStringQuery
+	query := FamixCBQueryHandler on: (FQStringQuery
 			          property: #name
 			          comparator: #beginsWith:
 			          valueToCompare: 'Test')
@@ -115,7 +115,7 @@ MiCBQueryHandlerTest >> testAsRuleEditorString [
 	queryFQ parent: (FQTypeQuery types: { FamixJavaMethod }).
 
 	self
-		assert: (MiCBQueryHandler on: queryFQ) asRuleEditorString
+		assert: (FamixCBQueryHandler on: queryFQ) asRuleEditorString
 		equals: '[ :entity | entity ]'
 ]
 
@@ -127,7 +127,7 @@ MiCBQueryHandlerTest >> testConvertToSTONString [
 	queryFQ parent: (FQTypeQuery types: { FamixJavaMethod }).
 
 	self
-		assert: (MiCBQueryHandler on: queryFQ) convertToSTONString
+		assert: (FamixCBQueryHandler on: queryFQ) convertToSTONString
 		equals:
 		'(FQTypeQuery types: {FamixJavaMethod}) --> (FQBooleanQuery property: #isDead)'
 ]
@@ -160,7 +160,7 @@ MiCBQueryHandlerTest >> testRunOnQueryWithParent [
 MiCBQueryHandlerTest >> unionOfThreeQueries [
 
 	| query class stubClass method attribute |
-	query := MiCBQueryHandler on: (FQStringQuery
+	query := FamixCBQueryHandler on: (FQStringQuery
 			          property: #name
 			          comparator: #beginsWith:
 			          valueToCompare: 'Test')

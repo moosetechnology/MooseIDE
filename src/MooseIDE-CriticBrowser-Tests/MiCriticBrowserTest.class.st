@@ -41,17 +41,17 @@ MiCriticBrowserTest >> setUp [
 	stubRule := FamixCBCondition
 		            named: 'test1'
 		            on:
-		            (MiCBScriptQueryHandler on:
+		            (FamixCBScriptQueryHandler on:
 			             '[ :entity | entity isStub ]').
 	deadRule := FamixCBCondition
 		            named: 'test2'
 		            on:
-		            (MiCBScriptQueryHandler on:
+		            (FamixCBScriptQueryHandler on:
 			             '[ :entity | entity isDead ]').
 	queriesBrowserRule := FamixCBCondition
 		                      named: 'test3'
 		                      on:
-		                      (MiCBQueryHandler on:
+		                      (FamixCBQueryHandler on:
 			                       (FQBooleanQuery property: #isDead)).
 	queriesBrowserRule query innerQuery parent:
 		(FQTypeQuery types: { FamixStMethod }).

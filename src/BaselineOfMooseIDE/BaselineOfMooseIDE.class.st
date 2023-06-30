@@ -68,8 +68,9 @@ BaselineOfMooseIDE >> defineMooseCriticsPackages: spec [
 		package: 'MooseIDE-CriticBrowser-Tests'
 		with: [ 
 			spec requires: #( 'MooseIDE-Tests' 'MooseIDE-CriticBrowser' ) ];
-		package: 'Famix-CriticBrowser-Entities';
-		package: 'Famix-CriticBrowser-Severities';
+		package: 'Famix-CriticBrowser-Entities'
+		with: [ spec requires: 'Famix-CriticBrowser-ManualEntities' ];
+		package: 'Famix-CriticBrowser-ManualEntities';
 		package: 'Famix-CriticBrowser-Generator';
 		package: 'Famix-CriticBrowser-Tests'
 		with: [ spec requires: 'Famix-CriticBrowser-Entities' ].
@@ -77,7 +78,7 @@ BaselineOfMooseIDE >> defineMooseCriticsPackages: spec [
 	spec
 		group: 'CriticBrowser-Metamodel'
 		with:
-			#( 'Famix-CriticBrowser-Entities' 'Famix-CriticBrowser-Severities'
+			#( 'Famix-CriticBrowser-Entities' 'Famix-CriticBrowser-ManualEntities'
 			   'Famix-CriticBrowser-Generator' 'Famix-CriticBrowser-Tests' )
 ]
 

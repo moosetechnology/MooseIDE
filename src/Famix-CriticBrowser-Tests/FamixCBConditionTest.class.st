@@ -21,7 +21,7 @@ FamixCBConditionTest >> setUp [
 	condition := FamixCBCondition
 		             named: 'test1'
 		             on:
-		             (MiCBScriptQueryHandler on:
+		             (FamixCBScriptQueryHandler on:
 			              '[ :entity | entity isStub ]').
 
 	violatingEntity := FamixJavaMethod new.
@@ -64,14 +64,14 @@ FamixCBConditionTest >> testQuery [
 
 	self
 		should: [ FamixCBCondition named: 'test' on: 'test' ]
-		raise: NotAValidQuery.
+		raise: FamixCBNotAValidQuery.
 	
 	self
 		shouldnt: [
 			FamixCBCondition
 				named: 'test'
-				on: MiCBQueryHandler new ]
-		raise: NotAValidQuery
+				on: FamixCBQueryHandler new ]
+		raise: FamixCBNotAValidQuery
 ]
 
 { #category : #test }
@@ -101,7 +101,7 @@ FamixCBConditionTest >> testRunOn [
 	condition := FamixCBCondition
 		             named: 'test1'
 		             on:
-		             (MiCBScriptQueryHandler on:
+		             (FamixCBScriptQueryHandler on:
 			              '[ :entity | entity isStub ]').
 	entity := FamixJavaMethod new.
 	stubEntity := FamixJavaMethod new.

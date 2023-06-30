@@ -34,7 +34,7 @@ MiCBRulesMakerPresenter >> addInputtedCodeRule [
 	codeInput text ifNotNil: [ 
 		owner addCondition: (FamixCBCondition
 				 named: ruleTitle text
-				 on: (MiCBScriptQueryHandler on: codeInput text)
+				 on: (FamixCBScriptQueryHandler on: codeInput text)
 				 summary: ruleSummary text
 				 severity: severityDroplist selectedItem) ].
 	codeInput text: '[ :entity | entity ]'
@@ -46,7 +46,7 @@ MiCBRulesMakerPresenter >> addInputtedFQRule [
 	queryDroplist selectedItem ifNotNil: [
 		owner addCondition: (FamixCBCondition
 				 named: ruleTitle text
-				 on: (MiCBQueryHandler on: queryDroplist selectedItem)
+				 on: (FamixCBQueryHandler on: queryDroplist selectedItem)
 				 summary: ruleSummary text
 				 severity: severityDroplist selectedItem) ]
 ]
@@ -118,8 +118,8 @@ MiCBRulesMakerPresenter >> editRule: aCondition [
 
 	aCondition name: ruleTitle text.
 	aCondition query: (codeButton state
-			 ifTrue: [ MiCBScriptQueryHandler on: codeInput text ]
-			 ifFalse: [ MiCBQueryHandler on: queryDroplist selectedItem ]).
+			 ifTrue: [ FamixCBScriptQueryHandler on: codeInput text ]
+			 ifFalse: [ FamixCBQueryHandler on: queryDroplist selectedItem ]).
 	aCondition summary: ruleSummary text.
 	aCondition severity: severityDroplist selectedItem.
 	owner hasBeenEdited: aCondition

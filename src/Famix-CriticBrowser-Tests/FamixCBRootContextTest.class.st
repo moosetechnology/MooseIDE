@@ -30,12 +30,12 @@ FamixCBRootContextTest >> testGetAllViolations [
 
 	condition := FamixCBCondition
 		             named: 'Condition root'
-		             on: (MiCBScriptQueryHandler on:
+		             on: (FamixCBScriptQueryHandler on:
 				              '[ :entity | (entity class = FamixJavaParameter) and: [ entity name = ''violation'' ] ]').
 
 	childCondition := FamixCBCondition
 		                  named: 'Condition child'
-		                  on: (MiCBScriptQueryHandler on:
+		                  on: (FamixCBScriptQueryHandler on:
 				                   '[ :entity | entity isClass and: [ entity name = ''Violation'' ] ]').
 
 	rootContext addChild: childContext.
