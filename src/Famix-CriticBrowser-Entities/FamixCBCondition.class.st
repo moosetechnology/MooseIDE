@@ -92,8 +92,9 @@ FamixCBCondition >> resetExecutionOfTree [
 ]
 
 { #category : #running }
-FamixCBCondition >> runDownTree: aCollection [
-	self runOn: aCollection
+FamixCBCondition >> runDownTree: aCollection withCallback: aBlock [
+
+	self runOn: aCollection withCallback: aBlock
 ]
 
 { #category : #running }
@@ -101,6 +102,13 @@ FamixCBCondition >> runOn: aCollection [
 
 	(self query runOnCollection: aCollection) do: [ :each | 
 		self addViolation: (FamixCBViolation new violatingEntity: each) ]
+]
+
+{ #category : #running }
+FamixCBCondition >> runOn: aCollection withCallback: aBlock [
+
+	aBlock value: self name.
+	self runOn: aCollection
 ]
 
 { #category : #'as yet unclassified' }

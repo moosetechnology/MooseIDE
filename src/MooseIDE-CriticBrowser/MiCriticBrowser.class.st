@@ -22,7 +22,8 @@ Class {
 		'rules',
 		'expandMenu',
 		'addContextsPresenter',
-		'contextEditorPresenter'
+		'contextEditorPresenter',
+		'statusLabel'
 	],
 	#category : #'MooseIDE-CriticBrowser-Browser'
 }
@@ -152,10 +153,15 @@ MiCriticBrowser >> defaultLayout [
 			yourself);
 		yourself);
 		add: (SpBoxLayout newLeftToRight
-			addLast: importButton;
-			addLast: exportButton;
-			spacing: 5; 
-			addLast: runButton;
+			add: statusLabel;
+			add: (SpBoxLayout newLeftToRight 
+				addLast: importButton;
+				addLast: exportButton;
+				addLast: runButton;
+				hAlignEnd;
+				spacing: 5;
+				yourself);
+			vAlignCenter;
 			yourself) expand: false;
 	yourself
 ]
@@ -361,17 +367,24 @@ MiCriticBrowser >> initializePresenters [
 	self initializeMenu.
 	self initializeLists.
 	self initializeButtons.
+	self initializeStatusLabel.
 
 	addRulesPresenter := MiCBAddRulesPresenter on: self.
 	rulesEditorPresenter := MiCBEditRulePresenter on: self.
 	addContextsPresenter := MiCBAddContextsPresenter on: self.
-	contextEditorPresenter := MiCBEditContextPresenter on:
-		                          self.
+	contextEditorPresenter := MiCBEditContextPresenter on: self.
 
 	self focusOrder
 		add: rules;
 		add: rulesResult;
 		add: runButton
+]
+
+{ #category : #initialization }
+MiCriticBrowser >> initializeStatusLabel [
+
+	statusLabel := self newLabel.
+	self updateStatusLabel: 'Critic Browser is ready to work!'
 ]
 
 { #category : #initialization }
@@ -447,18 +460,16 @@ MiCriticBrowser >> rulesResult [
 	^ rulesResult 
 ]
 
-{ #category : #'accessing - testing' }
-MiCriticBrowser >> runButton [
-"used for testing purposes, do not access outside of tests"
-	^ runButton
-]
-
 { #category : #'buttons actions' }
 MiCriticBrowser >> runButtonAction [
-"executes the queries on the entities stored in the model, then prints the results"
+	"executes the queries on the entities stored in the model, then prints the results"
 	self model run.
+
+	[ self model run.
+	self updateStatusLabel: 'Updating display...'.
 	self updateResultList: specModel getAllViolations.
-	self updateRulesList
+	self updateRulesList.
+	self updateStatusLabel: 'Critics finished.' ] fork
 ]
 
 { #category : #initialization }
@@ -534,4 +545,10 @@ MiCriticBrowser >> updateRulesList [
 
 	self rules updateRootsKeepingSelection: self rules roots.
 	self rules expandAll
+]
+
+{ #category : #'buttons actions' }
+MiCriticBrowser >> updateStatusLabel: aString [
+
+	statusLabel label: DateAndTime now asStringYMDHM , ': ' , aString
 ]

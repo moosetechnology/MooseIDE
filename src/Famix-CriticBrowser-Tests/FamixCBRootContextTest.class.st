@@ -45,7 +45,8 @@ FamixCBRootContextTest >> testGetAllViolations [
 			contextEntity.
 			entity.
 			childEntityViolating.
-			entityViolating }.
+			entityViolating }
+			withCallback: [:e | ].
 	violations := rootContext getAllViolations.
 	self assert: violations class equals: Dictionary.
 	self assertCollection: violations keys hasSameElements: {

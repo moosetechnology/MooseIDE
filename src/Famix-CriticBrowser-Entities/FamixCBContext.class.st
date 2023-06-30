@@ -126,10 +126,12 @@ FamixCBContext >> resetExecutionOfTree [
 ]
 
 { #category : #running }
-FamixCBContext >> runDownTree: aCollection [
+FamixCBContext >> runDownTree: aCollection withCallback: aBlock [
 
-	self entities ifEmpty: [ self runOn: aCollection ].
-	children do: [ :child | child runDownTree: self entities asMooseGroup ]
+	self entities ifEmpty: [ 
+		self runOn: aCollection withCallback: aBlock ].
+	children do: [ :child | 
+		child runDownTree: self entities asMooseGroup withCallback: aBlock ]
 ]
 
 { #category : #running }
@@ -137,6 +139,13 @@ FamixCBContext >> runOn: aCollection [
 
 	self entities: (contextBlock value: aCollection)
 
+]
+
+{ #category : #running }
+FamixCBContext >> runOn: aCollection withCallback: aBlock [
+
+	aBlock value: self name.
+	self entities: (contextBlock value: aCollection)
 ]
 
 { #category : #'as yet unclassified' }
