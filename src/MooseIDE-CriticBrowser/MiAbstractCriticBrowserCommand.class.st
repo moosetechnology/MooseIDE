@@ -14,13 +14,13 @@ MiAbstractCriticBrowserCommand class >> asCommandGroupWith: aPresenter [
 	^ exportCommandGroup
 ]
 
-{ #category : #'accessing - defaults' }
+{ #category : #default }
 MiAbstractCriticBrowserCommand class >> defaultDescription [
 
 	^ 'Possible actions for contexts and conditions'
 ]
 
-{ #category : #'accessing - defaults' }
+{ #category : #default }
 MiAbstractCriticBrowserCommand class >> defaultName [
 
 	^ 'Rules menu'

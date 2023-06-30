@@ -70,7 +70,7 @@ FamixCBCondition >> query [
 { #category : #accessing }
 FamixCBCondition >> query: aQuery [
 
-	(aQuery class inheritsFrom: MiCriticBrowserAbstractQuery)
+	(aQuery class inheritsFromOrEqualTo: MiCBQueryHandler)
 		ifTrue: [ query := aQuery ]
 		ifFalse: [ self error: NotAValidQuery signal ]
 ]
@@ -113,7 +113,7 @@ FamixCBCondition >> severity [
 
 	<FMProperty: #severity type: #Object>
 	<FMComment: 'Severity for the violations of this condition'>
-	^ severity ifNil: [ AbstractSeverity allSubclasses detectMin: #level ]
+	^ severity ifNil: [ MiCBAbstractSeverity allSubclasses detectMin: #level ]
 ]
 
 { #category : #accessing }
@@ -130,7 +130,7 @@ FamixCBCondition >> stonOn: stonWriter [
 			(self instVarNamed: each) ifNotNil: [ :value |
 				dictionary
 					at: each asSymbol
-					put: ((value class inheritsFrom: MiCriticBrowserAbstractQuery)
+					put: ((value class inheritsFromOrEqualTo: MiCBQueryHandler)
 							 ifTrue: [ value convertToSTONString ]
 							 ifFalse: [ value ]) ] ] ]
 ]

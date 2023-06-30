@@ -2,7 +2,7 @@
 Dialog window called to edit a rule, uses the RulesMakerPresenter.
 "
 Class {
-	#name : #MiCriticBrowserEditRulePresenter,
+	#name : #MiCBEditRulePresenter,
 	#superclass : #MiPresenter,
 	#instVars : [
 		'editButton',
@@ -15,62 +15,62 @@ Class {
 }
 
 { #category : #'instance creation' }
-MiCriticBrowserEditRulePresenter class >> on: aWindowPresenter [
+MiCBEditRulePresenter class >> on: aWindowPresenter [
 	^ self new
 		setMainWindow: aWindowPresenter;
 		yourself.
 ]
 
 { #category : #brokerage }
-MiCriticBrowserEditRulePresenter >> consume: aQuery [
+MiCBEditRulePresenter >> consume: aQuery [
 	queryPresenter queryDroplist items: self fetchQueries 
 ]
 
 { #category : #layout }
-MiCriticBrowserEditRulePresenter >> defaultLayout [
+MiCBEditRulePresenter >> defaultLayout [
 	^ SpBoxLayout newTopToBottom
 		add: queryPresenter;
 		yourself
 ]
 
 { #category : #accessing }
-MiCriticBrowserEditRulePresenter >> defaultTitle [
+MiCBEditRulePresenter >> defaultTitle [
 	^ 'Rule Editor'
 ]
 
 { #category : #settings }
-MiCriticBrowserEditRulePresenter >> editButtonAction [
+MiCBEditRulePresenter >> editButtonAction [
 	queryPresenter editRule: ruleToEdit.
 	self window close
 ]
 
 { #category : #initialization }
-MiCriticBrowserEditRulePresenter >> fetchQueries [
+MiCBEditRulePresenter >> fetchQueries [
 	^ ((self application itemsFor: FQAbstractQuery)
 		asOrderedCollection) select: [ :each | each isValid ] 
 ]
 
 { #category : #testing }
-MiCriticBrowserEditRulePresenter >> hasBeenEdited: aRuleComponent [
+MiCBEditRulePresenter >> hasBeenEdited: aRuleComponent [
 	mainWindow model hasBeenEdited: aRuleComponent.
 	
 ]
 
 { #category : #initialization }
-MiCriticBrowserEditRulePresenter >> initializeDialogWindow: aDialogWindowPresenter [
+MiCBEditRulePresenter >> initializeDialogWindow: aDialogWindowPresenter [
 	aDialogWindowPresenter 
 		addButton: editButton;
 		addButton: cancelButton
 ]
 
 { #category : #initialization }
-MiCriticBrowserEditRulePresenter >> initializeMainPresenter [
+MiCBEditRulePresenter >> initializeMainPresenter [
 "must be called after mainWindow has been set, not before"
-	queryPresenter := self instantiate: MiCriticBrowserRulesMakerPresenter on: mainWindow model
+	queryPresenter := self instantiate: MiCBRulesMakerPresenter on: mainWindow model
 ]
 
 { #category : #initialization }
-MiCriticBrowserEditRulePresenter >> initializePresenters [ 
+MiCBEditRulePresenter >> initializePresenters [ 
 	editButton := self newButton.
 	cancelButton := self newButton.
 	
@@ -84,7 +84,7 @@ MiCriticBrowserEditRulePresenter >> initializePresenters [
 ]
 
 { #category : #initialization }
-MiCriticBrowserEditRulePresenter >> initializeWindow: aWindowPresenter [	
+MiCBEditRulePresenter >> initializeWindow: aWindowPresenter [	
 	super initializeWindow: aWindowPresenter.
 	aWindowPresenter
 		title: self defaultTitle;
@@ -92,29 +92,29 @@ MiCriticBrowserEditRulePresenter >> initializeWindow: aWindowPresenter [
 ]
 
 { #category : #accessing }
-MiCriticBrowserEditRulePresenter >> queryPresenter [
+MiCBEditRulePresenter >> queryPresenter [
 "used for test purposes, do not access outside of tests"
 	^ queryPresenter
 ]
 
 { #category : #removing }
-MiCriticBrowserEditRulePresenter >> remove: aQuery [
+MiCBEditRulePresenter >> remove: aQuery [
 	queryPresenter queryDroplist items: self fetchQueries 
 ]
 
 { #category : #initialization }
-MiCriticBrowserEditRulePresenter >> setMainWindow: aWindowPresenter [
+MiCBEditRulePresenter >> setMainWindow: aWindowPresenter [
 	mainWindow := aWindowPresenter.
 	self initializeMainPresenter
 ]
 
 { #category : #accessing }
-MiCriticBrowserEditRulePresenter >> setRuleToEdit: aRule [
+MiCBEditRulePresenter >> setRuleToEdit: aRule [
 	ruleToEdit := aRule.
 	queryPresenter fillRuleToEdit: ruleToEdit
 ]
 
 { #category : #updating }
-MiCriticBrowserEditRulePresenter >> update: aQuery [
+MiCBEditRulePresenter >> update: aQuery [
 	queryPresenter queryDroplist items: self fetchQueries
 ]

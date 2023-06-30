@@ -1,26 +1,26 @@
 "
-I represent an Error severity in MooseCritics.
+I represent an Warning severity in MooseCritics.
 "
 Class {
-	#name : #SeverityError,
-	#superclass : #AbstractSeverity,
+	#name : #MiCBWarningSeverity,
+	#superclass : #MiCBAbstractSeverity,
 	#category : #'MooseIDE-CriticBrowser-Severities'
 }
 
 { #category : #accessing }
-SeverityError class >> iconName [
+MiCBWarningSeverity class >> iconName [
 "name of the icon to use for violation printing in the UI (optional)"
-	^ 'error'
+	^ 'smallWarning'
 ]
 
 { #category : #accessing }
-SeverityError class >> level [
+MiCBWarningSeverity class >> level [
 "an Int (unique to each subclass) to define the level of severity"
-	^ 3
+	^ 2
 ]
 
 { #category : #accessing }
-SeverityError class >> title [
+MiCBWarningSeverity class >> title [
 "name of the severity (to print in UI)"
-	^ 'Error'
+	^ 'Warning'
 ]

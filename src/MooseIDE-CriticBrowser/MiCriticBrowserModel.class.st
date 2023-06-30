@@ -35,7 +35,7 @@ MiCriticBrowserModel >> addViolationsFor: aCondition [
 	violations at: aCondition put: aCondition violations asMooseSpecializedGroup
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 MiCriticBrowserModel >> contextOf: aRuleComponent [
 
 	^ (aRuleComponent class inheritsFromOrEqualTo: FamixCBContext)
@@ -43,14 +43,14 @@ MiCriticBrowserModel >> contextOf: aRuleComponent [
 		  ifFalse: [ self contextOf: aRuleComponent parent ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #running }
 MiCriticBrowserModel >> createHierarchyTree [
 "creates a list with the index of the parent of each rule component in the ruleComponents
  used to export the rules (and represents the hierarchy)"
 	^ ruleComponents collect: [ :el | ruleComponents indexOf: el parent ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #removing }
 MiCriticBrowserModel >> deleteRuleComponent: aRuleComponent [
 	self removeChild: aRuleComponent fromContext: aRuleComponent parent 
 ]
@@ -135,7 +135,7 @@ MiCriticBrowserModel >> run [
 	violations := rootContext getAllViolations
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #running }
 MiCriticBrowserModel >> runCondition: aCondition [
 	aCondition runUpTree: entities.
 	self addViolationsFor: aCondition

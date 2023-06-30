@@ -18,8 +18,11 @@ FamixCBConditionTest >> setUp [
 
 	super setUp.
 
-	condition := FamixCBCondition named: 'test1' on:
-		             (MiCriticBrowserPharoCodeQuery on: '[ :entity | entity isStub ]').
+	condition := FamixCBCondition
+		             named: 'test1'
+		             on:
+		             (MiCBScriptQueryHandler on:
+			              '[ :entity | entity isStub ]').
 
 	violatingEntity := FamixJavaMethod new.
 	violatingEntity isStub: true.
@@ -67,7 +70,7 @@ FamixCBConditionTest >> testQuery [
 		shouldnt: [
 			FamixCBCondition
 				named: 'test'
-				on: MiCriticBrowserPharoCodeQuery new ]
+				on: MiCBQueryHandler new ]
 		raise: NotAValidQuery
 ]
 
@@ -93,13 +96,25 @@ FamixCBConditionTest >> testRemoveViolation [
 
 { #category : #test }
 FamixCBConditionTest >> testRunOn [
-	| condition entity stubEntity |
-	condition := FamixCBCondition named: 'test1' on: ((MiCriticBrowserPharoCodeQuery on: '[ :entity | entity isStub ]')).
+
+	| stubEntity |
+	condition := FamixCBCondition
+		             named: 'test1'
+		             on:
+		             (MiCBScriptQueryHandler on:
+			              '[ :entity | entity isStub ]').
 	entity := FamixJavaMethod new.
-	stubEntity := FamixJavaMethod new. stubEntity isStub: true.
-	
-	condition runOn: { entity. stubEntity }.
+	stubEntity := FamixJavaMethod new.
+	stubEntity isStub: true.
+
+	condition runOn: {
+			entity.
+			stubEntity }.
 	self assert: condition violations size equals: 1.
-	self assert: condition violations anyOne violatingEntity equals: stubEntity.
-	self assert: condition violations anyOne violatedCondition equals: condition
+	self
+		assert: condition violations anyOne violatingEntity
+		equals: stubEntity.
+	self
+		assert: condition violations anyOne violatedCondition
+		equals: condition
 ]

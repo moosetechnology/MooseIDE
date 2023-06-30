@@ -2,7 +2,7 @@
 Dialog window used to add new rules, uses the RulesMakerPresenter.
 "
 Class {
-	#name : #MiCriticBrowserAddRulesPresenter,
+	#name : #MiCBAddRulesPresenter,
 	#superclass : #MiPresenter,
 	#instVars : [
 		'addButton',
@@ -15,61 +15,61 @@ Class {
 }
 
 { #category : #'instance creation' }
-MiCriticBrowserAddRulesPresenter class >> on: aWindowPresenter [
+MiCBAddRulesPresenter class >> on: aWindowPresenter [
 	^ self new
 		setMainWindow: aWindowPresenter;
 		yourself.
 ]
 
 { #category : #adding }
-MiCriticBrowserAddRulesPresenter >> addButtonAction [
+MiCBAddRulesPresenter >> addButtonAction [
 	queryPresenter addButtonAction.
 	self window close
 ]
 
 { #category : #adding }
-MiCriticBrowserAddRulesPresenter >> addCondition: aFamixCBCondition [ 
+MiCBAddRulesPresenter >> addCondition: aFamixCBCondition [ 
 	mainWindow model addChild: aFamixCBCondition toContext: parentContext
 ]
 
 { #category : #initialization }
-MiCriticBrowserAddRulesPresenter >> consume: aQuery [
+MiCBAddRulesPresenter >> consume: aQuery [
 	queryPresenter queryDroplist items: self fetchQueries 
 ]
 
 { #category : #layout }
-MiCriticBrowserAddRulesPresenter >> defaultLayout [
+MiCBAddRulesPresenter >> defaultLayout [
 	^ SpBoxLayout newTopToBottom
 		add: queryPresenter;
 		yourself
 ]
 
 { #category : #accessing }
-MiCriticBrowserAddRulesPresenter >> defaultTitle [
+MiCBAddRulesPresenter >> defaultTitle [
 	^ 'Rules maker'
 ]
 
 { #category : #initialization }
-MiCriticBrowserAddRulesPresenter >> fetchQueries [
+MiCBAddRulesPresenter >> fetchQueries [
 	^ ((self application itemsFor: FQAbstractQuery)
 		asOrderedCollection) select: [ :each | each isValid ] 
 ]
 
 { #category : #initialization }
-MiCriticBrowserAddRulesPresenter >> initializeDialogWindow: aDialogWindowPresenter [
+MiCBAddRulesPresenter >> initializeDialogWindow: aDialogWindowPresenter [
 	aDialogWindowPresenter 
 		addButton: addButton;
 		addButton: closeButton
 ]
 
 { #category : #initialization }
-MiCriticBrowserAddRulesPresenter >> initializeMainPresenter [
+MiCBAddRulesPresenter >> initializeMainPresenter [
 "must be called after mainWindow has been set, not before"
-	queryPresenter := self instantiate: MiCriticBrowserRulesMakerPresenter on: mainWindow model
+	queryPresenter := self instantiate: MiCBRulesMakerPresenter on: mainWindow model
 ]
 
 { #category : #initialization }
-MiCriticBrowserAddRulesPresenter >> initializePresenters [
+MiCBAddRulesPresenter >> initializePresenters [
 	addButton := self newButton.
 	closeButton := self newButton.
 	
@@ -83,7 +83,7 @@ MiCriticBrowserAddRulesPresenter >> initializePresenters [
 ]
 
 { #category : #initialization }
-MiCriticBrowserAddRulesPresenter >> initializeWindow: aWindowPresenter [	
+MiCBAddRulesPresenter >> initializeWindow: aWindowPresenter [	
 	super initializeWindow: aWindowPresenter.
 	aWindowPresenter
 		title: self defaultTitle;
@@ -91,28 +91,28 @@ MiCriticBrowserAddRulesPresenter >> initializeWindow: aWindowPresenter [
 ]
 
 { #category : #accessing }
-MiCriticBrowserAddRulesPresenter >> queryPresenter [
+MiCBAddRulesPresenter >> queryPresenter [
 "used for test purposes, do not access outside of tests"
 	^ queryPresenter
 ]
 
 { #category : #removing }
-MiCriticBrowserAddRulesPresenter >> remove: aQuery [
+MiCBAddRulesPresenter >> remove: aQuery [
 	queryPresenter queryDroplist items: self fetchQueries 
 ]
 
 { #category : #accessing }
-MiCriticBrowserAddRulesPresenter >> setMainWindow: aWindowPresenter [
+MiCBAddRulesPresenter >> setMainWindow: aWindowPresenter [
 	mainWindow := aWindowPresenter.
 	self initializeMainPresenter
 ]
 
 { #category : #initialization }
-MiCriticBrowserAddRulesPresenter >> setParentContext: aContext [
+MiCBAddRulesPresenter >> setParentContext: aContext [
 	parentContext := aContext
 ]
 
 { #category : #updating }
-MiCriticBrowserAddRulesPresenter >> update: aQuery [
+MiCBAddRulesPresenter >> update: aQuery [
 	queryPresenter queryDroplist items: self fetchQueries 
 ]

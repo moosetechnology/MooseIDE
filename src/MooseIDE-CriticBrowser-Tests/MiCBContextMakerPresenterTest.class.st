@@ -2,7 +2,7 @@
 A MiCriticBrowserContextMakerPresenterTest is a test class for testing the behavior of MiCriticBrowserContextMakerPresenter
 "
 Class {
-	#name : #MiCriticBrowserContextMakerPresenterTest,
+	#name : #MiCBContextMakerPresenterTest,
 	#superclass : #MiAbstractBrowserTest,
 	#instVars : [
 		'editContextPresenter',
@@ -12,12 +12,12 @@ Class {
 }
 
 { #category : #running }
-MiCriticBrowserContextMakerPresenterTest >> browserClass [
+MiCBContextMakerPresenterTest >> browserClass [
 	^ MiCriticBrowser 
 ]
 
-{ #category : #initialization }
-MiCriticBrowserContextMakerPresenterTest >> setUp [
+{ #category : #running }
+MiCBContextMakerPresenterTest >> setUp [
 	super setUp.
 	browser addContextsPresenter setParentContext: browser model rootContext.
 	addContextsPresenter := browser addContextsPresenter contextPresenter.
@@ -26,13 +26,13 @@ MiCriticBrowserContextMakerPresenterTest >> setUp [
 ]
 
 { #category : #running }
-MiCriticBrowserContextMakerPresenterTest >> tearDown [
+MiCBContextMakerPresenterTest >> tearDown [
 	super tearDown.
 	browser addContextsPresenter window close
 ]
 
 { #category : #tests }
-MiCriticBrowserContextMakerPresenterTest >> testAddInputtedCodeRule [
+MiCBContextMakerPresenterTest >> testAddInputtedCodeRule [
 	addContextsPresenter contextTitle text: 'test'.
 	addContextsPresenter codeInput text: '[ :col | col allClasses ]'.
 	addContextsPresenter addButtonAction.
@@ -41,8 +41,8 @@ MiCriticBrowserContextMakerPresenterTest >> testAddInputtedCodeRule [
 	self assert: browser model rootContext children anyOne name equals: 'test'
 ]
 
-{ #category : #test }
-MiCriticBrowserContextMakerPresenterTest >> testEditContext [
+{ #category : #tests }
+MiCBContextMakerPresenterTest >> testEditContext [
 	| context newTitle newBlock newSummary |
 	context := FamixCBContext named: 'test' on: '[ :col | col ]' summary: 'règle utilisée pour un test'.
 	newTitle := 'test édité'.
@@ -60,7 +60,7 @@ MiCriticBrowserContextMakerPresenterTest >> testEditContext [
 ]
 
 { #category : #tests }
-MiCriticBrowserContextMakerPresenterTest >> testFillContextToEdit [
+MiCBContextMakerPresenterTest >> testFillContextToEdit [
 	| context |
 	context := FamixCBContext named: 'test' on: '[ :col | col ]' summary: 'règle utilisée pour un test'.
 	
@@ -71,7 +71,7 @@ MiCriticBrowserContextMakerPresenterTest >> testFillContextToEdit [
 ]
 
 { #category : #'tests - tags' }
-MiCriticBrowserContextMakerPresenterTest >> testSelectedTagSetAndGet [
+MiCBContextMakerPresenterTest >> testSelectedTagSetAndGet [
 	"already tested in MiCriticBrowserTest"
 	self skip
 ]

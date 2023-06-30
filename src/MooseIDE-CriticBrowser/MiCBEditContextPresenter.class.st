@@ -2,14 +2,11 @@
 Dialog window called to edit a context, uses the ContextMakerPresenter.
 "
 Class {
-	#name : #MiCriticBrowserEditContextPresenter,
+	#name : #MiCBEditContextPresenter,
 	#superclass : #MiPresenter,
 	#instVars : [
-		'addButton',
-		'closeButton',
 		'contextPresenter',
 		'mainWindow',
-		'parentContext',
 		'contextToEdit',
 		'editButton',
 		'cancelButton'
@@ -18,56 +15,56 @@ Class {
 }
 
 { #category : #'instance creation' }
-MiCriticBrowserEditContextPresenter class >> on: aWindowPresenter [
+MiCBEditContextPresenter class >> on: aWindowPresenter [
 	^ self new
 		setMainWindow: aWindowPresenter;
 		yourself.
 ]
 
 { #category : #accessing }
-MiCriticBrowserEditContextPresenter >> contextPresenter [
+MiCBEditContextPresenter >> contextPresenter [
 "used for test purposes, do not access outside of tests"
 	^ contextPresenter
 ]
 
 { #category : #layout }
-MiCriticBrowserEditContextPresenter >> defaultLayout [
+MiCBEditContextPresenter >> defaultLayout [
 	^ SpBoxLayout newTopToBottom
 		add: contextPresenter;
 		yourself
 ]
 
 { #category : #accessing }
-MiCriticBrowserEditContextPresenter >> defaultTitle [
+MiCBEditContextPresenter >> defaultTitle [
 	^ 'Context Editor'
 ]
 
 { #category : #settings }
-MiCriticBrowserEditContextPresenter >> editButtonAction [
+MiCBEditContextPresenter >> editButtonAction [
 	contextPresenter editContext: contextToEdit.
 	self window close
 ]
 
 { #category : #testing }
-MiCriticBrowserEditContextPresenter >> hasBeenEdited: aRuleComponent [
+MiCBEditContextPresenter >> hasBeenEdited: aRuleComponent [
 	mainWindow model hasBeenEdited: aRuleComponent.
 ]
 
 { #category : #initialization }
-MiCriticBrowserEditContextPresenter >> initializeDialogWindow: aDialogWindowPresenter [
+MiCBEditContextPresenter >> initializeDialogWindow: aDialogWindowPresenter [
 	aDialogWindowPresenter 
 		addButton: editButton;
 		addButton: cancelButton
 ]
 
 { #category : #initialization }
-MiCriticBrowserEditContextPresenter >> initializeMainPresenter [
+MiCBEditContextPresenter >> initializeMainPresenter [
 "must be called after mainWindow has been set, not before"
-	contextPresenter := self instantiate: MiCriticBrowserContextMakerPresenter on: mainWindow model
+	contextPresenter := self instantiate: MiCBContextMakerPresenter on: mainWindow model
 ]
 
 { #category : #initialization }
-MiCriticBrowserEditContextPresenter >> initializePresenters [ 
+MiCBEditContextPresenter >> initializePresenters [ 
 	editButton := self newButton.
 	cancelButton := self newButton.
 	
@@ -81,7 +78,7 @@ MiCriticBrowserEditContextPresenter >> initializePresenters [
 ]
 
 { #category : #initialization }
-MiCriticBrowserEditContextPresenter >> initializeWindow: aWindowPresenter [	
+MiCBEditContextPresenter >> initializeWindow: aWindowPresenter [	
 	super initializeWindow: aWindowPresenter.
 	aWindowPresenter
 		title: self defaultTitle;
@@ -89,13 +86,13 @@ MiCriticBrowserEditContextPresenter >> initializeWindow: aWindowPresenter [
 ]
 
 { #category : #initialization }
-MiCriticBrowserEditContextPresenter >> setContextToEdit: aContext [
+MiCBEditContextPresenter >> setContextToEdit: aContext [
 	contextToEdit := aContext.
 	contextPresenter fillContextToEdit: contextToEdit
 ]
 
 { #category : #initialization }
-MiCriticBrowserEditContextPresenter >> setMainWindow: aWindowPresenter [
+MiCBEditContextPresenter >> setMainWindow: aWindowPresenter [
 	mainWindow := aWindowPresenter.
 	self initializeMainPresenter
 ]
