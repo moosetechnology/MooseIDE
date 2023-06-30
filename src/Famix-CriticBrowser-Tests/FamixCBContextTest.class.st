@@ -70,13 +70,13 @@ FamixCBContextTest >> testAddChild [
 	self assert: childContext parent equals: context
 ]
 
-{ #category : #test }
+{ #category : #tests }
 FamixCBContextTest >> testPutViolationsInto [
 	| violations |
 	
 	violations := Dictionary new.
 	context addChild: condition.
-	context runDownTree: { entity. violatingEntity }.
+	context runDownTree: { entity. violatingEntity } withCallback: [ :e ].
 	context putViolationsInto: violations.
 	
 	self assertCollection: violations keys hasSameElements: { condition. }.
