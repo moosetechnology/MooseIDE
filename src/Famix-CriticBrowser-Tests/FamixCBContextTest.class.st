@@ -110,13 +110,14 @@ FamixCBContextTest >> testResetExecutionOfTree [
 ]
 
 { #category : #tests }
-FamixCBContextTest >> testRunDownTree [
-	
+FamixCBContextTest >> testRunDownTreeWithCallback [
 	context addChild: childContext.
-	context runDownTree: { contextEntity. entity. childContextEntity. entityInvalid }.
-	
+	context runDownTree: { contextEntity. entity. childContextEntity. entityInvalid }
+		withCallback: [ :e ].
+
 	self assert: context entities size equals: 2.
 	self assertCollection: context entities hasSameElements: { contextEntity. childContextEntity }.
+
 	self assert: childContext entities size equals: 1.
 	self assert: childContext entities anyOne equals: childContextEntity
 	
