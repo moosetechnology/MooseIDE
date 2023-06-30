@@ -6,7 +6,7 @@ I am defined by a level, a unique integer for each of my subclasses, and with a 
 Class {
 	#name : #FamixCBAbstractSeverity,
 	#superclass : #Object,
-	#category : #'Famix-CriticBrowser-Severities'
+	#category : #'Famix-CriticBrowser-ManualEntities-Severities'
 }
 
 { #category : #accessing }

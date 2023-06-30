@@ -4,7 +4,7 @@ I represent an Error severity in MooseCritics.
 Class {
 	#name : #FamixCBErrorSeverity,
 	#superclass : #FamixCBAbstractSeverity,
-	#category : #'Famix-CriticBrowser-Severities'
+	#category : #'Famix-CriticBrowser-ManualEntities-Severities'
 }
 
 { #category : #accessing }
