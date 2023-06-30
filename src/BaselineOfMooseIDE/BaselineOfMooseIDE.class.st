@@ -70,7 +70,8 @@ BaselineOfMooseIDE >> defineMooseCriticsPackages: spec [
 			spec requires: #( 'MooseIDE-Tests' 'MooseIDE-CriticBrowser' ) ];
 		package: 'Famix-CriticBrowser-Entities'
 		with: [ spec requires: 'Famix-CriticBrowser-ManualEntities' ];
-		package: 'Famix-CriticBrowser-ManualEntities';
+		package: 'Famix-CriticBrowser-ManualEntities'
+		with: [ spec requires: #( 'Famix-Queries' ) ];
 		package: 'Famix-CriticBrowser-Generator';
 		package: 'Famix-CriticBrowser-Tests'
 		with: [ spec requires: 'Famix-CriticBrowser-Entities' ].
