@@ -26,10 +26,11 @@ FamixCBQueryHandler >> asRuleEditorString [
 
 { #category : #converting }
 FamixCBQueryHandler >> convertToSTONString [
+
 	"Converts the query to a string used to save the query in STON format.
 	The string must return the query when evaluated by the Smalltalk compiler"
 
-	^ String streamContents: [ :stream |
+	^ String streamContents: [ :stream | 
 		  innerQuery storeWithParentsOn: stream ]
 ]
 

@@ -130,7 +130,7 @@ FamixCBCondition >> stonOn: stonWriter [
 			(self instVarNamed: each) ifNotNil: [ :value | 
 				dictionary
 					at: each asSymbol
-					put: ((value class isKindOf: FamixCBQueryHandler)
+					put: ((value isKindOf: FamixCBQueryHandler)
 							 ifTrue: [ value convertToSTONString ]
 							 ifFalse: [ value ]) ] ] ]
 ]
