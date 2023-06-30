@@ -49,7 +49,7 @@ jobs:
         uses: Xotl/cool-github-releases@v1
         with:
           mode: update
-          replace_assets: true
+          #replace_assets: true
           tag_name: 'continuous'
           assets: ${{ env.PROJECT_NAME }}-${{ matrix.smalltalk }}.zip
           github_token: ${{ secrets.GITHUB_TOKEN }}
