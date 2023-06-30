@@ -42,7 +42,8 @@ jobs:
           mv /home/runner/.smalltalkCI/_builds/* .
           mv TravisCI.image $PROJECT_NAME.image
           mv TravisCI.changes $PROJECT_NAME.changes
-          zip -r $PROJECT_NAME${{matrix.smalltalk}}.zip $PROJECT_NAME.image $PROJECT_NAME.changes *.sources pharo.version
+          SMALLTALK_VERSION=${{matrix.smalltalk}}
+          zip -r $PROJECT_NAME$SMALLTALK_VERSION.zip $PROJECT_NAME.image $PROJECT_NAME.changes *.sources pharo.version
           ls
       
       - name: Update release
