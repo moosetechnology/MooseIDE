@@ -19,6 +19,18 @@ MiMSEFileImporter >> run [
 ]
 
 { #category : #'as yet unclassified' }
+MiMSEFileImporter >> runAggregating [
+
+	[
+	model importFrom: 
+		(model class importFrom: inputStream
+		withMetamodel: model metamodel
+		customizingImporterWith: [ :importer |
+		FMImporterAggregationDecorator on: importer ] ) named: (inputStream localName removeSuffix: '.mse')] ensure: [
+		inputStream close ]
+]
+
+{ #category : #'as yet unclassified' }
 MiMSEFileImporter >> runFilteredBy: anImportingContext [
 
 	[ model importFromMSEStream: inputStream filteredBy: anImportingContext ] 

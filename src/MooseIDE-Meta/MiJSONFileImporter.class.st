@@ -19,6 +19,20 @@ MiJSONFileImporter >> run [
 	ensure: [ inputStream close ]
 ]
 
+{ #category : #'as yet unclassified' }
+MiJSONFileImporter >> runAggregating [
+
+	[
+	model
+		importFrom: (model class
+				 importFromJSON: inputStream
+				 withMetamodel: model metamodel
+				 customizingImporterWith: [ :importer |
+				 FMImporterAggregationDecorator on: importer ])
+		named: (inputStream localName removeSuffix: '.json') ] ensure: [
+		inputStream close ]
+]
+
 { #category : #running }
 MiJSONFileImporter >> runFilteredBy: anImportingContext [
 

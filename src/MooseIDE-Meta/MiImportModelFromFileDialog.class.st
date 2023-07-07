@@ -13,7 +13,8 @@ Class {
 		'importingContext',
 		'customEntities',
 		'customEntitiesButton',
-		'allEntitiesButton'
+		'allEntitiesButton',
+		'aggregateMethodsButton'
 	],
 	#category : #'MooseIDE-Meta-Import'
 }
@@ -177,18 +178,24 @@ MiImportModelFromFileDialog >> initializeEntitiesSelectionWidgets [
 
 	allEntitiesButton := self newRadioButton
 		                     label: 'All Entities';
-		                     whenActivatedDo: [ 
+		                     whenActivatedDo: [
 			                     importingContext importMaximum ];
 		                     yourself.
+
+	aggregateMethodsButton := self newRadioButton
+		                          label: 'Aggregate Methods';
+		                          yourself.
 
 	customEntitiesButton := self newRadioButton
 		                        label: 'Custom Entities';
 		                        whenActivatedDo: [ self openEntitiesChoice ];
-		                        whenDeactivatedDo: [ 
+		                        whenDeactivatedDo: [
 			                        self closeEntitiesChoice ];
 		                        yourself.
 
-	allEntitiesButton associatedRadioButtons: { customEntitiesButton }
+	allEntitiesButton associatedRadioButtons: {
+			aggregateMethodsButton.
+			customEntitiesButton }
 ]
 
 { #category : #initialization }
@@ -319,14 +326,15 @@ MiImportModelFromFileDialog >> openEntitiesChoice [
 MiImportModelFromFileDialog >> privateImportModel [
 
 	| model importer |
-	importer := self importerForFile.
-
+	
 	model := mooseModelDroplist selectedItem new.
 
-	importer new
+	importer := self importerForFile
+ new
 		model: model;
-		inputFile: modelFile;
-		runFilteredBy: importingContext.
+		inputFile: modelFile.
+		aggregateMethodsButton state ifTrue: [importer runAggregating  ] ifFalse: [ importer runFilteredBy: importingContext ]
+		.
 
 	model name: (modelNameInput text ifEmpty: [ 'MooseModel' ]).
 
@@ -373,6 +381,7 @@ MiImportModelFromFileDialog >> simpleLayout [
 				   spacing: spacing;
 				   add: 'Entity types:' width: labelWidth;
 				   add: allEntitiesButton;
+					add: aggregateMethodsButton;
 				   add: customEntitiesButton;
 				   yourself)
 		  height: size;
