@@ -222,17 +222,17 @@ MiImportModelFromFileDialog >> initializeMooseModelDroplist [
 
 	mooseModelDroplist := self newDropList
 		                      items:
-			                      (MooseModel withAllSubclasses reject: [ 
-					                       :model | 
-					                       model isDeprecated or: [ 
+			                      (MooseModel withAllSubclasses reject: [
+					                       :model |
+					                       model isDeprecated or: [
 							                       model canBeImportedFromFile not ] ]);
-		                      whenSelectedItemChangedDo: [ :mooseModelClass | 
+		                      whenSelectedItemChangedDo: [ :mooseModelClass |
 			                      importingContext := mooseModelClass
 				                                          importingContextClass
 				                                          new
 				                                          importMaximum;
 				                                          yourself ];
-		                      selectIndex: 1;
+		                      selectItem: FamixStModel;
 		                      yourself
 ]
 
