@@ -29,6 +29,8 @@ MiModelNavigationBrowserTest >> testClickingOpensMooseGroup [
 	"This test passes locally but fails on SmalltalkCI because MiModelNavigationBrowser fails to be implemented.
 	The error is a primitive failure in #inspectorPerform:"
 	| inspectedModel |
+	self skip: 'This test passes locally but fails on SmalltalkCI because MiModelNavigationBrowser fails to be implemented.	The error is a primitive failure in #inspectorPerform:'.
+
 	inspectedModel := FamixStModel new
 		                  newClassNamed: #C1;
 		                  newClassNamed: #C2;
