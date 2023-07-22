@@ -1,6 +1,10 @@
 "
 A MooseIDE browser showing a DSM (Dependency Structural Matrix).
 
+- Accepted entities: a group of entities having dependencies between themselves.
+- Highlight: <TODO>
+- Propagate: <TODO>
+
 Legend:
 - A blue cell indicates that the row entity directly depends on the column entity.
 - A pink cell indicates the same + there is a dependency cycle.
@@ -109,6 +113,11 @@ MiDSMBrowser >> canFollowEntity: anObject [
 MiDSMBrowser >> canHighlight [
 
 	^ true
+]
+
+{ #category : #testing }
+MiDSMBrowser >> canTagEntities [ 
+	^false
 ]
 
 { #category : #accessing }
