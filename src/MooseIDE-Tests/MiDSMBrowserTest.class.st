@@ -35,3 +35,8 @@ MiDSMBrowserTest >> testActivateActionButtons [
 	browser actionButtons do: [ :button | self assert: button isEnabled ]."
 
 ]
+
+{ #category : #'tests - tags' }
+MiDSMBrowserTest >> testCanTagEntities [
+	self deny: browser canTagEntities 
+]
