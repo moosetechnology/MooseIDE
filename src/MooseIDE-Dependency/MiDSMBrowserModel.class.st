@@ -3,9 +3,8 @@ A model for the MiDSMBrowser, contains the entities to display, computes the dep
 "
 Class {
 	#name : #MiDSMBrowserModel,
-	#superclass : #Object,
+	#superclass : #MiAbstractModel,
 	#instVars : [
-		'browser',
 		'graph',
 		'nodeDictionary',
 		'nodeColors',
