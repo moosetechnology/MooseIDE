@@ -55,7 +55,7 @@ MiImportModelFromFileDialog class >> title [
 { #category : #accessing }
 MiImportModelFromFileDialog class >> windowExtent [
 
-	^ 600 @ 250
+	^ 600 @ 400
 ]
 
 { #category : #'metamodel-guess' }
