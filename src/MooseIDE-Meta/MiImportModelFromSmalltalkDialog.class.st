@@ -40,7 +40,7 @@ MiImportModelFromSmalltalkDialog class >> defaultLayout [
 { #category : #accessing }
 MiImportModelFromSmalltalkDialog class >> fullWindowExtent [
 
-	^ 500 @ 700
+	^ 600 @ 700
 ]
 
 { #category : #opening }
@@ -58,7 +58,7 @@ MiImportModelFromSmalltalkDialog class >> title [
 { #category : #accessing }
 MiImportModelFromSmalltalkDialog class >> windowExtent [
 
-	^ 500 @ 400
+	^ 500 @ 500
 ]
 
 { #category : #action }
