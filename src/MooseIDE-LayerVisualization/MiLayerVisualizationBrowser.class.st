@@ -8,15 +8,28 @@ Class {
 }
 
 { #category : #'world menu' }
+MiLayerVisualizationBrowser class >> menuCommandOn: aBuilder [
+
+	<worldMenu>
+	^ self buildMenuItemIn: aBuilder
+]
+
+{ #category : #'world menu' }
 MiLayerVisualizationBrowser class >> menuItem [
 
 	^ #MiLayerVisualizationBrowser
 ]
 
 { #category : #'world menu' }
+MiLayerVisualizationBrowser class >> menuPriority [
+
+	^ self menuVisualizationToolsPriority + 1
+]
+
+{ #category : #'world menu' }
 MiLayerVisualizationBrowser class >> title [
 
-	^ 'Multilayer visualization'
+	^ 'Layer visualization'
 ]
 
 { #category : #'instance creation' }
