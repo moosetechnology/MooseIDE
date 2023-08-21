@@ -1,3 +1,6 @@
+"
+I am a node that describes the layered structure of the layer visualization.
+"
 Class {
 	#name : #MiLVAbstractNode,
 	#superclass : #Object,
