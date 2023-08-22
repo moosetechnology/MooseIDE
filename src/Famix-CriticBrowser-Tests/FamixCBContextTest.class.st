@@ -47,7 +47,7 @@ FamixCBContextTest >> setUp [
 				              '[ :entity | entity name = ''Violation'' ]')
 ]
 
-{ #category : #test }
+{ #category : #tests }
 FamixCBContextTest >> testAddChild [
 
 	context := FamixCBContext named: 'context' on: '[ :col | col ]'.
@@ -71,6 +71,25 @@ FamixCBContextTest >> testAddChild [
 ]
 
 { #category : #tests }
+FamixCBContextTest >> testAllParents [
+
+	| parent1 parent2 |
+	parent1 := FamixCBContext new.
+	parent2 := FamixCBContext new.
+
+	self assertEmpty: context allParents.
+	context parent: parent1.
+	parent1 parent: parent2.
+
+	self assertCollection: context allParents hasSameElements: {
+			parent1.
+			parent2 }.
+	self
+		assertCollection: parent1 allParents
+		hasSameElements: { parent2 }
+]
+
+{ #category : #tests }
 FamixCBContextTest >> testPutViolationsInto [
 	| violations |
 	
@@ -84,7 +103,7 @@ FamixCBContextTest >> testPutViolationsInto [
 	self assert: (violations at: condition) anyOne violatingEntity equals: violatingEntity.
 ]
 
-{ #category : #test }
+{ #category : #tests }
 FamixCBContextTest >> testRemoveChild [
 	
 	context addChild: condition; addChild: childContext.
@@ -95,7 +114,7 @@ FamixCBContextTest >> testRemoveChild [
 	self assert: condition parent equals: nil
 ]
 
-{ #category : #test }
+{ #category : #tests }
 FamixCBContextTest >> testResetExecutionOfTree [
 	
 	context addChild: childContext.
@@ -134,7 +153,7 @@ FamixCBContextTest >> testRunOn [
 	
 ]
 
-{ #category : #test }
+{ #category : #tests }
 FamixCBContextTest >> testRunUpTree [
 	| rootContext |
 	rootContext := FamixCBRootContext named: 'test' on: '[ :col | col ]'.

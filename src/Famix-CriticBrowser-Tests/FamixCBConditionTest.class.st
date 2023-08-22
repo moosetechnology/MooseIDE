@@ -34,7 +34,7 @@ FamixCBConditionTest >> setUp [
 	entity := FamixJavaMethod new
 ]
 
-{ #category : #test }
+{ #category : #tests }
 FamixCBConditionTest >> testAddViolation [
 
 	condition addViolation: (FamixCBViolation condition: condition violatedBy: violatingEntity).
@@ -64,7 +64,7 @@ FamixCBConditionTest >> testAllParents [
 		hasSameElements: { parent2 }
 ]
 
-{ #category : #test }
+{ #category : #tests }
 FamixCBConditionTest >> testPutViolationsInto [
 	| dict |
 	dict := Dictionary new.
@@ -93,7 +93,7 @@ FamixCBConditionTest >> testQuery [
 		raise: FamixCBNotAValidQuery
 ]
 
-{ #category : #test }
+{ #category : #tests }
 FamixCBConditionTest >> testRemoveAllViolations [
 	| violation2 violation3 violation4 |
 	violation2 := FamixCBViolation condition: condition violatedBy: FamixJavaClass new.
@@ -104,7 +104,7 @@ FamixCBConditionTest >> testRemoveAllViolations [
 	self assert: condition violations size equals: 0
 ]
 
-{ #category : #test }
+{ #category : #tests }
 FamixCBConditionTest >> testRemoveViolation [
 	
 	condition addViolation: violation .
@@ -113,7 +113,7 @@ FamixCBConditionTest >> testRemoveViolation [
 	self assert: (violatingEntity violations includes: violation) equals: false
 ]
 
-{ #category : #test }
+{ #category : #tests }
 FamixCBConditionTest >> testRunOn [
 
 	| stubEntity |
