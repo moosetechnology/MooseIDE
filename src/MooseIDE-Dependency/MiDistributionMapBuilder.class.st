@@ -114,7 +114,6 @@ MiDistributionMapBuilder >> nodeAnnouncer [
 		@ self popup;
 		@ self menuInteraction;
 		@ self highlightable;
-		@ (HUpdateSelectionBox new);
 		yourself.
 	^ baseNode announcer
 ]

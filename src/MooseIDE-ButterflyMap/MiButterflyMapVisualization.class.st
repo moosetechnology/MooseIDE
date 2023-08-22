@@ -35,7 +35,6 @@ MiButterflyMapVisualization >> run [
 		           mapModel: owner model;
 		           container: self canvas;
 		           yourself.
-	self canvas @ (builder elasticBoxFor: self canvas).
 	builder build
 ]
 

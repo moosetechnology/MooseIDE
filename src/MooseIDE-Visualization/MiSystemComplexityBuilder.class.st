@@ -165,7 +165,6 @@ MiSystemComplexityBuilder >> nodeAnnouncer [
 		@ self popup;
 		@ self menuInteraction;
 		@ (RSNodeOnTopWhenPositionChanged new);
-		@ (HUpdateSelectionBox new);
 		yourself.
 	^ baseNode announcer
 	

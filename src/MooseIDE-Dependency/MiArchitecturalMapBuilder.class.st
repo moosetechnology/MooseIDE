@@ -287,12 +287,14 @@ MiArchitecturalMapBuilder >> highlightableLinkedShapes [
 				                     highlightable
 					                     record: evt shape
 					                     selector: #color
-					                     value: color ];
+					                     value: color ]
+			                     for: self;
 			                     when: RSUnHighlightEvent
 			                     do: [ :evt | 
 				                     highlightable
 					                     restore: evt shape
-					                     selector: #color ];
+					                     selector: #color ]
+			                     for: self;
 			                     yourself ]
 ]
 
@@ -372,7 +374,6 @@ MiArchitecturalMapBuilder >> nodeAnnouncer [
 		            @ self highlightable;
 		            @ self highlightableLinkedShapes;
 		            @ RSNodeOnTopWhenPositionChanged new;
-		            @ HUpdateSelectionBox new;
 		            @ HResizeParentWhenChildMoves new;
 		            yourself.
 	^ baseNode announcer
