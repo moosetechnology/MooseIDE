@@ -225,7 +225,6 @@ MiLayerVisualizationBuilder >> nodeAnnouncer [
 		            @ self menuInteraction;
 		            @ self highlightable;
 		            @ RSNodeOnTopWhenPositionChanged new;
-		            @ HUpdateSelectionBox new;
 		            @ self highlightableLinkedShapes;
 		            yourself.
 	^ baseNode announcer

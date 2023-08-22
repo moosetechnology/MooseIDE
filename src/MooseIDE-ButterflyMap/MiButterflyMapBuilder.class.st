@@ -187,7 +187,6 @@ MiButterflyMapBuilder >> nodeAnnouncer [
 		            @ self menuInteraction;
 		            @ self highlightable;
 		            @ RSNodeOnTopWhenPositionChanged new;
-		            @ HUpdateSelectionBox new;
 		            @ HResizeParentWhenChildMoves new;
 		            yourself.
 	^ baseNode announcer
