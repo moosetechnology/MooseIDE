@@ -27,6 +27,22 @@ FamixCBTRuleComponent classSide >> stonAllInstVarNames [
 ]
 
 { #category : #accessing }
+FamixCBTRuleComponent >> allParents [
+
+	^ parent
+		  ifNil: [ {  } ]
+		  ifNotNil: [ self allParentsIn: OrderedCollection new ]
+]
+
+{ #category : #accessing }
+FamixCBTRuleComponent >> allParentsIn: anOrderedCollection [
+
+	^ parent ifNil: [ anOrderedCollection ] ifNotNil: [
+		  anOrderedCollection add: self parent.
+		  self parent allParentsIn: anOrderedCollection ]
+]
+
+{ #category : #accessing }
 FamixCBTRuleComponent >> parent [
 	"Relation named: #parent type: #FamixCBContext opposite: #children"
 

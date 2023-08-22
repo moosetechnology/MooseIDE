@@ -45,6 +45,25 @@ FamixCBConditionTest >> testAddViolation [
 	self assert: condition violations size equals: 2.
 ]
 
+{ #category : #tests }
+FamixCBConditionTest >> testAllParents [
+
+	| parent1 parent2 |
+	parent1 := FamixCBContext new.
+	parent2 := FamixCBContext new.
+
+	self assertEmpty: condition allParents.
+	condition parent: parent1.
+	parent1 parent: parent2.
+
+	self assertCollection: condition allParents hasSameElements: {
+			parent1.
+			parent2 }.
+	self
+		assertCollection: parent1 allParents
+		hasSameElements: { parent2 }
+]
+
 { #category : #test }
 FamixCBConditionTest >> testPutViolationsInto [
 	| dict |

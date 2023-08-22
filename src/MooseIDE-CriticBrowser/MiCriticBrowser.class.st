@@ -90,7 +90,7 @@ MiCriticBrowser >> allAvailableContexts [
 	  , (specModel ruleComponents select: [ :component |
 			   component class = FamixCBContext and: [
 				   component ~= rules selectedItem and: [
-					   (rules selectedItems children includes: component) not ] ] ])
+					   (component allParents includes: rules selectedItem) not ] ] ])
 ]
 
 { #category : #'window control' }
