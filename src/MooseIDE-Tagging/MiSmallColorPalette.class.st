@@ -29,13 +29,17 @@ MiSmallColorPalette >> boxFromColor: aColor [
 				   joinMiter;
 				   color: (Smalltalk ui theme textColor alpha: 0.3);
 				   yourself);
-		  when: RSMouseClick do: [ :evt | self owner setColor: aColor ];
-		  when: RSMouseEnter do: [ :evt | 
-		  evt shape extent: 30 @ 30.
-		  evt signalUpdate ];
-		  when: RSMouseLeave do: [ :evt | 
-		  evt shape extent: 20 @ 20.
-		  evt signalUpdate ];
+		  when: RSMouseClick
+		  do: [ :evt | self owner setColor: aColor ]
+		  for: self;
+		  when: RSMouseEnter do: [ :evt |
+			  evt shape extent: 30 @ 30.
+			  evt signalUpdate ]
+		  for: self;
+		  when: RSMouseLeave do: [ :evt |
+			  evt shape extent: 20 @ 20.
+			  evt signalUpdate ]
+		  for: self;
 		  yourself
 ]
 

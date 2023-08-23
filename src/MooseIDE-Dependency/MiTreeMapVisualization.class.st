@@ -73,17 +73,19 @@ MiTreeMapVisualization >> initialize [
 
 	super initialize.
 	base := RSComposite new
-		draggable;
-		addInteraction: (RSMorphicPopupInteraction new
-			morphBuilder: [:model | self createPopupMorphFor: model ]);
-		when: RSMouseLeftClick
-		 	do: [ :evt | self processEvent: evt ].
-	base @ (RSMenuActivable new menuDo: [ :menu :box | 
+		        draggable;
+		        addInteraction:
+			        (RSMorphicPopupInteraction new morphBuilder: [ :model |
+					         self createPopupMorphFor: model ]);
+		        when: RSMouseLeftClick
+		        do: [ :evt | self processEvent: evt ]
+		        for: self.
+	base @ (RSMenuActivable new menuDo: [ :menu :box |
 		 menu
 			 add: 'Inspect'
 			 target: MiInspectorBrowser
 			 selector: #inspect:forBuses:
-			 argumentList: { 
+			 argumentList: {
 					 box model.
 					 self owner buses } ]).
 	childrenBlock := [ :entity | entity children ]
