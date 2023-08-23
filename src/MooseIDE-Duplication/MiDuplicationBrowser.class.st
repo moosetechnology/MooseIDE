@@ -73,11 +73,12 @@ MiDuplicationBrowser >> btnRun [
 { #category : #testing }
 MiDuplicationBrowser >> canFollowEntity: anObject [
 
-	^ anObject isMooseObject and: [ 
-		  anObject asCollection anySatisfy: [ :each | 
-			  [ each hasSourceAnchor ]
-				  on: Error
-				  do: [ false ] ] ]
+	^ anObject isMooseObject and: [
+		  anObject isCollection and: [
+			  anObject anySatisfy: [ :each |
+				  [ each hasSourceAnchor ]
+					  on: Error
+					  do: [ false ] ] ] ]
 ]
 
 { #category : #testing }

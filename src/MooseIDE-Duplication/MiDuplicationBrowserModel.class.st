@@ -73,8 +73,7 @@ MiDuplicationBrowserModel >> entities [
 { #category : #accessing }
 MiDuplicationBrowserModel >> entities: aCollection [
 
-	entities := aCollection asCollection sorted: [ :a :b |
-		            a name < b name ].
+	entities := aCollection sorted: [ :a :b | a name < b name ].
 	browser showEntities: entities
 ]
 
