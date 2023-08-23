@@ -130,7 +130,10 @@ MiNoteBookReport >> initializeLayout [
 MiNoteBookReport >> initializePresenters [
 
 	(headerSep := self newRoassal) canvas color: Color transparent.
-	headerSep canvas when: RSExtentChangedEvent do: [ self updateHeight ].
+	headerSep canvas
+		when: RSExtentChangedEvent
+		do: [ self updateHeight ]
+		for: self.
 	self whenDisplayDo: [ self updateHeight ].
 	self initializeLayout
 ]

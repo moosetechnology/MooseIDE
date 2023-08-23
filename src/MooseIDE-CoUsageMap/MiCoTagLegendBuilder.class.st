@@ -69,21 +69,26 @@ MiCoTagLegendBuilder >> legendBottomLine [
 
 { #category : #hooks }
 MiCoTagLegendBuilder >> legendDo: aShape [
+
 	| highlight |
 	highlight := RSHighlightable new
-		when: RSHighlightEvent do: [ :evt | 
-			evt shape border color: Color blue.
-			evt signalUpdate ];
-		when: RSUnHighlightEvent do: [ :evt | 
-			evt shape border color: Color lightGray.
-			 evt signalUpdate ].
-	aShape shapes last translateBy: 0@15.
+		             when: RSHighlightEvent do: [ :evt |
+			             evt shape border color: Color blue.
+			             evt signalUpdate ]
+		             for: self;
+		             when: RSUnHighlightEvent do: [ :evt |
+			             evt shape border color: Color lightGray.
+			             evt signalUpdate ]
+		             for: self.
+	aShape shapes last translateBy: 0 @ 15.
 	aShape
 		adjustToChildren;
 		padding: 10;
 		when: RSMouseMove send: #yourself to: self;
 		color: ((Color colorFrom: 'f4f4f4') alpha: 0.9);
-		border: (RSBorder new color: Color lightGray; width: 0.5);
+		border: (RSBorder new
+				 color: Color lightGray;
+				 width: 0.5);
 		addInteraction: highlight
 ]
 

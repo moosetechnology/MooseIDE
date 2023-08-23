@@ -283,13 +283,16 @@ MiSystemComplexityBuilder >> renderIn: aCanvas [
 	aCanvas schildren: rootShapes.
 	aCanvas addAll: rootShapes.
 	aCanvas @ self menuInteraction.
-	rootNode when: HNodeAddedEvent do: [ :evt | 
-		| newShape |
-		newShape := (self shapeFor: evt newChild) sparent: aCanvas.
-		newShape position: aCanvas camera position.
-		rootShapes add: newShape.
-		aCanvas add: newShape.
-		aCanvas signalUpdate ].
+	rootNode
+		when: HNodeAddedEvent
+		do: [ :evt |
+			| newShape |
+			newShape := (self shapeFor: evt newChild) sparent: aCanvas.
+			newShape position: aCanvas camera position.
+			rootShapes add: newShape.
+			aCanvas add: newShape.
+			aCanvas signalUpdate ]
+		for: self.
 
 	self normalizeShapes.
 	self renderLinesIn: aCanvas.
