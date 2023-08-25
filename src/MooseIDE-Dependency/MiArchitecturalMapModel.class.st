@@ -69,6 +69,15 @@ MiArchitecturalMapModel >> associationTypesSetting [
 ]
 
 { #category : #accessing }
+MiArchitecturalMapModel >> availableLayouts [
+	"all available layouts: 
+	  RSLayout withAllSubclasses reject: [ :c | c isAbstract ]
+	But some of them require specific configuration that we cannot easily specify here
+	so we choose a subset of the simplest ones"
+	^{ RSFlowLayout . RSCircleLayout . RSGridLayout }
+]
+
+{ #category : #accessing }
 MiArchitecturalMapModel >> availableQueries [
 
 	^ { self defaultChildrenQuery } , browser availableQueries
@@ -120,6 +129,11 @@ MiArchitecturalMapModel >> defaultChildrenQuery [
 ]
 
 { #category : #accessing }
+MiArchitecturalMapModel >> defaultLayout [
+	^RSFlowLayout
+]
+
+{ #category : #accessing }
 MiArchitecturalMapModel >> entities [
 
 	^ entities
@@ -152,6 +166,7 @@ MiArchitecturalMapModel >> initializeSettings [
 						addItem: self itemChildrenQuery named: #childrenQuery;
 						addItem: self itemTags named: #tags;
 						addItem: self itemAssociationTypes named: #associationTypes;
+						addItem: self itemLayout named: #layout ;
 						addItem: self itemNoMegaMorphic named: #noMegaMorphic ;
 						addItem: self itemMegaMorphicSize named: #megaMorphicSize ;
 		            yourself
@@ -175,6 +190,17 @@ MiArchitecturalMapModel >> itemChildrenQuery [
 		  setValue: self defaultChildrenQuery;
 		  label: 'Children query';
 		  help: 'The query giving all the children of any displayed entity';
+		  yourself
+]
+
+{ #category : #settings }
+MiArchitecturalMapModel >> itemLayout [
+
+	^ MiAbstractSettingItem droplistSetting
+		  possibleValues: self availableLayouts;
+		  setValue: self defaultLayout;
+		  label: 'Layout to display entities';
+		  help: 'You can change the layout of the entities (eg: circular or flow layout)';
 		  yourself
 ]
 
@@ -218,6 +244,12 @@ MiArchitecturalMapModel >> itemTags [
 		  label: 'Tags to add';
 		  help: 'The tags you want to add to the visualization. They will be entities and inner elements are tagged entities';
 		  yourself
+]
+
+{ #category : #settings }
+MiArchitecturalMapModel >> layoutSetting [
+
+	^ settings getItemValue: #layout
 ]
 
 { #category : #settings }
