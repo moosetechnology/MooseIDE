@@ -69,6 +69,12 @@ MiArchitecturalMapBrowserTest >> testSettingsAction [
 ]
 
 { #category : #tests }
+MiArchitecturalMapBrowserTest >> testSettingsAvailableLayouts [
+
+	self assert: browser model availableLayouts isNotEmpty.
+]
+
+{ #category : #tests }
 MiArchitecturalMapBrowserTest >> testSettingsClickOK [
 	"overriding to setup the right context"
 
@@ -79,4 +85,10 @@ MiArchitecturalMapBrowserTest >> testSettingsClickOK [
 			browser model settings buttonOk click ]
 		raise: Error.
 
+]
+
+{ #category : #tests }
+MiArchitecturalMapBrowserTest >> testSettingsDefaultLayout [
+
+	self assert: browser model defaultLayout equals: RSFlowLayout
 ]
