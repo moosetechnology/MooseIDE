@@ -126,7 +126,7 @@ MiCriticBrowserTest >> testExportRulesToStream [
 	self assert: cond1 query equals: '(FQSelectScriptQuery script: [ :entity | entity isStub ])'.
 	self assert: cond2 query equals: '(FQTypeQuery types: {FamixStMethod}) --> (FQBooleanQuery property: #isDead)'.
 	self assert: cond3 query equals: '(FQSelectScriptQuery script: [ :entity | entity isDead ])'.
-	self assert: hierarchy equals: { 0. 0. 0. 1 } asOrderedCollection.
+	self assertCollection: hierarchy hasSameElements: { 0. 0. 0. 1 }.
 	
 	stonReader close
 	
