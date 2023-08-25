@@ -4,6 +4,14 @@ Class {
 	#category : #'MooseIDE-Dependency-ArchitecturalMap'
 }
 
+{ #category : #'public - hooks' }
+MiHArchitecturalMapStyle >> boxChildrenColorFor: anHNode [
+
+	^ anHNode level odd
+		  ifTrue: [ Color lightGray ]
+		  ifFalse: [ Color veryLightGray ]
+]
+
 { #category : #private }
 MiHArchitecturalMapStyle >> colorFor: node [
 
