@@ -146,24 +146,43 @@ MiArchitecturalMapBuilder >> build [
 ]
 
 { #category : #building }
+MiArchitecturalMapBuilder >> buildChildrenNodesFrom: anEntity register: aBoolean [
+
+	^ ((self mapModel childrenFor: anEntity)
+		   collect: [ :e | 
+			   anEntity == e ifFalse: [ 
+				   self buildNodeFromEntity: e register: aBoolean ] ]
+		   thenSelect: [ :e | e isNotNil ]) sort: [ :c1 :c2 | 
+		  c1 name < c2 name ]
+]
+
+{ #category : #building }
+MiArchitecturalMapBuilder >> buildChildrenNodesFromTag: aTag [
+
+	^ ((aTag taggedEntities collect: [ :e | 
+		    aTag == e ifFalse: [ self buildNodeFromEntity: e register: true ] ]) 
+		   reject: [ :e | e isNil or: [ e parent notNil ] ]) sort: [ :a :b | 
+		  a name < b name ]
+]
+
+{ #category : #building }
 MiArchitecturalMapBuilder >> buildNodeFromEntity: anEntity register: aBoolean [
 
 	| node |
-	nodeMooseIDDict at: anEntity mooseID ifPresent: [ ^ nil ].
+	nodeMooseIDDict at: anEntity mooseID ifPresent: [ :n | 
+		n parent ifNil: [ ^ n ].
+		^ nil ].
+
 	node := HNode new
 		        name:
 			        (String streamContents: [ :s | anEntity displayStringOn: s ]);
 		        rawModel: anEntity;
 		        style: MiHArchitecturalMapStyle new;
 		        addAll:
-			        (((self mapModel childrenFor: anEntity) sort: [ :c1 :c2 | 
-					          c1 name < c2 name ])
-				         collect: [ :e | 
-					         anEntity == e ifFalse: [ 
-							         self buildNodeFromEntity: e register: aBoolean ] ]
-				         thenSelect: [ :e | e isNotNil ]);
+			        (self buildChildrenNodesFrom: anEntity register: aBoolean);
 		        collapse;
 		        yourself.
+
 	aBoolean ifTrue: [ 
 		nodeMooseIDDict at: anEntity mooseID put: node.
 		allEntities add: anEntity ].
@@ -179,11 +198,8 @@ MiArchitecturalMapBuilder >> buildNodeFromTag: aTag [
 		        name:
 			        (String streamContents: [ :s | aTag displayStringOn: s ]);
 		        rawModel: aTag;
-		        addAll: (aTag taggedEntities
-				         collect: [ :e | 
-					         aTag == e ifFalse: [ 
-							         self buildNodeFromEntity: e register: true ] ]
-				         thenSelect: [ :e | e isNotNil ]);
+		        style: MiHArchitecturalMapStyle new;
+		        addAll: (self buildChildrenNodesFromTag: aTag);
 		        color: aTag color;
 		        collapse;
 		        yourself.
@@ -240,7 +256,8 @@ MiArchitecturalMapBuilder >> createRootNodes [
 
 	^ (self elements
 		   collect: [ :e | self buildNodeFromEntity: e register: true ]
-		   thenReject: [ :e | e isNil ]) sort: [ :a :b | a name < b name ]
+		   thenReject: [ :e | e isNil or: [ e parent notNil ] ]) sort: [ :a :b | 
+		  a name < b name ]
 ]
 
 { #category : #accessing }
