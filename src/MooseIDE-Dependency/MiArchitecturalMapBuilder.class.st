@@ -420,12 +420,12 @@ MiArchitecturalMapBuilder >> parentNodeFor: anHNode [
 	^ parentNode
 ]
 
-{ #category : #initialization }
+{ #category : #layout }
 MiArchitecturalMapBuilder >> relayout: aGroupOfShapes parent: shape [
 	
 	shape layout ifNil: [ 
-		RSFlowLayout new
-			gapSize: 10;
+		mapModel layoutSetting new
+			"gapSize: 10;"
 			on: aGroupOfShapes. 
 		^ self ].
 	shape layout on: aGroupOfShapes.
