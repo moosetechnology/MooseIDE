@@ -62,12 +62,6 @@ MiArchitecturalMapModel >> associationTypes [
 	^ settings getItemValue: #associationTypes
 ]
 
-{ #category : #settings }
-MiArchitecturalMapModel >> associationTypesSetting [
-
-	^ settings getItemValue: #associationTypes
-]
-
 { #category : #accessing }
 MiArchitecturalMapModel >> availableQueries [
 
@@ -139,12 +133,6 @@ MiArchitecturalMapModel >> fetchTags [
 ]
 
 { #category : #initialization }
-MiArchitecturalMapModel >> initialize [
-
-	super initialize
-]
-
-{ #category : #initialization }
 MiArchitecturalMapModel >> initializeSettings [
 
 	settings := super initializeSettings
@@ -152,8 +140,9 @@ MiArchitecturalMapModel >> initializeSettings [
 						addItem: self itemChildrenQuery named: #childrenQuery;
 						addItem: self itemTags named: #tags;
 						addItem: self itemAssociationTypes named: #associationTypes;
-						addItem: self itemNoMegaMorphic named: #noMegaMorphic ;
-						addItem: self itemMegaMorphicSize named: #megaMorphicSize ;
+						addItem: self itemNoMegaMorphic named: #noMegaMorphic;
+						addItem: self itemMegaMorphicSize named: #megaMorphicSize;
+						addItem: self itemTimeoutDuration named: #timeoutDuration;
 		            yourself
 ]
 
@@ -221,6 +210,18 @@ MiArchitecturalMapModel >> itemTags [
 ]
 
 { #category : #settings }
+MiArchitecturalMapModel >> itemTimeoutDuration [
+	"Default arbitrary timeout of 30s"
+
+	^ MiTextSettingItem integerSetting
+		  setValue: 30;
+		  label: 'Timeout duration (seconds)';
+		  help:
+			  'How long to wait before interrupting the process. No value means no timeout.';
+		  yourself
+]
+
+{ #category : #settings }
 MiArchitecturalMapModel >> megaMorphicSize [
 	^settings getItemValue: #megaMorphicSize
 ]
@@ -245,7 +246,7 @@ MiArchitecturalMapModel >> settings [
 { #category : #settings }
 MiArchitecturalMapModel >> settingsChanged: aBoolean [
 
-	aBoolean ifTrue: [ browser run ]
+	aBoolean ifTrue: [ browser runVisualization ]
 ]
 
 { #category : #accessing }
@@ -264,6 +265,12 @@ MiArchitecturalMapModel >> showBusEntities [
 MiArchitecturalMapModel >> tags [
 
 	^ settings getItemValue: #tags
+]
+
+{ #category : #settings }
+MiArchitecturalMapModel >> timeoutDuration [
+
+	^ settings getItemValue: #timeoutDuration
 ]
 
 { #category : #accessing }
