@@ -238,11 +238,13 @@ MiArchitecturalMapModel >> itemShowBusEntities [
 MiArchitecturalMapModel >> itemTags [
 
 	^ MiAbstractSettingItem buttonWithEditableListSetting
+		  updateWith: [ self fetchTags ];
 		  possibleValues: self fetchTags;
 		  displayIcon: [ :tag | MiTagBrowserModel iconForTag: tag ];
 		  display: [ :tag | tag name ];
 		  label: 'Tags to add';
-		  help: 'The tags you want to add to the visualization. They will be entities and inner elements are tagged entities';
+		  help:
+			  'The tags you want to add to the visualization. They will be entities and inner elements are tagged entities';
 		  yourself
 ]
 
