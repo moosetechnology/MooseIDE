@@ -35,13 +35,23 @@ MiCoUsageMapBrowserTest >> testConsumerProducer [
 
 { #category : #'tests - tags' }
 MiCoUsageMapBrowserTest >> testSelectedTagSetAndGet [
-	| model entity tag |
+
+	| model entity entity2 tag |
 	self skip.
 	model := FamixRepTestModel new.
 	tag := model tagNamed: 'aTag'.
-	entity := FamixRepTestClass new name: 'aClass' ; mooseModel: model ; yourself.
+	entity := FamixRepTestClass new
+		          name: 'aClass';
+		          mooseModel: model;
+		          yourself.
+	entity2 := FamixRepTestClass new
+		           name: 'anotherClass';
+		           mooseModel: model;
+		           yourself.
 
-	browser followEntity: entity.
+	browser followEntity: {
+			entity.
+			entity2 }.
 	browser selectedTag: tag.
 	self assert: browser selectedTag equals: tag
 ]
