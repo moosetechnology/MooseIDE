@@ -11,7 +11,7 @@ TEntityMetaLevelDependency >> miTreeExtension [
 						    yourself);
 				   addColumn: (SpStringTableColumn evaluated: #name);
 				   yourself);
-		  children: [ :aClass | aClass children asOrderedCollection ];
+		  children: [ :aClass | aClass children ];
 		  beMultipleSelection;
 		  roots: { self };
 		  beResizable

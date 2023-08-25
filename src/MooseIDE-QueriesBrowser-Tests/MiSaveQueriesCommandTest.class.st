@@ -55,8 +55,8 @@ MiSaveQueriesCommandTest >> testPutChildrenInPlace [
 	sortedQueriesWithChildreInPlace := saver putChildrenInPlace: fixture expectedTopologicalOrder.
 
 	self
-		assert: sortedQueriesWithChildreInPlace asOrderedCollection
-		equals: fixture expectedChildrenInPlaceOrder asOrderedCollection
+		assertCollection: sortedQueriesWithChildreInPlace 
+		hasSameElements: fixture expectedChildrenInPlaceOrder 
 ]
 
 { #category : #tests }
@@ -109,7 +109,5 @@ MiSaveQueriesCommandTest >> testTopologicalSortForQueries2 [
 	sortedQueries := saver topologicalSortForQueries:
 		                 fixture unsortedQueries.
 
-	self
-		assert: sortedQueries
-		equals: fixture expectedTopologicalOrder asOrderedCollection
+	self assertCollection: sortedQueries hasSameElements: fixture expectedTopologicalOrder
 ]

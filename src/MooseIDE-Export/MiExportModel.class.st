@@ -91,16 +91,18 @@ MiExportModel >> commentOf: anEntity [
 { #category : #initialization }
 MiExportModel >> defaultColumns [
 
-	^ { 
+	^OrderedCollection 
+		with:
 		  (MiExportQueryColumnModel new
 			   query: [ :entity | 
 				   String streamContents: [ :s | entity displayStringOn: s ] ];
 			   name: #Name;
-			   yourself).
+			   yourself)
+		with: 
 		  (MiExportQueryColumnModel new
 			   query: [ :entity | entity mooseDescription name ];
 			   name: #Type;
-			   yourself) } asOrderedCollection
+			   yourself)
 ]
 
 { #category : #accessing }

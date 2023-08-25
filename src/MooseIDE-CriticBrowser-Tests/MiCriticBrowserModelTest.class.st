@@ -87,7 +87,7 @@ MiCriticBrowserModelTest >> testCreateHierarchyTree [
 	model addChild: deadCondition toContext: context.
 	tree := model createHierarchyTree.
 	self assert: tree size equals: 3.
-	self assert: tree equals: { 0. 0. 2 } asOrderedCollection
+	self assertCollection: tree hasSameElements: { 0. 0. 2 }
 ]
 
 { #category : #tests }

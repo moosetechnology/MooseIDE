@@ -7,7 +7,7 @@ Class {
 { #category : #running }
 MiButtonSelectableListSettingItemTest >> initialValue [
 
-	^ { 1 } asOrderedCollection
+	^OrderedCollection with: 1
 ]
 
 { #category : #running }
@@ -19,5 +19,5 @@ MiButtonSelectableListSettingItemTest >> settingItemInstance [
 { #category : #running }
 MiButtonSelectableListSettingItemTest >> someOtherValue [
 	
-	^ { 3. 2. 1 } asOrderedCollection
+	^OrderedCollection with: 3 with: 2 with: 1
 ]
