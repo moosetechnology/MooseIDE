@@ -126,8 +126,7 @@ MiButterflyMapModel >> getRightEntitiesQuery [
 { #category : #accessing }
 MiButterflyMapModel >> initializeSettings [
 
-	settings := MiSettingsPresenter new
-		            ownerTool: self;
+	settings := super initializeSettings
 		            addItem: self itemChildrenQuery
 		            named: self childrenQuery;
 		            addItem: self itemLeftEntitiesQuery

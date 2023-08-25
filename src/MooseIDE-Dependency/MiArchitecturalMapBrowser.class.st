@@ -108,6 +108,20 @@ MiArchitecturalMapBrowser >> canvas [
 	^ visualization canvas
 ]
 
+{ #category : #actions }
+MiArchitecturalMapBrowser >> doWithTimeout: aBlock [
+
+	self model timeoutDuration
+		ifNil: [ aBlock value ]
+		ifNotNil: [ :duration |
+			aBlock
+				valueWithin: self model timeoutDuration asSeconds
+				onTimeout: [
+					Abort signal:
+						'Process took longer than the configured time ('
+						, duration asString , ' seconds)' ] ]
+]
+
 { #category : #initialization }
 MiArchitecturalMapBrowser >> fetchTags [
 
@@ -150,16 +164,10 @@ MiArchitecturalMapBrowser >> miSelectedItem [
 				asMooseGroup ]
 ]
 
-{ #category : #initialization }
-MiArchitecturalMapBrowser >> run [
-
-	visualization run
-]
-
 { #category : #actions }
-MiArchitecturalMapBrowser >> runVisualization [ 
+MiArchitecturalMapBrowser >> runVisualization [
 
-	visualization run
+	self doWithTimeout: [ visualization run ]
 ]
 
 { #category : #initialization }
