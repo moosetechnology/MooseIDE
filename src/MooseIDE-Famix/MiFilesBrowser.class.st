@@ -129,7 +129,7 @@ MiFilesBrowser >> initializePresenters [
 	treeEntity := self newTreeTable.
 	treeEntity
 		addColumn: (SpCompositeTableColumn new
-				 addColumn: ((SpImageTableColumn evaluated: #midasIcon)
+				 addColumn: ((SpImageTableColumn evaluated: #mooseIcon)
 						  width: 20;
 						  yourself);
 				 addColumn: (SpStringTableColumn evaluated: #name);

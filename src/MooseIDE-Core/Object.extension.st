@@ -6,6 +6,6 @@ Object >> isMooseObject [
 ]
 
 { #category : #'*MooseIDE-Core' }
-Object >> midasIcon [
+Object >> mooseIcon [
 	^ Form extent: 16@16 
 ]

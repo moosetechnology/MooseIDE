@@ -6,7 +6,7 @@ TEntityMetaLevelDependency >> miTreeExtension [
 	<inspectorPresentationOrder: 15 title: 'Tree'>
 	^ SpTreeTablePresenter new
 		  addColumn: (SpCompositeTableColumn new
-				   addColumn: ((SpImageTableColumn evaluated: #midasIcon)
+				   addColumn: ((SpImageTableColumn evaluated: #mooseIcon)
 						    width: 20;
 						    yourself);
 				   addColumn: (SpStringTableColumn evaluated: #name);

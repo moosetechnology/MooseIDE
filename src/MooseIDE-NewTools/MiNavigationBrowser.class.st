@@ -78,6 +78,12 @@ MiNavigationBrowser >> hasOutputActivationPort [
 ]
 
 { #category : #initialization }
+MiNavigationBrowser >> iconBlock [
+
+	^ [ :el | el value mooseIcon ]
+]
+
+{ #category : #initialization }
 MiNavigationBrowser >> initializePresenters [
 
 	| items |
@@ -90,7 +96,7 @@ MiNavigationBrowser >> initializePresenters [
 	navigation addColumn: (SpCompositeTableColumn new
 			 addColumn: (SpImageTableColumn new
 					  beNotExpandable;
-					  evaluated: [ :el | el value midasIcon ];
+					  evaluated: self iconBlock;
 					  yourself);
 			 addColumn: (SpStringTableColumn new
 					  evaluated: [ :el | el key ];

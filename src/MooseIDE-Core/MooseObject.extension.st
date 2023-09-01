@@ -1,6 +1,12 @@
 Extension { #name : #MooseObject }
 
 { #category : #'*MooseIDE-Core' }
+MooseObject >> iconNamed: aSymbol [
+
+	^ MiApplication current iconProvider iconNamed: aSymbol
+]
+
+{ #category : #'*MooseIDE-Core' }
 MooseObject >> isMooseObject [
 	^ true
 ]

@@ -1,7 +1,7 @@
 Extension { #name : #FamixTClass }
 
 { #category : #'*MooseIDE-Core' }
-FamixTClass >> midasIcon [
+FamixTClass >> mooseIcon [
 	
-	^ self iconNamed: #mooseFamixClass
+	^ self iconNamed: #famixClass
 ]

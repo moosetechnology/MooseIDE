@@ -5,6 +5,12 @@ Class {
 }
 
 { #category : #initialization }
+MiModelNavigationBrowser >> iconBlock [
+
+	^ [ :el | self iconNamed: #mooseMetamodelGroup ]
+]
+
+{ #category : #initialization }
 MiModelNavigationBrowser >> initializePresenters [
 
 	super initializePresenters.
