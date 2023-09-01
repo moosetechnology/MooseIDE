@@ -37,12 +37,6 @@ MiAbstractGroupNavigationBrowser >> initializePresenters [
 ]
 
 { #category : #initialization }
-MiAbstractGroupNavigationBrowser >> inspectorObjectContextPresenter [
-
-	^ self owner owner owner owner
-]
-
-{ #category : #initialization }
 MiAbstractGroupNavigationBrowser >> itemsFor: anEntity [
 
 	^ anEntity collect: [ :entity | entity inspectorToString -> entity ]

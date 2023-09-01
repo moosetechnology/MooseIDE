@@ -15,12 +15,6 @@ MiModelNavigationBrowser >> initializePresenters [
 ]
 
 { #category : #initialization }
-MiModelNavigationBrowser >> inspectorObjectContextPresenter [
-
-	^ self owner owner owner owner
-]
-
-{ #category : #initialization }
 MiModelNavigationBrowser >> itemsFor: anEntity [
 
 	^ anEntity navigationItemsFromPragmas

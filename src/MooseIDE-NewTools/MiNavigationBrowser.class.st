@@ -97,7 +97,15 @@ MiNavigationBrowser >> initializePresenters [
 					  yourself);
 			 yourself).
 	navigation whenActivatedDo: [ :selection |
-		activationBlock value: self ]
+		self inspectorObjectContextPresenter owner
+			changeSelection: selection selectedItem value
+			from: self inspectorObjectContextPresenter ]
+]
+
+{ #category : #initialization }
+MiNavigationBrowser >> inspectorObjectContextPresenter [
+
+	^ self owner owner owner owner
 ]
 
 { #category : #initialization }
