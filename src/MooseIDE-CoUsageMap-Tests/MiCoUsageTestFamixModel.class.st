@@ -18,6 +18,7 @@ MiCoUsageTestFamixModel >> initialize [
 
 	super initialize.
 	self name: 'Test model for CoUsageMap'.
+	self metamodel: FamixStModel metamodel.
 	self initializeAttributes.
 	self initializeMethods.
 	self initializeAccesses
@@ -54,42 +55,20 @@ MiCoUsageTestFamixModel >> initializeAccesses [
 { #category : #initialization }
 MiCoUsageTestFamixModel >> initializeAttributes [
 
-	FamixStAttribute new
-		name: 'var1';
-		mooseModel: self.
-	FamixStAttribute new
-		name: 'var2';
-		mooseModel: self.
-	FamixStAttribute new
-		name: 'var3';
-		mooseModel: self.
-	FamixStAttribute new
-		name: 'var4';
-		mooseModel: self.
-	FamixStAttribute new
-		name: 'var5';
-		mooseModel: self.
-	FamixStAttribute new
-		name: 'var6';
-		mooseModel: self
+	self newAttributeNamed: 'var1'.
+	self newAttributeNamed: 'var2'.
+	self newAttributeNamed: 'var3'.
+	self newAttributeNamed: 'var4'.
+	self newAttributeNamed: 'var5'.
+	self newAttributeNamed: 'var6'
 ]
 
 { #category : #initialization }
 MiCoUsageTestFamixModel >> initializeMethods [
 
-	FamixStMethod new
-		name: 'method1';
-		mooseModel: self.
-	FamixStMethod new
-		name: 'method2';
-		mooseModel: self.
-	FamixStMethod new
-		name: 'method3';
-		mooseModel: self.
-	FamixStMethod new
-		name: 'method4';
-		mooseModel: self.
-	FamixStMethod new
-		name: 'method5';
-		mooseModel: self
+	self newMethodNamed: 'method1'.
+	self newMethodNamed: 'method2'.
+	self newMethodNamed: 'method3'.
+	self newMethodNamed: 'method4'.
+	self newMethodNamed: 'method5'
 ]
