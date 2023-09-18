@@ -39,7 +39,6 @@ MiCoUsageMapVisualization >> consumeTagAssociation: aFamixTagAssociation [
 { #category : #initialization }
 MiCoUsageMapVisualization >> initialize [
 	super initialize.
-	self script: [ :canvas | canvas ].
 
 	mapBuilder := MiCoUsageMapBuilder new.
 	mapBuilder visualization: self.

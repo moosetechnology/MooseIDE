@@ -26,6 +26,9 @@ Controls:
 Class {
 	#name : #MiDependencyBrowser,
 	#superclass : #MiAbstractVisualizationBrowser,
+	#instVars : [
+		'entities'
+	],
 	#category : #'MooseIDE-Dependency-Dependency'
 }
 
@@ -102,14 +105,28 @@ MiDependencyBrowser >> canTagEntities [
 { #category : #actions }
 MiDependencyBrowser >> followEntity: anEntity [
 
+	entities := anEntity asMooseGroup select: [ :a |
+		            a usesFamixTrait: TEntityMetaLevelDependency ].
 	visualization
-		entities: (anEntity asMooseGroup select: [ :a | 
-					 a usesFamixTrait: TEntityMetaLevelDependency ]);
+		entities: entities;
 		run
+]
+
+{ #category : #accessing }
+MiDependencyBrowser >> initialize [
+
+	super initialize.
+	entities := MooseGroup new
 ]
 
 { #category : #initialization }
 MiDependencyBrowser >> initializePresenters [
 
 	visualization := self instantiate: MiDependencyVisualization
+]
+
+{ #category : #accessing }
+MiDependencyBrowser >> miSelectedItem [
+
+	^ entities
 ]

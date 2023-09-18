@@ -43,8 +43,5 @@ MiDependencyBrowserTest >> testMiSelectedItem [
 
 	browser receiveEntity: (MooseGroup with: entityToSelect).
 	self assert: browser miSelectedItem isMooseObject.
-	self assert: browser miSelectedItem anyOne equals: entityToSelect.
-
-	browser diagram canvas shapes anyOne click.
-	self assert: browser miSelectedItem equals: entityToSelect
+	self assert: browser miSelectedItem anyOne equals: entityToSelect
 ]
