@@ -61,7 +61,7 @@ MiDependencyBrowser class >> menuItem [
 { #category : #'world menu' }
 MiDependencyBrowser class >> menuParent [
 
-	^ self dependencyMenuRoot
+	^ #MooseIDEDependencyBrowsers
 ]
 
 { #category : #'world menu' }
