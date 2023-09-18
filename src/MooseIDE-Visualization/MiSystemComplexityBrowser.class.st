@@ -22,10 +22,7 @@ Controls:
 "
 Class {
 	#name : #MiSystemComplexityBrowser,
-	#superclass : #MiAbstractBrowser,
-	#instVars : [
-		'visualization'
-	],
+	#superclass : #MiAbstractVisualizationBrowser,
 	#category : #'MooseIDE-Visualization-System Complexity'
 }
 
@@ -115,12 +112,6 @@ MiSystemComplexityBrowser >> initializePresenters [
 
 	visualization := self instantiate: MiSystemComplexityVisualization.
 	self initializeLayout
-]
-
-{ #category : #accessing }
-MiSystemComplexityBrowser >> miSelectedItem [
-
-	^ specModel entities
 ]
 
 { #category : #actions }

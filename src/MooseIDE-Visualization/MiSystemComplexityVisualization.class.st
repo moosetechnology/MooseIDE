@@ -1,6 +1,6 @@
 Class {
 	#name : #MiSystemComplexityVisualization,
-	#superclass : #MiAbstractVisualization,
+	#superclass : #MiAbstractHierarchicalVisualization,
 	#category : #'MooseIDE-Visualization-System Complexity'
 }
 

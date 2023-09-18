@@ -4,19 +4,9 @@ I have a canvas and I use a builder (MiLayerVisualizationBuilder).
 "
 Class {
 	#name : #MiLayerVisualization,
-	#superclass : #MiAbstractVisualization,
-	#instVars : [
-		'builder'
-	],
+	#superclass : #MiAbstractHierarchicalVisualization,
 	#category : #'MooseIDE-LayerVisualization-Presenters'
 }
-
-{ #category : #highlighting }
-MiLayerVisualization >> highlightShapes [
-	
-
-	
-]
 
 { #category : #accessing }
 MiLayerVisualization >> model [

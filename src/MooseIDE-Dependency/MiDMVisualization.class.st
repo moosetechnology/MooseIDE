@@ -5,10 +5,7 @@ I am a visualization, using a builder to draw a distribution map [1] on my canva
 "
 Class {
 	#name : #MiDMVisualization,
-	#superclass : #MiAbstractVisualization,
-	#instVars : [
-		'builder'
-	],
+	#superclass : #MiAbstractHierarchicalVisualization,
 	#category : #'MooseIDE-Dependency-DistributionMap'
 }
 

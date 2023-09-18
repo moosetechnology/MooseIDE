@@ -21,7 +21,8 @@ MiAbstractVisualization >> highlightColor [
 
 { #category : #highlighting }
 MiAbstractVisualization >> highlightEntities: someEntities [
-	self highlightedEntities: someEntities.
+
+	self highlightedEntities: someEntities asMooseGroup.
 	self highlightShapes.
 	self canvas signalUpdate
 ]
@@ -48,6 +49,12 @@ MiAbstractVisualization >> initialize [
 	super initialize.
 	highlightedEntities := MooseGroup new.
 	self script: [ :canvas | canvas @ RSCanvasController new noLegend ]
+]
+
+{ #category : #accessing }
+MiAbstractVisualization >> miSelectedItem [
+
+	^ self canvas selectedShapes collect: [ :shape | shape model ]
 ]
 
 { #category : #helpers }
