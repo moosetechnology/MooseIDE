@@ -144,6 +144,7 @@ MiPreviewBrowser >> updatePresenters [
 	| results newLayout groups |
 	queryPresenters := OrderedCollection new.
 	results := self getQueries.
+	results ifEmpty: [ ^self ].
 	newLayout := SpBoxLayout newTopToBottom
 		             spacing: 5;
 		             yourself.
