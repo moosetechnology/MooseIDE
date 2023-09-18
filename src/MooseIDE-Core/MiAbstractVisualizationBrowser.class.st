@@ -16,7 +16,6 @@ MiAbstractVisualizationBrowser >> canHighlight [
 { #category : #highlighting }
 MiAbstractVisualizationBrowser >> highlightEntity: entities [
 
-	
 	visualization highlightEntities: entities
 ]
 
@@ -24,5 +23,6 @@ MiAbstractVisualizationBrowser >> highlightEntity: entities [
 MiAbstractVisualizationBrowser >> miSelectedItem [
 
 	^ visualization miSelectedItem ifEmpty: [
+		  specModel ifNil: [ ^ #(  ) ].
 		  specModel entities mooseInterestingEntity ]
 ]

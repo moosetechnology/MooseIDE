@@ -25,17 +25,14 @@ Controls:
 "
 Class {
 	#name : #MiDependencyBrowser,
-	#superclass : #MiAbstractDependencyBrowser,
-	#instVars : [
-		'diagram'
-	],
+	#superclass : #MiAbstractVisualizationBrowser,
 	#category : #'MooseIDE-Dependency-Dependency'
 }
 
 { #category : #layout }
 MiDependencyBrowser class >> defaultLayout [
 	^ super defaultLayout
-		add: #diagram;
+		add: #visualization;
 		yourself
 ]
 
@@ -105,26 +102,14 @@ MiDependencyBrowser >> canTagEntities [
 { #category : #actions }
 MiDependencyBrowser >> followEntity: anEntity [
 
-	diagram
+	visualization
 		entities: (anEntity asMooseGroup select: [ :a | 
 					 a usesFamixTrait: TEntityMetaLevelDependency ]);
 		run
 ]
 
-{ #category : #actions }
-MiDependencyBrowser >> highlightEntity: anEntity [
-
-	diagram highlightEntities: anEntity asCollection
-]
-
 { #category : #initialization }
 MiDependencyBrowser >> initializePresenters [
 
-	diagram := self instantiate: MiDependencyVisualization
-]
-
-{ #category : #accessing }
-MiDependencyBrowser >> miSelectedItem [
-
-	^ diagram selected ifNil: [ diagram entities ]
+	visualization := self instantiate: MiDependencyVisualization
 ]

@@ -29,7 +29,7 @@ MiAbstractVisualization >> highlightEntities: someEntities [
 
 { #category : #highlighting }
 MiAbstractVisualization >> highlightShapes [
-
+	
 	self selectShapes: self shapesWithModel
 ]
 
