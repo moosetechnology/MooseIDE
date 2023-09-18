@@ -10,12 +10,6 @@ Class {
 	#category : #'MooseIDE-Dependency-ArchitecturalMap'
 }
 
-{ #category : #highlighting }
-MiArchitecturalMapVisualization >> highlightShapes [
-	
-
-]
-
 { #category : #running }
 MiArchitecturalMapVisualization >> run [
 

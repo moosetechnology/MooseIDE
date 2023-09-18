@@ -1,9 +1,8 @@
 Class {
 	#name : #MiHierarchicalVisualization,
-	#superclass : #MiAbstractVisualization,
+	#superclass : #MiAbstractHierarchicalVisualization,
 	#instVars : [
 		'rootNode',
-		'builder',
 		'childrenBlock',
 		'visualizationTheme'
 	],
@@ -23,11 +22,6 @@ MiHierarchicalVisualization >> entities: aCollection [
 
 	rootNode children:
 		(aCollection collect: [ :entity | self nodeFor: entity ])
-]
-
-{ #category : #highlighting }
-MiHierarchicalVisualization >> highlightShapes [
-
 ]
 
 { #category : #initialization }

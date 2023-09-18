@@ -4,12 +4,6 @@ Class {
 	#category : #'MooseIDE-Visualization-System Complexity'
 }
 
-{ #category : #highlighting }
-MiSystemComplexityVisualization >> highlightShapes [
-	
-
-]
-
 { #category : #accessing }
 MiSystemComplexityVisualization >> model [
 
