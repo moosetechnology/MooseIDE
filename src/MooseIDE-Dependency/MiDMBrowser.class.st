@@ -22,10 +22,7 @@ Controls:
 "
 Class {
 	#name : #MiDMBrowser,
-	#superclass : #MiAbstractBrowser,
-	#instVars : [
-		'visualization'
-	],
+	#superclass : #MiAbstractVisualizationBrowser,
 	#category : #'MooseIDE-Dependency-DistributionMap'
 }
 
@@ -144,12 +141,6 @@ MiDMBrowser >> initializePresenters [
 
 	visualization := self class mapClass owner: self.
 	self initializeLayout
-]
-
-{ #category : #accessing }
-MiDMBrowser >> miSelectedItem [
-
-	^ specModel entities mooseInterestingEntity
 ]
 
 { #category : #actions }
