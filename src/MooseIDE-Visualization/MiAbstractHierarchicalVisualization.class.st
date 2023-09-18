@@ -22,11 +22,8 @@ MiAbstractHierarchicalVisualization >> builder: anObject [
 { #category : #highlighting }
 MiAbstractHierarchicalVisualization >> highlightShapes [
 
-	self canvas setSelectedShapes:
-		(self canvas shapes select: [ :shape |
-			 shape isLine not and: [
-				 shape model notNil and: [
-					 highlightedEntities includes: shape model rawModel ] ] ])
+	self selectShapes:
+		(self shapesWithModel: [ :shape | shape model rawModel ])
 ]
 
 { #category : #accessing }

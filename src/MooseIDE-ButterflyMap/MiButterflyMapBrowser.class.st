@@ -25,10 +25,7 @@ Controls:
 "
 Class {
 	#name : #MiButterflyMapBrowser,
-	#superclass : #MiAbstractBrowser,
-	#instVars : [
-		'visualization'
-	],
+	#superclass : #MiAbstractVisualizationBrowser,
 	#category : #'MooseIDE-ButterflyMap-Browser'
 }
 
@@ -123,12 +120,6 @@ MiButterflyMapBrowser >> initializePresenters [
 MiButterflyMapBrowser >> itemsFor: aClass [
 
 	^ self application itemsFor: aClass
-]
-
-{ #category : #accessing }
-MiButterflyMapBrowser >> miSelectedItem [
-
-	^ specModel currentEntity
 ]
 
 { #category : #running }

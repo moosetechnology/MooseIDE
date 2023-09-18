@@ -29,9 +29,8 @@ MiAbstractVisualization >> highlightEntities: someEntities [
 
 { #category : #highlighting }
 MiAbstractVisualization >> highlightShapes [
-	"Override to react to Midas highlight action"
 
-	self subclassResponsibility
+	self selectShapes: (self shapesWithModel: [ :shape | shape model ])
 ]
 
 { #category : #accessing }
@@ -65,6 +64,21 @@ MiAbstractVisualization >> noHighlightColorFor: anEntity [
 { #category : #running }
 MiAbstractVisualization >> run [
 	self refresh
+]
+
+{ #category : #highlighting }
+MiAbstractVisualization >> selectShapes: shapes [
+
+	self canvas setSelectedShapes: shapes
+]
+
+{ #category : #highlighting }
+MiAbstractVisualization >> shapesWithModel: aBlock [
+	"aBlock should return the model of a shape."
+	^ self canvas shapes select: [ :shape |
+		  shape isLine not and: [
+			  shape model notNil and: [
+				  highlightedEntities includes: (aBlock value: shape) ] ] ]
 ]
 
 { #category : #highlighting }
