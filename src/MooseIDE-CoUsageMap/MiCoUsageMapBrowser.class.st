@@ -25,10 +25,7 @@ Controls:
 "
 Class {
 	#name : #MiCoUsageMapBrowser,
-	#superclass : #MiAbstractBrowser,
-	#instVars : [
-		'mapVisualization'
-	],
+	#superclass : #MiAbstractVisualizationBrowser,
 	#category : #'MooseIDE-CoUsageMap-Browser'
 }
 
@@ -36,7 +33,7 @@ Class {
 MiCoUsageMapBrowser class >> defaultLayout [
 
 	^ SpBoxLayout newLeftToRight
-		  add: #mapVisualization
+		  add: #visualization
 		  yourself
 ]
 
@@ -86,8 +83,8 @@ MiCoUsageMapBrowser class >> windowSize [
 { #category : #'window control' }
 MiCoUsageMapBrowser >> browserClosed [
 	super browserClosed.
-	application unregisterConsumer: mapVisualization.
-	application unregisterProducer: mapVisualization.
+	application unregisterConsumer: visualization.
+	application unregisterProducer: visualization.
 	"settings mapVisualization: nil.
 	mapVisualization settings: nil."
 
@@ -112,11 +109,6 @@ MiCoUsageMapBrowser >> connectPresenters [
 	mapVisualization settings: settings."
 ]
 
-{ #category : #accessing }
-MiCoUsageMapBrowser >> defaultSettings [
-	^ MiCoUsageMapInstanceSettingsPresenter new
-]
-
 { #category : #actions }
 MiCoUsageMapBrowser >> followEntity: anEntity [
 	self model followEntity: anEntity
@@ -129,26 +121,21 @@ MiCoUsageMapBrowser >> hasSettings [
 
 { #category : #initialization }
 MiCoUsageMapBrowser >> initializePresenters [
-	mapVisualization := self instantiate: MiCoUsageMapVisualization.
-	mapVisualization specModel: specModel.
+	visualization := self instantiate: MiCoUsageMapVisualization.
+	visualization specModel: specModel.
 
 	"self flag: 'this should be in MiCoUsageMapModel'.
 	settings := self instantiate: MiCoUsageMapInstanceSettingsPresenter."
 	
 	self flag: 'this should be in MiCoUsageMapVisualization'.
-	application registerConsumer: mapVisualization for: FamixTag.
-	application registerConsumer: mapVisualization for: FamixTagAssociation.
-	application registerProducer: mapVisualization for: FamixTagAssociation.
+	application registerConsumer: visualization for: FamixTag.
+	application registerConsumer: visualization for: FamixTagAssociation.
+	application registerProducer: visualization for: FamixTagAssociation.
 ]
 
 { #category : #accessing }
 MiCoUsageMapBrowser >> mapVisualization [
-	^ mapVisualization
-]
-
-{ #category : #accessing }
-MiCoUsageMapBrowser >> miSelectedItem [
-	^ specModel miSelectedItem
+	^ visualization
 ]
 
 { #category : #dependencies }
@@ -163,11 +150,11 @@ MiCoUsageMapBrowser >> settings [
 
 { #category : #updating }
 MiCoUsageMapBrowser >> update [
-	mapVisualization run
+	visualization run
 ]
 
 { #category : #public }
 MiCoUsageMapBrowser >> updateBoxColor: aMiCoBox fromTags: tags [
 
-	mapVisualization updateBoxColor: aMiCoBox fromTags: tags
+	visualization updateBoxColor: aMiCoBox fromTags: tags
 ]
