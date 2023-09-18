@@ -23,9 +23,6 @@ MiAbstractVisualizationBrowser >> highlightEntity: entities [
 { #category : #accessing }
 MiAbstractVisualizationBrowser >> miSelectedItem [
 
-	^visualization canvas selectedShapes
-		ifEmpty: [ specModel entities mooseInterestingEntity ]
-		ifNotEmpty: [ :selectedShapes |
-			(selectedShapes collect: [:shape | shape model rawModel])
-				asMooseGroup ]
+	^ visualization miSelectedItem ifEmpty: [
+		  specModel entities mooseInterestingEntity ]
 ]

@@ -30,7 +30,7 @@ MiAbstractVisualization >> highlightEntities: someEntities [
 { #category : #highlighting }
 MiAbstractVisualization >> highlightShapes [
 
-	self selectShapes: (self shapesWithModel: [ :shape | shape model ])
+	self selectShapes: self shapesWithModel
 ]
 
 { #category : #accessing }
@@ -53,7 +53,14 @@ MiAbstractVisualization >> initialize [
 { #category : #accessing }
 MiAbstractVisualization >> miSelectedItem [
 
-	^ self canvas selectedShapes collect: [ :shape | shape model ]
+	^ self canvas selectedShapes collect: [ :shape |
+		  self modelForShape: shape ]
+]
+
+{ #category : #'as yet unclassified' }
+MiAbstractVisualization >> modelForShape: aShape [
+
+	^ aShape model
 ]
 
 { #category : #helpers }
@@ -73,12 +80,12 @@ MiAbstractVisualization >> selectShapes: shapes [
 ]
 
 { #category : #highlighting }
-MiAbstractVisualization >> shapesWithModel: aBlock [
-	"aBlock should return the model of a shape."
+MiAbstractVisualization >> shapesWithModel [
+	
 	^ self canvas shapes select: [ :shape |
 		  shape isLine not and: [
 			  shape model notNil and: [
-				  highlightedEntities includes: (aBlock value: shape) ] ] ]
+				  highlightedEntities includes: (self modelForShape: shape) ] ] ]
 ]
 
 { #category : #highlighting }

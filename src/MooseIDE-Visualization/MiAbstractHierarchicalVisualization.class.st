@@ -19,16 +19,8 @@ MiAbstractHierarchicalVisualization >> builder: anObject [
 	builder := anObject
 ]
 
-{ #category : #highlighting }
-MiAbstractHierarchicalVisualization >> highlightShapes [
+{ #category : #'as yet unclassified' }
+MiAbstractHierarchicalVisualization >> modelForShape: aShape [
 
-	self selectShapes:
-		(self shapesWithModel: [ :shape | shape model rawModel ])
-]
-
-{ #category : #accessing }
-MiAbstractHierarchicalVisualization >> miSelectedItem [
-
-	^ self canvas selectedShapes collect: [ :shape |
-		  shape model rawModel ]
+	^ aShape model rawModel
 ]
