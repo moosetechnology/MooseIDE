@@ -3,23 +3,9 @@ Butterfly visualization.
 "
 Class {
 	#name : #MiButterflyMapVisualization,
-	#superclass : #MiAbstractVisualization,
-	#instVars : [
-		'builder'
-	],
+	#superclass : #MiAbstractHierarchicalVisualization,
 	#category : #'MooseIDE-ButterflyMap-Browser'
 }
-
-{ #category : #running }
-MiButterflyMapVisualization >> builder [
-
-	^ builder
-]
-
-{ #category : #highlighting }
-MiButterflyMapVisualization >> highlightShapes [
-	
-]
 
 { #category : #running }
 MiButterflyMapVisualization >> model [

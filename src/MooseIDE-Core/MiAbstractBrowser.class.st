@@ -344,7 +344,7 @@ MiAbstractBrowser >> canFollowEntity: anObject [
 	self subclassResponsibility
 ]
 
-{ #category : #testing }
+{ #category : #highlighting }
 MiAbstractBrowser >> canHighlight [
 
 	"Override to retrun true if you want to give your browser a highlight behavior. 
@@ -415,7 +415,7 @@ MiAbstractBrowser >> hasSettings [
 	^false
 ]
 
-{ #category : #actions }
+{ #category : #highlighting }
 MiAbstractBrowser >> highlightEntity: anEntity [
 
 	"Override to add behavior on highlight. 

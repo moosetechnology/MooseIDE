@@ -25,9 +25,9 @@ Controls:
 "
 Class {
 	#name : #MiDependencyBrowser,
-	#superclass : #MiAbstractDependencyBrowser,
+	#superclass : #MiAbstractVisualizationBrowser,
 	#instVars : [
-		'diagram'
+		'entities'
 	],
 	#category : #'MooseIDE-Dependency-Dependency'
 }
@@ -35,7 +35,7 @@ Class {
 { #category : #layout }
 MiDependencyBrowser class >> defaultLayout [
 	^ super defaultLayout
-		add: #diagram;
+		add: #visualization;
 		yourself
 ]
 
@@ -61,7 +61,7 @@ MiDependencyBrowser class >> menuItem [
 { #category : #'world menu' }
 MiDependencyBrowser class >> menuParent [
 
-	^ self dependencyMenuRoot
+	^ #MooseIDEDependencyBrowsers
 ]
 
 { #category : #'world menu' }
@@ -105,26 +105,28 @@ MiDependencyBrowser >> canTagEntities [
 { #category : #actions }
 MiDependencyBrowser >> followEntity: anEntity [
 
-	diagram
-		entities: (anEntity asMooseGroup select: [ :a | 
-					 a usesFamixTrait: TEntityMetaLevelDependency ]);
+	entities := anEntity asMooseGroup select: [ :a |
+		            a usesFamixTrait: TEntityMetaLevelDependency ].
+	visualization
+		entities: entities;
 		run
 ]
 
-{ #category : #actions }
-MiDependencyBrowser >> highlightEntity: anEntity [
+{ #category : #accessing }
+MiDependencyBrowser >> initialize [
 
-	diagram highlightEntities: anEntity asCollection
+	super initialize.
+	entities := MooseGroup new
 ]
 
 { #category : #initialization }
 MiDependencyBrowser >> initializePresenters [
 
-	diagram := self instantiate: MiDependencyVisualization
+	visualization := self instantiate: MiDependencyVisualization
 ]
 
 { #category : #accessing }
 MiDependencyBrowser >> miSelectedItem [
 
-	^ diagram selected ifNil: [ diagram entities ]
+	^ entities
 ]

@@ -22,10 +22,7 @@ Controls:
 "
 Class {
 	#name : #MiArchitecturalMapBrowser,
-	#superclass : #MiAbstractBrowser,
-	#instVars : [
-		'visualization'
-	],
+	#superclass : #MiAbstractVisualizationBrowser,
 	#category : #'MooseIDE-Dependency-ArchitecturalMap'
 }
 
@@ -152,16 +149,6 @@ MiArchitecturalMapBrowser >> initializePresenters [
 
 	visualization := self class mapClass owner: self.
 	self initializeLayout
-]
-
-{ #category : #accessing }
-MiArchitecturalMapBrowser >> miSelectedItem [
-
-	^visualization canvas selectedShapes
-		ifEmpty: [ specModel entities mooseInterestingEntity ]
-		ifNotEmpty: [ :selectedShapes |
-			(selectedShapes collect: [:shape | shape model rawModel])
-				asMooseGroup ]
 ]
 
 { #category : #actions }

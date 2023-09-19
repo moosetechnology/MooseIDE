@@ -6,24 +6,9 @@ Handle interactions.
 "
 Class {
 	#name : #MiArchitecturalMapVisualization,
-	#superclass : #MiAbstractVisualization,
-	#instVars : [
-		'builder'
-	],
+	#superclass : #MiAbstractHierarchicalVisualization,
 	#category : #'MooseIDE-Dependency-ArchitecturalMap'
 }
-
-{ #category : #accessing }
-MiArchitecturalMapVisualization >> builder [
-
-	^ builder
-]
-
-{ #category : #highlighting }
-MiArchitecturalMapVisualization >> highlightShapes [
-	
-
-]
 
 { #category : #running }
 MiArchitecturalMapVisualization >> run [

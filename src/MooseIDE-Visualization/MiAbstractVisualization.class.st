@@ -21,16 +21,16 @@ MiAbstractVisualization >> highlightColor [
 
 { #category : #highlighting }
 MiAbstractVisualization >> highlightEntities: someEntities [
-	self highlightedEntities: someEntities.
+
+	self highlightedEntities: someEntities asMooseGroup.
 	self highlightShapes.
 	self canvas signalUpdate
 ]
 
 { #category : #highlighting }
 MiAbstractVisualization >> highlightShapes [
-	"Override to react to Midas highlight action"
-
-	self subclassResponsibility
+	
+	self selectShapes: self shapesWithModel
 ]
 
 { #category : #accessing }
@@ -50,6 +50,19 @@ MiAbstractVisualization >> initialize [
 	self script: [ :canvas | canvas @ RSCanvasController new noLegend ]
 ]
 
+{ #category : #accessing }
+MiAbstractVisualization >> miSelectedItem [
+
+	^ self canvas selectedShapes collect: [ :shape |
+		  self modelForShape: shape ]
+]
+
+{ #category : #'as yet unclassified' }
+MiAbstractVisualization >> modelForShape: aShape [
+
+	^ aShape model
+]
+
 { #category : #helpers }
 MiAbstractVisualization >> noHighlightColorFor: anEntity [
 	^ self theme selectionColor
@@ -58,6 +71,21 @@ MiAbstractVisualization >> noHighlightColorFor: anEntity [
 { #category : #running }
 MiAbstractVisualization >> run [
 	self refresh
+]
+
+{ #category : #highlighting }
+MiAbstractVisualization >> selectShapes: shapes [
+
+	self canvas setSelectedShapes: shapes
+]
+
+{ #category : #highlighting }
+MiAbstractVisualization >> shapesWithModel [
+	
+	^ self canvas shapes select: [ :shape |
+		  shape isLine not and: [
+			  shape model notNil and: [
+				  highlightedEntities includes: (self modelForShape: shape) ] ] ]
 ]
 
 { #category : #highlighting }

@@ -36,15 +36,9 @@ MiCoUsageMapVisualization >> consumeTagAssociation: aFamixTagAssociation [
 	mapBuilder updateShapeColors
 ]
 
-{ #category : #highlighting }
-MiCoUsageMapVisualization >> highlightShapes [
-	^ #()
-]
-
 { #category : #initialization }
 MiCoUsageMapVisualization >> initialize [
 	super initialize.
-	self script: [ :canvas | canvas ].
 
 	mapBuilder := MiCoUsageMapBuilder new.
 	mapBuilder visualization: self.
@@ -63,6 +57,15 @@ MiCoUsageMapVisualization >> itemsFor: aClass [
 { #category : #'private - testing' }
 MiCoUsageMapVisualization >> mapBuilder [
 	^mapBuilder 
+]
+
+{ #category : #'as yet unclassified' }
+MiCoUsageMapVisualization >> modelForShape: aShape [
+
+	| containerBox |
+	containerBox := aShape model.
+
+	^ containerBox mooseEntity
 ]
 
 { #category : #actions }

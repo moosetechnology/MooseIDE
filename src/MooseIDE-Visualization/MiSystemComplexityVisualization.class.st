@@ -1,14 +1,8 @@
 Class {
 	#name : #MiSystemComplexityVisualization,
-	#superclass : #MiAbstractVisualization,
+	#superclass : #MiAbstractHierarchicalVisualization,
 	#category : #'MooseIDE-Visualization-System Complexity'
 }
-
-{ #category : #highlighting }
-MiSystemComplexityVisualization >> highlightShapes [
-	
-
-]
 
 { #category : #accessing }
 MiSystemComplexityVisualization >> model [

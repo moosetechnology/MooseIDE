@@ -75,15 +75,6 @@ MiDependencyVisualization >> entities: aCollection [
 	entities := aCollection
 ]
 
-{ #category : #highlighting }
-MiDependencyVisualization >> highlightShapes [
-	"It would be interesting to color edges as well but we have to choose a behavior: 
-			when only one of the source & target is highlighted VS when both are highlighted"
-
-	self canvas nodes
-		do: [ :box | box color: (self colorFor: box model) ]
-]
-
 { #category : #initialization }
 MiDependencyVisualization >> initialize [
 
@@ -125,18 +116,6 @@ MiDependencyVisualization >> legendArrowColored: aColor [
 		endPoint: 20 @ 0;
 		color: aColor;
 		yourself
-]
-
-{ #category : #running }
-MiDependencyVisualization >> makeHighlightable: shape [
-	shape
-		@
-			(RSHighlightable new
-				withEdges;
-				highlightColor: [ :edge | 
-					edge = shape
-						ifTrue: [ self highlightColor ]
-						ifFalse: [ self colorForEdge: edge ofShape: shape ] ])
 ]
 
 { #category : #helpers }
@@ -185,6 +164,5 @@ MiDependencyVisualization >> shapeForEntity: node [
 					           self selected: entity.
 					           owner updateToolbar ]) marginPercentage: 0.5);
 		         yourself.
-	self makeHighlightable: shape.
 	^ shape
 ]
