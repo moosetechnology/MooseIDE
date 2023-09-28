@@ -44,11 +44,12 @@ MiAbstractVisualizationBrowser >> exportVisualization [
 { #category : #export }
 MiAbstractVisualizationBrowser >> exportWith: roassalExporter [
 
-	| file |
+	| file fileName |
+	fileName := (self class title copyReplaceAll: ' ' with: '_') uncapitalized, '.', roassalExporter extension.
 	file := UIManager default
 		        chooseForSaveFileReference: 'Chose export destination'
 		        extensions: roassalExporter extension
-		        path: 'visualization.' , roassalExporter extension.
+		        path: fileName.
 
 	file ifNotNil: [
 		roassalExporter new
