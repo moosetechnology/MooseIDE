@@ -50,11 +50,11 @@ MiAbstractVisualizationBrowser >> exportWith: roassalExporter [
 		        extensions: roassalExporter extension
 		        path: 'visualization.' , roassalExporter extension.
 
-
-	roassalExporter new
-		canvas: visualization canvas;
-		zoomToShapes;
-		exportToFile: file
+	file ifNotNil: [
+		roassalExporter new
+			canvas: visualization canvas;
+			zoomToShapes;
+			exportToFile: file ]
 ]
 
 { #category : #testing }
