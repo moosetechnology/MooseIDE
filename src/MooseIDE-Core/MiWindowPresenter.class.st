@@ -35,7 +35,12 @@ MiWindowPresenter class >> buildCommandsGroupWith: aPresenter forRoot: rootComma
 	aPresenter hasSettings ifTrue: [ 
 		rootCommandGroup register:
 			(MiSettingsCommand forSpecContext: aPresenter)
-				beDisplayedOnRightSide ]
+				beDisplayedOnRightSide ].
+	aPresenter hasVisualization ifTrue: [ 
+			rootCommandGroup register:
+			(MiExportVisualizationCommand forSpecContext: aPresenter)
+				beDisplayedOnRightSide 
+		]
 ]
 
 { #category : #toolbar }

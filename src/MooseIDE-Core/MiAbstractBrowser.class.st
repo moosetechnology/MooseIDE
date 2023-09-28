@@ -415,6 +415,12 @@ MiAbstractBrowser >> hasSettings [
 	^false
 ]
 
+{ #category : #testing }
+MiAbstractBrowser >> hasVisualization [
+	
+	^ false
+]
+
 { #category : #highlighting }
 MiAbstractBrowser >> highlightEntity: anEntity [
 
