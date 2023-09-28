@@ -35,9 +35,9 @@ MiAbstractVisualizationBrowser >> exportToSVG [
 MiAbstractVisualizationBrowser >> exportVisualization [
 
 	SpMenuPresenter new
-		addItem: [ :item | item name: 'SVG'; action: [ self exportToSVG ] ];
-		addItem: [ :item | item name: 'PNG'; action: [ self exportToPNG ] ];
-		addItem: [ :item | item name: 'PDF'; action: [ self exportToPDF ] ];
+		addItem: [ :item | item name: 'Export to SVG'; action: [ self exportToSVG ] ];
+		addItem: [ :item | item name: 'Export to PNG'; action: [ self exportToPNG ] ];
+		addItem: [ :item | item name: 'Export to PDF'; action: [ self exportToPDF ] ];
 		openWithSpecAtPointer
 ]
 
