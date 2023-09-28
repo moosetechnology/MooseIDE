@@ -243,7 +243,7 @@ BaselineOfMooseIDE >> roassal3Exporters: spec [
 	spec
 		baseline: 'Roassal3Exporters'
 		with: [ 
-		spec repository: 'github.com/ObjectProfile/Roassal3Exporters:v1.0/src' ]
+		spec repository: 'github://ObjectProfile/Roassal3Exporters:v1.0/src' ]
 ]
 
 { #category : #dependencies }
