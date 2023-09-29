@@ -36,6 +36,12 @@ QueryCompilerPresenter >> initialExtent [
 ]
 
 { #category : #initialization }
+QueryCompilerPresenter >> initialize [ 
+	super initialize.
+	codePresenter text: 'FQCollectScriptQuery script: "Your code here"'
+]
+
+{ #category : #initialization }
 QueryCompilerPresenter >> initializeButtons [
 
 	submitButton := self newButton.
