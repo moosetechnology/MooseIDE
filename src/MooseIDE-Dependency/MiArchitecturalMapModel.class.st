@@ -300,12 +300,6 @@ MiArchitecturalMapModel >> timeoutDuration [
 	^ settings getItemValue: #timeoutDuration
 ]
 
-{ #category : #accessing }
-MiArchitecturalMapModel >> toolName [
-
-	^ browser title
-]
-
 { #category : #settings }
 MiArchitecturalMapModel >> updateSettings [
 

@@ -203,9 +203,3 @@ MiButterflyMapModel >> settingsChanged: aBoolean [
 
 	aBoolean ifTrue: [ browser run ]
 ]
-
-{ #category : #accessing }
-MiButterflyMapModel >> toolName [
-
-	^ self browser title
-]
