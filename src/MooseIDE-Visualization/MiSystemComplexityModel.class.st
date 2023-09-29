@@ -176,10 +176,10 @@ MiSystemComplexityModel >> settings [
 	^ settings
 ]
 
-{ #category : #initialization }
+{ #category : #accessing }
 MiSystemComplexityModel >> settingsChanged: aBoolean [
 
-	aBoolean ifTrue: [ browser buildVisualization ]
+	aBoolean ifTrue: [ browser runVisualization ]
 ]
 
 { #category : #accessing }

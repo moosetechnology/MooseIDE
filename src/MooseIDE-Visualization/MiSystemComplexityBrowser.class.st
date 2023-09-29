@@ -67,7 +67,8 @@ MiSystemComplexityBrowser class >> title [
 { #category : #actions }
 MiSystemComplexityBrowser >> buildVisualization [
 
-	visualization run
+	self deprecated: 'Use runVisualization method instead' transformWith: '`@receiver buildVisualization' -> '`@receiver runVisualization'.
+	self runVisualization 
 ]
 
 { #category : #testing }

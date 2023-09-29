@@ -143,12 +143,6 @@ MiDMBrowser >> initializePresenters [
 	self initializeLayout
 ]
 
-{ #category : #actions }
-MiDMBrowser >> runVisualization [
-
-	visualization run
-]
-
 { #category : #accessing }
 MiDMBrowser >> settings [
 

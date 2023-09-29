@@ -57,7 +57,7 @@ MiButterflyMapModel >> currentEntity [
 MiButterflyMapModel >> currentEntity: anObject [
 
 	currentEntity := anObject.
-	browser run
+	browser runVisualization
 ]
 
 { #category : #accessing }
@@ -201,5 +201,5 @@ MiButterflyMapModel >> settings [
 { #category : #accessing }
 MiButterflyMapModel >> settingsChanged: aBoolean [
 
-	aBoolean ifTrue: [ browser run ]
+	aBoolean ifTrue: [ browser runVisualization ]
 ]

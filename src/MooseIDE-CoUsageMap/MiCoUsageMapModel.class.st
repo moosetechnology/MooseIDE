@@ -122,9 +122,10 @@ MiCoUsageMapModel >> entities [
 
 { #category : #actions }
 MiCoUsageMapModel >> followEntity: aCollection [
+
 	self containerEntities: aCollection.
 	self initializeValues.
-	browser update
+	browser runVisualization
 ]
 
 { #category : #accessing }
@@ -262,7 +263,7 @@ MiCoUsageMapModel >> newInnerBoxFor: anObject [
 ]
 
 { #category : #actions }
-MiCoUsageMapModel >> openSettings [ 
+MiCoUsageMapModel >> openSettings [
 	"For now, we handle settings here:
 	 - create the window 
 	 - subscribe to be informed when any window is closed closed
@@ -272,22 +273,18 @@ MiCoUsageMapModel >> openSettings [
 
 	| settingBrowser |
 	settingBrowser := SettingBrowser new.
-	settingBrowser
-		changePackageSet:
-			(OrderedCollection with:
-				(RPackage organizer 
-					packageNamed: MiCoUsageMapSettings package name)).
+	settingBrowser changePackageSet: (OrderedCollection with:
+			 (RPackage organizer packageNamed:
+				  MiCoUsageMapSettings package name)).
 	settingsWindow := settingBrowser open.
-	settingsWindow position: (self currentWorld extent - settingsWindow extent) // 2.
+	settingsWindow position:
+		self currentWorld extent - settingsWindow extent // 2.
 	settingBrowser expandAll.
 
 	self currentWorld announcer when: WindowClosed do: [ :annoucement |
-		(annoucement window = settingsWindow)
-		ifTrue: [
+		annoucement window = settingsWindow ifTrue: [
 			self currentWorld announcer unsubscribe: self.
-			browser update
-		]
-	]
+			browser runVisualization ] ]
 ]
 
 { #category : #properties }
