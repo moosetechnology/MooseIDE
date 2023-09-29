@@ -21,8 +21,10 @@ Class {
 { #category : #action }
 MiTagExtentPage >> add [
 
-	self currentTag ifNil: [ ^ self ].
-	incomingEntitiesFilteringList selectedItem ifNotNil: [ :entity | 
+	(self currentTag isNil or: [
+		 incomingEntitiesFilteringList selectedItems isEmpty ]) ifTrue: [
+		^ self ].
+	incomingEntitiesFilteringList selectedItems do: [ :entity |
 		self model tagEntityNotYourself: entity ].
 	self refreshTaggedEntitiesList.
 	self refreshEntitiesList
@@ -101,20 +103,18 @@ MiTagExtentPage >> initializePresenters [
 
 	super initializePresenters.
 	taggedEntitiesLabel := self newLabel label: 'Entities in tag:'.
-	incomingEntitiesFilteringList := self newFilteringList
-		                                 display: [ :entity | 
-			                                 String streamContents: [ :s | 
+	incomingEntitiesFilteringList := self newList
+		                                 display: [ :entity |
+			                                 String streamContents: [ :s |
 					                                 entity displayStringOn: s ] ];
-		                                 "displayIcon: [ :entity | 
-			                                 entity mooseIcon ];"
+		                                 beMultipleSelection;
 		                                 yourself.
 	self refreshEntitiesList.
-	taggedEntitiesFilteringList := self newFilteringList
-		                               display: [ :entity | 
-			                               String streamContents: [ :s | 
+	taggedEntitiesFilteringList := self newList
+		                               display: [ :entity |
+			                               String streamContents: [ :s |
 					                               entity displayStringOn: s ] ];
-		                               "displayIcon: [ :entity | 
-			                               entity mooseIcon ];"
+		                               beMultipleSelection;
 		                               yourself.
 	self refreshTaggedEntitiesList.
 	self initializeButtons.
@@ -160,8 +160,11 @@ MiTagExtentPage >> refreshTaggedEntitiesList [
 { #category : #action }
 MiTagExtentPage >> remove [
 
-	self currentTag ifNil: [ ^ self ].
-	taggedEntitiesFilteringList selectedItem ifNotNil: [ :entity | 
+	(self currentTag isNil or: [
+		 taggedEntitiesFilteringList selectedItems isEmpty ]) ifTrue: [
+		^ self ].
+
+	taggedEntitiesFilteringList selectedItems do: [ :entity |
 		self model untagEntity: entity ].
 	self refreshTaggedEntitiesList.
 	self refreshEntitiesList
@@ -175,6 +178,12 @@ MiTagExtentPage >> removeAll [
 		self model untagEntity: entity ].
 	self refreshTaggedEntitiesList.
 	self refreshEntitiesList
+]
+
+{ #category : #accessing }
+MiTagExtentPage >> selectedItems [
+
+	^ taggedEntitiesFilteringList selectedItems
 ]
 
 { #category : #accessing }

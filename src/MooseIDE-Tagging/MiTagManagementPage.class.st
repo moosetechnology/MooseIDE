@@ -225,6 +225,12 @@ MiTagManagementPage >> removeCategory [
 	self refreshCategoryList
 ]
 
+{ #category : #accessing }
+MiTagManagementPage >> selectedItems [
+
+	^ tagDescriptionPage selectedItems
+]
+
 { #category : #initialization }
 MiTagManagementPage >> setIconForButton: aBtn [
 
