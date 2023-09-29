@@ -48,5 +48,5 @@ MiButterflyMapModelTest >> testDefaultRightEntitiesQueryIsNotNil [
 MiButterflyMapModelTest >> testSetCurrentEntityShouldNotifyBrowser [
 
 	model currentEntity: Mock new.
-	model browser should receive run
+	model browser should receive runVisualization
 ]
