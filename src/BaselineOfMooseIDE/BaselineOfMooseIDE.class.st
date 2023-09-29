@@ -13,6 +13,7 @@ BaselineOfMooseIDE >> baseline: spec [
 		self labelContractor: spec.
 		self hierarchicalVisualizations: spec.
 		self roassal3: spec.
+		self roassal3Exporters: spec.
 		self famixQueries: spec.
 		self pharoAIHierachicalClustering: spec.
 		self stonCustomizer: spec.
@@ -234,6 +235,15 @@ BaselineOfMooseIDE >> roassal3: spec [
 		baseline: 'Roassal3'
 		with: [ 
 		spec repository: 'github://ObjectProfile/Roassal3:master/src' ]
+]
+
+{ #category : #dependencies }
+BaselineOfMooseIDE >> roassal3Exporters: spec [
+
+	spec
+		baseline: 'Roassal3Exporters'
+		with: [ 
+		spec repository: 'github://ObjectProfile/Roassal3Exporters:v1.0/src' ]
 ]
 
 { #category : #dependencies }
