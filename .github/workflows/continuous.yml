@@ -21,7 +21,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        smalltalk: [ "Pharo64-10", "Pharo64-11" ]
+        smalltalk: [ "Pharo64-11" ]
     name: ${{ matrix.smalltalk }}
     steps:
       - uses: actions/checkout@v3
