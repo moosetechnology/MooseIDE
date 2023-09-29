@@ -20,14 +20,6 @@ MiSystemComplexityModel >> availableMetrics [
 		  a < b ]
 ]
 
-{ #category : #initialization }
-MiSystemComplexityModel >> browser: aBrowser [
-
-	browser := aBrowser.
-	
-	self initializeSettings
-]
-
 { #category : #accessing }
 MiSystemComplexityModel >> colorMetric [
 

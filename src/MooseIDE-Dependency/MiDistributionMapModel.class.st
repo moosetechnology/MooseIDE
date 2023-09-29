@@ -53,14 +53,6 @@ MiDistributionMapModel >> browser [
 ]
 
 { #category : #accessing }
-MiDistributionMapModel >> browser: anObject [
-
-	browser := anObject.
-
-	self initializeSettings
-]
-
-{ #category : #accessing }
 MiDistributionMapModel >> childrenFor: anEntity [
 
 	| groups dts children |

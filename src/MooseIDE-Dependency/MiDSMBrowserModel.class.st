@@ -19,12 +19,6 @@ MiDSMBrowserModel >> browser [
 	^ browser
 ]
 
-{ #category : #accessing }
-MiDSMBrowserModel >> browser: anObject [
-
-	browser := anObject
-]
-
 { #category : #buildGraph }
 MiDSMBrowserModel >> buildGraphEdges [
 	"We choose to say that there is a relation from line to column if line depends on column"

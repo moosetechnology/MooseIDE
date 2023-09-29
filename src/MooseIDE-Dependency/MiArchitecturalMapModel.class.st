@@ -78,13 +78,6 @@ MiArchitecturalMapModel >> availableQueries [
 ]
 
 { #category : #accessing }
-MiArchitecturalMapModel >> browser: aBrowser [
-
-	browser := aBrowser.
-	self initializeSettings
-]
-
-{ #category : #accessing }
 MiArchitecturalMapModel >> childrenBlock [
 
 	^ childrenBlock

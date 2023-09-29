@@ -30,13 +30,6 @@ MiButterflyMapModel >> browser [
 ]
 
 { #category : #accessing }
-MiButterflyMapModel >> browser: anObject [
-
-	browser := anObject.
-	self initializeSettings
-]
-
-{ #category : #accessing }
 MiButterflyMapModel >> childrenBlock [
 
 	^ childrenBlock

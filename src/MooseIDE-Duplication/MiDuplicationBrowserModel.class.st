@@ -29,12 +29,6 @@ MiDuplicationBrowserModel >> browser [
 	^ browser
 ]
 
-{ #category : #accessing }
-MiDuplicationBrowserModel >> browser: anObject [
-
-	browser := anObject
-]
-
 { #category : #api }
 MiDuplicationBrowserModel >> childrenFragments: aFragment [
 

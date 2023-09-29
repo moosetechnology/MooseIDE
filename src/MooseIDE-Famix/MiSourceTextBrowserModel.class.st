@@ -67,11 +67,6 @@ MiSourceTextBrowserModel >> addTagHighlightFor: aChildEntity interval: childInte
 ]
 
 { #category : #accessing }
-MiSourceTextBrowserModel >> browser: aMiBrowser [
-	browser := aMiBrowser 
-]
-
-{ #category : #accessing }
 MiSourceTextBrowserModel >> displayedEntity [
 	"the entity which source code is shown in the browser"
 	^ displayedEntity
