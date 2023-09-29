@@ -32,7 +32,7 @@ MiInspectorBrowser class >> inspect: anObject [
 
 	^ self
 		  inspect: anObject
-		  forBuses: self currentApplication defaultBus asCollection
+		  forBuses: (OrderedCollection with: self currentApplication defaultBus asCollection)
 ]
 
 { #category : #api }
