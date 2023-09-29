@@ -24,12 +24,6 @@ MiButterflyMapModel >> allPossibleQueries [
 ]
 
 { #category : #accessing }
-MiButterflyMapModel >> browser [
-
-	^ browser
-]
-
-{ #category : #accessing }
 MiButterflyMapModel >> childrenBlock [
 
 	^ childrenBlock
