@@ -250,9 +250,13 @@ MiTagBrowser >> itemsFor: aClass [
 { #category : #accessing }
 MiTagBrowser >> miSelectedItem [
 
-	^ specModel currentTag
-		  ifNil: [ ^ nil ]
-		  ifNotNil: [ :tag | tag taggedEntities asMooseGroup ]
+	| tag |
+	tag := specModel currentTag.
+	tag ifNil: [ ^ nil ].
+
+	tagManagementPage selectedItems ifNotEmpty: [ :items |
+		^ items asMooseGroup ].
+	^ tag taggedEntities asMooseGroup
 ]
 
 { #category : #testing }
