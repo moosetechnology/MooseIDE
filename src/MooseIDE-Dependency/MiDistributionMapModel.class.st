@@ -46,20 +46,6 @@ MiDistributionMapModel >> availableQueries [
 	^ { self defaultChildrenQuery } , browser availableQueries
 ]
 
-{ #category : #'accessing - tests' }
-MiDistributionMapModel >> browser [
-
-	^ browser
-]
-
-{ #category : #accessing }
-MiDistributionMapModel >> browser: anObject [
-
-	browser := anObject.
-
-	self initializeSettings
-]
-
 { #category : #accessing }
 MiDistributionMapModel >> childrenFor: anEntity [
 

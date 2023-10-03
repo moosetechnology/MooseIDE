@@ -78,13 +78,6 @@ MiArchitecturalMapModel >> availableQueries [
 ]
 
 { #category : #accessing }
-MiArchitecturalMapModel >> browser: aBrowser [
-
-	browser := aBrowser.
-	self initializeSettings
-]
-
-{ #category : #accessing }
 MiArchitecturalMapModel >> childrenBlock [
 
 	^ childrenBlock
@@ -305,12 +298,6 @@ MiArchitecturalMapModel >> tags [
 MiArchitecturalMapModel >> timeoutDuration [
 
 	^ settings getItemValue: #timeoutDuration
-]
-
-{ #category : #accessing }
-MiArchitecturalMapModel >> toolName [
-
-	^ browser title
 ]
 
 { #category : #settings }

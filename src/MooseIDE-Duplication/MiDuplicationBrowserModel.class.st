@@ -23,18 +23,6 @@ MiDuplicationBrowserModel >> ancestorsOf: aFragment in: aFragmentCollection [
 		           self fragment: anotherFragment includes: aFragment ]
 ]
 
-{ #category : #accessing }
-MiDuplicationBrowserModel >> browser [
-
-	^ browser
-]
-
-{ #category : #accessing }
-MiDuplicationBrowserModel >> browser: anObject [
-
-	browser := anObject
-]
-
 { #category : #api }
 MiDuplicationBrowserModel >> childrenFragments: aFragment [
 

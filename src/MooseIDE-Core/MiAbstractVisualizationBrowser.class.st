@@ -77,3 +77,9 @@ MiAbstractVisualizationBrowser >> miSelectedItem [
 		  specModel ifNil: [ ^ #(  ) ].
 		  specModel entities mooseInterestingEntity ]
 ]
+
+{ #category : #actions }
+MiAbstractVisualizationBrowser >> runVisualization [
+
+	visualization run
+]

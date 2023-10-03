@@ -24,19 +24,6 @@ MiButterflyMapModel >> allPossibleQueries [
 ]
 
 { #category : #accessing }
-MiButterflyMapModel >> browser [
-
-	^ browser
-]
-
-{ #category : #accessing }
-MiButterflyMapModel >> browser: anObject [
-
-	browser := anObject.
-	self initializeSettings
-]
-
-{ #category : #accessing }
 MiButterflyMapModel >> childrenBlock [
 
 	^ childrenBlock
@@ -70,7 +57,7 @@ MiButterflyMapModel >> currentEntity [
 MiButterflyMapModel >> currentEntity: anObject [
 
 	currentEntity := anObject.
-	browser run
+	browser runVisualization
 ]
 
 { #category : #accessing }
@@ -214,11 +201,5 @@ MiButterflyMapModel >> settings [
 { #category : #accessing }
 MiButterflyMapModel >> settingsChanged: aBoolean [
 
-	aBoolean ifTrue: [ browser run ]
-]
-
-{ #category : #accessing }
-MiButterflyMapModel >> toolName [
-
-	^ self browser title
+	aBoolean ifTrue: [ browser runVisualization ]
 ]

@@ -150,7 +150,8 @@ MiCoUsageMapBrowser >> settings [
 
 { #category : #updating }
 MiCoUsageMapBrowser >> update [
-	visualization run
+	self deprecated: 'Use runVisualization method instead' transformWith: '`@receiver update' -> '`@receiver runVisualization'.
+	self runVisualization 
 ]
 
 { #category : #public }

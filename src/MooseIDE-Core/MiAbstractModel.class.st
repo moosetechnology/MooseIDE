@@ -21,7 +21,8 @@ MiAbstractModel >> browser [
 { #category : #accessing }
 MiAbstractModel >> browser: anObject [
 
-	browser := anObject
+	browser := anObject.
+	self initializeSettings
 ]
 
 { #category : #accessing }

@@ -53,11 +53,6 @@ MiModelRootBrowserModel >> availableMooseModels [
 	^ MooseModel root allModels
 ]
 
-{ #category : #accessing }
-MiModelRootBrowserModel >> browser: aBrowser [
-	browser := aBrowser
-]
-
 { #category : #testing }
 MiModelRootBrowserModel >> canPropagate [
 	^ selected isMooseObject

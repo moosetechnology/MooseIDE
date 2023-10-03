@@ -124,8 +124,8 @@ MiButterflyMapBrowser >> itemsFor: aClass [
 
 { #category : #running }
 MiButterflyMapBrowser >> run [
-
-	self visualization run
+	self deprecated: 'Use runVisualization method instead' transformWith: '`@receiver run' -> '`@receiver runVisualization'.
+	self runVisualization 
 ]
 
 { #category : #actions }
