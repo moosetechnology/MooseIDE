@@ -152,7 +152,7 @@ BaselineOfMooseIDE >> definePackages: spec [
 
 { #category : #dependencies }
 BaselineOfMooseIDE >> famix: spec [
-
+self halt.
 	spec
 		baseline: 'Famix'
 		with: [ 
