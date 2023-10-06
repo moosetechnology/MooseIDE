@@ -156,7 +156,7 @@ BaselineOfMooseIDE >> famix: spec [
 	spec
 		baseline: 'Moose'
 		with: [
-		spec repository: 'github://moosetechnology/Moose:development/src' ].
+		spec repository: 'github://moosetechnology/Moose:baseline-exp/src' ].
 
 	spec
 		project: 'Famix'
