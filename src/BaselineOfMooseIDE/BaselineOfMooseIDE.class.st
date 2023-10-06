@@ -152,11 +152,16 @@ BaselineOfMooseIDE >> definePackages: spec [
 
 { #category : #dependencies }
 BaselineOfMooseIDE >> famix: spec [
-self halt.
+
 	spec
-		baseline: 'Famix'
-		with: [ 
-		spec repository: 'github://moosetechnology/Famix:development/src' ]
+		baseline: 'Moose'
+		with: [
+		spec repository: 'github://moosetechnology/Moose:development/src' ].
+
+	spec
+		project: 'Famix'
+		copyFrom: 'Moose'
+		with: [ spec loads: 'Metamodel' ]
 ]
 
 { #category : #dependencies }
