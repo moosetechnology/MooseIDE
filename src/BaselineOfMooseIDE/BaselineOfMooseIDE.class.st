@@ -205,10 +205,13 @@ BaselineOfMooseIDE >> labelContractor: spec [
 { #category : #dependencies }
 BaselineOfMooseIDE >> microdown: spec [
 
-	spec
-		baseline: 'Microdown'
-		with: [ 
-		spec repository: 'github://pillar-markup/Microdown:master/src' ]
+	| version |
+	version := 'master'.
+	spec for: #( #'Pharo12.x' ) do: [ version := 'pharo12' ].
+
+	spec baseline: 'Microdown' with: [
+		spec repository:
+			('github://pillar-markup/Microdown:{1}/src' format: { version }) ]
 ]
 
 { #category : #dependencies }
