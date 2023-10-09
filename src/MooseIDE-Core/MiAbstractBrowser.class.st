@@ -108,8 +108,7 @@ MiAbstractBrowser class >> famixMenuRoot [
 { #category : #'world menu' }
 MiAbstractBrowser class >> helpMessage [
 
-	^ (self comment lines copyUpTo: '') fold: [ :s1 :s2 | 
-		  s1 , Character cr asString , s2 ]
+	^ ((self comment ifNil: [ '' ]) lines copyUpTo: '') inject: '' into: [ :s1 :s2 | s1 , Character cr asString , s2 ]
 ]
 
 { #category : #testing }
