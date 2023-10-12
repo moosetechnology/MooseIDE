@@ -215,7 +215,7 @@ BaselineOfMooseIDE >> microdown: spec [
 		spec
 			baseline: 'Microdown'
 			with: [
-			spec repository: 'github://pillar-markup/Microdown:pharo12/src' ] ]
+			spec repository: 'github://pillar-markup/Microdown:Pharo12/src' ] ]
 ]
 
 { #category : #dependencies }
