@@ -23,12 +23,13 @@ BaselineOfMooseIDE >> baseline: spec [
 		self definePackages: spec.
 
 		"If Moose is not already present"
-		spec for: #NeedsMoose do: [ 
+		spec for: #NeedsMoose do: [
 			self famix: spec.
 			self famixTagging: spec.
 			self famixReplication: spec.
 			spec
-				package: 'MooseIDE-Core' with: [ spec requires: #( 'Famix' ) ];
+				package: 'MooseIDE-Core'
+				with: [ spec requires: #( 'Famix' 'Roassal3Exporters' ) ];
 				package: 'MooseIDE-Meta'
 				with: [ spec requires: #( 'MooseIDE-Core' ) ];
 				package: 'MooseIDE-Tagging'
