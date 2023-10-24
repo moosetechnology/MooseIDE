@@ -190,7 +190,7 @@ BaselineOfMooseIDE >> hierarchicalVisualizations: spec [
 
 	spec baseline: 'HierarchicalVisualizations' with: [
 		spec repository:
-			'github://pharo-graphics/HierarchicalVisualizations:v1.01/src' ]
+			'github://moosetechnology/HierarchicalVisualizations:v1.01/src' ]
 ]
 
 { #category : #dependencies }
