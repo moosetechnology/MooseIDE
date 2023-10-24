@@ -236,8 +236,20 @@ BaselineOfMooseIDE >> registerCustomTools [
 ]
 
 { #category : #dependencies }
+BaselineOfMooseIDE >> removeRoassalFromSystem [
+
+	#( Roassal3 Numeric ) do: [ :string |
+		| regExp packages |
+		regExp := '*' , string , '*'.
+		packages := RPackageOrganizer default packages select: [ :each |
+			            regExp match: each name ].
+		packages do: [ :each | each removeFromSystem ] ]
+]
+
+{ #category : #dependencies }
 BaselineOfMooseIDE >> roassal: spec [
 
+	self removeRoassalFromSystem.
 	spec
 		baseline: 'Roassal'
 		with: [
