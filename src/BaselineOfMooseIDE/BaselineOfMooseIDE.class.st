@@ -12,8 +12,8 @@ BaselineOfMooseIDE >> baseline: spec [
 		self tylerDurden: spec.
 		self labelContractor: spec.
 		self hierarchicalVisualizations: spec.
-		self roassal3: spec.
-		self roassal3Exporters: spec.
+		self roassal: spec.
+		self roassalExporters: spec.
 		self famixQueries: spec.
 		self pharoAIHierachicalClustering: spec.
 		self stonCustomizer: spec.
@@ -28,8 +28,7 @@ BaselineOfMooseIDE >> baseline: spec [
 			self famixTagging: spec.
 			self famixReplication: spec.
 			spec
-				package: 'MooseIDE-Core'
-				with: [ spec requires: #( 'Famix' 'Roassal3Exporters' ) ];
+				package: 'MooseIDE-Core' with: [ spec requires: #( 'Famix' ) ];
 				package: 'MooseIDE-Meta'
 				with: [ spec requires: #( 'MooseIDE-Core' ) ];
 				package: 'MooseIDE-Tagging'
@@ -90,32 +89,32 @@ BaselineOfMooseIDE >> definePackages: spec [
 
 	spec
 		package: 'MooseIDE-Core'
-		with: [ spec requires: #( 'LabelContractor' ) ];
+		with: [ spec requires: #( 'LabelContractor' 'RoassalExporters' ) ];
 		package: 'MooseIDE-Visualization'
-		with: [ 
+		with: [
 			spec requires: #( 'MooseIDE-Core' 'HierarchicalVisualizations' ) ];
-
 		package: 'MooseIDE-Meta'
 		with: [ spec requires: #( 'MooseIDE-Core' ) ];
-		package: 'MooseIDE-Tests' with: [ 
+		package: 'MooseIDE-Tests' with: [
 			spec requires:
-					#( 'MooseIDE-Core' 'MooseIDE-Dependency' 'MooseIDE-Tagging' 'MooseIDE-Visualization' ) ];
-		package: 'MooseIDE-Dependency' with: [ 
+					#( 'MooseIDE-Core' 'MooseIDE-Dependency' 'MooseIDE-Tagging'
+					   'MooseIDE-Visualization' ) ];
+		package: 'MooseIDE-Dependency' with: [
 			spec requires:
 					#( 'MooseIDE-Core' 'MooseIDE-Visualization'
-					   'Roassal3' 'AIHierarchicalClustering' ) ];
+					   'Roassal' 'AIHierarchicalClustering' ) ];
 		package: 'MooseIDE-Famix'
-		with: [ 
+		with: [
 			spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' ) ];
 		package: 'MooseIDE-Tagging'
-		with: [ 
+		with: [
 			spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' ) ];
 		package: 'MooseIDE-Tagging-Tests'
 		with: [ spec requires: #( 'MooseIDE-Tagging' ) ];
 		package: 'MooseIDE-QueriesBrowser'
 		with: [ spec requires: #( 'MooseIDE-Core' 'FamixQueries' ) ];
 		package: 'MooseIDE-QueriesBrowser-Tests'
-		with: [ 
+		with: [
 			spec requires: #( 'MooseIDE-QueriesBrowser'
 				   'MooseIDE-Tests' ) ];
 		package: 'MooseIDE-NewTools'
@@ -130,7 +129,7 @@ BaselineOfMooseIDE >> definePackages: spec [
 		package: 'MooseIDE-Durden'
 		with: [ spec requires: #( 'MooseIDE-Core' 'Durden' ) ];
 		package: 'MooseIDE-CoUsageMap'
-		with: [ 
+		with: [
 			spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' ) ];
 		package: 'MooseIDE-CoUsageMap-Tests'
 		with: [ spec requires: #( 'MooseIDE-CoUsageMap'
@@ -138,13 +137,14 @@ BaselineOfMooseIDE >> definePackages: spec [
 		package: 'MooseIDE-Duplication'
 		with: [ spec requires: #( 'MooseIDE-Core' ) ];
 		package: 'MooseIDE-ButterflyMap'
-		with: [ 
+		with: [
 			spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' ) ];
 		package: 'MooseIDE-Preview'
-		with: [ spec requires: #( 'MooseIDE-Core' )];
-		package: 'MooseIDE-LayerVisualization'
-		with: [ 
-			spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' 'MooseIDE-Preview' ) ];
+		with: [ spec requires: #( 'MooseIDE-Core' ) ];
+		package: 'MooseIDE-LayerVisualization' with: [
+			spec requires:
+					#( 'MooseIDE-Core' 'MooseIDE-Visualization'
+					   'MooseIDE-Preview' ) ];
 		package: 'MooseIDE-ButterflyMap-Tests'
 		with: [ spec requires: #( 'MooseIDE-ButterflyMap' ) ].
 
@@ -188,10 +188,9 @@ BaselineOfMooseIDE >> famixTagging: spec [
 { #category : #dependencies }
 BaselineOfMooseIDE >> hierarchicalVisualizations: spec [
 
-	spec
-		baseline: 'HierarchicalVisualizations'
-		with: [ 
-		spec repository: 'github://ObjectProfile/HierarchicalVisualizations:main/src' ]
+	spec baseline: 'HierarchicalVisualizations' with: [
+		spec repository:
+			'github://pharo-graphics/HierarchicalVisualizations:v1.01/src' ]
 ]
 
 { #category : #dependencies }
@@ -237,21 +236,20 @@ BaselineOfMooseIDE >> registerCustomTools [
 ]
 
 { #category : #dependencies }
-BaselineOfMooseIDE >> roassal3: spec [
+BaselineOfMooseIDE >> roassal: spec [
 
 	spec
-		baseline: 'Roassal3'
-		with: [ 
-		spec repository: 'github://ObjectProfile/Roassal3:master/src' ]
+		baseline: 'Roassal'
+		with: [
+		spec repository: 'github://pharo-graphics/Roassal:v1.04b/src' ]
 ]
 
 { #category : #dependencies }
-BaselineOfMooseIDE >> roassal3Exporters: spec [
+BaselineOfMooseIDE >> roassalExporters: spec [
 
-	spec
-		baseline: 'Roassal3Exporters'
-		with: [ 
-		spec repository: 'github://ObjectProfile/Roassal3Exporters:v1.0/src' ]
+	spec baseline: 'RoassalExporters' with: [
+		spec repository:
+			'github://pharo-graphics/RoassalExporters:v1.01/src' ]
 ]
 
 { #category : #dependencies }
