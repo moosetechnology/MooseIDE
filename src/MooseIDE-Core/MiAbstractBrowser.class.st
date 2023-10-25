@@ -441,7 +441,6 @@ MiAbstractBrowser >> initialize [
 
 	super initialize.
 	self setDefaultReceivingMode.
-	inspector := MiInspectorBrowser.
 	buses := Set new
 ]
 
@@ -461,13 +460,7 @@ MiAbstractBrowser >> initializeWindow: aMiWindowPresenter [
 { #category : #'private - for tests' }
 MiAbstractBrowser >> inspector [
 
-	^ inspector
-]
-
-{ #category : #accessing }
-MiAbstractBrowser >> inspector: anObject [
-
-	inspector := anObject
+	^ inspector ifNil: [ inspector := MiInspector ]
 ]
 
 { #category : #testing }
@@ -478,12 +471,6 @@ MiAbstractBrowser >> isMiBrowser [
 { #category : #testing }
 MiAbstractBrowser >> isModelImporter [
 	^self class isModelImporter
-]
-
-{ #category : #'as yet unclassified' }
-MiAbstractBrowser >> miInspect [
-
-	self inspector inspect: self miSelectedItem forBuses: buses
 ]
 
 { #category : #accessing }

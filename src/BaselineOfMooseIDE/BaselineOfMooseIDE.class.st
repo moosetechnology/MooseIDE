@@ -66,8 +66,11 @@ BaselineOfMooseIDE >> defineMooseCriticsPackages: spec [
 BaselineOfMooseIDE >> definePackages: spec [
 
 	spec
+		package: 'MooseIDE-Colors' with: [ spec requires: #( 'Roassal3' ) ];
+		package: 'MooseIDE-Colors-Tests'
+		with: [ spec requires: #( 'MooseIDE-Colors' ) ];
 		package: 'MooseIDE-Core'
-		with: [ spec requires: #( 'LabelContractor' ) ];
+		with: [ spec requires: #( 'MooseIDE-Colors' 'LabelContractor' ) ];
 		package: 'MooseIDE-Visualization'
 		with: [
 			spec requires: #( 'MooseIDE-Core' 'HierarchicalVisualizations' ) ];
@@ -100,9 +103,6 @@ BaselineOfMooseIDE >> definePackages: spec [
 		with: [ spec requires: #( 'MooseIDE-NewTools' 'MooseIDE-Tests' ) ];
 		package: 'MooseIDE-Export'
 		with: [ spec requires: #( 'MooseIDE-Core' 'Microdown' ) ];
-		package: 'MooseIDE-ColorPalette';
-		package: 'MooseIDE-ColorPalette-Tests'
-		with: [ spec requires: #( 'MooseIDE-ColorPalette' ) ];
 		package: 'MooseIDE-Durden'
 		with: [ spec requires: #( 'MooseIDE-Core' 'Durden' ) ];
 		package: 'MooseIDE-CoUsageMap'

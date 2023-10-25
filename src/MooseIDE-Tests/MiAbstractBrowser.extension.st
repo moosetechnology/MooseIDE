@@ -15,6 +15,13 @@ MiAbstractBrowser >> busButton [
 ]
 
 { #category : #'*MooseIDE-Tests' }
+MiAbstractBrowser >> inspector: anObject [
+	"Used only in tests"
+
+	inspector := anObject
+]
+
+{ #category : #'*MooseIDE-Tests' }
 MiAbstractBrowser class >> openForTests: aTestApplication [
 
 	^ (self newApplication: aTestApplication model: self newModel)
