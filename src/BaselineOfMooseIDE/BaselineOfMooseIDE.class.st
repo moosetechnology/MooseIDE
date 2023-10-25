@@ -14,7 +14,6 @@ BaselineOfMooseIDE >> baseline: spec [
 		self hierarchicalVisualizations: spec.
 		self roassal: spec.
 		self roassalExporters: spec.
-		self famixQueries: spec.
 		self pharoAIHierachicalClustering: spec.
 		self stonCustomizer: spec.
 		self microdown: spec.
@@ -23,28 +22,7 @@ BaselineOfMooseIDE >> baseline: spec [
 		self definePackages: spec.
 
 		"If Moose is not already present"
-		spec for: #NeedsMoose do: [
-			self famix: spec.
-			self famixTagging: spec.
-			self famixReplication: spec.
-			spec
-				package: 'MooseIDE-Core' with: [ spec requires: #( 'Famix' ) ];
-				package: 'MooseIDE-Meta'
-				with: [ spec requires: #( 'MooseIDE-Core' ) ];
-				package: 'MooseIDE-Tagging'
-				with: [ spec requires: #( 'FamixTagging' ) ];
-				package: 'MooseIDE-CoUsageMap'
-				with: [ spec requires: #( 'FamixTagging' ) ];
-				package: 'MooseIDE-Dependency'
-				with: [ spec requires: #( 'FamixTagging' ) ];
-				package: 'MooseIDE-NewTools'
-				with: [ spec requires: #( 'FamixQueries' ) ];
-				package: 'MooseIDE-Duplication'
-				with: [ spec requires: #( 'FamixReplication' ) ];
-				package: 'Famix-CriticBrowser-Entities'
-				with: [ spec requires: 'Famix' ];
-				package: 'Famix-CriticBrowser-Generator'
-				with: [ spec requires: 'Famix' ] ].
+		spec for: #NeedsMoose do: [ self definePackagesWhithoutFamix: spec ].
 
 		"Register custom tools"
 		spec postLoadDoIt: #registerCustomTools ]
@@ -97,8 +75,8 @@ BaselineOfMooseIDE >> definePackages: spec [
 		with: [ spec requires: #( 'MooseIDE-Core' ) ];
 		package: 'MooseIDE-Tests' with: [
 			spec requires:
-					#( 'MooseIDE-Core' 'MooseIDE-Dependency' 'MooseIDE-Tagging'
-					   'MooseIDE-Visualization' ) ];
+					#( 'MooseIDE-Core' 'MooseIDE-Dependency' 'MooseIDE-Visualization' ) ];
+
 		package: 'MooseIDE-Dependency' with: [
 			spec requires:
 					#( 'MooseIDE-Core' 'MooseIDE-Visualization'
@@ -110,7 +88,7 @@ BaselineOfMooseIDE >> definePackages: spec [
 		with: [
 			spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' ) ];
 		package: 'MooseIDE-Tagging-Tests'
-		with: [ spec requires: #( 'MooseIDE-Tagging' ) ];
+		with: [ spec requires: #( 'MooseIDE-Tagging' 'MooseIDE-Tests' ) ];
 		package: 'MooseIDE-QueriesBrowser'
 		with: [ spec requires: #( 'MooseIDE-Core' 'FamixQueries' ) ];
 		package: 'MooseIDE-QueriesBrowser-Tests'
@@ -149,6 +127,37 @@ BaselineOfMooseIDE >> definePackages: spec [
 		with: [ spec requires: #( 'MooseIDE-ButterflyMap' ) ].
 
 	self defineMooseCriticsPackages: spec
+]
+
+{ #category : #baselines }
+BaselineOfMooseIDE >> definePackagesWhithoutFamix: spec [
+
+	self famix: spec.
+	self famixTagging: spec.
+	self famixReplication: spec.
+	self famixQueries: spec.
+
+	spec
+		package: 'MooseIDE-Core'
+		with: [ spec requires: #( 'Famix' 'Roassal3Exporters' ) ];
+		package: 'MooseIDE-Meta'
+		with: [ spec requires: #( 'MooseIDE-Core' ) ];
+		package: 'MooseIDE-QueriesBrowser'
+		with: [ spec requires: #( 'FamixQueries' ) ];
+		package: 'MooseIDE-Tagging'
+		with: [ spec requires: #( 'FamixTagging' ) ];
+		package: 'MooseIDE-CoUsageMap'
+		with: [ spec requires: #( 'FamixTagging' ) ];
+		package: 'MooseIDE-Dependency'
+		with: [ spec requires: #( 'FamixTagging' ) ];
+		package: 'MooseIDE-NewTools'
+		with: [ spec requires: #( 'FamixQueries' ) ];
+		package: 'MooseIDE-Duplication'
+		with: [ spec requires: #( 'FamixReplication' ) ];
+		package: 'Famix-CriticBrowser-Entities'
+		with: [ spec requires: 'Famix' ];
+		package: 'Famix-CriticBrowser-Generator'
+		with: [ spec requires: 'Famix' ]
 ]
 
 { #category : #dependencies }

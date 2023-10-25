@@ -5,7 +5,7 @@ Class {
 		'detailsPage',
 		'helper'
 	],
-	#category : #'MooseIDE-Tests-Browsers'
+	#category : #'MooseIDE-Tagging-Tests'
 }
 
 { #category : #running }
