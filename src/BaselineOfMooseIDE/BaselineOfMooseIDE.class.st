@@ -138,8 +138,7 @@ BaselineOfMooseIDE >> definePackagesWhithoutFamix: spec [
 	self famixQueries: spec.
 
 	spec
-		package: 'MooseIDE-Core'
-		with: [ spec requires: #( 'Famix' 'Roassal3Exporters' ) ];
+		package: 'MooseIDE-Core' with: [ spec requires: #( 'Famix' ) ];
 		package: 'MooseIDE-Meta'
 		with: [ spec requires: #( 'MooseIDE-Core' ) ];
 		package: 'MooseIDE-QueriesBrowser'
