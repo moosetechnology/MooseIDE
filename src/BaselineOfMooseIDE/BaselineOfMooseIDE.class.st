@@ -170,6 +170,7 @@ BaselineOfMooseIDE >> famix: spec [
 
 { #category : #dependencies }
 BaselineOfMooseIDE >> famixQueries: spec [
+
 	spec
 		baseline: 'FamixQueries'
 		with: [ spec repository: 'github://moosetechnology/FamixQueries' ]
@@ -189,8 +190,8 @@ BaselineOfMooseIDE >> famixTagging: spec [
 
 	spec
 		baseline: 'FamixTagging'
-		with: [ 
-		spec repository: 'github://moosetechnology/FamixTagging:v1.x.x/src' ]
+		with: [
+		spec repository: 'github://moosetechnology/FamixTagging/src' ]
 ]
 
 { #category : #dependencies }
