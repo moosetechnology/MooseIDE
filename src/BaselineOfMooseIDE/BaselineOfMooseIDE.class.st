@@ -130,10 +130,10 @@ BaselineOfMooseIDE >> definePackages: spec [
 { #category : #baselines }
 BaselineOfMooseIDE >> definePackagesWhithoutFamix: spec [
 
-	self famix: spec.
 	self famixTagging: spec.
 	self famixReplication: spec.
 	self famixQueries: spec.
+	self famix: spec.
 
 	spec
 		package: 'MooseIDE-Core' with: [ spec requires: #( 'Famix' ) ];
