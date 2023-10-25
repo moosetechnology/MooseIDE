@@ -1,6 +1,6 @@
 Class {
 	#name : #MiColorPicker,
-	#superclass : #MiPresenter,
+	#superclass : #SpPresenter,
 	#instVars : [
 		'colorSlider',
 		'colorMap',

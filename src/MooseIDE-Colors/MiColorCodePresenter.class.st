@@ -1,6 +1,6 @@
 Class {
 	#name : #MiColorCodePresenter,
-	#superclass : #MiPresenter,
+	#superclass : #SpPresenter,
 	#instVars : [
 		'rCodeInput',
 		'gCodeInput',

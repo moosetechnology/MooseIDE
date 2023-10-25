@@ -1,6 +1,6 @@
 Class {
 	#name : #MiSmallColorPalette,
-	#superclass : #MiPresenter,
+	#superclass : #SpPresenter,
 	#instVars : [
 		'paletteDropList',
 		'currentPalette',
