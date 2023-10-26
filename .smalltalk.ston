@@ -1,5 +1,4 @@
 SmalltalkCISpec {
-  #preLoading : '.dependencies.st',
   #loading : [
     SCIMetacelloLoadSpec {
       #baseline : 'MooseIDE',
