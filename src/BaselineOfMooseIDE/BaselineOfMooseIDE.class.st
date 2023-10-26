@@ -92,7 +92,7 @@ BaselineOfMooseIDE >> definePackages: spec [
 		package: 'MooseIDE-Tagging-Tests'
 		with: [ spec requires: #( 'MooseIDE-Tagging' 'MooseIDE-Tests' ) ];
 		package: 'MooseIDE-QueriesBrowser'
-		with: [ spec requires: #( 'MooseIDE-Core' 'FamixQueries' ) ];
+		with: [ spec requires: #( 'MooseIDE-Core'  ) ];
 		package: 'MooseIDE-QueriesBrowser-Tests'
 		with: [
 			spec requires: #( 'MooseIDE-QueriesBrowser'
