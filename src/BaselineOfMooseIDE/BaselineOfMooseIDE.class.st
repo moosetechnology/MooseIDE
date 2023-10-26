@@ -81,16 +81,16 @@ BaselineOfMooseIDE >> defineMooseDependencies: spec [
 BaselineOfMooseIDE >> definePackages: spec [
 
 	spec
-		package: 'MooseIDE-Colors' with: [ spec requires: #( 'Roassal3' ) ];
+		package: 'MooseIDE-Colors' with: [ spec requires: #( 'Roassal' ) ];
 		package: 'MooseIDE-Colors-Tests' with: [ spec requires: #( 'MooseIDE-Colors' ) ];
 		
-		package: 'MooseIDE-Core' with: [ spec requires: #( 'MooseIDE-Colors' 'LabelContractor' 'Roassal3Exporters' ) ];
+		package: 'MooseIDE-Core' with: [ spec requires: #( 'MooseIDE-Colors' 'LabelContractor' 'RoassalExporters' ) ];
 		
 		package: 'MooseIDE-Visualization' with: [ spec requires: #( 'MooseIDE-Core' 'HierarchicalVisualizations' ) ];
 		
 		package: 'MooseIDE-Meta' with: [ spec requires: #( 'MooseIDE-Core' ) ];
 		
-		package: 'MooseIDE-Dependency' with: [ spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' 'Roassal3' 'AIHierarchicalClustering' ) ];
+		package: 'MooseIDE-Dependency' with: [ spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' 'Roassal' 'AIHierarchicalClustering' ) ];
 		
 		package: 'MooseIDE-Tests' with: [ spec requires: #( 'MooseIDE-Core' 'MooseIDE-Dependency' 'MooseIDE-Visualization' ) ];
 		
