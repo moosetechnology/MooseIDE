@@ -8,7 +8,7 @@ Class {
 BaselineOfMooseIDE >> baseline: spec [
 
 	<baseline>
-	self halt.
+
 	spec for: #common do: [ "Dependencies"
 		self tylerDurden: spec.
 		self labelContractor: spec.
