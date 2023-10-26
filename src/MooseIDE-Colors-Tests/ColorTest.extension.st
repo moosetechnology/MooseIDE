@@ -1,7 +1,7 @@
-Extension { #name : #MiColorTest }
+Extension { #name : #ColorTest }
 
 { #category : #'*MooseIDE-Colors-Tests' }
-MiColorTest >> testHclToLab [
+ColorTest >> testHclToLab [
 
 	self "white"
 		assert: (Color new hclToLab: { 
@@ -55,7 +55,7 @@ MiColorTest >> testHclToLab [
 ]
 
 { #category : #'*MooseIDE-Colors-Tests' }
-MiColorTest >> testHclToRgb [
+ColorTest >> testHclToRgb [
 
 	self "white"
 		assert: (Color new hclToRgb: { 
@@ -94,7 +94,7 @@ MiColorTest >> testHclToRgb [
 ]
 
 { #category : #'*MooseIDE-Colors-Tests' }
-MiColorTest >> testLabToHcl [
+ColorTest >> testLabToHcl [
 
 	self "white"
 		assert: (Color new labToHcl: { 
@@ -148,7 +148,7 @@ MiColorTest >> testLabToHcl [
 ]
 
 { #category : #'*MooseIDE-Colors-Tests' }
-MiColorTest >> testLabToRgb [
+ColorTest >> testLabToRgb [
 
 	self "white"
 		assert: (Color new labToRgb: {
@@ -187,7 +187,7 @@ MiColorTest >> testLabToRgb [
 ]
 
 { #category : #'*MooseIDE-Colors-Tests' }
-MiColorTest >> testRgbToHcl [
+ColorTest >> testRgbToHcl [
 
 	self "white"
 		assert: (Color r: 1 g: 1 b: 1) rgbToHcl 
@@ -226,7 +226,7 @@ MiColorTest >> testRgbToHcl [
 ]
 
 { #category : #'*MooseIDE-Colors-Tests' }
-MiColorTest >> testRgbToLab [
+ColorTest >> testRgbToLab [
 
 	self assert: (Color r: 1 g: 1 b: 1) rgbToLab equals: { 
 			(#luminance -> 100).
