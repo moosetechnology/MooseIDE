@@ -8,6 +8,7 @@ Class {
 BaselineOfMooseIDE >> baseline: spec [
 
 	<baseline>
+	self halt.
 	spec for: #common do: [ "Dependencies"
 		self tylerDurden: spec.
 		self labelContractor: spec.
@@ -112,7 +113,7 @@ BaselineOfMooseIDE >> definePackages: spec [
 
 { #category : #baselines }
 BaselineOfMooseIDE >> definePackagesWhithoutFamix: spec [
-self halt.
+
 	self famix: spec.
 	self famixTagging: spec.
 	self famixReplication: spec.
@@ -147,10 +148,10 @@ BaselineOfMooseIDE >> famix: spec [
 
 { #category : #dependencies }
 BaselineOfMooseIDE >> famixQueries: spec [
-self halt.
+
 	spec
 		baseline: 'FamixQueries'
-		with: [ spec repository: 'github://moosetechnology/FamixQueries/src' ]
+		with: [ spec repository: 'github://moosetechnology/FamixQueries' ]
 ]
 
 { #category : #dependencies }
