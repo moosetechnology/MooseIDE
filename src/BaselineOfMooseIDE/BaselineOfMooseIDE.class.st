@@ -41,16 +41,15 @@ BaselineOfMooseIDE >> customProjectAttributes [
 BaselineOfMooseIDE >> defineMooseCriticsPackages: spec [
 
 	spec
-		package: 'MooseIDE-CriticBrowser' with: [ 
+		package: 'MooseIDE-CriticBrowser' with: [
 			spec requires: #( 'MooseIDE-Core' 'Famix-CriticBrowser-Entities'
 					   'STONCustomizer' ) ];
 		package: 'MooseIDE-CriticBrowser-Tests'
-		with: [ 
+		with: [
 			spec requires: #( 'MooseIDE-Tests' 'MooseIDE-CriticBrowser' ) ];
 		package: 'Famix-CriticBrowser-Entities'
 		with: [ spec requires: 'Famix-CriticBrowser-ManualEntities' ];
-		package: 'Famix-CriticBrowser-ManualEntities'
-		with: [ spec requires: #( 'FamixQueries' ) ];
+		package: 'Famix-CriticBrowser-ManualEntities';
 		package: 'Famix-CriticBrowser-Generator';
 		package: 'Famix-CriticBrowser-Tests'
 		with: [ spec requires: 'Famix-CriticBrowser-Entities' ].
@@ -155,6 +154,8 @@ BaselineOfMooseIDE >> definePackagesWhithoutFamix: spec [
 		with: [ spec requires: #( 'FamixReplication' ) ];
 		package: 'Famix-CriticBrowser-Entities'
 		with: [ spec requires: 'Famix' ];
+		package: 'Famix-CriticBrowser-ManualEntities'
+		with: [ spec requires: #( 'FamixQueries' ) ];
 		package: 'Famix-CriticBrowser-Generator'
 		with: [ spec requires: 'Famix' ]
 ]
