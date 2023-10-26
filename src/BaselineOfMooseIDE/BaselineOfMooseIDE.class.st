@@ -112,7 +112,7 @@ BaselineOfMooseIDE >> definePackages: spec [
 
 { #category : #baselines }
 BaselineOfMooseIDE >> definePackagesWhithoutFamix: spec [
-
+self halt.
 	self famix: spec.
 	self famixTagging: spec.
 	self famixReplication: spec.
