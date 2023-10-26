@@ -238,7 +238,7 @@ BaselineOfMooseIDE >> removeRoassalFromSystem [
 BaselineOfMooseIDE >> roassal: spec [
 
 	spec
-		baseline: 'Roassal3'
+		baseline: 'Roassal'
 		with: [
 		spec repository: 'github://pharo-graphics/Roassal:v1.04b/src' ]
 ]
@@ -247,7 +247,7 @@ BaselineOfMooseIDE >> roassal: spec [
 BaselineOfMooseIDE >> roassalExporters: spec [
 
 	spec
-		baseline: 'Roassal3Exporters'
+		baseline: 'RoassalExporters'
 		with: [ 
 		spec repository: 'github://pharo-graphics/RoassalExporters:v1.01/src' ]
 ]
