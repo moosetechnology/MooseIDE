@@ -147,7 +147,7 @@ BaselineOfMooseIDE >> famix: spec [
 
 { #category : #dependencies }
 BaselineOfMooseIDE >> famixQueries: spec [
-
+self halt.
 	spec
 		baseline: 'FamixQueries'
 		with: [ spec repository: 'github://moosetechnology/FamixQueries/src' ]
