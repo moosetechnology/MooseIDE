@@ -8,24 +8,17 @@ Class {
 BaselineOfMooseIDE >> baseline: spec [
 
 	<baseline>
+	spec for: #common do: [
+		spec preLoadDoIt: #removeRoassalFromSystem.
 
-	spec for: #common do: [ "Dependencies"
-		self tylerDurden: spec.
-		self labelContractor: spec.
-		self hierarchicalVisualizations: spec.
-		self roassal3: spec.
-		self roassal3Exporters: spec.
-		self pharoAIHierachicalClustering: spec.
-		self stonCustomizer: spec.
-		self microdown: spec.
-
-		"Packages"
+		self defineDependencies: spec.
 		self definePackages: spec.
+		self defineGroups: spec.
 
-		"If Moose is not already present"
-		spec for: #NeedsMoose do: [ self definePackagesWhithoutFamix: spec ].
+		spec for: #NoFamix do: [
+			self defineMooseDependencies: spec.
+			self definePackagesWhenNoFamix: spec ].
 
-		"Register custom tools"
 		spec postLoadDoIt: #registerCustomTools ]
 ]
 
@@ -35,10 +28,33 @@ BaselineOfMooseIDE >> customProjectAttributes [
 	^ RPackageOrganizer default packages
 		  detect: [ :package | package name = 'BaselineOfFamix' ]
 		  ifFound: [ #(  ) ]
-		  ifNone: [ #( #NeedsMoose ) ]
+		  ifNone: [ #( #NoFamix ) ]
 ]
 
-{ #category : #baselines }
+{ #category : #dependencies }
+BaselineOfMooseIDE >> defineDependencies: spec [
+
+	self tylerDurden: spec.
+	self labelContractor: spec.
+	self roassal: spec.
+	self roassalExporters: spec.
+	self hierarchicalVisualizations: spec.
+	self pharoAIHierachicalClustering: spec.
+	self stonCustomizer: spec.
+	self microdown: spec
+]
+
+{ #category : #groups }
+BaselineOfMooseIDE >> defineGroups: spec [
+
+	spec
+		group: 'CriticBrowser-Metamodel'
+		with:
+			#( 'Famix-CriticBrowser-Entities' 'Famix-CriticBrowser-ManualEntities'
+			   'Famix-CriticBrowser-Generator' 'Famix-CriticBrowser-Tests' )
+]
+
+{ #category : #packages }
 BaselineOfMooseIDE >> defineMooseCriticsPackages: spec [
 
 	spec
@@ -49,38 +65,32 @@ BaselineOfMooseIDE >> defineMooseCriticsPackages: spec [
 		package: 'Famix-CriticBrowser-Entities' with: [ spec requires: #('Famix-CriticBrowser-ManualEntities') ];
 		package: 'Famix-CriticBrowser-Generator';
 		
-		package: 'Famix-CriticBrowser-Tests' with: [ spec requires: 'Famix-CriticBrowser-Entities' ].
-
-	spec
-		group: 'CriticBrowser-Metamodel'
-		with:
-			#( 'Famix-CriticBrowser-Entities' 'Famix-CriticBrowser-ManualEntities'
-			   'Famix-CriticBrowser-Generator' 'Famix-CriticBrowser-Tests' )
+		package: 'Famix-CriticBrowser-Tests' with: [ spec requires: 'Famix-CriticBrowser-Entities' ]
 ]
 
-{ #category : #baselines }
-BaselineOfMooseIDE >> defineMooseCriticsPackagesWithoutFamix: spec [
+{ #category : #dependencies }
+BaselineOfMooseIDE >> defineMooseDependencies: spec [
 
-	spec
-		package: 'Famix-CriticBrowser-ManualEntities' with: [ spec requires: #( 'FamixQueries' ) ];
-		package: 'Famix-CriticBrowser-Entities' with: [ spec requires: #( 'Famix') ];
-		package: 'Famix-CriticBrowser-Generator' with: [ spec requires: 'Famix' ]
+	self famix: spec.
+	self famixTagging: spec.
+	self famixReplication: spec.
+	self famixQueries: spec
 ]
 
-{ #category : #baselines }
+{ #category : #packages }
 BaselineOfMooseIDE >> definePackages: spec [
 
 	spec
-		package: 'MooseIDE-Colors' with: [ spec requires: #( 'Roassal3' ) ];
+		package: 'MooseIDE-Colors' with: [ spec requires: #( 'Roassal' ) ];
 		package: 'MooseIDE-Colors-Tests' with: [ spec requires: #( 'MooseIDE-Colors' ) ];
 		
-		package: 'MooseIDE-Core' with: [ spec requires: #( 'MooseIDE-Colors' 'LabelContractor' 'Roassal3Exporters' ) ];
+		package: 'MooseIDE-Core' with: [ spec requires: #( 'MooseIDE-Colors' 'LabelContractor' 'RoassalExporters' ) ];
 		
 		package: 'MooseIDE-Visualization' with: [ spec requires: #( 'MooseIDE-Core' 'HierarchicalVisualizations' ) ];
 		
 		package: 'MooseIDE-Meta' with: [ spec requires: #( 'MooseIDE-Core' ) ];
 		
-		package: 'MooseIDE-Dependency' with: [ spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' 'Roassal3' 'AIHierarchicalClustering' ) ];
+		package: 'MooseIDE-Dependency' with: [ spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' 'Roassal' 'AIHierarchicalClustering' ) ];
 		
 		package: 'MooseIDE-Tests' with: [ spec requires: #( 'MooseIDE-Core' 'MooseIDE-Dependency' 'MooseIDE-Visualization' ) ];
 		
@@ -111,30 +121,21 @@ BaselineOfMooseIDE >> definePackages: spec [
 	self defineMooseCriticsPackages: spec
 ]
 
-{ #category : #baselines }
-BaselineOfMooseIDE >> definePackagesWhithoutFamix: spec [
-
-	self famix: spec.
-	self famixTagging: spec.
-	self famixReplication: spec.
-	self famixQueries: spec.
+{ #category : #packages }
+BaselineOfMooseIDE >> definePackagesWhenNoFamix: spec [
 
 	spec
 		package: 'MooseIDE-Core' with: [ spec requires: #( 'Famix' ) ];
-		
 		package: 'MooseIDE-Dependency' with: [ spec requires: #( 'FamixTagging' ) ];
-		
 		package: 'MooseIDE-QueriesBrowser' with: [ spec requires: #( 'FamixQueries' ) ];
-		
 		package: 'MooseIDE-Tagging' with: [ spec requires: #( 'FamixTagging' ) ];
-		
 		package: 'MooseIDE-CoUsageMap' with: [ spec requires: #( 'FamixTagging' ) ];
-		
 		package: 'MooseIDE-NewTools' with: [ spec requires: #( 'FamixQueries' ) ];
-
-		package: 'MooseIDE-Duplication' with: [ spec requires: #( 'FamixReplication' ) ].
-
-	self defineMooseCriticsPackagesWithoutFamix: spec
+		package: 'MooseIDE-Duplication' with: [ spec requires: #( 'FamixReplication' ) ];
+		
+		package: 'Famix-CriticBrowser-ManualEntities' with: [ spec requires: #( 'FamixQueries' ) ];
+		package: 'Famix-CriticBrowser-Entities' with: [ spec requires: #( 'Famix') ];
+		package: 'Famix-CriticBrowser-Generator' with: [ spec requires: 'Famix' ]
 ]
 
 { #category : #dependencies }
@@ -175,10 +176,9 @@ BaselineOfMooseIDE >> famixTagging: spec [
 { #category : #dependencies }
 BaselineOfMooseIDE >> hierarchicalVisualizations: spec [
 
-	spec
-		baseline: 'HierarchicalVisualizations'
-		with: [ 
-		spec repository: 'github://ObjectProfile/HierarchicalVisualizations:main/src' ]
+	spec baseline: 'HierarchicalVisualizations' with: [
+		spec repository:
+			'github://moosetechnology/HierarchicalVisualizations:v1.01/src' ]
 ]
 
 { #category : #dependencies }
@@ -223,22 +223,33 @@ BaselineOfMooseIDE >> registerCustomTools [
 		miPlayground register ]
 ]
 
-{ #category : #dependencies }
-BaselineOfMooseIDE >> roassal3: spec [
+{ #category : #actions }
+BaselineOfMooseIDE >> removeRoassalFromSystem [
 
-	spec
-		baseline: 'Roassal3'
-		with: [ 
-		spec repository: 'github://ObjectProfile/Roassal3:master/src' ]
+	#( Roassal3 Numeric ) do: [ :string |
+		| packages |
+		packages := RPackageOrganizer default packages
+			            select: [ :each |
+			            (string surroundedBy: '*') match: each name ]
+			            thenDo: [ :each | each removeFromSystem ] ]
 ]
 
 { #category : #dependencies }
-BaselineOfMooseIDE >> roassal3Exporters: spec [
+BaselineOfMooseIDE >> roassal: spec [
 
 	spec
-		baseline: 'Roassal3Exporters'
+		baseline: 'Roassal'
+		with: [
+		spec repository: 'github://pharo-graphics/Roassal:v1.04b/src' ]
+]
+
+{ #category : #dependencies }
+BaselineOfMooseIDE >> roassalExporters: spec [
+
+	spec
+		baseline: 'RoassalExporters'
 		with: [ 
-		spec repository: 'github://ObjectProfile/Roassal3Exporters:v1.0/src' ]
+		spec repository: 'github://pharo-graphics/RoassalExporters:v1.01/src' ]
 ]
 
 { #category : #dependencies }
