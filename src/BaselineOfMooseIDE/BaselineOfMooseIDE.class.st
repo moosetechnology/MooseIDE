@@ -27,7 +27,7 @@ BaselineOfMooseIDE >> customProjectAttributes [
 
 	^ RPackageOrganizer default packages
 		  detect: [ :package | package name = 'BaselineOfFamix' ]
-		  ifFound: [ #(  ) ]
+		  ifFound: [ #( #WithFamix ) ]
 		  ifNone: [ #( #NoFamix ) ]
 ]
 
@@ -41,7 +41,9 @@ BaselineOfMooseIDE >> defineDependencies: spec [
 	self hierarchicalVisualizations: spec.
 	self pharoAIHierachicalClustering: spec.
 	self stonCustomizer: spec.
-	self microdown: spec
+	self microdown: spec.
+
+	spec for: #WithFamix do: [ self famixQueries: spec ]
 ]
 
 { #category : #groups }
