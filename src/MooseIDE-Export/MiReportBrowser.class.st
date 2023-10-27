@@ -74,6 +74,12 @@ MiReportBrowser class >> title [
 	^ 'Notebook'
 ]
 
+{ #category : #specs }
+MiReportBrowser class >> windowSize [
+
+	^ 1083 @ 697
+]
+
 { #category : #initialization }
 MiReportBrowser >> addCells [
 
@@ -268,13 +274,6 @@ MiReportBrowser >> initializeToolbar [
 				            action: [ notebook addTextCell ];
 				            yourself);
 		           yourself
-]
-
-{ #category : #initialization }
-MiReportBrowser >> initializeWindow: aMiWindowPresenter [
-
-	super initializeWindow: aMiWindowPresenter.
-	aMiWindowPresenter initialExtent: 1083.0 @ 697.0
 ]
 
 { #category : #actions }

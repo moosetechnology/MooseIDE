@@ -38,6 +38,12 @@ MiLayerVisualizationBrowser class >> visualizationBuilder [
 	^ MiLayerVisualizationBuilder new
 ]
 
+{ #category : #specs }
+MiLayerVisualizationBrowser class >> windowSize [
+
+	^ self currentWorld extent
+]
+
 { #category : #testing }
 MiLayerVisualizationBrowser >> canFollowEntity: anObject [
 
@@ -74,13 +80,6 @@ MiLayerVisualizationBrowser >> initializePresenters [
 
 	visualization := self instantiate: MiLayerVisualization.
 	self initializeLayout
-]
-
-{ #category : #accessing }
-MiLayerVisualizationBrowser >> initializeWindow: aMiWindowPresenter [
-
-	super initializeWindow: aMiWindowPresenter.
-	aMiWindowPresenter initialExtent: self currentWorld extent
 ]
 
 { #category : #accessing }

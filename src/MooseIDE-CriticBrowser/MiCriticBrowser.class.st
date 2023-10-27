@@ -71,6 +71,12 @@ MiCriticBrowser class >> title [
 	^ 'Moose Critic Browser'
 ]
 
+{ #category : #specs }
+MiCriticBrowser class >> windowSize [
+
+	^ 1280 @ 560
+]
+
 { #category : #'accessing - testing' }
 MiCriticBrowser >> addContextsPresenter [
 "used for testing purposes, do not access outside of tests"
@@ -385,14 +391,6 @@ MiCriticBrowser >> initializeStatusLabel [
 
 	statusLabel := self newLabel.
 	self updateStatusLabel: 'Critic Browser is ready to work!'
-]
-
-{ #category : #initialization }
-MiCriticBrowser >> initializeWindow: aWindowPresenter [	
-	super initializeWindow: aWindowPresenter.
-	aWindowPresenter
-		title: self defaultTitle;
-		initialExtent: 1280 @ 560
 ]
 
 { #category : #accessing }

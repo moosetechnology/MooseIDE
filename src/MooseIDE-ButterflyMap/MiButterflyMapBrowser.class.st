@@ -97,12 +97,6 @@ MiButterflyMapBrowser >> hasSettings [
 ]
 
 { #category : #initialization }
-MiButterflyMapBrowser >> initialize [
-
-	super initialize
-]
-
-{ #category : #initialization }
 MiButterflyMapBrowser >> initializeLayout [
 
 	self layout: (SpScrollableLayout with: mainPresenter)

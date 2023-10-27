@@ -45,6 +45,12 @@ MiPreviewBrowser class >> title [
 	^ 'Queries dashboard'
 ]
 
+{ #category : #specs }
+MiPreviewBrowser class >> windowSize [
+
+	^ 800 @ 500
+]
+
 { #category : #testing }
 MiPreviewBrowser >> canFollowEntity: anObject [
 
@@ -103,13 +109,6 @@ MiPreviewBrowser >> initializePresenters [
 		                  addStyle: 'titleLabel';
 		                  yourself.
 	self initializeLayout
-]
-
-{ #category : #initialization }
-MiPreviewBrowser >> initializeWindow: aMiWindowPresenter [
-
-	super initializeWindow: aMiWindowPresenter.
-	aMiWindowPresenter initialExtent: 800@500
 ]
 
 { #category : #initialization }
