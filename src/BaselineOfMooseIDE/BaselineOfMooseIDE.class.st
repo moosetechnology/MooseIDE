@@ -36,9 +36,9 @@ BaselineOfMooseIDE >> defineDependencies: spec [
 
 	self tylerDurden: spec.
 	self labelContractor: spec.
-	self hierarchicalVisualizations: spec.
 	self roassal: spec.
 	self roassalExporters: spec.
+	self hierarchicalVisualizations: spec.
 	self pharoAIHierachicalClustering: spec.
 	self stonCustomizer: spec.
 	self microdown: spec
