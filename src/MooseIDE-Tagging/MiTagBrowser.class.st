@@ -289,11 +289,6 @@ MiTagBrowser >> setTagTo: aTag [
 	self model currentTag: aTag.
 ]
 
-{ #category : #actions }
-MiTagBrowser >> settings [
-	
-]
-
 { #category : #initialization }
 MiTagBrowser >> showNoMooseModel [
 

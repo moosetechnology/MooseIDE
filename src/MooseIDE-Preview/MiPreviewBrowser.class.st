@@ -133,12 +133,6 @@ MiPreviewBrowser >> setModelBeforeInitialization: aBrowserModel [
 ]
 
 { #category : #actions }
-MiPreviewBrowser >> settings [
-	
-	
-]
-
-{ #category : #actions }
 MiPreviewBrowser >> updatePresenters [
 
 	| results newLayout groups |

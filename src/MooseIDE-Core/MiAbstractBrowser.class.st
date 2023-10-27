@@ -548,9 +548,8 @@ MiAbstractBrowser >> setModelBeforeInitialization: aBrowserModel [
 
 { #category : #actions }
 MiAbstractBrowser >> settings [
-	"not used if #hasSettings is false"
 
-	self subclassResponsibility 
+	self hasSettings ifTrue: [ specModel openSettings ]
 ]
 
 { #category : #actions }

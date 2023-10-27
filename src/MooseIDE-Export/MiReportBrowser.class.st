@@ -342,12 +342,6 @@ MiReportBrowser >> sep [
 	^ sep
 ]
 
-{ #category : #actions }
-MiReportBrowser >> settings [
-	
-	
-]
-
 { #category : #initialization }
 MiReportBrowser >> updateModelCells [
 

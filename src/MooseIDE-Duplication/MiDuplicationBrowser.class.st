@@ -241,12 +241,6 @@ MiDuplicationBrowser >> selectFragments: selectedFragments [
 	lstReplicatedFragments selectItems: selectedFragments
 ]
 
-{ #category : #actions }
-MiDuplicationBrowser >> settings [
-
-	^specModel openSettings
-]
-
 { #category : #api }
 MiDuplicationBrowser >> showEntities: entities [
 

@@ -114,9 +114,3 @@ MiSystemComplexityBrowser >> initializePresenters [
 	mainPresenter := self instantiate: MiSystemComplexityVisualization.
 	self initializeLayout
 ]
-
-{ #category : #actions }
-MiSystemComplexityBrowser >> settings [
-	
-	specModel settings open
-]

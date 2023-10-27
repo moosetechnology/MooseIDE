@@ -128,12 +128,6 @@ MiButterflyMapBrowser >> run [
 	self runVisualization 
 ]
 
-{ #category : #actions }
-MiButterflyMapBrowser >> settings [
-	
-	^self model openSettings
-]
-
 { #category : #accessing }
 MiButterflyMapBrowser >> visualization [
 

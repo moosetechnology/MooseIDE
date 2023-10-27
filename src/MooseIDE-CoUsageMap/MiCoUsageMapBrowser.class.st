@@ -135,11 +135,6 @@ MiCoUsageMapBrowser >> release [
 	self class instVarNames do: [ :n | self instVarNamed: n put: nil ]
 ]
 
-{ #category : #actions }
-MiCoUsageMapBrowser >> settings [ 
-	specModel openSettings
-]
-
 { #category : #updating }
 MiCoUsageMapBrowser >> update [
 	self deprecated: 'Use runVisualization method instead' transformWith: '`@receiver update' -> '`@receiver runVisualization'.

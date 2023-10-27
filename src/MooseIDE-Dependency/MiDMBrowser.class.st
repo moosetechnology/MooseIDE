@@ -143,12 +143,6 @@ MiDMBrowser >> initializePresenters [
 	self initializeLayout
 ]
 
-{ #category : #accessing }
-MiDMBrowser >> settings [
-
-	^specModel settings open
-]
-
 { #category : #initialization }
 MiDMBrowser >> visualization [
 

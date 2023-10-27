@@ -226,12 +226,6 @@ MiModelRootBrowser >> refreshToolbarButton [
 		  yourself
 ]
 
-{ #category : #actions }
-MiModelRootBrowser >> settings [
-
-	^specModel openSettings
-]
-
 { #category : #'accessing - tests' }
 MiModelRootBrowser >> settingsItem [
 	^ specModel settings

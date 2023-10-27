@@ -164,12 +164,6 @@ MiArchitecturalMapBrowser >> setModelBeforeInitialization: aModel [
 	aModel browser: self
 ]
 
-{ #category : #accessing }
-MiArchitecturalMapBrowser >> settings [
-
-	^specModel openSettings
-]
-
 { #category : #'accessing - private tests' }
 MiArchitecturalMapBrowser >> visualization [
 	^mainPresenter
