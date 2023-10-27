@@ -19,12 +19,6 @@ Class {
 	#category : #'MooseIDE-Meta-ModelRootBrowser'
 }
 
-{ #category : #menu }
-MiModelRootBrowser class >> addItemOrSubMenuToMiBrowsersMenu: aRootMenu defaultSubMenu: aSubMenu [
-
-	self addToMiBrowsersMenu: aRootMenu
-]
-
 { #category : #commands }
 MiModelRootBrowser class >> buildModelCommandsGroupWith: presenterInstance [
 

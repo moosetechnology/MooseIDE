@@ -13,12 +13,6 @@ Class {
 	#category : #'MooseIDE-NewTools-Inspector'
 }
 
-{ #category : #menu }
-MiInspectorBrowser class >> addItemOrSubMenuToMiBrowsersMenu: aRootMenu defaultSubMenu: aSubMenu [
-
-	self addToMiBrowsersMenu: aRootMenu
-]
-
 { #category : #api }
 MiInspectorBrowser class >> inspect: anObject [
 
