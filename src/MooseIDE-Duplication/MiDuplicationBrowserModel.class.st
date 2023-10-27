@@ -35,13 +35,6 @@ MiDuplicationBrowserModel >> codeCleanerClass [
 ]
 
 { #category : #private }
-MiDuplicationBrowserModel >> currentMooseModel [
-	^self entities
-		ifEmpty: [ nil ]
-		ifNotEmpty: [ :list | list anyOne mooseModel]
-]
-
-{ #category : #private }
 MiDuplicationBrowserModel >> directParentOf: aFragment in: aFragmentCollection [
 
 	| parents |
