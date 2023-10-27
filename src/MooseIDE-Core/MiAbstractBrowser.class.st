@@ -460,7 +460,7 @@ MiAbstractBrowser >> initializeWindow: aMiWindowPresenter [
 { #category : #'private - for tests' }
 MiAbstractBrowser >> inspector [
 
-	^ inspector ifNil: [ inspector := MiInspector ]
+	^ inspector ifNil: [ inspector := MiInspectorBrowser ]
 ]
 
 { #category : #testing }
