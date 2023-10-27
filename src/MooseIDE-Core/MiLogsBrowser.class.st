@@ -57,14 +57,6 @@ MiLogsBrowser >> canFollowEntity: anObject [
 ]
 
 { #category : #testing }
-MiLogsBrowser >> canPropagate [
-
-	^ self miSelectedItem isMooseObject and: [ 
-		  self miSelectedItem asMooseGroup isNotEmpty or: [ 
-			  self miSelectedItem isMooseModel ] ]
-]
-
-{ #category : #testing }
 MiLogsBrowser >> canTagEntities [
 
 	^false

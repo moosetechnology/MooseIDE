@@ -103,12 +103,6 @@ MiModelRootBrowser >> canFollowEntity: anObject [
 ]
 
 { #category : #testing }
-MiModelRootBrowser >> canPropagate [
-
-	^specModel canPropagate
-]
-
-{ #category : #testing }
 MiModelRootBrowser >> canTagEntities [
 	"manipulates models, not entities"
 	^false
