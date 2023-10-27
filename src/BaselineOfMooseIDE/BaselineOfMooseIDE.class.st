@@ -63,7 +63,7 @@ BaselineOfMooseIDE >> defineMooseCriticsPackages: spec [
 		package: 'MooseIDE-CriticBrowser' with: [ spec requires: #( 'MooseIDE-Core' 'Famix-CriticBrowser-Entities' 'STONCustomizer' ) ];
 		package: 'MooseIDE-CriticBrowser-Tests' with: [ spec requires: #( 'MooseIDE-Tests' 'MooseIDE-CriticBrowser' ) ];
 		
-		package: 'Famix-CriticBrowser-ManualEntities';
+		package: 'Famix-CriticBrowser-ManualEntities' with: [ spec requires: #( 'FamixQueries' ) ];
 		package: 'Famix-CriticBrowser-Entities' with: [ spec requires: #('Famix-CriticBrowser-ManualEntities') ];
 		package: 'Famix-CriticBrowser-Generator';
 		
@@ -98,7 +98,7 @@ BaselineOfMooseIDE >> definePackages: spec [
 		
 		package: 'MooseIDE-Famix' with: [ spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' ) ];
 		
-		package: 'MooseIDE-QueriesBrowser' with: [ spec requires: #( 'MooseIDE-Core' ) ];
+		package: 'MooseIDE-QueriesBrowser' with: [ spec requires: #( 'MooseIDE-Core' 'FamixQueries' ) ];
 		package: 'MooseIDE-QueriesBrowser-Tests' with: [ spec requires: #( 'MooseIDE-QueriesBrowser' 'MooseIDE-Tests' ) ];
 		
 		package: 'MooseIDE-Tagging' with: [ spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' ) ];
@@ -107,7 +107,7 @@ BaselineOfMooseIDE >> definePackages: spec [
 		package: 'MooseIDE-CoUsageMap' with: [ spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' ) ];
 		package: 'MooseIDE-CoUsageMap-Tests' with: [ spec requires: #( 'MooseIDE-CoUsageMap' 'MooseIDE-Tests' ) ];
 		
-		package: 'MooseIDE-NewTools' with: [ spec requires: #( 'MooseIDE-Meta' 'MooseIDE-Core' ) ];
+		package: 'MooseIDE-NewTools' with: [ spec requires: #( 'MooseIDE-Meta' 'MooseIDE-Core' 'FamixQueries' ) ];
 		package: 'MooseIDE-NewTools-Tests' with: [ spec requires: #( 'MooseIDE-NewTools' 'MooseIDE-Tests' ) ];
 		
 		package: 'MooseIDE-Export' with: [ spec requires: #( 'MooseIDE-Core' 'Microdown' ) ];
@@ -129,13 +129,10 @@ BaselineOfMooseIDE >> definePackagesWhenNoFamix: spec [
 	spec
 		package: 'MooseIDE-Core' with: [ spec requires: #( 'Famix' ) ];
 		package: 'MooseIDE-Dependency' with: [ spec requires: #( 'FamixTagging' ) ];
-		package: 'MooseIDE-QueriesBrowser' with: [ spec requires: #( 'FamixQueries' ) ];
 		package: 'MooseIDE-Tagging' with: [ spec requires: #( 'FamixTagging' ) ];
 		package: 'MooseIDE-CoUsageMap' with: [ spec requires: #( 'FamixTagging' ) ];
-		package: 'MooseIDE-NewTools' with: [ spec requires: #( 'FamixQueries' ) ];
 		package: 'MooseIDE-Duplication' with: [ spec requires: #( 'FamixReplication' ) ];
 		
-		package: 'Famix-CriticBrowser-ManualEntities' with: [ spec requires: #( 'FamixQueries' ) ];
 		package: 'Famix-CriticBrowser-Entities' with: [ spec requires: #( 'Famix') ];
 		package: 'Famix-CriticBrowser-Generator' with: [ spec requires: 'Famix' ]
 ]
