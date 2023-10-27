@@ -10,18 +10,10 @@ Class {
 	#name : #MiFameBrowser,
 	#superclass : #MiAbstractBrowser,
 	#instVars : [
-		'fameDescription'
+		'mainPresenter'
 	],
 	#category : #'MooseIDE-Meta-FameBrowser'
 }
-
-{ #category : #layout }
-MiFameBrowser class >> defaultLayout [
-
-	^ super defaultLayout
-		  add: #fameDescription;
-		  yourself
-]
 
 { #category : #'world menu' }
 MiFameBrowser class >> menuCommandOn: aBuilder [
@@ -81,15 +73,15 @@ MiFameBrowser >> canTagEntities [
 MiFameBrowser >> followEntity: anEntity [
 
 	specModel := anEntity.
-	fameDescription items: anEntity mooseDescription allComplexProperties.
+	mainPresenter items: anEntity mooseDescription allComplexProperties.
 	self updateWindowTitleWith: anEntity name
 ]
 
 { #category : #initialization }
 MiFameBrowser >> initializePresenters [
 
-	fameDescription := self newTable.
-	fameDescription
+	mainPresenter := self newTable.
+	mainPresenter
 		items: (self model mooseDescription allComplexProperties sorted:
 					 #name ascending);
 		addColumn:

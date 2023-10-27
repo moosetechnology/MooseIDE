@@ -104,14 +104,14 @@ MiSystemComplexityBrowser >> hasSettings [
 MiSystemComplexityBrowser >> initializeLayout [
 
 	self layout: (SpBoxLayout newTopToBottom
-			 add: visualization;
+			 add: mainPresenter;
 			 yourself)
 ]
 
 { #category : #initialization }
 MiSystemComplexityBrowser >> initializePresenters [
 
-	visualization := self instantiate: MiSystemComplexityVisualization.
+	mainPresenter := self instantiate: MiSystemComplexityVisualization.
 	self initializeLayout
 ]
 

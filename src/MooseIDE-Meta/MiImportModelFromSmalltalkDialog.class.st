@@ -280,7 +280,7 @@ MiImportModelFromSmalltalkDialog >> showAdvancedSettings [
 { #category : #'advanced settings' }
 MiImportModelFromSmalltalkDialog >> simpleLayout [
 
-	^ self class defaultLayout
+	^ SpBoxLayout newVertical
 ]
 
 { #category : #action }

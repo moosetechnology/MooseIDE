@@ -111,7 +111,7 @@ MiDMBrowser >> canReceiveEntity: anEntity [
 { #category : #initialization }
 MiDMBrowser >> canvas [
 
-	^ visualization canvas
+	^ mainPresenter canvas
 ]
 
 { #category : #actions }
@@ -132,14 +132,14 @@ MiDMBrowser >> initializeLayout [
 
 	self layout: (SpBoxLayout newLeftToRight
 			 spacing: 3;
-			 add: visualization;
+			 add: mainPresenter;
 			 yourself)
 ]
 
 { #category : #initialization }
 MiDMBrowser >> initializePresenters [
 
-	visualization := self class mapClass owner: self.
+	mainPresenter := self class mapClass owner: self.
 	self initializeLayout
 ]
 
@@ -152,5 +152,5 @@ MiDMBrowser >> settings [
 { #category : #initialization }
 MiDMBrowser >> visualization [
 
-	^ visualization
+	^ mainPresenter
 ]

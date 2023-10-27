@@ -35,7 +35,7 @@ Class {
 
 { #category : #layout }
 MiTreeMapVisualisationBrowser class >> defaultLayout [
-	^ super defaultLayout
+	^ SpBoxLayout newVertical
 		add: #diagram;
 		yourself
 ]

@@ -36,18 +36,10 @@ Class {
 	#name : #MiDSMBrowser,
 	#superclass : #MiAbstractDependencyBrowser,
 	#instVars : [
-		'diagram'
+		'mainPresenter'
 	],
 	#category : #'MooseIDE-Dependency-DSM'
 }
-
-{ #category : #specs }
-MiDSMBrowser class >> defaultLayout [
-
-	^ super defaultLayout
-		  add: #diagram;
-		  yourself
-]
 
 { #category : #'world menu' }
 MiDSMBrowser class >> menuCommandOn: aBuilder [
@@ -100,7 +92,7 @@ MiDSMBrowser class >> title [
 
 { #category : #api }
 MiDSMBrowser >> buildDSM [
-	diagram run
+	mainPresenter run
 ]
 
 { #category : #testing }
@@ -123,7 +115,7 @@ MiDSMBrowser >> canTagEntities [
 { #category : #accessing }
 MiDSMBrowser >> diagram [
 
-	^ diagram
+	^ mainPresenter
 ]
 
 { #category : #actions }
@@ -140,8 +132,8 @@ MiDSMBrowser >> highlightEntity: anEntity [
 { #category : #initialization }
 MiDSMBrowser >> initializePresenters [
 
-	diagram := self instantiate: MiDSMVisualization.
-	diagram viewModel: specModel
+	mainPresenter := self instantiate: MiDSMVisualization.
+	mainPresenter viewModel: specModel
 ]
 
 { #category : #accessing }
@@ -152,5 +144,5 @@ MiDSMBrowser >> miSelectedItem [
 
 { #category : #api }
 MiDSMBrowser >> showSCC: aCollection [
-	diagram showSCC: aCollection 
+	mainPresenter showSCC: aCollection 
 ]

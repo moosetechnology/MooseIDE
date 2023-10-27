@@ -16,7 +16,7 @@ Class {
 
 { #category : #layout }
 MiTreeBrowser class >> defaultLayout [
-	^ super defaultLayout
+	^ SpBoxLayout newVertical
 		add: #tree;
 		yourself
 ]

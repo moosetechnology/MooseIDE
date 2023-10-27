@@ -9,18 +9,10 @@ Class {
 	#name : #MiPropertyBrowser,
 	#superclass : #MiAbstractBrowser,
 	#instVars : [
-		'properties'
+		'mainPresenter'
 	],
 	#category : #'MooseIDE-Meta-PropertyBrowser'
 }
-
-{ #category : #layout }
-MiPropertyBrowser class >> defaultLayout [
-
-	^ super defaultLayout
-		  add: #properties;
-		  yourself
-]
 
 { #category : #'world menu' }
 MiPropertyBrowser class >> menuCommandOn: aBuilder [
@@ -81,7 +73,7 @@ MiPropertyBrowser >> canTagEntities [
 MiPropertyBrowser >> followEntity: anEntity [
 
 	self model: anEntity.
-	properties items:
+	mainPresenter items:
 		(anEntity mooseDescription allPrimitiveProperties sorted:
 			 #name ascending).
 	self updateWindowTitleWith: anEntity name
@@ -90,7 +82,7 @@ MiPropertyBrowser >> followEntity: anEntity [
 { #category : #initialization }
 MiPropertyBrowser >> initializePresenters [
 
-	properties := self newTable
+	mainPresenter := self newTable
 		              addColumn: (SpStringTableColumn
 				               title: 'Properties'
 				               evaluated: [ :item | item name ]) yourself;

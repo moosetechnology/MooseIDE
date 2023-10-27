@@ -125,7 +125,7 @@ MiMetaBrowser >> initializeEntities [
 MiMetaBrowser >> initializeLayout [
 
 	| toolbar left |
-	toolbar := self class defaultLayout.
+	toolbar := SpBoxLayout newVertical.
 	left := SpPanedLayout newTopToBottom
 		        add: (SpPanedLayout newLeftToRight
 				         add: entities;

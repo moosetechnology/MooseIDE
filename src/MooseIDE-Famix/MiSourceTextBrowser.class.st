@@ -20,7 +20,7 @@ Class {
 { #category : #layout }
 MiSourceTextBrowser class >> defaultLayout [
 
-	^ super defaultLayout
+	^ SpBoxLayout newVertical
 		  add: #toolBarExternalEditor height: self toolbarHeight;
 		  add: #textRenderer expand: true;
 		  yourself

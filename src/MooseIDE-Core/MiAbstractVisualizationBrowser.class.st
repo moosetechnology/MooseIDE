@@ -2,7 +2,7 @@ Class {
 	#name : #MiAbstractVisualizationBrowser,
 	#superclass : #MiAbstractBrowser,
 	#instVars : [
-		'visualization'
+		'mainPresenter'
 	],
 	#category : #'MooseIDE-Core-Browser'
 }
@@ -53,7 +53,7 @@ MiAbstractVisualizationBrowser >> exportWith: roassalExporter [
 
 	file ifNotNil: [
 		roassalExporter new
-			canvas: visualization canvas;
+			canvas: mainPresenter canvas;
 			zoomToShapes;
 			exportToFile: file ]
 ]
@@ -67,13 +67,13 @@ MiAbstractVisualizationBrowser >> hasVisualization [
 { #category : #highlighting }
 MiAbstractVisualizationBrowser >> highlightEntity: entities [
 
-	visualization highlightEntities: entities
+	mainPresenter highlightEntities: entities
 ]
 
 { #category : #accessing }
 MiAbstractVisualizationBrowser >> miSelectedItem [
 
-	^ visualization miSelectedItem ifEmpty: [
+	^ mainPresenter miSelectedItem ifEmpty: [
 		  specModel ifNil: [ ^ #(  ) ].
 		  specModel entities mooseInterestingEntity ]
 ]
@@ -81,5 +81,5 @@ MiAbstractVisualizationBrowser >> miSelectedItem [
 { #category : #actions }
 MiAbstractVisualizationBrowser >> runVisualization [
 
-	visualization run
+	mainPresenter run
 ]

@@ -21,7 +21,7 @@ Class {
 { #category : #layout }
 MiFilesBrowser class >> defaultLayout [
 
-	^ super defaultLayout
+	^ SpBoxLayout newVertical
 		  add: (SpBoxLayout newHorizontal
 				   add: #tree;
 				   add: #treeEntity;

@@ -32,13 +32,6 @@ Class {
 	#category : #'MooseIDE-Dependency-Dependency'
 }
 
-{ #category : #layout }
-MiDependencyBrowser class >> defaultLayout [
-	^ super defaultLayout
-		add: #visualization;
-		yourself
-]
-
 { #category : #'world menu' }
 MiDependencyBrowser class >> menuCommandOn: aBuilder [
 
@@ -107,7 +100,7 @@ MiDependencyBrowser >> followEntity: anEntity [
 
 	entities := anEntity asMooseGroup select: [ :a |
 		            a usesFamixTrait: TEntityMetaLevelDependency ].
-	visualization
+	mainPresenter
 		entities: entities;
 		run
 ]
@@ -122,7 +115,7 @@ MiDependencyBrowser >> initialize [
 { #category : #initialization }
 MiDependencyBrowser >> initializePresenters [
 
-	visualization := self instantiate: MiDependencyVisualization
+	mainPresenter := self instantiate: MiDependencyVisualization
 ]
 
 { #category : #accessing }

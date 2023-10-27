@@ -102,7 +102,7 @@ MiArchitecturalMapBrowser >> canReceiveEntity: anEntity [
 { #category : #initialization }
 MiArchitecturalMapBrowser >> canvas [
 
-	^ visualization canvas
+	^ mainPresenter canvas
 ]
 
 { #category : #actions }
@@ -141,20 +141,20 @@ MiArchitecturalMapBrowser >> hasSettings [
 { #category : #initialization }
 MiArchitecturalMapBrowser >> initializeLayout [
 
-	self layout: (SpScrollableLayout with: visualization)
+	self layout: (SpScrollableLayout with: mainPresenter)
 ]
 
 { #category : #initialization }
 MiArchitecturalMapBrowser >> initializePresenters [
 
-	visualization := self class mapClass owner: self.
+	mainPresenter := self class mapClass owner: self.
 	self initializeLayout
 ]
 
 { #category : #actions }
 MiArchitecturalMapBrowser >> runVisualization [
 
-	self doWithTimeout: [ visualization run ]
+	self doWithTimeout: [ mainPresenter run ]
 ]
 
 { #category : #initialization }
@@ -172,5 +172,5 @@ MiArchitecturalMapBrowser >> settings [
 
 { #category : #'accessing - private tests' }
 MiArchitecturalMapBrowser >> visualization [
-	^visualization
+	^mainPresenter
 ]

@@ -91,6 +91,8 @@ MiAbstractBrowser class >> buildMenuItemIn: aBuilder [
 MiAbstractBrowser class >> defaultLayout [
 
 	^ SpBoxLayout newVertical
+		  add: #mainPresenter;
+		  yourself
 ]
 
 { #category : #menu }

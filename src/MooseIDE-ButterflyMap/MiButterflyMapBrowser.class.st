@@ -105,13 +105,13 @@ MiButterflyMapBrowser >> initialize [
 { #category : #initialization }
 MiButterflyMapBrowser >> initializeLayout [
 
-	self layout: (SpScrollableLayout with: visualization)
+	self layout: (SpScrollableLayout with: mainPresenter)
 ]
 
 { #category : #initialization }
 MiButterflyMapBrowser >> initializePresenters [
 
-	visualization := self class mapClass owner: self.
+	mainPresenter := self class mapClass owner: self.
 	specModel browser: self.
 	self initializeLayout
 ]
@@ -137,5 +137,5 @@ MiButterflyMapBrowser >> settings [
 { #category : #accessing }
 MiButterflyMapBrowser >> visualization [
 
-	^ visualization
+	^ mainPresenter
 ]

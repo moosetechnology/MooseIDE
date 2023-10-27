@@ -8,7 +8,7 @@ Class {
 	#name : #MiInspectorBrowser,
 	#superclass : #MiAbstractBrowser,
 	#instVars : [
-		'miInspector'
+		'mainPresenter'
 	],
 	#category : #'MooseIDE-NewTools-Inspector'
 }
@@ -17,14 +17,6 @@ Class {
 MiInspectorBrowser class >> addItemOrSubMenuToMiBrowsersMenu: aRootMenu defaultSubMenu: aSubMenu [
 
 	self addToMiBrowsersMenu: aRootMenu
-]
-
-{ #category : #layout }
-MiInspectorBrowser class >> defaultLayout [
-
-	^ super defaultLayout
-		  add: #miInspector;
-		  yourself
 ]
 
 { #category : #api }
@@ -109,7 +101,7 @@ MiInspectorBrowser >> followEntity: anEntity [
 
 	anEntity ifNil: [ ^ self ].
 	self model entity: anEntity.
-	miInspector model: self model entity.
+	mainPresenter model: self model entity.
 	self updateWindowTitle: self window.
 	self updateToolbar
 ]
@@ -117,7 +109,7 @@ MiInspectorBrowser >> followEntity: anEntity [
 { #category : #initialization }
 MiInspectorBrowser >> initializePresenters [
 
-	miInspector := self instantiate: MiInspector on: self model entity
+	mainPresenter := self instantiate: MiInspector on: self model entity
 ]
 
 { #category : #initialization }
@@ -131,7 +123,7 @@ MiInspectorBrowser >> initializeWindow: aWindow [
 MiInspectorBrowser >> miSelectedItem [
 
 	| lastInspectorPage |
-	lastInspectorPage := miInspector millerList pages last.
+	lastInspectorPage := mainPresenter millerList pages last.
 	^ lastInspectorPage model inspectedObject
 ]
 

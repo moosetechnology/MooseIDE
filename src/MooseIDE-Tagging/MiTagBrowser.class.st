@@ -17,14 +17,6 @@ Class {
 	#category : #'MooseIDE-Tagging-Browser'
 }
 
-{ #category : #layout }
-MiTagBrowser class >> defaultLayout [
-
-	^ super defaultLayout
-		  add: #mainPresenter;
-		  yourself
-]
-
 { #category : #'world menu' }
 MiTagBrowser class >> menuCommandOn: aBuilder [
 

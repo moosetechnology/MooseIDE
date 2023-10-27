@@ -27,18 +27,10 @@ Class {
 	#name : #MiUMLBrowser,
 	#superclass : #MiAbstractBrowser,
 	#instVars : [
-		'diagram'
+		'mainPresenter'
 	],
 	#category : #'MooseIDE-Famix-UML'
 }
-
-{ #category : #layout }
-MiUMLBrowser class >> defaultLayout [
-
-	^ super defaultLayout
-		  add: #diagram;
-		  yourself
-]
 
 { #category : #'world menu' }
 MiUMLBrowser class >> menuCommandOn: aBuilder [
@@ -115,7 +107,7 @@ MiUMLBrowser >> followEntity: anEntity [
 	specModel
 		entities: anEntity asMooseSpecializedGroup;
 		unselectAll.
-	diagram
+	mainPresenter
 		rootEntities: specModel entities;
 		run
 ]
@@ -123,13 +115,13 @@ MiUMLBrowser >> followEntity: anEntity [
 { #category : #actions }
 MiUMLBrowser >> highlightEntity: anEntity [
 
-	diagram highlightEntities: anEntity asCollection
+	mainPresenter highlightEntities: anEntity asCollection
 ]
 
 { #category : #initialization }
 MiUMLBrowser >> initializePresenters [
 
-	diagram := self instantiate: MiUMLVisualization
+	mainPresenter := self instantiate: MiUMLVisualization
 ]
 
 { #category : #accessing }

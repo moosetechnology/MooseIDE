@@ -29,14 +29,6 @@ Class {
 	#category : #'MooseIDE-CoUsageMap-Browser'
 }
 
-{ #category : #layout }
-MiCoUsageMapBrowser class >> defaultLayout [
-
-	^ SpBoxLayout newLeftToRight
-		  add: #visualization
-		  yourself
-]
-
 { #category : #'world menu' }
 MiCoUsageMapBrowser class >> menuCommandOn: aBuilder [
 
@@ -83,8 +75,8 @@ MiCoUsageMapBrowser class >> windowSize [
 { #category : #'window control' }
 MiCoUsageMapBrowser >> browserClosed [
 	super browserClosed.
-	application unregisterConsumer: visualization.
-	application unregisterProducer: visualization.
+	application unregisterConsumer: mainPresenter.
+	application unregisterProducer: mainPresenter.
 	"settings mapVisualization: nil.
 	mapVisualization settings: nil."
 
@@ -121,21 +113,21 @@ MiCoUsageMapBrowser >> hasSettings [
 
 { #category : #initialization }
 MiCoUsageMapBrowser >> initializePresenters [
-	visualization := self instantiate: MiCoUsageMapVisualization.
-	visualization specModel: specModel.
+	mainPresenter := self instantiate: MiCoUsageMapVisualization.
+	mainPresenter specModel: specModel.
 
 	"self flag: 'this should be in MiCoUsageMapModel'.
 	settings := self instantiate: MiCoUsageMapInstanceSettingsPresenter."
 	
 	self flag: 'this should be in MiCoUsageMapVisualization'.
-	application registerConsumer: visualization for: FamixTag.
-	application registerConsumer: visualization for: FamixTagAssociation.
-	application registerProducer: visualization for: FamixTagAssociation.
+	application registerConsumer: mainPresenter for: FamixTag.
+	application registerConsumer: mainPresenter for: FamixTagAssociation.
+	application registerProducer: mainPresenter for: FamixTagAssociation.
 ]
 
 { #category : #accessing }
 MiCoUsageMapBrowser >> mapVisualization [
-	^ visualization
+	^ mainPresenter
 ]
 
 { #category : #dependencies }
@@ -157,5 +149,5 @@ MiCoUsageMapBrowser >> update [
 { #category : #public }
 MiCoUsageMapBrowser >> updateBoxColor: aMiCoBox fromTags: tags [
 
-	visualization updateBoxColor: aMiCoBox fromTags: tags
+	mainPresenter updateBoxColor: aMiCoBox fromTags: tags
 ]
