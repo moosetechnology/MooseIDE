@@ -107,12 +107,6 @@ MiDSMBrowserModel >> followEntity: aCollection [
 	browser buildDSM
 ]
 
-{ #category : #actions }
-MiDSMBrowserModel >> highlightEntity: anEntity [
-
-	"browser highlightEntities: anEntity asCollection"
-]
-
 { #category : #initialization }
 MiDSMBrowserModel >> initialize [ 
 	super initialize.

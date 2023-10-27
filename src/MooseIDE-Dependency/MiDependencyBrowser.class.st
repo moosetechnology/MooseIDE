@@ -84,12 +84,6 @@ MiDependencyBrowser >> canFollowEntity: anObject [
 ]
 
 { #category : #testing }
-MiDependencyBrowser >> canHighlight [
-
-	^ true
-]
-
-{ #category : #testing }
 MiDependencyBrowser >> canTagEntities [ 
 	self flag: 'Remove browser ? (issue #810)'.
 	^false

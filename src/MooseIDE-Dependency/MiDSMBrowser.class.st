@@ -102,12 +102,6 @@ MiDSMBrowser >> canFollowEntity: anObject [
 ]
 
 { #category : #testing }
-MiDSMBrowser >> canHighlight [
-
-	^ true
-]
-
-{ #category : #testing }
 MiDSMBrowser >> canTagEntities [ 
 	^false
 ]
@@ -121,12 +115,6 @@ MiDSMBrowser >> diagram [
 { #category : #actions }
 MiDSMBrowser >> followEntity: anEntity [
 	specModel followEntity: anEntity
-]
-
-{ #category : #actions }
-MiDSMBrowser >> highlightEntity: anEntity [
-
-	specModel highlightEntity: anEntity
 ]
 
 { #category : #initialization }
