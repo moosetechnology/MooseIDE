@@ -61,6 +61,7 @@ MiModelRootBrowserTest >> testActivateActionButtons [
 	browser actionButtons do: [ :button | self deny: button isEnabled ].
 
 	newModel := self newModel: 'aModel'.
+	(FamixStClass named: #AClass) mooseModel: newModel.
 	browser updateForNewModel: newModel.
 
 	browser actionButtons do: [ :button | self assert: button isEnabled ]
