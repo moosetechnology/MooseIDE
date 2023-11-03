@@ -30,10 +30,6 @@ MiModelNavigationBrowserTest >> testClickingOpensMooseGroup [
 	The error is a primitive failure in #inspectorPerform:"
 	| inspectedModel |
 
-	"skip with a deadline to solve the problem"
-	(Date today isAfter: (Date year: 2023 month: 10 day: 31))
-	ifFalse: [ self skip ].
-
 	inspectedModel := FamixStModel new
 		                  newClassNamed: #C1;
 		                  newClassNamed: #C2;
@@ -41,7 +37,6 @@ MiModelNavigationBrowserTest >> testClickingOpensMooseGroup [
 	miInspectorBrowser followEntity: inspectedModel.
 
 	self assert: miInspectorBrowser miSelectedItem equals: inspectedModel.
-
 
 	miInspectorBrowser miInspector firstPagePresenter navigation
 		clickAtIndex: 8.
