@@ -18,7 +18,7 @@ MiInspectorBrowser class >> inspect: anObject [
 
 	^ self
 		  inspect: anObject
-		  forBuses: (OrderedCollection with: self currentApplication defaultBus asCollection)
+		  forBuses: (OrderedCollection with: self currentApplication defaultBus)
 ]
 
 { #category : #api }
