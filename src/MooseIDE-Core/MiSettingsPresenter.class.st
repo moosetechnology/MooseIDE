@@ -12,6 +12,14 @@ Class {
 	#category : #'MooseIDE-Core-Settings'
 }
 
+{ #category : #'instance creation' }
+MiSettingsPresenter class >> owner: aMiSpecModel [
+
+	^ self new
+		  ownerTool: aMiSpecModel;
+		  yourself
+]
+
 { #category : #accessing }
 MiSettingsPresenter >> addItem: anItem named: aName [
 
