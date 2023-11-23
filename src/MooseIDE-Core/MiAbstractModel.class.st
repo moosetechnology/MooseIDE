@@ -47,9 +47,7 @@ MiAbstractModel >> entities [
 { #category : #initialization }
 MiAbstractModel >> initializeSettings [
 
-	^MiSettingsPresenter new
-		ownerTool: self;
-		yourself
+	^ MiSettingsPresenter owner: self
 ]
 
 { #category : #accessing }
