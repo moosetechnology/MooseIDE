@@ -223,6 +223,12 @@ BaselineOfMooseIDE >> registerCustomTools [
 ]
 
 { #category : #actions }
+BaselineOfMooseIDE >> registerShortcuts [
+
+	MiShortcutsCategory new installAsGlobalCategory
+]
+
+{ #category : #actions }
 BaselineOfMooseIDE >> removeRoassalFromSystem [
 
 	#( Roassal3 Numeric ) do: [ :string |
