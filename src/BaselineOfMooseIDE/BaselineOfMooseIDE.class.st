@@ -227,7 +227,9 @@ BaselineOfMooseIDE >> registerCustomTools [
 { #category : #actions }
 BaselineOfMooseIDE >> registerShortcuts [
 
-	MiShortcutsCategory new installAsGlobalCategory
+	(Smalltalk classNamed: #MiShortcutsCategory) ifNotNil: [
+		:miShortcutsCategory |
+		miShortcutsCategory new installAsGlobalCategory ]
 ]
 
 { #category : #actions }
