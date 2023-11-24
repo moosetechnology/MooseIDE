@@ -4,6 +4,12 @@ Class {
 	#category : #'MooseIDE-Core-KeyMapping'
 }
 
+{ #category : #testing }
+MiShortcutsCategory class >> isGlobalCategory [
+
+	^ true
+]
+
 { #category : #keymaps }
 MiShortcutsCategory >> openModelRootBrowser [
 
