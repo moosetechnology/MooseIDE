@@ -10,8 +10,8 @@ MiShortcutsCategory class >> isGlobalCategory [
 	^ true
 ]
 
-{ #category : #'as yet unclassified' }
-MiShortcutsCategory class >> openModelRootBrowser [
+{ #category : #keymaps }
+MiShortcutsCategory >> openModelRootBrowser [
 
 	<shortcut>
 	^ MiModelRootBrowser openShortcut
