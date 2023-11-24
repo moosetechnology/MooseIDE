@@ -111,12 +111,13 @@ MiCBQueryHandlerTest >> substractionQuery [
 MiCBQueryHandlerTest >> testAsRuleEditorString [
 
 	| queryFQ |
-	queryFQ := FQBooleanQuery property: #isDead.
-	queryFQ parent: (FQTypeQuery types: { FamixJavaMethod }).
+	"queryFQ := FQBooleanQuery property: #isDead.
+	queryFQ parent: (FQTypeQuery types: { FamixJavaMethod })."
+	queryFQ := FQSelectScriptQuery script: [ :entity | entity name includesSubstring: 'Rule' ].
 
 	self
 		assert: (FamixCBQueryHandler on: queryFQ) asRuleEditorString
-		equals: '[ :entity | entity ]'
+		equals: '[ :entity | entity name includesSubstring: ''Rule'' ]'
 ]
 
 { #category : #tests }

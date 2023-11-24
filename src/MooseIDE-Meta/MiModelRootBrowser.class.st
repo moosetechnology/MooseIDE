@@ -48,12 +48,6 @@ MiModelRootBrowser class >> isModelImporter [
 ]
 
 { #category : #'world menu' }
-MiModelRootBrowser class >> keyText [
-
-	^ 'M, M'
-]
-
-{ #category : #'world menu' }
 MiModelRootBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
@@ -89,18 +83,6 @@ MiModelRootBrowser class >> open [
 
 	<script>
 	^ super open
-]
-
-{ #category : #'as yet unclassified' }
-MiModelRootBrowser class >> openShortcut [
-
-	^ KMKeymap shortcut: self shortcut action: [ self open ]
-]
-
-{ #category : #accessing }
-MiModelRootBrowser class >> shortcut [
-
-	^ $m meta shift , $m meta shift
 ]
 
 { #category : #specs }
