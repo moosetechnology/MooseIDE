@@ -24,6 +24,12 @@ MiInspectCommand class >> defaultName [
 	^ 'Inspect'
 ]
 
+{ #category : #default }
+MiInspectCommand class >> defaultShortcut [
+
+	^ $m meta shift , $i meta shift
+]
+
 { #category : #testing }
 MiInspectCommand >> canBeExecuted [
 

@@ -26,6 +26,12 @@ MiPropagateCommand class >> defaultName [
 	^ 'Propagate'
 ]
 
+{ #category : #default }
+MiPropagateCommand class >> defaultShortcut [
+
+	^ $m shift meta , $p meta shift
+]
+
 { #category : #testing }
 MiPropagateCommand >> canBeExecuted [
 

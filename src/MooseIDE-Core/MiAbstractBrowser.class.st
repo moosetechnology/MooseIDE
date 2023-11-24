@@ -462,10 +462,10 @@ MiAbstractBrowser >> initializeWindow: aMiWindowPresenter [
 
 	aMiWindowPresenter buildToolbar.
 
-	aMiWindowPresenter whenClosedDo: [ 
-		self browserClosed ].
+	aMiWindowPresenter whenClosedDo: [ self browserClosed ].
 
-	aMiWindowPresenter initialExtent: self class windowSize
+	aMiWindowPresenter initialExtent: self class windowSize.
+	aMiWindowPresenter setContextBindingKeys
 ]
 
 { #category : #'private - for tests' }
