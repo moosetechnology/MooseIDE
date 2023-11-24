@@ -14,5 +14,6 @@ MiShortcutsCategory class >> isGlobalCategory [
 MiShortcutsCategory >> openModelRootBrowser [
 
 	<shortcut>
+
 	^ MiModelRootBrowser openShortcut
 ]
