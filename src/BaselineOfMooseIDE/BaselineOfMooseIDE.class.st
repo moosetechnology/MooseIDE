@@ -216,8 +216,10 @@ BaselineOfMooseIDE >> pharoAIHierachicalClustering: spec [
 
 { #category : #actions }
 BaselineOfMooseIDE >> registerCustomTools [
-	"MiPlayground could be absent if we load only a group"
 
+	self registerShortcuts.
+
+	"MiPlayground could be absent if we load only a group"
 	(Smalltalk classNamed: #MiPlayground) ifNotNil: [ :miPlayground |
 		miPlayground register ]
 ]

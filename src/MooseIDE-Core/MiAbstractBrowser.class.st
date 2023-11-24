@@ -84,6 +84,7 @@ MiAbstractBrowser class >> buildMenuItemIn: aBuilder [
 		  help: self helpMessage;
 		  order: self menuPriority;
 		  action: [ self open ];
+		  keyText: self keyText;
 		  yourself
 ]
 
@@ -121,6 +122,14 @@ MiAbstractBrowser class >> isAbstract [
 { #category : #testing }
 MiAbstractBrowser class >> isModelImporter [
 	^false
+]
+
+{ #category : #accessing }
+MiAbstractBrowser class >> keyText [
+
+	"Override to display your shortcut in the menu"
+
+	^ nil
 ]
 
 { #category : #'menu organization' }
