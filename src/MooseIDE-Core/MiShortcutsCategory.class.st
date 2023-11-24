@@ -15,5 +15,5 @@ MiShortcutsCategory >> openModelRootBrowser [
 
 	<shortcut>
 
-	^ MiModelRootBrowser openShortcut
+	^ MiModelRootBrowser openKeyMap
 ]

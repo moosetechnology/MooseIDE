@@ -59,6 +59,14 @@ MiAbstractBrowser class >> addToMiBrowsersMenu: aMenuPresenter [
 	self buildItemInMenu: aMenuPresenter
 ]
 
+{ #category : #'as yet unclassified' }
+MiAbstractBrowser class >> browserKey [
+
+	"Override with a character to be used after m (for Moose) to open your browser"
+
+	^ nil
+]
+
 { #category : #menu }
 MiAbstractBrowser class >> buildItemInMenu: aMenuGroupPresenter [
 
@@ -127,9 +135,8 @@ MiAbstractBrowser class >> isModelImporter [
 { #category : #accessing }
 MiAbstractBrowser class >> keyText [
 
-	"Override to display your shortcut in the menu"
-
-	^ nil
+	^ self browserKey ifNotNil: [ :aCharacter |
+		  'M, {1}' format: { aCharacter asUppercase } ]
 ]
 
 { #category : #'menu organization' }
@@ -289,6 +296,13 @@ MiAbstractBrowser class >> open [
 		  yourself
 ]
 
+{ #category : #'as yet unclassified' }
+MiAbstractBrowser class >> openKeyMap [
+
+	^ self browserKey ifNotNil: [
+		  KMKeymap shortcut: self shortcut action: [ self open ] ]
+]
+
 { #category : #'instance creation' }
 MiAbstractBrowser class >> openOn: anEntity [
 
@@ -298,6 +312,13 @@ MiAbstractBrowser class >> openOn: anEntity [
 		  beFrozen;
 		  followBus: self currentApplication defaultBus;
 		  yourself
+]
+
+{ #category : #'as yet unclassified' }
+MiAbstractBrowser class >> shortcut [
+
+	^ self browserKey ifNotNil: [ :aCharacter |
+		  $m shift meta , aCharacter shift meta ]
 ]
 
 { #category : #accessing }
