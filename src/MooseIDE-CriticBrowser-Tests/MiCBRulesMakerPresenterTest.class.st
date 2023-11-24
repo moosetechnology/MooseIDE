@@ -103,24 +103,24 @@ MiCBRulesMakerPresenterTest >> testFillRuleToEdit [
 		                      named: 'test2'
 		                      on:
 		                      (FamixCBQueryHandler on:
-			                       (FQBooleanQuery property: #isDead))
+			                       ( FQSelectScriptQuery script: [ :entity | entity isDead ]))
 		                      summary: 'autre règle utilisée pour un test'.
 
 	addQueryPresenter codeButtonAction.
 	addQueryPresenter fillRuleToEdit: rule.
-	self assert: addQueryPresenter ruleTitle text equals: rule name.
+	self assert: addQueryPresenter ruleTitle text equals: rule name. 
 	self
 		assert: addQueryPresenter codeInput text
 		equals: rule query asRuleEditorString.
 	self assert: addQueryPresenter ruleSummary text equals: rule summary.
-
+	
 	addQueryPresenter fillRuleToEdit: queriesBrowserRule.
 	self
 		assert: addQueryPresenter ruleTitle text
 		equals: queriesBrowserRule name.
 	self
 		assert: addQueryPresenter codeInput text
-		equals: '[ :entity | entity ]'.
+		equals: '[ :entity | entity isDead ]'.
 	self
 		assert: addQueryPresenter ruleSummary text
 		equals: queriesBrowserRule summary

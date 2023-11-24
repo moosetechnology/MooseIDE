@@ -20,8 +20,7 @@ FamixCBQueryHandler class >> on: aQuery [
 
 { #category : #converting }
 FamixCBQueryHandler >> asRuleEditorString [
-
-	^ '[ :entity | entity ]'
+	^ innerQuery script asString
 ]
 
 { #category : #converting }
