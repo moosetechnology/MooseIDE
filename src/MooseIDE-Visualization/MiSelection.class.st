@@ -66,6 +66,7 @@ MiSelection >> removeShadowOn: aShape [
 
 { #category : #hooks }
 MiSelection >> selection: aShape [
+
 	self
 		removeShadowOn: aShape;
 		putShadowOn: aShape.

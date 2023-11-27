@@ -14,8 +14,7 @@ MiSystemComplexityVisualization >> model [
 MiSystemComplexityVisualization >> run [
 
 	super run.
-	self script: [ :canvas | 
-		| builder |
+	self script: [ :canvas |
 		builder := MiSystemComplexityBuilder new
 			           container: canvas;
 			           mapModel: self model;

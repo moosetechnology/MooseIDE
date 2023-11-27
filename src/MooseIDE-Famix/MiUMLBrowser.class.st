@@ -25,10 +25,7 @@ Controls:
 "
 Class {
 	#name : #MiUMLBrowser,
-	#superclass : #MiAbstractBrowser,
-	#instVars : [
-		'mainPresenter'
-	],
+	#superclass : #MiAbstractVisualizationBrowser,
 	#category : #'MooseIDE-Famix-UML'
 }
 
@@ -90,15 +87,9 @@ MiUMLBrowser >> canFollowEntity: anObject [
 ]
 
 { #category : #testing }
-MiUMLBrowser >> canHighlight [
+MiUMLBrowser >> canTagEntities [
 
-	^ true
-]
-
-{ #category : #testing }
-MiUMLBrowser >> canTagEntities [ 
-	self flag: 'Remove browser ? (issue #810)'.
-	^false
+	^ false
 ]
 
 { #category : #actions }
@@ -112,7 +103,7 @@ MiUMLBrowser >> followEntity: anEntity [
 		run
 ]
 
-{ #category : #actions }
+{ #category : #highlighting }
 MiUMLBrowser >> highlightEntity: anEntity [
 
 	mainPresenter highlightEntities: anEntity asCollection
