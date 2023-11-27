@@ -69,7 +69,7 @@ MiModelsBrowser class >> menuIconName [
 { #category : #'world menu' }
 MiModelsBrowser class >> menuItem [
 
-	^ #ModelRootBrowser
+	^ #ModelsBrowser
 ]
 
 { #category : #'world menu' }
