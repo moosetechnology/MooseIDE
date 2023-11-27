@@ -5,7 +5,7 @@ Class {
 		'queryPresenters',
 		'titlePresenter'
 	],
-	#category : #'MooseIDE-Preview-Browser'
+	#category : #'MooseIDE-QueriesDashboard-Browser'
 }
 
 { #category : #accessing }

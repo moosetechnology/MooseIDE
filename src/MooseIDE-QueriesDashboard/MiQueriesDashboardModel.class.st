@@ -5,7 +5,7 @@ Class {
 		'queries',
 		'mooseModel'
 	],
-	#category : #'MooseIDE-Preview-Browser'
+	#category : #'MooseIDE-QueriesDashboard-Browser'
 }
 
 { #category : #accessing }
