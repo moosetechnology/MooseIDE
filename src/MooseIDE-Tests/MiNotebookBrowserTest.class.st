@@ -1,17 +1,17 @@
 Class {
-	#name : #MiReportBrowserTest,
+	#name : #MiNotebookBrowserTest,
 	#superclass : #MiAbstractBrowserTest,
 	#category : #'MooseIDE-Tests-Browsers'
 }
 
 { #category : #running }
-MiReportBrowserTest >> browserClass [
+MiNotebookBrowserTest >> browserClass [
 
-	^ MiReportBrowser
+	^ MiNotebookBrowser
 ]
 
 { #category : #tests }
-MiReportBrowserTest >> testFollowEntity [
+MiNotebookBrowserTest >> testFollowEntity [
 
 	| model entity |
 	model := Mock named: 'mooseModel'.
@@ -25,7 +25,7 @@ MiReportBrowserTest >> testFollowEntity [
 ]
 
 { #category : #'tests - tags' }
-MiReportBrowserTest >> testSelectedTagSetAndGet [
+MiNotebookBrowserTest >> testSelectedTagSetAndGet [
 	| model entity tag |
 	model := FamixRepTestModel new.
 	tag := model tagNamed: 'aTag'.
