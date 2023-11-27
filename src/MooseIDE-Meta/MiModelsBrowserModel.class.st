@@ -25,54 +25,54 @@ Internal Representation and Key Implementation Points.
     Implementation Points
 "
 Class {
-	#name : #MiModelRootBrowserModel,
+	#name : #MiModelsBrowserModel,
 	#superclass : #MiAbstractModel,
 	#instVars : [
 		'mooseModelsList',
 		'selected',
 		'settings'
 	],
-	#category : #'MooseIDE-Meta-ModelRootBrowser'
+	#category : #'MooseIDE-Meta-ModelsBrowser'
 }
 
 { #category : #updating }
-MiModelRootBrowserModel >> allModelRootBrowser [
+MiModelsBrowserModel >> allModelRootBrowser [
 
-	^ browser application allBrowsers: MiModelRootBrowser
+	^ browser application allBrowsers: MiModelsBrowser
 ]
 
 { #category : #settings }
-MiModelRootBrowserModel >> autoImportSetting [
+MiModelsBrowserModel >> autoImportSetting [
 
 	^ settings getItemValue: #modelAutoImportSetting
 ]
 
 { #category : #accessing }
-MiModelRootBrowserModel >> availableMooseModels [
+MiModelsBrowserModel >> availableMooseModels [
 
 	^ MooseModel root allModels
 ]
 
 { #category : #accessing }
-MiModelRootBrowserModel >> currentMooseModel [
+MiModelsBrowserModel >> currentMooseModel [
 
 	^ self selected
 ]
 
 { #category : #'accessing - tests' }
-MiModelRootBrowserModel >> entities [
+MiModelsBrowserModel >> entities [
 
 	^ mooseModelsList
 ]
 
 { #category : #'accessing - tests' }
-MiModelRootBrowserModel >> entities: aList [
+MiModelsBrowserModel >> entities: aList [
 
 	mooseModelsList := aList
 ]
 
 { #category : #initialization }
-MiModelRootBrowserModel >> initialize [
+MiModelsBrowserModel >> initialize [
 
 	super initialize.
 	mooseModelsList := self availableMooseModels.
@@ -81,7 +81,7 @@ MiModelRootBrowserModel >> initialize [
 ]
 
 { #category : #initialization }
-MiModelRootBrowserModel >> initializeSettings [ 
+MiModelsBrowserModel >> initializeSettings [ 
 
 	settings := super initializeSettings.
 	settings	addItem: (MiCheckboxSettingItem new
@@ -100,24 +100,24 @@ MiModelRootBrowserModel >> initializeSettings [
 ]
 
 { #category : #keymaps }
-MiModelRootBrowserModel >> openSettings [ 
+MiModelsBrowserModel >> openSettings [ 
 	settings open
 ]
 
 { #category : #accessing }
-MiModelRootBrowserModel >> selected [
+MiModelsBrowserModel >> selected [
 
 	^ selected
 ]
 
 { #category : #accessing }
-MiModelRootBrowserModel >> selected: anObject [
+MiModelsBrowserModel >> selected: anObject [
 	selected := anObject.
 	browser updateToolbar
 ]
 
 { #category : #accessing }
-MiModelRootBrowserModel >> selectedModel [
+MiModelsBrowserModel >> selectedModel [
 
 	^ (settings getItemValue: #filterStubsSetting)
 		  ifTrue: [ 
@@ -127,12 +127,12 @@ MiModelRootBrowserModel >> selectedModel [
 ]
 
 { #category : #'accessing - tests' }
-MiModelRootBrowserModel >> settings [
+MiModelsBrowserModel >> settings [
 	^ settings
 ]
 
 { #category : #updating }
-MiModelRootBrowserModel >> updateForNewModel: aMooseModel [
+MiModelsBrowserModel >> updateForNewModel: aMooseModel [
 
 	self allModelRootBrowser do: [ :modelBrowser |
 		modelBrowser updateList ].
@@ -140,7 +140,7 @@ MiModelRootBrowserModel >> updateForNewModel: aMooseModel [
 ]
 
 { #category : #updating }
-MiModelRootBrowserModel >> updateMooseModelsList [
+MiModelsBrowserModel >> updateMooseModelsList [
 
 	mooseModelsList := self availableMooseModels.
 	browser listOfMooseModels: mooseModelsList

@@ -155,7 +155,7 @@ MiApplicationTest >> testMiPropagate [
 MiApplicationTest >> testMooseRootBrowserIsModelImporter [
 	| browser |
 	browser := application modelImporter.
-	self assert: browser class equals: MiModelRootBrowser.
+	self assert: browser class equals: MiModelsBrowser.
 	browser window close
 ]
 

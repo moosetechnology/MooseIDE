@@ -1,7 +1,7 @@
-Extension { #name : #MiModelRootBrowser }
+Extension { #name : #MiModelsBrowser }
 
 { #category : #'*MooseIDE-NewTools' }
-MiModelRootBrowser >> miInspect [
+MiModelsBrowser >> miInspect [
 
 	self inspector inspect: self miSelectedModel forBuses: buses
 ]
