@@ -19,7 +19,7 @@ Class {
 	#category : #'MooseIDE-Meta-ModelRootBrowser'
 }
 
-{ #category : #accessing }
+{ #category : #keymaps }
 MiModelRootBrowser class >> browserKey [
 
 	^ $m

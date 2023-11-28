@@ -17,3 +17,11 @@ MiShortcutsCategory >> openModelRootBrowser [
 
 	^ MiModelRootBrowser openKeyMap
 ]
+
+{ #category : #keymaps }
+MiShortcutsCategory >> openQueriesBrowser [
+
+	<shortcut>
+
+	^ MiQueriesBrowser openKeyMap
+]
