@@ -59,7 +59,7 @@ MiAbstractBrowser class >> addToMiBrowsersMenu: aMenuPresenter [
 	self buildItemInMenu: aMenuPresenter
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #keymaps }
 MiAbstractBrowser class >> browserKey [
 
 	"Override with a character to be used after m (for Moose) to open your browser"
@@ -296,7 +296,7 @@ MiAbstractBrowser class >> open [
 		  yourself
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #keymaps }
 MiAbstractBrowser class >> openKeyMap [
 
 	^ self browserKey ifNotNil: [
@@ -314,7 +314,7 @@ MiAbstractBrowser class >> openOn: anEntity [
 		  yourself
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #keymaps }
 MiAbstractBrowser class >> shortcut [
 
 	^ self browserKey ifNotNil: [ :aCharacter |

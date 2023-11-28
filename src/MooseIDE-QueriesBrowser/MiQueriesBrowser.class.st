@@ -18,6 +18,12 @@ Class {
 	#category : #'MooseIDE-QueriesBrowser-Main presenters'
 }
 
+{ #category : #keymaps }
+MiQueriesBrowser class >> browserKey [
+
+	^ $f
+]
+
 { #category : #'world menu' }
 MiQueriesBrowser class >> menuCommandOn: aBuilder [
 
