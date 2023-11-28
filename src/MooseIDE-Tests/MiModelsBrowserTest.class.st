@@ -1,5 +1,5 @@
 Class {
-	#name : #MiModelRootBrowserTest,
+	#name : #MiModelsBrowserTest,
 	#superclass : #MiAbstractBrowserTest,
 	#instVars : [
 		'savedRoot'
@@ -8,13 +8,13 @@ Class {
 }
 
 { #category : #running }
-MiModelRootBrowserTest >> browserClass [
+MiModelsBrowserTest >> browserClass [
 
-	^ MiModelRootBrowser
+	^ MiModelsBrowser
 ]
 
 { #category : #running }
-MiModelRootBrowserTest >> newModel: aString [
+MiModelsBrowserTest >> newModel: aString [
 
 	| model |
 	model := FamixStModel new
@@ -25,7 +25,7 @@ MiModelRootBrowserTest >> newModel: aString [
 ]
 
 { #category : #running }
-MiModelRootBrowserTest >> setUp [
+MiModelsBrowserTest >> setUp [
 
 	savedRoot := MooseModelRoot installedRoot.
 	MooseModelRoot resetRoot.
@@ -33,7 +33,7 @@ MiModelRootBrowserTest >> setUp [
 ]
 
 { #category : #running }
-MiModelRootBrowserTest >> stModelFile [
+MiModelsBrowserTest >> stModelFile [
 
 	"Creating an in-memory JSON file containing a class from FamixStModel"
 
@@ -47,14 +47,14 @@ MiModelRootBrowserTest >> stModelFile [
 ]
 
 { #category : #running }
-MiModelRootBrowserTest >> tearDown [
+MiModelsBrowserTest >> tearDown [
 
 	MooseModelRoot installRoot: savedRoot.
 	super tearDown
 ]
 
 { #category : #tests }
-MiModelRootBrowserTest >> testActivateActionButtons [
+MiModelsBrowserTest >> testActivateActionButtons [
 
 	| newModel |
 	self assert: browser actionButtons isNotEmpty.
@@ -68,12 +68,12 @@ MiModelRootBrowserTest >> testActivateActionButtons [
 ]
 
 { #category : #'tests - opening' }
-MiModelRootBrowserTest >> testCanTagEntities [
+MiModelsBrowserTest >> testCanTagEntities [
 	self deny: browser canTagEntities 
 ]
 
 { #category : #tests }
-MiModelRootBrowserTest >> testFilterStubsSettingsWithoutStub [
+MiModelsBrowserTest >> testFilterStubsSettingsWithoutStub [
 
 	| newModel |
 	self assert: browser miSelectedItem isNil.
@@ -95,7 +95,7 @@ MiModelRootBrowserTest >> testFilterStubsSettingsWithoutStub [
 ]
 
 { #category : #tests }
-MiModelRootBrowserTest >> testHandleDropFileImportsModel [
+MiModelsBrowserTest >> testHandleDropFileImportsModel [
 	| file |
 	file := self stModelFile.
 
@@ -114,7 +114,7 @@ MiModelRootBrowserTest >> testHandleDropFileImportsModel [
 ]
 
 { #category : #tests }
-MiModelRootBrowserTest >> testMiInspectCommand [
+MiModelsBrowserTest >> testMiInspectCommand [
 
 	| inspector result newModel |
 	newModel := self newModel: 'aModel'.
@@ -132,7 +132,7 @@ MiModelRootBrowserTest >> testMiInspectCommand [
 ]
 
 { #category : #tests }
-MiModelRootBrowserTest >> testMiInspectCommandWithoutStubFilter [
+MiModelsBrowserTest >> testMiInspectCommandWithoutStubFilter [
 
 	| inspector result newModel |
 	newModel := self newModel: 'aModel'.
@@ -151,7 +151,7 @@ MiModelRootBrowserTest >> testMiInspectCommandWithoutStubFilter [
 ]
 
 { #category : #tests }
-MiModelRootBrowserTest >> testMiSelectedItem [
+MiModelsBrowserTest >> testMiSelectedItem [
 
 	| newModel |
 	self assert: browser miSelectedItem isNil.
@@ -163,7 +163,7 @@ MiModelRootBrowserTest >> testMiSelectedItem [
 ]
 
 { #category : #tests }
-MiModelRootBrowserTest >> testMiSelectedItemWithoutStub [
+MiModelsBrowserTest >> testMiSelectedItemWithoutStub [
 
 	| newModel |
 	self assert: browser miSelectedItem isNil.
@@ -182,13 +182,13 @@ MiModelRootBrowserTest >> testMiSelectedItemWithoutStub [
 ]
 
 { #category : #'tests - opening' }
-MiModelRootBrowserTest >> testSettingsAction [
+MiModelsBrowserTest >> testSettingsAction [
 
 	self assert: browser hasSettings
 ]
 
 { #category : #tests }
-MiModelRootBrowserTest >> testUpdateForNewModel [
+MiModelsBrowserTest >> testUpdateForNewModel [
 
 	| newModel |
 	self newModel: 'model1'.
@@ -205,7 +205,7 @@ MiModelRootBrowserTest >> testUpdateForNewModel [
 ]
 
 { #category : #tests }
-MiModelRootBrowserTest >> testUpdateForNewModelMultipleBrowsers [
+MiModelsBrowserTest >> testUpdateForNewModelMultipleBrowsers [
 
 	| browser2 newModel |
 	self newModel: 'model1'.
@@ -231,7 +231,7 @@ MiModelRootBrowserTest >> testUpdateForNewModelMultipleBrowsers [
 ]
 
 { #category : #tests }
-MiModelRootBrowserTest >> testUpdateList [
+MiModelsBrowserTest >> testUpdateList [
 
 	self assertEmpty: browser model entities.
 

@@ -34,7 +34,7 @@ Controls:
 "
 Class {
 	#name : #MiDSMBrowser,
-	#superclass : #MiAbstractDependencyBrowser,
+	#superclass : #MiAbstractBrowser,
 	#instVars : [
 		'mainPresenter'
 	],
@@ -87,7 +87,7 @@ MiDSMBrowser class >> open [
 { #category : #specs }
 MiDSMBrowser class >> title [
 
-	^ 'DSM'
+	^ 'Dependency Structural Matrix'
 ]
 
 { #category : #api }

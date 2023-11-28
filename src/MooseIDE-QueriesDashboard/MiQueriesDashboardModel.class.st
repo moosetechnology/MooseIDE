@@ -1,21 +1,21 @@
 Class {
-	#name : #MiPreviewModel,
+	#name : #MiQueriesDashboardModel,
 	#superclass : #Object,
 	#instVars : [
 		'queries',
 		'mooseModel'
 	],
-	#category : #'MooseIDE-Preview-Browser'
+	#category : #'MooseIDE-QueriesDashboard-Browser'
 }
 
 { #category : #accessing }
-MiPreviewModel >> mooseModel [
+MiQueriesDashboardModel >> mooseModel [
 
 	^ mooseModel
 ]
 
 { #category : #accessing }
-MiPreviewModel >> mooseModel: anObject [
+MiQueriesDashboardModel >> mooseModel: anObject [
 
 	mooseModel := anObject
 ]

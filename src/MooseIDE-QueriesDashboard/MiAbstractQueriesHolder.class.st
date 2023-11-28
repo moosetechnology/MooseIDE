@@ -10,7 +10,7 @@ Class {
 	#instVars : [
 		'mooseModel'
 	],
-	#category : #'MooseIDE-Preview-Queries'
+	#category : #'MooseIDE-QueriesDashboard-Queries'
 }
 
 { #category : #testing }

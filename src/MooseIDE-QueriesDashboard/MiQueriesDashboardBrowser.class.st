@@ -1,64 +1,64 @@
 Class {
-	#name : #MiPreviewBrowser,
+	#name : #MiQueriesDashboardBrowser,
 	#superclass : #MiAbstractBrowser,
 	#instVars : [
 		'queryPresenters',
 		'titlePresenter'
 	],
-	#category : #'MooseIDE-Preview-Browser'
+	#category : #'MooseIDE-QueriesDashboard-Browser'
 }
 
 { #category : #accessing }
-MiPreviewBrowser class >> menuCommandOn: aBuilder [
+MiQueriesDashboardBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
 	^ self buildMenuItemIn: aBuilder
 ]
 
 { #category : #accessing }
-MiPreviewBrowser class >> menuItem [
+MiQueriesDashboardBrowser class >> menuItem [
 
-	^ #MiPreviewBrowser
+	^ #MiQueriesDashboardBrowser
 ]
 
 { #category : #accessing }
-MiPreviewBrowser class >> menuPriority [
+MiQueriesDashboardBrowser class >> menuPriority [
 
 	^ self menuVisualizationToolsPriority + 1
 ]
 
 { #category : #'instance creation' }
-MiPreviewBrowser class >> newModel [
+MiQueriesDashboardBrowser class >> newModel [
 
-	^ MiPreviewModel new
+	^ MiQueriesDashboardModel new
 ]
 
 { #category : #accessing }
-MiPreviewBrowser class >> open [
+MiQueriesDashboardBrowser class >> open [
 	<script>
 	super open
 ]
 
 { #category : #accessing }
-MiPreviewBrowser class >> title [
+MiQueriesDashboardBrowser class >> title [
 
 	^ 'Queries dashboard'
 ]
 
 { #category : #specs }
-MiPreviewBrowser class >> windowSize [
+MiQueriesDashboardBrowser class >> windowSize [
 
 	^ 800 @ 500
 ]
 
 { #category : #testing }
-MiPreviewBrowser >> canFollowEntity: anObject [
+MiQueriesDashboardBrowser >> canFollowEntity: anObject [
 
 	^ anObject isMooseObject
 ]
 
 { #category : #actions }
-MiPreviewBrowser >> followEntity: anEntity [
+MiQueriesDashboardBrowser >> followEntity: anEntity [
 
 	specModel mooseModel: (anEntity isMooseModel
 			 ifTrue: [ anEntity ]
@@ -67,7 +67,7 @@ MiPreviewBrowser >> followEntity: anEntity [
 ]
 
 { #category : #actions }
-MiPreviewBrowser >> getQueries [
+MiQueriesDashboardBrowser >> getQueries [
 
 	| qh qhClass queries results |
 	qhClass := MiAbstractQueriesHolder subclasses
@@ -85,14 +85,14 @@ MiPreviewBrowser >> getQueries [
 ]
 
 { #category : #actions }
-MiPreviewBrowser >> initialize [
+MiQueriesDashboardBrowser >> initialize [
 
 	super initialize.
 	queryPresenters := OrderedCollection new.
 ]
 
 { #category : #initialization }
-MiPreviewBrowser >> initializeLayout [
+MiQueriesDashboardBrowser >> initializeLayout [
 
 	self layout: (SpBoxLayout newTopToBottom
 			 vAlignCenter;
@@ -102,7 +102,7 @@ MiPreviewBrowser >> initializeLayout [
 ]
 
 { #category : #initialization }
-MiPreviewBrowser >> initializePresenters [
+MiQueriesDashboardBrowser >> initializePresenters [
 
 	titlePresenter := self newLabel
 		                  label: 'Available queries';
@@ -112,19 +112,19 @@ MiPreviewBrowser >> initializePresenters [
 ]
 
 { #category : #initialization }
-MiPreviewBrowser >> miSelectedItem [
+MiQueriesDashboardBrowser >> miSelectedItem [
 
 	^ nil
 ]
 
 { #category : #accessing }
-MiPreviewBrowser >> selectedTag [
+MiQueriesDashboardBrowser >> selectedTag [
 
 	^ nil 
 ]
 
 { #category : #initialization }
-MiPreviewBrowser >> setModelBeforeInitialization: aBrowserModel [
+MiQueriesDashboardBrowser >> setModelBeforeInitialization: aBrowserModel [
 
 	aBrowserModel ifNil: [ ^ self ].
 
@@ -132,7 +132,7 @@ MiPreviewBrowser >> setModelBeforeInitialization: aBrowserModel [
 ]
 
 { #category : #actions }
-MiPreviewBrowser >> updatePresenters [
+MiQueriesDashboardBrowser >> updatePresenters [
 
 	| results newLayout groups |
 	queryPresenters := OrderedCollection new.

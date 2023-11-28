@@ -18,7 +18,7 @@ builder exportToTextAt: '/path/to/your/notebook.md' asFileReference
 See export protocole (instance side) for more export methods.
 "
 Class {
-	#name : #MiReportModel,
+	#name : #MiNotebookModel,
 	#superclass : #MiAbstractModel,
 	#instVars : [
 		'mooseModel',
@@ -33,7 +33,7 @@ Class {
 }
 
 { #category : #initialization }
-MiReportModel class >> initializeWith: aFileReference on: aMooseModel [
+MiNotebookModel class >> initializeWith: aFileReference on: aMooseModel [
 
 	^ self new
 		  importCellsFrom: aFileReference;
@@ -42,26 +42,26 @@ MiReportModel class >> initializeWith: aFileReference on: aMooseModel [
 ]
 
 { #category : #accessing }
-MiReportModel >> cellList [
+MiNotebookModel >> cellList [
 
 	^ cellList
 ]
 
 { #category : #accessing }
-MiReportModel >> cellList: anOrderedCollection [
+MiNotebookModel >> cellList: anOrderedCollection [
 
 	needToUpdate := true.
 	cellList := anOrderedCollection
 ]
 
 { #category : #accessing }
-MiReportModel >> context [
+MiNotebookModel >> context [
 
 	^ context
 ]
 
 { #category : #initialization }
-MiReportModel >> defaultBindings [
+MiNotebookModel >> defaultBindings [
 
 	^ { 
 		  ('mooseModel' -> mooseModel).
@@ -70,7 +70,7 @@ MiReportModel >> defaultBindings [
 ]
 
 { #category : #initialization }
-MiReportModel >> defaultBindingsWithStream: aStream [
+MiNotebookModel >> defaultBindingsWithStream: aStream [
 
 	^ { 
 		  ('mooseModel' -> mooseModel).
@@ -79,12 +79,12 @@ MiReportModel >> defaultBindingsWithStream: aStream [
 ]
 
 { #category : #accessing }
-MiReportModel >> entities [
+MiNotebookModel >> entities [
 	^mooseModel 
 ]
 
 { #category : #actions }
-MiReportModel >> executeAllCells [
+MiNotebookModel >> executeAllCells [
 
 	needToUpdate ifFalse: [ ^ generatedDocument ].
 	generatedDocument := String streamContents: [ :s | 
@@ -97,7 +97,7 @@ MiReportModel >> executeAllCells [
 ]
 
 { #category : #actions }
-MiReportModel >> executeAllCellsAsTextCollection [
+MiNotebookModel >> executeAllCellsAsTextCollection [
 
 	| textCollection |
 	self initializeContext.
@@ -116,7 +116,7 @@ MiReportModel >> executeAllCellsAsTextCollection [
 ]
 
 { #category : #export }
-MiReportModel >> exportDocumentAt: aFileReference [
+MiNotebookModel >> exportDocumentAt: aFileReference [
 
 	"Export the cell list in a ston file."
 
@@ -127,7 +127,7 @@ MiReportModel >> exportDocumentAt: aFileReference [
 ]
 
 { #category : #export }
-MiReportModel >> exportToHTMLAt: aFileReference [
+MiNotebookModel >> exportToHTMLAt: aFileReference [
 
 	"This will use the microdown HTML visitor to export the document to HTML. So your document should respect Microdown specs."
 	aFileReference ifNil: [ ^ self ].
@@ -136,7 +136,7 @@ MiReportModel >> exportToHTMLAt: aFileReference [
 ]
 
 { #category : #export }
-MiReportModel >> exportToTextAt: aFileReference [
+MiNotebookModel >> exportToTextAt: aFileReference [
 
 	"Export the generated document, i.e., the resulting text of all cells execution."
 
@@ -147,32 +147,32 @@ MiReportModel >> exportToTextAt: aFileReference [
 ]
 
 { #category : #actions }
-MiReportModel >> followEntity: aMooseModel [
+MiNotebookModel >> followEntity: aMooseModel [
 
 	mooseModel := aMooseModel
 ]
 
 { #category : #accessing }
-MiReportModel >> generatedDocument [
+MiNotebookModel >> generatedDocument [
 
 	^ generatedDocument
 ]
 
 { #category : #accessing }
-MiReportModel >> generatedDocument: anObject [
+MiNotebookModel >> generatedDocument: anObject [
 
 	generatedDocument := anObject.
 ]
 
 { #category : #actions }
-MiReportModel >> importCellsFrom: aFileReference [
+MiNotebookModel >> importCellsFrom: aFileReference [
 
 	aFileReference ifNil: [ ^ self ].
 	cellList := STON fromString: aFileReference contents
 ]
 
 { #category : #initialization }
-MiReportModel >> initialize [
+MiNotebookModel >> initialize [
 
 	super initialize.
 	needToUpdate := true.
@@ -180,7 +180,7 @@ MiReportModel >> initialize [
 ]
 
 { #category : #initialization }
-MiReportModel >> initializeContext [
+MiNotebookModel >> initializeContext [
 
 	context := CompilationContext new
 		           bindings: (self defaultBindings);
@@ -188,7 +188,7 @@ MiReportModel >> initializeContext [
 ]
 
 { #category : #initialization }
-MiReportModel >> initializeContextWithStream: aStream [
+MiNotebookModel >> initializeContextWithStream: aStream [
 
 	context := CompilationContext new
 		           bindings: (self defaultBindingsWithStream: aStream);
@@ -196,13 +196,13 @@ MiReportModel >> initializeContextWithStream: aStream [
 ]
 
 { #category : #accessing }
-MiReportModel >> micDocument [
+MiNotebookModel >> micDocument [
 
 	^ micDocument
 ]
 
 { #category : #accessing }
-MiReportModel >> mooseModel [
+MiNotebookModel >> mooseModel [
 
 	^ mooseModel 
 ]

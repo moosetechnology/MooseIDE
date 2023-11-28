@@ -8,7 +8,7 @@ Class {
 		'propagateButton',
 		'descriptionButton'
 	],
-	#category : #'MooseIDE-Preview-Browser'
+	#category : #'MooseIDE-QueriesDashboard-Browser'
 }
 
 { #category : #initialization }

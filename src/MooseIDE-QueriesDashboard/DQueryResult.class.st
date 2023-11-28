@@ -9,7 +9,7 @@ Class {
 		'group',
 		'description'
 	],
-	#category : #'MooseIDE-Preview-Queries'
+	#category : #'MooseIDE-QueriesDashboard-Queries'
 }
 
 { #category : #accessing }

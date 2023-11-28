@@ -20,7 +20,7 @@ Some globals are avalaible in all code cells:
 When the notebook is executed, all cells are responsible to print there content in the stream. The order of cells is therfore important.
 "
 Class {
-	#name : #MiReportBrowser,
+	#name : #MiNotebookBrowser,
 	#superclass : #MiAbstractBrowser,
 	#instVars : [
 		'toolbar',
@@ -36,7 +36,7 @@ Class {
 }
 
 { #category : #'world menu' }
-MiReportBrowser class >> menuCommandOn: aBuilder [
+MiNotebookBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
 	<miBrowsers>
@@ -50,51 +50,51 @@ MiReportBrowser class >> menuCommandOn: aBuilder [
 ]
 
 { #category : #'world menu' }
-MiReportBrowser class >> menuItem [
+MiNotebookBrowser class >> menuItem [
 
 	^ #reporteBuilder
 ]
 
 { #category : #'instance creation' }
-MiReportBrowser class >> newModel [
+MiNotebookBrowser class >> newModel [
 
-	^ MiReportModel new
+	^ MiNotebookModel new
 ]
 
 { #category : #'instance creation' }
-MiReportBrowser class >> open [
+MiNotebookBrowser class >> open [
 
 	<script>
 	^ super open
 ]
 
 { #category : #specs }
-MiReportBrowser class >> title [
+MiNotebookBrowser class >> title [
 
 	^ 'Notebook'
 ]
 
 { #category : #specs }
-MiReportBrowser class >> windowSize [
+MiNotebookBrowser class >> windowSize [
 
 	^ 1083 @ 697
 ]
 
 { #category : #initialization }
-MiReportBrowser >> addCells [
+MiNotebookBrowser >> addCells [
 
 	self updateModelCells.
 	^ specModel executeAllCells
 ]
 
 { #category : #testing }
-MiReportBrowser >> canFollowEntity: anObject [
+MiNotebookBrowser >> canFollowEntity: anObject [
 
 	^ true
 ]
 
 { #category : #actions }
-MiReportBrowser >> chooseTextFile: messageString extensions: stringCollection path: defaultName [
+MiNotebookBrowser >> chooseTextFile: messageString extensions: stringCollection path: defaultName [
 	^UIManager default
 		chooseForSaveFileReference: messageString 
 		extensions: stringCollection 
@@ -102,7 +102,7 @@ MiReportBrowser >> chooseTextFile: messageString extensions: stringCollection pa
 ]
 
 { #category : #initialization }
-MiReportBrowser >> closePreview [
+MiNotebookBrowser >> closePreview [
 
 	previewOpened ifFalse: [ ^ self ].
 	previewOpened := false.
@@ -111,7 +111,7 @@ MiReportBrowser >> closePreview [
 ]
 
 { #category : #initialization }
-MiReportBrowser >> columnChoiceButton [
+MiNotebookBrowser >> columnChoiceButton [
 
 	| choiceButton |
 	choiceButton := self newToolbarButton
@@ -128,7 +128,7 @@ MiReportBrowser >> columnChoiceButton [
 ]
 
 { #category : #initialization }
-MiReportBrowser >> exportDocument [
+MiNotebookBrowser >> exportDocument [
 
 	| aFile |
 	self updateModelCells.
@@ -143,7 +143,7 @@ MiReportBrowser >> exportDocument [
 ]
 
 { #category : #actions }
-MiReportBrowser >> exportToHTML [
+MiNotebookBrowser >> exportToHTML [
 
 	| aFile |
 	self updateModelCells.
@@ -160,7 +160,7 @@ MiReportBrowser >> exportToHTML [
 ]
 
 { #category : #initialization }
-MiReportBrowser >> exportToText [
+MiNotebookBrowser >> exportToText [
 
 	| aFile |
 	self updateModelCells.
@@ -175,14 +175,14 @@ MiReportBrowser >> exportToText [
 ]
 
 { #category : #actions }
-MiReportBrowser >> followEntity: anEntity [
+MiNotebookBrowser >> followEntity: anEntity [
 
 	specModel followEntity: anEntity mooseModel.
 	notebook mooseModel: anEntity mooseModel
 ]
 
 { #category : #initialization }
-MiReportBrowser >> importMicrodownFile [
+MiNotebookBrowser >> importMicrodownFile [
 
 	| file |
 	file := UIManager default
@@ -194,14 +194,14 @@ MiReportBrowser >> importMicrodownFile [
 ]
 
 { #category : #initialization }
-MiReportBrowser >> initialize [
+MiNotebookBrowser >> initialize [
 
 	super initialize.
 	previewOpened := false
 ]
 
 { #category : #initialization }
-MiReportBrowser >> initializeLayout [
+MiNotebookBrowser >> initializeLayout [
 
 	sep := self newRoassal.
 	mainLayout := SpBoxLayout newLeftToRight
@@ -219,7 +219,7 @@ MiReportBrowser >> initializeLayout [
 ]
 
 { #category : #initialization }
-MiReportBrowser >> initializePresenters [
+MiNotebookBrowser >> initializePresenters [
 
 	self initializeToolbar.
 	self whenDisplayDo: [ 
@@ -240,7 +240,7 @@ MiReportBrowser >> initializePresenters [
 ]
 
 { #category : #initialization }
-MiReportBrowser >> initializeToolbar [
+MiNotebookBrowser >> initializeToolbar [
 
 	toolbar := self newToolbar
 		           addItem: (self newToolbarButton
@@ -277,19 +277,19 @@ MiReportBrowser >> initializeToolbar [
 ]
 
 { #category : #actions }
-MiReportBrowser >> miSelectedItem [
+MiNotebookBrowser >> miSelectedItem [
 
 	^ specModel mooseModel
 ]
 
 { #category : #accessing }
-MiReportBrowser >> mooseModel [
+MiNotebookBrowser >> mooseModel [
 
 	^ specModel mooseModel
 ]
 
 { #category : #initialization }
-MiReportBrowser >> openPreview [
+MiNotebookBrowser >> openPreview [
 
 	previewOpened ifTrue: [ ^ self ].
 	previewOpened := true.
@@ -300,7 +300,7 @@ MiReportBrowser >> openPreview [
 ]
 
 { #category : #initialization }
-MiReportBrowser >> preview [
+MiNotebookBrowser >> preview [
 
 	self openPreview.
 	self updateModelCells.
@@ -312,13 +312,13 @@ MiReportBrowser >> preview [
 ]
 
 { #category : #accessing }
-MiReportBrowser >> previewOpened [
+MiNotebookBrowser >> previewOpened [
 
 	^ previewOpened
 ]
 
 { #category : #actions }
-MiReportBrowser >> reportExported: aFile [
+MiNotebookBrowser >> reportExported: aFile [
 
 	| msg |
 	msg := 'Report exported.
@@ -330,25 +330,25 @@ Click to show in folder'.
 ]
 
 { #category : #accessing }
-MiReportBrowser >> selectedEntities [
+MiNotebookBrowser >> selectedEntities [
 
 	^ specModel mooseModel
 ]
 
 { #category : #accessing }
-MiReportBrowser >> sep [
+MiNotebookBrowser >> sep [
 
 	^ sep
 ]
 
 { #category : #initialization }
-MiReportBrowser >> updateModelCells [
+MiNotebookBrowser >> updateModelCells [
 
 	specModel cellList: notebook allModelCells.
 ]
 
 { #category : #initialization }
-MiReportBrowser >> updateWithFile: aFileReference [
+MiNotebookBrowser >> updateWithFile: aFileReference [
 
 	specModel importCellsFrom: aFileReference.
 	self closePreview.

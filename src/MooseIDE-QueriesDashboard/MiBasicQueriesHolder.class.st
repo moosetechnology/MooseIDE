@@ -9,7 +9,7 @@ Class {
 		'withAnnotation',
 		'methods'
 	],
-	#category : #'MooseIDE-Preview-Queries'
+	#category : #'MooseIDE-QueriesDashboard-Queries'
 }
 
 { #category : #testing }

@@ -309,9 +309,9 @@ MiAbstractBrowserTest >> testHighlightEntity [
 
 { #category : #'tests - tags' }
 MiAbstractBrowserTest >> testSelectedTagSetAndGet [
-	browser canTagEntities ifFalse: [ self skip ].
 
-	self subclassResponsibility 
+	browser canTagEntities ifFalse: [ self skip ]
+	"Override to use test"
 ]
 
 { #category : #'tests - opening' }
