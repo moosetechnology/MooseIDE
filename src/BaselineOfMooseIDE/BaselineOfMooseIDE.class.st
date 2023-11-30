@@ -90,7 +90,7 @@ BaselineOfMooseIDE >> definePackages: spec [
 		
 		package: 'MooseIDE-Visualization' with: [ spec requires: #( 'MooseIDE-Core' 'HierarchicalVisualizations' ) ];
 		
-		package: 'MooseIDE-Meta' with: [ spec requires: #( 'MooseIDE-Core' ) ];
+		package: 'MooseIDE-Meta' with: [ spec requires: #( 'MooseIDE-Core' 'MooseIDE-Famix' ) ];
 		
 		package: 'MooseIDE-Dependency' with: [ spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' 'Roassal' 'AIHierarchicalClustering' ) ];
 		
