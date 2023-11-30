@@ -147,7 +147,7 @@ MiMetaBrowser >> initializeLayout [
 MiMetaBrowser >> initializeMap [
 
 	map := self instantiate: MiUMLVisualization.
-	map miUMLModelDescriptor: RSUMLClassDescriptor new forFame
+	map classDescriptor: RSUMLClassDescriptor new forFame
 ]
 
 { #category : #initialization }

@@ -3,10 +3,24 @@ Class {
 	#superclass : #MiAbstractVisualization,
 	#instVars : [
 		'builder',
-		'rootEntities'
+		'rootEntities',
+		'classDescriptor'
 	],
 	#category : #'MooseIDE-Famix-UML'
 }
+
+{ #category : #running }
+MiUMLVisualization >> classDescriptor [
+
+	^ classDescriptor ifNil: [
+		  classDescriptor := RSUMLClassDescriptor new forFamix ]
+]
+
+{ #category : #running }
+MiUMLVisualization >> classDescriptor: aRSUMLClassDescriptor [
+
+	classDescriptor := aRSUMLClassDescriptor
+]
 
 { #category : #highlighting }
 MiUMLVisualization >> highlightShapes [
@@ -39,7 +53,7 @@ MiUMLVisualization >> run [
 
 	super run.
 	builder := RSUMLClassBuilder new
-		           modelDescriptor: RSUMLClassDescriptor new forFamix;
+		           modelDescriptor: self classDescriptor;
 		           classes: rootEntities;
 		           build;
 		           renderIn: self canvas;
