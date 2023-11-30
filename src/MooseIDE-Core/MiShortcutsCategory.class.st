@@ -25,3 +25,11 @@ MiShortcutsCategory >> openQueriesBrowser [
 
 	^ MiQueriesBrowser openKeyMap
 ]
+
+{ #category : #keymaps }
+MiShortcutsCategory >> openTagBrowser [
+
+	<shortcut>
+
+	^ MiTagBrowser openKeyMap
+]
