@@ -17,6 +17,12 @@ Class {
 	#category : #'MooseIDE-Tagging-Browser'
 }
 
+{ #category : #keymaps }
+MiTagBrowser class >> browserKey [
+
+	^ $t
+]
+
 { #category : #'world menu' }
 MiTagBrowser class >> menuCommandOn: aBuilder [
 
