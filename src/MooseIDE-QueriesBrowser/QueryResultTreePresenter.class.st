@@ -26,6 +26,14 @@ QueryResultTreePresenter class >> buildCommandsGroupWith: presenter forRoot: aCm
 				 context: presenter owner)
 ]
 
+{ #category : #commands }
+QueryResultTreePresenter class >> buildModelCommandsGroupWith: presenterInstance [
+
+	^ CmCommandGroup forSpec beRoot
+		  register: (MiInspectCommand forSpecContext: presenterInstance);
+		  register: (MiPropagateCommand forSpecContext: presenterInstance)
+]
+
 { #category : #accessing }
 QueryResultTreePresenter class >> headerTitle [
 	^ 'Result of current query'
@@ -53,7 +61,10 @@ QueryResultTreePresenter >> initialize [
 				 title: self class headerTitle
 				 evaluated: [ :item | self stringForItem: item ]);
 		children: [ :item | self childrenOf: item ];
-		beMultipleSelection
+		beMultipleSelection;
+		contextMenu: [
+			(self class buildModelCommandsGroupWith: self queriesBrowser)
+				asMenuPresenter ]
 ]
 
 { #category : #'private - for tests' }
