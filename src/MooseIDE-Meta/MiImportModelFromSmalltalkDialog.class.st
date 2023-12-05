@@ -207,7 +207,7 @@ MiImportModelFromSmalltalkDialog >> initializePresenters [
 	modelNameField := self newTextInput text: 'MooseModel'.
 
 	packagesSelector := self instantiate: SpChooserPresenter.
-	packagesSelector sourceItems: RPackage organizer packageNames.
+	packagesSelector sourceItems: self packageOrganizer packageNames.
 
 	advancedSettingsButton := self newToggleButton
 		label: 'Advanced settings';

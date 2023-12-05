@@ -273,12 +273,9 @@ MiCoUsageMapModel >> openSettings [
 
 	| settingBrowser |
 	settingBrowser := SettingBrowser new.
-	settingBrowser changePackageSet: (OrderedCollection with:
-			 (RPackage organizer packageNamed:
-				  MiCoUsageMapSettings package name)).
+	settingBrowser changePackageSet: (OrderedCollection with: (self packageOrganizer packageNamed: MiCoUsageMapSettings package name)).
 	settingsWindow := settingBrowser open.
-	settingsWindow position:
-		self currentWorld extent - settingsWindow extent // 2.
+	settingsWindow position: self currentWorld extent - settingsWindow extent // 2.
 	settingBrowser expandAll.
 
 	self currentWorld announcer when: WindowClosed do: [ :annoucement |
