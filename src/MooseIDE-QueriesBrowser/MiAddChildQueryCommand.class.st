@@ -3,7 +3,7 @@ This is a command for adding a new child query. I am called in `MiQueryListItemP
 "
 Class {
 	#name : #MiAddChildQueryCommand,
-	#superclass : #CmCommand,
+	#superclass : #MiCommand,
 	#category : #'MooseIDE-QueriesBrowser-Commands'
 }
 
@@ -13,16 +13,16 @@ MiAddChildQueryCommand class >> defaultDescription [
 	^ 'Narrow result by adding a query'
 ]
 
+{ #category : #initialization }
+MiAddChildQueryCommand class >> defaultIconName [
+
+	^ #smallAdd
+]
+
 { #category : #'accessing - defaults' }
 MiAddChildQueryCommand class >> defaultName [
 
 	^ 'Add a child query'
-]
-
-{ #category : #initialization }
-MiAddChildQueryCommand class >> iconName [
-
-	^ #smallAdd
 ]
 
 { #category : #executing }
