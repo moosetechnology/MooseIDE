@@ -102,6 +102,10 @@ MiDMBrowser >> canFollowEntity: aCollection [
 	| uniqType confirm |
 	aCollection isCollection ifFalse: [ ^false ].
 
+	"for example, this allows to open on an empty collection
+	 (to propagate entities later)"
+	aCollection ifEmpty: [ ^true ].
+
 	(aCollection size > self model tooManyEntities)
 		ifTrue: [ 
 			confirm := UIManager default
