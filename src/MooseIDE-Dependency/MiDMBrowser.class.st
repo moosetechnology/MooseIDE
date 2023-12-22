@@ -97,9 +97,36 @@ MiDMBrowser >> browserClosed [
 ]
 
 { #category : #actions }
-MiDMBrowser >> canFollowEntity: anEntity [
+MiDMBrowser >> canFollowEntity: aCollection [
 
-	^ anEntity isMooseObject
+	| uniqType confirm |
+	aCollection isCollection ifFalse: [ ^false ].
+
+	"for example, this allows to open on an empty collection
+	 (to propagate entities later)"
+	aCollection ifEmpty: [ ^true ].
+
+	(aCollection size > self model tooManyEntities)
+		ifTrue: [ 
+			confirm := UIManager default
+				confirm: 'DistributionMap uses an algorithm in O^2.
+Propagating many entities to it will result in lengthy computation.
+Are you sure you want to continue ?'.
+			confirm ifFalse: [ ^false ]
+	].
+
+	uniqType := aCollection anyOne class.
+	(aCollection allSatisfy: [ :e | (e class = uniqType) ])
+		ifFalse: [
+			confirm := UIManager default
+				confirm: 'DistributionMap is intend to work on _one_ kind of entity (and their direct ''children'').
+You are propagating several different kinds of entities.
+Are you sure you want to continue ?
+(That might result in unecessary lengthy computation)'.
+			confirm ifFalse: [ ^false ]
+		].
+
+	^true
 ]
 
 { #category : #testing }

@@ -274,3 +274,11 @@ MiDistributionMapModel >> tagFor: anEntity [
 MiDistributionMapModel >> tagsSetting [
 	^settings getItemValue: #tags
 ]
+
+{ #category : #accessing }
+MiDistributionMapModel >> tooManyEntities [
+	"some random value above which computing the DistributionMap takes too long.
+	Not very brilliant, but solves https://github.com/moosetechnology/MooseIDE/issues/955"
+
+	^100
+]
