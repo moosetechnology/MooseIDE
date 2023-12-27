@@ -51,12 +51,18 @@ MiAbstractModel >> initializeSettings [
 ]
 
 { #category : #accessing }
+MiAbstractModel >> miSelectedItem [
+
+	self subclassResponsibility
+]
+
+{ #category : #tagging }
 MiAbstractModel >> selectedTag [
 
 	^self currentApplication tagSelectedInMooseModel: self currentMooseModel
 ]
 
-{ #category : #accessing }
+{ #category : #tagging }
 MiAbstractModel >> selectedTag: aTag [
 
 	self currentApplication selectedTag: aTag
@@ -67,15 +73,38 @@ MiAbstractModel >> settingsChanged: aBoolean [
 	"by default don't do anything"
 ]
 
-{ #category : #actions }
-MiAbstractModel >> tagEntitiesSelected [
-	UIManager  default inform: 'Unimplemented tagging (' , self selectedTag name, ') of selected entities'
+{ #category : #tagging }
+MiAbstractModel >> tagEntity: aMooseEntity with: aTag [
+
+	| tagAssociation |
+	
+	aTag ifNil: [ ^self ].
+	aTag = aMooseEntity ifTrue: [ ^ self ].
+
+	tagAssociation := FamixTagEntityAssociation
+		newForEntity: aMooseEntity
+		tag: aTag.
+	browser application consumeItem: tagAssociation.
+
 ]
 
-{ #category : #accessing }
+{ #category : #tagging }
 MiAbstractModel >> tagList [
 
 	^self currentApplication tagListForMooseModel: self currentMooseModel 
+]
+
+{ #category : #tagging }
+MiAbstractModel >> tagSelectedEntities [
+
+	| tag entity |
+	(tag := self selectedTag) ifNil: [ ^self ].
+	(entity := self miSelectedItem) ifNil: [ ^self ].
+
+	entity isCollection
+		ifTrue: [ entity do: [:each | self tagEntity: each with: tag] ]
+		ifFalse: [ self tagEntity: entity with: tag ].
+
 ]
 
 { #category : #accessing }

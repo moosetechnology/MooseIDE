@@ -616,13 +616,6 @@ MiAbstractBrowser >> showHelp [
 
 ]
 
-{ #category : #actions }
-MiAbstractBrowser >> tagEntitiesSelected [
-
-	^self model
-		ifNotNil: [ :model | model tagEntitiesSelected ]
-]
-
 { #category : #accessing }
 MiAbstractBrowser >> tagIcon [
 
@@ -642,6 +635,13 @@ MiAbstractBrowser >> tagName [
 	^self selectedTag
 		ifNil: [ '' ]
 		ifNotNil: [ :tag | tag name ]
+]
+
+{ #category : #actions }
+MiAbstractBrowser >> tagSelectedEntities [
+
+	^self model
+		ifNotNil: [ :model | model tagSelectedEntities ]
 ]
 
 { #category : #buses }
