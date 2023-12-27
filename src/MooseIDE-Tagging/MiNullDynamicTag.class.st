@@ -1,7 +1,7 @@
 Class {
 	#name : #MiNullDynamicTag,
 	#superclass : #MiDynamicTag,
-	#category : #'MooseIDE-Tagging-Browser'
+	#category : #'MooseIDE-Tagging-Model'
 }
 
 { #category : #accessing }

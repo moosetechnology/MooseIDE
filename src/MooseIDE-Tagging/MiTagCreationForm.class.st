@@ -1,3 +1,7 @@
+"
+the page that allows to enter information about the tag (like its name and category)
+This is the right part of the tag browser
+"
 Class {
 	#name : #MiTagCreationForm,
 	#superclass : #MiPresenter,
@@ -216,6 +220,12 @@ MiTagCreationForm >> intentButton [
 ]
 
 { #category : #accessing }
+MiTagCreationForm >> model [
+
+	^self owner model
+]
+
+{ #category : #accessing }
 MiTagCreationForm >> nameField [
 
 	^ nameField
@@ -302,13 +312,13 @@ MiTagCreationForm >> submit [
 
 	isIntent
 		ifFalse: [ 
-			self owner
+			self model
 				createTag: nameField text
 				description: descriptionField text
 				color: colorPicker color
 				category: categorySelection selectedItem ]
 		ifTrue: [ 
-			self owner
+			self model
 				createDynamicTag: nameField text
 				description: descriptionField text
 				color: colorPicker color
