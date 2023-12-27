@@ -30,3 +30,11 @@ MiInspectorModel >> entity: anObject [
 
 	entity := anObject
 ]
+
+{ #category : #accessing }
+MiInspectorModel >> miSelectedItem [
+	"the inspector keeps its own model"
+
+	^browser miSelectedItem
+
+]
