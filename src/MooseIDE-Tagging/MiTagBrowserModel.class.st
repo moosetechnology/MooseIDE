@@ -8,7 +8,7 @@ Class {
 		'entities',
 		'dynamicTags'
 	],
-	#category : #'MooseIDE-Tagging-Browser'
+	#category : #'MooseIDE-Tagging-Model'
 }
 
 { #category : #accessing }
@@ -150,6 +150,36 @@ MiTagBrowserModel >> allTags [
 		  ifNotNil: [ :model | model allTags ]
 ]
 
+{ #category : #testing }
+MiTagBrowserModel >> createDynamicTag: name description: aText color: aColor category: aCategory query: aQuery [
+
+	| newTag |
+	(name notNil and: [ name isNotEmpty ]) ifFalse: [ ^ self ].
+
+	newTag := MiDynamicTag new.
+	newTag name: name.
+	self addDynamicTag: newTag.
+
+	self setTag: newTag description: aText color: aColor category: aCategory.
+	aQuery
+		ifNotNil: [ newTag query: aQuery ]
+		ifNil: [ newTag query: FQNullQuery new ].
+
+	browser refreshTagList.
+	self currentApplication consumeItem: newTag
+]
+
+{ #category : #testing }
+MiTagBrowserModel >> createTag: name description: aText color: aColor category: aCategory [
+
+	| newTag |
+	newTag := self addTag: name.
+	self setTag: newTag description: aText color: aColor category: aCategory.
+
+	browser refreshTagList.
+	self currentApplication consumeItem: newTag
+]
+
 { #category : #accessing }
 MiTagBrowserModel >> currentCategory [
 
@@ -197,6 +227,41 @@ MiTagBrowserModel >> deleteCurrentTag [
 MiTagBrowserModel >> dynamicTags [
 
 	^ dynamicTags
+]
+
+{ #category : #actions }
+MiTagBrowserModel >> editCurrentDynamicTag: name description: description color: color category: category query: query [
+
+	| tag |
+	tag := self currentTag.
+	tag ifNil: [ ^ false ].
+
+	(name isNil or: [ name isEmpty ]) ifTrue: [ ^ false ].
+
+	tag name: name.
+	self setTag: tag description: description color: color category: category.
+	tag query: query.
+
+	browser refresh.
+	self currentApplication updateItem: tag
+]
+
+{ #category : #actions }
+MiTagBrowserModel >> editCurrentTag: name description: description color: color category: category [
+
+	| tag |
+	tag := self currentTag.
+	tag ifNil: [ ^ false ].
+
+	(name isNil or: [ name isEmpty ]) ifTrue: [ ^ false ].
+
+	tag name: name.
+	tag categories ifNotEmpty: [ tag removeCategory: tag categories anyOne ].
+	self setTag: tag description: description color: color category: category.
+
+	browser refresh.
+	self currentApplication updateItem: tag.
+
 ]
 
 { #category : #accessing }
@@ -251,6 +316,17 @@ MiTagBrowserModel >> mooseModel [
 { #category : #accessing }
 MiTagBrowserModel >> mooseModel: anAlcixModel [ 
 	mooseModel := anAlcixModel
+]
+
+{ #category : #testing }
+MiTagBrowserModel >> setTag: newTag description: aText color: aColor category: aCategory [
+
+	(aText notNil and: [ aText isNotEmpty ]) ifTrue: [
+		newTag description: aText ].
+	aColor ifNotNil: [ newTag color: aColor ].
+	aCategory ifNotNil: [
+		aCategory addTag: newTag.
+		newTag addCategory: aCategory ]
 ]
 
 { #category : #accessing }

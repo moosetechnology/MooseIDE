@@ -8,7 +8,7 @@ Class {
 		'description',
 		'category'
 	],
-	#category : #'MooseIDE-Tagging-Browser'
+	#category : #'MooseIDE-Tagging-Model'
 }
 
 { #category : #accessing }

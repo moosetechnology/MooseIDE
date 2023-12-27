@@ -26,6 +26,15 @@ MiDuplicationBrowserTest >> method: aName withSource: lineInterval [
 		  yourself
 ]
 
+{ #category : #'tests - actions' }
+MiDuplicationBrowserTest >> populateBrowser: mooseModel [
+
+	mooseModel add: (FamixStClass new name: 'AClass').
+	mooseModel add: (FamixStClass new name: 'AnotherClass').
+	browser followEntity: mooseModel entities.
+
+]
+
 { #category : #running }
 MiDuplicationBrowserTest >> replicaFor: anEntity source: lineInterval [
 

@@ -1,5 +1,5 @@
 "
-The page of the TagBrowser allowing to create, select, or remove tags
+The page of the TagBrowser allowing to create, select, or remove tags (left part of the browser)
 "
 Class {
 	#name : #MiTagManagementPage,

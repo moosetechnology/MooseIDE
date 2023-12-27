@@ -119,84 +119,10 @@ MiTagBrowser >> consume: anObject [
 			ifTrue: [ tagManagementPage refreshTaggedEntitiesList ] ]
 ]
 
-{ #category : #testing }
-MiTagBrowser >> createDynamicTag: name description: aText color: aColor category: aCategory query: aQuery [
-
-	| newTag |
-	(name notNil and: [ name isNotEmpty ]) ifFalse: [ ^ self ].
-	newTag := MiDynamicTag new.
-	(aText notNil and: [ aText isNotEmpty ]) ifTrue: [ 
-		newTag description: aText ].
-	newTag name: name.
-	aColor ifNotNil: [ newTag color: aColor ].
-
-	aCategory ifNotNil: [ newTag category: aCategory ].
-
-	aQuery
-		ifNotNil: [ newTag query: aQuery ]
-		ifNil: [ newTag query: FQNullQuery new ].
-	specModel addDynamicTag: newTag.
-	application consumeItem: newTag.
-	tagManagementPage refreshTagList
-]
-
-{ #category : #testing }
-MiTagBrowser >> createTag: name description: aText color: aColor category: aCategory [
-
-	| newTag |
-	newTag := specModel addTag: name.
-	(aText notNil and: [ aText isNotEmpty ]) ifTrue: [ 
-		newTag description: aText ].
-	aColor ifNotNil: [ newTag color: aColor ].
-	tagManagementPage refreshTagList.
-	aCategory ifNotNil: [ 
-		aCategory addTag: newTag.
-		newTag addCategory: aCategory ].
-	application consumeItem: newTag
-]
-
 { #category : #accessing }
 MiTagBrowser >> descriptionPage [
 
 	^ tagManagementPage descriptionPage
-]
-
-{ #category : #actions }
-MiTagBrowser >> editCurrentDynamicTag: name description: description color: color category: category query: query [
-
-	| tag |
-	tag := specModel currentTag.
-	tag ifNil: [ ^ false ].
-
-	(name isNil or: [ name isEmpty ]) ifTrue: [ ^ false ].
-
-	tag name: name.
-	tag description: description.
-	tag color: color.
-	category ifNotNil: [ tag category: category ].
-	tag query: query.
-	tagManagementPage refresh.
-	^ true
-]
-
-{ #category : #actions }
-MiTagBrowser >> editCurrentTag: name description: description color: color category: category [
-
-	| tag |
-	tag := specModel currentTag.
-	tag ifNil: [ ^ false ].
-
-	(name isNil or: [ name isEmpty ]) ifTrue: [ ^ false ].
-
-	tag name: name.
-	tag description: description.
-	tag color: color.
-	tag categories ifNotEmpty: [ 
-		tag removeCategory: tag categories first ].
-	category ifNotNil: [ tag addCategory: category ].
-	tagManagementPage refresh.
-	self application updateItem: tag.
-	^ true
 ]
 
 { #category : #actions }
@@ -282,6 +208,12 @@ MiTagBrowser >> openTagEditionForm [
 	self layout child: tagEditionForm.
 	tagEditionForm fillWithCurrentTag.
 	tagEditionForm update
+]
+
+{ #category : #refreshing }
+MiTagBrowser >> refreshTagList [
+
+	tagManagementPage refreshTagList
 ]
 
 { #category : #testing }

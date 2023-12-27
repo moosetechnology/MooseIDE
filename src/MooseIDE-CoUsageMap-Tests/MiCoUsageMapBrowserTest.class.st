@@ -9,6 +9,15 @@ MiCoUsageMapBrowserTest >> browserClass [
 	^ MiCoUsageMapBrowser
 ]
 
+{ #category : #'tests - actions' }
+MiCoUsageMapBrowserTest >> populateBrowser: mooseModel [
+
+	mooseModel add: (FamixStClass new name: 'AClass').
+	mooseModel add: (FamixStClass new name: 'AnotherClass').
+	browser followEntity: mooseModel entities.
+
+]
+
 { #category : #tests }
 MiCoUsageMapBrowserTest >> testCanOpenSettings [
 
