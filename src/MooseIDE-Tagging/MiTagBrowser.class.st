@@ -92,6 +92,7 @@ MiTagBrowser >> canFollowEntity: anObject [
 { #category : #testing }
 MiTagBrowser >> canTagEntities [
 	"tagging done in the browser main window, not through the toolbar"
+
 	^false
 ]
 

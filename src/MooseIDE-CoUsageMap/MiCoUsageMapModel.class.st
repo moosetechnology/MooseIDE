@@ -336,27 +336,15 @@ MiCoUsageMapModel >> strategies [
 ]
 
 { #category : #tagging }
-MiCoUsageMapModel >> tagEntitiesSelected [ 
-	| tag entity |
-	(tag := self selectedTag) ifNil: [ ^self ].
-	(entity := self selectedEntity) ifNil: [ ^self ].
-	self tagEntity: entity with: tag
-	
-]
-
-{ #category : #tagging }
 MiCoUsageMapModel >> tagEntity: aMooseEntity with: aTag [
+	"entites can have only one tag in this tool"
 
 	self removeTagOn: aMooseEntity.
 
-	aTag ifNotNil: [ 
-		| tagAssociation |
-		tagAssociation := aTag addReference: aMooseEntity.
-		self currentApplication consumeItem: tagAssociation.
+	super tagEntity: aMooseEntity with: aTag.
 
-		self selectedTag: aTag ].
-
-	browser updateBoxColor: (self getBoxFor: aMooseEntity) fromTags: aMooseEntity allTags
+	browser updateBoxColor: (self getBoxFor: aMooseEntity) fromTags: aMooseEntity allTags.
+	self selectedTag: aTag
 ]
 
 { #category : #tagging }

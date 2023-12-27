@@ -234,6 +234,12 @@ MiTagBrowserModel >> initialize [
 ]
 
 { #category : #accessing }
+MiTagBrowserModel >> miSelectedItem [
+
+	^self entitiesTaggedWithCurrentTag
+]
+
+{ #category : #accessing }
 MiTagBrowserModel >> mooseModel [
 
 	^ mooseModel ifNil: [ 
@@ -250,12 +256,7 @@ MiTagBrowserModel >> mooseModel: anAlcixModel [
 { #category : #accessing }
 MiTagBrowserModel >> tagEntityNotYourself: anEntity [
 
-	| assoc |
-	self currentTag = anEntity ifTrue: [ ^ self ].
-	assoc := FamixTagEntityAssociation
-		         newForEntity: anEntity
-		         tag: self currentTag.
-	browser application consumeItem: assoc
+	self tagEntity: anEntity with: self currentTag
 ]
 
 { #category : #accessing }
