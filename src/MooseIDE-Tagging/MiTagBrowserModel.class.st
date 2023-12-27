@@ -234,6 +234,12 @@ MiTagBrowserModel >> initialize [
 ]
 
 { #category : #accessing }
+MiTagBrowserModel >> miSelectedItem [
+
+	^self entitiesTaggedWithCurrentTag
+]
+
+{ #category : #accessing }
 MiTagBrowserModel >> mooseModel [
 
 	^ mooseModel ifNil: [ 
