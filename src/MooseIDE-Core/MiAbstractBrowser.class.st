@@ -350,6 +350,17 @@ MiAbstractBrowser >> browserClosed [
 	buses do: [ :bus | bus unregisterBrowser: self ]
 ]
 
+{ #category : #'window control' }
+MiAbstractBrowser >> browserCollapsed [
+
+	self beFrozen
+]
+
+{ #category : #'window control' }
+MiAbstractBrowser >> browserExpanded [
+	"should we 'unfroze' ?"
+]
+
 { #category : #accessing }
 MiAbstractBrowser >> buses [
 	^ buses
@@ -484,6 +495,7 @@ MiAbstractBrowser >> initializeWindow: aMiWindowPresenter [
 	aMiWindowPresenter buildToolbar.
 
 	aMiWindowPresenter whenClosedDo: [ self browserClosed ].
+	aMiWindowPresenter withAdapterPerformOrDefer: [ :anAdapter | self registerToAdapterEvents: anAdapter ] .
 
 	aMiWindowPresenter initialExtent: self class windowSize.
 	aMiWindowPresenter setContextBindingKeys
@@ -546,6 +558,15 @@ MiAbstractBrowser >> receivingMode [
 MiAbstractBrowser >> receivingMode: aReceivingMode [
 
 	receivingMode := aReceivingMode
+]
+
+{ #category : #'window control' }
+MiAbstractBrowser >> registerToAdapterEvents: anAdapter [
+	"spec does not give access to window collapsing/expanding events
+	 This is a hack to get them on Morph backend"
+
+	anAdapter widget announcer when: WindowCollapsed do: [ self browserCollapsed ].
+	anAdapter widget announcer when: WindowExpanded do: [ self browserExpanded ].
 ]
 
 { #category : #accessing }

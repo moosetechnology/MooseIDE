@@ -291,6 +291,15 @@ MiAbstractBrowserTest >> testFollowOtherBus [
 	self assert: browser busButton label equals: '2 buses'
 ]
 
+{ #category : #'tests - receiving' }
+MiAbstractBrowserTest >> testFreezeOnCollapse [
+
+	browser privateReceivingMode: MiFollowMode.
+	self assert: browser receivingMode equals: MiFollowMode.
+	browser window minimize.
+	self assert: browser receivingMode equals: MiFreezeMode.
+]
+
 { #category : #tests }
 MiAbstractBrowserTest >> testHelpHasSomeInformation [
 
