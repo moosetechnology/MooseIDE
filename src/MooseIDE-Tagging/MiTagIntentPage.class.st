@@ -1,7 +1,6 @@
 "
-The page of the TagBrowser notebook showing the boolean query that allows to check whether this tag applied to an entity or not
+The page of the TagBrowser notebook showing the boolean query that allows to check whether this tag applies to an entity or not
 
-This is the so called _Intent description_ of the tag
 "
 Class {
 	#name : #MiTagIntentPage,

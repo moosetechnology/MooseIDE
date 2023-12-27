@@ -9,7 +9,6 @@ Class {
 	#name : #MiSourceTextBrowserModel,
 	#superclass : #MiAbstractModel,
 	#instVars : [
-		'displayedEntity',
 		'displayedText',
 		'selectedEntity',
 		'highlights'
@@ -188,6 +187,12 @@ MiSourceTextBrowserModel >> initialize [
 	super initialize.
 	
 	self resetHighlights
+]
+
+{ #category : #accessing }
+MiSourceTextBrowserModel >> miSelectedItem [
+
+	^self entities
 ]
 
 { #category : #formatting }

@@ -174,6 +174,12 @@ MiButterflyMapModel >> leftEntitiesQuery [
 	^ #leftEntitiesQuery
 ]
 
+{ #category : #accessing }
+MiButterflyMapModel >> miSelectedItem [
+
+	^self entities
+]
+
 { #category : #actions }
 MiButterflyMapModel >> openSettings [
 
