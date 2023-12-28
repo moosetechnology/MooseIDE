@@ -119,12 +119,12 @@ MiTagManagementPage >> initializePresenters [
 	btnIsExtent := self newToggleButton
 		state: true;
 		icon: (Smalltalk ui icons iconNamed: #checkboxSelected);
-		label: 'Dynamic';
+		label: 'Static';
 		yourself.
 	btnIsIntent := self newToggleButton
 		state: false;
 		icon: (Smalltalk ui icons iconNamed: #checkboxUnselected);
-		label: 'Static';
+		label: 'Dynamic';
 		yourself.
 
 	tagList := self newList.
