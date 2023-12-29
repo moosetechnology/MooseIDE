@@ -11,7 +11,9 @@ Class {
 		'entities',
 		'childrenBlock',
 		'settings',
-		'defaultChildrenQuery'
+		'defaultChildrenQuery',
+		'virtualEntities',
+		'roots'
 	],
 	#category : #'MooseIDE-Dependency-ArchitecturalMap'
 }
@@ -42,6 +44,28 @@ MiArchitecturalMapModel class >> defaultDynamicTags [
 	^ { 
 		  self defaultDynamicTagIsStub .
 		  self defaultDynamicTagIsDead }
+]
+
+{ #category : #private }
+MiArchitecturalMapModel >> addVirtualParent: aFileReference child: entity upTo: virtualRoot [
+	"#virtualEntities is a Dictionnary where the keys are the virtual entities
+	 and the values their children
+	Here the virtual entities are fileReferences"
+
+	| virtualEntity virtualChildren |
+	virtualEntity := self virtualEntity: aFileReference belowRoot: virtualRoot.
+
+	virtualChildren := virtualEntities
+		at: virtualEntity
+		ifAbsentPut: [ OrderedCollection new ].
+	(virtualChildren includes: entity)
+		ifFalse: [virtualChildren add: entity].
+
+	virtualEntity = virtualRoot ifFalse: [
+		self
+			addVirtualParent: aFileReference parent
+			child: virtualEntity
+			upTo: virtualRoot ]
 ]
 
 { #category : #accessing }
@@ -92,7 +116,10 @@ MiArchitecturalMapModel >> childrenBlock: anObject [
 { #category : #accessing }
 MiArchitecturalMapModel >> childrenFor: anEntity [
 
-	^ self childrenQuerySetting runOn: anEntity asMooseGroup
+	^virtualEntities
+		at: anEntity
+		ifPresent: [ :children | children ]
+		ifAbsent: [ self childrenQuerySetting runOn: anEntity asMooseGroup ]
 ]
 
 { #category : #settings }
@@ -105,6 +132,43 @@ MiArchitecturalMapModel >> childrenQuerySetting [
 MiArchitecturalMapModel >> colorFor: anEntity [
 
 	^ Color gray
+]
+
+{ #category : #private }
+MiArchitecturalMapModel >> computeRootEntities [
+
+	| nodesParent |
+	nodesParent := Dictionary new.
+
+	entities do: [ :parent |
+		(self childrenFor: parent) do: [ :child |
+			nodesParent at: child put: parent ] ].
+
+	^entities select: [ :each |
+		(nodesParent at: each ifAbsent: [ nil ]) isNil ]
+]
+
+{ #category : #private }
+MiArchitecturalMapModel >> computeVirtualRoots: rootEntities [
+	"#virtualEntities is a Dictionnary where the keys are the virtual entities
+	 and the values their children
+	Here we compute virtual entities from the directories containing the real entities"
+
+	| virtualRoot entityFile |
+
+	virtualRoot := MiArchitecturalMapVirtualEntity new
+		rawEntity: self currentMooseModel rootFolder asFileReference.
+
+	rootEntities do: [ :entity |
+		(entity hasSourceAnchor and:
+		[ entity sourceAnchor isFileAnchor ])
+			ifTrue: [
+				entityFile := entity sourceAnchor fileName asFileReference.
+				self addVirtualParent: entityFile parent child: entity upTo: virtualRoot
+			]
+	].
+
+	^{ virtualRoot }
 ]
 
 { #category : #accessing }
@@ -120,6 +184,12 @@ MiArchitecturalMapModel >> defaultLayout [
 	^RSFlowLayout
 ]
 
+{ #category : #settings }
+MiArchitecturalMapModel >> directoriesVirtualNodes [
+
+	^ settings getItemValue: #directoriesVirtualNodes
+]
+
 { #category : #accessing }
 MiArchitecturalMapModel >> entities [
 
@@ -130,6 +200,7 @@ MiArchitecturalMapModel >> entities [
 MiArchitecturalMapModel >> entities: anObject [
 
 	entities := anObject.
+	self recomputeRootNodes.
 	self updateSettings
 ]
 
@@ -151,6 +222,7 @@ MiArchitecturalMapModel >> initializeSettings [
 						addItem: self itemNoMegaMorphic named: #noMegaMorphic;
 						addItem: self itemMegaMorphicSize named: #megaMorphicSize;
 						addItem: self itemTimeoutDuration named: #timeoutDuration;
+						addItem: self itemDirectoriesVirtualNodes named: #directoriesVirtualNodes;
 						yourself
 ]
 
@@ -172,6 +244,18 @@ MiArchitecturalMapModel >> itemChildrenQuery [
 		  setValue: self defaultChildrenQuery;
 		  label: 'Children query';
 		  help: 'The query giving all the children of any displayed entity';
+		  yourself
+]
+
+{ #category : #settings }
+MiArchitecturalMapModel >> itemDirectoriesVirtualNodes [
+
+	^ MiAbstractSettingItem checkboxSetting
+		  setValue: false ;
+		  label: 'Directories are root nodes? (experimental)';
+		  help:
+			  'If checked the source files/directories containing entites are treated and showed in the map.
+They are root nodes in the map';
 		  yourself
 ]
 
@@ -253,6 +337,12 @@ MiArchitecturalMapModel >> megaMorphicSize [
 	^settings getItemValue: #megaMorphicSize
 ]
 
+{ #category : #accessing }
+MiArchitecturalMapModel >> miSelectedItem [
+
+	^self entities
+]
+
 { #category : #settings }
 MiArchitecturalMapModel >> noMegaMorphic [
 
@@ -265,6 +355,27 @@ MiArchitecturalMapModel >> openSettings [
 	settings open
 ]
 
+{ #category : #private }
+MiArchitecturalMapModel >> recomputeRootNodes [
+	"Assumes each entity has only one parent"
+
+	| rootEntities |
+
+	virtualEntities := Dictionary new.
+
+	rootEntities := self computeRootEntities.
+	
+	roots := self directoriesVirtualNodes
+		ifTrue: [ self computeVirtualRoots: rootEntities ]
+		ifFalse: [ rootEntities ]
+]
+
+{ #category : #accessing }
+MiArchitecturalMapModel >> rootNodes [
+
+	^roots
+]
+
 { #category : #settings }
 MiArchitecturalMapModel >> settings [
 	^settings
@@ -273,7 +384,10 @@ MiArchitecturalMapModel >> settings [
 { #category : #settings }
 MiArchitecturalMapModel >> settingsChanged: aBoolean [
 
-	aBoolean ifTrue: [ browser runVisualization ]
+	aBoolean ifFalse: [ ^self ].
+	self recomputeRootNodes.
+	browser runVisualization
+
 ]
 
 { #category : #accessing }
@@ -305,4 +419,14 @@ MiArchitecturalMapModel >> updateSettings [
 
 	(settings itemNamed: #associationTypes) possibleValues:
 		self allAssociationTypes
+]
+
+{ #category : #private }
+MiArchitecturalMapModel >> virtualEntity: aFileReference belowRoot: virtualRoot [
+
+	aFileReference = virtualRoot rawEntity ifTrue: [ ^virtualRoot ].
+	aFileReference = '.' asFileReference ifTrue: [ ^virtualRoot ].
+	^virtualEntities keys
+		detect: [ :virtualEntity | virtualEntity rawEntity = aFileReference ]
+		ifNone: [ MiArchitecturalMapVirtualEntity new rawEntity: aFileReference ]
 ]
