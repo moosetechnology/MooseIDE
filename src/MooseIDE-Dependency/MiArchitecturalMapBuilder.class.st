@@ -146,12 +146,12 @@ MiArchitecturalMapBuilder >> build [
 ]
 
 { #category : #building }
-MiArchitecturalMapBuilder >> buildChildrenNodesFrom: anEntity register: aBoolean [
+MiArchitecturalMapBuilder >> buildChildrenNodesFrom: anEntity register: registerEntity [
 
 	^ ((self mapModel childrenFor: anEntity)
 		   collect: [ :e | 
 			   anEntity == e ifFalse: [ 
-				   self buildNodeFromEntity: e register: aBoolean ] ]
+				   self buildNodeFromEntity: e register: registerEntity ] ]
 		   thenSelect: [ :e | e isNotNil ]) sort: [ :c1 :c2 | 
 		  c1 name < c2 name ]
 ]
@@ -166,7 +166,7 @@ MiArchitecturalMapBuilder >> buildChildrenNodesFromTag: aTag [
 ]
 
 { #category : #building }
-MiArchitecturalMapBuilder >> buildNodeFromEntity: anEntity register: aBoolean [
+MiArchitecturalMapBuilder >> buildNodeFromEntity: anEntity register: registerEntity [
 
 	| node |
 	nodeMooseIDDict at: anEntity mooseID ifPresent: [ :n | 
@@ -174,16 +174,15 @@ MiArchitecturalMapBuilder >> buildNodeFromEntity: anEntity register: aBoolean [
 		^ nil ].
 
 	node := HNode new
-		        name:
-			        (String streamContents: [ :s | anEntity displayStringOn: s ]);
+		        name: anEntity fullDisplayString ;
 		        rawModel: anEntity;
 		        style: MiHArchitecturalMapStyle new;
 		        addAll:
-			        (self buildChildrenNodesFrom: anEntity register: aBoolean);
+			        (self buildChildrenNodesFrom: anEntity register: registerEntity);
 		        collapse;
 		        yourself.
 
-	aBoolean ifTrue: [ 
+	registerEntity ifTrue: [ 
 		nodeMooseIDDict at: anEntity mooseID put: node.
 		allEntities add: anEntity ].
 
