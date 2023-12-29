@@ -197,9 +197,9 @@ MiArchitecturalMapModel >> entities [
 ]
 
 { #category : #accessing }
-MiArchitecturalMapModel >> entities: anObject [
+MiArchitecturalMapModel >> entities: aCollection [
 
-	entities := anObject.
+	entities := aCollection.
 	self recomputeRootNodes.
 	self updateSettings
 ]
@@ -362,6 +362,8 @@ MiArchitecturalMapModel >> recomputeRootNodes [
 	| rootEntities |
 
 	virtualEntities := Dictionary new.
+
+	entities ifNil: [ ^roots := #() ].
 
 	rootEntities := self computeRootEntities.
 	
