@@ -11,7 +11,9 @@ Class {
 		'entities',
 		'childrenBlock',
 		'settings',
-		'defaultChildrenQuery'
+		'defaultChildrenQuery',
+		'virtualEntities',
+		'roots'
 	],
 	#category : #'MooseIDE-Dependency-ArchitecturalMap'
 }
@@ -120,6 +122,12 @@ MiArchitecturalMapModel >> defaultLayout [
 	^RSFlowLayout
 ]
 
+{ #category : #settings }
+MiArchitecturalMapModel >> directoriesVirtualNodes [
+
+	^ settings getItemValue: #directoriesVirtualNodes
+]
+
 { #category : #accessing }
 MiArchitecturalMapModel >> entities [
 
@@ -151,6 +159,7 @@ MiArchitecturalMapModel >> initializeSettings [
 						addItem: self itemNoMegaMorphic named: #noMegaMorphic;
 						addItem: self itemMegaMorphicSize named: #megaMorphicSize;
 						addItem: self itemTimeoutDuration named: #timeoutDuration;
+						addItem: self itemDirectoriesVirtualNodes named: #directoriesVirtualNodes;
 						yourself
 ]
 
@@ -172,6 +181,18 @@ MiArchitecturalMapModel >> itemChildrenQuery [
 		  setValue: self defaultChildrenQuery;
 		  label: 'Children query';
 		  help: 'The query giving all the children of any displayed entity';
+		  yourself
+]
+
+{ #category : #settings }
+MiArchitecturalMapModel >> itemDirectoriesVirtualNodes [
+
+	^ MiAbstractSettingItem checkboxSetting
+		  setValue: false ;
+		  label: 'Directories are root nodes? (experimental)';
+		  help:
+			  'If checked the source files/directories containing entites are treated and showed in the map.
+They are root nodes in the map';
 		  yourself
 ]
 
