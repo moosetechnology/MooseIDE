@@ -253,6 +253,12 @@ MiArchitecturalMapModel >> megaMorphicSize [
 	^settings getItemValue: #megaMorphicSize
 ]
 
+{ #category : #accessing }
+MiArchitecturalMapModel >> miSelectedItem [
+
+	^self entities
+]
+
 { #category : #settings }
 MiArchitecturalMapModel >> noMegaMorphic [
 
