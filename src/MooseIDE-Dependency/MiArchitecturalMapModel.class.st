@@ -46,6 +46,28 @@ MiArchitecturalMapModel class >> defaultDynamicTags [
 		  self defaultDynamicTagIsDead }
 ]
 
+{ #category : #private }
+MiArchitecturalMapModel >> addVirtualParent: aFileReference child: entity upTo: virtualRoot [
+	"#virtualEntities is a Dictionnary where the keys are the virtual entities
+	 and the values their children
+	Here the virtual entities are fileReferences"
+
+	| virtualEntity virtualChildren |
+	virtualEntity := self virtualEntity: aFileReference belowRoot: virtualRoot.
+
+	virtualChildren := virtualEntities
+		at: virtualEntity
+		ifAbsentPut: [ OrderedCollection new ].
+	(virtualChildren includes: entity)
+		ifFalse: [virtualChildren add: entity].
+
+	virtualEntity = virtualRoot ifFalse: [
+		self
+			addVirtualParent: aFileReference parent
+			child: virtualEntity
+			upTo: virtualRoot ]
+]
+
 { #category : #accessing }
 MiArchitecturalMapModel >> allAssociationTypes [
 
@@ -94,7 +116,10 @@ MiArchitecturalMapModel >> childrenBlock: anObject [
 { #category : #accessing }
 MiArchitecturalMapModel >> childrenFor: anEntity [
 
-	^ self childrenQuerySetting runOn: anEntity asMooseGroup
+	^virtualEntities
+		at: anEntity
+		ifPresent: [ :children | children ]
+		ifAbsent: [ self childrenQuerySetting runOn: anEntity asMooseGroup ]
 ]
 
 { #category : #settings }
@@ -107,6 +132,43 @@ MiArchitecturalMapModel >> childrenQuerySetting [
 MiArchitecturalMapModel >> colorFor: anEntity [
 
 	^ Color gray
+]
+
+{ #category : #private }
+MiArchitecturalMapModel >> computeRootEntities [
+
+	| nodesParent |
+	nodesParent := Dictionary new.
+
+	entities do: [ :parent |
+		(self childrenFor: parent) do: [ :child |
+			nodesParent at: child put: parent ] ].
+
+	^entities select: [ :each |
+		(nodesParent at: each ifAbsent: [ nil ]) isNil ]
+]
+
+{ #category : #private }
+MiArchitecturalMapModel >> computeVirtualRoots: rootEntities [
+	"#virtualEntities is a Dictionnary where the keys are the virtual entities
+	 and the values their children
+	Here we compute virtual entities from the directories containing the real entities"
+
+	| virtualRoot entityFile |
+
+	virtualRoot := MiArchitecturalMapVirtualEntity new
+		rawEntity: self currentMooseModel rootFolder asFileReference.
+
+	rootEntities do: [ :entity |
+		(entity hasSourceAnchor and:
+		[ entity sourceAnchor isFileAnchor ])
+			ifTrue: [
+				entityFile := entity sourceAnchor fileName asFileReference.
+				self addVirtualParent: entityFile parent child: entity upTo: virtualRoot
+			]
+	].
+
+	^{ virtualRoot }
 ]
 
 { #category : #accessing }
@@ -138,6 +200,7 @@ MiArchitecturalMapModel >> entities [
 MiArchitecturalMapModel >> entities: anObject [
 
 	entities := anObject.
+	self recomputeRootNodes.
 	self updateSettings
 ]
 
@@ -292,6 +355,27 @@ MiArchitecturalMapModel >> openSettings [
 	settings open
 ]
 
+{ #category : #private }
+MiArchitecturalMapModel >> recomputeRootNodes [
+	"Assumes each entity has only one parent"
+
+	| rootEntities |
+
+	virtualEntities := Dictionary new.
+
+	rootEntities := self computeRootEntities.
+	
+	roots := self directoriesVirtualNodes
+		ifTrue: [ self computeVirtualRoots: rootEntities ]
+		ifFalse: [ rootEntities ]
+]
+
+{ #category : #accessing }
+MiArchitecturalMapModel >> rootNodes [
+
+	^roots
+]
+
 { #category : #settings }
 MiArchitecturalMapModel >> settings [
 	^settings
@@ -300,7 +384,10 @@ MiArchitecturalMapModel >> settings [
 { #category : #settings }
 MiArchitecturalMapModel >> settingsChanged: aBoolean [
 
-	aBoolean ifTrue: [ browser runVisualization ]
+	aBoolean ifFalse: [ ^self ].
+	self recomputeRootNodes.
+	browser runVisualization
+
 ]
 
 { #category : #accessing }
@@ -332,4 +419,14 @@ MiArchitecturalMapModel >> updateSettings [
 
 	(settings itemNamed: #associationTypes) possibleValues:
 		self allAssociationTypes
+]
+
+{ #category : #private }
+MiArchitecturalMapModel >> virtualEntity: aFileReference belowRoot: virtualRoot [
+
+	aFileReference = virtualRoot rawEntity ifTrue: [ ^virtualRoot ].
+	aFileReference = '.' asFileReference ifTrue: [ ^virtualRoot ].
+	^virtualEntities keys
+		detect: [ :virtualEntity | virtualEntity rawEntity = aFileReference ]
+		ifNone: [ MiArchitecturalMapVirtualEntity new rawEntity: aFileReference ]
 ]

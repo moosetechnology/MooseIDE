@@ -146,12 +146,12 @@ MiArchitecturalMapBuilder >> build [
 ]
 
 { #category : #building }
-MiArchitecturalMapBuilder >> buildChildrenNodesFrom: anEntity register: registerEntity [
+MiArchitecturalMapBuilder >> buildChildrenNodesFrom: anEntity [
 
 	^ ((self mapModel childrenFor: anEntity)
 		   collect: [ :e | 
 			   anEntity == e ifFalse: [ 
-				   self buildNodeFromEntity: e register: registerEntity ] ]
+				   self buildNodeFromEntity: e ] ]
 		   thenSelect: [ :e | e isNotNil ]) sort: [ :c1 :c2 | 
 		  c1 name < c2 name ]
 ]
@@ -159,32 +159,30 @@ MiArchitecturalMapBuilder >> buildChildrenNodesFrom: anEntity register: register
 { #category : #building }
 MiArchitecturalMapBuilder >> buildChildrenNodesFromTag: aTag [
 
-	^ ((aTag taggedEntities collect: [ :e | 
-		    aTag == e ifFalse: [ self buildNodeFromEntity: e register: true ] ]) 
-		   reject: [ :e | e isNil or: [ e parent notNil ] ]) sort: [ :a :b | 
+	^ ((aTag taggedEntities collect: [ :e |
+		    aTag == e ifFalse: [ self buildNodeFromEntity: e ] ]) reject: [
+		   :e | e isNil or: [ e parent notNil ] ]) sort: [ :a :b |
 		  a name < b name ]
 ]
 
 { #category : #building }
-MiArchitecturalMapBuilder >> buildNodeFromEntity: anEntity register: registerEntity [
+MiArchitecturalMapBuilder >> buildNodeFromEntity: anEntity [
 
 	| node |
-	nodeMooseIDDict at: anEntity mooseID ifPresent: [ :n | 
+	nodeMooseIDDict at: anEntity mooseID ifPresent: [ :n |
 		n parent ifNil: [ ^ n ].
 		^ nil ].
 
 	node := HNode new
-		        name: anEntity fullDisplayString ;
+		        name: anEntity fullDisplayString;
 		        rawModel: anEntity;
 		        style: MiHArchitecturalMapStyle new;
-		        addAll:
-			        (self buildChildrenNodesFrom: anEntity register: registerEntity);
+		        addAll: (self buildChildrenNodesFrom: anEntity);
 		        collapse;
 		        yourself.
 
-	registerEntity ifTrue: [ 
-		nodeMooseIDDict at: anEntity mooseID put: node.
-		allEntities add: anEntity ].
+	nodeMooseIDDict at: anEntity mooseID put: node.
+	allEntities add: anEntity.
 
 	^ node
 ]
@@ -253,10 +251,9 @@ MiArchitecturalMapBuilder >> createMultiTagBoxSized: aSize [
 { #category : #building }
 MiArchitecturalMapBuilder >> createRootNodes [
 
-	^ (self elements
-		   collect: [ :e | self buildNodeFromEntity: e register: true ]
-		   thenReject: [ :e | e isNil or: [ e parent notNil ] ]) sort: [ :a :b | 
-		  a name < b name ]
+	^ (mapModel rootNodes
+		   collect: [ :e | self buildNodeFromEntity: e ]
+		) sort: [ :a :b | a name < b name ]
 ]
 
 { #category : #accessing }
