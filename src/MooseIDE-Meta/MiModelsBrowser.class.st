@@ -13,8 +13,7 @@ Class {
 	#superclass : #MiAbstractBrowser,
 	#instVars : [
 		'toolbar',
-		'modelFilteringList',
-		'blockWhenSelection'
+		'modelFilteringList'
 	],
 	#category : #'MooseIDE-Meta-ModelsBrowser'
 }
@@ -158,12 +157,8 @@ MiModelsBrowser >> initializeList [
 	self listOfMooseModels: specModel entities.
 
 	modelFilteringList display: [ :mooseModel | mooseModel name ].
-
-	modelFilteringList listPresenter contextMenu: [ 
-		(self class buildModelCommandsGroupWith: self) asMenuPresenter ].
-	blockWhenSelection := [ :selected | 
-	                      specModel selected: selected selectedItem ].
-	modelFilteringList whenSelectionChangedDo: blockWhenSelection
+	modelFilteringList listPresenter contextMenu: [ (self class buildModelCommandsGroupWith: self) asMenuPresenter ].
+	modelFilteringList whenSelectionChangedDo: [ :selected | specModel selected: selected selectedItem ]
 ]
 
 { #category : #initialization }
@@ -177,11 +172,10 @@ MiModelsBrowser >> initializePresenters [
 MiModelsBrowser >> initializeToolbar [
 
 	toolbar := self newToolbar
-		           fillWith:
-			           (MiImportCommand asCommandGroupForSpecContext: self);
+		           fillWith: (MiImportCommand asCommandGroupForSpecContext: self);
 		           beIcons;
-		           yourself.
-	toolbar addItem: self refreshToolbarButton
+		           addItem: self refreshToolbarButton;
+		           yourself
 ]
 
 { #category : #updating }
