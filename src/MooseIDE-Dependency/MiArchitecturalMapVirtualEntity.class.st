@@ -10,7 +10,7 @@ Class {
 { #category : #accessing }
 MiArchitecturalMapVirtualEntity >> name [
 
-	^rawEntity basename
+	^ rawEntity ifNil: [ super name ] ifNotNil: [ rawEntity basename ]
 ]
 
 { #category : #accessing }
