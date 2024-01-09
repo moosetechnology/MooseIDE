@@ -59,7 +59,7 @@ MiPropagateCommand >> initialize [
 { #category : #testing }
 MiPropagateCommand >> propagate [
 	| selectedItem |
-	selectedItem := [ self context miSelectedItem ]
+	selectedItem := [ self context miSelectedItemToPropagate ]
 		on: MiNoSelectedElementToPropagateException
 		do: [ :exception | 
 			exception signal.

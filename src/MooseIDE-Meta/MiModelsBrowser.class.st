@@ -188,15 +188,13 @@ MiModelsBrowser >> listOfMooseModels: aList [
 { #category : #accessing }
 MiModelsBrowser >> miSelectedItem [
 
-	^ specModel selectedModel
+	^ specModel selected
 ]
 
 { #category : #accessing }
-MiModelsBrowser >> miSelectedModel [
+MiModelsBrowser >> miSelectedItemToPropagate [
 
-	"similar to #miSelectedItem but ignore the setting #filterStubsSetting"
-
-	^ specModel selected
+	^ specModel selectedModel
 ]
 
 { #category : #'accessing - tests' }
