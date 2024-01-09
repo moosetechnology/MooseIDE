@@ -76,22 +76,24 @@ MiModelsBrowserTest >> testCanTagEntities [
 MiModelsBrowserTest >> testFilterStubsSettingsWithoutStub [
 
 	| newModel |
-	self assert: browser miSelectedItem isNil.
+	self assert: browser miSelectedItemToPropagate isNil.
 
 	newModel := self newModel: 'aModel'.
-	newModel addAll: { 
-			(FamixStClass named: 'Class1') isStub: true; yourself.
-			(FamixStClass named: 'Class2') isStub: false; yourself}.
+	newModel addAll: {
+			((FamixStClass named: 'Class1')
+				 isStub: true;
+				 yourself).
+			((FamixStClass named: 'Class2')
+				 isStub: false;
+				 yourself) }.
 	browser updateForNewModel: newModel.
 
-	self assert: browser miSelectedItem size equals: 1.
-	self assert: browser miSelectedItem anyOne name equals: 'Class2'.
+	self assert: browser miSelectedItemToPropagate size equals: 1.
+	self assert: browser miSelectedItemToPropagate anyOne name equals: 'Class2'.
 
 	browser settingsItem setItem: #filterStubsSetting value: false.
 	browser updateForNewModel: newModel.
-	self assert: browser miSelectedItem size equals: 2.
-
-	
+	self assert: browser miSelectedItemToPropagate size equals: 2
 ]
 
 { #category : #tests }
@@ -166,7 +168,7 @@ MiModelsBrowserTest >> testMiSelectedItem [
 MiModelsBrowserTest >> testMiSelectedItemWithoutStub [
 
 	| newModel |
-	self assert: browser miSelectedItem isNil.
+	self assert: browser miSelectedItemToPropagate isNil.
 
 	newModel := self newModel: 'aModel'.
 	newModel addAll: { 
@@ -174,8 +176,8 @@ MiModelsBrowserTest >> testMiSelectedItemWithoutStub [
 			(FamixStClass named: 'Class2') isStub: false; yourself}.
 	browser updateForNewModel: newModel.
 
-	self assert: browser miSelectedItem size equals: 1.
-	self assert: browser miSelectedItem anyOne name equals: 'Class2'
+	self assert: browser miSelectedItemToPropagate size equals: 1.
+	self assert: browser miSelectedItemToPropagate anyOne name equals: 'Class2'
 	
 
 	
