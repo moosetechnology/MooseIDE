@@ -18,6 +18,13 @@ Class {
 	#category : #'MooseIDE-Tagging-Browser'
 }
 
+{ #category : #accessing }
+MiTagExtentPage class >> maxNumberOfEntitiesToSort [
+	"If we have a 'small' number of untagged entities we will sort them to be user friendly. But if we have a lot of them, this will just take too much time. In that case we will just not sort them. Here I'm defining the limit, with a magic number for a start, maybe this could be a setting in the future but I'm not sure it brings much value."
+
+	^ 10000
+]
+
 { #category : #action }
 MiTagExtentPage >> add [
 
@@ -136,20 +143,18 @@ MiTagExtentPage >> onBrowserPageRedisplay [
 MiTagExtentPage >> refresh [
 
 	super refresh.
-	self refreshEntitiesList. 
+	self refreshEntitiesList.
 	self refreshTaggedEntitiesList.
 	self update
-	
 ]
 
 { #category : #refreshing }
 MiTagExtentPage >> refreshEntitiesList [
 
-	| sortedEntities untaggedEntities |
-	untaggedEntities := self model entities asCollection
-	                    \ self taggedEntities asCollection.
-	sortedEntities := untaggedEntities sort: [ :a :b | a name < b name ].
-	incomingEntitiesFilteringList items: sortedEntities
+	| untaggedEntities |
+	untaggedEntities := self model entities asCollection \ self taggedEntities asCollection.
+	untaggedEntities size < self class maxNumberOfEntitiesToSort ifTrue: [ untaggedEntities sort: [ :a :b | a name < b name ] ].
+	incomingEntitiesFilteringList items: untaggedEntities
 ]
 
 { #category : #refreshing }

@@ -58,6 +58,7 @@ MiTagBrowser class >> newModel [
 
 { #category : #'instance creation' }
 MiTagBrowser class >> open [
+
 	<script>
 	^ super open
 ]
