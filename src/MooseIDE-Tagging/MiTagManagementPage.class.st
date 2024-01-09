@@ -137,7 +137,6 @@ MiTagManagementPage >> initializePresenters [
 	addTagButton := self newButton icon: (Smalltalk iconNamed: #smallAdd).
 	addTagButton action: [ self owner openTagCreationForm ].
 
-
 	self initializeLayout
 ]
 
@@ -180,8 +179,9 @@ MiTagManagementPage >> refreshCategoryList [
 
 { #category : #refreshing }
 MiTagManagementPage >> refreshDescriptionPage [
+	"No need to refresh if this is hidden."
 
-	descriptionPage refresh
+	descriptionPage isVisible ifTrue: [ descriptionPage refresh ]
 ]
 
 { #category : #refreshing }
@@ -251,7 +251,7 @@ MiTagManagementPage >> setTagTo: aTag [
 	self preparePageFor: aTag.
 	descriptionPage setTag: aTag.
 	descriptionPage show.
-	descriptionPage refresh.
+	self refreshDescriptionPage.
 	self update
 ]
 
