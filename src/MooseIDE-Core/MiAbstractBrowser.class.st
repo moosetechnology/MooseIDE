@@ -399,10 +399,9 @@ MiAbstractBrowser >> canHighlight [
 MiAbstractBrowser >> canPropagate [
 
 	| entity |
-
+	"Ideally we should use miSelectedItemToPropagate but this would make the models browser really slow since it would copy the whole model and reject the stubs each time I'm called. So we do not care about checking the stubs here by calling #miSelectedItem.."
 	entity := self miSelectedItem.
-	^ entity isMooseObject and: [ 
-		  entity asMooseGroup isNotEmpty or: [ entity isMooseModel ] ]
+	^ entity isMooseObject and: [ entity isMooseModel or: [ entity asMooseGroup isNotEmpty ] ]
 ]
 
 { #category : #testing }
@@ -521,6 +520,13 @@ MiAbstractBrowser >> isModelImporter [
 MiAbstractBrowser >> miSelectedItem [
 
 	^ (MiNoSelectedElementToPropagateException browser: self) signal
+]
+
+{ #category : #accessing }
+MiAbstractBrowser >> miSelectedItemToPropagate [
+	"Hook to be able to add some filters in the model browser."
+
+	^ self miSelectedItem
 ]
 
 { #category : #accessing }

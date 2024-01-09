@@ -119,16 +119,20 @@ MiModelsBrowserModel >> selected: anObject [
 { #category : #accessing }
 MiModelsBrowserModel >> selectedModel [
 
-	^ (settings getItemValue: #filterStubsSetting)
-		  ifTrue: [ 
-			  self selected ifNotNil: [ :selectedModel | 
-				  (selectedModel reject: [ :each | each isStub ]) asMooseGroup ] ]
+	^ self shouldFilterStubs
+		  ifTrue: [ self selected ifNotNil: [ :selectedModel | (selectedModel reject: [ :each | each isStub ]) asMooseGroup ] ]
 		  ifFalse: [ self selected ]
 ]
 
 { #category : #'accessing - tests' }
 MiModelsBrowserModel >> settings [
 	^ settings
+]
+
+{ #category : #accessing }
+MiModelsBrowserModel >> shouldFilterStubs [
+
+	^ settings getItemValue: #filterStubsSetting
 ]
 
 { #category : #updating }
