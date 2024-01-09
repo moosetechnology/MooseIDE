@@ -167,10 +167,9 @@ MiTagManagementPage >> preparePageFor: aTag [
 { #category : #refreshing }
 MiTagManagementPage >> refresh [
 
-	self refreshDescriptionPage.
 	self refreshTagList.
 	self refreshCategoryList.
-	descriptionPage refresh.
+	self refreshDescriptionPage
 ]
 
 { #category : #refreshing }
