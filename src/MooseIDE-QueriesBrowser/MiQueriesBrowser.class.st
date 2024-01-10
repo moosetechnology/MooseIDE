@@ -195,12 +195,7 @@ MiQueriesBrowser >> itemsFor: aClass [
 { #category : #accessing }
 MiQueriesBrowser >> miSelectedItem [
 
-	| selected |
-	selected := queryResultTreePresenter miSelectedItem
-		            ifEmpty: [ selectedQuery result ]
-		            ifNotEmpty: [ :items | items ].
-
-	^ selected mooseInterestingEntity
+	^ queryResultTreePresenter miSelectedItem ifEmpty: [ selectedQuery result ] ifNotEmpty: [ :items | items ]
 ]
 
 { #category : #accessing }
