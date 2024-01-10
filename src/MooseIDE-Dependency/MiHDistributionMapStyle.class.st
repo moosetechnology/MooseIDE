@@ -2,7 +2,7 @@
 I am the class responsible of building shapes for the distribution map.
 "
 Class {
-	#name : #MiHDMStyle,
+	#name : #MiHDistributionMapStyle,
 	#superclass : #HStyle,
 	#instVars : [
 		'topCornerRadius',
@@ -12,7 +12,7 @@ Class {
 }
 
 { #category : #hooks }
-MiHDMStyle >> adjustLabel: aLabel ToWidth: width [
+MiHDistributionMapStyle >> adjustLabel: aLabel ToWidth: width [
 
 	| sizeOfNewText font text |
 	font := aLabel font.
@@ -25,14 +25,14 @@ MiHDMStyle >> adjustLabel: aLabel ToWidth: width [
 ]
 
 { #category : #hooks }
-MiHDMStyle >> bottomCornerRadius [
+MiHDistributionMapStyle >> bottomCornerRadius [
 	^ bottomCornerRadius ifNil: [ 
 		bottomCornerRadius := RSCornerRadius new 
 			bottom: self cornerRadius ]
 ]
 
 { #category : #hooks }
-MiHDMStyle >> buildCompositeEmptyNodeIn: shape [
+MiHDistributionMapStyle >> buildCompositeEmptyNodeIn: shape [
 
 	| node box rect |
 	node := shape model.
@@ -58,7 +58,7 @@ MiHDMStyle >> buildCompositeEmptyNodeIn: shape [
 ]
 
 { #category : #hooks }
-MiHDMStyle >> buildCompositeFullNodeIn: shape [
+MiHDistributionMapStyle >> buildCompositeFullNodeIn: shape [
 
 	| childrenShapes node titleGroup title titleBox children boxChildren titleRadius boxChildrenRadius list |
 	node := shape model.
@@ -122,25 +122,25 @@ MiHDMStyle >> buildCompositeFullNodeIn: shape [
 ]
 
 { #category : #hooks }
-MiHDMStyle >> cornerRadius [
+MiHDistributionMapStyle >> cornerRadius [
 
 	^ 7
 ]
 
 { #category : #hooks }
-MiHDMStyle >> elementWidth [
+MiHDistributionMapStyle >> elementWidth [
 
 	^ 10
 ]
 
 { #category : #hooks }
-MiHDMStyle >> emptyBoxExtent [
+MiHDistributionMapStyle >> emptyBoxExtent [
 
 	^ 30@20
 ]
 
 { #category : #hooks }
-MiHDMStyle >> iconFor: anHNode [
+MiHDistributionMapStyle >> iconFor: anHNode [
 	anHNode iconName ifNil: [ ^ nil ].
 	^ RSBitmap new
 		form: (self iconNamed: anHNode iconName);
@@ -149,7 +149,7 @@ MiHDMStyle >> iconFor: anHNode [
 ]
 
 { #category : #hooks }
-MiHDMStyle >> labelAndIconFor: anHNode [
+MiHDistributionMapStyle >> labelAndIconFor: anHNode [
 	| group icon |
 	group := RSGroup new.
 	icon := self iconFor: anHNode.
@@ -161,7 +161,7 @@ MiHDMStyle >> labelAndIconFor: anHNode [
 ]
 
 { #category : #hooks }
-MiHDMStyle >> shapeFor: aHNode [
+MiHDistributionMapStyle >> shapeFor: aHNode [
 
 	| shape |
 	shape := RSComposite new
@@ -175,7 +175,7 @@ MiHDMStyle >> shapeFor: aHNode [
 ]
 
 { #category : #hooks }
-MiHDMStyle >> topCornerRadius [
+MiHDistributionMapStyle >> topCornerRadius [
 	^ topCornerRadius ifNil: [ 
 		topCornerRadius := RSCornerRadius new 
 			top: self cornerRadius ]

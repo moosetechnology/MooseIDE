@@ -2,7 +2,7 @@
 A model for the MiDSMBrowser, contains the entities to display, computes the dependencies and the colors to show the cells of the DSM matrix
 "
 Class {
-	#name : #MiDSMBrowserModel,
+	#name : #MiDependencyStructuralMatrixBrowserModel,
 	#superclass : #MiAbstractModel,
 	#instVars : [
 		'graph',
@@ -14,7 +14,7 @@ Class {
 }
 
 { #category : #buildGraph }
-MiDSMBrowserModel >> buildGraphEdges [
+MiDependencyStructuralMatrixBrowserModel >> buildGraphEdges [
 	"We choose to say that there is a relation from line to column if line depends on column"
 	| entities |
 	entities := self entities.
@@ -31,7 +31,7 @@ MiDSMBrowserModel >> buildGraphEdges [
 ]
 
 { #category : #buildGraph }
-MiDSMBrowserModel >> buildGraphNodes: aCollection [
+MiDependencyStructuralMatrixBrowserModel >> buildGraphNodes: aCollection [
 
 	graph nodes: (aCollection asMooseGroup select: [ :e | 
 			 e usesFamixTrait: TEntityMetaLevelDependency ]).
@@ -40,7 +40,7 @@ MiDSMBrowserModel >> buildGraphNodes: aCollection [
 ]
 
 { #category : #testing }
-MiDSMBrowserModel >> canFollowEntity: anObject [
+MiDependencyStructuralMatrixBrowserModel >> canFollowEntity: anObject [
 
 	^ anObject isCollection and: [ 
 		  anObject allSatisfy: [ :a | 
@@ -48,7 +48,7 @@ MiDSMBrowserModel >> canFollowEntity: anObject [
 ]
 
 { #category : #api }
-MiDSMBrowserModel >> colorForTuple: tuple [
+MiDependencyStructuralMatrixBrowserModel >> colorForTuple: tuple [
 
 	(self isDiagonal: tuple) ifTrue: [ ^self diagonalColor ].
 	(self isDependency: tuple) ifFalse: [ ^self defaultColor ].
@@ -58,46 +58,46 @@ MiDSMBrowserModel >> colorForTuple: tuple [
 ]
 
 { #category : #buildGraph }
-MiDSMBrowserModel >> computeSCCs [
+MiDependencyStructuralMatrixBrowserModel >> computeSCCs [
 	"run tarjan"
 	graph run
 ]
 
 { #category : #settings }
-MiDSMBrowserModel >> defaultColor [
+MiDependencyStructuralMatrixBrowserModel >> defaultColor [
 
 	^ nodeColors at: #defaultCell
 ]
 
 { #category : #settings }
-MiDSMBrowserModel >> dependencyColor [
+MiDependencyStructuralMatrixBrowserModel >> dependencyColor [
 	"a 'nice' blue for cells with dependency"
 	^ nodeColors at: #dependency
 ]
 
 { #category : #settings }
-MiDSMBrowserModel >> diagonalColor [
+MiDependencyStructuralMatrixBrowserModel >> diagonalColor [
 
 	^nodeColors at: #diagonalCell
 ]
 
 { #category : #api }
-MiDSMBrowserModel >> displayValueForNode: aNode [
+MiDependencyStructuralMatrixBrowserModel >> displayValueForNode: aNode [
 	^aNode model name
 ]
 
 { #category : #api }
-MiDSMBrowserModel >> displayValueForTuple: tuple [
+MiDependencyStructuralMatrixBrowserModel >> displayValueForTuple: tuple [
 	^(self displayValueForNode: tuple key), ' -> ' , (self displayValueForNode: tuple value)
 ]
 
 { #category : #accessing }
-MiDSMBrowserModel >> entities [
+MiDependencyStructuralMatrixBrowserModel >> entities [
 	^graph nodes collect: #model
 ]
 
 { #category : #actions }
-MiDSMBrowserModel >> followEntity: aCollection [
+MiDependencyStructuralMatrixBrowserModel >> followEntity: aCollection [
 
 	self newGraph.
 	self buildGraphNodes: aCollection.
@@ -108,14 +108,14 @@ MiDSMBrowserModel >> followEntity: aCollection [
 ]
 
 { #category : #initialization }
-MiDSMBrowserModel >> initialize [ 
+MiDependencyStructuralMatrixBrowserModel >> initialize [ 
 	super initialize.
 	self initializeColors.
 	self newGraph.
 ]
 
 { #category : #initialization }
-MiDSMBrowserModel >> initializeColors [
+MiDependencyStructuralMatrixBrowserModel >> initializeColors [
 	nodeColors := Dictionary new: 5.
 
 	nodeColors at: #diagonalCell put: Color veryLightGray.
@@ -129,36 +129,36 @@ MiDSMBrowserModel >> initializeColors [
 ]
 
 { #category : #testing }
-MiDSMBrowserModel >> isCycle: tuple [
+MiDependencyStructuralMatrixBrowserModel >> isCycle: tuple [
 
 	^tuple key cycleNodes includes: tuple value
 ]
 
 { #category : #testing }
-MiDSMBrowserModel >> isDependency: tuple [
+MiDependencyStructuralMatrixBrowserModel >> isDependency: tuple [
 
 	^tuple key adjacentNodes includes: tuple value
 ]
 
 { #category : #testing }
-MiDSMBrowserModel >> isDiagonal: tuple [
+MiDependencyStructuralMatrixBrowserModel >> isDiagonal: tuple [
 	^tuple key = tuple value
 
 ]
 
 { #category : #buildGraph }
-MiDSMBrowserModel >> newGraph [
+MiDependencyStructuralMatrixBrowserModel >> newGraph [
 	graph := AITarjan new.
 	orderedNodes := #()
 ]
 
 { #category : #accessing }
-MiDSMBrowserModel >> nodesOrdered [
+MiDependencyStructuralMatrixBrowserModel >> nodesOrdered [
 	^orderedNodes
 ]
 
 { #category : #buildGraph }
-MiDSMBrowserModel >> orderNodes [
+MiDependencyStructuralMatrixBrowserModel >> orderNodes [
 	"Store ordered nodes in #orderedNodes.
 	 Order is:
 	 - number of combined in and out dependencies
@@ -188,13 +188,13 @@ MiDSMBrowserModel >> orderNodes [
 ]
 
 { #category : #settings }
-MiDSMBrowserModel >> sccColor [
+MiDependencyStructuralMatrixBrowserModel >> sccColor [
 
 	^ nodeColors at: #scc
 ]
 
 { #category : #api }
-MiDSMBrowserModel >> sccTuplesForTuple: tuple [
+MiDependencyStructuralMatrixBrowserModel >> sccTuplesForTuple: tuple [
 	"gets the SCC owning tuple, then collects all tuples in this SCC
 	 where row entity depends on column entity"
 	| scc graphNode |
@@ -212,18 +212,18 @@ MiDSMBrowserModel >> sccTuplesForTuple: tuple [
 ]
 
 { #category : #accessing }
-MiDSMBrowserModel >> selectedEntities [
+MiDependencyStructuralMatrixBrowserModel >> selectedEntities [
 	^#()
 ]
 
 { #category : #settings }
-MiDSMBrowserModel >> showSCCColor [
+MiDependencyStructuralMatrixBrowserModel >> showSCCColor [
 
 	^ nodeColors at: #showSCC
 ]
 
 { #category : #api }
-MiDSMBrowserModel >> showSCCColorForTuple: tuple [
+MiDependencyStructuralMatrixBrowserModel >> showSCCColorForTuple: tuple [
 	"same as #colorForX:y: but highlighting SCCs"
 	(self isDiagonal: tuple) ifTrue: [ ^self diagonalColor ].
 	(self isDependency: tuple) ifFalse: [ ^self defaultColor ].

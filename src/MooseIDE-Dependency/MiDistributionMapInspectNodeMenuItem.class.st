@@ -2,28 +2,28 @@
 This menu item inspects a node with a moose inspector.
 "
 Class {
-	#name : #MiDMInspectNodeMenuItem,
-	#superclass : #MiDMNodeMenuItem,
+	#name : #MiDistributionMapInspectNodeMenuItem,
+	#superclass : #MiDistributionMapNodeMenuItem,
 	#category : #'MooseIDE-Dependency-DistributionMap'
 }
 
 { #category : #execution }
-MiDMInspectNodeMenuItem >> execute [
+MiDistributionMapInspectNodeMenuItem >> execute [
 
 	MiInspectorBrowser inspect: shape model rawModel
 ]
 
 { #category : #execution }
-MiDMInspectNodeMenuItem >> iconName [
+MiDistributionMapInspectNodeMenuItem >> iconName [
 	^ #smallInspectIt
 ]
 
 { #category : #execution }
-MiDMInspectNodeMenuItem >> label [
+MiDistributionMapInspectNodeMenuItem >> label [
 	^ 'Inspect'
 ]
 
 { #category : #execution }
-MiDMInspectNodeMenuItem >> order [
+MiDistributionMapInspectNodeMenuItem >> order [
 	^ 42
 ]

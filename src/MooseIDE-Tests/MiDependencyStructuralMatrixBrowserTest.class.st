@@ -1,5 +1,5 @@
 Class {
-	#name : #MiDSMBrowserTest,
+	#name : #MiDependencyStructuralMatrixBrowserTest,
 	#superclass : #MiAbstractBrowserTest,
 	#instVars : [
 		'entityToSelect'
@@ -8,25 +8,25 @@ Class {
 }
 
 { #category : #running }
-MiDSMBrowserTest >> browserClass [
-	^ MiDSMBrowser
+MiDependencyStructuralMatrixBrowserTest >> browserClass [
+	^ MiDependencyStructuralMatrixBrowser
 ]
 
 { #category : #running }
-MiDSMBrowserTest >> method: aName [
+MiDependencyStructuralMatrixBrowserTest >> method: aName [
 
 	^ FamixRepTestMethod named: aName
 ]
 
 { #category : #running }
-MiDSMBrowserTest >> setUp [
+MiDependencyStructuralMatrixBrowserTest >> setUp [
 	super setUp.
 
 	entityToSelect := { self method: 'method1' . self method: 'method2' . self method: 'method3' }
 ]
 
 { #category : #tests }
-MiDSMBrowserTest >> testActivateActionButtons [
+MiDependencyStructuralMatrixBrowserTest >> testActivateActionButtons [
 
 	browser actionButtons do: [ :button | self deny: button isEnabled ].
 
@@ -37,6 +37,6 @@ MiDSMBrowserTest >> testActivateActionButtons [
 ]
 
 { #category : #'tests - tags' }
-MiDSMBrowserTest >> testCanTagEntities [
+MiDependencyStructuralMatrixBrowserTest >> testCanTagEntities [
 	self deny: browser canTagEntities 
 ]

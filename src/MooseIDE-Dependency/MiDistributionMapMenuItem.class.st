@@ -2,13 +2,13 @@
 Base class for distribution map menu.
 "
 Class {
-	#name : #MiDMMenuItem,
+	#name : #MiDistributionMapMenuItem,
 	#superclass : #HAbstractMenuItem,
 	#category : #'MooseIDE-Dependency-DistributionMap'
 }
 
 { #category : #public }
-MiDMMenuItem class >> buildIn: aMenuMorph shape: aRoassalShape visualization: anHSimpleVisualizationBuilder [
+MiDistributionMapMenuItem class >> buildIn: aMenuMorph shape: aRoassalShape visualization: anHSimpleVisualizationBuilder [
 	| items clazz |
 	clazz := self classFor: aRoassalShape.
 	items := clazz subclasses collect: #new.
@@ -25,12 +25,12 @@ MiDMMenuItem class >> buildIn: aMenuMorph shape: aRoassalShape visualization: an
 ]
 
 { #category : #public }
-MiDMMenuItem class >> classFor: aRoassalShape [
+MiDistributionMapMenuItem class >> classFor: aRoassalShape [
 	aRoassalShape isShape
 		ifFalse: [ ^ self ].
 	^ aRoassalShape isNode
 		ifTrue: [ 
-			MiDMNodeMenuItem ]
+			MiDistributionMapNodeMenuItem ]
 		ifFalse: [ self ]
 		
 ]

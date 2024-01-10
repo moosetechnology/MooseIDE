@@ -2,7 +2,7 @@
 A visualization of a RSDSM inside a MooseIDE browser
 "
 Class {
-	#name : #MiDSMVisualization,
+	#name : #MiDependencyStructuralMatrixVisualization,
 	#superclass : #MiAbstractVisualization,
 	#instVars : [
 		'viewModel',
@@ -14,17 +14,17 @@ Class {
 }
 
 { #category : #coloring }
-MiDSMVisualization >> cellColor: tuple [
+MiDependencyStructuralMatrixVisualization >> cellColor: tuple [
 	^viewModel colorForTuple: tuple
 ]
 
 { #category : #coloring }
-MiDSMVisualization >> cellShowSCCColor: tuple [
+MiDependencyStructuralMatrixVisualization >> cellShowSCCColor: tuple [
 	^viewModel showSCCColorForTuple: tuple
 ]
 
 { #category : #initialization }
-MiDSMVisualization >> createDSM: aRSCanvas [
+MiDependencyStructuralMatrixVisualization >> createDSM: aRSCanvas [
 	| dsm entities |
 	"change legend by adding #noLegend to RSCanvasController new
 	and add RSLegend new ..."
@@ -33,7 +33,7 @@ MiDSMVisualization >> createDSM: aRSCanvas [
 	entities ifEmpty: [ ^self ].
 	
 	aRSCanvas addInteraction: RSCanvasController new.
-	dsm := MiRSDSM new.
+	dsm := MiRSDependencyStructuralMatrix new.
 	dsm owner: self.
 	dsm setShouldFeedY.
 	dsm labelShapeX textBlock: [ :columnNode | viewModel displayValueForNode: columnNode].
@@ -49,7 +49,7 @@ MiDSMVisualization >> createDSM: aRSCanvas [
 ]
 
 { #category : #initialization }
-MiDSMVisualization >> initialize [
+MiDependencyStructuralMatrixVisualization >> initialize [
 
 	super initialize.
 	self script: [ :canvas | self createDSM: canvas ].
@@ -59,7 +59,7 @@ MiDSMVisualization >> initialize [
 ]
 
 { #category : #private }
-MiDSMVisualization >> sccShapesIncluding: aRSShape [
+MiDependencyStructuralMatrixVisualization >> sccShapesIncluding: aRSShape [
 "Transcript
 	show: '    ';
 	show: (aRSShape model key model name) ;
@@ -75,7 +75,7 @@ MiDSMVisualization >> sccShapesIncluding: aRSShape [
 ]
 
 { #category : #initialization }
-MiDSMVisualization >> setInteractions: dsm [
+MiDependencyStructuralMatrixVisualization >> setInteractions: dsm [
 	|   |
 	dsm shapes @ (RSPopup text: [:tuple | viewModel displayValueForTuple: tuple ]).
 
@@ -96,18 +96,18 @@ MiDSMVisualization >> setInteractions: dsm [
 ]
 
 { #category : #utilities }
-MiDSMVisualization >> shapeFor: tuple [
+MiDependencyStructuralMatrixVisualization >> shapeFor: tuple [
 	currentCanvas deepShapeFromModel: tuple
 ]
 
 { #category : #coloring }
-MiDSMVisualization >> showSCC: aCollection [
+MiDependencyStructuralMatrixVisualization >> showSCC: aCollection [
 	aCollection do: [ :tuple |
 		(self shapeFor: tuple) color: (viewModel showSCCColorForTuple: tuple)
 	]
 ]
 
 { #category : #accessing }
-MiDSMVisualization >> viewModel: aDSMModel [
+MiDependencyStructuralMatrixVisualization >> viewModel: aDSMModel [
 	viewModel := aDSMModel
 ]
