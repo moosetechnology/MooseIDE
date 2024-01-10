@@ -104,8 +104,8 @@ MiDuplicationBrowserTest >> testFollowEntity [
 MiDuplicationBrowserTest >> testFormatReplicatedFragment [
 
 	self
-		assert: (browser formatReplicatedFragment: self replicatedFragment)
-		equals: '2:"Goodness, what big ey...'
+		assert: (self replicatedFragment formatForDuplicationBrowser)
+		equals: '2x3:"Goodness, what big ey...'
 ]
 
 { #category : #tests }

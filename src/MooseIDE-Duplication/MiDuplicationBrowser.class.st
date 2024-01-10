@@ -2,6 +2,12 @@
 A MooseIDE browser to present code clones.
 
 Accepted entities: A collection of entities with a source anchor.
+
+Use:
+1. Propagate entities to this tool
+2. Press 'Run' button
+3. the tool will show a list of duplicated code chunks
+4. select a duplicated code chunk to see the ducplicated sources (the duplication is greyed in the source code)
 "
 Class {
 	#name : #MiDuplicationBrowser,
@@ -92,17 +98,6 @@ MiDuplicationBrowser >> followEntity: entityCollection [
 	specModel entities: entityCollection
 ]
 
-{ #category : #utilities }
-MiDuplicationBrowser >> formatReplicatedFragment: replicatedFragment [
-
-	"number of replicas and summarization of replicated fragment code"
-
-	^ replicatedFragment replicas size asString , ':'
-	  ,
-		  (replicatedFragment replicas anyOne codeText
-			   withSeparatorsCompacted truncateWithElipsisTo: 25)
-]
-
 { #category : #actions }
 MiDuplicationBrowser >> hasSettings [
 	^ true
@@ -156,7 +151,7 @@ MiDuplicationBrowser >> initializeListReplicatedFragments [
 	lstReplicatedFragments beMultipleSelection.
 
 	lstReplicatedFragments display: [ :replicatedFragment | 
-		self formatReplicatedFragment: replicatedFragment ].
+		replicatedFragment formatForDuplicationBrowser ].
 
 	lstReplicatedFragments children: [ :replicatedFragment | specModel childrenFragments: replicatedFragment ].
 
@@ -262,7 +257,9 @@ MiDuplicationBrowser >> showReplicas: replicas [
 { #category : #api }
 MiDuplicationBrowser >> showReplicatedFragments: replicatedFragments [
 
-	lstReplicatedFragments items: replicatedFragments.
+	lstReplicatedFragments items:
+		(replicatedFragments sort: [ :a :b |
+			a replicas anyOne length > b replicas anyOne length ]).
 	
 	self updateStatusBar.
 ]
