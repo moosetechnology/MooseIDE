@@ -201,13 +201,10 @@ MiDistributionMapModel >> orderOuterNodes: aCollectionOfNodes [
 	| engine partVectors |
 	aCollectionOfNodes ifEmpty: [ ^ #(  ) ].
 
-	partVectors := aCollectionOfNodes collect: [ :node | 
-		AISimilarityItem
-			with: node
-			andAll: (self tagsSetting collect: [ :aProp | 
-				self
-					numberOfchildrenWithProperty: aProp
-					forNode: node ]) ] as: Array.
+	partVectors := aCollectionOfNodes
+		               collect: [ :node |
+		               AISimilarityItem with: node andAll: (self tagsSetting collect: [ :aProp | self numberOfchildrenWithProperty: aProp forNode: node ]) ]
+		               as: Array.
 	engine := AISeriationEngine with: partVectors.
 	^ engine orderDendrogramLeaves collect: #item
 ]

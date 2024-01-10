@@ -1,5 +1,5 @@
 Class {
-	#name : #MiRSDSM,
+	#name : #MiRSDependencyStructuralMatrix,
 	#superclass : #RSDSM,
 	#instVars : [
 		'owner'
@@ -8,7 +8,7 @@ Class {
 }
 
 { #category : #highlighting }
-MiRSDSM >> highlight: evt [
+MiRSDependencyStructuralMatrix >> highlight: evt [
 	super highlight: evt.
 	shape := nil.
 	(owner sccShapesIncluding: evt shape) do: [ :aShape |
@@ -17,13 +17,13 @@ MiRSDSM >> highlight: evt [
 ]
 
 { #category : #accessing }
-MiRSDSM >> owner: anObject [
+MiRSDependencyStructuralMatrix >> owner: anObject [
 
 	owner := anObject
 ]
 
 { #category : #highlighting }
-MiRSDSM >> unhighlight: evt [
+MiRSDependencyStructuralMatrix >> unhighlight: evt [
 	super unhighlight: evt.
 
 	(owner sccShapesIncluding: evt shape) do: [ :aShape |

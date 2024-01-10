@@ -57,12 +57,12 @@ MiDistributionMapBuilder >> buildNodeFromEntity: anEntity [
 		  name:
 			  (String streamContents: [ :s | anEntity displayStringOn: s ]);
 		  rawModel: anEntity;
-		  style: MiHDMStyle new;
+		  style: MiHDistributionMapStyle new;
 		  layout: self nodeLayout;
 		  addAll: ((self mapModel childrenFor: anEntity) collect: [ :n | 
 					   HNode new
 						   name: (String streamContents: [ :s | n displayStringOn: s ]);
-						   style: MiHDMStyle new;
+						   style: MiHDistributionMapStyle new;
 						   rawModel: n;
 						   yourself ]);
 		  expand;
@@ -98,7 +98,7 @@ MiDistributionMapBuilder >> mapModel: anObject [
 MiDistributionMapBuilder >> menuInteraction [
 	^ menuInteraction ifNil: [ 
 		menuInteraction := RSMenuActivable new
-			menuDo: [ :menu :aShape | MiDMMenuItem 
+			menuDo: [ :menu :aShape | MiDistributionMapMenuItem 
 				buildIn: menu 
 				shape: aShape 
 				visualization: self ];

@@ -21,83 +21,83 @@ Controls:
 * R to clear all searches
 "
 Class {
-	#name : #MiDMBrowser,
+	#name : #MiDistributionMapBrowser,
 	#superclass : #MiAbstractVisualizationBrowser,
 	#category : #'MooseIDE-Dependency-DistributionMap'
 }
 
 { #category : #accessing }
-MiDMBrowser class >> mapClass [
+MiDistributionMapBrowser class >> mapClass [
 
-	^ MiDMVisualization
+	^ MiDistributionMapVisualization
 ]
 
 { #category : #'world menu' }
-MiDMBrowser class >> menuCommandOn: aBuilder [
+MiDistributionMapBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
 	^ self buildMenuItemIn: aBuilder
 ]
 
 { #category : #'world menu' }
-MiDMBrowser class >> menuItem [
+MiDistributionMapBrowser class >> menuItem [
 
 	^ #DMBrowser
 ]
 
 { #category : #'world menu' }
-MiDMBrowser class >> menuPriority [
+MiDistributionMapBrowser class >> menuPriority [
 
 	^ self menuVisualizationToolsPriority + 5
 ]
 
 { #category : #'instance creation' }
-MiDMBrowser class >> newModel [
+MiDistributionMapBrowser class >> newModel [
 
 	^ MiDistributionMapModel new
 ]
 
 { #category : #'instance creation' }
-MiDMBrowser class >> open [
+MiDistributionMapBrowser class >> open [
 	<script>
-	super open
+	[super open] spy
 ]
 
 { #category : #specs }
-MiDMBrowser class >> title [
+MiDistributionMapBrowser class >> title [
 
 	^ 'Distribution map'
 ]
 
 { #category : #specs }
-MiDMBrowser class >> windowSize [
+MiDistributionMapBrowser class >> windowSize [
 
 	^ 850 @ 520
 ]
 
 { #category : #adding }
-MiDMBrowser >> addDynamicTags: aCollection [
+MiDistributionMapBrowser >> addDynamicTags: aCollection [
 
 	aCollection do: [ :dt | self model addDynamicTag: dt ].
 	"settings refreshTagList"
 ]
 
 { #category : #actions }
-MiDMBrowser >> availableQueries [
+MiDistributionMapBrowser >> availableQueries [
 
 	^ (self application itemsFor: FQAbstractQuery) asOrderedCollection 
 		  select: [ :q | q isValid ]
 ]
 
 { #category : #initialization }
-MiDMBrowser >> browserClosed [
+MiDistributionMapBrowser >> browserClosed [
 
 	super browserClosed.
 	application unregisterConsumer: self
 ]
 
 { #category : #actions }
-MiDMBrowser >> canFollowEntity: aCollection [
+MiDistributionMapBrowser >> canFollowEntity: aCollection [
 
 	| uniqType confirm |
 	aCollection isCollection ifFalse: [ ^false ].
@@ -130,32 +130,32 @@ Are you sure you want to continue ?
 ]
 
 { #category : #testing }
-MiDMBrowser >> canReceiveEntity: anEntity [
+MiDistributionMapBrowser >> canReceiveEntity: anEntity [
 
 	^ anEntity isMooseObject
 ]
 
 { #category : #initialization }
-MiDMBrowser >> canvas [
+MiDistributionMapBrowser >> canvas [
 
 	^ mainPresenter canvas
 ]
 
 { #category : #actions }
-MiDMBrowser >> followEntity: anEntity [
+MiDistributionMapBrowser >> followEntity: anEntity [
 
 	specModel entities: anEntity asMooseGroup.
 	self runVisualization
 ]
 
 { #category : #testing }
-MiDMBrowser >> hasSettings [
+MiDistributionMapBrowser >> hasSettings [
 
 	^ true
 ]
 
 { #category : #initialization }
-MiDMBrowser >> initializeLayout [
+MiDistributionMapBrowser >> initializeLayout [
 
 	self layout: (SpBoxLayout newLeftToRight
 			 spacing: 3;
@@ -164,14 +164,14 @@ MiDMBrowser >> initializeLayout [
 ]
 
 { #category : #initialization }
-MiDMBrowser >> initializePresenters [
+MiDistributionMapBrowser >> initializePresenters [
 
 	mainPresenter := self class mapClass owner: self.
 	self initializeLayout
 ]
 
 { #category : #initialization }
-MiDMBrowser >> visualization [
+MiDistributionMapBrowser >> visualization [
 
 	^ mainPresenter
 ]
