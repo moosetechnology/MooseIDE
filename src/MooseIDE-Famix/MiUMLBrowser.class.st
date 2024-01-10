@@ -118,7 +118,7 @@ MiUMLBrowser >> initializePresenters [
 { #category : #accessing }
 MiUMLBrowser >> miSelectedItem [
 
-	^ (specModel selected ifNil: [ specModel entities ]) mooseInterestingEntity
+	^ specModel selected ifNil: [ specModel entities ]
 ]
 
 { #category : #accessing }

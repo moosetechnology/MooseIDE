@@ -75,7 +75,7 @@ MiAbstractVisualizationBrowser >> miSelectedItem [
 
 	^ mainPresenter miSelectedItem ifEmpty: [
 		  specModel ifNil: [ ^ #(  ) ].
-		  specModel entities mooseInterestingEntity ]
+		  specModel entities ]
 ]
 
 { #category : #actions }

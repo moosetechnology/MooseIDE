@@ -53,8 +53,7 @@ MiAbstractVisualization >> initialize [
 { #category : #accessing }
 MiAbstractVisualization >> miSelectedItem [
 
-	^ (self canvas selectedShapes collect: [ :shape |
-		   self modelForShape: shape ]) mooseInterestingEntity
+	^ self canvas selectedShapes collect: [ :shape | self modelForShape: shape ]
 ]
 
 { #category : #'as yet unclassified' }
