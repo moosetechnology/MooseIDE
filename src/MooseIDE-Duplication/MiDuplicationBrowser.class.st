@@ -98,17 +98,6 @@ MiDuplicationBrowser >> followEntity: entityCollection [
 	specModel entities: entityCollection
 ]
 
-{ #category : #utilities }
-MiDuplicationBrowser >> formatReplicatedFragment: replicatedFragment [
-
-	"number of replicas and summarization of replicated fragment code"
-
-	^ replicatedFragment replicas size asString , ':'
-	  ,
-		  (replicatedFragment replicas anyOne codeText
-			   withSeparatorsCompacted truncateWithElipsisTo: 25)
-]
-
 { #category : #actions }
 MiDuplicationBrowser >> hasSettings [
 	^ true
@@ -162,7 +151,7 @@ MiDuplicationBrowser >> initializeListReplicatedFragments [
 	lstReplicatedFragments beMultipleSelection.
 
 	lstReplicatedFragments display: [ :replicatedFragment | 
-		self formatReplicatedFragment: replicatedFragment ].
+		replicatedFragment formatForDuplicationBrowser ].
 
 	lstReplicatedFragments children: [ :replicatedFragment | specModel childrenFragments: replicatedFragment ].
 
