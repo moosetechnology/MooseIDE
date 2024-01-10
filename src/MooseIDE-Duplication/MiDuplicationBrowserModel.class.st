@@ -180,6 +180,12 @@ MiDuplicationBrowserModel >> maxReplicasShowed [
 	^#maxReplicasShowed
 ]
 
+{ #category : #accessing }
+MiDuplicationBrowserModel >> miSelectedItem [
+
+	^selectedEntities
+]
+
 { #category : #settings }
 MiDuplicationBrowserModel >> minNumberOfCharacters [
 	^#minNumberOfCharacters
