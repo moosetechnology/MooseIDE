@@ -62,8 +62,8 @@ MiDuplicationBrowserModel >> entities: aCollection [
 MiDuplicationBrowserModel >> findReplicas [
 
 	replicatedFragmentsHierarchy := self hierarchyOfReplicatedFragment:
-		                       (self newDetector runOn: entities)
-			                       replicatedFragments.
+		(self newDetector runOn: entities)
+			replicatedFragments.
 	browser showReplicatedFragments: (self rootFragments)
 ]
 
@@ -249,13 +249,13 @@ MiDuplicationBrowserModel >> openSettings [
 	settings open
 ]
 
-{ #category : #'accessing - testing' }
+{ #category : #accessing }
 MiDuplicationBrowserModel >> replicatedFragmentsHierarchy [
 
 	^ replicatedFragmentsHierarchy
 ]
 
-{ #category : #'accessing - testing' }
+{ #category : #accessing }
 MiDuplicationBrowserModel >> replicatedFragmentsHierarchy: aCollection [
 
 	replicatedFragmentsHierarchy := aCollection
