@@ -121,10 +121,11 @@ MiDistributionMapModel >> fetchChildrenQueries [
 
 { #category : #accessing }
 MiDistributionMapModel >> fetchTags [
+	"If we ask the application, then we need the tag browser opened. So we asume a browser is opened on the entities of only one model and we ask the tags in the models of a random moose entity of the browser."
 
-	^ ((browser application itemsFor: MiDynamicTag)
-	   , (browser application itemsFor: FamixTag)) asOrderedCollection 
-		  sorted: [ :t1 :t2 | t1 name < t2 name ]
+	browser model entities ifNotNil: [ :ents | ents ifNotEmpty: [ ^ ents anyOne mooseModel allTags sorted: #name ascending ] ].
+
+	^ #(  )
 ]
 
 { #category : #accessing }
