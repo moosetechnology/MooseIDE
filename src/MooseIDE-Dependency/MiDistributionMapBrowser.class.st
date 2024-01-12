@@ -59,8 +59,9 @@ MiDistributionMapBrowser class >> newModel [
 
 { #category : #'instance creation' }
 MiDistributionMapBrowser class >> open [
+
 	<script>
-	[super open] spy
+	^ super open
 ]
 
 { #category : #specs }
