@@ -1,5 +1,18 @@
 "
 I allow a rule component to be named and summarized.
+
+## Relations
+======================
+
+### Other
+- Relation: #parent Type: #FamixCBContext Opposite: #children Comment: Parent context, if it exists.
+
+## Properties
+======================
+
+- Named: #name Type: String Comment: Basic name of the entity, not full reference.
+- Named: #summary Type: String Comment: A rule component can have an explanatory summary
+
 "
 Trait {
 	#name : #FamixCBTRuleComponent,

@@ -1,3 +1,20 @@
+"
+## Relations
+======================
+
+### Other
+- Relation: #children Type: #FamixCBTRuleComponent Opposite: #parent Comment: Every child context or condition of this context.
+- Relation: #entities Type: #MooseObject Opposite: #contexts Comment: Every entity that is a part of the context.
+- Relation: #parent Type: #FamixCBContext Opposite: #children Comment: Parent context, if it exists.
+
+## Properties
+======================
+
+- Named: #contextBlock Type: Object Comment: Block to execute to get the context's entities
+- Named: #name Type: String Comment: Basic name of the entity, not full reference.
+- Named: #summary Type: String Comment: A rule component can have an explanatory summary
+
+"
 Class {
 	#name : #FamixCBContext,
 	#superclass : #FamixCBEntity,

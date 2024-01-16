@@ -1,3 +1,13 @@
+"
+## Relations
+======================
+
+### Other
+- Relation: #violatedCondition Type: #FamixCBCondition Opposite: #violations Comment: Condition violated by this entity.
+- Relation: #violatingEntity Type: #MooseObject Opposite: #violations Comment: Entity raising this violation.
+
+
+"
 Class {
 	#name : #FamixCBViolation,
 	#superclass : #FamixCBEntity,
