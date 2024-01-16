@@ -3,16 +3,19 @@
 ======================
 
 ### Other
-- Relation: #parent Type: #FamixCBContext Opposite: #children Comment: Parent context, if it exists.
-- Relation: #violations Type: #FamixCBViolation Opposite: #violatedCondition Comment: Every violation of this condition.
+| Relation | Origin | Opposite | Type | Comment |
+| `parent` | `FamixCBTRuleComponent` | `children` | `FamixCBContext` | Parent context, if it exists.|
+| `violations` | `FamixCBCondition` | `violatedCondition` | `FamixCBViolation` | Every violation of this condition.|
+
 
 ## Properties
 ======================
 
-- Named: #name Type: String Comment: Basic name of the entity, not full reference.
-- Named: #query Type: Object Comment: Block to execute to find violations to the condition within the parent context
-- Named: #severity Type: Object Comment: Severity for the violations of this condition
-- Named: #summary Type: String Comment: A rule component can have an explanatory summary
+| Name | Type | Default value | Comment |
+| `name` | `String` | nil | Basic name of the entity, not full reference.|
+| `query` | `Object` | nil | Block to execute to find violations to the condition within the parent context|
+| `severity` | `Object` | nil | Severity for the violations of this condition|
+| `summary` | `String` | nil | A rule component can have an explanatory summary|
 
 "
 Class {
