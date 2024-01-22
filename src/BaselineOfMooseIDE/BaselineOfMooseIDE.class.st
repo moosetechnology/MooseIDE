@@ -34,7 +34,6 @@ BaselineOfMooseIDE >> customProjectAttributes [
 { #category : #dependencies }
 BaselineOfMooseIDE >> defineDependencies: spec [
 
-	self tylerDurden: spec.
 	self labelContractor: spec.
 	self roassal: spec.
 	self roassalExporters: spec.
@@ -111,7 +110,6 @@ BaselineOfMooseIDE >> definePackages: spec [
 		package: 'MooseIDE-NewTools-Tests' with: [ spec requires: #( 'MooseIDE-NewTools' 'MooseIDE-Tests' ) ];
 		
 		package: 'MooseIDE-Export' with: [ spec requires: #( 'MooseIDE-Core' 'Microdown' ) ];
-		package: 'MooseIDE-Durden' with: [ spec requires: #( 'MooseIDE-Core' 'Durden' ) ];
 
 		package: 'MooseIDE-Duplication' with: [ spec requires: #( 'MooseIDE-Core' ) ];
 		
@@ -268,11 +266,4 @@ BaselineOfMooseIDE >> stonCustomizer: spec [
 		baseline: 'STONCustomizer'
 		with: [ 
 		spec repository: 'github://jecisc/STONCustomizer:v1.x.x/src' ]
-]
-
-{ #category : #dependencies }
-BaselineOfMooseIDE >> tylerDurden: spec [
-	spec
-		package: 'Durden'
-		with: [ spec repository: 'github://pharo-contributions/Durden' ]
 ]
