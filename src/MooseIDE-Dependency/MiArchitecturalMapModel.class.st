@@ -119,7 +119,7 @@ MiArchitecturalMapModel >> childrenFor: anEntity [
 	^ virtualEntities
 		  at: anEntity
 		  ifPresent: [ :children | children ]
-		  ifAbsent: [ (self childrenQuerySetting rawRunOn: anEntity asMooseGroup) asArray ]
+		  ifAbsent: [ (self childrenQuerySetting rawRunOnEntity: anEntity) asArray ]
 ]
 
 { #category : #settings }
