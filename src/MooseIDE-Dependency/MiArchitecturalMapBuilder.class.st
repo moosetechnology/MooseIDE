@@ -316,7 +316,7 @@ MiArchitecturalMapBuilder >> initialize [
 
 	super initialize.
 	nodeMooseIDDict := Dictionary new.
-	allEntities := MooseGroup new.
+	allEntities := OrderedCollection new.
 	tagNodes := OrderedCollection new.
 	nodesToAdd := Dictionary new
 ]
