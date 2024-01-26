@@ -24,6 +24,9 @@ MiQueryListItemPresenter class >> buildCommandsGroupWith: presenterInstance forR
 		((MiAddChildQueryCommand forSpecContext: presenterInstance) 
 			 iconName: MiAddChildQueryCommand iconName).
 	rootCommandGroup register:
+		((MiClipBoardCopyQueryCommand forSpecContext: presenterInstance) 
+			 iconName: MiClipBoardCopyQueryCommand iconName).
+	rootCommandGroup register:
 		((MiRemoveQueryCommand forSpecContext: presenterInstance) iconName:
 			 MiRemoveQueryCommand iconName)
 ]
