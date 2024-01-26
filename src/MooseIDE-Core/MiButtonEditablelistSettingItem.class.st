@@ -8,19 +8,7 @@ Class {
 }
 
 { #category : #accessing }
-MiButtonEditablelistSettingItem >> display: aBlock [
-
-	secondaryPresenter display: aBlock
-]
-
-{ #category : #accessing }
 MiButtonEditablelistSettingItem >> displayBlock: aBlock [
-
-	secondaryPresenter displayIcon: aBlock
-]
-
-{ #category : #accessing }
-MiButtonEditablelistSettingItem >> displayIcon: aBlock [
 
 	secondaryPresenter displayIcon: aBlock
 ]

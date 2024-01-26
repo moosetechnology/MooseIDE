@@ -7,6 +7,18 @@ Class {
 	#category : #'MooseIDE-Core-Settings'
 }
 
+{ #category : #accessing }
+MiButtonListSettingItem >> display: aBlock [
+
+	secondaryPresenter display: aBlock
+]
+
+{ #category : #accessing }
+MiButtonListSettingItem >> displayIcon: aBlock [
+
+	secondaryPresenter displayIcon: aBlock
+]
+
 { #category : #updating }
 MiButtonListSettingItem >> possibleValues: aList [
 

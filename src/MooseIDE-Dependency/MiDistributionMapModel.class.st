@@ -173,13 +173,14 @@ MiDistributionMapModel >> itemColorForNoTag [
 { #category : #settings }
 MiDistributionMapModel >> itemTags [
 
-	^ MiAbstractSettingItem buttonWithEditableListSetting
+	^ MiAbstractSettingItem buttonWithSelectableListSetting
 		  possibleValues: self fetchTags;
 		  displayIcon: [ :tag | MiTagBrowserModel iconForTag: tag ];
 		  display: [ :tag | tag name ];
 		  label: 'Tags';
 		  help: 'The tags used as properties to display.
 If an entity has several tags, it will get the color of the first of its tags appearing in the list';
+		  selectAll;
 		  yourself
 ]
 
