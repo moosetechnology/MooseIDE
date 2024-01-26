@@ -41,7 +41,7 @@ MiTagPage >> model [
 	^owner model
 ]
 
-{ #category : #accessing }
+{ #category : #refreshing }
 MiTagPage >> refresh [
 
 	self refreshTagDescription

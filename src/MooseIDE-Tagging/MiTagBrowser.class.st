@@ -100,7 +100,8 @@ MiTagBrowser >> canTagEntities [
 { #category : #initialization }
 MiTagBrowser >> closeTagCreationForm [
 
-	self layout child: tagManagementPage
+	self layout child: tagManagementPage.
+	self updateToolbar
 ]
 
 { #category : #initialization }

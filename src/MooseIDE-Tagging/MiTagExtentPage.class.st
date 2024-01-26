@@ -34,17 +34,19 @@ MiTagExtentPage >> add [
 	incomingEntitiesFilteringList selectedItems do: [ :entity |
 		self model tagEntityNotYourself: entity ].
 	self refreshTaggedEntitiesList.
-	self refreshEntitiesList
+	self refreshEntitiesList.
+	self refreshBrowserToolbar
 ]
 
 { #category : #action }
 MiTagExtentPage >> addAll [
 
 	self currentTag ifNil: [ ^ self ].
-	incomingEntitiesFilteringList items do: [ :entity | 
+	incomingEntitiesFilteringList items do: [ :entity |
 		self model tagEntityNotYourself: entity ].
 	self refreshTaggedEntitiesList.
-	self refreshEntitiesList
+	self refreshEntitiesList.
+	self refreshBrowserToolbar
 ]
 
 { #category : #accessing }
@@ -148,17 +150,27 @@ MiTagExtentPage >> refresh [
 	self update
 ]
 
+{ #category : #action }
+MiTagExtentPage >> refreshBrowserToolbar [
+
+	self owner owner updateToolbar
+]
+
 { #category : #refreshing }
 MiTagExtentPage >> refreshEntitiesList [
 
 	| untaggedEntities |
-	untaggedEntities := self model entities asCollection \ self taggedEntities asCollection.
-	untaggedEntities size < self class maxNumberOfEntitiesToSort ifTrue: [ untaggedEntities sort: [ :a :b | a name < b name ] ].
+
+	untaggedEntities := self model entities asCollection
+	                    \ self taggedEntities asCollection.
+	untaggedEntities size < self class maxNumberOfEntitiesToSort ifTrue: [
+		untaggedEntities sort: [ :a :b | a name < b name ] ].
 	incomingEntitiesFilteringList items: untaggedEntities
 ]
 
 { #category : #refreshing }
 MiTagExtentPage >> refreshTaggedEntitiesList [
+
 	taggedEntitiesFilteringList items: self taggedEntities
 ]
 
@@ -172,17 +184,19 @@ MiTagExtentPage >> remove [
 	taggedEntitiesFilteringList selectedItems do: [ :entity |
 		self model untagEntity: entity ].
 	self refreshTaggedEntitiesList.
-	self refreshEntitiesList
+	self refreshEntitiesList.
+	self refreshBrowserToolbar
 ]
 
 { #category : #action }
 MiTagExtentPage >> removeAll [
 
 	self currentTag ifNil: [ ^ self ].
-	taggedEntitiesFilteringList items do: [ :entity | 
+	taggedEntitiesFilteringList items do: [ :entity |
 		self model untagEntity: entity ].
 	self refreshTaggedEntitiesList.
-	self refreshEntitiesList
+	self refreshEntitiesList.
+	self refreshBrowserToolbar
 ]
 
 { #category : #accessing }

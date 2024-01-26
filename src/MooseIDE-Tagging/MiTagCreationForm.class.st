@@ -175,11 +175,11 @@ MiTagCreationForm >> initializePresenters [
 		Color random.
 	extentButton := self newToggleButton
 		                state: true;
-		                label: 'Dynamic';
+		                label: 'Static';
 		                yourself.
 	intentButton := self newToggleButton
 		                state: false;
-		                label: 'Static';
+		                label: 'Dynamic';
 		                yourself.
 	submitButton := self newButton
 		                label: 'Add';
