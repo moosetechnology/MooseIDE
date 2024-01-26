@@ -253,7 +253,7 @@ MiArchitecturalMapBuilder >> createRootNodes [
 
 	^ (mapModel rootNodes
 		   collect: [ :e | self buildNodeFromEntity: e ]
-		) sort: [ :a :b | a name < b name ]
+		   thenReject: [ :node | node isNil ]) sort: [ :a :b | a name < b name ]
 ]
 
 { #category : #accessing }
