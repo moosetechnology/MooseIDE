@@ -87,21 +87,22 @@ MiNavigationBrowser >> iconBlock [
 MiNavigationBrowser >> initializePresenters [
 
 	| items |
+
 	navigation := self newTable.
 	items := self filterEmptyValues: (self itemsFor: self model).
 	navigation
+		addColumn: (SpImageTableColumn new
+				 beNotExpandable;
+				 evaluated: self iconBlock;
+				 yourself);
+		addColumn: (SpStringTableColumn new
+				 title: 'Entities';
+				 evaluated: [ :el | el key ];
+				 beSortable;
+				 yourself).
+	navigation
 		contextMenu: [ self rootCommandsGroup asMenuPresenter ];
-		items: items;
-		sortingBlock: [ :a :b | a key asString < b key asString ].
-	navigation addColumn: (SpCompositeTableColumn new
-			 addColumn: (SpImageTableColumn new
-					  beNotExpandable;
-					  evaluated: self iconBlock;
-					  yourself);
-			 addColumn: (SpStringTableColumn new
-					  evaluated: [ :el | el key ];
-					  yourself);
-			 yourself).
+		items: items.
 	navigation whenActivatedDo: [ :selection |
 		self inspectorObjectContextPresenter owner
 			changeSelection: selection selectedItem value
