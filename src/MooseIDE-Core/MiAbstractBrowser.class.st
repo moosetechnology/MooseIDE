@@ -571,8 +571,8 @@ MiAbstractBrowser >> registerToAdapterEvents: anAdapter [
 	"spec does not give access to window collapsing/expanding events
 	 This is a hack to get them on Morph backend"
 
-	anAdapter widget announcer when: WindowCollapsed do: [ self browserCollapsed ].
-	anAdapter widget announcer when: WindowExpanded do: [ self browserExpanded ].
+	anAdapter widget announcer when: WindowCollapsed do: [ self browserCollapsed ] for: self.
+	anAdapter widget announcer when: WindowExpanded do: [ self browserExpanded ] for: self
 ]
 
 { #category : #accessing }

@@ -278,10 +278,13 @@ MiCoUsageMapModel >> openSettings [
 	settingsWindow position: self currentWorld extent - settingsWindow extent // 2.
 	settingBrowser expandAll.
 
-	self currentWorld announcer when: WindowClosed do: [ :annoucement |
-		annoucement window = settingsWindow ifTrue: [
-			self currentWorld announcer unsubscribe: self.
-			browser runVisualization ] ]
+	self currentWorld announcer
+		when: WindowClosed
+		do: [ :annoucement |
+			annoucement window = settingsWindow ifTrue: [
+				self currentWorld announcer unsubscribe: self.
+				browser runVisualization ] ]
+		for: self
 ]
 
 { #category : #properties }
