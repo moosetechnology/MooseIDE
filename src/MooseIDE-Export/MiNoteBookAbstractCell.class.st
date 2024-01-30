@@ -88,11 +88,8 @@ MiNoteBookAbstractCell >> initializeLayout [
 MiNoteBookAbstractCell >> initializePresenters [
 
 	| buttons menu |
-	self whenDisplayDo: [ 
-		self withAdapterDo: [ 
-			self adapter children second textArea announcer
-				when: MorphGotFocus
-				do: [ self selectMe ] ].
+	self whenDisplayDo: [
+		self withAdapterDo: [ self adapter children second textArea announcer when: MorphGotFocus do: [ self selectMe ] for: self ].
 		self updateHeight ].
 	removeButton := self newButton
 		                icon: (Smalltalk ui iconNamed: #remove);
@@ -128,7 +125,7 @@ MiNoteBookAbstractCell >> initializePresenters [
 		                model: 'Move down cell';
 		                size: 16;
 		                yourself.
-	buttons := RSGroup withAll: { 
+	buttons := RSGroup withAll: {
 			           moveCellUp.
 			           moveCellDown.
 			           addCellBellowButton.
@@ -154,12 +151,8 @@ MiNoteBookAbstractCell >> initializePresenters [
 	menu padding: 10.
 	moveCellUp when: RSMouseClick do: [ self moveUp ].
 	moveCellDown when: RSMouseClick do: [ self moveDown ].
-	addCellBellowButton
-		when: RSMouseClick
-		do: [ notebook addTextCellAfter: self ].
-	addCellAboveButton
-		when: RSMouseClick
-		do: [ notebook addTextCellBefore: self ]
+	addCellBellowButton when: RSMouseClick do: [ notebook addTextCellAfter: self ].
+	addCellAboveButton when: RSMouseClick do: [ notebook addTextCellBefore: self ]
 ]
 
 { #category : #initialization }

@@ -62,9 +62,7 @@ MiNAryQueryPresenter >> configureQuery: newSelectedItem [
 MiNAryQueryPresenter >> initialize [
 
 	super initialize.
-	owner queriesListPresenter announcer
-		when: QueriesListChangedAnnouncement
-		do: [ self queryPresentersListChanged ]
+	owner queriesListPresenter announcer when: QueriesListChangedAnnouncement do: [ self queryPresentersListChanged ] for: self
 ]
 
 { #category : #initialization }
