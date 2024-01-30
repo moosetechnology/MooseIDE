@@ -6,6 +6,7 @@ I allow a rule component to be named and summarized.
 
 ### Other
 | Relation | Origin | Opposite | Type | Comment |
+|---|
 | `parent` | `FamixCBTRuleComponent` | `children` | `FamixCBContext` | Parent context, if it exists.|
 
 
@@ -13,6 +14,7 @@ I allow a rule component to be named and summarized.
 ======================
 
 | Name | Type | Default value | Comment |
+|---|
 | `name` | `String` | nil | Basic name of the entity, not full reference.|
 | `summary` | `String` | nil | A rule component can have an explanatory summary|
 

@@ -4,6 +4,7 @@
 
 ### Other
 | Relation | Origin | Opposite | Type | Comment |
+|---|
 | `children` | `FamixCBContext` | `parent` | `FamixCBTRuleComponent` | Every child context or condition of this context.|
 | `entities` | `FamixCBContext` | `contexts` | `MooseObject` | Every entity that is a part of the context.|
 | `parent` | `FamixCBTRuleComponent` | `children` | `FamixCBContext` | Parent context, if it exists.|
@@ -13,6 +14,7 @@
 ======================
 
 | Name | Type | Default value | Comment |
+|---|
 | `contextBlock` | `Object` | nil | Block to execute to get the context's entities|
 | `name` | `String` | nil | Basic name of the entity, not full reference.|
 | `summary` | `String` | nil | A rule component can have an explanatory summary|

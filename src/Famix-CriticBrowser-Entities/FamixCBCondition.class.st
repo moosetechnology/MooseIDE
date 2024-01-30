@@ -4,6 +4,7 @@
 
 ### Other
 | Relation | Origin | Opposite | Type | Comment |
+|---|
 | `parent` | `FamixCBTRuleComponent` | `children` | `FamixCBContext` | Parent context, if it exists.|
 | `violations` | `FamixCBCondition` | `violatedCondition` | `FamixCBViolation` | Every violation of this condition.|
 
@@ -12,6 +13,7 @@
 ======================
 
 | Name | Type | Default value | Comment |
+|---|
 | `name` | `String` | nil | Basic name of the entity, not full reference.|
 | `query` | `Object` | nil | Block to execute to find violations to the condition within the parent context|
 | `severity` | `Object` | nil | Severity for the violations of this condition|
