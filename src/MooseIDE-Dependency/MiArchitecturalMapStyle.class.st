@@ -1,11 +1,11 @@
 Class {
-	#name : #MiHArchitecturalMapStyle,
+	#name : #MiArchitecturalMapStyle,
 	#superclass : #HDefaultStyle,
 	#category : #'MooseIDE-Dependency-ArchitecturalMap'
 }
 
 { #category : #'public - hooks' }
-MiHArchitecturalMapStyle >> boxChildrenColorFor: anHNode [
+MiArchitecturalMapStyle >> boxChildrenColorFor: anHNode [
 
 	^ anHNode level odd
 		  ifTrue: [ Color lightGray ]
@@ -13,13 +13,13 @@ MiHArchitecturalMapStyle >> boxChildrenColorFor: anHNode [
 ]
 
 { #category : #private }
-MiHArchitecturalMapStyle >> colorFor: node [
+MiArchitecturalMapStyle >> colorFor: node [
 
 	^ node color ifNil: [ (Smalltalk ui theme baseColor) alpha: 0.7 ]
 ]
 
 { #category : #hooks }
-MiHArchitecturalMapStyle >> createMultiTagBoxSized: aSize [
+MiArchitecturalMapStyle >> createMultiTagBoxSized: aSize [
 
 	| cp |
 	cp := RSComposite new.
@@ -45,7 +45,7 @@ MiHArchitecturalMapStyle >> createMultiTagBoxSized: aSize [
 ]
 
 { #category : #hooks }
-MiHArchitecturalMapStyle >> labelAndIconFor: node [
+MiArchitecturalMapStyle >> labelAndIconFor: node [
 
 	| group entity |
 	group := super labelAndIconFor: node.

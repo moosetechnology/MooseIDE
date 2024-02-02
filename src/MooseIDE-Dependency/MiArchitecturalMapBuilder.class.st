@@ -16,7 +16,8 @@ Class {
 		'allEntities',
 		'tagNodes',
 		'nodesToAdd',
-		'highlightShapes'
+		'highlightShapes',
+		'nodeStyle'
 	],
 	#category : #'MooseIDE-Dependency-ArchitecturalMap'
 }
@@ -148,19 +149,14 @@ MiArchitecturalMapBuilder >> build [
 MiArchitecturalMapBuilder >> buildChildrenNodesFrom: anEntity [
 
 	^ ((self mapModel childrenFor: anEntity)
-		   collect: [ :e | 
-			   anEntity == e ifFalse: [ 
-				   self buildNodeFromEntity: e ] ]
-		   thenSelect: [ :e | e isNotNil ]) sort: [ :c1 :c2 | 
-		  c1 name < c2 name ]
+		   collect: [ :e | anEntity == e ifFalse: [ self buildNodeFromEntity: e ] ]
+		   thenSelect: [ :e | e isNotNil ]) sort: [ :c1 :c2 | c1 name < c2 name ]
 ]
 
 { #category : #building }
 MiArchitecturalMapBuilder >> buildChildrenNodesFromTag: aTag [
 
-	^ ((aTag taggedEntities collect: [ :e |
-		    aTag == e ifFalse: [ self buildNodeFromEntity: e ] ]) reject: [
-		   :e | e isNil or: [ e parent notNil ] ]) sort: [ :a :b |
+	^ ((aTag taggedEntities collect: [ :e | aTag == e ifFalse: [ self buildNodeFromEntity: e ] ]) reject: [ :e | e isNil or: [ e parent notNil ] ]) sort: [ :a :b |
 		  a name < b name ]
 ]
 
@@ -175,7 +171,7 @@ MiArchitecturalMapBuilder >> buildNodeFromEntity: anEntity [
 	node := HNode new
 		        name: anEntity fullDisplayString;
 		        rawModel: anEntity;
-		        style: MiHArchitecturalMapStyle new;
+		        style: self nodeStyle;
 		        addAll: (self buildChildrenNodesFrom: anEntity);
 		        collapse;
 		        yourself.
@@ -191,10 +187,9 @@ MiArchitecturalMapBuilder >> buildNodeFromTag: aTag [
 
 	| node |
 	node := HNode new
-		        name:
-			        (String streamContents: [ :s | aTag displayStringOn: s ]);
+		        name: (String streamContents: [ :s | aTag displayStringOn: s ]);
 		        rawModel: aTag;
-		        style: MiHArchitecturalMapStyle new;
+		        style: self nodeStyle;
 		        addAll: (self buildChildrenNodesFromTag: aTag);
 		        color: aTag color;
 		        collapse;
@@ -338,6 +333,18 @@ MiArchitecturalMapBuilder >> nodeAnnouncer [
 		            @ HResizeParentWhenChildMoves new;
 		            yourself.
 	^ baseNode announcer
+]
+
+{ #category : #accessing }
+MiArchitecturalMapBuilder >> nodeStyle [
+
+	^ nodeStyle ifNil: [ nodeStyle := MiArchitecturalMapStyle new ]
+]
+
+{ #category : #accessing }
+MiArchitecturalMapBuilder >> nodeStyle: anObject [
+
+	nodeStyle := anObject
 ]
 
 { #category : #adding }
