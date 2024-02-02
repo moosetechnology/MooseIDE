@@ -4,10 +4,8 @@ I am the class responsible of building shapes for the distribution map.
 Class {
 	#name : #MiHDistributionMapStyle,
 	#superclass : #HStyle,
-	#instVars : [
-		'topCornerRadius',
-		'bottomCornerRadius'
-	],
+	#traits : 'THWithCornerRadiusStyle',
+	#classTraits : 'THWithCornerRadiusStyle classTrait',
 	#category : #'MooseIDE-Dependency-DistributionMap'
 }
 
@@ -22,13 +20,6 @@ MiHDistributionMapStyle >> adjustLabel: aLabel ToWidth: width [
 	[ (font widthOfString: text from: 1 to: sizeOfNewText) < width ] 
 		whileTrue: [ sizeOfNewText := sizeOfNewText + 1 ].
 	aLabel text: (text truncateTo: sizeOfNewText - 1),'.'
-]
-
-{ #category : #hooks }
-MiHDistributionMapStyle >> bottomCornerRadius [
-	^ bottomCornerRadius ifNil: [ 
-		bottomCornerRadius := RSCornerRadius new 
-			bottom: self cornerRadius ]
 ]
 
 { #category : #hooks }
@@ -60,7 +51,7 @@ MiHDistributionMapStyle >> buildCompositeEmptyNodeIn: shape [
 { #category : #hooks }
 MiHDistributionMapStyle >> buildCompositeFullNodeIn: shape [
 
-	| childrenShapes node titleGroup title titleBox children boxChildren titleRadius boxChildrenRadius list |
+	| childrenShapes node titleGroup title titleBox children boxChildren list |
 	node := shape model.
 	titleGroup := self labelAndIconFor: node.
 
@@ -68,6 +59,7 @@ MiHDistributionMapStyle >> buildCompositeFullNodeIn: shape [
 		            extent: titleGroup extent;
 		            color: Color transparent;
 		            position: titleGroup position;
+		            cornerRadius: self cornerRadius;
 		            yourself.
 	title := RSComposite new
 		         add: titleBox;
@@ -92,21 +84,15 @@ MiHDistributionMapStyle >> buildCompositeFullNodeIn: shape [
 	boxChildren := RSBox new
 		               color: Color transparent;
 		               yourself.
-	titleRadius := self topCornerRadius.
-	boxChildrenRadius := self bottomCornerRadius.
-	list := { 
-		        title.
-		        children }.
-	self titleLocation = #below ifTrue: [ 
-		titleRadius := self bottomCornerRadius.
-		boxChildrenRadius := self topCornerRadius.
-		list := { 
-			        children.
-			        title } ].
+
+	list := self titleLocation = #below
+		ifTrue: [ { children. title } ]
+		ifFalse: [ { title. children } ].
+
 	RSVerticalLineLayout new
 		gapSize: 0;
 		on: list.
-	titleBox cornerRadius: titleRadius.
+
 	boxChildren
 		border: (RSBorder new
 				 width: 1;
@@ -119,12 +105,6 @@ MiHDistributionMapStyle >> buildCompositeFullNodeIn: shape [
 		add: boxChildren;
 		add: children.
 	shape adjustToChildren
-]
-
-{ #category : #hooks }
-MiHDistributionMapStyle >> cornerRadius [
-
-	^ 7
 ]
 
 { #category : #hooks }
@@ -172,11 +152,4 @@ MiHDistributionMapStyle >> shapeFor: aHNode [
 		ifFalse: [ self buildCompositeEmptyNodeIn: shape ].
 
 	^ shape
-]
-
-{ #category : #hooks }
-MiHDistributionMapStyle >> topCornerRadius [
-	^ topCornerRadius ifNil: [ 
-		topCornerRadius := RSCornerRadius new 
-			top: self cornerRadius ]
 ]

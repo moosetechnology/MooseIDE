@@ -216,12 +216,6 @@ MiArchitecturalMapBuilder >> colorFor: node [
 ]
 
 { #category : #accessing }
-MiArchitecturalMapBuilder >> cornerRadius [
-
-	^ 3
-]
-
-{ #category : #accessing }
 MiArchitecturalMapBuilder >> createMultiTagBoxSized: aSize [
 
 	| cp |
