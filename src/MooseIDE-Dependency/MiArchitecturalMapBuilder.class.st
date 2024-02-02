@@ -12,7 +12,6 @@ Class {
 	#name : #MiArchitecturalMapBuilder,
 	#superclass : #HSimpleVisualizationBuilder,
 	#instVars : [
-		'mapModel',
 		'nodeMooseIDDict',
 		'allEntities',
 		'tagNodes',
@@ -227,11 +226,11 @@ MiArchitecturalMapBuilder >> createMultiTagBoxSized: aSize [
 
 	| cp |
 	cp := RSComposite new.
-	cp addAll: ({ 
+	cp addAll: ({
 			 Color red.
 			 Color cyan.
 			 Color green.
-			 Color yellow } collect: [ :color | 
+			 Color yellow } collect: [ :color |
 			 RSBox new
 				 size: aSize / 2;
 				 color: color;
@@ -319,51 +318,6 @@ MiArchitecturalMapBuilder >> initialize [
 	allEntities := OrderedCollection new.
 	tagNodes := OrderedCollection new.
 	nodesToAdd := Dictionary new
-]
-
-{ #category : #accessing }
-MiArchitecturalMapBuilder >> labelAndTagFor: node [
-
-	| group entity |
-	group := self nodeStyler labelAndIconFor: node.
-	entity := node rawModel.
-	(entity notNil and: [ entity isTag not and: [ entity isTagged ] ]) 
-		ifTrue: [ 
-			| tag |
-			tag := entity allTags first.
-			group addFirst: (RSCircle new
-					 color: tag color;
-					 radius: 7;
-					 yourself) ].
-	node children ifNotEmpty: [ 
-		| tags |
-		tags := Set new.
-		node children do: [ :child | 
-			child rawModel isTagged ifTrue: [ 
-				tags add: child rawModel allTags first ] ].
-		tags size = 1 ifTrue: [ 
-			group addLast: (RSBox new
-					 color: tags anyOne color;
-					 size: 14;
-					 yourself) ].
-		tags size > 1 ifTrue: [ 
-			group addLast: (self createMultiTagBoxSized: 14) ] ].
-	RSHorizontalLineLayout new
-		alignMiddle;
-		on: group.
-	^ group
-]
-
-{ #category : #accessing }
-MiArchitecturalMapBuilder >> mapModel [
-
-	^ mapModel
-]
-
-{ #category : #accessing }
-MiArchitecturalMapBuilder >> mapModel: anObject [
-
-	mapModel := anObject
 ]
 
 { #category : #accessing }
@@ -475,12 +429,6 @@ MiArchitecturalMapBuilder >> setDependency: e forEntity: anEntity [
 		  hNode
 			  dependencyTo: (nodeMooseIDDict at: anEntity mooseID)
 			  withModel: e ]
-]
-
-{ #category : #accessing }
-MiArchitecturalMapBuilder >> shapeFor: node [
-
-	^ node asShape
 ]
 
 { #category : #building }

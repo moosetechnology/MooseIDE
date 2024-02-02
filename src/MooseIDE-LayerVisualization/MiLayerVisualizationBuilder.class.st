@@ -2,7 +2,6 @@ Class {
 	#name : #MiLayerVisualizationBuilder,
 	#superclass : #HSimpleVisualizationBuilder,
 	#instVars : [
-		'mapModel',
 		'visitHNodeCache',
 		'description',
 		'highlightShapes',
@@ -200,18 +199,6 @@ MiLayerVisualizationBuilder >> layoutOn: aGroupOfShapes parent: shape [
 	aGroupOfShapes ifEmpty: [ ^ self ].
 
 	self relayout: (aGroupOfShapes reject: #isFixed) parent: shape
-]
-
-{ #category : #accessing }
-MiLayerVisualizationBuilder >> mapModel [
-
-	^ mapModel
-]
-
-{ #category : #accessing }
-MiLayerVisualizationBuilder >> mapModel: anObject [
-
-	mapModel := anObject
 ]
 
 { #category : #building }

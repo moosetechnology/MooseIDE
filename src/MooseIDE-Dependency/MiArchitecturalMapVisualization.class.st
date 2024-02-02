@@ -1,8 +1,6 @@
 "
 I am a hierarchical map.
-I compute the herarchical map using MiHierarchicalMapBuilder.
-Handle interactions.
-
+I compute the herarchical map using `MiArchitecturalMapBuilder`.
 "
 Class {
 	#name : #MiArchitecturalMapVisualization,
@@ -17,9 +15,8 @@ MiArchitecturalMapVisualization >> run [
 	builder := MiArchitecturalMapBuilder new
 		           mapModel: owner model;
 		           container: self canvas;
-		           yourself.
-
-	builder build
+		           build;
+		           yourself
 ]
 
 { #category : #searching }

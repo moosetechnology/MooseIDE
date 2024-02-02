@@ -10,7 +10,6 @@ Class {
 	#name : #MiDistributionMapBuilder,
 	#superclass : #HSimpleVisualizationBuilder,
 	#instVars : [
-		'mapModel',
 		'nodeStyle'
 	],
 	#category : #'MooseIDE-Dependency-DistributionMap'
@@ -83,18 +82,6 @@ MiDistributionMapBuilder >> elements [
 ]
 
 { #category : #accessing }
-MiDistributionMapBuilder >> mapModel [
-
-	^ mapModel
-]
-
-{ #category : #accessing }
-MiDistributionMapBuilder >> mapModel: anObject [
-
-	mapModel := anObject
-]
-
-{ #category : #accessing }
 MiDistributionMapBuilder >> menuInteraction [
 	^ menuInteraction ifNil: [ 
 		menuInteraction := RSMenuActivable new
@@ -131,10 +118,4 @@ MiDistributionMapBuilder >> setColors [
 
 	rootNode children do: [ :c | 
 		c children do: [ :cc | cc color: (self colorFor: cc) ] ]
-]
-
-{ #category : #accessing }
-MiDistributionMapBuilder >> shapeFor: node [
-
-	^ node asShape
 ]
