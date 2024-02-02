@@ -2,7 +2,6 @@ Class {
 	#name : #MiSystemComplexityBuilder,
 	#superclass : #HSimpleVisualizationBuilder,
 	#instVars : [
-		'mapModel',
 		'nodeMooseIDDict',
 		'widthMetricThreshold',
 		'heightMetricThreshold',
@@ -137,18 +136,6 @@ MiSystemComplexityBuilder >> layoutOn: aGroupOfShapes parent: shape [
 	self relayout: aGroupOfShapes parent: shape.
 	
 	
-]
-
-{ #category : #accessing }
-MiSystemComplexityBuilder >> mapModel [
-
-	^ mapModel
-]
-
-{ #category : #accessing }
-MiSystemComplexityBuilder >> mapModel: anObject [
-
-	mapModel := anObject
 ]
 
 { #category : #accessing }
@@ -328,12 +315,6 @@ MiSystemComplexityBuilder >> setDependenciesFor: aNode [
 		nodeMooseIDDict
 			at: e mooseID
 			ifPresent: [ :hNode | aNode dependencyTo: hNode ] ]
-]
-
-{ #category : #building }
-MiSystemComplexityBuilder >> shapeFor: node [
-
-	^ node asShape
 ]
 
 { #category : #accessing }

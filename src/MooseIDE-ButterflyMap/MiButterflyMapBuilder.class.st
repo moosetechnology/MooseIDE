@@ -2,7 +2,6 @@ Class {
 	#name : #MiButterflyMapBuilder,
 	#superclass : #HSimpleVisualizationBuilder,
 	#instVars : [
-		'mapModel',
 		'incomingGroups',
 		'outgoingGroups',
 		'centralNode',
@@ -149,18 +148,6 @@ MiButterflyMapBuilder >> layoutButterfly [
 		alignMiddle;
 		horizontalGap: 250;
 		on: incomingGroups reversed , { centralShape } , outgoingGroups
-]
-
-{ #category : #accessing }
-MiButterflyMapBuilder >> mapModel [
-
-	^ mapModel
-]
-
-{ #category : #accessing }
-MiButterflyMapBuilder >> mapModel: anObject [
-
-	mapModel := anObject
 ]
 
 { #category : #accessing }
