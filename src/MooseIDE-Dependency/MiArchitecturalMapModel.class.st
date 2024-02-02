@@ -207,7 +207,9 @@ MiArchitecturalMapModel >> entities: aCollection [
 { #category : #accessing }
 MiArchitecturalMapModel >> fetchTags [
 
-	^ browser fetchTags
+	browser model entities ifNotNil: [ :ents | ents ifNotEmpty: [ ^ ents anyOne mooseModel allTags sorted: #name ascending ] ].
+
+	^ #(  )
 ]
 
 { #category : #initialization }

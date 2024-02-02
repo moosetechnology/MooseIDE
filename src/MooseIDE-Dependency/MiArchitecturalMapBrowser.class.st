@@ -119,12 +119,6 @@ MiArchitecturalMapBrowser >> doWithTimeout: aBlock [
 						, duration asString , ' seconds)' ] ]
 ]
 
-{ #category : #initialization }
-MiArchitecturalMapBrowser >> fetchTags [
-
-	^ (self application itemsFor: FamixTag) asOrderedCollection
-]
-
 { #category : #actions }
 MiArchitecturalMapBrowser >> followEntity: anEntity [
 
