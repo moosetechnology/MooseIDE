@@ -49,7 +49,7 @@ BaselineOfMooseIDE >> defineDependencies: spec [
 	self hierarchicalVisualizations: spec.
 	self pharoAIHierachicalClustering: spec.
 	self stonCustomizer: spec.
-	self microdown: spec.
+	self interactiveNotebook: spec.
 	self classBlueprint: spec.
 
 	spec for: #WithFamix do: [ self famixQueries: spec ]
@@ -119,7 +119,7 @@ BaselineOfMooseIDE >> definePackages: spec [
 		package: 'MooseIDE-NewTools' with: [ spec requires: #( 'MooseIDE-Meta' 'MooseIDE-Core' 'FamixQueries' ) ];
 		package: 'MooseIDE-NewTools-Tests' with: [ spec requires: #( 'MooseIDE-NewTools' 'MooseIDE-Tests' ) ];
 		
-		package: 'MooseIDE-Export' with: [ spec requires: #( 'MooseIDE-Core' 'Microdown' ) ];
+		package: 'MooseIDE-Export' with: [ spec requires: #( 'MooseIDE-Core' 'InteractiveNotebook' ) ];
 
 		package: 'MooseIDE-Duplication' with: [ spec requires: #( 'MooseIDE-Core' ) ];
 		
@@ -187,6 +187,15 @@ BaselineOfMooseIDE >> hierarchicalVisualizations: spec [
 	spec baseline: 'HierarchicalVisualizations' with: [
 		spec repository:
 			'github://moosetechnology/HierarchicalVisualizations:main/src' ]
+]
+
+{ #category : #dependencies }
+BaselineOfMooseIDE >> interactiveNotebook: spec [
+
+	spec
+		baseline: 'InteractiveNotebook'
+		with: [ 
+		spec repository: 'github://moosetechnology/InteractiveNotebook/src' ]
 ]
 
 { #category : #dependencies }
