@@ -317,21 +317,20 @@ MiArchitecturalMapBuilder >> menuItemStrategy [
 
 { #category : #accessing }
 MiArchitecturalMapBuilder >> nodeAnnouncer [
-
 	"plug new events here"
 
 	baseNode ifNotNil: [ ^ baseNode announcer ].
 	baseNode := RSComposite new
 		            @ self popup;
-		            @
-			            (HGhostDraggable new color:
-					             Smalltalk ui theme caretColor);
+		            @ (HGhostDraggable new color: Smalltalk ui theme caretColor);
 		            @ self menuInteraction;
 		            @ self highlightable;
 		            @ self highlightableLinkedShapes;
 		            @ RSNodeOnTopWhenPositionChanged new;
 		            @ HResizeParentWhenChildMoves new;
 		            yourself.
+
+	baseNode when: RSMouseDoubleLeftClick do: [ :event | event shape model expandCollapse ] for: self.
 	^ baseNode announcer
 ]
 
