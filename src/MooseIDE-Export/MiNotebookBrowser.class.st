@@ -101,7 +101,7 @@ MiNotebookBrowser >> initializePresenters [
 	notebook := self instantiate: INNotebookPresenter
 ]
 
-{ #category : #actions }
+{ #category : #accessing }
 MiNotebookBrowser >> miSelectedItem [
 
 	^ specModel entities
