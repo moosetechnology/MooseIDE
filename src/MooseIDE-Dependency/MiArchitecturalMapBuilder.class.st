@@ -306,7 +306,20 @@ MiArchitecturalMapBuilder >> initialize [
 	nodeMooseIDDict := Dictionary new.
 	allEntities := OrderedCollection new.
 	tagNodes := OrderedCollection new.
-	nodesToAdd := Dictionary new
+	nodesToAdd := Dictionary new.
+	self popup text: [ :model |
+		| entity |
+		entity := model rawModel.
+		String streamContents: [ :s |
+			s << entity description.
+			entity tags ifNotEmpty: [ :tags |
+				s << '
+Tags: '.
+				tags do: [ :tag | s << tag name ] separatedBy: [ s << ', ' ] ].
+			(entity allChildren flatCollectAsSet: [ :child | child tags ]) ifNotEmpty: [ :tags |
+				s << '
+Tags on children: '.
+				tags do: [ :tag | s << tag name ] separatedBy: [ s << ', ' ] ] ] ]
 ]
 
 { #category : #accessing }
