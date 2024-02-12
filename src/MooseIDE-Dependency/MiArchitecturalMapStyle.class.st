@@ -89,7 +89,8 @@ MiArchitecturalMapStyle >> tagIconFor: node [
 			               ifTrue: [
 				               foundTag
 					               ifNil: [ foundTag := tags anyOne ]
-					               ifNotNil: [ ^ self createMultiTagBox ] ]
+					               ifNotNil: [ "We have multiple tags in the found one is different than the currently found tag"
+					               foundTag = tags anyOne ifFalse: [ ^ self createMultiTagBox ] ] ]
 			               ifFalse: [ ^ self createMultiTagBox ] ] ].
 
 	childrenToCheck := node children.
