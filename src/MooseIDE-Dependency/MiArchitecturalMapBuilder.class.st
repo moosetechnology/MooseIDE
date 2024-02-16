@@ -149,15 +149,23 @@ MiArchitecturalMapBuilder >> build [
 MiArchitecturalMapBuilder >> buildChildrenNodesFrom: anEntity [
 
 	^ ((self mapModel childrenFor: anEntity)
-		   collect: [ :e | anEntity == e ifFalse: [ self buildNodeFromEntity: e ] ]
-		   thenSelect: [ :e | e isNotNil ]) sort: [ :c1 :c2 | c1 name < c2 name ]
+		   collect: [ :childEntity | self buildNodeFromEntity: childEntity ]
+		   thenSelect: [ :childNode | childNode isNotNil ]) sort: [ :c1 :c2 | c1 name < c2 name ]
 ]
 
 { #category : #building }
 MiArchitecturalMapBuilder >> buildChildrenNodesFromTag: aTag [
 
-	^ ((aTag taggedEntities collect: [ :e | aTag == e ifFalse: [ self buildNodeFromEntity: e ] ]) reject: [ :e | e isNil or: [ e parent notNil ] ]) sort: [ :a :b |
-		  a name < b name ]
+	^ ((aTag taggedEntities collect: [ :taggedEntity | self buildNodeFromEntity: taggedEntity ]) reject: [ :childNode |
+		   childNode isNil or: [ childNode parent isNotNil ] ]) sort: [ :a :b | a name < b name ]
+]
+
+{ #category : #building }
+MiArchitecturalMapBuilder >> buildNodeFrom: aMooseEntity [
+
+	^ aMooseEntity isTag
+		  ifTrue: [ self buildNodeFromTag: aMooseEntity ]
+		  ifFalse: [ self buildNodeFromEntity: aMooseEntity ]
 ]
 
 { #category : #building }
@@ -240,7 +248,7 @@ MiArchitecturalMapBuilder >> createMultiTagBoxSized: aSize [
 MiArchitecturalMapBuilder >> createRootNodes [
 
 	^ (mapModel rootNodes
-		   collect: [ :e | self buildNodeFromEntity: e ]
+		   collect: [ :e | self buildNodeFrom: e ]
 		   thenReject: [ :node | node isNil ]) sort: [ :a :b | a name < b name ]
 ]
 
