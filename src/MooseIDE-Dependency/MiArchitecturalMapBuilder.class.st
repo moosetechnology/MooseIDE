@@ -307,19 +307,7 @@ MiArchitecturalMapBuilder >> initialize [
 	allEntities := OrderedCollection new.
 	tagNodes := OrderedCollection new.
 	nodesToAdd := Dictionary new.
-	self popup text: [ :model |
-		| entity |
-		entity := model rawModel.
-		String streamContents: [ :s |
-			s << entity description.
-			entity tags ifNotEmpty: [ :tags |
-				s << '
-Tags: '.
-				tags do: [ :tag | s << tag name ] separatedBy: [ s << ', ' ] ].
-			(entity allChildren flatCollectAsSet: [ :child | child tags ]) ifNotEmpty: [ :tags |
-				s << '
-Tags on children: '.
-				tags do: [ :tag | s << tag name ] separatedBy: [ s << ', ' ] ] ] ]
+	self popup text: [ :model | self tooltipOf: model rawModel ]
 ]
 
 { #category : #accessing }
@@ -442,6 +430,23 @@ MiArchitecturalMapBuilder >> setDependency: e forEntity: anEntity [
 		  hNode
 			  dependencyTo: (nodeMooseIDDict at: anEntity mooseID)
 			  withModel: e ]
+]
+
+{ #category : #accessing }
+MiArchitecturalMapBuilder >> tooltipOf: entity [
+
+	^ String streamContents: [ :s |
+		  s << entity miDescription.
+
+		  entity isTag ifFalse: [
+			  entity tags ifNotEmpty: [ :tags |
+				  s << '
+Tags: '.
+				  tags do: [ :tag | s << tag name ] separatedBy: [ s << ', ' ] ].
+			  (entity allChildren flatCollectAsSet: [ :child | child tags ]) ifNotEmpty: [ :tags |
+				  s << '
+Tags on children: '.
+				  tags do: [ :tag | s << tag name ] separatedBy: [ s << ', ' ] ] ] ]
 ]
 
 { #category : #building }
