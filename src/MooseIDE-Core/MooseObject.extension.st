@@ -12,6 +12,12 @@ MooseObject >> isMooseObject [
 ]
 
 { #category : #'*MooseIDE-Core' }
+MooseObject >> miDescription [
+
+	^ self description
+]
+
+{ #category : #'*MooseIDE-Core' }
 MooseObject >> miPropagate [
 
 	(MiApplication current busNamed: MiApplication defaultBusName ) globallySelect: self.
