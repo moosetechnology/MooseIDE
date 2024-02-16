@@ -156,8 +156,23 @@ MiArchitecturalMapBuilder >> buildChildrenNodesFrom: anEntity [
 { #category : #building }
 MiArchitecturalMapBuilder >> buildChildrenNodesFromTag: aTag [
 
-	^ ((aTag taggedEntities collect: [ :taggedEntity | self buildNodeFromEntity: taggedEntity ]) reject: [ :childNode |
-		   childNode isNil or: [ childNode parent isNotNil ] ]) sort: [ :a :b | a name < b name ]
+	| nodes |
+	nodes := (aTag taggedEntities collect: [ :taggedEntity | self buildNodeFromEntity: taggedEntity ]) reject: [ :childNode |
+		         childNode isNil or: [ childNode parent isNotNil ] ].
+
+	"When we open the architectural on tags it might be hard to distinguish the entities. For example I have a cas where I had 15 methods names #write tagged with the same tag. 
+With Imen we propose to display also the name of the parent entity in the label to recognize better the entities when their parent is a tag"
+	nodes do: [ :childNode |
+		| entity |
+		entity := childNode rawModel.
+		childNode name: (String streamContents: [ :stream |
+				 entity belongsTo ifNotNil: [ :parent |
+					 stream
+						 nextPutAll: parent name;
+						 nextPut: $. ].
+				 stream nextPutAll: entity name ]) ].
+
+	^ nodes sort: [ :a :b | a name < b name ]
 ]
 
 { #category : #building }
