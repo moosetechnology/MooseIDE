@@ -59,8 +59,9 @@ MiArchitecturalMapBrowser class >> newModel [
 
 { #category : #'instance creation' }
 MiArchitecturalMapBrowser class >> open [
+
 	<script>
-	super open
+	^ super open
 ]
 
 { #category : #specs }
