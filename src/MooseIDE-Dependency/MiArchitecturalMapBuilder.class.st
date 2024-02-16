@@ -398,37 +398,27 @@ MiArchitecturalMapBuilder >> setDependencies [
 ]
 
 { #category : #building }
-MiArchitecturalMapBuilder >> setDependenciesFor: aNode [
-
-	| incoming |
-	aNode rawModel class == FamixTag ifTrue: [ ^ self ].
-	incoming := aNode rawModel queryAllLocal: #in.
-	incoming do: [ :e | 
-		(nodeMooseIDDict at: e source mooseID ifAbsent: [ nil ]) ifNotNil: [ 
-			:hNode | hNode dependencyTo: aNode withModel: e ] ]
-]
-
-{ #category : #building }
 MiArchitecturalMapBuilder >> setDependenciesForEntity: anEntity [
 
 	| associationTypes |
 	associationTypes := mapModel associationTypes.
 
-	associationTypes do: [ :at | 
+	associationTypes do: [ :at |
 		| assocs |
 		assocs := anEntity queryLocal: #in with: at.
 
-		assocs do: [ :dep | 
-			(mapModel noMegaMorphic and:
-			[ dep isInvocation and:
-			[ dep candidates size > mapModel megaMorphicSize ]])
-			ifFalse: [ self setDependency: dep forEntity: anEntity ] ] ]
+		assocs do: [ :dep |
+			(mapModel noMegaMorphic and: [ dep isInvocation and: [ dep candidates size > mapModel megaMorphicSize ] ]) ifFalse: [
+				self setDependency: dep forEntity: anEntity ] ] ]
 ]
 
 { #category : #building }
 MiArchitecturalMapBuilder >> setDependenciesForTag: aTagNode [
 
-	aTagNode children do: [ :child | self setDependenciesFor: child ]
+	aTagNode children do: [ :child |
+		child rawModel isTag ifFalse: [
+			(child rawModel queryAllLocal: #in) do: [ :incommingDependency |
+				(nodeMooseIDDict at: incommingDependency source mooseID ifAbsent: [ nil ]) ifNotNil: [ :hNode | hNode dependencyTo: child withModel: incommingDependency ] ] ] ]
 ]
 
 { #category : #building }
