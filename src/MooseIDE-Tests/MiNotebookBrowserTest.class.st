@@ -10,10 +10,11 @@ MiNotebookBrowserTest >> browserClass [
 	^ MiNotebookBrowser
 ]
 
-{ #category : #tests }
+{ #category : #'tests - actions' }
 MiNotebookBrowserTest >> testFollowEntity [
 
 	| model entity |
+
 	model := Mock named: 'mooseModel'.
 	entity := Mock named: 'entity'.
 	entity stub mooseModel willReturn: model.
@@ -21,7 +22,7 @@ MiNotebookBrowserTest >> testFollowEntity [
 
 	browser followEntity: entity.
 
-	self assert: browser mooseModel mockName equals: 'mooseModel'
+	self assert: browser miSelectedItem mockName equals: 'mooseModel'
 ]
 
 { #category : #'tests - tags' }
