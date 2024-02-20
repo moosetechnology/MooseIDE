@@ -106,35 +106,28 @@ MiQueryListItemPresenter >> indentationSpacesPresenters [
 MiQueryListItemPresenter >> initializeLayout [
 
 	| tempLayout |
+
 	tempLayout := SpBoxLayout newLeftToRight
 		              spacing: 5;
 		              borderWidth: 5;
 		              yourself.
-	self indentationSpacesPresenters do: [ :each | 
+	self indentationSpacesPresenters do: [ :each |
 		tempLayout add: each expand: false ].
 	tempLayout
 		add: queryNumberLabelPresenter expand: false;
 		add: queryTypesDropListPresenter width: 130;
 		add: queryConfiguratorPresenter;
-		addLast: optionsMenuButton expand: false.
+		add: optionsMenuButton width: 25.
 	self layout: tempLayout
 ]
 
 { #category : #initialization }
 MiQueryListItemPresenter >> initializeMenu [
 
-	| optionsMenuGroup |
-	optionsMenuGroup := (self class buildRootCommandsGroupFor: self)
-		                    asMenuPresenter.
-	optionsMenuGroup addGroup: [ :aGroup | 
-		aGroup addItem: [ :anItem | 
-			anItem
-				name: 'Cancel';
-				icon: (self iconNamed: #smallCancel);
-				action: [  ] ] ].
-
-	optionsMenuButton := self newMenuButton
-		                     menu: optionsMenuGroup;
+	optionsMenuButton := self newMenuBar
+		                     addItem: [ :item |
+			                     item subMenu:
+					                     self rootCommandsGroup asMenuPresenter ];
 		                     yourself
 ]
 
