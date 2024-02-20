@@ -91,14 +91,14 @@ MiNotebookBrowser >> canFollowEntity: anObject [
 MiNotebookBrowser >> followEntity: anEntity [
 
 	specModel mooseModel: anEntity mooseModel.
-	notebook addBindingToCurrentNotebook:
-		'mooseModel' -> anEntity mooseModel
+	notebook addBinding: 'mooseModel' -> anEntity mooseModel
 ]
 
 { #category : #initialization }
 MiNotebookBrowser >> initializePresenters [
 
-	notebook := self instantiate: INNotebookPresenter
+	notebook := self instantiate: INNotebookPresenter.
+	notebook addBinding: 'mooseModel' -> nil
 ]
 
 { #category : #accessing }
