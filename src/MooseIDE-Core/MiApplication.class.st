@@ -330,8 +330,7 @@ MiApplication >> start [
 { #category : #style }
 MiApplication >> styleSheet [
 
-	^ SpStyle defaultStyleSheet
-	  , self mooseStyleSheet
+	^ super styleSheet , self mooseStyleSheet
 ]
 
 { #category : #tags }
