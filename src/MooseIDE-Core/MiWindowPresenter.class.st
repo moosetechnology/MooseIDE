@@ -81,6 +81,7 @@ MiWindowPresenter >> toolbarCommandGroup [
 MiWindowPresenter >> updateBusButton [
 
 	| busEditCommand |
+
 	busEditCommand := self toolbarCommandGroup
 		                  commandOrGroupNamed: 'Buses'
 		                  ifNone: [ ^ self ].

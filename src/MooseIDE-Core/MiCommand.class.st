@@ -32,13 +32,14 @@ MiCommand >> application [
 MiCommand >> asSpecCommand [
 
 	| command |
+
 	command := super asSpecCommand
 		           iconProvider: self iconProvider;
 		           iconName: self class defaultIconName;
 		           name: self class defaultName;
 		           yourself.
 
-	self class defaultShortcut ifNotNil: [ :keyCombination | 
+	self class defaultShortcut ifNotNil: [ :keyCombination |
 		command shortcutKey: keyCombination ].
 
 	^ command
