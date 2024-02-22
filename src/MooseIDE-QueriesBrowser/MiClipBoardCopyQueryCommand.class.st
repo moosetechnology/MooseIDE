@@ -1,6 +1,6 @@
 Class {
 	#name : #MiClipBoardCopyQueryCommand,
-	#superclass : #CmCommand,
+	#superclass : #MiCommand,
 	#category : #'MooseIDE-QueriesBrowser-Commands'
 }
 
@@ -11,15 +11,15 @@ MiClipBoardCopyQueryCommand class >> defaultDescription [
 ]
 
 { #category : #default }
+MiClipBoardCopyQueryCommand class >> defaultIconName [
+
+	^ #smallCopy
+]
+
+{ #category : #default }
 MiClipBoardCopyQueryCommand class >> defaultName [
 
 	^ 'Copy query to clipboard'
-]
-
-{ #category : #accessing }
-MiClipBoardCopyQueryCommand class >> iconName [
-
-	^ #smallCopy
 ]
 
 { #category : #execution }
