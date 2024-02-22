@@ -101,6 +101,19 @@ MiQueriesBrowser >> canTagEntities [
 	^false
 ]
 
+{ #category : #actions }
+MiQueriesBrowser >> clearQueries [
+
+	| anyQuery |
+
+	self rootQuery children ifEmpty: [ ^ self ].
+
+	anyQuery := self rootQuery children anyOne.
+	self rootQuery children removeAll.
+	self application removeItem: anyQuery.
+	self selectQuery: rootQuery
+]
+
 { #category : #'api - actions' }
 MiQueriesBrowser >> enableProgressNotification [
 
