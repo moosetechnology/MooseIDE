@@ -127,7 +127,7 @@ BaselineOfMooseIDE >> definePackages: spec [
 		package: 'MooseIDE-ButterflyMap-Tests' with: [ spec requires: #( 'MooseIDE-ButterflyMap' ) ];
 		package: 'MooseIDE-QueriesDashboard' with: [ spec requires: #( 'MooseIDE-Core' ) ];
 		package: 'MooseIDE-LayerVisualization' with: [ spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' 'MooseIDE-QueriesDashboard' ) ];
-		package: 'MooseIDE-ClassBlueprint'with: [ spec requires: #( 'ClassBlueprint' )].
+		package: 'MooseIDE-ClassBlueprint'with: [ spec requires: #( 'MooseIDE-Visualization' 'ClassBlueprint' )].
 
 	self defineMooseCriticsPackages: spec
 ]
