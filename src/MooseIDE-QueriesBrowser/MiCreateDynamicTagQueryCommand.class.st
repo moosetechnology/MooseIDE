@@ -25,11 +25,21 @@ MiCreateDynamicTagQueryCommand class >> defaultName [
 { #category : #executing }
 MiCreateDynamicTagQueryCommand >> execute [
 
+	self context query isValid ifFalse: [
+		self inform: 'Cannot create tag with invalid query'.
+		^ self ].
+
+	self openTagCreationPage
+]
+
+{ #category : #executing }
+MiCreateDynamicTagQueryCommand >> openTagCreationPage [
+
 	| tagCreationPage |
 
 	tagCreationPage := MiTagBrowser open
-		                  openTagCreationForm;
-		                  tagCreationForm.
+		                   openTagCreationForm;
+		                   tagCreationForm.
 	tagCreationPage
 		setIntentForm;
 		updateQueryList.
