@@ -136,7 +136,7 @@ BaselineOfMooseIDE >> definePackages: spec [
 BaselineOfMooseIDE >> definePackagesWhenNoFamix: spec [
 
 	spec
-		package: 'MooseIDE-Core' with: [ spec requires: #( 'Famix' ) ];
+		package: 'MooseIDE-Core' with: [ spec requires: #( 'Famix' 'FamixTagging' ) ];
 		package: 'MooseIDE-Dependency' with: [ spec requires: #( 'FamixTagging' ) ];
 		package: 'MooseIDE-Tagging' with: [ spec requires: #( 'FamixTagging' ) ];
 		package: 'MooseIDE-CoUsageMap' with: [ spec requires: #( 'FamixTagging' ) ];

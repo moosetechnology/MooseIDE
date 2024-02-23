@@ -57,7 +57,7 @@ MiDynamicTagSelectionForm >> initializePresenters [
 	(tagList := self newList)
 		beMultipleSelection;
 		display: [ :dt | dt name ];
-		displayIcon: [ :dt | MiTagBrowserModel iconForTag: dt ].
+		displayIcon: [ :dt | self application iconForTag: dt ].
 	submitButton := self newButton label: 'Add'.
 	cancelButton := self newButton label: 'Cancel'.
 	self initializeLayout

@@ -175,7 +175,7 @@ MiDistributionMapModel >> itemTags [
 
 	^ MiAbstractSettingItem buttonWithSelectableListSetting
 		  possibleValues: self fetchTags;
-		  displayIcon: [ :tag | MiTagBrowserModel iconForTag: tag ];
+		  displayIcon: [ :tag | browser application iconForTag: tag ];
 		  display: [ :tag | tag name ];
 		  label: 'Tags';
 		  help: 'The tags used as properties to display.
