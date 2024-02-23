@@ -308,7 +308,7 @@ MiArchitecturalMapModel >> itemTags [
 	^ MiAbstractSettingItem buttonWithEditableListSetting
 		  updateWith: [ self fetchTags ];
 		  possibleValues: self fetchTags;
-		  displayIcon: [ :tag | MiTagBrowserModel iconForTag: tag ];
+		  displayIcon: [ :tag | browser application iconForTag: tag ];
 		  display: [ :tag | tag name ];
 		  label: 'Tags to add';
 		  help:

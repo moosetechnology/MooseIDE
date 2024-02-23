@@ -98,11 +98,11 @@ MiTagDescription >> setModelBeforeInitialization: aTagModel [
 { #category : #initialization }
 MiTagDescription >> setTag: aTag [
 
-	aTag ifNil: [ ^self ].
+	aTag ifNil: [ ^ self ].
 	tagNameLabel label: aTag name.
 	tagDescriptionText text: (aTag description
 			 ifNotNil: [ :text | text ]
 			 ifNil: [ 'No description on this tag.' ]).
-	tagFormPresenter image: (tagModel class iconForTag: aTag).
+	tagFormPresenter image: (self application iconForTag: aTag).
 	self update
 ]

@@ -625,7 +625,7 @@ MiAbstractBrowser >> showHelp [
 { #category : #accessing }
 MiAbstractBrowser >> tagIcon [
 
-	^application iconProvider iconForTag: self selectedTag  
+	^ application iconForTag: self selectedTag
 ]
 
 { #category : #accessing }

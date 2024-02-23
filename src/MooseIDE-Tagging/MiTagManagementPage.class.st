@@ -108,8 +108,8 @@ MiTagManagementPage >> initializeLayout [
 MiTagManagementPage >> initializePresenters [
 
 	categoryManagement := self
-		instantiate: MiTagCategoriesPresenter
-		on: tagModel.
+		                      instantiate: MiTagCategoriesPresenter
+		                      on: tagModel.
 
 	tagDescriptionPage := self instantiate: MiTagExtentPage.
 	dynamicTagDescriptionPage := self instantiate: MiTagIntentPage.
@@ -117,22 +117,24 @@ MiTagManagementPage >> initializePresenters [
 	descriptionPage hide.
 
 	btnIsExtent := self newToggleButton
-		state: true;
-		icon: (Smalltalk ui icons iconNamed: #checkboxSelected);
-		label: 'Static';
-		yourself.
+		               state: true;
+		               icon:
+			               (Smalltalk ui icons iconNamed: #checkboxSelected);
+		               label: 'Static';
+		               yourself.
 	btnIsIntent := self newToggleButton
-		state: false;
-		icon: (Smalltalk ui icons iconNamed: #checkboxUnselected);
-		label: 'Dynamic';
-		yourself.
+		               state: false;
+		               icon:
+			               (Smalltalk ui icons iconNamed: #checkboxUnselected);
+		               label: 'Dynamic';
+		               yourself.
 
 	tagList := self newList.
 	tagList contextMenu: self tagListMenu.
 	tagList display: [ :aTag | aTag name ].
 	tagList
-		displayIcon: [ :aTag | self model class iconForTag: aTag ];
-		whenSelectionChangedDo: [ :selection | 
+		displayIcon: [ :aTag | self application iconForTag: aTag ];
+		whenSelectionChangedDo: [ :selection |
 			selection selectedItem ifNotNil: [ :item | self setTagTo: item ] ].
 	addTagButton := self newButton icon: (Smalltalk iconNamed: #smallAdd).
 	addTagButton action: [ self owner openTagCreationForm ].

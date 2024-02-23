@@ -144,8 +144,9 @@ MiCoUsageMapBuilder >> highlightManager: aMiCoHighlightManager [
 
 { #category : #accessing }
 MiCoUsageMapBuilder >> iconForTag: aTag [
+
 	self flag: 'move to model?'.
-	^self application iconForTag: aTag
+	^ self application iconForTag: aTag
 ]
 
 { #category : #initialization }

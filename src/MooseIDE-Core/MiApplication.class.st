@@ -166,7 +166,8 @@ MiApplication >> deleteBusNamed: aName [
 
 { #category : #accessing }
 MiApplication >> iconForTag: aTag [
-	^self iconProvider iconForTag: aTag
+
+	^ self iconProvider iconForTag: aTag
 ]
 
 { #category : #'drag and drop support' }
