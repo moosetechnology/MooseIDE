@@ -26,16 +26,18 @@ RSAttributedText >> addAttribute: attribute from: from to: to [
 
 { #category : #hooks }
 RSAttributedText >> canvasController [
+
 	| c |
+
 	c := RSCanvasController simple.
 	c interactions removeKey: RSZoomableCanvasInteraction.
-	c interactions removeKey:  RSDraggableCanvasInteraction.
-	c interactions at: RSScrollWheelCanvasInteraction put: RSScrollWheelCanvasInteraction new.
-	c configuration 
-		padding: 10;
-		hasHorizontalScrolling: false.
+	c interactions removeKey: RSDraggableCanvasInteraction.
+	c interactions
+		at: RSScrollWheelCanvasInteraction
+		put: RSScrollWheelCanvasInteraction new.
+	c keyNavigationInteraction hasHorizontalScrolling: false.
+	c configuration padding: 10.
 	^ c
-	
 ]
 
 { #category : #initialization }
