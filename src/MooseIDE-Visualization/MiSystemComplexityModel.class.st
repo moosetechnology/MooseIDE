@@ -68,7 +68,7 @@ MiSystemComplexityModel >> entities: aMooseGroup [
 	aMooseGroup ifEmpty: [ ^ self ].
 	entities := aMooseGroup.
 	self updateSettings.
-	browser buildVisualization
+	browser runVisualization
 ]
 
 { #category : #accessing }
