@@ -236,6 +236,13 @@ MiSystemComplexityBuilder >> normalizeWidth [
 			(scale scale: (each model rawModel perform: widthMetric)) ]
 ]
 
+{ #category : #hooks }
+MiSystemComplexityBuilder >> rebuildRootShape: shape [
+
+	super rebuildRootShape: shape.
+	self relayout: self container nodes parent: self rootNode
+]
+
 { #category : #building }
 MiSystemComplexityBuilder >> relayout: aGroupOfShapes parent: shape [
 
