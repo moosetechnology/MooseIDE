@@ -57,28 +57,6 @@ MiImportModelFromFileDialog class >> windowExtent [
 	^ 600 @ 250
 ]
 
-{ #category : #'metamodel-guess' }
-MiImportModelFromFileDialog >> canImport: inputSample importer: importer metaModel: tmpModel [
-
-	"try import with the metamodel
-	 - on FMElementNotFound, some class was not found in the metamodel, it's a failure
-	 - on FMSyntaxError, we reached end of the stream (which is an excerpt of a file) so it is a success
-	 - on other Error, not sure what it is but assume failure
-	 - on no Error, could import the whole stream that was less than default sample size, so it is a success"
-
-	[ 
-	importer
-		model: tmpModel;
-		inputStream: inputSample readStream;
-		run ]
-		on: Error
-		do: [ :err | 
-			err class = FMElementNotFound ifTrue: [ ^ false ].
-			err class = FMSyntaxError ifTrue: [ ^ true ].
-			^ false ].
-	^ true
-]
-
 { #category : #action }
 MiImportModelFromFileDialog >> closeEntitiesChoice [
 
@@ -255,35 +233,9 @@ MiImportModelFromFileDialog >> initializePresenters [
 ]
 
 { #category : #'metamodel-guess' }
-MiImportModelFromFileDialog >> inputFileSample [
-
-	^ modelFile readStreamDo: [ :inputStream | 
-		  | firstChar |
-		  firstChar := inputStream peek.
-		  inputStream size < self class inputSampleLength
-			  ifTrue: [ inputStream contents ]
-			  ifFalse: [ 
-				  (inputStream next: self class inputSampleLength)
-				  , (inputStream upTo: (firstChar = $(
-							    ifTrue: [ "mse" $) ]
-							    ifFalse: [ "json" $} ])) ] ]
-]
-
-{ #category : #'metamodel-guess' }
 MiImportModelFromFileDialog >> metaModelForFile [
 
-	| importer inputSample |
-	importer := self importerForFile new.
-	inputSample := self inputFileSample.
-
-	mooseModelDroplist items do: [ :mmClass | 
-		mooseModelDroplist selectItem: mmClass.
-		(self
-			 canImport: inputSample
-			 importer: importer
-			 metaModel: mmClass new) ifTrue: [ ^ self ] ].
-
-	Error signal: 'No metamodel to import file'
+	mooseModelDroplist selectItem: (self importerForFile findPossibleModelClassIn: mooseModelDroplist items forFile: modelFile)
 ]
 
 { #category : #private }
@@ -344,15 +296,15 @@ MiImportModelFromFileDialog >> simpleLayout [
 		  spacing: spacing;
 		  add: (SpBoxLayout newLeftToRight
 				   spacing: spacing;
-				   add: 'Model type:' width: labelWidth;
-				   add: mooseModelDroplist;
+				   add: 'File path:' width: labelWidth;
+				   add: filePathInput;
+				   add: filePathButton width: size;
 				   yourself)
 		  height: size;
 		  add: (SpBoxLayout newLeftToRight
 				   spacing: spacing;
-				   add: 'File path:' width: labelWidth;
-				   add: filePathInput;
-				   add: filePathButton width: size;
+				   add: 'Model type:' width: labelWidth;
+				   add: mooseModelDroplist;
 				   yourself)
 		  height: size;
 		  add: (SpBoxLayout newLeftToRight

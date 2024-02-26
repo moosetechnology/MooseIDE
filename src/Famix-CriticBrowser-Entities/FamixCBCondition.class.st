@@ -75,7 +75,7 @@ FamixCBCondition >> addViolation: anObject [
 	^ self violations add: anObject
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 FamixCBCondition >> putViolationsInto: aDictionary [
 	aDictionary at: self put: violations asMooseSpecializedGroup
 ]
@@ -97,18 +97,18 @@ FamixCBCondition >> query: aQuery [
 		ifFalse: [ self error: FamixCBNotAValidQuery signal ]
 ]
 
-{ #category : #'*Famix-CriticBrowser-Entities' }
+{ #category : #removing }
 FamixCBCondition >> removeAllViolations [
 	[ violations isNotEmpty ] whileTrue: [ self removeViolation: violations anyOne ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #removing }
 FamixCBCondition >> removeViolation: aViolation [
 	self violations remove: aViolation ifAbsent: [ ^ self ].
 	aViolation violatingEntity ifNotNil: [ aViolation violatingEntity removeViolation: aViolation ]
 ]
 
-{ #category : #'*Famix-CriticBrowser-Entities' }
+{ #category : #removing }
 FamixCBCondition >> resetExecutionOfTree [ 
 	self removeAllViolations
 ]
@@ -133,7 +133,7 @@ FamixCBCondition >> runOn: aCollection withCallback: aBlock [
 	self runOn: aCollection
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #removing }
 FamixCBCondition >> runUpTree: aCollection [
 	self runOn: (parent runUpTree: aCollection)
 ]
