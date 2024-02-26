@@ -30,12 +30,6 @@ MiImportModelFromFileDialog class >> fullWindowExtent [
 	^ self windowExtent + (0 @ MiImportingContextPresenter windowExtent y)
 ]
 
-{ #category : #accessing }
-MiImportModelFromFileDialog class >> inputSampleLength [
-
-	^ 1000
-]
-
 { #category : #'instance creation' }
 MiImportModelFromFileDialog class >> open [
 

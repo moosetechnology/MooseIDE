@@ -76,12 +76,18 @@ MiAbstractFileImporter class >> inputSampleFrom: aFile [
 	^ aFile readStreamDo: [ :inputStream |
 		  | firstChar |
 		  firstChar := inputStream peek.
-		  inputStream size < self class inputSampleLength
+		  inputStream size < self inputSampleLength
 			  ifTrue: [ inputStream contents ]
 			  ifFalse: [
-				  (inputStream next: self class inputSampleLength) , (inputStream upTo: (firstChar = $(
+				  (inputStream next: self inputSampleLength) , (inputStream upTo: (firstChar = $(
 						    ifTrue: [ "mse" $) ]
 						    ifFalse: [ "json" $} ])) ] ]
+]
+
+{ #category : #accessing }
+MiAbstractFileImporter class >> inputSampleLength [
+
+	^ 1000
 ]
 
 { #category : #executing }
