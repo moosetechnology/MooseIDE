@@ -69,7 +69,9 @@ MiPlaygroundModelsPresenter >> initializePresenters [
 MiPlaygroundModelsPresenter >> initializeWindow: aWindowPresenter [
 
 	super initializeWindow: aWindowPresenter.
-	aWindowPresenter title: self class defaultTitle
+	aWindowPresenter
+		title: self class defaultTitle;
+		initialExtent: 800 @ 400
 ]
 
 { #category : #initialization }
