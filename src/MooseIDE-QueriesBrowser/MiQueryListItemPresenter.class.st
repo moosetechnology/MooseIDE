@@ -149,14 +149,13 @@ MiQueryListItemPresenter >> initializePresenters [
 { #category : #initialization }
 MiQueryListItemPresenter >> initializeQueryTypesDropList [
 
-	| sortedItems |
 	queryTypesDropListPresenter := self newDropList.
-	sortedItems := queriesListPresenter availableQueryTypes sorted: #label ascending.
+
 	queryTypesDropListPresenter
 		startWithoutSelection;
-		items: sortedItems;
+		items: self sortedAvailableQueries;
 		display: [ :queryClass | queryClass label ];
-		whenSelectedItemChangedDo: [ :queryClass | 
+		whenSelectedItemChangedDo: [ :queryClass |
 			self updateQueryConfiguratorPresenterFor: queryClass ]
 ]
 
@@ -244,6 +243,13 @@ MiQueryListItemPresenter >> setModelBeforeInitialization: aQuery [
 MiQueryListItemPresenter >> setQueryNumber: anInteger [
 
 	queryNumberLabelPresenter label: anInteger asString
+]
+
+{ #category : #initialization }
+MiQueryListItemPresenter >> sortedAvailableQueries [
+
+	^ queriesListPresenter availableQueryTypes sorted:
+		  #yourself ascending
 ]
 
 { #category : #update }

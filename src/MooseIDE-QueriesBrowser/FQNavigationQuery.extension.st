@@ -6,12 +6,6 @@ FQNavigationQuery class >> canBeConfigured [
 ]
 
 { #category : #'*MooseIDE-QueriesBrowser' }
-FQNavigationQuery class >> isAvailableForQueriesSize: numberOfQueriesInPresenter [
-
-	^ true
-]
-
-{ #category : #'*MooseIDE-QueriesBrowser' }
 FQNavigationQuery >> isNavigationQuery [
 
 	^ true

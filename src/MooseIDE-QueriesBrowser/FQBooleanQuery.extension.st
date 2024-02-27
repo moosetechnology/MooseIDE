@@ -7,12 +7,6 @@ FQBooleanQuery class >> canBeConfigured [
 ]
 
 { #category : #'*MooseIDE-QueriesBrowser' }
-FQBooleanQuery class >> isAvailableForQueriesSize: numberOfQueriesInPresenter [
-
-	^ true
-]
-
-{ #category : #'*MooseIDE-QueriesBrowser' }
 FQBooleanQuery class >> miPresenterClass [
 
 	^ MiBooleanQueryPresenter
