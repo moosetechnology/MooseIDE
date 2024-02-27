@@ -4,3 +4,9 @@ Extension { #name : #FQUnaryQuery }
 FQUnaryQuery class >> canBeConfigured [
 	^ false
 ]
+
+{ #category : #'*MooseIDE-QueriesBrowser' }
+FQUnaryQuery class >> minimumQueriesSize [
+
+	^ 0
+]
