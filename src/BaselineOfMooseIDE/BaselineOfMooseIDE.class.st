@@ -268,7 +268,7 @@ BaselineOfMooseIDE >> roassal: spec [
 	spec
 		baseline: 'Roassal'
 		with: [
-		spec repository: 'github://pharo-graphics/Roassal:v1.05/src' ]
+		spec repository: 'github://pharo-graphics/Roassal:v1.06/src' ]
 ]
 
 { #category : #dependencies }
