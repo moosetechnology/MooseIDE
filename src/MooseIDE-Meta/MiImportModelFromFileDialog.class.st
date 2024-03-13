@@ -74,7 +74,7 @@ MiImportModelFromFileDialog >> getModelFile [
 	chosenFile := UIManager default
 		              chooseExistingFileReference:
 		              'Select your model source file'
-		              extensions: MiAbstractFileImporter knownExtensions
+		              extensions: FamixAbstractFileImporter knownExtensions
 		              path:
 			              (modelFile
 				               ifNil: [ self class defaultDirectory ]
@@ -140,7 +140,7 @@ MiImportModelFromFileDialog >> importModel [
 { #category : #private }
 MiImportModelFromFileDialog >> importerForFile [
 
-	^ (MiAbstractFileImporter importerFor: modelFile) ifNil: [ 
+	^ (FamixAbstractFileImporter importerFor: modelFile) ifNil: [ 
 		  self error: 'No importer found for this input file' ]
 ]
 
