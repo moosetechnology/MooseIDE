@@ -170,13 +170,14 @@ MiImportModelFromFileDialog >> initializeFilePathWidgets [
 		                 placeholder:
 			                 self class defaultDirectory asFileReference
 				                 pathString;
-		                 whenSubmitDo: [ self newModelFileEntered ];
+		                 whenSubmitDo: [ :modelPath |
+			                 self newFilePathInput: modelPath ];
 		                 help:
 			                 'Tip: to choose a file in the directory of this Pharo image, type ''local/path/to/myFile.mse''';
 		                 yourself.
 
-	filePathInput eventHandler whenFocusLostDo: [ 
-		self newModelFileEntered ].
+	filePathInput eventHandler whenFocusLostDo: [
+		self newFilePathInput: filePathInput text ].
 
 	filePathButton := self newButton
 		                  action: [ self getModelFile ];
@@ -226,10 +227,24 @@ MiImportModelFromFileDialog >> metaModelForFile [
 	mooseModelDroplist selectItem: (self importerForFile findPossibleModelClassIn: mooseModelDroplist items forFile: modelFile)
 ]
 
+{ #category : #'instance creation' }
+MiImportModelFromFileDialog >> newFilePathInput: aString [
+
+	| file |
+
+	aString ifEmpty: [ ^ self ].
+
+	file := aString asFileReference.
+	file isFile ifFalse: [ ^ self ].
+
+	modelFile := file.
+	self newModelFileEntered
+]
+
 { #category : #private }
 MiImportModelFromFileDialog >> newModelFileEntered [
 
-	(modelFile notNil and: [ modelFile fullName = filePathInput text ]) 
+	(modelFile isNil or: [ modelFile fullName = filePathInput text ])
 		ifFalse: [ filePathInput text: modelFile fullName ].
 
 	[ self updateForModelFile: modelFile ]
