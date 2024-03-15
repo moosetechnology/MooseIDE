@@ -1,24 +1,9 @@
 "
-Please comment me using the following template inspired by Class Responsibility Collaborator (CRC) design:
+A command to load Moose-Security in the image.
 
-For the Class part:  State a one line summary. For example, ""I represent a paragraph of text"".
+This project goal is to help find security vulnerabilities in projects using Moose. We tag the vulnerabilities and visualize them.
 
-For the Responsibility part: Three sentences about my main responsibilities - what I do, what I know.
-
-For the Collaborators Part: State my main collaborators and one line about how I interact with them.
-
-Public API and Key Messages
-
-- message one
-- message two
-- (for bonus points) how to create instances.
-
-   One simple example is simply gorgeous.
-
-Internal Representation and Key Implementation Points.
-
-
-    Implementation Points
+https://github.com/moosetechnology/Moose-Security
 "
 Class {
 	#name : #MooseLoadMooseSecurityMenuCommand,
