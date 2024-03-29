@@ -305,7 +305,7 @@ MiArchitecturalMapModel >> itemShowBusEntities [
 { #category : #settings }
 MiArchitecturalMapModel >> itemTags [
 
-	^ MiAbstractSettingItem buttonWithEditableListSetting
+	^ MiAbstractSettingItem buttonWithSelectableListSetting
 		  updateWith: [ self fetchTags ];
 		  possibleValues: self fetchTags;
 		  displayIcon: [ :tag | browser application iconForTag: tag ];
