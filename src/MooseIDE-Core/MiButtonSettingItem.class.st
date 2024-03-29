@@ -18,9 +18,12 @@ MiButtonSettingItem >> initialize [
 	presenter := SpButtonPresenter new.
 	presenter label: 'Change'.
 
-	presenter action: [ 
+	presenter action: [
+		| modal |
 		self update.
-		secondaryPresenter openModal ].
+		modal := secondaryPresenter asModalWindow.
+		modal title: self label.
+		modal open ].
 
 	self initializeSecondaryPresenter
 ]
