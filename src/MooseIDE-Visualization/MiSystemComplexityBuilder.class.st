@@ -10,6 +10,24 @@ Class {
 	#category : #'MooseIDE-Visualization-System Complexity'
 }
 
+{ #category : #rendering }
+MiSystemComplexityBuilder >> addInteractionsToShape: aShape [
+
+	| node |
+	aShape announcer: self nodeAnnouncer.
+	node := aShape model.
+	node
+		removeInteractionIfPresent: self class;
+		when: HCollapseEvent do: [ :evt |
+			self rebuildShape: aShape.
+			self normalizeShapes.
+			self relayout: self container nodes parent: rootNode ]
+		for: self;
+		when: HExpandEvent
+		do: [ :evt | self rebuildRootShape: aShape ]
+		for: self
+]
+
 { #category : #building }
 MiSystemComplexityBuilder >> build [
 
@@ -168,7 +186,7 @@ MiSystemComplexityBuilder >> normalizeColor [
 	scale range: { 
 			mapModel colorRangeStart.
 			mapModel colorRangeEnd }.
-	shapes do: [ :each | 
+	self container nodes do: [ :each | 
 		each color:
 			(scale scale: (each model rawModel perform: colorMetric)) ]
 ]
@@ -182,7 +200,7 @@ MiSystemComplexityBuilder >> normalizeHeight [
 		         normalizeMetric: heightMetric
 		         threshold: self heightMetricThreshold.
 	scale range: { 20. 400 }.
-	shapes do: [ :each | 
+	self container nodes do: [ :each | 
 		each height:
 			(scale scale: (each model rawModel perform: heightMetric)) ]
 ]
@@ -196,7 +214,7 @@ MiSystemComplexityBuilder >> normalizeMetric: metric threshold: threshold [
 	"start by finding min and max"
 	min := SmallInteger maxVal.
 	max := 0.
-	shapes do: [ :shape | 
+	self container nodes do: [ :shape | 
 		| value |
 		value := shape model rawModel perform: metric.
 		min := min min: value.
@@ -231,7 +249,7 @@ MiSystemComplexityBuilder >> normalizeWidth [
 		         normalizeMetric: widthMetric
 		         threshold: self widthMetricThreshold.
 	scale range: { 20. 400 }.
-	shapes do: [ :each | 
+	self container nodes do: [ :each | 
 		each width:
 			(scale scale: (each model rawModel perform: widthMetric)) ]
 ]
