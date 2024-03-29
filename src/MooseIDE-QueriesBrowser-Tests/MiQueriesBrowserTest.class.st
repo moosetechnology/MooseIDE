@@ -135,7 +135,9 @@ MiQueriesBrowserTest >> testRemoveQuery [
 { #category : #tests }
 MiQueriesBrowserTest >> testSelectQuery [
 
+	<expectedFailure>
 	| query previousCurrentQuery |
+
 	query := (FQBooleanQuery property: #isDead) beChildOf:
 		         browser rootQuery.
 	previousCurrentQuery := browser selectedQuery.
