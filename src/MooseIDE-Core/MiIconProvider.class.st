@@ -123,8 +123,8 @@ MiIconProvider >> iconForTag: aTag [
 	| form |
 
 	form := ((aTag isNil or: [ aTag class = FamixTag ])
-		         ifTrue: [ self iconNamed: #famixTagArrow ]
-		         ifFalse: [ self iconNamed: #famixTagFlag ]) deepCopy.
+		         ifTrue: [ self iconNamed: #famixTagLabel ]
+		         ifFalse: [ self iconNamed: #famixTagBookmark ]) deepCopy.
 
 	form
 		mapColor: self tagIconsDefaultColor
