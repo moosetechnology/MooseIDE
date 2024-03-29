@@ -76,16 +76,33 @@ QueryCodePresenter >> initializePresenters [
 ]
 
 { #category : #initialization }
+QueryCodePresenter >> queryCodeComment: aQueryScript [
+
+	^ '"To execute this query on your input, copy this script:
+({1}) executeOn: yourInput
+ "' format: { aQueryScript }
+]
+
+{ #category : #initialization }
 QueryCodePresenter >> updateForQuery: aQuery [
 
 	| text |
+
 	text := aQuery isRootQuery
-		ifTrue: [ self defaultComment ]
-		ifFalse: [ 
-			| parsedExpression |
-			parsedExpression := RBParser parseExpression:
-				(String streamContents: [ :aStream | aQuery storeWithParentsOn: aStream ]).
-			parsedExpression formattedCode ].
+		        ifTrue: [ self defaultComment ]
+		        ifFalse: [
+			        | parsedExpression queryCode |
+
+			        parsedExpression := RBParser parseExpression:
+				                            (String streamContents: [ :aStream |
+					                             aQuery storeWithParentsOn: aStream ]).
+			        queryCode := parsedExpression formattedCode.
+			        String streamContents: [ :stream |
+				        stream
+					        << queryCode;
+					        cr;
+					        cr;
+					        << (self queryCodeComment: queryCode) ] ].
 
 	code text: text
 ]

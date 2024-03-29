@@ -239,7 +239,7 @@ MiQueriesBrowser >> resetRootQueryForEntities: busMooseEntities [
 
 	rootQuery
 		resetResult;
-		result: busMooseEntities;
+		input: busMooseEntities;
 		name: busMooseEntities first mooseModel name.
 	self selectQuery: rootQuery
 ]
