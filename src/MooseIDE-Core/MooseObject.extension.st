@@ -7,11 +7,6 @@ MooseObject >> iconNamed: aSymbol [
 ]
 
 { #category : #'*MooseIDE-Core' }
-MooseObject >> isMooseObject [
-	^ true
-]
-
-{ #category : #'*MooseIDE-Core' }
 MooseObject >> miDescription [
 
 	^ self description
