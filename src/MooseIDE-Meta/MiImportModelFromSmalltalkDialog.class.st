@@ -12,8 +12,6 @@ Class {
 		'classesAndMetaclassesCheckBox',
 		'importSubclassesCheckBox',
 		'computeAttributesTypeCheckBox',
-		'factoryClass',
-		'metamodelCheckBox',
 		'invocationStrategyDroplist',
 		'entitiesToImport',
 		'contextCheckBoxes'
@@ -99,18 +97,6 @@ MiImportModelFromSmalltalkDialog >> candidateClass [
 	^ invocationStrategyDroplist selectedItem
 ]
 
-{ #category : #accessing }
-MiImportModelFromSmalltalkDialog >> factoryClass [
-
-	^ factoryClass ifNil: [ factoryClass := SmalltalkMetamodelFactory ]
-]
-
-{ #category : #accessing }
-MiImportModelFromSmalltalkDialog >> factoryClass: aFactoryClass [
-
-	factoryClass := aFactoryClass
-]
-
 { #category : #'advanced settings' }
 MiImportModelFromSmalltalkDialog >> hideAdvancedSettings [
 
@@ -130,8 +116,7 @@ MiImportModelFromSmalltalkDialog >> importingContext [
 MiImportModelFromSmalltalkDialog >> initialize [
 
 	importingContext := MooseImportingContext new.
-	entitiesToImport := MooseImportingContext entityDependencies keys
-		                    asSet.
+	entitiesToImport := MooseImportingContext entityDependencies keys asSet.
 	contextCheckBoxes := OrderedCollection new.
 	super initialize
 ]
@@ -230,11 +215,9 @@ MiImportModelFromSmalltalkDialog >> privateImportModel [
 	| mooseModel |
 	self setImportingContext.
 
-	mooseModel := self factoryClass new modelClass named: self modelName.
-
 	MoosePharoImporterTask new
 		importingContext: self importingContext;
-		model: mooseModel;
+		model: (mooseModel := FamixStModel named: self modelName);
 		addFromPackagesNamed: self selectedPackages;
 		candidateClass: self candidateClass;
 		runWithProgress.
