@@ -64,7 +64,7 @@ MiImportModelFromSmalltalkDialog >> addContext: aContext [
 
 	entitiesToImport add: aContext.
 
-	(MooseImportingContext entityDependencies at: aContext) do: [ 
+	(FamixStImporterContext entityDependencies at: aContext) do: [ 
 		:dependency | 
 		(contextCheckBoxes detect: [ :checkBox | 
 			 checkBox label = dependency asString ]) state: true ]
@@ -115,8 +115,8 @@ MiImportModelFromSmalltalkDialog >> importingContext [
 { #category : #initialization }
 MiImportModelFromSmalltalkDialog >> initialize [
 
-	importingContext := MooseImportingContext new.
-	entitiesToImport := MooseImportingContext entityDependencies keys asSet.
+	importingContext := FamixStImporterContext new.
+	entitiesToImport := FamixStImporterContext entityDependencies keys asSet.
 	contextCheckBoxes := OrderedCollection new.
 	super initialize
 ]
@@ -158,7 +158,7 @@ MiImportModelFromSmalltalkDialog >> initializeEntitiesCheckBoxes [
 	| checkBoxesLayout |
 	checkBoxesLayout := SpBoxLayout newLeftToRight.
 
-	((MooseImportingContext entityDependencies keys sort:
+	((FamixStImporterContext entityDependencies keys sort:
 		  #yourself ascending) groupsOf: 5) do: [ :group | 
 		| subLayout |
 		subLayout := SpBoxLayout newVertical.
@@ -215,7 +215,7 @@ MiImportModelFromSmalltalkDialog >> privateImportModel [
 	| mooseModel |
 	self setImportingContext.
 
-	MoosePharoImporterTask new
+	FamixStPharoImporterTask new
 		importingContext: self importingContext;
 		model: (mooseModel := FamixStModel named: self modelName);
 		addFromPackagesNamed: self selectedPackages;
@@ -230,7 +230,7 @@ MiImportModelFromSmalltalkDialog >> removeContext: aContext [
 
 	entitiesToImport remove: aContext.
 
-	(MooseImportingContext entityDependencies select: [ :values | 
+	(FamixStImporterContext entityDependencies select: [ :values | 
 		 values includes: aContext ]) keysDo: [ :dependency | 
 		(contextCheckBoxes detect: [ :checkBox | 
 			 checkBox label = dependency asString ]) state: false ]
