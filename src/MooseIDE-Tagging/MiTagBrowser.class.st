@@ -212,6 +212,12 @@ MiTagBrowser >> openTagEditionForm [
 	tagEditionForm update
 ]
 
+{ #category : #accessing }
+MiTagBrowser >> refreshDescriptionPage [
+
+	tagManagementPage refreshDescriptionPage
+]
+
 { #category : #refreshing }
 MiTagBrowser >> refreshTagList [
 

@@ -456,7 +456,8 @@ MiArchitecturalMapBuilder >> tooltipOf: entity [
 				  s << '
 Tags: '.
 				  tags do: [ :tag | s << tag name ] separatedBy: [ s << ', ' ] ].
-			  (entity allChildren flatCollectAsSet: [ :child | child tags ]) ifNotEmpty: [ :tags |
+			
+			  ((nodeMooseIDDict at: entity mooseID) allChildren flatCollectAsSet: [ :child | child tags ]) ifNotEmpty: [ :tags |
 				  s << '
 Tags on children: '.
 				  tags do: [ :tag | s << tag name ] separatedBy: [ s << ', ' ] ] ] ]
