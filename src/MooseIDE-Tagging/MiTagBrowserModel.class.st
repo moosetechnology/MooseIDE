@@ -129,15 +129,16 @@ MiTagBrowserModel >> editCurrentDynamicTag: name description: description color:
 
 	| tag |
 	tag := self currentTag.
-	tag ifNil: [ ^ false ].
+	tag ifNil: [ ^ self ].
 
-	(name isNil or: [ name isEmpty ]) ifTrue: [ ^ false ].
+	(name isNil or: [ name isEmpty ]) ifTrue: [ ^ self ].
 
 	tag name: name.
 	self setTag: tag description: description color: color category: category.
 	tag query: query.
 
-	browser refresh.
+	browser refreshTagList.
+	browser refreshDescriptionPage .
 	self currentApplication updateItem: tag
 ]
 
@@ -146,15 +147,16 @@ MiTagBrowserModel >> editCurrentTag: name description: description color: color 
 
 	| tag |
 	tag := self currentTag.
-	tag ifNil: [ ^ false ].
+	tag ifNil: [ ^ self ].
 
-	(name isNil or: [ name isEmpty ]) ifTrue: [ ^ false ].
+	(name isNil or: [ name isEmpty ]) ifTrue: [ ^ self ].
 
 	tag name: name.
 	tag categories ifNotEmpty: [ tag removeCategory: tag categories anyOne ].
 	self setTag: tag description: description color: color category: category.
 
-	browser refresh.
+	browser refreshTagList .
+	browser refreshDescriptionPage .
 	self currentApplication updateItem: tag.
 
 ]

@@ -120,14 +120,14 @@ MiTagEditionForm >> submit [
 	self checkFormInputs ifFalse: [ ^ self ].
 	tagModel currentTag isIntent
 		ifTrue: [ 
-			self owner
+			self owner tagModel
 				editCurrentDynamicTag: nameField text
 				description: descriptionField text
 				color: colorPicker color
 				category: categorySelection selectedItem
 				query: queryList selectedItem ]
 		ifFalse: [ 
-			self owner
+			self owner tagModel
 				editCurrentTag: nameField text
 				description: descriptionField text
 				color: colorPicker color
