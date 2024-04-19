@@ -133,12 +133,12 @@ MiArchitecturalMapBuilder >> borderFor: node [
 { #category : #building }
 MiArchitecturalMapBuilder >> build [
 
-	rootNode ifNotNil: [ 
+	rootNode ifNotNil: [
 		self updateWithModelSettings.
 		^ self ].
 	rootNode := HNode new.
 	self addTags.
-	mapModel showBusEntities ifTrue: [ 
+	mapModel showBusEntities ifTrue: [
 		rootNode addAll: self createRootNodes ].
 	self renderIn: self container.
 	self updateWithModelSettings.
