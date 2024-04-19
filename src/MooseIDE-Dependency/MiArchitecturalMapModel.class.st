@@ -119,7 +119,9 @@ MiArchitecturalMapModel >> childrenFor: anEntity [
 	^ virtualEntities
 		  at: anEntity
 		  ifPresent: [ :children | children ]
-		  ifAbsent: [ (self childrenQuerySetting rawRunOnEntity: anEntity) asArray ]
+		  ifAbsent: [
+			  (self childrenQuerySetting rawRunOnEntity: anEntity) asArray
+				  reject: [ :each | each == anEntity ] ]
 ]
 
 { #category : #settings }

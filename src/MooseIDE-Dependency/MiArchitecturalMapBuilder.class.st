@@ -133,12 +133,12 @@ MiArchitecturalMapBuilder >> borderFor: node [
 { #category : #building }
 MiArchitecturalMapBuilder >> build [
 
-	rootNode ifNotNil: [ 
+	rootNode ifNotNil: [
 		self updateWithModelSettings.
 		^ self ].
 	rootNode := HNode new.
 	self addTags.
-	mapModel showBusEntities ifTrue: [ 
+	mapModel showBusEntities ifTrue: [
 		rootNode addAll: self createRootNodes ].
 	self renderIn: self container.
 	self updateWithModelSettings.
@@ -457,7 +457,7 @@ MiArchitecturalMapBuilder >> tooltipOf: entity [
 Tags: '.
 				  tags do: [ :tag | s << tag name ] separatedBy: [ s << ', ' ] ].
 			
-			  ((nodeMooseIDDict at: entity mooseID) allChildren flatCollectAsSet: [ :child | child tags ]) ifNotEmpty: [ :tags |
+			  ((nodeMooseIDDict at: entity mooseID) allChildren flatCollectAsSet: [ :child | child rawModel tags ]) ifNotEmpty: [ :tags |
 				  s << '
 Tags on children: '.
 				  tags do: [ :tag | s << tag name ] separatedBy: [ s << ', ' ] ] ] ]
