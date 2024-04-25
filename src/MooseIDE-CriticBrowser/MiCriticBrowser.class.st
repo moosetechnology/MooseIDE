@@ -23,7 +23,8 @@ Class {
 		'expandMenu',
 		'addContextsPresenter',
 		'contextEditorPresenter',
-		'statusLabel'
+		'statusLabel',
+		'tagAllViolationsButton'
 	],
 	#category : #'MooseIDE-CriticBrowser-Browser'
 }
@@ -101,6 +102,7 @@ MiCriticBrowser >> allAvailableContexts [
 
 { #category : #'window control' }
 MiCriticBrowser >> browserClosed [
+
 	super browserClosed.
 	application unregisterConsumer: addRulesPresenter.
 	application unregisterConsumer: rulesEditorPresenter.
@@ -139,6 +141,16 @@ MiCriticBrowser >> contextEditorPresenter [
 	^ contextEditorPresenter
 ]
 
+{ #category : #tagging }
+MiCriticBrowser >> convertViolationToTag: violation [
+
+	| entity |
+
+	entity := violation violatingEntity.
+	^ entity tagWith:
+		  (entity mooseModel tagNamed: violation violatedCondition name)
+]
+
 { #category : #layout }
 MiCriticBrowser >> defaultLayout [	
 	^ SpBoxLayout newTopToBottom
@@ -164,6 +176,7 @@ MiCriticBrowser >> defaultLayout [
 				addLast: importButton;
 				addLast: exportButton;
 				addLast: runButton;
+				addLast: tagAllViolationsButton;
 				hAlignEnd;
 				spacing: 5;
 				yourself);
@@ -289,24 +302,33 @@ MiCriticBrowser >> initialize [
 
 { #category : #initialization }
 MiCriticBrowser >> initializeButtons [
+
 	runButton := self newButton.
 	importButton := self newButton.
 	exportButton := self newButton.
-	
-	runButton 
+	tagAllViolationsButton := self newButton.
+
+	runButton
 		label: 'Run';
 		icon: (self iconNamed: #glamorousPlay);
 		action: [ self runButtonAction ].
-		
+
 	importButton
 		label: 'Import rules';
 		icon: (self iconNamed: #smallOpen);
 		action: [ self importRules ].
-	
+
 	exportButton
 		label: 'Export rules';
 		icon: (self iconNamed: #smallSave);
-		action: [ self exportRules ]
+		action: [ self exportRules ].
+
+	tagAllViolationsButton
+		label: 'Tag entities';
+		icon: (self iconNamed: #famixTagLabel);
+		action: [
+			self tagAllViolations.
+			MiTagBrowser open ]
 ]
 
 { #category : #initialization }
@@ -383,7 +405,8 @@ MiCriticBrowser >> initializePresenters [
 	self focusOrder
 		add: rules;
 		add: rulesResult;
-		add: runButton
+		add: runButton;
+		add: tagAllViolationsButton
 ]
 
 { #category : #initialization }
@@ -504,6 +527,20 @@ MiCriticBrowser >> stringForItem: item [
 "returns string to describe an item or a root regrouping entities of the same type"
 	(rulesResult roots includes: item) ifTrue: [ ^ item description ].
 	^ String streamContents: [ :s | item displayStringOn: s ]
+]
+
+{ #category : #tagging }
+MiCriticBrowser >> tagAllViolations [
+
+	specModel getAllViolations do: [ :violation |
+		self convertViolationToTag: violation ]
+]
+
+{ #category : #tagging }
+MiCriticBrowser >> tagCurrentViolations [
+
+	(specModel violationsOf: rules selectedItem) do: [ :violation |
+		self convertViolationToTag: violation ]
 ]
 
 { #category : #'updating screen' }

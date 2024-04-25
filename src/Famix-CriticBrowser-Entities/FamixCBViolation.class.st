@@ -51,7 +51,7 @@ FamixCBViolation >> = anObject [
 
 { #category : #comparing }
 FamixCBViolation >> hash [
-	^ self violatingEntity hash + violatedCondition 
+	^ self violatingEntity hash + violatedCondition hash
 ]
 
 { #category : #printing }
