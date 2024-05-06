@@ -14,3 +14,4 @@ jobs:
     with:
       create-artifact: ${{ github.event_name == 'push' }} #Create artifact only after a push
       image-name: MooseIDE
+      run-coverage: true
