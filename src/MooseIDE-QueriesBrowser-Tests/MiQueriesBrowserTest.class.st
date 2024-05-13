@@ -135,8 +135,7 @@ MiQueriesBrowserTest >> testRemoveQuery [
 { #category : #tests }
 MiQueriesBrowserTest >> testSelectQuery [
 
-	<expectedFailure>
-	| query previousCurrentQuery |
+	| query previousCurrentQuery newQuery |
 
 	query := (FQBooleanQuery property: #isDead) beChildOf:
 		         browser rootQuery.
@@ -148,10 +147,11 @@ MiQueriesBrowserTest >> testSelectQuery [
 		assertCollection: browser queryResultTreePresenter items
 		hasSameElements: query result.
 	"Check if the code presenter changed its text to the new query"
-	self
-		assert: browser queryCodePresenter text
-		equals: (EFFormatter format: (RBParser parseExpression:
-					  (String streamContents: [ :s | query storeOn: s ])))
+
+	newQuery := Smalltalk compiler evaluate:
+		            browser queryCodePresenter text.
+	self assert: newQuery class equals: query class.
+	self assert: newQuery property equals: query property
 ]
 
 { #category : #tests }
