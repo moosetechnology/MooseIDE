@@ -19,7 +19,7 @@ StMooseEntry >> doEvaluate [
 { #category : #accessing }
 StMooseEntry >> iconName [
 
-	^ content systemIconName
+	^ #mooseIcon
 ]
 
 { #category : #accessing }
