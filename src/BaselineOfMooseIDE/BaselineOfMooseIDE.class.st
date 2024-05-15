@@ -155,7 +155,9 @@ BaselineOfMooseIDE >> definePackages: spec [
 		package: 'MooseIDE-ClassBlueprint'
 		with: [
 			spec requires: #( 'MooseIDE-Visualization' 'ClassBlueprint' ) ];
-		package: 'MooseIDE-Spotter'.
+		package: 'MooseIDE-Spotter';
+		package: 'MooseIDE-Spotter-Tests'
+		with: [ spec requires: #( 'MooseIDE-Spotter' ) ].
 
 	self defineMooseCriticsPackages: spec
 ]
