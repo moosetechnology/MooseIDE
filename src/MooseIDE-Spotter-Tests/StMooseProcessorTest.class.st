@@ -33,8 +33,33 @@ StMooseProcessorTest >> tearDown [
 ]
 
 { #category : #tests }
+StMooseProcessorTest >> testEmptyEvenWithExistingModel [
+
+	| stModel aStClass |
+	stModel := FamixStModel new.
+	aStClass := stModel newClassNamed: 'aClass'.
+	stModel install.
+
+	self runForText: ''.
+	self assertQuantityOfResults: 0
+]
+
+{ #category : #tests }
 StMooseProcessorTest >> testEmptyQueryShowsNoResult [
 
 	self runForText: ''.
 	self assertQuantityOfResults: 0
+]
+
+{ #category : #tests }
+StMooseProcessorTest >> testOneNamedClassUsingFamixSt [
+
+	| stModel aStClass |
+	stModel := FamixStModel new.
+	aStClass := stModel newClassNamed: 'aClass'.
+	stModel install.
+
+	self runForText: 'aCl'.
+	self assertQuantityOfResults: 1.
+	self assertResultsIncludes: aStClass
 ]
