@@ -16,15 +16,15 @@ StMooseProcessorTest >> processor [
 	^ StMooseProcessor new 
 ]
 
-{ #category : #tests }
+{ #category : #running }
 StMooseProcessorTest >> setUp [
 
+	super setUp.
 	existingRoot := MooseModelRoot installedRoot.
-	MooseModelRoot resetRoot.
-	super setUp
+	MooseModelRoot resetRoot
 ]
 
-{ #category : #tests }
+{ #category : #running }
 StMooseProcessorTest >> tearDown [
 
 	MooseModelRoot resetRoot.
