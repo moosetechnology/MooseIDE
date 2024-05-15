@@ -25,7 +25,8 @@ StMooseProcessor class >> title [
 { #category : #filtering }
 StMooseProcessor >> newTextFilteringSource [
 
-	^ ((StCollectionIterator on:
-		    (MooseModel root anyOne allUsing: FamixTNamedEntity))
+	^ ((StCollectionIterator on: (MooseModel root
+			     ifEmpty: [ {  } ]
+			     ifNotEmpty: [ :root | root anyOne allUsing: FamixTNamedEntity ]))
 		   collect: [ :e | StMooseEntry on: e ]) asSubstringFilter
 ]
