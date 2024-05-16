@@ -123,14 +123,11 @@ MiModelsBrowser >> followEntity: anEntity [
 
 { #category : #actions }
 MiModelsBrowser >> handleDropFile: aFileReference [
-	
-	self model autoImportSetting 
-		ifTrue: [self importFromFileUI handleDropFileAndImport: aFileReference.  ]
-		ifFalse: [self importFromFileUI handleDropFile: aFileReference].
-	
-	
-	
 
+	self model autoImportSetting
+		ifTrue: [
+		self importFromFileUI handleDropFileAndImport: aFileReference ]
+		ifFalse: [ self importFromFileUI handleDropFile: aFileReference ]
 ]
 
 { #category : #'private testing' }
@@ -147,7 +144,8 @@ MiModelsBrowser >> hasSettings [
 
 { #category : #accessing }
 MiModelsBrowser >> importFromFileUI [
-	^MiImportFromFileCommand new execute presenter
+
+	^ (MiImportModelFromFileDialog on: self) openDialog presenter
 ]
 
 { #category : #initialization }

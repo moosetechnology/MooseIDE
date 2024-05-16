@@ -17,10 +17,10 @@ MiModelsBrowserTest >> browserClass [
 MiModelsBrowserTest >> newModel: aString [
 
 	| model |
-	model := FamixStModel new
-		         name: aString;
-		         yourself.
+
+	model := FamixStModel named: aString.
 	MooseModel root add: model.
+
 	^ model
 ]
 
@@ -37,12 +37,15 @@ MiModelsBrowserTest >> stModelFile [
 
 	"Creating an in-memory JSON file containing a class from FamixStModel"
 
-	| file model |
-	model := FamixStModel new.
-	FamixStClass named: 'AClass' model: model.
+	| file |
 
 	file := FileSystem workingDirectory / 'stModel.json'.
-	file writeStreamDo: [ :stream | model exportToJSONStream: stream ].
+
+	file writeStreamDo: [ :stream |
+		(FamixStModel new
+			 newClassNamed: 'AClass';
+			 yourself) exportToJSONStream: stream ].
+
 	^ file
 ]
 
@@ -57,39 +60,41 @@ MiModelsBrowserTest >> tearDown [
 MiModelsBrowserTest >> testActivateActionButtons [
 
 	| newModel |
-	self assert: browser actionButtons isNotEmpty.
+
+	self denyEmpty: browser actionButtons.
 	browser actionButtons do: [ :button | self deny: button isEnabled ].
 
 	newModel := self newModel: 'aModel'.
-	(FamixStClass named: #AClass) mooseModel: newModel.
+	newModel newClassNamed: #AClass.
+	
 	browser updateForNewModel: newModel.
 
 	browser actionButtons do: [ :button | self assert: button isEnabled ]
 ]
 
-{ #category : #'tests - opening' }
+{ #category : #'tests - tags' }
 MiModelsBrowserTest >> testCanTagEntities [
-	self deny: browser canTagEntities 
+
+	self deny: browser canTagEntities
 ]
 
 { #category : #tests }
 MiModelsBrowserTest >> testFilterStubsSettingsWithoutStub [
 
 	| newModel |
+
 	self assert: browser miSelectedItemToPropagate isNil.
 
 	newModel := self newModel: 'aModel'.
-	newModel addAll: {
-			((FamixStClass named: 'Class1')
-				 isStub: true;
-				 yourself).
-			((FamixStClass named: 'Class2')
-				 isStub: false;
-				 yourself) }.
+	(newModel newClassNamed: 'Class1') isStub: true.
+	(newModel newClassNamed: 'Class2') isStub: false.
+
 	browser updateForNewModel: newModel.
 
 	self assert: browser miSelectedItemToPropagate size equals: 1.
-	self assert: browser miSelectedItemToPropagate anyOne name equals: 'Class2'.
+	self
+		assert: browser miSelectedItemToPropagate anyOne name
+		equals: 'Class2'.
 
 	browser settingsItem setItem: #filterStubsSetting value: false.
 	browser updateForNewModel: newModel.
@@ -98,33 +103,37 @@ MiModelsBrowserTest >> testFilterStubsSettingsWithoutStub [
 
 { #category : #tests }
 MiModelsBrowserTest >> testHandleDropFileImportsModel [
+
 	| file |
+
 	file := self stModelFile.
 
 	self assertEmpty: browser model entities.
 
-	browser handleDropFileAndImport: file.
+	browser settingsItem setItem: #modelAutoImportSetting value: true.
+	browser handleDropFile: file.
 
 	"Must wait a bit to ensure model finishes importing.
 	 Also need to update list manually because only browsers in MiApplication are updated
 	 and this one is in MiApplicationTest"
-	[ 0.5 second wait.
-	  browser updateList ]
-	ensure: [ file delete ]. 
-	
-	self assert: browser model entities size equals: 1.
+	[
+	0.1 second wait.
+	browser updateList ] ensure: [ file delete ].
+
+	self assert: browser model entities size equals: 1
 ]
 
 { #category : #tests }
 MiModelsBrowserTest >> testMiInspectCommand [
 
 	| inspector result newModel |
+
 	newModel := self newModel: 'aModel'.
-	newModel add: FamixStClass new.
+	newModel newClass.
 	browser updateForNewModel: newModel.
 
 	inspector := Mock named: 'inspector'.
-	(inspector stub inspect: Any forBuses: Any) will: [ :object :buses | 
+	(inspector stub inspect: Any forBuses: Any) will: [ :object :buses |
 		result := object ].
 
 	browser inspector: inspector.
@@ -137,13 +146,15 @@ MiModelsBrowserTest >> testMiInspectCommand [
 MiModelsBrowserTest >> testMiInspectCommandWithoutStubFilter [
 
 	| inspector result newModel |
+
 	newModel := self newModel: 'aModel'.
-	newModel add: FamixStClass new.
+	newModel newClass.
 
 	browser updateForNewModel: newModel.
-	browser model settings setItem: #filterStubsSetting value: false.
+
+	browser settingsItem setItem: #filterStubsSetting value: false.
 	inspector := Mock named: 'inspector'.
-	(inspector stub inspect: Any forBuses: Any) will: [ :object :buses | 
+	(inspector stub inspect: Any forBuses: Any) will: [ :object :buses |
 		result := object ].
 
 	browser inspector: inspector.
@@ -156,6 +167,7 @@ MiModelsBrowserTest >> testMiInspectCommandWithoutStubFilter [
 MiModelsBrowserTest >> testMiSelectedItem [
 
 	| newModel |
+
 	self assert: browser miSelectedItem isNil.
 
 	newModel := self newModel: 'aModel'.
@@ -168,19 +180,19 @@ MiModelsBrowserTest >> testMiSelectedItem [
 MiModelsBrowserTest >> testMiSelectedItemWithoutStub [
 
 	| newModel |
+
 	self assert: browser miSelectedItemToPropagate isNil.
 
 	newModel := self newModel: 'aModel'.
-	newModel addAll: { 
-			(FamixStClass named: 'Class1') isStub: true; yourself.
-			(FamixStClass named: 'Class2') isStub: false; yourself}.
+	(newModel newClassNamed: 'Class1') isStub: true.
+	(newModel newClassNamed: 'Class2') isStub: false.
+
 	browser updateForNewModel: newModel.
 
 	self assert: browser miSelectedItemToPropagate size equals: 1.
-	self assert: browser miSelectedItemToPropagate anyOne name equals: 'Class2'
-	
-
-	
+	self
+		assert: browser miSelectedItemToPropagate anyOne name
+		equals: 'Class2'
 ]
 
 { #category : #'tests - opening' }
@@ -193,6 +205,7 @@ MiModelsBrowserTest >> testSettingsAction [
 MiModelsBrowserTest >> testUpdateForNewModel [
 
 	| newModel |
+
 	self newModel: 'model1'.
 	browser updateList.
 
@@ -210,6 +223,7 @@ MiModelsBrowserTest >> testUpdateForNewModel [
 MiModelsBrowserTest >> testUpdateForNewModelMultipleBrowsers [
 
 	| browser2 newModel |
+
 	self newModel: 'model1'.
 	browser2 := self browserClass openForTests: self application.
 	browser updateList.

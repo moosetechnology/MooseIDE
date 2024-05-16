@@ -116,7 +116,8 @@ MiImportModelFromFileDialog >> handleDropFile: aFileReference [
 
 { #category : #action }
 MiImportModelFromFileDialog >> handleDropFileAndImport: aFileReference [
-	self handleDropFile: aFileReference. 
+
+	self handleDropFile: aFileReference.
 
 	self importModelThenCloseDialogWindow: owner
 ]
