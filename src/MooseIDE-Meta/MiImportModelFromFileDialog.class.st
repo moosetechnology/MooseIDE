@@ -107,11 +107,12 @@ MiImportModelFromFileDialog >> getRootFolder [
 
 { #category : #action }
 MiImportModelFromFileDialog >> handleDropFile: aFileReference [
-	[self updateForModelFile: aFileReference]
-	on: Error
-	do: [:err |
-		UIManager default alert: 'Error: ' , err messageText.
-		^self ].	
+
+	[ self updateForModelFile: aFileReference ]
+		on: Error
+		do: [ :err |
+			UIManager default alert: 'Error: ' , err messageText.
+			^ self ]
 ]
 
 { #category : #action }
@@ -119,7 +120,7 @@ MiImportModelFromFileDialog >> handleDropFileAndImport: aFileReference [
 
 	self handleDropFile: aFileReference.
 
-	self importModelThenCloseDialogWindow: owner
+	self importModelThenCloseDialogWindow
 ]
 
 { #category : #action }
@@ -225,7 +226,9 @@ MiImportModelFromFileDialog >> initializePresenters [
 { #category : #'metamodel-guess' }
 MiImportModelFromFileDialog >> metaModelForFile [
 
-	mooseModelDroplist selectItem: (self importerForFile findPossibleModelClassIn: mooseModelDroplist items forFile: modelFile)
+	mooseModelDroplist selectItem: (self importerForFile
+			 findPossibleModelClassIn: mooseModelDroplist items
+			 forFile: modelFile)
 ]
 
 { #category : #'instance creation' }

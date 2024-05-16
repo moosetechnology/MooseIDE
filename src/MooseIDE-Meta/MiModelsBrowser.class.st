@@ -127,14 +127,10 @@ MiModelsBrowser >> handleDropFile: aFileReference [
 	self model autoImportSetting
 		ifTrue: [
 		self importFromFileUI handleDropFileAndImport: aFileReference ]
-		ifFalse: [ self importFromFileUI handleDropFile: aFileReference ]
-]
-
-{ #category : #'private testing' }
-MiModelsBrowser >> handleDropFileAndImport: aFileReference [
-
-	self importFromFileUI handleDropFileAndImport: aFileReference.
-
+		ifFalse: [
+			self importFromFileUI
+				openDialog;
+				handleDropFile: aFileReference ]
 ]
 
 { #category : #testing }
@@ -145,7 +141,7 @@ MiModelsBrowser >> hasSettings [
 { #category : #accessing }
 MiModelsBrowser >> importFromFileUI [
 
-	^ (MiImportModelFromFileDialog on: self) openDialog presenter
+	^ MiImportModelFromFileDialog on: self
 ]
 
 { #category : #initialization }
