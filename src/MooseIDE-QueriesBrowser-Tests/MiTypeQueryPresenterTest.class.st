@@ -26,12 +26,15 @@ MiTypeQueryPresenterTest >> classToTest [
 MiTypeQueryPresenterTest >> createNewQuery [
 
 	| rootQuery |
+
 	rootQuery := FQRootQuery new
-		result: helper classesAndMethods;
-		yourself.
+		             input: helper classesAndMethods;
+		             yourself.
 	^ (FQTypeQuery defaultForParent: rootQuery)
-			types: { FamixStClass . FamixStAttribute };
-			yourself
+		  types: {
+				  FamixStClass.
+				  FamixStAttribute };
+		  yourself
 ]
 
 { #category : #running }

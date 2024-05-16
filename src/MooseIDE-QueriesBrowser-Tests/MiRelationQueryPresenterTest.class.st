@@ -22,8 +22,9 @@ MiRelationQueryPresenterTest >> classToTest [
 MiRelationQueryPresenterTest >> createNewQuery [
 
 	| rootQuery |
+
 	rootQuery := FQRootQuery new
-		             result: helper classesAndMethods;
+		             input: helper classesAndMethods;
 		             yourself.
 	^ FQRelationQuery defaultForParent: rootQuery
 ]

@@ -60,9 +60,10 @@ MiQueryListItemPresenterTest >> testAllQueryPresentersExceptSelf [
 MiQueryListItemPresenterTest >> testConfigureFor [
 
 	| newQuery rootQuery |
+
 	rootQuery := FQRootQuery new
-		result: helper classesAndMethods;
-		yourself.
+		             input: helper classesAndMethods;
+		             yourself.
 	newQuery := FQStringQuery defaultForParent: rootQuery.
 	newQuery
 		comparator: #includesSubstring:;

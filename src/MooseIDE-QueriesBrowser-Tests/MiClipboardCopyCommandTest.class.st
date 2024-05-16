@@ -41,9 +41,10 @@ MiClipboardCopyCommandTest >> tearDown [
 MiClipboardCopyCommandTest >> testExecuteCommand [
 
 	| newQuery rootQuery |
+
 	rootQuery := FQRootQuery new
-		result: helper classesAndMethods;
-		yourself.
+		             input: helper classesAndMethods;
+		             yourself.
 	newQuery := FQStringQuery defaultForParent: rootQuery.
 	newQuery
 		comparator: #includesSubstring:;
@@ -53,5 +54,7 @@ MiClipboardCopyCommandTest >> testExecuteCommand [
 	presenter rootCommandsGroup entries second decoratedCommand execute.
 
 	self
-		assert: Clipboard clipboardText equals: '(FQStringQuery property: #name comparator: #includesSubstring: valueToCompare: ''a'')'
+		assert: Clipboard clipboardText
+		equals:
+		'(FQStringQuery property: #name comparator: #includesSubstring: valueToCompare: ''a'')'
 ]

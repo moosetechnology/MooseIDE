@@ -21,13 +21,14 @@ MiNumericQueryPresenterTest >> classToTest [
 MiNumericQueryPresenterTest >> createNewQuery [
 
 	| rootQuery |
+
 	rootQuery := FQRootQuery new
-		result: helper classesAndMethods;
-		yourself.
+		             input: helper classesAndMethods;
+		             yourself.
 	^ (FQNumericQuery defaultForParent: rootQuery)
-			property: #fanIn;
-			comparator: #>;
-			valueToCompare: 5
+		  property: #fanIn;
+		  comparator: #>;
+		  valueToCompare: 5
 ]
 
 { #category : #running }

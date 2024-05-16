@@ -33,13 +33,14 @@ MiNavigationQueryPresenterTest >> classToTest [
 MiNavigationQueryPresenterTest >> createNewQuery [
 
 	| rootQuery |
+
 	rootQuery := FQRootQuery new
-		result: helper classesAndMethods;
-		yourself.
+		             input: helper classesAndMethods;
+		             yourself.
 	^ (FQNavigationQuery defaultForParent: rootQuery)
-			resetAndChangeDirection: FQIncomingNavigation;
-			association: FamixStInvocation;
-			yourself
+		  resetAndChangeDirection: FQIncomingNavigation;
+		  association: FamixStInvocation;
+		  yourself
 ]
 
 { #category : #running }

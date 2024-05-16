@@ -25,16 +25,20 @@ Class {
 SaveQueriesFixture >> exampleForCopyingQueries [
 
 	| root firstLevel secondLevel thirdLevel |
+
 	root := FQRootQuery new
-		result: FQTestsHelper new classesAndMethods;
-		yourself.
+		        input: FQTestsHelper new classesAndMethods;
+		        yourself.
 	firstLevel := FQBooleanQuery property: #isStub.
 	firstLevel beChildOf: root.
 	secondLevel := FQBooleanQuery property: #isDead.
 	secondLevel beChildOf: firstLevel.
 	thirdLevel := FQBooleanQuery property: #containsReplicas.
 	thirdLevel beChildOf: secondLevel.
-	^ { firstLevel. secondLevel. thirdLevel }
+	^ {
+		  firstLevel.
+		  secondLevel.
+		  thirdLevel }
 ]
 
 { #category : #accessing }

@@ -21,14 +21,15 @@ MiStringQueryPresenterTest >> classToTest [
 MiStringQueryPresenterTest >> createNewQuery [
 
 	| rootQuery |
+
 	rootQuery := FQRootQuery new
-		result: helper classesAndMethods;
-		yourself.
+		             input: helper classesAndMethods;
+		             yourself.
 	^ (FQStringQuery defaultForParent: rootQuery)
-			comparator: #includesSubstring:;
-			property: #name;
-			valueToCompare: 'f';
-			yourself
+		  comparator: #includesSubstring:;
+		  property: #name;
+		  valueToCompare: 'f';
+		  yourself
 ]
 
 { #category : #running }

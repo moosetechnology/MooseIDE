@@ -21,8 +21,9 @@ MiTaggedEntityQueryPresenterTest >> classToTest [
 MiTaggedEntityQueryPresenterTest >> createNewQuery [
 
 	| rootQuery |
+
 	rootQuery := FQRootQuery new
-		             result: helper classesAndMethods;
+		             input: helper classesAndMethods;
 		             yourself.
 	^ FQTaggedEntityQuery defaultForParent: rootQuery
 ]
