@@ -2,7 +2,9 @@ Class {
 	#name : #MiImportModelFromFileDialogTest,
 	#superclass : #TestCase,
 	#instVars : [
-		'dialog'
+		'dialog',
+		'emptyJSONFile',
+		'modelJSONFile'
 	],
 	#category : #'MooseIDE-Tests-Browsers'
 }
@@ -29,25 +31,23 @@ MiImportModelFromFileDialogTest >> famixTest1ModelFile [
 
 { #category : #running }
 MiImportModelFromFileDialogTest >> setUp [
+
 	super setUp.
-	
-	dialog := MiImportModelFromFileDialog open.
-]
 
-{ #category : #running }
-MiImportModelFromFileDialogTest >> tearDown [
+	modelJSONFile := self famixTest1ModelFile.
+	emptyJSONFile := self emptyJSONFile.
 
-	dialog window close.
-	super tearDown
+	dialog := MiImportModelFromFileDialog new
 ]
 
 { #category : #tests }
 MiImportModelFromFileDialogTest >> testAddingFilePathSelectsAppropriateMetaModel [
-	| file |
-	(dialog presenterAt: #mooseModelDroplist) addItemLabeled: FamixTest1Model do: [ ].
-	file := self famixTest1ModelFile.
 
-	dialog updateForModelFile: file.
+	(dialog presenterAt: #mooseModelDroplist)
+		addItemLabeled: FamixTest1Model
+		do: [  ].
+
+	dialog updateForModelFile: modelJSONFile.
 
 	self
 		assert: (dialog presenterAt: #mooseModelDroplist) selectedItem
@@ -57,47 +57,37 @@ MiImportModelFromFileDialogTest >> testAddingFilePathSelectsAppropriateMetaModel
 { #category : #tests }
 MiImportModelFromFileDialogTest >> testAddingFilePathUpdatesFilePathInput [
 
-	| jsonFile |
-	jsonFile := self emptyJSONFile.
-
-	dialog updateForModelFile: jsonFile.
+	dialog updateForModelFile: emptyJSONFile.
 
 	self
 		assert: (dialog presenterAt: #filePathInput) text
-		equals: jsonFile pathString
+		equals: emptyJSONFile pathString
 ]
 
 { #category : #tests }
 MiImportModelFromFileDialogTest >> testAddingFilePathUpdatesModelName [
 
-	| jsonFile |
-	jsonFile := self emptyJSONFile.
-
-	dialog updateForModelFile: jsonFile.
+	dialog updateForModelFile: emptyJSONFile.
 
 	self
 		assert: (dialog presenterAt: #modelNameInput) text
-		equals: jsonFile basenameWithoutExtension
+		equals: emptyJSONFile basenameWithoutExtension
 ]
 
 { #category : #tests }
 MiImportModelFromFileDialogTest >> testAddingFilePathUpdatesRootFolderInput [
 
-	| jsonFile |
-	jsonFile := self emptyJSONFile.
-
-	dialog updateForModelFile: jsonFile.
+	dialog updateForModelFile: emptyJSONFile.
 
 	self
 		assert: (dialog presenterAt: #rootFolderInput) text
-		equals: jsonFile parent pathString
+		equals: emptyJSONFile parent pathString
 ]
 
 { #category : #tests }
 MiImportModelFromFileDialogTest >> testAddingFilePathWithoutAppropriateMetaModel [
-	| file |
-	file := self famixTest1ModelFile.
 
-	self should: [ dialog updateForModelFile: file ] raise: Error.
-
+	self
+		should: [ dialog updateForModelFile: modelJSONFile ]
+		raise: Error
 ]

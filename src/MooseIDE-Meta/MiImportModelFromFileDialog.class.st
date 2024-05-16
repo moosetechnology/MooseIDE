@@ -30,7 +30,7 @@ MiImportModelFromFileDialog class >> fullWindowExtent [
 	^ self windowExtent + (0 @ MiImportingContextPresenter windowExtent y)
 ]
 
-{ #category : #'instance creation' }
+{ #category : #opening }
 MiImportModelFromFileDialog class >> open [
 
 	<script>
