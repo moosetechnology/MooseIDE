@@ -38,7 +38,7 @@ MooseLoadFASTJavaMenuCommand >> baselineName [
 { #category : #accessing }
 MooseLoadFASTJavaMenuCommand >> repositoryURL [
 
-	^ 'github://moosetechnology/FAST-Java:' , self version , '/src'
+	^ 'github://moosetechnology/FAST-JAVA:' , self version , '/src'
 ]
 
 { #category : #accessing }
