@@ -93,42 +93,71 @@ BaselineOfMooseIDE >> definePackages: spec [
 
 	spec
 		package: 'MooseIDE-Colors' with: [ spec requires: #( 'Roassal' ) ];
-		package: 'MooseIDE-Colors-Tests' with: [ spec requires: #( 'MooseIDE-Colors' ) ];
-		
-		package: 'MooseIDE-Core' with: [ spec requires: #( 'MooseIDE-Colors' 'LabelContractor' 'RoassalExporters' ) ];
-		
-		package: 'MooseIDE-Visualization' with: [ spec requires: #( 'MooseIDE-Core' 'HierarchicalVisualizations' ) ];
-		
-		package: 'MooseIDE-Meta' with: [ spec requires: #( 'MooseIDE-Core' 'MooseIDE-Famix' ) ];
-		
-		package: 'MooseIDE-Dependency' with: [ spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' 'Roassal' 'AIHierarchicalClustering' ) ];
-		
-		package: 'MooseIDE-Tests' with: [ spec requires: #( 'MooseIDE-Core' 'MooseIDE-Dependency' 'MooseIDE-Visualization' ) ];
-		
+		package: 'MooseIDE-Colors-Tests'
+		with: [ spec requires: #( 'MooseIDE-Colors' ) ];
+		package: 'MooseIDE-Core' with: [
+			spec requires:
+					#( 'MooseIDE-Colors' 'LabelContractor' 'RoassalExporters' ) ];
+		package: 'MooseIDE-Visualization'
+		with: [
+			spec requires: #( 'MooseIDE-Core' 'HierarchicalVisualizations' ) ];
+		package: 'MooseIDE-Meta'
+		with: [ spec requires: #( 'MooseIDE-Core' 'MooseIDE-Famix' ) ];
+		package: 'MooseIDE-Dependency' with: [
+			spec requires:
+					#( 'MooseIDE-Core' 'MooseIDE-Visualization'
+					   'Roassal' 'AIHierarchicalClustering' ) ];
+		package: 'MooseIDE-Tests' with: [
+			spec requires:
+					#( 'MooseIDE-Core' 'MooseIDE-Dependency' 'MooseIDE-Visualization' ) ];
 		package: 'MooseIDE-AttributedText';
-		package: 'MooseIDE-Famix' with: [ spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' 'MooseIDE-AttributedText') ];
-		
-		package: 'MooseIDE-QueriesBrowser' with: [ spec requires: #( 'MooseIDE-Core' 'FamixQueries' ) ];
-		package: 'MooseIDE-QueriesBrowser-Tests' with: [ spec requires: #( 'MooseIDE-QueriesBrowser' 'MooseIDE-Tests' ) ];
-		
-		package: 'MooseIDE-Tagging' with: [ spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' ) ];
-		package: 'MooseIDE-Tagging-Tests' with: [ spec requires: #( 'MooseIDE-Tagging' 'MooseIDE-Tests' ) ];
-		
-		package: 'MooseIDE-CoUsageMap' with: [ spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' ) ];
-		package: 'MooseIDE-CoUsageMap-Tests' with: [ spec requires: #( 'MooseIDE-CoUsageMap' 'MooseIDE-Tests' ) ];
-		
-		package: 'MooseIDE-NewTools' with: [ spec requires: #( 'MooseIDE-Meta' 'MooseIDE-Core' 'FamixQueries' ) ];
-		package: 'MooseIDE-NewTools-Tests' with: [ spec requires: #( 'MooseIDE-NewTools' 'MooseIDE-Tests' ) ];
-		
-		package: 'MooseIDE-Export' with: [ spec requires: #( 'MooseIDE-Core' 'InteractiveNotebook' ) ];
-
-		package: 'MooseIDE-Duplication' with: [ spec requires: #( 'MooseIDE-Core' ) ];
-		
-		package: 'MooseIDE-ButterflyMap' with: [ spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' ) ];
-		package: 'MooseIDE-ButterflyMap-Tests' with: [ spec requires: #( 'MooseIDE-ButterflyMap' ) ];
-		package: 'MooseIDE-QueriesDashboard' with: [ spec requires: #( 'MooseIDE-Core' ) ];
-		package: 'MooseIDE-LayerVisualization' with: [ spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' 'MooseIDE-QueriesDashboard' ) ];
-		package: 'MooseIDE-ClassBlueprint'with: [ spec requires: #( 'MooseIDE-Visualization' 'ClassBlueprint' )].
+		package: 'MooseIDE-Famix' with: [
+			spec requires:
+					#( 'MooseIDE-Core' 'MooseIDE-Visualization'
+					   'MooseIDE-AttributedText' ) ];
+		package: 'MooseIDE-QueriesBrowser'
+		with: [ spec requires: #( 'MooseIDE-Core' 'FamixQueries' ) ];
+		package: 'MooseIDE-QueriesBrowser-Tests'
+		with: [
+			spec requires: #( 'MooseIDE-QueriesBrowser'
+				   'MooseIDE-Tests' ) ];
+		package: 'MooseIDE-Tagging'
+		with: [
+			spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' ) ];
+		package: 'MooseIDE-Tagging-Tests'
+		with: [ spec requires: #( 'MooseIDE-Tagging' 'MooseIDE-Tests' ) ];
+		package: 'MooseIDE-CoUsageMap'
+		with: [
+			spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' ) ];
+		package: 'MooseIDE-CoUsageMap-Tests'
+		with: [ spec requires: #( 'MooseIDE-CoUsageMap'
+				   'MooseIDE-Tests' ) ];
+		package: 'MooseIDE-NewTools'
+		with: [
+			spec requires: #( 'MooseIDE-Meta' 'MooseIDE-Core' 'FamixQueries' ) ];
+		package: 'MooseIDE-NewTools-Tests'
+		with: [ spec requires: #( 'MooseIDE-NewTools' 'MooseIDE-Tests' ) ];
+		package: 'MooseIDE-Export'
+		with: [ spec requires: #( 'MooseIDE-Core' 'InteractiveNotebook' ) ];
+		package: 'MooseIDE-Duplication'
+		with: [ spec requires: #( 'MooseIDE-Core' ) ];
+		package: 'MooseIDE-ButterflyMap'
+		with: [
+			spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' ) ];
+		package: 'MooseIDE-ButterflyMap-Tests'
+		with: [ spec requires: #( 'MooseIDE-ButterflyMap' ) ];
+		package: 'MooseIDE-QueriesDashboard'
+		with: [ spec requires: #( 'MooseIDE-Core' ) ];
+		package: 'MooseIDE-LayerVisualization' with: [
+			spec requires:
+					#( 'MooseIDE-Core' 'MooseIDE-Visualization'
+					   'MooseIDE-QueriesDashboard' ) ];
+		package: 'MooseIDE-ClassBlueprint'
+		with: [
+			spec requires: #( 'MooseIDE-Visualization' 'ClassBlueprint' ) ];
+		package: 'MooseIDE-Spotter';
+		package: 'MooseIDE-Spotter-Tests'
+		with: [ spec requires: #( 'MooseIDE-Spotter' ) ].
 
 	self defineMooseCriticsPackages: spec
 ]
