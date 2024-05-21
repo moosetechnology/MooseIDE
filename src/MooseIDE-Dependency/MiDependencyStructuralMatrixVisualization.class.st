@@ -36,7 +36,7 @@ MiDependencyStructuralMatrixVisualization >> createDSM: aRSCanvas [
 	dsm := MiRSDependencyStructuralMatrix new.
 	dsm owner: self.
 	dsm setShouldFeedY.
-	dsm labelShapeX textBlock: [ :columnNode | viewModel displayValueForNode: columnNode].
+	dsm labelShapeX textBlock: [ :columnNode | "viewModel displayValueForNode: columnNode" ''].
 	dsm labelShapeY textBlock: [ :rowNode | viewModel displayValueForNode: rowNode ].
 	dsm container: aRSCanvas.
 	dsm objects: entities.
@@ -46,6 +46,14 @@ MiDependencyStructuralMatrixVisualization >> createDSM: aRSCanvas [
 
 	self setInteractions: dsm.
 
+]
+
+{ #category : #initialization }
+MiDependencyStructuralMatrixVisualization >> doubleClickOn: aShape event: event [
+
+	event shiftKeyPressed
+		ifTrue: [ viewModel addSelectedEntities: {aShape model key model . aShape model value model } ]
+		ifFalse: [ viewModel selectedEntities: {aShape model key model . aShape model value model } ]
 ]
 
 { #category : #initialization }
@@ -76,23 +84,9 @@ MiDependencyStructuralMatrixVisualization >> sccShapesIncluding: aRSShape [
 
 { #category : #initialization }
 MiDependencyStructuralMatrixVisualization >> setInteractions: dsm [
-	|   |
+
 	dsm shapes @ (RSPopup text: [:tuple | viewModel displayValueForTuple: tuple ]).
 
-	"sccHighlight := RSHighlightable new.
-	sccHighlight
-		when: RSHighlightEvent do: [ :evt | evt shape color: (self cellHighlightColor: evt shape model) ].
-	sccHighlight
-		when: RSUnHighlightEvent do: [ :evt | evt shape color: (self cellColor: evt shape model) ].
-	sccHighlight highlightShapes: [ :shape | self sccShapesIncluding: shape ].
-	currentCanvas @ sccHighlight"
-	
-	"RSInspectableInteraction reset.
-	inspect := RSInspectableInteraction new.
-	""highligtable := inspectable highlightable.
-	highligtable highlightColor: Color green.""
-	inspect inspectShapeBlock: [ :tuple | viewModel selected: tuple ].
-	dsm shapes @ inspect"
 ]
 
 { #category : #utilities }

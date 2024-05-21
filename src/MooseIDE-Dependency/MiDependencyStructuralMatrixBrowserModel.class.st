@@ -8,10 +8,18 @@ Class {
 		'graph',
 		'nodeDictionary',
 		'nodeColors',
-		'orderedNodes'
+		'orderedNodes',
+		'selectedEntities'
 	],
 	#category : #'MooseIDE-Dependency-DSM'
 }
+
+{ #category : #accessing }
+MiDependencyStructuralMatrixBrowserModel >> addSelectedEntities: aCollection [
+
+	selectedEntities  := MooseGroup withAll: (Set withAll: aCollection , selectedEntities entities).
+	browser updateToolbar
+]
 
 { #category : #buildGraph }
 MiDependencyStructuralMatrixBrowserModel >> buildGraphEdges [
@@ -110,6 +118,7 @@ MiDependencyStructuralMatrixBrowserModel >> followEntity: aCollection [
 { #category : #initialization }
 MiDependencyStructuralMatrixBrowserModel >> initialize [ 
 	super initialize.
+	selectedEntities := Set new.
 	self initializeColors.
 	self newGraph.
 ]
@@ -213,7 +222,14 @@ MiDependencyStructuralMatrixBrowserModel >> sccTuplesForTuple: tuple [
 
 { #category : #accessing }
 MiDependencyStructuralMatrixBrowserModel >> selectedEntities [
-	^#()
+	^selectedEntities 
+]
+
+{ #category : #accessing }
+MiDependencyStructuralMatrixBrowserModel >> selectedEntities: aCollection [
+
+	selectedEntities  := MooseGroup withAll: (Set withAll: aCollection).
+	browser updateToolbar
 ]
 
 { #category : #settings }
