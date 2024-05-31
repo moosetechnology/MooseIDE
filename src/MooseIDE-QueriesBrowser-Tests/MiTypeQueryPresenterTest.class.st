@@ -51,6 +51,17 @@ MiTypeQueryPresenterTest >> testImpossibleQueryInitialization [
 ]
 
 { #category : #tests }
+MiTypeQueryPresenterTest >> testModalSelectionTypes [
+
+	presenter typesList selectItems: { FamixStClass }.
+	presenter selectTypeAction: nil.
+
+	self
+		assertCollection: presenter query types
+		hasSameElements: { FamixStClass }
+]
+
+{ #category : #tests }
 MiTypeQueryPresenterTest >> testPresenters [
 
 	self assert: presenter typesButton class equals: SpButtonPresenter
