@@ -8,7 +8,8 @@ Class {
 	#instVars : [
 		'typesButton',
 		'typesList',
-		'selectedTypesLabel'
+		'selectedTypesLabel',
+		'typesModal'
 	],
 	#category : #'MooseIDE-QueriesBrowser-Configuration presenters'
 }
@@ -90,10 +91,8 @@ MiTypeQueryPresenter >> newTypesButton [
 		  label: 'Select Types';
 		  action: [
 			  typesList selectItems: self query types.
-			  typesList openModal cancelled ifFalse: [
-					  self
-						  updateTypesLabel;
-						  computeQueryAction: nil ] ];
+			  typesModal := typesList openModal.
+			  typesModal isCancelled ifFalse: [ self selectTypeAction: nil ] ];
 		  yourself
 ]
 

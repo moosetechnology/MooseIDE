@@ -39,6 +39,12 @@ MiTypeSelectionPresenter >> items: types [
 ]
 
 { #category : #accessing }
+MiTypeSelectionPresenter >> okButton [ 
+
+	^self owner buttons detect: [ :button | button label = 'Ok' ]
+]
+
+{ #category : #accessing }
 MiTypeSelectionPresenter >> selectItems: items [
 
 	list selectItems: items
