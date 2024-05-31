@@ -7,6 +7,14 @@ Class {
 	#category : #'MooseIDE-Visualization-Helpers'
 }
 
+{ #category : #accessing }
+HMiPropagateMenuItem >> argument [
+	"Propagate on the buses selected by the browser"
+
+	^ visualization mapModel ifNotNil: [ :mapModel |
+		  mapModel browser buses ]
+]
+
 { #category : #testing }
 HMiPropagateMenuItem >> canBeExecuted [
 	^ shape model rawModel isMooseEntity
@@ -34,7 +42,7 @@ HMiPropagateMenuItem >> order [
 
 { #category : #accessing }
 HMiPropagateMenuItem >> selector [
-	^ #miPropagate
+	^ #miPropagateTo:
 ]
 
 { #category : #accessing }

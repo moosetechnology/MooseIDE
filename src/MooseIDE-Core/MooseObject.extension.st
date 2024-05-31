@@ -15,5 +15,12 @@ MooseObject >> miDescription [
 { #category : #'*MooseIDE-Core' }
 MooseObject >> miPropagate [
 
-	(MiApplication current busNamed: MiApplication defaultBusName ) globallySelect: self.
+	(MiApplication current busNamed: MiApplication defaultBusName)
+		globallySelect: self
+]
+
+{ #category : #'*MooseIDE-Core' }
+MooseObject >> miPropagateTo: buses [
+
+	buses do: [ :bus | bus globallySelect: self ]
 ]
