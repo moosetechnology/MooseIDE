@@ -308,7 +308,7 @@ MiCoUsageMapBuilder >> selectedInnerShape [
 			ifNone: [ nil ]
 		].
 
-	Error signal: 'Shape of selected entity not found'
+	"Error signal: 'Shape of selected entity not found'"
 ]
 
 { #category : #accessing }
