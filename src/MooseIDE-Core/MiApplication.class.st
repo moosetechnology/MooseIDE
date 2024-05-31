@@ -94,7 +94,7 @@ MiApplication >> buses [
 
 { #category : #brokerage }
 MiApplication >> consumeItem: anItem [
-	
+
 	self consumeItem: anItem from: nil
 ]
 
@@ -202,9 +202,13 @@ MiApplication >> instantiateModelImporter [
 
 { #category : #brokerage }
 MiApplication >> itemsFor: aClass [
+	| setCopy |
 
-	^ (self producersOf: aClass) flatCollect: [ :producer | 
-		  producer itemsFor: aClass ]
+	setCopy := Set new.
+	 (self producersOf: aClass) do: [ :producer | 
+		  (producer itemsFor: aClass ) do: [ :e | setCopy add: e shallowCopy ]].
+	^ setCopy
+	
 ]
 
 { #category : #'drag and drop support' }
