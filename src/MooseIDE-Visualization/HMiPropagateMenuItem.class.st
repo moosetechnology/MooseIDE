@@ -42,7 +42,7 @@ HMiPropagateMenuItem >> order [
 
 { #category : #accessing }
 HMiPropagateMenuItem >> selector [
-	^ #miPropagateTo:
+	^ #miPropagateOn:
 ]
 
 { #category : #accessing }

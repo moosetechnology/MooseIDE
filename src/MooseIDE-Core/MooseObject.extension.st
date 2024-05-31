@@ -20,7 +20,7 @@ MooseObject >> miPropagate [
 ]
 
 { #category : #'*MooseIDE-Core' }
-MooseObject >> miPropagateTo: buses [
+MooseObject >> miPropagateOn: buses [
 
 	buses do: [ :bus | bus globallySelect: self ]
 ]
