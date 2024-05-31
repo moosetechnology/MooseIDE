@@ -86,6 +86,13 @@ MiArchitecturalMapModel >> associationTypes [
 	^ settings getItemValue: #associationTypes
 ]
 
+{ #category : #settings }
+MiArchitecturalMapModel >> availableDoubleClickActions [
+
+	^ #( doubleClickExpandeCollapse: doubleClickInspect:
+	     doubleClickPropagate: )
+]
+
 { #category : #accessing }
 MiArchitecturalMapModel >> availableLayouts [
 	"all available layouts: 
@@ -193,6 +200,31 @@ MiArchitecturalMapModel >> directoriesVirtualNodes [
 ]
 
 { #category : #accessing }
+MiArchitecturalMapModel >> doubleClickExpandeCollapse: aShape [
+
+	aShape model expandCollapse
+]
+
+{ #category : #accessing }
+MiArchitecturalMapModel >> doubleClickInspect: aShape [
+
+	MiInspectorBrowser inspect: aShape model rawModel
+]
+
+{ #category : #accessing }
+MiArchitecturalMapModel >> doubleClickPropagate: aShape [
+
+	self browser buses do: [ :bus |
+		bus globallySelect: aShape model rawModel mooseInterestingEntity ]
+]
+
+{ #category : #'as yet unclassified' }
+MiArchitecturalMapModel >> doubleClickSetting [
+
+	^ settings getItemValue: #doubleClickAction
+]
+
+{ #category : #accessing }
 MiArchitecturalMapModel >> entities [
 
 	^ entities
@@ -227,6 +259,7 @@ MiArchitecturalMapModel >> initializeSettings [
 						addItem: self itemMegaMorphicSize named: #megaMorphicSize;
 						addItem: self itemTimeoutDuration named: #timeoutDuration;
 						addItem: self itemDirectoriesVirtualNodes named: #directoriesVirtualNodes;
+						addItem: self itemDoubleClickAction named: #doubleClickAction;
 						yourself
 ]
 
@@ -260,6 +293,17 @@ MiArchitecturalMapModel >> itemDirectoriesVirtualNodes [
 		  help:
 			  'If checked the source files/directories containing entites are treated and showed in the map.
 They are root nodes in the map';
+		  yourself
+]
+
+{ #category : #settings }
+MiArchitecturalMapModel >> itemDoubleClickAction [
+
+	^ MiAbstractSettingItem droplistSetting
+		  possibleValues: self availableDoubleClickActions;
+		  setValue: #doubleClickExpandeCollapse:;
+		  label: 'Action on double click';
+		  help: 'You can define an action for double click on a node.';
 		  yourself
 ]
 
