@@ -92,7 +92,12 @@ MiArchitecturalMapModel >> availableLayouts [
 	  RSLayout withAllSubclasses reject: [ :c | c isAbstract ]
 	But some of them require specific configuration that we cannot easily specify here
 	so we choose a subset of the simplest ones"
-	^{ RSFlowLayout . RSCircleLayout . RSGridLayout }
+
+	^ {
+		  RSFlowLayout.
+		  RSCircleLayout.
+		  RSGridLayout.
+		  RSTreeLayout }
 ]
 
 { #category : #accessing }
