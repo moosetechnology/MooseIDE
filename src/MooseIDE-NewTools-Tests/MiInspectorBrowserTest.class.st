@@ -40,16 +40,6 @@ MiInspectorBrowserTest >> testCanPropagateMooseGroup [
 
 ]
 
-{ #category : #tests }
-MiInspectorBrowserTest >> testCannotPropagatePharoCollection [
-
-	browser followEntity: self mooseObjects.
-
-	self deny: browser canPropagate.
-	self deny: (browser toolbarButton: 'Propagate') isEnabled
-
-]
-
 { #category : #'tests - tags' }
 MiInspectorBrowserTest >> testSelectedTagSetAndGet [
 	| model entity tag |

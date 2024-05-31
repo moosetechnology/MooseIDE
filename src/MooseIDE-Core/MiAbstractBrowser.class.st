@@ -401,7 +401,8 @@ MiAbstractBrowser >> canPropagate [
 	| entity |
 	"Ideally we should use miSelectedItemToPropagate but this would make the models browser really slow since it would copy the whole model and reject the stubs each time I'm called. So we do not care about checking the stubs here by calling #miSelectedItem.."
 	entity := self miSelectedItem.
-	^ entity isMooseObject and: [ entity isMooseModel or: [ entity asMooseGroup isNotEmpty ] ]
+	^ (entity isCollection and: [ entity isNotEmpty ]) or: [
+		  entity isMooseObject and: [ entity isCollection not ] ]
 ]
 
 { #category : #testing }
