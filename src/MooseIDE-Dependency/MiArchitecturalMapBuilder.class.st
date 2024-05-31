@@ -346,7 +346,9 @@ MiArchitecturalMapBuilder >> nodeAnnouncer [
 	baseNode ifNotNil: [ ^ baseNode announcer ].
 	baseNode := RSComposite new
 		            @ self popup;
-		            @ (HGhostDraggable new color: Smalltalk ui theme caretColor);
+		            @
+			            (HGhostDraggable new color:
+					             Smalltalk ui theme caretColor);
 		            @ self menuInteraction;
 		            @ self highlightable;
 		            @ self highlightableLinkedShapes;
@@ -354,7 +356,12 @@ MiArchitecturalMapBuilder >> nodeAnnouncer [
 		            @ HResizeParentWhenChildMoves new;
 		            yourself.
 
-	baseNode when: RSMouseDoubleLeftClick do: [ :event | event shape model expandCollapse ] for: self.
+	baseNode
+		when: RSMouseDoubleLeftClick
+		do: [ :event |
+			mapModel perform: mapModel doubleClickSetting with: event shape ]
+		for: self.
+
 	^ baseNode announcer
 ]
 
