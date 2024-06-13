@@ -60,7 +60,7 @@ MiTagCreationFormTest >> testQueryDropListFetchQueriesFromQueriesProducer [
 	query := FQBooleanQuery new property: #isAbstract.
 	(mockProducer stub itemsFor: FQAbstractQuery) willReturn: { query }.
 	presenter updateQueryList.
-	self assert: (presenter queryList items anySatisfy: [ :q | q = query ])
+	self assert: (presenter queryList items anySatisfy: [ :q |  (q class = query class) and: [ q property = query property ] ])
 ]
 
 { #category : #tests }
