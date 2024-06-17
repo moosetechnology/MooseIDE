@@ -19,22 +19,6 @@ Class {
 	#category : #'MooseIDE-Meta-Import'
 }
 
-{ #category : #layout }
-MiImportModelFromSmalltalkDialog class >> defaultLayout [
-
-	^ SpBoxLayout newTopToBottom
-		  spacing: 10;
-		  add: (SpBoxLayout newLeftToRight
-				   add: 'Model name: ' width: 100;
-				   add: #modelNameField;
-				   yourself)
-		  height: self inputTextHeight;
-		  add: 'Select packages: ' height: self inputTextHeight;
-		  add: #packagesSelector;
-		  add: #advancedSettingsButton height: self buttonHeight;
-		  yourself
-]
-
 { #category : #accessing }
 MiImportModelFromSmalltalkDialog class >> fullWindowExtent [
 
@@ -45,7 +29,7 @@ MiImportModelFromSmalltalkDialog class >> fullWindowExtent [
 MiImportModelFromSmalltalkDialog class >> open [
 
 	<script>
-	^ self new openDialog
+	^ super open
 ]
 
 { #category : #specs }
@@ -95,6 +79,22 @@ MiImportModelFromSmalltalkDialog >> advancedSettingsLayout [
 MiImportModelFromSmalltalkDialog >> candidateClass [
 
 	^ invocationStrategyDroplist selectedItem
+]
+
+{ #category : #layout }
+MiImportModelFromSmalltalkDialog >> defaultLayout [
+
+	^ SpBoxLayout newTopToBottom
+		  spacing: 10;
+		  add: (SpBoxLayout newLeftToRight
+				   add: 'Model name: ' width: 100;
+				   add: modelNameField;
+				   yourself)
+		  height: self class inputTextHeight;
+		  add: 'Select packages: ' height: self class inputTextHeight;
+		  add: packagesSelector;
+		  add: advancedSettingsButton height: self class buttonHeight;
+		  yourself
 ]
 
 { #category : #'advanced settings' }
