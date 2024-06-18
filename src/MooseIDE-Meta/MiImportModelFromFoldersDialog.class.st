@@ -64,6 +64,12 @@ MiImportModelFromFoldersDialog >> defaultLayout [
 		  yourself
 ]
 
+{ #category : #action }
+MiImportModelFromFoldersDialog >> importModel [
+
+	^ self privateImportModel
+]
+
 { #category : #initialization }
 MiImportModelFromFoldersDialog >> initializePresenters [
 
@@ -89,10 +95,17 @@ MiImportModelFromFoldersDialog >> initializePresenters [
 
 { #category : #action }
 MiImportModelFromFoldersDialog >> privateImportModel [
-1halt
+
+	^ MiMooseModelsWrapper models: (FamixJavaFoldersImporter importFolders: self selectedFolders)
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
+MiImportModelFromFoldersDialog >> selectedFolders [
+
+	^ foldersList items
+]
+
+{ #category : #accessing }
 MiImportModelFromFoldersDialog >> userDescription [
 
 	^ 'I am in interface to easily parse projects and import the resulting models into Moose.
@@ -102,5 +115,7 @@ Bellow, you can select folders containing each a project to parse with the lates
 
 { #category : #action }
 MiImportModelFromFoldersDialog >> validateImportForm [
-	1halt
+
+	self selectedFolders ifEmpty: [ self error: 'Please select at least one folder.' ].
+	self selectedFolders do: [ :folder | folder ifAbsent: [ self error: 'Selected folder does not exist.' ] ]
 ]
