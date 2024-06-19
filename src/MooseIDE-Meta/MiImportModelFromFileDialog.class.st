@@ -34,9 +34,7 @@ MiImportModelFromFileDialog class >> fullWindowExtent [
 MiImportModelFromFileDialog class >> open [
 
 	<script>
-	^ self new
-		  openDialog;
-		  yourself
+	^ super open
 ]
 
 { #category : #accessing }
@@ -54,10 +52,7 @@ MiImportModelFromFileDialog class >> windowExtent [
 { #category : #action }
 MiImportModelFromFileDialog >> closeEntitiesChoice [
 
-	self withWindowDo: [ :window | 
-		window extent: self class windowExtent ].
-
-	self layout: self simpleLayout
+	self withWindowDo: [ :window | window extent: self class windowExtent ]
 ]
 
 { #category : #initialization }
@@ -65,6 +60,52 @@ MiImportModelFromFileDialog >> connectPresenters [
 
 	mooseModelDroplist whenSelectionChangedDo: [ 
 		customEntitiesButton state ifTrue: [ self openEntitiesChoice ] ]
+]
+
+{ #category : #initialization }
+MiImportModelFromFileDialog >> defaultLayout [
+
+	| spacing size labelWidth |
+	spacing := 10.
+	size := 25.
+	labelWidth := 120.
+	^ SpBoxLayout newTopToBottom
+		  spacing: spacing;
+		  add: (SpBoxLayout newLeftToRight
+				   spacing: spacing;
+				   add: 'File path:' width: labelWidth;
+				   add: filePathInput;
+				   add: filePathButton width: size;
+				   yourself)
+		  height: size;
+		  add: (SpBoxLayout newLeftToRight
+				   spacing: spacing;
+				   add: 'Model type:' width: labelWidth;
+				   add: mooseModelDroplist;
+				   yourself)
+		  height: size;
+		  add: (SpBoxLayout newLeftToRight
+				   spacing: spacing;
+				   add: 'Model name:' width: labelWidth;
+				   add: modelNameInput;
+				   add: self newNullPresenter width: size;
+				   yourself)
+		  height: size;
+		  add: (SpBoxLayout newLeftToRight
+				   spacing: spacing;
+				   add: 'Root folder (optional):' width: labelWidth;
+				   add: rootFolderInput;
+				   add: rootFolderButton width: size;
+				   yourself)
+		  height: size;
+		  add: (SpBoxLayout newLeftToRight
+				   spacing: spacing;
+				   add: 'Entity types:' width: labelWidth;
+				   add: allEntitiesButton;
+				   add: customEntitiesButton;
+				   yourself)
+		  height: size;
+		  yourself
 ]
 
 { #category : #private }
@@ -187,12 +228,6 @@ MiImportModelFromFileDialog >> initializeFilePathWidgets [
 ]
 
 { #category : #initialization }
-MiImportModelFromFileDialog >> initializeLayout [
-
-	self layout: self simpleLayout
-]
-
-{ #category : #initialization }
 MiImportModelFromFileDialog >> initializeMooseModelDroplist [
 
 	mooseModelDroplist := self newDropList
@@ -218,9 +253,7 @@ MiImportModelFromFileDialog >> initializePresenters [
 		                    action: [ self getRootFolder ];
 		                    icon: (self iconNamed: #open).
 
-	self initializeEntitiesSelectionWidgets.
-
-	self initializeLayout
+	self initializeEntitiesSelectionWidgets
 ]
 
 { #category : #'metamodel-guess' }
@@ -290,52 +323,6 @@ MiImportModelFromFileDialog >> privateImportModel [
 	model name: (modelNameInput text ifEmpty: [ 'MooseModel' ]).
 
 	^ model
-]
-
-{ #category : #initialization }
-MiImportModelFromFileDialog >> simpleLayout [
-
-	| spacing size labelWidth |
-	spacing := 10.
-	size := 25.
-	labelWidth := 120.
-	^ SpBoxLayout newTopToBottom
-		  spacing: spacing;
-		  add: (SpBoxLayout newLeftToRight
-				   spacing: spacing;
-				   add: 'File path:' width: labelWidth;
-				   add: filePathInput;
-				   add: filePathButton width: size;
-				   yourself)
-		  height: size;
-		  add: (SpBoxLayout newLeftToRight
-				   spacing: spacing;
-				   add: 'Model type:' width: labelWidth;
-				   add: mooseModelDroplist;
-				   yourself)
-		  height: size;
-		  add: (SpBoxLayout newLeftToRight
-				   spacing: spacing;
-				   add: 'Model name:' width: labelWidth;
-				   add: modelNameInput;
-				   add: self newNullPresenter width: size;
-				   yourself)
-		  height: size;
-		  add: (SpBoxLayout newLeftToRight
-				   spacing: spacing;
-				   add: 'Root folder (optional):' width: labelWidth;
-				   add: rootFolderInput;
-				   add: rootFolderButton width: size;
-				   yourself)
-		  height: size;
-		  add: (SpBoxLayout newLeftToRight
-				   spacing: spacing;
-				   add: 'Entity types:' width: labelWidth;
-				   add: allEntitiesButton;
-				   add: customEntitiesButton;
-				   yourself)
-		  height: size;
-		  yourself
 ]
 
 { #category : #private }

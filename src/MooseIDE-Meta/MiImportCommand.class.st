@@ -18,9 +18,7 @@ Class {
 { #category : #converting }
 MiImportCommand class >> addToSpCommandGroup: aSpCommandGroup forSpecContext: aPresenter [
 
-	{ 
-		MiImportFromFileCommand.
-		MiImportFromSTCommand } do: [ :cmd | 
+	self allSubclasses do: [ :cmd |
 		aSpCommandGroup register: ((cmd forSpecContext: aPresenter)
 				 iconName: cmd defaultIconName;
 				 yourself) ].

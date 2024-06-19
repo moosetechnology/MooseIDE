@@ -12,7 +12,11 @@ Class {
 
 { #category : #opening }
 MiImportModelDialog class >> open [
-	^ self subclassResponsibility
+
+	<script>
+	^ self new
+		  openDialog;
+		  yourself
 ]
 
 { #category : #accessing }
