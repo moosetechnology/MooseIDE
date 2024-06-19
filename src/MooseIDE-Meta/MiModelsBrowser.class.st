@@ -147,12 +147,30 @@ MiModelsBrowser >> importFromFileUI [
 { #category : #initialization }
 MiModelsBrowser >> initializeList [
 
-	modelFilteringList := self newFilteringList.
+	modelFilteringList := self newTable.
 	self listOfMooseModels: specModel entities.
 
-	modelFilteringList display: [ :mooseModel | mooseModel name ].
-	modelFilteringList listPresenter contextMenu: [ (self class buildModelCommandsGroupWith: self) asMenuPresenter ].
-	modelFilteringList whenSelectionChangedDo: [ :selected | specModel selected: selected selectedItem ]
+	modelFilteringList
+		addColumn: (SpStringTableColumn new
+				 title: 'Name';
+				 sortFunction: #name ascending;
+				 evaluated: [ :model | model name ] yourself);
+		addColumn: (SpStringTableColumn new
+				 title: 'Language';
+				 evaluated: [ :model |
+					 model sourceLanguage
+						 ifNil: [ 'unknown' ]
+						 ifNotNil: [ :language | language name ] ];
+				 beSortable;
+				 yourself);
+		addColumn: (SpStringTableColumn new
+				 title: 'Number of entities';
+				 sortFunction: [ :model | model entities size ] ascending;
+				 evaluated: [ :model | model entities size asString ];
+				 beSortable;
+				 yourself);
+		contextMenu: [ (self class buildModelCommandsGroupWith: self) asMenuPresenter ];
+		whenSelectionChangedDo: [ :selected | specModel selected: selected selectedItem ]
 ]
 
 { #category : #initialization }
