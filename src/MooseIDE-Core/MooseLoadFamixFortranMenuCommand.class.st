@@ -26,7 +26,7 @@ MooseLoadFamixFortranMenuCommand class >> menuCommandOn: aBuilder [
 { #category : #accessing }
 MooseLoadFamixFortranMenuCommand class >> menuPriority [
 
-	^ 25
+	^ 21
 ]
 
 { #category : #accessing }
