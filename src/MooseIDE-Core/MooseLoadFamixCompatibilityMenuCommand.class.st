@@ -26,7 +26,7 @@ MooseLoadFamixCompatibilityMenuCommand class >> menuCommandOn: aBuilder [
 { #category : #accessing }
 MooseLoadFamixCompatibilityMenuCommand class >> menuPriority [
 
-	^ 21
+	^ 22
 ]
 
 { #category : #accessing }
