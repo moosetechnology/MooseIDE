@@ -5,7 +5,6 @@ Class {
 		'mooseModelDroplist',
 		'filePathInput',
 		'filePathButton',
-		'importedFile',
 		'modelNameInput',
 		'rootFolderInput',
 		'rootFolderButton',
@@ -119,15 +118,14 @@ MiImportModelFromFileDialog >> getModelFile [
 		              path:
 			              (modelFile
 				               ifNil: [ self class defaultDirectory ]
-				               ifNotNil: [ 
+				               ifNotNil: [
 					               modelFile isFile
 						               ifTrue: [ modelFile parent ]
 						               ifFalse: [ modelFile ] ]).
 
 	chosenFile ifNil: [ ^ self ].
 
-	modelFile := chosenFile.
-	self newModelFileEntered
+	self tryUpdatingForModelFile:  chosenFile
 ]
 
 { #category : #private }
@@ -149,11 +147,7 @@ MiImportModelFromFileDialog >> getRootFolder [
 { #category : #action }
 MiImportModelFromFileDialog >> handleDropFile: aFileReference [
 
-	[ self updateForModelFile: aFileReference ]
-		on: Error
-		do: [ :err |
-			UIManager default alert: 'Error: ' , err messageText.
-			^ self ]
+	self tryUpdatingForModelFile: aFileReference
 ]
 
 { #category : #action }
@@ -268,25 +262,12 @@ MiImportModelFromFileDialog >> metaModelForFile [
 MiImportModelFromFileDialog >> newFilePathInput: aString [
 
 	| file |
-
 	aString ifEmpty: [ ^ self ].
 
 	file := aString asFileReference.
 	file isFile ifFalse: [ ^ self ].
 
-	modelFile := file.
-	self newModelFileEntered
-]
-
-{ #category : #private }
-MiImportModelFromFileDialog >> newModelFileEntered [
-
-	(modelFile isNil or: [ modelFile fullName = filePathInput text ])
-		ifFalse: [ filePathInput text: modelFile fullName ].
-
-	[ self updateForModelFile: modelFile ]
-		on: Error
-		do: [ :err | UIManager default alert: err messageText ]
+	self tryUpdatingForModelFile: file
 ]
 
 { #category : #action }
@@ -326,8 +307,22 @@ MiImportModelFromFileDialog >> privateImportModel [
 ]
 
 { #category : #private }
+MiImportModelFromFileDialog >> tryUpdatingForModelFile: aFile [
+
+	[ self updateForModelFile: aFile ]
+		on: Error
+		do: [ :err |
+			err freeze.
+			MiImportErrorDialog new
+				label: 'Error: ' , err messageText;
+				onCancel: [ err debug ];
+				openDialog ]
+]
+
+{ #category : #private }
 MiImportModelFromFileDialog >> updateForModelFile: aFile [
 	"updates all fileds in the presenter according to new modelFile"
+
 	modelFile := aFile.
 
 	filePathInput text: modelFile asFileReference pathString.
