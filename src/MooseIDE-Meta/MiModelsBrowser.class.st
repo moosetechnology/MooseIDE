@@ -47,6 +47,12 @@ MiModelsBrowser class >> defaultLayout [
 		  yourself
 ]
 
+{ #category : #'instance creation' }
+MiModelsBrowser class >> instantiateAndOpen [
+
+	^ super open
+]
+
 { #category : #testing }
 MiModelsBrowser class >> isModelImporter [
 	^true
@@ -87,7 +93,7 @@ MiModelsBrowser class >> newModel [
 MiModelsBrowser class >> open [
 
 	<script>
-	^ super open
+	^ MiApplication current openCurrentModelsBrowser
 ]
 
 { #category : #specs }
@@ -100,6 +106,13 @@ MiModelsBrowser class >> title [
 MiModelsBrowser class >> windowSize [
 
 	^ 600 @ 400
+]
+
+{ #category : #'window control' }
+MiModelsBrowser >> browserClosed [
+
+	super browserClosed.
+	self application unregisterModelsBrowser
 ]
 
 { #category : #testing }
