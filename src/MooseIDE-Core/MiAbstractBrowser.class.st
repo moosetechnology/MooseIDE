@@ -576,6 +576,18 @@ MiAbstractBrowser >> registerToAdapterEvents: anAdapter [
 	anAdapter widget announcer when: WindowExpanded do: [ self browserExpanded ] for: self
 ]
 
+{ #category : #'window management' }
+MiAbstractBrowser >> restore [
+	"We have to get to the adpater because #restore is not in SpWindowPresenter yet.
+	A PR has been made to Pharo 13"
+
+	self withWindowDo: [ :window |
+		window isMinimized ifTrue: [
+			window withAdapterDo: [ :windowAdapter |
+				windowAdapter widgetDo: [ :widget | widget restore ] ] ].
+		window activate ]
+]
+
 { #category : #accessing }
 MiAbstractBrowser >> selectedTag [
 	^self model
