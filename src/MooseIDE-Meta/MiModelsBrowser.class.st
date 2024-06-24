@@ -15,6 +15,9 @@ Class {
 		'toolbar',
 		'modelFilteringList'
 	],
+	#classInstVars : [
+		'openedBrowser'
+	],
 	#category : #'MooseIDE-Meta-ModelsBrowser'
 }
 
@@ -87,7 +90,21 @@ MiModelsBrowser class >> newModel [
 MiModelsBrowser class >> open [
 
 	<script>
-	^ super open
+	^ openedBrowser
+		  ifNotNil: [ :modelsBrowser | self restoreCurrent: modelsBrowser ]
+		  ifNil: [ openedBrowser := super open ]
+]
+
+{ #category : #'instance creation' }
+MiModelsBrowser class >> restoreCurrent: modelsBrowser [
+	"We have to get to the adpater because #restore is not in SpWindowPresenter yet.
+	A PR has been made to Pharo 13"
+
+	modelsBrowser withWindowDo: [ :window |
+		window isMinimized ifTrue: [
+			window withAdapterDo: [ :adapter |
+				adapter widgetDo: [ :widget | widget restore ] ] ].
+		window activate ]
 ]
 
 { #category : #specs }
@@ -96,10 +113,23 @@ MiModelsBrowser class >> title [
 	^ 'Models browser'
 ]
 
+{ #category : #'instance creation' }
+MiModelsBrowser class >> unregisterOpenedBrowser [
+
+	openedBrowser := nil
+]
+
 { #category : #specs }
 MiModelsBrowser class >> windowSize [
 
 	^ 600 @ 400
+]
+
+{ #category : #'window control' }
+MiModelsBrowser >> browserClosed [
+
+	super browserClosed.
+	self class unregisterOpenedBrowser
 ]
 
 { #category : #testing }
