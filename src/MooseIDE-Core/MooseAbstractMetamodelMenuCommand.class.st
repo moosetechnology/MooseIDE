@@ -34,7 +34,7 @@ MooseAbstractMetamodelMenuCommand class >> menuCommandOn: aBuilder [
 { #category : #accessing }
 MooseAbstractMetamodelMenuCommand class >> menuPriority [
 
-	^ 0
+	^ 20
 ]
 
 { #category : #'world menu' }

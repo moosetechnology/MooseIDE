@@ -17,11 +17,11 @@ MooseLoadClassNameAnalyserMenuCommand class >> label [
 	^ 'Class Name Analyser'
 ]
 
-{ #category : #'world menu' }
+{ #category : #accessing }
 MooseLoadClassNameAnalyserMenuCommand class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
-	^ self menuCommandOn: aBuilder forCommand: self
+	^ (self menuCommandOn: aBuilder forCommand: self) yourself
 ]
 
 { #category : #accessing }

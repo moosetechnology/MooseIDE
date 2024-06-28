@@ -3,7 +3,7 @@ This class adds a menu item to load github://moosetechnology/Famix-CPP
 "
 Class {
 	#name : #MooseLoadFamixCppMenuCommand,
-	#superclass : #MooseAbstractLoadModuleMenuCommand,
+	#superclass : #MooseAbstractLoadFamixMenuCommand,
 	#category : #'MooseIDE-Core-MenuBar'
 }
 
@@ -19,17 +19,19 @@ MooseLoadFamixCppMenuCommand class >> label [
 	^ 'Famix-Cpp'
 ]
 
-{ #category : #'world menu' }
+{ #category : #accessing }
 MooseLoadFamixCppMenuCommand class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
-	^ self menuCommandOn: aBuilder forCommand: self
+	^ (self menuCommandOn: aBuilder forCommand: self)
+		  withSeparatorAfter;
+		  yourself
 ]
 
 { #category : #accessing }
 MooseLoadFamixCppMenuCommand class >> menuPriority [
 
-	^ 20
+	^super menuPriority + 2
 ]
 
 { #category : #accessing }

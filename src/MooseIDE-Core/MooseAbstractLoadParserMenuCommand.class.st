@@ -5,13 +5,7 @@ Class {
 }
 
 { #category : #accessing }
-MooseAbstractLoadParserMenuCommand class >> label [
-
-	^ 'Parser'
-]
-
-{ #category : #accessing }
 MooseAbstractLoadParserMenuCommand class >> menuPriority [
 
-	^ 30
+	^ 40
 ]

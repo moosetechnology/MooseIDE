@@ -28,7 +28,7 @@ MooseLoadFASTFortranMenuCommand class >> menuCommandOn: aBuilder [
 { #category : #accessing }
 MooseLoadFASTFortranMenuCommand class >> menuPriority [
 
-	^ super menuPriority + 4
+	^ super menuPriority + 3
 ]
 
 { #category : #accessing }

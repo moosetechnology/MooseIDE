@@ -1,6 +1,6 @@
 Class {
 	#name : #MooseLoadFamixFortranMenuCommand,
-	#superclass : #MooseAbstractLoadModuleMenuCommand,
+	#superclass : #MooseAbstractLoadFamixMenuCommand,
 	#category : #'MooseIDE-Core-MenuBar'
 }
 
@@ -26,7 +26,7 @@ MooseLoadFamixFortranMenuCommand class >> menuCommandOn: aBuilder [
 { #category : #accessing }
 MooseLoadFamixFortranMenuCommand class >> menuPriority [
 
-	^ 21
+	^super menuPriority + 1
 ]
 
 { #category : #accessing }

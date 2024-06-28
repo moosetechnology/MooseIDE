@@ -31,7 +31,7 @@ MooseRegenerateAllMetamodelsMenuCommand class >> menuCommandOn: aBuilder [
 { #category : #accessing }
 MooseRegenerateAllMetamodelsMenuCommand class >> menuPriority [
 
-	^ 40
+	^super menuPriority + 1
 ]
 
 { #category : #executing }
