@@ -119,7 +119,12 @@ MiAbstractBrowser class >> famixMenuRoot [
 { #category : #'world menu' }
 MiAbstractBrowser class >> helpMessage [
 
-	^ ((self comment ifNil: [ '' ]) lines copyUpTo: '') inject: '' into: [ :s1 :s2 | s1 , Character cr asString , s2 ]
+	^ self comment ifNil: [ '' ] ifNotNil: [ :comment |
+		  String streamContents: [ :s |
+			  comment lineIndicesDo: [ :start :end :ignored |
+				  start = (end + 1) ifTrue: [ "stop at empty line" ^ s contents ].
+				  start = 1 ifFalse: [ s nextPut: Character cr ].
+				  start to: end do: [ :i | s nextPut: (comment at: i) ] ] ] ]
 ]
 
 { #category : #testing }
