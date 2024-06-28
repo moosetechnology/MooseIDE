@@ -35,6 +35,17 @@ MooseLoadFASTJavaMenuCommand >> baselineName [
 	^ 'FASTJava'
 ]
 
+{ #category : #executing }
+MooseLoadFASTJavaMenuCommand >> execute [
+	"override to load a specific group of the baseline: #all"
+
+	Metacello new
+		baseline: self baselineName;
+		repository: self repositoryURL;
+		onConflictUseIncoming;
+		load: #all
+]
+
 { #category : #accessing }
 MooseLoadFASTJavaMenuCommand >> repositoryURL [
 
@@ -44,5 +55,5 @@ MooseLoadFASTJavaMenuCommand >> repositoryURL [
 { #category : #accessing }
 MooseLoadFASTJavaMenuCommand >> version [
 
-	^ 'v3.x.x'
+	^ 'v3'
 ]
