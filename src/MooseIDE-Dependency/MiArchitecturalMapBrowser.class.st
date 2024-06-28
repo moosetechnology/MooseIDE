@@ -127,7 +127,7 @@ MiArchitecturalMapBrowser >> followEntity: anEntity [
 	self runVisualization
 ]
 
-{ #category : #testing }
+{ #category : #settings }
 MiArchitecturalMapBrowser >> hasSettings [
 
 	^ true
@@ -157,6 +157,24 @@ MiArchitecturalMapBrowser >> setModelBeforeInitialization: aModel [
 
 	super setModelBeforeInitialization: aModel.
 	aModel browser: self
+]
+
+{ #category : #settings }
+MiArchitecturalMapBrowser >> setSettingItem: aSymbol value: aValue [
+
+	specModel settings setItem: aSymbol value: aValue
+]
+
+{ #category : #settings }
+MiArchitecturalMapBrowser >> settingsModel [
+
+	^ specModel settings
+]
+
+{ #category : #settings }
+MiArchitecturalMapBrowser >> updateSettings [
+
+	specModel settingsChanged: true
 ]
 
 { #category : #'accessing - private tests' }
