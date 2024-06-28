@@ -16,7 +16,7 @@ MooseLoadFASTJavaMenuCommand class >> label [
 	^ 'FAST Java'
 ]
 
-{ #category : #'world menu' }
+{ #category : #accessing }
 MooseLoadFASTJavaMenuCommand class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
@@ -26,7 +26,7 @@ MooseLoadFASTJavaMenuCommand class >> menuCommandOn: aBuilder [
 { #category : #accessing }
 MooseLoadFASTJavaMenuCommand class >> menuPriority [
 
-	^ super menuPriority + 2
+	^ super menuPriority + 1
 ]
 
 { #category : #accessing }

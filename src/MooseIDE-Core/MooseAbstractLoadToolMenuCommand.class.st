@@ -7,5 +7,5 @@ Class {
 { #category : #accessing }
 MooseAbstractLoadToolMenuCommand class >> menuPriority [
 
-	^ 10
+	^ 30
 ]

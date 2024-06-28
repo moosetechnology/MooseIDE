@@ -28,7 +28,7 @@ MooseResetAllMetamodelsMenuCommand class >> menuCommandOn: aBuilder [
 { #category : #accessing }
 MooseResetAllMetamodelsMenuCommand class >> menuPriority [
 
-	^ 45
+	^super menuPriority + 2
 ]
 
 { #category : #executing }

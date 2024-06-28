@@ -16,11 +16,11 @@ MooseLoadPetitParserMenuCommand class >> label [
 	^ 'Petit Parser'
 ]
 
-{ #category : #'world menu' }
+{ #category : #accessing }
 MooseLoadPetitParserMenuCommand class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
-	^ self menuCommandOn: aBuilder forCommand: self
+	^ (self menuCommandOn: aBuilder forCommand: self) yourself
 ]
 
 { #category : #accessing }
