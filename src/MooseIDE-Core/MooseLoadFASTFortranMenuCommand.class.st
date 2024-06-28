@@ -46,5 +46,5 @@ MooseLoadFASTFortranMenuCommand >> repositoryURL [
 { #category : #accessing }
 MooseLoadFASTFortranMenuCommand >> version [
 
-	^ 'v1.x.x'
+	^ 'v1'
 ]
