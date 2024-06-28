@@ -43,5 +43,5 @@ MooseLoadPetitParserMenuCommand >> repositoryURL [
 
 { #category : #accessing }
 MooseLoadPetitParserMenuCommand >> version [
-	^ 'v3.x.x'
+	^ 'v3'
 ]
