@@ -583,6 +583,7 @@ MiAbstractBrowser >> registerToAdapterEvents: anAdapter [
 
 { #category : #'window management' }
 MiAbstractBrowser >> restore [
+
 	"We have to get to the adpater because #restore is not in SpWindowPresenter yet.
 	A PR has been made to Pharo 13"
 
@@ -590,7 +591,8 @@ MiAbstractBrowser >> restore [
 		window isMinimized ifTrue: [
 			window withAdapterDo: [ :windowAdapter |
 				windowAdapter widgetDo: [ :widget | widget restore ] ] ].
-		window activate ]
+		window withAdapterDo: [ :windowAdapter |
+			windowAdapter widgetDo: [ :widget | widget activate ] ] ]
 ]
 
 { #category : #accessing }
