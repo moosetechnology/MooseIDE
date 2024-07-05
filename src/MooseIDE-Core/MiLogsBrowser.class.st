@@ -1,3 +1,8 @@
+"
+I am a bus log browser. I display logs of all buses, each one in a notebook.
+
+Accepted entities: Does not apply.
+"
 Class {
 	#name : #MiLogsBrowser,
 	#superclass : #MiAbstractBrowser,
@@ -6,12 +11,6 @@ Class {
 	],
 	#category : #'MooseIDE-Core-Logger'
 }
-
-{ #category : #menu }
-MiLogsBrowser class >> addItemOrSubMenuToMiBrowsersMenu: aRootMenu defaultSubMenu: aSubMenu [
-
-	self addToMiBrowsersMenu: aRootMenu
-]
 
 { #category : #'world menu' }
 MiLogsBrowser class >> menuCommandOn: aBuilder [
@@ -55,14 +54,6 @@ MiLogsBrowser >> canFollowEntity: anObject [
 	"Subpresenters are MiBrowsers. They are responsible for entities reception"
 
 	^ false
-]
-
-{ #category : #testing }
-MiLogsBrowser >> canPropagate [
-
-	^ self miSelectedItem isMooseObject and: [ 
-		  self miSelectedItem asMooseGroup isNotEmpty or: [ 
-			  self miSelectedItem isMooseModel ] ]
 ]
 
 { #category : #testing }

@@ -2,7 +2,7 @@
 I am a MiBrowser used to create rules to apply on the entities of a model. If the entities return true when they are interrogated by the rules (represented through a boolean query), then a violation is created, linking the violating entity and the violated rule.
 Allows to export and import the created rules.
 
-- Follow: Accepts MooseObjects
+- Accepted entities: a MooseObject
 
 - Highlight: None
 
@@ -13,7 +13,6 @@ Class {
 	#superclass : #MiAbstractBrowser,
 	#instVars : [
 		'entitiesList',
-		'editMenu',
 		'runButton',
 		'rulesResult',
 		'importButton',
@@ -23,10 +22,18 @@ Class {
 		'rules',
 		'expandMenu',
 		'addContextsPresenter',
-		'contextEditorPresenter'
+		'contextEditorPresenter',
+		'statusLabel'
 	],
 	#category : #'MooseIDE-CriticBrowser-Browser'
 }
+
+{ #category : #commands }
+MiCriticBrowser class >> buildRulesCommandsGroupWith: presenterInstance [
+
+	^ MiAbstractCriticBrowserCommand asCommandGroupWith:
+		  presenterInstance
+]
 
 { #category : #'world menu' }
 MiCriticBrowser class >> menuCommandOn: aBuilder [
@@ -64,6 +71,12 @@ MiCriticBrowser class >> title [
 	^ 'Moose Critic Browser'
 ]
 
+{ #category : #specs }
+MiCriticBrowser class >> windowSize [
+
+	^ 1280 @ 560
+]
+
 { #category : #'accessing - testing' }
 MiCriticBrowser >> addContextsPresenter [
 "used for testing purposes, do not access outside of tests"
@@ -74,6 +87,16 @@ MiCriticBrowser >> addContextsPresenter [
 MiCriticBrowser >> addRulesPresenter [
 "used for testing purposes, do not access outside of tests"
 	^ addRulesPresenter
+]
+
+{ #category : #accessing }
+MiCriticBrowser >> allAvailableContexts [
+
+	^ { specModel rootContext }
+	  , (specModel ruleComponents select: [ :component |
+			   component class = FamixCBContext and: [
+				   component ~= rules selectedItem and: [
+					   (component allParents includes: rules selectedItem) not ] ] ])
 ]
 
 { #category : #'window control' }
@@ -98,7 +121,7 @@ MiCriticBrowser >> children: aCollection for: aTreePresenter [
 		ifFalse: [ {  } ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #api }
 MiCriticBrowser >> childrenForContext: aRuleComponent [
 
 	"content of children block for rules list"
@@ -136,10 +159,15 @@ MiCriticBrowser >> defaultLayout [
 			yourself);
 		yourself);
 		add: (SpBoxLayout newLeftToRight
-			addLast: importButton;
-			addLast: exportButton;
-			spacing: 5; 
-			addLast: runButton;
+			add: statusLabel;
+			add: (SpBoxLayout newLeftToRight 
+				addLast: importButton;
+				addLast: exportButton;
+				addLast: runButton;
+				hAlignEnd;
+				spacing: 5;
+				yourself);
+			vAlignCenter;
 			yourself) expand: false;
 	yourself
 ]
@@ -220,33 +248,36 @@ MiCriticBrowser >> importRules [
 
 { #category : #'load and saving' }
 MiCriticBrowser >> importRulesFromStream: aStream [
-"import rules from a ston rules file opened on a stream"
+	"import rules from a ston rules file opened on a stream"
+
 	| reader rulesCollection hierarchy index |
 	reader := STONReader on: aStream.
 	rulesCollection := OrderedCollection new.
-	[ reader atEnd ] whileFalse: [ rulesCollection add: reader parseObject ].
+	[ reader atEnd ] whileFalse: [
+		rulesCollection add: reader parseObject ].
 	hierarchy := rulesCollection removeLast.
 	reader close.
 
-	(rulesCollection select: [ :rc | rc class = FamixCBCondition ]) do: [ :cond |
+	(rulesCollection select: [ :rc | rc class = FamixCBCondition ]) do: [
+		:cond |
 		| temp |
 		temp := Smalltalk compiler evaluate: cond query.
-		(temp class = FullBlockClosure) 
-			ifTrue: [ cond query: (MiCriticBrowserPharoCodeQuery on: cond query) ]
-			ifFalse: [ cond query: (MiCriticBrowserFQQuery on: temp) ]. 
-	].
-	(rulesCollection select: [ :rc | rc class = FamixCBContext ]) do: [ :cont |
-		cont contextBlock: cont contextBlock.
-	].
+		temp class = FullBlockClosure
+			ifTrue: [ cond query: (FamixCBQueryHandler on: cond query) ]
+			ifFalse: [ cond query: (FamixCBQueryHandler on: temp) ] ].
+	(rulesCollection select: [ :rc | rc class = FamixCBContext ]) do: [
+		:cont | cont contextBlock: cont contextBlock ].
 
 	index := 1.
-	hierarchy do: [ :parentIndex | 
-		parentIndex = 0 
-			ifTrue: [ specModel addChildToRootContext: (rulesCollection at: index) ]
-			ifFalse: [ specModel addChild: (rulesCollection at: index) toContext: (rulesCollection at: parentIndex) ].
-		index := index + 1. 
-	].
-	
+	hierarchy do: [ :parentIndex |
+		parentIndex = 0
+			ifTrue: [
+			specModel addChildToRootContext: (rulesCollection at: index) ]
+			ifFalse: [
+				specModel
+					addChild: (rulesCollection at: index)
+					toContext: (rulesCollection at: parentIndex) ].
+		index := index + 1 ]
 ]
 
 { #category : #initialization }
@@ -299,17 +330,20 @@ MiCriticBrowser >> initializeLists [
 				ifTrue: [ self iconNamed: #radioButtonOn ]
 				ifFalse: [ self iconNamed: #radioButtonSelected ] ];
 		children: [ :each | self childrenForContext: each ];
-		contextMenu: editMenu;
+		contextMenu: [ 
+			(self class buildRulesCommandsGroupWith: self) asMenuPresenter ];
 		beSingleSelection;
 		whenSelectionChangedDo: [ 
 			specModel violations ifNotEmpty: [ self selectedRules ] ].
 
 	rulesResult
 		display: [ :each | self stringForItem: each ];
-		displayIcon: [ :each |
-			each class = FamixCBViolation ifTrue: [ 
-					self iconNamed: each violatedCondition severity iconName ] ifFalse: [ self iconNamed: 'blank' ] ];
-		children: [ :each | (self sortedChildren: each for: rulesResult) ];
+		displayIcon: [ :each | 
+			each class = FamixCBViolation
+				ifTrue: [ 
+					self iconNamed: each violatedCondition severity iconName ]
+				ifFalse: [ self iconNamed: 'blank' ] ];
+		children: [ :each | self sortedChildren: each for: rulesResult ];
 		contextMenu: expandMenu;
 		activateOnDoubleClick;
 		whenActivatedDo: [ :each | each selectedItem inspect ]
@@ -318,54 +352,6 @@ MiCriticBrowser >> initializeLists [
 { #category : #initialization }
 MiCriticBrowser >> initializeMenu [
 
-	editMenu := self newMenu.
-	editMenu
-		addItem: [ :item | 
-			item
-				name: 'Edit rule';
-				icon: (self iconNamed: #glamorousEdit);
-				action: [ 
-					rules selectedItem class = FamixCBCondition
-						ifTrue: [ 
-							rulesEditorPresenter setRuleToEdit: rules selectedItem.
-							rulesEditorPresenter openDialog ]
-						ifFalse: [ 
-							contextEditorPresenter setContextToEdit: rules selectedItem.
-							contextEditorPresenter openDialog ] ];
-				enabled: [ (rules selectedItem class ~= FamixCBRootContext) ] ];
-		addItem: [ :item | 
-			item
-				name: 'Delete rule';
-				icon: (self iconNamed: #smallDelete);
-				action: [ 
-					self deleteSelectedRule.
-					self updateRulesList ];
-				enabled: [ rules selectedItem class ~= FamixCBRootContext ] ];
-		addItem: [ :item | 
-			item
-				name: 'Add context';
-				icon: (self iconNamed: #smallAdd);
-				action: [ 
-					addContextsPresenter setParentContext: rules selectedItem.
-					addContextsPresenter openDialog ];
-				enabled: [ (rules selectedItem class ~= FamixCBCondition) ] ];
-		addItem: [ :item | 
-			item
-				name: 'Add condition';
-				icon: (self iconNamed: #smallAdd);
-				action: [ 
-					addRulesPresenter setParentContext: rules selectedItem.
-					addRulesPresenter openDialog ];
-				enabled: [ (rules selectedItem class ~= FamixCBCondition) ] ];
-		addItem: [ :item | 
-			item
-				name: 'Run condition';
-				icon: (self iconNamed: #glamorousPlay);
-				action: [ 
-					specModel runCondition: rules selectedItem.
-					self updateRulesList.
-					self updateResultList: specModel getAllViolations ];
-				enabled: [ (rules selectedItem class = FamixCBCondition) ] ].
 	expandMenu := self newMenu.
 	expandMenu
 		addItem: [ :item | 
@@ -382,29 +368,29 @@ MiCriticBrowser >> initializeMenu [
 
 { #category : #initialization }
 MiCriticBrowser >> initializePresenters [
-	
+
 	super initializePresenters.
 	self initializeMenu.
 	self initializeLists.
 	self initializeButtons.
-	
-	addRulesPresenter := MiCriticBrowserAddRulesPresenter on: self.
-	rulesEditorPresenter := MiCriticBrowserEditRulePresenter on: self.
-	addContextsPresenter := MiCriticBrowserAddContextsPresenter on: self.
-	contextEditorPresenter := MiCriticBrowserEditContextPresenter on: self.
-	
+	self initializeStatusLabel.
+
+	addRulesPresenter := MiCBAddRulesPresenter on: self.
+	rulesEditorPresenter := MiCBEditRulePresenter on: self.
+	addContextsPresenter := MiCBAddContextsPresenter on: self.
+	contextEditorPresenter := MiCBEditContextPresenter on: self.
+
 	self focusOrder
-			add: rules;
-			add: rulesResult;
-			add: runButton.
+		add: rules;
+		add: rulesResult;
+		add: runButton
 ]
 
 { #category : #initialization }
-MiCriticBrowser >> initializeWindow: aWindowPresenter [	
-	super initializeWindow: aWindowPresenter.
-	aWindowPresenter
-		title: self defaultTitle;
-		initialExtent: 1280 @ 560
+MiCriticBrowser >> initializeStatusLabel [
+
+	statusLabel := self newLabel.
+	self updateStatusLabel: 'Critic Browser is ready to work!'
 ]
 
 { #category : #accessing }
@@ -412,6 +398,46 @@ MiCriticBrowser >> miSelectedItem [
 	^ self rules selectedItem 
 		ifNil: [ specModel getAllViolations ] 
 		ifNotNil: [ specModel violationsOf: (self rules selectedItem) ]
+]
+
+{ #category : #'buttons actions' }
+MiCriticBrowser >> moveCurrentRuleComponentToContext: aFamixCBContext [
+
+	| selectedRule |
+	selectedRule := rules selectedItem.
+	self deleteSelectedRule.
+
+	specModel
+		addChild: (selectedRule
+				 reset;
+				 yourself)
+		toContext: aFamixCBContext
+]
+
+{ #category : #initialization }
+MiCriticBrowser >> openAddConditionDialog [
+
+	addRulesPresenter setParentContext: rules selectedItem.
+	^ addRulesPresenter openDialog
+]
+
+{ #category : #initialization }
+MiCriticBrowser >> openAddContextDialog [
+
+	addContextsPresenter setParentContext: rules selectedItem.
+	^ addContextsPresenter openDialog
+]
+
+{ #category : #initialization }
+MiCriticBrowser >> openEditRuleDialog [
+
+	^ rules selectedItem class = FamixCBCondition
+		  ifTrue: [ 
+			  rulesEditorPresenter setRuleToEdit: rules selectedItem.
+			  rulesEditorPresenter openDialog ]
+		  ifFalse: [ 
+			  contextEditorPresenter setContextToEdit: rules selectedItem.
+			  contextEditorPresenter openDialog ]
 ]
 
 { #category : #'accessing - testing' }
@@ -432,18 +458,24 @@ MiCriticBrowser >> rulesResult [
 	^ rulesResult 
 ]
 
-{ #category : #'accessing - testing' }
-MiCriticBrowser >> runButton [
-"used for testing purposes, do not access outside of tests"
-	^ runButton
-]
-
 { #category : #'buttons actions' }
 MiCriticBrowser >> runButtonAction [
-"executes the queries on the entities stored in the model, then prints the results"
+	"executes the queries on the entities stored in the model, then prints the results"
 	self model run.
+
+	[ self model run.
+	self updateStatusLabel: 'Updating display...'.
 	self updateResultList: specModel getAllViolations.
-	self updateRulesList
+	self updateRulesList.
+	self updateStatusLabel: 'Critics finished.' ] fork
+]
+
+{ #category : #initialization }
+MiCriticBrowser >> runSelectedCondition [
+
+	specModel runCondition: rules selectedItem.
+	self updateRulesList.
+	^ self updateResultList: specModel getAllViolations
 ]
 
 { #category : #'selected object' }
@@ -508,6 +540,13 @@ MiCriticBrowser >> updateResultList: aCollection [
 
 { #category : #'updating screen' }
 MiCriticBrowser >> updateRulesList [
+
 	self rules updateRootsKeepingSelection: self rules roots.
-	self rules expandAll 
+	self rules expandAll
+]
+
+{ #category : #'buttons actions' }
+MiCriticBrowser >> updateStatusLabel: aString [
+
+	statusLabel label: DateAndTime now asStringYMDHM , ': ' , aString
 ]

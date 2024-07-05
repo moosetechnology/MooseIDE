@@ -30,8 +30,8 @@ MiCriticBrowserModelTest >> setUp [
 	super setUp.
 
 	model := browser model.
-	stubCondition := FamixCBCondition named: 'test1' on: (MiCriticBrowserPharoCodeQuery on: '[ :entity | entity isStub ]'). 
-	deadCondition := FamixCBCondition named: 'test2' on: (MiCriticBrowserPharoCodeQuery on: '[ :entity | entity isDead ]').
+	stubCondition := FamixCBCondition named: 'test1' on: (FamixCBScriptQueryHandler on: '[ :entity | entity isStub ]'). 
+	deadCondition := FamixCBCondition named: 'test2' on: (FamixCBScriptQueryHandler on: '[ :entity | entity isDead ]').
 	model addChild: stubCondition toContext: model rootContext.
 	model addChild: deadCondition toContext: model rootContext.
 	stubEntity := FamixStMethod named: 'test1'.
@@ -50,7 +50,7 @@ MiCriticBrowserModelTest >> testAddChildToContext [
 	
 ]
 
-{ #category : #test }
+{ #category : #tests }
 MiCriticBrowserModelTest >> testAddViolationsFor [
 	
 	self assert: model violations keys size equals: 0.
@@ -60,7 +60,7 @@ MiCriticBrowserModelTest >> testAddViolationsFor [
 	self assert: model violations keys anyOne equals: stubCondition
 ]
 
-{ #category : #test }
+{ #category : #tests }
 MiCriticBrowserModelTest >> testContextOf [
 	| classes methods classEntity |
 	classes := FamixCBContext named: 'Classes' on: '[ :col | col allClasses ]'.
@@ -87,7 +87,7 @@ MiCriticBrowserModelTest >> testCreateHierarchyTree [
 	model addChild: deadCondition toContext: context.
 	tree := model createHierarchyTree.
 	self assert: tree size equals: 3.
-	self assert: tree equals: { 0. 0. 2 } asOrderedCollection
+	self assertCollection: tree hasSameElements: { 0. 0. 2 }
 ]
 
 { #category : #tests }
@@ -121,12 +121,14 @@ MiCriticBrowserModelTest >> testHasBeenEdited [
 	self assert: model rootContext children anyOne name equals: 'test édité'
 ]
 
-{ #category : #test }
+{ #category : #tests }
 MiCriticBrowserModelTest >> testRemoveBranchFromRuleComponents [
 
-	| context tree |
+	| context |
 	self removeAllFromRootContext.
-	context := FamixCBContext named: 'child context' on: '[ :col | col allClasses ]'.
+	context := FamixCBContext
+		           named: 'child context'
+		           on: '[ :col | col allClasses ]'.
 	model addChild: stubCondition toContext: model rootContext.
 	model addChild: context toContext: model rootContext.
 	model addChild: deadCondition toContext: context.
@@ -166,7 +168,7 @@ MiCriticBrowserModelTest >> testRun [
 	
 ]
 
-{ #category : #test }
+{ #category : #tests }
 MiCriticBrowserModelTest >> testRunCondition [
 	
 	self assert: model violations keys size equals: 0.

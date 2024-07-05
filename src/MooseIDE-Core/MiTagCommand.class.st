@@ -31,20 +31,18 @@ MiTagCommand >> asSpecCommand [
 
 { #category : #building }
 MiTagCommand >> buildTagMenu [
-	^[
-		SpMenuPresenter new
-			addGroup: [ :group | 
-				self tagsList do: [ :tag | 
-					group addItem: [ :item | 
-						item
-							name: tag name ;
-							icon: (self iconForTag: tag) ;
-							action: [ self selectedTag: tag ] ;
-							yourself
-					] ]
-			];
-			yourself
-	]
+
+	^ [
+	  SpMenuPresenter new
+		  addGroup: [ :group |
+			  self tagsList do: [ :tag |
+					  group addItem: [ :item |
+							  item
+								  name: tag name;
+								  icon: (self application iconForTag: tag);
+								  action: [ self selectedTag: tag ];
+								  yourself ] ] ];
+		  yourself ]
 ]
 
 { #category : #building }
@@ -76,7 +74,8 @@ right click to change tag'
 
 { #category : #accessing }
 MiTagCommand >> buttonIcon [
-	^self iconForTag: context selectedTag
+
+	^ self application iconForTag: context selectedTag
 ]
 
 { #category : #accessing }
@@ -102,12 +101,7 @@ MiTagCommand >> disableTagButton [
 { #category : #executing }
 MiTagCommand >> execute [
 
-	context tagEntitiesSelected
-]
-
-{ #category : #accessing }
-MiTagCommand >> iconForTag: aTag [
-	^self application iconForTag: aTag
+	context tagSelectedEntities
 ]
 
 { #category : #execution }

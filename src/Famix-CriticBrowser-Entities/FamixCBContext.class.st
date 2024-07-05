@@ -1,3 +1,25 @@
+"
+## Relations
+======================
+
+### Other
+| Relation | Origin | Opposite | Type | Comment |
+|---|
+| `children` | `FamixCBContext` | `parent` | `FamixCBTRuleComponent` | Every child context or condition of this context.|
+| `entities` | `FamixCBContext` | `contexts` | `MooseObject` | Every entity that is a part of the context.|
+| `parent` | `FamixCBTRuleComponent` | `children` | `FamixCBContext` | Parent context, if it exists.|
+
+
+## Properties
+======================
+
+| Name | Type | Default value | Comment |
+|---|
+| `contextBlock` | `Object` | nil | Block to execute to get the context's entities|
+| `name` | `String` | nil | Basic name of the entity, not full reference.|
+| `summary` | `String` | nil | A rule component can have an explanatory summary|
+
+"
 Class {
 	#name : #FamixCBContext,
 	#superclass : #FamixCBEntity,
@@ -126,10 +148,12 @@ FamixCBContext >> resetExecutionOfTree [
 ]
 
 { #category : #running }
-FamixCBContext >> runDownTree: aCollection [
+FamixCBContext >> runDownTree: aCollection withCallback: aBlock [
 
-	self entities ifEmpty: [ self runOn: aCollection ].
-	children do: [ :child | child runDownTree: self entities asMooseGroup ]
+	self entities ifEmpty: [ 
+		self runOn: aCollection withCallback: aBlock ].
+	children do: [ :child | 
+		child runDownTree: self entities asMooseGroup withCallback: aBlock ]
 ]
 
 { #category : #running }
@@ -137,6 +161,13 @@ FamixCBContext >> runOn: aCollection [
 
 	self entities: (contextBlock value: aCollection)
 
+]
+
+{ #category : #running }
+FamixCBContext >> runOn: aCollection withCallback: aBlock [
+
+	aBlock value: self name.
+	self entities: (contextBlock value: aCollection)
 ]
 
 { #category : #'as yet unclassified' }

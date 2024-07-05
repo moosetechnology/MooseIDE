@@ -1,11 +1,6 @@
 Extension { #name : #Object }
 
 { #category : #'*MooseIDE-Core' }
-Object >> isMooseObject [
-	^ false
-]
-
-{ #category : #'*MooseIDE-Core' }
-Object >> midasIcon [
+Object >> mooseIcon [
 	^ Form extent: 16@16 
 ]

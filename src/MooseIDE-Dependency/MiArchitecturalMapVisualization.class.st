@@ -1,29 +1,12 @@
 "
 I am a hierarchical map.
-I compute the herarchical map using MiHierarchicalMapBuilder.
-Handle interactions.
-
+I compute the herarchical map using `MiArchitecturalMapBuilder`.
 "
 Class {
 	#name : #MiArchitecturalMapVisualization,
-	#superclass : #MiAbstractVisualization,
-	#instVars : [
-		'builder'
-	],
+	#superclass : #MiAbstractHierarchicalVisualization,
 	#category : #'MooseIDE-Dependency-ArchitecturalMap'
 }
-
-{ #category : #accessing }
-MiArchitecturalMapVisualization >> builder [
-
-	^ builder
-]
-
-{ #category : #highlighting }
-MiArchitecturalMapVisualization >> highlightShapes [
-	
-
-]
 
 { #category : #running }
 MiArchitecturalMapVisualization >> run [
@@ -32,10 +15,8 @@ MiArchitecturalMapVisualization >> run [
 	builder := MiArchitecturalMapBuilder new
 		           mapModel: owner model;
 		           container: self canvas;
-		           yourself.
-	self canvas @ (builder elasticBoxFor: self canvas).
-
-	builder build
+		           build;
+		           yourself
 ]
 
 { #category : #searching }

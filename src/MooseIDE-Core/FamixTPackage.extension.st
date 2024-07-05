@@ -1,6 +1,6 @@
 Extension { #name : #FamixTPackage }
 
 { #category : #'*MooseIDE-Core' }
-FamixTPackage >> midasIcon [
-	^ self iconNamed: #mooseFamixPackage
+FamixTPackage >> mooseIcon [
+	^ self iconNamed: #famixPackage
 ]

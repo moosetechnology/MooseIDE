@@ -95,8 +95,16 @@ MiApplicationTest >> testHandleJSONDropEvent [
 { #category : #'tests dragNDrop' }
 MiApplicationTest >> testJSONRegisteredHandler [
 	"There should be only 2 handlers: MiApplication & MiTestApplication
-	 Becareful, this test sometimes fails (more than 2 handlers) after other tests failed.
-	 This has to do with the other tests not unregistering the Applications."
+	 
+	Other tests may fail and not unregister their MiTestApplication, so we clean first the
+	registeredHandlers, then we recreate a MiTestApplication and we can perfrom the actual test"
+	
+	ExternalDropHandler registeredHandlers copy do: [ :registeredHandler |
+		(registeredHandler handler class = MiTestApplication)
+		ifTrue: [ ExternalDropHandler registeredHandlers remove: registeredHandler ]
+	].
+	application := MiTestApplication new.
+
 	self assert: (ExternalDropHandler registeredHandlers select: [:handler | handler extension = #json]) size equals: 2.
 
 ]
@@ -104,8 +112,16 @@ MiApplicationTest >> testJSONRegisteredHandler [
 { #category : #'tests dragNDrop' }
 MiApplicationTest >> testMSERegisteredHandler [
 	"There should be only 2 handlers: MiApplication & MiTestApplication
-	 Becareful, this test sometimes fails (more than 2 handlers) after other tests failed.
-	 This has to do with the other tests not unregistering the Applications."
+	 
+	Other tests may fail and not unregister their MiTestApplication, so we clean first the
+	registeredHandlers, then we recreate a MiTestApplication and we can perfrom the actual test"
+	
+	ExternalDropHandler registeredHandlers copy do: [ :registeredHandler |
+		(registeredHandler handler class = MiTestApplication)
+		ifTrue: [ ExternalDropHandler registeredHandlers remove: registeredHandler ]
+	].
+	application := MiTestApplication new.
+
 	self assert: (ExternalDropHandler registeredHandlers select: [:handler | handler extension = #mse]) size equals: 2.
 
 ]
@@ -138,8 +154,8 @@ MiApplicationTest >> testMiPropagate [
 { #category : #'tests dragNDrop' }
 MiApplicationTest >> testMooseRootBrowserIsModelImporter [
 	| browser |
-	browser := application modelImporter.
-	self assert: browser class equals: MiModelRootBrowser.
+	browser := application openCurrentModelsBrowser.
+	self assert: browser class equals: MiModelsBrowser.
 	browser window close
 ]
 

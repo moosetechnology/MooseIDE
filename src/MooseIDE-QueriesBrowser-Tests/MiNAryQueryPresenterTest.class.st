@@ -21,8 +21,9 @@ MiNAryQueryPresenterTest >> classToTest [
 MiNAryQueryPresenterTest >> configureInnerQueries [
 
 	| rootQuery query1 query2 query3 |
+
 	rootQuery := FQRootQuery new
-		             result: helper classesAndMethods;
+		             input: helper classesAndMethods;
 		             yourself.
 	query1 := FQStringQuery defaultForParent: rootQuery.
 	query1
@@ -43,13 +44,13 @@ MiNAryQueryPresenterTest >> configureInnerQueries [
 		addNewFirstLevelQuery;
 		addNewFirstLevelQuery;
 		addNewFirstLevelQuery.
-	{ 
+	{
 		query1.
 		query2.
 		query3 }
 		with: browser queriesListPresenter queryItemsPresenters
 		do: [ :a :b | b configureFor: a ].
-	^ { 
+	^ {
 		  query1.
 		  query2.
 		  query3 }
@@ -85,7 +86,7 @@ MiNAryQueryPresenterTest >> resetPresenterWithEntities: aMooseGroup [
 	browser := MiQueriesBrowser
 		           newApplication: self application
 		           model: (FQRootQuery new
-				            result: aMooseGroup;
+				            input: aMooseGroup;
 				            yourself).
 	self configureInnerQueries.
 

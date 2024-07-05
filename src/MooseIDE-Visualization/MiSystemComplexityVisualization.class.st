@@ -1,14 +1,8 @@
 Class {
 	#name : #MiSystemComplexityVisualization,
-	#superclass : #MiAbstractVisualization,
+	#superclass : #MiAbstractHierarchicalVisualization,
 	#category : #'MooseIDE-Visualization-System Complexity'
 }
-
-{ #category : #highlighting }
-MiSystemComplexityVisualization >> highlightShapes [
-	
-
-]
 
 { #category : #accessing }
 MiSystemComplexityVisualization >> model [
@@ -20,8 +14,7 @@ MiSystemComplexityVisualization >> model [
 MiSystemComplexityVisualization >> run [
 
 	super run.
-	self script: [ :canvas | 
-		| builder |
+	self script: [ :canvas |
 		builder := MiSystemComplexityBuilder new
 			           container: canvas;
 			           mapModel: self model;

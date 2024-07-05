@@ -12,12 +12,12 @@ Class {
 	#name : #MiArchitecturalMapBuilder,
 	#superclass : #HSimpleVisualizationBuilder,
 	#instVars : [
-		'mapModel',
 		'nodeMooseIDDict',
 		'allEntities',
 		'tagNodes',
 		'nodesToAdd',
-		'highlightShapes'
+		'highlightShapes',
+		'nodeStyle'
 	],
 	#category : #'MooseIDE-Dependency-ArchitecturalMap'
 }
@@ -132,190 +132,75 @@ MiArchitecturalMapBuilder >> borderFor: node [
 
 { #category : #building }
 MiArchitecturalMapBuilder >> build [
-	rootNode ifNotNil: [ 
+
+	rootNode ifNotNil: [
 		self updateWithModelSettings.
 		^ self ].
 	rootNode := HNode new.
 	self addTags.
-	mapModel showBusEntities ifTrue: [ 
-		rootNode addAll: (self elements
-				 collect: [ :e | self buildNodeFromEntity: e register: true ]
-				 thenReject: [ :e | e isNil ]) ].
+	mapModel showBusEntities ifTrue: [
+		rootNode addAll: self createRootNodes ].
 	self renderIn: self container.
 	self updateWithModelSettings.
 	^ self container
 ]
 
-{ #category : #hooks }
-MiArchitecturalMapBuilder >> buildCompositeEmptyNodeIn: shape [
+{ #category : #building }
+MiArchitecturalMapBuilder >> buildChildrenNodesFrom: anEntity [
 
-	| node box rect entity group |
-	node := shape model.
-	entity := node rawModel.
-	group := self labelAndTagFor: node.
-	shape addAll: group.
-	rect := shape children encompassingRectangle.
-	box := RSBox new
-		       model: node;
-		       position: rect floatCenter;
-		       extent: rect extent + 10;
-		       cornerRadius: self fullCornerRadius;
-		       color: (self colorFor: node);
-		       border: (self borderFor: node);
-		       yourself.
-	shape add: box.
-	box pushBack.
-	shape schildren: #(  ).
-
-	shape
-		propertyAt: #background put: box;
-		adjustToChildren
-]
-
-{ #category : #accessing }
-MiArchitecturalMapBuilder >> buildCompositeFullNodeIn: shape [
-
-	| childrenShapes node titleGroup title titleBox children boxChildren titleRadius boxChildrenRadius list |
-	node := shape model.
-	titleGroup := self labelAndTagFor: node.
-	titleBox := RSBox new
-		            extent: titleGroup extent + 10;
-		            color: ((self colorFor: node) alpha: 0.7);
-		            position: titleGroup position;
-		            yourself.
-	title := RSComposite new
-		         add: titleBox;
-		         addAll: titleGroup;
-		         adjustToChildren;
-		         yourself.
-	shape propertyAt: #background put: titleBox.
-	childrenShapes := self childrenFor: node.
-	self layoutOn: childrenShapes parent: node.
-
-	shape schildren: childrenShapes.
-	childrenShapes do: [ :child | child sparent: shape ].
-	children := childrenShapes asShape padding: 6.
-	childrenShapes do: [ :child | child model position: child position ].
-	title width < children width
-		ifTrue: [ 
-			titleBox width: children width.
-			title adjustToChildren ]
-		ifFalse: [ children width: title width ].
-	boxChildren := self boxChildrenFor: node.
-	titleRadius := self topCornerRadius.
-	boxChildrenRadius := self bottomCornerRadius.
-	list := { 
-		        title.
-		        children }.
-	self nodeStyler position = #below ifTrue: [ 
-		titleRadius := self bottomCornerRadius.
-		boxChildrenRadius := self topCornerRadius.
-		list := { 
-			        children.
-			        title } ].
-	RSVerticalLineLayout new
-		gapSize: 0;
-		on: list.
-	titleBox cornerRadius: titleRadius.
-	boxChildren
-		cornerRadius: boxChildrenRadius;
-		fromRectangle: children encompassingRectangle.
-
-	shape
-		add: title;
-		add: boxChildren;
-		add: children.
-	shape adjustToChildren
+	^ ((self mapModel childrenFor: anEntity)
+		   collect: [ :childEntity | self buildNodeFromEntity: childEntity ]
+		   thenSelect: [ :childNode | childNode isNotNil ]) sort: [ :c1 :c2 | c1 name < c2 name ]
 ]
 
 { #category : #building }
-MiArchitecturalMapBuilder >> buildCompositeFullTagIn: shape [
+MiArchitecturalMapBuilder >> buildChildrenNodesFromTag: aTag [
 
-	| childrenShapes node titleGroup title titleBox children boxChildren titleRadius boxChildrenRadius list childrenGroups childrenShapesGroups |
-	node := shape model.
-	childrenGroups := self groupTagElements: node.
-	titleGroup := self nodeStyler labelAndIconFor: node.
-	titleBox := RSBox new
-		            extent: titleGroup extent + 10;
-		            color: ((self colorFor: node) alpha: 0.7);
-		            position: titleGroup position;
-		            yourself.
-	title := RSComposite new
-		         add: titleBox;
-		         addAll: titleGroup;
-		         adjustToChildren;
-		         yourself.
-	title when: RSMouseDoubleClick do: [ :e | node expandCollapse ].
-	shape propertyAt: #background put: titleBox.
-	childrenShapesGroups := RSGroup new.
-	childrenShapes := RSGroup new.
-	childrenGroups do: [ :group | 
-		| cs |
-		cs := group collect: [ :child | self shapeFor: child ] as: RSGroup.
-		childrenShapes addAll: cs ].
+	| nodes |
+	nodes := (aTag taggedEntities collect: [ :taggedEntity | self buildNodeFromEntity: taggedEntity ]) reject: [ :childNode |
+		         childNode isNil or: [ childNode parent isNotNil ] ].
 
-	self layoutOn: childrenShapes parent: node.
+	"When we open the architectural on tags it might be hard to distinguish the entities. For example I have a cas where I had 15 methods names #write tagged with the same tag. 
+With Imen we propose to display also the name of the parent entity in the label to recognize better the entities when their parent is a tag"
+	nodes do: [ :childNode |
+		| entity |
+		entity := childNode rawModel.
+		childNode name: (String streamContents: [ :stream |
+				 entity belongsTo ifNotNil: [ :parent |
+					 stream
+						 nextPutAll: parent name;
+						 nextPut: $. ].
+				 stream nextPutAll: entity name ]) ].
 
-	shape schildren: childrenShapes.
-	childrenShapes do: [ :child | child sparent: shape ].
-
-
-	children := childrenShapes asShape padding: 6.
-	childrenShapes do: [ :child | child model position: child position ].
-	title width < children width
-		ifTrue: [ 
-			titleBox width: children width.
-			title adjustToChildren ]
-		ifFalse: [ children width: title width ].
-	boxChildren := self boxChildrenFor: node.
-	titleRadius := self topCornerRadius.
-	boxChildrenRadius := self bottomCornerRadius.
-	list := { 
-		        title.
-		        children }.
-	self nodeStyler position = #below ifTrue: [ 
-		titleRadius := self bottomCornerRadius.
-		boxChildrenRadius := self topCornerRadius.
-		list := { 
-			        children.
-			        title } ].
-	RSVerticalLineLayout new
-		gapSize: 0;
-		on: list.
-	titleBox cornerRadius: titleRadius.
-	boxChildren
-		color: (self colorFor: node);
-		cornerRadius: boxChildrenRadius;
-		fromRectangle: children encompassingRectangle.
-
-	shape
-		add: title;
-		add: boxChildren;
-		add: children.
-	shape adjustToChildren
+	^ nodes sort: [ :a :b | a name < b name ]
 ]
 
 { #category : #building }
-MiArchitecturalMapBuilder >> buildNodeFromEntity: anEntity register: aBoolean [
+MiArchitecturalMapBuilder >> buildNodeFrom: aMooseEntity [
+
+	^ aMooseEntity isTag
+		  ifTrue: [ self buildNodeFromTag: aMooseEntity ]
+		  ifFalse: [ self buildNodeFromEntity: aMooseEntity ]
+]
+
+{ #category : #building }
+MiArchitecturalMapBuilder >> buildNodeFromEntity: anEntity [
 
 	| node |
-	nodeMooseIDDict at: anEntity mooseID ifPresent: [ ^ nil ].
+	nodeMooseIDDict at: anEntity mooseID ifPresent: [ :n |
+		n parent ifNil: [ ^ n ].
+		^ nil ].
+
 	node := HNode new
-		        name:
-			        (String streamContents: [ :s | anEntity displayStringOn: s ]);
+		        name: anEntity fullDisplayString;
 		        rawModel: anEntity;
-		        addAll:
-			        (((self mapModel childrenFor: anEntity) sort: [ :c1 :c2 | 
-					          c1 name < c2 name ])
-				         collect: [ :e | 
-					         anEntity == e ifFalse: [ 
-							         self buildNodeFromEntity: e register: aBoolean ] ]
-				         thenSelect: [ :e | e isNotNil ]);
+		        style: self nodeStyle;
+		        addAll: (self buildChildrenNodesFrom: anEntity);
 		        collapse;
 		        yourself.
-	aBoolean ifTrue: [ 
-		nodeMooseIDDict at: anEntity mooseID put: node.
-		allEntities add: anEntity ].
+
+	nodeMooseIDDict at: anEntity mooseID put: node.
+	allEntities add: anEntity.
 
 	^ node
 ]
@@ -325,14 +210,10 @@ MiArchitecturalMapBuilder >> buildNodeFromTag: aTag [
 
 	| node |
 	node := HNode new
-		        name:
-			        (String streamContents: [ :s | aTag displayStringOn: s ]);
+		        name: (String streamContents: [ :s | aTag displayStringOn: s ]);
 		        rawModel: aTag;
-		        addAll: (aTag taggedEntities
-				         collect: [ :e | 
-					         aTag == e ifFalse: [ 
-							         self buildNodeFromEntity: e register: true ] ]
-				         thenSelect: [ :e | e isNotNil ]);
+		        style: self nodeStyle;
+		        addAll: (self buildChildrenNodesFromTag: aTag);
 		        color: aTag color;
 		        collapse;
 		        yourself.
@@ -353,21 +234,15 @@ MiArchitecturalMapBuilder >> colorFor: node [
 ]
 
 { #category : #accessing }
-MiArchitecturalMapBuilder >> cornerRadius [
-
-	^ 3
-]
-
-{ #category : #accessing }
 MiArchitecturalMapBuilder >> createMultiTagBoxSized: aSize [
 
 	| cp |
 	cp := RSComposite new.
-	cp addAll: ({ 
+	cp addAll: ({
 			 Color red.
 			 Color cyan.
 			 Color green.
-			 Color yellow } collect: [ :color | 
+			 Color yellow } collect: [ :color |
 			 RSBox new
 				 size: aSize / 2;
 				 color: color;
@@ -382,6 +257,14 @@ MiArchitecturalMapBuilder >> createMultiTagBoxSized: aSize [
 			 width: 1;
 			 yourself).
 	^ cp
+]
+
+{ #category : #building }
+MiArchitecturalMapBuilder >> createRootNodes [
+
+	^ (mapModel rootNodes
+		   collect: [ :e | self buildNodeFrom: e ]
+		   thenReject: [ :node | node isNil ]) sort: [ :a :b | a name < b name ]
 ]
 
 { #category : #accessing }
@@ -428,12 +311,14 @@ MiArchitecturalMapBuilder >> highlightableLinkedShapes [
 				                     highlightable
 					                     record: evt shape
 					                     selector: #color
-					                     value: color ];
+					                     value: color ]
+			                     for: self;
 			                     when: RSUnHighlightEvent
 			                     do: [ :evt | 
 				                     highlightable
 					                     restore: evt shape
-					                     selector: #color ];
+					                     selector: #color ]
+			                     for: self;
 			                     yourself ]
 ]
 
@@ -442,79 +327,25 @@ MiArchitecturalMapBuilder >> initialize [
 
 	super initialize.
 	nodeMooseIDDict := Dictionary new.
-	allEntities := MooseGroup new.
+	allEntities := OrderedCollection new.
 	tagNodes := OrderedCollection new.
-	nodesToAdd := Dictionary new
+	nodesToAdd := Dictionary new.
+	self popup text: [ :model | self tooltipOf: model rawModel ]
 ]
 
 { #category : #accessing }
-MiArchitecturalMapBuilder >> labelAndTagFor: node [
+MiArchitecturalMapBuilder >> menuItemStrategy [
 
-	| group entity |
-	group := self nodeStyler labelAndIconFor: node.
-	entity := node rawModel.
-	(entity notNil and: [ entity isTag not and: [ entity isTagged ] ]) 
-		ifTrue: [ 
-			| tag |
-			tag := entity allTags first.
-			group addFirst: (RSCircle new
-					 color: tag color;
-					 radius: 7;
-					 yourself) ].
-	node children ifNotEmpty: [ 
-		| tags |
-		tags := Set new.
-		node children do: [ :child | 
-			child rawModel isTagged ifTrue: [ 
-				tags add: child rawModel allTags first ] ].
-		tags size = 1 ifTrue: [ 
-			group addLast: (RSBox new
-					 color: tags anyOne color;
-					 size: 14;
-					 yourself) ].
-		tags size > 1 ifTrue: [ 
-			group addLast: (self createMultiTagBoxSized: 14) ] ].
-	RSHorizontalLineLayout new
-		alignMiddle;
-		on: group.
-	^ group
-]
-
-{ #category : #accessing }
-MiArchitecturalMapBuilder >> mapModel [
-
-	^ mapModel
-]
-
-{ #category : #accessing }
-MiArchitecturalMapBuilder >> mapModel: anObject [
-
-	mapModel := anObject
-]
-
-{ #category : #accessing }
-MiArchitecturalMapBuilder >> menuInteraction [
-
-	^ menuInteraction ifNil: [ 
-		  menuInteraction := RSMenuActivable new
-			                     menuDo: [ :menu :aShape | 
-				                     HMenuBuilder new
-					                     menuItemStrategy:
-						                     MiArchitecturalMenuItemStrategy new;
-					                     buildIn: menu
-					                     shape: aShape
-					                     visualization: self ];
-			                     yourself ]
+	^ MiArchitecturalMenuItemStrategy new
 ]
 
 { #category : #accessing }
 MiArchitecturalMapBuilder >> nodeAnnouncer [
-
 	"plug new events here"
 
 	baseNode ifNotNil: [ ^ baseNode announcer ].
 	baseNode := RSComposite new
-		            @ self nodeStyler popup;
+		            @ self popup;
 		            @
 			            (HGhostDraggable new color:
 					             Smalltalk ui theme caretColor);
@@ -522,12 +353,28 @@ MiArchitecturalMapBuilder >> nodeAnnouncer [
 		            @ self highlightable;
 		            @ self highlightableLinkedShapes;
 		            @ RSNodeOnTopWhenPositionChanged new;
-		            @ HUpdateSelectionBox new;
-		            @
-			            (HResizeParentWhenChildMoves new nodeStyler:
-					             self nodeStyler);
+		            @ HResizeParentWhenChildMoves new;
 		            yourself.
+
+	baseNode
+		when: RSMouseDoubleLeftClick
+		do: [ :event |
+			mapModel perform: mapModel doubleClickSetting with: event shape ]
+		for: self.
+
 	^ baseNode announcer
+]
+
+{ #category : #accessing }
+MiArchitecturalMapBuilder >> nodeStyle [
+
+	^ nodeStyle ifNil: [ nodeStyle := MiArchitecturalMapStyle new ]
+]
+
+{ #category : #accessing }
+MiArchitecturalMapBuilder >> nodeStyle: anObject [
+
+	nodeStyle := anObject
 ]
 
 { #category : #adding }
@@ -554,37 +401,15 @@ MiArchitecturalMapBuilder >> parentNodeFor: anHNode [
 	^ parentNode
 ]
 
-{ #category : #initialization }
+{ #category : #layout }
 MiArchitecturalMapBuilder >> relayout: aGroupOfShapes parent: shape [
 	
 	shape layout ifNil: [ 
-		RSFlowLayout new
-			gapSize: 10;
+		mapModel layoutSetting new
+			"gapSize: 10;"
 			on: aGroupOfShapes. 
 		^ self ].
 	shape layout on: aGroupOfShapes.
-]
-
-{ #category : #accessing }
-MiArchitecturalMapBuilder >> renderIn: aCanvas [
-	| rootShapes |
-	aCanvas color: Smalltalk ui theme backgroundColor.
-	shapes := RSGroup new.
-	rootShapes := (rootNode children sort: [ :c1 :c2 | c1 name < c2 name])
-		collect: [:child | (self shapeFor: child) sparent: aCanvas ]
-		as: RSGroup.
-	aCanvas schildren: rootShapes.
-	aCanvas addAll: rootShapes.
-	aCanvas @ self menuInteraction.
-	rootNode when: HNodeAddedEvent do: [ :evt | | newShape |
-		newShape := (self shapeFor: evt newChild) sparent: aCanvas.
-		newShape position: aCanvas camera position.
-		rootShapes add: newShape.
-		aCanvas add: newShape.
-		 ].
-	self renderLinesIn: aCanvas.
-	self layoutOn: rootShapes parent: rootNode.
-	
 ]
 
 { #category : #building }
@@ -595,37 +420,27 @@ MiArchitecturalMapBuilder >> setDependencies [
 ]
 
 { #category : #building }
-MiArchitecturalMapBuilder >> setDependenciesFor: aNode [
-
-	| incoming |
-	aNode rawModel class == FamixTag ifTrue: [ ^ self ].
-	incoming := aNode rawModel queryAllLocal: #in.
-	incoming do: [ :e | 
-		(nodeMooseIDDict at: e source mooseID ifAbsent: [ nil ]) ifNotNil: [ 
-			:hNode | hNode dependencyTo: aNode withModel: e ] ]
-]
-
-{ #category : #building }
 MiArchitecturalMapBuilder >> setDependenciesForEntity: anEntity [
 
 	| associationTypes |
 	associationTypes := mapModel associationTypes.
 
-	associationTypes do: [ :at | 
+	associationTypes do: [ :at |
 		| assocs |
 		assocs := anEntity queryLocal: #in with: at.
 
-		assocs do: [ :dep | 
-			(dep isInvocation and:
-			[ mapModel noMegaMorphic and:
-			[ dep candidates size > mapModel megaMorphicSize ]])
-			ifFalse: [ self setDependency: dep forEntity: anEntity ] ] ]
+		assocs do: [ :dep |
+			(mapModel noMegaMorphic and: [ dep isInvocation and: [ dep candidates size > mapModel megaMorphicSize ] ]) ifFalse: [
+				self setDependency: dep forEntity: anEntity ] ] ]
 ]
 
 { #category : #building }
 MiArchitecturalMapBuilder >> setDependenciesForTag: aTagNode [
 
-	aTagNode children do: [ :child | self setDependenciesFor: child ]
+	aTagNode children do: [ :child |
+		child rawModel isTag ifFalse: [
+			(child rawModel queryAllLocal: #in) do: [ :incommingDependency |
+				(nodeMooseIDDict at: incommingDependency source mooseID ifAbsent: [ nil ]) ifNotNil: [ :hNode | hNode dependencyTo: child withModel: incommingDependency ] ] ] ]
 ]
 
 { #category : #building }
@@ -638,29 +453,21 @@ MiArchitecturalMapBuilder >> setDependency: e forEntity: anEntity [
 ]
 
 { #category : #accessing }
-MiArchitecturalMapBuilder >> shapeFor: node [
+MiArchitecturalMapBuilder >> tooltipOf: entity [
 
-	| shape |
-	shape := RSComposite new
-		         model: node;
-		         announcer: self nodeAnnouncer;
-		         yourself.
+	^ String streamContents: [ :s |
+		  s << entity miDescription.
 
-	(node isExpanded and: [ node hasChildren ])
-		ifTrue: [ 
-			node rawModel isTag
-				ifTrue: [ self buildCompositeFullTagIn: shape ]
-				ifFalse: [ self buildCompositeFullNodeIn: shape ] ]
-		ifFalse: [ self buildCompositeEmptyNodeIn: shape ].
-
-	node
-		removeInteractionIfPresent: self class;
-		when: HNodeAddedEvent do: [ :evt | self rebuildRootShape: shape ];
-		when: HCollapseEvent do: [ :evt | self rebuildShape: shape ];
-		when: HExpandEvent do: [ :evt | self rebuildRootShape: shape ];
-		when: HNodeChangedEvent do: [ :evt | self rebuildShape: shape ].
-	shapes add: shape.
-	^ shape
+		  entity isTag ifFalse: [
+			  entity tags ifNotEmpty: [ :tags |
+				  s << '
+Tags: '.
+				  tags do: [ :tag | s << tag name ] separatedBy: [ s << ', ' ] ].
+			
+			  ((nodeMooseIDDict at: entity mooseID) allChildren flatCollectAsSet: [ :child | child rawModel tags ]) ifNotEmpty: [ :tags |
+				  s << '
+Tags on children: '.
+				  tags do: [ :tag | s << tag name ] separatedBy: [ s << ', ' ] ] ] ]
 ]
 
 { #category : #building }

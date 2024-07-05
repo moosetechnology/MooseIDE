@@ -12,7 +12,11 @@ Class {
 
 { #category : #opening }
 MiImportModelDialog class >> open [
-	^ self subclassResponsibility
+
+	<script>
+	^ self new
+		  openDialog;
+		  yourself
 ]
 
 { #category : #accessing }
@@ -36,23 +40,24 @@ MiImportModelDialog >> importModel [
 ]
 
 { #category : #action }
-MiImportModelDialog >> importModelThenCloseDialogWindow: aDialog [
+MiImportModelDialog >> importModelThenCloseDialogWindow [
 
 	| mooseModel aJob |
-	[ self validateImportForm ] onErrorDo: [ :err | 
+
+	[ self validateImportForm ] onErrorDo: [ :err |
 		UIManager default alert: 'Invalid input: ' , err messageText.
 		^ self ].
 
-	aJob := [ :job | 
+	aJob := [ :job |
 	        job title: 'Importing model'.
-	        mooseModel := [ self importModel ] onErrorDo: [ :err | 
+	        mooseModel := [ self importModel ] onErrorDo: [ :err |
 		                      UIManager default alert:
 			                      'Import error: ' , err messageText.
 		                      nil ].
 	        job currentValue: 50.
-	        mooseModel ifNotNil: [ 
+	        mooseModel ifNotNil: [
 		        mooseModel install.
-		        aDialog close.
+		        self withWindowDo: [ :window | window close ].
 		        self updateBrowserWith: mooseModel ] ] asJob.
 
 	[ aJob run ] forkAt: Processor userBackgroundPriority
@@ -62,11 +67,12 @@ MiImportModelDialog >> importModelThenCloseDialogWindow: aDialog [
 MiImportModelDialog >> initializeDialogWindow: aDialog [
 
 	| button |
-	button := nil. 
+
+	button := nil.
 	aDialog initialExtent: self class windowExtent.
 	button := aDialog
-		addButton: 'Import'
-		do: [ :dialog | self importModelThenCloseDialogWindow: dialog ].
+		          addButton: 'Import'
+		          do: [ self importModelThenCloseDialogWindow ].
 	aDialog addButton: 'Cancel' do: [ :dialog | dialog close ]
 ]
 
@@ -87,7 +93,7 @@ MiImportModelDialog >> updateBrowserWith: mooseModel [
 
 	originBrowser
 	ifNotNil: [ originBrowser updateForNewModel: mooseModel ]
-	ifNil: [ (MiApplication current allBrowsers: MiModelRootBrowser)
+	ifNil: [ (MiApplication current allBrowsers: MiModelsBrowser)
 		do: [ :browser | browser updateList ] ]
 ]
 

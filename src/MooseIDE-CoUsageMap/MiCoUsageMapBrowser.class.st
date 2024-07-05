@@ -1,8 +1,9 @@
 "
 This browser shows dependencies between ""container entities"" (e.g. methods) and ""used entities"" (e.g. attributes) and it allows to mark entities with tags.
-Use this browser with a moose collection entity.
 Use settings to configure it.
 In order to navigate across the visualization.
+
+Accepted entities: a MooseGroup.
 
 Controls:
 
@@ -24,20 +25,9 @@ Controls:
 "
 Class {
 	#name : #MiCoUsageMapBrowser,
-	#superclass : #MiAbstractBrowser,
-	#instVars : [
-		'mapVisualization'
-	],
+	#superclass : #MiAbstractVisualizationBrowser,
 	#category : #'MooseIDE-CoUsageMap-Browser'
 }
-
-{ #category : #layout }
-MiCoUsageMapBrowser class >> defaultLayout [
-
-	^ SpBoxLayout newLeftToRight
-		  add: #mapVisualization
-		  yourself
-]
 
 { #category : #'world menu' }
 MiCoUsageMapBrowser class >> menuCommandOn: aBuilder [
@@ -85,8 +75,8 @@ MiCoUsageMapBrowser class >> windowSize [
 { #category : #'window control' }
 MiCoUsageMapBrowser >> browserClosed [
 	super browserClosed.
-	application unregisterConsumer: mapVisualization.
-	application unregisterProducer: mapVisualization.
+	application unregisterConsumer: mainPresenter.
+	application unregisterProducer: mainPresenter.
 	"settings mapVisualization: nil.
 	mapVisualization settings: nil."
 
@@ -105,25 +95,10 @@ MiCoUsageMapBrowser >> closeSettings [
 	specModel closeSettings 
 ]
 
-{ #category : #accessing }
-MiCoUsageMapBrowser >> collectionModel [
-	^specModel collectionModel
-]
-
-{ #category : #accessing }
-MiCoUsageMapBrowser >> collectionModel: anObject [
-	specModel collectionModel: anObject
-]
-
 { #category : #initialization }
 MiCoUsageMapBrowser >> connectPresenters [
 	"settings mapVisualization: mapVisualization.
 	mapVisualization settings: settings."
-]
-
-{ #category : #accessing }
-MiCoUsageMapBrowser >> defaultSettings [
-	^ MiCoUsageMapInstanceSettingsPresenter new
 ]
 
 { #category : #actions }
@@ -138,26 +113,21 @@ MiCoUsageMapBrowser >> hasSettings [
 
 { #category : #initialization }
 MiCoUsageMapBrowser >> initializePresenters [
-	mapVisualization := self instantiate: MiCoUsageMapVisualization.
-	mapVisualization specModel: specModel.
+	mainPresenter := self instantiate: MiCoUsageMapVisualization.
+	mainPresenter specModel: specModel.
 
 	"self flag: 'this should be in MiCoUsageMapModel'.
 	settings := self instantiate: MiCoUsageMapInstanceSettingsPresenter."
 	
 	self flag: 'this should be in MiCoUsageMapVisualization'.
-	application registerConsumer: mapVisualization for: FamixTag.
-	application registerConsumer: mapVisualization for: FamixTagAssociation.
-	application registerProducer: mapVisualization for: FamixTagAssociation.
+	application registerConsumer: mainPresenter for: FamixTag.
+	application registerConsumer: mainPresenter for: FamixTagAssociation.
+	application registerProducer: mainPresenter for: FamixTagAssociation.
 ]
 
 { #category : #accessing }
 MiCoUsageMapBrowser >> mapVisualization [
-	^ mapVisualization
-]
-
-{ #category : #accessing }
-MiCoUsageMapBrowser >> miSelectedItem [
-	^ specModel miSelectedItem
+	^ mainPresenter
 ]
 
 { #category : #dependencies }
@@ -165,17 +135,14 @@ MiCoUsageMapBrowser >> release [
 	self class instVarNames do: [ :n | self instVarNamed: n put: nil ]
 ]
 
-{ #category : #actions }
-MiCoUsageMapBrowser >> settings [ 
-	specModel openSettings
-]
-
 { #category : #updating }
 MiCoUsageMapBrowser >> update [
-	mapVisualization run
+	self deprecated: 'Use runVisualization method instead' transformWith: '`@receiver update' -> '`@receiver runVisualization'.
+	self runVisualization 
 ]
 
 { #category : #public }
-MiCoUsageMapBrowser >> updateTagColorFor: anEntity [
-	mapVisualization updateTagColorFor: anEntity
+MiCoUsageMapBrowser >> updateBoxColor: aMiCoBox fromTags: tags [
+
+	mainPresenter updateBoxColor: aMiCoBox fromTags: tags
 ]

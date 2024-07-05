@@ -1,5 +1,6 @@
 "
 I am a browser that displays an architectural map.
+Accepted entities: a MooseObject.
 
 Controls:
 
@@ -21,10 +22,7 @@ Controls:
 "
 Class {
 	#name : #MiArchitecturalMapBrowser,
-	#superclass : #MiAbstractBrowser,
-	#instVars : [
-		'visualization'
-	],
+	#superclass : #MiAbstractVisualizationBrowser,
 	#category : #'MooseIDE-Dependency-ArchitecturalMap'
 }
 
@@ -61,8 +59,9 @@ MiArchitecturalMapBrowser class >> newModel [
 
 { #category : #'instance creation' }
 MiArchitecturalMapBrowser class >> open [
+
 	<script>
-	super open
+	^ super open
 ]
 
 { #category : #specs }
@@ -104,13 +103,21 @@ MiArchitecturalMapBrowser >> canReceiveEntity: anEntity [
 { #category : #initialization }
 MiArchitecturalMapBrowser >> canvas [
 
-	^ visualization canvas
+	^ mainPresenter canvas
 ]
 
-{ #category : #initialization }
-MiArchitecturalMapBrowser >> fetchTags [
+{ #category : #actions }
+MiArchitecturalMapBrowser >> doWithTimeout: aBlock [
 
-	^ (self application itemsFor: FamixTag) asOrderedCollection
+	self model timeoutDuration
+		ifNil: [ aBlock value ]
+		ifNotNil: [ :duration |
+			aBlock
+				valueWithin: self model timeoutDuration asSeconds
+				onTimeout: [
+					Abort signal:
+						'Process took longer than the configured time ('
+						, duration asString , ' seconds)' ] ]
 ]
 
 { #category : #actions }
@@ -120,7 +127,7 @@ MiArchitecturalMapBrowser >> followEntity: anEntity [
 	self runVisualization
 ]
 
-{ #category : #testing }
+{ #category : #settings }
 MiArchitecturalMapBrowser >> hasSettings [
 
 	^ true
@@ -129,36 +136,20 @@ MiArchitecturalMapBrowser >> hasSettings [
 { #category : #initialization }
 MiArchitecturalMapBrowser >> initializeLayout [
 
-	self layout: (SpScrollableLayout with: visualization)
+	self layout: (SpScrollableLayout with: mainPresenter)
 ]
 
 { #category : #initialization }
 MiArchitecturalMapBrowser >> initializePresenters [
 
-	visualization := self class mapClass owner: self.
+	mainPresenter := self class mapClass owner: self.
 	self initializeLayout
 ]
 
-{ #category : #accessing }
-MiArchitecturalMapBrowser >> miSelectedItem [
-
-	^visualization canvas selectedShapes
-		ifEmpty: [ specModel entities mooseInterestingEntity ]
-		ifNotEmpty: [ :selectedShapes |
-			(selectedShapes collect: [:shape | shape model rawModel])
-				asMooseGroup ]
-]
-
-{ #category : #initialization }
-MiArchitecturalMapBrowser >> run [
-
-	visualization run
-]
-
 { #category : #actions }
-MiArchitecturalMapBrowser >> runVisualization [ 
+MiArchitecturalMapBrowser >> runVisualization [
 
-	visualization run
+	self doWithTimeout: [ mainPresenter run ]
 ]
 
 { #category : #initialization }
@@ -168,13 +159,25 @@ MiArchitecturalMapBrowser >> setModelBeforeInitialization: aModel [
 	aModel browser: self
 ]
 
-{ #category : #accessing }
-MiArchitecturalMapBrowser >> settings [
+{ #category : #settings }
+MiArchitecturalMapBrowser >> setSettingItem: aSymbol value: aValue [
 
-	^specModel openSettings
+	specModel settings setItem: aSymbol value: aValue
+]
+
+{ #category : #settings }
+MiArchitecturalMapBrowser >> settingsModel [
+
+	^ specModel settings
+]
+
+{ #category : #settings }
+MiArchitecturalMapBrowser >> updateSettings [
+
+	specModel settingsChanged: true
 ]
 
 { #category : #'accessing - private tests' }
 MiArchitecturalMapBrowser >> visualization [
-	^visualization
+	^mainPresenter
 ]

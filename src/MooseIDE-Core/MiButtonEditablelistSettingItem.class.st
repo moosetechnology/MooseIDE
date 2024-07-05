@@ -3,24 +3,12 @@ A MiSettingItem which value is given by an editable list. It allows to chose an 
 "
 Class {
 	#name : #MiButtonEditablelistSettingItem,
-	#superclass : #MiButtonSettingItem,
+	#superclass : #MiButtonListSettingItem,
 	#category : #'MooseIDE-Core-Settings'
 }
 
 { #category : #accessing }
-MiButtonEditablelistSettingItem >> display: aBlock [
-
-	secondaryPresenter display: aBlock
-]
-
-{ #category : #accessing }
 MiButtonEditablelistSettingItem >> displayBlock: aBlock [
-
-	secondaryPresenter displayIcon: aBlock
-]
-
-{ #category : #accessing }
-MiButtonEditablelistSettingItem >> displayIcon: aBlock [
 
 	secondaryPresenter displayIcon: aBlock
 ]

@@ -26,12 +26,15 @@ MiTypeQueryPresenterTest >> classToTest [
 MiTypeQueryPresenterTest >> createNewQuery [
 
 	| rootQuery |
+
 	rootQuery := FQRootQuery new
-		result: helper classesAndMethods;
-		yourself.
+		             input: helper classesAndMethods;
+		             yourself.
 	^ (FQTypeQuery defaultForParent: rootQuery)
-			types: { FamixStClass . FamixStAttribute };
-			yourself
+		  types: {
+				  FamixStClass.
+				  FamixStAttribute };
+		  yourself
 ]
 
 { #category : #running }
@@ -45,6 +48,17 @@ MiTypeQueryPresenterTest >> testImpossibleQueryInitialization [
 	self resetPresenterWithEntities: helper noEntities.
 	self assert: presenter query class identicalTo: self queryClass.
 	self deny: presenter query isValid
+]
+
+{ #category : #tests }
+MiTypeQueryPresenterTest >> testModalSelectionTypes [
+
+	presenter typesList selectItems: { FamixStClass }.
+	presenter selectTypeAction: nil.
+
+	self
+		assertCollection: presenter query types
+		hasSameElements: { FamixStClass }
 ]
 
 { #category : #tests }

@@ -20,19 +20,19 @@ MiEditBusCommand class >> defaultIconName [
 MiEditBusCommand >> asSpecCommand [
 
 	| specCommand |
+
 	specCommand := super asSpecCommand
 		               name: 'Buses';
 		               description: self help;
 		               yourself.
 
-	specCommand buildPresenterBlock: [ :cmd | 
+	specCommand buildPresenterBlock: [ :cmd |
 		SpToolbarPopoverButtonPresenter new
 			label: specCommand decoratedCommand label;
 			help: specCommand decoratedCommand help;
 			icon: specCommand icon;
 			content: [ self busesList ];
-			yourself
-	].
+			yourself ].
 
 	^ specCommand
 ]

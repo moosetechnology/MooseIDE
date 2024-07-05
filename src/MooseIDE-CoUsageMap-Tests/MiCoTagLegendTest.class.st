@@ -7,8 +7,6 @@ Class {
 { #category : #tests }
 MiCoTagLegendTest >> testEmptyLegend [
 	"Empty legend has one entry (at bottom) describing the size of the inner box"
-	self buildForTest.
-
 	self assert: builder legendTagBuilder shapes size equals: 1
 ]
 
@@ -18,7 +16,6 @@ MiCoTagLegendTest >> testNotEmptyLegend [
 
 	self tagsWithPalette: #( tag1 tag2 tag3).
 
-	self buildForTest.
 	builder updateLegend.
 
 	self assert: builder legendTagBuilder shapes size equals: 4
@@ -26,15 +23,18 @@ MiCoTagLegendTest >> testNotEmptyLegend [
 
 { #category : #tests }
 MiCoTagLegendTest >> testToggleTag [
-	| tagShape |
-	
-	self createTag: 'aTag'.
-	self buildForTest.
+	| tag tagShape |
+	tag := self createTag: 'aTag'.
+	builder updateLegend.
+
+	self deny: tag isHidden.
 
 	tagShape := builder legendTagBuilder shapes first.
 	self assert: tagShape isComposite.
 	self assert: tagShape shapes size equals: 3.
 
 	builder legendTagBuilder toggleTag: (RSMouseClick new shape: tagShape shapes first).
-	
+
+	self assert: tag isHidden.
+
 ]

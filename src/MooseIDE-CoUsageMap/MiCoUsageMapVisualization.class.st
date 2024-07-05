@@ -13,7 +13,7 @@ Class {
 
 { #category : #brokerage }
 MiCoUsageMapVisualization >> consume: anItem [
-	anItem class = FamixTag
+	anItem isTag
 		ifTrue: [ self consumeTag: anItem ]
 		ifFalse: [ self consumeTagAssociation: anItem ]
 ]
@@ -28,7 +28,7 @@ MiCoUsageMapVisualization >> consumeTagAssociation: aFamixTagAssociation [
 	| entity tag miCoObject |
 	entity := aFamixTagAssociation entity.
 	tag := aFamixTagAssociation tag.
-	miCoObject := mapBuilder containerBoxes , mapBuilder innerBoxes 
+	miCoObject := specModel containerBoxes , specModel innerBoxes 
 		detect: [ :each | each mooseEntity = entity and: [ each tag ~= tag ] ] ifNone: [ nil ].
 	miCoObject ifNil: [ ^ self ].
 	self flag: 'tag-association already set, but need to show it in the map'.
@@ -36,15 +36,9 @@ MiCoUsageMapVisualization >> consumeTagAssociation: aFamixTagAssociation [
 	mapBuilder updateShapeColors
 ]
 
-{ #category : #highlighting }
-MiCoUsageMapVisualization >> highlightShapes [
-	^ #()
-]
-
 { #category : #initialization }
 MiCoUsageMapVisualization >> initialize [
 	super initialize.
-	self script: [ :canvas | canvas ].
 
 	mapBuilder := MiCoUsageMapBuilder new.
 	mapBuilder visualization: self.
@@ -53,7 +47,7 @@ MiCoUsageMapVisualization >> initialize [
 { #category : #brokerage }
 MiCoUsageMapVisualization >> itemsFor: aClass [
 	| model |
-	model := self owner collectionModel mooseModel.
+	model := self owner containerEntities mooseModel.
 	
 	aClass = FamixTagAssociation ifTrue: [ ^ model allTagAssociations ].
 	aClass = FamixTag ifTrue: [ ^ model allTags ].
@@ -63,6 +57,15 @@ MiCoUsageMapVisualization >> itemsFor: aClass [
 { #category : #'private - testing' }
 MiCoUsageMapVisualization >> mapBuilder [
 	^mapBuilder 
+]
+
+{ #category : #'as yet unclassified' }
+MiCoUsageMapVisualization >> modelForShape: aShape [
+
+	| containerBox |
+	containerBox := aShape model.
+
+	^ containerBox mooseEntity
 ]
 
 { #category : #actions }
@@ -86,7 +89,7 @@ MiCoUsageMapVisualization >> removeTag: aTag [
 	legendTag := mapBuilder legendTagBuilder.
 	
 	"updating legend"
-	self tagsFromMooseModel: self owner collectionModel mooseModel.
+	self tagsFromMooseModel: self specModel currentMooseModel.
 	legendTag build.
 	
 	mapBuilder menuManager removeTag: aTag.
@@ -107,19 +110,33 @@ MiCoUsageMapVisualization >> removeTagAssociation: aFamixTagAssociation [
 
 { #category : #running }
 MiCoUsageMapVisualization >> run [
-	| model |
+	| mooseModel |
 	super run.
-	model := self owner collectionModel.
-	model ifNil: [ ^self ].
+	mooseModel := self specModel currentMooseModel.
+	mooseModel ifNil: [ ^self ].
 	mapBuilder 
 		container: self canvas;
-		containerEntities: model;
 		build.
 ]
 
-{ #category : #initialization }
-MiCoUsageMapVisualization >> setTag: aTag onEntity: mooseEntity [
-	specModel tagEntity: mooseEntity with: aTag
+{ #category : #accessing }
+MiCoUsageMapVisualization >> selectedInnerEntity [
+	^specModel selectedEntity
+]
+
+{ #category : #accessing }
+MiCoUsageMapVisualization >> selectedInnerEntity: aMooseEntity [
+	specModel selectedEntity: aMooseEntity
+]
+
+{ #category : #accessing }
+MiCoUsageMapVisualization >> selectedTag [
+	^specModel selectedTag
+]
+
+{ #category : #accessing }
+MiCoUsageMapVisualization >> selectedTag: aTag [
+	specModel selectedTag: aTag
 ]
 
 { #category : #accessing }
@@ -160,6 +177,12 @@ MiCoUsageMapVisualization >> update: anObject [
 ]
 
 { #category : #update }
+MiCoUsageMapVisualization >> updateBoxColor: aMiCoBox fromTags: tags [
+
+	mapBuilder updateBoxColor: aMiCoBox fromTags: tags
+]
+
+{ #category : #update }
 MiCoUsageMapVisualization >> updateChildren [
 	mapBuilder updateChildren
 ]
@@ -181,9 +204,4 @@ MiCoUsageMapVisualization >> updateLegend [
 { #category : #update }
 MiCoUsageMapVisualization >> updateShapeLayout [
 	mapBuilder updateShapeLayout
-]
-
-{ #category : #update }
-MiCoUsageMapVisualization >> updateTagColorFor: anEntity [
-	mapBuilder updateTagColorFor: anEntity
 ]

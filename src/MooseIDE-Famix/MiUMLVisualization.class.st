@@ -4,10 +4,23 @@ Class {
 	#instVars : [
 		'builder',
 		'rootEntities',
-		'miUMLModelDescriptor'
+		'classDescriptor'
 	],
 	#category : #'MooseIDE-Famix-UML'
 }
+
+{ #category : #running }
+MiUMLVisualization >> classDescriptor [
+
+	^ classDescriptor ifNil: [
+		  classDescriptor := RSUMLClassDescriptor new forFamix ]
+]
+
+{ #category : #running }
+MiUMLVisualization >> classDescriptor: aRSUMLClassDescriptor [
+
+	classDescriptor := aRSUMLClassDescriptor
+]
 
 { #category : #highlighting }
 MiUMLVisualization >> highlightShapes [
@@ -23,28 +36,10 @@ MiUMLVisualization >> initialize [
 	rootEntities := #(  )
 ]
 
-{ #category : #accessing }
-MiUMLVisualization >> miUMLModelDescriptor [
-
-	^ miUMLModelDescriptor ifNil: [ RSUMLClassDescriptor new forFamix ]
-]
-
-{ #category : #accessing }
-MiUMLVisualization >> miUMLModelDescriptor: anObject [
-
-	miUMLModelDescriptor := anObject
-]
-
 { #category : #helpers }
 MiUMLVisualization >> noHighlightColorFor: anEntity [
 
 	^ builder renderer boxColor
-]
-
-{ #category : #accessing }
-MiUMLVisualization >> rootEntities [
-
-	^ rootEntities
 ]
 
 { #category : #accessing }
@@ -57,14 +52,17 @@ MiUMLVisualization >> rootEntities: anObject [
 MiUMLVisualization >> run [
 
 	super run.
-	builder := RSUMLClassBuilder new.
-	builder modelDescriptor: self miUMLModelDescriptor.
-	builder classes: self rootEntities.
-	builder build.
-	builder renderIn: self canvas.
-	self canvas nodes do: [ :node | 
+	builder := RSUMLClassBuilder new
+		           modelDescriptor: self classDescriptor;
+		           classes: rootEntities;
+		           build;
+		           renderIn: self canvas;
+		           yourself.
+
+	self canvas nodes do: [ :node |
 		node addInteraction:
-			((MiSelection on: [ :entity | self owner selected: entity ]) 
+			((MiSelection on: [ :entity | self owner selected: entity ])
 				 marginPercentage: 0.2) ].
+
 	self canvas zoomToFit
 ]

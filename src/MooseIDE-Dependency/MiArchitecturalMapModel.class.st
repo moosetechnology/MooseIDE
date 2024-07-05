@@ -11,7 +11,9 @@ Class {
 		'entities',
 		'childrenBlock',
 		'settings',
-		'defaultChildrenQuery'
+		'defaultChildrenQuery',
+		'virtualEntities',
+		'roots'
 	],
 	#category : #'MooseIDE-Dependency-ArchitecturalMap'
 }
@@ -44,6 +46,28 @@ MiArchitecturalMapModel class >> defaultDynamicTags [
 		  self defaultDynamicTagIsDead }
 ]
 
+{ #category : #private }
+MiArchitecturalMapModel >> addVirtualParent: aFileReference child: entity upTo: virtualRoot [
+	"#virtualEntities is a Dictionnary where the keys are the virtual entities
+	 and the values their children
+	Here the virtual entities are fileReferences"
+
+	| virtualEntity virtualChildren |
+	virtualEntity := self virtualEntity: aFileReference belowRoot: virtualRoot.
+
+	virtualChildren := virtualEntities
+		at: virtualEntity
+		ifAbsentPut: [ OrderedCollection new ].
+	(virtualChildren includes: entity)
+		ifFalse: [virtualChildren add: entity].
+
+	virtualEntity = virtualRoot ifFalse: [
+		self
+			addVirtualParent: aFileReference parent
+			child: virtualEntity
+			upTo: virtualRoot ]
+]
+
 { #category : #accessing }
 MiArchitecturalMapModel >> allAssociationTypes [
 
@@ -63,22 +87,30 @@ MiArchitecturalMapModel >> associationTypes [
 ]
 
 { #category : #settings }
-MiArchitecturalMapModel >> associationTypesSetting [
+MiArchitecturalMapModel >> availableDoubleClickActions [
 
-	^ settings getItemValue: #associationTypes
+	^ #( doubleClickExpandeCollapse: doubleClickInspect:
+	     doubleClickPropagate: )
+]
+
+{ #category : #accessing }
+MiArchitecturalMapModel >> availableLayouts [
+	"all available layouts: 
+	  RSLayout withAllSubclasses reject: [ :c | c isAbstract ]
+	But some of them require specific configuration that we cannot easily specify here
+	so we choose a subset of the simplest ones"
+
+	^ {
+		  RSFlowLayout.
+		  RSCircleLayout.
+		  RSGridLayout.
+		  RSTreeLayout }
 ]
 
 { #category : #accessing }
 MiArchitecturalMapModel >> availableQueries [
 
 	^ { self defaultChildrenQuery } , browser availableQueries
-]
-
-{ #category : #accessing }
-MiArchitecturalMapModel >> browser: aBrowser [
-
-	browser := aBrowser.
-	self initializeSettings
 ]
 
 { #category : #accessing }
@@ -96,7 +128,12 @@ MiArchitecturalMapModel >> childrenBlock: anObject [
 { #category : #accessing }
 MiArchitecturalMapModel >> childrenFor: anEntity [
 
-	^ self childrenQuerySetting runOn: anEntity asMooseGroup
+	^ virtualEntities
+		  at: anEntity
+		  ifPresent: [ :children | children ]
+		  ifAbsent: [
+			  (self childrenQuerySetting rawRunOnEntity: anEntity) asArray
+				  reject: [ :each | each == anEntity ] ]
 ]
 
 { #category : #settings }
@@ -111,6 +148,43 @@ MiArchitecturalMapModel >> colorFor: anEntity [
 	^ Color gray
 ]
 
+{ #category : #private }
+MiArchitecturalMapModel >> computeRootEntities [
+
+	| nodesParent |
+	nodesParent := Dictionary new.
+
+	entities do: [ :parent |
+		(self childrenFor: parent) do: [ :child |
+			nodesParent at: child put: parent ] ].
+
+	^entities select: [ :each |
+		(nodesParent at: each ifAbsent: [ nil ]) isNil ]
+]
+
+{ #category : #private }
+MiArchitecturalMapModel >> computeVirtualRoots: rootEntities [
+	"#virtualEntities is a Dictionnary where the keys are the virtual entities
+	 and the values their children
+	Here we compute virtual entities from the directories containing the real entities"
+
+	| virtualRoot entityFile |
+
+	virtualRoot := MiArchitecturalMapVirtualEntity new
+		rawEntity: self currentMooseModel rootFolder asFileReference.
+
+	rootEntities do: [ :entity |
+		(entity hasSourceAnchor and:
+		[ entity sourceAnchor isFileAnchor ])
+			ifTrue: [
+				entityFile := entity sourceAnchor fileName asFileReference.
+				self addVirtualParent: entityFile parent child: entity upTo: virtualRoot
+			]
+	].
+
+	^{ virtualRoot }
+]
+
 { #category : #accessing }
 MiArchitecturalMapModel >> defaultChildrenQuery [
 
@@ -120,28 +194,61 @@ MiArchitecturalMapModel >> defaultChildrenQuery [
 ]
 
 { #category : #accessing }
+MiArchitecturalMapModel >> defaultLayout [
+	^RSFlowLayout
+]
+
+{ #category : #settings }
+MiArchitecturalMapModel >> directoriesVirtualNodes [
+
+	^ settings getItemValue: #directoriesVirtualNodes
+]
+
+{ #category : #accessing }
+MiArchitecturalMapModel >> doubleClickExpandeCollapse: aShape [
+
+	aShape model expandCollapse
+]
+
+{ #category : #accessing }
+MiArchitecturalMapModel >> doubleClickInspect: aShape [
+
+	MiInspectorBrowser inspect: aShape model rawModel
+]
+
+{ #category : #accessing }
+MiArchitecturalMapModel >> doubleClickPropagate: aShape [
+
+	self browser buses do: [ :bus |
+		bus globallySelect: aShape model rawModel mooseInterestingEntity ]
+]
+
+{ #category : #'as yet unclassified' }
+MiArchitecturalMapModel >> doubleClickSetting [
+
+	^ settings getItemValue: #doubleClickAction
+]
+
+{ #category : #accessing }
 MiArchitecturalMapModel >> entities [
 
 	^ entities
 ]
 
 { #category : #accessing }
-MiArchitecturalMapModel >> entities: anObject [
+MiArchitecturalMapModel >> entities: aCollection [
 
-	entities := anObject.
+	entities := aCollection.
+	self recomputeRootNodes.
 	self updateSettings
 ]
 
 { #category : #accessing }
 MiArchitecturalMapModel >> fetchTags [
 
-	^ browser fetchTags
-]
+	browser model entities ifNotNil: [ :ents | ents ifNotEmpty: [ ^ ents anyOne mooseModel allTags sorted: #name ascending ] ].
 
-{ #category : #initialization }
-MiArchitecturalMapModel >> initialize [
-
-	super initialize
+	^ #(  )
 ]
 
 { #category : #initialization }
@@ -152,9 +259,13 @@ MiArchitecturalMapModel >> initializeSettings [
 						addItem: self itemChildrenQuery named: #childrenQuery;
 						addItem: self itemTags named: #tags;
 						addItem: self itemAssociationTypes named: #associationTypes;
-						addItem: self itemNoMegaMorphic named: #noMegaMorphic ;
-						addItem: self itemMegaMorphicSize named: #megaMorphicSize ;
-		            yourself
+						addItem: self itemLayout named: #layout;
+						addItem: self itemNoMegaMorphic named: #noMegaMorphic;
+						addItem: self itemMegaMorphicSize named: #megaMorphicSize;
+						addItem: self itemTimeoutDuration named: #timeoutDuration;
+						addItem: self itemDirectoriesVirtualNodes named: #directoriesVirtualNodes;
+						addItem: self itemDoubleClickAction named: #doubleClickAction;
+						yourself
 ]
 
 { #category : #settings }
@@ -179,6 +290,40 @@ MiArchitecturalMapModel >> itemChildrenQuery [
 ]
 
 { #category : #settings }
+MiArchitecturalMapModel >> itemDirectoriesVirtualNodes [
+
+	^ MiAbstractSettingItem checkboxSetting
+		  setValue: false ;
+		  label: 'Directories are root nodes? (experimental)';
+		  help:
+			  'If checked the source files/directories containing entites are treated and showed in the map.
+They are root nodes in the map';
+		  yourself
+]
+
+{ #category : #settings }
+MiArchitecturalMapModel >> itemDoubleClickAction [
+
+	^ MiAbstractSettingItem droplistSetting
+		  possibleValues: self availableDoubleClickActions;
+		  setValue: #doubleClickExpandeCollapse:;
+		  label: 'Action on double click';
+		  help: 'You can define an action for double click on a node.';
+		  yourself
+]
+
+{ #category : #settings }
+MiArchitecturalMapModel >> itemLayout [
+
+	^ MiAbstractSettingItem droplistSetting
+		  possibleValues: self availableLayouts;
+		  setValue: self defaultLayout;
+		  label: 'Layout to display entities';
+		  help: 'You can change the layout of the entities (eg: circular or flow layout)';
+		  yourself
+]
+
+{ #category : #settings }
 MiArchitecturalMapModel >> itemMegaMorphicSize [
 	^MiTextSettingItem integerSetting
 		setValue: 10 ;
@@ -191,7 +336,7 @@ MiArchitecturalMapModel >> itemMegaMorphicSize [
 MiArchitecturalMapModel >> itemNoMegaMorphic [
 
 	^MiCheckboxSettingItem new
-		setValue: true ;
+		setValue: false ;
 		label: 'Ignore mega-morphic invocations?' ;
 		help: 'In the dependencies, ignore invocations of mega-morphic methods' ;
 		yourself
@@ -211,18 +356,44 @@ MiArchitecturalMapModel >> itemShowBusEntities [
 { #category : #settings }
 MiArchitecturalMapModel >> itemTags [
 
-	^ MiAbstractSettingItem buttonWithEditableListSetting
+	^ MiAbstractSettingItem buttonWithSelectableListSetting
+		  updateWith: [ self fetchTags ];
 		  possibleValues: self fetchTags;
-		  displayIcon: [ :tag | MiTagBrowserModel iconForTag: tag ];
+		  displayIcon: [ :tag | browser application iconForTag: tag ];
 		  display: [ :tag | tag name ];
 		  label: 'Tags to add';
-		  help: 'The tags you want to add to the visualization. They will be entities and inner elements are tagged entities';
+		  help:
+			  'The tags you want to add to the visualization. They will be entities and inner elements are tagged entities';
 		  yourself
+]
+
+{ #category : #settings }
+MiArchitecturalMapModel >> itemTimeoutDuration [
+	"Default arbitrary timeout of 30s"
+
+	^ MiTextSettingItem integerSetting
+		  setValue: 30;
+		  label: 'Timeout duration (seconds)';
+		  help:
+			  'How long to wait before interrupting the process. No value means no timeout.';
+		  yourself
+]
+
+{ #category : #settings }
+MiArchitecturalMapModel >> layoutSetting [
+
+	^ settings getItemValue: #layout
 ]
 
 { #category : #settings }
 MiArchitecturalMapModel >> megaMorphicSize [
 	^settings getItemValue: #megaMorphicSize
+]
+
+{ #category : #accessing }
+MiArchitecturalMapModel >> miSelectedItem [
+
+	^self entities
 ]
 
 { #category : #settings }
@@ -237,6 +408,29 @@ MiArchitecturalMapModel >> openSettings [
 	settings open
 ]
 
+{ #category : #private }
+MiArchitecturalMapModel >> recomputeRootNodes [
+	"Assumes each entity has only one parent"
+
+	| rootEntities |
+
+	virtualEntities := Dictionary new.
+
+	entities ifNil: [ ^roots := #() ].
+
+	rootEntities := self computeRootEntities.
+	
+	roots := self directoriesVirtualNodes
+		ifTrue: [ self computeVirtualRoots: rootEntities ]
+		ifFalse: [ rootEntities ]
+]
+
+{ #category : #accessing }
+MiArchitecturalMapModel >> rootNodes [
+
+	^roots
+]
+
 { #category : #settings }
 MiArchitecturalMapModel >> settings [
 	^settings
@@ -245,7 +439,10 @@ MiArchitecturalMapModel >> settings [
 { #category : #settings }
 MiArchitecturalMapModel >> settingsChanged: aBoolean [
 
-	aBoolean ifTrue: [ browser run ]
+	aBoolean ifFalse: [ ^self ].
+	self recomputeRootNodes.
+	browser runVisualization
+
 ]
 
 { #category : #accessing }
@@ -266,10 +463,10 @@ MiArchitecturalMapModel >> tags [
 	^ settings getItemValue: #tags
 ]
 
-{ #category : #accessing }
-MiArchitecturalMapModel >> toolName [
+{ #category : #settings }
+MiArchitecturalMapModel >> timeoutDuration [
 
-	^ browser title
+	^ settings getItemValue: #timeoutDuration
 ]
 
 { #category : #settings }
@@ -277,4 +474,14 @@ MiArchitecturalMapModel >> updateSettings [
 
 	(settings itemNamed: #associationTypes) possibleValues:
 		self allAssociationTypes
+]
+
+{ #category : #private }
+MiArchitecturalMapModel >> virtualEntity: aFileReference belowRoot: virtualRoot [
+
+	aFileReference = virtualRoot rawEntity ifTrue: [ ^virtualRoot ].
+	aFileReference = '.' asFileReference ifTrue: [ ^virtualRoot ].
+	^virtualEntities keys
+		detect: [ :virtualEntity | virtualEntity rawEntity = aFileReference ]
+		ifNone: [ MiArchitecturalMapVirtualEntity new rawEntity: aFileReference ]
 ]

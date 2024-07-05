@@ -21,12 +21,13 @@ MiBooleanQueryPresenterTest >> classToTest [
 MiBooleanQueryPresenterTest >> createNewQuery [
 
 	| rootQuery |
+
 	rootQuery := FQRootQuery new
-		result: helper classesAndMethods;
-		yourself.
+		             input: helper classesAndMethods;
+		             yourself.
 	^ (FQBooleanQuery defaultForParent: rootQuery)
-			property: #isStub;
-			yourself
+		  property: #isStub;
+		  yourself
 ]
 
 { #category : #running }

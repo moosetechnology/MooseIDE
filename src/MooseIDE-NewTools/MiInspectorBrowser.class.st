@@ -1,36 +1,24 @@
 "
 I am a custom MooseIDE inspector. I have as a sub-presenter an instance of `MiInspectorPresenter` which is at the same time a subclass of `StInspector`. I am just like Pharo's inspector just that I am connected to the `MiApplication` bus.
 I have implemented the methods: `followAction` and `miSelectedItem` in order to listen and propagate entries to the bus.
+
+Accepted entities: a MooseEntity
 "
 Class {
 	#name : #MiInspectorBrowser,
 	#superclass : #MiAbstractBrowser,
 	#instVars : [
-		'miInspector'
+		'mainPresenter'
 	],
 	#category : #'MooseIDE-NewTools-Inspector'
 }
-
-{ #category : #menu }
-MiInspectorBrowser class >> addItemOrSubMenuToMiBrowsersMenu: aRootMenu defaultSubMenu: aSubMenu [
-
-	self addToMiBrowsersMenu: aRootMenu
-]
-
-{ #category : #layout }
-MiInspectorBrowser class >> defaultLayout [
-
-	^ super defaultLayout
-		  add: #miInspector;
-		  yourself
-]
 
 { #category : #api }
 MiInspectorBrowser class >> inspect: anObject [
 
 	^ self
 		  inspect: anObject
-		  forBuses: self currentApplication defaultBus asCollection
+		  forBuses: (OrderedCollection with: self currentApplication defaultBus)
 ]
 
 { #category : #api }
@@ -107,7 +95,7 @@ MiInspectorBrowser >> followEntity: anEntity [
 
 	anEntity ifNil: [ ^ self ].
 	self model entity: anEntity.
-	miInspector model: self model entity.
+	mainPresenter model: self model entity.
 	self updateWindowTitle: self window.
 	self updateToolbar
 ]
@@ -115,7 +103,7 @@ MiInspectorBrowser >> followEntity: anEntity [
 { #category : #initialization }
 MiInspectorBrowser >> initializePresenters [
 
-	miInspector := self instantiate: MiInspector on: self model entity
+	mainPresenter := self instantiate: MiInspector on: self model entity
 ]
 
 { #category : #initialization }
@@ -129,7 +117,7 @@ MiInspectorBrowser >> initializeWindow: aWindow [
 MiInspectorBrowser >> miSelectedItem [
 
 	| lastInspectorPage |
-	lastInspectorPage := miInspector millerList pages last.
+	lastInspectorPage := mainPresenter millerList pages last.
 	^ lastInspectorPage model inspectedObject
 ]
 

@@ -1,7 +1,9 @@
 "
 A tool to manage tags
 
-Allows to create new tag, give them name, put them in a hierarchy of tags, give them a color, and of course add or remove entities carrying a tag
+Allows to create new tag, give them name, put them in a hierarchy of tags, give them a color, and of course add or remove entities carrying a tag.
+
+Accepted entities: a MooseObject.
 
 "
 Class {
@@ -15,12 +17,10 @@ Class {
 	#category : #'MooseIDE-Tagging-Browser'
 }
 
-{ #category : #layout }
-MiTagBrowser class >> defaultLayout [
+{ #category : #keymaps }
+MiTagBrowser class >> browserKey [
 
-	^ super defaultLayout
-		  add: #mainPresenter;
-		  yourself
+	^ $t
 ]
 
 { #category : #'world menu' }
@@ -58,6 +58,7 @@ MiTagBrowser class >> newModel [
 
 { #category : #'instance creation' }
 MiTagBrowser class >> open [
+
 	<script>
 	^ super open
 ]
@@ -92,13 +93,15 @@ MiTagBrowser >> canFollowEntity: anObject [
 { #category : #testing }
 MiTagBrowser >> canTagEntities [
 	"tagging done in the browser main window, not through the toolbar"
+
 	^false
 ]
 
 { #category : #initialization }
 MiTagBrowser >> closeTagCreationForm [
 
-	self layout child: tagManagementPage
+	self layout child: tagManagementPage.
+	self updateToolbar
 ]
 
 { #category : #initialization }
@@ -118,84 +121,10 @@ MiTagBrowser >> consume: anObject [
 			ifTrue: [ tagManagementPage refreshTaggedEntitiesList ] ]
 ]
 
-{ #category : #testing }
-MiTagBrowser >> createDynamicTag: name description: aText color: aColor category: aCategory query: aQuery [
-
-	| newTag |
-	(name notNil and: [ name isNotEmpty ]) ifFalse: [ ^ self ].
-	newTag := MiDynamicTag new.
-	(aText notNil and: [ aText isNotEmpty ]) ifTrue: [ 
-		newTag description: aText ].
-	newTag name: name.
-	aColor ifNotNil: [ newTag color: aColor ].
-
-	aCategory ifNotNil: [ newTag category: aCategory ].
-
-	aQuery
-		ifNotNil: [ newTag query: aQuery ]
-		ifNil: [ newTag query: FQNullQuery new ].
-	specModel addDynamicTag: newTag.
-	application consumeItem: newTag.
-	tagManagementPage refreshTagList
-]
-
-{ #category : #testing }
-MiTagBrowser >> createTag: name description: aText color: aColor category: aCategory [
-
-	| newTag |
-	newTag := specModel addTag: name.
-	(aText notNil and: [ aText isNotEmpty ]) ifTrue: [ 
-		newTag description: aText ].
-	aColor ifNotNil: [ newTag color: aColor ].
-	tagManagementPage refreshTagList.
-	aCategory ifNotNil: [ 
-		aCategory addTag: newTag.
-		newTag addCategory: aCategory ].
-	application consumeItem: newTag
-]
-
 { #category : #accessing }
 MiTagBrowser >> descriptionPage [
 
 	^ tagManagementPage descriptionPage
-]
-
-{ #category : #actions }
-MiTagBrowser >> editCurrentDynamicTag: name description: description color: color category: category query: query [
-
-	| tag |
-	tag := specModel currentTag.
-	tag ifNil: [ ^ false ].
-
-	(name isNil or: [ name isEmpty ]) ifTrue: [ ^ false ].
-
-	tag name: name.
-	tag description: description.
-	tag color: color.
-	category ifNotNil: [ tag category: category ].
-	tag query: query.
-	tagManagementPage refresh.
-	^ true
-]
-
-{ #category : #actions }
-MiTagBrowser >> editCurrentTag: name description: description color: color category: category [
-
-	| tag |
-	tag := specModel currentTag.
-	tag ifNil: [ ^ false ].
-
-	(name isNil or: [ name isEmpty ]) ifTrue: [ ^ false ].
-
-	tag name: name.
-	tag description: description.
-	tag color: color.
-	tag categories ifNotEmpty: [ 
-		tag removeCategory: tag categories first ].
-	category ifNotNil: [ tag addCategory: category ].
-	tagManagementPage refresh.
-	self application updateItem: tag.
-	^ true
 ]
 
 { #category : #actions }
@@ -248,9 +177,13 @@ MiTagBrowser >> itemsFor: aClass [
 { #category : #accessing }
 MiTagBrowser >> miSelectedItem [
 
-	^ specModel currentTag
-		  ifNil: [ ^ nil ]
-		  ifNotNil: [ :tag | tag taggedEntities asMooseGroup ]
+	| tag |
+	tag := specModel currentTag.
+	tag ifNil: [ ^ nil ].
+
+	tagManagementPage selectedItems ifNotEmpty: [ :items |
+		^ items asMooseGroup ].
+	^ tag taggedEntities asMooseGroup
 ]
 
 { #category : #testing }
@@ -279,6 +212,18 @@ MiTagBrowser >> openTagEditionForm [
 	tagEditionForm update
 ]
 
+{ #category : #accessing }
+MiTagBrowser >> refreshDescriptionPage [
+
+	tagManagementPage refreshDescriptionPage
+]
+
+{ #category : #refreshing }
+MiTagBrowser >> refreshTagList [
+
+	tagManagementPage refreshTagList
+]
+
 { #category : #testing }
 MiTagBrowser >> remove: aTagAssociation [
 
@@ -289,11 +234,6 @@ MiTagBrowser >> remove: aTagAssociation [
 MiTagBrowser >> setTagTo: aTag [
 
 	self model currentTag: aTag.
-]
-
-{ #category : #actions }
-MiTagBrowser >> settings [
-	
 ]
 
 { #category : #initialization }

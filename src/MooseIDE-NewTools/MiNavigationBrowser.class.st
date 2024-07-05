@@ -78,34 +78,50 @@ MiNavigationBrowser >> hasOutputActivationPort [
 ]
 
 { #category : #initialization }
+MiNavigationBrowser >> iconBlock [
+
+	^ [ :el | el value mooseIcon ]
+]
+
+{ #category : #initialization }
 MiNavigationBrowser >> initializePresenters [
 
 	| items |
+
 	navigation := self newTable.
 	items := self filterEmptyValues: (self itemsFor: self model).
 	navigation
+		addColumn: (SpImageTableColumn new
+				 beNotExpandable;
+				 evaluated: self iconBlock;
+				 yourself);
+		addColumn: (SpStringTableColumn new
+				 title: 'Entities';
+				 evaluated: [ :el | el key ];
+				 beSortable;
+				 yourself).
+	navigation
 		contextMenu: [ self rootCommandsGroup asMenuPresenter ];
-		items: items;
-		sortingBlock: [ :a :b | a key asString < b key asString ].
-	navigation addColumn: (SpCompositeTableColumn new
-			 addColumn: (SpImageTableColumn new
-					  beNotExpandable;
-					  evaluated: [ :el | el value midasIcon ];
-					  yourself);
-			 addColumn: (SpStringTableColumn new
-					  evaluated: [ :el | el key ];
-					  yourself);
-			 yourself).
-	navigation whenActivatedDo: [ :selection | 
-		activationBlock value: self ]
+		items: items.
+	navigation whenActivatedDo: [ :selection |
+		self inspectorObjectContextPresenter owner
+			changeSelection: selection selectedItem value
+			from: self inspectorObjectContextPresenter ]
+]
+
+{ #category : #initialization }
+MiNavigationBrowser >> inspectorObjectContextPresenter [
+
+	^ self owner owner owner owner
 ]
 
 { #category : #initialization }
 MiNavigationBrowser >> itemsFor: anEntity [
-	
+
 	^ anEntity mooseDescription allComplexProperties
 		  collect: [ :property | 
-			  property name -> (anEntity propertyNamed: property name) ]
+			  property name
+			  -> (anEntity propertyNamed: property name ifAbsent: [ nil ]) ]
 		  thenReject: [ :assoc | 
 			  assoc value isNil or: [ 
 				  assoc value isCollection and: [ assoc value isEmpty ] ] ]

@@ -25,8 +25,9 @@ MiResultSizeQueryPresenterTest >> classToTest [
 MiResultSizeQueryPresenterTest >> configureInnerQuery [
 
 	| rootQuery |
+
 	rootQuery := FQRootQuery new
-		             result: helper classesAndMethods;
+		             input: helper classesAndMethods;
 		             yourself.
 	innerQuery := (FQNavigationQuery defaultForParent: rootQuery)
 		              resetAndChangeDirection: FQIncomingNavigation;
@@ -58,10 +59,11 @@ MiResultSizeQueryPresenterTest >> queryClass [
 MiResultSizeQueryPresenterTest >> resetPresenterWithEntities: aMooseGroup [
 
 	| builder superPresenter |
+
 	browser := MiQueriesBrowser
 		           newApplication: self application
 		           model: (FQRootQuery new
-				            result: aMooseGroup;
+				            input: aMooseGroup;
 				            yourself).
 	builder := browser instantiate: MiQueriesListPresenter on: browser.
 	builder

@@ -2,7 +2,7 @@
 Root folder explorer.
 Allows to explore the root folder of a model (left panel) and shows the entities contained in each file (right panel).
 
-- Follow: Receives a MooseModel that has a root folder
+- Accepted entities: a MooseModel that has a root folder
 - Highlight: <TODO>
   Entities if present and visible.
   Could highlight the file owning a received entity.
@@ -21,7 +21,7 @@ Class {
 { #category : #layout }
 MiFilesBrowser class >> defaultLayout [
 
-	^ super defaultLayout
+	^ SpBoxLayout newVertical
 		  add: (SpBoxLayout newHorizontal
 				   add: #tree;
 				   add: #treeEntity;
@@ -129,7 +129,7 @@ MiFilesBrowser >> initializePresenters [
 	treeEntity := self newTreeTable.
 	treeEntity
 		addColumn: (SpCompositeTableColumn new
-				 addColumn: ((SpImageTableColumn evaluated: #midasIcon)
+				 addColumn: ((SpImageTableColumn evaluated: #mooseIcon)
 						  width: 20;
 						  yourself);
 				 addColumn: (SpStringTableColumn evaluated: #name);

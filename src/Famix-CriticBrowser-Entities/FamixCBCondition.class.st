@@ -1,3 +1,25 @@
+"
+## Relations
+======================
+
+### Other
+| Relation | Origin | Opposite | Type | Comment |
+|---|
+| `parent` | `FamixCBTRuleComponent` | `children` | `FamixCBContext` | Parent context, if it exists.|
+| `violations` | `FamixCBCondition` | `violatedCondition` | `FamixCBViolation` | Every violation of this condition.|
+
+
+## Properties
+======================
+
+| Name | Type | Default value | Comment |
+|---|
+| `name` | `String` | nil | Basic name of the entity, not full reference.|
+| `query` | `Object` | nil | Block to execute to find violations to the condition within the parent context|
+| `severity` | `Object` | nil | Severity for the violations of this condition|
+| `summary` | `String` | nil | A rule component can have an explanatory summary|
+
+"
 Class {
 	#name : #FamixCBCondition,
 	#superclass : #FamixCBEntity,
@@ -53,7 +75,7 @@ FamixCBCondition >> addViolation: anObject [
 	^ self violations add: anObject
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 FamixCBCondition >> putViolationsInto: aDictionary [
 	aDictionary at: self put: violations asMooseSpecializedGroup
 ]
@@ -70,30 +92,31 @@ FamixCBCondition >> query [
 { #category : #accessing }
 FamixCBCondition >> query: aQuery [
 
-	(aQuery class inheritsFrom: MiCriticBrowserAbstractQuery) 
+	(aQuery isKindOf: FamixCBQueryHandler)
 		ifTrue: [ query := aQuery ]
-		ifFalse: [ self error: NotAValidQuery signal ]
+		ifFalse: [ self error: FamixCBNotAValidQuery signal ]
 ]
 
-{ #category : #'*Famix-CriticBrowser-Entities' }
+{ #category : #removing }
 FamixCBCondition >> removeAllViolations [
 	[ violations isNotEmpty ] whileTrue: [ self removeViolation: violations anyOne ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #removing }
 FamixCBCondition >> removeViolation: aViolation [
 	self violations remove: aViolation ifAbsent: [ ^ self ].
 	aViolation violatingEntity ifNotNil: [ aViolation violatingEntity removeViolation: aViolation ]
 ]
 
-{ #category : #'*Famix-CriticBrowser-Entities' }
+{ #category : #removing }
 FamixCBCondition >> resetExecutionOfTree [ 
 	self removeAllViolations
 ]
 
 { #category : #running }
-FamixCBCondition >> runDownTree: aCollection [
-	self runOn: aCollection
+FamixCBCondition >> runDownTree: aCollection withCallback: aBlock [
+
+	self runOn: aCollection withCallback: aBlock
 ]
 
 { #category : #running }
@@ -103,7 +126,14 @@ FamixCBCondition >> runOn: aCollection [
 		self addViolation: (FamixCBViolation new violatingEntity: each) ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #running }
+FamixCBCondition >> runOn: aCollection withCallback: aBlock [
+
+	aBlock value: self name.
+	self runOn: aCollection
+]
+
+{ #category : #removing }
 FamixCBCondition >> runUpTree: aCollection [
 	self runOn: (parent runUpTree: aCollection)
 ]
@@ -112,9 +142,8 @@ FamixCBCondition >> runUpTree: aCollection [
 FamixCBCondition >> severity [
 
 	<FMProperty: #severity type: #Object>
-	<generated>
 	<FMComment: 'Severity for the violations of this condition'>
-	^ severity
+	^ severity ifNil: [ FamixCBAbstractSeverity allSubclasses detectMin: #level ]
 ]
 
 { #category : #accessing }
@@ -125,19 +154,15 @@ FamixCBCondition >> severity: anObject [
 
 { #category : #'ston persistence' }
 FamixCBCondition >> stonOn: stonWriter [
-	stonWriter
-		writeObject: self
-		streamMap: [ :dictionary | 
-			self class stonAllInstVarNames
-				do: [ :each | 
-					(self instVarNamed: each)
-						ifNotNil: [ :value | 
-							dictionary
-								at: each asSymbol
-								put:
-									((value class inheritsFrom: MiCriticBrowserAbstractQuery)
-										ifTrue: [ value convertToSTONString ]
-										ifFalse: [ value ]) ] ] ]
+
+	stonWriter writeObject: self streamMap: [ :dictionary | 
+		self class stonAllInstVarNames do: [ :each | 
+			(self instVarNamed: each) ifNotNil: [ :value | 
+				dictionary
+					at: each asSymbol
+					put: ((value isKindOf: FamixCBQueryHandler)
+							 ifTrue: [ value convertToSTONString ]
+							 ifFalse: [ value ]) ] ] ]
 ]
 
 { #category : #accessing }

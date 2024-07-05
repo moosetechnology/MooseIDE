@@ -19,9 +19,7 @@ MiPlaygroundInspectInMooseCommand class >> defaultName [
 { #category : #default }
 MiPlaygroundInspectInMooseCommand class >> defaultShortcutKey [
 
-	^ ($m command shift , $i command shift) mac
-	  | ($m shift control , $i shift control) win
-	  | ($m shift control , $i shift control) unix
+	^ $m shift meta , $i shift meta
 ]
 
 { #category : #converting }

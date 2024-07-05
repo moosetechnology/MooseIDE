@@ -1,6 +1,8 @@
 Class {
 	#name : #FamixCBModel,
 	#superclass : #MooseModel,
+	#traits : 'FamixCBTEntityCreator + MooseTEntityCreator',
+	#classTraits : 'FamixCBTEntityCreator classTrait + MooseTEntityCreator classTrait',
 	#category : #'Famix-CriticBrowser-Entities-Model'
 }
 

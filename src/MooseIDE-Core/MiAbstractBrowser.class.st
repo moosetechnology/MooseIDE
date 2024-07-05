@@ -39,7 +39,8 @@ Class {
 	#instVars : [
 		'buses',
 		'receivingMode',
-		'specModel'
+		'specModel',
+		'inspector'
 	],
 	#category : #'MooseIDE-Core-Browser'
 }
@@ -56,6 +57,14 @@ MiAbstractBrowser class >> addToMiBrowsersMenu: aMenuPresenter [
 	"Override with an empty method if you don't want your browser in Moose menu"
 
 	self buildItemInMenu: aMenuPresenter
+]
+
+{ #category : #keymaps }
+MiAbstractBrowser class >> browserKey [
+
+	"Override with a character to be used after m (for Moose) to open your browser"
+
+	^ nil
 ]
 
 { #category : #menu }
@@ -83,6 +92,7 @@ MiAbstractBrowser class >> buildMenuItemIn: aBuilder [
 		  help: self helpMessage;
 		  order: self menuPriority;
 		  action: [ self open ];
+		  keyText: self keyText;
 		  yourself
 ]
 
@@ -90,6 +100,8 @@ MiAbstractBrowser class >> buildMenuItemIn: aBuilder [
 MiAbstractBrowser class >> defaultLayout [
 
 	^ SpBoxLayout newVertical
+		  add: #mainPresenter;
+		  yourself
 ]
 
 { #category : #menu }
@@ -107,8 +119,12 @@ MiAbstractBrowser class >> famixMenuRoot [
 { #category : #'world menu' }
 MiAbstractBrowser class >> helpMessage [
 
-	^ (self comment lines copyUpTo: '') fold: [ :s1 :s2 | 
-		  s1 , Character cr asString , s2 ]
+	^ self comment ifNil: [ '' ] ifNotNil: [ :comment |
+		  String streamContents: [ :s |
+			  comment lineIndicesDo: [ :start :end :ignored |
+				  start = (end + 1) ifTrue: [ "stop at empty line" ^ s contents ].
+				  start = 1 ifFalse: [ s nextPut: Character cr ].
+				  start to: end do: [ :i | s nextPut: (comment at: i) ] ] ] ]
 ]
 
 { #category : #testing }
@@ -119,6 +135,13 @@ MiAbstractBrowser class >> isAbstract [
 { #category : #testing }
 MiAbstractBrowser class >> isModelImporter [
 	^false
+]
+
+{ #category : #accessing }
+MiAbstractBrowser class >> keyText [
+
+	^ self browserKey ifNotNil: [ :aCharacter |
+		  'M, {1}' format: { aCharacter asUppercase } ]
 ]
 
 { #category : #'menu organization' }
@@ -278,6 +301,13 @@ MiAbstractBrowser class >> open [
 		  yourself
 ]
 
+{ #category : #keymaps }
+MiAbstractBrowser class >> openKeyMap [
+
+	^ self browserKey ifNotNil: [
+		  KMKeymap shortcut: self shortcut action: [ self open ] ]
+]
+
 { #category : #'instance creation' }
 MiAbstractBrowser class >> openOn: anEntity [
 
@@ -287,6 +317,13 @@ MiAbstractBrowser class >> openOn: anEntity [
 		  beFrozen;
 		  followBus: self currentApplication defaultBus;
 		  yourself
+]
+
+{ #category : #keymaps }
+MiAbstractBrowser class >> shortcut [
+
+	^ self browserKey ifNotNil: [ :aCharacter |
+		  $m shift meta , aCharacter shift meta ]
 ]
 
 { #category : #accessing }
@@ -318,6 +355,17 @@ MiAbstractBrowser >> browserClosed [
 	buses do: [ :bus | bus unregisterBrowser: self ]
 ]
 
+{ #category : #'window control' }
+MiAbstractBrowser >> browserCollapsed [
+
+	self beFrozen
+]
+
+{ #category : #'window control' }
+MiAbstractBrowser >> browserExpanded [
+	"should we 'unfroze' ?"
+]
+
 { #category : #accessing }
 MiAbstractBrowser >> buses [
 	^ buses
@@ -343,7 +391,7 @@ MiAbstractBrowser >> canFollowEntity: anObject [
 	self subclassResponsibility
 ]
 
-{ #category : #testing }
+{ #category : #highlighting }
 MiAbstractBrowser >> canHighlight [
 
 	"Override to retrun true if you want to give your browser a highlight behavior. 
@@ -356,10 +404,10 @@ MiAbstractBrowser >> canHighlight [
 MiAbstractBrowser >> canPropagate [
 
 	| entity |
-
+	"Ideally we should use miSelectedItemToPropagate but this would make the models browser really slow since it would copy the whole model and reject the stubs each time I'm called. So we do not care about checking the stubs here by calling #miSelectedItem.."
 	entity := self miSelectedItem.
-	^ entity isMooseObject and: [ 
-		  entity asMooseGroup isNotEmpty or: [ entity isMooseModel ] ]
+	^ (entity isCollection and: [ entity isNotEmpty ]) or: [
+		  entity isMooseObject and: [ entity isCollection not ] ]
 ]
 
 { #category : #testing }
@@ -414,7 +462,13 @@ MiAbstractBrowser >> hasSettings [
 	^false
 ]
 
-{ #category : #actions }
+{ #category : #testing }
+MiAbstractBrowser >> hasVisualization [
+	
+	^ false
+]
+
+{ #category : #highlighting }
 MiAbstractBrowser >> highlightEntity: anEntity [
 
 	"Override to add behavior on highlight. 
@@ -445,10 +499,17 @@ MiAbstractBrowser >> initializeWindow: aMiWindowPresenter [
 
 	aMiWindowPresenter buildToolbar.
 
-	aMiWindowPresenter whenClosedDo: [ 
-		self browserClosed ].
+	aMiWindowPresenter whenClosedDo: [ self browserClosed ].
+	aMiWindowPresenter withAdapterPerformOrDefer: [ :anAdapter | self registerToAdapterEvents: anAdapter ] .
 
-	aMiWindowPresenter initialExtent: self class windowSize
+	aMiWindowPresenter initialExtent: self class windowSize.
+	aMiWindowPresenter setContextBindingKeys
+]
+
+{ #category : #'private - for tests' }
+MiAbstractBrowser >> inspector [
+
+	^ inspector ifNil: [ inspector := MiInspectorBrowser ]
 ]
 
 { #category : #testing }
@@ -465,6 +526,13 @@ MiAbstractBrowser >> isModelImporter [
 MiAbstractBrowser >> miSelectedItem [
 
 	^ (MiNoSelectedElementToPropagateException browser: self) signal
+]
+
+{ #category : #accessing }
+MiAbstractBrowser >> miSelectedItemToPropagate [
+	"Hook to be able to add some filters in the model browser."
+
+	^ self miSelectedItem
 ]
 
 { #category : #accessing }
@@ -504,6 +572,29 @@ MiAbstractBrowser >> receivingMode: aReceivingMode [
 	receivingMode := aReceivingMode
 ]
 
+{ #category : #'window control' }
+MiAbstractBrowser >> registerToAdapterEvents: anAdapter [
+	"spec does not give access to window collapsing/expanding events
+	 This is a hack to get them on Morph backend"
+
+	anAdapter widget announcer when: WindowCollapsed do: [ self browserCollapsed ] for: self.
+	anAdapter widget announcer when: WindowExpanded do: [ self browserExpanded ] for: self
+]
+
+{ #category : #'window management' }
+MiAbstractBrowser >> restore [
+
+	"We have to get to the adpater because #restore is not in SpWindowPresenter yet.
+	A PR has been made to Pharo 13"
+
+	self withWindowDo: [ :window |
+		window isMinimized ifTrue: [
+			window withAdapterDo: [ :windowAdapter |
+				windowAdapter widgetDo: [ :widget | widget restore ] ] ].
+		window withAdapterDo: [ :windowAdapter |
+			windowAdapter widgetDo: [ :widget | widget activate ] ] ]
+]
+
 { #category : #accessing }
 MiAbstractBrowser >> selectedTag [
 	^self model
@@ -534,9 +625,8 @@ MiAbstractBrowser >> setModelBeforeInitialization: aBrowserModel [
 
 { #category : #actions }
 MiAbstractBrowser >> settings [
-	"not used if #hasSettings is false"
 
-	self subclassResponsibility 
+	self hasSettings ifTrue: [ specModel openSettings ]
 ]
 
 { #category : #actions }
@@ -552,17 +642,10 @@ MiAbstractBrowser >> showHelp [
 
 ]
 
-{ #category : #actions }
-MiAbstractBrowser >> tagEntitiesSelected [
-
-	^self model
-		ifNotNil: [ :model | model tagEntitiesSelected ]
-]
-
 { #category : #accessing }
 MiAbstractBrowser >> tagIcon [
 
-	^application iconProvider iconForTag: self selectedTag  
+	^ application iconForTag: self selectedTag
 ]
 
 { #category : #accessing }
@@ -578,6 +661,13 @@ MiAbstractBrowser >> tagName [
 	^self selectedTag
 		ifNil: [ '' ]
 		ifNotNil: [ :tag | tag name ]
+]
+
+{ #category : #actions }
+MiAbstractBrowser >> tagSelectedEntities [
+
+	^self model
+		ifNotNil: [ :model | model tagSelectedEntities ]
 ]
 
 { #category : #buses }

@@ -24,19 +24,6 @@ MiButterflyMapModel >> allPossibleQueries [
 ]
 
 { #category : #accessing }
-MiButterflyMapModel >> browser [
-
-	^ browser
-]
-
-{ #category : #accessing }
-MiButterflyMapModel >> browser: anObject [
-
-	browser := anObject.
-	self initializeSettings
-]
-
-{ #category : #accessing }
 MiButterflyMapModel >> childrenBlock [
 
 	^ childrenBlock
@@ -70,7 +57,7 @@ MiButterflyMapModel >> currentEntity [
 MiButterflyMapModel >> currentEntity: anObject [
 
 	currentEntity := anObject.
-	browser run
+	browser runVisualization
 ]
 
 { #category : #accessing }
@@ -97,7 +84,7 @@ MiButterflyMapModel >> defaultRightEntitiesQuery [
 			                               :entity | entity allProviders ] ]
 ]
 
-{ #category : #'plugin interface' }
+{ #category : #accessing }
 MiButterflyMapModel >> entities [
 	"should probably return all entities displayed and not only the central one"
 	^self currentEntity
@@ -126,8 +113,7 @@ MiButterflyMapModel >> getRightEntitiesQuery [
 { #category : #accessing }
 MiButterflyMapModel >> initializeSettings [
 
-	settings := MiSettingsPresenter new
-		            ownerTool: self;
+	settings := super initializeSettings
 		            addItem: self itemChildrenQuery
 		            named: self childrenQuery;
 		            addItem: self itemLeftEntitiesQuery
@@ -188,6 +174,12 @@ MiButterflyMapModel >> leftEntitiesQuery [
 	^ #leftEntitiesQuery
 ]
 
+{ #category : #accessing }
+MiButterflyMapModel >> miSelectedItem [
+
+	^self entities
+]
+
 { #category : #actions }
 MiButterflyMapModel >> openSettings [
 
@@ -215,11 +207,5 @@ MiButterflyMapModel >> settings [
 { #category : #accessing }
 MiButterflyMapModel >> settingsChanged: aBoolean [
 
-	aBoolean ifTrue: [ browser run ]
-]
-
-{ #category : #accessing }
-MiButterflyMapModel >> toolName [
-
-	^ self browser title
+	aBoolean ifTrue: [ browser runVisualization ]
 ]

@@ -9,7 +9,6 @@ Class {
 	#name : #MiSourceTextBrowserModel,
 	#superclass : #MiAbstractModel,
 	#instVars : [
-		'displayedEntity',
 		'displayedText',
 		'selectedEntity',
 		'highlights'
@@ -67,19 +66,8 @@ MiSourceTextBrowserModel >> addTagHighlightFor: aChildEntity interval: childInte
 ]
 
 { #category : #accessing }
-MiSourceTextBrowserModel >> browser: aMiBrowser [
-	browser := aMiBrowser 
-]
-
-{ #category : #accessing }
-MiSourceTextBrowserModel >> displayedEntity [
-	"the entity which source code is shown in the browser"
-	^ displayedEntity
-]
-
-{ #category : #accessing }
 MiSourceTextBrowserModel >> displayedEntity: anObject [
-	displayedEntity := anObject.
+
 	selectedEntity := anObject.
 	self resetHighlights.
 
@@ -93,15 +81,15 @@ MiSourceTextBrowserModel >> displayedText [
 
 { #category : #accessing }
 MiSourceTextBrowserModel >> entities [
-	^displayedEntity
+	^selectedEntity
 		ifNil: [ #() ]
-		ifNotNil: [ { displayedEntity } ]
+		ifNotNil: [ { selectedEntity } ]
 ]
 
 { #category : #formatting }
 MiSourceTextBrowserModel >> formatSource [
-	displayedEntity sourceText
-		ifEmpty: [ self noSourceCodeFor: displayedEntity ]
+	selectedEntity sourceText
+		ifEmpty: [ self noSourceCodeFor: selectedEntity ]
 		ifNotEmpty: [ :code | self formatSource: code ]
 
 ]
@@ -114,7 +102,7 @@ MiSourceTextBrowserModel >> formatSource: aString [
 
 { #category : #highlights }
 MiSourceTextBrowserModel >> gatherHighlights [
-	self displayedEntity children do: [ :child |
+	self selectedEntity children do: [ :child |
 		self gatherHighlightsForEntity: child
 	]
 ]
@@ -122,7 +110,7 @@ MiSourceTextBrowserModel >> gatherHighlights [
 { #category : #highlights }
 MiSourceTextBrowserModel >> gatherHighlightsForEntity: aChildEntity [
 
-	self displayedEntity sourceAnchor
+	self selectedEntity sourceAnchor
 	ifNotNil: [ :referenceAnchor |
 		(self identifierIntervalFor: aChildEntity inside: referenceAnchor)
 		ifNotNil: [ :childInterval | 
@@ -193,6 +181,12 @@ MiSourceTextBrowserModel >> initialize [
 	super initialize.
 	
 	self resetHighlights
+]
+
+{ #category : #accessing }
+MiSourceTextBrowserModel >> miSelectedItem [
+
+	^self entities
 ]
 
 { #category : #formatting }

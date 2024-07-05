@@ -18,24 +18,35 @@ Class {
 	#category : #'MooseIDE-Tagging-Browser'
 }
 
+{ #category : #accessing }
+MiTagExtentPage class >> maxNumberOfEntitiesToSort [
+	"If we have a 'small' number of untagged entities we will sort them to be user friendly. But if we have a lot of them, this will just take too much time. In that case we will just not sort them. Here I'm defining the limit, with a magic number for a start, maybe this could be a setting in the future but I'm not sure it brings much value."
+
+	^ 10000
+]
+
 { #category : #action }
 MiTagExtentPage >> add [
 
-	self currentTag ifNil: [ ^ self ].
-	incomingEntitiesFilteringList selectedItem ifNotNil: [ :entity | 
+	(self currentTag isNil or: [
+		 incomingEntitiesFilteringList selectedItems isEmpty ]) ifTrue: [
+		^ self ].
+	incomingEntitiesFilteringList selectedItems do: [ :entity |
 		self model tagEntityNotYourself: entity ].
 	self refreshTaggedEntitiesList.
-	self refreshEntitiesList
+	self refreshEntitiesList.
+	self refreshBrowserToolbar
 ]
 
 { #category : #action }
 MiTagExtentPage >> addAll [
 
 	self currentTag ifNil: [ ^ self ].
-	incomingEntitiesFilteringList items do: [ :entity | 
+	incomingEntitiesFilteringList items do: [ :entity |
 		self model tagEntityNotYourself: entity ].
 	self refreshTaggedEntitiesList.
-	self refreshEntitiesList
+	self refreshEntitiesList.
+	self refreshBrowserToolbar
 ]
 
 { #category : #accessing }
@@ -101,20 +112,18 @@ MiTagExtentPage >> initializePresenters [
 
 	super initializePresenters.
 	taggedEntitiesLabel := self newLabel label: 'Entities in tag:'.
-	incomingEntitiesFilteringList := self newFilteringList
-		                                 display: [ :entity | 
-			                                 String streamContents: [ :s | 
+	incomingEntitiesFilteringList := self newList
+		                                 display: [ :entity |
+			                                 String streamContents: [ :s |
 					                                 entity displayStringOn: s ] ];
-		                                 "displayIcon: [ :entity | 
-			                                 entity mooseIcon ];"
+		                                 beMultipleSelection;
 		                                 yourself.
 	self refreshEntitiesList.
-	taggedEntitiesFilteringList := self newFilteringList
-		                               display: [ :entity | 
-			                               String streamContents: [ :s | 
+	taggedEntitiesFilteringList := self newList
+		                               display: [ :entity |
+			                               String streamContents: [ :s |
 					                               entity displayStringOn: s ] ];
-		                               "displayIcon: [ :entity | 
-			                               entity mooseIcon ];"
+		                               beMultipleSelection;
 		                               yourself.
 	self refreshTaggedEntitiesList.
 	self initializeButtons.
@@ -136,45 +145,64 @@ MiTagExtentPage >> onBrowserPageRedisplay [
 MiTagExtentPage >> refresh [
 
 	super refresh.
-	self refreshEntitiesList. 
+	self refreshEntitiesList.
 	self refreshTaggedEntitiesList.
 	self update
-	
+]
+
+{ #category : #action }
+MiTagExtentPage >> refreshBrowserToolbar [
+
+	self owner owner updateToolbar
 ]
 
 { #category : #refreshing }
 MiTagExtentPage >> refreshEntitiesList [
 
-	| sortedEntities untaggedEntities |
+	| untaggedEntities |
+
 	untaggedEntities := self model entities asCollection
 	                    \ self taggedEntities asCollection.
-	sortedEntities := untaggedEntities sort: [ :a :b | a name < b name ].
-	incomingEntitiesFilteringList items: sortedEntities
+	untaggedEntities size < self class maxNumberOfEntitiesToSort ifTrue: [
+		untaggedEntities sort: [ :a :b | a name < b name ] ].
+	incomingEntitiesFilteringList items: untaggedEntities
 ]
 
 { #category : #refreshing }
 MiTagExtentPage >> refreshTaggedEntitiesList [
+
 	taggedEntitiesFilteringList items: self taggedEntities
 ]
 
 { #category : #action }
 MiTagExtentPage >> remove [
 
-	self currentTag ifNil: [ ^ self ].
-	taggedEntitiesFilteringList selectedItem ifNotNil: [ :entity | 
+	(self currentTag isNil or: [
+		 taggedEntitiesFilteringList selectedItems isEmpty ]) ifTrue: [
+		^ self ].
+
+	taggedEntitiesFilteringList selectedItems do: [ :entity |
 		self model untagEntity: entity ].
 	self refreshTaggedEntitiesList.
-	self refreshEntitiesList
+	self refreshEntitiesList.
+	self refreshBrowserToolbar
 ]
 
 { #category : #action }
 MiTagExtentPage >> removeAll [
 
 	self currentTag ifNil: [ ^ self ].
-	taggedEntitiesFilteringList items do: [ :entity | 
+	taggedEntitiesFilteringList items do: [ :entity |
 		self model untagEntity: entity ].
 	self refreshTaggedEntitiesList.
-	self refreshEntitiesList
+	self refreshEntitiesList.
+	self refreshBrowserToolbar
+]
+
+{ #category : #accessing }
+MiTagExtentPage >> selectedItems [
+
+	^ taggedEntitiesFilteringList selectedItems
 ]
 
 { #category : #accessing }

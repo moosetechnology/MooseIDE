@@ -1,3 +1,6 @@
+"
+An abstract class for the right part of the TagBrowser. It allows to define the content of a tag
+"
 Class {
 	#name : #MiTagPage,
 	#superclass : #MiPresenter,
@@ -38,7 +41,7 @@ MiTagPage >> model [
 	^owner model
 ]
 
-{ #category : #accessing }
+{ #category : #refreshing }
 MiTagPage >> refresh [
 
 	self refreshTagDescription

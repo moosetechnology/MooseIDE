@@ -125,7 +125,7 @@ MiMetaBrowser >> initializeEntities [
 MiMetaBrowser >> initializeLayout [
 
 	| toolbar left |
-	toolbar := self class defaultLayout.
+	toolbar := SpBoxLayout newVertical.
 	left := SpPanedLayout newTopToBottom
 		        add: (SpPanedLayout newLeftToRight
 				         add: entities;
@@ -147,7 +147,7 @@ MiMetaBrowser >> initializeLayout [
 MiMetaBrowser >> initializeMap [
 
 	map := self instantiate: MiUMLVisualization.
-	map miUMLModelDescriptor: RSUMLClassDescriptor new forFame
+	map classDescriptor: RSUMLClassDescriptor new forFame
 ]
 
 { #category : #initialization }

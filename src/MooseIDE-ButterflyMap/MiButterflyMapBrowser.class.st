@@ -1,6 +1,7 @@
 "
 I am a Butterfly map. I can show incoming and outgoing dependencies from a central entity. It allows to navigate through several level of dependencies.
-I accept a moose entity that is the central entity.
+Accepted entities: a moose entity that is the central entity.
+
 By default entities at left are all clients of the central entity, right ones are providers of the central entity. You can change these rules and custom the semantics of your butterfly map by playing with its settings.
 
 Controls:
@@ -24,10 +25,7 @@ Controls:
 "
 Class {
 	#name : #MiButterflyMapBrowser,
-	#superclass : #MiAbstractBrowser,
-	#instVars : [
-		'visualization'
-	],
+	#superclass : #MiAbstractVisualizationBrowser,
 	#category : #'MooseIDE-ButterflyMap-Browser'
 }
 
@@ -99,21 +97,15 @@ MiButterflyMapBrowser >> hasSettings [
 ]
 
 { #category : #initialization }
-MiButterflyMapBrowser >> initialize [
-
-	super initialize
-]
-
-{ #category : #initialization }
 MiButterflyMapBrowser >> initializeLayout [
 
-	self layout: (SpScrollableLayout with: visualization)
+	self layout: (SpScrollableLayout with: mainPresenter)
 ]
 
 { #category : #initialization }
 MiButterflyMapBrowser >> initializePresenters [
 
-	visualization := self class mapClass owner: self.
+	mainPresenter := self class mapClass owner: self.
 	specModel browser: self.
 	self initializeLayout
 ]
@@ -124,26 +116,14 @@ MiButterflyMapBrowser >> itemsFor: aClass [
 	^ self application itemsFor: aClass
 ]
 
-{ #category : #accessing }
-MiButterflyMapBrowser >> miSelectedItem [
-
-	^ specModel currentEntity
-]
-
 { #category : #running }
 MiButterflyMapBrowser >> run [
-
-	self visualization run
-]
-
-{ #category : #actions }
-MiButterflyMapBrowser >> settings [
-	
-	^self model openSettings
+	self deprecated: 'Use runVisualization method instead' transformWith: '`@receiver run' -> '`@receiver runVisualization'.
+	self runVisualization 
 ]
 
 { #category : #accessing }
 MiButterflyMapBrowser >> visualization [
 
-	^ visualization
+	^ mainPresenter
 ]

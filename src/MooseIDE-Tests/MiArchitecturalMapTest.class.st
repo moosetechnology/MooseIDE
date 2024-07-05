@@ -1,7 +1,7 @@
 Class {
 	#name : #MiArchitecturalMapTest,
 	#superclass : #TestCase,
-	#category : #'MooseIDE-Tests-Application'
+	#category : #'MooseIDE-Tests-Browsers'
 }
 
 { #category : #running }
@@ -15,6 +15,7 @@ MiArchitecturalMapTest >> architecturalMapWith: entities [
 	mockModel stub showAllLinks willReturn: false.
 	mockModel stub tags willReturn: #().
 	mockModel stub entities willReturn: entities.
+	mockModel stub rootNodes willReturn: entities.
 
 	"Mock MiArchitecturalMapBrowser with model -> mockModel"
 	mockBrowser := Mock named: 'MiArchitecturalMapBrowser'.

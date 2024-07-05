@@ -41,9 +41,7 @@ MiResultSizeQueryPresenter >> initialize [
 
 	super initialize.
 	delayer := InputProcessingWaiter new.
-	owner queriesListPresenter announcer
-		when: QueriesListChangedAnnouncement
-		do: [ self queryPresentersListChanged ]
+	owner queriesListPresenter announcer when: QueriesListChangedAnnouncement do: [ self queryPresentersListChanged ] for: self
 ]
 
 { #category : #initialization }

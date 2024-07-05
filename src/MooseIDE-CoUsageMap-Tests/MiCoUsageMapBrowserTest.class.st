@@ -9,6 +9,15 @@ MiCoUsageMapBrowserTest >> browserClass [
 	^ MiCoUsageMapBrowser
 ]
 
+{ #category : #'tests - actions' }
+MiCoUsageMapBrowserTest >> populateBrowser: mooseModel [
+
+	mooseModel add: (FamixStClass new name: 'AClass').
+	mooseModel add: (FamixStClass new name: 'AnotherClass').
+	browser followEntity: mooseModel entities.
+
+]
+
 { #category : #tests }
 MiCoUsageMapBrowserTest >> testCanOpenSettings [
 
@@ -35,13 +44,23 @@ MiCoUsageMapBrowserTest >> testConsumerProducer [
 
 { #category : #'tests - tags' }
 MiCoUsageMapBrowserTest >> testSelectedTagSetAndGet [
-	| model entity tag |
+
+	| model entity entity2 tag |
 	self skip.
 	model := FamixRepTestModel new.
 	tag := model tagNamed: 'aTag'.
-	entity := FamixRepTestClass new name: 'aClass' ; mooseModel: model ; yourself.
+	entity := FamixRepTestClass new
+		          name: 'aClass';
+		          mooseModel: model;
+		          yourself.
+	entity2 := FamixRepTestClass new
+		           name: 'anotherClass';
+		           mooseModel: model;
+		           yourself.
 
-	browser followEntity: entity.
+	browser followEntity: {
+			entity.
+			entity2 }.
 	browser selectedTag: tag.
 	self assert: browser selectedTag equals: tag
 ]
@@ -56,20 +75,20 @@ MiCoUsageMapBrowserTest >> testSettingsAction [
 { #category : #tests }
 MiCoUsageMapBrowserTest >> testSettingsClickCancel [
 	"skipping for now because settings are handled in a very special way"
-
+	self flag: 'should test settings'.
 	self skip.
 ]
 
 { #category : #tests }
 MiCoUsageMapBrowserTest >> testSettingsClickOK [
 	"overrind and skipping for now because settings are handled in a very special way"
-
+	self flag: 'should test settings'.
 	self skip.
 ]
 
 { #category : #tests }
 MiCoUsageMapBrowserTest >> testSettingsClickReset [
 	"overrind and skipping for now because settings are handled in a very special way"
-
+	self flag: 'should test settings'.
 	self skip.
 ]

@@ -20,12 +20,13 @@ Class {
 { #category : #commands }
 MiQueryListItemPresenter class >> buildCommandsGroupWith: presenterInstance forRoot: rootCommandGroup [
 
-	rootCommandGroup register:
-		((MiAddChildQueryCommand forSpecContext: presenterInstance) 
-			 iconName: MiAddChildQueryCommand iconName).
-	rootCommandGroup register:
-		((MiRemoveQueryCommand forSpecContext: presenterInstance) iconName:
-			 MiRemoveQueryCommand iconName)
+	rootCommandGroup
+		register: (MiAddChildQueryCommand forSpecContext: presenterInstance);
+		register:
+			(MiClipBoardCopyQueryCommand forSpecContext: presenterInstance);
+		register:
+			(MiCreateDynamicTagQueryCommand forSpecContext: presenterInstance);
+		register: (MiRemoveQueryCommand forSpecContext: presenterInstance)
 ]
 
 { #category : #'instance creation' }
@@ -103,35 +104,28 @@ MiQueryListItemPresenter >> indentationSpacesPresenters [
 MiQueryListItemPresenter >> initializeLayout [
 
 	| tempLayout |
+
 	tempLayout := SpBoxLayout newLeftToRight
 		              spacing: 5;
 		              borderWidth: 5;
 		              yourself.
-	self indentationSpacesPresenters do: [ :each | 
+	self indentationSpacesPresenters do: [ :each |
 		tempLayout add: each expand: false ].
 	tempLayout
 		add: queryNumberLabelPresenter expand: false;
 		add: queryTypesDropListPresenter width: 130;
 		add: queryConfiguratorPresenter;
-		addLast: optionsMenuButton expand: false.
+		add: optionsMenuButton width: 25.
 	self layout: tempLayout
 ]
 
 { #category : #initialization }
 MiQueryListItemPresenter >> initializeMenu [
 
-	| optionsMenuGroup |
-	optionsMenuGroup := (self class buildRootCommandsGroupFor: self)
-		                    asMenuPresenter.
-	optionsMenuGroup addGroup: [ :aGroup | 
-		aGroup addItem: [ :anItem | 
-			anItem
-				name: 'Cancel';
-				icon: (self iconNamed: #smallCancel);
-				action: [  ] ] ].
-
-	optionsMenuButton := self newMenuButton
-		                     menu: optionsMenuGroup;
+	optionsMenuButton := self newMenuBar
+		                     addItem: [ :item |
+			                     item subMenu:
+					                     self rootCommandsGroup asMenuPresenter ];
 		                     yourself
 ]
 
@@ -155,14 +149,13 @@ MiQueryListItemPresenter >> initializePresenters [
 { #category : #initialization }
 MiQueryListItemPresenter >> initializeQueryTypesDropList [
 
-	| sortedItems |
 	queryTypesDropListPresenter := self newDropList.
-	sortedItems := queriesListPresenter availableQueryTypes sorted: #label ascending.
+
 	queryTypesDropListPresenter
 		startWithoutSelection;
-		items: sortedItems;
+		items: self sortedAvailableQueries;
 		display: [ :queryClass | queryClass label ];
-		whenSelectedItemChangedDo: [ :queryClass | 
+		whenSelectedItemChangedDo: [ :queryClass |
 			self updateQueryConfiguratorPresenterFor: queryClass ]
 ]
 
@@ -250,6 +243,13 @@ MiQueryListItemPresenter >> setModelBeforeInitialization: aQuery [
 MiQueryListItemPresenter >> setQueryNumber: anInteger [
 
 	queryNumberLabelPresenter label: anInteger asString
+]
+
+{ #category : #initialization }
+MiQueryListItemPresenter >> sortedAvailableQueries [
+
+	^ queriesListPresenter availableQueryTypes sorted:
+		  #yourself ascending
 ]
 
 { #category : #update }

@@ -44,11 +44,11 @@ FamixCriticBrowserGenerator >> defineClasses [
 
 { #category : #definition }
 FamixCriticBrowserGenerator >> defineHierarchy [
+
 	tRuleComponent --|> #TNamedEntity.
 	context --|> tRuleComponent.
 	rootContext --|> context.
 	condition --|> tRuleComponent
-	
 ]
 
 { #category : #definition }

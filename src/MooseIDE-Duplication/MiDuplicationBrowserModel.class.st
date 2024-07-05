@@ -23,18 +23,6 @@ MiDuplicationBrowserModel >> ancestorsOf: aFragment in: aFragmentCollection [
 		           self fragment: anotherFragment includes: aFragment ]
 ]
 
-{ #category : #accessing }
-MiDuplicationBrowserModel >> browser [
-
-	^ browser
-]
-
-{ #category : #accessing }
-MiDuplicationBrowserModel >> browser: anObject [
-
-	browser := anObject
-]
-
 { #category : #api }
 MiDuplicationBrowserModel >> childrenFragments: aFragment [
 
@@ -44,13 +32,6 @@ MiDuplicationBrowserModel >> childrenFragments: aFragment [
 { #category : #settings }
 MiDuplicationBrowserModel >> codeCleanerClass [
 	^#codeCleanerClass
-]
-
-{ #category : #private }
-MiDuplicationBrowserModel >> currentMooseModel [
-	^self entities
-		ifEmpty: [ nil ]
-		ifNotEmpty: [ :list | list anyOne mooseModel]
 ]
 
 { #category : #private }
@@ -73,8 +54,7 @@ MiDuplicationBrowserModel >> entities [
 { #category : #accessing }
 MiDuplicationBrowserModel >> entities: aCollection [
 
-	entities := aCollection asCollection sorted: [ :a :b |
-		            a name < b name ].
+	entities := aCollection sorted: [ :a :b | a name < b name ].
 	browser showEntities: entities
 ]
 
@@ -82,8 +62,8 @@ MiDuplicationBrowserModel >> entities: aCollection [
 MiDuplicationBrowserModel >> findReplicas [
 
 	replicatedFragmentsHierarchy := self hierarchyOfReplicatedFragment:
-		                       (self newDetector runOn: entities)
-			                       replicatedFragments.
+		(self newDetector runOn: entities)
+			replicatedFragments.
 	browser showReplicatedFragments: (self rootFragments)
 ]
 
@@ -200,6 +180,12 @@ MiDuplicationBrowserModel >> maxReplicasShowed [
 	^#maxReplicasShowed
 ]
 
+{ #category : #accessing }
+MiDuplicationBrowserModel >> miSelectedItem [
+
+	^selectedEntities
+]
+
 { #category : #settings }
 MiDuplicationBrowserModel >> minNumberOfCharacters [
 	^#minNumberOfCharacters
@@ -263,13 +249,13 @@ MiDuplicationBrowserModel >> openSettings [
 	settings open
 ]
 
-{ #category : #'accessing - testing' }
+{ #category : #accessing }
 MiDuplicationBrowserModel >> replicatedFragmentsHierarchy [
 
 	^ replicatedFragmentsHierarchy
 ]
 
-{ #category : #'accessing - testing' }
+{ #category : #accessing }
 MiDuplicationBrowserModel >> replicatedFragmentsHierarchy: aCollection [
 
 	replicatedFragmentsHierarchy := aCollection

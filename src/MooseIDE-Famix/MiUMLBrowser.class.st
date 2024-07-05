@@ -1,7 +1,7 @@
 "
 Shows UML of the received entities.
 
-- Follow: Receives a TypeGroup or entities using TType.
+- Accepted entities: a TypeGroup or entities using TType.
 - Highlight: Entities if present
 - Propagate: The selected entity if there is one.
 
@@ -25,20 +25,9 @@ Controls:
 "
 Class {
 	#name : #MiUMLBrowser,
-	#superclass : #MiAbstractBrowser,
-	#instVars : [
-		'diagram'
-	],
+	#superclass : #MiAbstractVisualizationBrowser,
 	#category : #'MooseIDE-Famix-UML'
 }
-
-{ #category : #layout }
-MiUMLBrowser class >> defaultLayout [
-
-	^ super defaultLayout
-		  add: #diagram;
-		  yourself
-]
 
 { #category : #'world menu' }
 MiUMLBrowser class >> menuCommandOn: aBuilder [
@@ -98,15 +87,9 @@ MiUMLBrowser >> canFollowEntity: anObject [
 ]
 
 { #category : #testing }
-MiUMLBrowser >> canHighlight [
+MiUMLBrowser >> canTagEntities [
 
-	^ true
-]
-
-{ #category : #testing }
-MiUMLBrowser >> canTagEntities [ 
-	self flag: 'Remove browser ? (issue #810)'.
-	^false
+	^ false
 ]
 
 { #category : #actions }
@@ -115,27 +98,27 @@ MiUMLBrowser >> followEntity: anEntity [
 	specModel
 		entities: anEntity asMooseSpecializedGroup;
 		unselectAll.
-	diagram
+	mainPresenter
 		rootEntities: specModel entities;
 		run
 ]
 
-{ #category : #actions }
+{ #category : #highlighting }
 MiUMLBrowser >> highlightEntity: anEntity [
 
-	diagram highlightEntities: anEntity asCollection
+	mainPresenter highlightEntities: anEntity asCollection
 ]
 
 { #category : #initialization }
 MiUMLBrowser >> initializePresenters [
 
-	diagram := self instantiate: MiUMLVisualization
+	mainPresenter := self instantiate: MiUMLVisualization
 ]
 
 { #category : #accessing }
 MiUMLBrowser >> miSelectedItem [
 
-	^ (specModel selected ifNil: [ specModel entities ]) mooseInterestingEntity
+	^ specModel selected ifNil: [ specModel entities ]
 ]
 
 { #category : #accessing }

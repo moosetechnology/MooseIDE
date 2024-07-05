@@ -15,11 +15,12 @@ Class {
 
 { #category : #adding }
 MiCriticBrowserModel >> addChild: aRuleComponent toContext: aContext [
-	(aContext = rootContext or: [ ruleComponents includes: aContext ]) ifFalse: [ ^ self ].
+
+	(aContext = rootContext or: [ ruleComponents includes: aContext ]) 
+		ifFalse: [ ^ self ].
 	aContext addChild: aRuleComponent.
 	ruleComponents add: aRuleComponent.
 	browser updateRulesList
-	
 ]
 
 { #category : #adding }
@@ -34,7 +35,7 @@ MiCriticBrowserModel >> addViolationsFor: aCondition [
 	violations at: aCondition put: aCondition violations asMooseSpecializedGroup
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 MiCriticBrowserModel >> contextOf: aRuleComponent [
 
 	^ (aRuleComponent class inheritsFromOrEqualTo: FamixCBContext)
@@ -42,14 +43,14 @@ MiCriticBrowserModel >> contextOf: aRuleComponent [
 		  ifFalse: [ self contextOf: aRuleComponent parent ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #running }
 MiCriticBrowserModel >> createHierarchyTree [
 "creates a list with the index of the parent of each rule component in the ruleComponents
  used to export the rules (and represents the hierarchy)"
 	^ ruleComponents collect: [ :el | ruleComponents indexOf: el parent ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #removing }
 MiCriticBrowserModel >> deleteRuleComponent: aRuleComponent [
 	self removeChild: aRuleComponent fromContext: aRuleComponent parent 
 ]
@@ -130,11 +131,12 @@ MiCriticBrowserModel >> ruleComponents [
 
 { #category : #running }
 MiCriticBrowserModel >> run [
-	rootContext runDownTree: entities.
+	rootContext runDownTree: entities withCallback: [ :aName | 
+		self browser updateStatusLabel: 'Running critic ' , aName , '.' ].
 	violations := rootContext getAllViolations
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #running }
 MiCriticBrowserModel >> runCondition: aCondition [
 	aCondition runUpTree: entities.
 	self addViolationsFor: aCondition

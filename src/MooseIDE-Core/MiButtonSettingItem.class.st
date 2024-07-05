@@ -17,7 +17,13 @@ MiButtonSettingItem >> initialize [
 
 	presenter := SpButtonPresenter new.
 	presenter label: 'Change'.
-	presenter action: [ secondaryPresenter openModal ].
+
+	presenter action: [
+		| modal |
+		self update.
+		modal := secondaryPresenter asModalWindow.
+		modal title: self label.
+		modal open ].
 
 	self initializeSecondaryPresenter
 ]
@@ -31,4 +37,9 @@ MiButtonSettingItem >> initializeSecondaryPresenter [
 MiButtonSettingItem >> owner: aPresenter [
 	super owner: aPresenter.
 	secondaryPresenter owner: aPresenter
+]
+
+{ #category : #initialization }
+MiButtonSettingItem >> update [
+	"empty in superclass but redefined in revelant subclasses."
 ]

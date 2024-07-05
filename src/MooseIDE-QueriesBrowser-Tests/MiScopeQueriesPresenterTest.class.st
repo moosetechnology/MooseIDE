@@ -20,13 +20,14 @@ MiScopeQueriesPresenterTest >> classToTest [
 MiScopeQueriesPresenterTest >> createNewQuery [
 
 	| rootQuery |
+
 	rootQuery := FQRootQuery new
-		result: helper classesAndMethods;
-		yourself.
+		             input: helper classesAndMethods;
+		             yourself.
 	^ (FQScopeQuery defaultForParent: rootQuery)
-			resetAndChangeDirection: FQScopeUpAndDown;
-			scope: FamixStClass;
-			yourself
+		  resetAndChangeDirection: FQScopeUpAndDown;
+		  scope: FamixStClass;
+		  yourself
 ]
 
 { #category : #running }

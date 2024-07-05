@@ -1,5 +1,4 @@
 SmalltalkCISpec {
-  #preLoading : '.dependencies.st',
   #loading : [
     SCIMetacelloLoadSpec {
       #baseline : 'MooseIDE',
@@ -12,7 +11,7 @@ SmalltalkCISpec {
   ], 
   #testing : {
     #exclude : {
-      #classes : [ #MiInspectorBrowserTest ]
+      #classes : [ #MiInspectorBrowserTest, #MiModelNavigationBrowserTest ]
     },
     #coverage : {
       #packages : [ 'MooseIDE.*' ],

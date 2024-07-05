@@ -54,6 +54,18 @@ MiAbstractBrowserTest >> mooseObjects [
 		  (MooseModel with: MooseEntity new) }
 ]
 
+{ #category : #'tests - actions' }
+MiAbstractBrowserTest >> populateBrowser: mooseModel [
+	"Some abstract tests require the browser to 'contain' propagated entity(-ies).
+	 For example to be able to retreive the current MooseModel.
+	 But some browsers expect a single entity and others a collection of entities.
+	 This method assumes a single entity is required. It should be overriden when this is not the case"
+
+	mooseModel add: (FamixStClass new name: 'AClass').
+	browser followEntity: mooseModel entities anyOne.
+
+]
+
 { #category : #running }
 MiAbstractBrowserTest >> setUp [
 
@@ -188,12 +200,14 @@ MiAbstractBrowserTest >> testCanOpenSettings [
 
 { #category : #'tests - tags' }
 MiAbstractBrowserTest >> testCanTagEntities [
+	"this is the default. Overrides in tools that cannot tag entities"
 
 	self assert: browser canTagEntities
 ]
 
 { #category : #'tests - tags' }
 MiAbstractBrowserTest >> testDefaultSelectedTagIsNil [
+
 	self assert: browser selectedTag isNil
 ]
 
@@ -291,6 +305,22 @@ MiAbstractBrowserTest >> testFollowOtherBus [
 	self assert: browser busButton label equals: '2 buses'
 ]
 
+{ #category : #'tests - receiving' }
+MiAbstractBrowserTest >> testFreezeOnCollapse [
+
+	browser privateReceivingMode: MiFollowMode.
+	self assert: browser receivingMode equals: MiFollowMode.
+	browser window minimize.
+	self assert: browser receivingMode equals: MiFreezeMode.
+]
+
+{ #category : #tests }
+MiAbstractBrowserTest >> testHelpHasSomeInformation [
+
+	self assert:
+		(browser class comment includesSubstring: 'Accepted entities:')
+]
+
 { #category : #'tests - actions' }
 MiAbstractBrowserTest >> testHighlightEntity [
 
@@ -302,9 +332,9 @@ MiAbstractBrowserTest >> testHighlightEntity [
 
 { #category : #'tests - tags' }
 MiAbstractBrowserTest >> testSelectedTagSetAndGet [
-	browser canTagEntities ifFalse: [ self skip ].
 
-	self subclassResponsibility 
+	browser canTagEntities ifFalse: [ self skip ]
+	"Override to use test"
 ]
 
 { #category : #'tests - opening' }
@@ -352,6 +382,24 @@ MiAbstractBrowserTest >> testSettingsClickReset [
 		raise: Error.
 
 	[ browser closeSettings ] on: Error do: [ "nothing -- ensuring settings window is closed as REset does not do it" ]
+]
+
+{ #category : #'tests - tags' }
+MiAbstractBrowserTest >> testTagMenuListsTags [
+	"The tags are defined in the 'current MooseModel'
+	 To find this model, one of its entities need to be propagated to the browser
+	 But some browsers expect a _collection_ of entities. for these one, the test must be redefined"
+	| mooseModel |
+
+	browser canTagEntities ifFalse: [ self skip ].
+
+	mooseModel := FamixStModel new.
+	self populateBrowser: mooseModel.
+
+	self assert: browser tagList size equals: 0.
+	mooseModel tagNamed: 'blah'.
+	self assert: browser tagList size equals: 1
+	
 ]
 
 { #category : #'tests - buses' }

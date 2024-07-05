@@ -53,10 +53,11 @@ MiQueryConfiguratorPresenterTest >> queryClass [
 MiQueryConfiguratorPresenterTest >> resetPresenterWithEntities: aMooseGroup [
 
 	| builder superPresenter |
+
 	browser := MiQueriesBrowser
 		           newApplication: self application
 		           model: (FQRootQuery new
-				            result: aMooseGroup;
+				            input: aMooseGroup;
 				            yourself).
 	builder := browser queriesListPresenter.
 	"Add a query presenter"

@@ -1,3 +1,16 @@
+"
+## Relations
+======================
+
+### Other
+| Relation | Origin | Opposite | Type | Comment |
+|---|
+| `violatedCondition` | `FamixCBViolation` | `violations` | `FamixCBCondition` | Condition violated by this entity.|
+| `violatingEntity` | `FamixCBViolation` | `violations` | `MooseObject` | Entity raising this violation.|
+
+
+
+"
 Class {
 	#name : #FamixCBViolation,
 	#superclass : #FamixCBEntity,

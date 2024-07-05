@@ -6,7 +6,7 @@ Class {
 		'selectionAction',
 		'marginPercentage'
 	],
-	#category : #'MooseIDE-Visualization'
+	#category : #'MooseIDE-Visualization-Helpers'
 }
 
 { #category : #'instance creation' }
@@ -40,7 +40,7 @@ MiSelection >> on: aBlock [
 MiSelection >> onShape: aShape [
 
 	aShape model ifNil: [ ^ self ].
-	aShape when: RSMouseClick do: [ self selection: aShape ]
+	aShape when: RSMouseClick do: [ self selection: aShape ] for: self
 ]
 
 { #category : #hooks }
@@ -66,6 +66,7 @@ MiSelection >> removeShadowOn: aShape [
 
 { #category : #hooks }
 MiSelection >> selection: aShape [
+
 	self
 		removeShadowOn: aShape;
 		putShadowOn: aShape.

@@ -26,6 +26,12 @@ MiPropagateCommand class >> defaultName [
 	^ 'Propagate'
 ]
 
+{ #category : #default }
+MiPropagateCommand class >> defaultShortcut [
+
+	^ $m shift meta , $p meta shift
+]
+
 { #category : #testing }
 MiPropagateCommand >> canBeExecuted [
 
@@ -53,12 +59,10 @@ MiPropagateCommand >> initialize [
 { #category : #testing }
 MiPropagateCommand >> propagate [
 	| selectedItem |
-	selectedItem := [ self context miSelectedItem ]
+	selectedItem := [ self context miSelectedItemToPropagate ]
 		on: MiNoSelectedElementToPropagateException
 		do: [ :exception | 
 			exception signal.
 			^ self ].
-	selectedItem isMooseObject
-		ifFalse: [ ^ self ].
-	self context buses do: [ :bus | bus globallySelect: selectedItem ]
+	self context buses do: [ :bus | bus globallySelect: selectedItem mooseInterestingEntity ]
 ]

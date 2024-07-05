@@ -8,7 +8,8 @@ Class {
 	#instVars : [
 		'typesButton',
 		'typesList',
-		'selectedTypesLabel'
+		'selectedTypesLabel',
+		'typesModal'
 	],
 	#category : #'MooseIDE-QueriesBrowser-Configuration presenters'
 }
@@ -22,7 +23,7 @@ MiTypeQueryPresenter class >> title [
 MiTypeQueryPresenter >> configureFor: aQuery [
 
 	typesButton := self newTypesButton.
-	typesList items: typesList items | aQuery types.
+	typesList items: self query availableTypes | aQuery types.
 	typesList selectItems: aQuery types.
 	query types: aQuery types.
 	query := aQuery
@@ -60,14 +61,7 @@ MiTypeQueryPresenter >> initializeTypesButton [
 { #category : #initialization }
 MiTypeQueryPresenter >> initializeTypesList [
 
-	typesList := self newSelectableListForPopoverExtent: 120 @ 120.
-
-	typesList
-		display: [ :item | self labelFor: item ];
-		items: self query availableTypes;
-		selectItems: self query types;
-		onActivation: [ :type | self selectTypeAction: type ];
-		onDeactivation: [ :type | self selectTypeAction: type ]
+	typesList := self instantiate: MiTypeSelectionPresenter on: self
 ]
 
 { #category : #'widgets configuration' }
@@ -95,12 +89,10 @@ MiTypeQueryPresenter >> newTypesButton [
 
 	^ self newButton
 		  label: 'Select Types';
-		  action: [ 
-			  self newPopover
-				  relativeTo: typesButton;
-				  bePositionRight;
-				  presenter: typesList;
-				  popup ];
+		  action: [
+			  typesList selectItems: self query types.
+			  typesModal := typesList openModal.
+			  typesModal isCancelled ifFalse: [ self selectTypeAction: nil ] ];
 		  yourself
 ]
 

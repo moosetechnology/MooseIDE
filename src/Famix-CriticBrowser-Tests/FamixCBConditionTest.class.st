@@ -15,15 +15,26 @@ Class {
 
 { #category : #running }
 FamixCBConditionTest >> setUp [
+
 	super setUp.
-	
-	condition := FamixCBCondition named: 'test1' on: ((MiCriticBrowserPharoCodeQuery on: '[ :entity | entity isStub ]')).
-	violatingEntity := FamixJavaMethod new. violatingEntity isStub: true.
-	violation := FamixCBViolation condition: condition violatedBy: violatingEntity.
-	entity := FamixJavaMethod new.
+
+	condition := FamixCBCondition
+		             named: 'test1'
+		             on:
+		             (FamixCBScriptQueryHandler on:
+			              '[ :entity | entity isStub ]').
+
+	violatingEntity := FamixJavaMethod new.
+	violatingEntity isStub: true.
+
+	violation := FamixCBViolation
+		             condition: condition
+		             violatedBy: violatingEntity.
+
+	entity := FamixJavaMethod new
 ]
 
-{ #category : #test }
+{ #category : #tests }
 FamixCBConditionTest >> testAddViolation [
 
 	condition addViolation: (FamixCBViolation condition: condition violatedBy: violatingEntity).
@@ -34,7 +45,26 @@ FamixCBConditionTest >> testAddViolation [
 	self assert: condition violations size equals: 2.
 ]
 
-{ #category : #test }
+{ #category : #tests }
+FamixCBConditionTest >> testAllParents [
+
+	| parent1 parent2 |
+	parent1 := FamixCBContext new.
+	parent2 := FamixCBContext new.
+
+	self assertEmpty: condition allParents.
+	condition parent: parent1.
+	parent1 parent: parent2.
+
+	self assertCollection: condition allParents hasSameElements: {
+			parent1.
+			parent2 }.
+	self
+		assertCollection: parent1 allParents
+		hasSameElements: { parent2 }
+]
+
+{ #category : #tests }
 FamixCBConditionTest >> testPutViolationsInto [
 	| dict |
 	dict := Dictionary new.
@@ -50,11 +80,20 @@ FamixCBConditionTest >> testPutViolationsInto [
 
 { #category : #tests }
 FamixCBConditionTest >> testQuery [
-	self should: [ FamixCBCondition named: 'test' on: 'test' ] raise: NotAValidQuery.
-	self shouldnt: [ FamixCBCondition named: 'test' on: (MiCriticBrowserPharoCodeQuery new) ] raise: NotAValidQuery
+
+	self
+		should: [ FamixCBCondition named: 'test' on: 'test' ]
+		raise: FamixCBNotAValidQuery.
+	
+	self
+		shouldnt: [
+			FamixCBCondition
+				named: 'test'
+				on: FamixCBQueryHandler new ]
+		raise: FamixCBNotAValidQuery
 ]
 
-{ #category : #test }
+{ #category : #tests }
 FamixCBConditionTest >> testRemoveAllViolations [
 	| violation2 violation3 violation4 |
 	violation2 := FamixCBViolation condition: condition violatedBy: FamixJavaClass new.
@@ -65,7 +104,7 @@ FamixCBConditionTest >> testRemoveAllViolations [
 	self assert: condition violations size equals: 0
 ]
 
-{ #category : #test }
+{ #category : #tests }
 FamixCBConditionTest >> testRemoveViolation [
 	
 	condition addViolation: violation .
@@ -74,15 +113,27 @@ FamixCBConditionTest >> testRemoveViolation [
 	self assert: (violatingEntity violations includes: violation) equals: false
 ]
 
-{ #category : #test }
+{ #category : #tests }
 FamixCBConditionTest >> testRunOn [
-	| condition entity stubEntity |
-	condition := FamixCBCondition named: 'test1' on: ((MiCriticBrowserPharoCodeQuery on: '[ :entity | entity isStub ]')).
+
+	| stubEntity |
+	condition := FamixCBCondition
+		             named: 'test1'
+		             on:
+		             (FamixCBScriptQueryHandler on:
+			              '[ :entity | entity isStub ]').
 	entity := FamixJavaMethod new.
-	stubEntity := FamixJavaMethod new. stubEntity isStub: true.
-	
-	condition runOn: { entity. stubEntity }.
+	stubEntity := FamixJavaMethod new.
+	stubEntity isStub: true.
+
+	condition runOn: {
+			entity.
+			stubEntity }.
 	self assert: condition violations size equals: 1.
-	self assert: condition violations anyOne violatingEntity equals: stubEntity.
-	self assert: condition violations anyOne violatedCondition equals: condition
+	self
+		assert: condition violations anyOne violatingEntity
+		equals: stubEntity.
+	self
+		assert: condition violations anyOne violatedCondition
+		equals: condition
 ]

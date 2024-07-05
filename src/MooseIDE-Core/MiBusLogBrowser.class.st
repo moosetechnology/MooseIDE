@@ -1,3 +1,8 @@
+"
+I am a browser displaying logs for a specific bus. I am used by the overview browser as a browser and by the logs browser as a presenter in a notebook.
+
+Accepted entities: Does not apply.
+"
 Class {
 	#name : #MiBusLogBrowser,
 	#superclass : #MiAbstractBrowser,

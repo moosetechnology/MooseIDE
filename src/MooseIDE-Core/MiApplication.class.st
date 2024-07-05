@@ -11,7 +11,8 @@ Class {
 		'producers',
 		'consumers',
 		'dropFileHandlers',
-		'mooseModelsTag'
+		'mooseModelsTag',
+		'currentModelsBrowser'
 	],
 	#classVars : [
 		'Current'
@@ -31,10 +32,10 @@ MiApplication class >> defaultBusName [
 	^ 'Default'
 ]
 
-{ #category : #'instance creation' }
+{ #category : #'class initialization' }
 MiApplication class >> reset [
 	<script>
-	Current ifNotNil: [ Current unregisterForDropFilesEvent ].
+	Current ifNotNil: [ [Current unregisterForDropFilesEvent] onErrorDo: [ "ignore" ] ].
 	Current := nil
 ]
 
@@ -56,18 +57,17 @@ MiApplication >> allBrowsers: aMiClass [
 
 { #category : #'drag and drop support' }
 MiApplication >> beDropFilesHandler [
-	dropFileHandlers := {
-		(ExternalDropHandler
-			type: nil
-			extension: #mse
-			action: [ :fileReference | self importModelFromFile: fileReference ])
-		.
-		(ExternalDropHandler
-			type: nil
-			extension: #json
-			action: [ :fileReference | self importModelFromFile: fileReference ])
-	}.
-	dropFileHandlers do: [ :handler | ExternalDropHandler registerHandler: handler ]
+
+	dropFileHandlers := { #mse. #json } collect: [ :extension |
+		                    | handler |
+		                    handler := ExternalDropHandler
+			                               type: nil
+			                               extension: extension
+			                               action: [ :fileReference |
+			                               self importModelFromFile:
+				                               fileReference ].
+		                    ExternalDropHandler registerHandler: handler.
+		                    handler ]
 ]
 
 { #category : #accessing }
@@ -94,7 +94,7 @@ MiApplication >> buses [
 
 { #category : #brokerage }
 MiApplication >> consumeItem: anItem [
-	
+
 	self consumeItem: anItem from: nil
 ]
 
@@ -166,13 +166,14 @@ MiApplication >> deleteBusNamed: aName [
 
 { #category : #accessing }
 MiApplication >> iconForTag: aTag [
-	^self iconProvider iconForTag: aTag
+
+	^ self iconProvider iconForTag: aTag
 ]
 
 { #category : #'drag and drop support' }
 MiApplication >> importModelFromFile: aFileReference [
 
-	self modelImporter handleDropFile: aFileReference
+	self openCurrentModelsBrowser handleDropFile: aFileReference
 ]
 
 { #category : #initialization }
@@ -184,34 +185,22 @@ MiApplication >> initialize [
 	defaultBus := self busNamed: self class defaultBusName.
 
 	consumers := Dictionary new.
-	producers  := Dictionary new.
+	producers := Dictionary new.
 
 	mooseModelsTag := Dictionary new: 5.
 
-	dropFileHandlers := #().
 	self beDropFilesHandler
-
-]
-
-{ #category : #'drag and drop support' }
-MiApplication >> instantiateModelImporter [
-	^(MiAbstractBrowser withAllSubclasses detect: [ :aMiClass | aMiClass isModelImporter ])
-		open
 ]
 
 { #category : #brokerage }
 MiApplication >> itemsFor: aClass [
+	| setCopy |
 
-	^ (self producersOf: aClass) flatCollect: [ :producer | 
-		  producer itemsFor: aClass ]
-]
-
-{ #category : #'drag and drop support' }
-MiApplication >> modelImporter [
-	^self openedBrowsers
-		detect: [ :browser | browser isModelImporter ]
-		ifNone: [ self instantiateModelImporter ].
-
+	setCopy := Set new.
+	 (self producersOf: aClass) do: [ :producer | 
+		  (producer itemsFor: aClass ) do: [ :e | setCopy add: e shallowCopy ]].
+	^ setCopy
+	
 ]
 
 { #category : #style }
@@ -249,6 +238,15 @@ MiApplication >> mooseStyleSheet [
 MiApplication >> newIconProvider [
 
 	^ MiIconProvider new
+]
+
+{ #category : #'drag and drop support' }
+MiApplication >> openCurrentModelsBrowser [
+
+	^ currentModelsBrowser
+		  ifNotNil: [ :modelsBrowser | modelsBrowser restore ]
+		  ifNil: [
+		  currentModelsBrowser := MiModelsBrowser instantiateAndOpen ]
 ]
 
 { #category : #presenters }
@@ -330,8 +328,7 @@ MiApplication >> start [
 { #category : #style }
 MiApplication >> styleSheet [
 
-	^ SpStyle defaultStyleSheet
-	  , self mooseStyleSheet
+	^ super styleSheet , self mooseStyleSheet
 ]
 
 { #category : #tags }
@@ -357,8 +354,15 @@ MiApplication >> unregisterConsumer: aConsumer [
 
 { #category : #'drag and drop support' }
 MiApplication >> unregisterForDropFilesEvent [
+
 	ExternalDropHandler registeredHandlers removeAll: dropFileHandlers.
-	dropFileHandlers := #()
+	dropFileHandlers := #(  )
+]
+
+{ #category : #'drag and drop support' }
+MiApplication >> unregisterModelsBrowser [
+
+	currentModelsBrowser := nil
 ]
 
 { #category : #brokerage }

@@ -35,7 +35,12 @@ MiWindowPresenter class >> buildCommandsGroupWith: aPresenter forRoot: rootComma
 	aPresenter hasSettings ifTrue: [ 
 		rootCommandGroup register:
 			(MiSettingsCommand forSpecContext: aPresenter)
-				beDisplayedOnRightSide ]
+				beDisplayedOnRightSide ].
+	aPresenter hasVisualization ifTrue: [ 
+			rootCommandGroup register:
+			(MiExportVisualizationCommand forSpecContext: aPresenter)
+				beDisplayedOnRightSide 
+		]
 ]
 
 { #category : #toolbar }
@@ -58,6 +63,13 @@ MiWindowPresenter >> defaultInitialExtent [
 	^ 500 @ 400
 ]
 
+{ #category : #initialization }
+MiWindowPresenter >> setContextBindingKeys [
+
+	self contextKeyBindings:
+		(self class actionsCommandGroupFor: presenter) asKMCategory
+]
+
 { #category : #toolbar }
 MiWindowPresenter >> toolbarCommandGroup [
 
@@ -69,6 +81,7 @@ MiWindowPresenter >> toolbarCommandGroup [
 MiWindowPresenter >> updateBusButton [
 
 	| busEditCommand |
+
 	busEditCommand := self toolbarCommandGroup
 		                  commandOrGroupNamed: 'Buses'
 		                  ifNone: [ ^ self ].

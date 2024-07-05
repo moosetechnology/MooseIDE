@@ -26,6 +26,15 @@ MiDuplicationBrowserTest >> method: aName withSource: lineInterval [
 		  yourself
 ]
 
+{ #category : #'tests - actions' }
+MiDuplicationBrowserTest >> populateBrowser: mooseModel [
+
+	mooseModel add: (FamixStClass new name: 'AClass').
+	mooseModel add: (FamixStClass new name: 'AnotherClass').
+	browser followEntity: mooseModel entities.
+
+]
+
 { #category : #running }
 MiDuplicationBrowserTest >> replicaFor: anEntity source: lineInterval [
 
@@ -79,7 +88,7 @@ MiDuplicationBrowserTest >> sourceCode: lineInterval [
 				    to: lineInterval last)
 ]
 
-{ #category : #tests }
+{ #category : #'tests - actions' }
 MiDuplicationBrowserTest >> testFollowEntity [
 
 	self assertEmpty: browser model entities.
@@ -95,8 +104,8 @@ MiDuplicationBrowserTest >> testFollowEntity [
 MiDuplicationBrowserTest >> testFormatReplicatedFragment [
 
 	self
-		assert: (browser formatReplicatedFragment: self replicatedFragment)
-		equals: '2:"Goodness, what big ey...'
+		assert: (self replicatedFragment formatForDuplicationBrowser)
+		equals: '2x3:"Goodness, what big ey...'
 ]
 
 { #category : #tests }
@@ -140,12 +149,20 @@ MiDuplicationBrowserTest >> testSelectEntity [
 
 { #category : #'tests - tags' }
 MiDuplicationBrowserTest >> testSelectedTagSetAndGet [
-	| model entity tag |
+
+	| model entity entity2 tag |
 	model := FamixRepTestModel new.
 	tag := model tagNamed: 'aTag'.
-	entity := (self method: 'aMethod') mooseModel: model ; yourself.
+	entity := (self method: 'aMethod')
+		          mooseModel: model;
+		          yourself.
+	entity2 := (self method: 'anotherMethod')
+		           mooseModel: model;
+		           yourself.
 
-	browser followEntity: entity.
+	browser followEntity: {
+			entity.
+			entity2 }.
 	browser selectedTag: tag.
 	self assert: browser selectedTag equals: tag
 ]

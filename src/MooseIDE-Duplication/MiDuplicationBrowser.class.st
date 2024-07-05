@@ -1,5 +1,13 @@
 "
-A MooseIDE browser to present code clones
+A MooseIDE browser to present code clones.
+
+Accepted entities: A collection of entities with a source anchor.
+
+Use:
+1. Propagate entities to this tool
+2. Press 'Run' button
+3. the tool will show a list of duplicated code chunks
+4. select a duplicated code chunk to see the ducplicated sources (the duplication is greyed in the source code)
 "
 Class {
 	#name : #MiDuplicationBrowser,
@@ -71,11 +79,12 @@ MiDuplicationBrowser >> btnRun [
 { #category : #testing }
 MiDuplicationBrowser >> canFollowEntity: anObject [
 
-	^ anObject isMooseObject and: [ 
-		  anObject asCollection anySatisfy: [ :each | 
-			  [ each hasSourceAnchor ]
-				  on: Error
-				  do: [ false ] ] ]
+	^ anObject isMooseObject and: [
+		  anObject isCollection and: [
+			  anObject anySatisfy: [ :each |
+				  [ each hasSourceAnchor ]
+					  on: Error
+					  do: [ false ] ] ] ]
 ]
 
 { #category : #testing }
@@ -89,23 +98,12 @@ MiDuplicationBrowser >> followEntity: entityCollection [
 	specModel entities: entityCollection
 ]
 
-{ #category : #utilities }
-MiDuplicationBrowser >> formatReplicatedFragment: replicatedFragment [
-
-	"number of replicas and summarization of replicated fragment code"
-
-	^ replicatedFragment replicas size asString , ':'
-	  ,
-		  (replicatedFragment replicas anyOne codeText
-			   withSeparatorsCompacted truncateWithElipsisTo: 25)
-]
-
 { #category : #actions }
 MiDuplicationBrowser >> hasSettings [
 	^ true
 ]
 
-{ #category : #api }
+{ #category : #actions }
 MiDuplicationBrowser >> highlightEntity: entities [
 
 	specModel highlightEntity: entities
@@ -153,7 +151,7 @@ MiDuplicationBrowser >> initializeListReplicatedFragments [
 	lstReplicatedFragments beMultipleSelection.
 
 	lstReplicatedFragments display: [ :replicatedFragment | 
-		self formatReplicatedFragment: replicatedFragment ].
+		replicatedFragment formatForDuplicationBrowser ].
 
 	lstReplicatedFragments children: [ :replicatedFragment | specModel childrenFragments: replicatedFragment ].
 
@@ -238,12 +236,6 @@ MiDuplicationBrowser >> selectFragments: selectedFragments [
 	lstReplicatedFragments selectItems: selectedFragments
 ]
 
-{ #category : #actions }
-MiDuplicationBrowser >> settings [
-
-	^specModel openSettings
-]
-
 { #category : #api }
 MiDuplicationBrowser >> showEntities: entities [
 
@@ -265,7 +257,9 @@ MiDuplicationBrowser >> showReplicas: replicas [
 { #category : #api }
 MiDuplicationBrowser >> showReplicatedFragments: replicatedFragments [
 
-	lstReplicatedFragments items: replicatedFragments.
+	lstReplicatedFragments items:
+		(replicatedFragments sort: [ :a :b |
+			a replicas anyOne length > b replicas anyOne length ]).
 	
 	self updateStatusBar.
 ]

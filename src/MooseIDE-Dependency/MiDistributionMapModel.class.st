@@ -1,3 +1,6 @@
+"
+I am the model of the distribution map. I am responsible for tag managment, data storage and element sorting.
+"
 Class {
 	#name : #MiDistributionMapModel,
 	#superclass : #MiAbstractModel,
@@ -43,24 +46,17 @@ MiDistributionMapModel >> availableQueries [
 	^ { self defaultChildrenQuery } , browser availableQueries
 ]
 
-{ #category : #'accessing - tests' }
-MiDistributionMapModel >> browser [
-
-	^ browser
-]
-
-{ #category : #accessing }
-MiDistributionMapModel >> browser: anObject [
-
-	browser := anObject.
-
-	self initializeSettings
-]
-
 { #category : #accessing }
 MiDistributionMapModel >> childrenFor: anEntity [
 
-	^ self childrenQuerySetting runOn: anEntity asMooseGroup
+	| groups dts children |
+	children := self childrenQuerySetting runOn: anEntity asMooseGroup.
+	dts := self tagsSetting.
+	groups := OrderedCollection new.
+	dts size + 1 timesRepeat: [ groups add: OrderedCollection new ].
+	children do: [ :child | 
+		(groups at: 1 + (self indexOfTagFor: child)) add: child ].
+	^ groups flatCollect: [ :child | child ] as: OrderedCollection
 ]
 
 { #category : #settings }
@@ -125,10 +121,11 @@ MiDistributionMapModel >> fetchChildrenQueries [
 
 { #category : #accessing }
 MiDistributionMapModel >> fetchTags [
+	"If we ask the application, then we need the tag browser opened. So we asume a browser is opened on the entities of only one model and we ask the tags in the models of a random moose entity of the browser."
 
-	^ ((browser application itemsFor: MiDynamicTag)
-	   , (browser application itemsFor: FamixTag)) asOrderedCollection 
-		  sorted: [ :t1 :t2 | t1 name < t2 name ]
+	browser model entities ifNotNil: [ :ents | ents ifNotEmpty: [ ^ ents anyOne mooseModel allTags sorted: #name ascending ] ].
+
+	^ #(  )
 ]
 
 { #category : #accessing }
@@ -176,13 +173,14 @@ MiDistributionMapModel >> itemColorForNoTag [
 { #category : #settings }
 MiDistributionMapModel >> itemTags [
 
-	^ MiAbstractSettingItem buttonWithEditableListSetting
+	^ MiAbstractSettingItem buttonWithSelectableListSetting
 		  possibleValues: self fetchTags;
-		  displayIcon: [ :tag | MiTagBrowserModel iconForTag: tag ];
+		  displayIcon: [ :tag | browser application iconForTag: tag ];
 		  display: [ :tag | tag name ];
 		  label: 'Tags';
 		  help: 'The tags used as properties to display.
 If an entity has several tags, it will get the color of the first of its tags appearing in the list';
+		  selectAll;
 		  yourself
 ]
 
@@ -193,23 +191,24 @@ MiDistributionMapModel >> numberOfchildrenWithProperty: aProp forNode: node [
 	count: [ :child  |  aProp isApplicableTo: child]
 ]
 
+{ #category : #settings }
+MiDistributionMapModel >> openSettings [
+
+	self settings open
+]
+
 { #category : #querying }
 MiDistributionMapModel >> orderOuterNodes: aCollectionOfNodes [
 
 	| engine partVectors |
 	aCollectionOfNodes ifEmpty: [ ^ #(  ) ].
 
-	partVectors := aCollectionOfNodes collect: [ 
-		               :node | 
-		               AISimilarityItem
-			               with: node
-			               andAll: (self tagsSetting collect: [ :aProp | 
-					                self
-						                numberOfchildrenWithProperty: aProp
-						                forNode: node ]) ] as: Array.
-	engine := AIClusterEngine with: partVectors.
-	engine hierarchicalClusteringUsing: #completeLinkage.
-	^ engine dendrogram orderLeafs collect: #item
+	partVectors := aCollectionOfNodes
+		               collect: [ :node |
+		               AISimilarityItem with: node andAll: (self tagsSetting collect: [ :aProp | self numberOfchildrenWithProperty: aProp forNode: node ]) ]
+		               as: Array.
+	engine := AISeriationEngine with: partVectors.
+	^ engine orderDendrogramLeaves collect: #item
 ]
 
 { #category : #settings }
@@ -271,4 +270,12 @@ MiDistributionMapModel >> tagFor: anEntity [
 { #category : #settings }
 MiDistributionMapModel >> tagsSetting [
 	^settings getItemValue: #tags
+]
+
+{ #category : #accessing }
+MiDistributionMapModel >> tooManyEntities [
+	"some random value above which computing the DistributionMap takes too long.
+	Not very brilliant, but solves https://github.com/moosetechnology/MooseIDE/issues/955"
+
+	^100
 ]

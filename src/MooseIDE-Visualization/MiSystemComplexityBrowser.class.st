@@ -1,6 +1,6 @@
 "
 I am a browser showing a System Complexity visualization on classes.
-I accept a MooseGroup.
+Accepted entities: a MooseGroup.
 
 Controls:
 
@@ -22,10 +22,7 @@ Controls:
 "
 Class {
 	#name : #MiSystemComplexityBrowser,
-	#superclass : #MiAbstractBrowser,
-	#instVars : [
-		'visualization'
-	],
+	#superclass : #MiAbstractVisualizationBrowser,
 	#category : #'MooseIDE-Visualization-System Complexity'
 }
 
@@ -70,7 +67,8 @@ MiSystemComplexityBrowser class >> title [
 { #category : #actions }
 MiSystemComplexityBrowser >> buildVisualization [
 
-	visualization run
+	self deprecated: 'Use runVisualization method instead' transformWith: '`@receiver buildVisualization' -> '`@receiver runVisualization'.
+	self runVisualization 
 ]
 
 { #category : #testing }
@@ -106,25 +104,13 @@ MiSystemComplexityBrowser >> hasSettings [
 MiSystemComplexityBrowser >> initializeLayout [
 
 	self layout: (SpBoxLayout newTopToBottom
-			 add: visualization;
+			 add: mainPresenter;
 			 yourself)
 ]
 
 { #category : #initialization }
 MiSystemComplexityBrowser >> initializePresenters [
 
-	visualization := self instantiate: MiSystemComplexityVisualization.
+	mainPresenter := self instantiate: MiSystemComplexityVisualization.
 	self initializeLayout
-]
-
-{ #category : #accessing }
-MiSystemComplexityBrowser >> miSelectedItem [
-
-	^ specModel entities
-]
-
-{ #category : #actions }
-MiSystemComplexityBrowser >> settings [
-	
-	specModel settings open
 ]

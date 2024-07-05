@@ -20,14 +20,6 @@ MiSystemComplexityModel >> availableMetrics [
 		  a < b ]
 ]
 
-{ #category : #initialization }
-MiSystemComplexityModel >> browser: aBrowser [
-
-	browser := aBrowser.
-	
-	self initializeSettings
-]
-
 { #category : #accessing }
 MiSystemComplexityModel >> colorMetric [
 
@@ -76,7 +68,7 @@ MiSystemComplexityModel >> entities: aMooseGroup [
 	aMooseGroup ifEmpty: [ ^ self ].
 	entities := aMooseGroup.
 	self updateSettings.
-	browser buildVisualization
+	browser runVisualization
 ]
 
 { #category : #accessing }
@@ -179,15 +171,21 @@ MiSystemComplexityModel >> nameToDisplay [
 ]
 
 { #category : #accessing }
+MiSystemComplexityModel >> openSettings [
+
+	settings open
+]
+
+{ #category : #accessing }
 MiSystemComplexityModel >> settings [
 
 	^ settings
 ]
 
-{ #category : #initialization }
+{ #category : #accessing }
 MiSystemComplexityModel >> settingsChanged: aBoolean [
 
-	aBoolean ifTrue: [ browser buildVisualization ]
+	aBoolean ifTrue: [ browser runVisualization ]
 ]
 
 { #category : #accessing }

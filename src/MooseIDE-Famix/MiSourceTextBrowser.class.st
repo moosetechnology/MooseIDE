@@ -1,7 +1,7 @@
 "
 Shows the source text of an entity if it has one.
 
-- Follow: Receives a MooseEntity that uses FamixTSourceEntity.
+- Accepted entities: a MooseEntity that uses FamixTSourceEntity.
 - Highlight: Nothing to do.
 - Propagate: <TODO>
 
@@ -20,7 +20,7 @@ Class {
 { #category : #layout }
 MiSourceTextBrowser class >> defaultLayout [
 
-	^ super defaultLayout
+	^ SpBoxLayout newVertical
 		  add: #toolBarExternalEditor height: self toolbarHeight;
 		  add: #textRenderer expand: true;
 		  yourself

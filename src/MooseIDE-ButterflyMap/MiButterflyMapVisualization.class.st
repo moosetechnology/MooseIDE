@@ -3,23 +3,9 @@ Butterfly visualization.
 "
 Class {
 	#name : #MiButterflyMapVisualization,
-	#superclass : #MiAbstractVisualization,
-	#instVars : [
-		'builder'
-	],
+	#superclass : #MiAbstractHierarchicalVisualization,
 	#category : #'MooseIDE-ButterflyMap-Browser'
 }
-
-{ #category : #running }
-MiButterflyMapVisualization >> builder [
-
-	^ builder
-]
-
-{ #category : #highlighting }
-MiButterflyMapVisualization >> highlightShapes [
-	
-]
 
 { #category : #running }
 MiButterflyMapVisualization >> model [
@@ -35,7 +21,6 @@ MiButterflyMapVisualization >> run [
 		           mapModel: owner model;
 		           container: self canvas;
 		           yourself.
-	self canvas @ (builder elasticBoxFor: self canvas).
 	builder build
 ]
 

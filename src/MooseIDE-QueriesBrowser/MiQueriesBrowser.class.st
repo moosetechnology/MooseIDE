@@ -1,6 +1,8 @@
 "
 I am a MooseIDE browser that allows to create custom queries that applies to a MooseModel. I have a `Mi
 queryBuilderPresenter` instance variable that contains a list with all the queries that you want to apply to the Moose model.
+
+Accepted entities: a MooseGroup with some named entities.
 "
 Class {
 	#name : #MiQueriesBrowser,
@@ -16,10 +18,10 @@ Class {
 	#category : #'MooseIDE-QueriesBrowser-Main presenters'
 }
 
-{ #category : #menu }
-MiQueriesBrowser class >> addItemOrSubMenuToMiBrowsersMenu: aRootMenu defaultSubMenu: aSubMenu [
+{ #category : #keymaps }
+MiQueriesBrowser class >> browserKey [
 
-	self addToMiBrowsersMenu: aRootMenu
+	^ $f
 ]
 
 { #category : #'world menu' }
@@ -50,7 +52,7 @@ MiQueriesBrowser class >> menuPriority [
 { #category : #'instance creation' }
 MiQueriesBrowser class >> newModel [
 
-	^ FQRootQuery new
+	^ MiQueriesModel newModel
 ]
 
 { #category : #'instance creation' }
@@ -97,6 +99,19 @@ MiQueriesBrowser >> canFollowEntity: anObject [
 MiQueriesBrowser >> canTagEntities [ 
 	self flag: 'TODO, put browser in default Browser/Model pattern (issue #809) so that tagging can work'.
 	^false
+]
+
+{ #category : #actions }
+MiQueriesBrowser >> clearQueries [
+
+	| anyQuery |
+
+	self rootQuery children ifEmpty: [ ^ self ].
+
+	anyQuery := self rootQuery children anyOne.
+	self rootQuery children removeAll.
+	self application removeItem: anyQuery.
+	self selectQuery: rootQuery
 ]
 
 { #category : #'api - actions' }
@@ -193,12 +208,7 @@ MiQueriesBrowser >> itemsFor: aClass [
 { #category : #accessing }
 MiQueriesBrowser >> miSelectedItem [
 
-	| selected |
-	selected := queryResultTreePresenter miSelectedItem
-		            ifEmpty: [ selectedQuery result ]
-		            ifNotEmpty: [ :items | items ].
-
-	^ selected mooseInterestingEntity
+	^ queryResultTreePresenter miSelectedItem ifEmpty: [ selectedQuery result ] ifNotEmpty: [ :items | items ]
 ]
 
 { #category : #accessing }
@@ -229,7 +239,7 @@ MiQueriesBrowser >> resetRootQueryForEntities: busMooseEntities [
 
 	rootQuery
 		resetResult;
-		result: busMooseEntities;
+		input: busMooseEntities;
 		name: busMooseEntities first mooseModel name.
 	self selectQuery: rootQuery
 ]

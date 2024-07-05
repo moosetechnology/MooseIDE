@@ -16,14 +16,9 @@ Class {
 	#instVars : [
 		'highlightManager',
 		'legendTagBuilder',
-		'methodAttributeCounter',
 		'widthScale',
 		'visualization',
 		'menuManager',
-		'strategies',
-		'containerBoxes',
-		'innerBoxes',
-		'containerEntities',
 		'innerBoxInteraction',
 		'containerBoxInteraction'
 	],
@@ -47,115 +42,58 @@ MiCoUsageMapBuilder >> applyLayout [
 	
 ]
 
-{ #category : #public }
-MiCoUsageMapBuilder >> automaticColor [
-	self flag: 'to move to specModel'.
-	self changeTagsDuring: [ 
-		self containerBoxes 
-			do:[:met | self automaticColorForContainerBox: met ].
-	]
-	
-]
-
-{ #category : #public }
-MiCoUsageMapBuilder >> automaticColorForContainerBox: aMiContainer [
-
-	| groupsByTag |
-	groupsByTag := aMiContainer innerBoxes groupedBy: [ :att | att tag ].
-	groupsByTag ifEmpty: [ "nothing to compare" ^ self ].
-	self strategies do: [ :strat | 
-		strat
-			method: aMiContainer;
-			groupsByTag: groupsByTag.
-		strat computeTag ifNotNil: [ :tag | 
-			self setTag: tag onInnerBox: aMiContainer.
-			^ self ] ].
-	self setTag: nil onInnerBox: aMiContainer
-]
-
 { #category : #accessing }
 MiCoUsageMapBuilder >> canvasController [
 	^ RSCanvasController simple
 ]
 
-{ #category : #private }
-MiCoUsageMapBuilder >> changeTagsDuring: aBlockClosure [
-	| lastTag |
-	lastTag := self lastTagSelected.
-	aBlockClosure value.
-	self lastTagSelected: lastTag
-]
-
 { #category : #accessing }
-MiCoUsageMapBuilder >> conflictTag [
-	^ self legendTagBuilder conflictTag
+MiCoUsageMapBuilder >> colorFromTags: tags [
+	tags ifNil:  [ ^ Color colorFrom: 'f5f5f5' ].
+	(tags isCollection and: [ tags isEmpty ]) ifTrue: [ ^ Color colorFrom: 'f5f5f5' ].
+	(tags isCollection and: [ tags size = 1 ]) ifTrue: [ ^ self colorFromTags: tags anyOne ].
+	tags isCollection ifTrue: [ ^ Color black ].
+
+	(tags isTag and: [ tags isHidden ]) ifTrue: [ ^ Color colorFrom: 'f5f5f5' ].
+	tags isTag ifTrue: [ ^ tags color ].
+	^ Error signal: 'A famixTag was expected'
 ]
 
 { #category : #hooks }
-MiCoUsageMapBuilder >> containerBoxBodyShapeFor: contr [
+MiCoUsageMapBuilder >> containerBoxBodyShapeFor: containerBox [
 	| attributesShapes |
-	attributesShapes := contr innerBoxes collect: [ :inner | 
+	attributesShapes := containerBox innerBoxes collect: [ :innerBox | 
 		self
-			innerBoxShapeFor: inner
-			method: contr ].
+			innerBoxShapeFor: innerBox
+			containerBox: containerBox ].
 	"RSFlowLayout on: attributesShapes."
 	^ attributesShapes asGroup asShape
 		padding: 10;
-		color: (self tagColorFrom: contr tag);
+		color: (self colorFromTags: containerBox tag);
 		border: (RSBorder new color: Color black; joinMiter);
 		yourself.
 ]
 
-{ #category : #accessing }
-MiCoUsageMapBuilder >> containerBoxNamed: aByteString [
-	^ self containerBoxes detect: [ :contr | contr name = aByteString ]
-]
-
 { #category : #hooks }
-MiCoUsageMapBuilder >> containerBoxShapeFor: met [
+MiCoUsageMapBuilder >> containerBoxShapeFor: containerBox [
 	| label body |
-	label := self labelShapeFor: met.
-	body := self containerBoxBodyShapeFor: met.
+	label := self labelShapeFor: containerBox.
+	body := self containerBoxBodyShapeFor: containerBox.
 	RSVerticalLineLayout new
 		alignCenter;
 		gapSize: 0;
 		on: { label. body }.
 	^ MiCoContainerShape new
-		model: met;
+		model: containerBox;
 		addAll: { label. body };
 		adjustToChildren;
 		announcer: containerBoxInteraction announcer;
 		yourself
 ]
 
-{ #category : #accessing }
-MiCoUsageMapBuilder >> containerBoxes [
-	^ containerBoxes
-]
-
-{ #category : #accessing }
-MiCoUsageMapBuilder >> containerEntities [
-	^ containerEntities
-]
-
-{ #category : #accessing }
-MiCoUsageMapBuilder >> containerEntities: aCollection [
-	containerEntities := aCollection
-]
-
-{ #category : #accessing }
-MiCoUsageMapBuilder >> containerInnerCounter [
-	^ methodAttributeCounter
-]
-
-{ #category : #accessing }
-MiCoUsageMapBuilder >> containerInnerCounter: aMiCoMethodAttributeCounter [
-	methodAttributeCounter := aMiCoMethodAttributeCounter
-]
-
 { #category : #'popup - hooks' }
-MiCoUsageMapBuilder >> createAttributeTextMorphFor: att method: met [
-	^ (att asStringForContainerBox: met) asTextMorph
+MiCoUsageMapBuilder >> createContainerBoxTextMorphFor: containerBox [
+	^ containerBox asString asTextMorph
 		backgroundColor: (Smalltalk ui theme backgroundColor alpha: 0.9);
 		borderColor: Color black;
 		borderWidth: 1;
@@ -164,8 +102,8 @@ MiCoUsageMapBuilder >> createAttributeTextMorphFor: att method: met [
 ]
 
 { #category : #'popup - hooks' }
-MiCoUsageMapBuilder >> createContainerBoxTextMorphFor: model [
-	^ model asString asTextMorph
+MiCoUsageMapBuilder >> createInnerBoxTextMorphFor: innerBox containerBox: containerBox [
+	^ (innerBox asStringForContainerBox: containerBox) asTextMorph
 		backgroundColor: (Smalltalk ui theme backgroundColor alpha: 0.9);
 		borderColor: Color black;
 		borderWidth: 1;
@@ -179,11 +117,6 @@ MiCoUsageMapBuilder >> defaultHighlightManager [
 ]
 
 { #category : #default }
-MiCoUsageMapBuilder >> defaultInnerSortBlock [
-	^ [ :inner1 :inner2 :containr | inner1 name < inner2 name ].
-]
-
-{ #category : #default }
 MiCoUsageMapBuilder >> defaultMaxLabelWidth [
 	^ 200
 ]
@@ -194,55 +127,8 @@ MiCoUsageMapBuilder >> defaultMenuManager [
 ]
 
 { #category : #default }
-MiCoUsageMapBuilder >> defaultSettings [
-	^ MiCoUsageMapSettings
-]
-
-{ #category : #default }
-MiCoUsageMapBuilder >> defaultSortBlock [
-	^ [ :container1 :container2 | 
-		| size1 size2 |
-		size1 := container1 innerBoxes size.
-		size2 := container2 innerBoxes size.
-		size1 = size2 
-			ifTrue: [ container1 name < container2 name ]
-			ifFalse: [ size1 > size2 ]
-		 ].
-]
-
-{ #category : #default }
 MiCoUsageMapBuilder >> defaultTagLegendBuilder [
 	^ MiCoTagLegendBuilder new
-]
-
-{ #category : #default }
-MiCoUsageMapBuilder >> defaultTester [
-	^ MiCoFromSettingsMethodAttributeTester new
-]
-
-{ #category : #accessing }
-MiCoUsageMapBuilder >> getBoxFor: object [
-	^(self getContainerBoxFor: object) ifNil: [ self getInnerBoxFor: object ]
-]
-
-{ #category : #accessing }
-MiCoUsageMapBuilder >> getContainerBoxFor: object [
-	^self containerBoxes
-		detect: [ :box | box mooseEntity = object ]
-		ifNone: [ nil ]
-]
-
-{ #category : #accessing }
-MiCoUsageMapBuilder >> getInnerBoxFor: object [
-	^self innerBoxes
-		detect: [ :inner | inner mooseEntity = object ]
-		ifNone: [ nil ]
-]
-
-{ #category : #accessing }
-MiCoUsageMapBuilder >> getOrCreateInnerBoxFor: object [
-	^ (self getInnerBoxFor: object)
-		ifNil: [ innerBoxes add: (self newInnerBoxFor: object) ]
 ]
 
 { #category : #accessing }
@@ -252,67 +138,26 @@ MiCoUsageMapBuilder >> highlightManager [
 
 { #category : #accessing }
 MiCoUsageMapBuilder >> highlightManager: aMiCoHighlightManager [
-	highlightManager := aMiCoHighlightManager
+	highlightManager := aMiCoHighlightManager.
+	highlightManager mapBuilder: self.
 ]
 
 { #category : #accessing }
 MiCoUsageMapBuilder >> iconForTag: aTag [
-	^self application iconForTag: aTag
+
+	self flag: 'move to model?'.
+	^ self application iconForTag: aTag
 ]
 
 { #category : #initialization }
 MiCoUsageMapBuilder >> initialize [
 	super initialize.
 
-	strategies := (MiCoMarkStrategy subclasses collect: #new) sorted: [ :a :b | a order < b order ].
 	self
-		containerEntities: #();
-		containerInnerCounter: self defaultTester;
 		legendTagBuilder: self defaultTagLegendBuilder;
 		menuManager: self defaultMenuManager;
 		highlightManager: self defaultHighlightManager;
 		initializeShapes
-]
-
-{ #category : #initialization }
-MiCoUsageMapBuilder >> initializeContainerBoxes [
-	containerBoxes := self containerEntities 
-		collect: [ :cont | self newContainerBoxFor: cont ]
-		as: OrderedCollection.
-]
-
-{ #category : #initialization }
-MiCoUsageMapBuilder >> initializeReferences [
-	innerBoxes := OrderedCollection new.
-
-	self containerInnerCounter settings: self settings.
-	
-	self containerBoxes do: [ :cont | 
-		| bag |
-		bag := Bag withAll: (self containerInnerCounter allAttributesFor: cont).
-		bag doWithOccurrences: [ :innerEntity :count | | in |
-			count > 0 ifTrue: [ 
-				in := self getOrCreateInnerBoxFor: innerEntity.
-				cont addInnerBox: in.
-				in containerBox: cont numberOfUses: count.
-			].
-		].
-	]
-]
-
-{ #category : #initialization }
-MiCoUsageMapBuilder >> initializeScale [
-	| allAttributesUses range scaleType cls |
-	allAttributesUses := self containerBoxes flatCollect: [ :cont | 
-		cont innerBoxes collect: [ :inner | inner numberOfUses ] ].
-	cls := MiCoUsageMapSettings.
-	range := cls innerBoxRange.
-	scaleType := cls innerBoxScaleType.
-	
-	widthScale := (scaleType value: NSScale)
-		range: {range first. range last}.
-	allAttributesUses ifEmpty: [ ^ self ].
-	widthScale domain: {allAttributesUses min. allAttributesUses max}.
 ]
 
 { #category : #initialization }
@@ -325,8 +170,8 @@ MiCoUsageMapBuilder >> initializeShapes [
 			model: #yourself;
 			morphBuilder: [:shape | 
 				self 
-					createAttributeTextMorphFor: shape model
-					method: (shape propertyAt: #method) ];
+					createInnerBoxTextMorphFor: shape model
+					containerBox: (shape propertyAt: #container) ];
 			yourself).
 	
 	containerBoxInteraction := RSComposite new
@@ -339,59 +184,31 @@ MiCoUsageMapBuilder >> initializeShapes [
 	
 ]
 
-{ #category : #initialization }
-MiCoUsageMapBuilder >> initializeValues [
-	self
-		initializeContainerBoxes;
-		initializeReferences;
-		initializeScale.
-]
-
-{ #category : #accessing }
-MiCoUsageMapBuilder >> innerBoxNamed: aByteString [
-	^ self innerBoxes detect: [ :contr | contr name = aByteString ]
-]
-
 { #category : #hooks }
-MiCoUsageMapBuilder >> innerBoxShapeFor: att method: met [
+MiCoUsageMapBuilder >> innerBoxShapeFor: innerBox containerBox: containerBox [
 	| height |
-	height := self settings innerBoxHeight.
+	height := self specModel innerBoxHeight.
+	widthScale := self specModel widthScale.
 	^ RSBox new
-		model: att;
-		width: (widthScale scale: (att numberOfUses));
+		model: innerBox;
+		width: (widthScale scale: (innerBox numberOfUses));
 		height: height;
-		color: (self tagColorFrom: att tag);
+		color: (self colorFromTags: innerBox tag);
 		border: (self highlightManager defaultBoxBorder);
-		propertyAt: #method put: met;
+		propertyAt: #container put: containerBox;
 		announcer: innerBoxInteraction announcer;
 		yourself.
 ]
 
-{ #category : #accessing }
-MiCoUsageMapBuilder >> innerBoxes [
-	^ innerBoxes
-]
-
 { #category : #hooks }
-MiCoUsageMapBuilder >> labelShapeFor: contr [
+MiCoUsageMapBuilder >> labelShapeFor: containerBox [
 	| label |
 	label := RSLabel new
-		text: contr name;
+		text: containerBox name;
 		color: Color black;
 		yourself.
 	self resizeLabelIfNecessary: label.
 	^ label
-]
-
-{ #category : #accessing }
-MiCoUsageMapBuilder >> lastTagSelected [
-	self flag: 'should be in specModel'.
-	^self application tagSelectedInMooseModel: self specModel currentMooseModel
-]
-
-{ #category : #accessing }
-MiCoUsageMapBuilder >> lastTagSelected: aTag [ 
-	self application selectedTag: aTag
 ]
 
 { #category : #accessing }
@@ -421,80 +238,23 @@ MiCoUsageMapBuilder >> menuManager: aMiCoMenuManager [
 	menuManager mapBuilder: self.
 ]
 
-{ #category : #'instance creation' }
-MiCoUsageMapBuilder >> newContainerBoxFor: anObject [
-	"| tags |
-	tags := anObject allTagAssociations collect: [ :asso | asso tag ].
-	tags := tags
-		ifEmpty: [ nil ]
-		ifNotEmpty: [ tags anyOne ]."
-	^ MiCoContainerBox new
-		mooseEntity: anObject;
-		yourself
-]
-
-{ #category : #'instance creation' }
-MiCoUsageMapBuilder >> newInnerBoxFor: anObject [
-	| tags |
-	tags := anObject allTagAssociations collect: [ :asso | asso tag ].
-	tags := tags
-		ifEmpty: [ nil ]
-		ifNotEmpty: [ tags anyOne ].
-	^ MiCoInnerBox new
-		mooseEntity: anObject;
-		yourself
-]
-
-{ #category : #events }
-MiCoUsageMapBuilder >> quickTaggingOn: entity [ 
-	self lastTagSelected
-	ifNil: [ ^ self ].
-
-	self setTag: self lastTagSelected onInnerBox: entity
-
-]
-
 { #category : #dependencies }
 MiCoUsageMapBuilder >> release [
 	super release.
 	self class instVarNames do: [ :n | self instVarNamed: n put: nil ]
 ]
 
-{ #category : #public }
-MiCoUsageMapBuilder >> removeTag: aMiCoTag [
-	self changeTagsDuring: [ 
-		self mapBuilder containerBoxes, self mapBuilder innerBoxes
-			select: [:each | each tag = aMiCoTag ]
-			thenDo: [:each | self setTag: nil onInnerBox: each ].
-	]
-]
-
 { #category : #hooks }
-MiCoUsageMapBuilder >> renderAsync: aCanvas [
-	[ :aJob | self renderIn: aCanvas job: aJob ] runAsRoassalJobOn: aCanvas.
-	"[ :aJob | self renderIn: aCanvas job: aJob ] asJob run."
+MiCoUsageMapBuilder >> render [
+	self renderIn: self canvas
 ]
 
 { #category : #hooks }
 MiCoUsageMapBuilder >> renderIn: aCanvas [
-	self shouldUseProgressBar
-		ifTrue: [ self renderAsync: aCanvas ]
-		ifFalse: [ self renderIn: aCanvas job: MiJob new ].
-	
-]
-
-{ #category : #hooks }
-MiCoUsageMapBuilder >> renderIn: aCanvas job: aJob [
-	aCanvas aaFast.
-	aJob currentValue: 0; title: 'Reading entities'.
-	self initializeValues.
-	aJob currentValue: 50; title: 'Rendering entities'.
-	shapes := self containerBoxes collect: [ :met | self containerBoxShapeFor: met ].
+	shapes := self specModel containerBoxes  collect: [ :containerEntity | self containerBoxShapeFor: containerEntity ].
 	aCanvas addAll: shapes.
 	
-	aJob currentValue: 85; title: 'Applying layout'.
 	self updateShapeLayout.
-	aJob currentValue: 90; title: 'Adding decorations'.
 	self legendTagBuilder
 		container: aCanvas;
 		build.
@@ -530,16 +290,36 @@ MiCoUsageMapBuilder >> resizeLabelIfNecessary: label [
 	label scaleBy: scale @ 1.
 ]
 
-{ #category : #initialization }
-MiCoUsageMapBuilder >> setTag: aTag onInnerBox: aBox [
-	"send to specModel through the MapVisualization"
-	self flag: 'lastTagSelected should be in specModel'.
-	self lastTagSelected: aTag.
-	visualization setTag: aTag onEntity: aBox mooseEntity
+{ #category : #accessing }
+MiCoUsageMapBuilder >> selectedInnerEntity [
+
+	^visualization selectedInnerEntity
+]
+
+{ #category : #accessing }
+MiCoUsageMapBuilder >> selectedInnerShape [
+	| selectedEntity |
+	selectedEntity := visualization selectedInnerEntity.
+	self canvas children do: [:containerShape |
+		containerShape innerBoxShapes
+			detect: [ :innerShape |
+				innerShape model mooseEntity = selectedEntity ]
+			ifOne: [ :innerShape | ^innerShape ]
+			ifNone: [ nil ]
+		].
+
+	Error signal: 'Shape of selected entity not found'
+]
+
+{ #category : #accessing }
+MiCoUsageMapBuilder >> selectedInnerShape: anInnerShape [
+
+	^visualization selectedInnerEntity: (anInnerShape ifNil: [ nil ] ifNotNil: [anInnerShape model mooseEntity])
 ]
 
 { #category : #accessing }
 MiCoUsageMapBuilder >> settings [
+self shouldNotImplement .
 	^visualization settings
 ]
 
@@ -551,20 +331,20 @@ MiCoUsageMapBuilder >> shouldUseProgressBar [
 { #category : #public }
 MiCoUsageMapBuilder >> sortShapes [
 	| block children tBlock |
-	block := self settings outerBoxSortBlockCompiled.
+	block := self specModel outerBoxSortBlockCompiled.
 	tBlock := [ :a :b | block value: a model value: b model ].
 	children := self canvas children.
 	[ children sort: tBlock ]
 	onErrorDo: [ :ex | 
-		block := self defaultSortBlock.
+		block := self specModel defaultSortBlock.
 		children sort: tBlock ].
-	block := self settings innerBoxSortBlockCompiled.
+	block := self specModel innerBoxSortBlockCompiled.
 	children do: [ :node |
 		tBlock := [ :a :b | 
 			block value: a model value: b model value: node model ].
 		[ node innerBoxShapes sort: tBlock  ]
 		onErrorDo: [ :ex |
-			block := self defaultInnerSortBlock.
+			block := self specModel defaultInnerSortBlock.
 			node innerBoxShapes sort: tBlock ]
 	]
 
@@ -573,23 +353,6 @@ MiCoUsageMapBuilder >> sortShapes [
 { #category : #accessing }
 MiCoUsageMapBuilder >> specModel [
 	^visualization specModel
-]
-
-{ #category : #accessing }
-MiCoUsageMapBuilder >> strategies [
-	^ strategies
-]
-
-{ #category : #accessing }
-MiCoUsageMapBuilder >> tagColorFrom: tags [
-	tags ifNil:  [ ^ Color colorFrom: 'f5f5f5' ].
-	(tags isCollection and: [ tags isEmpty ]) ifTrue: [ ^ Color colorFrom: 'f5f5f5' ].
-	(tags isCollection and: [ tags size = 1 ]) ifTrue: [ ^ self tagColorFrom: tags anyOne ].
-	tags isCollection ifTrue: [ ^ Color black ].
-
-	(tags isTag and: [ tags isHidden ]) ifTrue: [ ^ Color colorFrom: 'f5f5f5' ].
-	tags isTag ifTrue: [ ^ tags color ].
-	^ Error signal: 'A famixTag was expected'
 ]
 
 { #category : #accessing }
@@ -602,14 +365,14 @@ MiCoUsageMapBuilder >> tags [
 	^self specModel tagList
 ]
 
-{ #category : #update }
-MiCoUsageMapBuilder >> threshold75: aNumber [
-	self assert: (aNumber between: 0 and: 100) description: 'use number between 0 and 100'.
+{ #category : #public }
+MiCoUsageMapBuilder >> updateBoxColor: aMiCoBox fromTags: tags [
+	| tagColor |
+	tagColor := self colorFromTags: tags.
+	(self canvas deepShapesFromModel: aMiCoBox) 
+		do: [ :shape | shape color: tagColor ].
+	self canvas signalUpdate.
 
-	self strategies 
-		detect: [ :strat | strat class = MiCo75PercentageMarkStrategy ]
-		ifFound: [ :strat | strat threshold: aNumber / 100.0 ]
-		ifNone: [  ]
 ]
 
 { #category : #update }
@@ -658,8 +421,6 @@ MiCoUsageMapBuilder >> updateInnerBoxSize [
 { #category : #update }
 MiCoUsageMapBuilder >> updateLegend [
 
-	visualization ifNil: [ ^ self ].
-
 	legendTagBuilder removeOldLegend.
 	legendTagBuilder build.
 	self updateShapeColors.
@@ -669,7 +430,7 @@ MiCoUsageMapBuilder >> updateLegend [
 MiCoUsageMapBuilder >> updateShapeColors [
 	self canvas allChildren
 		select: [ :shape | shape model notNil ]
-		thenDo: [ :shape | shape color: (self tagColorFrom: shape model tag) ].
+		thenDo: [ :shape | shape color: (self colorFromTags: shape model tag) ].
 	self canvas signalUpdate.
 ]
 
@@ -688,17 +449,6 @@ MiCoUsageMapBuilder >> updateShapeLayout [
 		child adjustToChildren ].
 	self applyLayout.
 	self canvas signalUpdate.
-]
-
-{ #category : #public }
-MiCoUsageMapBuilder >> updateTagColorFor: anEntity [
-	| tagColor entityBox |
-	tagColor := self tagColorFrom: anEntity allTags .
-	entityBox := self getBoxFor: anEntity.
-	(self canvas deepShapesFromModel: entityBox) 
-		do: [ :shape | shape color: tagColor ].
-	self canvas signalUpdate.
-
 ]
 
 { #category : #accessing }
