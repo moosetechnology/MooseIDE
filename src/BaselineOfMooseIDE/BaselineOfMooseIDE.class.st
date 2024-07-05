@@ -35,7 +35,7 @@ BaselineOfMooseIDE >> classBlueprint: spec [
 BaselineOfMooseIDE >> customProjectAttributes [
 
 	^ RPackageOrganizer default packages
-		  detect: [ :package | package name = 'BaselineOfFamix' ]
+		  detect: [ :package | package name = 'BaselineOfMoose' ]
 		  ifFound: [ #( #WithFamix ) ]
 		  ifNone: [ #( #NoFamix ) ]
 ]
