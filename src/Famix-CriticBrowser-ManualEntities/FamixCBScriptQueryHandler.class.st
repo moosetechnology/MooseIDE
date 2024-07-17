@@ -8,7 +8,7 @@ Class {
 FamixCBScriptQueryHandler class >> on: aString [
 
 	^ self new
-		  innerQuery: (FQSelectScriptQuery script: aString asValuable);
+		  innerQuery: (FQSelectScriptQuery script: aString script);
 		  yourself
 ]
 

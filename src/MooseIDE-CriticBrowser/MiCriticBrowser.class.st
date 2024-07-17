@@ -264,7 +264,15 @@ MiCriticBrowser >> importRulesFromStream: aStream [
 		temp := Smalltalk compiler evaluate: cond query.
 		temp class = FullBlockClosure
 			ifTrue: [ cond query: (FamixCBQueryHandler on: cond query) ]
-			ifFalse: [ cond query: (FamixCBQueryHandler on: temp) ] ].
+			ifFalse: [
+				temp isScriptQuery
+					ifTrue: [
+						| query |
+						query := FamixCBScriptQueryHandler new
+							         innerQuery: (FQSelectScriptQuery script: temp script);
+							         yourself.
+						cond query: query ]
+					ifFalse: [ cond query: (FamixCBQueryHandler on: temp) ] ] ].
 	(rulesCollection select: [ :rc | rc class = FamixCBContext ]) do: [
 		:cont | cont contextBlock: cont contextBlock ].
 
