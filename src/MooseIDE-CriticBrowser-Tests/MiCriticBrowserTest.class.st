@@ -28,16 +28,49 @@ MiCriticBrowserTest >> browserClass [
 	^ MiCriticBrowser 
 ]
 
-{ #category : #removing }
-MiCriticBrowserTest >> removeAllFromRootContext [
+{ #category : #tests }
+MiCriticBrowserTest >> createRulesThenImport [
 
-	[ browser model rootContext children isNotEmpty ] whileTrue: [ browser model removeChild: browser model rootContext children anyOne fromContext: browser model rootContext ].
+	| writeStream fileReference readStream |
+	browser model
+		addChildToRootContext: childContext;
+		addChildToRootContext: stubRule;
+		addChildToRootContext: queriesBrowserRule.
+	browser model addChild: deadRule toContext: childContext.
+
+	fileReference := (FileSystem memory root / 'rules.ston')
+		                 asFileReference.
+	writeStream := fileReference writeStream.
+	browser exportRulesToStream: writeStream.
+	writeStream close.
+
+	self removeAllFromRootContext.
+	readStream := fileReference readStream.
+	browser importRulesFromStream: readStream.
+	readStream close
 ]
 
 { #category : #running }
-MiCriticBrowserTest >> setUp [
+MiCriticBrowserTest >> initializeContexts [
 
-	super setUp.
+	rootContext := browser model rootContext.
+	childContext := FamixCBContext
+		                named: 'Classes context'
+		                on: '[ :col | col allClasses ]'
+]
+
+{ #category : #running }
+MiCriticBrowserTest >> initializeEntities [
+
+	stubEntity := FamixStMethod named: 'test1'.
+	stubEntity isStub: true.
+
+	basicEntity := FamixStMethod named: 'test2'
+]
+
+{ #category : #running }
+MiCriticBrowserTest >> initializeRules [
+
 	stubRule := FamixCBCondition
 		            named: 'test1'
 		            on:
@@ -48,25 +81,30 @@ MiCriticBrowserTest >> setUp [
 		            on:
 		            (FamixCBScriptQueryHandler on:
 			             '[ :entity | entity isDead ]').
+	
 	queriesBrowserRule := FamixCBCondition
 		                      named: 'test3'
 		                      on:
 		                      (FamixCBQueryHandler on:
 			                       (FQBooleanQuery property: #isDead)).
 	queriesBrowserRule query innerQuery parent:
-		(FQTypeQuery types: { FamixStMethod }).
+		(FQTypeQuery types: { FamixStMethod })
+]
 
-	stubEntity := FamixStMethod new.
-	stubEntity
-		name: 'test1';
-		isStub: true.
-	basicEntity := FamixStMethod new.
-	basicEntity name: 'test2'.
+{ #category : #removing }
+MiCriticBrowserTest >> removeAllFromRootContext [
 
-	rootContext := browser model rootContext.
-	childContext := FamixCBContext
-		                named: 'Classes context'
-		                on: '[ :col | col allClasses ]'
+	[ browser model rootContext children isNotEmpty ] whileTrue: [ browser model removeChild: browser model rootContext children anyOne fromContext: browser model rootContext ].
+]
+
+{ #category : #running }
+MiCriticBrowserTest >> setUp [
+
+	super setUp.
+
+	self initializeRules.
+	self initializeContexts.
+	self initializeEntities
 ]
 
 { #category : #tests }
@@ -149,24 +187,23 @@ MiCriticBrowserTest >> testFollowEntity [
 { #category : #tests }
 MiCriticBrowserTest >> testImportRulesFromStream [
 
-	| fileReference writeStream readStream |
-	browser model
-		addChildToRootContext: childContext;
-		addChildToRootContext: stubRule;
-		addChildToRootContext: queriesBrowserRule.
-	browser model addChild: deadRule toContext: childContext.
-
-	fileReference := (FileSystem memory root / 'rules.ston')
-		                 asFileReference.
-	writeStream := fileReference writeStream.
-	browser exportRulesToStream: writeStream.
-	writeStream close.
-
-	self removeAllFromRootContext.
-	readStream := fileReference readStream.
-	browser importRulesFromStream: readStream.
-	readStream close.
+	self createRulesThenImport.
 	self assert: browser model rootContext children size equals: 3
+]
+
+{ #category : #tests }
+MiCriticBrowserTest >> testImportedRulesAreCorrectlyDisplayed [
+
+	| dialog |
+	self createRulesThenImport.
+	browser rules clickAtPath: #( 1 1 ).
+
+	dialog := browser openEditRuleDialog.
+	self
+		assert: browser rulesEditorPresenter queryPresenter codeInput text
+		equals: '[ :entity | entity isStub ]'.
+
+	dialog close
 ]
 
 { #category : #tests }

@@ -129,7 +129,7 @@ MiCBRulesMakerPresenter >> editRule: aCondition [
 MiCBRulesMakerPresenter >> fillRuleToEdit: aRule [
 
 	ruleTitle text: aRule name.
-	ruleSummary text: aRule summary.
+	ruleSummary text: (aRule summary ifNil: [ '' ]).
 	aRule severity ifNotNil: [
 		severityDroplist selectItem: aRule severity ].
 	codeInput text: aRule query asRuleEditorString
