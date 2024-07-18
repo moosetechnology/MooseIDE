@@ -28,6 +28,28 @@ MiCriticBrowserTest >> browserClass [
 	^ MiCriticBrowser 
 ]
 
+{ #category : #tests }
+MiCriticBrowserTest >> createRulesThenImport [
+
+	| writeStream fileReference readStream |
+	browser model
+		addChildToRootContext: childContext;
+		addChildToRootContext: stubRule;
+		addChildToRootContext: queriesBrowserRule.
+	browser model addChild: deadRule toContext: childContext.
+
+	fileReference := (FileSystem memory root / 'rules.ston')
+		                 asFileReference.
+	writeStream := fileReference writeStream.
+	browser exportRulesToStream: writeStream.
+	writeStream close.
+
+	self removeAllFromRootContext.
+	readStream := fileReference readStream.
+	browser importRulesFromStream: readStream.
+	readStream close
+]
+
 { #category : #removing }
 MiCriticBrowserTest >> removeAllFromRootContext [
 
@@ -149,24 +171,23 @@ MiCriticBrowserTest >> testFollowEntity [
 { #category : #tests }
 MiCriticBrowserTest >> testImportRulesFromStream [
 
-	| fileReference writeStream readStream |
-	browser model
-		addChildToRootContext: childContext;
-		addChildToRootContext: stubRule;
-		addChildToRootContext: queriesBrowserRule.
-	browser model addChild: deadRule toContext: childContext.
-
-	fileReference := (FileSystem memory root / 'rules.ston')
-		                 asFileReference.
-	writeStream := fileReference writeStream.
-	browser exportRulesToStream: writeStream.
-	writeStream close.
-
-	self removeAllFromRootContext.
-	readStream := fileReference readStream.
-	browser importRulesFromStream: readStream.
-	readStream close.
+	self createRulesThenImport.
 	self assert: browser model rootContext children size equals: 3
+]
+
+{ #category : #tests }
+MiCriticBrowserTest >> testImportedRulesAreCorrectlyDisplayed [
+
+	| dialog |
+	self createRulesThenImport.
+	browser rules clickAtPath: #( 1 1 ).
+
+	dialog := browser openEditRuleDialog.
+	self
+		assert: browser rulesEditorPresenter queryPresenter codeInput text
+		equals: '[ :entity | entity isStub ]'.
+
+	dialog close
 ]
 
 { #category : #tests }
