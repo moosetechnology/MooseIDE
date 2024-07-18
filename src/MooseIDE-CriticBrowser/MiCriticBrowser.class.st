@@ -265,7 +265,7 @@ MiCriticBrowser >> importRulesFromStream: aStream [
 		temp class = FullBlockClosure
 			ifTrue: [ cond query: (FamixCBQueryHandler on: cond query) ]
 			ifFalse: [
-				temp isScriptQuery
+				temp isScriptQuery 
 					ifTrue: [
 						| query |
 						query := FamixCBScriptQueryHandler new
