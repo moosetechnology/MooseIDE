@@ -165,6 +165,25 @@ FamixCBCondition >> stonOn: stonWriter [
 							 ifFalse: [ value ]) ] ] ]
 ]
 
+{ #category : #initialization }
+FamixCBCondition >> tagRuleResult [
+
+	| results model |
+	results := self violations collect: #violatingEntity.
+	model := results first mooseModel.
+	self tagRuleResultInModel: model
+]
+
+{ #category : #initialization }
+FamixCBCondition >> tagRuleResultInModel: aMooseModel [
+
+	| results tag |
+
+	results := self violations collect: #violatingEntity.
+	tag := aMooseModel tagNamed: self name.
+	results do: [ :entity | entity tagWith: tag ]
+]
+
 { #category : #accessing }
 FamixCBCondition >> violations [
 	"Relation named: #violations type: #FamixCBViolation opposite: #violatedCondition"

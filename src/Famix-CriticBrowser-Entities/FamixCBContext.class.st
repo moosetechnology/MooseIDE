@@ -193,3 +193,14 @@ FamixCBContext >> stonOn: stonWriter [
 										ifTrue: [ value asString ]
 										ifFalse: [ value ]) ] ] ] 
 ]
+
+{ #category : #running }
+FamixCBContext >> tagRuleResult [
+
+	| model |
+
+	model := children ifNotEmpty: [
+		         (children first violations collect: #violatingEntity) first
+			         mooseModel ].
+	children do: [ :c | c tagRuleResultInModel: model ]
+]

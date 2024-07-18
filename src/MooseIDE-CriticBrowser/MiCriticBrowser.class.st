@@ -506,6 +506,13 @@ MiCriticBrowser >> stringForItem: item [
 	^ String streamContents: [ :s | item displayStringOn: s ]
 ]
 
+{ #category : #initialization }
+MiCriticBrowser >> tagRuleResult [
+
+	rules selectedItem tagRuleResult. 
+
+]
+
 { #category : #'updating screen' }
 MiCriticBrowser >> updateEntitiesList: aCollection [
 	| roots |
