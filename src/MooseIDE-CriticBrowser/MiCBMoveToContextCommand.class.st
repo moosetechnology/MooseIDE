@@ -45,7 +45,7 @@ MiCBMoveToContextCommand class >> newForSpecContext: aPresenter targetContext: a
 { #category : #accessing }
 MiCBMoveToContextCommand class >> priority [
 
-	^ 6
+	^ 7
 ]
 
 { #category : #converting }
