@@ -74,7 +74,7 @@ MiCBEditRulePresenter >> initializePresenters [
 	editButton := self newButton.
 	cancelButton := self newButton.
 	
-	editButton label: 'Edit rule';
+	editButton label: 'Confirm';
 		icon: (self iconNamed: #glamorousEdit);
 		action: [ self editButtonAction ].
 		

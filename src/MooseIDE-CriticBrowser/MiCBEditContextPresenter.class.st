@@ -68,7 +68,7 @@ MiCBEditContextPresenter >> initializePresenters [
 	editButton := self newButton.
 	cancelButton := self newButton.
 	
-	editButton label: 'Edit context';
+	editButton label: 'Confirm';
 		icon: (self iconNamed: #glamorousEdit);
 		action: [ self editButtonAction ].
 		
