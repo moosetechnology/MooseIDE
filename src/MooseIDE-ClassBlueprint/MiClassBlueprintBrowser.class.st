@@ -1,3 +1,9 @@
+"
+I am a visualization that displays the structure of a class.
+Accepted entities: a famix class.
+
+This visualization is used to understand a class structure and presents dead artifacts within a class.
+"
 Class {
 	#name : #MiClassBlueprintBrowser,
 	#superclass : #MiAbstractBrowser,

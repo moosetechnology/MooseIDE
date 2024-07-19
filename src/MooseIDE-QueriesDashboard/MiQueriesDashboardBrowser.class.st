@@ -1,3 +1,9 @@
+"
+I present queries associated with a model.
+Accepted entities: any moose object, the moose model is accessed from it.
+
+It looks for queries that could be applied on the model using subclasses of MiAbstractQueriesHolder.
+"
 Class {
 	#name : #MiQueriesDashboardBrowser,
 	#superclass : #MiAbstractBrowser,

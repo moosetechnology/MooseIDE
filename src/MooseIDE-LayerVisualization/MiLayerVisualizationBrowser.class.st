@@ -1,3 +1,10 @@
+"
+I am a visualization that is used to partition a model into layers and show the links between layers.
+Accepted entities: a moose object, the model is accessed from it.
+
+The model that is propagated should have a description model that specifies the structure of the visualization.
+This is done programmaticaly by subclassing the class MiLayerVisualizationModel.
+"
 Class {
 	#name : #MiLayerVisualizationBrowser,
 	#superclass : #MiAbstractBrowser,
