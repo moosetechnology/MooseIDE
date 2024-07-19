@@ -184,8 +184,8 @@ FamixCBContext >> tagRuleResult [
 
 	| model |
 
-	model := children ifNotEmpty: [
-		         (children first violations collect: #violatingEntity) first
+	model := self ruleComponents ifNotEmpty: [
+		         (self ruleComponents first violations collect: #violatingEntity) first
 			         mooseModel ].
-	children do: [ :c | c tagRuleResultInModel: model ]
+	self ruleComponents do: [ :c | c tagRuleResultInModel: model ]
 ]
