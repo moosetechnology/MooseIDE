@@ -173,7 +173,7 @@ MiQueriesDashboardBrowser >> updatePresenters [
 			 add: (self newLabel
 					  addStyle: 'hSep';
 					  yourself)
-			 expand: false;
+			 withConstraints: [ :constraints | constraints height: 1 ];
 			 add: (SpScrollableLayout with: newLayout);
 			 yourself).
 	self announceDisplayed

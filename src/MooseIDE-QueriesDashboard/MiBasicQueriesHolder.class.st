@@ -15,7 +15,7 @@ Class {
 { #category : #testing }
 MiBasicQueriesHolder class >> canBeAppliedOnModel: aMooseModel [
 
-	^ false
+	^ true
 ]
 
 { #category : #'queries - class' }
@@ -43,7 +43,7 @@ MiBasicQueriesHolder >> classes: anObject [
 
 { #category : #'queries - method' }
 MiBasicQueriesHolder >> classesWhoseAmethodHasACyclomaticComplexitySupTo: aNumber [
-		<query>
+		
 	^ DQueryResult new
 		  name: 'Classes whose at least a method has a cyclomatic complexity superior to X';
 		  group: 'Methods';
@@ -54,7 +54,7 @@ MiBasicQueriesHolder >> classesWhoseAmethodHasACyclomaticComplexitySupTo: aNumbe
 
 { #category : #'queries - class' }
 MiBasicQueriesHolder >> classesWithANumberOfAttributesSupTo: aNumber [
-		<query>
+		
 	^ DQueryResult new
 		  name: 'Classes with more than X attributes';
 		  group: 'Classes';
@@ -65,7 +65,7 @@ MiBasicQueriesHolder >> classesWithANumberOfAttributesSupTo: aNumber [
 
 { #category : #'queries - class' }
 MiBasicQueriesHolder >> classesWithANumberOfLOCSupTo: aNumber [
-		<query>
+		
 	^ DQueryResult new
 		  name: 'Classes with more than X lines of code';
 		  group: 'Classes';
@@ -76,7 +76,7 @@ MiBasicQueriesHolder >> classesWithANumberOfLOCSupTo: aNumber [
 
 { #category : #'queries - class' }
 MiBasicQueriesHolder >> classesWithANumberOfMethodsSupTo: aNumber [
-		<query>
+		
 	^ DQueryResult new
 		  name: 'Classes with more than X methods';
 		  group: 'Classes';
@@ -142,7 +142,7 @@ MiBasicQueriesHolder >> deprecatedMethods [
 
 { #category : #'query - enum' }
 MiBasicQueriesHolder >> enumWithANumberOfValuesSupTo: aNumber [
-		<query>
+		
 	^ DQueryResult new
 		  name: 'Enumerations with more than X values';
 		  group: 'Enumeration';
@@ -240,6 +240,19 @@ MiBasicQueriesHolder >> leafPackages [
 		  yourself
 ]
 
+{ #category : #'queries - method' }
+MiBasicQueriesHolder >> methodWithMoreThan30LOC [
+
+	<query>
+	^ DQueryResult new
+		  name:
+			  'Methods withe more than 30 lines of code';
+		  group: 'Methods';
+		  queryBlock: [ 
+			  self methods select: [ :m | m numberOfLinesOfCode > 30 ] ] ;
+		  yourself
+]
+
 { #category : #accessing }
 MiBasicQueriesHolder >> methods [
 
@@ -255,7 +268,7 @@ MiBasicQueriesHolder >> methods: anObject [
 { #category : #'queries - method' }
 MiBasicQueriesHolder >> methodsAccessingMoreAttributesThan: aNumber [
 
-	<query>
+	
 	^ DQueryResult new
 		  name:
 			  'Methods with more than X accesses to Attributes or Enum Values';
@@ -267,7 +280,7 @@ MiBasicQueriesHolder >> methodsAccessingMoreAttributesThan: aNumber [
 
 { #category : #'queries - method' }
 MiBasicQueriesHolder >> methodsWithACyclomaticComplexitySupTo: aNumber [
-		<query>
+		
 	^ DQueryResult new
 		  name: 'Methods with a cyclomatic complexity superior to X';
 		  group: 'Methods';
@@ -278,7 +291,7 @@ MiBasicQueriesHolder >> methodsWithACyclomaticComplexitySupTo: aNumber [
 
 { #category : #'queries - method' }
 MiBasicQueriesHolder >> methodsWithANumberOfAccessesSupTo: aNumber [
-		<query>
+		
 	^ DQueryResult new
 		  name: 'Methods with more than X accesses to Attributes or Enum Values';
 		  group: 'Methods';
@@ -316,7 +329,7 @@ MiBasicQueriesHolder >> packages: anObject [
 
 { #category : #'queries - packages' }
 MiBasicQueriesHolder >> packagesWithANumberOfClassesSupTo: aNumber [
-		<query>
+		
 	^ DQueryResult new
 		  name: 'Packages with more than X classes';
 		  group: 'Packages';
