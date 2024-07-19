@@ -114,6 +114,8 @@ MiDependencyStructuralMatrixBrowser >> diagram [
 
 { #category : #actions }
 MiDependencyStructuralMatrixBrowser >> followEntity: anEntity [
+
+	super followEntity: anEntity.
 	specModel followEntity: anEntity
 ]
 

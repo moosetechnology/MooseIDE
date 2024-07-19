@@ -145,6 +145,7 @@ MiDistributionMapBrowser >> canvas [
 { #category : #actions }
 MiDistributionMapBrowser >> followEntity: anEntity [
 
+	super followEntity: anEntity.
 	specModel entities: anEntity asMooseGroup.
 	self runVisualization
 ]

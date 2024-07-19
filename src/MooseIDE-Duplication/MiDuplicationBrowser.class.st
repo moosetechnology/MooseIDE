@@ -93,9 +93,10 @@ MiDuplicationBrowser >> canHighlight [
 ]
 
 { #category : #actions }
-MiDuplicationBrowser >> followEntity: entityCollection [
+MiDuplicationBrowser >> followEntity: anEntity [
 
-	specModel entities: entityCollection
+	super followEntity: anEntity.
+	specModel entities: anEntity
 ]
 
 { #category : #actions }

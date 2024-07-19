@@ -103,6 +103,8 @@ MiCoUsageMapBrowser >> connectPresenters [
 
 { #category : #actions }
 MiCoUsageMapBrowser >> followEntity: anEntity [
+
+	super followEntity: anEntity.
 	self model followEntity: anEntity
 ]
 

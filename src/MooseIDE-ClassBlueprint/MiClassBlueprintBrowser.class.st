@@ -52,8 +52,7 @@ MiClassBlueprintBrowser >> canFollowEntity: anObject [
 { #category : #testing }
 MiClassBlueprintBrowser >> followEntity: anEntity [
 
-	self withWindowDo: [ :window |
-		window title: 'Blueprint of' , anEntity name ].
+	super followEntity: anEntity.
 	blueprint
 		type: anEntity;
 		run

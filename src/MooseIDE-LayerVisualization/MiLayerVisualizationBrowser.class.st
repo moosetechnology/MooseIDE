@@ -54,6 +54,7 @@ MiLayerVisualizationBrowser >> canFollowEntity: anObject [
 MiLayerVisualizationBrowser >> followEntity: anEntity [
 
 	| mooseModel modelClass |
+	super followEntity: anEntity.
 	mooseModel := anEntity isMooseModel
 		              ifTrue: [ anEntity ]
 		              ifFalse: [ anEntity mooseModel ].

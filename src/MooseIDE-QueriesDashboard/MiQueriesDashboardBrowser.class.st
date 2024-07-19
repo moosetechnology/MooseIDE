@@ -60,6 +60,7 @@ MiQueriesDashboardBrowser >> canFollowEntity: anObject [
 { #category : #actions }
 MiQueriesDashboardBrowser >> followEntity: anEntity [
 
+	super followEntity: anEntity.
 	specModel mooseModel: (anEntity isMooseModel
 			 ifTrue: [ anEntity ]
 			 ifFalse: [ anEntity mooseModel ]).
