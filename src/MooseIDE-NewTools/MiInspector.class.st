@@ -6,7 +6,7 @@ The only difference between my `newInspectorFor:` method implementation and the 
 "
 Class {
 	#name : #MiInspector,
-	#superclass : #StInspector,
+	#superclass : #StInspectorPresenter,
 	#category : #'MooseIDE-NewTools-Inspector'
 }
 
