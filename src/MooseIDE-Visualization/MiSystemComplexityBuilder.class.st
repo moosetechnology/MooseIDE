@@ -165,14 +165,17 @@ MiSystemComplexityBuilder >> menuItemStrategy [
 { #category : #building }
 MiSystemComplexityBuilder >> nodeAnnouncer [
 	"plug new events here"
+
 	baseNode ifNotNil: [ ^ baseNode announcer ].
 	baseNode := RSComposite new
-		@ self popup;
-		@ self menuInteraction;
-		@ (RSNodeOnTopWhenPositionChanged new);
-		yourself.
+		            @ self popup;
+		            @ self menuInteraction;
+		            @
+			            (HGhostDraggable new color:
+					             Smalltalk ui theme caretColor);
+		            @ RSNodeOnTopWhenPositionChanged new;
+		            yourself.
 	^ baseNode announcer
-	
 ]
 
 { #category : #building }
@@ -183,11 +186,11 @@ MiSystemComplexityBuilder >> normalizeColor [
 	scale := self
 		         normalizeMetric: colorMetric
 		         threshold: self colorMetricThreshold.
-	scale range: { 
+	scale range: {
 			mapModel colorRangeStart.
 			mapModel colorRangeEnd }.
-	self container nodes do: [ :each | 
-		each color:
+	self container nodes do: [ :each |
+		(each propertyAt: #background) color:
 			(scale scale: (each model rawModel perform: colorMetric)) ]
 ]
 
@@ -201,7 +204,7 @@ MiSystemComplexityBuilder >> normalizeHeight [
 		         threshold: self heightMetricThreshold.
 	scale range: { 20. 400 }.
 	self container nodes do: [ :each | 
-		each height:
+		(each propertyAt: #background) height:
 			(scale scale: (each model rawModel perform: heightMetric)) ]
 ]
 
@@ -236,8 +239,13 @@ MiSystemComplexityBuilder >> normalizeShapes [
 	self normalizeWidth.
 	self normalizeHeight.
 	self normalizeColor.
-	self container nodes do: [ :canvasShape | 
-		canvasShape model isExpanded ifTrue: [ canvasShape adjustToChildren ] ]
+	self container nodes do: [ :canvasShape |
+		canvasShape model isExpanded ifFalse: [
+			RSVerticalLineLayout new alignCenter on: canvasShape children.
+			canvasShape adjustToChildren.
+			
+			
+			 ] ]
 ]
 
 { #category : #building }
@@ -250,7 +258,7 @@ MiSystemComplexityBuilder >> normalizeWidth [
 		         threshold: self widthMetricThreshold.
 	scale range: { 20. 400 }.
 	self container nodes do: [ :each | 
-		each width:
+		(each propertyAt: #background) width:
 			(scale scale: (each model rawModel perform: widthMetric)) ]
 ]
 
