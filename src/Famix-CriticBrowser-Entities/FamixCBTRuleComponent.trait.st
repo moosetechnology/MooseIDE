@@ -4,10 +4,10 @@ I allow a rule component to be named and summarized.
 ## Relations
 ======================
 
-### Other
+### Parents
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `parent` | `FamixCBTRuleComponent` | `children` | `FamixCBContext` | Parent context, if it exists.|
+| `ruleContainer` | `FamixCBTRuleComponent` | `ruleComponents` | `FamixCBTRuleComposite` | Parent context, if it exists.|
 
 
 ## Properties
@@ -22,11 +22,11 @@ I allow a rule component to be named and summarized.
 Trait {
 	#name : #FamixCBTRuleComponent,
 	#instVars : [
-		'#parent => FMOne type: #FamixCBContext opposite: #children',
+		'#ruleContainer => FMOne type: #FamixCBTRuleComposite opposite: #ruleComponents',
 		'#summary => FMProperty'
 	],
-	#traits : 'FamixTNamedEntity',
-	#classTraits : 'FamixTNamedEntity classTrait',
+	#traits : 'FamixTNamedEntity + TEntityMetaLevelDependency',
+	#classTraits : 'FamixTNamedEntity classTrait + TEntityMetaLevelDependency classTrait',
 	#category : #'Famix-CriticBrowser-Entities-Traits'
 }
 
@@ -45,47 +45,60 @@ FamixCBTRuleComponent classSide >> stonAllInstVarNames [
 ]
 
 { #category : #accessing }
-FamixCBTRuleComponent >> allParents [
-
-	^ parent
-		  ifNil: [ {  } ]
-		  ifNotNil: [ self allParentsIn: OrderedCollection new ]
-]
-
-{ #category : #accessing }
-FamixCBTRuleComponent >> allParentsIn: anOrderedCollection [
-
-	^ parent ifNil: [ anOrderedCollection ] ifNotNil: [
-		  anOrderedCollection add: self parent.
-		  self parent allParentsIn: anOrderedCollection ]
-]
-
-{ #category : #accessing }
 FamixCBTRuleComponent >> parent [
-	"Relation named: #parent type: #FamixCBContext opposite: #children"
 
-	<generated>
-	<FMComment: 'Parent context, if it exists.'>
-	^ parent
+	self
+		deprecated: ''
+		transformWith: '`@receiver parent' -> '`@receiver ruleContainer'.
+
+	^ self ruleContainer
 ]
 
 { #category : #accessing }
 FamixCBTRuleComponent >> parent: anObject [
 
-	<generated>
-	parent := anObject
+	self
+		deprecated: ''
+		transformWith:
+		'`@receiver parent: `@arg' -> '`@receiver ruleContainer: `@arg'.
+
+	^ self ruleContainer: anObject
 ]
 
 { #category : #removing }
 FamixCBTRuleComponent >> removeSelfFromTree [
 
-	self parent removeChild: self
+	self ruleContainer removeChild: self
+]
+
+{ #category : #accessing }
+FamixCBTRuleComponent >> ruleContainer [
+	"Relation named: #ruleContainer type: #FamixCBTRuleComposite opposite: #ruleComponents"
+
+	<generated>
+	<FMComment: 'Parent context, if it exists.'>
+	<container>
+	^ ruleContainer
+]
+
+{ #category : #accessing }
+FamixCBTRuleComponent >> ruleContainer: anObject [
+
+	<generated>
+	ruleContainer := anObject
+]
+
+{ #category : #navigation }
+FamixCBTRuleComponent >> ruleContainerGroup [
+	<generated>
+	<navigation: 'RuleContainer'>
+	^ MooseSpecializedGroup with: self ruleContainer
 ]
 
 { #category : #initialization }
 FamixCBTRuleComponent >> setParentToNilIfNeeded [
 
-	parent ifNotNil: [ self parent: nil ] 
+	self ruleContainer ifNotNil: [ self ruleContainer: nil ]
 ]
 
 { #category : #accessing }

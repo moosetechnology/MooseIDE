@@ -2,10 +2,14 @@
 ## Relations
 ======================
 
+### Parents
+| Relation | Origin | Opposite | Type | Comment |
+|---|
+| `ruleContainer` | `FamixCBTRuleComponent` | `ruleComponents` | `FamixCBTRuleComposite` | Parent context, if it exists.|
+
 ### Other
 | Relation | Origin | Opposite | Type | Comment |
 |---|
-| `parent` | `FamixCBTRuleComponent` | `children` | `FamixCBContext` | Parent context, if it exists.|
 | `violations` | `FamixCBCondition` | `violatedCondition` | `FamixCBViolation` | Every violation of this condition.|
 
 
@@ -135,7 +139,8 @@ FamixCBCondition >> runOn: aCollection withCallback: aBlock [
 
 { #category : #removing }
 FamixCBCondition >> runUpTree: aCollection [
-	self runOn: (parent runUpTree: aCollection)
+
+	self runOn: (self ruleContainer runUpTree: aCollection)
 ]
 
 { #category : #accessing }

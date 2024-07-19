@@ -40,19 +40,24 @@ MiCriticBrowserModel >> contextOf: aRuleComponent [
 
 	^ (aRuleComponent class inheritsFromOrEqualTo: FamixCBContext)
 		  ifTrue: [ aRuleComponent entities ifNil: [ entities ] ]
-		  ifFalse: [ self contextOf: aRuleComponent parent ]
+		  ifFalse: [ self contextOf: aRuleComponent ruleContainer ]
 ]
 
 { #category : #running }
 MiCriticBrowserModel >> createHierarchyTree [
-"creates a list with the index of the parent of each rule component in the ruleComponents
+	"creates a list with the index of the parent of each rule component in the ruleComponents
  used to export the rules (and represents the hierarchy)"
-	^ ruleComponents collect: [ :el | ruleComponents indexOf: el parent ]
+
+	^ ruleComponents collect: [ :el |
+		  ruleComponents indexOf: el ruleContainer ]
 ]
 
 { #category : #removing }
 MiCriticBrowserModel >> deleteRuleComponent: aRuleComponent [
-	self removeChild: aRuleComponent fromContext: aRuleComponent parent 
+
+	self
+		removeChild: aRuleComponent
+		fromContext: aRuleComponent ruleContainer
 ]
 
 { #category : #accessing }

@@ -53,8 +53,9 @@ FamixCBContextTest >> testAddChild [
 	context := FamixCBContext named: 'context' on: '[ :col | col ]'.
 	condition := FamixCBCondition
 		             named: 'Condition root'
-		             on: (FamixCBQueryHandler on:
-				              '[ :entity | entity name = ''violation'' ]').
+		             on:
+		             (FamixCBQueryHandler on:
+			              '[ :entity | entity name = ''violation'' ]').
 	childContext := FamixCBContext
 		                named: 'child context'
 		                on: '[ :col | col select: [ :el | el isClass ] ]'.
@@ -66,8 +67,8 @@ FamixCBContextTest >> testAddChild [
 	self assertCollection: context children hasSameElements: {
 			condition.
 			childContext }.
-	self assert: condition parent equals: context.
-	self assert: childContext parent equals: context
+	self assert: condition ruleContainer equals: context.
+	self assert: childContext ruleContainer equals: context
 ]
 
 { #category : #tests }
@@ -78,8 +79,8 @@ FamixCBContextTest >> testAllParents [
 	parent2 := FamixCBContext new.
 
 	self assertEmpty: context allParents.
-	context parent: parent1.
-	parent1 parent: parent2.
+	context ruleContainer: parent1.
+	parent1 ruleContainer: parent2.
 
 	self assertCollection: context allParents hasSameElements: {
 			parent1.
@@ -105,13 +106,15 @@ FamixCBContextTest >> testPutViolationsInto [
 
 { #category : #tests }
 FamixCBContextTest >> testRemoveChild [
-	
-	context addChild: condition; addChild: childContext.
+
+	context
+		addChild: condition;
+		addChild: childContext.
 	self assert: context children size equals: 2.
 	context removeChild: condition.
 	self assert: context children size equals: 1.
 	self assert: context children anyOne equals: childContext.
-	self assert: condition parent equals: nil
+	self assert: condition ruleContainer equals: nil
 ]
 
 { #category : #tests }
