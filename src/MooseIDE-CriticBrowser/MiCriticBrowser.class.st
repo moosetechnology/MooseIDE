@@ -217,8 +217,8 @@ MiCriticBrowser >> exportRules [
 
 { #category : #'load and saving' }
 MiCriticBrowser >> exportRulesToStream: aStream [
-	specModel ruleComponents do: 
-		[ :el | SCExporter export: el onStream: aStream ].
+	specModel rootContext exportToJSONStream: aStream. 
+		"[ :el | SCExporter export: el onStream: aStream ]."
 	SCExporter export: specModel createHierarchyTree onStream: aStream
 ]
 

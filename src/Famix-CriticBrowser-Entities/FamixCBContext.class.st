@@ -110,6 +110,19 @@ FamixCBContext >> entities: anObject [
 	self entities value: anObject
 ]
 
+{ #category : #'import-export' }
+FamixCBContext >> exportToJSONStream: aStream [
+	(NeoJSONWriter on: aStream) prettyPrint: true;
+	mapInstVarsFor: self class; 
+	mapInstVarsFor: FamixCBCondition ;
+	mapInstVarsFor: FullBlockClosure ;
+	mapInstVarsFor: FamixCBRootContext ;
+	mapInstVarsFor: FamixCBHintSeverity ;
+	mapInstVarsFor: FamixCBScriptQueryHandler ;
+	nextPut: self.
+	self ruleComponents exportToJSONStream: aStream .
+]
+
 { #category : #'as yet unclassified' }
 FamixCBContext >> putViolationsInto: aDictionary [
 	self ruleComponents do: [ :child | child putViolationsInto: aDictionary ]

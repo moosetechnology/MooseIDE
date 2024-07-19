@@ -79,6 +79,13 @@ FamixCBCondition >> addViolation: anObject [
 	^ self violations add: anObject
 ]
 
+{ #category : #'import-export' }
+FamixCBCondition >> exportToJSONStream: aStream [
+	(NeoJSONWriter on: aStream) prettyPrint: true;
+	mapInstVarsFor: self class; 
+	nextPut: self.
+]
+
 { #category : #accessing }
 FamixCBCondition >> putViolationsInto: aDictionary [
 	aDictionary at: self put: violations asMooseSpecializedGroup

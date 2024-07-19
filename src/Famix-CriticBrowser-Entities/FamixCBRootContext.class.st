@@ -13,6 +13,11 @@ FamixCBRootContext class >> annotation [
 	^ self
 ]
 
+{ #category : #'import-export' }
+FamixCBRootContext >> exportToJSONStream: aStream [
+	self ruleComponents do: [ :el | el exportToJSONStream: aStream ]
+]
+
 { #category : #accessing }
 FamixCBRootContext >> getAllViolations [
 	| res |
