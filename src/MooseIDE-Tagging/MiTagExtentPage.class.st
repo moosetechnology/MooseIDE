@@ -112,18 +112,18 @@ MiTagExtentPage >> initializePresenters [
 
 	super initializePresenters.
 	taggedEntitiesLabel := self newLabel label: 'Entities in tag:'.
-	incomingEntitiesFilteringList := self newList
+	incomingEntitiesFilteringList := (self instantiate:
+			                                  SpFilteringSelectableListPresenter)
 		                                 display: [ :entity |
 			                                 String streamContents: [ :s |
 					                                 entity displayStringOn: s ] ];
-		                                 beMultipleSelection;
 		                                 yourself.
 	self refreshEntitiesList.
-	taggedEntitiesFilteringList := self newList
+	taggedEntitiesFilteringList := (self instantiate:
+			                                SpFilteringSelectableListPresenter)
 		                               display: [ :entity |
 			                               String streamContents: [ :s |
 					                               entity displayStringOn: s ] ];
-		                               beMultipleSelection;
 		                               yourself.
 	self refreshTaggedEntitiesList.
 	self initializeButtons.
