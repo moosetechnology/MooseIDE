@@ -34,10 +34,9 @@ BaselineOfMooseIDE >> classBlueprint: spec [
 { #category : #accessing }
 BaselineOfMooseIDE >> customProjectAttributes [
 
-	^ RPackageOrganizer default packages
-		  detect: [ :package | package name = 'BaselineOfFamix' ]
-		  ifFound: [ #( #WithFamix ) ]
-		  ifNone: [ #( #NoFamix ) ]
+	'BaselineOfFamix' asPackageIfAbsent: [ ^ #( #NoFamix ) ].
+	^ #( #WithFamix )
+
 ]
 
 { #category : #dependencies }
@@ -285,7 +284,7 @@ BaselineOfMooseIDE >> removeRoassalFromSystem [
 
 	#( Roassal3 Numeric ) do: [ :string |
 		| packages |
-		packages := RPackageOrganizer default packages
+		packages := self packageOrganizer packages
 			            select: [ :each |
 			            (string surroundedBy: '*') match: each name ]
 			            thenDo: [ :each | each removeFromSystem ] ]
