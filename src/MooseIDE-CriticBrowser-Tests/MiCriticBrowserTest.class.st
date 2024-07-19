@@ -244,11 +244,11 @@ MiCriticBrowserTest >> testMoveCondition [
 
 	browser rules selectItem: stubRule.
 	browser moveCurrentRuleComponentToContext: newContext.
-	
+
 	self assert: rootContext children size equals: 1.
 	self deny: (rootContext children includes: stubRule).
 	self assert: (newContext children includes: stubRule).
-	self assert: stubRule parent equals: newContext
+	self assert: stubRule ruleContainer equals: newContext
 ]
 
 { #category : #tests }
@@ -267,7 +267,7 @@ MiCriticBrowserTest >> testMoveContext [
 	self assert: rootContext children size equals: 1.
 	self deny: (rootContext children includes: childContext).
 	self assert: (newContext children includes: childContext).
-	self assert: childContext parent equals: newContext
+	self assert: childContext ruleContainer equals: newContext
 ]
 
 { #category : #tests }

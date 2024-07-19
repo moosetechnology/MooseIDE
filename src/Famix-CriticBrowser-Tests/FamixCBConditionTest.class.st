@@ -53,8 +53,8 @@ FamixCBConditionTest >> testAllParents [
 	parent2 := FamixCBContext new.
 
 	self assertEmpty: condition allParents.
-	condition parent: parent1.
-	parent1 parent: parent2.
+	condition ruleContainer: parent1.
+	parent1 ruleContainer: parent2.
 
 	self assertCollection: condition allParents hasSameElements: {
 			parent1.

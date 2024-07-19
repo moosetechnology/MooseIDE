@@ -27,3 +27,10 @@ FamixCBEntity class >> metamodel [
 	<generated>
 	^ FamixCBModel metamodel
 ]
+
+{ #category : #testing }
+FamixCBEntity >> isQueryable [
+
+	<generated>
+	^ false
+]
