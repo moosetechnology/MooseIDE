@@ -102,12 +102,12 @@ MiSourceTextBrowser >> externalEditor: anObject [
 { #category : #actions }
 MiSourceTextBrowser >> followEntity: anEntity [
 
+	super followEntity: anEntity.
 	specModel displayedEntity: anEntity.
 	textRenderer renderText.
 
-	self updateWindowTitleWith: anEntity name.
 
-	toolBarExternalEditor newEntity.
+	toolBarExternalEditor newEntity
 ]
 
 { #category : #initialization }
@@ -139,13 +139,6 @@ MiSourceTextBrowser >> toolBarExternalEditor [
 MiSourceTextBrowser >> toolBarExternalEditor: anObject [
 	"only for testing"
 	toolBarExternalEditor := anObject
-]
-
-{ #category : #actions }
-MiSourceTextBrowser >> updateWindowTitleWith: aName [
-
-	self withWindowDo: [ :window | 
-		window title: self class title , ' of ' , aName ]
 ]
 
 { #category : #formatting }

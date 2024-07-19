@@ -87,8 +87,9 @@ MiSystemComplexityBrowser >> canTagEntities [
 MiSystemComplexityBrowser >> followEntity: aMooseGroup [
 
 	| newGroup |
+	super followEntity: aMooseGroup.
 	newGroup := aMooseGroup select: [ :e | e isClass ].
-	newGroup size < aMooseGroup size ifTrue: [ 
+	newGroup size < aMooseGroup size ifTrue: [
 		self inform:
 			(aMooseGroup size - newGroup size) asString , ' rejected entities.' ].
 	specModel entities: newGroup

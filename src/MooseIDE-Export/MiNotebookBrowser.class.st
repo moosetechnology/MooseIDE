@@ -90,6 +90,7 @@ MiNotebookBrowser >> canFollowEntity: anObject [
 { #category : #actions }
 MiNotebookBrowser >> followEntity: anEntity [
 
+	super followEntity: anEntity.
 	specModel mooseModel: anEntity mooseModel.
 	notebook addBinding: 'mooseModel' -> anEntity mooseModel
 ]

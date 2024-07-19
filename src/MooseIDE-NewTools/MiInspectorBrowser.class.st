@@ -93,6 +93,7 @@ MiInspectorBrowser >> canFollowEntity: anEntity [
 { #category : #actions }
 MiInspectorBrowser >> followEntity: anEntity [
 
+	super followEntity: anEntity.
 	anEntity ifNil: [ ^ self ].
 	self model entity: anEntity.
 	mainPresenter model: self model entity.

@@ -224,6 +224,7 @@ MiCriticBrowser >> exportRulesToStream: aStream [
 
 { #category : #actions }
 MiCriticBrowser >> followEntity: anEntity [
+	super followEntity: anEntity .
 	self model setEntities: anEntity.
 	self updateEntitiesList: specModel entities.
 	self updateRulesList.

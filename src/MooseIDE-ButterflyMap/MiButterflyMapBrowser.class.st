@@ -87,6 +87,7 @@ MiButterflyMapBrowser >> canFollowEntity: anObject [
 { #category : #actions }
 MiButterflyMapBrowser >> followEntity: anEntity [
 
+	super followEntity: anEntity.
 	self model currentEntity: anEntity
 ]
 

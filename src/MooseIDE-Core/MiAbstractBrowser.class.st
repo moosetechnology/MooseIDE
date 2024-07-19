@@ -332,6 +332,12 @@ MiAbstractBrowser class >> taskbarIcon [
 
 ]
 
+{ #category : #accessing }
+MiAbstractBrowser class >> titleForModelName: mooseModelName [
+
+	^ self title , ' (' , mooseModelName , ')'
+]
+
 { #category : #specs }
 MiAbstractBrowser class >> windowSize [
 
@@ -441,8 +447,8 @@ MiAbstractBrowser >> followBus: aBus [
 
 { #category : #actions }
 MiAbstractBrowser >> followEntity: anEntity [
-
-	^ self subclassResponsibility
+   anEntity ifNotNil: [ self updateWindowTitleWith: anEntity ].
+	
 ]
 
 { #category : #actions }
@@ -683,4 +689,15 @@ MiAbstractBrowser >> unfollowBus: aBus [
 MiAbstractBrowser >> updateToolbar [
 
 	self window ifNotNil: [ :window | window updateToolbar ]
+]
+
+{ #category : #actions }
+MiAbstractBrowser >> updateWindowTitleWith: anEntity [
+
+	| modelName |
+	modelName := (anEntity isMooseObject and: [ anEntity isMooseModel ])
+		             ifTrue: [ anEntity name ]
+		             ifFalse: [ anEntity printString ].
+	self withWindowDo: [ :window |
+		window title: (self class titleForModelName: modelName) ]
 ]

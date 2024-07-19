@@ -70,12 +70,6 @@ MiQueriesBrowser class >> title [
 	^ 'Queries Browser'
 ]
 
-{ #category : #accessing }
-MiQueriesBrowser class >> titleForModelName: mooseModelName [
-
-	^ self title , ' (' , mooseModelName , ')'
-]
-
 { #category : #specs }
 MiQueriesBrowser class >> windowSize [
 
@@ -125,15 +119,14 @@ MiQueriesBrowser >> enableProgressNotification [
 MiQueriesBrowser >> followEntity: anEntity [
 
 	| busMooseEntities |
+	super followEntity: anEntity.
 	"Create a group in case that only one entity was received from the bus"
 	busMooseEntities := anEntity asMooseGroup allUsing: FamixTNamedEntity.
-		
+
 	"Create the new root query"
 	self resetRootQueryForEntities: busMooseEntities.
 
-	"Update window's title"
-	self window
-		title: (self class titleForModelName: busMooseEntities first mooseModel name).
+
 
 	"Update the all the sub presenters with this new query"
 	queriesListPresenter followNewEntity

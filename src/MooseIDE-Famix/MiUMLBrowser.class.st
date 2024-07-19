@@ -95,6 +95,7 @@ MiUMLBrowser >> canTagEntities [
 { #category : #actions }
 MiUMLBrowser >> followEntity: anEntity [
 
+	super followEntity: anEntity.
 	specModel
 		entities: anEntity asMooseSpecializedGroup;
 		unselectAll.
