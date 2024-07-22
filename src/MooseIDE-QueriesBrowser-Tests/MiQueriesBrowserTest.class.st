@@ -170,14 +170,12 @@ MiQueriesBrowserTest >> testUnregisterAtClose [
 MiQueriesBrowserTest >> unionQuery [
 
 	| subqueries union |
-	subqueries := { 
-		           (FQBooleanQuery property: #isDead).
-		           (FQTypeQuery new type: FamixStClass) }.
+	subqueries := {
+		              (FQBooleanQuery property: #isDead).
+		              (FQTypeQuery new type: FamixStClass) }.
 	union := FQUnionQuery new.
-	subqueries do: [ :parent | 
-		parent beChildOf: browser rootQuery.
-		browser selectQuery: parent.
-		parent addChild: union ].
+	subqueries do: [ :parent | parent beChildOf: browser rootQuery ].
+	browser rootQuery addChild: union.
 	union subqueries: subqueries.
 	^ union
 ]
