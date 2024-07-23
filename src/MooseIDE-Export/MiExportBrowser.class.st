@@ -167,11 +167,11 @@ MiExportBrowser >> commentsButton [
 { #category : #accessing }
 MiExportBrowser >> commonPropertiesIn: aMooseGroup [
 
-	| properties |
+	| properties mooseDescriptions |
 	aMooseGroup ifEmpty: [ ^ aMooseGroup ].
-
-	properties := ((aMooseGroup collect: [ :entity | 
-		                entity mooseDescription allPrimitiveProperties ]) 
+	mooseDescriptions := (aMooseGroup collect: [ :entity | 
+		                entity mooseDescription ]) asSet.
+	properties := ((mooseDescriptions collect: #allPrimitiveProperties)
 		               fold: [ :availableProperties :entityProperty | 
 			               availableProperties & entityProperty ]) sorted:
 		              #name ascending.
