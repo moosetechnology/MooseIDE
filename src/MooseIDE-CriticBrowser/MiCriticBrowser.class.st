@@ -329,7 +329,7 @@ MiCriticBrowser >> initializeLists [
 		display: [ :each | self stringForItem: each ];
 		children: [ :each | self children: each for: entitiesList ];
 		activateOnDoubleClick;
-		whenActivatedDo: [ :each | each selectedItem inspect ].
+		whenActivatedDo: [ :each | specModel doubleClickOn: each selectedItem ].
 
 	rules
 		items: { self model rootContext };
@@ -342,8 +342,7 @@ MiCriticBrowser >> initializeLists [
 		contextMenu: [ 
 			(self class buildRulesCommandsGroupWith: self) asMenuPresenter ];
 		beSingleSelection;
-		whenSelectionChangedDo: [ 
-			specModel violations ifNotEmpty: [ self selectedRules ] ].
+		whenSelectionChangedDo: [ specModel selectedRule: rules selectedItem ].
 
 	rulesResult
 		display: [ :each | self stringForItem: each ];
@@ -355,7 +354,7 @@ MiCriticBrowser >> initializeLists [
 		children: [ :each | self sortedChildren: each for: rulesResult ];
 		contextMenu: expandMenu;
 		activateOnDoubleClick;
-		whenActivatedDo: [ :each | each selectedItem inspect ]
+		whenActivatedDo: [ :each | specModel doubleClickOn: each selectedItem ]
 ]
 
 { #category : #initialization }
@@ -403,10 +402,12 @@ MiCriticBrowser >> initializeStatusLabel [
 ]
 
 { #category : #accessing }
-MiCriticBrowser >> miSelectedItem [ 
-	^ self rules selectedItem 
+MiCriticBrowser >> miSelectedItem [
+
+	^specModel miSelectedItem 
+	" self rules selectedItem 
 		ifNil: [ specModel getAllViolations ] 
-		ifNotNil: [ specModel violationsOf: (self rules selectedItem) ]
+		ifNotNil: [ specModel violationsOf: (self rules selectedItem) ]"
 ]
 
 { #category : #'buttons actions' }
@@ -485,18 +486,6 @@ MiCriticBrowser >> runSelectedCondition [
 	specModel runCondition: rules selectedItem.
 	self updateRulesList.
 	^ self updateResultList: specModel getAllViolations
-]
-
-{ #category : #'selected object' }
-MiCriticBrowser >> selectedRules [
-"shows in the output list only the entities validating the selected queries (or the complete output if no query is selected)"
-	(rules selectedItem) 
-		ifNotNil: [
-			self updateResultList: (specModel violationsOf: rules selectedItem).
-			self updateEntitiesList: (specModel contextOf: rules selectedItem) asMooseGroup]
-		ifNil: [ 
-			self updateResultList: specModel getAllViolations.
-			self updateEntitiesList: specModel entities ]
 ]
 
 { #category : #api }

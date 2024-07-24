@@ -8,7 +8,8 @@ Class {
 		'entities',
 		'rootContext',
 		'ruleComponents',
-		'violations'
+		'violations',
+		'selectedEntities'
 	],
 	#category : #'MooseIDE-CriticBrowser-Model'
 }
@@ -38,9 +39,13 @@ MiCriticBrowserModel >> addViolationsFor: aCondition [
 { #category : #accessing }
 MiCriticBrowserModel >> contextOf: aRuleComponent [
 
-	^ (aRuleComponent class inheritsFromOrEqualTo: FamixCBContext)
-		  ifTrue: [ aRuleComponent entities ifNil: [ entities ] ]
-		  ifFalse: [ self contextOf: aRuleComponent parent ]
+	^(aRuleComponent class = FamixCBRootContext)
+		ifTrue: [ entities ]
+		ifFalse: [
+			(aRuleComponent class = FamixCBContext)
+				ifTrue: [ aRuleComponent entities ]
+				ifFalse: [ self contextOf: aRuleComponent parent ]
+		]
 ]
 
 { #category : #running }
@@ -53,6 +58,15 @@ MiCriticBrowserModel >> createHierarchyTree [
 { #category : #removing }
 MiCriticBrowserModel >> deleteRuleComponent: aRuleComponent [
 	self removeChild: aRuleComponent fromContext: aRuleComponent parent 
+]
+
+{ #category : #initialization }
+MiCriticBrowserModel >> doubleClickOn: items [
+	"could be an entity or a collection"
+
+	self miSelectedItem: items.
+	items inspect
+
 ]
 
 { #category : #accessing }
@@ -88,6 +102,18 @@ MiCriticBrowserModel >> initialize [
 	violations := Dictionary new
 ]
 
+{ #category : #accessing }
+MiCriticBrowserModel >> miSelectedItem [
+
+	^ selectedEntities
+]
+
+{ #category : #accessing }
+MiCriticBrowserModel >> miSelectedItem: anObject [
+
+	selectedEntities := anObject
+]
+
 { #category : #removing }
 MiCriticBrowserModel >> removeBranchFromRuleComponents: aRuleComponent [
 
@@ -115,7 +141,8 @@ MiCriticBrowserModel >> removeRuleViolations: aRuleComponent [
 { #category : #removing }
 MiCriticBrowserModel >> resetResults [
 	rootContext resetExecutionOfTree.
-	violations := Dictionary new
+	violations := Dictionary new.
+	selectedEntities := OrderedCollection new
 ]
 
 { #category : #accessing }
@@ -142,6 +169,31 @@ MiCriticBrowserModel >> runCondition: aCondition [
 	self addViolationsFor: aCondition
 	
 	
+]
+
+{ #category : #interactions }
+MiCriticBrowserModel >> selectedRule: rule [
+	"shows in the output list only the entities validating the selected queries
+	 (or the complete output if no query is selected)"
+
+	| contextEntities violationEntities |
+
+	rule 
+		ifNotNil: [
+			violationEntities := self violationsOf: rule.
+			contextEntities := (self contextOf: rule) asMooseGroup.
+			(rule class = FamixCBCondition)
+				ifTrue: [ self miSelectedItem: violationEntities ]
+				ifFalse: [ self miSelectedItem: contextEntities ]
+		]
+		ifNil: [
+			contextEntities := self entities.
+			violationEntities := self getAllViolations.
+			self miSelectedItem: #()
+		].
+
+	browser updateResultList: violationEntities.
+	browser updateEntitiesList: contextEntities
 ]
 
 { #category : #accessing }
