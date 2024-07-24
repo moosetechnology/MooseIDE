@@ -220,7 +220,7 @@ MiCriticBrowserTest >> testMiSelectedItem [
 	(browser model) 
 		setEntities: {entity. entityStub} asMooseGroup; 
 		run.
-	browser updateResultList: browser model getAllViolations.
+	browser model selectedRule: stubRule.
 		
 	self assert: browser miSelectedItem size equals: 1.
 	self assert: (browser miSelectedItem anyOne violatingEntity) equals: entityStub 
