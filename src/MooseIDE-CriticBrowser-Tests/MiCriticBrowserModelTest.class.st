@@ -122,6 +122,22 @@ MiCriticBrowserModelTest >> testHasBeenEdited [
 ]
 
 { #category : #tests }
+MiCriticBrowserModelTest >> testMiSelectedItemEmpty [
+	model setEntities: { stubEntity. deadEntity } asMooseGroup.
+
+	self assert: model miSelectedItem size equals: 0
+
+]
+
+{ #category : #tests }
+MiCriticBrowserModelTest >> testMiSelectedItemOnDoubleclick [
+	model setEntities: { stubEntity. deadEntity } asMooseGroup.
+
+	self assert: model miSelectedItem size equals: 0
+
+]
+
+{ #category : #tests }
 MiCriticBrowserModelTest >> testRemoveBranchFromRuleComponents [
 
 	| context |
