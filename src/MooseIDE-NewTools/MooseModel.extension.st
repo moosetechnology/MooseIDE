@@ -1,6 +1,13 @@
 Extension { #name : #MooseModel }
 
 { #category : #'*MooseIDE-NewTools' }
+MooseModel >> miMetaNavigationInspectorExtension [
+
+	<inspectorPresentationOrder: -100 title: 'Meta Navigation'>
+	^ MiMetaModelNavigationBrowser on: self
+]
+
+{ #category : #'*MooseIDE-NewTools' }
 MooseModel >> miNavigationInspectorExtension [
 
 	<inspectorPresentationOrder: -100 title: 'Navigation'>

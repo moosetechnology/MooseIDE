@@ -19,6 +19,13 @@ MooseObject >> miFameInspectorExtension [
 ]
 
 { #category : #'*MooseIDE-NewTools' }
+MooseObject >> miMetaNavigationInspectorExtension [
+
+	<inspectorPresentationOrder: 1 title: 'Meta Navigation'>
+	^ MiNavigationBrowser on: self
+]
+
+{ #category : #'*MooseIDE-NewTools' }
 MooseObject >> miNavigationInspectorExtension [
 
 	<inspectorPresentationOrder: 0 title: 'Navigation'>
@@ -40,9 +47,9 @@ MooseObject >> navigationItemsFromPragmas [
 	the pragma #navigation:"
 	pragmaValueAssociations := (self mooseInterestingEntity
 		                            navigationPragmas sorted:
-		                            [ :pragma | 
+		                            [ :pragma |
 		                            pragma argumentNamed: #navigation: ]
-			                            ascending) collect: [ :pragma | 
+			                            ascending) collect: [ :pragma |
 		                           pragma inspectorToString
 		                           -> pragma methodSelector ].
 
