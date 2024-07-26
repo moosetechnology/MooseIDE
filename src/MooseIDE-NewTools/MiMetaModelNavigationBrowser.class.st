@@ -17,7 +17,9 @@ MiMetaModelNavigationBrowser >> initializePresenters [
 	navigation whenActivatedDo: [ :selection |
 		self inspectorObjectContextPresenter owner
 			changeSelection: (selection selectedItem value value: self model)
-			from: self inspectorObjectContextPresenter ]
+			from: self inspectorObjectContextPresenter ].
+	navigation children: [ :aClass | {  } ].
+	entitiesColumn evaluated: [ :el | el key ]
 ]
 
 { #category : #initialization }

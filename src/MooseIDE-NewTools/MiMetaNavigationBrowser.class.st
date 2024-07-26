@@ -31,7 +31,9 @@ Class {
 		'navigation',
 		'model',
 		'activationBlock',
-		'activateOnSingleClick'
+		'activateOnSingleClick',
+		'properties',
+		'entitiesColumn'
 	],
 	#category : #'MooseIDE-NewTools-Inspector tabs'
 }
@@ -46,8 +48,10 @@ MiMetaNavigationBrowser class >> buildCommandsGroupWith: presenter forRoot: aCmC
 { #category : #layout }
 MiMetaNavigationBrowser class >> defaultLayout [
 
-	^ SpBoxLayout newVertical
+	^ SpPanedLayout newVertical
+		  positionOfSlider: 65 percent;
 		  add: #navigation;
+		  add: #properties;
 		  yourself
 ]
 
@@ -87,26 +91,36 @@ MiMetaNavigationBrowser >> iconBlock [
 MiMetaNavigationBrowser >> initializePresenters [
 
 	| items |
-
-	navigation := self newTable.
+	navigation := self newTreeTable beResizable.
 	items := self filterEmptyValues: (self itemsFor: self model).
+	entitiesColumn := SpStringTableColumn new
+		                  title: 'Entities';
+		                  evaluated: [ :el |
+			                  el key , ': ' , el value mooseName ];
+		                  beSortable;
+		                  yourself.
 	navigation
 		addColumn: (SpImageTableColumn new
 				 beNotExpandable;
 				 evaluated: self iconBlock;
 				 yourself);
-		addColumn: (SpStringTableColumn new
-				 title: 'Entities';
-				 evaluated: [ :el | el key ];
-				 beSortable;
-				 yourself).
+		addColumn: entitiesColumn.
+	navigation children: [ :anEntity |
+		anEntity value mooseDescription allComplexProperties
+			collect: [ :property |
+				property name
+				-> (anEntity value propertyNamed: property name ifAbsent: [ nil ]) ]
+			thenReject: [ :assoc |
+				assoc value isNil or: [
+					assoc value isCollection and: [ assoc value isEmpty ] ] ] ].
 	navigation
 		contextMenu: [ self rootCommandsGroup asMenuPresenter ];
 		items: items.
 	navigation whenActivatedDo: [ :selection |
 		self inspectorObjectContextPresenter owner
 			changeSelection: selection selectedItem value
-			from: self inspectorObjectContextPresenter ]
+			from: self inspectorObjectContextPresenter ].
+	properties := MiPropertyExtension on: self model
 ]
 
 { #category : #initialization }

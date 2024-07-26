@@ -22,7 +22,7 @@ MooseObject >> miFameInspectorExtension [
 MooseObject >> miMetaNavigationInspectorExtension [
 
 	<inspectorPresentationOrder: 1 title: 'Meta Navigation'>
-	^ MiNavigationBrowser on: self
+	^ MiMetaNavigationBrowser on: self
 ]
 
 { #category : #'*MooseIDE-NewTools' }

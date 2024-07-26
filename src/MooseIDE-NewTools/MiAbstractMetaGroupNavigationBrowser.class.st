@@ -33,7 +33,8 @@ MiAbstractMetaGroupNavigationBrowser >> initializePresenters [
 	navigation whenActivatedDo: [ :selection |
 		self inspectorObjectContextPresenter owner
 			changeSelection: selection selectedItem value
-			from: self inspectorObjectContextPresenter ]
+			from: self inspectorObjectContextPresenter ].
+	entitiesColumn evaluated: [ :el | el key ]
 ]
 
 { #category : #initialization }
