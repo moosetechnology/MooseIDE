@@ -21,16 +21,16 @@ MiPropertyExtension >> initializePresenters [
 
 	properties := self newTable.
 	properties
-		addColumn: (SpStringTableColumn
-				 title: 'Properties'
+		addColumn: (SpStringTableColumn new
+				 title: 'Properties';
+				 width: 200;
 				 evaluated: [ :item | item name ]) yourself;
-		addColumn:
-			(SpStringTableColumn title: 'Value' evaluated: [ :item | 
-					 [ self model mmGetProperty: item ]
-						 on: Error
-						 do: [ 'error' ] ]);
+		addColumn: (SpStringTableColumn title: 'Value' evaluated: [ :item |
+				 [ self model mmGetProperty: item ]
+					 on: Error
+					 do: [ 'error' ] ]);
 		items: (self model mooseDescription allPrimitiveProperties sorted:
-					 #name ascending);
+				 #name ascending);
 		beResizable
 ]
 

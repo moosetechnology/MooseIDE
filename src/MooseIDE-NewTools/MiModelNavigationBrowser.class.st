@@ -20,7 +20,7 @@ MiModelNavigationBrowser >> initializePresenters [
 			from: self inspectorObjectContextPresenter ]
 ]
 
-{ #category : #initialization }
+{ #category : #'as yet unclassified' }
 MiModelNavigationBrowser >> itemsFor: anEntity [
 
 	^ anEntity navigationItemsFromPragmas
