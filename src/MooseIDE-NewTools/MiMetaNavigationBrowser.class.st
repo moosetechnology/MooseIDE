@@ -91,20 +91,21 @@ MiMetaNavigationBrowser >> iconBlock [
 MiMetaNavigationBrowser >> initializePresenters [
 
 	| items |
-	navigation := self newTreeTable beResizable.
+	navigation := self newTreeTable.
 	items := self filterEmptyValues: (self itemsFor: self model).
 	entitiesColumn := SpStringTableColumn new
-		                  title: 'Entities';
 		                  evaluated: [ :el |
-			                  el key , ': ' , el value mooseName ];
+			                  String streamContents: [ :str |
+					                  self printEntry: el on: str ] ];
 		                  beSortable;
 		                  yourself.
-	navigation
-		addColumn: (SpImageTableColumn new
-				 beNotExpandable;
-				 evaluated: self iconBlock;
-				 yourself);
-		addColumn: entitiesColumn.
+	navigation addColumn: (SpCompositeTableColumn new
+			 title: 'Entities';
+			 addColumn: (SpImageTableColumn new
+					  width: 20;
+					  evaluated: self iconBlock;
+					  yourself);
+			 addColumn: entitiesColumn).
 	navigation children: [ :anEntity | self itemsFor: anEntity value ].
 	navigation
 		contextMenu: [ self rootCommandsGroup asMenuPresenter ];
@@ -144,6 +145,16 @@ MiMetaNavigationBrowser >> model: anObject [
 MiMetaNavigationBrowser >> outputActivationPort [
 	^ (SpActivationPort newPresenter: self)
 		yourself
+]
+
+{ #category : #initialization }
+MiMetaNavigationBrowser >> printEntry: el on: aStream [
+
+	aStream nextPutAll: el key.
+	(el value isBlock not and: [ el value mooseName ~= el key ])
+		ifFalse: [ ^ self ].
+	aStream nextPutAll: ': '.
+	aStream nextPutAll: el value mooseName
 ]
 
 { #category : #accessing }
