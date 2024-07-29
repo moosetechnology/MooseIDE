@@ -39,7 +39,8 @@ MooseAbstractGroup >> miMetaNavigationInspectorExtension [
 { #category : #'*MooseIDE-NewTools' }
 MooseAbstractGroup >> miMetaNavigationItems [
 
-	^ self collect: [ :entity | entity inspectorToString -> entity ]
+	^ (self collect: [ :entity | entity inspectorToString -> entity ])
+		  sorted: [ :a :b | a inspectorToString < b inspectorToString ]
 ]
 
 { #category : #'*MooseIDE-NewTools' }
