@@ -36,7 +36,7 @@ MiAbstractGroupNavigationBrowser >> initializePresenters [
 			from: self inspectorObjectContextPresenter ]
 ]
 
-{ #category : #initialization }
+{ #category : #'as yet unclassified' }
 MiAbstractGroupNavigationBrowser >> itemsFor: anEntity [
 
 	^ anEntity collect: [ :entity | entity inspectorToString -> entity ]

@@ -36,9 +36,3 @@ MiAbstractMetaGroupNavigationBrowser >> initializePresenters [
 			from: self inspectorObjectContextPresenter ].
 	entitiesColumn evaluated: [ :el | el key ]
 ]
-
-{ #category : #initialization }
-MiAbstractMetaGroupNavigationBrowser >> itemsFor: anEntity [
-
-	^ anEntity collect: [ :entity | entity inspectorToString -> entity ]
-]

@@ -8,6 +8,15 @@ MooseModel >> miMetaNavigationInspectorExtension [
 ]
 
 { #category : #'*MooseIDE-NewTools' }
+MooseModel >> miMetaNavigationItems [
+
+	^ (self metamodel classes sorted: #name ascending) collect: [
+		  :fm3class |
+		  fm3class name
+		  -> [ :model | (model allWithType: fm3class implementingClass) ] ]
+]
+
+{ #category : #'*MooseIDE-NewTools' }
 MooseModel >> miNavigationInspectorExtension [
 
 	<inspectorPresentationOrder: -100 title: 'Navigation'>

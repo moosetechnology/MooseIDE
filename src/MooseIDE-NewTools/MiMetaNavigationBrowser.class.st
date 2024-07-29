@@ -105,14 +105,7 @@ MiMetaNavigationBrowser >> initializePresenters [
 				 evaluated: self iconBlock;
 				 yourself);
 		addColumn: entitiesColumn.
-	navigation children: [ :anEntity |
-		anEntity value mooseDescription allComplexProperties
-			collect: [ :property |
-				property name
-				-> (anEntity value propertyNamed: property name ifAbsent: [ nil ]) ]
-			thenReject: [ :assoc |
-				assoc value isNil or: [
-					assoc value isCollection and: [ assoc value isEmpty ] ] ] ].
+	navigation children: [ :anEntity | self itemsFor: anEntity value ].
 	navigation
 		contextMenu: [ self rootCommandsGroup asMenuPresenter ];
 		items: items.
@@ -132,13 +125,9 @@ MiMetaNavigationBrowser >> inspectorObjectContextPresenter [
 { #category : #initialization }
 MiMetaNavigationBrowser >> itemsFor: anEntity [
 
-	^ anEntity mooseDescription allComplexProperties
-		  collect: [ :property | 
-			  property name
-			  -> (anEntity propertyNamed: property name ifAbsent: [ nil ]) ]
-		  thenReject: [ :assoc | 
-			  assoc value isNil or: [ 
-				  assoc value isCollection and: [ assoc value isEmpty ] ] ]
+	^ anEntity isMooseObject
+		  ifTrue: [ anEntity miMetaNavigationItems ]
+		  ifFalse: [ {  } ]
 ]
 
 { #category : #accessing }

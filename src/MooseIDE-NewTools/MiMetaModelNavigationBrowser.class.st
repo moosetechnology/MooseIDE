@@ -22,15 +22,6 @@ MiMetaModelNavigationBrowser >> initializePresenters [
 	entitiesColumn evaluated: [ :el | el key ]
 ]
 
-{ #category : #initialization }
-MiMetaModelNavigationBrowser >> itemsFor: anEntity [
-
-	^ (anEntity metamodel classes sorted: #name ascending) collect: [
-		  :fm3class |
-		  fm3class name
-		  -> [ :model | model allWithType: fm3class implementingClass ] ]
-]
-
 { #category : #accessing }
 MiMetaModelNavigationBrowser >> selectedItem [
 
