@@ -25,26 +25,19 @@ MiSaveQueriesCommandTest >> testCopyQueriesReferencesOf [
 	| copy original |
 	original := fixture exampleForCopyingQueries.
 	copy := saver copyQueriesReferencesOf: original.
-	
+
 	self assert: copy second parent equals: copy first.
 	self assert: copy third parent equals: copy second.
-	
+
 	self assert: copy first children anyOne equals: copy second.
 	self assert: copy second children anyOne equals: copy third.
-	
-	self deny: copy equals: original.
-	copy
-		with: original
-		do: [ :a :b | self deny: a equals: b ].
-	copy
-		with: original
-		do: [ :a :b | 
-		a parent ifNotNil: [ self deny: a parent equals: b parent ] ].
-	copy
-		with: original
-		do: [ :a :b | 
-		a children
-			ifNotEmpty: [ self deny: a children anyOne equals: b children anyOne ] ]
+
+	self assert: copy equals: original.
+	copy with: original do: [ :a :b |
+		self assert: a equals: b.
+		a parent ifNotNil: [ self assert: a parent equals: b parent ].
+		a children ifNotEmpty: [
+			self assert: a children anyOne equals: b children anyOne ] ]
 ]
 
 { #category : #tests }
