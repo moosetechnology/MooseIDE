@@ -29,9 +29,10 @@ MiQueriesBrowserTest >> testAddNewNAryQuery [
 
 	| unionQuery |
 	unionQuery := self unionQuery.
+	browser rootQuery addChild: unionQuery.
 
 	browser selectQuery: unionQuery.
-	self assert: (browser rootQuery children asArray includes: unionQuery).
+	self assert: (browser rootQuery children includes: unionQuery).
 	self assert: browser selectedQuery equals: unionQuery.
 	self
 		assertCollection: browser queryResultTreePresenter items
@@ -175,7 +176,7 @@ MiQueriesBrowserTest >> unionQuery [
 		              (FQTypeQuery new type: FamixStClass) }.
 	union := FQUnionQuery new.
 	subqueries do: [ :parent | parent beChildOf: browser rootQuery ].
-	browser rootQuery addChild: union.
+
 	union subqueries: subqueries.
 	^ union
 ]
