@@ -31,7 +31,7 @@ MiQueriesBrowserTest >> testAddNewNAryQuery [
 	unionQuery := self unionQuery.
 
 	browser selectQuery: unionQuery.
-	self assert: (browser rootQuery children includes: unionQuery).
+	self assert: (browser rootQuery children asArray includes: unionQuery).
 	self assert: browser selectedQuery equals: unionQuery.
 	self
 		assertCollection: browser queryResultTreePresenter items
