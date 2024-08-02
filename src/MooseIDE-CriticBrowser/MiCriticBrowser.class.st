@@ -15,8 +15,6 @@ Class {
 		'entitiesList',
 		'runButton',
 		'rulesResult',
-		'importButton',
-		'exportButton',
 		'addRulesPresenter',
 		'rulesEditorPresenter',
 		'rules',
@@ -28,8 +26,23 @@ Class {
 	#category : #'MooseIDE-CriticBrowser-Browser'
 }
 
+{ #category : #keymaps }
+MiCriticBrowser class >> browserKey [
+
+	^ $c
+]
+
 { #category : #commands }
-MiCriticBrowser class >> buildRulesCommandsGroupWith: presenterInstance [
+MiCriticBrowser class >> buildActionCommandsGroupWith: presenterInstance [
+
+	^ {
+		  (MiCBImportRulesCommand forSpecContext: presenterInstance).
+		  (MiCBExportRulesCommand forSpecContext: presenterInstance).
+		  (MiCBRunAllRulesCommand forSpecContext: presenterInstance) }
+]
+
+{ #category : #commands }
+MiCriticBrowser class >> buildRuleCommandsGroupWith: presenterInstance [
 
 	^ MiAbstractCriticBrowserCommand asCommandGroupWith:
 		  presenterInstance
@@ -75,6 +88,20 @@ MiCriticBrowser class >> title [
 MiCriticBrowser class >> windowSize [
 
 	^ 1280 @ 560
+]
+
+{ #category : #layout }
+MiCriticBrowser >> actionButtonsLayout [
+
+	layout := SpBoxLayout newLeftToRight
+		          hAlignEnd;
+		          spacing: 5;
+		          yourself.
+
+	(self class buildActionCommandsGroupWith: self) do: [ :cmd |
+		layout add: cmd asButtonPresenter ].
+
+	^ layout
 ]
 
 { #category : #'accessing - testing' }
@@ -140,36 +167,32 @@ MiCriticBrowser >> contextEditorPresenter [
 ]
 
 { #category : #layout }
-MiCriticBrowser >> defaultLayout [	
+MiCriticBrowser >> defaultLayout [
+
 	^ SpBoxLayout newTopToBottom
-		add: (SpPanedLayout newLeftToRight
-			add: (SpBoxLayout new 
-					add: 'Entities' expand: false;
-					add: entitiesList;
-					yourself);
-			add: (SpPanedLayout newLeftToRight
-				add: (SpBoxLayout new 
-					add: 'Rules' expand: false;
-					add: rules;
-					yourself);
-				add: (SpBoxLayout new 
-					add: ('Entities requested' asPresenter) expand: false;
-					add: rulesResult;
-					yourself);
-			yourself);
-		yourself);
-		add: (SpBoxLayout newLeftToRight
-			add: statusLabel;
-			add: (SpBoxLayout newLeftToRight 
-				addLast: importButton;
-				addLast: exportButton;
-				addLast: runButton;
-				hAlignEnd;
-				spacing: 5;
-				yourself);
-			vAlignCenter;
-			yourself) expand: false;
-	yourself
+		  add: (SpPanedLayout newLeftToRight
+				   add: (SpBoxLayout new
+						    add: 'Entities' expand: false;
+						    add: entitiesList;
+						    yourself);
+				   add: (SpPanedLayout newLeftToRight
+						    add: (SpBoxLayout new
+								     add: 'Rules' expand: false;
+								     add: rules;
+								     yourself);
+						    add: (SpBoxLayout new
+								     add: 'Entities requested' asPresenter expand: false;
+								     add: rulesResult;
+								     yourself);
+						    yourself);
+				   yourself);
+		  add: (SpBoxLayout newLeftToRight
+				   add: statusLabel;
+				   add: self actionButtonsLayout;
+				   vAlignCenter;
+				   yourself)
+		  expand: false;
+		  yourself
 ]
 
 { #category : #accessing }
@@ -291,97 +314,48 @@ MiCriticBrowser >> importRulesFromStream: aStream [
 
 { #category : #initialization }
 MiCriticBrowser >> initialize [
+
 	super initialize.
 	application registerConsumer: addRulesPresenter for: FQAbstractQuery.
-	application registerConsumer: rulesEditorPresenter for: FQAbstractQuery
-]
-
-{ #category : #initialization }
-MiCriticBrowser >> initializeButtons [
-	runButton := self newButton.
-	importButton := self newButton.
-	exportButton := self newButton.
-	
-	runButton 
-		label: 'Run';
-		icon: (self iconNamed: #glamorousPlay);
-		action: [ self runButtonAction ].
-		
-	importButton
-		label: 'Import rules';
-		icon: (self iconNamed: #smallOpen);
-		action: [ self importRules ].
-	
-	exportButton
-		label: 'Export rules';
-		icon: (self iconNamed: #smallSave);
-		action: [ self exportRules ]
+	application
+		registerConsumer: rulesEditorPresenter
+		for: FQAbstractQuery
 ]
 
 { #category : #initialization }
 MiCriticBrowser >> initializeLists [
 
-	entitiesList := self newTree.
+	entitiesList := self newMooseGroupsTreeTable.
+
 	rules := self newTree.
-	rulesResult := self newTree.
-
-	entitiesList
-		display: [ :each | self stringForItem: each ];
-		children: [ :each | self children: each for: entitiesList ];
-		activateOnDoubleClick;
-		whenActivatedDo: [ :each | each selectedItem inspect ].
-
 	rules
 		items: { self model rootContext };
 		display: [ :each | self displayRule: each ];
-		displayIcon: [ :each | 
+		displayIcon: [ :each |
 			each class = FamixCBCondition
 				ifTrue: [ self iconNamed: #radioButtonOn ]
 				ifFalse: [ self iconNamed: #radioButtonSelected ] ];
 		children: [ :each | self childrenForContext: each ];
-		contextMenu: [ 
-			(self class buildRulesCommandsGroupWith: self) asMenuPresenter ];
+		contextMenu: [
+			(self class buildRuleCommandsGroupWith: self) asMenuPresenter ];
 		beSingleSelection;
-		whenSelectionChangedDo: [ 
+		whenSelectionChangedDo: [
 			specModel violations ifNotEmpty: [ self selectedRules ] ].
 
-	rulesResult
-		display: [ :each | self stringForItem: each ];
-		displayIcon: [ :each | 
-			each class = FamixCBViolation
-				ifTrue: [ 
-					self iconNamed: each violatedCondition severity iconName ]
-				ifFalse: [ self iconNamed: 'blank' ] ];
-		children: [ :each | self sortedChildren: each for: rulesResult ];
-		contextMenu: expandMenu;
-		activateOnDoubleClick;
-		whenActivatedDo: [ :each | each selectedItem inspect ]
-]
-
-{ #category : #initialization }
-MiCriticBrowser >> initializeMenu [
-
-	expandMenu := self newMenu.
-	expandMenu
-		addItem: [ :item | 
-			item
-				name: 'Collapse all';
-				icon: ((self iconNamed: #windowMenuInactive) rotateBy: -90);
-				action: [ rulesResult collapseAll ] ];
-		addItem: [ :item | 
-			item
-				name: 'Expand all';
-				icon: ((self iconNamed: #windowMenuInactive) rotateBy: 360);
-				action: [ rulesResult expandAll ] ]
+	rulesResult := self newMooseGroupsTreeTable
+		               displayIcon: #mooseIcon;
+		               childrenSortingBlock:
+			               #severityLevel descending , #displayString ascending;
+		               manageNodesFromMenu;
+		               yourself
 ]
 
 { #category : #initialization }
 MiCriticBrowser >> initializePresenters [
 
 	super initializePresenters.
-	self initializeMenu.
+
 	self initializeLists.
-	self initializeButtons.
 	self initializeStatusLabel.
 
 	addRulesPresenter := MiCBAddRulesPresenter on: self.
@@ -403,10 +377,11 @@ MiCriticBrowser >> initializeStatusLabel [
 ]
 
 { #category : #accessing }
-MiCriticBrowser >> miSelectedItem [ 
-	^ self rules selectedItem 
-		ifNil: [ specModel getAllViolations ] 
-		ifNotNil: [ specModel violationsOf: (self rules selectedItem) ]
+MiCriticBrowser >> miSelectedItem [
+
+	^ self rules selectedItem
+		  ifNil: [ specModel getAllViolations ]
+		  ifNotNil: [ specModel violationsOf: self rules selectedItem ]
 ]
 
 { #category : #'buttons actions' }
@@ -451,7 +426,7 @@ MiCriticBrowser >> openEditRuleDialog [
 
 { #category : #'accessing - testing' }
 MiCriticBrowser >> rules [
-"used for testing purposes, do not access outside of tests"
+
 	^ rules
 ]
 
@@ -468,11 +443,13 @@ MiCriticBrowser >> rulesResult [
 ]
 
 { #category : #'buttons actions' }
-MiCriticBrowser >> runButtonAction [
-	"executes the queries on the entities stored in the model, then prints the results"
+MiCriticBrowser >> runAllRules [
+	"Executes the queries on the entities stored in the model, then prints the results"
+
 	self model run.
 
-	[ self model run.
+	[
+	self model run.
 	self updateStatusLabel: 'Updating display...'.
 	self updateResultList: specModel getAllViolations.
 	self updateRulesList.
@@ -510,9 +487,10 @@ MiCriticBrowser >> sortedChildren: each for: aTreePresenter [
 
 { #category : #naming }
 MiCriticBrowser >> stringForItem: item [
-"returns string to describe an item or a root regrouping entities of the same type"
+	"returns string to describe an item or a root regrouping entities of the same type"
+
 	(rulesResult roots includes: item) ifTrue: [ ^ item description ].
-	^ String streamContents: [ :s | item displayStringOn: s ]
+	^ item displayString
 ]
 
 { #category : #initialization }
@@ -524,32 +502,36 @@ MiCriticBrowser >> tagRuleResult [
 
 { #category : #'updating screen' }
 MiCriticBrowser >> updateEntitiesList: aCollection [
+
 	| roots |
-	roots := (aCollection allEntityTypes collect: [ :type | 
-		           aCollection allWithType: type ]) asOrderedCollection.
+	roots := (aCollection allEntityTypes collect: [ :type |
+		          aCollection allWithType: type ]) asOrderedCollection.
 	roots do: [ :group | group description: group details ].
 	entitiesList roots:
 		(roots sort: [ :group | group description onlyLetters ] ascending).
-	
+
 	entitiesList roots: roots.
-	entitiesList refresh.
-	
+	entitiesList refresh
 ]
 
 { #category : #'updating screen' }
 MiCriticBrowser >> updateResultList: aCollection [
+
 	| roots |
-	aCollection ifNotEmpty: [ 
-	roots := (aCollection allViolatingEntitiesType collect: [ :type | 
-		           aCollection allWithViolatingEntitiesType: type ]) asOrderedCollection.
-	roots do: [ :group | group description: group stringForCBDescription ].
-	rulesResult roots:
-		(roots sort: [ :group | group description onlyLetters ] ascending).
-	rulesResult refresh.
-	] ifEmpty: [ 
-	roots := aCollection.
-	rulesResult roots: roots
-	].
+	aCollection
+		ifNotEmpty: [
+			roots := (aCollection allViolatingEntitiesType collect: [ :type |
+				          aCollection allWithViolatingEntitiesType: type ])
+				         asOrderedCollection.
+			roots do: [ :group |
+				group description: group stringForCBDescription ].
+			rulesResult roots:
+				(roots sort: [ :group | group description onlyLetters ] ascending).
+			rulesResult refresh ]
+		ifEmpty: [
+			roots := aCollection.
+			rulesResult roots: roots ].
+
 	self updateToolbar.
 	rulesResult expandAll
 ]
