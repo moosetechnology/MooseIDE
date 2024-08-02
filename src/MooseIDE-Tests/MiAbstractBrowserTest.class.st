@@ -78,7 +78,7 @@ MiAbstractBrowserTest >> setUp [
 { #category : #running }
 MiAbstractBrowserTest >> tearDown [
 
-	browser window ifNotNil: [ :window | window close ].
+	browser ifNotNil: [ browser withWindowDo: [ :window | window close ] ].
 	self application deleteBus: self bus.
 
 	super tearDown

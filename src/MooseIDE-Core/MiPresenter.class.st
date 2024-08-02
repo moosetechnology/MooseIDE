@@ -33,6 +33,12 @@ MiPresenter >> isMiBrowser [
 ]
 
 { #category : #'scripting - widgets' }
+MiPresenter >> newMooseGroupsTreeTable [
+
+	^ self instantiate: MiMooseGroupsTreeTablePresenter
+]
+
+{ #category : #'scripting - widgets' }
 MiPresenter >> newSelectableListForPopoverExtent: aPoint [
 
 	^ SpFilteringSelectableListPresenter new
@@ -44,4 +50,12 @@ MiPresenter >> newSelectableListForPopoverExtent: aPoint [
 						   width: aPoint y ];
 				   yourself);
 		  yourself
+]
+
+{ #category : #accessing }
+MiPresenter >> rootBrowser [
+
+	^ self isMiBrowser
+		  ifTrue: [ self ]
+		  ifFalse: [ self owner rootBrowser ]
 ]
