@@ -251,7 +251,7 @@ MiButterflyMapBuilder >> updateShapes [
 		allShapes addAll: layer.
 		rightLayout on: layer.
 		outgoingGroups add: layer ].
-
+	shapes := allShapes , { centralShape }.
 	self addInteractions: allShapes , { centralShape }.
 	self container addAll: allShapes , { centralShape }.
 	self container schildren: allShapes , { centralShape }.
