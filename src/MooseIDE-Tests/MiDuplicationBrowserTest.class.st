@@ -88,6 +88,12 @@ MiDuplicationBrowserTest >> sourceCode: lineInterval [
 				    to: lineInterval last)
 ]
 
+{ #category : #tests }
+MiDuplicationBrowserTest >> testActivateActionButtons [
+
+	browser actionButtons do: [ :button | self deny: button isEnabled ].
+]
+
 { #category : #'tests - actions' }
 MiDuplicationBrowserTest >> testFollowEntity [
 

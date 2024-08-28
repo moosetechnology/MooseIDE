@@ -28,6 +28,12 @@ MiArchitecturalMapBrowserTest >> setUp [
 ]
 
 { #category : #tests }
+MiArchitecturalMapBrowserTest >> testActivateActionButtons [
+
+
+]
+
+{ #category : #tests }
 MiArchitecturalMapBrowserTest >> testMiSelectedItemWithSelection [
 	"returns selected entities"
 	| map |

@@ -34,6 +34,13 @@ MiCBRulesMakerPresenterTest >> tearDown [
 ]
 
 { #category : #tests }
+MiCBRulesMakerPresenterTest >> testActivateActionButtons [
+
+	browser actionButtons do: [ :button | self deny: button isEnabled ].
+
+]
+
+{ #category : #tests }
 MiCBRulesMakerPresenterTest >> testAddInputtedCodeRule [
 	addQueryPresenter codeButtonAction.
 	addQueryPresenter ruleTitle text: 'test'.

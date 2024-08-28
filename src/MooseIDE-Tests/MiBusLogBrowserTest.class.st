@@ -14,6 +14,12 @@ MiBusLogBrowserTest >> browserClass [
 	^ MiBusLogBrowser
 ]
 
+{ #category : #tests }
+MiBusLogBrowserTest >> setEntityToSelect [
+
+	self bus globallySelect: entityToSelect
+]
+
 { #category : #initialization }
 MiBusLogBrowserTest >> setUp [
 
@@ -26,15 +32,6 @@ MiBusLogBrowserTest >> tearDown [
 
 	newBrowser ifNotNil: [ newBrowser window close ].
 	super tearDown
-]
-
-{ #category : #tests }
-MiBusLogBrowserTest >> testActivateActionButtons [
-
-	browser actionButtons do: [ :button | self deny: button isEnabled ].
-
-	self bus globallySelect: entityToSelect.
-	browser actionButtons do: [ :button | self assert: button isEnabled ]
 ]
 
 { #category : #tests }

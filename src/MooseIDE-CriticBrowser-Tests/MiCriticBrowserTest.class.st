@@ -108,6 +108,12 @@ MiCriticBrowserTest >> setUp [
 ]
 
 { #category : #tests }
+MiCriticBrowserTest >> testActivateActionButtons [
+
+	browser actionButtons do: [ :button | self deny: button isEnabled ].
+]
+
+{ #category : #tests }
 MiCriticBrowserTest >> testChildrenFor [
 	| entity |
 	entity := FamixStMethod new.

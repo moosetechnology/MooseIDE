@@ -40,6 +40,12 @@ MiCriticBrowserModelTest >> setUp [
 ]
 
 { #category : #tests }
+MiCriticBrowserModelTest >> testActivateActionButtons [
+
+	browser actionButtons do: [ :button | self deny: button isEnabled ].
+]
+
+{ #category : #tests }
 MiCriticBrowserModelTest >> testAddChildToContext [
 
 	self removeAllFromRootContext.

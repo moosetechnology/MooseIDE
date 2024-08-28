@@ -19,6 +19,12 @@ MiCoUsageMapBrowserTest >> populateBrowser: mooseModel [
 ]
 
 { #category : #tests }
+MiCoUsageMapBrowserTest >> testActivateActionButtons [
+
+	browser actionButtons do: [ :button | self deny: button isEnabled ].
+]
+
+{ #category : #tests }
 MiCoUsageMapBrowserTest >> testCanOpenSettings [
 
 	browser hasSettings ifFalse: [ self skip ].

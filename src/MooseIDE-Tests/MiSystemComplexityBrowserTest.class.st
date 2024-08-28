@@ -11,6 +11,12 @@ MiSystemComplexityBrowserTest >> browserClass [
 ]
 
 { #category : #tests }
+MiSystemComplexityBrowserTest >> testActivateActionButtons [
+
+	browser actionButtons do: [ :button | self deny: button isEnabled ].
+]
+
+{ #category : #tests }
 MiSystemComplexityBrowserTest >> testCanTagEntities [
 	self deny: browser canTagEntities 
 ]

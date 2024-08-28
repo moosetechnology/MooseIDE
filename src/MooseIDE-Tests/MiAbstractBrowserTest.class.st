@@ -66,6 +66,12 @@ MiAbstractBrowserTest >> populateBrowser: mooseModel [
 
 ]
 
+{ #category : #tests }
+MiAbstractBrowserTest >> setEntityToSelect [
+
+	browser receiveEntity: (FamixStClass named: 'TestClass').
+]
+
 { #category : #running }
 MiAbstractBrowserTest >> setUp [
 
@@ -82,6 +88,15 @@ MiAbstractBrowserTest >> tearDown [
 	self application deleteBus: self bus.
 
 	super tearDown
+]
+
+{ #category : #tests }
+MiAbstractBrowserTest >> testActivateActionButtons [
+
+	browser actionButtons do: [ :button | self deny: button isEnabled ].
+
+	self setEntityToSelect.
+	browser actionButtons do: [ :button | self assert: button isEnabled ]
 ]
 
 { #category : #'tests - opening' }

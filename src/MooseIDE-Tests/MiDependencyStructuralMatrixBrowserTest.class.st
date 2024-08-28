@@ -30,9 +30,7 @@ MiDependencyStructuralMatrixBrowserTest >> testActivateActionButtons [
 
 	browser actionButtons do: [ :button | self deny: button isEnabled ].
 
-	self flag: 'not sure whether we should have actions in DSM ?'.
-	"browser receiveEntity: (MooseGroup with: entityToSelect).
-	browser actionButtons do: [ :button | self assert: button isEnabled ]."
+	
 
 ]
 

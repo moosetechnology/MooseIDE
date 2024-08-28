@@ -10,6 +10,12 @@ MiNotebookBrowserTest >> browserClass [
 	^ MiNotebookBrowser
 ]
 
+{ #category : #tests }
+MiNotebookBrowserTest >> testActivateActionButtons [
+
+	browser actionButtons do: [ :button | self deny: button isEnabled ].
+]
+
 { #category : #'tests - actions' }
 MiNotebookBrowserTest >> testFollowEntity [
 

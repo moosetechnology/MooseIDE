@@ -32,6 +32,13 @@ MiCBContextMakerPresenterTest >> tearDown [
 ]
 
 { #category : #tests }
+MiCBContextMakerPresenterTest >> testActivateActionButtons [
+
+	browser actionButtons do: [ :button | self deny: button isEnabled ].
+
+]
+
+{ #category : #tests }
 MiCBContextMakerPresenterTest >> testAddInputtedCodeRule [
 	addContextsPresenter contextTitle text: 'test'.
 	addContextsPresenter codeInput text: '[ :col | col allClasses ]'.

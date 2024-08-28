@@ -35,6 +35,12 @@ MiTagBrowserTest >> setUp [
 	detailsPage := browser descriptionPage
 ]
 
+{ #category : #tests }
+MiTagBrowserTest >> testActivateActionButtons [
+
+	browser actionButtons do: [ :button | self deny: button isEnabled ].
+]
+
 { #category : #'tests - opening' }
 MiTagBrowserTest >> testCanTagEntities [
 	self deny: browser canTagEntities 

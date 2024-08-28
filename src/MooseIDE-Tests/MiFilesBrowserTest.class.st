@@ -12,6 +12,11 @@ MiFilesBrowserTest >> browserClass [
 	^ MiFilesBrowser
 ]
 
+{ #category : #tests }
+MiFilesBrowserTest >> setEntityToSelect [ 
+		browser receiveEntity: entityToSelect.
+]
+
 { #category : #initialization }
 MiFilesBrowserTest >> setUp [
 
@@ -20,15 +25,6 @@ MiFilesBrowserTest >> setUp [
 		                  rootFolder: FileSystem workingDirectory;
 		                  add: MooseEntity new;
 		                  yourself
-]
-
-{ #category : #tests }
-MiFilesBrowserTest >> testActivateActionButtons [
-
-	browser actionButtons do: [ :button | self deny: button isEnabled ].
-
-	browser receiveEntity: entityToSelect.
-	browser actionButtons do: [ :button | self assert: button isEnabled ]
 ]
 
 { #category : #tests }

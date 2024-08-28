@@ -24,6 +24,16 @@ MiModelsBrowserTest >> newModel: aString [
 	^ model
 ]
 
+{ #category : #tests }
+MiModelsBrowserTest >> setEntityToSelect [ 
+	| newModel |
+	newModel := self newModel: 'aModel'.
+	newModel newClassNamed: #AClass.
+	
+	browser updateForNewModel: newModel.
+
+]
+
 { #category : #running }
 MiModelsBrowserTest >> setUp [
 
@@ -54,22 +64,6 @@ MiModelsBrowserTest >> tearDown [
 
 	MooseModelRoot installRoot: savedRoot.
 	super tearDown
-]
-
-{ #category : #tests }
-MiModelsBrowserTest >> testActivateActionButtons [
-
-	| newModel |
-
-	self denyEmpty: browser actionButtons.
-	browser actionButtons do: [ :button | self deny: button isEnabled ].
-
-	newModel := self newModel: 'aModel'.
-	newModel newClassNamed: #AClass.
-	
-	browser updateForNewModel: newModel.
-
-	browser actionButtons do: [ :button | self assert: button isEnabled ]
 ]
 
 { #category : #'tests - tags' }

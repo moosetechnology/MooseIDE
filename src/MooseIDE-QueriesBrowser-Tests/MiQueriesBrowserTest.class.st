@@ -34,6 +34,12 @@ MiQueriesBrowserTest >> setUp [
 ]
 
 { #category : #tests }
+MiQueriesBrowserTest >> testActivateActionButtons [
+
+
+]
+
+{ #category : #tests }
 MiQueriesBrowserTest >> testAddNewNAryQuery [
 
 	| unionQuery |

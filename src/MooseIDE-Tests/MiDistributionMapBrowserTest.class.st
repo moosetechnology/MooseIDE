@@ -10,6 +10,12 @@ MiDistributionMapBrowserTest >> browserClass [
 	^ MiDistributionMapBrowser
 ]
 
+{ #category : #tests }
+MiDistributionMapBrowserTest >> testActivateActionButtons [
+
+	browser actionButtons do: [ :button | self deny: button isEnabled ].
+]
+
 { #category : #'tests - tags' }
 MiDistributionMapBrowserTest >> testSelectedTagSetAndGet [
 	| model entity tag |
