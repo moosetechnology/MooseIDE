@@ -141,28 +141,8 @@ MiOverviewBrowser >> addBrowser: aMiPresenterClass asPage: aString [
 
 { #category : #toolbar }
 MiOverviewBrowser >> browsersMenu [
-	| browsersMenu |
-	browsersMenu := MiAbstractBrowser miBrowsersMenuPresenter.
 
-	(self collectMenuItems: browsersMenu)
-		do: [ :item | self replaceMenuItemAction: item ].
-	^ browsersMenu
-]
-
-{ #category : #toolbar }
-MiOverviewBrowser >> collectMenuItems: aMenuPresenter [
-	| menuItems |
-	aMenuPresenter ifNil: [ ^#() ].
-
-	menuItems := OrderedCollection new.
-	aMenuPresenter menuGroups
-	do: [:menuGrp | 
-		menuGrp menuItems do: [:anItem |
-			menuItems add: anItem.
-			menuItems addAll: (self collectMenuItems: anItem subMenu)]
-	].
-	^menuItems
-		
+	^ MiAbstractBrowser miBrowsersMenuPresenter
 ]
 
 { #category : #initialization }
@@ -210,7 +190,6 @@ MiOverviewBrowser >> initializeLayout [
 		add: (SpBoxLayout newHorizontal
 			add: busesButton width: self class buttonWidth;
 			add: browsersButton expand: false;
-			add: chkOpenInPage expand: false;
 			add: SpNullPresenter new expand: true;
 			add: helpButton width: self class iconWidth)
 		height: self class toolbarHeight;
@@ -255,11 +234,6 @@ MiOverviewBrowser >> initializeToolbar [
 				icon: MooseIcons mooseIcon;
 				name: 'Open new browser';
 				subMenu: self browsersMenu ].
-
-	chkOpenInPage := self newCheckBox 
-		label: 'Open in page' ;
-		labelOnRight ;
-		yourself.
 	
 	helpButton := self newButton
 		iconName: #help;
@@ -302,16 +276,10 @@ MiOverviewBrowser >> pageNamed: aName presenter: aComponentList [
 { #category : #toolbar }
 MiOverviewBrowser >> replaceMenuItemAction: aMenuItem [
 
-	| browserClass itemAction |
+	| itemAction |
 	itemAction := aMenuItem action.
 
-	aMenuItem action: [ 
-		chkOpenInPage state
-			ifTrue: [ 
-				browserClass := itemAction receiver.
-				self addBrowser: browserClass asPage: browserClass title.
-				mainPresenter selectPage: mainPresenter pages last ]
-			ifFalse: [ itemAction value ] ]
+	aMenuItem action: [ itemAction value ]
 ]
 
 { #category : #toolbar }
