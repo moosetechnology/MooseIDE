@@ -3,7 +3,7 @@ I am responsible for the opening of a `MiPlaygroundModelsPresenter` and used as 
 "
 Class {
 	#name : #MiPlaygroundInstalledModelsCommand,
-	#superclass : #MiPlaygroundCommand,
+	#superclass : #MiCommand,
 	#category : #'MooseIDE-NewTools-Playground'
 }
 

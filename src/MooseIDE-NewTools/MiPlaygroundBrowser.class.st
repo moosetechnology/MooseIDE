@@ -47,21 +47,14 @@ MiPlaygroundBrowser >> initializePresenters [
 	playground := self instantiate: MiPlayground
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #inspecting }
 MiPlaygroundBrowser >> miInspect [
 
-	MiInspectorBrowser inspect: self miSelectedItem
+	MiInspectorBrowser inspect: playground firstPage evaluate
 ]
 
 { #category : #accessing }
 MiPlaygroundBrowser >> miSelectedItem [
 
-	| codePresenter result |
-	
-	codePresenter := playground firstPage text.
-
-	^ result := codePresenter
-		            evaluate: codePresenter selectedTextOrLine
-		            onCompileError: [ :e | ^ self ]
-		            onError: [ :e | e pass ]
+	^ playground firstPage evaluate
 ]

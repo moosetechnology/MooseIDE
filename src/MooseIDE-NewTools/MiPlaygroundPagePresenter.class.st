@@ -14,6 +14,15 @@ MiPlaygroundPagePresenter >> addModelExpression: anExpression [
 	text insertAndSelectAfterCurrentSelection: anExpression
 ]
 
+{ #category : #'public access' }
+MiPlaygroundPagePresenter >> evaluate [
+
+	^ self text
+		  evaluate: self selectedTextOrLine
+		  onCompileError: [ :e | ^ self ]
+		  onError: [ :e | e pass ]
+]
+
 { #category : #private }
 MiPlaygroundPagePresenter >> menuActionsFor: aCodePresenter [
 
@@ -23,7 +32,9 @@ MiPlaygroundPagePresenter >> menuActionsFor: aCodePresenter [
 				   beDisplayedAsGroup;
 				   register: (StEvaluateCommand forSpecContext: self);
 				   register:
-					   (MiPlaygroundInspectInMooseCommand forSpecContext: self);
+					   (MiInspectCommand forSpecContext: self playgroundBrowser);
+				   register:
+					   (MiPropagateCommand forSpecContext: self playgroundBrowser);
 				   yourself);
 		  register: (aCodePresenter rootCommandsGroup name: 'Code');
 		  register: (aCodePresenter editionCommandsGroup name: 'Edition');
@@ -43,7 +54,18 @@ MiPlaygroundPagePresenter >> menuActionsFor: aCodePresenter [
 		  yourself
 ]
 
-{ #category : #'private - builder' }
+{ #category : #accessing }
+MiPlaygroundPagePresenter >> playgroundBrowser [
+
+	^ self owner ifNotNil: [ :presenter |
+		  | root |
+		  root := presenter root.
+		  root isWindowPresenter
+			  ifFalse: [ root ]
+			  ifTrue: [ root presenter ] ]
+]
+
+{ #category : #private }
 MiPlaygroundPagePresenter >> toolbarActions [
 
 	^ super toolbarActions
