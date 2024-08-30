@@ -343,6 +343,12 @@ MiApplication >> tagSelectedInMooseModel: aMooseModel [
 	^mooseModelsTag at: aMooseModel ifAbsent: [ nil ]
 ]
 
+{ #category : #settings }
+MiApplication >> toolbarDisplayMode [
+
+	^ StPharoSettings toolbarDisplayMode
+]
+
 { #category : #brokerage }
 MiApplication >> unregisterConsumer: aConsumer [
 
