@@ -7,11 +7,40 @@ Class {
 	#category : #'MooseIDE-NewTools-Playground'
 }
 
+{ #category : #'class initialization' }
+MiPlaygroundBrowser class >> initialize [
+	"Make playground active by default"
+
+	super initialize.
+	self register
+]
+
 { #category : #'instance creation' }
 MiPlaygroundBrowser class >> open [
 
 	<script>
 	^ super open
+]
+
+{ #category : #'as yet unclassified' }
+MiPlaygroundBrowser class >> receivedEntityBindingName [
+
+	^ 'receivedEntity'
+]
+
+{ #category : #finalization }
+MiPlaygroundBrowser class >> register [
+	"Add ourselves to registry. See [Smalltalk tools]"
+
+	<script>
+	self registerToolsOn: Smalltalk tools
+]
+
+{ #category : #'tools registry' }
+MiPlaygroundBrowser class >> registerToolsOn: registry [
+	"Add ourselves to registry. See [Smalltalk tools]"
+
+	registry workspaceTool: self
 ]
 
 { #category : #specs }
