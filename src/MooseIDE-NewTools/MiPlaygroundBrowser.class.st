@@ -40,6 +40,15 @@ MiPlaygroundBrowser >> defaultLayout [
 		  yourself
 ]
 
+{ #category : #actions }
+MiPlaygroundBrowser >> followEntity: anEntity [
+
+	playground firstPage text interactionModel addBinding:
+		(WorkspaceVariable
+			 key: self class receivedEntityBindingName
+			 value: anEntity)
+]
+
 { #category : #initialization }
 MiPlaygroundBrowser >> initializePresenters [
 
