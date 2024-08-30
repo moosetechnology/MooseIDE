@@ -104,6 +104,22 @@ MiExportBrowser >> canFollowEntity: anObject [
 	^ true
 ]
 
+{ #category : #initialization }
+MiExportBrowser >> clearButton [
+
+	^ self newToolbarButton
+		  label: 'Clear Entities';
+		  icon: (self iconNamed: #remove);
+		  action: [ self clearEntities ]
+]
+
+{ #category : #initialization }
+MiExportBrowser >> clearEntities [
+
+	self model entitiesList: #(  ).
+	
+]
+
 { #category : #'columns management' }
 MiExportBrowser >> columnAdded: aColumn [
 
@@ -217,10 +233,7 @@ MiExportBrowser >> followEntity: anEntity [
 	| entities |
 	entities := anEntity asMooseGroup.
 	self updateEntitiesListWith: entities.
-	entitiesCountLabel label:
-		entities size asString , ' entit' , (entities size > 1
-			 ifTrue: 'ies'
-			 ifFalse: 'y').
+	self updateEntitiesCountLabel
 ]
 
 { #category : #initialization }
@@ -264,7 +277,8 @@ MiExportBrowser >> initializeToolbar [
 		           addItem: (self newToolbarButton
 				            label: 'Export to CSV';
 				            icon: (self iconNamed: #smallExport);
-				            action: [ self exportEntitiesToCSV ])
+				            action: [ self exportEntitiesToCSV ]);
+		           addItem: self clearButton
 ]
 
 { #category : #'event handling' }
@@ -347,11 +361,22 @@ MiExportBrowser >> toggleCommentsColumn [
 ]
 
 { #category : #'columns management' }
+MiExportBrowser >> updateEntitiesCountLabel [
+
+	entitiesCountLabel label:
+		self model entities size asString , ' entit'
+		, (self model entities size > 1
+				 ifTrue: 'ies'
+				 ifFalse: 'y')
+]
+
+{ #category : #'columns management' }
 MiExportBrowser >> updateEntitiesListWith: aMooseGroup [
 
 	(self commonPropertiesIn: aMooseGroup) do: [ :property | 
 		self addColumnForProperty: property ].
 	self model entitiesList: aMooseGroup.
+
 	self updateTable
 ]
 
@@ -359,15 +384,16 @@ MiExportBrowser >> updateEntitiesListWith: aMooseGroup [
 MiExportBrowser >> updateTable [
 
 	entitiesTable columns: {  }.
-	self model columns do: [ :columnModel | 
+	self model columns do: [ :columnModel |
 		entitiesTable addColumn: (SpStringTableColumn
 				 title: columnModel name
 				 evaluated: [ :entity | columnModel printValueFor: entity ])
 				yourself ].
 	entitiesTable items: self model entitiesList.
-	
+
 
 	self commentsAreShown ifTrue: [ self addCommentsColumn ].
+	self updateEntitiesCountLabel.
 
 	entitiesTable refresh
 ]
