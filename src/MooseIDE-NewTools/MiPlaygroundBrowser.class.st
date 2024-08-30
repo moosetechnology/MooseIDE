@@ -41,6 +41,12 @@ MiPlaygroundBrowser >> initializePresenters [
 	playground := self instantiate: MiPlayground
 ]
 
+{ #category : #'as yet unclassified' }
+MiPlaygroundBrowser >> miInspect [
+
+	MiInspectorBrowser inspect: self miSelectedItem
+]
+
 { #category : #accessing }
 MiPlaygroundBrowser >> miSelectedItem [
 
