@@ -72,6 +72,12 @@ MiPlaygroundBrowser class >> registerToolsOn: registry [
 ]
 
 { #category : #specs }
+MiPlaygroundBrowser class >> title [
+
+	^ 'Moose Playground'
+]
+
+{ #category : #specs }
 MiPlaygroundBrowser class >> windowSize [
 
 	^ StPlaygroundPresenter preferredExtent
