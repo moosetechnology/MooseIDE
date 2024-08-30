@@ -21,12 +21,16 @@ Class {
 MiQueryListItemPresenter class >> buildCommandsGroupWith: presenterInstance forRoot: rootCommandGroup [
 
 	rootCommandGroup
-		register: (MiAddChildQueryCommand forSpecContext: presenterInstance);
+		register: 
+			(MiAddChildQueryCommand forSpecContext: presenterInstance);
 		register:
 			(MiClipBoardCopyQueryCommand forSpecContext: presenterInstance);
 		register:
 			(MiCreateDynamicTagQueryCommand forSpecContext: presenterInstance);
-		register: (MiRemoveQueryCommand forSpecContext: presenterInstance)
+		register: 
+			(MiSaveQueryCommand forSpecContext: presenterInstance);
+		register: 
+			(MiRemoveQueryCommand forSpecContext: presenterInstance)
 ]
 
 { #category : #'instance creation' }
