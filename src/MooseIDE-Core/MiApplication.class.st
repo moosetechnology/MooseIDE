@@ -302,11 +302,15 @@ MiApplication >> registerProducer: aProducer for: aClass [
 { #category : #bindings }
 MiApplication >> registerToModelsAnnouncements [
 
+	MooseModel root entitiesDo: [ :model |
+		self addBindingForModel: model.
+		self registerToSingleModelAnnouncements: model ].
+
 	MooseModel root announcer
 		when: MooseEntityAdded
 		do: [ :announcement |
 			self addBindingForModel: announcement entity.
-			self registerToNewModelAnnouncements: announcement entity ]
+			self registerToSingleModelAnnouncements: announcement entity ]
 		for: self.
 
 	MooseModel root announcer
@@ -317,7 +321,7 @@ MiApplication >> registerToModelsAnnouncements [
 ]
 
 { #category : #bindings }
-MiApplication >> registerToNewModelAnnouncements: aModel [
+MiApplication >> registerToSingleModelAnnouncements: aModel [
 
 	aModel announcer
 		when: MooseEntityRenamed
