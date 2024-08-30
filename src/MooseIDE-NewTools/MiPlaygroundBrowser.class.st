@@ -1,3 +1,13 @@
+"
+I am the Moose browser that replaces the Pharo playground.
+
+Accepted entities: Anything.
+
+Bindings:
+- #receivedEntity: The latest received entity.
+- A binding for each model in MooseModel root (with 1st letter lowercase).
+See Bindings button.
+"
 Class {
 	#name : #MiPlaygroundBrowser,
 	#superclass : #MiAbstractBrowser,

@@ -64,12 +64,3 @@ MiPlaygroundPagePresenter >> playgroundBrowser [
 			  ifFalse: [ root ]
 			  ifTrue: [ root presenter ] ]
 ]
-
-{ #category : #private }
-MiPlaygroundPagePresenter >> toolbarActions [
-
-	^ super toolbarActions
-		  register:
-			  (MiPlaygroundInstalledModelsCommand forSpecContext: self);
-		  yourself
-]
