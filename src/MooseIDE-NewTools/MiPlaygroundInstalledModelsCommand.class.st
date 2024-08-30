@@ -25,14 +25,6 @@ MiPlaygroundInstalledModelsCommand class >> defaultName [
 	^ 'Models'
 ]
 
-{ #category : #converting }
-MiPlaygroundInstalledModelsCommand >> asSpecCommand [
-
-	^ super asSpecCommand
-		  beDisplayedOnRightSide;
-		  yourself
-]
-
 { #category : #executing }
 MiPlaygroundInstalledModelsCommand >> execute [
 

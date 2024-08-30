@@ -49,6 +49,5 @@ MiPlaygroundPagePresenter >> toolbarActions [
 	^ super toolbarActions
 		  register:
 			  (MiPlaygroundInstalledModelsCommand forSpecContext: self);
-		  register: (MiPlaygroundInspectInMooseCommand forSpecContext: self);
 		  yourself
 ]
