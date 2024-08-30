@@ -14,6 +14,12 @@ MiPlaygroundBrowser class >> open [
 	^ super open
 ]
 
+{ #category : #specs }
+MiPlaygroundBrowser class >> windowSize [
+
+	^ StPlaygroundPresenter preferredExtent
+]
+
 { #category : #testing }
 MiPlaygroundBrowser >> canFollowEntity: anObject [
 
