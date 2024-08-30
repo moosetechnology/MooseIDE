@@ -7,12 +7,40 @@ Class {
 	#category : #'MooseIDE-NewTools-Playground'
 }
 
+{ #category : #accessing }
+MiPlaygroundBrowser class >> defaultTitle [ 
+
+	^ 'Moose Playground'
+]
+
 { #category : #'class initialization' }
 MiPlaygroundBrowser class >> initialize [
 	"Make playground active by default"
 
 	super initialize.
 	self register
+]
+
+{ #category : #'world menu' }
+MiPlaygroundBrowser class >> menuCommandOn: aBuilder [
+
+	<worldMenu>
+	^ aBuilder
+		  item: self menuLabel;
+		  parent: #Moose;
+		  label: self menuLabel;
+		  icon: MooseIcons mooseIcon;
+		  help: 'Playground enhanced for usage in Moose';
+		  order: MiAbstractBrowser menuPharoToolsPriority + 2;
+		  action: [ self open ];
+		  withSeparatorAfter;
+		  yourself
+]
+
+{ #category : #'world menu' }
+MiPlaygroundBrowser class >> menuLabel [
+
+	^ 'Moose Playground'
 ]
 
 { #category : #'instance creation' }
@@ -72,8 +100,7 @@ MiPlaygroundBrowser >> defaultLayout [
 { #category : #actions }
 MiPlaygroundBrowser >> followEntity: anEntity [
 
-	playground firstPage text interactionModel addBinding:
-		(WorkspaceVariable
+	playground firstPage interactionModel addBinding: (WorkspaceVariable
 			 key: self class receivedEntityBindingName
 			 value: anEntity)
 ]
