@@ -267,8 +267,8 @@ BaselineOfMooseIDE >> registerCustomTools [
 	self registerShortcuts.
 
 	"MiPlayground could be absent if we load only a group"
-	(Smalltalk classNamed: #MiPlayground) ifNotNil: [ :miPlayground |
-		miPlayground register ]
+	(Smalltalk classNamed: #MiPlaygroundBrowser) ifNotNil: [
+		:miPlayground | miPlayground register ]
 ]
 
 { #category : #actions }

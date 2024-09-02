@@ -277,10 +277,10 @@ MiImportModelFromFileDialog >> openEntitiesChoice [
 		                  instantiate: MiImportingContextPresenter
 		                  on: importingContext.
 
-	self withWindowDo: [ :window | 
-		window extent: self class fullWindowExtent ].
+	self withWindowDo: [ :window | "The double #window is a patch for a spec bug. August 2024"
+		window window extent: self class fullWindowExtent ].
 
-	self layout: (self simpleLayout
+	self layout: (self defaultLayout
 			 add: customEntities;
 			 yourself).
 

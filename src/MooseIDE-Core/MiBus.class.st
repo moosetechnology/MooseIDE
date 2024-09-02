@@ -26,9 +26,10 @@ MiBus >> browsers [
 
 { #category : #actions }
 MiBus >> globallySelect: anEntity [
-	anEntity
-		isMooseObject ifTrue: [ 
-			(self logger newLogFor: anEntity) activateIn: self ] 
+
+	anEntity isMooseObject
+		ifTrue: [ (self logger newLogFor: anEntity) activateIn: self ]
+		ifFalse: [ self inform: 'No Moose object to propagate.' ]
 ]
 
 { #category : #initialization }
