@@ -80,6 +80,18 @@ MiSaveQueriesCommand >> createFile: fileName [
 MiSaveQueriesCommand >> execute [
 
 	| fileName |
+	fileName := self getFileName.
+
+	[ :job |
+		job title: self jobTitle.
+		self write: self queriesToStore toFileNamed: fileName 
+	] asJob run
+]
+
+{ #category : #executing }
+MiSaveQueriesCommand >> getFileName [
+
+	| fileName |
 	fileName := UIManager default
 		            request: 'Name of the file: '
 		            initialAnswer: ''.
@@ -87,13 +99,24 @@ MiSaveQueriesCommand >> execute [
 	fileName ifNil: [ ^ self ].
 
 	"If user did not provide any file name"
-	fileName ifEmpty: [ 
+	fileName ifEmpty: [
 		UIManager inform: 'You need to specify a name for the file.'.
-		^ self ].
+		^ self 
+	].
 
-	[ :job | 
-	job title: 'Saving queries on disk'.
-	self write: self queriesToStore toFileNamed: fileName ] asJob run
+	^fileName
+]
+
+{ #category : #actions }
+MiSaveQueriesCommand >> getQueries [
+
+	^ self context famixQueries
+]
+
+{ #category : #executing }
+MiSaveQueriesCommand >> jobTitle [
+
+	^ 'Saving queries on disk'
 ]
 
 { #category : #sorting }
@@ -137,7 +160,7 @@ MiSaveQueriesCommand >> putNilAsParentForRootQuery: aQuery [
 MiSaveQueriesCommand >> queriesToStore [
 
 	| queriesToStore topSortedQueries uiSortedQueries |
-	queriesToStore := self copyQueriesReferencesOf: self context famixQueries.
+	queriesToStore := self copyQueriesReferencesOf: self getQueries.
 
 	"For the unary queries that have a root query as a parent we put the parent as nil.
 	Also we don't want to store the result of the queries"
