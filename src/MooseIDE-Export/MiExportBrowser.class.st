@@ -240,9 +240,10 @@ MiExportBrowser >> followEntity: anEntity [
 MiExportBrowser >> initializeLayout [
 
 	self layout: (SpBoxLayout newTopToBottom
+			 spacing: 10;
 			 add: (SpBoxLayout newLeftToRight
-					  add: toolbar expand: false;
-					  add: entitiesCountLabel withConstraints: [ :consts | 
+					  add: toolbar;
+					  add: entitiesCountLabel withConstraints: [ :consts |
 						  consts
 							  bePlacedAtEnd;
 							  expand: false ];
@@ -363,11 +364,12 @@ MiExportBrowser >> toggleCommentsColumn [
 { #category : #'columns management' }
 MiExportBrowser >> updateEntitiesCountLabel [
 
-	entitiesCountLabel label:
-		self model entities size asString , ' entit'
-		, (self model entities size > 1
-				 ifTrue: 'ies'
-				 ifFalse: 'y')
+	| size |
+	size := self model entities size.
+
+	entitiesCountLabel label: size asString , (size > 1
+			 ifTrue: [ ' entity' asEnglishPlural ]
+			 ifFalse: [ ' entity' ])
 ]
 
 { #category : #'columns management' }
