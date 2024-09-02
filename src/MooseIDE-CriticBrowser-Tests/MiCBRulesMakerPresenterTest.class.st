@@ -3,7 +3,7 @@ A MiCriticBrowserQueryMakerPresenterTest is a test class for testing the behavio
 "
 Class {
 	#name : #MiCBRulesMakerPresenterTest,
-	#superclass : #MiAbstractBrowserTest,
+	#superclass : #MiCriticBrowserToolsTest,
 	#instVars : [
 		'addQueryPresenter',
 		'editQueryPresenter'
@@ -12,43 +12,34 @@ Class {
 }
 
 { #category : #running }
-MiCBRulesMakerPresenterTest >> browserClass [
-	^ MiCriticBrowser 
-]
-
-{ #category : #running }
 MiCBRulesMakerPresenterTest >> setUp [
+
 	super setUp.
 	browser addRulesPresenter setParentContext: browser model rootContext.
 	addQueryPresenter := browser addRulesPresenter queryPresenter.
 	editQueryPresenter := browser rulesEditorPresenter queryPresenter.
 	browser addRulesPresenter openDialog
-	
-
 ]
 
 { #category : #running }
 MiCBRulesMakerPresenterTest >> tearDown [
-	super tearDown.
-	browser addRulesPresenter window close
-]
 
-{ #category : #tests }
-MiCBRulesMakerPresenterTest >> testActivateActionButtons [
-
-	browser actionButtons do: [ :button | self deny: button isEnabled ].
-
+	browser addRulesPresenter withWindowDo: [ :window | window close ].
+	super tearDown
 ]
 
 { #category : #tests }
 MiCBRulesMakerPresenterTest >> testAddInputtedCodeRule [
+
 	addQueryPresenter codeButtonAction.
 	addQueryPresenter ruleTitle text: 'test'.
 	addQueryPresenter codeInput text: '[ :entity | entity isDead ]'.
 	addQueryPresenter addButtonAction.
-	
+
 	self assert: browser model rootContext children size equals: 1.
-	self assert: browser model rootContext children anyOne name equals: 'test'
+	self
+		assert: browser model rootContext children anyOne name
+		equals: 'test'
 ]
 
 { #category : #tests }
@@ -138,10 +129,4 @@ MiCBRulesMakerPresenterTest >> testQueriesBrowserButtonAction [
 	addQueryPresenter queriesBrowserButtonAction.
 	self assert: addQueryPresenter codeInput isVisible equals: false.
 	self assert: addQueryPresenter queryDroplist isVisible equals: true
-]
-
-{ #category : #'tests - tags' }
-MiCBRulesMakerPresenterTest >> testSelectedTagSetAndGet [
-	"already tested in MiCriticBrowserTest"
-	self skip
 ]
