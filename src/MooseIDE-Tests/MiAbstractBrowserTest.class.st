@@ -2,7 +2,8 @@ Class {
 	#name : #MiAbstractBrowserTest,
 	#superclass : #MiAbstractApplicationTest,
 	#instVars : [
-		'browser'
+		'browser',
+		'entityToSelect'
 	],
 	#category : #'MooseIDE-Tests-Browsers'
 }
@@ -44,6 +45,18 @@ MiAbstractBrowserTest >> bus [
 ]
 
 { #category : #running }
+MiAbstractBrowserTest >> entityToSelect [
+
+	^ entityToSelect
+]
+
+{ #category : #running }
+MiAbstractBrowserTest >> initializeEntityToSelect [
+
+	entityToSelect := FamixStModel new newClassNamed: 'TestClass'
+]
+
+{ #category : #running }
 MiAbstractBrowserTest >> mooseObjects [
 
 	^ { 
@@ -54,7 +67,7 @@ MiAbstractBrowserTest >> mooseObjects [
 		  (MooseModel with: MooseEntity new) }
 ]
 
-{ #category : #'tests - actions' }
+{ #category : #running }
 MiAbstractBrowserTest >> populateBrowser: mooseModel [
 	"Some abstract tests require the browser to 'contain' propagated entity(-ies).
 	 For example to be able to retreive the current MooseModel.
@@ -66,19 +79,20 @@ MiAbstractBrowserTest >> populateBrowser: mooseModel [
 
 ]
 
-{ #category : #tests }
-MiAbstractBrowserTest >> setEntityToSelect [
+{ #category : #running }
+MiAbstractBrowserTest >> receiveEntityToSelect [
 
-	browser receiveEntity: (FamixStClass named: 'TestClass').
+	browser receiveEntity: entityToSelect
 ]
 
 { #category : #running }
 MiAbstractBrowserTest >> setUp [
 
-	  super setUp.
+	super setUp.
 
-	  application defaultBus: self bus.
-	  browser := self browserClass openForTests: self application
+	application defaultBus: self bus.
+	browser := self browserClass openForTests: self application.
+	self initializeEntityToSelect
 ]
 
 { #category : #running }
@@ -95,7 +109,8 @@ MiAbstractBrowserTest >> testActivateActionButtons [
 
 	browser actionButtons do: [ :button | self deny: button isEnabled ].
 
-	self setEntityToSelect.
+	self receiveEntityToSelect.
+
 	browser actionButtons do: [ :button | self assert: button isEnabled ]
 ]
 

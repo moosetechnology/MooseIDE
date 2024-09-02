@@ -13,6 +13,12 @@ MiModelsBrowserTest >> browserClass [
 	^ MiModelsBrowser
 ]
 
+{ #category : #tests }
+MiModelsBrowserTest >> entityToSelect [
+
+	^ super entityToSelect mooseModel
+]
+
 { #category : #running }
 MiModelsBrowserTest >> newModel: aString [
 
@@ -24,14 +30,10 @@ MiModelsBrowserTest >> newModel: aString [
 	^ model
 ]
 
-{ #category : #tests }
-MiModelsBrowserTest >> setEntityToSelect [ 
-	| newModel |
-	newModel := self newModel: 'aModel'.
-	newModel newClassNamed: #AClass.
-	
-	browser updateForNewModel: newModel.
+{ #category : #running }
+MiModelsBrowserTest >> receiveEntityToSelect [
 
+	browser updateForNewModel: self entityToSelect
 ]
 
 { #category : #running }

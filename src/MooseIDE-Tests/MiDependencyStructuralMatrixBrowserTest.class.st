@@ -1,9 +1,6 @@
 Class {
 	#name : #MiDependencyStructuralMatrixBrowserTest,
 	#superclass : #MiAbstractBrowserTest,
-	#instVars : [
-		'entityToSelect'
-	],
 	#category : #'MooseIDE-Tests-Browsers'
 }
 
@@ -13,16 +10,18 @@ MiDependencyStructuralMatrixBrowserTest >> browserClass [
 ]
 
 { #category : #running }
-MiDependencyStructuralMatrixBrowserTest >> method: aName [
+MiDependencyStructuralMatrixBrowserTest >> initializeEntityToSelect [
 
-	^ FamixRepTestMethod named: aName
+	^ {
+		  (self method: 'method1').
+		  (self method: 'method2').
+		  (self method: 'method3') }
 ]
 
 { #category : #running }
-MiDependencyStructuralMatrixBrowserTest >> setUp [
-	super setUp.
+MiDependencyStructuralMatrixBrowserTest >> method: aName [
 
-	entityToSelect := { self method: 'method1' . self method: 'method2' . self method: 'method3' }
+	^ FamixRepTestMethod named: aName
 ]
 
 { #category : #tests }

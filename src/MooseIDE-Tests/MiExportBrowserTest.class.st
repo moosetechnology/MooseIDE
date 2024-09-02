@@ -10,11 +10,6 @@ MiExportBrowserTest >> browserClass [
 	^ MiExportBrowser
 ]
 
-{ #category : #running }
-MiExportBrowserTest >> setEntityToSelect [ 
-	browser receiveEntity: (FamixStClass named: 'TestClass').
-]
-
 { #category : #tests }
 MiExportBrowserTest >> testMiSelectedItem [
 

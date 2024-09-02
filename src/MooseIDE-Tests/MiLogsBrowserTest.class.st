@@ -2,7 +2,6 @@ Class {
 	#name : #MiLogsBrowserTest,
 	#superclass : #MiAbstractBrowserTest,
 	#instVars : [
-		'entityToSelect',
 		'newBrowser'
 	],
 	#category : #'MooseIDE-Tests-Browsers'
@@ -15,16 +14,9 @@ MiLogsBrowserTest >> browserClass [
 ]
 
 { #category : #tests }
-MiLogsBrowserTest >> setEntityToSelect [ 
+MiLogsBrowserTest >> receiveEntityToSelect [
 
-	self bus globallySelect: entityToSelect.
-]
-
-{ #category : #running }
-MiLogsBrowserTest >> setUp [
-
-	super setUp.
-	entityToSelect := FamixStClass named: 'TestClass'
+	self bus globallySelect: self entityToSelect
 ]
 
 { #category : #running }
@@ -44,7 +36,7 @@ MiLogsBrowserTest >> testMiSelectedItem [
 
 	self assert: browser miSelectedItem isNil.
 
-	self bus globallySelect: entityToSelect.
+	self bus globallySelect: self entityToSelect.
 
-	self assert: browser miSelectedItem equals: entityToSelect
+	self assert: browser miSelectedItem equals: self entityToSelect
 ]
