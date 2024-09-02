@@ -103,12 +103,16 @@ MiNavigationBrowser >> initializePresenters [
 				 evaluated: self iconBlock;
 				 yourself);
 		addColumn: (SpStringTableColumn new
-				 title: 'Number of entities';
-				 evaluated: [ :el | ((self entitiesForActivationOf: el)
-	ifNil: [ 0 ]
-	ifNotNil: [ :coll | coll size ]) asString ];
+				 title: 'Size';
+				 evaluated: [ :el |
+					 ((self entitiesForActivationOf: el)
+						  ifNil: [ '-' ]
+						  ifNotNil: [ :coll |
+							  coll isCollection
+								  ifTrue: [ coll size ]
+								  ifFalse: [ '-' ] ]) asString ];
 				 beSortable;
-				width: 60;
+				 width: 60;
 				 yourself);
 		addColumn: (SpStringTableColumn new
 				 title: 'Entities';
