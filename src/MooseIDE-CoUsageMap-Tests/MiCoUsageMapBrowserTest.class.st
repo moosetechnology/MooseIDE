@@ -18,10 +18,10 @@ MiCoUsageMapBrowserTest >> populateBrowser: mooseModel [
 
 ]
 
-{ #category : #tests }
-MiCoUsageMapBrowserTest >> testActivateActionButtons [
+{ #category : #running }
+MiCoUsageMapBrowserTest >> receiveEntityToSelect [
 
-	browser actionButtons do: [ :button | self deny: button isEnabled ].
+	browser receiveEntity: entityToSelect asMooseGroup
 ]
 
 { #category : #tests }
