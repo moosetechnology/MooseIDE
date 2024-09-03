@@ -5,19 +5,15 @@ Class {
 }
 
 { #category : #initialization }
-MiModelNavigationBrowser >> iconBlock [
+MiModelNavigationBrowser >> entitiesForActivationOf: selection [
 
-	^ [ :el | self iconNamed: #mooseMetamodelGroup ]
+	^ selection value value: self model
 ]
 
 { #category : #initialization }
-MiModelNavigationBrowser >> initializePresenters [
+MiModelNavigationBrowser >> iconBlock [
 
-	super initializePresenters.
-	navigation whenActivatedDo: [ :selection |
-		self inspectorObjectContextPresenter owner
-			changeSelection: (selection selectedItem value value: self model)
-			from: self inspectorObjectContextPresenter ]
+	^ [ :el | self iconNamed: #mooseMetamodelGroup ]
 ]
 
 { #category : #initialization }
@@ -38,5 +34,5 @@ MiModelNavigationBrowser >> selectedItem [
 { #category : #initialization }
 MiModelNavigationBrowser >> selectedObject [
 
-	^ navigation selection selectedItem value value: self model
+	^ self entitiesForActivationOf: navigation selection
 ]

@@ -62,12 +62,20 @@ MiNavigationBrowser >> activateOnSingleClick: anObject [
 	activateOnSingleClick := anObject
 ]
 
+{ #category : #initialization }
+MiNavigationBrowser >> entitiesForActivationOf: selection [
+
+	^ selection value
+]
+
 { #category : #action }
 MiNavigationBrowser >> filterEmptyValues: entities [
 
-	^ entities select: [ :each | 
-		  each value isCollection
-			  ifTrue: [ each value isNotEmpty ]
+	^ entities select: [ :each |
+		  | values |
+		  values := self entitiesForActivationOf: each.
+		  values isCollection
+			  ifTrue: [ values isNotEmpty ]
 			  ifFalse: [ true ] ]
 ]
 
@@ -87,13 +95,24 @@ MiNavigationBrowser >> iconBlock [
 MiNavigationBrowser >> initializePresenters [
 
 	| items |
-
 	navigation := self newTable.
 	items := self filterEmptyValues: (self itemsFor: self model).
 	navigation
 		addColumn: (SpImageTableColumn new
 				 beNotExpandable;
 				 evaluated: self iconBlock;
+				 yourself);
+		addColumn: (SpStringTableColumn new
+				 title: 'Size';
+				 evaluated: [ :el |
+					 ((self entitiesForActivationOf: el)
+						  ifNil: [ '-' ]
+						  ifNotNil: [ :coll |
+							  coll isCollection
+								  ifTrue: [ coll size ]
+								  ifFalse: [ '-' ] ]) asString ];
+				 beSortable;
+				 width: 60;
 				 yourself);
 		addColumn: (SpStringTableColumn new
 				 title: 'Entities';
@@ -104,9 +123,7 @@ MiNavigationBrowser >> initializePresenters [
 		contextMenu: [ self rootCommandsGroup asMenuPresenter ];
 		items: items.
 	navigation whenActivatedDo: [ :selection |
-		self inspectorObjectContextPresenter owner
-			changeSelection: selection selectedItem value
-			from: self inspectorObjectContextPresenter ]
+		self inspectorObjectContextPresenter owner changeSelection: (self entitiesForActivationOf: selection selectedItem) from: self inspectorObjectContextPresenter ]
 ]
 
 { #category : #initialization }
@@ -119,12 +136,8 @@ MiNavigationBrowser >> inspectorObjectContextPresenter [
 MiNavigationBrowser >> itemsFor: anEntity [
 
 	^ anEntity mooseDescription allComplexProperties
-		  collect: [ :property | 
-			  property name
-			  -> (anEntity propertyNamed: property name ifAbsent: [ nil ]) ]
-		  thenReject: [ :assoc | 
-			  assoc value isNil or: [ 
-				  assoc value isCollection and: [ assoc value isEmpty ] ] ]
+		  collect: [ :property | property name -> (anEntity propertyNamed: property name ifAbsent: [ nil ]) ]
+		  thenReject: [ :assoc | assoc value isNil or: [ assoc value isCollection and: [ assoc value isEmpty ] ] ]
 ]
 
 { #category : #accessing }
