@@ -10,10 +10,10 @@ MiDistributionMapBrowserTest >> browserClass [
 	^ MiDistributionMapBrowser
 ]
 
-{ #category : #tests }
-MiDistributionMapBrowserTest >> testActivateActionButtons [
+{ #category : #running }
+MiDistributionMapBrowserTest >> receiveEntityToSelect [
 
-	browser actionButtons do: [ :button | self deny: button isEnabled ].
+	browser receiveEntity: entityToSelect asMooseGroup
 ]
 
 { #category : #'tests - tags' }

@@ -97,7 +97,7 @@ MiDistributionMapBrowser >> browserClosed [
 	application unregisterConsumer: self
 ]
 
-{ #category : #actions }
+{ #category : #testing }
 MiDistributionMapBrowser >> canFollowEntity: aCollection [
 
 	| uniqType confirm |
