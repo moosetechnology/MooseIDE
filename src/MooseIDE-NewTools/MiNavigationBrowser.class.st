@@ -152,8 +152,8 @@ MiNavigationBrowser >> model: anObject [
 
 { #category : #initialization }
 MiNavigationBrowser >> outputActivationPort [
-	^ (SpActivationPort newPresenter: self)
-		yourself
+
+	^ (SpActivationPort newPresenter: self) yourself
 ]
 
 { #category : #accessing }
@@ -164,6 +164,7 @@ MiNavigationBrowser >> selectedItem [
 
 { #category : #initialization }
 MiNavigationBrowser >> selectedObject [
+
 	^ navigation selection selectedItem value
 ]
 
@@ -175,5 +176,6 @@ MiNavigationBrowser >> setModelBeforeInitialization: anInspectionModel [
 
 { #category : #initialization }
 MiNavigationBrowser >> whenActivatedDo: aBlock [
+
 	activationBlock := aBlock
 ]

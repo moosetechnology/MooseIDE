@@ -26,10 +26,7 @@ MiModelNavigationBrowserTest >> tearDown [
 { #category : #tests }
 MiModelNavigationBrowserTest >> testClickingOpensMooseGroup [
 
-	"This test passes locally but fails on SmalltalkCI because MiModelNavigationBrowser fails to be implemented.
-	The error is a primitive failure in #inspectorPerform:"
 	| inspectedModel |
-
 	inspectedModel := FamixStModel new
 		                  newClassNamed: #C1;
 		                  newClassNamed: #C2;
@@ -39,7 +36,7 @@ MiModelNavigationBrowserTest >> testClickingOpensMooseGroup [
 	self assert: miInspectorBrowser miSelectedItem equals: inspectedModel.
 
 	miInspectorBrowser miInspector firstPagePresenter navigation
-		clickAtIndex: 8.
+		clickAtIndex: 1.
 
 	self
 		assert: miInspectorBrowser miSelectedItem
