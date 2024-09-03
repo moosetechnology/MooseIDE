@@ -12,7 +12,7 @@ MiModelNavigationBrowserTest >> clickOnAllClasses [
 	"Yes, this could be more simple, but it does not work easily on CI"
 
 	| navigationPane |
-	navigationPane := self navigationPane navigation.
+	navigationPane := self navigationPane.
 
 	navigationPane
 		selectItem:
@@ -23,9 +23,10 @@ MiModelNavigationBrowserTest >> clickOnAllClasses [
 { #category : #tests }
 MiModelNavigationBrowserTest >> navigationPane [
 
-	miInspectorBrowser miInspector firstPagePresenter
-		traversePresentersDo: [ :presenter |
-			presenter class = MiModelNavigationBrowser ifTrue: [ ^ presenter ] ]
+	^ miInspectorBrowser miInspector firstPagePresenter
+		  traversePresentersDo: [ :presenter |
+			  presenter class = MiModelNavigationBrowser ifTrue: [
+				  ^ presenter navigation ] ]
 ]
 
 { #category : #running }
