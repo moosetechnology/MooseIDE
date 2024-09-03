@@ -2,7 +2,6 @@ Class {
 	#name : #MiLogsBrowserTest,
 	#superclass : #MiAbstractBrowserTest,
 	#instVars : [
-		'entityToSelect',
 		'newBrowser'
 	],
 	#category : #'MooseIDE-Tests-Browsers'
@@ -15,10 +14,9 @@ MiLogsBrowserTest >> browserClass [
 ]
 
 { #category : #running }
-MiLogsBrowserTest >> setUp [
+MiLogsBrowserTest >> receiveEntityToSelect [
 
-	super setUp.
-	entityToSelect := FamixStClass named: 'TestClass'
+	self bus globallySelect: entityToSelect
 ]
 
 { #category : #running }
@@ -26,15 +24,6 @@ MiLogsBrowserTest >> tearDown [
 
 	newBrowser ifNotNil: [ newBrowser window close ].
 	super tearDown
-]
-
-{ #category : #tests }
-MiLogsBrowserTest >> testActivateActionButtons [
-
-	browser actionButtons do: [ :button | self deny: button isEnabled ].
-
-	self bus globallySelect: entityToSelect.
-	browser actionButtons do: [ :button | self assert: button isEnabled ]
 ]
 
 { #category : #tests }

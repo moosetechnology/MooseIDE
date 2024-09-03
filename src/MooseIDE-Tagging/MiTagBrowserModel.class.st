@@ -198,7 +198,7 @@ MiTagBrowserModel >> initialize [
 { #category : #accessing }
 MiTagBrowserModel >> miSelectedItem [
 
-	^self entitiesTaggedWithCurrentTag
+	^ self entitiesTaggedWithCurrentTag
 ]
 
 { #category : #accessing }

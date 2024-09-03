@@ -3,7 +3,7 @@ A MiCriticBrowserModelTest is a test class for testing the behavior of MiCriticB
 "
 Class {
 	#name : #MiCriticBrowserModelTest,
-	#superclass : #MiAbstractBrowserTest,
+	#superclass : #MiCriticBrowserToolsTest,
 	#instVars : [
 		'model',
 		'stubEntity',
@@ -14,18 +14,16 @@ Class {
 	#category : #'MooseIDE-CriticBrowser-Tests'
 }
 
-{ #category : #running }
-MiCriticBrowserModelTest >> browserClass [
-	^ MiCriticBrowser
-]
-
 { #category : #removing }
 MiCriticBrowserModelTest >> removeAllFromRootContext [
 
-	[ model rootContext children isNotEmpty ] whileTrue: [ model removeChild: model rootContext children anyOne fromContext: model rootContext ].
+	[ model rootContext children isNotEmpty ] whileTrue: [
+		model
+			removeChild: model rootContext children anyOne
+			fromContext: model rootContext ]
 ]
 
-{ #category : #initialization }
+{ #category : #running }
 MiCriticBrowserModelTest >> setUp [
 	super setUp.
 
@@ -175,12 +173,6 @@ MiCriticBrowserModelTest >> testRunCondition [
 	model runCondition: stubCondition.
 	self assert: model violations keys size equals: 1.
 	self assert: model violations keys anyOne equals: stubCondition
-]
-
-{ #category : #'tests - tags' }
-MiCriticBrowserModelTest >> testSelectedTagSetAndGet [
-	"already tested in MiCriticBrowserTest"
-	self skip
 ]
 
 { #category : #tests }

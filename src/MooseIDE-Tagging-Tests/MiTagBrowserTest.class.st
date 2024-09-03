@@ -14,15 +14,36 @@ MiTagBrowserTest >> browserClass [
 ]
 
 { #category : #running }
+MiTagBrowserTest >> defaultEntityToSelect [
+
+	^ FQTestsHelper new classesAndMethods
+]
+
+{ #category : #running }
 MiTagBrowserTest >> mooseModelSize [
 
-	^ helper classesAndMethods anyOne mooseModel size
+	^ self defaultEntityToSelect anyOne mooseModel size
 ]
 
 { #category : #running }
 MiTagBrowserTest >> numberOfTaggedEntities [
 
-	^ (helper classesAndMethods anyOne mooseModel select: #isTagged) size
+	^ (self defaultEntityToSelect anyOne mooseModel select: #isTagged)
+		  size
+]
+
+{ #category : #running }
+MiTagBrowserTest >> receiveEntityToSelect [
+
+	| tag |
+	super receiveEntityToSelect.
+
+	tag := detailsPage model addTag: 'aTag'.
+	detailsPage model currentTag: tag.
+
+	browser refreshTagList.
+	browser tagManagementPage setTagTo: tag.
+	browser tagManagementPage descriptionPage addAll
 ]
 
 { #category : #running }
@@ -30,8 +51,7 @@ MiTagBrowserTest >> setUp [
 
 	super setUp.
 
-	helper := FQTestsHelper new.
-	browser followEntity: helper classesAndMethods.
+	browser followEntity: entityToSelect.
 	detailsPage := browser descriptionPage
 ]
 

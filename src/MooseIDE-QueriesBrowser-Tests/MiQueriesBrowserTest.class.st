@@ -25,12 +25,31 @@ MiQueriesBrowserTest >> queryResultTreeItems [
 		  resultTree childrenFor: root ]
 ]
 
+{ #category : #tests }
+MiQueriesBrowserTest >> resetBrowser [
+
+	browser withWindowDo: [ :window | window close ].
+	browser := self browserClass openForTests: self application
+]
+
 { #category : #running }
 MiQueriesBrowserTest >> setUp [
 
 	super setUp.
 	helper := FQTestsHelper new.
 	browser receiveEntity: helper classesAndMethods
+]
+
+{ #category : #tests }
+MiQueriesBrowserTest >> testActivateActionButtons [
+
+	self resetBrowser.
+
+	browser actionButtons do: [ :button | self deny: button isEnabled ].
+
+	self receiveEntityToSelect.
+
+	browser actionButtons do: [ :button | self assert: button isEnabled ]
 ]
 
 { #category : #tests }

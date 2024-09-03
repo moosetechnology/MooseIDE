@@ -128,6 +128,7 @@ MiCriticBrowser >> allAvailableContexts [
 
 { #category : #'window control' }
 MiCriticBrowser >> browserClosed [
+
 	super browserClosed.
 	application unregisterConsumer: addRulesPresenter.
 	application unregisterConsumer: rulesEditorPresenter.
@@ -136,7 +137,7 @@ MiCriticBrowser >> browserClosed [
 
 { #category : #testing }
 MiCriticBrowser >> canFollowEntity: anEntity [
-"whether the browser accepts to deal with anObject"
+
 	^ anEntity isMooseObject
 ]
 
@@ -326,6 +327,7 @@ MiCriticBrowser >> initialize [
 MiCriticBrowser >> initializeLists [
 
 	entitiesList := self newMooseGroupsTreeTable.
+	entitiesList whenSelectedItemChangedDo: [ self updateToolbar ].
 
 	rules := self newTree.
 	rules
@@ -379,9 +381,10 @@ MiCriticBrowser >> initializeStatusLabel [
 { #category : #accessing }
 MiCriticBrowser >> miSelectedItem [
 
-	^ self rules selectedItem
-		  ifNil: [ specModel getAllViolations ]
-		  ifNotNil: [ specModel violationsOf: self rules selectedItem ]
+	^ (self rules selectedItem
+		   ifNil: [ specModel getAllViolations ]
+		   ifNotNil: [ specModel violationsOf: self rules selectedItem ])
+		  ifEmpty: [ entitiesList miSelectedItem ]
 ]
 
 { #category : #'buttons actions' }
