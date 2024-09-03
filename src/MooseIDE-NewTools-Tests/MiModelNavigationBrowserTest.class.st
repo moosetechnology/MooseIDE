@@ -35,8 +35,10 @@ MiModelNavigationBrowserTest >> testClickingOpensMooseGroup [
 
 	self assert: miInspectorBrowser miSelectedItem equals: inspectedModel.
 
-	miInspectorBrowser miInspector firstPagePresenter navigation
-		clickAtIndex: 1.
+	miInspectorBrowser miInspector firstPagePresenter
+		traversePresentersDo: [ :presenter |
+			presenter class = MiModelNavigationBrowser ifTrue: [
+				presenter navigation clickAtIndex: 1 ] ].
 
 	self
 		assert: miInspectorBrowser miSelectedItem
