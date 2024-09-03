@@ -77,15 +77,13 @@ MiAbstractModel >> settingsChanged: aBoolean [
 MiAbstractModel >> tagEntity: aMooseEntity with: aTag [
 
 	| tagAssociation |
-	
-	aTag ifNil: [ ^self ].
+	aTag ifNil: [ ^ self ].
 	aTag = aMooseEntity ifTrue: [ ^ self ].
 
 	tagAssociation := FamixTagEntityAssociation
-		newForEntity: aMooseEntity
-		tag: aTag.
-	browser application consumeItem: tagAssociation.
-
+		                  newForEntity: aMooseEntity
+		                  tag: aTag.
+	browser application consumeItem: tagAssociation
 ]
 
 { #category : #tagging }
