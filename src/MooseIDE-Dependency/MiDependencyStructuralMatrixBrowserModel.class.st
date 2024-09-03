@@ -93,7 +93,8 @@ MiDependencyStructuralMatrixBrowserModel >> displayValueForTuple: tuple [
 
 { #category : #accessing }
 MiDependencyStructuralMatrixBrowserModel >> entities [
-	^graph nodes collect: #model
+
+	^ graph nodes collect: #model
 ]
 
 { #category : #actions }
@@ -144,6 +145,12 @@ MiDependencyStructuralMatrixBrowserModel >> isDependency: tuple [
 MiDependencyStructuralMatrixBrowserModel >> isDiagonal: tuple [
 	^tuple key = tuple value
 
+]
+
+{ #category : #accessing }
+MiDependencyStructuralMatrixBrowserModel >> miSelectedItem [
+
+	^ self entities
 ]
 
 { #category : #buildGraph }
@@ -209,11 +216,6 @@ MiDependencyStructuralMatrixBrowserModel >> sccTuplesForTuple: tuple [
 					thenSelect: [ :sccTuple | self isCycle: sccTuple ]
 			]
 		]
-]
-
-{ #category : #accessing }
-MiDependencyStructuralMatrixBrowserModel >> selectedEntities [
-	^#()
 ]
 
 { #category : #settings }
