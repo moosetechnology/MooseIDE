@@ -7,6 +7,27 @@ Class {
 	#category : #'MooseIDE-NewTools-Tests'
 }
 
+{ #category : #tests }
+MiModelNavigationBrowserTest >> clickOnAllClasses [
+	"Yes, this could be more simple, but it does not work easily on CI"
+
+	| navigationPane |
+	navigationPane := self navigationPane navigation.
+
+	navigationPane
+		selectItem:
+			(navigationPane items detect: [ :item | item key = 'All classes' ]);
+		doActivateAtIndex: navigationPane selection selectedIndex
+]
+
+{ #category : #tests }
+MiModelNavigationBrowserTest >> navigationPane [
+
+	miInspectorBrowser miInspector firstPagePresenter
+		traversePresentersDo: [ :presenter |
+			presenter class = MiModelNavigationBrowser ifTrue: [ ^ presenter ] ]
+]
+
 { #category : #running }
 MiModelNavigationBrowserTest >> setUp [
 
@@ -32,14 +53,8 @@ MiModelNavigationBrowserTest >> testClickingOpensMooseGroup [
 		                  newClassNamed: #C2;
 		                  yourself.
 	miInspectorBrowser followEntity: inspectedModel.
-
 	self assert: miInspectorBrowser miSelectedItem equals: inspectedModel.
-
-	miInspectorBrowser miInspector firstPagePresenter
-		traversePresentersDo: [ :presenter |
-			presenter class = MiModelNavigationBrowser ifTrue: [
-				presenter navigation clickAtIndex: 1 ] ].
-
+	self clickOnAllClasses.
 	self
 		assert: miInspectorBrowser miSelectedItem
 		equals: inspectedModel allClasses
