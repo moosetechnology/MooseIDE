@@ -101,8 +101,8 @@ MiImportModelFromSmalltalkDialog >> defaultLayout [
 MiImportModelFromSmalltalkDialog >> hideAdvancedSettings [
 
 	advancedSettingsButton icon: (self iconNamed: #arrowDown).
-	self withWindowDo: [ :window | 
-		window extent: self class windowExtent ].
+	self withWindowDo: [ :window |
+		window resize: self class windowExtent ].
 	self layout: self defaultLayout
 ]
 
@@ -254,7 +254,7 @@ MiImportModelFromSmalltalkDialog >> showAdvancedSettings [
 
 	advancedSettingsButton icon: (self iconNamed: #arrowUp).
 	self withWindowDo: [ :window |
-		window extent: self class fullWindowExtent ].
+		window resize: self class fullWindowExtent ].
 	self layout: (self simpleLayout
 			 add: advancedSettingsButton height: self class buttonHeight;
 			 add: self advancedSettingsLayout;

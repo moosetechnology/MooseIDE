@@ -51,7 +51,10 @@ MiImportModelFromFileDialog class >> windowExtent [
 { #category : #action }
 MiImportModelFromFileDialog >> closeEntitiesChoice [
 
-	self withWindowDo: [ :window | window extent: self class windowExtent ]
+	self layout: self defaultLayout.
+
+	self withWindowDo: [ :window |
+		window resize: self class windowExtent ]
 ]
 
 { #category : #initialization }
@@ -278,7 +281,7 @@ MiImportModelFromFileDialog >> openEntitiesChoice [
 		                  on: importingContext.
 
 	self withWindowDo: [ :window | "The double #window is a patch for a spec bug. August 2024"
-		window window extent: self class fullWindowExtent ].
+		window resize: self class fullWindowExtent ].
 
 	self layout: (self defaultLayout
 			 add: customEntities;
