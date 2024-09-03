@@ -10,9 +10,9 @@ MiFilesBrowserTest >> browserClass [
 ]
 
 { #category : #running }
-MiFilesBrowserTest >> initializeEntityToSelect [
+MiFilesBrowserTest >> defaultEntityToSelect [
 
-	^ entityToSelect:= MooseModel new
+	^ MooseModel new
 		  rootFolder: FileSystem workingDirectory;
 		  add: MooseEntity new;
 		  yourself
@@ -27,5 +27,5 @@ MiFilesBrowserTest >> testCanTagEntities [
 MiFilesBrowserTest >> testMiSelectedItem [
 
 	self receiveEntityToSelect.
-	self assert: browser miSelectedItem equals: self entityToSelect
+	self assert: browser miSelectedItem equals: entityToSelect
 ]

@@ -13,12 +13,6 @@ MiAbstractBrowserTest class >> isAbstract [
 	^ self == MiAbstractBrowserTest
 ]
 
-{ #category : #running }
-MiAbstractBrowserTest >> application [
-
-	  ^ application
-]
-
 { #category : #'tests - actions' }
 MiAbstractBrowserTest >> assertFollowActionFor: aMooseObject [
 	"Override to test follow action"
@@ -35,6 +29,7 @@ MiAbstractBrowserTest >> assertHighlightActionFor: aMooseObject [
 
 { #category : #running }
 MiAbstractBrowserTest >> browserClass [
+
 	^ self subclassResponsibility
 ]
 
@@ -45,15 +40,9 @@ MiAbstractBrowserTest >> bus [
 ]
 
 { #category : #running }
-MiAbstractBrowserTest >> entityToSelect [
+MiAbstractBrowserTest >> defaultEntityToSelect [
 
-	^ entityToSelect
-]
-
-{ #category : #running }
-MiAbstractBrowserTest >> initializeEntityToSelect [
-
-	entityToSelect := FamixStModel new newClassNamed: 'TestClass'
+	^ FamixStModel new newClassNamed: 'TestClass'
 ]
 
 { #category : #running }
@@ -92,7 +81,7 @@ MiAbstractBrowserTest >> setUp [
 
 	application defaultBus: self bus.
 	browser := self browserClass openForTests: self application.
-	self initializeEntityToSelect
+	entityToSelect := self defaultEntityToSelect
 ]
 
 { #category : #running }

@@ -11,10 +11,9 @@ MiDuplicationBrowserTest >> browserClass [
 ]
 
 { #category : #running }
-MiDuplicationBrowserTest >> initializeEntityToSelect [
+MiDuplicationBrowserTest >> defaultEntityToSelect [
 
-	entityToSelect := (self method: 'method1' withSource: (1 to: 8))
-		                  asMooseGroup
+	^ (self method: 'method1' withSource: (1 to: 8)) asMooseGroup
 ]
 
 { #category : #running }

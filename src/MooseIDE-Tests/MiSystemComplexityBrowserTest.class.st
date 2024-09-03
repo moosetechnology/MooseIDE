@@ -10,10 +10,10 @@ MiSystemComplexityBrowserTest >> browserClass [
 	^ MiSystemComplexityBrowser
 ]
 
-{ #category : #tests }
-MiSystemComplexityBrowserTest >> testActivateActionButtons [
+{ #category : #running }
+MiSystemComplexityBrowserTest >> defaultEntityToSelect [
 
-	browser actionButtons do: [ :button | self deny: button isEnabled ].
+	^ MooseGroup with: super defaultEntityToSelect
 ]
 
 { #category : #tests }

@@ -25,6 +25,13 @@ MiQueriesBrowserTest >> queryResultTreeItems [
 		  resultTree childrenFor: root ]
 ]
 
+{ #category : #tests }
+MiQueriesBrowserTest >> resetBrowser [
+
+	browser withWindowDo: [ :window | window close ].
+	browser := self browserClass openForTests: self application
+]
+
 { #category : #running }
 MiQueriesBrowserTest >> setUp [
 
@@ -36,7 +43,13 @@ MiQueriesBrowserTest >> setUp [
 { #category : #tests }
 MiQueriesBrowserTest >> testActivateActionButtons [
 
+	self resetBrowser.
 
+	browser actionButtons do: [ :button | self deny: button isEnabled ].
+
+	self receiveEntityToSelect.
+
+	browser actionButtons do: [ :button | self assert: button isEnabled ]
 ]
 
 { #category : #tests }

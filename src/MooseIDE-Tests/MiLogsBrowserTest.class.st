@@ -13,10 +13,10 @@ MiLogsBrowserTest >> browserClass [
 	^ MiLogsBrowser
 ]
 
-{ #category : #tests }
+{ #category : #running }
 MiLogsBrowserTest >> receiveEntityToSelect [
 
-	self bus globallySelect: self entityToSelect
+	self bus globallySelect: entityToSelect
 ]
 
 { #category : #running }
@@ -36,7 +36,7 @@ MiLogsBrowserTest >> testMiSelectedItem [
 
 	self assert: browser miSelectedItem isNil.
 
-	self bus globallySelect: self entityToSelect.
+	self bus globallySelect: entityToSelect.
 
-	self assert: browser miSelectedItem equals: self entityToSelect
+	self assert: browser miSelectedItem equals: entityToSelect
 ]

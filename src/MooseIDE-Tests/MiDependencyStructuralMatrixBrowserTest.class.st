@@ -10,12 +10,12 @@ MiDependencyStructuralMatrixBrowserTest >> browserClass [
 ]
 
 { #category : #running }
-MiDependencyStructuralMatrixBrowserTest >> initializeEntityToSelect [
+MiDependencyStructuralMatrixBrowserTest >> defaultEntityToSelect [
 
-	entityToSelect := {
-		                  (self method: 'method1').
-		                  (self method: 'method2').
-		                  (self method: 'method3') }
+	^ {
+		  (self method: 'method1').
+		  (self method: 'method2').
+		  (self method: 'method3') }
 ]
 
 { #category : #running }

@@ -13,10 +13,10 @@ MiBusLogBrowserTest >> browserClass [
 	^ MiBusLogBrowser
 ]
 
-{ #category : #tests }
+{ #category : #running }
 MiBusLogBrowserTest >> receiveEntityToSelect [
 
-	self bus globallySelect: self entityToSelect
+	self bus globallySelect: entityToSelect
 ]
 
 { #category : #running }
@@ -38,7 +38,7 @@ MiBusLogBrowserTest >> testMiSelectedItem [
 
 	self receiveEntityToSelect.
 
-	self assert: browser miSelectedItem equals: self entityToSelect
+	self assert: browser miSelectedItem equals: entityToSelect
 ]
 
 { #category : #running }
@@ -49,5 +49,5 @@ MiBusLogBrowserTest >> testOpenOnLatestEntity [
 	self receiveEntityToSelect.
 
 	newBrowser := self browserClass openForTests: self application.
-	self assert: newBrowser miSelectedItem equals: self entityToSelect
+	self assert: newBrowser miSelectedItem equals: entityToSelect
 ]
