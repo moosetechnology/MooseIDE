@@ -22,17 +22,8 @@ MiModelNavigationBrowser >> itemsFor: anEntity [
 	^ anEntity navigationItemsFromPragmas
 ]
 
-{ #category : #accessing }
-MiModelNavigationBrowser >> selectedItem [
-
-	^ ([ 
-	   self model mooseInterestingEntity perform:
-		   navigation selection selectedItem value ] onErrorDo: [ nil ])
-		  mooseInterestingEntity
-]
-
 { #category : #initialization }
 MiModelNavigationBrowser >> selectedObject [
 
-	^ self entitiesForActivationOf: navigation selection
+	^ navigation selectedItem value value: self model
 ]

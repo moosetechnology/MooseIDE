@@ -35,6 +35,5 @@ MiInspectorModel >> entity: anObject [
 MiInspectorModel >> miSelectedItem [
 	"the inspector keeps its own model"
 
-	^browser miSelectedItem
-
+	^ browser miSelectedItem
 ]
