@@ -23,10 +23,15 @@ MiModelNavigationBrowserTest >> clickOnAllClasses [
 { #category : #tests }
 MiModelNavigationBrowserTest >> navigationPane [
 
-	^ miInspectorBrowser miInspector firstPagePresenter
-		  traversePresentersDo: [ :presenter |
-			  presenter class = MiModelNavigationBrowser ifTrue: [
-				  ^ presenter navigation ] ]
+	miInspectorBrowser miInspector firstPage selectedPage activePresenter
+		ifNil: [
+			miInspectorBrowser miInspector firstPage selectedPage
+				retrievePresenter ].
+
+	^ miInspectorBrowser miInspector firstPagePresenter allPresenters
+		  detect: [ :presenter | presenter class = MiModelNavigationBrowser ]
+		  ifFound: [ :presenter | presenter navigation ]
+		  ifNone: [  ]
 ]
 
 { #category : #running }
@@ -53,8 +58,10 @@ MiModelNavigationBrowserTest >> testClickingOpensMooseGroup [
 		                  newClassNamed: #C1;
 		                  newClassNamed: #C2;
 		                  yourself.
+
 	miInspectorBrowser followEntity: inspectedModel.
 	self assert: miInspectorBrowser miSelectedItem equals: inspectedModel.
+
 	self clickOnAllClasses.
 	self
 		assert: miInspectorBrowser miSelectedItem
