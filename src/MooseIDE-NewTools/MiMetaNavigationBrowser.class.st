@@ -45,16 +45,6 @@ MiMetaNavigationBrowser class >> buildCommandsGroupWith: presenter forRoot: aCmC
 		register: (StInspectorInspectSelectedCommand forSpecContext: presenter)
 ]
 
-{ #category : #layout }
-MiMetaNavigationBrowser class >> defaultLayout [
-
-	^ SpPanedLayout newVertical
-		  positionOfSlider: 65 percent;
-		  add: #navigation;
-		  add: #properties;
-		  yourself
-]
-
 { #category : #initialization }
 MiMetaNavigationBrowser >> activateOnSingleClick [
 	navigation activateOnSingleClick
@@ -64,6 +54,16 @@ MiMetaNavigationBrowser >> activateOnSingleClick [
 MiMetaNavigationBrowser >> activateOnSingleClick: anObject [
 
 	activateOnSingleClick := anObject
+]
+
+{ #category : #layout }
+MiMetaNavigationBrowser >> defaultLayout [
+
+	^ SpPanedLayout newVertical
+		  positionOfSlider: 75 percent;
+		  add: #navigation;
+		  add: #properties;
+		  yourself
 ]
 
 { #category : #action }
@@ -92,6 +92,7 @@ MiMetaNavigationBrowser >> initializePresenters [
 
 	| items |
 	navigation := self newTreeTable.
+	navigation isResizable: true.
 	items := self filterEmptyValues: (self itemsFor: self model).
 	entitiesColumn := SpStringTableColumn new
 		                  evaluated: [ :el |
