@@ -13,6 +13,12 @@ MooseObject >> miDescription [
 ]
 
 { #category : #'*MooseIDE-Core' }
+MooseObject >> miInspect [
+
+	MiInspectorBrowser inspect: self
+]
+
+{ #category : #'*MooseIDE-Core' }
 MooseObject >> miPropagate [
 
 	(MiApplication current busNamed: MiApplication defaultBusName)

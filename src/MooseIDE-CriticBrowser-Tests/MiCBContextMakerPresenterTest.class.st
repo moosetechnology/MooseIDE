@@ -3,7 +3,7 @@ A MiCriticBrowserContextMakerPresenterTest is a test class for testing the behav
 "
 Class {
 	#name : #MiCBContextMakerPresenterTest,
-	#superclass : #MiAbstractBrowserTest,
+	#superclass : #MiCriticBrowserToolsTest,
 	#instVars : [
 		'editContextPresenter',
 		'addContextsPresenter'
@@ -12,33 +12,35 @@ Class {
 }
 
 { #category : #running }
-MiCBContextMakerPresenterTest >> browserClass [
-	^ MiCriticBrowser 
-]
-
-{ #category : #running }
 MiCBContextMakerPresenterTest >> setUp [
+
 	super setUp.
-	browser addContextsPresenter setParentContext: browser model rootContext.
+	browser addContextsPresenter setParentContext:
+		browser model rootContext.
 	addContextsPresenter := browser addContextsPresenter contextPresenter.
-	editContextPresenter := browser contextEditorPresenter contextPresenter.
+	editContextPresenter := browser contextEditorPresenter
+		                        contextPresenter.
 	browser addContextsPresenter openDialog
 ]
 
 { #category : #running }
 MiCBContextMakerPresenterTest >> tearDown [
-	super tearDown.
-	browser addContextsPresenter window close
+
+	browser addContextsPresenter withWindowDo: [ :window | window close ].
+	super tearDown
 ]
 
 { #category : #tests }
 MiCBContextMakerPresenterTest >> testAddInputtedCodeRule [
+
 	addContextsPresenter contextTitle text: 'test'.
 	addContextsPresenter codeInput text: '[ :col | col allClasses ]'.
 	addContextsPresenter addButtonAction.
-	
+
 	self assert: browser model rootContext children size equals: 1.
-	self assert: browser model rootContext children anyOne name equals: 'test'
+	self
+		assert: browser model rootContext children anyOne name
+		equals: 'test'
 ]
 
 { #category : #tests }
@@ -68,10 +70,4 @@ MiCBContextMakerPresenterTest >> testFillContextToEdit [
 	self assert: addContextsPresenter contextTitle text equals: context name.
 	self assert: addContextsPresenter codeInput text equals: context contextBlock asString.
 	self assert: addContextsPresenter contextSummary text equals: context summary.
-]
-
-{ #category : #'tests - tags' }
-MiCBContextMakerPresenterTest >> testSelectedTagSetAndGet [
-	"already tested in MiCriticBrowserTest"
-	self skip
 ]

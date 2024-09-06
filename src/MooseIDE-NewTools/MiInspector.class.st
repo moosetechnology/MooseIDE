@@ -10,31 +10,17 @@ Class {
 	#category : #'MooseIDE-NewTools-Inspector'
 }
 
-{ #category : #initialization }
-MiInspector >> initializePresenters [
-	super initializePresenters.
+{ #category : #'inspector compatibility' }
+MiInspector >> defaultObjectInspectorClass [
 
-	millerList millerListPresenter
-		whenColumnsChangedDo: [self owner updateToolbar].
+	^ MiObjectInspectorPresenter
 ]
 
-{ #category : #'private - factory' }
-MiInspector >> newInspectorFor: aModel [
+{ #category : #initialization }
+MiInspector >> initializePresenters [
 
-	| newInspector |
-	newInspector := self
-		                instantiate: MiObjectInspectorPresenter
-		                on: aModel asInspectorModel.
-	self class inspectorDiveOnSingleClick ifTrue: [ 
-		newInspector activateOnSingleClick ].
+	super initializePresenters.
 
-	millerList pages ifNotEmpty: [ :pages | 
-		newInspector
-			whenClosedDo: [ millerList removeAllFrom: newInspector ];
-			"select last shown page (or default)"trySelectAnyPageWithName: { 
-					lastPageSelectedTabName.
-					pages last selectedPageName }
-		"prepare to close" ].
-
-	^ newInspector
+	millerList millerListPresenter whenColumnsChangedDo: [
+		self owner updateToolbar ]
 ]

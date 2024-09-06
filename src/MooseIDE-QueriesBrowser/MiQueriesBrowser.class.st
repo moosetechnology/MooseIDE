@@ -187,8 +187,8 @@ MiQueriesBrowser >> initializeQueryCodePresenter [
 { #category : #initialization }
 MiQueriesBrowser >> initializeResultTreePresenter [
 
-	queryResultTreePresenter := self instantiate:
-		                            QueryResultTreePresenter.
+	queryResultTreePresenter := self newMooseGroupsTreeTable.
+
 	queryResultTreePresenter updateForEntities: self queryResultEntities
 ]
 
@@ -271,10 +271,7 @@ MiQueriesBrowser >> showResultOfQuery: aQuery [
 
 	result := aQuery result.
 
-	queryResultTreePresenter := self instantiate:
-		                            QueryResultTreePresenter.
-	queryResultTreePresenter updateForEntities: result.
-
+	self initializeResultTreePresenter.
 	"This will sho the correct queryResultTreePresenter:"
 	queryNotebookPresenter resetAllPageContents
 ]

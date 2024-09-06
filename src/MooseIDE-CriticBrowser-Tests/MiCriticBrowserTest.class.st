@@ -91,6 +91,13 @@ MiCriticBrowserTest >> initializeRules [
 		(FQTypeQuery types: { FamixStMethod })
 ]
 
+{ #category : #running }
+MiCriticBrowserTest >> receiveEntityToSelect [
+
+	super receiveEntityToSelect.
+	browser entitiesList selectPath: { 1 }
+]
+
 { #category : #removing }
 MiCriticBrowserTest >> removeAllFromRootContext [
 

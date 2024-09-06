@@ -99,9 +99,10 @@ MiCoMenuManager >> fillTagMenu: menu for: aMiCoBox [
 
 { #category : #'building - menus' }
 MiCoMenuManager >> iconFormFor: aMiCoTag [
+
 	^ (FormCanvas extent: 15 asPoint)
-		fillColor: aMiCoTag color;
-		form
+		  fillColor: aMiCoTag color;
+		  form
 ]
 
 { #category : #accessing }

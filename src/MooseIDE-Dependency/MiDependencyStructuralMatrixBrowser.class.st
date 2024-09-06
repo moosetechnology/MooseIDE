@@ -98,7 +98,7 @@ MiDependencyStructuralMatrixBrowser >> buildDSM [
 { #category : #testing }
 MiDependencyStructuralMatrixBrowser >> canFollowEntity: anObject [
 
-	^specModel canFollowEntity: anObject
+	^ specModel canFollowEntity: anObject
 ]
 
 { #category : #testing }
@@ -129,7 +129,7 @@ MiDependencyStructuralMatrixBrowser >> initializePresenters [
 { #category : #accessing }
 MiDependencyStructuralMatrixBrowser >> miSelectedItem [
 
-	^specModel selectedEntities
+	^ specModel miSelectedItem
 ]
 
 { #category : #api }

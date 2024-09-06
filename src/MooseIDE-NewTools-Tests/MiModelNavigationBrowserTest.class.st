@@ -2,46 +2,47 @@ Class {
 	#name : #MiModelNavigationBrowserTest,
 	#superclass : #TestCase,
 	#instVars : [
-		'miInspectorBrowser'
+		'browser',
+		'inspectedModel'
 	],
 	#category : #'MooseIDE-NewTools-Tests'
 }
+
+{ #category : #tests }
+MiModelNavigationBrowserTest >> clickOnAllClasses [
+
+	| navigationTable |
+	navigationTable := browser presenterAt: #navigation.
+
+	navigationTable selectItem:
+		(navigationTable items detect: [ :item | item key = 'All classes' ])
+]
 
 { #category : #running }
 MiModelNavigationBrowserTest >> setUp [
 
 	super setUp.
 
-	miInspectorBrowser := MiInspectorBrowser openForTests:
-		               MiTestApplication current
+	inspectedModel := FamixStModel new
+		                  newClassNamed: #C1;
+		                  newClassNamed: #C2;
+		                  yourself.
+
+	browser := MiModelNavigationBrowser on: inspectedModel
 ]
 
 { #category : #running }
 MiModelNavigationBrowserTest >> tearDown [
 
-	miInspectorBrowser window close.
+	browser withWindowDo: [ :window | window close ].
+
 	super tearDown
 ]
 
 { #category : #tests }
 MiModelNavigationBrowserTest >> testClickingOpensMooseGroup [
 
-	"This test passes locally but fails on SmalltalkCI because MiModelNavigationBrowser fails to be implemented.
-	The error is a primitive failure in #inspectorPerform:"
-	| inspectedModel |
+	self clickOnAllClasses.
 
-	inspectedModel := FamixStModel new
-		                  newClassNamed: #C1;
-		                  newClassNamed: #C2;
-		                  yourself.
-	miInspectorBrowser followEntity: inspectedModel.
-
-	self assert: miInspectorBrowser miSelectedItem equals: inspectedModel.
-
-	miInspectorBrowser miInspector firstPagePresenter navigation
-		clickAtIndex: 8.
-
-	self
-		assert: miInspectorBrowser miSelectedItem
-		equals: inspectedModel allClasses
+	self assert: browser selectedObject equals: inspectedModel allClasses
 ]

@@ -192,7 +192,8 @@ MiDuplicationBrowser >> list: collection1 hasSameElements: collection2 [
 
 { #category : #'accessing - private tests' }
 MiDuplicationBrowser >> lstEntities [
-	^lstEntities 
+
+	^ lstEntities
 ]
 
 { #category : #'accessing - private tests' }
@@ -204,7 +205,7 @@ MiDuplicationBrowser >> lstReplicatedFragments [
 { #category : #accessing }
 MiDuplicationBrowser >> miSelectedItem [
 
-	^ specModel selectedEntities
+	^ specModel miSelectedItem
 ]
 
 { #category : #utilities }
