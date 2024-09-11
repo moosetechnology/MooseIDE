@@ -12,7 +12,8 @@ Class {
 		'consumers',
 		'dropFileHandlers',
 		'mooseModelsTag',
-		'currentModelsBrowser'
+		'currentModelsBrowser',
+		'dynamicAttributes'
 	],
 	#classVars : [
 		'Current'
@@ -60,6 +61,21 @@ MiApplication >> addBindingForModel: aModel [
 { #category : #accessing }
 MiApplication >> allBrowsers: aMiClass [
 	^self browsers select: [ :aBrowser | aBrowser isKindOf: aMiClass ]
+]
+
+{ #category : #accessing }
+MiApplication >> attributeAt: aKey [
+
+	^dynamicAttributes
+		ifNil: [ nil ]
+		ifNotNil: [ dynamicAttributes at: aKey ifAbsent: [ nil ] ]
+]
+
+{ #category : #accessing }
+MiApplication >> attributeAt: aKey put: aValue [
+
+	dynamicAttributes ifNil: [ dynamicAttributes := Dictionary new ].
+	dynamicAttributes at: aKey put: aValue
 ]
 
 { #category : #'drag and drop support' }
