@@ -13,7 +13,7 @@ Class {
 { #category : #accessing }
 MiCBContextMakerPresenterTest >> contextBuilderClass [
 
-	^ MiCBContextMakerPresenter
+	^ MiCBContextBuilderPresenter
 ]
 
 { #category : #running }

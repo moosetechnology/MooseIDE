@@ -2,7 +2,7 @@
 Class implementing the presenter used to input contexts, using Pharo code blocks.
 "
 Class {
-	#name : #MiCBContextMakerPresenter,
+	#name : #MiCBContextBuilderPresenter,
 	#superclass : #MiPresenter,
 	#instVars : [
 		'contextTitle',
@@ -16,19 +16,19 @@ Class {
 }
 
 { #category : #api }
-MiCBContextMakerPresenter class >> initialExtent [
+MiCBContextBuilderPresenter class >> initialExtent [
 
 	^ 600 @ 400
 ]
 
 { #category : #specs }
-MiCBContextMakerPresenter class >> title [
+MiCBContextBuilderPresenter class >> title [
 
 	^ 'Context builder'
 ]
 
 { #category : #initialization }
-MiCBContextMakerPresenter >> actionButton [
+MiCBContextBuilderPresenter >> actionButton [
 
 	^ isForEdition
 		  ifFalse: [
@@ -49,7 +49,7 @@ MiCBContextMakerPresenter >> actionButton [
 ]
 
 { #category : #action }
-MiCBContextMakerPresenter >> addNewContext [
+MiCBContextBuilderPresenter >> addNewContext [
 
 	codeInput text
 		ifNil: [
@@ -62,14 +62,14 @@ MiCBContextMakerPresenter >> addNewContext [
 ]
 
 { #category : #initialization }
-MiCBContextMakerPresenter >> beForEdition [
+MiCBContextBuilderPresenter >> beForEdition [
 
 	self fillWithContext: selectedContext.
 	isForEdition := true
 ]
 
 { #category : #action }
-MiCBContextMakerPresenter >> buildContext: aContext [
+MiCBContextBuilderPresenter >> buildContext: aContext [
 
 	aContext name: contextTitle text.
 	aContext contextBlock: codeInput text.
@@ -79,7 +79,7 @@ MiCBContextMakerPresenter >> buildContext: aContext [
 ]
 
 { #category : #layout }
-MiCBContextMakerPresenter >> codeBlockLayout [
+MiCBContextBuilderPresenter >> codeBlockLayout [
 
 	^ SpBoxLayout newTopToBottom
 		  spacing: 5;
@@ -89,7 +89,7 @@ MiCBContextMakerPresenter >> codeBlockLayout [
 ]
 
 { #category : #layout }
-MiCBContextMakerPresenter >> defaultLayout [
+MiCBContextBuilderPresenter >> defaultLayout [
 
 	^ SpBoxLayout newTopToBottom
 		  spacing: 10;
@@ -100,7 +100,7 @@ MiCBContextMakerPresenter >> defaultLayout [
 ]
 
 { #category : #action }
-MiCBContextMakerPresenter >> editContext [
+MiCBContextBuilderPresenter >> editContext [
 
 	self buildContext: selectedContext.
 
@@ -108,7 +108,7 @@ MiCBContextMakerPresenter >> editContext [
 ]
 
 { #category : #initialization }
-MiCBContextMakerPresenter >> fillWithContext: aContext [
+MiCBContextBuilderPresenter >> fillWithContext: aContext [
 
 	contextTitle text: aContext name.
 	contextSummary text: aContext summary.
@@ -116,14 +116,14 @@ MiCBContextMakerPresenter >> fillWithContext: aContext [
 ]
 
 { #category : #initialization }
-MiCBContextMakerPresenter >> initialize [
+MiCBContextBuilderPresenter >> initialize [
 
 	super initialize.
 	isForEdition := false
 ]
 
 { #category : #initialization }
-MiCBContextMakerPresenter >> initializeDialogWindow: aDialogWindowPresenter [
+MiCBContextBuilderPresenter >> initializeDialogWindow: aDialogWindowPresenter [
 
 	aDialogWindowPresenter
 		addButton: self actionButton;
@@ -135,7 +135,7 @@ MiCBContextMakerPresenter >> initializeDialogWindow: aDialogWindowPresenter [
 ]
 
 { #category : #initialization }
-MiCBContextMakerPresenter >> initializePresenters [
+MiCBContextBuilderPresenter >> initializePresenters [
 
 	contextTitle := self newTextInput.
 
@@ -149,21 +149,21 @@ MiCBContextMakerPresenter >> initializePresenters [
 ]
 
 { #category : #initialization }
-MiCBContextMakerPresenter >> initializeWindow: aWindowPresenter [
+MiCBContextBuilderPresenter >> initializeWindow: aWindowPresenter [
 
 	super initializeWindow: aWindowPresenter.
 	aWindowPresenter initialExtent: self class initialExtent
 ]
 
 { #category : #'accessing - model' }
-MiCBContextMakerPresenter >> setModelBeforeInitialization: aBrowserModel [
+MiCBContextBuilderPresenter >> setModelBeforeInitialization: aBrowserModel [
 
 	browserModel := aBrowserModel.
 	selectedContext := browserModel selectedRule
 ]
 
 { #category : #layout }
-MiCBContextMakerPresenter >> summaryLayout [
+MiCBContextBuilderPresenter >> summaryLayout [
 
 	^ SpBoxLayout newTopToBottom
 		  spacing: 5;
@@ -173,7 +173,7 @@ MiCBContextMakerPresenter >> summaryLayout [
 ]
 
 { #category : #layout }
-MiCBContextMakerPresenter >> titleLayout [
+MiCBContextBuilderPresenter >> titleLayout [
 
 	^ SpBoxLayout newLeftToRight
 		  spacing: 10;

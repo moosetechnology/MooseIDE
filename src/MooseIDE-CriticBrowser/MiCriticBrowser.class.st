@@ -363,7 +363,7 @@ MiCriticBrowser >> openAddConditionDialog [
 { #category : #actions }
 MiCriticBrowser >> openAddContextDialog [
 
-	(MiCBContextMakerPresenter on: specModel) openDialog
+	(MiCBContextBuilderPresenter on: specModel) openDialog
 ]
 
 { #category : #actions }
@@ -374,7 +374,7 @@ MiCriticBrowser >> openEditRuleDialog [
 			  rulesEditorPresenter setRuleToEdit: rules selectedItem.
 			  rulesEditorPresenter openDialog ]
 		  ifFalse: [
-			  (MiCBContextMakerPresenter on: specModel)
+			  (MiCBContextBuilderPresenter on: specModel)
 				  beForEdition;
 				  openDialog ]
 ]
