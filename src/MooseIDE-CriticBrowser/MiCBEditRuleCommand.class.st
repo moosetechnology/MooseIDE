@@ -25,7 +25,7 @@ MiCBEditRuleCommand class >> priority [
 { #category : #testing }
 MiCBEditRuleCommand >> canBeExecuted [
 
-	^ self context rules selectedItem class ~= FamixCBRootContext
+	^ self context selectedRule class ~= FamixCBRootContext
 ]
 
 { #category : #executing }

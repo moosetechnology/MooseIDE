@@ -5,144 +5,179 @@ Class {
 	#name : #MiCBContextMakerPresenter,
 	#superclass : #MiPresenter,
 	#instVars : [
-		'addButton',
-		'closeButton',
 		'contextTitle',
 		'contextSummary',
 		'codeInput',
-		'mainWindow',
-		'parentContext'
+		'browserModel',
+		'selectedContext',
+		'isForEdition'
 	],
 	#category : #'MooseIDE-CriticBrowser-Presenters'
 }
 
-{ #category : #adding }
-MiCBContextMakerPresenter >> addButtonAction [
+{ #category : #api }
+MiCBContextMakerPresenter class >> initialExtent [
 
-	codeInput text ifNotNil: [ 
-		owner addContext: (FamixCBContext
-				 							named: contextTitle text
-				 							on: codeInput text
-				 							summary: contextSummary text) ].
-	contextTitle text: ''.
-	codeInput text: '[ :collection | collection ]'.
-	contextSummary text: ''
+	^ 600 @ 400
 ]
 
-{ #category : #accessing }
-MiCBContextMakerPresenter >> codeInput [ 
-"used for testing purposes, do not access outside of tests"
-	^ codeInput
+{ #category : #specs }
+MiCBContextMakerPresenter class >> title [
+
+	^ 'Context builder'
 ]
 
-{ #category : #accessing }
-MiCBContextMakerPresenter >> contextSummary [
-"used for testing purposes, do not access outside of tests"
-	^ contextSummary
+{ #category : #initialization }
+MiCBContextMakerPresenter >> actionButton [
+
+	^ isForEdition
+		  ifFalse: [
+			  self newButton
+				  label: 'Add context';
+				  iconName: #smallAdd;
+				  action: [
+					  self addNewContext.
+					  self withWindowDo: #close ];
+				  yourself ]
+		  ifTrue: [
+			  self newButton
+				  label: 'Confirm';
+				  iconName: #glamorousEdit;
+				  action: [
+					  self editContext.
+					  self withWindowDo: #close ] ]
 ]
 
-{ #category : #accessing }
-MiCBContextMakerPresenter >> contextTitle [
-"used for testing purposes, do not access outside of tests"
-	^ contextTitle
+{ #category : #action }
+MiCBContextMakerPresenter >> addNewContext [
+
+	codeInput text
+		ifNil: [
+			self application alert:
+				'Please give your context a code to execute.' ]
+		ifNotNil: [
+			browserModel
+				addChild: (self buildContext: FamixCBContext new)
+				toContext: selectedContext ]
+]
+
+{ #category : #initialization }
+MiCBContextMakerPresenter >> beForEdition [
+
+	self fillWithContext: selectedContext.
+	isForEdition := true
+]
+
+{ #category : #action }
+MiCBContextMakerPresenter >> buildContext: aContext [
+
+	aContext name: contextTitle text.
+	aContext contextBlock: codeInput text.
+	aContext summary: contextSummary text.
+
+	^ aContext
+]
+
+{ #category : #layout }
+MiCBContextMakerPresenter >> codeBlockLayout [
+
+	^ SpBoxLayout newTopToBottom
+		  spacing: 5;
+		  add: 'Input for context selection :' expand: false;
+		  add: codeInput;
+		  yourself
 ]
 
 { #category : #layout }
 MiCBContextMakerPresenter >> defaultLayout [
-	
-	| titlePane codeBlock summaryPane |
-	
-	titlePane := SpBoxLayout newTopToBottom
-		add: ('Rule name : ' asPresenter) expand: false;
-		add: contextTitle expand: false;
-		yourself.
-	
-	codeBlock := SpBoxLayout newTopToBottom 
-		add: ('Input for context selection :' asPresenter) expand: false; 
-		add: codeInput;
-		yourself.
-		
-	summaryPane := SpBoxLayout newTopToBottom
-		add: ('Summary of the context :' asPresenter) expand: false;
-		add: contextSummary expand: true;
-		yourself.
-	
+
 	^ SpBoxLayout newTopToBottom
-		add: titlePane expand: false;
-		add: codeBlock;
-		add: summaryPane;
-		yourself
-]
-
-{ #category : #accessing }
-MiCBContextMakerPresenter >> defaultTitle [
-	^ 'Context builder'
+		  spacing: 10;
+		  add: self titleLayout expand: false;
+		  add: self codeBlockLayout;
+		  add: self summaryLayout;
+		  yourself
 ]
 
 { #category : #action }
-MiCBContextMakerPresenter >> editContext: aContext [
-	aContext name: contextTitle text.
-	aContext contextBlock: codeInput text.
-	aContext summary: contextSummary text.
-	owner hasBeenEdited: aContext
+MiCBContextMakerPresenter >> editContext [
+
+	self buildContext: selectedContext.
+
+	browserModel hasBeenEdited: selectedContext
 ]
 
-{ #category : #action }
-MiCBContextMakerPresenter >> fillContextToEdit: aContext [
+{ #category : #initialization }
+MiCBContextMakerPresenter >> fillWithContext: aContext [
+
 	contextTitle text: aContext name.
 	contextSummary text: aContext summary.
 	codeInput text: aContext contextBlock asString
 ]
 
 { #category : #initialization }
-MiCBContextMakerPresenter >> initializeButtons [
-	addButton := self newButton.
-	closeButton := self newButton.
-	
-	addButton label: 'Add context';
-		icon: (self iconNamed: #smallAdd);
-		action: [ self addButtonAction ].
-		
-	closeButton label: 'Close';
-		icon: (self iconNamed: #glamorousClose);
-		action: [ self window close ]
+MiCBContextMakerPresenter >> initialize [
+
+	super initialize.
+	isForEdition := false
 ]
 
 { #category : #initialization }
 MiCBContextMakerPresenter >> initializeDialogWindow: aDialogWindowPresenter [
-	aDialogWindowPresenter 
-		addButton: addButton;
-		addButton: closeButton
+
+	aDialogWindowPresenter
+		addButton: self actionButton;
+		addButton: (self newButton
+				 label: 'Close';
+				 iconName: #glamorousClose;
+				 action: [ self withWindowDo: #close ];
+				 yourself)
 ]
 
 { #category : #initialization }
 MiCBContextMakerPresenter >> initializePresenters [
-	
-	self initializeButtons.
-	
+
 	contextTitle := self newTextInput.
-	contextSummary := self newText.
+
 	codeInput := self newCode.
-	
-	codeInput text: '[ :collection | collection ]'.
-	
+	codeInput text: '[ :collection | collection  ]'.
+	codeInput eventHandler whenFocusReceivedDo: [ "Set cursor to the position where some code should be added"
+		codeInput selectionInterval:
+			(codeInput text size - 1 to: codeInput text size - 2) ].
+
+	contextSummary := self newText
 ]
 
 { #category : #initialization }
-MiCBContextMakerPresenter >> initializeWindow: aWindowPresenter [	
+MiCBContextMakerPresenter >> initializeWindow: aWindowPresenter [
+
 	super initializeWindow: aWindowPresenter.
-	aWindowPresenter
-		title: self defaultTitle;
-		initialExtent: 1280 @ 720
+	aWindowPresenter initialExtent: self class initialExtent
 ]
 
-{ #category : #initialization }
-MiCBContextMakerPresenter >> setMainWindow: aWindowPresenter [
-	mainWindow := aWindowPresenter
+{ #category : #'accessing - model' }
+MiCBContextMakerPresenter >> setModelBeforeInitialization: aBrowserModel [
+
+	browserModel := aBrowserModel.
+	selectedContext := browserModel selectedRule
 ]
 
-{ #category : #initialization }
-MiCBContextMakerPresenter >> setParentContext: aContext [
-	parentContext := aContext
-	
+{ #category : #layout }
+MiCBContextMakerPresenter >> summaryLayout [
+
+	^ SpBoxLayout newTopToBottom
+		  spacing: 5;
+		  add: 'Summary of the context :' asPresenter expand: false;
+		  add: contextSummary expand: true;
+		  yourself
+]
+
+{ #category : #layout }
+MiCBContextMakerPresenter >> titleLayout [
+
+	^ SpBoxLayout newLeftToRight
+		  spacing: 10;
+		  add: 'Context name : ' expand: false;
+		  add: contextTitle;
+		  yourself
 ]

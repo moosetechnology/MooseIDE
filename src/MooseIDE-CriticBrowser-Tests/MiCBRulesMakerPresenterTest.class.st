@@ -15,16 +15,18 @@ Class {
 MiCBRulesMakerPresenterTest >> setUp [
 
 	super setUp.
-	browser addRulesPresenter setParentContext: browser model rootContext.
-	addQueryPresenter := browser addRulesPresenter queryPresenter.
-	editQueryPresenter := browser rulesEditorPresenter queryPresenter.
-	browser addRulesPresenter openDialog
+	(browser presenterAt: #addRulesPresenter) setParentContext:
+		browser model rootContext.
+	addQueryPresenter := (browser presenterAt: #addRulesPresenter) queryPresenter.
+	editQueryPresenter := (browser presenterAt: #rulesEditorPresenter)
+		                      queryPresenter.
+	(browser presenterAt: #addRulesPresenter) openDialog
 ]
 
 { #category : #running }
 MiCBRulesMakerPresenterTest >> tearDown [
 
-	browser addRulesPresenter withWindowDo: [ :window | window close ].
+	(browser presenterAt: #addRulesPresenter) withWindowDo: [ :window | window close ].
 	super tearDown
 ]
 

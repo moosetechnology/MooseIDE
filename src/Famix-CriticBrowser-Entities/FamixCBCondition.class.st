@@ -75,6 +75,12 @@ FamixCBCondition >> addViolation: anObject [
 	^ self violations add: anObject
 ]
 
+{ #category : #testing }
+FamixCBCondition >> isCBCondition [
+
+	^ true
+]
+
 { #category : #accessing }
 FamixCBCondition >> putViolationsInto: aDictionary [
 	aDictionary at: self put: violations asMooseSpecializedGroup

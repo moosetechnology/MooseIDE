@@ -25,7 +25,9 @@ MiCBAddConditionCommand class >> priority [
 { #category : #testing }
 MiCBAddConditionCommand >> canBeExecuted [
 
-	^ self context rules selectedItem class ~= FamixCBCondition
+	^ self context selectedRule
+		  ifNil: [ false ]
+		  ifNotNil: [ :ruleComponent | ruleComponent isCBCondition not ]
 ]
 
 { #category : #executing }
