@@ -40,10 +40,13 @@ MiMetaModelNavigationBrowser >> initializePresenters [
 				              ifFalse: [ '' ] ].
 	navigation columns: (navigation columns copyWithFirst: sizeColumn).
 	navigation items: (((navigation roots flatCollect: [ :el |
+
 			   el value classes
 				   reject: [ :a | a implementingClass isTrait ]
 				   thenCollect: [ :clazz |
-				   clazz name -> (self model allWithType: clazz implementingClass) ] ])
+					
+					   clazz name
+					   -> (self model allWithType: clazz implementingClass ofGroupClass: MooseSpecializedGroup) ] ])
 			  reject: [ :a | a value isEmpty ]) sorted: [ :a :b |
 			 a name < b name ]).
 	navigation expandRoots
@@ -61,5 +64,5 @@ MiMetaModelNavigationBrowser >> selectedItem [
 { #category : #initialization }
 MiMetaModelNavigationBrowser >> selectedObject [
 
-	^ navigation selection selectedItem value value: self model
+	^ navigation selection selectedItem value
 ]
