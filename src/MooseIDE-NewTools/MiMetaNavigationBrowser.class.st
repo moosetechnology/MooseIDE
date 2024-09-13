@@ -33,7 +33,9 @@ Class {
 		'activationBlock',
 		'activateOnSingleClick',
 		'properties',
-		'entitiesColumn'
+		'entitiesColumn',
+		'actionBar',
+		'shouldShowPropertiesPane'
 	],
 	#category : #'MooseIDE-NewTools-Inspector tabs'
 }
@@ -43,6 +45,12 @@ MiMetaNavigationBrowser class >> buildCommandsGroupWith: presenter forRoot: aCmC
 	aCmCommandsGroup
 		beDisplayedAsGroup;
 		register: (StInspectorInspectSelectedCommand forSpecContext: presenter)
+]
+
+{ #category : #'as yet unclassified' }
+MiMetaNavigationBrowser class >> defaultShouldShowPropertiesPane [
+
+	^ false
 ]
 
 { #category : #initialization }
@@ -56,13 +64,20 @@ MiMetaNavigationBrowser >> activateOnSingleClick: anObject [
 	activateOnSingleClick := anObject
 ]
 
+{ #category : #initialization }
+MiMetaNavigationBrowser >> addPropertiesPane [
+
+	self layout add: properties
+]
+
 { #category : #layout }
 MiMetaNavigationBrowser >> defaultLayout [
 
-	^ SpPanedLayout newVertical
-		  positionOfSlider: 75 percent;
-		  add: #navigation;
-		  add: #properties;
+	^ SpBoxLayout newTopToBottom
+		  add: (SpBoxLayout newTopToBottom
+				   add: #navigation;
+				   yourself);
+		  add: #actionBar expand: false;
 		  yourself
 ]
 
@@ -91,6 +106,7 @@ MiMetaNavigationBrowser >> iconBlock [
 MiMetaNavigationBrowser >> initializePresenters [
 
 	| items |
+	"navigation"
 	navigation := self newTreeTable.
 	navigation isResizable: true.
 	items := self filterEmptyValues: (self itemsFor: self model).
@@ -115,7 +131,15 @@ MiMetaNavigationBrowser >> initializePresenters [
 		self inspectorObjectContextPresenter owner
 			changeSelection: selection selectedItem value
 			from: self inspectorObjectContextPresenter ].
-	properties := MiPropertyExtension on: self model
+	"action bar"
+	actionBar := self newActionBar add: (self newButton
+			              label: 'Properties';
+			              help: 'Show properties panel';
+			              action: [ self toggleShouldShowPropertiesPane ];
+			              yourself).
+	"properties"
+	properties := MiPropertyExtension on: self model.
+	self shouldShowPropertiesPane ifTrue: [ self addPropertiesPane ]
 ]
 
 { #category : #initialization }
@@ -158,6 +182,12 @@ MiMetaNavigationBrowser >> printEntry: el on: aStream [
 	aStream nextPutAll: el value mooseName
 ]
 
+{ #category : #initialization }
+MiMetaNavigationBrowser >> removePropertiesPane [
+
+	self layout remove: properties
+]
+
 { #category : #accessing }
 MiMetaNavigationBrowser >> selectedItem [
 	
@@ -173,6 +203,24 @@ MiMetaNavigationBrowser >> selectedObject [
 MiMetaNavigationBrowser >> setModelBeforeInitialization: anInspectionModel [ 
 
 	model := anInspectionModel
+]
+
+{ #category : #initialization }
+MiMetaNavigationBrowser >> shouldShowPropertiesPane [
+
+	^ shouldShowPropertiesPane ifNil: [ self class defaultShouldShowPropertiesPane ]
+]
+
+{ #category : #initialization }
+MiMetaNavigationBrowser >> toggleShouldShowPropertiesPane [
+
+	^ self shouldShowPropertiesPane
+		  ifTrue: [
+			  shouldShowPropertiesPane := false.
+			  self removePropertiesPane ]
+		  ifFalse: [
+			  shouldShowPropertiesPane := true.
+			  self addPropertiesPane ]
 ]
 
 { #category : #initialization }
