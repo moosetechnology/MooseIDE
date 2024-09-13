@@ -21,7 +21,7 @@ MooseObject >> miFameInspectorExtension [
 { #category : #'*MooseIDE-NewTools' }
 MooseObject >> miMetaNavigationInspectorExtension [
 
-	<inspectorPresentationOrder: 1 title: 'Meta Navigation'>
+	<inspectorPresentationOrder: 1 title: 'Navigation'>
 	^ MiMetaNavigationBrowser on: self
 ]
 
@@ -37,20 +37,6 @@ MooseObject >> miMetaNavigationItems [
 		  thenReject: [ :assoc |
 			  assoc value isNil or: [
 				  assoc value isCollection and: [ assoc value isEmpty ] ] ]
-]
-
-{ #category : #'*MooseIDE-NewTools' }
-MooseObject >> miNavigationInspectorExtension [
-
-	<inspectorPresentationOrder: 0 title: 'Navigation'>
-	^ MiNavigationBrowser on: self
-]
-
-{ #category : #'*MooseIDE-NewTools' }
-MooseObject >> miPropertiesInspectorExtension [
-
-	<inspectorPresentationOrder: 2 title: 'Moose Properties'>
-	^ MiPropertyExtension on: self
 ]
 
 { #category : #'*MooseIDE-NewTools' }

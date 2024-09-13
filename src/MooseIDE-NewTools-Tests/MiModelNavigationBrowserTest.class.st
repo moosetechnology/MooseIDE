@@ -28,7 +28,7 @@ MiModelNavigationBrowserTest >> setUp [
 		                  newClassNamed: #C2;
 		                  yourself.
 
-	browser := MiModelNavigationBrowser on: inspectedModel
+	browser := MiMetaModelNavigationBrowser on: inspectedModel
 ]
 
 { #category : #running }

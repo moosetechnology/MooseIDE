@@ -3,7 +3,7 @@ Extension { #name : #MooseModel }
 { #category : #'*MooseIDE-NewTools' }
 MooseModel >> miMetaNavigationInspectorExtension [
 
-	<inspectorPresentationOrder: -100 title: 'Meta Navigation'>
+	<inspectorPresentationOrder: -100 title: 'Navigation'>
 	^ MiMetaModelNavigationBrowser on: self
 ]
 
@@ -12,13 +12,6 @@ MooseModel >> miMetaNavigationItems [
 
 	^ (self metamodel packages sorted: #name ascending) collect: [
 		  :fm3package | fm3package name -> fm3package ]
-]
-
-{ #category : #'*MooseIDE-NewTools' }
-MooseModel >> miNavigationInspectorExtension [
-
-	<inspectorPresentationOrder: -100 title: 'Navigation'>
-	^ MiModelNavigationBrowser on: self
 ]
 
 { #category : #'*MooseIDE-NewTools' }

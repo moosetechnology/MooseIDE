@@ -32,7 +32,7 @@ MooseAbstractGroup >> details [
 { #category : #'*MooseIDE-NewTools' }
 MooseAbstractGroup >> miMetaNavigationInspectorExtension [
 
-	<inspectorPresentationOrder: 0 title: 'Meta Navigation'>
+	<inspectorPresentationOrder: 0 title: 'Navigation'>
 	^ MiAbstractMetaGroupNavigationBrowser on: self
 ]
 
@@ -40,11 +40,4 @@ MooseAbstractGroup >> miMetaNavigationInspectorExtension [
 MooseAbstractGroup >> miMetaNavigationItems [
 
 	^ self collect: [ :entity | entity inspectorToString -> entity ]
-]
-
-{ #category : #'*MooseIDE-NewTools' }
-MooseAbstractGroup >> miNavigationInspectorExtension [
-
-	<inspectorPresentationOrder: 0 title: 'Navigation'>
-	^ MiAbstractGroupNavigationBrowser on: self
 ]
