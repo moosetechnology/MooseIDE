@@ -19,17 +19,24 @@ MooseObject >> miFameInspectorExtension [
 ]
 
 { #category : #'*MooseIDE-NewTools' }
-MooseObject >> miNavigationInspectorExtension [
+MooseObject >> miMetaNavigationInspectorExtension [
 
-	<inspectorPresentationOrder: 0 title: 'Navigation'>
-	^ MiNavigationBrowser on: self
+	<inspectorPresentationOrder: 1 title: 'Navigation'>
+	^ MiMetaNavigationBrowser on: self
 ]
 
 { #category : #'*MooseIDE-NewTools' }
-MooseObject >> miPropertiesInspectorExtension [
+MooseObject >> miMetaNavigationItems [
 
-	<inspectorPresentationOrder: 2 title: 'Moose Properties'>
-	^ MiPropertyExtension on: self
+	^ self mooseDescription allComplexProperties
+		  collect: [ :property |
+			  | value |
+			  value := self propertyNamed: property name ifAbsent: [ nil ].
+			  value isCollection ifTrue: [ value := value asMooseGroup ].
+			  property name -> value ]
+		  thenReject: [ :assoc |
+			  assoc value isNil or: [
+				  assoc value isCollection and: [ assoc value isEmpty ] ] ]
 ]
 
 { #category : #'*MooseIDE-NewTools' }
@@ -40,9 +47,9 @@ MooseObject >> navigationItemsFromPragmas [
 	the pragma #navigation:"
 	pragmaValueAssociations := (self mooseInterestingEntity
 		                            navigationPragmas sorted:
-		                            [ :pragma | 
+		                            [ :pragma |
 		                            pragma argumentNamed: #navigation: ]
-			                            ascending) collect: [ :pragma | 
+			                            ascending) collect: [ :pragma |
 		                           pragma inspectorToString
 		                           -> pragma methodSelector ].
 

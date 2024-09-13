@@ -12,3 +12,9 @@ MooseGroup >> mooseInterestingEntity [
 		  ifTrue: [ self first mooseInterestingEntity ]
 		  ifFalse: [ self specialize ]
 ]
+
+{ #category : #'*MooseIDE-NewTools' }
+MooseGroup >> sum [
+
+	^ storage sum
+]
