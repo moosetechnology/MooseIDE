@@ -81,6 +81,12 @@ FamixCBCondition >> isCBCondition [
 	^ true
 ]
 
+{ #category : #printing }
+FamixCBCondition >> printAsBlock [
+
+	^ query asRuleEditorString
+]
+
 { #category : #accessing }
 FamixCBCondition >> putViolationsInto: aDictionary [
 	aDictionary at: self put: violations asMooseSpecializedGroup

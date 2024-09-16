@@ -131,6 +131,12 @@ FamixCBContext >> isCBContext [
 	^ true
 ]
 
+{ #category : #printing }
+FamixCBContext >> printAsBlock [
+
+	^ contextBlock asString
+]
+
 { #category : #'as yet unclassified' }
 FamixCBContext >> putViolationsInto: aDictionary [
 	children do: [ :child | child putViolationsInto: aDictionary ]

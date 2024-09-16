@@ -25,7 +25,7 @@ MiCBContextBuilderPresenterTest >> testAddInputtedCodeRule [
 	(contextBuilder presenterAt: #codeInput) text:
 		'[ :col | col allClasses ]'.
 
-	contextBuilder addNewContext.
+	contextBuilder addNewComponent.
 
 	self assert: browser model rootContext children size equals: 1.
 	self
@@ -48,7 +48,7 @@ MiCBContextBuilderPresenterTest >> testEditContext [
 	contextBuilder codeInput text: newBlock.
 	contextBuilder contextSummary text: newSummary.
 
-	contextBuilder editContext.
+	contextBuilder editComponent.
 
 	self assert: contextToEdit name equals: newTitle.
 	self assert: contextToEdit contextBlock asString equals: newBlock.
@@ -63,7 +63,7 @@ MiCBContextBuilderPresenterTest >> testFillContextToEdit [
 
 	context := self ruleComponentToEdit.
 
-	contextBuilder fillWithContext: context.
+	contextBuilder fillWithRuleComponent: context.
 	self
 		assert: (contextBuilder presenterAt: #contextTitle) text
 		equals: context name.

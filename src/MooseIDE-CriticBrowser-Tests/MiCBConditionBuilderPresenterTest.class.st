@@ -36,7 +36,7 @@ MiCBConditionBuilderPresenterTest >> testAddInputtedCodeRule [
 
 	(contextBuilder presenterAt: #conditionTitle) text: 'test'.
 	contextBuilder codeInput text: '[ :entity | entity isDead ]'.
-	contextBuilder addNewCondition.
+	contextBuilder addNewComponent.
 
 	self assert: browser model rootContext children size equals: 1.
 	self
@@ -58,7 +58,7 @@ MiCBConditionBuilderPresenterTest >> testAddInputtedFQRule [
 		items: { query };
 		selectItem: query.
 
-	contextBuilder addNewCondition.
+	contextBuilder addNewComponent.
 
 	self assert: browser model rootContext children size equals: 1.
 	self
@@ -81,7 +81,7 @@ MiCBConditionBuilderPresenterTest >> testEditRule [
 	contextBuilder codeInput text: newQuery.
 	contextBuilder conditionSummary text: newSummary.
 
-	contextBuilder editCondition.
+	contextBuilder editComponent.
 
 	self assert: conditionToEdit name equals: newTitle.
 	self
@@ -97,7 +97,7 @@ MiCBConditionBuilderPresenterTest >> testFillQueryRuleToEdit [
 	self setUpBuilderAsCreator.
 	queriesBrowserRule := self conditionWithQuery.
 
-	contextBuilder fillWithCondition: queriesBrowserRule.
+	contextBuilder fillWithRuleComponent: queriesBrowserRule.
 	self
 		assert: contextBuilder conditionTitle text
 		equals: queriesBrowserRule name.
@@ -116,7 +116,7 @@ MiCBConditionBuilderPresenterTest >> testFillRuleToEdit [
 	self setUpBuilderAsCreator.
 	rule := self ruleComponentToEdit.
 
-	contextBuilder fillWithCondition: rule.
+	contextBuilder fillWithRuleComponent: rule.
 	self assert: contextBuilder conditionTitle text equals: rule name.
 	self
 		assert: contextBuilder codeInput text

@@ -3,28 +3,33 @@ Class implementing the presenter used to input queries, can use Pharo code or qu
 "
 Class {
 	#name : #MiCBConditionBuilderPresenter,
-	#superclass : #MiPresenter,
+	#superclass : #MiCBRuleComponentPresenter,
 	#instVars : [
 		'codeButton',
 		'queriesBrowserButton',
-		'codeInput',
 		'queryDroplist',
-		'changeableBlock',
 		'severityDroplist',
-		'conditionTitle',
-		'conditionSummary',
-		'usePharoCode',
-		'browserModel',
-		'selectedRuleComponent',
-		'isForEdition'
+		'usePharoCode'
 	],
 	#category : #'MooseIDE-CriticBrowser-Presenters'
 }
+
+{ #category : #labels }
+MiCBConditionBuilderPresenter class >> defaultCodeInput [
+
+	^ '[ :entity | entity  ]'
+]
 
 { #category : #api }
 MiCBConditionBuilderPresenter class >> initialExtent [
 
 	^ 600 @ 400
+]
+
+{ #category : #labels }
+MiCBConditionBuilderPresenter class >> ruleComponentName [
+
+	^ 'condition'
 ]
 
 { #category : #specs }
@@ -33,56 +38,14 @@ MiCBConditionBuilderPresenter class >> title [
 	^ 'Rules builder'
 ]
 
-{ #category : #initialization }
-MiCBConditionBuilderPresenter >> actionButton [
-
-	^ isForEdition
-		  ifFalse: [
-			  self newButton
-				  label: 'Add condition';
-				  iconName: #smallAdd;
-				  action: [
-					  self addNewCondition.
-					  self withWindowDo: #close ];
-				  yourself ]
-		  ifTrue: [
-			  self newButton
-				  label: 'Confirm';
-				  iconName: #glamorousEdit;
-				  action: [
-					  self editCondition.
-					  self withWindowDo: #close ] ]
-]
-
 { #category : #action }
-MiCBConditionBuilderPresenter >> addNewCondition [
+MiCBConditionBuilderPresenter >> buildComponent: aCondition [
 
-	codeInput text ifNil: [
-		self application alert:
-			'Please give your condition a code to execute.' ].
-
-	browserModel
-		addChild: (self buildCondition: FamixCBCondition new)
-		toContext: selectedRuleComponent
-]
-
-{ #category : #initialization }
-MiCBConditionBuilderPresenter >> beForEdition [
-
-	self fillWithCondition: selectedRuleComponent.
-	isForEdition := true
-]
-
-{ #category : #action }
-MiCBConditionBuilderPresenter >> buildCondition: aCondition [
-
-	aCondition name: conditionTitle text.
+	super buildComponent: aCondition.
 
 	aCondition query: (usePharoCode
-			 ifTrue: [ FamixCBScriptQueryHandler on: codeInput text ]
+			 ifTrue: [ FamixCBScriptQueryHandler on: codeInputFiled text ]
 			 ifFalse: [ FamixCBQueryHandler on: queryDroplist selectedItem ]).
-
-	aCondition summary: conditionSummary text.
 
 	aCondition severity: severityDroplist selectedItem.
 
@@ -109,7 +72,7 @@ MiCBConditionBuilderPresenter >> conditionComputingLayout [
 		ifTrue: [
 			conditionComputingLayout
 				add: 'Compute condition:' expand: false;
-				add: codeInput ]
+				add: codeInputFiled ]
 		ifFalse: [
 			conditionComputingLayout
 				add: 'Select a query:';
@@ -130,33 +93,22 @@ MiCBConditionBuilderPresenter >> defaultLayout [
 		  yourself
 ]
 
-{ #category : #action }
-MiCBConditionBuilderPresenter >> editCondition [
-
-	self buildCondition: selectedRuleComponent.
-
-	browserModel hasBeenEdited: selectedRuleComponent
-]
-
 { #category : #initialization }
-MiCBConditionBuilderPresenter >> fillWithCondition: aCondition [
+MiCBConditionBuilderPresenter >> fillWithRuleComponent: aCondition [
 
-	conditionTitle text: aCondition name.
+	super fillWithRuleComponent: aCondition.
 
 	aCondition severity ifNotNil: [
-		severityDroplist selectItem: aCondition severity ].
-
-	codeInput text: aCondition query asRuleEditorString.
-
-	conditionSummary text: (aCondition summary ifNil: [ '' ])
+		severityDroplist selectItem: aCondition severity ]
 ]
 
 { #category : #initialization }
 MiCBConditionBuilderPresenter >> initialize [
 
 	super initialize.
+
 	usePharoCode := true.
-	isForEdition := false.
+
 	self application registerConsumer: self for: FQAbstractQuery
 ]
 
@@ -177,23 +129,10 @@ MiCBConditionBuilderPresenter >> initializeChoiceButtons [
 ]
 
 { #category : #initialization }
-MiCBConditionBuilderPresenter >> initializeDialogWindow: aDialogWindowPresenter [
-
-	aDialogWindowPresenter
-		addButton: self actionButton;
-		addButton: (self newButton
-				 label: 'Close';
-				 iconName: #glamorousClose;
-				 action: [ self withWindowDo: #close ];
-				 yourself)
-]
-
-{ #category : #initialization }
 MiCBConditionBuilderPresenter >> initializePresenters [
 
+	super initializePresenters.
 	self initializeChoiceButtons.
-
-	conditionTitle := self newTextInput.
 
 	severityDroplist := self newDropList
 		                    items: FamixCBAbstractSeverity allSubclasses;
@@ -203,14 +142,6 @@ MiCBConditionBuilderPresenter >> initializePresenters [
 		                    sortingBlock:
 			                    [ :item | item model level ] ascending.
 
-	codeInput := self newCode
-		             text: '[ :entity | entity  ]';
-		             yourself.
-	codeInput eventHandler whenFocusReceivedDo: [ "Set cursor to the position where some code should be added or modified"
-		| pipePosition |
-		pipePosition := codeInput text findString: ']'.
-		codeInput selectionInterval: (pipePosition - 1 to: pipePosition - 2) ].
-
 	queryDroplist := self newDropList
 		                 startWithoutSelection;
 		                 items:
@@ -218,35 +149,22 @@ MiCBConditionBuilderPresenter >> initializePresenters [
 				                  asOrderedCollection select: [ :each |
 					                  each isValid ]);
 		                 centered;
-		                 yourself.
-
-	conditionSummary := self newText
+		                 yourself
 ]
 
 { #category : #initialization }
 MiCBConditionBuilderPresenter >> initializeWindow: aWindowPresenter [
 
 	super initializeWindow: aWindowPresenter.
-	aWindowPresenter initialExtent: self class initialExtent.
+
 	aWindowPresenter whenClosedDo: [
 		self application unregisterConsumer: self ]
 ]
 
-{ #category : #'accessing - model' }
-MiCBConditionBuilderPresenter >> setModelBeforeInitialization: aBrowserModel [
+{ #category : #'instance creation' }
+MiCBConditionBuilderPresenter >> newComponent [
 
-	browserModel := aBrowserModel.
-	selectedRuleComponent := browserModel selectedRule
-]
-
-{ #category : #layout }
-MiCBConditionBuilderPresenter >> summaryLayout [
-
-	^ self newBoxLayoutTopToBottom
-		  spacing: 5;
-		  add: 'Condition summary:' expand: false;
-		  add: conditionSummary;
-		  yourself
+	^ FamixCBCondition new
 ]
 
 { #category : #layout }
@@ -258,7 +176,7 @@ MiCBConditionBuilderPresenter >> titleAndSeverityLayout [
 		  build: [ :builder |
 			  builder
 				  add: 'Condition name:';
-				  add: conditionTitle;
+				  add: titleField;
 				  nextRow;
 				  add: 'Severity:';
 				  add: severityDroplist;
