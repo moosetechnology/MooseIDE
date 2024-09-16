@@ -14,8 +14,6 @@ Class {
 	#instVars : [
 		'entitiesList',
 		'rulesResult',
-		'addRulesPresenter',
-		'rulesEditorPresenter',
 		'rules',
 		'statusLabel'
 	],
@@ -121,8 +119,6 @@ MiCriticBrowser >> actionButtonsLayout [
 MiCriticBrowser >> browserClosed [
 
 	super browserClosed.
-	application unregisterConsumer: addRulesPresenter.
-	application unregisterConsumer: rulesEditorPresenter.
 	specModel resetResults
 ]
 
@@ -273,16 +269,6 @@ MiCriticBrowser >> importRulesFromStream: aStream [
 ]
 
 { #category : #initialization }
-MiCriticBrowser >> initialize [
-
-	super initialize.
-	application registerConsumer: addRulesPresenter for: FQAbstractQuery.
-	application
-		registerConsumer: rulesEditorPresenter
-		for: FQAbstractQuery
-]
-
-{ #category : #initialization }
 MiCriticBrowser >> initializeLists [
 
 	entitiesList := self newMooseGroupsTreeTable.
@@ -316,10 +302,7 @@ MiCriticBrowser >> initializePresenters [
 	super initializePresenters.
 
 	self initializeLists.
-	self initializeStatusLabel.
-
-	addRulesPresenter := MiCBAddRulesPresenter on: self.
-	rulesEditorPresenter := MiCBEditRulePresenter on: self
+	self initializeStatusLabel
 ]
 
 { #category : #initialization }
@@ -354,25 +337,13 @@ MiCriticBrowser >> moveCurrentRuleComponentToContext: aFamixCBContext [
 ]
 
 { #category : #actions }
-MiCriticBrowser >> openAddConditionDialog [
-
-	addRulesPresenter setParentContext: rules selectedItem.
-	^ addRulesPresenter openDialog
-]
-
-{ #category : #actions }
-MiCriticBrowser >> openAddContextDialog [
-
-	(MiCBContextBuilderPresenter on: specModel) openDialog
-]
-
-{ #category : #actions }
-MiCriticBrowser >> openEditRuleDialog [
+MiCriticBrowser >> openEditRuleComponentDialog [
 
 	^ rules selectedItem class = FamixCBCondition
 		  ifTrue: [
-			  rulesEditorPresenter setRuleToEdit: rules selectedItem.
-			  rulesEditorPresenter openDialog ]
+			  (MiCBConditionBuilderPresenter on: specModel)
+				  beForEdition;
+				  openDialog ]
 		  ifFalse: [
 			  (MiCBContextBuilderPresenter on: specModel)
 				  beForEdition;

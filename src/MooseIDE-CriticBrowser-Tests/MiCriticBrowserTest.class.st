@@ -29,12 +29,6 @@ MiCriticBrowserTest >> browserClass [
 ]
 
 { #category : #tests }
-MiCriticBrowserTest >> browserEditorPresenter [
-
-	^ browser presenterAt: #rulesEditorPresenter
-]
-
-{ #category : #tests }
 MiCriticBrowserTest >> browserEntitiesListTree [
 
 	^ browser presenterAt: #entitiesList
@@ -241,16 +235,12 @@ MiCriticBrowserTest >> testImportRulesFromStream [
 { #category : #tests }
 MiCriticBrowserTest >> testImportedRulesAreCorrectlyDisplayed [
 
-	| dialog |
 	self createRulesThenImport.
 	self browserRulesTree clickAtPath: #( 1 1 ).
 
-	dialog := browser openEditRuleDialog.
 	self
-		assert: self browserEditorPresenter queryPresenter codeInput text
-		equals: '[ :entity | entity isStub ]'.
-
-	dialog close
+		assert: browser selectedRule query asRuleEditorString
+		equals: '[ :entity | entity isStub ]'
 ]
 
 { #category : #tests }

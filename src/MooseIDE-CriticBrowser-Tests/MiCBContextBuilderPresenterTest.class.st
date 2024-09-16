@@ -2,22 +2,13 @@
 A MiCriticBrowserContextMakerPresenterTest is a test class for testing the behavior of MiCriticBrowserContextMakerPresenter
 "
 Class {
-	#name : #MiCBContextMakerPresenterTest,
+	#name : #MiCBContextBuilderPresenterTest,
 	#superclass : #MiCriticBrowserToolsTest,
-	#instVars : [
-		'contextBuilder'
-	],
 	#category : #'MooseIDE-CriticBrowser-Tests'
 }
 
-{ #category : #accessing }
-MiCBContextMakerPresenterTest >> contextBuilderClass [
-
-	^ MiCBContextBuilderPresenter
-]
-
 { #category : #running }
-MiCBContextMakerPresenterTest >> contextToEdit [
+MiCBContextBuilderPresenterTest >> ruleComponentToEdit [
 
 	^ FamixCBContext
 		  named: 'test'
@@ -25,38 +16,8 @@ MiCBContextMakerPresenterTest >> contextToEdit [
 		  summary: 'règle utilisée pour un test'
 ]
 
-{ #category : #running }
-MiCBContextMakerPresenterTest >> setUp [
-
-	super setUp.
-
-	(browser presenterAt: #rules) selectPath: { 1 }
-]
-
-{ #category : #running }
-MiCBContextMakerPresenterTest >> setUpBuilderAsCreator [
-
-	contextBuilder := self contextBuilderClass on: browser model
-]
-
-{ #category : #running }
-MiCBContextMakerPresenterTest >> setUpBuilderAsEditor [
-
-	| contextToEdit |
-	contextToEdit := self contextToEdit.
-
-	browser model addChildToRootContext: contextToEdit.
-	browser updateRulesList.
-
-	(browser presenterAt: #rules) selectItem: contextToEdit.
-
-	contextBuilder := (self contextBuilderClass on: browser model)
-		                        beForEdition;
-		                        yourself
-]
-
 { #category : #tests }
-MiCBContextMakerPresenterTest >> testAddInputtedCodeRule [
+MiCBContextBuilderPresenterTest >> testAddInputtedCodeRule [
 
 	self setUpBuilderAsCreator.
 
@@ -73,7 +34,7 @@ MiCBContextMakerPresenterTest >> testAddInputtedCodeRule [
 ]
 
 { #category : #tests }
-MiCBContextMakerPresenterTest >> testEditContext [
+MiCBContextBuilderPresenterTest >> testEditContext [
 
 	| contextToEdit newTitle newBlock newSummary |
 	self setUpBuilderAsEditor.
@@ -95,12 +56,12 @@ MiCBContextMakerPresenterTest >> testEditContext [
 ]
 
 { #category : #tests }
-MiCBContextMakerPresenterTest >> testFillContextToEdit [
+MiCBContextBuilderPresenterTest >> testFillContextToEdit [
 
 	| context |
 	self setUpBuilderAsCreator.
 
-	context := self contextToEdit.
+	context := self ruleComponentToEdit.
 
 	contextBuilder fillWithContext: context.
 	self
@@ -112,4 +73,10 @@ MiCBContextMakerPresenterTest >> testFillContextToEdit [
 	self
 		assert: (contextBuilder presenterAt: #contextSummary) text
 		equals: context summary
+]
+
+{ #category : #accessing }
+MiCBContextBuilderPresenterTest >> toolClass [
+
+	^ MiCBContextBuilderPresenter
 ]

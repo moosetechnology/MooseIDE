@@ -31,5 +31,5 @@ MiCBEditRuleCommand >> canBeExecuted [
 { #category : #executing }
 MiCBEditRuleCommand >> execute [
 
-	self context openEditRuleDialog
+	self context openEditRuleComponentDialog
 ]

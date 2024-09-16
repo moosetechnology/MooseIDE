@@ -81,9 +81,9 @@ MiCBContextBuilderPresenter >> buildContext: aContext [
 { #category : #layout }
 MiCBContextBuilderPresenter >> codeBlockLayout [
 
-	^ SpBoxLayout newTopToBottom
+	^ self newBoxLayoutTopToBottom
 		  spacing: 5;
-		  add: 'Input for context selection :' expand: false;
+		  add: 'Compute context:' expand: false;
 		  add: codeInput;
 		  yourself
 ]
@@ -91,7 +91,7 @@ MiCBContextBuilderPresenter >> codeBlockLayout [
 { #category : #layout }
 MiCBContextBuilderPresenter >> defaultLayout [
 
-	^ SpBoxLayout newTopToBottom
+	^ self newBoxLayoutTopToBottom
 		  spacing: 10;
 		  add: self titleLayout expand: false;
 		  add: self codeBlockLayout;
@@ -111,8 +111,8 @@ MiCBContextBuilderPresenter >> editContext [
 MiCBContextBuilderPresenter >> fillWithContext: aContext [
 
 	contextTitle text: aContext name.
-	contextSummary text: aContext summary.
-	codeInput text: aContext contextBlock asString
+	codeInput text: aContext contextBlock asString.
+	contextSummary text: aContext summary
 ]
 
 { #category : #initialization }
@@ -139,11 +139,13 @@ MiCBContextBuilderPresenter >> initializePresenters [
 
 	contextTitle := self newTextInput.
 
-	codeInput := self newCode.
-	codeInput text: '[ :collection | collection  ]'.
-	codeInput eventHandler whenFocusReceivedDo: [ "Set cursor to the position where some code should be added"
-		codeInput selectionInterval:
-			(codeInput text size - 1 to: codeInput text size - 2) ].
+	codeInput := self newCode
+		             text: '[ :collection | collection  ]';
+		             yourself.
+	codeInput eventHandler whenFocusReceivedDo: [ "Set cursor to the position where some code should be added or modified"
+		| pipePosition |
+		pipePosition := codeInput text findString: ']'.
+		codeInput selectionInterval: (pipePosition - 1 to: pipePosition - 2) ].
 
 	contextSummary := self newText
 ]
@@ -165,19 +167,19 @@ MiCBContextBuilderPresenter >> setModelBeforeInitialization: aBrowserModel [
 { #category : #layout }
 MiCBContextBuilderPresenter >> summaryLayout [
 
-	^ SpBoxLayout newTopToBottom
+	^ self newBoxLayoutTopToBottom
 		  spacing: 5;
-		  add: 'Summary of the context :' asPresenter expand: false;
-		  add: contextSummary expand: true;
+		  add: 'Context summary:' expand: false;
+		  add: contextSummary;
 		  yourself
 ]
 
 { #category : #layout }
 MiCBContextBuilderPresenter >> titleLayout [
 
-	^ SpBoxLayout newLeftToRight
+	^ self newBoxLayoutLeftToRight
 		  spacing: 10;
-		  add: 'Context name : ' expand: false;
+		  add: 'Context name:' expand: false;
 		  add: contextTitle;
 		  yourself
 ]
