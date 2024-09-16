@@ -35,7 +35,7 @@ MiCBContextBuilderPresenter class >> title [
 MiCBContextBuilderPresenter >> buildComponent: aContext [
 
 	super buildComponent: aContext.
-	aContext contextBlock: codeInputFiled text.
+	aContext contextBlock: codeInputField text.
 
 	^ aContext
 ]
@@ -46,7 +46,7 @@ MiCBContextBuilderPresenter >> codeBlockLayout [
 	^ self newBoxLayoutTopToBottom
 		  spacing: 5;
 		  add: 'Compute context:' expand: false;
-		  add: codeInputFiled;
+		  add: codeInputField;
 		  yourself
 ]
 

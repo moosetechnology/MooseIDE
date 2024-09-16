@@ -44,7 +44,7 @@ MiCBConditionBuilderPresenter >> buildComponent: aCondition [
 	super buildComponent: aCondition.
 
 	aCondition query: (usePharoCode
-			 ifTrue: [ FamixCBScriptQueryHandler on: codeInputFiled text ]
+			 ifTrue: [ FamixCBScriptQueryHandler on: codeInputField text ]
 			 ifFalse: [ FamixCBQueryHandler on: queryDroplist selectedItem ]).
 
 	aCondition severity: severityDroplist selectedItem.
@@ -72,7 +72,7 @@ MiCBConditionBuilderPresenter >> conditionComputingLayout [
 		ifTrue: [
 			conditionComputingLayout
 				add: 'Compute condition:' expand: false;
-				add: codeInputFiled ]
+				add: codeInputField ]
 		ifFalse: [
 			conditionComputingLayout
 				add: 'Select a query:';

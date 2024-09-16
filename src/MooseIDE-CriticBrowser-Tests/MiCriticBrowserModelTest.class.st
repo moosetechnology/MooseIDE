@@ -47,6 +47,13 @@ MiCriticBrowserModelTest >> setUp [
 	stubEntity isStub: true
 ]
 
+{ #category : #running }
+MiCriticBrowserModelTest >> tearDown [
+
+	browser ifNotNil: [ browser withWindowDo: [ :window | window close ] ].
+	super tearDown
+]
+
 { #category : #tests }
 MiCriticBrowserModelTest >> testAddChildToContext [
 

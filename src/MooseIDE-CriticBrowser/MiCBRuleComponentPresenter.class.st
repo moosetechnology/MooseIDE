@@ -7,7 +7,7 @@ Class {
 		'summaryField',
 		'selectedRuleComponent',
 		'titleField',
-		'codeInputFiled'
+		'codeInputField'
 	],
 	#category : #'MooseIDE-CriticBrowser-Presenters'
 }
@@ -43,7 +43,7 @@ MiCBRuleComponentPresenter class >> summaryLabel [
 	^ '{1} summary:' format: { self ruleComponentName capitalized }
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 MiCBRuleComponentPresenter >> actionButton [
 
 	^ isForEdition
@@ -64,10 +64,10 @@ MiCBRuleComponentPresenter >> actionButton [
 					  self withWindowDo: #close ] ]
 ]
 
-{ #category : #adding }
+{ #category : #action }
 MiCBRuleComponentPresenter >> addNewComponent [
 
-	codeInputFiled text
+	codeInputField text
 		ifNil: [ self alert: self class alertLabel ]
 		ifNotNil: [
 			browserModel
@@ -75,14 +75,14 @@ MiCBRuleComponentPresenter >> addNewComponent [
 				toContext: selectedRuleComponent ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 MiCBRuleComponentPresenter >> beForEdition [
 
 	self fillWithRuleComponent: selectedRuleComponent.
 	isForEdition := true
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #action }
 MiCBRuleComponentPresenter >> buildComponent: aComponent [
 
 	aComponent name: titleField text.
@@ -91,7 +91,7 @@ MiCBRuleComponentPresenter >> buildComponent: aComponent [
 	^ aComponent
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #action }
 MiCBRuleComponentPresenter >> editComponent [
 
 	self buildComponent: selectedRuleComponent.
@@ -99,12 +99,12 @@ MiCBRuleComponentPresenter >> editComponent [
 	browserModel hasBeenEdited: selectedRuleComponent
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 MiCBRuleComponentPresenter >> fillWithRuleComponent: aRuleComponent [
 
 	titleField text: (aRuleComponent name ifNil: [ '' ]).
 
-	codeInputFiled text: aRuleComponent printAsBlock.
+	codeInputField text: aRuleComponent printAsBlock.
 
 	summaryField text: (aRuleComponent summary ifNil: [ '' ])
 ]
@@ -134,13 +134,13 @@ MiCBRuleComponentPresenter >> initializePresenters [
 	titleField := self newTextInput.
 	summaryField := self newText.
 
-	codeInputFiled := self newCode
+	codeInputField := self newCode
 		                  text: self class defaultCodeInput;
 		                  yourself.
-	codeInputFiled eventHandler whenFocusReceivedDo: [ "Set cursor to the position where some code should be added or modified"
+	codeInputField eventHandler whenFocusReceivedDo: [ "Set cursor to the position where some code should be added or modified"
 		| pipePosition |
-		pipePosition := codeInputFiled text findString: ']'.
-		codeInputFiled selectionInterval:
+		pipePosition := codeInputField text findString: ']'.
+		codeInputField selectionInterval:
 			(pipePosition - 1 to: pipePosition - 2) ]
 ]
 
@@ -164,7 +164,7 @@ MiCBRuleComponentPresenter >> setModelBeforeInitialization: aBrowserModel [
 	selectedRuleComponent := browserModel selectedRule
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #layout }
 MiCBRuleComponentPresenter >> summaryLayout [
 
 	^ self newBoxLayoutTopToBottom
