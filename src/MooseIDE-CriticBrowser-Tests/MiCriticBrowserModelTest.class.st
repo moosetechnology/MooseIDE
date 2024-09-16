@@ -3,13 +3,14 @@ A MiCriticBrowserModelTest is a test class for testing the behavior of MiCriticB
 "
 Class {
 	#name : #MiCriticBrowserModelTest,
-	#superclass : #MiCriticBrowserToolsTest,
+	#superclass : #MiAbstractApplicationTest,
 	#instVars : [
 		'model',
 		'stubEntity',
 		'deadEntity',
 		'stubCondition',
-		'deadCondition'
+		'deadCondition',
+		'browser'
 	],
 	#category : #'MooseIDE-CriticBrowser-Tests'
 }
@@ -25,16 +26,32 @@ MiCriticBrowserModelTest >> removeAllFromRootContext [
 
 { #category : #running }
 MiCriticBrowserModelTest >> setUp [
-	super setUp.
 
+	super setUp.
+	browser := MiCriticBrowser openForTests: self application.
 	model := browser model.
-	stubCondition := FamixCBCondition named: 'test1' on: (FamixCBScriptQueryHandler on: '[ :entity | entity isStub ]'). 
-	deadCondition := FamixCBCondition named: 'test2' on: (FamixCBScriptQueryHandler on: '[ :entity | entity isDead ]').
+	stubCondition := FamixCBCondition
+		                 named: 'test1'
+		                 on:
+		                 (FamixCBScriptQueryHandler on:
+			                  '[ :entity | entity isStub ]').
+	deadCondition := FamixCBCondition
+		                 named: 'test2'
+		                 on:
+		                 (FamixCBScriptQueryHandler on:
+			                  '[ :entity | entity isDead ]').
 	model addChild: stubCondition toContext: model rootContext.
 	model addChild: deadCondition toContext: model rootContext.
 	stubEntity := FamixStMethod named: 'test1'.
 	deadEntity := FamixStMethod named: 'test2'.
 	stubEntity isStub: true
+]
+
+{ #category : #running }
+MiCriticBrowserModelTest >> tearDown [
+
+	browser ifNotNil: [ browser withWindowDo: [ :window | window close ] ].
+	super tearDown
 ]
 
 { #category : #tests }
@@ -213,12 +230,4 @@ MiCriticBrowserModelTest >> testViolationsOf [
 	model run.
 	self assert: (model violationsOf: stubCondition) class equals: FamixCBViolationGroup.
 	self assertCollection: (model violationsOf: stubCondition) allEntities hasSameElements: { stubEntity }
-]
-
-{ #category : #tests }
-MiCriticBrowserModelTest >> testViolationsOfCollection [
-	model setEntities: { stubEntity. deadEntity } asMooseGroup.
-	model run.
-	self assert: (model violationsOfCollection: { stubCondition. deadCondition }) class equals: FamixCBViolationGroup.
-	self assertCollection: (model violationsOfCollection: { stubCondition. deadCondition }) allEntities includesAll: { stubEntity. deadEntity }
 ]

@@ -22,6 +22,12 @@ FamixCBRootContext >> getAllViolations [
 	
 ]
 
+{ #category : #testing }
+FamixCBRootContext >> isCBRootContext [
+
+	^ true
+]
+
 { #category : #removing }
 FamixCBRootContext >> removeSelfFromTree [
 

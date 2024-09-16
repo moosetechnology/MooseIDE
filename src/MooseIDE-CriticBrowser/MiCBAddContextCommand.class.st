@@ -25,11 +25,13 @@ MiCBAddContextCommand class >> priority [
 { #category : #testing }
 MiCBAddContextCommand >> canBeExecuted [
 
-	^ self context rules selectedItem class ~= FamixCBCondition
+	^ self context selectedRule
+		  ifNil: [ false ]
+		  ifNotNil: [ :ruleComponent | ruleComponent isCBCondition not ]
 ]
 
 { #category : #executing }
 MiCBAddContextCommand >> execute [
 
-	self context openAddContextDialog
+	(MiCBContextBuilderPresenter on: self context model) openDialog
 ]

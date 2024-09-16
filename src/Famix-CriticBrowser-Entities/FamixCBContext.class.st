@@ -125,6 +125,18 @@ FamixCBContext >> entities: anObject [
 	self entities value: anObject
 ]
 
+{ #category : #testing }
+FamixCBContext >> isCBContext [
+
+	^ true
+]
+
+{ #category : #printing }
+FamixCBContext >> printAsBlock [
+
+	^ contextBlock asString
+]
+
 { #category : #'as yet unclassified' }
 FamixCBContext >> putViolationsInto: aDictionary [
 	children do: [ :child | child putViolationsInto: aDictionary ]
