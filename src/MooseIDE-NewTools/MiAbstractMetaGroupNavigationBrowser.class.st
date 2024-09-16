@@ -21,23 +21,17 @@ Internal Representation and Key Implementation Points.
     Implementation Points
 "
 Class {
-	#name : #MiAbstractGroupNavigationBrowser,
-	#superclass : #MiNavigationBrowser,
+	#name : #MiAbstractMetaGroupNavigationBrowser,
+	#superclass : #MiMetaNavigationBrowser,
 	#category : #'MooseIDE-NewTools-Inspector tabs'
 }
 
 { #category : #initialization }
-MiAbstractGroupNavigationBrowser >> initializePresenters [
+MiAbstractMetaGroupNavigationBrowser >> initializePresenters [
 
 	super initializePresenters.
 	navigation whenActivatedDo: [ :selection |
 		self inspectorObjectContextPresenter owner
 			changeSelection: selection selectedItem value
-			from: self inspectorObjectContextPresenter ]
-]
-
-{ #category : #initialization }
-MiAbstractGroupNavigationBrowser >> itemsFor: anEntity [
-
-	^ anEntity collect: [ :entity | entity inspectorToString -> entity ]
+			from: self inspectorObjectContextPresenter ].
 ]

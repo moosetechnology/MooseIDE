@@ -11,11 +11,9 @@ Class {
 { #category : #tests }
 MiModelNavigationBrowserTest >> clickOnAllClasses [
 
-	| navigationTable |
-	navigationTable := browser presenterAt: #navigation.
-
-	navigationTable selectItem:
-		(navigationTable items detect: [ :item | item key = 'All classes' ])
+	| navigationTreeTable |
+	navigationTreeTable := browser presenterAt: #navigation.
+	navigationTreeTable selectItem: navigationTreeTable roots first
 ]
 
 { #category : #running }
@@ -28,7 +26,7 @@ MiModelNavigationBrowserTest >> setUp [
 		                  newClassNamed: #C2;
 		                  yourself.
 
-	browser := MiModelNavigationBrowser on: inspectedModel
+	browser := MiMetaModelNavigationBrowser on: inspectedModel
 ]
 
 { #category : #running }
@@ -44,5 +42,5 @@ MiModelNavigationBrowserTest >> testClickingOpensMooseGroup [
 
 	self clickOnAllClasses.
 
-	self assert: browser selectedObject equals: inspectedModel allClasses
+	self assert: browser selectedObject equals: (inspectedModel allWithType: FamixStClass)
 ]

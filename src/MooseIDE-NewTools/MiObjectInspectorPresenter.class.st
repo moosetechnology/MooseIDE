@@ -20,11 +20,6 @@ MiObjectInspectorPresenter >> allPages [
 	^ allPagesWithoutBreakpointsPage
 ]
 
-{ #category : #private }
-MiObjectInspectorPresenter >> miBrowser [
-	^self owner owner owner owner
-]
-
 { #category : #'private - factory' }
 MiObjectInspectorPresenter >> newInspectionForContext: aContext [
 
@@ -39,5 +34,6 @@ MiObjectInspectorPresenter >> newInspectionForContext: aContext [
 MiObjectInspectorPresenter >> refreshContent [
 
 	super refreshContent.
-	self miBrowser updateToolbar
+
+	self withWindowDo: #updateToolbar
 ]
