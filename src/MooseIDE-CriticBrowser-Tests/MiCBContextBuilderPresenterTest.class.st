@@ -3,7 +3,7 @@ A MiCriticBrowserContextMakerPresenterTest is a test class for testing the behav
 "
 Class {
 	#name : #MiCBContextBuilderPresenterTest,
-	#superclass : #MiCriticBrowserToolsTest,
+	#superclass : #MiCBRuleComponentBuilderPresenterTest,
 	#category : #'MooseIDE-CriticBrowser-Tests'
 }
 

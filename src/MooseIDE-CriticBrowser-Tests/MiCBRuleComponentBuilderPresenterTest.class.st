@@ -1,5 +1,5 @@
 Class {
-	#name : #MiCriticBrowserToolsTest,
+	#name : #MiCBRuleComponentBuilderPresenterTest,
 	#superclass : #MiAbstractApplicationTest,
 	#instVars : [
 		'browser',
@@ -9,43 +9,43 @@ Class {
 }
 
 { #category : #testing }
-MiCriticBrowserToolsTest class >> isAbstract [
+MiCBRuleComponentBuilderPresenterTest class >> isAbstract [
 
-	^ self == MiCriticBrowserToolsTest
+	^ self == MiCBRuleComponentBuilderPresenterTest
 ]
 
 { #category : #tests }
-MiCriticBrowserToolsTest >> builderCodeInputField [
+MiCBRuleComponentBuilderPresenterTest >> builderCodeInputField [
 
 	^ contextBuilder presenterAt: #codeInputField
 ]
 
 { #category : #tests }
-MiCriticBrowserToolsTest >> builderSummaryField [
+MiCBRuleComponentBuilderPresenterTest >> builderSummaryField [
 
 	^ contextBuilder presenterAt: #summaryField
 ]
 
 { #category : #accessing }
-MiCriticBrowserToolsTest >> builderTitleField [
+MiCBRuleComponentBuilderPresenterTest >> builderTitleField [
 
 	^ contextBuilder presenterAt: #titleField
 ]
 
 { #category : #running }
-MiCriticBrowserToolsTest >> otherComponent [
+MiCBRuleComponentBuilderPresenterTest >> otherComponent [
 
 	self subclassResponsibility
 ]
 
 { #category : #running }
-MiCriticBrowserToolsTest >> ruleComponentToEdit [
+MiCBRuleComponentBuilderPresenterTest >> ruleComponentToEdit [
 
 	self subclassResponsibility
 ]
 
 { #category : #running }
-MiCriticBrowserToolsTest >> setUp [
+MiCBRuleComponentBuilderPresenterTest >> setUp [
 
 	super setUp.
 	browser := MiCriticBrowser openForTests: self application.
@@ -53,13 +53,13 @@ MiCriticBrowserToolsTest >> setUp [
 ]
 
 { #category : #running }
-MiCriticBrowserToolsTest >> setUpBuilderAsCreator [
+MiCBRuleComponentBuilderPresenterTest >> setUpBuilderAsCreator [
 
 	contextBuilder := self toolClass on: browser model
 ]
 
 { #category : #running }
-MiCriticBrowserToolsTest >> setUpBuilderAsEditor [
+MiCBRuleComponentBuilderPresenterTest >> setUpBuilderAsEditor [
 
 	| contextToEdit |
 	contextToEdit := self ruleComponentToEdit.
@@ -75,14 +75,14 @@ MiCriticBrowserToolsTest >> setUpBuilderAsEditor [
 ]
 
 { #category : #running }
-MiCriticBrowserToolsTest >> tearDown [
+MiCBRuleComponentBuilderPresenterTest >> tearDown [
 
 	browser ifNotNil: [ browser withWindowDo: [ :window | window close ] ].
 	super tearDown
 ]
 
 { #category : #tests }
-MiCriticBrowserToolsTest >> testAddInputtedCodeRule [
+MiCBRuleComponentBuilderPresenterTest >> testAddNewComponent [
 
 	self setUpBuilderAsCreator.
 
@@ -98,7 +98,7 @@ MiCriticBrowserToolsTest >> testAddInputtedCodeRule [
 ]
 
 { #category : #tests }
-MiCriticBrowserToolsTest >> testEditComponent [
+MiCBRuleComponentBuilderPresenterTest >> testEditComponent [
 
 	| componentToEdit otherComponent |
 	self setUpBuilderAsEditor.
@@ -120,7 +120,7 @@ MiCriticBrowserToolsTest >> testEditComponent [
 ]
 
 { #category : #tests }
-MiCriticBrowserToolsTest >> testFillComponentToEdit [
+MiCBRuleComponentBuilderPresenterTest >> testFillWithRuleComponent [
 
 	| component |
 	self setUpBuilderAsCreator.
@@ -136,7 +136,7 @@ MiCriticBrowserToolsTest >> testFillComponentToEdit [
 ]
 
 { #category : #accessing }
-MiCriticBrowserToolsTest >> toolClass [
+MiCBRuleComponentBuilderPresenterTest >> toolClass [
 
 	self subclassResponsibility
 ]

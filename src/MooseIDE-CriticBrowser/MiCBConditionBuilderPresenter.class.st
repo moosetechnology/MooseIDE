@@ -3,7 +3,7 @@ Class implementing the presenter used to input queries, can use Pharo code or qu
 "
 Class {
 	#name : #MiCBConditionBuilderPresenter,
-	#superclass : #MiCBRuleComponentPresenter,
+	#superclass : #MiCBRuleComponentBuilderPresenter,
 	#instVars : [
 		'codeButton',
 		'queriesBrowserButton',
@@ -18,12 +18,6 @@ Class {
 MiCBConditionBuilderPresenter class >> defaultCodeInput [
 
 	^ '[ :entity | entity  ]'
-]
-
-{ #category : #api }
-MiCBConditionBuilderPresenter class >> initialExtent [
-
-	^ 600 @ 400
 ]
 
 { #category : #labels }

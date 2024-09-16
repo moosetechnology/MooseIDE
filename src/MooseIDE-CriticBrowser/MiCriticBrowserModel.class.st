@@ -107,7 +107,9 @@ MiCriticBrowserModel >> initialize [
 MiCriticBrowserModel >> removeBranchFromRuleComponents: aRuleComponent [
 
 	ruleComponents remove: aRuleComponent ifAbsent: [  ].
-	aRuleComponent class = FamixCBContext ifTrue: [ aRuleComponent children do: [ :child | self removeBranchFromRuleComponents: child ] ]
+	aRuleComponent class = FamixCBContext ifTrue: [
+		aRuleComponent children do: [ :child |
+			self removeBranchFromRuleComponents: child ] ]
 ]
 
 { #category : #adding }

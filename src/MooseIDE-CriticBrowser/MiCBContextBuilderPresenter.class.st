@@ -3,7 +3,7 @@ Class implementing the presenter used to input contexts, using Pharo code blocks
 "
 Class {
 	#name : #MiCBContextBuilderPresenter,
-	#superclass : #MiCBRuleComponentPresenter,
+	#superclass : #MiCBRuleComponentBuilderPresenter,
 	#category : #'MooseIDE-CriticBrowser-Presenters'
 }
 
@@ -11,12 +11,6 @@ Class {
 MiCBContextBuilderPresenter class >> defaultCodeInput [
 
 	^ '[ :collection | collection  ]'
-]
-
-{ #category : #api }
-MiCBContextBuilderPresenter class >> initialExtent [
-
-	^ 600 @ 400
 ]
 
 { #category : #labels }

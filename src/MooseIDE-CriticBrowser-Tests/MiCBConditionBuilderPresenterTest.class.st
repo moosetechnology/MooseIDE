@@ -3,11 +3,7 @@ A MiCriticBrowserQueryMakerPresenterTest is a test class for testing the behavio
 "
 Class {
 	#name : #MiCBConditionBuilderPresenterTest,
-	#superclass : #MiCriticBrowserToolsTest,
-	#instVars : [
-		'addQueryPresenter',
-		'editQueryPresenter'
-	],
+	#superclass : #MiCBRuleComponentBuilderPresenterTest,
 	#category : #'MooseIDE-CriticBrowser-Tests'
 }
 
@@ -39,7 +35,7 @@ MiCBConditionBuilderPresenterTest >> ruleComponentToEdit [
 ]
 
 { #category : #tests }
-MiCBConditionBuilderPresenterTest >> testAddInputtedQueryCondition [
+MiCBConditionBuilderPresenterTest >> testAddNewQueryCondition [
 
 	| query |
 	query := FQBooleanQuery property: #isStub.
