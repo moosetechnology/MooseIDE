@@ -69,10 +69,17 @@ MiCBConditionBuilderPresenter >> conditionComputingLayout [
 				add: codeInputField ]
 		ifFalse: [
 			conditionComputingLayout
+				vAlignStart;
 				add: 'Select a query:';
 				add: queryDroplist ].
 
 	^ conditionComputingLayout
+]
+
+{ #category : #brokerage }
+MiCBConditionBuilderPresenter >> consume: aQuery [
+
+	queryDroplist items: self fetchQueries
 ]
 
 { #category : #layout }
@@ -85,6 +92,13 @@ MiCBConditionBuilderPresenter >> defaultLayout [
 		  add: self conditionComputingLayout;
 		  add: self summaryLayout;
 		  yourself
+]
+
+{ #category : #initialization }
+MiCBConditionBuilderPresenter >> fetchQueries [
+
+	^ (self application itemsFor: FQAbstractQuery) asOrderedCollection
+		  select: [ :each | each isValid ]
 ]
 
 { #category : #initialization }
@@ -161,6 +175,12 @@ MiCBConditionBuilderPresenter >> newComponent [
 	^ FamixCBCondition new
 ]
 
+{ #category : #brokerage }
+MiCBConditionBuilderPresenter >> remove: aQuery [
+
+	queryDroplist items: self fetchQueries
+]
+
 { #category : #layout }
 MiCBConditionBuilderPresenter >> titleAndSeverityLayout [
 
@@ -176,6 +196,12 @@ MiCBConditionBuilderPresenter >> titleAndSeverityLayout [
 				  add: severityDroplist;
 				  nextRow ];
 		  yourself
+]
+
+{ #category : #brokerage }
+MiCBConditionBuilderPresenter >> update: aQuery [
+
+	queryDroplist items: self fetchQueries
 ]
 
 { #category : #layout }
