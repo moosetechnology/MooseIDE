@@ -8,10 +8,21 @@ Class {
 		'entities',
 		'rootContext',
 		'ruleComponents',
-		'violations'
+		'violations',
+		'selectedRule'
 	],
 	#category : #'MooseIDE-CriticBrowser-Model'
 }
+
+{ #category : #adding }
+MiCriticBrowserModel >> addChild: aRuleComponent [
+
+	selectedRule isCBCondition ifTrue: [ ^ self ].
+
+	selectedRule addChild: aRuleComponent.
+	ruleComponents add: aRuleComponent.
+	browser updateRulesList
+]
 
 { #category : #adding }
 MiCriticBrowserModel >> addChild: aRuleComponent toContext: aContext [
@@ -32,7 +43,10 @@ MiCriticBrowserModel >> addChildToRootContext: aRuleComponent [
 
 { #category : #adding }
 MiCriticBrowserModel >> addViolationsFor: aCondition [
-	violations at: aCondition put: aCondition violations asMooseSpecializedGroup
+
+	violations
+		at: aCondition
+		put: aCondition violations asMooseSpecializedGroup
 ]
 
 { #category : #accessing }
@@ -52,7 +66,8 @@ MiCriticBrowserModel >> createHierarchyTree [
 
 { #category : #removing }
 MiCriticBrowserModel >> deleteRuleComponent: aRuleComponent [
-	self removeChild: aRuleComponent fromContext: aRuleComponent parent 
+
+	self removeChild: aRuleComponent fromContext: aRuleComponent parent
 ]
 
 { #category : #accessing }
@@ -88,20 +103,32 @@ MiCriticBrowserModel >> initialize [
 	violations := Dictionary new
 ]
 
+{ #category : #accessing }
+MiCriticBrowserModel >> miSelectedItem [
+
+	^ (selectedRule
+		   ifNil: [ self getAllViolations ]
+		   ifNotNil: [ :ruleComponent | self violationsOf: ruleComponent ])
+		  collect: #violatingEntity
+]
+
 { #category : #removing }
 MiCriticBrowserModel >> removeBranchFromRuleComponents: aRuleComponent [
 
 	ruleComponents remove: aRuleComponent ifAbsent: [  ].
-	aRuleComponent class = FamixCBContext ifTrue: [ aRuleComponent children do: [ :child | self removeBranchFromRuleComponents: child ] ]
+	aRuleComponent class = FamixCBContext ifTrue: [
+		aRuleComponent children do: [ :child |
+			self removeBranchFromRuleComponents: child ] ]
 ]
 
 { #category : #adding }
 MiCriticBrowserModel >> removeChild: aRuleComponent fromContext: aContext [
-	(aContext = rootContext or: [ ruleComponents includes: aContext ]) ifFalse: [ ^ self ].
+
+	(aContext = rootContext or: [ ruleComponents includes: aContext ])
+		ifFalse: [ ^ self ].
 	aRuleComponent removeSelfFromTree.
 	self removeBranchFromRuleComponents: aRuleComponent.
 	self removeRuleViolations: aRuleComponent
-	
 ]
 
 { #category : #removing }
@@ -146,6 +173,18 @@ MiCriticBrowserModel >> runCondition: aCondition [
 ]
 
 { #category : #accessing }
+MiCriticBrowserModel >> selectedRule [
+
+	^ selectedRule
+]
+
+{ #category : #accessing }
+MiCriticBrowserModel >> selectedRule: anObject [
+
+	selectedRule := anObject
+]
+
+{ #category : #accessing }
 MiCriticBrowserModel >> setEntities: aMooseObject [
 
 	entities := aMooseObject isCollection
@@ -162,25 +201,21 @@ MiCriticBrowserModel >> violations [
 
 { #category : #accessing }
 MiCriticBrowserModel >> violationsOf: aRuleComponent [
-"returns violations for a given condition or childs of the selected context"
-	^ (aRuleComponent class inheritsFromOrEqualTo: FamixCBContext)
-		ifTrue: 
-			[ | group |
-			group := OrderedCollection new.
-			aRuleComponent children do: [ :child | group addAll: (self violationsOf: child) ].
-			group asMooseSpecializedGroup
-			]
-		ifFalse:
-			[ 
-			self violations at: aRuleComponent ifAbsent: [ MooseGroup new ]
-			]
+	"Returns violations for a given condition or childs of the selected context"
+
+	^ (self violationsOf: aRuleComponent in: MooseGroup new) specialize
 ]
 
 { #category : #accessing }
-MiCriticBrowserModel >> violationsOfCollection: aCollection [
-"returns violations for a given set of rules"
-	| result |
-	result := FamixCBViolationGroup new.
-	aCollection do: [ :condition | result addAll: (self violationsOf: condition) ].
-	^ result 
+MiCriticBrowserModel >> violationsOf: aRuleComponent in: aMooseGroup [
+	"returns violations for a given condition or childs of the selected context"
+
+	aRuleComponent isCBContext
+		ifTrue: [
+			aRuleComponent children do: [ :child |
+				self violationsOf: child in: aMooseGroup ] ]
+		ifFalse: [
+			aMooseGroup addAll:
+				(self violations at: aRuleComponent ifAbsent: [ MooseGroup new ]) ].
+	^ aMooseGroup
 ]

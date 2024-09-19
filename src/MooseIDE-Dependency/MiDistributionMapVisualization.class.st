@@ -10,16 +10,16 @@ Class {
 }
 
 { #category : #running }
-MiDistributionMapVisualization >> run [
+MiDistributionMapVisualization >> buildInCanvas: aCanvas [
 
-	super run.
+	owner model entities ifNil: [ ^ self ].
 	builder := MiDistributionMapBuilder new
 		           mapModel: owner model;
-		           container: self canvas;
+		           container: aCanvas;
 		           yourself.
+
 	builder build.
 	builder rootNode expandChildren.
-	self canvas
-		zoomToFit;
-		zoomToFit
+
+	aCanvas @ RSCanvasController new noLegend
 ]

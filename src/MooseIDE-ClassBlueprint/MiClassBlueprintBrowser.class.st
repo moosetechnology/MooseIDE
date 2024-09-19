@@ -13,12 +13,6 @@ Class {
 	#category : #'MooseIDE-ClassBlueprint'
 }
 
-{ #category : #'instance creation' }
-MiClassBlueprintBrowser class >> followEntity: anEntity [ 
-	self withWindowDo: [ :window | window title: 'Blueprint of' , anEntity name ].
-	
-]
-
 { #category : #'world menu' }
 MiClassBlueprintBrowser class >> menuCommandOn: aBuilder [
 
@@ -55,31 +49,39 @@ MiClassBlueprintBrowser >> canFollowEntity: anObject [
 	^ anObject isMooseEntity and: [ anObject isType ]
 ]
 
-{ #category : #testing }
+{ #category : #layout }
+MiClassBlueprintBrowser >> defaultLayout [
+
+	^ self newBoxLayoutTopToBottom
+		  add: blueprint;
+		  yourself
+]
+
+{ #category : #actions }
 MiClassBlueprintBrowser >> followEntity: anEntity [
 
 	super followEntity: anEntity.
+
 	blueprint
 		type: anEntity;
-		run
-]
-
-{ #category : #testing }
-MiClassBlueprintBrowser >> initializeLayout [
-
-	self layout: (SpBoxLayout newTopToBottom
-			 add: blueprint;
-			 yourself)
+		refresh
 ]
 
 { #category : #initialization }
 MiClassBlueprintBrowser >> initializePresenters [
 
-	blueprint := self instantiate: MiClassBlueprintVisualization.
-	self initializeLayout
+	blueprint := self instantiate: MiClassBlueprintVisualization
 ]
 
-{ #category : #testing }
-MiClassBlueprintBrowser >> miSelectedItem [ 
+{ #category : #accessing }
+MiClassBlueprintBrowser >> miSelectedItem [
+
 	^ blueprint type
+]
+
+{ #category : #actions }
+MiClassBlueprintBrowser >> updateWindowTitleWith: anEntity [
+
+	self withWindowDo: [ :window |
+		window title: 'Blueprint of' , anEntity name ]
 ]

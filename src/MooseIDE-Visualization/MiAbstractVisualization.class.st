@@ -7,6 +7,12 @@ Class {
 	#category : #'MooseIDE-Visualization-Helpers'
 }
 
+{ #category : #running }
+MiAbstractVisualization >> buildInCanvas: aCanvas [
+
+	self subclassResponsibility
+]
+
 { #category : #helpers }
 MiAbstractVisualization >> colorFor: anEntity [
 	^ (highlightedEntities includes: anEntity)
@@ -22,6 +28,7 @@ MiAbstractVisualization >> highlightColor [
 { #category : #highlighting }
 MiAbstractVisualization >> highlightEntities: someEntities [
 
+	self canvas shapes ifEmpty: [ ^ self ].
 	self highlightedEntities: someEntities asMooseGroup.
 	self highlightShapes.
 	self canvas signalUpdate
@@ -45,9 +52,12 @@ MiAbstractVisualization >> highlightedEntities: entities [
 
 { #category : #initialization }
 MiAbstractVisualization >> initialize [
+
 	super initialize.
+
 	highlightedEntities := MooseGroup new.
-	self script: [ :canvas | canvas @ RSCanvasController new noLegend ]
+
+	self script: [ :canvas | self buildInCanvas: canvas ]
 ]
 
 { #category : #accessing }
@@ -56,7 +66,7 @@ MiAbstractVisualization >> miSelectedItem [
 	^ self canvas selectedShapes collect: [ :shape | self modelForShape: shape ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 MiAbstractVisualization >> modelForShape: aShape [
 
 	^ aShape model
@@ -69,7 +79,8 @@ MiAbstractVisualization >> noHighlightColorFor: anEntity [
 
 { #category : #running }
 MiAbstractVisualization >> run [
-	self refresh
+
+	self script value: self canvas
 ]
 
 { #category : #highlighting }

@@ -27,3 +27,21 @@ FamixCBEntity class >> metamodel [
 	<generated>
 	^ FamixCBModel metamodel
 ]
+
+{ #category : #testing }
+FamixCBEntity >> isCBCondition [
+
+	^ false
+]
+
+{ #category : #testing }
+FamixCBEntity >> isCBContext [
+
+	^ false
+]
+
+{ #category : #testing }
+FamixCBEntity >> isCBRootContext [
+
+	^ false
+]

@@ -17,15 +17,6 @@ Class {
 	#category : #'MooseIDE-Famix-SourceText'
 }
 
-{ #category : #layout }
-MiSourceTextBrowser class >> defaultLayout [
-
-	^ SpBoxLayout newVertical
-		  add: #toolBarExternalEditor height: self toolbarHeight;
-		  add: #textRenderer expand: true;
-		  yourself
-]
-
 { #category : #'world menu' }
 MiSourceTextBrowser class >> menuCommandOn: aBuilder [
 
@@ -80,6 +71,15 @@ MiSourceTextBrowser class >> windowSize [
 MiSourceTextBrowser >> canFollowEntity: anObject [
 
 	^ anObject usesFamixTrait: FamixTSourceEntity
+]
+
+{ #category : #layout }
+MiSourceTextBrowser >> defaultLayout [
+
+	^ SpBoxLayout newVertical
+		  add: toolBarExternalEditor height: self class toolbarHeight;
+		  add: textRenderer expand: true;
+		  yourself
 ]
 
 { #category : #actions }

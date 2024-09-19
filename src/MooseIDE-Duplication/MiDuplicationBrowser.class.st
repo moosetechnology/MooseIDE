@@ -104,7 +104,7 @@ MiDuplicationBrowser >> hasSettings [
 	^ true
 ]
 
-{ #category : #actions }
+{ #category : #highlighting }
 MiDuplicationBrowser >> highlightEntity: entities [
 
 	specModel highlightEntity: entities

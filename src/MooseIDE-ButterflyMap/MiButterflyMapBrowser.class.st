@@ -91,7 +91,7 @@ MiButterflyMapBrowser >> followEntity: anEntity [
 	self model currentEntity: anEntity
 ]
 
-{ #category : #actions }
+{ #category : #testing }
 MiButterflyMapBrowser >> hasSettings [
 
 	^ true

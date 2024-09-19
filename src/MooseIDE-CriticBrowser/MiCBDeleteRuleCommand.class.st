@@ -25,13 +25,11 @@ MiCBDeleteRuleCommand class >> priority [
 { #category : #testing }
 MiCBDeleteRuleCommand >> canBeExecuted [
 
-	^ self context rules selectedItem class ~= FamixCBRootContext
+	^ self context selectedRule class ~= FamixCBRootContext
 ]
 
 { #category : #executing }
 MiCBDeleteRuleCommand >> execute [
 
-	self context
-		deleteSelectedRule;
-		updateRulesList
+	self context deleteSelectedRule
 ]

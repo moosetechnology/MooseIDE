@@ -96,14 +96,6 @@ MiAbstractBrowser class >> buildMenuItemIn: aBuilder [
 		  yourself
 ]
 
-{ #category : #layout }
-MiAbstractBrowser class >> defaultLayout [
-
-	^ SpBoxLayout newVertical
-		  add: #mainPresenter;
-		  yourself
-]
-
 { #category : #menu }
 MiAbstractBrowser class >> defaultSubMenuLabel [
 
@@ -397,7 +389,7 @@ MiAbstractBrowser >> canFollowEntity: anObject [
 	self subclassResponsibility
 ]
 
-{ #category : #highlighting }
+{ #category : #testing }
 MiAbstractBrowser >> canHighlight [
 
 	"Override to retrun true if you want to give your browser a highlight behavior. 
@@ -429,6 +421,14 @@ MiAbstractBrowser >> closeSettings [
 
 	self hasSettings 
 	ifTrue: [ self model settings window close]
+]
+
+{ #category : #layout }
+MiAbstractBrowser >> defaultLayout [
+
+	^ SpBoxLayout newVertical
+		  add: #mainPresenter;
+		  yourself
 ]
 
 { #category : #buses }

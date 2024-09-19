@@ -51,7 +51,18 @@ MiSourceTextRoassalRenderer >> applyTagHighlight: aHighlight [
 
 { #category : #accessing }
 MiSourceTextRoassalRenderer >> browser [
-	^model browser
+
+	^ model browser
+]
+
+{ #category : #highlighting }
+MiSourceTextRoassalRenderer >> buildInCanvas: aCanvas [
+
+	model displayedText ifNil: [ ^ self ].
+
+	roassalTextRenderer text: model displayedText.
+	model highlights do: [ :hlght | hlght applyTo: self ].
+	roassalTextRenderer renderIn: aCanvas
 ]
 
 { #category : #highlighting }
@@ -63,18 +74,18 @@ MiSourceTextRoassalRenderer >> highlightShapes [
 MiSourceTextRoassalRenderer >> initialize [
 
 	super initialize.
-	self script: [ :canvas | canvas ].
+
 	roassalTextRenderer := RSAttributedText new
 ]
 
 { #category : #highlighting }
 MiSourceTextRoassalRenderer >> renderText [
-	roassalTextRenderer text: model displayedText.
-	model highlights do: [ :hlght | hlght applyTo: self ].
-	roassalTextRenderer renderIn: self canvas
+
+	self run
 ]
 
-{ #category : #initialization }
+{ #category : #'accessing - model' }
 MiSourceTextRoassalRenderer >> setModelBeforeInitialization: aModel [
+
 	model := aModel
 ]
