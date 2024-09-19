@@ -52,10 +52,9 @@ MiDependencyStructuralMatrixVisualization >> cellShowSCCColor: tuple [
 MiDependencyStructuralMatrixVisualization >> initialize [
 
 	super initialize.
-	self script: [ :canvas | self buildInCanvas: canvas ].
-	
+
 	"optimization cache"
-	lastSCCShapes := nil -> #()
+	lastSCCShapes := nil -> #(  )
 ]
 
 { #category : #private }

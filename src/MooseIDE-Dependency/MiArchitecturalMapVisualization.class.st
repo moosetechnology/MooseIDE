@@ -22,22 +22,17 @@ MiArchitecturalMapVisualization >> buildInCanvas: aCanvas [
 		           yourself
 ]
 
-{ #category : #initialization }
-MiArchitecturalMapVisualization >> initialize [
-
-	super initialize.
-
-	self script: [ :canvas | self buildInCanvas: canvas ]
-]
-
 { #category : #searching }
 MiArchitecturalMapVisualization >> shapeFromEntity: anEntity [
 	"search for the RSShape in the canvas that represent anEntity returns nil otherwise
 	 each RSShape contains a HNode which contains an entity"
 
-	^self canvas deepNodes
-	detect: [ :shape | shape model ifNil: [false] ifNotNil: [:shapeModel | shapeModel rawModel = anEntity] ]
-	ifNone: [ nil ]
+	^ self canvas deepNodes
+		  detect: [ :shape |
+			  shape model
+				  ifNil: [ false ]
+				  ifNotNil: [ :shapeModel | shapeModel rawModel = anEntity ] ]
+		  ifNone: [ nil ]
 ]
 
 { #category : #updating }

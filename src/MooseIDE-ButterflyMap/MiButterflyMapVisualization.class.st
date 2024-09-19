@@ -19,14 +19,6 @@ MiButterflyMapVisualization >> buildInCanvas: aCanvas [
 	builder build
 ]
 
-{ #category : #initialization }
-MiButterflyMapVisualization >> initialize [
-
-	super initialize.
-
-	self script: [ :canvas | self buildInCanvas: canvas ]
-]
-
 { #category : #running }
 MiButterflyMapVisualization >> update [
 

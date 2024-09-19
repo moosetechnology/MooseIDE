@@ -19,14 +19,6 @@ MiSystemComplexityVisualization >> buildInCanvas: canvas [
 	^ canvas @ RSCanvasController new noLegend
 ]
 
-{ #category : #initialization }
-MiSystemComplexityVisualization >> initialize [
-
-	super initialize.
-
-	self script: [ :canvas | self buildInCanvas: canvas ]
-]
-
 { #category : #accessing }
 MiSystemComplexityVisualization >> model [
 

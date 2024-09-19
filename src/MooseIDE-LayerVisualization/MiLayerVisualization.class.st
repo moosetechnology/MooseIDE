@@ -20,11 +20,3 @@ MiLayerVisualization >> buildInCanvas: aCanvas [
 
 	builder build
 ]
-
-{ #category : #initialization }
-MiLayerVisualization >> initialize [
-
-	super initialize.
-
-	self script: [ :canvas | self buildInCanvas: canvas ]
-]

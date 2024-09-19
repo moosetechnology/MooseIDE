@@ -75,8 +75,7 @@ MiSourceTextRoassalRenderer >> initialize [
 
 	super initialize.
 
-	roassalTextRenderer := RSAttributedText new.
-	self script: [ :canvas | self buildInCanvas: canvas ]
+	roassalTextRenderer := RSAttributedText new
 ]
 
 { #category : #highlighting }

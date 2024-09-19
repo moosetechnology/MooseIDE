@@ -56,9 +56,7 @@ MiCoUsageMapVisualization >> initialize [
 	super initialize.
 
 	mapBuilder := MiCoUsageMapBuilder new.
-	mapBuilder visualization: self.
-
-	self script: [ :canvas | self buildInCanvas: canvas ]
+	mapBuilder visualization: self
 ]
 
 { #category : #brokerage }

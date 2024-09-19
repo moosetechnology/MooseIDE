@@ -49,14 +49,6 @@ MiUMLVisualization >> highlightShapes [
 		composite shapes first color: (self colorFor: composite model) ]
 ]
 
-{ #category : #initialization }
-MiUMLVisualization >> initialize [
-
-	super initialize.
-
-	self script: [ :canvas | self buildInCanvas: canvas ]
-]
-
 { #category : #helpers }
 MiUMLVisualization >> noHighlightColorFor: anEntity [
 

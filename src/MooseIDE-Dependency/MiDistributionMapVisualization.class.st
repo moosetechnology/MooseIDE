@@ -23,11 +23,3 @@ MiDistributionMapVisualization >> buildInCanvas: aCanvas [
 
 	aCanvas @ RSCanvasController new noLegend
 ]
-
-{ #category : #initialization }
-MiDistributionMapVisualization >> initialize [
-
-	super initialize.
-
-	self script: [ :canvas | self buildInCanvas: canvas ]
-]
