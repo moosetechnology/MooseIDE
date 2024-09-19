@@ -108,6 +108,21 @@ MiDependencyStructuralMatrixBrowserModel >> followEntity: aCollection [
 	browser buildDSM
 ]
 
+{ #category : #api }
+MiDependencyStructuralMatrixBrowserModel >> getTupleDependencyWeight: tuple [
+
+	^(tuple key = tuple value)
+		ifTrue: [ ^0 ]
+		ifFalse: [
+			tuple key model queryAllOutgoing count: [ :dependency || opposites |
+				opposites := dependency target.
+				opposites isCollection
+				ifTrue: [ opposites anySatisfy: [ :each | (each atScope: tuple value model class) includes: tuple value model] ]
+				ifFalse: [(opposites atScope: tuple value model class) includes: tuple value model ]
+			]
+		]
+]
+
 { #category : #initialization }
 MiDependencyStructuralMatrixBrowserModel >> initialize [ 
 	super initialize.

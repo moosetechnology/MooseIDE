@@ -7,6 +7,24 @@ Class {
 	#category : #'MooseIDE-Dependency-DSM'
 }
 
+{ #category : #hooks }
+MiRSDependencyStructuralMatrix >> createShape: tuple [
+	"1halt."
+	| weight |
+	weight := self getTupleDependencyWeight: tuple.
+
+	^ MiRSDSMShape new
+		text: (weight = 0 ifTrue: [''] ifFalse: [ weight asString]);
+		model: tuple;
+		color: (self color cull: tuple);
+		yourself
+]
+
+{ #category : #accessing }
+MiRSDependencyStructuralMatrix >> getTupleDependencyWeight: tuple [
+	^ owner getTupleDependencyWeight: tuple
+]
+
 { #category : #highlighting }
 MiRSDependencyStructuralMatrix >> highlight: evt [
 	super highlight: evt.
