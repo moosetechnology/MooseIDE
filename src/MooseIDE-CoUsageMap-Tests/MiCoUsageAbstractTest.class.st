@@ -3,7 +3,8 @@ Class {
 	#superclass : #TestCase,
 	#instVars : [
 		'visualization',
-		'builder'
+		'builder',
+		'browser'
 	],
 	#category : #'MooseIDE-CoUsageMap-Tests-Browser'
 }

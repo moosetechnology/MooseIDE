@@ -7,7 +7,7 @@ Class {
 	#category : #'MooseIDE-Core-Browser'
 }
 
-{ #category : #actions }
+{ #category : #testing }
 MiAbstractVisualizationBrowser >> canHighlight [
 
 	^ true

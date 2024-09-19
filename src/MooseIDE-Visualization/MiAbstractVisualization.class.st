@@ -22,6 +22,7 @@ MiAbstractVisualization >> highlightColor [
 { #category : #highlighting }
 MiAbstractVisualization >> highlightEntities: someEntities [
 
+	self canvas shapes ifEmpty: [ ^ self ].
 	self highlightedEntities: someEntities asMooseGroup.
 	self highlightShapes.
 	self canvas signalUpdate
@@ -69,7 +70,8 @@ MiAbstractVisualization >> noHighlightColorFor: anEntity [
 
 { #category : #running }
 MiAbstractVisualization >> run [
-	self refresh
+
+	self script value: self canvas
 ]
 
 { #category : #highlighting }

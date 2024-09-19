@@ -9,6 +9,26 @@ Class {
 	#category : #'MooseIDE-Famix-UML'
 }
 
+{ #category : #initialization }
+MiUMLVisualization >> buildInCanvas: aCanvas [
+
+	rootEntities ifNil: [ ^ self ].
+
+	builder := RSUMLClassBuilder new
+		           modelDescriptor: self classDescriptor;
+		           classes: rootEntities;
+		           build;
+		           renderIn: aCanvas canvas;
+		           yourself.
+
+	aCanvas nodes do: [ :node |
+		node addInteraction:
+			((MiSelection on: [ :entity | self owner selected: entity ])
+				 marginPercentage: 0.2) ].
+
+	^ aCanvas @ RSCanvasController new noLegend
+]
+
 { #category : #running }
 MiUMLVisualization >> classDescriptor [
 
@@ -33,7 +53,8 @@ MiUMLVisualization >> highlightShapes [
 MiUMLVisualization >> initialize [
 
 	super initialize.
-	rootEntities := #(  )
+
+	self script: [ :canvas | self buildInCanvas: canvas ]
 ]
 
 { #category : #helpers }
@@ -46,23 +67,4 @@ MiUMLVisualization >> noHighlightColorFor: anEntity [
 MiUMLVisualization >> rootEntities: anObject [
 
 	rootEntities := anObject
-]
-
-{ #category : #running }
-MiUMLVisualization >> run [
-
-	super run.
-	builder := RSUMLClassBuilder new
-		           modelDescriptor: self classDescriptor;
-		           classes: rootEntities;
-		           build;
-		           renderIn: self canvas;
-		           yourself.
-
-	self canvas nodes do: [ :node |
-		node addInteraction:
-			((MiSelection on: [ :entity | self owner selected: entity ])
-				 marginPercentage: 0.2) ].
-
-	self canvas zoomToFit
 ]

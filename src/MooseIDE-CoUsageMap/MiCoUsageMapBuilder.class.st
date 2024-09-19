@@ -33,13 +33,11 @@ MiCoUsageMapBuilder >> application [
 
 { #category : #hooks }
 MiCoUsageMapBuilder >> applyLayout [
-	| canvas |
-	canvas := self canvas.
+
 	RSFlowLayout new
-		maxWidth: canvas extent x * (1/ canvas camera scale);
+		maxWidth: self canvas extent x * (1 / self canvas camera scale);
 		gapSize: 20;
-		on: canvas nodes.
-	
+		on: self canvas nodes
 ]
 
 { #category : #accessing }
@@ -151,6 +149,7 @@ MiCoUsageMapBuilder >> iconForTag: aTag [
 
 { #category : #initialization }
 MiCoUsageMapBuilder >> initialize [
+
 	super initialize.
 
 	self
@@ -244,25 +243,22 @@ MiCoUsageMapBuilder >> release [
 	self class instVarNames do: [ :n | self instVarNamed: n put: nil ]
 ]
 
-{ #category : #hooks }
-MiCoUsageMapBuilder >> render [
-	self renderIn: self canvas
-]
-
-{ #category : #hooks }
+{ #category : #rendering }
 MiCoUsageMapBuilder >> renderIn: aCanvas [
-	shapes := self specModel containerBoxes  collect: [ :containerEntity | self containerBoxShapeFor: containerEntity ].
+
+	shapes := self specModel containerBoxes collect: [ :containerEntity |
+		          self containerBoxShapeFor: containerEntity ].
 	aCanvas addAll: shapes.
-	
+
 	self updateShapeLayout.
 	self legendTagBuilder
 		container: aCanvas;
 		build.
-	aCanvas 
+	aCanvas
 		when: RSExtentChangedEvent send: #applyLayout to: self;
 		addInteraction: self highlightManager;
 		addInteraction: self menuManager;
-		addInteraction: self canvasController.
+		addInteraction: self canvasController
 ]
 
 { #category : #hooks }

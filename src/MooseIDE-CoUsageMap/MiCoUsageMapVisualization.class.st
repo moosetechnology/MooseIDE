@@ -11,6 +11,20 @@ Class {
 	#category : #'MooseIDE-CoUsageMap-Browser'
 }
 
+{ #category : #running }
+MiCoUsageMapVisualization >> buildInCanvas: aCanvas [
+
+	self specModel currentMooseModel ifNil: [ ^ self ].
+
+	aCanvas @ RSCanvasController new noLegend.
+
+	mapBuilder
+		container: aCanvas;
+		build.
+
+	^ aCanvas
+]
+
 { #category : #brokerage }
 MiCoUsageMapVisualization >> consume: anItem [
 	anItem isTag
@@ -38,10 +52,13 @@ MiCoUsageMapVisualization >> consumeTagAssociation: aFamixTagAssociation [
 
 { #category : #initialization }
 MiCoUsageMapVisualization >> initialize [
+
 	super initialize.
 
 	mapBuilder := MiCoUsageMapBuilder new.
 	mapBuilder visualization: self.
+
+	self script: [ :canvas | self buildInCanvas: canvas ]
 ]
 
 { #category : #brokerage }
@@ -62,10 +79,7 @@ MiCoUsageMapVisualization >> mapBuilder [
 { #category : #'as yet unclassified' }
 MiCoUsageMapVisualization >> modelForShape: aShape [
 
-	| containerBox |
-	containerBox := aShape model.
-
-	^ containerBox mooseEntity
+	^ aShape model mooseEntity
 ]
 
 { #category : #actions }
@@ -106,17 +120,6 @@ MiCoUsageMapVisualization >> removeTagAssociation: aFamixTagAssociation [
 	"this avoids call the consumer producer system"
 	miCoObject privateTag: nil.
 	mapBuilder updateShapeColors
-]
-
-{ #category : #running }
-MiCoUsageMapVisualization >> run [
-	| mooseModel |
-	super run.
-	mooseModel := self specModel currentMooseModel.
-	mooseModel ifNil: [ ^self ].
-	mapBuilder 
-		container: self canvas;
-		build.
 ]
 
 { #category : #accessing }

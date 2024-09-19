@@ -13,18 +13,8 @@ Class {
 	#category : #'MooseIDE-Dependency-DSM'
 }
 
-{ #category : #coloring }
-MiDependencyStructuralMatrixVisualization >> cellColor: tuple [
-	^viewModel colorForTuple: tuple
-]
-
-{ #category : #coloring }
-MiDependencyStructuralMatrixVisualization >> cellShowSCCColor: tuple [
-	^viewModel showSCCColorForTuple: tuple
-]
-
 { #category : #initialization }
-MiDependencyStructuralMatrixVisualization >> createDSM: aRSCanvas [
+MiDependencyStructuralMatrixVisualization >> buildInCanvas: aRSCanvas [
 	| dsm entities |
 	"change legend by adding #noLegend to RSCanvasController new
 	and add RSLegend new ..."
@@ -48,11 +38,21 @@ MiDependencyStructuralMatrixVisualization >> createDSM: aRSCanvas [
 
 ]
 
+{ #category : #coloring }
+MiDependencyStructuralMatrixVisualization >> cellColor: tuple [
+	^viewModel colorForTuple: tuple
+]
+
+{ #category : #coloring }
+MiDependencyStructuralMatrixVisualization >> cellShowSCCColor: tuple [
+	^viewModel showSCCColorForTuple: tuple
+]
+
 { #category : #initialization }
 MiDependencyStructuralMatrixVisualization >> initialize [
 
 	super initialize.
-	self script: [ :canvas | self createDSM: canvas ].
+	self script: [ :canvas | self buildInCanvas: canvas ].
 	
 	"optimization cache"
 	lastSCCShapes := nil -> #()

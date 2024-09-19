@@ -8,8 +8,23 @@ Class {
 	#category : #'MooseIDE-LayerVisualization-Presenters'
 }
 
-{ #category : #accessing }
-MiLayerVisualization >> model [
+{ #category : #initialization }
+MiLayerVisualization >> buildInCanvas: aCanvas [
 
-	^ self owner model
+	owner model ifNil: [ ^ self ].
+
+	builder := MiLayerVisualizationBuilder new
+		           mapModel: owner model;
+		           container: aCanvas;
+		           yourself.
+
+	builder build
+]
+
+{ #category : #initialization }
+MiLayerVisualization >> initialize [
+
+	super initialize.
+
+	self script: [ :canvas | self buildInCanvas: canvas ]
 ]

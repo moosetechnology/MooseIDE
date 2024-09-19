@@ -9,15 +9,15 @@ Class {
 }
 
 { #category : #initialization }
-MiClassBlueprintVisualization >> buildInCanvas: canvas [
+MiClassBlueprintVisualization >> buildInCanvas: aCanvas [
 
 	type ifNil: [ ^ self ].
 
 	blueprint := type blueprint.
-	blueprint canvas: canvas.
+	blueprint canvas: aCanvas.
 	blueprint build.
 
-	^ canvas @ RSCanvasController new noLegend
+	^ aCanvas @ RSCanvasController new noLegend
 ]
 
 { #category : #initialization }

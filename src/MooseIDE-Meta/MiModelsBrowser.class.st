@@ -36,17 +36,6 @@ MiModelsBrowser class >> buildModelCommandsGroupWith: presenterInstance [
 			  (MiModelUtilityCommand asCommandGroupWith: presenterInstance)
 ]
 
-{ #category : #layout }
-MiModelsBrowser class >> defaultLayout [
-
-	^ SpBoxLayout newVertical
-		  add: #toolbar
-		  withConstraints: [ :constraints | 
-			  constraints height: self toolbarHeight ];
-		  add: #modelFilteringList;
-		  yourself
-]
-
 { #category : #'instance creation' }
 MiModelsBrowser class >> instantiateAndOpen [
 
@@ -124,6 +113,17 @@ MiModelsBrowser >> canFollowEntity: anObject [
 MiModelsBrowser >> canTagEntities [
 	"manipulates models, not entities"
 	^false
+]
+
+{ #category : #layout }
+MiModelsBrowser >> defaultLayout [
+
+	^ SpBoxLayout newVertical
+		  add: #toolbar
+		  withConstraints: [ :constraints |
+			  constraints height: self class toolbarHeight ];
+		  add: #modelFilteringList;
+		  yourself
 ]
 
 { #category : #actions }

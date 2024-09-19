@@ -39,12 +39,6 @@ MiLayerVisualizationBrowser class >> title [
 	^ 'Layer visualization'
 ]
 
-{ #category : #'instance creation' }
-MiLayerVisualizationBrowser class >> visualizationBuilder [
-
-	^ MiLayerVisualizationBuilder new
-]
-
 { #category : #specs }
 MiLayerVisualizationBrowser class >> windowSize [
 
@@ -55,6 +49,14 @@ MiLayerVisualizationBrowser class >> windowSize [
 MiLayerVisualizationBrowser >> canFollowEntity: anObject [
 
 	^ anObject isMooseObject
+]
+
+{ #category : #layout }
+MiLayerVisualizationBrowser >> defaultLayout [
+
+	^ SpBoxLayout newTopToBottom
+		  add: visualization;
+		  yourself
 ]
 
 { #category : #actions }
@@ -76,18 +78,9 @@ MiLayerVisualizationBrowser >> followEntity: anEntity [
 ]
 
 { #category : #initialization }
-MiLayerVisualizationBrowser >> initializeLayout [
-
-	self layout: (SpBoxLayout newTopToBottom
-			 add: visualization;
-			 yourself)
-]
-
-{ #category : #initialization }
 MiLayerVisualizationBrowser >> initializePresenters [
 
-	visualization := self instantiate: MiLayerVisualization.
-	self initializeLayout
+	visualization := self instantiate: MiLayerVisualization
 ]
 
 { #category : #accessing }
@@ -99,10 +92,5 @@ MiLayerVisualizationBrowser >> miSelectedItem [
 { #category : #actions }
 MiLayerVisualizationBrowser >> runVisualization [
 
-	| builder |
-	builder := self class visualizationBuilder
-		           mapModel: self model;
-		           container: visualization canvas;
-		           yourself.
-	builder build
+	visualization run
 ]

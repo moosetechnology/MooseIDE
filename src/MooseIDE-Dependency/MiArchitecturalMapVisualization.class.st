@@ -9,14 +9,25 @@ Class {
 }
 
 { #category : #running }
-MiArchitecturalMapVisualization >> run [
+MiArchitecturalMapVisualization >> buildInCanvas: aCanvas [
 
-	super run.
+	owner model rootNodes ifNil: [ ^ self ].
+
+	aCanvas @ RSCanvasController new noLegend.
+
 	builder := MiArchitecturalMapBuilder new
 		           mapModel: owner model;
-		           container: self canvas;
+		           container: aCanvas;
 		           build;
 		           yourself
+]
+
+{ #category : #initialization }
+MiArchitecturalMapVisualization >> initialize [
+
+	super initialize.
+
+	self script: [ :canvas | self buildInCanvas: canvas ]
 ]
 
 { #category : #searching }
