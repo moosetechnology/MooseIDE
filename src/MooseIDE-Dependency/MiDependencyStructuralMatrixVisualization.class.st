@@ -48,6 +48,11 @@ MiDependencyStructuralMatrixVisualization >> createDSM: aRSCanvas [
 
 ]
 
+{ #category : #accessing }
+MiDependencyStructuralMatrixVisualization >> getTupleDependencyWeight: tuple [
+	^ viewModel getTupleDependencyWeight: tuple
+]
+
 { #category : #initialization }
 MiDependencyStructuralMatrixVisualization >> initialize [
 
@@ -60,12 +65,11 @@ MiDependencyStructuralMatrixVisualization >> initialize [
 
 { #category : #private }
 MiDependencyStructuralMatrixVisualization >> sccShapesIncluding: aRSShape [
-"Transcript
-	show: '    ';
-	show: (aRSShape model key model name) ;
-	show: ' -> ';
-	show: (aRSShape model value model name)."
 
+	"Returns all shapes involved in the same cycle as aRSShape.
+	 lastSCCShapes is an optimization cache.
+	 if aRSShape is part of the lastSSCShapes, do nothing. Otherwise, get all shapes of the tuples involved in a cycle with aRSShape model."
+	
 	(lastSCCShapes key = aRSShape model key) ifFalse: [ 
 		"Transcript show: ' - NOT found' ; cr."
 		lastSCCShapes := aRSShape model key -> (aRSShape canvas deepShapesFromModels:

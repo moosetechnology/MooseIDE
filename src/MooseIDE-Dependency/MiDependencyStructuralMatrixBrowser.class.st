@@ -23,7 +23,7 @@ Controls:
 - command+click to use the last tag.
 
 - Mouse left to drag
-- Arrrow keys to move the visualization around
+- Arrow keys to move the visualization around
 - Scrolls bars to change the view's position
 - M to collapse or expand the window
 - I to zoom in
