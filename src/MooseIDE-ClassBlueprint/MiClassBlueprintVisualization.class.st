@@ -9,23 +9,15 @@ Class {
 }
 
 { #category : #initialization }
-MiClassBlueprintVisualization >> buildInCanvas: canvas [
+MiClassBlueprintVisualization >> buildInCanvas: aCanvas [
 
 	type ifNil: [ ^ self ].
 
 	blueprint := type blueprint.
-	blueprint canvas: canvas.
+	blueprint canvas: aCanvas.
 	blueprint build.
 
-	^ canvas @ RSCanvasController new noLegend
-]
-
-{ #category : #initialization }
-MiClassBlueprintVisualization >> initialize [
-
-	super initialize.
-
-	self script: [ :canvas | self buildInCanvas: canvas ]
+	^ aCanvas @ RSCanvasController new noLegend
 ]
 
 { #category : #running }

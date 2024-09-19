@@ -8,12 +8,11 @@ Class {
 MiArchitecturalMapTest >> architecturalMapWith: entities [
 
 	| mockModel mockBrowser |
-	
 	"mock MiArchitecturalMapModel with proper settings and MooseEntities"
-	mockModel:= Mock named: 'MiArchitecturalMapModel'.
+	mockModel := Mock named: 'MiArchitecturalMapModel'.
 	mockModel stub showBusEntities willReturn: true.
 	mockModel stub showAllLinks willReturn: false.
-	mockModel stub tags willReturn: #().
+	mockModel stub tags willReturn: #(  ).
 	mockModel stub entities willReturn: entities.
 	mockModel stub rootNodes willReturn: entities.
 
@@ -22,9 +21,7 @@ MiArchitecturalMapTest >> architecturalMapWith: entities [
 	mockBrowser stub model willReturn: mockModel.
 
 	"MiArchitecturalMap with owner -> mockBrowser"
-	^MiArchitecturalMapVisualization new
-		owner: mockBrowser
-
+	^ MiArchitecturalMapVisualization new owner: mockBrowser
 ]
 
 { #category : #tests }
