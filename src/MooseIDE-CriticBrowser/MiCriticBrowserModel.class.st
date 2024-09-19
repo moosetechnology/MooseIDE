@@ -103,6 +103,15 @@ MiCriticBrowserModel >> initialize [
 	violations := Dictionary new
 ]
 
+{ #category : #accessing }
+MiCriticBrowserModel >> miSelectedItem [
+
+	^ (selectedRule
+		   ifNil: [ self getAllViolations ]
+		   ifNotNil: [ :ruleComponent | self violationsOf: ruleComponent ])
+		  collect: #violatingEntity
+]
+
 { #category : #removing }
 MiCriticBrowserModel >> removeBranchFromRuleComponents: aRuleComponent [
 
