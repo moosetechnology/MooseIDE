@@ -28,14 +28,6 @@ Class {
 	#category : #'MooseIDE-Export-Notebook'
 }
 
-{ #category : #layout }
-MiNotebookBrowser class >> defaultLayout [
-
-	^ SpBoxLayout newLeftToRight
-		  add: #notebook;
-		  yourself
-]
-
 { #category : #'world menu' }
 MiNotebookBrowser class >> menuCommandOn: aBuilder [
 
@@ -85,6 +77,14 @@ MiNotebookBrowser class >> windowSize [
 MiNotebookBrowser >> canFollowEntity: anObject [
 
 	^ true
+]
+
+{ #category : #layout }
+MiNotebookBrowser >> defaultLayout [
+
+	^ self newBoxLayoutLeftToRight
+		  add: notebook;
+		  yourself
 ]
 
 { #category : #actions }

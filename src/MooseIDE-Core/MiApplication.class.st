@@ -50,6 +50,13 @@ MiApplication >> add: anObject toDictionary: aDictionary for: aKey [
 	
 ]
 
+{ #category : #bindings }
+MiApplication >> addBindingForModel: aModel [
+
+	self addSharedBinding:
+		(WorkspaceVariable key: aModel name asValidSelector value: aModel)
+]
+
 { #category : #accessing }
 MiApplication >> allBrowsers: aMiClass [
 	^self browsers select: [ :aBrowser | aBrowser isKindOf: aMiClass ]
@@ -189,7 +196,8 @@ MiApplication >> initialize [
 
 	mooseModelsTag := Dictionary new: 5.
 
-	self beDropFilesHandler
+	self beDropFilesHandler.
+	self registerToModelsAnnouncements
 ]
 
 { #category : #brokerage }
@@ -291,11 +299,49 @@ MiApplication >> registerProducer: aProducer for: aClass [
 	self add: aProducer toDictionary: producers for: aClass
 ]
 
+{ #category : #bindings }
+MiApplication >> registerToModelsAnnouncements [
+
+	MooseModel root entitiesDo: [ :model |
+		self addBindingForModel: model.
+		self registerToSingleModelAnnouncements: model ].
+
+	MooseModel root announcer
+		when: MooseEntityAdded
+		do: [ :announcement |
+			self addBindingForModel: announcement entity.
+			self registerToSingleModelAnnouncements: announcement entity ]
+		for: self.
+
+	MooseModel root announcer
+		when: MooseEntityRemoved
+		do: [ :announcement |
+		self removeBindingNamed: announcement entity name ]
+		for: self
+]
+
+{ #category : #bindings }
+MiApplication >> registerToSingleModelAnnouncements: aModel [
+
+	aModel announcer
+		when: MooseEntityRenamed
+		do: [ :announcement |
+			self removeBindingNamed: announcement oldName.
+			self addBindingForModel: announcement entity ]
+		for: self
+]
+
 { #category : #private }
 MiApplication >> registerWindow: aWindow [
 
 	super registerWindow: aWindow.
 	self updateOverviewBrowsers
+]
+
+{ #category : #bindings }
+MiApplication >> removeBindingNamed: aName [
+
+	self sharedBindings removeKey: aName asValidSelector ifAbsent: [  ]
 ]
 
 { #category : #brokerage }
@@ -341,6 +387,12 @@ MiApplication >> tagListForMooseModel: aMooseModel [
 { #category : #tags }
 MiApplication >> tagSelectedInMooseModel: aMooseModel [
 	^mooseModelsTag at: aMooseModel ifAbsent: [ nil ]
+]
+
+{ #category : #settings }
+MiApplication >> toolbarDisplayMode [
+
+	^ StPharoSettings toolbarDisplayMode
 ]
 
 { #category : #brokerage }

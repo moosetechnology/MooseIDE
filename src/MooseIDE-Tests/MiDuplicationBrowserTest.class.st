@@ -7,7 +7,13 @@ Class {
 { #category : #running }
 MiDuplicationBrowserTest >> browserClass [
 
-	^MiDuplicationBrowser 
+	^ MiDuplicationBrowser
+]
+
+{ #category : #running }
+MiDuplicationBrowserTest >> defaultEntityToSelect [
+
+	^ (self method: 'method1' withSource: (1 to: 8)) asMooseGroup
 ]
 
 { #category : #running }
@@ -112,16 +118,16 @@ MiDuplicationBrowserTest >> testFormatReplicatedFragment [
 MiDuplicationBrowserTest >> testMiSelectedItem [
 
 	| entities |
-	entities := { 
+	entities := {
 		            (self method: 'method1').
 		            (self method: 'method2') } asMooseGroup.
 
 	browser model entities: entities.
 
-	self assertEmpty: browser miSelectedItem.
-	self deny: browser canPropagate.
+	self denyEmpty: browser miSelectedItem.
+	self assert: browser canPropagate.
 
-	browser model selectedEntities: entities.
+	browser model selectEntities: entities.
 	self assert: browser miSelectedItem size equals: 2.
 	self assert: browser canPropagate
 ]

@@ -95,7 +95,7 @@ MiSystemComplexityBrowser >> followEntity: aMooseGroup [
 	specModel entities: newGroup
 ]
 
-{ #category : #actions }
+{ #category : #testing }
 MiSystemComplexityBrowser >> hasSettings [
 
 	^ true

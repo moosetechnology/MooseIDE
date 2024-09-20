@@ -31,8 +31,10 @@ MiTagExtentPage >> add [
 	(self currentTag isNil or: [
 		 incomingEntitiesFilteringList selectedItems isEmpty ]) ifTrue: [
 		^ self ].
+
 	incomingEntitiesFilteringList selectedItems do: [ :entity |
 		self model tagEntityNotYourself: entity ].
+
 	self refreshTaggedEntitiesList.
 	self refreshEntitiesList.
 	self refreshBrowserToolbar
@@ -41,7 +43,7 @@ MiTagExtentPage >> add [
 { #category : #action }
 MiTagExtentPage >> addAll [
 
-	self currentTag ifNil: [ ^ self ].
+	self currentTag ifNil: [ ^ self ]. 
 	incomingEntitiesFilteringList items do: [ :entity |
 		self model tagEntityNotYourself: entity ].
 	self refreshTaggedEntitiesList.

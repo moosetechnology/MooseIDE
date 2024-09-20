@@ -93,7 +93,8 @@ MiDependencyStructuralMatrixBrowserModel >> displayValueForTuple: tuple [
 
 { #category : #accessing }
 MiDependencyStructuralMatrixBrowserModel >> entities [
-	^graph nodes collect: #model
+
+	^ graph nodes collect: #model
 ]
 
 { #category : #actions }
@@ -105,6 +106,21 @@ MiDependencyStructuralMatrixBrowserModel >> followEntity: aCollection [
 	self orderNodes.
 	self computeSCCs.
 	browser buildDSM
+]
+
+{ #category : #api }
+MiDependencyStructuralMatrixBrowserModel >> getTupleDependencyWeight: tuple [
+
+	^(tuple key = tuple value)
+		ifTrue: [ ^0 ]
+		ifFalse: [
+			tuple key model queryAllOutgoing count: [ :dependency || opposites |
+				opposites := dependency target.
+				opposites isCollection
+				ifTrue: [ opposites anySatisfy: [ :each | (each atScope: tuple value model class) includes: tuple value model] ]
+				ifFalse: [(opposites atScope: tuple value model class) includes: tuple value model ]
+			]
+		]
 ]
 
 { #category : #initialization }
@@ -144,6 +160,12 @@ MiDependencyStructuralMatrixBrowserModel >> isDependency: tuple [
 MiDependencyStructuralMatrixBrowserModel >> isDiagonal: tuple [
 	^tuple key = tuple value
 
+]
+
+{ #category : #accessing }
+MiDependencyStructuralMatrixBrowserModel >> miSelectedItem [
+
+	^ self entities
 ]
 
 { #category : #buildGraph }
@@ -209,11 +231,6 @@ MiDependencyStructuralMatrixBrowserModel >> sccTuplesForTuple: tuple [
 					thenSelect: [ :sccTuple | self isCycle: sccTuple ]
 			]
 		]
-]
-
-{ #category : #accessing }
-MiDependencyStructuralMatrixBrowserModel >> selectedEntities [
-	^#()
 ]
 
 { #category : #settings }

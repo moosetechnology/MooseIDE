@@ -2,8 +2,7 @@ Class {
 	#name : #MiBusLogBrowserTest,
 	#superclass : #MiAbstractBrowserTest,
 	#instVars : [
-		'newBrowser',
-		'entityToSelect'
+		'newBrowser'
 	],
 	#category : #'MooseIDE-Tests-Browsers'
 }
@@ -14,11 +13,10 @@ MiBusLogBrowserTest >> browserClass [
 	^ MiBusLogBrowser
 ]
 
-{ #category : #initialization }
-MiBusLogBrowserTest >> setUp [
+{ #category : #running }
+MiBusLogBrowserTest >> receiveEntityToSelect [
 
-	super setUp.
-	entityToSelect := FamixStClass named: 'TestClass'
+	self bus globallySelect: entityToSelect
 ]
 
 { #category : #running }
@@ -26,24 +24,6 @@ MiBusLogBrowserTest >> tearDown [
 
 	newBrowser ifNotNil: [ newBrowser window close ].
 	super tearDown
-]
-
-{ #category : #tests }
-MiBusLogBrowserTest >> testActivateActionButtons [
-
-	browser actionButtons do: [ :button | self deny: button isEnabled ].
-
-	self bus globallySelect: entityToSelect.
-	browser actionButtons do: [ :button | self assert: button isEnabled ]
-]
-
-{ #category : #tests }
-MiBusLogBrowserTest >> testActivateLocalActionButtons [
-
-	browser localActionButtons do: [ :button | self deny: button isEnabled ].
-	
-	self bus globallySelect: entityToSelect.
-	browser localActionButtons do: [ :button | self assert: button isEnabled ]
 ]
 
 { #category : #tests }
@@ -56,7 +36,7 @@ MiBusLogBrowserTest >> testMiSelectedItem [
 
 	self assert: browser miSelectedItem isNil.
 
-	self bus globallySelect: entityToSelect.
+	self receiveEntityToSelect.
 
 	self assert: browser miSelectedItem equals: entityToSelect
 ]
@@ -66,7 +46,7 @@ MiBusLogBrowserTest >> testOpenOnLatestEntity [
 
 	self assert: browser miSelectedItem isNil.
 
-	self bus globallySelect: entityToSelect.
+	self receiveEntityToSelect.
 
 	newBrowser := self browserClass openForTests: self application.
 	self assert: newBrowser miSelectedItem equals: entityToSelect

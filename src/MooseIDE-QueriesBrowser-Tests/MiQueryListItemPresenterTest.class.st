@@ -114,7 +114,7 @@ MiQueryListItemPresenterTest >> testNewQueryForClass [
 	"We check that the method doesn't die when calling it from non unary queries"
 
 	presenter newQueryForClass: FQComplementQuery.
-	presenter newQueryForClass: FQNAryQuery.
+	presenter newQueryForClass: FQUnionQuery.
 
 	self
 		assert: (presenter newQueryForClass: FQBooleanQuery) parent

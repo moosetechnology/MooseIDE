@@ -90,11 +90,6 @@ MiArchitecturalMapBrowser >> canFollowEntity: anEntity [
 ]
 
 { #category : #testing }
-MiArchitecturalMapBrowser >> canPropagate [
-	^true
-]
-
-{ #category : #testing }
 MiArchitecturalMapBrowser >> canReceiveEntity: anEntity [
 
 	^ anEntity isMooseObject

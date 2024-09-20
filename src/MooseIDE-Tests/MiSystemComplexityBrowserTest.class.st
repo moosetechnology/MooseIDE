@@ -10,6 +10,12 @@ MiSystemComplexityBrowserTest >> browserClass [
 	^ MiSystemComplexityBrowser
 ]
 
+{ #category : #running }
+MiSystemComplexityBrowserTest >> defaultEntityToSelect [
+
+	^ MooseGroup with: super defaultEntityToSelect
+]
+
 { #category : #tests }
 MiSystemComplexityBrowserTest >> testCanTagEntities [
 	self deny: browser canTagEntities 

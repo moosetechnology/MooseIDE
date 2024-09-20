@@ -18,6 +18,12 @@ MiCoUsageMapBrowserTest >> populateBrowser: mooseModel [
 
 ]
 
+{ #category : #running }
+MiCoUsageMapBrowserTest >> receiveEntityToSelect [
+
+	browser receiveEntity: entityToSelect asMooseGroup
+]
+
 { #category : #tests }
 MiCoUsageMapBrowserTest >> testCanOpenSettings [
 

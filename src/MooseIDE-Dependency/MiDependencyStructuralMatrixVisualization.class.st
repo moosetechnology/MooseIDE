@@ -13,18 +13,8 @@ Class {
 	#category : #'MooseIDE-Dependency-DSM'
 }
 
-{ #category : #coloring }
-MiDependencyStructuralMatrixVisualization >> cellColor: tuple [
-	^viewModel colorForTuple: tuple
-]
-
-{ #category : #coloring }
-MiDependencyStructuralMatrixVisualization >> cellShowSCCColor: tuple [
-	^viewModel showSCCColorForTuple: tuple
-]
-
 { #category : #initialization }
-MiDependencyStructuralMatrixVisualization >> createDSM: aRSCanvas [
+MiDependencyStructuralMatrixVisualization >> buildInCanvas: aRSCanvas [
 	| dsm entities |
 	"change legend by adding #noLegend to RSCanvasController new
 	and add RSLegend new ..."
@@ -48,24 +38,37 @@ MiDependencyStructuralMatrixVisualization >> createDSM: aRSCanvas [
 
 ]
 
+{ #category : #coloring }
+MiDependencyStructuralMatrixVisualization >> cellColor: tuple [
+	^viewModel colorForTuple: tuple
+]
+
+{ #category : #coloring }
+MiDependencyStructuralMatrixVisualization >> cellShowSCCColor: tuple [
+	^viewModel showSCCColorForTuple: tuple
+]
+
+{ #category : #accessing }
+MiDependencyStructuralMatrixVisualization >> getTupleDependencyWeight: tuple [
+	^ viewModel getTupleDependencyWeight: tuple
+]
+
 { #category : #initialization }
 MiDependencyStructuralMatrixVisualization >> initialize [
 
 	super initialize.
-	self script: [ :canvas | self createDSM: canvas ].
-	
+
 	"optimization cache"
-	lastSCCShapes := nil -> #()
+	lastSCCShapes := nil -> #(  )
 ]
 
 { #category : #private }
 MiDependencyStructuralMatrixVisualization >> sccShapesIncluding: aRSShape [
-"Transcript
-	show: '    ';
-	show: (aRSShape model key model name) ;
-	show: ' -> ';
-	show: (aRSShape model value model name)."
 
+	"Returns all shapes involved in the same cycle as aRSShape.
+	 lastSCCShapes is an optimization cache.
+	 if aRSShape is part of the lastSSCShapes, do nothing. Otherwise, get all shapes of the tuples involved in a cycle with aRSShape model."
+	
 	(lastSCCShapes key = aRSShape model key) ifFalse: [ 
 		"Transcript show: ' - NOT found' ; cr."
 		lastSCCShapes := aRSShape model key -> (aRSShape canvas deepShapesFromModels:

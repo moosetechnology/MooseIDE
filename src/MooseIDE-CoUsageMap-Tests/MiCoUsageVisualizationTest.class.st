@@ -63,7 +63,7 @@ MiCoUsageVisualizationTest >> test05MethodAttributePopup [
 MiCoUsageVisualizationTest >> test06ExtentChanged [
 	"Note: size of canvas depends on number of methods, attributes, and accesses"
 
-	self assert: builder canvas extent x equals: 500.
+	self assert: visualization canvas extent x equals: 500.
 	self
 		assert: (builder canvas encompassingRectangle width between: 400 and: 500)
 		description: 'Value: ' , builder canvas encompassingRectangle width asString , ' not in specified interval'.

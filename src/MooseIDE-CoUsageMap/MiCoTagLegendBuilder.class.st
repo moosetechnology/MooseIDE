@@ -151,23 +151,24 @@ MiCoTagLegendBuilder >> removeOldLegend [
 
 { #category : #hooks }
 MiCoTagLegendBuilder >> renderIn: aCanvas [
+
 	| tagShapes legend |
 	legend := RSLegend new
-		container: aCanvas;
-		yourself.
+		          container: aCanvas;
+		          yourself.
 	shapes := RSGroup new.
 	tagShapes := self tags collect: [ :tag | self legendTagLine: tag ].
 	shapes addAll: tagShapes.
 	shapes add: self legendBottomLine.
-	legend shapes ifNotNil:[ :collection | collection addAll: shapes].
+	legend shapes ifNotNil: [ :collection | collection addAll: shapes ].
 	legend layout vertical gapSize: 2.
 	legend defaultTitle
 		color: Color black;
 		fontSize: 12.
-	legend 
+	legend
 		legendDo: [ :l | self legendDo: l ];
 		beFixedWithTitle: self legendTitle;
-		build.
+		build
 ]
 
 { #category : #accessing }
