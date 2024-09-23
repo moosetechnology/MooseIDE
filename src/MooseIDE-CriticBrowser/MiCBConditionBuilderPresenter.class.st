@@ -26,12 +26,6 @@ MiCBConditionBuilderPresenter class >> ruleComponentName [
 	^ 'condition'
 ]
 
-{ #category : #specs }
-MiCBConditionBuilderPresenter class >> title [
-
-	^ 'Rules builder'
-]
-
 { #category : #action }
 MiCBConditionBuilderPresenter >> buildComponent: aCondition [
 

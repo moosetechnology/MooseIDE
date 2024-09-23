@@ -19,12 +19,6 @@ MiCBContextBuilderPresenter class >> ruleComponentName [
 	^ 'context'
 ]
 
-{ #category : #specs }
-MiCBContextBuilderPresenter class >> title [
-
-	^ 'Context builder'
-]
-
 { #category : #action }
 MiCBContextBuilderPresenter >> buildComponent: aContext [
 

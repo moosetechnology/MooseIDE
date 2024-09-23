@@ -15,7 +15,7 @@ Class {
 { #category : #labels }
 MiCBRuleComponentBuilderPresenter class >> addButtonLabel [
 
-	^ 'Add {1}' format: { self ruleComponentName capitalized }
+	^ 'Add'
 ]
 
 { #category : #labels }
@@ -67,7 +67,8 @@ MiCBRuleComponentBuilderPresenter >> actionButton [
 				  iconName: #glamorousEdit;
 				  action: [
 					  self editComponent.
-					  self withWindowDo: #close ] ]
+					  self withWindowDo: #close ];
+				  yourself ]
 ]
 
 { #category : #action }
@@ -154,6 +155,10 @@ MiCBRuleComponentBuilderPresenter >> initializePresenters [
 MiCBRuleComponentBuilderPresenter >> initializeWindow: aWindowPresenter [
 
 	super initializeWindow: aWindowPresenter.
+	aWindowPresenter title:
+		self class ruleComponentName capitalized , (isForEdition
+			 ifTrue: [ ' editor' ]
+			 ifFalse: [ ' builder' ]).
 	aWindowPresenter initialExtent: self class initialExtent
 ]
 
