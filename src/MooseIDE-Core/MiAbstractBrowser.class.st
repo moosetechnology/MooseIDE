@@ -506,7 +506,8 @@ MiAbstractBrowser >> initializeWindow: aMiWindowPresenter [
 	aMiWindowPresenter buildToolbar.
 
 	aMiWindowPresenter whenClosedDo: [ self browserClosed ].
-	aMiWindowPresenter withAdapterPerformOrDefer: [ :anAdapter | self registerToAdapterEvents: anAdapter ] .
+	aMiWindowPresenter withAdapterPerformOrDefer: [ :anAdapter |
+		self registerToAdapterEvents: anAdapter ].
 
 	aMiWindowPresenter initialExtent: self class windowSize.
 	aMiWindowPresenter setContextBindingKeys
@@ -640,12 +641,11 @@ MiAbstractBrowser >> showHelp [
 
 	| help |
 	(help := self newPopover)
-		"the first right item in the toolbar is the Help buttton"
-		relativeTo: self window toolbar rightItems first;
 		bePositionLeft;
 		presenter: (MiHelpPopup owner: help on: self);
-		popup
-
+		popupPointingTo:
+			(self currentHand position corner: self currentHand position).
+	^ help
 ]
 
 { #category : #accessing }

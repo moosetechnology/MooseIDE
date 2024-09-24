@@ -103,12 +103,12 @@ MiWindowPresenter >> updateReceivingModeButtons [
 { #category : #toolbar }
 MiWindowPresenter >> updateToolbar [
 
-	self toolbarCommandGroup allCommands do: [ :cmd | 
+	self toolbarCommandGroup allCommands do: [ :cmd |
 		cmd updateEnableStatus ].
 
 	(self toolbarCommandGroup
 		 commandOrGroupNamed: 'Receiving Mode'
-		 ifNone: [ ^ self ]) commands do: [ :cmd | 
-		cmd canBeExecuted ifFalse: [ 
+		 ifNone: [ ^ self ]) commands do: [ :cmd |
+		cmd canBeExecuted ifFalse: [
 			cmd presenter icon: (cmd icon lighter: 0.4) ] ]
 ]

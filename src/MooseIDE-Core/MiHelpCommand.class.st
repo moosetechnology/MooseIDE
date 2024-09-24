@@ -1,6 +1,10 @@
 Class {
 	#name : #MiHelpCommand,
 	#superclass : #MiCommand,
+	#instVars : [
+		'helpIsOpen',
+		'currentHelp'
+	],
 	#category : #'MooseIDE-Core-Command'
 }
 
@@ -25,5 +29,17 @@ MiHelpCommand class >> defaultName [
 { #category : #executing }
 MiHelpCommand >> execute [
 
-	self context showHelp
+	helpIsOpen
+		ifFalse: [ currentHelp := self context showHelp ]
+		ifTrue: [
+			currentHelp dismiss.
+			currentHelp := nil ].
+	helpIsOpen := helpIsOpen not
+]
+
+{ #category : #initialization }
+MiHelpCommand >> initialize [
+
+	super initialize.
+	helpIsOpen := false
 ]

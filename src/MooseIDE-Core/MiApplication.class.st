@@ -153,7 +153,7 @@ MiApplication >> defaultBus: aMiBus [
 { #category : #showing }
 MiApplication >> defaultWindowPresenterClass [
 
-	^ MiWindowPresenter "SpWindowPresenter"
+	^ MiWindowPresenter
 ]
 
 { #category : #buses }

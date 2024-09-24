@@ -32,7 +32,6 @@ MiCommand >> application [
 MiCommand >> asSpecCommand [
 
 	| command |
-
 	command := super asSpecCommand
 		           iconProvider: self iconProvider;
 		           iconName: self class defaultIconName;
