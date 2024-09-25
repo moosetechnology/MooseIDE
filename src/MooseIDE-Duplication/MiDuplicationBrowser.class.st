@@ -96,7 +96,7 @@ MiDuplicationBrowser >> canHighlight [
 MiDuplicationBrowser >> followEntity: anEntity [
 
 	super followEntity: anEntity.
-	specModel entities: anEntity
+	specModel allEntities: anEntity
 ]
 
 { #category : #actions }
@@ -240,6 +240,7 @@ MiDuplicationBrowser >> selectFragments: selectedFragments [
 
 { #category : #api }
 MiDuplicationBrowser >> showEntities: entities [
+	"displays list of entities in the left list"
 
 	self resetReplicas.
 	lstEntities items: entities.
@@ -248,6 +249,7 @@ MiDuplicationBrowser >> showEntities: entities [
 
 { #category : #api }
 MiDuplicationBrowser >> showReplicas: replicas [
+	"show the code of the replicas (right pane)"
 
 	replicas do: [ :replica | 
 		panCodes addPage: (self newCodePage: replica) ].
@@ -258,12 +260,23 @@ MiDuplicationBrowser >> showReplicas: replicas [
 
 { #category : #api }
 MiDuplicationBrowser >> showReplicatedFragments: replicatedFragments [
+	"update middle list (of replicated fragments)"
 
 	lstReplicatedFragments items:
 		(replicatedFragments sort: [ :a :b |
 			a replicas anyOne length > b replicas anyOne length ]).
 	
 	self updateStatusBar.
+]
+
+{ #category : #api }
+MiDuplicationBrowser >> showSelectedClones: entities [
+	"show on the left list the entities belonging to selected replica(s)
+	 If the list is empty (no selected replicas) show all entities"
+
+	entities
+		ifEmpty: [ lstEntities items: self model allEntities ]
+		ifNotEmpty: [ lstEntities items: entities ]
 ]
 
 { #category : #'accessing - private tests' }

@@ -9,13 +9,26 @@ Class {
 	#name : #MiDuplicationBrowserModel,
 	#superclass : #MiAbstractModel,
 	#instVars : [
-		'entities',
 		'settings',
 		'selectedEntities',
-		'replicatedFragmentsHierarchy'
+		'replicatedFragmentsHierarchy',
+		'allEntities'
 	],
 	#category : #'MooseIDE-Duplication'
 }
+
+{ #category : #accessing }
+MiDuplicationBrowserModel >> allEntities [
+
+	^ allEntities
+]
+
+{ #category : #accessing }
+MiDuplicationBrowserModel >> allEntities: aCollection [
+
+	allEntities := aCollection sorted: [ :a :b | a name < b name ].
+	browser showEntities: allEntities
+]
 
 { #category : #private }
 MiDuplicationBrowserModel >> ancestorsOf: aFragment in: aFragmentCollection [
@@ -47,22 +60,16 @@ MiDuplicationBrowserModel >> directParentOf: aFragment in: aFragmentCollection [
 
 { #category : #accessing }
 MiDuplicationBrowserModel >> entities [
+	"required by MiAbstractModel, synonym to local #allEntities"
 
-	^ entities
-]
-
-{ #category : #accessing }
-MiDuplicationBrowserModel >> entities: aCollection [
-
-	entities := aCollection sorted: [ :a :b | a name < b name ].
-	browser showEntities: entities
+	^self allEntities
 ]
 
 { #category : #api }
 MiDuplicationBrowserModel >> findReplicas [
 
 	replicatedFragmentsHierarchy := self hierarchyOfReplicatedFragment:
-		(self newDetector runOn: entities)
+		(self newDetector runOn: allEntities)
 			replicatedFragments.
 	browser showReplicatedFragments: (self rootFragments)
 ]
@@ -105,7 +112,7 @@ MiDuplicationBrowserModel >> highlightEntity: entitiesToHighlight [
 { #category : #initialization }
 MiDuplicationBrowserModel >> initialize [
 
-	entities := #(  ).
+	allEntities := #(  ).
 	selectedEntities := #().
 	replicatedFragmentsHierarchy := Dictionary new.
 
@@ -184,7 +191,7 @@ MiDuplicationBrowserModel >> maxReplicasShowed [
 { #category : #accessing }
 MiDuplicationBrowserModel >> miSelectedItem [
 
-	^ selectedEntities ifEmpty: [ entities ]
+	^ selectedEntities ifEmpty: [ allEntities ]
 ]
 
 { #category : #settings }
@@ -222,7 +229,7 @@ MiDuplicationBrowserModel >> newRepConfig [
 
 { #category : #api }
 MiDuplicationBrowserModel >> numberOfEntities [
-	^entities size
+	^allEntities size
 ]
 
 { #category : #api }
@@ -292,9 +299,15 @@ MiDuplicationBrowserModel >> selectedEntities: entityCollection [
 
 { #category : #api }
 MiDuplicationBrowserModel >> selectedFragments: selectedFragments [
+	"called when some clone(s) are selected in the listOfReplicatedFragments (middle list)
+	 - Displays the code of the clones (right pane)
+	   Note: there is a limit on the number entities shown (see settings)
+	 - Displays the cloned entities (left list)"
 
 	| allReplicas |
 	allReplicas := selectedFragments flatCollect: #replicas.
+	browser showSelectedClones: allReplicas.
+
 	allReplicas size > (settings getItemValue: self maxReplicasShowed)
 		ifTrue: [ allReplicas first: (settings getItemValue: self maxReplicasShowed) ]
 		ifFalse: [ allReplicas ].
