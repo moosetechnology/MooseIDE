@@ -65,6 +65,13 @@ MiDuplicationBrowserModel >> entities [
 	^self allEntities
 ]
 
+{ #category : #accessing }
+MiDuplicationBrowserModel >> entities: anObject [
+	"required by MiAbstractModel, synonym to local #allEntities:"
+
+	allEntities := anObject
+]
+
 { #category : #api }
 MiDuplicationBrowserModel >> findReplicas [
 

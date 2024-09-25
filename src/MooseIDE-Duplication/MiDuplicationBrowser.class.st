@@ -136,10 +136,6 @@ MiDuplicationBrowser >> initializeListEntities [
 	lstEntities := self newList.
 	lstEntities beMultipleSelection.
 	lstEntities display: [ :entity | entity name ].
-	lstEntities displayIcon: [ :entity | 
-		self iconNamed: ((specModel isSelected: entity)
-				 ifTrue: [ #testGreen ]
-				 ifFalse: [ #glamorousGrayCircleEmpty ]) ].
 
 	lstEntities whenSelectionChangedDo: [ :selection | 
 		specModel highlightEntity: selection selectedItems ]
