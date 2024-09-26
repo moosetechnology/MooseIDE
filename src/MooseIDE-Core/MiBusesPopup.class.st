@@ -44,11 +44,13 @@ MiBusesPopup >> followNewBusNamed: aName [
 { #category : #initialization }
 MiBusesPopup >> initializePresenters [
 
-	busesList := self newSelectableListForPopoverExtent: 125 @ 150.
-	busesList display: [ :bus | bus name ].
-	busesList items: self application buses.
+	busesList := self instantiate: SpFilteringSelectableListPresenter.
 
 	busesList
+		addStyle: 'busesList';
+		display: #name;
+		items: self application buses;
+		selectItems: browser buses copy;
 		onActivation: [ :bus | bus ifNotNil: [ browser followBus: bus ] ];
 		onDeactivation: [ :bus | bus ifNotNil: [ browser unfollowBus: bus ] ].
 
@@ -57,6 +59,7 @@ MiBusesPopup >> initializePresenters [
 
 { #category : #'accessing - model' }
 MiBusesPopup >> setModelBeforeInitialization: aBrowser [
+
 	browser := aBrowser
 ]
 

@@ -81,14 +81,13 @@ MiWindowPresenter >> toolbarCommandGroup [
 MiWindowPresenter >> updateBusButton [
 
 	| busEditCommand |
-
 	busEditCommand := self toolbarCommandGroup
 		                  commandOrGroupNamed: 'Buses'
 		                  ifNone: [ ^ self ].
 	busEditCommand presenter ifNil: [ ^ self ].
 	busEditCommand presenter
-		label: busEditCommand decoratedCommand label;
-		help: busEditCommand decoratedCommand help.
+		label: busEditCommand dynamicName;
+		help: busEditCommand dynamicDescription.
 	busEditCommand updateEnableStatus
 ]
 

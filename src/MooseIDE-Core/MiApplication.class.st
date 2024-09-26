@@ -241,7 +241,10 @@ MiApplication >> mooseStyleSheet [
 		.mooseContainer [ Container { #borderColor: #00000020, #borderWidth: 1, #padding: 5 } ],
 		.help [ Geometry { 
 			#height: 225,
-			#width: 250 } ]
+			#width: 250 } ],
+		.busesList [ Geometry { 
+			#height: 120,
+			#width: 120 } ]
 ]'
 ]
 
