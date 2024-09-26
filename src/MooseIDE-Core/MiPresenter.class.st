@@ -27,6 +27,19 @@ MiPresenter class >> tableLineHeight [
 	^ self labelHeight + 5
 ]
 
+{ #category : #actions }
+MiPresenter >> helpPopoverSource [
+
+	^ self window toolbar rightItems first
+]
+
+{ #category : #actions }
+MiPresenter >> helpText [
+	"Override when necessary"
+
+	^ self class comment
+]
+
 { #category : #testing }
 MiPresenter >> isMiBrowser [
 	^ false
@@ -58,4 +71,24 @@ MiPresenter >> rootBrowser [
 	^ self isMiBrowser
 		  ifTrue: [ self ]
 		  ifFalse: [ self owner rootBrowser ]
+]
+
+{ #category : #actions }
+MiPresenter >> showHelp [
+
+	| innerTextPresenter |
+	innerTextPresenter := self newText
+		                      text: self helpText;
+		                      beNotEditable;
+		                      addStyle: 'help';
+		                      yourself.
+
+	innerTextPresenter eventHandler whenFocusLostDo: [
+		innerTextPresenter owner dismiss ].
+
+	^ self newPopover
+		  relativeTo: self helpPopoverSource;
+		  bePositionLeft;
+		  presenter: innerTextPresenter;
+		  popup
 ]

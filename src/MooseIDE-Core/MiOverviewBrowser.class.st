@@ -223,23 +223,22 @@ MiOverviewBrowser >> initializePresenters [
 MiOverviewBrowser >> initializeToolbar [
 
 	busesButton := self newButton
-		iconName: #smallAdd;
-		label: 'Add Bus';
-		action: [ self openBusEditor ];
-		yourself.
-	
-	browsersButton := self newMenuBar
-		addItem: [ :item | 
-			item
-				icon: MooseIcons mooseIcon;
-				name: 'Open new browser';
-				subMenu: self browsersMenu ].
-	
+		               iconName: #smallAdd;
+		               label: 'Add Bus';
+		               action: [ self openBusEditor ];
+		               yourself.
+
+	browsersButton := self newMenuBar addItem: [ :item |
+		                  item
+			                  icon: MooseIcons mooseIcon;
+			                  name: 'Open new browser';
+			                  subMenu: self browsersMenu ].
+
 	helpButton := self newButton
-		iconName: #help;
-		help: self class comment;
-		action: [ self showHelp ];
-		yourself
+		              iconName: #help;
+		              help: self helpText;
+		              action: [ self showHelp ];
+		              yourself
 ]
 
 { #category : #initialization }
@@ -284,10 +283,22 @@ MiOverviewBrowser >> replaceMenuItemAction: aMenuItem [
 
 { #category : #toolbar }
 MiOverviewBrowser >> showHelp [
-	self newPopover
-		relativeTo: helpButton;
-		presenter: (MiHelpPopup on: self);
-		popup
+
+	| innerTextPresenter |
+	innerTextPresenter := self newText
+		                      text: self helpText;
+		                      beNotEditable;
+		                      addStyle: 'help';
+		                      yourself.
+
+	innerTextPresenter eventHandler whenFocusLostDo: [
+		innerTextPresenter owner dismiss ].
+
+	^ self newPopover
+		  relativeTo: helpButton;
+		  bePositionLeft;
+		  presenter: innerTextPresenter;
+		  popup
 ]
 
 { #category : #api }

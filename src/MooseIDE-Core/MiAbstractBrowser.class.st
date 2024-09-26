@@ -639,13 +639,21 @@ MiAbstractBrowser >> settings [
 { #category : #actions }
 MiAbstractBrowser >> showHelp [
 
-	| help |
-	(help := self newPopover)
-		bePositionLeft;
-		presenter: (MiHelpPopup owner: help on: self);
-		popupPointingTo:
-			(self currentHand position corner: self currentHand position).
-	^ help
+	| innerTextPresenter |
+	innerTextPresenter := self newText
+		                      text: self helpText;
+		                      beNotEditable;
+		                      addStyle: 'help';
+		                      yourself.
+
+	innerTextPresenter eventHandler whenFocusLostDo: [
+		innerTextPresenter owner dismiss ].
+
+	^ self newPopover
+		  relativeTo: self helpPopoverSource;
+		  bePositionLeft;
+		  presenter: innerTextPresenter;
+		  popup
 ]
 
 { #category : #accessing }

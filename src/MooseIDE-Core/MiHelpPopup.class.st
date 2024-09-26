@@ -23,6 +23,14 @@ MiHelpPopup class >> defaultLayout [
 		yourself
 ]
 
+{ #category : #layout }
+MiHelpPopup >> defaultLayout [
+
+	^ SpBoxLayout newHorizontal
+		  add: help;
+		  yourself
+]
+
 { #category : #api }
 MiHelpPopup >> dismiss [
 	self owner dismiss
@@ -30,12 +38,13 @@ MiHelpPopup >> dismiss [
 
 { #category : #initialization }
 MiHelpPopup >> initializePresenters [
+
 	super initializePresenters.
-	help := self newText text: browser class comment.
-	okButton := self newButton
-		label: 'Ok';
-		action: [ self owner dismiss ];
-		yourself
+
+	help := self newText
+		        text: browser class comment;
+		        addStyle: 'help';
+		        yourself
 ]
 
 { #category : #'accessing - model' }
