@@ -182,15 +182,20 @@ MiModelsBrowser >> initializeList [
 				 evaluated: [ :model | model entities size asString ];
 				 beSortable;
 				 yourself);
-		contextMenu: [ (self class buildModelCommandsGroupWith: self) asMenuPresenter ];
-		whenSelectionChangedDo: [ :selected | specModel selected: selected selectedItem ]
+		contextMenu: [
+		(self class buildModelCommandsGroupWith: self) asMenuPresenter ];
+		whenSelectionChangedDo: [ :selected |
+		specModel selected: selected selectedItem ];
+		activateOnDoubleClick;
+		whenActivatedDo: [ self miInspect ]
 ]
 
 { #category : #initialization }
 MiModelsBrowser >> initializePresenters [
 
 	self initializeToolbar.
-	self initializeList
+	self initializeList.
+	self selectAModelIfPossible
 ]
 
 { #category : #initialization }
@@ -206,8 +211,7 @@ MiModelsBrowser >> initializeToolbar [
 { #category : #updating }
 MiModelsBrowser >> listOfMooseModels: aList [
 
-	modelFilteringList items: aList.
-	
+	modelFilteringList items: aList
 ]
 
 { #category : #accessing }
@@ -235,6 +239,13 @@ MiModelsBrowser >> refreshToolbarButton [
 		  help: 'Refresh list';
 		  action: [ self updateList ];
 		  yourself
+]
+
+{ #category : #initialization }
+MiModelsBrowser >> selectAModelIfPossible [
+
+	specModel entities ifNotEmpty: [ :list |
+		modelFilteringList selectItem: list first ]
 ]
 
 { #category : #'accessing - tests' }
