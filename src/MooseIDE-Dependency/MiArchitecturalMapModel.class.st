@@ -472,8 +472,9 @@ MiArchitecturalMapModel >> timeoutDuration [
 { #category : #settings }
 MiArchitecturalMapModel >> updateSettings [
 
-	(settings itemNamed: #associationTypes) possibleValues:
-		self allAssociationTypes
+	(settings itemNamed: #associationTypes)
+		possibleValues: self allAssociationTypes ;
+		selectAll
 ]
 
 { #category : #private }
