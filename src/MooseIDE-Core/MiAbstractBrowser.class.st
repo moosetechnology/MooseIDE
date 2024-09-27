@@ -233,13 +233,13 @@ MiAbstractBrowser class >> miBrowsersMenuPresenter [
 	rootMenu := SpMenuPresenter new.
 	defaultSubMenu := SpMenuPresenter new.
 
-	(self subclasses sortAscending: [ :browserClass | 
-		 browserClass menuPriority ]) do: [ :browserClass | 
+	(self subclasses sortAscending: [ :browserClass |
+		 browserClass menuPriority ]) do: [ :browserClass |
 		browserClass
 			addItemOrSubMenuToMiBrowsersMenu: rootMenu
 			defaultSubMenu: defaultSubMenu ].
 
-	rootMenu addItem: [ :item | 
+	rootMenu addItem: [ :item |
 		item
 			name: self defaultSubMenuLabel;
 			subMenu: defaultSubMenu ].
@@ -634,26 +634,6 @@ MiAbstractBrowser >> setModelBeforeInitialization: aBrowserModel [
 MiAbstractBrowser >> settings [
 
 	self hasSettings ifTrue: [ specModel openSettings ]
-]
-
-{ #category : #actions }
-MiAbstractBrowser >> showHelp [
-
-	| innerTextPresenter |
-	innerTextPresenter := self newText
-		                      text: self helpText;
-		                      beNotEditable;
-		                      addStyle: 'help';
-		                      yourself.
-
-	innerTextPresenter eventHandler whenFocusLostDo: [
-		innerTextPresenter owner dismiss ].
-
-	^ self newPopover
-		  relativeTo: self helpPopoverSource;
-		  bePositionLeft;
-		  presenter: innerTextPresenter;
-		  popup
 ]
 
 { #category : #accessing }

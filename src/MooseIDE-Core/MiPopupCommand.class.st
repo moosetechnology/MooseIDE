@@ -16,7 +16,7 @@ MiPopupCommand >> asSpecCommand [
 
 	specCommand buildPresenterBlock: [ :cmd |
 		toolbarButton := SpToolbarToggleButtonPresenter new
-			                 icon: specCommand icon;
+			                 icon: (self iconNamed: self class defaultIconName);
 			                 help: self dynamicDescription;
 			                 label: self dynamicName;
 			                 whenActivatedDo: [ self execute ];

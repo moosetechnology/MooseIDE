@@ -10,15 +10,12 @@ Class {
 	#name : #MiOverviewBrowser,
 	#superclass : #MiPresenter,
 	#instVars : [
-		'busesButton',
-		'browsersButton',
-		'chkOpenInPage',
-		'helpButton',
 		'browsersPage',
 		'busesPage',
 		'browsersListPresenter',
 		'busesListPresenter',
-		'mainPresenter'
+		'mainPresenter',
+		'toolbar'
 	],
 	#category : #'MooseIDE-Core-Overview'
 }
@@ -151,6 +148,20 @@ MiOverviewBrowser >> buses [
 	^ self application buses
 ]
 
+{ #category : #layout }
+MiOverviewBrowser >> defaultLayout [
+
+	^ SpBoxLayout newVertical
+		  spacing: 10;
+		  add: toolbar height: self class toolbarHeight;
+		  add: mainPresenter;
+		  yourself "(SpBoxLayout newHorizontal
+				   add: busesButton width: self class buttonWidth;
+				   add: browsersButton expand: false;
+				   add: SpNullPresenter new expand: true;
+				   add: helpButton width: self class iconWidth)"
+]
+
 { #category : #actions }
 MiOverviewBrowser >> followBus: aBus [
 
@@ -195,23 +206,6 @@ MiOverviewBrowser >> initializeBusesPage [
 ]
 
 { #category : #initialization }
-MiOverviewBrowser >> initializeLayout [
-
-	| tempLayout |
-	tempLayout := SpBoxLayout newVertical
-		add: (SpBoxLayout newHorizontal
-			add: busesButton width: self class buttonWidth;
-			add: browsersButton expand: false;
-			add: SpNullPresenter new expand: true;
-			add: helpButton width: self class iconWidth)
-		height: self class toolbarHeight;
-		add: mainPresenter;
-		yourself.
-		
-	self layout: tempLayout
-]
-
-{ #category : #initialization }
 MiOverviewBrowser >> initializeNotebook [
 
 	mainPresenter := self newNotebook.
@@ -227,30 +221,24 @@ MiOverviewBrowser >> initializeNotebook [
 MiOverviewBrowser >> initializePresenters [
 
 	self initializeToolbar.
-	self initializeNotebook.
-	self initializeLayout
+	self initializeNotebook
 ]
 
 { #category : #initialization }
 MiOverviewBrowser >> initializeToolbar [
 
-	busesButton := self newButton
-		               iconName: #smallAdd;
-		               label: 'Add Bus';
-		               action: [ self openBusEditor ];
-		               yourself.
+	toolbar := self newToolbar.
 
-	browsersButton := self newMenuBar addItem: [ :item |
-		                  item
-			                  icon: MooseIcons mooseIcon;
-			                  name: 'Open new browser';
-			                  subMenu: self browsersMenu ].
+	toolbar add: (MiEditBusCommand forSpecContext: self) buildPresenter.
 
-	helpButton := self newButton
-		              iconName: #help;
-		              help: self helpText;
-		              action: [ self showHelp ];
-		              yourself
+	toolbar add: (SpToolbarButtonPresenter new
+			 icon: MooseIcons mooseIcon;
+			 label: 'Open new browser';
+			 action: [ self browsersMenu openWithSpecAtPointer ];
+			 yourself).
+
+	toolbar addItemRight:
+		(MiHelpCommand forSpecContext: self) buildPresenter
 ]
 
 { #category : #initialization }
@@ -258,16 +246,6 @@ MiOverviewBrowser >> initializeWindow: aWindowPresenter [
 
 	super initializeWindow: aWindowPresenter.
 	aWindowPresenter initialExtent: 500 @ self class height
-]
-
-{ #category : #toolbar }
-MiOverviewBrowser >> openBusEditor [
-
-	self newPopover
-		relativeTo: busesButton;
-		presenter:
-			(MiBusesPopup newApplication: self application model: self);
-		popup
 ]
 
 { #category : #presenters }
@@ -294,33 +272,13 @@ MiOverviewBrowser >> replaceMenuItemAction: aMenuItem [
 	aMenuItem action: [ itemAction value ]
 ]
 
-{ #category : #toolbar }
-MiOverviewBrowser >> showHelp [
-
-	| innerTextPresenter |
-	innerTextPresenter := self newText
-		                      text: self helpText;
-		                      beNotEditable;
-		                      addStyle: 'help';
-		                      yourself.
-
-	innerTextPresenter eventHandler whenFocusLostDo: [
-		innerTextPresenter owner dismiss ].
-
-	^ self newPopover
-		  relativeTo: helpButton;
-		  bePositionLeft;
-		  presenter: innerTextPresenter;
-		  popup
-]
-
 { #category : #actions }
 MiOverviewBrowser >> unfollowBus: aBus [
 
 	self updateBusesPage
 ]
 
-{ #category : #api }
+{ #category : #actions }
 MiOverviewBrowser >> updateBrowsersListItems [
 
 	browsersListPresenter items: self openedBrowsers
