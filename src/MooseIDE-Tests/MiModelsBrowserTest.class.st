@@ -219,9 +219,9 @@ MiModelsBrowserTest >> testUpdateForNewModel [
 MiModelsBrowserTest >> testUpdateForNewModelMultipleBrowsers [
 
 	| browser2 newModel |
-
-	self newModel: 'model1'.
 	browser2 := self browserClass openForTests: self application.
+	self newModel: 'model1'.
+
 	browser updateList.
 
 	self assert: browser model entities size equals: 1.
