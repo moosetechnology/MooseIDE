@@ -30,7 +30,8 @@ MiBusesPopup >> createNewBusNamed: aName [
 
 	"Update"
 	self filterInputPresenter clearContent.
-	self items: self application buses
+	self items: self application buses.
+	self selectItem: newBus
 ]
 
 { #category : #initialization }

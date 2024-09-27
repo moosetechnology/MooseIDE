@@ -154,9 +154,7 @@ MiOverviewBrowser >> buses [
 { #category : #actions }
 MiOverviewBrowser >> followBus: aBus [
 
-	busesListPresenter items: (busesListPresenter items
-			 add: (MiBusPresenter on: aBus);
-			 yourself)
+	self updateBusesPage
 ]
 
 { #category : #initialization }
@@ -314,6 +312,12 @@ MiOverviewBrowser >> showHelp [
 		  bePositionLeft;
 		  presenter: innerTextPresenter;
 		  popup
+]
+
+{ #category : #actions }
+MiOverviewBrowser >> unfollowBus: aBus [
+
+	self updateBusesPage
 ]
 
 { #category : #api }
