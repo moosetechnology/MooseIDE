@@ -27,6 +27,13 @@ MiPresenter class >> tableLineHeight [
 	^ self labelHeight + 5
 ]
 
+{ #category : #actions }
+MiPresenter >> helpText [
+	"Override when necessary"
+
+	^ self class comment
+]
+
 { #category : #testing }
 MiPresenter >> isMiBrowser [
 	^ false

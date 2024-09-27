@@ -233,13 +233,13 @@ MiAbstractBrowser class >> miBrowsersMenuPresenter [
 	rootMenu := SpMenuPresenter new.
 	defaultSubMenu := SpMenuPresenter new.
 
-	(self subclasses sortAscending: [ :browserClass | 
-		 browserClass menuPriority ]) do: [ :browserClass | 
+	(self subclasses sortAscending: [ :browserClass |
+		 browserClass menuPriority ]) do: [ :browserClass |
 		browserClass
 			addItemOrSubMenuToMiBrowsersMenu: rootMenu
 			defaultSubMenu: defaultSubMenu ].
 
-	rootMenu addItem: [ :item | 
+	rootMenu addItem: [ :item |
 		item
 			name: self defaultSubMenuLabel;
 			subMenu: defaultSubMenu ].
@@ -434,15 +434,15 @@ MiAbstractBrowser >> defaultLayout [
 { #category : #buses }
 MiAbstractBrowser >> followBus: aBus [
 
-	  (self buses includes: aBus) ifTrue: [ 
-		  application defaultBus: aBus.
-		  ^ self ].
+	(self buses includes: aBus) ifTrue: [
+		application defaultBus: aBus.
+		^ self ].
 
-	  self buses add: aBus.
-	  aBus registerBrowser: self.
-	  self window ifNotNil: [ :window | window updateBusButton ].
-	  self receiveEntity: aBus logger mostRecentEntity.
-	  application defaultBus: aBus
+	self buses add: aBus.
+	aBus registerBrowser: self.
+	self window ifNotNil: [ :window | window updateBusButton ].
+	self receiveEntity: aBus logger mostRecentEntity.
+	application defaultBus: aBus
 ]
 
 { #category : #actions }
@@ -634,18 +634,6 @@ MiAbstractBrowser >> setModelBeforeInitialization: aBrowserModel [
 MiAbstractBrowser >> settings [
 
 	self hasSettings ifTrue: [ specModel openSettings ]
-]
-
-{ #category : #actions }
-MiAbstractBrowser >> showHelp [
-
-	| help |
-	(help := self newPopover)
-		bePositionLeft;
-		presenter: (MiHelpPopup owner: help on: self);
-		popupPointingTo:
-			(self currentHand position corner: self currentHand position).
-	^ help
 ]
 
 { #category : #accessing }

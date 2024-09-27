@@ -1,10 +1,6 @@
 Class {
 	#name : #MiHelpCommand,
-	#superclass : #MiCommand,
-	#instVars : [
-		'helpIsOpen',
-		'currentHelp'
-	],
+	#superclass : #MiPopupCommand,
 	#category : #'MooseIDE-Core-Command'
 }
 
@@ -27,19 +23,19 @@ MiHelpCommand class >> defaultName [
 ]
 
 { #category : #executing }
-MiHelpCommand >> execute [
+MiHelpCommand >> newPopover [
 
-	helpIsOpen
-		ifFalse: [ currentHelp := self context showHelp ]
-		ifTrue: [
-			currentHelp dismiss.
-			currentHelp := nil ].
-	helpIsOpen := helpIsOpen not
+	^ super newPopover
+		  bePositionLeft;
+		  yourself
 ]
 
-{ #category : #initialization }
-MiHelpCommand >> initialize [
+{ #category : #converting }
+MiHelpCommand >> popupContent [
 
-	super initialize.
-	helpIsOpen := false
+	^ (SpTextPresenter newApplication: self context application)
+		  text: self context helpText;
+		  beNotEditable;
+		  addStyle: 'help';
+		  yourself
 ]
