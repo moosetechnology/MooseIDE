@@ -243,8 +243,8 @@ MiApplication >> mooseStyleSheet [
 			#height: 225,
 			#width: 250 } ],
 		.busesList [ Geometry { 
-			#height: 120,
-			#width: 120 } ]
+			#height: 150,
+			#width: 150 } ]
 ]'
 ]
 

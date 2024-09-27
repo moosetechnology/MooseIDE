@@ -145,6 +145,20 @@ MiOverviewBrowser >> browsersMenu [
 	^ MiAbstractBrowser miBrowsersMenuPresenter
 ]
 
+{ #category : #accessing }
+MiOverviewBrowser >> buses [
+
+	^ self application buses
+]
+
+{ #category : #actions }
+MiOverviewBrowser >> followBus: aBus [
+
+	busesListPresenter items: (busesListPresenter items
+			 add: (MiBusPresenter on: aBus);
+			 yourself)
+]
+
 { #category : #initialization }
 MiOverviewBrowser >> initializeBrowsersList [
 
@@ -253,7 +267,8 @@ MiOverviewBrowser >> openBusEditor [
 
 	self newPopover
 		relativeTo: busesButton;
-		presenter: (MiBusesPopup on: self);
+		presenter:
+			(MiBusesPopup newApplication: self application model: self);
 		popup
 ]
 

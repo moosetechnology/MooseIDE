@@ -10,7 +10,7 @@ The buses are shown in a SpTable. We don't have action on selection for now. An 
 "
 Class {
 	#name : #MiBusesPopup,
-	#superclass : #MiPresenter,
+	#superclass : #SpFilteringSelectableListPresenter,
 	#instVars : [
 		'busesList',
 		'browser'
@@ -18,35 +18,26 @@ Class {
 	#category : #'MooseIDE-Core-Browser'
 }
 
-{ #category : #specs }
-MiBusesPopup class >> defaultLayout [
-
-	^ SpBoxLayout newTopToBottom
-		  add: #busesList;
-		  yourself
-]
-
 { #category : #initialization }
-MiBusesPopup >> followNewBusNamed: aName [
+MiBusesPopup >> createNewBusNamed: aName [
 
 	| newBus |
 	"Create new bus"
 	newBus := self application busNamed: aName.
 
 	"Follow new bus"
-	browser updateBusesPage.
+	browser followBus: newBus.
 
 	"Update"
-	busesList filterInputPresenter clearContent.
-	busesList items: self application buses
+	self filterInputPresenter clearContent.
+	self items: self application buses
 ]
 
 { #category : #initialization }
-MiBusesPopup >> initializePresenters [
+MiBusesPopup >> initialize [
 
-	busesList := self instantiate: SpFilteringSelectableListPresenter.
-
-	busesList
+	super initialize.
+	self
 		addStyle: 'busesList';
 		display: #name;
 		items: self application buses;
@@ -65,16 +56,15 @@ MiBusesPopup >> setModelBeforeInitialization: aBrowser [
 
 { #category : #initialization }
 MiBusesPopup >> useTextInputForBusCreation [
-
 	"Do not filter but use text input for bus creation"
 
-	busesList filterInputPresenter placeholder: '+ New bus'.
+	self filterInputPresenter placeholder: '+ New bus'.
 
-	busesList itemFilter: [ :each :pattern | 
+	self itemFilter: [ :each :pattern |
 		true "We do not want to filter anything" ].
 
-	busesList filterInputPresenter whenSubmitDo: [ :busName | 
-		self followNewBusNamed: busName.
-		busesList filterInputPresenter clearContent.
-		busesList items: self application buses ]
+	self filterInputPresenter whenSubmitDo: [ :busName |
+		self createNewBusNamed: busName.
+		self filterInputPresenter clearContent.
+		self items: self application buses ]
 ]
