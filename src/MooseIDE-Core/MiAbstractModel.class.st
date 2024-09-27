@@ -7,7 +7,8 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'browser',
-		'lastTagSelected'
+		'lastTagSelected',
+		'selectedTag'
 	],
 	#category : #'MooseIDE-Core-Browser'
 }
@@ -59,13 +60,13 @@ MiAbstractModel >> miSelectedItem [
 { #category : #tagging }
 MiAbstractModel >> selectedTag [
 
-	^self currentApplication tagSelectedInMooseModel: self currentMooseModel
+	^ selectedTag
 ]
 
 { #category : #tagging }
 MiAbstractModel >> selectedTag: aTag [
 
-	self currentApplication selectedTag: aTag
+	selectedTag := aTag
 ]
 
 { #category : #accessing }

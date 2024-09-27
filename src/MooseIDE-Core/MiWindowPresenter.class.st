@@ -25,22 +25,30 @@ MiWindowPresenter class >> buildCommandsGroupWith: aPresenter forRoot: rootComma
 
 	rootCommandGroup
 		register:
-			(MiReceivingModeCommand asCommandGroupForSpecContext: aPresenter) ;
-		register: (MiEditBusCommand forSpecContext: aPresenter) ;
-		register: (MiTagCommand forSpecContext: aPresenter) ;
+			(MiReceivingModeCommand asCommandGroupForSpecContext: aPresenter);
+		register: (MiEditBusCommand forSpecContext: aPresenter);
+		register: (self taggingCommandGroupFor: aPresenter);
 		register:
-			(MiHelpCommand forSpecContext: aPresenter) beDisplayedOnRightSide ;
+			(MiHelpCommand forSpecContext: aPresenter) beDisplayedOnRightSide;
 		register: (self actionsCommandGroupFor: aPresenter).
 
-	aPresenter hasSettings ifTrue: [ 
+	aPresenter hasSettings ifTrue: [
 		rootCommandGroup register:
 			(MiSettingsCommand forSpecContext: aPresenter)
 				beDisplayedOnRightSide ].
-	aPresenter hasVisualization ifTrue: [ 
-			rootCommandGroup register:
+	aPresenter hasVisualization ifTrue: [
+		rootCommandGroup register:
 			(MiExportVisualizationCommand forSpecContext: aPresenter)
-				beDisplayedOnRightSide 
-		]
+				beDisplayedOnRightSide ]
+]
+
+{ #category : #commands }
+MiWindowPresenter class >> taggingCommandGroupFor: aPresenter [
+
+	^ CmCommandGroup forSpec
+		  name: 'Tagging';
+		  register: (MiTagCommand forSpecContext: aPresenter);
+		  register: (MiSelectTagCommand forSpecContext: aPresenter)
 ]
 
 { #category : #toolbar }
@@ -100,14 +108,38 @@ MiWindowPresenter >> updateReceivingModeButtons [
 ]
 
 { #category : #toolbar }
-MiWindowPresenter >> updateToolbar [
-
-	self toolbarCommandGroup allCommands do: [ :cmd |
-		cmd updateEnableStatus ].
+MiWindowPresenter >> updateReceivingModelToolbarButtons [
 
 	(self toolbarCommandGroup
 		 commandOrGroupNamed: 'Receiving Mode'
 		 ifNone: [ ^ self ]) commands do: [ :cmd |
 		cmd canBeExecuted ifFalse: [
 			cmd presenter icon: (cmd icon lighter: 0.4) ] ]
+]
+
+{ #category : #toolbar }
+MiWindowPresenter >> updateTaggingToolbarButton [
+
+	| tagCommand |
+	tagCommand := (self toolbarCommandGroup
+		               commandOrGroupNamed: 'Tagging'
+		               ifNone: [ ^ self ])
+		              commandOrGroupNamed: 'Tag entities'
+		              ifNone: [ ^ self ].
+
+	tagCommand canBeExecuted ifTrue: [
+		tagCommand presenter
+			icon: (self application iconForTag: self presenter selectedTag);
+			label: self presenter selectedTag name ]
+]
+
+{ #category : #toolbar }
+MiWindowPresenter >> updateToolbar [
+
+	self toolbarCommandGroup allCommands do: [ :cmd |
+		cmd updateEnableStatus ].
+
+	self updateReceivingModelToolbarButtons.
+
+	self updateTaggingToolbarButton
 ]

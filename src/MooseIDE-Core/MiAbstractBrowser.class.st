@@ -604,16 +604,17 @@ MiAbstractBrowser >> restore [
 
 { #category : #accessing }
 MiAbstractBrowser >> selectedTag [
-	^self model
-		ifNil: [ nil ]
-		ifNotNil: [ :model | model selectedTag]
+
+	^ self model ifNil: [ nil ] ifNotNil: [ :model | model selectedTag ]
 ]
 
 { #category : #accessing }
 MiAbstractBrowser >> selectedTag: aTag [
-	^self model
+
+	self model
 		ifNil: [ nil ]
-		ifNotNil: [ :model | model selectedTag: aTag]
+		ifNotNil: [ :model | model selectedTag: aTag ].
+	self updateToolbar
 ]
 
 { #category : #initialization }
@@ -660,8 +661,7 @@ MiAbstractBrowser >> tagName [
 { #category : #actions }
 MiAbstractBrowser >> tagSelectedEntities [
 
-	^self model
-		ifNotNil: [ :model | model tagSelectedEntities ]
+	self model ifNotNil: [ :model | model tagSelectedEntities ]
 ]
 
 { #category : #buses }
