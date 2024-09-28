@@ -11,9 +11,15 @@ MiSelectTagCommand class >> defaultDescription [
 ]
 
 { #category : #default }
+MiSelectTagCommand class >> defaultIconName [
+
+	^ #mooseDown
+]
+
+{ #category : #default }
 MiSelectTagCommand class >> defaultName [
 
-	^ 'Select Tag'
+	^ 'Tag'
 ]
 
 { #category : #testing }
