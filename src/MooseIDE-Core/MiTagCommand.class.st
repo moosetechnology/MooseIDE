@@ -24,7 +24,7 @@ MiTagCommand class >> defaultIconName [
 
 { #category : #'accessing - defaults' }
 MiTagCommand class >> defaultName [
-	^ 'Tag entities'
+	^ 'Set'
 ]
 
 { #category : #testing }
