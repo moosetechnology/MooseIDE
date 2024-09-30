@@ -8,10 +8,21 @@ Class {
 		'graph',
 		'nodeDictionary',
 		'nodeColors',
-		'orderedNodes'
+		'orderedNodesX',
+		'orderedNodesY'
 	],
 	#category : #'MooseIDE-Dependency-DSM'
 }
+
+{ #category : #accessing }
+MiDependencyStructuralMatrixBrowserModel >> buildGraph: aCollection [
+
+	self newGraph.
+	self buildGraphNodes: aCollection.
+	self buildGraphEdges.
+	"self initializeNodes."
+	self computeSCCs
+]
 
 { #category : #buildGraph }
 MiDependencyStructuralMatrixBrowserModel >> buildGraphEdges [
@@ -100,11 +111,7 @@ MiDependencyStructuralMatrixBrowserModel >> entities [
 { #category : #actions }
 MiDependencyStructuralMatrixBrowserModel >> followEntity: aCollection [
 
-	self newGraph.
-	self buildGraphNodes: aCollection.
-	self buildGraphEdges.
-	self orderNodes.
-	self computeSCCs.
+	self buildGraph: aCollection.
 	browser buildDSM
 ]
 
@@ -144,6 +151,38 @@ MiDependencyStructuralMatrixBrowserModel >> initializeColors [
 
 ]
 
+{ #category : #buildGraph }
+MiDependencyStructuralMatrixBrowserModel >> initializeNodes [
+	"Store ordered nodes in #orderedNodes.
+	 Order is:
+	 - number of combined in and out dependencies
+	 - if equal, number of out dependencies
+	 - if also equal, then name"
+	orderedNodesX:= graph nodes.
+	orderedNodesY := graph nodes.
+	"| incomingEdges |
+
+	incomingEdges := Dictionary new: graph nodes size.
+	graph nodes do: [ :node | incomingEdges at: node put: Set new ].
+	graph nodes do: [ :node |
+		node adjacentNodes do: [ :adjacent |
+			(incomingEdges at: adjacent) add: node
+		].
+	].
+	orderedNodes := graph nodes sorted: [ :nodeA :nodeB || outA inA outB inB|
+		outA := nodeA adjacentNodes size.
+		inA := (incomingEdges at: nodeA) size.
+		outB := nodeB adjacentNodes size.
+		inB := (incomingEdges at: nodeB) size.
+		
+		(inA + outA) < (inB + outB)
+		or: [ (inA + outA) = (inB + outB)
+			ifTrue: [ outA < outB
+				or: [ outA = outB and: [nodeA model name < nodeB model name] ] ]
+			ifFalse: [ false ] ] ]."
+
+]
+
 { #category : #testing }
 MiDependencyStructuralMatrixBrowserModel >> isCycle: tuple [
 
@@ -171,42 +210,26 @@ MiDependencyStructuralMatrixBrowserModel >> miSelectedItem [
 { #category : #buildGraph }
 MiDependencyStructuralMatrixBrowserModel >> newGraph [
 	graph := AITarjan new.
-	orderedNodes := #()
+	"orderedNodes := #()."
+	orderedNodesX := #().
+	orderedNodesY := #()
+]
+
+{ #category : #actions }
+MiDependencyStructuralMatrixBrowserModel >> openDetailedDSMOn: aTuple [
+	MiDependencyStructuralMatrixBrowser openWithX: aTuple key model children withY: aTuple value model children
+	
+
 ]
 
 { #category : #accessing }
-MiDependencyStructuralMatrixBrowserModel >> nodesOrdered [
-	^orderedNodes
+MiDependencyStructuralMatrixBrowserModel >> orderedNodesX [
+	^orderedNodesX
 ]
 
-{ #category : #buildGraph }
-MiDependencyStructuralMatrixBrowserModel >> orderNodes [
-	"Store ordered nodes in #orderedNodes.
-	 Order is:
-	 - number of combined in and out dependencies
-	 - if equal, number of out dependencies
-	 - if also equal, then name"
-	| incomingEdges |
-
-	incomingEdges := Dictionary new: graph nodes size.
-	graph nodes do: [ :node | incomingEdges at: node put: Set new ].
-	graph nodes do: [ :node |
-		node adjacentNodes do: [ :adjacent |
-			(incomingEdges at: adjacent) add: node
-		].
-	].
-	orderedNodes := graph nodes sorted: [ :nodeA :nodeB || outA inA outB inB|
-		outA := nodeA adjacentNodes size.
-		inA := (incomingEdges at: nodeA) size.
-		outB := nodeB adjacentNodes size.
-		inB := (incomingEdges at: nodeB) size.
-		
-		(inA + outA) < (inB + outB)
-		or: [ (inA + outA) = (inB + outB)
-			ifTrue: [ outA < outB
-				or: [ outA = outB and: [nodeA model name < nodeB model name] ] ]
-			ifFalse: [ false ] ] ].
-
+{ #category : #accessing }
+MiDependencyStructuralMatrixBrowserModel >> orderedNodesY [
+	^orderedNodesY
 ]
 
 { #category : #settings }
@@ -247,4 +270,15 @@ MiDependencyStructuralMatrixBrowserModel >> showSCCColorForTuple: tuple [
 
 	(self isCycle: tuple) ifTrue: [ ^ self showSCCColor ].
 	^ self dependencyColor
+]
+
+{ #category : #accessing }
+MiDependencyStructuralMatrixBrowserModel >> withX: entitiesX withY: entitiesY [
+
+	| aCollection |
+	aCollection := entitiesX union: entitiesY.
+	self buildGraph: aCollection.
+	orderedNodesX := entitiesX collect: [ :each | graph findNode: each].
+	orderedNodesY := entitiesY collect: [ :each | graph findNode: each].
+	browser buildDSM
 ]

@@ -4,6 +4,9 @@ This is a modified version of the `RSComposite` to accomodate our new DSM
 Class {
 	#name : #MiRSDSMShape,
 	#superclass : #RSComposite,
+	#instVars : [
+		'viewModel'
+	],
 	#category : #'MooseIDE-Dependency-DSM'
 }
 
@@ -16,7 +19,7 @@ MiRSDSMShape >> color: aColor [
 MiRSDSMShape >> initialize [ 
 	super initialize.
 
-	self add: (RSBox new size: 15).
+	self add: (RSBox new size: 15; when: RSMouseDoubleClick do: [ viewModel openDetailedDSMOn: self model] for: self).
 	self add: (RSLabel new fontSize: 5).
 	self adjustToChildren
 
@@ -25,4 +28,9 @@ MiRSDSMShape >> initialize [
 { #category : #accessing }
 MiRSDSMShape >> text: aString [
 	self children second text: aString 
+]
+
+{ #category : #accessing }
+MiRSDSMShape >> viewModel: aMiDependencyStructuralMatrixBrowserModel [
+	viewModel := aMiDependencyStructuralMatrixBrowserModel
 ]

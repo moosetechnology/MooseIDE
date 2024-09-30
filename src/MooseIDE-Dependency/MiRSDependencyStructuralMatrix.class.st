@@ -16,6 +16,7 @@ MiRSDependencyStructuralMatrix >> createShape: tuple [
 	^ MiRSDSMShape new
 		text: (weight = 0 ifTrue: [''] ifFalse: [ weight asString]);
 		model: tuple;
+		viewModel: self viewModel;
 		color: (self color cull: tuple);
 		yourself
 ]
@@ -35,6 +36,11 @@ MiRSDependencyStructuralMatrix >> highlight: evt [
 ]
 
 { #category : #accessing }
+MiRSDependencyStructuralMatrix >> owner [
+	^ owner
+]
+
+{ #category : #accessing }
 MiRSDependencyStructuralMatrix >> owner: anObject [
 
 	owner := anObject
@@ -47,4 +53,9 @@ MiRSDependencyStructuralMatrix >> unhighlight: evt [
 	(owner sccShapesIncluding: evt shape) do: [ :aShape |
 		aShape color: (owner cellColor: aShape model)
 	]
+]
+
+{ #category : #accessing }
+MiRSDependencyStructuralMatrix >> viewModel [
+	^self owner viewModel.
 ]

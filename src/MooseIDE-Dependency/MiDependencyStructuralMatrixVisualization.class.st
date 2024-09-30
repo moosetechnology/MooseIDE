@@ -111,6 +111,11 @@ MiDependencyStructuralMatrixVisualization >> showSCC: aCollection [
 ]
 
 { #category : #accessing }
+MiDependencyStructuralMatrixVisualization >> viewModel [
+	^ viewModel
+]
+
+{ #category : #accessing }
 MiDependencyStructuralMatrixVisualization >> viewModel: aDSMModel [
 	viewModel := aDSMModel
 ]
