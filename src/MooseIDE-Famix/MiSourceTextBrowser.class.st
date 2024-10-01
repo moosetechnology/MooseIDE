@@ -104,10 +104,16 @@ MiSourceTextBrowser >> followEntity: anEntity [
 
 	super followEntity: anEntity.
 	specModel displayedEntity: anEntity.
-	textRenderer renderText.
+	self renderText.
 
 
 	toolBarExternalEditor newEntity
+]
+
+{ #category : #settings }
+MiSourceTextBrowser >> hasSettings [
+
+	^ true
 ]
 
 { #category : #initialization }
@@ -122,6 +128,18 @@ MiSourceTextBrowser >> initializePresenters [
 MiSourceTextBrowser >> miSelectedItem [
 
 	^ specModel selectedEntity
+]
+
+{ #category : #formatting }
+MiSourceTextBrowser >> renderText [ 
+
+	textRenderer renderText
+]
+
+{ #category : #settings }
+MiSourceTextBrowser >> settingsModel [
+
+	^ specModel settings
 ]
 
 { #category : #'private - testing' }

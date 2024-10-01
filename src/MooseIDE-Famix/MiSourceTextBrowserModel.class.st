@@ -97,8 +97,11 @@ MiSourceTextBrowserModel >> formatSource [
 
 { #category : #formatting }
 MiSourceTextBrowserModel >> formatSource: aString [
+
 	displayedText := aString.
-	self gatherHighlights
+	self withHighlight
+		ifTrue: [ self gatherHighlights ]
+		ifFalse: [self resetHighlights ]
 ]
 
 { #category : #highlights }
@@ -184,6 +187,25 @@ MiSourceTextBrowserModel >> initialize [
 	self resetHighlights
 ]
 
+{ #category : #settings }
+MiSourceTextBrowserModel >> initializeSettings [
+
+	settings := super initializeSettings
+		addItem: self itemWithHighlight named: #withHighlight ;
+		yourself
+]
+
+{ #category : #settings }
+MiSourceTextBrowserModel >> itemWithHighlight [
+
+	^ MiAbstractSettingItem checkboxSetting
+		  setValue: false ;
+		  label: 'Highlight children in text?';
+		  help:
+			  'If checked the entity''s children are highlighted';
+		  yourself
+]
+
 { #category : #accessing }
 MiSourceTextBrowserModel >> miSelectedItem [
 
@@ -218,4 +240,19 @@ MiSourceTextBrowserModel >> selectedEntity: anEntity [
 { #category : #settings }
 MiSourceTextBrowserModel >> settings [
 	^settings
+]
+
+{ #category : #settings }
+MiSourceTextBrowserModel >> settingsChanged: aBoolean [
+
+	aBoolean ifTrue: [
+		self formatSource.
+		self browser renderText
+	]
+]
+
+{ #category : #settings }
+MiSourceTextBrowserModel >> withHighlight [
+
+	^settings getItemValue: #withHighlight
 ]
