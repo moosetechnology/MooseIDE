@@ -18,6 +18,19 @@ Class {
 }
 
 { #category : #highlights }
+MiSourceTextBrowserModel >> addCommentHighlightInterval: anInterval [
+	| highlight |
+	
+	self flag: 'not called anywhere'.
+		
+	highlight := MiSourceTextCommentHighlight new
+		interval: anInterval ;
+		yourself.
+	self addHighlight: highlight.
+	^highlight
+]
+
+{ #category : #highlights }
 MiSourceTextBrowserModel >> addErrorHighlightInterval: anInterval [
 	| highlight |
 	highlight := MiSourceTextErrorHighlight new

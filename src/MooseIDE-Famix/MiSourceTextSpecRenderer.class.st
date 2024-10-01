@@ -16,6 +16,17 @@ Class {
 }
 
 { #category : #formatting }
+MiSourceTextSpecRenderer >> applyCommentHighlight: aHighlight [
+	"put comments in grey"
+
+	formatedText 
+		addAttribute: TextColor gray
+		from: aHighlight from
+		to: aHighlight to.
+
+]
+
+{ #category : #formatting }
 MiSourceTextSpecRenderer >> applyErrorHighlight: aHighlight [
 	formatedText 
 		addAttribute: TextColor red
