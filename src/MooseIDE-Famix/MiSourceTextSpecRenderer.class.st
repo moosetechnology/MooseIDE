@@ -76,7 +76,7 @@ MiSourceTextSpecRenderer >> formatedText [
 { #category : #initialization }
 MiSourceTextSpecRenderer >> initialize [
 	super initialize.
-	self beEditable
+	self beNotEditable
 ]
 
 { #category : #accessing }
