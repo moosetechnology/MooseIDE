@@ -83,8 +83,14 @@ MiSourceTextSpecRenderer >> model: aSourceTextModel [
 
 { #category : #rendering }
 MiSourceTextSpecRenderer >> renderText [
+	"Get the text to display
+	 Apply highlights if needed
+	 Re-display (requires to clear the text first)"
+
 	formatedText := model displayedText asText.
 	model highlights do: [ :hlght | hlght applyTo: self ].
+
+	self clearContent.
 	self text: formatedText
 
 ]
