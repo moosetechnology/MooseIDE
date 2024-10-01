@@ -87,6 +87,15 @@ MiSourceTextBrowserModel >> entities [
 		ifNotNil: [ { selectedEntity } ]
 ]
 
+{ #category : #actions }
+MiSourceTextBrowserModel >> event: aMouseEvent selectedEntity: anEntity [
+
+	self selectedEntity: anEntity.
+
+	aMouseEvent controlKeyPressed
+		ifTrue: [ anEntity inspect ]
+]
+
 { #category : #formatting }
 MiSourceTextBrowserModel >> formatSource [
 	selectedEntity sourceText

@@ -27,6 +27,9 @@ MiSourceTextSpecRenderer >> applyErrorHighlight: aHighlight [
 
 { #category : #formatting }
 MiSourceTextSpecRenderer >> applyIdentifierHighlight: aHighlight [
+	"Identifiers are underlined + italic + bold
+	 Clicking on them is passed on to the spec model"
+
 	formatedText 
 		addAttribute: TextEmphasis underlined
 		from: aHighlight from
@@ -35,9 +38,14 @@ MiSourceTextSpecRenderer >> applyIdentifierHighlight: aHighlight [
 		addAttribute: TextEmphasis italic
 		from: aHighlight from
 		to: aHighlight to ;
+		
+		addAttribute: TextEmphasis bold
+		from: aHighlight from
+		to: aHighlight to ;
 
 		addAttribute:
-			(TextDoIt new actOnClickBlock: [ model selectedEntity: aHighlight highlightedEntity ])
+			(TextDoIt new actOnClickBlock: [ :ignored :event |
+				model event: event selectedEntity: aHighlight highlightedEntity ])
 		from: aHighlight from
 		to: aHighlight to ;
 
