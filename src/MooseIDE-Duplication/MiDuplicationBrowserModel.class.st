@@ -264,11 +264,6 @@ MiDuplicationBrowserModel >> numberOfSelectedFragments [
 ]
 
 { #category : #accessing }
-MiDuplicationBrowserModel >> openSettings [ 
-	settings open
-]
-
-{ #category : #accessing }
 MiDuplicationBrowserModel >> replicatedFragmentsHierarchy [
 
 	^ replicatedFragmentsHierarchy

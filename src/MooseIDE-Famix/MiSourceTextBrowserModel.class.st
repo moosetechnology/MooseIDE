@@ -11,7 +11,8 @@ Class {
 	#instVars : [
 		'displayedText',
 		'selectedEntity',
-		'highlights'
+		'highlights',
+		'settings'
 	],
 	#category : #'MooseIDE-Famix-SourceText'
 }
@@ -212,4 +213,9 @@ MiSourceTextBrowserModel >> selectedEntity [
 MiSourceTextBrowserModel >> selectedEntity: anEntity [
 	selectedEntity := anEntity.
 	browser updateToolbar 
+]
+
+{ #category : #settings }
+MiSourceTextBrowserModel >> settings [
+	^settings
 ]

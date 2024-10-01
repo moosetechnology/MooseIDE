@@ -171,12 +171,6 @@ MiSystemComplexityModel >> nameToDisplay [
 ]
 
 { #category : #accessing }
-MiSystemComplexityModel >> openSettings [
-
-	settings open
-]
-
-{ #category : #accessing }
 MiSystemComplexityModel >> settings [
 
 	^ settings

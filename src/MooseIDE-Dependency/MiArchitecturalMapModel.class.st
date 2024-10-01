@@ -402,12 +402,6 @@ MiArchitecturalMapModel >> noMegaMorphic [
 	^ settings getItemValue: #noMegaMorphic
 ]
 
-{ #category : #settings }
-MiArchitecturalMapModel >> openSettings [
-
-	settings open
-]
-
 { #category : #private }
 MiArchitecturalMapModel >> recomputeRootNodes [
 	"Assumes each entity has only one parent"

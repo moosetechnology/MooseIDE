@@ -57,6 +57,12 @@ MiAbstractModel >> miSelectedItem [
 	self subclassResponsibility
 ]
 
+{ #category : #settings }
+MiAbstractModel >> openSettings [
+
+	self settings open
+]
+
 { #category : #tagging }
 MiAbstractModel >> selectedTag [
 
@@ -67,6 +73,13 @@ MiAbstractModel >> selectedTag [
 MiAbstractModel >> selectedTag: aTag [
 
 	selectedTag := aTag
+]
+
+{ #category : #settings }
+MiAbstractModel >> settings [
+	"If browser hasSettings, then implement this method to get them"
+
+	self subclassResponsibility
 ]
 
 { #category : #accessing }
