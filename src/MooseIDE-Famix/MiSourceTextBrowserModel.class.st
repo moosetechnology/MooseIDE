@@ -165,9 +165,11 @@ MiSourceTextBrowserModel >> highlights [
 
 { #category : #highlights }
 MiSourceTextBrowserModel >> identifierIntervalFor: aChildEntity inside: referenceAnchor [
-	"returns the interval in #displayedText for the 1st line containing aChildEntity identifier
-	 referenceanchor is the anchor of the #displayedEntity and is used to find where aChildEntity
-	 is within #displayedText"
+	"returns the interval in #displayedText for aChildEntity
+	 First look at the interval for aChildEntity definition inside displayedText
+	   (#referenceAnchor is the anchor of #displayedEntity)
+	 then in this interval look for the first occurence of aChildEntity's name"
+1haltIf:[aChildEntity name = 'm'].
 	^(referenceAnchor textIntervalForChild: aChildEntity)
 	ifNotNil: [ :childInterval | | childStart |
 		childStart := displayedText
