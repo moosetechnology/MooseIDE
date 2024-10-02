@@ -17,65 +17,17 @@ Class {
 	#category : #'MooseIDE-Famix-SourceText'
 }
 
-{ #category : #highlights }
-MiSourceTextBrowserModel >> addCommentHighlightInterval: anInterval [
-	| highlight |
-	
-	self flag: 'not called anywhere'.
-		
-	highlight := MiSourceTextCommentHighlight new
-		interval: anInterval ;
-		yourself.
-	self addHighlight: highlight.
-	^highlight
-]
-
-{ #category : #highlights }
-MiSourceTextBrowserModel >> addErrorHighlightInterval: anInterval [
-	| highlight |
-	highlight := MiSourceTextErrorHighlight new
-		interval: anInterval ;
-		yourself.
-	self addHighlight: highlight.
-	^highlight
-]
-
-{ #category : #highlights }
+{ #category : #accessing }
 MiSourceTextBrowserModel >> addHighlight: aSourceTextHighlight [
 	highlights add: aSourceTextHighlight
 ]
 
 { #category : #highlights }
-MiSourceTextBrowserModel >> addIdentifierHighlightFor: aChildEntity interval: childInterval [
-	| highlight |
-	highlight := MiSourceTextIdentifierHighlight new
-		highlightedEntity: aChildEntity ;
-		interval: childInterval ;
-		restrictIntervalTo: aChildEntity name in: self displayedText ;
-		yourself.
-	self addHighlight: highlight.
-	^highlight 
-]
+MiSourceTextBrowserModel >> commentHighlightFor: aComment [
 
-{ #category : #highlights }
-MiSourceTextBrowserModel >> addNullHighlightFor: aChildEntity [
-	| highlight |
-	highlight := MiSourceTextNullHighlight new
-		highlightedEntity: aChildEntity;
+	^MiSourceTextCommentHighlight new
+		highlightedEntity: aComment ;
 		yourself.
-	self addHighlight: highlight.
-	^highlight
-]
-
-{ #category : #highlights }
-MiSourceTextBrowserModel >> addTagHighlightFor: aChildEntity interval: childInterval [
-	| highlight |
-	highlight := MiSourceTextTagHighlight new
-		highlightedEntity: aChildEntity ;
-		interval: childInterval ;
-		yourself.
-	self addHighlight: highlight.
-	^highlight
 
 ]
 
@@ -98,6 +50,15 @@ MiSourceTextBrowserModel >> entities [
 	^selectedEntity
 		ifNil: [ #() ]
 		ifNotNil: [ { selectedEntity } ]
+]
+
+{ #category : #highlights }
+MiSourceTextBrowserModel >> errorHighlightInterval: anInterval [
+
+		^MiSourceTextErrorHighlight new
+		interval: anInterval ;
+		yourself.
+
 ]
 
 { #category : #actions }
@@ -136,48 +97,18 @@ MiSourceTextBrowserModel >> gatherHighlights [
 { #category : #highlights }
 MiSourceTextBrowserModel >> gatherHighlightsForEntity: aChildEntity [
 
-	self selectedEntity sourceAnchor
-	ifNotNil: [ :referenceAnchor |
-		(self identifierIntervalFor: aChildEntity inside: referenceAnchor)
-		ifNotNil: [ :childInterval | 
-			self addIdentifierHighlightFor: aChildEntity interval: childInterval.
-			aChildEntity tags do: [ :childTag |
-				(self addTagHighlightFor: childTag interval: childInterval)
-					restrictIntervalTo: aChildEntity name in: self displayedText.
-			]
-		].
-		aChildEntity children do: [ :childChild |
-			self gatherHighlightsForEntity: childChild ].
+		self addHighlight: (self identifierHighlightFor: aChildEntity).
 
-		aChildEntity queryAllOutgoing do: [:mseAssoc |
-			mseAssoc allTargets do: [ :target |
-				target tags do: [ :assocTag |
-					(referenceAnchor textIntervalForChild: mseAssoc)
-					ifNotNil: [ :assocInterval |
-						self addTagHighlightFor: assocTag interval: assocInterval.
-					]
-				]
-			]
-		].
-		"-- Not sure, but it may be that highlighting associations (just above) is enough --
+	aChildEntity comments do: [ :cmt | 	self addHighlight: (self commentHighlightFor: cmt) ].
 
-		aChildEntity outgoingMSEProperties do: [:prop |
-			prop isChildrenProperty ifFalse: [
-				prop isContainer ifFalse: [ 
-					(aChildEntity perform: (prop implementingSelector)) do: [ :assoc |
-						assoc allTargets do: [ :target |
-							target tags do: [ :assocTag |
-								(referenceAnchor textIntervalForChild: assoc)
-								ifNotNil: [ :assocInterval |
-									self addTagHighlightFor: assocTag interval: assocInterval.
-								]
-							]
-						]
-					]
-				]
-			]
-		]"
-	]
+	aChildEntity tags do: [ :childTag | 	self addHighlight: (self tagHighlightFor: childTag) ].
+
+	aChildEntity children do: [ :childChild |
+		self gatherHighlightsForEntity: childChild ].
+
+	aChildEntity queryAllOutgoing do: [:mseAssoc |
+		mseAssoc allTargets do: [ :target | 	self addHighlight: (self tagHighlightFor: mseAssoc) ]
+	].
 ]
 
 { #category : #accessing }
@@ -186,22 +117,12 @@ MiSourceTextBrowserModel >> highlights [
 ]
 
 { #category : #highlights }
-MiSourceTextBrowserModel >> identifierIntervalFor: aChildEntity inside: referenceAnchor [
-	"returns the interval in #displayedText for aChildEntity
-	 First look at the interval for aChildEntity definition inside displayedText
-	   (#referenceAnchor is the anchor of #displayedEntity)
-	 then in this interval look for the first occurence of aChildEntity's name"
-1haltIf:[aChildEntity name = 'm'].
-	^(referenceAnchor textIntervalForChild: aChildEntity)
-	ifNotNil: [ :childInterval | | childStart |
-		childStart := displayedText
-			findString: aChildEntity name
-			startingAt: childInterval first.
+MiSourceTextBrowserModel >> identifierHighlightFor: aChildEntity [
+	
+	^MiSourceTextIdentifierHighlight new
+		highlightedEntity: aChildEntity ;
+		yourself.
 
-		Interval
-			from: childStart
-			to: (childStart + aChildEntity name size - 1)
-  ]
 ]
 
 { #category : #initialization }
@@ -241,7 +162,16 @@ MiSourceTextBrowserModel >> noSourceCodeFor: anEntity [
 	displayedText := ('There is no source code to show for {1}'
 		format: { anEntity name }).
 
-	self addErrorHighlightInterval: (Interval from: 37 to: displayedText size)
+	self errorHighlightInterval: (Interval from: 37 to: displayedText size)
+]
+
+{ #category : #highlights }
+MiSourceTextBrowserModel >> nullHighlightFor: aChildEntity [
+
+	^MiSourceTextNullHighlight new
+		highlightedEntity: aChildEntity;
+		yourself.
+
 ]
 
 { #category : #accessing }
@@ -273,6 +203,15 @@ MiSourceTextBrowserModel >> settingsChanged: aBoolean [
 		self formatSource.
 		self browser renderText
 	]
+]
+
+{ #category : #highlights }
+MiSourceTextBrowserModel >> tagHighlightFor: anEntity [
+
+	^MiSourceTextTagHighlight new
+		highlightedEntity: anEntity ;
+		yourself.
+
 ]
 
 { #category : #settings }

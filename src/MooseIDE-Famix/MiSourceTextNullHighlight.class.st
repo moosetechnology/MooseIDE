@@ -11,13 +11,3 @@ Class {
 MiSourceTextNullHighlight >> applyTo: aRenderer [
 
 ]
-
-{ #category : #'instance creation' }
-MiSourceTextNullHighlight >> from [
-	^0
-]
-
-{ #category : #'instance creation' }
-MiSourceTextNullHighlight >> to [
-	^0
-]
