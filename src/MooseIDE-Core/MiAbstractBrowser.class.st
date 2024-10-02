@@ -366,7 +366,8 @@ MiAbstractBrowser >> browserExpanded [
 
 { #category : #accessing }
 MiAbstractBrowser >> buses [
-	^ buses
+
+	^ buses ifNil: [ Set new ]
 ]
 
 { #category : #testing }
@@ -503,7 +504,7 @@ MiAbstractBrowser >> initializeWindow: aMiWindowPresenter [
 
 	super initializeWindow: aMiWindowPresenter.
 
-	aMiWindowPresenter buildToolbar.
+	self shouldBuildToolbar ifTrue: [ aMiWindowPresenter buildToolbar ].
 
 	aMiWindowPresenter whenClosedDo: [ self browserClosed ].
 	aMiWindowPresenter withAdapterPerformOrDefer: [ :anAdapter |
@@ -635,6 +636,12 @@ MiAbstractBrowser >> setModelBeforeInitialization: aBrowserModel [
 MiAbstractBrowser >> settings [
 
 	self hasSettings ifTrue: [ specModel openSettings ]
+]
+
+{ #category : #testing }
+MiAbstractBrowser >> shouldBuildToolbar [
+
+	^ true
 ]
 
 { #category : #accessing }

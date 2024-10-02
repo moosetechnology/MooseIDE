@@ -14,6 +14,14 @@ MiPlaygroundPagePresenter >> addModelExpression: anExpression [
 	text insertAndSelectAfterCurrentSelection: anExpression
 ]
 
+{ #category : #private }
+MiPlaygroundPagePresenter >> addMooseToolbarCommandsTo: aGroup [
+
+	MiWindowPresenter
+		buildCommandsGroupWith: self playgroundBrowser
+		forRoot: aGroup
+]
+
 { #category : #'public access' }
 MiPlaygroundPagePresenter >> evaluate [
 
@@ -63,4 +71,20 @@ MiPlaygroundPagePresenter >> playgroundBrowser [
 		  root isWindowPresenter
 			  ifFalse: [ root ]
 			  ifTrue: [ root presenter ] ]
+]
+
+{ #category : #private }
+MiPlaygroundPagePresenter >> toolbarActions [
+
+	^ CmCommandGroup forSpec
+		  in: [ :this |
+			  self addToolbarCommandsTo: this.
+			  self addMooseToolbarCommandsTo: this ];
+		  yourself
+]
+
+{ #category : #actions }
+MiPlaygroundPagePresenter >> updateToolbar [
+
+	toolbar fillWith: self toolbarActions
 ]

@@ -105,6 +105,12 @@ MiPlaygroundBrowser >> canPropagate [
 	^ true
 ]
 
+{ #category : #testing }
+MiPlaygroundBrowser >> canTagEntities [
+
+	^ false
+]
+
 { #category : #layout }
 MiPlaygroundBrowser >> defaultLayout [
 
@@ -138,4 +144,16 @@ MiPlaygroundBrowser >> miInspect [
 MiPlaygroundBrowser >> miSelectedItem [
 
 	^ playground firstPage evaluate
+]
+
+{ #category : #testing }
+MiPlaygroundBrowser >> shouldBuildToolbar [
+
+	^ false
+]
+
+{ #category : #actions }
+MiPlaygroundBrowser >> updateToolbar [
+
+	playground millerList pages first updateToolbar
 ]
