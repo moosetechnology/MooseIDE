@@ -10,19 +10,19 @@ Class {
 	#category : #'MooseIDE-Core-Command'
 }
 
-{ #category : #'accessing - defaults' }
+{ #category : #default }
 MiTagCommand class >> defaultDescription [
 
 	^ 'Tag selected entities with current tag'
 ]
 
-{ #category : #'accessing - defaults' }
+{ #category : #default }
 MiTagCommand class >> defaultIconName [
 
 	^ #famixTagLabel
 ]
 
-{ #category : #'accessing - defaults' }
+{ #category : #default }
 MiTagCommand class >> defaultName [
 	^ 'Set'
 ]

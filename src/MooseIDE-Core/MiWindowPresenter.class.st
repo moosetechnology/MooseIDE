@@ -27,15 +27,22 @@ MiWindowPresenter class >> buildCommandsGroupWith: aPresenter forRoot: rootComma
 		register:
 			(MiReceivingModeCommand asCommandGroupForSpecContext: aPresenter);
 		register: (MiEditBusCommand forSpecContext: aPresenter);
-		register: (self taggingCommandGroupFor: aPresenter);
 		register:
 			(MiHelpCommand forSpecContext: aPresenter) beDisplayedOnRightSide;
-		register: (self actionsCommandGroupFor: aPresenter).
+		register: (self actionsCommandGroupFor: aPresenter)
+]
+
+{ #category : #commands }
+MiWindowPresenter class >> buildExtensionCommandsWith: aPresenter forRoot: rootCommandGroup [
+
+	aPresenter canTagEntities ifTrue: [
+		rootCommandGroup register: (self taggingCommandGroupFor: aPresenter) ].
 
 	aPresenter hasSettings ifTrue: [
 		rootCommandGroup register:
 			(MiSettingsCommand forSpecContext: aPresenter)
 				beDisplayedOnRightSide ].
+
 	aPresenter hasVisualization ifTrue: [
 		rootCommandGroup register:
 			(MiExportVisualizationCommand forSpecContext: aPresenter)
@@ -124,13 +131,13 @@ MiWindowPresenter >> updateTaggingToolbarButton [
 	tagCommand := (self toolbarCommandGroup
 		               commandOrGroupNamed: 'Tagging'
 		               ifNone: [ ^ self ])
-		              commandOrGroupNamed: 'Tag entities'
+		              commandOrGroupNamed: MiTagCommand defaultName
 		              ifNone: [ ^ self ].
 
 	tagCommand canBeExecuted ifTrue: [
-		tagCommand presenter
-			icon: (self application iconForTag: self presenter selectedTag);
-			label: self presenter selectedTag name ]
+		tagCommand presenter label: self presenter selectedTag name ].
+	tagCommand presenter icon:
+		(self application iconForTag: self presenter selectedTag)
 ]
 
 { #category : #toolbar }

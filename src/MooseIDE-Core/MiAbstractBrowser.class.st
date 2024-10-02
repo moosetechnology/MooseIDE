@@ -638,12 +638,6 @@ MiAbstractBrowser >> settings [
 ]
 
 { #category : #accessing }
-MiAbstractBrowser >> tagIcon [
-
-	^ application iconForTag: self selectedTag
-]
-
-{ #category : #accessing }
 MiAbstractBrowser >> tagList [
 
 	^self model
