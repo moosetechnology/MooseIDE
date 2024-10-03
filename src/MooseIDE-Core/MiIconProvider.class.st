@@ -141,7 +141,7 @@ MiIconProvider >> iconNamed: aName [
 
 	^ MooseIcons icons
 		  at: aName
-		  ifAbsent: [ 
+		  ifAbsent: [
 		  Smalltalk ui icons iconNamed: aName ifNone: [ self noIcon ] ]
 ]
 

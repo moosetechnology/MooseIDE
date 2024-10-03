@@ -9,9 +9,14 @@ MiReceivingModeCommand class >> asCommandGroupForSpecContext: aBrowser [
 
 	| group |
 	group := CmCommandGroup forSpec name: 'Receiving Mode'.
-	self subclassesDo: [ :cmd | 
-		group register: (cmd forSpecContext: aBrowser) ].
+	self subclassesDo: [ :cmd | cmd registerWith: aBrowser inRoot: group ].
 	^ group
+]
+
+{ #category : #converting }
+MiReceivingModeCommand class >> registerWith: aBrowser inRoot: aCommandGroup [
+
+	aCommandGroup register: (self forSpecContext: aBrowser)
 ]
 
 { #category : #converting }

@@ -1,11 +1,6 @@
 Class {
 	#name : #MiHelpCommand,
-	#superclass : #MiCommand,
-	#instVars : [
-		'helpIsOpen',
-		'currentHelp',
-		'toolbarButton'
-	],
+	#superclass : #MiPopupCommand,
 	#category : #'MooseIDE-Core-Command'
 }
 
@@ -27,49 +22,12 @@ MiHelpCommand class >> defaultName [
 	^ 'Help'
 ]
 
-{ #category : #converting }
-MiHelpCommand >> asSpecCommand [
-
-	| specCommand |
-	specCommand := super asSpecCommand.
-
-	specCommand buildPresenterBlock: [ :cmd |
-		toolbarButton := SpToolbarToggleButtonPresenter new
-			                 icon: specCommand icon;
-			                 label: self name;
-			whenToggledDo: [ self execute ]                 
-			"whenActivatedDo: [
-				                 self execute.
-				                 toolbarButton ];
-			                 whenDeactivatedDo: [ currentHelp dismiss ]";
-			                 yourself ].
-
-	^ specCommand
-]
-
 { #category : #executing }
-MiHelpCommand >> execute [
-self crTrace: toolbarButton state.
-"	toolbarButton state ifFalse: [ ^ self ]."
+MiHelpCommand >> newPopover [
 
-	currentHelp := (SpPopoverPresenter newApplication:
-			                self context application)
-		               relativeTo: self context helpPopoverSource;
-		               bePositionLeft;
-		               presenter: self popupContent;
-		               yourself.
-
-	currentHelp eventHandler whenFocusLostDo: [
-		toolbarButton beUnselected ].
-
-	^ currentHelp popup
-]
-
-{ #category : #initialization }
-MiHelpCommand >> initialize [
-
-	super initialize.
-	helpIsOpen := false
+	^ super newPopover
+		  bePositionLeft;
+		  yourself
 ]
 
 { #category : #converting }

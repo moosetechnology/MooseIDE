@@ -347,7 +347,8 @@ MiAbstractBrowser >> browserExpanded [
 
 { #category : #accessing }
 MiAbstractBrowser >> buses [
-	^ buses
+
+	^ buses ifNil: [ Set new ]
 ]
 
 { #category : #testing }
@@ -415,15 +416,15 @@ MiAbstractBrowser >> defaultLayout [
 { #category : #buses }
 MiAbstractBrowser >> followBus: aBus [
 
-	  (self buses includes: aBus) ifTrue: [ 
-		  application defaultBus: aBus.
-		  ^ self ].
+	(self buses includes: aBus) ifTrue: [
+		application defaultBus: aBus.
+		^ self ].
 
-	  self buses add: aBus.
-	  aBus registerBrowser: self.
-	  self window ifNotNil: [ :window | window updateBusButton ].
-	  self receiveEntity: aBus logger mostRecentEntity.
-	  application defaultBus: aBus
+	self buses add: aBus.
+	aBus registerBrowser: self.
+	self window ifNotNil: [ :window | window updateBusButton ].
+	self receiveEntity: aBus logger mostRecentEntity.
+	application defaultBus: aBus
 ]
 
 { #category : #actions }
@@ -484,7 +485,7 @@ MiAbstractBrowser >> initializeWindow: aMiWindowPresenter [
 
 	super initializeWindow: aMiWindowPresenter.
 
-	aMiWindowPresenter buildToolbar.
+	self shouldBuildToolbar ifTrue: [ aMiWindowPresenter buildToolbar ].
 
 	aMiWindowPresenter whenClosedDo: [ self browserClosed ].
 	aMiWindowPresenter withAdapterPerformOrDefer: [ :anAdapter |
@@ -585,16 +586,17 @@ MiAbstractBrowser >> restore [
 
 { #category : #accessing }
 MiAbstractBrowser >> selectedTag [
-	^self model
-		ifNil: [ nil ]
-		ifNotNil: [ :model | model selectedTag]
+
+	^ self model ifNil: [ nil ] ifNotNil: [ :model | model selectedTag ]
 ]
 
 { #category : #accessing }
 MiAbstractBrowser >> selectedTag: aTag [
-	^self model
+
+	self model
 		ifNil: [ nil ]
-		ifNotNil: [ :model | model selectedTag: aTag]
+		ifNotNil: [ :model | model selectedTag: aTag ].
+	self updateToolbar
 ]
 
 { #category : #initialization }
@@ -617,30 +619,10 @@ MiAbstractBrowser >> settings [
 	self hasSettings ifTrue: [ specModel openSettings ]
 ]
 
-{ #category : #actions }
-MiAbstractBrowser >> showHelp [
+{ #category : #testing }
+MiAbstractBrowser >> shouldBuildToolbar [
 
-	| innerTextPresenter |
-	innerTextPresenter := self newText
-		                      text: self helpText;
-		                      beNotEditable;
-		                      addStyle: 'help';
-		                      yourself.
-
-	innerTextPresenter eventHandler whenFocusLostDo: [
-		innerTextPresenter owner dismiss ].
-
-	^ self newPopover
-		  relativeTo: self helpPopoverSource;
-		  bePositionLeft;
-		  presenter: innerTextPresenter;
-		  popup
-]
-
-{ #category : #accessing }
-MiAbstractBrowser >> tagIcon [
-
-	^ application iconForTag: self selectedTag
+	^ true
 ]
 
 { #category : #accessing }
@@ -661,8 +643,7 @@ MiAbstractBrowser >> tagName [
 { #category : #actions }
 MiAbstractBrowser >> tagSelectedEntities [
 
-	^self model
-		ifNotNil: [ :model | model tagSelectedEntities ]
+	self model ifNotNil: [ :model | model tagSelectedEntities ]
 ]
 
 { #category : #buses }

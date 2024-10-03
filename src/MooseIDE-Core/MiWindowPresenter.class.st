@@ -25,22 +25,37 @@ MiWindowPresenter class >> buildCommandsGroupWith: aPresenter forRoot: rootComma
 
 	rootCommandGroup
 		register:
-			(MiReceivingModeCommand asCommandGroupForSpecContext: aPresenter) ;
-		register: (MiEditBusCommand forSpecContext: aPresenter) ;
-		register: (MiTagCommand forSpecContext: aPresenter) ;
+			(MiReceivingModeCommand asCommandGroupForSpecContext: aPresenter);
+		register: (MiEditBusCommand forSpecContext: aPresenter);
 		register:
-			(MiHelpCommand forSpecContext: aPresenter) beDisplayedOnRightSide ;
-		register: (self actionsCommandGroupFor: aPresenter).
+			(MiHelpCommand forSpecContext: aPresenter) beDisplayedOnRightSide;
+		register: (self actionsCommandGroupFor: aPresenter)
+]
 
-	aPresenter hasSettings ifTrue: [ 
+{ #category : #commands }
+MiWindowPresenter class >> buildExtensionCommandsWith: aPresenter forRoot: rootCommandGroup [
+
+	aPresenter canTagEntities ifTrue: [
+		rootCommandGroup register: (self taggingCommandGroupFor: aPresenter) ].
+
+	aPresenter hasSettings ifTrue: [
 		rootCommandGroup register:
 			(MiSettingsCommand forSpecContext: aPresenter)
 				beDisplayedOnRightSide ].
-	aPresenter hasVisualization ifTrue: [ 
-			rootCommandGroup register:
+
+	aPresenter hasVisualization ifTrue: [
+		rootCommandGroup register:
 			(MiExportVisualizationCommand forSpecContext: aPresenter)
-				beDisplayedOnRightSide 
-		]
+				beDisplayedOnRightSide ]
+]
+
+{ #category : #commands }
+MiWindowPresenter class >> taggingCommandGroupFor: aPresenter [
+
+	^ CmCommandGroup forSpec
+		  name: 'Tagging';
+		  register: (MiTagCommand forSpecContext: aPresenter);
+		  register: (MiSelectTagCommand forSpecContext: aPresenter)
 ]
 
 { #category : #toolbar }
@@ -81,14 +96,13 @@ MiWindowPresenter >> toolbarCommandGroup [
 MiWindowPresenter >> updateBusButton [
 
 	| busEditCommand |
-
 	busEditCommand := self toolbarCommandGroup
 		                  commandOrGroupNamed: 'Buses'
 		                  ifNone: [ ^ self ].
 	busEditCommand presenter ifNil: [ ^ self ].
 	busEditCommand presenter
-		label: busEditCommand decoratedCommand label;
-		help: busEditCommand decoratedCommand help.
+		label: busEditCommand dynamicName;
+		help: busEditCommand dynamicDescription.
 	busEditCommand updateEnableStatus
 ]
 
@@ -101,14 +115,38 @@ MiWindowPresenter >> updateReceivingModeButtons [
 ]
 
 { #category : #toolbar }
-MiWindowPresenter >> updateToolbar [
-
-	self toolbarCommandGroup allCommands do: [ :cmd |
-		cmd updateEnableStatus ].
+MiWindowPresenter >> updateReceivingModelToolbarButtons [
 
 	(self toolbarCommandGroup
 		 commandOrGroupNamed: 'Receiving Mode'
 		 ifNone: [ ^ self ]) commands do: [ :cmd |
 		cmd canBeExecuted ifFalse: [
 			cmd presenter icon: (cmd icon lighter: 0.4) ] ]
+]
+
+{ #category : #toolbar }
+MiWindowPresenter >> updateTaggingToolbarButton [
+
+	| tagCommand |
+	tagCommand := (self toolbarCommandGroup
+		               commandOrGroupNamed: 'Tagging'
+		               ifNone: [ ^ self ])
+		              commandOrGroupNamed: MiTagCommand defaultName
+		              ifNone: [ ^ self ].
+
+	tagCommand canBeExecuted ifTrue: [
+		tagCommand presenter label: self presenter selectedTag name ].
+	tagCommand presenter icon:
+		(self application iconForTag: self presenter selectedTag)
+]
+
+{ #category : #toolbar }
+MiWindowPresenter >> updateToolbar [
+
+	self toolbarCommandGroup allCommands do: [ :cmd |
+		cmd updateEnableStatus ].
+
+	self updateReceivingModelToolbarButtons.
+
+	self updateTaggingToolbarButton
 ]

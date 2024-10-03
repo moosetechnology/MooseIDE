@@ -4,7 +4,7 @@ I include a **Models** toolbar button. It is used to insert an expression to ass
 "
 Class {
 	#name : #MiPlayground,
-	#superclass : #StPlayground,
+	#superclass : #StPlaygroundPresenter,
 	#category : #'MooseIDE-NewTools-Playground'
 }
 

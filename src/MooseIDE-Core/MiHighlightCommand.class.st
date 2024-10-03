@@ -19,6 +19,13 @@ MiHighlightCommand class >> defaultName [
 	^ 'Highlight'
 ]
 
+{ #category : #converting }
+MiHighlightCommand class >> registerWith: aBrowser inRoot: aCommandGroup [
+
+	aBrowser canHighlight ifFalse: [ ^ self ].
+	aCommandGroup register: (self forSpecContext: aBrowser)
+]
+
 { #category : #testing }
 MiHighlightCommand >> canBeExecuted [
 	^ self context canHighlight
