@@ -9,6 +9,13 @@ Class {
 	#category : #'MooseIDE-Analysis'
 }
 
+{ #category : #'instance creation' }
+MiAnalysisPresenter class >> open [
+
+	<script>
+	super open
+]
+
 { #category : #specs }
 MiAnalysisPresenter class >> title [
 
@@ -54,6 +61,7 @@ MiAnalysisPresenter >> initializePresenters [
 		items: {
 				(self newBrowser: MiModelsBrowser).
 				(self newBrowser: MiTagBrowser) };
+		contextMenu: [  ];
 		whenSelectedItemChangedDo: [ :browserCard |
 			self selectedBrowserChanged: browserCard browser ]
 ]
@@ -74,15 +82,7 @@ MiAnalysisPresenter >> miSelectedItemToPropagate [
 MiAnalysisPresenter >> newBrowser: aBrowserClass [
 
 	^ MiBrowserCardPresenter on:
-		  ((aBrowserClass on: aBrowserClass newModel)
-			   owner: self;
-			   yourself)
-]
-
-{ #category : #initialization }
-MiAnalysisPresenter >> newModelsBrowser [
-
-	^ MiModelsBrowser on: MiModelsBrowserModel
+		  (aBrowserClass on: aBrowserClass newModel)
 ]
 
 { #category : #initialization }

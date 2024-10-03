@@ -44,6 +44,12 @@ MiMetaBrowser class >> menuItem [
 ]
 
 { #category : #'world menu' }
+MiMetaBrowser class >> menuParent [
+
+	^ self oldBrowserMenuRoot
+]
+
+{ #category : #'world menu' }
 MiMetaBrowser class >> menuPriority [
 
 	^ self menuMetaToolsPriority + 3

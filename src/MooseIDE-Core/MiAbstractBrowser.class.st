@@ -48,7 +48,7 @@ Class {
 { #category : #menu }
 MiAbstractBrowser class >> addItemOrSubMenuToMiBrowsersMenu: aRootMenu defaultSubMenu: aSubMenu [
 
-	self addToMiBrowsersMenu: aSubMenu
+	self addToMiBrowsersMenu: aRootMenu
 ]
 
 { #category : #menu }
@@ -144,20 +144,13 @@ MiAbstractBrowser class >> menuCodeToolsPriority [
 
 { #category : #'world menu' }
 MiAbstractBrowser class >> menuCommandOn: aBuilder [
+	"Library > Famix > Old browsers"
 
 	<worldMenu>
-
-	"Library > Famix > Old browsers"
 	(aBuilder item: self oldBrowserMenuRoot)
 		parent: self famixMenuRoot;
 		icon: self menuIcon;
-		order: self oldBrowserMenuPriority.
-
-	"Library > Famix > Old browsers > Meta"
-	(aBuilder item: self oldMetaBrowsersMenuRoot)
-		parent: self oldBrowserMenuRoot;
-		icon: self menuIcon;
-		order: self oldMetaBrowsersMenuPriority
+		order: self oldBrowserMenuPriority
 ]
 
 { #category : #'world menu' }
@@ -240,7 +233,7 @@ MiAbstractBrowser class >> miBrowsersMenuPresenter [
 			defaultSubMenu: defaultSubMenu ].
 
 	rootMenu addItem: [ :item | 
-		item
+		item 
 			name: self defaultSubMenuLabel;
 			subMenu: defaultSubMenu ].
 
@@ -270,18 +263,6 @@ MiAbstractBrowser class >> oldBrowserMenuPriority [
 MiAbstractBrowser class >> oldBrowserMenuRoot [
 
 	^ #'Old browsers'
-]
-
-{ #category : #'menu organization' }
-MiAbstractBrowser class >> oldMetaBrowsersMenuPriority [
-
-	^ 100
-]
-
-{ #category : #'menu organization' }
-MiAbstractBrowser class >> oldMetaBrowsersMenuRoot [
-
-	^ #Meta
 ]
 
 { #category : #'instance creation' }
