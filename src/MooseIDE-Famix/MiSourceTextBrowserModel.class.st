@@ -22,15 +22,6 @@ MiSourceTextBrowserModel >> addHighlight: aSourceTextHighlight [
 	highlights add: aSourceTextHighlight
 ]
 
-{ #category : #highlights }
-MiSourceTextBrowserModel >> commentHighlightFor: aComment [
-
-	^MiSourceTextCommentHighlight new
-		highlightedEntity: aComment ;
-		yourself.
-
-]
-
 { #category : #accessing }
 MiSourceTextBrowserModel >> displayedEntity: anEntity [
 
@@ -53,15 +44,6 @@ MiSourceTextBrowserModel >> entities [
 		ifNotNil: [ { selectedEntity } ]
 ]
 
-{ #category : #highlights }
-MiSourceTextBrowserModel >> errorHighlightInterval: anInterval [
-
-		^MiSourceTextErrorHighlight new
-		interval: anInterval ;
-		yourself.
-
-]
-
 { #category : #actions }
 MiSourceTextBrowserModel >> event: aMouseEvent selectedEntity: anEntity [
 
@@ -71,45 +53,17 @@ MiSourceTextBrowserModel >> event: aMouseEvent selectedEntity: anEntity [
 		ifTrue: [ anEntity inspect ]
 ]
 
-{ #category : #highlights }
+{ #category : #formatting }
 MiSourceTextBrowserModel >> gatherHighlights [
-	self selectedEntity children do: [ :child |
-		self gatherHighlightsForEntity: child
-	]
-]
 
-{ #category : #highlights }
-MiSourceTextBrowserModel >> gatherHighlightsForEntity: aChildEntity [
-
-	self addHighlight: (self identifierHighlightFor: aChildEntity).
-
-	(aChildEntity mooseDescription allProperties anySatisfy: [ :prop | prop implementingSelector = #comments ])
-		ifTrue: [ aChildEntity comments
-			do: [ :cmt | 	self addHighlight: (self commentHighlightFor: cmt) ]
-		].
-
-	aChildEntity tags do: [ :childTag | self addHighlight: (self tagHighlightFor: childTag) ].
-
-	aChildEntity children do: [ :childChild |
-		self gatherHighlightsForEntity: childChild ].
-
-	aChildEntity queryAllOutgoing do: [:mseAssoc |
-		mseAssoc allTargets do: [ :target | 	self addHighlight: (self tagHighlightFor: mseAssoc) ]
-	].
+	MiSourceTextAbstractHighlightBuilder new
+		model: self ;
+		createHighlightsFor: self selectedEntity
 ]
 
 { #category : #accessing }
 MiSourceTextBrowserModel >> highlights [
 	^highlights
-]
-
-{ #category : #highlights }
-MiSourceTextBrowserModel >> identifierHighlightFor: aChildEntity [
-	
-	^MiSourceTextIdentifierHighlight new
-		highlightedEntity: aChildEntity ;
-		yourself.
-
 ]
 
 { #category : #initialization }
@@ -152,15 +106,6 @@ MiSourceTextBrowserModel >> noSourceCodeFor: anEntity [
 	self errorHighlightInterval: (Interval from: 37 to: displayedText size)
 ]
 
-{ #category : #highlights }
-MiSourceTextBrowserModel >> nullHighlightFor: aChildEntity [
-
-	^MiSourceTextNullHighlight new
-		highlightedEntity: aChildEntity;
-		yourself.
-
-]
-
 { #category : #formatting }
 MiSourceTextBrowserModel >> prepareFormating [
 	selectedEntity sourceText
@@ -178,7 +123,7 @@ MiSourceTextBrowserModel >> prepareFormating: aString [
 		ifFalse: [self resetHighlights ]
 ]
 
-{ #category : #accessing }
+{ #category : #formatting }
 MiSourceTextBrowserModel >> resetHighlights [
 
 	highlights := OrderedCollection new
@@ -208,15 +153,6 @@ MiSourceTextBrowserModel >> settingsChanged: aBoolean [
 		self prepareFormating.
 		self browser reRenderText
 	]
-]
-
-{ #category : #highlights }
-MiSourceTextBrowserModel >> tagHighlightFor: anEntity [
-
-	^MiSourceTextTagHighlight new
-		highlightedEntity: anEntity ;
-		yourself.
-
 ]
 
 { #category : #settings }
