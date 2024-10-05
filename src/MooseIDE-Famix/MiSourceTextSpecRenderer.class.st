@@ -10,7 +10,8 @@ Class {
 	#superclass : #SpTextPresenter,
 	#instVars : [
 		'model',
-		'formatedText'
+		'formatedText',
+		'sourceAnchorAdapter'
 	],
 	#category : #'MooseIDE-Famix-SourceText'
 }
@@ -19,21 +20,20 @@ Class {
 MiSourceTextSpecRenderer >> applyCommentHighlight: aHighlight [
 	"put comments in grey"
 
-	formatedText 
+	"formatedText 
 		addAttribute: TextColor gray
 		from: aHighlight from
-		to: aHighlight to.
+		to: aHighlight to."
 
 ]
 
 { #category : #formatting }
 MiSourceTextSpecRenderer >> applyErrorHighlight: aHighlight [
+
 	formatedText 
 		addAttribute: TextColor red
 		from: aHighlight from
-		to: aHighlight to ;
-		yourself
-
+		to: aHighlight to
 ]
 
 { #category : #formatting }
@@ -68,10 +68,11 @@ MiSourceTextSpecRenderer >> applyIdentifierHighlight: aHighlight [
 
 { #category : #formatting }
 MiSourceTextSpecRenderer >> applyTagHighlight: aHighlight [
-	formatedText
+
+	"formatedText
 		addAttribute: (TextBackgroundColor color: (aHighlight highlightedEntity color))
 		from: aHighlight from
-		to: aHighlight to
+		to: aHighlight to"
 ]
 
 { #category : #accessing }
@@ -87,7 +88,9 @@ MiSourceTextSpecRenderer >> formatedText [
 { #category : #initialization }
 MiSourceTextSpecRenderer >> initialize [
 	super initialize.
-	self beNotEditable
+	self beNotEditable.
+
+	sourceAnchorAdapter := MiSourceTextNullAdapter new
 ]
 
 { #category : #accessing }
@@ -101,12 +104,10 @@ MiSourceTextSpecRenderer >> model: aSourceTextModel [
 ]
 
 { #category : #rendering }
-MiSourceTextSpecRenderer >> renderText [
-	"Get the text to display
-	 Apply highlights if needed
+MiSourceTextSpecRenderer >> reRenderText [
+	"Apply highlights if needed
 	 Re-display (requires to clear the text first)"
 
-	formatedText := model displayedText asText.
 	model highlights do: [ :hlght | hlght applyTo: self ].
 
 	self clearContent.
@@ -114,7 +115,24 @@ MiSourceTextSpecRenderer >> renderText [
 
 ]
 
+{ #category : #rendering }
+MiSourceTextSpecRenderer >> renderTextFor: anEntity [
+	
+	formatedText := model displayedText asText.
+	sourceAnchorAdapter := MiAbstractSourceTextAnchorAdapter adapterFor: anEntity.
+	sourceAnchorAdapter displayedText: formatedText for: anEntity.
+
+	self reRenderText
+
+]
+
 { #category : #initialization }
 MiSourceTextSpecRenderer >> setModelBeforeInitialization: aModel [
 	self model: aModel
+]
+
+{ #category : #accessing }
+MiSourceTextSpecRenderer >> sourceAnchorAdapter [
+
+	^sourceAnchorAdapter
 ]

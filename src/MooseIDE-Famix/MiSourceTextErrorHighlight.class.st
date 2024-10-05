@@ -14,5 +14,6 @@ Class {
 
 { #category : #formatting }
 MiSourceTextErrorHighlight >> applyTo: aRenderer [
+
 	aRenderer applyErrorHighlight: self
 ]

@@ -9,6 +9,17 @@ Class {
 }
 
 { #category : #formatting }
+MiSourceTextCommentHighlight >> adaptSourceAnchorWith: aSourceAnchorAdapter [
+
+	"(aSourceAnchorAdapter intervalForEntity: highlightedEntity)
+		ifNotNil: [ :entityInterval |
+			
+		]"
+]
+
+{ #category : #formatting }
 MiSourceTextCommentHighlight >> applyTo: aRenderer [
+
+	self adaptSourceAnchorWith: aRenderer sourceAnchorAdapter.
 	aRenderer applyCommentHighlight: self
 ]

@@ -79,7 +79,7 @@ MiSourceTextRoassalRenderer >> initialize [
 ]
 
 { #category : #highlighting }
-MiSourceTextRoassalRenderer >> renderText [
+MiSourceTextRoassalRenderer >> reRenderText [
 
 	self run
 ]

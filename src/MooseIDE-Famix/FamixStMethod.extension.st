@@ -7,6 +7,18 @@ FamixStMethod >> accept: aVisitor [
 ]
 
 { #category : #'*MooseIDE-Famix' }
+FamixStMethod >> displayedNameInMiSourceText [
+
+	^String streamContents: [ :stream |
+		stream << self parentType name.
+		self isClassSide ifTrue: [ stream << ' class' ].
+		stream
+			<< ' >> ' ;
+			<< self name
+	]
+]
+
+{ #category : #'*MooseIDE-Famix' }
 FamixStMethod >> textIntervalForChild: aChildEntity [
 	"looks for the definition of #aChildEntity within the generated #sourceText of the receiver
 	 First looks for the text of the receiver in its parent text"

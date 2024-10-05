@@ -13,14 +13,22 @@ Class {
 	#name : #MiSourceTextHighlight,
 	#superclass : #Object,
 	#instVars : [
-		'highlightedEntity'
+		'highlightedEntity',
+		'highlightInterval'
 	],
 	#category : #'MooseIDE-Famix-SourceText'
 }
 
 { #category : #formatting }
 MiSourceTextHighlight >> applyTo: aRenderer [
+
 	self subclassResponsibility 
+]
+
+{ #category : #accessing }
+MiSourceTextHighlight >> from [
+
+	^highlightInterval first
 ]
 
 { #category : #accessing }
@@ -33,4 +41,10 @@ MiSourceTextHighlight >> highlightedEntity [
 MiSourceTextHighlight >> highlightedEntity: anObject [
 
 	highlightedEntity := anObject
+]
+
+{ #category : #accessing }
+MiSourceTextHighlight >> to [
+
+	^highlightInterval last
 ]

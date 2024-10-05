@@ -81,11 +81,14 @@ MiSourceTextBrowserModel >> gatherHighlights [
 { #category : #highlights }
 MiSourceTextBrowserModel >> gatherHighlightsForEntity: aChildEntity [
 
-		self addHighlight: (self identifierHighlightFor: aChildEntity).
+	self addHighlight: (self identifierHighlightFor: aChildEntity).
 
-	aChildEntity comments do: [ :cmt | 	self addHighlight: (self commentHighlightFor: cmt) ].
+	(aChildEntity mooseDescription allProperties anySatisfy: [ :prop | prop implementingSelector = #comments ])
+		ifTrue: [ aChildEntity comments
+			do: [ :cmt | 	self addHighlight: (self commentHighlightFor: cmt) ]
+		].
 
-	aChildEntity tags do: [ :childTag | 	self addHighlight: (self tagHighlightFor: childTag) ].
+	aChildEntity tags do: [ :childTag | self addHighlight: (self tagHighlightFor: childTag) ].
 
 	aChildEntity children do: [ :childChild |
 		self gatherHighlightsForEntity: childChild ].
@@ -128,7 +131,7 @@ MiSourceTextBrowserModel >> initializeSettings [
 MiSourceTextBrowserModel >> itemWithHighlight [
 
 	^ MiAbstractSettingItem checkboxSetting
-		  setValue: false ;
+		  setValue: true ;
 		  label: 'Highlight children in text?';
 		  help:
 			  'If checked the entity''s children are highlighted';
