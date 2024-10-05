@@ -9,24 +9,19 @@ Class {
 }
 
 { #category : #formatting }
-MiSourceTextIdentifierHighlight >> adaptSourceAnchorWith: aSourceAnchorAdapter [
+MiSourceTextIdentifierHighlight >> applyTo: aRenderer [
 
-	(aSourceAnchorAdapter intervalForEntity: highlightedEntity)
-		ifNotNil: [ :entityInterval || entityNameStart |
-			entityNameStart := aSourceAnchorAdapter displayedText
-				findString: highlightedEntity name
-				startingAt: entityInterval first.
-
-			highlightInterval := Interval
-				from: entityNameStart
-				to: (entityNameStart + highlightedEntity name size - 1) 
-		].
+	aRenderer applyIdentifierHighlight: self
 ]
 
 { #category : #formatting }
-MiSourceTextIdentifierHighlight >> applyTo: aRenderer [
+MiSourceTextIdentifierHighlight >> boundingEntity [
 
-	self adaptSourceAnchorWith: aRenderer sourceAnchorAdapter.
+	^highlightedEntity
+]
 
-	highlightInterval ifNotNil: [ aRenderer applyIdentifierHighlight: self ]
+{ #category : #formatting }
+MiSourceTextIdentifierHighlight >> stringToHighlight [
+
+	^highlightedEntity name
 ]

@@ -149,10 +149,11 @@ MiSourceTextBrowserModel >> settings [
 { #category : #settings }
 MiSourceTextBrowserModel >> settingsChanged: aBoolean [
 
-	aBoolean ifTrue: [
-		self prepareFormating.
-		self browser reRenderText
-	]
+	aBoolean ifFalse: [ ^self ].
+
+	self prepareFormating.
+	self browser reRenderText
+
 ]
 
 { #category : #settings }

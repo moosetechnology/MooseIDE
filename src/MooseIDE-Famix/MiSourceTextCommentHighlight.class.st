@@ -9,17 +9,14 @@ Class {
 }
 
 { #category : #formatting }
-MiSourceTextCommentHighlight >> adaptSourceAnchorWith: aSourceAnchorAdapter [
+MiSourceTextCommentHighlight >> boundingEntity [
 
-	"(aSourceAnchorAdapter intervalForEntity: highlightedEntity)
-		ifNotNil: [ :entityInterval |
-			
-		]"
+	^highlightedEntity commentedEntity
 ]
 
 { #category : #formatting }
-MiSourceTextCommentHighlight >> applyTo: aRenderer [
+MiSourceTextCommentHighlight >> stringToHighlight [
 
-	self adaptSourceAnchorWith: aRenderer sourceAnchorAdapter.
-	aRenderer applyCommentHighlight: self
+	^highlightedEntity content
+		replaceAll: Character cr with: Character lf
 ]

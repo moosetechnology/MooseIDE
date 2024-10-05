@@ -20,7 +20,24 @@ Class {
 }
 
 { #category : #formatting }
+MiSourceTextHighlight >> adaptSourceAnchorWith: aSourceAnchorAdapter [
+
+	(aSourceAnchorAdapter intervalForEntity: self boundingEntity)
+		ifNotNil: [ :entityInterval |
+			self
+				setIntervalIn: aSourceAnchorAdapter displayedText
+				boundedBy: entityInterval
+		]
+]
+
+{ #category : #formatting }
 MiSourceTextHighlight >> applyTo: aRenderer [
+
+	aRenderer applyCommentHighlight: self
+]
+
+{ #category : #formatting }
+MiSourceTextHighlight >> boundingEntity [
 
 	self subclassResponsibility 
 ]
@@ -29,6 +46,18 @@ MiSourceTextHighlight >> applyTo: aRenderer [
 MiSourceTextHighlight >> from [
 
 	^highlightInterval first
+]
+
+{ #category : #testing }
+MiSourceTextHighlight >> hasInterval [
+
+	^highlightInterval isNotNil
+]
+
+{ #category : #accessing }
+MiSourceTextHighlight >> highlightInterval: anObject [
+
+	^ highlightInterval := anObject
 ]
 
 { #category : #accessing }
@@ -41,6 +70,27 @@ MiSourceTextHighlight >> highlightedEntity [
 MiSourceTextHighlight >> highlightedEntity: anObject [
 
 	highlightedEntity := anObject
+]
+
+{ #category : #formatting }
+MiSourceTextHighlight >> setIntervalIn: aText boundedBy: anInterval [
+
+	| startOfHighlight |
+	startOfHighlight := aText
+		findString: self stringToHighlight
+		startingAt: anInterval first.
+
+	highlightInterval := (startOfHighlight > 0)
+		ifTrue: [Interval
+			from: startOfHighlight
+			to: (startOfHighlight + self stringToHighlight size - 1) ]
+		ifFalse: [ nil ]
+]
+
+{ #category : #formatting }
+MiSourceTextHighlight >> stringToHighlight [
+
+	self subclassResponsibility 
 ]
 
 { #category : #accessing }

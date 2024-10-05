@@ -19,7 +19,7 @@ MiSourceTextStAnchorAdapter >> intervalForEntity: anEntity [
 	 the displayedText is generated differently for each entity (mainly classes and methods)"
 
 	(super intervalForEntity: anEntity)
-	ifNotNil: [ :interval | ^interval ].
+		ifNotNil: [ :interval | ^interval ].
 
 	^anEntity accept: self
 ]
@@ -41,8 +41,21 @@ MiSourceTextStAnchorAdapter >> visitFamixStClass: aClass [
 
 { #category : #'as yet unclassified' }
 MiSourceTextStAnchorAdapter >> visitFamixStComment: aComment [
+	"might be a class comeent or a method comment.
+	 In bothe cases we should alread have the commented entity's interval in the cache
+	 Then look for the comment interval within this entity's interval"
 
-	^nil
+	| startPos entityInterval |
+
+	entityInterval := entitiesIntervals
+		at: aComment commentedEntity
+		ifAbsent: [ ^nil ].
+
+	startPos := self displayedText findString: aComment content startingAt: entityInterval first.
+	^(startPos = 0)
+		ifTrue: [ Error signal: aComment name , ' not found in displayed entity'
+ ]
+		ifFalse: [ Interval from: startPos to: (startPos + aComment content size)]
 ]
 
 { #category : #'as yet unclassified' }
@@ -60,7 +73,8 @@ MiSourceTextStAnchorAdapter >> visitFamixStLocalVariable: aLocalVariable [
 { #category : #'as yet unclassified' }
 MiSourceTextStAnchorAdapter >> visitFamixStMethod: aMethod [
 	"if we are here it is because the method is not the main displayed entity
-	 So we must assume, its class is"
+	 So we must assume, its class is and we are looking for the text of the method within
+	 the generated text of its parentClass"
 
 	| startPos |
 	self assert: (entitiesIntervals keys includes: aMethod parentType).

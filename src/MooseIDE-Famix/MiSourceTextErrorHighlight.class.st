@@ -13,6 +13,12 @@ Class {
 }
 
 { #category : #formatting }
+MiSourceTextErrorHighlight >> adaptSourceAnchorWith: aSourceAnchorAdapter [
+
+	"Nothing to do the interval should already be defined"
+]
+
+{ #category : #formatting }
 MiSourceTextErrorHighlight >> applyTo: aRenderer [
 
 	aRenderer applyErrorHighlight: self

@@ -20,10 +20,10 @@ Class {
 MiSourceTextSpecRenderer >> applyCommentHighlight: aHighlight [
 	"put comments in grey"
 
-	"formatedText 
+	formatedText 
 		addAttribute: TextColor gray
 		from: aHighlight from
-		to: aHighlight to."
+		to: aHighlight to.
 
 ]
 
@@ -80,6 +80,12 @@ MiSourceTextSpecRenderer >> browser [
 	^self model browser
 ]
 
+{ #category : #formatting }
+MiSourceTextSpecRenderer >> clearFormating [
+
+	formatedText := formatedText asString asText
+]
+
 { #category : #'private - testing' }
 MiSourceTextSpecRenderer >> formatedText [
 	^formatedText 
@@ -108,7 +114,12 @@ MiSourceTextSpecRenderer >> reRenderText [
 	"Apply highlights if needed
 	 Re-display (requires to clear the text first)"
 
-	model highlights do: [ :hlght | hlght applyTo: self ].
+	self clearFormating.
+
+	model highlights do: [ :hlght |
+		hlght adaptSourceAnchorWith: self sourceAnchorAdapter.
+		hlght hasInterval ifTrue: [ hlght applyTo: self ]	
+	].
 
 	self clearContent.
 	self text: formatedText
