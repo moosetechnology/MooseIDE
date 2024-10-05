@@ -1,6 +1,12 @@
 Extension { #name : #FamixStMethod }
 
 { #category : #'*MooseIDE-Famix' }
+FamixStMethod >> accept: aVisitor [
+
+	^aVisitor visitFamixStMethod: self
+]
+
+{ #category : #'*MooseIDE-Famix' }
 FamixStMethod >> textIntervalForChild: aChildEntity [
 	"looks for the definition of #aChildEntity within the generated #sourceText of the receiver
 	 First looks for the text of the receiver in its parent text"
