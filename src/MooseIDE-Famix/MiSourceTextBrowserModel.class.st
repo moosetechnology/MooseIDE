@@ -32,12 +32,13 @@ MiSourceTextBrowserModel >> commentHighlightFor: aComment [
 ]
 
 { #category : #accessing }
-MiSourceTextBrowserModel >> displayedEntity: anObject [
+MiSourceTextBrowserModel >> displayedEntity: anEntity [
 
-	selectedEntity := anObject.
+	self selectedEntity: anEntity.
+
 	self resetHighlights.
-
-	self formatSource 
+	self prepareFormating.
+	browser renderTextFor: anEntity
 ]
 
 { #category : #accessing }
@@ -68,23 +69,6 @@ MiSourceTextBrowserModel >> event: aMouseEvent selectedEntity: anEntity [
 
 	aMouseEvent controlKeyPressed
 		ifTrue: [ anEntity inspect ]
-]
-
-{ #category : #formatting }
-MiSourceTextBrowserModel >> formatSource [
-	selectedEntity sourceText
-		ifEmpty: [ self noSourceCodeFor: selectedEntity ]
-		ifNotEmpty: [ :code | self formatSource: code ]
-
-]
-
-{ #category : #formatting }
-MiSourceTextBrowserModel >> formatSource: aString [
-
-	displayedText := aString.
-	self withHighlight
-		ifTrue: [ self gatherHighlights ]
-		ifFalse: [self resetHighlights ]
 ]
 
 { #category : #highlights }
@@ -174,6 +158,23 @@ MiSourceTextBrowserModel >> nullHighlightFor: aChildEntity [
 
 ]
 
+{ #category : #formatting }
+MiSourceTextBrowserModel >> prepareFormating [
+	selectedEntity sourceText
+		ifEmpty: [ self noSourceCodeFor: selectedEntity ]
+		ifNotEmpty: [ :code | self prepareFormating: code ]
+
+]
+
+{ #category : #formatting }
+MiSourceTextBrowserModel >> prepareFormating: aString [
+
+	displayedText := aString.
+	self withHighlight
+		ifTrue: [ self gatherHighlights ]
+		ifFalse: [self resetHighlights ]
+]
+
 { #category : #accessing }
 MiSourceTextBrowserModel >> resetHighlights [
 
@@ -187,8 +188,9 @@ MiSourceTextBrowserModel >> selectedEntity [
 
 { #category : #accessing }
 MiSourceTextBrowserModel >> selectedEntity: anEntity [
+
 	selectedEntity := anEntity.
-	browser updateToolbar 
+	browser updateToolbar
 ]
 
 { #category : #settings }
@@ -200,8 +202,8 @@ MiSourceTextBrowserModel >> settings [
 MiSourceTextBrowserModel >> settingsChanged: aBoolean [
 
 	aBoolean ifTrue: [
-		self formatSource.
-		self browser renderText
+		self prepareFormating.
+		self browser reRenderText
 	]
 ]
 

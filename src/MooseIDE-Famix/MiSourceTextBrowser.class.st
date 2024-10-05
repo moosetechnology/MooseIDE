@@ -104,8 +104,6 @@ MiSourceTextBrowser >> followEntity: anEntity [
 
 	super followEntity: anEntity.
 	specModel displayedEntity: anEntity.
-	self renderText.
-
 
 	toolBarExternalEditor newEntity
 ]
@@ -131,9 +129,15 @@ MiSourceTextBrowser >> miSelectedItem [
 ]
 
 { #category : #formatting }
-MiSourceTextBrowser >> renderText [ 
+MiSourceTextBrowser >> reRenderText [ 
 
-	textRenderer renderText
+	textRenderer reRenderText
+]
+
+{ #category : #formatting }
+MiSourceTextBrowser >> renderTextFor: anEntity [
+
+	textRenderer renderTextFor: anEntity
 ]
 
 { #category : #settings }
