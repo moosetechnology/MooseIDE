@@ -28,9 +28,9 @@ MiSourceTextStAnchorAdapter >> initialBoundingPos: anEntity [
 
 { #category : #'as yet unclassified' }
 MiSourceTextStAnchorAdapter >> intervalForEntity: anEntity [
-	"First tries to see if anEntity is the displayedEntity (and then we already have its interval)
-	 else find the intervak for entity owning anEntity,
-	 then search for anEntity in these bounds"
+	"First find from where to start searching in the code,
+	 This will be from the first position of the entity owning anEntity.
+	 then search for first occurence of anEntity after this point"
 
 	^(self initialBoundingPos: anEntity sourceCodeBoundingEntity)
 		ifNotNil: [ :initialPos |
