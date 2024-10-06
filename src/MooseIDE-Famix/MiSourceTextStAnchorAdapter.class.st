@@ -8,9 +8,9 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-MiSourceTextStAnchorAdapter class >> acceptedEntities [
+MiSourceTextStAnchorAdapter class >> acceptEntity: anEntity [
 
-	^{ FamixStClass . FamixStMethod }
+	^anEntity class name beginsWith: 'FamixSt'
 ]
 
 { #category : #'as yet unclassified' }

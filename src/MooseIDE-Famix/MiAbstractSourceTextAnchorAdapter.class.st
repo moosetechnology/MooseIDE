@@ -17,16 +17,16 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-MiAbstractSourceTextAnchorAdapter class >> acceptedEntities [
+MiAbstractSourceTextAnchorAdapter class >> acceptEntity: anEntity [
 
-	^#()
+	^false
 ]
 
 { #category : #'as yet unclassified' }
 MiAbstractSourceTextAnchorAdapter class >> adapterFor: anEntity [
 
 	self withAllSubclassesDo: [ :adapterClass |
-		(adapterClass acceptedEntities includes: anEntity class)
+		(adapterClass acceptEntity: anEntity)
 			ifTrue: [ ^adapterClass new ]
 	].
 

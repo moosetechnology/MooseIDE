@@ -5,9 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-MiSourceTextTIndexedFileAnchorAdapter class >> acceptedEntities [
+MiSourceTextTIndexedFileAnchorAdapter class >> acceptEntity: anEntity [
 
-	^{ FamixJavaClass . FamixJavaMethod }
+	^anEntity sourceAnchor
+		ifNil: [ nil ]
+		ifNotNil: [ :anchor | anchor class usesTrait: FamixTIndexedFileNavigation ]
 ]
 
 { #category : #api }
