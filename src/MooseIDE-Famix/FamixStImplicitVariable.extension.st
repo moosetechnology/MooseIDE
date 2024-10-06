@@ -5,3 +5,9 @@ FamixStImplicitVariable >> accept: aVisitor [
 
 	^aVisitor visitFamixStImplicitVariable: self
 ]
+
+{ #category : #'*MooseIDE-Famix' }
+FamixStImplicitVariable >> sourceCodeBoundingEntity [
+
+	^nil
+]

@@ -11,7 +11,7 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'displayedText',
-		'entitiesIntervals'
+		'displayedEntityInterval'
 	],
 	#category : #'MooseIDE-Famix-SourceText'
 }
@@ -51,21 +51,7 @@ MiAbstractSourceTextAnchorAdapter >> displayedText: aText for: anEntity [
 
 	self displayedText: aText.
 
-	entitiesIntervals
-		removeAll ;
-		at: anEntity put: (Interval from: 1 to: aText size)
-]
-
-{ #category : #accessing }
-MiAbstractSourceTextAnchorAdapter >> entitiesIntervals [
-
-	^ entitiesIntervals
-]
-
-{ #category : #accessing }
-MiAbstractSourceTextAnchorAdapter >> entitiesIntervals: anObject [
-
-	entitiesIntervals := anObject
+	displayedEntityInterval := anEntity -> (Interval from: 1 to: aText size)
 ]
 
 { #category : #initialization }
@@ -73,17 +59,18 @@ MiAbstractSourceTextAnchorAdapter >> initialize [
 
 	super initialize.
 
-	entitiesIntervals := Dictionary new.
+	displayedEntityInterval := nil -> nil.
 	displayedText := ''
 ]
 
 { #category : #api }
 MiAbstractSourceTextAnchorAdapter >> intervalForEntity: anEntity [
-	"Find the first and last character of anEntity's name in the displayedText"
+	"Find the first and last character of anEntity's name in the displayedText
+	 Here we only take care of the interval for the displayed entity
+	 For others (its children), this is subclass dependent"
 
-	entitiesIntervals
-		at: anEntity
-		ifPresent: [ :interval | ^interval ].
+	^(displayedEntityInterval key = anEntity)
+		ifTrue: [ ^displayedEntityInterval value ]
+		ifFalse: [ nil ]
 
-	^nil
 ]

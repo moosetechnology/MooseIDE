@@ -9,14 +9,7 @@ Class {
 }
 
 { #category : #formatting }
-MiSourceTextCommentHighlight >> boundingEntity [
+MiSourceTextCommentHighlight >> applyTo: aRenderer [
 
-	^highlightedEntity commentedEntity
-]
-
-{ #category : #formatting }
-MiSourceTextCommentHighlight >> stringToHighlight [
-
-	^highlightedEntity content
-		replaceAll: Character cr with: Character lf
+	aRenderer applyCommentHighlight: self
 ]

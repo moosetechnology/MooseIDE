@@ -13,15 +13,3 @@ MiSourceTextIdentifierHighlight >> applyTo: aRenderer [
 
 	aRenderer applyIdentifierHighlight: self
 ]
-
-{ #category : #formatting }
-MiSourceTextIdentifierHighlight >> boundingEntity [
-
-	^highlightedEntity
-]
-
-{ #category : #formatting }
-MiSourceTextIdentifierHighlight >> stringToHighlight [
-
-	^highlightedEntity name
-]
