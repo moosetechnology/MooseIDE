@@ -166,6 +166,8 @@ MiSourceTextBrowser >> toolBarExternalEditor: anObject [
 { #category : #formatting }
 MiSourceTextBrowser >> withRoassalRenderer [
 
+	self deprecated: 'RoassalRenderer is out of sync with the rest of the code'.
+
 	textRenderer := self instantiate: MiSourceTextRoassalRenderer on: specModel
 ]
 
