@@ -69,10 +69,10 @@ MiSourceTextSpecRenderer >> applyIdentifierHighlight: aHighlight [
 { #category : #formatting }
 MiSourceTextSpecRenderer >> applyTagHighlight: aHighlight [
 
-	"formatedText
-		addAttribute: (TextBackgroundColor color: (aHighlight highlightedEntity color))
+	formatedText
+		addAttribute: (TextColor color: aHighlight tag color)
 		from: aHighlight from
-		to: aHighlight to"
+		to: aHighlight to
 ]
 
 { #category : #accessing }

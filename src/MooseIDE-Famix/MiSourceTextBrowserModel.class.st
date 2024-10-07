@@ -48,6 +48,9 @@ MiSourceTextBrowserModel >> createHighlightsFor: anEntity [
 	anEntity children do: [ :childChild |
 		self createHighlightsFor: childChild ].
 
+	(anEntity tags size = 1) ifTrue: [
+		self tagHighlight: anEntity tags anyOne for: anEntity ].
+
 	"aChildEntity queryAllOutgoing do: [:mseAssoc |
 		mseAssoc allTargets do: [ :target | 	self addHighlight: (self dependencyHighlightFor: mseAssoc) ]
 	]."
@@ -203,10 +206,11 @@ MiSourceTextBrowserModel >> settingsChanged: aBoolean [
 ]
 
 { #category : #highlights }
-MiSourceTextBrowserModel >> tagHighlightFor: anEntity [
+MiSourceTextBrowserModel >> tagHighlight: aTag for: anEntity [
 
 	self addHighlight: (MiSourceTextTagHighlight new
 		highlightedEntity: anEntity ;
+		tag: aTag ;
 		yourself)
 
 ]
