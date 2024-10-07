@@ -21,9 +21,9 @@ MiSourceTextStAnchorAdapter >> initialBoundingPos: anEntity [
 	anEntity ifNil: [ ^nil ].
 
 	boundingInterval := self intervalForString: anEntity displayedNameInMiSourceText after: 1.
-	^(boundingInterval = 0)
-		ifTrue: [ nil ]
-		ifFalse: [ boundingInterval first]
+	boundingInterval ifNil: [ ^nil ].
+	(boundingInterval = 0) ifTrue: [ ^nil ].
+	^boundingInterval first
 ]
 
 { #category : #'as yet unclassified' }
