@@ -138,7 +138,7 @@ MiSourceTextSpecRenderer >> renderTextFor: anEntity [
 	
 	formatedText := model displayedText asText.
 	sourceAnchorAdapter := MiAbstractSourceTextAnchorAdapter adapterFor: anEntity.
-	sourceAnchorAdapter displayedText: formatedText for: anEntity.
+	sourceAnchorAdapter initializeDisplayedText: formatedText andEntity: anEntity.
 
 	self reRenderText
 

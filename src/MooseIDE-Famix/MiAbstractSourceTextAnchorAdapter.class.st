@@ -45,14 +45,6 @@ MiAbstractSourceTextAnchorAdapter >> displayedText: anObject [
 	displayedText := anObject
 ]
 
-{ #category : #accessing }
-MiAbstractSourceTextAnchorAdapter >> displayedText: aText for: anEntity [
-
-	self displayedText: aText.
-
-	displayedEntityInterval := anEntity -> (Interval from: 1 to: aText size)
-]
-
 { #category : #initialization }
 MiAbstractSourceTextAnchorAdapter >> initialize [
 
@@ -60,6 +52,14 @@ MiAbstractSourceTextAnchorAdapter >> initialize [
 
 	displayedEntityInterval := nil -> nil.
 	displayedText := ''
+]
+
+{ #category : #initialization }
+MiAbstractSourceTextAnchorAdapter >> initializeDisplayedText: aText andEntity: anEntity [
+	"initialize the adapter with the displayedText and the main displayedEntity"
+
+	self displayedText: aText.
+	displayedEntityInterval := anEntity -> (Interval from: 1 to: aText size)
 ]
 
 { #category : #api }
