@@ -30,7 +30,6 @@ MiAbstractSourceTextAnchorAdapter class >> adapterFor: anEntity [
 			ifTrue: [ ^adapterClass new ]
 	].
 
-	Error signal: 'No SourceTextAnchorAdapter found for ' , anEntity class name.
 	^MiSourceTextNullAdapter new
 ]
 

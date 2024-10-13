@@ -52,14 +52,20 @@ MiSourceTextBrowserTest >> testHasExternalEditorEmacs [
 ]
 
 { #category : #'tests - highlighting' }
-MiSourceTextBrowserTest >> testHighlightChildNotIndexedAnchor [
-	| entity |
+MiSourceTextBrowserTest >> testHighlightChildWithImmediateTextAnchor [
+	| entity displayedText |
+
 	entity := FamixStClass new
 		name: 'aClass' ;
 		sourceAnchor: (self stubImmediateAnchorText: 
-'code of aClass {
-	code of aMethod()
-}').
+'Class {
+	#name : ''aClass'',
+	#package : ''For-Testing''
+}
+
+aClass >> aMethod()
+	"nothing"
+').
 	FamixStMethod new
 		name: 'aMethod' ;
 		parentType: entity ;
@@ -67,19 +73,24 @@ MiSourceTextBrowserTest >> testHighlightChildNotIndexedAnchor [
 		
 	browser followEntity: entity.
 
-	self assert: browser textRenderer formatedText unembellished.
+	displayedText := browser textRenderer formatedText.
+	self deny: displayedText unembellished.
+	self assert: (displayedText attributesAt: 30) isEmpty.
+	self deny: (displayedText attributesAt: 70) isEmpty.
+	self assert: ((displayedText attributesAt: 70) anySatisfy: [ :att | att mayActOnEvent: MouseEvent new ]).
+	self assert: ((displayedText attributesAt: 70) anySatisfy: [ :att | (att class = TextEmphasis) and: [ att set ] ]).
 ]
 
 { #category : #'tests - highlighting' }
 MiSourceTextBrowserTest >> testHighlightChildWithIndexedFileAnchor [
 	| entity displayedText |
-	entity := FamixStClass new
+	entity := FamixJavaClass new
 		name: 'aClass' ;
 		sourceAnchor: (self stubIndexedAnchorText: 
 'code of aClass {
 	code of aMethod()
 }').
-	FamixStMethod new
+	FamixJavaMethod new
 		name: 'aMethod' ;
 		parentType: entity ;
 		sourceAnchor: (self stubIndexedAnchorText: #whatever positions: 18@36 ).
@@ -90,12 +101,15 @@ MiSourceTextBrowserTest >> testHighlightChildWithIndexedFileAnchor [
 	self deny: displayedText unembellished.
 	self assert: (displayedText attributesAt: 20) isEmpty.
 	self deny: (displayedText attributesAt: 30) isEmpty.
-	self assert: ((displayedText attributesAt: 30) anySatisfy: [ :att | att mayActOnEvent: MouseEvent new ])
+	self assert:
+		((displayedText attributesAt: 30) anySatisfy: [ :att | att mayActOnEvent: MouseEvent new ]).
+	self assert:
+		((displayedText attributesAt: 30) anySatisfy: [ :att | (att class = TextEmphasis) and: [ att set ] ]).
 ]
 
 { #category : #'tests - highlighting' }
 MiSourceTextBrowserTest >> testHighlightChildWithNoAnchor [
-	| entity |
+	| entity displayedText |
 	entity := FamixStClass new
 		name: 'aClass' ;
 		sourceAnchor: (self stubIndexedAnchorText: 
@@ -108,7 +122,37 @@ MiSourceTextBrowserTest >> testHighlightChildWithNoAnchor [
 		
 	browser followEntity: entity.
 
-	self assert: browser textRenderer formatedText unembellished.
+	displayedText := browser textRenderer formatedText.
+	self deny: displayedText unembellished.
+	self assert: (displayedText attributesAt: 20) isEmpty.
+	self assert: (displayedText attributesAt: 30) isEmpty.
+
+]
+
+{ #category : #'tests - highlighting' }
+MiSourceTextBrowserTest >> testHighlightJavaComment [
+	| entity displayedText |
+	entity := FamixJavaClass new
+		name: 'aClass' ;
+		sourceAnchor: (self stubIndexedAnchorText: 
+'code of aClass {
+	/* this is a Java comment */
+}').
+	FamixJavaComment new
+		content: 'this is a Java comment' ;
+		commentedEntity: entity ;
+		sourceAnchor: (self stubIndexedAnchorText: #whatever positions: 19@46 ).
+
+	browser followEntity: entity.
+
+	displayedText := browser textRenderer formatedText.
+	self deny: displayedText unembellished.
+	self assert: (displayedText attributesAt: 15) isEmpty.
+	self deny: (displayedText attributesAt: 25) isEmpty.
+	self assert:
+		((displayedText attributesAt: 25) noneSatisfy: [ :att | att mayActOnEvent: MouseEvent new ]).
+	self assert:
+		((displayedText attributesAt: 25) anySatisfy: [ :att | (att class = TextColor) and: [ att color = Color gray ] ]).
 ]
 
 { #category : #'tests - highlighting' }
@@ -130,7 +174,7 @@ MiSourceTextBrowserTest >> testHighlightNoAnchor [
 
 { #category : #'tests - highlighting' }
 MiSourceTextBrowserTest >> testHighlightNoChild [
-	| entity |
+	| entity displayedText |
 	entity := FamixStClass new
 		name: 'aClass' ;
 		sourceAnchor: (self stubIndexedAnchorText: 
@@ -139,8 +183,37 @@ MiSourceTextBrowserTest >> testHighlightNoChild [
 }' ).
 		
 	browser followEntity: entity.
-	
-	self assert: browser textRenderer formatedText unembellished 
+
+	displayedText := browser textRenderer formatedText.
+	self deny: displayedText unembellished.
+	self assert: (displayedText attributesAt: 20) isEmpty.
+	self assert: (displayedText attributesAt: 30) isEmpty.
+
+]
+
+{ #category : #'tests - highlighting' }
+MiSourceTextBrowserTest >> testHighlightStComment [
+	| entity displayedText |
+	entity := FamixStClass new
+		name: 'aClass' ;
+		sourceAnchor: (self stubIndexedAnchorText: 
+'code of aClass {
+	"this is a Pharo comment"
+}' ).
+	FamixStComment new
+		content: 'this is a Pharo comment' ;
+		commentedEntity: entity.
+
+	browser followEntity: entity.
+
+	displayedText := browser textRenderer formatedText.
+	self deny: displayedText unembellished.
+	self assert: (displayedText attributesAt: 15) isEmpty.
+	self deny: (displayedText attributesAt: 25) isEmpty.
+	self assert:
+		((displayedText attributesAt: 25) noneSatisfy: [ :att | att mayActOnEvent: MouseEvent new ]).
+	self assert:
+		((displayedText attributesAt: 25) anySatisfy: [ :att | (att class = TextColor) and: [ att color = Color gray ] ]).
 ]
 
 { #category : #tests }
@@ -165,6 +238,12 @@ MiSourceTextBrowserTest >> testSelectedTagSetAndGet [
 	browser followEntity: entity.
 	browser selectedTag: tag.
 	self assert: browser selectedTag equals: tag
+]
+
+{ #category : #'tests - opening' }
+MiSourceTextBrowserTest >> testSettingsAction [
+
+	self assert: browser hasSettings
 ]
 
 { #category : #tests }

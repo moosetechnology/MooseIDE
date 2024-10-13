@@ -200,9 +200,11 @@ MiSourceTextBrowserModel >> settingsChanged: aBoolean [
 
 	aBoolean ifFalse: [ ^self ].
 
-	self prepareFormating.
-	self browser reRenderText
-
+	displayedText ifNotNil: [
+		"nil when running some of the tests"
+		self prepareFormating.
+		self browser reRenderText
+	]
 ]
 
 { #category : #highlights }

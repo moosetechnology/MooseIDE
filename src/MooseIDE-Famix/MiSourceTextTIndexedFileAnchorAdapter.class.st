@@ -8,7 +8,7 @@ Class {
 MiSourceTextTIndexedFileAnchorAdapter class >> acceptEntity: anEntity [
 
 	^anEntity sourceAnchor
-		ifNil: [ nil ]
+		ifNil: [ false ]
 		ifNotNil: [ :anchor | anchor class usesTrait: FamixTIndexedFileNavigation ]
 ]
 
