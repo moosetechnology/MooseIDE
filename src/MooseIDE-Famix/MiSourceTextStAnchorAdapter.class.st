@@ -19,6 +19,7 @@ MiSourceTextStAnchorAdapter >> initialBoundingPos: anEntity [
 	| boundingInterval |
 
 	anEntity ifNil: [ ^nil ].
+	(anEntity = displayedEntityInterval key) ifTrue: [ ^displayedEntityInterval value first ].
 
 	boundingInterval := self intervalForString: anEntity displayedNameInMiSourceText after: 1.
 	boundingInterval ifNil: [ ^nil ].

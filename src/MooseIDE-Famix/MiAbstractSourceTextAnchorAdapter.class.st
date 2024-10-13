@@ -64,9 +64,7 @@ MiAbstractSourceTextAnchorAdapter >> initializeDisplayedText: aText andEntity: a
 
 { #category : #api }
 MiAbstractSourceTextAnchorAdapter >> intervalForEntity: anEntity [
-	"Find the first and last character of anEntity's name in the displayedText
-	 Here we only take care of the interval for the displayed entity
-	 For others (its children), this is subclass dependent"
+	"Find the first and last character of anEntity's name in the displayedText"
 
 	^(displayedEntityInterval key = anEntity)
 		ifTrue: [ ^displayedEntityInterval value ]

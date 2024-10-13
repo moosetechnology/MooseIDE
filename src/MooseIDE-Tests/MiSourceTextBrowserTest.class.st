@@ -216,6 +216,33 @@ MiSourceTextBrowserTest >> testHighlightStComment [
 		((displayedText attributesAt: 25) anySatisfy: [ :att | (att class = TextColor) and: [ att color = Color gray ] ]).
 ]
 
+{ #category : #'tests - highlighting' }
+MiSourceTextBrowserTest >> testHighlightStCommentForClass [
+	"class comment appear before the class in Pharo"
+
+	| entity displayedText |
+	entity := FamixStClass new
+		name: 'aClass' ;
+		sourceAnchor: (self stubIndexedAnchorText: 
+'"this is a Pharo class comment"
+code of aClass {
+}' ).
+	FamixStComment new
+		content: 'this is a Pharo class comment' ;
+		commentedEntity: entity.
+
+	browser followEntity: entity.
+
+	displayedText := browser textRenderer formatedText.
+	self deny: displayedText unembellished.
+	self assert: (displayedText attributesAt: 35) isEmpty.
+	self deny: (displayedText attributesAt: 20) isEmpty.
+	self assert:
+		((displayedText attributesAt: 20) noneSatisfy: [ :att | att mayActOnEvent: MouseEvent new ]).
+	self assert:
+		((displayedText attributesAt: 20) anySatisfy: [ :att | (att class = TextColor) and: [ att color = Color gray ] ]).
+]
+
 { #category : #tests }
 MiSourceTextBrowserTest >> testMiSelectedItem [
 
