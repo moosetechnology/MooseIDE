@@ -13,7 +13,7 @@ MiSourceTextStAnchorAdapter class >> acceptEntity: anEntity [
 	^anEntity class name beginsWith: 'FamixSt'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #formatting }
 MiSourceTextStAnchorAdapter >> initialBoundingPos: anEntity [
 
 	| boundingInterval |
@@ -27,7 +27,7 @@ MiSourceTextStAnchorAdapter >> initialBoundingPos: anEntity [
 	^boundingInterval first
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #formatting }
 MiSourceTextStAnchorAdapter >> intervalForEntity: anEntity [
 	"First find from where to start searching in the code,
 	 This will be from the first position of the entity owning anEntity.
