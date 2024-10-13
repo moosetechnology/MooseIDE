@@ -128,6 +128,15 @@ MiSourceTextBrowser >> miSelectedItem [
 	^ specModel selectedEntity
 ]
 
+{ #category : #initialization }
+MiSourceTextBrowser >> open [
+	"redefined to change the cursor in the text morph"
+	super open.
+
+	textRenderer adapter widget theme: MiSourceTextRendererTheme new.
+
+]
+
 { #category : #formatting }
 MiSourceTextBrowser >> reRenderText [ 
 
