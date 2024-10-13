@@ -56,7 +56,7 @@ MiSourceTextSpecRenderer >> applyIdentifierHighlight: aHighlight [
 
 		addAttribute:
 			(TextDoIt new actOnClickBlock: [ :ignored :event |
-				model event: event selectedEntity: aHighlight highlightedEntity ])
+				self event: event selectedEntity: aHighlight highlightedEntity ])
 		from: aHighlight from
 		to: aHighlight to ;
 
@@ -84,6 +84,13 @@ MiSourceTextSpecRenderer >> browser [
 MiSourceTextSpecRenderer >> clearFormating [
 
 	formatedText := formatedText asString asText
+]
+
+{ #category : #actions }
+MiSourceTextSpecRenderer >> event: anEvent selectedEntity: anEntity [
+
+	model event: anEvent selectedEntity: anEntity.
+	self inform: 'Selected entity: ' , anEntity asString
 ]
 
 { #category : #'private - testing' }
