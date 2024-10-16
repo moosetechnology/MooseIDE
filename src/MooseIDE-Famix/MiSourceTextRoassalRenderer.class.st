@@ -17,6 +17,11 @@ Class {
 	#category : #'MooseIDE-Famix-SourceText'
 }
 
+{ #category : #deprecation }
+MiSourceTextRoassalRenderer class >> isDeprecated [
+	^ true
+]
+
 { #category : #formatting }
 MiSourceTextRoassalRenderer >> applyErrorHighlight: aHighlight [
 
