@@ -44,8 +44,6 @@ MiSourceTextTIndexedFileAnchorAdapter >> intervalForEntity: anEntity [
 	 This will be from the first position of anEntity.
 	 then search for first occurence of anEntity's name after this point"
 
-	(super intervalForEntity: anEntity) ifNotNil: [ :interval | ^interval ].
-
 	(anEntity class usesFamixTrait: FamixTComment)
 	ifTrue: [ (self intervalForComment: anEntity) 
 		ifNotNil: [ :interval | ^interval ]
