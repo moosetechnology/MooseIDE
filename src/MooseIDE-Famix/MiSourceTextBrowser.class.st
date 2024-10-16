@@ -104,10 +104,14 @@ MiSourceTextBrowser >> followEntity: anEntity [
 
 	super followEntity: anEntity.
 	specModel displayedEntity: anEntity.
-	textRenderer renderText.
-
 
 	toolBarExternalEditor newEntity
+]
+
+{ #category : #settings }
+MiSourceTextBrowser >> hasSettings [
+
+	^ true
 ]
 
 { #category : #initialization }
@@ -122,6 +126,33 @@ MiSourceTextBrowser >> initializePresenters [
 MiSourceTextBrowser >> miSelectedItem [
 
 	^ specModel selectedEntity
+]
+
+{ #category : #initialization }
+MiSourceTextBrowser >> open [
+	"redefined to change the cursor in the text morph"
+	super open.
+
+	textRenderer adapter widget theme: MiSourceTextRendererTheme new.
+
+]
+
+{ #category : #formatting }
+MiSourceTextBrowser >> reRenderText [ 
+
+	textRenderer reRenderText
+]
+
+{ #category : #formatting }
+MiSourceTextBrowser >> renderTextFor: anEntity [
+
+	textRenderer renderTextFor: anEntity
+]
+
+{ #category : #settings }
+MiSourceTextBrowser >> settingsModel [
+
+	^ specModel settings
 ]
 
 { #category : #'private - testing' }
@@ -143,6 +174,8 @@ MiSourceTextBrowser >> toolBarExternalEditor: anObject [
 
 { #category : #formatting }
 MiSourceTextBrowser >> withRoassalRenderer [
+
+	self deprecated: 'RoassalRenderer is out of sync with the rest of the code'.
 
 	textRenderer := self instantiate: MiSourceTextRoassalRenderer on: specModel
 ]

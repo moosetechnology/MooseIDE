@@ -1,4 +1,6 @@
 "
+DEPRECATED
+
 A renderer of highlighted source text using Roassal.
 Ideally it would be subclass of a MiSourceTextAbstractRenderer, but it also need to inherit from MiAbstractVisualization
 
@@ -14,6 +16,11 @@ Class {
 	],
 	#category : #'MooseIDE-Famix-SourceText'
 }
+
+{ #category : #deprecation }
+MiSourceTextRoassalRenderer class >> isDeprecated [
+	^ true
+]
 
 { #category : #formatting }
 MiSourceTextRoassalRenderer >> applyErrorHighlight: aHighlight [
@@ -79,7 +86,7 @@ MiSourceTextRoassalRenderer >> initialize [
 ]
 
 { #category : #highlighting }
-MiSourceTextRoassalRenderer >> renderText [
+MiSourceTextRoassalRenderer >> reRenderText [
 
 	self run
 ]

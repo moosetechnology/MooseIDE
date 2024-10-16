@@ -99,11 +99,6 @@ MiModelsBrowserModel >> initializeSettings [
 		named: #modelAutoImportSetting.
 ]
 
-{ #category : #keymaps }
-MiModelsBrowserModel >> openSettings [ 
-	settings open
-]
-
 { #category : #accessing }
 MiModelsBrowserModel >> selected [
 

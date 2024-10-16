@@ -13,21 +13,40 @@ Class {
 	#name : #MiSourceTextHighlight,
 	#superclass : #Object,
 	#instVars : [
-		'interval',
-		'highlightedEntity'
+		'highlightedEntity',
+		'highlightInterval'
 	],
 	#category : #'MooseIDE-Famix-SourceText'
 }
 
 { #category : #formatting }
+MiSourceTextHighlight >> adaptSourceAnchorWith: aSourceAnchorAdapter [
+
+	^highlightInterval := aSourceAnchorAdapter intervalForEntity: self highlightedEntity
+]
+
+{ #category : #formatting }
 MiSourceTextHighlight >> applyTo: aRenderer [
+
 	self subclassResponsibility 
 ]
 
 { #category : #accessing }
 MiSourceTextHighlight >> from [
 
-	^ interval first
+	^highlightInterval first
+]
+
+{ #category : #testing }
+MiSourceTextHighlight >> hasInterval [
+
+	^highlightInterval isNotNil
+]
+
+{ #category : #accessing }
+MiSourceTextHighlight >> highlightInterval: anObject [
+
+	^ highlightInterval := anObject
 ]
 
 { #category : #accessing }
@@ -43,34 +62,7 @@ MiSourceTextHighlight >> highlightedEntity: anObject [
 ]
 
 { #category : #accessing }
-MiSourceTextHighlight >> interval [
-
-	^ interval
-]
-
-{ #category : #accessing }
-MiSourceTextHighlight >> interval: anObject [
-
-	interval := anObject
-]
-
-{ #category : #api }
-MiSourceTextHighlight >> restrictIntervalTo: aName in: aString [
-	"sets the interval to the 1st line containing aName in aString"
-	| myStart |
-	myStart := aString
-		findString: aName
-		startingAt: interval first.
-
-	self interval:
-		(Interval
-			from: myStart
-			to: (myStart + aName size - 1))
-
-]
-
-{ #category : #accessing }
 MiSourceTextHighlight >> to [
 
-	^ interval last
+	^highlightInterval last
 ]

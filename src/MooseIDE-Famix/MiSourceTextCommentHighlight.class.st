@@ -3,13 +3,13 @@ Concrete class for highlighting an identifier in the text
 
 "
 Class {
-	#name : #MiSourceTextIdentifierHighlight,
+	#name : #MiSourceTextCommentHighlight,
 	#superclass : #MiSourceTextHighlight,
 	#category : #'MooseIDE-Famix-SourceText'
 }
 
 { #category : #formatting }
-MiSourceTextIdentifierHighlight >> applyTo: aRenderer [
+MiSourceTextCommentHighlight >> applyTo: aRenderer [
 
-	aRenderer applyIdentifierHighlight: self
+	aRenderer applyCommentHighlight: self
 ]

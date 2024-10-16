@@ -191,12 +191,6 @@ MiDistributionMapModel >> numberOfchildrenWithProperty: aProp forNode: node [
 	count: [ :child  |  aProp isApplicableTo: child]
 ]
 
-{ #category : #settings }
-MiDistributionMapModel >> openSettings [
-
-	self settings open
-]
-
 { #category : #querying }
 MiDistributionMapModel >> orderOuterNodes: aCollectionOfNodes [
 
