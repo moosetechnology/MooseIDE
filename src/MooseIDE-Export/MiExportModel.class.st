@@ -35,19 +35,25 @@ Class {
 { #category : #'api - column property' }
 MiExportModel >> addColumnForProperty: aFM3Property [
 
-	self columnAdded:
-		(columns add:
-			 (MiExportPropertyColumnModel forProperty: aFM3Property))
+	| newQueryColumn |
+	
+	newQueryColumn := MiExportPropertyColumnModel forProperty:
+		                  aFM3Property.
+	(columns includes: newQueryColumn) ifTrue: [ ^ newQueryColumn ].
+	self columnAdded: (columns add: newQueryColumn)
 ]
 
 { #category : #'api - column script' }
 MiExportModel >> addColumnForQuery: aBlock withName: queryName [
 
-	| newColumn |
-	newColumn := columns add: (MiExportQueryColumnModel new
-			              query: aBlock;
-			              name: queryName;
-			              yourself).
+	| newColumn newQueryColumn |
+	
+	newQueryColumn := MiExportQueryColumnModel new
+		                  query: aBlock;
+		                  name: queryName;
+		                  yourself.
+	(columns includes: newQueryColumn) ifTrue: [ ^ newQueryColumn ].
+	newColumn := columns add: newQueryColumn.
 	self columnAdded: newColumn.
 	^ newColumn
 ]

@@ -16,10 +16,32 @@ MiExportPropertyColumnModel class >> forProperty: aFM3Property [
 		  yourself
 ]
 
+{ #category : #comparing }
+MiExportPropertyColumnModel >> = anObject [
+	"Answer whether the receiver and anObject represent the same object."
+
+	self == anObject ifTrue: [ ^ true ].
+	self class = anObject class ifFalse: [ ^ false ].
+	^ property = anObject property and: [ name = anObject name1 ]
+]
+
+{ #category : #comparing }
+MiExportPropertyColumnModel >> hash [
+	"Answer an integer value that is related to the identity of the receiver."
+
+	^ property hash bitXor: name hash
+]
+
 { #category : #testing }
 MiExportPropertyColumnModel >> isPropertyColumn [
 
 	^ true
+]
+
+{ #category : #accessing }
+MiExportPropertyColumnModel >> name1 [
+
+	^ name
 ]
 
 { #category : #private }
