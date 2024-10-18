@@ -114,12 +114,23 @@ MiDependencyStructuralMatrixBrowserModel >> getTupleDependencyWeight: tuple [
 	^(tuple key = tuple value)
 		ifTrue: [ ^0 ]
 		ifFalse: [
-			tuple key model queryAllOutgoing count: [ :dependency || opposites |
-				opposites := dependency target.
-				opposites isCollection
-				ifTrue: [ opposites anySatisfy: [ :each | (each atScope: tuple value model class) includes: tuple value model] ]
-				ifFalse: [(opposites atScope: tuple value model class) includes: tuple value model ]
+			tuple key model queryAllOutgoingForDSM count: [ :dependency || opposites |
+				dependency isAssociation ifTrue: [
+					"Association so need to get the target because DSM is done between entities"
+					opposites := dependency target.
+					opposites isCollection
+					ifTrue: [ opposites anySatisfy: [ :each | (each atScope: tuple value model class) includes: tuple value model] ]
+					"The ifNotNil is to avoid the null dependency problem coming from the model due to generic types"
+					ifFalse: [ opposites 
+						ifNotNil: [ (opposites atScope: tuple value model class) includes: tuple value model ] 
+						ifNil: [false]]
+					]
+				ifFalse: [ 
+					"Case of declaredType"
+					dependency isStub ifTrue: [ false ] ifFalse: [ (dependency atScope: tuple value model class) includes: tuple value model ]
+					 ]
 			]
+			
 		]
 ]
 
