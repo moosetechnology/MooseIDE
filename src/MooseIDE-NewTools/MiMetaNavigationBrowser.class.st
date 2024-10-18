@@ -111,13 +111,12 @@ MiMetaNavigationBrowser >> initializePresenters [
 	navigation isResizable: true.
 	items := self filterEmptyValues: (self itemsFor: self model).
 	entitiesColumn := SpStringTableColumn new
-		                  evaluated: [ :el |
-			                  String streamContents: [ :str |
-					                  self printEntry: el on: str ] ];
+		                  evaluated: [ :el | self printEntry: el ];
 		                  beSortable;
 		                  yourself.
 	navigation addColumn: (SpCompositeTableColumn new
 			 title: 'Entities';
+			 sortFunction: [ :entry | self printEntry: entry ] ascending;
 			 addColumn: (SpImageTableColumn new
 					  width: 20;
 					  evaluated: self iconBlock;
@@ -173,13 +172,15 @@ MiMetaNavigationBrowser >> outputActivationPort [
 ]
 
 { #category : #initialization }
-MiMetaNavigationBrowser >> printEntry: el on: aStream [
+MiMetaNavigationBrowser >> printEntry: anAssociation [
 
-	aStream nextPutAll: el key.
-	(el value isBlock not and: [ el value mooseName ~= el key ])
-		ifFalse: [ ^ self ].
-	aStream nextPutAll: ': '.
-	aStream nextPutAll: el value mooseName
+	^ String streamContents: [ :s |
+		  s << anAssociation key.
+		  (anAssociation value isBlock not and: [
+			   anAssociation value mooseName ~= anAssociation key ]) ifFalse: [
+			  ^ self ].
+		  s << ': '.
+		  s << anAssociation value mooseName ]
 ]
 
 { #category : #initialization }
