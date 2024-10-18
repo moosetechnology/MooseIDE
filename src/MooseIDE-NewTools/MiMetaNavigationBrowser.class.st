@@ -64,20 +64,12 @@ MiMetaNavigationBrowser >> activateOnSingleClick: anObject [
 	activateOnSingleClick := anObject
 ]
 
-{ #category : #initialization }
-MiMetaNavigationBrowser >> addPropertiesPane [
-
-	self layout add: properties
-]
-
 { #category : #layout }
 MiMetaNavigationBrowser >> defaultLayout [
 
 	^ SpBoxLayout newTopToBottom
-		  add: (SpBoxLayout newTopToBottom
-				   add: #navigation;
-				   yourself);
-		  add: #actionBar expand: false;
+		  add: navigation;
+		  add: actionBar expand: false;
 		  yourself
 ]
 
@@ -97,9 +89,43 @@ MiMetaNavigationBrowser >> hasOutputActivationPort [
 ]
 
 { #category : #initialization }
+MiMetaNavigationBrowser >> hidePropertiesPane [
+
+	self layout remove: properties
+]
+
+{ #category : #initialization }
 MiMetaNavigationBrowser >> iconBlock [
 
 	^ [ :el | el value mooseIcon ]
+]
+
+{ #category : #initialization }
+MiMetaNavigationBrowser >> initializeNavigationTreeTable [
+
+	navigation := self newTreeTable.
+	navigation
+		beResizable;
+		addColumn: (SpCompositeTableColumn new
+				 title: 'Entities';
+				 sortFunction: [ :entry | self printEntry: entry ] ascending;
+				 addColumn: (SpImageTableColumn new
+						  width: 20;
+						  evaluated: self iconBlock;
+						  yourself);
+				 addColumn: (SpStringTableColumn new
+						  evaluated: [ :el | self printEntry: el ];
+						  beSortable;
+						  yourself)).
+	navigation
+		children: [ :anEntity | self itemsFor: anEntity value ];
+		contextMenu: [ self rootCommandsGroup asMenuPresenter ];
+		items: (self filterEmptyValues: (self itemsFor: self model)).
+
+	navigation whenActivatedDo: [ :selection |
+		self inspectorObjectContextPresenter owner
+			changeSelection: selection selectedItem value
+			from: self inspectorObjectContextPresenter ]
 ]
 
 { #category : #initialization }
@@ -167,8 +193,8 @@ MiMetaNavigationBrowser >> model: anObject [
 
 { #category : #initialization }
 MiMetaNavigationBrowser >> outputActivationPort [
-	^ (SpActivationPort newPresenter: self)
-		yourself
+
+	^ SpActivationPort newPresenter: self
 ]
 
 { #category : #initialization }
@@ -184,19 +210,8 @@ MiMetaNavigationBrowser >> printEntry: anAssociation [
 ]
 
 { #category : #initialization }
-MiMetaNavigationBrowser >> removePropertiesPane [
-
-	self layout remove: properties
-]
-
-{ #category : #accessing }
-MiMetaNavigationBrowser >> selectedItem [
-	
-	^ navigation selection selectedItem value
-]
-
-{ #category : #initialization }
 MiMetaNavigationBrowser >> selectedObject [
+
 	^ navigation selection selectedItem value
 ]
 
@@ -207,21 +222,10 @@ MiMetaNavigationBrowser >> setModelBeforeInitialization: anInspectionModel [
 ]
 
 { #category : #initialization }
-MiMetaNavigationBrowser >> shouldShowPropertiesPane [
+MiMetaNavigationBrowser >> showPropertiesPane [
 
-	^ shouldShowPropertiesPane ifNil: [ self class defaultShouldShowPropertiesPane ]
-]
-
-{ #category : #initialization }
-MiMetaNavigationBrowser >> toggleShouldShowPropertiesPane [
-
-	^ self shouldShowPropertiesPane
-		  ifTrue: [
-			  shouldShowPropertiesPane := false.
-			  self removePropertiesPane ]
-		  ifFalse: [
-			  shouldShowPropertiesPane := true.
-			  self addPropertiesPane ]
+	properties ifNil: [ properties := MiPropertyExtension on: self model ].
+	self layout add: properties
 ]
 
 { #category : #initialization }
