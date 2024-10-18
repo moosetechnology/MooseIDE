@@ -27,15 +27,14 @@ Internal Representation and Key Implementation Points.
 Class {
 	#name : #MiMetaNavigationBrowser,
 	#superclass : #StPresenter,
+	#traits : 'SpTActivable',
+	#classTraits : 'SpTActivable classTrait',
 	#instVars : [
 		'navigation',
 		'model',
-		'activationBlock',
 		'activateOnSingleClick',
 		'properties',
-		'entitiesColumn',
-		'actionBar',
-		'shouldShowPropertiesPane'
+		'actionBar'
 	],
 	#category : #'MooseIDE-NewTools-Inspector tabs'
 }
@@ -53,15 +52,23 @@ MiMetaNavigationBrowser class >> defaultShouldShowPropertiesPane [
 	^ false
 ]
 
-{ #category : #initialization }
-MiMetaNavigationBrowser >> activateOnSingleClick [
-	navigation activateOnSingleClick
+{ #category : #'private - actions' }
+MiMetaNavigationBrowser >> activate [
+
+	activationAction cull:
+		(SpActivatedSelection newValue: navigation selectedItem value)
 ]
 
-{ #category : #accessing }
-MiMetaNavigationBrowser >> activateOnSingleClick: anObject [
+{ #category : #api }
+MiMetaNavigationBrowser >> activateOnDoubleClick [
 
-	activateOnSingleClick := anObject
+	navigation activateOnDoubleClick
+]
+
+{ #category : #api }
+MiMetaNavigationBrowser >> activateOnSingleClick [
+
+	navigation activateOnSingleClick
 ]
 
 { #category : #layout }
@@ -83,12 +90,6 @@ MiMetaNavigationBrowser >> filterEmptyValues: entities [
 ]
 
 { #category : #initialization }
-MiMetaNavigationBrowser >> hasOutputActivationPort [
-
-	^ true
-]
-
-{ #category : #initialization }
 MiMetaNavigationBrowser >> hidePropertiesPane [
 
 	self layout remove: properties
@@ -100,18 +101,25 @@ MiMetaNavigationBrowser >> iconBlock [
 	^ [ :el | el value mooseIcon ]
 ]
 
+{ #category : #private }
+MiMetaNavigationBrowser >> initialize [
+
+	super initialize.
+	activationAction := SpActivationHolder new
+]
+
 { #category : #initialization }
 MiMetaNavigationBrowser >> initializeNavigationTreeTable [
 
 	navigation := self newTreeTable.
 	navigation
 		beResizable;
-		addColumn: (SpCompositeTableColumn new
-				 title: 'Entities';
+		activateOnSingleClick;
+		addColumn: ((SpCompositeTableColumn title: 'Entities')
 				 sortFunction: [ :entry | self printEntry: entry ] ascending;
 				 addColumn: (SpImageTableColumn new
-						  width: 20;
 						  evaluated: self iconBlock;
+						  width: 20;
 						  yourself);
 				 addColumn: (SpStringTableColumn new
 						  evaluated: [ :el | self printEntry: el ];
@@ -120,51 +128,22 @@ MiMetaNavigationBrowser >> initializeNavigationTreeTable [
 	navigation
 		children: [ :anEntity | self itemsFor: anEntity value ];
 		contextMenu: [ self rootCommandsGroup asMenuPresenter ];
-		items: (self filterEmptyValues: (self itemsFor: self model)).
-
-	navigation whenActivatedDo: [ :selection |
-		self inspectorObjectContextPresenter owner
-			changeSelection: selection selectedItem value
-			from: self inspectorObjectContextPresenter ]
+		items: (self filterEmptyValues: (self itemsFor: self model));
+		whenActivatedDo: [ self activate ]
 ]
 
 { #category : #initialization }
 MiMetaNavigationBrowser >> initializePresenters [
 
-	| items |
-	"navigation"
-	navigation := self newTreeTable.
-	navigation isResizable: true.
-	items := self filterEmptyValues: (self itemsFor: self model).
-	entitiesColumn := SpStringTableColumn new
-		                  evaluated: [ :el | self printEntry: el ];
-		                  beSortable;
-		                  yourself.
-	navigation addColumn: (SpCompositeTableColumn new
-			 title: 'Entities';
-			 sortFunction: [ :entry | self printEntry: entry ] ascending;
-			 addColumn: (SpImageTableColumn new
-					  width: 20;
-					  evaluated: self iconBlock;
-					  yourself);
-			 addColumn: entitiesColumn).
-	navigation children: [ :anEntity | self itemsFor: anEntity value ].
-	navigation
-		contextMenu: [ self rootCommandsGroup asMenuPresenter ];
-		items: items.
-	navigation whenActivatedDo: [ :selection |
-		self inspectorObjectContextPresenter owner
-			changeSelection: selection selectedItem value
-			from: self inspectorObjectContextPresenter ].
-	"action bar"
-	actionBar := self newActionBar add: (self newButton
-			              label: 'Properties';
-			              help: 'Show properties panel';
-			              action: [ self toggleShouldShowPropertiesPane ];
-			              yourself).
-	"properties"
-	properties := MiPropertyExtension on: self model.
-	self shouldShowPropertiesPane ifTrue: [ self addPropertiesPane ]
+	self initializeNavigationTreeTable.
+
+	actionBar := self newActionBar.
+	actionBar add: (self newToggleButton
+			 label: 'Properties';
+			 help: 'Show properties panel - May be long to compute';
+			 whenActivatedDo: [ self showPropertiesPane ];
+			 whenDeactivatedDo: [ self hidePropertiesPane ];
+			 yourself)
 ]
 
 { #category : #initialization }
@@ -192,12 +171,6 @@ MiMetaNavigationBrowser >> model: anObject [
 ]
 
 { #category : #initialization }
-MiMetaNavigationBrowser >> outputActivationPort [
-
-	^ SpActivationPort newPresenter: self
-]
-
-{ #category : #initialization }
 MiMetaNavigationBrowser >> printEntry: anAssociation [
 
 	^ String streamContents: [ :s |
@@ -207,12 +180,6 @@ MiMetaNavigationBrowser >> printEntry: anAssociation [
 			  ^ self ].
 		  s << ': '.
 		  s << anAssociation value mooseName ]
-]
-
-{ #category : #initialization }
-MiMetaNavigationBrowser >> selectedObject [
-
-	^ navigation selection selectedItem value
 ]
 
 { #category : #'accessing - model' }
@@ -226,9 +193,4 @@ MiMetaNavigationBrowser >> showPropertiesPane [
 
 	properties ifNil: [ properties := MiPropertyExtension on: self model ].
 	self layout add: properties
-]
-
-{ #category : #initialization }
-MiMetaNavigationBrowser >> whenActivatedDo: aBlock [
-	activationBlock := aBlock
 ]
