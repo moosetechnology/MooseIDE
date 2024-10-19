@@ -97,6 +97,13 @@ MiDependencyStructuralMatrixBrowserModel >> entities [
 	^ graph nodes collect: #model
 ]
 
+{ #category : #testing }
+MiDependencyStructuralMatrixBrowserModel >> entity: aCandidate belongsTo: anEntity [
+	"test whether aDependentEntity can be scoped up to anEntity"
+
+	^(aCandidate atScope: anEntity class) includes: anEntity
+]
+
 { #category : #actions }
 MiDependencyStructuralMatrixBrowserModel >> followEntity: aCollection [
 
@@ -110,28 +117,31 @@ MiDependencyStructuralMatrixBrowserModel >> followEntity: aCollection [
 
 { #category : #api }
 MiDependencyStructuralMatrixBrowserModel >> getTupleDependencyWeight: tuple [
+	"generic algorithm is to take all dependencies of the `tuple key` (row of the DSM) and count
+	 those that can be scoped up to the `tuple value` (column of the DSM)"
 
-	^(tuple key = tuple value)
-		ifTrue: [ ^0 ]
-		ifFalse: [
-			tuple key model queryAllOutgoingForDSM count: [ :dependency || opposites |
-				dependency isAssociation ifTrue: [
-					"Association so need to get the target because DSM is done between entities"
-					opposites := dependency target.
-					opposites isCollection
-					ifTrue: [ opposites anySatisfy: [ :each | (each atScope: tuple value model class) includes: tuple value model] ]
-					"The ifNotNil is to avoid the null dependency problem coming from the model due to generic types"
-					ifFalse: [ opposites 
-						ifNotNil: [ (opposites atScope: tuple value model class) includes: tuple value model ] 
-						ifNil: [false]]
-					]
-				ifFalse: [ 
-					"Case of declaredType"
-					dependency isStub ifTrue: [ false ] ifFalse: [ (dependency atScope: tuple value model class) includes: tuple value model ]
-					 ]
+	^tuple key model queryAllOutgoingForDSM count: [ :dependency || opposites |
+		dependency isAssociation ifTrue: [
+			"Association so need to get the target because DSM is done between entities"
+			opposites := dependency target.
+			opposites isCollection
+			ifTrue: [ opposites anySatisfy: [ :each |
+					self entity: each belongsTo: tuple value model ]
 			]
-			
-		]
+			ifFalse: [
+				self flag: 'can be nil because of a bug in the model with generic types'.
+				opposites 
+					ifNotNil: [ self entity: opposites belongsTo: tuple value model ] 
+					ifNil: [false]
+				]
+			]
+		ifFalse: [ 
+			"case of declaredType"
+			dependency isStub
+				ifTrue: [ false ]
+				ifFalse: [ self entity: dependency belongsTo: tuple value model ]
+			 ]
+	]
 ]
 
 { #category : #initialization }
