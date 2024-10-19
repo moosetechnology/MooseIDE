@@ -7,6 +7,22 @@ Class {
 	#category : #'MooseIDE-Dependency-DSM'
 }
 
+{ #category : #'hooks - labels' }
+MiRSDependencyStructuralMatrix >> createLabelShapeX: aRSBox [
+
+	^(super createLabelShapeX: aRSBox)
+		popupText: [ :graphNode | graphNode model mooseName ] ;
+		yourself
+]
+
+{ #category : #'hooks - labels' }
+MiRSDependencyStructuralMatrix >> createLabelShapeY: aRSBox [
+
+	^(super createLabelShapeY: aRSBox)
+		popupText: [ :graphNode | graphNode model mooseName ] ;
+		yourself
+]
+
 { #category : #hooks }
 MiRSDependencyStructuralMatrix >> createShape: tuple [
 	"1halt."
