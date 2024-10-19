@@ -44,8 +44,12 @@ MiRSDependencyStructuralMatrix >> getTupleDependencyWeight: tuple [
 
 { #category : #highlighting }
 MiRSDependencyStructuralMatrix >> highlight: evt [
+	"Probable bug in RSDSM: `super highlight: evt` draws the row and column with bold border
+	 But the borders are shape that should not receive announcement (like mouseEnter/Leave for highlight/unhighlight"
 	super highlight: evt.
-	shape := nil.
+	(self canvas canvas propertyAt: #columnRect) announcer: nil.
+	(self canvas canvas propertyAt: #rowRect) announcer: nil.
+
 	(owner sccShapesIncluding: evt shape) do: [ :aShape |
 		aShape color: (owner cellShowSCCColor: aShape model)
 	]
@@ -59,6 +63,7 @@ MiRSDependencyStructuralMatrix >> owner: anObject [
 
 { #category : #highlighting }
 MiRSDependencyStructuralMatrix >> unhighlight: evt [
+
 	super unhighlight: evt.
 
 	(owner sccShapesIncluding: evt shape) do: [ :aShape |
