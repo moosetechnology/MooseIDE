@@ -15,6 +15,7 @@ MiRSDependencyStructuralMatrix >> createShape: tuple [
 
 	^ MiRSDSMShape new
 		text: (weight = 0 ifTrue: [''] ifFalse: [ weight asString]);
+		weight: weight ;
 		model: tuple;
 		color: (self color cull: tuple);
 		yourself

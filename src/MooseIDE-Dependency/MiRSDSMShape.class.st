@@ -4,6 +4,9 @@ This is a modified version of the `RSComposite` to accomodate our new DSM
 Class {
 	#name : #MiRSDSMShape,
 	#superclass : #RSComposite,
+	#instVars : [
+		'weight'
+	],
 	#category : #'MooseIDE-Dependency-DSM'
 }
 
@@ -24,5 +27,17 @@ MiRSDSMShape >> initialize [
 
 { #category : #accessing }
 MiRSDSMShape >> text: aString [
-	self children second text: aString 
+	self children second text: aString
+]
+
+{ #category : #accessing }
+MiRSDSMShape >> weight [
+
+	^ weight
+]
+
+{ #category : #accessing }
+MiRSDSMShape >> weight: anObject [
+
+	weight := anObject
 ]
