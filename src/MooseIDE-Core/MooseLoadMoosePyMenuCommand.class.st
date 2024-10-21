@@ -16,6 +16,13 @@ MooseLoadMoosePyMenuCommand class >> label [
 	^ 'MoosePy'
 ]
 
+{ #category : #'world menu' }
+MooseLoadMoosePyMenuCommand class >> menuCommandOn: aBuilder [
+
+	<worldMenu>
+	^ self menuCommandOn: aBuilder forCommand: self
+]
+
 { #category : #accessing }
 MooseLoadMoosePyMenuCommand class >> menuPriority [
 
