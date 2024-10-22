@@ -118,6 +118,7 @@ MiDuplicationBrowserModel >> highlightEntity: entitiesToHighlight [
 
 { #category : #initialization }
 MiDuplicationBrowserModel >> initialize [
+	super initialize.
 
 	allEntities := #(  ).
 	selectedEntities := #().
