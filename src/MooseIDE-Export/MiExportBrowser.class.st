@@ -49,7 +49,7 @@ MiExportBrowser class >> menuItem [
 { #category : #'world menu' }
 MiExportBrowser class >> menuPriority [
 
-	^ self menuMetaToolsPriority + 2
+	^ self menuMetaToolsPriority + 3
 ]
 
 { #category : #specs }
