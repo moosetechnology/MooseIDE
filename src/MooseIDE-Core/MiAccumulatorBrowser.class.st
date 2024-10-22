@@ -1,7 +1,11 @@
 "
 A small tool to conveniently gather a set of entities
 
-Just propagate entities to it from any other tool and when you are done, propagate all the entities it gathered
+Accepted entities: A collection of entities
+
+Just propagate entities to it from any other tool and it will accumulate them
+You can propagate several set of entities
+when you are done, you can now propagate all of them together
 "
 Class {
 	#name : #MiAccumulatorBrowser,
@@ -53,13 +57,16 @@ MiAccumulatorBrowser >> btnRemove [
 { #category : #testing }
 MiAccumulatorBrowser >> canFollowEntity: anObject [
 
-	^ anObject isMooseObject
+	^anObject isMooseObject
 ]
 
 { #category : #actions }
 MiAccumulatorBrowser >> followEntity: anObject [
 
-	specModel newEntities: anObject
+	anObject isCollection
+		ifTrue: [ specModel newEntities: anObject ]
+		ifFalse: [ specModel newEntities: { anObject } ]
+
 ]
 
 { #category : #initialization }
