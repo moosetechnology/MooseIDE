@@ -11,15 +11,9 @@ MiAccumulatorBrowserTest >> browserClass [
 ]
 
 { #category : #running }
-MiAccumulatorBrowserTest >> method: aName [
-
-	^ FamixRepTestMethod named: aName
-]
-
-{ #category : #running }
 MiAccumulatorBrowserTest >> testCanPropagateAfterFollow [
 
-	browser followEntity: { (self method: 'method1') . (self method: 'method2') }.
+	browser followEntity: { MooseEntity new . MooseEntity new }.
 
 	self assert: browser canPropagate.
 
@@ -35,7 +29,7 @@ MiAccumulatorBrowserTest >> testCannotPropagateWhenEmpty [
 { #category : #running }
 MiAccumulatorBrowserTest >> testClearEntities [
 
-	browser followEntity: { (self method: 'method1') . (self method: 'method2') }.
+	browser followEntity: { MooseEntity new . MooseEntity new }.
 
 	self denyEmpty: browser model entities.
 
@@ -48,7 +42,7 @@ MiAccumulatorBrowserTest >> testFollowEntity [
 
 	self assertEmpty: browser model entities.
 
-	browser followEntity: { (self method: 'method1') . (self method: 'method2') }.
+	browser followEntity: { MooseEntity new . MooseEntity new }.
 
 	self assert: browser model entities size equals: 2
 ]
@@ -58,7 +52,7 @@ MiAccumulatorBrowserTest >> testMiSelectedItemWithSelection [
 
 	| entities |
 
-	entities := { (self method: 'method1') . (self method: 'method2') }.
+	entities := { MooseEntity new . MooseEntity new }.
 
 	browser followEntity: entities.
 	browser model selectedEntities: { entities first }.
@@ -69,7 +63,7 @@ MiAccumulatorBrowserTest >> testMiSelectedItemWithSelection [
 { #category : #running }
 MiAccumulatorBrowserTest >> testMiSelectedItemWithoutSelection [
 
-	browser followEntity: { (self method: 'method1') . (self method: 'method2') }.
+	browser followEntity: { MooseEntity new . MooseEntity new }.
 
 	self assert: browser miSelectedItem size equals: 2
 ]
@@ -79,7 +73,7 @@ MiAccumulatorBrowserTest >> testRemoveEntities [
 
 	| entities |
 
-	entities := { (self method: 'method1') . (self method: 'method2') }.
+	entities := { MooseEntity new . MooseEntity new }.
 
 	browser followEntity: entities.
 	browser model selectedEntities: { entities first }.
