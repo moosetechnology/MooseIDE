@@ -20,9 +20,22 @@ Class {
 }
 
 { #category : #'world menu' }
+MiAccumulatorBrowser class >> menuCommandOn: aBuilder [
+
+	<worldMenu>
+	^ self buildMenuItemIn: aBuilder
+]
+
+{ #category : #'world menu' }
 MiAccumulatorBrowser class >> menuItem [
 
 	^#AccumulatorBrowser
+]
+
+{ #category : #'world menu' }
+MiAccumulatorBrowser class >> menuPriority [
+
+	^ self menuMetaToolsPriority + 2
 ]
 
 { #category : #'instance creation' }
