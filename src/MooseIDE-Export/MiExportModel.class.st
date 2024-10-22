@@ -52,13 +52,13 @@ MiExportModel >> addColumnForQuery: aBlock withName: queryName [
 	^ newColumn
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #clearing }
 MiExportModel >> clearColumns [
 
 	columns := self defaultColumns
 ]
 
-{ #category : #initialization }
+{ #category : #clearing }
 MiExportModel >> clearEntities [
 
 	self entitiesList: #(  ).
@@ -105,18 +105,15 @@ MiExportModel >> commentOf: anEntity [
 { #category : #initialization }
 MiExportModel >> defaultColumns [
 
-	^OrderedCollection 
-		with:
-		  (MiExportQueryColumnModel new
-			   query: [ :entity | 
-				   String streamContents: [ :s | entity displayStringOn: s ] ];
-			   name: #Name;
-			   yourself)
-		with: 
-		  (MiExportQueryColumnModel new
-			   query: [ :entity | entity mooseDescription name ];
-			   name: #Type;
-			   yourself)
+	^ OrderedCollection
+		  with: (MiExportQueryColumnModel new
+				   query: #displayString;
+				   name: #Name;
+				   yourself)
+		  with: (MiExportQueryColumnModel new
+				   query: [ :entity | entity mooseDescription name ];
+				   name: #Type;
+				   yourself)
 ]
 
 { #category : #accessing }
@@ -139,6 +136,7 @@ MiExportModel >> entitiesList: anObject [
 
 { #category : #initialization }
 MiExportModel >> initialize [
+
 	super initialize.
 	commentDictionary := Dictionary new.
 	columns := self defaultColumns.

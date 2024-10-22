@@ -75,14 +75,9 @@ MiExportBrowser class >> title [
 MiExportBrowser >> addColumn: aColumn [
 
 	(aColumn isKindOf: FM3Property)
-		ifTrue: [ self addColumnForProperty: aColumn ]
-		ifFalse: [ 
+		ifTrue: [ self model addColumnForProperty: aColumn ]
+		ifFalse: [
 		self model addColumnForQuery: aColumn query withName: aColumn name ]
-]
-
-{ #category : #'columns management' }
-MiExportBrowser >> addColumnForProperty: aFM3Property [
-	self model addColumnForProperty: aFM3Property.
 ]
 
 { #category : #'columns management' }
@@ -92,7 +87,7 @@ MiExportBrowser >> addCommentsColumn [
 			  title: self class commentColumnTitle
 			  evaluated: [ :entity | self commentOf: entity ])
 			 beEditable;
-			 onAcceptEdition: [ :entity :comment | 
+			 onAcceptEdition: [ :entity :comment |
 				 self model comment: entity with: comment ];
 			 yourself).
 	entitiesTable refresh
@@ -229,9 +224,7 @@ Click to show in folder'
 { #category : #actions }
 MiExportBrowser >> followEntity: anEntity [
 
-	| entities |
-	entities := anEntity asMooseGroup.
-	self updateEntitiesListWith: entities.
+	self updateEntitiesListWith: anEntity asMooseGroup.
 	self updateEntitiesCountLabel
 ]
 
@@ -376,7 +369,7 @@ MiExportBrowser >> updateEntitiesListWith: aMooseGroup [
 
 	self model clearColumns.
 	(self commonPropertiesIn: aMooseGroup) do: [ :property |
-		self addColumnForProperty: property ].
+		self model addColumnForProperty: property ].
 	self model entitiesList: aMooseGroup.
 
 	self updateTable
