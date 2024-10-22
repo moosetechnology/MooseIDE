@@ -52,6 +52,20 @@ MiExportModel >> addColumnForQuery: aBlock withName: queryName [
 	^ newColumn
 ]
 
+{ #category : #'as yet unclassified' }
+MiExportModel >> clearColumns [
+
+	columns := self defaultColumns
+]
+
+{ #category : #initialization }
+MiExportModel >> clearEntities [
+
+	self entitiesList: #(  ).
+	self clearColumns.
+	self browser ifNotNil: [ :b | b updateTable ]
+]
+
 { #category : #events }
 MiExportModel >> columnAdded: aColumn [
 

@@ -116,8 +116,7 @@ MiExportBrowser >> clearButton [
 { #category : #initialization }
 MiExportBrowser >> clearEntities [
 
-	self model entitiesList: #(  ).
-	
+	self model clearEntities
 ]
 
 { #category : #'columns management' }
@@ -375,7 +374,8 @@ MiExportBrowser >> updateEntitiesCountLabel [
 { #category : #'columns management' }
 MiExportBrowser >> updateEntitiesListWith: aMooseGroup [
 
-	(self commonPropertiesIn: aMooseGroup) do: [ :property | 
+	self model clearColumns.
+	(self commonPropertiesIn: aMooseGroup) do: [ :property |
 		self addColumnForProperty: property ].
 	self model entitiesList: aMooseGroup.
 
