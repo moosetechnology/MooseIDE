@@ -1,9 +1,9 @@
-Extension { #name : #FamixTSourceEntity }
+Extension { #name : #FamixTSourceAnchor }
 
 { #category : #'*MooseIDE-NewTools' }
-FamixTSourceEntity >> miSourceInspectorExtension [
+FamixTSourceAnchor >> miSourceInspectorExtension [
 
-	<inspectorPresentationOrder: 3 title: 'SourceText'>
+	<inspectorPresentationOrder: 4 title: 'SourceText'>
 	^ SpCodePresenter new
 		  withoutSyntaxHighlight;
 		  withLineNumbers;
