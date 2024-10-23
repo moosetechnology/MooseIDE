@@ -8,7 +8,7 @@ You can propagate several set of entities
 when you are done, you can now propagate all of them together
 "
 Class {
-	#name : #MiAccumulatorBrowser,
+	#name : #MiAggregatorBrowser,
 	#superclass : #MiAbstractBrowser,
 	#instVars : [
 		'btnClear',
@@ -20,61 +20,61 @@ Class {
 }
 
 { #category : #'world menu' }
-MiAccumulatorBrowser class >> menuCommandOn: aBuilder [
+MiAggregatorBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
 	^ self buildMenuItemIn: aBuilder
 ]
 
 { #category : #'world menu' }
-MiAccumulatorBrowser class >> menuItem [
+MiAggregatorBrowser class >> menuItem [
 
 	^#AccumulatorBrowser
 ]
 
 { #category : #'world menu' }
-MiAccumulatorBrowser class >> menuPriority [
+MiAggregatorBrowser class >> menuPriority [
 
 	^ self menuMetaToolsPriority + 2
 ]
 
 { #category : #'instance creation' }
-MiAccumulatorBrowser class >> newModel [
+MiAggregatorBrowser class >> newModel [
 
-	^ MiAccumulatorBrowserModel new
+	^ MiAggregatorBrowserModel new
 ]
 
 { #category : #'instance creation' }
-MiAccumulatorBrowser class >> open [
+MiAggregatorBrowser class >> open [
 	<script>
 	^ super open
 ]
 
 { #category : #'world menu' }
-MiAccumulatorBrowser class >> title [
-	^ 'Accumulator Browser'
+MiAggregatorBrowser class >> title [
+	^ 'Aggregator Browser'
 ]
 
 { #category : #'private - testing' }
-MiAccumulatorBrowser >> btnClear [
+MiAggregatorBrowser >> btnClear [
 
 	^btnClear
 ]
 
 { #category : #'private - testing' }
-MiAccumulatorBrowser >> btnRemove [
+MiAggregatorBrowser >> btnRemove [
 
 	^btnRemove
 ]
 
 { #category : #testing }
-MiAccumulatorBrowser >> canFollowEntity: anObject [
+MiAggregatorBrowser >> canFollowEntity: anObject [
 
 	^anObject isMooseObject
 ]
 
 { #category : #actions }
-MiAccumulatorBrowser >> followEntity: anObject [
+MiAggregatorBrowser >> followEntity: anObject [
 
 	anObject isCollection
 		ifTrue: [ specModel newEntities: anObject ]
@@ -83,7 +83,7 @@ MiAccumulatorBrowser >> followEntity: anObject [
 ]
 
 { #category : #initialization }
-MiAccumulatorBrowser >> initializeLayout [
+MiAggregatorBrowser >> initializeLayout [
 
 	self layout: (SpBoxLayout newTopToBottom
 		add: lstEntities expand: true ;
@@ -97,7 +97,7 @@ MiAccumulatorBrowser >> initializeLayout [
 ]
 
 { #category : #initialization }
-MiAccumulatorBrowser >> initializeListEntities [
+MiAggregatorBrowser >> initializeListEntities [
 
 	lstEntities := self newFilteringList.
 	lstEntities listPresenter beMultipleSelection.
@@ -108,7 +108,7 @@ MiAccumulatorBrowser >> initializeListEntities [
 ]
 
 { #category : #initialization }
-MiAccumulatorBrowser >> initializePresenters [
+MiAggregatorBrowser >> initializePresenters [
 
 	super initializePresenters.
 
@@ -128,13 +128,13 @@ MiAccumulatorBrowser >> initializePresenters [
 ]
 
 { #category : #accessing }
-MiAccumulatorBrowser >> miSelectedItem [
+MiAggregatorBrowser >> miSelectedItem [
 
 	^specModel selectedEntities ifEmpty: [ specModel entities ]
 ]
 
 { #category : #utilities }
-MiAccumulatorBrowser >> updateEntityList: entities [
+MiAggregatorBrowser >> updateEntityList: entities [
 
 	lstEntities items: entities.
 
@@ -142,7 +142,7 @@ MiAccumulatorBrowser >> updateEntityList: entities [
 ]
 
 { #category : #utilities }
-MiAccumulatorBrowser >> updateStatusBar [
+MiAggregatorBrowser >> updateStatusBar [
 
 	^String streamContents: [ :stream |
 		stream
