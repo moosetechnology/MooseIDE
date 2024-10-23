@@ -7,7 +7,7 @@ Class {
 { #category : #running }
 MiAccumulatorBrowserTest >> browserClass [
 
-	^MiAccumulatorBrowser
+	^MiAggregatorBrowser
 ]
 
 { #category : #running }
