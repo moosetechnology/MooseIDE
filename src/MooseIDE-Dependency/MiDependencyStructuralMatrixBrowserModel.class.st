@@ -263,44 +263,9 @@ MiDependencyStructuralMatrixBrowserModel >> newGraph [
 	orderedNodesY := #()
 ]
 
-{ #category : #accessing }
-MiDependencyStructuralMatrixBrowserModel >> nodesOrdered [
-	^orderedNodes
-]
-
 { #category : #actions }
 MiDependencyStructuralMatrixBrowserModel >> openDetailedDSMOn: aTuple [
 	MiDependencyStructuralMatrixBrowser openWithX: aTuple value model children withY: aTuple key model children
-]
-
-{ #category : #buildGraph }
-MiDependencyStructuralMatrixBrowserModel >> orderNodes [
-	"Store ordered nodes in #orderedNodes.
-	 Order is:
-	 - number of combined in and out dependencies
-	 - if equal, number of out dependencies
-	 - if also equal, then name"
-	| incomingEdges |
-
-	incomingEdges := Dictionary new: graph nodes size.
-	graph nodes do: [ :node | incomingEdges at: node put: Set new ].
-	graph nodes do: [ :node |
-		node adjacentNodes do: [ :adjacent |
-			(incomingEdges at: adjacent) add: node
-		].
-	].
-	orderedNodes := graph nodes sorted: [ :nodeA :nodeB || outA inA outB inB|
-		outA := nodeA adjacentNodes size.
-		inA := (incomingEdges at: nodeA) size.
-		outB := nodeB adjacentNodes size.
-		inB := (incomingEdges at: nodeB) size.
-		
-		(inA + outA) < (inB + outB)
-		or: [ (inA + outA) = (inB + outB)
-			ifTrue: [ outA < outB
-				or: [ outA = outB and: [nodeA model name < nodeB model name] ] ]
-			ifFalse: [ false ] ] ].
-
 ]
 
 { #category : #accessing }
