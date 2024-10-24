@@ -15,12 +15,14 @@ Class {
 
 { #category : #initialization }
 MiDependencyStructuralMatrixVisualization >> buildInCanvas: aRSCanvas [
-	| dsm entities |
+	| dsm entitiesX entitiesY |
 	"change legend by adding #noLegend to RSCanvasController new
 	and add RSLegend new ..."
 	
-	entities := viewModel nodesOrdered.
-	entities ifEmpty: [ ^self ].
+	entitiesX := viewModel orderedNodesX.
+	entitiesY := viewModel orderedNodesY.
+	entitiesX ifEmpty: [ ^self ].
+	entitiesY ifEmpty: [ ^self ].
 	
 	aRSCanvas addInteraction: RSCanvasController new.
 	dsm := MiRSDependencyStructuralMatrix new.
@@ -29,7 +31,8 @@ MiDependencyStructuralMatrixVisualization >> buildInCanvas: aRSCanvas [
 	dsm labelShapeX textBlock: [ :columnNode | viewModel displayValueForNode: columnNode].
 	dsm labelShapeY textBlock: [ :rowNode | viewModel displayValueForNode: rowNode ].
 	dsm container: aRSCanvas.
-	dsm objects: entities.
+	dsm objectsX: entitiesX.
+	dsm objectsY: entitiesY.
 	dsm color: [ :tuple | self cellColor: tuple ].
 
 	dsm build.
@@ -108,6 +111,11 @@ MiDependencyStructuralMatrixVisualization >> showSCC: aCollection [
 	aCollection do: [ :tuple |
 		(self shapeFor: tuple) color: (viewModel showSCCColorForTuple: tuple)
 	]
+]
+
+{ #category : #accessing }
+MiDependencyStructuralMatrixVisualization >> viewModel [
+	^ viewModel
 ]
 
 { #category : #accessing }
