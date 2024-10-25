@@ -20,7 +20,7 @@ MiRSDSMShape >> color: aColor [
 MiRSDSMShape >> initialize [ 
 	super initialize.
 
-	self add: (RSBox new size: 15; when: RSMouseDoubleClick do: [ viewModel openDetailedDSMOn: self model] for: self).
+	self add: (RSBox new size: 15).
 	self add: (RSLabel new fontSize: 5).
 	self adjustToChildren
 

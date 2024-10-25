@@ -29,13 +29,19 @@ MiRSDependencyStructuralMatrix >> createShape: tuple [
 	| weight |
 	weight := self getTupleDependencyWeight: tuple.
 
-	^ MiRSDSMShape new
+	shape := MiRSDSMShape new
 		text: (weight = 0 ifTrue: [''] ifFalse: [ weight asString]);
 		weight: weight ;
 		model: tuple;
-		viewModel: self viewModel;
 		color: (self color cull: tuple);
-		yourself
+		yourself.
+
+	shape
+		when: RSMouseDoubleClick do: [ self viewModel openDetailedDSMOn: tuple] for: shape ;
+		when: RSMouseEnter send: #highlight: to: self ;
+		when: RSMouseLeave send: #unhighlight: to: self.
+
+	^shape
 ]
 
 { #category : #accessing }
