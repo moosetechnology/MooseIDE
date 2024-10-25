@@ -19,8 +19,10 @@ MiDependencyStructuralMatrixBrowserModel >> buildGraph: aCollection [
 
 	self newGraph.
 	self buildGraphNodes: aCollection.
+
+	self initializeDependencies.
+
 	self buildGraphEdges.
-	self initializeNodes.
 	self computeSCCs
 ]
 
@@ -29,7 +31,6 @@ MiDependencyStructuralMatrixBrowserModel >> buildGraphEdges [
 	"We choose to say that there is a relation from line to column if line depends on column"
 	| entities |
 	entities := self entities.
-	self initializeDependencies.
 	
 	graph
 			edges: entities
@@ -118,12 +119,11 @@ MiDependencyStructuralMatrixBrowserModel >> entity: aCandidate belongsTo: anEnti
 { #category : #actions }
 MiDependencyStructuralMatrixBrowserModel >> followEntity: aCollection [
 
-	"self newGraph.
-	self buildGraphNodes: aCollection.
-	self buildGraphEdges.
-	self orderNodes.
-	self computeSCCs."
 	self buildGraph: aCollection.
+
+	orderedNodesX := self orderNodes: graph nodes.
+	orderedNodesY := orderedNodesX.
+
 	browser buildDSM
 ]
 
@@ -165,6 +165,15 @@ MiDependencyStructuralMatrixBrowserModel >> getTupleDependencyWeight: tuple [
 ]
 
 { #category : #initialization }
+MiDependencyStructuralMatrixBrowserModel >> increment: dictionary key: key value: increment [
+
+	| oldValue |
+	oldValue := dictionary at: key ifAbsent: [ ^self ].
+
+	dictionary at: key put: oldValue + increment
+]
+
+{ #category : #initialization }
 MiDependencyStructuralMatrixBrowserModel >> initialize [ 
 	super initialize.
 	self initializeColors.
@@ -197,38 +206,6 @@ MiDependencyStructuralMatrixBrowserModel >> initializeDependencies [
 				put: (self getDependenciesFrom: sourceEntity to: targetEntity) 
 		]
 	]
-]
-
-{ #category : #initialization }
-MiDependencyStructuralMatrixBrowserModel >> initializeNodes [
-	"Store ordered nodes in #orderedNodes.
-	 Order is:
-	 - number of combined in and out dependencies
-	 - if equal, number of out dependencies
-	 - if also equal, then name"
-	
-	orderedNodesX:= graph nodes.
-	orderedNodesY := graph nodes.
-	
-	"| incomingEdges |
-	incomingEdges := Dictionary new: graph nodes size.
-	graph nodes do: [ :node | incomingEdges at: node put: Set new ].
-	graph nodes do: [ :node |
-		node adjacentNodes do: [ :adjacent |
-			(incomingEdges at: adjacent) add: node
-		].
-	]."
-	"orderedNodes := graph nodes sorted: [ :nodeA :nodeB || outA inA outB inB|
-		outA := nodeA adjacentNodes size.
-		inA := (incomingEdges at: nodeA) size.
-		outB := nodeB adjacentNodes size.
-		inB := (incomingEdges at: nodeB) size.
-		
-		(inA + outA) < (inB + outB)
-		or: [ (inA + outA) = (inB + outB)
-			ifTrue: [ outA < outB
-				or: [ outA = outB and: [nodeA model name < nodeB model name] ] ]
-			ifFalse: [ false ] ] ]."
 ]
 
 { #category : #testing }
@@ -266,6 +243,78 @@ MiDependencyStructuralMatrixBrowserModel >> newGraph [
 { #category : #actions }
 MiDependencyStructuralMatrixBrowserModel >> openDetailedDSMOn: aTuple [
 	MiDependencyStructuralMatrixBrowser openWithX: aTuple value model children withY: aTuple key model children
+]
+
+{ #category : #initialization }
+MiDependencyStructuralMatrixBrowserModel >> orderNodes [
+	"Store ordered nodes in #orderedNodes.
+	 Order is:
+	 - number of combined in and out dependencies
+	 - if equal, number of out dependencies
+	 - if also equal, then name"
+	
+	orderedNodesX:= graph nodes.
+	orderedNodesY := graph nodes.
+	
+	"| incomingEdges |
+	incomingEdges := Dictionary new: graph nodes size.
+	graph nodes do: [ :node | incomingEdges at: node put: Set new ].
+	graph nodes do: [ :node |
+		node adjacentNodes do: [ :adjacent |
+			(incomingEdges at: adjacent) add: node
+		].
+	]."
+	"orderedNodes := graph nodes sorted: [ :nodeA :nodeB || outA inA outB inB|
+		outA := nodeA adjacentNodes size.
+		inA := (incomingEdges at: nodeA) size.
+		outB := nodeB adjacentNodes size.
+		inB := (incomingEdges at: nodeB) size.
+		
+		(inA + outA) < (inB + outB)
+		or: [ (inA + outA) = (inB + outB)
+			ifTrue: [ outA < outB
+				or: [ outA = outB and: [nodeA model name < nodeB model name] ] ]
+			ifFalse: [ false ] ] ]."
+]
+
+{ #category : #initialization }
+MiDependencyStructuralMatrixBrowserModel >> orderNodes: nodeCollection [
+
+	"order nodes according to number of dependencies
+	 Order is:
+	 - first the less outgoing dependencies
+	 - if equal, then first less incoming dependencies
+	 - if equal, then alphabetical order"
+
+	| inDependencies outDependencies |
+	inDependencies := Dictionary new: nodeCollection size.
+	outDependencies := Dictionary new: nodeCollection size.
+
+	nodeCollection do: [ :node |
+		inDependencies at: node model put: 0.
+		outDependencies at: node model put: 0
+	].
+
+	dependencyDictionary keysAndValuesDo: [ :tuple :dependencies |
+		dependencies ifNotEmpty: [
+			self increment: inDependencies key: tuple value value: 1.
+			self increment: outDependencies key: tuple key value: 1
+		]
+	].
+
+	^nodeCollection sorted: [ :nodeA :nodeB || outA inA outB inB|
+		outA := outDependencies at: nodeA model.
+		inA :=  inDependencies  at: nodeA model.
+		outB := outDependencies at: nodeB model.
+		inB :=  inDependencies  at: nodeB model.
+"1halt."
+		(outA < outB)
+		or: [ (outA = outB)
+			ifTrue: [ (inA < inB)
+				or: [ (inA = inB) and: [nodeA model name < nodeB model name] ] ]
+			ifFalse: [ false ] ] 
+	]
+
 ]
 
 { #category : #accessing }
@@ -330,7 +379,7 @@ MiDependencyStructuralMatrixBrowserModel >> withX: entitiesX withY: entitiesY [
 	| aCollection |
 	aCollection := entitiesX union: entitiesY.
 	self buildGraph: aCollection.
-	orderedNodesX := entitiesX collect: [ :each | graph findNode: each].
-	orderedNodesY := entitiesY collect: [ :each | graph findNode: each].
+	orderedNodesX := self orderNodes: (entitiesX collect: [ :each | graph findNode: each]).
+	orderedNodesY := self orderNodes: (entitiesX collect: [ :each | graph findNode: each]).
 	browser buildDSM
 ]
