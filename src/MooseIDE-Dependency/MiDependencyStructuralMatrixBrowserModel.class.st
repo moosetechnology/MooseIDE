@@ -120,6 +120,8 @@ MiDependencyStructuralMatrixBrowserModel >> entity: aCandidate belongsTo: anEnti
 { #category : #actions }
 MiDependencyStructuralMatrixBrowserModel >> followEntity: aCollection [
 
+	self selectedEntities: aCollection.
+
 	self buildGraph: aCollection.
 
 	orderedNodesX := self orderNodes: graph nodes.
@@ -400,7 +402,11 @@ MiDependencyStructuralMatrixBrowserModel >> userActionOn: aTuple [
 { #category : #actions }
 MiDependencyStructuralMatrixBrowserModel >> withX: entitiesX withY: entitiesY [
 
-	self buildGraph: (entitiesX union: entitiesY).
+	| allEntities |
+	allEntities := entitiesX union: entitiesY.
+
+	self selectedEntities: allEntities.
+	self buildGraph: allEntities.
 
 	orderedNodesX := self orderNodes: (entitiesX collect: [ :each | graph findNode: each]).
 	orderedNodesY := self orderNodes: (entitiesY collect: [ :each | graph findNode: each]).
