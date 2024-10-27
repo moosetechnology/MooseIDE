@@ -84,7 +84,7 @@ MiDependencyStructuralMatrixBrowserModel >> defaultColor [
 
 { #category : #settings }
 MiDependencyStructuralMatrixBrowserModel >> dependencyColor [
-	"a 'nice' blue for cells with dependency"
+
 	^ nodeColors at: #dependency
 ]
 
@@ -183,13 +183,15 @@ MiDependencyStructuralMatrixBrowserModel >> initializeColors [
 	nodeColors := Dictionary new: 5.
 
 	nodeColors at: #diagonalCell put: Color veryLightGray.
+
 	nodeColors at: #scc put: Color lightRed.
 	nodeColors at: #showSCC put: Color red.
-	"extremely light gray for cell not in diagonal and not in dependency"
-	nodeColors at: #defaultCell put: (Color r: 0.9 g: 0.9 b: 0.9).
-	"a 'nice' blue for cells with dependency"
-	nodeColors at: #dependency put: (Color colorFrom: '#4d79ff').
 
+	"very light gray for cell not in diagonal and not in dependency"
+	nodeColors at: #defaultCell put: (Color r: 0.9 g: 0.9 b: 0.9).
+
+	"a 'nice' blue for cells with dependency"
+	nodeColors at: #dependency put: (Color colorFrom: '#659ef6').
 ]
 
 { #category : #buildGraph }
