@@ -9,12 +9,13 @@ Class {
 		'nodeColors',
 		'orderedNodesX',
 		'orderedNodesY',
-		'dependencyDictionary'
+		'dependencyDictionary',
+		'selectedEntities'
 	],
 	#category : #'MooseIDE-Dependency-DSM'
 }
 
-{ #category : #accessing }
+{ #category : #buildGraph }
 MiDependencyStructuralMatrixBrowserModel >> buildGraph: aCollection [
 
 	self newGraph.
@@ -139,12 +140,7 @@ MiDependencyStructuralMatrixBrowserModel >> getDependenciesFrom: entityX to: ent
 			ifTrue: [ opposites anySatisfy: [ :each |
 					self entity: each belongsTo: entityY ]
 			]
-			ifFalse: [
-				self flag: 'can be nil because of a bug in the model with generic types'.
-				opposites 
-					ifNotNil: [ self entity: opposites belongsTo: entityY ] 
-					ifNil: [false]
-				]
+			ifFalse: [ self entity: opposites belongsTo: entityY ]
 			]
 		ifFalse: [ 
 			"case of declaredType"
@@ -160,7 +156,7 @@ MiDependencyStructuralMatrixBrowserModel >> getTupleDependencyWeight: tuple [
 	"generic algorithm is to take all dependencies of the `tuple key` (row of the DSM) and count
 	 those that can be scoped up to the `tuple value` (column of the DSM)"
 	
-	^(dependencyDictionary at:(tuple key model -> tuple value model ))
+	^(dependencyDictionary at: (tuple key model -> tuple value model ))
 		size
 ]
 
@@ -211,17 +207,20 @@ MiDependencyStructuralMatrixBrowserModel >> initializeDependencies [
 { #category : #testing }
 MiDependencyStructuralMatrixBrowserModel >> isCycle: tuple [
 
-	^tuple key cycleNodes includes: tuple value
+	^tuple key cycleNodes
+		includes: tuple value
 ]
 
 { #category : #testing }
 MiDependencyStructuralMatrixBrowserModel >> isDependency: tuple [
 
-	^tuple key adjacentNodes includes: tuple value
+	^tuple key adjacentNodes
+		includes: tuple value
 ]
 
 { #category : #testing }
 MiDependencyStructuralMatrixBrowserModel >> isDiagonal: tuple [
+
 	^tuple key = tuple value
 
 ]
@@ -235,14 +234,18 @@ MiDependencyStructuralMatrixBrowserModel >> miSelectedItem [
 { #category : #buildGraph }
 MiDependencyStructuralMatrixBrowserModel >> newGraph [
 	graph := AITarjan new.
-	"orderedNodes := #()"
+
 	orderedNodesX := #().
 	orderedNodesY := #()
 ]
 
 { #category : #actions }
 MiDependencyStructuralMatrixBrowserModel >> openDetailedDSMOn: aTuple [
-	MiDependencyStructuralMatrixBrowser openWithX: aTuple value model children withY: aTuple key model children
+	"note: RSDSM calls X the columns (#value of aTuple) and Y the rows (#key of aTuple)"
+
+	MiDependencyStructuralMatrixBrowser
+		openWithX: aTuple value model children
+		withY: aTuple key model children
 ]
 
 { #category : #initialization }
@@ -373,13 +376,13 @@ MiDependencyStructuralMatrixBrowserModel >> showSCCColorForTuple: tuple [
 	^ self dependencyColor
 ]
 
-{ #category : #accessing }
+{ #category : #actions }
 MiDependencyStructuralMatrixBrowserModel >> withX: entitiesX withY: entitiesY [
 
-	| aCollection |
-	aCollection := entitiesX union: entitiesY.
-	self buildGraph: aCollection.
+	self buildGraph: (entitiesX union: entitiesY).
+
 	orderedNodesX := self orderNodes: (entitiesX collect: [ :each | graph findNode: each]).
-	orderedNodesY := self orderNodes: (entitiesX collect: [ :each | graph findNode: each]).
+	orderedNodesY := self orderNodes: (entitiesY collect: [ :each | graph findNode: each]).
+
 	browser buildDSM
 ]
