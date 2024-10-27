@@ -15,14 +15,10 @@ Class {
 
 { #category : #initialization }
 MiDependencyStructuralMatrixVisualization >> buildInCanvas: aRSCanvas [
-	| dsm entitiesX entitiesY |
-	"change legend by adding #noLegend to RSCanvasController new
-	and add RSLegend new ..."
-	
-	entitiesX := viewModel orderedNodesX.
-	entitiesY := viewModel orderedNodesY.
-	entitiesX ifEmpty: [ ^self ].
-	entitiesY ifEmpty: [ ^self ].
+	| dsm |
+
+	viewModel orderedNodesX ifEmpty: [ ^self ].
+	viewModel orderedNodesY ifEmpty: [ ^self ].
 	
 	aRSCanvas addInteraction: RSCanvasController new.
 	dsm := MiRSDependencyStructuralMatrix new.
@@ -31,8 +27,8 @@ MiDependencyStructuralMatrixVisualization >> buildInCanvas: aRSCanvas [
 	dsm labelShapeX textBlock: [ :columnNode | viewModel displayValueForNode: columnNode].
 	dsm labelShapeY textBlock: [ :rowNode | viewModel displayValueForNode: rowNode ].
 	dsm container: aRSCanvas.
-	dsm objectsX: entitiesX.
-	dsm objectsY: entitiesY.
+	dsm objectsX: viewModel orderedNodesX.
+	dsm objectsY: viewModel orderedNodesY.
 	dsm color: [ :tuple | self cellColor: tuple ].
 
 	dsm build.

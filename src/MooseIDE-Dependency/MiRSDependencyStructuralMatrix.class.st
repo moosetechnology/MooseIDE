@@ -30,14 +30,13 @@ MiRSDependencyStructuralMatrix >> createShape: tuple [
 	weight := self getTupleDependencyWeight: tuple.
 
 	shape := MiRSDSMShape new
-		text: (weight = 0 ifTrue: [''] ifFalse: [ weight asString]);
-		weight: weight ;
-		model: tuple;
-		color: (self color cull: tuple);
+		text: (weight = 0 ifTrue: [''] ifFalse: [ weight asString]) ;
+		color: (self color cull: tuple) ;
+		model: tuple ;
 		yourself.
 
 	shape
-		when: RSMouseDoubleClick do: [ self viewModel openDetailedDSMOn: tuple] for: shape ;
+		when: RSMouseDoubleClick do: [ self userActionOn: tuple] for: shape ;
 		when: RSMouseEnter send: #highlight: to: self ;
 		when: RSMouseLeave send: #unhighlight: to: self.
 
@@ -81,6 +80,12 @@ MiRSDependencyStructuralMatrix >> unhighlight: evt [
 	(owner sccShapesIncluding: evt shape) do: [ :aShape |
 		aShape color: (owner cellColor: aShape model)
 	]
+]
+
+{ #category : #'as yet unclassified' }
+MiRSDependencyStructuralMatrix >> userActionOn: aTuple [
+
+	self viewModel userActionOn: aTuple
 ]
 
 { #category : #accessing }
