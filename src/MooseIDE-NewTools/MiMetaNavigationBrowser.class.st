@@ -109,6 +109,7 @@ MiMetaNavigationBrowser >> initializePresenters [
 	"navigation"
 	navigation := self newTreeTable.
 	navigation isResizable: true.
+
 	items := self filterEmptyValues: (self itemsFor: self model).
 	entitiesColumn := SpStringTableColumn new
 		                  evaluated: [ :el | self printEntry: el ];
@@ -178,7 +179,7 @@ MiMetaNavigationBrowser >> printEntry: anAssociation [
 		  s << anAssociation key.
 		  (anAssociation value isBlock not and: [
 			   anAssociation value mooseName ~= anAssociation key ]) ifFalse: [
-			  ^ self ].
+			  ^ s contents ].
 		  s << ': '.
 		  s << anAssociation value mooseName ]
 ]
