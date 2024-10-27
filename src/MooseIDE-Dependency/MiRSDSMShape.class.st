@@ -5,7 +5,8 @@ Class {
 	#name : #MiRSDSMShape,
 	#superclass : #RSComposite,
 	#instVars : [
-		'weight'
+		'weight',
+		'viewModel'
 	],
 	#category : #'MooseIDE-Dependency-DSM'
 }
@@ -28,6 +29,11 @@ MiRSDSMShape >> initialize [
 { #category : #accessing }
 MiRSDSMShape >> text: aString [
 	self children second text: aString
+]
+
+{ #category : #accessing }
+MiRSDSMShape >> viewModel: aMiDependencyStructuralMatrixBrowserModel [
+	viewModel := aMiDependencyStructuralMatrixBrowserModel
 ]
 
 { #category : #accessing }
