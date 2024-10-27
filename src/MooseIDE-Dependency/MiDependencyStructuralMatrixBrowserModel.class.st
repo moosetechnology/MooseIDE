@@ -172,8 +172,10 @@ MiDependencyStructuralMatrixBrowserModel >> increment: dictionary key: key value
 { #category : #initialization }
 MiDependencyStructuralMatrixBrowserModel >> initialize [ 
 	super initialize.
+
 	self initializeColors.
 	self newGraph.
+	selectedEntities := #()
 ]
 
 { #category : #initialization }
@@ -228,7 +230,7 @@ MiDependencyStructuralMatrixBrowserModel >> isDiagonal: tuple [
 { #category : #accessing }
 MiDependencyStructuralMatrixBrowserModel >> miSelectedItem [
 
-	^ self entities
+	^selectedEntities
 ]
 
 { #category : #buildGraph }
@@ -354,6 +356,14 @@ MiDependencyStructuralMatrixBrowserModel >> sccTuplesForTuple: tuple [
 		]
 ]
 
+{ #category : #accessing }
+MiDependencyStructuralMatrixBrowserModel >> selectedEntities: anObject [
+
+	selectedEntities := anObject.
+
+	browser updateToolbar
+]
+
 { #category : #settings }
 MiDependencyStructuralMatrixBrowserModel >> settings [
 
@@ -374,6 +384,15 @@ MiDependencyStructuralMatrixBrowserModel >> showSCCColorForTuple: tuple [
 
 	(self isCycle: tuple) ifTrue: [ ^ self showSCCColor ].
 	^ self dependencyColor
+]
+
+{ #category : #actions }
+MiDependencyStructuralMatrixBrowserModel >> userActionOn: aTuple [
+
+
+	self selectedEntities: { aTuple key model . aTuple value model }.
+	self openDetailedDSMOn: aTuple
+
 ]
 
 { #category : #actions }
