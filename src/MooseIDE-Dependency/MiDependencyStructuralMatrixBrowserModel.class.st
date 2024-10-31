@@ -113,7 +113,6 @@ MiDependencyStructuralMatrixBrowserModel >> entities [
 { #category : #testing }
 MiDependencyStructuralMatrixBrowserModel >> entity: aCandidate belongsTo: anEntity [
 	"test whether aDependentEntity can be scoped up to anEntity"
-
 	^(aCandidate atScope: anEntity class) includes: anEntity
 ]
 
@@ -142,7 +141,11 @@ MiDependencyStructuralMatrixBrowserModel >> getDependenciesFrom: entityX to: ent
 			ifTrue: [ opposites anySatisfy: [ :each |
 					self entity: each belongsTo: entityY ]
 			]
-			ifFalse: [ self entity: opposites belongsTo: entityY ]
+			ifFalse: [ "self entity: opposites belongsTo: entityY "
+					opposites 
+					ifNotNil: [ self entity: opposites belongsTo: entityY ] 
+					ifNil: [false]
+				]
 			]
 		ifFalse: [ 
 			"case of declaredType"
@@ -392,10 +395,20 @@ MiDependencyStructuralMatrixBrowserModel >> showSCCColorForTuple: tuple [
 
 { #category : #actions }
 MiDependencyStructuralMatrixBrowserModel >> userActionOn: aTuple [
-
-
-	self selectedEntities: { aTuple key model . aTuple value model }.
-	self openDetailedDSMOn: aTuple
+	| keyModel valModel weight|
+	keyModel := aTuple key model.
+	valModel := aTuple value model.
+	weight := self getTupleDependencyWeight: aTuple.
+	
+	self selectedEntities: { keyModel . valModel }.
+	"1halt."
+	"We open a detailed DSM for a typle only if the tuple key and value are still at the class or package level and the weight is not zero. "
+	((keyModel usesFamixTrait: FamixTAttribute ) 
+		or: [ (keyModel usesFamixTrait: FamixTMethod ) 
+			or: [ (valModel usesFamixTrait: FamixTAttribute)
+				or: [ (valModel usesFamixTrait: FamixTMethod) or: [ weight = 0 ] ] ] ])	
+		ifFalse: [self openDetailedDSMOn: aTuple] 
+		ifTrue: [  ]
 
 ]
 

@@ -84,7 +84,7 @@ MiRSDependencyStructuralMatrix >> unhighlight: evt [
 
 { #category : #'as yet unclassified' }
 MiRSDependencyStructuralMatrix >> userActionOn: aTuple [
-
+	
 	self viewModel userActionOn: aTuple
 ]
 
