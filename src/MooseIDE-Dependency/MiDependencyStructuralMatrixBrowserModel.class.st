@@ -253,8 +253,12 @@ MiDependencyStructuralMatrixBrowserModel >> openDetailedDSMOn: aTuple [
 	"note: RSDSM calls X the columns (#value of aTuple) and Y the rows (#key of aTuple)"
 
 	MiDependencyStructuralMatrixBrowser
+		titleForDetailedDSM: aTuple; 
 		openWithX: aTuple value model children
-		withY: aTuple key model children
+		withY: aTuple key model children.
+		"titleForDetailedDSM: aTuple"
+		
+		
 ]
 
 { #category : #initialization }
