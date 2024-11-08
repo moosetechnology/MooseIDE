@@ -32,5 +32,7 @@ MooseAbstractGroup >> details [
 { #category : #'*MooseIDE-NewTools' }
 MooseAbstractGroup >> miMetaNavigationItems [
 
-	^ self collect: [ :entity | entity inspectorToString -> entity ]
+	^ self
+		  reject: [ :entity | entity isNil ]
+		  thenCollect: [ :entity | entity inspectorToString -> entity ]
 ]

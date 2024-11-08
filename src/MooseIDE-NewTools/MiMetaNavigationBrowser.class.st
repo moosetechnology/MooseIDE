@@ -32,7 +32,6 @@ Class {
 	#instVars : [
 		'navigation',
 		'model',
-		'activateOnSingleClick',
 		'properties',
 		'actionBar'
 	],
@@ -41,9 +40,11 @@ Class {
 
 { #category : #specs }
 MiMetaNavigationBrowser class >> buildCommandsGroupWith: presenter forRoot: aCmCommandsGroup [
+
 	aCmCommandsGroup
 		beDisplayedAsGroup;
-		register: (StInspectorInspectSelectedCommand forSpecContext: presenter)
+		register:
+			(StInspectorInspectSelectedCommand forSpecContext: presenter)
 ]
 
 { #category : #'as yet unclassified' }
@@ -71,6 +72,12 @@ MiMetaNavigationBrowser >> activateOnSingleClick [
 	navigation activateOnSingleClick
 ]
 
+{ #category : #'private - display' }
+MiMetaNavigationBrowser >> childrenFor: anEntity [
+
+	^ self itemsFor: anEntity value
+]
+
 { #category : #layout }
 MiMetaNavigationBrowser >> defaultLayout [
 
@@ -80,28 +87,19 @@ MiMetaNavigationBrowser >> defaultLayout [
 		  yourself
 ]
 
-{ #category : #action }
-MiMetaNavigationBrowser >> filterEmptyValues: entities [
-
-	^ entities select: [ :each | 
-		  each value isCollection
-			  ifTrue: [ each value isNotEmpty ]
-			  ifFalse: [ true ] ]
-]
-
-{ #category : #initialization }
+{ #category : #layout }
 MiMetaNavigationBrowser >> hidePropertiesPane [
 
 	self layout remove: properties
 ]
 
-{ #category : #initialization }
+{ #category : #'private - display' }
 MiMetaNavigationBrowser >> iconBlock [
 
 	^ [ :el | el value mooseIcon ]
 ]
 
-{ #category : #private }
+{ #category : #initialization }
 MiMetaNavigationBrowser >> initialize [
 
 	super initialize.
@@ -126,9 +124,9 @@ MiMetaNavigationBrowser >> initializeNavigationTreeTable [
 						  beSortable;
 						  yourself)).
 	navigation
-		children: [ :anEntity | self itemsFor: anEntity value ];
+		children: [ :anEntity | self childrenFor: anEntity ];
 		contextMenu: [ self rootCommandsGroup asMenuPresenter ];
-		items: (self filterEmptyValues: (self itemsFor: self model));
+		items: (self itemsFor: self model);
 		whenActivatedDo: [ self activate ]
 ]
 
@@ -146,18 +144,10 @@ MiMetaNavigationBrowser >> initializePresenters [
 			 yourself)
 ]
 
-{ #category : #initialization }
-MiMetaNavigationBrowser >> inspectorObjectContextPresenter [
+{ #category : #'private - display' }
+MiMetaNavigationBrowser >> itemsFor: anObject [
 
-	^ self owner owner owner owner
-]
-
-{ #category : #initialization }
-MiMetaNavigationBrowser >> itemsFor: anEntity [
-
-	^ anEntity isMooseObject
-		  ifTrue: [ anEntity miMetaNavigationItems ]
-		  ifFalse: [ {  } ]
+	^ anObject miMetaNavigationItems
 ]
 
 { #category : #accessing }
@@ -170,7 +160,7 @@ MiMetaNavigationBrowser >> model: anObject [
 	model := anObject
 ]
 
-{ #category : #initialization }
+{ #category : #'private - display' }
 MiMetaNavigationBrowser >> printEntry: anAssociation [
 
 	^ String streamContents: [ :s |
@@ -182,13 +172,19 @@ MiMetaNavigationBrowser >> printEntry: anAssociation [
 		  s << anAssociation value mooseName ]
 ]
 
+{ #category : #accessing }
+MiMetaNavigationBrowser >> selectedObject [
+
+	^ navigation selection selectedItem value
+]
+
 { #category : #'accessing - model' }
 MiMetaNavigationBrowser >> setModelBeforeInitialization: anInspectionModel [ 
 
 	model := anInspectionModel
 ]
 
-{ #category : #initialization }
+{ #category : #layout }
 MiMetaNavigationBrowser >> showPropertiesPane [
 
 	properties ifNil: [ properties := MiPropertyExtension on: self model ].

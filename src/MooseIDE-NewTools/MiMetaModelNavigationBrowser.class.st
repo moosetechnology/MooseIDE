@@ -4,18 +4,18 @@ Class {
 	#category : #'MooseIDE-NewTools-Inspector tabs'
 }
 
-{ #category : #initialization }
-MiMetaModelNavigationBrowser >> iconBlock [
+{ #category : #'private - display' }
+MiMetaModelNavigationBrowser >> childrenFor: anEntity [
 
-	^ [ self iconNamed: #mooseMetamodelGroup ]
+	^ {  }
 ]
 
 { #category : #initialization }
-MiMetaModelNavigationBrowser >> initializePresenters [
+MiMetaModelNavigationBrowser >> initializeNavigationTreeTable [
 
 	| sizeColumn |
-	super initializePresenters.
-	navigation children: [ :aFMPackage | {  } ].
+	super initializeNavigationTreeTable.
+
 	sizeColumn := SpStringTableColumn new
 		              title: 'Size';
 		              width: 50;
@@ -24,37 +24,14 @@ MiMetaModelNavigationBrowser >> initializePresenters [
 				              ifTrue: [ each value size printString ]
 				              ifFalse: [ '' ] ].
 	navigation columns: (navigation columns copyWithFirst: sizeColumn).
-	navigation items: (((navigation roots flatCollect: [ :el |
-			   el value classes
-				   reject: [ :a | a implementingClass isTrait ]
-				   thenCollect: [ :clazz |
-					   clazz name -> (self model
-						    allWithType: clazz implementingClass
-						    ofGroupClass: MooseSpecializedGroup) ] ]) reject: [ :a |
-			  a value isEmpty ]) sorted: [ :a :b | a name < b name ])
-		, (((navigation roots flatCollect: [ :el |
-				   el value classes
-					   reject: [ :a | a implementingClass isTrait ]
-					   thenCollect: [ :clazz |
-						   'Model ' , clazz name -> ((self model
-							     allWithType: clazz implementingClass
-							     ofGroupClass: MooseSpecializedGroup) reject: [ :el2 |
-							    el2 isStub ]) ] ]) reject: [ :a | a value isEmpty ])
-				 sorted: [ :a :b | a name < b name ]).
+
 	navigation expandRoots
 ]
 
-{ #category : #accessing }
-MiMetaModelNavigationBrowser >> selectedItem [
+{ #category : #'private - display' }
+MiMetaModelNavigationBrowser >> printEntry: anAssociation [
 
-	^ ([ 
-	   self model mooseInterestingEntity perform:
-		   navigation selection selectedItem value ] onErrorDo: [ nil ])
-		  mooseInterestingEntity
-]
-
-{ #category : #initialization }
-MiMetaModelNavigationBrowser >> selectedObject [
-
-	^ navigation selection selectedItem value
+	^ anAssociation value size > 1
+		  ifTrue: [ anAssociation key asEnglishPlural ]
+		  ifFalse: [ anAssociation key ]
 ]
