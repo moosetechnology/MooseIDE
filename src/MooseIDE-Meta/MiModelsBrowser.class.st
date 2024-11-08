@@ -119,9 +119,7 @@ MiModelsBrowser >> canTagEntities [
 MiModelsBrowser >> defaultLayout [
 
 	^ SpBoxLayout newVertical
-		  add: #toolbar
-		  withConstraints: [ :constraints |
-			  constraints height: self class toolbarHeight ];
+		  add: #toolbar expand: false;
 		  add: #modelFilteringList;
 		  yourself
 ]
@@ -202,7 +200,8 @@ MiModelsBrowser >> initializePresenters [
 MiModelsBrowser >> initializeToolbar [
 
 	toolbar := self newToolbar
-		           fillWith: (MiImportCommand asCommandGroupForSpecContext: self);
+		           fillWith:
+			           (MiImportCommand asCommandGroupForSpecContext: self);
 		           beIcons;
 		           addItem: self refreshToolbarButton;
 		           yourself
