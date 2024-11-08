@@ -33,7 +33,8 @@ Class {
 		'navigation',
 		'model',
 		'properties',
-		'actionBar'
+		'actionBar',
+		'shouldShowPropertiesPane'
 	],
 	#category : #'MooseIDE-NewTools-Inspector tabs'
 }
@@ -105,7 +106,8 @@ MiMetaNavigationBrowser >> iconBlock [
 MiMetaNavigationBrowser >> initialize [
 
 	super initialize.
-	activationAction := SpActivationHolder new
+	activationAction := SpActivationHolder new.
+	self shouldShowPropertiesPane ifTrue: [ self showPropertiesPane ]
 ]
 
 { #category : #initialization }
@@ -184,6 +186,14 @@ MiMetaNavigationBrowser >> selectedObject [
 MiMetaNavigationBrowser >> setModelBeforeInitialization: anInspectionModel [ 
 
 	model := anInspectionModel
+]
+
+{ #category : #testing }
+MiMetaNavigationBrowser >> shouldShowPropertiesPane [
+	"This is legacy. Not removed because it may be used? If so, it should be a setting. Else, removed"
+
+	^ shouldShowPropertiesPane ifNil: [
+		  self class defaultShouldShowPropertiesPane ]
 ]
 
 { #category : #layout }
