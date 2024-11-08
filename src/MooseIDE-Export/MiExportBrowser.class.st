@@ -288,7 +288,8 @@ MiExportBrowser >> miSelectedItem [
 MiExportBrowser >> propertiesListForPopover [
 
 	| list |
-	list := self newSelectableListForPopoverExtent: 250 @ 250.
+	list := self instantiate: SpFilteringSelectableListPresenter.
+	list addStyle: 'largeList'.
 
 	list
 		display: [ :property | property name ];

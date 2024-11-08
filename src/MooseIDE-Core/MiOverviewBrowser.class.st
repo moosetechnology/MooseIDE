@@ -155,11 +155,7 @@ MiOverviewBrowser >> defaultLayout [
 		  spacing: 10;
 		  add: toolbar height: self class toolbarHeight;
 		  add: mainPresenter;
-		  yourself "(SpBoxLayout newHorizontal
-				   add: busesButton width: self class buttonWidth;
-				   add: browsersButton expand: false;
-				   add: SpNullPresenter new expand: true;
-				   add: helpButton width: self class iconWidth)"
+		  yourself
 ]
 
 { #category : #actions }
