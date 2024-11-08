@@ -44,7 +44,9 @@ MiMetaNavigationBrowser class >> buildCommandsGroupWith: presenter forRoot: aCmC
 	aCmCommandsGroup
 		beDisplayedAsGroup;
 		register:
-			(StInspectorInspectSelectedCommand forSpecContext: presenter)
+			(MiInspectCommand forSpecContext: presenter window presenter);
+		register:
+			(MiPropagateCommand forSpecContext: presenter window presenter)
 ]
 
 { #category : #'as yet unclassified' }
