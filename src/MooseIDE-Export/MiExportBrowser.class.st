@@ -170,7 +170,7 @@ MiExportBrowser >> commentsButton [
 
 	^ commentsButton := self newToolbarButton
 		                    label: 'Toggle comments';
-		                    icon: (self iconNamed: #edit);
+		                    icon: (self iconNamed: #mooseEditor);
 		                    action: [ :button | self toggleCommentsColumn ]
 ]
 
@@ -205,6 +205,22 @@ MiExportBrowser >> customQueryButton [
 		  yourself
 ]
 
+{ #category : #layout }
+MiExportBrowser >> defaultLayout [
+
+	^ SpBoxLayout newTopToBottom
+		  add: (SpOverlayLayout new
+				   child: toolbar;
+				   addOverlay: entitiesCountLabel withConstraints: [ :c |
+					   c
+						   vAlignCenter;
+						   hAlignEnd ];
+				   yourself)
+		  height: 50;
+		  add: entitiesTable;
+		  yourself
+]
+
 { #category : #actions }
 MiExportBrowser >> exportEntitiesToCSV [
 
@@ -229,29 +245,11 @@ MiExportBrowser >> followEntity: anEntity [
 ]
 
 { #category : #initialization }
-MiExportBrowser >> initializeLayout [
-
-	self layout: (SpBoxLayout newTopToBottom
-			 spacing: 10;
-			 add: (SpBoxLayout newLeftToRight
-					  add: toolbar;
-					  add: entitiesCountLabel withConstraints: [ :consts |
-						  consts
-							  bePlacedAtEnd;
-							  expand: false ];
-					  yourself)
-			 height: self class toolbarHeight;
-			 add: entitiesTable;
-			 yourself)
-]
-
-{ #category : #initialization }
 MiExportBrowser >> initializePresenters [
 
 	entitiesCountLabel := self newLabel label: 'xxx'.
 	self initializeToolbar.
-	self initializeTable.
-	self initializeLayout
+	self initializeTable
 ]
 
 { #category : #initialization }
@@ -294,14 +292,14 @@ MiExportBrowser >> propertiesListForPopover [
 
 	list
 		display: [ :property | property name ];
-		onActivation: [ :property | 
+		onActivation: [ :property |
 			self addColumn: property.
 			self updateTable ];
-		onDeactivation: [ :property | 
+		onDeactivation: [ :property |
 			self removeColumn: property.
 			self updateTable ].
 
-	list items: ((self miSelectedItem flatCollectAsSet: [ :entity | 
+	list items: ((self miSelectedItem flatCollectAsSet: [ :entity |
 			  entity mooseDescription allPrimitiveProperties ])
 		 , (self model columns reject: #isPropertyColumn) sorted:
 			 [ :property | self showsProperty: property ] descending
