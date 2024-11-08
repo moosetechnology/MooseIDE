@@ -9,7 +9,8 @@ Class {
 
 { #category : #accessing }
 MiRSDSMShape >> color: aColor [
-	self children first color: aColor
+	self children first
+		color: aColor
 ]
 
 { #category : #initialization }
@@ -24,5 +25,7 @@ MiRSDSMShape >> initialize [
 
 { #category : #accessing }
 MiRSDSMShape >> text: aString [
-	self children second text: aString 
+
+	self children second
+		text: aString
 ]

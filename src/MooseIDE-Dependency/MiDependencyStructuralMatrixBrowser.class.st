@@ -84,6 +84,16 @@ MiDependencyStructuralMatrixBrowser class >> open [
 	^ super open
 ]
 
+{ #category : #'instance creation' }
+MiDependencyStructuralMatrixBrowser class >> openWithX: nodesX withY: nodesY [
+
+	^ (self on: self newModel)
+		  withX: nodesX withY: nodesY;
+		  open;
+		  yourself
+
+]
+
 { #category : #specs }
 MiDependencyStructuralMatrixBrowser class >> title [
 
@@ -135,4 +145,9 @@ MiDependencyStructuralMatrixBrowser >> miSelectedItem [
 { #category : #api }
 MiDependencyStructuralMatrixBrowser >> showSCC: aCollection [
 	mainPresenter showSCC: aCollection 
+]
+
+{ #category : #accessing }
+MiDependencyStructuralMatrixBrowser >> withX: nodesX withY: nodesY [
+	specModel withX: nodesX withY: nodesY
 ]

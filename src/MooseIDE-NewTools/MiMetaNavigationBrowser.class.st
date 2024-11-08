@@ -177,7 +177,7 @@ MiMetaNavigationBrowser >> printEntry: anAssociation [
 		  s << anAssociation key.
 		  (anAssociation value isBlock not and: [
 			   anAssociation value mooseName ~= anAssociation key ]) ifFalse: [
-			  ^ self ].
+			  ^ s contents ].
 		  s << ': '.
 		  s << anAssociation value mooseName ]
 ]
