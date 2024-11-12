@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'currentBrowser',
 		'browserLayout',
-		'browsersList'
+		'browsers',
+		'browsersListPresenter'
 	],
 	#category : #'MooseIDE-Analysis'
 }
@@ -83,7 +84,13 @@ MiAnalysisPresenter >> addBrowserMenu [
 MiAnalysisPresenter >> addBrowsers: aCollectionOfBrowsers [
 
 	aCollectionOfBrowsers do: [ :browser |
-		browsersList addPresenter: (MiBrowserCardPresenter on: browser) ]
+		browsersListPresenter addPresenter: (MiBrowserCardPresenter on: browser) ]
+]
+
+{ #category : #accessing }
+MiAnalysisPresenter >> browsers [
+
+	^ browsers ifNil: [ browsers := self initialBrowsers ]
 ]
 
 { #category : #testing }
@@ -97,16 +104,25 @@ MiAnalysisPresenter >> defaultLayout [
 
 	^ SpPanedLayout newLeftToRight
 		  positionOfSlider: 0.3;
-		  add: browsersList;
+		  add: browsersListPresenter;
 		  add: (browserLayout := self newBoxLayoutTopToBottom);
 		  yourself
+]
+
+{ #category : #accessing }
+MiAnalysisPresenter >> initialBrowsers [
+
+	^ OrderedCollection withAll: {
+			  MiModelsBrowser new.
+			  MiTagBrowser new }
 ]
 
 { #category : #initialization }
 MiAnalysisPresenter >> initialize [
 
 	super initialize.
-	self whenDisplayDo: [ browsersList selectFirst ]
+
+	self whenDisplayDo: [ browsersListPresenter selectFirst ]
 ]
 
 { #category : #initialization }
@@ -114,11 +130,10 @@ MiAnalysisPresenter >> initializePresenters [
 
 	super initializePresenters.
 
-	browsersList := self newComponentList.
-
-	self newBrowser: MiModelsBrowser.
-	self newBrowser: MiTagBrowser.
-	browsersList
+	browsersListPresenter := self newComponentList.
+	browsersListPresenter
+		items: (self browsers collect: [ :browser |
+					 MiBrowserCardPresenter on: browser ]);
 		contextMenu: [ self addBrowserMenu ];
 		whenSelectedItemChangedDo: [ :browserCard |
 			self selectedBrowserChanged: (browserCard
@@ -141,9 +156,31 @@ MiAnalysisPresenter >> miSelectedItemToPropagate [
 { #category : #initialization }
 MiAnalysisPresenter >> newBrowser: aBrowserClass [
 
-	browsersList addPresenter:
-		(MiBrowserCardPresenter on:
-			 (aBrowserClass on: aBrowserClass newModel))
+	| newBrowser |
+	newBrowser := aBrowserClass new.
+
+	browsers ifNotEmpty: [
+		newBrowser receiveEntity: browsers last miSelectedItem ].
+
+	browsers add: newBrowser.
+	browsersListPresenter addPresenter:
+		(MiBrowserCardPresenter on: newBrowser)
+]
+
+{ #category : #'as yet unclassified' }
+MiAnalysisPresenter >> propagateLocallyFrom: aBrowser [
+
+	| target |
+	target := browsers after: aBrowser ifAbsent: [ ^ self ].
+	target receiveEntity: aBrowser miSelectedItemToPropagate
+]
+
+{ #category : #removing }
+MiAnalysisPresenter >> remove: aBrowser [
+
+	browsers remove: aBrowser.
+	browsersListPresenter items:
+		(browsers collect: [ :browser | MiBrowserCardPresenter on: browser ])
 ]
 
 { #category : #initialization }

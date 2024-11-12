@@ -13,10 +13,17 @@ Class {
 MiBrowserCardPresenter class >> buildCommandsGroupWith: aPresenter forRoot: rootCommandGroup [
 
 	rootCommandGroup
-		register: (MiPropagateCommand forSpecContext: aPresenter browser);
+		register:
+			(MiAnalysisPropagateLocallyCommand forSpecContext: aPresenter);
 		register: (MiInspectCommand forSpecContext: aPresenter browser);
 		register: (MiAnalysisCloseBrowserCommand forSpecContext: aPresenter);
 		register: (MiHelpCommand forSpecContext: aPresenter browser)
+]
+
+{ #category : #'as yet unclassified' }
+MiBrowserCardPresenter >> analysisBrowser [
+
+	^ owner owner
 ]
 
 { #category : #accessing }
@@ -28,7 +35,7 @@ MiBrowserCardPresenter >> browser [
 { #category : #'as yet unclassified' }
 MiBrowserCardPresenter >> closeBrowser [
 
-	owner items: (owner items copyWithout: self)
+	self analysisBrowser remove: browser
 ]
 
 { #category : #layout }
@@ -53,6 +60,12 @@ MiBrowserCardPresenter >> initializePresenters [
 	buttons := self newToolbar
 		           fillWith: self rootCommandsGroup;
 		           beIcons
+]
+
+{ #category : #'as yet unclassified' }
+MiBrowserCardPresenter >> propagateLocally [
+
+	self analysisBrowser propagateLocallyFrom: browser
 ]
 
 { #category : #'accessing - model' }
