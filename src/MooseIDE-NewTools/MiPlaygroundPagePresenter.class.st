@@ -22,6 +22,13 @@ MiPlaygroundPagePresenter >> addMooseToolbarCommandsTo: aGroup [
 		forRoot: aGroup
 ]
 
+{ #category : #accessing }
+MiPlaygroundPagePresenter >> application [
+	"This is a hack to avoid opening Pharo system tools in MiApplication"
+
+	^ StPharoApplication current
+]
+
 { #category : #'public access' }
 MiPlaygroundPagePresenter >> evaluate [
 
@@ -40,18 +47,19 @@ MiPlaygroundPagePresenter >> menuActionsFor: aCodePresenter [
 				   beDisplayedAsGroup;
 				   register: (StEvaluateCommand forSpecContext: self);
 				   register:
-					   (MiInspectCommand forSpecContext: self playgroundBrowser);
+					   ((MiInspectCommand forSpecContext: self playgroundBrowser)
+						    name: 'Inspect in Moose');
 				   register:
 					   (MiPropagateCommand forSpecContext: self playgroundBrowser);
 				   yourself);
 		  register: (aCodePresenter rootCommandsGroup name: 'Code');
-		  register: (aCodePresenter editionCommandsGroup name: 'Edition');
+		  in: [ :this |
+			  self addMenuEditionCommandsTo: this presenter: aCodePresenter ];
+		  in: [ :this | self addMenuCommandsTo: this ];
 		  register: ((CmCommandGroup named: 'Playground') asSpecGroup
 				   register: ((CmCommandGroup named: 'Base options') asSpecGroup
 						    beDisplayedAsGroup;
-						    register: (StPlaygroundPublishCommand forSpecContext: self);
-						    register: (StPlaygroundBindingsCommand forSpecContext: self);
-						    register: (StPlaygroundPagesCommand forSpecContext: self);
+						    in: [ :this | self addToolbarCommandsTo: this ];
 						    yourself);
 				   register:
 					   ((CmCommandGroup named: 'Miscelaneous options') asSpecGroup
