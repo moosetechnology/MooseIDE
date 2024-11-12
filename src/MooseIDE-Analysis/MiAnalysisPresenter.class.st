@@ -76,15 +76,14 @@ MiAnalysisPresenter >> addBrowserMenu [
 		 browserClass menuPriority ]) do: [ :browserClass |
 		browserClass
 			buildItemInMenu: menu
-			action: [ self newBrowser: browserClass ] ].
+			action: [ self newBrowser: browserClass new ] ].
 	^ menu
 ]
 
 { #category : #adding }
 MiAnalysisPresenter >> addBrowsers: aCollectionOfBrowsers [
 
-	aCollectionOfBrowsers do: [ :browser |
-		browsersListPresenter addPresenter: (MiBrowserCardPresenter on: browser) ]
+	aCollectionOfBrowsers do: [ :browser | self newBrowser: browser ]
 ]
 
 { #category : #accessing }
@@ -112,9 +111,14 @@ MiAnalysisPresenter >> defaultLayout [
 { #category : #accessing }
 MiAnalysisPresenter >> initialBrowsers [
 
+	| modelsBrowser tagBrowser |
+	modelsBrowser := MiModelsBrowser new.
+	tagBrowser := MiTagBrowser new receiveEntity:
+		              modelsBrowser miSelectedItem.
+
 	^ OrderedCollection withAll: {
-			  MiModelsBrowser new.
-			  MiTagBrowser new }
+			  modelsBrowser.
+			  tagBrowser }
 ]
 
 { #category : #initialization }
@@ -154,20 +158,18 @@ MiAnalysisPresenter >> miSelectedItemToPropagate [
 ]
 
 { #category : #initialization }
-MiAnalysisPresenter >> newBrowser: aBrowserClass [
-
-	| newBrowser |
-	newBrowser := aBrowserClass new.
+MiAnalysisPresenter >> newBrowser: aBrowser [
 
 	browsers ifNotEmpty: [
-		newBrowser receiveEntity: browsers last miSelectedItem ].
+		aBrowser receiveEntity:
+			browsers last miSelectedItem mooseInterestingEntity ].
 
-	browsers add: newBrowser.
+	browsers add: aBrowser.
 	browsersListPresenter addPresenter:
-		(MiBrowserCardPresenter on: newBrowser)
+		(MiBrowserCardPresenter on: aBrowser)
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #action }
 MiAnalysisPresenter >> propagateLocallyFrom: aBrowser [
 
 	| target |
