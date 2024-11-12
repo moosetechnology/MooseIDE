@@ -172,7 +172,8 @@ MiAnalysisPresenter >> propagateLocallyFrom: aBrowser [
 
 	| target |
 	target := browsers after: aBrowser ifAbsent: [ ^ self ].
-	target receiveEntity: aBrowser miSelectedItemToPropagate
+	target receiveEntity:
+		aBrowser miSelectedItemToPropagate mooseInterestingEntity
 ]
 
 { #category : #removing }
