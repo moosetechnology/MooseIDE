@@ -22,14 +22,6 @@ MiLogger >> initialize [
 ]
 
 { #category : #accessing }
-MiLogger >> lastEntity [
-	self
-		deprecated: 'Use #mostRecentEntity instead'
-		transformWith: '`@receiver lastEntity' -> '`@receiver mostRecentEntity'.
-	^ self mostRecentEntity
-]
-
-{ #category : #accessing }
 MiLogger >> logs [
 	^ logs
 ]
@@ -51,9 +43,10 @@ MiLogger >> mostRecentLog [
 
 { #category : #api }
 MiLogger >> newLogFor: anEntity [
+
 	^ self mostRecentEntity == anEntity
-		ifTrue: [ self mostRecentLog ]
-		ifFalse: [ logs addFirst: (MiSelectedEntityLog new entity: anEntity) ]
+		  ifTrue: [ self mostRecentLog ]
+		  ifFalse: [ logs addFirst: (MiSelectedEntityLog entity: anEntity) ]
 ]
 
 { #category : #api }

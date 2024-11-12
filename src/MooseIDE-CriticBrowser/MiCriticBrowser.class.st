@@ -63,6 +63,7 @@ MiCriticBrowser class >> iconForRuleComponent: aRuleComponent [
 MiCriticBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
+	<miBrowsersMenu>
 	^ (self buildMenuItemIn: aBuilder) withSeparatorAfter
 ]
 

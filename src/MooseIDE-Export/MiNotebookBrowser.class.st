@@ -33,6 +33,7 @@ MiNotebookBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
 	<miBrowsers>
+	<miBrowsersMenu>
 	(aBuilder item: #Reporter)
 		parent: #Moose;
 		label: self title;

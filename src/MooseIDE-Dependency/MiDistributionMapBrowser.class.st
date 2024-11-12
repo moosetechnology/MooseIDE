@@ -36,6 +36,7 @@ MiDistributionMapBrowser class >> mapClass [
 MiDistributionMapBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
+	<miBrowsersMenu>
 	^ self buildMenuItemIn: aBuilder
 ]
 

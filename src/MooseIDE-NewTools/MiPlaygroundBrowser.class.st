@@ -35,6 +35,7 @@ MiPlaygroundBrowser class >> initialize [
 MiPlaygroundBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
+	<miBrowsersMenu>
 	^ aBuilder
 		  item: self menuLabel;
 		  parent: #Moose;

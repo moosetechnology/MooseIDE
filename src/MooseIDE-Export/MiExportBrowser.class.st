@@ -31,6 +31,7 @@ MiExportBrowser class >> commentColumnTitle [
 MiExportBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
+	<miBrowsersMenu>
 	^ self buildMenuItemIn: aBuilder
 ]
 

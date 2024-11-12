@@ -17,6 +17,7 @@ Class {
 MiClassBlueprintBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
+	<miBrowsersMenu>
 	^ self buildMenuItemIn: aBuilder
 ]
 

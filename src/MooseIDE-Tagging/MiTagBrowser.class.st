@@ -27,6 +27,7 @@ MiTagBrowser class >> browserKey [
 MiTagBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
+	<miBrowsersMenu>
 	^ self buildMenuItemIn: aBuilder
 ]
 

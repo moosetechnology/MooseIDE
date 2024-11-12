@@ -28,6 +28,7 @@ MiMetaBrowser class >> helpMessage [
 MiMetaBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
+	<miBrowsersMenu>
 	^ self buildMenuItemIn: aBuilder
 ]
 
@@ -41,6 +42,12 @@ MiMetaBrowser class >> menuIconName [
 MiMetaBrowser class >> menuItem [
 
 	^ #MetaBrowser
+]
+
+{ #category : #'world menu' }
+MiMetaBrowser class >> menuParent [
+
+	^ self oldBrowserMenuRoot
 ]
 
 { #category : #'world menu' }

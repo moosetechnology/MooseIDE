@@ -36,6 +36,7 @@ MiInspectorBrowser class >> inspect: anObject forBuses: buses [
 MiInspectorBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
+	<miBrowsersMenu>
 	^ self buildMenuItemIn: aBuilder
 ]
 

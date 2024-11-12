@@ -138,6 +138,12 @@ MiApplication >> consumersOf: aClass [
 	^ foundConsumers
 ]
 
+{ #category : #'drag and drop support' }
+MiApplication >> currentModelsBrowser [
+
+	^ currentModelsBrowser
+]
+
 { #category : #buses }
 MiApplication >> defaultBus [
 
@@ -257,7 +263,11 @@ MiApplication >> newIconProvider [
 MiApplication >> openCurrentModelsBrowser [
 
 	^ currentModelsBrowser
-		  ifNotNil: [ :modelsBrowser | modelsBrowser restore ]
+		  ifNotNil: [ :modelsBrowser |
+			  modelsBrowser withWindowDo: [ :window |
+				  window
+					  restore;
+					  activate ] ]
 		  ifNil: [
 		  currentModelsBrowser := MiModelsBrowser instantiateAndOpen ]
 ]
