@@ -118,6 +118,7 @@ MiDuplicationBrowserModel >> highlightEntity: entitiesToHighlight [
 
 { #category : #initialization }
 MiDuplicationBrowserModel >> initialize [
+	super initialize.
 
 	allEntities := #(  ).
 	selectedEntities := #().
@@ -261,11 +262,6 @@ MiDuplicationBrowserModel >> numberOfSelectedEntities [
 { #category : #api }
 MiDuplicationBrowserModel >> numberOfSelectedFragments [
 	^browser lstReplicatedFragments selectedItems size
-]
-
-{ #category : #accessing }
-MiDuplicationBrowserModel >> openSettings [ 
-	settings open
 ]
 
 { #category : #accessing }

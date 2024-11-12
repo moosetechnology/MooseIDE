@@ -4,5 +4,9 @@ Extension { #name : #FamixTSourceEntity }
 FamixTSourceEntity >> miSourceInspectorExtension [
 
 	<inspectorPresentationOrder: 3 title: 'SourceText'>
-	^ MiSourceExtension on: self
+	^ SpCodePresenter new
+		  withoutSyntaxHighlight;
+		  withLineNumbers;
+		  text: self sourceText;
+		  beNotEditable
 ]

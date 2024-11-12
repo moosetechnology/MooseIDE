@@ -10,5 +10,6 @@ Class {
 
 { #category : #formatting }
 MiSourceTextIdentifierHighlight >> applyTo: aRenderer [
+
 	aRenderer applyIdentifierHighlight: self
 ]

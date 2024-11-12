@@ -53,7 +53,7 @@ MiMetaBrowser class >> menuParent [
 { #category : #'world menu' }
 MiMetaBrowser class >> menuPriority [
 
-	^ self menuMetaToolsPriority + 3
+	^ self menuMetaToolsPriority + 4
 ]
 
 { #category : #'instance creation' }

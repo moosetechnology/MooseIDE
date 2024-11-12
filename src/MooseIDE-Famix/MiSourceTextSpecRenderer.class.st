@@ -10,23 +10,37 @@ Class {
 	#superclass : #SpTextPresenter,
 	#instVars : [
 		'model',
-		'formatedText'
+		'formatedText',
+		'sourceAnchorAdapter'
 	],
 	#category : #'MooseIDE-Famix-SourceText'
 }
 
 { #category : #formatting }
-MiSourceTextSpecRenderer >> applyErrorHighlight: aHighlight [
+MiSourceTextSpecRenderer >> applyCommentHighlight: aHighlight [
+	"put comments in grey"
+
 	formatedText 
-		addAttribute: TextColor red
+		addAttribute: TextColor gray
 		from: aHighlight from
-		to: aHighlight to ;
-		yourself
+		to: aHighlight to.
 
 ]
 
 { #category : #formatting }
+MiSourceTextSpecRenderer >> applyErrorHighlight: aHighlight [
+
+	formatedText 
+		addAttribute: TextColor red
+		from: aHighlight from
+		to: aHighlight to
+]
+
+{ #category : #formatting }
 MiSourceTextSpecRenderer >> applyIdentifierHighlight: aHighlight [
+	"Identifiers are underlined + italic + bold
+	 Clicking on them is passed on to the spec model"
+
 	formatedText 
 		addAttribute: TextEmphasis underlined
 		from: aHighlight from
@@ -35,9 +49,14 @@ MiSourceTextSpecRenderer >> applyIdentifierHighlight: aHighlight [
 		addAttribute: TextEmphasis italic
 		from: aHighlight from
 		to: aHighlight to ;
+		
+		addAttribute: TextEmphasis bold
+		from: aHighlight from
+		to: aHighlight to ;
 
 		addAttribute:
-			(TextDoIt new actOnClickBlock: [ model selectedEntity: aHighlight highlightedEntity ])
+			(TextDoIt new actOnClickBlock: [ :ignored :event |
+				self event: event selectedEntity: aHighlight highlightedEntity ])
 		from: aHighlight from
 		to: aHighlight to ;
 
@@ -49,8 +68,9 @@ MiSourceTextSpecRenderer >> applyIdentifierHighlight: aHighlight [
 
 { #category : #formatting }
 MiSourceTextSpecRenderer >> applyTagHighlight: aHighlight [
+
 	formatedText
-		addAttribute: (TextBackgroundColor color: (aHighlight highlightedEntity color))
+		addAttribute: (TextColor color: aHighlight tag color)
 		from: aHighlight from
 		to: aHighlight to
 ]
@@ -58,6 +78,19 @@ MiSourceTextSpecRenderer >> applyTagHighlight: aHighlight [
 { #category : #accessing }
 MiSourceTextSpecRenderer >> browser [
 	^self model browser
+]
+
+{ #category : #formatting }
+MiSourceTextSpecRenderer >> clearFormating [
+
+	formatedText := formatedText asString asText
+]
+
+{ #category : #actions }
+MiSourceTextSpecRenderer >> event: anEvent selectedEntity: anEntity [
+
+	model event: anEvent selectedEntity: anEntity.
+	self inform: 'Selected entity: ' , anEntity asString
 ]
 
 { #category : #'private - testing' }
@@ -68,7 +101,9 @@ MiSourceTextSpecRenderer >> formatedText [
 { #category : #initialization }
 MiSourceTextSpecRenderer >> initialize [
 	super initialize.
-	self beEditable
+	self beNotEditable.
+
+	sourceAnchorAdapter := MiSourceTextNullAdapter new
 ]
 
 { #category : #accessing }
@@ -82,14 +117,40 @@ MiSourceTextSpecRenderer >> model: aSourceTextModel [
 ]
 
 { #category : #rendering }
-MiSourceTextSpecRenderer >> renderText [
-	formatedText := model displayedText asText.
-	model highlights do: [ :hlght | hlght applyTo: self ].
+MiSourceTextSpecRenderer >> reRenderText [
+	"Apply highlights if needed
+	 Re-display (requires to clear the text first)"
+
+	self clearFormating.
+
+	model highlights do: [ :hlght |
+		hlght adaptSourceAnchorWith: self sourceAnchorAdapter.
+		hlght hasInterval ifTrue: [ hlght applyTo: self ]	
+	].
+
+	self clearContent.
 	self text: formatedText
+
+]
+
+{ #category : #rendering }
+MiSourceTextSpecRenderer >> renderTextFor: anEntity [
+	
+	formatedText := model displayedText asText.
+	sourceAnchorAdapter := MiAbstractSourceTextAnchorAdapter adapterFor: anEntity.
+	sourceAnchorAdapter initializeDisplayedText: formatedText andEntity: anEntity.
+
+	self reRenderText
 
 ]
 
 { #category : #initialization }
 MiSourceTextSpecRenderer >> setModelBeforeInitialization: aModel [
 	self model: aModel
+]
+
+{ #category : #accessing }
+MiSourceTextSpecRenderer >> sourceAnchorAdapter [
+
+	^sourceAnchorAdapter
 ]

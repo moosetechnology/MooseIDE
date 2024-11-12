@@ -27,13 +27,12 @@ Internal Representation and Key Implementation Points.
 Class {
 	#name : #MiMetaNavigationBrowser,
 	#superclass : #StPresenter,
+	#traits : 'SpTActivable',
+	#classTraits : 'SpTActivable classTrait',
 	#instVars : [
 		'navigation',
 		'model',
-		'activationBlock',
-		'activateOnSingleClick',
 		'properties',
-		'entitiesColumn',
 		'actionBar',
 		'shouldShowPropertiesPane'
 	],
@@ -42,9 +41,13 @@ Class {
 
 { #category : #specs }
 MiMetaNavigationBrowser class >> buildCommandsGroupWith: presenter forRoot: aCmCommandsGroup [
+
 	aCmCommandsGroup
 		beDisplayedAsGroup;
-		register: (StInspectorInspectSelectedCommand forSpecContext: presenter)
+		register:
+			(MiInspectCommand forSpecContext: presenter window presenter);
+		register:
+			(MiPropagateCommand forSpecContext: presenter window presenter)
 ]
 
 { #category : #'as yet unclassified' }
@@ -53,107 +56,102 @@ MiMetaNavigationBrowser class >> defaultShouldShowPropertiesPane [
 	^ false
 ]
 
-{ #category : #initialization }
+{ #category : #'private - actions' }
+MiMetaNavigationBrowser >> activate [
+
+	activationAction cull:
+		(SpActivatedSelection newValue: navigation selectedItem value)
+]
+
+{ #category : #api }
+MiMetaNavigationBrowser >> activateOnDoubleClick [
+
+	navigation activateOnDoubleClick
+]
+
+{ #category : #api }
 MiMetaNavigationBrowser >> activateOnSingleClick [
+
 	navigation activateOnSingleClick
 ]
 
-{ #category : #accessing }
-MiMetaNavigationBrowser >> activateOnSingleClick: anObject [
+{ #category : #'private - display' }
+MiMetaNavigationBrowser >> childrenFor: anEntity [
 
-	activateOnSingleClick := anObject
-]
-
-{ #category : #initialization }
-MiMetaNavigationBrowser >> addPropertiesPane [
-
-	self layout add: properties
+	^ self itemsFor: anEntity value
 ]
 
 { #category : #layout }
 MiMetaNavigationBrowser >> defaultLayout [
 
 	^ SpBoxLayout newTopToBottom
-		  add: (SpBoxLayout newTopToBottom
-				   add: #navigation;
-				   yourself);
-		  add: #actionBar expand: false;
+		  add: navigation;
+		  add: actionBar expand: false;
 		  yourself
 ]
 
-{ #category : #action }
-MiMetaNavigationBrowser >> filterEmptyValues: entities [
+{ #category : #layout }
+MiMetaNavigationBrowser >> hidePropertiesPane [
 
-	^ entities select: [ :each | 
-		  each value isCollection
-			  ifTrue: [ each value isNotEmpty ]
-			  ifFalse: [ true ] ]
+	self layout remove: properties
 ]
 
-{ #category : #initialization }
-MiMetaNavigationBrowser >> hasOutputActivationPort [
-
-	^ true
-]
-
-{ #category : #initialization }
+{ #category : #'private - display' }
 MiMetaNavigationBrowser >> iconBlock [
 
 	^ [ :el | el value mooseIcon ]
 ]
 
 { #category : #initialization }
+MiMetaNavigationBrowser >> initialize [
+
+	super initialize.
+	activationAction := SpActivationHolder new.
+	self shouldShowPropertiesPane ifTrue: [ self showPropertiesPane ]
+]
+
+{ #category : #initialization }
+MiMetaNavigationBrowser >> initializeNavigationTreeTable [
+
+	navigation := self newTreeTable.
+	navigation
+		beResizable;
+		activateOnSingleClick;
+		addColumn: ((SpCompositeTableColumn title: 'Entities')
+				 sortFunction: [ :entry | self printEntry: entry ] ascending;
+				 addColumn: (SpImageTableColumn new
+						  evaluated: self iconBlock;
+						  width: 20;
+						  yourself);
+				 addColumn: (SpStringTableColumn new
+						  evaluated: [ :el | self printEntry: el ];
+						  beSortable;
+						  yourself)).
+	navigation
+		children: [ :anEntity | self childrenFor: anEntity ];
+		contextMenu: [ self rootCommandsGroup asMenuPresenter ];
+		items: (self itemsFor: self model);
+		whenActivatedDo: [ self activate ]
+]
+
+{ #category : #initialization }
 MiMetaNavigationBrowser >> initializePresenters [
 
-	| items |
-	"navigation"
-	navigation := self newTreeTable.
-	navigation isResizable: true.
-	items := self filterEmptyValues: (self itemsFor: self model).
-	entitiesColumn := SpStringTableColumn new
-		                  evaluated: [ :el |
-			                  String streamContents: [ :str |
-					                  self printEntry: el on: str ] ];
-		                  beSortable;
-		                  yourself.
-	navigation addColumn: (SpCompositeTableColumn new
-			 title: 'Entities';
-			 addColumn: (SpImageTableColumn new
-					  width: 20;
-					  evaluated: self iconBlock;
-					  yourself);
-			 addColumn: entitiesColumn).
-	navigation children: [ :anEntity | self itemsFor: anEntity value ].
-	navigation
-		contextMenu: [ self rootCommandsGroup asMenuPresenter ];
-		items: items.
-	navigation whenActivatedDo: [ :selection |
-		self inspectorObjectContextPresenter owner
-			changeSelection: selection selectedItem value
-			from: self inspectorObjectContextPresenter ].
-	"action bar"
-	actionBar := self newActionBar add: (self newButton
-			              label: 'Properties';
-			              help: 'Show properties panel';
-			              action: [ self toggleShouldShowPropertiesPane ];
-			              yourself).
-	"properties"
-	properties := MiPropertyExtension on: self model.
-	self shouldShowPropertiesPane ifTrue: [ self addPropertiesPane ]
+	self initializeNavigationTreeTable.
+
+	actionBar := self newActionBar.
+	actionBar add: (self newToggleButton
+			 label: 'Properties';
+			 help: 'Show properties panel - May be long to compute';
+			 whenActivatedDo: [ self showPropertiesPane ];
+			 whenDeactivatedDo: [ self hidePropertiesPane ];
+			 yourself)
 ]
 
-{ #category : #initialization }
-MiMetaNavigationBrowser >> inspectorObjectContextPresenter [
+{ #category : #'private - display' }
+MiMetaNavigationBrowser >> itemsFor: anObject [
 
-	^ self owner owner owner owner
-]
-
-{ #category : #initialization }
-MiMetaNavigationBrowser >> itemsFor: anEntity [
-
-	^ anEntity isMooseObject
-		  ifTrue: [ anEntity miMetaNavigationItems ]
-		  ifFalse: [ {  } ]
+	^ anObject miMetaNavigationItems
 ]
 
 { #category : #accessing }
@@ -166,36 +164,21 @@ MiMetaNavigationBrowser >> model: anObject [
 	model := anObject
 ]
 
-{ #category : #initialization }
-MiMetaNavigationBrowser >> outputActivationPort [
-	^ (SpActivationPort newPresenter: self)
-		yourself
-]
+{ #category : #'private - display' }
+MiMetaNavigationBrowser >> printEntry: anAssociation [
 
-{ #category : #initialization }
-MiMetaNavigationBrowser >> printEntry: el on: aStream [
-
-	aStream nextPutAll: el key.
-	(el value isBlock not and: [ el value mooseName ~= el key ])
-		ifFalse: [ ^ self ].
-	aStream nextPutAll: ': '.
-	aStream nextPutAll: el value mooseName
-]
-
-{ #category : #initialization }
-MiMetaNavigationBrowser >> removePropertiesPane [
-
-	self layout remove: properties
+	^ String streamContents: [ :s |
+		  s << anAssociation key.
+		  (anAssociation value isBlock not and: [
+			   anAssociation value mooseName ~= anAssociation key ]) ifFalse: [
+			  ^ s contents ].
+		  s << ': '.
+		  s << anAssociation value mooseName ]
 ]
 
 { #category : #accessing }
-MiMetaNavigationBrowser >> selectedItem [
-	
-	^ navigation selection selectedItem value
-]
-
-{ #category : #initialization }
 MiMetaNavigationBrowser >> selectedObject [
+
 	^ navigation selection selectedItem value
 ]
 
@@ -205,25 +188,17 @@ MiMetaNavigationBrowser >> setModelBeforeInitialization: anInspectionModel [
 	model := anInspectionModel
 ]
 
-{ #category : #initialization }
+{ #category : #testing }
 MiMetaNavigationBrowser >> shouldShowPropertiesPane [
+	"This is legacy. Not removed because it may be used? If so, it should be a setting. Else, removed"
 
-	^ shouldShowPropertiesPane ifNil: [ self class defaultShouldShowPropertiesPane ]
+	^ shouldShowPropertiesPane ifNil: [
+		  self class defaultShouldShowPropertiesPane ]
 ]
 
-{ #category : #initialization }
-MiMetaNavigationBrowser >> toggleShouldShowPropertiesPane [
+{ #category : #layout }
+MiMetaNavigationBrowser >> showPropertiesPane [
 
-	^ self shouldShowPropertiesPane
-		  ifTrue: [
-			  shouldShowPropertiesPane := false.
-			  self removePropertiesPane ]
-		  ifFalse: [
-			  shouldShowPropertiesPane := true.
-			  self addPropertiesPane ]
-]
-
-{ #category : #initialization }
-MiMetaNavigationBrowser >> whenActivatedDo: aBlock [
-	activationBlock := aBlock
+	properties ifNil: [ properties := MiPropertyExtension on: self model ].
+	self layout add: properties
 ]
