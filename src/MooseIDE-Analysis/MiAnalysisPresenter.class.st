@@ -144,7 +144,7 @@ MiAnalysisPresenter >> initializePresenters [
 { #category : #accessing }
 MiAnalysisPresenter >> miSelectedItem [
 
-	^ currentBrowser miSelectedItem
+	^ currentBrowser ifNotNil: [ currentBrowser miSelectedItem ]
 ]
 
 { #category : #accessing }
