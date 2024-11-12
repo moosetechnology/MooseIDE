@@ -160,7 +160,8 @@ MiQueryListItemPresenter >> initializeQueryTypesDropList [
 		items: self sortedAvailableQueries;
 		display: [ :queryClass | queryClass label ];
 		whenSelectedItemChangedDo: [ :queryClass |
-			self updateQueryConfiguratorPresenterFor: queryClass ]
+			queryClass ifNotNil: [
+					self updateQueryConfiguratorPresenterFor: queryClass ] ]
 ]
 
 { #category : #update }

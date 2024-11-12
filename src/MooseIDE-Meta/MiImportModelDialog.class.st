@@ -92,9 +92,8 @@ MiImportModelDialog >> setModelBeforeInitialization: aBrowserOrMoosePanel [
 MiImportModelDialog >> updateBrowserWith: mooseModel [
 
 	originBrowser
-	ifNotNil: [ originBrowser updateForNewModel: mooseModel ]
-	ifNil: [ (MiApplication current allBrowsers: MiModelsBrowser)
-		do: [ :browser | browser updateList ] ]
+		ifNotNil: [ originBrowser updateForNewModel: mooseModel ]
+		ifNil: [ MiApplication current currentModelsBrowser updateList ]
 ]
 
 { #category : #action }

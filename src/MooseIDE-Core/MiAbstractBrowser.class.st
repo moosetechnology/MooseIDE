@@ -45,20 +45,6 @@ Class {
 	#category : #'MooseIDE-Core-Browser'
 }
 
-{ #category : #menu }
-MiAbstractBrowser class >> addItemOrSubMenuToMiBrowsersMenu: aRootMenu defaultSubMenu: aSubMenu [
-
-	self addToMiBrowsersMenu: aRootMenu
-]
-
-{ #category : #menu }
-MiAbstractBrowser class >> addToMiBrowsersMenu: aMenuPresenter [
-
-	"Override with an empty method if you don't want your browser in Moose menu"
-
-	self buildItemInMenu: aMenuPresenter
-]
-
 { #category : #keymaps }
 MiAbstractBrowser class >> browserKey [
 
@@ -68,14 +54,14 @@ MiAbstractBrowser class >> browserKey [
 ]
 
 { #category : #menu }
-MiAbstractBrowser class >> buildItemInMenu: aMenuGroupPresenter [
+MiAbstractBrowser class >> buildItemInMenu: aMenuGroupPresenter action: aBlock [
 
-	"Override with an empty method if you don't want your browser in Moose menu"
+	self isAbstract ifTrue: [ ^ self ].
 
-	aMenuGroupPresenter addItem: [ :item | 
+	aMenuGroupPresenter addItem: [ :item |
 		item
 			name: self title;
-			action: [ self open ];
+			action: aBlock;
 			help: self helpMessage;
 			icon: self menuIcon ]
 ]
@@ -96,13 +82,22 @@ MiAbstractBrowser class >> buildMenuItemIn: aBuilder [
 		  yourself
 ]
 
-{ #category : #menu }
-MiAbstractBrowser class >> defaultSubMenuLabel [
+{ #category : #'world menu' }
+MiAbstractBrowser class >> buildMenuItemIn: aBuilder action: aBlock [
+	"Method used in subclasses"
 
-	^ 'Specialized Browsers'
+	^ (aBuilder item: self menuItem)
+		  parent: self menuParent;
+		  label: self menuLabel;
+		  icon: self menuIcon;
+		  help: self helpMessage;
+		  order: self menuPriority;
+		  action: aBlock;
+		  keyText: self keyText;
+		  yourself
 ]
 
-{ #category : #'menu organization' }
+{ #category : #'world menu' }
 MiAbstractBrowser class >> famixMenuRoot [
 
 	^ #Famix
@@ -129,14 +124,14 @@ MiAbstractBrowser class >> isModelImporter [
 	^false
 ]
 
-{ #category : #accessing }
+{ #category : #keymaps }
 MiAbstractBrowser class >> keyText [
 
 	^ self browserKey ifNotNil: [ :aCharacter |
 		  'M, {1}' format: { aCharacter asUppercase } ]
 ]
 
-{ #category : #'menu organization' }
+{ #category : #'world menu' }
 MiAbstractBrowser class >> menuCodeToolsPriority [
 
 	^ 20
@@ -181,13 +176,13 @@ MiAbstractBrowser class >> menuLabel [
 	^ self title
 ]
 
-{ #category : #'menu organization' }
+{ #category : #'world menu' }
 MiAbstractBrowser class >> menuMainToolsPriority [
 
 	^ 0
 ]
 
-{ #category : #'menu organization' }
+{ #category : #'world menu' }
 MiAbstractBrowser class >> menuMetaToolsPriority [
 
 	^ 40
@@ -201,7 +196,7 @@ MiAbstractBrowser class >> menuParent [
 	^ self mooseMenuRoot
 ]
 
-{ #category : #'menu organization' }
+{ #category : #'world menu' }
 MiAbstractBrowser class >> menuPharoToolsPriority [
 
 	^ 30
@@ -213,7 +208,7 @@ MiAbstractBrowser class >> menuPriority [
 	^ 100
 ]
 
-{ #category : #'menu organization' }
+{ #category : #'world menu' }
 MiAbstractBrowser class >> menuVisualizationToolsPriority [
 
 	^ 10
@@ -222,28 +217,32 @@ MiAbstractBrowser class >> menuVisualizationToolsPriority [
 { #category : #menu }
 MiAbstractBrowser class >> miBrowsersMenuPresenter [
 
-	| rootMenu defaultSubMenu |
+	| rootMenu |
 	rootMenu := SpMenuPresenter new.
-	defaultSubMenu := SpMenuPresenter new.
 
-	(self subclasses sortAscending: [ :browserClass | 
-		 browserClass menuPriority ]) do: [ :browserClass | 
-		browserClass
-			addItemOrSubMenuToMiBrowsersMenu: rootMenu
-			defaultSubMenu: defaultSubMenu ].
-
-	rootMenu addItem: [ :item | 
-		item 
-			name: self defaultSubMenuLabel;
-			subMenu: defaultSubMenu ].
+	(self subclasses sortAscending: [ :browserClass |
+		 browserClass menuPriority ]) do: [ :browserClass |
+		browserClass buildItemInMenu: rootMenu action: [ self open ] ].
 
 	^ rootMenu
 ]
 
-{ #category : #'menu organization' }
+{ #category : #'world menu' }
 MiAbstractBrowser class >> mooseMenuRoot [
 
 	^ #Moose
+]
+
+{ #category : #'instance creation' }
+MiAbstractBrowser class >> new [
+
+	^ self on: self newModel
+]
+
+{ #category : #'world menu' }
+MiAbstractBrowser class >> newBrowser: aBrowserClass [
+
+	aBrowserClass open
 ]
 
 { #category : #'instance creation' }
@@ -253,13 +252,13 @@ MiAbstractBrowser class >> newModel [
 	^ nil
 ]
 
-{ #category : #'menu organization' }
+{ #category : #'world menu' }
 MiAbstractBrowser class >> oldBrowserMenuPriority [
 
 	^ 30
 ]
 
-{ #category : #'menu organization' }
+{ #category : #'world menu' }
 MiAbstractBrowser class >> oldBrowserMenuRoot [
 
 	^ #'Old browsers'
@@ -568,20 +567,6 @@ MiAbstractBrowser >> registerToAdapterEvents: anAdapter [
 
 	anAdapter widget announcer when: WindowCollapsed do: [ self browserCollapsed ] for: self.
 	anAdapter widget announcer when: WindowExpanded do: [ self browserExpanded ] for: self
-]
-
-{ #category : #'window management' }
-MiAbstractBrowser >> restore [
-
-	"We have to get to the adpater because #restore is not in SpWindowPresenter yet.
-	A PR has been made to Pharo 13"
-
-	self withWindowDo: [ :window |
-		window isMinimized ifTrue: [
-			window withAdapterDo: [ :windowAdapter |
-				windowAdapter widgetDo: [ :widget | widget restore ] ] ].
-		window withAdapterDo: [ :windowAdapter |
-			windowAdapter widgetDo: [ :widget | widget activate ] ] ]
 ]
 
 { #category : #accessing }

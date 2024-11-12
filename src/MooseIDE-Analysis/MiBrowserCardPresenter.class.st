@@ -13,8 +13,10 @@ Class {
 MiBrowserCardPresenter class >> buildCommandsGroupWith: aPresenter forRoot: rootCommandGroup [
 
 	rootCommandGroup
-		register: (MiPropagateCommand forSpecContext: aPresenter);
-		register: (MiInspectCommand forSpecContext: aPresenter)
+		register: (MiPropagateCommand forSpecContext: aPresenter browser);
+		register: (MiInspectCommand forSpecContext: aPresenter browser);
+		register: (MiAnalysisCloseBrowserCommand forSpecContext: aPresenter);
+		register: (MiHelpCommand forSpecContext: aPresenter browser)
 ]
 
 { #category : #accessing }
@@ -23,10 +25,10 @@ MiBrowserCardPresenter >> browser [
 	^ browser
 ]
 
-{ #category : #toolbar }
-MiBrowserCardPresenter >> defaultCommandsContext [
+{ #category : #'as yet unclassified' }
+MiBrowserCardPresenter >> closeBrowser [
 
-	^ browser
+	owner items: (owner items copyWithout: self)
 ]
 
 { #category : #layout }
@@ -37,18 +39,6 @@ MiBrowserCardPresenter >> defaultLayout [
 		  add: titleLabel;
 		  add: buttons expand: false;
 		  yourself
-]
-
-{ #category : #actions }
-MiBrowserCardPresenter >> helpPopoverSource [
-
-	^ buttons items last
-]
-
-{ #category : #actions }
-MiBrowserCardPresenter >> helpText [
-
-	^ browser helpText
 ]
 
 { #category : #initialization }
@@ -62,9 +52,6 @@ MiBrowserCardPresenter >> initializePresenters [
 
 	buttons := self newToolbar
 		           fillWith: self rootCommandsGroup;
-		           add:
-			           (MiHelpCommand forSpecContext: self)
-				           beDisplayedOnRightSide buildPresenter;
 		           beIcons
 ]
 
@@ -72,10 +59,4 @@ MiBrowserCardPresenter >> initializePresenters [
 MiBrowserCardPresenter >> setModelBeforeInitialization: aBrowser [
 
 	browser := aBrowser
-]
-
-{ #category : #actions }
-MiBrowserCardPresenter >> showHelp [
-
-	^ super showHelp bePositionRight
 ]

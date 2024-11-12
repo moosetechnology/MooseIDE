@@ -51,6 +51,7 @@ MiModelsBrowser class >> isModelImporter [
 MiModelsBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
+	<miBrowsersMenu>
 	^ self buildMenuItemIn: aBuilder
 ]
 

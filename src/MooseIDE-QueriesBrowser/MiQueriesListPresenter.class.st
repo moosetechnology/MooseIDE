@@ -63,14 +63,13 @@ MiQueriesListPresenter >> availableQueryTypes [
 
 { #category : #actions }
 MiQueriesListPresenter >> constructQueries: acollectionsOfQueries [
-
 	"Put the root query as the parent for the first level unary queries"
 
-	acollectionsOfQueries do: [ :each | 
-		each parent ifNil: [ "This works only for subclasses of FQUnaryQuery: " 
+	acollectionsOfQueries do: [ :each |
+		each parent ifNil: [ "This works only for subclasses of FQUnaryQuery: "
 			each parent: self queriesBrowser rootQuery ] ].
 
-	acollectionsOfQueries do: [ :each | 
+	acollectionsOfQueries do: [ :each |
 		| newPresenter |
 		newPresenter := self createNewQueryPresenter: (each parent
 				                 ifNil: [ self queriesBrowser rootQuery ]
@@ -133,7 +132,7 @@ MiQueriesListPresenter >> initializeComponentListPresenter [
 	componentListPresenter
 		activateOnSingleClick;
 		propagateNaturalHeight: true;
-		whenSelectedDo: [ :selectedPresenter | 
+		whenSelectedDo: [ :selectedPresenter |
 			queriesBrowser selectQuery: selectedPresenter query ]
 ]
 

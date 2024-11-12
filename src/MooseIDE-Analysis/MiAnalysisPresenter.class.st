@@ -2,18 +2,56 @@ Class {
 	#name : #MiAnalysisPresenter,
 	#superclass : #MiAbstractBrowser,
 	#instVars : [
-		'browsersLists',
 		'currentBrowser',
-		'browserLayout'
+		'browserLayout',
+		'browsersList'
 	],
 	#category : #'MooseIDE-Analysis'
 }
+
+{ #category : #keymaps }
+MiAnalysisPresenter class >> browserKey [
+
+	^ $a
+]
+
+{ #category : #'as yet unclassified' }
+MiAnalysisPresenter class >> duplicationAnalysis [
+
+	| duplicationTag queryBrowser duplicationBrowser |
+	duplicationTag := FamixTag named: 'Duplication'.
+
+	queryBrowser := MiQueriesBrowser new.
+	queryBrowser followBus: MiApplication current defaultBus.
+	queryBrowser queriesListPresenter constructQueries:
+		{ (FQTypeQuery types: { FamixTMethod }) }.
+
+	duplicationBrowser := MiDuplicationBrowser new.
+	duplicationBrowser followBus: MiApplication current defaultBus.
+	duplicationBrowser resetReplicas.
+	duplicationBrowser model findReplicas.
+	duplicationBrowser selectedTag: duplicationTag.
+	duplicationBrowser tagSelectedEntities.
+
+	^ {
+		  queryBrowser.
+		  duplicationBrowser }
+]
 
 { #category : #'instance creation' }
 MiAnalysisPresenter class >> open [
 
 	<script>
-	super open
+	^ super open
+]
+
+{ #category : #'instance creation' }
+MiAnalysisPresenter class >> openDuplicationAnalysis [
+
+	<script>
+	^ super open
+		  addBrowsers: self duplicationAnalysis;
+		  yourself
 ]
 
 { #category : #specs }
@@ -25,7 +63,27 @@ MiAnalysisPresenter class >> title [
 { #category : #specs }
 MiAnalysisPresenter class >> windowSize [
 
-	^ 600 @ 400
+	^ 700 @ 500
+]
+
+{ #category : #initialization }
+MiAnalysisPresenter >> addBrowserMenu [
+
+	| menu |
+	menu := self newMenu.
+	(MiAbstractBrowser subclasses sortAscending: [ :browserClass |
+		 browserClass menuPriority ]) do: [ :browserClass |
+		browserClass
+			buildItemInMenu: menu
+			action: [ self newBrowser: browserClass ] ].
+	^ menu
+]
+
+{ #category : #adding }
+MiAnalysisPresenter >> addBrowsers: aCollectionOfBrowsers [
+
+	aCollectionOfBrowsers do: [ :browser |
+		browsersList addPresenter: (MiBrowserCardPresenter on: browser) ]
 ]
 
 { #category : #testing }
@@ -39,7 +97,7 @@ MiAnalysisPresenter >> defaultLayout [
 
 	^ SpPanedLayout newLeftToRight
 		  positionOfSlider: 0.3;
-		  add: browsersLists;
+		  add: browsersList;
 		  add: (browserLayout := self newBoxLayoutTopToBottom);
 		  yourself
 ]
@@ -48,7 +106,7 @@ MiAnalysisPresenter >> defaultLayout [
 MiAnalysisPresenter >> initialize [
 
 	super initialize.
-	self whenDisplayDo: [ browsersLists selectIndex: 1 ]
+	self whenDisplayDo: [ browsersList selectFirst ]
 ]
 
 { #category : #initialization }
@@ -56,14 +114,16 @@ MiAnalysisPresenter >> initializePresenters [
 
 	super initializePresenters.
 
-	browsersLists := self newComponentList.
-	browsersLists
-		items: {
-				(self newBrowser: MiModelsBrowser).
-				(self newBrowser: MiTagBrowser) };
-		contextMenu: [  ];
+	browsersList := self newComponentList.
+
+	self newBrowser: MiModelsBrowser.
+	self newBrowser: MiTagBrowser.
+	browsersList
+		contextMenu: [ self addBrowserMenu ];
 		whenSelectedItemChangedDo: [ :browserCard |
-			self selectedBrowserChanged: browserCard browser ]
+			self selectedBrowserChanged: (browserCard
+						 ifNil: [ MiNullBrowser new ]
+						 ifNotNil: [ browserCard browser ]) ]
 ]
 
 { #category : #accessing }
@@ -81,8 +141,9 @@ MiAnalysisPresenter >> miSelectedItemToPropagate [
 { #category : #initialization }
 MiAnalysisPresenter >> newBrowser: aBrowserClass [
 
-	^ MiBrowserCardPresenter on:
-		  (aBrowserClass on: aBrowserClass newModel)
+	browsersList addPresenter:
+		(MiBrowserCardPresenter on:
+			 (aBrowserClass on: aBrowserClass newModel))
 ]
 
 { #category : #initialization }

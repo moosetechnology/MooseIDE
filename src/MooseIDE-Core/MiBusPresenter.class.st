@@ -1,30 +1,19 @@
 Class {
 	#name : #MiBusPresenter,
-	#superclass : #MiMidasItemPresenter,
+	#superclass : #MiOverviewItemPresenter,
 	#instVars : [
 		'loggerButton'
 	],
 	#category : #'MooseIDE-Core-Overview'
 }
 
-{ #category : #actions }
-MiBusPresenter >> activateItem: aBrowser [
-	aBrowser followBus: midasModel
-]
+{ #category : #layout }
+MiBusPresenter >> defaultLayout [
 
-{ #category : #actions }
-MiBusPresenter >> deactivateItem: aBrowser [
-	aBrowser unfollowBus: midasModel
-]
-
-{ #category : #initialization }
-MiBusPresenter >> initializeLayout [
-
-	self layout: (SpBoxLayout newHorizontal
-		add: nameLabel;
-		add: SpNullPresenter new;
-		add: loggerButton expand: false;
-		yourself)
+	^ SpBoxLayout newHorizontal
+		  add: nameLabel;
+		  add: loggerButton expand: false;
+		  yourself
 ]
 
 { #category : #initialization }
@@ -34,11 +23,13 @@ MiBusPresenter >> initializePresenters [
 	loggerButton := self newButton
 		                iconName: #history;
 		                label: 'Open logger';
-		                action: [ MiBusLogBrowser openForBus: midasModel application: application ].
-	self initializeLayout
+		                action: [
+			                MiBusLogBrowser
+				                openForBus: model
+				                application: application ]
 ]
 
 { #category : #settings }
 MiBusPresenter >> toolbarLabel [
-	^ midasModel name
+	^ model name
 ]

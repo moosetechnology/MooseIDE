@@ -1,6 +1,6 @@
 Class {
 	#name : #MiSelectedEntityLog,
-	#superclass : #MiLog,
+	#superclass : #Object,
 	#instVars : [
 		'entity'
 	],
@@ -13,8 +13,9 @@ MiSelectedEntityLog class >> entity: aSelectedEntity [
 ]
 
 { #category : #activation }
-MiSelectedEntityLog >> activateIn: anApplication [
-	anApplication refreshBrowsersWith: self entity
+MiSelectedEntityLog >> activateIn: aBus [
+
+	aBus refreshBrowsersWith: self entity
 ]
 
 { #category : #accessing }

@@ -26,6 +26,7 @@ Class {
 MiDuplicationBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
+	<miBrowsersMenu>
 	^ (self buildMenuItemIn: aBuilder) withSeparatorAfter
 ]
 
@@ -67,7 +68,7 @@ MiDuplicationBrowser class >> title [
 { #category : #specs }
 MiDuplicationBrowser class >> windowSize [
 
-	^ 1000 @ 400
+	^ 1000 @ 500
 ]
 
 { #category : #'accessing - private tests' }
@@ -116,18 +117,20 @@ MiDuplicationBrowser >> highlightEntity: entities [
 MiDuplicationBrowser >> initializeLayout [
 
 	self layout: (SpBoxLayout newTopToBottom
-		add: (SpBoxLayout newLeftToRight
-			add: lstEntities width: 150;
-			add: (SpBoxLayout newTopToBottom
-				add: btnRun expand: false;
-				add: lstReplicatedFragments;
-				yourself)
-			width: 150;
-			add: panCodes expand: true;
-			yourself)
-		expand: true ;
-		add: statusBar expand: false ;
-		yourself)
+			 add: (SpPanedLayout newLeftToRight
+					  add: lstEntities;
+					  positionOfSlider: 0.15;
+					  add: (SpPanedLayout newLeftToRight
+							   add: (SpBoxLayout newTopToBottom
+									    add: btnRun expand: false;
+									    add: lstReplicatedFragments;
+									    yourself);
+							   positionOfSlider: 0.2;
+							   add: panCodes);
+					  yourself)
+			 expand: true;
+			 add: statusBar expand: false;
+			 yourself)
 ]
 
 { #category : #initialization }
