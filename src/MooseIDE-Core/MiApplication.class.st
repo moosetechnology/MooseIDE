@@ -342,7 +342,7 @@ MiApplication >> registerToSingleModelAnnouncements: aModel [
 		when: MooseEntityRenamed
 		do: [ :announcement |
 			self removeBindingNamed: announcement oldName.
-			self addBindingForModel: announcement entity ]
+			self addBindingForModel: aModel ]
 		for: self
 ]
 
