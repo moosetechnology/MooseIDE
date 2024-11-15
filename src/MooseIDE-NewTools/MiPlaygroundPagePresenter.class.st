@@ -24,9 +24,10 @@ MiPlaygroundPagePresenter >> addMooseToolbarCommandsTo: aGroup [
 
 { #category : #accessing }
 MiPlaygroundPagePresenter >> application [
-	"This is a hack to avoid opening Pharo system tools in MiApplication"
+	"This allows the playground to use the StPharoApplication instead of the Moose-specific application.
+	We do not want the native windows to open silently as Moose windows."
 
-	^ StPharoApplication current
+	^ application
 ]
 
 { #category : #'public access' }
@@ -36,6 +37,13 @@ MiPlaygroundPagePresenter >> evaluate [
 		  evaluate: self selectedTextOrLine
 		  onCompileError: [ :e | ^ self ]
 		  onError: [ :e | e pass ]
+]
+
+{ #category : #initialization }
+MiPlaygroundPagePresenter >> initializePresenters [
+
+	super initializePresenters.
+	text interactionModel: MiPlaygroundInteractionModel new
 ]
 
 { #category : #private }
