@@ -133,7 +133,7 @@ MiDependencyStructuralMatrixBrowser >> followEntity: anEntity [
 MiDependencyStructuralMatrixBrowser >> initializePresenters [
 
 	mainPresenter := self instantiate: MiDependencyStructuralMatrixVisualization.
-	mainPresenter viewModel: specModel
+	mainPresenter specModel: specModel
 ]
 
 { #category : #accessing }

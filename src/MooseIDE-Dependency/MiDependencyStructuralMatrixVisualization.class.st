@@ -5,10 +5,10 @@ Class {
 	#name : #MiDependencyStructuralMatrixVisualization,
 	#superclass : #MiAbstractVisualization,
 	#instVars : [
-		'viewModel',
 		'lastSCCShapes',
 		'lastHighlighted',
-		'lastUnhighlighted'
+		'lastUnhighlighted',
+		'specModel'
 	],
 	#category : #'MooseIDE-Dependency-DSM'
 }
@@ -17,18 +17,18 @@ Class {
 MiDependencyStructuralMatrixVisualization >> buildInCanvas: aRSCanvas [
 	| dsm |
 
-	viewModel orderedNodesX ifEmpty: [ ^self ].
-	viewModel orderedNodesY ifEmpty: [ ^self ].
+	specModel orderedNodesX ifEmpty: [ ^self ].
+	specModel orderedNodesY ifEmpty: [ ^self ].
 	
 	aRSCanvas addInteraction: RSCanvasController new.
 	dsm := MiRSDependencyStructuralMatrix new.
 	dsm owner: self.
 	dsm setShouldFeedY.
-	dsm labelShapeX textBlock: [ :columnNode | viewModel displayValueForNode: columnNode].
-	dsm labelShapeY textBlock: [ :rowNode | viewModel displayValueForNode: rowNode ].
+	dsm labelShapeX textBlock: [ :columnNode | specModel displayValueForNode: columnNode].
+	dsm labelShapeY textBlock: [ :rowNode | specModel displayValueForNode: rowNode ].
 	dsm container: aRSCanvas.
-	dsm objectsX: viewModel orderedNodesX.
-	dsm objectsY: viewModel orderedNodesY.
+	dsm objectsX: specModel orderedNodesX.
+	dsm objectsY: specModel orderedNodesY.
 	dsm color: [ :tuple | self cellColor: tuple ].
 
 	dsm build.
@@ -39,17 +39,17 @@ MiDependencyStructuralMatrixVisualization >> buildInCanvas: aRSCanvas [
 
 { #category : #coloring }
 MiDependencyStructuralMatrixVisualization >> cellColor: tuple [
-	^viewModel colorForTuple: tuple
+	^specModel colorForTuple: tuple
 ]
 
 { #category : #coloring }
 MiDependencyStructuralMatrixVisualization >> cellShowSCCColor: tuple [
-	^viewModel showSCCColorForTuple: tuple
+	^specModel showSCCColorForTuple: tuple
 ]
 
 { #category : #accessing }
 MiDependencyStructuralMatrixVisualization >> getTupleDependencyWeight: tuple [
-	^ viewModel getTupleDependencyWeight: tuple
+	^ specModel getTupleDependencyWeight: tuple
 ]
 
 { #category : #initialization }
@@ -71,7 +71,7 @@ MiDependencyStructuralMatrixVisualization >> sccShapesIncluding: aRSShape [
 	(lastSCCShapes key = aRSShape model key) ifFalse: [ 
 		"Transcript show: ' - NOT found' ; cr."
 		lastSCCShapes := aRSShape model key -> (aRSShape canvas deepShapesFromModels:
-			(viewModel sccTuplesForTuple: aRSShape model)) ]
+			(specModel sccTuplesForTuple: aRSShape model)) ]
 		"ifTrue: [ Transcript show: ' - found' ; cr ]".
 	^ lastSCCShapes value
 ]
@@ -79,7 +79,7 @@ MiDependencyStructuralMatrixVisualization >> sccShapesIncluding: aRSShape [
 { #category : #initialization }
 MiDependencyStructuralMatrixVisualization >> setInteractions: dsm [
 	|   |
-	dsm shapes @ (RSPopup text: [:tuple | viewModel displayValueForTuple: tuple ]).
+	dsm shapes @ (RSPopup text: [:tuple | specModel displayValueForTuple: tuple ]).
 
 	"sccHighlight := RSHighlightable new.
 	sccHighlight
@@ -105,16 +105,16 @@ MiDependencyStructuralMatrixVisualization >> shapeFor: tuple [
 { #category : #coloring }
 MiDependencyStructuralMatrixVisualization >> showSCC: aCollection [
 	aCollection do: [ :tuple |
-		(self shapeFor: tuple) color: (viewModel showSCCColorForTuple: tuple)
+		(self shapeFor: tuple) color: (specModel showSCCColorForTuple: tuple)
 	]
 ]
 
 { #category : #accessing }
-MiDependencyStructuralMatrixVisualization >> viewModel [
-	^ viewModel
+MiDependencyStructuralMatrixVisualization >> specModel [
+	^ specModel
 ]
 
 { #category : #accessing }
-MiDependencyStructuralMatrixVisualization >> viewModel: aDSMModel [
-	viewModel := aDSMModel
+MiDependencyStructuralMatrixVisualization >> specModel: aDSMModel [
+	specModel := aDSMModel
 ]
