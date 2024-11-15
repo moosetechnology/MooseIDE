@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'model',
 		'class1',
-		'class2'
+		'class2',
+		'class3'
 	],
 	#category : #'MooseIDE-Tests-Browsers'
 }
@@ -29,6 +30,7 @@ MiDependencyStructuralMatrixBrowserTest >> setUp [
 	model := FamixStModel new.
 	class1 := model newClassNamed: 'class1'.
 	class2 := model newClassNamed: 'class2'.
+	class3 := model newClassNamed: 'class3'.
 
 	mth1 := (model newMethodNamed: 'mth1') parentType: class1.
 	mth2 := (model newMethodNamed: 'mth2') parentType: class2.
@@ -53,8 +55,34 @@ MiDependencyStructuralMatrixBrowserTest >> testCanTagEntities [
 ]
 
 { #category : #'tests - tags' }
-MiDependencyStructuralMatrixBrowserTest >> testDoubleClickCallsUserAction [
+MiDependencyStructuralMatrixBrowserTest >> testDoesNotOpenEmptyDetailedDSM [
+	"sets a fake spec model that delegates #userActionOn: to the original model
+	 We checks that #userActionOn: was called and #openDetailedDSMOn: was not"
+	| originalModel mockModel userAction detailedDSM  |
 
+	browser followEntity: {  class2 . class3 }.
+
+	originalModel := browser model.
+	mockModel := Mock named: 'DSM-spec-model'.
+	(mockModel stub userActionOn: Any) will: [ :arg |
+		userAction := arg.
+		originalModel userActionOn: arg ].
+	(mockModel stub openDetailedDSMOn: Any) will: [ :arg | detailedDSM := arg ].
+	detailedDSM := nil.
+	browser diagram specModel: mockModel.
+
+	(self shapeAtRow: class2 column: class3)
+		announce: RSMouseDoubleClick.
+
+	self assert: userAction isNotNil.
+	self assert: userAction key model equals: class2.
+	self assert: userAction value model equals: class3.
+
+	self assert: detailedDSM isNil
+]
+
+{ #category : #'tests - tags' }
+MiDependencyStructuralMatrixBrowserTest >> testDoubleClickCallsUserAction [
 	"sets a fake spec model on the visualization to check that #userAction: is called
 	 with the right tuple when double clicking on a square"
 	| mockModel detailedDSM  |
