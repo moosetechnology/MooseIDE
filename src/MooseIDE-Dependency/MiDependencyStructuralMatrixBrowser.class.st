@@ -88,7 +88,7 @@ MiDependencyStructuralMatrixBrowser class >> open [
 { #category : #'instance creation' }
 MiDependencyStructuralMatrixBrowser class >> openWithX: nodesX withY: nodesY [
 
-	^ (self on: self newModel)
+	^ (super on: self newModel)
 		  withX: nodesX withY: nodesY;
 		  open;
 		  yourself
@@ -134,7 +134,7 @@ MiDependencyStructuralMatrixBrowser >> followEntity: anEntity [
 MiDependencyStructuralMatrixBrowser >> initializePresenters [
 
 	mainPresenter := self instantiate: MiDependencyStructuralMatrixVisualization.
-	mainPresenter viewModel: specModel
+	mainPresenter specModel: specModel
 ]
 
 { #category : #accessing }
