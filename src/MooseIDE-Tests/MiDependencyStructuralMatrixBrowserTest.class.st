@@ -18,7 +18,7 @@ MiDependencyStructuralMatrixBrowserTest >> browserClass [
 { #category : #running }
 MiDependencyStructuralMatrixBrowserTest >> defaultEntityToSelect [
 
-	^ { class1 . class2 }
+	^{ 	FamixStClass new name: 'a'. FamixStClass new name: 'b' }
 ]
 
 { #category : #running }
@@ -37,6 +37,7 @@ MiDependencyStructuralMatrixBrowserTest >> setUp [
 	model newInvocation
 		sender: mth1 ;
 		candidates: { mth2 }.
+
 ]
 
 { #category : #'tests - tags' }
