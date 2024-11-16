@@ -21,6 +21,14 @@ MiDependencyStructuralMatrixBrowserTest >> defaultEntityToSelect [
 	^{ 	FamixStClass new name: 'a'. FamixStClass new name: 'b' }
 ]
 
+{ #category : #'tests - tags' }
+MiDependencyStructuralMatrixBrowserTest >> makeGraphNode: anEntity [
+
+	^AIGraphNode new
+		model: anEntity ;
+		yourself
+]
+
 { #category : #running }
 MiDependencyStructuralMatrixBrowserTest >> setUp [
 	| mth1 mth2 |
@@ -101,4 +109,33 @@ MiDependencyStructuralMatrixBrowserTest >> testDoubleClickCallsUserAction [
 	self assert: detailedDSM isNotNil.
 	self assert: detailedDSM key model equals: class1.
 	self assert: detailedDSM value model equals: class2.
+]
+
+{ #category : #'tests - tags' }
+MiDependencyStructuralMatrixBrowserTest >> testTitleOfDSM [
+
+	browser followEntity: {  class1 . class2 }.
+
+	browser withWindowDo: [ : window |
+		self assert: (window title beginsWith: 'Dependency Structural Matrix ').
+		self assert: (window title includesSubstring: 'class1').
+		self assert: (window title includesSubstring: 'class2')
+	]
+]
+
+{ #category : #'tests - tags' }
+MiDependencyStructuralMatrixBrowserTest >> testTitleOfDetailedDSM [
+	"detailed DSM title should show the original entities"
+	| detailedDSM |
+
+	browser followEntity: {  class1 . class2 }.
+
+	detailedDSM := browser model
+		openDetailedDSMOn: ( (self makeGraphNode: class1) -> (self makeGraphNode: class2) ).
+
+	detailedDSM withWindowDo: [ : window || title |
+		title := window title.
+		window close.
+		self assert: title equals: 'DSM class1 -> class2'
+	]
 ]

@@ -88,10 +88,10 @@ MiDependencyStructuralMatrixBrowser class >> open [
 { #category : #'instance creation' }
 MiDependencyStructuralMatrixBrowser class >> openWithX: nodesX withY: nodesY [
 
-	^ (super on: self newModel)
-		  withX: nodesX withY: nodesY;
-		  open;
-		  yourself
+	^(super on: self newModel)
+		withX: nodesX withY: nodesY;
+		open;
+		yourself
 
 ]
 
