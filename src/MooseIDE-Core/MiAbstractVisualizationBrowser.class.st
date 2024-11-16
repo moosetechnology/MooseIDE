@@ -8,6 +8,12 @@ Class {
 }
 
 { #category : #testing }
+MiAbstractVisualizationBrowser class >> isAbstract [
+
+	^ self == MiAbstractVisualizationBrowser
+]
+
+{ #category : #testing }
 MiAbstractVisualizationBrowser >> canHighlight [
 
 	^ true

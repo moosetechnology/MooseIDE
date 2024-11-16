@@ -10,16 +10,21 @@ MooseModel >> miMetaNavigationInspectorExtension [
 { #category : #'*MooseIDE-NewTools' }
 MooseModel >> miMetaNavigationItems [
 
-	^ (self metamodel packages sorted: #name ascending) collect: [
-		  :fm3package | fm3package name -> fm3package ]
-]
+	| roots |
+	roots := self metamodel classes.
 
-{ #category : #'*MooseIDE-NewTools' }
-MooseModel >> navigationItemsFromMetamodel [
-
-	^ (self metamodel classes reject: [ :a | a implementingClass isTrait ])
-		  collect: [ :metaClass |
-			  metaClass implementingClass inspectorToString
-			  -> (self allWithType: metaClass implementingClass) ]
-		  thenReject: [ :a | a value isEmpty ]
+	^ ((roots
+		    collect: [ :fm3Class |
+			    fm3Class name -> (self
+				     allWithType: fm3Class implementingClass
+				     ofGroupClass: MooseSpecializedGroup) ]
+		    thenReject: [ :association | association value isEmpty ])
+		   sorted: #name ascending) , 
+		((roots
+		    collect: [ :fm3Class |
+			    'Model ' , fm3Class name -> ((self
+				      allWithType: fm3Class implementingClass
+				      ofGroupClass: MooseSpecializedGroup) reject: #isStub) ]
+		    thenReject: [ :association | association value isEmpty ])
+		   sorted: #name ascending)
 ]

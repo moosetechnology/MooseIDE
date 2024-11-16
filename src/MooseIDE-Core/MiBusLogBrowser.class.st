@@ -15,8 +15,7 @@ Class {
 }
 
 { #category : #adding }
-MiBusLogBrowser class >> addToMiBrowsersMenu: aMenuGroupPresenter [
-
+MiBusLogBrowser class >> buildItemInMenu: aMenuGroupPresenter action: aBlok [
 	"Do not appear in menu"
 
 	

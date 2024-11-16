@@ -72,6 +72,11 @@ MiRSDependencyStructuralMatrix >> owner: anObject [
 	owner := anObject
 ]
 
+{ #category : #accessing }
+MiRSDependencyStructuralMatrix >> specModel [
+	^self owner specModel.
+]
+
 { #category : #highlighting }
 MiRSDependencyStructuralMatrix >> unhighlight: evt [
 
@@ -85,10 +90,5 @@ MiRSDependencyStructuralMatrix >> unhighlight: evt [
 { #category : #'as yet unclassified' }
 MiRSDependencyStructuralMatrix >> userActionOn: aTuple [
 	
-	self viewModel userActionOn: aTuple
-]
-
-{ #category : #accessing }
-MiRSDependencyStructuralMatrix >> viewModel [
-	^self owner viewModel.
+	self specModel userActionOn: aTuple
 ]

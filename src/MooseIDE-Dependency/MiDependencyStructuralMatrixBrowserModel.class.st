@@ -405,7 +405,7 @@ MiDependencyStructuralMatrixBrowserModel >> userActionOn: aTuple [
 	weight := self getTupleDependencyWeight: aTuple.
 	
 	self selectedEntities: { keyModel . valModel }.
-	"1halt."
+
 	"We open a detailed DSM for a typle only if the tuple key and value are still at the class or package level and the weight is not zero. "
 	((keyModel usesFamixTrait: FamixTAttribute ) 
 		or: [ (keyModel usesFamixTrait: FamixTMethod ) 

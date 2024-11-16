@@ -1,6 +1,6 @@
 Class {
 	#name : #MiBrowserPresenter,
-	#superclass : #MiMidasItemPresenter,
+	#superclass : #MiOverviewItemPresenter,
 	#instVars : [
 		'closeButton',
 		'topButton'
@@ -8,30 +8,20 @@ Class {
 	#category : #'MooseIDE-Core-Overview'
 }
 
-{ #category : #actions }
-MiBrowserPresenter >> activateItem: aBus [
-	midasModel followBus: aBus
-]
+{ #category : #layout }
+MiBrowserPresenter >> defaultLayout [
 
-{ #category : #actions }
-MiBrowserPresenter >> deactivateItem: aBus [
-	midasModel unfollowBus: aBus
+	^ SpBoxLayout newHorizontal
+		  add: nameLabel;
+		  add: topButton expand: false;
+		  add: closeButton expand: false;
+		  yourself
 ]
 
 { #category : #actions }
 MiBrowserPresenter >> highlightWindow [
-	midasModel window beep
-]
 
-{ #category : #initialization }
-MiBrowserPresenter >> initializeLayout [
-
-	self layout: (SpBoxLayout newHorizontal
-		add: nameLabel;
-		add: SpNullPresenter new;
-		add: topButton expand: false;
-		add: closeButton expand: false;
-		yourself)
+	model window beep
 ]
 
 { #category : #initialization }
@@ -41,21 +31,20 @@ MiBrowserPresenter >> initializePresenters [
 	topButton := self newButton
 		             iconName: #window;
 		             label: 'Put on top';
-		             action: [ 
-			             midasModel window window
-				             expand;
-				             activate ];
+		             action: [
+			             model withWindowDo: [ :window |
+					             window
+						             restore;
+						             activate ] ];
 		             yourself.
 	closeButton := self newButton
 		               iconName: #delete;
 		               label: 'Close';
-		               action: [ midasModel window close ];
-		               yourself.
-		
-	self initializeLayout
+		               action: [ model withWindowDo: #close ];
+		               yourself
 ]
 
 { #category : #settings }
 MiBrowserPresenter >> toolbarLabel [
-	^ midasModel title
+	^ model title
 ]

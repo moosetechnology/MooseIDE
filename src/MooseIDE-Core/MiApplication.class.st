@@ -138,6 +138,12 @@ MiApplication >> consumersOf: aClass [
 	^ foundConsumers
 ]
 
+{ #category : #'drag and drop support' }
+MiApplication >> currentModelsBrowser [
+
+	^ currentModelsBrowser
+]
+
 { #category : #buses }
 MiApplication >> defaultBus [
 
@@ -242,9 +248,8 @@ MiApplication >> mooseStyleSheet [
 		.help [ Geometry { 
 			#height: 225,
 			#width: 250 } ],
-		.busesList [ Geometry { 
-			#height: 150,
-			#width: 150 } ]
+		.smallList [ Geometry { #height: 120, #width: 120 } ],
+		.largeList [ Geometry { #height: 250, #width: 250 } ]
 ]'
 ]
 
@@ -258,7 +263,11 @@ MiApplication >> newIconProvider [
 MiApplication >> openCurrentModelsBrowser [
 
 	^ currentModelsBrowser
-		  ifNotNil: [ :modelsBrowser | modelsBrowser restore ]
+		  ifNotNil: [ :modelsBrowser |
+			  modelsBrowser withWindowDo: [ :window |
+				  window
+					  restore;
+					  activate ] ]
 		  ifNil: [
 		  currentModelsBrowser := MiModelsBrowser instantiateAndOpen ]
 ]
@@ -333,7 +342,7 @@ MiApplication >> registerToSingleModelAnnouncements: aModel [
 		when: MooseEntityRenamed
 		do: [ :announcement |
 			self removeBindingNamed: announcement oldName.
-			self addBindingForModel: announcement entity ]
+			self addBindingForModel: aModel ]
 		for: self
 ]
 

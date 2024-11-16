@@ -39,6 +39,7 @@ MiButterflyMapBrowser class >> mapClass [
 MiButterflyMapBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
+	<miBrowsersMenu>
 	^ self buildMenuItemIn: aBuilder
 ]
 

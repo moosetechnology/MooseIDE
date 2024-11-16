@@ -39,7 +39,7 @@ MiBusesPopup >> initialize [
 
 	super initialize.
 	self
-		addStyle: 'busesList';
+		addStyle: 'smallList';
 		display: #name;
 		items: self application buses;
 		selectItems: browser buses copy;

@@ -78,6 +78,15 @@ MiWindowPresenter >> defaultInitialExtent [
 	^ 500 @ 400
 ]
 
+{ #category : #'window management' }
+MiWindowPresenter >> restore [
+	"We have to get to the adpater because #restore is not in SpWindowPresenter yet. 
+	Fix is in Pharo 13. We will remove this method when using Pharo 13."
+
+	self withAdapterDo: [ :windowAdapter |
+		windowAdapter widgetDo: [ :widget | widget restore ] ]
+]
+
 { #category : #initialization }
 MiWindowPresenter >> setContextBindingKeys [
 

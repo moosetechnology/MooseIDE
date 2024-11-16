@@ -22,6 +22,14 @@ MiPlaygroundPagePresenter >> addMooseToolbarCommandsTo: aGroup [
 		forRoot: aGroup
 ]
 
+{ #category : #accessing }
+MiPlaygroundPagePresenter >> application [
+	"This allows the playground to use the StPharoApplication instead of the Moose-specific application.
+	We do not want the native windows to open silently as Moose windows."
+
+	^ application
+]
+
 { #category : #'public access' }
 MiPlaygroundPagePresenter >> evaluate [
 
@@ -29,6 +37,13 @@ MiPlaygroundPagePresenter >> evaluate [
 		  evaluate: self selectedTextOrLine
 		  onCompileError: [ :e | ^ self ]
 		  onError: [ :e | e pass ]
+]
+
+{ #category : #initialization }
+MiPlaygroundPagePresenter >> initializePresenters [
+
+	super initializePresenters.
+	text interactionModel: MiPlaygroundInteractionModel new
 ]
 
 { #category : #private }
@@ -40,18 +55,19 @@ MiPlaygroundPagePresenter >> menuActionsFor: aCodePresenter [
 				   beDisplayedAsGroup;
 				   register: (StEvaluateCommand forSpecContext: self);
 				   register:
-					   (MiInspectCommand forSpecContext: self playgroundBrowser);
+					   ((MiInspectCommand forSpecContext: self playgroundBrowser)
+						    name: 'Inspect in Moose');
 				   register:
 					   (MiPropagateCommand forSpecContext: self playgroundBrowser);
 				   yourself);
 		  register: (aCodePresenter rootCommandsGroup name: 'Code');
-		  register: (aCodePresenter editionCommandsGroup name: 'Edition');
+		  in: [ :this |
+			  self addMenuEditionCommandsTo: this presenter: aCodePresenter ];
+		  in: [ :this | self addMenuCommandsTo: this ];
 		  register: ((CmCommandGroup named: 'Playground') asSpecGroup
 				   register: ((CmCommandGroup named: 'Base options') asSpecGroup
 						    beDisplayedAsGroup;
-						    register: (StPlaygroundPublishCommand forSpecContext: self);
-						    register: (StPlaygroundBindingsCommand forSpecContext: self);
-						    register: (StPlaygroundPagesCommand forSpecContext: self);
+						    in: [ :this | self addToolbarCommandsTo: this ];
 						    yourself);
 				   register:
 					   ((CmCommandGroup named: 'Miscelaneous options') asSpecGroup

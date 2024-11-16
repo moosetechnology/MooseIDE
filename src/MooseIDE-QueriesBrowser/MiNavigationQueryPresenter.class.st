@@ -54,7 +54,8 @@ MiNavigationQueryPresenter >> initializeAssociationsButton [
 { #category : #initialization }
 MiNavigationQueryPresenter >> initializeAssociationsList [
 
-	associationsList := self newSelectableListForPopoverExtent: 120 @ 120.
+	associationsList := self instantiate: SpFilteringSelectableListPresenter.
+	associationsList addStyle: 'smallList'.
 	associationsList
 		display: [ :item | item mooseDescription name asString ];
 		items: self query availableAssociations;
