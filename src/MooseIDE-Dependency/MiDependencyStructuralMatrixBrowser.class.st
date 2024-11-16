@@ -38,9 +38,6 @@ Class {
 	#instVars : [
 		'mainPresenter'
 	],
-	#classInstVars : [
-		'title'
-	],
 	#category : #'MooseIDE-Dependency-DSM'
 }
 
@@ -91,34 +88,17 @@ MiDependencyStructuralMatrixBrowser class >> open [
 { #category : #'instance creation' }
 MiDependencyStructuralMatrixBrowser class >> openWithX: nodesX withY: nodesY [
 
-	^ (super on: self newModel)
-		  withX: nodesX withY: nodesY;
-		  open;
-		  yourself
+	^(super on: self newModel)
+		withX: nodesX withY: nodesY;
+		open;
+		yourself
 
 ]
 
 { #category : #specs }
 MiDependencyStructuralMatrixBrowser class >> title [
 
-	title ifNil: [  
-	^ 'Dependency Structural Matrix']
-	ifNotNil: [ ^ title ]
-	
-]
-
-{ #category : #specs }
-MiDependencyStructuralMatrixBrowser class >> title: aString [
-
-	"^ 'Dependency Structural Matrix'"
-	title := aString 
-]
-
-{ #category : #'as yet unclassified' }
-MiDependencyStructuralMatrixBrowser class >> titleForDetailedDSM: aTuple [
-
-	title := 'DSM ' , aTuple key model name , ' -> '
-	         , aTuple value model name
+	^ 'Dependency Structural Matrix'
 ]
 
 { #category : #api }

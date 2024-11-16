@@ -252,13 +252,13 @@ MiDependencyStructuralMatrixBrowserModel >> newGraph [
 MiDependencyStructuralMatrixBrowserModel >> openDetailedDSMOn: aTuple [
 	"note: RSDSM calls X the columns (#value of aTuple) and Y the rows (#key of aTuple)"
 
-	MiDependencyStructuralMatrixBrowser
-		titleForDetailedDSM: aTuple; 
+	^(MiDependencyStructuralMatrixBrowser
 		openWithX: aTuple value model children
-		withY: aTuple key model children.
-		"titleForDetailedDSM: aTuple"
-		
-		
+		withY: aTuple key model children)
+
+		withWindowDo: [ :window |
+			window title: ('DSM ' , aTuple key model name , ' -> ' , aTuple value model name) ] ;
+		yourself
 ]
 
 { #category : #initialization }
