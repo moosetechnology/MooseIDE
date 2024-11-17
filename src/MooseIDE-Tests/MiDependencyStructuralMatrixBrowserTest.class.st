@@ -140,6 +140,33 @@ MiDependencyStructuralMatrixBrowserTest >> testOutgoingDependencyFromMethodDecla
 ]
 
 { #category : #tests }
+MiDependencyStructuralMatrixBrowserTest >> testOutgoingDependencyFromVMethodDeclaredTypeParametric [
+	"code: 
+	Class2
+		ParametricClass<Class1> mth2
+	Note: FamixJavaConcretization is an association and we are not interested in its genericEntity here
+	Note: hueristic to detect a concreteParameter being a genuine class is to check it has children
+	  That's why we use Class1 and not Class3 as concreteParameter"
+
+	| mth2 parametricClass dependencies |
+	parametricClass := model newParametricClass
+		name: 'ParametricClass' ;
+		genericization: model newConcretization ;
+		addConcreteParameter: class1 ;
+		yourself.
+
+	mth2 := class2 methods anyOne.
+	mth2 declaredType: parametricClass.
+
+	dependencies := mth2 queryAllOutgoingForDSM.
+
+	self assert: dependencies size equals: 2.
+	dependencies do: [ :dep |
+		{ 'ParametricClass' . 'Class1' } includes: dep name
+	]
+]
+
+{ #category : #tests }
 MiDependencyStructuralMatrixBrowserTest >> testOutgoingDependencyFromVariableDeclaredType [
 
 	| mth2 dependencies |
@@ -161,7 +188,7 @@ MiDependencyStructuralMatrixBrowserTest >> testOutgoingDependencyFromVariableDec
 	"code: 
 	Class2
 		mth2
-			ParametricClass<Class3> local2
+			ParametricClass<Class1> local2
 	Note: FamixJavaConcretization is an association and we are not interested in its genericEntity here
 	Note: hueristic to detect a concreteParameter being a genuine class is to check it has children
 	  That's why we use Class1 and not Class3 as concreteParameter"

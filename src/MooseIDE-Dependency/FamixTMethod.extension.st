@@ -4,5 +4,17 @@ Extension { #name : #FamixTMethod }
 FamixTMethod >> addNonAssociationDependenciesTo: dependencies [
 
 	self children do: [ :c | c addNonAssociationDependenciesTo: dependencies ].
-	self declaredType ifNotNil: [ dependencies add: self declaredType ]
+
+	declaredType ifNotNil: [
+		dependencies add: declaredType.
+
+		( (declaredType usesFamixTrait: FamixTParametricEntity) and:
+		[ declaredType genericization isNotNil ])
+			ifTrue: [
+				declaredType concreteParameters do: [ :param |
+					param children ifNotEmpty: [ dependencies add: param ]
+				]
+			]
+
+	]
 ]
