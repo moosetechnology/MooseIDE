@@ -1,8 +1,8 @@
 Extension { #name : #FamixTMethod }
 
 { #category : #'*MooseIDE-Dependency' }
-FamixTMethod >> addDeclaredTypesIn: dependencies [
+FamixTMethod >> addNonAssociationDependenciesTo: dependencies [
 
-	self children do: [ :c | c addDeclaredTypesIn: dependencies ].
+	self children do: [ :c | c addNonAssociationDependenciesTo: dependencies ].
 	self declaredType ifNotNil: [ dependencies add: self declaredType ]
 ]

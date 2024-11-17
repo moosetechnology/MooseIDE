@@ -1,8 +1,8 @@
 Extension { #name : #FamixTClass }
 
 { #category : #'*MooseIDE-Dependency' }
-FamixTClass >> addDeclaredTypesIn: dependencies [
+FamixTClass >> addNonAssociationDependenciesTo: dependencies [
 
-	self children do: [ :c | c addDeclaredTypesIn: dependencies ].
+	self children do: [ :c | c addNonAssociationDependenciesTo: dependencies ].
 	
 ]
