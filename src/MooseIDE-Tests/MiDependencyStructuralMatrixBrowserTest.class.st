@@ -34,8 +34,9 @@ MiDependencyStructuralMatrixBrowserTest >> setUp [
 	| mth1 mth2 |
 
 	super setUp.
-	
-	model := FamixStModel new.
+
+	"Note: need to be a Java model to test ParametricEntities"
+	model := FamixJavaModel new.
 	class1 := model newClassNamed: 'Class1'.
 	class2 := model newClassNamed: 'Class2'.
 	class3 := model newClassNamed: 'Class3'.
@@ -118,8 +119,23 @@ MiDependencyStructuralMatrixBrowserTest >> testOutgoingDependencyFromInvocation 
 	dependencies := class1 methods anyOne queryAllOutgoingForDSM.
 
 	self assert: dependencies size equals: 1.
-	self assert: dependencies anyOne class equals: FamixStInvocation.
+	self assert: dependencies anyOne class equals: FamixJavaInvocation.
 	self assert: dependencies anyOne candidates anyOne name equals: 'mth2'.
+
+]
+
+{ #category : #tests }
+MiDependencyStructuralMatrixBrowserTest >> testOutgoingDependencyFromMethodDeclaredType [
+
+	| mth2 dependencies |
+	mth2 := class2 methods anyOne.
+	mth2 declaredType: class3.
+
+	dependencies := mth2 queryAllOutgoingForDSM.
+
+	self assert: dependencies size equals: 1.
+	self assert: dependencies anyOne class equals: FamixJavaClass.
+	self assert: dependencies anyOne name equals: 'Class3'.
 
 ]
 
@@ -135,9 +151,39 @@ MiDependencyStructuralMatrixBrowserTest >> testOutgoingDependencyFromVariableDec
 	dependencies := mth2 queryAllOutgoingForDSM.
 
 	self assert: dependencies size equals: 1.
-	self assert: dependencies anyOne class equals: FamixStClass.
+	self assert: dependencies anyOne class equals: FamixJavaClass.
 	self assert: dependencies anyOne name equals: 'Class3'.
 
+]
+
+{ #category : #tests }
+MiDependencyStructuralMatrixBrowserTest >> testOutgoingDependencyFromVariableDeclaredTypeParametric [
+	"code: 
+	Class2
+		mth2
+			ParametricClass<Class3> local2
+	Note: FamixJavaConcretization is an association and we are not interested in its genericEntity here
+	Note: hueristic to detect a concreteParameter being a genuine class is to check it has children
+	  That's why we use Class1 and not Class3 as concreteParameter"
+
+	| mth2 parametricClass dependencies |
+	parametricClass := model newParametricClass
+		name: 'ParametricClass' ;
+		genericization: model newConcretization ;
+		addConcreteParameter: class1 ;
+		yourself.
+
+	mth2 := class2 methods anyOne.
+	(model newLocalVariableNamed: 'local2')
+		parentBehaviouralEntity: mth2 ;
+		declaredType: parametricClass.
+
+	dependencies := mth2 queryAllOutgoingForDSM.
+
+	self assert: dependencies size equals: 2.
+	dependencies do: [ :dep |
+		{ 'ParametricClass' . 'Class1' } includes: dep name
+	]
 ]
 
 { #category : #tests }
