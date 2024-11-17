@@ -21,7 +21,7 @@ MiDependencyStructuralMatrixBrowserTest >> defaultEntityToSelect [
 	^{ 	FamixStClass new name: 'a'. FamixStClass new name: 'b' }
 ]
 
-{ #category : #'tests - tags' }
+{ #category : #running }
 MiDependencyStructuralMatrixBrowserTest >> makeGraphNode: anEntity [
 
 	^AIGraphNode new
@@ -36,9 +36,9 @@ MiDependencyStructuralMatrixBrowserTest >> setUp [
 	super setUp.
 	
 	model := FamixStModel new.
-	class1 := model newClassNamed: 'class1'.
-	class2 := model newClassNamed: 'class2'.
-	class3 := model newClassNamed: 'class3'.
+	class1 := model newClassNamed: 'Class1'.
+	class2 := model newClassNamed: 'Class2'.
+	class3 := model newClassNamed: 'Class3'.
 
 	mth1 := (model newMethodNamed: 'mth1') parentType: class1.
 	mth2 := (model newMethodNamed: 'mth2') parentType: class2.
@@ -48,7 +48,7 @@ MiDependencyStructuralMatrixBrowserTest >> setUp [
 
 ]
 
-{ #category : #'tests - tags' }
+{ #category : #running }
 MiDependencyStructuralMatrixBrowserTest >> shapeAtRow: rEntity column: cEntity2 [
 
 	^browser diagram canvas shapes detect: [ :sh |
@@ -57,13 +57,13 @@ MiDependencyStructuralMatrixBrowserTest >> shapeAtRow: rEntity column: cEntity2 
 	]
 ]
 
-{ #category : #'tests - tags' }
+{ #category : #tests }
 MiDependencyStructuralMatrixBrowserTest >> testCanTagEntities [
 
 	self deny: browser canTagEntities
 ]
 
-{ #category : #'tests - tags' }
+{ #category : #tests }
 MiDependencyStructuralMatrixBrowserTest >> testDoesNotOpenEmptyDetailedDSM [
 	"sets a fake spec model that delegates #userActionOn: to the original model
 	 We checks that #userActionOn: was called and #openDetailedDSMOn: was not"
@@ -90,7 +90,7 @@ MiDependencyStructuralMatrixBrowserTest >> testDoesNotOpenEmptyDetailedDSM [
 	self assert: detailedDSM isNil
 ]
 
-{ #category : #'tests - tags' }
+{ #category : #tests }
 MiDependencyStructuralMatrixBrowserTest >> testDoubleClickCallsUserAction [
 	"sets a fake spec model on the visualization to check that #userAction: is called
 	 with the right tuple when double clicking on a square"
@@ -111,19 +111,19 @@ MiDependencyStructuralMatrixBrowserTest >> testDoubleClickCallsUserAction [
 	self assert: detailedDSM value model equals: class2.
 ]
 
-{ #category : #'tests - tags' }
+{ #category : #tests }
 MiDependencyStructuralMatrixBrowserTest >> testTitleOfDSM [
 
 	browser followEntity: {  class1 . class2 }.
 
 	browser withWindowDo: [ : window |
 		self assert: (window title beginsWith: 'Dependency Structural Matrix ').
-		self assert: (window title includesSubstring: 'class1').
-		self assert: (window title includesSubstring: 'class2')
+		self assert: (window title includesSubstring: 'Class1').
+		self assert: (window title includesSubstring: 'Class2')
 	]
 ]
 
-{ #category : #'tests - tags' }
+{ #category : #tests }
 MiDependencyStructuralMatrixBrowserTest >> testTitleOfDetailedDSM [
 	"detailed DSM title should show the original entities"
 	| detailedDSM |
@@ -136,6 +136,6 @@ MiDependencyStructuralMatrixBrowserTest >> testTitleOfDetailedDSM [
 	detailedDSM withWindowDo: [ : window || title |
 		title := window title.
 		window close.
-		self assert: title equals: 'DSM class1 -> class2'
+		self assert: title equals: 'DSM Class1 -> Class2'
 	]
 ]
