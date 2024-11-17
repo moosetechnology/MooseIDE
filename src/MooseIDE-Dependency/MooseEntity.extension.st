@@ -1,8 +1,8 @@
 Extension { #name : #MooseEntity }
 
 { #category : #'*MooseIDE-Dependency' }
-MooseEntity >> addDeclaredTypesIn: dependencies [
-	"default is to do nothing (no declaredType to add)"
+MooseEntity >> addNonAssociationDependenciesTo: dependencies [
+	"default is to do nothing (no extra dependencies to add)"
 ]
 
 { #category : #'*MooseIDE-Dependency' }

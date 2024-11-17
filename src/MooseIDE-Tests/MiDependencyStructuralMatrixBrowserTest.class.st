@@ -21,7 +21,7 @@ MiDependencyStructuralMatrixBrowserTest >> defaultEntityToSelect [
 	^{ 	FamixStClass new name: 'a'. FamixStClass new name: 'b' }
 ]
 
-{ #category : #'tests - tags' }
+{ #category : #running }
 MiDependencyStructuralMatrixBrowserTest >> makeGraphNode: anEntity [
 
 	^AIGraphNode new
@@ -34,11 +34,12 @@ MiDependencyStructuralMatrixBrowserTest >> setUp [
 	| mth1 mth2 |
 
 	super setUp.
-	
-	model := FamixStModel new.
-	class1 := model newClassNamed: 'class1'.
-	class2 := model newClassNamed: 'class2'.
-	class3 := model newClassNamed: 'class3'.
+
+	"Note: need to be a Java model to test ParametricEntities"
+	model := FamixJavaModel new.
+	class1 := model newClassNamed: 'Class1'.
+	class2 := model newClassNamed: 'Class2'.
+	class3 := model newClassNamed: 'Class3'.
 
 	mth1 := (model newMethodNamed: 'mth1') parentType: class1.
 	mth2 := (model newMethodNamed: 'mth2') parentType: class2.
@@ -48,7 +49,7 @@ MiDependencyStructuralMatrixBrowserTest >> setUp [
 
 ]
 
-{ #category : #'tests - tags' }
+{ #category : #running }
 MiDependencyStructuralMatrixBrowserTest >> shapeAtRow: rEntity column: cEntity2 [
 
 	^browser diagram canvas shapes detect: [ :sh |
@@ -57,13 +58,13 @@ MiDependencyStructuralMatrixBrowserTest >> shapeAtRow: rEntity column: cEntity2 
 	]
 ]
 
-{ #category : #'tests - tags' }
+{ #category : #tests }
 MiDependencyStructuralMatrixBrowserTest >> testCanTagEntities [
 
 	self deny: browser canTagEntities
 ]
 
-{ #category : #'tests - tags' }
+{ #category : #tests }
 MiDependencyStructuralMatrixBrowserTest >> testDoesNotOpenEmptyDetailedDSM [
 	"sets a fake spec model that delegates #userActionOn: to the original model
 	 We checks that #userActionOn: was called and #openDetailedDSMOn: was not"
@@ -90,7 +91,7 @@ MiDependencyStructuralMatrixBrowserTest >> testDoesNotOpenEmptyDetailedDSM [
 	self assert: detailedDSM isNil
 ]
 
-{ #category : #'tests - tags' }
+{ #category : #tests }
 MiDependencyStructuralMatrixBrowserTest >> testDoubleClickCallsUserAction [
 	"sets a fake spec model on the visualization to check that #userAction: is called
 	 with the right tuple when double clicking on a square"
@@ -111,19 +112,120 @@ MiDependencyStructuralMatrixBrowserTest >> testDoubleClickCallsUserAction [
 	self assert: detailedDSM value model equals: class2.
 ]
 
-{ #category : #'tests - tags' }
+{ #category : #tests }
+MiDependencyStructuralMatrixBrowserTest >> testOutgoingDependencyFromInvocation [
+
+	| dependencies |
+	dependencies := class1 methods anyOne queryAllOutgoingForDSM.
+
+	self assert: dependencies size equals: 1.
+	self assert: dependencies anyOne class equals: FamixJavaInvocation.
+	self assert: dependencies anyOne candidates anyOne name equals: 'mth2'.
+
+]
+
+{ #category : #tests }
+MiDependencyStructuralMatrixBrowserTest >> testOutgoingDependencyFromMethodDeclaredType [
+
+	| mth2 dependencies |
+	mth2 := class2 methods anyOne.
+	mth2 declaredType: class3.
+
+	dependencies := mth2 queryAllOutgoingForDSM.
+
+	self assert: dependencies size equals: 1.
+	self assert: dependencies anyOne class equals: FamixJavaClass.
+	self assert: dependencies anyOne name equals: 'Class3'.
+
+]
+
+{ #category : #tests }
+MiDependencyStructuralMatrixBrowserTest >> testOutgoingDependencyFromVMethodDeclaredTypeParametric [
+	"code: 
+	Class2
+		ParametricClass<Class1> mth2
+	Note: FamixJavaConcretization is an association and we are not interested in its genericEntity here
+	Note: hueristic to detect a concreteParameter being a genuine class is to check it has children
+	  That's why we use Class1 and not Class3 as concreteParameter"
+
+	| mth2 parametricClass dependencies |
+	parametricClass := model newParametricClass
+		name: 'ParametricClass' ;
+		genericization: model newConcretization ;
+		addConcreteParameter: class1 ;
+		yourself.
+
+	mth2 := class2 methods anyOne.
+	mth2 declaredType: parametricClass.
+
+	dependencies := mth2 queryAllOutgoingForDSM.
+
+	self assert: dependencies size equals: 2.
+	dependencies do: [ :dep |
+		{ 'ParametricClass' . 'Class1' } includes: dep name
+	]
+]
+
+{ #category : #tests }
+MiDependencyStructuralMatrixBrowserTest >> testOutgoingDependencyFromVariableDeclaredType [
+
+	| mth2 dependencies |
+	mth2 := class2 methods anyOne.
+	(model newLocalVariableNamed: 'local2')
+		parentBehaviouralEntity: mth2 ;
+		declaredType: class3.
+
+	dependencies := mth2 queryAllOutgoingForDSM.
+
+	self assert: dependencies size equals: 1.
+	self assert: dependencies anyOne class equals: FamixJavaClass.
+	self assert: dependencies anyOne name equals: 'Class3'.
+
+]
+
+{ #category : #tests }
+MiDependencyStructuralMatrixBrowserTest >> testOutgoingDependencyFromVariableDeclaredTypeParametric [
+	"code: 
+	Class2
+		mth2
+			ParametricClass<Class1> local2
+	Note: FamixJavaConcretization is an association and we are not interested in its genericEntity here
+	Note: hueristic to detect a concreteParameter being a genuine class is to check it has children
+	  That's why we use Class1 and not Class3 as concreteParameter"
+
+	| mth2 parametricClass dependencies |
+	parametricClass := model newParametricClass
+		name: 'ParametricClass' ;
+		genericization: model newConcretization ;
+		addConcreteParameter: class1 ;
+		yourself.
+
+	mth2 := class2 methods anyOne.
+	(model newLocalVariableNamed: 'local2')
+		parentBehaviouralEntity: mth2 ;
+		declaredType: parametricClass.
+
+	dependencies := mth2 queryAllOutgoingForDSM.
+
+	self assert: dependencies size equals: 2.
+	dependencies do: [ :dep |
+		{ 'ParametricClass' . 'Class1' } includes: dep name
+	]
+]
+
+{ #category : #tests }
 MiDependencyStructuralMatrixBrowserTest >> testTitleOfDSM [
 
 	browser followEntity: {  class1 . class2 }.
 
 	browser withWindowDo: [ : window |
 		self assert: (window title beginsWith: 'Dependency Structural Matrix ').
-		self assert: (window title includesSubstring: 'class1').
-		self assert: (window title includesSubstring: 'class2')
+		self assert: (window title includesSubstring: 'Class1').
+		self assert: (window title includesSubstring: 'Class2')
 	]
 ]
 
-{ #category : #'tests - tags' }
+{ #category : #tests }
 MiDependencyStructuralMatrixBrowserTest >> testTitleOfDetailedDSM [
 	"detailed DSM title should show the original entities"
 	| detailedDSM |
@@ -136,6 +238,6 @@ MiDependencyStructuralMatrixBrowserTest >> testTitleOfDetailedDSM [
 	detailedDSM withWindowDo: [ : window || title |
 		title := window title.
 		window close.
-		self assert: title equals: 'DSM class1 -> class2'
+		self assert: title equals: 'DSM Class1 -> Class2'
 	]
 ]

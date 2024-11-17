@@ -1,8 +1,20 @@
 Extension { #name : #FamixTMethod }
 
 { #category : #'*MooseIDE-Dependency' }
-FamixTMethod >> addDeclaredTypesIn: dependencies [
+FamixTMethod >> addNonAssociationDependenciesTo: dependencies [
 
-	self children do: [ :c | c addDeclaredTypesIn: dependencies ].
-	self declaredType ifNotNil: [ dependencies add: self declaredType ]
+	self children do: [ :c | c addNonAssociationDependenciesTo: dependencies ].
+
+	declaredType ifNotNil: [
+		dependencies add: declaredType.
+
+		( (declaredType usesFamixTrait: FamixTParametricEntity) and:
+		[ declaredType genericization isNotNil ])
+			ifTrue: [
+				declaredType concreteParameters do: [ :param |
+					param children ifNotEmpty: [ dependencies add: param ]
+				]
+			]
+
+	]
 ]

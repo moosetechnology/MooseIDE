@@ -148,7 +148,7 @@ MiDependencyStructuralMatrixBrowserModel >> getDependenciesFrom: entityX to: ent
 				]
 			]
 		ifFalse: [ 
-			"case of declaredType"
+			"case of dependencies not coming from an association"
 			dependency isStub
 				ifTrue: [ false ]
 				ifFalse: [ self entity: dependency belongsTo: entityY ]
