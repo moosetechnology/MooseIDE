@@ -112,6 +112,35 @@ MiDependencyStructuralMatrixBrowserTest >> testDoubleClickCallsUserAction [
 ]
 
 { #category : #tests }
+MiDependencyStructuralMatrixBrowserTest >> testOutgoingDependencyFromInvocation [
+
+	| dependencies |
+	dependencies := class1 methods anyOne queryAllOutgoingForDSM.
+
+	self assert: dependencies size equals: 1.
+	self assert: dependencies anyOne class equals: FamixStInvocation.
+	self assert: dependencies anyOne candidates anyOne name equals: 'mth2'.
+
+]
+
+{ #category : #tests }
+MiDependencyStructuralMatrixBrowserTest >> testOutgoingDependencyFromVariableDeclaredType [
+
+	| mth2 dependencies |
+	mth2 := class2 methods anyOne.
+	(model newLocalVariableNamed: 'local2')
+		parentBehaviouralEntity: mth2 ;
+		declaredType: class3.
+
+	dependencies := mth2 queryAllOutgoingForDSM.
+
+	self assert: dependencies size equals: 1.
+	self assert: dependencies anyOne class equals: FamixStClass.
+	self assert: dependencies anyOne name equals: 'Class3'.
+
+]
+
+{ #category : #tests }
 MiDependencyStructuralMatrixBrowserTest >> testTitleOfDSM [
 
 	browser followEntity: {  class1 . class2 }.
