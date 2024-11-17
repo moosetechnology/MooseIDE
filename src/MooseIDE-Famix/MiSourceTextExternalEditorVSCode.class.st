@@ -1,3 +1,6 @@
+"
+External source text editor using VSCode
+"
 Class {
 	#name : #MiSourceTextExternalEditorVSCode,
 	#superclass : #MiSourceTextFileExternalEditor,
