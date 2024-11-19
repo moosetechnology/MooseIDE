@@ -5,6 +5,12 @@ Class {
 }
 
 { #category : #accessing }
+MooseLoadFamixCallGraphMenuCommand class >> help [
+
+	^ 'Load the Callgraph browser for Java (this loads FASTJava).'
+]
+
+{ #category : #accessing }
 MooseLoadFamixCallGraphMenuCommand class >> label [
 
 	^ 'Java CallGraph'
@@ -14,7 +20,7 @@ MooseLoadFamixCallGraphMenuCommand class >> label [
 MooseLoadFamixCallGraphMenuCommand class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
-	^ self menuCommandOn: aBuilder forCommand: self 
+	^ self menuCommandOn: aBuilder forCommand: self
 ]
 
 { #category : #accessing }
