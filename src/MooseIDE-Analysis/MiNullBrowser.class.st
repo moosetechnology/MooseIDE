@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'mainPresenter'
 	],
-	#category : #'MooseIDE-Analysis'
+	#category : #'MooseIDE-Analysis-Widgets'
 }
 
 { #category : #testing }

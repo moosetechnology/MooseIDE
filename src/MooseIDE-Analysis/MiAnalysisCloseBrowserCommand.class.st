@@ -1,7 +1,7 @@
 Class {
 	#name : #MiAnalysisCloseBrowserCommand,
 	#superclass : #MiCommand,
-	#category : #'MooseIDE-Analysis'
+	#category : #'MooseIDE-Analysis-Commands'
 }
 
 { #category : #default }

@@ -6,7 +6,7 @@ Class {
 		'titleLabel',
 		'buttons'
 	],
-	#category : #'MooseIDE-Analysis'
+	#category : #'MooseIDE-Analysis-Widgets'
 }
 
 { #category : #commands }

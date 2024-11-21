@@ -4,7 +4,7 @@ Extension { #name : #MiShortcutsCategory }
 MiShortcutsCategory >> openAnalysisBrowser [
 
 	<shortcut>
-	^ MiAnalysisPresenter openKeyMap
+	^ MiAnalysisBrowser openKeyMap
 ]
 
 { #category : #'*MooseIDE-Tagging' }

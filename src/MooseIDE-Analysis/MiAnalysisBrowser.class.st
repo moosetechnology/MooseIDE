@@ -1,5 +1,5 @@
 Class {
-	#name : #MiAnalysisPresenter,
+	#name : #MiAnalysisBrowser,
 	#superclass : #MiAbstractBrowser,
 	#instVars : [
 		'currentBrowser',
@@ -7,17 +7,17 @@ Class {
 		'browsers',
 		'browsersListPresenter'
 	],
-	#category : #'MooseIDE-Analysis'
+	#category : #'MooseIDE-Analysis-Browser'
 }
 
 { #category : #keymaps }
-MiAnalysisPresenter class >> browserKey [
+MiAnalysisBrowser class >> browserKey [
 
 	^ $a
 ]
 
 { #category : #'as yet unclassified' }
-MiAnalysisPresenter class >> duplicationAnalysis [
+MiAnalysisBrowser class >> duplicationAnalysis [
 
 	| duplicationTag queryBrowser duplicationBrowser |
 	duplicationTag := FamixTag named: 'Duplication'.
@@ -39,15 +39,35 @@ MiAnalysisPresenter class >> duplicationAnalysis [
 		  duplicationBrowser }
 ]
 
+{ #category : #'world menu' }
+MiAnalysisBrowser class >> menuCommandOn: aBuilder [
+
+	<worldMenu>
+	<miBrowsersMenu>
+	^ self buildMenuItemIn: aBuilder
+]
+
+{ #category : #'world menu' }
+MiAnalysisBrowser class >> menuItem [
+
+	^ #AnalysisBrowser
+]
+
+{ #category : #'world menu' }
+MiAnalysisBrowser class >> menuPriority [
+
+	^ self menuMainToolsPriority + 6
+]
+
 { #category : #'instance creation' }
-MiAnalysisPresenter class >> open [
+MiAnalysisBrowser class >> open [
 
 	<script>
 	^ super open
 ]
 
 { #category : #'instance creation' }
-MiAnalysisPresenter class >> openDuplicationAnalysis [
+MiAnalysisBrowser class >> openDuplicationAnalysis [
 
 	<script>
 	^ super open
@@ -56,19 +76,19 @@ MiAnalysisPresenter class >> openDuplicationAnalysis [
 ]
 
 { #category : #specs }
-MiAnalysisPresenter class >> title [
+MiAnalysisBrowser class >> title [
 
 	^ 'Moose Analysis'
 ]
 
 { #category : #specs }
-MiAnalysisPresenter class >> windowSize [
+MiAnalysisBrowser class >> windowSize [
 
 	^ 700 @ 500
 ]
 
 { #category : #initialization }
-MiAnalysisPresenter >> addBrowserMenu [
+MiAnalysisBrowser >> addBrowserMenu [
 
 	| menu |
 	menu := self newMenu.
@@ -81,25 +101,25 @@ MiAnalysisPresenter >> addBrowserMenu [
 ]
 
 { #category : #adding }
-MiAnalysisPresenter >> addBrowsers: aCollectionOfBrowsers [
+MiAnalysisBrowser >> addBrowsers: aCollectionOfBrowsers [
 
 	aCollectionOfBrowsers do: [ :browser | self newBrowser: browser ]
 ]
 
 { #category : #accessing }
-MiAnalysisPresenter >> browsers [
+MiAnalysisBrowser >> browsers [
 
 	^ browsers ifNil: [ browsers := self initialBrowsers ]
 ]
 
 { #category : #testing }
-MiAnalysisPresenter >> canFollowEntity: anObject [
+MiAnalysisBrowser >> canFollowEntity: anObject [
 
 	^ currentBrowser canFollowEntity: anObject
 ]
 
 { #category : #layout }
-MiAnalysisPresenter >> defaultLayout [
+MiAnalysisBrowser >> defaultLayout [
 
 	^ SpPanedLayout newLeftToRight
 		  positionOfSlider: 0.3;
@@ -109,7 +129,7 @@ MiAnalysisPresenter >> defaultLayout [
 ]
 
 { #category : #accessing }
-MiAnalysisPresenter >> initialBrowsers [
+MiAnalysisBrowser >> initialBrowsers [
 
 	| modelsBrowser tagBrowser |
 	modelsBrowser := MiModelsBrowser new.
@@ -122,7 +142,7 @@ MiAnalysisPresenter >> initialBrowsers [
 ]
 
 { #category : #initialization }
-MiAnalysisPresenter >> initialize [
+MiAnalysisBrowser >> initialize [
 
 	super initialize.
 
@@ -130,7 +150,7 @@ MiAnalysisPresenter >> initialize [
 ]
 
 { #category : #initialization }
-MiAnalysisPresenter >> initializePresenters [
+MiAnalysisBrowser >> initializePresenters [
 
 	super initializePresenters.
 
@@ -146,19 +166,19 @@ MiAnalysisPresenter >> initializePresenters [
 ]
 
 { #category : #accessing }
-MiAnalysisPresenter >> miSelectedItem [
+MiAnalysisBrowser >> miSelectedItem [
 
 	^ currentBrowser ifNotNil: [ currentBrowser miSelectedItem ]
 ]
 
 { #category : #accessing }
-MiAnalysisPresenter >> miSelectedItemToPropagate [
+MiAnalysisBrowser >> miSelectedItemToPropagate [
 
 	^ currentBrowser miSelectedItemToPropagate
 ]
 
 { #category : #initialization }
-MiAnalysisPresenter >> newBrowser: aBrowser [
+MiAnalysisBrowser >> newBrowser: aBrowser [
 
 	browsers ifNotEmpty: [
 		aBrowser receiveEntity:
@@ -170,7 +190,7 @@ MiAnalysisPresenter >> newBrowser: aBrowser [
 ]
 
 { #category : #action }
-MiAnalysisPresenter >> propagateLocallyFrom: aBrowser [
+MiAnalysisBrowser >> propagateLocallyFrom: aBrowser [
 
 	| target |
 	target := browsers after: aBrowser ifAbsent: [ ^ self ].
@@ -179,7 +199,7 @@ MiAnalysisPresenter >> propagateLocallyFrom: aBrowser [
 ]
 
 { #category : #removing }
-MiAnalysisPresenter >> remove: aBrowser [
+MiAnalysisBrowser >> remove: aBrowser [
 
 	browsers remove: aBrowser.
 	browsersListPresenter items:
@@ -187,7 +207,7 @@ MiAnalysisPresenter >> remove: aBrowser [
 ]
 
 { #category : #initialization }
-MiAnalysisPresenter >> selectedBrowserChanged: aBrowser [
+MiAnalysisBrowser >> selectedBrowserChanged: aBrowser [
 
 	currentBrowser := aBrowser.
 
