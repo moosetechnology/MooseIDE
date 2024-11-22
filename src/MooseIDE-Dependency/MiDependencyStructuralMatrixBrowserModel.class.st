@@ -46,10 +46,9 @@ MiDependencyStructuralMatrixBrowserModel >> buildGraphEdges [
 { #category : #buildGraph }
 MiDependencyStructuralMatrixBrowserModel >> buildGraphNodes: aCollection [
 
-	graph nodes: (aCollection "asMooseGroup" select: [ :e | 
+	graph nodes: (aCollection select: [ :e | 
 			 e usesFamixTrait: TEntityMetaLevelDependency ]).
-	"nodeDictionary := Dictionary new: aCollection size.
-	graph nodes do: [ :node | nodeDictionary at: node model put: node ]"
+
 ]
 
 { #category : #testing }
@@ -113,6 +112,7 @@ MiDependencyStructuralMatrixBrowserModel >> entities [
 { #category : #testing }
 MiDependencyStructuralMatrixBrowserModel >> entity: aCandidate belongsTo: anEntity [
 	"test whether aDependentEntity can be scoped up to anEntity"
+
 	^(aCandidate atScope: anEntity class) includes: anEntity
 ]
 
@@ -262,38 +262,6 @@ MiDependencyStructuralMatrixBrowserModel >> openDetailedDSMOn: aTuple [
 ]
 
 { #category : #initialization }
-MiDependencyStructuralMatrixBrowserModel >> orderNodes [
-	"Store ordered nodes in #orderedNodes.
-	 Order is:
-	 - number of combined in and out dependencies
-	 - if equal, number of out dependencies
-	 - if also equal, then name"
-	
-	orderedNodesX:= graph nodes.
-	orderedNodesY := graph nodes.
-	
-	"| incomingEdges |
-	incomingEdges := Dictionary new: graph nodes size.
-	graph nodes do: [ :node | incomingEdges at: node put: Set new ].
-	graph nodes do: [ :node |
-		node adjacentNodes do: [ :adjacent |
-			(incomingEdges at: adjacent) add: node
-		].
-	]."
-	"orderedNodes := graph nodes sorted: [ :nodeA :nodeB || outA inA outB inB|
-		outA := nodeA adjacentNodes size.
-		inA := (incomingEdges at: nodeA) size.
-		outB := nodeB adjacentNodes size.
-		inB := (incomingEdges at: nodeB) size.
-		
-		(inA + outA) < (inB + outB)
-		or: [ (inA + outA) = (inB + outB)
-			ifTrue: [ outA < outB
-				or: [ outA = outB and: [nodeA model name < nodeB model name] ] ]
-			ifFalse: [ false ] ] ]."
-]
-
-{ #category : #initialization }
 MiDependencyStructuralMatrixBrowserModel >> orderNodes: nodeCollection [
 
 	"order nodes according to number of dependencies
@@ -373,11 +341,6 @@ MiDependencyStructuralMatrixBrowserModel >> selectedEntities: anObject [
 	selectedEntities := anObject.
 
 	browser updateToolbar
-]
-
-{ #category : #settings }
-MiDependencyStructuralMatrixBrowserModel >> settings [
-
 ]
 
 { #category : #settings }

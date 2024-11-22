@@ -25,7 +25,7 @@ MiRSDependencyStructuralMatrix >> createLabelShapeY: aRSBox [
 
 { #category : #hooks }
 MiRSDependencyStructuralMatrix >> createShape: tuple [
-	"1halt."
+
 	| weight |
 	weight := self getTupleDependencyWeight: tuple.
 
@@ -51,7 +51,8 @@ MiRSDependencyStructuralMatrix >> getTupleDependencyWeight: tuple [
 { #category : #highlighting }
 MiRSDependencyStructuralMatrix >> highlight: evt [
 	"Probable bug in RSDSM: `super highlight: evt` draws the row and column with bold border
-	 But the borders are shape that should not receive announcement (like mouseEnter/Leave for highlight/unhighlight"
+	 But the borders are shapes that should not receive announcement (like mouseEnter/Leave for highlight/unhighlight"
+
 	super highlight: evt.
 	(self canvas canvas propertyAt: #columnRect) announcer: nil.
 	(self canvas canvas propertyAt: #rowRect) announcer: nil.
