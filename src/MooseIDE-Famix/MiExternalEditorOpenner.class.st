@@ -71,7 +71,7 @@ MiExternalEditorOpenner >> visitUnix: aPlatform [
 MiExternalEditorOpenner >> visitWindows: aPlatform [
 
 	self
-		privShellExecute: ''
+		privShellExecute: 'open'
 		file: command
 		parameters: ('"{1}"' format: { pathString })
 		directory: ''
