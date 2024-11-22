@@ -25,7 +25,7 @@ MiSourceTextExternalEditorIntellij class >> editorName [
 MiSourceTextExternalEditorIntellij class >> platformCommand [
 
 	^{ #Unix -> 'intellij-idea-ultimate' .
-	  #Windows -> 'idea64.exe' .
+	  #Windows -> 'idea64' .
 	  #MacOS -> 'idea' .
 	  #MacOSX -> 'idea' } asDictionary 
 		at: OSPlatform current family
