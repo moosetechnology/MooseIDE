@@ -23,9 +23,9 @@ MiDependencyStructuralMatrixVisualization >> buildInCanvas: aRSCanvas [
 	aRSCanvas addInteraction: RSCanvasController new.
 	dsm := MiRSDependencyStructuralMatrix new.
 	dsm owner: self.
-	dsm setShouldFeedY.
-	dsm labelShapeX textBlock: [ :columnNode | specModel displayValueForNode: columnNode].
-	dsm labelShapeY textBlock: [ :rowNode | specModel displayValueForNode: rowNode ].
+	dsm setShouldFeedX.
+	dsm labelShapeX textBlock: [ :dependingNode | specModel displayValueForNode: dependingNode].
+	dsm labelShapeY textBlock: [ :dependedNode | specModel displayValueForNode: dependedNode ].
 	dsm container: aRSCanvas.
 	dsm objectsX: specModel orderedNodesX.
 	dsm objectsY: specModel orderedNodesY.

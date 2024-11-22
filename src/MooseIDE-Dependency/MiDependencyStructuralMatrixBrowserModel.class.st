@@ -158,8 +158,8 @@ MiDependencyStructuralMatrixBrowserModel >> getDependenciesFrom: entityX to: ent
 
 { #category : #api }
 MiDependencyStructuralMatrixBrowserModel >> getTupleDependencyWeight: tuple [
-	"generic algorithm is to take all dependencies of the `tuple key` (row of the DSM) and count
-	 those that can be scoped up to the `tuple value` (column of the DSM)"
+	"generic algorithm is to take all dependencies of the `tuple key` (column of the DSM) and count
+	 those that can be scoped up to the `tuple value` (row of the DSM)"
 	
 	^(dependencyDictionary at: (tuple key model -> tuple value model ))
 		size
@@ -250,11 +250,10 @@ MiDependencyStructuralMatrixBrowserModel >> newGraph [
 
 { #category : #actions }
 MiDependencyStructuralMatrixBrowserModel >> openDetailedDSMOn: aTuple [
-	"note: RSDSM calls X the columns (#value of aTuple) and Y the rows (#key of aTuple)"
 
 	^(MiDependencyStructuralMatrixBrowser
-		openWithX: aTuple value model children
-		withY: aTuple key model children)
+		openWithX: aTuple key model children
+		withY: aTuple value model children)
 
 		withWindowDo: [ :window |
 			window title: ('DSM ' , aTuple key model name , ' -> ' , aTuple value model name) ] ;
@@ -320,16 +319,16 @@ MiDependencyStructuralMatrixBrowserModel >> sccColor [
 { #category : #api }
 MiDependencyStructuralMatrixBrowserModel >> sccTuplesForTuple: tuple [
 	"gets the SCC owning tuple, then collects all tuples in this SCC
-	 where row entity depends on column entity"
+	 where depending entity depends on depended entity (!)"
 	| scc graphNode |
 	graphNode := tuple key.
 	scc := { graphNode } , graphNode cycleNodes.
 	^(scc size = 1)
 		ifTrue: [ #() ]
 		ifFalse: [
-			scc flatCollect: [ :rowNode |
-				rowNode adjacentNodes
-					collect: [ :columnNode | rowNode -> columnNode ]
+			scc flatCollect: [ :dependingNode |
+				dependingNode adjacentNodes
+					collect: [ :dependedNode | dependingNode -> dependedNode ]
 					thenSelect: [ :sccTuple | self isCycle: sccTuple ]
 			]
 		]
@@ -362,18 +361,19 @@ MiDependencyStructuralMatrixBrowserModel >> showSCCColorForTuple: tuple [
 
 { #category : #actions }
 MiDependencyStructuralMatrixBrowserModel >> userActionOn: aTuple [
-	| keyModel valModel weight|
-	keyModel := aTuple key model.
-	valModel := aTuple value model.
+	| depending depended weight|
+	depending := aTuple key model.
+	depended := aTuple value model.
 	weight := self getTupleDependencyWeight: aTuple.
 	
-	self selectedEntities: { keyModel . valModel }.
+	self selectedEntities: { depending . depended }.
 
 	"We open a detailed DSM for a typle only if the tuple key and value are still at the class or package level and the weight is not zero. "
-	((keyModel usesFamixTrait: FamixTAttribute ) 
-		or: [ (keyModel usesFamixTrait: FamixTMethod ) 
-			or: [ (valModel usesFamixTrait: FamixTAttribute)
-				or: [ (valModel usesFamixTrait: FamixTMethod) or: [ weight = 0 ] ] ] ])	
+	self flag: 'might want to review this which is OO dependent'.
+	((depending usesFamixTrait: FamixTAttribute ) 
+		or: [ (depending usesFamixTrait: FamixTMethod ) 
+			or: [ (depended usesFamixTrait: FamixTAttribute)
+				or: [ (depended usesFamixTrait: FamixTMethod) or: [ weight = 0 ] ] ] ])	
 		ifFalse: [self openDetailedDSMOn: aTuple] 
 		ifTrue: [  ]
 
