@@ -80,6 +80,7 @@ MiAbstractVisualization >> noHighlightColorFor: anEntity [
 { #category : #running }
 MiAbstractVisualization >> run [
 
+	self canvas clear.
 	self script value: self canvas
 ]
 
