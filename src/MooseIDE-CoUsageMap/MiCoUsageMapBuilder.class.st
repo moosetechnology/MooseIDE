@@ -289,28 +289,25 @@ MiCoUsageMapBuilder >> resizeLabelIfNecessary: label [
 { #category : #accessing }
 MiCoUsageMapBuilder >> selectedInnerEntity [
 
-	^visualization selectedInnerEntity
+	^ visualization selectedInnerEntity
 ]
 
 { #category : #accessing }
 MiCoUsageMapBuilder >> selectedInnerShape [
-	| selectedEntity |
-	selectedEntity := visualization selectedInnerEntity.
-	self canvas children do: [:containerShape |
+
+	self canvas children do: [ :containerShape |
 		containerShape innerBoxShapes
 			detect: [ :innerShape |
-				innerShape model mooseEntity = selectedEntity ]
-			ifOne: [ :innerShape | ^innerShape ]
-			ifNone: [ nil ]
-		].
-
-	Error signal: 'Shape of selected entity not found'
+				innerShape model mooseEntity = self selectedInnerEntity ]
+			ifFound: [ :innerShape | ^ innerShape ] ].
+	^ nil
 ]
 
 { #category : #accessing }
 MiCoUsageMapBuilder >> selectedInnerShape: anInnerShape [
 
-	^visualization selectedInnerEntity: (anInnerShape ifNil: [ nil ] ifNotNil: [anInnerShape model mooseEntity])
+	^ visualization selectedInnerEntity:
+		  (anInnerShape ifNotNil: [ anInnerShape model mooseEntity ])
 ]
 
 { #category : #accessing }
