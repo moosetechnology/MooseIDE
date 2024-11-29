@@ -56,7 +56,7 @@ MiImportModelDialog >> importModelThenCloseDialogWindow [
 		                      nil ].
 	        job currentValue: 50.
 	        mooseModel ifNotNil: [
-		        mooseModel install.
+		        mooseModel installWithCache: self shouldCreateCache.
 		        self withWindowDo: [ :window | window close ].
 		        self updateBrowserWith: mooseModel ] ] asJob.
 
@@ -86,6 +86,18 @@ MiImportModelDialog >> privateImportModel [
 MiImportModelDialog >> setModelBeforeInitialization: aBrowserOrMoosePanel [
 
 	originBrowser := aBrowserOrMoosePanel
+]
+
+{ #category : #accessing }
+MiImportModelDialog >> settings [
+
+	^ originBrowser settingsItem
+]
+
+{ #category : #accessing }
+MiImportModelDialog >> shouldCreateCache [
+
+	^ originBrowser specModel shouldCreateCache 
 ]
 
 { #category : #action }
