@@ -46,6 +46,6 @@ MiImportCommand class >> isAbstract [
 
 { #category : #executing }
 MiImportCommand >> execute [
-
+	
 	^(self class importForm on: self context) openDialog
 ]

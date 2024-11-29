@@ -91,6 +91,14 @@ MiModelsBrowserModel >> initializeSettings [
 		yourself)
 		named: #filterStubsSetting.
 		
+	settings	addItem: (MiCheckboxSettingItem new
+		setValue: true ;
+		label: 'Import without cache?' ;
+		help: 'when importing a model you can create or not the cache' ;
+		yourself)
+		named: #createWithCache.
+			
+		
 	settings addItem: (MiCheckboxSettingItem new
 		setValue: false ;
 		label: 'Automatically import drag&drop files?' ;
@@ -122,6 +130,12 @@ MiModelsBrowserModel >> selectedModel [
 { #category : #'accessing - tests' }
 MiModelsBrowserModel >> settings [
 	^ settings
+]
+
+{ #category : #asserting }
+MiModelsBrowserModel >> shouldCreateCache [
+
+	^ settings getItemValue: #createWithCache
 ]
 
 { #category : #accessing }
