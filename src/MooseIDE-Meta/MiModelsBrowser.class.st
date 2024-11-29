@@ -253,6 +253,12 @@ MiModelsBrowser >> settingsItem [
 	^ specModel settings
 ]
 
+{ #category : #accessing }
+MiModelsBrowser >> specModel [
+
+	^ specModel 
+]
+
 { #category : #updating }
 MiModelsBrowser >> updateForNewModel: aModel [
 	specModel updateForNewModel: aModel
