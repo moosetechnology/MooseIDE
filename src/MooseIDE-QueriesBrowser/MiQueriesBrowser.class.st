@@ -202,7 +202,9 @@ MiQueriesBrowser >> itemsFor: aClass [
 { #category : #accessing }
 MiQueriesBrowser >> miSelectedItem [
 
-	^ queryResultTreePresenter miSelectedItem ifEmpty: [ selectedQuery result ] ifNotEmpty: [ :items | items ]
+	^ queryResultTreePresenter miSelectedItem asCollection
+		  ifEmpty: [ selectedQuery result ]
+		  ifNotEmpty: [ :items | items ]
 ]
 
 { #category : #accessing }
