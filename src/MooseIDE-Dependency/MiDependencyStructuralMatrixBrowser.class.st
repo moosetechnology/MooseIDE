@@ -117,6 +117,11 @@ MiDependencyStructuralMatrixBrowser >> followEntity: anEntity [
 	specModel followEntity: anEntity
 ]
 
+{ #category : #testing }
+MiDependencyStructuralMatrixBrowser >> hasSettings [
+	^ true
+]
+
 { #category : #initialization }
 MiDependencyStructuralMatrixBrowser >> initializePresenters [
 
