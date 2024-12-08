@@ -129,6 +129,12 @@ MiDependencyStructuralMatrixBrowser >> initializePresenters [
 	mainPresenter specModel: specModel
 ]
 
+{ #category : #'accessing - private tests' }
+MiDependencyStructuralMatrixBrowser >> mainPresenter: anObject [
+
+	mainPresenter := anObject 
+]
+
 { #category : #accessing }
 MiDependencyStructuralMatrixBrowser >> miSelectedItem [
 

@@ -88,6 +88,12 @@ MiDependencyStructuralMatrixBrowserModel >> dependencyColor [
 	^ nodeColors at: #dependency
 ]
 
+{ #category : #'accessing - private tests' }
+MiDependencyStructuralMatrixBrowserModel >> dependencyDictionary: anObject [
+
+	dependencyDictionary := anObject
+]
+
 { #category : #settings }
 MiDependencyStructuralMatrixBrowserModel >> diagonalColor [
 
