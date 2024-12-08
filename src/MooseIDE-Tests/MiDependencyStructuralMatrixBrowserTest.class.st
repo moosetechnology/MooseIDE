@@ -92,6 +92,28 @@ MiDependencyStructuralMatrixBrowserTest >> testDoesNotOpenEmptyDetailedDSM [
 ]
 
 { #category : #tests }
+MiDependencyStructuralMatrixBrowserTest >> testDontShowSelfDependenciesHideDiagonalWeight [
+
+	| tuple |
+	browser model settings setItem: #selfDependenciesSetting value: false.
+	tuple := (AITarjanNode with: #entityA) -> (AITarjanNode with: #entityA).
+	browser model dependencyDictionary: (Dictionary newFromPairs: { (#entityA -> #entityA) . #(1 2 3) }).
+
+	self assert: (browser model getTupleDependencyWeight: tuple) equals: 0.
+]
+
+{ #category : #tests }
+MiDependencyStructuralMatrixBrowserTest >> testDontShowSelfDependenciesShowNonDiagonalWeight [
+
+	| tuple |
+	browser model settings setItem: #selfDependenciesSetting value: false.
+	tuple := (AITarjanNode with: #entityA) -> (AITarjanNode with: #entityB).
+	browser model dependencyDictionary: (Dictionary newFromPairs: { (#entityA -> #entityB) . #(1 2 3) }).
+
+	self assert: (browser model getTupleDependencyWeight: tuple) equals: 3.
+]
+
+{ #category : #tests }
 MiDependencyStructuralMatrixBrowserTest >> testDoubleClickCallsUserAction [
 	"sets a fake spec model on the visualization to check that #userAction: is called
 	 with the right tuple when double clicking on a square"
@@ -211,6 +233,51 @@ MiDependencyStructuralMatrixBrowserTest >> testOutgoingDependencyFromVariableDec
 	dependencies do: [ :dep |
 		{ 'ParametricClass' . 'Class1' } includes: dep name
 	]
+]
+
+{ #category : #tests }
+MiDependencyStructuralMatrixBrowserTest >> testSettingsAction [
+
+	self assert: browser hasSettings
+]
+
+{ #category : #tests }
+MiDependencyStructuralMatrixBrowserTest >> testSettingsChanged [
+
+	| stubDSM redrawn |
+	redrawn := false.
+	stubDSM := Mock new.
+	stubDSM stub run will: [ redrawn := true ].
+	browser mainPresenter: stubDSM.
+
+	browser model settingsChanged: true.
+		
+	self assert: redrawn
+]
+
+{ #category : #tests }
+MiDependencyStructuralMatrixBrowserTest >> testSettingsNotChanged [
+
+	| stubDSM redrawn |
+	redrawn := false.
+	stubDSM := Mock new.
+	stubDSM stub run will: [ redrawn := true ].
+	browser mainPresenter: stubDSM.
+
+	browser model settingsChanged: false.
+		
+	self deny: redrawn
+]
+
+{ #category : #tests }
+MiDependencyStructuralMatrixBrowserTest >> testShowSelfDependenciesDoNotHideDiagonalWeight [
+
+	| tuple |
+	browser model settings setItem: #selfDependenciesSetting value: true.
+	tuple := (AITarjanNode with: #entityA) -> (AITarjanNode with: #entityA).
+	browser model dependencyDictionary: (Dictionary newFromPairs: { (#entityA -> #entityA) . #(1 2 3) }).
+
+	self assert: (browser model getTupleDependencyWeight: tuple) equals: 3.
 ]
 
 { #category : #tests }
