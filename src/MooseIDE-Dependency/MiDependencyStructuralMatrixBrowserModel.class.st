@@ -10,7 +10,8 @@ Class {
 		'orderedNodesX',
 		'orderedNodesY',
 		'dependencyDictionary',
-		'selectedEntities'
+		'selectedEntities',
+		'settings'
 	],
 	#category : #'MooseIDE-Dependency-DSM'
 }
@@ -260,7 +261,7 @@ MiDependencyStructuralMatrixBrowserModel >> openDetailedDSMOn: aTuple [
 		yourself
 ]
 
-{ #category : #initialization }
+{ #category : #actions }
 MiDependencyStructuralMatrixBrowserModel >> orderNodes: nodeCollection [
 
 	"order nodes according to number of dependencies
