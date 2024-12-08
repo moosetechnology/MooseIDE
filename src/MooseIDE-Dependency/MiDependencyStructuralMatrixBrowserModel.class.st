@@ -374,7 +374,7 @@ MiDependencyStructuralMatrixBrowserModel >> settings [
 { #category : #settings }
 MiDependencyStructuralMatrixBrowserModel >> settingsChanged: aBoolean [
 
-	browser buildDSM
+	aBoolean ifTrue: [ browser buildDSM ]
 ]
 
 { #category : #settings }
