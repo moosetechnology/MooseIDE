@@ -10,7 +10,8 @@ Class {
 		'orderedNodesX',
 		'orderedNodesY',
 		'dependencyDictionary',
-		'selectedEntities'
+		'selectedEntities',
+		'settings'
 	],
 	#category : #'MooseIDE-Dependency-DSM'
 }
@@ -87,6 +88,12 @@ MiDependencyStructuralMatrixBrowserModel >> dependencyColor [
 	^ nodeColors at: #dependency
 ]
 
+{ #category : #'accessing - private tests' }
+MiDependencyStructuralMatrixBrowserModel >> dependencyDictionary: anObject [
+
+	dependencyDictionary := anObject
+]
+
 { #category : #settings }
 MiDependencyStructuralMatrixBrowserModel >> diagonalColor [
 
@@ -159,13 +166,20 @@ MiDependencyStructuralMatrixBrowserModel >> getDependenciesFrom: entityX to: ent
 { #category : #api }
 MiDependencyStructuralMatrixBrowserModel >> getTupleDependencyWeight: tuple [
 	"generic algorithm is to take all dependencies of the `tuple key` (column of the DSM) and count
-	 those that can be scoped up to the `tuple value` (row of the DSM)"
+	 those that can be scoped up to the `tuple value` (row of the DSM)
 	
+	 if `tuple key` = `tuple value`, it is a diagonal cell.
+	 If setting showSelfDependencies is false, return 0 so that no value is displayed"
+
+	((tuple key model = tuple value model)
+	and: [ self showSelfDependencies not ])
+		ifTrue: [ ^0 ].
+
 	^(dependencyDictionary at: (tuple key model -> tuple value model ))
 		size
 ]
 
-{ #category : #initialization }
+{ #category : #actions }
 MiDependencyStructuralMatrixBrowserModel >> increment: dictionary key: key value: increment [
 
 	| oldValue |
@@ -180,7 +194,9 @@ MiDependencyStructuralMatrixBrowserModel >> initialize [
 
 	self initializeColors.
 	self newGraph.
-	selectedEntities := #()
+	selectedEntities := #().
+
+	self initializeSettings 
 ]
 
 { #category : #initialization }
@@ -211,6 +227,19 @@ MiDependencyStructuralMatrixBrowserModel >> initializeDependencies [
 				put: (self getDependenciesFrom: sourceEntity to: targetEntity) 
 		]
 	]
+]
+
+{ #category : #initialization }
+MiDependencyStructuralMatrixBrowserModel >> initializeSettings [ 
+
+	settings := super initializeSettings.
+	settings	addItem: (MiCheckboxSettingItem new
+		setValue: true ;
+		label: 'Show self dependency?' ;
+		help: 'In a square matrix, show the number of dependencies of an entity with itself on the diagonal?' ;
+		yourself)
+		named: #selfDependenciesSetting.
+
 ]
 
 { #category : #testing }
@@ -260,7 +289,7 @@ MiDependencyStructuralMatrixBrowserModel >> openDetailedDSMOn: aTuple [
 		yourself
 ]
 
-{ #category : #initialization }
+{ #category : #actions }
 MiDependencyStructuralMatrixBrowserModel >> orderNodes: nodeCollection [
 
 	"order nodes according to number of dependencies
@@ -336,6 +365,19 @@ MiDependencyStructuralMatrixBrowserModel >> selectedEntities: anObject [
 ]
 
 { #category : #settings }
+MiDependencyStructuralMatrixBrowserModel >> settings [
+	"If browser hasSettings, then implement this method to get them"
+
+	^settings 
+]
+
+{ #category : #settings }
+MiDependencyStructuralMatrixBrowserModel >> settingsChanged: aBoolean [
+
+	aBoolean ifTrue: [ browser buildDSM ]
+]
+
+{ #category : #settings }
 MiDependencyStructuralMatrixBrowserModel >> showSCCColor [
 
 	^ nodeColors at: #showSCC
@@ -350,6 +392,12 @@ MiDependencyStructuralMatrixBrowserModel >> showSCCColorForTuple: tuple [
 
 	(self isCycle: tuple) ifTrue: [ ^ self showSCCColor ].
 	^ self dependencyColor
+]
+
+{ #category : #settings }
+MiDependencyStructuralMatrixBrowserModel >> showSelfDependencies [
+
+	^ settings getItemValue: #selfDependenciesSetting
 ]
 
 { #category : #actions }

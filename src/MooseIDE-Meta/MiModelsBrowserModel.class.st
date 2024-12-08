@@ -132,13 +132,13 @@ MiModelsBrowserModel >> settings [
 	^ settings
 ]
 
-{ #category : #asserting }
+{ #category : #settings }
 MiModelsBrowserModel >> shouldCreateCache [
 
 	^ settings getItemValue: #createWithCache
 ]
 
-{ #category : #accessing }
+{ #category : #settings }
 MiModelsBrowserModel >> shouldFilterStubs [
 
 	^ settings getItemValue: #filterStubsSetting

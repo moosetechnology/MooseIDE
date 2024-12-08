@@ -117,11 +117,22 @@ MiDependencyStructuralMatrixBrowser >> followEntity: anEntity [
 	specModel followEntity: anEntity
 ]
 
+{ #category : #testing }
+MiDependencyStructuralMatrixBrowser >> hasSettings [
+	^ true
+]
+
 { #category : #initialization }
 MiDependencyStructuralMatrixBrowser >> initializePresenters [
 
 	mainPresenter := self instantiate: MiDependencyStructuralMatrixVisualization.
 	mainPresenter specModel: specModel
+]
+
+{ #category : #'accessing - private tests' }
+MiDependencyStructuralMatrixBrowser >> mainPresenter: anObject [
+
+	mainPresenter := anObject 
 ]
 
 { #category : #accessing }
