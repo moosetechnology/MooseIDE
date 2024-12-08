@@ -366,6 +366,12 @@ MiDependencyStructuralMatrixBrowserModel >> settings [
 ]
 
 { #category : #settings }
+MiDependencyStructuralMatrixBrowserModel >> settingsChanged: aBoolean [
+
+	browser buildDSM
+]
+
+{ #category : #settings }
 MiDependencyStructuralMatrixBrowserModel >> showSCCColor [
 
 	^ nodeColors at: #showSCC
