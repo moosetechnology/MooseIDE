@@ -265,39 +265,32 @@ MiDependencyStructuralMatrixBrowserModel >> orderNodes: nodeCollection [
 
 	"order nodes according to number of dependencies
 	 Order is:
-	 - first the less outgoing dependencies
-	 - if equal, then first less incoming dependencies
-	 - if equal, then alphabetical order"
+	 - put first entities with less dependents (ignoring weights)
+	 - put first entities with weaker dependents based on weights"
 
-	| inDependencies outDependencies |
-	inDependencies := Dictionary new: nodeCollection size.
-	outDependencies := Dictionary new: nodeCollection size.
+	| dependents weights |
+	dependents := Dictionary new: nodeCollection size.
+	weights := Dictionary new: nodeCollection size.
 
 	nodeCollection do: [ :node |
-		inDependencies at: node model put: 0.
-		outDependencies at: node model put: 0
+		dependents at: node model put: 0.
+		weights at: node model put: 0.
 	].
 
 	dependencyDictionary keysAndValuesDo: [ :tuple :dependencies |
 		dependencies ifNotEmpty: [
-			self increment: inDependencies key: tuple value value: 1.
-			self increment: outDependencies key: tuple key value: 1
+			self increment: dependents key: tuple value value: 1.
+			self increment: weights key: tuple value value: dependencies size.
 		]
 	].
 
-	^nodeCollection sorted: [ :nodeA :nodeB || outA inA outB inB|
-		outA := outDependencies at: nodeA model.
-		inA :=  inDependencies  at: nodeA model.
-		outB := outDependencies at: nodeB model.
-		inB :=  inDependencies  at: nodeB model.
-"1halt."
-		(outA < outB)
-		or: [ (outA = outB)
-			ifTrue: [ (inA < inB)
-				or: [ (inA = inB) and: [nodeA model name < nodeB model name] ] ]
-			ifFalse: [ false ] ] 
-	]
+	^nodeCollection sorted: [ :nodeA :nodeB || depsA depsB |
+		depsA := dependents at: nodeA model.
+		depsB := dependents at: nodeB model.
 
+		(depsA < depsB)
+		or: [ (depsA = depsB) and: [ (weights at: nodeA model) < (weights at: nodeB model) ] ]
+	]
 ]
 
 { #category : #accessing }
