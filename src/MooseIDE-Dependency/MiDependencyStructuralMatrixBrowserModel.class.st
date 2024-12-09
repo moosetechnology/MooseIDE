@@ -124,6 +124,18 @@ MiDependencyStructuralMatrixBrowserModel >> entity: aCandidate belongsTo: anEnti
 ]
 
 { #category : #actions }
+MiDependencyStructuralMatrixBrowserModel >> entityChildrenForDSM: anEntity [
+	"children of an entity except concretization of generic entities which are considered more
+	 like associations"
+
+	^anEntity children reject: [ :child |
+		(child usesFamixTrait: FamixTParametricEntity) and:
+		[ child genericization isNotNil ]
+	]
+	
+]
+
+{ #category : #actions }
 MiDependencyStructuralMatrixBrowserModel >> followEntity: aCollection [
 
 	self selectedEntities: aCollection.
@@ -145,21 +157,24 @@ MiDependencyStructuralMatrixBrowserModel >> getDependenciesFrom: entityX to: ent
 			"Association so need to get the target because DSM is done between entities"
 			opposites := dependency target.
 			opposites isCollection
-			ifTrue: [ opposites anySatisfy: [ :each |
-					self entity: each belongsTo: entityY ]
+			ifTrue: [ opposites anySatisfy: [ :each | self entity: each belongsTo: entityY ]
 			]
-			ifFalse: [ "self entity: opposites belongsTo: entityY "
-					opposites 
+			ifFalse: [
+				((opposites usesFamixTrait: FamixTParametricEntity) and:
+				[ opposites genericization isNotNil ])
+					ifTrue: [ opposites := opposites genericization genericEntity ].
+
+				opposites 
 					ifNotNil: [ self entity: opposites belongsTo: entityY ] 
 					ifNil: [false]
-				]
 			]
+		]
 		ifFalse: [ 
 			"case of dependencies not coming from an association"
 			dependency isStub
 				ifTrue: [ false ]
 				ifFalse: [ self entity: dependency belongsTo: entityY ]
-			 ]
+		]
 	]
 ]
 
@@ -217,7 +232,13 @@ MiDependencyStructuralMatrixBrowserModel >> initializeColors [
 
 { #category : #buildGraph }
 MiDependencyStructuralMatrixBrowserModel >> initializeDependencies [
-	 | entities |
+	"Could be optimized, when we open a detailed DSM, `self entities` is the union of entitiesX and entitiesY
+	 But we only need dependencies from entitiesX to entitiesY, and not:
+	 - from entitiesY to entitiesX
+	 - from entitiesX to entitiesX
+	 - from entitiesY to entitiesY"
+
+	| entities |
 	dependencyDictionary := Dictionary new.
 	entities := self entities.
 	entities do: [ :sourceEntity | 
@@ -281,8 +302,8 @@ MiDependencyStructuralMatrixBrowserModel >> newGraph [
 MiDependencyStructuralMatrixBrowserModel >> openDetailedDSMOn: aTuple [
 
 	^(MiDependencyStructuralMatrixBrowser
-		openWithX: aTuple key model children
-		withY: aTuple value model children)
+		openWithX: (self entityChildrenForDSM: aTuple key model)
+		withY: (self entityChildrenForDSM: aTuple value model))
 
 		withWindowDo: [ :window |
 			window title: ('DSM ' , aTuple key model name , ' -> ' , aTuple value model name) ] ;

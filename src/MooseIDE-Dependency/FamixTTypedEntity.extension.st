@@ -7,15 +7,16 @@ FamixTTypedEntity >> addNonAssociationDependenciesTo: dependencies [
 	 This is check through an heuristic: if they have some children, then it must be an actual class"
 
 	declaredType ifNotNil: [
-		dependencies add: declaredType.
 
 		( (declaredType usesFamixTrait: FamixTParametricEntity) and:
 		[ declaredType genericization isNotNil ])
 			ifTrue: [
+				dependencies add: declaredType genericization.
+
 				declaredType concreteParameters do: [ :param |
 					param children ifNotEmpty: [ dependencies add: param ]
 				]
 			]
-
+			ifFalse: [ dependencies add: declaredType ]
 	]
 ]
