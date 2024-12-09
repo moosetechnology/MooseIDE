@@ -17,6 +17,6 @@ FamixTTypedEntity >> addNonAssociationDependenciesTo: dependencies [
 					param children ifNotEmpty: [ dependencies add: param ]
 				]
 			]
-
+			ifFalse: [ dependencies add: declaredType ]
 	]
 ]
