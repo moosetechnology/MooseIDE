@@ -97,12 +97,6 @@ MiCoUsageMapBrowser >> closeSettings [
 	specModel closeSettings 
 ]
 
-{ #category : #initialization }
-MiCoUsageMapBrowser >> connectPresenters [
-	"settings mapVisualization: mapVisualization.
-	mapVisualization settings: settings."
-]
-
 { #category : #actions }
 MiCoUsageMapBrowser >> followEntity: anEntity [
 

@@ -17,6 +17,5 @@ MiCoUsageMapAbstractSettingsPresenter >> settings [
 
 { #category : #accessing }
 MiCoUsageMapAbstractSettingsPresenter >> settings: anObject [
-	settings := anObject.
-	self connectPresenters.
+	settings := anObject
 ]
