@@ -114,9 +114,6 @@ MiCoUsageMapBrowser >> initializePresenters [
 	mainPresenter := self instantiate: MiCoUsageMapVisualization.
 	mainPresenter specModel: specModel.
 
-	"self flag: 'this should be in MiCoUsageMapModel'.
-	settings := self instantiate: MiCoUsageMapInstanceSettingsPresenter."
-	
 	self flag: 'this should be in MiCoUsageMapVisualization'.
 	application registerConsumer: mainPresenter for: FamixTag.
 	application registerConsumer: mainPresenter for: FamixTagAssociation.
