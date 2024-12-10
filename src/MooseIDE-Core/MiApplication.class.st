@@ -264,10 +264,12 @@ MiApplication >> openCurrentModelsBrowser [
 
 	^ currentModelsBrowser
 		  ifNotNil: [ :modelsBrowser |
-			  modelsBrowser withWindowDo: [ :window |
-				  window
-					  restore;
-					  activate ] ]
+			  modelsBrowser
+				  withWindowDo: [ :window |
+					  window
+						  restore;
+						  activate ];
+				  yourself ]
 		  ifNil: [
 		  currentModelsBrowser := MiModelsBrowser instantiateAndOpen ]
 ]

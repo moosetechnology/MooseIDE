@@ -160,6 +160,21 @@ MiApplicationTest >> testMooseRootBrowserIsModelImporter [
 ]
 
 { #category : #'tests dragNDrop' }
+MiApplicationTest >> testOpenCurrentModelsBrowser [
+
+	| browser1 browser2 |
+	browser1 := application openCurrentModelsBrowser.
+	self assert: browser1 class equals: MiModelsBrowser.
+
+	"This should not open a new browser but get the first one"
+	browser2 := application openCurrentModelsBrowser.
+	self assert: browser2 class equals: MiModelsBrowser.
+	self assert: browser1 equals: browser2.
+
+	browser1 window close
+]
+
+{ #category : #'tests dragNDrop' }
 MiApplicationTest >> testUnregisterHandler [
 	| jsonHandlers mseHandlers |
 	jsonHandlers := ExternalDropHandler registeredHandlers
