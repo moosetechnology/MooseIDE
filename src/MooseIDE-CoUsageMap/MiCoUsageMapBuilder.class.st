@@ -40,6 +40,12 @@ MiCoUsageMapBuilder >> applyLayout [
 		on: self canvas nodes
 ]
 
+{ #category : #tagging }
+MiCoUsageMapBuilder >> automaticColor [
+
+	self specModel automaticColor
+]
+
 { #category : #accessing }
 MiCoUsageMapBuilder >> canvasController [
 	^ RSCanvasController simple
