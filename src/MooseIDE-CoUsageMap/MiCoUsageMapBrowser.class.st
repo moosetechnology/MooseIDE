@@ -97,12 +97,6 @@ MiCoUsageMapBrowser >> closeSettings [
 	specModel closeSettings 
 ]
 
-{ #category : #initialization }
-MiCoUsageMapBrowser >> connectPresenters [
-	"settings mapVisualization: mapVisualization.
-	mapVisualization settings: settings."
-]
-
 { #category : #actions }
 MiCoUsageMapBrowser >> followEntity: anEntity [
 
@@ -120,9 +114,6 @@ MiCoUsageMapBrowser >> initializePresenters [
 	mainPresenter := self instantiate: MiCoUsageMapVisualization.
 	mainPresenter specModel: specModel.
 
-	"self flag: 'this should be in MiCoUsageMapModel'.
-	settings := self instantiate: MiCoUsageMapInstanceSettingsPresenter."
-	
 	self flag: 'this should be in MiCoUsageMapVisualization'.
 	application registerConsumer: mainPresenter for: FamixTag.
 	application registerConsumer: mainPresenter for: FamixTagAssociation.
