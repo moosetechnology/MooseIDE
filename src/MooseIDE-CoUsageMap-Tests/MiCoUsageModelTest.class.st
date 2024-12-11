@@ -21,6 +21,14 @@ MiCoUsageModelTest >> setUp [
 
 ]
 
+{ #category : #initialization }
+MiCoUsageModelTest >> tearDown [ 
+
+	MiCoUsageMapSettings reset.
+
+	super tearDown
+]
+
 { #category : #tests }
 MiCoUsageModelTest >> test01Basic [
 
@@ -48,24 +56,21 @@ MiCoUsageModelTest >> test02MethodsAttributes [
 { #category : #tests }
 MiCoUsageModelTest >> test03AttributeWidth [
 
-	| method attribute shapes |
-	attribute := model getInnerBoxNamed: #var1.
+	| method |
 	method := model containerBoxNamed: #method1.
-	self assert: (attribute numberOfUsesOn: method) equals: 3.
+	self assert: ((model getInnerBoxNamed: #var1) numberOfUsesOn: method) equals: 3.
 
-	attribute := model getInnerBoxNamed: #var4.
 	method := model containerBoxNamed: #method3.
-	self assert: (attribute numberOfUsesOn: method) equals: 1
+	self assert: ((model getInnerBoxNamed: #var4) numberOfUsesOn: method) equals: 1
 ]
 
 { #category : #tests }
-MiCoUsageModelTest >> testAutomaticColorOfContainerBox [
+MiCoUsageModelTest >> testAutomaticColorOneTaggedInnerBox [
 
-	| attribute tag |
+	| tag |
 
-	attribute := model getInnerBoxNamed: #var6.
 	tag := model currentMooseModel tagNamed: 'aTag'.
-	model setTag: tag onInnerBox: attribute.
+	model setTag: tag onInnerBox: (model getInnerBoxNamed: #var6).
 
 	model automaticColor.
 
@@ -79,6 +84,57 @@ MiCoUsageModelTest >> testAutomaticColorOfContainerBox [
 ]
 
 { #category : #tests }
+MiCoUsageModelTest >> testAutomaticColorSeveralInnerBoxAllTagged [
+
+	| tag |
+
+	tag := model currentMooseModel tagNamed: 'aTag'.
+	model setTag: tag onInnerBox: (model getInnerBoxNamed: #var2).
+	model setTag: tag onInnerBox: (model getInnerBoxNamed: #var3).
+	model setTag: tag onInnerBox: (model getInnerBoxNamed: #var4).
+
+	model automaticColor.
+
+	self
+		assertCollection: (model containerBoxNamed: #method3) mooseEntity allTags
+		hasSameElements: {tag}.
+
+]
+
+{ #category : #tests }
+MiCoUsageModelTest >> testAutomaticColorSeveralInnerBoxAndAboveThreshold [
+
+	| tag |
+
+	tag := model currentMooseModel tagNamed: 'aTag'.
+	model setTag: tag onInnerBox: (model getInnerBoxNamed: #var2).
+	model setTag: tag onInnerBox: (model getInnerBoxNamed: #var3).
+
+	model settings threshold75PercentGroup: 65. 
+	model automaticColor.
+
+	self
+		assertCollection: (model containerBoxNamed: #method3) mooseEntity allTags
+		hasSameElements: {tag}.
+
+]
+
+{ #category : #tests }
+MiCoUsageModelTest >> testAutomaticColorSeveralInnerBoxAndBelowThreshold [
+
+	| tag |
+
+	tag := model currentMooseModel tagNamed: 'aTag'.
+	model setTag: tag onInnerBox: (model getInnerBoxNamed: #var2).
+	model setTag: tag onInnerBox: (model getInnerBoxNamed: #var3).
+
+	model automaticColor.
+
+	self assert: (model containerBoxNamed: #method3) mooseEntity allTags isEmpty
+
+]
+
+{ #category : #tests }
 MiCoUsageModelTest >> testLastTagInitialization [
 
 	self assert: model selectedTag isNil.
@@ -88,11 +144,10 @@ MiCoUsageModelTest >> testLastTagInitialization [
 { #category : #tests }
 MiCoUsageModelTest >> testLastTagWithTag [
 
-	| attribute tag |
-	attribute := model getInnerBoxNamed: #var2.
+	| tag |
 	tag := model currentMooseModel tagNamed: 'aTag'.
 
-	model setTag: tag onInnerBox: attribute.
+	model setTag: tag onInnerBox: (model getInnerBoxNamed: #var2).
 
 	self assert: model selectedTag equals: tag.
 

@@ -8,7 +8,6 @@ Class {
 		'settingsWindow',
 		'containerEntities',
 		'selectedEntity',
-		'strategies',
 		'methodAttributeCounter',
 		'innerBoxes',
 		'containerBoxes',
@@ -29,18 +28,21 @@ MiCoUsageMapModel >> automaticColor [
 
 { #category : #tagging }
 MiCoUsageMapModel >> automaticColorForContainerBox: aMiContainer [
-	| groupsByTag |
+	"inner boxes are grouped by their tag (#groupsByTag)
+	 If there are several groups, searches for the largest (ignoring the group of untagged)
+	 then checks whether it size is >= threshold percent of all inner boxes.
+	 If so, set the tag on aMiContainer"
+
+	| groupsByTag tag |
 
 	groupsByTag := aMiContainer innerBoxes groupedBy: [ :att | att tag ].
-	groupsByTag ifEmpty: [ "nothing to compare" ^ self ].
-	self strategies do: [ :strat | 
-		strat
-			method: aMiContainer;
-			groupsByTag: groupsByTag.
-		strat computeTag ifNotNil: [ :tag | 
-			self setTag: tag onInnerBox: aMiContainer.
-			^ self ] ].
-	self setTag: nil onInnerBox: aMiContainer
+	groupsByTag ifEmpty: [ ^ self ].
+	
+	tag := self largestTag: groupsByTag in: aMiContainer.
+
+	"note: tag could be nil here if we did not find a large enough group"
+	self setTag: tag onInnerBox: aMiContainer.
+
 ]
 
 { #category : #tagging }
@@ -88,17 +90,17 @@ MiCoUsageMapModel >> containerInnerCounter: aMiCoMethodAttributeCounter [
 	methodAttributeCounter := aMiCoMethodAttributeCounter
 ]
 
-{ #category : #default }
+{ #category : #settings }
 MiCoUsageMapModel >> defaultInnerSortBlock [
 	^ [ :inner1 :inner2 :containr | inner1 name < inner2 name ].
 ]
 
-{ #category : #default }
+{ #category : #settings }
 MiCoUsageMapModel >> defaultSettings [
 	^ MiCoUsageMapSettings
 ]
 
-{ #category : #default }
+{ #category : #settings }
 MiCoUsageMapModel >> defaultSortBlock [
 	^ [ :container1 :container2 | 
 		| size1 size2 |
@@ -110,7 +112,7 @@ MiCoUsageMapModel >> defaultSortBlock [
 		 ].
 ]
 
-{ #category : #default }
+{ #category : #settings }
 MiCoUsageMapModel >> defaultTester [
 	^ MiCoFromSettingsMethodAttributeTester new
 ]
@@ -163,7 +165,6 @@ MiCoUsageMapModel >> getOrCreateInnerBoxFor: object [
 MiCoUsageMapModel >> initialize [
 	super initialize.
 
-	strategies := (MiCoMarkStrategy subclasses collect: #new) sorted: [ :a :b | a order < b order ].
 	self containerInnerCounter: self defaultTester
 ]
 
@@ -218,12 +219,12 @@ MiCoUsageMapModel >> initializeValues [
 		initializeScale.
 ]
 
-{ #category : #properties }
+{ #category : #settings }
 MiCoUsageMapModel >> innerBoxHeight [
 	^self settings innerBoxHeight
 ]
 
-{ #category : #properties }
+{ #category : #settings }
 MiCoUsageMapModel >> innerBoxSortBlockCompiled [
 	^self settings innerBoxSortBlockCompiled
 ]
@@ -231,6 +232,28 @@ MiCoUsageMapModel >> innerBoxSortBlockCompiled [
 { #category : #accessing }
 MiCoUsageMapModel >> innerBoxes [
 	^ innerBoxes
+]
+
+{ #category : #tagging }
+MiCoUsageMapModel >> largestTag: groupsByTag in: containerBox [
+	"inner boxes are grouped by their tag (#groupsByTag)
+	 search the largest of these groups (ignoring the group of untagged)
+	 then checks whether it size is >= threshold percent of all inner boxes.
+	 If so, returns the tag of this group"
+
+	| largestGroup tag |
+	tag := nil.
+	largestGroup := 0.
+
+	groupsByTag keysAndValuesDo: [ :groupTag :group | 
+		((groupTag isNotNil) and: [group size > largestGroup ])
+		ifTrue: [
+			tag := groupTag.
+			largestGroup := group size ] ].
+
+	^(largestGroup / containerBox innerBoxes size) >= self threshold 
+		ifTrue: [ tag ]
+		ifFalse: [ nil ]
 ]
 
 { #category : #accessing }
@@ -262,7 +285,7 @@ MiCoUsageMapModel >> newInnerBoxFor: anObject [
 		yourself
 ]
 
-{ #category : #actions }
+{ #category : #settings }
 MiCoUsageMapModel >> openSettings [
 	"For now, we handle settings here:
 	 - create the window 
@@ -287,7 +310,7 @@ MiCoUsageMapModel >> openSettings [
 		for: self
 ]
 
-{ #category : #properties }
+{ #category : #settings }
 MiCoUsageMapModel >> outerBoxSortBlockCompiled [
 	^self settings outerBoxSortBlockCompiled
 ]
@@ -331,15 +354,12 @@ MiCoUsageMapModel >> setTag: aTag onInnerBox: aBox [
 	self tagEntity: aBox mooseEntity with: aTag
 ]
 
-{ #category : #accessing }
+{ #category : #settings }
 MiCoUsageMapModel >> settings [
+	self flag: #FIXME.
+	"settings should not be handled by a an other class (with only class side methods"
+
 	^MiCoUsageMapSettings
-]
-
-{ #category : #tagging }
-MiCoUsageMapModel >> strategies [
-
-	^ strategies
 ]
 
 { #category : #tagging }
@@ -354,15 +374,10 @@ MiCoUsageMapModel >> tagEntity: aMooseEntity with: aTag [
 	self selectedTag: aTag
 ]
 
-{ #category : #tagging }
-MiCoUsageMapModel >> threshold75: aNumber [
+{ #category : #settings }
+MiCoUsageMapModel >> threshold [
 
-	self assert: (aNumber between: 0 and: 100) description: 'use number between 0 and 100'.
-
-	self strategies 
-		detect: [ :strat | strat class = MiCo75PercentageMarkStrategy ]
-		ifFound: [ :strat | strat threshold: aNumber / 100.0 ]
-		ifNone: [  ]
+	^self settings threshold75PercentGroup/100.0
 ]
 
 { #category : #accessing }
