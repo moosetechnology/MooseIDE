@@ -64,6 +64,25 @@ MiAbstractModel >> openSettings [
 ]
 
 { #category : #tagging }
+MiAbstractModel >> privateRemoveTag: aTag fromEntity: aMooseEntity [
+	"should find the corresponding TagAssociation and remove it and return it
+	 does nothing for now"
+	
+	self flag: #FIXME.
+	^FamixTagEntityAssociation
+		new
+]
+
+{ #category : #tagging }
+MiAbstractModel >> privateSetTag: aTag onEntity: aMooseEntity [
+
+	^FamixTagEntityAssociation
+		newForEntity: aMooseEntity
+		tag: aTag.
+	
+]
+
+{ #category : #tagging }
 MiAbstractModel >> selectedTag [
 
 	^ selectedTag
@@ -91,13 +110,16 @@ MiAbstractModel >> settingsChanged: aBoolean [
 MiAbstractModel >> tagEntity: aMooseEntity with: aTag [
 
 	| tagAssociation |
-	aTag ifNil: [ ^ self ].
-	aTag = aMooseEntity ifTrue: [ ^ self ].
+	(aTag = aMooseEntity) ifTrue: [ ^ self ].
+	
+	aTag
+		ifNil: [
+			tagAssociation := self privateRemoveTag: aTag fromEntity: aMooseEntity.
+			browser application removeItem: tagAssociation ]
+		ifNotNil: [
+			tagAssociation := self privateSetTag: aTag onEntity: aMooseEntity.
+			browser application consumeItem: tagAssociation ].
 
-	tagAssociation := FamixTagEntityAssociation
-		                  newForEntity: aMooseEntity
-		                  tag: aTag.
-	browser application consumeItem: tagAssociation
 ]
 
 { #category : #tagging }

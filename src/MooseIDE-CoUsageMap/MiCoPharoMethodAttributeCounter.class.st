@@ -8,6 +8,13 @@ Class {
 	#category : #'MooseIDE-CoUsageMap-Model'
 }
 
+{ #category : #testing }
+MiCoPharoMethodAttributeCounter class >> isDeprecated [
+	"Does not seem to be used"
+
+	^ true
+]
+
 { #category : #public }
 MiCoPharoMethodAttributeCounter >> allAttributesFor: aMiCoMethod [
 	| method result |
