@@ -25,15 +25,63 @@ MiCoUsageMapBrowserTest >> receiveEntityToSelect [
 ]
 
 { #category : #tests }
-MiCoUsageMapBrowserTest >> testCanOpenSettings [
+MiCoUsageMapBrowserTest >> testBlockSettingsChangeValue [
 
-	browser hasSettings ifFalse: [ self skip ].
-	"this should not raise an error"
-	browser settings.
-  "tear down"
-	[ browser closeSettings ]
-		on: Error
-		do: [ "nothing -- ensuring settings window is closed" ]
+	| settings |
+
+	settings := MiCoUsageMapBlockSettingsPresenter new 
+		settings: MiCoUsageMapSettings ;
+		yourself.
+
+	[
+		settings sortInnerBoxTextInput text: '[ ]'.
+		settings applyButton click.
+		
+		self assert: MiCoUsageMapSettings innerBoxSortBlockText equals: '[ ]'.
+	]
+	ensure: [
+		"tearDown"
+		settings delete ]
+]
+
+{ #category : #tests }
+MiCoUsageMapBrowserTest >> testBlockSettingsDefaultValues [
+
+	| settings |
+	settings := MiCoUsageMapBlockSettingsPresenter new 
+		settings: MiCoUsageMapSettings ;
+		yourself.
+
+	[
+		self assert: settings childrenTextInput     text isNotEmpty.
+		self assert: settings sortInnerBoxTextInput text isNotEmpty.
+		self assert: settings sortOuterBoxTextInput text isNotEmpty.
+	]
+	ensure: [
+		"tearDown"
+		settings delete ]
+]
+
+{ #category : #tests }
+MiCoUsageMapBrowserTest >> testBlockSettingsResetValues [
+
+	| settings |
+	MiCoUsageMapSettings childrenBlockText: 'Blah'.
+	self assert: MiCoUsageMapSettings childrenBlockText equals: 'Blah'.
+
+	settings := MiCoUsageMapBlockSettingsPresenter new 
+		settings: MiCoUsageMapSettings ;
+		yourself.
+
+	[
+		settings resetButton click.
+
+		self deny: MiCoUsageMapSettings childrenBlockText equals: 'Blah'.
+		self deny: MiCoUsageMapSettings childrenBlockText isEmpty.
+	]
+	ensure: [
+		"tearDown"
+		settings delete ]
 ]
 
 { #category : #tests }
