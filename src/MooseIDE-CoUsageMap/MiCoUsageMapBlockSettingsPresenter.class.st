@@ -81,13 +81,17 @@ MiCoUsageMapBlockSettingsPresenter >> initializeButtons [
 
 { #category : #initialization }
 MiCoUsageMapBlockSettingsPresenter >> initializePresenters [
+
 	childrenTextInput := self newCode
+		text: MiCoUsageMapSettings childrenBlockText ;
 		whenSubmitDo: [ :text | self settings childrenBlockText: text ];
 		yourself.
 	sortOuterBoxTextInput := self newCode
+		text: MiCoUsageMapSettings outerBoxSortBlockText ;
 		whenSubmitDo: [ :text | self settings outerBoxSortBlockText: text ];
 		yourself.
 	sortInnerBoxTextInput := self newCode
+		text: MiCoUsageMapSettings innerBoxSortBlockText ;
 		whenSubmitDo: [ :text | self settings innerBoxSortBlockText: text ];
 		yourself.
 	self initializeButtons
