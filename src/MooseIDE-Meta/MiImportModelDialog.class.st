@@ -40,25 +40,37 @@ MiImportModelDialog >> importModel [
 ]
 
 { #category : #action }
+MiImportModelDialog >> importModelStep1Import [
+
+	^ [ self importModel ] onErrorDo: [ :err |
+		  UIManager default alert: 'Import error: ' , err messageText.
+		  nil ]
+]
+
+{ #category : #action }
+MiImportModelDialog >> importModelStep2Install: mooseModel [
+
+	mooseModel ifNotNil: [
+		mooseModel installWithCache: self shouldCreateCache.
+		self withWindowDo: [ :window | window close ].
+		self updateBrowserWith: mooseModel
+	]
+]
+
+{ #category : #action }
 MiImportModelDialog >> importModelThenCloseDialogWindow [
 
 	| mooseModel aJob |
-
 	[ self validateImportForm ] onErrorDo: [ :err |
 		UIManager default alert: 'Invalid input: ' , err messageText.
 		^ self ].
 
 	aJob := [ :job |
 	        job title: 'Importing model'.
-	        mooseModel := [ self importModel ] onErrorDo: [ :err |
-		                      UIManager default alert:
-			                      'Import error: ' , err messageText.
-		                      nil ].
+	        mooseModel := self importModelStep1Import.
 	        job currentValue: 50.
-	        mooseModel ifNotNil: [
-		        mooseModel installWithCache: self shouldCreateCache.
-		        self withWindowDo: [ :window | window close ].
-		        self updateBrowserWith: mooseModel ] ] asJob.
+	        self importModelStep2Install: mooseModel
+	] asJob.
 
 	[ aJob run ] forkAt: Processor userBackgroundPriority
 ]
