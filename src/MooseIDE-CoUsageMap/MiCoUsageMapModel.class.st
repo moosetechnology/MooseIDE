@@ -8,7 +8,6 @@ Class {
 		'settingsWindow',
 		'containerEntities',
 		'selectedEntity',
-		'strategies',
 		'methodAttributeCounter',
 		'innerBoxes',
 		'containerBoxes',
@@ -352,17 +351,6 @@ MiCoUsageMapModel >> tagEntity: aMooseEntity with: aTag [
 
 	browser updateBoxColor: (self getBoxFor: aMooseEntity) fromTags: aMooseEntity allTags.
 	self selectedTag: aTag
-]
-
-{ #category : #tagging }
-MiCoUsageMapModel >> threshold75: aNumber [
-
-	self assert: (aNumber between: 0 and: 100) description: 'use number between 0 and 100'.
-
-	self strategies 
-		detect: [ :strat | strat class = MiCo75PercentageMarkStrategy ]
-		ifFound: [ :strat | strat threshold: aNumber / 100.0 ]
-		ifNone: [  ]
 ]
 
 { #category : #accessing }

@@ -172,11 +172,6 @@ MiCoUsageMapVisualization >> tagsFromMooseModel: aMooseModel [
 	group do: [ :tag | legendTag addTag: tag asMiCoTag ].
 ]
 
-{ #category : #update }
-MiCoUsageMapVisualization >> threshold75: aNumber [
-	mapBuilder threshold75: aNumber
-]
-
 { #category : #brokerage }
 MiCoUsageMapVisualization >> update: anObject [
 	self consume: anObject
