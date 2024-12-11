@@ -9,8 +9,8 @@ Class {
 		'childrenTextInput',
 		'sortOuterBoxTextInput',
 		'sortInnerBoxTextInput',
-		'button',
-		'resetButton'
+		'resetButton',
+		'applyButton'
 	],
 	#category : #'MooseIDE-CoUsageMap-Settings'
 }
@@ -36,6 +36,18 @@ MiCoUsageMapBlockSettingsPresenter class >> defaultLayout [
 		yourself
 ]
 
+{ #category : #'accessing - private tests' }
+MiCoUsageMapBlockSettingsPresenter >> applyButton [
+
+	^applyButton
+]
+
+{ #category : #'accessing - private tests' }
+MiCoUsageMapBlockSettingsPresenter >> childrenTextInput [
+
+	^childrenTextInput
+]
+
 { #category : #initialization }
 MiCoUsageMapBlockSettingsPresenter >> connectPresenters [
 	| set |
@@ -48,7 +60,7 @@ MiCoUsageMapBlockSettingsPresenter >> connectPresenters [
 
 { #category : #initialization }
 MiCoUsageMapBlockSettingsPresenter >> initializeButtons [
-	button := self newButton
+	applyButton := self newButton
 		label: 'Apply all';
 		action: [ 
 			childrenTextInput triggerSubmitAction.
@@ -69,13 +81,17 @@ MiCoUsageMapBlockSettingsPresenter >> initializeButtons [
 
 { #category : #initialization }
 MiCoUsageMapBlockSettingsPresenter >> initializePresenters [
+
 	childrenTextInput := self newCode
+		text: MiCoUsageMapSettings childrenBlockText ;
 		whenSubmitDo: [ :text | self settings childrenBlockText: text ];
 		yourself.
 	sortOuterBoxTextInput := self newCode
+		text: MiCoUsageMapSettings outerBoxSortBlockText ;
 		whenSubmitDo: [ :text | self settings outerBoxSortBlockText: text ];
 		yourself.
 	sortInnerBoxTextInput := self newCode
+		text: MiCoUsageMapSettings innerBoxSortBlockText ;
 		whenSubmitDo: [ :text | self settings innerBoxSortBlockText: text ];
 		yourself.
 	self initializeButtons
@@ -86,4 +102,22 @@ MiCoUsageMapBlockSettingsPresenter >> initializeWindow: aWindowPresenter [
 	aWindowPresenter 
 		initialExtent: 500@700;
 		title: 'Blocks Settings - Co Usage Map'
+]
+
+{ #category : #'accessing - private tests' }
+MiCoUsageMapBlockSettingsPresenter >> resetButton [
+
+	^resetButton
+]
+
+{ #category : #'accessing - private tests' }
+MiCoUsageMapBlockSettingsPresenter >> sortInnerBoxTextInput [
+
+	^sortInnerBoxTextInput
+]
+
+{ #category : #'accessing - private tests' }
+MiCoUsageMapBlockSettingsPresenter >> sortOuterBoxTextInput [
+
+	^sortOuterBoxTextInput
 ]

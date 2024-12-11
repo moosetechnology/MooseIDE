@@ -265,9 +265,9 @@ MiCoUsageMapSettings class >> reset [
 MiCoUsageMapSettings class >> resetText [
 	<script>
 	self propertiesMap
-		removeKey: #childrenBlockText;
-		removeKey: #outerBoxSortBlockText;
-		removeKey: #innerBoxSortBlockText
+		removeKey: #childrenBlockText ifAbsent: [] ;
+		removeKey: #outerBoxSortBlockText ifAbsent: [] ;
+		removeKey: #innerBoxSortBlockText ifAbsent: [] 
 ]
 
 { #category : #accessing }
