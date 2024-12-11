@@ -323,6 +323,10 @@ MiCoUsageMapModel >> selectedEntity: aMooseEntity [
 { #category : #tagging }
 MiCoUsageMapModel >> setTag: aTag onInnerBox: aBox [
 
+	self flag: #FIXME.
+	"- #tagEntity:with: already calls #selectedTag:
+	 - #tagEntity:with: calls #getBoxFor: to find back aBox"
+
 	self selectedTag: aTag.
 	self tagEntity: aBox mooseEntity with: aTag
 ]

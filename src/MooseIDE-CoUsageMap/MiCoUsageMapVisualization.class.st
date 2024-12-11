@@ -78,7 +78,7 @@ MiCoUsageMapVisualization >> mapBuilder [
 	^mapBuilder 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 MiCoUsageMapVisualization >> modelForShape: aShape [
 
 	^ aShape model mooseEntity
@@ -198,7 +198,7 @@ MiCoUsageMapVisualization >> updateInnerBoxSize [
 	mapBuilder updateInnerBoxSize
 ]
 
-{ #category : #brokerage }
+{ #category : #update }
 MiCoUsageMapVisualization >> updateLegend [
 	| legendTag |
 	legendTag := mapBuilder legendTagBuilder.

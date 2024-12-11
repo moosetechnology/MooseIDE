@@ -32,7 +32,10 @@ MiCoTagLegendBuilder >> checkBoxFor: aTag [
 { #category : #highlighting }
 MiCoTagLegendBuilder >> highlightLegend: evt [
 	| shape |
-	self unhighlight: evt.
+	self flag: #FIXME.
+	"self unhighlight: evt.
+	#unhighlight: is not implemented and I don't understand what should be ungighlighted"
+
 	shape := evt shape.
 	shape border: (RSBorder new width: 2; color: Color gray).
 	evt canvas propertyAt: #tagCheck put: shape.
