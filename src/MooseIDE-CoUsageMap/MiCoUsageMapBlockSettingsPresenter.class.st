@@ -36,6 +36,18 @@ MiCoUsageMapBlockSettingsPresenter class >> defaultLayout [
 		yourself
 ]
 
+{ #category : #'accessing - private tests' }
+MiCoUsageMapBlockSettingsPresenter >> applyButton [
+
+	^applyButton
+]
+
+{ #category : #'accessing - private tests' }
+MiCoUsageMapBlockSettingsPresenter >> childrenTextInput [
+
+	^childrenTextInput
+]
+
 { #category : #initialization }
 MiCoUsageMapBlockSettingsPresenter >> connectPresenters [
 	| set |
@@ -86,4 +98,22 @@ MiCoUsageMapBlockSettingsPresenter >> initializeWindow: aWindowPresenter [
 	aWindowPresenter 
 		initialExtent: 500@700;
 		title: 'Blocks Settings - Co Usage Map'
+]
+
+{ #category : #'accessing - private tests' }
+MiCoUsageMapBlockSettingsPresenter >> resetButton [
+
+	^resetButton
+]
+
+{ #category : #'accessing - private tests' }
+MiCoUsageMapBlockSettingsPresenter >> sortInnerBoxTextInput [
+
+	^sortInnerBoxTextInput
+]
+
+{ #category : #'accessing - private tests' }
+MiCoUsageMapBlockSettingsPresenter >> sortOuterBoxTextInput [
+
+	^sortOuterBoxTextInput
 ]
