@@ -28,18 +28,21 @@ MiCoUsageMapModel >> automaticColor [
 
 { #category : #tagging }
 MiCoUsageMapModel >> automaticColorForContainerBox: aMiContainer [
-	| groupsByTag |
+	"inner boxes are grouped by their tag (#groupsByTag)
+	 If there are several groups, searches for the largest (ignoring the group of untagged)
+	 then checks whether it size is >= threshold percent of all inner boxes.
+	 If so, set the tag on aMiContainer"
+
+	| groupsByTag tag |
 
 	groupsByTag := aMiContainer innerBoxes groupedBy: [ :att | att tag ].
+
 	groupsByTag ifEmpty: [ "nothing to compare" ^ self ].
-	self strategies do: [ :strat | 
-		strat
-			method: aMiContainer;
-			groupsByTag: groupsByTag.
-		strat computeTag ifNotNil: [ :tag | 
-			self setTag: tag onInnerBox: aMiContainer.
-			^ self ] ].
-	self setTag: nil onInnerBox: aMiContainer
+	tag := self largestTag: groupsByTag in: aMiContainer.
+
+	"note: tag could be nil here if we did not find a large enough group"
+	self setTag: tag onInnerBox: aMiContainer.
+
 ]
 
 { #category : #tagging }
@@ -162,7 +165,6 @@ MiCoUsageMapModel >> getOrCreateInnerBoxFor: object [
 MiCoUsageMapModel >> initialize [
 	super initialize.
 
-	strategies := (MiCoMarkStrategy subclasses collect: #new) sorted: [ :a :b | a order < b order ].
 	self containerInnerCounter: self defaultTester
 ]
 
@@ -230,6 +232,28 @@ MiCoUsageMapModel >> innerBoxSortBlockCompiled [
 { #category : #accessing }
 MiCoUsageMapModel >> innerBoxes [
 	^ innerBoxes
+]
+
+{ #category : #tagging }
+MiCoUsageMapModel >> largestTag: groupsByTag in: containerBox [
+	"inner boxes are grouped by their tag (#groupsByTag)
+	 search the largest of these groups (ignoring the group of untagged)
+	 then checks whether it size is >= threshold percent of all inner boxes.
+	 If so, returns the tag of this group"
+
+	| largestGroup tag |
+	tag := nil.
+	largestGroup := 0.
+
+	groupsByTag keysAndValuesDo: [ :groupTag :group | 
+		((groupTag isNotNil) and: [group size > largestGroup ])
+		ifTrue: [
+			tag := groupTag.
+			largestGroup := group size ] ].
+
+	^(largestGroup / containerBox innerBoxes size) >= self threshold 
+		ifTrue: [ tag ]
+		ifFalse: [ nil ]
 ]
 
 { #category : #accessing }
@@ -336,12 +360,6 @@ MiCoUsageMapModel >> settings [
 	"settings should not be handled by a an other class (with only class side methods"
 
 	^MiCoUsageMapSettings
-]
-
-{ #category : #tagging }
-MiCoUsageMapModel >> strategies [
-
-	^ strategies
 ]
 
 { #category : #tagging }
