@@ -75,6 +75,25 @@ MiModelsBrowserTest >> testCanTagEntities [
 ]
 
 { #category : #tests }
+MiModelsBrowserTest >> testFilterStubsSettingsWithStub [
+
+	| newModel |
+
+	self assert: browser miSelectedItemToPropagate isNil.
+
+	newModel := self newModel: 'aModel'.
+	(newModel newClassNamed: 'Class1') isStub: true.
+	(newModel newClassNamed: 'Class2') isStub: false.
+
+	browser settingsItem setItem: #filterStubsSetting value: false.
+
+	browser updateForNewModel: newModel.
+
+	self assert: browser miSelectedItemToPropagate size equals: 2
+
+]
+
+{ #category : #tests }
 MiModelsBrowserTest >> testFilterStubsSettingsWithoutStub [
 
 	| newModel |
@@ -90,11 +109,7 @@ MiModelsBrowserTest >> testFilterStubsSettingsWithoutStub [
 	self assert: browser miSelectedItemToPropagate size equals: 1.
 	self
 		assert: browser miSelectedItemToPropagate anyOne name
-		equals: 'Class2'.
-
-	browser settingsItem setItem: #filterStubsSetting value: false.
-	browser updateForNewModel: newModel.
-	self assert: browser miSelectedItemToPropagate size equals: 2
+		equals: 'Class2'
 ]
 
 { #category : #tests }
@@ -172,25 +187,6 @@ MiModelsBrowserTest >> testMiSelectedItem [
 	self deny: browser miSelectedItem isNil
 ]
 
-{ #category : #tests }
-MiModelsBrowserTest >> testMiSelectedItemWithoutStub [
-
-	| newModel |
-
-	self assert: browser miSelectedItemToPropagate isNil.
-
-	newModel := self newModel: 'aModel'.
-	(newModel newClassNamed: 'Class1') isStub: true.
-	(newModel newClassNamed: 'Class2') isStub: false.
-
-	browser updateForNewModel: newModel.
-
-	self assert: browser miSelectedItemToPropagate size equals: 1.
-	self
-		assert: browser miSelectedItemToPropagate anyOne name
-		equals: 'Class2'
-]
-
 { #category : #'tests - opening' }
 MiModelsBrowserTest >> testSettingsAction [
 
@@ -251,4 +247,32 @@ MiModelsBrowserTest >> testUpdateList [
 	browser updateList.
 
 	self assert: browser model entities size equals: 1
+]
+
+{ #category : #tests }
+MiModelsBrowserTest >> testWithCacheSettingNoCache [
+	"Importing by default is without cache"
+
+	| newModel |
+	newModel := self newModel: 'aModel'.
+	(newModel newClassNamed: 'Class1').
+	(newModel newClassNamed: 'Class2').
+
+	browser importFromFileUI importModelStep2Install: newModel.
+
+	self assert: (newModel cacheAt: FamixTClass ifAbsent: [ true ] ifPresent: [:cache | cache isEmpty ])
+]
+
+{ #category : #tests }
+MiModelsBrowserTest >> testWithCacheSettingWithCache [
+
+	| newModel |
+	newModel := self newModel: 'aModel'.
+	(newModel newClassNamed: 'Class1').
+	(newModel newClassNamed: 'Class2').
+
+	browser settingsItem setItem: #createWithCache value: true.
+	browser importFromFileUI importModelStep2Install: newModel.
+
+	self assert: (newModel cacheAt: FamixTClass ifAbsent: [ false ] ifPresent: [:cache | cache isEmpty not])
 ]
