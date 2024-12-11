@@ -9,8 +9,8 @@ Class {
 		'childrenTextInput',
 		'sortOuterBoxTextInput',
 		'sortInnerBoxTextInput',
-		'button',
-		'resetButton'
+		'resetButton',
+		'applyButton'
 	],
 	#category : #'MooseIDE-CoUsageMap-Settings'
 }
@@ -48,7 +48,7 @@ MiCoUsageMapBlockSettingsPresenter >> connectPresenters [
 
 { #category : #initialization }
 MiCoUsageMapBlockSettingsPresenter >> initializeButtons [
-	button := self newButton
+	applyButton := self newButton
 		label: 'Apply all';
 		action: [ 
 			childrenTextInput triggerSubmitAction.
