@@ -12,7 +12,7 @@ Width of each attbute is the total number of uses of that attribute in all conta
 "
 Class {
 	#name : #MiCoUsageMapBuilder,
-	#superclass : #RSAbstractContainerBuilder,
+	#superclass : #RSBuilder,
 	#instVars : [
 		'highlightManager',
 		'legendTagBuilder',

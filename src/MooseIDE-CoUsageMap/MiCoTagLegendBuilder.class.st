@@ -4,7 +4,7 @@ The legend allows to check/uncheck each tag individually
 "
 Class {
 	#name : #MiCoTagLegendBuilder,
-	#superclass : #RSAbstractContainerBuilder,
+	#superclass : #RSBuilder,
 	#instVars : [
 		'tags',
 		'mapBuilder'
