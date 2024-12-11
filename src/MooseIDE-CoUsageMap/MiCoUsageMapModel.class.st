@@ -36,8 +36,8 @@ MiCoUsageMapModel >> automaticColorForContainerBox: aMiContainer [
 	| groupsByTag tag |
 
 	groupsByTag := aMiContainer innerBoxes groupedBy: [ :att | att tag ].
-
-	groupsByTag ifEmpty: [ "nothing to compare" ^ self ].
+	groupsByTag ifEmpty: [ ^ self ].
+	
 	tag := self largestTag: groupsByTag in: aMiContainer.
 
 	"note: tag could be nil here if we did not find a large enough group"
