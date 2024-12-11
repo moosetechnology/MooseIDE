@@ -39,14 +39,18 @@ MiCoUsageMapVisualization >> consumeTag: aTag [
 
 { #category : #brokerage }
 MiCoUsageMapVisualization >> consumeTagAssociation: aFamixTagAssociation [
-	| entity tag miCoObject |
+	"search the box for the tagged entity with the right tag
+	 - if found nothing to do
+	 - else update the visualization"
+
+	| entity tag |
 	entity := aFamixTagAssociation entity.
 	tag := aFamixTagAssociation tag.
-	miCoObject := specModel containerBoxes , specModel innerBoxes 
-		detect: [ :each | each mooseEntity = entity and: [ each tag ~= tag ] ] ifNone: [ nil ].
-	miCoObject ifNil: [ ^ self ].
-	self flag: 'tag-association already set, but need to show it in the map'.
-	self specModel tagEntity: miCoObject mooseEntity with: tag.
+
+	((specModel containerBoxes , specModel innerBoxes) 
+		anySatisfy: [ :each | (each mooseEntity = entity) and: [ each tag = tag ] ])
+		ifTrue: [ ^ self ].
+
 	mapBuilder updateShapeColors
 ]
 
@@ -110,13 +114,14 @@ MiCoUsageMapVisualization >> removeTag: aTag [
 
 { #category : #brokerage }
 MiCoUsageMapVisualization >> removeTagAssociation: aFamixTagAssociation [
+
 	| entity miCoObject |
 	entity := aFamixTagAssociation entity.
-	miCoObject := mapBuilder containerBoxes , mapBuilder innerBoxes 
-		detect: [ :each | each mooseEntity = entity ] ifNone: [ nil ].
-	miCoObject ifNil: [ ^ self ].
-	"this avoids call the consumer producer system"
-	miCoObject privateTag: nil.
+
+	miCoObject := specModel containerBoxes , specModel innerBoxes 
+		detect: [ :each | each mooseEntity = entity ]
+		ifNone: [ ^ self ].
+
 	mapBuilder updateShapeColors
 ]
 
