@@ -87,17 +87,17 @@ MiCoUsageMapModel >> containerInnerCounter: aMiCoMethodAttributeCounter [
 	methodAttributeCounter := aMiCoMethodAttributeCounter
 ]
 
-{ #category : #default }
+{ #category : #settings }
 MiCoUsageMapModel >> defaultInnerSortBlock [
 	^ [ :inner1 :inner2 :containr | inner1 name < inner2 name ].
 ]
 
-{ #category : #default }
+{ #category : #settings }
 MiCoUsageMapModel >> defaultSettings [
 	^ MiCoUsageMapSettings
 ]
 
-{ #category : #default }
+{ #category : #settings }
 MiCoUsageMapModel >> defaultSortBlock [
 	^ [ :container1 :container2 | 
 		| size1 size2 |
@@ -109,7 +109,7 @@ MiCoUsageMapModel >> defaultSortBlock [
 		 ].
 ]
 
-{ #category : #default }
+{ #category : #settings }
 MiCoUsageMapModel >> defaultTester [
 	^ MiCoFromSettingsMethodAttributeTester new
 ]
@@ -217,12 +217,12 @@ MiCoUsageMapModel >> initializeValues [
 		initializeScale.
 ]
 
-{ #category : #properties }
+{ #category : #settings }
 MiCoUsageMapModel >> innerBoxHeight [
 	^self settings innerBoxHeight
 ]
 
-{ #category : #properties }
+{ #category : #settings }
 MiCoUsageMapModel >> innerBoxSortBlockCompiled [
 	^self settings innerBoxSortBlockCompiled
 ]
@@ -261,7 +261,7 @@ MiCoUsageMapModel >> newInnerBoxFor: anObject [
 		yourself
 ]
 
-{ #category : #actions }
+{ #category : #settings }
 MiCoUsageMapModel >> openSettings [
 	"For now, we handle settings here:
 	 - create the window 
@@ -286,7 +286,7 @@ MiCoUsageMapModel >> openSettings [
 		for: self
 ]
 
-{ #category : #properties }
+{ #category : #settings }
 MiCoUsageMapModel >> outerBoxSortBlockCompiled [
 	^self settings outerBoxSortBlockCompiled
 ]
@@ -330,7 +330,7 @@ MiCoUsageMapModel >> setTag: aTag onInnerBox: aBox [
 	self tagEntity: aBox mooseEntity with: aTag
 ]
 
-{ #category : #accessing }
+{ #category : #settings }
 MiCoUsageMapModel >> settings [
 	^MiCoUsageMapSettings
 ]
