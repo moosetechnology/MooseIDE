@@ -84,17 +84,11 @@ MiModelsBrowserModel >> initialize [
 MiModelsBrowserModel >> initializeSettings [ 
 
 	settings := super initializeSettings.
-	settings	addItem: (MiCheckboxSettingItem new
-		setValue: true ;
-		label: 'Filter out stubs?' ;
-		help: 'When propagating the model should it filter out the stub entities or pass them along' ;
-		yourself)
-		named: #filterStubsSetting.
 		
 	settings	addItem: (MiCheckboxSettingItem new
-		setValue: true ;
-		label: 'Import without cache?' ;
-		help: 'when importing a model you can create or not the cache' ;
+		setValue: false ;
+		label: 'Import with cache?' ;
+		help: 'Caching entities in the model may improve some functionalities but takes time on import' ;
 		yourself)
 		named: #createWithCache.
 			
@@ -105,6 +99,14 @@ MiModelsBrowserModel >> initializeSettings [
 		help: 'When drag & drop model from file should it be automatically imported if possible or should it just configure the import dialog' ;
 		yourself)
 		named: #modelAutoImportSetting.
+
+	settings	addItem: (MiCheckboxSettingItem new
+		setValue: true ;
+		label: 'Filter out stubs?' ;
+		help: 'When propagating the model should it filter out the stub entities or pass them along' ;
+		yourself)
+		named: #filterStubsSetting.
+
 ]
 
 { #category : #accessing }
