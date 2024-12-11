@@ -75,6 +75,25 @@ MiModelsBrowserTest >> testCanTagEntities [
 ]
 
 { #category : #tests }
+MiModelsBrowserTest >> testFilterStubsSettingsWithStub [
+
+	| newModel |
+
+	self assert: browser miSelectedItemToPropagate isNil.
+
+	newModel := self newModel: 'aModel'.
+	(newModel newClassNamed: 'Class1') isStub: true.
+	(newModel newClassNamed: 'Class2') isStub: false.
+
+	browser settingsItem setItem: #filterStubsSetting value: false.
+
+	browser updateForNewModel: newModel.
+
+	self assert: browser miSelectedItemToPropagate size equals: 2
+
+]
+
+{ #category : #tests }
 MiModelsBrowserTest >> testFilterStubsSettingsWithoutStub [
 
 	| newModel |
@@ -90,11 +109,7 @@ MiModelsBrowserTest >> testFilterStubsSettingsWithoutStub [
 	self assert: browser miSelectedItemToPropagate size equals: 1.
 	self
 		assert: browser miSelectedItemToPropagate anyOne name
-		equals: 'Class2'.
-
-	browser settingsItem setItem: #filterStubsSetting value: false.
-	browser updateForNewModel: newModel.
-	self assert: browser miSelectedItemToPropagate size equals: 2
+		equals: 'Class2'
 ]
 
 { #category : #tests }
@@ -170,25 +185,6 @@ MiModelsBrowserTest >> testMiSelectedItem [
 	browser updateForNewModel: newModel.
 
 	self deny: browser miSelectedItem isNil
-]
-
-{ #category : #tests }
-MiModelsBrowserTest >> testMiSelectedItemWithoutStub [
-
-	| newModel |
-
-	self assert: browser miSelectedItemToPropagate isNil.
-
-	newModel := self newModel: 'aModel'.
-	(newModel newClassNamed: 'Class1') isStub: true.
-	(newModel newClassNamed: 'Class2') isStub: false.
-
-	browser updateForNewModel: newModel.
-
-	self assert: browser miSelectedItemToPropagate size equals: 1.
-	self
-		assert: browser miSelectedItemToPropagate anyOne name
-		equals: 'Class2'
 ]
 
 { #category : #'tests - opening' }
