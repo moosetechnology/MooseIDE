@@ -332,6 +332,9 @@ MiCoUsageMapModel >> setTag: aTag onInnerBox: aBox [
 
 { #category : #settings }
 MiCoUsageMapModel >> settings [
+	self flag: #FIXME.
+	"settings should not be handled by a an other class (with only class side methods"
+
 	^MiCoUsageMapSettings
 ]
 
@@ -351,6 +354,12 @@ MiCoUsageMapModel >> tagEntity: aMooseEntity with: aTag [
 
 	browser updateBoxColor: (self getBoxFor: aMooseEntity) fromTags: aMooseEntity allTags.
 	self selectedTag: aTag
+]
+
+{ #category : #settings }
+MiCoUsageMapModel >> threshold [
+
+	^self settings threshold75PercentGroup/100.0
 ]
 
 { #category : #accessing }
