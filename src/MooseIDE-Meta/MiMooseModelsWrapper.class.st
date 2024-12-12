@@ -33,6 +33,12 @@ MiMooseModelsWrapper >> install [
 	models do: [ :model | model install ]
 ]
 
+{ #category : #actions }
+MiMooseModelsWrapper >> installWithCache: aBoolean [
+
+	models do: [ :model | model installWithCache: aBoolean ]
+]
+
 { #category : #accessing }
 MiMooseModelsWrapper >> models: aCollection [
 
