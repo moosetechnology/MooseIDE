@@ -50,6 +50,30 @@ MiDSMDependencyManager >> allPairsDo: aBlock [
 	]
 ]
 
+{ #category : #testing }
+MiDSMDependencyManager >> association: associations isTo: entity [
+	"need to get the target because DSM is done between entities"
+
+	| target |
+
+	target := associations target.
+	^target isCollection
+		ifTrue: [
+			"the association is an Invocation and the target-s are the candidates"
+			target anySatisfy: [ :each | self entity: each belongsTo: entity ]
+		]
+		ifFalse: [
+			((target usesFamixTrait: FamixTParametricEntity) and:
+			[ target genericization isNotNil ])
+				ifTrue: [ target := target genericization genericEntity ].
+
+			target 
+				ifNotNil: [ self entity: target belongsTo: entity ] 
+				ifNil: [false]
+		]
+		
+]
+
 { #category : #initialization }
 MiDSMDependencyManager >> computeDependencies: aCollection [
 	"Could be optimized, when we open a detailed DSM, `miModel entities` is the union of entitiesX and entitiesY
@@ -77,36 +101,54 @@ MiDSMDependencyManager >> computeDependencies: aCollection [
 MiDSMDependencyManager >> computeDependenciesFrom: entityX to: entityY [
 	"generic algorithm to get all dependencies from entityX to entityY at the scope of entityY"
 
-	^entityX queryAllOutgoingForDSM select: [ :dependency || opposites |
-		dependency isAssociation ifTrue: [
-			"Association so need to get the target because DSM is done between entities"
-			opposites := dependency target.
-			opposites isCollection
-			ifTrue: [ opposites anySatisfy: [ :each | self entity: each belongsTo: entityY ]
-			]
-			ifFalse: [
-				((opposites usesFamixTrait: FamixTParametricEntity) and:
-				[ opposites genericization isNotNil ])
-					ifTrue: [ opposites := opposites genericization genericEntity ].
+	^entityX queryAllOutgoingForDSM select: [ :dependency |
+		entityY isPackage
+			ifFalse: [ self dependency: dependency isTo: entityY ]
+			ifTrue: [ self dependency: dependency isToPackage: entityY ]
+	].
 
-				opposites 
-					ifNotNil: [ self entity: opposites belongsTo: entityY ] 
-					ifNil: [false]
-			]
-		]
-		ifFalse: [ 
-			"case of dependencies not coming from an association"
-			dependency isStub
-				ifTrue: [ false ]
-				ifFalse: [ self entity: dependency belongsTo: entityY ]
-		]
-	]
 ]
 
 { #category : #accessing }
 MiDSMDependencyManager >> dependencies: dependencies from: sourceEntity to: targetEntity [
 
 	dependencyDictionary at: (sourceEntity -> targetEntity) put: dependencies
+]
+
+{ #category : #testing }
+MiDSMDependencyManager >> dependency: dependency isTo: entity [
+
+	^dependency isAssociation ifTrue: [ self association: dependency isTo: entity ]
+		ifFalse: [ 
+			"case of dependencies not coming from an association"
+			dependency isStub
+				ifTrue: [ false ]
+				ifFalse: [ self entity: dependency belongsTo: entity ]
+		]
+
+]
+
+{ #category : #testing }
+MiDSMDependencyManager >> dependency: dependency isToPackage: aPackage [
+	"dependencies to sub-packages are added to their parent package"
+
+	^(self dependency: dependency isTo: aPackage)
+		or: [
+			aPackage children anySatisfy: [ :child |
+				child isPackage and:
+				[ self dependency: dependency isToPackage: child ]
+		]
+	]
+]
+
+{ #category : #testing }
+MiDSMDependencyManager >> dependency: dependency isToSubPackage: aPackage [
+
+	^aPackage children anySatisfy: [ :child |
+		child isPackage and:
+		[ (self dependency: dependency isTo: child) or: 
+			[] ]
+	]
 ]
 
 { #category : #accessing }
