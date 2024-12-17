@@ -1,12 +1,13 @@
-Extension { #name : #FamixTTypedEntity }
+Extension { #name : #FamixTFunction }
 
 { #category : #'*MooseIDE-Dependency' }
-FamixTTypedEntity >> queryAllOutgoingForDSM [
+FamixTFunction >> queryAllOutgoingForDSM [
 
 	| dependencies |
 
-	dependencies := self queryAllOutgoing.
-
+	dependencies := self queryAllOutgoing asSet.
+	(self children do: [ :c | dependencies addAll: c queryAllOutgoingForDSM ]).
+	
 	declaredType ifNotNil: [
 
 		( (declaredType usesFamixTrait: FamixTParametricEntity) and:

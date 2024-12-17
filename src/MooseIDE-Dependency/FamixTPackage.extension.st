@@ -5,7 +5,7 @@ FamixTPackage >> queryAllOutgoingForDSM [
 
 	| dependencies |
 
-	dependencies := self queryAllOutgoing.
+	dependencies := Set new.
 	self children do: [ :c | dependencies addAll: c queryAllOutgoingForDSM ].
 
 	^dependencies

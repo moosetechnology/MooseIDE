@@ -7,7 +7,7 @@ MooseEntity >> queryAllOutgoingForDSM [
 	 For example it gets the declaredType of variables.
 	 This is temporary until we resolve the issue of declaredType not being an Association"
 
-	^ self query outgoing dependencies
+	^ self query outgoing dependencies asSet
 ]
 
 { #category : #'*MooseIDE-Dependency' }

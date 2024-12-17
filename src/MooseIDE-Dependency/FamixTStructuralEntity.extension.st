@@ -1,13 +1,12 @@
-Extension { #name : #FamixTMethod }
+Extension { #name : #FamixTStructuralEntity }
 
 { #category : #'*MooseIDE-Dependency' }
-FamixTMethod >> queryAllOutgoingForDSM [
+FamixTStructuralEntity >> queryAllOutgoingForDSM [
 
 	| dependencies |
 
-	dependencies := self queryAllOutgoing asSet.
-	(self children do: [ :c | dependencies addAll: c queryAllOutgoingForDSM ]).
-	
+	dependencies := Set new: 5.
+
 	declaredType ifNotNil: [
 
 		( (declaredType usesFamixTrait: FamixTParametricEntity) and:
