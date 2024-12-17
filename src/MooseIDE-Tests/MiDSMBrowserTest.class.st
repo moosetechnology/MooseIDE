@@ -1,5 +1,5 @@
 Class {
-	#name : #MiDependencyStructuralMatrixBrowserTest,
+	#name : #MiDSMBrowserTest,
 	#superclass : #MiAbstractBrowserTest,
 	#instVars : [
 		'model',
@@ -11,18 +11,18 @@ Class {
 }
 
 { #category : #running }
-MiDependencyStructuralMatrixBrowserTest >> browserClass [
+MiDSMBrowserTest >> browserClass [
 	^ MiDSMBrowser
 ]
 
 { #category : #running }
-MiDependencyStructuralMatrixBrowserTest >> defaultEntityToSelect [
+MiDSMBrowserTest >> defaultEntityToSelect [
 
 	^{ 	FamixStClass new name: 'a'. FamixStClass new name: 'b' }
 ]
 
 { #category : #running }
-MiDependencyStructuralMatrixBrowserTest >> makeGraphNode: anEntity [
+MiDSMBrowserTest >> makeGraphNode: anEntity [
 
 	^AIGraphNode new
 		model: anEntity ;
@@ -30,7 +30,7 @@ MiDependencyStructuralMatrixBrowserTest >> makeGraphNode: anEntity [
 ]
 
 { #category : #running }
-MiDependencyStructuralMatrixBrowserTest >> setUp [
+MiDSMBrowserTest >> setUp [
 	| mth1 mth2 |
 
 	super setUp.
@@ -50,7 +50,7 @@ MiDependencyStructuralMatrixBrowserTest >> setUp [
 ]
 
 { #category : #running }
-MiDependencyStructuralMatrixBrowserTest >> shapeAtRow: rEntity column: cEntity2 [
+MiDSMBrowserTest >> shapeAtRow: rEntity column: cEntity2 [
 
 	^browser diagram canvas shapes detect: [ :sh |
 		(sh model key model = rEntity) and: 
@@ -59,13 +59,13 @@ MiDependencyStructuralMatrixBrowserTest >> shapeAtRow: rEntity column: cEntity2 
 ]
 
 { #category : #tests }
-MiDependencyStructuralMatrixBrowserTest >> testCanTagEntities [
+MiDSMBrowserTest >> testCanTagEntities [
 
 	self deny: browser canTagEntities
 ]
 
 { #category : #tests }
-MiDependencyStructuralMatrixBrowserTest >> testDoesNotOpenEmptyDetailedDSM [
+MiDSMBrowserTest >> testDoesNotOpenEmptyDetailedDSM [
 	"sets a fake spec model that delegates #userActionOn: to the original model
 	 We checks that #userActionOn: was called and #openDetailedDSMOn: was not"
 	| originalModel mockModel userAction detailedDSM  |
@@ -92,29 +92,31 @@ MiDependencyStructuralMatrixBrowserTest >> testDoesNotOpenEmptyDetailedDSM [
 ]
 
 { #category : #tests }
-MiDependencyStructuralMatrixBrowserTest >> testDontShowSelfDependenciesHideDiagonalWeight [
+MiDSMBrowserTest >> testDontShowSelfDependenciesHideDiagonalWeight [
 
 	| tuple |
 	browser model settings setItem: #selfDependenciesSetting value: false.
 	tuple := (AITarjanNode with: #entityA) -> (AITarjanNode with: #entityA).
-	browser model dependencyDictionary: (Dictionary newFromPairs: { (#entityA -> #entityA) . #(1 2 3) }).
+	browser model dependencies
+		dependencies: #(1 2 3) from: #entityA to: #entityA.
 
 	self assert: (browser model getTupleDependencyWeight: tuple) equals: 0.
 ]
 
 { #category : #tests }
-MiDependencyStructuralMatrixBrowserTest >> testDontShowSelfDependenciesShowNonDiagonalWeight [
+MiDSMBrowserTest >> testDontShowSelfDependenciesShowNonDiagonalWeight [
 
 	| tuple |
 	browser model settings setItem: #selfDependenciesSetting value: false.
 	tuple := (AITarjanNode with: #entityA) -> (AITarjanNode with: #entityB).
-	browser model dependencyDictionary: (Dictionary newFromPairs: { (#entityA -> #entityB) . #(1 2 3) }).
+	browser model dependencies
+		dependencies: #(1 2 3) from: #entityA to: #entityB.
 
 	self assert: (browser model getTupleDependencyWeight: tuple) equals: 3.
 ]
 
 { #category : #tests }
-MiDependencyStructuralMatrixBrowserTest >> testDoubleClickCallsUserAction [
+MiDSMBrowserTest >> testDoubleClickCallsUserAction [
 	"sets a fake spec model on the visualization to check that #userAction: is called
 	 with the right tuple when double clicking on a square"
 	| mockModel detailedDSM  |
@@ -135,7 +137,7 @@ MiDependencyStructuralMatrixBrowserTest >> testDoubleClickCallsUserAction [
 ]
 
 { #category : #tests }
-MiDependencyStructuralMatrixBrowserTest >> testOutgoingDependencyFromInvocation [
+MiDSMBrowserTest >> testOutgoingDependencyFromInvocation [
 
 	| dependencies |
 	dependencies := class1 methods anyOne queryAllOutgoingForDSM.
@@ -147,7 +149,7 @@ MiDependencyStructuralMatrixBrowserTest >> testOutgoingDependencyFromInvocation 
 ]
 
 { #category : #tests }
-MiDependencyStructuralMatrixBrowserTest >> testOutgoingDependencyFromMethodDeclaredType [
+MiDSMBrowserTest >> testOutgoingDependencyFromMethodDeclaredType [
 
 	| mth2 dependencies |
 	mth2 := class2 methods anyOne.
@@ -162,7 +164,7 @@ MiDependencyStructuralMatrixBrowserTest >> testOutgoingDependencyFromMethodDecla
 ]
 
 { #category : #tests }
-MiDependencyStructuralMatrixBrowserTest >> testOutgoingDependencyFromVMethodDeclaredTypeParametric [
+MiDSMBrowserTest >> testOutgoingDependencyFromVMethodDeclaredTypeParametric [
 	"code: 
 	Class2
 		ParametricClass<Class1> mth2
@@ -189,7 +191,7 @@ MiDependencyStructuralMatrixBrowserTest >> testOutgoingDependencyFromVMethodDecl
 ]
 
 { #category : #tests }
-MiDependencyStructuralMatrixBrowserTest >> testOutgoingDependencyFromVariableDeclaredType [
+MiDSMBrowserTest >> testOutgoingDependencyFromVariableDeclaredType [
 
 	| mth2 dependencies |
 	mth2 := class2 methods anyOne.
@@ -206,7 +208,7 @@ MiDependencyStructuralMatrixBrowserTest >> testOutgoingDependencyFromVariableDec
 ]
 
 { #category : #tests }
-MiDependencyStructuralMatrixBrowserTest >> testOutgoingDependencyFromVariableDeclaredTypeParametric [
+MiDSMBrowserTest >> testOutgoingDependencyFromVariableDeclaredTypeParametric [
 	"code: 
 	Class2
 		mth2
@@ -236,13 +238,13 @@ MiDependencyStructuralMatrixBrowserTest >> testOutgoingDependencyFromVariableDec
 ]
 
 { #category : #tests }
-MiDependencyStructuralMatrixBrowserTest >> testSettingsAction [
+MiDSMBrowserTest >> testSettingsAction [
 
 	self assert: browser hasSettings
 ]
 
 { #category : #tests }
-MiDependencyStructuralMatrixBrowserTest >> testSettingsChanged [
+MiDSMBrowserTest >> testSettingsChanged [
 
 	| stubDSM redrawn |
 	redrawn := false.
@@ -256,7 +258,7 @@ MiDependencyStructuralMatrixBrowserTest >> testSettingsChanged [
 ]
 
 { #category : #tests }
-MiDependencyStructuralMatrixBrowserTest >> testSettingsNotChanged [
+MiDSMBrowserTest >> testSettingsNotChanged [
 
 	| stubDSM redrawn |
 	redrawn := false.
@@ -270,18 +272,19 @@ MiDependencyStructuralMatrixBrowserTest >> testSettingsNotChanged [
 ]
 
 { #category : #tests }
-MiDependencyStructuralMatrixBrowserTest >> testShowSelfDependenciesDoNotHideDiagonalWeight [
+MiDSMBrowserTest >> testShowSelfDependenciesDoNotHideDiagonalWeight [
 
 	| tuple |
 	browser model settings setItem: #selfDependenciesSetting value: true.
 	tuple := (AITarjanNode with: #entityA) -> (AITarjanNode with: #entityA).
-	browser model dependencyDictionary: (Dictionary newFromPairs: { (#entityA -> #entityA) . #(1 2 3) }).
+	browser model dependencies
+		dependencies: #(1 2 3) from: #entityA to: #entityA.
 
 	self assert: (browser model getTupleDependencyWeight: tuple) equals: 3.
 ]
 
 { #category : #tests }
-MiDependencyStructuralMatrixBrowserTest >> testTitleOfDSM [
+MiDSMBrowserTest >> testTitleOfDSM [
 
 	browser followEntity: {  class1 . class2 }.
 
@@ -293,7 +296,7 @@ MiDependencyStructuralMatrixBrowserTest >> testTitleOfDSM [
 ]
 
 { #category : #tests }
-MiDependencyStructuralMatrixBrowserTest >> testTitleOfDetailedDSM [
+MiDSMBrowserTest >> testTitleOfDetailedDSM [
 	"detailed DSM title should show the original entities"
 	| detailedDSM |
 
