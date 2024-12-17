@@ -12,7 +12,7 @@ Class {
 
 { #category : #running }
 MiDependencyStructuralMatrixBrowserTest >> browserClass [
-	^ MiDependencyStructuralMatrixBrowser
+	^ MiDSMBrowser
 ]
 
 { #category : #running }
