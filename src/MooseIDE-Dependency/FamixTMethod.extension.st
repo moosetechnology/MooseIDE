@@ -1,13 +1,13 @@
 Extension { #name : #FamixTMethod }
 
 { #category : #'*MooseIDE-Dependency' }
-FamixTMethod >> addNonAssociationDependenciesTo: dependencies [
-	"Same method as in FamixTTypedEntity + one statement at the begining.
-	 With inheritance we would have liked to do this `statement + super addNonAssociationDependenciesTo: dependencies`
-	 but this is not possible with traits, so we copy the code"
+FamixTMethod >> queryAllOutgoingForDSM [
 
-	self children do: [ :c | c addNonAssociationDependenciesTo: dependencies ].
+	| dependencies |
 
+	dependencies := self queryAllOutgoing.
+	(self children do: [ :c | dependencies addAll: c queryAllOutgoingForDSM ]).
+	
 	declaredType ifNotNil: [
 
 		( (declaredType usesFamixTrait: FamixTParametricEntity) and:
@@ -20,5 +20,7 @@ FamixTMethod >> addNonAssociationDependenciesTo: dependencies [
 				]
 			]
 			ifFalse: [ dependencies add: declaredType ]
-	]
+	].
+
+	^dependencies 
 ]
