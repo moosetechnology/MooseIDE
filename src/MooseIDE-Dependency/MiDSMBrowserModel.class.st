@@ -125,6 +125,12 @@ MiDSMBrowserModel >> getTupleDependencyWeight: tuple [
 	^dependencies weightFrom: tuple key model to: tuple value model
 ]
 
+{ #category : #accessing }
+MiDSMBrowserModel >> graph [
+
+	^graph
+]
+
 { #category : #initialization }
 MiDSMBrowserModel >> initialize [ 
 	super initialize.
@@ -178,7 +184,7 @@ MiDSMBrowserModel >> isCycle: tuple [
 { #category : #testing }
 MiDSMBrowserModel >> isDependency: tuple [
 
-	^(dependencies from: tuple key to: tuple value) isNotEmpty
+	^(dependencies from: tuple key model to: tuple value model) isNotEmpty
 ]
 
 { #category : #testing }

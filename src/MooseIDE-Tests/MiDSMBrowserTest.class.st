@@ -214,7 +214,7 @@ MiDSMBrowserTest >> testOutgoingDependencyFromVariableDeclaredTypeParametric [
 		mth2
 			ParametricClass<Class1> local2
 	Note: FamixJavaConcretization is an association and we are not interested in its genericEntity here
-	Note: hueristic to detect a concreteParameter being a genuine class is to check it has children
+	Note: heuristic to detect a concreteParameter being a genuine class is to check it has children
 	  That's why we use Class1 and not Class3 as concreteParameter"
 
 	| mth2 parametricClass dependencies |
@@ -310,4 +310,78 @@ MiDSMBrowserTest >> testTitleOfDetailedDSM [
 		window close.
 		self assert: title equals: 'DSM Class1 -> Class2'
 	]
+]
+
+{ #category : #tests }
+MiDSMBrowserTest >> testTupleIsCycle [
+
+	| tarjanGraph tuple |
+
+	tarjanGraph := browser model graph graph.
+	tarjanGraph nodes: { #entityA . #entityB }.
+	tarjanGraph addEdge: #entityA -> #entityB from: #key to: #value.
+	tarjanGraph addEdge: #entityB -> #entityA from: #key to: #value.
+	tarjanGraph run.
+
+	tuple := (tarjanGraph findNode: #entityA) -> (tarjanGraph findNode: #entityB).
+ 
+	self assert: (browser model isCycle: tuple)
+]
+
+{ #category : #tests }
+MiDSMBrowserTest >> testTupleIsDependency [
+
+	| tuple |
+
+	tuple := (AITarjanNode with: #entityA) -> (AITarjanNode with: #entityB).
+	browser model dependencies
+		dependencies: #(1 2 3) from: #entityA to: #entityB.
+
+	self assert: (browser model isDependency: tuple)
+]
+
+{ #category : #tests }
+MiDSMBrowserTest >> testTupleIsDiagonal [
+
+	| node tuple |
+
+	node := AITarjanNode with: #entityA.
+	tuple := node -> node.
+
+	self assert: (browser model isDiagonal: tuple)
+]
+
+{ #category : #tests }
+MiDSMBrowserTest >> testTupleIsNotCycle [
+
+	| tarjanGraph tuple |
+
+	tarjanGraph := browser model graph graph.
+	tarjanGraph nodes: { #entityA . #entityB }.
+	tarjanGraph addEdge: #entityA -> #entityB from: #key to: #value.
+	tarjanGraph run.
+
+	tuple := (tarjanGraph findNode: #entityA) -> (tarjanGraph findNode: #entityB).
+ 
+	self deny: (browser model isCycle: tuple)
+]
+
+{ #category : #tests }
+MiDSMBrowserTest >> testTupleIsNotDependency [
+
+	| tuple |
+
+	tuple := (AITarjanNode with: #entityA) -> (AITarjanNode with: #entityB).
+
+	self deny: (browser model isDependency: tuple)
+]
+
+{ #category : #tests }
+MiDSMBrowserTest >> testTupleIsNotDiagonal [
+
+	| tuple |
+
+	tuple := (AITarjanNode with: #entityA) -> (AITarjanNode with: #entityB).
+
+	self deny: (browser model isDiagonal: tuple)
 ]
