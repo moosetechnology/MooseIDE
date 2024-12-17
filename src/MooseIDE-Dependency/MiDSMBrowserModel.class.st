@@ -9,9 +9,9 @@ Class {
 		'nodeColors',
 		'orderedNodesX',
 		'orderedNodesY',
-		'dependencyDictionary',
 		'selectedEntities',
-		'settings'
+		'settings',
+		'dependencies'
 	],
 	#category : #'MooseIDE-Dependency-DSM'
 }
@@ -22,7 +22,7 @@ MiDSMBrowserModel >> buildGraph: aCollection [
 	self newGraph.
 	self buildGraphNodes: aCollection.
 
-	self initializeDependencies.
+	dependencies initializeDependencies.
 
 	self buildGraphEdges.
 	self computeSCCs
@@ -39,7 +39,7 @@ MiDSMBrowserModel >> buildGraphEdges [
 			from: #yourself
 			toAll: [ :sourceEntity | 
 				entities select: [ :targetEntity | 
-					(dependencyDictionary at:(sourceEntity -> targetEntity ) ) isNotEmpty 
+					(dependencies from: sourceEntity to: targetEntity) isNotEmpty 
 				]
 			]
 ]
@@ -82,16 +82,16 @@ MiDSMBrowserModel >> defaultColor [
 	^ nodeColors at: #defaultCell
 ]
 
+{ #category : #accessing }
+MiDSMBrowserModel >> dependencies [
+
+	^ dependencies
+]
+
 { #category : #settings }
 MiDSMBrowserModel >> dependencyColor [
 
 	^ nodeColors at: #dependency
-]
-
-{ #category : #'accessing - private tests' }
-MiDSMBrowserModel >> dependencyDictionary: anObject [
-
-	dependencyDictionary := anObject
 ]
 
 { #category : #settings }
@@ -114,13 +114,6 @@ MiDSMBrowserModel >> displayValueForTuple: tuple [
 MiDSMBrowserModel >> entities [
 
 	^ graph nodes collect: #model
-]
-
-{ #category : #testing }
-MiDSMBrowserModel >> entity: aCandidate belongsTo: anEntity [
-	"test whether aDependentEntity can be scoped up to anEntity"
-
-	^(aCandidate atScope: anEntity class) includes: anEntity
 ]
 
 { #category : #actions }
@@ -148,36 +141,6 @@ MiDSMBrowserModel >> followEntity: aCollection [
 	browser buildDSM
 ]
 
-{ #category : #actions }
-MiDSMBrowserModel >> getDependenciesFrom: entityX to: entityY [
-	"generic algorithm to get all dependencies from entityX to entityY at the scope of entityY"
-
-	^entityX queryAllOutgoingForDSM select: [ :dependency || opposites |
-		dependency isAssociation ifTrue: [
-			"Association so need to get the target because DSM is done between entities"
-			opposites := dependency target.
-			opposites isCollection
-			ifTrue: [ opposites anySatisfy: [ :each | self entity: each belongsTo: entityY ]
-			]
-			ifFalse: [
-				((opposites usesFamixTrait: FamixTParametricEntity) and:
-				[ opposites genericization isNotNil ])
-					ifTrue: [ opposites := opposites genericization genericEntity ].
-
-				opposites 
-					ifNotNil: [ self entity: opposites belongsTo: entityY ] 
-					ifNil: [false]
-			]
-		]
-		ifFalse: [ 
-			"case of dependencies not coming from an association"
-			dependency isStub
-				ifTrue: [ false ]
-				ifFalse: [ self entity: dependency belongsTo: entityY ]
-		]
-	]
-]
-
 { #category : #api }
 MiDSMBrowserModel >> getTupleDependencyWeight: tuple [
 	"generic algorithm is to take all dependencies of the `tuple key` (column of the DSM) and count
@@ -190,8 +153,7 @@ MiDSMBrowserModel >> getTupleDependencyWeight: tuple [
 	and: [ self showSelfDependencies not ])
 		ifTrue: [ ^0 ].
 
-	^(dependencyDictionary at: (tuple key model -> tuple value model ))
-		size
+	^dependencies weightFrom: tuple key model to: tuple value model
 ]
 
 { #category : #actions }
@@ -210,6 +172,7 @@ MiDSMBrowserModel >> initialize [
 	self initializeColors.
 	self newGraph.
 	selectedEntities := #().
+	dependencies := MiDSMDependencyManager on: self.
 
 	self initializeSettings 
 ]
@@ -228,26 +191,6 @@ MiDSMBrowserModel >> initializeColors [
 
 	"a 'nice' blue for cells with dependency"
 	nodeColors at: #dependency put: (Color colorFrom: '#659ef6').
-]
-
-{ #category : #buildGraph }
-MiDSMBrowserModel >> initializeDependencies [
-	"Could be optimized, when we open a detailed DSM, `self entities` is the union of entitiesX and entitiesY
-	 But we only need dependencies from entitiesX to entitiesY, and not:
-	 - from entitiesY to entitiesX
-	 - from entitiesX to entitiesX
-	 - from entitiesY to entitiesY"
-
-	| entities |
-	dependencyDictionary := Dictionary new.
-	entities := self entities.
-	entities do: [ :sourceEntity | 
-		entities do: [ :targetEntity | 
-			dependencyDictionary
-				at: (sourceEntity -> targetEntity)
-				put: (self getDependenciesFrom: sourceEntity to: targetEntity) 
-		]
-	]
 ]
 
 { #category : #initialization }
@@ -327,11 +270,9 @@ MiDSMBrowserModel >> orderNodes: nodeCollection [
 		weights at: node model put: 0.
 	].
 
-	dependencyDictionary keysAndValuesDo: [ :tuple :dependencies |
-		dependencies ifNotEmpty: [
-			self increment: dependents key: tuple value value: 1.
-			self increment: weights key: tuple value value: dependencies size.
-		]
+	dependencies allDependencyPairsDo: [ :fromEntity :toEntity :pairDependencies |
+		self increment: dependents key: toEntity value: 1.
+		self increment: weights key: toEntity value: pairDependencies size.
 	].
 
 	^nodeCollection sorted: [ :nodeA :nodeB || depsA depsB |
