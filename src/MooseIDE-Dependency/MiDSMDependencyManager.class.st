@@ -141,16 +141,6 @@ MiDSMDependencyManager >> dependency: dependency isToPackage: aPackage [
 	]
 ]
 
-{ #category : #testing }
-MiDSMDependencyManager >> dependency: dependency isToSubPackage: aPackage [
-
-	^aPackage children anySatisfy: [ :child |
-		child isPackage and:
-		[ (self dependency: dependency isTo: child) or: 
-			[] ]
-	]
-]
-
 { #category : #accessing }
 MiDSMDependencyManager >> dependencyDictionary [
 
