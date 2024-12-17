@@ -62,7 +62,13 @@ MooseAbstractLoadModuleMenuCommand >> execute [
 		baseline: self baselineName;
 		repository: self repositoryURL;
 		onConflictUseIncoming;
-		load
+		load: self groupToLoad
+]
+
+{ #category : #'as yet unclassified' }
+MooseAbstractLoadModuleMenuCommand >> groupToLoad [
+
+	^ 'default'
 ]
 
 { #category : #accessing }
