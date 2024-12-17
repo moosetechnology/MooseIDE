@@ -39,7 +39,7 @@ MiDSMBrowserModel >> computeMatrix: entities [
 
 	self selectedEntities: entities.
 
-	dependencies initializeDependencies: entities.
+	dependencies computeDependencies: entities.
 
 	graph buildGraph 
 

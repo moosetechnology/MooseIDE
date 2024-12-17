@@ -51,6 +51,29 @@ MiDSMDependencyManager >> allPairsDo: aBlock [
 ]
 
 { #category : #initialization }
+MiDSMDependencyManager >> computeDependencies: aCollection [
+	"Could be optimized, when we open a detailed DSM, `miModel entities` is the union of entitiesX and entitiesY
+	 But we only need dependencies from entitiesX to entitiesY, and not:
+	 - from entitiesY to entitiesX
+	 - from entitiesX to entitiesX
+	 - from entitiesY to entitiesY"
+
+	entities := aCollection select: [ :e | 
+			 e usesFamixTrait: TEntityMetaLevelDependency ].
+
+	dependencyDictionary := Dictionary new: entities size squared.
+
+	entities do: [ :sourceEntity | 
+		entities do: [ :targetEntity | 
+			self
+				dependencies: (self computeDependenciesFrom: sourceEntity to: targetEntity) 
+				from: sourceEntity
+				to: targetEntity
+		]
+	]
+]
+
+{ #category : #initialization }
 MiDSMDependencyManager >> computeDependenciesFrom: entityX to: entityY [
 	"generic algorithm to get all dependencies from entityX to entityY at the scope of entityY"
 
@@ -125,29 +148,6 @@ MiDSMDependencyManager >> initialize [
 	"empty initialization just to get a working object
 	 useful for tests"
 	dependencyDictionary := Dictionary new
-]
-
-{ #category : #initialization }
-MiDSMDependencyManager >> initializeDependencies: aCollection [
-	"Could be optimized, when we open a detailed DSM, `miModel entities` is the union of entitiesX and entitiesY
-	 But we only need dependencies from entitiesX to entitiesY, and not:
-	 - from entitiesY to entitiesX
-	 - from entitiesX to entitiesX
-	 - from entitiesY to entitiesY"
-
-	entities := aCollection select: [ :e | 
-			 e usesFamixTrait: TEntityMetaLevelDependency ].
-
-	dependencyDictionary := Dictionary new: entities size squared.
-
-	entities do: [ :sourceEntity | 
-		entities do: [ :targetEntity | 
-			self
-				dependencies: (self computeDependenciesFrom: sourceEntity to: targetEntity) 
-				from: sourceEntity
-				to: targetEntity
-		]
-	]
 ]
 
 { #category : #accessing }
