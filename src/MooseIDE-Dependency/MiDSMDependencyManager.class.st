@@ -6,7 +6,8 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'dependencyDictionary',
-		'miModel'
+		'miModel',
+		'entities'
 	],
 	#category : #'MooseIDE-Dependency-DSM'
 }
@@ -97,6 +98,12 @@ MiDSMDependencyManager >> dependencyDictionary: anObject [
 	dependencyDictionary := anObject
 ]
 
+{ #category : #accessing }
+MiDSMDependencyManager >> entities [
+
+	^entities 
+]
+
 { #category : #testing }
 MiDSMDependencyManager >> entity: aCandidate belongsTo: anEntity [
 	"test whether aDependentEntity can be scoped up to anEntity"
@@ -107,20 +114,30 @@ MiDSMDependencyManager >> entity: aCandidate belongsTo: anEntity [
 { #category : #api }
 MiDSMDependencyManager >> from: sourceEntity to: targetEntity [
 
-	^dependencyDictionary at: (sourceEntity -> targetEntity)
+	^dependencyDictionary at: (sourceEntity -> targetEntity) ifAbsent: [ ^#() ]
 ]
 
 { #category : #initialization }
-MiDSMDependencyManager >> initializeDependencies [
+MiDSMDependencyManager >> initialize [
+
+	super initialize.
+
+	"empty initialization just to get a working object
+	 useful for tests"
+	dependencyDictionary := Dictionary new
+]
+
+{ #category : #initialization }
+MiDSMDependencyManager >> initializeDependencies: aCollection [
 	"Could be optimized, when we open a detailed DSM, `miModel entities` is the union of entitiesX and entitiesY
 	 But we only need dependencies from entitiesX to entitiesY, and not:
 	 - from entitiesY to entitiesX
 	 - from entitiesX to entitiesX
 	 - from entitiesY to entitiesY"
 
-	| entities |
+	entities := aCollection select: [ :e | 
+			 e usesFamixTrait: TEntityMetaLevelDependency ].
 
-	entities := miModel entities.
 	dependencyDictionary := Dictionary new: entities size squared.
 
 	entities do: [ :sourceEntity | 
@@ -142,8 +159,7 @@ MiDSMDependencyManager >> miModel [
 { #category : #accessing }
 MiDSMDependencyManager >> miModel: anObject [
 
-	miModel := anObject.
-	self initializeDependencies
+	miModel := anObject
 ]
 
 { #category : #api }

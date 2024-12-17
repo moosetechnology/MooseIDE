@@ -16,42 +16,6 @@ Class {
 	#category : #'MooseIDE-Dependency-DSM'
 }
 
-{ #category : #buildGraph }
-MiDSMBrowserModel >> buildGraph: aCollection [
-
-	self newGraph.
-	self buildGraphNodes: aCollection.
-
-	dependencies initializeDependencies.
-
-	self buildGraphEdges.
-	self computeSCCs
-]
-
-{ #category : #buildGraph }
-MiDSMBrowserModel >> buildGraphEdges [
-	"We choose to say that there is a relation from line to column if line depends on column"
-	| entities |
-	entities := self entities.
-	
-	graph
-			edges: entities
-			from: #yourself
-			toAll: [ :sourceEntity | 
-				entities select: [ :targetEntity | 
-					(dependencies from: sourceEntity to: targetEntity) isNotEmpty 
-				]
-			]
-]
-
-{ #category : #buildGraph }
-MiDSMBrowserModel >> buildGraphNodes: aCollection [
-
-	graph nodes: (aCollection select: [ :e | 
-			 e usesFamixTrait: TEntityMetaLevelDependency ]).
-
-]
-
 { #category : #testing }
 MiDSMBrowserModel >> canFollowEntity: anObject [
 
@@ -70,10 +34,15 @@ MiDSMBrowserModel >> colorForTuple: tuple [
 	^ self dependencyColor
 ]
 
-{ #category : #buildGraph }
-MiDSMBrowserModel >> computeSCCs [
-	"run tarjan"
-	graph run
+{ #category : #initialization }
+MiDSMBrowserModel >> computeMatrix: entities [
+
+	self selectedEntities: entities.
+
+	dependencies initializeDependencies: entities.
+
+	graph buildGraph 
+
 ]
 
 { #category : #settings }
@@ -113,7 +82,7 @@ MiDSMBrowserModel >> displayValueForTuple: tuple [
 { #category : #accessing }
 MiDSMBrowserModel >> entities [
 
-	^ graph nodes collect: #model
+	^dependencies entities
 ]
 
 { #category : #actions }
@@ -130,12 +99,12 @@ MiDSMBrowserModel >> entityChildrenForDSM: anEntity [
 
 { #category : #actions }
 MiDSMBrowserModel >> followEntity: aCollection [
+	"initializing the DSM from a collection of entities received on the data bus (see also #withX:withY:)
+	 In this case, this is a square matrix of dependency"
 
-	self selectedEntities: aCollection.
+	self computeMatrix: aCollection.
 
-	self buildGraph: aCollection.
-
-	orderedNodesX := self orderNodes: graph nodes.
+	orderedNodesX := self orderNodes: aCollection.
 	orderedNodesY := orderedNodesX.
 
 	browser buildDSM
@@ -156,25 +125,19 @@ MiDSMBrowserModel >> getTupleDependencyWeight: tuple [
 	^dependencies weightFrom: tuple key model to: tuple value model
 ]
 
-{ #category : #actions }
-MiDSMBrowserModel >> increment: dictionary key: key value: increment [
-
-	| oldValue |
-	oldValue := dictionary at: key ifAbsent: [ ^self ].
-
-	dictionary at: key put: oldValue + increment
-]
-
 { #category : #initialization }
 MiDSMBrowserModel >> initialize [ 
 	super initialize.
 
 	self initializeColors.
-	self newGraph.
-	selectedEntities := #().
+	self initializeSettings .
+	
 	dependencies := MiDSMDependencyManager on: self.
+	graph := MiDSMDependencyGraph new dependencies: self dependencies.
 
-	self initializeSettings 
+	selectedEntities := #().
+	orderedNodesY := orderedNodesX := #().
+
 ]
 
 { #category : #initialization }
@@ -209,15 +172,13 @@ MiDSMBrowserModel >> initializeSettings [
 { #category : #testing }
 MiDSMBrowserModel >> isCycle: tuple [
 
-	^tuple key cycleNodes
-		includes: tuple value
+	^graph inCycle: tuple key with: tuple value
 ]
 
 { #category : #testing }
 MiDSMBrowserModel >> isDependency: tuple [
 
-	^tuple key adjacentNodes
-		includes: tuple value
+	^(dependencies from: tuple key to: tuple value) isNotEmpty
 ]
 
 { #category : #testing }
@@ -233,16 +194,9 @@ MiDSMBrowserModel >> miSelectedItem [
 	^selectedEntities
 ]
 
-{ #category : #buildGraph }
-MiDSMBrowserModel >> newGraph [
-	graph := AITarjan new.
-
-	orderedNodesX := #().
-	orderedNodesY := #()
-]
-
 { #category : #actions }
 MiDSMBrowserModel >> openDetailedDSMOn: aTuple [
+	"creating a new (detailed) DSM from	aTuple = fromEntity -> toEntity"
 
 	^(MiDSMBrowser
 		openWithX: (self entityChildrenForDSM: aTuple key model)
@@ -254,34 +208,34 @@ MiDSMBrowserModel >> openDetailedDSMOn: aTuple [
 ]
 
 { #category : #actions }
-MiDSMBrowserModel >> orderNodes: nodeCollection [
-
+MiDSMBrowserModel >> orderNodes: entities [
 	"order nodes according to number of dependencies
 	 Order is:
 	 - put first entities with less dependents (ignoring weights)
 	 - put first entities with weaker dependents based on weights"
 
 	| dependents weights |
-	dependents := Dictionary new: nodeCollection size.
-	weights := Dictionary new: nodeCollection size.
+	entities ifEmpty: [ ^#() ].
 
-	nodeCollection do: [ :node |
-		dependents at: node model put: 0.
-		weights at: node model put: 0.
+	dependents := Dictionary new: selectedEntities size.
+	weights := Dictionary new: selectedEntities size.
+
+	selectedEntities do: [ :entity |
+		dependents at: entity put: 0.
+		weights at: entity put: 0.
 	].
 
 	dependencies allDependencyPairsDo: [ :fromEntity :toEntity :pairDependencies |
-		self increment: dependents key: toEntity value: 1.
-		self increment: weights key: toEntity value: pairDependencies size.
+		dependents at: toEntity put: (dependents at: toEntity) + 1.
+		weights at: toEntity put: (weights at: toEntity) + pairDependencies size.
 	].
 
-	^nodeCollection sorted: [ :nodeA :nodeB || depsA depsB |
-		depsA := dependents at: nodeA model.
-		depsB := dependents at: nodeB model.
-
-		(depsA < depsB)
-		or: [ (depsA = depsB) and: [ (weights at: nodeA model) < (weights at: nodeB model) ] ]
-	]
+	^(entities sorted: [ :entityA :entityB |
+		((dependents at: entityA) < (dependents at: entityB))
+		or: [ ((dependents at: entityA) = (dependents at: entityB)) and:
+				[ (weights at: entityA) < (weights at: entityB) ] ]
+	])
+		collect: [ :entity | graph findNode: entity ]
 ]
 
 { #category : #accessing }
@@ -384,15 +338,16 @@ MiDSMBrowserModel >> userActionOn: aTuple [
 
 { #category : #actions }
 MiDSMBrowserModel >> withX: entitiesX withY: entitiesY [
+	"initializing the DSM for two list of entities (see also #followEntity:)
+	 In this case, this is probably not a suqare matrix of dependency"
 
 	| allEntities |
 	allEntities := entitiesX union: entitiesY.
 
-	self selectedEntities: allEntities.
-	self buildGraph: allEntities.
+	self computeMatrix: allEntities.
 
-	orderedNodesX := self orderNodes: (entitiesX collect: [ :each | graph findNode: each]).
-	orderedNodesY := self orderNodes: (entitiesY collect: [ :each | graph findNode: each]).
+	orderedNodesX := self orderNodes: entitiesX.
+	orderedNodesY := self orderNodes: entitiesY.
 
 	browser buildDSM
 ]

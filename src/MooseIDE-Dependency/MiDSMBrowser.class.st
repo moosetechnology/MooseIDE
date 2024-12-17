@@ -73,10 +73,10 @@ MiDSMBrowser class >> open [
 ]
 
 { #category : #'instance creation' }
-MiDSMBrowser class >> openWithX: nodesX withY: nodesY [
+MiDSMBrowser class >> openWithX: entitiesX withY: entitiesY [
 
 	^(super on: self newModel)
-		withX: nodesX withY: nodesY;
+		withX: entitiesX withY: entitiesY;
 		open;
 		yourself
 
@@ -147,6 +147,6 @@ MiDSMBrowser >> showSCC: aCollection [
 ]
 
 { #category : #accessing }
-MiDSMBrowser >> withX: nodesX withY: nodesY [
-	specModel withX: nodesX withY: nodesY
+MiDSMBrowser >> withX: entitiesX withY: entitiesY [
+	specModel withX: entitiesX withY: entitiesY
 ]
