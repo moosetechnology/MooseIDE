@@ -1,11 +1,13 @@
-Extension { #name : #FamixTTypedEntity }
+Extension { #name : #FamixTFunction }
 
 { #category : #'*MooseIDE-Dependency' }
-FamixTTypedEntity >> addNonAssociationDependenciesTo: dependencies [
-	"if declaredType is a Concretization of a ParametricEntity, then must look at its concreteParameters
-	 if they are actual classes (not GenericParameterType), then add them as dependencies
-	 This is check through an heuristic: if they have some children, then it must be an actual class"
+FamixTFunction >> queryAllOutgoingForDSM [
 
+	| dependencies |
+
+	dependencies := self queryAllOutgoing asSet.
+	(self children do: [ :c | dependencies addAll: c queryAllOutgoingForDSM ]).
+	
 	declaredType ifNotNil: [
 
 		( (declaredType usesFamixTrait: FamixTParametricEntity) and:
@@ -18,5 +20,7 @@ FamixTTypedEntity >> addNonAssociationDependenciesTo: dependencies [
 				]
 			]
 			ifFalse: [ dependencies add: declaredType ]
-	]
+	].
+
+	^dependencies 
 ]

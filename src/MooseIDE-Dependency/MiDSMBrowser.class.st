@@ -20,7 +20,7 @@ Controls:
 - Double click on a cell to open a detailed DSM
 "
 Class {
-	#name : #MiDependencyStructuralMatrixBrowser,
+	#name : #MiDSMBrowser,
 	#superclass : #MiAbstractBrowser,
 	#instVars : [
 		'mainPresenter'
@@ -29,7 +29,7 @@ Class {
 }
 
 { #category : #'world menu' }
-MiDependencyStructuralMatrixBrowser class >> menuCommandOn: aBuilder [
+MiDSMBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
 	<miBrowsersMenu>
@@ -37,116 +37,116 @@ MiDependencyStructuralMatrixBrowser class >> menuCommandOn: aBuilder [
 ]
 
 { #category : #'world menu' }
-MiDependencyStructuralMatrixBrowser class >> menuIconName [
+MiDSMBrowser class >> menuIconName [
 
 	^ #mooseTree
 ]
 
 { #category : #'world menu' }
-MiDependencyStructuralMatrixBrowser class >> menuItem [
+MiDSMBrowser class >> menuItem [
 
 	^ #DSMVisualisationBrowser
 ]
 
 { #category : #'world menu' }
-MiDependencyStructuralMatrixBrowser class >> menuLabel [
+MiDSMBrowser class >> menuLabel [
 
 	^ 'Dependency Structural Matrix'
 ]
 
 { #category : #'world menu' }
-MiDependencyStructuralMatrixBrowser class >> menuPriority [
+MiDSMBrowser class >> menuPriority [
 
 	^ self menuVisualizationToolsPriority + 4
 ]
 
 { #category : #'instance creation' }
-MiDependencyStructuralMatrixBrowser class >> newModel [
-	^MiDependencyStructuralMatrixBrowserModel new
+MiDSMBrowser class >> newModel [
+	^MiDSMBrowserModel new
 ]
 
 { #category : #'instance creation' }
-MiDependencyStructuralMatrixBrowser class >> open [
+MiDSMBrowser class >> open [
 
 	<script>
 	^ super open
 ]
 
 { #category : #'instance creation' }
-MiDependencyStructuralMatrixBrowser class >> openWithX: nodesX withY: nodesY [
+MiDSMBrowser class >> openWithX: entitiesX withY: entitiesY [
 
 	^(super on: self newModel)
-		withX: nodesX withY: nodesY;
+		withX: entitiesX withY: entitiesY;
 		open;
 		yourself
 
 ]
 
 { #category : #specs }
-MiDependencyStructuralMatrixBrowser class >> title [
+MiDSMBrowser class >> title [
 
 	^ 'Dependency Structural Matrix'
 ]
 
 { #category : #api }
-MiDependencyStructuralMatrixBrowser >> buildDSM [
+MiDSMBrowser >> buildDSM [
 	mainPresenter run
 ]
 
 { #category : #testing }
-MiDependencyStructuralMatrixBrowser >> canFollowEntity: anObject [
+MiDSMBrowser >> canFollowEntity: anObject [
 
 	^ specModel canFollowEntity: anObject
 ]
 
 { #category : #testing }
-MiDependencyStructuralMatrixBrowser >> canTagEntities [ 
+MiDSMBrowser >> canTagEntities [ 
 	^false
 ]
 
 { #category : #accessing }
-MiDependencyStructuralMatrixBrowser >> diagram [
+MiDSMBrowser >> diagram [
 
 	^ mainPresenter
 ]
 
 { #category : #actions }
-MiDependencyStructuralMatrixBrowser >> followEntity: anEntity [
+MiDSMBrowser >> followEntity: anEntity [
 
 	super followEntity: anEntity.
 	specModel followEntity: anEntity
 ]
 
 { #category : #testing }
-MiDependencyStructuralMatrixBrowser >> hasSettings [
+MiDSMBrowser >> hasSettings [
 	^ true
 ]
 
 { #category : #initialization }
-MiDependencyStructuralMatrixBrowser >> initializePresenters [
+MiDSMBrowser >> initializePresenters [
 
-	mainPresenter := self instantiate: MiDependencyStructuralMatrixVisualization.
+	mainPresenter := self instantiate: MiDSMVisualization.
 	mainPresenter specModel: specModel
 ]
 
 { #category : #'accessing - private tests' }
-MiDependencyStructuralMatrixBrowser >> mainPresenter: anObject [
+MiDSMBrowser >> mainPresenter: anObject [
 
 	mainPresenter := anObject 
 ]
 
 { #category : #accessing }
-MiDependencyStructuralMatrixBrowser >> miSelectedItem [
+MiDSMBrowser >> miSelectedItem [
 
 	^ specModel miSelectedItem
 ]
 
 { #category : #api }
-MiDependencyStructuralMatrixBrowser >> showSCC: aCollection [
+MiDSMBrowser >> showSCC: aCollection [
 	mainPresenter showSCC: aCollection 
 ]
 
 { #category : #accessing }
-MiDependencyStructuralMatrixBrowser >> withX: nodesX withY: nodesY [
-	specModel withX: nodesX withY: nodesY
+MiDSMBrowser >> withX: entitiesX withY: entitiesY [
+	specModel withX: entitiesX withY: entitiesY
 ]

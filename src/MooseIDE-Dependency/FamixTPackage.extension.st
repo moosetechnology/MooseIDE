@@ -1,7 +1,13 @@
 Extension { #name : #FamixTPackage }
 
 { #category : #'*MooseIDE-Dependency' }
-FamixTPackage >> addNonAssociationDependenciesTo: dependencies [
+FamixTPackage >> queryAllOutgoingForDSM [
 
-	self children do: [ :c | c addNonAssociationDependenciesTo: dependencies ].
+	| dependencies |
+
+	dependencies := Set new.
+	self children do: [ :c | dependencies addAll: c queryAllOutgoingForDSM ].
+
+	^dependencies
+
 ]

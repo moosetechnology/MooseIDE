@@ -1,5 +1,5 @@
 Class {
-	#name : #MiRSDependencyStructuralMatrix,
+	#name : #MiRSDSM,
 	#superclass : #RSDSM,
 	#instVars : [
 		'owner'
@@ -8,7 +8,7 @@ Class {
 }
 
 { #category : #'hooks - labels' }
-MiRSDependencyStructuralMatrix >> createLabelShapeX: aRSBox [
+MiRSDSM >> createLabelShapeX: aRSBox [
 
 	^(super createLabelShapeX: aRSBox)
 		popupText: [ :graphNode | graphNode model mooseName ] ;
@@ -16,7 +16,7 @@ MiRSDependencyStructuralMatrix >> createLabelShapeX: aRSBox [
 ]
 
 { #category : #'hooks - labels' }
-MiRSDependencyStructuralMatrix >> createLabelShapeY: aRSBox [
+MiRSDSM >> createLabelShapeY: aRSBox [
 
 	^(super createLabelShapeY: aRSBox)
 		popupText: [ :graphNode | graphNode model mooseName ] ;
@@ -24,7 +24,7 @@ MiRSDependencyStructuralMatrix >> createLabelShapeY: aRSBox [
 ]
 
 { #category : #hooks }
-MiRSDependencyStructuralMatrix >> createShape: tuple [
+MiRSDSM >> createShape: tuple [
 
 	| weight |
 	weight := self getTupleDependencyWeight: tuple.
@@ -44,12 +44,12 @@ MiRSDependencyStructuralMatrix >> createShape: tuple [
 ]
 
 { #category : #accessing }
-MiRSDependencyStructuralMatrix >> getTupleDependencyWeight: tuple [
+MiRSDSM >> getTupleDependencyWeight: tuple [
 	^ owner getTupleDependencyWeight: tuple
 ]
 
 { #category : #highlighting }
-MiRSDependencyStructuralMatrix >> highlight: evt [
+MiRSDSM >> highlight: evt [
 	"Probable bug in RSDSM: `super highlight: evt` draws the row and column with bold border
 	 But the borders are shapes that should not receive announcement (like mouseEnter/Leave for highlight/unhighlight"
 
@@ -63,23 +63,23 @@ MiRSDependencyStructuralMatrix >> highlight: evt [
 ]
 
 { #category : #accessing }
-MiRSDependencyStructuralMatrix >> owner [
+MiRSDSM >> owner [
 	^ owner
 ]
 
 { #category : #accessing }
-MiRSDependencyStructuralMatrix >> owner: anObject [
+MiRSDSM >> owner: anObject [
 
 	owner := anObject
 ]
 
 { #category : #accessing }
-MiRSDependencyStructuralMatrix >> specModel [
+MiRSDSM >> specModel [
 	^self owner specModel.
 ]
 
 { #category : #highlighting }
-MiRSDependencyStructuralMatrix >> unhighlight: evt [
+MiRSDSM >> unhighlight: evt [
 
 	super unhighlight: evt.
 
@@ -89,7 +89,7 @@ MiRSDependencyStructuralMatrix >> unhighlight: evt [
 ]
 
 { #category : #'as yet unclassified' }
-MiRSDependencyStructuralMatrix >> userActionOn: aTuple [
+MiRSDSM >> userActionOn: aTuple [
 	
 	self specModel userActionOn: aTuple
 ]

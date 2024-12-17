@@ -1,8 +1,13 @@
 Extension { #name : #FamixTClass }
 
 { #category : #'*MooseIDE-Dependency' }
-FamixTClass >> addNonAssociationDependenciesTo: dependencies [
+FamixTClass >> queryAllOutgoingForDSM [
 
-	self children do: [ :c | c addNonAssociationDependenciesTo: dependencies ].
-	
+	| dependencies |
+
+	dependencies := self queryOutgoingInheritances asSet.
+	self children do: [ :c | dependencies addAll: c queryAllOutgoingForDSM ].
+
+	^dependencies
+
 ]

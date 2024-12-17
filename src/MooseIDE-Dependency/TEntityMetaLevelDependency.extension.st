@@ -18,19 +18,6 @@ TEntityMetaLevelDependency >> miTreeExtension [
 ]
 
 { #category : #'*MooseIDE-Dependency' }
-TEntityMetaLevelDependency >> queryAllOutgoingForDSM [
-	"Query all the outgoing associations of the receiver and its children.
-	 This is a special implementation that catches more dependencies.
-	 For example it gets the declaredType of variables.
-	 This is temporary until we resolve the issue of declaredType not being an Association"
-	
-	| dependencies |
-	dependencies := self queryAllOutgoing.
-	self addNonAssociationDependenciesTo: dependencies.
-	^ dependencies
-]
-
-{ #category : #'*MooseIDE-Dependency' }
 TEntityMetaLevelDependency >> rootsForTreeMap [
 
 	^ self asMooseGroup

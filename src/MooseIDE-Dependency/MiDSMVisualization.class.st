@@ -2,7 +2,7 @@
 A visualization of a RSDSM inside a MooseIDE browser
 "
 Class {
-	#name : #MiDependencyStructuralMatrixVisualization,
+	#name : #MiDSMVisualization,
 	#superclass : #MiAbstractVisualization,
 	#instVars : [
 		'lastSCCShapes',
@@ -14,14 +14,14 @@ Class {
 }
 
 { #category : #initialization }
-MiDependencyStructuralMatrixVisualization >> buildInCanvas: aRSCanvas [
+MiDSMVisualization >> buildInCanvas: aRSCanvas [
 	| dsm |
 
 	specModel orderedNodesX ifEmpty: [ ^self ].
 	specModel orderedNodesY ifEmpty: [ ^self ].
 	
 	aRSCanvas addInteraction: RSCanvasController new.
-	dsm := MiRSDependencyStructuralMatrix new.
+	dsm := MiRSDSM new.
 	dsm owner: self.
 	dsm setShouldFeedX.
 	dsm labelShapeX textBlock: [ :dependingNode | specModel displayValueForNode: dependingNode].
@@ -38,22 +38,22 @@ MiDependencyStructuralMatrixVisualization >> buildInCanvas: aRSCanvas [
 ]
 
 { #category : #coloring }
-MiDependencyStructuralMatrixVisualization >> cellColor: tuple [
+MiDSMVisualization >> cellColor: tuple [
 	^specModel colorForTuple: tuple
 ]
 
 { #category : #coloring }
-MiDependencyStructuralMatrixVisualization >> cellShowSCCColor: tuple [
+MiDSMVisualization >> cellShowSCCColor: tuple [
 	^specModel showSCCColorForTuple: tuple
 ]
 
 { #category : #accessing }
-MiDependencyStructuralMatrixVisualization >> getTupleDependencyWeight: tuple [
+MiDSMVisualization >> getTupleDependencyWeight: tuple [
 	^ specModel getTupleDependencyWeight: tuple
 ]
 
 { #category : #initialization }
-MiDependencyStructuralMatrixVisualization >> initialize [
+MiDSMVisualization >> initialize [
 
 	super initialize.
 
@@ -62,7 +62,7 @@ MiDependencyStructuralMatrixVisualization >> initialize [
 ]
 
 { #category : #private }
-MiDependencyStructuralMatrixVisualization >> sccShapesIncluding: aRSShape [
+MiDSMVisualization >> sccShapesIncluding: aRSShape [
 
 	"Returns all shapes involved in the same cycle as aRSShape.
 	 lastSCCShapes is an optimization cache.
@@ -77,7 +77,7 @@ MiDependencyStructuralMatrixVisualization >> sccShapesIncluding: aRSShape [
 ]
 
 { #category : #initialization }
-MiDependencyStructuralMatrixVisualization >> setInteractions: dsm [
+MiDSMVisualization >> setInteractions: dsm [
 	|   |
 	dsm shapes @ (RSPopup text: [:tuple | specModel displayValueForTuple: tuple ]).
 
@@ -98,23 +98,23 @@ MiDependencyStructuralMatrixVisualization >> setInteractions: dsm [
 ]
 
 { #category : #utilities }
-MiDependencyStructuralMatrixVisualization >> shapeFor: tuple [
+MiDSMVisualization >> shapeFor: tuple [
 	currentCanvas deepShapeFromModel: tuple
 ]
 
 { #category : #coloring }
-MiDependencyStructuralMatrixVisualization >> showSCC: aCollection [
+MiDSMVisualization >> showSCC: aCollection [
 	aCollection do: [ :tuple |
 		(self shapeFor: tuple) color: (specModel showSCCColorForTuple: tuple)
 	]
 ]
 
 { #category : #accessing }
-MiDependencyStructuralMatrixVisualization >> specModel [
+MiDSMVisualization >> specModel [
 	^ specModel
 ]
 
 { #category : #accessing }
-MiDependencyStructuralMatrixVisualization >> specModel: aDSMModel [
+MiDSMVisualization >> specModel: aDSMModel [
 	specModel := aDSMModel
 ]
