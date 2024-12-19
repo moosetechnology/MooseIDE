@@ -23,7 +23,7 @@ MiModelReporter class >> menuCommandOn: aBuilder [
 { #category : #'world menu' }
 MiModelReporter class >> menuItem [
 
-	^#ModelDashboardBrowser
+	^#ModelReporter
 ]
 
 { #category : #'world menu' }
@@ -46,7 +46,7 @@ MiModelReporter class >> open [
 
 { #category : #'world menu' }
 MiModelReporter class >> title [
-	^ 'Model Dashboard'
+	^ 'Model Reporter'
 ]
 
 { #category : #testing }
