@@ -71,6 +71,20 @@ MiModelReporterModel >> entities [
 	^mooseModel
 ]
 
+{ #category : #'as yet unclassified' }
+MiModelReporterModel >> exportReportToHTML: microdownText [
+
+	(mooseModel name , '-report.html') asFileReference writeStreamDo: [ :stream |
+		stream nextPutAll: (MicHTMLVisitor asHTMLString: (MicrodownParser new parse: microdownText) )
+	]
+]
+
+{ #category : #'as yet unclassified' }
+MiModelReporterModel >> exportReportToPDF: microdownText [
+
+	self inform: 'PDF export not implemented yet, sorry'
+]
+
 { #category : #document }
 MiModelReporterModel >> floatAsString: aFloat [
 

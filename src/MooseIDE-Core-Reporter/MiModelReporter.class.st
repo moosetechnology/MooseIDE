@@ -77,6 +77,18 @@ MiModelReporter >> defaultLayout [
 		  yourself
 ]
 
+{ #category : #'as yet unclassified' }
+MiModelReporter >> exportReportToHTML [
+
+	specModel exportReportToHTML: mainPresenter text
+]
+
+{ #category : #'as yet unclassified' }
+MiModelReporter >> exportReportToPDF [
+
+	specModel exportReportToPDF: mainPresenter text
+]
+
 { #category : #testing }
 MiModelReporter >> followEntity: anEntity [
 
