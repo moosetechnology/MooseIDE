@@ -12,7 +12,7 @@ MiReportHTMLExportCommand class >> defaultDescription [
 { #category : #testing }
 MiReportHTMLExportCommand class >> defaultIconName [
 
-	^ #mooseExportHTML
+	^ #save
 ]
 
 { #category : #testing }

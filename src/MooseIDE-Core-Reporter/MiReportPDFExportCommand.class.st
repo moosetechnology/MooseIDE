@@ -12,7 +12,7 @@ MiReportPDFExportCommand class >> defaultDescription [
 { #category : #testing }
 MiReportPDFExportCommand class >> defaultIconName [
 
-	^ #mooseExportPDF
+	^ #save
 ]
 
 { #category : #testing }

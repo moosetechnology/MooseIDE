@@ -53,7 +53,7 @@ MiModelReporter class >> title [
 { #category : #testing }
 MiModelReporter >> canFollowEntity: anObject [
 
-	^anObject isMooseModel 
+	^anObject ifNil: [ false ] ifNotNil: [ anObject isMooseModel ]
 ]
 
 { #category : #testing }
