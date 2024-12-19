@@ -8,7 +8,8 @@ Class {
 	#name : #MiModelReporter,
 	#superclass : #MiAbstractBrowser,
 	#instVars : [
-		'mainPresenter'
+		'mainPresenter',
+		'toolbar'
 	],
 	#category : #'MooseIDE-Core-Reporter'
 }
@@ -67,6 +68,15 @@ MiModelReporter >> canTagEntities [
 	^ false
 ]
 
+{ #category : #layout }
+MiModelReporter >> defaultLayout [
+
+	^ SpBoxLayout newVertical
+		  add: #toolbar expand: false ;
+		  add: #mainPresenter expand: true ;
+		  yourself
+]
+
 { #category : #testing }
 MiModelReporter >> followEntity: anEntity [
 
@@ -74,16 +84,47 @@ MiModelReporter >> followEntity: anEntity [
 	specModel followEntity: anEntity
 ]
 
+{ #category : #'as yet unclassified' }
+MiModelReporter >> formattedReport: formattedReport [
+]
+
 { #category : #testing }
 MiModelReporter >> initializePresenters [
 
+	toolbar := self newToolbar
+		fillWith: (MiReportExportCommand asCommandGroupWith: self);
+		beIcons;
+		addItem: self refreshToolbarButton;
+		yourself.
+
 	mainPresenter := self newText
+]
+
+{ #category : #initialization }
+MiModelReporter >> initializeToolbar [
+
+	toolbar := self newToolbar
+		           fillWith:
+			           (MiReportExportCommand asCommandGroupWith: self);
+		           beIcons;
+		           addItem: self refreshToolbarButton;
+		           yourself
 ]
 
 { #category : #testing }
 MiModelReporter >> miSelectedItem [
 
 	^#()
+]
+
+{ #category : #initialization }
+MiModelReporter >> refreshToolbarButton [
+
+	^ SpToolbarButtonPresenter new
+		  icon: (self iconNamed: #smallUpdate);
+		  help: 'Refresh list';
+		  action: [ self updateList ];
+		  yourself
 ]
 
 { #category : #actions }
