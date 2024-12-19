@@ -75,7 +75,7 @@ MiModelReporterModel >> entities [
 MiModelReporterModel >> exportReportToHTML: microdownText [
 
 	(mooseModel name , '-report.html') asFileReference writeStreamDo: [ :stream |
-		stream nextPutAll: (MicHTMLVisitor asHTMLString: (MicrodownParser new parse: microdownText) )
+		stream nextPutAll: (MicHTMLVisitor asHTMLString: microdownText)
 	]
 ]
 
