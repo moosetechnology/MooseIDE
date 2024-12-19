@@ -1,87 +1,93 @@
+"
+Generates a statistical report on key features of a Moose model
+The report is generated in markdown and can be edited manually before being exported
+
+Accepted entities: A mooseModel
+"
 Class {
-	#name : #MiModelDashboard,
+	#name : #MiModelReporter,
 	#superclass : #MiAbstractBrowser,
 	#instVars : [
 		'mainPresenter'
 	],
-	#category : #'MooseIDE-Core-ModelDashboard'
+	#category : #'MooseIDE-Core-Reporter'
 }
 
 { #category : #'world menu' }
-MiModelDashboard class >> menuCommandOn: aBuilder [
+MiModelReporter class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
 	^ self buildMenuItemIn: aBuilder
 ]
 
 { #category : #'world menu' }
-MiModelDashboard class >> menuItem [
+MiModelReporter class >> menuItem [
 
 	^#ModelDashboardBrowser
 ]
 
 { #category : #'world menu' }
-MiModelDashboard class >> menuPriority [
+MiModelReporter class >> menuPriority [
 
 	^ self menuMetaToolsPriority + 1
 ]
 
 { #category : #'world menu' }
-MiModelDashboard class >> newModel [
+MiModelReporter class >> newModel [
 
-	^ MiModelDashboardModel new
+	^ MiModelReporterModel new
 ]
 
 { #category : #'world menu' }
-MiModelDashboard class >> open [
+MiModelReporter class >> open [
 	<script>
 	^ super open
 ]
 
 { #category : #'world menu' }
-MiModelDashboard class >> title [
+MiModelReporter class >> title [
 	^ 'Model Dashboard'
 ]
 
 { #category : #testing }
-MiModelDashboard >> canFollowEntity: anObject [
+MiModelReporter >> canFollowEntity: anObject [
 
 	^anObject isMooseModel 
 ]
 
 { #category : #testing }
-MiModelDashboard >> canPropagate [
+MiModelReporter >> canPropagate [
 
 	^ false
 ]
 
 { #category : #testing }
-MiModelDashboard >> canTagEntities [
+MiModelReporter >> canTagEntities [
 
 	^ false
 ]
 
 { #category : #testing }
-MiModelDashboard >> followEntity: anEntity [
+MiModelReporter >> followEntity: anEntity [
 
 	super followEntity: anEntity.
 	specModel followEntity: anEntity
 ]
 
 { #category : #testing }
-MiModelDashboard >> initializePresenters [
+MiModelReporter >> initializePresenters [
 
 	mainPresenter := self newText
 ]
 
 { #category : #testing }
-MiModelDashboard >> miSelectedItem [
+MiModelReporter >> miSelectedItem [
 
 	^#()
 ]
 
 { #category : #actions }
-MiModelDashboard >> updateReport: report [
+MiModelReporter >> updateReport: report [
 
 	mainPresenter text: report
 ]

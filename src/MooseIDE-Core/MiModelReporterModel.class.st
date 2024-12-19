@@ -1,16 +1,21 @@
+"
+The spec model for the MiModelReporter
+
+Responsible for actually generating the report
+"
 Class {
-	#name : #MiModelDashboardModel,
+	#name : #MiModelReporterModel,
 	#superclass : #MiAbstractModel,
 	#instVars : [
 		'mooseModel',
 		'reportDOM',
 		'context'
 	],
-	#category : #'MooseIDE-Core-ModelDashboard'
+	#category : #'MooseIDE-Core-Reporter'
 }
 
 { #category : #microdown }
-MiModelDashboardModel >> bulletList: aCollection [
+MiModelReporterModel >> bulletList: aCollection [
 
 	| block |
 	block := MicUnorderedListBlock new.
@@ -31,13 +36,13 @@ MiModelDashboardModel >> bulletList: aCollection [
 ]
 
 { #category : #accessing }
-MiModelDashboardModel >> currentBlock [
+MiModelReporterModel >> currentBlock [
 
 	^context top
 ]
 
 { #category : #document }
-MiModelDashboardModel >> document [
+MiModelReporterModel >> document [
 		
 	self title: ('Dashboard : '  , mooseModel name).
 
@@ -48,13 +53,13 @@ MiModelDashboardModel >> document [
 ]
 
 { #category : #document }
-MiModelDashboardModel >> endSection [
+MiModelReporterModel >> endSection [
 
 	context pop
 ]
 
 { #category : #microdown }
-MiModelDashboardModel >> ensure: parentBlock parentOf: childBlock [
+MiModelReporterModel >> ensure: parentBlock parentOf: childBlock [
 
 	childBlock parent: parentBlock.
 	(parentBlock children includes: childBlock)
@@ -62,33 +67,33 @@ MiModelDashboardModel >> ensure: parentBlock parentOf: childBlock [
 ]
 
 { #category : #accessing }
-MiModelDashboardModel >> entities [
+MiModelReporterModel >> entities [
 	^mooseModel
 ]
 
 { #category : #document }
-MiModelDashboardModel >> floatAsString: aFloat [
+MiModelReporterModel >> floatAsString: aFloat [
 
 	^(aFloat asFloat round: 1) asString
 
 ]
 
 { #category : #accessing }
-MiModelDashboardModel >> followEntity: aMooseModel [
+MiModelReporterModel >> followEntity: aMooseModel [
 
 	mooseModel := aMooseModel.
 	self updateReport
 ]
 
 { #category : #document }
-MiModelDashboardModel >> fullyQualifiedName: anEntity [
+MiModelReporterModel >> fullyQualifiedName: anEntity [
 
 	^anEntity mooseName copyReplaceAll: '::' with: '.' 
 
 ]
 
 { #category : #microdown }
-MiModelDashboardModel >> headerBlock: level header: aString [
+MiModelReporterModel >> headerBlock: level header: aString [
 
 	| block |
 	block := MicHeaderBlock new
@@ -100,20 +105,20 @@ MiModelDashboardModel >> headerBlock: level header: aString [
 ]
 
 { #category : #accessing }
-MiModelDashboardModel >> miSelectedItem [
+MiModelReporterModel >> miSelectedItem [
 
 	^#()
 ]
 
 { #category : #microdown }
-MiModelDashboardModel >> numericValue: text value: number [
+MiModelReporterModel >> numericValue: text value: number [
 
 	^self textBlock: (text , ': ' , number asString) in: nil
 		
 ]
 
 { #category : #microdown }
-MiModelDashboardModel >> paragraph: aCollection [
+MiModelReporterModel >> paragraph: aCollection [
 
 	| block |
 	block := MicParagraphBlock new
@@ -132,13 +137,13 @@ MiModelDashboardModel >> paragraph: aCollection [
 ]
 
 { #category : #accessing }
-MiModelDashboardModel >> reportDOM [
+MiModelReporterModel >> reportDOM [
 
 	^ reportDOM
 ]
 
 { #category : #document }
-MiModelDashboardModel >> sectionClasses [
+MiModelReporterModel >> sectionClasses [
 
 	self subtitle: 'Classes'.
 
@@ -150,14 +155,14 @@ MiModelDashboardModel >> sectionClasses [
 ]
 
 { #category : #document }
-MiModelDashboardModel >> sectionClassesMemberStats: classes [
+MiModelReporterModel >> sectionClassesMemberStats: classes [
 
 	self stats: (classes collect: [ :c | c numberOfAttributes ]) description: 'attributes'.
 	self stats: (classes collect: [ :c | c numberOfMethods ]) description: 'methods'
 ]
 
 { #category : #document }
-MiModelDashboardModel >> sectionMethods [
+MiModelReporterModel >> sectionMethods [
 
 	self subtitle: 'Methods'.
 
@@ -169,7 +174,7 @@ MiModelDashboardModel >> sectionMethods [
 ]
 
 { #category : #document }
-MiModelDashboardModel >> sectionMethodsStats: methods [
+MiModelReporterModel >> sectionMethodsStats: methods [
 
 	self stats: (methods collect: [ :c | c numberOfParameters ]) description: 'parameters'.
 	self stats: (methods collect: [ :c | c numberOfLinesOfCode ]) description: 'lines of code'.
@@ -178,7 +183,7 @@ MiModelDashboardModel >> sectionMethodsStats: methods [
 ]
 
 { #category : #document }
-MiModelDashboardModel >> sectionPackages [
+MiModelReporterModel >> sectionPackages [
 	| number allClasses |
 
 	self subtitle: 'Packages'.
@@ -198,12 +203,12 @@ MiModelDashboardModel >> sectionPackages [
 ]
 
 { #category : #settings }
-MiModelDashboardModel >> settings [
+MiModelReporterModel >> settings [
 
 ]
 
 { #category : #document }
-MiModelDashboardModel >> stats: numberCollection description: aString [
+MiModelReporterModel >> stats: numberCollection description: aString [
 
 	| collection |
 	collection := numberCollection asOrderedCollection.
@@ -220,7 +225,7 @@ MiModelDashboardModel >> stats: numberCollection description: aString [
 ]
 
 { #category : #document }
-MiModelDashboardModel >> subSectionSpecialClasses: selectionBlock description: aString [
+MiModelReporterModel >> subSectionSpecialClasses: selectionBlock description: aString [
 
 	| largeClasses |
 	self subsubtitle: aString.
@@ -238,7 +243,7 @@ MiModelDashboardModel >> subSectionSpecialClasses: selectionBlock description: a
 ]
 
 { #category : #document }
-MiModelDashboardModel >> subSectionSpecialMethods: selectionBlock description: aString [
+MiModelReporterModel >> subSectionSpecialMethods: selectionBlock description: aString [
 
 	| methods |
 	self subsubtitle: aString.
@@ -256,21 +261,21 @@ MiModelDashboardModel >> subSectionSpecialMethods: selectionBlock description: a
 ]
 
 { #category : #microdown }
-MiModelDashboardModel >> subsubtitle: aString [
+MiModelReporterModel >> subsubtitle: aString [
 
 	^self headerBlock: 3 header: aString.
 
 ]
 
 { #category : #microdown }
-MiModelDashboardModel >> subtitle: aString [
+MiModelReporterModel >> subtitle: aString [
 
 	^self headerBlock: 2 header: aString.
 
 ]
 
 { #category : #microdown }
-MiModelDashboardModel >> textBlock: aString in: parentBlock [
+MiModelReporterModel >> textBlock: aString in: parentBlock [
 
 	| block |
 	block := MicTextBlock new
@@ -282,14 +287,14 @@ MiModelDashboardModel >> textBlock: aString in: parentBlock [
 ]
 
 { #category : #microdown }
-MiModelDashboardModel >> title: aString [
+MiModelReporterModel >> title: aString [
 
 	^self headerBlock: 1 header: aString.
 
 ]
 
 { #category : #running }
-MiModelDashboardModel >> updateReport [
+MiModelReporterModel >> updateReport [
 
 	context := Stack new.
 	context push: MicRootBlock new.
