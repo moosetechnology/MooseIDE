@@ -101,6 +101,11 @@ MiModelReporter >> formattedReport: formattedReport [
 ]
 
 { #category : #testing }
+MiModelReporter >> hasSettings [
+	^ true
+]
+
+{ #category : #testing }
 MiModelReporter >> initializePresenters [
 
 	toolbar := self newToolbar

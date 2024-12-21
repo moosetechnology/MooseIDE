@@ -9,7 +9,8 @@ Class {
 	#instVars : [
 		'mooseModel',
 		'reportDOM',
-		'context'
+		'context',
+		'settings'
 	],
 	#category : #'MooseIDE-Core-Reporter'
 }
@@ -33,6 +34,12 @@ MiModelReporterModel >> bulletList: aCollection [
 
 	^block
 
+]
+
+{ #category : #settings }
+MiModelReporterModel >> complexMethodLimit [
+
+	^ settings getItemValue: #complexMethodSetting
 ]
 
 { #category : #accessing }
@@ -118,6 +125,60 @@ MiModelReporterModel >> headerBlock: level header: aString [
 	^ block
 ]
 
+{ #category : #initialization }
+MiModelReporterModel >> initializeSettings [ 
+
+	settings := super initializeSettings.
+	settings
+		addItem: (MiTextSettingItem integerSetting
+			setValue: 100 ;
+			label: 'Large class' ;
+			help: 'Above this number of methods, a class is considered large' ;
+			yourself)
+		named: #largeClassSetting ;
+
+		addItem: (MiTextSettingItem integerSetting
+			setValue: 1000 ;
+			label: 'Long class' ;
+			help: 'Above this number of Lines Of Code, a class is considered long' ;
+			yourself)
+		named: #longClassSetting ;
+
+		addItem: (MiTextSettingItem integerSetting
+			setValue: 100 ;
+			label: 'Long method' ;
+			help: 'Above this number of Lines Of Code, a method is considered long' ;
+			yourself)
+		named: #longMethodSetting;
+
+		addItem: (MiTextSettingItem integerSetting
+			setValue: 50 ;
+			label: 'Complex method' ;
+			help: 'Above this cyclomatic complexity, a method is considered complex' ;
+		yourself)
+		named: #complexMethodSetting.
+
+
+]
+
+{ #category : #settings }
+MiModelReporterModel >> largeClassLimit [
+
+	^ settings getItemValue: #largeClassSetting
+]
+
+{ #category : #settings }
+MiModelReporterModel >> longClassLimit [
+
+	^ settings getItemValue: #longClassSetting
+]
+
+{ #category : #settings }
+MiModelReporterModel >> longMethodLimit [
+
+	^ settings getItemValue: #longMethodSetting
+]
+
 { #category : #accessing }
 MiModelReporterModel >> miSelectedItem [
 
@@ -159,12 +220,20 @@ MiModelReporterModel >> reportDOM [
 { #category : #document }
 MiModelReporterModel >> sectionClasses [
 
+	| limit |
 	self subtitle: 'Classes'.
 
 	self sectionClassesMemberStats: mooseModel allModelClasses.
 
-	self subSectionSpecialClasses: [ :c | c numberOfMethods > 200 ] description: 'Large classes (> 200 methods)'.
-	self subSectionSpecialClasses: [ :c | c numberOfLinesOfCode > 2000 ] description: 'Long classes (> 2000 LOC)'
+	limit := self largeClassLimit.
+	self
+		subSectionSpecialClasses: [ :c | c numberOfMethods > limit ]
+		description: 'Large classes (> ' , limit asString , ' methods)'.
+
+	limit := self longClassLimit.
+	self
+		subSectionSpecialClasses: [ :c | c numberOfLinesOfCode > limit ]
+		description: 'Long classes (> ', limit asString , ' LOC)'
 
 ]
 
@@ -178,12 +247,20 @@ MiModelReporterModel >> sectionClassesMemberStats: classes [
 { #category : #document }
 MiModelReporterModel >> sectionMethods [
 
+	| limit |
 	self subtitle: 'Methods'.
 
 	self sectionMethodsStats: mooseModel allModelMethods.
 
-	self subSectionSpecialMethods: [ :m | m numberOfLinesOfCode > 200 ] description: 'Long methods (> 200 LOC)'.
-	self subSectionSpecialMethods: [ :m | m cyclomaticComplexity > 50 ] description: 'Complex methods (cyclomatic complexity > 50)'
+	limit := self longMethodLimit.
+	self
+		subSectionSpecialMethods: [ :m | m numberOfLinesOfCode > limit ]
+		description: 'Long methods (> ', limit asString ,' LOC)'.
+
+	limit := self complexMethodLimit.
+	self
+		subSectionSpecialMethods: [ :m | m cyclomaticComplexity > limit ]
+		description: 'Complex methods (cyclomatic complexity > ', limit asString, ')'
 
 ]
 
@@ -219,12 +296,21 @@ MiModelReporterModel >> sectionPackages [
 { #category : #settings }
 MiModelReporterModel >> settings [
 
+	^settings
+]
+
+{ #category : #settings }
+MiModelReporterModel >> settingsChanged: aBoolean [
+
+	aBoolean ifTrue: [ self updateReport ]
 ]
 
 { #category : #document }
 MiModelReporterModel >> stats: numberCollection description: aString [
 
 	| collection |
+	numberCollection ifEmpty: [ ^self ].
+
 	collection := numberCollection asOrderedCollection.
 
 	self paragraph: {
