@@ -73,6 +73,20 @@ MiAggregatorBrowser >> canFollowEntity: anObject [
 	^anObject isMooseObject
 ]
 
+{ #category : #utilities }
+MiAggregatorBrowser >> entityDescription: entity [
+
+	^String streamContents: [ :st |
+		st
+			<< entity name ;
+			<< ' - ' ;
+			<< entity mooseDescription name ;
+			<< ' (' ;
+			<< entity mooseName ;
+			<< ')'
+	]
+]
+
 { #category : #actions }
 MiAggregatorBrowser >> followEntity: anObject [
 
@@ -101,7 +115,7 @@ MiAggregatorBrowser >> initializeListEntities [
 
 	lstEntities := self newFilteringList.
 	lstEntities listPresenter beMultipleSelection.
-	lstEntities display: [ :entity | entity name ].
+	lstEntities display: [ :entity | self entityDescription: entity ].
 
 	lstEntities whenSelectionChangedDo: [ :selection | 
 		specModel selectedEntities: selection selectedItems ]
