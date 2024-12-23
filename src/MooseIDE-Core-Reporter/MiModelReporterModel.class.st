@@ -8,9 +8,8 @@ Class {
 	#superclass : #MiAbstractModel,
 	#instVars : [
 		'mooseModel',
-		'reportDOM',
-		'context',
-		'settings'
+		'settings',
+		'report'
 	],
 	#category : #'MooseIDE-Core-Reporter'
 }
@@ -18,34 +17,26 @@ Class {
 { #category : #microdown }
 MiModelReporterModel >> bulletList: aCollection [
 
-	| block |
-	block := MicUnorderedListBlock new.
-		
-	context push: block.
-
-	aCollection do: [ :item || itemBlock |
-		itemBlock := MicListItemBlock new
-			parent: block.
-
-		self ensure: itemBlock parentOf: item
+	aCollection do: [ :line |
+		report
+			<< '- ' ;
+			<< line ;
+			cr
 	].
+	report cr
+]
 
-	self endSection.
+{ #category : #document }
+MiModelReporterModel >> classMembersStats: columns [
 
-	^block
-
+	self stats: columns compute: [ :c | c numberOfAttributes ] description: 'ATTRIBUTES'.
+	self stats: columns compute: [ :c | c numberOfMethods ]    description: 'METHODS'
 ]
 
 { #category : #settings }
 MiModelReporterModel >> complexMethodLimit [
 
 	^ settings getItemValue: #complexMethodSetting
-]
-
-{ #category : #accessing }
-MiModelReporterModel >> currentBlock [
-
-	^context top
 ]
 
 { #category : #document }
@@ -59,26 +50,12 @@ MiModelReporterModel >> document [
 
 ]
 
-{ #category : #document }
-MiModelReporterModel >> endSection [
-
-	context pop
-]
-
-{ #category : #microdown }
-MiModelReporterModel >> ensure: parentBlock parentOf: childBlock [
-
-	childBlock parent: parentBlock.
-	(parentBlock children includes: childBlock)
-		ifFalse: [ parentBlock addChild: childBlock ]
-]
-
 { #category : #accessing }
 MiModelReporterModel >> entities [
 	^mooseModel
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'api - export' }
 MiModelReporterModel >> exportReportToHTML: microdownText [
 
 	(mooseModel name , '-report.html') asFileReference writeStreamDo: [ :stream |
@@ -86,13 +63,13 @@ MiModelReporterModel >> exportReportToHTML: microdownText [
 	]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'api - export' }
 MiModelReporterModel >> exportReportToPDF: microdownText [
 
 	self inform: 'PDF export not implemented yet, sorry'
 ]
 
-{ #category : #document }
+{ #category : #'private - formatting' }
 MiModelReporterModel >> floatAsString: aFloat [
 
 	^(aFloat asFloat round: 1) asString
@@ -106,7 +83,15 @@ MiModelReporterModel >> followEntity: aMooseModel [
 	self updateReport
 ]
 
-{ #category : #document }
+{ #category : #'private - formatting' }
+MiModelReporterModel >> formatCollection: collection value: valueBlock [
+
+	^collection
+		ifEmpty: [ 'n/a' ]
+		ifNotEmpty: [ self floatAsString: (valueBlock value: collection) ]
+]
+
+{ #category : #'private - formatting' }
 MiModelReporterModel >> fullyQualifiedName: anEntity [
 
 	^anEntity mooseName copyReplaceAll: '::' with: '.' 
@@ -116,13 +101,11 @@ MiModelReporterModel >> fullyQualifiedName: anEntity [
 { #category : #microdown }
 MiModelReporterModel >> headerBlock: level header: aString [
 
-	| block |
-	block := MicHeaderBlock new
-		level: level;
-		parent: self currentBlock.
-	self textBlock: aString in: block.
-
-	^ block
+	level timesRepeat: [ report << '#' ].
+	report
+		space ;
+		<< aString ;
+		cr ; cr
 ]
 
 { #category : #initialization }
@@ -167,6 +150,15 @@ MiModelReporterModel >> largeClassLimit [
 	^ settings getItemValue: #largeClassSetting
 ]
 
+{ #category : #microdown }
+MiModelReporterModel >> line: aString [
+
+	report
+		<< aString ;
+		cr
+
+]
+
 { #category : #settings }
 MiModelReporterModel >> longClassLimit [
 
@@ -179,89 +171,83 @@ MiModelReporterModel >> longMethodLimit [
 	^ settings getItemValue: #longMethodSetting
 ]
 
+{ #category : #document }
+MiModelReporterModel >> methodMembersStats: columns [
+
+	self stats: columns compute: [ :m | m numberOfParameters ] description: 'PARAMETERS'.
+	self stats: columns compute: [ :m | m numberOfLinesOfCode ]    description: 'LINES OF CODE'.
+	self stats: columns compute: [ :m | m cyclomaticComplexity ]    description: 'CYCLOMATIC COMPLEXITY'
+]
+
 { #category : #accessing }
 MiModelReporterModel >> miSelectedItem [
 
 	^#()
 ]
 
-{ #category : #microdown }
+{ #category : #'private - formatting' }
 MiModelReporterModel >> numericValue: text value: number [
 
-	^self textBlock: (text , ': ' , number asString) in: nil
+	^text , ': ' , number asString
 		
-]
-
-{ #category : #microdown }
-MiModelReporterModel >> paragraph: aCollection [
-
-	| block |
-	block := MicParagraphBlock new
-		parent: self currentBlock.
-		
-	context push: block.
-
-	aCollection do: [ :each |
-		self ensure: block parentOf: each
-	].
-
-	self endSection.
-
-	^block
-
 ]
 
 { #category : #accessing }
 MiModelReporterModel >> reportDOM [
 
-	^ reportDOM
+	^ report
 ]
 
 { #category : #document }
 MiModelReporterModel >> sectionClasses [
 
-	| limit |
+	| allClasses largeClasses longClasses |
+
+	allClasses := OrderedCollection withAll: mooseModel allModelClasses.
+	largeClasses := allClasses select: [ :c | c numberOfMethods > self largeClassLimit ].
+	longClasses := allClasses select: [ :c | c numberOfLinesOfCode > self longClassLimit ].
+
 	self subtitle: 'Classes'.
 
-	self sectionClassesMemberStats: mooseModel allModelClasses.
+	"Stats table"
+	self tableHeader: { '' . 'All' . 'Large' . 'Long' }.
+	self statLine: { allClasses size asString . largeClasses size asString . longClasses size asString } description: 'number'.
+	self classMembersStats: { allClasses . largeClasses . longClasses }.
+	self line: ''.
 
-	limit := self largeClassLimit.
+	"Lists of entities"
 	self
-		subSectionSpecialClasses: [ :c | c numberOfMethods > limit ]
-		description: 'Large classes (> ' , limit asString , ' methods)'.
-
-	limit := self longClassLimit.
+		subSectionSpecialList: largeClasses
+		description: 'Large classes (> ' , self largeClassLimit asString , ' methods)'.
 	self
-		subSectionSpecialClasses: [ :c | c numberOfLinesOfCode > limit ]
-		description: 'Long classes (> ', limit asString , ' LOC)'
-
-]
-
-{ #category : #document }
-MiModelReporterModel >> sectionClassesMemberStats: classes [
-
-	self stats: (classes collect: [ :c | c numberOfAttributes ]) description: 'attributes'.
-	self stats: (classes collect: [ :c | c numberOfMethods ]) description: 'methods'
+		subSectionSpecialList: longClasses
+		description: 'Long classes (> ' , self longClassLimit asString , ' LOC)'
 ]
 
 { #category : #document }
 MiModelReporterModel >> sectionMethods [
 
-	| limit |
+	| allMethods longMethods complexMethods |
+
+	allMethods := OrderedCollection withAll: mooseModel allModelMethods.
+	longMethods := allMethods select: [ :c | c numberOfLinesOfCode > self longMethodLimit ].
+	complexMethods := allMethods select: [ :c | c cyclomaticComplexity > self complexMethodLimit ].
+
 	self subtitle: 'Methods'.
 
-	self sectionMethodsStats: mooseModel allModelMethods.
+	"Stats table"
+	self tableHeader: { '' . 'All' . 'Long' . 'Complex' }.
+	self statLine: { allMethods size asString . longMethods size asString . complexMethods size asString } description: 'number'.
+	self methodMembersStats: { allMethods . longMethods . complexMethods }.
+	self line: ''.
 
-	limit := self longMethodLimit.
+	"Lists of entities"
 	self
-		subSectionSpecialMethods: [ :m | m numberOfLinesOfCode > limit ]
-		description: 'Long methods (> ', limit asString ,' LOC)'.
-
-	limit := self complexMethodLimit.
+		subSectionSpecialList: longMethods
+		description: 'Long methods (> ' , self longMethodLimit asString , ' LOC)'.
 	self
-		subSectionSpecialMethods: [ :m | m cyclomaticComplexity > limit ]
-		description: 'Complex methods (cyclomatic complexity > ', limit asString, ')'
-
+		subSectionSpecialList: complexMethods
+		description: 'Complex methods (cyclomatic complexity > ' , self complexMethodLimit asString , ')'
 ]
 
 { #category : #document }
@@ -282,14 +268,15 @@ MiModelReporterModel >> sectionPackages [
 	number := mooseModel allModelPackages size.
 	allClasses := mooseModel allModelClasses asOrderedCollection.
 
-	self paragraph: {
-		self bulletList: {
-			self numericValue: 'Number of Packages' value: number.
-			self numericValue: 'Mean number of classes' value: (self floatAsString: (allClasses size / number)).
-			self numericValue: 'Total number of classes' value: allClasses size.
-			self numericValue: 'Total number of lines of code' value: (allClasses sum: #numberOfLinesOfCode).
-		}
-	}.
+	self line:
+		(self numericValue: 'Number of Packages' value: number).
+	self line:
+		(self numericValue: 'Mean number of classes' value: (self floatAsString: (allClasses size / number))).
+	self line:
+		(self numericValue: 'Total number of classes' value: allClasses size).
+	self line:
+		(self numericValue: 'Total number of lines of code' value: (allClasses sum: #numberOfLinesOfCode)).
+	self line: ''
 
 ]
 
@@ -305,40 +292,43 @@ MiModelReporterModel >> settingsChanged: aBoolean [
 	aBoolean ifTrue: [ self updateReport ]
 ]
 
-{ #category : #document }
-MiModelReporterModel >> stats: numberCollection description: aString [
+{ #category : #microdown }
+MiModelReporterModel >> statLine: columns	description: aString [
 
-	| collection |
-	numberCollection ifEmpty: [ ^self ].
+	self tableLine: { aString } , columns
+]
 
-	collection := numberCollection asOrderedCollection.
+{ #category : #microdown }
+MiModelReporterModel >> stats: columns compute: valueBlock description: aString [
+	"columns is a collection of collections of entities (eg. {allClasses, largeClasses, longClasses})
+	 valueBlock takes one entity of these collections and compute a number form it (eg. numberOfAttributes)
+	 From this, we display 3 lines: mean value, median value, max value for each column"
 
-	self paragraph: {
-		self textBlock: (aString capitalized , ':') in: nil.
-		self bulletList: {
-			self numericValue: ('Mean number of ' , aString) value: (self floatAsString: collection average) .
-			self numericValue: ('Median number of ' , aString) value: collection median .
-			self numericValue: ('Max number of ' , aString) value: collection max
-		}
-	}
+	| valuesCollection |
+	valuesCollection := columns collect: [ :collection | collection collect: valueBlock ].
+
+	self tableLine: { aString }.
+	self
+		statLine: (valuesCollection collect: [ :column | self formatCollection: column value: #average])
+		description: '. mean'.
+	self
+		statLine: (valuesCollection collect: [ :column | self formatCollection: column value: #median])
+		description: '. median'.
+	self
+		statLine: (valuesCollection collect: [ :column | self formatCollection: column value: #max])
+		description: '. max'
 
 ]
 
 { #category : #document }
-MiModelReporterModel >> subSectionSpecialClasses: selectionBlock description: aString [
+MiModelReporterModel >> subSectionSpecialList: collection description: aString [
 
-	| largeClasses |
 	self subsubtitle: aString.
 
-	largeClasses := (mooseModel allModelClasses select: selectionBlock)
-		sorted: [:a :b | a mooseName < b mooseName].
+	self line: (self numericValue: 'Number' value: collection size).
 
-	self paragraph: {
-		self numericValue: 'Number' value: largeClasses size.
-		self bulletList: (largeClasses collect: [:c | self textBlock: (self fullyQualifiedName: c) in: nil] )
-	}.
-
-	self sectionClassesMemberStats: largeClasses 
+	self bulletList: ((collection collect: [:c | self fullyQualifiedName: c ])
+		sorted: [:a :b | a mooseName < b mooseName]).
 
 ]
 
@@ -351,10 +341,8 @@ MiModelReporterModel >> subSectionSpecialMethods: selectionBlock description: aS
 	methods := (mooseModel allModelMethods select: selectionBlock)
 		sorted: [:a :b | a mooseName < b mooseName].
 
-	self paragraph: {
-		self numericValue: 'Number' value: methods size.
-		self bulletList: (methods collect: [:c | self textBlock: (self fullyQualifiedName: c) in: nil] )
-	}.
+	self line: (self numericValue: 'Number' value: methods size).
+	self bulletList: (methods collect: [:c | self fullyQualifiedName: c ] ).
 
 	self sectionMethodsStats: methods 
 
@@ -375,15 +363,26 @@ MiModelReporterModel >> subtitle: aString [
 ]
 
 { #category : #microdown }
-MiModelReporterModel >> textBlock: aString in: parentBlock [
+MiModelReporterModel >> tableHeader: aCollection [
 
-	| block |
-	block := MicTextBlock new
-		substring: aString;
-		parent: parentBlock.
-	parentBlock ifNotNil: [parentBlock addChild: block].
+	self tableLine: aCollection.
+	report
+		<< '|---|' ;
+		cr
+]
 
-	^block
+{ #category : #microdown }
+MiModelReporterModel >> tableLine: aCollection [
+
+	aCollection do: [ :item |
+		report
+			<< '| ' ;
+			<< item ;
+			space
+	].
+	report
+		<< '|' ;
+		cr
 ]
 
 { #category : #microdown }
@@ -396,12 +395,8 @@ MiModelReporterModel >> title: aString [
 { #category : #running }
 MiModelReporterModel >> updateReport [
 
-	context := Stack new.
-	context push: MicRootBlock new.
-
+	report := String new writeStream .
 	self document.
-
-	reportDOM := context top.
-
-	browser updateReport: (MicTextualMicrodownExporter new visit: reportDOM).
+	report close.
+	browser updateReport: report contents
 ]

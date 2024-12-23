@@ -139,8 +139,8 @@ MiModelReporter >> refreshToolbarButton [
 
 	^ SpToolbarButtonPresenter new
 		  icon: (self iconNamed: #smallUpdate);
-		  help: 'Refresh list';
-		  action: [ self updateList ];
+		  help: 'Reset report';
+		  action: [ specModel updateReport ];
 		  yourself
 ]
 
