@@ -35,7 +35,6 @@ MiCoUsageMapBuilder >> application [
 MiCoUsageMapBuilder >> applyLayout [
 
 	RSFlowLayout new
-		maxWidth: self canvas extent x * (1 / self canvas camera scale);
 		gapSize: 20;
 		on: self canvas nodes
 ]

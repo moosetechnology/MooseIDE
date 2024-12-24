@@ -60,28 +60,6 @@ MiCoUsageVisualizationTest >> test05MethodAttributePopup [
 ]
 
 { #category : #tests }
-MiCoUsageVisualizationTest >> test06ExtentChanged [
-	"Note: size of canvas depends on number of methods, attributes, and accesses"
-
-	self assert: visualization canvas extent x equals: 500.
-	self
-		assert: (builder canvas encompassingRectangle width between: 400 and: 500)
-		description: 'Value: ' , builder canvas encompassingRectangle width asString , ' not in specified interval'.
-
-	builder canvas extent: 700 asPoint.
-	self assert: builder canvas extent x equals: 700.
-	self
-		assert: (builder canvas encompassingRectangle width between: 600 and: 700)
-		description: 'Value: ' , builder canvas encompassingRectangle width asString , ' not in specified interval'.
-
-	builder canvas camera scale: 0.5.
-	builder canvas extent: 500 asPoint.
-	self
-		assert: (builder canvas encompassingRectangle width between: 600 and: 700)
-		description: 'Value: ' , builder canvas encompassingRectangle width asString , ' not in specified interval'.
-]
-
-{ #category : #tests }
 MiCoUsageVisualizationTest >> testConsumeTag [
 
 	self shouldnt: (visualization consume: (self createTag: 'aTag')) raise: Error
