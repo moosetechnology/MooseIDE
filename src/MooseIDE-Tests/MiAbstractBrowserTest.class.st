@@ -13,6 +13,13 @@ MiAbstractBrowserTest class >> isAbstract [
 	^ self == MiAbstractBrowserTest
 ]
 
+{ #category : #running }
+MiAbstractBrowserTest >> anEntity: aName [
+
+	^FamixStClass new
+		name: aName
+]
+
 { #category : #'tests - actions' }
 MiAbstractBrowserTest >> assertFollowActionFor: aMooseObject [
 	"Override to test follow action"
