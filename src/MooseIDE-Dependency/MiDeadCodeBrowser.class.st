@@ -16,13 +16,11 @@ Class {
 		'lstMethod',
 		'lstHeuristicsOffered',
 		'lstHeuristicsChosen',
-		'lstDeadMethods',
 		'btnSelectHeuristic',
-		'btnFirstRound',
-		'btnRecursive',
 		'btnRejectHeuristic',
-		'lblDeadMethods',
-		'lblAllMethods'
+		'lblAllMethods',
+		'resultColumn',
+		'heuristicColumn'
 	],
 	#category : #'MooseIDE-Dependency-DeadCode'
 }
@@ -69,18 +67,6 @@ MiDeadCodeBrowser class >> windowSize [
 	^ 900 @ 700
 ]
 
-{ #category : #accessing }
-MiDeadCodeBrowser >> availableHeuristics [
-
-	^specModel availableHeuristics
-]
-
-{ #category : #'accessing - private tests' }
-MiDeadCodeBrowser >> buttonSelectHeuristics [
-
-	^btnSelectHeuristic 
-]
-
 { #category : #testing }
 MiDeadCodeBrowser >> canFollowEntity: anObject [
 
@@ -109,24 +95,10 @@ MiDeadCodeBrowser >> candidateEntities: aCollection [
 	lstMethod items: aCollection 
 ]
 
-{ #category : #accessing }
+{ #category : #'heuristic column' }
 MiDeadCodeBrowser >> chosenHeuristics [
 
 	^specModel chosenHeuristics
-]
-
-{ #category : #layout }
-MiDeadCodeBrowser >> deadMethodColumnLayout [
-
-	^SpBoxLayout newTopToBottom
-		add: (SpBoxLayout newLeftToRight
-			add: btnFirstRound ;
-			add: btnRecursive ;
-			yourself)
-		height: self toolbarHeight ;
-		add: lblDeadMethods height: self toolbarHeight ;
-		add: lstDeadMethods expand: true ;
-		yourself
 ]
 
 { #category : #layout }
@@ -135,8 +107,8 @@ MiDeadCodeBrowser >> defaultLayout [
 	^SpPanedLayout newLeftToRight 
 		add: self candidateEntiesColumnLayout;
 		add: (SpPanedLayout newLeftToRight 
-			add: self heuristicColumnLayout ;
-			add: self deadMethodColumnLayout ;
+			add: heuristicColumn ;
+			add: resultColumn ;
 			yourself) ;
 		positionOfSlider: 0.3 ;
 		yourself
@@ -149,76 +121,21 @@ MiDeadCodeBrowser >> followEntity: anEntity [
 	specModel followEntity: anEntity
 ]
 
-{ #category : #layout }
-MiDeadCodeBrowser >> heuristicColumnLayout [
+{ #category : #accessing }
+MiDeadCodeBrowser >> heuristicColumn [
 
-	^SpBoxLayout newTopToBottom
-		add: lstHeuristicsOffered expand: true ;
-		add: (SpBoxLayout newLeftToRight
-			add: btnSelectHeuristic ;
-			add: btnRejectHeuristic ;
-			yourself)
-		height: self toolbarHeight ;
-		add: lstHeuristicsChosen expand: true ;
-		yourself
-]
-
-{ #category : #'accessing - private tests' }
-MiDeadCodeBrowser >> heuristicsOffered [ 
-
-	^lstHeuristicsOffered 
+	^heuristicColumn 
 ]
 
 { #category : #initialization }
 MiDeadCodeBrowser >> initializePresenters [
 
 	lstMethod := self newList.
-	lstHeuristicsOffered := self newList
-		items: specModel availableHeuristics ;
-		beMultipleSelection ;
-		display: [:item | item name] ;
-		sortingBlock: #name ascending.
-
-	lstHeuristicsChosen := self newList
-		beMultipleSelection ;
-		display: [:item | item name] ;
-		sortingBlock: #name ascending.
-	self selectedHeuristics: specModel selectedHeuristics.
-
-	lstDeadMethods := self newList.
-
-	btnSelectHeuristic := self newButton
-		label: 'v' ;
-		action: [ specModel selectHeuristics].
-
-	btnRejectHeuristic := self newButton
-		label: '^' ;
-		action: [ specModel rejectHeuristics].
-
-	btnFirstRound := self newButton
-		label: '1st round' ;
-		action: [ specModel firstRoundComputation].
-
-	btnRecursive := self newButton
-		label: 'recursion' ;
-		action: [ specModel recursiveComputation].
-
 	lblAllMethods := self newLabel
 		label: '0 entities'.
-	lblDeadMethods := self newLabel
-		label: '0 dead entities'
-]
 
-{ #category : #'accessing - private tests' }
-MiDeadCodeBrowser >> listHeuristicsOffered [ 
-
-	^lstHeuristicsOffered 
-]
-
-{ #category : #'accessing - private tests' }
-MiDeadCodeBrowser >> listHeuristicsSelected [ 
-
-	^lstHeuristicsChosen
+	heuristicColumn := self instantiate: MiDeadCodeBrowserHeuristicColum.
+	resultColumn := self instantiate: MiDeadCodeBrowserResultColum.
 ]
 
 { #category : #accessing }
@@ -227,10 +144,10 @@ MiDeadCodeBrowser >> miSelectedItem [
 	^specModel miSelectedItem 
 ]
 
-{ #category : #actions }
+{ #category : #'heuristic column' }
 MiDeadCodeBrowser >> selectedHeuristics: aCollection [
 
-	lstHeuristicsChosen items: aCollection asOrderedCollection
+	heuristicColumn selectedHeuristics: aCollection
 ]
 
 { #category : #'accessing - private tests' }

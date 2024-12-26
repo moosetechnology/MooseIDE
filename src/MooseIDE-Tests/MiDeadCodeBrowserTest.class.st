@@ -48,20 +48,36 @@ MiDeadCodeBrowserTest >> testInitializeCandidateEntityList [
 { #category : #tests }
 MiDeadCodeBrowserTest >> testInitializeHeuristicsList [
 
-	self assert: browser listHeuristicsOffered items isNotEmpty
+	self assert: browser heuristicColumn listHeuristicsOffered items isNotEmpty
+]
+
+{ #category : #tests }
+MiDeadCodeBrowserTest >> testInitializeSelectedHeuristicsList [
+	"by default, there is one selected heuristics: `MiDeadCodeNoIncomingInvocationHeuristic`
+	 see also: MiDeadCodeAbstractHeuristic >> selectedByDefault"
+
+	self assert: browser heuristicColumn listHeuristicsSelected items size equals: 1.
+
+]
+
+{ #category : #tests }
+MiDeadCodeBrowserTest >> testRejectHeuristic [
+	"by default, there is one selected heuristics"
+
+	browser heuristicColumn listHeuristicsSelected selectIndex: 1.
+	browser heuristicColumn buttonRejectHeuristics click.
+
+	self assert: browser heuristicColumn listHeuristicsSelected items size equals: 0
 ]
 
 { #category : #tests }
 MiDeadCodeBrowserTest >> testSelectHeuristics [
-	"by default, there is one selected heuristics: `MiDeadCodeNoIncomingInvocationHeuristic`
-	 see also: MiDeadCodeAbstractHeuristic >> selectedByDefault"
+	"by default, there is one selected heuristics"
 
-	self assert: browser listHeuristicsSelected items size equals: 1.
-
-	browser listHeuristicsOffered
-		selectItem: 	(browser listHeuristicsOffered items
+	browser heuristicColumn listHeuristicsOffered
+		selectItem: 	(browser heuristicColumn listHeuristicsOffered items
 			detect: [:item | item selectedByDefault not ]).
-	browser buttonSelectHeuristics click.
+	browser heuristicColumn buttonSelectHeuristics click.
 
-	self assert: browser listHeuristicsSelected items size equals: 2
+	self assert: browser heuristicColumn listHeuristicsSelected items size equals: 2
 ]

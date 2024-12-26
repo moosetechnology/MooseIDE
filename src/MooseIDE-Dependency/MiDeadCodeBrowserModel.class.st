@@ -69,10 +69,20 @@ MiDeadCodeBrowserModel >> miSelectedItem [
 ]
 
 { #category : #actions }
+MiDeadCodeBrowserModel >> rejectHeuristics [
+
+	| reject |
+	reject := browser heuristicColumn listHeuristicsSelected selectedItems clone.
+
+	selectedHeuristics removeAll: reject.
+	browser heuristicColumn selectedHeuristics: selectedHeuristics 
+]
+
+{ #category : #actions }
 MiDeadCodeBrowserModel >> selectHeuristics [
 
-	selectedHeuristics addAll: browser listHeuristicsOffered selectedItems.
-	browser selectedHeuristics: selectedHeuristics 
+	selectedHeuristics addAll: browser heuristicColumn listHeuristicsOffered selectedItems.
+	browser heuristicColumn selectedHeuristics: selectedHeuristics 
 ]
 
 { #category : #accessing }
