@@ -1,0 +1,24 @@
+Class {
+	#name : #MiDeadCodePharoTestCaseSubClassHeuristic,
+	#superclass : #MiDeadCodeAbstractTestHeuristic,
+	#category : #'MooseIDE-Dependency-DeadCode'
+}
+
+{ #category : #accessing }
+MiDeadCodePharoTestCaseSubClassHeuristic >> description [
+
+	^super description , '
+	In Pharo, sub-classes of TestCase are test classes'
+]
+
+{ #category : #testing }
+MiDeadCodePharoTestCaseSubClassHeuristic >> isDead: aTMethod [
+
+	^aTMethod parentType superclassHierarchy anySatisfy: [ :c | c name = 'TestCase' ] 
+]
+
+{ #category : #accessing }
+MiDeadCodePharoTestCaseSubClassHeuristic >> name [
+
+	^'Test: TestCase sub-class'
+]

@@ -4,6 +4,13 @@ Class {
 	#category : #'MooseIDE-Dependency-DeadCode'
 }
 
+{ #category : #accessing }
+MiDeadCodeJavaImplementedInterfaceHeuristic >> description [
+
+	^'A method implementing a Java interface that is called is not dead
+[Refute a method is dead]'
+]
+
 { #category : #testing }
 MiDeadCodeJavaImplementedInterfaceHeuristic >> isDead: aTMethod [
 
@@ -18,10 +25,17 @@ MiDeadCodeJavaImplementedInterfaceHeuristic >> isDead: aTMethod [
 	].
 
 	^true
+
 ]
 
-{ #category : #testing }
-MiDeadCodeJavaImplementedInterfaceHeuristic >> refuteDead [
+{ #category : #accessing }
+MiDeadCodeJavaImplementedInterfaceHeuristic >> name [
 
-	^false
+	'Implementing Java interface'
+]
+
+{ #category : #accessing }
+MiDeadCodeJavaImplementedInterfaceHeuristic >> refuteDead [ 
+
+	^true
 ]

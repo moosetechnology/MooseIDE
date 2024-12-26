@@ -3,3 +3,9 @@ Class {
 	#superclass : #MiAbstractModel,
 	#category : #'MooseIDE-Dependency-DeadCode'
 }
+
+{ #category : #accessing }
+MiDeadCodeBrowserModel >> miSelectedItem [
+
+	^#()
+]

@@ -1,13 +1,15 @@
 Class {
 	#name : #MiDeadCodeJavaTestAnnotationHeuristic,
-	#superclass : #MiDeadCodeAbstractHeuristic,
+	#superclass : #MiDeadCodeAbstractTestHeuristic,
 	#category : #'MooseIDE-Dependency-DeadCode'
 }
 
-{ #category : #testing }
+{ #category : #accessing }
 MiDeadCodeJavaTestAnnotationHeuristic >> description [ 
 
-	^'Test methods are considered not dead'
+	^super description , '
+	In Java, different annotations mark methods of test class
+	 (@Test, @Before, @BeforeEach,...)'
 ]
 
 { #category : #testing }
@@ -37,8 +39,8 @@ MiDeadCodeJavaTestAnnotationHeuristic >> junit5Annotations [
 
 ]
 
-{ #category : #testing }
+{ #category : #accessing }
 MiDeadCodeJavaTestAnnotationHeuristic >> name [
 
-	^'Java @Test method'
+	^'Test: Java @Test method'
 ]
