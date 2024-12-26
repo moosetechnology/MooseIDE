@@ -61,7 +61,7 @@ MiDeadCodeBrowser class >> title [
 MiDeadCodeBrowser >> canFollowEntity: anObject [
 
 	^anObject isCollection and:
-	[ anObject anySatisfy: #isMethod ]
+	[ anObject anySatisfy: [ :entity | entity usesFamixTrait: FamixTWithInvocations ] ]
 ]
 
 { #category : #layout }
