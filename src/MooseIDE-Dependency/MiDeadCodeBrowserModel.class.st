@@ -21,6 +21,13 @@ MiDeadCodeBrowserModel >> availableHeuristics [
 	^allHeuristics
 ]
 
+{ #category : #'accessing - private tests' }
+MiDeadCodeBrowserModel >> clearSelectedHeuristics [
+
+	selectedHeuristics removeAll.
+	browser updateHeuristicSelection
+]
+
 { #category : #accessing }
 MiDeadCodeBrowserModel >> entities [
 
@@ -75,14 +82,14 @@ MiDeadCodeBrowserModel >> rejectHeuristics [
 	reject := browser heuristicColumn listHeuristicsSelected selectedItems clone.
 
 	selectedHeuristics removeAll: reject.
-	browser heuristicColumn selectedHeuristics: selectedHeuristics 
+	browser updateHeuristicSelection
 ]
 
 { #category : #actions }
 MiDeadCodeBrowserModel >> selectHeuristics [
 
 	selectedHeuristics addAll: browser heuristicColumn listHeuristicsOffered selectedItems.
-	browser heuristicColumn selectedHeuristics: selectedHeuristics 
+	browser updateHeuristicSelection
 ]
 
 { #category : #accessing }

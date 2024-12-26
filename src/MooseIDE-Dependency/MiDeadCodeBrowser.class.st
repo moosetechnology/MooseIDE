@@ -144,6 +144,12 @@ MiDeadCodeBrowser >> miSelectedItem [
 	^specModel miSelectedItem 
 ]
 
+{ #category : #accessing }
+MiDeadCodeBrowser >> resultColumn [
+
+	^resultColumn 
+]
+
 { #category : #'heuristic column' }
 MiDeadCodeBrowser >> selectedHeuristics: aCollection [
 
@@ -160,4 +166,11 @@ MiDeadCodeBrowser >> specModel [
 MiDeadCodeBrowser >> toolbarHeight [
 
 	^self class toolbarHeight
+]
+
+{ #category : #actions }
+MiDeadCodeBrowser >> updateHeuristicSelection [
+
+	heuristicColumn selectedHeuristics: specModel selectedHeuristics.
+	resultColumn updateHeuristicSelection
 ]

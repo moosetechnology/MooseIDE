@@ -13,6 +13,12 @@ Class {
 	#category : #'MooseIDE-Dependency-DeadCode'
 }
 
+{ #category : #'accessing - private tests' }
+MiDeadCodeBrowserResultColum >> buttonFirstRound [
+
+	^btnFirstRound 
+]
+
 { #category : #layout }
 MiDeadCodeBrowserResultColum >> defaultLayout [
 
@@ -54,4 +60,10 @@ MiDeadCodeBrowserResultColum >> specModel [
 MiDeadCodeBrowserResultColum >> toolbarHeight [
 
 	^self class toolbarHeight
+]
+
+{ #category : #actions }
+MiDeadCodeBrowserResultColum >> updateHeuristicSelection [
+
+	btnFirstRound enabled: (self specModel selectedHeuristics isNotEmpty)
 ]

@@ -36,6 +36,22 @@ MiDeadCodeBrowserTest >> testActivateActionButtons [
 ]
 
 { #category : #tests }
+MiDeadCodeBrowserTest >> testDisabledFirstRoundButton [
+	"without selected heuristics, 1st-round button is disabled"
+
+	browser specModel clearSelectedHeuristics.
+
+	self deny: browser resultColumn buttonFirstRound isEnabled
+]
+
+{ #category : #tests }
+MiDeadCodeBrowserTest >> testEnabledFirstRoundButton [
+	"with a selected heuristics, 1st-round button is enabled"
+
+	self assert: browser resultColumn buttonFirstRound isEnabled
+]
+
+{ #category : #tests }
 MiDeadCodeBrowserTest >> testInitializeCandidateEntityList [
 
 	| mooseModel |
