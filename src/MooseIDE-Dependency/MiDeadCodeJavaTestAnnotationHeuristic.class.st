@@ -1,3 +1,10 @@
+"
+A heuristic to identify test methods based on their Java annotations
+
+There are a number of annotations in Java that mark test methods (@Test, @Before, @BeforeEach,...)
+
+Recognizes annotations from JUnit4 and JUnit5
+"
 Class {
 	#name : #MiDeadCodeJavaTestAnnotationHeuristic,
 	#superclass : #MiDeadCodeAbstractTestHeuristic,

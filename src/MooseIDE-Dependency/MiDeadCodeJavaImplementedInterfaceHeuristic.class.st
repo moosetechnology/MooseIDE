@@ -1,3 +1,8 @@
+"
+A heuristic to recognize methods implementing a Java interface method that is called.
+
+I a Java interface method is called, we assume any method implementing it in a concrete class can be called
+"
 Class {
 	#name : #MiDeadCodeJavaImplementedInterfaceHeuristic,
 	#superclass : #MiDeadCodeAbstractHeuristic,

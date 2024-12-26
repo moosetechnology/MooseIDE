@@ -1,3 +1,7 @@
+"
+A heuristic to recognize test methods based on naming conventions.
+See #description for details
+"
 Class {
 	#name : #MiDeadCodeNamingConventionHeuristic,
 	#superclass : #MiDeadCodeAbstractTestHeuristic,

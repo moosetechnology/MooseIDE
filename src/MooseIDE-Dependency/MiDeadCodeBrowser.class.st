@@ -1,3 +1,14 @@
+"
+Computes dead methods/functions from an initial list of methods/functions
+There are several heurisitcs to find out what are dead entities
+The user must:
+- first select some heuristics to apply
+- then do a ""first run"" (apply the chosen heurisitcs to the list of entities
+- this gives a firs tlist of dead entities
+- this list can be expanded by running a ""recursion"": any entity only called by a dead entity is also dead
+
+Accepted entities: A list of methods/functions (behavioural entities)
+"
 Class {
 	#name : #MiDeadCodeBrowser,
 	#superclass : #MiAbstractBrowser,

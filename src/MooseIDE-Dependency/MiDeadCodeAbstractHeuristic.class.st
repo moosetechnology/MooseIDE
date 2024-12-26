@@ -1,3 +1,17 @@
+"
+An abstract class for heurisitcs identifying dead behavioural entities
+
+An heurisitc can try to identifiy dead entities or identify not-dead entities (refuting dead entities)
+In the first case, #isDead: = true means the entity is dead, = false means 'undecided'
+In the second case, #isDead: = false means the entity is not dead, = true means 'undecided'
+
+
+A heurisitc has:
+- a name
+- a description
+- #isDead: method that accept an entity and answers a boolean
+- #refuteDead: true if the heuristic tries to prove that an entity is dead
+"
 Class {
 	#name : #MiDeadCodeAbstractHeuristic,
 	#superclass : #Object,

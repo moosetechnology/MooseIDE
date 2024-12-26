@@ -1,3 +1,6 @@
+"
+Most basic heuristic for dead code: any behavioural entiy not invoked is dead
+"
 Class {
 	#name : #MiDeadCodeNoIncomingInvocationHeuristic,
 	#superclass : #MiDeadCodeAbstractHeuristic,

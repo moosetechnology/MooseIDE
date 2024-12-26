@@ -1,3 +1,7 @@
+"
+A heuristic to recognize test methods in Pharo.
+(they belong to a clas sinheriting from `TestCase`
+"
 Class {
 	#name : #MiDeadCodePharoTestCaseSubClassHeuristic,
 	#superclass : #MiDeadCodeAbstractTestHeuristic,
