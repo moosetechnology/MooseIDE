@@ -36,7 +36,7 @@ MiDeadCodeJavaImplementedInterfaceHeuristic >> isDead: aTMethod [
 { #category : #accessing }
 MiDeadCodeJavaImplementedInterfaceHeuristic >> name [
 
-	'Implementing Java interface'
+	^'Implementing Java interface'
 ]
 
 { #category : #accessing }

@@ -57,6 +57,12 @@ MiDeadCodeBrowser class >> title [
 	^ 'Dead code browser'
 ]
 
+{ #category : #'accessing - private tests' }
+MiDeadCodeBrowser >> availableHeuristics [
+
+	^specModel availableHeuristics
+]
+
 { #category : #testing }
 MiDeadCodeBrowser >> canFollowEntity: anObject [
 
@@ -113,11 +119,20 @@ MiDeadCodeBrowser >> heuristicColumnLayout [
 		yourself
 ]
 
+{ #category : #'accessing - private tests' }
+MiDeadCodeBrowser >> heuristicsOffered [ 
+
+	^lstHeuristicsOffered 
+]
+
 { #category : #initialization }
 MiDeadCodeBrowser >> initializePresenters [
 
 	lstMethod := self newList.
-	lstHeuristicsOffered := self newList.
+	lstHeuristicsOffered := self newList
+		items: specModel availableHeuristics ;
+		display: [:item | item name] ;
+		sortingBlock: #name.
 	lstHeuristicsChosen := self newList.
 	lstDeadMethods := self newList.
 
@@ -145,6 +160,12 @@ MiDeadCodeBrowser >> initializePresenters [
 MiDeadCodeBrowser >> miSelectedItem [
 
 	^specModel miSelectedItem 
+]
+
+{ #category : #'accessing - private tests' }
+MiDeadCodeBrowser >> specModel [
+
+	^specModel
 ]
 
 { #category : #TOREMOVE }

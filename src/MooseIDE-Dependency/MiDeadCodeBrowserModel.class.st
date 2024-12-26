@@ -8,10 +8,17 @@ Class {
 	#superclass : #MiAbstractModel,
 	#instVars : [
 		'deadEntities',
-		'candidateEntities'
+		'candidateEntities',
+		'allHeuristics'
 	],
 	#category : #'MooseIDE-Dependency-DeadCode'
 }
+
+{ #category : #'accessing - private tests' }
+MiDeadCodeBrowserModel >> availableHeuristics [
+
+	^allHeuristics
+]
 
 { #category : #accessing }
 MiDeadCodeBrowserModel >> entities [
@@ -25,11 +32,20 @@ MiDeadCodeBrowserModel >> followEntity: aCollection [
 	candidateEntities := aCollection 
 ]
 
+{ #category : #accessing }
+MiDeadCodeBrowserModel >> gatherHeuristics [
+
+	^MiDeadCodeAbstractHeuristic withAllSubclasses
+		select: [ :class | class isAbstract not ]
+		thenCollect: [ :class | class new ]
+]
+
 { #category : #initialization }
 MiDeadCodeBrowserModel >> initialize [ 
 
 	super initialize.
 
+	allHeuristics := self gatherHeuristics.
 	deadEntities := OrderedCollection new
 ]
 

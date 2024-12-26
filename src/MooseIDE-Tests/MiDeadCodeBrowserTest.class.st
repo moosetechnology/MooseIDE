@@ -34,3 +34,16 @@ MiDeadCodeBrowserTest >> testActivateActionButtons [
 
 	browser actionButtons do: [ :button | self deny: button isEnabled ]
 ]
+
+{ #category : #tests }
+MiDeadCodeBrowserTest >> testGatherHeuristicsList [
+	"Expected number must be updated according to number of non abstract heuristics classes"
+
+	self assert: browser specModel gatherHeuristics size equals: 5
+]
+
+{ #category : #tests }
+MiDeadCodeBrowserTest >> testInitializeHeuristicsList [
+
+	self assert: browser heuristicsOffered items isNotEmpty
+]
