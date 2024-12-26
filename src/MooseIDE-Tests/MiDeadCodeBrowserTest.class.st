@@ -43,6 +43,16 @@ MiDeadCodeBrowserTest >> testGatherHeuristicsList [
 ]
 
 { #category : #tests }
+MiDeadCodeBrowserTest >> testInitializeCandidateEntityList [
+
+	| mooseModel |
+	mooseModel := FamixStModel new.
+	self populateBrowser: mooseModel.
+
+	self assert: browser candidateEntities items isNotEmpty
+]
+
+{ #category : #tests }
 MiDeadCodeBrowserTest >> testInitializeHeuristicsList [
 
 	self assert: browser heuristicsOffered items isNotEmpty

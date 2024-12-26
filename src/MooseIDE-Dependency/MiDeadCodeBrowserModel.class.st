@@ -29,7 +29,8 @@ MiDeadCodeBrowserModel >> entities [
 { #category : #actions }
 MiDeadCodeBrowserModel >> followEntity: aCollection [
 
-	candidateEntities := aCollection 
+	candidateEntities := aCollection.
+	browser candidateEntities: aCollection 
 ]
 
 { #category : #accessing }

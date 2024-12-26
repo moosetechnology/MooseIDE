@@ -70,6 +70,18 @@ MiDeadCodeBrowser >> canFollowEntity: anObject [
 	[ anObject anySatisfy: [ :entity | entity usesFamixTrait: FamixTWithInvocations ] ]
 ]
 
+{ #category : #'accessing - private tests' }
+MiDeadCodeBrowser >> candidateEntities [
+
+	^lstMethod 
+]
+
+{ #category : #accessing }
+MiDeadCodeBrowser >> candidateEntities: aCollection [
+
+	lstMethod items: aCollection 
+]
+
 { #category : #layout }
 MiDeadCodeBrowser >> deadMethodColumnLayout [
 
@@ -132,7 +144,7 @@ MiDeadCodeBrowser >> initializePresenters [
 	lstHeuristicsOffered := self newList
 		items: specModel availableHeuristics ;
 		display: [:item | item name] ;
-		sortingBlock: #name.
+		sortingBlock: #name ascending.
 	lstHeuristicsChosen := self newList.
 	lstDeadMethods := self newList.
 
