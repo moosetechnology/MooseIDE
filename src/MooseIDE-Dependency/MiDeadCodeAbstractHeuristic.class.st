@@ -55,3 +55,10 @@ MiDeadCodeAbstractHeuristic >> refuteDead [
 
 	^false
 ]
+
+{ #category : #testing }
+MiDeadCodeAbstractHeuristic >> selectedByDefault [
+	"Whether the heuristic is selected in the DeadCodeBrowser by default"
+
+	^false
+]

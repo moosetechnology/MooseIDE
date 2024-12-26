@@ -37,7 +37,13 @@ MiDeadCodeBrowser class >> menuCommandOn: aBuilder [
 { #category : #'world menu' }
 MiDeadCodeBrowser class >> menuItem [
 
-	^#DeadCode
+	^#DeadCodeBrowser
+]
+
+{ #category : #'world menu' }
+MiDeadCodeBrowser class >> menuPriority [
+
+	^ self menuMetaToolsPriority + 1
 ]
 
 { #category : #'world menu' }
@@ -54,13 +60,25 @@ MiDeadCodeBrowser class >> open [
 
 { #category : #'world menu' }
 MiDeadCodeBrowser class >> title [
-	^ 'Dead code browser'
+	^'Dead code browser'
 ]
 
-{ #category : #'accessing - private tests' }
+{ #category : #'world menu' }
+MiDeadCodeBrowser class >> windowSize [
+
+	^ 900 @ 700
+]
+
+{ #category : #accessing }
 MiDeadCodeBrowser >> availableHeuristics [
 
 	^specModel availableHeuristics
+]
+
+{ #category : #'accessing - private tests' }
+MiDeadCodeBrowser >> buttonSelectHeuristics [
+
+	^btnSelectHeuristic 
 ]
 
 { #category : #testing }
@@ -68,6 +86,15 @@ MiDeadCodeBrowser >> canFollowEntity: anObject [
 
 	^anObject isCollection and:
 	[ anObject anySatisfy: [ :entity | entity usesFamixTrait: FamixTWithInvocations ] ]
+]
+
+{ #category : #layout }
+MiDeadCodeBrowser >> candidateEntiesColumnLayout [
+
+	^SpBoxLayout newTopToBottom
+		add: lblAllMethods expand: false;
+		add: lstMethod ;
+		yourself
 ]
 
 { #category : #'accessing - private tests' }
@@ -80,6 +107,12 @@ MiDeadCodeBrowser >> candidateEntities [
 MiDeadCodeBrowser >> candidateEntities: aCollection [
 
 	lstMethod items: aCollection 
+]
+
+{ #category : #accessing }
+MiDeadCodeBrowser >> chosenHeuristics [
+
+	^specModel chosenHeuristics
 ]
 
 { #category : #layout }
@@ -100,20 +133,19 @@ MiDeadCodeBrowser >> deadMethodColumnLayout [
 MiDeadCodeBrowser >> defaultLayout [
 
 	^SpPanedLayout newLeftToRight 
-		add: (SpBoxLayout newTopToBottom
-			add: lblAllMethods expand: false;
-			add: lstMethod ;
-			yourself) ;
+		add: self candidateEntiesColumnLayout;
 		add: (SpPanedLayout newLeftToRight 
 			add: self heuristicColumnLayout ;
 			add: self deadMethodColumnLayout ;
 			yourself) ;
+		positionOfSlider: 0.3 ;
 		yourself
 ]
 
 { #category : #actions }
 MiDeadCodeBrowser >> followEntity: anEntity [
 
+	super followEntity: anEntity anyOne mooseModel.
 	specModel followEntity: anEntity
 ]
 
@@ -143,14 +175,22 @@ MiDeadCodeBrowser >> initializePresenters [
 	lstMethod := self newList.
 	lstHeuristicsOffered := self newList
 		items: specModel availableHeuristics ;
+		beMultipleSelection ;
 		display: [:item | item name] ;
 		sortingBlock: #name ascending.
-	lstHeuristicsChosen := self newList.
+
+	lstHeuristicsChosen := self newList
+		beMultipleSelection ;
+		display: [:item | item name] ;
+		sortingBlock: #name ascending.
+	self selectedHeuristics: specModel selectedHeuristics.
+
 	lstDeadMethods := self newList.
 
 	btnSelectHeuristic := self newButton
 		label: 'v' ;
 		action: [ specModel selectHeuristics].
+
 	btnRejectHeuristic := self newButton
 		label: '^' ;
 		action: [ specModel rejectHeuristics].
@@ -158,6 +198,7 @@ MiDeadCodeBrowser >> initializePresenters [
 	btnFirstRound := self newButton
 		label: '1st round' ;
 		action: [ specModel firstRoundComputation].
+
 	btnRecursive := self newButton
 		label: 'recursion' ;
 		action: [ specModel recursiveComputation].
@@ -168,10 +209,28 @@ MiDeadCodeBrowser >> initializePresenters [
 		label: '0 dead entities'
 ]
 
+{ #category : #'accessing - private tests' }
+MiDeadCodeBrowser >> listHeuristicsOffered [ 
+
+	^lstHeuristicsOffered 
+]
+
+{ #category : #'accessing - private tests' }
+MiDeadCodeBrowser >> listHeuristicsSelected [ 
+
+	^lstHeuristicsChosen
+]
+
 { #category : #accessing }
 MiDeadCodeBrowser >> miSelectedItem [
 
 	^specModel miSelectedItem 
+]
+
+{ #category : #actions }
+MiDeadCodeBrowser >> selectedHeuristics: aCollection [
+
+	lstHeuristicsChosen items: aCollection asOrderedCollection
 ]
 
 { #category : #'accessing - private tests' }

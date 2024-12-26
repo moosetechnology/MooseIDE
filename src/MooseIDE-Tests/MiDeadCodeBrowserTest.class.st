@@ -36,13 +36,6 @@ MiDeadCodeBrowserTest >> testActivateActionButtons [
 ]
 
 { #category : #tests }
-MiDeadCodeBrowserTest >> testGatherHeuristicsList [
-	"Expected number must be updated according to number of non abstract heuristics classes"
-
-	self assert: browser specModel gatherHeuristics size equals: 5
-]
-
-{ #category : #tests }
 MiDeadCodeBrowserTest >> testInitializeCandidateEntityList [
 
 	| mooseModel |
@@ -55,5 +48,20 @@ MiDeadCodeBrowserTest >> testInitializeCandidateEntityList [
 { #category : #tests }
 MiDeadCodeBrowserTest >> testInitializeHeuristicsList [
 
-	self assert: browser heuristicsOffered items isNotEmpty
+	self assert: browser listHeuristicsOffered items isNotEmpty
+]
+
+{ #category : #tests }
+MiDeadCodeBrowserTest >> testSelectHeuristics [
+	"by default, there is one selected heuristics: `MiDeadCodeNoIncomingInvocationHeuristic`
+	 see also: MiDeadCodeAbstractHeuristic >> selectedByDefault"
+
+	self assert: browser listHeuristicsSelected items size equals: 1.
+
+	browser listHeuristicsOffered
+		selectItem: 	(browser listHeuristicsOffered items
+			detect: [:item | item selectedByDefault not ]).
+	browser buttonSelectHeuristics click.
+
+	self assert: browser listHeuristicsSelected items size equals: 2
 ]

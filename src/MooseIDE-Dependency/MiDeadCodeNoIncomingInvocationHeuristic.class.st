@@ -24,3 +24,9 @@ MiDeadCodeNoIncomingInvocationHeuristic >> name [
 
 	^'Not invoked method'
 ]
+
+{ #category : #testing }
+MiDeadCodeNoIncomingInvocationHeuristic >> selectedByDefault [
+
+	^true
+]

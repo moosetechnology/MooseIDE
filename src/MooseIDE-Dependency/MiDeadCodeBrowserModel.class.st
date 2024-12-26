@@ -9,7 +9,8 @@ Class {
 	#instVars : [
 		'deadEntities',
 		'candidateEntities',
-		'allHeuristics'
+		'allHeuristics',
+		'selectedHeuristics'
 	],
 	#category : #'MooseIDE-Dependency-DeadCode'
 }
@@ -46,12 +47,36 @@ MiDeadCodeBrowserModel >> initialize [
 
 	super initialize.
 
-	allHeuristics := self gatherHeuristics.
+	self initializeHeuristics.
 	deadEntities := OrderedCollection new
+]
+
+{ #category : #initialization }
+MiDeadCodeBrowserModel >> initializeHeuristics [
+
+	allHeuristics := self gatherHeuristics.
+
+	selectedHeuristics := Set new: allHeuristics size.
+	allHeuristics do: [ :heuristic |
+		heuristic selectedByDefault
+			ifTrue: [ selectedHeuristics add: heuristic ] ]
 ]
 
 { #category : #accessing }
 MiDeadCodeBrowserModel >> miSelectedItem [
 
 	^#()
+]
+
+{ #category : #actions }
+MiDeadCodeBrowserModel >> selectHeuristics [
+
+	selectedHeuristics addAll: browser listHeuristicsOffered selectedItems.
+	browser selectedHeuristics: selectedHeuristics 
+]
+
+{ #category : #accessing }
+MiDeadCodeBrowserModel >> selectedHeuristics [
+
+	^selectedHeuristics 
 ]
