@@ -21,13 +21,13 @@ MiDeadCodeJavaImplementedInterfaceHeuristic >> isDead: aTMethod [
 
 	aTMethod parentType interfaceImplementations ifEmpty: [ ^true ].
 
-	aTMethod parentType interfaceImplementations do: [ :interface |
-		interface methods do: [ :interfaceMethod |
-			((interfaceMethod signature = aTMethod signature) and:
-			[ interfaceMethod incomingInvocations isNotEmpty ])
-				ifTrue: [ ^false ]
-		]
-	].
+	aTMethod parentType interfaceImplementations do: [ :implementation |
+		implementation interface methods
+			detect: [ :interfaceMethod |
+				(interfaceMethod signature = aTMethod signature) and:
+				[ interfaceMethod incomingInvocations isNotEmpty ] ]
+			ifOne: [ :ignore | ^false ]
+		].
 
 	^true
 

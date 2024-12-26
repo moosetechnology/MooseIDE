@@ -22,12 +22,17 @@ MiDeadCodeJavaTestAnnotationHeuristic >> description [
 { #category : #testing }
 MiDeadCodeJavaTestAnnotationHeuristic >> isDead: aTMethod [
 
-	^aTMethod annotationInstances
-		ifNotEmpty: [ :annots |
-			(annots anySatisfy: [ :ann |
-				(self junit4Annotations includes: ann annotationType name) or:
-				[self junit5Annotations includes: ann annotationType name] ]) ].
+	aTMethod annotationInstances ifEmpty: [ ^true ].
 
+	(aTMethod annotationInstances anySatisfy: [ :annotation |
+		self junit4Annotations includes: annotation annotationType name ])
+		ifTrue: [ ^false ].
+
+	(aTMethod annotationInstances anySatisfy: [ :annotation |
+		self junit5Annotations includes: annotation annotationType name ]) 
+		ifTrue: [ ^false ].
+
+	^true
 ]
 
 { #category : #testing }

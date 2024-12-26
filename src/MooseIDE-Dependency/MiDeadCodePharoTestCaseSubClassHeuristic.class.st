@@ -18,7 +18,7 @@ MiDeadCodePharoTestCaseSubClassHeuristic >> description [
 { #category : #testing }
 MiDeadCodePharoTestCaseSubClassHeuristic >> isDead: aTMethod [
 
-	^aTMethod parentType superclassHierarchy anySatisfy: [ :c | c name = 'TestCase' ] 
+	^aTMethod parentType superclassHierarchy noneSatisfy: [ :c | c name = 'TestCase' ] 
 ]
 
 { #category : #accessing }
