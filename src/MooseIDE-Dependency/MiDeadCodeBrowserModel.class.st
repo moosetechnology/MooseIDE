@@ -15,7 +15,7 @@ Class {
 	#category : #'MooseIDE-Dependency-DeadCode'
 }
 
-{ #category : #'accessing - private tests' }
+{ #category : #accessing }
 MiDeadCodeBrowserModel >> availableHeuristics [
 
 	^allHeuristics
@@ -24,8 +24,7 @@ MiDeadCodeBrowserModel >> availableHeuristics [
 { #category : #'accessing - private tests' }
 MiDeadCodeBrowserModel >> clearSelectedHeuristics [
 
-	selectedHeuristics removeAll.
-	browser updateHeuristicSelection
+	selectedHeuristics removeAll
 ]
 
 { #category : #accessing }

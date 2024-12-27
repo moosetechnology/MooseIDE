@@ -40,6 +40,7 @@ MiDeadCodeBrowserTest >> testDisabledFirstRoundButton [
 	"without selected heuristics, 1st-round button is disabled"
 
 	browser specModel clearSelectedHeuristics.
+	browser updateHeuristicSelection.
 
 	self deny: browser resultColumn buttonFirstRound isEnabled
 ]

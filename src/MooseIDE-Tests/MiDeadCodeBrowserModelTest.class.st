@@ -8,15 +8,96 @@ Class {
 }
 
 { #category : #running }
-MiDeadCodeBrowserModelTest >> assertHeuristic: heuristicClass on: anEntity [
+MiDeadCodeBrowserModelTest >> class: aClass inheritFrom: superclassName [
 
-	self assert: (heuristicClass new isDead: anEntity)
+	FamixStInheritance new
+		superclass: (FamixStClass new name: superclassName) ;
+		subclass: aClass
 ]
 
 { #category : #running }
-MiDeadCodeBrowserModelTest >> denyHeuristic: heuristicClass on: anEntity [
+MiDeadCodeBrowserModelTest >> invokeJavaMethod: entity [
 
-	self deny: (heuristicClass new isDead: anEntity)
+	FamixJavaInvocation new
+		sender: entity ;
+		candidates: { entity }.
+]
+
+{ #category : #running }
+MiDeadCodeBrowserModelTest >> invokedMethod: methName [
+
+	| entity |
+	entity := FamixStMethod new.
+	entity name: methName.
+
+	FamixStInvocation new
+		sender: entity ;
+		candidates: { entity }.
+
+	^entity
+]
+
+{ #category : #running }
+MiDeadCodeBrowserModelTest >> javaClass: aClass implements: anInterface [
+
+	FamixJavaImplementation new
+		implementingClass: aClass ;
+		interface: anInterface
+]
+
+{ #category : #running }
+MiDeadCodeBrowserModelTest >> javaClassMethod: methSignature [
+
+	| entity |
+	entity := FamixJavaMethod new.
+	entity signature: methSignature.
+	entity parentType: (FamixJavaClass new).
+
+	^entity
+]
+
+{ #category : #running }
+MiDeadCodeBrowserModelTest >> javaInterfaceMethod: methSignature [
+
+	| entity |
+	entity := FamixJavaMethod new.
+	entity signature: methSignature.
+	entity parentType: (FamixJavaInterface new).
+
+	^entity
+]
+
+{ #category : #running }
+MiDeadCodeBrowserModelTest >> method: methName annotatedWith: annotationName [
+
+	| entity |
+	entity := FamixJavaMethod new.
+	entity name: methName.
+
+	FamixJavaAnnotationInstance new
+		annotationType: (FamixJavaAnnotationType new name: annotationName) ;
+		annotatedEntity: entity.
+
+	^entity
+]
+
+{ #category : #running }
+MiDeadCodeBrowserModelTest >> method: methName inClass: className [
+
+	| entity |
+	entity := FamixStMethod new.
+	entity name: methName.
+	entity parentType: (FamixStClass new name: className).
+
+	^entity
+]
+
+{ #category : #running }
+MiDeadCodeBrowserModelTest >> modelWithHeuristic: aCollection [
+
+	model initializeHeuristics.
+	model selectedHeuristics addAll: aCollection
+
 ]
 
 { #category : #running }
@@ -24,6 +105,8 @@ MiDeadCodeBrowserModelTest >> setUp [
 	super setUp.
 
 	model := MiDeadCodeBrowserModel new.
+	model browser: Mock new.
+
 ]
 
 { #category : #tests }
@@ -45,10 +128,7 @@ MiDeadCodeBrowserModelTest >> testNoInvocationHeuristicIsDead [
 MiDeadCodeBrowserModelTest >> testNoInvocationHeuristicNotDead [
 
 	| entity |
-	entity := FamixStMethod new.
-	FamixStInvocation new
-		sender: entity ;
-		candidates: { entity }.
+	entity := self invokedMethod: 'someFunctionality'.
 
 	self deny: (MiDeadCodeNoIncomingInvocationHeuristic new isDead: entity)
 ]
@@ -56,11 +136,8 @@ MiDeadCodeBrowserModelTest >> testNoInvocationHeuristicNotDead [
 { #category : #tests }
 MiDeadCodeBrowserModelTest >> testPharoTestCaseHeuristicIsDead [
 	| entity |
-	entity := FamixStMethod new.
-	entity parentType: (FamixStClass new name: 'SomeClass').
-	FamixStInheritance new
-		superclass: (FamixStClass new name: 'Object') ;
-		subclass: entity parentType.
+	entity := self method: 'someFunctionality' inClass: 'SomeClass'.
+	self class: entity parentType inheritFrom: 'Object'.
 
 	self assert: (MiDeadCodePharoTestCaseSubClassHeuristic new isDead: entity)
 ]
@@ -68,11 +145,8 @@ MiDeadCodeBrowserModelTest >> testPharoTestCaseHeuristicIsDead [
 { #category : #tests }
 MiDeadCodeBrowserModelTest >> testPharoTestCaseHeuristicNotDead [
 	| entity |
-	entity := FamixStMethod new.
-	entity parentType: (FamixStClass new name: 'SomeClass').
-	FamixStInheritance new
-		superclass: (FamixStClass new name: 'TestCase') ;
-		subclass: entity parentType.
+	entity := self method: 'someFunctionality' inClass: 'SomeClass'.
+	self class: entity parentType inheritFrom: 'TestCase'.
 
 	self deny: (MiDeadCodePharoTestCaseSubClassHeuristic new isDead: entity)
 ]
@@ -90,10 +164,7 @@ MiDeadCodeBrowserModelTest >> testTestJavaAnnotationHeuristicDeadNoAnnotation [
 MiDeadCodeBrowserModelTest >> testTestJavaAnnotationHeuristicDeadWrongAnnotation [
 
 	| entity |
-	entity := FamixJavaMethod new.
-	FamixJavaAnnotationInstance new
-		annotationType: (FamixJavaAnnotationType new name: 'Deprecated') ;
-		annotatedEntity: entity.
+	entity := self method: 'someFunctionality' annotatedWith: 'Deprecated'.
 
 	self assert: (MiDeadCodeJavaTestAnnotationHeuristic new isDead: entity)
 ]
@@ -102,10 +173,7 @@ MiDeadCodeBrowserModelTest >> testTestJavaAnnotationHeuristicDeadWrongAnnotation
 MiDeadCodeBrowserModelTest >> testTestJavaAnnotationHeuristicNotDead [
 
 	| entity |
-	entity := FamixJavaMethod new.
-	FamixJavaAnnotationInstance new
-		annotationType: (FamixJavaAnnotationType new name: 'BeforeClass') ;
-		annotatedEntity: entity.
+	entity := self method: 'someFunctionality' annotatedWith: 'BeforeClass'.
 
 	self deny: (MiDeadCodeJavaTestAnnotationHeuristic new isDead: entity)
 ]
@@ -113,17 +181,9 @@ MiDeadCodeBrowserModelTest >> testTestJavaAnnotationHeuristicNotDead [
 { #category : #tests }
 MiDeadCodeBrowserModelTest >> testTestJavaInterfaceHeuristicDeadNoInterface [
 	| entity1 entity2 |
-	entity1 := FamixJavaMethod new.
-	entity1 signature: 'doSomething()'.
-	entity1 parentType: (FamixJavaClass new).
-
-	entity2 := FamixJavaMethod new.
-	entity2 signature: 'doSomething()'.
-	entity2 parentType: (FamixJavaInterface new).
-
-	FamixJavaInvocation new
-		sender: entity2 ;
-		candidates: { entity2 }.
+	entity1 := self javaClassMethod: 'doSomething()'.
+	entity2 := self javaInterfaceMethod: 'doSomething()'.
+	self invokeJavaMethod: entity2.
 
 	self assert: (MiDeadCodeJavaImplementedInterfaceHeuristic new isDead: entity1)
 ]
@@ -132,17 +192,9 @@ MiDeadCodeBrowserModelTest >> testTestJavaInterfaceHeuristicDeadNoInterface [
 MiDeadCodeBrowserModelTest >> testTestJavaInterfaceHeuristicDeadNoInvocation [
 
 	| entity1 entity2 |
-	entity1 := FamixJavaMethod new.
-	entity1 signature: 'doSomething()'.
-	entity1 parentType: (FamixJavaClass new).
-
-	entity2 := FamixJavaMethod new.
-	entity2 signature: 'doSomething()'.
-	entity2 parentType: (FamixJavaInterface new).
-
-	FamixJavaImplementation new
-		implementingClass: entity1 parentType ;
-		interface: entity2 parentType.
+	entity1 := self javaClassMethod: 'doSomething()'.
+	entity2 := self javaInterfaceMethod: 'doSomething()'.
+	self javaClass: entity1 parentType implements: entity2 parentType.
 
 	self assert: (MiDeadCodeJavaImplementedInterfaceHeuristic new isDead: entity1)
 ]
@@ -151,21 +203,10 @@ MiDeadCodeBrowserModelTest >> testTestJavaInterfaceHeuristicDeadNoInvocation [
 MiDeadCodeBrowserModelTest >> testTestJavaInterfaceHeuristicDeadNoMethod [
 
 	| entity1 entity2 |
-	entity1 := FamixJavaMethod new.
-	entity1 signature: 'doSomething()'.
-	entity1 parentType: (FamixJavaClass new).
-
-	entity2 := FamixJavaMethod new.
-	entity2 signature: 'doOtherThing()'.
-	entity2 parentType: (FamixJavaInterface new).
-
-	FamixJavaImplementation new
-		implementingClass: entity1 parentType ;
-		interface: entity2 parentType.
-	
-	FamixJavaInvocation new
-		sender: entity2 ;
-		candidates: { entity2 }.
+	entity1 := self javaClassMethod: 'doSomething()'.
+	entity2 := self javaInterfaceMethod: 'doOtherThing()'.
+	self javaClass: entity1 parentType implements: entity2 parentType.
+	self invokeJavaMethod: entity2.
 
 	self assert: (MiDeadCodeJavaImplementedInterfaceHeuristic new isDead: entity1)
 ]
@@ -174,21 +215,10 @@ MiDeadCodeBrowserModelTest >> testTestJavaInterfaceHeuristicDeadNoMethod [
 MiDeadCodeBrowserModelTest >> testTestJavaInterfaceHeuristicNotDead [
 
 	| entity1 entity2 |
-	entity1 := FamixJavaMethod new.
-	entity1 signature: 'doSomething()'.
-	entity1 parentType: (FamixJavaClass new).
-
-	entity2 := FamixJavaMethod new.
-	entity2 signature: 'doSomething()'.
-	entity2 parentType: (FamixJavaInterface new).
-
-	FamixJavaImplementation new
-		implementingClass: entity1 parentType ;
-		interface: entity2 parentType.
-	
-	FamixJavaInvocation new
-		sender: entity2 ;
-		candidates: { entity2 }.
+	entity1 := self javaClassMethod: 'doSomething()'.
+	entity2 := self javaInterfaceMethod: 'doSomething()'.
+	self javaClass: entity1 parentType implements: entity2 parentType.
+	self invokeJavaMethod: entity2.
 
 	self deny: (MiDeadCodeJavaImplementedInterfaceHeuristic new isDead: entity1)
 ]
@@ -196,9 +226,7 @@ MiDeadCodeBrowserModelTest >> testTestJavaInterfaceHeuristicNotDead [
 { #category : #tests }
 MiDeadCodeBrowserModelTest >> testTestNamingConventionHeuristicIsDead [
 	| entity |
-	entity := FamixStMethod new.
-	entity name: 'testWhateverFunctionality'.
-	entity parentType: (FamixStClass new name: 'IsAClassTest').
+	entity := self method: 'testWhateverFunctionality'  inClass: 'IsAClassTest'.
 
 	self assert: (MiDeadCodeNamingConventionHeuristic new isDead: entity)
 ]
@@ -207,9 +235,7 @@ MiDeadCodeBrowserModelTest >> testTestNamingConventionHeuristicIsDead [
 MiDeadCodeBrowserModelTest >> testTestNamingConventionHeuristicMethodNameJustTest [
 
 	| entity |
-	entity := FamixStMethod new.
-	entity name: 'test'.
-	entity parentType: (FamixStClass new name: 'IsAClassTest').
+	entity := self method: 'test'  inClass: 'IsAClassTest'.
 
 	self deny: (MiDeadCodeNamingConventionHeuristic new isDead: entity)
 ]
@@ -218,9 +244,7 @@ MiDeadCodeBrowserModelTest >> testTestNamingConventionHeuristicMethodNameJustTes
 MiDeadCodeBrowserModelTest >> testTestNamingConventionHeuristicMethodNameNotTest [
 
 	| entity |
-	entity := FamixStMethod new.
-	entity name: 'whateverFunctionality'.
-	entity parentType: (FamixStClass new name: 'IsAClassTest').
+	entity := self method: 'whateverFunctionality'  inClass: 'IsAClassTest'.
 
 	self deny: (MiDeadCodeNamingConventionHeuristic new isDead: entity)
 ]
@@ -229,9 +253,7 @@ MiDeadCodeBrowserModelTest >> testTestNamingConventionHeuristicMethodNameNotTest
 MiDeadCodeBrowserModelTest >> testTestNamingConventionHeuristicMethodNameTestosterone [
 
 	| entity |
-	entity := FamixStMethod new.
-	entity name: 'testosterone'.
-	entity parentType: (FamixStClass new name: 'IsAClassTest').
+	entity := self method: 'testosterone'  inClass: 'IsAClassTest'.
 
 	self deny: (MiDeadCodeNamingConventionHeuristic new isDead: entity)
 ]
@@ -240,9 +262,7 @@ MiDeadCodeBrowserModelTest >> testTestNamingConventionHeuristicMethodNameTestost
 MiDeadCodeBrowserModelTest >> testTestNamingConventionHeuristicWrongClassName [
 
 	| entity |
-	entity := FamixStMethod new.
-	entity name: 'testWhateverFunctionality'.
-	entity parentType: (FamixStClass new name: 'NotATestClass').
+	entity := self method: 'testWhateverFunctionality'  inClass: 'NotATestClass'.
 
 	self deny: (MiDeadCodeNamingConventionHeuristic new isDead: entity)
 ]
