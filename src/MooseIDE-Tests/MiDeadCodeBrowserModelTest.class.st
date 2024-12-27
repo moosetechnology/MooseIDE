@@ -205,6 +205,7 @@ MiDeadCodeBrowserModelTest >> testSortHeuristics [
 		MiDeadCodeNamingConventionHeuristic new .
 		MiDeadCodeJavaImplementedInterfaceHeuristic new }.
 
+	self assert: model selectedHeuristics size equals: 3.
 	self assert: model selectedHeuristics first  class equals: MiDeadCodeJavaImplementedInterfaceHeuristic.
 	self assert: model selectedHeuristics second class equals: MiDeadCodeNamingConventionHeuristic.
 	self assert: model selectedHeuristics third  class equals: MiDeadCodeNoIncomingInvocationHeuristic.
