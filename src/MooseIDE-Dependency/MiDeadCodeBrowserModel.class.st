@@ -134,8 +134,8 @@ MiDeadCodeBrowserModel >> selectHeuristics [
 	"add all heuristics selected by the user in listHeuristicsOffered to
 	 the internal list of selectedHeuristics"
 
-	selectedHeuristics addAll:
-		(selectedHeuristics union: browser heuristicColumn listHeuristicsOffered selectedItems).
+	selectedHeuristics := (selectedHeuristics union:
+		browser heuristicColumn listHeuristicsOffered selectedItems).
 	self sortHeuristics.
 	browser updateHeuristicSelection
 ]
