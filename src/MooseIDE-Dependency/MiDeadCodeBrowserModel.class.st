@@ -105,7 +105,7 @@ MiDeadCodeBrowserModel >> initializeHeuristics [
 
 	allHeuristics := self gatherHeuristics.
 
-	selectedHeuristics := Set new: allHeuristics size.
+	selectedHeuristics := OrderedCollection new: allHeuristics size.
 	allHeuristics do: [ :heuristic |
 		heuristic selectedByDefault
 			ifTrue: [ selectedHeuristics add: heuristic ] ]
@@ -134,7 +134,9 @@ MiDeadCodeBrowserModel >> selectHeuristics [
 	"add all heuristics selected by the user in listHeuristicsOffered to
 	 the internal list of selectedHeuristics"
 
-	selectedHeuristics addAll: browser heuristicColumn listHeuristicsOffered selectedItems.
+	selectedHeuristics addAll:
+		(selectedHeuristics union: browser heuristicColumn listHeuristicsOffered selectedItems).
+	self sortHeuristics.
 	browser updateHeuristicSelection
 ]
 
@@ -147,4 +149,16 @@ MiDeadCodeBrowserModel >> selectedHeuristics [
 { #category : #settings }
 MiDeadCodeBrowserModel >> settings [
 
+]
+
+{ #category : #actions }
+MiDeadCodeBrowserModel >> sortHeuristics [
+	"sorts refuting heuristics before asserting ones.
+	 if of the samecategory, sort on their names"
+
+	selectedHeuristics sort: [ :a :b |
+		(a refuteDead = b refuteDead)
+			ifTrue: [ a name < b name ]
+			ifFalse: [ a refuteDead ]
+		]
 ]

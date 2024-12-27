@@ -96,7 +96,8 @@ MiDeadCodeBrowserModelTest >> method: methName inClass: className [
 MiDeadCodeBrowserModelTest >> modelWithHeuristic: aCollection [
 
 	model initializeHeuristics.
-	model selectedHeuristics addAll: aCollection
+	model selectedHeuristics addAll: aCollection.
+	model sortHeuristics.
 
 ]
 
@@ -194,6 +195,19 @@ MiDeadCodeBrowserModelTest >> testPharoTestCaseHeuristicNotDead [
 	self class: entity parentType inheritFrom: 'TestCase'.
 
 	self deny: (MiDeadCodePharoTestCaseSubClassHeuristic new isDead: entity)
+]
+
+{ #category : #tests }
+MiDeadCodeBrowserModelTest >> testSortHeuristics [
+	"entity is not invoked, but it should be considered a test method"
+
+	self modelWithHeuristic: {
+		MiDeadCodeNamingConventionHeuristic new .
+		MiDeadCodeJavaImplementedInterfaceHeuristic new }.
+
+	self assert: model selectedHeuristics first  class equals: MiDeadCodeJavaImplementedInterfaceHeuristic.
+	self assert: model selectedHeuristics second class equals: MiDeadCodeNamingConventionHeuristic.
+	self assert: model selectedHeuristics third  class equals: MiDeadCodeNoIncomingInvocationHeuristic.
 ]
 
 { #category : #tests }
