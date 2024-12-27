@@ -269,20 +269,12 @@ MiDeadCodeBrowserModelTest >> testTestJavaInterfaceHeuristicNotDead [
 ]
 
 { #category : #tests }
-MiDeadCodeBrowserModelTest >> testTestNamingConventionHeuristicIsDead [
-	| entity |
-	entity := self method: 'testWhateverFunctionality'  inClass: 'IsAClassTest'.
-
-	self assert: (MiDeadCodeNamingConventionHeuristic new isDead: entity)
-]
-
-{ #category : #tests }
 MiDeadCodeBrowserModelTest >> testTestNamingConventionHeuristicMethodNameJustTest [
 
 	| entity |
 	entity := self method: 'test'  inClass: 'IsAClassTest'.
 
-	self deny: (MiDeadCodeNamingConventionHeuristic new isDead: entity)
+	self assert: (MiDeadCodeNamingConventionHeuristic new isDead: entity)
 ]
 
 { #category : #tests }
@@ -291,7 +283,7 @@ MiDeadCodeBrowserModelTest >> testTestNamingConventionHeuristicMethodNameNotTest
 	| entity |
 	entity := self method: 'whateverFunctionality'  inClass: 'IsAClassTest'.
 
-	self deny: (MiDeadCodeNamingConventionHeuristic new isDead: entity)
+	self assert: (MiDeadCodeNamingConventionHeuristic new isDead: entity)
 ]
 
 { #category : #tests }
@@ -299,6 +291,14 @@ MiDeadCodeBrowserModelTest >> testTestNamingConventionHeuristicMethodNameTestost
 
 	| entity |
 	entity := self method: 'testosterone'  inClass: 'IsAClassTest'.
+
+	self assert: (MiDeadCodeNamingConventionHeuristic new isDead: entity)
+]
+
+{ #category : #tests }
+MiDeadCodeBrowserModelTest >> testTestNamingConventionHeuristicNotDead [
+	| entity |
+	entity := self method: 'testWhateverFunctionality'  inClass: 'IsAClassTest'.
 
 	self deny: (MiDeadCodeNamingConventionHeuristic new isDead: entity)
 ]
@@ -309,5 +309,5 @@ MiDeadCodeBrowserModelTest >> testTestNamingConventionHeuristicWrongClassName [
 	| entity |
 	entity := self method: 'testWhateverFunctionality'  inClass: 'NotATestClass'.
 
-	self deny: (MiDeadCodeNamingConventionHeuristic new isDead: entity)
+	self assert: (MiDeadCodeNamingConventionHeuristic new isDead: entity)
 ]

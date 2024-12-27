@@ -22,11 +22,11 @@ MiDeadCodeNamingConventionHeuristic >> description [
 { #category : #testing }
 MiDeadCodeNamingConventionHeuristic >> isDead: aTMethod [
 
-	(aTMethod name beginsWith: #test) ifFalse: [ ^false ].
-	(aTMethod parentType name endsWith: 'Test') ifFalse: [ ^false ].
-	(aTMethod name size > 5)  ifFalse: [ ^false ].
-	(aTMethod name fifth isLowercase) ifTrue: [ ^false ].
-	^true
+	(aTMethod name beginsWith: #test) ifFalse: [ ^true ].
+	(aTMethod parentType name endsWith: 'Test') ifFalse: [ ^true ].
+	(aTMethod name size > 5)  ifFalse: [ ^true ].
+	(aTMethod name fifth isLowercase) ifTrue: [ ^true ].
+	^false
 ]
 
 { #category : #accessing }
