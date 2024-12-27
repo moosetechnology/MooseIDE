@@ -18,6 +18,12 @@ MiDeadCodeJavaImplementedInterfaceHeuristic >> description [
 
 { #category : #testing }
 MiDeadCodeJavaImplementedInterfaceHeuristic >> isDead: aTMethod [
+	"metods implementing a Java interface method that is invoked are considered not dead
+	 the other one are 'dead' (refuting heuristic)"
+
+	(aTMethod parentType mooseDescription allProperties noneSatisfy: [ :fmProp |
+		fmProp name = #interfaceImplementations ])
+		ifTrue: [ ^true ].
 
 	aTMethod parentType interfaceImplementations ifEmpty: [ ^true ].
 
