@@ -19,6 +19,12 @@ MiDeadCodeBrowserResultColum >> buttonFirstRound [
 	^btnFirstRound 
 ]
 
+{ #category : #'accessing - private tests' }
+MiDeadCodeBrowserResultColum >> buttonRecursiveRound [
+
+	^btnRecursive 
+]
+
 { #category : #layout }
 MiDeadCodeBrowserResultColum >> defaultLayout [
 
@@ -40,14 +46,28 @@ MiDeadCodeBrowserResultColum >> initializePresenters [
 
 	btnFirstRound := self newButton
 		label: '1st round' ;
+		enabled: false ;
 		action: [ self specModel firstRoundComputation].
 
 	btnRecursive := self newButton
 		label: 'recursion' ;
+		enabled: false ;
 		action: [ self specModel recursiveComputation].
 
 	lblDeadMethods := self newLabel
 		label: '0 dead entities'
+]
+
+{ #category : #'accessing - private tests' }
+MiDeadCodeBrowserResultColum >> labelDeadEntities [
+
+	^lblDeadMethods 
+]
+
+{ #category : #'accessing - private tests' }
+MiDeadCodeBrowserResultColum >> listDeadEntities [
+
+	^lstDeadMethods 
 ]
 
 { #category : #accessing }
@@ -68,7 +88,7 @@ MiDeadCodeBrowserResultColum >> update [
 	| deads |
 	deads := self specModel deadEntities.
 	lstDeadMethods items: deads.
-	lblDeadMethods label: deads asString , ' dead entities'.
+	lblDeadMethods label: deads size asString , ' dead entities'.
 
 	btnRecursive enabled: deads isNotEmpty
 ]

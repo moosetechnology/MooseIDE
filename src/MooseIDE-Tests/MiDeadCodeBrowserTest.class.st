@@ -49,6 +49,7 @@ MiDeadCodeBrowserTest >> testDisabledFirstRoundButton [
 MiDeadCodeBrowserTest >> testEnabledFirstRoundButton [
 	"with a selected heuristics, 1st-round button is enabled"
 
+	browser updateHeuristicSelection.
 	self assert: browser resultColumn buttonFirstRound isEnabled
 ]
 
@@ -97,4 +98,17 @@ MiDeadCodeBrowserTest >> testSelectHeuristics [
 	browser heuristicColumn buttonSelectHeuristics click.
 
 	self assert: browser heuristicColumn listHeuristicsSelected items size equals: 2
+]
+
+{ #category : #tests }
+MiDeadCodeBrowserTest >> testUpdateDeadEntities [
+
+	self assert: browser resultColumn listDeadEntities items size equals: 0.
+	self deny: browser resultColumn buttonRecursiveRound isEnabled.
+
+	browser specModel deadEntities addAll: { FamixStMethod new . FamixStMethod new }.
+	browser updateDeadEntities.
+
+	self assert: browser resultColumn listDeadEntities items size equals: 2.
+	self assert: browser resultColumn labelDeadEntities label equals: '2 dead entities'
 ]
