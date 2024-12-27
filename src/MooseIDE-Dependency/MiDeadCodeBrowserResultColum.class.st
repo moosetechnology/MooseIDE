@@ -63,6 +63,17 @@ MiDeadCodeBrowserResultColum >> toolbarHeight [
 ]
 
 { #category : #actions }
+MiDeadCodeBrowserResultColum >> update [
+
+	| deads |
+	deads := self specModel deadEntities.
+	lstDeadMethods items: deads.
+	lblDeadMethods label: deads asString , ' dead entities'.
+
+	btnRecursive enabled: deads isNotEmpty
+]
+
+{ #category : #actions }
 MiDeadCodeBrowserResultColum >> updateHeuristicSelection [
 
 	btnFirstRound enabled: (self specModel selectedHeuristics isNotEmpty)

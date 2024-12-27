@@ -28,9 +28,34 @@ MiDeadCodeBrowserModel >> clearSelectedHeuristics [
 ]
 
 { #category : #accessing }
+MiDeadCodeBrowserModel >> deadEntities [
+
+	^deadEntities 
+]
+
+{ #category : #accessing }
 MiDeadCodeBrowserModel >> entities [
 
 	^candidateEntities
+]
+
+{ #category : #actions }
+MiDeadCodeBrowserModel >> firstRoundComputation [
+
+	deadEntities removeAll.
+	self entities do: [ :entity | self firstRoundOn: entity ].
+	browser updateDeadEntities
+]
+
+{ #category : #actions }
+MiDeadCodeBrowserModel >> firstRoundOn: entity [
+	"search for a heuristic that could deal with the entity
+	 when found, go to next entity"
+
+	selectedHeuristics do: [ :heuristic |
+		(self heuristic: heuristic handle: entity)
+			ifTrue: [ ^self ]
+		]
 ]
 
 { #category : #actions }
@@ -46,6 +71,24 @@ MiDeadCodeBrowserModel >> gatherHeuristics [
 	^MiDeadCodeAbstractHeuristic withAllSubclasses
 		select: [ :class | class isAbstract not ]
 		thenCollect: [ :class | class new ]
+]
+
+{ #category : #actions }
+MiDeadCodeBrowserModel >> heuristic: heuristic handle: entity [
+	"returns whether a decision was reach or not.
+	 A decision is reached for _refuting_ heuristics if the entity is not dead
+	   and there is nothing to do (but we do not need to check other heuristics)
+	 A decision is reached for _asserting_ heuristic, if the entity is dead
+	   and it must be added to the list of dead entities"
+
+	heuristic refuteDead 
+		ifTrue: [ (heuristic isDead: entity) ifFalse: [ ^true ] ]
+		ifFalse: [
+			(heuristic isDead: entity)
+				ifTrue: [ deadEntities add: entity. ^true ]
+		].
+	
+	^false
 ]
 
 { #category : #initialization }
@@ -76,6 +119,8 @@ MiDeadCodeBrowserModel >> miSelectedItem [
 
 { #category : #actions }
 MiDeadCodeBrowserModel >> rejectHeuristics [
+	"remove all heuristics selected by the user in listHeuristicsSelected from
+	 the internal list of selectedHeuristics"
 
 	| reject |
 	reject := browser heuristicColumn listHeuristicsSelected selectedItems clone.
@@ -86,6 +131,8 @@ MiDeadCodeBrowserModel >> rejectHeuristics [
 
 { #category : #actions }
 MiDeadCodeBrowserModel >> selectHeuristics [
+	"add all heuristics selected by the user in listHeuristicsOffered to
+	 the internal list of selectedHeuristics"
 
 	selectedHeuristics addAll: browser heuristicColumn listHeuristicsOffered selectedItems.
 	browser updateHeuristicSelection
@@ -95,4 +142,9 @@ MiDeadCodeBrowserModel >> selectHeuristics [
 MiDeadCodeBrowserModel >> selectedHeuristics [
 
 	^selectedHeuristics 
+]
+
+{ #category : #settings }
+MiDeadCodeBrowserModel >> settings [
+
 ]

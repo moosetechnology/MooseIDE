@@ -169,6 +169,12 @@ MiDeadCodeBrowser >> toolbarHeight [
 ]
 
 { #category : #actions }
+MiDeadCodeBrowser >> updateDeadEntities [
+
+	resultColumn update
+]
+
+{ #category : #actions }
 MiDeadCodeBrowser >> updateHeuristicSelection [
 
 	heuristicColumn selectedHeuristics: specModel selectedHeuristics.

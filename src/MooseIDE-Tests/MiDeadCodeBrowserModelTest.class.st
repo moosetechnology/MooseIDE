@@ -110,6 +110,51 @@ MiDeadCodeBrowserModelTest >> setUp [
 ]
 
 { #category : #tests }
+MiDeadCodeBrowserModelTest >> testFirstRoundDeadNotRefuted [
+
+	self modelWithHeuristic: { MiDeadCodeNamingConventionHeuristic new }.
+
+	model followEntity: { self method: 'whateverFunctionality' inClass: 'IsAClassTest' }.
+
+	self assert: model deadEntities size equals: 0.
+	model firstRoundComputation.
+	self assert: model deadEntities size equals: 1
+]
+
+{ #category : #tests }
+MiDeadCodeBrowserModelTest >> testFirstRoundNoDead [
+
+	model followEntity: { self invokedMethod: 'someFunctionality' }.
+
+	self assert: model deadEntities size equals: 0.
+	model firstRoundComputation.
+	self assert: model deadEntities size equals: 0
+]
+
+{ #category : #tests }
+MiDeadCodeBrowserModelTest >> testFirstRoundOneDead [
+
+	model followEntity: { FamixStMethod new }.
+
+	self assert: model deadEntities size equals: 0.
+	model firstRoundComputation.
+	self assert: model deadEntities size equals: 1
+]
+
+{ #category : #tests }
+MiDeadCodeBrowserModelTest >> testFirstRoundRefutedDead [
+	"entity is not invoked, but it should be considered a test method"
+
+	self modelWithHeuristic: { MiDeadCodeNamingConventionHeuristic new }.
+
+	model followEntity: { self method: 'testWhateverFunctionality' inClass: 'IsAClassTest' }.
+
+	self assert: model deadEntities size equals: 0.
+	model firstRoundComputation.
+	self assert: model deadEntities size equals: 0
+]
+
+{ #category : #tests }
 MiDeadCodeBrowserModelTest >> testGatherHeuristicsList [
 	"Expected number must be updated according to number of non abstract heuristics classes"
 
