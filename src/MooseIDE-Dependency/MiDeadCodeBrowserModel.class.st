@@ -62,7 +62,8 @@ MiDeadCodeBrowserModel >> firstRoundOn: entity [
 MiDeadCodeBrowserModel >> followEntity: aCollection [
 
 	candidateEntities := aCollection.
-	browser candidateEntities: aCollection 
+	browser candidateEntities: aCollection.
+	browser updateHeuristicSelection
 ]
 
 { #category : #accessing }
@@ -108,7 +109,8 @@ MiDeadCodeBrowserModel >> initializeHeuristics [
 	selectedHeuristics := OrderedCollection new: allHeuristics size.
 	allHeuristics do: [ :heuristic |
 		heuristic selectedByDefault
-			ifTrue: [ selectedHeuristics add: heuristic ] ]
+			ifTrue: [ selectedHeuristics add: heuristic ] ].
+
 ]
 
 { #category : #accessing }

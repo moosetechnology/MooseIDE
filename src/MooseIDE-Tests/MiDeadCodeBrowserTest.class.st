@@ -60,7 +60,8 @@ MiDeadCodeBrowserTest >> testInitializeCandidateEntityList [
 	mooseModel := FamixStModel new.
 	self populateBrowser: mooseModel.
 
-	self assert: browser candidateEntities items isNotEmpty
+	self assert: browser candidateEntities items isNotEmpty.
+	self assert: browser labelCandidateEntities label equals: '2 entities'
 ]
 
 { #category : #tests }

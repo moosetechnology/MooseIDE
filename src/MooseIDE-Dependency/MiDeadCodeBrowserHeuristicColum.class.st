@@ -67,8 +67,7 @@ MiDeadCodeBrowserHeuristicColum >> initializePresenters [
 
 	lstHeuristicsChosen := self newList
 		beMultipleSelection ;
-		display: [:item | item name] ;
-		sortingBlock: #name ascending.
+		display: [:item | item name].
 	self selectedHeuristics: self specModel selectedHeuristics.
 
 	btnSelectHeuristic := self newButton
@@ -96,7 +95,7 @@ MiDeadCodeBrowserHeuristicColum >> listHeuristicsSelected [
 { #category : #actions }
 MiDeadCodeBrowserHeuristicColum >> selectedHeuristics: aCollection [
 
-	lstHeuristicsChosen items: aCollection asOrderedCollection
+	lstHeuristicsChosen items: aCollection
 ]
 
 { #category : #accessing }
