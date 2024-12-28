@@ -53,7 +53,7 @@ MiDeadCodeBrowserResultColum >> initializePresenters [
 	btnRecursive := self newButton
 		label: 'recursion' ;
 		enabled: false ;
-		action: [ self specModel recursiveComputation].
+		action: [ self specModel recursionComputation].
 
 	lblDeadMethods := self newLabel
 		label: '0 dead entities'
@@ -91,7 +91,8 @@ MiDeadCodeBrowserResultColum >> update [
 	lstDeadMethods items: deads.
 	lblDeadMethods label: deads size asString , ' dead entities'.
 
-	btnRecursive enabled: deads isNotEmpty
+	btnFirstRound enabled: (self specModel selectedHeuristics isNotEmpty).
+	btnRecursive enabled: (deads isNotEmpty)
 ]
 
 { #category : #actions }

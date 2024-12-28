@@ -21,6 +21,13 @@ MiDeadCodeBrowserModel >> availableHeuristics [
 	^allHeuristics
 ]
 
+{ #category : #actions }
+MiDeadCodeBrowserModel >> clearDeads [
+
+	deadEntities := OrderedCollection new.
+	browser updateDeadEntities
+]
+
 { #category : #'accessing - private tests' }
 MiDeadCodeBrowserModel >> clearSelectedHeuristics [
 
@@ -113,10 +120,45 @@ MiDeadCodeBrowserModel >> initializeHeuristics [
 
 ]
 
+{ #category : #actions }
+MiDeadCodeBrowserModel >> isNewDead: anEntity [
+
+	(deadEntities includes: anEntity) ifTrue: [ ^false ].
+
+	^anEntity queryAllIncomingInvocations opposites allSatisfy: [ :invoker |
+		deadEntities includes: invoker
+	] 
+]
+
 { #category : #accessing }
 MiDeadCodeBrowserModel >> miSelectedItem [
 
 	^#()
+]
+
+{ #category : #actions }
+MiDeadCodeBrowserModel >> oneRoundRecursion [
+
+	| addNewDead |
+	addNewDead := false.
+
+	self deadEntities clone do: [ :dead |
+		dead queryAllOutgoingInvocations opposites do: [ :invoked |
+			(self isNewDead: invoked) ifTrue: [
+				deadEntities add: invoked.
+				addNewDead := true
+			]
+		]
+	].
+
+	^addNewDead
+]
+
+{ #category : #actions }
+MiDeadCodeBrowserModel >> recursionComputation [
+
+	[ self oneRoundRecursion ]
+		whileTrue
 ]
 
 { #category : #actions }

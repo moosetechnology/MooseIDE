@@ -163,6 +163,27 @@ MiDeadCodeBrowserModelTest >> testGatherHeuristicsList [
 ]
 
 { #category : #tests }
+MiDeadCodeBrowserModelTest >> testIsNewDead [
+
+	| entity1 entity2 entity3 |
+	entity1 := self method: 'firstLevel' inClass: 'SomeClass'.
+	entity2 := self method: 'secondLevel' inClass: 'SomeClass'.
+	entity3 := self method: 'thirdLevel' inClass: 'SomeClass'.
+	FamixStInvocation new
+		sender: entity1 ;
+		candidates: { entity2 }.
+	FamixStInvocation new
+		sender: entity2 ;
+		candidates: { entity3 }.
+	model deadEntities add: entity1.
+
+	self deny: (model isNewDead: entity1).
+	self assert: (model isNewDead: entity2).
+	self deny: (model isNewDead: entity3)
+
+]
+
+{ #category : #tests }
 MiDeadCodeBrowserModelTest >> testNoInvocationHeuristicIsDead [
 
 	| entity |
@@ -177,6 +198,28 @@ MiDeadCodeBrowserModelTest >> testNoInvocationHeuristicNotDead [
 	entity := self invokedMethod: 'someFunctionality'.
 
 	self deny: (MiDeadCodeNoIncomingInvocationHeuristic new isDead: entity)
+]
+
+{ #category : #tests }
+MiDeadCodeBrowserModelTest >> testOneRoundRecursion [
+
+	| entity1 entity2 entity3 |
+	entity1 := self method: 'firstLevel' inClass: 'SomeClass'.
+	entity2 := self method: 'secondLevel' inClass: 'SomeClass'.
+	entity3 := self method: 'thirdLevel' inClass: 'SomeClass'.
+	FamixStInvocation new
+		sender: entity1 ;
+		candidates: { entity2 }.
+	FamixStInvocation new
+		sender: entity2 ;
+		candidates: { entity3 }.
+	model deadEntities add: entity1.
+
+	self assert: model deadEntities size equals: 1.
+	model oneRoundRecursion.
+	self assert: model deadEntities size equals: 2.
+	model oneRoundRecursion.
+	self assert: model deadEntities size equals: 3
 ]
 
 { #category : #tests }
@@ -195,6 +238,58 @@ MiDeadCodeBrowserModelTest >> testPharoTestCaseHeuristicNotDead [
 	self class: entity parentType inheritFrom: 'TestCase'.
 
 	self deny: (MiDeadCodePharoTestCaseSubClassHeuristic new isDead: entity)
+]
+
+{ #category : #tests }
+MiDeadCodeBrowserModelTest >> testRecursionRoundInvokedByDead [
+
+	| entity1 entity2 |
+	entity1 := self method: 'invoking' inClass: 'SomeClass'.
+	entity2 := self method: 'invokedFunctionality' inClass: 'SomeClass'.
+	FamixStInvocation new
+		sender: entity1 ;
+		candidates: { entity2 }.
+	model deadEntities add: entity1.
+
+	self assert: model deadEntities size equals: 1.
+	model recursionComputation.
+	self assert: model deadEntities size equals: 2
+]
+
+{ #category : #tests }
+MiDeadCodeBrowserModelTest >> testRecursionRoundInvokedByDeadRecursively [
+
+	| entity1 entity2 entity3 |
+	entity1 := self method: 'firstLevel' inClass: 'SomeClass'.
+	entity2 := self method: 'secondLevel' inClass: 'SomeClass'.
+	entity3 := self method: 'thirdLevel' inClass: 'SomeClass'.
+	FamixStInvocation new
+		sender: entity1 ;
+		candidates: { entity2 }.
+	FamixStInvocation new
+		sender: entity2 ;
+		candidates: { entity3 }.
+	model deadEntities add: entity1.
+
+	self assert: model deadEntities size equals: 1.
+	model recursionComputation.
+	self assert: model deadEntities size equals: 3
+]
+
+{ #category : #tests }
+MiDeadCodeBrowserModelTest >> testRecursionRoundInvokedByNotDead [
+
+	| entity1 entity2 |
+	entity1 := self method: 'invoking' inClass: 'SomeClass'.
+	entity2 := self method: 'invokedFunctionality' inClass: 'SomeClass'.
+	FamixStInvocation new
+		sender: entity2 ;
+		candidates: { entity2 }.
+	model deadEntities add: entity1.
+
+	self assert: model deadEntities size equals: 1.
+	model recursionComputation.
+	self assert: model deadEntities size equals: 1
 ]
 
 { #category : #tests }
