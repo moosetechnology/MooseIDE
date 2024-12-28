@@ -51,6 +51,7 @@ MiDeadCodeBrowserModel >> firstRoundComputation [
 
 	deadEntities removeAll.
 	self entities do: [ :entity | self firstRoundOn: entity ].
+	browser updateToolbar.
 	browser updateDeadEntities
 ]
 
@@ -133,7 +134,7 @@ MiDeadCodeBrowserModel >> isNewDead: anEntity [
 { #category : #accessing }
 MiDeadCodeBrowserModel >> miSelectedItem [
 
-	^#()
+	^deadEntities 
 ]
 
 { #category : #actions }

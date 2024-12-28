@@ -36,6 +36,30 @@ MiDeadCodeBrowserTest >> testActivateActionButtons [
 ]
 
 { #category : #tests }
+MiDeadCodeBrowserTest >> testCanPropagateAfterDeadComputation [
+
+	| mooseModel |
+	mooseModel := FamixStModel new.
+	self populateBrowser: mooseModel.
+
+	browser specModel deadEntities addAll: self mooseObjects.
+
+	self assert: browser canPropagate.
+
+]
+
+{ #category : #tests }
+MiDeadCodeBrowserTest >> testCannotPropagateAtInitialization [
+
+	| mooseModel |
+	mooseModel := FamixStModel new.
+	self populateBrowser: mooseModel.
+
+	self deny: browser canPropagate.
+
+]
+
+{ #category : #tests }
 MiDeadCodeBrowserTest >> testDisabledFirstRoundButton [
 	"without selected heuristics, 1st-round button is disabled"
 
