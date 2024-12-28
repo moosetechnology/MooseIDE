@@ -17,13 +17,12 @@ Class {
 { #category : #accessing }
 MiDeadCodeAbstractTestHeuristic >> description [ 
 
-	^'Any method of a test class is considered not dead.
-[Refute a method is dead]'
+	^super description ,
+	'Any method of a test class is considered not dead'
 ]
 
 { #category : #accessing }
-MiDeadCodeAbstractTestHeuristic >> refuteDead [ 
-	"any method in a test class is considered not dead"
+MiDeadCodeAbstractTestHeuristic >> name [
 
-	^true
+	^super name , 'Test: '
 ]

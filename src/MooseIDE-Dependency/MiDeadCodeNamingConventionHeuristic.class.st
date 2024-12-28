@@ -32,5 +32,5 @@ MiDeadCodeNamingConventionHeuristic >> isDead: aTMethod [
 { #category : #accessing }
 MiDeadCodeNamingConventionHeuristic >> name [
 
-	^'Test: Naming convention'
+	^super name , 'Naming convention'
 ]

@@ -5,15 +5,15 @@ I a Java interface method is called, we assume any method implementing it in a c
 "
 Class {
 	#name : #MiDeadCodeJavaImplementedInterfaceHeuristic,
-	#superclass : #MiDeadCodeAbstractHeuristic,
+	#superclass : #MiDeadCodeAbstractJavaHeuristic,
 	#category : #'MooseIDE-Dependency-DeadCode'
 }
 
 { #category : #accessing }
 MiDeadCodeJavaImplementedInterfaceHeuristic >> description [
 
-	^'A method implementing a Java interface that is called is not dead
-[Refute a method is dead]'
+	^super description ,
+	'A method implementing a Java interface that is called is not dead'
 ]
 
 { #category : #testing }
@@ -42,11 +42,5 @@ MiDeadCodeJavaImplementedInterfaceHeuristic >> isDead: aTMethod [
 { #category : #accessing }
 MiDeadCodeJavaImplementedInterfaceHeuristic >> name [
 
-	^'Implementing Java interface'
-]
-
-{ #category : #accessing }
-MiDeadCodeJavaImplementedInterfaceHeuristic >> refuteDead [ 
-
-	^true
+	^super name , 'Implemented interface'
 ]

@@ -54,5 +54,5 @@ MiDeadCodeJavaTestAnnotationHeuristic >> junit5Annotations [
 { #category : #accessing }
 MiDeadCodeJavaTestAnnotationHeuristic >> name [
 
-	^'Test: Java @Test method'
+	^super name , 'Java @Test method'
 ]

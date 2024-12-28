@@ -10,7 +10,8 @@ Class {
 { #category : #accessing }
 MiDeadCodeNoIncomingInvocationHeuristic >> description [
 
-	^'Methods never invoked are considered dead'
+	^super description ,
+	'Methods never invoked are considered dead'
 ]
 
 { #category : #testing }
@@ -22,7 +23,13 @@ MiDeadCodeNoIncomingInvocationHeuristic >> isDead: aTMethod [
 { #category : #accessing }
 MiDeadCodeNoIncomingInvocationHeuristic >> name [
 
-	^'Not invoked method'
+	^super name , 'Not invoked method'
+]
+
+{ #category : #accessing }
+MiDeadCodeNoIncomingInvocationHeuristic >> refuteDead [
+
+	^false
 ]
 
 { #category : #testing }

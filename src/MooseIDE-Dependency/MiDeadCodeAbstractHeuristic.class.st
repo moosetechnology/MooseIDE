@@ -27,7 +27,9 @@ MiDeadCodeAbstractHeuristic class >> isAbstract [
 { #category : #accessing }
 MiDeadCodeAbstractHeuristic >> description [
 
-	self subclassResponsibility 
+	^self refuteDead
+		ifTrue: [ '[Refute a method is dead]' , String cr ]
+		ifFalse: [ '' ]
 ]
 
 { #category : #testing }
@@ -45,7 +47,9 @@ MiDeadCodeAbstractHeuristic >> isDead: aTMethod [
 { #category : #accessing }
 MiDeadCodeAbstractHeuristic >> name [
 
-	self subclassResponsibility 
+	^self selectedByDefault
+		ifTrue: [ '[Default] ' ]
+		ifFalse: [ '' ]
 ]
 
 { #category : #accessing }
@@ -53,7 +57,7 @@ MiDeadCodeAbstractHeuristic >> refuteDead [
 	"if true, the heuristic tries to _refute_ a method is dead (or assert it is not dead)
 	 if false, the heuristic tries to _assert_ a method is dead"
 
-	^false
+	^true
 ]
 
 { #category : #testing }

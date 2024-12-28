@@ -42,7 +42,8 @@ MiDeadCodeBrowserResultColum >> defaultLayout [
 { #category : #initialization }
 MiDeadCodeBrowserResultColum >> initializePresenters [
 
-	lstDeadMethods := self newList.
+	lstDeadMethods := self newList
+		sortingBlock: #mooseName ascending.
 
 	btnFirstRound := self newButton
 		label: '1st round' ;

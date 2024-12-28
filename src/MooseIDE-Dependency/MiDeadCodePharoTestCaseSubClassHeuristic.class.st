@@ -24,5 +24,5 @@ MiDeadCodePharoTestCaseSubClassHeuristic >> isDead: aTMethod [
 { #category : #accessing }
 MiDeadCodePharoTestCaseSubClassHeuristic >> name [
 
-	^'Test: TestCase sub-class'
+	^super name , 'TestCase sub-class'
 ]
