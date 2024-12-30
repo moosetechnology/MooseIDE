@@ -11,7 +11,7 @@ Class {
 		'settings',
 		'report'
 	],
-	#category : #'MooseIDE-Core-Reporter'
+	#category : #'MooseIDE-Reporter'
 }
 
 { #category : #microdown }

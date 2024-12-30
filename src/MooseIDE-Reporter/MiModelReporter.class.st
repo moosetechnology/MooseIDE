@@ -11,7 +11,7 @@ Class {
 		'mainPresenter',
 		'toolbar'
 	],
-	#category : #'MooseIDE-Core-Reporter'
+	#category : #'MooseIDE-Reporter'
 }
 
 { #category : #'world menu' }
@@ -77,26 +77,26 @@ MiModelReporter >> defaultLayout [
 		  yourself
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #exporting }
 MiModelReporter >> exportReportToHTML [
 
 	specModel exportReportToHTML: mainPresenter text
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #exporting }
 MiModelReporter >> exportReportToPDF [
 
 	specModel exportReportToPDF: mainPresenter text
 ]
 
-{ #category : #testing }
+{ #category : #actions }
 MiModelReporter >> followEntity: anEntity [
 
 	super followEntity: anEntity.
 	specModel followEntity: anEntity
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #exporting }
 MiModelReporter >> formattedReport: formattedReport [
 ]
 

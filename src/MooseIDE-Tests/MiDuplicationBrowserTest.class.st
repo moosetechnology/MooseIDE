@@ -133,16 +133,6 @@ MiDuplicationBrowserTest >> testMiSelectedItem [
 ]
 
 { #category : #tests }
-MiDuplicationBrowserTest >> testResetReplicas [
-
-	browser showReplicas: self replicatedFragment replicas.
-	self assert: browser panCodes pages size equals: 2.
-
-	browser resetReplicas.
-	self assertEmpty: browser panCodes pages
-]
-
-{ #category : #tests }
 MiDuplicationBrowserTest >> testSelectEntity [
 	"issue https://github.com/moosetechnology/MooseIDE/issues/655"
 
@@ -243,9 +233,19 @@ MiDuplicationBrowserTest >> testUpdateStatusBar [
 		equals:
 		'Searched entities: 2 | Number of clones: 1 | Entities with clones: 2 | Selected entities: 0 | Selected clones: 0'.
 
-	browser model selectedFragments: { fragment }.
+	browser model fragmentsSelection: { fragment }.
 	self
 		assert: browser updateStatusBar
 		equals:
 		'Searched entities: 2 | Number of clones: 1 | Entities with clones: 2 | Selected entities: 2 | Selected clones: 0'
+]
+
+{ #category : #tests }
+MiDuplicationBrowserTest >> testresetDisplayedReplicas [
+
+	browser showReplicas: self replicatedFragment replicas.
+	self assert: browser panCodes pages size equals: 2.
+
+	browser resetDisplayedReplicas.
+	self assertEmpty: browser panCodes pages
 ]

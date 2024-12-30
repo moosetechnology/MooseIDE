@@ -11,9 +11,28 @@ MiAccumulatorBrowserTest >> browserClass [
 ]
 
 { #category : #running }
+MiAccumulatorBrowserTest >> mooseObjects [
+	"overriding because aggregatorBrowser cannot accept MooseObject-s"
+
+	^{ self anEntity: 'a' . self anEntity: 'b' }
+]
+
+{ #category : #'tests - opening' }
+MiAccumulatorBrowserTest >> testCanOpenOnMooseEntity [
+
+	| newBrowser |
+	self bus globallySelect: (self anEntity: 'a').
+	self
+		shouldnt: [ 
+			newBrowser := self browserClass openForTests: self application.
+			newBrowser window close ]
+		raise: Error
+]
+
+{ #category : #running }
 MiAccumulatorBrowserTest >> testCanPropagateAfterFollow [
 
-	browser followEntity: { MooseEntity new . MooseEntity new }.
+	browser followEntity: self mooseObjects.
 
 	self assert: browser canPropagate.
 
@@ -29,7 +48,7 @@ MiAccumulatorBrowserTest >> testCannotPropagateWhenEmpty [
 { #category : #running }
 MiAccumulatorBrowserTest >> testClearEntities [
 
-	browser followEntity: { MooseEntity new . MooseEntity new }.
+	browser followEntity: self mooseObjects.
 
 	self denyEmpty: browser model entities.
 
@@ -37,12 +56,26 @@ MiAccumulatorBrowserTest >> testClearEntities [
 	self assertEmpty: browser model entities
 ]
 
+{ #category : #'tests - buses' }
+MiAccumulatorBrowserTest >> testFollowBusTriggersSelectEntity [
+
+	| propagatedEntity |
+	propagatedEntity := self anEntity: 'a'.
+	
+	browser stub.
+	
+	self bus globallySelect: propagatedEntity.
+	
+	browser followBus: self bus.
+	browser should receive receiveEntity: propagatedEntity
+]
+
 { #category : #running }
 MiAccumulatorBrowserTest >> testFollowEntity [
 
 	self assertEmpty: browser model entities.
 
-	browser followEntity: { MooseEntity new . MooseEntity new }.
+	browser followEntity: self mooseObjects.
 
 	self assert: browser model entities size equals: 2
 ]
@@ -52,7 +85,7 @@ MiAccumulatorBrowserTest >> testMiSelectedItemWithSelection [
 
 	| entities |
 
-	entities := { MooseEntity new . MooseEntity new }.
+	entities := self mooseObjects.
 
 	browser followEntity: entities.
 	browser model selectedEntities: { entities first }.
@@ -63,7 +96,7 @@ MiAccumulatorBrowserTest >> testMiSelectedItemWithSelection [
 { #category : #running }
 MiAccumulatorBrowserTest >> testMiSelectedItemWithoutSelection [
 
-	browser followEntity: { MooseEntity new . MooseEntity new }.
+	browser followEntity: self mooseObjects.
 
 	self assert: browser miSelectedItem size equals: 2
 ]
@@ -73,7 +106,7 @@ MiAccumulatorBrowserTest >> testRemoveEntities [
 
 	| entities |
 
-	entities := { MooseEntity new . MooseEntity new }.
+	entities := self mooseObjects.
 
 	browser followEntity: entities.
 	browser model selectedEntities: { entities first }.
