@@ -128,15 +128,17 @@ MiCoUsageMapSettings class >> compiledBlock: aString onError: defaultString [
 { #category : #'accessing - defaults' }
 MiCoUsageMapSettings class >> defaultChildrenBlockText [
 
-	^ '"This code is for entity method, but you can change it"
-	"You should return all the inner entities even with duplicates"
-	[ :entity |
-	  entity isContainerEntity
-		  ifTrue: [
-			  entity accesses
-				  select: [ :slotLink | slotLink variable isAttribute ]
-				  thenCollect: [ :slotLink | slotLink variable ] ]
-		  ifFalse: [ {  } ] ]'
+	^ '"This code is for entity method, but you can change it
+You should return all the inner entities even with duplicates"
+[ :entity |
+	entity isContainerEntity
+	ifTrue: [
+		entity accesses
+			collect: [ :access | access variable ]
+			thenSelect: [ :var | var isAttribute ]
+	]
+	ifFalse: [ #() ]
+]'
 ]
 
 { #category : #'accessing - defaults' }

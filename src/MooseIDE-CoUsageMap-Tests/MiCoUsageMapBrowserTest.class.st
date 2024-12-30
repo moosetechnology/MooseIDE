@@ -25,6 +25,25 @@ MiCoUsageMapBrowserTest >> receiveEntityToSelect [
 ]
 
 { #category : #tests }
+MiCoUsageMapBrowserTest >> testBlockSettingsApplyButton [
+	"Apply button should close the block setting window"
+
+	| settings |
+
+	settings := MiCoUsageMapBlockSettingsPresenter new 
+		settings: MiCoUsageMapSettings ;
+		open ;
+		yourself.
+
+	self assert: settings owner isOpen.
+
+	settings applyButton click.
+
+	self assert: settings owner isClosed.
+
+]
+
+{ #category : #tests }
 MiCoUsageMapBrowserTest >> testBlockSettingsChangeValue [
 
 	| settings |
@@ -38,6 +57,32 @@ MiCoUsageMapBrowserTest >> testBlockSettingsChangeValue [
 		settings applyButton click.
 		
 		self assert: MiCoUsageMapSettings innerBoxSortBlockText equals: '[ ]'.
+	]
+	ensure: [
+		"tearDown"
+		settings delete ]
+]
+
+{ #category : #tests }
+MiCoUsageMapBrowserTest >> testBlockSettingsClickClose [
+
+	| settings |
+
+	self
+		assert: MiCoUsageMapSettings childrenBlockText
+		equals: MiCoUsageMapSettings defaultChildrenBlockText.
+
+	settings := MiCoUsageMapBlockSettingsPresenter new 
+		settings: MiCoUsageMapSettings ;
+		yourself.
+	settings childrenTextInput text: 'Blah'.
+	
+	[
+		settings closeButton click.
+
+		self
+			assert: MiCoUsageMapSettings childrenBlockText
+			equals: MiCoUsageMapSettings defaultChildrenBlockText.
 	]
 	ensure: [
 		"tearDown"
