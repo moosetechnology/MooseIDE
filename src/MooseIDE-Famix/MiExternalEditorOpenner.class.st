@@ -59,12 +59,12 @@ MiExternalEditorOpenner >> privShellExecute: lpOperation file: lpFile parameters
 
 { #category : #'private - ffi' }
 MiExternalEditorOpenner >> visitMacOS: aPlatform [
-	LibC runCommand: ('{1} "{2}"' format: {command . pathString})
+	LibC runCommand: ('{1} "{2}" &' format: {command . pathString})
 ]
 
 { #category : #'private - ffi' }
 MiExternalEditorOpenner >> visitUnix: aPlatform [
-	LibC runCommand: ('{1} "{2}"' format: {command . pathString})
+	LibC runCommand: ('{1} "{2}" &' format: {command . pathString})
 ]
 
 { #category : #'private - ffi' }
