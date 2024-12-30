@@ -10,7 +10,8 @@ Class {
 		'sortOuterBoxTextInput',
 		'sortInnerBoxTextInput',
 		'resetButton',
-		'applyButton'
+		'applyButton',
+		'closeButton'
 	],
 	#category : #'MooseIDE-CoUsageMap-Settings'
 }
@@ -21,10 +22,37 @@ MiCoUsageMapBlockSettingsPresenter >> applyButton [
 	^applyButton
 ]
 
+{ #category : #layout }
+MiCoUsageMapBlockSettingsPresenter >> buttonRowLayout [
+
+	^SpBoxLayout newLeftToRight
+		hAlignCenter;
+		borderWidth: 5;
+		addLast: (SpBoxLayout newLeftToRight
+			add: applyButton ;
+			add: resetButton ;
+			add: closeButton ;
+			yourself)
+		expand: false;
+		yourself
+]
+
 { #category : #'accessing - private tests' }
 MiCoUsageMapBlockSettingsPresenter >> childrenTextInput [
 
 	^childrenTextInput
+]
+
+{ #category : #'accessing - private tests' }
+MiCoUsageMapBlockSettingsPresenter >> closeButton [
+
+	^closeButton
+]
+
+{ #category : #initialization }
+MiCoUsageMapBlockSettingsPresenter >> closeWindow [
+
+	self delete
 ]
 
 { #category : #initialization }
@@ -51,15 +79,7 @@ MiCoUsageMapBlockSettingsPresenter >> defaultLayout [
 		add: 'Inner box sort block:' asPresenter expand: false ;
 		add: sortInnerBoxTextInput height: 170 ;
 
-		add: (SpBoxLayout newLeftToRight
-			hAlignCenter;
-			borderWidth: 5;
-			addLast: (SpBoxLayout newLeftToRight
-				add: applyButton ;
-				add: resetButton ;
-				yourself)
-			expand: false;
-			yourself)
+		add: self buttonRowLayout
 		expand: false;
 
 		yourself
@@ -67,12 +87,16 @@ MiCoUsageMapBlockSettingsPresenter >> defaultLayout [
 
 { #category : #initialization }
 MiCoUsageMapBlockSettingsPresenter >> initializeButtons [
+
 	applyButton := self newButton
 		label: 'Apply all';
 		action: [ 
 			childrenTextInput triggerSubmitAction.
 			sortOuterBoxTextInput triggerSubmitAction.
-			sortInnerBoxTextInput triggerSubmitAction  ].
+			sortInnerBoxTextInput triggerSubmitAction.
+			self closeWindow 
+		].
+
 	resetButton := self newButton
 		label: 'Reset text fields';
 		action: [ | set |
@@ -81,9 +105,14 @@ MiCoUsageMapBlockSettingsPresenter >> initializeButtons [
 			childrenTextInput text: set childrenBlockText.
 			sortOuterBoxTextInput text: set outerBoxSortBlockText.
 			sortInnerBoxTextInput text: set innerBoxSortBlockText.
-			 ]
-		
-		
+		].
+
+	closeButton := self newButton
+		label: 'Close';
+		action: [
+			self closeWindow 
+		].
+
 ]
 
 { #category : #initialization }
