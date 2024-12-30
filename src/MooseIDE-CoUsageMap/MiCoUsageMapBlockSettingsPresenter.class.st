@@ -15,27 +15,6 @@ Class {
 	#category : #'MooseIDE-CoUsageMap-Settings'
 }
 
-{ #category : #layout }
-MiCoUsageMapBlockSettingsPresenter class >> defaultLayout [
-	^ SpBoxLayout newTopToBottom
-		spacing: 3;
-		add: 'Children block:' asPresenter expand: false;
-		add: #childrenTextInput height: 200;
-		add: 'Outer box sort block:' asPresenter expand: false;
-		add: #sortOuterBoxTextInput height: 170;
-		add: 'Inner box sort block:' asPresenter expand: false;
-		add: #sortInnerBoxTextInput height: 170;
-		add: (SpBoxLayout newLeftToRight
-			hAlignCenter;
-			borderWidth: 5;
-			addLast: (SpBoxLayout newLeftToRight
-				add: #button;
-				add: #resetButton;
-				yourself) expand: false;
-			yourself) expand: false;
-		yourself
-]
-
 { #category : #'accessing - private tests' }
 MiCoUsageMapBlockSettingsPresenter >> applyButton [
 
@@ -56,6 +35,34 @@ MiCoUsageMapBlockSettingsPresenter >> connectPresenters [
 	childrenTextInput text: set childrenBlockText.
 	sortOuterBoxTextInput text: set outerBoxSortBlockText.
 	sortInnerBoxTextInput text: set innerBoxSortBlockText.
+]
+
+{ #category : #layout }
+MiCoUsageMapBlockSettingsPresenter >> defaultLayout [
+	^ SpBoxLayout newTopToBottom
+		spacing: 3;
+
+		add: 'Children block:' asPresenter expand: false ;
+		add: childrenTextInput height: 200 ;
+
+		add: 'Outer box sort block:' asPresenter expand: false ;
+		add: sortOuterBoxTextInput height: 170 ;
+
+		add: 'Inner box sort block:' asPresenter expand: false ;
+		add: sortInnerBoxTextInput height: 170 ;
+
+		add: (SpBoxLayout newLeftToRight
+			hAlignCenter;
+			borderWidth: 5;
+			addLast: (SpBoxLayout newLeftToRight
+				add: applyButton ;
+				add: resetButton ;
+				yourself)
+			expand: false;
+			yourself)
+		expand: false;
+
+		yourself
 ]
 
 { #category : #initialization }
