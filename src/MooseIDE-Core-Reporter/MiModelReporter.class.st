@@ -9,7 +9,10 @@ Class {
 	#superclass : #MiAbstractBrowser,
 	#instVars : [
 		'mainPresenter',
-		'toolbar'
+		'toolbar',
+		'tabPreview',
+		'tabMicrodown',
+		'rebuildPreview'
 	],
 	#category : #'MooseIDE-Core-Reporter'
 }
@@ -77,35 +80,52 @@ MiModelReporter >> defaultLayout [
 		  yourself
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #actions }
 MiModelReporter >> exportReportToHTML [
 
-	specModel exportReportToHTML: mainPresenter text
+	specModel exportReportToHTML: self rawReport
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #actions }
 MiModelReporter >> exportReportToPDF [
 
-	specModel exportReportToPDF: mainPresenter text
+	specModel exportReportToPDF: self rawReport
 ]
 
-{ #category : #testing }
+{ #category : #actions }
 MiModelReporter >> followEntity: anEntity [
 
 	super followEntity: anEntity.
 	specModel followEntity: anEntity
 ]
 
-{ #category : #'as yet unclassified' }
-MiModelReporter >> formattedReport: formattedReport [
+{ #category : #actions }
+MiModelReporter >> generatedReport: report [
+
+	tabMicrodown text: report
 ]
 
-{ #category : #testing }
+{ #category : #accessing }
 MiModelReporter >> hasSettings [
 	^ true
 ]
 
-{ #category : #testing }
+{ #category : #initialization }
+MiModelReporter >> initializeMainPresenter [
+
+	tabMicrodown := SpTextPresenter new
+		whenTextChangedDo: [ rebuildPreview := true ].
+	tabPreview := MicrodownPresenter new.
+
+	mainPresenter := self newNotebook.
+	mainPresenter whenSelectedPageChangedDo: [ :new :old |
+		self showingTab: new].
+
+	mainPresenter addPageTitle: 'Raw report' provider: [ tabMicrodown ].
+	mainPresenter addPageTitle: 'Preview' provider: [ tabPreview ].
+]
+
+{ #category : #initialization }
 MiModelReporter >> initializePresenters [
 
 	toolbar := self newToolbar
@@ -114,7 +134,7 @@ MiModelReporter >> initializePresenters [
 		addItem: self refreshToolbarButton;
 		yourself.
 
-	mainPresenter := self newText
+	self initializeMainPresenter
 ]
 
 { #category : #initialization }
@@ -128,10 +148,16 @@ MiModelReporter >> initializeToolbar [
 		           yourself
 ]
 
-{ #category : #testing }
+{ #category : #accessing }
 MiModelReporter >> miSelectedItem [
 
 	^#()
+]
+
+{ #category : #accessing }
+MiModelReporter >> rawReport [
+
+	^ tabMicrodown text
 ]
 
 { #category : #initialization }
@@ -145,7 +171,11 @@ MiModelReporter >> refreshToolbarButton [
 ]
 
 { #category : #actions }
-MiModelReporter >> updateReport: report [
+MiModelReporter >> showingTab: newTab [
 
-	mainPresenter text: report
+	(newTab activePresenter = tabPreview and: [ rebuildPreview ])
+		ifFalse: [ ^ self ].
+
+	tabPreview documentFromString: self rawReport.
+	rebuildPreview := false
 ]
