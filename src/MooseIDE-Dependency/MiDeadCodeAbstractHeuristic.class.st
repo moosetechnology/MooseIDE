@@ -41,7 +41,9 @@ MiDeadCodeAbstractHeuristic >> isAbstract [
 { #category : #testing }
 MiDeadCodeAbstractHeuristic >> isDead: aTMethod [
 
-	self subclassResponsibility 
+	^self refuteDead
+		ifTrue: [ (self notDead: aTMethod) not ]
+		ifFalse: [ self subclassResponsibility ]
 ]
 
 { #category : #accessing }
@@ -50,6 +52,12 @@ MiDeadCodeAbstractHeuristic >> name [
 	^self selectedByDefault
 		ifTrue: [ '[Default] ' ]
 		ifFalse: [ '' ]
+]
+
+{ #category : #testing }
+MiDeadCodeAbstractHeuristic >> notDead: aTMethod [
+
+	self subclassResponsibility 
 ]
 
 { #category : #accessing }

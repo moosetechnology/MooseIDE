@@ -20,22 +20,6 @@ MiDeadCodeJavaTestAnnotationHeuristic >> description [
 ]
 
 { #category : #testing }
-MiDeadCodeJavaTestAnnotationHeuristic >> isDead: aTMethod [
-
-	aTMethod annotationInstances ifEmpty: [ ^true ].
-
-	(aTMethod annotationInstances anySatisfy: [ :annotation |
-		self junit4Annotations includes: annotation annotationType name ])
-		ifTrue: [ ^false ].
-
-	(aTMethod annotationInstances anySatisfy: [ :annotation |
-		self junit5Annotations includes: annotation annotationType name ]) 
-		ifTrue: [ ^false ].
-
-	^true
-]
-
-{ #category : #testing }
 MiDeadCodeJavaTestAnnotationHeuristic >> junit4Annotations [
 	"from https://www.softwaretestinghelp.com/junit-annotations-tutorial/"
 
@@ -55,4 +39,20 @@ MiDeadCodeJavaTestAnnotationHeuristic >> junit5Annotations [
 MiDeadCodeJavaTestAnnotationHeuristic >> name [
 
 	^super name , 'Java @Test method'
+]
+
+{ #category : #testing }
+MiDeadCodeJavaTestAnnotationHeuristic >> notDead: aTMethod [
+
+	aTMethod annotationInstances ifEmpty: [ ^false ].
+
+	(aTMethod annotationInstances anySatisfy: [ :annotation |
+		self junit4Annotations includes: annotation annotationType name ])
+		ifTrue: [ ^true ].
+
+	(aTMethod annotationInstances anySatisfy: [ :annotation |
+		self junit5Annotations includes: annotation annotationType name ]) 
+		ifTrue: [ ^true ].
+
+	^false
 ]
