@@ -398,5 +398,5 @@ MiModelReporterModel >> updateReport [
 	report := String new writeStream .
 	self document.
 	report close.
-	browser updateReport: report contents
+	browser generatedReport: report contents
 ]
