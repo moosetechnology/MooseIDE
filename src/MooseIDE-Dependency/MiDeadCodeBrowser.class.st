@@ -35,7 +35,7 @@ MiDeadCodeBrowser class >> menuCommandOn: aBuilder [
 { #category : #'world menu' }
 MiDeadCodeBrowser class >> menuItem [
 
-	^#DeadCodeBrowser
+	^#mooseCancel
 ]
 
 { #category : #'world menu' }
