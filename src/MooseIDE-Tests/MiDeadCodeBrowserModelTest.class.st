@@ -237,6 +237,23 @@ MiDeadCodeBrowserModelTest >> testOneRoundRecursion [
 ]
 
 { #category : #'tests - heuristics' }
+MiDeadCodeBrowserModelTest >> testPharoPragmaHeuristicIsDead [
+	| entity |
+
+	entity := self pharoMethod: 'someFunctionality' withPragma: 'generated'.
+
+	self assert: (MiDeadCodePharoPragmasHeuristic new isDead: entity)
+]
+
+{ #category : #'tests - heuristics' }
+MiDeadCodeBrowserModelTest >> testPharoPragmaHeuristicScriptNotDead [
+	| entity |
+	entity := self pharoMethod: 'someFunctionality' withPragma: 'script'.
+
+	self deny: (MiDeadCodePharoPragmasHeuristic new isDead: entity)
+]
+
+{ #category : #'tests - heuristics' }
 MiDeadCodeBrowserModelTest >> testPharoTestCaseHeuristicIsDead [
 	| entity |
 	entity := self pharoMethod: 'someFunctionality' inClass: 'SomeClass'.
