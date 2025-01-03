@@ -15,14 +15,15 @@ MiDeadCodePharoTestCaseSubClassHeuristic >> description [
 	In Pharo, sub-classes of TestCase are test classes'
 ]
 
-{ #category : #testing }
-MiDeadCodePharoTestCaseSubClassHeuristic >> isDead: aTMethod [
-
-	^aTMethod parentType superclassHierarchy noneSatisfy: [ :c | c name = 'TestCase' ] 
-]
-
 { #category : #accessing }
 MiDeadCodePharoTestCaseSubClassHeuristic >> name [
 
-	^super name , 'TestCase sub-class'
+	^super name , 'Pharo TestCase sub-class'
+]
+
+{ #category : #testing }
+MiDeadCodePharoTestCaseSubClassHeuristic >> notDead: aTMethod [
+
+	^aTMethod parentType superclassHierarchy
+		anySatisfy: [ :c | c name = 'TestCase' ] 
 ]

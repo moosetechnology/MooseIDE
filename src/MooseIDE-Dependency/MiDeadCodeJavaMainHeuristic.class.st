@@ -14,19 +14,19 @@ MiDeadCodeJavaMainHeuristic >> description [
 	'Java "public static void main()" methods are not dead'
 ]
 
-{ #category : #testing }
-MiDeadCodeJavaMainHeuristic >> isDead: aTMethod [
-
-	(aTMethod name = 'main') ifFalse: [ ^true ].
-	aTMethod declaredType ifNil: [ ^true ].
-	(aTMethod declaredType name = 'void') ifNil: [ ^true ].
-	aTMethod isClassSide ifFalse: [ ^true ].
-
-	^false
-]
-
 { #category : #accessing }
 MiDeadCodeJavaMainHeuristic >> name [
 
 	^super name , 'main()'
+]
+
+{ #category : #testing }
+MiDeadCodeJavaMainHeuristic >> notDead: aTMethod [
+
+	(aTMethod name = 'main') ifFalse: [ ^false ].
+	aTMethod declaredType ifNil: [ ^false ].
+	(aTMethod declaredType name = 'void') ifNil: [ ^false ].
+	aTMethod isClassSide ifFalse: [ ^false ].
+
+	^true
 ]

@@ -32,12 +32,14 @@ MiDeadCodeBrowserHeuristicColum >> chosenHeuristics [
 MiDeadCodeBrowserHeuristicColum >> defaultLayout [
 
 	^SpBoxLayout newTopToBottom
+		add: 'Available heuristics' expand: false ;
 		add: lstHeuristicsOffered expand: true ;
 		add: (SpBoxLayout newLeftToRight
 			add: btnSelectHeuristic ;
 			add: btnRejectHeuristic ;
 			yourself)
 		height: self toolbarHeight ;
+		add: 'Selected heuristics' expand: false ;
 		add: lstHeuristicsChosen expand: true ;
 		yourself
 ]

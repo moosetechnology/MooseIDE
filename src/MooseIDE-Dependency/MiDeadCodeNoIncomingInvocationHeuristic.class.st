@@ -26,6 +26,12 @@ MiDeadCodeNoIncomingInvocationHeuristic >> name [
 	^super name , 'Not invoked method'
 ]
 
+{ #category : #testing }
+MiDeadCodeNoIncomingInvocationHeuristic >> notDead: aTMethod [
+
+	^(self isDead: aTMethod) not
+]
+
 { #category : #accessing }
 MiDeadCodeNoIncomingInvocationHeuristic >> refuteDead [
 
