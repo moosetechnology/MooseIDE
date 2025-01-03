@@ -64,15 +64,18 @@ MiModelReportModel >> excessiveAPIMethodLimit [
 { #category : #'api - export' }
 MiModelReportModel >> exportReportToHTML: microdownText [
 
-	(mooseModel name , '-report.html') asFileReference writeStreamDo: [ :stream |
+	| filename |
+	filename := mooseModel name , '-report.html'.
+	filename asFileReference writeStreamDo: [ :stream |
 		stream nextPutAll: (MicHTMLVisitor asHTMLString: microdownText)
-	]
+	].
+	browser inform: filename , ' generated', String cr , '(in Pharo image directory)'
 ]
 
 { #category : #'api - export' }
 MiModelReportModel >> exportReportToPDF: microdownText [
 
-	self inform: 'PDF export not implemented yet, sorry'
+	browser inform: 'PDF export not implemented yet, sorry'
 ]
 
 { #category : #'private - formatting' }
@@ -213,9 +216,12 @@ MiModelReportModel >> reportDOM [
 { #category : #'api - export' }
 MiModelReportModel >> saveRawReport: microdownText [
 
-	(mooseModel name , '-report.md') asFileReference writeStreamDo: [ :stream |
+	| filename |
+	filename := mooseModel name , '-report.md'.
+	filename asFileReference writeStreamDo: [ :stream |
 		stream nextPutAll: microdownText
-	]
+	].
+	browser inform: filename , ' saved', String cr , '(in Pharo image directory)'
 ]
 
 { #category : #document }

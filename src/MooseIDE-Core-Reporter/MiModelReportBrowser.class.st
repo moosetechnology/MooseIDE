@@ -63,16 +63,6 @@ MiModelReportBrowser >> btnToolbarRefresh [
 		  yourself
 ]
 
-{ #category : #initialization }
-MiModelReportBrowser >> btnToolbarSave [
-
-	^ SpToolbarButtonPresenter new
-		  icon: (self iconNamed: #save);
-		  help: 'Save raw report';
-		  action: [ specModel saveRawReport: self rawReport ];
-		  yourself
-]
-
 { #category : #testing }
 MiModelReportBrowser >> canFollowEntity: anObject [
 	"note: MooseModel-s have a #mooseModel also so the test accepts
@@ -153,13 +143,7 @@ MiModelReportBrowser >> initializeMainPresenter [
 { #category : #initialization }
 MiModelReportBrowser >> initializePresenters [
 
-	toolbar := self newToolbar
-		addItem: self btnToolbarSave;
-		fillWith: (MiReportExportCommand asCommandGroupWith: self);
-		beIcons;
-		addItem: self btnToolbarRefresh;
-		yourself.
-
+	self initializeToolbar.
 	self initializeMainPresenter
 ]
 
@@ -167,11 +151,10 @@ MiModelReportBrowser >> initializePresenters [
 MiModelReportBrowser >> initializeToolbar [
 
 	toolbar := self newToolbar
-		beIcons ;
+		beIcons;
 
-		addItem: self btnToolbarSave ;
-		fillWith: (MiReportExportCommand asCommandGroupWith: self) ;
-		addItem: self btnToolbarRefresh ;
+		fillWith: (MiReportExportCommand asCommandGroupWith: self);
+		addItem: self btnToolbarRefresh;
 
 		yourself
 ]
@@ -186,6 +169,12 @@ MiModelReportBrowser >> miSelectedItem [
 MiModelReportBrowser >> rawReport [
 
 	^ tabMicrodown text
+]
+
+{ #category : #initialization }
+MiModelReportBrowser >> saveRawReport [
+
+	specModel saveRawReport: self rawReport
 ]
 
 { #category : #actions }
