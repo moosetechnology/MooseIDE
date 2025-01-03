@@ -1,10 +1,10 @@
 "
-The spec model for the MiModelReporter
+The spec model for the `MiModelReport`
 
 Responsible for actually generating the report
 "
 Class {
-	#name : #MiModelReporterModel,
+	#name : #MiModelReportModel,
 	#superclass : #MiAbstractModel,
 	#instVars : [
 		'mooseModel',
@@ -15,7 +15,7 @@ Class {
 }
 
 { #category : #microdown }
-MiModelReporterModel >> bulletList: aCollection [
+MiModelReportModel >> bulletList: aCollection [
 
 	aCollection do: [ :line |
 		report
@@ -27,20 +27,20 @@ MiModelReporterModel >> bulletList: aCollection [
 ]
 
 { #category : #document }
-MiModelReporterModel >> classMembersStats: columns [
+MiModelReportModel >> classMembersStats: columns [
 
 	self stats: columns compute: [ :c | c numberOfAttributes ] description: 'ATTRIBUTES'.
 	self stats: columns compute: [ :c | c numberOfMethods ]    description: 'METHODS'
 ]
 
 { #category : #settings }
-MiModelReporterModel >> complexMethodLimit [
+MiModelReportModel >> complexMethodLimit [
 
 	^ settings getItemValue: #complexMethodSetting
 ]
 
 { #category : #document }
-MiModelReporterModel >> document [
+MiModelReportModel >> document [
 		
 	self title: ('Dashboard : '  , mooseModel name).
 
@@ -51,40 +51,49 @@ MiModelReporterModel >> document [
 ]
 
 { #category : #accessing }
-MiModelReporterModel >> entities [
+MiModelReportModel >> entities [
 	^mooseModel
 ]
 
-{ #category : #'api - export' }
-MiModelReporterModel >> exportReportToHTML: microdownText [
+{ #category : #settings }
+MiModelReportModel >> excessiveAPIMethodLimit [
 
-	(mooseModel name , '-report.html') asFileReference writeStreamDo: [ :stream |
-		stream nextPutAll: (MicHTMLVisitor asHTMLString: microdownText)
-	]
+	^ settings getItemValue: #excessiveAPIMethodLimit
 ]
 
 { #category : #'api - export' }
-MiModelReporterModel >> exportReportToPDF: microdownText [
+MiModelReportModel >> exportReportToHTML: microdownText [
 
-	self inform: 'PDF export not implemented yet, sorry'
+	| filename |
+	filename := mooseModel name , '-report.html'.
+	filename asFileReference writeStreamDo: [ :stream |
+		stream nextPutAll: (MicHTMLVisitor asHTMLString: microdownText)
+	].
+	browser inform: filename , ' generated', String cr , '(in Pharo image directory)'
+]
+
+{ #category : #'api - export' }
+MiModelReportModel >> exportReportToPDF: microdownText [
+
+	browser inform: 'PDF export not implemented yet, sorry'
 ]
 
 { #category : #'private - formatting' }
-MiModelReporterModel >> floatAsString: aFloat [
+MiModelReportModel >> floatAsString: aFloat [
 
 	^(aFloat asFloat round: 1) asString
 
 ]
 
 { #category : #accessing }
-MiModelReporterModel >> followEntity: aMooseModel [
+MiModelReportModel >> followEntity: aMooseEntity [
 
-	mooseModel := aMooseModel.
+	mooseModel := (aMooseEntity isMooseModel ifTrue: [ aMooseEntity ] ifFalse: [ aMooseEntity mooseModel ]).
 	self updateReport
 ]
 
 { #category : #'private - formatting' }
-MiModelReporterModel >> formatCollection: collection value: valueBlock [
+MiModelReportModel >> formatCollection: collection value: valueBlock [
 
 	^collection
 		ifEmpty: [ 'n/a' ]
@@ -92,14 +101,14 @@ MiModelReporterModel >> formatCollection: collection value: valueBlock [
 ]
 
 { #category : #'private - formatting' }
-MiModelReporterModel >> fullyQualifiedName: anEntity [
+MiModelReportModel >> fullyQualifiedName: anEntity [
 
 	^anEntity mooseName copyReplaceAll: '::' with: '.' 
 
 ]
 
 { #category : #microdown }
-MiModelReporterModel >> headerBlock: level header: aString [
+MiModelReportModel >> headerBlock: level header: aString [
 
 	level timesRepeat: [ report << '#' ].
 	report
@@ -109,7 +118,7 @@ MiModelReporterModel >> headerBlock: level header: aString [
 ]
 
 { #category : #initialization }
-MiModelReporterModel >> initializeSettings [ 
+MiModelReportModel >> initializeSettings [ 
 
 	settings := super initializeSettings.
 	settings
@@ -139,19 +148,25 @@ MiModelReporterModel >> initializeSettings [
 			label: 'Complex method' ;
 			help: 'Above this cyclomatic complexity, a method is considered complex' ;
 		yourself)
-		named: #complexMethodSetting.
+		named: #complexMethodSetting ;
 
+		addItem: (MiTextSettingItem integerSetting
+			setValue: 5 ;
+			label: 'excessive API method' ;
+			help: 'Above this number of parameters, a method is considered to have an excessive API' ;
+		yourself)
+		named: #excessiveAPIMethodLimit.
 
 ]
 
 { #category : #settings }
-MiModelReporterModel >> largeClassLimit [
+MiModelReportModel >> largeClassLimit [
 
 	^ settings getItemValue: #largeClassSetting
 ]
 
 { #category : #microdown }
-MiModelReporterModel >> line: aString [
+MiModelReportModel >> line: aString [
 
 	report
 		<< aString ;
@@ -160,19 +175,19 @@ MiModelReporterModel >> line: aString [
 ]
 
 { #category : #settings }
-MiModelReporterModel >> longClassLimit [
+MiModelReportModel >> longClassLimit [
 
 	^ settings getItemValue: #longClassSetting
 ]
 
 { #category : #settings }
-MiModelReporterModel >> longMethodLimit [
+MiModelReportModel >> longMethodLimit [
 
 	^ settings getItemValue: #longMethodSetting
 ]
 
 { #category : #document }
-MiModelReporterModel >> methodMembersStats: columns [
+MiModelReportModel >> methodMembersStats: columns [
 
 	self stats: columns compute: [ :m | m numberOfParameters ] description: 'PARAMETERS'.
 	self stats: columns compute: [ :m | m numberOfLinesOfCode ]    description: 'LINES OF CODE'.
@@ -180,26 +195,37 @@ MiModelReporterModel >> methodMembersStats: columns [
 ]
 
 { #category : #accessing }
-MiModelReporterModel >> miSelectedItem [
+MiModelReportModel >> miSelectedItem [
 
 	^#()
 ]
 
 { #category : #'private - formatting' }
-MiModelReporterModel >> numericValue: text value: number [
+MiModelReportModel >> numericValue: text value: number [
 
 	^text , ': ' , number asString
 		
 ]
 
 { #category : #accessing }
-MiModelReporterModel >> reportDOM [
+MiModelReportModel >> reportDOM [
 
 	^ report
 ]
 
+{ #category : #'api - export' }
+MiModelReportModel >> saveRawReport: microdownText [
+
+	| filename |
+	filename := mooseModel name , '-report.md'.
+	filename asFileReference writeStreamDo: [ :stream |
+		stream nextPutAll: microdownText
+	].
+	browser inform: filename , ' saved', String cr , '(in Pharo image directory)'
+]
+
 { #category : #document }
-MiModelReporterModel >> sectionClasses [
+MiModelReportModel >> sectionClasses [
 
 	| allClasses largeClasses longClasses |
 
@@ -225,20 +251,20 @@ MiModelReporterModel >> sectionClasses [
 ]
 
 { #category : #document }
-MiModelReporterModel >> sectionMethods [
+MiModelReportModel >> sectionMethods [
 
-	| allMethods longMethods complexMethods |
+	| allMethods longMethods complexMethods excessiveAPIMethods |
 
 	allMethods := OrderedCollection withAll: mooseModel allModelMethods.
-	longMethods := allMethods select: [ :c | c numberOfLinesOfCode > self longMethodLimit ].
-	complexMethods := allMethods select: [ :c | c cyclomaticComplexity > self complexMethodLimit ].
-
+	longMethods := allMethods select: [ :m | m numberOfLinesOfCode > self longMethodLimit ].
+	complexMethods := allMethods select: [ :m | m cyclomaticComplexity > self complexMethodLimit ].
+	excessiveAPIMethods := allMethods select: [ :m | m numberOfParameters > self excessiveAPIMethodLimit ].
 	self subtitle: 'Methods'.
 
 	"Stats table"
-	self tableHeader: { '' . 'All' . 'Long' . 'Complex' }.
-	self statLine: { allMethods size asString . longMethods size asString . complexMethods size asString } description: 'number'.
-	self methodMembersStats: { allMethods . longMethods . complexMethods }.
+	self tableHeader: { '' . 'All' . 'Long' . 'Complex' . 'Excessive API'}.
+	self statLine: { allMethods size asString . longMethods size asString . complexMethods size asString . excessiveAPIMethods size asString } description: 'number'.
+	self methodMembersStats: { allMethods . longMethods . complexMethods . excessiveAPIMethods }.
 	self line: ''.
 
 	"Lists of entities"
@@ -247,11 +273,14 @@ MiModelReporterModel >> sectionMethods [
 		description: 'Long methods (> ' , self longMethodLimit asString , ' LOC)'.
 	self
 		subSectionSpecialList: complexMethods
-		description: 'Complex methods (cyclomatic complexity > ' , self complexMethodLimit asString , ')'
+		description: 'Complex methods (cyclomatic complexity > ' , self complexMethodLimit asString , ')'.
+	self
+		subSectionSpecialList: excessiveAPIMethods
+		description: 'Excessive API methods (> ' , self excessiveAPIMethodLimit asString , ' parameters)'
 ]
 
 { #category : #document }
-MiModelReporterModel >> sectionMethodsStats: methods [
+MiModelReportModel >> sectionMethodsStats: methods [
 
 	self stats: (methods collect: [ :c | c numberOfParameters ]) description: 'parameters'.
 	self stats: (methods collect: [ :c | c numberOfLinesOfCode ]) description: 'lines of code'.
@@ -260,7 +289,7 @@ MiModelReporterModel >> sectionMethodsStats: methods [
 ]
 
 { #category : #document }
-MiModelReporterModel >> sectionPackages [
+MiModelReportModel >> sectionPackages [
 	| number allClasses |
 
 	self subtitle: 'Packages'.
@@ -281,25 +310,25 @@ MiModelReporterModel >> sectionPackages [
 ]
 
 { #category : #settings }
-MiModelReporterModel >> settings [
+MiModelReportModel >> settings [
 
 	^settings
 ]
 
 { #category : #settings }
-MiModelReporterModel >> settingsChanged: aBoolean [
+MiModelReportModel >> settingsChanged: aBoolean [
 
-	aBoolean ifTrue: [ self updateReport ]
+	aBoolean ifTrue: [ self updateReport ].
 ]
 
 { #category : #microdown }
-MiModelReporterModel >> statLine: columns	description: aString [
+MiModelReportModel >> statLine: columns	description: aString [
 
 	self tableLine: { aString } , columns
 ]
 
 { #category : #microdown }
-MiModelReporterModel >> stats: columns compute: valueBlock description: aString [
+MiModelReportModel >> stats: columns compute: valueBlock description: aString [
 	"columns is a collection of collections of entities (eg. {allClasses, largeClasses, longClasses})
 	 valueBlock takes one entity of these collections and compute a number form it (eg. numberOfAttributes)
 	 From this, we display 3 lines: mean value, median value, max value for each column"
@@ -321,7 +350,7 @@ MiModelReporterModel >> stats: columns compute: valueBlock description: aString 
 ]
 
 { #category : #document }
-MiModelReporterModel >> subSectionSpecialList: collection description: aString [
+MiModelReportModel >> subSectionSpecialList: collection description: aString [
 
 	self subsubtitle: aString.
 
@@ -333,7 +362,7 @@ MiModelReporterModel >> subSectionSpecialList: collection description: aString [
 ]
 
 { #category : #document }
-MiModelReporterModel >> subSectionSpecialMethods: selectionBlock description: aString [
+MiModelReportModel >> subSectionSpecialMethods: selectionBlock description: aString [
 
 	| methods |
 	self subsubtitle: aString.
@@ -349,21 +378,21 @@ MiModelReporterModel >> subSectionSpecialMethods: selectionBlock description: aS
 ]
 
 { #category : #microdown }
-MiModelReporterModel >> subsubtitle: aString [
+MiModelReportModel >> subsubtitle: aString [
 
 	^self headerBlock: 3 header: aString.
 
 ]
 
 { #category : #microdown }
-MiModelReporterModel >> subtitle: aString [
+MiModelReportModel >> subtitle: aString [
 
 	^self headerBlock: 2 header: aString.
 
 ]
 
 { #category : #microdown }
-MiModelReporterModel >> tableHeader: aCollection [
+MiModelReportModel >> tableHeader: aCollection [
 
 	self tableLine: aCollection.
 	report
@@ -372,7 +401,7 @@ MiModelReporterModel >> tableHeader: aCollection [
 ]
 
 { #category : #microdown }
-MiModelReporterModel >> tableLine: aCollection [
+MiModelReportModel >> tableLine: aCollection [
 
 	aCollection do: [ :item |
 		report
@@ -386,14 +415,14 @@ MiModelReporterModel >> tableLine: aCollection [
 ]
 
 { #category : #microdown }
-MiModelReporterModel >> title: aString [
+MiModelReportModel >> title: aString [
 
 	^self headerBlock: 1 header: aString.
 
 ]
 
 { #category : #running }
-MiModelReporterModel >> updateReport [
+MiModelReportModel >> updateReport [
 
 	report := String new writeStream .
 	self document.

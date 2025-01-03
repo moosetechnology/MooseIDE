@@ -21,7 +21,7 @@ MiReportHTMLExportCommand class >> defaultName [
 ]
 
 { #category : #export }
-MiReportHTMLExportCommand >> exportReport: reporterBrowserModel [
+MiReportHTMLExportCommand >> exportReport: reporterBrowser [
 
-	reporterBrowserModel exportReportToHTML
+	reporterBrowser exportReportToHTML
 ]

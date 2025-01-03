@@ -20,8 +20,8 @@ MiReportPDFExportCommand class >> defaultName [
 	^ 'Export to PDF'
 ]
 
-{ #category : #'as yet unclassified' }
-MiReportPDFExportCommand >> exportReport: reporterBrowserModel [
+{ #category : #export }
+MiReportPDFExportCommand >> exportReport: reporterBrowser [
 
-	reporterBrowserModel exportReportToPDF
+	reporterBrowser exportReportToPDF
 ]

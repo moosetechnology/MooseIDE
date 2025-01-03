@@ -29,18 +29,8 @@ MiReportExportCommand class >> asCommandGroupWith: aPresenter [
 ]
 
 { #category : #testing }
-MiReportExportCommand class >> defaultDescription [
-	^ 'Export this report'
-]
-
-{ #category : #testing }
-MiReportExportCommand class >> defaultName [
-	^ 'Export'
-]
-
-{ #category : #testing }
 MiReportExportCommand class >> isAbstract [
-	^ self = MiImportCommand
+	^ self = MiReportExportCommand
 ]
 
 { #category : #executing }

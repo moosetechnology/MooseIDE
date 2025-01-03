@@ -1,11 +1,11 @@
 "
-Generates a statistical report on key features of a Moose model
+Generates a statistical report on key features of a `MooseModel`
 The report is generated in markdown and can be edited manually before being exported
 
-Accepted entities: A mooseModel
+Accepted entities: Any `MooseEntity` in a `MooseModel`
 "
 Class {
-	#name : #MiModelReporter,
+	#name : #MiModelReportBrowser,
 	#superclass : #MiAbstractBrowser,
 	#instVars : [
 		'mainPresenter',
@@ -18,61 +18,73 @@ Class {
 }
 
 { #category : #'world menu' }
-MiModelReporter class >> menuCommandOn: aBuilder [
+MiModelReportBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
 	^ self buildMenuItemIn: aBuilder
 ]
 
 { #category : #'world menu' }
-MiModelReporter class >> menuItem [
+MiModelReportBrowser class >> menuItem [
 
-	^#ModelReporter
+	^#ModelReport
 ]
 
 { #category : #'world menu' }
-MiModelReporter class >> menuPriority [
+MiModelReportBrowser class >> menuPriority [
 
 	^ self menuMetaToolsPriority + 1
 ]
 
 { #category : #'world menu' }
-MiModelReporter class >> newModel [
+MiModelReportBrowser class >> newModel [
 
-	^ MiModelReporterModel new
+	^ MiModelReportModel new
 ]
 
 { #category : #'world menu' }
-MiModelReporter class >> open [
+MiModelReportBrowser class >> open [
 	<script>
 	^ super open
 ]
 
 { #category : #'world menu' }
-MiModelReporter class >> title [
-	^ 'Model Reporter'
+MiModelReportBrowser class >> title [
+	^ 'Model Report'
+]
+
+{ #category : #initialization }
+MiModelReportBrowser >> btnToolbarRefresh [
+
+	^ SpToolbarButtonPresenter new
+		  icon: (self iconNamed: #smallUpdate);
+		  help: 'Regenerate report';
+		  action: [ specModel updateReport ];
+		  yourself
 ]
 
 { #category : #testing }
-MiModelReporter >> canFollowEntity: anObject [
+MiModelReportBrowser >> canFollowEntity: anObject [
+	"note: MooseModel-s have a #mooseModel also so the test accepts
+	 any MooseModel or entity within a MooseModel"
 
-	^anObject ifNil: [ false ] ifNotNil: [ anObject isMooseModel ]
+	^anObject isMooseObject and: [ anObject mooseModel isNotEmpty ]
 ]
 
 { #category : #testing }
-MiModelReporter >> canPropagate [
+MiModelReportBrowser >> canPropagate [
 
 	^ false
 ]
 
 { #category : #testing }
-MiModelReporter >> canTagEntities [
+MiModelReportBrowser >> canTagEntities [
 
 	^ false
 ]
 
 { #category : #layout }
-MiModelReporter >> defaultLayout [
+MiModelReportBrowser >> defaultLayout [
 
 	^ SpBoxLayout newVertical
 		  add: #toolbar expand: false ;
@@ -81,37 +93,40 @@ MiModelReporter >> defaultLayout [
 ]
 
 { #category : #actions }
-MiModelReporter >> exportReportToHTML [
+MiModelReportBrowser >> exportReportToHTML [
 
 	specModel exportReportToHTML: self rawReport
 ]
 
 { #category : #actions }
-MiModelReporter >> exportReportToPDF [
+MiModelReportBrowser >> exportReportToPDF [
 
 	specModel exportReportToPDF: self rawReport
 ]
 
 { #category : #actions }
-MiModelReporter >> followEntity: anEntity [
+MiModelReportBrowser >> followEntity: anEntity [
 
 	super followEntity: anEntity.
 	specModel followEntity: anEntity
 ]
 
 { #category : #actions }
-MiModelReporter >> generatedReport: report [
+MiModelReportBrowser >> generatedReport: report [
 
-	tabMicrodown text: report
+	tabMicrodown text: report.
+
+	(mainPresenter selectedPage activePresenter = tabPreview)
+		ifTrue: [ self showingTab: mainPresenter selectedPage ]
 ]
 
 { #category : #accessing }
-MiModelReporter >> hasSettings [
+MiModelReportBrowser >> hasSettings [
 	^ true
 ]
 
 { #category : #initialization }
-MiModelReporter >> initializeMainPresenter [
+MiModelReportBrowser >> initializeMainPresenter [
 
 	tabMicrodown := SpTextPresenter new
 		whenTextChangedDo: [ rebuildPreview := true ].
@@ -126,52 +141,44 @@ MiModelReporter >> initializeMainPresenter [
 ]
 
 { #category : #initialization }
-MiModelReporter >> initializePresenters [
+MiModelReportBrowser >> initializePresenters [
 
-	toolbar := self newToolbar
-		fillWith: (MiReportExportCommand asCommandGroupWith: self);
-		beIcons;
-		addItem: self refreshToolbarButton;
-		yourself.
-
+	self initializeToolbar.
 	self initializeMainPresenter
 ]
 
 { #category : #initialization }
-MiModelReporter >> initializeToolbar [
+MiModelReportBrowser >> initializeToolbar [
 
 	toolbar := self newToolbar
-		           fillWith:
-			           (MiReportExportCommand asCommandGroupWith: self);
-		           beIcons;
-		           addItem: self refreshToolbarButton;
-		           yourself
+		beIcons;
+
+		fillWith: (MiReportExportCommand asCommandGroupWith: self);
+		addItem: self btnToolbarRefresh;
+
+		yourself
 ]
 
 { #category : #accessing }
-MiModelReporter >> miSelectedItem [
+MiModelReportBrowser >> miSelectedItem [
 
 	^#()
 ]
 
 { #category : #accessing }
-MiModelReporter >> rawReport [
+MiModelReportBrowser >> rawReport [
 
 	^ tabMicrodown text
 ]
 
 { #category : #initialization }
-MiModelReporter >> refreshToolbarButton [
+MiModelReportBrowser >> saveRawReport [
 
-	^ SpToolbarButtonPresenter new
-		  icon: (self iconNamed: #smallUpdate);
-		  help: 'Reset report';
-		  action: [ specModel updateReport ];
-		  yourself
+	specModel saveRawReport: self rawReport
 ]
 
 { #category : #actions }
-MiModelReporter >> showingTab: newTab [
+MiModelReportBrowser >> showingTab: newTab [
 
 	(newTab activePresenter = tabPreview and: [ rebuildPreview ])
 		ifFalse: [ ^ self ].
