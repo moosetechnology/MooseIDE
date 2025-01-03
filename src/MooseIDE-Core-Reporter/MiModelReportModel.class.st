@@ -29,7 +29,7 @@ MiModelReportModel >> bulletList: aCollection [
 { #category : #document }
 MiModelReportModel >> classMembersStats: columns [
 
-	self stats: columns compute: [ :c | c numberOfAttributes ] description: 'ATTRIBUTES'.
+	self stats: columns compute: [ :c | c numberOfAttributes ] description: 'FIELDS'.
 	self stats: columns compute: [ :c | c numberOfMethods ]    description: 'METHODS'
 ]
 
@@ -37,6 +37,12 @@ MiModelReportModel >> classMembersStats: columns [
 MiModelReportModel >> complexMethodLimit [
 
 	^ settings getItemValue: #complexMethodSetting
+]
+
+{ #category : #settings }
+MiModelReportModel >> dataClassLimit [
+
+	^ settings getItemValue: #dataClassSetting
 ]
 
 { #category : #document }
@@ -117,10 +123,9 @@ MiModelReportModel >> headerBlock: level header: aString [
 		cr ; cr
 ]
 
-{ #category : #initialization }
-MiModelReportModel >> initializeSettings [ 
+{ #category : #settings }
+MiModelReportModel >> initializeClassSettings [
 
-	settings := super initializeSettings.
 	settings
 		addItem: (MiTextSettingItem integerSetting
 			setValue: 100 ;
@@ -136,6 +141,18 @@ MiModelReportModel >> initializeSettings [
 			yourself)
 		named: #longClassSetting ;
 
+		addItem: (MiTextSettingItem integerSetting
+			setValue: 10 ;
+			label: 'Data class' ;
+			help: 'Above this number of attribute, a class is considered to be a Data class' ;
+			yourself)
+		named: #dataClassSetting
+]
+
+{ #category : #settings }
+MiModelReportModel >> initializeMethodSettings [
+
+	settings 
 		addItem: (MiTextSettingItem integerSetting
 			setValue: 100 ;
 			label: 'Long method' ;
@@ -156,6 +173,16 @@ MiModelReportModel >> initializeSettings [
 			help: 'Above this number of parameters, a method is considered to have an excessive API' ;
 		yourself)
 		named: #excessiveAPIMethodLimit.
+
+
+]
+
+{ #category : #settings }
+MiModelReportModel >> initializeSettings [ 
+
+	settings := super initializeSettings.
+	self initializeClassSettings.
+	self initializeMethodSettings.
 
 ]
 
@@ -227,19 +254,19 @@ MiModelReportModel >> saveRawReport: microdownText [
 { #category : #document }
 MiModelReportModel >> sectionClasses [
 
-	| allClasses largeClasses longClasses |
+	| allClasses largeClasses longClasses dataClasses |
 
 	allClasses := OrderedCollection withAll: mooseModel allModelClasses.
 	largeClasses := allClasses select: [ :c | c numberOfMethods > self largeClassLimit ].
 	longClasses := allClasses select: [ :c | c numberOfLinesOfCode > self longClassLimit ].
+	dataClasses := allClasses select: [ :c | c numberOfAttributes > self dataClassLimit ].
 
 	self subtitle: 'Classes'.
 
 	"Stats table"
-	self tableHeader: { '' . 'All' . 'Large' . 'Long' }.
-	self statLine: { allClasses size asString . largeClasses size asString . longClasses size asString } description: 'number'.
-	self classMembersStats: { allClasses . largeClasses . longClasses }.
-	self line: ''.
+	self tableHeader: #( '' All Large Long Data ).
+	self statLine: { allClasses size asString . largeClasses size asString . longClasses size asString . dataClasses size asString } description: 'number'.
+	self classMembersStats: { allClasses . largeClasses . longClasses . dataClasses }.
 
 	"Lists of entities"
 	self
@@ -247,7 +274,11 @@ MiModelReportModel >> sectionClasses [
 		description: 'Large classes (> ' , self largeClassLimit asString , ' methods)'.
 	self
 		subSectionSpecialList: longClasses
-		description: 'Long classes (> ' , self longClassLimit asString , ' LOC)'
+		description: 'Long classes (> ' , self longClassLimit asString , ' LOC)'.
+	self
+		subSectionSpecialList: dataClasses
+		description: 'Data classes (> ' , self dataClassLimit asString , ' fields)'.
+
 ]
 
 { #category : #document }
