@@ -45,6 +45,21 @@ Class {
 	#category : #'MooseIDE-Core-Browser'
 }
 
+{ #category : #accessing }
+MiAbstractBrowser class >> allBrowsers [
+
+	^ self allSubclasses reject: #isAbstract
+]
+
+{ #category : #menu }
+MiAbstractBrowser class >> allBrowsersMenuRoot: aRootMenu action: aBlock [
+
+	(self allBrowsers sortAscending: #menuPriority) do: [ :browserClass |
+		browserClass buildItemInMenu: aRootMenu action: aBlock ].
+
+	^ aRootMenu
+]
+
 { #category : #keymaps }
 MiAbstractBrowser class >> browserKey [
 
@@ -61,7 +76,7 @@ MiAbstractBrowser class >> buildItemInMenu: aMenuGroupPresenter action: aBlock [
 	aMenuGroupPresenter addItem: [ :item |
 		item
 			name: self title;
-			action: aBlock;
+			action: [ aBlock cull: self ];
 			help: self helpMessage;
 			icon: self menuIcon ]
 ]
@@ -145,7 +160,7 @@ MiAbstractBrowser class >> menuCommandOn: aBuilder [
 	(aBuilder item: self oldBrowserMenuRoot)
 		parent: self famixMenuRoot;
 		icon: self menuIcon;
-		order: self oldBrowserMenuPriority
+		order: self menuOldBrowsersPriority
 ]
 
 { #category : #'world menu' }
@@ -189,6 +204,12 @@ MiAbstractBrowser class >> menuMetaToolsPriority [
 ]
 
 { #category : #'world menu' }
+MiAbstractBrowser class >> menuOldBrowsersPriority [
+
+	^ 200
+]
+
+{ #category : #'world menu' }
 MiAbstractBrowser class >> menuParent [
 
 	"Override if necessary"
@@ -217,14 +238,9 @@ MiAbstractBrowser class >> menuVisualizationToolsPriority [
 { #category : #menu }
 MiAbstractBrowser class >> miBrowsersMenuPresenter [
 
-	| rootMenu |
-	rootMenu := SpMenuPresenter new.
-
-	(self subclasses sortAscending: [ :browserClass |
-		 browserClass menuPriority ]) do: [ :browserClass |
-		browserClass buildItemInMenu: rootMenu action: [ self open ] ].
-
-	^ rootMenu
+	^ self
+		  allBrowsersMenuRoot: SpMenuPresenter new
+		  action: [ :browserClass | browserClass open ]
 ]
 
 { #category : #'world menu' }
@@ -250,12 +266,6 @@ MiAbstractBrowser class >> newModel [
 	"Override to return a model (in the MVC sense) for your browser"
 
 	^ nil
-]
-
-{ #category : #'world menu' }
-MiAbstractBrowser class >> oldBrowserMenuPriority [
-
-	^ 30
 ]
 
 { #category : #'world menu' }

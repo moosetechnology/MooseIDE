@@ -90,14 +90,9 @@ MiAnalysisBrowser class >> windowSize [
 { #category : #initialization }
 MiAnalysisBrowser >> addBrowserMenu [
 
-	| menu |
-	menu := self newMenu.
-	(MiAbstractBrowser subclasses sortAscending: [ :browserClass |
-		 browserClass menuPriority ]) do: [ :browserClass |
-		browserClass
-			buildItemInMenu: menu
-			action: [ self newBrowser: browserClass new ] ].
-	^ menu
+	^ MiAbstractBrowser
+		  allBrowsersMenuRoot: self newMenu
+		  action: [ :browserClass | self newBrowser: browserClass new ]
 ]
 
 { #category : #adding }

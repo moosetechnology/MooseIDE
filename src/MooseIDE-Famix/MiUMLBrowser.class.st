@@ -58,7 +58,7 @@ MiUMLBrowser class >> menuParent [
 { #category : #'world menu' }
 MiUMLBrowser class >> menuPriority [
 
-	^ 4
+	^ self menuOldBrowsersPriority + 2
 ]
 
 { #category : #'instance creation' }

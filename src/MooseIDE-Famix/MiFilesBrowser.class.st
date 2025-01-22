@@ -47,7 +47,7 @@ MiFilesBrowser class >> menuParent [
 { #category : #'world menu' }
 MiFilesBrowser class >> menuPriority [
 
-	^ 3
+	^ self menuOldBrowsersPriority + 3
 ]
 
 { #category : #'instance creation' }
