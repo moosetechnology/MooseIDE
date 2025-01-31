@@ -11,6 +11,7 @@ Class {
 MiButterflyMapVisualization >> buildInCanvas: aCanvas [
 
 	owner model currentEntity ifNil: [ ^ self ].
+	aCanvas @ RSCanvasController new noLegend. 
 
 	builder := MiButterflyMapBuilder new
 		           mapModel: owner model;
