@@ -93,14 +93,14 @@ MiNotebookBrowser >> followEntity: anEntity [
 
 	super followEntity: anEntity.
 	specModel mooseModel: anEntity mooseModel.
-	notebook addBinding: 'mooseModel' -> anEntity mooseModel
+	notebook addBinding: (WorkspaceVariable key: #mooseModel value: anEntity mooseModel)
 ]
 
 { #category : #initialization }
 MiNotebookBrowser >> initializePresenters [
 
 	notebook := self instantiate: INNotebookPresenter.
-	notebook addBinding: 'mooseModel' -> nil
+	notebook addBinding: (WorkspaceVariable key: #mooseModel value: 42)
 ]
 
 { #category : #accessing }
