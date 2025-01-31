@@ -81,6 +81,7 @@ MiAbstractVisualization >> noHighlightColorFor: anEntity [
 MiAbstractVisualization >> run [
 
 	self canvas clear.
+	self canvas controllerInteraction: nil.
 	self script value: self canvas
 ]
 
