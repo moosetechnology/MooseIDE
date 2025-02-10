@@ -79,7 +79,7 @@ MiPlaygroundBrowser class >> register [
 MiPlaygroundBrowser class >> registerToolsOn: registry [
 	"Add ourselves to registry. See [Smalltalk tools]"
 
-	registry workspaceTool: self
+	registry register: self as: #workspace
 ]
 
 { #category : #specs }
