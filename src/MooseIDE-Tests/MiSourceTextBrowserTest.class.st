@@ -131,17 +131,17 @@ MiSourceTextBrowserTest >> testHighlightChildWithNoAnchor [
 
 { #category : #'tests - highlighting' }
 MiSourceTextBrowserTest >> testHighlightJavaComment [
+
 	| entity displayedText |
 	entity := FamixJavaClass new
-		name: 'aClass' ;
-		sourceAnchor: (self stubIndexedAnchorText: 
-'code of aClass {
+		          name: 'aClass';
+		          sourceAnchor: (self stubIndexedAnchorText: 'code of aClass {
 	/* this is a Java comment */
 }').
 	FamixJavaComment new
-		content: 'this is a Java comment' ;
-		commentedEntity: entity ;
-		sourceAnchor: (self stubIndexedAnchorText: #whatever positions: 19@46 ).
+		sourceAnchor: (self stubIndexedAnchorText: 'this is a Java comment');
+		commentedEntity: entity;
+		sourceAnchor: (self stubIndexedAnchorText: #whatever positions: 19 @ 46).
 
 	browser followEntity: entity.
 
@@ -149,10 +149,8 @@ MiSourceTextBrowserTest >> testHighlightJavaComment [
 	self deny: displayedText unembellished.
 	self assert: (displayedText attributesAt: 15) isEmpty.
 	self deny: (displayedText attributesAt: 25) isEmpty.
-	self assert:
-		((displayedText attributesAt: 25) noneSatisfy: [ :att | att mayActOnEvent: MouseEvent new ]).
-	self assert:
-		((displayedText attributesAt: 25) anySatisfy: [ :att | (att class = TextColor) and: [ att color = Color gray ] ]).
+	self assert: ((displayedText attributesAt: 25) noneSatisfy: [ :att | att mayActOnEvent: MouseEvent new ]).
+	self assert: ((displayedText attributesAt: 25) anySatisfy: [ :att | att class = TextColor and: [ att color = Color gray ] ])
 ]
 
 { #category : #'tests - highlighting' }
@@ -193,15 +191,15 @@ MiSourceTextBrowserTest >> testHighlightNoChild [
 
 { #category : #'tests - highlighting' }
 MiSourceTextBrowserTest >> testHighlightStComment [
+
 	| entity displayedText |
 	entity := FamixStClass new
-		name: 'aClass' ;
-		sourceAnchor: (self stubIndexedAnchorText: 
-'code of aClass {
+		          name: 'aClass';
+		          sourceAnchor: (self stubIndexedAnchorText: 'code of aClass {
 	"this is a Pharo comment"
-}' ).
+}').
 	FamixStComment new
-		content: 'this is a Pharo comment' ;
+		sourceAnchor: (self stubIndexedAnchorText: 'this is a Pharo comment');
 		commentedEntity: entity.
 
 	browser followEntity: entity.
@@ -210,10 +208,8 @@ MiSourceTextBrowserTest >> testHighlightStComment [
 	self deny: displayedText unembellished.
 	self assert: (displayedText attributesAt: 15) isEmpty.
 	self deny: (displayedText attributesAt: 25) isEmpty.
-	self assert:
-		((displayedText attributesAt: 25) noneSatisfy: [ :att | att mayActOnEvent: MouseEvent new ]).
-	self assert:
-		((displayedText attributesAt: 25) anySatisfy: [ :att | (att class = TextColor) and: [ att color = Color gray ] ]).
+	self assert: ((displayedText attributesAt: 25) noneSatisfy: [ :att | att mayActOnEvent: MouseEvent new ]).
+	self assert: ((displayedText attributesAt: 25) anySatisfy: [ :att | att class = TextColor and: [ att color = Color gray ] ])
 ]
 
 { #category : #'tests - highlighting' }
@@ -222,13 +218,12 @@ MiSourceTextBrowserTest >> testHighlightStCommentForClass [
 
 	| entity displayedText |
 	entity := FamixStClass new
-		name: 'aClass' ;
-		sourceAnchor: (self stubIndexedAnchorText: 
-'"this is a Pharo class comment"
+		          name: 'aClass';
+		          sourceAnchor: (self stubIndexedAnchorText: '"this is a Pharo class comment"
 code of aClass {
-}' ).
+}').
 	FamixStComment new
-		content: 'this is a Pharo class comment' ;
+		sourceAnchor: (self stubIndexedAnchorText: 'this is a Pharo class comment');
 		commentedEntity: entity.
 
 	browser followEntity: entity.
@@ -237,10 +232,8 @@ code of aClass {
 	self deny: displayedText unembellished.
 	self assert: (displayedText attributesAt: 35) isEmpty.
 	self deny: (displayedText attributesAt: 20) isEmpty.
-	self assert:
-		((displayedText attributesAt: 20) noneSatisfy: [ :att | att mayActOnEvent: MouseEvent new ]).
-	self assert:
-		((displayedText attributesAt: 20) anySatisfy: [ :att | (att class = TextColor) and: [ att color = Color gray ] ]).
+	self assert: ((displayedText attributesAt: 20) noneSatisfy: [ :att | att mayActOnEvent: MouseEvent new ]).
+	self assert: ((displayedText attributesAt: 20) anySatisfy: [ :att | att class = TextColor and: [ att color = Color gray ] ])
 ]
 
 { #category : #tests }
