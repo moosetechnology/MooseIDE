@@ -11,5 +11,5 @@ FamixTComment >> sourceCodeBoundingEntity [
 FamixTComment >> stringToHighlight [
 	"this is for SourceAnchorAdapter"
 
-	^self content
+	^ self sourceText
 ]
