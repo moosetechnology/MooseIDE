@@ -27,20 +27,14 @@ MiDeadCodeJavaImplementedInterfaceHeuristic >> notDead: aTMethod [
 	"metods implementing a Java interface method that is invoked are considered not dead
 	 the other one are 'dead' (refuting heuristic)"
 
-	(aTMethod parentType mooseDescription allProperties noneSatisfy: [ :fmProp |
-		fmProp name = #interfaceImplementations ])
-		ifTrue: [ ^false ].
+	(aTMethod parentType mooseDescription allProperties noneSatisfy: [ :fmProp | fmProp name = #interfaceImplementations ]) ifTrue: [ ^ false ].
 
-	aTMethod parentType interfaceImplementations ifEmpty: [ ^false ].
+	aTMethod parentType interfaceImplementations ifEmpty: [ ^ false ].
 
 	aTMethod parentType interfaceImplementations do: [ :implementation |
 		implementation interface methods
-			detect: [ :interfaceMethod |
-				(interfaceMethod signature = aTMethod signature) and:
-				[ interfaceMethod incomingInvocations isNotEmpty ] ]
-			ifOne: [ :ignore | ^true ]
-		].
+			detect: [ :interfaceMethod | interfaceMethod signature = aTMethod signature and: [ interfaceMethod incomingInvocations isNotEmpty ] ]
+			ifFound: [ :ignore | ^ true ] ].
 
-	^false
-
+	^ false
 ]
