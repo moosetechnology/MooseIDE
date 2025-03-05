@@ -91,12 +91,9 @@ BaselineOfMooseIDE >> defineMooseDependencies: spec [
 BaselineOfMooseIDE >> definePackages: spec [
 
 	spec
-		package: 'MooseIDE-Colors' with: [ spec requires: #( 'Roassal' ) ];
-		package: 'MooseIDE-Colors-Tests'
-		with: [ spec requires: #( 'MooseIDE-Colors' ) ];
 		package: 'MooseIDE-Core' with: [
 			spec requires:
-					#( 'MooseIDE-Colors' 'LabelContractor' 'RoassalExporters' ) ];
+					#( 'LabelContractor' 'RoassalExporters' ) ];
 		package: 'MooseIDE-Visualization'
 		with: [
 			spec requires: #( 'MooseIDE-Core' 'HierarchicalVisualizations' ) ];

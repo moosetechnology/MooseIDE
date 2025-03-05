@@ -171,8 +171,7 @@ MiTagCreationForm >> initializeLayout [
 { #category : #initialization }
 MiTagCreationForm >> initializePresenters [
 
-	(colorPicker := self instantiate: MiColorPicker) setColor:
-		Color random.
+	(colorPicker := self newColorPicker) setColor: Color random.
 	extentButton := self newToggleButton
 		                state: true;
 		                label: 'Static';
@@ -190,18 +189,21 @@ MiTagCreationForm >> initializePresenters [
 	nameField := self newTextInput.
 	descriptionField := self newText.
 	categorySelection := self newDropList
-		                     sortingBlock: [ :c1 :c2 | 
-			                     c1 model ifNil: [ true ] ifNotNil: [ 
+		                     sortingBlock: [ :c1 :c2 |
+			                     c1 model
+				                     ifNil: [ true ]
+				                     ifNotNil: [
 					                     c2 model
 						                     ifNil: [ false ]
 						                     ifNotNil: [ c1 model name < c2 model name ] ] ];
-		                     display: [ :cat | 
-			                     cat ifNil: [ '' ] ifNotNil: [ cat name ] ];
+		                     display: [ :cat |
+			                     cat
+				                     ifNil: [ '' ]
+				                     ifNotNil: [ cat name ] ];
 		                     yourself.
 	queryList := self newDropList
 		             startWithoutSelection;
-		             display:
-			             [ :query | self stringForQuery: query ] yourself.
+		             display: [ :query | self stringForQuery: query ] yourself.
 	queryListLabeled := MiPresenter new
 		                    layout: (SpBoxLayout newTopToBottom
 				                     add: 'Query' asPresenter expand: false;

@@ -20,13 +20,10 @@ MiColorSettingItem >> getValue [
 MiColorSettingItem >> initialize [
 
 	super initialize.
-	colorPicker := MiColorPicker new "whenColorChangedDo: [ :c | 
-		               presenter canvas color: c ]".
+	colorPicker := SpColorPicker new. "whenColorChangedDo: [ :c | 
+		               presenter canvas color: c ]"
 	presenter := SpRoassalPresenter new.
-	presenter canvas
-		when: RSMouseLeftClick
-		send: #openColorPicker
-		to: self.
+	presenter canvas when: RSMouseLeftClick send: #openColorPicker to: self.
 	label := 'Choose color'
 ]
 
