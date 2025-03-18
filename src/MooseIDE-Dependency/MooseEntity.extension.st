@@ -9,9 +9,3 @@ MooseEntity >> queryAllOutgoingForDSM [
 
 	^ self query outgoing dependencies asSet
 ]
-
-{ #category : #'*MooseIDE-Dependency' }
-MooseEntity >> rootsForTreeMap [
-
-	^ {  }
-]
