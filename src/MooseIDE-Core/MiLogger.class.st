@@ -50,6 +50,7 @@ MiLogger >> newLogFor: anEntity [
 ]
 
 { #category : #api }
-MiLogger >> removeLog: aLog [
-	self logs remove: aLog
+MiLogger >> removeLog: someLogs [
+
+	 someLogs do: [ :aLog | self logs remove: aLog  ].	
 ]
