@@ -116,6 +116,12 @@ MiBusLogBrowser >> followEntity: anEntity [
 	self updateList
 ]
 
+{ #category : #'accessing - private tests' }
+MiBusLogBrowser >> getDisplayedList [
+
+	^list
+]
+
 { #category : #initialization }
 MiBusLogBrowser >> initializePresenters [
 
@@ -155,7 +161,19 @@ MiBusLogBrowser >> menuCommandGroup [
 
 { #category : #accessing }
 MiBusLogBrowser >> miSelectedItem [
-	^ list selectedItems ifNotNil: [ :logs | logs flatCollect: [ :aLog | aLog entity ] ]
+
+	| flattened |
+	flattened := OrderedCollection new.
+
+	list selectedItems ifNotNil: [ :logs |
+		logs do: [ :aLog |
+			aLog entity isCollection
+				ifTrue: [ flattened addAll: aLog entity ] 
+				ifFalse: [ flattened add: aLog entity ]
+		]
+	].
+
+	^ flattened 
 ]
 
 { #category : #actions }

@@ -93,6 +93,12 @@ MiLogsBrowser >> followEntity: anEntity [
 	
 ]
 
+{ #category : #'accessing - private tests' }
+MiLogsBrowser >> getSelectedPage [
+
+	^ mainPresenter selectedPage
+]
+
 { #category : #initialization }
 MiLogsBrowser >> initializePresenters [
 
