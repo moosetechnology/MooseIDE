@@ -51,5 +51,6 @@ MiLogger >> newLogFor: anEntity [
 
 { #category : #api }
 MiLogger >> removeLog: aLog [
-	self logs remove: aLog
+
+	 aLog do: [ :each | self logs remove: each  ].	
 ]

@@ -129,7 +129,8 @@ MiBusLogBrowser >> initializePresenters [
 	list
 		display: [ :log | log entity mooseName ];
 		contextMenu: [ self menuCommandGroup asMenuPresenter ];
-		whenSelectedDo: [ :log | self updateToolbars ]
+		whenSelectionChangedDo: [ :log | self updateToolbars ]	;
+		selectionMode: (SpMultipleSelectionMode on: list)
 ]
 
 { #category : #commandGroups }
@@ -154,14 +155,13 @@ MiBusLogBrowser >> menuCommandGroup [
 
 { #category : #accessing }
 MiBusLogBrowser >> miSelectedItem [
-
-	^ list selectedItem ifNotNil: [ :log | log entity ]
+	^ list selectedItems ifNotNil: [ :log | log flatCollect: [ :each | each entity ] ]
+	"^ list selectedItem ifNotNil: [ :log | log entity ]"
 ]
 
 { #category : #actions }
 MiBusLogBrowser >> removeSelectedLog [
-
-	self logger removeLog: list selectedItem.
+	self logger removeLog: (list selectedItems).
 	self updateList
 ]
 
@@ -169,13 +169,13 @@ MiBusLogBrowser >> removeSelectedLog [
 MiBusLogBrowser >> updateList [
 
 	| logs |
+	
 	logs := self logger logs.
 
 	list items: logs.
-
+	
 	logs
 		ifEmpty: [ self updateToolbars ]
-		ifNotEmpty: [ list selectFirst ]
 ]
 
 { #category : #updating }
