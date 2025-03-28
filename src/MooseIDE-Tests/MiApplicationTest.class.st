@@ -128,6 +128,7 @@ MiApplicationTest >> testMSERegisteredHandler [
 
 { #category : #tests }
 MiApplicationTest >> testMiPropagate [
+	"This test propagate an entity on the defaultBus and checks otherBuses (if there are any) are not changed"
 	| mooseModel defaultBus otherBuses originalMostRecentEntities newMostRecentEntities |
 	
 	mooseModel := MooseModel new.
@@ -146,8 +147,8 @@ MiApplicationTest >> testMiPropagate [
 	
 	self assertCollection:  defaultBus logger mostRecentEntity hasSameElements: mooseModel entities  .
 
-	"Tear down: Removing the entity we propagated on the default bus"
-	defaultBus logger removeLog: (defaultBus logger mostRecentLog ) .
+	"Tear down: Removing the entity (as a collection of entities) we propagated on the default bus"
+	defaultBus logger removeLog: ({defaultBus logger mostRecentLog}) .
 	
 ]
 

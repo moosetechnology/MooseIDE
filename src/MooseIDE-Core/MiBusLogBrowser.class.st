@@ -155,8 +155,7 @@ MiBusLogBrowser >> menuCommandGroup [
 
 { #category : #accessing }
 MiBusLogBrowser >> miSelectedItem [
-	^ list selectedItems ifNotNil: [ :log | log flatCollect: [ :each | each entity ] ]
-	"^ list selectedItem ifNotNil: [ :log | log entity ]"
+	^ list selectedItems ifNotNil: [ :logs | logs flatCollect: [ :aLog | aLog entity ] ]
 ]
 
 { #category : #actions }
