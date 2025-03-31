@@ -245,7 +245,7 @@ BaselineOfMooseIDE >> microdown: spec [
 		spec
 			baseline: 'Microdown'
 			with: [
-			spec repository: 'github://pillar-markup/Microdown:master/src' ] ].
+			spec repository: 'github://pillar-markup/Microdown:v2.4.1/src' ] ].
 
 	spec for: #( #'pharo12.x' ) do: [
 		spec
