@@ -78,6 +78,12 @@ MiRSDSM >> highlight: evt [
 ]
 
 { #category : #accessing }
+MiRSDSM >> listTupleDependencies: tuple [
+	^(owner listTupleDependencies: tuple)
+		inspect
+]
+
+{ #category : #accessing }
 MiRSDSM >> owner [
 	^ owner
 ]
