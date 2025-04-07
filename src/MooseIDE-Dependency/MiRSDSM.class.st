@@ -2,10 +2,24 @@ Class {
 	#name : #MiRSDSM,
 	#superclass : #RSDSM,
 	#instVars : [
-		'owner'
+		'owner',
+		'menuInteraction'
 	],
 	#category : #'MooseIDE-Dependency-DSM'
 }
+
+{ #category : #hooks }
+MiRSDSM >> cellMenu [
+	^menuInteraction ifNil: [
+		menuInteraction := RSMenuActivable new
+			menuDo: [ :menu :cell |
+				menu
+					add: 'Dependencies'
+					target: [ self listTupleDependencies: cell model ]
+					selector: #value
+			]
+	]
+]
 
 { #category : #'hooks - labels' }
 MiRSDSM >> createLabelShapeX: aRSBox [
@@ -39,6 +53,7 @@ MiRSDSM >> createShape: tuple [
 		when: RSMouseDoubleClick do: [ self userActionOn: tuple] for: shape ;
 		when: RSMouseEnter send: #highlight: to: self ;
 		when: RSMouseLeave send: #unhighlight: to: self.
+	shape @ self cellMenu.
 
 	^shape
 ]
