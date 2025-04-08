@@ -65,6 +65,19 @@ MiDSMBrowserTest >> testCanTagEntities [
 ]
 
 { #category : #tests }
+MiDSMBrowserTest >> testCellListTupleDependencies [
+	"detailed DSM title should show the original entities"
+
+	| tuple |
+	browser followEntity: {  class1 . class2 }.
+
+	tuple := (self shapeAtRow: class1 column: class2) model.
+
+	self assert: (browser diagram listTupleDependencies: tuple) size equals: 1.
+	self assert: (browser diagram listTupleDependencies: tuple) anyOne class equals: FamixJavaInvocation 
+]
+
+{ #category : #tests }
 MiDSMBrowserTest >> testDoesNotOpenEmptyDetailedDSM [
 	"sets a fake spec model that delegates #userActionOn: to the original model
 	 We checks that #userActionOn: was called and #openDetailedDSMOn: was not"

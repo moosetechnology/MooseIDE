@@ -61,6 +61,11 @@ MiDSMVisualization >> initialize [
 	lastSCCShapes := nil -> #(  )
 ]
 
+{ #category : #accessing }
+MiDSMVisualization >> listTupleDependencies: tuple [
+	^ specModel listTupleDependencies: tuple
+]
+
 { #category : #private }
 MiDSMVisualization >> sccShapesIncluding: aRSShape [
 

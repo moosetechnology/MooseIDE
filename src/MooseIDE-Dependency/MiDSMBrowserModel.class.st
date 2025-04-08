@@ -194,6 +194,15 @@ MiDSMBrowserModel >> isDiagonal: tuple [
 
 ]
 
+{ #category : #api }
+MiDSMBrowserModel >> listTupleDependencies: tuple [
+	((tuple key model = tuple value model)
+	and: [ self showSelfDependencies not ])
+		ifTrue: [ ^#() ].
+
+	^dependencies from: tuple key model to: tuple value model
+]
+
 { #category : #accessing }
 MiDSMBrowserModel >> miSelectedItem [
 
