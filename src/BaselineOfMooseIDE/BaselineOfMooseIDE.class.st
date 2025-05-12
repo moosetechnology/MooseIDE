@@ -199,7 +199,7 @@ BaselineOfMooseIDE >> famixReplication: spec [
 	spec
 		baseline: 'FamixReplication'
 		with: [ 
-		spec repository: 'github://moosetechnology/FamixReplication' ]
+		spec repository: 'github://moosetechnology/FamixReplication:v1.1.5' ]
 ]
 
 { #category : #dependencies }
