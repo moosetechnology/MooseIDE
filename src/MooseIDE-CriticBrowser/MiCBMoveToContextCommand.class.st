@@ -7,6 +7,16 @@ Class {
 	#category : #'MooseIDE-CriticBrowser-Commands'
 }
 
+{ #category : #'instance creation' }
+MiCBMoveToContextCommand class >> availableContextsIn: aPresenter [
+
+	^ { aPresenter model rootContext }
+	  , (aPresenter model ruleComponents select: [ :component |
+			   component isCBContext and: [
+				   component ~= aPresenter selectedRule and: [
+					   (component allParents includes: aPresenter selectedRule) not ] ] ])
+]
+
 { #category : #default }
 MiCBMoveToContextCommand class >> defaultIconName [
 
@@ -27,7 +37,7 @@ MiCBMoveToContextCommand class >> forSpecContext: aPresenter [
 		                name: 'Move to context: ';
 		                iconName: #glamorousRedo.
 
-	aPresenter allAvailableContexts do: [ :aCBContext | 
+	(self availableContextsIn: aPresenter) do: [ :aCBContext |
 		commandGroup register:
 			(self newForSpecContext: aPresenter targetContext: aCBContext) ].
 
@@ -45,7 +55,7 @@ MiCBMoveToContextCommand class >> newForSpecContext: aPresenter targetContext: a
 { #category : #accessing }
 MiCBMoveToContextCommand class >> priority [
 
-	^ 6
+	^ 7
 ]
 
 { #category : #converting }
@@ -60,8 +70,7 @@ MiCBMoveToContextCommand >> asSpecCommand [
 { #category : #testing }
 MiCBMoveToContextCommand >> canBeExecuted [
 
-	^ self context rules isNotNil and: [ 
-		  self context rules selectedItem class ~= FamixCBRootContext ]
+	^ self context selectedRule class ~= FamixCBRootContext
 ]
 
 { #category : #executing }

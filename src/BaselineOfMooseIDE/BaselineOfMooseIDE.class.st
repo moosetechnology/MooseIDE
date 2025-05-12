@@ -34,10 +34,9 @@ BaselineOfMooseIDE >> classBlueprint: spec [
 { #category : #accessing }
 BaselineOfMooseIDE >> customProjectAttributes [
 
-	^ RPackageOrganizer default packages
-		  detect: [ :package | package name = 'BaselineOfFamix' ]
-		  ifFound: [ #( #WithFamix ) ]
-		  ifNone: [ #( #NoFamix ) ]
+	'BaselineOfFamix' asPackageIfAbsent: [ ^ #( #NoFamix ) ].
+	^ #( #WithFamix )
+
 ]
 
 { #category : #dependencies }
@@ -92,12 +91,9 @@ BaselineOfMooseIDE >> defineMooseDependencies: spec [
 BaselineOfMooseIDE >> definePackages: spec [
 
 	spec
-		package: 'MooseIDE-Colors' with: [ spec requires: #( 'Roassal' ) ];
-		package: 'MooseIDE-Colors-Tests'
-		with: [ spec requires: #( 'MooseIDE-Colors' ) ];
 		package: 'MooseIDE-Core' with: [
 			spec requires:
-					#( 'MooseIDE-Colors' 'LabelContractor' 'RoassalExporters' ) ];
+					#( 'LabelContractor' 'RoassalExporters' ) ];
 		package: 'MooseIDE-Visualization'
 		with: [
 			spec requires: #( 'MooseIDE-Core' 'HierarchicalVisualizations' ) ];
@@ -156,8 +152,11 @@ BaselineOfMooseIDE >> definePackages: spec [
 		with: [
 			spec requires: #( 'MooseIDE-Visualization' 'ClassBlueprint' ) ];
 		package: 'MooseIDE-Spotter';
+		package: 'MooseIDE-Core-Reporter';
 		package: 'MooseIDE-Spotter-Tests'
-		with: [ spec requires: #( 'MooseIDE-Spotter' ) ].
+		with: [ spec requires: #( 'MooseIDE-Spotter' ) ];
+		package: 'MooseIDE-Analysis'
+		with: [ spec requires: #( 'MooseIDE-Core' ) ].
 
 	self defineMooseCriticsPackages: spec
 ]
@@ -269,8 +268,8 @@ BaselineOfMooseIDE >> registerCustomTools [
 	self registerShortcuts.
 
 	"MiPlayground could be absent if we load only a group"
-	(Smalltalk classNamed: #MiPlayground) ifNotNil: [ :miPlayground |
-		miPlayground register ]
+	(Smalltalk classNamed: #MiPlaygroundBrowser) ifNotNil: [
+		:miPlayground | miPlayground register ]
 ]
 
 { #category : #actions }
@@ -286,7 +285,7 @@ BaselineOfMooseIDE >> removeRoassalFromSystem [
 
 	#( Roassal3 Numeric ) do: [ :string |
 		| packages |
-		packages := RPackageOrganizer default packages
+		packages := self packageOrganizer packages
 			            select: [ :each |
 			            (string surroundedBy: '*') match: each name ]
 			            thenDo: [ :each | each removeFromSystem ] ]

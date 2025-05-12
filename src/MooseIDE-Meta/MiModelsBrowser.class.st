@@ -36,17 +36,6 @@ MiModelsBrowser class >> buildModelCommandsGroupWith: presenterInstance [
 			  (MiModelUtilityCommand asCommandGroupWith: presenterInstance)
 ]
 
-{ #category : #layout }
-MiModelsBrowser class >> defaultLayout [
-
-	^ SpBoxLayout newVertical
-		  add: #toolbar
-		  withConstraints: [ :constraints | 
-			  constraints height: self toolbarHeight ];
-		  add: #modelFilteringList;
-		  yourself
-]
-
 { #category : #'instance creation' }
 MiModelsBrowser class >> instantiateAndOpen [
 
@@ -62,6 +51,7 @@ MiModelsBrowser class >> isModelImporter [
 MiModelsBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
+	<miBrowsersMenu>
 	^ self buildMenuItemIn: aBuilder
 ]
 
@@ -126,6 +116,15 @@ MiModelsBrowser >> canTagEntities [
 	^false
 ]
 
+{ #category : #layout }
+MiModelsBrowser >> defaultLayout [
+
+	^ SpBoxLayout newVertical
+		  add: #toolbar expand: false;
+		  add: #modelFilteringList;
+		  yourself
+]
+
 { #category : #actions }
 MiModelsBrowser >> followEntity: anEntity [
 
@@ -182,22 +181,28 @@ MiModelsBrowser >> initializeList [
 				 evaluated: [ :model | model entities size asString ];
 				 beSortable;
 				 yourself);
-		contextMenu: [ (self class buildModelCommandsGroupWith: self) asMenuPresenter ];
-		whenSelectionChangedDo: [ :selected | specModel selected: selected selectedItem ]
+		contextMenu: [
+		(self class buildModelCommandsGroupWith: self) asMenuPresenter ];
+		whenSelectionChangedDo: [ :selected |
+		specModel selected: selected selectedItem ];
+		activateOnDoubleClick;
+		whenActivatedDo: [ self miInspect ]
 ]
 
 { #category : #initialization }
 MiModelsBrowser >> initializePresenters [
 
 	self initializeToolbar.
-	self initializeList
+	self initializeList.
+	self selectAModelIfPossible
 ]
 
 { #category : #initialization }
 MiModelsBrowser >> initializeToolbar [
 
 	toolbar := self newToolbar
-		           fillWith: (MiImportCommand asCommandGroupForSpecContext: self);
+		           fillWith:
+			           (MiImportCommand asCommandGroupForSpecContext: self);
 		           beIcons;
 		           addItem: self refreshToolbarButton;
 		           yourself
@@ -206,8 +211,7 @@ MiModelsBrowser >> initializeToolbar [
 { #category : #updating }
 MiModelsBrowser >> listOfMooseModels: aList [
 
-	modelFilteringList items: aList.
-	
+	modelFilteringList items: aList
 ]
 
 { #category : #accessing }
@@ -237,9 +241,22 @@ MiModelsBrowser >> refreshToolbarButton [
 		  yourself
 ]
 
+{ #category : #initialization }
+MiModelsBrowser >> selectAModelIfPossible [
+
+	specModel entities ifNotEmpty: [ :list |
+		modelFilteringList selectItem: list first ]
+]
+
 { #category : #'accessing - tests' }
 MiModelsBrowser >> settingsItem [
 	^ specModel settings
+]
+
+{ #category : #accessing }
+MiModelsBrowser >> specModel [
+
+	^ specModel 
 ]
 
 { #category : #updating }

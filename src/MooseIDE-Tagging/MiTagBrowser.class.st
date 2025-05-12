@@ -27,6 +27,7 @@ MiTagBrowser class >> browserKey [
 MiTagBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
+	<miBrowsersMenu>
 	^ self buildMenuItemIn: aBuilder
 ]
 
@@ -177,13 +178,7 @@ MiTagBrowser >> itemsFor: aClass [
 { #category : #accessing }
 MiTagBrowser >> miSelectedItem [
 
-	| tag |
-	tag := specModel currentTag.
-	tag ifNil: [ ^ nil ].
-
-	tagManagementPage selectedItems ifNotEmpty: [ :items |
-		^ items asMooseGroup ].
-	^ tag taggedEntities asMooseGroup
+	^ specModel miSelectedItem
 ]
 
 { #category : #testing }
@@ -234,6 +229,7 @@ MiTagBrowser >> remove: aTagAssociation [
 MiTagBrowser >> setTagTo: aTag [
 
 	self model currentTag: aTag.
+	self updateToolbar
 ]
 
 { #category : #initialization }

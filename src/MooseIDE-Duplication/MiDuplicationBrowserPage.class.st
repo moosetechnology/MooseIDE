@@ -5,7 +5,8 @@ Class {
 	#name : #MiDuplicationBrowserPage,
 	#superclass : #SpNotebookPage,
 	#instVars : [
-		'replica'
+		'replica',
+		'text'
 	],
 	#category : #'MooseIDE-Duplication'
 }
@@ -19,23 +20,59 @@ MiDuplicationBrowserPage class >> forReplica: aReplica [
 		
 ]
 
-{ #category : #private }
-MiDuplicationBrowserPage >> formatReplicaText [
+{ #category : #formatting }
+MiDuplicationBrowserPage >> backgroundColor: aColor at: anInterval [
 
-	| text highlightInterval |
-	text := replica entity sourceText.
-	highlightInterval := self linesToCharPos: (replica startLine to: replica endLine) in: text.
-	^ text asText
-		  addAttribute: (TextBackgroundColor color: self highlightingColor)
-		  from: highlightInterval first
-		  to: highlightInterval last;
-		  yourself
+	text
+		addAttribute: (TextBackgroundColor color: aColor)
+		from: anInterval first
+		to: anInterval last.
+ 
 ]
 
-{ #category : #accessing }
-MiDuplicationBrowserPage >> highlightingColor [
+{ #category : #formatting }
+MiDuplicationBrowserPage >> formatReplicaText [
 
-	^ Color veryVeryLightGray
+	text := Text streamContents: [ :stream |
+		stream
+			<< replica entity mooseName ;
+			cr ;
+			<< replica entity sourceText
+	].
+
+	self formatTitle.
+
+	replica entity replicas do: [:cloneToShow |
+		(cloneToShow = replica)
+		ifFalse: [ self highlightClone: cloneToShow color: self otherCloneColor ]
+	].
+
+	self highlightClone: replica color: self mainCloneColor.
+
+	^text
+]
+
+{ #category : #formatting }
+MiDuplicationBrowserPage >> formatTitle [
+
+	| titleInterval |
+	titleInterval := 1 to: replica entity mooseName size.
+
+	text
+		addAttribute: (TextEmphasis underlined)
+		from: titleInterval first
+		to: titleInterval last.
+ 
+	self backgroundColor: self titleColor at: titleInterval
+]
+
+{ #category : #formatting }
+MiDuplicationBrowserPage >> highlightClone: clone color: aColor [
+	"computes first and last character position of the clone"
+
+	self
+		backgroundColor: aColor
+		at: (self linesToCharPos: (clone startLine to: clone endLine))
 ]
 
 { #category : #initialization }
@@ -54,33 +91,31 @@ MiDuplicationBrowserPage >> initialize [
 ]
 
 { #category : #private }
-MiDuplicationBrowserPage >> intervalAsCharPos: lineInterval [
-	"copied from FamixTFileNavigation >> #intervalAsCharPos"
-	| start end index |
-	index := 0.
+MiDuplicationBrowserPage >> linesToCharPos: lineInterval [
+
+	"copied from FamixTFileNavigation >> #intervalAsCharPos
+	must ignore the first line which is a kind of title (see #formatReplicaText)"
+
+	| start lineNumber |
+	lineNumber := -1. "so that first line is ignored in first 'loop iteration' "
 	start := 1.
-	end := 0.
-	self completeText lineIndicesDo: [ :lineStart :lineEnd :y | 
-		index := index + 1.
-		self startLine = index ifTrue: [ start := lineStart ].
-		self endLine = index ifTrue: [ end := lineEnd ] ].
-	^ start to: end
+	text asString lineIndicesDo: [ :lineStart :lineEnd :ignore | 
+		lineNumber := lineNumber + 1.
+		lineInterval first = lineNumber ifTrue: [ start := lineStart ].
+		lineInterval last = lineNumber ifTrue: [ ^start to: lineEnd ] ].
+	^ start to: text size
 ]
 
-{ #category : #private }
-MiDuplicationBrowserPage >> linesToCharPos: lineInterval in: aString [
+{ #category : #accessing }
+MiDuplicationBrowserPage >> mainCloneColor [
 
-	"copied from FamixTFileNavigation >> #intervalAsCharPos"
+	^ Color lightYellow lighter
+]
 
-	| start end index |
-	index := 0.
-	start := 1.
-	end := 0.
-	aString lineIndicesDo: [ :lineStart :lineEnd :y | 
-		index := index + 1.
-		lineInterval first = index ifTrue: [ start := lineStart ].
-		lineInterval last = index ifTrue: [ end := lineEnd ] ].
-	^ start to: end
+{ #category : #accessing }
+MiDuplicationBrowserPage >> otherCloneColor [
+
+	^ Color veryVeryLightGray
 ]
 
 { #category : #accessing }
@@ -94,4 +129,11 @@ MiDuplicationBrowserPage >> replica: aReplica [
 MiDuplicationBrowserPage >> textContent [
 
 	^ replica ifNil: [ '** no source code found**' ] ifNotNil: [ self formatReplicaText ]
+]
+
+{ #category : #accessing }
+MiDuplicationBrowserPage >> titleColor [
+	"same blue as used in pharo for text selection"
+
+	^Color fromHexString: 'afd5fa'
 ]

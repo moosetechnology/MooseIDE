@@ -36,6 +36,7 @@ MiArchitecturalMapBrowser class >> mapClass [
 MiArchitecturalMapBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
+	<miBrowsersMenu>
 	^ self buildMenuItemIn: aBuilder
 ]
 
@@ -90,11 +91,6 @@ MiArchitecturalMapBrowser >> canFollowEntity: anEntity [
 ]
 
 { #category : #testing }
-MiArchitecturalMapBrowser >> canPropagate [
-	^true
-]
-
-{ #category : #testing }
 MiArchitecturalMapBrowser >> canReceiveEntity: anEntity [
 
 	^ anEntity isMooseObject
@@ -123,6 +119,7 @@ MiArchitecturalMapBrowser >> doWithTimeout: aBlock [
 { #category : #actions }
 MiArchitecturalMapBrowser >> followEntity: anEntity [
 
+	super followEntity: anEntity.
 	specModel entities: anEntity asMooseGroup.
 	self runVisualization
 ]

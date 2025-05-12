@@ -39,6 +39,7 @@ MiButterflyMapBrowser class >> mapClass [
 MiButterflyMapBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
+	<miBrowsersMenu>
 	^ self buildMenuItemIn: aBuilder
 ]
 
@@ -87,10 +88,11 @@ MiButterflyMapBrowser >> canFollowEntity: anObject [
 { #category : #actions }
 MiButterflyMapBrowser >> followEntity: anEntity [
 
+	super followEntity: anEntity.
 	self model currentEntity: anEntity
 ]
 
-{ #category : #actions }
+{ #category : #testing }
 MiButterflyMapBrowser >> hasSettings [
 
 	^ true

@@ -40,25 +40,37 @@ MiImportModelDialog >> importModel [
 ]
 
 { #category : #action }
+MiImportModelDialog >> importModelStep1Import [
+
+	^ [ self importModel ] onErrorDo: [ :err |
+		  UIManager default alert: 'Import error: ' , err messageText.
+		  nil ]
+]
+
+{ #category : #action }
+MiImportModelDialog >> importModelStep2Install: mooseModel [
+
+	mooseModel ifNotNil: [
+		mooseModel installWithCache: self shouldCreateCache.
+		self withWindowDo: [ :window | window close ].
+		self updateBrowserWith: mooseModel
+	]
+]
+
+{ #category : #action }
 MiImportModelDialog >> importModelThenCloseDialogWindow [
 
 	| mooseModel aJob |
-
 	[ self validateImportForm ] onErrorDo: [ :err |
 		UIManager default alert: 'Invalid input: ' , err messageText.
 		^ self ].
 
 	aJob := [ :job |
 	        job title: 'Importing model'.
-	        mooseModel := [ self importModel ] onErrorDo: [ :err |
-		                      UIManager default alert:
-			                      'Import error: ' , err messageText.
-		                      nil ].
+	        mooseModel := self importModelStep1Import.
 	        job currentValue: 50.
-	        mooseModel ifNotNil: [
-		        mooseModel install.
-		        self withWindowDo: [ :window | window close ].
-		        self updateBrowserWith: mooseModel ] ] asJob.
+	        self importModelStep2Install: mooseModel
+	] asJob.
 
 	[ aJob run ] forkAt: Processor userBackgroundPriority
 ]
@@ -88,13 +100,24 @@ MiImportModelDialog >> setModelBeforeInitialization: aBrowserOrMoosePanel [
 	originBrowser := aBrowserOrMoosePanel
 ]
 
+{ #category : #accessing }
+MiImportModelDialog >> settings [
+
+	^ originBrowser settingsItem
+]
+
+{ #category : #accessing }
+MiImportModelDialog >> shouldCreateCache [
+
+	^ originBrowser specModel shouldCreateCache 
+]
+
 { #category : #action }
 MiImportModelDialog >> updateBrowserWith: mooseModel [
 
 	originBrowser
-	ifNotNil: [ originBrowser updateForNewModel: mooseModel ]
-	ifNil: [ (MiApplication current allBrowsers: MiModelsBrowser)
-		do: [ :browser | browser updateList ] ]
+		ifNotNil: [ originBrowser updateForNewModel: mooseModel ]
+		ifNil: [ MiApplication current currentModelsBrowser updateList ]
 ]
 
 { #category : #action }

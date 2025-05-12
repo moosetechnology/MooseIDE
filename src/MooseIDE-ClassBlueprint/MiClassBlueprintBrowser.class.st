@@ -1,3 +1,9 @@
+"
+I am a visualization that displays the structure of a class.
+Accepted entities: a famix class.
+
+This visualization is used to understand a class structure and presents dead artifacts within a class.
+"
 Class {
 	#name : #MiClassBlueprintBrowser,
 	#superclass : #MiAbstractBrowser,
@@ -7,16 +13,11 @@ Class {
 	#category : #'MooseIDE-ClassBlueprint'
 }
 
-{ #category : #'instance creation' }
-MiClassBlueprintBrowser class >> followEntity: anEntity [ 
-	self withWindowDo: [ :window | window title: 'Blueprint of' , anEntity name ].
-	
-]
-
 { #category : #'world menu' }
 MiClassBlueprintBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
+	<miBrowsersMenu>
 	^ self buildMenuItemIn: aBuilder
 ]
 
@@ -49,32 +50,39 @@ MiClassBlueprintBrowser >> canFollowEntity: anObject [
 	^ anObject isMooseEntity and: [ anObject isType ]
 ]
 
-{ #category : #testing }
-MiClassBlueprintBrowser >> followEntity: anEntity [
+{ #category : #layout }
+MiClassBlueprintBrowser >> defaultLayout [
 
-	self withWindowDo: [ :window |
-		window title: 'Blueprint of' , anEntity name ].
-	blueprint
-		type: anEntity;
-		run
+	^ self newBoxLayoutTopToBottom
+		  add: blueprint;
+		  yourself
 ]
 
-{ #category : #testing }
-MiClassBlueprintBrowser >> initializeLayout [
+{ #category : #actions }
+MiClassBlueprintBrowser >> followEntity: anEntity [
 
-	self layout: (SpBoxLayout newTopToBottom
-			 add: blueprint;
-			 yourself)
+	super followEntity: anEntity.
+
+	blueprint
+		type: anEntity;
+		refresh
 ]
 
 { #category : #initialization }
 MiClassBlueprintBrowser >> initializePresenters [
 
-	blueprint := self instantiate: MiClassBlueprintVisualization.
-	self initializeLayout
+	blueprint := self instantiate: MiClassBlueprintVisualization
 ]
 
-{ #category : #testing }
-MiClassBlueprintBrowser >> miSelectedItem [ 
+{ #category : #accessing }
+MiClassBlueprintBrowser >> miSelectedItem [
+
 	^ blueprint type
+]
+
+{ #category : #actions }
+MiClassBlueprintBrowser >> updateWindowTitleWith: anEntity [
+
+	self withWindowDo: [ :window |
+		window title: 'Blueprint of' , anEntity name ]
 ]

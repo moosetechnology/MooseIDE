@@ -10,15 +10,12 @@ Class {
 	#name : #MiOverviewBrowser,
 	#superclass : #MiPresenter,
 	#instVars : [
-		'busesButton',
-		'browsersButton',
-		'chkOpenInPage',
-		'helpButton',
 		'browsersPage',
 		'busesPage',
 		'browsersListPresenter',
 		'busesListPresenter',
-		'mainPresenter'
+		'mainPresenter',
+		'toolbar'
 	],
 	#category : #'MooseIDE-Core-Overview'
 }
@@ -141,28 +138,30 @@ MiOverviewBrowser >> addBrowser: aMiPresenterClass asPage: aString [
 
 { #category : #toolbar }
 MiOverviewBrowser >> browsersMenu [
-	| browsersMenu |
-	browsersMenu := MiAbstractBrowser miBrowsersMenuPresenter.
 
-	(self collectMenuItems: browsersMenu)
-		do: [ :item | self replaceMenuItemAction: item ].
-	^ browsersMenu
+	^ MiAbstractBrowser miBrowsersMenuPresenter
 ]
 
-{ #category : #toolbar }
-MiOverviewBrowser >> collectMenuItems: aMenuPresenter [
-	| menuItems |
-	aMenuPresenter ifNil: [ ^#() ].
+{ #category : #accessing }
+MiOverviewBrowser >> buses [
 
-	menuItems := OrderedCollection new.
-	aMenuPresenter menuGroups
-	do: [:menuGrp | 
-		menuGrp menuItems do: [:anItem |
-			menuItems add: anItem.
-			menuItems addAll: (self collectMenuItems: anItem subMenu)]
-	].
-	^menuItems
-		
+	^ self application buses
+]
+
+{ #category : #layout }
+MiOverviewBrowser >> defaultLayout [
+
+	^ SpBoxLayout newVertical
+		  spacing: 10;
+		  add: toolbar height: self class toolbarHeight;
+		  add: mainPresenter;
+		  yourself
+]
+
+{ #category : #actions }
+MiOverviewBrowser >> followBus: aBus [
+
+	self updateBusesPage
 ]
 
 { #category : #initialization }
@@ -203,24 +202,6 @@ MiOverviewBrowser >> initializeBusesPage [
 ]
 
 { #category : #initialization }
-MiOverviewBrowser >> initializeLayout [
-
-	| tempLayout |
-	tempLayout := SpBoxLayout newVertical
-		add: (SpBoxLayout newHorizontal
-			add: busesButton width: self class buttonWidth;
-			add: browsersButton expand: false;
-			add: chkOpenInPage expand: false;
-			add: SpNullPresenter new expand: true;
-			add: helpButton width: self class iconWidth)
-		height: self class toolbarHeight;
-		add: mainPresenter;
-		yourself.
-		
-	self layout: tempLayout
-]
-
-{ #category : #initialization }
 MiOverviewBrowser >> initializeNotebook [
 
 	mainPresenter := self newNotebook.
@@ -236,36 +217,24 @@ MiOverviewBrowser >> initializeNotebook [
 MiOverviewBrowser >> initializePresenters [
 
 	self initializeToolbar.
-	self initializeNotebook.
-	self initializeLayout
+	self initializeNotebook
 ]
 
 { #category : #initialization }
 MiOverviewBrowser >> initializeToolbar [
 
-	busesButton := self newButton
-		iconName: #smallAdd;
-		label: 'Add Bus';
-		action: [ self openBusEditor ];
-		yourself.
-	
-	browsersButton := self newMenuBar
-		addItem: [ :item | 
-			item
-				icon: MooseIcons mooseIcon;
-				name: 'Open new browser';
-				subMenu: self browsersMenu ].
+	toolbar := self newToolbar.
 
-	chkOpenInPage := self newCheckBox 
-		label: 'Open in page' ;
-		labelOnRight ;
-		yourself.
-	
-	helpButton := self newButton
-		iconName: #help;
-		help: self class comment;
-		action: [ self showHelp ];
-		yourself
+	toolbar add: (MiEditBusCommand forSpecContext: self) buildPresenter.
+
+	toolbar add: (SpToolbarButtonPresenter new
+			 icon: MooseIcons mooseIcon;
+			 label: 'Open new browser';
+			 action: [ self browsersMenu openWithSpecAtPointer ];
+			 yourself).
+
+	toolbar addItemRight:
+		(MiHelpCommand forSpecContext: self) buildPresenter
 ]
 
 { #category : #initialization }
@@ -273,15 +242,6 @@ MiOverviewBrowser >> initializeWindow: aWindowPresenter [
 
 	super initializeWindow: aWindowPresenter.
 	aWindowPresenter initialExtent: 500 @ self class height
-]
-
-{ #category : #toolbar }
-MiOverviewBrowser >> openBusEditor [
-
-	self newPopover
-		relativeTo: busesButton;
-		presenter: (MiBusesPopup on: self);
-		popup
 ]
 
 { #category : #presenters }
@@ -302,27 +262,19 @@ MiOverviewBrowser >> pageNamed: aName presenter: aComponentList [
 { #category : #toolbar }
 MiOverviewBrowser >> replaceMenuItemAction: aMenuItem [
 
-	| browserClass itemAction |
+	| itemAction |
 	itemAction := aMenuItem action.
 
-	aMenuItem action: [ 
-		chkOpenInPage state
-			ifTrue: [ 
-				browserClass := itemAction receiver.
-				self addBrowser: browserClass asPage: browserClass title.
-				mainPresenter selectPage: mainPresenter pages last ]
-			ifFalse: [ itemAction value ] ]
+	aMenuItem action: [ itemAction value ]
 ]
 
-{ #category : #toolbar }
-MiOverviewBrowser >> showHelp [
-	self newPopover
-		relativeTo: helpButton;
-		presenter: (MiHelpPopup on: self);
-		popup
+{ #category : #actions }
+MiOverviewBrowser >> unfollowBus: aBus [
+
+	self updateBusesPage
 ]
 
-{ #category : #api }
+{ #category : #actions }
 MiOverviewBrowser >> updateBrowsersListItems [
 
 	browsersListPresenter items: self openedBrowsers

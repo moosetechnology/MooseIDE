@@ -1,6 +1,6 @@
 Class {
 	#name : #MiHelpCommand,
-	#superclass : #MiCommand,
+	#superclass : #MiPopupCommand,
 	#category : #'MooseIDE-Core-Command'
 }
 
@@ -23,7 +23,19 @@ MiHelpCommand class >> defaultName [
 ]
 
 { #category : #executing }
-MiHelpCommand >> execute [
+MiHelpCommand >> newPopover [
 
-	self context showHelp
+	^ super newPopover
+		  bePositionLeft;
+		  yourself
+]
+
+{ #category : #converting }
+MiHelpCommand >> popupContent [
+
+	^ (SpTextPresenter newApplication: self context application)
+		  text: self context helpText;
+		  beNotEditable;
+		  addStyle: 'help';
+		  yourself
 ]

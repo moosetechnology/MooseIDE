@@ -27,10 +27,18 @@ MiHSystemComplexityStyle >> buildCompositeEmptyNodeIn: shape [
 
 	| node |
 	node := shape model.
-	node level <= 1 ifTrue: [ 
-		shape
-			color: Color black;
-			border: (self borderFor: node).
+	node level <= 1 ifTrue: [
+		| box |
+		box := RSBox new
+			       color: Color red;
+			       yourself.
+		shape color: Color transparent.
+		box border: (self borderFor: node).
+
+		shape propertyAt: #background put: box.
+		shape add: (self labelAndIconFor: node) asShape.
+		shape add: box.
+		RSVerticalLineLayout on: shape children.
 		shape schildren: #(  ).
 
 		^ self ].

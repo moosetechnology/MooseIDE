@@ -7,7 +7,13 @@ Class {
 { #category : #running }
 MiDuplicationBrowserTest >> browserClass [
 
-	^MiDuplicationBrowser 
+	^ MiDuplicationBrowser
+]
+
+{ #category : #running }
+MiDuplicationBrowserTest >> defaultEntityToSelect [
+
+	^ (self method: 'method1' withSource: (1 to: 8)) asMooseGroup
 ]
 
 { #category : #running }
@@ -112,28 +118,18 @@ MiDuplicationBrowserTest >> testFormatReplicatedFragment [
 MiDuplicationBrowserTest >> testMiSelectedItem [
 
 	| entities |
-	entities := { 
+	entities := {
 		            (self method: 'method1').
 		            (self method: 'method2') } asMooseGroup.
 
 	browser model entities: entities.
 
-	self assertEmpty: browser miSelectedItem.
-	self deny: browser canPropagate.
+	self denyEmpty: browser miSelectedItem.
+	self assert: browser canPropagate.
 
-	browser model selectedEntities: entities.
+	browser model selectEntities: entities.
 	self assert: browser miSelectedItem size equals: 2.
 	self assert: browser canPropagate
-]
-
-{ #category : #tests }
-MiDuplicationBrowserTest >> testResetReplicas [
-
-	browser showReplicas: self replicatedFragment replicas.
-	self assert: browser panCodes pages size equals: 2.
-
-	browser resetReplicas.
-	self assertEmpty: browser panCodes pages
 ]
 
 { #category : #tests }
@@ -237,9 +233,19 @@ MiDuplicationBrowserTest >> testUpdateStatusBar [
 		equals:
 		'Searched entities: 2 | Number of clones: 1 | Entities with clones: 2 | Selected entities: 0 | Selected clones: 0'.
 
-	browser model selectedFragments: { fragment }.
+	browser model fragmentsSelection: { fragment }.
 	self
 		assert: browser updateStatusBar
 		equals:
 		'Searched entities: 2 | Number of clones: 1 | Entities with clones: 2 | Selected entities: 2 | Selected clones: 0'
+]
+
+{ #category : #tests }
+MiDuplicationBrowserTest >> testresetDisplayedReplicas [
+
+	browser showReplicas: self replicatedFragment replicas.
+	self assert: browser panCodes pages size equals: 2.
+
+	browser resetDisplayedReplicas.
+	self assertEmpty: browser panCodes pages
 ]

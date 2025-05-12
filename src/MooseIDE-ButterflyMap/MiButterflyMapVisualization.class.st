@@ -8,18 +8,14 @@ Class {
 }
 
 { #category : #running }
-MiButterflyMapVisualization >> model [
+MiButterflyMapVisualization >> buildInCanvas: aCanvas [
 
-	^ self owner model
-]
+	owner model currentEntity ifNil: [ ^ self ].
+	aCanvas @ RSCanvasController new noLegend. 
 
-{ #category : #running }
-MiButterflyMapVisualization >> run [
-
-	super run.
 	builder := MiButterflyMapBuilder new
 		           mapModel: owner model;
-		           container: self canvas;
+		           container: aCanvas;
 		           yourself.
 	builder build
 ]
@@ -27,5 +23,5 @@ MiButterflyMapVisualization >> run [
 { #category : #running }
 MiButterflyMapVisualization >> update [
 
-	builder ifNil: [ self run ] ifNotNil: [ builder build ]
+	self refresh
 ]

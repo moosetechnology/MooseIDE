@@ -9,7 +9,8 @@ Class {
 
 { #category : #accessing }
 MiAbstractApplicationTest >> application [
- 	^application
+
+	^ application
 ]
 
 { #category : #running }

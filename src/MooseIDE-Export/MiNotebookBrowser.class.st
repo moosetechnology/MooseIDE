@@ -28,19 +28,12 @@ Class {
 	#category : #'MooseIDE-Export-Notebook'
 }
 
-{ #category : #layout }
-MiNotebookBrowser class >> defaultLayout [
-
-	^ SpBoxLayout newLeftToRight
-		  add: #notebook;
-		  yourself
-]
-
 { #category : #'world menu' }
 MiNotebookBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
 	<miBrowsers>
+	<miBrowsersMenu>
 	(aBuilder item: #Reporter)
 		parent: #Moose;
 		label: self title;
@@ -87,18 +80,27 @@ MiNotebookBrowser >> canFollowEntity: anObject [
 	^ true
 ]
 
+{ #category : #layout }
+MiNotebookBrowser >> defaultLayout [
+
+	^ self newBoxLayoutLeftToRight
+		  add: notebook;
+		  yourself
+]
+
 { #category : #actions }
 MiNotebookBrowser >> followEntity: anEntity [
 
+	super followEntity: anEntity.
 	specModel mooseModel: anEntity mooseModel.
-	notebook addBinding: 'mooseModel' -> anEntity mooseModel
+	notebook addBinding: (WorkspaceVariable key: #mooseModel value: anEntity mooseModel)
 ]
 
 { #category : #initialization }
 MiNotebookBrowser >> initializePresenters [
 
 	notebook := self instantiate: INNotebookPresenter.
-	notebook addBinding: 'mooseModel' -> nil
+	notebook addBinding: (WorkspaceVariable key: #mooseModel value: 42)
 ]
 
 { #category : #accessing }

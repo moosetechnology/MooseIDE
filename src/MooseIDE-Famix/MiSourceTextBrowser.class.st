@@ -17,19 +17,11 @@ Class {
 	#category : #'MooseIDE-Famix-SourceText'
 }
 
-{ #category : #layout }
-MiSourceTextBrowser class >> defaultLayout [
-
-	^ SpBoxLayout newVertical
-		  add: #toolBarExternalEditor height: self toolbarHeight;
-		  add: #textRenderer expand: true;
-		  yourself
-]
-
 { #category : #'world menu' }
 MiSourceTextBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
+	<miBrowsersMenu>
 	^ self buildMenuItemIn: aBuilder
 ]
 
@@ -82,6 +74,15 @@ MiSourceTextBrowser >> canFollowEntity: anObject [
 	^ anObject usesFamixTrait: FamixTSourceEntity
 ]
 
+{ #category : #layout }
+MiSourceTextBrowser >> defaultLayout [
+
+	^ SpBoxLayout newVertical
+		  add: toolBarExternalEditor height: self class toolbarHeight;
+		  add: textRenderer expand: true;
+		  yourself
+]
+
 { #category : #actions }
 MiSourceTextBrowser >> editExternally: anExternalTool [
 	anExternalTool new open: specModel selectedEntity
@@ -102,12 +103,16 @@ MiSourceTextBrowser >> externalEditor: anObject [
 { #category : #actions }
 MiSourceTextBrowser >> followEntity: anEntity [
 
+	super followEntity: anEntity.
 	specModel displayedEntity: anEntity.
-	textRenderer renderText.
 
-	self updateWindowTitleWith: anEntity name.
+	toolBarExternalEditor newEntity
+]
 
-	toolBarExternalEditor newEntity.
+{ #category : #settings }
+MiSourceTextBrowser >> hasSettings [
+
+	^ true
 ]
 
 { #category : #initialization }
@@ -122,6 +127,33 @@ MiSourceTextBrowser >> initializePresenters [
 MiSourceTextBrowser >> miSelectedItem [
 
 	^ specModel selectedEntity
+]
+
+{ #category : #initialization }
+MiSourceTextBrowser >> open [
+	"redefined to change the cursor in the text morph"
+	super open.
+
+	textRenderer adapter widget theme: MiSourceTextRendererTheme new.
+
+]
+
+{ #category : #formatting }
+MiSourceTextBrowser >> reRenderText [ 
+
+	textRenderer reRenderText
+]
+
+{ #category : #formatting }
+MiSourceTextBrowser >> renderTextFor: anEntity [
+
+	textRenderer renderTextFor: anEntity
+]
+
+{ #category : #settings }
+MiSourceTextBrowser >> settingsModel [
+
+	^ specModel settings
 ]
 
 { #category : #'private - testing' }
@@ -141,15 +173,10 @@ MiSourceTextBrowser >> toolBarExternalEditor: anObject [
 	toolBarExternalEditor := anObject
 ]
 
-{ #category : #actions }
-MiSourceTextBrowser >> updateWindowTitleWith: aName [
-
-	self withWindowDo: [ :window | 
-		window title: self class title , ' of ' , aName ]
-]
-
 { #category : #formatting }
 MiSourceTextBrowser >> withRoassalRenderer [
+
+	self deprecated: 'RoassalRenderer is out of sync with the rest of the code'.
 
 	textRenderer := self instantiate: MiSourceTextRoassalRenderer on: specModel
 ]

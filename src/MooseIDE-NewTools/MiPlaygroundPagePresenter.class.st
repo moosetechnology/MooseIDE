@@ -15,6 +15,38 @@ MiPlaygroundPagePresenter >> addModelExpression: anExpression [
 ]
 
 { #category : #private }
+MiPlaygroundPagePresenter >> addMooseToolbarCommandsTo: aGroup [
+
+	MiWindowPresenter
+		buildCommandsGroupWith: self playgroundBrowser
+		forRoot: aGroup
+]
+
+{ #category : #accessing }
+MiPlaygroundPagePresenter >> application [
+	"This allows the playground to use the StPharoApplication instead of the Moose-specific application.
+	We do not want the native windows to open silently as Moose windows."
+
+	^ application
+]
+
+{ #category : #'public access' }
+MiPlaygroundPagePresenter >> evaluate [
+
+	^ self text
+		  evaluate: self selectedTextOrLine
+		  onCompileError: [ :e | ^ self ]
+		  onError: [ :e | e pass ]
+]
+
+{ #category : #initialization }
+MiPlaygroundPagePresenter >> initializePresenters [
+
+	super initializePresenters.
+	text interactionModel: MiPlaygroundInteractionModel new
+]
+
+{ #category : #private }
 MiPlaygroundPagePresenter >> menuActionsFor: aCodePresenter [
 
 	^ CmCommandGroup forSpec
@@ -23,16 +55,19 @@ MiPlaygroundPagePresenter >> menuActionsFor: aCodePresenter [
 				   beDisplayedAsGroup;
 				   register: (StEvaluateCommand forSpecContext: self);
 				   register:
-					   (MiPlaygroundInspectInMooseCommand forSpecContext: self);
+					   ((MiInspectCommand forSpecContext: self playgroundBrowser)
+						    name: 'Inspect in Moose');
+				   register:
+					   (MiPropagateCommand forSpecContext: self playgroundBrowser);
 				   yourself);
 		  register: (aCodePresenter rootCommandsGroup name: 'Code');
-		  register: (aCodePresenter editionCommandsGroup name: 'Edition');
+		  in: [ :this |
+			  self addMenuEditionCommandsTo: this presenter: aCodePresenter ];
+		  in: [ :this | self addMenuCommandsTo: this ];
 		  register: ((CmCommandGroup named: 'Playground') asSpecGroup
 				   register: ((CmCommandGroup named: 'Base options') asSpecGroup
 						    beDisplayedAsGroup;
-						    register: (StPlaygroundPublishCommand forSpecContext: self);
-						    register: (StPlaygroundBindingsCommand forSpecContext: self);
-						    register: (StPlaygroundPagesCommand forSpecContext: self);
+						    in: [ :this | self addToolbarCommandsTo: this ];
 						    yourself);
 				   register:
 					   ((CmCommandGroup named: 'Miscelaneous options') asSpecGroup
@@ -43,12 +78,29 @@ MiPlaygroundPagePresenter >> menuActionsFor: aCodePresenter [
 		  yourself
 ]
 
-{ #category : #'private - builder' }
+{ #category : #accessing }
+MiPlaygroundPagePresenter >> playgroundBrowser [
+
+	^ self owner ifNotNil: [ :presenter |
+		  | root |
+		  root := presenter root.
+		  root isWindowPresenter
+			  ifFalse: [ root ]
+			  ifTrue: [ root presenter ] ]
+]
+
+{ #category : #private }
 MiPlaygroundPagePresenter >> toolbarActions [
 
-	^ super toolbarActions
-		  register:
-			  (MiPlaygroundInstalledModelsCommand forSpecContext: self);
-		  register: (MiPlaygroundInspectInMooseCommand forSpecContext: self);
+	^ CmCommandGroup forSpec
+		  in: [ :this |
+			  self addToolbarCommandsTo: this.
+			  self addMooseToolbarCommandsTo: this ];
 		  yourself
+]
+
+{ #category : #actions }
+MiPlaygroundPagePresenter >> updateToolbar [
+
+	toolbar fillWith: self toolbarActions
 ]

@@ -95,12 +95,12 @@ MiTagEditionForm >> setDynamicTag: aTag [
 	aTag name ifNotNil: [ :name | nameField text: name ].
 	aTag description ifNotNil: [ :desc | descriptionField text: desc ].
 	aTag color ifNotNil: [ :color | colorPicker setColor: color ].
-	aTag category ifNotNil: [ 
+	aTag category ifNotNil: [
 		categorySelection selectItem: aTag category ].
-	aTag query ifNotNil: [ 
-		(queryList items includes: aTag query) ifFalse: [ 
+	aTag query ifNotNil: [
+		(queryList items includes: aTag query) ifFalse: [
 			queryList items: queryList items , { aTag query } ].
-		queryList selectItem: aTag query ]
+		queryList startWithSelection selectItem: aTag query ]
 ]
 
 { #category : #accessing }

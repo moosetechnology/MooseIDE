@@ -47,9 +47,9 @@ MiExternalEditorOpenner >> pathString: anObject [
 
 { #category : #'private - ffi' }
 MiExternalEditorOpenner >> privShellExecute: lpOperation file: lpFile parameters: lpParameters directory: lpDirectory show: nShowCmd [
-	^ self ffiCall: #( 
+	^ self ffiCall: #(
 			FFIConstantHandle ShellExecuteA(
-     				0,
+     				int 0, "Operation is not associated with a window"
      				char* lpOperation,
          			char* lpFile,
      				char* lpParameters,
@@ -59,21 +59,21 @@ MiExternalEditorOpenner >> privShellExecute: lpOperation file: lpFile parameters
 
 { #category : #'private - ffi' }
 MiExternalEditorOpenner >> visitMacOS: aPlatform [
-	LibC runCommand: ('{1} "{2}"' format: {command . pathString})
+	LibC runCommand: ('{1} "{2}" &' format: {command . pathString})
 ]
 
 { #category : #'private - ffi' }
 MiExternalEditorOpenner >> visitUnix: aPlatform [
-	LibC runCommand: ('{1} "{2}"' format: {command . pathString})
+	LibC runCommand: ('{1} "{2}" &' format: {command . pathString})
 ]
 
 { #category : #'private - ffi' }
 MiExternalEditorOpenner >> visitWindows: aPlatform [
 
 	self
-		privShellExecute: ''
-		file: command
+		privShellExecute: 'open'
+		file: ('"{1}"' format: { command })
 		parameters: ('"{1}"' format: { pathString })
 		directory: ''
-		show: 0 "SW_SHOW"
+		show: 5 "SW_SHOW : Activates the window and displays it in its current size and position."
 ]

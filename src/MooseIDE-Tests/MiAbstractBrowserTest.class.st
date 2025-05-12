@@ -2,7 +2,8 @@ Class {
 	#name : #MiAbstractBrowserTest,
 	#superclass : #MiAbstractApplicationTest,
 	#instVars : [
-		'browser'
+		'browser',
+		'entityToSelect'
 	],
 	#category : #'MooseIDE-Tests-Browsers'
 }
@@ -13,9 +14,10 @@ MiAbstractBrowserTest class >> isAbstract [
 ]
 
 { #category : #running }
-MiAbstractBrowserTest >> application [
+MiAbstractBrowserTest >> anEntity: aName [
 
-	  ^ application
+	^FamixStClass new
+		name: aName
 ]
 
 { #category : #'tests - actions' }
@@ -34,6 +36,7 @@ MiAbstractBrowserTest >> assertHighlightActionFor: aMooseObject [
 
 { #category : #running }
 MiAbstractBrowserTest >> browserClass [
+
 	^ self subclassResponsibility
 ]
 
@@ -41,6 +44,12 @@ MiAbstractBrowserTest >> browserClass [
 MiAbstractBrowserTest >> bus [
 
 	^ self application defaultBus
+]
+
+{ #category : #running }
+MiAbstractBrowserTest >> defaultEntityToSelect [
+
+	^ FamixStModel new newClassNamed: 'TestClass'
 ]
 
 { #category : #running }
@@ -54,7 +63,7 @@ MiAbstractBrowserTest >> mooseObjects [
 		  (MooseModel with: MooseEntity new) }
 ]
 
-{ #category : #'tests - actions' }
+{ #category : #running }
 MiAbstractBrowserTest >> populateBrowser: mooseModel [
 	"Some abstract tests require the browser to 'contain' propagated entity(-ies).
 	 For example to be able to retreive the current MooseModel.
@@ -67,21 +76,38 @@ MiAbstractBrowserTest >> populateBrowser: mooseModel [
 ]
 
 { #category : #running }
+MiAbstractBrowserTest >> receiveEntityToSelect [
+
+	browser receiveEntity: entityToSelect
+]
+
+{ #category : #running }
 MiAbstractBrowserTest >> setUp [
 
-	  super setUp.
+	super setUp.
 
-	  application defaultBus: self bus.
-	  browser := self browserClass openForTests: self application
+	application defaultBus: self bus.
+	browser := self browserClass openForTests: self application.
+	entityToSelect := self defaultEntityToSelect
 ]
 
 { #category : #running }
 MiAbstractBrowserTest >> tearDown [
 
-	browser window ifNotNil: [ :window | window close ].
+	browser ifNotNil: [ browser withWindowDo: [ :window | window close ] ].
 	self application deleteBus: self bus.
 
 	super tearDown
+]
+
+{ #category : #tests }
+MiAbstractBrowserTest >> testActivateActionButtons [
+
+	browser actionButtons do: [ :button | self deny: button isEnabled ].
+
+	self receiveEntityToSelect.
+
+	browser actionButtons do: [ :button | self assert: button isEnabled ]
 ]
 
 { #category : #'tests - opening' }

@@ -28,6 +28,7 @@ MiQueriesBrowser class >> browserKey [
 MiQueriesBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
+	<miBrowsersMenu>
 	^ self buildMenuItemIn: aBuilder
 ]
 
@@ -68,12 +69,6 @@ MiQueriesBrowser class >> open [
 MiQueriesBrowser class >> title [
 
 	^ 'Queries Browser'
-]
-
-{ #category : #accessing }
-MiQueriesBrowser class >> titleForModelName: mooseModelName [
-
-	^ self title , ' (' , mooseModelName , ')'
 ]
 
 { #category : #specs }
@@ -125,15 +120,14 @@ MiQueriesBrowser >> enableProgressNotification [
 MiQueriesBrowser >> followEntity: anEntity [
 
 	| busMooseEntities |
+	super followEntity: anEntity.
 	"Create a group in case that only one entity was received from the bus"
 	busMooseEntities := anEntity asMooseGroup allUsing: FamixTNamedEntity.
-		
+
 	"Create the new root query"
 	self resetRootQueryForEntities: busMooseEntities.
 
-	"Update window's title"
-	self window
-		title: (self class titleForModelName: busMooseEntities first mooseModel name).
+
 
 	"Update the all the sub presenters with this new query"
 	queriesListPresenter followNewEntity
@@ -194,8 +188,8 @@ MiQueriesBrowser >> initializeQueryCodePresenter [
 { #category : #initialization }
 MiQueriesBrowser >> initializeResultTreePresenter [
 
-	queryResultTreePresenter := self instantiate:
-		                            QueryResultTreePresenter.
+	queryResultTreePresenter := self newMooseGroupsTreeTable.
+
 	queryResultTreePresenter updateForEntities: self queryResultEntities
 ]
 
@@ -208,7 +202,9 @@ MiQueriesBrowser >> itemsFor: aClass [
 { #category : #accessing }
 MiQueriesBrowser >> miSelectedItem [
 
-	^ queryResultTreePresenter miSelectedItem ifEmpty: [ selectedQuery result ] ifNotEmpty: [ :items | items ]
+	^ queryResultTreePresenter miSelectedItem asCollection
+		  ifEmpty: [ selectedQuery result ]
+		  ifNotEmpty: [ :items | items ]
 ]
 
 { #category : #accessing }
@@ -278,10 +274,7 @@ MiQueriesBrowser >> showResultOfQuery: aQuery [
 
 	result := aQuery result.
 
-	queryResultTreePresenter := self instantiate:
-		                            QueryResultTreePresenter.
-	queryResultTreePresenter updateForEntities: result.
-
+	self initializeResultTreePresenter.
 	"This will sho the correct queryResultTreePresenter:"
 	queryNotebookPresenter resetAllPageContents
 ]

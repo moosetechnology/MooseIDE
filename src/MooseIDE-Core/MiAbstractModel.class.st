@@ -7,7 +7,8 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'browser',
-		'lastTagSelected'
+		'lastTagSelected',
+		'selectedTag'
 	],
 	#category : #'MooseIDE-Core-Browser'
 }
@@ -56,16 +57,48 @@ MiAbstractModel >> miSelectedItem [
 	self subclassResponsibility
 ]
 
+{ #category : #settings }
+MiAbstractModel >> openSettings [
+
+	self settings open
+]
+
+{ #category : #tagging }
+MiAbstractModel >> privateRemoveTag: aTag fromEntity: aMooseEntity [
+	"should find the corresponding TagAssociation and remove it and return it
+	 does nothing for now"
+	
+	self flag: #FIXME.
+	^FamixTagEntityAssociation
+		new
+]
+
+{ #category : #tagging }
+MiAbstractModel >> privateSetTag: aTag onEntity: aMooseEntity [
+
+	^FamixTagEntityAssociation
+		newForEntity: aMooseEntity
+		tag: aTag.
+	
+]
+
 { #category : #tagging }
 MiAbstractModel >> selectedTag [
 
-	^self currentApplication tagSelectedInMooseModel: self currentMooseModel
+	^ selectedTag
 ]
 
 { #category : #tagging }
 MiAbstractModel >> selectedTag: aTag [
 
-	self currentApplication selectedTag: aTag
+	selectedTag := aTag
+]
+
+{ #category : #settings }
+MiAbstractModel >> settings [
+	"If browser hasSettings, then implement this method to get them"
+
+	self subclassResponsibility
 ]
 
 { #category : #accessing }
@@ -77,14 +110,15 @@ MiAbstractModel >> settingsChanged: aBoolean [
 MiAbstractModel >> tagEntity: aMooseEntity with: aTag [
 
 	| tagAssociation |
+	(aTag = aMooseEntity) ifTrue: [ ^ self ].
 	
-	aTag ifNil: [ ^self ].
-	aTag = aMooseEntity ifTrue: [ ^ self ].
-
-	tagAssociation := FamixTagEntityAssociation
-		newForEntity: aMooseEntity
-		tag: aTag.
-	browser application consumeItem: tagAssociation.
+	aTag
+		ifNil: [
+			tagAssociation := self privateRemoveTag: aTag fromEntity: aMooseEntity.
+			browser application removeItem: tagAssociation ]
+		ifNotNil: [
+			tagAssociation := self privateSetTag: aTag onEntity: aMooseEntity.
+			browser application consumeItem: tagAssociation ].
 
 ]
 

@@ -128,6 +128,7 @@ MiApplicationTest >> testMSERegisteredHandler [
 
 { #category : #tests }
 MiApplicationTest >> testMiPropagate [
+	"This test propagate an entity on the defaultBus and checks otherBuses (if there are any) are not changed"
 	| mooseModel defaultBus otherBuses originalMostRecentEntities newMostRecentEntities |
 	
 	mooseModel := MooseModel new.
@@ -146,8 +147,8 @@ MiApplicationTest >> testMiPropagate [
 	
 	self assertCollection:  defaultBus logger mostRecentEntity hasSameElements: mooseModel entities  .
 
-	"Tear down: Removing the entity we propagated on the default bus"
-	defaultBus logger removeLog: (defaultBus logger mostRecentLog ) .
+	"Tear down: Removing the entity (as a collection of entities) we propagated on the default bus"
+	defaultBus logger removeLog: ({defaultBus logger mostRecentLog}) .
 	
 ]
 
@@ -157,6 +158,21 @@ MiApplicationTest >> testMooseRootBrowserIsModelImporter [
 	browser := application openCurrentModelsBrowser.
 	self assert: browser class equals: MiModelsBrowser.
 	browser window close
+]
+
+{ #category : #'tests dragNDrop' }
+MiApplicationTest >> testOpenCurrentModelsBrowser [
+
+	| browser1 browser2 |
+	browser1 := application openCurrentModelsBrowser.
+	self assert: browser1 class equals: MiModelsBrowser.
+
+	"This should not open a new browser but get the first one"
+	browser2 := application openCurrentModelsBrowser.
+	self assert: browser2 class equals: MiModelsBrowser.
+	self assert: browser1 equals: browser2.
+
+	browser1 window close
 ]
 
 { #category : #'tests dragNDrop' }

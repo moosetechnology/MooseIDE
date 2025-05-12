@@ -50,6 +50,13 @@ MiApplication >> add: anObject toDictionary: aDictionary for: aKey [
 	
 ]
 
+{ #category : #bindings }
+MiApplication >> addBindingForModel: aModel [
+
+	self addSharedBinding:
+		(WorkspaceVariable key: aModel name asValidSelector value: aModel)
+]
+
 { #category : #accessing }
 MiApplication >> allBrowsers: aMiClass [
 	^self browsers select: [ :aBrowser | aBrowser isKindOf: aMiClass ]
@@ -131,6 +138,12 @@ MiApplication >> consumersOf: aClass [
 	^ foundConsumers
 ]
 
+{ #category : #'drag and drop support' }
+MiApplication >> currentModelsBrowser [
+
+	^ currentModelsBrowser
+]
+
 { #category : #buses }
 MiApplication >> defaultBus [
 
@@ -146,7 +159,7 @@ MiApplication >> defaultBus: aMiBus [
 { #category : #showing }
 MiApplication >> defaultWindowPresenterClass [
 
-	^ MiWindowPresenter "SpWindowPresenter"
+	^ MiWindowPresenter
 ]
 
 { #category : #buses }
@@ -189,7 +202,8 @@ MiApplication >> initialize [
 
 	mooseModelsTag := Dictionary new: 5.
 
-	self beDropFilesHandler
+	self beDropFilesHandler.
+	self registerToModelsAnnouncements
 ]
 
 { #category : #brokerage }
@@ -230,7 +244,12 @@ MiApplication >> mooseStyleSheet [
 			Draw { #backgroundColor: #00000010 },
 			Geometry { #height: 30 }
 		],
-		.mooseContainer [ Container { #borderColor: #00000020, #borderWidth: 1, #padding: 5 } ]
+		.mooseContainer [ Container { #borderColor: #00000020, #borderWidth: 1, #padding: 5 } ],
+		.help [ Geometry { 
+			#height: 225,
+			#width: 250 } ],
+		.smallList [ Geometry { #height: 120, #width: 120 } ],
+		.largeList [ Geometry { #height: 250, #width: 250 } ]
 ]'
 ]
 
@@ -244,7 +263,13 @@ MiApplication >> newIconProvider [
 MiApplication >> openCurrentModelsBrowser [
 
 	^ currentModelsBrowser
-		  ifNotNil: [ :modelsBrowser | modelsBrowser restore ]
+		  ifNotNil: [ :modelsBrowser |
+			  modelsBrowser
+				  withWindowDo: [ :window |
+					  window
+						  restore;
+						  activate ];
+				  yourself ]
 		  ifNil: [
 		  currentModelsBrowser := MiModelsBrowser instantiateAndOpen ]
 ]
@@ -291,11 +316,49 @@ MiApplication >> registerProducer: aProducer for: aClass [
 	self add: aProducer toDictionary: producers for: aClass
 ]
 
+{ #category : #bindings }
+MiApplication >> registerToModelsAnnouncements [
+
+	MooseModel root entitiesDo: [ :model |
+		self addBindingForModel: model.
+		self registerToSingleModelAnnouncements: model ].
+
+	MooseModel root announcer
+		when: MooseEntityAdded
+		do: [ :announcement |
+			self addBindingForModel: announcement entity.
+			self registerToSingleModelAnnouncements: announcement entity ]
+		for: self.
+
+	MooseModel root announcer
+		when: MooseEntityRemoved
+		do: [ :announcement |
+		self removeBindingNamed: announcement entity name ]
+		for: self
+]
+
+{ #category : #bindings }
+MiApplication >> registerToSingleModelAnnouncements: aModel [
+
+	aModel announcer
+		when: MooseEntityRenamed
+		do: [ :announcement |
+			self removeBindingNamed: announcement oldName.
+			self addBindingForModel: aModel ]
+		for: self
+]
+
 { #category : #private }
 MiApplication >> registerWindow: aWindow [
 
 	super registerWindow: aWindow.
 	self updateOverviewBrowsers
+]
+
+{ #category : #bindings }
+MiApplication >> removeBindingNamed: aName [
+
+	self sharedBindings removeKey: aName asValidSelector ifAbsent: [  ]
 ]
 
 { #category : #brokerage }
@@ -341,6 +404,12 @@ MiApplication >> tagListForMooseModel: aMooseModel [
 { #category : #tags }
 MiApplication >> tagSelectedInMooseModel: aMooseModel [
 	^mooseModelsTag at: aMooseModel ifAbsent: [ nil ]
+]
+
+{ #category : #settings }
+MiApplication >> toolbarDisplayMode [
+
+	^ StPharoSettings toolbarDisplayMode
 ]
 
 { #category : #brokerage }

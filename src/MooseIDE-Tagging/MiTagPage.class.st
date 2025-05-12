@@ -53,7 +53,7 @@ MiTagPage >> refreshTagDescription [
 	tagDescription refresh
 ]
 
-{ #category : #initialization }
+{ #category : #accessing }
 MiTagPage >> setTag: aTag [
 
 	tagDescription setTag: aTag.

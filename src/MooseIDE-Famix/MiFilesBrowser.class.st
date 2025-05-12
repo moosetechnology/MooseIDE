@@ -18,21 +18,11 @@ Class {
 	#category : #'MooseIDE-Famix-FilesBrowser'
 }
 
-{ #category : #layout }
-MiFilesBrowser class >> defaultLayout [
-
-	^ SpBoxLayout newVertical
-		  add: (SpBoxLayout newHorizontal
-				   add: #tree;
-				   add: #treeEntity;
-				   yourself);
-		  yourself
-]
-
 { #category : #'world menu' }
 MiFilesBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
+	<miBrowsersMenu>
 	^ self buildMenuItemIn: aBuilder
 ]
 
@@ -57,7 +47,7 @@ MiFilesBrowser class >> menuParent [
 { #category : #'world menu' }
 MiFilesBrowser class >> menuPriority [
 
-	^ 3
+	^ self menuOldBrowsersPriority + 3
 ]
 
 { #category : #'instance creation' }
@@ -112,6 +102,15 @@ MiFilesBrowser >> connectPresenters [
 			ifTrue: [
 				self selectFileReference: selected selectedItem.
 				treeEntity roots: (self computeItemsInFileReference: self model fileReference) ] ] 
+]
+
+{ #category : #layout }
+MiFilesBrowser >> defaultLayout [
+
+	^ self newBoxLayoutLeftToRight
+		  add: tree;
+		  add: treeEntity;
+		  yourself
 ]
 
 { #category : #actions }

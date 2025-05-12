@@ -4,7 +4,7 @@ The legend allows to check/uncheck each tag individually
 "
 Class {
 	#name : #MiCoTagLegendBuilder,
-	#superclass : #RSAbstractContainerBuilder,
+	#superclass : #RSBuilder,
 	#instVars : [
 		'tags',
 		'mapBuilder'
@@ -32,7 +32,10 @@ MiCoTagLegendBuilder >> checkBoxFor: aTag [
 { #category : #highlighting }
 MiCoTagLegendBuilder >> highlightLegend: evt [
 	| shape |
-	self unhighlight: evt.
+	self flag: #FIXME.
+	"self unhighlight: evt.
+	#unhighlight: is not implemented and I don't understand what should be ungighlighted"
+
 	shape := evt shape.
 	shape border: (RSBorder new width: 2; color: Color gray).
 	evt canvas propertyAt: #tagCheck put: shape.
@@ -149,25 +152,31 @@ MiCoTagLegendBuilder >> removeOldLegend [
 
 ]
 
-{ #category : #hooks }
+{ #category : #rendering }
 MiCoTagLegendBuilder >> renderIn: aCanvas [
-	| tagShapes legend |
+
+	| legend |
+	self removeOldLegend.
+
 	legend := RSLegend new
-		container: aCanvas;
-		yourself.
+		          container: aCanvas;
+		          yourself.
+
 	shapes := RSGroup new.
-	tagShapes := self tags collect: [ :tag | self legendTagLine: tag ].
-	shapes addAll: tagShapes.
+	shapes addAll:
+		(self tags collect: [ :tag | self legendTagLine: tag ]).
 	shapes add: self legendBottomLine.
-	legend shapes ifNotNil:[ :collection | collection addAll: shapes].
+	legend shapes ifNotNil: [ :collection | collection addAll: shapes ].
+
 	legend layout vertical gapSize: 2.
 	legend defaultTitle
 		color: Color black;
 		fontSize: 12.
-	legend 
+
+	legend
 		legendDo: [ :l | self legendDo: l ];
 		beFixedWithTitle: self legendTitle;
-		build.
+		build
 ]
 
 { #category : #accessing }

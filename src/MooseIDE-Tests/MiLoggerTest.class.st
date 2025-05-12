@@ -81,6 +81,6 @@ MiLoggerTest >> testRemoveLog [
 	secondLog := logger newLogFor: MooseGroup new.
 
 	"Remove logs"
-	logger removeLog: secondLog.
+	logger removeLog: {secondLog}.
 	self assertCollection: logger logs hasSameElements: {firstLog}
 ]

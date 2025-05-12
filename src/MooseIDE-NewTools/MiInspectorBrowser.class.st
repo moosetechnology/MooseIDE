@@ -36,6 +36,7 @@ MiInspectorBrowser class >> inspect: anObject forBuses: buses [
 MiInspectorBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
+	<miBrowsersMenu>
 	^ self buildMenuItemIn: aBuilder
 ]
 
@@ -93,6 +94,7 @@ MiInspectorBrowser >> canFollowEntity: anEntity [
 { #category : #actions }
 MiInspectorBrowser >> followEntity: anEntity [
 
+	super followEntity: anEntity.
 	anEntity ifNil: [ ^ self ].
 	self model entity: anEntity.
 	mainPresenter model: self model entity.

@@ -26,6 +26,7 @@ Class {
 MiDuplicationBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
+	<miBrowsersMenu>
 	^ (self buildMenuItemIn: aBuilder) withSeparatorAfter
 ]
 
@@ -67,7 +68,7 @@ MiDuplicationBrowser class >> title [
 { #category : #specs }
 MiDuplicationBrowser class >> windowSize [
 
-	^ 1000 @ 400
+	^ 1000 @ 500
 ]
 
 { #category : #'accessing - private tests' }
@@ -93,9 +94,30 @@ MiDuplicationBrowser >> canHighlight [
 ]
 
 { #category : #actions }
-MiDuplicationBrowser >> followEntity: entityCollection [
+MiDuplicationBrowser >> followEntity: anEntity [
 
-	specModel entities: entityCollection
+	super followEntity: anEntity.
+	specModel allEntities: anEntity
+]
+
+{ #category : #initialization }
+MiDuplicationBrowser >> handleFragmentSelection: selectedFragments [
+
+	"| commonEntities |"
+
+	self resetDisplayedReplicas.
+	
+	specModel fragmentsSelection: selectedFragments.
+	"
+	selectedFragments ifEmpty: [ ^self ].
+
+	commonEntities := Set withAll: (selectedFragments first replicas collect: #entity).
+
+	selectedFragments allButFirst do: [ :otherFragment |
+		commonEntities := commonEntities intersection: (otherFragment replicas collect: #entity)
+	].
+
+	specModel highlightEntities: commonEntities"
 ]
 
 { #category : #actions }
@@ -103,10 +125,10 @@ MiDuplicationBrowser >> hasSettings [
 	^ true
 ]
 
-{ #category : #actions }
-MiDuplicationBrowser >> highlightEntity: entities [
+{ #category : #highlighting }
+MiDuplicationBrowser >> highlightEntities: entities [
 
-	specModel highlightEntity: entities
+	specModel highlightEntities: entities
 
 	
 ]
@@ -115,18 +137,20 @@ MiDuplicationBrowser >> highlightEntity: entities [
 MiDuplicationBrowser >> initializeLayout [
 
 	self layout: (SpBoxLayout newTopToBottom
-		add: (SpBoxLayout newLeftToRight
-			add: lstEntities width: 150;
-			add: (SpBoxLayout newTopToBottom
-				add: btnRun expand: false;
-				add: lstReplicatedFragments;
-				yourself)
-			width: 150;
-			add: panCodes expand: true;
-			yourself)
-		expand: true ;
-		add: statusBar expand: false ;
-		yourself)
+			 add: (SpPanedLayout newLeftToRight
+					  add: lstEntities;
+					  positionOfSlider: 0.15;
+					  add: (SpPanedLayout newLeftToRight
+							   add: (SpBoxLayout newTopToBottom
+									    add: btnRun expand: false;
+									    add: lstReplicatedFragments;
+									    yourself);
+							   positionOfSlider: 0.2;
+							   add: panCodes);
+					  yourself)
+			 expand: true;
+			 add: statusBar expand: false;
+			 yourself)
 ]
 
 { #category : #initialization }
@@ -134,14 +158,10 @@ MiDuplicationBrowser >> initializeListEntities [
 
 	lstEntities := self newList.
 	lstEntities beMultipleSelection.
-	lstEntities display: [ :entity | entity name ].
-	lstEntities displayIcon: [ :entity | 
-		self iconNamed: ((specModel isSelected: entity)
-				 ifTrue: [ #testGreen ]
-				 ifFalse: [ #glamorousGrayCircleEmpty ]) ].
+	lstEntities display: [ :entity | entity name , ' - ' , entity mooseName].
 
 	lstEntities whenSelectionChangedDo: [ :selection | 
-		specModel highlightEntity: selection selectedItems ]
+		specModel highlightEntities: selection selectedItems ]
 ]
 
 { #category : #initialization }
@@ -154,10 +174,8 @@ MiDuplicationBrowser >> initializeListReplicatedFragments [
 		replicatedFragment formatForDuplicationBrowser ].
 
 	lstReplicatedFragments children: [ :replicatedFragment | specModel childrenFragments: replicatedFragment ].
-
-	lstReplicatedFragments whenSelectionChangedDo: [ :selection | 
-		self resetReplicas.
-		specModel selectedFragments: selection selectedItems ]
+	
+	lstReplicatedFragments whenSelectionChangedDo: [ :selection | self handleFragmentSelection: selection selectedItems ]
 ]
 
 { #category : #initialization }
@@ -171,7 +189,7 @@ MiDuplicationBrowser >> initializePresenters [
 	btnRun := self newButton
 		          label: 'Run';
 		          action: [ 
-			          self resetReplicas.
+			          self resetDisplayedReplicas.
 			          specModel findReplicas ].
 
 	panCodes := self newNotebook.
@@ -191,7 +209,8 @@ MiDuplicationBrowser >> list: collection1 hasSameElements: collection2 [
 
 { #category : #'accessing - private tests' }
 MiDuplicationBrowser >> lstEntities [
-	^lstEntities 
+
+	^ lstEntities
 ]
 
 { #category : #'accessing - private tests' }
@@ -203,7 +222,7 @@ MiDuplicationBrowser >> lstReplicatedFragments [
 { #category : #accessing }
 MiDuplicationBrowser >> miSelectedItem [
 
-	^ specModel selectedEntities
+	^ specModel miSelectedItem
 ]
 
 { #category : #utilities }
@@ -219,7 +238,7 @@ MiDuplicationBrowser >> panCodes [
 ]
 
 { #category : #api }
-MiDuplicationBrowser >> resetReplicas [
+MiDuplicationBrowser >> resetDisplayedReplicas [
 
 	lstEntities unselectAll.
 	panCodes removeAll.
@@ -238,14 +257,17 @@ MiDuplicationBrowser >> selectFragments: selectedFragments [
 
 { #category : #api }
 MiDuplicationBrowser >> showEntities: entities [
+	"displays list of entities in the left list"
 
-	self resetReplicas.
+	self resetDisplayedReplicas.
 	lstEntities items: entities.
 	self updateStatusBar.
 ]
 
 { #category : #api }
 MiDuplicationBrowser >> showReplicas: replicas [
+	 "a replica is an entity containing a clone
+	show the code of the replicas in right pane"
 
 	replicas do: [ :replica | 
 		panCodes addPage: (self newCodePage: replica) ].
@@ -256,12 +278,23 @@ MiDuplicationBrowser >> showReplicas: replicas [
 
 { #category : #api }
 MiDuplicationBrowser >> showReplicatedFragments: replicatedFragments [
+	"update middle list (of replicated fragments)"
 
 	lstReplicatedFragments items:
 		(replicatedFragments sort: [ :a :b |
 			a replicas anyOne length > b replicas anyOne length ]).
 	
 	self updateStatusBar.
+]
+
+{ #category : #api }
+MiDuplicationBrowser >> showSelectedClones: replicas [
+	"show on the left list the entities belonging to selected replica(s)
+	 If the list is empty (no selected replicas) show all entities"
+
+	replicas
+		ifEmpty: [ lstEntities items: self model allEntities ]
+		ifNotEmpty: [ lstEntities items: (replicas collect: #entity) ]
 ]
 
 { #category : #'accessing - private tests' }

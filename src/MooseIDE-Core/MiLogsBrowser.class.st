@@ -16,6 +16,7 @@ Class {
 MiLogsBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
+	<miBrowsersMenu>
 	^ self buildMenuItemIn: aBuilder
 ]
 
@@ -90,6 +91,12 @@ MiLogsBrowser >> followEntity: anEntity [
 	"Subpresenters are MiBrowsers. They are responsible for entities reception"
 
 	
+]
+
+{ #category : #'accessing - private tests' }
+MiLogsBrowser >> getSelectedPage [
+
+	^ mainPresenter selectedPage
 ]
 
 { #category : #initialization }

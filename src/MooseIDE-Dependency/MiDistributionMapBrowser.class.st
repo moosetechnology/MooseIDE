@@ -36,6 +36,7 @@ MiDistributionMapBrowser class >> mapClass [
 MiDistributionMapBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
+	<miBrowsersMenu>
 	^ self buildMenuItemIn: aBuilder
 ]
 
@@ -97,7 +98,7 @@ MiDistributionMapBrowser >> browserClosed [
 	application unregisterConsumer: self
 ]
 
-{ #category : #actions }
+{ #category : #testing }
 MiDistributionMapBrowser >> canFollowEntity: aCollection [
 
 	| uniqType confirm |
@@ -145,6 +146,7 @@ MiDistributionMapBrowser >> canvas [
 { #category : #actions }
 MiDistributionMapBrowser >> followEntity: anEntity [
 
+	super followEntity: anEntity.
 	specModel entities: anEntity asMooseGroup.
 	self runVisualization
 ]

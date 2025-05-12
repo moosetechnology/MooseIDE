@@ -11,6 +11,20 @@ Class {
 	#category : #'MooseIDE-CoUsageMap-Browser'
 }
 
+{ #category : #running }
+MiCoUsageMapVisualization >> buildInCanvas: aCanvas [
+
+	self specModel currentMooseModel ifNil: [ ^ self ].
+
+	aCanvas @ RSCanvasController new noLegend.
+
+	mapBuilder
+		container: aCanvas;
+		build.
+
+	^ aCanvas
+]
+
 { #category : #brokerage }
 MiCoUsageMapVisualization >> consume: anItem [
 	anItem isTag
@@ -25,23 +39,28 @@ MiCoUsageMapVisualization >> consumeTag: aTag [
 
 { #category : #brokerage }
 MiCoUsageMapVisualization >> consumeTagAssociation: aFamixTagAssociation [
-	| entity tag miCoObject |
+	"search the box for the tagged entity with the right tag
+	 - if found nothing to do
+	 - else update the visualization"
+
+	| entity tag |
 	entity := aFamixTagAssociation entity.
 	tag := aFamixTagAssociation tag.
-	miCoObject := specModel containerBoxes , specModel innerBoxes 
-		detect: [ :each | each mooseEntity = entity and: [ each tag ~= tag ] ] ifNone: [ nil ].
-	miCoObject ifNil: [ ^ self ].
-	self flag: 'tag-association already set, but need to show it in the map'.
-	self specModel tagEntity: miCoObject mooseEntity with: tag.
+
+	((specModel containerBoxes , specModel innerBoxes) 
+		anySatisfy: [ :each | (each mooseEntity = entity) and: [ each tag = tag ] ])
+		ifTrue: [ ^ self ].
+
 	mapBuilder updateShapeColors
 ]
 
 { #category : #initialization }
 MiCoUsageMapVisualization >> initialize [
+
 	super initialize.
 
 	mapBuilder := MiCoUsageMapBuilder new.
-	mapBuilder visualization: self.
+	mapBuilder visualization: self
 ]
 
 { #category : #brokerage }
@@ -59,13 +78,10 @@ MiCoUsageMapVisualization >> mapBuilder [
 	^mapBuilder 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 MiCoUsageMapVisualization >> modelForShape: aShape [
 
-	| containerBox |
-	containerBox := aShape model.
-
-	^ containerBox mooseEntity
+	^ aShape model mooseEntity
 ]
 
 { #category : #actions }
@@ -98,25 +114,15 @@ MiCoUsageMapVisualization >> removeTag: aTag [
 
 { #category : #brokerage }
 MiCoUsageMapVisualization >> removeTagAssociation: aFamixTagAssociation [
+
 	| entity miCoObject |
 	entity := aFamixTagAssociation entity.
-	miCoObject := mapBuilder containerBoxes , mapBuilder innerBoxes 
-		detect: [ :each | each mooseEntity = entity ] ifNone: [ nil ].
-	miCoObject ifNil: [ ^ self ].
-	"this avoids call the consumer producer system"
-	miCoObject privateTag: nil.
-	mapBuilder updateShapeColors
-]
 
-{ #category : #running }
-MiCoUsageMapVisualization >> run [
-	| mooseModel |
-	super run.
-	mooseModel := self specModel currentMooseModel.
-	mooseModel ifNil: [ ^self ].
-	mapBuilder 
-		container: self canvas;
-		build.
+	miCoObject := specModel containerBoxes , specModel innerBoxes 
+		detect: [ :each | each mooseEntity = entity ]
+		ifNone: [ ^ self ].
+
+	mapBuilder updateShapeColors
 ]
 
 { #category : #accessing }
@@ -166,11 +172,6 @@ MiCoUsageMapVisualization >> tagsFromMooseModel: aMooseModel [
 	group do: [ :tag | legendTag addTag: tag asMiCoTag ].
 ]
 
-{ #category : #update }
-MiCoUsageMapVisualization >> threshold75: aNumber [
-	mapBuilder threshold75: aNumber
-]
-
 { #category : #brokerage }
 MiCoUsageMapVisualization >> update: anObject [
 	self consume: anObject
@@ -192,7 +193,7 @@ MiCoUsageMapVisualization >> updateInnerBoxSize [
 	mapBuilder updateInnerBoxSize
 ]
 
-{ #category : #brokerage }
+{ #category : #update }
 MiCoUsageMapVisualization >> updateLegend [
 	| legendTag |
 	legendTag := mapBuilder legendTagBuilder.

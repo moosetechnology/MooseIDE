@@ -30,6 +30,7 @@ Class {
 MiSystemComplexityBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
+	<miBrowsersMenu>
 	^ (self buildMenuItemIn: aBuilder) withSeparatorAfter
 ]
 
@@ -87,14 +88,15 @@ MiSystemComplexityBrowser >> canTagEntities [
 MiSystemComplexityBrowser >> followEntity: aMooseGroup [
 
 	| newGroup |
+	super followEntity: aMooseGroup.
 	newGroup := aMooseGroup select: [ :e | e isClass ].
-	newGroup size < aMooseGroup size ifTrue: [ 
+	newGroup size < aMooseGroup size ifTrue: [
 		self inform:
 			(aMooseGroup size - newGroup size) asString , ' rejected entities.' ].
 	specModel entities: newGroup
 ]
 
-{ #category : #actions }
+{ #category : #testing }
 MiSystemComplexityBrowser >> hasSettings [
 
 	^ true

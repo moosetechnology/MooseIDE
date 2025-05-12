@@ -1,3 +1,9 @@
+"
+I present queries associated with a model.
+Accepted entities: any moose object, the moose model is accessed from it.
+
+It looks for queries that could be applied on the model using subclasses of MiAbstractQueriesHolder.
+"
 Class {
 	#name : #MiQueriesDashboardBrowser,
 	#superclass : #MiAbstractBrowser,
@@ -12,6 +18,7 @@ Class {
 MiQueriesDashboardBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
+	<miBrowsersMenu>
 	^ self buildMenuItemIn: aBuilder
 ]
 
@@ -60,6 +67,7 @@ MiQueriesDashboardBrowser >> canFollowEntity: anObject [
 { #category : #actions }
 MiQueriesDashboardBrowser >> followEntity: anEntity [
 
+	super followEntity: anEntity.
 	specModel mooseModel: (anEntity isMooseModel
 			 ifTrue: [ anEntity ]
 			 ifFalse: [ anEntity mooseModel ]).

@@ -75,6 +75,18 @@ FamixCBCondition >> addViolation: anObject [
 	^ self violations add: anObject
 ]
 
+{ #category : #testing }
+FamixCBCondition >> isCBCondition [
+
+	^ true
+]
+
+{ #category : #printing }
+FamixCBCondition >> printAsBlock [
+
+	^ query asRuleEditorString
+]
+
 { #category : #accessing }
 FamixCBCondition >> putViolationsInto: aDictionary [
 	aDictionary at: self put: violations asMooseSpecializedGroup
@@ -163,6 +175,25 @@ FamixCBCondition >> stonOn: stonWriter [
 					put: ((value isKindOf: FamixCBQueryHandler)
 							 ifTrue: [ value convertToSTONString ]
 							 ifFalse: [ value ]) ] ] ]
+]
+
+{ #category : #initialization }
+FamixCBCondition >> tagRuleResult [
+
+	| results model |
+	results := self violations collect: #violatingEntity.
+	model := results first mooseModel.
+	self tagRuleResultInModel: model
+]
+
+{ #category : #initialization }
+FamixCBCondition >> tagRuleResultInModel: aMooseModel [
+
+	| results tag |
+
+	results := self violations collect: #violatingEntity.
+	tag := aMooseModel tagNamed: self name.
+	results do: [ :entity | entity tagWith: tag ]
 ]
 
 { #category : #accessing }

@@ -21,24 +21,23 @@ MiCoHighlightManager >> defaultBoxBorder [
 
 { #category : #selection }
 MiCoHighlightManager >> deselectInnerBox: evt [
-	"called when clicking on a shape ('permanent' highlight)"
+	"Called when clicking on a shape ('permanent' highlight)"
 
-	evt canvas 
-		propertyAt: highlight propertyKey 
+	mapBuilder selectedInnerShape ifNil: [ ^ self ].
+	evt canvas
+		propertyAt: highlight propertyKey
 		put: (highlight highlightShapesFor: mapBuilder selectedInnerShape).
 	mapBuilder selectedInnerShape: nil.
 	highlight unhighlightRecordedShapes: evt shape.
-	evt signalUpdate.
+	evt signalUpdate
 ]
 
 { #category : #highlighting }
 MiCoHighlightManager >> highlight: evt [
 	"called on mouse entering a shape"
 
-	mapBuilder selectedInnerEntity
-		ifNil: [ evt shape border: self selectedBoxBorder ]
-		ifNotNil: [
-		].
+	mapBuilder selectedInnerEntity ifNil: [
+		evt shape border: self selectedBoxBorder ]
 ]
 
 { #category : #initialization }
@@ -70,12 +69,13 @@ MiCoHighlightManager >> mapBuilder: aCoUsageMapBuilder [
 
 { #category : #hooks }
 MiCoHighlightManager >> onShape: aShape [
-	(aShape isShape not or: [aShape isComposite]) ifTrue: [ 
+
+	(aShape isShape not or: [ aShape isComposite ]) ifTrue: [
 		aShape when: RSMouseClick send: #deselectInnerBox: to: self.
 		^ self ].
-	aShape 
+	aShape
 		addInteraction: highlight;
-		when: RSMouseLeftClick send: #selectInnerBox: to: self.
+		when: RSMouseLeftClick send: #selectInnerBox: to: self
 ]
 
 { #category : #selection }
@@ -85,7 +85,7 @@ MiCoHighlightManager >> selectInnerBox: evt [
 	mapBuilder selectedInnerEntity ifNotNil: [
 		self deselectInnerBox: evt ].
 	highlight doHighlight: evt shape.
-	mapBuilder selectedInnerShape: evt shape.
+	mapBuilder selectedInnerShape: evt shape
 ]
 
 { #category : #accessing }
@@ -101,8 +101,6 @@ MiCoHighlightManager >> selectedBoxBorder [
 MiCoHighlightManager >> unhighlight: evt [
 	"called on mouse leaving a shape"
 
-	mapBuilder selectedInnerEntity
-		ifNil: [ evt shape border: self defaultBoxBorder ]
-		ifNotNil: [ 
-		].
+	mapBuilder selectedInnerEntity ifNil: [
+		evt shape border: self defaultBoxBorder ]
 ]

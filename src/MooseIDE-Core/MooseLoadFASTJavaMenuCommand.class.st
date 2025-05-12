@@ -49,7 +49,7 @@ MooseLoadFASTJavaMenuCommand >> execute [
 { #category : #accessing }
 MooseLoadFASTJavaMenuCommand >> repositoryURL [
 
-	^ 'github://moosetechnology/FAST-JAVA:' , self version , '/src'
+	^ 'github://moosetechnology/FAST-Java:' , self version , '/src'
 ]
 
 { #category : #accessing }

@@ -125,6 +125,18 @@ FamixCBContext >> entities: anObject [
 	self entities value: anObject
 ]
 
+{ #category : #testing }
+FamixCBContext >> isCBContext [
+
+	^ true
+]
+
+{ #category : #printing }
+FamixCBContext >> printAsBlock [
+
+	^ contextBlock asString
+]
+
 { #category : #'as yet unclassified' }
 FamixCBContext >> putViolationsInto: aDictionary [
 	children do: [ :child | child putViolationsInto: aDictionary ]
@@ -192,4 +204,15 @@ FamixCBContext >> stonOn: stonWriter [
 									((value class = FullBlockClosure)
 										ifTrue: [ value asString ]
 										ifFalse: [ value ]) ] ] ] 
+]
+
+{ #category : #running }
+FamixCBContext >> tagRuleResult [
+
+	| model |
+
+	model := children ifNotEmpty: [
+		         (children first violations collect: #violatingEntity) first
+			         mooseModel ].
+	children do: [ :c | c tagRuleResultInModel: model ]
 ]

@@ -1,10 +1,22 @@
 Class {
 	#name : #MiClassBlueprintPalette,
-	#superclass : #MiPalette,
+	#superclass : #Object,
+	#instVars : [
+		'colorsDictionary',
+		'index'
+	],
 	#category : #'MooseIDE-ClassBlueprint'
 }
 
-{ #category : #style }
+{ #category : #adding }
+MiClassBlueprintPalette >> addName: aName forColor: color [
+	"Associate a name 'aName' with a color 'color' and add it to the color dictionary"
+
+	colorsDictionary add: aName -> color.
+	self updateIndexColor: (colorsDictionary indexOfKey: aName)
+]
+
+{ #category : #'as yet unclassified' }
 MiClassBlueprintPalette >> beDefaultStyle [
 
 	self
@@ -38,9 +50,30 @@ MiClassBlueprintPalette >> beDefaultStyle [
 		addName: #'Megamorphic Method' forColor: nil
 ]
 
+{ #category : #'as yet unclassified' }
+MiClassBlueprintPalette >> colorAt: anIndex [
+
+	"get a color at the index anIndex from the dictionary of colors. Use this method only if the keys are the indexes, otherwise use #colorFor:"
+
+	^ colorsDictionary at: anIndex
+]
+
+{ #category : #accessing }
+MiClassBlueprintPalette >> colorsDictionary [
+	^ colorsDictionary
+]
+
 { #category : #initialization }
 MiClassBlueprintPalette >> initialize [
 
 	super initialize.
+	colorsDictionary := OrderedDictionary new.
+	index := 1.
 	self beDefaultStyle
+]
+
+{ #category : #'as yet unclassified' }
+MiClassBlueprintPalette >> updateIndexColor: anIndex [
+
+	index := anIndex
 ]

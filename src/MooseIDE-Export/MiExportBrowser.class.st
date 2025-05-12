@@ -31,6 +31,7 @@ MiExportBrowser class >> commentColumnTitle [
 MiExportBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
+	<miBrowsersMenu>
 	^ self buildMenuItemIn: aBuilder
 ]
 
@@ -49,7 +50,7 @@ MiExportBrowser class >> menuItem [
 { #category : #'world menu' }
 MiExportBrowser class >> menuPriority [
 
-	^ self menuMetaToolsPriority + 2
+	^ self menuMetaToolsPriority + 3
 ]
 
 { #category : #specs }
@@ -75,14 +76,9 @@ MiExportBrowser class >> title [
 MiExportBrowser >> addColumn: aColumn [
 
 	(aColumn isKindOf: FM3Property)
-		ifTrue: [ self addColumnForProperty: aColumn ]
-		ifFalse: [ 
+		ifTrue: [ self model addColumnForProperty: aColumn ]
+		ifFalse: [
 		self model addColumnForQuery: aColumn query withName: aColumn name ]
-]
-
-{ #category : #'columns management' }
-MiExportBrowser >> addColumnForProperty: aFM3Property [
-	self model addColumnForProperty: aFM3Property.
 ]
 
 { #category : #'columns management' }
@@ -92,7 +88,7 @@ MiExportBrowser >> addCommentsColumn [
 			  title: self class commentColumnTitle
 			  evaluated: [ :entity | self commentOf: entity ])
 			 beEditable;
-			 onAcceptEdition: [ :entity :comment | 
+			 onAcceptEdition: [ :entity :comment |
 				 self model comment: entity with: comment ];
 			 yourself).
 	entitiesTable refresh
@@ -102,6 +98,21 @@ MiExportBrowser >> addCommentsColumn [
 MiExportBrowser >> canFollowEntity: anObject [
 
 	^ true
+]
+
+{ #category : #initialization }
+MiExportBrowser >> clearButton [
+
+	^ self newToolbarButton
+		  label: 'Clear Entities';
+		  icon: (self iconNamed: #remove);
+		  action: [ self clearEntities ]
+]
+
+{ #category : #initialization }
+MiExportBrowser >> clearEntities [
+
+	self model clearEntities
 ]
 
 { #category : #'columns management' }
@@ -160,18 +171,18 @@ MiExportBrowser >> commentsButton [
 
 	^ commentsButton := self newToolbarButton
 		                    label: 'Toggle comments';
-		                    icon: (self iconNamed: #edit);
+		                    icon: (self iconNamed: #mooseEditor);
 		                    action: [ :button | self toggleCommentsColumn ]
 ]
 
 { #category : #accessing }
 MiExportBrowser >> commonPropertiesIn: aMooseGroup [
 
-	| properties |
+	| properties mooseDescriptions |
 	aMooseGroup ifEmpty: [ ^ aMooseGroup ].
-
-	properties := ((aMooseGroup collect: [ :entity | 
-		                entity mooseDescription allPrimitiveProperties ]) 
+	mooseDescriptions := (aMooseGroup collect: [ :entity | 
+		                entity mooseDescription ]) asSet.
+	properties := ((mooseDescriptions collect: #allPrimitiveProperties)
 		               fold: [ :availableProperties :entityProperty | 
 			               availableProperties & entityProperty ]) sorted:
 		              #name ascending.
@@ -195,6 +206,22 @@ MiExportBrowser >> customQueryButton [
 		  yourself
 ]
 
+{ #category : #layout }
+MiExportBrowser >> defaultLayout [
+
+	^ SpBoxLayout newTopToBottom
+		  add: (SpOverlayLayout new
+				   child: toolbar;
+				   addOverlay: entitiesCountLabel withConstraints: [ :c |
+					   c
+						   vAlignCenter;
+						   hAlignEnd ];
+				   yourself)
+		  height: 50;
+		  add: entitiesTable;
+		  yourself
+]
+
 { #category : #actions }
 MiExportBrowser >> exportEntitiesToCSV [
 
@@ -214,29 +241,8 @@ Click to show in folder'
 { #category : #actions }
 MiExportBrowser >> followEntity: anEntity [
 
-	| entities |
-	entities := anEntity asMooseGroup.
-	self updateEntitiesListWith: entities.
-	entitiesCountLabel label:
-		entities size asString , ' entit' , (entities size > 1
-			 ifTrue: 'ies'
-			 ifFalse: 'y').
-]
-
-{ #category : #initialization }
-MiExportBrowser >> initializeLayout [
-
-	self layout: (SpBoxLayout newTopToBottom
-			 add: (SpBoxLayout newLeftToRight
-					  add: toolbar expand: false;
-					  add: entitiesCountLabel withConstraints: [ :consts | 
-						  consts
-							  bePlacedAtEnd;
-							  expand: false ];
-					  yourself)
-			 height: self class toolbarHeight;
-			 add: entitiesTable;
-			 yourself)
+	self updateEntitiesListWith: anEntity asMooseGroup.
+	self updateEntitiesCountLabel
 ]
 
 { #category : #initialization }
@@ -244,8 +250,7 @@ MiExportBrowser >> initializePresenters [
 
 	entitiesCountLabel := self newLabel label: 'xxx'.
 	self initializeToolbar.
-	self initializeTable.
-	self initializeLayout
+	self initializeTable
 ]
 
 { #category : #initialization }
@@ -264,7 +269,8 @@ MiExportBrowser >> initializeToolbar [
 		           addItem: (self newToolbarButton
 				            label: 'Export to CSV';
 				            icon: (self iconNamed: #smallExport);
-				            action: [ self exportEntitiesToCSV ])
+				            action: [ self exportEntitiesToCSV ]);
+		           addItem: self clearButton
 ]
 
 { #category : #'event handling' }
@@ -283,18 +289,19 @@ MiExportBrowser >> miSelectedItem [
 MiExportBrowser >> propertiesListForPopover [
 
 	| list |
-	list := self newSelectableListForPopoverExtent: 250 @ 250.
+	list := self instantiate: SpFilteringSelectableListPresenter.
+	list addStyle: 'largeList'.
 
 	list
 		display: [ :property | property name ];
-		onActivation: [ :property | 
+		onActivation: [ :property |
 			self addColumn: property.
 			self updateTable ];
-		onDeactivation: [ :property | 
+		onDeactivation: [ :property |
 			self removeColumn: property.
 			self updateTable ].
 
-	list items: ((self miSelectedItem flatCollectAsSet: [ :entity | 
+	list items: ((self miSelectedItem flatCollectAsSet: [ :entity |
 			  entity mooseDescription allPrimitiveProperties ])
 		 , (self model columns reject: #isPropertyColumn) sorted:
 			 [ :property | self showsProperty: property ] descending
@@ -347,11 +354,24 @@ MiExportBrowser >> toggleCommentsColumn [
 ]
 
 { #category : #'columns management' }
+MiExportBrowser >> updateEntitiesCountLabel [
+
+	| size |
+	size := self model entities size.
+
+	entitiesCountLabel label: size asString , (size > 1
+			 ifTrue: [ ' entity' asEnglishPlural ]
+			 ifFalse: [ ' entity' ])
+]
+
+{ #category : #'columns management' }
 MiExportBrowser >> updateEntitiesListWith: aMooseGroup [
 
-	(self commonPropertiesIn: aMooseGroup) do: [ :property | 
-		self addColumnForProperty: property ].
+	self model clearColumns.
+	(self commonPropertiesIn: aMooseGroup) do: [ :property |
+		self model addColumnForProperty: property ].
 	self model entitiesList: aMooseGroup.
+
 	self updateTable
 ]
 
@@ -359,15 +379,16 @@ MiExportBrowser >> updateEntitiesListWith: aMooseGroup [
 MiExportBrowser >> updateTable [
 
 	entitiesTable columns: {  }.
-	self model columns do: [ :columnModel | 
+	self model columns do: [ :columnModel |
 		entitiesTable addColumn: (SpStringTableColumn
 				 title: columnModel name
 				 evaluated: [ :entity | columnModel printValueFor: entity ])
 				yourself ].
 	entitiesTable items: self model entitiesList.
-	
+
 
 	self commentsAreShown ifTrue: [ self addCommentsColumn ].
+	self updateEntitiesCountLabel.
 
 	entitiesTable refresh
 ]

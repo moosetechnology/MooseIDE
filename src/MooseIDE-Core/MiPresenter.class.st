@@ -27,21 +27,28 @@ MiPresenter class >> tableLineHeight [
 	^ self labelHeight + 5
 ]
 
+{ #category : #actions }
+MiPresenter >> helpText [
+	"Override when necessary"
+
+	^ self class comment
+]
+
 { #category : #testing }
 MiPresenter >> isMiBrowser [
 	^ false
 ]
 
 { #category : #'scripting - widgets' }
-MiPresenter >> newSelectableListForPopoverExtent: aPoint [
+MiPresenter >> newMooseGroupsTreeTable [
 
-	^ SpFilteringSelectableListPresenter new
-		  layout: (self newBoxLayoutTopToBottom
-				   add: SpFilteringSelectableListPresenter defaultLayout
-				   withConstraints: [ :c | 
-					   c
-						   height: aPoint x;
-						   width: aPoint y ];
-				   yourself);
-		  yourself
+	^ self instantiate: MiMooseGroupsTreeTablePresenter
+]
+
+{ #category : #accessing }
+MiPresenter >> rootBrowser [
+
+	^ self isMiBrowser
+		  ifTrue: [ self ]
+		  ifFalse: [ self owner rootBrowser ]
 ]

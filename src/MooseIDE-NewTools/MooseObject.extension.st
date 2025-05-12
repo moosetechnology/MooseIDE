@@ -12,24 +12,58 @@ MooseObject class >> inspectorToString [
 ]
 
 { #category : #'*MooseIDE-NewTools' }
-MooseObject >> miFameInspectorExtension [
+MooseObject >> miFameInspectorExtension: aBuilder [
 
 	<inspectorPresentationOrder: 3 title: 'Fame'>
-	^ MiFameExtension on: self
+	^ aBuilder newTable
+		  items: self mooseDescription allComplexProperties;
+		  sortingBlock: #fullName ascending;
+		  addColumn:
+			  (SpStringTableColumn
+				   title: 'Name'
+				   evaluated: [ :item | item name ]) beSortable;
+		  addColumn: (SpStringTableColumn
+				   title: 'Type'
+				   evaluated: [ :item | item type name ]) beSortable;
+		  addColumn:
+			  (SpStringTableColumn title: 'Opposite' evaluated: [ :item |
+					   item opposite
+						   ifNil: [ '' ]
+						   ifNotNil: [ :opposite | opposite name ] ]) beSortable;
+		  addColumn: (SpStringTableColumn
+				   title: 'Derived?'
+				   evaluated: [ :item | item isDerived ]) beSortable;
+		  addColumn: (SpStringTableColumn
+				   title: 'Container?'
+				   evaluated: [ :item | item isContainer ]) beSortable;
+		  addColumn: (SpStringTableColumn
+				   title: 'IsTarget?'
+				   evaluated: [ :item | item isTarget ]) beSortable;
+		  addColumn: (SpStringTableColumn
+				   title: 'IsSource?'
+				   evaluated: [ :item | item isSource ]) beSortable;
+		  beResizable
 ]
 
 { #category : #'*MooseIDE-NewTools' }
-MooseObject >> miNavigationInspectorExtension [
+MooseObject >> miMetaNavigationInspectorExtension [
 
-	<inspectorPresentationOrder: 0 title: 'Navigation'>
-	^ MiNavigationBrowser on: self
+	<inspectorPresentationOrder: 1 title: 'Navigation'>
+	^ MiMetaNavigationBrowser on: self
 ]
 
 { #category : #'*MooseIDE-NewTools' }
-MooseObject >> miPropertiesInspectorExtension [
+MooseObject >> miMetaNavigationItems [
 
-	<inspectorPresentationOrder: 2 title: 'Moose Properties'>
-	^ MiPropertyExtension on: self
+	^ self mooseDescription allComplexProperties
+		  collect: [ :property |
+			  | value |
+			  value := self propertyNamed: property name ifAbsent: [ nil ].
+			  value isCollection ifTrue: [ value := value asMooseGroup ].
+			  property name -> value ]
+		  thenReject: [ :assoc |
+			  assoc value isNil or: [
+				  assoc value isCollection and: [ assoc value isEmpty ] ] ]
 ]
 
 { #category : #'*MooseIDE-NewTools' }
@@ -40,9 +74,9 @@ MooseObject >> navigationItemsFromPragmas [
 	the pragma #navigation:"
 	pragmaValueAssociations := (self mooseInterestingEntity
 		                            navigationPragmas sorted:
-		                            [ :pragma | 
+		                            [ :pragma |
 		                            pragma argumentNamed: #navigation: ]
-			                            ascending) collect: [ :pragma | 
+			                            ascending) collect: [ :pragma |
 		                           pragma inspectorToString
 		                           -> pragma methodSelector ].
 

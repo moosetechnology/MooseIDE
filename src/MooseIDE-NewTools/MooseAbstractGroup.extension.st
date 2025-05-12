@@ -30,8 +30,9 @@ MooseAbstractGroup >> details [
 ]
 
 { #category : #'*MooseIDE-NewTools' }
-MooseAbstractGroup >> miNavigationInspectorExtension [
+MooseAbstractGroup >> miMetaNavigationItems [
 
-	<inspectorPresentationOrder: 0 title: 'Navigation'>
-	^ MiAbstractGroupNavigationBrowser on: self
+	^ self
+		  reject: [ :entity | entity isNil ]
+		  thenCollect: [ :entity | entity inspectorToString -> entity ]
 ]

@@ -180,12 +180,6 @@ MiButterflyMapModel >> miSelectedItem [
 	^self entities
 ]
 
-{ #category : #actions }
-MiButterflyMapModel >> openSettings [
-
-	settings open
-]
-
 { #category : #accessing }
 MiButterflyMapModel >> rightEntitiesFor: anEntity [
 

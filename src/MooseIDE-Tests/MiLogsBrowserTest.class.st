@@ -2,7 +2,6 @@ Class {
 	#name : #MiLogsBrowserTest,
 	#superclass : #MiAbstractBrowserTest,
 	#instVars : [
-		'entityToSelect',
 		'newBrowser'
 	],
 	#category : #'MooseIDE-Tests-Browsers'
@@ -15,10 +14,9 @@ MiLogsBrowserTest >> browserClass [
 ]
 
 { #category : #running }
-MiLogsBrowserTest >> setUp [
+MiLogsBrowserTest >> receiveEntityToSelect [
 
-	super setUp.
-	entityToSelect := FamixStClass named: 'TestClass'
+	self bus globallySelect: entityToSelect
 ]
 
 { #category : #running }
@@ -30,10 +28,25 @@ MiLogsBrowserTest >> tearDown [
 
 { #category : #tests }
 MiLogsBrowserTest >> testActivateActionButtons [
+	" test that the top toolbar buttons are not activated by default
+	 (because there is not selection by default)"
 
 	browser actionButtons do: [ :button | self deny: button isEnabled ].
 
-	self bus globallySelect: entityToSelect.
+	self receiveEntityToSelect.
+
+	browser actionButtons do: [ :button | self deny: button isEnabled ]
+]
+
+{ #category : #tests }
+MiLogsBrowserTest >> testActivateActionButtonsAfterSelection [
+	" test that the top toolbar buttons are activated after some entry is selected"
+
+	browser actionButtons do: [ :button | self deny: button isEnabled ].
+
+	self receiveEntityToSelect.
+	(browser getSelectedPage) activePresenter getDisplayedList clickAtIndex: 1.
+
 	browser actionButtons do: [ :button | self assert: button isEnabled ]
 ]
 
@@ -44,10 +57,24 @@ MiLogsBrowserTest >> testCanTagEntities [
 
 { #category : #tests }
 MiLogsBrowserTest >> testMiSelectedItem [
+	"Test that when there is no selection, selectedItem is empty
+	 even after propagating something"
 
-	self assert: browser miSelectedItem isNil.
+	self assert: browser miSelectedItem isEmpty.
 
-	self bus globallySelect: entityToSelect.
+	self receiveEntityToSelect.
 
-	self assert: browser miSelectedItem equals: entityToSelect
+	self assert: browser miSelectedItem isEmpty
+]
+
+{ #category : #tests }
+MiLogsBrowserTest >> testMiSelectedItemAfterSelection [
+	"Test that when there is a selection, the selectedItem contains it"
+
+	self assert: browser miSelectedItem isEmpty.
+
+	self receiveEntityToSelect.
+	(browser getSelectedPage) activePresenter getDisplayedList clickAtIndex: 1.
+
+	self assertCollection: browser miSelectedItem hasSameElements: {entityToSelect}
 ]

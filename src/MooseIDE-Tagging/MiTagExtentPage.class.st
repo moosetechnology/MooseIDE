@@ -31,8 +31,10 @@ MiTagExtentPage >> add [
 	(self currentTag isNil or: [
 		 incomingEntitiesFilteringList selectedItems isEmpty ]) ifTrue: [
 		^ self ].
+
 	incomingEntitiesFilteringList selectedItems do: [ :entity |
 		self model tagEntityNotYourself: entity ].
+
 	self refreshTaggedEntitiesList.
 	self refreshEntitiesList.
 	self refreshBrowserToolbar
@@ -41,7 +43,7 @@ MiTagExtentPage >> add [
 { #category : #action }
 MiTagExtentPage >> addAll [
 
-	self currentTag ifNil: [ ^ self ].
+	self currentTag ifNil: [ ^ self ]. 
 	incomingEntitiesFilteringList items do: [ :entity |
 		self model tagEntityNotYourself: entity ].
 	self refreshTaggedEntitiesList.
@@ -112,18 +114,18 @@ MiTagExtentPage >> initializePresenters [
 
 	super initializePresenters.
 	taggedEntitiesLabel := self newLabel label: 'Entities in tag:'.
-	incomingEntitiesFilteringList := self newList
+	incomingEntitiesFilteringList := (self instantiate:
+			                                  SpFilteringSelectableListPresenter)
 		                                 display: [ :entity |
 			                                 String streamContents: [ :s |
 					                                 entity displayStringOn: s ] ];
-		                                 beMultipleSelection;
 		                                 yourself.
 	self refreshEntitiesList.
-	taggedEntitiesFilteringList := self newList
+	taggedEntitiesFilteringList := (self instantiate:
+			                                SpFilteringSelectableListPresenter)
 		                               display: [ :entity |
 			                               String streamContents: [ :s |
 					                               entity displayStringOn: s ] ];
-		                               beMultipleSelection;
 		                               yourself.
 	self refreshTaggedEntitiesList.
 	self initializeButtons.

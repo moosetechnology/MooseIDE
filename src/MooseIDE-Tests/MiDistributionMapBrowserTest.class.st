@@ -10,6 +10,12 @@ MiDistributionMapBrowserTest >> browserClass [
 	^ MiDistributionMapBrowser
 ]
 
+{ #category : #running }
+MiDistributionMapBrowserTest >> receiveEntityToSelect [
+
+	browser receiveEntity: entityToSelect asMooseGroup
+]
+
 { #category : #'tests - tags' }
 MiDistributionMapBrowserTest >> testSelectedTagSetAndGet [
 	| model entity tag |

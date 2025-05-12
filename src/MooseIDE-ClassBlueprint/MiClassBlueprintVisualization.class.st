@@ -8,18 +8,21 @@ Class {
 	#category : #'MooseIDE-ClassBlueprint'
 }
 
-{ #category : #running }
-MiClassBlueprintVisualization >> run [ 
-	super run.
-	self script: [ :canvas | 
-			blueprint := type blueprint.
-			blueprint canvas: canvas.
-			blueprint build.
-			canvas @ RSCanvasController new noLegend ]
+{ #category : #initialization }
+MiClassBlueprintVisualization >> buildInCanvas: aCanvas [
+
+	type ifNil: [ ^ self ].
+
+	blueprint := type blueprint.
+	blueprint canvas: aCanvas.
+	blueprint build.
+
+	^ aCanvas @ RSCanvasController new noLegend
 ]
 
 { #category : #running }
 MiClassBlueprintVisualization >> type [
+
 	^ type
 ]
 

@@ -4,6 +4,11 @@ Class {
 	#category : #'MooseIDE-Core-MenuBar'
 }
 
+{ #category : #testing }
+MooseAbstractLoadFamixMenuCommand class >> isAbstract [
+	^ self = MooseAbstractLoadFamixMenuCommand
+]
+
 { #category : #accessing }
 MooseAbstractLoadFamixMenuCommand class >> menuPriority [
 

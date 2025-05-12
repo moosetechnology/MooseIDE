@@ -33,6 +33,7 @@ Class {
 MiUMLBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
+	<miBrowsersMenu>
 	^ self buildMenuItemIn: aBuilder
 ]
 
@@ -57,7 +58,7 @@ MiUMLBrowser class >> menuParent [
 { #category : #'world menu' }
 MiUMLBrowser class >> menuPriority [
 
-	^ 4
+	^ self menuOldBrowsersPriority + 2
 ]
 
 { #category : #'instance creation' }
@@ -95,6 +96,7 @@ MiUMLBrowser >> canTagEntities [
 { #category : #actions }
 MiUMLBrowser >> followEntity: anEntity [
 
+	super followEntity: anEntity.
 	specModel
 		entities: anEntity asMooseSpecializedGroup;
 		unselectAll.

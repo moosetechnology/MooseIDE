@@ -28,6 +28,7 @@ MiMetaBrowser class >> helpMessage [
 MiMetaBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
+	<miBrowsersMenu>
 	^ self buildMenuItemIn: aBuilder
 ]
 
@@ -44,9 +45,15 @@ MiMetaBrowser class >> menuItem [
 ]
 
 { #category : #'world menu' }
+MiMetaBrowser class >> menuParent [
+
+	^ self oldBrowserMenuRoot
+]
+
+{ #category : #'world menu' }
 MiMetaBrowser class >> menuPriority [
 
-	^ self menuMetaToolsPriority + 3
+	^ self menuOldBrowsersPriority + 1
 ]
 
 { #category : #'instance creation' }

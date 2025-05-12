@@ -15,8 +15,7 @@ Class {
 }
 
 { #category : #adding }
-MiBusLogBrowser class >> addToMiBrowsersMenu: aMenuGroupPresenter [
-
+MiBusLogBrowser class >> buildItemInMenu: aMenuGroupPresenter action: aBlok [
 	"Do not appear in menu"
 
 	
@@ -117,6 +116,12 @@ MiBusLogBrowser >> followEntity: anEntity [
 	self updateList
 ]
 
+{ #category : #'accessing - private tests' }
+MiBusLogBrowser >> getDisplayedList [
+
+	^list
+]
+
 { #category : #initialization }
 MiBusLogBrowser >> initializePresenters [
 
@@ -130,7 +135,8 @@ MiBusLogBrowser >> initializePresenters [
 	list
 		display: [ :log | log entity mooseName ];
 		contextMenu: [ self menuCommandGroup asMenuPresenter ];
-		whenSelectedDo: [ :log | self updateToolbars ]
+		whenSelectionChangedDo: [ :log | self updateToolbars ]	;
+		selectionMode: (SpMultipleSelectionMode on: list)
 ]
 
 { #category : #commandGroups }
@@ -156,13 +162,23 @@ MiBusLogBrowser >> menuCommandGroup [
 { #category : #accessing }
 MiBusLogBrowser >> miSelectedItem [
 
-	^ list selectedItem ifNotNil: [ :log | log entity ]
+	| flattened |
+	flattened := OrderedCollection new.
+
+	list selectedItems ifNotNil: [ :logs |
+		logs do: [ :aLog |
+			aLog entity isCollection
+				ifTrue: [ flattened addAll: aLog entity ] 
+				ifFalse: [ flattened add: aLog entity ]
+		]
+	].
+
+	^ flattened 
 ]
 
 { #category : #actions }
 MiBusLogBrowser >> removeSelectedLog [
-
-	self logger removeLog: list selectedItem.
+	self logger removeLog: (list selectedItems).
 	self updateList
 ]
 
@@ -170,13 +186,13 @@ MiBusLogBrowser >> removeSelectedLog [
 MiBusLogBrowser >> updateList [
 
 	| logs |
+	
 	logs := self logger logs.
 
 	list items: logs.
-
+	
 	logs
 		ifEmpty: [ self updateToolbars ]
-		ifNotEmpty: [ list selectFirst ]
 ]
 
 { #category : #updating }
