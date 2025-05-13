@@ -4,10 +4,9 @@ Extension { #name : #FamixTPackage }
 FamixTPackage >> queryAllOutgoingForDSM [
 
 	| dependencies |
-
 	dependencies := Set new.
-	self children do: [ :c | dependencies addAll: c queryAllOutgoingForDSM ].
+	self children do: [ :c |
+		dependencies addAll: c queryAllOutgoingForDSM ].
 
-	^dependencies
-
+	^ dependencies
 ]

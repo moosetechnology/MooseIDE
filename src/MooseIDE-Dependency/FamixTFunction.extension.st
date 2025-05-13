@@ -4,23 +4,14 @@ Extension { #name : #FamixTFunction }
 FamixTFunction >> queryAllOutgoingForDSM [
 
 	| dependencies |
-
 	dependencies := self queryAllOutgoing asSet.
-	(self children do: [ :c | dependencies addAll: c queryAllOutgoingForDSM ]).
-	
-	declaredType ifNotNil: [
 
-		( (declaredType usesFamixTrait: FamixTParametricEntity) and:
-		[ declaredType genericization isNotNil ])
-			ifTrue: [
-				dependencies add: declaredType genericization.
+	self children do: [ :c |
+		dependencies addAll: c queryAllOutgoingForDSM ].
 
-				declaredType concreteParameters do: [ :param |
-					param children ifNotEmpty: [ dependencies add: param ]
-				]
-			]
-			ifFalse: [ dependencies add: declaredType ]
-	].
+	self declaredType ifNotNil: [ :declaredType |
+		declaredType isParametricEntity ifTrue: [
+			dependencies addAll: self typing concretizations ] ].
 
-	^dependencies 
+	^ dependencies
 ]

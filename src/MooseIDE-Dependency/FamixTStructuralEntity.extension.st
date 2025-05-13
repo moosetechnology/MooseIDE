@@ -2,24 +2,15 @@ Extension { #name : #FamixTStructuralEntity }
 
 { #category : #'*MooseIDE-Dependency' }
 FamixTStructuralEntity >> queryAllOutgoingForDSM [
+	"DO NOT USE OUTSIDE THE CONTEXT OF DSM.
+See declaration in TEntityMetalevelDependency for context."
 
 	| dependencies |
-
 	dependencies := Set new: 5.
 
-	declaredType ifNotNil: [
+	self declaredType ifNotNil: [ :declaredType |
+		declaredType isParametricEntity ifTrue: [
+			dependencies addAll: self typing concretizations ] ].
 
-		( (declaredType usesFamixTrait: FamixTParametricEntity) and:
-		[ declaredType genericization isNotNil ])
-			ifTrue: [
-				dependencies add: declaredType genericization.
-
-				declaredType concreteParameters do: [ :param |
-					param children ifNotEmpty: [ dependencies add: param ]
-				]
-			]
-			ifFalse: [ dependencies add: declaredType ]
-	].
-
-	^dependencies 
+	^ dependencies
 ]

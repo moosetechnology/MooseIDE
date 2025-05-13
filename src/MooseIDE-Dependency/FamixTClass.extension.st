@@ -4,10 +4,9 @@ Extension { #name : #FamixTClass }
 FamixTClass >> queryAllOutgoingForDSM [
 
 	| dependencies |
-
 	dependencies := self queryOutgoingInheritances asSet.
-	self children do: [ :c | dependencies addAll: c queryAllOutgoingForDSM ].
+	self children do: [ :c |
+		dependencies addAll: c queryAllOutgoingForDSM ].
 
-	^dependencies
-
+	^ dependencies
 ]

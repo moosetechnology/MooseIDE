@@ -12,6 +12,7 @@ Class {
 
 { #category : #running }
 MiDSMBrowserTest >> browserClass [
+
 	^ MiDSMBrowser
 ]
 
@@ -155,10 +156,9 @@ MiDSMBrowserTest >> testOutgoingDependencyFromInvocation [
 	| dependencies |
 	dependencies := class1 methods anyOne queryAllOutgoingForDSM.
 
-	self assert: dependencies size equals: 1.
-	self assert: dependencies anyOne class equals: FamixJavaInvocation.
-	self assert: dependencies anyOne candidates anyOne name equals: 'mth2'.
-
+	self
+		assertCollection: dependencies
+		hasSameElements: class1 methods anyOne outgoingInvocations
 ]
 
 { #category : #tests }
@@ -166,41 +166,40 @@ MiDSMBrowserTest >> testOutgoingDependencyFromMethodDeclaredType [
 
 	| mth2 dependencies |
 	mth2 := class2 methods anyOne.
-	mth2 declaredType: class3.
+	mth2 typing: (model newEntityTyping declaredType: class3).
 
 	dependencies := mth2 queryAllOutgoingForDSM.
 
-	self assert: dependencies size equals: 1.
-	self assert: dependencies anyOne class equals: FamixJavaClass.
-	self assert: dependencies anyOne name equals: 'Class3'.
-
+	self assertCollection: dependencies hasSameElements: { mth2 typing }
 ]
 
 { #category : #tests }
 MiDSMBrowserTest >> testOutgoingDependencyFromVMethodDeclaredTypeParametric [
-	"code: 
-	Class2
-		ParametricClass<Class1> mth2
-	Note: FamixJavaConcretization is an association and we are not interested in its genericEntity here
-	Note: hueristic to detect a concreteParameter being a genuine class is to check it has children
-	  That's why we use Class1 and not Class3 as concreteParameter"
+	"
+	public class Class2 { 
+		public ParametricClass<Classs1> mth2 { }
+	}
+	"
 
 	| mth2 parametricClass dependencies |
 	parametricClass := model newParametricClass
-		name: 'ParametricClass' ;
-		genericization: model newConcretization ;
-		addConcreteParameter: class1 ;
-		yourself.
+		                   name: 'ParametricClass';
+		                   yourself.
 
 	mth2 := class2 methods anyOne.
-	mth2 declaredType: parametricClass.
+
+	mth2 typing: (model newParametricEntityTyping
+			 declaredType: parametricClass;
+			 addConcretization: (model newConcretization
+					  typeArgument: class1;
+					  yourself);
+			 yourself). "We do not need the type parameter"
 
 	dependencies := mth2 queryAllOutgoingForDSM.
 
-	self assert: dependencies size equals: 2.
-	dependencies do: [ :dep |
-		{ 'ParametricClass' . 'Class1' } includes: dep name
-	]
+	self assertCollection: dependencies hasSameElements: {
+			mth2 typing.
+			mth2 typing concretizations anyOne }
 ]
 
 { #category : #tests }
@@ -208,46 +207,50 @@ MiDSMBrowserTest >> testOutgoingDependencyFromVariableDeclaredType [
 
 	| mth2 dependencies |
 	mth2 := class2 methods anyOne.
+
 	(model newLocalVariableNamed: 'local2')
-		parentBehaviouralEntity: mth2 ;
-		declaredType: class3.
+		parentBehaviouralEntity: mth2;
+		typing: (model newEntityTyping
+				 declaredType: class3;
+				 yourself).
 
 	dependencies := mth2 queryAllOutgoingForDSM.
 
-	self assert: dependencies size equals: 1.
-	self assert: dependencies anyOne class equals: FamixJavaClass.
-	self assert: dependencies anyOne name equals: 'Class3'.
-
+	self
+		assertCollection: dependencies
+		hasSameElements: { mth2 localVariables anyOne typing }
 ]
 
 { #category : #tests }
 MiDSMBrowserTest >> testOutgoingDependencyFromVariableDeclaredTypeParametric [
-	"code: 
-	Class2
-		mth2
-			ParametricClass<Class1> local2
-	Note: FamixJavaConcretization is an association and we are not interested in its genericEntity here
-	Note: heuristic to detect a concreteParameter being a genuine class is to check it has children
-	  That's why we use Class1 and not Class3 as concreteParameter"
+	"
+	public class Class2 { 
+		public mth2 { 
+			ParametricClass<Classs1> local2
+		}
+	}
+	"
 
-	| mth2 parametricClass dependencies |
+	| mth2 parametricClass dependencies localVariable |
 	parametricClass := model newParametricClass
-		name: 'ParametricClass' ;
-		genericization: model newConcretization ;
-		addConcreteParameter: class1 ;
-		yourself.
+		                   name: 'ParametricClass';
+		                   yourself.
 
 	mth2 := class2 methods anyOne.
-	(model newLocalVariableNamed: 'local2')
-		parentBehaviouralEntity: mth2 ;
-		declaredType: parametricClass.
+
+	localVariable := (model newLocalVariableNamed: 'local2')
+		                 parentBehaviouralEntity: mth2;
+		                 typing: (model newParametricEntityTyping
+				                  declaredType: parametricClass;
+				                  addConcretization:
+					                  (model newConcretization typeArgument: class1);
+				                  yourself). "We do not need the type parameter"
 
 	dependencies := mth2 queryAllOutgoingForDSM.
 
-	self assert: dependencies size equals: 2.
-	dependencies do: [ :dep |
-		{ 'ParametricClass' . 'Class1' } includes: dep name
-	]
+	self assertCollection: dependencies hasSameElements: {
+			localVariable typing.
+			localVariable typing concretizations anyOne }
 ]
 
 { #category : #tests }
