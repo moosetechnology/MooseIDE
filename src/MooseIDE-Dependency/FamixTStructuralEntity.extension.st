@@ -8,8 +8,8 @@ See declaration in TEntityMetalevelDependency for context."
 	| dependencies |
 	dependencies := Set new: 5.
 
-	self declaredType ifNotNil: [ :declaredType |
-		declaredType isParametricEntity ifTrue: [
+	self typing isNotNil and: [
+		self typing isParametricAssociation ifTrue: [
 			dependencies addAll: self typing concretizations ] ].
 
 	^ dependencies
