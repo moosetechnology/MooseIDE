@@ -310,23 +310,28 @@ MiTagCreationForm >> stringForQuery: aQuery [
 { #category : #initialization }
 MiTagCreationForm >> submit [
 
+	| tag |
 	self checkFormInputs ifFalse: [ ^ self ].
+	tag := isIntent
+		       ifFalse: [
+			       self model
+				       createTag: nameField text
+				       description: descriptionField text
+				       color: colorPicker color
+				       category: categorySelection selectedItem ]
+		       ifTrue: [
+			       self model
+				       createDynamicTag: nameField text
+				       description: descriptionField text
+				       color: colorPicker color
+				       category: categorySelection selectedItem
+				       query: queryList selectedItem ].
 
-	isIntent
-		ifFalse: [ 
-			self model
-				createTag: nameField text
-				description: descriptionField text
-				color: colorPicker color
-				category: categorySelection selectedItem ]
-		ifTrue: [ 
-			self model
-				createDynamicTag: nameField text
-				description: descriptionField text
-				color: colorPicker color
-				category: categorySelection selectedItem
-				query: queryList selectedItem ].
-	self owner closeTagCreationForm
+	tag
+		ifNil: [
+			self alert:
+				'This tag name is already in use. Please choose a different one.' ]
+		ifNotNil: [ self owner closeTagCreationForm ]
 ]
 
 { #category : #accessing }
