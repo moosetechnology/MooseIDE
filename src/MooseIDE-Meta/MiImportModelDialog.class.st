@@ -78,13 +78,17 @@ MiImportModelDialog >> importModelThenCloseDialogWindow [
 ]
 
 { #category : #initialization }
+MiImportModelDialog >> initialize [
+	super initialize .
+	isImporting := false
+]
+
+{ #category : #initialization }
 MiImportModelDialog >> initializeDialogWindow: aDialog [
 
-	| button|
-
+	| button |
 	button := nil.
 	aDialog initialExtent: self class windowExtent.
-	isImporting := false.
 	button := aDialog
 		          addButton: 'Import'
 		          do: [ self importModelThenCloseDialogWindow ].
