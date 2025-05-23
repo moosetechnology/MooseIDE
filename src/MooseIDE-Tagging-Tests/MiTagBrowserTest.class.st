@@ -123,6 +123,29 @@ MiTagBrowserTest >> testTagDetailPageAddEntityToTag [
 ]
 
 { #category : #tests }
+MiTagBrowserTest >> testTagDuplicationReturnNilAtCreation [
+
+	| name firstTag duplicatedTag |
+	name := 'aTag'.
+	
+	firstTag := browser model
+		createTag: name
+		description: ''
+		color: Color red
+		category: nil.
+
+	duplicatedTag := browser model
+		createTag: name
+		description: ''
+		color: Color blue
+		category: nil.
+
+	self assert: browser model allTags size equals: 1.
+	self assert: firstTag isNotNil.
+	self assert: duplicatedTag isNil.
+]
+
+{ #category : #tests }
 MiTagBrowserTest >> testTagModelInitialization [
 
 	| specModel |
