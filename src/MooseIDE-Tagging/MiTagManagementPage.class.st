@@ -24,6 +24,38 @@ MiTagManagementPage >> addTagButton [
 	^ addTagButton
 ]
 
+{ #category : #refreshing }
+MiTagManagementPage >> computeExtentTagList [
+
+	^btnIsExtent state
+		ifTrue: [ tagModel currentCategory
+		     ifNil: [ self model allTags ]
+		     ifNotNil: [ :currentTag | currentTag markedTags asMooseGroup ] ]
+		ifFalse: [ #() ]
+]
+
+{ #category : #refreshing }
+MiTagManagementPage >> computeIntentTagList [
+
+	^btnIsIntent state
+		ifTrue: [ tagModel currentCategory
+			ifNil: [ self model dynamicTags ]
+			ifNotNil: [ :currentCat | 
+				self model dynamicTags select: [ :tag | 
+					tag category = currentCat ] ] ]
+		ifFalse: [ #() ]
+
+]
+
+{ #category : #refreshing }
+MiTagManagementPage >> computeTagList [
+
+	^self computeExtentTagList 
+	 ,
+	 self computeIntentTagList
+
+]
+
 { #category : #initialization }
 MiTagManagementPage >> connectPresenters [
 
@@ -189,27 +221,9 @@ MiTagManagementPage >> refreshDescriptionPage [
 { #category : #refreshing }
 MiTagManagementPage >> refreshTagList [
 
-	| sortingBlock isExtent isIntent extentTags intentTags |
-	sortingBlock := [ :t1 :t2 | t1 name <= t2 name ].
-
-	isExtent := btnIsExtent state.
-	isIntent := btnIsIntent state.
-	extentTags := [ 
-	     tagModel currentCategory
-		     ifNil: [ self model allTags ]
-		     ifNotNil: [ :currentTag | currentTag markedTags asMooseGroup ] ].
-	intentTags := [ 
-	      tagModel currentCategory
-		      ifNil: [ self model dynamicTags ]
-		      ifNotNil: [ :currentCat | 
-			      self model dynamicTags select: [ :tag | 
-				      tag category = currentCat ] ] ].
-	
 	tagList items:
-		( (isExtent ifTrue: [ extentTags value ] ifFalse: [ #() ]) 
-		  ,
-		  (isIntent ifTrue: [ intentTags value ] ifFalse: [ #() ])
-		sort: sortingBlock ) asArray.
+		(self computeTagList asArray
+			sort: [ :t1 :t2 | t1 name <= t2 name ] ) .
 
 	self model currentTag ifNotNil: [ :currentTag | tagList selectItem: currentTag ]
 
