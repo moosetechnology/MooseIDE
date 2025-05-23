@@ -96,7 +96,7 @@ MiTagBrowserTest >> testIsProducerOfFamixTags [
 MiTagBrowserTest >> testNoTagDetailPageAddDoNothing [
 
 	| entities |
-	entities := detailsPage model mooseModel entities.
+	entities := browser model mooseModel entities.
 	self assert: entities size equals: self mooseModelSize.
 
 	detailsPage addAll.
@@ -110,11 +110,11 @@ MiTagBrowserTest >> testNoTagDetailPageAddDoNothing [
 MiTagBrowserTest >> testTagDetailPageAddEntityToTag [
 
 	| entities tag |
-	entities := detailsPage model mooseModel entities.
+	entities := browser model mooseModel entities.
 	self assert: entities size equals: self mooseModelSize.
 
-	tag := detailsPage model addTag: 'aTag'.
-	detailsPage model currentTag: tag.
+	tag := browser model addTag: 'aTag'.
+	browser model currentTag: tag.
 	detailsPage addAll.
 
 	self
@@ -126,8 +126,30 @@ MiTagBrowserTest >> testTagDetailPageAddEntityToTag [
 MiTagBrowserTest >> testTagModelInitialization [
 
 	| specModel |
-	specModel := detailsPage model.
+	specModel := browser model.
 	self assert: specModel isNotNil.
 	self assert: specModel mooseModel isNotNil.
 	self assert: specModel mooseModel size equals: self mooseModelSize
+]
+
+{ #category : #tests }
+MiTagBrowserTest >> testTagRemainSelectedOnRefresh [
+
+	| tagList |
+
+	browser model
+		createTag: 'aTag'
+		description: ''
+		color: Color red
+		category: nil.
+
+	tagList := browser tagManagementPage tagList.
+	tagList selectIndex: 1.
+
+	self assert: tagList selectedItems size equals: 1.
+
+	browser refreshTagList.
+
+	self assert: tagList selectedItems size equals: 1
+
 ]
