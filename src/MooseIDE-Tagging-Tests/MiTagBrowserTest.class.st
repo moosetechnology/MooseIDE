@@ -131,3 +131,25 @@ MiTagBrowserTest >> testTagModelInitialization [
 	self assert: specModel mooseModel isNotNil.
 	self assert: specModel mooseModel size equals: self mooseModelSize
 ]
+
+{ #category : #tests }
+MiTagBrowserTest >> testTagRemainSelectedOnRefresh [
+
+	| tagList |
+
+	browser model
+		createTag: 'aTag'
+		description: ''
+		color: Color red
+		category: nil.
+
+	tagList := browser tagManagementPage tagList.
+	tagList selectIndex: 1.
+
+	self assert: tagList selectedItems size equals: 1.
+
+	browser refreshTagList.
+
+	self assert: tagList selectedItems size equals: 1
+
+]
