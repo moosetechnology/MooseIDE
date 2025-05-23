@@ -7,7 +7,8 @@ Class {
 	#instVars : [
 		'dependencyDictionary',
 		'miModel',
-		'entities'
+		'entitiesX',
+		'entitiesY'
 	],
 	#category : #'MooseIDE-Dependency-DSM'
 }
@@ -75,29 +76,6 @@ MiDSMDependencyManager >> association: associations isTo: entity [
 ]
 
 { #category : #initialization }
-MiDSMDependencyManager >> computeDependencies: aCollection [
-	"Could be optimized, when we open a detailed DSM, `miModel entities` is the union of entitiesX and entitiesY
-	 But we only need dependencies from entitiesX to entitiesY, and not:
-	 - from entitiesY to entitiesX
-	 - from entitiesX to entitiesX
-	 - from entitiesY to entitiesY"
-
-	entities := aCollection select: [ :e | 
-			 e usesFamixTrait: TEntityMetaLevelDependency ].
-
-	dependencyDictionary := Dictionary new: entities size squared.
-
-	entities do: [ :sourceEntity | 
-		entities do: [ :targetEntity | 
-			self
-				dependencies: (self computeDependenciesFrom: sourceEntity to: targetEntity) 
-				from: sourceEntity
-				to: targetEntity
-		]
-	]
-]
-
-{ #category : #initialization }
 MiDSMDependencyManager >> computeDependenciesFrom: entityX to: entityY [
 	"generic algorithm to get all dependencies from entityX to entityY at the scope of entityY"
 
@@ -109,10 +87,29 @@ MiDSMDependencyManager >> computeDependenciesFrom: entityX to: entityY [
 
 ]
 
-{ #category : #accessing }
-MiDSMDependencyManager >> dependencies: dependencies from: sourceEntity to: targetEntity [
+{ #category : #initialization }
+MiDSMDependencyManager >> computeDependenciesWithX: aCollectionX withY: aCollectionY [
+	"Could be optimized, when we open a detailed DSM, `miModel entities` is the union of entitiesX and entitiesY
+	 But we only need dependencies from entitiesX to entitiesY, and not:
+	 - from entitiesY to entitiesX
+	 - from entitiesX to entitiesX
+	 - from entitiesY to entitiesY"
 
-	dependencyDictionary at: (sourceEntity -> targetEntity) put: dependencies
+	entitiesX := aCollectionX select: [ :e | 
+			 e usesFamixTrait: TEntityMetaLevelDependency ].
+	entitiesY := aCollectionY select: [ :e | 
+			 e usesFamixTrait: TEntityMetaLevelDependency ].
+
+	dependencyDictionary := Dictionary new: entitiesX size * entitiesY size .
+
+	entitiesX do: [ :sourceEntity | 
+		entitiesY do: [ :targetEntity | 
+			self
+				recordDependencies: (self computeDependenciesFrom: sourceEntity to: targetEntity) 
+				from: sourceEntity
+				to: targetEntity
+		]
+	]
 ]
 
 { #category : #testing }
@@ -156,7 +153,19 @@ MiDSMDependencyManager >> dependencyDictionary: anObject [
 { #category : #accessing }
 MiDSMDependencyManager >> entities [
 
-	^entities 
+	^(entitiesX union: entitiesY)
+]
+
+{ #category : #accessing }
+MiDSMDependencyManager >> entitiesX [
+
+	^entitiesX 
+]
+
+{ #category : #accessing }
+MiDSMDependencyManager >> entitiesY [
+
+	^entitiesY 
 ]
 
 { #category : #testing }
@@ -192,6 +201,12 @@ MiDSMDependencyManager >> miModel [
 MiDSMDependencyManager >> miModel: anObject [
 
 	miModel := anObject
+]
+
+{ #category : #accessing }
+MiDSMDependencyManager >> recordDependencies: dependencies from: sourceEntity to: targetEntity [
+
+	dependencyDictionary at: (sourceEntity -> targetEntity) put: dependencies
 ]
 
 { #category : #api }
