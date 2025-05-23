@@ -35,11 +35,11 @@ MiDSMBrowserModel >> colorForTuple: tuple [
 ]
 
 { #category : #initialization }
-MiDSMBrowserModel >> computeMatrix: entities [
+MiDSMBrowserModel >> computeMatrixWithX: entitiesX withY: entitiesY [
 
-	self selectedEntities: entities.
-
-	dependencies computeDependencies: entities.
+	self selectedEntities: (entitiesX union: entitiesY).
+	
+	dependencies computeDependenciesWithX: entitiesX withY: entitiesY .
 
 	graph buildGraph 
 
@@ -102,7 +102,7 @@ MiDSMBrowserModel >> followEntity: aCollection [
 	"initializing the DSM from a collection of entities received on the data bus (see also #withX:withY:)
 	 In this case, this is a square matrix of dependency"
 
-	self computeMatrix: aCollection.
+	self computeMatrixWithX: aCollection withY: aCollection.
 
 	orderedNodesX := self orderNodes: aCollection.
 	orderedNodesY := orderedNodesX.
@@ -244,12 +244,12 @@ MiDSMBrowserModel >> orderNodes: entities [
 		dependents at: toEntity put: (dependents at: toEntity) + 1.
 		weights at: toEntity put: (weights at: toEntity) + pairDependencies size.
 	].
-
-	^(entities sorted: [ :entityA :entityB |
-		((dependents at: entityA) < (dependents at: entityB))
-		or: [ ((dependents at: entityA) = (dependents at: entityB)) and:
-				[ (weights at: entityA) < (weights at: entityB) ] ]
-	])
+	
+	^(entities sorted:
+		([:entityA | dependents at: entityA] ascending, 
+		[:entityA | weights at: entityA] ascending,
+		[:entityA | entityA name asLowercase ] ascending)
+	) 	
 		collect: [ :entity | graph findNode: entity ]
 ]
 
@@ -356,10 +356,12 @@ MiDSMBrowserModel >> withX: entitiesX withY: entitiesY [
 	"initializing the DSM for two list of entities (see also #followEntity:)
 	 In this case, this is probably not a suqare matrix of dependency"
 
-	| allEntities |
-	allEntities := entitiesX union: entitiesY.
+	"| allEntities |
+	allEntities := entitiesX union: entitiesY."
 
-	self computeMatrix: allEntities.
+	"self computeMatrix: allEntities."
+
+	self computeMatrixWithX: entitiesX withY: entitiesY.
 
 	orderedNodesX := self orderNodes: entitiesX.
 	orderedNodesY := self orderNodes: entitiesY.

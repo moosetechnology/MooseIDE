@@ -112,7 +112,7 @@ MiDSMBrowserTest >> testDontShowSelfDependenciesHideDiagonalWeight [
 	browser model settings setItem: #selfDependenciesSetting value: false.
 	tuple := (AITarjanNode with: #entityA) -> (AITarjanNode with: #entityA).
 	browser model dependencies
-		dependencies: #(1 2 3) from: #entityA to: #entityA.
+		recordDependencies: #(1 2 3) from: #entityA to: #entityA.
 
 	self assert: (browser model getTupleDependencyWeight: tuple) equals: 0.
 ]
@@ -124,7 +124,7 @@ MiDSMBrowserTest >> testDontShowSelfDependenciesShowNonDiagonalWeight [
 	browser model settings setItem: #selfDependenciesSetting value: false.
 	tuple := (AITarjanNode with: #entityA) -> (AITarjanNode with: #entityB).
 	browser model dependencies
-		dependencies: #(1 2 3) from: #entityA to: #entityB.
+		recordDependencies: #(1 2 3) from: #entityA to: #entityB.
 
 	self assert: (browser model getTupleDependencyWeight: tuple) equals: 3.
 ]
@@ -294,7 +294,7 @@ MiDSMBrowserTest >> testShowSelfDependenciesDoNotHideDiagonalWeight [
 	browser model settings setItem: #selfDependenciesSetting value: true.
 	tuple := (AITarjanNode with: #entityA) -> (AITarjanNode with: #entityA).
 	browser model dependencies
-		dependencies: #(1 2 3) from: #entityA to: #entityA.
+		recordDependencies: #(1 2 3) from: #entityA to: #entityA.
 
 	self assert: (browser model getTupleDependencyWeight: tuple) equals: 3.
 ]
@@ -351,7 +351,7 @@ MiDSMBrowserTest >> testTupleIsDependency [
 
 	tuple := (AITarjanNode with: #entityA) -> (AITarjanNode with: #entityB).
 	browser model dependencies
-		dependencies: #(1 2 3) from: #entityA to: #entityB.
+		recordDependencies: #(1 2 3) from: #entityA to: #entityB.
 
 	self assert: (browser model isDependency: tuple)
 ]

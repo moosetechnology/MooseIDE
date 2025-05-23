@@ -54,6 +54,13 @@ FamixCBTEntityCreator >> newRootContext [
 ]
 
 { #category : #'entity creation' }
+FamixCBTEntityCreator >> newRootContextNamed: aName [
+
+	<generated>
+	^ self add: (FamixCBRootContext named: aName)
+]
+
+{ #category : #'entity creation' }
 FamixCBTEntityCreator >> newViolation [
 
 	<generated>
