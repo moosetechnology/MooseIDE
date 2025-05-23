@@ -38,7 +38,7 @@ MiModelExportCommand >> exportModel: aModel [
 	fileReference := UITheme builder
 		chooseForSaveFileReference: 'Choose location'
 		extensions: self fileExtension
-		path: ''.
+		path: aModel name.
 	fileReference
 		ifNotNil: [ fileReference
 				writeStreamDo: [ :stream | 
