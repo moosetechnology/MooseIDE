@@ -209,7 +209,9 @@ MiTagManagementPage >> refreshTagList [
 		( (isExtent ifTrue: [ extentTags value ] ifFalse: [ #() ]) 
 		  ,
 		  (isIntent ifTrue: [ intentTags value ] ifFalse: [ #() ])
-		sort: sortingBlock )
+		sort: sortingBlock ) asArray.
+
+	self model currentTag ifNotNil: [ :currentTag | tagList selectItem: currentTag ]
 
 ]
 
