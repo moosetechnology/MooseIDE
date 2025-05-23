@@ -162,6 +162,7 @@ MiPlaygroundBrowser >> updateToolbar [
 { #category : #accessing }
 MiPlaygroundBrowser >> windowTitle [
 
+	<ignoreForCoverage>
 	^self model
 		ifNil: [ self class title ]
 		ifNotNil: [ self model windowTitle ]
