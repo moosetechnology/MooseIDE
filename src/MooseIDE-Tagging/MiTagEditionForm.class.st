@@ -8,9 +8,23 @@ Class {
 MiTagEditionForm >> checkFormInputs [
 
 	nameField text ifEmpty: [ ^ false ].
-	tagModel currentTag isIntent ifFalse: [ 
-		(tagModel getTagNamed: nameField text) ifNotNil: [ :tag | 
-			tagModel currentTag = tag ifFalse: [ ^ false ] ] ].
+	tagModel currentTag isIntent ifFalse: [
+		(tagModel getTagNamed: nameField text) ifNotNil: [ :tag |
+			tagModel currentTag = tag ifFalse: [
+				| popup |
+				(popup := self newPopover)
+					addStyle: 'error';
+					relativeTo: nameField;
+					bePositionRight;
+					presenter: (SpPresenter new
+							 layout: (SpBoxLayout newTopToBottom
+									  borderWidth: 2;
+									  spacing: 0;
+									  add: (self newLabel label: 'Name already exists');
+									  yourself);
+							 yourself);
+					popup.
+				^ false ] ] ].
 
 
 	^ true
