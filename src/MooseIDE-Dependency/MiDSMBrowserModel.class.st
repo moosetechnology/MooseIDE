@@ -244,12 +244,12 @@ MiDSMBrowserModel >> orderNodes: entities [
 		dependents at: toEntity put: (dependents at: toEntity) + 1.
 		weights at: toEntity put: (weights at: toEntity) + pairDependencies size.
 	].
-
-	^(entities sorted: [ :entityA :entityB |
-		((dependents at: entityA) < (dependents at: entityB))
-		or: [ ((dependents at: entityA) = (dependents at: entityB)) and:
-				[ (weights at: entityA) < (weights at: entityB) ] ]
-	])
+	
+	^(entities sorted:
+		([:entityA | dependents at: entityA] ascending, 
+		[:entityA | weights at: entityA] ascending,
+		[:entityA | entityA name ] ascending)
+	) 	
 		collect: [ :entity | graph findNode: entity ]
 ]
 
