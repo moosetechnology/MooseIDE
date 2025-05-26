@@ -49,5 +49,5 @@ MooseLoadFamixCppMenuCommand >> repositoryURL [
 { #category : #accessing }
 MooseLoadFamixCppMenuCommand >> version [
 
-	^ 'main'
+	^ 'v1.0.1'
 ]
