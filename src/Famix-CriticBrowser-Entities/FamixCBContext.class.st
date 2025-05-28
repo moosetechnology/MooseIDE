@@ -127,7 +127,6 @@ FamixCBContext >> contextFilter [
 { #category : #accessing }
 FamixCBContext >> contextFilter: anObject [
 
-	<generated>
 	anObject asCBContextFilterIn: self
 ]
 
