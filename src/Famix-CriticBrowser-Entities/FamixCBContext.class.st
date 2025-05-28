@@ -15,7 +15,7 @@
 
 | Name | Type | Default value | Comment |
 |---|
-| `contextBlock` | `Object` | nil | Block to execute to get the context's entities|
+| `contextFilter` | `Object` | nil | Filter applied on entities. It can be a block or a custom object|
 | `name` | `String` | nil | Basic name of the entity, not full reference.|
 | `summary` | `String` | nil | A rule component can have an explanatory summary|
 
@@ -27,7 +27,7 @@ Class {
 	#classTraits : 'FamixCBTRuleComponent classTrait',
 	#instVars : [
 		'#children => FMMany type: #FamixCBTRuleComponent opposite: #parent',
-		'#contextBlock => FMProperty'
+		'#contextFilter => FMProperty'
 	],
 	#category : #'Famix-CriticBrowser-Entities-Entities'
 }
@@ -43,10 +43,11 @@ FamixCBContext class >> annotation [
 
 { #category : #'instance creation' }
 FamixCBContext class >> named: aString on: anObject [
+
 	^ self new
-		name: aString;
-		contextBlock: anObject;
-		yourself
+		  name: aString;
+		  contextFilter: anObject;
+		  yourself
 ]
 
 { #category : #'instance creation' }
@@ -95,16 +96,57 @@ FamixCBContext >> children: anObject [
 { #category : #accessing }
 FamixCBContext >> contextBlock [
 
-	<FMProperty: #contextBlock type: #Object>
-	<generated>
-	<FMComment: 'Block to execute to get the context''s entities'>
-	^ contextBlock
+	self
+		deprecated: 'Please use #contextFilter instead'
+		transformWith:
+		'`@receiver contextBlock' -> '`@receiver contextFilter'.
+	^ self contextFilter
 ]
 
 { #category : #accessing }
 FamixCBContext >> contextBlock: anObject [
 
-	contextBlock := Smalltalk compiler evaluate: anObject
+	self
+		deprecated: 'Please use #contextFilter: instead'
+		transformWith:
+		'`@receiver contextBlock: `@arg'
+		-> '`@receiver contextFilter: `@arg'.
+
+	self contextFilter: anObject
+]
+
+{ #category : #accessing }
+FamixCBContext >> contextFilter [
+
+	<FMProperty: #contextFilter type: #Object>
+	<generated>
+	<FMComment: 'Filter applied on entities. It can be a block or a custom object'>
+	^ contextFilter
+]
+
+{ #category : #accessing }
+FamixCBContext >> contextFilter: anObject [
+
+	<generated>
+	anObject asCBContextFilterIn: self
+]
+
+{ #category : #accessing }
+FamixCBContext >> contextFilterBlock: aBlock [
+
+	contextFilter := aBlock
+]
+
+{ #category : #accessing }
+FamixCBContext >> contextFilterString: aString [
+
+	contextFilter := Smalltalk compiler evaluate: aString
+]
+
+{ #category : #accessing }
+FamixCBContext >> customContextFilter: anObject [
+
+	contextFilter := anObject
 ]
 
 { #category : #accessing }
@@ -134,7 +176,7 @@ FamixCBContext >> isCBContext [
 { #category : #printing }
 FamixCBContext >> printAsBlock [
 
-	^ contextBlock asString
+	^ contextFilter asString
 ]
 
 { #category : #'as yet unclassified' }
@@ -171,15 +213,14 @@ FamixCBContext >> runDownTree: aCollection withCallback: aBlock [
 { #category : #running }
 FamixCBContext >> runOn: aCollection [
 
-	self entities: (contextBlock value: aCollection)
-
+	self entities: (contextFilter value: aCollection)
 ]
 
 { #category : #running }
 FamixCBContext >> runOn: aCollection withCallback: aBlock [
 
 	aBlock value: self name.
-	self entities: (contextBlock value: aCollection)
+	self entities: (contextFilter value: aCollection)
 ]
 
 { #category : #'as yet unclassified' }

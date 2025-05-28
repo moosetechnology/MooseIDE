@@ -1,0 +1,17 @@
+Class {
+	#name : #FamixCBContextFilter,
+	#superclass : #Object,
+	#category : #'Famix-CriticBrowser-Entities'
+}
+
+{ #category : #converting }
+FamixCBContextFilter >> asCBContextFilterIn: aFamixCBContext [
+
+	aFamixCBContext customContextFilter: self
+]
+
+{ #category : #evaluating }
+FamixCBContextFilter >> value [
+
+	self subclassResponsibility
+]
