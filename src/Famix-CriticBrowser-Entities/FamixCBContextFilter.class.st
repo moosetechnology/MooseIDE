@@ -11,7 +11,7 @@ FamixCBContextFilter >> asCBContextFilterIn: aFamixCBContext [
 ]
 
 { #category : #evaluating }
-FamixCBContextFilter >> value [
+FamixCBContextFilter >> value: aCollection [
 
 	self subclassResponsibility
 ]
