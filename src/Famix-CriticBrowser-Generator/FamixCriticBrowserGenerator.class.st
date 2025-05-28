@@ -56,8 +56,8 @@ FamixCriticBrowserGenerator >> defineProperties [
 
 	(tRuleComponent property: #summary type: #String) comment:
 		'A rule component can have an explanatory summary'.
-	(context property: #contextBlock type: #Object) comment:
-		'Block to execute to get the context''s entities'.
+	(context property: #contextFilter type: #Object) comment:
+		'Filter applied on entities. It can be a block or a custom object'.
 	(condition property: #query type: #Object) comment:
 		'Block to execute to find violations to the condition within the parent context'.
 	(condition property: #severity type: #Object) comment:

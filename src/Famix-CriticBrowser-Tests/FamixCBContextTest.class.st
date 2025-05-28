@@ -90,6 +90,28 @@ FamixCBContextTest >> testAllParents [
 ]
 
 { #category : #tests }
+FamixCBContextTest >> testCustomContextFilter [
+
+	| customFilterClass customCondition |
+	customFilterClass := FamixCBContextFilter newAnonymousSubclass
+		                     compile: 'value: aCollection
+	^ aCollection select: #isType 
+';
+		                     yourself.
+
+	customCondition := FamixCBContext new contextFilter:
+		                   customFilterClass new.
+	customCondition runOn: {
+			contextEntity.
+			childContextEntity.
+			entity }.
+
+	self assertCollection: customCondition entities hasSameElements: {
+			contextEntity.
+			childContextEntity }
+]
+
+{ #category : #tests }
 FamixCBContextTest >> testPutViolationsInto [
 	| violations |
 	
