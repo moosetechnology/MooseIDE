@@ -4,7 +4,6 @@ Class {
 	#instVars : [
 		'commentNoteBook',
 		'entities',
-		'properties',
 		'map',
 		'propertiesRelationsTable',
 		'propertiesPropertiesTable',

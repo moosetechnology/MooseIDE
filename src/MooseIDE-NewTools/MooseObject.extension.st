@@ -12,44 +12,10 @@ MooseObject class >> inspectorToString [
 ]
 
 { #category : #'*MooseIDE-NewTools' }
-MooseObject >> miFameInspectorExtension: aBuilder [
-
-	<inspectorPresentationOrder: 3 title: 'Fame'>
-	^ aBuilder newTable
-		  items: self mooseDescription allComplexProperties;
-		  sortingBlock: #fullName ascending;
-		  addColumn:
-			  (SpStringTableColumn
-				   title: 'Name'
-				   evaluated: [ :item | item name ]) beSortable;
-		  addColumn: (SpStringTableColumn
-				   title: 'Type'
-				   evaluated: [ :item | item type name ]) beSortable;
-		  addColumn:
-			  (SpStringTableColumn title: 'Opposite' evaluated: [ :item |
-					   item opposite
-						   ifNil: [ '' ]
-						   ifNotNil: [ :opposite | opposite name ] ]) beSortable;
-		  addColumn: (SpStringTableColumn
-				   title: 'Derived?'
-				   evaluated: [ :item | item isDerived ]) beSortable;
-		  addColumn: (SpStringTableColumn
-				   title: 'Container?'
-				   evaluated: [ :item | item isContainer ]) beSortable;
-		  addColumn: (SpStringTableColumn
-				   title: 'IsTarget?'
-				   evaluated: [ :item | item isTarget ]) beSortable;
-		  addColumn: (SpStringTableColumn
-				   title: 'IsSource?'
-				   evaluated: [ :item | item isSource ]) beSortable;
-		  beResizable
-]
-
-{ #category : #'*MooseIDE-NewTools' }
-MooseObject >> miMetaNavigationInspectorExtension [
+MooseObject >> miInspectionNavigation: aBuilder [
 
 	<inspectorPresentationOrder: 1 title: 'Navigation'>
-	^ MiMetaNavigationBrowser on: self
+	^ aBuilder instantiate: MiMetaNavigationBrowser on: self
 ]
 
 { #category : #'*MooseIDE-NewTools' }

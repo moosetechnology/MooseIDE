@@ -32,7 +32,6 @@ Class {
 	#instVars : [
 		'navigation',
 		'model',
-		'properties',
 		'actionBar',
 		'shouldShowPropertiesPane'
 	],

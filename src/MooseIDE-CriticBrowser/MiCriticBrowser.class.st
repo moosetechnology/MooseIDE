@@ -240,33 +240,34 @@ MiCriticBrowser >> importRulesFromStream: aStream [
 	reader close.
 
 	(rulesCollection select: [ :rc | rc class = FamixCBCondition ]) do: [
-		:cond |
-		| temp |
-		temp := Smalltalk compiler evaluate: cond query.
-		temp class = FullBlockClosure
-			ifTrue: [ cond query: (FamixCBQueryHandler on: cond query) ]
-			ifFalse: [
-				temp isScriptQuery 
-					ifTrue: [
-						| query |
-						query := FamixCBScriptQueryHandler new
-							         innerQuery: (FQSelectScriptQuery script: temp script);
-							         yourself.
-						cond query: query ]
-					ifFalse: [ cond query: (FamixCBQueryHandler on: temp) ] ] ].
+			:cond |
+			| temp |
+			temp := Smalltalk compiler evaluate: cond query.
+			temp class = FullBlockClosure
+				ifTrue: [ cond query: (FamixCBQueryHandler on: cond query) ]
+				ifFalse: [
+						temp isScriptQuery
+							ifTrue: [
+									| query |
+									query := FamixCBScriptQueryHandler new
+										         innerQuery:
+											         (FQSelectScriptQuery script: temp script);
+										         yourself.
+									cond query: query ]
+							ifFalse: [ cond query: (FamixCBQueryHandler on: temp) ] ] ].
 	(rulesCollection select: [ :rc | rc class = FamixCBContext ]) do: [
-		:cont | cont contextBlock: cont contextBlock ].
+		:cont | cont contextFilter: cont contextFilter ].
 
 	index := 1.
 	hierarchy do: [ :parentIndex |
-		parentIndex = 0
-			ifTrue: [
-			specModel addChildToRootContext: (rulesCollection at: index) ]
-			ifFalse: [
-				specModel
-					addChild: (rulesCollection at: index)
-					toContext: (rulesCollection at: parentIndex) ].
-		index := index + 1 ]
+			parentIndex = 0
+				ifTrue: [
+				specModel addChildToRootContext: (rulesCollection at: index) ]
+				ifFalse: [
+						specModel
+							addChild: (rulesCollection at: index)
+							toContext: (rulesCollection at: parentIndex) ].
+			index := index + 1 ]
 ]
 
 { #category : #initialization }

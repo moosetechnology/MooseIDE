@@ -22,7 +22,7 @@ FamixCBRootContextTest >> testGetAllViolations [
 	entityViolating name: 'violation'.
 
 	rootContext := FamixCBRootContext new.
-	rootContext contextBlock: '[ :col | col ]'.
+	rootContext contextFilter: '[ :col | col ]'.
 
 	childContext := FamixCBContext
 		                named: 'Child of Root'
@@ -41,12 +41,13 @@ FamixCBRootContextTest >> testGetAllViolations [
 	rootContext addChild: childContext.
 	rootContext addChild: condition.
 	childContext addChild: childCondition.
-	rootContext runDownTree: {
-			contextEntity.
-			entity.
-			childEntityViolating.
-			entityViolating }
-			withCallback: [:e | ].
+	rootContext
+		runDownTree: {
+				contextEntity.
+				entity.
+				childEntityViolating.
+				entityViolating }
+		withCallback: [ :e |  ].
 	violations := rootContext getAllViolations.
 	self assert: violations class equals: Dictionary.
 	self assertCollection: violations keys hasSameElements: {

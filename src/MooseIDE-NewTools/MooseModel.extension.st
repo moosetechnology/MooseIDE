@@ -1,10 +1,10 @@
 Extension { #name : #MooseModel }
 
 { #category : #'*MooseIDE-NewTools' }
-MooseModel >> miMetaNavigationInspectorExtension [
+MooseModel >> miInspectionNavigation: aBuilder [
 
 	<inspectorPresentationOrder: -100 title: 'Navigation'>
-	^ MiMetaModelNavigationBrowser on: self
+	^ aBuilder instantiate: MiMetaModelNavigationBrowser on: self
 ]
 
 { #category : #'*MooseIDE-NewTools' }

@@ -13,14 +13,7 @@ Class {
 }
 
 { #category : #initialization }
-MiObjectContextPresenter >> initializePresenters [
-
-	view := self model newInspectionView.
-	self intializePresentersWithBetterEvaluator
-]
-
-{ #category : #initialization }
-MiObjectContextPresenter >> intializePresentersWithBetterEvaluator [
+MiObjectContextPresenter >> intializePresentersWithEvaluator [
 
 	| mainLayout toogled |
 	toogled := false.
