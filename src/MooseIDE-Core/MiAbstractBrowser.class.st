@@ -326,12 +326,6 @@ MiAbstractBrowser class >> taskbarIcon [
 
 ]
 
-{ #category : #accessing }
-MiAbstractBrowser class >> titleForModelName: mooseModelName [
-
-	^ self title , ' (' , mooseModelName , ')'
-]
-
 { #category : #testing }
 MiAbstractBrowser >> acceptsDropFileExtension: aString [
 	^false
@@ -445,8 +439,10 @@ MiAbstractBrowser >> followBus: aBus [
 
 { #category : #actions }
 MiAbstractBrowser >> followEntity: anEntity [
-   anEntity ifNotNil: [ self updateWindowTitleWith: anEntity ].
-	
+
+	anEntity ifNotNil: [
+			self withWindowDo: [ :window |
+				window title: (self windowTitleFor: anEntity) ] ]
 ]
 
 { #category : #actions }
@@ -665,19 +661,18 @@ MiAbstractBrowser >> updateToolbar [
 	self window ifNotNil: [ :window | window updateToolbar ]
 ]
 
-{ #category : #actions }
-MiAbstractBrowser >> updateWindowTitleWith: anEntity [
-
-	| modelName |
-	modelName := (anEntity isMooseObject and: [ anEntity isMooseModel ])
-		             ifTrue: [ anEntity name ]
-		             ifFalse: [ anEntity printString ].
-	self withWindowDo: [ :window |
-		window title: (self class titleForModelName: modelName) ]
-]
-
-{ #category : #initialization }
+{ #category : #accessing }
 MiAbstractBrowser >> windowTitle [
 
 	^ self class title
+]
+
+{ #category : #accessing }
+MiAbstractBrowser >> windowTitleFor: anEntity [
+
+	^ String streamContents: [ :stream |
+			  stream
+				  << self class title;
+				  << ' on '.
+			  anEntity displayStringOn: stream ]
 ]

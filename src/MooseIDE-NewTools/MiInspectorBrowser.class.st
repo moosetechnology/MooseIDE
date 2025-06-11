@@ -98,7 +98,7 @@ MiInspectorBrowser >> followEntity: anEntity [
 	anEntity ifNil: [ ^ self ].
 	self model entity: anEntity.
 	mainPresenter model: self model entity.
-	self updateWindowTitle: self window.
+	self withWindowDo: [ :window | window title: self windowTitle ].
 	self updateToolbar
 ]
 
@@ -106,13 +106,6 @@ MiInspectorBrowser >> followEntity: anEntity [
 MiInspectorBrowser >> initializePresenters [
 
 	mainPresenter := self instantiate: MiInspector on: self model entity
-]
-
-{ #category : #initialization }
-MiInspectorBrowser >> initializeWindow: aWindow [
-
-	super initializeWindow: aWindow.
-	self updateWindowTitle: aWindow
 ]
 
 { #category : #accessing }
@@ -123,13 +116,8 @@ MiInspectorBrowser >> miSelectedItem [
 	^ lastInspectorPage model inspectedObject
 ]
 
-{ #category : #initialization }
-MiInspectorBrowser >> updateWindowTitle: aWindow [
+{ #category : #accessing }
+MiInspectorBrowser >> windowTitle [
 
-	| title |
-	title := self class title , ' on {1}' format:
-		         { ([ self model entity displayString ]
-			          on: Error
-			          do: [ :e | e printString ]) }.
-	aWindow ifNotNil: [ aWindow title: title ]
+	^ self windowTitleFor: self model entity
 ]
