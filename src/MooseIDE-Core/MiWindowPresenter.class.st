@@ -80,8 +80,7 @@ MiWindowPresenter >> defaultInitialExtent [
 
 { #category : #'window management' }
 MiWindowPresenter >> restore [
-	"We have to get to the adpater because #restore is not in SpWindowPresenter yet. 
-	Fix is in Pharo 13. We will remove this method when using Pharo 13."
+	"We have to get to the adpater because #restore is not in SpWindowPresenter yet"
 
 	self withAdapterDo: [ :windowAdapter |
 		windowAdapter widgetDo: [ :widget | widget restore ] ]

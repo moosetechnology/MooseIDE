@@ -61,6 +61,12 @@ MiPlaygroundBrowser class >> open [
 	^ super open
 ]
 
+{ #category : #specs }
+MiPlaygroundBrowser class >> preferredExtent [
+
+	^ StPlaygroundPresenter preferredExtent
+]
+
 { #category : #'as yet unclassified' }
 MiPlaygroundBrowser class >> receivedEntityBindingName [
 
@@ -82,16 +88,16 @@ MiPlaygroundBrowser class >> registerToolsOn: registry [
 	registry register: self as: #workspace
 ]
 
+{ #category : #testing }
+MiPlaygroundBrowser class >> shouldBuildToolbar [
+
+	^ false
+]
+
 { #category : #specs }
 MiPlaygroundBrowser class >> title [
 
 	^ 'Moose Playground'
-]
-
-{ #category : #specs }
-MiPlaygroundBrowser class >> windowSize [
-
-	^ StPlaygroundPresenter preferredExtent
 ]
 
 { #category : #testing }
@@ -145,12 +151,6 @@ MiPlaygroundBrowser >> miInspect [
 MiPlaygroundBrowser >> miSelectedItem [
 
 	^ playground firstPage evaluate
-]
-
-{ #category : #testing }
-MiPlaygroundBrowser >> shouldBuildToolbar [
-
-	^ false
 ]
 
 { #category : #actions }

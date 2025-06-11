@@ -61,14 +61,14 @@ MiDuplicationBrowser class >> open [
 ]
 
 { #category : #specs }
-MiDuplicationBrowser class >> title [
-	^ 'Duplication browser'
+MiDuplicationBrowser class >> preferredExtent [
+
+	^ 1000 @ 500
 ]
 
 { #category : #specs }
-MiDuplicationBrowser class >> windowSize [
-
-	^ 1000 @ 500
+MiDuplicationBrowser class >> title [
+	^ 'Duplication browser'
 ]
 
 { #category : #'accessing - private tests' }

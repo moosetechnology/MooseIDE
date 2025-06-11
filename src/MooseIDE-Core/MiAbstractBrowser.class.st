@@ -301,11 +301,23 @@ MiAbstractBrowser class >> openOn: anEntity [
 		  yourself
 ]
 
+{ #category : #specs }
+MiAbstractBrowser class >> preferredExtent [
+
+	^ 500 @ 400
+]
+
 { #category : #keymaps }
 MiAbstractBrowser class >> shortcut [
 
 	^ self browserKey ifNotNil: [ :aCharacter |
 		  $m shift meta , aCharacter shift meta ]
+]
+
+{ #category : #testing }
+MiAbstractBrowser class >> shouldBuildToolbar [
+
+	^ true
 ]
 
 { #category : #accessing }
@@ -318,12 +330,6 @@ MiAbstractBrowser class >> taskbarIcon [
 MiAbstractBrowser class >> titleForModelName: mooseModelName [
 
 	^ self title , ' (' , mooseModelName , ')'
-]
-
-{ #category : #specs }
-MiAbstractBrowser class >> windowSize [
-
-	^ 500 @ 400
 ]
 
 { #category : #testing }
@@ -340,6 +346,7 @@ MiAbstractBrowser >> beFrozen [
 
 { #category : #'window control' }
 MiAbstractBrowser >> browserClosed [
+
 	buses do: [ :bus | bus unregisterBrowser: self ]
 ]
 
@@ -494,14 +501,15 @@ MiAbstractBrowser >> initializeWindow: aMiWindowPresenter [
 
 	super initializeWindow: aMiWindowPresenter.
 
-	self shouldBuildToolbar ifTrue: [ aMiWindowPresenter buildToolbar ].
+	self class shouldBuildToolbar ifTrue: [
+		aMiWindowPresenter buildToolbar ].
+	aMiWindowPresenter setContextBindingKeys.
 
 	aMiWindowPresenter whenClosedDo: [ self browserClosed ].
 	aMiWindowPresenter withAdapterPerformOrDefer: [ :anAdapter |
 		self registerToAdapterEvents: anAdapter ].
 
-	aMiWindowPresenter initialExtent: self class windowSize.
-	aMiWindowPresenter setContextBindingKeys
+	aMiWindowPresenter initialExtent: self class preferredExtent
 ]
 
 { #category : #'private - for tests' }
@@ -575,8 +583,15 @@ MiAbstractBrowser >> registerToAdapterEvents: anAdapter [
 	"spec does not give access to window collapsing/expanding events
 	 This is a hack to get them on Morph backend"
 
-	anAdapter widget announcer when: WindowCollapsed do: [ self browserCollapsed ] for: self.
-	anAdapter widget announcer when: WindowExpanded do: [ self browserExpanded ] for: self
+	anAdapter widget announcer
+		when: WindowCollapsed
+		do: [ self browserCollapsed ]
+		for: self.
+
+	anAdapter widget announcer
+		when: WindowExpanded
+		do: [ self browserExpanded ]
+		for: self
 ]
 
 { #category : #accessing }
@@ -612,12 +627,6 @@ MiAbstractBrowser >> setModelBeforeInitialization: aBrowserModel [
 MiAbstractBrowser >> settings [
 
 	self hasSettings ifTrue: [ specModel openSettings ]
-]
-
-{ #category : #testing }
-MiAbstractBrowser >> shouldBuildToolbar [
-
-	^ true
 ]
 
 { #category : #accessing }
@@ -665,4 +674,10 @@ MiAbstractBrowser >> updateWindowTitleWith: anEntity [
 		             ifFalse: [ anEntity printString ].
 	self withWindowDo: [ :window |
 		window title: (self class titleForModelName: modelName) ]
+]
+
+{ #category : #initialization }
+MiAbstractBrowser >> windowTitle [
+
+	^ self class title
 ]

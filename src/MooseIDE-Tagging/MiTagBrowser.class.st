@@ -65,15 +65,15 @@ MiTagBrowser class >> open [
 ]
 
 { #category : #specs }
-MiTagBrowser class >> title [
+MiTagBrowser class >> preferredExtent [
 
-	^ 'Tag browser'
+	^ 700 @ 475
 ]
 
 { #category : #specs }
-MiTagBrowser class >> windowSize [
+MiTagBrowser class >> title [
 
-	^ 700 @ 475
+	^ 'Tag browser'
 ]
 
 { #category : #initialization }

@@ -66,15 +66,15 @@ MiQueriesBrowser class >> open [
 ]
 
 { #category : #specs }
-MiQueriesBrowser class >> title [
+MiQueriesBrowser class >> preferredExtent [
 
-	^ 'Queries Browser'
+	^ 650 @ 420
 ]
 
 { #category : #specs }
-MiQueriesBrowser class >> windowSize [
+MiQueriesBrowser class >> title [
 
-	^ 650 @ 420
+	^ 'Queries Browser'
 ]
 
 { #category : #'window control' }

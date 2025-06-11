@@ -68,15 +68,15 @@ MiButterflyMapBrowser class >> open [
 ]
 
 { #category : #specs }
-MiButterflyMapBrowser class >> title [
+MiButterflyMapBrowser class >> preferredExtent [
 
-	^ 'Butterfly map'
+	^ 850 @ 520
 ]
 
 { #category : #specs }
-MiButterflyMapBrowser class >> windowSize [
+MiButterflyMapBrowser class >> title [
 
-	^ 850 @ 520
+	^ 'Butterfly map'
 ]
 
 { #category : #testing }

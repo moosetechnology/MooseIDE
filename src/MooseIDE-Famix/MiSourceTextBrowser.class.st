@@ -57,15 +57,15 @@ MiSourceTextBrowser class >> open [
 ]
 
 { #category : #specs }
-MiSourceTextBrowser class >> title [
+MiSourceTextBrowser class >> preferredExtent [
 
-	^ 'Source code'
+	^ 600 @ 700
 ]
 
 { #category : #specs }
-MiSourceTextBrowser class >> windowSize [
+MiSourceTextBrowser class >> title [
 
-	^ 600 @ 700
+	^ 'Source code'
 ]
 
 { #category : #testing }

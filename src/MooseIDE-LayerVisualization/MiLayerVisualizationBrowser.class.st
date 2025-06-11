@@ -34,16 +34,16 @@ MiLayerVisualizationBrowser class >> menuPriority [
 	^ self menuVisualizationToolsPriority + 1
 ]
 
+{ #category : #specs }
+MiLayerVisualizationBrowser class >> preferredExtent [
+
+	^ self currentWorld extent
+]
+
 { #category : #'world menu' }
 MiLayerVisualizationBrowser class >> title [
 
 	^ 'Layer visualization'
-]
-
-{ #category : #specs }
-MiLayerVisualizationBrowser class >> windowSize [
-
-	^ self currentWorld extent
 ]
 
 { #category : #testing }

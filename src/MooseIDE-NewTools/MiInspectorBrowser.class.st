@@ -72,15 +72,15 @@ MiInspectorBrowser class >> open [
 ]
 
 { #category : #specs }
-MiInspectorBrowser class >> title [
+MiInspectorBrowser class >> preferredExtent [
 
-	^ 'Moose Inspector'
+	^ 700 @ 500
 ]
 
 { #category : #specs }
-MiInspectorBrowser class >> windowSize [
+MiInspectorBrowser class >> title [
 
-	^ 700 @ 500
+	^ 'Moose Inspector'
 ]
 
 { #category : #testing }

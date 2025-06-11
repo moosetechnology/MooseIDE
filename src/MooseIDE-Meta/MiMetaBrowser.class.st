@@ -68,15 +68,15 @@ MiMetaBrowser class >> open [
 ]
 
 { #category : #specs }
-MiMetaBrowser class >> title [
+MiMetaBrowser class >> preferredExtent [
 
-	^ 'Meta Browser'
+	^ 750 @ 550
 ]
 
 { #category : #specs }
-MiMetaBrowser class >> windowSize [
+MiMetaBrowser class >> title [
 
-	^ 750 @ 550
+	^ 'Meta Browser'
 ]
 
 { #category : #testing }

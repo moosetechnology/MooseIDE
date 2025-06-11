@@ -91,15 +91,15 @@ MiCriticBrowser class >> open [
 ]
 
 { #category : #specs }
-MiCriticBrowser class >> title [
+MiCriticBrowser class >> preferredExtent [
 
-	^ 'Moose Critic Browser'
+	^ 1280 @ 560
 ]
 
 { #category : #specs }
-MiCriticBrowser class >> windowSize [
+MiCriticBrowser class >> title [
 
-	^ 1280 @ 560
+	^ 'Moose Critic Browser'
 ]
 
 { #category : #layout }

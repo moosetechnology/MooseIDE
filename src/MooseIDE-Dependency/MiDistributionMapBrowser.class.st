@@ -66,15 +66,15 @@ MiDistributionMapBrowser class >> open [
 ]
 
 { #category : #specs }
-MiDistributionMapBrowser class >> title [
+MiDistributionMapBrowser class >> preferredExtent [
 
-	^ 'Distribution map'
+	^ 850 @ 520
 ]
 
 { #category : #specs }
-MiDistributionMapBrowser class >> windowSize [
+MiDistributionMapBrowser class >> title [
 
-	^ 850 @ 520
+	^ 'Distribution map'
 ]
 
 { #category : #adding }
