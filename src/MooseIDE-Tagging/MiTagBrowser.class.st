@@ -228,7 +228,7 @@ MiTagBrowser >> remove: aTagAssociation [
 { #category : #initialization }
 MiTagBrowser >> setTagTo: aTag [
 
-	self model currentTag: aTag.
+	self specModel currentTag: aTag.
 	self updateToolbar
 ]
 

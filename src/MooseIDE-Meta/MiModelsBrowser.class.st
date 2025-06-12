@@ -136,13 +136,13 @@ MiModelsBrowser >> followEntity: anEntity [
 { #category : #actions }
 MiModelsBrowser >> handleDropFile: aFileReference [
 
-	self model autoImportSetting
+	self specModel autoImportSetting
 		ifTrue: [
 		self importFromFileUI handleDropFileAndImport: aFileReference ]
 		ifFalse: [
-			self importFromFileUI
-				openDialog;
-				handleDropFile: aFileReference ]
+				self importFromFileUI
+					openDialog;
+					handleDropFile: aFileReference ]
 ]
 
 { #category : #testing }

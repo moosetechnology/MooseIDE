@@ -25,21 +25,22 @@ Internal Representation and Key Implementation Points.
     Implementation Points
 "
 Class {
-	#name : #MiMetaNavigationBrowser,
+	#name : #MiNavigationInspectionTab,
 	#superclass : #StPresenter,
 	#traits : 'SpTActivable',
 	#classTraits : 'SpTActivable classTrait',
 	#instVars : [
 		'navigation',
-		'model',
 		'actionBar',
-		'shouldShowPropertiesPane'
+		'shouldShowPropertiesPane',
+		'inspectedObject',
+		'propertiesPane'
 	],
 	#category : #'MooseIDE-NewTools-Inspector tabs'
 }
 
 { #category : #specs }
-MiMetaNavigationBrowser class >> buildCommandsGroupWith: presenter forRoot: aCmCommandsGroup [
+MiNavigationInspectionTab class >> buildCommandsGroupWith: presenter forRoot: aCmCommandsGroup [
 
 	aCmCommandsGroup
 		beDisplayedAsGroup;
@@ -50,38 +51,38 @@ MiMetaNavigationBrowser class >> buildCommandsGroupWith: presenter forRoot: aCmC
 ]
 
 { #category : #'as yet unclassified' }
-MiMetaNavigationBrowser class >> defaultShouldShowPropertiesPane [
+MiNavigationInspectionTab class >> defaultShouldShowPropertiesPane [
 
 	^ false
 ]
 
 { #category : #'private - actions' }
-MiMetaNavigationBrowser >> activate [
+MiNavigationInspectionTab >> activate [
 
 	activationAction cull:
 		(SpActivatedSelection newValue: navigation selectedItem value)
 ]
 
 { #category : #api }
-MiMetaNavigationBrowser >> activateOnDoubleClick [
+MiNavigationInspectionTab >> activateOnDoubleClick [
 
 	navigation activateOnDoubleClick
 ]
 
 { #category : #api }
-MiMetaNavigationBrowser >> activateOnSingleClick [
+MiNavigationInspectionTab >> activateOnSingleClick [
 
 	navigation activateOnSingleClick
 ]
 
 { #category : #'private - display' }
-MiMetaNavigationBrowser >> childrenFor: anEntity [
+MiNavigationInspectionTab >> childrenFor: anEntity [
 
 	^ self itemsFor: anEntity value
 ]
 
 { #category : #layout }
-MiMetaNavigationBrowser >> defaultLayout [
+MiNavigationInspectionTab >> defaultLayout [
 
 	^ SpBoxLayout newTopToBottom
 		  add: navigation;
@@ -90,19 +91,19 @@ MiMetaNavigationBrowser >> defaultLayout [
 ]
 
 { #category : #layout }
-MiMetaNavigationBrowser >> hidePropertiesPane [
+MiNavigationInspectionTab >> hidePropertiesPane [
 
-	self layout remove: properties
+	self layout remove: propertiesPane
 ]
 
 { #category : #'private - display' }
-MiMetaNavigationBrowser >> iconBlock [
+MiNavigationInspectionTab >> iconBlock [
 
 	^ [ :el | el value mooseIcon ]
 ]
 
 { #category : #initialization }
-MiMetaNavigationBrowser >> initialize [
+MiNavigationInspectionTab >> initialize [
 
 	super initialize.
 	activationAction := SpActivationHolder new.
@@ -110,7 +111,7 @@ MiMetaNavigationBrowser >> initialize [
 ]
 
 { #category : #initialization }
-MiMetaNavigationBrowser >> initializeNavigationTreeTable [
+MiNavigationInspectionTab >> initializeNavigationTreeTable [
 
 	navigation := self newTreeTable.
 	navigation
@@ -129,12 +130,12 @@ MiMetaNavigationBrowser >> initializeNavigationTreeTable [
 	navigation
 		children: [ :anEntity | self childrenFor: anEntity ];
 		contextMenu: [ self rootCommandsGroup asMenuPresenter ];
-		items: (self itemsFor: self model);
+		items: (self itemsFor: self inspectedObject);
 		whenActivatedDo: [ self activate ]
 ]
 
 { #category : #initialization }
-MiMetaNavigationBrowser >> initializePresenters [
+MiNavigationInspectionTab >> initializePresenters [
 
 	self initializeNavigationTreeTable.
 
@@ -147,24 +148,24 @@ MiMetaNavigationBrowser >> initializePresenters [
 			 yourself)
 ]
 
+{ #category : #accessing }
+MiNavigationInspectionTab >> inspectedObject [
+	^ inspectedObject
+]
+
+{ #category : #accessing }
+MiNavigationInspectionTab >> inspectedObject: anObject [
+	inspectedObject := anObject
+]
+
 { #category : #'private - display' }
-MiMetaNavigationBrowser >> itemsFor: anObject [
+MiNavigationInspectionTab >> itemsFor: anObject [
 
 	^ anObject miMetaNavigationItems
 ]
 
-{ #category : #accessing }
-MiMetaNavigationBrowser >> model [
-	^ model
-]
-
-{ #category : #accessing }
-MiMetaNavigationBrowser >> model: anObject [
-	model := anObject
-]
-
 { #category : #'private - display' }
-MiMetaNavigationBrowser >> printEntry: anAssociation [
+MiNavigationInspectionTab >> printEntry: anAssociation [
 
 	^ String streamContents: [ :s |
 		  s << anAssociation key.
@@ -176,19 +177,19 @@ MiMetaNavigationBrowser >> printEntry: anAssociation [
 ]
 
 { #category : #accessing }
-MiMetaNavigationBrowser >> selectedObject [
+MiNavigationInspectionTab >> selectedObject [
 
 	^ navigation selection selectedItem value
 ]
 
 { #category : #'accessing - model' }
-MiMetaNavigationBrowser >> setModelBeforeInitialization: anInspectionModel [ 
+MiNavigationInspectionTab >> setModelBeforeInitialization: anInspectionModel [ 
 
-	model := anInspectionModel
+	inspectedObject := anInspectionModel
 ]
 
 { #category : #testing }
-MiMetaNavigationBrowser >> shouldShowPropertiesPane [
+MiNavigationInspectionTab >> shouldShowPropertiesPane [
 	"This is legacy. Not removed because it may be used? If so, it should be a setting. Else, removed"
 
 	^ shouldShowPropertiesPane ifNil: [
@@ -196,8 +197,9 @@ MiMetaNavigationBrowser >> shouldShowPropertiesPane [
 ]
 
 { #category : #layout }
-MiMetaNavigationBrowser >> showPropertiesPane [
+MiNavigationInspectionTab >> showPropertiesPane [
 
-	properties ifNil: [ properties := MiPropertyExtension on: self model ].
-	self layout add: properties
+	propertiesPane ifNil: [
+		propertiesPane := MiPropertyExtension on: self inspectedObject ].
+	self layout add: propertiesPane
 ]

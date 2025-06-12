@@ -33,7 +33,7 @@ MiTagExtentPage >> add [
 		^ self ].
 
 	incomingEntitiesFilteringList selectedItems do: [ :entity |
-		self model tagEntityNotYourself: entity ].
+		self specModel tagEntityNotYourself: entity ].
 
 	self refreshTaggedEntitiesList.
 	self refreshEntitiesList.
@@ -43,9 +43,9 @@ MiTagExtentPage >> add [
 { #category : #action }
 MiTagExtentPage >> addAll [
 
-	self currentTag ifNil: [ ^ self ]. 
+	self currentTag ifNil: [ ^ self ].
 	incomingEntitiesFilteringList items do: [ :entity |
-		self model tagEntityNotYourself: entity ].
+		self specModel tagEntityNotYourself: entity ].
 	self refreshTaggedEntitiesList.
 	self refreshEntitiesList.
 	self refreshBrowserToolbar
@@ -54,7 +54,7 @@ MiTagExtentPage >> addAll [
 { #category : #accessing }
 MiTagExtentPage >> currentTag [
 
-	^ self model currentTag
+	^ self specModel currentTag
 ]
 
 { #category : #accessing }
@@ -162,8 +162,7 @@ MiTagExtentPage >> refreshBrowserToolbar [
 MiTagExtentPage >> refreshEntitiesList [
 
 	| untaggedEntities |
-
-	untaggedEntities := self model entities asCollection
+	untaggedEntities := self specModel entities asCollection
 	                    \ self taggedEntities asCollection.
 	untaggedEntities size < self class maxNumberOfEntitiesToSort ifTrue: [
 		untaggedEntities sort: [ :a :b | a name < b name ] ].
@@ -184,7 +183,7 @@ MiTagExtentPage >> remove [
 		^ self ].
 
 	taggedEntitiesFilteringList selectedItems do: [ :entity |
-		self model untagEntity: entity ].
+		self specModel untagEntity: entity ].
 	self refreshTaggedEntitiesList.
 	self refreshEntitiesList.
 	self refreshBrowserToolbar
@@ -195,7 +194,7 @@ MiTagExtentPage >> removeAll [
 
 	self currentTag ifNil: [ ^ self ].
 	taggedEntitiesFilteringList items do: [ :entity |
-		self model untagEntity: entity ].
+		self specModel untagEntity: entity ].
 	self refreshTaggedEntitiesList.
 	self refreshEntitiesList.
 	self refreshBrowserToolbar
@@ -217,6 +216,6 @@ MiTagExtentPage >> setTag: aTag [
 { #category : #accessing }
 MiTagExtentPage >> taggedEntities [
 
-	^ self model entitiesTaggedWithCurrentTag sort: [ :a :b | 
+	^ self specModel entitiesTaggedWithCurrentTag sort: [ :a :b |
 		  a name < b name ]
 ]

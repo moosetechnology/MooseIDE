@@ -33,5 +33,5 @@ MiCBAddContextCommand >> canBeExecuted [
 { #category : #executing }
 MiCBAddContextCommand >> execute [
 
-	(MiCBContextBuilderPresenter on: self context model) openDialog
+	(MiCBContextBuilderPresenter on: self context specModel) openDialog
 ]

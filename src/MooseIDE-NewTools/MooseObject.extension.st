@@ -15,7 +15,7 @@ MooseObject class >> inspectorToString [
 MooseObject >> miInspectionNavigation: aBuilder [
 
 	<inspectorPresentationOrder: 1 title: 'Navigation'>
-	^ aBuilder instantiate: MiMetaNavigationBrowser on: self
+	^ aBuilder instantiate: MiNavigationInspectionTab on: self
 ]
 
 { #category : #'*MooseIDE-NewTools' }

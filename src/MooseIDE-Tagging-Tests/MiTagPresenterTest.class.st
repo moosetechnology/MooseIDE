@@ -8,6 +8,12 @@ Class {
 	#category : #'MooseIDE-Tagging-Tests'
 }
 
+{ #category : #testing }
+MiTagPresenterTest class >> isAbstract [
+
+	^ self == MiTagPresenterTest
+]
+
 { #category : #'API - tags' }
 MiTagPresenterTest >> createCategory: aName [
 
@@ -17,7 +23,7 @@ MiTagPresenterTest >> createCategory: aName [
 { #category : #'API - tags' }
 MiTagPresenterTest >> createExtentTag: aName [
 
-	browser model
+	browser specModel
 		createTag: aName
 		description: nil
 		color: Color red
@@ -27,7 +33,7 @@ MiTagPresenterTest >> createExtentTag: aName [
 { #category : #'API - tags' }
 MiTagPresenterTest >> createIntentTag: aName [
 
-	browser model
+	browser specModel
 		createDynamicTag: aName
 		description: nil
 		color: Color blue

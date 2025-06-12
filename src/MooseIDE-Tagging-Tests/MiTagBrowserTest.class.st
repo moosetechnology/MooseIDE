@@ -38,8 +38,8 @@ MiTagBrowserTest >> receiveEntityToSelect [
 	| tag |
 	super receiveEntityToSelect.
 
-	tag := detailsPage model addTag: 'aTag'.
-	detailsPage model currentTag: tag.
+	tag := detailsPage specModel addTag: 'aTag'.
+	detailsPage specModel currentTag: tag.
 
 	browser refreshTagList.
 	browser tagManagementPage setTagTo: tag.
@@ -96,7 +96,7 @@ MiTagBrowserTest >> testIsProducerOfFamixTags [
 MiTagBrowserTest >> testNoTagDetailPageAddDoNothing [
 
 	| entities |
-	entities := browser model mooseModel entities.
+	entities := browser specModel mooseModel entities.
 	self assert: entities size equals: self mooseModelSize.
 
 	detailsPage addAll.
@@ -110,11 +110,11 @@ MiTagBrowserTest >> testNoTagDetailPageAddDoNothing [
 MiTagBrowserTest >> testTagDetailPageAddEntityToTag [
 
 	| entities tag |
-	entities := browser model mooseModel entities.
+	entities := browser specModel mooseModel entities.
 	self assert: entities size equals: self mooseModelSize.
 
-	tag := browser model addTag: 'aTag'.
-	browser model currentTag: tag.
+	tag := browser specModel addTag: 'aTag'.
+	browser specModel currentTag: tag.
 	detailsPage addAll.
 
 	self
@@ -127,29 +127,29 @@ MiTagBrowserTest >> testTagDuplicationReturnNilAtCreation [
 
 	| name firstTag duplicatedTag |
 	name := 'aTag'.
-	
-	firstTag := browser model
-		createTag: name
-		description: ''
-		color: Color red
-		category: nil.
 
-	duplicatedTag := browser model
-		createTag: name
-		description: ''
-		color: Color blue
-		category: nil.
+	firstTag := browser specModel
+		            createTag: name
+		            description: ''
+		            color: Color red
+		            category: nil.
 
-	self assert: browser model allTags size equals: 1.
+	duplicatedTag := browser specModel
+		                 createTag: name
+		                 description: ''
+		                 color: Color blue
+		                 category: nil.
+
+	self assert: browser specModel allTags size equals: 1.
 	self assert: firstTag isNotNil.
-	self assert: duplicatedTag isNil.
+	self assert: duplicatedTag isNil
 ]
 
 { #category : #tests }
 MiTagBrowserTest >> testTagModelInitialization [
 
 	| specModel |
-	specModel := browser model.
+	specModel := browser specModel.
 	self assert: specModel isNotNil.
 	self assert: specModel mooseModel isNotNil.
 	self assert: specModel mooseModel size equals: self mooseModelSize
@@ -159,8 +159,7 @@ MiTagBrowserTest >> testTagModelInitialization [
 MiTagBrowserTest >> testTagRemainSelectedOnRefresh [
 
 	| tagList |
-
-	browser model
+	browser specModel
 		createTag: 'aTag'
 		description: ''
 		color: Color red
@@ -174,5 +173,4 @@ MiTagBrowserTest >> testTagRemainSelectedOnRefresh [
 	browser refreshTagList.
 
 	self assert: tagList selectedItems size equals: 1
-
 ]

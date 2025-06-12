@@ -18,7 +18,7 @@ MiArchitecturalMapTest >> architecturalMapWith: entities [
 
 	"Mock MiArchitecturalMapBrowser with model -> mockModel"
 	mockBrowser := Mock named: 'MiArchitecturalMapBrowser'.
-	mockBrowser stub model willReturn: mockModel.
+	mockBrowser stub specModel willReturn: mockModel.
 
 	"MiArchitecturalMap with owner -> mockBrowser"
 	^ MiArchitecturalMapVisualization new owner: mockBrowser

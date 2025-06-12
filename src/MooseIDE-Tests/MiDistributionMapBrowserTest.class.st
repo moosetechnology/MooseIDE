@@ -38,11 +38,10 @@ MiDistributionMapBrowserTest >> testSettingsAction [
 MiDistributionMapBrowserTest >> testSettingsClickOK [
 	"overriding to setup the right context"
 
-	browser model entities: #().
+	browser specModel entities: #(  ).
 	self
-		shouldnt: [ 
-			browser settings.
-			browser model settings buttonOk click ]
-		raise: Error.
-
+		shouldnt: [
+				browser openSettings.
+				browser specModel settings buttonOk click ]
+		raise: Error
 ]

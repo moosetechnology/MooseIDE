@@ -204,7 +204,7 @@ MiCriticBrowser >> exportRulesToStream: aStream [
 MiCriticBrowser >> followEntity: anEntity [
 
 	super followEntity: anEntity.
-	self model setEntities: anEntity.
+	self specModel setEntities: anEntity.
 	self updateEntitiesList: specModel entities.
 	self updateRulesList.
 	self updateResultList: {  }
@@ -219,7 +219,7 @@ MiCriticBrowser >> importRules [
 		                 chooseExistingFileReference:
 		                 'Choose rules file to import'
 		                 extensions: { 'ston' }
-		                 path: './pharo-local'.
+		                 path: './pharo-local' asFileReference .
 	fileReference ifNotNil: [
 		fileReference readStreamDo: [ :stream |
 			self importRulesFromStream: stream.
@@ -278,7 +278,7 @@ MiCriticBrowser >> initializeLists [
 
 	rules := self newTree.
 	rules
-		items: { self model rootContext };
+		items: { self specModel rootContext };
 		display: [ :each | self displayRule: each ];
 		displayIcon: [ :each | self class iconForRuleComponent: each ];
 		children: [ :each | self class childrenForContext: each ];
@@ -356,14 +356,14 @@ MiCriticBrowser >> openEditRuleComponentDialog [
 MiCriticBrowser >> runAllRules [
 	"Executes the queries on the entities stored in the model, then prints the results"
 
-	self model run.
+	self specModel run.
 
 	[
-	self model run.
-	self updateStatusLabel: 'Updating display...'.
-	self updateResultList: specModel getAllViolations.
-	self updateRulesList.
-	self updateStatusLabel: 'Critics finished.' ] fork
+		self specModel run.
+		self updateStatusLabel: 'Updating display...'.
+		self updateResultList: specModel getAllViolations.
+		self updateRulesList.
+		self updateStatusLabel: 'Critics finished.' ] fork
 ]
 
 { #category : #actions }

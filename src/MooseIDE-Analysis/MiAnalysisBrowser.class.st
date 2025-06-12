@@ -29,8 +29,8 @@ MiAnalysisBrowser class >> duplicationAnalysis [
 
 	duplicationBrowser := MiDuplicationBrowser new.
 	duplicationBrowser followBus: MiApplication current defaultBus.
-	duplicationBrowser resetReplicas.
-	duplicationBrowser model findReplicas.
+	duplicationBrowser resetDisplayedReplicas.
+	duplicationBrowser specModel findReplicas.
 	duplicationBrowser selectedTag: duplicationTag.
 	duplicationBrowser tagSelectedEntities.
 

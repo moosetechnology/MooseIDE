@@ -270,8 +270,9 @@ MiSourceTextBrowserTest >> testSettingsAction [
 MiSourceTextBrowserTest >> testShowNoSourceCodeMessage [
 
 	browser receiveEntity: (FamixStClass named: 'TestClass').
-	self assert: browser model displayedText equals: 'There is no source code to show for TestClass'
-
+	self
+		assert: browser specModel displayedText
+		equals: 'There is no source code to show for TestClass'
 ]
 
 { #category : #'tests - externalEditor' }

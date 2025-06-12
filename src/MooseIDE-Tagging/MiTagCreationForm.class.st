@@ -189,21 +189,18 @@ MiTagCreationForm >> initializePresenters [
 	nameField := self newTextInput.
 	descriptionField := self newText.
 	categorySelection := self newDropList
-		                     sortingBlock: [ :c1 :c2 |
-			                     c1 model
-				                     ifNil: [ true ]
-				                     ifNotNil: [
-					                     c2 model
-						                     ifNil: [ false ]
-						                     ifNotNil: [ c1 model name < c2 model name ] ] ];
-		                     display: [ :cat |
-			                     cat
+		                     sortingBlock: [ :item |
+			                     item model
 				                     ifNil: [ '' ]
-				                     ifNotNil: [ cat name ] ];
+				                     ifNotNil: [ :category | category name ] ]
+				                     ascending;
+		                     display: [ :cat |
+			                     cat ifNil: [ '' ] ifNotNil: [ cat name ] ];
 		                     yourself.
 	queryList := self newDropList
 		             startWithoutSelection;
-		             display: [ :query | self stringForQuery: query ] yourself.
+		             display:
+			             [ :query | self stringForQuery: query ] yourself.
 	queryListLabeled := MiPresenter new
 		                    layout: (SpBoxLayout newTopToBottom
 				                     add: 'Query' asPresenter expand: false;
@@ -224,7 +221,7 @@ MiTagCreationForm >> intentButton [
 { #category : #accessing }
 MiTagCreationForm >> model [
 
-	^self owner model
+	^ self owner specModel
 ]
 
 { #category : #accessing }
@@ -292,6 +289,12 @@ MiTagCreationForm >> setModelBeforeInitialization: aTagModel [
 	tagModel := aTagModel
 ]
 
+{ #category : #accessing }
+MiTagCreationForm >> specModel [
+
+	^ self owner specModel
+]
+
 { #category : #initialization }
 MiTagCreationForm >> stringForQuery: aQuery [
 
@@ -314,23 +317,23 @@ MiTagCreationForm >> submit [
 	self checkFormInputs ifFalse: [ ^ self ].
 	tag := isIntent
 		       ifFalse: [
-			       self model
-				       createTag: nameField text
-				       description: descriptionField text
-				       color: colorPicker color
-				       category: categorySelection selectedItem ]
+				       self specModel
+					       createTag: nameField text
+					       description: descriptionField text
+					       color: colorPicker color
+					       category: categorySelection selectedItem ]
 		       ifTrue: [
-			       self model
-				       createDynamicTag: nameField text
-				       description: descriptionField text
-				       color: colorPicker color
-				       category: categorySelection selectedItem
-				       query: queryList selectedItem ].
+				       self specModel
+					       createDynamicTag: nameField text
+					       description: descriptionField text
+					       color: colorPicker color
+					       category: categorySelection selectedItem
+					       query: queryList selectedItem ].
 
 	tag
 		ifNil: [
-			self alert:
-				'This tag name is already in use. Please choose a different one.' ]
+				self alert:
+					'This tag name is already in use. Please choose a different one.' ]
 		ifNotNil: [ self owner closeTagCreationForm ]
 ]
 

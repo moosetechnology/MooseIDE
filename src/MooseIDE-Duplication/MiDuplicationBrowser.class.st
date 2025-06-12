@@ -293,7 +293,7 @@ MiDuplicationBrowser >> showSelectedClones: replicas [
 	 If the list is empty (no selected replicas) show all entities"
 
 	replicas
-		ifEmpty: [ lstEntities items: self model allEntities ]
+		ifEmpty: [ lstEntities items: self specModel allEntities ]
 		ifNotEmpty: [ lstEntities items: (replicas collect: #entity) ]
 ]
 

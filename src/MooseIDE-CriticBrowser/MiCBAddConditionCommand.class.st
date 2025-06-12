@@ -33,5 +33,5 @@ MiCBAddConditionCommand >> canBeExecuted [
 { #category : #executing }
 MiCBAddConditionCommand >> execute [
 
-	(MiCBConditionBuilderPresenter on: self context model) openDialog
+	(MiCBConditionBuilderPresenter on: self context specModel) openDialog
 ]

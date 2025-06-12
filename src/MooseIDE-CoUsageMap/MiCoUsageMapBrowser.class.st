@@ -101,7 +101,7 @@ MiCoUsageMapBrowser >> closeSettings [
 MiCoUsageMapBrowser >> followEntity: anEntity [
 
 	super followEntity: anEntity.
-	self model followEntity: anEntity
+	self specModel followEntity: anEntity
 ]
 
 { #category : #testing }

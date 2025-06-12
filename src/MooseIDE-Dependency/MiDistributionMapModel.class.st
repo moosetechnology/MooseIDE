@@ -123,7 +123,9 @@ MiDistributionMapModel >> fetchChildrenQueries [
 MiDistributionMapModel >> fetchTags [
 	"If we ask the application, then we need the tag browser opened. So we asume a browser is opened on the entities of only one model and we ask the tags in the models of a random moose entity of the browser."
 
-	browser model entities ifNotNil: [ :ents | ents ifNotEmpty: [ ^ ents anyOne mooseModel allTags sorted: #name ascending ] ].
+	browser specModel entities ifNotNil: [ :ents |
+			ents ifNotEmpty: [
+				^ ents anyOne mooseModel allTags sorted: #name ascending ] ].
 
 	^ #(  )
 ]

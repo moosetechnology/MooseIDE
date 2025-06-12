@@ -217,8 +217,8 @@ MiAbstractBrowserTest >> testCanOpenSettings [
 
 	browser hasSettings ifFalse: [ self skip ].
 	"this should not raise an error"
-	browser settings.
-  "tear down"
+	browser openSettings.
+	"tear down"
 	[ browser closeSettings ]
 		on: Error
 		do: [ "nothing -- ensuring settings window is closed" ]
@@ -376,11 +376,10 @@ MiAbstractBrowserTest >> testSettingsClickCancel [
 	browser hasSettings ifFalse: [ self skip ].
 
 	self
-		shouldnt: [ 
-			browser settings.
-			browser model settings buttonCancel click ]
-		raise: Error.
-
+		shouldnt: [
+				browser openSettings.
+				browser specModel settings buttonCancel click ]
+		raise: Error
 ]
 
 { #category : #'tests - opening' }
@@ -389,11 +388,10 @@ MiAbstractBrowserTest >> testSettingsClickOK [
 	browser hasSettings ifFalse: [ self skip ].
 
 	self
-		shouldnt: [ 
-			browser settings.
-			browser model settings buttonOk click ]
-		raise: Error.
-
+		shouldnt: [
+				browser openSettings.
+				browser specModel settings buttonOk click ]
+		raise: Error
 ]
 
 { #category : #'tests - opening' }
@@ -402,12 +400,15 @@ MiAbstractBrowserTest >> testSettingsClickReset [
 	browser hasSettings ifFalse: [ self skip ].
 
 	self
-		shouldnt: [ 
-			browser settings.
-			browser model settings buttonReset click ]
+		shouldnt: [
+				browser openSettings.
+				browser specModel settings buttonReset click ]
 		raise: Error.
 
-	[ browser closeSettings ] on: Error do: [ "nothing -- ensuring settings window is closed as REset does not do it" ]
+	[ browser closeSettings ]
+		on: Error
+		do: [ "nothing -- ensuring settings window is closed as REset does not do it"
+			 ]
 ]
 
 { #category : #'tests - tags' }

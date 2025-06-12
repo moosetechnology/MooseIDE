@@ -23,13 +23,14 @@ MiCoUsageAbstractTest >> setUp [
 	super setUp.
 
 	browser := MiCoUsageMapBrowser
-		newApplication: MiTestApplication new
-		model: MiCoUsageMapModel new.
-	browser model followEntity: MiCoUsageTestFamixModel new allMethods.
+		           newApplication: MiTestApplication new
+		           model: MiCoUsageMapModel new.
+	browser specModel followEntity:
+		MiCoUsageTestFamixModel new allMethods.
 
 	visualization := browser mapVisualization.
 
-	builder := visualization mapBuilder.
+	builder := visualization mapBuilder
 	"builder containerEntities: browser model collectionModel"
 ]
 

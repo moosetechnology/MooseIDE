@@ -246,7 +246,9 @@ MiArchitecturalMapModel >> entities: aCollection [
 { #category : #accessing }
 MiArchitecturalMapModel >> fetchTags [
 
-	browser model entities ifNotNil: [ :ents | ents ifNotEmpty: [ ^ ents anyOne mooseModel allTags sorted: #name ascending ] ].
+	browser specModel entities ifNotNil: [ :ents |
+			ents ifNotEmpty: [
+				^ ents anyOne mooseModel allTags sorted: #name ascending ] ].
 
 	^ #(  )
 ]
