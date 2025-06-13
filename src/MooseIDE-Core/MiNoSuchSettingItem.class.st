@@ -1,5 +1,5 @@
 Class {
 	#name : #MiNoSuchSettingItem,
 	#superclass : #Error,
-	#category : #'MooseIDE-Core-Settings'
+	#category : #'MooseIDE-Core-Settings-old'
 }

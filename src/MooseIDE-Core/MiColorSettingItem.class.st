@@ -7,7 +7,7 @@ Class {
 	#instVars : [
 		'colorPicker'
 	],
-	#category : #'MooseIDE-Core-Settings'
+	#category : #'MooseIDE-Core-Settings-old'
 }
 
 { #category : #accessing }

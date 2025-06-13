@@ -535,7 +535,7 @@ MiAbstractBrowser >> model: anObject [
 { #category : #actions }
 MiAbstractBrowser >> openSettings [
 
-	self hasSettings ifTrue: [ specModel openSettings ]
+	specModel openSettings
 ]
 
 { #category : #'private - accessing' }

@@ -17,7 +17,7 @@ Class {
 		'oldValue',
 		'displayBlock'
 	],
-	#category : #'MooseIDE-Core-Settings'
+	#category : #'MooseIDE-Core-Settings-old'
 }
 
 { #category : #'instance creation' }

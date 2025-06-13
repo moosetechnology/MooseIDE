@@ -136,7 +136,7 @@ MiModelsBrowser >> followEntity: anEntity [
 { #category : #actions }
 MiModelsBrowser >> handleDropFile: aFileReference [
 
-	self specModel autoImportSetting
+	self specModel modelImportIsAutomatic
 		ifTrue: [
 		self importFromFileUI handleDropFileAndImport: aFileReference ]
 		ifFalse: [
@@ -246,11 +246,6 @@ MiModelsBrowser >> selectAModelIfPossible [
 
 	specModel entities ifNotEmpty: [ :list |
 		modelFilteringList selectItem: list first ]
-]
-
-{ #category : #'accessing - tests' }
-MiModelsBrowser >> settingsItem [
-	^ specModel settings
 ]
 
 { #category : #accessing }

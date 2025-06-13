@@ -7,7 +7,7 @@ Class {
 	#instVars : [
 		'secondaryPresenter'
 	],
-	#category : #'MooseIDE-Core-Settings'
+	#category : #'MooseIDE-Core-Settings-old'
 }
 
 { #category : #initialization }

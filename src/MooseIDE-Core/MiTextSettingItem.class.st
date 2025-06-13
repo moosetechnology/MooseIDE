@@ -8,7 +8,7 @@ Class {
 	#instVars : [
 		'valueFromString'
 	],
-	#category : #'MooseIDE-Core-Settings'
+	#category : #'MooseIDE-Core-Settings-old'
 }
 
 { #category : #convertion }

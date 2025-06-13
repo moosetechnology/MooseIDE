@@ -29,22 +29,21 @@ Class {
 	#superclass : #MiAbstractModel,
 	#instVars : [
 		'mooseModelsList',
-		'selected',
-		'settings'
+		'selected'
 	],
 	#category : #'MooseIDE-Meta-ModelsBrowser'
 }
+
+{ #category : #'as yet unclassified' }
+MiModelsBrowserModel class >> settingsManagerClass [
+
+	^ MiModelsBrowserSettingsManager
+]
 
 { #category : #updating }
 MiModelsBrowserModel >> allModelRootBrowser [
 
 	^ browser application allBrowsers: MiModelsBrowser
-]
-
-{ #category : #settings }
-MiModelsBrowserModel >> autoImportSetting [
-
-	^ settings getItemValue: #modelAutoImportSetting
 ]
 
 { #category : #accessing }
@@ -71,6 +70,12 @@ MiModelsBrowserModel >> entities: aList [
 	mooseModelsList := aList
 ]
 
+{ #category : #testing }
+MiModelsBrowserModel >> hasSettings [
+
+	^ true
+]
+
 { #category : #initialization }
 MiModelsBrowserModel >> initialize [
 
@@ -80,33 +85,10 @@ MiModelsBrowserModel >> initialize [
 	self initializeSettings 
 ]
 
-{ #category : #initialization }
-MiModelsBrowserModel >> initializeSettings [ 
+{ #category : #settings }
+MiModelsBrowserModel >> modelImportIsAutomatic [
 
-	settings := super initializeSettings.
-		
-	settings	addItem: (MiCheckboxSettingItem new
-		setValue: false ;
-		label: 'Import with cache?' ;
-		help: 'Caching entities in the model may improve some functionalities but takes time on import' ;
-		yourself)
-		named: #createWithCache.
-			
-		
-	settings addItem: (MiCheckboxSettingItem new
-		setValue: false ;
-		label: 'Automatically import drag&drop files?' ;
-		help: 'When drag & drop model from file should it be automatically imported if possible or should it just configure the import dialog' ;
-		yourself)
-		named: #modelAutoImportSetting.
-
-	settings	addItem: (MiCheckboxSettingItem new
-		setValue: true ;
-		label: 'Filter out stubs?' ;
-		help: 'When propagating the model should it filter out the stub entities or pass them along' ;
-		yourself)
-		named: #filterStubsSetting.
-
+	^ settingsManager modelImportIsAutomatic
 ]
 
 { #category : #accessing }
@@ -129,21 +111,16 @@ MiModelsBrowserModel >> selectedModel [
 		  ifFalse: [ self selected ]
 ]
 
-{ #category : #'accessing - tests' }
-MiModelsBrowserModel >> settings [
-	^ settings
-]
-
 { #category : #settings }
 MiModelsBrowserModel >> shouldCreateCache [
 
-	^ settings getItemValue: #createWithCache
+	^ settingsManager shouldCreateCache
 ]
 
 { #category : #settings }
 MiModelsBrowserModel >> shouldFilterStubs [
 
-	^ settings getItemValue: #filterStubsSetting
+	^ settingsManager filterStubs
 ]
 
 { #category : #updating }

@@ -4,7 +4,7 @@ A MiSettingItem which value is given by a checkbox (therefore: true or false set
 Class {
 	#name : #MiCheckboxSettingItem,
 	#superclass : #MiAbstractSettingItem,
-	#category : #'MooseIDE-Core-Settings'
+	#category : #'MooseIDE-Core-Settings-old'
 }
 
 { #category : #accessing }

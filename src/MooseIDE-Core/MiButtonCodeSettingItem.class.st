@@ -5,7 +5,7 @@ A MiSettingItem which value is given by a code editor. The setting itself is a b
 Class {
 	#name : #MiButtonCodeSettingItem,
 	#superclass : #MiButtonSettingItem,
-	#category : #'MooseIDE-Core-Settings'
+	#category : #'MooseIDE-Core-Settings-old'
 }
 
 { #category : #accessing }

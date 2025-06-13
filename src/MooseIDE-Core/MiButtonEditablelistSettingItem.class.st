@@ -4,7 +4,7 @@ A MiSettingItem which value is given by an editable list. It allows to chose an 
 Class {
 	#name : #MiButtonEditablelistSettingItem,
 	#superclass : #MiButtonListSettingItem,
-	#category : #'MooseIDE-Core-Settings'
+	#category : #'MooseIDE-Core-Settings-old'
 }
 
 { #category : #accessing }

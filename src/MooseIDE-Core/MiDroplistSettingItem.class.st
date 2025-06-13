@@ -4,7 +4,7 @@ A settingItem which value is selected in a DropList
 Class {
 	#name : #MiDroplistSettingItem,
 	#superclass : #MiAbstractSettingItem,
-	#category : #'MooseIDE-Core-Settings'
+	#category : #'MooseIDE-Core-Settings-old'
 }
 
 { #category : #accessing }

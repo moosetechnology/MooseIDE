@@ -8,10 +8,17 @@ Class {
 	#instVars : [
 		'browser',
 		'lastTagSelected',
-		'selectedTag'
+		'selectedTag',
+		'settingsManager'
 	],
 	#category : #'MooseIDE-Core-Browser'
 }
+
+{ #category : #'as yet unclassified' }
+MiAbstractModel class >> settingsManagerClass [
+
+	self subclassResponsibility
+]
 
 { #category : #accessing }
 MiAbstractModel >> browser [
@@ -45,10 +52,18 @@ MiAbstractModel >> entities [
 	self subclassResponsibility 
 ]
 
+{ #category : #testing }
+MiAbstractModel >> hasSettings [
+	"Override to have settings"
+
+	^ false
+]
+
 { #category : #initialization }
 MiAbstractModel >> initializeSettings [
 
-	^ MiSettingsPresenter owner: self
+	self hasSettings ifTrue: [
+		settingsManager := self class settingsManagerClass on: self ]
 ]
 
 { #category : #accessing }
@@ -60,7 +75,7 @@ MiAbstractModel >> miSelectedItem [
 { #category : #settings }
 MiAbstractModel >> openSettings [
 
-	self settings open
+	self hasSettings ifTrue: [ settingsManager openSettings ]
 ]
 
 { #category : #tagging }

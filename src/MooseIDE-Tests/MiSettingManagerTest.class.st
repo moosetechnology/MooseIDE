@@ -11,7 +11,7 @@ Class {
 MiSettingManagerTest >> setUp [ 
 	super setUp.
 
-	settingManager := MiSettingsPresenter new.
+	settingManager := MiOldSettingsPresenter new.
 	
 ]
 

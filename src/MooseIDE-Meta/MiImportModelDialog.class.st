@@ -107,13 +107,7 @@ MiImportModelDialog >> setModelBeforeInitialization: aBrowserOrMoosePanel [
 	originBrowser := aBrowserOrMoosePanel
 ]
 
-{ #category : #accessing }
-MiImportModelDialog >> settings [
-
-	^ originBrowser settingsItem
-]
-
-{ #category : #accessing }
+{ #category : #testing }
 MiImportModelDialog >> shouldCreateCache [
 
 	^ originBrowser specModel shouldCreateCache 
