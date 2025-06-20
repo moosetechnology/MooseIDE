@@ -43,7 +43,7 @@ FamixCBRootContext >> runOn: aCollection [
 { #category : #running }
 FamixCBRootContext >> runOn: aCollection withCallback: aBlock [
 
-	aBlock value: self name.
+	aBlock cull: self name.
 	self entities: aCollection
 ]
 

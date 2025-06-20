@@ -219,7 +219,7 @@ FamixCBContext >> runOn: aCollection [
 { #category : #running }
 FamixCBContext >> runOn: aCollection withCallback: aBlock [
 
-	aBlock value: self name.
+	aBlock cull: self name.
 	self entities: (contextFilter value: aCollection)
 ]
 
