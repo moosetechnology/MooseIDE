@@ -23,7 +23,7 @@ MiCBContextBuilderPresenter class >> ruleComponentName [
 MiCBContextBuilderPresenter >> buildComponent: aContext [
 
 	super buildComponent: aContext.
-	aContext contextBlock: codeInputField text.
+	aContext contextFilter: codeInputField text.
 
 	^ aContext
 ]

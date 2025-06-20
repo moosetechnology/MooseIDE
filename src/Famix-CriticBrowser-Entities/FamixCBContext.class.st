@@ -52,11 +52,12 @@ FamixCBContext class >> named: aString on: anObject [
 
 { #category : #'instance creation' }
 FamixCBContext class >> named: aString on: anObject summary: aSummary [
+
 	^ self new
-		name: aString;
-		contextBlock: anObject;
-		summary: aSummary;
-		yourself
+		  name: aString;
+		  contextFilter: anObject;
+		  summary: aSummary;
+		  yourself
 ]
 
 { #category : #adding }
