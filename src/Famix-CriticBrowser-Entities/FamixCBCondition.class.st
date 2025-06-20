@@ -141,7 +141,7 @@ FamixCBCondition >> runOn: aCollection [
 { #category : #running }
 FamixCBCondition >> runOn: aCollection withCallback: aBlock [
 
-	aBlock value: self name.
+	aBlock cull: self name.
 	self runOn: aCollection
 ]
 
