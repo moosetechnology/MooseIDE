@@ -52,11 +52,12 @@ FamixCBContext class >> named: aString on: anObject [
 
 { #category : #'instance creation' }
 FamixCBContext class >> named: aString on: anObject summary: aSummary [
+
 	^ self new
-		name: aString;
-		contextBlock: anObject;
-		summary: aSummary;
-		yourself
+		  name: aString;
+		  contextFilter: anObject;
+		  summary: aSummary;
+		  yourself
 ]
 
 { #category : #adding }
@@ -218,7 +219,7 @@ FamixCBContext >> runOn: aCollection [
 { #category : #running }
 FamixCBContext >> runOn: aCollection withCallback: aBlock [
 
-	aBlock value: self name.
+	aBlock cull: self name.
 	self entities: (contextFilter value: aCollection)
 ]
 

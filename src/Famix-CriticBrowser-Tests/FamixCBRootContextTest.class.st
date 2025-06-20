@@ -11,6 +11,7 @@ Class {
 FamixCBRootContextTest >> testGetAllViolations [
 
 	| contextEntity childEntityViolating entity entityViolating rootContext childContext condition childCondition violations |
+
 	contextEntity := FamixJavaClass new.
 	childEntityViolating := FamixJavaClass new.
 	entity := FamixJavaParameter new.

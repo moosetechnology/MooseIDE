@@ -246,7 +246,7 @@ MiCriticBrowser >> importRulesFromStream: aStream [
 		temp class = FullBlockClosure
 			ifTrue: [ cond query: (FamixCBQueryHandler on: cond query) ]
 			ifFalse: [
-				temp isScriptQuery 
+				temp isScriptQuery
 					ifTrue: [
 						| query |
 						query := FamixCBScriptQueryHandler new
@@ -255,7 +255,7 @@ MiCriticBrowser >> importRulesFromStream: aStream [
 						cond query: query ]
 					ifFalse: [ cond query: (FamixCBQueryHandler on: temp) ] ] ].
 	(rulesCollection select: [ :rc | rc class = FamixCBContext ]) do: [
-		:cont | cont contextBlock: cont contextBlock ].
+		:cont | cont contextFilter: cont contextFilter ].
 
 	index := 1.
 	hierarchy do: [ :parentIndex |
