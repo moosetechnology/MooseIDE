@@ -630,7 +630,7 @@ MiAbstractBrowser >> tagList [
 
 	^self model
 		ifNil: [ #() ]
-		ifNotNil: [ :model | model tagList ]
+		ifNotNil: [ :model | model entity allTags. ]
 ]
 
 { #category : #accessing }
