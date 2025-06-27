@@ -630,7 +630,7 @@ MiAbstractBrowser >> tagList [
 
 	^self model
 		ifNil: [ #() ]
-		ifNotNil: [ :model | model tagList ]
+		ifNotNil: [ :model | model entity allTags. ]
 ]
 
 { #category : #accessing }
@@ -658,7 +658,7 @@ MiAbstractBrowser >> unfollowBus: aBus [
 { #category : #actions }
 MiAbstractBrowser >> updateToolbar [
 
-	self window ifNotNil: [ :window | window updateToolbar ]
+	self window ifNotNil: [ :window | window updateToolbar. ]
 ]
 
 { #category : #accessing }
