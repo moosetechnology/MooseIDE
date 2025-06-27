@@ -7,6 +7,12 @@ FamixCBContext >> editorClass [
 ]
 
 { #category : #'*MooseIDE-CriticBrowser' }
+FamixCBContext >> newMemento [
+
+	^ MiContextMemento on: self
+]
+
+{ #category : #'*MooseIDE-CriticBrowser' }
 FamixCBContext >> reset [
 
 	self resetExecutionOfTree

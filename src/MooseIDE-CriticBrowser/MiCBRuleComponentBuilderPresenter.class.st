@@ -3,11 +3,10 @@ Class {
 	#superclass : #MiPresenter,
 	#instVars : [
 		'isForEdition',
-		'browserModel',
 		'summaryField',
-		'selectedRuleComponent',
 		'titleField',
-		'codeInputField'
+		'codeInputField',
+		'memento'
 	],
 	#category : #'MooseIDE-CriticBrowser-Presenters'
 }
@@ -77,15 +76,16 @@ MiCBRuleComponentBuilderPresenter >> addNewComponent [
 	codeInputField text
 		ifNil: [ self alert: self class alertLabel ]
 		ifNotNil: [
-			browserModel
-				addChild: (self buildComponent: self newComponent)
-				toContext: selectedRuleComponent ]
+				| newRule |
+				memento createRule.
+				newRule := memento rule.
+				self announceRuleCreated: newRule ]
 ]
 
 { #category : #initialization }
 MiCBRuleComponentBuilderPresenter >> beForEdition [
 
-	self fillWithRuleComponent: selectedRuleComponent.
+	self fillWithRuleComponent: memento.
 	isForEdition := true
 ]
 
@@ -101,9 +101,8 @@ MiCBRuleComponentBuilderPresenter >> buildComponent: aComponent [
 { #category : #action }
 MiCBRuleComponentBuilderPresenter >> editComponent [
 
-	self buildComponent: selectedRuleComponent.
-
-	browserModel hasBeenEdited: selectedRuleComponent
+	memento updateRule.
+	self announceRuleUpdated: memento rule
 ]
 
 { #category : #initialization }
@@ -169,10 +168,9 @@ MiCBRuleComponentBuilderPresenter >> newComponent [
 ]
 
 { #category : #'accessing - model' }
-MiCBRuleComponentBuilderPresenter >> setModelBeforeInitialization: aBrowserModel [
+MiCBRuleComponentBuilderPresenter >> setModelBeforeInitialization: aMemento [
 
-	browserModel := aBrowserModel.
-	selectedRuleComponent := browserModel selectedRule
+	memento := aMemento
 ]
 
 { #category : #layout }

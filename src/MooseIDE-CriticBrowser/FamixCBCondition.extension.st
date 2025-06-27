@@ -7,6 +7,12 @@ FamixCBCondition >> editorClass [
 ]
 
 { #category : #'*MooseIDE-CriticBrowser' }
+FamixCBCondition >> newMemento [
+
+	^ MiConditionMemento on: self
+]
+
+{ #category : #'*MooseIDE-CriticBrowser' }
 FamixCBCondition >> reset [
 
 	self removeAllViolations
