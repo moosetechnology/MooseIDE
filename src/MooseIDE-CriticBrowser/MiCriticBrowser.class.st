@@ -341,15 +341,9 @@ MiCriticBrowser >> moveCurrentRuleComponentToContext: aFamixCBContext [
 { #category : #actions }
 MiCriticBrowser >> openEditRuleComponentDialog [
 
-	^ rules selectedItem class = FamixCBCondition
-		  ifTrue: [
-			  (MiCBConditionBuilderPresenter on: specModel)
-				  beForEdition;
-				  openDialog ]
-		  ifFalse: [
-			  (MiCBContextBuilderPresenter on: specModel)
-				  beForEdition;
-				  openDialog ]
+	^ self selectedRule editionPresenter
+		  beForEdition;
+		  openDialog
 ]
 
 { #category : #actions }

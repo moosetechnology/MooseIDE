@@ -33,5 +33,7 @@ MiCBAddConditionCommand >> canBeExecuted [
 { #category : #executing }
 MiCBAddConditionCommand >> execute [
 
-	(MiCBConditionBuilderPresenter on: self context model) openDialog
+	| memento |
+	memento := MiConditionMemento new parent: self context selectedRule.
+	(MiCBConditionBuilderPresenter on: memento) openDialog
 ]
