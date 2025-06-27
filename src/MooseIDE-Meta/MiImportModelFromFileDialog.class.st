@@ -344,3 +344,10 @@ MiImportModelFromFileDialog >> validateImportForm [
 	modelNameInput text ifEmpty: [ Error signal: 'Please name the model' ].
 	rootFolderInput text asFileReference isDirectory ifFalse: [ Error signal: 'Root folder path is not a directory' ].
 ]
+
+{ #category : #accessing }
+MiImportModelFromFileDialog >> windowTitle [ 
+
+	^ self class title 
+	
+]
