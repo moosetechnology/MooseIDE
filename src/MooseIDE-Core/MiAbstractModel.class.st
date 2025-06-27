@@ -125,7 +125,7 @@ MiAbstractModel >> tagEntity: aMooseEntity with: aTag [
 { #category : #tagging }
 MiAbstractModel >> tagList [
 
-	^self currentApplication tagListForMooseModel: self currentMooseModel 
+	^self currentApplication tagListForMooseModel: self currentMooseModel.
 ]
 
 { #category : #tagging }

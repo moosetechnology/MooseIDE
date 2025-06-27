@@ -658,7 +658,7 @@ MiAbstractBrowser >> unfollowBus: aBus [
 { #category : #actions }
 MiAbstractBrowser >> updateToolbar [
 
-	self window ifNotNil: [ :window | window updateToolbar ]
+	self window ifNotNil: [ :window | window updateToolbar. ]
 ]
 
 { #category : #accessing }
