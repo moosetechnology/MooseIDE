@@ -16,24 +16,10 @@ MiAbstractSettingsManager class >> on: aSpecModel [
 		  yourself 
 ]
 
-{ #category : #initialization }
-MiAbstractSettingsManager >> initialize [
-
-	super initialize.
-	settingsBuilders := OrderedCollection new.
-	self initializeSettingsBuilders
-]
-
-{ #category : #initialization }
-MiAbstractSettingsManager >> initializeSettingsBuilders [
-
-	self subclassResponsibility
-]
-
 { #category : #ui }
 MiAbstractSettingsManager >> openSettings [
 
-	(MiSettingsPresenter on: self) openModal
+	^ (MiSettingsPresenter on: self) openDialog
 ]
 
 { #category : #accessing }

@@ -78,19 +78,17 @@ MiModelsBrowserTest >> testCanTagEntities [
 MiModelsBrowserTest >> testFilterStubsSettingsWithStub [
 
 	| newModel |
-
 	self assert: browser miSelectedItemToPropagate isNil.
 
 	newModel := self newModel: 'aModel'.
 	(newModel newClassNamed: 'Class1') isStub: true.
 	(newModel newClassNamed: 'Class2') isStub: false.
 
-	browser settingsItem setItem: #filterStubsSetting value: false.
+	self settingNamed: #shouldFilterStubs setValue: false.
 
 	browser updateForNewModel: newModel.
 
 	self assert: browser miSelectedItemToPropagate size equals: 2
-
 ]
 
 { #category : #tests }
@@ -120,7 +118,7 @@ MiModelsBrowserTest >> testHandleDropFileImportsModel [
 
 	self assertEmpty: browser specModel entities.
 
-	browser settingsItem setItem: #modelAutoImportSetting value: true.
+	self settingNamed: #modelImportIsAutomatic setValue: true.
 	browser handleDropFile: file.
 
 	"Must wait a bit to ensure model finishes importing.
@@ -156,13 +154,12 @@ MiModelsBrowserTest >> testMiInspectCommand [
 MiModelsBrowserTest >> testMiInspectCommandWithoutStubFilter [
 
 	| inspector result newModel |
-
 	newModel := self newModel: 'aModel'.
 	newModel newClass.
 
 	browser updateForNewModel: newModel.
 
-	browser settingsItem setItem: #filterStubsSetting value: false.
+	self settingNamed: #shouldFilterStubs setValue: false.
 	inspector := Mock named: 'inspector'.
 	(inspector stub inspect: Any forBuses: Any) will: [ :object :buses |
 		result := object ].
@@ -266,11 +263,14 @@ MiModelsBrowserTest >> testWithCacheSettingWithCache [
 
 	| newModel |
 	newModel := self newModel: 'aModel'.
-	(newModel newClassNamed: 'Class1').
-	(newModel newClassNamed: 'Class2').
+	newModel newClassNamed: 'Class1'.
+	newModel newClassNamed: 'Class2'.
 
-	browser settingsItem setItem: #createWithCache value: true.
+	self settingNamed: #shouldCreateCache setValue: true.
 	browser importFromFileUI importModelStep2Install: newModel.
 
-	self assert: (newModel cacheAt: FamixTClass ifAbsent: [ false ] ifPresent: [:cache | cache isEmpty not])
+	self assert: (newModel
+			 cacheAt: FamixTClass
+			 ifAbsent: [ false ]
+			 ifPresent: [ :cache | cache isEmpty not ])
 ]

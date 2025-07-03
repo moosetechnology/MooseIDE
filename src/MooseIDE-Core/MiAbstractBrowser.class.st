@@ -535,7 +535,7 @@ MiAbstractBrowser >> model: anObject [
 { #category : #actions }
 MiAbstractBrowser >> openSettings [
 
-	specModel openSettings
+	^ specModel openSettings
 ]
 
 { #category : #'private - accessing' }
@@ -606,7 +606,7 @@ MiAbstractBrowser >> setModelBeforeInitialization: aBrowserModel [
 MiAbstractBrowser >> settings [
 
 	self
-		deprecated: 'This is not a setter so it should not appear like one'
+		deprecated: 'This is not a getter so it should not appear like one'
 		transformWith: '`@receiver settings' -> '`@receiver openSettings'.
 
 	self openSettings

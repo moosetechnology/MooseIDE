@@ -248,12 +248,6 @@ MiModelsBrowser >> selectAModelIfPossible [
 		modelFilteringList selectItem: list first ]
 ]
 
-{ #category : #accessing }
-MiModelsBrowser >> specModel [
-
-	^ specModel 
-]
-
 { #category : #updating }
 MiModelsBrowser >> updateForNewModel: aModel [
 	specModel updateForNewModel: aModel

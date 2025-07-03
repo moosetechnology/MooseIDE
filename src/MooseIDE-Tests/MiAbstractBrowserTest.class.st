@@ -92,6 +92,18 @@ MiAbstractBrowserTest >> setUp [
 ]
 
 { #category : #running }
+MiAbstractBrowserTest >> settingNamed: aName [
+
+	^ browser specModel instVarNamed: aName
+]
+
+{ #category : #running }
+MiAbstractBrowserTest >> settingNamed: aName setValue: anObject [
+
+	browser specModel instVarNamed: aName put: anObject
+]
+
+{ #category : #running }
 MiAbstractBrowserTest >> tearDown [
 
 	browser ifNotNil: [ browser withWindowDo: [ :window | window close ] ].
@@ -373,24 +385,26 @@ MiAbstractBrowserTest >> testSettingsAction [
 { #category : #'tests - opening' }
 MiAbstractBrowserTest >> testSettingsClickCancel [
 
-	browser hasSettings ifFalse: [ self skip ].
+	browser hasSettings ifFalse: [ ^ self skip ].
 
 	self
 		shouldnt: [
-				browser openSettings.
-				browser specModel settings buttonCancel click ]
+				| settingsDialog |
+				settingsDialog := browser openSettings.
+				settingsDialog triggerCancelAction ]
 		raise: Error
 ]
 
 { #category : #'tests - opening' }
 MiAbstractBrowserTest >> testSettingsClickOK [
 
-	browser hasSettings ifFalse: [ self skip ].
+	browser hasSettings ifFalse: [ ^ self skip ].
 
 	self
 		shouldnt: [
-				browser openSettings.
-				browser specModel settings buttonOk click ]
+				| settingsDialog |
+				settingsDialog := browser openSettings.
+				settingsDialog triggerOkAction ]
 		raise: Error
 ]
 

@@ -15,9 +15,10 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-MiAbstractModel class >> settingsManagerClass [
+MiAbstractModel class >> settingsCommandsOn: aMemento [
+	"Override to add commands"
 
-	self subclassResponsibility
+	^ OrderedCollection new
 ]
 
 { #category : #accessing }
@@ -54,7 +55,6 @@ MiAbstractModel >> entities [
 
 { #category : #testing }
 MiAbstractModel >> hasSettings [
-	"Override to have settings"
 
 	^ false
 ]
@@ -62,8 +62,7 @@ MiAbstractModel >> hasSettings [
 { #category : #initialization }
 MiAbstractModel >> initializeSettings [
 
-	self hasSettings ifTrue: [
-		settingsManager := self class settingsManagerClass on: self ]
+	^ MiOldSettingsPresenter owner: self
 ]
 
 { #category : #accessing }
@@ -72,10 +71,10 @@ MiAbstractModel >> miSelectedItem [
 	self subclassResponsibility
 ]
 
-{ #category : #settings }
+{ #category : #actions }
 MiAbstractModel >> openSettings [
 
-	self hasSettings ifTrue: [ settingsManager openSettings ]
+	"Nothing to do when no settings"
 ]
 
 { #category : #tagging }
@@ -109,16 +108,11 @@ MiAbstractModel >> selectedTag: aTag [
 	selectedTag := aTag
 ]
 
-{ #category : #settings }
+{ #category : #'TO REMOVE' }
 MiAbstractModel >> settings [
 	"If browser hasSettings, then implement this method to get them"
 
 	self subclassResponsibility
-]
-
-{ #category : #accessing }
-MiAbstractModel >> settingsChanged: aBoolean [
-	"by default don't do anything"
 ]
 
 { #category : #tagging }

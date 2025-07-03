@@ -4,7 +4,7 @@ Class {
 	#category : #'MooseIDE-ButterflyMap-Menu'
 }
 
-{ #category : #execution }
+{ #category : #testing }
 MiButterflyNodeBeCentralNode >> canBeExecuted [
 
 	^ shape model rawModel ~= visualization centralNode rawModel
@@ -17,13 +17,13 @@ MiButterflyNodeBeCentralNode >> execute [
 	visualization mapModel browser visualization run
 ]
 
-{ #category : #execution }
+{ #category : #accessing }
 MiButterflyNodeBeCentralNode >> group [ 
 
 	^ 4
 ]
 
-{ #category : #execution }
+{ #category : #accessing }
 MiButterflyNodeBeCentralNode >> label [
 
 	^ 'Be central node'
