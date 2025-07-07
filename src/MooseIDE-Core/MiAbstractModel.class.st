@@ -7,9 +7,7 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'browser',
-		'lastTagSelected',
-		'selectedTag',
-		'settingsManager'
+		'selectedTag'
 	],
 	#category : #'MooseIDE-Core-Browser'
 }
@@ -106,13 +104,6 @@ MiAbstractModel >> selectedTag [
 MiAbstractModel >> selectedTag: aTag [
 
 	selectedTag := aTag
-]
-
-{ #category : #'TO REMOVE' }
-MiAbstractModel >> settings [
-	"If browser hasSettings, then implement this method to get them"
-
-	self subclassResponsibility
 ]
 
 { #category : #tagging }

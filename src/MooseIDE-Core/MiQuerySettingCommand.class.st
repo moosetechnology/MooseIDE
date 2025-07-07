@@ -1,38 +1,18 @@
 Class {
 	#name : #MiQuerySettingCommand,
 	#superclass : #MiSettingCommand,
-	#instVars : [
-		'initialQuery',
-		'defaultQuery',
-		'items',
-		'initialSelectedItem',
-		'displayAction'
-	],
 	#category : #'MooseIDE-Core-Settings'
 }
 
 { #category : #default }
-MiQuerySettingCommand class >> defaultDisplayAction [
+MiQuerySettingCommand class >> availableQueries [
 
-	^ [ :query | query displayString ]
+	^ OrderedCollection withAll:
+		  (MiApplication current itemsFor: FQAbstractQuery)
 ]
 
-{ #category : #default }
-MiQuerySettingCommand class >> defaultItems [
-	"Override to set a collection as default items"
-
-	| defaultQueries aMiQuerySettingBuilder |
-	aMiQuerySettingBuilder := self new.
-	defaultQueries := OrderedCollection withAll:
-		                  (MiApplication current itemsFor: FQAbstractQuery).
-	aMiQuerySettingBuilder class defaultInitialValue ifNotNil: [ :query |
-		defaultQueries addFirst: query ].
-
-	^ defaultQueries
-]
-
-{ #category : #'as yet unclassified' }
-MiQuerySettingCommand class >> defaultPresenterClass [
+{ #category : #specs }
+MiQuerySettingCommand class >> presenterClass [
 
 	^ SpDropListPresenter
 ]
@@ -41,22 +21,28 @@ MiQuerySettingCommand class >> defaultPresenterClass [
 MiQuerySettingCommand >> buildPresenter [
 
 	^ super buildPresenter
-		  items: self items;
+		  items: self queries;
 		  selectItem: self currentValue;
-		  display: [ :item | self displayAction cull: item ];
+		  display: [ :query | query name ];
 		  whenSelectedItemChangedDo: [ :selectedItem |
-			  self action cull: selectedItem ];
+			  self execute: selectedItem ];
 		  yourself
 ]
 
-{ #category : #accessing }
-MiQuerySettingCommand >> displayAction [
+{ #category : #'as yet unclassified' }
+MiQuerySettingCommand >> defaultQuery [
 
-	^ displayAction ifNil: [ self class defaultDisplayAction ]
+	^ nil
 ]
 
 { #category : #accessing }
-MiQuerySettingCommand >> items [
+MiQuerySettingCommand >> queries [
 
-	^ items ifNil: [ self class defaultItems ]
+	| availableQueries |
+	availableQueries := self class availableQueries.
+
+	self defaultQuery ifNotNil: [ :query |
+		availableQueries addFirst: query ].
+
+	^ availableQueries
 ]

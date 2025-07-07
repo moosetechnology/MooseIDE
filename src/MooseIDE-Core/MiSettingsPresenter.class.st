@@ -4,7 +4,6 @@ Class {
 	#instVars : [
 		'layoutBuilder',
 		'browserModel',
-		'settingsCommands',
 		'memento'
 	],
 	#category : #'MooseIDE-Core-Settings'
@@ -16,7 +15,7 @@ MiSettingsPresenter >> acceptChanges [
 	browserModel updateFromMemento: memento
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 MiSettingsPresenter >> buildPresenterForCommand: aMiSettingCommand [
 
 	layoutBuilder
@@ -47,13 +46,6 @@ MiSettingsPresenter >> initializePresenters [
 	layoutBuilder := SpGridLayoutBuilder on: self newGridLayout.
 	(browserModel settingsCommandsOn: memento) do: [ :cmd |
 		self buildPresenterForCommand: cmd ]
-]
-
-{ #category : #initialization }
-MiSettingsPresenter >> initializeSettingsCommands [
-	"Override this method to add setting commands"
-
-	settingsCommands := OrderedCollection new
 ]
 
 { #category : #accessing }

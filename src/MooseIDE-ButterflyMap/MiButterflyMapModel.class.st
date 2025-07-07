@@ -1,22 +1,65 @@
 Class {
 	#name : #MiButterflyMapModel,
 	#superclass : #MiAbstractModel,
+	#traits : 'MiTSpecModelWithSettings',
+	#classTraits : 'MiTSpecModelWithSettings classTrait',
 	#instVars : [
-		'currentEntity'
+		'currentEntity',
+		'childrenQuery',
+		'clientsQuery',
+		'providersQuery'
 	],
 	#category : #'MooseIDE-ButterflyMap-Model'
 }
 
-{ #category : #initialization }
-MiButterflyMapModel class >> settingsManagerClass [
+{ #category : #default }
+MiButterflyMapModel class >> defaultChildrenQuery [
 
-	^ MiButterflyMapSettingsManager
+	^ (FQCollectScriptQuery script: [ :each | each children ])
+		  name: 'anEntity children';
+		  yourself
+]
+
+{ #category : #default }
+MiButterflyMapModel class >> defaultClientsQuery [
+
+	^ (FQCollectScriptQuery script: [ :entity | entity allClients ])
+		  name: 'anEntity allClients';
+		  yourself
+]
+
+{ #category : #default }
+MiButterflyMapModel class >> defaultProvidersQuery [
+
+	^ (FQCollectScriptQuery script: [ :entity | entity allClients ])
+		  name: 'anEntity allProviders';
+		  yourself
+]
+
+{ #category : #settings }
+MiButterflyMapModel class >> mementoForDefaultValues [
+
+	^ MiButterflyMapSettingsMemento new
+		  childrenQuery: self defaultChildrenQuery;
+		  clientsQuery: self defaultClientsQuery;
+		  providersQuery: self defaultProvidersQuery;
+		  yourself
+]
+
+{ #category : #settings }
+MiButterflyMapModel class >> settingsCommandsOn: aMemento [
+
+	^ OrderedCollection new
+		  add: (MiChildrenQuerySettingCommand forContext: aMemento);
+		  add: (MiClientsQuerySettingCommand forContext: aMemento);
+		  add: (MiProvidersQuerySettingCommand forContext: aMemento);
+		  yourself
 ]
 
 { #category : #computing }
 MiButterflyMapModel >> childrenFor: anEntity [
 
-	^ settingsManager childrenQuery runOn: anEntity asMooseGroup
+	^ childrenQuery runOn: anEntity asMooseGroup
 ]
 
 { #category : #accessing }
@@ -47,16 +90,17 @@ MiButterflyMapModel >> hasSettings [
 ]
 
 { #category : #initialization }
-MiButterflyMapModel >> initialize [
+MiButterflyMapModel >> initializeSettings [
 
-	super initialize.
-	self initializeSettingsManager
+	childrenQuery := self class defaultChildrenQuery.
+	clientsQuery := self class defaultClientsQuery.
+	providersQuery := self class defaultProvidersQuery
 ]
 
 { #category : #computing }
 MiButterflyMapModel >> leftEntitiesFor: anEntity [
 
-	^ settingsManager clientsQuery runOn: anEntity asMooseGroup
+	^ clientsQuery runOn: anEntity asMooseGroup
 ]
 
 { #category : #accessing }
@@ -65,14 +109,34 @@ MiButterflyMapModel >> miSelectedItem [
 	^ self entities
 ]
 
+{ #category : #'settings management' }
+MiButterflyMapModel >> newMemento [
+
+	^ MiButterflyMapSettingsMemento new
+		  childrenQuery: childrenQuery;
+		  clientsQuery: clientsQuery;
+		  providersQuery: providersQuery;
+		  yourself
+]
+
 { #category : #computing }
 MiButterflyMapModel >> rightEntitiesFor: anEntity [
 
-	^ settingsManager providersQuery runOn: anEntity asMooseGroup
+	^ providersQuery runOn: anEntity asMooseGroup
 ]
 
 { #category : #accessing }
 MiButterflyMapModel >> settingsChanged: aBoolean [
 
 	aBoolean ifTrue: [ browser runVisualization ]
+]
+
+{ #category : #'settings management' }
+MiButterflyMapModel >> updateFromMemento: aMemento [
+
+	childrenQuery := aMemento childrenQuery.
+	clientsQuery := aMemento clientsQuery.
+	providersQuery := aMemento providersQuery.
+
+	browser runVisualization
 ]

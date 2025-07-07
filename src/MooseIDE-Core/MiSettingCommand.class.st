@@ -47,16 +47,16 @@ MiSettingCommand class >> defaultName [
 	^ 'This setting has no name'
 ]
 
-{ #category : #'as yet unclassified' }
-MiSettingCommand class >> defaultPresenterClass [
-
-	self subclassResponsibility
-]
-
 { #category : #testing }
 MiSettingCommand class >> isAbstract [
 
 	^ self = MiSettingCommand
+]
+
+{ #category : #specs }
+MiSettingCommand class >> presenterClass [
+
+	self subclassResponsibility
 ]
 
 { #category : #accessing }
@@ -94,6 +94,5 @@ MiSettingCommand >> execute: aSpecValue [
 { #category : #accessing }
 MiSettingCommand >> presenterClass [
 
-	^ presenterClass ifNil: [
-		  presenterClass := self class defaultPresenterClass ]
+	^ self class presenterClass
 ]
