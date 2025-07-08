@@ -22,10 +22,10 @@ MiProvidersQuerySettingCommand >> currentValue [
 	^ self context providersQuery
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #defaults }
 MiProvidersQuerySettingCommand >> defaultQuery [
 
-	^ self context defaultProvidersQuery
+	^ self application defaultProvidersQuery
 ]
 
 { #category : #execution }

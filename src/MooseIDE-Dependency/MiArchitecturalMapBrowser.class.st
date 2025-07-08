@@ -78,13 +78,6 @@ MiArchitecturalMapBrowser class >> title [
 ]
 
 { #category : #actions }
-MiArchitecturalMapBrowser >> availableQueries [
-
-	^ (self application itemsFor: FQAbstractQuery) asOrderedCollection 
-		  select: [ :q | q isValid ]
-]
-
-{ #category : #actions }
 MiArchitecturalMapBrowser >> canFollowEntity: anEntity [
 
 	^ anEntity isMooseObject

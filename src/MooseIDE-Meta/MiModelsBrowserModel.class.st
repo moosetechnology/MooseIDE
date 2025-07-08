@@ -138,6 +138,12 @@ MiModelsBrowserModel >> newMemento [
 		  yourself
 ]
 
+{ #category : #'settings management' }
+MiModelsBrowserModel >> newMementoForDefaultValues [
+
+	^ self class mementoForDefaultValues
+]
+
 { #category : #accessing }
 MiModelsBrowserModel >> selected [
 

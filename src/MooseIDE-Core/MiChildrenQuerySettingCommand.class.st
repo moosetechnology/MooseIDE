@@ -22,10 +22,10 @@ MiChildrenQuerySettingCommand >> currentValue [
 	^ self context childrenQuery
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #defaults }
 MiChildrenQuerySettingCommand >> defaultQuery [
 
-	^ self context defaultChildrenQuery
+	^ self application defaultChildrenQuery
 ]
 
 { #category : #execution }

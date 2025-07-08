@@ -11,6 +11,12 @@ Class {
 	#category : #'MooseIDE-Core-Settings'
 }
 
+{ #category : #accessing }
+MiSettingCommand class >> application [
+
+	^ MiApplication current
+]
+
 { #category : #default }
 MiSettingCommand class >> defaultAction [
 	"Override to set an action"
@@ -19,25 +25,10 @@ MiSettingCommand class >> defaultAction [
 ]
 
 { #category : #default }
-MiSettingCommand class >> defaultCurrentValue [
-	"Override to set a way to get the current value, 
-	i.e. get it from the settings manager"
-
-	^ nil
-]
-
-{ #category : #default }
 MiSettingCommand class >> defaultDescription [
 	"Override to set a default description"
 
 	^ 'This setting is not documented'
-]
-
-{ #category : #default }
-MiSettingCommand class >> defaultInitialValue [
-	"Override to set the default initial state/selected item/value"
-
-	^ nil
 ]
 
 { #category : #default }
@@ -71,6 +62,12 @@ MiSettingCommand >> action: aValuable [
 	action := aValuable
 ]
 
+{ #category : #accessing }
+MiSettingCommand >> application [
+
+	^ self class application
+]
+
 { #category : #building }
 MiSettingCommand >> buildPresenter [
 
@@ -88,7 +85,7 @@ MiSettingCommand >> currentValue [
 { #category : #execution }
 MiSettingCommand >> execute: aSpecValue [
 
-	self subclassResponsibility
+	self action cull: aSpecValue cull: self context
 ]
 
 { #category : #accessing }

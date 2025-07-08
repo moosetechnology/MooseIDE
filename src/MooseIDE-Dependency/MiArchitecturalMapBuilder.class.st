@@ -222,12 +222,6 @@ MiArchitecturalMapBuilder >> buildNodeFromTag: aTag [
 ]
 
 { #category : #accessing }
-MiArchitecturalMapBuilder >> childrenBlock [
-
-	^ mapModel childrenBlock
-]
-
-{ #category : #accessing }
 MiArchitecturalMapBuilder >> colorFor: node [
 
 	^ node color ifNil: [ Smalltalk ui theme baseColor ] 
@@ -422,20 +416,17 @@ MiArchitecturalMapBuilder >> setDependencies [
 { #category : #building }
 MiArchitecturalMapBuilder >> setDependenciesForEntity: anEntity [
 
-	| associationTypes |
 	anEntity isQueryable ifFalse: [ ^ self ].
 
-	associationTypes := mapModel associationTypes.
+	mapModel associationTypes do: [ :at |
+			| assocs |
+			assocs := anEntity queryLocal: #in with: at.
 
-	associationTypes do: [ :at |
-		| assocs |
-		assocs := anEntity queryLocal: #in with: at.
-
-		assocs do: [ :dep |
-			(mapModel noMegaMorphic and: [
-				 dep isInvocation and: [
-					 dep candidates size > mapModel megaMorphicSize ] ]) ifFalse: [
-				self setDependency: dep forEntity: anEntity ] ] ]
+			assocs do: [ :dep |
+					(mapModel noMegaMorphic and: [
+							 dep isInvocation and: [
+								 dep candidates size > mapModel megaMorphicSize ] ]) ifFalse: [
+						self setDependency: dep forEntity: anEntity ] ] ]
 ]
 
 { #category : #building }

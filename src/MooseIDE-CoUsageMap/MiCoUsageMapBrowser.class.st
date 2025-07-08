@@ -75,12 +75,10 @@ MiCoUsageMapBrowser class >> title [
 
 { #category : #'window control' }
 MiCoUsageMapBrowser >> browserClosed [
+
 	super browserClosed.
 	application unregisterConsumer: mainPresenter.
-	application unregisterProducer: mainPresenter.
-	"settings mapVisualization: nil.
-	mapVisualization settings: nil."
-
+	application unregisterProducer: mainPresenter
 ]
 
 { #category : #testing }

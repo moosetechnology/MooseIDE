@@ -8,7 +8,7 @@ Class {
 MiQuerySettingCommand class >> availableQueries [
 
 	^ OrderedCollection withAll:
-		  (MiApplication current itemsFor: FQAbstractQuery)
+		  (self application itemsFor: FQAbstractQuery)
 ]
 
 { #category : #specs }
@@ -29,7 +29,7 @@ MiQuerySettingCommand >> buildPresenter [
 		  yourself
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #defaults }
 MiQuerySettingCommand >> defaultQuery [
 
 	^ nil

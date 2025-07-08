@@ -62,6 +62,13 @@ MiApplication >> allBrowsers: aMiClass [
 	^self browsers select: [ :aBrowser | aBrowser isKindOf: aMiClass ]
 ]
 
+{ #category : #queries }
+MiApplication >> availableQueries [
+
+	^ OrderedCollection withAll:
+		  ((self itemsFor: FQAbstractQuery) select: #isValid)
+]
+
 { #category : #'drag and drop support' }
 MiApplication >> beDropFilesHandler [
 
@@ -154,6 +161,30 @@ MiApplication >> defaultBus [
 MiApplication >> defaultBus: aMiBus [
 
 	  defaultBus := aMiBus
+]
+
+{ #category : #queries }
+MiApplication >> defaultChildrenQuery [
+
+	^ (FQCollectScriptQuery script: [ :each | each children ])
+		  name: 'anEntity children';
+		  yourself
+]
+
+{ #category : #queries }
+MiApplication >> defaultClientsQuery [
+
+	^ (FQCollectScriptQuery script: [ :entity | entity allClients ])
+		  name: 'anEntity allClients';
+		  yourself
+]
+
+{ #category : #queries }
+MiApplication >> defaultProvidersQuery [
+
+	^ (FQCollectScriptQuery script: [ :entity | entity allClients ])
+		  name: 'anEntity allProviders';
+		  yourself
 ]
 
 { #category : #showing }

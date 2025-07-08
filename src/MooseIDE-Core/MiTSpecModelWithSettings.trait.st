@@ -4,12 +4,6 @@ Trait {
 }
 
 { #category : #settings }
-MiTSpecModelWithSettings classSide >> mementoForDefaultValues [
-
-	self shouldBeImplemented
-]
-
-{ #category : #settings }
 MiTSpecModelWithSettings classSide >> settingsCommandsOn: aMemento [
 	"Override to add  commands"
 
@@ -31,7 +25,7 @@ MiTSpecModelWithSettings >> newMemento [
 { #category : #'settings management' }
 MiTSpecModelWithSettings >> newMementoForDefaultValues [
 
-	^ self class mementoForDefaultValues
+	self shouldBeImplemented
 ]
 
 { #category : #actions }

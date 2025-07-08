@@ -7,13 +7,14 @@ I am responsible for:
 Class {
 	#name : #MiArchitecturalMapModel,
 	#superclass : #MiAbstractModel,
+	#traits : 'MiTSpecModelWithSettings',
+	#classTraits : 'MiTSpecModelWithSettings classTrait',
 	#instVars : [
 		'entities',
-		'childrenBlock',
 		'settings',
-		'defaultChildrenQuery',
 		'virtualEntities',
-		'roots'
+		'roots',
+		'associationTypes'
 	],
 	#category : #'MooseIDE-Dependency-ArchitecturalMap'
 }
@@ -46,6 +47,14 @@ MiArchitecturalMapModel class >> defaultDynamicTags [
 		  self defaultDynamicTagIsDead }
 ]
 
+{ #category : #settings }
+MiArchitecturalMapModel class >> settingsCommandsOn: aMemento [
+
+	^ OrderedCollection new
+		  add: (MiAssociationTypesSettingCommand forContext: aMemento);
+		  yourself
+]
+
 { #category : #private }
 MiArchitecturalMapModel >> addVirtualParent: aFileReference child: entity upTo: virtualRoot [
 	"#virtualEntities is a Dictionnary where the keys are the virtual entities
@@ -68,22 +77,19 @@ MiArchitecturalMapModel >> addVirtualParent: aFileReference child: entity upTo: 
 			upTo: virtualRoot ]
 ]
 
-{ #category : #accessing }
-MiArchitecturalMapModel >> allAssociationTypes [
-
-	| mooseGroup |
-	mooseGroup := entities asMooseGroup allUsing:
-		              TEntityMetaLevelDependency.
-	mooseGroup ifEmpty: [ ^ {  } ].
-	^ (mooseGroup allEntityTypes flatCollectAsSet: [ :class | 
-		   class allIncomingAssociationTypesIn: mooseGroup metamodel ])
-		  asOrderedCollection
-]
-
 { #category : #settings }
 MiArchitecturalMapModel >> associationTypes [
 
-	^ settings getItemValue: #associationTypes
+	^ associationTypes
+]
+
+{ #category : #accessing }
+MiArchitecturalMapModel >> availableAssociationTypes [
+
+	^ ((entities asMooseGroup select: #isQueryable) allEntityTypes
+		   flatCollectAsSet: [ :class |
+		   class allIncomingAssociationTypesIn: entities metamodel ])
+		  asOrderedCollection
 ]
 
 { #category : #settings }
@@ -110,19 +116,9 @@ MiArchitecturalMapModel >> availableLayouts [
 { #category : #accessing }
 MiArchitecturalMapModel >> availableQueries [
 
-	^ { self defaultChildrenQuery } , browser availableQueries
-]
-
-{ #category : #accessing }
-MiArchitecturalMapModel >> childrenBlock [
-
-	^ childrenBlock
-]
-
-{ #category : #accessing }
-MiArchitecturalMapModel >> childrenBlock: anObject [
-
-	childrenBlock := anObject
+	^ self currentApplication availableQueries
+		  addFirst: self currentApplication defaultChildrenQuery;
+		  yourself
 ]
 
 { #category : #accessing }
@@ -183,14 +179,6 @@ MiArchitecturalMapModel >> computeVirtualRoots: rootEntities [
 	].
 
 	^{ virtualRoot }
-]
-
-{ #category : #accessing }
-MiArchitecturalMapModel >> defaultChildrenQuery [
-
-	^ defaultChildrenQuery ifNil: [ 
-		  defaultChildrenQuery := FQCollectScriptQuery script: [ :e | 
-			                          e children ] ]
 ]
 
 { #category : #accessing }
@@ -256,25 +244,31 @@ MiArchitecturalMapModel >> fetchTags [
 { #category : #initialization }
 MiArchitecturalMapModel >> initializeSettings [
 
+	associationTypes := self availableAssociationTypes.
+
 	settings := super initializeSettings
-						addItem: self itemShowBusEntities named: #showBusEntities;
-						addItem: self itemChildrenQuery named: #childrenQuery;
-						addItem: self itemTags named: #tags;
-						addItem: self itemAssociationTypes named: #associationTypes;
-						addItem: self itemLayout named: #layout;
-						addItem: self itemNoMegaMorphic named: #noMegaMorphic;
-						addItem: self itemMegaMorphicSize named: #megaMorphicSize;
-						addItem: self itemTimeoutDuration named: #timeoutDuration;
-						addItem: self itemDirectoriesVirtualNodes named: #directoriesVirtualNodes;
-						addItem: self itemDoubleClickAction named: #doubleClickAction;
-						yourself
+		            addItem: self itemShowBusEntities
+		            named: #showBusEntities;
+		            addItem: self itemChildrenQuery named: #childrenQuery;
+		            addItem: self itemTags named: #tags;
+		            addItem: self itemLayout named: #layout;
+		            addItem: self itemNoMegaMorphic named: #noMegaMorphic;
+		            addItem: self itemMegaMorphicSize
+		            named: #megaMorphicSize;
+		            addItem: self itemTimeoutDuration
+		            named: #timeoutDuration;
+		            addItem: self itemDirectoriesVirtualNodes
+		            named: #directoriesVirtualNodes;
+		            addItem: self itemDoubleClickAction
+		            named: #doubleClickAction;
+		            yourself
 ]
 
 { #category : #settings }
 MiArchitecturalMapModel >> itemAssociationTypes [
 
 	^ MiAbstractSettingItem buttonWithSelectableListSetting
-		  possibleValues: self allAssociationTypes;
+		  possibleValues: self availableAssociationTypes;
 		  label: 'Links to show';
 		  selectAll;
 		  yourself
@@ -285,7 +279,7 @@ MiArchitecturalMapModel >> itemChildrenQuery [
 
 	^ MiAbstractSettingItem droplistSetting
 		  possibleValues: self availableQueries;
-		  setValue: self defaultChildrenQuery;
+		  setValue: self currentApplication defaultChildrenQuery;
 		  label: 'Children query';
 		  help: 'The query giving all the children of any displayed entity';
 		  yourself
@@ -398,6 +392,24 @@ MiArchitecturalMapModel >> miSelectedItem [
 	^self entities
 ]
 
+{ #category : #'settings management' }
+MiArchitecturalMapModel >> newMemento [
+
+	^ MiArchitecturalMapSettingsMemento new
+		  availableAssociationTypes: self availableAssociationTypes;
+		  associationTypes: associationTypes;
+		  yourself
+]
+
+{ #category : #'settings management' }
+MiArchitecturalMapModel >> newMementoForDefaultValues [
+
+	^ MiArchitecturalMapSettingsMemento new
+		  availableAssociationTypes: self availableAssociationTypes;
+		  associationTypes: self availableAssociationTypes;
+		  yourself
+]
+
 { #category : #settings }
 MiArchitecturalMapModel >> noMegaMorphic [
 
@@ -465,12 +477,19 @@ MiArchitecturalMapModel >> timeoutDuration [
 	^ settings getItemValue: #timeoutDuration
 ]
 
+{ #category : #'settings management' }
+MiArchitecturalMapModel >> updateFromMemento: aMemento [
+
+	associationTypes := aMemento associationTypes.
+
+	self recomputeRootNodes.
+	browser runVisualization
+]
+
 { #category : #settings }
 MiArchitecturalMapModel >> updateSettings [
 
-	(settings itemNamed: #associationTypes)
-		possibleValues: self allAssociationTypes ;
-		selectAll
+	associationTypes := self availableAssociationTypes
 ]
 
 { #category : #private }

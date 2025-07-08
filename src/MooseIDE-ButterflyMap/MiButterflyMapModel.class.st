@@ -12,40 +12,6 @@ Class {
 	#category : #'MooseIDE-ButterflyMap-Model'
 }
 
-{ #category : #default }
-MiButterflyMapModel class >> defaultChildrenQuery [
-
-	^ (FQCollectScriptQuery script: [ :each | each children ])
-		  name: 'anEntity children';
-		  yourself
-]
-
-{ #category : #default }
-MiButterflyMapModel class >> defaultClientsQuery [
-
-	^ (FQCollectScriptQuery script: [ :entity | entity allClients ])
-		  name: 'anEntity allClients';
-		  yourself
-]
-
-{ #category : #default }
-MiButterflyMapModel class >> defaultProvidersQuery [
-
-	^ (FQCollectScriptQuery script: [ :entity | entity allClients ])
-		  name: 'anEntity allProviders';
-		  yourself
-]
-
-{ #category : #settings }
-MiButterflyMapModel class >> mementoForDefaultValues [
-
-	^ MiButterflyMapSettingsMemento new
-		  childrenQuery: self defaultChildrenQuery;
-		  clientsQuery: self defaultClientsQuery;
-		  providersQuery: self defaultProvidersQuery;
-		  yourself
-]
-
 { #category : #settings }
 MiButterflyMapModel class >> settingsCommandsOn: aMemento [
 
@@ -92,9 +58,9 @@ MiButterflyMapModel >> hasSettings [
 { #category : #initialization }
 MiButterflyMapModel >> initializeSettings [
 
-	childrenQuery := self class defaultChildrenQuery.
-	clientsQuery := self class defaultClientsQuery.
-	providersQuery := self class defaultProvidersQuery
+	childrenQuery := self currentApplication defaultChildrenQuery.
+	clientsQuery := self currentApplication defaultClientsQuery.
+	providersQuery := self currentApplication defaultProvidersQuery
 ]
 
 { #category : #computing }
@@ -116,6 +82,16 @@ MiButterflyMapModel >> newMemento [
 		  childrenQuery: childrenQuery;
 		  clientsQuery: clientsQuery;
 		  providersQuery: providersQuery;
+		  yourself
+]
+
+{ #category : #'settings management' }
+MiButterflyMapModel >> newMementoForDefaultValues [
+
+	^ MiButterflyMapSettingsMemento new
+		  childrenQuery: self currentApplication defaultChildrenQuery;
+		  clientsQuery: self currentApplication defaultClientsQuery;
+		  providersQuery: self currentApplication defaultProvidersQuery;
 		  yourself
 ]
 

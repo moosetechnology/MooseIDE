@@ -22,10 +22,10 @@ MiClientsQuerySettingCommand >> currentValue [
 	^ self context clientsQuery
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #defaults }
 MiClientsQuerySettingCommand >> defaultQuery [
 
-	^ self context defaultClientsQuery
+	^ self application defaultClientsQuery
 ]
 
 { #category : #execution }
