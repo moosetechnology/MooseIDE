@@ -3,7 +3,9 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'associationTypes',
-		'availableAssociationTypes'
+		'availableAssociationTypes',
+		'tags',
+		'availableTags'
 	],
 	#category : #'MooseIDE-Dependency-ArchitecturalMap'
 }
@@ -30,4 +32,28 @@ MiArchitecturalMapSettingsMemento >> availableAssociationTypes [
 MiArchitecturalMapSettingsMemento >> availableAssociationTypes: aCollection [
 
 	availableAssociationTypes := aCollection
+]
+
+{ #category : #accessing }
+MiArchitecturalMapSettingsMemento >> availableTags [
+
+	^ availableTags
+]
+
+{ #category : #accessing }
+MiArchitecturalMapSettingsMemento >> availableTags: aCollection [
+
+	availableTags := aCollection
+]
+
+{ #category : #accessing }
+MiArchitecturalMapSettingsMemento >> tags [
+
+	^ tags
+]
+
+{ #category : #accessing }
+MiArchitecturalMapSettingsMemento >> tags: aCollection [
+
+	tags := aCollection
 ]

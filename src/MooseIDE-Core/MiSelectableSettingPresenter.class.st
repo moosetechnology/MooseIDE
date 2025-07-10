@@ -2,11 +2,10 @@ Class {
 	#name : #MiSelectableSettingPresenter,
 	#superclass : #MiPresenter,
 	#instVars : [
+		'settingCommand',
 		'allItemsButton',
 		'customItemsButton',
-		'settingCommand',
 		'table',
-		'displayBlock',
 		'noItemsButton'
 	],
 	#category : #'MooseIDE-Core-Settings'
@@ -23,16 +22,13 @@ MiSelectableSettingPresenter >> defaultLayout [
 		  yourself
 ]
 
-{ #category : #api }
-MiSelectableSettingPresenter >> display [
+{ #category : #accessing }
+MiSelectableSettingPresenter >> help: aString [
 
-	^ displayBlock ifNil: [ #printString ]
-]
-
-{ #category : #api }
-MiSelectableSettingPresenter >> display: aBlock [
-
-	displayBlock := aBlock
+	allItemsButton help: aString.
+	customItemsButton help: aString.
+	noItemsButton help: aString.
+	table help: aString
 ]
 
 { #category : #initialization }
@@ -44,11 +40,11 @@ MiSelectableSettingPresenter >> initializePresenters [
 		addColumn: self tableColumns;
 		items: settingCommand allItems;
 		hide.
-		
+
 	self initializeRadioButtons
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 MiSelectableSettingPresenter >> initializeRadioButtons [
 
 	allItemsButton := self newRadioButton label: 'All'.
@@ -60,7 +56,7 @@ MiSelectableSettingPresenter >> initializeRadioButtons [
 			customItemsButton.
 			noItemsButton }.
 
-	settingCommand currentValue = settingCommand allItems ifFalse: [
+	(settingCommand currentValue equalsTo: settingCommand allItems) ifFalse: [
 			settingCommand currentValue
 				ifEmpty: [ noItemsButton toggleState ]
 				ifNotEmpty: [ customItemsButton toggleState ] ].
@@ -79,7 +75,7 @@ MiSelectableSettingPresenter >> setModelBeforeInitialization: aSettingCommand [
 	settingCommand := aSettingCommand
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 MiSelectableSettingPresenter >> tableColumns [
 
 	| column selectColumn |
@@ -94,7 +90,11 @@ MiSelectableSettingPresenter >> tableColumns [
 				                 settingCommand removeItem: anObject ];
 			                 beNotExpandable).
 
-	column addColumn: (SpStringTableColumn evaluated: self display).
+	settingCommand icon ifNotNil: [ :nameValuable |
+		column addColumn: (SpImageTableColumn new evaluated: nameValuable) ].
+
+	column addColumn:
+		(SpStringTableColumn evaluated: settingCommand itemsDisplay).
 
 	^ column
 ]

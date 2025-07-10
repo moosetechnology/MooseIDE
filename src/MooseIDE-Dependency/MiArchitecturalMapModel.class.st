@@ -14,7 +14,8 @@ Class {
 		'settings',
 		'virtualEntities',
 		'roots',
-		'associationTypes'
+		'associationTypes',
+		'tags'
 	],
 	#category : #'MooseIDE-Dependency-ArchitecturalMap'
 }
@@ -52,6 +53,7 @@ MiArchitecturalMapModel class >> settingsCommandsOn: aMemento [
 
 	^ OrderedCollection new
 		  add: (MiAssociationTypesSettingCommand forContext: aMemento);
+		  add: (MiTagsSettingCommand forContext: aMemento);
 		  yourself
 ]
 
@@ -119,6 +121,16 @@ MiArchitecturalMapModel >> availableQueries [
 	^ self currentApplication availableQueries
 		  addFirst: self currentApplication defaultChildrenQuery;
 		  yourself
+]
+
+{ #category : #accessing }
+MiArchitecturalMapModel >> availableTags [
+
+	entities ifNotNil: [ :ents |
+			ents ifNotEmpty: [
+				^ ents anyOne mooseModel allTags sorted: #name ascending ] ].
+
+	^ OrderedCollection new
 ]
 
 { #category : #accessing }
@@ -234,7 +246,7 @@ MiArchitecturalMapModel >> entities: aCollection [
 { #category : #accessing }
 MiArchitecturalMapModel >> fetchTags [
 
-	browser specModel entities ifNotNil: [ :ents |
+	entities ifNotNil: [ :ents |
 			ents ifNotEmpty: [
 				^ ents anyOne mooseModel allTags sorted: #name ascending ] ].
 
@@ -245,12 +257,12 @@ MiArchitecturalMapModel >> fetchTags [
 MiArchitecturalMapModel >> initializeSettings [
 
 	associationTypes := self availableAssociationTypes.
+	tags := OrderedCollection new.
 
 	settings := super initializeSettings
 		            addItem: self itemShowBusEntities
 		            named: #showBusEntities;
 		            addItem: self itemChildrenQuery named: #childrenQuery;
-		            addItem: self itemTags named: #tags;
 		            addItem: self itemLayout named: #layout;
 		            addItem: self itemNoMegaMorphic named: #noMegaMorphic;
 		            addItem: self itemMegaMorphicSize
@@ -398,6 +410,8 @@ MiArchitecturalMapModel >> newMemento [
 	^ MiArchitecturalMapSettingsMemento new
 		  availableAssociationTypes: self availableAssociationTypes;
 		  associationTypes: associationTypes;
+		  tags: tags;
+		  availableTags: self availableTags;
 		  yourself
 ]
 
@@ -468,7 +482,7 @@ MiArchitecturalMapModel >> showBusEntities [
 { #category : #settings }
 MiArchitecturalMapModel >> tags [
 
-	^ settings getItemValue: #tags
+	^ tags
 ]
 
 { #category : #settings }
@@ -481,6 +495,7 @@ MiArchitecturalMapModel >> timeoutDuration [
 MiArchitecturalMapModel >> updateFromMemento: aMemento [
 
 	associationTypes := aMemento associationTypes.
+	tags := aMemento tags.
 
 	self recomputeRootNodes.
 	browser runVisualization

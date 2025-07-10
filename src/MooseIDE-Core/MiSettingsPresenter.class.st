@@ -19,7 +19,10 @@ MiSettingsPresenter >> acceptChanges [
 MiSettingsPresenter >> buildPresenterForCommand: aMiSettingCommand [
 
 	layoutBuilder
-		add: aMiSettingCommand name;
+		add: (self newLabel
+				 label: aMiSettingCommand name;
+				 help: aMiSettingCommand description;
+				 yourself);
 		add: (aMiSettingCommand buildPresenter
 				 owner: self;
 				 yourself);

@@ -71,7 +71,7 @@ MiSettingCommand >> application [
 { #category : #building }
 MiSettingCommand >> buildPresenter [
 
-	^ self presenterClass new
+	^ (self presenterClass on: self)
 		  help: self description;
 		  yourself
 ]

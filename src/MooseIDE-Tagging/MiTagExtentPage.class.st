@@ -216,6 +216,5 @@ MiTagExtentPage >> setTag: aTag [
 { #category : #accessing }
 MiTagExtentPage >> taggedEntities [
 
-	^ self specModel entitiesTaggedWithCurrentTag sort: [ :a :b |
-		  a name < b name ]
+	^ self specModel entitiesTaggedWithCurrentTag sort: #name ascending
 ]
