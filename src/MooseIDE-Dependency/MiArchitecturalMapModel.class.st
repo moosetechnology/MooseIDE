@@ -15,7 +15,13 @@ Class {
 		'virtualEntities',
 		'roots',
 		'associationTypes',
-		'tags'
+		'tags',
+		'childrenQuery',
+		'hideReceivedEntities',
+		'doubleClickAction',
+		'layout',
+		'hideMegamorphicInvocations',
+		'megamorphicTreshold'
 	],
 	#category : #'MooseIDE-Dependency-ArchitecturalMap'
 }
@@ -52,8 +58,13 @@ MiArchitecturalMapModel class >> defaultDynamicTags [
 MiArchitecturalMapModel class >> settingsCommandsOn: aMemento [
 
 	^ OrderedCollection new
+		  add: (MiLayoutSettingCommand forContext: aMemento);
+		  add: (MiChildrenQuerySettingCommand forContext: aMemento);
 		  add: (MiAssociationTypesSettingCommand forContext: aMemento);
+		  add: (MiMegamorphicInvocationsSettingCommand forContext: aMemento);
 		  add: (MiTagsSettingCommand forContext: aMemento);
+		  add: (MiHideEntitiesSettingCommand forContext: aMemento);
+		  add: (MiDoubleClickSettingCommand forContext: aMemento);
 		  yourself
 ]
 
@@ -94,11 +105,15 @@ MiArchitecturalMapModel >> availableAssociationTypes [
 		  asOrderedCollection
 ]
 
-{ #category : #settings }
+{ #category : #accessing }
 MiArchitecturalMapModel >> availableDoubleClickActions [
 
-	^ #( doubleClickExpandeCollapse: doubleClickInspect:
-	     doubleClickPropagate: )
+	^ {
+		  MiExpandCollapseShapeCommand new.
+		  MiInspectShapeCommand new.
+		  (MiPropagateShapeCommand new
+			   browser: browser;
+			   yourself) }
 ]
 
 { #category : #accessing }
@@ -140,14 +155,8 @@ MiArchitecturalMapModel >> childrenFor: anEntity [
 		  at: anEntity
 		  ifPresent: [ :children | children ]
 		  ifAbsent: [
-			  (self childrenQuerySetting rawRunOnEntity: anEntity) asArray
-				  reject: [ :each | each == anEntity ] ]
-]
-
-{ #category : #settings }
-MiArchitecturalMapModel >> childrenQuerySetting [
-
-	^ settings getItemValue: #childrenQuery
+				  (childrenQuery rawRunOnEntity: anEntity) asArray reject: [ :each |
+					  each == anEntity ] ]
 ]
 
 { #category : #private }
@@ -172,30 +181,41 @@ MiArchitecturalMapModel >> computeRootEntities [
 
 { #category : #private }
 MiArchitecturalMapModel >> computeVirtualRoots: rootEntities [
-	"#virtualEntities is a Dictionnary where the keys are the virtual entities
-	 and the values their children
+	"#virtualEntities is a Dictionnary where the keys are the virtual entities and the values their children
 	Here we compute virtual entities from the directories containing the real entities"
 
 	| virtualRoot entityFile |
-
-	virtualRoot := MiArchitecturalMapVirtualEntity new
-		rawEntity: self currentMooseModel rootFolder asFileReference.
+	virtualRoot := MiArchitecturalMapVirtualEntity new rawEntity:
+		               self currentMooseModel rootFolder asFileReference.
 
 	rootEntities do: [ :entity |
-		(entity hasSourceAnchor and:
-		[ entity sourceAnchor isFileAnchor ])
-			ifTrue: [
-				entityFile := entity sourceAnchor fileName asFileReference.
-				self addVirtualParent: entityFile parent child: entity upTo: virtualRoot
-			]
-	].
+			(entity hasSourceAnchor and: [ entity sourceAnchor isFileAnchor ])
+				ifTrue: [
+						entityFile := entity sourceAnchor fileName asFileReference.
+						self
+							addVirtualParent: entityFile parent
+							child: entity
+							upTo: virtualRoot ] ].
 
-	^{ virtualRoot }
+	^ { virtualRoot }
+]
+
+{ #category : #accessing }
+MiArchitecturalMapModel >> defaultDoubleClickAction [
+
+	^ self availableDoubleClickActions first
 ]
 
 { #category : #accessing }
 MiArchitecturalMapModel >> defaultLayout [
-	^RSFlowLayout
+
+	^ RSFlowLayout
+]
+
+{ #category : #accessing }
+MiArchitecturalMapModel >> defaultMegamorphicTreshold [
+
+	^ 10
 ]
 
 { #category : #settings }
@@ -204,29 +224,12 @@ MiArchitecturalMapModel >> directoriesVirtualNodes [
 	^ settings getItemValue: #directoriesVirtualNodes
 ]
 
-{ #category : #accessing }
-MiArchitecturalMapModel >> doubleClickExpandeCollapse: aShape [
-
-	aShape model expandCollapse
-]
-
-{ #category : #accessing }
-MiArchitecturalMapModel >> doubleClickInspect: aShape [
-
-	MiInspectorBrowser inspect: aShape model rawModel
-]
-
-{ #category : #accessing }
-MiArchitecturalMapModel >> doubleClickPropagate: aShape [
-
-	self browser buses do: [ :bus |
-		bus globallySelect: aShape model rawModel mooseInterestingEntity ]
-]
-
 { #category : #'as yet unclassified' }
-MiArchitecturalMapModel >> doubleClickSetting [
+MiArchitecturalMapModel >> doubleClickActOn: aShape [
 
-	^ settings getItemValue: #doubleClickAction
+	doubleClickAction
+		context: aShape;
+		execute
 ]
 
 { #category : #accessing }
@@ -253,48 +256,30 @@ MiArchitecturalMapModel >> fetchTags [
 	^ #(  )
 ]
 
+{ #category : #settings }
+MiArchitecturalMapModel >> hideReceivedEntities [
+
+	^ hideReceivedEntities
+]
+
 { #category : #initialization }
 MiArchitecturalMapModel >> initializeSettings [
 
 	associationTypes := self availableAssociationTypes.
 	tags := OrderedCollection new.
+	childrenQuery := self currentApplication defaultChildrenQuery.
+	hideReceivedEntities := false.
+	doubleClickAction := self defaultDoubleClickAction.
+	layout := self defaultLayout.
+	hideMegamorphicInvocations := false.
+	megamorphicTreshold := self defaultMegamorphicTreshold.
 
 	settings := super initializeSettings
-		            addItem: self itemShowBusEntities
-		            named: #showBusEntities;
-		            addItem: self itemChildrenQuery named: #childrenQuery;
-		            addItem: self itemLayout named: #layout;
-		            addItem: self itemNoMegaMorphic named: #noMegaMorphic;
-		            addItem: self itemMegaMorphicSize
-		            named: #megaMorphicSize;
 		            addItem: self itemTimeoutDuration
 		            named: #timeoutDuration;
 		            addItem: self itemDirectoriesVirtualNodes
 		            named: #directoriesVirtualNodes;
-		            addItem: self itemDoubleClickAction
-		            named: #doubleClickAction;
 		            yourself
-]
-
-{ #category : #settings }
-MiArchitecturalMapModel >> itemAssociationTypes [
-
-	^ MiAbstractSettingItem buttonWithSelectableListSetting
-		  possibleValues: self availableAssociationTypes;
-		  label: 'Links to show';
-		  selectAll;
-		  yourself
-]
-
-{ #category : #settings }
-MiArchitecturalMapModel >> itemChildrenQuery [
-
-	^ MiAbstractSettingItem droplistSetting
-		  possibleValues: self availableQueries;
-		  setValue: self currentApplication defaultChildrenQuery;
-		  label: 'Children query';
-		  help: 'The query giving all the children of any displayed entity';
-		  yourself
 ]
 
 { #category : #settings }
@@ -310,72 +295,6 @@ They are root nodes in the map';
 ]
 
 { #category : #settings }
-MiArchitecturalMapModel >> itemDoubleClickAction [
-
-	^ MiAbstractSettingItem droplistSetting
-		  possibleValues: self availableDoubleClickActions;
-		  setValue: #doubleClickExpandeCollapse:;
-		  label: 'Action on double click';
-		  help: 'You can define an action for double click on a node.';
-		  yourself
-]
-
-{ #category : #settings }
-MiArchitecturalMapModel >> itemLayout [
-
-	^ MiAbstractSettingItem droplistSetting
-		  possibleValues: self availableLayouts;
-		  setValue: self defaultLayout;
-		  label: 'Layout to display entities';
-		  help: 'You can change the layout of the entities (eg: circular or flow layout)';
-		  yourself
-]
-
-{ #category : #settings }
-MiArchitecturalMapModel >> itemMegaMorphicSize [
-	^MiTextSettingItem integerSetting
-		setValue: 10 ;
-		label: 'Mega-morphic limit' ;
-		help: 'How many implementors of a method make it mega-morphic?' ;
-		yourself
-]
-
-{ #category : #settings }
-MiArchitecturalMapModel >> itemNoMegaMorphic [
-
-	^MiCheckboxSettingItem new
-		setValue: false ;
-		label: 'Ignore mega-morphic invocations?' ;
-		help: 'In the dependencies, ignore invocations of mega-morphic methods' ;
-		yourself
-]
-
-{ #category : #settings }
-MiArchitecturalMapModel >> itemShowBusEntities [
-
-	^ MiAbstractSettingItem checkboxSetting
-		  setValue: true;
-		  label: 'Show bus entities?';
-		  help:
-			  'If not checked, this will ignore entities in bus. Usefull when tags are added in the visualization.';
-		  yourself
-]
-
-{ #category : #settings }
-MiArchitecturalMapModel >> itemTags [
-
-	^ MiAbstractSettingItem buttonWithSelectableListSetting
-		  updateWith: [ self fetchTags ];
-		  possibleValues: self fetchTags;
-		  displayIcon: [ :tag | browser application iconForTag: tag ];
-		  display: [ :tag | tag name ];
-		  label: 'Tags to add';
-		  help:
-			  'The tags you want to add to the visualization. They will be entities and inner elements are tagged entities';
-		  yourself
-]
-
-{ #category : #settings }
 MiArchitecturalMapModel >> itemTimeoutDuration [
 	"Default arbitrary timeout of 30s"
 
@@ -387,15 +306,9 @@ MiArchitecturalMapModel >> itemTimeoutDuration [
 		  yourself
 ]
 
-{ #category : #settings }
-MiArchitecturalMapModel >> layoutSetting [
-
-	^ settings getItemValue: #layout
-]
-
-{ #category : #settings }
-MiArchitecturalMapModel >> megaMorphicSize [
-	^settings getItemValue: #megaMorphicSize
+{ #category : #accessing }
+MiArchitecturalMapModel >> layout [
+	^ layout
 ]
 
 { #category : #accessing }
@@ -408,10 +321,18 @@ MiArchitecturalMapModel >> miSelectedItem [
 MiArchitecturalMapModel >> newMemento [
 
 	^ MiArchitecturalMapSettingsMemento new
+		  availableLayouts: self availableLayouts;
+		  layout: layout;
 		  availableAssociationTypes: self availableAssociationTypes;
 		  associationTypes: associationTypes;
 		  tags: tags;
 		  availableTags: self availableTags;
+		  hideReceivedEntities: hideReceivedEntities;
+		  childrenQuery: childrenQuery;
+		  availableDoubleClickActions: self availableDoubleClickActions;
+		  doubleClickAction: doubleClickAction;
+		  hideMegamorphicInvocations: hideMegamorphicInvocations;
+		  megamorphicTreshold: megamorphicTreshold;
 		  yourself
 ]
 
@@ -419,15 +340,19 @@ MiArchitecturalMapModel >> newMemento [
 MiArchitecturalMapModel >> newMementoForDefaultValues [
 
 	^ MiArchitecturalMapSettingsMemento new
+		  availableLayouts: self availableLayouts;
+		  layout: self defaultLayout;
 		  availableAssociationTypes: self availableAssociationTypes;
 		  associationTypes: self availableAssociationTypes;
+		  tags: self availableTags;
+		  availableTags: self availableTags;
+		  hideReceivedEntities: false;
+		  childrenQuery: self currentApplication defaultChildrenQuery;
+		  availableDoubleClickActions: self availableDoubleClickActions;
+		  doubleClickAction: self defaultDoubleClickAction;
+		  hideMegamorphicInvocations: false;
+		  megamorphicTreshold: self defaultMegamorphicTreshold;
 		  yourself
-]
-
-{ #category : #settings }
-MiArchitecturalMapModel >> noMegaMorphic [
-
-	^ settings getItemValue: #noMegaMorphic
 ]
 
 { #category : #private }
@@ -435,16 +360,15 @@ MiArchitecturalMapModel >> recomputeRootNodes [
 	"Assumes each entity has only one parent"
 
 	| rootEntities |
-
 	virtualEntities := Dictionary new.
 
-	entities ifNil: [ ^roots := #() ].
+	entities ifNil: [ ^ roots := #(  ) ].
 
 	rootEntities := self computeRootEntities.
-	
+
 	roots := self directoriesVirtualNodes
-		ifTrue: [ self computeVirtualRoots: rootEntities ]
-		ifFalse: [ rootEntities ]
+		         ifTrue: [ self computeVirtualRoots: rootEntities ]
+		         ifFalse: [ rootEntities ]
 ]
 
 { #category : #accessing }
@@ -467,16 +391,18 @@ MiArchitecturalMapModel >> settingsChanged: aBoolean [
 
 ]
 
+{ #category : #settings }
+MiArchitecturalMapModel >> shouldHideDependency: aFamixAssociation [
+
+	^ hideMegamorphicInvocations and: [
+			  aFamixAssociation isInvocation and: [
+				  aFamixAssociation candidates size > megamorphicTreshold ] ]
+]
+
 { #category : #accessing }
 MiArchitecturalMapModel >> showAllLinks [
 
 	^ true
-]
-
-{ #category : #settings }
-MiArchitecturalMapModel >> showBusEntities [
-
-	^ settings getItemValue: #showBusEntities
 ]
 
 { #category : #settings }
@@ -496,6 +422,12 @@ MiArchitecturalMapModel >> updateFromMemento: aMemento [
 
 	associationTypes := aMemento associationTypes.
 	tags := aMemento tags.
+	hideReceivedEntities := aMemento hideReceivedEntities.
+	childrenQuery := aMemento childrenQuery.
+	doubleClickAction := aMemento doubleClickAction.
+	layout := aMemento layout.
+	hideMegamorphicInvocations := aMemento hideMegamorphicInvocations.
+	megamorphicTreshold := aMemento megamorphicTreshold.
 
 	self recomputeRootNodes.
 	browser runVisualization

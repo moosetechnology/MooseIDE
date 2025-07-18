@@ -10,7 +10,7 @@ MiArchitecturalMapTest >> architecturalMapWith: entities [
 	| mockModel mockBrowser |
 	"mock MiArchitecturalMapModel with proper settings and MooseEntities"
 	mockModel := Mock named: 'MiArchitecturalMapModel'.
-	mockModel stub showBusEntities willReturn: true.
+	mockModel stub hideReceivedEntities willReturn: false.
 	mockModel stub showAllLinks willReturn: false.
 	mockModel stub tags willReturn: #(  ).
 	mockModel stub entities willReturn: entities.

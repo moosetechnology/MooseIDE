@@ -34,9 +34,3 @@ MiArchitecturalMapVisualization >> shapeFromEntity: anEntity [
 				  ifNotNil: [ :shapeModel | shapeModel rawModel = anEntity ] ]
 		  ifNone: [ nil ]
 ]
-
-{ #category : #updating }
-MiArchitecturalMapVisualization >> update [
-
-	builder ifNil: [ self run ] ifNotNil: [ builder build ]
-]

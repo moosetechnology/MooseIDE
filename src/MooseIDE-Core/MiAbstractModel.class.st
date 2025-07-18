@@ -47,6 +47,11 @@ MiAbstractModel >> currentMooseModel [
 ]
 
 { #category : #accessing }
+MiAbstractModel >> doubleClickAction [
+	self shouldBeImplemented.
+]
+
+{ #category : #accessing }
 MiAbstractModel >> entities [
 	self subclassResponsibility 
 ]
