@@ -3,20 +3,37 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'associationTypes',
-		'availableAssociationTypes',
 		'tags',
-		'availableTags',
 		'childrenQuery',
 		'hideReceivedEntities',
 		'doubleClickCommand',
-		'availableDoubleClickActions',
-		'availableLayouts',
 		'layout',
 		'hideMegamorphicInvocations',
-		'megamorphicTreshold'
+		'megamorphicTreshold',
+		'showDirectoriesAsRootNodes',
+		'defaultsHolder'
 	],
 	#category : #'MooseIDE-Dependency-ArchitecturalMap'
 }
+
+{ #category : #'instance creation' }
+MiArchitecturalMapSettingsMemento class >> fromDefaultsHolder: aDefaultsHolder [
+
+	^ self new
+		  defaultsHolder: aDefaultsHolder;
+		  layout: aDefaultsHolder defaultLayout;
+		  associationTypes: aDefaultsHolder availableAssociationTypes;
+		  tags: aDefaultsHolder tags;
+		  hideReceivedEntities: aDefaultsHolder hideReceivedEntities;
+		  childrenQuery: aDefaultsHolder childrenQuery;
+		  doubleClickAction: aDefaultsHolder doubleClickAction;
+		  hideMegamorphicInvocations:
+			  aDefaultsHolder hideMegamorphicInvocations;
+		  megamorphicTreshold: aDefaultsHolder megamorphicTreshold;
+		  showDirectoriesAsRootNodes:
+			  aDefaultsHolder showDirectoriesAsRootNodes;
+		  yourself
+]
 
 { #category : #accessing }
 MiArchitecturalMapSettingsMemento >> associationTypes [
@@ -30,52 +47,28 @@ MiArchitecturalMapSettingsMemento >> associationTypes: aCollection [
 	associationTypes := aCollection
 ]
 
-{ #category : #accessing }
+{ #category : #available }
 MiArchitecturalMapSettingsMemento >> availableAssociationTypes [
 
-	^ availableAssociationTypes
+	^ defaultsHolder availableAssociationTypes
 ]
 
-{ #category : #accessing }
-MiArchitecturalMapSettingsMemento >> availableAssociationTypes: aCollection [
-
-	availableAssociationTypes := aCollection
-]
-
-{ #category : #accessing }
+{ #category : #available }
 MiArchitecturalMapSettingsMemento >> availableDoubleClickActions [
 
-	^ availableDoubleClickActions
+	^ defaultsHolder availableDoubleClickActions
 ]
 
-{ #category : #accessing }
-MiArchitecturalMapSettingsMemento >> availableDoubleClickActions: aCollection [
-
-	availableDoubleClickActions := aCollection
-]
-
-{ #category : #accessing }
+{ #category : #available }
 MiArchitecturalMapSettingsMemento >> availableLayouts [
 
-	^ availableLayouts
+	^ defaultsHolder availableLayouts
 ]
 
-{ #category : #accessing }
-MiArchitecturalMapSettingsMemento >> availableLayouts: aCollection [
-
-	availableLayouts := aCollection
-]
-
-{ #category : #accessing }
+{ #category : #available }
 MiArchitecturalMapSettingsMemento >> availableTags [
 
-	^ availableTags
-]
-
-{ #category : #accessing }
-MiArchitecturalMapSettingsMemento >> availableTags: aCollection [
-
-	availableTags := aCollection
+	^ defaultsHolder availableTags
 ]
 
 { #category : #accessing }
@@ -90,13 +83,19 @@ MiArchitecturalMapSettingsMemento >> childrenQuery: aQuery [
 	childrenQuery := aQuery
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
+MiArchitecturalMapSettingsMemento >> defaultsHolder: aSettingsDefaultHolder [
+
+	defaultsHolder := aSettingsDefaultHolder
+]
+
+{ #category : #accessing }
 MiArchitecturalMapSettingsMemento >> doubleClickAction [
 
 	^ doubleClickCommand
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 MiArchitecturalMapSettingsMemento >> doubleClickAction: aCommand [
 
 	doubleClickCommand := aCommand
@@ -148,6 +147,18 @@ MiArchitecturalMapSettingsMemento >> megamorphicTreshold [
 MiArchitecturalMapSettingsMemento >> megamorphicTreshold: anInteger [
 
 	megamorphicTreshold := anInteger
+]
+
+{ #category : #accessing }
+MiArchitecturalMapSettingsMemento >> showDirectoriesAsRootNodes [
+
+	^ showDirectoriesAsRootNodes
+]
+
+{ #category : #accessing }
+MiArchitecturalMapSettingsMemento >> showDirectoriesAsRootNodes: aBoolean [
+
+	showDirectoriesAsRootNodes := aBoolean
 ]
 
 { #category : #accessing }

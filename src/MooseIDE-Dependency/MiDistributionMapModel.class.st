@@ -62,7 +62,7 @@ MiDistributionMapModel >> childrenFor: anEntity [
 { #category : #settings }
 MiDistributionMapModel >> childrenQuerySetting [
 
-	^ settings getItemValue: #childrenQuery
+	^ settings getItemValue: #defaultChildrenQuery
 ]
 
 { #category : #utilities }
@@ -145,7 +145,7 @@ MiDistributionMapModel >> initializeSettings [
 		            "addItem: self itemChildrenBlock 		named: #childrenBlock ;"
 		            addItem: self itemColorForNoTag
 		            named: #colorForNoTag;
-		            addItem: self itemChildrenQuery named: #childrenQuery;
+		            addItem: self itemChildrenQuery named: #defaultChildrenQuery;
 		            addItem: self itemTags named: #tags;
 		            yourself
 ]
@@ -211,7 +211,7 @@ MiDistributionMapModel >> orderOuterNodes: aCollectionOfNodes [
 MiDistributionMapModel >> resetChildrenQuerySetting [
 	| settingQueries environmentQueries currentSelected |
 
-	settingQueries := (settings itemNamed: #childrenQuery) possibleValues.
+	settingQueries := (settings itemNamed: #defaultChildrenQuery) possibleValues.
 	environmentQueries := self availableQueries.
 
 	(self collection: environmentQueries hasSameElementHas: settingQueries)
@@ -219,11 +219,11 @@ MiDistributionMapModel >> resetChildrenQuerySetting [
 
 	currentSelected := self childrenQuerySetting.
 
-	(settings itemNamed: #childrenQuery) possibleValues: environmentQueries.
+	(settings itemNamed: #defaultChildrenQuery) possibleValues: environmentQueries.
 
 	(environmentQueries includes: currentSelected)
-	ifTrue: [ settings setItem: #childrenQuery value: currentSelected ]
-	ifFalse: [ settings setItem: #childrenQuery value: environmentQueries anyOne ]
+	ifTrue: [ settings setItem: #defaultChildrenQuery value: currentSelected ]
+	ifFalse: [ settings setItem: #defaultChildrenQuery value: environmentQueries anyOne ]
 
 ]
 

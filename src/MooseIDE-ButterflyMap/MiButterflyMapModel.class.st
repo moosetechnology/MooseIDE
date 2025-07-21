@@ -110,7 +110,7 @@ MiButterflyMapModel >> settingsChanged: aBoolean [
 { #category : #'settings management' }
 MiButterflyMapModel >> updateFromMemento: aMemento [
 
-	childrenQuery := aMemento childrenQuery.
+	childrenQuery := aMemento defaultChildrenQuery.
 	clientsQuery := aMemento clientsQuery.
 	providersQuery := aMemento providersQuery.
 

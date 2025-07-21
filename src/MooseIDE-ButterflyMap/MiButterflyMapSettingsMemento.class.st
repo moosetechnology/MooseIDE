@@ -10,12 +10,6 @@ Class {
 }
 
 { #category : #accessing }
-MiButterflyMapSettingsMemento >> childrenQuery [
-
-	^ childrenQuery
-]
-
-{ #category : #accessing }
 MiButterflyMapSettingsMemento >> childrenQuery: aQuery [
 
 	childrenQuery := aQuery
@@ -31,6 +25,12 @@ MiButterflyMapSettingsMemento >> clientsQuery [
 MiButterflyMapSettingsMemento >> clientsQuery: aQuery [
 
 	clientsQuery := aQuery
+]
+
+{ #category : #accessing }
+MiButterflyMapSettingsMemento >> defaultChildrenQuery [
+
+	^ childrenQuery
 ]
 
 { #category : #accessing }

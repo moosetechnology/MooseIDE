@@ -55,7 +55,7 @@ MiCollectionSettingCommand >> labelForItem: anItem [
 	^ anItem printString
 ]
 
-{ #category : #'instance creation' }
+{ #category : #building }
 MiCollectionSettingCommand >> newRadioButtonFor: anItem [
 
 	| button |

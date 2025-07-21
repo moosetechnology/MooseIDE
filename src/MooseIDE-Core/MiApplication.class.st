@@ -12,7 +12,8 @@ Class {
 		'consumers',
 		'dropFileHandlers',
 		'mooseModelsTag',
-		'currentModelsBrowser'
+		'currentModelsBrowser',
+		'visualizationTimeout'
 	],
 	#classVars : [
 		'Current'
@@ -37,6 +38,23 @@ MiApplication class >> reset [
 	<script>
 	Current ifNotNil: [ [Current unregisterForDropFilesEvent] onErrorDo: [ "ignore" ] ].
 	Current := nil
+]
+
+{ #category : #settings }
+MiApplication class >> visualizationTimeoutSetting: aBuilder [
+
+	<systemsettings>
+	| aMiApplication |
+	aMiApplication := self new.
+	(aBuilder range: #visualizationTimeout)
+		parent: #moose;
+		range: (10 to: 300);
+		target: aMiApplication;
+		order: 1;
+		label: 'Visualization timeout (seconds)';
+		description:
+			'How long can a visualization be unresponsive while building, before failing';
+		default: 30
 ]
 
 { #category : #brokerage }
@@ -167,7 +185,7 @@ MiApplication >> defaultBus: aMiBus [
 MiApplication >> defaultChildrenQuery [
 
 	^ (FQCollectScriptQuery script: [ :each | each children ])
-		  name: 'anEntity children';
+		  name: 'All children';
 		  yourself
 ]
 
@@ -175,7 +193,7 @@ MiApplication >> defaultChildrenQuery [
 MiApplication >> defaultClientsQuery [
 
 	^ (FQCollectScriptQuery script: [ :entity | entity allClients ])
-		  name: 'anEntity allClients';
+		  name: 'All clients';
 		  yourself
 ]
 
@@ -183,7 +201,7 @@ MiApplication >> defaultClientsQuery [
 MiApplication >> defaultProvidersQuery [
 
 	^ (FQCollectScriptQuery script: [ :entity | entity allClients ])
-		  name: 'anEntity allProviders';
+		  name: 'All providers';
 		  yourself
 ]
 
@@ -407,11 +425,8 @@ MiApplication >> removeItem: anItem from: aProducer [
 
 { #category : #tags }
 MiApplication >> selectedTag: aTag [
-	"mooseModel is deduced from aTag itself"
 
-	aTag ifNotNil: [
-		mooseModelsTag at: aTag mooseModel put: aTag
-	]
+	aTag ifNotNil: [ mooseModelsTag at: aTag mooseModel put: aTag ]
 ]
 
 { #category : #running }
@@ -427,14 +442,16 @@ MiApplication >> styleSheet [
 
 { #category : #tags }
 MiApplication >> tagListForMooseModel: aMooseModel [
-	^aMooseModel 
-		ifNil: [ #() ]
-		ifNotNil: [ aMooseModel allTags sorted: [ :a :b | a name < b name ] ]
+
+	^ aMooseModel
+		  ifNil: [ #(  ) ]
+		  ifNotNil: [ aMooseModel allTags sorted: #name ascending ]
 ]
 
 { #category : #tags }
 MiApplication >> tagSelectedInMooseModel: aMooseModel [
-	^mooseModelsTag at: aMooseModel ifAbsent: [ nil ]
+
+	^ mooseModelsTag at: aMooseModel ifAbsent: [ nil ]
 ]
 
 { #category : #settings }
@@ -494,6 +511,17 @@ MiApplication >> updateOverviewBrowsers [
 		collect: [ :each | each presenter]
 		thenSelect: [ :presenter | presenter class == MiOverviewBrowser ])
 		do: [ :each | each updateBrowsersListItems]
+]
+
+{ #category : #settings }
+MiApplication >> visualizationTimeout [
+
+	^ visualizationTimeout
+]
+
+{ #category : #settings }
+MiApplication >> visualizationTimeout: anInteger [ 
+	visualizationTimeout := anInteger
 ]
 
 { #category : #windows }

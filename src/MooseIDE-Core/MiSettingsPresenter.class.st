@@ -2,7 +2,6 @@ Class {
 	#name : #MiSettingsPresenter,
 	#superclass : #MiPresenter,
 	#instVars : [
-		'layoutBuilder',
 		'browserModel',
 		'memento'
 	],
@@ -16,9 +15,9 @@ MiSettingsPresenter >> acceptChanges [
 ]
 
 { #category : #initialization }
-MiSettingsPresenter >> buildPresenterForCommand: aMiSettingCommand [
+MiSettingsPresenter >> addPresenterForCommand: aMiSettingCommand inBuilder: aBuilder [
 
-	layoutBuilder
+	aBuilder
 		add: (self newLabel
 				 label: aMiSettingCommand name;
 				 help: aMiSettingCommand description;
@@ -32,13 +31,14 @@ MiSettingsPresenter >> buildPresenterForCommand: aMiSettingCommand [
 { #category : #layout }
 MiSettingsPresenter >> defaultLayout [
 
-	^ layoutBuilder layout
+	^ self newGridLayout
 ]
 
 { #category : #initialization }
 MiSettingsPresenter >> initializeDialogWindow: aSpDialogWindowPresenter [
 
 	super initializeDialogWindow: aSpDialogWindowPresenter.
+	aSpDialogWindowPresenter toolbar: self toolbar.
 
 	aSpDialogWindowPresenter okAction: [ self acceptChanges ]
 ]
@@ -46,15 +46,16 @@ MiSettingsPresenter >> initializeDialogWindow: aSpDialogWindowPresenter [
 { #category : #initialization }
 MiSettingsPresenter >> initializePresenters [
 
-	layoutBuilder := SpGridLayoutBuilder on: self newGridLayout.
-	(browserModel settingsCommandsOn: memento) do: [ :cmd |
-		self buildPresenterForCommand: cmd ]
+	self layout build: [ :builder |
+			(browserModel settingsCommandsOn: memento) do: [ :cmd |
+				self addPresenterForCommand: cmd inBuilder: builder ] ]
 ]
 
-{ #category : #accessing }
-MiSettingsPresenter >> layoutBuilder [
+{ #category : #initialization }
+MiSettingsPresenter >> resetToDefault [
 
-	^ layoutBuilder
+	memento := browserModel newMementoForDefaultValues.
+	self initializePresenters
 ]
 
 { #category : #'accessing - model' }
@@ -62,6 +63,17 @@ MiSettingsPresenter >> setModelBeforeInitialization: aSpecModel [
 
 	browserModel := aSpecModel.
 	memento := aSpecModel newMemento
+]
+
+{ #category : #accessing }
+MiSettingsPresenter >> toolbar [
+
+	^ self newToolbar addItemRight: (self newToolbarButton
+			   action: [ self resetToDefault ];
+			   label: 'Reset';
+			   help: 'Restore all settings to default values';
+			   icon: (self iconNamed: #smallUpdate);
+			   yourself)
 ]
 
 { #category : #accessing }

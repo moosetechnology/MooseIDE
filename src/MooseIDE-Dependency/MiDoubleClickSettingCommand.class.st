@@ -4,6 +4,18 @@ Class {
 	#category : #'MooseIDE-Dependency-ArchitecturalMap'
 }
 
+{ #category : #default }
+MiDoubleClickSettingCommand class >> defaultDescription [
+
+	^ 'What happens when double-clicking on an entity? '
+]
+
+{ #category : #default }
+MiDoubleClickSettingCommand class >> defaultName [
+
+	^ 'Double click action'
+]
+
 { #category : #accessing }
 MiDoubleClickSettingCommand >> currentValue [
 
@@ -16,13 +28,13 @@ MiDoubleClickSettingCommand >> execute: aCommand [
 	self context doubleClickAction: aCommand
 ]
 
-{ #category : #'instance creation' }
+{ #category : #building }
 MiDoubleClickSettingCommand >> helpForItem: aCommand [
 
 	^ aCommand description
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #testing }
 MiDoubleClickSettingCommand >> isCurrentValue: anItem [
 
 	^ anItem class = self currentValue class
@@ -34,7 +46,7 @@ MiDoubleClickSettingCommand >> items [
 	^ self context availableDoubleClickActions
 ]
 
-{ #category : #'instance creation' }
+{ #category : #building }
 MiDoubleClickSettingCommand >> labelForItem: aCommand [
 
 	^ aCommand name

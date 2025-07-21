@@ -15,10 +15,12 @@ Class {
 MiSelectableSettingPresenter >> defaultLayout [
 
 	^ self newBoxLayoutLeftToRight
-		  add: allItemsButton;
-		  add: customItemsButton;
+		  add: (self newBoxLayoutTopToBottom
+				   add: allItemsButton;
+				   add: customItemsButton;
+				   add: noItemsButton;
+				   yourself);
 		  add: table;
-		  add: noItemsButton;
 		  yourself
 ]
 

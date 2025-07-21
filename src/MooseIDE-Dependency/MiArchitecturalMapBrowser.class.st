@@ -98,11 +98,11 @@ MiArchitecturalMapBrowser >> canvas [
 { #category : #actions }
 MiArchitecturalMapBrowser >> doWithTimeout: aBlock [
 
-	self specModel timeoutDuration
+	self application visualizationTimeout
 		ifNil: [ aBlock value ]
 		ifNotNil: [ :duration |
 				aBlock
-					valueWithin: self specModel timeoutDuration asSeconds
+					valueWithin: self application visualizationTimeout asSeconds
 					onTimeout: [
 							Abort signal:
 								'Process took longer than the configured time ('

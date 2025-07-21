@@ -19,7 +19,7 @@ MiChildrenQuerySettingCommand class >> defaultName [
 { #category : #accessing }
 MiChildrenQuerySettingCommand >> currentValue [
 
-	^ self context childrenQuery
+	^ self application defaultChildrenQuery
 ]
 
 { #category : #defaults }
