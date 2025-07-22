@@ -1,47 +1,49 @@
 Class {
-	#name : #MooseLoadPetitParserMenuCommand,
-	#superclass : #MooseAbstractLoadParserMenuCommand,
-	#category : #'MooseIDE-Core-MenuBar'
+	#name : 'MooseLoadPetitParserMenuCommand',
+	#superclass : 'MooseAbstractLoadParserMenuCommand',
+	#category : 'MooseIDE-Core-MenuBar',
+	#package : 'MooseIDE-Core',
+	#tag : 'MenuBar'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseLoadPetitParserMenuCommand class >> help [
 
 	^ 'Framework for parsers building'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseLoadPetitParserMenuCommand class >> label [
 
 	^ 'Petit Parser'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseLoadPetitParserMenuCommand class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
 	^ (self menuCommandOn: aBuilder forCommand: self) yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseLoadPetitParserMenuCommand class >> menuPriority [
 
 	^ super menuPriority + 1
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseLoadPetitParserMenuCommand >> baselineName [
 
 	^ 'PetitParser'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseLoadPetitParserMenuCommand >> repositoryURL [
 
 	^ 'github://moosetechnology/PetitParser:' , self version , '/src'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseLoadPetitParserMenuCommand >> version [
 	^ 'v3'
 ]

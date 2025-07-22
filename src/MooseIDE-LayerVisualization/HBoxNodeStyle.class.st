@@ -1,10 +1,12 @@
 Class {
-	#name : #HBoxNodeStyle,
-	#superclass : #HBorderAndTitleStyle,
-	#category : #'MooseIDE-LayerVisualization-Roassal-builder'
+	#name : 'HBoxNodeStyle',
+	#superclass : 'HBorderAndTitleStyle',
+	#category : 'MooseIDE-LayerVisualization-Roassal-builder',
+	#package : 'MooseIDE-LayerVisualization',
+	#tag : 'Roassal-builder'
 }
 
-{ #category : #building }
+{ #category : 'building' }
 HBoxNodeStyle >> layoutOn: aGroupOfShapes parent: anHNode [
 	aGroupOfShapes ifEmpty: [ ^ self ].
 	

@@ -1,14 +1,16 @@
 Class {
-	#name : #MiSpinnerPresenter,
-	#superclass : #MiPresenter,
+	#name : 'MiSpinnerPresenter',
+	#superclass : 'MiPresenter',
 	#instVars : [
 		'textMorphPresenter',
 		'spinnerPresenter'
 	],
-	#category : #'MooseIDE-QueriesBrowser-Widgets'
+	#category : 'MooseIDE-QueriesBrowser-Widgets',
+	#package : 'MooseIDE-QueriesBrowser',
+	#tag : 'Widgets'
 }
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiSpinnerPresenter >> initializeLayout [
 
 	self layout: (SpBoxLayout newTopToBottom
@@ -17,7 +19,7 @@ MiSpinnerPresenter >> initializeLayout [
 			 yourself)
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiSpinnerPresenter >> initializePresenters [
 
 	self initializeTextMorphPresenter.
@@ -25,7 +27,7 @@ MiSpinnerPresenter >> initializePresenters [
 	self initializeLayout
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiSpinnerPresenter >> initializeTextMorphPresenter [
 
 	| font morph |
@@ -43,7 +45,7 @@ MiSpinnerPresenter >> initializeTextMorphPresenter [
 		                      yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiSpinnerPresenter >> miSelectedItem [
 
 	^ MooseGroup new

@@ -2,24 +2,26 @@
 Class implementing the presenter used to input contexts, using Pharo code blocks.
 "
 Class {
-	#name : #MiCBContextBuilderPresenter,
-	#superclass : #MiCBRuleComponentBuilderPresenter,
-	#category : #'MooseIDE-CriticBrowser-Presenters'
+	#name : 'MiCBContextBuilderPresenter',
+	#superclass : 'MiCBRuleComponentBuilderPresenter',
+	#category : 'MooseIDE-CriticBrowser-Presenters',
+	#package : 'MooseIDE-CriticBrowser',
+	#tag : 'Presenters'
 }
 
-{ #category : #labels }
+{ #category : 'labels' }
 MiCBContextBuilderPresenter class >> defaultCodeInput [
 
 	^ '[ :collection | collection  ]'
 ]
 
-{ #category : #labels }
+{ #category : 'labels' }
 MiCBContextBuilderPresenter class >> ruleComponentName [
 
 	^ 'context'
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 MiCBContextBuilderPresenter >> buildComponent: aContext [
 
 	super buildComponent: aContext.
@@ -28,7 +30,7 @@ MiCBContextBuilderPresenter >> buildComponent: aContext [
 	^ aContext
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 MiCBContextBuilderPresenter >> codeBlockLayout [
 
 	^ self newBoxLayoutTopToBottom
@@ -38,7 +40,7 @@ MiCBContextBuilderPresenter >> codeBlockLayout [
 		  yourself
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 MiCBContextBuilderPresenter >> defaultLayout [
 
 	^ self newBoxLayoutTopToBottom
@@ -49,13 +51,13 @@ MiCBContextBuilderPresenter >> defaultLayout [
 		  yourself
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MiCBContextBuilderPresenter >> newComponent [
 
 	^ FamixCBContext new
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 MiCBContextBuilderPresenter >> titleLayout [
 
 	^ self newBoxLayoutLeftToRight

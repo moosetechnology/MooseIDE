@@ -2,15 +2,17 @@
 Simple slider presenter (for Spec) for MiCoSlider
 "
 Class {
-	#name : #MiCoSliderPresenter,
-	#superclass : #MiCoAbstractSliderPresenter,
+	#name : 'MiCoSliderPresenter',
+	#superclass : 'MiCoAbstractSliderPresenter',
 	#instVars : [
 		'text'
 	],
-	#category : #'MooseIDE-CoUsageMap-Sliders'
+	#category : 'MooseIDE-CoUsageMap-Sliders',
+	#package : 'MooseIDE-CoUsageMap',
+	#tag : 'Sliders'
 }
 
-{ #category : #layout }
+{ #category : 'layout' }
 MiCoSliderPresenter class >> defaultLayout [
 	^ SpBoxLayout newLeftToRight
 		spacing: 10;
@@ -21,12 +23,12 @@ MiCoSliderPresenter class >> defaultLayout [
 		yourself
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiCoSliderPresenter >> defaultSlider [
 	^ MiCoSlider new
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiCoSliderPresenter >> initializePresenters [
 	super initializePresenters.
 	text := self newNumberInput.
@@ -35,7 +37,7 @@ MiCoSliderPresenter >> initializePresenters [
 		setValueSelector: #realValue:
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiCoSliderPresenter >> range: anObject [
 	super range: anObject.
 	text 
@@ -47,7 +49,7 @@ MiCoSliderPresenter >> range: anObject [
 		
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MiCoSliderPresenter >> setValue: anObject [
 	| newValue |
 	newValue := anObject min: sliderBuilder max max: sliderBuilder min.

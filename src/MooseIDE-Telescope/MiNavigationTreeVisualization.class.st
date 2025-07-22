@@ -1,16 +1,18 @@
 Class {
-	#name : #MiNavigationTreeVisualization,
-	#superclass : #TLVisualization,
+	#name : 'MiNavigationTreeVisualization',
+	#superclass : 'TLVisualization',
 	#instVars : [
 		'entities',
 		'children',
 		'property',
 		'builder'
 	],
-	#category : #'MooseIDE-Telescope-NavigationTree'
+	#category : 'MooseIDE-Telescope-NavigationTree',
+	#package : 'MooseIDE-Telescope',
+	#tag : 'NavigationTree'
 }
 
-{ #category : #building }
+{ #category : 'building' }
 MiNavigationTreeVisualization >> buildAssociationButtons [
 	(self > #buttons) styleSheet
 		width: 200;
@@ -29,7 +31,7 @@ MiNavigationTreeVisualization >> buildAssociationButtons [
 				onClick
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 MiNavigationTreeVisualization >> buildEntities [
 	(self > #entities)
 		addNodesFromEntities: (self entities , self children) asSet;
@@ -42,7 +44,7 @@ MiNavigationTreeVisualization >> buildEntities [
 				yourself)
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 MiNavigationTreeVisualization >> buildStyle [
 	(self > #entities) styleSheet
 		nodeLabel: #name position: #top;
@@ -55,7 +57,7 @@ MiNavigationTreeVisualization >> buildStyle [
 				ifFalse: [ Smalltalk ui theme selectionColor ] ]
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 MiNavigationTreeVisualization >> buildVisualization [
 	self buildAssociationButtons.
 	self buildStyle.
@@ -63,47 +65,47 @@ MiNavigationTreeVisualization >> buildVisualization [
 	self layout: (TLLinearLayout topToBottom gap: 200)
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiNavigationTreeVisualization >> builder [
 	^ builder
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiNavigationTreeVisualization >> builder: anObject [
 	builder := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiNavigationTreeVisualization >> children [
 	^ children
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiNavigationTreeVisualization >> children: anObject [
 	children := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiNavigationTreeVisualization >> entities [
 	^ entities
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiNavigationTreeVisualization >> entities: anObject [
 	entities := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiNavigationTreeVisualization >> property [
 	^ property
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiNavigationTreeVisualization >> property: anObject [
 	property := anObject
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 MiNavigationTreeVisualization >> resetWithAssociation: anAssociation [
 	builder
 		association: anAssociation;

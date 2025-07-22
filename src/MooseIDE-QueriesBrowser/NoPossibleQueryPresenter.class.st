@@ -2,18 +2,20 @@
 I am a presenter that only shows the message 'No property available' when a invalid query is created in a `MiQueryConfigurationPresenter`
 "
 Class {
-	#name : #NoPossibleQueryPresenter,
-	#superclass : #MiPresenter,
+	#name : 'NoPossibleQueryPresenter',
+	#superclass : 'MiPresenter',
 	#instVars : [
 		'textToDisplay',
 		'label',
 		'null1',
 		'null2'
 	],
-	#category : #'MooseIDE-QueriesBrowser-Widgets'
+	#category : 'MooseIDE-QueriesBrowser-Widgets',
+	#package : 'MooseIDE-QueriesBrowser',
+	#tag : 'Widgets'
 }
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 NoPossibleQueryPresenter >> initializeLayout [
 
 	self layout: (SpBoxLayout newHorizontal
@@ -26,7 +28,7 @@ NoPossibleQueryPresenter >> initializeLayout [
 			 yourself)
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 NoPossibleQueryPresenter >> initializePresenters [
 
 	label := self newLabel
@@ -37,13 +39,13 @@ NoPossibleQueryPresenter >> initializePresenters [
 	self initializeLayout
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 NoPossibleQueryPresenter >> isImpossibleQueryPresenter [
 
 	^ true
 ]
 
-{ #category : #'accessing model' }
+{ #category : 'accessing model' }
 NoPossibleQueryPresenter >> setModelBeforeInitialization: aString [
 	textToDisplay := 'No ' , aString , ' available'
 ]

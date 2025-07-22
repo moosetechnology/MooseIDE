@@ -1,6 +1,6 @@
-Extension { #name : #Collection }
+Extension { #name : 'Collection' }
 
-{ #category : #'*MooseIDE-NewTools' }
+{ #category : '*MooseIDE-NewTools' }
 Collection >> mooseInterestingEntity [
 	"Method used in UI. 
 		- For a group with one element, returns this element

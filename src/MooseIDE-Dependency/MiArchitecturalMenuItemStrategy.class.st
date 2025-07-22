@@ -1,10 +1,12 @@
 Class {
-	#name : #MiArchitecturalMenuItemStrategy,
-	#superclass : #HDefaultMenuItemStrategy,
-	#category : #'MooseIDE-Dependency-ArchitecturalMap'
+	#name : 'MiArchitecturalMenuItemStrategy',
+	#superclass : 'HDefaultMenuItemStrategy',
+	#category : 'MooseIDE-Dependency-ArchitecturalMap',
+	#package : 'MooseIDE-Dependency',
+	#tag : 'ArchitecturalMap'
 }
 
-{ #category : #public }
+{ #category : 'public' }
 MiArchitecturalMenuItemStrategy >> menuItemClassesFor: aShape [
 
 	| clazz |

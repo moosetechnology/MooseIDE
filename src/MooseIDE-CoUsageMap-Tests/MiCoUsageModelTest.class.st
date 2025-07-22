@@ -1,13 +1,15 @@
 Class {
-	#name : #MiCoUsageModelTest,
-	#superclass : #TestCase,
+	#name : 'MiCoUsageModelTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'model'
 	],
-	#category : #'MooseIDE-CoUsageMap-Tests-Browser'
+	#category : 'MooseIDE-CoUsageMap-Tests-Browser',
+	#package : 'MooseIDE-CoUsageMap-Tests',
+	#tag : 'Browser'
 }
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiCoUsageModelTest >> setUp [
 
 	super setUp.
@@ -21,7 +23,7 @@ MiCoUsageModelTest >> setUp [
 
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiCoUsageModelTest >> tearDown [ 
 
 	MiCoUsageMapSettings reset.
@@ -29,14 +31,14 @@ MiCoUsageModelTest >> tearDown [
 	super tearDown
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiCoUsageModelTest >> test01Basic [
 
 	self assert: model containerBoxes size equals: 5.
 	self assert: model innerBoxes size equals: 5. "var5 is not used"
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiCoUsageModelTest >> test02MethodsAttributes [
 
 	| method |
@@ -53,7 +55,7 @@ MiCoUsageModelTest >> test02MethodsAttributes [
 	self should: [model getInnerBoxNamed: #var5] raise: Error.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiCoUsageModelTest >> test03AttributeWidth [
 
 	| method |
@@ -64,7 +66,7 @@ MiCoUsageModelTest >> test03AttributeWidth [
 	self assert: ((model getInnerBoxNamed: #var4) numberOfUsesOn: method) equals: 1
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiCoUsageModelTest >> testAutomaticColorOneTaggedInnerBox [
 
 	| tag |
@@ -83,7 +85,7 @@ MiCoUsageModelTest >> testAutomaticColorOneTaggedInnerBox [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiCoUsageModelTest >> testAutomaticColorSeveralInnerBoxAllTagged [
 
 	| tag |
@@ -101,7 +103,7 @@ MiCoUsageModelTest >> testAutomaticColorSeveralInnerBoxAllTagged [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiCoUsageModelTest >> testAutomaticColorSeveralInnerBoxAndAboveThreshold [
 
 	| tag |
@@ -119,7 +121,7 @@ MiCoUsageModelTest >> testAutomaticColorSeveralInnerBoxAndAboveThreshold [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiCoUsageModelTest >> testAutomaticColorSeveralInnerBoxAndBelowThreshold [
 
 	| tag |
@@ -134,14 +136,14 @@ MiCoUsageModelTest >> testAutomaticColorSeveralInnerBoxAndBelowThreshold [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiCoUsageModelTest >> testLastTagInitialization [
 
 	self assert: model selectedTag isNil.
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiCoUsageModelTest >> testLastTagWithTag [
 
 	| tag |

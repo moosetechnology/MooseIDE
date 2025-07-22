@@ -1,29 +1,31 @@
 Class {
-	#name : #MiButterflyNodeBeCentralNode,
-	#superclass : #MiButterflyNodeMenuItem,
-	#category : #'MooseIDE-ButterflyMap-Menu'
+	#name : 'MiButterflyNodeBeCentralNode',
+	#superclass : 'MiButterflyNodeMenuItem',
+	#category : 'MooseIDE-ButterflyMap-Menu',
+	#package : 'MooseIDE-ButterflyMap',
+	#tag : 'Menu'
 }
 
-{ #category : #execution }
+{ #category : 'execution' }
 MiButterflyNodeBeCentralNode >> canBeExecuted [
 
 	^ shape model rawModel ~= visualization centralNode rawModel
 ]
 
-{ #category : #execution }
+{ #category : 'execution' }
 MiButterflyNodeBeCentralNode >> execute [
 
 	visualization mapModel currentEntity: shape model rawModel.
 	visualization mapModel browser visualization run
 ]
 
-{ #category : #execution }
+{ #category : 'execution' }
 MiButterflyNodeBeCentralNode >> group [ 
 
 	^ 4
 ]
 
-{ #category : #execution }
+{ #category : 'execution' }
 MiButterflyNodeBeCentralNode >> label [
 
 	^ 'Be central node'

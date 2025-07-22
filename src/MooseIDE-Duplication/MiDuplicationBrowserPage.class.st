@@ -2,16 +2,17 @@
 A page in the MiDuplicationBrowser 'NoteBook', it display the content of an entity, highlighting its duplicated fragment
 "
 Class {
-	#name : #MiDuplicationBrowserPage,
-	#superclass : #SpNotebookPage,
+	#name : 'MiDuplicationBrowserPage',
+	#superclass : 'SpNotebookPage',
 	#instVars : [
 		'replica',
 		'text'
 	],
-	#category : #'MooseIDE-Duplication'
+	#category : 'MooseIDE-Duplication',
+	#package : 'MooseIDE-Duplication'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MiDuplicationBrowserPage class >> forReplica: aReplica [
 
 	^self new
@@ -20,7 +21,7 @@ MiDuplicationBrowserPage class >> forReplica: aReplica [
 		
 ]
 
-{ #category : #formatting }
+{ #category : 'formatting' }
 MiDuplicationBrowserPage >> backgroundColor: aColor at: anInterval [
 
 	text
@@ -30,7 +31,7 @@ MiDuplicationBrowserPage >> backgroundColor: aColor at: anInterval [
  
 ]
 
-{ #category : #formatting }
+{ #category : 'formatting' }
 MiDuplicationBrowserPage >> formatReplicaText [
 
 	text := Text streamContents: [ :stream |
@@ -52,7 +53,7 @@ MiDuplicationBrowserPage >> formatReplicaText [
 	^text
 ]
 
-{ #category : #formatting }
+{ #category : 'formatting' }
 MiDuplicationBrowserPage >> formatTitle [
 
 	| titleInterval |
@@ -66,7 +67,7 @@ MiDuplicationBrowserPage >> formatTitle [
 	self backgroundColor: self titleColor at: titleInterval
 ]
 
-{ #category : #formatting }
+{ #category : 'formatting' }
 MiDuplicationBrowserPage >> highlightClone: clone color: aColor [
 	"computes first and last character position of the clone"
 
@@ -75,7 +76,7 @@ MiDuplicationBrowserPage >> highlightClone: clone color: aColor [
 		at: (self linesToCharPos: (clone startLine to: clone endLine))
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiDuplicationBrowserPage >> initialize [
 
 	super initialize.
@@ -90,7 +91,7 @@ MiDuplicationBrowserPage >> initialize [
         yourself ]
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MiDuplicationBrowserPage >> linesToCharPos: lineInterval [
 
 	"copied from FamixTFileNavigation >> #intervalAsCharPos
@@ -106,32 +107,32 @@ MiDuplicationBrowserPage >> linesToCharPos: lineInterval [
 	^ start to: text size
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDuplicationBrowserPage >> mainCloneColor [
 
 	^ Color lightYellow lighter
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDuplicationBrowserPage >> otherCloneColor [
 
 	^ Color veryVeryLightGray
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDuplicationBrowserPage >> replica: aReplica [
 	replica := aReplica.
 	self title: aReplica entity name.
 
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MiDuplicationBrowserPage >> textContent [
 
 	^ replica ifNil: [ '** no source code found**' ] ifNotNil: [ self formatReplicaText ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDuplicationBrowserPage >> titleColor [
 	"same blue as used in pharo for text selection"
 

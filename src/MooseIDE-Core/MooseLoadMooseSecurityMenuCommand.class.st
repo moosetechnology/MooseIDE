@@ -6,43 +6,45 @@ This project goal is to help find security vulnerabilities in projects using Moo
 https://github.com/moosetechnology/Moose-Security
 "
 Class {
-	#name : #MooseLoadMooseSecurityMenuCommand,
-	#superclass : #MooseAbstractLoadToolMenuCommand,
-	#category : #'MooseIDE-Core-MenuBar'
+	#name : 'MooseLoadMooseSecurityMenuCommand',
+	#superclass : 'MooseAbstractLoadToolMenuCommand',
+	#category : 'MooseIDE-Core-MenuBar',
+	#package : 'MooseIDE-Core',
+	#tag : 'MenuBar'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseLoadMooseSecurityMenuCommand class >> label [
 
 	^ 'Moose Security'
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MooseLoadMooseSecurityMenuCommand class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
 	^ self menuCommandOn: aBuilder forCommand: self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseLoadMooseSecurityMenuCommand class >> menuPriority [
 
 	^ super menuPriority + 3
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseLoadMooseSecurityMenuCommand >> baselineName [
 
 	^ 'MooseSecurity'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseLoadMooseSecurityMenuCommand >> repositoryURL [
 
 	^ 'github://moosetechnology/MooseSecurity:' , self version , '/src'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseLoadMooseSecurityMenuCommand >> version [
 
 	^ 'main'

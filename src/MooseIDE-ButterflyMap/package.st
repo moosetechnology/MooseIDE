@@ -1,1 +1,1 @@
-Package { #name : #'MooseIDE-ButterflyMap' }
+Package { #name : 'MooseIDE-ButterflyMap' }

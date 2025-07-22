@@ -1,40 +1,42 @@
 Class {
-	#name : #MooseLoadFamixSQLMenuCommand,
-	#superclass : #MooseAbstractLoadFamixMenuCommand,
-	#category : #'MooseIDE-Core-MenuBar'
+	#name : 'MooseLoadFamixSQLMenuCommand',
+	#superclass : 'MooseAbstractLoadFamixMenuCommand',
+	#category : 'MooseIDE-Core-MenuBar',
+	#package : 'MooseIDE-Core',
+	#tag : 'MenuBar'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseLoadFamixSQLMenuCommand class >> help [
 
 	^ 'Famix Metamodel for SQL'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseLoadFamixSQLMenuCommand class >> label [
 
 	^ 'Famix-SQL'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseLoadFamixSQLMenuCommand class >> menuPriority [
 
 	^super menuPriority + 1
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseLoadFamixSQLMenuCommand >> baselineName [
 
 	^ 'FamixSQL'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseLoadFamixSQLMenuCommand >> repositoryURL [
 
 	^ 'github://moosetechnology/FamixSQL:' , self version , '/src'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseLoadFamixSQLMenuCommand >> version [
 
 	^ 'main'

@@ -1,15 +1,17 @@
 Class {
-	#name : #MooseAbstractLoadFamixMenuCommand,
-	#superclass : #MooseAbstractLoadModuleMenuCommand,
-	#category : #'MooseIDE-Core-MenuBar'
+	#name : 'MooseAbstractLoadFamixMenuCommand',
+	#superclass : 'MooseAbstractLoadModuleMenuCommand',
+	#category : 'MooseIDE-Core-MenuBar',
+	#package : 'MooseIDE-Core',
+	#tag : 'MenuBar'
 }
 
-{ #category : #testing }
+{ #category : 'testing' }
 MooseAbstractLoadFamixMenuCommand class >> isAbstract [
 	^ self = MooseAbstractLoadFamixMenuCommand
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseAbstractLoadFamixMenuCommand class >> menuPriority [
 
 	^ 10

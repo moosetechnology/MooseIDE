@@ -1,38 +1,39 @@
 Class {
-	#name : #MiTagBrowserTest,
-	#superclass : #MiAbstractBrowserTest,
+	#name : 'MiTagBrowserTest',
+	#superclass : 'MiAbstractBrowserTest',
 	#instVars : [
 		'detailsPage',
 		'helper'
 	],
-	#category : #'MooseIDE-Tagging-Tests'
+	#category : 'MooseIDE-Tagging-Tests',
+	#package : 'MooseIDE-Tagging-Tests'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 MiTagBrowserTest >> browserClass [
 	^ MiTagBrowser
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiTagBrowserTest >> defaultEntityToSelect [
 
 	^ FQTestsHelper new classesAndMethods
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiTagBrowserTest >> mooseModelSize [
 
 	^ self defaultEntityToSelect anyOne mooseModel size
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiTagBrowserTest >> numberOfTaggedEntities [
 
 	^ (self defaultEntityToSelect anyOne mooseModel select: #isTagged)
 		  size
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiTagBrowserTest >> receiveEntityToSelect [
 
 	| tag |
@@ -46,7 +47,7 @@ MiTagBrowserTest >> receiveEntityToSelect [
 	browser tagManagementPage descriptionPage addAll
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiTagBrowserTest >> setUp [
 
 	super setUp.
@@ -55,12 +56,12 @@ MiTagBrowserTest >> setUp [
 	detailsPage := browser descriptionPage
 ]
 
-{ #category : #'tests - opening' }
+{ #category : 'tests - opening' }
 MiTagBrowserTest >> testCanTagEntities [
 	self deny: browser canTagEntities 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiTagBrowserTest >> testIsConsumerOfFQAbstractQuery [
 
 	self assert:
@@ -68,7 +69,7 @@ MiTagBrowserTest >> testIsConsumerOfFQAbstractQuery [
 			 elt = browser tagCreationForm ])
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiTagBrowserTest >> testIsConsumerOfTagAssociation [
 
 	self assert:
@@ -76,7 +77,7 @@ MiTagBrowserTest >> testIsConsumerOfTagAssociation [
 			 elt = browser ])
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiTagBrowserTest >> testIsProducerOfDynamicTag [
 
 	self assert:
@@ -84,7 +85,7 @@ MiTagBrowserTest >> testIsProducerOfDynamicTag [
 			 elt = browser ])
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiTagBrowserTest >> testIsProducerOfFamixTags [
 
 	self assert:
@@ -92,7 +93,7 @@ MiTagBrowserTest >> testIsProducerOfFamixTags [
 			 elt = browser ])
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiTagBrowserTest >> testNoTagDetailPageAddDoNothing [
 
 	| entities |
@@ -106,7 +107,7 @@ MiTagBrowserTest >> testNoTagDetailPageAddDoNothing [
 		equals: self numberOfTaggedEntities
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiTagBrowserTest >> testTagDetailPageAddEntityToTag [
 
 	| entities tag |
@@ -122,7 +123,7 @@ MiTagBrowserTest >> testTagDetailPageAddEntityToTag [
 		equals: self numberOfTaggedEntities
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiTagBrowserTest >> testTagDuplicationReturnNilAtCreation [
 
 	| name firstTag duplicatedTag |
@@ -145,7 +146,7 @@ MiTagBrowserTest >> testTagDuplicationReturnNilAtCreation [
 	self assert: duplicatedTag isNil.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiTagBrowserTest >> testTagModelInitialization [
 
 	| specModel |
@@ -155,7 +156,7 @@ MiTagBrowserTest >> testTagModelInitialization [
 	self assert: specModel mooseModel size equals: self mooseModelSize
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiTagBrowserTest >> testTagRemainSelectedOnRefresh [
 
 	| tagList |

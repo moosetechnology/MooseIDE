@@ -9,8 +9,8 @@ Allows the addition of a comment for each entity.
 - Propagate: All entities
 "
 Class {
-	#name : #MiExportBrowser,
-	#superclass : #MiAbstractBrowser,
+	#name : 'MiExportBrowser',
+	#superclass : 'MiAbstractBrowser',
 	#instVars : [
 		'toolbar',
 		'entitiesTable',
@@ -18,16 +18,18 @@ Class {
 		'commentsAreShown',
 		'entitiesCountLabel'
 	],
-	#category : #'MooseIDE-Export-Browser'
+	#category : 'MooseIDE-Export-Browser',
+	#package : 'MooseIDE-Export',
+	#tag : 'Browser'
 }
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiExportBrowser class >> commentColumnTitle [
 
 	^ 'Comment'
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiExportBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
@@ -35,44 +37,44 @@ MiExportBrowser class >> menuCommandOn: aBuilder [
 	^ self buildMenuItemIn: aBuilder
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiExportBrowser class >> menuIconName [
 
 	^ #smallExport
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiExportBrowser class >> menuItem [
 
 	^ #Exporter
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiExportBrowser class >> menuPriority [
 
 	^ self menuMetaToolsPriority + 3
 ]
 
-{ #category : #specs }
+{ #category : 'specs' }
 MiExportBrowser class >> newModel [
 
 	^ MiExportModel new
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MiExportBrowser class >> open [
 
 	<script>
 	^ super open
 ]
 
-{ #category : #specs }
+{ #category : 'specs' }
 MiExportBrowser class >> title [
 
 	^ 'Entities exporter'
 ]
 
-{ #category : #'columns management' }
+{ #category : 'columns management' }
 MiExportBrowser >> addColumn: aColumn [
 
 	(aColumn isKindOf: FM3Property)
@@ -81,7 +83,7 @@ MiExportBrowser >> addColumn: aColumn [
 		self model addColumnForQuery: aColumn query withName: aColumn name ]
 ]
 
-{ #category : #'columns management' }
+{ #category : 'columns management' }
 MiExportBrowser >> addCommentsColumn [
 
 	entitiesTable addColumn: ((SpStringTableColumn
@@ -94,13 +96,13 @@ MiExportBrowser >> addCommentsColumn [
 	entitiesTable refresh
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiExportBrowser >> canFollowEntity: anObject [
 
 	^ true
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiExportBrowser >> clearButton [
 
 	^ self newToolbarButton
@@ -109,13 +111,13 @@ MiExportBrowser >> clearButton [
 		  action: [ self clearEntities ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiExportBrowser >> clearEntities [
 
 	self model clearEntities
 ]
 
-{ #category : #'columns management' }
+{ #category : 'columns management' }
 MiExportBrowser >> columnAdded: aColumn [
 
 	"Update table recreate fully the table, we should be able to simply add the column"
@@ -123,7 +125,7 @@ MiExportBrowser >> columnAdded: aColumn [
 	self updateTable
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiExportBrowser >> columnChoiceButton [
 
 	| choiceButton |
@@ -140,7 +142,7 @@ MiExportBrowser >> columnChoiceButton [
 	^ choiceButton
 ]
 
-{ #category : #'columns management' }
+{ #category : 'columns management' }
 MiExportBrowser >> columnRemoved: aColumn [
 
 	"Update table recreate fully the table, we should be able to simply remove the column"
@@ -148,25 +150,25 @@ MiExportBrowser >> columnRemoved: aColumn [
 	self updateTable
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiExportBrowser >> commentOf: anEntity [
 
 	^ self model commentOf: anEntity
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiExportBrowser >> commentsAreShown [
 
 	^ commentsAreShown ifNil: [ commentsAreShown := false ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiExportBrowser >> commentsAreShown: anObject [
 
 	commentsAreShown := anObject
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiExportBrowser >> commentsButton [
 
 	^ commentsButton := self newToolbarButton
@@ -175,7 +177,7 @@ MiExportBrowser >> commentsButton [
 		                    action: [ :button | self toggleCommentsColumn ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiExportBrowser >> commonPropertiesIn: aMooseGroup [
 
 	| properties mooseDescriptions |
@@ -193,7 +195,7 @@ MiExportBrowser >> commonPropertiesIn: aMooseGroup [
 		  ifFalse: [ properties first: 5 ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiExportBrowser >> customQueryButton [
 
 	^ self newToolbarButton
@@ -206,7 +208,7 @@ MiExportBrowser >> customQueryButton [
 		  yourself
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 MiExportBrowser >> defaultLayout [
 
 	^ SpBoxLayout newTopToBottom
@@ -222,7 +224,7 @@ MiExportBrowser >> defaultLayout [
 		  yourself
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiExportBrowser >> exportEntitiesToCSV [
 
 	| file |
@@ -238,14 +240,14 @@ Click to show in folder'
 			actionOnClick: [ file openInOSFileBrowser ] ]
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiExportBrowser >> followEntity: anEntity [
 
 	self updateEntitiesListWith: anEntity asMooseGroup.
 	self updateEntitiesCountLabel
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiExportBrowser >> initializePresenters [
 
 	entitiesCountLabel := self newLabel label: 'xxx'.
@@ -253,13 +255,13 @@ MiExportBrowser >> initializePresenters [
 	self initializeTable
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiExportBrowser >> initializeTable [
 
 	entitiesTable := self newTable beResizable.
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiExportBrowser >> initializeToolbar [
 
 	toolbar := self newToolbar
@@ -273,19 +275,19 @@ MiExportBrowser >> initializeToolbar [
 		           addItem: self clearButton
 ]
 
-{ #category : #'event handling' }
+{ #category : 'event handling' }
 MiExportBrowser >> listEntityChanged [
 
 	self updateTable
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiExportBrowser >> miSelectedItem [
 
 	^ entitiesTable items
 ]
 
-{ #category : #'columns management' }
+{ #category : 'columns management' }
 MiExportBrowser >> propertiesListForPopover [
 
 	| list |
@@ -313,7 +315,7 @@ MiExportBrowser >> propertiesListForPopover [
 	^ list
 ]
 
-{ #category : #'columns management' }
+{ #category : 'columns management' }
 MiExportBrowser >> removeColumn: aColumn [
 
 	(aColumn isKindOf: FM3Property)
@@ -321,12 +323,12 @@ MiExportBrowser >> removeColumn: aColumn [
 		ifFalse: [ self model removeColumnForQueryNamed: aColumn name ]
 ]
 
-{ #category : #'columns management' }
+{ #category : 'columns management' }
 MiExportBrowser >> removeColumnForProperty: aFM3Property [
 	self model removeColumnForProperty: aFM3Property.
 ]
 
-{ #category : #'columns management' }
+{ #category : 'columns management' }
 MiExportBrowser >> removeCommentsColumn [
 
 	entitiesTable columns: (entitiesTable columns reject: [ :column | 
@@ -334,14 +336,14 @@ MiExportBrowser >> removeCommentsColumn [
 	entitiesTable refresh
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiExportBrowser >> showsProperty: aFM3Property [
 
 	^ entitiesTable columns anySatisfy: [ :column | 
 		  column title = aFM3Property name ]
 ]
 
-{ #category : #'columns management' }
+{ #category : 'columns management' }
 MiExportBrowser >> toggleCommentsColumn [
 
 	self commentsAreShown
@@ -353,7 +355,7 @@ MiExportBrowser >> toggleCommentsColumn [
 			self commentsAreShown: true ]
 ]
 
-{ #category : #'columns management' }
+{ #category : 'columns management' }
 MiExportBrowser >> updateEntitiesCountLabel [
 
 	| size |
@@ -364,7 +366,7 @@ MiExportBrowser >> updateEntitiesCountLabel [
 			 ifFalse: [ ' entity' ])
 ]
 
-{ #category : #'columns management' }
+{ #category : 'columns management' }
 MiExportBrowser >> updateEntitiesListWith: aMooseGroup [
 
 	self model clearColumns.
@@ -375,7 +377,7 @@ MiExportBrowser >> updateEntitiesListWith: aMooseGroup [
 	self updateTable
 ]
 
-{ #category : #'columns management' }
+{ #category : 'columns management' }
 MiExportBrowser >> updateTable [
 
 	entitiesTable columns: {  }.

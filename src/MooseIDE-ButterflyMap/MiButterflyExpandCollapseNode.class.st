@@ -1,32 +1,34 @@
 Class {
-	#name : #MiButterflyExpandCollapseNode,
-	#superclass : #MiButterflyNodeMenuItem,
-	#category : #'MooseIDE-ButterflyMap-Menu'
+	#name : 'MiButterflyExpandCollapseNode',
+	#superclass : 'MiButterflyNodeMenuItem',
+	#category : 'MooseIDE-ButterflyMap-Menu',
+	#package : 'MooseIDE-ButterflyMap',
+	#tag : 'Menu'
 }
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiButterflyExpandCollapseNode >> canBeExecuted [
 	^ shape model children isNotEmpty
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiButterflyExpandCollapseNode >> label [
 	^ shape model isExpanded
 		ifTrue: [ 'Collapse' ]
 		ifFalse: [ 'Expand' ]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiButterflyExpandCollapseNode >> order [
 	^ 0
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiButterflyExpandCollapseNode >> selector [
 	^ #expandCollapse
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiButterflyExpandCollapseNode >> target [
 	^ shape model
 ]

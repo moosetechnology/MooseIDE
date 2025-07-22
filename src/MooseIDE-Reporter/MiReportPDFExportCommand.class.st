@@ -1,26 +1,27 @@
 Class {
-	#name : #MiReportPDFExportCommand,
-	#superclass : #MiReportExportCommand,
-	#category : #'MooseIDE-Reporter'
+	#name : 'MiReportPDFExportCommand',
+	#superclass : 'MiReportExportCommand',
+	#category : 'MooseIDE-Reporter',
+	#package : 'MooseIDE-Reporter'
 }
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiReportPDFExportCommand class >> defaultDescription [
 	^ 'Export this report to PDF'
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiReportPDFExportCommand class >> defaultIconName [
 
 	^ #save
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiReportPDFExportCommand class >> defaultName [
 	^ 'Export to PDF'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 MiReportPDFExportCommand >> exportReport: reporterBrowserModel [
 
 	reporterBrowserModel exportReportToPDF

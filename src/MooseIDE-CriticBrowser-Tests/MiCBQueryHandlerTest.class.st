@@ -2,12 +2,13 @@
 A MiCriticBrowserFQQueryTest is a test class for testing the behavior of MiCriticBrowserFQQuery
 "
 Class {
-	#name : #MiCBQueryHandlerTest,
-	#superclass : #TestCase,
-	#category : #'MooseIDE-CriticBrowser-Tests'
+	#name : 'MiCBQueryHandlerTest',
+	#superclass : 'TestCase',
+	#category : 'MooseIDE-CriticBrowser-Tests',
+	#package : 'MooseIDE-CriticBrowser-Tests'
 }
 
-{ #category : #queries }
+{ #category : 'queries' }
 MiCBQueryHandlerTest >> intersectionQuery [
 
 	| query class stubClass method |
@@ -33,7 +34,7 @@ MiCBQueryHandlerTest >> intersectionQuery [
 		hasSameElements: { stubClass }
 ]
 
-{ #category : #queries }
+{ #category : 'queries' }
 MiCBQueryHandlerTest >> queryWithParent [
 
 	| query childQuery class stubClass method |
@@ -69,7 +70,7 @@ MiCBQueryHandlerTest >> queryWithParent [
 		hasSameElements: { stubClass }
 ]
 
-{ #category : #queries }
+{ #category : 'queries' }
 MiCBQueryHandlerTest >> singleQuery [
 
 	| query class stubClass method |
@@ -81,7 +82,7 @@ MiCBQueryHandlerTest >> singleQuery [
 	self assertCollection: (query runOnCollection: ({ class. stubClass. method } asMooseGroup) ) hasSameElements: { method. stubClass }. 
 ]
 
-{ #category : #queries }
+{ #category : 'queries' }
 MiCBQueryHandlerTest >> substractionQuery [
 
 	| query class stubClass method |
@@ -107,7 +108,7 @@ MiCBQueryHandlerTest >> substractionQuery [
 		hasSameElements: { class }
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiCBQueryHandlerTest >> testAsRuleEditorString [
 
 	| queryFQ |
@@ -119,7 +120,7 @@ MiCBQueryHandlerTest >> testAsRuleEditorString [
 		equals: '[ :entity | entity ]'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiCBQueryHandlerTest >> testConvertToSTONString [
 
 	| queryFQ |
@@ -132,7 +133,7 @@ MiCBQueryHandlerTest >> testConvertToSTONString [
 		'(FQTypeQuery types: {FamixJavaMethod}) --> (FQBooleanQuery property: #isDead)'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiCBQueryHandlerTest >> testRunOnCollection [
 	
 	self singleQuery.
@@ -140,7 +141,7 @@ MiCBQueryHandlerTest >> testRunOnCollection [
 	self testRunOnQueryWithParent
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiCBQueryHandlerTest >> testRunOnNAryQuery [
 	
 	self substractionQuery.
@@ -149,14 +150,14 @@ MiCBQueryHandlerTest >> testRunOnNAryQuery [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiCBQueryHandlerTest >> testRunOnQueryWithParent [
 	
 	self queryWithParent.
 
 ]
 
-{ #category : #queries }
+{ #category : 'queries' }
 MiCBQueryHandlerTest >> unionOfThreeQueries [
 
 	| query class stubClass method attribute |

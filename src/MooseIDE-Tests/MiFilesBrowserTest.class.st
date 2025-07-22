@@ -1,15 +1,17 @@
 Class {
-	#name : #MiFilesBrowserTest,
-	#superclass : #MiAbstractBrowserTest,
-	#category : #'MooseIDE-Tests-Browsers'
+	#name : 'MiFilesBrowserTest',
+	#superclass : 'MiAbstractBrowserTest',
+	#category : 'MooseIDE-Tests-Browsers',
+	#package : 'MooseIDE-Tests',
+	#tag : 'Browsers'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 MiFilesBrowserTest >> browserClass [
 	^ MiFilesBrowser
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiFilesBrowserTest >> defaultEntityToSelect [
 
 	^ MooseModel new
@@ -18,12 +20,12 @@ MiFilesBrowserTest >> defaultEntityToSelect [
 		  yourself
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiFilesBrowserTest >> testCanTagEntities [
 	self deny: browser canTagEntities 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiFilesBrowserTest >> testMiSelectedItem [
 
 	self receiveEntityToSelect.

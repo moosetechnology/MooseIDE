@@ -1,41 +1,43 @@
 Class {
-	#name : #MooseLoadFASTJavaMenuCommand,
-	#superclass : #MooseAbstractLoadFASTMenuCommand,
-	#category : #'MooseIDE-Core-MenuBar'
+	#name : 'MooseLoadFASTJavaMenuCommand',
+	#superclass : 'MooseAbstractLoadFASTMenuCommand',
+	#category : 'MooseIDE-Core-MenuBar',
+	#package : 'MooseIDE-Core',
+	#tag : 'MenuBar'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseLoadFASTJavaMenuCommand class >> help [
 
 	^ 'Famix representation of Java AST'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseLoadFASTJavaMenuCommand class >> label [
 
 	^ 'FAST Java'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseLoadFASTJavaMenuCommand class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
 	^ (self menuCommandOn: aBuilder forCommand: self) yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseLoadFASTJavaMenuCommand class >> menuPriority [
 
 	^ super menuPriority + 1
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseLoadFASTJavaMenuCommand >> baselineName [
 
 	^ 'FASTJava'
 ]
 
-{ #category : #executing }
+{ #category : 'executing' }
 MooseLoadFASTJavaMenuCommand >> execute [
 	"override to load a specific group of the baseline: #all"
 
@@ -46,13 +48,13 @@ MooseLoadFASTJavaMenuCommand >> execute [
 		load: #all
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseLoadFASTJavaMenuCommand >> repositoryURL [
 
 	^ 'github://moosetechnology/FAST-Java:' , self version , '/src'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseLoadFASTJavaMenuCommand >> version [
 
 	^ 'v3'

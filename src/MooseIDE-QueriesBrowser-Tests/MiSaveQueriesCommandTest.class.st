@@ -2,16 +2,18 @@
 A MiSaveQueriesCommandTest is a test class for testing the behavior of MiSaveQueriesCommand
 "
 Class {
-	#name : #MiSaveQueriesCommandTest,
-	#superclass : #TestCase,
+	#name : 'MiSaveQueriesCommandTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'saver',
 		'fixture'
 	],
-	#category : #'MooseIDE-QueriesBrowser-Tests-Commands'
+	#category : 'MooseIDE-QueriesBrowser-Tests-Commands',
+	#package : 'MooseIDE-QueriesBrowser-Tests',
+	#tag : 'Commands'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 MiSaveQueriesCommandTest >> setUp [
 
 	super setUp.
@@ -19,7 +21,7 @@ MiSaveQueriesCommandTest >> setUp [
 	fixture := SaveQueriesFixture new
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiSaveQueriesCommandTest >> testCopyQueriesReferencesOf [
 
 	| copy original |
@@ -40,7 +42,7 @@ MiSaveQueriesCommandTest >> testCopyQueriesReferencesOf [
 			self assert: a children anyOne equals: b children anyOne ] ]
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiSaveQueriesCommandTest >> testPutChildrenInPlace [
 
 	| sortedQueriesWithChildreInPlace |
@@ -52,7 +54,7 @@ MiSaveQueriesCommandTest >> testPutChildrenInPlace [
 		hasSameElements: fixture expectedChildrenInPlaceOrder 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiSaveQueriesCommandTest >> testTopologicalSortForQueries [
 
 	| query1 query2 complementQuery andQuery resultSize orQuery unSortedQueries sortedQueries query3 complement2 |
@@ -94,7 +96,7 @@ MiSaveQueriesCommandTest >> testTopologicalSortForQueries [
 	self assert: sortedQueries last equals: orQuery
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiSaveQueriesCommandTest >> testTopologicalSortForQueries2 [
 
 	| sortedQueries |

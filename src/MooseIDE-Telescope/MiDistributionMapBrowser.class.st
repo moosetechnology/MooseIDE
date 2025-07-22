@@ -6,12 +6,14 @@ Shows children of entities.
 - Propagate: <TODO>
 "
 Class {
-	#name : #MiDistributionMapBrowser,
-	#superclass : #MiAbstractTelescopeBrowser,
-	#category : #'MooseIDE-Telescope-DistributionMap'
+	#name : 'MiDistributionMapBrowser',
+	#superclass : 'MiAbstractTelescopeBrowser',
+	#category : 'MooseIDE-Telescope-DistributionMap',
+	#package : 'MooseIDE-Telescope',
+	#tag : 'DistributionMap'
 }
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiDistributionMapBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	<miBrowsers>
@@ -23,28 +25,28 @@ MiDistributionMapBrowser class >> menuCommandOn: aBuilder [
 		action: [ self open ]
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MiDistributionMapBrowser class >> open [
 	<script>
 	^ super open
 ]
 
-{ #category : #specs }
+{ #category : 'specs' }
 MiDistributionMapBrowser class >> title [
 	^ 'Distribution Map'
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiDistributionMapBrowser >> canFollowEntity: anObject [
 	^ anObject isMooseObject
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiDistributionMapBrowser >> diagramClass [
 	^ MiDistributionMap
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiDistributionMapBrowser >> followEntity: anEntity [
 
 	diagram
@@ -53,7 +55,7 @@ MiDistributionMapBrowser >> followEntity: anEntity [
 		run
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiDistributionMapBrowser >> initializePresenters [
 	super initializePresenters.
 	diagram

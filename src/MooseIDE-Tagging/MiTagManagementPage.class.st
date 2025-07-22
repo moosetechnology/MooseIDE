@@ -2,8 +2,8 @@
 The page of the TagBrowser allowing to create, select, or remove tags (left part of the browser)
 "
 Class {
-	#name : #MiTagManagementPage,
-	#superclass : #MiPresenter,
+	#name : 'MiTagManagementPage',
+	#superclass : 'MiPresenter',
 	#instVars : [
 		'categoryManagement',
 		'tagList',
@@ -15,16 +15,18 @@ Class {
 		'btnIsExtent',
 		'btnIsIntent'
 	],
-	#category : #'MooseIDE-Tagging-Browser'
+	#category : 'MooseIDE-Tagging-Browser',
+	#package : 'MooseIDE-Tagging',
+	#tag : 'Browser'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiTagManagementPage >> addTagButton [
 
 	^ addTagButton
 ]
 
-{ #category : #refreshing }
+{ #category : 'refreshing' }
 MiTagManagementPage >> computeExtentTagList [
 
 	^btnIsExtent state
@@ -34,7 +36,7 @@ MiTagManagementPage >> computeExtentTagList [
 		ifFalse: [ #() ]
 ]
 
-{ #category : #refreshing }
+{ #category : 'refreshing' }
 MiTagManagementPage >> computeIntentTagList [
 
 	^btnIsIntent state
@@ -47,7 +49,7 @@ MiTagManagementPage >> computeIntentTagList [
 
 ]
 
-{ #category : #refreshing }
+{ #category : 'refreshing' }
 MiTagManagementPage >> computeTagList [
 
 	^self computeExtentTagList 
@@ -56,7 +58,7 @@ MiTagManagementPage >> computeTagList [
 
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiTagManagementPage >> connectPresenters [
 
 	btnIsExtent whenChangedDo: [ 
@@ -67,7 +69,7 @@ MiTagManagementPage >> connectPresenters [
 		self refreshTagList ]
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 MiTagManagementPage >> deleteCurrentTag [
 
 	|tag|
@@ -77,31 +79,31 @@ MiTagManagementPage >> deleteCurrentTag [
 	self refreshTagList
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiTagManagementPage >> descriptionPage [
 
 	^ descriptionPage
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiTagManagementPage >> dynamicTagDescriptionPage [
 
 	^ dynamicTagDescriptionPage
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 MiTagManagementPage >> editCurrentTag [
 
 	self owner openTagEditionForm
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiTagManagementPage >> extentTagButton [
 
 	^ btnIsExtent
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiTagManagementPage >> initializeLayout [
 
 	| sep |
@@ -136,7 +138,7 @@ MiTagManagementPage >> initializeLayout [
 			 yourself)
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiTagManagementPage >> initializePresenters [
 
 	categoryManagement := self
@@ -174,19 +176,19 @@ MiTagManagementPage >> initializePresenters [
 	self initializeLayout
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiTagManagementPage >> intentTagButton [
 
 	^ btnIsIntent
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiTagManagementPage >> model [
 
 	^ owner model
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 MiTagManagementPage >> preparePageFor: aTag [
 
 	aTag isIntent ifTrue: [ 
@@ -197,7 +199,7 @@ MiTagManagementPage >> preparePageFor: aTag [
 	descriptionPage := tagDescriptionPage
 ]
 
-{ #category : #refreshing }
+{ #category : 'refreshing' }
 MiTagManagementPage >> refresh [
 
 	self refreshTagList.
@@ -205,20 +207,20 @@ MiTagManagementPage >> refresh [
 	self refreshDescriptionPage
 ]
 
-{ #category : #refreshing }
+{ #category : 'refreshing' }
 MiTagManagementPage >> refreshCategoryList [
 
 	categoryManagement refreshCategoryList
 ]
 
-{ #category : #refreshing }
+{ #category : 'refreshing' }
 MiTagManagementPage >> refreshDescriptionPage [
 	"No need to refresh if this is hidden."
 
 	descriptionPage isVisible ifTrue: [ descriptionPage refresh ]
 ]
 
-{ #category : #refreshing }
+{ #category : 'refreshing' }
 MiTagManagementPage >> refreshTagList [
 
 	tagList items:
@@ -229,26 +231,26 @@ MiTagManagementPage >> refreshTagList [
 
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiTagManagementPage >> refreshTaggedEntitiesList [
 
 	descriptionPage refreshTaggedEntitiesList
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 MiTagManagementPage >> removeCategory [
 
 	self model deleteCurrentCategory.
 	self refreshCategoryList
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiTagManagementPage >> selectedItems [
 
 	^ tagDescriptionPage selectedItems
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiTagManagementPage >> setIconForButton: aBtn [
 
 	aBtn icon: (Smalltalk ui icons iconNamed: (aBtn state
@@ -256,13 +258,13 @@ MiTagManagementPage >> setIconForButton: aBtn [
 				  ifFalse: [ #checkboxUnselected ]))
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiTagManagementPage >> setModelBeforeInitialization: aTagModel [
 
 	tagModel := aTagModel
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 MiTagManagementPage >> setTagTo: aTag [
 
 	self owner setTagTo: aTag.
@@ -273,13 +275,13 @@ MiTagManagementPage >> setTagTo: aTag [
 	self update
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiTagManagementPage >> tagList [
 
 	^ tagList
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiTagManagementPage >> tagListMenu [
 
 	^ self newMenu
@@ -297,7 +299,7 @@ MiTagManagementPage >> tagListMenu [
 						  action: [ self deleteCurrentTag ] ] ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiTagManagementPage >> tagModel [
 
 	^ owner model

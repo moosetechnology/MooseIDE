@@ -1,14 +1,16 @@
 Class {
-	#name : #MiDependencyButterfly,
-	#superclass : #MiAbstractVisualization,
+	#name : 'MiDependencyButterfly',
+	#superclass : 'MiAbstractVisualization',
 	#instVars : [
 		'entity',
 		'butterfly'
 	],
-	#category : #'MooseIDE-Telescope-Butterfly'
+	#category : 'MooseIDE-Telescope-Butterfly',
+	#package : 'MooseIDE-Telescope',
+	#tag : 'Butterfly'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 MiDependencyButterfly >> decorateEntity [
 	butterfly mainEntity: self entity.
 	(butterfly styleSheet > #entity)
@@ -17,7 +19,7 @@ MiDependencyButterfly >> decorateEntity [
 	butterfly > #central addStyle: #entity
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiDependencyButterfly >> decorateIncoming [
 	butterfly
 		leftEntities: [ :e | e queryAllIncoming withoutSelfLoops atScope: entity class ].
@@ -25,7 +27,7 @@ MiDependencyButterfly >> decorateIncoming [
 	butterfly > #left addStyle: #incoming
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiDependencyButterfly >> decorateOutgoing [
 	butterfly
 		rightEntities: [ :e | e queryAllOutgoing withoutSelfLoops atScope: entity class ].
@@ -33,17 +35,17 @@ MiDependencyButterfly >> decorateOutgoing [
 	butterfly > #right addStyle: #outgoing
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDependencyButterfly >> entity [
 	^ entity
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDependencyButterfly >> entity: anObject [
 	entity := anObject
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiDependencyButterfly >> run [
 	super run.
 	butterfly := TLButterfly new.
@@ -56,7 +58,7 @@ MiDependencyButterfly >> run [
 	self canvas zoomToFit
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiDependencyButterfly >> setButterflyStyle [
 	butterfly styleSheet
 		shape: TLEllipse;

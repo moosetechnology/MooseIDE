@@ -4,25 +4,27 @@ A heuristic to recognize methods implementing a Java interface method that is ca
 I a Java interface method is called, we assume any method implementing it in a concrete class can be called
 "
 Class {
-	#name : #MiDeadCodeJavaImplementedInterfaceHeuristic,
-	#superclass : #MiDeadCodeAbstractJavaHeuristic,
-	#category : #'MooseIDE-Dependency-DeadCode'
+	#name : 'MiDeadCodeJavaImplementedInterfaceHeuristic',
+	#superclass : 'MiDeadCodeAbstractJavaHeuristic',
+	#category : 'MooseIDE-Dependency-DeadCode',
+	#package : 'MooseIDE-Dependency',
+	#tag : 'DeadCode'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDeadCodeJavaImplementedInterfaceHeuristic >> description [
 
 	^super description ,
 	'A method implementing a Java interface that is called is not dead'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDeadCodeJavaImplementedInterfaceHeuristic >> name [
 
 	^super name , 'Implemented interface'
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiDeadCodeJavaImplementedInterfaceHeuristic >> notDead: aTMethod [
 	"metods implementing a Java interface method that is invoked are considered not dead
 	 the other one are 'dead' (refuting heuristic)"

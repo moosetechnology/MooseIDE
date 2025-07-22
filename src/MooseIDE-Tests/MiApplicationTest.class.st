@@ -1,24 +1,26 @@
 Class {
-	#name : #MiApplicationTest,
-	#superclass : #MiAbstractApplicationTest,
+	#name : 'MiApplicationTest',
+	#superclass : 'MiAbstractApplicationTest',
 	#instVars : [
 		'bus'
 	],
-	#category : #'MooseIDE-Tests-Application'
+	#category : 'MooseIDE-Tests-Application',
+	#package : 'MooseIDE-Tests',
+	#tag : 'Application'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 MiApplicationTest >> alternativeBusName [
 	^ 'TestBus2'
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiApplicationTest >> busName [
 
 	^ 'Not the default bus'
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiApplicationTest >> setUp [
 
 	  super setUp.
@@ -26,7 +28,7 @@ MiApplicationTest >> setUp [
 	  bus := self application busNamed: self busName
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiApplicationTest >> testBusNamed [
 	| initialSize newBus |
 	initialSize := self application buses size.
@@ -39,7 +41,7 @@ MiApplicationTest >> testBusNamed [
 	self application deleteBus: newBus.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiApplicationTest >> testDefaultBus [
 	| default |
 	default := self application defaultBus.
@@ -47,7 +49,7 @@ MiApplicationTest >> testDefaultBus [
 	self assert: (self application buses includes: default)
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiApplicationTest >> testDeleteBus [
 	| initialSize busToDelete |
 	busToDelete := self application buses first.
@@ -59,7 +61,7 @@ MiApplicationTest >> testDeleteBus [
 	self assert: self application buses size equals: initialSize - 1
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiApplicationTest >> testDeleteBusNamed [
 
 	| initialSize |
@@ -73,7 +75,7 @@ MiApplicationTest >> testDeleteBusNamed [
 	self assert: self application buses size equals: initialSize - 1
 ]
 
-{ #category : #'tests dragNDrop' }
+{ #category : 'tests dragNDrop' }
 MiApplicationTest >> testHandleJSONDropEvent [
 	"must reset (i.e. remove) MiApplication singleton instance
 	 for MiTestApplication special handling method to be asked to handle the drop"
@@ -92,7 +94,7 @@ MiApplicationTest >> testHandleJSONDropEvent [
 	MiApplication current
 ]
 
-{ #category : #'tests dragNDrop' }
+{ #category : 'tests dragNDrop' }
 MiApplicationTest >> testJSONRegisteredHandler [
 	"There should be only 2 handlers: MiApplication & MiTestApplication
 	 
@@ -109,7 +111,7 @@ MiApplicationTest >> testJSONRegisteredHandler [
 
 ]
 
-{ #category : #'tests dragNDrop' }
+{ #category : 'tests dragNDrop' }
 MiApplicationTest >> testMSERegisteredHandler [
 	"There should be only 2 handlers: MiApplication & MiTestApplication
 	 
@@ -126,7 +128,7 @@ MiApplicationTest >> testMSERegisteredHandler [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiApplicationTest >> testMiPropagate [
 	"This test propagate an entity on the defaultBus and checks otherBuses (if there are any) are not changed"
 	| mooseModel defaultBus otherBuses originalMostRecentEntities newMostRecentEntities |
@@ -152,7 +154,7 @@ MiApplicationTest >> testMiPropagate [
 	
 ]
 
-{ #category : #'tests dragNDrop' }
+{ #category : 'tests dragNDrop' }
 MiApplicationTest >> testMooseRootBrowserIsModelImporter [
 	| browser |
 	browser := application openCurrentModelsBrowser.
@@ -160,7 +162,7 @@ MiApplicationTest >> testMooseRootBrowserIsModelImporter [
 	browser window close
 ]
 
-{ #category : #'tests dragNDrop' }
+{ #category : 'tests dragNDrop' }
 MiApplicationTest >> testOpenCurrentModelsBrowser [
 
 	| browser1 browser2 |
@@ -175,7 +177,7 @@ MiApplicationTest >> testOpenCurrentModelsBrowser [
 	browser1 window close
 ]
 
-{ #category : #'tests dragNDrop' }
+{ #category : 'tests dragNDrop' }
 MiApplicationTest >> testUnregisterHandler [
 	| jsonHandlers mseHandlers |
 	jsonHandlers := ExternalDropHandler registeredHandlers

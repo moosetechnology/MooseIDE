@@ -1,10 +1,12 @@
 Class {
-	#name : #MiModelExportCommand,
-	#superclass : #MiCommand,
-	#category : #'MooseIDE-Core-Command'
+	#name : 'MiModelExportCommand',
+	#superclass : 'MiCommand',
+	#category : 'MooseIDE-Core-Command',
+	#package : 'MooseIDE-Core',
+	#tag : 'Command'
 }
 
-{ #category : #converting }
+{ #category : 'converting' }
 MiModelExportCommand class >> asCommandGroupWith: aPresenter [
 
 	| exportCommandGroup |
@@ -17,22 +19,22 @@ MiModelExportCommand class >> asCommandGroupWith: aPresenter [
 	^ exportCommandGroup
 ]
 
-{ #category : #default }
+{ #category : 'default' }
 MiModelExportCommand class >> defaultDescription [
 	^ 'Export this model'
 ]
 
-{ #category : #default }
+{ #category : 'default' }
 MiModelExportCommand class >> defaultName [
 	^ 'Export'
 ]
 
-{ #category : #executing }
+{ #category : 'executing' }
 MiModelExportCommand >> execute [
 	self exportModel: self context miSelectedItem
 ]
 
-{ #category : #executing }
+{ #category : 'executing' }
 MiModelExportCommand >> exportModel: aModel [
 
 	| fileReference |
@@ -43,12 +45,12 @@ MiModelExportCommand >> exportModel: aModel [
 					Notification signal: 'Save successful!' ] ]
 ]
 
-{ #category : #executing }
+{ #category : 'executing' }
 MiModelExportCommand >> exportModel: aModel toStream: stream [
 	self subclassResponsibility
 ]
 
-{ #category : #executing }
+{ #category : 'executing' }
 MiModelExportCommand >> fileExtension [
 	^ self subclassResponsibility
 ]

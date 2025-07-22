@@ -3,12 +3,14 @@ I am a roassal presenter for the MiLayerVisualizationBrowser.
 I have a canvas and I use a builder (MiLayerVisualizationBuilder).
 "
 Class {
-	#name : #MiLayerVisualization,
-	#superclass : #MiAbstractHierarchicalVisualization,
-	#category : #'MooseIDE-LayerVisualization-Presenters'
+	#name : 'MiLayerVisualization',
+	#superclass : 'MiAbstractHierarchicalVisualization',
+	#category : 'MooseIDE-LayerVisualization-Presenters',
+	#package : 'MooseIDE-LayerVisualization',
+	#tag : 'Presenters'
 }
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiLayerVisualization >> buildInCanvas: aCanvas [
 
 	owner model ifNil: [ ^ self ].

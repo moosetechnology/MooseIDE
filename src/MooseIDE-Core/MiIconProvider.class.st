@@ -2,12 +2,14 @@
 I hold a icon set for Moose IDE
 "
 Class {
-	#name : #MiIconProvider,
-	#superclass : #SpIconProvider,
-	#category : #'MooseIDE-Core-Application'
+	#name : 'MiIconProvider',
+	#superclass : 'SpIconProvider',
+	#category : 'MooseIDE-Core-Application',
+	#package : 'MooseIDE-Core',
+	#tag : 'Application'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiIconProvider class >> arrayInArrowEnd [
 
 	^ Form
@@ -61,7 +63,7 @@ MiIconProvider class >> arrayInArrowEnd [
 		  offset: 0 @ 0
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiIconProvider class >> arrayOutArrowEnd [
 
 	^ Form
@@ -114,7 +116,7 @@ MiIconProvider class >> arrayOutArrowEnd [
 		  offset: 0 @ 0
 ]
 
-{ #category : #'tag icons' }
+{ #category : 'tag icons' }
 MiIconProvider >> iconForTag: aTag [
 
 	"Icon formatted according to a tag.
@@ -136,7 +138,7 @@ MiIconProvider >> iconForTag: aTag [
 	^ form
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiIconProvider >> iconNamed: aName [
 
 	^ MooseIcons icons
@@ -145,26 +147,26 @@ MiIconProvider >> iconNamed: aName [
 		  Smalltalk ui icons iconNamed: aName ifNone: [ self noIcon ] ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiIconProvider >> iconNamed: aName ifAbsent: aBlock [
 
 	^ MooseIcons icons at: aName ifAbsent: aBlock
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiIconProvider >> initialize [
 
 	super initialize.
 	MooseIcons buildCache
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiIconProvider >> noIcon [
 
 	^ Smalltalk ui icons iconNamed: #blankIcon
 ]
 
-{ #category : #'tag icons' }
+{ #category : 'tag icons' }
 MiIconProvider >> tagIconsDefaultColor [
 
 	"This is the color inside the flag or arrow.

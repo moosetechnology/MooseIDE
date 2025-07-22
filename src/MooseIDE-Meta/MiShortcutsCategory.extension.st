@@ -1,13 +1,13 @@
-Extension { #name : #MiShortcutsCategory }
+Extension { #name : 'MiShortcutsCategory' }
 
-{ #category : #'*MooseIDE-Meta' }
+{ #category : '*MooseIDE-Meta' }
 MiShortcutsCategory >> openCriticBrowser [
 
 	<shortcut>
 	^ MiCriticBrowser openKeyMap
 ]
 
-{ #category : #'*MooseIDE-Meta' }
+{ #category : '*MooseIDE-Meta' }
 MiShortcutsCategory >> openModelRootBrowser [
 
 	<shortcut>

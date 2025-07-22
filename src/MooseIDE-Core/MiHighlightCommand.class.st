@@ -3,41 +3,43 @@ I represent a command corresponding to a highlight button in browsers.
 This command allows to highlight changes that have been pushed by the bus last.
 "
 Class {
-	#name : #MiHighlightCommand,
-	#superclass : #MiReceivingModeCommand,
-	#category : #'MooseIDE-Core-Command'
+	#name : 'MiHighlightCommand',
+	#superclass : 'MiReceivingModeCommand',
+	#category : 'MooseIDE-Core-Command',
+	#package : 'MooseIDE-Core',
+	#tag : 'Command'
 }
 
-{ #category : #default }
+{ #category : 'default' }
 MiHighlightCommand class >> defaultDescription [
 	^ 'A mode that allows to highlight in current visualization/state changes just pushed on the bus'
 ]
 
-{ #category : #default }
+{ #category : 'default' }
 MiHighlightCommand class >> defaultName [
 
 	^ 'Highlight'
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 MiHighlightCommand class >> registerWith: aBrowser inRoot: aCommandGroup [
 
 	aBrowser canHighlight ifFalse: [ ^ self ].
 	aCommandGroup register: (self forSpecContext: aBrowser)
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiHighlightCommand >> canBeExecuted [
 	^ self context canHighlight
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiHighlightCommand >> iconName [
 
 	^ self iconNameForState: false
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiHighlightCommand >> receivingMode [
 
 	^ MiHighlightMode

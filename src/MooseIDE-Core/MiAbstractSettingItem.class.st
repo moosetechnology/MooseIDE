@@ -8,8 +8,8 @@ Represents a generic setting item. A setting item holds a value and necessary in
 Class side has some factory methods
 "
 Class {
-	#name : #MiAbstractSettingItem,
-	#superclass : #Object,
+	#name : 'MiAbstractSettingItem',
+	#superclass : 'Object',
 	#instVars : [
 		'label',
 		'help',
@@ -17,48 +17,50 @@ Class {
 		'oldValue',
 		'displayBlock'
 	],
-	#category : #'MooseIDE-Core-Settings'
+	#category : 'MooseIDE-Core-Settings',
+	#package : 'MooseIDE-Core',
+	#tag : 'Settings'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MiAbstractSettingItem class >> buttonWithCodeSetting [
 	^MiButtonCodeSettingItem new
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MiAbstractSettingItem class >> buttonWithEditableListSetting [
 	^MiButtonEditablelistSettingItem new
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MiAbstractSettingItem class >> buttonWithSelectableListSetting [
 	^MiButtonSelectableListSettingItem new
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MiAbstractSettingItem class >> checkboxSetting [
 	^MiCheckboxSettingItem new
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MiAbstractSettingItem class >> colorSetting [
 
 	^ MiColorSettingItem new
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MiAbstractSettingItem class >> droplistSetting [
 	^MiDroplistSettingItem new
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MiAbstractSettingItem class >> integerSetting [
 	^MiTextSettingItem new
 		integerValue ;
 		yourself
 ]
 
-{ #category : #'api - building' }
+{ #category : 'api - building' }
 MiAbstractSettingItem >> buildLayout [
 
 	oldValue := self getValue.
@@ -70,74 +72,74 @@ MiAbstractSettingItem >> buildLayout [
 		  yourself
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 MiAbstractSettingItem >> confirmValue [
 
 	oldValue := self getValue
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiAbstractSettingItem >> displayBlock: anObject [
 	"a block with 1 argument (a value) used to display the Value in the Presenter"
 	displayBlock := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiAbstractSettingItem >> getValue [
 
 	self subclassResponsibility
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiAbstractSettingItem >> help [
 
 	^ help
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiAbstractSettingItem >> help: anObject [
 
 	help := anObject
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiAbstractSettingItem >> initialize [ 
 	super initialize.
 
 	displayBlock := #asString
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiAbstractSettingItem >> label [
 
 	^ label
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiAbstractSettingItem >> label: anObject [
 
 	label := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiAbstractSettingItem >> owner: aPresenter [
 
 	self presenter owner: aPresenter
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiAbstractSettingItem >> presenter [
 
 	^ presenter
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 MiAbstractSettingItem >> resetValue [
 
 	self setValue: oldValue
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiAbstractSettingItem >> setValue: anObject [
 
 	self subclassResponsibility

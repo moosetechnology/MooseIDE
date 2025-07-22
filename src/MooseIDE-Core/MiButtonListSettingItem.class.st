@@ -1,38 +1,40 @@
 Class {
-	#name : #MiButtonListSettingItem,
-	#superclass : #MiButtonSettingItem,
+	#name : 'MiButtonListSettingItem',
+	#superclass : 'MiButtonSettingItem',
 	#instVars : [
 		'updateBlock'
 	],
-	#category : #'MooseIDE-Core-Settings'
+	#category : 'MooseIDE-Core-Settings',
+	#package : 'MooseIDE-Core',
+	#tag : 'Settings'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiButtonListSettingItem >> display: aBlock [
 
 	secondaryPresenter display: aBlock
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiButtonListSettingItem >> displayIcon: aBlock [
 
 	secondaryPresenter displayIcon: aBlock
 ]
 
-{ #category : #updating }
+{ #category : 'updating' }
 MiButtonListSettingItem >> possibleValues: aList [
 
 	self subclassResponsibility 
 ]
 
-{ #category : #updating }
+{ #category : 'updating' }
 MiButtonListSettingItem >> update [
 
 	updateBlock ifNil: [ ^ self ].
 	self possibleValues: updateBlock value
 ]
 
-{ #category : #updating }
+{ #category : 'updating' }
 MiButtonListSettingItem >> updateWith: aBlock [
 
 	updateBlock := aBlock

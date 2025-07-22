@@ -2,41 +2,43 @@
 Use me to inspect the selected entities
 "
 Class {
-	#name : #MiInspectCommand,
-	#superclass : #MiCommand,
-	#category : #'MooseIDE-NewTools-Inspector'
+	#name : 'MiInspectCommand',
+	#superclass : 'MiCommand',
+	#category : 'MooseIDE-NewTools-Inspector',
+	#package : 'MooseIDE-NewTools',
+	#tag : 'Inspector'
 }
 
-{ #category : #default }
+{ #category : 'default' }
 MiInspectCommand class >> defaultDescription [
 	^ 'Inspect selected entity'
 ]
 
-{ #category : #default }
+{ #category : 'default' }
 MiInspectCommand class >> defaultIconName [
 
 	^ #smallInspectIt
 ]
 
-{ #category : #default }
+{ #category : 'default' }
 MiInspectCommand class >> defaultName [
 
 	^ 'Inspect'
 ]
 
-{ #category : #default }
+{ #category : 'default' }
 MiInspectCommand class >> defaultShortcut [
 
 	^ $m meta shift , $i meta shift
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiInspectCommand >> canBeExecuted [
 
 	^ self context canPropagate
 ]
 
-{ #category : #executing }
+{ #category : 'executing' }
 MiInspectCommand >> execute [
 
 	[ self context miInspect ]

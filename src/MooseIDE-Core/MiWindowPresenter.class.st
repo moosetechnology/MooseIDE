@@ -1,13 +1,15 @@
 Class {
-	#name : #MiWindowPresenter,
-	#superclass : #SpWindowPresenter,
+	#name : 'MiWindowPresenter',
+	#superclass : 'SpWindowPresenter',
 	#instVars : [
 		'toolbarCommandGroup'
 	],
-	#category : #'MooseIDE-Core-Browser'
+	#category : 'MooseIDE-Core-Browser',
+	#package : 'MooseIDE-Core',
+	#tag : 'Browser'
 }
 
-{ #category : #commands }
+{ #category : 'commands' }
 MiWindowPresenter class >> actionsCommandGroupFor: aPresenter [
 
 	^ CmCommandGroup forSpec
@@ -20,7 +22,7 @@ MiWindowPresenter class >> actionsCommandGroupFor: aPresenter [
 				  beDisplayedOnRightSide
 ]
 
-{ #category : #commands }
+{ #category : 'commands' }
 MiWindowPresenter class >> buildCommandsGroupWith: aPresenter forRoot: rootCommandGroup [
 
 	rootCommandGroup
@@ -32,7 +34,7 @@ MiWindowPresenter class >> buildCommandsGroupWith: aPresenter forRoot: rootComma
 		register: (self actionsCommandGroupFor: aPresenter)
 ]
 
-{ #category : #commands }
+{ #category : 'commands' }
 MiWindowPresenter class >> buildExtensionCommandsWith: aPresenter forRoot: rootCommandGroup [
 
 	aPresenter canTagEntities ifTrue: [
@@ -49,7 +51,7 @@ MiWindowPresenter class >> buildExtensionCommandsWith: aPresenter forRoot: rootC
 				beDisplayedOnRightSide ]
 ]
 
-{ #category : #commands }
+{ #category : 'commands' }
 MiWindowPresenter class >> taggingCommandGroupFor: aPresenter [
 
 	^ CmCommandGroup forSpec
@@ -58,7 +60,7 @@ MiWindowPresenter class >> taggingCommandGroupFor: aPresenter [
 		  register: (MiSelectTagCommand forSpecContext: aPresenter)
 ]
 
-{ #category : #toolbar }
+{ #category : 'toolbar' }
 MiWindowPresenter >> buildToolbar [
 
 	self toolbar: (self newToolbar
@@ -66,19 +68,19 @@ MiWindowPresenter >> buildToolbar [
 			 yourself)
 ]
 
-{ #category : #toolbar }
+{ #category : 'toolbar' }
 MiWindowPresenter >> defaultCommandsContext [
 
 	^ presenter
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MiWindowPresenter >> defaultInitialExtent [
 
 	^ 500 @ 400
 ]
 
-{ #category : #'window management' }
+{ #category : 'window management' }
 MiWindowPresenter >> restore [
 	"We have to get to the adpater because #restore is not in SpWindowPresenter yet"
 
@@ -86,21 +88,21 @@ MiWindowPresenter >> restore [
 		windowAdapter widgetDo: [ :widget | widget restore ] ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiWindowPresenter >> setContextBindingKeys [
 
 	self contextKeyBindings:
 		(self class actionsCommandGroupFor: presenter) asKMCategory
 ]
 
-{ #category : #toolbar }
+{ #category : 'toolbar' }
 MiWindowPresenter >> toolbarCommandGroup [
 
 	^ toolbarCommandGroup ifNil: [ 
 		  toolbarCommandGroup := self rootCommandsGroup ]
 ]
 
-{ #category : #toolbar }
+{ #category : 'toolbar' }
 MiWindowPresenter >> updateBusButton [
 
 	| busEditCommand |
@@ -114,7 +116,7 @@ MiWindowPresenter >> updateBusButton [
 	busEditCommand updateEnableStatus
 ]
 
-{ #category : #toolbar }
+{ #category : 'toolbar' }
 MiWindowPresenter >> updateReceivingModeButtons [
 
 	(self toolbarCommandGroup commandOrGroupNamed: 'Receiving Mode')
@@ -122,7 +124,7 @@ MiWindowPresenter >> updateReceivingModeButtons [
 		cmd updateIconForMode: presenter receivingMode ]
 ]
 
-{ #category : #toolbar }
+{ #category : 'toolbar' }
 MiWindowPresenter >> updateReceivingModelToolbarButtons [
 
 	(self toolbarCommandGroup
@@ -132,7 +134,7 @@ MiWindowPresenter >> updateReceivingModelToolbarButtons [
 			cmd presenter icon: (cmd icon lighter: 0.4) ] ]
 ]
 
-{ #category : #toolbar }
+{ #category : 'toolbar' }
 MiWindowPresenter >> updateTaggingToolbarButton [
 
 	| tagCommand |
@@ -148,7 +150,7 @@ MiWindowPresenter >> updateTaggingToolbarButton [
 		(self application iconForTag: self presenter selectedTag)
 ]
 
-{ #category : #toolbar }
+{ #category : 'toolbar' }
 MiWindowPresenter >> updateToolbar [
 
 	self toolbarCommandGroup allCommands do: [ :cmd |

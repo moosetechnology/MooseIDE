@@ -1,6 +1,6 @@
-Extension { #name : #TLRoassal3Connector }
+Extension { #name : 'TLRoassal3Connector' }
 
-{ #category : #'*MooseIDE-Telescope' }
+{ #category : '*MooseIDE-Telescope' }
 TLRoassal3Connector >> open: aTLVisualization inCanvas: aCanvas [
 	| lb |
 	self view: aCanvas.

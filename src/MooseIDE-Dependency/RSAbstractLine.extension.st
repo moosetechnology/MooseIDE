@@ -1,6 +1,6 @@
-Extension { #name : #RSAbstractLine }
+Extension { #name : 'RSAbstractLine' }
 
-{ #category : #'*MooseIDE-Dependency' }
+{ #category : '*MooseIDE-Dependency' }
 RSAbstractLine >> inspectOnMoose [
 	| fromObject toObject list objectToInspect |
 	fromObject := self model key. "an HNode"

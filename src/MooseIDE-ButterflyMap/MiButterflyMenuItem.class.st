@@ -1,10 +1,12 @@
 Class {
-	#name : #MiButterflyMenuItem,
-	#superclass : #HAbstractMenuItem,
-	#category : #'MooseIDE-ButterflyMap-Menu'
+	#name : 'MiButterflyMenuItem',
+	#superclass : 'HAbstractMenuItem',
+	#category : 'MooseIDE-ButterflyMap-Menu',
+	#package : 'MooseIDE-ButterflyMap',
+	#tag : 'Menu'
 }
 
-{ #category : #public }
+{ #category : 'public' }
 MiButterflyMenuItem class >> buildIn: aMenuMorph shape: aRoassalShape visualization: anHSimpleVisualizationBuilder [
 
 	| items clazz |
@@ -24,7 +26,7 @@ MiButterflyMenuItem class >> buildIn: aMenuMorph shape: aRoassalShape visualizat
 		separatedBy: [ aMenuMorph addSeparator ]
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 MiButterflyMenuItem class >> classFor: aRoassalShape [
 
 	aRoassalShape isShape ifFalse: [ ^ MiButterflyCanvasMenuItem ].

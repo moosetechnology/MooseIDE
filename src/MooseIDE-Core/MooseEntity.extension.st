@@ -1,6 +1,6 @@
-Extension { #name : #MooseEntity }
+Extension { #name : 'MooseEntity' }
 
-{ #category : #'*MooseIDE-Core' }
+{ #category : '*MooseIDE-Core' }
 MooseEntity >> mooseIcon [
 	^ self iconNamed: #mooseMetamodelEntity
 ]

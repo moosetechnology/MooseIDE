@@ -3,27 +3,29 @@ A MiSettingItem subclass for tests.
 It stores the value in an instance variable and the presenter is a Mock
 "
 Class {
-	#name : #MiStubSettingItem,
-	#superclass : #MiAbstractSettingItem,
+	#name : 'MiStubSettingItem',
+	#superclass : 'MiAbstractSettingItem',
 	#instVars : [
 		'value'
 	],
-	#category : #'MooseIDE-Tests-Settings'
+	#category : 'MooseIDE-Tests-Settings',
+	#package : 'MooseIDE-Tests',
+	#tag : 'Settings'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiStubSettingItem >> getValue [
 	^value
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiStubSettingItem >> initialize [ 
 	super initialize.
 	
 	presenter := Mock named: 'presenter'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiStubSettingItem >> setValue: anObject [
 	value := anObject
 ]

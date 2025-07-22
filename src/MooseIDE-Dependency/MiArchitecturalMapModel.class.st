@@ -5,8 +5,8 @@ I am responsible for:
 - holding elements to display on the hierarchical map.
 "
 Class {
-	#name : #MiArchitecturalMapModel,
-	#superclass : #MiAbstractModel,
+	#name : 'MiArchitecturalMapModel',
+	#superclass : 'MiAbstractModel',
 	#instVars : [
 		'entities',
 		'childrenBlock',
@@ -15,10 +15,12 @@ Class {
 		'virtualEntities',
 		'roots'
 	],
-	#category : #'MooseIDE-Dependency-ArchitecturalMap'
+	#category : 'MooseIDE-Dependency-ArchitecturalMap',
+	#package : 'MooseIDE-Dependency',
+	#tag : 'ArchitecturalMap'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 MiArchitecturalMapModel class >> defaultDynamicTagIsDead [
 
 	^ MiDynamicTag new
@@ -28,7 +30,7 @@ MiArchitecturalMapModel class >> defaultDynamicTagIsDead [
 		  yourself
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 MiArchitecturalMapModel class >> defaultDynamicTagIsStub [
 
 	^ MiDynamicTag new
@@ -38,7 +40,7 @@ MiArchitecturalMapModel class >> defaultDynamicTagIsStub [
 		  yourself
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 MiArchitecturalMapModel class >> defaultDynamicTags [
 
 	^ { 
@@ -46,7 +48,7 @@ MiArchitecturalMapModel class >> defaultDynamicTags [
 		  self defaultDynamicTagIsDead }
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MiArchitecturalMapModel >> addVirtualParent: aFileReference child: entity upTo: virtualRoot [
 	"#virtualEntities is a Dictionnary where the keys are the virtual entities
 	 and the values their children
@@ -68,7 +70,7 @@ MiArchitecturalMapModel >> addVirtualParent: aFileReference child: entity upTo: 
 			upTo: virtualRoot ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiArchitecturalMapModel >> allAssociationTypes [
 
 	| mooseGroup |
@@ -80,20 +82,20 @@ MiArchitecturalMapModel >> allAssociationTypes [
 		  asOrderedCollection
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 MiArchitecturalMapModel >> associationTypes [
 
 	^ settings getItemValue: #associationTypes
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 MiArchitecturalMapModel >> availableDoubleClickActions [
 
 	^ #( doubleClickExpandeCollapse: doubleClickInspect:
 	     doubleClickPropagate: )
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiArchitecturalMapModel >> availableLayouts [
 	"all available layouts: 
 	  RSLayout withAllSubclasses reject: [ :c | c isAbstract ]
@@ -107,25 +109,25 @@ MiArchitecturalMapModel >> availableLayouts [
 		  RSTreeLayout }
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiArchitecturalMapModel >> availableQueries [
 
 	^ { self defaultChildrenQuery } , browser availableQueries
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiArchitecturalMapModel >> childrenBlock [
 
 	^ childrenBlock
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiArchitecturalMapModel >> childrenBlock: anObject [
 
 	childrenBlock := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiArchitecturalMapModel >> childrenFor: anEntity [
 
 	^ virtualEntities
@@ -136,19 +138,19 @@ MiArchitecturalMapModel >> childrenFor: anEntity [
 				  reject: [ :each | each == anEntity ] ]
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 MiArchitecturalMapModel >> childrenQuerySetting [
 
 	^ settings getItemValue: #childrenQuery
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MiArchitecturalMapModel >> colorFor: anEntity [
 
 	^ Color gray
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MiArchitecturalMapModel >> computeRootEntities [
 
 	| nodesParent |
@@ -162,7 +164,7 @@ MiArchitecturalMapModel >> computeRootEntities [
 		(nodesParent at: each ifAbsent: [ nil ]) isNil ]
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MiArchitecturalMapModel >> computeVirtualRoots: rootEntities [
 	"#virtualEntities is a Dictionnary where the keys are the virtual entities
 	 and the values their children
@@ -185,7 +187,7 @@ MiArchitecturalMapModel >> computeVirtualRoots: rootEntities [
 	^{ virtualRoot }
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiArchitecturalMapModel >> defaultChildrenQuery [
 
 	^ defaultChildrenQuery ifNil: [ 
@@ -193,49 +195,49 @@ MiArchitecturalMapModel >> defaultChildrenQuery [
 			                          e children ] ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiArchitecturalMapModel >> defaultLayout [
 	^RSFlowLayout
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 MiArchitecturalMapModel >> directoriesVirtualNodes [
 
 	^ settings getItemValue: #directoriesVirtualNodes
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiArchitecturalMapModel >> doubleClickExpandeCollapse: aShape [
 
 	aShape model expandCollapse
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiArchitecturalMapModel >> doubleClickInspect: aShape [
 
 	MiInspectorBrowser inspect: aShape model rawModel
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiArchitecturalMapModel >> doubleClickPropagate: aShape [
 
 	self browser buses do: [ :bus |
 		bus globallySelect: aShape model rawModel mooseInterestingEntity ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 MiArchitecturalMapModel >> doubleClickSetting [
 
 	^ settings getItemValue: #doubleClickAction
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiArchitecturalMapModel >> entities [
 
 	^ entities
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiArchitecturalMapModel >> entities: aCollection [
 
 	entities := aCollection.
@@ -243,7 +245,7 @@ MiArchitecturalMapModel >> entities: aCollection [
 	self updateSettings
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiArchitecturalMapModel >> fetchTags [
 
 	browser model entities ifNotNil: [ :ents | ents ifNotEmpty: [ ^ ents anyOne mooseModel allTags sorted: #name ascending ] ].
@@ -251,7 +253,7 @@ MiArchitecturalMapModel >> fetchTags [
 	^ #(  )
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiArchitecturalMapModel >> initializeSettings [
 
 	settings := super initializeSettings
@@ -268,7 +270,7 @@ MiArchitecturalMapModel >> initializeSettings [
 						yourself
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 MiArchitecturalMapModel >> itemAssociationTypes [
 
 	^ MiAbstractSettingItem buttonWithSelectableListSetting
@@ -278,7 +280,7 @@ MiArchitecturalMapModel >> itemAssociationTypes [
 		  yourself
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 MiArchitecturalMapModel >> itemChildrenQuery [
 
 	^ MiAbstractSettingItem droplistSetting
@@ -289,7 +291,7 @@ MiArchitecturalMapModel >> itemChildrenQuery [
 		  yourself
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 MiArchitecturalMapModel >> itemDirectoriesVirtualNodes [
 
 	^ MiAbstractSettingItem checkboxSetting
@@ -301,7 +303,7 @@ They are root nodes in the map';
 		  yourself
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 MiArchitecturalMapModel >> itemDoubleClickAction [
 
 	^ MiAbstractSettingItem droplistSetting
@@ -312,7 +314,7 @@ MiArchitecturalMapModel >> itemDoubleClickAction [
 		  yourself
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 MiArchitecturalMapModel >> itemLayout [
 
 	^ MiAbstractSettingItem droplistSetting
@@ -323,7 +325,7 @@ MiArchitecturalMapModel >> itemLayout [
 		  yourself
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 MiArchitecturalMapModel >> itemMegaMorphicSize [
 	^MiTextSettingItem integerSetting
 		setValue: 10 ;
@@ -332,7 +334,7 @@ MiArchitecturalMapModel >> itemMegaMorphicSize [
 		yourself
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 MiArchitecturalMapModel >> itemNoMegaMorphic [
 
 	^MiCheckboxSettingItem new
@@ -342,7 +344,7 @@ MiArchitecturalMapModel >> itemNoMegaMorphic [
 		yourself
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 MiArchitecturalMapModel >> itemShowBusEntities [
 
 	^ MiAbstractSettingItem checkboxSetting
@@ -353,7 +355,7 @@ MiArchitecturalMapModel >> itemShowBusEntities [
 		  yourself
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 MiArchitecturalMapModel >> itemTags [
 
 	^ MiAbstractSettingItem buttonWithSelectableListSetting
@@ -367,7 +369,7 @@ MiArchitecturalMapModel >> itemTags [
 		  yourself
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 MiArchitecturalMapModel >> itemTimeoutDuration [
 	"Default arbitrary timeout of 30s"
 
@@ -379,30 +381,30 @@ MiArchitecturalMapModel >> itemTimeoutDuration [
 		  yourself
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 MiArchitecturalMapModel >> layoutSetting [
 
 	^ settings getItemValue: #layout
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 MiArchitecturalMapModel >> megaMorphicSize [
 	^settings getItemValue: #megaMorphicSize
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiArchitecturalMapModel >> miSelectedItem [
 
 	^self entities
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 MiArchitecturalMapModel >> noMegaMorphic [
 
 	^ settings getItemValue: #noMegaMorphic
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MiArchitecturalMapModel >> recomputeRootNodes [
 	"Assumes each entity has only one parent"
 
@@ -419,18 +421,18 @@ MiArchitecturalMapModel >> recomputeRootNodes [
 		ifFalse: [ rootEntities ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiArchitecturalMapModel >> rootNodes [
 
 	^roots
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 MiArchitecturalMapModel >> settings [
 	^settings
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 MiArchitecturalMapModel >> settingsChanged: aBoolean [
 
 	aBoolean ifFalse: [ ^self ].
@@ -439,31 +441,31 @@ MiArchitecturalMapModel >> settingsChanged: aBoolean [
 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiArchitecturalMapModel >> showAllLinks [
 
 	^ true
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 MiArchitecturalMapModel >> showBusEntities [
 
 	^ settings getItemValue: #showBusEntities
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 MiArchitecturalMapModel >> tags [
 
 	^ settings getItemValue: #tags
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 MiArchitecturalMapModel >> timeoutDuration [
 
 	^ settings getItemValue: #timeoutDuration
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 MiArchitecturalMapModel >> updateSettings [
 
 	(settings itemNamed: #associationTypes)
@@ -471,7 +473,7 @@ MiArchitecturalMapModel >> updateSettings [
 		selectAll
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MiArchitecturalMapModel >> virtualEntity: aFileReference belowRoot: virtualRoot [
 
 	aFileReference = virtualRoot rawEntity ifTrue: [ ^virtualRoot ].

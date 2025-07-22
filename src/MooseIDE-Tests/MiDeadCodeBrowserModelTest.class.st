@@ -1,13 +1,15 @@
 Class {
-	#name : #MiDeadCodeBrowserModelTest,
-	#superclass : #TestCase,
+	#name : 'MiDeadCodeBrowserModelTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'model'
 	],
-	#category : #'MooseIDE-Tests-Browsers'
+	#category : 'MooseIDE-Tests-Browsers',
+	#package : 'MooseIDE-Tests',
+	#tag : 'Browsers'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 MiDeadCodeBrowserModelTest >> javaClass: aClass implements: anInterface [
 
 	FamixJavaImplementation new
@@ -15,7 +17,7 @@ MiDeadCodeBrowserModelTest >> javaClass: aClass implements: anInterface [
 		interface: anInterface
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiDeadCodeBrowserModelTest >> javaClassMethod: methSignature [
 
 	| entity |
@@ -26,7 +28,7 @@ MiDeadCodeBrowserModelTest >> javaClassMethod: methSignature [
 	^entity
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiDeadCodeBrowserModelTest >> javaInterfaceMethod: methSignature [
 
 	| entity |
@@ -37,7 +39,7 @@ MiDeadCodeBrowserModelTest >> javaInterfaceMethod: methSignature [
 	^entity
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiDeadCodeBrowserModelTest >> javaInvokeMethod: entity [
 
 	FamixJavaInvocation new
@@ -45,7 +47,7 @@ MiDeadCodeBrowserModelTest >> javaInvokeMethod: entity [
 		candidates: { entity }.
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiDeadCodeBrowserModelTest >> javaMethod: methName annotatedWith: annotationName [
 
 	| entity |
@@ -59,7 +61,7 @@ MiDeadCodeBrowserModelTest >> javaMethod: methName annotatedWith: annotationName
 	^entity
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiDeadCodeBrowserModelTest >> modelWithHeuristic: aCollection [
 
 	model initializeHeuristics.
@@ -68,7 +70,7 @@ MiDeadCodeBrowserModelTest >> modelWithHeuristic: aCollection [
 
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiDeadCodeBrowserModelTest >> pharoClass: aClass inheritFrom: superclassName [
 
 	FamixStInheritance new
@@ -76,7 +78,7 @@ MiDeadCodeBrowserModelTest >> pharoClass: aClass inheritFrom: superclassName [
 		subclass: aClass
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiDeadCodeBrowserModelTest >> pharoInvokedMethod: methName [
 
 	| entity |
@@ -90,7 +92,7 @@ MiDeadCodeBrowserModelTest >> pharoInvokedMethod: methName [
 	^entity
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiDeadCodeBrowserModelTest >> pharoMethod: methName inClass: className [
 
 	| entity |
@@ -101,7 +103,7 @@ MiDeadCodeBrowserModelTest >> pharoMethod: methName inClass: className [
 	^entity
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiDeadCodeBrowserModelTest >> pharoMethod: methName withPragma: annotationName [
 
 	| entity |
@@ -115,7 +117,7 @@ MiDeadCodeBrowserModelTest >> pharoMethod: methName withPragma: annotationName [
 	^entity
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiDeadCodeBrowserModelTest >> setUp [
 	super setUp.
 
@@ -124,7 +126,7 @@ MiDeadCodeBrowserModelTest >> setUp [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiDeadCodeBrowserModelTest >> testFirstRoundDeadNotRefuted [
 
 	self modelWithHeuristic: { MiDeadCodeNamingConventionHeuristic new }.
@@ -136,7 +138,7 @@ MiDeadCodeBrowserModelTest >> testFirstRoundDeadNotRefuted [
 	self assert: model deadEntities size equals: 1
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiDeadCodeBrowserModelTest >> testFirstRoundNoDead [
 
 	model followEntity: { self pharoInvokedMethod: 'someFunctionality' }.
@@ -146,7 +148,7 @@ MiDeadCodeBrowserModelTest >> testFirstRoundNoDead [
 	self assert: model deadEntities size equals: 0
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiDeadCodeBrowserModelTest >> testFirstRoundOneDead [
 
 	model followEntity: { FamixStMethod new }.
@@ -156,7 +158,7 @@ MiDeadCodeBrowserModelTest >> testFirstRoundOneDead [
 	self assert: model deadEntities size equals: 1
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiDeadCodeBrowserModelTest >> testFirstRoundRefutedDead [
 	"entity is not invoked, but it should be considered a test method"
 
@@ -169,14 +171,14 @@ MiDeadCodeBrowserModelTest >> testFirstRoundRefutedDead [
 	self assert: model deadEntities size equals: 0
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiDeadCodeBrowserModelTest >> testGatherHeuristicsList [
 	"Expected number must be updated according to number of non abstract heuristics classes"
 
 	self assert: model gatherHeuristics size equals: 8
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiDeadCodeBrowserModelTest >> testIsNewDead [
 
 	| entity1 entity2 entity3 |
@@ -197,7 +199,7 @@ MiDeadCodeBrowserModelTest >> testIsNewDead [
 
 ]
 
-{ #category : #'tests - heuristics' }
+{ #category : 'tests - heuristics' }
 MiDeadCodeBrowserModelTest >> testNoInvocationHeuristicIsDead [
 
 	| entity |
@@ -205,7 +207,7 @@ MiDeadCodeBrowserModelTest >> testNoInvocationHeuristicIsDead [
 	self assert: (MiDeadCodeNoIncomingInvocationHeuristic new isDead: entity)
 ]
 
-{ #category : #'tests - heuristics' }
+{ #category : 'tests - heuristics' }
 MiDeadCodeBrowserModelTest >> testNoInvocationHeuristicNotDead [
 
 	| entity |
@@ -214,7 +216,7 @@ MiDeadCodeBrowserModelTest >> testNoInvocationHeuristicNotDead [
 	self deny: (MiDeadCodeNoIncomingInvocationHeuristic new isDead: entity)
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiDeadCodeBrowserModelTest >> testOneRoundRecursion [
 
 	| entity1 entity2 entity3 |
@@ -236,7 +238,7 @@ MiDeadCodeBrowserModelTest >> testOneRoundRecursion [
 	self assert: model deadEntities size equals: 3
 ]
 
-{ #category : #'tests - heuristics' }
+{ #category : 'tests - heuristics' }
 MiDeadCodeBrowserModelTest >> testPharoPragmaHeuristicIsDead [
 	| entity |
 
@@ -245,7 +247,7 @@ MiDeadCodeBrowserModelTest >> testPharoPragmaHeuristicIsDead [
 	self assert: (MiDeadCodePharoPragmasHeuristic new isDead: entity)
 ]
 
-{ #category : #'tests - heuristics' }
+{ #category : 'tests - heuristics' }
 MiDeadCodeBrowserModelTest >> testPharoPragmaHeuristicScriptNotDead [
 	| entity |
 	entity := self pharoMethod: 'someFunctionality' withPragma: 'script'.
@@ -253,7 +255,7 @@ MiDeadCodeBrowserModelTest >> testPharoPragmaHeuristicScriptNotDead [
 	self deny: (MiDeadCodePharoPragmasHeuristic new isDead: entity)
 ]
 
-{ #category : #'tests - heuristics' }
+{ #category : 'tests - heuristics' }
 MiDeadCodeBrowserModelTest >> testPharoTestCaseHeuristicIsDead [
 	| entity |
 	entity := self pharoMethod: 'someFunctionality' inClass: 'SomeClass'.
@@ -262,7 +264,7 @@ MiDeadCodeBrowserModelTest >> testPharoTestCaseHeuristicIsDead [
 	self assert: (MiDeadCodePharoTestCaseSubClassHeuristic new isDead: entity)
 ]
 
-{ #category : #'tests - heuristics' }
+{ #category : 'tests - heuristics' }
 MiDeadCodeBrowserModelTest >> testPharoTestCaseHeuristicNotDead [
 	| entity |
 	entity := self pharoMethod: 'someFunctionality' inClass: 'SomeClass'.
@@ -271,7 +273,7 @@ MiDeadCodeBrowserModelTest >> testPharoTestCaseHeuristicNotDead [
 	self deny: (MiDeadCodePharoTestCaseSubClassHeuristic new isDead: entity)
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiDeadCodeBrowserModelTest >> testRecursionRoundInvokedByDead [
 
 	| entity1 entity2 |
@@ -287,7 +289,7 @@ MiDeadCodeBrowserModelTest >> testRecursionRoundInvokedByDead [
 	self assert: model deadEntities size equals: 2
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiDeadCodeBrowserModelTest >> testRecursionRoundInvokedByDeadRecursively [
 
 	| entity1 entity2 entity3 |
@@ -307,7 +309,7 @@ MiDeadCodeBrowserModelTest >> testRecursionRoundInvokedByDeadRecursively [
 	self assert: model deadEntities size equals: 3
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiDeadCodeBrowserModelTest >> testRecursionRoundInvokedByNotDead [
 
 	| entity1 entity2 |
@@ -323,7 +325,7 @@ MiDeadCodeBrowserModelTest >> testRecursionRoundInvokedByNotDead [
 	self assert: model deadEntities size equals: 1
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiDeadCodeBrowserModelTest >> testSortHeuristics [
 	"entity is not invoked, but it should be considered a test method"
 
@@ -337,7 +339,7 @@ MiDeadCodeBrowserModelTest >> testSortHeuristics [
 	self assert: model selectedHeuristics third  class equals: MiDeadCodeNoIncomingInvocationHeuristic.
 ]
 
-{ #category : #'tests - heuristics' }
+{ #category : 'tests - heuristics' }
 MiDeadCodeBrowserModelTest >> testTestJavaAnnotationHeuristicDeadNoAnnotation [
 
 	| entity |
@@ -346,7 +348,7 @@ MiDeadCodeBrowserModelTest >> testTestJavaAnnotationHeuristicDeadNoAnnotation [
 	self assert: (MiDeadCodeJavaTestAnnotationHeuristic new isDead: entity)
 ]
 
-{ #category : #'tests - heuristics' }
+{ #category : 'tests - heuristics' }
 MiDeadCodeBrowserModelTest >> testTestJavaAnnotationHeuristicDeadWrongAnnotation [
 
 	| entity |
@@ -355,7 +357,7 @@ MiDeadCodeBrowserModelTest >> testTestJavaAnnotationHeuristicDeadWrongAnnotation
 	self assert: (MiDeadCodeJavaTestAnnotationHeuristic new isDead: entity)
 ]
 
-{ #category : #'tests - heuristics' }
+{ #category : 'tests - heuristics' }
 MiDeadCodeBrowserModelTest >> testTestJavaAnnotationHeuristicNotDead [
 
 	| entity |
@@ -364,7 +366,7 @@ MiDeadCodeBrowserModelTest >> testTestJavaAnnotationHeuristicNotDead [
 	self deny: (MiDeadCodeJavaTestAnnotationHeuristic new isDead: entity)
 ]
 
-{ #category : #'tests - heuristics' }
+{ #category : 'tests - heuristics' }
 MiDeadCodeBrowserModelTest >> testTestJavaInterfaceHeuristicDeadNoInterface [
 	| entity1 entity2 |
 	entity1 := self javaClassMethod: 'doSomething()'.
@@ -374,7 +376,7 @@ MiDeadCodeBrowserModelTest >> testTestJavaInterfaceHeuristicDeadNoInterface [
 	self assert: (MiDeadCodeJavaImplementedInterfaceHeuristic new isDead: entity1)
 ]
 
-{ #category : #'tests - heuristics' }
+{ #category : 'tests - heuristics' }
 MiDeadCodeBrowserModelTest >> testTestJavaInterfaceHeuristicDeadNoInvocation [
 
 	| entity1 entity2 |
@@ -385,7 +387,7 @@ MiDeadCodeBrowserModelTest >> testTestJavaInterfaceHeuristicDeadNoInvocation [
 	self assert: (MiDeadCodeJavaImplementedInterfaceHeuristic new isDead: entity1)
 ]
 
-{ #category : #'tests - heuristics' }
+{ #category : 'tests - heuristics' }
 MiDeadCodeBrowserModelTest >> testTestJavaInterfaceHeuristicDeadNoMethod [
 
 	| entity1 entity2 |
@@ -397,7 +399,7 @@ MiDeadCodeBrowserModelTest >> testTestJavaInterfaceHeuristicDeadNoMethod [
 	self assert: (MiDeadCodeJavaImplementedInterfaceHeuristic new isDead: entity1)
 ]
 
-{ #category : #'tests - heuristics' }
+{ #category : 'tests - heuristics' }
 MiDeadCodeBrowserModelTest >> testTestJavaInterfaceHeuristicNotDead [
 
 	| entity1 entity2 |
@@ -409,7 +411,7 @@ MiDeadCodeBrowserModelTest >> testTestJavaInterfaceHeuristicNotDead [
 	self deny: (MiDeadCodeJavaImplementedInterfaceHeuristic new isDead: entity1)
 ]
 
-{ #category : #'tests - heuristics' }
+{ #category : 'tests - heuristics' }
 MiDeadCodeBrowserModelTest >> testTestNamingConventionHeuristicMethodNameJustTest [
 
 	| entity |
@@ -418,7 +420,7 @@ MiDeadCodeBrowserModelTest >> testTestNamingConventionHeuristicMethodNameJustTes
 	self assert: (MiDeadCodeNamingConventionHeuristic new isDead: entity)
 ]
 
-{ #category : #'tests - heuristics' }
+{ #category : 'tests - heuristics' }
 MiDeadCodeBrowserModelTest >> testTestNamingConventionHeuristicMethodNameNotTest [
 
 	| entity |
@@ -427,7 +429,7 @@ MiDeadCodeBrowserModelTest >> testTestNamingConventionHeuristicMethodNameNotTest
 	self assert: (MiDeadCodeNamingConventionHeuristic new isDead: entity)
 ]
 
-{ #category : #'tests - heuristics' }
+{ #category : 'tests - heuristics' }
 MiDeadCodeBrowserModelTest >> testTestNamingConventionHeuristicMethodNameTestosterone [
 
 	| entity |
@@ -436,7 +438,7 @@ MiDeadCodeBrowserModelTest >> testTestNamingConventionHeuristicMethodNameTestost
 	self assert: (MiDeadCodeNamingConventionHeuristic new isDead: entity)
 ]
 
-{ #category : #'tests - heuristics' }
+{ #category : 'tests - heuristics' }
 MiDeadCodeBrowserModelTest >> testTestNamingConventionHeuristicNotDead [
 	| entity |
 	entity := self pharoMethod: 'testWhateverFunctionality'  inClass: 'IsAClassTest'.
@@ -444,7 +446,7 @@ MiDeadCodeBrowserModelTest >> testTestNamingConventionHeuristicNotDead [
 	self deny: (MiDeadCodeNamingConventionHeuristic new isDead: entity)
 ]
 
-{ #category : #'tests - heuristics' }
+{ #category : 'tests - heuristics' }
 MiDeadCodeBrowserModelTest >> testTestNamingConventionHeuristicWrongClassName [
 
 	| entity |

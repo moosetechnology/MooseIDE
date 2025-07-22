@@ -2,15 +2,17 @@
 The query configuration presenter for FQTaggedEntityQuery
 "
 Class {
-	#name : #MiTaggedEntityQueryPresenter,
-	#superclass : #MiQueryConfiguratorPresenter,
+	#name : 'MiTaggedEntityQueryPresenter',
+	#superclass : 'MiQueryConfiguratorPresenter',
 	#instVars : [
 		'tagList'
 	],
-	#category : #'MooseIDE-QueriesBrowser-Configuration presenters'
+	#category : 'MooseIDE-QueriesBrowser-Configuration presenters',
+	#package : 'MooseIDE-QueriesBrowser',
+	#tag : 'Configuration presenters'
 }
 
-{ #category : #'api - actions' }
+{ #category : 'api - actions' }
 MiTaggedEntityQueryPresenter >> configureFor: aQuery [
 
 	query := aQuery.
@@ -19,13 +21,13 @@ MiTaggedEntityQueryPresenter >> configureFor: aQuery [
 	query tagName: aQuery tagName
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiTaggedEntityQueryPresenter >> configureQuery: anObject [
 
 	self query tagName: anObject
 ]
 
-{ #category : #'api - actions' }
+{ #category : 'api - actions' }
 MiTaggedEntityQueryPresenter >> initializeDropListForTags: tagNames [
 
 	tagList := tagNames
@@ -34,14 +36,14 @@ MiTaggedEntityQueryPresenter >> initializeDropListForTags: tagNames [
 			self initializeRelationDroplistForValidQueryTags: tagNames ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiTaggedEntityQueryPresenter >> initializePresenters [
 
 	self initializeDropListForTags: query availableTagNames.
 	self initializeLayout
 ]
 
-{ #category : #'api - actions' }
+{ #category : 'api - actions' }
 MiTaggedEntityQueryPresenter >> initializeRelationDroplistForValidQueryTags: tagNames [
 
 	^ self newDropList
@@ -51,7 +53,7 @@ MiTaggedEntityQueryPresenter >> initializeRelationDroplistForValidQueryTags: tag
 			  self computeQueryAction: selectedTagName ]
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 MiTaggedEntityQueryPresenter >> newLayout [
 
 	| padding |

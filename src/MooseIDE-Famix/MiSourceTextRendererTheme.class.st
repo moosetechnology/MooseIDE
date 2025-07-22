@@ -11,19 +11,21 @@ There could be a problem if UITheme overrides a method of Object which will ther
 This happens for #postCopy and we should think whether it needs to be treated in a special way.
 "
 Class {
-	#name : #MiSourceTextRendererTheme,
-	#superclass : #Object,
-	#category : #'MooseIDE-Famix-SourceText'
+	#name : 'MiSourceTextRendererTheme',
+	#superclass : 'Object',
+	#category : 'MooseIDE-Famix-SourceText',
+	#package : 'MooseIDE-Famix',
+	#tag : 'SourceText'
 }
 
-{ #category : #'reflective operations' }
+{ #category : 'reflective operations' }
 MiSourceTextRendererTheme >> doesNotUnderstand: aMessage [
 	"receiver is supposed to be a UITheme, so it forward any message not understood to the actual theme"
 
 	^Smalltalk ui theme perform: aMessage selector withArguments: aMessage arguments
 ]
 
-{ #category : #cursor }
+{ #category : 'cursor' }
 MiSourceTextRendererTheme >> overTextCursorFor: aTextMorph [
 
 	^Cursor normal

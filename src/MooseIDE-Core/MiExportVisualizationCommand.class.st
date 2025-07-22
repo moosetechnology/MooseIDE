@@ -1,28 +1,30 @@
 Class {
-	#name : #MiExportVisualizationCommand,
-	#superclass : #MiCommand,
-	#category : #'MooseIDE-Core-Command'
+	#name : 'MiExportVisualizationCommand',
+	#superclass : 'MiCommand',
+	#category : 'MooseIDE-Core-Command',
+	#package : 'MooseIDE-Core',
+	#tag : 'Command'
 }
 
-{ #category : #default }
+{ #category : 'default' }
 MiExportVisualizationCommand class >> defaultDescription [
 
 	^ 'Export this visulization'
 ]
 
-{ #category : #default }
+{ #category : 'default' }
 MiExportVisualizationCommand class >> defaultIconName [
 
 	^ #smallExport
 ]
 
-{ #category : #default }
+{ #category : 'default' }
 MiExportVisualizationCommand class >> defaultName [
 
 	^ 'Export'
 ]
 
-{ #category : #executing }
+{ #category : 'executing' }
 MiExportVisualizationCommand >> execute [
 
 	self context exportVisualization

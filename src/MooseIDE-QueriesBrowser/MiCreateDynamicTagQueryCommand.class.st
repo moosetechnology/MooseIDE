@@ -1,28 +1,30 @@
 Class {
-	#name : #MiCreateDynamicTagQueryCommand,
-	#superclass : #MiCommand,
-	#category : #'MooseIDE-QueriesBrowser-Commands'
+	#name : 'MiCreateDynamicTagQueryCommand',
+	#superclass : 'MiCommand',
+	#category : 'MooseIDE-QueriesBrowser-Commands',
+	#package : 'MooseIDE-QueriesBrowser',
+	#tag : 'Commands'
 }
 
-{ #category : #default }
+{ #category : 'default' }
 MiCreateDynamicTagQueryCommand class >> defaultDescription [
 
 	^ 'Create a dynamic tag using this query'
 ]
 
-{ #category : #default }
+{ #category : 'default' }
 MiCreateDynamicTagQueryCommand class >> defaultIconName [
 
 	^ #mooseEditor
 ]
 
-{ #category : #default }
+{ #category : 'default' }
 MiCreateDynamicTagQueryCommand class >> defaultName [
 
 	^ 'Create Dynamic Tag'
 ]
 
-{ #category : #executing }
+{ #category : 'executing' }
 MiCreateDynamicTagQueryCommand >> execute [
 
 	self context query isValid ifFalse: [
@@ -32,7 +34,7 @@ MiCreateDynamicTagQueryCommand >> execute [
 	self openTagCreationPage
 ]
 
-{ #category : #executing }
+{ #category : 'executing' }
 MiCreateDynamicTagQueryCommand >> openTagCreationPage [
 
 	| tagCreationPage |

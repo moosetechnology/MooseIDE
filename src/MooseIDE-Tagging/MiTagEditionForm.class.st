@@ -1,10 +1,12 @@
 Class {
-	#name : #MiTagEditionForm,
-	#superclass : #MiTagCreationForm,
-	#category : #'MooseIDE-Tagging-Browser'
+	#name : 'MiTagEditionForm',
+	#superclass : 'MiTagCreationForm',
+	#category : 'MooseIDE-Tagging-Browser',
+	#package : 'MooseIDE-Tagging',
+	#tag : 'Browser'
 }
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiTagEditionForm >> checkFormInputs [
 
 	nameField text ifEmpty: [ ^ false ].
@@ -30,7 +32,7 @@ MiTagEditionForm >> checkFormInputs [
 	^ true
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiTagEditionForm >> connectPresenters [
 
 	cancelButton action: [ 
@@ -39,7 +41,7 @@ MiTagEditionForm >> connectPresenters [
 	submitButton action: [ self submit ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiTagEditionForm >> fillFormWithTag: aTag [
 
 	aTag ifNil: [ ^ self ].
@@ -49,13 +51,13 @@ MiTagEditionForm >> fillFormWithTag: aTag [
 	
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiTagEditionForm >> fillWithCurrentTag [
 
 	self fillFormWithTag: tagModel currentTag
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiTagEditionForm >> formLayout [
 
 	^ SpBoxLayout newTopToBottom
@@ -87,13 +89,13 @@ MiTagEditionForm >> formLayout [
 		  yourself
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiTagEditionForm >> formTitle [
 
 	^ 'Edit tag'
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiTagEditionForm >> initializePresenters [
 
 	super initializePresenters.
@@ -102,7 +104,7 @@ MiTagEditionForm >> initializePresenters [
 	submitButton label: 'Edit'.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiTagEditionForm >> setDynamicTag: aTag [
 
 	self setIntentForm.
@@ -117,7 +119,7 @@ MiTagEditionForm >> setDynamicTag: aTag [
 		queryList startWithSelection selectItem: aTag query ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiTagEditionForm >> setTag: aTag [
 
 	self setExtentForm.
@@ -128,7 +130,7 @@ MiTagEditionForm >> setTag: aTag [
 		categorySelection selectItem: aTag categories first ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiTagEditionForm >> submit [
 
 	self checkFormInputs ifFalse: [ ^ self ].
@@ -150,7 +152,7 @@ MiTagEditionForm >> submit [
 	self owner closeTagEditionForm
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiTagEditionForm >> title [
 
 	^ 'Edit tag'

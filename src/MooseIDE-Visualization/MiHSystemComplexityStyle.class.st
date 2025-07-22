@@ -1,10 +1,12 @@
 Class {
-	#name : #MiHSystemComplexityStyle,
-	#superclass : #HDefaultStyle,
-	#category : #'MooseIDE-Visualization-System Complexity'
+	#name : 'MiHSystemComplexityStyle',
+	#superclass : 'HDefaultStyle',
+	#category : 'MooseIDE-Visualization-System Complexity',
+	#package : 'MooseIDE-Visualization',
+	#tag : 'System Complexity'
 }
 
-{ #category : #'public - hooks' }
+{ #category : 'public - hooks' }
 MiHSystemComplexityStyle >> borderFor: node [
 
 	^ node hasChildren
@@ -22,7 +24,7 @@ MiHSystemComplexityStyle >> borderFor: node [
 				  yourself ]
 ]
 
-{ #category : #hooks }
+{ #category : 'hooks' }
 MiHSystemComplexityStyle >> buildCompositeEmptyNodeIn: shape [
 
 	| node |

@@ -6,15 +6,16 @@ I work with classes that have the following API:
 `#condition` should return a FamixCBContidion
 "
 Class {
-	#name : #FamixCBRunner,
-	#superclass : #Object,
+	#name : 'FamixCBRunner',
+	#superclass : 'Object',
 	#instVars : [
 		'rootContext'
 	],
-	#category : #'Famix-CriticBrowser-ManualEntities'
+	#category : 'Famix-CriticBrowser-ManualEntities',
+	#package : 'Famix-CriticBrowser-ManualEntities'
 }
 
-{ #category : #adding }
+{ #category : 'adding' }
 FamixCBRunner >> addRule: aRule [
 
 	| context |
@@ -23,13 +24,13 @@ FamixCBRunner >> addRule: aRule [
 	rootContext addChild: context
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 FamixCBRunner >> addRules: aCollection [
 
 	aCollection do: [ :rule | self addRule: rule ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 FamixCBRunner >> initialize [
 
 	super initialize.
@@ -38,7 +39,7 @@ FamixCBRunner >> initialize [
 		               yourself
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 FamixCBRunner >> runOn: aMooseGroup [
 
 	rootContext runDownTree: aMooseGroup withCallback: [ ].

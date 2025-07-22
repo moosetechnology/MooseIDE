@@ -1,10 +1,12 @@
 Class {
-	#name : #MiShortcutsCategory,
-	#superclass : #KMCategory,
-	#category : #'MooseIDE-Core-KeyMapping'
+	#name : 'MiShortcutsCategory',
+	#superclass : 'KMCategory',
+	#category : 'MooseIDE-Core-KeyMapping',
+	#package : 'MooseIDE-Core',
+	#tag : 'KeyMapping'
 }
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiShortcutsCategory class >> isGlobalCategory [
 
 	^ true

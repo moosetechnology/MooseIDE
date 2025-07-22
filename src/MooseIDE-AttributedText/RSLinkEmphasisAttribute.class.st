@@ -2,12 +2,13 @@
 TODO
 "
 Class {
-	#name : #RSLinkEmphasisAttribute,
-	#superclass : #RSAbstractTextAttribute,
-	#category : #'MooseIDE-AttributedText'
+	#name : 'RSLinkEmphasisAttribute',
+	#superclass : 'RSAbstractTextAttribute',
+	#category : 'MooseIDE-AttributedText',
+	#package : 'MooseIDE-AttributedText'
 }
 
-{ #category : #rendering }
+{ #category : 'rendering' }
 RSLinkEmphasisAttribute >> renderIn: aShape [
 	| startLine endLine line label rect box |
 	startLine := self startLine: aShape.

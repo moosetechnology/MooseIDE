@@ -9,24 +9,26 @@ Allows to export and import the created rules.
 - Propagate: Violations (by rule or on the whole inputed set of rules)
 "
 Class {
-	#name : #MiCriticBrowser,
-	#superclass : #MiAbstractBrowser,
+	#name : 'MiCriticBrowser',
+	#superclass : 'MiAbstractBrowser',
 	#instVars : [
 		'entitiesList',
 		'rulesResult',
 		'rules',
 		'statusLabel'
 	],
-	#category : #'MooseIDE-CriticBrowser-Browser'
+	#category : 'MooseIDE-CriticBrowser-Browser',
+	#package : 'MooseIDE-CriticBrowser',
+	#tag : 'Browser'
 }
 
-{ #category : #keymaps }
+{ #category : 'keymaps' }
 MiCriticBrowser class >> browserKey [
 
 	^ $c
 ]
 
-{ #category : #commands }
+{ #category : 'commands' }
 MiCriticBrowser class >> buildActionCommandsGroupWith: presenterInstance [
 
 	^ {
@@ -35,14 +37,14 @@ MiCriticBrowser class >> buildActionCommandsGroupWith: presenterInstance [
 		  (MiCBRunAllRulesCommand forSpecContext: presenterInstance) }
 ]
 
-{ #category : #commands }
+{ #category : 'commands' }
 MiCriticBrowser class >> buildRuleCommandsGroupWith: presenterInstance [
 
 	^ MiAbstractCriticBrowserCommand asCommandGroupWith:
 		  presenterInstance
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiCriticBrowser class >> childrenForContext: aRuleComponent [
 	"Content of children block for rules list"
 
@@ -51,7 +53,7 @@ MiCriticBrowser class >> childrenForContext: aRuleComponent [
 		  ifTrue: [ {  } ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiCriticBrowser class >> iconForRuleComponent: aRuleComponent [
 
 	^ aRuleComponent isCBCondition
@@ -59,7 +61,7 @@ MiCriticBrowser class >> iconForRuleComponent: aRuleComponent [
 		  ifFalse: [ self iconNamed: #radioButtonSelected ]
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiCriticBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
@@ -67,42 +69,42 @@ MiCriticBrowser class >> menuCommandOn: aBuilder [
 	^ (self buildMenuItemIn: aBuilder) withSeparatorAfter
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiCriticBrowser class >> menuItem [
 
 	^ #MiCrtiticsBrowser
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiCriticBrowser class >> menuPriority [
 
 	^ self menuMainToolsPriority + 7
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MiCriticBrowser class >> newModel [
 	^ MiCriticBrowserModel new
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MiCriticBrowser class >> open [
 	<script>
 	^ super open
 ]
 
-{ #category : #specs }
+{ #category : 'specs' }
 MiCriticBrowser class >> preferredExtent [
 
 	^ 1280 @ 560
 ]
 
-{ #category : #specs }
+{ #category : 'specs' }
 MiCriticBrowser class >> title [
 
 	^ 'Moose Critic Browser'
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 MiCriticBrowser >> actionButtonsLayout [
 
 	layout := SpBoxLayout newLeftToRight
@@ -116,20 +118,20 @@ MiCriticBrowser >> actionButtonsLayout [
 	^ layout
 ]
 
-{ #category : #'window control' }
+{ #category : 'window control' }
 MiCriticBrowser >> browserClosed [
 
 	super browserClosed.
 	specModel resetResults
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiCriticBrowser >> canFollowEntity: anEntity [
 
 	^ anEntity isMooseObject
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 MiCriticBrowser >> defaultLayout [
 
 	^ SpBoxLayout newTopToBottom
@@ -158,7 +160,7 @@ MiCriticBrowser >> defaultLayout [
 		  yourself
 ]
 
-{ #category : #deleting }
+{ #category : 'deleting' }
 MiCriticBrowser >> deleteSelectedRule [
 
 	specModel deleteRuleComponent: rules selectedItem.
@@ -167,7 +169,7 @@ MiCriticBrowser >> deleteSelectedRule [
 	self updateRulesList
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiCriticBrowser >> displayRule: aRuleComponent [
 
 	^ specModel violations
@@ -177,7 +179,7 @@ MiCriticBrowser >> displayRule: aRuleComponent [
 		  ifAbsent: [ aRuleComponent name ]
 ]
 
-{ #category : #'import-export' }
+{ #category : 'import-export' }
 MiCriticBrowser >> exportRules [
 	"Opens an UI to choose where to save the rules, before opening a stream and saving on the chosen file"
 
@@ -192,7 +194,7 @@ MiCriticBrowser >> exportRules [
 			Notification signal: 'Save successful!' ] ]
 ]
 
-{ #category : #'import-export' }
+{ #category : 'import-export' }
 MiCriticBrowser >> exportRulesToStream: aStream [
 
 	specModel ruleComponents do: [ :el |
@@ -200,7 +202,7 @@ MiCriticBrowser >> exportRulesToStream: aStream [
 	SCExporter export: specModel createHierarchyTree onStream: aStream
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiCriticBrowser >> followEntity: anEntity [
 
 	super followEntity: anEntity.
@@ -210,7 +212,7 @@ MiCriticBrowser >> followEntity: anEntity [
 	self updateResultList: {  }
 ]
 
-{ #category : #'import-export' }
+{ #category : 'import-export' }
 MiCriticBrowser >> importRules [
 	"Opens an UI to choose what rules file to import, before opening a stream on it and importing the rules"
 
@@ -227,7 +229,7 @@ MiCriticBrowser >> importRules [
 	self updateRulesList
 ]
 
-{ #category : #'import-export' }
+{ #category : 'import-export' }
 MiCriticBrowser >> importRulesFromStream: aStream [
 	"import rules from a ston rules file opened on a stream"
 
@@ -270,7 +272,7 @@ MiCriticBrowser >> importRulesFromStream: aStream [
 			index := index + 1 ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiCriticBrowser >> initializeLists [
 
 	entitiesList := self newMooseGroupsTreeTable.
@@ -298,7 +300,7 @@ MiCriticBrowser >> initializeLists [
 		               yourself
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiCriticBrowser >> initializePresenters [
 
 	super initializePresenters.
@@ -307,14 +309,14 @@ MiCriticBrowser >> initializePresenters [
 	self initializeStatusLabel
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiCriticBrowser >> initializeStatusLabel [
 
 	statusLabel := self newLabel.
 	self updateStatusLabel: 'Critic Browser is ready to work!'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiCriticBrowser >> miSelectedItem [
 
 	^ (specModel selectedRule
@@ -324,7 +326,7 @@ MiCriticBrowser >> miSelectedItem [
 		  entitiesList miSelectedItem ]
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiCriticBrowser >> moveCurrentRuleComponentToContext: aFamixCBContext [
 
 	| selectedRule |
@@ -338,7 +340,7 @@ MiCriticBrowser >> moveCurrentRuleComponentToContext: aFamixCBContext [
 		toContext: aFamixCBContext
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiCriticBrowser >> openEditRuleComponentDialog [
 
 	^ rules selectedItem class = FamixCBCondition
@@ -352,7 +354,7 @@ MiCriticBrowser >> openEditRuleComponentDialog [
 				  openDialog ]
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiCriticBrowser >> runAllRules [
 	"Executes the queries on the entities stored in the model, then prints the results"
 
@@ -366,7 +368,7 @@ MiCriticBrowser >> runAllRules [
 	self updateStatusLabel: 'Critics finished.' ] fork
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiCriticBrowser >> runSelectedCondition [
 
 	specModel runCondition: rules selectedItem.
@@ -374,13 +376,13 @@ MiCriticBrowser >> runSelectedCondition [
 	^ self updateResultList: specModel getAllViolations
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiCriticBrowser >> selectedRule [
 
 	^ specModel selectedRule
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiCriticBrowser >> showSelectedRuleResult [
 	"Shows in the output list only the entities validating the selected queries (or the complete output if no query is selected)"
 
@@ -394,14 +396,14 @@ MiCriticBrowser >> showSelectedRuleResult [
 			self updateEntitiesList: specModel entities ]
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiCriticBrowser >> tagRuleResult [
 
 	rules selectedItem tagRuleResult. 
 
 ]
 
-{ #category : #updating }
+{ #category : 'updating' }
 MiCriticBrowser >> updateEntitiesList: aCollection [
 
 	| roots |
@@ -415,7 +417,7 @@ MiCriticBrowser >> updateEntitiesList: aCollection [
 	entitiesList refresh
 ]
 
-{ #category : #updating }
+{ #category : 'updating' }
 MiCriticBrowser >> updateResultList: aCollection [
 
 	| roots |
@@ -437,14 +439,14 @@ MiCriticBrowser >> updateResultList: aCollection [
 	rulesResult expandAll
 ]
 
-{ #category : #updating }
+{ #category : 'updating' }
 MiCriticBrowser >> updateRulesList [
 
 	rules updateRootsKeepingSelection: rules roots.
 	rules expandAll
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiCriticBrowser >> updateStatusLabel: aString [
 
 	statusLabel label: DateAndTime now asStringYMDHM , ': ' , aString

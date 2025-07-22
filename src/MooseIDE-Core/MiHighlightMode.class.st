@@ -3,12 +3,14 @@
 Triggers a highlight action if the browser can receive the current entity.
 "
 Class {
-	#name : #MiHighlightMode,
-	#superclass : #MiBrowserReceivingMode,
-	#category : #'MooseIDE-Core-ReceivingMode'
+	#name : 'MiHighlightMode',
+	#superclass : 'MiBrowserReceivingMode',
+	#category : 'MooseIDE-Core-ReceivingMode',
+	#package : 'MooseIDE-Core',
+	#tag : 'ReceivingMode'
 }
 
-{ #category : #action }
+{ #category : 'action' }
 MiHighlightMode class >> browser: aBrowser actOnEntity: anEntity [
 
 	(aBrowser canFollowEntity: anEntity) ifFalse: [ ^ self ].

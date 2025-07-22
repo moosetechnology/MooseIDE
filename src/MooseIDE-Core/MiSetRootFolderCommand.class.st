@@ -1,20 +1,22 @@
 Class {
-	#name : #MiSetRootFolderCommand,
-	#superclass : #MiModelUtilityCommand,
-	#category : #'MooseIDE-Core-Command'
+	#name : 'MiSetRootFolderCommand',
+	#superclass : 'MiModelUtilityCommand',
+	#category : 'MooseIDE-Core-Command',
+	#package : 'MooseIDE-Core',
+	#tag : 'Command'
 }
 
-{ #category : #default }
+{ #category : 'default' }
 MiSetRootFolderCommand class >> defaultIconName [
 	^ #glamorousFolder
 ]
 
-{ #category : #default }
+{ #category : 'default' }
 MiSetRootFolderCommand class >> defaultName [
 	^ 'Set Root Folder'
 ]
 
-{ #category : #executing }
+{ #category : 'executing' }
 MiSetRootFolderCommand >> execute [
 
 	| file |

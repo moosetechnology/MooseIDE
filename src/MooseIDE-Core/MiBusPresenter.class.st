@@ -1,13 +1,15 @@
 Class {
-	#name : #MiBusPresenter,
-	#superclass : #MiOverviewItemPresenter,
+	#name : 'MiBusPresenter',
+	#superclass : 'MiOverviewItemPresenter',
 	#instVars : [
 		'loggerButton'
 	],
-	#category : #'MooseIDE-Core-Overview'
+	#category : 'MooseIDE-Core-Overview',
+	#package : 'MooseIDE-Core',
+	#tag : 'Overview'
 }
 
-{ #category : #layout }
+{ #category : 'layout' }
 MiBusPresenter >> defaultLayout [
 
 	^ SpBoxLayout newHorizontal
@@ -16,7 +18,7 @@ MiBusPresenter >> defaultLayout [
 		  yourself
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiBusPresenter >> initializePresenters [
 
 	super initializePresenters.
@@ -29,7 +31,7 @@ MiBusPresenter >> initializePresenters [
 				                application: application ]
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 MiBusPresenter >> toolbarLabel [
 	^ model name
 ]

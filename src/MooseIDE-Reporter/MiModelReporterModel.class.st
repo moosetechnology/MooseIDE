@@ -4,17 +4,18 @@ The spec model for the MiModelReporter
 Responsible for actually generating the report
 "
 Class {
-	#name : #MiModelReporterModel,
-	#superclass : #MiAbstractModel,
+	#name : 'MiModelReporterModel',
+	#superclass : 'MiAbstractModel',
 	#instVars : [
 		'mooseModel',
 		'settings',
 		'report'
 	],
-	#category : #'MooseIDE-Reporter'
+	#category : 'MooseIDE-Reporter',
+	#package : 'MooseIDE-Reporter'
 }
 
-{ #category : #microdown }
+{ #category : 'microdown' }
 MiModelReporterModel >> bulletList: aCollection [
 
 	aCollection do: [ :line |
@@ -26,20 +27,20 @@ MiModelReporterModel >> bulletList: aCollection [
 	report cr
 ]
 
-{ #category : #document }
+{ #category : 'document' }
 MiModelReporterModel >> classMembersStats: columns [
 
 	self stats: columns compute: [ :c | c numberOfAttributes ] description: 'ATTRIBUTES'.
 	self stats: columns compute: [ :c | c numberOfMethods ]    description: 'METHODS'
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 MiModelReporterModel >> complexMethodLimit [
 
 	^ settings getItemValue: #complexMethodSetting
 ]
 
-{ #category : #document }
+{ #category : 'document' }
 MiModelReporterModel >> document [
 		
 	self title: ('Dashboard : '  , mooseModel name).
@@ -50,12 +51,12 @@ MiModelReporterModel >> document [
 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiModelReporterModel >> entities [
 	^mooseModel
 ]
 
-{ #category : #'api - export' }
+{ #category : 'api - export' }
 MiModelReporterModel >> exportReportToHTML: microdownText [
 
 	(mooseModel name , '-report.html') asFileReference writeStreamDo: [ :stream |
@@ -63,27 +64,27 @@ MiModelReporterModel >> exportReportToHTML: microdownText [
 	]
 ]
 
-{ #category : #'api - export' }
+{ #category : 'api - export' }
 MiModelReporterModel >> exportReportToPDF: microdownText [
 
 	self inform: 'PDF export not implemented yet, sorry'
 ]
 
-{ #category : #'private - formatting' }
+{ #category : 'private - formatting' }
 MiModelReporterModel >> floatAsString: aFloat [
 
 	^(aFloat asFloat round: 1) asString
 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiModelReporterModel >> followEntity: aMooseModel [
 
 	mooseModel := aMooseModel.
 	self updateReport
 ]
 
-{ #category : #'private - formatting' }
+{ #category : 'private - formatting' }
 MiModelReporterModel >> formatCollection: collection value: valueBlock [
 
 	^collection
@@ -91,14 +92,14 @@ MiModelReporterModel >> formatCollection: collection value: valueBlock [
 		ifNotEmpty: [ self floatAsString: (valueBlock value: collection) ]
 ]
 
-{ #category : #'private - formatting' }
+{ #category : 'private - formatting' }
 MiModelReporterModel >> fullyQualifiedName: anEntity [
 
 	^anEntity mooseName copyReplaceAll: '::' with: '.' 
 
 ]
 
-{ #category : #microdown }
+{ #category : 'microdown' }
 MiModelReporterModel >> headerBlock: level header: aString [
 
 	level timesRepeat: [ report << '#' ].
@@ -108,7 +109,7 @@ MiModelReporterModel >> headerBlock: level header: aString [
 		cr ; cr
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiModelReporterModel >> initializeSettings [ 
 
 	settings := super initializeSettings.
@@ -144,13 +145,13 @@ MiModelReporterModel >> initializeSettings [
 
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 MiModelReporterModel >> largeClassLimit [
 
 	^ settings getItemValue: #largeClassSetting
 ]
 
-{ #category : #microdown }
+{ #category : 'microdown' }
 MiModelReporterModel >> line: aString [
 
 	report
@@ -159,19 +160,19 @@ MiModelReporterModel >> line: aString [
 
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 MiModelReporterModel >> longClassLimit [
 
 	^ settings getItemValue: #longClassSetting
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 MiModelReporterModel >> longMethodLimit [
 
 	^ settings getItemValue: #longMethodSetting
 ]
 
-{ #category : #document }
+{ #category : 'document' }
 MiModelReporterModel >> methodMembersStats: columns [
 
 	self stats: columns compute: [ :m | m numberOfParameters ] description: 'PARAMETERS'.
@@ -179,26 +180,26 @@ MiModelReporterModel >> methodMembersStats: columns [
 	self stats: columns compute: [ :m | m cyclomaticComplexity ]    description: 'CYCLOMATIC COMPLEXITY'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiModelReporterModel >> miSelectedItem [
 
 	^#()
 ]
 
-{ #category : #'private - formatting' }
+{ #category : 'private - formatting' }
 MiModelReporterModel >> numericValue: text value: number [
 
 	^text , ': ' , number asString
 		
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiModelReporterModel >> reportDOM [
 
 	^ report
 ]
 
-{ #category : #document }
+{ #category : 'document' }
 MiModelReporterModel >> sectionClasses [
 
 	| allClasses largeClasses longClasses |
@@ -224,7 +225,7 @@ MiModelReporterModel >> sectionClasses [
 		description: 'Long classes (> ' , self longClassLimit asString , ' LOC)'
 ]
 
-{ #category : #document }
+{ #category : 'document' }
 MiModelReporterModel >> sectionMethods [
 
 	| allMethods longMethods complexMethods |
@@ -250,7 +251,7 @@ MiModelReporterModel >> sectionMethods [
 		description: 'Complex methods (cyclomatic complexity > ' , self complexMethodLimit asString , ')'
 ]
 
-{ #category : #document }
+{ #category : 'document' }
 MiModelReporterModel >> sectionMethodsStats: methods [
 
 	self stats: (methods collect: [ :c | c numberOfParameters ]) description: 'parameters'.
@@ -259,7 +260,7 @@ MiModelReporterModel >> sectionMethodsStats: methods [
 
 ]
 
-{ #category : #document }
+{ #category : 'document' }
 MiModelReporterModel >> sectionPackages [
 	| number allClasses |
 
@@ -280,25 +281,25 @@ MiModelReporterModel >> sectionPackages [
 
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 MiModelReporterModel >> settings [
 
 	^settings
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 MiModelReporterModel >> settingsChanged: aBoolean [
 
 	aBoolean ifTrue: [ self updateReport ]
 ]
 
-{ #category : #microdown }
+{ #category : 'microdown' }
 MiModelReporterModel >> statLine: columns	description: aString [
 
 	self tableLine: { aString } , columns
 ]
 
-{ #category : #microdown }
+{ #category : 'microdown' }
 MiModelReporterModel >> stats: columns compute: valueBlock description: aString [
 	"columns is a collection of collections of entities (eg. {allClasses, largeClasses, longClasses})
 	 valueBlock takes one entity of these collections and compute a number form it (eg. numberOfAttributes)
@@ -320,7 +321,7 @@ MiModelReporterModel >> stats: columns compute: valueBlock description: aString 
 
 ]
 
-{ #category : #document }
+{ #category : 'document' }
 MiModelReporterModel >> subSectionSpecialList: collection description: aString [
 
 	self subsubtitle: aString.
@@ -332,7 +333,7 @@ MiModelReporterModel >> subSectionSpecialList: collection description: aString [
 
 ]
 
-{ #category : #document }
+{ #category : 'document' }
 MiModelReporterModel >> subSectionSpecialMethods: selectionBlock description: aString [
 
 	| methods |
@@ -348,21 +349,21 @@ MiModelReporterModel >> subSectionSpecialMethods: selectionBlock description: aS
 
 ]
 
-{ #category : #microdown }
+{ #category : 'microdown' }
 MiModelReporterModel >> subsubtitle: aString [
 
 	^self headerBlock: 3 header: aString.
 
 ]
 
-{ #category : #microdown }
+{ #category : 'microdown' }
 MiModelReporterModel >> subtitle: aString [
 
 	^self headerBlock: 2 header: aString.
 
 ]
 
-{ #category : #microdown }
+{ #category : 'microdown' }
 MiModelReporterModel >> tableHeader: aCollection [
 
 	self tableLine: aCollection.
@@ -371,7 +372,7 @@ MiModelReporterModel >> tableHeader: aCollection [
 		cr
 ]
 
-{ #category : #microdown }
+{ #category : 'microdown' }
 MiModelReporterModel >> tableLine: aCollection [
 
 	aCollection do: [ :item |
@@ -385,14 +386,14 @@ MiModelReporterModel >> tableLine: aCollection [
 		cr
 ]
 
-{ #category : #microdown }
+{ #category : 'microdown' }
 MiModelReporterModel >> title: aString [
 
 	^self headerBlock: 1 header: aString.
 
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiModelReporterModel >> updateReport [
 
 	report := String new writeStream .

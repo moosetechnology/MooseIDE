@@ -1,10 +1,12 @@
 Class {
-	#name : #MooseAbstractMenuCommandTest,
-	#superclass : #TestCase,
-	#category : #'MooseIDE-Tests-Menubar'
+	#name : 'MooseAbstractMenuCommandTest',
+	#superclass : 'TestCase',
+	#category : 'MooseIDE-Tests-Menubar',
+	#package : 'MooseIDE-Tests',
+	#tag : 'Menubar'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 MooseAbstractMenuCommandTest >> testMenuCommandOn [
 
 	| builder |

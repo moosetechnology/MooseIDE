@@ -1,51 +1,53 @@
 Class {
-	#name : #MiPresenter,
-	#superclass : #SpPresenter,
-	#category : #'MooseIDE-Core-Browser'
+	#name : 'MiPresenter',
+	#superclass : 'SpPresenter',
+	#category : 'MooseIDE-Core-Browser',
+	#package : 'MooseIDE-Core',
+	#tag : 'Browser'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiPresenter class >> currentApplication [
 
 	^ MiApplication current
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiPresenter class >> iconNamed: aName [
 
 	^ self currentApplication iconNamed: aName
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MiPresenter class >> new [
 
 	^ self newApplication: self currentApplication
 ]
 
-{ #category : #specs }
+{ #category : 'specs' }
 MiPresenter class >> tableLineHeight [
 	^ self labelHeight + 5
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiPresenter >> helpText [
 	"Override when necessary"
 
 	^ self class comment
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiPresenter >> isMiBrowser [
 	^ false
 ]
 
-{ #category : #'scripting - widgets' }
+{ #category : 'scripting - widgets' }
 MiPresenter >> newMooseGroupsTreeTable [
 
 	^ self instantiate: MiMooseGroupsTreeTablePresenter
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiPresenter >> rootBrowser [
 
 	^ self isMiBrowser

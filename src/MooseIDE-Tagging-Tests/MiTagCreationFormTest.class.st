@@ -1,29 +1,30 @@
 Class {
-	#name : #MiTagCreationFormTest,
-	#superclass : #MiTagPresenterTest,
-	#category : #'MooseIDE-Tagging-Tests'
+	#name : 'MiTagCreationFormTest',
+	#superclass : 'MiTagPresenterTest',
+	#category : 'MooseIDE-Tagging-Tests',
+	#package : 'MooseIDE-Tagging-Tests'
 }
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 MiTagCreationFormTest >> presenterClass [
 
 	^ MiTagCreationForm
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 MiTagCreationFormTest >> presenterOwner [
 
 	^ browser
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiTagCreationFormTest >> setUp [
 
 	super setUp.
 	browser openTagCreationForm.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiTagCreationFormTest >> testCancelTagCreation [
 
 	self assert: browser layout child equals: browser tagCreationForm.
@@ -31,7 +32,7 @@ MiTagCreationFormTest >> testCancelTagCreation [
 	self deny: browser layout child equals: browser tagCreationForm
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiTagCreationFormTest >> testCategoryDropListContainsCategories [
 
 	self
@@ -42,14 +43,14 @@ MiTagCreationFormTest >> testCategoryDropListContainsCategories [
 	self assert: presenter categorySelection items size equals: 4
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiTagCreationFormTest >> testExtentTagDefault [
 
 	self assert: presenter extentButton state equals: true.
 	self deny: presenter queryListLabeled isVisible
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiTagCreationFormTest >> testQueryDropListFetchQueriesFromQueriesProducer [
 
 	| mockProducer query |
@@ -63,7 +64,7 @@ MiTagCreationFormTest >> testQueryDropListFetchQueriesFromQueriesProducer [
 	self assert: (presenter queryList items anySatisfy: [ :q |  (q class = query class) and: [ q property = query property ] ])
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiTagCreationFormTest >> testSetIntentTag [
 
 	self assert: presenter intentButton state equals: false.
@@ -75,14 +76,14 @@ MiTagCreationFormTest >> testSetIntentTag [
 	self assert: presenter queryListLabeled isVisible
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiTagCreationFormTest >> testShouldNotSubmitWithoutName [
 
 	presenter submit.
 	self assert: browser layout child equals: browser tagCreationForm
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiTagCreationFormTest >> testSubmitCreatesATag [
 
 	self assert: browser tagModel allTags size equals: 0.

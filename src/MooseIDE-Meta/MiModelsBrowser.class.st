@@ -9,22 +9,24 @@ Shows installed models and allows model installation.
 <TODO> Add features available in MoosePanel.
 "
 Class {
-	#name : #MiModelsBrowser,
-	#superclass : #MiAbstractBrowser,
+	#name : 'MiModelsBrowser',
+	#superclass : 'MiAbstractBrowser',
 	#instVars : [
 		'toolbar',
 		'modelFilteringList'
 	],
-	#category : #'MooseIDE-Meta-ModelsBrowser'
+	#category : 'MooseIDE-Meta-ModelsBrowser',
+	#package : 'MooseIDE-Meta',
+	#tag : 'ModelsBrowser'
 }
 
-{ #category : #keymaps }
+{ #category : 'keymaps' }
 MiModelsBrowser class >> browserKey [
 
 	^ $m
 ]
 
-{ #category : #commands }
+{ #category : 'commands' }
 MiModelsBrowser class >> buildModelCommandsGroupWith: presenterInstance [
 
 	^ CmCommandGroup forSpec beRoot
@@ -36,18 +38,18 @@ MiModelsBrowser class >> buildModelCommandsGroupWith: presenterInstance [
 			  (MiModelUtilityCommand asCommandGroupWith: presenterInstance)
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MiModelsBrowser class >> instantiateAndOpen [
 
 	^ super open
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiModelsBrowser class >> isModelImporter [
 	^true
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiModelsBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
@@ -55,68 +57,68 @@ MiModelsBrowser class >> menuCommandOn: aBuilder [
 	^ self buildMenuItemIn: aBuilder
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiModelsBrowser class >> menuIconName [
 
 	^ #mooseNavigation
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiModelsBrowser class >> menuItem [
 
 	^ #ModelsBrowser
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiModelsBrowser class >> menuPriority [
 
 	^ self menuMainToolsPriority + 2
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MiModelsBrowser class >> newModel [
 
 	^ MiModelsBrowserModel new
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MiModelsBrowser class >> open [
 
 	<script>
 	^ MiApplication current openCurrentModelsBrowser
 ]
 
-{ #category : #specs }
+{ #category : 'specs' }
 MiModelsBrowser class >> preferredExtent [
 
 	^ 600 @ 400
 ]
 
-{ #category : #specs }
+{ #category : 'specs' }
 MiModelsBrowser class >> title [
 
 	^ 'Models browser'
 ]
 
-{ #category : #'window control' }
+{ #category : 'window control' }
 MiModelsBrowser >> browserClosed [
 
 	super browserClosed.
 	self application unregisterModelsBrowser
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiModelsBrowser >> canFollowEntity: anObject [
 	^ false
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiModelsBrowser >> canTagEntities [
 	"manipulates models, not entities"
 	^false
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 MiModelsBrowser >> defaultLayout [
 
 	^ SpBoxLayout newVertical
@@ -125,7 +127,7 @@ MiModelsBrowser >> defaultLayout [
 		  yourself
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiModelsBrowser >> followEntity: anEntity [
 
 	"Nothing to do"
@@ -133,7 +135,7 @@ MiModelsBrowser >> followEntity: anEntity [
 	
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiModelsBrowser >> handleDropFile: aFileReference [
 
 	self model autoImportSetting
@@ -145,18 +147,18 @@ MiModelsBrowser >> handleDropFile: aFileReference [
 				handleDropFile: aFileReference ]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiModelsBrowser >> hasSettings [
 	^ true
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiModelsBrowser >> importFromFileUI [
 
 	^ MiImportModelFromFileDialog on: self
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiModelsBrowser >> initializeList [
 
 	modelFilteringList := self newTable.
@@ -189,7 +191,7 @@ MiModelsBrowser >> initializeList [
 		whenActivatedDo: [ self miInspect ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiModelsBrowser >> initializePresenters [
 
 	self initializeToolbar.
@@ -197,7 +199,7 @@ MiModelsBrowser >> initializePresenters [
 	self selectAModelIfPossible
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiModelsBrowser >> initializeToolbar [
 
 	toolbar := self newToolbar
@@ -208,30 +210,30 @@ MiModelsBrowser >> initializeToolbar [
 		           yourself
 ]
 
-{ #category : #updating }
+{ #category : 'updating' }
 MiModelsBrowser >> listOfMooseModels: aList [
 
 	modelFilteringList items: aList
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiModelsBrowser >> miSelectedItem [
 
 	^ specModel selected
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiModelsBrowser >> miSelectedItemToPropagate [
 
 	^ specModel selectedModel
 ]
 
-{ #category : #'accessing - tests' }
+{ #category : 'accessing - tests' }
 MiModelsBrowser >> modelFilteringList [
 	^ modelFilteringList
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiModelsBrowser >> refreshToolbarButton [
 
 	^ SpToolbarButtonPresenter new
@@ -241,31 +243,31 @@ MiModelsBrowser >> refreshToolbarButton [
 		  yourself
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiModelsBrowser >> selectAModelIfPossible [
 
 	specModel entities ifNotEmpty: [ :list |
 		modelFilteringList selectItem: list first ]
 ]
 
-{ #category : #'accessing - tests' }
+{ #category : 'accessing - tests' }
 MiModelsBrowser >> settingsItem [
 	^ specModel settings
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiModelsBrowser >> specModel [
 
 	^ specModel 
 ]
 
-{ #category : #updating }
+{ #category : 'updating' }
 MiModelsBrowser >> updateForNewModel: aModel [
 	specModel updateForNewModel: aModel
 
 ]
 
-{ #category : #updating }
+{ #category : 'updating' }
 MiModelsBrowser >> updateList [
 
 	specModel updateMooseModelsList.

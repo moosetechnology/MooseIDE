@@ -1,10 +1,12 @@
 Class {
-	#name : #MiArchitecturalMapStyle,
-	#superclass : #HDefaultStyle,
-	#category : #'MooseIDE-Dependency-ArchitecturalMap'
+	#name : 'MiArchitecturalMapStyle',
+	#superclass : 'HDefaultStyle',
+	#category : 'MooseIDE-Dependency-ArchitecturalMap',
+	#package : 'MooseIDE-Dependency',
+	#tag : 'ArchitecturalMap'
 }
 
-{ #category : #'public - hooks' }
+{ #category : 'public - hooks' }
 MiArchitecturalMapStyle >> boxChildrenColorFor: anHNode [
 
 	^ anHNode level odd
@@ -12,13 +14,13 @@ MiArchitecturalMapStyle >> boxChildrenColorFor: anHNode [
 		  ifFalse: [ Color veryLightGray ]
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MiArchitecturalMapStyle >> colorFor: node [
 
 	^ node color ifNil: [ (Smalltalk ui theme baseColor) alpha: 0.7 ]
 ]
 
-{ #category : #hooks }
+{ #category : 'hooks' }
 MiArchitecturalMapStyle >> createMultiTagBox [
 
 	| cp |
@@ -44,7 +46,7 @@ MiArchitecturalMapStyle >> createMultiTagBox [
 	^ cp
 ]
 
-{ #category : #hooks }
+{ #category : 'hooks' }
 MiArchitecturalMapStyle >> labelAndIconFor: node [
 
 	| group entity |
@@ -62,7 +64,7 @@ MiArchitecturalMapStyle >> labelAndIconFor: node [
 	^ group
 ]
 
-{ #category : #hooks }
+{ #category : 'hooks' }
 MiArchitecturalMapStyle >> tagIconFor: node [
 	"We could just do a #flatCollectAsSet: of the tags on the #allChildren but this can be pretty long to do. And in the end we just want to know if there is 0, 1 or multiple tags so here is an optimized version.
 	

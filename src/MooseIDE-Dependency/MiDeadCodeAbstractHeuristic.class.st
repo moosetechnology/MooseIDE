@@ -13,18 +13,20 @@ A heurisitc has:
 - #refuteDead: true if the heuristic tries to prove that an entity is dead
 "
 Class {
-	#name : #MiDeadCodeAbstractHeuristic,
-	#superclass : #Object,
-	#category : #'MooseIDE-Dependency-DeadCode'
+	#name : 'MiDeadCodeAbstractHeuristic',
+	#superclass : 'Object',
+	#category : 'MooseIDE-Dependency-DeadCode',
+	#package : 'MooseIDE-Dependency',
+	#tag : 'DeadCode'
 }
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiDeadCodeAbstractHeuristic class >> isAbstract [
 
 	^self name includesSubstring: 'Abstract'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDeadCodeAbstractHeuristic >> description [
 
 	^self refuteDead
@@ -32,13 +34,13 @@ MiDeadCodeAbstractHeuristic >> description [
 		ifFalse: [ '' ]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiDeadCodeAbstractHeuristic >> isAbstract [
 
 	^ self class isAbstract
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiDeadCodeAbstractHeuristic >> isDead: aTMethod [
 
 	^self refuteDead
@@ -46,7 +48,7 @@ MiDeadCodeAbstractHeuristic >> isDead: aTMethod [
 		ifFalse: [ self subclassResponsibility ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDeadCodeAbstractHeuristic >> name [
 
 	^self selectedByDefault
@@ -54,13 +56,13 @@ MiDeadCodeAbstractHeuristic >> name [
 		ifFalse: [ '' ]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiDeadCodeAbstractHeuristic >> notDead: aTMethod [
 
 	self subclassResponsibility 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDeadCodeAbstractHeuristic >> refuteDead [
 	"if true, the heuristic tries to _refute_ a method is dead (or assert it is not dead)
 	 if false, the heuristic tries to _assert_ a method is dead"
@@ -68,7 +70,7 @@ MiDeadCodeAbstractHeuristic >> refuteDead [
 	^true
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiDeadCodeAbstractHeuristic >> selectedByDefault [
 	"Whether the heuristic is selected in the DeadCodeBrowser by default"
 

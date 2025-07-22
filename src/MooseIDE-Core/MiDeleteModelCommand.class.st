@@ -1,25 +1,27 @@
 Class {
-	#name : #MiDeleteModelCommand,
-	#superclass : #MiModelUtilityCommand,
-	#category : #'MooseIDE-Core-Command'
+	#name : 'MiDeleteModelCommand',
+	#superclass : 'MiModelUtilityCommand',
+	#category : 'MooseIDE-Core-Command',
+	#package : 'MooseIDE-Core',
+	#tag : 'Command'
 }
 
-{ #category : #default }
+{ #category : 'default' }
 MiDeleteModelCommand class >> defaultDescription [
 	^ 'Delete this model'
 ]
 
-{ #category : #default }
+{ #category : 'default' }
 MiDeleteModelCommand class >> defaultIconName [
 	^ #smallDelete
 ]
 
-{ #category : #default }
+{ #category : 'default' }
 MiDeleteModelCommand class >> defaultName [
 	^ 'Delete'
 ]
 
-{ #category : #executing }
+{ #category : 'executing' }
 MiDeleteModelCommand >> execute [
 	(UIManager default
 		confirm:

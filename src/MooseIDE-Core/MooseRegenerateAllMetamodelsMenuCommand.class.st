@@ -1,10 +1,12 @@
 Class {
-	#name : #MooseRegenerateAllMetamodelsMenuCommand,
-	#superclass : #MooseAbstractMetamodelMenuCommand,
-	#category : #'MooseIDE-Core-MenuBar'
+	#name : 'MooseRegenerateAllMetamodelsMenuCommand',
+	#superclass : 'MooseAbstractMetamodelMenuCommand',
+	#category : 'MooseIDE-Core-MenuBar',
+	#package : 'MooseIDE-Core',
+	#tag : 'MenuBar'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseRegenerateAllMetamodelsMenuCommand class >> help [
 
 	^ 'Regenerate all metamodels in the system:
@@ -15,26 +17,26 @@ Then for each metamodel:
 	-- In each subclass of MooseModel, reset the #metamodel instance variable to the newly generated metamodel.'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseRegenerateAllMetamodelsMenuCommand class >> label [
 
 	^ 'Regenerate all metamodels'
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MooseRegenerateAllMetamodelsMenuCommand class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
 	^ self menuCommandOn: aBuilder forCommand: self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseRegenerateAllMetamodelsMenuCommand class >> menuPriority [
 
 	^super menuPriority + 1
 ]
 
-{ #category : #executing }
+{ #category : 'executing' }
 MooseRegenerateAllMetamodelsMenuCommand >> execute [
 
 	FamixMetamodelGenerator generateAllMetamodels

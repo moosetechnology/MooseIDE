@@ -1,11 +1,11 @@
-Extension { #name : #FQTypeQuery }
+Extension { #name : 'FQTypeQuery' }
 
-{ #category : #'*MooseIDE-QueriesBrowser' }
+{ #category : '*MooseIDE-QueriesBrowser' }
 FQTypeQuery class >> canBeConfigured [
 	^ true
 ]
 
-{ #category : #'*MooseIDE-QueriesBrowser' }
+{ #category : '*MooseIDE-QueriesBrowser' }
 FQTypeQuery class >> miPresenterClass [
 
 	^ MiTypeQueryPresenter

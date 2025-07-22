@@ -1,22 +1,24 @@
 Class {
-	#name : #MiCoUsageAbstractTest,
-	#superclass : #TestCase,
+	#name : 'MiCoUsageAbstractTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'visualization',
 		'builder',
 		'browser'
 	],
-	#category : #'MooseIDE-CoUsageMap-Tests-Browser'
+	#category : 'MooseIDE-CoUsageMap-Tests-Browser',
+	#package : 'MooseIDE-CoUsageMap-Tests',
+	#tag : 'Browser'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 MiCoUsageAbstractTest >> createTag: aName [
 	^(builder specModel currentMooseModel tagNamed: aName)
 		color: (Color red) ;
 		yourself
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiCoUsageAbstractTest >> setUp [
 
 	| browser |
@@ -33,12 +35,12 @@ MiCoUsageAbstractTest >> setUp [
 	"builder containerEntities: browser model collectionModel"
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiCoUsageAbstractTest >> specModel [
 	^visualization specModel
 ]
 
-{ #category : #'private - testing' }
+{ #category : 'private - testing' }
 MiCoUsageAbstractTest >> tagsWithPalette: aCollection [
 	aCollection do: [:str |
 		(self createTag: str)

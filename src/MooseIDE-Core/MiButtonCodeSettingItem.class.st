@@ -3,18 +3,20 @@ A MiSettingItem which value is given by a code editor. The setting itself is a b
 
 "
 Class {
-	#name : #MiButtonCodeSettingItem,
-	#superclass : #MiButtonSettingItem,
-	#category : #'MooseIDE-Core-Settings'
+	#name : 'MiButtonCodeSettingItem',
+	#superclass : 'MiButtonSettingItem',
+	#category : 'MooseIDE-Core-Settings',
+	#package : 'MooseIDE-Core',
+	#tag : 'Settings'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiButtonCodeSettingItem >> getValue [
 
 	^secondaryPresenter text
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiButtonCodeSettingItem >> initializeSecondaryPresenter [
 	
 	secondaryPresenter := SpCodePresenter new.
@@ -22,7 +24,7 @@ MiButtonCodeSettingItem >> initializeSecondaryPresenter [
 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiButtonCodeSettingItem >> setValue: aValue [
 
 	secondaryPresenter text: (displayBlock value: aValue)

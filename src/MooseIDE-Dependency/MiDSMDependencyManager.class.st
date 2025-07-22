@@ -2,18 +2,20 @@
 I am an helper to manage dependencies for the DependencyStructuralMatrix browser
 "
 Class {
-	#name : #MiDSMDependencyManager,
-	#superclass : #Object,
+	#name : 'MiDSMDependencyManager',
+	#superclass : 'Object',
 	#instVars : [
 		'dependencyDictionary',
 		'miModel',
 		'entitiesX',
 		'entitiesY'
 	],
-	#category : #'MooseIDE-Dependency-DSM'
+	#category : 'MooseIDE-Dependency-DSM',
+	#package : 'MooseIDE-Dependency',
+	#tag : 'DSM'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MiDSMDependencyManager class >> on: aMiDSMModel [
 
 	^self new
@@ -21,7 +23,7 @@ MiDSMDependencyManager class >> on: aMiDSMModel [
 		yourself
 ]
 
-{ #category : #enumerating }
+{ #category : 'enumerating' }
 MiDSMDependencyManager >> allDependencyPairsDo: aBlock [
 	"Excute aBlock on all paira with non-empty dependencies
 	 aBlock takes 3 arguments: fromEntity, toEntity, pairDependencies"
@@ -36,7 +38,7 @@ MiDSMDependencyManager >> allDependencyPairsDo: aBlock [
 	]
 ]
 
-{ #category : #enumerating }
+{ #category : 'enumerating' }
 MiDSMDependencyManager >> allPairsDo: aBlock [
 	"Excute aBlock on all pairs
 	 aBlock takes 3 arguments: fromEntity, toEntity, pairDependencies"
@@ -51,7 +53,7 @@ MiDSMDependencyManager >> allPairsDo: aBlock [
 	]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiDSMDependencyManager >> association: associations isTo: entity [
 	"need to get the target because DSM is done between entities"
 
@@ -75,7 +77,7 @@ MiDSMDependencyManager >> association: associations isTo: entity [
 		
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiDSMDependencyManager >> computeDependenciesFrom: entityX to: entityY [
 	"generic algorithm to get all dependencies from entityX to entityY at the scope of entityY"
 
@@ -87,7 +89,7 @@ MiDSMDependencyManager >> computeDependenciesFrom: entityX to: entityY [
 
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiDSMDependencyManager >> computeDependenciesWithX: aCollectionX withY: aCollectionY [
 	"Could be optimized, when we open a detailed DSM, `miModel entities` is the union of entitiesX and entitiesY
 	 But we only need dependencies from entitiesX to entitiesY, and not:
@@ -112,7 +114,7 @@ MiDSMDependencyManager >> computeDependenciesWithX: aCollectionX withY: aCollect
 	]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiDSMDependencyManager >> dependency: dependency isTo: entity [
 
 	^dependency isAssociation ifTrue: [ self association: dependency isTo: entity ]
@@ -125,7 +127,7 @@ MiDSMDependencyManager >> dependency: dependency isTo: entity [
 
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiDSMDependencyManager >> dependency: dependency isToPackage: aPackage [
 	"dependencies to sub-packages are added to their parent package"
 
@@ -138,50 +140,50 @@ MiDSMDependencyManager >> dependency: dependency isToPackage: aPackage [
 	]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDSMDependencyManager >> dependencyDictionary [
 
 	^ dependencyDictionary
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDSMDependencyManager >> dependencyDictionary: anObject [
 
 	dependencyDictionary := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDSMDependencyManager >> entities [
 
 	^(entitiesX union: entitiesY)
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDSMDependencyManager >> entitiesX [
 
 	^entitiesX 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDSMDependencyManager >> entitiesY [
 
 	^entitiesY 
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiDSMDependencyManager >> entity: aCandidate belongsTo: anEntity [
 	"test whether aDependentEntity can be scoped up to anEntity"
 
 	^(aCandidate atScope: anEntity class) includes: anEntity
 ]
 
-{ #category : #api }
+{ #category : 'api' }
 MiDSMDependencyManager >> from: sourceEntity to: targetEntity [
 
 	^dependencyDictionary at: (sourceEntity -> targetEntity) ifAbsent: [ ^#() ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiDSMDependencyManager >> initialize [
 
 	super initialize.
@@ -191,25 +193,25 @@ MiDSMDependencyManager >> initialize [
 	dependencyDictionary := Dictionary new
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDSMDependencyManager >> miModel [
 
 	^ miModel
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDSMDependencyManager >> miModel: anObject [
 
 	miModel := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDSMDependencyManager >> recordDependencies: dependencies from: sourceEntity to: targetEntity [
 
 	dependencyDictionary at: (sourceEntity -> targetEntity) put: dependencies
 ]
 
-{ #category : #api }
+{ #category : 'api' }
 MiDSMDependencyManager >> weightFrom: sourceEntity to: targetEntity [
 
 	^(self from: sourceEntity to: targetEntity) size

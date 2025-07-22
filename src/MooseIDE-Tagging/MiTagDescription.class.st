@@ -1,6 +1,6 @@
 Class {
-	#name : #MiTagDescription,
-	#superclass : #MiPresenter,
+	#name : 'MiTagDescription',
+	#superclass : 'MiPresenter',
 	#instVars : [
 		'tagFormPresenter',
 		'tagNameLabel',
@@ -9,10 +9,12 @@ Class {
 		'tagModel',
 		'tagMenu'
 	],
-	#category : #'MooseIDE-Tagging-Browser'
+	#category : 'MooseIDE-Tagging-Browser',
+	#package : 'MooseIDE-Tagging',
+	#tag : 'Browser'
 }
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiTagDescription >> initializeLayout [
 
 	| sep |
@@ -39,7 +41,7 @@ MiTagDescription >> initializeLayout [
 			 yourself)
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiTagDescription >> initializePresenters [
 
 	tagNameLabel := self newLabel.
@@ -83,19 +85,19 @@ MiTagDescription >> initializePresenters [
 	self initializeLayout
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiTagDescription >> refresh [
 
 	self setTag: tagModel currentTag
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiTagDescription >> setModelBeforeInitialization: aTagModel [
 
 	tagModel := aTagModel
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiTagDescription >> setTag: aTag [
 
 	aTag ifNil: [ ^ self ].
