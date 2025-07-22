@@ -1,15 +1,17 @@
 Class {
-	#name : #MiUMLVisualization,
-	#superclass : #MiAbstractVisualization,
+	#name : 'MiUMLVisualization',
+	#superclass : 'MiAbstractVisualization',
 	#instVars : [
 		'builder',
 		'rootEntities',
 		'classDescriptor'
 	],
-	#category : #'MooseIDE-Famix-UML'
+	#category : 'MooseIDE-Famix-UML',
+	#package : 'MooseIDE-Famix',
+	#tag : 'UML'
 }
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiUMLVisualization >> buildInCanvas: aCanvas [
 
 	rootEntities ifNil: [ ^ self ].
@@ -29,33 +31,33 @@ MiUMLVisualization >> buildInCanvas: aCanvas [
 	^ aCanvas @ RSCanvasController new noLegend
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiUMLVisualization >> classDescriptor [
 
 	^ classDescriptor ifNil: [
 		  classDescriptor := RSUMLClassDescriptor new forFamix ]
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiUMLVisualization >> classDescriptor: aRSUMLClassDescriptor [
 
 	classDescriptor := aRSUMLClassDescriptor
 ]
 
-{ #category : #highlighting }
+{ #category : 'highlighting' }
 MiUMLVisualization >> highlightShapes [
 
 	self canvas nodes do: [ :composite | 
 		composite shapes first color: (self colorFor: composite model) ]
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 MiUMLVisualization >> noHighlightColorFor: anEntity [
 
 	^ builder renderer boxColor
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiUMLVisualization >> rootEntities: anObject [
 
 	rootEntities := anObject

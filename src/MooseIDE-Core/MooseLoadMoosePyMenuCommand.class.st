@@ -1,47 +1,49 @@
 Class {
-	#name : #MooseLoadMoosePyMenuCommand,
-	#superclass : #MooseAbstractLoadFamixMenuCommand,
-	#category : #'MooseIDE-Core-MenuBar'
+	#name : 'MooseLoadMoosePyMenuCommand',
+	#superclass : 'MooseAbstractLoadFamixMenuCommand',
+	#category : 'MooseIDE-Core-MenuBar',
+	#package : 'MooseIDE-Core',
+	#tag : 'MenuBar'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseLoadMoosePyMenuCommand class >> help [
 
 	^ 'Famix Metamodel for Python'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseLoadMoosePyMenuCommand class >> label [
 
 	^ 'MoosePy'
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MooseLoadMoosePyMenuCommand class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
 	^ self menuCommandOn: aBuilder forCommand: self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseLoadMoosePyMenuCommand class >> menuPriority [
 
 	^super menuPriority + 1
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseLoadMoosePyMenuCommand >> baselineName [
 
 	^ 'MoosePy'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseLoadMoosePyMenuCommand >> repositoryURL [
 
 	^ 'github://moosetechnology/MoosePy:' , self version , '/src'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseLoadMoosePyMenuCommand >> version [
 
 	^ 'master'

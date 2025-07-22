@@ -1,22 +1,24 @@
 Class {
-	#name : #MooseLoadSmaCCMenuCommand,
-	#superclass : #MooseAbstractLoadParserMenuCommand,
-	#category : #'MooseIDE-Core-MenuBar'
+	#name : 'MooseLoadSmaCCMenuCommand',
+	#superclass : 'MooseAbstractLoadParserMenuCommand',
+	#category : 'MooseIDE-Core-MenuBar',
+	#package : 'MooseIDE-Core',
+	#tag : 'MenuBar'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseLoadSmaCCMenuCommand class >> help [
 
 	^ 'Smacc parser'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseLoadSmaCCMenuCommand class >> label [
 
 	^ 'SmaCC'
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MooseLoadSmaCCMenuCommand class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
@@ -25,25 +27,25 @@ MooseLoadSmaCCMenuCommand class >> menuCommandOn: aBuilder [
 		  yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseLoadSmaCCMenuCommand class >> menuPriority [
 
 	^ super menuPriority + 2
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseLoadSmaCCMenuCommand >> baselineName [
 
 	^ 'SmaCC'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseLoadSmaCCMenuCommand >> repositoryURL [
 
 	^ 'github://j-brant/SmaCC:' , self version , '/src'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseLoadSmaCCMenuCommand >> version [
 
 	^ 'master'

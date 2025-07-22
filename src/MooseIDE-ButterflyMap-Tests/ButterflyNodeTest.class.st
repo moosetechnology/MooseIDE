@@ -1,20 +1,22 @@
 Class {
-	#name : #ButterflyNodeTest,
-	#superclass : #TestCase,
+	#name : 'ButterflyNodeTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'randomGenerator',
 		'butterflyNode'
 	],
-	#category : #'MooseIDE-ButterflyMap-Tests-Model'
+	#category : 'MooseIDE-ButterflyMap-Tests-Model',
+	#package : 'MooseIDE-ButterflyMap-Tests',
+	#tag : 'Model'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 ButterflyNodeTest >> randomNumber [
 
 	^ (randomGenerator next * 10) asInteger + 1
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 ButterflyNodeTest >> setUp [
 
 	super setUp.
@@ -29,7 +31,7 @@ ButterflyNodeTest >> setUp [
 		children ]
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 ButterflyNodeTest >> testAddChild [
 
 	| aBNode |
@@ -41,7 +43,7 @@ ButterflyNodeTest >> testAddChild [
 	self assert: aBNode parent equals: butterflyNode
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 ButterflyNodeTest >> testAddLevel [
 
 	self assert: butterflyNode depth equals: 0.
@@ -50,7 +52,7 @@ ButterflyNodeTest >> testAddLevel [
 	self assert: butterflyNode children isNotEmpty
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 ButterflyNodeTest >> testLayers [
 
 	| numberOfLevels layers |
@@ -62,7 +64,7 @@ ButterflyNodeTest >> testLayers [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 ButterflyNodeTest >> testRemoveChild [
 
 	| aBNode |
@@ -75,7 +77,7 @@ ButterflyNodeTest >> testRemoveChild [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 ButterflyNodeTest >> testRemoveLevel [
 
 	butterflyNode addLevel.
@@ -84,7 +86,7 @@ ButterflyNodeTest >> testRemoveLevel [
 	self assert: butterflyNode depth equals: 0
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 ButterflyNodeTest >> testRemoveNode [
 
 	| aBNode |

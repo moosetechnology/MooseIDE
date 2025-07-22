@@ -5,70 +5,71 @@ The report is generated in markdown and can be edited manually before being expo
 Accepted entities: A mooseModel
 "
 Class {
-	#name : #MiModelReporter,
-	#superclass : #MiAbstractBrowser,
+	#name : 'MiModelReporter',
+	#superclass : 'MiAbstractBrowser',
 	#instVars : [
 		'mainPresenter',
 		'toolbar'
 	],
-	#category : #'MooseIDE-Reporter'
+	#category : 'MooseIDE-Reporter',
+	#package : 'MooseIDE-Reporter'
 }
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiModelReporter class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
 	^ self buildMenuItemIn: aBuilder
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiModelReporter class >> menuItem [
 
 	^#ModelReporter
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiModelReporter class >> menuPriority [
 
 	^ self menuMetaToolsPriority + 1
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiModelReporter class >> newModel [
 
 	^ MiModelReporterModel new
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiModelReporter class >> open [
 	<script>
 	^ super open
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiModelReporter class >> title [
 	^ 'Model Reporter'
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiModelReporter >> canFollowEntity: anObject [
 
 	^anObject ifNil: [ false ] ifNotNil: [ anObject isMooseModel ]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiModelReporter >> canPropagate [
 
 	^ false
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiModelReporter >> canTagEntities [
 
 	^ false
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 MiModelReporter >> defaultLayout [
 
 	^ SpBoxLayout newVertical
@@ -77,35 +78,35 @@ MiModelReporter >> defaultLayout [
 		  yourself
 ]
 
-{ #category : #exporting }
+{ #category : 'exporting' }
 MiModelReporter >> exportReportToHTML [
 
 	specModel exportReportToHTML: mainPresenter text
 ]
 
-{ #category : #exporting }
+{ #category : 'exporting' }
 MiModelReporter >> exportReportToPDF [
 
 	specModel exportReportToPDF: mainPresenter text
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiModelReporter >> followEntity: anEntity [
 
 	super followEntity: anEntity.
 	specModel followEntity: anEntity
 ]
 
-{ #category : #exporting }
+{ #category : 'exporting' }
 MiModelReporter >> formattedReport: formattedReport [
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiModelReporter >> hasSettings [
 	^ true
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiModelReporter >> initializePresenters [
 
 	toolbar := self newToolbar
@@ -117,7 +118,7 @@ MiModelReporter >> initializePresenters [
 	mainPresenter := self newText
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiModelReporter >> initializeToolbar [
 
 	toolbar := self newToolbar
@@ -128,13 +129,13 @@ MiModelReporter >> initializeToolbar [
 		           yourself
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiModelReporter >> miSelectedItem [
 
 	^#()
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiModelReporter >> refreshToolbarButton [
 
 	^ SpToolbarButtonPresenter new
@@ -144,7 +145,7 @@ MiModelReporter >> refreshToolbarButton [
 		  yourself
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiModelReporter >> updateReport: report [
 
 	mainPresenter text: report

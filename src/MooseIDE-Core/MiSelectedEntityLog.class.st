@@ -1,34 +1,36 @@
 Class {
-	#name : #MiSelectedEntityLog,
-	#superclass : #Object,
+	#name : 'MiSelectedEntityLog',
+	#superclass : 'Object',
 	#instVars : [
 		'entity'
 	],
-	#category : #'MooseIDE-Core-Logger'
+	#category : 'MooseIDE-Core-Logger',
+	#package : 'MooseIDE-Core',
+	#tag : 'Logger'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiSelectedEntityLog class >> entity: aSelectedEntity [
 	^ self new entity: aSelectedEntity
 ]
 
-{ #category : #activation }
+{ #category : 'activation' }
 MiSelectedEntityLog >> activateIn: aBus [
 
 	aBus refreshBrowsersWith: self entity
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiSelectedEntityLog >> entity [
 	^ entity
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiSelectedEntityLog >> entity: anObject [
 	entity := anObject
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 MiSelectedEntityLog >> printOn: aStream [
 	aStream
 		nextPutAll: 'log(';

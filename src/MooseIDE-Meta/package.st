@@ -1,1 +1,1 @@
-Package { #name : #'MooseIDE-Meta' }
+Package { #name : 'MooseIDE-Meta' }

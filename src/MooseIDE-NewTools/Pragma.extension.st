@@ -1,6 +1,6 @@
-Extension { #name : #Pragma }
+Extension { #name : 'Pragma' }
 
-{ #category : #'*MooseIDE-NewTools' }
+{ #category : '*MooseIDE-NewTools' }
 Pragma >> inspectorToString [
 
 	^ ' & ' join: arguments

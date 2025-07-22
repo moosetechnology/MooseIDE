@@ -1,28 +1,30 @@
 Class {
-	#name : #MiLoggerClearLogsCommand,
-	#superclass : #MiCommand,
-	#category : #'MooseIDE-Core-Command'
+	#name : 'MiLoggerClearLogsCommand',
+	#superclass : 'MiCommand',
+	#category : 'MooseIDE-Core-Command',
+	#package : 'MooseIDE-Core',
+	#tag : 'Command'
 }
 
-{ #category : #default }
+{ #category : 'default' }
 MiLoggerClearLogsCommand class >> defaultIconName [
 
 	^ #smallDelete
 ]
 
-{ #category : #default }
+{ #category : 'default' }
 MiLoggerClearLogsCommand class >> defaultName [
 
 	^ 'Clear logs'
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiLoggerClearLogsCommand >> canBeExecuted [
 
 	^ self context miSelectedItem isNotNil
 ]
 
-{ #category : #executing }
+{ #category : 'executing' }
 MiLoggerClearLogsCommand >> execute [
 
 	self context clearLogs

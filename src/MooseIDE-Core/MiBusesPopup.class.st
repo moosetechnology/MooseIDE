@@ -9,16 +9,18 @@ This difference is now implemented as a conditional, we should do it smarter.
 The buses are shown in a SpTable. We don't have action on selection for now. An issue is filled on Spec to add this behavior (https://github.com/pharo-spec/Spec/issues/1122).
 "
 Class {
-	#name : #MiBusesPopup,
-	#superclass : #SpFilteringSelectableListPresenter,
+	#name : 'MiBusesPopup',
+	#superclass : 'SpFilteringSelectableListPresenter',
 	#instVars : [
 		'busesList',
 		'browser'
 	],
-	#category : #'MooseIDE-Core-Browser'
+	#category : 'MooseIDE-Core-Browser',
+	#package : 'MooseIDE-Core',
+	#tag : 'Browser'
 }
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiBusesPopup >> createNewBusNamed: aName [
 
 	| newBus |
@@ -34,7 +36,7 @@ MiBusesPopup >> createNewBusNamed: aName [
 	self selectItem: newBus
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiBusesPopup >> initialize [
 
 	super initialize.
@@ -49,13 +51,13 @@ MiBusesPopup >> initialize [
 	self useTextInputForBusCreation
 ]
 
-{ #category : #'accessing - model' }
+{ #category : 'accessing - model' }
 MiBusesPopup >> setModelBeforeInitialization: aBrowser [
 
 	browser := aBrowser
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiBusesPopup >> useTextInputForBusCreation [
 	"Do not filter but use text input for bus creation"
 

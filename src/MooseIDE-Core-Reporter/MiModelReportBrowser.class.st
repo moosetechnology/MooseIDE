@@ -5,8 +5,8 @@ The report is generated in markdown and can be edited manually before being expo
 Accepted entities: Any `MooseEntity` in a `MooseModel`
 "
 Class {
-	#name : #MiModelReportBrowser,
-	#superclass : #MiAbstractBrowser,
+	#name : 'MiModelReportBrowser',
+	#superclass : 'MiAbstractBrowser',
 	#instVars : [
 		'mainPresenter',
 		'toolbar',
@@ -14,46 +14,47 @@ Class {
 		'tabMicrodown',
 		'rebuildPreview'
 	],
-	#category : #'MooseIDE-Core-Reporter'
+	#category : 'MooseIDE-Core-Reporter',
+	#package : 'MooseIDE-Core-Reporter'
 }
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiModelReportBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
 	^ self buildMenuItemIn: aBuilder
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiModelReportBrowser class >> menuItem [
 
 	^#ModelReport
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiModelReportBrowser class >> menuPriority [
 
 	^ self menuMetaToolsPriority + 1
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiModelReportBrowser class >> newModel [
 
 	^ MiModelReportModel new
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiModelReportBrowser class >> open [
 	<script>
 	^ super open
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiModelReportBrowser class >> title [
 	^ 'Model Report'
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiModelReportBrowser >> btnToolbarRefresh [
 
 	^ SpToolbarButtonPresenter new
@@ -63,7 +64,7 @@ MiModelReportBrowser >> btnToolbarRefresh [
 		  yourself
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiModelReportBrowser >> canFollowEntity: anObject [
 	"note: MooseModel-s have a #mooseModel also so the test accepts
 	 any MooseModel or entity within a MooseModel"
@@ -71,19 +72,19 @@ MiModelReportBrowser >> canFollowEntity: anObject [
 	^anObject isMooseObject and: [ anObject mooseModel isNotEmpty ]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiModelReportBrowser >> canPropagate [
 
 	^ false
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiModelReportBrowser >> canTagEntities [
 
 	^ false
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 MiModelReportBrowser >> defaultLayout [
 
 	^ SpBoxLayout newVertical
@@ -92,26 +93,26 @@ MiModelReportBrowser >> defaultLayout [
 		  yourself
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiModelReportBrowser >> exportReportToHTML [
 
 	specModel exportReportToHTML: self rawReport
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiModelReportBrowser >> exportReportToPDF [
 
 	specModel exportReportToPDF: self rawReport
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiModelReportBrowser >> followEntity: anEntity [
 
 	super followEntity: anEntity.
 	specModel followEntity: anEntity
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiModelReportBrowser >> generatedReport: report [
 
 	tabMicrodown text: report.
@@ -120,12 +121,12 @@ MiModelReportBrowser >> generatedReport: report [
 		ifTrue: [ self showingTab: mainPresenter selectedPage ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiModelReportBrowser >> hasSettings [
 	^ true
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiModelReportBrowser >> initializeMainPresenter [
 
 	tabMicrodown := SpTextPresenter new
@@ -140,14 +141,14 @@ MiModelReportBrowser >> initializeMainPresenter [
 	mainPresenter addPageTitle: 'Preview' provider: [ tabPreview ].
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiModelReportBrowser >> initializePresenters [
 
 	self initializeToolbar.
 	self initializeMainPresenter
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiModelReportBrowser >> initializeToolbar [
 
 	toolbar := self newToolbar
@@ -159,25 +160,25 @@ MiModelReportBrowser >> initializeToolbar [
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiModelReportBrowser >> miSelectedItem [
 
 	^#()
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiModelReportBrowser >> rawReport [
 
 	^ tabMicrodown text
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiModelReportBrowser >> saveRawReport [
 
 	specModel saveRawReport: self rawReport
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiModelReportBrowser >> showingTab: newTab [
 
 	(newTab activePresenter = tabPreview and: [ rebuildPreview ])

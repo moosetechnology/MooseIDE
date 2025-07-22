@@ -1,37 +1,39 @@
 Class {
-	#name : #MiArchitecturalInspectorMenuItem,
-	#superclass : #MiArchitecturalMenuItem,
-	#category : #'MooseIDE-Dependency-ArchitecturalMap'
+	#name : 'MiArchitecturalInspectorMenuItem',
+	#superclass : 'MiArchitecturalMenuItem',
+	#category : 'MooseIDE-Dependency-ArchitecturalMap',
+	#package : 'MooseIDE-Dependency',
+	#tag : 'ArchitecturalMap'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiArchitecturalInspectorMenuItem >> canBeExecuted [
 
 	^ shape isShape
 ]
 
-{ #category : #execution }
+{ #category : 'execution' }
 MiArchitecturalInspectorMenuItem >> execute [
 	shape inspectOnMoose
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiArchitecturalInspectorMenuItem >> group [
 
 	^ 100
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiArchitecturalInspectorMenuItem >> iconName [
 	^ #smallInspectIt
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiArchitecturalInspectorMenuItem >> label [
 	^ 'Inspect'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiArchitecturalInspectorMenuItem >> order [
 	^ 100
 ]

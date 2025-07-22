@@ -1,22 +1,24 @@
 Class {
-	#name : #MiDistributionMapBrowserTest,
-	#superclass : #MiAbstractBrowserTest,
-	#category : #'MooseIDE-Tests-Browsers'
+	#name : 'MiDistributionMapBrowserTest',
+	#superclass : 'MiAbstractBrowserTest',
+	#category : 'MooseIDE-Tests-Browsers',
+	#package : 'MooseIDE-Tests',
+	#tag : 'Browsers'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 MiDistributionMapBrowserTest >> browserClass [
 
 	^ MiDistributionMapBrowser
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiDistributionMapBrowserTest >> receiveEntityToSelect [
 
 	browser receiveEntity: entityToSelect asMooseGroup
 ]
 
-{ #category : #'tests - tags' }
+{ #category : 'tests - tags' }
 MiDistributionMapBrowserTest >> testSelectedTagSetAndGet [
 	| model entity tag |
 	model := FamixRepTestModel new.
@@ -28,13 +30,13 @@ MiDistributionMapBrowserTest >> testSelectedTagSetAndGet [
 	self assert: browser selectedTag equals: tag
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiDistributionMapBrowserTest >> testSettingsAction [
 
 	self assert: browser hasSettings
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiDistributionMapBrowserTest >> testSettingsClickOK [
 	"overriding to setup the right context"
 

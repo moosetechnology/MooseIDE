@@ -1,24 +1,24 @@
-Extension { #name : #MooseObject }
+Extension { #name : 'MooseObject' }
 
-{ #category : #'*MooseIDE-NewTools' }
+{ #category : '*MooseIDE-NewTools' }
 MooseObject >> customNavigationItems [
 
 	^ {  }
 ]
 
-{ #category : #'*MooseIDE-NewTools' }
+{ #category : '*MooseIDE-NewTools' }
 MooseObject class >> inspectorToString [
 	^ name
 ]
 
-{ #category : #'*MooseIDE-NewTools' }
+{ #category : '*MooseIDE-NewTools' }
 MooseObject >> miInspectionNavigation: aBuilder [
 
 	<inspectorPresentationOrder: 1 title: 'Navigation'>
 	^ aBuilder instantiate: MiMetaNavigationBrowser on: self
 ]
 
-{ #category : #'*MooseIDE-NewTools' }
+{ #category : '*MooseIDE-NewTools' }
 MooseObject >> miMetaNavigationItems [
 
 	^ self mooseDescription allComplexProperties
@@ -32,7 +32,7 @@ MooseObject >> miMetaNavigationItems [
 				  assoc value isCollection and: [ assoc value isEmpty ] ] ]
 ]
 
-{ #category : #'*MooseIDE-NewTools' }
+{ #category : '*MooseIDE-NewTools' }
 MooseObject >> navigationItemsFromPragmas [
 
 	| pragmaValueAssociations |

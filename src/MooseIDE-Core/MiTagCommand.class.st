@@ -2,44 +2,46 @@
 Use me to tag selected entities. One can also choose what tag to use
 "
 Class {
-	#name : #MiTagCommand,
-	#superclass : #MiCommand,
+	#name : 'MiTagCommand',
+	#superclass : 'MiCommand',
 	#instVars : [
 		'tagButton'
 	],
-	#category : #'MooseIDE-Core-Command'
+	#category : 'MooseIDE-Core-Command',
+	#package : 'MooseIDE-Core',
+	#tag : 'Command'
 }
 
-{ #category : #default }
+{ #category : 'default' }
 MiTagCommand class >> defaultDescription [
 
 	^ 'Tag selected entities with current tag'
 ]
 
-{ #category : #default }
+{ #category : 'default' }
 MiTagCommand class >> defaultIconName [
 
 	^ #famixTagLabel
 ]
 
-{ #category : #default }
+{ #category : 'default' }
 MiTagCommand class >> defaultName [
 	^ 'Set'
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiTagCommand >> canBeExecuted [
 
 	^ self context canTagEntities and: [ context selectedTag isNotNil ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiTagCommand >> dynamicName [
 
 	^ context tagName
 ]
 
-{ #category : #executing }
+{ #category : 'executing' }
 MiTagCommand >> execute [
 
 	context tagSelectedEntities

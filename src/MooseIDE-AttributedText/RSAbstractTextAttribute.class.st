@@ -2,22 +2,23 @@
 TODO
 "
 Class {
-	#name : #RSAbstractTextAttribute,
-	#superclass : #Object,
+	#name : 'RSAbstractTextAttribute',
+	#superclass : 'Object',
 	#instVars : [
 		'from',
 		'to',
 		'interactions'
 	],
-	#category : #'MooseIDE-AttributedText'
+	#category : 'MooseIDE-AttributedText',
+	#package : 'MooseIDE-AttributedText'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 RSAbstractTextAttribute >> endLine: aShape [
 	^ self findLine: aShape index: to + 1
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 RSAbstractTextAttribute >> findLine: aShape index: index [
 	| lineNumber |
 	lineNumber := 0.
@@ -42,30 +43,30 @@ RSAbstractTextAttribute >> findLine: aShape index: index [
 		
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 RSAbstractTextAttribute >> from [
 
 	^ from
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 RSAbstractTextAttribute >> from: anObject [
 
 	from := anObject
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 RSAbstractTextAttribute >> initialize [
 	super initialize.
 	interactions := Dictionary new
 ]
 
-{ #category : #convenience }
+{ #category : 'convenience' }
 RSAbstractTextAttribute >> on: anEvent do: aBlock [
 	interactions at: anEvent put: aBlock 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 RSAbstractTextAttribute >> pointFor: label at: index [
 	| rawExt cairoFont glyphs delta text |
 	cairoFont := label cairoFont.
@@ -81,23 +82,23 @@ RSAbstractTextAttribute >> pointFor: label at: index [
 		
 ]
 
-{ #category : #rendering }
+{ #category : 'rendering' }
 RSAbstractTextAttribute >> renderIn: aShape [
 	self subclassResponsibility
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 RSAbstractTextAttribute >> startLine: aShape [
 	^ self findLine: aShape index: from
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 RSAbstractTextAttribute >> to [
 
 	^ to
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 RSAbstractTextAttribute >> to: anObject [
 
 	to := anObject

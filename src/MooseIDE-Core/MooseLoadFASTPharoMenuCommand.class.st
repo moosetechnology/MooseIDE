@@ -1,47 +1,49 @@
 Class {
-	#name : #MooseLoadFASTPharoMenuCommand,
-	#superclass : #MooseAbstractLoadFASTMenuCommand,
-	#category : #'MooseIDE-Core-MenuBar'
+	#name : 'MooseLoadFASTPharoMenuCommand',
+	#superclass : 'MooseAbstractLoadFASTMenuCommand',
+	#category : 'MooseIDE-Core-MenuBar',
+	#package : 'MooseIDE-Core',
+	#tag : 'MenuBar'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseLoadFASTPharoMenuCommand class >> help [
 
 	^ 'Famix representation of Pharo AST'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseLoadFASTPharoMenuCommand class >> label [
 
 	^ 'FAST Pharo'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseLoadFASTPharoMenuCommand class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
 	^ (self menuCommandOn: aBuilder forCommand: self) yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseLoadFASTPharoMenuCommand class >> menuPriority [
 
 	^ super menuPriority + 2
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseLoadFASTPharoMenuCommand >> baselineName [
 
 	^ 'FASTPharo'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseLoadFASTPharoMenuCommand >> repositoryURL [
 
 	^ 'github://moosetechnology/FAST-Pharo:' , self version , '/src'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseLoadFASTPharoMenuCommand >> version [
 
 	^ 'v2'

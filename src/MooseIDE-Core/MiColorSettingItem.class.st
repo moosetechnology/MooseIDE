@@ -2,21 +2,23 @@
 I am a setting item which open a color picker to set a color.
 "
 Class {
-	#name : #MiColorSettingItem,
-	#superclass : #MiAbstractSettingItem,
+	#name : 'MiColorSettingItem',
+	#superclass : 'MiAbstractSettingItem',
 	#instVars : [
 		'colorPicker'
 	],
-	#category : #'MooseIDE-Core-Settings'
+	#category : 'MooseIDE-Core-Settings',
+	#package : 'MooseIDE-Core',
+	#tag : 'Settings'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiColorSettingItem >> getValue [
 
 	^ self presenter canvas color
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiColorSettingItem >> initialize [
 
 	super initialize.
@@ -27,7 +29,7 @@ MiColorSettingItem >> initialize [
 	label := 'Choose color'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiColorSettingItem >> openColorPicker [
 
 	| modal |
@@ -38,7 +40,7 @@ MiColorSettingItem >> openColorPicker [
 	modal open
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiColorSettingItem >> setValue: aColor [
 
 	self presenter canvas color: aColor.

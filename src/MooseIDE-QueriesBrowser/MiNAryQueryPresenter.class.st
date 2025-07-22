@@ -2,29 +2,31 @@
 I am a query configuration presenter for all N-ary queries (before called binary queries but are not longer binaries because they can do with the operation with more than two queries)
 "
 Class {
-	#name : #MiNAryQueryPresenter,
-	#superclass : #MiQueryConfiguratorPresenter,
+	#name : 'MiNAryQueryPresenter',
+	#superclass : 'MiQueryConfiguratorPresenter',
 	#instVars : [
 		'subqueryDropLists',
 		'addSubqueryToLayoutButton',
 		'removeSubqueryFromLayoutButton'
 	],
-	#category : #'MooseIDE-QueriesBrowser-Configuration presenters'
+	#category : 'MooseIDE-QueriesBrowser-Configuration presenters',
+	#package : 'MooseIDE-QueriesBrowser',
+	#tag : 'Configuration presenters'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiNAryQueryPresenter class >> dropListWidth [
 
 	^ 57
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiNAryQueryPresenter >> addSubqueryPresenter [
 
 	subqueryDropLists add: self newSubqueryDropList
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiNAryQueryPresenter >> addSubqueryToLayoutAction [
 
 	self addSubqueryPresenter.
@@ -32,7 +34,7 @@ MiNAryQueryPresenter >> addSubqueryToLayoutAction [
 	self initializeLayout
 ]
 
-{ #category : #'api - actions' }
+{ #category : 'api - actions' }
 MiNAryQueryPresenter >> configureFor: aQuery [
 
 	"We know that the NAry query has at last two subqueries"
@@ -52,20 +54,20 @@ MiNAryQueryPresenter >> configureFor: aQuery [
 
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiNAryQueryPresenter >> configureQuery: newSelectedItem [
 
 	self nAryOperation: newSelectedItem
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiNAryQueryPresenter >> initialize [
 
 	super initialize.
 	owner queriesListPresenter announcer when: QueriesListChangedAnnouncement do: [ self queryPresentersListChanged ] for: self
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiNAryQueryPresenter >> initializeButtons [
 
 	addSubqueryToLayoutButton := self newButton.
@@ -80,7 +82,7 @@ MiNAryQueryPresenter >> initializeButtons [
 	removeSubqueryFromLayoutButton disable
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiNAryQueryPresenter >> initializePresenters [
 
 	self initializeButtons.
@@ -90,14 +92,14 @@ MiNAryQueryPresenter >> initializePresenters [
 	self initializeLayout
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiNAryQueryPresenter >> isQueryUsed: aQuery [
 
 	^ subqueryDropLists anySatisfy: [ :dropList | 
 		dropList selectedItem = aQuery ]
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiNAryQueryPresenter >> nAryOperation: newSelectedItem [
 
 	| subqueries selectedDropListItems |
@@ -116,7 +118,7 @@ MiNAryQueryPresenter >> nAryOperation: newSelectedItem [
 		resetResult
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 MiNAryQueryPresenter >> newLayout [
 
 	| tempLayout |
@@ -134,7 +136,7 @@ MiNAryQueryPresenter >> newLayout [
 	^ tempLayout
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiNAryQueryPresenter >> newSubqueryDropList [
 
 	| availableQueryPresentersForOperation |
@@ -149,7 +151,7 @@ MiNAryQueryPresenter >> newSubqueryDropList [
 		  yourself
 ]
 
-{ #category : #'api - actions' }
+{ #category : 'api - actions' }
 MiNAryQueryPresenter >> queryPresentersListChanged [
 
 	"Since the list of available queries of the MiQueryBuilder changed, 
@@ -168,7 +170,7 @@ MiNAryQueryPresenter >> queryPresentersListChanged [
 			ifFalse: [ dropList items: newAvailableQueries ] ]
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiNAryQueryPresenter >> removeSubqueryFromLayoutAction [
 
 	subqueryDropLists removeLast.

@@ -4,8 +4,8 @@ The page of the TagBrowser notebook showing the entities in the tag and allowing
 This is the so called _Extent description_ of the tag
 "
 Class {
-	#name : #MiTagExtentPage,
-	#superclass : #MiTagPage,
+	#name : 'MiTagExtentPage',
+	#superclass : 'MiTagPage',
 	#instVars : [
 		'incomingEntitiesFilteringList',
 		'taggedEntitiesLabel',
@@ -15,17 +15,19 @@ Class {
 		'removeButton',
 		'removeAllButton'
 	],
-	#category : #'MooseIDE-Tagging-Browser'
+	#category : 'MooseIDE-Tagging-Browser',
+	#package : 'MooseIDE-Tagging',
+	#tag : 'Browser'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiTagExtentPage class >> maxNumberOfEntitiesToSort [
 	"If we have a 'small' number of untagged entities we will sort them to be user friendly. But if we have a lot of them, this will just take too much time. In that case we will just not sort them. Here I'm defining the limit, with a magic number for a start, maybe this could be a setting in the future but I'm not sure it brings much value."
 
 	^ 10000
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 MiTagExtentPage >> add [
 
 	(self currentTag isNil or: [
@@ -40,7 +42,7 @@ MiTagExtentPage >> add [
 	self refreshBrowserToolbar
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 MiTagExtentPage >> addAll [
 
 	self currentTag ifNil: [ ^ self ]. 
@@ -51,19 +53,19 @@ MiTagExtentPage >> addAll [
 	self refreshBrowserToolbar
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiTagExtentPage >> currentTag [
 
 	^ self model currentTag
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiTagExtentPage >> incomingEntitiesFilteringList [
 
 	^ incomingEntitiesFilteringList
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiTagExtentPage >> initializeButtons [
 
 	addButton := self newButton
@@ -80,7 +82,7 @@ MiTagExtentPage >> initializeButtons [
 		             action: [ self removeAll ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiTagExtentPage >> initializeLayout [
 
 	super initializeLayout.
@@ -109,7 +111,7 @@ MiTagExtentPage >> initializeLayout [
 			 yourself)
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiTagExtentPage >> initializePresenters [
 
 	super initializePresenters.
@@ -132,7 +134,7 @@ MiTagExtentPage >> initializePresenters [
 	self initializeLayout
 ]
 
-{ #category : #refreshing }
+{ #category : 'refreshing' }
 MiTagExtentPage >> onBrowserPageRedisplay [
 
 	taggedEntitiesLabel
@@ -143,7 +145,7 @@ MiTagExtentPage >> onBrowserPageRedisplay [
 			)
 ]
 
-{ #category : #refreshing }
+{ #category : 'refreshing' }
 MiTagExtentPage >> refresh [
 
 	super refresh.
@@ -152,13 +154,13 @@ MiTagExtentPage >> refresh [
 	self update
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 MiTagExtentPage >> refreshBrowserToolbar [
 
 	self owner owner updateToolbar
 ]
 
-{ #category : #refreshing }
+{ #category : 'refreshing' }
 MiTagExtentPage >> refreshEntitiesList [
 
 	| untaggedEntities |
@@ -170,13 +172,13 @@ MiTagExtentPage >> refreshEntitiesList [
 	incomingEntitiesFilteringList items: untaggedEntities
 ]
 
-{ #category : #refreshing }
+{ #category : 'refreshing' }
 MiTagExtentPage >> refreshTaggedEntitiesList [
 
 	taggedEntitiesFilteringList items: self taggedEntities
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 MiTagExtentPage >> remove [
 
 	(self currentTag isNil or: [
@@ -190,7 +192,7 @@ MiTagExtentPage >> remove [
 	self refreshBrowserToolbar
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 MiTagExtentPage >> removeAll [
 
 	self currentTag ifNil: [ ^ self ].
@@ -201,20 +203,20 @@ MiTagExtentPage >> removeAll [
 	self refreshBrowserToolbar
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiTagExtentPage >> selectedItems [
 
 	^ taggedEntitiesFilteringList selectedItems
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiTagExtentPage >> setTag: aTag [
 
 	super setTag: aTag.
 	self update
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiTagExtentPage >> taggedEntities [
 
 	^ self model entitiesTaggedWithCurrentTag sort: [ :a :b | 

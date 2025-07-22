@@ -1,6 +1,6 @@
-Extension { #name : #RSBoundingShape }
+Extension { #name : 'RSBoundingShape' }
 
-{ #category : #'*MooseIDE-Dependency' }
+{ #category : '*MooseIDE-Dependency' }
 RSBoundingShape >> inspectOnMoose [
 	
 	MiInspectorBrowser inspect: self model rawModel

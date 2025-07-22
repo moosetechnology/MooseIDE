@@ -3,19 +3,21 @@ Abstract class for all external source text editors working on file (for entitie
 
 "
 Class {
-	#name : #MiSourceTextFileExternalEditor,
-	#superclass : #MiSourceTextExternalEditor,
-	#category : #'MooseIDE-Famix-SourceText'
+	#name : 'MiSourceTextFileExternalEditor',
+	#superclass : 'MiSourceTextExternalEditor',
+	#category : 'MooseIDE-Famix-SourceText',
+	#package : 'MooseIDE-Famix',
+	#tag : 'SourceText'
 }
 
-{ #category : #protocol }
+{ #category : 'protocol' }
 MiSourceTextFileExternalEditor >> open: aMooseEntity [
 	((aMooseEntity  usesFamixTrait: FamixTSourceEntity)
 	and: [ aMooseEntity sourceAnchor isFileAnchor ])
 	ifTrue: [ self openFile: aMooseEntity sourceAnchor fileReference ]
 ]
 
-{ #category : #protocol }
+{ #category : 'protocol' }
 MiSourceTextFileExternalEditor >> openFile: aFilereference [
 	self subclassResponsibility 
 

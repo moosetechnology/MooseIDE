@@ -1,23 +1,25 @@
 Class {
-	#name : #MiCycleDependencies,
-	#superclass : #MiAbstractVisualization,
+	#name : 'MiCycleDependencies',
+	#superclass : 'MiAbstractVisualization',
 	#instVars : [
 		'entities'
 	],
-	#category : #'MooseIDE-Telescope-CycleDependencies'
+	#category : 'MooseIDE-Telescope-CycleDependencies',
+	#package : 'MooseIDE-Telescope',
+	#tag : 'CycleDependencies'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiCycleDependencies >> entities [
 	^ entities
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiCycleDependencies >> entities: anObject [
 	entities := anObject
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiCycleDependencies >> run [
 	super run.
 	(TLCycleDependencies new

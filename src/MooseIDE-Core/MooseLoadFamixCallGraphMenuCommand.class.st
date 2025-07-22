@@ -1,47 +1,49 @@
 Class {
-	#name : #MooseLoadFamixCallGraphMenuCommand,
-	#superclass : #MooseAbstractLoadToolMenuCommand,
-	#category : #'MooseIDE-Core-MenuBar'
+	#name : 'MooseLoadFamixCallGraphMenuCommand',
+	#superclass : 'MooseAbstractLoadToolMenuCommand',
+	#category : 'MooseIDE-Core-MenuBar',
+	#package : 'MooseIDE-Core',
+	#tag : 'MenuBar'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseLoadFamixCallGraphMenuCommand class >> help [
 
 	^ 'Load the Callgraph browser for Java (this loads FASTJava).'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseLoadFamixCallGraphMenuCommand class >> label [
 
 	^ 'Java CallGraph'
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MooseLoadFamixCallGraphMenuCommand class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
 	^ self menuCommandOn: aBuilder forCommand: self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseLoadFamixCallGraphMenuCommand class >> menuPriority [
 
 	^ super menuPriority + 1
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseLoadFamixCallGraphMenuCommand >> baselineName [
 
 	^ 'FamixCallGraph'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseLoadFamixCallGraphMenuCommand >> repositoryURL [
 
 	^ 'github://moosetechnology/FamixCallGraph:' , self version , '/src'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseLoadFamixCallGraphMenuCommand >> version [
 
 

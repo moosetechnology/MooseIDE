@@ -2,8 +2,8 @@
 Class implementing the presenter used to input queries, can use Pharo code or queries produced by the Queries Browser.
 "
 Class {
-	#name : #MiCBConditionBuilderPresenter,
-	#superclass : #MiCBRuleComponentBuilderPresenter,
+	#name : 'MiCBConditionBuilderPresenter',
+	#superclass : 'MiCBRuleComponentBuilderPresenter',
 	#instVars : [
 		'codeButton',
 		'queriesBrowserButton',
@@ -11,22 +11,24 @@ Class {
 		'severityDroplist',
 		'usePharoCode'
 	],
-	#category : #'MooseIDE-CriticBrowser-Presenters'
+	#category : 'MooseIDE-CriticBrowser-Presenters',
+	#package : 'MooseIDE-CriticBrowser',
+	#tag : 'Presenters'
 }
 
-{ #category : #labels }
+{ #category : 'labels' }
 MiCBConditionBuilderPresenter class >> defaultCodeInput [
 
 	^ '[ :entity | entity  ]'
 ]
 
-{ #category : #labels }
+{ #category : 'labels' }
 MiCBConditionBuilderPresenter class >> ruleComponentName [
 
 	^ 'condition'
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 MiCBConditionBuilderPresenter >> buildComponent: aCondition [
 
 	super buildComponent: aCondition.
@@ -40,7 +42,7 @@ MiCBConditionBuilderPresenter >> buildComponent: aCondition [
 	^ aCondition
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 MiCBConditionBuilderPresenter >> choiceLayout [
 
 	^ self newBoxLayoutLeftToRight
@@ -50,7 +52,7 @@ MiCBConditionBuilderPresenter >> choiceLayout [
 		  yourself
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 MiCBConditionBuilderPresenter >> conditionComputingLayout [
 
 	| conditionComputingLayout |
@@ -70,13 +72,13 @@ MiCBConditionBuilderPresenter >> conditionComputingLayout [
 	^ conditionComputingLayout
 ]
 
-{ #category : #brokerage }
+{ #category : 'brokerage' }
 MiCBConditionBuilderPresenter >> consume: aQuery [
 
 	queryDroplist items: self fetchQueries
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 MiCBConditionBuilderPresenter >> defaultLayout [
 
 	^ self newBoxLayoutTopToBottom
@@ -88,14 +90,14 @@ MiCBConditionBuilderPresenter >> defaultLayout [
 		  yourself
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiCBConditionBuilderPresenter >> fetchQueries [
 
 	^ (self application itemsFor: FQAbstractQuery) asOrderedCollection
 		  select: [ :each | each isValid ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiCBConditionBuilderPresenter >> fillWithRuleComponent: aCondition [
 
 	super fillWithRuleComponent: aCondition.
@@ -104,7 +106,7 @@ MiCBConditionBuilderPresenter >> fillWithRuleComponent: aCondition [
 		severityDroplist selectItem: aCondition severity ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiCBConditionBuilderPresenter >> initialize [
 
 	super initialize.
@@ -114,7 +116,7 @@ MiCBConditionBuilderPresenter >> initialize [
 	self application registerConsumer: self for: FQAbstractQuery
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiCBConditionBuilderPresenter >> initializeChoiceButtons [
 
 	codeButton := self newRadioButton
@@ -130,7 +132,7 @@ MiCBConditionBuilderPresenter >> initializeChoiceButtons [
 	codeButton associatedRadioButtons: { queriesBrowserButton }
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiCBConditionBuilderPresenter >> initializePresenters [
 
 	super initializePresenters.
@@ -154,7 +156,7 @@ MiCBConditionBuilderPresenter >> initializePresenters [
 		                 yourself
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiCBConditionBuilderPresenter >> initializeWindow: aWindowPresenter [
 
 	super initializeWindow: aWindowPresenter.
@@ -163,19 +165,19 @@ MiCBConditionBuilderPresenter >> initializeWindow: aWindowPresenter [
 		self application unregisterConsumer: self ]
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MiCBConditionBuilderPresenter >> newComponent [
 
 	^ FamixCBCondition new
 ]
 
-{ #category : #brokerage }
+{ #category : 'brokerage' }
 MiCBConditionBuilderPresenter >> remove: aQuery [
 
 	queryDroplist items: self fetchQueries
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 MiCBConditionBuilderPresenter >> titleAndSeverityLayout [
 
 	^ self newGridLayout
@@ -192,26 +194,26 @@ MiCBConditionBuilderPresenter >> titleAndSeverityLayout [
 		  yourself
 ]
 
-{ #category : #brokerage }
+{ #category : 'brokerage' }
 MiCBConditionBuilderPresenter >> update: aQuery [
 
 	queryDroplist items: self fetchQueries
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 MiCBConditionBuilderPresenter >> updateLayout [
 
 	self layout: self defaultLayout
 ]
 
-{ #category : #'computing options' }
+{ #category : 'computing options' }
 MiCBConditionBuilderPresenter >> usePharoCode [
 
 	usePharoCode := true.
 	self updateLayout
 ]
 
-{ #category : #'computing options' }
+{ #category : 'computing options' }
 MiCBConditionBuilderPresenter >> useQuery [
 
 	usePharoCode := false.

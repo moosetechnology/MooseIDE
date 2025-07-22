@@ -1,6 +1,6 @@
-Extension { #name : #FamixTType }
+Extension { #name : 'FamixTType' }
 
-{ #category : #'*MooseIDE-ClassBlueprint' }
+{ #category : '*MooseIDE-ClassBlueprint' }
 FamixTType >> miInspectionBlueprint: aBuilder [
 
 	<inspectorPresentationOrder: 10 title: 'Blueprint'>

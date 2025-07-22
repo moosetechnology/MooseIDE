@@ -1,6 +1,6 @@
-Extension { #name : #SpCommand }
+Extension { #name : 'SpCommand' }
 
-{ #category : #'*MooseIDE-Core' }
+{ #category : '*MooseIDE-Core' }
 SpCommand >> updateIconForMode: aReceivingMode [
 
 	presenter ifNil: [ ^ self ].

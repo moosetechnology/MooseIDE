@@ -2,12 +2,14 @@
 I am a custom `StPlaygroundPage` with custom defaultObjectInspectorClass. I am used by `MiPlayground`.
 "
 Class {
-	#name : #MiPlaygroundPage,
-	#superclass : #StPlaygroundPage,
-	#category : #'MooseIDE-NewTools-Playground'
+	#name : 'MiPlaygroundPage',
+	#superclass : 'StPlaygroundPage',
+	#category : 'MooseIDE-NewTools-Playground',
+	#package : 'MooseIDE-NewTools',
+	#tag : 'Playground'
 }
 
-{ #category : #'inspector compatibility' }
+{ #category : 'inspector compatibility' }
 MiPlaygroundPage >> defaultObjectInspectorClass [
 
 	^ MiPlaygroundPagePresenter

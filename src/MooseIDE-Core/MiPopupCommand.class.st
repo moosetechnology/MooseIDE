@@ -1,14 +1,16 @@
 Class {
-	#name : #MiPopupCommand,
-	#superclass : #MiCommand,
+	#name : 'MiPopupCommand',
+	#superclass : 'MiCommand',
 	#instVars : [
 		'toolbarButton',
 		'buttonIsPressed'
 	],
-	#category : #'MooseIDE-Core-Command'
+	#category : 'MooseIDE-Core-Command',
+	#package : 'MooseIDE-Core',
+	#tag : 'Command'
 }
 
-{ #category : #converting }
+{ #category : 'converting' }
 MiPopupCommand >> asSpecCommand [
 
 	| specCommand |
@@ -29,20 +31,20 @@ MiPopupCommand >> asSpecCommand [
 	^ specCommand
 ]
 
-{ #category : #executing }
+{ #category : 'executing' }
 MiPopupCommand >> execute [
 
 	self newPopover popup
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiPopupCommand >> initialize [
 
 	super initialize.
 	buttonIsPressed := false
 ]
 
-{ #category : #executing }
+{ #category : 'executing' }
 MiPopupCommand >> newPopover [
 
 	| helpPopover |
@@ -58,7 +60,7 @@ MiPopupCommand >> newPopover [
 	^ helpPopover
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 MiPopupCommand >> popupContent [
 
 	self subclassResponsibility

@@ -2,24 +2,26 @@
 A settingItem which value is selected in a DropList
 "
 Class {
-	#name : #MiDroplistSettingItem,
-	#superclass : #MiAbstractSettingItem,
-	#category : #'MooseIDE-Core-Settings'
+	#name : 'MiDroplistSettingItem',
+	#superclass : 'MiAbstractSettingItem',
+	#category : 'MooseIDE-Core-Settings',
+	#package : 'MooseIDE-Core',
+	#tag : 'Settings'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDroplistSettingItem >> displayBlock: aBlock [
 	super displayBlock: aBlock.
 	presenter display: aBlock 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDroplistSettingItem >> getValue [
 
 	^presenter selectedItem
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiDroplistSettingItem >> initialize [
 
 	super initialize.
@@ -31,12 +33,12 @@ MiDroplistSettingItem >> initialize [
 	self displayBlock: [ :value :listItem | value asString].
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDroplistSettingItem >> possibleValues [
 	^presenter items
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDroplistSettingItem >> possibleValues: aCollection [
 
 	presenter items: aCollection.
@@ -44,7 +46,7 @@ MiDroplistSettingItem >> possibleValues: aCollection [
 	self setValue: aCollection anyOne
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDroplistSettingItem >> setValue: anObject [
 
 	presenter selectItem: anObject 

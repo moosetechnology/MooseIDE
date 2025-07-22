@@ -1,16 +1,18 @@
 Class {
-	#name : #MooseAbstractMenuCommand,
-	#superclass : #CmCommand,
-	#category : #'MooseIDE-Core-MenuBar'
+	#name : 'MooseAbstractMenuCommand',
+	#superclass : 'CmCommand',
+	#category : 'MooseIDE-Core-MenuBar',
+	#package : 'MooseIDE-Core',
+	#tag : 'MenuBar'
 }
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MooseAbstractMenuCommand class >> famixMenuRoot [
 
 	^ #Famix
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MooseAbstractMenuCommand class >> famixMenuRootOn: aBuilder [
 
 	aBuilder
@@ -21,7 +23,7 @@ MooseAbstractMenuCommand class >> famixMenuRootOn: aBuilder [
 		withSeparatorAfter
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseAbstractMenuCommand class >> help [
 
 	"Override if necessary"
@@ -29,7 +31,7 @@ MooseAbstractMenuCommand class >> help [
 	^ ''
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseAbstractMenuCommand class >> icon [
 
 	"Override if necessary"
@@ -37,13 +39,13 @@ MooseAbstractMenuCommand class >> icon [
 	^ MooseIcons mooseIcon
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseAbstractMenuCommand class >> label [
 
 	self subclassResponsibility
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseAbstractMenuCommand class >> labelFor: aMooseCommand [
 
 	"Override if necessary"
@@ -51,7 +53,7 @@ MooseAbstractMenuCommand class >> labelFor: aMooseCommand [
 	^ aMooseCommand label
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MooseAbstractMenuCommand class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
@@ -61,7 +63,7 @@ MooseAbstractMenuCommand class >> menuCommandOn: aBuilder [
 
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MooseAbstractMenuCommand class >> menuCommandOn: aBuilder forCommand: aMooseCommand [
 
 	"Configure sub-entries"
@@ -77,7 +79,7 @@ MooseAbstractMenuCommand class >> menuCommandOn: aBuilder forCommand: aMooseComm
 		  yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseAbstractMenuCommand class >> menuPriority [
 
 	"Override if necessary"
@@ -85,13 +87,13 @@ MooseAbstractMenuCommand class >> menuPriority [
 	^ 999
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MooseAbstractMenuCommand class >> menuRoot [
 
 	self subclassResponsibility
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MooseAbstractMenuCommand class >> mooseMenuRootOn: aBuilder [
 
 	aBuilder

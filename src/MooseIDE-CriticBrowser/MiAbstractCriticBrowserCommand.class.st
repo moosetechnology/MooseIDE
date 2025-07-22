@@ -1,10 +1,12 @@
 Class {
-	#name : #MiAbstractCriticBrowserCommand,
-	#superclass : #MiCommand,
-	#category : #'MooseIDE-CriticBrowser-Commands'
+	#name : 'MiAbstractCriticBrowserCommand',
+	#superclass : 'MiCommand',
+	#category : 'MooseIDE-CriticBrowser-Commands',
+	#package : 'MooseIDE-CriticBrowser',
+	#tag : 'Commands'
 }
 
-{ #category : #converting }
+{ #category : 'converting' }
 MiAbstractCriticBrowserCommand class >> asCommandGroupWith: aPresenter [
 
 	| exportCommandGroup |
@@ -14,19 +16,19 @@ MiAbstractCriticBrowserCommand class >> asCommandGroupWith: aPresenter [
 	^ exportCommandGroup
 ]
 
-{ #category : #default }
+{ #category : 'default' }
 MiAbstractCriticBrowserCommand class >> defaultDescription [
 
 	^ 'Possible actions for contexts and conditions'
 ]
 
-{ #category : #default }
+{ #category : 'default' }
 MiAbstractCriticBrowserCommand class >> defaultName [
 
 	^ 'Rules menu'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiAbstractCriticBrowserCommand class >> priority [
 
 	^ self subclassResponsibility

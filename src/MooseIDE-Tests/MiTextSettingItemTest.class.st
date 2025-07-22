@@ -1,25 +1,27 @@
 Class {
-	#name : #MiTextSettingItemTest,
-	#superclass : #MiAbstractSettingItemTest,
-	#category : #'MooseIDE-Tests-Settings'
+	#name : 'MiTextSettingItemTest',
+	#superclass : 'MiAbstractSettingItemTest',
+	#category : 'MooseIDE-Tests-Settings',
+	#package : 'MooseIDE-Tests',
+	#tag : 'Settings'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 MiTextSettingItemTest >> initialValue [
 	^'Initial Value'
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiTextSettingItemTest >> settingItemInstance [
 	^MiTextSettingItem new
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiTextSettingItemTest >> someOtherValue [
 	^'Some Other Value'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiTextSettingItemTest >> testDateValue [
 	settingItem setValue: '22 February 2022'.
 	self assert: settingItem getValue equals: '22 February 2022'.
@@ -28,7 +30,7 @@ MiTextSettingItemTest >> testDateValue [
 	self assert: settingItem getValue equals: (Date year: 2022 month: 02 day: 22)
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiTextSettingItemTest >> testFloatValue [
 	settingItem setValue: '4.2'.
 	self assert: settingItem getValue equals: '4.2'.
@@ -37,7 +39,7 @@ MiTextSettingItemTest >> testFloatValue [
 	self assert: settingItem getValue equals: 4.2
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiTextSettingItemTest >> testIntegerValue [
 	settingItem setValue: '42'.
 	self assert: settingItem getValue equals: '42'.

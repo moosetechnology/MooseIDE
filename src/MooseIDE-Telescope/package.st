@@ -1,1 +1,1 @@
-Package { #name : #'MooseIDE-Telescope' }
+Package { #name : 'MooseIDE-Telescope' }

@@ -1,45 +1,47 @@
 Class {
-	#name : #MiDistributionMap,
-	#superclass : #MiAbstractVisualization,
+	#name : 'MiDistributionMap',
+	#superclass : 'MiAbstractVisualization',
 	#instVars : [
 		'entities',
 		'childrenBlock',
 		'propertyBlock'
 	],
-	#category : #'MooseIDE-Telescope-DistributionMap'
+	#category : 'MooseIDE-Telescope-DistributionMap',
+	#package : 'MooseIDE-Telescope',
+	#tag : 'DistributionMap'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 MiDistributionMap >> childrenBlock [
 	^ childrenBlock
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiDistributionMap >> childrenBlock: aBlock [
 	childrenBlock := aBlock
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDistributionMap >> entities [
 	^ entities
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDistributionMap >> entities: anObject [
 	entities := anObject
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiDistributionMap >> propertyBlock [
 	^ propertyBlock
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiDistributionMap >> propertyBlock: aBlock [
 	propertyBlock := aBlock
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiDistributionMap >> run [
 	super run.
 	(TLDistributionMap

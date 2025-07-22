@@ -9,16 +9,18 @@ Allows to explore the root folder of a model (left panel) and shows the entities
 - Propagate: <TODO>
 "
 Class {
-	#name : #MiFilesBrowser,
-	#superclass : #MiAbstractBrowser,
+	#name : 'MiFilesBrowser',
+	#superclass : 'MiAbstractBrowser',
 	#instVars : [
 		'tree',
 		'treeEntity'
 	],
-	#category : #'MooseIDE-Famix-FilesBrowser'
+	#category : 'MooseIDE-Famix-FilesBrowser',
+	#package : 'MooseIDE-Famix',
+	#tag : 'FilesBrowser'
 }
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiFilesBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
@@ -26,50 +28,50 @@ MiFilesBrowser class >> menuCommandOn: aBuilder [
 	^ self buildMenuItemIn: aBuilder
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiFilesBrowser class >> menuIconName [
 
 	^ #mooseFolder
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiFilesBrowser class >> menuItem [
 
 	^ #FilesBrowser
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiFilesBrowser class >> menuParent [
 
 	^ self oldBrowserMenuRoot
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiFilesBrowser class >> menuPriority [
 
 	^ self menuOldBrowsersPriority + 3
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MiFilesBrowser class >> newModel [
 
 	^ MiFilesModel new
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MiFilesBrowser class >> open [
 
 	<script>
 	^ super open
 ]
 
-{ #category : #specs }
+{ #category : 'specs' }
 MiFilesBrowser class >> title [
 
 	^ 'Files'
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiFilesBrowser >> canFollowEntity: anObject [
 
 	^ anObject isMooseObject and: [ 
@@ -78,13 +80,13 @@ MiFilesBrowser >> canFollowEntity: anObject [
 				  anObject rootFolder asFileReference exists ] ] ]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiFilesBrowser >> canTagEntities [ 
 	self flag: 'Remove browser ? (issue #810)'.
 	^false
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiFilesBrowser >> computeItemsInFileReference: aFileReference [
 	"isChildOf: can bug see issue https://github.com/pharo-project/pharo/issues/5720"
 
@@ -93,7 +95,7 @@ MiFilesBrowser >> computeItemsInFileReference: aFileReference [
 		thenCollect: [ :anchor | anchor element ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiFilesBrowser >> connectPresenters [
 	super connectPresenters.
 	tree whenSelectionChangedDo: [ :selected |
@@ -104,7 +106,7 @@ MiFilesBrowser >> connectPresenters [
 				treeEntity roots: (self computeItemsInFileReference: self model fileReference) ] ] 
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 MiFilesBrowser >> defaultLayout [
 
 	^ self newBoxLayoutLeftToRight
@@ -113,7 +115,7 @@ MiFilesBrowser >> defaultLayout [
 		  yourself
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiFilesBrowser >> followEntity: anEntity [
 
 	self model mooseModel: anEntity.
@@ -121,7 +123,7 @@ MiFilesBrowser >> followEntity: anEntity [
 	self updateWindowTitle
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiFilesBrowser >> initializePresenters [
 
 	self initializeTreeTable.
@@ -149,7 +151,7 @@ MiFilesBrowser >> initializePresenters [
 						self buses do: [ :bus | bus globallySelect: mooseGroup ] ] ] ] ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiFilesBrowser >> initializeTreeTable [
 	tree := self newTable.
 	tree
@@ -163,13 +165,13 @@ MiFilesBrowser >> initializeTreeTable [
 		beResizable
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiFilesBrowser >> miSelectedItem [
 
 	^ specModel mooseModel
 ]
 
-{ #category : #refreshing }
+{ #category : 'refreshing' }
 MiFilesBrowser >> refresh [
 
 	tree items: { self model fileReference parent }
@@ -177,13 +179,13 @@ MiFilesBrowser >> refresh [
 		, self model fileReference files
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiFilesBrowser >> selectFileReference: aFileReference [
 	self model fileReference: aFileReference.
 	self refresh
 ]
 
-{ #category : #refreshing }
+{ #category : 'refreshing' }
 MiFilesBrowser >> updateWindowTitle [
 	self
 		withWindowDo: [ :window | 

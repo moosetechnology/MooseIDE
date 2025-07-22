@@ -7,12 +7,14 @@ Entities that are in a dependency circle are shown in red.
 - Propagate: <TODO>
 "
 Class {
-	#name : #MiCycleDependenciesBrowser,
-	#superclass : #MiAbstractTelescopeBrowser,
-	#category : #'MooseIDE-Telescope-CycleDependencies'
+	#name : 'MiCycleDependenciesBrowser',
+	#superclass : 'MiAbstractTelescopeBrowser',
+	#category : 'MooseIDE-Telescope-CycleDependencies',
+	#package : 'MooseIDE-Telescope',
+	#tag : 'CycleDependencies'
 }
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiCycleDependenciesBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	<miBrowsers>
@@ -24,28 +26,28 @@ MiCycleDependenciesBrowser class >> menuCommandOn: aBuilder [
 		action: [ self open ]
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MiCycleDependenciesBrowser class >> open [
 	<script>
 	super open
 ]
 
-{ #category : #specs }
+{ #category : 'specs' }
 MiCycleDependenciesBrowser class >> title [
 	^ 'Cycle Dependencies'
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiCycleDependenciesBrowser >> canFollowEntity: anObject [
 	^ anObject isMooseObject and: [ anObject isCollection ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiCycleDependenciesBrowser >> diagramClass [
 	^ MiCycleDependencies
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiCycleDependenciesBrowser >> followEntity: anEntity [
 
 	diagram

@@ -1,20 +1,22 @@
 Class {
-	#name : #MiCheckboxSettingItemTest,
-	#superclass : #MiAbstractSettingItemTest,
-	#category : #'MooseIDE-Tests-Settings'
+	#name : 'MiCheckboxSettingItemTest',
+	#superclass : 'MiAbstractSettingItemTest',
+	#category : 'MooseIDE-Tests-Settings',
+	#package : 'MooseIDE-Tests',
+	#tag : 'Settings'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 MiCheckboxSettingItemTest >> initialValue [
 	^true
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiCheckboxSettingItemTest >> settingItemInstance [
 	^MiCheckboxSettingItem new
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiCheckboxSettingItemTest >> someOtherValue [
 	^false
 ]

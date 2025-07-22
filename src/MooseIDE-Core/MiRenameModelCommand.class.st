@@ -1,25 +1,27 @@
 Class {
-	#name : #MiRenameModelCommand,
-	#superclass : #MiModelUtilityCommand,
-	#category : #'MooseIDE-Core-Command'
+	#name : 'MiRenameModelCommand',
+	#superclass : 'MiModelUtilityCommand',
+	#category : 'MooseIDE-Core-Command',
+	#package : 'MooseIDE-Core',
+	#tag : 'Command'
 }
 
-{ #category : #default }
+{ #category : 'default' }
 MiRenameModelCommand class >> defaultDescription [
 	^ 'Rename this model'
 ]
 
-{ #category : #default }
+{ #category : 'default' }
 MiRenameModelCommand class >> defaultIconName [
 	^ #edit
 ]
 
-{ #category : #default }
+{ #category : 'default' }
 MiRenameModelCommand class >> defaultName [
 	^ 'Rename'
 ]
 
-{ #category : #executing }
+{ #category : 'executing' }
 MiRenameModelCommand >> execute [
 
 	| newName |

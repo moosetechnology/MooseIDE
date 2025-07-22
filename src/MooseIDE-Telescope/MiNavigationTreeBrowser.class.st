@@ -7,12 +7,14 @@ Received entities are shown in red.
 - Propagate: <TODO>
 "
 Class {
-	#name : #MiNavigationTreeBrowser,
-	#superclass : #MiAbstractTelescopeBrowser,
-	#category : #'MooseIDE-Telescope-NavigationTree'
+	#name : 'MiNavigationTreeBrowser',
+	#superclass : 'MiAbstractTelescopeBrowser',
+	#category : 'MooseIDE-Telescope-NavigationTree',
+	#package : 'MooseIDE-Telescope',
+	#tag : 'NavigationTree'
 }
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiNavigationTreeBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	<miBrowsers>
@@ -24,28 +26,28 @@ MiNavigationTreeBrowser class >> menuCommandOn: aBuilder [
 		action: [ self open ]
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MiNavigationTreeBrowser class >> open [
 	<script>
 	super open
 ]
 
-{ #category : #specs }
+{ #category : 'specs' }
 MiNavigationTreeBrowser class >> title [
 	^ 'Navigation tree'
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiNavigationTreeBrowser >> canFollowEntity: anObject [
 	^ anObject isMooseObject
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiNavigationTreeBrowser >> diagramClass [
 	^ MiNavigationTree
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiNavigationTreeBrowser >> followEntity: anEntity [
 
 	diagram

@@ -1,22 +1,24 @@
 Class {
-	#name : #MooseLoadFASTFortranMenuCommand,
-	#superclass : #MooseAbstractLoadFASTMenuCommand,
-	#category : #'MooseIDE-Core-MenuBar'
+	#name : 'MooseLoadFASTFortranMenuCommand',
+	#superclass : 'MooseAbstractLoadFASTMenuCommand',
+	#category : 'MooseIDE-Core-MenuBar',
+	#package : 'MooseIDE-Core',
+	#tag : 'MenuBar'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseLoadFASTFortranMenuCommand class >> help [
 
 	^ 'Famix representation of Fortran AST'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseLoadFASTFortranMenuCommand class >> label [
 
 	^ 'FAST Fortran'
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MooseLoadFASTFortranMenuCommand class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
@@ -25,25 +27,25 @@ MooseLoadFASTFortranMenuCommand class >> menuCommandOn: aBuilder [
 		  yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseLoadFASTFortranMenuCommand class >> menuPriority [
 
 	^ super menuPriority + 3
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseLoadFASTFortranMenuCommand >> baselineName [
 
 	^ 'FASTFortran'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseLoadFASTFortranMenuCommand >> repositoryURL [
 
 	^ 'github://moosetechnology/FAST-Fortran' , '/src'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseLoadFASTFortranMenuCommand >> version [
 
 	^ 'v1'

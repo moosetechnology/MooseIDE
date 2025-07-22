@@ -1,6 +1,6 @@
-Extension { #name : #FamixTAnnotationType }
+Extension { #name : 'FamixTAnnotationType' }
 
-{ #category : #'*MooseIDE-Core' }
+{ #category : '*MooseIDE-Core' }
 FamixTAnnotationType >> mooseIcon [
 	^ self iconNamed: #famixAnnotationType 
 ]

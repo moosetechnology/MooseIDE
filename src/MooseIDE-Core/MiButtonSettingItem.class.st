@@ -2,15 +2,17 @@
 A MiSettingItem which value is given by a button that calls a ""secondary presenter""
 "
 Class {
-	#name : #MiButtonSettingItem,
-	#superclass : #MiAbstractSettingItem,
+	#name : 'MiButtonSettingItem',
+	#superclass : 'MiAbstractSettingItem',
 	#instVars : [
 		'secondaryPresenter'
 	],
-	#category : #'MooseIDE-Core-Settings'
+	#category : 'MooseIDE-Core-Settings',
+	#package : 'MooseIDE-Core',
+	#tag : 'Settings'
 }
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiButtonSettingItem >> initialize [
 
 	super initialize.
@@ -28,18 +30,18 @@ MiButtonSettingItem >> initialize [
 	self initializeSecondaryPresenter
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiButtonSettingItem >> initializeSecondaryPresenter [
 	self subclassResponsibility
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiButtonSettingItem >> owner: aPresenter [
 	super owner: aPresenter.
 	secondaryPresenter owner: aPresenter
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiButtonSettingItem >> update [
 	"empty in superclass but redefined in revelant subclasses."
 ]

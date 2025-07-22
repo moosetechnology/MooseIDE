@@ -2,60 +2,62 @@
 I am a node that describes the layered structure of the layer visualization.
 "
 Class {
-	#name : #MiLVAbstractNode,
-	#superclass : #Object,
+	#name : 'MiLVAbstractNode',
+	#superclass : 'Object',
 	#instVars : [
 		'expanded',
 		'parent'
 	],
-	#category : #'MooseIDE-LayerVisualization-Model'
+	#category : 'MooseIDE-LayerVisualization-Model',
+	#package : 'MooseIDE-LayerVisualization',
+	#tag : 'Model'
 }
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MiLVAbstractNode >> acceptVisitor: aVisitor [
 
 	self subclassResponsibility
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiLVAbstractNode >> collapse [
 
 	expanded := false
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiLVAbstractNode >> depth [
 
 	parent ifNil: [ ^ 0 ].
 	^ 1 + parent depth
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiLVAbstractNode >> expand [
 
 	expanded := true
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiLVAbstractNode >> expanded [
 
 	^ expanded
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiLVAbstractNode >> initialize [
 
 	super initialize.
 	expanded := true.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiLVAbstractNode >> parent [
 
 	^ parent
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiLVAbstractNode >> parent: anObject [
 
 	parent := anObject

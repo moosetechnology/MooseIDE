@@ -2,21 +2,22 @@
 A StMooseProcessorTest is a test class for testing the behavior of StMooseProcessor
 "
 Class {
-	#name : #StMooseProcessorTest,
-	#superclass : #StAbstractProcessorTest,
+	#name : 'StMooseProcessorTest',
+	#superclass : 'StAbstractProcessorTest',
 	#instVars : [
 		'existingRoot'
 	],
-	#category : #'MooseIDE-Spotter-Tests'
+	#category : 'MooseIDE-Spotter-Tests',
+	#package : 'MooseIDE-Spotter-Tests'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 StMooseProcessorTest >> processor [
 
 	^ StMooseProcessor new 
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 StMooseProcessorTest >> setUp [
 
 	super setUp.
@@ -24,7 +25,7 @@ StMooseProcessorTest >> setUp [
 	MooseModelRoot resetRoot
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 StMooseProcessorTest >> tearDown [
 
 	MooseModelRoot resetRoot.
@@ -32,7 +33,7 @@ StMooseProcessorTest >> tearDown [
 	super tearDown
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 StMooseProcessorTest >> testEmptyEvenWithExistingModel [
 
 	| stModel aStClass |
@@ -44,14 +45,14 @@ StMooseProcessorTest >> testEmptyEvenWithExistingModel [
 	self assertQuantityOfResults: 0
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 StMooseProcessorTest >> testEmptyQueryShowsNoResult [
 
 	self runForText: ''.
 	self assertQuantityOfResults: 0
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 StMooseProcessorTest >> testOneNamedClassUsingFamixSt [
 
 	| stModel aStClass |

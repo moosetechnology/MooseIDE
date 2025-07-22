@@ -2,16 +2,18 @@
 The model for the `MiAccumulatorBrowser`
 "
 Class {
-	#name : #MiAggregatorBrowserModel,
-	#superclass : #MiAbstractModel,
+	#name : 'MiAggregatorBrowserModel',
+	#superclass : 'MiAbstractModel',
 	#instVars : [
 		'entities',
 		'selectedEntities'
 	],
-	#category : #'MooseIDE-Core-Logger'
+	#category : 'MooseIDE-Core-Logger',
+	#package : 'MooseIDE-Core',
+	#tag : 'Logger'
 }
 
-{ #category : #api }
+{ #category : 'api' }
 MiAggregatorBrowserModel >> clearEntities [
 
 	entities removeAll.
@@ -20,7 +22,7 @@ MiAggregatorBrowserModel >> clearEntities [
 	browser updateEntityList: self entities
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiAggregatorBrowserModel >> entities [
 	"converting into an Array because browser Sets have limitations
 	 (notably cannot be used as model of an SpListPresenter)"
@@ -28,7 +30,7 @@ MiAggregatorBrowserModel >> entities [
 	^entities asArray
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiAggregatorBrowserModel >> initialize [
 
 	super initialize.
@@ -38,14 +40,14 @@ MiAggregatorBrowserModel >> initialize [
 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiAggregatorBrowserModel >> miSelectedItem [
 	"overriden, synonym of #selectedEntities"
 
 	^self selectedEntities
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MiAggregatorBrowserModel >> newEntities: aCollection [
 
 	entities addAll: aCollection.
@@ -53,19 +55,19 @@ MiAggregatorBrowserModel >> newEntities: aCollection [
 	browser updateEntityList: self entities
 ]
 
-{ #category : #api }
+{ #category : 'api' }
 MiAggregatorBrowserModel >> numberOfEntities [
 
 	^entities size
 ]
 
-{ #category : #api }
+{ #category : 'api' }
 MiAggregatorBrowserModel >> numberOfSelectedEntities [
 
 	^selectedEntities size
 ]
 
-{ #category : #api }
+{ #category : 'api' }
 MiAggregatorBrowserModel >> removeSelectedEntities [
 
 	entities removeAll: selectedEntities.
@@ -74,13 +76,13 @@ MiAggregatorBrowserModel >> removeSelectedEntities [
 	browser updateEntityList: self entities
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiAggregatorBrowserModel >> selectedEntities [
 
 	^selectedEntities
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiAggregatorBrowserModel >> selectedEntities: aCollection [
 
 	selectedEntities := aCollection asOrderedCollection.

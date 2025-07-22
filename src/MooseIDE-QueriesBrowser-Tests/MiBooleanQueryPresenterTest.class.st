@@ -1,10 +1,12 @@
 Class {
-	#name : #MiBooleanQueryPresenterTest,
-	#superclass : #MiPropertyQueryPresenterTest,
-	#category : #'MooseIDE-QueriesBrowser-Tests-Queries Configuration'
+	#name : 'MiBooleanQueryPresenterTest',
+	#superclass : 'MiPropertyQueryPresenterTest',
+	#category : 'MooseIDE-QueriesBrowser-Tests-Queries Configuration',
+	#package : 'MooseIDE-QueriesBrowser-Tests',
+	#tag : 'Queries Configuration'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiBooleanQueryPresenterTest >> assertSubpresentersAreConfigured [
 
 	self
@@ -12,12 +14,12 @@ MiBooleanQueryPresenterTest >> assertSubpresentersAreConfigured [
 		equals: self createNewQuery property
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiBooleanQueryPresenterTest >> classToTest [
 	^ MiBooleanQueryPresenter
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiBooleanQueryPresenterTest >> createNewQuery [
 
 	| rootQuery |
@@ -30,12 +32,12 @@ MiBooleanQueryPresenterTest >> createNewQuery [
 		  yourself
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiBooleanQueryPresenterTest >> queryClass [
 	^ FQBooleanQuery
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiBooleanQueryPresenterTest >> testQueryValidity [
 
 	self deny: presenter query isValid.

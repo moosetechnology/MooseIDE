@@ -1,24 +1,26 @@
 Class {
-	#name : #MiNavigationTree,
-	#superclass : #MiAbstractVisualization,
+	#name : 'MiNavigationTree',
+	#superclass : 'MiAbstractVisualization',
 	#instVars : [
 		'entities',
 		'association'
 	],
-	#category : #'MooseIDE-Telescope-NavigationTree'
+	#category : 'MooseIDE-Telescope-NavigationTree',
+	#package : 'MooseIDE-Telescope',
+	#tag : 'NavigationTree'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiNavigationTree >> association [
 	^ association ifNil: [ self setAssociation ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiNavigationTree >> association: anObject [
 	^ association := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiNavigationTree >> availableAssociations [
 	| associations model |
 	associations := self entities allEntityTypes
@@ -37,17 +39,17 @@ MiNavigationTree >> availableAssociations [
 			[ :class | (model metamodel classes collect: #implementingClass) includes: class ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiNavigationTree >> entities [
 	^ entities
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiNavigationTree >> entities: anObject [
 	entities := anObject
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiNavigationTree >> run [
 	super run.
 	(MiNavigationTreeVisualization new
@@ -63,7 +65,7 @@ MiNavigationTree >> run [
 	self canvas zoomToFit
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiNavigationTree >> setAssociation [
 	^ association := self availableAssociations
 		ifNotEmpty: [ :associations | associations anyOne ]

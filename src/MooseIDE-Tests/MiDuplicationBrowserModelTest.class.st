@@ -1,6 +1,6 @@
 Class {
-	#name : #MiDuplicationBrowserModelTest,
-	#superclass : #TestCase,
+	#name : 'MiDuplicationBrowserModelTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'method1',
 		'method2',
@@ -10,16 +10,18 @@ Class {
 		'fragment2',
 		'fragment3'
 	],
-	#category : #'MooseIDE-Tests-Browsers'
+	#category : 'MooseIDE-Tests-Browsers',
+	#package : 'MooseIDE-Tests',
+	#tag : 'Browsers'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 MiDuplicationBrowserModelTest >> method: aName [
 
 	^ FamixRepTestMethod named: aName
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiDuplicationBrowserModelTest >> method: aName withSource: lineInterval [
 
 	^ (self method: aName)
@@ -29,7 +31,7 @@ MiDuplicationBrowserModelTest >> method: aName withSource: lineInterval [
 		  yourself
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiDuplicationBrowserModelTest >> replicaFor: anEntity source: lineInterval inFragment: aFragment [
 
 	| replica |
@@ -48,7 +50,7 @@ MiDuplicationBrowserModelTest >> replicaFor: anEntity source: lineInterval inFra
 	^ replica
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiDuplicationBrowserModelTest >> setUp [
 
 	model := MiDuplicationBrowserModel new.
@@ -79,7 +81,7 @@ MiDuplicationBrowserModelTest >> setUp [
 	self replicaFor: method2 source: (1 to: 8) inFragment: fragment3
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiDuplicationBrowserModelTest >> sourceCode: lineInterval [
 
 	^ String cr join:
@@ -96,7 +98,7 @@ MiDuplicationBrowserModelTest >> sourceCode: lineInterval [
 			   to: lineInterval last)
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiDuplicationBrowserModelTest >> testAncestorsOfIn [
 
 	self assertEmpty: (model ancestorsOf: fragment1 in: { 
@@ -117,7 +119,7 @@ MiDuplicationBrowserModelTest >> testAncestorsOfIn [
 		hasSameElements: { fragment1 .fragment2 }
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiDuplicationBrowserModelTest >> testChildrenFragments [
 
 	model replicatedFragmentsHierarchy: (model hierarchyOfReplicatedFragment: { 
@@ -134,7 +136,7 @@ MiDuplicationBrowserModelTest >> testChildrenFragments [
 	self assertEmpty: (model childrenFragments: fragment3)
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiDuplicationBrowserModelTest >> testDirectParentOfIn [
 
 	self assert: (model directParentOf: fragment1 in: { 
@@ -156,7 +158,7 @@ MiDuplicationBrowserModelTest >> testDirectParentOfIn [
 				fragment2
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiDuplicationBrowserModelTest >> testFragmentIncludes [
 
 	self assert: (model fragment: fragment1 includes: fragment2).
@@ -164,7 +166,7 @@ MiDuplicationBrowserModelTest >> testFragmentIncludes [
 	self deny: (model fragment: fragment2 includes: fragment1)
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiDuplicationBrowserModelTest >> testHierarchyOfReplicatedFragment [
 
 	| hierarchy |
@@ -178,7 +180,7 @@ MiDuplicationBrowserModelTest >> testHierarchyOfReplicatedFragment [
 		self assertEmpty: (hierarchy at: fragment3).
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiDuplicationBrowserModelTest >> testHighlightEntities [
 
 	| selectedFragments |
@@ -194,7 +196,7 @@ MiDuplicationBrowserModelTest >> testHighlightEntities [
 			fragment2 }
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiDuplicationBrowserModelTest >> testRootFragments [
 
 	model replicatedFragmentsHierarchy: (model hierarchyOfReplicatedFragment: { 
@@ -207,7 +209,7 @@ MiDuplicationBrowserModelTest >> testRootFragments [
 		hasSameElements: { fragment1 }
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiDuplicationBrowserModelTest >> testSelectedFragment [
 
 	model entities: {

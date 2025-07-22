@@ -3,23 +3,25 @@ A query configuration presenter for the `FQTypeQuery`
 
 "
 Class {
-	#name : #MiTypeQueryPresenter,
-	#superclass : #MiQueryConfiguratorPresenter,
+	#name : 'MiTypeQueryPresenter',
+	#superclass : 'MiQueryConfiguratorPresenter',
 	#instVars : [
 		'typesButton',
 		'typesList',
 		'selectedTypesLabel',
 		'typesModal'
 	],
-	#category : #'MooseIDE-QueriesBrowser-Configuration presenters'
+	#category : 'MooseIDE-QueriesBrowser-Configuration presenters',
+	#package : 'MooseIDE-QueriesBrowser',
+	#tag : 'Configuration presenters'
 }
 
-{ #category : #specs }
+{ #category : 'specs' }
 MiTypeQueryPresenter class >> title [
 	^ 'Type Query'
 ]
 
-{ #category : #'api - actions' }
+{ #category : 'api - actions' }
 MiTypeQueryPresenter >> configureFor: aQuery [
 
 	typesButton := self newTypesButton.
@@ -29,19 +31,19 @@ MiTypeQueryPresenter >> configureFor: aQuery [
 	query := aQuery
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiTypeQueryPresenter >> configureQuery: aType [
 
 	self updateQueryWithSelectedTypes: typesList selectedItems
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiTypeQueryPresenter >> initializeLabel [
 
 	selectedTypesLabel := self newLabel
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiTypeQueryPresenter >> initializePresenters [
 
 	self initializeTypesList.
@@ -50,7 +52,7 @@ MiTypeQueryPresenter >> initializePresenters [
 	self initializeLayout
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiTypeQueryPresenter >> initializeTypesButton [
 
 	typesButton := self query availableTypes
@@ -58,19 +60,19 @@ MiTypeQueryPresenter >> initializeTypesButton [
 		               ifNotEmpty: [ self newTypesButton ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiTypeQueryPresenter >> initializeTypesList [
 
 	typesList := self instantiate: MiTypeSelectionPresenter on: self
 ]
 
-{ #category : #'widgets configuration' }
+{ #category : 'widgets configuration' }
 MiTypeQueryPresenter >> labelFor: type [
 
 	^ type mooseDescription name asEnglishPlural
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 MiTypeQueryPresenter >> newLayout [
 
 	| padding |
@@ -84,7 +86,7 @@ MiTypeQueryPresenter >> newLayout [
 		yourself
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiTypeQueryPresenter >> newTypesButton [
 
 	^ self newButton
@@ -96,14 +98,14 @@ MiTypeQueryPresenter >> newTypesButton [
 		  yourself
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiTypeQueryPresenter >> selectTypeAction: aType [
 
 	self updateTypesLabel.
 	self computeQueryAction: aType
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiTypeQueryPresenter >> updateQueryWithSelectedTypes: selectedTypes [
 
 	| nonSelectedTypes |
@@ -112,7 +114,7 @@ MiTypeQueryPresenter >> updateQueryWithSelectedTypes: selectedTypes [
 	nonSelectedTypes do: [ :type | self query removeType: type ]
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiTypeQueryPresenter >> updateTypesLabel [ 
 
 	| selectedTypesText names reducedNames |

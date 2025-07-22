@@ -10,12 +10,13 @@ You can also use class side method `#asCommandGroupForSpecContext:` to build a S
 Your presenter should implement `#updateForNewModel:` to define behavior when a new model is installed successfully
 "
 Class {
-	#name : #MiReportExportCommand,
-	#superclass : #MiCommand,
-	#category : #'MooseIDE-Reporter'
+	#name : 'MiReportExportCommand',
+	#superclass : 'MiCommand',
+	#category : 'MooseIDE-Reporter',
+	#package : 'MooseIDE-Reporter'
 }
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiReportExportCommand class >> asCommandGroupWith: aPresenter [
 
 	| exportCommandGroup |
@@ -28,22 +29,22 @@ MiReportExportCommand class >> asCommandGroupWith: aPresenter [
 	^ exportCommandGroup
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiReportExportCommand class >> defaultDescription [
 	^ 'Export this report'
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiReportExportCommand class >> defaultName [
 	^ 'Export'
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiReportExportCommand class >> isAbstract [
 	^ self = MiImportCommand
 ]
 
-{ #category : #executing }
+{ #category : 'executing' }
 MiReportExportCommand >> execute [
 	
 	^self exportReport: self context 

@@ -1,26 +1,27 @@
 Class {
-	#name : #MiReportHTMLExportCommand,
-	#superclass : #MiReportExportCommand,
-	#category : #'MooseIDE-Core-Reporter'
+	#name : 'MiReportHTMLExportCommand',
+	#superclass : 'MiReportExportCommand',
+	#category : 'MooseIDE-Core-Reporter',
+	#package : 'MooseIDE-Core-Reporter'
 }
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiReportHTMLExportCommand class >> defaultDescription [
 	^ 'Export this report to HTML'
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiReportHTMLExportCommand class >> defaultIconName [
 
 	^ #save
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiReportHTMLExportCommand class >> defaultName [
 	^ 'Export to HTML'
 ]
 
-{ #category : #export }
+{ #category : 'export' }
 MiReportHTMLExportCommand >> exportReport: reporterBrowser [
 
 	reporterBrowser exportReportToHTML

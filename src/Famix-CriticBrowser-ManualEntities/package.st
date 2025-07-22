@@ -1,1 +1,1 @@
-Package { #name : #'Famix-CriticBrowser-ManualEntities' }
+Package { #name : 'Famix-CriticBrowser-ManualEntities' }

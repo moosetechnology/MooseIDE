@@ -1,25 +1,27 @@
 Class {
-	#name : #MiModelsBrowserTest,
-	#superclass : #MiAbstractBrowserTest,
+	#name : 'MiModelsBrowserTest',
+	#superclass : 'MiAbstractBrowserTest',
 	#instVars : [
 		'savedRoot'
 	],
-	#category : #'MooseIDE-Tests-Browsers'
+	#category : 'MooseIDE-Tests-Browsers',
+	#package : 'MooseIDE-Tests',
+	#tag : 'Browsers'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 MiModelsBrowserTest >> browserClass [
 
 	^ MiModelsBrowser
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiModelsBrowserTest >> defaultEntityToSelect [
 
 	^ super defaultEntityToSelect mooseModel
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiModelsBrowserTest >> newModel: aString [
 
 	| model |
@@ -30,13 +32,13 @@ MiModelsBrowserTest >> newModel: aString [
 	^ model
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiModelsBrowserTest >> receiveEntityToSelect [
 
 	browser updateForNewModel: entityToSelect
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiModelsBrowserTest >> setUp [
 
 	savedRoot := MooseModelRoot installedRoot.
@@ -44,7 +46,7 @@ MiModelsBrowserTest >> setUp [
 	super setUp
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiModelsBrowserTest >> stModelFile [
 
 	"Creating an in-memory JSON file containing a class from FamixStModel"
@@ -61,20 +63,20 @@ MiModelsBrowserTest >> stModelFile [
 	^ file
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiModelsBrowserTest >> tearDown [
 
 	MooseModelRoot installRoot: savedRoot.
 	super tearDown
 ]
 
-{ #category : #'tests - tags' }
+{ #category : 'tests - tags' }
 MiModelsBrowserTest >> testCanTagEntities [
 
 	self deny: browser canTagEntities
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiModelsBrowserTest >> testDisplayImportModelDialogTitle [
 
 	| dialog |
@@ -87,7 +89,7 @@ MiModelsBrowserTest >> testDisplayImportModelDialogTitle [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiModelsBrowserTest >> testFilterStubsSettingsWithStub [
 
 	| newModel |
@@ -106,7 +108,7 @@ MiModelsBrowserTest >> testFilterStubsSettingsWithStub [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiModelsBrowserTest >> testFilterStubsSettingsWithoutStub [
 
 	| newModel |
@@ -125,7 +127,7 @@ MiModelsBrowserTest >> testFilterStubsSettingsWithoutStub [
 		equals: 'Class2'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiModelsBrowserTest >> testHandleDropFileImportsModel [
 
 	| file |
@@ -147,7 +149,7 @@ MiModelsBrowserTest >> testHandleDropFileImportsModel [
 	self assert: browser model entities size equals: 1
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiModelsBrowserTest >> testMiInspectCommand [
 
 	| inspector result newModel |
@@ -166,7 +168,7 @@ MiModelsBrowserTest >> testMiInspectCommand [
 	self assert: result equals: newModel
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiModelsBrowserTest >> testMiInspectCommandWithoutStubFilter [
 
 	| inspector result newModel |
@@ -187,7 +189,7 @@ MiModelsBrowserTest >> testMiInspectCommandWithoutStubFilter [
 	self assert: result equals: newModel
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiModelsBrowserTest >> testMiSelectedItem [
 
 	| newModel |
@@ -200,13 +202,13 @@ MiModelsBrowserTest >> testMiSelectedItem [
 	self deny: browser miSelectedItem isNil
 ]
 
-{ #category : #'tests - opening' }
+{ #category : 'tests - opening' }
 MiModelsBrowserTest >> testSettingsAction [
 
 	self assert: browser hasSettings
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiModelsBrowserTest >> testUpdateForNewModel [
 
 	| newModel |
@@ -224,7 +226,7 @@ MiModelsBrowserTest >> testUpdateForNewModel [
 	self assert: browser model selected equals: newModel
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiModelsBrowserTest >> testUpdateForNewModelMultipleBrowsers [
 
 	| browser2 newModel |
@@ -251,7 +253,7 @@ MiModelsBrowserTest >> testUpdateForNewModelMultipleBrowsers [
 	browser2 window close
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiModelsBrowserTest >> testUpdateList [
 
 	self assertEmpty: browser model entities.
@@ -262,7 +264,7 @@ MiModelsBrowserTest >> testUpdateList [
 	self assert: browser model entities size equals: 1
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiModelsBrowserTest >> testWithCacheSettingNoCache [
 	"Importing by default is without cache"
 
@@ -276,7 +278,7 @@ MiModelsBrowserTest >> testWithCacheSettingNoCache [
 	self assert: (newModel cacheAt: FamixTClass ifAbsent: [ true ] ifPresent: [:cache | cache isEmpty ])
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiModelsBrowserTest >> testWithCacheSettingWithCache [
 
 	| newModel |

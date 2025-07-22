@@ -1,14 +1,16 @@
 Class {
-	#name : #MiBrowserPresenter,
-	#superclass : #MiOverviewItemPresenter,
+	#name : 'MiBrowserPresenter',
+	#superclass : 'MiOverviewItemPresenter',
 	#instVars : [
 		'closeButton',
 		'topButton'
 	],
-	#category : #'MooseIDE-Core-Overview'
+	#category : 'MooseIDE-Core-Overview',
+	#package : 'MooseIDE-Core',
+	#tag : 'Overview'
 }
 
-{ #category : #layout }
+{ #category : 'layout' }
 MiBrowserPresenter >> defaultLayout [
 
 	^ SpBoxLayout newHorizontal
@@ -18,13 +20,13 @@ MiBrowserPresenter >> defaultLayout [
 		  yourself
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiBrowserPresenter >> highlightWindow [
 
 	model window beep
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiBrowserPresenter >> initializePresenters [
 
 	super initializePresenters.
@@ -44,7 +46,7 @@ MiBrowserPresenter >> initializePresenters [
 		               yourself
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 MiBrowserPresenter >> toolbarLabel [
 	^ model title
 ]

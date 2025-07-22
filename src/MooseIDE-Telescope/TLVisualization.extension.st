@@ -1,6 +1,6 @@
-Extension { #name : #TLVisualization }
+Extension { #name : 'TLVisualization' }
 
-{ #category : #'*MooseIDE-Telescope' }
+{ #category : '*MooseIDE-Telescope' }
 TLVisualization >> openInCanvas: aCanvas [
 	self generator open: self inCanvas: aCanvas
 ]

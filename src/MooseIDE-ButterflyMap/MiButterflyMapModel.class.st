@@ -1,6 +1,6 @@
 Class {
-	#name : #MiButterflyMapModel,
-	#superclass : #MiAbstractModel,
+	#name : 'MiButterflyMapModel',
+	#superclass : 'MiAbstractModel',
 	#instVars : [
 		'currentEntity',
 		'childrenBlock',
@@ -14,53 +14,55 @@ Class {
 		'defaultLeftEntitiesQuery',
 		'defaultRightEntitiesQuery'
 	],
-	#category : #'MooseIDE-ButterflyMap-Model'
+	#category : 'MooseIDE-ButterflyMap-Model',
+	#package : 'MooseIDE-ButterflyMap',
+	#tag : 'Model'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiButterflyMapModel >> allPossibleQueries [
 
 	^ (self browser itemsFor: FQAbstractQuery) as: OrderedCollection
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiButterflyMapModel >> childrenBlock [
 
 	^ childrenBlock
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiButterflyMapModel >> childrenBlock: anObject [
 
 	childrenBlock := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiButterflyMapModel >> childrenFor: anEntity [
 
 	^ self getChildrenQuery runOn: anEntity asMooseGroup
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiButterflyMapModel >> childrenQuery [
 
 	^ #childrenQuery
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiButterflyMapModel >> currentEntity [
 
 	^ currentEntity
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiButterflyMapModel >> currentEntity: anObject [
 
 	currentEntity := anObject.
 	browser runVisualization
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiButterflyMapModel >> defaultChildrenQuery [
 
 	^ defaultChildrenQuery ifNil: [ 
@@ -68,7 +70,7 @@ MiButterflyMapModel >> defaultChildrenQuery [
 			                          each children ] ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiButterflyMapModel >> defaultLeftEntitiesQuery [
 
 	^ defaultLeftEntitiesQuery ifNil: [ 
@@ -76,7 +78,7 @@ MiButterflyMapModel >> defaultLeftEntitiesQuery [
 			                              entity allClients ] ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiButterflyMapModel >> defaultRightEntitiesQuery [
 
 	^ defaultRightEntitiesQuery ifNil: [ 
@@ -84,7 +86,7 @@ MiButterflyMapModel >> defaultRightEntitiesQuery [
 			                               :entity | entity allProviders ] ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiButterflyMapModel >> entities [
 	"should probably return all entities displayed and not only the central one"
 	^self currentEntity
@@ -92,25 +94,25 @@ MiButterflyMapModel >> entities [
 		ifNotNil: [ :entity | { entity } ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiButterflyMapModel >> getChildrenQuery [
 
 	^ settings getItemValue: self childrenQuery
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiButterflyMapModel >> getLeftEntitiesQuery [
 
 	^ settings getItemValue: self leftEntitiesQuery
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiButterflyMapModel >> getRightEntitiesQuery [
 
 	^ settings getItemValue: self rightEntitiesQuery
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiButterflyMapModel >> initializeSettings [
 
 	settings := super initializeSettings
@@ -123,7 +125,7 @@ MiButterflyMapModel >> initializeSettings [
 		            yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiButterflyMapModel >> itemChildrenQuery [
 
 	^ MiAbstractSettingItem droplistSetting
@@ -136,7 +138,7 @@ MiButterflyMapModel >> itemChildrenQuery [
 		  yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiButterflyMapModel >> itemLeftEntitiesQuery [
 
 	^ MiAbstractSettingItem droplistSetting
@@ -149,7 +151,7 @@ MiButterflyMapModel >> itemLeftEntitiesQuery [
 		  yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiButterflyMapModel >> itemRightEntitiesQuery [
 
 	^ MiAbstractSettingItem droplistSetting
@@ -162,43 +164,43 @@ MiButterflyMapModel >> itemRightEntitiesQuery [
 		  yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiButterflyMapModel >> leftEntitiesFor: anEntity [
 
 	^ self getLeftEntitiesQuery runOn: anEntity asMooseGroup
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiButterflyMapModel >> leftEntitiesQuery [
 
 	^ #leftEntitiesQuery
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiButterflyMapModel >> miSelectedItem [
 
 	^self entities
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiButterflyMapModel >> rightEntitiesFor: anEntity [
 
 	^ self getRightEntitiesQuery runOn: anEntity asMooseGroup
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiButterflyMapModel >> rightEntitiesQuery [
 
 	^ #rightEntitiesQuery
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiButterflyMapModel >> settings [
 
 	^ settings
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiButterflyMapModel >> settingsChanged: aBoolean [
 
 	aBoolean ifTrue: [ browser runVisualization ]

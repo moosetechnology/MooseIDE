@@ -1,28 +1,30 @@
 Class {
-	#name : #MiCBAddContextCommand,
-	#superclass : #MiAbstractCriticBrowserCommand,
-	#category : #'MooseIDE-CriticBrowser-Commands'
+	#name : 'MiCBAddContextCommand',
+	#superclass : 'MiAbstractCriticBrowserCommand',
+	#category : 'MooseIDE-CriticBrowser-Commands',
+	#package : 'MooseIDE-CriticBrowser',
+	#tag : 'Commands'
 }
 
-{ #category : #default }
+{ #category : 'default' }
 MiCBAddContextCommand class >> defaultIconName [
 
 	^ #smallAdd
 ]
 
-{ #category : #default }
+{ #category : 'default' }
 MiCBAddContextCommand class >> defaultName [
 
 	^ 'Add context'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiCBAddContextCommand class >> priority [
 
 	^ 3
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiCBAddContextCommand >> canBeExecuted [
 
 	^ self context selectedRule
@@ -30,7 +32,7 @@ MiCBAddContextCommand >> canBeExecuted [
 		  ifNotNil: [ :ruleComponent | ruleComponent isCBCondition not ]
 ]
 
-{ #category : #executing }
+{ #category : 'executing' }
 MiCBAddContextCommand >> execute [
 
 	(MiCBContextBuilderPresenter on: self context model) openDialog

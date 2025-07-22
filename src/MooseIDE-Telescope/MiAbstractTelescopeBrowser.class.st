@@ -1,25 +1,27 @@
 Class {
-	#name : #MiAbstractTelescopeBrowser,
-	#superclass : #MiAbstractBrowser,
+	#name : 'MiAbstractTelescopeBrowser',
+	#superclass : 'MiAbstractBrowser',
 	#instVars : [
 		'diagram'
 	],
-	#category : #'MooseIDE-Telescope-Butterfly'
+	#category : 'MooseIDE-Telescope-Butterfly',
+	#package : 'MooseIDE-Telescope',
+	#tag : 'Butterfly'
 }
 
-{ #category : #specs }
+{ #category : 'specs' }
 MiAbstractTelescopeBrowser class >> defaultLayout [
 	^ super defaultLayout
 		add: #diagram;
 		yourself
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiAbstractTelescopeBrowser class >> isAbstract [
 	^ self == MiAbstractTelescopeBrowser
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiAbstractTelescopeBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	<miBrowsers>
@@ -30,19 +32,19 @@ MiAbstractTelescopeBrowser class >> menuCommandOn: aBuilder [
 		withSeparatorAfter 
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiAbstractTelescopeBrowser class >> telescopeMenuItemName [
 	^ #TelescopeBrowsers
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiAbstractTelescopeBrowser >> diagramClass [
 	"Should return a subclass of MiAbstractVisualization"
 
 	^ self subclassResponsibility
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiAbstractTelescopeBrowser >> initializePresenters [
 
 	diagram := self instantiate: self diagramClass

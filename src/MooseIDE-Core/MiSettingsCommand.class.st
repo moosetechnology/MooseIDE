@@ -4,36 +4,38 @@ Browsers should implement #hasSetting (to return true) and #settings to open the
 
 "
 Class {
-	#name : #MiSettingsCommand,
-	#superclass : #MiCommand,
-	#category : #'MooseIDE-Core-Command'
+	#name : 'MiSettingsCommand',
+	#superclass : 'MiCommand',
+	#category : 'MooseIDE-Core-Command',
+	#package : 'MooseIDE-Core',
+	#tag : 'Command'
 }
 
-{ #category : #default }
+{ #category : 'default' }
 MiSettingsCommand class >> defaultDescription [
 
 	^ 'Configure settings'
 ]
 
-{ #category : #default }
+{ #category : 'default' }
 MiSettingsCommand class >> defaultIconName [
 
 	^ #smallConfiguration
 ]
 
-{ #category : #default }
+{ #category : 'default' }
 MiSettingsCommand class >> defaultName [
 
 	^ 'Settings'
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiSettingsCommand >> canBeExecuted [
 
 	^ self context hasSettings
 ]
 
-{ #category : #executing }
+{ #category : 'executing' }
 MiSettingsCommand >> execute [
 
 	self context settings

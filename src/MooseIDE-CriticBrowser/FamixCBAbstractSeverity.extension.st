@@ -1,6 +1,6 @@
-Extension { #name : #FamixCBAbstractSeverity }
+Extension { #name : 'FamixCBAbstractSeverity' }
 
-{ #category : #'*MooseIDE-CriticBrowser' }
+{ #category : '*MooseIDE-CriticBrowser' }
 FamixCBAbstractSeverity class >> droplistDisplayString [
 
 	^ String streamContents: [ :s |

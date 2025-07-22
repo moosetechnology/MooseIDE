@@ -1,6 +1,6 @@
-Extension { #name : #FQNullQuery }
+Extension { #name : 'FQNullQuery' }
 
-{ #category : #'*MooseIDE-QueriesBrowser' }
+{ #category : '*MooseIDE-QueriesBrowser' }
 FQNullQuery class >> isAvailableForQueriesSize: numberOfQueriesInPresenter [
 
 	^ false

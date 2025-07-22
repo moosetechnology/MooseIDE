@@ -1,32 +1,34 @@
 Class {
-	#name : #MiBusLogBrowserTest,
-	#superclass : #MiAbstractBrowserTest,
+	#name : 'MiBusLogBrowserTest',
+	#superclass : 'MiAbstractBrowserTest',
 	#instVars : [
 		'newBrowser'
 	],
-	#category : #'MooseIDE-Tests-Browsers'
+	#category : 'MooseIDE-Tests-Browsers',
+	#package : 'MooseIDE-Tests',
+	#tag : 'Browsers'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 MiBusLogBrowserTest >> browserClass [
 
 	^ MiBusLogBrowser
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiBusLogBrowserTest >> receiveEntityToSelect [
 
 	self bus globallySelect: entityToSelect
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiBusLogBrowserTest >> tearDown [
 
 	newBrowser ifNotNil: [ newBrowser window close ].
 	super tearDown
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiBusLogBrowserTest >> testActivateActionButtons [
 	" checks that top toolbar are inactive by default because there is no default selection"
 
@@ -37,12 +39,12 @@ MiBusLogBrowserTest >> testActivateActionButtons [
 	browser actionButtons do: [ :button | self deny: button isEnabled ]
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiBusLogBrowserTest >> testCanTagEntities [
 	self deny: browser canTagEntities 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiBusLogBrowserTest >> testMiSelectedItem [
 	" test that by default there are no selected items"
 
@@ -53,7 +55,7 @@ MiBusLogBrowserTest >> testMiSelectedItem [
 	self assert: browser miSelectedItem isEmpty
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiBusLogBrowserTest >> testOpenOnLatestEntity [
 	"test that new browser opens on the last selected entity"
 

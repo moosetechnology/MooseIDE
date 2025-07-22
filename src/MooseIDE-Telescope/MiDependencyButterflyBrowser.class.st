@@ -8,12 +8,14 @@ Outgoing dependencies, to the right, are in blue
 - Propagate: The central entity (in red)
 "
 Class {
-	#name : #MiDependencyButterflyBrowser,
-	#superclass : #MiAbstractTelescopeBrowser,
-	#category : #'MooseIDE-Telescope-Butterfly'
+	#name : 'MiDependencyButterflyBrowser',
+	#superclass : 'MiAbstractTelescopeBrowser',
+	#category : 'MooseIDE-Telescope-Butterfly',
+	#package : 'MooseIDE-Telescope',
+	#tag : 'Butterfly'
 }
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiDependencyButterflyBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	<miBrowsers>
@@ -25,29 +27,29 @@ MiDependencyButterflyBrowser class >> menuCommandOn: aBuilder [
 		action: [ self open ]
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MiDependencyButterflyBrowser class >> open [
 	<script>
 	^ super open
 ]
 
-{ #category : #specs }
+{ #category : 'specs' }
 MiDependencyButterflyBrowser class >> title [
 	^ 'Dependency Butterfly'
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiDependencyButterflyBrowser >> canFollowEntity: anObject [
 	^ anObject isMooseEntity
 		and: [ anObject usesFamixTrait: TEntityMetaLevelDependency ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiDependencyButterflyBrowser >> diagramClass [
 	^ MiDependencyButterfly
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiDependencyButterflyBrowser >> followEntity: anEntity [
 
 	diagram
@@ -55,7 +57,7 @@ MiDependencyButterflyBrowser >> followEntity: anEntity [
 		run
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDependencyButterflyBrowser >> miSelectedItem [
 	^ diagram entity
 ]

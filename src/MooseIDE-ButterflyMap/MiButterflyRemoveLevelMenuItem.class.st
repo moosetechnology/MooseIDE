@@ -1,22 +1,24 @@
 Class {
-	#name : #MiButterflyRemoveLevelMenuItem,
-	#superclass : #MiButterflyCanvasMenuItem,
-	#category : #'MooseIDE-ButterflyMap-Menu'
+	#name : 'MiButterflyRemoveLevelMenuItem',
+	#superclass : 'MiButterflyCanvasMenuItem',
+	#category : 'MooseIDE-ButterflyMap-Menu',
+	#package : 'MooseIDE-ButterflyMap',
+	#tag : 'Menu'
 }
 
-{ #category : #execution }
+{ #category : 'execution' }
 MiButterflyRemoveLevelMenuItem >> execute [
 
 	visualization removeLevel
 ]
 
-{ #category : #execution }
+{ #category : 'execution' }
 MiButterflyRemoveLevelMenuItem >> label [
 
 	^ 'Remove external layer'
 ]
 
-{ #category : #execution }
+{ #category : 'execution' }
 MiButterflyRemoveLevelMenuItem >> order [
 
 	^ 0

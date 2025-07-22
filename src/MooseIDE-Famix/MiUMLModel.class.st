@@ -1,38 +1,40 @@
 Class {
-	#name : #MiUMLModel,
-	#superclass : #MiAbstractModel,
+	#name : 'MiUMLModel',
+	#superclass : 'MiAbstractModel',
 	#instVars : [
 		'entities',
 		'selected'
 	],
-	#category : #'MooseIDE-Famix-UML'
+	#category : 'MooseIDE-Famix-UML',
+	#package : 'MooseIDE-Famix',
+	#tag : 'UML'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiUMLModel >> entities [
 
 	^ entities
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiUMLModel >> entities: anObject [
 
 	entities := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiUMLModel >> selected [
 
 	^ selected
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiUMLModel >> selected: anObject [
 
 	selected := anObject
 ]
 
-{ #category : #'api - selection' }
+{ #category : 'api - selection' }
 MiUMLModel >> unselectAll [
 
 	selected := nil

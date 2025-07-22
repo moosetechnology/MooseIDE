@@ -25,8 +25,8 @@ Internal Representation and Key Implementation Points.
     Implementation Points
 "
 Class {
-	#name : #MiMetaNavigationBrowser,
-	#superclass : #StPresenter,
+	#name : 'MiMetaNavigationBrowser',
+	#superclass : 'StPresenter',
 	#traits : 'SpTActivable',
 	#classTraits : 'SpTActivable classTrait',
 	#instVars : [
@@ -35,10 +35,12 @@ Class {
 		'actionBar',
 		'shouldShowPropertiesPane'
 	],
-	#category : #'MooseIDE-NewTools-Inspector tabs'
+	#category : 'MooseIDE-NewTools-Inspector tabs',
+	#package : 'MooseIDE-NewTools',
+	#tag : 'Inspector tabs'
 }
 
-{ #category : #specs }
+{ #category : 'specs' }
 MiMetaNavigationBrowser class >> buildCommandsGroupWith: presenter forRoot: aCmCommandsGroup [
 
 	aCmCommandsGroup
@@ -49,38 +51,38 @@ MiMetaNavigationBrowser class >> buildCommandsGroupWith: presenter forRoot: aCmC
 			(MiPropagateCommand forSpecContext: presenter window presenter)
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 MiMetaNavigationBrowser class >> defaultShouldShowPropertiesPane [
 
 	^ false
 ]
 
-{ #category : #'private - actions' }
+{ #category : 'private - actions' }
 MiMetaNavigationBrowser >> activate [
 
 	activationAction cull:
 		(SpActivatedSelection newValue: navigation selectedItem value)
 ]
 
-{ #category : #api }
+{ #category : 'api' }
 MiMetaNavigationBrowser >> activateOnDoubleClick [
 
 	navigation activateOnDoubleClick
 ]
 
-{ #category : #api }
+{ #category : 'api' }
 MiMetaNavigationBrowser >> activateOnSingleClick [
 
 	navigation activateOnSingleClick
 ]
 
-{ #category : #'private - display' }
+{ #category : 'private - display' }
 MiMetaNavigationBrowser >> childrenFor: anEntity [
 
 	^ self itemsFor: anEntity value
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 MiMetaNavigationBrowser >> defaultLayout [
 
 	^ SpBoxLayout newTopToBottom
@@ -89,19 +91,19 @@ MiMetaNavigationBrowser >> defaultLayout [
 		  yourself
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 MiMetaNavigationBrowser >> hidePropertiesPane [
 
 	self layout remove: properties
 ]
 
-{ #category : #'private - display' }
+{ #category : 'private - display' }
 MiMetaNavigationBrowser >> iconBlock [
 
 	^ [ :el | el value mooseIcon ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiMetaNavigationBrowser >> initialize [
 
 	super initialize.
@@ -109,7 +111,7 @@ MiMetaNavigationBrowser >> initialize [
 	self shouldShowPropertiesPane ifTrue: [ self showPropertiesPane ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiMetaNavigationBrowser >> initializeNavigationTreeTable [
 
 	navigation := self newTreeTable.
@@ -133,7 +135,7 @@ MiMetaNavigationBrowser >> initializeNavigationTreeTable [
 		whenActivatedDo: [ self activate ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiMetaNavigationBrowser >> initializePresenters [
 
 	self initializeNavigationTreeTable.
@@ -147,23 +149,23 @@ MiMetaNavigationBrowser >> initializePresenters [
 			 yourself)
 ]
 
-{ #category : #'private - display' }
+{ #category : 'private - display' }
 MiMetaNavigationBrowser >> itemsFor: anObject [
 
 	^ anObject miMetaNavigationItems
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiMetaNavigationBrowser >> model [
 	^ model
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiMetaNavigationBrowser >> model: anObject [
 	model := anObject
 ]
 
-{ #category : #'private - display' }
+{ #category : 'private - display' }
 MiMetaNavigationBrowser >> printEntry: anAssociation [
 
 	^ String streamContents: [ :s |
@@ -175,19 +177,19 @@ MiMetaNavigationBrowser >> printEntry: anAssociation [
 		  s << anAssociation value mooseName ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiMetaNavigationBrowser >> selectedObject [
 
 	^ navigation selection selectedItem value
 ]
 
-{ #category : #'accessing - model' }
+{ #category : 'accessing - model' }
 MiMetaNavigationBrowser >> setModelBeforeInitialization: anInspectionModel [ 
 
 	model := anInspectionModel
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiMetaNavigationBrowser >> shouldShowPropertiesPane [
 	"This is legacy. Not removed because it may be used? If so, it should be a setting. Else, removed"
 
@@ -195,7 +197,7 @@ MiMetaNavigationBrowser >> shouldShowPropertiesPane [
 		  self class defaultShouldShowPropertiesPane ]
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 MiMetaNavigationBrowser >> showPropertiesPane [
 
 	properties ifNil: [ properties := MiPropertyExtension on: self model ].

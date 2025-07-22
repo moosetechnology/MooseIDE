@@ -2,32 +2,34 @@
 This extension is signal when a user try to propagate an entity but there is no selected entity
 "
 Class {
-	#name : #MiNoSelectedElementToPropagateException,
-	#superclass : #MiException,
+	#name : 'MiNoSelectedElementToPropagateException',
+	#superclass : 'MiException',
 	#instVars : [
 		'browser'
 	],
-	#category : #'MooseIDE-Core-Exception'
+	#category : 'MooseIDE-Core-Exception',
+	#package : 'MooseIDE-Core',
+	#tag : 'Exception'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiNoSelectedElementToPropagateException class >> browser: aMiBrowser [
 	^ self new
 		browser: aMiBrowser;
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiNoSelectedElementToPropagateException >> browser [
 	^ browser
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiNoSelectedElementToPropagateException >> browser: anObject [
 	browser := anObject
 ]
 
-{ #category : #handling }
+{ #category : 'handling' }
 MiNoSelectedElementToPropagateException >> defaultAction [
 
 	"The default action taken if the exception is signaled."
@@ -35,7 +37,7 @@ MiNoSelectedElementToPropagateException >> defaultAction [
 	self inform: self browser class title , ': ' , self messageText
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiNoSelectedElementToPropagateException >> initialize [
 	super initialize.
 	messageText := 'This browser does not handle properly item selection. Please consider opening an issue: https://github.com/moosetechnology/MooseIDE'

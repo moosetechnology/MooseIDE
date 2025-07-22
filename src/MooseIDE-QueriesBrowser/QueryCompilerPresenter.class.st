@@ -2,22 +2,24 @@
 I am used in the manual query condigurator presenter. I have a code presenter in which you can enter some valid query code that I will compile an return the object
 "
 Class {
-	#name : #QueryCompilerPresenter,
-	#superclass : #MiPresenter,
+	#name : 'QueryCompilerPresenter',
+	#superclass : 'MiPresenter',
 	#instVars : [
 		'submitButton',
 		'codePresenter',
 		'configuratorPresenter'
 	],
-	#category : #'MooseIDE-QueriesBrowser-Widgets'
+	#category : 'MooseIDE-QueriesBrowser-Widgets',
+	#package : 'MooseIDE-QueriesBrowser',
+	#tag : 'Widgets'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 QueryCompilerPresenter >> code [
 	^ codePresenter text
 ]
 
-{ #category : #compiling }
+{ #category : 'compiling' }
 QueryCompilerPresenter >> compileQuery [
 
 	| compiledQuery |
@@ -29,19 +31,19 @@ QueryCompilerPresenter >> compileQuery [
 	^ compiledQuery
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 QueryCompilerPresenter >> initialExtent [
 
 	^ 350 @ 200
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 QueryCompilerPresenter >> initialize [ 
 	super initialize.
 	codePresenter text: 'FQCollectScriptQuery script: [ :mooseEntity | "Your code here" ]'
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 QueryCompilerPresenter >> initializeButtons [
 
 	submitButton := self newButton.
@@ -50,7 +52,7 @@ QueryCompilerPresenter >> initializeButtons [
 		icon: (self iconNamed: #smallDoIt)
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 QueryCompilerPresenter >> initializeCoder [
 
 	codePresenter := self newCode.
@@ -59,7 +61,7 @@ QueryCompilerPresenter >> initializeCoder [
 		beForScripting
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 QueryCompilerPresenter >> initializeLayout [
 
 	| tempLayout |
@@ -80,7 +82,7 @@ QueryCompilerPresenter >> initializeLayout [
 		yourself)
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 QueryCompilerPresenter >> initializePresenters [
 
 	self initializeButtons.
@@ -88,13 +90,13 @@ QueryCompilerPresenter >> initializePresenters [
 	self initializeLayout
 ]
 
-{ #category : #'accessing - model' }
+{ #category : 'accessing - model' }
 QueryCompilerPresenter >> setModelBeforeInitialization: aModel [
 
 	configuratorPresenter := aModel
 ]
 
-{ #category : #compiling }
+{ #category : 'compiling' }
 QueryCompilerPresenter >> submitQueryAction: aBlock [
 
 	submitButton action: aBlock

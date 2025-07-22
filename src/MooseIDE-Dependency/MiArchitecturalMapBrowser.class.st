@@ -21,18 +21,20 @@ Controls:
 * R to clear all searches
 "
 Class {
-	#name : #MiArchitecturalMapBrowser,
-	#superclass : #MiAbstractVisualizationBrowser,
-	#category : #'MooseIDE-Dependency-ArchitecturalMap'
+	#name : 'MiArchitecturalMapBrowser',
+	#superclass : 'MiAbstractVisualizationBrowser',
+	#category : 'MooseIDE-Dependency-ArchitecturalMap',
+	#package : 'MooseIDE-Dependency',
+	#tag : 'ArchitecturalMap'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiArchitecturalMapBrowser class >> mapClass [
 
 	^ MiArchitecturalMapVisualization
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiArchitecturalMapBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
@@ -40,69 +42,69 @@ MiArchitecturalMapBrowser class >> menuCommandOn: aBuilder [
 	^ self buildMenuItemIn: aBuilder
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiArchitecturalMapBrowser class >> menuItem [
 
 	^ #MiArchitecturalMapBrowser
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiArchitecturalMapBrowser class >> menuPriority [
 
 	^ self menuVisualizationToolsPriority + 1
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MiArchitecturalMapBrowser class >> newModel [
 
 	^ MiArchitecturalMapModel new
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MiArchitecturalMapBrowser class >> open [
 
 	<script>
 	^ super open
 ]
 
-{ #category : #specs }
+{ #category : 'specs' }
 MiArchitecturalMapBrowser class >> preferredExtent [
 
 	^ 850 @ 520
 ]
 
-{ #category : #specs }
+{ #category : 'specs' }
 MiArchitecturalMapBrowser class >> title [
 
 	^ 'Architectural map'
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiArchitecturalMapBrowser >> availableQueries [
 
 	^ (self application itemsFor: FQAbstractQuery) asOrderedCollection 
 		  select: [ :q | q isValid ]
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiArchitecturalMapBrowser >> canFollowEntity: anEntity [
 
 	^ anEntity isMooseObject
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiArchitecturalMapBrowser >> canReceiveEntity: anEntity [
 
 	^ anEntity isMooseObject
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiArchitecturalMapBrowser >> canvas [
 
 	^ mainPresenter canvas
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiArchitecturalMapBrowser >> doWithTimeout: aBlock [
 
 	self model timeoutDuration
@@ -116,7 +118,7 @@ MiArchitecturalMapBrowser >> doWithTimeout: aBlock [
 						, duration asString , ' seconds)' ] ]
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiArchitecturalMapBrowser >> followEntity: anEntity [
 
 	super followEntity: anEntity.
@@ -124,57 +126,57 @@ MiArchitecturalMapBrowser >> followEntity: anEntity [
 	self runVisualization
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 MiArchitecturalMapBrowser >> hasSettings [
 
 	^ true
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiArchitecturalMapBrowser >> initializeLayout [
 
 	self layout: (SpScrollableLayout with: mainPresenter)
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiArchitecturalMapBrowser >> initializePresenters [
 
 	mainPresenter := self class mapClass owner: self.
 	self initializeLayout
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiArchitecturalMapBrowser >> runVisualization [
 
 	self doWithTimeout: [ mainPresenter run ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiArchitecturalMapBrowser >> setModelBeforeInitialization: aModel [
 
 	super setModelBeforeInitialization: aModel.
 	aModel browser: self
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 MiArchitecturalMapBrowser >> setSettingItem: aSymbol value: aValue [
 
 	specModel settings setItem: aSymbol value: aValue
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 MiArchitecturalMapBrowser >> settingsModel [
 
 	^ specModel settings
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 MiArchitecturalMapBrowser >> updateSettings [
 
 	specModel settingsChanged: true
 ]
 
-{ #category : #'accessing - private tests' }
+{ #category : 'accessing - private tests' }
 MiArchitecturalMapBrowser >> visualization [
 	^mainPresenter
 ]
