@@ -559,7 +559,6 @@ MiAbstractBrowser >> needUpdate: anEntity [
 MiAbstractBrowser >> receiveEntity: anEntity [
 
 	"I am used by the Mi Application. You should use #globallySelect: anEntity that will transmit the message to me and the other browsers"
-
 	receivingMode browser: self actOnEntity: anEntity.
 	self updateToolbar
 ]
