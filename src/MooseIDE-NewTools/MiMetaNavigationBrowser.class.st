@@ -33,7 +33,8 @@ Class {
 		'navigation',
 		'model',
 		'actionBar',
-		'shouldShowPropertiesPane'
+		'shouldShowPropertiesPane',
+		'propertiesExtension'
 	],
 	#category : 'MooseIDE-NewTools-Inspector tabs',
 	#package : 'MooseIDE-NewTools',
@@ -94,7 +95,7 @@ MiMetaNavigationBrowser >> defaultLayout [
 { #category : 'layout' }
 MiMetaNavigationBrowser >> hidePropertiesPane [
 
-	self layout remove: properties
+	self layout remove: propertiesExtension
 ]
 
 { #category : 'private - display' }
@@ -199,7 +200,6 @@ MiMetaNavigationBrowser >> shouldShowPropertiesPane [
 
 { #category : 'layout' }
 MiMetaNavigationBrowser >> showPropertiesPane [
-
-	properties ifNil: [ properties := MiPropertyExtension on: self model ].
-	self layout add: properties
+	propertiesExtension ifNil: [ propertiesExtension := MiPropertyExtension on: self model ].
+	self layout add: propertiesExtension
 ]
