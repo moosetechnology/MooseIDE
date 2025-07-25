@@ -1,6 +1,6 @@
 Class {
 	#name : #MiButterflyMapSettingsMemento,
-	#superclass : #Object,
+	#superclass : #MiMemento,
 	#instVars : [
 		'childrenQuery',
 		'clientsQuery',
@@ -8,6 +8,12 @@ Class {
 	],
 	#category : #'MooseIDE-ButterflyMap-Model'
 }
+
+{ #category : #accessing }
+MiButterflyMapSettingsMemento >> childrenQuery [
+
+	^ childrenQuery
+]
 
 { #category : #accessing }
 MiButterflyMapSettingsMemento >> childrenQuery: aQuery [
@@ -28,12 +34,6 @@ MiButterflyMapSettingsMemento >> clientsQuery: aQuery [
 ]
 
 { #category : #accessing }
-MiButterflyMapSettingsMemento >> defaultChildrenQuery [
-
-	^ childrenQuery
-]
-
-{ #category : #accessing }
 MiButterflyMapSettingsMemento >> providersQuery [
 
 	^ providersQuery
@@ -43,4 +43,20 @@ MiButterflyMapSettingsMemento >> providersQuery [
 MiButterflyMapSettingsMemento >> providersQuery: aQuery [
 
 	providersQuery := aQuery
+]
+
+{ #category : #ui }
+MiButterflyMapSettingsMemento >> settingsPresenters [
+
+	^ super settingsPresenters
+		  add: ((MiQuerySettingPresenter on: self)
+				   beForChildren;
+				   yourself);
+		  add: ((MiQuerySettingPresenter on: self)
+				   beForClients;
+				   yourself);
+		  add: ((MiQuerySettingPresenter on: self)
+				   beForProviders;
+				   yourself);
+		  yourself
 ]

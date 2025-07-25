@@ -12,13 +12,6 @@ Class {
 	#category : #'MooseIDE-Core-Browser'
 }
 
-{ #category : #'as yet unclassified' }
-MiAbstractModel class >> settingsCommandsOn: aMemento [
-	"Override to add commands"
-
-	^ OrderedCollection new
-]
-
 { #category : #accessing }
 MiAbstractModel >> browser [
 

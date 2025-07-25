@@ -1,5 +1,5 @@
 Class {
-	#name : #MiArchitecturalMapSettingsDefaultHolder,
+	#name : #MiArchitecturalMapModelDefaultHolder,
 	#superclass : #Object,
 	#instVars : [
 		'specModel'
@@ -8,7 +8,7 @@ Class {
 }
 
 { #category : #'instance creation' }
-MiArchitecturalMapSettingsDefaultHolder class >> on: aMiArchitecturalMapModel [
+MiArchitecturalMapModelDefaultHolder class >> on: aMiArchitecturalMapModel [
 
 	^ self new
 		  specModel: aMiArchitecturalMapModel;
@@ -16,13 +16,13 @@ MiArchitecturalMapSettingsDefaultHolder class >> on: aMiArchitecturalMapModel [
 ]
 
 { #category : #defaults }
-MiArchitecturalMapSettingsDefaultHolder >> associationTypes [
+MiArchitecturalMapModelDefaultHolder >> associationTypes [
 
 	^ self availableAssociationTypes
 ]
 
 { #category : #available }
-MiArchitecturalMapSettingsDefaultHolder >> availableAssociationTypes [
+MiArchitecturalMapModelDefaultHolder >> availableAssociationTypes [
 
 	specModel entities ifNil: [ ^ OrderedCollection new ].
 
@@ -33,7 +33,7 @@ MiArchitecturalMapSettingsDefaultHolder >> availableAssociationTypes [
 ]
 
 { #category : #available }
-MiArchitecturalMapSettingsDefaultHolder >> availableDoubleClickActions [
+MiArchitecturalMapModelDefaultHolder >> availableDoubleClickActions [
 
 	^ {
 		  MiExpandCollapseShapeCommand new.
@@ -44,7 +44,7 @@ MiArchitecturalMapSettingsDefaultHolder >> availableDoubleClickActions [
 ]
 
 { #category : #available }
-MiArchitecturalMapSettingsDefaultHolder >> availableLayouts [
+MiArchitecturalMapModelDefaultHolder >> availableLayouts [
 	"RSLayout withAllSubclasses reject: [ :c | c isAbstract ]
 But some of them require specific configuration that we cannot easily specify here so we choose a subset of the simplest ones"
 
@@ -56,7 +56,7 @@ But some of them require specific configuration that we cannot easily specify he
 ]
 
 { #category : #available }
-MiArchitecturalMapSettingsDefaultHolder >> availableQueries [
+MiArchitecturalMapModelDefaultHolder >> availableQueries [
 
 	^ specModel currentApplication availableQueries
 		  addFirst: specModel currentApplication childrenQuery;
@@ -64,7 +64,7 @@ MiArchitecturalMapSettingsDefaultHolder >> availableQueries [
 ]
 
 { #category : #available }
-MiArchitecturalMapSettingsDefaultHolder >> availableTags [
+MiArchitecturalMapModelDefaultHolder >> availableTags [
 
 	specModel entities ifNotNil: [ :entities |
 			entities ifNotEmpty: [
@@ -73,50 +73,56 @@ MiArchitecturalMapSettingsDefaultHolder >> availableTags [
 	^ OrderedCollection new
 ]
 
+{ #category : #accessing }
+MiArchitecturalMapModelDefaultHolder >> childrenQuery [
+
+	^ specModel currentApplication defaultChildrenQuery
+]
+
 { #category : #defaults }
-MiArchitecturalMapSettingsDefaultHolder >> doubleClickAction [
+MiArchitecturalMapModelDefaultHolder >> doubleClickAction [
 
 	^ self availableDoubleClickActions first
 ]
 
 { #category : #defaults }
-MiArchitecturalMapSettingsDefaultHolder >> hideMegamorphicInvocations [
+MiArchitecturalMapModelDefaultHolder >> hideMegamorphicInvocations [
 
 	^ false
 ]
 
 { #category : #defaults }
-MiArchitecturalMapSettingsDefaultHolder >> hideReceivedEntities [
+MiArchitecturalMapModelDefaultHolder >> hideReceivedEntities [
 
 	^ false
 ]
 
 { #category : #defaults }
-MiArchitecturalMapSettingsDefaultHolder >> layout [
+MiArchitecturalMapModelDefaultHolder >> layout [
 
 	^ RSFlowLayout
 ]
 
 { #category : #defaults }
-MiArchitecturalMapSettingsDefaultHolder >> megamorphicTreshold [
+MiArchitecturalMapModelDefaultHolder >> megamorphicTreshold [
 
 	^ 10
 ]
 
 { #category : #defaults }
-MiArchitecturalMapSettingsDefaultHolder >> showDirectoriesAsRootNodes [
+MiArchitecturalMapModelDefaultHolder >> showDirectoriesAsRootNodes [
 
 	^ false
 ]
 
 { #category : #accessing }
-MiArchitecturalMapSettingsDefaultHolder >> specModel: aMiArchitecturalMapModel [
+MiArchitecturalMapModelDefaultHolder >> specModel: aMiArchitecturalMapModel [
 
 	specModel := aMiArchitecturalMapModel
 ]
 
 { #category : #defaults }
-MiArchitecturalMapSettingsDefaultHolder >> tags [
+MiArchitecturalMapModelDefaultHolder >> tags [
 
 	^ OrderedCollection new
 ]

@@ -8,23 +8,18 @@ Class {
 	#category : #'MooseIDE-Core-Settings'
 }
 
-{ #category : #validation }
+{ #category : #visiting }
 MiSettingsPresenter >> acceptChanges [
 
 	browserModel updateFromMemento: memento
 ]
 
-{ #category : #initialization }
-MiSettingsPresenter >> addPresenterForCommand: aMiSettingCommand inBuilder: aBuilder [
+{ #category : #adding }
+MiSettingsPresenter >> addPresenter: aPresenter inBuilder: aBuilder [
 
 	aBuilder
-		add: (self newLabel
-				 label: aMiSettingCommand name;
-				 help: aMiSettingCommand description;
-				 yourself);
-		add: (aMiSettingCommand buildPresenter
-				 owner: self;
-				 yourself);
+		add: aPresenter labelPresenter;
+		add: aPresenter;
 		nextRow
 ]
 
@@ -47,8 +42,8 @@ MiSettingsPresenter >> initializeDialogWindow: aSpDialogWindowPresenter [
 MiSettingsPresenter >> initializePresenters [
 
 	self layout build: [ :builder |
-			(browserModel settingsCommandsOn: memento) do: [ :cmd |
-				self addPresenterForCommand: cmd inBuilder: builder ] ]
+			(memento settingsPresenters) do: [ :presenterClass |
+				self addPresenter: presenterClass inBuilder: builder ] ]
 ]
 
 { #category : #initialization }

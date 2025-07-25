@@ -12,16 +12,6 @@ Class {
 	#category : #'MooseIDE-ButterflyMap-Model'
 }
 
-{ #category : #settings }
-MiButterflyMapModel class >> settingsCommandsOn: aMemento [
-
-	^ OrderedCollection new
-		  add: (MiChildrenQuerySettingCommand forContext: aMemento);
-		  add: (MiClientsQuerySettingCommand forContext: aMemento);
-		  add: (MiProvidersQuerySettingCommand forContext: aMemento);
-		  yourself
-]
-
 { #category : #computing }
 MiButterflyMapModel >> childrenFor: anEntity [
 
@@ -47,12 +37,6 @@ MiButterflyMapModel >> entities [
 	^self currentEntity
 		ifNil: [ #() ]
 		ifNotNil: [ :entity | { entity } ]
-]
-
-{ #category : #testing }
-MiButterflyMapModel >> hasSettings [
-
-	^ true
 ]
 
 { #category : #initialization }
@@ -101,16 +85,10 @@ MiButterflyMapModel >> rightEntitiesFor: anEntity [
 	^ providersQuery runOn: anEntity asMooseGroup
 ]
 
-{ #category : #accessing }
-MiButterflyMapModel >> settingsChanged: aBoolean [
-
-	aBoolean ifTrue: [ browser runVisualization ]
-]
-
 { #category : #'settings management' }
 MiButterflyMapModel >> updateFromMemento: aMemento [
 
-	childrenQuery := aMemento defaultChildrenQuery.
+	childrenQuery := aMemento childrenQuery.
 	clientsQuery := aMemento clientsQuery.
 	providersQuery := aMemento providersQuery.
 

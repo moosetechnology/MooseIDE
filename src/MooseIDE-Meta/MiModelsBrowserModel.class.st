@@ -67,16 +67,6 @@ MiModelsBrowserModel class >> mementoForDefaultValues [
 		  yourself
 ]
 
-{ #category : #commands }
-MiModelsBrowserModel class >> settingsCommandsOn: aMemento [
-
-	^ OrderedCollection new
-		  add: (MiCreateCacheSettingCommand forContext: aMemento);
-		  add: (MiFilterStubsSettingCommand forContext: aMemento);
-		  add: (MiAutomaticModelsImportSettingCommand forContext: aMemento);
-		  yourself
-]
-
 { #category : #updating }
 MiModelsBrowserModel >> allModelRootBrowser [
 
@@ -142,6 +132,12 @@ MiModelsBrowserModel >> newMemento [
 MiModelsBrowserModel >> newMementoForDefaultValues [
 
 	^ self class mementoForDefaultValues
+]
+
+{ #category : #actions }
+MiModelsBrowserModel >> openSettings [
+
+	^ (MiSettingsPresenter on: self) openDialog
 ]
 
 { #category : #accessing }

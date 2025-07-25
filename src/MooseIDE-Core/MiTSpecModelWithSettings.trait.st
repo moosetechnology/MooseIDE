@@ -1,14 +1,7 @@
 Trait {
 	#name : #MiTSpecModelWithSettings,
-	#category : #'MooseIDE-Core-Browser'
+	#category : #'MooseIDE-Core-Settings'
 }
-
-{ #category : #settings }
-MiTSpecModelWithSettings classSide >> settingsCommandsOn: aMemento [
-	"Override to add  commands"
-
-	^ OrderedCollection new
-]
 
 { #category : #testing }
 MiTSpecModelWithSettings >> hasSettings [
@@ -32,12 +25,6 @@ MiTSpecModelWithSettings >> newMementoForDefaultValues [
 MiTSpecModelWithSettings >> openSettings [
 
 	^ (MiSettingsPresenter on: self) openDialog
-]
-
-{ #category : #'settings management' }
-MiTSpecModelWithSettings >> settingsCommandsOn: aMemento [
-
-	^ self class settingsCommandsOn: aMemento
 ]
 
 { #category : #'settings management' }

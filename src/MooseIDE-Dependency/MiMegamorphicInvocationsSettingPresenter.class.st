@@ -1,10 +1,9 @@
 Class {
 	#name : #MiMegamorphicInvocationsSettingPresenter,
-	#superclass : #MiPresenter,
+	#superclass : #MiAbstractSettingPresenter,
 	#instVars : [
 		'checkbox',
 		'tresholdField',
-		'settingCommand',
 		'tresholdLabel'
 	],
 	#category : #'MooseIDE-Dependency-ArchitecturalMap'
@@ -21,10 +20,9 @@ MiMegamorphicInvocationsSettingPresenter >> defaultLayout [
 ]
 
 { #category : #accessing }
-MiMegamorphicInvocationsSettingPresenter >> help: aString [
+MiMegamorphicInvocationsSettingPresenter >> help [
 
-	checkbox help: aString.
-	tresholdField help: aString
+	^ 'Hide invocations if they have more than a specified number of candidates. Examples: #new, #add:'
 ]
 
 { #category : #initialization }
@@ -32,27 +30,29 @@ MiMegamorphicInvocationsSettingPresenter >> initializePresenters [
 
 	super initializePresenters.
 	checkbox := self newCheckBox
-		            state: settingCommand currentState;
+		            help: self help;
+		            state: memento hideMegamorphicInvocations;
 		            whenChangedDo: [ :state |
-				            settingCommand state: state.
+				            memento hideMegamorphicInvocations: state.
 				            tresholdLabel visible: state.
 				            tresholdField visible: state ].
 
 	tresholdLabel := 'Treshold:' asPresenter
 		                 help: 'Number of candidates to be megamorphic';
-		                 visible: settingCommand currentState;
+		                 visible: memento hideMegamorphicInvocations;
 		                 yourself.
 
 	tresholdField := self newNumberInput
+		                 help: 'Number of candidates to be megamorphic';
 		                 minimum: 1;
-		                 number: settingCommand currentTreshold;
+		                 number: memento megamorphicTreshold;
 		                 whenNumberChangedDo: [ :number |
-			                 settingCommand treshold: number ];
-		                 visible: settingCommand currentState
+			                 memento megamorphicTreshold: number ];
+		                 visible: memento hideMegamorphicInvocations
 ]
 
-{ #category : #'accessing - model' }
-MiMegamorphicInvocationsSettingPresenter >> setModelBeforeInitialization: aSettingCommand [
+{ #category : #accessing }
+MiMegamorphicInvocationsSettingPresenter >> label [
 
-	settingCommand := aSettingCommand
+	^ 'Hide megamorphic invocations'
 ]

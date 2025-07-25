@@ -56,21 +56,6 @@ MiArchitecturalMapModel class >> defaultDynamicTags [
 		  self defaultDynamicTagIsDead }
 ]
 
-{ #category : #settings }
-MiArchitecturalMapModel class >> settingsCommandsOn: aMemento [
-
-	^ OrderedCollection new
-		  add: (MiLayoutSettingCommand forContext: aMemento);
-		  add: (MiChildrenQuerySettingCommand forContext: aMemento);
-		  add: (MiAssociationTypesSettingCommand forContext: aMemento);
-		  add: (MiMegamorphicInvocationsSettingCommand forContext: aMemento);
-		  add: (MiTagsSettingCommand forContext: aMemento);
-		  add: (MiHideEntitiesSettingCommand forContext: aMemento);
-		  add: (MiDirectoriesAsRootNodesSettingCommand forContext: aMemento);
-		  add: (MiDoubleClickSettingCommand forContext: aMemento);
-		  yourself
-]
-
 { #category : #private }
 MiArchitecturalMapModel >> addVirtualParent: aFileReference child: entity upTo: virtualRoot [
 	"#virtualEntities is a Dictionnary where the keys are the virtual entities
@@ -176,7 +161,7 @@ MiArchitecturalMapModel >> hideReceivedEntities [
 { #category : #initialization }
 MiArchitecturalMapModel >> initializeSettings [
 
-	default := MiArchitecturalMapSettingsDefaultHolder on: self.
+	default := MiArchitecturalMapModelDefaultHolder on: self.
 
 	associationTypes := default associationTypes.
 	tags := default tags.
@@ -204,7 +189,7 @@ MiArchitecturalMapModel >> miSelectedItem [
 { #category : #'settings management' }
 MiArchitecturalMapModel >> newMemento [
 
-	^ MiArchitecturalMapSettingsMemento new
+	^ MiArchitecturalMapMemento new
 		  defaultsHolder: default;
 		  layout: layout;
 		  associationTypes: associationTypes;
@@ -221,7 +206,7 @@ MiArchitecturalMapModel >> newMemento [
 { #category : #'settings management' }
 MiArchitecturalMapModel >> newMementoForDefaultValues [
 
-	^ MiArchitecturalMapSettingsMemento fromDefaultsHolder:
+	^ MiArchitecturalMapMemento fromDefaultsHolder:
 		  default
 ]
 
