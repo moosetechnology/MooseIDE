@@ -5,8 +5,7 @@ Class {
 	#name : 'MiImportModelDialog',
 	#superclass : 'MiPresenter',
 	#instVars : [
-		'originBrowser',
-		'isImporting'
+		'originBrowser'
 	],
 	#category : 'MooseIDE-Meta-Import',
 	#package : 'MooseIDE-Meta',
@@ -67,7 +66,7 @@ MiImportModelDialog >> importModelThenCloseDialogWindow [
 	[ self validateImportForm ] onErrorDo: [ :err |
 		UIManager default alert: 'Invalid input: ' , err messageText.
 		^ self ].
-	isImporting ifFalse: [
+
 		aJob := [ :job |
 		        job title: 'Importing model'.
 		        mooseModel := self importModelStep1Import.
@@ -75,14 +74,9 @@ MiImportModelDialog >> importModelThenCloseDialogWindow [
 		        self importModelStep2Install: mooseModel ] asJob.
 
 		[ aJob run ] forkAt: Processor userBackgroundPriority.
-		isImporting := true ]
-	ifTrue: [ UIManager default alert: 'Model is already importing' ]
-]
+		self withWindowDo: [ :window | window close ].
+	
 
-{ #category : 'initialization' }
-MiImportModelDialog >> initialize [
-	super initialize .
-	isImporting := false
 ]
 
 { #category : 'initialization' }
