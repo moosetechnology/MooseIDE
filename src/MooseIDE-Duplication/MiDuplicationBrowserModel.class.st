@@ -27,10 +27,20 @@ Class {
 	#category : #'MooseIDE-Duplication'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #'settings management' }
 MiDuplicationBrowserModel class >> availableSourcesCleaners [
 
 	^ FamixRepSourcesCleaner allAvailableCleaners collect: #new
+]
+
+{ #category : #'settings management' }
+MiDuplicationBrowserModel class >> defaultConfiguration [
+
+	^ FamixRepConfiguration
+		  sourcesCleaner: self defaultSourcesCleaner
+		  minimumNumberOfReplicas: self defaultMinimumNumberOfReplicas
+		  ofLines: self defaultMinimumNumberOfLines
+		  ofCharacters: self defaultMinimumNumberOfCharacters
 ]
 
 { #category : #'settings management' }
@@ -118,7 +128,8 @@ MiDuplicationBrowserModel >> entities [
 { #category : #accessing }
 MiDuplicationBrowserModel >> entities: anObject [
 
-	entities := anObject
+	entities := anObject.
+	self setConfigurationForEntities
 ]
 
 { #category : #api }
@@ -206,14 +217,7 @@ MiDuplicationBrowserModel >> initialize [
 { #category : #initialization }
 MiDuplicationBrowserModel >> initializeSettings [
 
-	configuration := FamixRepConfiguration
-		                 sourcesCleaner: self class defaultSourcesCleaner
-		                 minimumNumberOfReplicas:
-		                 self class defaultMinimumNumberOfReplicas
-		                 ofLines: self class defaultMinimumNumberOfLines
-		                 ofCharacters:
-		                 self class defaultMinimumNumberOfCharacters.
-
+	self setConfigurationForEntities.
 	maximumShownReplicas := self class defaultMaximumShownReplicas
 ]
 
@@ -313,6 +317,18 @@ MiDuplicationBrowserModel >> selectEntities: entityCollection [
 
 	selectedEntities := entityCollection.
 	browser updateToolbar
+]
+
+{ #category : #'as yet unclassified' }
+MiDuplicationBrowserModel >> setConfigurationForEntities [
+
+	entities ifEmpty: [
+			configuration := self class defaultConfiguration.
+			^ self ].
+
+	configuration := entities anyOne mooseModel
+		                 replicationDetectionConfiguration ifNil: [
+		                 self class defaultConfiguration ]
 ]
 
 { #category : #'settings management' }
