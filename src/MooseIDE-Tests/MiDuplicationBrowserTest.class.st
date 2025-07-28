@@ -107,14 +107,6 @@ MiDuplicationBrowserTest >> testFollowEntity [
 ]
 
 { #category : #tests }
-MiDuplicationBrowserTest >> testFormatReplicatedFragment [
-
-	self
-		assert: (self replicatedFragment formatForDuplicationBrowser)
-		equals: '2x3:"Goodness, what big ey...'
-]
-
-{ #category : #tests }
 MiDuplicationBrowserTest >> testMiSelectedItem [
 
 	| entities |
@@ -130,6 +122,14 @@ MiDuplicationBrowserTest >> testMiSelectedItem [
 	browser specModel selectEntities: entities.
 	self assert: browser miSelectedItem size equals: 2.
 	self assert: browser canPropagate
+]
+
+{ #category : #tests }
+MiDuplicationBrowserTest >> testReplicatedFragmentDisplayString [
+
+	self
+		assert: self replicatedFragment displayString
+		equals: '2x3:"Goodness, what big ey...'
 ]
 
 { #category : #tests }

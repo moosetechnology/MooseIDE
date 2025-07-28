@@ -448,7 +448,7 @@ MiAbstractBrowser >> freezeDuring: aBlock [
 { #category : #testing }
 MiAbstractBrowser >> hasSettings [
 
-	^false
+	^ specModel hasSettings
 ]
 
 { #category : #testing }

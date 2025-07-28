@@ -15,49 +15,84 @@ A ReplicatedFragment must have at least 2 Replica-s
 Class {
 	#name : #MiDuplicationBrowserModel,
 	#superclass : #MiAbstractModel,
+	#traits : 'MiTSpecModelWithSettings',
+	#classTraits : 'MiTSpecModelWithSettings classTrait',
 	#instVars : [
-		'settings',
 		'selectedEntities',
 		'replicatedFragmentsHierarchy',
-		'allEntities'
+		'entities',
+		'configuration',
+		'maximumShownReplicas'
 	],
 	#category : #'MooseIDE-Duplication'
 }
 
-{ #category : #accessing }
-MiDuplicationBrowserModel >> allEntities [
+{ #category : #'as yet unclassified' }
+MiDuplicationBrowserModel class >> availableSourcesCleaners [
 
-	^ allEntities
+	^ FamixRepSourcesCleaner allAvailableCleaners collect: #new
+]
+
+{ #category : #'settings management' }
+MiDuplicationBrowserModel class >> defaultMaximumShownReplicas [
+
+	^ 10
+]
+
+{ #category : #'settings management' }
+MiDuplicationBrowserModel class >> defaultMinimumNumberOfCharacters [
+
+	^ 80
+]
+
+{ #category : #'settings management' }
+MiDuplicationBrowserModel class >> defaultMinimumNumberOfLines [
+
+	^ 10
+]
+
+{ #category : #'settings management' }
+MiDuplicationBrowserModel class >> defaultMinimumNumberOfReplicas [
+
+	^ 2
+]
+
+{ #category : #'settings management' }
+MiDuplicationBrowserModel class >> defaultSourcesCleaner [
+
+	^ FamixRepCLikeCleaner new
+]
+
+{ #category : #'settings management' }
+MiDuplicationBrowserModel class >> newMementoForDefaultValues [
+
+	^ MiDuplicationMemento new
+		  minimumNumberOfLines: self defaultMinimumNumberOfLines;
+		  minimumNumberOfCharacters: self defaultMinimumNumberOfCharacters;
+		  minimumNumberOfReplicas: self defaultMinimumNumberOfReplicas;
+		  sourcesCleaner: self defaultSourcesCleaner;
+		  availableSourceCleaners: self availableSourcesCleaners;
+		  maximumShownReplicas: self defaultMaximumShownReplicas;
+		  yourself
 ]
 
 { #category : #accessing }
-MiDuplicationBrowserModel >> allEntities: aCollection [
+MiDuplicationBrowserModel >> allReplicatedFragments [
 
-	allEntities := aCollection sorted: [ :a :b | a name < b name ].
-	browser showEntities: allEntities
-]
-
-{ #category : #accessing }
-MiDuplicationBrowserModel >> allReplicatedFragments [ 
-
-	^replicatedFragmentsHierarchy keys
+	^ replicatedFragmentsHierarchy keys
 ]
 
 { #category : #private }
 MiDuplicationBrowserModel >> ancestorsOf: aFragment in: aFragmentCollection [
-	^aFragmentCollection select: [ :anotherFragment | 
-		           self fragment: anotherFragment includes: aFragment ]
+
+	^ aFragmentCollection select: [ :anotherFragment |
+		  self fragment: anotherFragment includes: aFragment ]
 ]
 
 { #category : #api }
 MiDuplicationBrowserModel >> childrenFragments: aFragment [
 
 	^ replicatedFragmentsHierarchy at: aFragment
-]
-
-{ #category : #settings }
-MiDuplicationBrowserModel >> codeCleanerClass [
-	^#codeCleanerClass
 ]
 
 { #category : #private }
@@ -69,36 +104,34 @@ MiDuplicationBrowserModel >> directParentOf: aFragment in: aFragmentCollection [
 	| parents |
 	parents := self ancestorsOf: aFragment in: aFragmentCollection.
 	parents ifEmpty: [ ^ nil ].
-	^((parents collect: [ :fr | fr -> (self ancestorsOf: fr in: parents) ])
-	sorted: [ :a :b | a value size > b value size ])
-	first key
+	^ ((parents collect: [ :fr |
+		    fr -> (self ancestorsOf: fr in: parents) ]) sorted: [ :a :b |
+		   a value size > b value size ]) first key
 ]
 
 { #category : #accessing }
 MiDuplicationBrowserModel >> entities [
-	"required by MiAbstractModel, synonym to local #allEntities"
 
-	^self allEntities
+	^ entities
 ]
 
 { #category : #accessing }
 MiDuplicationBrowserModel >> entities: anObject [
-	"required by MiAbstractModel, synonym to local #allEntities:"
 
-	allEntities := anObject
+	entities := anObject
 ]
 
 { #category : #api }
 MiDuplicationBrowserModel >> findReplicas [
-	"computes all duplication fragments between #allEntities"
+	"Compute all duplication fragments between all entities"
 
-	allEntities do: [ :entity | entity replicas removeAll].
+	entities do: [ :entity | entity replicas removeAll ].
 
 	replicatedFragmentsHierarchy := self hierarchyOfReplicatedFragment:
-		(self newDetector runOn: allEntities)
-			replicatedFragments.
+		                                (self newDetector runOn: entities)
+			                                replicatedFragments.
 
-	browser showReplicatedFragments: (self rootFragments)
+	browser showReplicatedFragments: self rootFragments
 ]
 
 { #category : #private }
@@ -123,11 +156,10 @@ MiDuplicationBrowserModel >> fragmentsSelection: selectedFragments [
 	browser showSelectedClones: allReplicas.
 
 	"limit the number of code tabs shown"
-	allReplicas size > self maxReplicasShowedSetting
-		ifTrue: [ allReplicas := allReplicas first: self maxReplicasShowedSetting ].
+	allReplicas size > maximumShownReplicas ifTrue: [
+		allReplicas := allReplicas first: maximumShownReplicas ].
 
-	self selectEntities:
-		(allReplicas collectAsSet: #entity) asMooseGroup.
+	self selectEntities: (allReplicas collectAsSet: #entity) asMooseGroup.
 	browser showReplicas: allReplicas
 ]
 
@@ -161,25 +193,28 @@ MiDuplicationBrowserModel >> highlightEntities: entitiesToHighlight [
 
 { #category : #initialization }
 MiDuplicationBrowserModel >> initialize [
+
 	super initialize.
 
-	allEntities := #(  ).
-	selectedEntities := #().
+	entities := #(  ).
+	selectedEntities := #(  ).
 	replicatedFragmentsHierarchy := Dictionary new.
 
-	self initializeSettings 
+	self initializeSettings
 ]
 
 { #category : #initialization }
-MiDuplicationBrowserModel >> initializeSettings [ 
-	settings := super initializeSettings
-		addItem: self itemMinNumberOfLines 		named: self minNumberOfLines ;
-		addItem: self itemMinNumberOfCharacters named: self minNumberOfCharacters ;
-		addItem: self itemMinNumberOfReplicas 	named: self minNumberOfReplicas ;
-		addItem: self itemCodeCleanerClass 		named: self codeCleanerClass ;
-		addItem: self itemMaxReplicasShowed 		named: self maxReplicasShowed ;
-		yourself
-	
+MiDuplicationBrowserModel >> initializeSettings [
+
+	configuration := FamixRepConfiguration
+		                 sourcesCleaner: self class defaultSourcesCleaner
+		                 minimumNumberOfReplicas:
+		                 self class defaultMinimumNumberOfReplicas
+		                 ofLines: self class defaultMinimumNumberOfLines
+		                 ofCharacters:
+		                 self class defaultMinimumNumberOfCharacters.
+
+	maximumShownReplicas := self class defaultMaximumShownReplicas
 ]
 
 { #category : #api }
@@ -188,105 +223,43 @@ MiDuplicationBrowserModel >> isSelected: anEntity [
 	^ selectedEntities includes: anEntity
 ]
 
-{ #category : #settings }
-MiDuplicationBrowserModel >> itemCodeCleanerClass [
-	^MiAbstractSettingItem droplistSetting
-		possibleValues: FamixRepSourcesCleaner allAvailableCleaners ;
-		setValue: FamixRepCLikeCleaner ;
-		label: 'Code cleaning startegy' ;
-		help: 'The cleaner used to clean the code before detecting duplication. The cleaner removes extra whitespaces and/or comments. Cleaners are programming language specific.' ;
-		yourself
-]
-
-{ #category : #settings }
-MiDuplicationBrowserModel >> itemMaxReplicasShowed [
-	^MiAbstractSettingItem integerSetting
-		setValue: 10 ;
-		label: 'Maximum number of tab shown' ;
-		help: 'Maximum number of entities shown in the browser. If a code snippet is duplicated too many times, will only show that much occurences.' ;
-		yourself
-]
-
-{ #category : #settings }
-MiDuplicationBrowserModel >> itemMinNumberOfCharacters [
-	^MiAbstractSettingItem integerSetting
-		setValue: 80 ;
-		label: 'Minimum number of character' ;
-		help: 'Minimum number of characters in duplicated fragment. Code fragments that are too small are not interesting.' ;
-		yourself
-]
-
-{ #category : #settings }
-MiDuplicationBrowserModel >> itemMinNumberOfLines [
-	^MiAbstractSettingItem integerSetting
-		setValue: 10 ;
-		label: 'Minimum number of line' ;
-		help: 'Minimum number of lines of code in a duplicated code snipet. The larger, the less duplicated snippets found.' ;
-		yourself
-]
-
-{ #category : #settings }
-MiDuplicationBrowserModel >> itemMinNumberOfReplicas [
-	^MiAbstractSettingItem integerSetting
-		setValue: 2 ;
-		label: 'Minimum number of replica' ;
-		help: 'The minimum number of times a code snippet is duplicated. Cannot be less than 2. The larger, the less duplicated snippets found.' ;
-		yourself
-]
-
-{ #category : #settings }
-MiDuplicationBrowserModel >> maxReplicasShowed [
-	^#maxReplicasShowed
-]
-
-{ #category : #settings }
-MiDuplicationBrowserModel >> maxReplicasShowedSetting [
-
-	^settings getItemValue: self maxReplicasShowed
-]
-
 { #category : #accessing }
 MiDuplicationBrowserModel >> miSelectedItem [
 
-	^ selectedEntities ifEmpty: [ allEntities ]
-]
-
-{ #category : #settings }
-MiDuplicationBrowserModel >> minNumberOfCharacters [
-	^#minNumberOfCharacters
-]
-
-{ #category : #settings }
-MiDuplicationBrowserModel >> minNumberOfLines [
-	^#minNumberOfLines
-]
-
-{ #category : #settings }
-MiDuplicationBrowserModel >> minNumberOfReplicas [
-	^#minNumberOfReplicas
+	^ selectedEntities ifEmpty: [ entities ]
 ]
 
 { #category : #private }
 MiDuplicationBrowserModel >> newDetector [
-	^FamixRepDetector new
-		configuration: self newRepConfig ;
-		yourself
+
+	^ FamixRepDetector new
+		  configuration: configuration;
+		  yourself
 ]
 
-{ #category : #private }
-MiDuplicationBrowserModel >> newRepConfig [
+{ #category : #'settings management' }
+MiDuplicationBrowserModel >> newMemento [
 
-	^ FamixRepConfiguration new
-		  minimumNumberOfReplicas: (settings getItemValue: self minNumberOfReplicas) ;
-		  minimumNumberOfLines: (settings getItemValue: self minNumberOfLines) ;
-		  minimumNumberOfCharacters: (settings getItemValue: self minNumberOfCharacters) ;
-		  sourcesCleaner: (settings getItemValue: self codeCleanerClass) new;
+	^ MiDuplicationMemento new
+		  minimumNumberOfLines: configuration minimumNumberOfLines;
+		  minimumNumberOfCharacters: configuration minimumNumberOfCharacters;
+		  minimumNumberOfReplicas: configuration minimumNumberOfReplicas;
+		  sourcesCleaner: configuration sourcesCleaner;
+		  maximumShownReplicas: maximumShownReplicas;
+		  availableSourceCleaners: self class availableSourcesCleaners;
 		  yourself
+]
+
+{ #category : #'settings management' }
+MiDuplicationBrowserModel >> newMementoForDefaultValues [
+
+	^ self class newMementoForDefaultValues
 ]
 
 { #category : #api }
 MiDuplicationBrowserModel >> numberOfEntities [
-	^allEntities size
+
+	^ entities size
 ]
 
 { #category : #api }
@@ -342,8 +315,14 @@ MiDuplicationBrowserModel >> selectEntities: entityCollection [
 	browser updateToolbar
 ]
 
-{ #category : #accessing }
-MiDuplicationBrowserModel >> settings [
+{ #category : #'settings management' }
+MiDuplicationBrowserModel >> updateFromMemento: aMemento [
 
-	^ settings
+	configuration
+		minimumNumberOfLines: aMemento minimumNumberOfLines;
+		minimumNumberOfCharacters: aMemento minimumNumberOfCharacters;
+		minimumNumberOfReplicas: aMemento minimumNumberOfReplicas;
+		sourcesCleaner: aMemento sourcesCleaner.
+
+	maximumShownReplicas := aMemento maximumShownReplicas
 ]

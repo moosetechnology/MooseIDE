@@ -39,26 +39,26 @@ Class {
 	#category : #'MooseIDE-Meta-ModelsBrowser'
 }
 
-{ #category : #settings }
+{ #category : #'settings management' }
 MiModelsBrowserModel class >> defaultFilterStubs [
 
 	^ true
 ]
 
-{ #category : #settings }
+{ #category : #'settings management' }
 MiModelsBrowserModel class >> defaultModelImportIsAutomatic [
 
 	^ false
 ]
 
-{ #category : #settings }
+{ #category : #'settings management' }
 MiModelsBrowserModel class >> defaultShouldCreateCache [
 
 	^ false
 ]
 
-{ #category : #settings }
-MiModelsBrowserModel class >> mementoForDefaultValues [
+{ #category : #'settings management' }
+MiModelsBrowserModel class >> newMementoForDefaultValues [
 
 	^ MiModelsSettingsMemento new
 		  shouldCreateCache: self defaultShouldCreateCache;
@@ -131,7 +131,7 @@ MiModelsBrowserModel >> newMemento [
 { #category : #'settings management' }
 MiModelsBrowserModel >> newMementoForDefaultValues [
 
-	^ self class mementoForDefaultValues
+	^ self class newMementoForDefaultValues
 ]
 
 { #category : #actions }

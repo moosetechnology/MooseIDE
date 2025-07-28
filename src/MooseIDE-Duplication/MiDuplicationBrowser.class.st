@@ -97,7 +97,7 @@ MiDuplicationBrowser >> canHighlight [
 MiDuplicationBrowser >> followEntity: anEntity [
 
 	super followEntity: anEntity.
-	specModel allEntities: anEntity
+	specModel entities: anEntity
 ]
 
 { #category : #initialization }
@@ -171,7 +171,7 @@ MiDuplicationBrowser >> initializeListReplicatedFragments [
 	lstReplicatedFragments beMultipleSelection.
 
 	lstReplicatedFragments display: [ :replicatedFragment | 
-		replicatedFragment formatForDuplicationBrowser ].
+		replicatedFragment displayString ].
 
 	lstReplicatedFragments children: [ :replicatedFragment | specModel childrenFragments: replicatedFragment ].
 	
@@ -293,7 +293,7 @@ MiDuplicationBrowser >> showSelectedClones: replicas [
 	 If the list is empty (no selected replicas) show all entities"
 
 	replicas
-		ifEmpty: [ lstEntities items: self specModel allEntities ]
+		ifEmpty: [ lstEntities items: self specModel entities ]
 		ifNotEmpty: [ lstEntities items: (replicas collect: #entity) ]
 ]
 

@@ -145,11 +145,6 @@ MiModelsBrowser >> handleDropFile: aFileReference [
 					handleDropFile: aFileReference ]
 ]
 
-{ #category : #testing }
-MiModelsBrowser >> hasSettings [
-	^ true
-]
-
 { #category : #accessing }
 MiModelsBrowser >> importFromFileUI [
 

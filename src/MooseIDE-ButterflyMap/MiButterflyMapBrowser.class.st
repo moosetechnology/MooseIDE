@@ -92,12 +92,6 @@ MiButterflyMapBrowser >> followEntity: anEntity [
 	self specModel currentEntity: anEntity
 ]
 
-{ #category : #testing }
-MiButterflyMapBrowser >> hasSettings [
-
-	^ true
-]
-
 { #category : #initialization }
 MiButterflyMapBrowser >> initializeLayout [
 
