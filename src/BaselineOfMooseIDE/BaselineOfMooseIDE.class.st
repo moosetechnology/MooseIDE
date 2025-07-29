@@ -281,5 +281,5 @@ BaselineOfMooseIDE >> roassalExporters: spec [
 	spec
 		baseline: 'RoassalExporters'
 		with: [ 
-		spec repository: 'github://pharo-graphics/RoassalExporters:v1.01/src' ]
+		spec repository: 'github://pharo-graphics/RoassalExporters:v1.02/src' ]
 ]
