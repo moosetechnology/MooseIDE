@@ -69,7 +69,7 @@ BaselineOfMooseIDE >> defineGroups: spec [
 BaselineOfMooseIDE >> defineMooseCriticsPackages: spec [
 
 	spec
-		package: 'MooseIDE-CriticBrowser' with: [ spec requires: #( 'MooseIDE-Core' 'Famix-CriticBrowser-Entities' 'STONCustomizer' ) ];
+		package: 'MooseIDE-CriticBrowser' with: [ spec requires: #( 'MooseIDE-Core' 'Famix-CriticBrowser-Entities' ) ];
 		package: 'MooseIDE-CriticBrowser-Tests' with: [ spec requires: #( 'MooseIDE-Tests' 'MooseIDE-CriticBrowser' ) ];
 		
 		package: 'Famix-CriticBrowser-ManualEntities' with: [ spec requires: #( 'FamixQueries' ) ];
@@ -307,13 +307,4 @@ BaselineOfMooseIDE >> roassalExporters: spec [
 		baseline: 'RoassalExporters'
 		with: [ 
 		spec repository: 'github://pharo-graphics/RoassalExporters:v1.01/src' ]
-]
-
-{ #category : 'dependencies' }
-BaselineOfMooseIDE >> stonCustomizer: spec [
-
-	spec
-		baseline: 'STONCustomizer'
-		with: [ 
-		spec repository: 'github://jecisc/STONCustomizer:v1.x.x/src' ]
 ]

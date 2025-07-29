@@ -198,8 +198,8 @@ MiCriticBrowser >> exportRules [
 MiCriticBrowser >> exportRulesToStream: aStream [
 
 	specModel ruleComponents do: [ :el |
-		SCExporter export: el onStream: aStream ].
-	SCExporter export: specModel createHierarchyTree onStream: aStream
+		(STONWriter on: aStream) nextPut: el ].
+	(STONWriter on: aStream) nextPut: specModel createHierarchyTree
 ]
 
 { #category : 'actions' }
