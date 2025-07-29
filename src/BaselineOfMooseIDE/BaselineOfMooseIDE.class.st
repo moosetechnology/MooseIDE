@@ -48,7 +48,6 @@ BaselineOfMooseIDE >> defineDependencies: spec [
 	self roassalExporters: spec.
 	self hierarchicalVisualizations: spec.
 	self pharoAIHierachicalClustering: spec.
-	self stonCustomizer: spec.
 	self interactiveNotebook: spec.
 	self classBlueprint: spec.
 
