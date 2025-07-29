@@ -10,17 +10,15 @@ BaselineOfMooseIDE >> baseline: spec [
 
 	<baseline>
 	spec for: #common do: [
-		spec preLoadDoIt: #removeRoassalFromSystem.
+			self defineDependencies: spec.
+			self definePackages: spec.
+			self defineGroups: spec.
 
-		self defineDependencies: spec.
-		self definePackages: spec.
-		self defineGroups: spec.
+			spec for: #NoFamix do: [
+					self defineMooseDependencies: spec.
+					self definePackagesWhenNoFamix: spec ].
 
-		spec for: #NoFamix do: [
-			self defineMooseDependencies: spec.
-			self definePackagesWhenNoFamix: spec ].
-
-		spec postLoadDoIt: #registerCustomTools ]
+			spec postLoadDoIt: #registerCustomTools ]
 ]
 
 { #category : 'dependencies' }
@@ -275,17 +273,6 @@ BaselineOfMooseIDE >> registerShortcuts [
 	(Smalltalk classNamed: #MiShortcutsCategory) ifNotNil: [
 		:miShortcutsCategory |
 		miShortcutsCategory new installAsGlobalCategory ]
-]
-
-{ #category : 'actions' }
-BaselineOfMooseIDE >> removeRoassalFromSystem [
-
-	#( Roassal3 Numeric ) do: [ :string |
-		| packages |
-		packages := self packageOrganizer packages
-			            select: [ :each |
-			            (string surroundedBy: '*') match: each name ]
-			            thenDo: [ :each | each removeFromSystem ] ]
 ]
 
 { #category : 'dependencies' }
