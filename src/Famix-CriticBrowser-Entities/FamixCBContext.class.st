@@ -219,7 +219,7 @@ FamixCBContext >> runOn: aCollection [
 { #category : #running }
 FamixCBContext >> runOn: aCollection withCallback: aBlock [
 
-	aBlock value: self name.
+	aBlock cull: self name.
 	self entities: (contextFilter value: aCollection)
 ]
 
@@ -232,19 +232,13 @@ FamixCBContext >> runUpTree: aCollection [
 
 { #category : #'ston persistence' }
 FamixCBContext >> stonOn: stonWriter [
-	stonWriter
-		writeObject: self
-		streamMap: [ :dictionary | 
-			self class stonAllInstVarNames
-				do: [ :each | 
-					(self instVarNamed: each)
-						ifNotNil: [ :value | 
-							dictionary
-								at: each asSymbol
-								put:
-									((value class = FullBlockClosure)
-										ifTrue: [ value asString ]
-										ifFalse: [ value ]) ] ] ] 
+
+	stonWriter writeObject: self streamMap: [ :dictionary |
+			self class stonAllInstVarNames do: [ :each |
+					(self instVarNamed: each) ifNotNil: [ :value |
+							dictionary at: each asSymbol put: (value isClosure
+									 ifTrue: [ value asString ]
+									 ifFalse: [ value ]) ] ] ]
 ]
 
 { #category : #running }

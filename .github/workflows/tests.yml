@@ -12,5 +12,4 @@ jobs:
     with:
       create-artifact: ${{ github.event_name == 'push' }} #Create artifact only after a push
       image-name: MooseIDE
-      pharo-versions: "['Pharo64-12', 'Pharo64-13']"
       run-coverage: true

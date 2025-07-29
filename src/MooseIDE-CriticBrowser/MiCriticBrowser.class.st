@@ -196,8 +196,8 @@ MiCriticBrowser >> exportRules [
 MiCriticBrowser >> exportRulesToStream: aStream [
 
 	specModel ruleComponents do: [ :el |
-		SCExporter export: el onStream: aStream ].
-	SCExporter export: specModel createHierarchyTree onStream: aStream
+		(STONWriter on: aStream) nextPut: el ].
+	(STONWriter on: aStream) nextPut: specModel createHierarchyTree
 ]
 
 { #category : #actions }
@@ -243,7 +243,7 @@ MiCriticBrowser >> importRulesFromStream: aStream [
 			:cond |
 			| temp |
 			temp := Smalltalk compiler evaluate: cond query.
-			temp class = FullBlockClosure
+			temp isClosure
 				ifTrue: [ cond query: (FamixCBQueryHandler on: cond query) ]
 				ifFalse: [
 						temp isScriptQuery
