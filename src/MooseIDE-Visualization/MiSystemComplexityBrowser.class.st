@@ -75,7 +75,7 @@ MiSystemComplexityBrowser >> buildVisualization [
 { #category : #testing }
 MiSystemComplexityBrowser >> canFollowEntity: anObject [
 
-	^ anObject isKindOf: MooseGroup
+	^ anObject isMooseObject and: [ anObject isCollection ]
 ]
 
 { #category : #testing }
@@ -94,12 +94,6 @@ MiSystemComplexityBrowser >> followEntity: aMooseGroup [
 		self inform:
 			(aMooseGroup size - newGroup size) asString , ' rejected entities.' ].
 	specModel entities: newGroup
-]
-
-{ #category : #testing }
-MiSystemComplexityBrowser >> hasSettings [
-
-	^ true
 ]
 
 { #category : #initialization }

@@ -1,9 +1,12 @@
 Class {
 	#name : #MiSystemComplexityModel,
 	#superclass : #MiAbstractModel,
+	#traits : 'MiTSpecModelWithSettings',
+	#classTraits : 'MiTSpecModelWithSettings classTrait',
 	#instVars : [
 		'settings',
-		'entities'
+		'entities',
+		'availableMetrics'
 	],
 	#category : #'MooseIDE-Visualization-System Complexity'
 }
@@ -12,12 +15,12 @@ Class {
 MiSystemComplexityModel >> availableMetrics [
 
 	entities ifEmpty: [ ^ OrderedCollection new ].
-	^ (((entities allEntityTypes collect: [ :entity | 
-		     entity famePropertiesOfType: FM3Number ]) fold: [ 
-		    :availableProperties 
-		    :entityProperties | availableProperties & entityProperties ]) 
-		   collect: #implementingSelector) asOrderedCollection sort: [ :a :b | 
-		  a < b ]
+
+	^ (((entities allEntityTypes collect: [ :entity |
+		     entity famePropertiesOfType: FM3Number ]) fold: [
+		    :availableProperties
+		    :entityProperties | availableProperties & entityProperties ])
+		   collect: #implementingSelector) sorted: #yourself ascending
 ]
 
 { #category : #accessing }
@@ -66,7 +69,9 @@ MiSystemComplexityModel >> entities [
 MiSystemComplexityModel >> entities: aMooseGroup [
 
 	aMooseGroup ifEmpty: [ ^ self ].
+	
 	entities := aMooseGroup.
+	
 	self updateSettings.
 	browser runVisualization
 ]
@@ -82,6 +87,7 @@ MiSystemComplexityModel >> initialize [
 
 	super initialize.
 	entities := MooseGroup new.
+	availableMetrics := {  }
 ]
 
 { #category : #initialization }
@@ -91,8 +97,7 @@ MiSystemComplexityModel >> initializeSettings [
 		            addItem: self itemHeightMetric named: #heightMetric;
 		            addItem: self itemWidthMetric named: #widthMetric;
 		            addItem: self itemColorMetric named: #colorMetric;
-		            addItem: self itemColorRangeStart
-		            named: #colorRangeStart;
+		            addItem: self itemColorRangeStart named: #colorRangeStart;
 		            addItem: self itemColorRangeEnd named: #colorRangeEnd;
 		            addItem: self itemNameToDisplay named: #nameToDisplay;
 		            yourself

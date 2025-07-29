@@ -134,6 +134,12 @@ MiPlaygroundBrowser >> followEntity: anEntity [
 			 value: anEntity)
 ]
 
+{ #category : #testing }
+MiPlaygroundBrowser >> hasSettings [
+
+	^ false
+]
+
 { #category : #initialization }
 MiPlaygroundBrowser >> initializePresenters [
 
