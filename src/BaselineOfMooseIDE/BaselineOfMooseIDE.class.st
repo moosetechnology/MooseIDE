@@ -10,17 +10,15 @@ BaselineOfMooseIDE >> baseline: spec [
 
 	<baseline>
 	spec for: #common do: [
-		spec preLoadDoIt: #removeRoassalFromSystem.
+			self defineDependencies: spec.
+			self definePackages: spec.
+			self defineGroups: spec.
 
-		self defineDependencies: spec.
-		self definePackages: spec.
-		self defineGroups: spec.
+			spec for: #NoFamix do: [
+					self defineMooseDependencies: spec.
+					self definePackagesWhenNoFamix: spec ].
 
-		spec for: #NoFamix do: [
-			self defineMooseDependencies: spec.
-			self definePackagesWhenNoFamix: spec ].
-
-		spec postLoadDoIt: #registerCustomTools ]
+			spec postLoadDoIt: #registerCustomTools ]
 ]
 
 { #category : 'dependencies' }
@@ -44,7 +42,6 @@ BaselineOfMooseIDE >> customProjectAttributes [
 BaselineOfMooseIDE >> defineDependencies: spec [
 
 	self labelContractor: spec.
-	self roassal: spec.
 	self roassalExporters: spec.
 	self hierarchicalVisualizations: spec.
 	self pharoAIHierachicalClustering: spec.
@@ -91,26 +88,25 @@ BaselineOfMooseIDE >> defineMooseDependencies: spec [
 BaselineOfMooseIDE >> definePackages: spec [
 
 	spec
-		package: 'MooseIDE-Core' with: [
-			spec requires:
-					#( 'LabelContractor' 'RoassalExporters' ) ];
+		package: 'MooseIDE-Core'
+		with: [ spec requires: #( 'LabelContractor' 'RoassalExporters' ) ];
 		package: 'MooseIDE-Visualization'
 		with: [
 			spec requires: #( 'MooseIDE-Core' 'HierarchicalVisualizations' ) ];
 		package: 'MooseIDE-Meta'
 		with: [ spec requires: #( 'MooseIDE-Core' 'MooseIDE-Famix' ) ];
 		package: 'MooseIDE-Dependency' with: [
-			spec requires:
-					#( 'MooseIDE-Core' 'MooseIDE-Visualization'
-					   'Roassal' 'AIHierarchicalClustering' ) ];
+				spec requires:
+						#( 'MooseIDE-Core' 'MooseIDE-Visualization'
+						   'AIHierarchicalClustering' ) ];
 		package: 'MooseIDE-Tests' with: [
-			spec requires:
-					#( 'MooseIDE-Core' 'MooseIDE-Dependency' 'MooseIDE-Visualization' ) ];
+				spec requires:
+						#( 'MooseIDE-Core' 'MooseIDE-Dependency' 'MooseIDE-Visualization' ) ];
 		package: 'MooseIDE-AttributedText';
 		package: 'MooseIDE-Famix' with: [
-			spec requires:
-					#( 'MooseIDE-Core' 'MooseIDE-Visualization'
-					   'MooseIDE-AttributedText' ) ];
+				spec requires:
+						#( 'MooseIDE-Core' 'MooseIDE-Visualization'
+						   'MooseIDE-AttributedText' ) ];
 		package: 'MooseIDE-QueriesBrowser'
 		with: [ spec requires: #( 'MooseIDE-Core' 'FamixQueries' ) ];
 		package: 'MooseIDE-QueriesBrowser-Tests'
@@ -145,9 +141,9 @@ BaselineOfMooseIDE >> definePackages: spec [
 		package: 'MooseIDE-QueriesDashboard'
 		with: [ spec requires: #( 'MooseIDE-Core' ) ];
 		package: 'MooseIDE-LayerVisualization' with: [
-			spec requires:
-					#( 'MooseIDE-Core' 'MooseIDE-Visualization'
-					   'MooseIDE-QueriesDashboard' ) ];
+				spec requires:
+						#( 'MooseIDE-Core' 'MooseIDE-Visualization'
+						   'MooseIDE-QueriesDashboard' ) ];
 		package: 'MooseIDE-ClassBlueprint'
 		with: [
 			spec requires: #( 'MooseIDE-Visualization' 'ClassBlueprint' ) ];
@@ -279,31 +275,11 @@ BaselineOfMooseIDE >> registerShortcuts [
 		miShortcutsCategory new installAsGlobalCategory ]
 ]
 
-{ #category : 'actions' }
-BaselineOfMooseIDE >> removeRoassalFromSystem [
-
-	#( Roassal3 Numeric ) do: [ :string |
-		| packages |
-		packages := self packageOrganizer packages
-			            select: [ :each |
-			            (string surroundedBy: '*') match: each name ]
-			            thenDo: [ :each | each removeFromSystem ] ]
-]
-
-{ #category : 'dependencies' }
-BaselineOfMooseIDE >> roassal: spec [
-
-	spec
-		baseline: 'Roassal'
-		with: [
-		spec repository: 'github://pharo-graphics/Roassal:v1.06c/src' ]
-]
-
 { #category : 'dependencies' }
 BaselineOfMooseIDE >> roassalExporters: spec [
 
 	spec
 		baseline: 'RoassalExporters'
 		with: [ 
-		spec repository: 'github://pharo-graphics/RoassalExporters:v1.01/src' ]
+		spec repository: 'github://pharo-graphics/RoassalExporters:v1.02/src' ]
 ]
