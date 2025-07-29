@@ -21,12 +21,14 @@ Controls:
 * R to clear all searches
 "
 Class {
-	#name : #MiSystemComplexityBrowser,
-	#superclass : #MiAbstractVisualizationBrowser,
-	#category : #'MooseIDE-Visualization-System Complexity'
+	#name : 'MiSystemComplexityBrowser',
+	#superclass : 'MiAbstractVisualizationBrowser',
+	#category : 'MooseIDE-Visualization-System Complexity',
+	#package : 'MooseIDE-Visualization',
+	#tag : 'System Complexity'
 }
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiSystemComplexityBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
@@ -34,57 +36,57 @@ MiSystemComplexityBrowser class >> menuCommandOn: aBuilder [
 	^ (self buildMenuItemIn: aBuilder) withSeparatorAfter
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiSystemComplexityBrowser class >> menuItem [
 
 	^ #SystemComplexityBrowser
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiSystemComplexityBrowser class >> menuPriority [
 
 	^ self menuVisualizationToolsPriority + 6
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MiSystemComplexityBrowser class >> newModel [
 
 	^ MiSystemComplexityModel new
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MiSystemComplexityBrowser class >> open [
 
 	<script>
-	super open
+	^ super open
 ]
 
-{ #category : #specs }
+{ #category : 'specs' }
 MiSystemComplexityBrowser class >> title [
 
 	^ 'System complexity'
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiSystemComplexityBrowser >> buildVisualization [
 
 	self deprecated: 'Use runVisualization method instead' transformWith: '`@receiver buildVisualization' -> '`@receiver runVisualization'.
 	self runVisualization 
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiSystemComplexityBrowser >> canFollowEntity: anObject [
 
 	^ anObject isMooseObject and: [ anObject isCollection ]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiSystemComplexityBrowser >> canTagEntities [ 
 	self flag: 'No for now, but will need to be implemented'.
 	^false
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiSystemComplexityBrowser >> followEntity: aMooseGroup [
 
 	| newGroup |
@@ -96,7 +98,7 @@ MiSystemComplexityBrowser >> followEntity: aMooseGroup [
 	specModel entities: newGroup
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiSystemComplexityBrowser >> initializeLayout [
 
 	self layout: (SpBoxLayout newTopToBottom
@@ -104,7 +106,7 @@ MiSystemComplexityBrowser >> initializeLayout [
 			 yourself)
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiSystemComplexityBrowser >> initializePresenters [
 
 	mainPresenter := self instantiate: MiSystemComplexityVisualization.

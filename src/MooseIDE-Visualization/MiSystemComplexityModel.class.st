@@ -1,6 +1,6 @@
 Class {
-	#name : #MiSystemComplexityModel,
-	#superclass : #MiAbstractModel,
+	#name : 'MiSystemComplexityModel',
+	#superclass : 'MiAbstractModel',
 	#traits : 'MiTSpecModelWithSettings',
 	#classTraits : 'MiTSpecModelWithSettings classTrait',
 	#instVars : [
@@ -8,10 +8,12 @@ Class {
 		'entities',
 		'availableMetrics'
 	],
-	#category : #'MooseIDE-Visualization-System Complexity'
+	#category : 'MooseIDE-Visualization-System Complexity',
+	#package : 'MooseIDE-Visualization',
+	#tag : 'System Complexity'
 }
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiSystemComplexityModel >> availableMetrics [
 
 	entities ifEmpty: [ ^ OrderedCollection new ].
@@ -23,49 +25,49 @@ MiSystemComplexityModel >> availableMetrics [
 		   collect: #implementingSelector) sorted: #yourself ascending
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiSystemComplexityModel >> colorMetric [
 
 	^ settings getItemValue: #colorMetric
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiSystemComplexityModel >> colorRangeEnd [
 
 	^ settings getItemValue: #colorRangeEnd
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiSystemComplexityModel >> colorRangeStart [
 
 	^ settings getItemValue: #colorRangeStart
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiSystemComplexityModel >> defaultColorMetric [
 
 	^ nil
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiSystemComplexityModel >> defaultHeightMetric [
 
 	^ nil
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiSystemComplexityModel >> defaultWidthMetric [
 
 	^ nil
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiSystemComplexityModel >> entities [
 
 	^ entities
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiSystemComplexityModel >> entities: aMooseGroup [
 
 	aMooseGroup ifEmpty: [ ^ self ].
@@ -76,13 +78,13 @@ MiSystemComplexityModel >> entities: aMooseGroup [
 	browser runVisualization
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiSystemComplexityModel >> heightMetric [
 
 	^ settings getItemValue: #heightMetric
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiSystemComplexityModel >> initialize [
 
 	super initialize.
@@ -90,7 +92,7 @@ MiSystemComplexityModel >> initialize [
 	availableMetrics := {  }
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiSystemComplexityModel >> initializeSettings [
 
 	settings := super initializeSettings
@@ -103,7 +105,7 @@ MiSystemComplexityModel >> initializeSettings [
 		            yourself
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiSystemComplexityModel >> itemColorMetric [
 
 	^ MiAbstractSettingItem droplistSetting
@@ -114,7 +116,7 @@ MiSystemComplexityModel >> itemColorMetric [
 		  yourself
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiSystemComplexityModel >> itemColorRangeEnd [
 
 	^ MiAbstractSettingItem colorSetting
@@ -125,7 +127,7 @@ MiSystemComplexityModel >> itemColorRangeEnd [
 		  yourself
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiSystemComplexityModel >> itemColorRangeStart [
 
 	^ MiAbstractSettingItem colorSetting
@@ -136,7 +138,7 @@ MiSystemComplexityModel >> itemColorRangeStart [
 		  yourself
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiSystemComplexityModel >> itemHeightMetric [
 
 	^ MiAbstractSettingItem droplistSetting
@@ -147,7 +149,7 @@ MiSystemComplexityModel >> itemHeightMetric [
 		  yourself
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiSystemComplexityModel >> itemNameToDisplay [
 
 	^ MiAbstractSettingItem droplistSetting
@@ -158,7 +160,7 @@ MiSystemComplexityModel >> itemNameToDisplay [
 		  yourself
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiSystemComplexityModel >> itemWidthMetric [
 
 	^ MiAbstractSettingItem droplistSetting
@@ -169,25 +171,25 @@ MiSystemComplexityModel >> itemWidthMetric [
 		  yourself
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiSystemComplexityModel >> nameToDisplay [
 
 	^ settings getItemValue: #nameToDisplay
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiSystemComplexityModel >> settings [
 
 	^ settings
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiSystemComplexityModel >> settingsChanged: aBoolean [
 
 	aBoolean ifTrue: [ browser runVisualization ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiSystemComplexityModel >> updateSettings [
 
 	(settings itemNamed: #heightMetric)
@@ -201,7 +203,7 @@ MiSystemComplexityModel >> updateSettings [
 		setValue: #numberOfLinesOfCode
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiSystemComplexityModel >> widthMetric [
 
 	^ settings getItemValue: #widthMetric

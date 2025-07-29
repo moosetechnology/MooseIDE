@@ -1,16 +1,18 @@
 Class {
-	#name : #MiSystemComplexityBuilder,
-	#superclass : #HSimpleVisualizationBuilder,
+	#name : 'MiSystemComplexityBuilder',
+	#superclass : 'HSimpleVisualizationBuilder',
 	#instVars : [
 		'nodeMooseIDDict',
 		'widthMetricThreshold',
 		'heightMetricThreshold',
 		'colorMetricThreshold'
 	],
-	#category : #'MooseIDE-Visualization-System Complexity'
+	#category : 'MooseIDE-Visualization-System Complexity',
+	#package : 'MooseIDE-Visualization',
+	#tag : 'System Complexity'
 }
 
-{ #category : #rendering }
+{ #category : 'rendering' }
 MiSystemComplexityBuilder >> addInteractionsToShape: aShape [
 
 	| node |
@@ -28,7 +30,7 @@ MiSystemComplexityBuilder >> addInteractionsToShape: aShape [
 		for: self
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 MiSystemComplexityBuilder >> build [
 
 	
@@ -39,28 +41,27 @@ MiSystemComplexityBuilder >> build [
 	^ self container
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 MiSystemComplexityBuilder >> buildLegend [
+
 	| legend |
-	legend := RSLegend new.
-	legend container: self container.
-	legend onDemand.
-	legend title: 'System complexity'.
-	legend text: ''.
-	legend
-		polymetricWidth: mapModel widthMetric
-		height: mapModel heightMetric
-		box: 'Class'.
-	legend
-		text: mapModel colorMetric
-		withFadingRamp:
-			{(0 -> mapModel colorRangeStart).
-			(1 -> mapModel colorRangeEnd)}.
-	legend text: 'Line = Inheritance'.
-	legend build
+legend := RSLegend new.
+legend container: self container.
+legend onDemand.
+legend title: 'System complexity'.
+legend text: ''.
+legend
+	polymetricWidth: mapModel widthMetric
+	height: mapModel heightMetric
+	box: 'Class'.
+legend text: mapModel colorMetric withFadingRamp: {
+		(0 -> mapModel colorRangeStart).
+		(1 -> mapModel colorRangeEnd) }.
+legend text: 'Line = Inheritance'.
+legend build
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 MiSystemComplexityBuilder >> buildNodeFromEntity: anEntity [
 
 	| node |
@@ -78,62 +79,62 @@ MiSystemComplexityBuilder >> buildNodeFromEntity: anEntity [
 	^ node
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 MiSystemComplexityBuilder >> colorBlock [
 
 	^ [ :e | e rawModel perform: mapModel colorMetric ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiSystemComplexityBuilder >> colorFor: node [
 	^ Color fromHexString: '2980B9'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiSystemComplexityBuilder >> colorMetricThreshold [
 
 	^ colorMetricThreshold ifNil: [ colorMetricThreshold := 100 ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiSystemComplexityBuilder >> colorMetricThreshold: anObject [
 
 	colorMetricThreshold := anObject
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 MiSystemComplexityBuilder >> elements [
 
 	^ self types entityStorage
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiSystemComplexityBuilder >> heightMetricThreshold [
 
 	^ heightMetricThreshold ifNil: [ heightMetricThreshold := 10 ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiSystemComplexityBuilder >> heightMetricThreshold: anObject [
 
 	heightMetricThreshold := anObject
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiSystemComplexityBuilder >> initialize [
 
 	super initialize.
 	nodeMooseIDDict := Dictionary new
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 MiSystemComplexityBuilder >> initializeRootNode [
 
 	(rootNode := HNode new) addAll:
 		(self elements collect: [ :e | self buildNodeFromEntity: e ])
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 MiSystemComplexityBuilder >> layoutChildrenOn: aGroupOfShapes parent: shape [
 	aGroupOfShapes ifEmpty: [ ^ self ].
 	
@@ -146,7 +147,7 @@ MiSystemComplexityBuilder >> layoutChildrenOn: aGroupOfShapes parent: shape [
 	
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 MiSystemComplexityBuilder >> layoutOn: aGroupOfShapes parent: shape [
 	aGroupOfShapes ifEmpty: [ ^ self ].
 	
@@ -156,13 +157,13 @@ MiSystemComplexityBuilder >> layoutOn: aGroupOfShapes parent: shape [
 	
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiSystemComplexityBuilder >> menuItemStrategy [
 
 	^ MiSystemComplexityMenuItemStrategy new
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 MiSystemComplexityBuilder >> nodeAnnouncer [
 	"plug new events here"
 
@@ -178,7 +179,7 @@ MiSystemComplexityBuilder >> nodeAnnouncer [
 	^ baseNode announcer
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 MiSystemComplexityBuilder >> normalizeColor [
 
 	| colorMetric scale |
@@ -194,7 +195,7 @@ MiSystemComplexityBuilder >> normalizeColor [
 			(scale scale: (each model rawModel perform: colorMetric)) ]
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 MiSystemComplexityBuilder >> normalizeHeight [
 
 	| heightMetric scale |
@@ -208,7 +209,7 @@ MiSystemComplexityBuilder >> normalizeHeight [
 			(scale scale: (each model rawModel perform: heightMetric)) ]
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 MiSystemComplexityBuilder >> normalizeMetric: metric threshold: threshold [
 
 	"When all elements are homogeneous, we want to show that the difference is small by making them look similar. They are considered homogeneous when the difference between the min and max values of the metric is below the threshold."
@@ -233,7 +234,7 @@ MiSystemComplexityBuilder >> normalizeMetric: metric threshold: threshold [
 						   (max - min / 2 + max) } ])
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 MiSystemComplexityBuilder >> normalizeShapes [
 
 	self normalizeWidth.
@@ -248,7 +249,7 @@ MiSystemComplexityBuilder >> normalizeShapes [
 			 ] ]
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 MiSystemComplexityBuilder >> normalizeWidth [
 
 	| widthMetric scale |
@@ -262,14 +263,14 @@ MiSystemComplexityBuilder >> normalizeWidth [
 			(scale scale: (each model rawModel perform: widthMetric)) ]
 ]
 
-{ #category : #hooks }
+{ #category : 'hooks' }
 MiSystemComplexityBuilder >> rebuildRootShape: shape [
 
 	super rebuildRootShape: shape.
 	self relayout: self container nodes parent: self rootNode
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 MiSystemComplexityBuilder >> relayout: aGroupOfShapes parent: shape [
 
 	RSDominanceTreeLayout new
@@ -278,7 +279,7 @@ MiSystemComplexityBuilder >> relayout: aGroupOfShapes parent: shape [
 		on: aGroupOfShapes
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 MiSystemComplexityBuilder >> relayoutChildren: aGroupOfShapes parent: shape [
 
 	shape layout ifNil: [ 
@@ -291,7 +292,7 @@ MiSystemComplexityBuilder >> relayoutChildren: aGroupOfShapes parent: shape [
 	
 ]
 
-{ #category : #rendering }
+{ #category : 'rendering' }
 MiSystemComplexityBuilder >> renderIn: aCanvas [
 
 	| rootShapes |
@@ -319,7 +320,7 @@ MiSystemComplexityBuilder >> renderIn: aCanvas [
 	self layoutOn: rootShapes parent: rootNode
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 MiSystemComplexityBuilder >> renderLinesIn: aCanvas [
 
 	| arrow |
@@ -335,13 +336,13 @@ MiSystemComplexityBuilder >> renderLinesIn: aCanvas [
 	aCanvas pushBackEdges
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 MiSystemComplexityBuilder >> setDependencies [
 
 	rootNode children do: [ :each | self setDependenciesFor: each ]
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 MiSystemComplexityBuilder >> setDependenciesFor: aNode [
 
 	aNode rawModel directSubclasses do: [ :e | 
@@ -350,19 +351,19 @@ MiSystemComplexityBuilder >> setDependenciesFor: aNode [
 			ifPresent: [ :hNode | aNode dependencyTo: hNode ] ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiSystemComplexityBuilder >> types [
 
 	^ self mapModel entities
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiSystemComplexityBuilder >> widthMetricThreshold [
 
 	^ widthMetricThreshold ifNil: [ widthMetricThreshold := 10 ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiSystemComplexityBuilder >> widthMetricThreshold: anObject [
 
 	widthMetricThreshold := anObject
