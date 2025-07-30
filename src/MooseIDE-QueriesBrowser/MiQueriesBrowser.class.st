@@ -88,8 +88,7 @@ MiQueriesBrowser >> browserClosed [
 { #category : 'testing' }
 MiQueriesBrowser >> canFollowEntity: anObject [
 
-	^ anObject isMooseObject and: [ 
-		  (anObject asMooseGroup select: #isQueryable ) isNotEmpty ]
+	^ anObject isMooseObject and: [ anObject asMooseGroup anySatisfy: #isQueryable ]
 ]
 
 { #category : 'testing' }
@@ -124,7 +123,7 @@ MiQueriesBrowser >> followEntity: anEntity [
 	| busMooseEntities |
 	super followEntity: anEntity.
 	"Create a group in case that only one entity was received from the bus"
-	busMooseEntities := anEntity asMooseGroup .
+	busMooseEntities := anEntity asMooseGroup select: #isQueryable.
 
 	"Create the new root query"
 	self resetRootQueryForEntities: busMooseEntities.
