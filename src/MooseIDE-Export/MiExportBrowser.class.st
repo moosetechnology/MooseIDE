@@ -231,7 +231,7 @@ MiExportBrowser >> exportEntitiesToCSV [
 	file := UIManager default
 		        chooseForSaveFileReference: 'Chose export destination'
 		        extensions: #( 'csv' )
-		        path: 'entities.csv'.
+		        path: 'entities.csv' asFileReference.
 	file ifNotNil: [ 
 		file writeStreamDo: [ :stream | self model writeCSVOn: stream ].
 		UIManager default
