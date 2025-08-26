@@ -128,3 +128,10 @@ MiImportModelDialog >> validateImportForm [
 	"checks that required fields are properly filled in"
 	self subclassResponsibility 
 ]
+
+{ #category : 'accessing' }
+MiImportModelDialog >> windowTitle [ 
+
+	^ self class title 
+	
+]
