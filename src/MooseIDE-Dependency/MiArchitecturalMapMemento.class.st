@@ -1,6 +1,6 @@
 Class {
-	#name : #MiArchitecturalMapMemento,
-	#superclass : #MiMemento,
+	#name : 'MiArchitecturalMapMemento',
+	#superclass : 'MiMemento',
 	#instVars : [
 		'associationTypes',
 		'tags',
@@ -13,10 +13,12 @@ Class {
 		'showDirectoriesAsRootNodes',
 		'defaultsHolder'
 	],
-	#category : #'MooseIDE-Dependency-ArchitecturalMap'
+	#category : 'MooseIDE-Dependency-ArchitecturalMap',
+	#package : 'MooseIDE-Dependency',
+	#tag : 'ArchitecturalMap'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MiArchitecturalMapMemento class >> fromDefaultsHolder: aDefaultsHolder [
 
 	^ self new
@@ -35,121 +37,121 @@ MiArchitecturalMapMemento class >> fromDefaultsHolder: aDefaultsHolder [
 		  yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiArchitecturalMapMemento >> associationTypes [
 
 	^ associationTypes
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiArchitecturalMapMemento >> associationTypes: aCollection [
 
 	associationTypes := aCollection
 ]
 
-{ #category : #available }
+{ #category : 'available' }
 MiArchitecturalMapMemento >> availableAssociationTypes [
 
 	^ defaultsHolder availableAssociationTypes
 ]
 
-{ #category : #available }
+{ #category : 'available' }
 MiArchitecturalMapMemento >> availableDoubleClickActions [
 
 	^ defaultsHolder availableDoubleClickActions
 ]
 
-{ #category : #available }
+{ #category : 'available' }
 MiArchitecturalMapMemento >> availableLayouts [
 
 	^ defaultsHolder availableLayouts
 ]
 
-{ #category : #available }
+{ #category : 'available' }
 MiArchitecturalMapMemento >> availableTags [
 
 	^ defaultsHolder availableTags
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiArchitecturalMapMemento >> childrenQuery [
 
 	^ childrenQuery
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiArchitecturalMapMemento >> childrenQuery: aQuery [
 
 	childrenQuery := aQuery
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiArchitecturalMapMemento >> defaultsHolder: aSettingsDefaultHolder [
 
 	defaultsHolder := aSettingsDefaultHolder
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiArchitecturalMapMemento >> doubleClickAction [
 
 	^ doubleClickCommand
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiArchitecturalMapMemento >> doubleClickAction: aCommand [
 
 	doubleClickCommand := aCommand
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiArchitecturalMapMemento >> hideMegamorphicInvocations [
 
 	^ hideMegamorphicInvocations
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiArchitecturalMapMemento >> hideMegamorphicInvocations: aBoolean [
 
 	hideMegamorphicInvocations := aBoolean
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiArchitecturalMapMemento >> hideReceivedEntities [
 
 	^ hideReceivedEntities
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiArchitecturalMapMemento >> hideReceivedEntities: aBoolean [
 
 	hideReceivedEntities := aBoolean
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiArchitecturalMapMemento >> layout [
 
 	^ layout
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiArchitecturalMapMemento >> layout: aRSLayout [
 
 	layout := aRSLayout
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiArchitecturalMapMemento >> megamorphicTreshold [
 
 	^ megamorphicTreshold
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiArchitecturalMapMemento >> megamorphicTreshold: anInteger [
 
 	megamorphicTreshold := anInteger
 ]
 
-{ #category : #ui }
+{ #category : 'ui' }
 MiArchitecturalMapMemento >> settingsPresenters [
 
 	^ super settingsPresenters
@@ -180,25 +182,25 @@ MiArchitecturalMapMemento >> settingsPresenters [
 		  yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiArchitecturalMapMemento >> showDirectoriesAsRootNodes [
 
 	^ showDirectoriesAsRootNodes
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiArchitecturalMapMemento >> showDirectoriesAsRootNodes: aBoolean [
 
 	showDirectoriesAsRootNodes := aBoolean
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiArchitecturalMapMemento >> tags [
 
 	^ tags
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiArchitecturalMapMemento >> tags: aCollection [
 
 	tags := aCollection

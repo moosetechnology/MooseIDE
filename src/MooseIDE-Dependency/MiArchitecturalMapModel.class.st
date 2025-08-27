@@ -5,8 +5,8 @@ I am responsible for:
 - holding elements to display on the hierarchical map.
 "
 Class {
-	#name : #MiArchitecturalMapModel,
-	#superclass : #MiAbstractModel,
+	#name : 'MiArchitecturalMapModel',
+	#superclass : 'MiAbstractModel',
 	#traits : 'MiTSpecModelWithSettings',
 	#classTraits : 'MiTSpecModelWithSettings classTrait',
 	#instVars : [
@@ -25,10 +25,12 @@ Class {
 		'showDirectoriesAsRootNodes',
 		'default'
 	],
-	#category : #'MooseIDE-Dependency-ArchitecturalMap'
+	#category : 'MooseIDE-Dependency-ArchitecturalMap',
+	#package : 'MooseIDE-Dependency',
+	#tag : 'ArchitecturalMap'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 MiArchitecturalMapModel class >> defaultDynamicTagIsDead [
 
 	^ MiDynamicTag new
@@ -38,7 +40,7 @@ MiArchitecturalMapModel class >> defaultDynamicTagIsDead [
 		  yourself
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 MiArchitecturalMapModel class >> defaultDynamicTagIsStub [
 
 	^ MiDynamicTag new
@@ -48,7 +50,7 @@ MiArchitecturalMapModel class >> defaultDynamicTagIsStub [
 		  yourself
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 MiArchitecturalMapModel class >> defaultDynamicTags [
 
 	^ { 
@@ -56,7 +58,7 @@ MiArchitecturalMapModel class >> defaultDynamicTags [
 		  self defaultDynamicTagIsDead }
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MiArchitecturalMapModel >> addVirtualParent: aFileReference child: entity upTo: virtualRoot [
 	"#virtualEntities is a Dictionnary where the keys are the virtual entities
 	 and the values their children
@@ -78,13 +80,13 @@ MiArchitecturalMapModel >> addVirtualParent: aFileReference child: entity upTo: 
 			upTo: virtualRoot ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiArchitecturalMapModel >> associationTypes [
 
 	^ associationTypes
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiArchitecturalMapModel >> childrenFor: anEntity [
 
 	^ virtualEntities
@@ -95,7 +97,7 @@ MiArchitecturalMapModel >> childrenFor: anEntity [
 					  each == anEntity ] ]
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MiArchitecturalMapModel >> computeRootEntities [
 
 	| nodesParent |
@@ -109,7 +111,7 @@ MiArchitecturalMapModel >> computeRootEntities [
 		(nodesParent at: each ifAbsent: [ nil ]) isNil ]
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MiArchitecturalMapModel >> computeVirtualRoots: rootEntities [
 	"#virtualEntities is a Dictionnary where the keys are the virtual entities and the values their children
 	Here we compute virtual entities from the directories containing the real entities"
@@ -130,7 +132,7 @@ MiArchitecturalMapModel >> computeVirtualRoots: rootEntities [
 	^ { virtualRoot }
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 MiArchitecturalMapModel >> doubleClickActOn: aShape [
 
 	doubleClickAction
@@ -138,13 +140,13 @@ MiArchitecturalMapModel >> doubleClickActOn: aShape [
 		execute
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiArchitecturalMapModel >> entities [
 
 	^ entities
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiArchitecturalMapModel >> entities: aCollection [
 
 	entities := aCollection.
@@ -152,13 +154,13 @@ MiArchitecturalMapModel >> entities: aCollection [
 	self recomputeDefaultSettings
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiArchitecturalMapModel >> hideReceivedEntities [
 
 	^ hideReceivedEntities
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiArchitecturalMapModel >> initializeSettings [
 
 	default := MiArchitecturalMapModelDefaultHolder on: self.
@@ -174,19 +176,19 @@ MiArchitecturalMapModel >> initializeSettings [
 	showDirectoriesAsRootNodes := default showDirectoriesAsRootNodes
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiArchitecturalMapModel >> layout [
 
 	^ layout
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiArchitecturalMapModel >> miSelectedItem [
 
 	^ self entities
 ]
 
-{ #category : #'settings management' }
+{ #category : 'settings management' }
 MiArchitecturalMapModel >> newMemento [
 
 	^ MiArchitecturalMapMemento new
@@ -203,20 +205,20 @@ MiArchitecturalMapModel >> newMemento [
 		  yourself
 ]
 
-{ #category : #'settings management' }
+{ #category : 'settings management' }
 MiArchitecturalMapModel >> newMementoForDefaultValues [
 
 	^ MiArchitecturalMapMemento fromDefaultsHolder:
 		  default
 ]
 
-{ #category : #'settings management' }
+{ #category : 'settings management' }
 MiArchitecturalMapModel >> recomputeDefaultSettings [
 
 	associationTypes := default availableAssociationTypes
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MiArchitecturalMapModel >> recomputeRootNodes [
 	"Assumes each entity has only one parent"
 
@@ -232,13 +234,19 @@ MiArchitecturalMapModel >> recomputeRootNodes [
 		         ifFalse: [ rootEntities ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiArchitecturalMapModel >> rootNodes [
 
 	^roots
 ]
 
-{ #category : #settings }
+{ #category : 'settings management' }
+MiArchitecturalMapModel >> settingsPresenterExtent [
+
+	^ 600 @ 500
+]
+
+{ #category : 'settings' }
 MiArchitecturalMapModel >> shouldHideDependency: aFamixAssociation [
 
 	^ hideMegamorphicInvocations and: [
@@ -246,19 +254,19 @@ MiArchitecturalMapModel >> shouldHideDependency: aFamixAssociation [
 				  aFamixAssociation candidates size > megamorphicTreshold ] ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiArchitecturalMapModel >> showAllLinks [
 
 	^ true
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiArchitecturalMapModel >> tags [
 
 	^ tags
 ]
 
-{ #category : #'settings management' }
+{ #category : 'settings management' }
 MiArchitecturalMapModel >> updateFromMemento: aMemento [
 
 	associationTypes := aMemento associationTypes.
@@ -275,7 +283,7 @@ MiArchitecturalMapModel >> updateFromMemento: aMemento [
 	browser runVisualization
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MiArchitecturalMapModel >> virtualEntity: aFileReference belowRoot: virtualRoot [
 
 	aFileReference = virtualRoot rawEntity ifTrue: [ ^virtualRoot ].

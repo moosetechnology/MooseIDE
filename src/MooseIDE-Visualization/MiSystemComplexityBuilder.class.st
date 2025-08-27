@@ -44,21 +44,25 @@ MiSystemComplexityBuilder >> build [
 { #category : 'building' }
 MiSystemComplexityBuilder >> buildLegend [
 
-	| legend |
-legend := RSLegend new.
-legend container: self container.
-legend onDemand.
-legend title: 'System complexity'.
-legend text: ''.
-legend
-	polymetricWidth: mapModel widthMetric
-	height: mapModel heightMetric
-	box: 'Class'.
-legend text: mapModel colorMetric withFadingRamp: {
-		(0 -> mapModel colorRangeStart).
-		(1 -> mapModel colorRangeEnd) }.
-legend text: 'Line = Inheritance'.
-legend build
+	| legend box |
+	legend := RSLegend new.
+	legend withFrame.
+	legend container: self container.
+	legend onDemand.
+	legend title: 'System complexity'.
+	legend text: ' '.
+	box := legend
+		       polymetricWidth: mapModel widthMetric asWords
+		       height: mapModel heightMetric asWords
+		       box: 'Class'.
+	self paintLegendBox: box.
+	legend text: ' '.
+	legend text: mapModel colorMetric asWords withFadingRamp: {
+			(0 -> mapModel startColor).
+			(1 -> mapModel endColor) }.
+	legend text: ' '.
+	legend text: 'Line = Inheritance'.
+	legend build
 ]
 
 { #category : 'building' }
@@ -82,10 +86,10 @@ MiSystemComplexityBuilder >> buildNodeFromEntity: anEntity [
 { #category : 'building' }
 MiSystemComplexityBuilder >> colorBlock [
 
-	^ [ :e | e rawModel perform: mapModel colorMetric ]
+	^ [ :e | mapModel colorMetric value: e rawModel ]
 ]
 
-{ #category : 'initialization' }
+{ #category : 'public - hooks' }
 MiSystemComplexityBuilder >> colorFor: node [
 	^ Color fromHexString: '2980B9'
 ]
@@ -188,11 +192,11 @@ MiSystemComplexityBuilder >> normalizeColor [
 		         normalizeMetric: colorMetric
 		         threshold: self colorMetricThreshold.
 	scale range: {
-			mapModel colorRangeStart.
-			mapModel colorRangeEnd }.
+			mapModel startColor.
+			mapModel endColor }.
 	self container nodes do: [ :each |
-		(each propertyAt: #background) color:
-			(scale scale: (each model rawModel perform: colorMetric)) ]
+			(each propertyAt: #background) color:
+				(scale scale: (colorMetric value: each model rawModel)) ]
 ]
 
 { #category : 'building' }
@@ -204,32 +208,33 @@ MiSystemComplexityBuilder >> normalizeHeight [
 		         normalizeMetric: heightMetric
 		         threshold: self heightMetricThreshold.
 	scale range: { 20. 400 }.
-	self container nodes do: [ :each | 
-		(each propertyAt: #background) height:
-			(scale scale: (each model rawModel perform: heightMetric)) ]
+	self container nodes do: [ :each |
+			(each propertyAt: #background) height:
+				(scale scale: (heightMetric value: each model rawModel)) ]
 ]
 
 { #category : 'building' }
 MiSystemComplexityBuilder >> normalizeMetric: metric threshold: threshold [
-
 	"When all elements are homogeneous, we want to show that the difference is small by making them look similar. They are considered homogeneous when the difference between the min and max values of the metric is below the threshold."
 
 	| min max |
 	"start by finding min and max"
 	min := SmallInteger maxVal.
 	max := 0.
-	self container nodes do: [ :shape | 
-		| value |
-		value := shape model rawModel perform: metric.
-		min := min min: value.
-		max := max max: value ].
+	self container nodes do: [ :shape |
+			| value |
+			value := metric value: shape model rawModel.
+			min := min min: value.
+			max := max max: value ].
 
 	"widen the domain by the difference if it is below the threshold, which reduces the effective range and thus makes the elements more similar"
-	^ NSScale linear
-		  domain: (max - min > threshold
-				   ifTrue: [ { min. max } ]
-				   ifFalse: [ 
-					   { 
+	^ NSScale linear domain: (max - min > threshold
+			   ifTrue: [
+					   {
+						   min.
+						   max } ]
+			   ifFalse: [
+					   {
 						   (min - max / 2 + min).
 						   (max - min / 2 + max) } ])
 ]
@@ -258,9 +263,19 @@ MiSystemComplexityBuilder >> normalizeWidth [
 		         normalizeMetric: widthMetric
 		         threshold: self widthMetricThreshold.
 	scale range: { 20. 400 }.
-	self container nodes do: [ :each | 
-		(each propertyAt: #background) width:
-			(scale scale: (each model rawModel perform: widthMetric)) ]
+	self container nodes do: [ :each |
+			(each propertyAt: #background) width:
+				(scale scale: (widthMetric value: each model rawModel)) ]
+]
+
+{ #category : 'as yet unclassified' }
+MiSystemComplexityBuilder >> paintLegendBox: aComposite [
+
+	| actualBox |
+	actualBox := (aComposite nodes reject: #isLabel) anyOne.
+	actualBox
+		color: (mapModel startColor alphaMixed: 0.5 with: mapModel endColor);
+		borderWidth: 2
 ]
 
 { #category : 'hooks' }

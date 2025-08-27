@@ -91,11 +91,23 @@ MiSystemComplexityBrowser >> followEntity: aMooseGroup [
 
 	| newGroup |
 	super followEntity: aMooseGroup.
-	newGroup := aMooseGroup select: [ :e | e isClass ].
+	newGroup := (aMooseGroup select: [ :e | e isClass ]) asMooseGroup.
+
+	newGroup ifEmpty: [
+			self inform: 'System Complexity:
+All received entities were rejected'.
+			^ self ].
+
 	newGroup size < aMooseGroup size ifTrue: [
-		self inform:
-			(aMooseGroup size - newGroup size) asString , ' rejected entities.' ].
-	specModel entities: newGroup
+			self inform: (String streamContents: [ :s |
+						 s
+							 << 'SystemComplexity:';
+							 cr;
+							 << (aMooseGroup size - newGroup size) asString;
+							 << ' rejected entities.' ]) ].
+
+	specModel entities: newGroup.
+	self runVisualization
 ]
 
 { #category : 'initialization' }

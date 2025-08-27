@@ -2,25 +2,27 @@
 A MiSettingItem which value is given by a checkbox (therefore: true or false setting)
 "
 Class {
-	#name : #MiCheckboxSettingItem,
-	#superclass : #MiAbstractSettingItem,
-	#category : #'MooseIDE-Core-Settings-old'
+	#name : 'MiCheckboxSettingItem',
+	#superclass : 'MiAbstractSettingItem',
+	#category : 'MooseIDE-Core-Settings-old',
+	#package : 'MooseIDE-Core',
+	#tag : 'Settings-old'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiCheckboxSettingItem >> getValue [
 
 	^presenter state
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiCheckboxSettingItem >> initialize [ 
 	super initialize.
 
 	presenter := SpCheckBoxPresenter new
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiCheckboxSettingItem >> setValue: aBoolean [
 
 	presenter state: aBoolean 

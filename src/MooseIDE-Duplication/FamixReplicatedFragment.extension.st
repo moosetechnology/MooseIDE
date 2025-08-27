@@ -1,6 +1,6 @@
-Extension { #name : #FamixReplicatedFragment }
+Extension { #name : 'FamixReplicatedFragment' }
 
-{ #category : #'*MooseIDE-Duplication' }
+{ #category : '*MooseIDE-Duplication' }
 FamixReplicatedFragment >> displayStringOn: aStream [
 	"Display string for MiDuplicatinBrowser:
 	 - number of members

@@ -1,20 +1,22 @@
 Class {
-	#name : #MiSettingsPresenter,
-	#superclass : #MiPresenter,
+	#name : 'MiSettingsPresenter',
+	#superclass : 'MiPresenter',
 	#instVars : [
 		'browserModel',
 		'memento'
 	],
-	#category : #'MooseIDE-Core-Settings'
+	#category : 'MooseIDE-Core-Settings',
+	#package : 'MooseIDE-Core',
+	#tag : 'Settings'
 }
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MiSettingsPresenter >> acceptChanges [
 
 	browserModel updateFromMemento: memento
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 MiSettingsPresenter >> addPresenter: aPresenter inBuilder: aBuilder [
 
 	aBuilder
@@ -23,22 +25,24 @@ MiSettingsPresenter >> addPresenter: aPresenter inBuilder: aBuilder [
 		nextRow
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 MiSettingsPresenter >> defaultLayout [
 
 	^ self newGridLayout
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiSettingsPresenter >> initializeDialogWindow: aSpDialogWindowPresenter [
 
 	super initializeDialogWindow: aSpDialogWindowPresenter.
+
+	aSpDialogWindowPresenter initialExtent: browserModel settingsPresenterExtent.
 	aSpDialogWindowPresenter toolbar: self toolbar.
 
 	aSpDialogWindowPresenter okAction: [ self acceptChanges ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiSettingsPresenter >> initializePresenters [
 
 	self layout build: [ :builder |
@@ -46,21 +50,21 @@ MiSettingsPresenter >> initializePresenters [
 				self addPresenter: presenterClass inBuilder: builder ] ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiSettingsPresenter >> resetToDefault [
 
 	memento := browserModel newMementoForDefaultValues.
 	self initializePresenters
 ]
 
-{ #category : #'accessing - model' }
+{ #category : 'accessing - model' }
 MiSettingsPresenter >> setModelBeforeInitialization: aSpecModel [
 
 	browserModel := aSpecModel.
 	memento := aSpecModel newMemento
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiSettingsPresenter >> toolbar [
 
 	^ self newToolbar addItemRight: (self newToolbarButton
@@ -71,7 +75,7 @@ MiSettingsPresenter >> toolbar [
 			   yourself)
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiSettingsPresenter >> windowTitle [
 
 	^ browserModel toolName , ' settings'

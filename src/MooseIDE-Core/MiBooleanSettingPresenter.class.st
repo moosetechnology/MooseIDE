@@ -1,13 +1,15 @@
 Class {
-	#name : #MiBooleanSettingPresenter,
-	#superclass : #MiAbstractSettingPresenter,
+	#name : 'MiBooleanSettingPresenter',
+	#superclass : 'MiAbstractSettingPresenter',
 	#instVars : [
 		'checkbox'
 	],
-	#category : #'MooseIDE-Core-Settings'
+	#category : 'MooseIDE-Core-Settings',
+	#package : 'MooseIDE-Core',
+	#tag : 'Settings'
 }
 
-{ #category : #layout }
+{ #category : 'layout' }
 MiBooleanSettingPresenter >> defaultLayout [
 
 	^ self newBoxLayoutLeftToRight
@@ -15,14 +17,14 @@ MiBooleanSettingPresenter >> defaultLayout [
 		  yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiBooleanSettingPresenter >> help: aString [
 
 	super help: aString.
 	checkbox help: aString
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiBooleanSettingPresenter >> initializePresenters [
 
 	checkbox := self newCheckBox
@@ -31,13 +33,13 @@ MiBooleanSettingPresenter >> initializePresenters [
 		            yourself
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiBooleanSettingPresenter >> state: aBoolean [
 
 	checkbox state: aBoolean
 ]
 
-{ #category : #enumerating }
+{ #category : 'enumerating' }
 MiBooleanSettingPresenter >> whenStateChangedDo: aValuable [
 
 	checkbox whenChangedDo: [ :boolean | aValuable value: boolean ]

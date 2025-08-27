@@ -1,10 +1,12 @@
 Class {
-	#name : #MooseAbstractLoadFASTMenuCommand,
-	#superclass : #MooseAbstractLoadModuleMenuCommand,
-	#category : #'MooseIDE-Core-MenuBar'
+	#name : 'MooseAbstractLoadFASTMenuCommand',
+	#superclass : 'MooseAbstractLoadModuleMenuCommand',
+	#category : 'MooseIDE-Core-MenuBar',
+	#package : 'MooseIDE-Core',
+	#tag : 'MenuBar'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseAbstractLoadFASTMenuCommand class >> menuPriority [
 
 	^ 20

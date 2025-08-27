@@ -1,10 +1,12 @@
 Class {
-	#name : #MiModelUtilityCommand,
-	#superclass : #MiCommand,
-	#category : #'MooseIDE-Core-Command'
+	#name : 'MiModelUtilityCommand',
+	#superclass : 'MiCommand',
+	#category : 'MooseIDE-Core-Command',
+	#package : 'MooseIDE-Core',
+	#tag : 'Command'
 }
 
-{ #category : #converting }
+{ #category : 'converting' }
 MiModelUtilityCommand class >> asCommandGroupWith: aPresenter [
 
 	| exportCommandGroup |
@@ -16,27 +18,27 @@ MiModelUtilityCommand class >> asCommandGroupWith: aPresenter [
 	^ exportCommandGroup
 ]
 
-{ #category : #default }
+{ #category : 'default' }
 MiModelUtilityCommand class >> defaultDescription [
 	^ 'Utility'
 ]
 
-{ #category : #default }
+{ #category : 'default' }
 MiModelUtilityCommand class >> defaultIconName [
 	^ #blank
 ]
 
-{ #category : #default }
+{ #category : 'default' }
 MiModelUtilityCommand class >> defaultName [
 	^ 'Utility'
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiModelUtilityCommand >> canBeExecuted [
 	^ self model isMooseModel
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiModelUtilityCommand >> model [
 
 	^ self context miSelectedItem

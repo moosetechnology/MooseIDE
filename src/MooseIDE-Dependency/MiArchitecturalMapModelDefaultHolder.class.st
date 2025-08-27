@@ -1,13 +1,15 @@
 Class {
-	#name : #MiArchitecturalMapModelDefaultHolder,
-	#superclass : #Object,
+	#name : 'MiArchitecturalMapModelDefaultHolder',
+	#superclass : 'Object',
 	#instVars : [
 		'specModel'
 	],
-	#category : #'MooseIDE-Dependency-ArchitecturalMap'
+	#category : 'MooseIDE-Dependency-ArchitecturalMap',
+	#package : 'MooseIDE-Dependency',
+	#tag : 'ArchitecturalMap'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MiArchitecturalMapModelDefaultHolder class >> on: aMiArchitecturalMapModel [
 
 	^ self new
@@ -15,13 +17,13 @@ MiArchitecturalMapModelDefaultHolder class >> on: aMiArchitecturalMapModel [
 		  yourself
 ]
 
-{ #category : #defaults }
+{ #category : 'defaults' }
 MiArchitecturalMapModelDefaultHolder >> associationTypes [
 
 	^ self availableAssociationTypes
 ]
 
-{ #category : #available }
+{ #category : 'available' }
 MiArchitecturalMapModelDefaultHolder >> availableAssociationTypes [
 
 	specModel entities ifNil: [ ^ OrderedCollection new ].
@@ -32,7 +34,7 @@ MiArchitecturalMapModelDefaultHolder >> availableAssociationTypes [
 		  asOrderedCollection
 ]
 
-{ #category : #available }
+{ #category : 'available' }
 MiArchitecturalMapModelDefaultHolder >> availableDoubleClickActions [
 
 	^ {
@@ -43,7 +45,7 @@ MiArchitecturalMapModelDefaultHolder >> availableDoubleClickActions [
 			   yourself) }
 ]
 
-{ #category : #available }
+{ #category : 'available' }
 MiArchitecturalMapModelDefaultHolder >> availableLayouts [
 	"RSLayout withAllSubclasses reject: [ :c | c isAbstract ]
 But some of them require specific configuration that we cannot easily specify here so we choose a subset of the simplest ones"
@@ -55,7 +57,7 @@ But some of them require specific configuration that we cannot easily specify he
 		  RSTreeLayout }
 ]
 
-{ #category : #available }
+{ #category : 'available' }
 MiArchitecturalMapModelDefaultHolder >> availableQueries [
 
 	^ specModel currentApplication availableQueries
@@ -63,7 +65,7 @@ MiArchitecturalMapModelDefaultHolder >> availableQueries [
 		  yourself
 ]
 
-{ #category : #available }
+{ #category : 'available' }
 MiArchitecturalMapModelDefaultHolder >> availableTags [
 
 	specModel entities ifNotNil: [ :entities |
@@ -73,55 +75,55 @@ MiArchitecturalMapModelDefaultHolder >> availableTags [
 	^ OrderedCollection new
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiArchitecturalMapModelDefaultHolder >> childrenQuery [
 
 	^ specModel currentApplication defaultChildrenQuery
 ]
 
-{ #category : #defaults }
+{ #category : 'defaults' }
 MiArchitecturalMapModelDefaultHolder >> doubleClickAction [
 
 	^ self availableDoubleClickActions first
 ]
 
-{ #category : #defaults }
+{ #category : 'defaults' }
 MiArchitecturalMapModelDefaultHolder >> hideMegamorphicInvocations [
 
 	^ false
 ]
 
-{ #category : #defaults }
+{ #category : 'defaults' }
 MiArchitecturalMapModelDefaultHolder >> hideReceivedEntities [
 
 	^ false
 ]
 
-{ #category : #defaults }
+{ #category : 'defaults' }
 MiArchitecturalMapModelDefaultHolder >> layout [
 
 	^ RSFlowLayout
 ]
 
-{ #category : #defaults }
+{ #category : 'defaults' }
 MiArchitecturalMapModelDefaultHolder >> megamorphicTreshold [
 
 	^ 10
 ]
 
-{ #category : #defaults }
+{ #category : 'defaults' }
 MiArchitecturalMapModelDefaultHolder >> showDirectoriesAsRootNodes [
 
 	^ false
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiArchitecturalMapModelDefaultHolder >> specModel: aMiArchitecturalMapModel [
 
 	specModel := aMiArchitecturalMapModel
 ]
 
-{ #category : #defaults }
+{ #category : 'defaults' }
 MiArchitecturalMapModelDefaultHolder >> tags [
 
 	^ OrderedCollection new

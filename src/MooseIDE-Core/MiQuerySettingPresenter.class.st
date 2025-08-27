@@ -1,13 +1,15 @@
 Class {
-	#name : #MiQuerySettingPresenter,
-	#superclass : #MiAbstractSettingPresenter,
+	#name : 'MiQuerySettingPresenter',
+	#superclass : 'MiAbstractSettingPresenter',
 	#instVars : [
 		'droplist'
 	],
-	#category : #'MooseIDE-Core-Settings'
+	#category : 'MooseIDE-Core-Settings',
+	#package : 'MooseIDE-Core',
+	#tag : 'Settings'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 MiQuerySettingPresenter >> beForChildren [
 
 	self
@@ -22,7 +24,7 @@ MiQuerySettingPresenter >> beForChildren [
 		whenSelectedItemChangedDo: [ :query | memento childrenQuery: query ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 MiQuerySettingPresenter >> beForClients [
 
 	self
@@ -37,7 +39,7 @@ MiQuerySettingPresenter >> beForClients [
 		whenSelectedItemChangedDo: [ :query | memento clientsQuery: query ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 MiQuerySettingPresenter >> beForProviders [
 
 	self
@@ -52,7 +54,7 @@ MiQuerySettingPresenter >> beForProviders [
 		whenSelectedItemChangedDo: [ :query | memento providersQuery: query ]
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 MiQuerySettingPresenter >> defaultLayout [
 
 	^ self newBoxLayoutLeftToRight
@@ -60,7 +62,7 @@ MiQuerySettingPresenter >> defaultLayout [
 		  yourself
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiQuerySettingPresenter >> initializePresenters [
 
 	droplist := self newDropList

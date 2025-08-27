@@ -1,6 +1,6 @@
-Extension { #name : #AbstractCandidateListOperator }
+Extension { #name : 'AbstractCandidateListOperator' }
 
-{ #category : #'*MooseIDE-Meta' }
+{ #category : '*MooseIDE-Meta' }
 AbstractCandidateListOperator class >> description [
 	^ self subclassResponsibility
 ]

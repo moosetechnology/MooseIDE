@@ -2,24 +2,26 @@
 This class adds a menu item to load github://moosetechnology/Famix-CPP
 "
 Class {
-	#name : #MooseLoadFamixCppMenuCommand,
-	#superclass : #MooseAbstractLoadFamixMenuCommand,
-	#category : #'MooseIDE-Core-MenuBar'
+	#name : 'MooseLoadFamixCppMenuCommand',
+	#superclass : 'MooseAbstractLoadFamixMenuCommand',
+	#category : 'MooseIDE-Core-MenuBar',
+	#package : 'MooseIDE-Core',
+	#tag : 'MenuBar'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseLoadFamixCppMenuCommand class >> help [
 
 	^ 'Famix Metamodel for C++'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseLoadFamixCppMenuCommand class >> label [
 
 	^ 'Famix-Cpp'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseLoadFamixCppMenuCommand class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
@@ -28,25 +30,25 @@ MooseLoadFamixCppMenuCommand class >> menuCommandOn: aBuilder [
 		  yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseLoadFamixCppMenuCommand class >> menuPriority [
 
 	^super menuPriority + 2
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseLoadFamixCppMenuCommand >> baselineName [
 
 	^ 'FamixCpp'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseLoadFamixCppMenuCommand >> repositoryURL [
 
 	^ 'github://moosetechnology/Famix-Cpp:' , self version , '/src'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseLoadFamixCppMenuCommand >> version [
 
 	^ 'main'

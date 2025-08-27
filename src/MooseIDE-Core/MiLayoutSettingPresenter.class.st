@@ -1,46 +1,48 @@
 Class {
-	#name : #MiLayoutSettingPresenter,
-	#superclass : #MiAbstractSingleSelectionSettingPresenter,
-	#category : #'MooseIDE-Core-Settings'
+	#name : 'MiLayoutSettingPresenter',
+	#superclass : 'MiAbstractRadioButtonSettingPresenter',
+	#category : 'MooseIDE-Core-Settings',
+	#package : 'MooseIDE-Core',
+	#tag : 'Settings'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiLayoutSettingPresenter class >> help [
 
 	^ 'The layout used to display entities'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiLayoutSettingPresenter class >> label [
 
 	^ 'Entities layout'
 ]
 
-{ #category : #'event handling' }
+{ #category : 'event handling' }
 MiLayoutSettingPresenter >> activate: aLayout [
 
 	memento layout: aLayout
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 MiLayoutSettingPresenter >> helpForItem: aLayout [
 
 	^ aLayout layoutDescription
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiLayoutSettingPresenter >> isCurrentValue: aLayout [
 
 	^ aLayout = memento layout
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiLayoutSettingPresenter >> items [
 
 	^ memento availableLayouts
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 MiLayoutSettingPresenter >> labelForItem: aLayout [
 
 	^ aLayout layoutName

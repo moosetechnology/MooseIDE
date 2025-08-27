@@ -1,6 +1,6 @@
-Extension { #name : #FamixTClass }
+Extension { #name : 'FamixTClass' }
 
-{ #category : #'*MooseIDE-Dependency' }
+{ #category : '*MooseIDE-Dependency' }
 FamixTClass >> queryAllOutgoingForDSM [
 	"DO NOT USE OUTSIDE THE CONTEXT OF DSM.
 See declaration in TEntityMetalevelDependency for context."

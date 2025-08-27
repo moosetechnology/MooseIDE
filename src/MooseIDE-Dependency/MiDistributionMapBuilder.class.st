@@ -7,12 +7,14 @@ I am responsible for :
 - color the parts according to their property
 "
 Class {
-	#name : #MiDistributionMapBuilder,
-	#superclass : #HSimpleVisualizationBuilder,
-	#category : #'MooseIDE-Dependency-DistributionMap'
+	#name : 'MiDistributionMapBuilder',
+	#superclass : 'HSimpleVisualizationBuilder',
+	#category : 'MooseIDE-Dependency-DistributionMap',
+	#package : 'MooseIDE-Dependency',
+	#tag : 'DistributionMap'
 }
 
-{ #category : #building }
+{ #category : 'building' }
 MiDistributionMapBuilder >> build [
 	rootNode := HNode new
 		            addAll:
@@ -25,7 +27,7 @@ MiDistributionMapBuilder >> build [
 	^ self container
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 MiDistributionMapBuilder >> buildLegend [
 
 	| legend |
@@ -46,7 +48,7 @@ MiDistributionMapBuilder >> buildLegend [
 	legend build
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 MiDistributionMapBuilder >> buildNodeFromEntity: anEntity [
 
 	^ HNode new
@@ -65,20 +67,20 @@ MiDistributionMapBuilder >> buildNodeFromEntity: anEntity [
 		  yourself
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 MiDistributionMapBuilder >> colorFor: node [
 	
 	node level > 1 ifTrue: [ ^ mapModel colorFor: node rawModel ].
 	^ Color gray
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDistributionMapBuilder >> elements [
 
 	^ mapModel entities
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDistributionMapBuilder >> menuInteraction [
 	^ menuInteraction ifNil: [ 
 		menuInteraction := RSMenuActivable new
@@ -90,7 +92,7 @@ MiDistributionMapBuilder >> menuInteraction [
 	]
 ]
 
-{ #category : #hooks }
+{ #category : 'hooks' }
 MiDistributionMapBuilder >> nodeAnnouncer [
 	"plug new events here"
 	baseNode ifNotNil: [ ^ baseNode announcer ].
@@ -102,7 +104,7 @@ MiDistributionMapBuilder >> nodeAnnouncer [
 	^ baseNode announcer
 ]
 
-{ #category : #hooks }
+{ #category : 'hooks' }
 MiDistributionMapBuilder >> nodeLayout [
 
 	^ RSFlowLayout new
@@ -110,7 +112,7 @@ MiDistributionMapBuilder >> nodeLayout [
 		  yourself
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 MiDistributionMapBuilder >> setColors [
 
 	rootNode children do: [ :c | 

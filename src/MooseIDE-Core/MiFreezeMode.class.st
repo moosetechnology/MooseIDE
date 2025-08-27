@@ -3,12 +3,14 @@
 Does not trigger any action, as the browser is frozen.
 "
 Class {
-	#name : #MiFreezeMode,
-	#superclass : #MiBrowserReceivingMode,
-	#category : #'MooseIDE-Core-ReceivingMode'
+	#name : 'MiFreezeMode',
+	#superclass : 'MiBrowserReceivingMode',
+	#category : 'MooseIDE-Core-ReceivingMode',
+	#package : 'MooseIDE-Core',
+	#tag : 'ReceivingMode'
 }
 
-{ #category : #action }
+{ #category : 'action' }
 MiFreezeMode class >> browser: aBrowser actOnEntity: anEntity [
 
 	"Do nothing"

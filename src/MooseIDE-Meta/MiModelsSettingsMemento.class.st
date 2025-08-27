@@ -1,39 +1,41 @@
 Class {
-	#name : #MiModelsSettingsMemento,
-	#superclass : #MiMemento,
+	#name : 'MiModelsSettingsMemento',
+	#superclass : 'MiMemento',
 	#instVars : [
 		'shouldCreateCache',
 		'filterStubs',
 		'modelImportIsAutomatic'
 	],
-	#category : #'MooseIDE-Meta-ModelsBrowser'
+	#category : 'MooseIDE-Meta-ModelsBrowser',
+	#package : 'MooseIDE-Meta',
+	#tag : 'ModelsBrowser'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiModelsSettingsMemento >> filterStubs [
 
 	^ filterStubs
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiModelsSettingsMemento >> filterStubs: aBoolean [
 
 	filterStubs := aBoolean
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiModelsSettingsMemento >> modelImportIsAutomatic [
 
 	^ modelImportIsAutomatic
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiModelsSettingsMemento >> modelImportIsAutomatic: aBoolean [
 
 	modelImportIsAutomatic := aBoolean
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 MiModelsSettingsMemento >> settingsPresenters [
 
 	^ super settingsPresenters
@@ -63,13 +65,13 @@ MiModelsSettingsMemento >> settingsPresenters [
 		  yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiModelsSettingsMemento >> shouldCreateCache [
 
 	^ shouldCreateCache
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiModelsSettingsMemento >> shouldCreateCache: aBoolean [
 
 	shouldCreateCache := aBoolean

@@ -3,35 +3,37 @@ An abstract model class for all MooseIDE browsers
 IT knows its browser and have some default behavior implemented (e.g. to manage settings)
 "
 Class {
-	#name : #MiAbstractModel,
-	#superclass : #Object,
+	#name : 'MiAbstractModel',
+	#superclass : 'Object',
 	#instVars : [
 		'browser',
 		'selectedTag'
 	],
-	#category : #'MooseIDE-Core-Browser'
+	#category : 'MooseIDE-Core-Browser',
+	#package : 'MooseIDE-Core',
+	#tag : 'Browser'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiAbstractModel >> browser [
 
 	^ browser
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiAbstractModel >> browser: anObject [
 
 	browser := anObject.
 	self initializeSettings
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiAbstractModel >> currentApplication [
 
 	^ browser application
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiAbstractModel >> currentMooseModel [
 	self entities ifNil: [ ^nil ].
 	self entities ifEmpty: [ ^nil ].
@@ -39,41 +41,41 @@ MiAbstractModel >> currentMooseModel [
 	
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiAbstractModel >> doubleClickAction [
 	self shouldBeImplemented.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiAbstractModel >> entities [
 	self subclassResponsibility 
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiAbstractModel >> hasSettings [
 
 	^ false
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiAbstractModel >> initializeSettings [
 
 	^ MiOldSettingsPresenter owner: self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiAbstractModel >> miSelectedItem [
 
 	self subclassResponsibility
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiAbstractModel >> openSettings [
 
 	"Nothing to do when no settings"
 ]
 
-{ #category : #tagging }
+{ #category : 'tagging' }
 MiAbstractModel >> privateRemoveTag: aTag fromEntity: aMooseEntity [
 	"should find the corresponding TagAssociation and remove it and return it
 	 does nothing for now"
@@ -83,7 +85,7 @@ MiAbstractModel >> privateRemoveTag: aTag fromEntity: aMooseEntity [
 		new
 ]
 
-{ #category : #tagging }
+{ #category : 'tagging' }
 MiAbstractModel >> privateSetTag: aTag onEntity: aMooseEntity [
 
 	^FamixTagEntityAssociation
@@ -92,19 +94,19 @@ MiAbstractModel >> privateSetTag: aTag onEntity: aMooseEntity [
 	
 ]
 
-{ #category : #tagging }
+{ #category : 'tagging' }
 MiAbstractModel >> selectedTag [
 
 	^ selectedTag
 ]
 
-{ #category : #tagging }
+{ #category : 'tagging' }
 MiAbstractModel >> selectedTag: aTag [
 
 	selectedTag := aTag
 ]
 
-{ #category : #tagging }
+{ #category : 'tagging' }
 MiAbstractModel >> tagEntity: aMooseEntity with: aTag [
 
 	| tagAssociation |
@@ -120,13 +122,13 @@ MiAbstractModel >> tagEntity: aMooseEntity with: aTag [
 
 ]
 
-{ #category : #tagging }
+{ #category : 'tagging' }
 MiAbstractModel >> tagList [
 
 	^self currentApplication tagListForMooseModel: self currentMooseModel 
 ]
 
-{ #category : #tagging }
+{ #category : 'tagging' }
 MiAbstractModel >> tagSelectedEntities [
 
 	| tag entity |
@@ -139,7 +141,7 @@ MiAbstractModel >> tagSelectedEntities [
 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiAbstractModel >> toolName [
 
 	^ browser title

@@ -2,8 +2,8 @@
 A model for the MiDSMBrowser, contains the entities to display, computes the dependencies and the colors to show the cells of the DSM matrix
 "
 Class {
-	#name : #MiDSMBrowserModel,
-	#superclass : #MiAbstractModel,
+	#name : 'MiDSMBrowserModel',
+	#superclass : 'MiAbstractModel',
 	#instVars : [
 		'graph',
 		'nodeColors',
@@ -13,10 +13,12 @@ Class {
 		'settings',
 		'dependencies'
 	],
-	#category : #'MooseIDE-Dependency-DSM'
+	#category : 'MooseIDE-Dependency-DSM',
+	#package : 'MooseIDE-Dependency',
+	#tag : 'DSM'
 }
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiDSMBrowserModel >> canFollowEntity: anObject [
 
 	^ anObject isCollection and: [ 
@@ -24,7 +26,7 @@ MiDSMBrowserModel >> canFollowEntity: anObject [
 			  a usesFamixTrait: TEntityMetaLevelDependency ] ].
 ]
 
-{ #category : #api }
+{ #category : 'api' }
 MiDSMBrowserModel >> colorForTuple: tuple [
 
 	(self isDiagonal: tuple) ifTrue: [ ^self diagonalColor ].
@@ -34,7 +36,7 @@ MiDSMBrowserModel >> colorForTuple: tuple [
 	^ self dependencyColor
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiDSMBrowserModel >> computeMatrixWithX: entitiesX withY: entitiesY [
 
 	self selectedEntities: (entitiesX union: entitiesY).
@@ -45,47 +47,47 @@ MiDSMBrowserModel >> computeMatrixWithX: entitiesX withY: entitiesY [
 
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 MiDSMBrowserModel >> defaultColor [
 
 	^ nodeColors at: #defaultCell
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDSMBrowserModel >> dependencies [
 
 	^ dependencies
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 MiDSMBrowserModel >> dependencyColor [
 
 	^ nodeColors at: #dependency
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 MiDSMBrowserModel >> diagonalColor [
 
 	^nodeColors at: #diagonalCell
 ]
 
-{ #category : #api }
+{ #category : 'api' }
 MiDSMBrowserModel >> displayValueForNode: aNode [
 	^aNode model name
 ]
 
-{ #category : #api }
+{ #category : 'api' }
 MiDSMBrowserModel >> displayValueForTuple: tuple [
 	^(self displayValueForNode: tuple key), ' -> ' , (self displayValueForNode: tuple value)
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDSMBrowserModel >> entities [
 
 	^dependencies entities
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiDSMBrowserModel >> entityChildrenForDSM: anEntity [
 	"children of an entity except concretization of generic entities which are considered more
 	 like associations"
@@ -97,7 +99,7 @@ MiDSMBrowserModel >> entityChildrenForDSM: anEntity [
 	
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiDSMBrowserModel >> followEntity: aCollection [
 	"initializing the DSM from a collection of entities received on the data bus (see also #withX:withY:)
 	 In this case, this is a square matrix of dependency"
@@ -110,7 +112,7 @@ MiDSMBrowserModel >> followEntity: aCollection [
 	browser buildDSM
 ]
 
-{ #category : #api }
+{ #category : 'api' }
 MiDSMBrowserModel >> getTupleDependencyWeight: tuple [
 	"generic algorithm is to take all dependencies of the `tuple key` (column of the DSM) and count
 	 those that can be scoped up to the `tuple value` (row of the DSM)
@@ -125,13 +127,13 @@ MiDSMBrowserModel >> getTupleDependencyWeight: tuple [
 	^dependencies weightFrom: tuple key model to: tuple value model
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDSMBrowserModel >> graph [
 
 	^graph
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiDSMBrowserModel >> initialize [ 
 	super initialize.
 
@@ -146,7 +148,7 @@ MiDSMBrowserModel >> initialize [
 
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiDSMBrowserModel >> initializeColors [
 	nodeColors := Dictionary new: 5.
 
@@ -162,7 +164,7 @@ MiDSMBrowserModel >> initializeColors [
 	nodeColors at: #dependency put: (Color colorFrom: '#659ef6').
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiDSMBrowserModel >> initializeSettings [ 
 
 	settings := super initializeSettings.
@@ -175,26 +177,26 @@ MiDSMBrowserModel >> initializeSettings [
 
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiDSMBrowserModel >> isCycle: tuple [
 
 	^graph inCycle: tuple key with: tuple value
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiDSMBrowserModel >> isDependency: tuple [
 
 	^(dependencies from: tuple key model to: tuple value model) isNotEmpty
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiDSMBrowserModel >> isDiagonal: tuple [
 
 	^tuple key = tuple value
 
 ]
 
-{ #category : #api }
+{ #category : 'api' }
 MiDSMBrowserModel >> listTupleDependencies: tuple [
 	((tuple key model = tuple value model)
 	and: [ self showSelfDependencies not ])
@@ -203,13 +205,13 @@ MiDSMBrowserModel >> listTupleDependencies: tuple [
 	^dependencies from: tuple key model to: tuple value model
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDSMBrowserModel >> miSelectedItem [
 
 	^selectedEntities
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiDSMBrowserModel >> openDetailedDSMOn: aTuple [
 	"creating a new (detailed) DSM from	aTuple = fromEntity -> toEntity"
 
@@ -222,7 +224,7 @@ MiDSMBrowserModel >> openDetailedDSMOn: aTuple [
 		yourself
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiDSMBrowserModel >> orderNodes: entities [
 	"order nodes according to number of dependencies
 	 Order is:
@@ -253,23 +255,23 @@ MiDSMBrowserModel >> orderNodes: entities [
 		collect: [ :entity | graph findNode: entity ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDSMBrowserModel >> orderedNodesX [
 	^orderedNodesX
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDSMBrowserModel >> orderedNodesY [
 	^orderedNodesY
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 MiDSMBrowserModel >> sccColor [
 
 	^ nodeColors at: #scc
 ]
 
-{ #category : #api }
+{ #category : 'api' }
 MiDSMBrowserModel >> sccTuplesForTuple: tuple [
 	"gets the SCC owning tuple, then collects all tuples in this SCC
 	 where depending entity depends on depended entity (!)"
@@ -287,7 +289,7 @@ MiDSMBrowserModel >> sccTuplesForTuple: tuple [
 		]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDSMBrowserModel >> selectedEntities: anObject [
 
 	selectedEntities := anObject.
@@ -295,26 +297,26 @@ MiDSMBrowserModel >> selectedEntities: anObject [
 	browser updateToolbar
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 MiDSMBrowserModel >> settings [
 	"If browser hasSettings, then implement this method to get them"
 
 	^settings 
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 MiDSMBrowserModel >> settingsChanged: aBoolean [
 
 	aBoolean ifTrue: [ browser buildDSM ]
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 MiDSMBrowserModel >> showSCCColor [
 
 	^ nodeColors at: #showSCC
 ]
 
-{ #category : #api }
+{ #category : 'api' }
 MiDSMBrowserModel >> showSCCColorForTuple: tuple [
 	"same as #colorForTuple: but highlighting SCCs"
 
@@ -325,13 +327,13 @@ MiDSMBrowserModel >> showSCCColorForTuple: tuple [
 	^ self dependencyColor
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 MiDSMBrowserModel >> showSelfDependencies [
 
 	^ settings getItemValue: #selfDependenciesSetting
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiDSMBrowserModel >> userActionOn: aTuple [
 	| depending depended weight|
 	depending := aTuple key model.
@@ -351,7 +353,7 @@ MiDSMBrowserModel >> userActionOn: aTuple [
 
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiDSMBrowserModel >> withX: entitiesX withY: entitiesY [
 	"initializing the DSM for two list of entities (see also #followEntity:)
 	 In this case, this is probably not a suqare matrix of dependency"

@@ -6,59 +6,98 @@ Class {
 	#instVars : [
 		'settings',
 		'entities',
-		'availableMetrics'
+		'availableMetrics',
+		'startColor',
+		'endColor',
+		'heightMetric',
+		'widthMetric',
+		'colorMetric'
 	],
 	#category : 'MooseIDE-Visualization-System Complexity',
 	#package : 'MooseIDE-Visualization',
 	#tag : 'System Complexity'
 }
 
+{ #category : 'as yet unclassified' }
+MiSystemComplexityModel class >> defaultAvailableMetrics [
+
+	^ OrderedCollection withAll: {
+			  self defaultHeightMetric.
+			  self defaultWidthMetric.
+			  self defaultColorMetric }
+]
+
+{ #category : 'initialization' }
+MiSystemComplexityModel class >> defaultColorMetric [
+
+	^ #numberOfLinesOfCode
+]
+
+{ #category : 'initialization' }
+MiSystemComplexityModel class >> defaultEndColor [
+
+	^ Color black
+]
+
+{ #category : 'initialization' }
+MiSystemComplexityModel class >> defaultHeightMetric [
+
+	^ #numberOfMethods
+]
+
+{ #category : 'initialization' }
+MiSystemComplexityModel class >> defaultStartColor [
+
+	^ Color white
+]
+
+{ #category : 'initialization' }
+MiSystemComplexityModel class >> defaultWidthMetric [
+
+	^ #numberOfAttributes
+]
+
+{ #category : 'accessing' }
+MiSystemComplexityModel class >> newMementoForDefaultValues [
+
+	^ MiSystemComplexitySettingsMemento new
+		  heightMetric: self defaultHeightMetric;
+		  widthMetric: self defaultHeightMetric;
+		  colorMetric: self defaultColorMetric;
+		  startColor: self defaultStartColor;
+		  endColor: self defaultEndColor;
+		  yourself
+]
+
 { #category : 'initialization' }
 MiSystemComplexityModel >> availableMetrics [
 
-	entities ifEmpty: [ ^ OrderedCollection new ].
+	entities ifEmpty: [ ^ self class defaultAvailableMetrics ].
 
-	^ (((entities allEntityTypes collect: [ :entity |
-		     entity famePropertiesOfType: FM3Number ]) fold: [
-		    :availableProperties
-		    :entityProperties | availableProperties & entityProperties ])
-		   collect: #implementingSelector) sorted: #yourself ascending
+	^ self availableMetricsForEntities
+]
+
+{ #category : 'accessing' }
+MiSystemComplexityModel >> availableMetricsForEntities [
+	"entities are 
+		- MooseObjects (See MiSystemComplexityBrowser>>#canFollowEntity:) 
+		- returning true to #isClass (See MiSystemComplexityBrowser>>#followEntity:) 
+	i.e. instances of FamixXYZClass"
+
+	^ ((entities anyOne famePropertiesOfType: FM3Number) collect:
+		   #implementingSelector) sorted: #yourself ascending
 ]
 
 { #category : 'accessing' }
 MiSystemComplexityModel >> colorMetric [
 
-	^ settings getItemValue: #colorMetric
+	^ colorMetric
 ]
 
 { #category : 'initialization' }
-MiSystemComplexityModel >> colorRangeEnd [
+MiSystemComplexityModel >> endColor [
 
-	^ settings getItemValue: #colorRangeEnd
-]
-
-{ #category : 'initialization' }
-MiSystemComplexityModel >> colorRangeStart [
-
-	^ settings getItemValue: #colorRangeStart
-]
-
-{ #category : 'initialization' }
-MiSystemComplexityModel >> defaultColorMetric [
-
-	^ nil
-]
-
-{ #category : 'initialization' }
-MiSystemComplexityModel >> defaultHeightMetric [
-
-	^ nil
-]
-
-{ #category : 'initialization' }
-MiSystemComplexityModel >> defaultWidthMetric [
-
-	^ nil
+	^ endColor
 ]
 
 { #category : 'accessing' }
@@ -70,83 +109,34 @@ MiSystemComplexityModel >> entities [
 { #category : 'accessing' }
 MiSystemComplexityModel >> entities: aMooseGroup [
 
-	aMooseGroup ifEmpty: [ ^ self ].
-	
-	entities := aMooseGroup.
-	
-	self updateSettings.
-	browser runVisualization
+	entities := aMooseGroup
 ]
 
 { #category : 'accessing' }
 MiSystemComplexityModel >> heightMetric [
 
-	^ settings getItemValue: #heightMetric
+	^ heightMetric
 ]
 
 { #category : 'initialization' }
 MiSystemComplexityModel >> initialize [
 
 	super initialize.
-	entities := MooseGroup new.
-	availableMetrics := {  }
+	entities := MooseGroup new
 ]
 
 { #category : 'initialization' }
 MiSystemComplexityModel >> initializeSettings [
 
+	startColor := self class defaultStartColor.
+	endColor := self class defaultEndColor.
+	heightMetric := self class defaultHeightMetric.
+	widthMetric := self class defaultWidthMetric.
+	colorMetric := self class defaultColorMetric.
+
 	settings := super initializeSettings
-		            addItem: self itemHeightMetric named: #heightMetric;
-		            addItem: self itemWidthMetric named: #widthMetric;
-		            addItem: self itemColorMetric named: #colorMetric;
-		            addItem: self itemColorRangeStart named: #colorRangeStart;
-		            addItem: self itemColorRangeEnd named: #colorRangeEnd;
 		            addItem: self itemNameToDisplay named: #nameToDisplay;
 		            yourself
-]
-
-{ #category : 'initialization' }
-MiSystemComplexityModel >> itemColorMetric [
-
-	^ MiAbstractSettingItem droplistSetting
-		  possibleValues: self availableMetrics;
-		  setValue: self defaultColorMetric;
-		  label: 'Color metric:';
-		  help: 'The metric leading the normalization of boxes color.';
-		  yourself
-]
-
-{ #category : 'initialization' }
-MiSystemComplexityModel >> itemColorRangeEnd [
-
-	^ MiAbstractSettingItem colorSetting
-		  setValue: Color black;
-		  label: 'Color range end:';
-		  help:
-			  'End color for scaling color metric.';
-		  yourself
-]
-
-{ #category : 'initialization' }
-MiSystemComplexityModel >> itemColorRangeStart [
-
-	^ MiAbstractSettingItem colorSetting
-		  setValue: Color white;
-		  label: 'Color range start:';
-		  help:
-			  'Start color for scaling color metric.';
-		  yourself
-]
-
-{ #category : 'initialization' }
-MiSystemComplexityModel >> itemHeightMetric [
-
-	^ MiAbstractSettingItem droplistSetting
-		  possibleValues: self availableMetrics;
-		  setValue: self defaultHeightMetric;
-		  label: 'Height metric:';
-		  help: 'The metric leading the normalization of boxes height.';
-		  yourself
 ]
 
 { #category : 'initialization' }
@@ -160,21 +150,36 @@ MiSystemComplexityModel >> itemNameToDisplay [
 		  yourself
 ]
 
-{ #category : 'initialization' }
-MiSystemComplexityModel >> itemWidthMetric [
+{ #category : 'accessing' }
+MiSystemComplexityModel >> miSelectedItem [
 
-	^ MiAbstractSettingItem droplistSetting
-		  possibleValues: self availableMetrics;
-		  setValue: self defaultWidthMetric;
-		  label: 'Width metric:';
-		  help: 'The metric leading the normalization of boxes width.';
-		  yourself
+	^ entities
 ]
 
 { #category : 'initialization' }
 MiSystemComplexityModel >> nameToDisplay [
 
 	^ settings getItemValue: #nameToDisplay
+]
+
+{ #category : 'instance creation' }
+MiSystemComplexityModel >> newMemento [
+
+	^ MiSystemComplexitySettingsMemento new
+		  availableMetrics: self availableMetrics;
+		  heightMetric: heightMetric;
+		  widthMetric: widthMetric;
+		  colorMetric: colorMetric;
+		  startColor: startColor;
+		  endColor: endColor
+]
+
+{ #category : 'settings management' }
+MiSystemComplexityModel >> newMementoForDefaultValues [
+
+	^ self class newMementoForDefaultValues
+		  availableMetrics: self availableMetrics;
+		  yourself
 ]
 
 { #category : 'accessing' }
@@ -189,22 +194,33 @@ MiSystemComplexityModel >> settingsChanged: aBoolean [
 	aBoolean ifTrue: [ browser runVisualization ]
 ]
 
-{ #category : 'accessing' }
-MiSystemComplexityModel >> updateSettings [
+{ #category : 'settings management' }
+MiSystemComplexityModel >> settingsPresenterExtent [
+	"Override to set a custom size"
 
-	(settings itemNamed: #heightMetric)
-		possibleValues: self availableMetrics;
-		setValue: #numberOfMethods.
-	(settings itemNamed: #widthMetric)
-		possibleValues: self availableMetrics;
-		setValue: #numberOfAttributes.
-	(settings itemNamed: #colorMetric)
-		possibleValues: self availableMetrics;
-		setValue: #numberOfLinesOfCode
+	^ 400 @ 300
+]
+
+{ #category : 'initialization' }
+MiSystemComplexityModel >> startColor [
+
+	^ startColor
+]
+
+{ #category : 'settings management' }
+MiSystemComplexityModel >> updateFromMemento: aMemento [
+
+	heightMetric := aMemento heightMetric.
+	widthMetric := aMemento widthMetric.
+	colorMetric := aMemento colorMetric.
+	startColor := aMemento startColor.
+	endColor := aMemento endColor.
+
+	browser runVisualization
 ]
 
 { #category : 'accessing' }
 MiSystemComplexityModel >> widthMetric [
 
-	^ settings getItemValue: #widthMetric
+	^ widthMetric
 ]

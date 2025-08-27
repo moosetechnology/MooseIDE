@@ -2,24 +2,26 @@
 A MiSettingItem which value is given by an editable list. It allows to chose an ordered list of elements from a set of elements (all possible values).
 "
 Class {
-	#name : #MiButtonEditablelistSettingItem,
-	#superclass : #MiButtonListSettingItem,
-	#category : #'MooseIDE-Core-Settings-old'
+	#name : 'MiButtonEditablelistSettingItem',
+	#superclass : 'MiButtonListSettingItem',
+	#category : 'MooseIDE-Core-Settings-old',
+	#package : 'MooseIDE-Core',
+	#tag : 'Settings-old'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiButtonEditablelistSettingItem >> displayBlock: aBlock [
 
 	secondaryPresenter displayIcon: aBlock
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiButtonEditablelistSettingItem >> getValue [
 	
 	^ secondaryPresenter items
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiButtonEditablelistSettingItem >> initializeSecondaryPresenter [
 
 	secondaryPresenter := MiEditableListSelector new.
@@ -27,25 +29,25 @@ MiButtonEditablelistSettingItem >> initializeSecondaryPresenter [
 
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MiButtonEditablelistSettingItem >> listToString: aCollection [
 	^String cr join: (aCollection collect: #asString)
 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiButtonEditablelistSettingItem >> possibleValues [
 
 	^ secondaryPresenter allItems
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiButtonEditablelistSettingItem >> possibleValues: aCollection [
 
 	secondaryPresenter allItems: aCollection
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiButtonEditablelistSettingItem >> setValue: aCollection [
 
 	secondaryPresenter items: aCollection

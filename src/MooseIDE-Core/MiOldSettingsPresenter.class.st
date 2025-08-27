@@ -1,6 +1,6 @@
 Class {
-	#name : #MiOldSettingsPresenter,
-	#superclass : #SpPresenter,
+	#name : 'MiOldSettingsPresenter',
+	#superclass : 'SpPresenter',
 	#instVars : [
 		'ownerTool',
 		'settingItems',
@@ -9,10 +9,12 @@ Class {
 		'btnReset',
 		'settingsChanged'
 	],
-	#category : #'MooseIDE-Core-Settings-old'
+	#category : 'MooseIDE-Core-Settings-old',
+	#package : 'MooseIDE-Core',
+	#tag : 'Settings-old'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MiOldSettingsPresenter class >> owner: aMiSpecModel [
 
 	^ self new
@@ -20,50 +22,50 @@ MiOldSettingsPresenter class >> owner: aMiSpecModel [
 		  yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiOldSettingsPresenter >> addItem: anItem named: aName [
 
 	anItem owner: self.
 	settingItems at: aName put: anItem
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MiOldSettingsPresenter >> buildPresenter [
 	self layout
 ]
 
-{ #category : #'accessing - tests' }
+{ #category : 'accessing - tests' }
 MiOldSettingsPresenter >> buttonCancel [
 
 	^ btnCancel
 ]
 
-{ #category : #'accessing - tests' }
+{ #category : 'accessing - tests' }
 MiOldSettingsPresenter >> buttonOk [
 
 	^ btnOk
 ]
 
-{ #category : #'accessing - tests' }
+{ #category : 'accessing - tests' }
 MiOldSettingsPresenter >> buttonReset [
 
 	^ btnReset
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiOldSettingsPresenter >> closeSettings [
 	self window close.
 	ownerTool settingsChanged: settingsChanged 
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiOldSettingsPresenter >> confirmItems [
 
 	settingItems valuesDo: [ :item | item confirmValue ].
 	settingsChanged := true
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiOldSettingsPresenter >> connectPresenters [
 
 	btnOk action: [ 
@@ -75,7 +77,7 @@ MiOldSettingsPresenter >> connectPresenters [
 	btnReset action: [ self resetItems ]
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 MiOldSettingsPresenter >> defaultLayout [
 
 	| tmpLayout tmpLayout2 |
@@ -96,20 +98,20 @@ MiOldSettingsPresenter >> defaultLayout [
 		  yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiOldSettingsPresenter >> getItemValue: aString [
 
 	^ (self itemNamed: aString) getValue
 ]
 
-{ #category : #'morphic ui' }
+{ #category : 'morphic ui' }
 MiOldSettingsPresenter >> initialExtent [
 
 	^ 470 @ ((10 min: settingItems size) + 1 * self settingItemHeight
 	   + (settingItems size - 1 * self itemSpacing))
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiOldSettingsPresenter >> initialize [
 
 	super initialize.
@@ -117,7 +119,7 @@ MiOldSettingsPresenter >> initialize [
 	settingsChanged := false
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiOldSettingsPresenter >> initializePresenters [
 
 	btnReset := self newButton label: 'Reset'.
@@ -125,25 +127,25 @@ MiOldSettingsPresenter >> initializePresenters [
 	btnOk := self newButton label: 'Ok'
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiOldSettingsPresenter >> initializeWindow: aWindowPresenter [
 
 	super initializeWindow: aWindowPresenter.
 	aWindowPresenter title: ownerTool toolName , ' settings'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiOldSettingsPresenter >> itemNamed: aName [
 	^settingItems at: aName ifAbsent: [ MiNoSuchSettingItem signal ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiOldSettingsPresenter >> itemSpacing [
 
 	^ 2
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MiOldSettingsPresenter >> open [
 
 	self buildPresenter.
@@ -151,43 +153,43 @@ MiOldSettingsPresenter >> open [
 	super open
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiOldSettingsPresenter >> ownerTool [
 
 	^ ownerTool
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiOldSettingsPresenter >> ownerTool: anObject [
 
 	ownerTool := anObject
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiOldSettingsPresenter >> resetItems [
 
 	settingItems valuesDo: [ :item | item resetValue ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiOldSettingsPresenter >> setItem: itemName value: aValue [ 
 	
 	(self itemNamed: itemName) setValue: aValue
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiOldSettingsPresenter >> settingItemHeight [
 
 	^ self class toolbarHeight + 10
 ]
 
-{ #category : #'accessing - tests' }
+{ #category : 'accessing - tests' }
 MiOldSettingsPresenter >> settingItems [
 
 	^ settingItems
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiOldSettingsPresenter >> settingsChanged [
 	^settingsChanged
 ]

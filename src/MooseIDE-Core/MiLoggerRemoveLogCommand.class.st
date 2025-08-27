@@ -1,28 +1,30 @@
 Class {
-	#name : #MiLoggerRemoveLogCommand,
-	#superclass : #MiCommand,
-	#category : #'MooseIDE-Core-Command'
+	#name : 'MiLoggerRemoveLogCommand',
+	#superclass : 'MiCommand',
+	#category : 'MooseIDE-Core-Command',
+	#package : 'MooseIDE-Core',
+	#tag : 'Command'
 }
 
-{ #category : #default }
+{ #category : 'default' }
 MiLoggerRemoveLogCommand class >> defaultIconName [
 
 	^ #smallDelete
 ]
 
-{ #category : #default }
+{ #category : 'default' }
 MiLoggerRemoveLogCommand class >> defaultName [
 
 	^ 'Remove selected log'
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiLoggerRemoveLogCommand >> canBeExecuted [
 
 	^ self context miSelectedItem isNotNil
 ]
 
-{ #category : #executing }
+{ #category : 'executing' }
 MiLoggerRemoveLogCommand >> execute [
 
 	^ self context removeSelectedLog

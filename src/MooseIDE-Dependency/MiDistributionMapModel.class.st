@@ -2,17 +2,19 @@
 I am the model of the distribution map. I am responsible for tag managment, data storage and element sorting.
 "
 Class {
-	#name : #MiDistributionMapModel,
-	#superclass : #MiAbstractModel,
+	#name : 'MiDistributionMapModel',
+	#superclass : 'MiAbstractModel',
 	#instVars : [
 		'entities',
 		'settings',
 		'defaultChildrenQuery'
 	],
-	#category : #'MooseIDE-Dependency-DistributionMap'
+	#category : 'MooseIDE-Dependency-DistributionMap',
+	#package : 'MooseIDE-Dependency',
+	#tag : 'DistributionMap'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 MiDistributionMapModel class >> defaultDynamicTagIsDead [
 
 	^ MiDynamicTag new
@@ -22,7 +24,7 @@ MiDistributionMapModel class >> defaultDynamicTagIsDead [
 		  yourself
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 MiDistributionMapModel class >> defaultDynamicTagIsStub [
 
 	^ MiDynamicTag new
@@ -32,7 +34,7 @@ MiDistributionMapModel class >> defaultDynamicTagIsStub [
 		  yourself
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 MiDistributionMapModel class >> defaultDynamicTags [
 
 	^ { 
@@ -40,13 +42,13 @@ MiDistributionMapModel class >> defaultDynamicTags [
 		  self defaultDynamicTagIsDead }
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 MiDistributionMapModel >> availableQueries [
 
 	^ { self defaultChildrenQuery } , browser availableQueries
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDistributionMapModel >> childrenFor: anEntity [
 
 	| groups dts children |
@@ -59,19 +61,19 @@ MiDistributionMapModel >> childrenFor: anEntity [
 	^ groups flatCollect: [ :child | child ] as: OrderedCollection
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 MiDistributionMapModel >> childrenQuerySetting [
 
 	^ settings getItemValue: #defaultChildrenQuery
 ]
 
-{ #category : #utilities }
+{ #category : 'utilities' }
 MiDistributionMapModel >> collection: collection1 hasSameElementHas: collection2 [
 	^((collection1 size = collection2 size)
 	and: [ collection1 allSatisfy: [ :each | collection2 includes: each ] ])
 ]
 
-{ #category : #querying }
+{ #category : 'querying' }
 MiDistributionMapModel >> colorFor: anEntity [
 	
 	| dt |
@@ -79,12 +81,12 @@ MiDistributionMapModel >> colorFor: anEntity [
 	^ self colorForTag:  dt
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 MiDistributionMapModel >> colorForNoTagSetting [
 	^settings getItemValue: #colorForNoTag
 ]
 
-{ #category : #querying }
+{ #category : 'querying' }
 MiDistributionMapModel >> colorForTag: aTag [
 
 	aTag color ifNotNil: [ :color | ^ color ].
@@ -92,7 +94,7 @@ MiDistributionMapModel >> colorForTag: aTag [
 	^ self colorForNoTagSetting
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDistributionMapModel >> defaultChildrenQuery [
 
 	^ defaultChildrenQuery ifNil: [ 
@@ -100,26 +102,26 @@ MiDistributionMapModel >> defaultChildrenQuery [
 			                          entity children ] ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDistributionMapModel >> entities [
 
 	^ entities
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDistributionMapModel >> entities: anObject [
 
 	entities := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDistributionMapModel >> fetchChildrenQueries [
 
 	^(browser application itemsFor: FQAbstractQuery)
 		  asOrderedCollection select: [ :query | query isValid ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDistributionMapModel >> fetchTags [
 	"If we ask the application, then we need the tag browser opened. So we asume a browser is opened on the entities of only one model and we ask the tags in the models of a random moose entity of the browser."
 
@@ -130,7 +132,7 @@ MiDistributionMapModel >> fetchTags [
 	^ #(  )
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDistributionMapModel >> indexOfTagFor: anEntity [
 
 	self tagsSetting doWithIndex: [ :dt :i | 
@@ -138,7 +140,7 @@ MiDistributionMapModel >> indexOfTagFor: anEntity [
 	^ 0
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiDistributionMapModel >> initializeSettings [
 
 	settings := super initializeSettings
@@ -150,7 +152,7 @@ MiDistributionMapModel >> initializeSettings [
 		            yourself
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 MiDistributionMapModel >> itemChildrenQuery [
 
 	^ MiAbstractSettingItem droplistSetting
@@ -161,7 +163,7 @@ MiDistributionMapModel >> itemChildrenQuery [
 		  yourself
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 MiDistributionMapModel >> itemColorForNoTag [
 
 	^ MiAbstractSettingItem colorSetting
@@ -172,7 +174,7 @@ MiDistributionMapModel >> itemColorForNoTag [
 		  yourself
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 MiDistributionMapModel >> itemTags [
 
 	^ MiAbstractSettingItem buttonWithSelectableListSetting
@@ -186,14 +188,14 @@ If an entity has several tags, it will get the color of the first of its tags ap
 		  yourself
 ]
 
-{ #category : #querying }
+{ #category : 'querying' }
 MiDistributionMapModel >> numberOfchildrenWithProperty: aProp forNode: node [
 	
 	^(self childrenQuerySetting runOn: node asMooseGroup)
 	count: [ :child  |  aProp isApplicableTo: child]
 ]
 
-{ #category : #querying }
+{ #category : 'querying' }
 MiDistributionMapModel >> orderOuterNodes: aCollectionOfNodes [
 
 	| engine partVectors |
@@ -207,7 +209,7 @@ MiDistributionMapModel >> orderOuterNodes: aCollectionOfNodes [
 	^ engine orderDendrogramLeaves collect: #item
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 MiDistributionMapModel >> resetChildrenQuerySetting [
 	| settingQueries environmentQueries currentSelected |
 
@@ -227,7 +229,7 @@ MiDistributionMapModel >> resetChildrenQuerySetting [
 
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 MiDistributionMapModel >> resetTagSetting [
 
 	| settingTags environmentTags |
@@ -241,7 +243,7 @@ MiDistributionMapModel >> resetTagSetting [
 
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 MiDistributionMapModel >> settings [
 
 	self resetChildrenQuerySetting.
@@ -249,13 +251,13 @@ MiDistributionMapModel >> settings [
 	^ settings
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDistributionMapModel >> settingsChanged: aBoolean [
 
 	aBoolean ifTrue: [ browser runVisualization ]
 ]
 
-{ #category : #querying }
+{ #category : 'querying' }
 MiDistributionMapModel >> tagFor: anEntity [
 
 	^ self tagsSetting
@@ -263,12 +265,12 @@ MiDistributionMapModel >> tagFor: anEntity [
 		  ifNone: [ MiNullDynamicTag new ]
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 MiDistributionMapModel >> tagsSetting [
 	^settings getItemValue: #tags
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDistributionMapModel >> tooManyEntities [
 	"some random value above which computing the DistributionMap takes too long.
 	Not very brilliant, but solves https://github.com/moosetechnology/MooseIDE/issues/955"

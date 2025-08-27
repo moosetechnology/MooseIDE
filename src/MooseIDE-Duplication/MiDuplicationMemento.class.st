@@ -1,6 +1,6 @@
 Class {
-	#name : #MiDuplicationMemento,
-	#superclass : #MiMemento,
+	#name : 'MiDuplicationMemento',
+	#superclass : 'MiMemento',
 	#instVars : [
 		'maximumShownReplicas',
 		'sourcesCleaner',
@@ -9,70 +9,71 @@ Class {
 		'minimumNumberOfLines',
 		'availableSourceCleaners'
 	],
-	#category : #'MooseIDE-Duplication'
+	#category : 'MooseIDE-Duplication',
+	#package : 'MooseIDE-Duplication'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDuplicationMemento >> availableSourceCleaners [
 
 	^ availableSourceCleaners
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDuplicationMemento >> availableSourceCleaners: aCollection [
 
 	availableSourceCleaners := aCollection
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDuplicationMemento >> maximumShownReplicas [
 
 	^ maximumShownReplicas
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDuplicationMemento >> maximumShownReplicas: anObject [
 
 	maximumShownReplicas := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDuplicationMemento >> minimumNumberOfCharacters [
 
 	^ minimumNumberOfCharacters
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDuplicationMemento >> minimumNumberOfCharacters: anObject [
 
 	minimumNumberOfCharacters := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDuplicationMemento >> minimumNumberOfLines [
 
 	^ minimumNumberOfLines
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDuplicationMemento >> minimumNumberOfLines: anObject [
 
 	minimumNumberOfLines := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDuplicationMemento >> minimumNumberOfReplicas [
 
 	^ minimumNumberOfReplicas
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDuplicationMemento >> minimumNumberOfReplicas: anObject [
 
 	minimumNumberOfReplicas := anObject
 ]
 
-{ #category : #ui }
+{ #category : 'ui' }
 MiDuplicationMemento >> settingsPresenters [
 
 	^ OrderedCollection new
@@ -113,13 +114,13 @@ If a fragment is duplicated many times, the browser will only show that maximum 
 		  yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDuplicationMemento >> sourcesCleaner [
 
 	^ sourcesCleaner
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDuplicationMemento >> sourcesCleaner: anObject [
 
 	sourcesCleaner := anObject

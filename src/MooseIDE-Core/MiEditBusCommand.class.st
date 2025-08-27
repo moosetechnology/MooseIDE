@@ -1,34 +1,36 @@
 Class {
-	#name : #MiEditBusCommand,
-	#superclass : #MiPopupCommand,
-	#category : #'MooseIDE-Core-Command'
+	#name : 'MiEditBusCommand',
+	#superclass : 'MiPopupCommand',
+	#category : 'MooseIDE-Core-Command',
+	#package : 'MooseIDE-Core',
+	#tag : 'Command'
 }
 
-{ #category : #default }
+{ #category : 'default' }
 MiEditBusCommand class >> defaultDescription [
 
 	^ 'Edit buses'
 ]
 
-{ #category : #default }
+{ #category : 'default' }
 MiEditBusCommand class >> defaultIconName [
 
 	^ #mooseEditor
 ]
 
-{ #category : #default }
+{ #category : 'default' }
 MiEditBusCommand class >> defaultName [
 
 	^ 'Buses'
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiEditBusCommand >> canBeExecuted [
 
 	^ self context canEditBuses
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiEditBusCommand >> dynamicDescription [
 
 	^ String streamContents: [ :s |
@@ -40,7 +42,7 @@ MiEditBusCommand >> dynamicDescription [
 		  s << 'Click to edit' ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiEditBusCommand >> dynamicName [
 
 	^ self context buses ifEmpty: [ 'No bus' ] ifNotEmpty: [ :buses |
@@ -49,7 +51,7 @@ MiEditBusCommand >> dynamicName [
 			  ifFalse: [ buses size asString , ' buses' ] ]
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 MiEditBusCommand >> popupContent [
 
 	^ MiBusesPopup newApplication: self application model: self context

@@ -1,0 +1,103 @@
+Class {
+	#name : 'MiColorGradientSelectionPresenter',
+	#superclass : 'MiAbstractSettingPresenter',
+	#instVars : [
+		'originButton',
+		'gradient',
+		'endButton',
+		'colorPicker'
+	],
+	#category : 'MooseIDE-Core-Settings',
+	#package : 'MooseIDE-Core',
+	#tag : 'Settings'
+}
+
+{ #category : 'accessing' }
+MiColorGradientSelectionPresenter class >> help [
+
+	^ 'Choose start color for the minimal value and end color for the higher value'
+]
+
+{ #category : 'accessing' }
+MiColorGradientSelectionPresenter class >> label [
+
+	^ 'Color range:'
+]
+
+{ #category : 'initialization' }
+MiColorGradientSelectionPresenter >> buildGradientOn: aCanvas [
+
+	| paint |
+	aCanvas
+		clear;
+		color: Color transparent.
+
+	paint := LinearGradientPaint fromArray: {
+			         (0 -> memento startColor).
+			         (1 -> memento endColor) }.
+	paint
+		start: -50 @ 0;
+		stop: 50 @ 0.
+
+	aCanvas newBox
+		height: 23; "23 is (25 - 2) to align with buttons"
+		width: 100;
+		paint: paint
+]
+
+{ #category : 'layout' }
+MiColorGradientSelectionPresenter >> defaultLayout [
+
+	^ self newBoxLayoutTopToBottom
+		  add: (self newBoxLayoutLeftToRight
+				   add: originButton width: 25;
+				   add: gradient width: 100;
+				   add: endButton width: 25;
+				   spacing: 5;
+				   yourself)
+		  height: 25;
+		  yourself
+]
+
+{ #category : 'initialization' }
+MiColorGradientSelectionPresenter >> initializePresenters [
+
+	originButton := self newButton
+		                color: memento startColor;
+		                whenActivatedDo: [
+				                self
+					                openNewColorPickerFrom: originButton
+					                on: memento startColor
+					                action: [ :newColor |
+						                memento startColor: newColor ] ].
+
+	gradient := self newRoassal script: [ :canvas |
+		            self buildGradientOn: canvas ].
+
+	endButton := self newButton
+		             color: memento endColor;
+		             whenActivatedDo: [
+				             self
+					             openNewColorPickerFrom: endButton
+					             on: memento endColor
+					             action: [ :newColor | memento endColor: newColor ] ]
+]
+
+{ #category : 'as yet unclassified' }
+MiColorGradientSelectionPresenter >> openNewColorPickerFrom: aButton on: aColor action: aBlock [
+
+	| picker popover |
+	picker := aButton newColorPicker.
+	picker
+		setColor: aColor;
+		whenColorChangedDo: [ :newColor |
+				aBlock value: newColor.
+				aButton color: newColor.
+				gradient refresh.
+				self update ].
+	popover := picker asPopover.
+	popover whenOpenedDo: [ "Not nice to have to get to the widget, but no other way worked."
+			popover withAdapterDo: [ :a |
+				a widgetDo: [ :w | w extent: 350 @ 500 ] ] ].
+	popover popup
+]

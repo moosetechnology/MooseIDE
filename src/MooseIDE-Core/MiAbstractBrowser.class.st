@@ -34,24 +34,26 @@ Propagated entities.
 *************************************************
 "
 Class {
-	#name : #MiAbstractBrowser,
-	#superclass : #MiPresenter,
+	#name : 'MiAbstractBrowser',
+	#superclass : 'MiPresenter',
 	#instVars : [
 		'buses',
 		'receivingMode',
 		'specModel',
 		'inspector'
 	],
-	#category : #'MooseIDE-Core-Browser'
+	#category : 'MooseIDE-Core-Browser',
+	#package : 'MooseIDE-Core',
+	#tag : 'Browser'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiAbstractBrowser class >> allBrowsers [
 
 	^ self allSubclasses reject: #isAbstract
 ]
 
-{ #category : #menu }
+{ #category : 'menu' }
 MiAbstractBrowser class >> allBrowsersMenuRoot: aRootMenu action: aBlock [
 
 	(self allBrowsers sortAscending: #menuPriority) do: [ :browserClass |
@@ -60,7 +62,7 @@ MiAbstractBrowser class >> allBrowsersMenuRoot: aRootMenu action: aBlock [
 	^ aRootMenu
 ]
 
-{ #category : #keymaps }
+{ #category : 'keymaps' }
 MiAbstractBrowser class >> browserKey [
 
 	"Override with a character to be used after m (for Moose) to open your browser"
@@ -68,7 +70,7 @@ MiAbstractBrowser class >> browserKey [
 	^ nil
 ]
 
-{ #category : #menu }
+{ #category : 'menu' }
 MiAbstractBrowser class >> buildItemInMenu: aMenuGroupPresenter action: aBlock [
 
 	self isAbstract ifTrue: [ ^ self ].
@@ -81,7 +83,7 @@ MiAbstractBrowser class >> buildItemInMenu: aMenuGroupPresenter action: aBlock [
 			icon: self menuIcon ]
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiAbstractBrowser class >> buildMenuItemIn: aBuilder [
 
 	"Method used in subclasses"
@@ -97,7 +99,7 @@ MiAbstractBrowser class >> buildMenuItemIn: aBuilder [
 		  yourself
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiAbstractBrowser class >> buildMenuItemIn: aBuilder action: aBlock [
 	"Method used in subclasses"
 
@@ -112,13 +114,13 @@ MiAbstractBrowser class >> buildMenuItemIn: aBuilder action: aBlock [
 		  yourself
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiAbstractBrowser class >> famixMenuRoot [
 
 	^ #Famix
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiAbstractBrowser class >> helpMessage [
 
 	^ self comment ifNil: [ '' ] ifNotNil: [ :comment |
@@ -129,25 +131,25 @@ MiAbstractBrowser class >> helpMessage [
 				  start to: end do: [ :i | s nextPut: (comment at: i) ] ] ] ]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiAbstractBrowser class >> isAbstract [ 
 	^ self == MiAbstractBrowser
 ]
 
-{ #category : #keymaps }
+{ #category : 'keymaps' }
 MiAbstractBrowser class >> keyText [
 
 	^ self browserKey ifNotNil: [ :aCharacter |
 		  'M, {1}' format: { aCharacter asUppercase } ]
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiAbstractBrowser class >> menuCodeToolsPriority [
 
 	^ 20
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiAbstractBrowser class >> menuCommandOn: aBuilder [
 	"Library > Famix > Old browsers"
 
@@ -158,13 +160,13 @@ MiAbstractBrowser class >> menuCommandOn: aBuilder [
 		order: self menuOldBrowsersPriority
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiAbstractBrowser class >> menuIcon [
 
 	^ self iconNamed: self menuIconName
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiAbstractBrowser class >> menuIconName [
 
 	"Override if needed"
@@ -172,13 +174,13 @@ MiAbstractBrowser class >> menuIconName [
 	^ #blank
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiAbstractBrowser class >> menuItem [
 
 	self subclassResponsibility
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiAbstractBrowser class >> menuLabel [
 
 	"Override if necessary"
@@ -186,25 +188,25 @@ MiAbstractBrowser class >> menuLabel [
 	^ self title
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiAbstractBrowser class >> menuMainToolsPriority [
 
 	^ 0
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiAbstractBrowser class >> menuMetaToolsPriority [
 
 	^ 40
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiAbstractBrowser class >> menuOldBrowsersPriority [
 
 	^ 200
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiAbstractBrowser class >> menuParent [
 
 	"Override if necessary"
@@ -212,25 +214,25 @@ MiAbstractBrowser class >> menuParent [
 	^ self mooseMenuRoot
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiAbstractBrowser class >> menuPharoToolsPriority [
 
 	^ 30
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiAbstractBrowser class >> menuPriority [
 
 	^ 100
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiAbstractBrowser class >> menuVisualizationToolsPriority [
 
 	^ 10
 ]
 
-{ #category : #menu }
+{ #category : 'menu' }
 MiAbstractBrowser class >> miBrowsersMenuPresenter [
 
 	^ self
@@ -238,38 +240,38 @@ MiAbstractBrowser class >> miBrowsersMenuPresenter [
 		  action: [ :browserClass | browserClass open ]
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiAbstractBrowser class >> mooseMenuRoot [
 
 	^ #Moose
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MiAbstractBrowser class >> new [
 
 	^ self on: self newModel
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiAbstractBrowser class >> newBrowser: aBrowserClass [
 
 	aBrowserClass open
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MiAbstractBrowser class >> newModel [
 	"Override to return a model (in the MVC sense) for your browser"
 
 	^ nil
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiAbstractBrowser class >> oldBrowserMenuRoot [
 
 	^ #'Old browsers'
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MiAbstractBrowser class >> open [
 
 	^ (self on: self newModel)
@@ -278,14 +280,14 @@ MiAbstractBrowser class >> open [
 		  yourself
 ]
 
-{ #category : #keymaps }
+{ #category : 'keymaps' }
 MiAbstractBrowser class >> openKeyMap [
 
 	^ self browserKey ifNotNil: [
 		  KMKeymap shortcut: self shortcut action: [ self open ] ]
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MiAbstractBrowser class >> openOn: anEntity [
 
 	^ (self on: self newModel)
@@ -296,74 +298,74 @@ MiAbstractBrowser class >> openOn: anEntity [
 		  yourself
 ]
 
-{ #category : #specs }
+{ #category : 'specs' }
 MiAbstractBrowser class >> preferredExtent [
 
 	^ 500 @ 400
 ]
 
-{ #category : #keymaps }
+{ #category : 'keymaps' }
 MiAbstractBrowser class >> shortcut [
 
 	^ self browserKey ifNotNil: [ :aCharacter |
 		  $m shift meta , aCharacter shift meta ]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiAbstractBrowser class >> shouldBuildToolbar [
 
 	^ true
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiAbstractBrowser class >> taskbarIcon [
 	^MooseIcons mooseIcon
 
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiAbstractBrowser >> beFrozen [
 
 	self receivingMode: MiFreezeMode.
 	self window updateReceivingModeButtons
 ]
 
-{ #category : #'window control' }
+{ #category : 'window control' }
 MiAbstractBrowser >> browserClosed [
 
 	buses do: [ :bus | bus unregisterBrowser: self ]
 ]
 
-{ #category : #'window control' }
+{ #category : 'window control' }
 MiAbstractBrowser >> browserCollapsed [
 
 	self beFrozen
 ]
 
-{ #category : #'window control' }
+{ #category : 'window control' }
 MiAbstractBrowser >> browserExpanded [
 	"should we 'unfroze' ?"
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiAbstractBrowser >> buses [
 
 	^ buses ifNil: [ Set new ]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiAbstractBrowser >> canEditBuses [
 
 	^ true
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiAbstractBrowser >> canFollow [
 
 	^ true
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiAbstractBrowser >> canFollowEntity: anObject [
 
 	"whether the browser accepts to deal with anObject"
@@ -371,7 +373,7 @@ MiAbstractBrowser >> canFollowEntity: anObject [
 	self subclassResponsibility
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiAbstractBrowser >> canHighlight [
 
 	"Override to retrun true if you want to give your browser a highlight behavior. 
@@ -380,7 +382,7 @@ MiAbstractBrowser >> canHighlight [
 	^ false
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiAbstractBrowser >> canPropagate [
 
 	| entity |
@@ -390,13 +392,13 @@ MiAbstractBrowser >> canPropagate [
 		  entity isMooseObject and: [ entity isCollection not ] ]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiAbstractBrowser >> canTagEntities [
 
 	^ true
 ]
 
-{ #category : #'private - for tests' }
+{ #category : 'private - for tests' }
 MiAbstractBrowser >> closeSettings [
 	"to close the settings window when testing
 	Should not be used otherwise"
@@ -404,7 +406,7 @@ MiAbstractBrowser >> closeSettings [
 	self hasSettings ifTrue: [ self specModel settings window close ]
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 MiAbstractBrowser >> defaultLayout [
 
 	^ SpBoxLayout newVertical
@@ -412,7 +414,7 @@ MiAbstractBrowser >> defaultLayout [
 		  yourself
 ]
 
-{ #category : #buses }
+{ #category : 'buses' }
 MiAbstractBrowser >> followBus: aBus [
 
 	(self buses includes: aBus) ifTrue: [
@@ -426,7 +428,7 @@ MiAbstractBrowser >> followBus: aBus [
 	application defaultBus: aBus
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiAbstractBrowser >> followEntity: anEntity [
 
 	anEntity ifNotNil: [
@@ -434,7 +436,7 @@ MiAbstractBrowser >> followEntity: anEntity [
 				window title: (self windowTitleFor: anEntity) ] ]
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiAbstractBrowser >> freezeDuring: aBlock [
 
 	| previousMode |
@@ -445,19 +447,19 @@ MiAbstractBrowser >> freezeDuring: aBlock [
 	aBlock ensure: [ receivingMode := previousMode ]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiAbstractBrowser >> hasSettings [
 
 	^ specModel hasSettings
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiAbstractBrowser >> hasVisualization [
 	
 	^ false
 ]
 
-{ #category : #highlighting }
+{ #category : 'highlighting' }
 MiAbstractBrowser >> highlightEntity: anEntity [
 
 	"Override to add behavior on highlight. 
@@ -466,7 +468,7 @@ MiAbstractBrowser >> highlightEntity: anEntity [
 	
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiAbstractBrowser >> initialize [
 
 	super initialize.
@@ -474,7 +476,7 @@ MiAbstractBrowser >> initialize [
 	buses := Set new
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiAbstractBrowser >> initializeWindow: aMiWindowPresenter [
 
 	super initializeWindow: aMiWindowPresenter.
@@ -489,31 +491,31 @@ MiAbstractBrowser >> initializeWindow: aMiWindowPresenter [
 			self registerToAdapterEvents: anAdapter ]
 ]
 
-{ #category : #'private - for tests' }
+{ #category : 'private - for tests' }
 MiAbstractBrowser >> inspector [
 
 	^ inspector ifNil: [ inspector := MiInspectorBrowser ]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiAbstractBrowser >> isMiBrowser [
 	^ true
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiAbstractBrowser >> miSelectedItem [
 
 	^ (MiNoSelectedElementToPropagateException browser: self) signal
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiAbstractBrowser >> miSelectedItemToPropagate [
 	"Hook to be able to add some filters in the model browser."
 
 	^ self miSelectedItem
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiAbstractBrowser >> model [
 
 	self
@@ -522,7 +524,7 @@ MiAbstractBrowser >> model [
 	^ self specModel
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiAbstractBrowser >> model: anObject [
 
 	self
@@ -532,13 +534,13 @@ MiAbstractBrowser >> model: anObject [
 	self specModel: anObject
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiAbstractBrowser >> openSettings [
 
 	^ specModel openSettings
 ]
 
-{ #category : #'private - accessing' }
+{ #category : 'private - accessing' }
 MiAbstractBrowser >> receiveEntity: anEntity [
 
 	"Entry point to receiving an entity used by MiApplication.
@@ -549,19 +551,19 @@ MiAbstractBrowser >> receiveEntity: anEntity [
 	self updateToolbar
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiAbstractBrowser >> receivingMode [
 
 	^ receivingMode
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiAbstractBrowser >> receivingMode: aReceivingMode [
 
 	receivingMode := aReceivingMode
 ]
 
-{ #category : #'window control' }
+{ #category : 'window control' }
 MiAbstractBrowser >> registerToAdapterEvents: anAdapter [
 	"spec does not give access to window collapsing/expanding events
 	 This is a hack to get them on Morph backend"
@@ -577,7 +579,7 @@ MiAbstractBrowser >> registerToAdapterEvents: anAdapter [
 		for: self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiAbstractBrowser >> selectedTag [
 
 	^ self specModel
@@ -585,7 +587,7 @@ MiAbstractBrowser >> selectedTag [
 		  ifNotNil: [ :model | model selectedTag ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiAbstractBrowser >> selectedTag: aTag [
 
 	self specModel
@@ -594,7 +596,7 @@ MiAbstractBrowser >> selectedTag: aTag [
 	self updateToolbar
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiAbstractBrowser >> setModelBeforeInitialization: aBrowserModel [
 	aBrowserModel ifNil: [ ^self ].
 
@@ -602,7 +604,7 @@ MiAbstractBrowser >> setModelBeforeInitialization: aBrowserModel [
 	specModel browser: self
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiAbstractBrowser >> settings [
 
 	self
@@ -612,19 +614,19 @@ MiAbstractBrowser >> settings [
 	self openSettings
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiAbstractBrowser >> specModel [
 
 	^ specModel
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiAbstractBrowser >> specModel: anObject [
 
 	specModel := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiAbstractBrowser >> tagList [
 
 	^ self specModel
@@ -632,20 +634,20 @@ MiAbstractBrowser >> tagList [
 		  ifNotNil: [ :model | model tagList ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiAbstractBrowser >> tagName [
 	^self selectedTag
 		ifNil: [ '' ]
 		ifNotNil: [ :tag | tag name ]
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiAbstractBrowser >> tagSelectedEntities [
 
 	self specModel ifNotNil: [ :model | model tagSelectedEntities ]
 ]
 
-{ #category : #buses }
+{ #category : 'buses' }
 MiAbstractBrowser >> unfollowBus: aBus [
 
 	(self buses includes: aBus) ifFalse: [ ^ self ].
@@ -654,19 +656,19 @@ MiAbstractBrowser >> unfollowBus: aBus [
 	self window ifNotNil: [ :window | window updateBusButton ]
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiAbstractBrowser >> updateToolbar [
 
 	self window ifNotNil: [ :window | window updateToolbar ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiAbstractBrowser >> windowTitle [
 
 	^ self class title
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiAbstractBrowser >> windowTitleFor: anEntity [
 
 	^ String streamContents: [ :stream |

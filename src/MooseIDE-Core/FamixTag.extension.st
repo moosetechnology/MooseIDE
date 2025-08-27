@@ -1,6 +1,6 @@
-Extension { #name : #FamixTag }
+Extension { #name : 'FamixTag' }
 
-{ #category : #'*MooseIDE-Core' }
+{ #category : '*MooseIDE-Core' }
 FamixTag >> miDescription [
 
 	^ super description

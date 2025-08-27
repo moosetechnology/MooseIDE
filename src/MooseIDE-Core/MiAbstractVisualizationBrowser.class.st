@@ -1,43 +1,45 @@
 Class {
-	#name : #MiAbstractVisualizationBrowser,
-	#superclass : #MiAbstractBrowser,
+	#name : 'MiAbstractVisualizationBrowser',
+	#superclass : 'MiAbstractBrowser',
 	#instVars : [
 		'mainPresenter'
 	],
-	#category : #'MooseIDE-Core-Browser'
+	#category : 'MooseIDE-Core-Browser',
+	#package : 'MooseIDE-Core',
+	#tag : 'Browser'
 }
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiAbstractVisualizationBrowser class >> isAbstract [
 
 	^ self == MiAbstractVisualizationBrowser
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiAbstractVisualizationBrowser >> canHighlight [
 
 	^ true
 ]
 
-{ #category : #export }
+{ #category : 'export' }
 MiAbstractVisualizationBrowser >> exportToPDF [
 
 	self exportWith: RSPDFCairoExporter
 ]
 
-{ #category : #export }
+{ #category : 'export' }
 MiAbstractVisualizationBrowser >> exportToPNG [
 
 	self exportWith: RSPNGExporter
 ]
 
-{ #category : #export }
+{ #category : 'export' }
 MiAbstractVisualizationBrowser >> exportToSVG [
 
 	self exportWith: RSSVGCairoExporter
 ]
 
-{ #category : #export }
+{ #category : 'export' }
 MiAbstractVisualizationBrowser >> exportVisualization [
 
 	SpMenuPresenter new
@@ -47,7 +49,7 @@ MiAbstractVisualizationBrowser >> exportVisualization [
 		openWithSpecAtPointer
 ]
 
-{ #category : #export }
+{ #category : 'export' }
 MiAbstractVisualizationBrowser >> exportWith: roassalExporter [
 
 	| file fileName |
@@ -64,19 +66,19 @@ MiAbstractVisualizationBrowser >> exportWith: roassalExporter [
 			exportToFile: file ]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiAbstractVisualizationBrowser >> hasVisualization [
 
 	^ true
 ]
 
-{ #category : #highlighting }
+{ #category : 'highlighting' }
 MiAbstractVisualizationBrowser >> highlightEntity: entities [
 
 	mainPresenter highlightEntities: entities
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiAbstractVisualizationBrowser >> miSelectedItem [
 
 	^ mainPresenter miSelectedItem ifEmpty: [
@@ -84,7 +86,7 @@ MiAbstractVisualizationBrowser >> miSelectedItem [
 		  specModel entities ]
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiAbstractVisualizationBrowser >> runVisualization [
 
 	mainPresenter run
