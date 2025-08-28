@@ -11,16 +11,16 @@ Class {
 
 { #category : 'initialization' }
 MiVisualizationTheme >> defaultIconTheme [
-	^{  
-		FamixTClass -> #famixClass .
-		FamixTMethod -> #famixMethod .
-		FamixTNamespace -> #famixNamespace .
-		FamixTAttribute -> #famixAttribute .
-		FamixTAnnotationInstance -> #famixAnnotationInstance .
-		FamixTAnnotationType -> #famixAnnotationType .
-		FamixTFunction -> #famixFunction .
-		MooseEntity -> #mooseIcon
-	}
+
+	^ {
+		  (FamixTClass -> #famixClass).
+		  (FamixTMethod -> #famixMethod).
+		  (FamixTNamespace -> #famixNamespace).
+		  (FamixTAttribute -> #famixAttribute).
+		  (FamixTAnnotationInstance -> #famixAnnotationInstance).
+		  (FamixTAnnotationType -> #famixAnnotationType).
+		  (FamixTFunction -> #famixFunction).
+		  (MooseEntity -> #mooseIcon) }
 ]
 
 { #category : 'accessing' }
@@ -37,8 +37,9 @@ MiVisualizationTheme >> iconTheme: anObject [
 
 { #category : 'initialization' }
 MiVisualizationTheme >> initialize [
+
 	super initialize.
-	
+
 	self iconTheme: self defaultIconTheme
 ]
 

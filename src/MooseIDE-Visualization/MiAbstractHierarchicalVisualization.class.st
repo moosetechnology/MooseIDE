@@ -21,7 +21,7 @@ MiAbstractHierarchicalVisualization >> builder: anObject [
 	builder := anObject
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'accessing' }
 MiAbstractHierarchicalVisualization >> modelForShape: aShape [
 
 	^ aShape model rawModel

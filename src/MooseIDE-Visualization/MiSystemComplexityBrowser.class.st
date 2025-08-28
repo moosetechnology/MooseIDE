@@ -70,8 +70,11 @@ MiSystemComplexityBrowser class >> title [
 { #category : 'actions' }
 MiSystemComplexityBrowser >> buildVisualization [
 
-	self deprecated: 'Use runVisualization method instead' transformWith: '`@receiver buildVisualization' -> '`@receiver runVisualization'.
-	self runVisualization 
+	self
+		deprecated: 'Use runVisualization method instead'
+		transformWith:
+		'`@receiver buildVisualization' -> '`@receiver runVisualization'.
+	self runVisualization
 ]
 
 { #category : 'testing' }
@@ -81,9 +84,10 @@ MiSystemComplexityBrowser >> canFollowEntity: anObject [
 ]
 
 { #category : 'testing' }
-MiSystemComplexityBrowser >> canTagEntities [ 
+MiSystemComplexityBrowser >> canTagEntities [
+
 	self flag: 'No for now, but will need to be implemented'.
-	^false
+	^ false
 ]
 
 { #category : 'actions' }

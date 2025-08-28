@@ -7,12 +7,22 @@ Class {
 		'heightMetric',
 		'widthMetric',
 		'colorMetric',
-		'availableMetrics'
+		'availableMetrics',
+		'displayedName',
+		'heightMetricThreshold',
+		'widthMetricThreshold',
+		'colorMetricThreshold'
 	],
 	#category : 'MooseIDE-Visualization-System Complexity',
 	#package : 'MooseIDE-Visualization',
 	#tag : 'System Complexity'
 }
+
+{ #category : 'accessing' }
+MiSystemComplexitySettingsMemento >> availableMetrics [
+
+	^ availableMetrics
+]
 
 { #category : 'accessing' }
 MiSystemComplexitySettingsMemento >> availableMetrics: aCollection [
@@ -30,6 +40,30 @@ MiSystemComplexitySettingsMemento >> colorMetric [
 MiSystemComplexitySettingsMemento >> colorMetric: aFM3Property [
 
 	colorMetric := aFM3Property
+]
+
+{ #category : 'accessing' }
+MiSystemComplexitySettingsMemento >> colorMetricThreshold [
+
+	^ colorMetricThreshold
+]
+
+{ #category : 'accessing' }
+MiSystemComplexitySettingsMemento >> colorMetricThreshold: anObject [
+
+	colorMetricThreshold := anObject
+]
+
+{ #category : 'accessing' }
+MiSystemComplexitySettingsMemento >> displayedName [
+
+	^ displayedName
+]
+
+{ #category : 'accessing' }
+MiSystemComplexitySettingsMemento >> displayedName: aSymbol [
+
+	displayedName := aSymbol
 ]
 
 { #category : 'accessing' }
@@ -56,6 +90,18 @@ MiSystemComplexitySettingsMemento >> heightMetric: aFM3Property [
 	heightMetric := aFM3Property
 ]
 
+{ #category : 'accessing' }
+MiSystemComplexitySettingsMemento >> heightMetricThreshold [
+
+	^ heightMetricThreshold
+]
+
+{ #category : 'accessing' }
+MiSystemComplexitySettingsMemento >> heightMetricThreshold: anObject [
+
+	heightMetricThreshold := anObject
+]
+
 { #category : 'ui' }
 MiSystemComplexitySettingsMemento >> settingsPresenters [
 
@@ -67,6 +113,13 @@ MiSystemComplexitySettingsMemento >> settingsPresenters [
 				   selectItem: heightMetric;
 				   display: [ :symbol | symbol asWords ];
 				   whenSelectedDo: [ :property | self heightMetric: property ]);
+		  add: ((MiNumberSettingPresenter on: self)
+				   label: 'Heigh similarity threshold';
+				   help:
+					   'If the difference for the height metric between entities are below this threshold, normalize the height to make them look similar';
+				   number: heightMetricThreshold;
+				   whenNumberChangedDo: [ :nb | self heightMetricThreshold: nb ];
+				   yourself);
 		  add: ((MiDroplistSettingPresenter on: self)
 				   label: 'Width metric:';
 				   help: 'Metric used to determine the width of the boxes';
@@ -74,6 +127,13 @@ MiSystemComplexitySettingsMemento >> settingsPresenters [
 				   selectItem: widthMetric;
 				   display: [ :symbol | symbol asWords ];
 				   whenSelectedDo: [ :property | self widthMetric: property ]);
+		  add: ((MiNumberSettingPresenter on: self)
+				   label: 'Width similarity threshold';
+				   help:
+					   'If the difference for the width metric between entities are below this threshold, normalize the width to make them look similar';
+				   number: widthMetricThreshold;
+				   whenNumberChangedDo: [ :nb | self widthMetricThreshold: nb ];
+				   yourself);
 		  add: ((MiDroplistSettingPresenter on: self)
 				   label: 'Color metric:';
 				   help: 'Metric used to determine the color of the boxes';
@@ -81,7 +141,15 @@ MiSystemComplexitySettingsMemento >> settingsPresenters [
 				   selectItem: colorMetric;
 				   display: [ :symbol | symbol asWords ];
 				   whenSelectedDo: [ :property | self colorMetric: property ]);
+		  add: ((MiNumberSettingPresenter on: self)
+				   label: 'Color similarity threshold';
+				   help:
+					   'If the difference for the color metric between entities are below this threshold, normalize the color to make them look similar';
+				   number: colorMetricThreshold;
+				   whenNumberChangedDo: [ :nb | self colorMetricThreshold: nb ];
+				   yourself);
 		  add: (MiColorGradientSelectionPresenter on: self);
+		  add: (MiDisplayedNameSettingPresenter on: self);
 		  yourself
 ]
 
@@ -107,4 +175,16 @@ MiSystemComplexitySettingsMemento >> widthMetric [
 MiSystemComplexitySettingsMemento >> widthMetric: aFM3Property [
 
 	widthMetric := aFM3Property
+]
+
+{ #category : 'accessing' }
+MiSystemComplexitySettingsMemento >> widthMetricThreshold [
+
+	^ widthMetricThreshold
+]
+
+{ #category : 'accessing' }
+MiSystemComplexitySettingsMemento >> widthMetricThreshold: anObject [
+
+	widthMetricThreshold := anObject
 ]

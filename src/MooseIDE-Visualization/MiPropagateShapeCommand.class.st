@@ -2,7 +2,6 @@ Class {
 	#name : 'MiPropagateShapeCommand',
 	#superclass : 'MiShapeCommand',
 	#instVars : [
-		'buses',
 		'browser'
 	],
 	#category : 'MooseIDE-Visualization-Commands',

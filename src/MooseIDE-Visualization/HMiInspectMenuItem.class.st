@@ -6,7 +6,7 @@ Class {
 	#tag : 'Helpers'
 }
 
-{ #category : 'accessing' }
+{ #category : 'testing' }
 HMiInspectMenuItem >> canBeExecuted [
 
 	^ shape isShape

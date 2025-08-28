@@ -4,21 +4,23 @@ Class {
 	#traits : 'MiTSpecModelWithSettings',
 	#classTraits : 'MiTSpecModelWithSettings classTrait',
 	#instVars : [
-		'settings',
 		'entities',
-		'availableMetrics',
 		'startColor',
 		'endColor',
 		'heightMetric',
 		'widthMetric',
-		'colorMetric'
+		'colorMetric',
+		'displayedName',
+		'colorMetricThreshold',
+		'widthMetricThreshold',
+		'heightMetricThreshold'
 	],
 	#category : 'MooseIDE-Visualization-System Complexity',
 	#package : 'MooseIDE-Visualization',
 	#tag : 'System Complexity'
 }
 
-{ #category : 'as yet unclassified' }
+{ #category : 'default' }
 MiSystemComplexityModel class >> defaultAvailableMetrics [
 
 	^ OrderedCollection withAll: {
@@ -27,49 +29,77 @@ MiSystemComplexityModel class >> defaultAvailableMetrics [
 			  self defaultColorMetric }
 ]
 
-{ #category : 'initialization' }
+{ #category : 'default' }
 MiSystemComplexityModel class >> defaultColorMetric [
 
 	^ #numberOfLinesOfCode
 ]
 
-{ #category : 'initialization' }
+{ #category : 'default' }
+MiSystemComplexityModel class >> defaultColorMetricThreshold [
+
+	^ 100
+]
+
+{ #category : 'default' }
+MiSystemComplexityModel class >> defaultDisplayedName [
+
+	^ #name
+]
+
+{ #category : 'default' }
 MiSystemComplexityModel class >> defaultEndColor [
 
 	^ Color black
 ]
 
-{ #category : 'initialization' }
+{ #category : 'default' }
 MiSystemComplexityModel class >> defaultHeightMetric [
 
 	^ #numberOfMethods
 ]
 
-{ #category : 'initialization' }
+{ #category : 'default' }
+MiSystemComplexityModel class >> defaultHeightMetricThreshold [
+
+	^ 10
+]
+
+{ #category : 'default' }
 MiSystemComplexityModel class >> defaultStartColor [
 
 	^ Color white
 ]
 
-{ #category : 'initialization' }
+{ #category : 'default' }
 MiSystemComplexityModel class >> defaultWidthMetric [
 
 	^ #numberOfAttributes
 ]
 
-{ #category : 'accessing' }
+{ #category : 'default' }
+MiSystemComplexityModel class >> defaultWidthMetricThreshold [
+
+	^ 10
+]
+
+{ #category : 'settings management' }
 MiSystemComplexityModel class >> newMementoForDefaultValues [
 
 	^ MiSystemComplexitySettingsMemento new
 		  heightMetric: self defaultHeightMetric;
-		  widthMetric: self defaultHeightMetric;
+		  heightMetricThreshold: self defaultHeightMetricThreshold;
+		  widthMetric: self defaultWidthMetric;
+		  widthMetricThreshold: self defaultWidthMetricThreshold;
 		  colorMetric: self defaultColorMetric;
+		  colorMetricThreshold: self defaultColorMetricThreshold;
 		  startColor: self defaultStartColor;
 		  endColor: self defaultEndColor;
+		  displayedName: self defaultDisplayedName;
 		  yourself
 ]
 
-{ #category : 'initialization' }
+{ #category : 'accessing' }
 MiSystemComplexityModel >> availableMetrics [
 
 	entities ifEmpty: [ ^ self class defaultAvailableMetrics ].
@@ -82,7 +112,8 @@ MiSystemComplexityModel >> availableMetricsForEntities [
 	"entities are 
 		- MooseObjects (See MiSystemComplexityBrowser>>#canFollowEntity:) 
 		- returning true to #isClass (See MiSystemComplexityBrowser>>#followEntity:) 
-	i.e. instances of FamixXYZClass"
+	i.e. instances of FamixXYZClass.
+	We still have to take an entity to get the correct metamodel for the metadescription"
 
 	^ ((entities anyOne famePropertiesOfType: FM3Number) collect:
 		   #implementingSelector) sorted: #yourself ascending
@@ -94,7 +125,19 @@ MiSystemComplexityModel >> colorMetric [
 	^ colorMetric
 ]
 
-{ #category : 'initialization' }
+{ #category : 'accessing' }
+MiSystemComplexityModel >> colorMetricThreshold [
+
+	^ colorMetricThreshold
+]
+
+{ #category : 'accessing' }
+MiSystemComplexityModel >> displayedName [
+
+	^ displayedName
+]
+
+{ #category : 'accessing' }
 MiSystemComplexityModel >> endColor [
 
 	^ endColor
@@ -118,6 +161,12 @@ MiSystemComplexityModel >> heightMetric [
 	^ heightMetric
 ]
 
+{ #category : 'accessing' }
+MiSystemComplexityModel >> heightMetricThreshold [
+
+	^ heightMetricThreshold
+]
+
 { #category : 'initialization' }
 MiSystemComplexityModel >> initialize [
 
@@ -131,23 +180,12 @@ MiSystemComplexityModel >> initializeSettings [
 	startColor := self class defaultStartColor.
 	endColor := self class defaultEndColor.
 	heightMetric := self class defaultHeightMetric.
+	heightMetricThreshold := self class defaultHeightMetricThreshold.
 	widthMetric := self class defaultWidthMetric.
+	widthMetricThreshold := self class defaultWidthMetricThreshold.
 	colorMetric := self class defaultColorMetric.
-
-	settings := super initializeSettings
-		            addItem: self itemNameToDisplay named: #nameToDisplay;
-		            yourself
-]
-
-{ #category : 'initialization' }
-MiSystemComplexityModel >> itemNameToDisplay [
-
-	^ MiAbstractSettingItem droplistSetting
-		  possibleValues: {#mooseName. #name};
-		  setValue: #name;
-		  label: 'Name to display:';
-		  help: 'Entity names type to display.';
-		  yourself
+	colorMetricThreshold := self class defaultColorMetricThreshold.
+	displayedName := self class defaultDisplayedName
 ]
 
 { #category : 'accessing' }
@@ -156,22 +194,20 @@ MiSystemComplexityModel >> miSelectedItem [
 	^ entities
 ]
 
-{ #category : 'initialization' }
-MiSystemComplexityModel >> nameToDisplay [
-
-	^ settings getItemValue: #nameToDisplay
-]
-
-{ #category : 'instance creation' }
+{ #category : 'settings management' }
 MiSystemComplexityModel >> newMemento [
 
 	^ MiSystemComplexitySettingsMemento new
 		  availableMetrics: self availableMetrics;
 		  heightMetric: heightMetric;
+		  heightMetricThreshold: heightMetricThreshold;
 		  widthMetric: widthMetric;
+		  widthMetricThreshold: widthMetricThreshold;
 		  colorMetric: colorMetric;
+		  colorMetricThreshold: colorMetricThreshold;
 		  startColor: startColor;
-		  endColor: endColor
+		  endColor: endColor;
+		  displayedName: displayedName
 ]
 
 { #category : 'settings management' }
@@ -182,26 +218,14 @@ MiSystemComplexityModel >> newMementoForDefaultValues [
 		  yourself
 ]
 
-{ #category : 'accessing' }
-MiSystemComplexityModel >> settings [
-
-	^ settings
-]
-
-{ #category : 'accessing' }
-MiSystemComplexityModel >> settingsChanged: aBoolean [
-
-	aBoolean ifTrue: [ browser runVisualization ]
-]
-
 { #category : 'settings management' }
 MiSystemComplexityModel >> settingsPresenterExtent [
 	"Override to set a custom size"
 
-	^ 400 @ 300
+	^ 450 @ 400
 ]
 
-{ #category : 'initialization' }
+{ #category : 'accessing' }
 MiSystemComplexityModel >> startColor [
 
 	^ startColor
@@ -211,10 +235,14 @@ MiSystemComplexityModel >> startColor [
 MiSystemComplexityModel >> updateFromMemento: aMemento [
 
 	heightMetric := aMemento heightMetric.
+	heightMetricThreshold := aMemento heightMetricThreshold.
 	widthMetric := aMemento widthMetric.
+	widthMetricThreshold := aMemento widthMetricThreshold.
 	colorMetric := aMemento colorMetric.
+	colorMetricThreshold := aMemento colorMetricThreshold.
 	startColor := aMemento startColor.
 	endColor := aMemento endColor.
+	displayedName := aMemento displayedName.
 
 	browser runVisualization
 ]
@@ -223,4 +251,10 @@ MiSystemComplexityModel >> updateFromMemento: aMemento [
 MiSystemComplexityModel >> widthMetric [
 
 	^ widthMetric
+]
+
+{ #category : 'accessing' }
+MiSystemComplexityModel >> widthMetricThreshold [
+
+	^ widthMetricThreshold
 ]
