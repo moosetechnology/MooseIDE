@@ -1,13 +1,15 @@
 Class {
-	#name : #MiSettingManagerTest,
-	#superclass : #TestCase,
+	#name : 'MiSettingManagerTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'settingManager'
 	],
-	#category : #'MooseIDE-Tests-Settings'
+	#category : 'MooseIDE-Tests-Settings',
+	#package : 'MooseIDE-Tests',
+	#tag : 'Settings'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 MiSettingManagerTest >> setUp [ 
 	super setUp.
 
@@ -15,7 +17,7 @@ MiSettingManagerTest >> setUp [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiSettingManagerTest >> testAddItemNamed [
 	| settingItem |
 	self assertEmpty: settingManager settingItems.
@@ -27,7 +29,7 @@ MiSettingManagerTest >> testAddItemNamed [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiSettingManagerTest >> testConfirmItems [
 	| settingItem |
 	settingItem := MiStubSettingItem new.
@@ -45,7 +47,7 @@ MiSettingManagerTest >> testConfirmItems [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiSettingManagerTest >> testGetItemValue [
 	| settingItem |
 	settingItem := MiStubSettingItem new.
@@ -59,7 +61,7 @@ MiSettingManagerTest >> testGetItemValue [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiSettingManagerTest >> testResetItems [
 	| settingItem |
 	settingItem := MiStubSettingItem new.
@@ -77,7 +79,7 @@ MiSettingManagerTest >> testResetItems [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiSettingManagerTest >> testSetItemValue [
 	| settingItem |
 	settingItem := MiStubSettingItem new.

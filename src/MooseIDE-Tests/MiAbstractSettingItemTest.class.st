@@ -1,23 +1,25 @@
 Class {
-	#name : #MiAbstractSettingItemTest,
-	#superclass : #TestCase,
+	#name : 'MiAbstractSettingItemTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'settingItem'
 	],
-	#category : #'MooseIDE-Tests-Settings'
+	#category : 'MooseIDE-Tests-Settings',
+	#package : 'MooseIDE-Tests',
+	#tag : 'Settings'
 }
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiAbstractSettingItemTest class >> isAbstract [
 	^ self == MiAbstractSettingItemTest
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiAbstractSettingItemTest >> initialValue [
 	self subclassResponsibility 
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiAbstractSettingItemTest >> setUp [
 	super setUp.
 	
@@ -25,17 +27,17 @@ MiAbstractSettingItemTest >> setUp [
 	settingItem setValue: self initialValue  
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiAbstractSettingItemTest >> settingItemInstance [
 	self subclassResponsibility 
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiAbstractSettingItemTest >> someOtherValue [
 	self subclassResponsibility 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiAbstractSettingItemTest >> testBuildLayout [
 	| layout |
 	settingItem label: 'Setting label'.
@@ -47,7 +49,7 @@ MiAbstractSettingItemTest >> testBuildLayout [
 	self assert: layout children first label equals: 'Setting label'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiAbstractSettingItemTest >> testConfirmValue [
 	settingItem label: 'Setting label'.
 	settingItem buildLayout.
@@ -59,26 +61,26 @@ MiAbstractSettingItemTest >> testConfirmValue [
 	self assert: settingItem getValue equals: self initialValue .
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiAbstractSettingItemTest >> testGetValue [
 	self assert: settingItem getValue equals: self initialValue
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiAbstractSettingItemTest >> testHelp [
 	settingItem help: 'Setting help'.
 
 	self assert: settingItem help equals: 'Setting help'.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiAbstractSettingItemTest >> testLabel [
 	settingItem label: 'Setting label'.
 
 	self assert: settingItem label equals: 'Setting label'.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiAbstractSettingItemTest >> testResetValue [
 	settingItem label: 'Setting label'.
 	settingItem buildLayout.
@@ -90,7 +92,7 @@ MiAbstractSettingItemTest >> testResetValue [
 	self assert: settingItem getValue equals: self initialValue.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiAbstractSettingItemTest >> testSetValue [
 	settingItem setValue: self someOtherValue.
 

@@ -6,17 +6,19 @@ A renderer has a MiSourceTextBrowserModel and a browser.
 It can #renderText by applying the highlights of its #model
 "
 Class {
-	#name : #MiSourceTextSpecRenderer,
-	#superclass : #SpTextPresenter,
+	#name : 'MiSourceTextSpecRenderer',
+	#superclass : 'SpTextPresenter',
 	#instVars : [
 		'formatedText',
 		'sourceAnchorAdapter',
 		'specModel'
 	],
-	#category : #'MooseIDE-Famix-SourceText'
+	#category : 'MooseIDE-Famix-SourceText',
+	#package : 'MooseIDE-Famix',
+	#tag : 'SourceText'
 }
 
-{ #category : #formatting }
+{ #category : 'formatting' }
 MiSourceTextSpecRenderer >> applyCommentHighlight: aHighlight [
 	"put comments in grey"
 
@@ -27,7 +29,7 @@ MiSourceTextSpecRenderer >> applyCommentHighlight: aHighlight [
 
 ]
 
-{ #category : #formatting }
+{ #category : 'formatting' }
 MiSourceTextSpecRenderer >> applyErrorHighlight: aHighlight [
 
 	formatedText 
@@ -36,7 +38,7 @@ MiSourceTextSpecRenderer >> applyErrorHighlight: aHighlight [
 		to: aHighlight to
 ]
 
-{ #category : #formatting }
+{ #category : 'formatting' }
 MiSourceTextSpecRenderer >> applyIdentifierHighlight: aHighlight [
 	"Identifiers are underlined + italic + bold
 	 Clicking on them is passed on to the spec model"
@@ -66,7 +68,7 @@ MiSourceTextSpecRenderer >> applyIdentifierHighlight: aHighlight [
 
 ]
 
-{ #category : #formatting }
+{ #category : 'formatting' }
 MiSourceTextSpecRenderer >> applyTagHighlight: aHighlight [
 
 	formatedText
@@ -75,30 +77,30 @@ MiSourceTextSpecRenderer >> applyTagHighlight: aHighlight [
 		to: aHighlight to
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiSourceTextSpecRenderer >> browser [
 	^self model browser
 ]
 
-{ #category : #formatting }
+{ #category : 'formatting' }
 MiSourceTextSpecRenderer >> clearFormating [
 
 	formatedText := formatedText asString asText
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiSourceTextSpecRenderer >> event: anEvent selectedEntity: anEntity [
 
 	specModel event: anEvent selectedEntity: anEntity.
 	self inform: 'Selected entity: ' , anEntity asString
 ]
 
-{ #category : #'private - testing' }
+{ #category : 'private - testing' }
 MiSourceTextSpecRenderer >> formatedText [
 	^formatedText 
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiSourceTextSpecRenderer >> initialize [
 	super initialize.
 	self beNotEditable.
@@ -106,7 +108,7 @@ MiSourceTextSpecRenderer >> initialize [
 	sourceAnchorAdapter := MiSourceTextNullAdapter new
 ]
 
-{ #category : #rendering }
+{ #category : 'rendering' }
 MiSourceTextSpecRenderer >> reRenderText [
 	"Apply highlights if needed
 	 Re-display (requires to clear the text first)"
@@ -114,16 +116,14 @@ MiSourceTextSpecRenderer >> reRenderText [
 	self clearFormating.
 
 	specModel highlights do: [ :hlght |
-		hlght adaptSourceAnchorWith: self sourceAnchorAdapter.
-		hlght hasInterval ifTrue: [ hlght applyTo: self ]	
-	].
+			hlght adaptSourceAnchorWith: self sourceAnchorAdapter.
+			hlght hasInterval ifTrue: [ hlght applyTo: self ] ].
 
 	self clearContent.
 	self text: formatedText
-
 ]
 
-{ #category : #rendering }
+{ #category : 'rendering' }
 MiSourceTextSpecRenderer >> renderTextFor: anEntity [
 	
 	formatedText := specModel displayedText asText.
@@ -134,25 +134,25 @@ MiSourceTextSpecRenderer >> renderTextFor: anEntity [
 
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiSourceTextSpecRenderer >> setModelBeforeInitialization: aModel [
 
 	self specModel: aModel
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiSourceTextSpecRenderer >> sourceAnchorAdapter [
 
 	^sourceAnchorAdapter
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiSourceTextSpecRenderer >> specModel [
 
 	^ specModel
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiSourceTextSpecRenderer >> specModel: anObject [
 
 	specModel := anObject

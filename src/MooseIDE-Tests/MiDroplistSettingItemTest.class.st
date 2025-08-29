@@ -1,27 +1,29 @@
 Class {
-	#name : #MiDroplistSettingItemTest,
-	#superclass : #MiAbstractSettingItemTest,
-	#category : #'MooseIDE-Tests-Settings'
+	#name : 'MiDroplistSettingItemTest',
+	#superclass : 'MiAbstractSettingItemTest',
+	#category : 'MooseIDE-Tests-Settings',
+	#package : 'MooseIDE-Tests',
+	#tag : 'Settings'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 MiDroplistSettingItemTest >> initialValue [
 	^'one'
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiDroplistSettingItemTest >> settingItemInstance [
 	^MiDroplistSettingItem new
 		possibleValues: #('one' 'deux' 'tres') ;
 		yourself
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiDroplistSettingItemTest >> someOtherValue [
 	^'deux'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiDroplistSettingItemTest >> testSelectOtherValue [
 	settingItem presenter selectIndex: 3.
 	self assert: settingItem getValue equals: 'tres'

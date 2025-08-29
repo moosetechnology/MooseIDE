@@ -8,16 +8,18 @@ Shows the source text of an entity if it has one.
 <TODO> Improvement: tabs for several entities (receiving a MooseGroup)
 "
 Class {
-	#name : #MiSourceTextBrowser,
-	#superclass : #MiAbstractBrowser,
+	#name : 'MiSourceTextBrowser',
+	#superclass : 'MiAbstractBrowser',
 	#instVars : [
 		'toolBarExternalEditor',
 		'textRenderer'
 	],
-	#category : #'MooseIDE-Famix-SourceText'
+	#category : 'MooseIDE-Famix-SourceText',
+	#package : 'MooseIDE-Famix',
+	#tag : 'SourceText'
 }
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiSourceTextBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
@@ -25,56 +27,56 @@ MiSourceTextBrowser class >> menuCommandOn: aBuilder [
 	^ self buildMenuItemIn: aBuilder
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiSourceTextBrowser class >> menuIconName [
 
 	^ #mooseSourceText
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiSourceTextBrowser class >> menuItem [
 
 	^ #SourceTextBrowser
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiSourceTextBrowser class >> menuPriority [
 
 	^ self menuCodeToolsPriority + 1
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MiSourceTextBrowser class >> newModel [
 
 	^ MiSourceTextBrowserModel new
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MiSourceTextBrowser class >> open [
 
 	<script>
 	^ super open
 ]
 
-{ #category : #specs }
+{ #category : 'specs' }
 MiSourceTextBrowser class >> preferredExtent [
 
 	^ 600 @ 700
 ]
 
-{ #category : #specs }
+{ #category : 'specs' }
 MiSourceTextBrowser class >> title [
 
 	^ 'Source code'
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiSourceTextBrowser >> canFollowEntity: anObject [
 
 	^ anObject usesFamixTrait: FamixTSourceEntity
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 MiSourceTextBrowser >> defaultLayout [
 
 	^ SpBoxLayout newVertical
@@ -83,24 +85,24 @@ MiSourceTextBrowser >> defaultLayout [
 		  yourself
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiSourceTextBrowser >> editExternally: anExternalTool [
 	anExternalTool new open: specModel selectedEntity
 ]
 
-{ #category : #'private - testing' }
+{ #category : 'private - testing' }
 MiSourceTextBrowser >> externalEditor [
 	"only for testing"
 	^toolBarExternalEditor externalEditor 
 ]
 
-{ #category : #'private - testing' }
+{ #category : 'private - testing' }
 MiSourceTextBrowser >> externalEditor: anObject [
 	"only for testing"
 	toolBarExternalEditor externalEditor: anObject
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiSourceTextBrowser >> followEntity: anEntity [
 
 	super followEntity: anEntity.
@@ -109,27 +111,25 @@ MiSourceTextBrowser >> followEntity: anEntity [
 	toolBarExternalEditor newEntity
 ]
 
-{ #category : #settings }
-MiSourceTextBrowser >> hasSettings [
-
-	^ true
-]
-
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiSourceTextBrowser >> initializePresenters [
 
-	toolBarExternalEditor := self instantiate: MiSourceTextToolBar on: self.
-	"self withRoassalRenderer."
-	self withSpecRenderer.
+	toolBarExternalEditor := self
+		                         instantiate: MiSourceTextToolBar
+		                         on: self.
+
+	textRenderer := self
+		                instantiate: MiSourceTextSpecRenderer
+		                on: specModel
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiSourceTextBrowser >> miSelectedItem [
 
 	^ specModel selectedEntity
 ]
 
-{ #category : #initialization }
+{ #category : 'showing' }
 MiSourceTextBrowser >> open [
 	"redefined to change the cursor in the text morph"
 	super open.
@@ -138,51 +138,26 @@ MiSourceTextBrowser >> open [
 
 ]
 
-{ #category : #formatting }
+{ #category : 'formatting' }
 MiSourceTextBrowser >> reRenderText [ 
 
 	textRenderer reRenderText
 ]
 
-{ #category : #formatting }
+{ #category : 'formatting' }
 MiSourceTextBrowser >> renderTextFor: anEntity [
 
 	textRenderer renderTextFor: anEntity
 ]
 
-{ #category : #settings }
-MiSourceTextBrowser >> settingsModel [
-
-	^ specModel settings
-]
-
-{ #category : #'private - testing' }
-MiSourceTextBrowser >> textRenderer [
-	^textRenderer
-]
-
-{ #category : #'private - testing' }
+{ #category : 'private - testing' }
 MiSourceTextBrowser >> toolBarExternalEditor [
 	"only for testing"
 	^toolBarExternalEditor
 ]
 
-{ #category : #'private - testing' }
+{ #category : 'private - testing' }
 MiSourceTextBrowser >> toolBarExternalEditor: anObject [
 	"only for testing"
 	toolBarExternalEditor := anObject
-]
-
-{ #category : #formatting }
-MiSourceTextBrowser >> withRoassalRenderer [
-
-	self deprecated: 'RoassalRenderer is out of sync with the rest of the code'.
-
-	textRenderer := self instantiate: MiSourceTextRoassalRenderer on: specModel
-]
-
-{ #category : #formatting }
-MiSourceTextBrowser >> withSpecRenderer [
-
-	textRenderer := self instantiate: MiSourceTextSpecRenderer on: specModel
 ]

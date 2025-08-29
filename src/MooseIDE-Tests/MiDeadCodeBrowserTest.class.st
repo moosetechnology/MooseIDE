@@ -1,19 +1,21 @@
 Class {
-	#name : #MiDeadCodeBrowserTest,
-	#superclass : #MiAbstractBrowserTest,
+	#name : 'MiDeadCodeBrowserTest',
+	#superclass : 'MiAbstractBrowserTest',
 	#instVars : [
 		'newBrowser'
 	],
-	#category : #'MooseIDE-Tests-Browsers'
+	#category : 'MooseIDE-Tests-Browsers',
+	#package : 'MooseIDE-Tests',
+	#tag : 'Browsers'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 MiDeadCodeBrowserTest >> browserClass [
 
 	^MiDeadCodeBrowser
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiDeadCodeBrowserTest >> populateBrowser: mooseModel [
 
 	mooseModel newMethodNamed: 'aMethod'.
@@ -23,7 +25,7 @@ MiDeadCodeBrowserTest >> populateBrowser: mooseModel [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiDeadCodeBrowserTest >> testActivateActionButtons [
 	"can only propagate dead methods, therefore receiving entities alone
 	 does not allow to propagae anything"
@@ -35,7 +37,7 @@ MiDeadCodeBrowserTest >> testActivateActionButtons [
 	browser actionButtons do: [ :button | self deny: button isEnabled ]
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiDeadCodeBrowserTest >> testCanPropagateAfterDeadComputation [
 
 	| mooseModel |
@@ -48,7 +50,7 @@ MiDeadCodeBrowserTest >> testCanPropagateAfterDeadComputation [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiDeadCodeBrowserTest >> testCannotPropagateAtInitialization [
 
 	| mooseModel |
@@ -59,7 +61,7 @@ MiDeadCodeBrowserTest >> testCannotPropagateAtInitialization [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiDeadCodeBrowserTest >> testDisabledFirstRoundButton [
 	"without selected heuristics, 1st-round button is disabled"
 
@@ -69,7 +71,7 @@ MiDeadCodeBrowserTest >> testDisabledFirstRoundButton [
 	self deny: browser resultColumn buttonFirstRound isEnabled
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiDeadCodeBrowserTest >> testEnabledFirstRoundButton [
 	"with a selected heuristics, 1st-round button is enabled"
 
@@ -77,7 +79,7 @@ MiDeadCodeBrowserTest >> testEnabledFirstRoundButton [
 	self assert: browser resultColumn buttonFirstRound isEnabled
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiDeadCodeBrowserTest >> testInitializeCandidateEntityList [
 
 	| mooseModel |
@@ -88,13 +90,13 @@ MiDeadCodeBrowserTest >> testInitializeCandidateEntityList [
 	self assert: browser labelCandidateEntities label equals: '2 entities'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiDeadCodeBrowserTest >> testInitializeHeuristicsList [
 
 	self assert: browser heuristicColumn listHeuristicsOffered items isNotEmpty
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiDeadCodeBrowserTest >> testInitializeSelectedHeuristicsList [
 	"by default, there is one selected heuristics: `MiDeadCodeNoIncomingInvocationHeuristic`
 	 see also: MiDeadCodeAbstractHeuristic >> selectedByDefault"
@@ -103,7 +105,7 @@ MiDeadCodeBrowserTest >> testInitializeSelectedHeuristicsList [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiDeadCodeBrowserTest >> testRejectHeuristic [
 	"by default, there is one selected heuristics"
 
@@ -113,7 +115,7 @@ MiDeadCodeBrowserTest >> testRejectHeuristic [
 	self assert: browser heuristicColumn listHeuristicsSelected items size equals: 0
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiDeadCodeBrowserTest >> testSelectHeuristics [
 	"by default, there is one selected heuristics"
 
@@ -125,7 +127,7 @@ MiDeadCodeBrowserTest >> testSelectHeuristics [
 	self assert: browser heuristicColumn listHeuristicsSelected items size equals: 2
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiDeadCodeBrowserTest >> testUpdateDeadEntities [
 
 	self assert: browser resultColumn listDeadEntities items size equals: 0.

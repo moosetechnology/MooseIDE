@@ -1,16 +1,18 @@
 Class {
-	#name : #MiNotebookBrowserTest,
-	#superclass : #MiAbstractBrowserTest,
-	#category : #'MooseIDE-Tests-Browsers'
+	#name : 'MiNotebookBrowserTest',
+	#superclass : 'MiAbstractBrowserTest',
+	#category : 'MooseIDE-Tests-Browsers',
+	#package : 'MooseIDE-Tests',
+	#tag : 'Browsers'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 MiNotebookBrowserTest >> browserClass [
 
 	^ MiNotebookBrowser
 ]
 
-{ #category : #'tests - actions' }
+{ #category : 'tests - actions' }
 MiNotebookBrowserTest >> testFollowEntity [
 
 	| model entity |
@@ -25,7 +27,7 @@ MiNotebookBrowserTest >> testFollowEntity [
 	self assert: browser miSelectedItem mockName equals: 'mooseModel'
 ]
 
-{ #category : #'tests - tags' }
+{ #category : 'tests - tags' }
 MiNotebookBrowserTest >> testSelectedTagSetAndGet [
 	| model entity tag |
 	model := FamixRepTestModel new.

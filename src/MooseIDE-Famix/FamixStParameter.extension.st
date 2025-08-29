@@ -1,6 +1,6 @@
-Extension { #name : #FamixStParameter }
+Extension { #name : 'FamixStParameter' }
 
-{ #category : #'*MooseIDE-Famix' }
+{ #category : '*MooseIDE-Famix' }
 FamixStParameter >> sourceCodeBoundingEntity [
 
 	^self parentBehaviouralEntity 

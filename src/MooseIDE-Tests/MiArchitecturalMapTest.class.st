@@ -1,10 +1,12 @@
 Class {
-	#name : #MiArchitecturalMapTest,
-	#superclass : #TestCase,
-	#category : #'MooseIDE-Tests-Browsers'
+	#name : 'MiArchitecturalMapTest',
+	#superclass : 'TestCase',
+	#category : 'MooseIDE-Tests-Browsers',
+	#package : 'MooseIDE-Tests',
+	#tag : 'Browsers'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 MiArchitecturalMapTest >> architecturalMapWith: entities [
 
 	| mockModel mockBrowser |
@@ -24,7 +26,7 @@ MiArchitecturalMapTest >> architecturalMapWith: entities [
 	^ MiArchitecturalMapVisualization new owner: mockBrowser
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiArchitecturalMapTest >> testShapeFromEntity [
 	| map entity |
 	entity := FamixStClass named: 'anEntity'.

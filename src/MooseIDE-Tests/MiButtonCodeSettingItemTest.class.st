@@ -1,10 +1,12 @@
 Class {
-	#name : #MiButtonCodeSettingItemTest,
-	#superclass : #MiAbstractSettingItemTest,
-	#category : #'MooseIDE-Tests-Settings'
+	#name : 'MiButtonCodeSettingItemTest',
+	#superclass : 'MiAbstractSettingItemTest',
+	#category : 'MooseIDE-Tests-Settings',
+	#package : 'MooseIDE-Tests',
+	#tag : 'Settings'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 MiButtonCodeSettingItemTest >> initialValue [
 	"some piece of code, whatever"
 	^
@@ -13,12 +15,12 @@ MiButtonCodeSettingItemTest >> initialValue [
 ]'
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiButtonCodeSettingItemTest >> settingItemInstance [
 	^MiButtonCodeSettingItem new
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiButtonCodeSettingItemTest >> someOtherValue [
 	"another piece of code, whatever"
 	^
