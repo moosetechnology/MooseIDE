@@ -7,7 +7,8 @@ Class {
 	#instVars : [
 		'submitButton',
 		'codePresenter',
-		'configuratorPresenter'
+		'configuratorPresenter',
+		'closeButton'
 	],
 	#category : 'MooseIDE-QueriesBrowser-Widgets',
 	#package : 'MooseIDE-QueriesBrowser',
@@ -45,11 +46,15 @@ QueryCompilerPresenter >> initialize [
 
 { #category : 'initialization' }
 QueryCompilerPresenter >> initializeButtons [
-
+	
 	submitButton := self newButton.
 	submitButton
 		label: 'Submit';
-		icon: (self iconNamed: #smallDoIt)
+		icon: (self iconNamed: #smallDoIt).
+	closeButton := self newButton.
+	closeButton
+		label: 'Close';
+		action: [ self owner dismiss ]
 ]
 
 { #category : 'initialization' }
@@ -67,6 +72,7 @@ QueryCompilerPresenter >> initializeLayout [
 	| tempLayout |
 	tempLayout := SpBoxLayout newTopToBottom
 		add: (SpBoxLayout newLeftToRight
+			add: closeButton expand: false;
 			addLast: submitButton expand: false;
 			yourself)
 		expand: false;
