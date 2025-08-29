@@ -45,8 +45,15 @@ MiImportModelDialog >> importModel [
 MiImportModelDialog >> importModelStep1Import [
 
 	^ [ self importModel ] onErrorDo: [ :err |
-		  UIManager default alert: 'Import error: ' , err messageText.
-		  nil ]
+		    (MorphicUIManager new
+        confirm: ('Import error: ' , err messageText)
+        trueChoice: 'Ignore'
+        falseChoice: nil
+        cancelChoice: 'Debug'
+        default: false)
+    ifNil: [ err pass ]
+	 ifNotNil: [  ].
+	]
 ]
 
 { #category : 'action' }
