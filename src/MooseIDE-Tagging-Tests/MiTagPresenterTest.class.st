@@ -18,7 +18,7 @@ MiTagPresenterTest >> createCategory: aName [
 { #category : 'API - tags' }
 MiTagPresenterTest >> createExtentTag: aName [
 
-	browser model
+	^browser model
 		createTag: aName
 		description: nil
 		color: Color red

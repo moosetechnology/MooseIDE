@@ -18,6 +18,15 @@ MiTagManagementPageTest >> presenterOwner [
 ]
 
 { #category : 'tests' }
+MiTagManagementPageTest >> testAddTagSelectsNewTag [
+
+	| newTag |
+	newTag := self createExtentTag: 'Tag001'.
+	presenter refreshTagList.
+	self assert: presenter tagList selectedItem equals: newTag
+]
+
+{ #category : 'tests' }
 MiTagManagementPageTest >> testAddTagUpdatingTagList [
 
 	self createExtentTag: 'Tag001'.
@@ -30,7 +39,6 @@ MiTagManagementPageTest >> testCurrentTagAfterSelectionInTagList [
 
 	self createExtentTag: 'Tag001'.
 	presenter refreshTagList.
-	self assert: presenter tagModel currentTag isNil.
 	presenter tagList selectIndex: 1.
 	self assert: presenter tagModel currentTag notNil
 ]
