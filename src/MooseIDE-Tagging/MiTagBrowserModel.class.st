@@ -79,6 +79,8 @@ MiTagBrowserModel >> createTag: name description: aText color: aColor category: 
 		color: aColor
 		category: aCategory.
 
+	self currentTag: newTag.
+
 	browser refreshTagList.
 	self currentApplication consumeItem: newTag.
 
