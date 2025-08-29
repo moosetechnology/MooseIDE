@@ -18,9 +18,7 @@ Class {
 
 { #category : 'world menu' }
 MiLayerVisualizationBrowser class >> menuCommandOn: aBuilder [
-
-	<worldMenu>
-	<miBrowsersMenu>
+	
 	^ self buildMenuItemIn: aBuilder
 ]
 
