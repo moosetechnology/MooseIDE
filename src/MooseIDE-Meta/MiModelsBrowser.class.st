@@ -178,8 +178,8 @@ MiModelsBrowser >> initializeList [
 				 evaluated: [ :model | model entities size asString ];
 				 beSortable;
 				 yourself);
-		contextMenu: [
-		(self class buildModelCommandsGroupWith: self) asMenuPresenter ];
+		contextMenu: [specModel selected ifNotNil: [  
+		(self class buildModelCommandsGroupWith: self) asMenuPresenter ]];
 		whenSelectionChangedDo: [ :selected |
 		specModel selected: selected selectedItem ];
 		activateOnDoubleClick;

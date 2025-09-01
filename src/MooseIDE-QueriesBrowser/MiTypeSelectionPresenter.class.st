@@ -1,14 +1,16 @@
 Class {
-	#name : #MiTypeSelectionPresenter,
-	#superclass : #SpPresenter,
+	#name : 'MiTypeSelectionPresenter',
+	#superclass : 'SpPresenter',
 	#instVars : [
 		'list',
 		'parentQuery'
 	],
-	#category : #'MooseIDE-QueriesBrowser-Widgets'
+	#category : 'MooseIDE-QueriesBrowser-Widgets',
+	#package : 'MooseIDE-QueriesBrowser',
+	#tag : 'Widgets'
 }
 
-{ #category : #initialize }
+{ #category : 'initialize' }
 MiTypeSelectionPresenter >> defaultLayout [
 
 	^ SpBoxLayout newTopToBottom
@@ -16,7 +18,7 @@ MiTypeSelectionPresenter >> defaultLayout [
 		  yourself
 ]
 
-{ #category : #initialize }
+{ #category : 'initialize' }
 MiTypeSelectionPresenter >> initializePresenters [
 
 	list := self instantiate: SpFilteringSelectableListPresenter.
@@ -26,37 +28,37 @@ MiTypeSelectionPresenter >> initializePresenters [
 		items: parentQuery query availableTypes
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiTypeSelectionPresenter >> items [
 
 	^ list items
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiTypeSelectionPresenter >> items: types [
 
 	list items: types
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiTypeSelectionPresenter >> okButton [ 
 
 	^self owner buttons detect: [ :button | button label = 'Ok' ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiTypeSelectionPresenter >> selectItems: items [
 
 	list selectItems: items
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiTypeSelectionPresenter >> selectedItems [
 
 	^ list selectedItems
 ]
 
-{ #category : #initialize }
+{ #category : 'initialize' }
 MiTypeSelectionPresenter >> setModelBeforeInitialization: aQueryTypePresenter [
 
 	parentQuery := aQueryTypePresenter

@@ -2,15 +2,17 @@
 I am the abstract class for all the configuration presenter for the FamixQueries
 "
 Class {
-	#name : #MiQueryConfiguratorPresenter,
-	#superclass : #MiPresenter,
+	#name : 'MiQueryConfiguratorPresenter',
+	#superclass : 'MiPresenter',
 	#instVars : [
 		'query'
 	],
-	#category : #'MooseIDE-QueriesBrowser-Configuration presenters'
+	#category : 'MooseIDE-QueriesBrowser-Configuration presenters',
+	#package : 'MooseIDE-QueriesBrowser',
+	#tag : 'Configuration presenters'
 }
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiQueryConfiguratorPresenter >> computeQueryAction: anObject [
 
 	self configureQuery: anObject.
@@ -18,7 +20,7 @@ MiQueryConfiguratorPresenter >> computeQueryAction: anObject [
 	self notifyQueryChanged
 ]
 
-{ #category : #'api - actions' }
+{ #category : 'api - actions' }
 MiQueryConfiguratorPresenter >> configureFor: aQuery [
 
 	"You should always do `query := aQuery` at the end of this method for all subclasses"
@@ -26,54 +28,54 @@ MiQueryConfiguratorPresenter >> configureFor: aQuery [
 	self subclassResponsibility
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiQueryConfiguratorPresenter >> configureQuery: anObject [
 
 	self subclassResponsibility
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 MiQueryConfiguratorPresenter >> initializeLayout [
 
 	self layout: self newLayout
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiQueryConfiguratorPresenter >> isQueryUsed: aQuery [
 
 	^ false
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 MiQueryConfiguratorPresenter >> newLayout [
 
 	self subclassResponsibility
 ]
 
-{ #category : #update }
+{ #category : 'update' }
 MiQueryConfiguratorPresenter >> noParameterMessage: aParameterName [
 
 	^ self instantiate: NoPossibleQueryPresenter on: aParameterName
 ]
 
-{ #category : #transmissions }
+{ #category : 'transmissions' }
 MiQueryConfiguratorPresenter >> notifyQueryChanged [
 
 	owner queryChangedUpdate
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiQueryConfiguratorPresenter >> queriesBrowser [
 
 	^ owner queriesBrowser
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiQueryConfiguratorPresenter >> query [
 	^ query
 ]
 
-{ #category : #'accessing - model' }
+{ #category : 'accessing - model' }
 MiQueryConfiguratorPresenter >> setModelBeforeInitialization: aQuery [
 	query := aQuery
 ]

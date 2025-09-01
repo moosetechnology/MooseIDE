@@ -1,10 +1,12 @@
 Class {
-	#name : #MiLVTypeElement,
-	#superclass : #MiLVAbstractElement,
-	#category : #'MooseIDE-LayerVisualization-Model'
+	#name : 'MiLVTypeElement',
+	#superclass : 'MiLVAbstractElement',
+	#category : 'MooseIDE-LayerVisualization-Model',
+	#package : 'MooseIDE-LayerVisualization',
+	#tag : 'Model'
 }
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 MiLVTypeElement >> acceptVisitor: aVisitor [
 
 	^ aVisitor visitTypeElement: self

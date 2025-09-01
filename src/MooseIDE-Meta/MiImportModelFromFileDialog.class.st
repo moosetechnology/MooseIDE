@@ -297,7 +297,7 @@ MiImportModelFromFileDialog >> openEntitiesChoice [
 { #category : 'action' }
 MiImportModelFromFileDialog >> privateImportModel [
 
-	| model importer |
+	| model importer countedParsingErrors |
 	importer := self importerForFile.
 
 	model := mooseModelDroplist selectedItem new.
@@ -308,6 +308,10 @@ MiImportModelFromFileDialog >> privateImportModel [
 		runFilteredBy: importingContext.
 
 	model name: (modelNameInput text ifEmpty: [ 'MooseModel' ]).
+	countedParsingErrors := model entities count: [ :entity | (entity propertyNamed: #parsingError ifAbsent: [ nil ]) isNotNil ].
+	countedParsingErrors > 0 ifTrue: [ 
+		SpInformDialog new title: 'Importing Errors'; label: ('There were ' , countedParsingErrors asString, ' errors during the import, please look at the Transcript for more information (press Fetch if the Transcript is empty).'); openDialog.
+		 ]. 
 
 	^ model
 ]
@@ -345,11 +349,4 @@ MiImportModelFromFileDialog >> validateImportForm [
 	filePathInput text asFileReference exists ifFalse: [ Error signal: 'File path not found' ].
 	modelNameInput text ifEmpty: [ Error signal: 'Please name the model' ].
 	rootFolderInput text asFileReference isDirectory ifFalse: [ Error signal: 'Root folder path is not a directory' ].
-]
-
-{ #category : 'accessing' }
-MiImportModelFromFileDialog >> windowTitle [ 
-
-	^ self class title 
-	
 ]

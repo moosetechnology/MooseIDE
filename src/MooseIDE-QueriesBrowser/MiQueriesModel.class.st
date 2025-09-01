@@ -1,25 +1,27 @@
 Class {
-	#name : #MiQueriesModel,
-	#superclass : #MiAbstractModel,
+	#name : 'MiQueriesModel',
+	#superclass : 'MiAbstractModel',
 	#instVars : [
 		'entities'
 	],
-	#category : #'MooseIDE-QueriesBrowser-Model'
+	#category : 'MooseIDE-QueriesBrowser-Model',
+	#package : 'MooseIDE-QueriesBrowser',
+	#tag : 'Model'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MiQueriesModel class >> newModel [
 
 	^ FQRootQuery new
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiQueriesModel >> entities [
 
 	^ entities ifNil: [ #(  ) ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiQueriesModel >> entities: anObject [
 
 	entities := anObject

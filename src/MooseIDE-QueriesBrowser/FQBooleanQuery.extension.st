@@ -1,12 +1,12 @@
-Extension { #name : #FQBooleanQuery }
+Extension { #name : 'FQBooleanQuery' }
 
-{ #category : #'*MooseIDE-QueriesBrowser' }
+{ #category : '*MooseIDE-QueriesBrowser' }
 FQBooleanQuery class >> canBeConfigured [
 
 	^ true
 ]
 
-{ #category : #'*MooseIDE-QueriesBrowser' }
+{ #category : '*MooseIDE-QueriesBrowser' }
 FQBooleanQuery class >> miPresenterClass [
 
 	^ MiBooleanQueryPresenter

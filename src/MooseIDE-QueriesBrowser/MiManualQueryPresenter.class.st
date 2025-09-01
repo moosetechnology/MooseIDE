@@ -2,17 +2,19 @@
 I am a presenter that compiles a query according to a code input
 "
 Class {
-	#name : #MiManualQueryPresenter,
-	#superclass : #MiQueryConfiguratorPresenter,
+	#name : 'MiManualQueryPresenter',
+	#superclass : 'MiQueryConfiguratorPresenter',
 	#instVars : [
 		'writeQueryButton',
 		'parentQuery',
 		'queryCoder'
 	],
-	#category : #'MooseIDE-QueriesBrowser-Configuration presenters'
+	#category : 'MooseIDE-QueriesBrowser-Configuration presenters',
+	#package : 'MooseIDE-QueriesBrowser',
+	#tag : 'Configuration presenters'
 }
 
-{ #category : #compiling }
+{ #category : 'compiling' }
 MiManualQueryPresenter >> compileQuery [
 
 	| compiledQuery |
@@ -21,23 +23,23 @@ MiManualQueryPresenter >> compileQuery [
 	self notifyQueryChanged
 ]
 
-{ #category : #'api - actions' }
+{ #category : 'api - actions' }
 MiManualQueryPresenter >> configureFor: aQuery [
 
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiManualQueryPresenter >> configureQuery: queryString [
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiManualQueryPresenter >> initialize [
 
 	super initialize.
 	query := FQNullQuery new
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiManualQueryPresenter >> initializeButton [
 
 	writeQueryButton := self newButton.
@@ -47,13 +49,13 @@ MiManualQueryPresenter >> initializeButton [
 		action: [ self openQueryCoderPopup ]
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 MiManualQueryPresenter >> initializeLayout [
 
 	self layout: self newLayout
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiManualQueryPresenter >> initializePresenters [
  
 	self initializeButton.
@@ -61,14 +63,14 @@ MiManualQueryPresenter >> initializePresenters [
 	self initializeLayout
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiManualQueryPresenter >> initializeQueryCoder [
 
 	queryCoder := self instantiate: QueryCompilerPresenter on: self.
 	queryCoder submitQueryAction: [ self compileQuery ]
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 MiManualQueryPresenter >> newLayout [
 
 	| label |
@@ -81,7 +83,7 @@ MiManualQueryPresenter >> newLayout [
 		yourself
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiManualQueryPresenter >> openQueryCoderPopup [
 
 	self newPopover
@@ -91,7 +93,7 @@ MiManualQueryPresenter >> openQueryCoderPopup [
 		popup
 ]
 
-{ #category : #'accessing - model' }
+{ #category : 'accessing - model' }
 MiManualQueryPresenter >> setModelBeforeInitialization: aParentQuery [
 
 	parentQuery := aParentQuery

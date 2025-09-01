@@ -1,6 +1,6 @@
-Extension { #name : #FQRootQuery }
+Extension { #name : 'FQRootQuery' }
 
-{ #category : #'*MooseIDE-QueriesBrowser' }
+{ #category : '*MooseIDE-QueriesBrowser' }
 FQRootQuery class >> isAvailableForQueriesSize: numberOfQueriesInPresenter [
 
 	^ false
