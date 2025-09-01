@@ -1,40 +1,42 @@
 Class {
-	#name : #MiButterflyInspectMenuItem,
-	#superclass : #MiButterflyMenuItem,
-	#category : #'MooseIDE-ButterflyMap-Menu'
+	#name : 'MiButterflyInspectMenuItem',
+	#superclass : 'MiButterflyMenuItem',
+	#category : 'MooseIDE-ButterflyMap-Menu',
+	#package : 'MooseIDE-ButterflyMap',
+	#tag : 'Menu'
 }
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiButterflyInspectMenuItem >> canBeExecuted [
 
 	^ shape isShape
 ]
 
-{ #category : #execution }
+{ #category : 'execution' }
 MiButterflyInspectMenuItem >> execute [
 
 	MiInspectorBrowser inspect: shape model rawModel
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiButterflyInspectMenuItem >> group [ 
 
 	^ 100
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiButterflyInspectMenuItem >> iconName [ 
 	
 	^ #smallInspectIt
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiButterflyInspectMenuItem >> label [
 
 	^ 'Inpsect'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiButterflyInspectMenuItem >> order [
 
 	^ 100

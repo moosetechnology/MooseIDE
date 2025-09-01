@@ -333,6 +333,13 @@ MiDuplicationBrowserModel >> setConfigurationForEntities [
 ]
 
 { #category : 'settings management' }
+MiDuplicationBrowserModel >> settingsPresenterExtent [
+	"Override to set a custom size"
+
+	^ 550 @ 300
+]
+
+{ #category : 'settings management' }
 MiDuplicationBrowserModel >> updateFromMemento: aMemento [
 
 	configuration

@@ -1,6 +1,6 @@
 Class {
-	#name : #MiButterflyMapModel,
-	#superclass : #MiAbstractModel,
+	#name : 'MiButterflyMapModel',
+	#superclass : 'MiAbstractModel',
 	#traits : 'MiTSpecModelWithSettings',
 	#classTraits : 'MiTSpecModelWithSettings classTrait',
 	#instVars : [
@@ -9,29 +9,31 @@ Class {
 		'clientsQuery',
 		'providersQuery'
 	],
-	#category : #'MooseIDE-ButterflyMap-Model'
+	#category : 'MooseIDE-ButterflyMap-Model',
+	#package : 'MooseIDE-ButterflyMap',
+	#tag : 'Model'
 }
 
-{ #category : #computing }
+{ #category : 'computing' }
 MiButterflyMapModel >> childrenFor: anEntity [
 
 	^ childrenQuery runOn: anEntity asMooseGroup
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiButterflyMapModel >> currentEntity [
 
 	^ currentEntity
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiButterflyMapModel >> currentEntity: anObject [
 
 	currentEntity := anObject.
 	browser runVisualization
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiButterflyMapModel >> entities [
 	"should probably return all entities displayed and not only the central one"
 	^self currentEntity
@@ -39,7 +41,7 @@ MiButterflyMapModel >> entities [
 		ifNotNil: [ :entity | { entity } ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiButterflyMapModel >> initializeSettings [
 
 	childrenQuery := self currentApplication defaultChildrenQuery.
@@ -47,19 +49,19 @@ MiButterflyMapModel >> initializeSettings [
 	providersQuery := self currentApplication defaultProvidersQuery
 ]
 
-{ #category : #computing }
+{ #category : 'computing' }
 MiButterflyMapModel >> leftEntitiesFor: anEntity [
 
 	^ clientsQuery runOn: anEntity asMooseGroup
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiButterflyMapModel >> miSelectedItem [
 
 	^ self entities
 ]
 
-{ #category : #'settings management' }
+{ #category : 'settings management' }
 MiButterflyMapModel >> newMemento [
 
 	^ MiButterflyMapSettingsMemento new
@@ -69,7 +71,7 @@ MiButterflyMapModel >> newMemento [
 		  yourself
 ]
 
-{ #category : #'settings management' }
+{ #category : 'settings management' }
 MiButterflyMapModel >> newMementoForDefaultValues [
 
 	^ MiButterflyMapSettingsMemento new
@@ -79,13 +81,20 @@ MiButterflyMapModel >> newMementoForDefaultValues [
 		  yourself
 ]
 
-{ #category : #computing }
+{ #category : 'computing' }
 MiButterflyMapModel >> rightEntitiesFor: anEntity [
 
 	^ providersQuery runOn: anEntity asMooseGroup
 ]
 
-{ #category : #'settings management' }
+{ #category : 'settings management' }
+MiButterflyMapModel >> settingsPresenterExtent [
+	"Override to set a custom size"
+
+	^ 350 @ 250
+]
+
+{ #category : 'settings management' }
 MiButterflyMapModel >> updateFromMemento: aMemento [
 
 	childrenQuery := aMemento childrenQuery.

@@ -158,6 +158,13 @@ MiModelsBrowserModel >> selectedModel [
 		  ifFalse: [ self selected ]
 ]
 
+{ #category : 'settings management' }
+MiModelsBrowserModel >> settingsPresenterExtent [
+	"Override to set a custom size"
+
+	^ 350 @ 200
+]
+
 { #category : 'settings' }
 MiModelsBrowserModel >> shouldCreateCache [
 

@@ -131,11 +131,10 @@ MiSourceTextBrowser >> miSelectedItem [
 
 { #category : 'showing' }
 MiSourceTextBrowser >> open [
-	"redefined to change the cursor in the text morph"
+
 	super open.
-
-	textRenderer adapter widget theme: MiSourceTextRendererTheme new.
-
+	textRenderer withAdapterDo: [ :a |
+		a widgetDo: [ :w | w theme: MiSourceTextRendererTheme new ] ]
 ]
 
 { #category : 'formatting' }

@@ -236,6 +236,13 @@ MiSourceTextBrowserModel >> settingsChanged: aBoolean [
 	]
 ]
 
+{ #category : 'settings management' }
+MiSourceTextBrowserModel >> settingsPresenterExtent [
+	"Override to set a custom size"
+
+	^ 350 @ 200
+]
+
 { #category : 'highlights' }
 MiSourceTextBrowserModel >> tagHighlight: aTag for: anEntity [
 

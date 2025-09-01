@@ -286,7 +286,7 @@ MiDSMBrowserTest >> testSettingsChanged [
 	stubDSM stub run will: [ redrawn := true ].
 	browser mainPresenter: stubDSM.
 
-	browser specModel settingsChanged: true.
+	browser specModel updateFromMemento: MiDSMMemento new.
 
 	self assert: redrawn
 ]
