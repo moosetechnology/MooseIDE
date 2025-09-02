@@ -56,6 +56,17 @@ MiSourceTextBrowserModel >> createHighlightsFor: anEntity [
 	]."
 ]
 
+{ #category : #highlights }
+MiSourceTextBrowserModel >> createKeywordHighlights [
+
+	self selectedEntity mooseModel sourceLanguage languageKeyWords do: [ :kw || matcher |
+		matcher := RxMatcher forString: ('\W' , kw , '\W').
+		(matcher matchingRangesIn: self displayedText) do: [ :range |
+			self keywordHighlightInterval: (range first + 1 to: range last - 1)
+		]
+	]
+]
+
 { #category : #accessing }
 MiSourceTextBrowserModel >> displayedEntity: anEntity [
 
@@ -136,6 +147,15 @@ MiSourceTextBrowserModel >> itemWithHighlight [
 		  yourself
 ]
 
+{ #category : #highlights }
+MiSourceTextBrowserModel >> keywordHighlightInterval: anInterval [
+
+	self addHighlight: (MiSourceTextKeywordHighlight new
+		highlightInterval: anInterval ;
+		yourself)
+
+]
+
 { #category : #accessing }
 MiSourceTextBrowserModel >> miSelectedItem [
 
@@ -168,8 +188,10 @@ MiSourceTextBrowserModel >> prepareFormating: aString [
 
 	displayedText := aString.
 	self withHighlight
-		ifTrue: [ self createHighlightsFor: self selectedEntity ]
 		ifFalse: [self resetHighlights ]
+		ifTrue: [
+			self createHighlightsFor: self selectedEntity.
+			self createKeywordHighlights ]
 ]
 
 { #category : #highlights }

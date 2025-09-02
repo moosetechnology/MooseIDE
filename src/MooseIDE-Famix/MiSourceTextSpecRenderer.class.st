@@ -46,24 +46,33 @@ MiSourceTextSpecRenderer >> applyIdentifierHighlight: aHighlight [
 		from: aHighlight from
 		to: aHighlight to ;
 
-		addAttribute: TextEmphasis italic
+		"addAttribute: TextEmphasis italic
 		from: aHighlight from
-		to: aHighlight to ;
+		to: aHighlight to ;"
 		
-		addAttribute: TextEmphasis bold
+		"addAttribute: TextEmphasis bold
 		from: aHighlight from
-		to: aHighlight to ;
+		to: aHighlight to ;"
 
 		addAttribute:
 			(TextDoIt new actOnClickBlock: [ :ignored :event |
 				self event: event selectedEntity: aHighlight highlightedEntity ])
 		from: aHighlight from
-		to: aHighlight to ;
+		to: aHighlight to ";"
 
-		addAttribute: TextColor black
+		"addAttribute: TextColor black
 		from: aHighlight from
-		to: aHighlight to.
+		to: aHighlight to"
 
+]
+
+{ #category : #formatting }
+MiSourceTextSpecRenderer >> applyKeywordHighlight: aHighlight [
+
+	formatedText 
+		addAttribute: TextColor magenta
+		from: aHighlight from
+		to: aHighlight to
 ]
 
 { #category : #formatting }
