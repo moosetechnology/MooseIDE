@@ -1,6 +1,6 @@
-Extension { #name : #FamixJavaSourceLanguage }
+Extension { #name : 'FamixJavaSourceLanguage' }
 
-{ #category : #'*MooseIDE-Famix' }
+{ #category : '*MooseIDE-Famix' }
 FamixJavaSourceLanguage class >> languageKeyWords [
 	"according to https://docs.oracle.com/javase/specs/jls/se21/html/jls-3.html#jls-3.9
 	

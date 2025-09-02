@@ -60,11 +60,20 @@ MiSourceTextBrowserModel >> createHighlightsFor: anEntity [
 
 { #category : 'highlights' }
 MiSourceTextBrowserModel >> createKeywordHighlights [
+	"search for all sourceLanguage keywords in the displayedText and highlight them
+	There are several guard conditions because this feature is work in progress and
+	not all language implement it"
 
-	self selectedEntity mooseModel sourceLanguage languageKeyWords do: [ :kw || matcher |
-		matcher := RxMatcher forString: ('\W' , kw , '\W').
-		(matcher matchingRangesIn: self displayedText) do: [ :range |
-			self keywordHighlightInterval: (range first + 1 to: range last - 1)
+	self selectedEntity mooseModel
+	ifNotNil: [ :mooseModel |
+		mooseModel sourceLanguage
+		ifNotNil: [ :sourceLanguage |
+			sourceLanguage languageKeyWords do: [ :kw || matcher |
+				matcher := RxMatcher forString: ('\W' , kw , '\W').
+				(matcher matchingRangesIn: self displayedText) do: [ :range |
+					self keywordHighlightInterval: (range first + 1 to: range last - 1)
+				]
+			]
 		]
 	]
 ]

@@ -1,6 +1,6 @@
-Extension { #name : #FamixTSourceLanguage }
+Extension { #name : 'FamixTSourceLanguage' }
 
-{ #category : #'*MooseIDE-Famix' }
+{ #category : '*MooseIDE-Famix' }
 FamixTSourceLanguage classSide >> languageKeyWords [
 	"List of keywords defined in the language
 
@@ -10,7 +10,7 @@ FamixTSourceLanguage classSide >> languageKeyWords [
 	^#()
 ]
 
-{ #category : #'*MooseIDE-Famix' }
+{ #category : '*MooseIDE-Famix' }
 FamixTSourceLanguage >> languageKeyWords [
 	"For now defined as an extension of MooseIDE-Famix because it is required by MiSourceTextBrowser
 	 But could be a standard feature of Famix"
