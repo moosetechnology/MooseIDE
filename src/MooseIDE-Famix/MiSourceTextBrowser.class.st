@@ -1,6 +1,5 @@
 "
 Shows the source text of an entity if it has one.
-Provides some highlighting for the code (work in progress).
 
 - Accepted entities: a MooseEntity that uses FamixTSourceEntity.
 - Highlight: Nothing to do.
@@ -58,15 +57,15 @@ MiSourceTextBrowser class >> open [
 ]
 
 { #category : #specs }
-MiSourceTextBrowser class >> title [
+MiSourceTextBrowser class >> preferredExtent [
 
-	^ 'Source code'
+	^ 600 @ 700
 ]
 
 { #category : #specs }
-MiSourceTextBrowser class >> windowSize [
+MiSourceTextBrowser class >> title [
 
-	^ 600 @ 700
+	^ 'Source code'
 ]
 
 { #category : #testing }

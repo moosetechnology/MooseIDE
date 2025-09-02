@@ -75,6 +75,19 @@ MiModelsBrowserTest >> testCanTagEntities [
 ]
 
 { #category : #tests }
+MiModelsBrowserTest >> testDisplayImportModelDialogTitle [
+
+	| dialog |
+	dialog := browser importFromFileUI.
+	[self assert: dialog title equals: 'Import model from file']
+		ensure: [ dialog delete].
+
+
+
+	
+]
+
+{ #category : #tests }
 MiModelsBrowserTest >> testFilterStubsSettingsWithStub [
 
 	| newModel |

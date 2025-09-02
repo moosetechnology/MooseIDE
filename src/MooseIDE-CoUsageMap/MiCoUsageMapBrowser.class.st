@@ -62,15 +62,15 @@ MiCoUsageMapBrowser class >> open [
 ]
 
 { #category : #specs }
-MiCoUsageMapBrowser class >> title [
+MiCoUsageMapBrowser class >> preferredExtent [
 
-	^ 'Co Usage Map'
+	^ 900 @ 700
 ]
 
 { #category : #specs }
-MiCoUsageMapBrowser class >> windowSize [
+MiCoUsageMapBrowser class >> title [
 
-	^ 900 @ 700
+	^ 'Co Usage Map'
 ]
 
 { #category : #'window control' }

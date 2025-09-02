@@ -76,15 +76,15 @@ MiAnalysisBrowser class >> openDuplicationAnalysis [
 ]
 
 { #category : #specs }
-MiAnalysisBrowser class >> title [
+MiAnalysisBrowser class >> preferredExtent [
 
-	^ 'Moose Analysis'
+	^ 700 @ 500
 ]
 
 { #category : #specs }
-MiAnalysisBrowser class >> windowSize [
+MiAnalysisBrowser class >> title [
 
-	^ 700 @ 500
+	^ 'Moose Analysis'
 ]
 
 { #category : #initialization }

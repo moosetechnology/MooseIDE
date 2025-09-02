@@ -87,15 +87,15 @@ MiModelsBrowser class >> open [
 ]
 
 { #category : #specs }
-MiModelsBrowser class >> title [
+MiModelsBrowser class >> preferredExtent [
 
-	^ 'Models browser'
+	^ 600 @ 400
 ]
 
 { #category : #specs }
-MiModelsBrowser class >> windowSize [
+MiModelsBrowser class >> title [
 
-	^ 600 @ 400
+	^ 'Models browser'
 ]
 
 { #category : #'window control' }
@@ -181,8 +181,8 @@ MiModelsBrowser >> initializeList [
 				 evaluated: [ :model | model entities size asString ];
 				 beSortable;
 				 yourself);
-		contextMenu: [
-		(self class buildModelCommandsGroupWith: self) asMenuPresenter ];
+		contextMenu: [specModel selected ifNotNil: [  
+		(self class buildModelCommandsGroupWith: self) asMenuPresenter ]];
 		whenSelectionChangedDo: [ :selected |
 		specModel selected: selected selectedItem ];
 		activateOnDoubleClick;

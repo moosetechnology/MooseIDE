@@ -2,7 +2,6 @@ Class {
 	#name : #MiPropertyExtension,
 	#superclass : #SpPresenter,
 	#instVars : [
-		'properties',
 		'model'
 	],
 	#category : #'MooseIDE-NewTools-Inspector tabs'

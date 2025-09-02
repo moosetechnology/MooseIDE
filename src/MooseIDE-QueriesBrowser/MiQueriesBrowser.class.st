@@ -66,15 +66,15 @@ MiQueriesBrowser class >> open [
 ]
 
 { #category : #specs }
-MiQueriesBrowser class >> title [
+MiQueriesBrowser class >> preferredExtent [
 
-	^ 'Queries Browser'
+	^ 650 @ 420
 ]
 
 { #category : #specs }
-MiQueriesBrowser class >> windowSize [
+MiQueriesBrowser class >> title [
 
-	^ 650 @ 420
+	^ 'Queries Browser'
 ]
 
 { #category : #'window control' }
@@ -86,8 +86,7 @@ MiQueriesBrowser >> browserClosed [
 { #category : #testing }
 MiQueriesBrowser >> canFollowEntity: anObject [
 
-	^ anObject isMooseObject and: [ 
-		  (anObject asMooseGroup allUsing: FamixTNamedEntity) isNotEmpty ]
+	^ anObject isMooseObject and: [ anObject asMooseGroup anySatisfy: #isQueryable ]
 ]
 
 { #category : #testing }
@@ -122,7 +121,7 @@ MiQueriesBrowser >> followEntity: anEntity [
 	| busMooseEntities |
 	super followEntity: anEntity.
 	"Create a group in case that only one entity was received from the bus"
-	busMooseEntities := anEntity asMooseGroup allUsing: FamixTNamedEntity.
+	busMooseEntities := anEntity asMooseGroup select: #isQueryable.
 
 	"Create the new root query"
 	self resetRootQueryForEntities: busMooseEntities.

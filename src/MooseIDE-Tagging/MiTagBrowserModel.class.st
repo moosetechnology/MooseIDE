@@ -68,11 +68,21 @@ MiTagBrowserModel >> createDynamicTag: name description: aText color: aColor cat
 MiTagBrowserModel >> createTag: name description: aText color: aColor category: aCategory [
 
 	| newTag |
+	(self mooseModel allTags anySatisfy: [ :tag | tag name = name ])
+		ifTrue: [ ^ nil ].
 	newTag := self addTag: name.
-	self setTag: newTag description: aText color: aColor category: aCategory.
+	self
+		setTag: newTag
+		description: aText
+		color: aColor
+		category: aCategory.
+
+	self currentTag: newTag.
 
 	browser refreshTagList.
-	self currentApplication consumeItem: newTag
+	self currentApplication consumeItem: newTag.
+
+	^ newTag
 ]
 
 { #category : #accessing }

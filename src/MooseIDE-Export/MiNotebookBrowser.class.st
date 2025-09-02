@@ -63,15 +63,15 @@ MiNotebookBrowser class >> open [
 ]
 
 { #category : #specs }
-MiNotebookBrowser class >> title [
+MiNotebookBrowser class >> preferredExtent [
 
-	^ 'Notebook'
+	^ 1083 @ 697
 ]
 
 { #category : #specs }
-MiNotebookBrowser class >> windowSize [
+MiNotebookBrowser class >> title [
 
-	^ 1083 @ 697
+	^ 'Notebook'
 ]
 
 { #category : #testing }

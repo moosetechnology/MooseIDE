@@ -46,16 +46,16 @@ MiQueriesDashboardBrowser class >> open [
 	super open
 ]
 
+{ #category : #specs }
+MiQueriesDashboardBrowser class >> preferredExtent [
+
+	^ 800 @ 500
+]
+
 { #category : #accessing }
 MiQueriesDashboardBrowser class >> title [
 
 	^ 'Queries dashboard'
-]
-
-{ #category : #specs }
-MiQueriesDashboardBrowser class >> windowSize [
-
-	^ 800 @ 500
 ]
 
 { #category : #testing }

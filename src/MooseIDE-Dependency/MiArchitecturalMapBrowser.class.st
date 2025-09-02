@@ -66,15 +66,15 @@ MiArchitecturalMapBrowser class >> open [
 ]
 
 { #category : #specs }
-MiArchitecturalMapBrowser class >> title [
+MiArchitecturalMapBrowser class >> preferredExtent [
 
-	^ 'Architectural map'
+	^ 850 @ 520
 ]
 
 { #category : #specs }
-MiArchitecturalMapBrowser class >> windowSize [
+MiArchitecturalMapBrowser class >> title [
 
-	^ 850 @ 520
+	^ 'Architectural map'
 ]
 
 { #category : #actions }

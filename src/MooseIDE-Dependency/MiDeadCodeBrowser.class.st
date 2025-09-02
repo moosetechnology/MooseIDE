@@ -57,14 +57,14 @@ MiDeadCodeBrowser class >> open [
 ]
 
 { #category : #'world menu' }
-MiDeadCodeBrowser class >> title [
-	^'Dead code browser'
+MiDeadCodeBrowser class >> preferredExtent [
+
+	^ 900 @ 700
 ]
 
 { #category : #'world menu' }
-MiDeadCodeBrowser class >> windowSize [
-
-	^ 900 @ 700
+MiDeadCodeBrowser class >> title [
+	^'Dead code browser'
 ]
 
 { #category : #testing }

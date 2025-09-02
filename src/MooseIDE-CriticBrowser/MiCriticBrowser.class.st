@@ -91,15 +91,15 @@ MiCriticBrowser class >> open [
 ]
 
 { #category : #specs }
-MiCriticBrowser class >> title [
+MiCriticBrowser class >> preferredExtent [
 
-	^ 'Moose Critic Browser'
+	^ 1280 @ 560
 ]
 
 { #category : #specs }
-MiCriticBrowser class >> windowSize [
+MiCriticBrowser class >> title [
 
-	^ 1280 @ 560
+	^ 'Moose Critic Browser'
 ]
 
 { #category : #layout }
@@ -196,8 +196,8 @@ MiCriticBrowser >> exportRules [
 MiCriticBrowser >> exportRulesToStream: aStream [
 
 	specModel ruleComponents do: [ :el |
-		SCExporter export: el onStream: aStream ].
-	SCExporter export: specModel createHierarchyTree onStream: aStream
+		(STONWriter on: aStream) nextPut: el ].
+	(STONWriter on: aStream) nextPut: specModel createHierarchyTree
 ]
 
 { #category : #actions }

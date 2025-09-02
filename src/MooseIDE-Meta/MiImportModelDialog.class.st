@@ -43,8 +43,15 @@ MiImportModelDialog >> importModel [
 MiImportModelDialog >> importModelStep1Import [
 
 	^ [ self importModel ] onErrorDo: [ :err |
-		  UIManager default alert: 'Import error: ' , err messageText.
-		  nil ]
+		    (MorphicUIManager new
+        confirm: ('Import error: ' , err messageText)
+        trueChoice: 'Ignore'
+        falseChoice: nil
+        cancelChoice: 'Debug'
+        default: false)
+    ifNil: [ err pass ]
+	 ifNotNil: [  ].
+	]
 ]
 
 { #category : #action }
@@ -65,21 +72,22 @@ MiImportModelDialog >> importModelThenCloseDialogWindow [
 		UIManager default alert: 'Invalid input: ' , err messageText.
 		^ self ].
 
-	aJob := [ :job |
-	        job title: 'Importing model'.
-	        mooseModel := self importModelStep1Import.
-	        job currentValue: 50.
-	        self importModelStep2Install: mooseModel
-	] asJob.
+		aJob := [ :job |
+		        job title: 'Importing model'.
+		        mooseModel := self importModelStep1Import.
+		        job currentValue: 50.
+		        self importModelStep2Install: mooseModel ] asJob.
 
-	[ aJob run ] forkAt: Processor userBackgroundPriority
+		[ aJob run ] forkAt: Processor userBackgroundPriority.
+		self withWindowDo: [ :window | window close ].
+	
+
 ]
 
 { #category : #initialization }
 MiImportModelDialog >> initializeDialogWindow: aDialog [
 
 	| button |
-
 	button := nil.
 	aDialog initialExtent: self class windowExtent.
 	button := aDialog
@@ -124,4 +132,11 @@ MiImportModelDialog >> updateBrowserWith: mooseModel [
 MiImportModelDialog >> validateImportForm [
 	"checks that required fields are properly filled in"
 	self subclassResponsibility 
+]
+
+{ #category : #accessing }
+MiImportModelDialog >> windowTitle [ 
+
+	^ self class title 
+	
 ]
