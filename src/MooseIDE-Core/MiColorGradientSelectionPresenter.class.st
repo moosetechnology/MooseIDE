@@ -41,7 +41,7 @@ MiColorGradientSelectionPresenter >> buildGradientOn: aCanvas [
 
 	aCanvas newBox
 		height: 23; "23 is (25 - 2) to align with buttons"
-		width: 100;
+		width: 150;
 		paint: paint
 ]
 
@@ -51,7 +51,7 @@ MiColorGradientSelectionPresenter >> defaultLayout [
 	^ self newBoxLayoutTopToBottom
 		  add: (self newBoxLayoutLeftToRight
 				   add: originButton width: 25;
-				   add: gradient width: 100;
+				   add: gradient;
 				   add: endButton width: 25;
 				   spacing: 5;
 				   yourself)

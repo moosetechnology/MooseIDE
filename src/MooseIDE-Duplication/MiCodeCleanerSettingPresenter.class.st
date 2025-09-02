@@ -25,6 +25,12 @@ MiCodeCleanerSettingPresenter >> activate: aCodeCleaner [
 	memento sourcesCleaner: aCodeCleaner
 ]
 
+{ #category : 'layout' }
+MiCodeCleanerSettingPresenter >> defaultLayout [
+
+	^ self newBoxLayoutTopToBottom
+]
+
 { #category : 'building' }
 MiCodeCleanerSettingPresenter >> helpForItem: aCodeCleaner [
 

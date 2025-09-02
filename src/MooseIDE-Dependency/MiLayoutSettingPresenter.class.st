@@ -24,6 +24,12 @@ MiLayoutSettingPresenter >> activate: aLayout [
 	memento layout: aLayout
 ]
 
+{ #category : 'adding' }
+MiLayoutSettingPresenter >> addButton: aButton [
+
+	self layout add: aButton width: 75
+]
+
 { #category : 'building' }
 MiLayoutSettingPresenter >> helpForItem: aLayout [
 

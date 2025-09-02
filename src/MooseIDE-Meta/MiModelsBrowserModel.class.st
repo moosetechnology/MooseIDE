@@ -160,9 +160,9 @@ MiModelsBrowserModel >> selectedModel [
 
 { #category : 'settings management' }
 MiModelsBrowserModel >> settingsPresenterExtent [
-	"Override to set a custom size"
+	"Large extent because checkboxes are large"
 
-	^ 350 @ 200
+	^ 475 @ 250
 ]
 
 { #category : 'settings' }

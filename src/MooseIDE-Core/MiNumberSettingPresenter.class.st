@@ -2,7 +2,8 @@ Class {
 	#name : 'MiNumberSettingPresenter',
 	#superclass : 'MiAbstractSettingPresenter',
 	#instVars : [
-		'inputField'
+		'inputField',
+		'unitLabel'
 	],
 	#category : 'MooseIDE-Core-Settings',
 	#package : 'MooseIDE-Core',
@@ -13,7 +14,11 @@ Class {
 MiNumberSettingPresenter >> defaultLayout [
 
 	^ self newBoxLayoutLeftToRight
-		  add: inputField;
+		  add: inputField width: 75;
+		  add: unitLabel
+		  expand: true
+		  fill: true
+		  padding: 5;
 		  yourself
 ]
 
@@ -22,7 +27,8 @@ MiNumberSettingPresenter >> initializePresenters [
 
 	inputField := self newNumberInput
 		              help: self help;
-		              yourself
+		              yourself.
+	unitLabel := self newLabel
 ]
 
 { #category : 'accessing' }
@@ -43,10 +49,10 @@ MiNumberSettingPresenter >> number: aNumber [
 	inputField number: aNumber
 ]
 
-{ #category : 'accessing' }
-MiNumberSettingPresenter >> placeHolder: aString [
+{ #category : 'as yet unclassified' }
+MiNumberSettingPresenter >> unit: aString [
 
-	inputField placeHolder: aString
+	unitLabel label: aString
 ]
 
 { #category : 'enumerating' }

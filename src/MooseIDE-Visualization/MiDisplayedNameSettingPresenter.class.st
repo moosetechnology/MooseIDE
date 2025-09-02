@@ -26,6 +26,12 @@ MiDisplayedNameSettingPresenter >> activate: aSymbol [
 	memento displayedName: aSymbol
 ]
 
+{ #category : 'adding' }
+MiDisplayedNameSettingPresenter >> addButton: aButton [
+
+	self layout add: aButton width: 90
+]
+
 { #category : 'building' }
 MiDisplayedNameSettingPresenter >> helpForItem: aSymbol [
 

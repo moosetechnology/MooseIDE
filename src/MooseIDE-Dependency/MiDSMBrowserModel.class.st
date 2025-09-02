@@ -321,7 +321,6 @@ MiDSMBrowserModel >> selectedEntities: anObject [
 
 { #category : 'settings management' }
 MiDSMBrowserModel >> settingsPresenterExtent [
-	"Override to set a custom size"
 
 	^ 350 @ 200
 ]

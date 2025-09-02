@@ -238,9 +238,8 @@ MiSourceTextBrowserModel >> settingsChanged: aBoolean [
 
 { #category : 'settings management' }
 MiSourceTextBrowserModel >> settingsPresenterExtent [
-	"Override to set a custom size"
 
-	^ 350 @ 200
+	^ 375 @ 200
 ]
 
 { #category : 'highlights' }
@@ -257,6 +256,8 @@ MiSourceTextBrowserModel >> tagHighlight: aTag for: anEntity [
 MiSourceTextBrowserModel >> updateFromMemento: aMemento [
 
 	shouldHighlightChildren := aMemento shouldHighlightChildren.
+
+	entity ifNil: [ ^ self ].
 
 	self resetHighlights.
 	self prepareFormating.

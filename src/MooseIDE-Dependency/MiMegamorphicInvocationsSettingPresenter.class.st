@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'checkbox',
 		'tresholdField',
-		'tresholdLabel'
+		'tresholdLabel',
+		'invocationsLabel'
 	],
 	#category : 'MooseIDE-Dependency-ArchitecturalMap',
 	#package : 'MooseIDE-Dependency',
@@ -15,9 +16,23 @@ Class {
 MiMegamorphicInvocationsSettingPresenter >> defaultLayout [
 
 	^ self newBoxLayoutLeftToRight
+		  spacing: 5;
 		  add: checkbox width: 25;
-		  add: tresholdLabel;
-		  add: tresholdField;
+		  add: tresholdLabel expand: false fill: true;
+		  add: tresholdField width: 75;
+		  add: invocationsLabel expand: false fill: true;
+		  yourself
+]
+
+{ #category : 'layout' }
+MiMegamorphicInvocationsSettingPresenter >> fullLayout [
+
+	^ self newBoxLayoutLeftToRight
+		  spacing: 5;
+		  add: checkbox width: 25;
+		  add: tresholdLabel expand: false fill: true;
+		  add: tresholdField width: 75;
+		  add: invocationsLabel expand: false fill: true;
 		  yourself
 ]
 
@@ -37,7 +52,9 @@ MiMegamorphicInvocationsSettingPresenter >> initializePresenters [
 		            whenChangedDo: [ :state |
 				            memento hideMegamorphicInvocations: state.
 				            tresholdLabel visible: state.
-				            tresholdField visible: state ].
+				            tresholdField visible: state.
+				            invocationsLabel visible: state.
+				            self owner layout: self owner layout "Yes, we have to do this, or there will be a computation failure" ].
 
 	tresholdLabel := 'Treshold:' asPresenter
 		                 help: 'Number of candidates to be megamorphic';
@@ -50,7 +67,13 @@ MiMegamorphicInvocationsSettingPresenter >> initializePresenters [
 		                 number: memento megamorphicTreshold;
 		                 whenNumberChangedDo: [ :number |
 			                 memento megamorphicTreshold: number ];
-		                 visible: memento hideMegamorphicInvocations
+		                 visible: memento hideMegamorphicInvocations;
+		                 yourself.
+
+	invocationsLabel := self newLabel
+		                    label: 'Invocations';
+		                    visible: memento hideMegamorphicInvocations;
+		                    yourself
 ]
 
 { #category : 'accessing' }

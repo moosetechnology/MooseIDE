@@ -3,7 +3,8 @@ Class {
 	#superclass : 'MiAbstractSettingPresenter',
 	#instVars : [
 		'selectedButton',
-		'buttons'
+		'buttons',
+		'itemWidth'
 	],
 	#category : 'MooseIDE-Core-Settings',
 	#package : 'MooseIDE-Core',
@@ -14,6 +15,12 @@ Class {
 MiAbstractRadioButtonSettingPresenter >> activate: anItem [
 
 	self subclassResponsibility
+]
+
+{ #category : 'adding' }
+MiAbstractRadioButtonSettingPresenter >> addButton: aButton [
+
+	self layout add: aButton
 ]
 
 { #category : 'building' }
@@ -42,7 +49,7 @@ MiAbstractRadioButtonSettingPresenter >> initializePresenters [
 	buttons := self items collect: [ :item |
 			           | button |
 			           button := self newRadioButtonFor: item.
-			           self layout add: button.
+			           self addButton: button.
 			           button ].
 
 	self connectButtons

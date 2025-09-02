@@ -24,6 +24,20 @@ MiDoubleClickSettingPresenter >> activate: aCommand [
 	memento doubleClickAction: aCommand
 ]
 
+{ #category : 'adding' }
+MiDoubleClickSettingPresenter >> addButton: aButton [
+
+	self layout
+		add: aButton
+		width: (aButton label size roundUpTo: 10) * 6
+
+	"No better idea to 
+		- avoid radioButtons to wander off to the other side of the screen 
+		- while having similar sizes when similar label length.
+		
+	6 is arbitrary"
+]
+
 { #category : 'building' }
 MiDoubleClickSettingPresenter >> helpForItem: aCommand [
 

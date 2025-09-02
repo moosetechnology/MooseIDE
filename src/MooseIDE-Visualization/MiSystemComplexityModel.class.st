@@ -220,9 +220,8 @@ MiSystemComplexityModel >> newMementoForDefaultValues [
 
 { #category : 'settings management' }
 MiSystemComplexityModel >> settingsPresenterExtent [
-	"Override to set a custom size"
 
-	^ 450 @ 400
+	^ 380 @ 400
 ]
 
 { #category : 'accessing' }

@@ -29,6 +29,9 @@ MiSettingsPresenter >> addPresenter: aPresenter inBuilder: aBuilder [
 MiSettingsPresenter >> defaultLayout [
 
 	^ self newGridLayout
+		  beColumnNotHomogeneous;
+		  column: 2 expand: false;
+		  yourself
 ]
 
 { #category : 'initialization' }
@@ -46,7 +49,7 @@ MiSettingsPresenter >> initializeDialogWindow: aSpDialogWindowPresenter [
 MiSettingsPresenter >> initializePresenters [
 
 	self layout build: [ :builder |
-			(memento settingsPresenters) do: [ :presenterClass |
+			memento settingsPresenters do: [ :presenterClass |
 				self addPresenter: presenterClass inBuilder: builder ] ]
 ]
 

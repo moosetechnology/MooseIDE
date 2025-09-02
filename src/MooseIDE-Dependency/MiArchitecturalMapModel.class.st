@@ -243,7 +243,7 @@ MiArchitecturalMapModel >> rootNodes [
 { #category : 'settings management' }
 MiArchitecturalMapModel >> settingsPresenterExtent [
 
-	^ 600 @ 500
+	^ 580 @ 500
 ]
 
 { #category : 'settings' }

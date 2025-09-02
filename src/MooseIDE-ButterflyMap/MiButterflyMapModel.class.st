@@ -89,9 +89,8 @@ MiButterflyMapModel >> rightEntitiesFor: anEntity [
 
 { #category : 'settings management' }
 MiButterflyMapModel >> settingsPresenterExtent [
-	"Override to set a custom size"
 
-	^ 350 @ 250
+	^ 300 @ 250
 ]
 
 { #category : 'settings management' }
