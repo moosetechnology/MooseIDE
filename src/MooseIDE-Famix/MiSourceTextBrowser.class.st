@@ -1,5 +1,6 @@
 "
 Shows the source text of an entity if it has one.
+Provides some highlighting for the code (work in progress).
 
 - Accepted entities: a MooseEntity that uses FamixTSourceEntity.
 - Highlight: Nothing to do.
