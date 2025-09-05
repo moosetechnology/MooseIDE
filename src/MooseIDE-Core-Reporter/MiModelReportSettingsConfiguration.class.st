@@ -1,6 +1,6 @@
 Class {
-	#name : 'MiModelReportMemento',
-	#superclass : 'MiMemento',
+	#name : 'MiModelReportSettingsConfiguration',
+	#superclass : 'MiAbstractSettingsConfiguration',
 	#instVars : [
 		'largeClassThreshold',
 		'longClassThreshold',
@@ -14,79 +14,79 @@ Class {
 }
 
 { #category : 'accessing' }
-MiModelReportMemento >> complexMethodThreshold [
+MiModelReportSettingsConfiguration >> complexMethodThreshold [
 
 	^ complexMethodThreshold
 ]
 
 { #category : 'accessing' }
-MiModelReportMemento >> complexMethodThreshold: anObject [
+MiModelReportSettingsConfiguration >> complexMethodThreshold: anObject [
 
 	complexMethodThreshold := anObject
 ]
 
 { #category : 'accessing' }
-MiModelReportMemento >> dataClassThreshold [
+MiModelReportSettingsConfiguration >> dataClassThreshold [
 
 	^ dataClassThreshold
 ]
 
 { #category : 'accessing' }
-MiModelReportMemento >> dataClassThreshold: anObject [
+MiModelReportSettingsConfiguration >> dataClassThreshold: anObject [
 
 	dataClassThreshold := anObject
 ]
 
 { #category : 'accessing' }
-MiModelReportMemento >> excessiveAPIThreshold [
+MiModelReportSettingsConfiguration >> excessiveAPIThreshold [
 
 	^ excessiveAPIThreshold
 ]
 
 { #category : 'accessing' }
-MiModelReportMemento >> excessiveAPIThreshold: anObject [
+MiModelReportSettingsConfiguration >> excessiveAPIThreshold: anObject [
 
 	excessiveAPIThreshold := anObject
 ]
 
 { #category : 'accessing' }
-MiModelReportMemento >> largeClassThreshold [
+MiModelReportSettingsConfiguration >> largeClassThreshold [
 
 	^ largeClassThreshold
 ]
 
 { #category : 'accessing' }
-MiModelReportMemento >> largeClassThreshold: anObject [
+MiModelReportSettingsConfiguration >> largeClassThreshold: anObject [
 
 	largeClassThreshold := anObject
 ]
 
 { #category : 'accessing' }
-MiModelReportMemento >> longClassThreshold [
+MiModelReportSettingsConfiguration >> longClassThreshold [
 
 	^ longClassThreshold
 ]
 
 { #category : 'accessing' }
-MiModelReportMemento >> longClassThreshold: anObject [
+MiModelReportSettingsConfiguration >> longClassThreshold: anObject [
 
 	longClassThreshold := anObject
 ]
 
 { #category : 'accessing' }
-MiModelReportMemento >> longMethodThreshold [
+MiModelReportSettingsConfiguration >> longMethodThreshold [
 
 	^ longMethodThreshold
 ]
 
 { #category : 'accessing' }
-MiModelReportMemento >> longMethodThreshold: anObject [
+MiModelReportSettingsConfiguration >> longMethodThreshold: anObject [
 
 	longMethodThreshold := anObject
 ]
 
 { #category : 'ui' }
-MiModelReportMemento >> settingsPresenters [
+MiModelReportSettingsConfiguration >> settingsPresenters [
 
 	^ OrderedCollection new
 		  add: ((MiNumberSettingPresenter on: self)

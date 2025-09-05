@@ -1,8 +1,6 @@
 Class {
 	#name : 'MiSystemComplexityModel',
 	#superclass : 'MiAbstractModel',
-	#traits : 'MiTSpecModelWithSettings',
-	#classTraits : 'MiTSpecModelWithSettings classTrait',
 	#instVars : [
 		'entities',
 		'startColor',
@@ -39,6 +37,22 @@ MiSystemComplexityModel class >> defaultColorMetric [
 MiSystemComplexityModel class >> defaultColorMetricThreshold [
 
 	^ 100
+]
+
+{ #category : 'settings management' }
+MiSystemComplexityModel class >> defaultConfiguration [
+
+	^ MiSystemComplexitySettingsMemento new
+		  heightMetric: self defaultHeightMetric;
+		  heightMetricThreshold: self defaultHeightMetricThreshold;
+		  widthMetric: self defaultWidthMetric;
+		  widthMetricThreshold: self defaultWidthMetricThreshold;
+		  colorMetric: self defaultColorMetric;
+		  colorMetricThreshold: self defaultColorMetricThreshold;
+		  startColor: self defaultStartColor;
+		  endColor: self defaultEndColor;
+		  displayedName: self defaultDisplayedName;
+		  yourself
 ]
 
 { #category : 'default' }
@@ -83,22 +97,6 @@ MiSystemComplexityModel class >> defaultWidthMetricThreshold [
 	^ 10
 ]
 
-{ #category : 'settings management' }
-MiSystemComplexityModel class >> newMementoForDefaultValues [
-
-	^ MiSystemComplexitySettingsMemento new
-		  heightMetric: self defaultHeightMetric;
-		  heightMetricThreshold: self defaultHeightMetricThreshold;
-		  widthMetric: self defaultWidthMetric;
-		  widthMetricThreshold: self defaultWidthMetricThreshold;
-		  colorMetric: self defaultColorMetric;
-		  colorMetricThreshold: self defaultColorMetricThreshold;
-		  startColor: self defaultStartColor;
-		  endColor: self defaultEndColor;
-		  displayedName: self defaultDisplayedName;
-		  yourself
-]
-
 { #category : 'accessing' }
 MiSystemComplexityModel >> availableMetrics [
 
@@ -131,6 +129,30 @@ MiSystemComplexityModel >> colorMetricThreshold [
 	^ colorMetricThreshold
 ]
 
+{ #category : 'settings management' }
+MiSystemComplexityModel >> currentConfiguration [
+
+	^ MiSystemComplexitySettingsMemento new
+		  availableMetrics: self availableMetrics;
+		  heightMetric: heightMetric;
+		  heightMetricThreshold: heightMetricThreshold;
+		  widthMetric: widthMetric;
+		  widthMetricThreshold: widthMetricThreshold;
+		  colorMetric: colorMetric;
+		  colorMetricThreshold: colorMetricThreshold;
+		  startColor: startColor;
+		  endColor: endColor;
+		  displayedName: displayedName
+]
+
+{ #category : 'settings management' }
+MiSystemComplexityModel >> defaultConfiguration [
+
+	^ self class defaultConfiguration
+		  availableMetrics: self availableMetrics;
+		  yourself
+]
+
 { #category : 'accessing' }
 MiSystemComplexityModel >> displayedName [
 
@@ -153,6 +175,12 @@ MiSystemComplexityModel >> entities [
 MiSystemComplexityModel >> entities: aMooseGroup [
 
 	entities := aMooseGroup
+]
+
+{ #category : 'testing' }
+MiSystemComplexityModel >> hasSettings [
+
+	^ true
 ]
 
 { #category : 'accessing' }
@@ -195,30 +223,6 @@ MiSystemComplexityModel >> miSelectedItem [
 ]
 
 { #category : 'settings management' }
-MiSystemComplexityModel >> newMemento [
-
-	^ MiSystemComplexitySettingsMemento new
-		  availableMetrics: self availableMetrics;
-		  heightMetric: heightMetric;
-		  heightMetricThreshold: heightMetricThreshold;
-		  widthMetric: widthMetric;
-		  widthMetricThreshold: widthMetricThreshold;
-		  colorMetric: colorMetric;
-		  colorMetricThreshold: colorMetricThreshold;
-		  startColor: startColor;
-		  endColor: endColor;
-		  displayedName: displayedName
-]
-
-{ #category : 'settings management' }
-MiSystemComplexityModel >> newMementoForDefaultValues [
-
-	^ self class newMementoForDefaultValues
-		  availableMetrics: self availableMetrics;
-		  yourself
-]
-
-{ #category : 'settings management' }
 MiSystemComplexityModel >> settingsPresenterExtent [
 
 	^ 380 @ 400
@@ -231,17 +235,17 @@ MiSystemComplexityModel >> startColor [
 ]
 
 { #category : 'settings management' }
-MiSystemComplexityModel >> updateFromMemento: aMemento [
+MiSystemComplexityModel >> updateFromConfiguration: aConfiguration [
 
-	heightMetric := aMemento heightMetric.
-	heightMetricThreshold := aMemento heightMetricThreshold.
-	widthMetric := aMemento widthMetric.
-	widthMetricThreshold := aMemento widthMetricThreshold.
-	colorMetric := aMemento colorMetric.
-	colorMetricThreshold := aMemento colorMetricThreshold.
-	startColor := aMemento startColor.
-	endColor := aMemento endColor.
-	displayedName := aMemento displayedName.
+	heightMetric := aConfiguration heightMetric.
+	heightMetricThreshold := aConfiguration heightMetricThreshold.
+	widthMetric := aConfiguration widthMetric.
+	widthMetricThreshold := aConfiguration widthMetricThreshold.
+	colorMetric := aConfiguration colorMetric.
+	colorMetricThreshold := aConfiguration colorMetricThreshold.
+	startColor := aConfiguration startColor.
+	endColor := aConfiguration endColor.
+	displayedName := aConfiguration displayedName.
 
 	browser runVisualization
 ]

@@ -1,5 +1,5 @@
 Class {
-	#name : 'MiMemento',
+	#name : 'MiAbstractSettingsConfiguration',
 	#superclass : 'Object',
 	#category : 'MooseIDE-Core-Settings',
 	#package : 'MooseIDE-Core',
@@ -7,7 +7,7 @@ Class {
 }
 
 { #category : 'ui' }
-MiMemento >> settingsPresenters [
+MiAbstractSettingsConfiguration >> settingsPresenters [
 
 	^ OrderedCollection new
 ]

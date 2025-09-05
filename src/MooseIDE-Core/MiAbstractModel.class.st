@@ -33,12 +33,26 @@ MiAbstractModel >> currentApplication [
 	^ browser application
 ]
 
+{ #category : 'settings management' }
+MiAbstractModel >> currentConfiguration [
+	"Override to configure with current settings values"
+
+	self subclassResponsibility
+]
+
 { #category : 'accessing' }
 MiAbstractModel >> currentMooseModel [
-	self entities ifNil: [ ^nil ].
-	self entities ifEmpty: [ ^nil ].
-	^self entities anyOne mooseModel
-	
+
+	self entities isEmptyOrNil ifTrue: [ ^ nil ].
+
+	^ self entities anyOne mooseModel
+]
+
+{ #category : 'settings management' }
+MiAbstractModel >> defaultConfiguration [
+	"Override to configure with default settings values"
+
+	self subclassResponsibility
 ]
 
 { #category : 'accessing' }
@@ -69,10 +83,10 @@ MiAbstractModel >> miSelectedItem [
 	self subclassResponsibility
 ]
 
-{ #category : 'actions' }
+{ #category : 'settings management' }
 MiAbstractModel >> openSettings [
 
-	"Nothing to do when no settings"
+	^ (MiSettingsPresenter on: self) openDialog
 ]
 
 { #category : 'tagging' }
@@ -104,6 +118,13 @@ MiAbstractModel >> selectedTag [
 MiAbstractModel >> selectedTag: aTag [
 
 	selectedTag := aTag
+]
+
+{ #category : 'settings management' }
+MiAbstractModel >> settingsPresenterExtent [
+	"Override to set a custom size"
+
+	^ 350 @ 300
 ]
 
 { #category : 'tagging' }
@@ -145,4 +166,11 @@ MiAbstractModel >> tagSelectedEntities [
 MiAbstractModel >> toolName [
 
 	^ browser title
+]
+
+{ #category : 'settings management' }
+MiAbstractModel >> updateFromConfiguration: aConfiguration [
+	"Override to update"
+
+	self subclassResponsibility
 ]

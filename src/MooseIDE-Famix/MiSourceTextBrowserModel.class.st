@@ -8,8 +8,6 @@ I also keep the displayedEntity and the selectedEntity (in the source code) if a
 Class {
 	#name : 'MiSourceTextBrowserModel',
 	#superclass : 'MiAbstractModel',
-	#traits : 'MiTSpecModelWithSettings',
-	#classTraits : 'MiTSpecModelWithSettings classTrait',
 	#instVars : [
 		'displayedText',
 		'highlights',
@@ -21,18 +19,18 @@ Class {
 	#tag : 'SourceText'
 }
 
-{ #category : 'as yet unclassified' }
-MiSourceTextBrowserModel class >> defaultShouldHighlightChildren [
-
-	^ true
-]
-
 { #category : 'accessing' }
-MiSourceTextBrowserModel class >> newMementoForDefaultValues [
+MiSourceTextBrowserModel class >> defaultConfiguration [
 
 	^ MiSourceTextMemento new
 		  shouldHighlightChildren: self defaultShouldHighlightChildren;
 		  yourself
+]
+
+{ #category : 'as yet unclassified' }
+MiSourceTextBrowserModel class >> defaultShouldHighlightChildren [
+
+	^ true
 ]
 
 { #category : 'accessing' }
@@ -72,6 +70,20 @@ MiSourceTextBrowserModel >> createHighlightsFor: anEntity [
 	"aChildEntity queryAllOutgoing do: [:mseAssoc |
 		mseAssoc allTargets do: [ :target | 	self addHighlight: (self dependencyHighlightFor: mseAssoc) ]
 	]."
+]
+
+{ #category : 'settings management' }
+MiSourceTextBrowserModel >> currentConfiguration [
+
+	^ MiSourceTextMemento new
+		  shouldHighlightChildren: shouldHighlightChildren;
+		  yourself
+]
+
+{ #category : 'settings management' }
+MiSourceTextBrowserModel >> defaultConfiguration [
+
+	^ self class defaultConfiguration
 ]
 
 { #category : 'accessing' }
@@ -117,6 +129,12 @@ MiSourceTextBrowserModel >> event: aMouseEvent selectedEntity: anEntity [
 		ifTrue: [ anEntity inspect ]
 ]
 
+{ #category : 'testing' }
+MiSourceTextBrowserModel >> hasSettings [
+
+	^ true
+]
+
 { #category : 'accessing' }
 MiSourceTextBrowserModel >> highlights [
 	^highlights
@@ -159,20 +177,6 @@ MiSourceTextBrowserModel >> itemWithHighlight [
 MiSourceTextBrowserModel >> miSelectedItem [
 
 	^self entities
-]
-
-{ #category : 'settings management' }
-MiSourceTextBrowserModel >> newMemento [
-
-	^ MiSourceTextMemento new
-		  shouldHighlightChildren: shouldHighlightChildren;
-		  yourself
-]
-
-{ #category : 'settings management' }
-MiSourceTextBrowserModel >> newMementoForDefaultValues [
-
-	^ self class newMementoForDefaultValues
 ]
 
 { #category : 'formatting' }
@@ -253,9 +257,9 @@ MiSourceTextBrowserModel >> tagHighlight: aTag for: anEntity [
 ]
 
 { #category : 'settings management' }
-MiSourceTextBrowserModel >> updateFromMemento: aMemento [
+MiSourceTextBrowserModel >> updateFromConfiguration: aConfiguration [
 
-	shouldHighlightChildren := aMemento shouldHighlightChildren.
+	shouldHighlightChildren := aConfiguration shouldHighlightChildren.
 
 	entity ifNil: [ ^ self ].
 

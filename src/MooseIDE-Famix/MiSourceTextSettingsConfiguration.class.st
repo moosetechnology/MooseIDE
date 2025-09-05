@@ -1,6 +1,6 @@
 Class {
-	#name : 'MiSourceTextMemento',
-	#superclass : 'MiMemento',
+	#name : 'MiSourceTextSettingsConfiguration',
+	#superclass : 'MiAbstractSettingsConfiguration',
 	#instVars : [
 		'shouldHighlightChildren'
 	],
@@ -10,7 +10,7 @@ Class {
 }
 
 { #category : 'ui' }
-MiSourceTextMemento >> settingsPresenters [
+MiSourceTextSettingsConfiguration >> settingsPresenters [
 
 	^ OrderedCollection with: ((MiBooleanSettingPresenter on: self)
 			   label: 'Highlight children?';
@@ -21,13 +21,13 @@ MiSourceTextMemento >> settingsPresenters [
 ]
 
 { #category : 'accessing' }
-MiSourceTextMemento >> shouldHighlightChildren [
+MiSourceTextSettingsConfiguration >> shouldHighlightChildren [
 
 	^ shouldHighlightChildren
 ]
 
 { #category : 'accessing' }
-MiSourceTextMemento >> shouldHighlightChildren: aBoolean [
+MiSourceTextSettingsConfiguration >> shouldHighlightChildren: aBoolean [
 
 	shouldHighlightChildren := aBoolean
 ]

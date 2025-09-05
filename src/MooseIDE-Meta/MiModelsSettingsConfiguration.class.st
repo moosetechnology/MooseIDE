@@ -1,6 +1,6 @@
 Class {
-	#name : 'MiModelsSettingsMemento',
-	#superclass : 'MiMemento',
+	#name : 'MiModelsSettingsConfiguration',
+	#superclass : 'MiAbstractSettingsConfiguration',
 	#instVars : [
 		'shouldCreateCache',
 		'filterStubs',
@@ -12,31 +12,31 @@ Class {
 }
 
 { #category : 'accessing' }
-MiModelsSettingsMemento >> filterStubs [
+MiModelsSettingsConfiguration >> filterStubs [
 
 	^ filterStubs
 ]
 
 { #category : 'accessing' }
-MiModelsSettingsMemento >> filterStubs: aBoolean [
+MiModelsSettingsConfiguration >> filterStubs: aBoolean [
 
 	filterStubs := aBoolean
 ]
 
 { #category : 'accessing' }
-MiModelsSettingsMemento >> modelImportIsAutomatic [
+MiModelsSettingsConfiguration >> modelImportIsAutomatic [
 
 	^ modelImportIsAutomatic
 ]
 
 { #category : 'accessing' }
-MiModelsSettingsMemento >> modelImportIsAutomatic: aBoolean [
+MiModelsSettingsConfiguration >> modelImportIsAutomatic: aBoolean [
 
 	modelImportIsAutomatic := aBoolean
 ]
 
 { #category : 'as yet unclassified' }
-MiModelsSettingsMemento >> settingsPresenters [
+MiModelsSettingsConfiguration >> settingsPresenters [
 
 	^ super settingsPresenters
 		  add: ((MiBooleanSettingPresenter on: self)
@@ -66,13 +66,13 @@ MiModelsSettingsMemento >> settingsPresenters [
 ]
 
 { #category : 'accessing' }
-MiModelsSettingsMemento >> shouldCreateCache [
+MiModelsSettingsConfiguration >> shouldCreateCache [
 
 	^ shouldCreateCache
 ]
 
 { #category : 'accessing' }
-MiModelsSettingsMemento >> shouldCreateCache: aBoolean [
+MiModelsSettingsConfiguration >> shouldCreateCache: aBoolean [
 
 	shouldCreateCache := aBoolean
 ]

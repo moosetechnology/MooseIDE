@@ -15,8 +15,6 @@ A ReplicatedFragment must have at least 2 Replica-s
 Class {
 	#name : 'MiDuplicationBrowserModel',
 	#superclass : 'MiAbstractModel',
-	#traits : 'MiTSpecModelWithSettings',
-	#classTraits : 'MiTSpecModelWithSettings classTrait',
 	#instVars : [
 		'selectedEntities',
 		'replicatedFragmentsHierarchy',
@@ -37,11 +35,14 @@ MiDuplicationBrowserModel class >> availableSourcesCleaners [
 { #category : 'settings management' }
 MiDuplicationBrowserModel class >> defaultConfiguration [
 
-	^ FamixRepConfiguration
-		  sourcesCleaner: self defaultSourcesCleaner
-		  minimumNumberOfReplicas: self defaultMinimumNumberOfReplicas
-		  ofLines: self defaultMinimumNumberOfLines
-		  ofCharacters: self defaultMinimumNumberOfCharacters
+	^ MiDuplicationMemento new
+		  minimumNumberOfLines: self defaultMinimumNumberOfLines;
+		  minimumNumberOfCharacters: self defaultMinimumNumberOfCharacters;
+		  minimumNumberOfReplicas: self defaultMinimumNumberOfReplicas;
+		  sourcesCleaner: self defaultSourcesCleaner;
+		  availableSourceCleaners: self availableSourcesCleaners;
+		  maximumShownReplicas: self defaultMaximumShownReplicas;
+		  yourself
 ]
 
 { #category : 'settings management' }
@@ -74,19 +75,6 @@ MiDuplicationBrowserModel class >> defaultSourcesCleaner [
 	^ FamixRepCLikeCleaner new
 ]
 
-{ #category : 'settings management' }
-MiDuplicationBrowserModel class >> newMementoForDefaultValues [
-
-	^ MiDuplicationMemento new
-		  minimumNumberOfLines: self defaultMinimumNumberOfLines;
-		  minimumNumberOfCharacters: self defaultMinimumNumberOfCharacters;
-		  minimumNumberOfReplicas: self defaultMinimumNumberOfReplicas;
-		  sourcesCleaner: self defaultSourcesCleaner;
-		  availableSourceCleaners: self availableSourcesCleaners;
-		  maximumShownReplicas: self defaultMaximumShownReplicas;
-		  yourself
-]
-
 { #category : 'accessing' }
 MiDuplicationBrowserModel >> allReplicatedFragments [
 
@@ -104,6 +92,25 @@ MiDuplicationBrowserModel >> ancestorsOf: aFragment in: aFragmentCollection [
 MiDuplicationBrowserModel >> childrenFragments: aFragment [
 
 	^ replicatedFragmentsHierarchy at: aFragment
+]
+
+{ #category : 'settings management' }
+MiDuplicationBrowserModel >> currentConfiguration [
+
+	^ MiDuplicationMemento new
+		  minimumNumberOfLines: configuration minimumNumberOfLines;
+		  minimumNumberOfCharacters: configuration minimumNumberOfCharacters;
+		  minimumNumberOfReplicas: configuration minimumNumberOfReplicas;
+		  sourcesCleaner: configuration sourcesCleaner;
+		  maximumShownReplicas: maximumShownReplicas;
+		  availableSourceCleaners: self class availableSourcesCleaners;
+		  yourself
+]
+
+{ #category : 'settings management' }
+MiDuplicationBrowserModel >> defaultConfiguration [
+
+	^ self class defaultConfiguration
 ]
 
 { #category : 'private' }
@@ -127,9 +134,9 @@ MiDuplicationBrowserModel >> entities [
 ]
 
 { #category : 'accessing' }
-MiDuplicationBrowserModel >> entities: anObject [
+MiDuplicationBrowserModel >> entities: aCollection [
 
-	entities := anObject.
+	entities := aCollection sorted: #name ascending.
 	self setConfigurationForEntities
 ]
 
@@ -173,6 +180,12 @@ MiDuplicationBrowserModel >> fragmentsSelection: selectedFragments [
 
 	self selectEntities: (allReplicas collectAsSet: #entity) asMooseGroup.
 	browser showReplicas: allReplicas
+]
+
+{ #category : 'testing' }
+MiDuplicationBrowserModel >> hasSettings [
+
+	^ true
 ]
 
 { #category : 'private' }
@@ -242,25 +255,6 @@ MiDuplicationBrowserModel >> newDetector [
 		  yourself
 ]
 
-{ #category : 'settings management' }
-MiDuplicationBrowserModel >> newMemento [
-
-	^ MiDuplicationMemento new
-		  minimumNumberOfLines: configuration minimumNumberOfLines;
-		  minimumNumberOfCharacters: configuration minimumNumberOfCharacters;
-		  minimumNumberOfReplicas: configuration minimumNumberOfReplicas;
-		  sourcesCleaner: configuration sourcesCleaner;
-		  maximumShownReplicas: maximumShownReplicas;
-		  availableSourceCleaners: self class availableSourcesCleaners;
-		  yourself
-]
-
-{ #category : 'settings management' }
-MiDuplicationBrowserModel >> newMementoForDefaultValues [
-
-	^ self class newMementoForDefaultValues
-]
-
 { #category : 'api' }
 MiDuplicationBrowserModel >> numberOfEntities [
 
@@ -323,13 +317,12 @@ MiDuplicationBrowserModel >> selectEntities: entityCollection [
 { #category : 'as yet unclassified' }
 MiDuplicationBrowserModel >> setConfigurationForEntities [
 
-	entities ifEmpty: [
-			configuration := self class defaultConfiguration.
-			^ self ].
+	configuration := self class defaultConfiguration.
 
-	configuration := entities anyOne mooseModel
-		                 replicationDetectionConfiguration ifNil: [
-		                 self class defaultConfiguration ]
+	entities ifNotNil: [
+			entities detect: #hasMooseModel ifFound: [ :entity |
+					entity mooseModel replicationDetectionConfiguration ifNotNil: [
+						:modelConfiguration | configuration := modelConfiguration ] ] ]
 ]
 
 { #category : 'settings management' }
@@ -339,13 +332,13 @@ MiDuplicationBrowserModel >> settingsPresenterExtent [
 ]
 
 { #category : 'settings management' }
-MiDuplicationBrowserModel >> updateFromMemento: aMemento [
+MiDuplicationBrowserModel >> updateFromConfiguration: aConfiguration [
 
 	configuration
-		minimumNumberOfLines: aMemento minimumNumberOfLines;
-		minimumNumberOfCharacters: aMemento minimumNumberOfCharacters;
-		minimumNumberOfReplicas: aMemento minimumNumberOfReplicas;
-		sourcesCleaner: aMemento sourcesCleaner.
+		minimumNumberOfLines: aConfiguration minimumNumberOfLines;
+		minimumNumberOfCharacters: aConfiguration minimumNumberOfCharacters;
+		minimumNumberOfReplicas: aConfiguration minimumNumberOfReplicas;
+		sourcesCleaner: aConfiguration sourcesCleaner.
 
-	maximumShownReplicas := aMemento maximumShownReplicas
+	maximumShownReplicas := aConfiguration maximumShownReplicas
 ]

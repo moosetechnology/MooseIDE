@@ -4,8 +4,6 @@ A model for the MiDSMBrowser, contains the entities to display, computes the dep
 Class {
 	#name : 'MiDSMBrowserModel',
 	#superclass : 'MiAbstractModel',
-	#traits : 'MiTSpecModelWithSettings',
-	#classTraits : 'MiTSpecModelWithSettings classTrait',
 	#instVars : [
 		'graph',
 		'nodeColors',
@@ -21,18 +19,18 @@ Class {
 	#tag : 'DSM'
 }
 
-{ #category : 'default' }
-MiDSMBrowserModel class >> defaultShouldShowSelfDependencies [
-
-	^ true
-]
-
 { #category : 'settings management' }
-MiDSMBrowserModel class >> newMementoForDefaultValues [
+MiDSMBrowserModel class >> defaultConfiguration [
 
 	^ MiDSMMemento new
 		  shouldShowSelfDependencies: self defaultShouldShowSelfDependencies;
 		  yourself
+]
+
+{ #category : 'default' }
+MiDSMBrowserModel class >> defaultShouldShowSelfDependencies [
+
+	^ true
 ]
 
 { #category : 'testing' }
@@ -64,10 +62,24 @@ MiDSMBrowserModel >> computeMatrixWithX: entitiesX withY: entitiesY [
 
 ]
 
+{ #category : 'settings management' }
+MiDSMBrowserModel >> currentConfiguration [
+
+	^ MiDSMMemento new
+		  shouldShowSelfDependencies: shouldShowSelfDependencies;
+		  yourself
+]
+
 { #category : 'settings' }
 MiDSMBrowserModel >> defaultColor [
 
 	^ nodeColors at: #defaultCell
+]
+
+{ #category : 'settings management' }
+MiDSMBrowserModel >> defaultConfiguration [
+
+	^ self class defaultConfiguration
 ]
 
 { #category : 'accessing' }
@@ -148,6 +160,12 @@ MiDSMBrowserModel >> graph [
 	^graph
 ]
 
+{ #category : 'testing' }
+MiDSMBrowserModel >> hasSettings [
+
+	^ true
+]
+
 { #category : 'initialization' }
 MiDSMBrowserModel >> initialize [ 
 	super initialize.
@@ -217,20 +235,6 @@ MiDSMBrowserModel >> listTupleDependencies: tuple [
 MiDSMBrowserModel >> miSelectedItem [
 
 	^selectedEntities
-]
-
-{ #category : 'settings management' }
-MiDSMBrowserModel >> newMemento [
-
-	^ MiDSMMemento new
-		  shouldShowSelfDependencies: shouldShowSelfDependencies;
-		  yourself
-]
-
-{ #category : 'settings management' }
-MiDSMBrowserModel >> newMementoForDefaultValues [
-
-	^ self class newMementoForDefaultValues
 ]
 
 { #category : 'actions' }
@@ -343,9 +347,9 @@ MiDSMBrowserModel >> showSCCColorForTuple: tuple [
 ]
 
 { #category : 'settings management' }
-MiDSMBrowserModel >> updateFromMemento: aMemento [
+MiDSMBrowserModel >> updateFromConfiguration: aConfiguration [
 
-	shouldShowSelfDependencies := aMemento shouldShowSelfDependencies.
+	shouldShowSelfDependencies := aConfiguration shouldShowSelfDependencies.
 
 	browser buildDSM
 ]

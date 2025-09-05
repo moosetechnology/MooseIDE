@@ -1,6 +1,6 @@
 Class {
-	#name : 'MiSystemComplexitySettingsMemento',
-	#superclass : 'MiMemento',
+	#name : 'MiSystemComplexitySettingsConfiguration',
+	#superclass : 'MiAbstractSettingsConfiguration',
 	#instVars : [
 		'startColor',
 		'endColor',
@@ -19,91 +19,91 @@ Class {
 }
 
 { #category : 'accessing' }
-MiSystemComplexitySettingsMemento >> availableMetrics [
+MiSystemComplexitySettingsConfiguration >> availableMetrics [
 
 	^ availableMetrics
 ]
 
 { #category : 'accessing' }
-MiSystemComplexitySettingsMemento >> availableMetrics: aCollection [
+MiSystemComplexitySettingsConfiguration >> availableMetrics: aCollection [
 
 	availableMetrics := aCollection
 ]
 
 { #category : 'accessing' }
-MiSystemComplexitySettingsMemento >> colorMetric [
+MiSystemComplexitySettingsConfiguration >> colorMetric [
 
 	^ colorMetric
 ]
 
 { #category : 'accessing' }
-MiSystemComplexitySettingsMemento >> colorMetric: aFM3Property [
+MiSystemComplexitySettingsConfiguration >> colorMetric: aFM3Property [
 
 	colorMetric := aFM3Property
 ]
 
 { #category : 'accessing' }
-MiSystemComplexitySettingsMemento >> colorMetricThreshold [
+MiSystemComplexitySettingsConfiguration >> colorMetricThreshold [
 
 	^ colorMetricThreshold
 ]
 
 { #category : 'accessing' }
-MiSystemComplexitySettingsMemento >> colorMetricThreshold: anObject [
+MiSystemComplexitySettingsConfiguration >> colorMetricThreshold: anObject [
 
 	colorMetricThreshold := anObject
 ]
 
 { #category : 'accessing' }
-MiSystemComplexitySettingsMemento >> displayedName [
+MiSystemComplexitySettingsConfiguration >> displayedName [
 
 	^ displayedName
 ]
 
 { #category : 'accessing' }
-MiSystemComplexitySettingsMemento >> displayedName: aSymbol [
+MiSystemComplexitySettingsConfiguration >> displayedName: aSymbol [
 
 	displayedName := aSymbol
 ]
 
 { #category : 'accessing' }
-MiSystemComplexitySettingsMemento >> endColor [
+MiSystemComplexitySettingsConfiguration >> endColor [
 
 	^ endColor
 ]
 
 { #category : 'accessing' }
-MiSystemComplexitySettingsMemento >> endColor: anObject [
+MiSystemComplexitySettingsConfiguration >> endColor: anObject [
 
 	endColor := anObject
 ]
 
 { #category : 'accessing' }
-MiSystemComplexitySettingsMemento >> heightMetric [
+MiSystemComplexitySettingsConfiguration >> heightMetric [
 
 	^ heightMetric
 ]
 
 { #category : 'accessing' }
-MiSystemComplexitySettingsMemento >> heightMetric: aFM3Property [
+MiSystemComplexitySettingsConfiguration >> heightMetric: aFM3Property [
 
 	heightMetric := aFM3Property
 ]
 
 { #category : 'accessing' }
-MiSystemComplexitySettingsMemento >> heightMetricThreshold [
+MiSystemComplexitySettingsConfiguration >> heightMetricThreshold [
 
 	^ heightMetricThreshold
 ]
 
 { #category : 'accessing' }
-MiSystemComplexitySettingsMemento >> heightMetricThreshold: anObject [
+MiSystemComplexitySettingsConfiguration >> heightMetricThreshold: anObject [
 
 	heightMetricThreshold := anObject
 ]
 
 { #category : 'ui' }
-MiSystemComplexitySettingsMemento >> settingsPresenters [
+MiSystemComplexitySettingsConfiguration >> settingsPresenters [
 
 	^ super settingsPresenters
 		  add: ((MiDroplistSettingPresenter on: self)
@@ -154,37 +154,37 @@ MiSystemComplexitySettingsMemento >> settingsPresenters [
 ]
 
 { #category : 'accessing' }
-MiSystemComplexitySettingsMemento >> startColor [
+MiSystemComplexitySettingsConfiguration >> startColor [
 
 	^ startColor
 ]
 
 { #category : 'accessing' }
-MiSystemComplexitySettingsMemento >> startColor: anObject [
+MiSystemComplexitySettingsConfiguration >> startColor: anObject [
 
 	startColor := anObject
 ]
 
 { #category : 'accessing' }
-MiSystemComplexitySettingsMemento >> widthMetric [
+MiSystemComplexitySettingsConfiguration >> widthMetric [
 
 	^ widthMetric
 ]
 
 { #category : 'accessing' }
-MiSystemComplexitySettingsMemento >> widthMetric: aFM3Property [
+MiSystemComplexitySettingsConfiguration >> widthMetric: aFM3Property [
 
 	widthMetric := aFM3Property
 ]
 
 { #category : 'accessing' }
-MiSystemComplexitySettingsMemento >> widthMetricThreshold [
+MiSystemComplexitySettingsConfiguration >> widthMetricThreshold [
 
 	^ widthMetricThreshold
 ]
 
 { #category : 'accessing' }
-MiSystemComplexitySettingsMemento >> widthMetricThreshold: anObject [
+MiSystemComplexitySettingsConfiguration >> widthMetricThreshold: anObject [
 
 	widthMetricThreshold := anObject
 ]

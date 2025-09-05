@@ -134,6 +134,12 @@ MiQueriesBrowser >> followEntity: anEntity [
 	queriesListPresenter followNewEntity
 ]
 
+{ #category : 'testing' }
+MiQueriesBrowser >> hasSettings [
+
+	^ false
+]
+
 { #category : 'initialization' }
 MiQueriesBrowser >> initialize [ 
 	super initialize.

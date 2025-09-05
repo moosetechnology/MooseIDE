@@ -1,6 +1,6 @@
 Class {
-	#name : 'MiDSMMemento',
-	#superclass : 'MiMemento',
+	#name : 'MiDSMSettingsConfiguration',
+	#superclass : 'MiAbstractSettingsConfiguration',
 	#instVars : [
 		'shouldShowSelfDependencies'
 	],
@@ -10,7 +10,7 @@ Class {
 }
 
 { #category : 'ui' }
-MiDSMMemento >> settingsPresenters [
+MiDSMSettingsConfiguration >> settingsPresenters [
 
 	^ OrderedCollection with: ((MiBooleanSettingPresenter on: self)
 			   label: 'Show self dependencies';
@@ -23,13 +23,13 @@ MiDSMMemento >> settingsPresenters [
 ]
 
 { #category : 'accessing' }
-MiDSMMemento >> shouldShowSelfDependencies [
+MiDSMSettingsConfiguration >> shouldShowSelfDependencies [
 
 	^ shouldShowSelfDependencies
 ]
 
 { #category : 'accessing' }
-MiDSMMemento >> shouldShowSelfDependencies: anObject [
+MiDSMSettingsConfiguration >> shouldShowSelfDependencies: anObject [
 
 	shouldShowSelfDependencies := anObject
 ]

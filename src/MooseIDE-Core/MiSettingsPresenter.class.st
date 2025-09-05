@@ -13,7 +13,7 @@ Class {
 { #category : 'visiting' }
 MiSettingsPresenter >> acceptChanges [
 
-	browserModel updateFromMemento: memento
+	browserModel updateFromConfiguration: memento
 ]
 
 { #category : 'adding' }
@@ -56,7 +56,7 @@ MiSettingsPresenter >> initializePresenters [
 { #category : 'initialization' }
 MiSettingsPresenter >> resetToDefault [
 
-	memento := browserModel newMementoForDefaultValues.
+	memento := browserModel defaultConfiguration.
 	self initializePresenters
 ]
 
@@ -64,7 +64,7 @@ MiSettingsPresenter >> resetToDefault [
 MiSettingsPresenter >> setModelBeforeInitialization: aSpecModel [
 
 	browserModel := aSpecModel.
-	memento := aSpecModel newMemento
+	memento := aSpecModel currentConfiguration
 ]
 
 { #category : 'accessing' }

@@ -1,6 +1,6 @@
 Class {
-	#name : 'MiDuplicationMemento',
-	#superclass : 'MiMemento',
+	#name : 'MiDuplicationSettingsConfiguration',
+	#superclass : 'MiAbstractSettingsConfiguration',
 	#instVars : [
 		'maximumShownReplicas',
 		'sourcesCleaner',
@@ -14,67 +14,67 @@ Class {
 }
 
 { #category : 'accessing' }
-MiDuplicationMemento >> availableSourceCleaners [
+MiDuplicationSettingsConfiguration >> availableSourceCleaners [
 
 	^ availableSourceCleaners
 ]
 
 { #category : 'accessing' }
-MiDuplicationMemento >> availableSourceCleaners: aCollection [
+MiDuplicationSettingsConfiguration >> availableSourceCleaners: aCollection [
 
 	availableSourceCleaners := aCollection
 ]
 
 { #category : 'accessing' }
-MiDuplicationMemento >> maximumShownReplicas [
+MiDuplicationSettingsConfiguration >> maximumShownReplicas [
 
 	^ maximumShownReplicas
 ]
 
 { #category : 'accessing' }
-MiDuplicationMemento >> maximumShownReplicas: anObject [
+MiDuplicationSettingsConfiguration >> maximumShownReplicas: anObject [
 
 	maximumShownReplicas := anObject
 ]
 
 { #category : 'accessing' }
-MiDuplicationMemento >> minimumNumberOfCharacters [
+MiDuplicationSettingsConfiguration >> minimumNumberOfCharacters [
 
 	^ minimumNumberOfCharacters
 ]
 
 { #category : 'accessing' }
-MiDuplicationMemento >> minimumNumberOfCharacters: anObject [
+MiDuplicationSettingsConfiguration >> minimumNumberOfCharacters: anObject [
 
 	minimumNumberOfCharacters := anObject
 ]
 
 { #category : 'accessing' }
-MiDuplicationMemento >> minimumNumberOfLines [
+MiDuplicationSettingsConfiguration >> minimumNumberOfLines [
 
 	^ minimumNumberOfLines
 ]
 
 { #category : 'accessing' }
-MiDuplicationMemento >> minimumNumberOfLines: anObject [
+MiDuplicationSettingsConfiguration >> minimumNumberOfLines: anObject [
 
 	minimumNumberOfLines := anObject
 ]
 
 { #category : 'accessing' }
-MiDuplicationMemento >> minimumNumberOfReplicas [
+MiDuplicationSettingsConfiguration >> minimumNumberOfReplicas [
 
 	^ minimumNumberOfReplicas
 ]
 
 { #category : 'accessing' }
-MiDuplicationMemento >> minimumNumberOfReplicas: anObject [
+MiDuplicationSettingsConfiguration >> minimumNumberOfReplicas: anObject [
 
 	minimumNumberOfReplicas := anObject
 ]
 
 { #category : 'ui' }
-MiDuplicationMemento >> settingsPresenters [
+MiDuplicationSettingsConfiguration >> settingsPresenters [
 
 	^ OrderedCollection new
 		  add: ((MiNumberSettingPresenter on: self)
@@ -115,13 +115,13 @@ If a fragment is duplicated many times, the browser will only show that maximum 
 ]
 
 { #category : 'accessing' }
-MiDuplicationMemento >> sourcesCleaner [
+MiDuplicationSettingsConfiguration >> sourcesCleaner [
 
 	^ sourcesCleaner
 ]
 
 { #category : 'accessing' }
-MiDuplicationMemento >> sourcesCleaner: anObject [
+MiDuplicationSettingsConfiguration >> sourcesCleaner: anObject [
 
 	sourcesCleaner := anObject
 ]

@@ -6,8 +6,6 @@ Responsible for actually generating the report
 Class {
 	#name : 'MiModelReportModel',
 	#superclass : 'MiAbstractModel',
-	#traits : 'MiTSpecModelWithSettings',
-	#classTraits : 'MiTSpecModelWithSettings classTrait',
 	#instVars : [
 		'mooseModel',
 		'settings',
@@ -27,6 +25,19 @@ Class {
 MiModelReportModel class >> defaultComplexMethodThreshold [
 
 	^ 50
+]
+
+{ #category : 'accessing' }
+MiModelReportModel class >> defaultConfiguration [
+
+	^ MiModelReportMemento new
+		  largeClassThreshold: self defaultLargeClassThreshold;
+		  longClassThreshold: self defaultLongClassThreshold;
+		  dataClassThreshold: self defaultDataClassThreshold;
+		  longMethodThreshold: self defaultLongMethodThreshold;
+		  complexMethodThreshold: self defaultComplexMethodThreshold;
+		  excessiveAPIThreshold: self defaultExcessiveAPIThreshold;
+		  yourself
 ]
 
 { #category : 'as yet unclassified' }
@@ -59,19 +70,6 @@ MiModelReportModel class >> defaultLongMethodThreshold [
 	^ 100
 ]
 
-{ #category : 'accessing' }
-MiModelReportModel class >> newMementoForDefaultValues [
-
-	^ MiModelReportMemento new
-		  largeClassThreshold: self defaultLargeClassThreshold;
-		  longClassThreshold: self defaultLongClassThreshold;
-		  dataClassThreshold: self defaultDataClassThreshold;
-		  longMethodThreshold: self defaultLongMethodThreshold;
-		  complexMethodThreshold: self defaultComplexMethodThreshold;
-		  excessiveAPIThreshold: self defaultExcessiveAPIThreshold;
-		  yourself
-]
-
 { #category : 'microdown' }
 MiModelReportModel >> bulletList: aCollection [
 
@@ -89,6 +87,25 @@ MiModelReportModel >> classMembersStats: columns [
 
 	self stats: columns compute: [ :c | c numberOfAttributes ] description: 'FIELDS'.
 	self stats: columns compute: [ :c | c numberOfMethods ]    description: 'METHODS'
+]
+
+{ #category : 'settings management' }
+MiModelReportModel >> currentConfiguration [
+
+	^ MiModelReportMemento new
+		  largeClassThreshold: largeClassThreshold;
+		  longClassThreshold: longClassThreshold;
+		  dataClassThreshold: dataClassThreshold;
+		  longMethodThreshold: longMethodThreshold;
+		  complexMethodThreshold: complexMethodThreshold;
+		  excessiveAPIThreshold: excessiveAPIThreshold;
+		  yourself
+]
+
+{ #category : 'accessing' }
+MiModelReportModel >> defaultConfiguration [
+
+	^ self class defaultConfiguration
 ]
 
 { #category : 'document' }
@@ -153,6 +170,12 @@ MiModelReportModel >> fullyQualifiedName: anEntity [
 
 ]
 
+{ #category : 'testing' }
+MiModelReportModel >> hasSettings [
+
+	^ true
+]
+
 { #category : 'microdown' }
 MiModelReportModel >> headerBlock: level header: aString [
 
@@ -195,25 +218,6 @@ MiModelReportModel >> methodMembersStats: columns [
 MiModelReportModel >> miSelectedItem [
 
 	^#()
-]
-
-{ #category : 'settings management' }
-MiModelReportModel >> newMemento [
-
-	^ MiModelReportMemento new
-		  largeClassThreshold: largeClassThreshold;
-		  longClassThreshold: longClassThreshold;
-		  dataClassThreshold: dataClassThreshold;
-		  longMethodThreshold: longMethodThreshold;
-		  complexMethodThreshold: complexMethodThreshold;
-		  excessiveAPIThreshold: excessiveAPIThreshold;
-		  yourself
-]
-
-{ #category : 'accessing' }
-MiModelReportModel >> newMementoForDefaultValues [
-
-	^ self class newMementoForDefaultValues
 ]
 
 { #category : 'private - formatting' }
@@ -472,15 +476,15 @@ MiModelReportModel >> title: aString [
 ]
 
 { #category : 'settings management' }
-MiModelReportModel >> updateFromMemento: aMemento [
+MiModelReportModel >> updateFromConfiguration: aConfiguration [
 
-	largeClassThreshold := aMemento largeClassThreshold.
-	longClassThreshold := aMemento longClassThreshold.
-	dataClassThreshold := aMemento dataClassThreshold.
+	largeClassThreshold := aConfiguration largeClassThreshold.
+	longClassThreshold := aConfiguration longClassThreshold.
+	dataClassThreshold := aConfiguration dataClassThreshold.
 
-	longMethodThreshold := aMemento longMethodThreshold.
-	complexMethodThreshold := aMemento complexMethodThreshold.
-	excessiveAPIThreshold := aMemento excessiveAPIThreshold.
+	longMethodThreshold := aConfiguration longMethodThreshold.
+	complexMethodThreshold := aConfiguration complexMethodThreshold.
+	excessiveAPIThreshold := aConfiguration excessiveAPIThreshold.
 
 	mooseModel ifNil: [ ^ self ].
 	self updateReport

@@ -27,8 +27,6 @@ Internal Representation and Key Implementation Points.
 Class {
 	#name : 'MiModelsBrowserModel',
 	#superclass : 'MiAbstractModel',
-	#traits : 'MiTSpecModelWithSettings',
-	#classTraits : 'MiTSpecModelWithSettings classTrait',
 	#instVars : [
 		'mooseModelsList',
 		'selected',
@@ -40,6 +38,16 @@ Class {
 	#package : 'MooseIDE-Meta',
 	#tag : 'ModelsBrowser'
 }
+
+{ #category : 'settings management' }
+MiModelsBrowserModel class >> defaultConfiguration [
+
+	^ MiModelsSettingsMemento new
+		  shouldCreateCache: self defaultShouldCreateCache;
+		  filterStubs: self defaultFilterStubs;
+		  modelImportIsAutomatic: self defaultModelImportIsAutomatic;
+		  yourself
+]
 
 { #category : 'settings management' }
 MiModelsBrowserModel class >> defaultFilterStubs [
@@ -59,16 +67,6 @@ MiModelsBrowserModel class >> defaultShouldCreateCache [
 	^ false
 ]
 
-{ #category : 'settings management' }
-MiModelsBrowserModel class >> newMementoForDefaultValues [
-
-	^ MiModelsSettingsMemento new
-		  shouldCreateCache: self defaultShouldCreateCache;
-		  filterStubs: self defaultFilterStubs;
-		  modelImportIsAutomatic: self defaultModelImportIsAutomatic;
-		  yourself
-]
-
 { #category : 'updating' }
 MiModelsBrowserModel >> allModelRootBrowser [
 
@@ -81,10 +79,26 @@ MiModelsBrowserModel >> availableMooseModels [
 	^ MooseModel root entities
 ]
 
+{ #category : 'settings management' }
+MiModelsBrowserModel >> currentConfiguration [
+
+	^ MiModelsSettingsMemento new
+		  shouldCreateCache: shouldCreateCache;
+		  filterStubs: shouldFilterStubs;
+		  modelImportIsAutomatic: modelImportIsAutomatic;
+		  yourself
+]
+
 { #category : 'accessing' }
 MiModelsBrowserModel >> currentMooseModel [
 
 	^ self selected
+]
+
+{ #category : 'settings management' }
+MiModelsBrowserModel >> defaultConfiguration [
+
+	^ self class defaultConfiguration
 ]
 
 { #category : 'accessing - tests' }
@@ -97,6 +111,12 @@ MiModelsBrowserModel >> entities [
 MiModelsBrowserModel >> entities: aList [
 
 	mooseModelsList := aList
+]
+
+{ #category : 'testing' }
+MiModelsBrowserModel >> hasSettings [
+
+	^ true
 ]
 
 { #category : 'initialization' }
@@ -118,22 +138,6 @@ MiModelsBrowserModel >> initializeSettings [
 MiModelsBrowserModel >> modelImportIsAutomatic [
 
 	^ modelImportIsAutomatic
-]
-
-{ #category : 'settings management' }
-MiModelsBrowserModel >> newMemento [
-
-	^ MiModelsSettingsMemento new
-		  shouldCreateCache: shouldCreateCache;
-		  filterStubs: shouldFilterStubs;
-		  modelImportIsAutomatic: modelImportIsAutomatic;
-		  yourself
-]
-
-{ #category : 'settings management' }
-MiModelsBrowserModel >> newMementoForDefaultValues [
-
-	^ self class newMementoForDefaultValues
 ]
 
 { #category : 'accessing' }
@@ -180,11 +184,11 @@ MiModelsBrowserModel >> updateForNewModel: aMooseModel [
 ]
 
 { #category : 'settings management' }
-MiModelsBrowserModel >> updateFromMemento: aMemento [
+MiModelsBrowserModel >> updateFromConfiguration: aConfiguration [
 
-	shouldCreateCache := aMemento shouldCreateCache.
-	shouldFilterStubs := aMemento filterStubs.
-	modelImportIsAutomatic := aMemento modelImportIsAutomatic
+	shouldCreateCache := aConfiguration shouldCreateCache.
+	shouldFilterStubs := aConfiguration filterStubs.
+	modelImportIsAutomatic := aConfiguration modelImportIsAutomatic
 ]
 
 { #category : 'updating' }

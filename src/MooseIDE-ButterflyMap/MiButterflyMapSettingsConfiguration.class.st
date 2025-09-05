@@ -1,6 +1,6 @@
 Class {
-	#name : 'MiButterflyMapSettingsMemento',
-	#superclass : 'MiMemento',
+	#name : 'MiButterflyMapSettingsConfiguration',
+	#superclass : 'MiAbstractSettingsConfiguration',
 	#instVars : [
 		'childrenQuery',
 		'clientsQuery',
@@ -12,43 +12,43 @@ Class {
 }
 
 { #category : 'accessing' }
-MiButterflyMapSettingsMemento >> childrenQuery [
+MiButterflyMapSettingsConfiguration >> childrenQuery [
 
 	^ childrenQuery
 ]
 
 { #category : 'accessing' }
-MiButterflyMapSettingsMemento >> childrenQuery: aQuery [
+MiButterflyMapSettingsConfiguration >> childrenQuery: aQuery [
 
 	childrenQuery := aQuery
 ]
 
 { #category : 'accessing' }
-MiButterflyMapSettingsMemento >> clientsQuery [
+MiButterflyMapSettingsConfiguration >> clientsQuery [
 
 	^ clientsQuery
 ]
 
 { #category : 'accessing' }
-MiButterflyMapSettingsMemento >> clientsQuery: aQuery [
+MiButterflyMapSettingsConfiguration >> clientsQuery: aQuery [
 
 	clientsQuery := aQuery
 ]
 
 { #category : 'accessing' }
-MiButterflyMapSettingsMemento >> providersQuery [
+MiButterflyMapSettingsConfiguration >> providersQuery [
 
 	^ providersQuery
 ]
 
 { #category : 'accessing' }
-MiButterflyMapSettingsMemento >> providersQuery: aQuery [
+MiButterflyMapSettingsConfiguration >> providersQuery: aQuery [
 
 	providersQuery := aQuery
 ]
 
 { #category : 'ui' }
-MiButterflyMapSettingsMemento >> settingsPresenters [
+MiButterflyMapSettingsConfiguration >> settingsPresenters [
 
 	^ super settingsPresenters
 		  add: ((MiQuerySettingPresenter on: self)
