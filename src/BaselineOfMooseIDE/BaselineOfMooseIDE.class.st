@@ -223,11 +223,10 @@ BaselineOfMooseIDE >> pharoAIHierachicalClustering: spec [
 { #category : 'actions' }
 BaselineOfMooseIDE >> registerCustomTools [
 
-	self registerShortcuts.
+	self registerShortcuts. "MiPlayground could be absent if we load only a group"
+	(Smalltalk classNamed: #MiPlaygroundBrowser) ifNotNil: [ :miPlayground | miPlayground register ].
 
-	"MiPlayground could be absent if we load only a group"
-	(Smalltalk classNamed: #MiPlaygroundBrowser) ifNotNil: [
-		:miPlayground | miPlayground register ]
+	Smalltalk at: #MooseIDEWelcomeBrowser ifPresent: [ :mooseWelcome | mooseWelcome register ]
 ]
 
 { #category : 'actions' }
