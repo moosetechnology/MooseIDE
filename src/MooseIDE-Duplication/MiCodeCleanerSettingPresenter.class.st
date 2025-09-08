@@ -22,7 +22,7 @@ MiCodeCleanerSettingPresenter class >> label [
 { #category : 'event handling' }
 MiCodeCleanerSettingPresenter >> activate: aCodeCleaner [
 
-	memento sourcesCleaner: aCodeCleaner
+	configuration sourcesCleaner: aCodeCleaner
 ]
 
 { #category : 'layout' }
@@ -40,13 +40,13 @@ MiCodeCleanerSettingPresenter >> helpForItem: aCodeCleaner [
 { #category : 'testing' }
 MiCodeCleanerSettingPresenter >> isCurrentValue: aCodeCleanerClass [
 
-	^ aCodeCleanerClass class = memento sourcesCleaner class
+	^ aCodeCleanerClass class = configuration sourcesCleaner class
 ]
 
 { #category : 'accessing' }
 MiCodeCleanerSettingPresenter >> items [
 
-	^ memento availableSourceCleaners
+	^ configuration availableSourceCleaners
 ]
 
 { #category : 'building' }

@@ -2,9 +2,9 @@ Class {
 	#name : 'MiAbstractSettingPresenter',
 	#superclass : 'MiPresenter',
 	#instVars : [
-		'memento',
 		'label',
-		'help'
+		'help',
+		'configuration'
 	],
 	#category : 'MooseIDE-Core-Settings',
 	#package : 'MooseIDE-Core',
@@ -58,5 +58,5 @@ MiAbstractSettingPresenter >> labelPresenter [
 { #category : 'accessing - model' }
 MiAbstractSettingPresenter >> setModelBeforeInitialization: aMemento [
 
-	memento := aMemento
+	configuration := aMemento
 ]

@@ -33,8 +33,8 @@ MiColorGradientSelectionPresenter >> buildGradientOn: aCanvas [
 		color: Color transparent.
 
 	paint := LinearGradientPaint fromArray: {
-			         (0 -> memento startColor).
-			         (1 -> memento endColor) }.
+			         (0 -> configuration startColor).
+			         (1 -> configuration endColor) }.
 	paint
 		start: -50 @ 0;
 		stop: 50 @ 0.
@@ -63,24 +63,24 @@ MiColorGradientSelectionPresenter >> defaultLayout [
 MiColorGradientSelectionPresenter >> initializePresenters [
 
 	originButton := self newButton
-		                color: memento startColor;
+		                color: configuration startColor;
 		                whenActivatedDo: [
 				                self
 					                openNewColorPickerFrom: originButton
-					                on: memento startColor
+					                on: configuration startColor
 					                action: [ :newColor |
-						                memento startColor: newColor ] ].
+						                configuration startColor: newColor ] ].
 
 	gradient := self newRoassal script: [ :canvas |
 		            self buildGradientOn: canvas ].
 
 	endButton := self newButton
-		             color: memento endColor;
+		             color: configuration endColor;
 		             whenActivatedDo: [
 				             self
 					             openNewColorPickerFrom: endButton
-					             on: memento endColor
-					             action: [ :newColor | memento endColor: newColor ] ]
+					             on: configuration endColor
+					             action: [ :newColor | configuration endColor: newColor ] ]
 ]
 
 { #category : 'as yet unclassified' }

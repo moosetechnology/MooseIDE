@@ -21,7 +21,7 @@ MiLayoutSettingPresenter class >> label [
 { #category : 'event handling' }
 MiLayoutSettingPresenter >> activate: aLayout [
 
-	memento layout: aLayout
+	configuration layout: aLayout
 ]
 
 { #category : 'adding' }
@@ -39,13 +39,13 @@ MiLayoutSettingPresenter >> helpForItem: aLayout [
 { #category : 'testing' }
 MiLayoutSettingPresenter >> isCurrentValue: aLayout [
 
-	^ aLayout = memento layout
+	^ aLayout = configuration layout
 ]
 
 { #category : 'accessing' }
 MiLayoutSettingPresenter >> items [
 
-	^ memento availableLayouts
+	^ configuration availableLayouts
 ]
 
 { #category : 'building' }

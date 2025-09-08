@@ -23,7 +23,7 @@ MiDisplayedNameSettingPresenter class >> label [
 { #category : 'event handling' }
 MiDisplayedNameSettingPresenter >> activate: aSymbol [
 
-	memento displayedName: aSymbol
+	configuration displayedName: aSymbol
 ]
 
 { #category : 'adding' }
@@ -44,7 +44,7 @@ MiDisplayedNameSettingPresenter >> helpForItem: aSymbol [
 { #category : 'testing' }
 MiDisplayedNameSettingPresenter >> isCurrentValue: aSymbol [
 
-	^ aSymbol = memento displayedName
+	^ aSymbol = configuration displayedName
 ]
 
 { #category : 'accessing' }

@@ -48,9 +48,9 @@ MiMegamorphicInvocationsSettingPresenter >> initializePresenters [
 	super initializePresenters.
 	checkbox := self newCheckBox
 		            help: self help;
-		            state: memento hideMegamorphicInvocations;
+		            state: configuration hideMegamorphicInvocations;
 		            whenChangedDo: [ :state |
-				            memento hideMegamorphicInvocations: state.
+				            configuration hideMegamorphicInvocations: state.
 				            tresholdLabel visible: state.
 				            tresholdField visible: state.
 				            invocationsLabel visible: state.
@@ -58,21 +58,21 @@ MiMegamorphicInvocationsSettingPresenter >> initializePresenters [
 
 	tresholdLabel := 'Treshold:' asPresenter
 		                 help: 'Number of candidates to be megamorphic';
-		                 visible: memento hideMegamorphicInvocations;
+		                 visible: configuration hideMegamorphicInvocations;
 		                 yourself.
 
 	tresholdField := self newNumberInput
 		                 help: 'Number of candidates to be megamorphic';
 		                 minimum: 1;
-		                 number: memento megamorphicTreshold;
+		                 number: configuration megamorphicTreshold;
 		                 whenNumberChangedDo: [ :number |
-			                 memento megamorphicTreshold: number ];
-		                 visible: memento hideMegamorphicInvocations;
+			                 configuration megamorphicTreshold: number ];
+		                 visible: configuration hideMegamorphicInvocations;
 		                 yourself.
 
 	invocationsLabel := self newLabel
 		                    label: 'Invocations';
-		                    visible: memento hideMegamorphicInvocations;
+		                    visible: configuration hideMegamorphicInvocations;
 		                    yourself
 ]
 

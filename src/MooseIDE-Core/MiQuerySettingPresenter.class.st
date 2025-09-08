@@ -20,8 +20,8 @@ MiQuerySettingPresenter >> beForChildren [
 		items: (droplist items
 				 addFirst: self application defaultChildrenQuery;
 				 yourself);
-		selectItem: memento childrenQuery;
-		whenSelectedItemChangedDo: [ :query | memento childrenQuery: query ]
+		selectItem: configuration childrenQuery;
+		whenSelectedItemChangedDo: [ :query | configuration childrenQuery: query ]
 ]
 
 { #category : 'as yet unclassified' }
@@ -35,8 +35,8 @@ MiQuerySettingPresenter >> beForClients [
 		items: (droplist items
 				 addFirst: self application defaultClientsQuery;
 				 yourself);
-		selectItem: memento clientsQuery;
-		whenSelectedItemChangedDo: [ :query | memento clientsQuery: query ]
+		selectItem: configuration clientsQuery;
+		whenSelectedItemChangedDo: [ :query | configuration clientsQuery: query ]
 ]
 
 { #category : 'as yet unclassified' }
@@ -50,8 +50,8 @@ MiQuerySettingPresenter >> beForProviders [
 		items: (droplist items
 				 addFirst: self application defaultProvidersQuery;
 				 yourself);
-		selectItem: memento providersQuery;
-		whenSelectedItemChangedDo: [ :query | memento providersQuery: query ]
+		selectItem: configuration providersQuery;
+		whenSelectedItemChangedDo: [ :query | configuration providersQuery: query ]
 ]
 
 { #category : 'layout' }

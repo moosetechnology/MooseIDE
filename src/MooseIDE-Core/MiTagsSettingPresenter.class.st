@@ -22,7 +22,7 @@ MiTagsSettingPresenter class >> label [
 { #category : 'initialization' }
 MiTagsSettingPresenter >> allItems [
 
-	^ memento availableTags
+	^ configuration availableTags
 ]
 
 { #category : 'initialization' }
@@ -41,29 +41,29 @@ MiTagsSettingPresenter >> iconColumn [
 { #category : 'initialization' }
 MiTagsSettingPresenter >> selectAll [
 
-	memento tags: memento availableTags
+	configuration tags: configuration availableTags
 ]
 
 { #category : 'api - selection' }
 MiTagsSettingPresenter >> selectItem: aTag [
 
-	memento tags add: aTag
+	configuration tags add: aTag
 ]
 
 { #category : 'initialization' }
 MiTagsSettingPresenter >> selectNone [
 
-	memento tags: OrderedCollection new
+	configuration tags: OrderedCollection new
 ]
 
 { #category : 'initialization' }
 MiTagsSettingPresenter >> selectedItems [
 
-	^ memento tags
+	^ configuration tags
 ]
 
 { #category : 'api - selection' }
 MiTagsSettingPresenter >> unselectItem: aTag [
 
-	memento tags remove: aTag
+	configuration tags remove: aTag
 ]

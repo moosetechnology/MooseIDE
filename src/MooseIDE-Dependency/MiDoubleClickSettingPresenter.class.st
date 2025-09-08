@@ -21,7 +21,7 @@ MiDoubleClickSettingPresenter class >> label [
 { #category : 'event handling' }
 MiDoubleClickSettingPresenter >> activate: aCommand [
 
-	memento doubleClickAction: aCommand
+	configuration doubleClickAction: aCommand
 ]
 
 { #category : 'adding' }
@@ -47,13 +47,13 @@ MiDoubleClickSettingPresenter >> helpForItem: aCommand [
 { #category : 'testing' }
 MiDoubleClickSettingPresenter >> isCurrentValue: aCommand [
 
-	^ aCommand class = memento doubleClickAction class
+	^ aCommand class = configuration doubleClickAction class
 ]
 
 { #category : 'accessing' }
 MiDoubleClickSettingPresenter >> items [
 
-	^ memento availableDoubleClickActions
+	^ configuration availableDoubleClickActions
 ]
 
 { #category : 'building' }

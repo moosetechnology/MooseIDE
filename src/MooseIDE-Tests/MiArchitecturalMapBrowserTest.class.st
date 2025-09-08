@@ -77,18 +77,6 @@ MiArchitecturalMapBrowserTest >> testSettingsAvailableLayouts [
 ]
 
 { #category : 'tests' }
-MiArchitecturalMapBrowserTest >> testSettingsClickOK [
-	"overriding to setup the right context"
-
-	browser specModel entities: #(  ).
-	self
-		shouldnt: [
-				browser openSettings.
-				browser specModel settings buttonOk click ]
-		raise: Error
-]
-
-{ #category : 'tests' }
 MiArchitecturalMapBrowserTest >> testSettingsDefaultLayout [
 
 	self assert: browser specModel layout equals: RSFlowLayout

@@ -21,35 +21,35 @@ MiAssociationTypesSettingPresenter class >> label [
 { #category : 'api - selection' }
 MiAssociationTypesSettingPresenter >> allItems [
 
-	^ memento availableAssociationTypes
+	^ configuration availableAssociationTypes
 ]
 
 { #category : 'api - selection' }
 MiAssociationTypesSettingPresenter >> selectAll [
 
-	memento associationTypes: memento availableAssociationTypes
+	configuration associationTypes: configuration availableAssociationTypes
 ]
 
 { #category : 'api - selection' }
 MiAssociationTypesSettingPresenter >> selectItem: anAssociationType [
 
-	memento associationTypes add: anAssociationType
+	configuration associationTypes add: anAssociationType
 ]
 
 { #category : 'api - selection' }
 MiAssociationTypesSettingPresenter >> selectNone [
 
-	memento associationTypes: OrderedCollection new
+	configuration associationTypes: OrderedCollection new
 ]
 
 { #category : 'api - selection' }
 MiAssociationTypesSettingPresenter >> selectedItems [
 
-	^ memento associationTypes
+	^ configuration associationTypes
 ]
 
 { #category : 'api - selection' }
 MiAssociationTypesSettingPresenter >> unselectItem: anAssociationType [
 
-	memento associationTypes remove: anAssociationType
+	configuration associationTypes remove: anAssociationType
 ]

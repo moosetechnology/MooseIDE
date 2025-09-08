@@ -3,7 +3,7 @@ Class {
 	#superclass : 'MiPresenter',
 	#instVars : [
 		'browserModel',
-		'memento'
+		'configuration'
 	],
 	#category : 'MooseIDE-Core-Settings',
 	#package : 'MooseIDE-Core',
@@ -13,7 +13,7 @@ Class {
 { #category : 'visiting' }
 MiSettingsPresenter >> acceptChanges [
 
-	browserModel updateFromConfiguration: memento
+	browserModel updateFromConfiguration: configuration
 ]
 
 { #category : 'adding' }
@@ -49,14 +49,14 @@ MiSettingsPresenter >> initializeDialogWindow: aSpDialogWindowPresenter [
 MiSettingsPresenter >> initializePresenters [
 
 	self layout build: [ :builder |
-			memento settingsPresenters do: [ :presenterClass |
+			configuration settingsPresenters do: [ :presenterClass |
 				self addPresenter: presenterClass inBuilder: builder ] ]
 ]
 
 { #category : 'initialization' }
 MiSettingsPresenter >> resetToDefault [
 
-	memento := browserModel defaultConfiguration.
+	configuration := browserModel defaultConfiguration.
 	self initializePresenters
 ]
 
@@ -64,7 +64,7 @@ MiSettingsPresenter >> resetToDefault [
 MiSettingsPresenter >> setModelBeforeInitialization: aSpecModel [
 
 	browserModel := aSpecModel.
-	memento := aSpecModel currentConfiguration
+	configuration := aSpecModel currentConfiguration
 ]
 
 { #category : 'accessing' }

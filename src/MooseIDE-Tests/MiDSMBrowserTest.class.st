@@ -112,10 +112,11 @@ MiDSMBrowserTest >> testDoesNotOpenEmptyDetailedDSM [
 { #category : 'tests' }
 MiDSMBrowserTest >> testDontShowSelfDependenciesHideDiagonalWeight [
 
-	| tuple |
-	browser specModel settings
-		setItem: #selfDependenciesSetting
-		value: false.
+	| tuple configuration |
+	configuration := browser specModel currentConfiguration.
+	configuration shouldShowSelfDependencies: false.
+	browser specModel updateFromConfiguration: configuration.
+
 	tuple := (AITarjanNode with: #entityA)
 	         -> (AITarjanNode with: #entityA).
 	browser specModel dependencies
@@ -131,10 +132,11 @@ MiDSMBrowserTest >> testDontShowSelfDependenciesHideDiagonalWeight [
 { #category : 'tests' }
 MiDSMBrowserTest >> testDontShowSelfDependenciesShowNonDiagonalWeight [
 
-	| tuple |
-	browser specModel settings
-		setItem: #selfDependenciesSetting
-		value: false.
+	| tuple configuration |
+	configuration := browser specModel currentConfiguration.
+	configuration shouldShowSelfDependencies: false.
+	browser specModel updateFromConfiguration: configuration.
+
 	tuple := (AITarjanNode with: #entityA)
 	         -> (AITarjanNode with: #entityB).
 	browser specModel dependencies
@@ -278,42 +280,16 @@ MiDSMBrowserTest >> testSettingsAction [
 ]
 
 { #category : 'tests' }
-MiDSMBrowserTest >> testSettingsChanged [
-
-	| stubDSM redrawn |
-	redrawn := false.
-	stubDSM := Mock new.
-	stubDSM stub run will: [ redrawn := true ].
-	browser mainPresenter: stubDSM.
-
-	browser specModel updateFromConfiguration: MiDSMMemento new.
-
-	self assert: redrawn
-]
-
-{ #category : 'tests' }
-MiDSMBrowserTest >> testSettingsNotChanged [
-
-	| stubDSM redrawn |
-	redrawn := false.
-	stubDSM := Mock new.
-	stubDSM stub run will: [ redrawn := true ].
-	browser mainPresenter: stubDSM.
-
-	browser specModel settingsChanged: false.
-
-	self deny: redrawn
-]
-
-{ #category : 'tests' }
 MiDSMBrowserTest >> testShowSelfDependenciesDoNotHideDiagonalWeight [
 
-	| tuple |
-	browser specModel settings
-		setItem: #selfDependenciesSetting
-		value: true.
+	| tuple configuration |
+	configuration := browser specModel currentConfiguration.
+	configuration shouldShowSelfDependencies: true.
+	browser specModel updateFromConfiguration: configuration.
+
 	tuple := (AITarjanNode with: #entityA)
 	         -> (AITarjanNode with: #entityA).
+
 	browser specModel dependencies
 		recordDependencies: #( 1 2 3 )
 		from: #entityA

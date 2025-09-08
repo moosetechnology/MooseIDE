@@ -10,7 +10,6 @@ Class {
 		'orderedNodesX',
 		'orderedNodesY',
 		'selectedEntities',
-		'settings',
 		'dependencies',
 		'shouldShowSelfDependencies'
 	],
@@ -22,7 +21,7 @@ Class {
 { #category : 'settings management' }
 MiDSMBrowserModel class >> defaultConfiguration [
 
-	^ MiDSMMemento new
+	^ MiDSMSettingsConfiguration new
 		  shouldShowSelfDependencies: self defaultShouldShowSelfDependencies;
 		  yourself
 ]
@@ -65,7 +64,7 @@ MiDSMBrowserModel >> computeMatrixWithX: entitiesX withY: entitiesY [
 { #category : 'settings management' }
 MiDSMBrowserModel >> currentConfiguration [
 
-	^ MiDSMMemento new
+	^ MiDSMSettingsConfiguration new
 		  shouldShowSelfDependencies: shouldShowSelfDependencies;
 		  yourself
 ]
