@@ -23,13 +23,11 @@ MooseObject >> miMetaNavigationItems [
 
 	^ self mooseDescription allComplexProperties
 		  collect: [ :property |
-			  | value |
-			  value := self propertyNamed: property name ifAbsent: [ nil ].
-			  value isCollection ifTrue: [ value := value asMooseGroup ].
-			  property name -> value ]
-		  thenReject: [ :assoc |
-			  assoc value isNil or: [
-				  assoc value isCollection and: [ assoc value isEmpty ] ] ]
+				  | value |
+				  value := self valueOfFameProperty: property.
+				  value isCollection ifTrue: [ value := value asMooseGroup ].
+				  property name -> value ]
+		  thenReject: [ :assoc | assoc value isNil or: [ assoc value isCollection and: [ assoc value isEmpty ] ] ]
 ]
 
 { #category : '*MooseIDE-NewTools' }
