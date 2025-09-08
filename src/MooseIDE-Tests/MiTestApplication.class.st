@@ -4,8 +4,8 @@ An application for Moose IDE tests
 Class {
 	#name : 'MiTestApplication',
 	#superclass : 'MiApplication',
-	#category : 'MooseIDE-Core-Application',
-	#package : 'MooseIDE-Core',
+	#category : 'MooseIDE-Tests-Application',
+	#package : 'MooseIDE-Tests',
 	#tag : 'Application'
 }
 
