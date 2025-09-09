@@ -105,7 +105,8 @@ MiDuplicationBrowserTest >> testFollowEntity [
 			(self method: 'method1').
 			(self method: 'method2') }.
 
-	self assert: browser specModel entities size equals: 2
+	self assert: browser specModel entities size equals: 2.
+	self assert: browser lstEntities items first name equals: 'method1'
 ]
 
 { #category : 'tests' }
@@ -176,12 +177,12 @@ MiDuplicationBrowserTest >> testShowEntities [
 
 	self assertEmpty: browser lstEntities items.
 
-	browser showEntities: { 
+	browser stub.
+	browser followEntity: {
 			(self method: 'method1').
 			(self method: 'method2') }.
 
-	self assert: browser lstEntities items size equals: 2.
-	self assert: browser lstEntities items first name equals: 'method1'
+	browser should receive showEntities
 ]
 
 { #category : 'tests' }

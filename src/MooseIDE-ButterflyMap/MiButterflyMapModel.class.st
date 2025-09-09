@@ -21,7 +21,7 @@ MiButterflyMapModel >> childrenFor: anEntity [
 { #category : 'settings management' }
 MiButterflyMapModel >> currentConfiguration [
 
-	^ MiButterflyMapSettingsMemento new
+	^ MiButterflyMapSettingsConfiguration new
 		  childrenQuery: childrenQuery;
 		  clientsQuery: clientsQuery;
 		  providersQuery: providersQuery;
@@ -44,8 +44,8 @@ MiButterflyMapModel >> currentEntity: anObject [
 { #category : 'settings management' }
 MiButterflyMapModel >> defaultConfiguration [
 
-	^ MiButterflyMapSettingsMemento new
-		  childrenQuery: self currentApplication defaultChildrenQuery;
+	^ MiButterflyMapSettingsConfiguration new
+		  childrenQuery: self defaultChildrenQuery;
 		  clientsQuery: self currentApplication defaultClientsQuery;
 		  providersQuery: self currentApplication defaultProvidersQuery;
 		  yourself
@@ -68,7 +68,7 @@ MiButterflyMapModel >> hasSettings [
 { #category : 'initialization' }
 MiButterflyMapModel >> initializeSettings [
 
-	childrenQuery := self currentApplication defaultChildrenQuery.
+	childrenQuery := self defaultChildrenQuery.
 	clientsQuery := self currentApplication defaultClientsQuery.
 	providersQuery := self currentApplication defaultProvidersQuery
 ]

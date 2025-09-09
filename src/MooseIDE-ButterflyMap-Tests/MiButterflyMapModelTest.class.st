@@ -1,50 +1,58 @@
 Class {
-	#name : #MiButterflyMapModelTest,
-	#superclass : #TestCase,
+	#name : 'MiButterflyMapModelTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'model'
 	],
-	#category : #'MooseIDE-ButterflyMap-Tests-Model'
+	#category : 'MooseIDE-ButterflyMap-Tests-Model',
+	#package : 'MooseIDE-ButterflyMap-Tests',
+	#tag : 'Model'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 MiButterflyMapModelTest >> setUp [
-	super setUp.
-	model := MiButterflyMapModel new browser: Mock new.
-	model currentEntity: Mock new.
 
+	| browser |
+	super setUp.
+
+	browser := Mock new.
+	browser stub application willReturn: MiTestApplication current.
+
+	model := MiButterflyMapModel new
+		         browser: browser;
+		         yourself.
+
+	model currentEntity: Mock new
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiButterflyMapModelTest >> testChildrenFor [
 
 	| children |
 	children := model childrenFor: MooseEntity new.
 	self assert: children isMooseObject
-	
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiButterflyMapModelTest >> testDefaultChildrenQueryIsNotNil [
 
-	self assert: model defaultChildrenQuery isNotNil
-	.self assert: model defaultChildrenQuery isValid
-
+	self assert: model defaultChildrenQuery isNotNil.
+	self assert: model defaultChildrenQuery isValid
 ]
 
-{ #category : #running }
-MiButterflyMapModelTest >> testDefaultLeftEntitiesQueryIsNotNil [
+{ #category : 'running' }
+MiButterflyMapModelTest >> testDefaultClientsQuery [
 
-	self assert: model defaultLeftEntitiesQuery isNotNil
+	self assert: (model instVarNamed: #clientsQuery) isNotNil
 ]
 
-{ #category : #running }
-MiButterflyMapModelTest >> testDefaultRightEntitiesQueryIsNotNil [
+{ #category : 'running' }
+MiButterflyMapModelTest >> testDefaultProvidersQuery [
 
-	self assert: model defaultRightEntitiesQuery isNotNil
+	self assert: (model instVarNamed: #providersQuery) isNotNil
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiButterflyMapModelTest >> testSetCurrentEntityShouldNotifyBrowser [
 
 	model currentEntity: Mock new.

@@ -48,6 +48,12 @@ MiAbstractModel >> currentMooseModel [
 	^ self entities anyOne mooseModel
 ]
 
+{ #category : 'accessing' }
+MiAbstractModel >> defaultChildrenQuery [
+
+	^ self currentApplication defaultChildrenQuery
+]
+
 { #category : 'settings management' }
 MiAbstractModel >> defaultConfiguration [
 	"Override to configure with default settings values"

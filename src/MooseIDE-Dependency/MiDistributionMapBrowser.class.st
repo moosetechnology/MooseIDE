@@ -93,7 +93,7 @@ MiDistributionMapBrowser >> availableQueries [
 		  select: [ :q | q isValid ]
 ]
 
-{ #category : 'initialization' }
+{ #category : 'window control' }
 MiDistributionMapBrowser >> browserClosed [
 
 	super browserClosed.
@@ -145,14 +145,10 @@ MiDistributionMapBrowser >> canvas [
 MiDistributionMapBrowser >> followEntity: anEntity [
 
 	super followEntity: anEntity.
-	specModel entities: anEntity asMooseGroup.
+	specModel
+		entities: anEntity asMooseGroup;
+		initializeSettings.
 	self runVisualization
-]
-
-{ #category : 'testing' }
-MiDistributionMapBrowser >> hasSettings [
-
-	^ true
 ]
 
 { #category : 'initialization' }

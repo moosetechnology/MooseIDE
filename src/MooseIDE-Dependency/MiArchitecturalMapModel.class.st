@@ -39,12 +39,6 @@ But some of them require specific configuration that we cannot easily specify he
 		  RSTreeLayout }
 ]
 
-{ #category : 'accessing' }
-MiArchitecturalMapModel class >> defaultChildrenQuery [
-
-	^ MiApplication current defaultChildrenQuery
-]
-
 { #category : 'as yet unclassified' }
 MiArchitecturalMapModel class >> defaultDynamicTagIsDead [
 
@@ -241,16 +235,10 @@ MiArchitecturalMapModel >> currentConfiguration [
 		  yourself
 ]
 
-{ #category : 'accessing' }
-MiArchitecturalMapModel >> defaultChildrenQuery [
-
-	^ self currentApplication defaultChildrenQuery
-]
-
 { #category : 'settings management' }
 MiArchitecturalMapModel >> defaultConfiguration [
 
-	^ MiArchitecturalMapMemento new
+	^ MiArchitecturalMapSettingsConfiguration new
 		  availableAssociationTypes: self availableAssociationTypes;
 		  associationTypes: self availableAssociationTypes;
 		  availableDoubleClickActions: self availableDoubleClickActions;

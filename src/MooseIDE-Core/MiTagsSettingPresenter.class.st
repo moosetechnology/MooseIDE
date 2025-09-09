@@ -7,19 +7,6 @@ Class {
 }
 
 { #category : 'initialization' }
-MiTagsSettingPresenter class >> help [
-
-	^ 'The selected tags will be represented as entities in the visualisation.
-Inner elements will be the tagged entities'
-]
-
-{ #category : 'specs' }
-MiTagsSettingPresenter class >> label [
-
-	^ 'Show these tags as entities:'
-]
-
-{ #category : 'initialization' }
 MiTagsSettingPresenter >> allItems [
 
 	^ configuration availableTags

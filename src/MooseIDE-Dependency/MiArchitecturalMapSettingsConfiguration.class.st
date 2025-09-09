@@ -163,7 +163,12 @@ MiArchitecturalMapSettingsConfiguration >> settingsPresenters [
 				   yourself);
 		  add: (MiAssociationTypesSettingPresenter on: self);
 		  add: (MiMegamorphicInvocationsSettingPresenter on: self);
-		  add: (MiTagsSettingPresenter on: self);
+		  add: ((MiTagsSettingPresenter on: self)
+				   label: 'Show these tags as entities:';
+				   help:
+					   'The selected tags will be represented as entities in the visualisation.
+Inner elements will be the tagged entities';
+				   yourself);
 		  add: ((MiBooleanSettingPresenter on: self)
 				   label: 'Hide received entities';
 				   help:
