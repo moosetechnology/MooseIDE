@@ -82,7 +82,7 @@ MiModelsBrowserModel >> availableMooseModels [
 { #category : 'settings management' }
 MiModelsBrowserModel >> currentConfiguration [
 
-	^ MiModelsSettingsMemento new
+	^ MiModelsSettingsConfiguration new
 		  shouldCreateCache: shouldCreateCache;
 		  filterStubs: shouldFilterStubs;
 		  modelImportIsAutomatic: modelImportIsAutomatic;

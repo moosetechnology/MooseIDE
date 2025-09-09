@@ -2,7 +2,8 @@ Class {
 	#name : 'MiAbstractApplicationTest',
 	#superclass : 'TestCase',
 	#instVars : [
-		'application'
+		'application',
+		'previousApplication'
 	],
 	#category : 'MooseIDE-Tests-Application',
 	#package : 'MooseIDE-Tests',
@@ -18,14 +19,17 @@ MiAbstractApplicationTest >> application [
 { #category : 'running' }
 MiAbstractApplicationTest >> setUp [
 
-	  super setUp.
-	  application := MiTestApplication new.
+	super setUp.
+	previousApplication := MiApplication current.
+
+	application := MiTestApplication new.
+	MiApplication current: application
 ]
 
 { #category : 'running' }
 MiAbstractApplicationTest >> tearDown [
 
-	self application unregisterForDropFilesEvent.
-	super tearDown.
-
+	MiApplication reset.
+	MiApplication current: previousApplication.
+	super tearDown
 ]

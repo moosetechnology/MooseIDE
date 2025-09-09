@@ -1,47 +1,59 @@
 Class {
-	#name : #MiCoUsageAbstractTest,
-	#superclass : #TestCase,
+	#name : 'MiCoUsageAbstractTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'visualization',
 		'builder',
-		'browser'
+		'browser',
+		'application'
 	],
-	#category : #'MooseIDE-CoUsageMap-Tests-Browser'
+	#category : 'MooseIDE-CoUsageMap-Tests-Browser',
+	#package : 'MooseIDE-CoUsageMap-Tests',
+	#tag : 'Browser'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 MiCoUsageAbstractTest >> createTag: aName [
-	^(builder specModel currentMooseModel tagNamed: aName)
-		color: (Color red) ;
-		yourself
+
+	^ (builder specModel currentMooseModel tagNamed: aName)
+		  color: Color red;
+		  yourself
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiCoUsageAbstractTest >> setUp [
 
-	| browser |
 	super setUp.
+	application := MiTestApplication new.
 
 	browser := MiCoUsageMapBrowser
-		           newApplication: MiTestApplication new
+		           newApplication: application
 		           model: MiCoUsageMapModel new.
+
 	browser specModel followEntity:
 		MiCoUsageTestFamixModel new allMethods.
 
 	visualization := browser mapVisualization.
 
 	builder := visualization mapBuilder
-	"builder containerEntities: browser model collectionModel"
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiCoUsageAbstractTest >> specModel [
-	^visualization specModel
+
+	^ visualization specModel
 ]
 
-{ #category : #'private - testing' }
+{ #category : 'private - testing' }
 MiCoUsageAbstractTest >> tagsWithPalette: aCollection [
-	aCollection do: [:str |
-		(self createTag: str)
-			color: (NSScale category20 scale: str) ]
+
+	aCollection do: [ :str |
+		(self createTag: str) color: (NSScale category20 scale: str) ]
+]
+
+{ #category : 'running' }
+MiCoUsageAbstractTest >> tearDown [
+
+	application unregisterForDropFilesEvent.
+	super tearDown
 ]

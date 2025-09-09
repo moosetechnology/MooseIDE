@@ -1,28 +1,30 @@
 Class {
-	#name : #MiAnalysisPropagateLocallyCommand,
-	#superclass : #MiCommand,
-	#category : #'MooseIDE-Analysis-Commands'
+	#name : 'MiAnalysisPropagateLocallyCommand',
+	#superclass : 'MiCommand',
+	#category : 'MooseIDE-Analysis-Commands',
+	#package : 'MooseIDE-Analysis',
+	#tag : 'Commands'
 }
 
-{ #category : #default }
+{ #category : 'default' }
 MiAnalysisPropagateLocallyCommand class >> defaultDescription [
 
 	^ 'Propagate to the next browser in the list'
 ]
 
-{ #category : #default }
+{ #category : 'default' }
 MiAnalysisPropagateLocallyCommand class >> defaultIconName [
 
 	^ #mooseOutgoing
 ]
 
-{ #category : #default }
+{ #category : 'default' }
 MiAnalysisPropagateLocallyCommand class >> defaultName [
 
 	^ 'Propagate locally'
 ]
 
-{ #category : #executing }
+{ #category : 'executing' }
 MiAnalysisPropagateLocallyCommand >> execute [
 
 	self context propagateLocally

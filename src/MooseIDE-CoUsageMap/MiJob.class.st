@@ -4,8 +4,8 @@ Utility class to have a waiting message while building the visualization
 TODO: remove and make a general infrstructure for all MooseIDE browsers
 "
 Class {
-	#name : #MiJob,
-	#superclass : #Object,
+	#name : 'MiJob',
+	#superclass : 'Object',
 	#instVars : [
 		'block',
 		'label',
@@ -17,20 +17,22 @@ Class {
 		'newCanvas',
 		'morph'
 	],
-	#category : #'MooseIDE-CoUsageMap-Roassal3'
+	#category : 'MooseIDE-CoUsageMap-Roassal3',
+	#package : 'MooseIDE-CoUsageMap',
+	#tag : 'Roassal3'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiJob >> block: aBlock [
 	block := aBlock
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiJob >> canvas: aRSCanvas [
 	canvas := aRSCanvas
 ]
 
-{ #category : #utilities }
+{ #category : 'utilities' }
 MiJob >> cleanCanvas [
 	label remove.
 	backLine remove.
@@ -47,19 +49,19 @@ MiJob >> cleanCanvas [
 	
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiJob >> currentValue: aNumber [
 	currentValue := aNumber.
 	self update
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiJob >> initialize [
 	super initialize.
 	currentValue := 0
 ]
 
-{ #category : #utilities }
+{ #category : 'utilities' }
 MiJob >> newLine [
 	^ RSLine new
 		width: 20;
@@ -68,7 +70,7 @@ MiJob >> newLine [
 		yourself
 ]
 
-{ #category : #utilities }
+{ #category : 'utilities' }
 MiJob >> prepareForRendering [
 	background := RSBox new isFixed: true; color: Color white.
 	label := RSLabel new isFixed: true.
@@ -94,7 +96,7 @@ MiJob >> prepareForRendering [
 	self update
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiJob >> run [
 	^ [
 		self prepareForRendering.
@@ -102,14 +104,14 @@ MiJob >> run [
 		self cleanCanvas ] fork
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiJob >> title: aString [
 	newCanvas ifNil: [ ^ self ].
 	label text: aString.
 	newCanvas signalUpdate.
 ]
 
-{ #category : #update }
+{ #category : 'update' }
 MiJob >> update [
 	| visibleRect delta from to scale |
 	newCanvas ifNil: [ ^ self ].

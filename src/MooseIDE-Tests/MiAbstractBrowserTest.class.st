@@ -90,7 +90,7 @@ MiAbstractBrowserTest >> setUp [
 	super setUp.
 
 	application defaultBus: self bus.
-	browser := self browserClass openForTests: self application.
+	browser := self browserClass openForTests: application.
 	entityToSelect := self defaultEntityToSelect
 ]
 
@@ -110,8 +110,9 @@ MiAbstractBrowserTest >> settingNamed: aName setValue: anObject [
 MiAbstractBrowserTest >> tearDown [
 
 	browser ifNotNil: [ browser withWindowDo: [ :window | window close ] ].
+
 	self application deleteBus: self bus.
-	
+
 	settingsWindow ifNotNil: [ settingsWindow close ].
 
 	super tearDown
