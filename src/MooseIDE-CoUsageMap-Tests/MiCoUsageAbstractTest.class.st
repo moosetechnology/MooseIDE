@@ -5,7 +5,8 @@ Class {
 		'visualization',
 		'builder',
 		'browser',
-		'application'
+		'application',
+		'previousApplication'
 	],
 	#category : 'MooseIDE-CoUsageMap-Tests-Browser',
 	#package : 'MooseIDE-CoUsageMap-Tests',
@@ -24,7 +25,10 @@ MiCoUsageAbstractTest >> createTag: aName [
 MiCoUsageAbstractTest >> setUp [
 
 	super setUp.
+	previousApplication := MiApplication current.
+
 	application := MiTestApplication new.
+	MiApplication current: application.
 
 	browser := MiCoUsageMapBrowser
 		           newApplication: application
@@ -54,6 +58,7 @@ MiCoUsageAbstractTest >> tagsWithPalette: aCollection [
 { #category : 'running' }
 MiCoUsageAbstractTest >> tearDown [
 
-	application unregisterForDropFilesEvent.
+	MiApplication reset.
+	MiApplication current: previousApplication.
 	super tearDown
 ]

@@ -16,7 +16,7 @@ MiButterflyMapModelTest >> setUp [
 	super setUp.
 
 	browser := Mock new.
-	browser stub application willReturn: MiTestApplication current.
+	browser stub application willReturn: MiApplication current.
 
 	model := MiButterflyMapModel new
 		         browser: browser;

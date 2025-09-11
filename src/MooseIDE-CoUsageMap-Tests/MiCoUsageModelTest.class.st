@@ -2,31 +2,37 @@ Class {
 	#name : 'MiCoUsageModelTest',
 	#superclass : 'TestCase',
 	#instVars : [
-		'model'
+		'model',
+		'previousApplication',
+		'application'
 	],
 	#category : 'MooseIDE-CoUsageMap-Tests-Browser',
 	#package : 'MooseIDE-CoUsageMap-Tests',
 	#tag : 'Browser'
 }
 
-{ #category : 'initialization' }
+{ #category : 'running' }
 MiCoUsageModelTest >> setUp [
 
 	super setUp.
 
 	model := MiCoUsageMapModel new.
 
-	MiCoUsageMapBrowser
-		newApplication: MiTestApplication new
-		model: model.
-	model followEntity: MiCoUsageTestFamixModel new allMethods.
+	previousApplication := MiApplication current.
+	application := MiTestApplication new.
+	MiApplication current: application.
 
+	MiCoUsageMapBrowser newApplication: application model: model.
+	model followEntity: MiCoUsageTestFamixModel new allMethods
 ]
 
 { #category : 'initialization' }
-MiCoUsageModelTest >> tearDown [ 
+MiCoUsageModelTest >> tearDown [
 
 	MiCoUsageMapSettings reset.
+
+	MiApplication reset.
+	MiApplication current: previousApplication.
 
 	super tearDown
 ]
