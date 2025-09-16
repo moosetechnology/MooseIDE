@@ -162,17 +162,6 @@ MiSourceTextBrowserModel >> initializeSettings [
 	shouldHighlightChildren := self class defaultShouldHighlightChildren
 ]
 
-{ #category : 'settings' }
-MiSourceTextBrowserModel >> itemWithHighlight [
-
-	^ MiAbstractSettingItem checkboxSetting
-		  setValue: true ;
-		  label: 'Highlight children in text?';
-		  help:
-			  'If checked the entity''s children are highlighted';
-		  yourself
-]
-
 { #category : 'accessing' }
 MiSourceTextBrowserModel >> miSelectedItem [
 
@@ -226,18 +215,6 @@ MiSourceTextBrowserModel >> selectedEntity: anEntity [
 
 	entity := anEntity.
 	browser updateToolbar
-]
-
-{ #category : 'settings' }
-MiSourceTextBrowserModel >> settingsChanged: aBoolean [
-
-	aBoolean ifFalse: [ ^self ].
-
-	displayedText ifNotNil: [
-		"nil when running some of the tests"
-		self prepareFormating.
-		self browser reRenderText
-	]
 ]
 
 { #category : 'settings management' }

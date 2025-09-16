@@ -80,7 +80,7 @@ MiAbstractModel >> hasSettings [
 { #category : 'initialization' }
 MiAbstractModel >> initializeSettings [
 
-	^ MiOldSettingsPresenter owner: self
+	self subclassResponsibility 
 ]
 
 { #category : 'accessing' }
