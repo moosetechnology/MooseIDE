@@ -26,13 +26,19 @@ Class {
 { #category : 'instance creation' }
 MiApplication class >> current [
 
-	  ^ Current ifNil: [ Current := self new ]
+	^ Current ifNil: [ Current := self basicNew initialize ]
 ]
 
 { #category : 'accessing' }
 MiApplication class >> defaultBusName [
 
 	^ 'Default'
+]
+
+{ #category : 'instance creation' }
+MiApplication class >> new [
+
+	self error: 'Do not create another MiApplication'
 ]
 
 { #category : 'class initialization' }
@@ -47,7 +53,7 @@ MiApplication class >> visualizationTimeoutSetting: aBuilder [
 
 	<systemsettings>
 	| aMiApplication |
-	aMiApplication := self new.
+	aMiApplication := self current.
 	(aBuilder range: #visualizationTimeout)
 		parent: #moose;
 		range: (10 to: 300);
