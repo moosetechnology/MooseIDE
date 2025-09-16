@@ -35,7 +35,7 @@ MiDuplicationBrowserModel class >> availableSourcesCleaners [
 { #category : 'settings management' }
 MiDuplicationBrowserModel class >> defaultConfiguration [
 
-	^ MiDuplicationMemento new
+	^ MiDuplicationSettingsConfiguration new
 		  minimumNumberOfLines: self defaultMinimumNumberOfLines;
 		  minimumNumberOfCharacters: self defaultMinimumNumberOfCharacters;
 		  minimumNumberOfReplicas: self defaultMinimumNumberOfReplicas;
@@ -97,7 +97,7 @@ MiDuplicationBrowserModel >> childrenFragments: aFragment [
 { #category : 'settings management' }
 MiDuplicationBrowserModel >> currentConfiguration [
 
-	^ MiDuplicationMemento new
+	^ MiDuplicationSettingsConfiguration new
 		  minimumNumberOfLines: configuration minimumNumberOfLines;
 		  minimumNumberOfCharacters: configuration minimumNumberOfCharacters;
 		  minimumNumberOfReplicas: configuration minimumNumberOfReplicas;

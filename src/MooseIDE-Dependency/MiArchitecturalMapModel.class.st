@@ -218,7 +218,7 @@ MiArchitecturalMapModel >> computeVirtualRoots: rootEntities [
 { #category : 'settings management' }
 MiArchitecturalMapModel >> currentConfiguration [
 
-	^ MiArchitecturalMapMemento new
+	^ MiArchitecturalMapSettingsConfiguration new
 		  availableAssociationTypes: self availableAssociationTypes;
 		  associationTypes: associationTypes;
 		  availableDoubleClickActions: self availableDoubleClickActions;

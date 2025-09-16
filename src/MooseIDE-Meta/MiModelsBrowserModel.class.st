@@ -42,7 +42,7 @@ Class {
 { #category : 'settings management' }
 MiModelsBrowserModel class >> defaultConfiguration [
 
-	^ MiModelsSettingsMemento new
+	^ MiModelsSettingsConfiguration new
 		  shouldCreateCache: self defaultShouldCreateCache;
 		  filterStubs: self defaultFilterStubs;
 		  modelImportIsAutomatic: self defaultModelImportIsAutomatic;

@@ -30,7 +30,7 @@ MiModelReportModel class >> defaultComplexMethodThreshold [
 { #category : 'accessing' }
 MiModelReportModel class >> defaultConfiguration [
 
-	^ MiModelReportMemento new
+	^ MiModelReportSettingsConfiguration new
 		  largeClassThreshold: self defaultLargeClassThreshold;
 		  longClassThreshold: self defaultLongClassThreshold;
 		  dataClassThreshold: self defaultDataClassThreshold;
@@ -92,7 +92,7 @@ MiModelReportModel >> classMembersStats: columns [
 { #category : 'settings management' }
 MiModelReportModel >> currentConfiguration [
 
-	^ MiModelReportMemento new
+	^ MiModelReportSettingsConfiguration new
 		  largeClassThreshold: largeClassThreshold;
 		  longClassThreshold: longClassThreshold;
 		  dataClassThreshold: dataClassThreshold;

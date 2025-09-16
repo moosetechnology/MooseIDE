@@ -22,7 +22,7 @@ Class {
 { #category : 'accessing' }
 MiSourceTextBrowserModel class >> defaultConfiguration [
 
-	^ MiSourceTextMemento new
+	^ MiSourceTextSettingsConfiguration new
 		  shouldHighlightChildren: self defaultShouldHighlightChildren;
 		  yourself
 ]
@@ -75,7 +75,7 @@ MiSourceTextBrowserModel >> createHighlightsFor: anEntity [
 { #category : 'settings management' }
 MiSourceTextBrowserModel >> currentConfiguration [
 
-	^ MiSourceTextMemento new
+	^ MiSourceTextSettingsConfiguration new
 		  shouldHighlightChildren: shouldHighlightChildren;
 		  yourself
 ]

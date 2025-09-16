@@ -5,15 +5,17 @@ I have implemented the methods: `followAction` and `miSelectedItem` in order to 
 Accepted entities: a MooseEntity
 "
 Class {
-	#name : #MiInspectorBrowser,
-	#superclass : #MiAbstractBrowser,
+	#name : 'MiInspectorBrowser',
+	#superclass : 'MiAbstractBrowser',
 	#instVars : [
 		'mainPresenter'
 	],
-	#category : #'MooseIDE-NewTools-Inspector'
+	#category : 'MooseIDE-NewTools-Inspector',
+	#package : 'MooseIDE-NewTools',
+	#tag : 'Inspector'
 }
 
-{ #category : #api }
+{ #category : 'api' }
 MiInspectorBrowser class >> inspect: anObject [
 
 	^ self
@@ -21,7 +23,7 @@ MiInspectorBrowser class >> inspect: anObject [
 		  forBuses: (OrderedCollection with: self currentApplication defaultBus)
 ]
 
-{ #category : #api }
+{ #category : 'api' }
 MiInspectorBrowser class >> inspect: anObject forBuses: buses [
 
 	| newInstance |
@@ -32,7 +34,7 @@ MiInspectorBrowser class >> inspect: anObject forBuses: buses [
 	^ newInstance
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiInspectorBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
@@ -40,50 +42,50 @@ MiInspectorBrowser class >> menuCommandOn: aBuilder [
 	^ self buildMenuItemIn: aBuilder
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiInspectorBrowser class >> menuIconName [
 
 	^ #smallInspectIt
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiInspectorBrowser class >> menuItem [
 
 	^ #Inspector
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiInspectorBrowser class >> menuPriority [
 
 	^ self menuPharoToolsPriority + 1
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MiInspectorBrowser class >> newModel [
 
 	^ MiInspectorModel new
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MiInspectorBrowser class >> open [
 
 	<script>
 	^ super open
 ]
 
-{ #category : #specs }
+{ #category : 'specs' }
 MiInspectorBrowser class >> preferredExtent [
 
 	^ 700 @ 500
 ]
 
-{ #category : #specs }
+{ #category : 'specs' }
 MiInspectorBrowser class >> title [
 
 	^ 'Moose Inspector'
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiInspectorBrowser >> canFollowEntity: anEntity [
 
 	"Returns true because all object can be inspected with this Midas inspector. It can be changed in future acording to new needs."
@@ -91,7 +93,7 @@ MiInspectorBrowser >> canFollowEntity: anEntity [
 	^ true
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiInspectorBrowser >> followEntity: anEntity [
 
 	super followEntity: anEntity.
@@ -102,7 +104,7 @@ MiInspectorBrowser >> followEntity: anEntity [
 	self updateToolbar
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiInspectorBrowser >> initializePresenters [
 
 	mainPresenter := self
@@ -110,7 +112,7 @@ MiInspectorBrowser >> initializePresenters [
 		                 on: self specModel entity
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiInspectorBrowser >> miSelectedItem [
 
 	| lastInspectorPage |
@@ -118,7 +120,7 @@ MiInspectorBrowser >> miSelectedItem [
 	^ lastInspectorPage model inspectedObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiInspectorBrowser >> windowTitle [
 
 	^ self windowTitleFor: self specModel entity

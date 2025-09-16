@@ -1,18 +1,18 @@
-Extension { #name : #Object }
+Extension { #name : 'Object' }
 
-{ #category : #'*MooseIDE-NewTools' }
+{ #category : '*MooseIDE-NewTools' }
 Object >> inspectorToString [
 	^ self printString
 ]
 
-{ #category : #'*MooseIDE-NewTools' }
+{ #category : '*MooseIDE-NewTools' }
 Object >> miMetaNavigationItems [
 	"Method used in UI. There is no navigation items for non-Moose objects"
 
 	^ {  }
 ]
 
-{ #category : #'*MooseIDE-NewTools' }
+{ #category : '*MooseIDE-NewTools' }
 Object >> mooseInterestingEntity [
 
 	"Method used in UI. 

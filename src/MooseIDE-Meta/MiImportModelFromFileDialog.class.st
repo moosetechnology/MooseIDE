@@ -308,10 +308,17 @@ MiImportModelFromFileDialog >> privateImportModel [
 		runFilteredBy: importingContext.
 
 	model name: (modelNameInput text ifEmpty: [ 'MooseModel' ]).
-	countedParsingErrors := model entities count: [ :entity | (entity propertyNamed: #parsingError ifAbsent: [ nil ]) isNotNil ].
-	countedParsingErrors > 0 ifTrue: [ 
-		SpInformDialog new title: 'Importing Errors'; label: ('There were ' , countedParsingErrors asString, ' errors during the import, please look at the Transcript for more information (press Fetch if the Transcript is empty).'); openDialog.
-		 ]. 
+	countedParsingErrors := model entities count: [ :entity |
+		                        (entity
+			                         cacheAt: #parsingError
+			                         ifAbsent: [ nil ]) isNotNil ].
+	countedParsingErrors > 0 ifTrue: [
+			SpInformDialog new
+				title: 'Importing Errors';
+				label: 'There were ' , countedParsingErrors asString
+					,
+						' errors during the import, please look at the Transcript for more information (press Fetch if the Transcript is empty).';
+				openDialog ].
 
 	^ model
 ]

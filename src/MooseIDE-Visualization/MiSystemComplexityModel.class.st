@@ -42,7 +42,7 @@ MiSystemComplexityModel class >> defaultColorMetricThreshold [
 { #category : 'settings management' }
 MiSystemComplexityModel class >> defaultConfiguration [
 
-	^ MiSystemComplexitySettingsMemento new
+	^ MiSystemComplexitySettingsConfiguration new
 		  heightMetric: self defaultHeightMetric;
 		  heightMetricThreshold: self defaultHeightMetricThreshold;
 		  widthMetric: self defaultWidthMetric;
@@ -132,7 +132,7 @@ MiSystemComplexityModel >> colorMetricThreshold [
 { #category : 'settings management' }
 MiSystemComplexityModel >> currentConfiguration [
 
-	^ MiSystemComplexitySettingsMemento new
+	^ MiSystemComplexitySettingsConfiguration new
 		  availableMetrics: self availableMetrics;
 		  heightMetric: heightMetric;
 		  heightMetricThreshold: heightMetricThreshold;
