@@ -1,6 +1,3 @@
-"
-An application for Moose IDE tests
-"
 Class {
 	#name : 'MiTestApplication',
 	#superclass : 'MiApplication',
@@ -11,6 +8,7 @@ Class {
 
 { #category : 'accessing' }
 MiTestApplication class >> defaultBusName [
+
 	^ 'Test'
 ]
 
