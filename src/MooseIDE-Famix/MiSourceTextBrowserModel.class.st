@@ -224,7 +224,9 @@ MiSourceTextBrowserModel >> prepareFormating: aString [
 	displayedText := aString.
 
 	shouldHighlightChildren
-		ifTrue: [ self createHighlightsFor: self selectedEntity ]
+		ifTrue: [
+				self createHighlightsFor: self selectedEntity.
+				self createKeywordHighlights ]
 		ifFalse: [ self resetHighlights ]
 ]
 
