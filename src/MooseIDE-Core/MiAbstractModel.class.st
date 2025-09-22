@@ -80,7 +80,7 @@ MiAbstractModel >> hasSettings [
 { #category : 'initialization' }
 MiAbstractModel >> initializeSettings [
 
-	self subclassResponsibility 
+	"Override if necessary"
 ]
 
 { #category : 'accessing' }

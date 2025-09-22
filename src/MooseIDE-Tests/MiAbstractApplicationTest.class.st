@@ -21,6 +21,7 @@ MiAbstractApplicationTest >> setUp [
 
 	super setUp.
 	previousApplication := MiApplication current.
+	previousApplication unregisterForDropFilesEvent.
 
 	application := MiTestApplication new.
 	MiApplication current: application
@@ -31,5 +32,6 @@ MiAbstractApplicationTest >> tearDown [
 
 	MiApplication reset.
 	MiApplication current: previousApplication.
+	previousApplication beDropFilesHandler.
 	super tearDown
 ]
