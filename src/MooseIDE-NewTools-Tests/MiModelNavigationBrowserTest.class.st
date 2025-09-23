@@ -1,15 +1,14 @@
 Class {
-	#name : 'MiModelNavigationBrowserTest',
-	#superclass : 'TestCase',
+	#name : #MiModelNavigationBrowserTest,
+	#superclass : #TestCase,
 	#instVars : [
 		'browser',
 		'inspectedModel'
 	],
-	#category : 'MooseIDE-NewTools-Tests',
-	#package : 'MooseIDE-NewTools-Tests'
+	#category : #'MooseIDE-NewTools-Tests'
 }
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiModelNavigationBrowserTest >> clickOnAllClasses [
 
 	| navigationTreeTable |
@@ -17,7 +16,7 @@ MiModelNavigationBrowserTest >> clickOnAllClasses [
 	navigationTreeTable selectItem: navigationTreeTable roots first
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 MiModelNavigationBrowserTest >> setUp [
 
 	super setUp.
@@ -30,7 +29,7 @@ MiModelNavigationBrowserTest >> setUp [
 	browser := MiMetaModelNavigationBrowser on: inspectedModel
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 MiModelNavigationBrowserTest >> tearDown [
 
 	browser withWindowDo: [ :window | window close ].
@@ -38,7 +37,7 @@ MiModelNavigationBrowserTest >> tearDown [
 	super tearDown
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiModelNavigationBrowserTest >> testClickingOpensMooseGroup [
 
 	self clickOnAllClasses.

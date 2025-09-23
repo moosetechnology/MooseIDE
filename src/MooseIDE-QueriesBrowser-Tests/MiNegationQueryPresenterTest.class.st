@@ -2,29 +2,27 @@
 A MiNegationQueryPresenterTest is a test class for testing the behavior of MiNegationQueryPresenter
 "
 Class {
-	#name : 'MiNegationQueryPresenterTest',
-	#superclass : 'MiQueryConfiguratorPresenterTest',
+	#name : #MiNegationQueryPresenterTest,
+	#superclass : #MiQueryConfiguratorPresenterTest,
 	#instVars : [
 		'queryToNegate'
 	],
-	#category : 'MooseIDE-QueriesBrowser-Tests-Queries Configuration',
-	#package : 'MooseIDE-QueriesBrowser-Tests',
-	#tag : 'Queries Configuration'
+	#category : #'MooseIDE-QueriesBrowser-Tests-Queries Configuration'
 }
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiNegationQueryPresenterTest >> assertSubpresentersAreConfigured [
 
 	self assert: presenter subqueryDropListPresenter selectedItem query equals: queryToNegate
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 MiNegationQueryPresenterTest >> classToTest [
 
 	^ MiNegationQueryPresenter
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiNegationQueryPresenterTest >> createNewQuery [
 
 	| rootQuery |
@@ -41,13 +39,13 @@ MiNegationQueryPresenterTest >> createNewQuery [
 	^ FQComplementQuery queryToNegate: queryToNegate
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 MiNegationQueryPresenterTest >> queryClass [
 
 	^ FQComplementQuery
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 MiNegationQueryPresenterTest >> resetPresenterWithEntities: aMooseGroup [
 
 	| builder superPresenter |
@@ -67,20 +65,20 @@ MiNegationQueryPresenterTest >> resetPresenterWithEntities: aMooseGroup [
 	presenter := superPresenter queryConfiguratorPresenter
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiNegationQueryPresenterTest >> testImpossibleQueryInitialization [
 
 	self assert: true
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiNegationQueryPresenterTest >> testIsQueryUsed [
 
 	self assert: (presenter isQueryUsed: presenter subqueryDropListPresenter selectedItem).
 	self deny: (presenter isQueryUsed: presenter subqueryDropListPresenter items second)
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiNegationQueryPresenterTest >> testNormalQueryInitialization [
 
 	self assert: presenter query class identicalTo: self queryClass.
@@ -91,7 +89,7 @@ MiNegationQueryPresenterTest >> testNormalQueryInitialization [
 	self assert: presenter query isValid
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiNegationQueryPresenterTest >> testPresenters [
 
 	self
@@ -99,7 +97,7 @@ MiNegationQueryPresenterTest >> testPresenters [
 		equals: SpDropListPresenter
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiNegationQueryPresenterTest >> testPresentersOnImpossibleQuery [
 
 	"this presenter will not have the impossible query presenter as it only have a droplist to select other queries"
@@ -107,7 +105,7 @@ MiNegationQueryPresenterTest >> testPresentersOnImpossibleQuery [
 	self assert: true
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiNegationQueryPresenterTest >> testQueryValidity [
 
 	"This presenter does not know is the query is valid because it depends on the other queries. You select a query from the droplist and then it computes the value"

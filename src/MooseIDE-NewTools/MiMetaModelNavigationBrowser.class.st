@@ -1,6 +1,6 @@
 Class {
 	#name : 'MiMetaModelNavigationBrowser',
-	#superclass : 'MiMetaNavigationBrowser',
+	#superclass : 'MiNavigationInspectionTab',
 	#category : 'MooseIDE-NewTools-Inspector tabs',
 	#package : 'MooseIDE-NewTools',
 	#tag : 'Inspector tabs'

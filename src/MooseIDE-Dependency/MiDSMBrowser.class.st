@@ -119,11 +119,6 @@ MiDSMBrowser >> followEntity: anEntity [
 	specModel followEntity: anEntity
 ]
 
-{ #category : 'testing' }
-MiDSMBrowser >> hasSettings [
-	^ true
-]
-
 { #category : 'initialization' }
 MiDSMBrowser >> initializePresenters [
 

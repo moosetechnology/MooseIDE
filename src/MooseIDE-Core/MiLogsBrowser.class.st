@@ -101,6 +101,12 @@ MiLogsBrowser >> getSelectedPage [
 	^ mainPresenter selectedPage
 ]
 
+{ #category : 'testing' }
+MiLogsBrowser >> hasSettings [
+
+	^ false
+]
+
 { #category : 'initialization' }
 MiLogsBrowser >> initializePresenters [
 

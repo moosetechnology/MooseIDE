@@ -1,11 +1,10 @@
 Class {
-	#name : 'MiNewToolsExtenstionsTest',
-	#superclass : 'TestCase',
-	#category : 'MooseIDE-NewTools-Tests',
-	#package : 'MooseIDE-NewTools-Tests'
+	#name : #MiNewToolsExtenstionsTest,
+	#superclass : #TestCase,
+	#category : #'MooseIDE-NewTools-Tests'
 }
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiNewToolsExtenstionsTest >> testModelMooseInterestingEntity [
 
 	| model storage state |

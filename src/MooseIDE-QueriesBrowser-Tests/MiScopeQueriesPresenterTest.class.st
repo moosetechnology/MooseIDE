@@ -1,24 +1,22 @@
 Class {
-	#name : 'MiScopeQueriesPresenterTest',
-	#superclass : 'MiQueryConfiguratorPresenterTest',
-	#category : 'MooseIDE-QueriesBrowser-Tests-Queries Configuration',
-	#package : 'MooseIDE-QueriesBrowser-Tests',
-	#tag : 'Queries Configuration'
+	#name : #MiScopeQueriesPresenterTest,
+	#superclass : #MiQueryConfiguratorPresenterTest,
+	#category : #'MooseIDE-QueriesBrowser-Tests-Queries Configuration'
 }
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiScopeQueriesPresenterTest >> assertSubpresentersAreConfigured [
 
 	self assert: presenter scopesDropList selectedItem equals: self createNewQuery scope.
 	self assert: presenter directionsDropList selectedItem equals: self createNewQuery directionStrategy
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 MiScopeQueriesPresenterTest >> classToTest [
 	^ MiScopeQueryPresenter
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiScopeQueriesPresenterTest >> createNewQuery [
 
 	| rootQuery |
@@ -32,19 +30,19 @@ MiScopeQueriesPresenterTest >> createNewQuery [
 		  yourself
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 MiScopeQueriesPresenterTest >> queryClass [
 	^ FQScopeQuery
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiScopeQueriesPresenterTest >> selectNonSelectedDirection [
 
 	presenter directionsDropList selectItem:
 		presenter directionsDropList items last
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiScopeQueriesPresenterTest >> testChangingDirectionChangesAvailableScopes [
 
 	| initialScopes |
@@ -57,7 +55,7 @@ MiScopeQueriesPresenterTest >> testChangingDirectionChangesAvailableScopes [
 		hasSameElements: presenter query availableScopes
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiScopeQueriesPresenterTest >> testDropListMatchesAvailableScopes [
 
 	| scopes |
@@ -72,7 +70,7 @@ MiScopeQueriesPresenterTest >> testDropListMatchesAvailableScopes [
 		hasSameElements: presenter scopesDropList listItems
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiScopeQueriesPresenterTest >> testDropListMatchesForOtherDirection [
 
 	self selectNonSelectedDirection.
@@ -81,7 +79,7 @@ MiScopeQueriesPresenterTest >> testDropListMatchesForOtherDirection [
 	self testDropListMatchesQuery
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiScopeQueriesPresenterTest >> testDropListMatchesQuery [
 
 	presenter directionsDropList selectIndex: 1. 
@@ -94,7 +92,7 @@ MiScopeQueriesPresenterTest >> testDropListMatchesQuery [
 		equals: presenter query scope
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiScopeQueriesPresenterTest >> testNoScopesForADirection [
 
 	self resetPresenterWithEntities: helper entitiesWithNoDownScope.
@@ -106,7 +104,7 @@ MiScopeQueriesPresenterTest >> testNoScopesForADirection [
 		identicalTo: NoPossibleQueryPresenter
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiScopeQueriesPresenterTest >> testPresenters [
 
 	self
@@ -117,7 +115,7 @@ MiScopeQueriesPresenterTest >> testPresenters [
 		identicalTo: SpDropListPresenter
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiScopeQueriesPresenterTest >> testPresentersOnImpossibleQuery [
 
 	self resetPresenterWithEntities: helper noEntities.
@@ -132,7 +130,7 @@ MiScopeQueriesPresenterTest >> testPresentersOnImpossibleQuery [
 		identicalTo: NoPossibleQueryPresenter
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiScopeQueriesPresenterTest >> testQueryValidity [
 
 	presenter directionsDropList selectItem: FQScopeDown.
@@ -156,7 +154,7 @@ MiScopeQueriesPresenterTest >> testQueryValidity [
 	self deny: presenter query isValid
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiScopeQueriesPresenterTest >> testRadioButtonsMatchAvailableDirections [
 
 	| directions |
@@ -171,7 +169,7 @@ MiScopeQueriesPresenterTest >> testRadioButtonsMatchAvailableDirections [
 		(presenter directionsDropList items collect: #label)
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiScopeQueriesPresenterTest >> testRadioButtonsMatchQuery [
 
 	self selectNonSelectedDirection.

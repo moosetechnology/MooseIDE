@@ -1,15 +1,14 @@
 Class {
-	#name : 'MiClassBlueprintVisualization',
-	#superclass : 'MiAbstractVisualization',
+	#name : #MiClassBlueprintVisualization,
+	#superclass : #MiAbstractVisualization,
 	#instVars : [
 		'blueprint',
 		'type'
 	],
-	#category : 'MooseIDE-ClassBlueprint',
-	#package : 'MooseIDE-ClassBlueprint'
+	#category : #'MooseIDE-ClassBlueprint'
 }
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiClassBlueprintVisualization >> buildInCanvas: aCanvas [
 
 	type ifNil: [ ^ self ].
@@ -21,13 +20,13 @@ MiClassBlueprintVisualization >> buildInCanvas: aCanvas [
 	^ aCanvas @ RSCanvasController new noLegend
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 MiClassBlueprintVisualization >> type [
 
 	^ type
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 MiClassBlueprintVisualization >> type: anObject [
 
 	type := anObject

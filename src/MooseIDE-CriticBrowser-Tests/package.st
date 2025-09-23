@@ -1,1 +1,1 @@
-Package { #name : 'MooseIDE-CriticBrowser-Tests' }
+Package { #name : #'MooseIDE-CriticBrowser-Tests' }

@@ -21,8 +21,8 @@
 
 "
 Class {
-	#name : 'FamixCBCondition',
-	#superclass : 'FamixCBEntity',
+	#name : #FamixCBCondition,
+	#superclass : #FamixCBEntity,
 	#traits : 'FamixCBTRuleComponent',
 	#classTraits : 'FamixCBTRuleComponent classTrait',
 	#instVars : [
@@ -30,12 +30,10 @@ Class {
 		'#severity => FMProperty',
 		'#violations => FMMany type: #FamixCBViolation opposite: #violatedCondition'
 	],
-	#category : 'Famix-CriticBrowser-Entities-Entities',
-	#package : 'Famix-CriticBrowser-Entities',
-	#tag : 'Entities'
+	#category : #'Famix-CriticBrowser-Entities-Entities'
 }
 
-{ #category : 'meta' }
+{ #category : #meta }
 FamixCBCondition class >> annotation [
 
 	<FMClass: #Condition super: #FamixCBEntity>
@@ -44,7 +42,7 @@ FamixCBCondition class >> annotation [
 	^ self
 ]
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 FamixCBCondition class >> named: aString on: aQuery [
 	^ self new
 		name: aString;
@@ -52,7 +50,7 @@ FamixCBCondition class >> named: aString on: aQuery [
 		yourself
 ]
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 FamixCBCondition class >> named: aString on: aQuery summary: aSummary [
 	^ self new
 		name: aString;
@@ -61,7 +59,7 @@ FamixCBCondition class >> named: aString on: aQuery summary: aSummary [
 		yourself
 ]
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 FamixCBCondition class >> named: aString on: aQuery summary: aSummary severity: aSeverity [
 	^ self new
 		name: aString;
@@ -71,30 +69,30 @@ FamixCBCondition class >> named: aString on: aQuery summary: aSummary severity: 
 		yourself
 ]
 
-{ #category : 'adding' }
+{ #category : #adding }
 FamixCBCondition >> addViolation: anObject [
 	<generated>
 	^ self violations add: anObject
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 FamixCBCondition >> isCBCondition [
 
 	^ true
 ]
 
-{ #category : 'printing' }
+{ #category : #printing }
 FamixCBCondition >> printAsBlock [
 
 	^ query asRuleEditorString
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 FamixCBCondition >> putViolationsInto: aDictionary [
 	aDictionary at: self put: violations asMooseSpecializedGroup
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 FamixCBCondition >> query [
 
 	<FMProperty: #query type: #Object>
@@ -103,7 +101,7 @@ FamixCBCondition >> query [
 	^ query
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 FamixCBCondition >> query: aQuery [
 
 	(aQuery isKindOf: FamixCBQueryHandler)
@@ -111,48 +109,48 @@ FamixCBCondition >> query: aQuery [
 		ifFalse: [ self error: FamixCBNotAValidQuery signal ]
 ]
 
-{ #category : 'removing' }
+{ #category : #removing }
 FamixCBCondition >> removeAllViolations [
 	[ violations isNotEmpty ] whileTrue: [ self removeViolation: violations anyOne ]
 ]
 
-{ #category : 'removing' }
+{ #category : #removing }
 FamixCBCondition >> removeViolation: aViolation [
 	self violations remove: aViolation ifAbsent: [ ^ self ].
 	aViolation violatingEntity ifNotNil: [ aViolation violatingEntity removeViolation: aViolation ]
 ]
 
-{ #category : 'removing' }
+{ #category : #removing }
 FamixCBCondition >> resetExecutionOfTree [ 
 	self removeAllViolations
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 FamixCBCondition >> runDownTree: aCollection withCallback: aBlock [
 
 	self runOn: aCollection withCallback: aBlock
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 FamixCBCondition >> runOn: aCollection [
 
 	(self query runOnCollection: aCollection) do: [ :each | 
 		self addViolation: (FamixCBViolation new violatingEntity: each) ]
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 FamixCBCondition >> runOn: aCollection withCallback: aBlock [
 
 	aBlock cull: self name.
 	self runOn: aCollection
 ]
 
-{ #category : 'removing' }
+{ #category : #removing }
 FamixCBCondition >> runUpTree: aCollection [
 	self runOn: (parent runUpTree: aCollection)
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 FamixCBCondition >> severity [
 
 	<FMProperty: #severity type: #Object>
@@ -160,13 +158,13 @@ FamixCBCondition >> severity [
 	^ severity ifNil: [ FamixCBAbstractSeverity allSubclasses detectMin: #level ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 FamixCBCondition >> severity: anObject [
 	<generated>
 	severity := anObject
 ]
 
-{ #category : 'ston persistence' }
+{ #category : #'ston persistence' }
 FamixCBCondition >> stonOn: stonWriter [
 
 	stonWriter writeObject: self streamMap: [ :dictionary | 
@@ -179,7 +177,7 @@ FamixCBCondition >> stonOn: stonWriter [
 							 ifFalse: [ value ]) ] ] ]
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 FamixCBCondition >> tagRuleResult [
 
 	| results model |
@@ -188,7 +186,7 @@ FamixCBCondition >> tagRuleResult [
 	self tagRuleResultInModel: model
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 FamixCBCondition >> tagRuleResultInModel: aMooseModel [
 
 	| results tag |
@@ -198,7 +196,7 @@ FamixCBCondition >> tagRuleResultInModel: aMooseModel [
 	results do: [ :entity | entity tagWith: tag ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 FamixCBCondition >> violations [
 	"Relation named: #violations type: #FamixCBViolation opposite: #violatedCondition"
 
@@ -208,7 +206,7 @@ FamixCBCondition >> violations [
 	^ violations
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 FamixCBCondition >> violations: anObject [
 
 	<generated>

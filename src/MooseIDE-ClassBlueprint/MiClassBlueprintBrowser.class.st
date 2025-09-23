@@ -5,16 +5,15 @@ Accepted entities: a famix class.
 This visualization is used to understand a class structure and presents dead artifacts within a class.
 "
 Class {
-	#name : 'MiClassBlueprintBrowser',
-	#superclass : 'MiAbstractBrowser',
+	#name : #MiClassBlueprintBrowser,
+	#superclass : #MiAbstractBrowser,
 	#instVars : [
 		'blueprint'
 	],
-	#category : 'MooseIDE-ClassBlueprint',
-	#package : 'MooseIDE-ClassBlueprint'
+	#category : #'MooseIDE-ClassBlueprint'
 }
 
-{ #category : 'world menu' }
+{ #category : #'world menu' }
 MiClassBlueprintBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
@@ -22,36 +21,36 @@ MiClassBlueprintBrowser class >> menuCommandOn: aBuilder [
 	^ self buildMenuItemIn: aBuilder
 ]
 
-{ #category : 'world menu' }
+{ #category : #'world menu' }
 MiClassBlueprintBrowser class >> menuItem [
 
 	^ #ClassBlueprintBrowser
 ]
 
-{ #category : 'world menu' }
+{ #category : #'world menu' }
 MiClassBlueprintBrowser class >> menuPriority [
 
 	^ self menuVisualizationToolsPriority + 5
 ]
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 MiClassBlueprintBrowser class >> open [ 
 	<script>
 	super open
 ]
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 MiClassBlueprintBrowser class >> title [ 
 	^ 'Class Blueprint'
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 MiClassBlueprintBrowser >> canFollowEntity: anObject [
 
 	^ anObject isMooseEntity and: [ anObject isType ]
 ]
 
-{ #category : 'layout' }
+{ #category : #layout }
 MiClassBlueprintBrowser >> defaultLayout [
 
 	^ self newBoxLayoutTopToBottom
@@ -59,7 +58,7 @@ MiClassBlueprintBrowser >> defaultLayout [
 		  yourself
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 MiClassBlueprintBrowser >> followEntity: anEntity [
 
 	super followEntity: anEntity.
@@ -69,19 +68,19 @@ MiClassBlueprintBrowser >> followEntity: anEntity [
 		refresh
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiClassBlueprintBrowser >> initializePresenters [
 
 	blueprint := self instantiate: MiClassBlueprintVisualization
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiClassBlueprintBrowser >> miSelectedItem [
 
 	^ blueprint type
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 MiClassBlueprintBrowser >> updateWindowTitleWith: anEntity [
 
 	self withWindowDo: [ :window |

@@ -1,6 +1,6 @@
 Class {
-	#name : 'MiCBRuleComponentBuilderPresenter',
-	#superclass : 'MiPresenter',
+	#name : #MiCBRuleComponentBuilderPresenter,
+	#superclass : #MiPresenter,
 	#instVars : [
 		'isForEdition',
 		'browserModel',
@@ -9,49 +9,47 @@ Class {
 		'titleField',
 		'codeInputField'
 	],
-	#category : 'MooseIDE-CriticBrowser-Presenters',
-	#package : 'MooseIDE-CriticBrowser',
-	#tag : 'Presenters'
+	#category : #'MooseIDE-CriticBrowser-Presenters'
 }
 
-{ #category : 'labels' }
+{ #category : #labels }
 MiCBRuleComponentBuilderPresenter class >> addButtonLabel [
 
 	^ 'Add'
 ]
 
-{ #category : 'labels' }
+{ #category : #labels }
 MiCBRuleComponentBuilderPresenter class >> alertLabel [
 
 	^ 'Please give your {1} a code to execute.' format:
 		  { self ruleComponentName capitalized }
 ]
 
-{ #category : 'labels' }
+{ #category : #labels }
 MiCBRuleComponentBuilderPresenter class >> defaultCodeInput [
 
 	self subclassResponsibility
 ]
 
-{ #category : 'api' }
+{ #category : #api }
 MiCBRuleComponentBuilderPresenter class >> initialExtent [
 
 	^ 600 @ 400
 ]
 
-{ #category : 'labels' }
+{ #category : #labels }
 MiCBRuleComponentBuilderPresenter class >> ruleComponentName [
 
 	self subclassResponsibility
 ]
 
-{ #category : 'labels' }
+{ #category : #labels }
 MiCBRuleComponentBuilderPresenter class >> summaryLabel [
 
 	^ '{1} summary:' format: { self ruleComponentName capitalized }
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiCBRuleComponentBuilderPresenter >> actionButton [
 
 	^ isForEdition
@@ -73,7 +71,7 @@ MiCBRuleComponentBuilderPresenter >> actionButton [
 				  yourself ]
 ]
 
-{ #category : 'action' }
+{ #category : #action }
 MiCBRuleComponentBuilderPresenter >> addNewComponent [
 
 	codeInputField text
@@ -84,14 +82,14 @@ MiCBRuleComponentBuilderPresenter >> addNewComponent [
 				toContext: selectedRuleComponent ]
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiCBRuleComponentBuilderPresenter >> beForEdition [
 
 	self fillWithRuleComponent: selectedRuleComponent.
 	isForEdition := true
 ]
 
-{ #category : 'action' }
+{ #category : #action }
 MiCBRuleComponentBuilderPresenter >> buildComponent: aComponent [
 
 	aComponent name: titleField text.
@@ -100,7 +98,7 @@ MiCBRuleComponentBuilderPresenter >> buildComponent: aComponent [
 	^ aComponent
 ]
 
-{ #category : 'action' }
+{ #category : #action }
 MiCBRuleComponentBuilderPresenter >> editComponent [
 
 	self buildComponent: selectedRuleComponent.
@@ -108,7 +106,7 @@ MiCBRuleComponentBuilderPresenter >> editComponent [
 	browserModel hasBeenEdited: selectedRuleComponent
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiCBRuleComponentBuilderPresenter >> fillWithRuleComponent: aRuleComponent [
 
 	titleField text: (aRuleComponent name ifNil: [ '' ]).
@@ -118,14 +116,14 @@ MiCBRuleComponentBuilderPresenter >> fillWithRuleComponent: aRuleComponent [
 	summaryField text: (aRuleComponent summary ifNil: [ '' ])
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiCBRuleComponentBuilderPresenter >> initialize [
 
 	super initialize.
 	isForEdition := false
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiCBRuleComponentBuilderPresenter >> initializeDialogWindow: aDialogWindowPresenter [
 
 	aDialogWindowPresenter
@@ -137,7 +135,7 @@ MiCBRuleComponentBuilderPresenter >> initializeDialogWindow: aDialogWindowPresen
 				 yourself)
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiCBRuleComponentBuilderPresenter >> initializePresenters [
 
 	titleField := self newTextInput.
@@ -153,7 +151,7 @@ MiCBRuleComponentBuilderPresenter >> initializePresenters [
 			(pipePosition - 1 to: pipePosition - 2) ]
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiCBRuleComponentBuilderPresenter >> initializeWindow: aWindowPresenter [
 
 	super initializeWindow: aWindowPresenter.
@@ -164,20 +162,20 @@ MiCBRuleComponentBuilderPresenter >> initializeWindow: aWindowPresenter [
 	aWindowPresenter initialExtent: self class initialExtent
 ]
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 MiCBRuleComponentBuilderPresenter >> newComponent [
 
 	self subclassResponsibility
 ]
 
-{ #category : 'accessing - model' }
+{ #category : #'accessing - model' }
 MiCBRuleComponentBuilderPresenter >> setModelBeforeInitialization: aBrowserModel [
 
 	browserModel := aBrowserModel.
 	selectedRuleComponent := browserModel selectedRule
 ]
 
-{ #category : 'layout' }
+{ #category : #layout }
 MiCBRuleComponentBuilderPresenter >> summaryLayout [
 
 	^ self newBoxLayoutTopToBottom

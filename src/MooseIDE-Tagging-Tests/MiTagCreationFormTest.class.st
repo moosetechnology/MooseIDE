@@ -67,12 +67,15 @@ MiTagCreationFormTest >> testQueryDropListFetchQueriesFromQueriesProducer [
 { #category : 'tests' }
 MiTagCreationFormTest >> testSetIntentTag [
 
-	self assert: presenter intentButton state equals: false.
+	self deny: presenter intentButton state.
+	
 	self flag: 'fix weird behavior'.
+	
 	presenter intentButton click.
 	presenter intentButton action value.
-	self assert: presenter intentButton state equals: true.
-	self assert: presenter extentButton state equals: false.
+	
+	self assert: presenter intentButton state.
+	self deny: presenter extentButton state.
 	self assert: presenter queryListLabeled isVisible
 ]
 

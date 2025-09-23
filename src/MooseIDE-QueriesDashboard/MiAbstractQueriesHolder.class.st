@@ -5,35 +5,33 @@ A query method has to return a collection.
 A query method can define what browser we should use with its result with the pragma <browser:>.
 "
 Class {
-	#name : 'MiAbstractQueriesHolder',
-	#superclass : 'Object',
+	#name : #MiAbstractQueriesHolder,
+	#superclass : #Object,
 	#instVars : [
 		'mooseModel'
 	],
-	#category : 'MooseIDE-QueriesDashboard-Queries',
-	#package : 'MooseIDE-QueriesDashboard',
-	#tag : 'Queries'
+	#category : #'MooseIDE-QueriesDashboard-Queries'
 }
 
-{ #category : 'testing' }
+{ #category : #testing }
 MiAbstractQueriesHolder class >> canBeAppliedOnModel: aMooseModel [
 
 	^ self subclassResponsibility
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiAbstractQueriesHolder >> initializeEntities [
 
 	
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiAbstractQueriesHolder >> mooseModel [
 
 	^ mooseModel
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiAbstractQueriesHolder >> mooseModel: aMooseModel [
 
 	mooseModel := aMooseModel.

@@ -1,1 +1,1 @@
-Package { #name : 'MooseIDE-AttributedText' }
+Package { #name : #'MooseIDE-AttributedText' }

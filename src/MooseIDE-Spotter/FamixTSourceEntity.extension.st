@@ -1,6 +1,6 @@
-Extension { #name : 'FamixTSourceEntity' }
+Extension { #name : #FamixTSourceEntity }
 
-{ #category : '*MooseIDE-Spotter' }
+{ #category : #'*MooseIDE-Spotter' }
 FamixTSourceEntity >> spotterPreview: aBuilder [
 
 	^ aBuilder newCode

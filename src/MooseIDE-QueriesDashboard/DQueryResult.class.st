@@ -1,6 +1,6 @@
 Class {
-	#name : 'DQueryResult',
-	#superclass : 'Object',
+	#name : #DQueryResult,
+	#superclass : #Object,
 	#instVars : [
 		'browsers',
 		'result',
@@ -9,72 +9,70 @@ Class {
 		'group',
 		'description'
 	],
-	#category : 'MooseIDE-QueriesDashboard-Queries',
-	#package : 'MooseIDE-QueriesDashboard',
-	#tag : 'Queries'
+	#category : #'MooseIDE-QueriesDashboard-Queries'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 DQueryResult >> browsers [
 
 	^ browsers
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 DQueryResult >> browsers: anObject [
 
 	browsers := anObject
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 DQueryResult >> description [
 
 	^ description
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 DQueryResult >> description: anObject [
 
 	description := anObject
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 DQueryResult >> group [
 
 	^ group
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 DQueryResult >> group: anObject [
 
 	group := anObject
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 DQueryResult >> name [
 
 	^ name
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 DQueryResult >> name: anObject [
 
 	name := anObject
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 DQueryResult >> queryBlock [
 
 	^ queryBlock
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 DQueryResult >> queryBlock: anObject [
 
 	queryBlock := anObject
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 DQueryResult >> result [
 
 	^ result ifNil: [ result := queryBlock value ]

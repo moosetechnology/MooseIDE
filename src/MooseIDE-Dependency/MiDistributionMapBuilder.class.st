@@ -35,16 +35,18 @@ MiDistributionMapBuilder >> buildLegend [
 		          container: self canvas;
 		          title: 'Dynamic tags';
 		          onDemand: 'Legend';
-		          legendDo: [ :l | 
-			          l
-				          border: RSBorder new;
-				          color: Color white;
-				          padding: 10 ];
+		          legendDo: [ :l |
+				          l
+					          border: RSBorder new;
+					          color: Color white;
+					          padding: 10 ];
 		          yourself.
-	mapModel tagsSetting do: [ :dt | 
-		legend
-			text: dt name
-			withBoxColor: (self mapModel colorForTag: dt) ].
+
+	mapModel tagsDo: [ :dynamicTag |
+			legend
+				text: dynamicTag name
+				withBoxColor: (self mapModel colorForTag: dynamicTag) ].
+
 	legend build
 ]
 
@@ -67,40 +69,35 @@ MiDistributionMapBuilder >> buildNodeFromEntity: anEntity [
 		  yourself
 ]
 
-{ #category : 'building' }
-MiDistributionMapBuilder >> colorFor: node [
-	
-	node level > 1 ifTrue: [ ^ mapModel colorFor: node rawModel ].
-	^ Color gray
-]
-
 { #category : 'accessing' }
 MiDistributionMapBuilder >> elements [
 
 	^ mapModel entities
 ]
 
-{ #category : 'accessing' }
+{ #category : 'accessing - attributes' }
 MiDistributionMapBuilder >> menuInteraction [
-	^ menuInteraction ifNil: [ 
-		menuInteraction := RSMenuActivable new
-			menuDo: [ :menu :aShape | MiDistributionMapMenuItem 
-				buildIn: menu 
-				shape: aShape 
-				visualization: self ];
-			yourself 
-	]
+
+	^ menuInteraction ifNil: [
+			  menuInteraction := RSMenuActivable new
+				                     menuDo: [ :menu :aShape |
+						                     MiDistributionMapMenuItem
+							                     buildIn: menu
+							                     shape: aShape
+							                     visualization: self ];
+				                     yourself ]
 ]
 
 { #category : 'hooks' }
 MiDistributionMapBuilder >> nodeAnnouncer [
 	"plug new events here"
+
 	baseNode ifNotNil: [ ^ baseNode announcer ].
 	baseNode := RSComposite new
-		@ self popup;
-		@ self menuInteraction;
-		@ self highlightable;
-		yourself.
+		            @ self popup;
+		            @ self menuInteraction;
+		            @ self highlightable;
+		            yourself.
 	^ baseNode announcer
 ]
 
@@ -115,6 +112,7 @@ MiDistributionMapBuilder >> nodeLayout [
 { #category : 'building' }
 MiDistributionMapBuilder >> setColors [
 
-	rootNode children do: [ :c | 
-		c children do: [ :cc | cc color: (self colorFor: cc) ] ]
+	rootNode children do: [ :c |
+			c children do: [ :childNode |
+				childNode color: (mapModel colorFor: childNode rawModel) ] ]
 ]

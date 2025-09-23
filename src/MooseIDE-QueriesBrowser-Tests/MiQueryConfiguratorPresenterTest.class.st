@@ -1,39 +1,37 @@
 Class {
-	#name : 'MiQueryConfiguratorPresenterTest',
-	#superclass : 'MiAbstractApplicationTest',
+	#name : #MiQueryConfiguratorPresenterTest,
+	#superclass : #MiAbstractApplicationTest,
 	#instVars : [
 		'helper',
 		'presenter',
 		'browser'
 	],
-	#category : 'MooseIDE-QueriesBrowser-Tests-Queries Configuration',
-	#package : 'MooseIDE-QueriesBrowser-Tests',
-	#tag : 'Queries Configuration'
+	#category : #'MooseIDE-QueriesBrowser-Tests-Queries Configuration'
 }
 
-{ #category : 'testing' }
+{ #category : #testing }
 MiQueryConfiguratorPresenterTest class >> isAbstract [
 	^ self == MiQueryConfiguratorPresenterTest
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiQueryConfiguratorPresenterTest >> assertSubpresentersAreConfigured [
 
 	self subclassResponsibility
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 MiQueryConfiguratorPresenterTest >> classToTest [
 	^ self subclassResponsibility
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiQueryConfiguratorPresenterTest >> createNewQuery [
 
 	self subclassResponsibility
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiQueryConfiguratorPresenterTest >> createNewQueryWithoutInput [
 
 	^ self createNewQuery
@@ -41,17 +39,17 @@ MiQueryConfiguratorPresenterTest >> createNewQueryWithoutInput [
 		  yourself
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 MiQueryConfiguratorPresenterTest >> createTestHelper [
 	^FQTestsHelper new
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 MiQueryConfiguratorPresenterTest >> queryClass [
 	^ self subclassResponsibility
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 MiQueryConfiguratorPresenterTest >> resetPresenterWithEntities: aMooseGroup [
 
 	| builder superPresenter |
@@ -69,7 +67,7 @@ MiQueryConfiguratorPresenterTest >> resetPresenterWithEntities: aMooseGroup [
 	presenter := superPresenter queryConfiguratorPresenter
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 MiQueryConfiguratorPresenterTest >> setUp [
 
 	super setUp.
@@ -79,14 +77,14 @@ MiQueryConfiguratorPresenterTest >> setUp [
 	self resetPresenterWithEntities: helper classesAndMethods
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 MiQueryConfiguratorPresenterTest >> tearDown [
 
 	browser window ifNotNil: [ :window | window close ].
 	super tearDown
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiQueryConfiguratorPresenterTest >> testConfigureFor [
 
 	| newQuery |
@@ -103,7 +101,7 @@ MiQueryConfiguratorPresenterTest >> testConfigureFor [
 	self assert: presenter query equals: newQuery
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiQueryConfiguratorPresenterTest >> testConfigureForWithNoEntities [
 
 	| newQuery |
@@ -122,7 +120,7 @@ MiQueryConfiguratorPresenterTest >> testConfigureForWithNoEntities [
 	self assert: presenter query equals: newQuery
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiQueryConfiguratorPresenterTest >> testImpossibleQueryInitialization [
 
 	self resetPresenterWithEntities: helper noEntities.
@@ -130,13 +128,13 @@ MiQueryConfiguratorPresenterTest >> testImpossibleQueryInitialization [
 	self deny: presenter query isValid
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiQueryConfiguratorPresenterTest >> testIsQueryUsed [
 
 	self deny: (presenter isQueryUsed: FQBooleanQuery new)
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiQueryConfiguratorPresenterTest >> testNormalQueryInitialization [
 
 	self assert: presenter query class identicalTo: self queryClass.
@@ -144,19 +142,19 @@ MiQueryConfiguratorPresenterTest >> testNormalQueryInitialization [
 	"self assert: presenter query isValid"
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiQueryConfiguratorPresenterTest >> testPresenters [
 
 	self subclassResponsibility
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiQueryConfiguratorPresenterTest >> testPresentersOnImpossibleQuery [
 
 	self subclassResponsibility
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiQueryConfiguratorPresenterTest >> testQueryValidity [
 
 	^ self subclassResponsibility

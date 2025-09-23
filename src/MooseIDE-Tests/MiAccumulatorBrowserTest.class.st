@@ -52,10 +52,10 @@ MiAccumulatorBrowserTest >> testClearEntities [
 
 	browser followEntity: self mooseObjects.
 
-	self denyEmpty: browser model entities.
+	self denyEmpty: browser specModel entities.
 
 	browser btnClear click.
-	self assertEmpty: browser model entities
+	self assertEmpty: browser specModel entities
 ]
 
 { #category : 'tests - buses' }
@@ -75,22 +75,21 @@ MiAccumulatorBrowserTest >> testFollowBusTriggersSelectEntity [
 { #category : 'running' }
 MiAccumulatorBrowserTest >> testFollowEntity [
 
-	self assertEmpty: browser model entities.
+	self assertEmpty: browser specModel entities.
 
 	browser followEntity: self mooseObjects.
 
-	self assert: browser model entities size equals: 2
+	self assert: browser specModel entities size equals: 2
 ]
 
 { #category : 'running' }
 MiAccumulatorBrowserTest >> testMiSelectedItemWithSelection [
 
 	| entities |
-
 	entities := self mooseObjects.
 
 	browser followEntity: entities.
-	browser model selectedEntities: { entities first }.
+	browser specModel selectedEntities: { entities first }.
 
 	self assert: browser miSelectedItem size equals: 1
 ]
@@ -107,15 +106,14 @@ MiAccumulatorBrowserTest >> testMiSelectedItemWithoutSelection [
 MiAccumulatorBrowserTest >> testRemoveEntities [
 
 	| entities |
-
 	entities := self mooseObjects.
 
 	browser followEntity: entities.
-	browser model selectedEntities: { entities first }.
+	browser specModel selectedEntities: { entities first }.
 
-	self assert: browser model entities size equals: 2.
+	self assert: browser specModel entities size equals: 2.
 
 	browser btnRemove click.
 
-	self assert: browser model entities size equals: 1
+	self assert: browser specModel entities size equals: 1
 ]

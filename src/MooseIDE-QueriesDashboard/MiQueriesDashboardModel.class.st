@@ -1,22 +1,20 @@
 Class {
-	#name : 'MiQueriesDashboardModel',
-	#superclass : 'Object',
+	#name : #MiQueriesDashboardModel,
+	#superclass : #Object,
 	#instVars : [
 		'queries',
 		'mooseModel'
 	],
-	#category : 'MooseIDE-QueriesDashboard-Browser',
-	#package : 'MooseIDE-QueriesDashboard',
-	#tag : 'Browser'
+	#category : #'MooseIDE-QueriesDashboard-Browser'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiQueriesDashboardModel >> mooseModel [
 
 	^ mooseModel
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiQueriesDashboardModel >> mooseModel: anObject [
 
 	mooseModel := anObject

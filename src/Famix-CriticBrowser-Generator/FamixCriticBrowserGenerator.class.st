@@ -1,6 +1,6 @@
 Class {
-	#name : 'FamixCriticBrowserGenerator',
-	#superclass : 'FamixMetamodelGenerator',
+	#name : #FamixCriticBrowserGenerator,
+	#superclass : #FamixMetamodelGenerator,
 	#instVars : [
 		'violation',
 		'context',
@@ -9,28 +9,27 @@ Class {
 		'rootContext',
 		'mooseObject'
 	],
-	#category : 'Famix-CriticBrowser-Generator',
-	#package : 'Famix-CriticBrowser-Generator'
+	#category : #'Famix-CriticBrowser-Generator'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 FamixCriticBrowserGenerator class >> packageName [
 
 	^ #'Famix-CriticBrowser-Entities'
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 FamixCriticBrowserGenerator class >> prefix [
 
 	^ #'FamixCB'
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 FamixCriticBrowserGenerator class >> submetamodels [
 	^ { FamixGenerator . MooseModelGenerator }
 ]
 
-{ #category : 'definition' }
+{ #category : #definition }
 FamixCriticBrowserGenerator >> defineClasses [
 
 	super defineClasses.
@@ -43,7 +42,7 @@ FamixCriticBrowserGenerator >> defineClasses [
 	mooseObject := self remoteEntity: #Object withPrefix: #Moose
 ]
 
-{ #category : 'definition' }
+{ #category : #definition }
 FamixCriticBrowserGenerator >> defineHierarchy [
 
 	tRuleComponent --|> #TNamedEntity.
@@ -52,7 +51,7 @@ FamixCriticBrowserGenerator >> defineHierarchy [
 	condition --|> tRuleComponent
 ]
 
-{ #category : 'definition' }
+{ #category : #definition }
 FamixCriticBrowserGenerator >> defineProperties [
 
 	(tRuleComponent property: #summary type: #String) comment:
@@ -65,7 +64,7 @@ FamixCriticBrowserGenerator >> defineProperties [
 		'Severity for the violations of this condition'
 ]
 
-{ #category : 'definition' }
+{ #category : #definition }
 FamixCriticBrowserGenerator >> defineRelations [
 	super defineRelations.
 			
@@ -94,7 +93,7 @@ FamixCriticBrowserGenerator >> defineRelations [
 			comment: 'Every context that the entity is a part of.')
 ]
 
-{ #category : 'definition' }
+{ #category : #definition }
 FamixCriticBrowserGenerator >> defineTraits [
 
 	super defineTraits.

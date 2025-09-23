@@ -12,13 +12,13 @@ MiButterflyRemoveLevelMenuItem >> execute [
 	visualization removeLevel
 ]
 
-{ #category : 'execution' }
+{ #category : 'accessing' }
 MiButterflyRemoveLevelMenuItem >> label [
 
 	^ 'Remove external layer'
 ]
 
-{ #category : 'execution' }
+{ #category : 'accessing' }
 MiButterflyRemoveLevelMenuItem >> order [
 
 	^ 0

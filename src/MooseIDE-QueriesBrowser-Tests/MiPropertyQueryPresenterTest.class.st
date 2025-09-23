@@ -1,17 +1,15 @@
 Class {
-	#name : 'MiPropertyQueryPresenterTest',
-	#superclass : 'MiQueryConfiguratorPresenterTest',
-	#category : 'MooseIDE-QueriesBrowser-Tests-Queries Configuration',
-	#package : 'MooseIDE-QueriesBrowser-Tests',
-	#tag : 'Queries Configuration'
+	#name : #MiPropertyQueryPresenterTest,
+	#superclass : #MiQueryConfiguratorPresenterTest,
+	#category : #'MooseIDE-QueriesBrowser-Tests-Queries Configuration'
 }
 
-{ #category : 'testing' }
+{ #category : #testing }
 MiPropertyQueryPresenterTest class >> isAbstract [
 	^ self == MiPropertyQueryPresenterTest
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiPropertyQueryPresenterTest >> assertPropertiesDropList [
 
 	self
@@ -22,12 +20,12 @@ MiPropertyQueryPresenterTest >> assertPropertiesDropList [
 		hasSameElements: presenter query availableProperties.
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 MiPropertyQueryPresenterTest >> queryClass [
 	^ self subclassResponsibility
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiPropertyQueryPresenterTest >> testMatchesQuery [
 
 	presenter propertyDropList selectIndex: 2.
@@ -36,7 +34,7 @@ MiPropertyQueryPresenterTest >> testMatchesQuery [
 		equals: presenter propertyDropList selectedItem
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiPropertyQueryPresenterTest >> testNoAvailableProperties [
 
 	self resetPresenterWithEntities: helper noEntities.
@@ -45,13 +43,13 @@ MiPropertyQueryPresenterTest >> testNoAvailableProperties [
 		identicalTo: NoPossibleQueryPresenter
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiPropertyQueryPresenterTest >> testPresenters [
 
 	self assertPropertiesDropList
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiPropertyQueryPresenterTest >> testPresentersOnImpossibleQuery [
 
 	self resetPresenterWithEntities: helper noEntities.
@@ -61,7 +59,7 @@ MiPropertyQueryPresenterTest >> testPresentersOnImpossibleQuery [
 		identicalTo: NoPossibleQueryPresenter
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiPropertyQueryPresenterTest >> testQueryMatchesOwnerQuery [
 
 	self assert: presenter query equals: presenter owner query.
@@ -69,7 +67,7 @@ MiPropertyQueryPresenterTest >> testQueryMatchesOwnerQuery [
 	self assert: presenter query equals: presenter owner query
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiPropertyQueryPresenterTest >> testUpdateDoesNotChangeOwnerPresenter [
 
 	presenter propertyDropList selectIndex: 2.

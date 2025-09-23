@@ -2,8 +2,8 @@
 A FamixCBContextTest is a test class for testing the behavior of FamixCBContext
 "
 Class {
-	#name : 'FamixCBContextTest',
-	#superclass : 'TestCase',
+	#name : #FamixCBContextTest,
+	#superclass : #TestCase,
 	#instVars : [
 		'contextEntity',
 		'childContextEntity',
@@ -14,11 +14,10 @@ Class {
 		'condition',
 		'violatingEntity'
 	],
-	#category : 'Famix-CriticBrowser-Tests',
-	#package : 'Famix-CriticBrowser-Tests'
+	#category : #'Famix-CriticBrowser-Tests'
 }
 
-{ #category : 'running' }
+{ #category : #running }
 FamixCBContextTest >> setUp [
 
 	super setUp.
@@ -48,7 +47,7 @@ FamixCBContextTest >> setUp [
 				              '[ :entity | entity name = ''Violation'' ]')
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 FamixCBContextTest >> testAddChild [
 
 	context := FamixCBContext named: 'context' on: '[ :col | col ]'.
@@ -71,7 +70,7 @@ FamixCBContextTest >> testAddChild [
 	self assert: childContext parent equals: context
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 FamixCBContextTest >> testAllParents [
 
 	| parent1 parent2 |
@@ -90,7 +89,7 @@ FamixCBContextTest >> testAllParents [
 		hasSameElements: { parent2 }
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 FamixCBContextTest >> testCustomContextFilter [
 
 	| customFilterClass customCondition |
@@ -112,7 +111,7 @@ FamixCBContextTest >> testCustomContextFilter [
 			childContextEntity }
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 FamixCBContextTest >> testPutViolationsInto [
 	| violations |
 	
@@ -126,7 +125,7 @@ FamixCBContextTest >> testPutViolationsInto [
 	self assert: (violations at: condition) anyOne violatingEntity equals: violatingEntity.
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 FamixCBContextTest >> testRemoveChild [
 	
 	context addChild: condition; addChild: childContext.
@@ -137,7 +136,7 @@ FamixCBContextTest >> testRemoveChild [
 	self assert: condition parent equals: nil
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 FamixCBContextTest >> testResetExecutionOfTree [
 	
 	context addChild: childContext.
@@ -151,7 +150,7 @@ FamixCBContextTest >> testResetExecutionOfTree [
 	self assert: childContext entities isEmpty equals: true
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 FamixCBContextTest >> testRunDownTreeWithCallback [
 	context addChild: childContext.
 	context runDownTree: { contextEntity. entity. childContextEntity. entityInvalid }
@@ -166,7 +165,7 @@ FamixCBContextTest >> testRunDownTreeWithCallback [
 	
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 FamixCBContextTest >> testRunOn [
 	
 	context runOn: { contextEntity. entity. }.
@@ -176,7 +175,7 @@ FamixCBContextTest >> testRunOn [
 	
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 FamixCBContextTest >> testRunUpTree [
 	| rootContext |
 	rootContext := FamixCBRootContext named: 'test' on: '[ :col | col ]'.

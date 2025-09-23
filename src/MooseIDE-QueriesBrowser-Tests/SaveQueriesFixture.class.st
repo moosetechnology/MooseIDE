@@ -4,8 +4,8 @@ I am a fixture for MiSaveQueriesCommandTest.
 See https://i.imgur.com/n6dfMHQ.png
 "
 Class {
-	#name : 'SaveQueriesFixture',
-	#superclass : 'Object',
+	#name : #SaveQueriesFixture,
+	#superclass : #Object,
 	#instVars : [
 		'q1',
 		'q2',
@@ -18,12 +18,10 @@ Class {
 		'q9',
 		'q10'
 	],
-	#category : 'MooseIDE-QueriesBrowser-Tests-Commands',
-	#package : 'MooseIDE-QueriesBrowser-Tests',
-	#tag : 'Commands'
+	#category : #'MooseIDE-QueriesBrowser-Tests-Commands'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 SaveQueriesFixture >> exampleForCopyingQueries [
 
 	| root firstLevel secondLevel thirdLevel |
@@ -43,7 +41,7 @@ SaveQueriesFixture >> exampleForCopyingQueries [
 		  thirdLevel }
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 SaveQueriesFixture >> expectedChildrenInPlaceOrder [
 
 	^ {
@@ -53,7 +51,7 @@ SaveQueriesFixture >> expectedChildrenInPlaceOrder [
 		q4. q9 }
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 SaveQueriesFixture >> expectedTopologicalOrder [
 
 	^ {
@@ -63,7 +61,7 @@ SaveQueriesFixture >> expectedTopologicalOrder [
 		q9 }					"Level 3"
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 SaveQueriesFixture >> initialize [
 
 	q1 := FQBooleanQuery property: #isDead.
@@ -91,7 +89,7 @@ SaveQueriesFixture >> initialize [
 	q9 beChildOf: q4
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 SaveQueriesFixture >> unsortedQueries [
 
 	"Besides the example in the image, we change the order of the children"

@@ -1,6 +1,6 @@
-Extension { #name : 'MiInspectorBrowser' }
+Extension { #name : #MiInspectorBrowser }
 
-{ #category : '*MooseIDE-NewTools-Tests' }
+{ #category : #'*MooseIDE-NewTools-Tests' }
 MiInspectorBrowser >> miInspector [
 	^ mainPresenter
 ]

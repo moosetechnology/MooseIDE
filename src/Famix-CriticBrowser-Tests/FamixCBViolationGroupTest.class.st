@@ -2,19 +2,18 @@
 A MiCBViolationGroupTest is a test class for testing the behavior of MiCBViolationGroup
 "
 Class {
-	#name : 'FamixCBViolationGroupTest',
-	#superclass : 'TestCase',
+	#name : #FamixCBViolationGroupTest,
+	#superclass : #TestCase,
 	#instVars : [
 		'violation1',
 		'violation2',
 		'group',
 		'rule'
 	],
-	#category : 'Famix-CriticBrowser-Tests',
-	#package : 'Famix-CriticBrowser-Tests'
+	#category : #'Famix-CriticBrowser-Tests'
 }
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 FamixCBViolationGroupTest >> setUp [
 	rule := FamixCBCondition named: 'test' on: (FamixCBQueryHandler on: '[ :entity | true ]').
 	violation1 := FamixCBViolation condition: rule violatedBy: FamixJavaMethod new.
@@ -22,12 +21,12 @@ FamixCBViolationGroupTest >> setUp [
 	group := { violation1. violation2 } asMooseGroup specialize.
 ]
 
-{ #category : 'test' }
+{ #category : #test }
 FamixCBViolationGroupTest >> testAllViolatingEntitiesType [
 	self assertCollection: group allViolatingEntitiesType includesAll: { FamixJavaMethod. FamixJavaAttribute }
 ]
 
-{ #category : 'test' }
+{ #category : #test }
 FamixCBViolationGroupTest >> testAllWithViolatingEntitiesType [
 	self assert: (group allWithViolatingEntitiesType: FamixJavaMethod) size equals: 1.
 	self assertCollection: (group allWithViolatingEntitiesType: FamixJavaMethod) includesAll: { violation1 }.

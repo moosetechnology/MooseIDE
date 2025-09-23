@@ -1,51 +1,50 @@
 Class {
-	#name : 'MiCBRuleComponentBuilderPresenterTest',
-	#superclass : 'MiAbstractApplicationTest',
+	#name : #MiCBRuleComponentBuilderPresenterTest,
+	#superclass : #MiAbstractApplicationTest,
 	#instVars : [
 		'browser',
 		'contextBuilder'
 	],
-	#category : 'MooseIDE-CriticBrowser-Tests',
-	#package : 'MooseIDE-CriticBrowser-Tests'
+	#category : #'MooseIDE-CriticBrowser-Tests'
 }
 
-{ #category : 'testing' }
+{ #category : #testing }
 MiCBRuleComponentBuilderPresenterTest class >> isAbstract [
 
 	^ self == MiCBRuleComponentBuilderPresenterTest
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiCBRuleComponentBuilderPresenterTest >> builderCodeInputField [
 
 	^ contextBuilder presenterAt: #codeInputField
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiCBRuleComponentBuilderPresenterTest >> builderSummaryField [
 
 	^ contextBuilder presenterAt: #summaryField
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiCBRuleComponentBuilderPresenterTest >> builderTitleField [
 
 	^ contextBuilder presenterAt: #titleField
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 MiCBRuleComponentBuilderPresenterTest >> otherComponent [
 
 	self subclassResponsibility
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 MiCBRuleComponentBuilderPresenterTest >> ruleComponentToEdit [
 
 	self subclassResponsibility
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 MiCBRuleComponentBuilderPresenterTest >> setUp [
 
 	super setUp.
@@ -53,36 +52,36 @@ MiCBRuleComponentBuilderPresenterTest >> setUp [
 	(browser presenterAt: #rules) selectPath: { 1 }
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 MiCBRuleComponentBuilderPresenterTest >> setUpBuilderAsCreator [
 
-	contextBuilder := self toolClass on: browser model
+	contextBuilder := self toolClass on: browser specModel
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 MiCBRuleComponentBuilderPresenterTest >> setUpBuilderAsEditor [
 
 	| contextToEdit |
 	contextToEdit := self ruleComponentToEdit.
 
-	browser model addChildToRootContext: contextToEdit.
+	browser specModel addChildToRootContext: contextToEdit.
 	browser updateRulesList.
 
 	(browser presenterAt: #rules) selectItem: contextToEdit.
 
-	contextBuilder := (self toolClass on: browser model)
-		                        beForEdition;
-		                        yourself
+	contextBuilder := (self toolClass on: browser specModel)
+		                  beForEdition;
+		                  yourself
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 MiCBRuleComponentBuilderPresenterTest >> tearDown [
 
 	browser ifNotNil: [ browser withWindowDo: [ :window | window close ] ].
 	super tearDown
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiCBRuleComponentBuilderPresenterTest >> testAddNewComponent [
 
 	self setUpBuilderAsCreator.
@@ -92,13 +91,13 @@ MiCBRuleComponentBuilderPresenterTest >> testAddNewComponent [
 
 	contextBuilder addNewComponent.
 
-	self assert: browser model rootContext children size equals: 1.
+	self assert: browser specModel rootContext children size equals: 1.
 	self
-		assert: browser model rootContext children anyOne name
+		assert: browser specModel rootContext children anyOne name
 		equals: 'test'
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiCBRuleComponentBuilderPresenterTest >> testEditComponent [
 
 	| componentToEdit otherComponent |
@@ -120,7 +119,7 @@ MiCBRuleComponentBuilderPresenterTest >> testEditComponent [
 	self assert: componentToEdit summary equals: otherComponent summary
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiCBRuleComponentBuilderPresenterTest >> testFillWithRuleComponent [
 
 	| component |
@@ -136,7 +135,7 @@ MiCBRuleComponentBuilderPresenterTest >> testFillWithRuleComponent [
 	self assert: self builderSummaryField text equals: component summary
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiCBRuleComponentBuilderPresenterTest >> toolClass [
 
 	self subclassResponsibility

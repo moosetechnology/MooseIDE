@@ -1,30 +1,28 @@
 Class {
-	#name : 'FamixCBViolationGroup',
-	#superclass : 'MooseSpecializedGroup',
-	#category : 'Famix-CriticBrowser-Entities-Group',
-	#package : 'Famix-CriticBrowser-Entities',
-	#tag : 'Group'
+	#name : #FamixCBViolationGroup,
+	#superclass : #MooseSpecializedGroup,
+	#category : #'Famix-CriticBrowser-Entities-Group'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 FamixCBViolationGroup >> allEntities [
 	^ (self collect: [ :each | each violatingEntity ]) asMooseGroup
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 FamixCBViolationGroup >> allViolatingEntitiesType [
 "returns all the different types of the violating entities"
 	^ self collectAsSet: [ :each | each violatingEntity class ]
 	
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 FamixCBViolationGroup >> allWithViolatingEntitiesType: aType [
 "returns every violation whose entity is of type aType"
 	^ self select: [ :violation | violation violatingEntity class = aType ]
 ]
 
-{ #category : 'naming' }
+{ #category : #naming }
 FamixCBViolationGroup >> stringForCBDescription [
 "returns a string fitting for a description used in the model critic browser"
 	^ String streamContents: [ :s | 

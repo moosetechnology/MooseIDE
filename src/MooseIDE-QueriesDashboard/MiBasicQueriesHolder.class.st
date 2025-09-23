@@ -1,6 +1,6 @@
 Class {
-	#name : 'MiBasicQueriesHolder',
-	#superclass : 'MiAbstractQueriesHolder',
+	#name : #MiBasicQueriesHolder,
+	#superclass : #MiAbstractQueriesHolder,
 	#instVars : [
 		'classes',
 		'packages',
@@ -9,18 +9,16 @@ Class {
 		'withAnnotation',
 		'methods'
 	],
-	#category : 'MooseIDE-QueriesDashboard-Queries',
-	#package : 'MooseIDE-QueriesDashboard',
-	#tag : 'Queries'
+	#category : #'MooseIDE-QueriesDashboard-Queries'
 }
 
-{ #category : 'testing' }
+{ #category : #testing }
 MiBasicQueriesHolder class >> canBeAppliedOnModel: aMooseModel [
 
 	^ false
 ]
 
-{ #category : 'queries - class' }
+{ #category : #'queries - class' }
 MiBasicQueriesHolder >> abstractClassesWithoutSubclass [
 		<query>
 	^ DQueryResult new
@@ -31,19 +29,19 @@ MiBasicQueriesHolder >> abstractClassesWithoutSubclass [
 		  yourself
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiBasicQueriesHolder >> classes [
 
 	^ classes
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiBasicQueriesHolder >> classes: anObject [
 
 	classes := anObject
 ]
 
-{ #category : 'queries - method' }
+{ #category : #'queries - method' }
 MiBasicQueriesHolder >> classesWhoseAmethodHasACyclomaticComplexitySupTo: aNumber [
 		<query>
 	^ DQueryResult new
@@ -54,7 +52,7 @@ MiBasicQueriesHolder >> classesWhoseAmethodHasACyclomaticComplexitySupTo: aNumbe
 		  yourself
 ]
 
-{ #category : 'queries - class' }
+{ #category : #'queries - class' }
 MiBasicQueriesHolder >> classesWithANumberOfAttributesSupTo: aNumber [
 		<query>
 	^ DQueryResult new
@@ -65,7 +63,7 @@ MiBasicQueriesHolder >> classesWithANumberOfAttributesSupTo: aNumber [
 		  yourself
 ]
 
-{ #category : 'queries - class' }
+{ #category : #'queries - class' }
 MiBasicQueriesHolder >> classesWithANumberOfLOCSupTo: aNumber [
 		<query>
 	^ DQueryResult new
@@ -76,7 +74,7 @@ MiBasicQueriesHolder >> classesWithANumberOfLOCSupTo: aNumber [
 		  yourself
 ]
 
-{ #category : 'queries - class' }
+{ #category : #'queries - class' }
 MiBasicQueriesHolder >> classesWithANumberOfMethodsSupTo: aNumber [
 		<query>
 	^ DQueryResult new
@@ -87,7 +85,7 @@ MiBasicQueriesHolder >> classesWithANumberOfMethodsSupTo: aNumber [
 		  yourself
 ]
 
-{ #category : 'queries - class' }
+{ #category : #'queries - class' }
 MiBasicQueriesHolder >> deadClasses [
 		<query>
 	^ DQueryResult new
@@ -98,7 +96,7 @@ MiBasicQueriesHolder >> deadClasses [
 		  yourself
 ]
 
-{ #category : 'queries - method' }
+{ #category : #'queries - method' }
 MiBasicQueriesHolder >> deadMethods [
 
 	<query>
@@ -111,7 +109,7 @@ MiBasicQueriesHolder >> deadMethods [
 		  yourself
 ]
 
-{ #category : 'queries - method' }
+{ #category : #'queries - method' }
 MiBasicQueriesHolder >> deprecatedAndCalledMethods [
 
 	<query>
@@ -126,7 +124,7 @@ MiBasicQueriesHolder >> deprecatedAndCalledMethods [
 		  yourself
 ]
 
-{ #category : 'queries - method' }
+{ #category : #'queries - method' }
 MiBasicQueriesHolder >> deprecatedMethods [
 
 	<query>
@@ -142,7 +140,7 @@ MiBasicQueriesHolder >> deprecatedMethods [
 		  yourself
 ]
 
-{ #category : 'query - enum' }
+{ #category : #'query - enum' }
 MiBasicQueriesHolder >> enumWithANumberOfValuesSupTo: aNumber [
 		<query>
 	^ DQueryResult new
@@ -153,7 +151,7 @@ MiBasicQueriesHolder >> enumWithANumberOfValuesSupTo: aNumber [
 		  yourself
 ]
 
-{ #category : 'query - enum' }
+{ #category : #'query - enum' }
 MiBasicQueriesHolder >> enumWithMethods [
 		<query>
 	^ DQueryResult new
@@ -164,19 +162,19 @@ MiBasicQueriesHolder >> enumWithMethods [
 		  yourself
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiBasicQueriesHolder >> enums [
 
 	^ enums
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiBasicQueriesHolder >> enums: anObject [
 
 	enums := anObject
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiBasicQueriesHolder >> initializeAnnotationTypes [
 
 	| tAnnotationType |
@@ -191,7 +189,7 @@ MiBasicQueriesHolder >> initializeAnnotationTypes [
 		  self mooseModel allAnnotationTypes  ]
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiBasicQueriesHolder >> initializeClasses [
 
 	| exception |
@@ -205,7 +203,7 @@ MiBasicQueriesHolder >> initializeClasses [
 
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiBasicQueriesHolder >> initializeEntities [
 
 	classes := self initializeClasses .
@@ -216,7 +214,7 @@ MiBasicQueriesHolder >> initializeEntities [
 	
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiBasicQueriesHolder >> initializeEnums [
 
 	| tEnum |
@@ -231,7 +229,7 @@ MiBasicQueriesHolder >> initializeEnums [
 		  self mooseModel allEnums reject: [ :e | e isStub ] ]
 ]
 
-{ #category : 'queries - packages' }
+{ #category : #'queries - packages' }
 MiBasicQueriesHolder >> leafPackages [
 		<query>
 	^ DQueryResult new
@@ -242,19 +240,19 @@ MiBasicQueriesHolder >> leafPackages [
 		  yourself
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiBasicQueriesHolder >> methods [
 
 	^ methods
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiBasicQueriesHolder >> methods: anObject [
 
 	methods := anObject
 ]
 
-{ #category : 'queries - method' }
+{ #category : #'queries - method' }
 MiBasicQueriesHolder >> methodsAccessingMoreAttributesThan: aNumber [
 
 	<query>
@@ -267,7 +265,7 @@ MiBasicQueriesHolder >> methodsAccessingMoreAttributesThan: aNumber [
 		  yourself
 ]
 
-{ #category : 'queries - method' }
+{ #category : #'queries - method' }
 MiBasicQueriesHolder >> methodsWithACyclomaticComplexitySupTo: aNumber [
 		<query>
 	^ DQueryResult new
@@ -278,7 +276,7 @@ MiBasicQueriesHolder >> methodsWithACyclomaticComplexitySupTo: aNumber [
 		  yourself
 ]
 
-{ #category : 'queries - method' }
+{ #category : #'queries - method' }
 MiBasicQueriesHolder >> methodsWithANumberOfAccessesSupTo: aNumber [
 		<query>
 	^ DQueryResult new
@@ -289,7 +287,7 @@ MiBasicQueriesHolder >> methodsWithANumberOfAccessesSupTo: aNumber [
 		  yourself
 ]
 
-{ #category : 'queries - class' }
+{ #category : #'queries - class' }
 MiBasicQueriesHolder >> notImplementedInterfaces [
 		<query>
 		| tInterface |
@@ -304,19 +302,19 @@ MiBasicQueriesHolder >> notImplementedInterfaces [
 		  yourself
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiBasicQueriesHolder >> packages [
 
 	^ packages
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiBasicQueriesHolder >> packages: anObject [
 
 	packages := anObject
 ]
 
-{ #category : 'queries - packages' }
+{ #category : #'queries - packages' }
 MiBasicQueriesHolder >> packagesWithANumberOfClassesSupTo: aNumber [
 		<query>
 	^ DQueryResult new
@@ -327,7 +325,7 @@ MiBasicQueriesHolder >> packagesWithANumberOfClassesSupTo: aNumber [
 		  yourself
 ]
 
-{ #category : 'queries - packages' }
+{ #category : #'queries - packages' }
 MiBasicQueriesHolder >> packagesWithOneClass [
 		<query>
 	^ DQueryResult new
@@ -338,13 +336,13 @@ MiBasicQueriesHolder >> packagesWithOneClass [
 		  yourself
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiBasicQueriesHolder >> withAnnotation [
 
 	^ withAnnotation
 ]
 
-{ #category : 'queries - method' }
+{ #category : #'queries - method' }
 MiBasicQueriesHolder >> withEnum [ 
 	^ withEnum
 ]

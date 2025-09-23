@@ -1,17 +1,15 @@
 Class {
-	#name : 'MiClipboardCopyCommandTest',
-	#superclass : 'MiAbstractApplicationTest',
+	#name : #MiClipboardCopyCommandTest,
+	#superclass : #MiAbstractApplicationTest,
 	#instVars : [
 		'presenter',
 		'browser',
 		'helper'
 	],
-	#category : 'MooseIDE-QueriesBrowser-Tests-Queries Browser',
-	#package : 'MooseIDE-QueriesBrowser-Tests',
-	#tag : 'Queries Browser'
+	#category : #'MooseIDE-QueriesBrowser-Tests-Queries Browser'
 }
 
-{ #category : 'running' }
+{ #category : #running }
 MiClipboardCopyCommandTest >> setUp [
 
 	| parentPresenter |
@@ -32,14 +30,14 @@ MiClipboardCopyCommandTest >> setUp [
 	presenter updateQueryConfiguratorPresenterFor: FQStringQuery
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 MiClipboardCopyCommandTest >> tearDown [
 
 	browser window ifNotNil: [ :window | window close ].
 	super tearDown
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiClipboardCopyCommandTest >> testExecuteCommand [
 
 	| newQuery rootQuery |

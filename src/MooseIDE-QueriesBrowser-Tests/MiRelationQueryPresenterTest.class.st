@@ -1,12 +1,10 @@
 Class {
-	#name : 'MiRelationQueryPresenterTest',
-	#superclass : 'MiQueryConfiguratorPresenterTest',
-	#category : 'MooseIDE-QueriesBrowser-Tests-Queries Configuration',
-	#package : 'MooseIDE-QueriesBrowser-Tests',
-	#tag : 'Queries Configuration'
+	#name : #MiRelationQueryPresenterTest,
+	#superclass : #MiQueryConfiguratorPresenterTest,
+	#category : #'MooseIDE-QueriesBrowser-Tests-Queries Configuration'
 }
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiRelationQueryPresenterTest >> assertSubpresentersAreConfigured [
 
 	self
@@ -14,13 +12,13 @@ MiRelationQueryPresenterTest >> assertSubpresentersAreConfigured [
 		equals: self createNewQuery relationName
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 MiRelationQueryPresenterTest >> classToTest [
 
 	^ MiRelationQueryPresenter
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiRelationQueryPresenterTest >> createNewQuery [
 
 	| rootQuery |
@@ -31,13 +29,13 @@ MiRelationQueryPresenterTest >> createNewQuery [
 	^ FQRelationQuery defaultForParent: rootQuery
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 MiRelationQueryPresenterTest >> queryClass [
 
 	^ FQRelationQuery
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiRelationQueryPresenterTest >> testPresenters [
 
 	self
@@ -45,7 +43,7 @@ MiRelationQueryPresenterTest >> testPresenters [
 		identicalTo: SpDropListPresenter
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiRelationQueryPresenterTest >> testPresentersOnImpossibleQuery [
 
 	self resetPresenterWithEntities: helper noEntities.
@@ -54,7 +52,7 @@ MiRelationQueryPresenterTest >> testPresentersOnImpossibleQuery [
 		identicalTo: NoPossibleQueryPresenter
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiRelationQueryPresenterTest >> testQueryValidity [
 
 	self deny: presenter query isValid.

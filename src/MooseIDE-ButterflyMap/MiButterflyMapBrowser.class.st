@@ -91,13 +91,7 @@ MiButterflyMapBrowser >> canFollowEntity: anObject [
 MiButterflyMapBrowser >> followEntity: anEntity [
 
 	super followEntity: anEntity.
-	self model currentEntity: anEntity
-]
-
-{ #category : 'testing' }
-MiButterflyMapBrowser >> hasSettings [
-
-	^ true
+	self specModel currentEntity: anEntity
 ]
 
 { #category : 'initialization' }

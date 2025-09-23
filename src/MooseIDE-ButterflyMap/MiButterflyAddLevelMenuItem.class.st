@@ -6,7 +6,7 @@ Class {
 	#tag : 'Menu'
 }
 
-{ #category : 'accessing' }
+{ #category : 'execution' }
 MiButterflyAddLevelMenuItem >> execute [
 
 	visualization addLevel

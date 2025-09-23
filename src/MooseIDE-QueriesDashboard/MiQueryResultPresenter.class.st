@@ -1,6 +1,6 @@
 Class {
-	#name : 'MiQueryResultPresenter',
-	#superclass : 'MiPresenter',
+	#name : #MiQueryResultPresenter,
+	#superclass : #MiPresenter,
 	#instVars : [
 		'queryResult',
 		'menu',
@@ -8,12 +8,10 @@ Class {
 		'propagateButton',
 		'descriptionButton'
 	],
-	#category : 'MooseIDE-QueriesDashboard-Browser',
-	#package : 'MooseIDE-QueriesDashboard',
-	#tag : 'Browser'
+	#category : #'MooseIDE-QueriesDashboard-Browser'
 }
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiQueryResultPresenter >> buildButtons [
 
 	| buttons comp |
@@ -79,7 +77,7 @@ MiQueryResultPresenter >> buildButtons [
 		translateTopLeftTo: 0 @ 0
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiQueryResultPresenter >> createDescriptionFor: aString [
 
 	^ aString asTextMorph
@@ -91,7 +89,7 @@ MiQueryResultPresenter >> createDescriptionFor: aString [
 		  yourself
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiQueryResultPresenter >> displayDescription [
 
 	self newPopover
@@ -101,7 +99,7 @@ MiQueryResultPresenter >> displayDescription [
 		popup
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiQueryResultPresenter >> initializeLayout [
 
 	| sep |
@@ -127,7 +125,7 @@ MiQueryResultPresenter >> initializeLayout [
 			 yourself)
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiQueryResultPresenter >> initializePresenters [
 
 	menu := self newRoassal.
@@ -139,7 +137,7 @@ MiQueryResultPresenter >> initializePresenters [
 	self initializeLayout
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiQueryResultPresenter >> popupInteraction [
 
 	^ RSMorphicPopupInteraction new
@@ -147,7 +145,7 @@ MiQueryResultPresenter >> popupInteraction [
 		  yourself
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiQueryResultPresenter >> setModelBeforeInitialization: aQueryResult [
 
 	queryResult := aQueryResult

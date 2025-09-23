@@ -6,13 +6,20 @@ Class {
 	#superclass : 'MiAbstractModel',
 	#instVars : [
 		'entities',
-		'settings',
-		'defaultChildrenQuery'
+		'baseColor',
+		'childrenQuery',
+		'tags'
 	],
 	#category : 'MooseIDE-Dependency-DistributionMap',
 	#package : 'MooseIDE-Dependency',
 	#tag : 'DistributionMap'
 }
+
+{ #category : 'accessing' }
+MiDistributionMapModel class >> defaultBaseColor [
+
+	^ Color gray
+]
 
 { #category : 'as yet unclassified' }
 MiDistributionMapModel class >> defaultDynamicTagIsDead [
@@ -45,26 +52,22 @@ MiDistributionMapModel class >> defaultDynamicTags [
 { #category : 'settings' }
 MiDistributionMapModel >> availableQueries [
 
-	^ { self defaultChildrenQuery } , browser availableQueries
+	^ self currentApplication availableQueries
+		  addFirst: self currentApplication childrenQuery;
+		  yourself
 ]
 
 { #category : 'accessing' }
 MiDistributionMapModel >> childrenFor: anEntity [
 
 	| groups dts children |
-	children := self childrenQuerySetting runOn: anEntity asMooseGroup.
-	dts := self tagsSetting.
+	children := childrenQuery runOn: anEntity asMooseGroup.
+	dts := tags.
 	groups := OrderedCollection new.
 	dts size + 1 timesRepeat: [ groups add: OrderedCollection new ].
-	children do: [ :child | 
+	children do: [ :child |
 		(groups at: 1 + (self indexOfTagFor: child)) add: child ].
 	^ groups flatCollect: [ :child | child ] as: OrderedCollection
-]
-
-{ #category : 'settings' }
-MiDistributionMapModel >> childrenQuerySetting [
-
-	^ settings getItemValue: #childrenQuery
 ]
 
 { #category : 'utilities' }
@@ -75,31 +78,36 @@ MiDistributionMapModel >> collection: collection1 hasSameElementHas: collection2
 
 { #category : 'querying' }
 MiDistributionMapModel >> colorFor: anEntity [
-	
-	| dt |
-	dt :=  (self tagFor: anEntity).
-	^ self colorForTag:  dt
-]
 
-{ #category : 'settings' }
-MiDistributionMapModel >> colorForNoTagSetting [
-	^settings getItemValue: #colorForNoTag
+	^ self colorForTag: (self tagFor: anEntity)
 ]
 
 { #category : 'querying' }
 MiDistributionMapModel >> colorForTag: aTag [
 
-	aTag color ifNotNil: [ :color | ^ color ].
-
-	^ self colorForNoTagSetting
+	^ aTag color ifNil: [ baseColor ]
 ]
 
-{ #category : 'accessing' }
-MiDistributionMapModel >> defaultChildrenQuery [
+{ #category : 'settings management' }
+MiDistributionMapModel >> currentConfiguration [
 
-	^ defaultChildrenQuery ifNil: [ 
-		  defaultChildrenQuery := FQCollectScriptQuery script: [ :entity | 
-			                          entity children ] ]
+	^ MiDistributionMapSettingsConfiguration new
+		  baseColor: baseColor;
+		  availableTags: self fetchTags;
+		  tags: tags;
+		  childrenQuery: childrenQuery;
+		  yourself
+]
+
+{ #category : 'settings management' }
+MiDistributionMapModel >> defaultConfiguration [
+
+	^ MiDistributionMapSettingsConfiguration new
+		  baseColor: self class defaultBaseColor;
+		  availableTags: self fetchTags;
+		  tags: self fetchTags;
+		  childrenQuery: self defaultChildrenQuery;
+		  yourself
 ]
 
 { #category : 'accessing' }
@@ -125,72 +133,41 @@ MiDistributionMapModel >> fetchChildrenQueries [
 MiDistributionMapModel >> fetchTags [
 	"If we ask the application, then we need the tag browser opened. So we asume a browser is opened on the entities of only one model and we ask the tags in the models of a random moose entity of the browser."
 
-	browser model entities ifNotNil: [ :ents | ents ifNotEmpty: [ ^ ents anyOne mooseModel allTags sorted: #name ascending ] ].
+	entities isEmptyOrNil ifFalse: [
+			^ entities anyOne mooseModel allTags asOrderedCollection sorted:
+				  #name ascending ].
 
 	^ #(  )
+]
+
+{ #category : 'testing' }
+MiDistributionMapModel >> hasSettings [
+
+	^ true
 ]
 
 { #category : 'accessing' }
 MiDistributionMapModel >> indexOfTagFor: anEntity [
 
-	self tagsSetting doWithIndex: [ :dt :i | 
+	tags doWithIndex: [ :dt :i |
 		(dt isApplicableTo: anEntity) ifTrue: [ ^ i ] ].
+
 	^ 0
 ]
 
 { #category : 'initialization' }
 MiDistributionMapModel >> initializeSettings [
 
-	settings := super initializeSettings
-		            "addItem: self itemChildrenBlock 		named: #childrenBlock ;"
-		            addItem: self itemColorForNoTag
-		            named: #colorForNoTag;
-		            addItem: self itemChildrenQuery named: #childrenQuery;
-		            addItem: self itemTags named: #tags;
-		            yourself
-]
-
-{ #category : 'settings' }
-MiDistributionMapModel >> itemChildrenQuery [
-
-	^ MiAbstractSettingItem droplistSetting
-		  possibleValues: self availableQueries;
-		  setValue: self defaultChildrenQuery;
-		  label: 'Children query';
-		  help: 'The query giving all the children of any displayed entity';
-		  yourself
-]
-
-{ #category : 'settings' }
-MiDistributionMapModel >> itemColorForNoTag [
-
-	^ MiAbstractSettingItem colorSetting
-		  setValue: Color gray;
-		  label: 'Color for entities without property';
-		  help:
-			  'Color to use when none of the properties apply to an entity';
-		  yourself
-]
-
-{ #category : 'settings' }
-MiDistributionMapModel >> itemTags [
-
-	^ MiAbstractSettingItem buttonWithSelectableListSetting
-		  possibleValues: self fetchTags;
-		  displayIcon: [ :tag | browser application iconForTag: tag ];
-		  display: [ :tag | tag name ];
-		  label: 'Tags';
-		  help: 'The tags used as properties to display.
-If an entity has several tags, it will get the color of the first of its tags appearing in the list';
-		  selectAll;
-		  yourself
+	baseColor := self class defaultBaseColor.
+	childrenQuery := self defaultChildrenQuery.
+	tags := self fetchTags
 ]
 
 { #category : 'querying' }
 MiDistributionMapModel >> numberOfchildrenWithProperty: aProp forNode: node [
-	
-	^(self childrenQuerySetting runOn: node asMooseGroup)
-	count: [ :child  |  aProp isApplicableTo: child]
+
+	^ (childrenQuery runOn: node asMooseGroup) count: [ :child |
+		  aProp isApplicableTo: child ]
 ]
 
 { #category : 'querying' }
@@ -201,71 +178,32 @@ MiDistributionMapModel >> orderOuterNodes: aCollectionOfNodes [
 
 	partVectors := aCollectionOfNodes
 		               collect: [ :node |
-		               AISimilarityItem with: node andAll: (self tagsSetting collect: [ :aProp | self numberOfchildrenWithProperty: aProp forNode: node ]) ]
+				               AISimilarityItem
+					               with: node
+					               andAll: (tags collect: [ :aProp |
+							                self
+								                numberOfchildrenWithProperty: aProp
+								                forNode: node ]) ]
 		               as: Array.
+
 	engine := AISeriationEngine with: partVectors.
+
 	^ engine orderDendrogramLeaves collect: #item
-]
-
-{ #category : 'settings' }
-MiDistributionMapModel >> resetChildrenQuerySetting [
-	| settingQueries environmentQueries currentSelected |
-
-	settingQueries := (settings itemNamed: #childrenQuery) possibleValues.
-	environmentQueries := self availableQueries.
-
-	(self collection: environmentQueries hasSameElementHas: settingQueries)
-	ifTrue: [ ^self ].
-
-	currentSelected := self childrenQuerySetting.
-
-	(settings itemNamed: #childrenQuery) possibleValues: environmentQueries.
-
-	(environmentQueries includes: currentSelected)
-	ifTrue: [ settings setItem: #childrenQuery value: currentSelected ]
-	ifFalse: [ settings setItem: #childrenQuery value: environmentQueries anyOne ]
-
-]
-
-{ #category : 'settings' }
-MiDistributionMapModel >> resetTagSetting [
-
-	| settingTags environmentTags |
-	settingTags := (settings itemNamed: #tags) getValue.
-	environmentTags := self fetchTags.
-
-	(self collection: environmentTags hasSameElementHas: settingTags) 
-		ifTrue: [ ^ self ].
-
-	(settings itemNamed: #tags) possibleValues: environmentTags.
-
-]
-
-{ #category : 'settings' }
-MiDistributionMapModel >> settings [
-
-	self resetChildrenQuerySetting.
-	self resetTagSetting.
-	^ settings
-]
-
-{ #category : 'accessing' }
-MiDistributionMapModel >> settingsChanged: aBoolean [
-
-	aBoolean ifTrue: [ browser runVisualization ]
 ]
 
 { #category : 'querying' }
 MiDistributionMapModel >> tagFor: anEntity [
 
-	^ self tagsSetting
-		  detect: [ :dt | dt isApplicableTo: anEntity ]
+	^ tags
+		  detect: [ :dynamicTag | dynamicTag isApplicableTo: anEntity ]
 		  ifNone: [ MiNullDynamicTag new ]
 ]
 
-{ #category : 'settings' }
-MiDistributionMapModel >> tagsSetting [
-	^settings getItemValue: #tags
+{ #category : 'enumerating' }
+MiDistributionMapModel >> tagsDo: aBlock [
+	"This method avoids breaking encapsulation"
+
+	tags do: aBlock
 ]
 
 { #category : 'accessing' }
@@ -274,4 +212,14 @@ MiDistributionMapModel >> tooManyEntities [
 	Not very brilliant, but solves https://github.com/moosetechnology/MooseIDE/issues/955"
 
 	^100
+]
+
+{ #category : 'settings management' }
+MiDistributionMapModel >> updateFromConfiguration: aConfiguration [
+
+	baseColor := aConfiguration baseColor.
+	tags := aConfiguration tags.
+	childrenQuery := aConfiguration childrenQuery.
+
+	browser runVisualization
 ]

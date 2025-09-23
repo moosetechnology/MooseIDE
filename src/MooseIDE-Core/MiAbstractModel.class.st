@@ -7,7 +7,6 @@ Class {
 	#superclass : 'Object',
 	#instVars : [
 		'browser',
-		'lastTagSelected',
 		'selectedTag'
 	],
 	#category : 'MooseIDE-Core-Browser',
@@ -34,12 +33,37 @@ MiAbstractModel >> currentApplication [
 	^ browser application
 ]
 
+{ #category : 'settings management' }
+MiAbstractModel >> currentConfiguration [
+	"Override to configure with current settings values"
+
+	self subclassResponsibility
+]
+
 { #category : 'accessing' }
 MiAbstractModel >> currentMooseModel [
-	self entities ifNil: [ ^nil ].
-	self entities ifEmpty: [ ^nil ].
-	^self entities anyOne mooseModel
-	
+
+	self entities isEmptyOrNil ifTrue: [ ^ nil ].
+
+	^ self entities anyOne mooseModel
+]
+
+{ #category : 'accessing' }
+MiAbstractModel >> defaultChildrenQuery [
+
+	^ self currentApplication defaultChildrenQuery
+]
+
+{ #category : 'settings management' }
+MiAbstractModel >> defaultConfiguration [
+	"Override to configure with default settings values"
+
+	self subclassResponsibility
+]
+
+{ #category : 'accessing' }
+MiAbstractModel >> doubleClickAction [
+	self shouldBeImplemented.
 ]
 
 { #category : 'accessing' }
@@ -47,10 +71,16 @@ MiAbstractModel >> entities [
 	self subclassResponsibility 
 ]
 
+{ #category : 'testing' }
+MiAbstractModel >> hasSettings [
+
+	^ false
+]
+
 { #category : 'initialization' }
 MiAbstractModel >> initializeSettings [
 
-	^ MiSettingsPresenter owner: self
+	"Override if necessary"
 ]
 
 { #category : 'accessing' }
@@ -59,10 +89,10 @@ MiAbstractModel >> miSelectedItem [
 	self subclassResponsibility
 ]
 
-{ #category : 'settings' }
+{ #category : 'settings management' }
 MiAbstractModel >> openSettings [
 
-	self settings open
+	^ (MiSettingsPresenter on: self) openDialog
 ]
 
 { #category : 'tagging' }
@@ -96,16 +126,11 @@ MiAbstractModel >> selectedTag: aTag [
 	selectedTag := aTag
 ]
 
-{ #category : 'settings' }
-MiAbstractModel >> settings [
-	"If browser hasSettings, then implement this method to get them"
+{ #category : 'settings management' }
+MiAbstractModel >> settingsPresenterExtent [
+	"Override to set a custom size"
 
-	self subclassResponsibility
-]
-
-{ #category : 'accessing' }
-MiAbstractModel >> settingsChanged: aBoolean [
-	"by default don't do anything"
+	^ 350 @ 300
 ]
 
 { #category : 'tagging' }
@@ -147,4 +172,11 @@ MiAbstractModel >> tagSelectedEntities [
 MiAbstractModel >> toolName [
 
 	^ browser title
+]
+
+{ #category : 'settings management' }
+MiAbstractModel >> updateFromConfiguration: aConfiguration [
+	"Override to update"
+
+	self subclassResponsibility
 ]

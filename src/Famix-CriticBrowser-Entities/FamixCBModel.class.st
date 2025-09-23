@@ -1,20 +1,18 @@
 Class {
-	#name : 'FamixCBModel',
-	#superclass : 'MooseModel',
+	#name : #FamixCBModel,
+	#superclass : #MooseModel,
 	#traits : 'FamixCBTEntityCreator + MooseTEntityCreator',
 	#classTraits : 'FamixCBTEntityCreator classTrait + MooseTEntityCreator classTrait',
-	#category : 'Famix-CriticBrowser-Entities-Model',
-	#package : 'Famix-CriticBrowser-Entities',
-	#tag : 'Model'
+	#category : #'Famix-CriticBrowser-Entities-Model'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 FamixCBModel class >> allSubmetamodelsPackagesNames [
 	<generated>
 	^ #(#'Moose-Query' #'Moose-Core' #'Famix-Traits')
 ]
 
-{ #category : 'meta' }
+{ #category : #meta }
 FamixCBModel class >> annotation [
 	<FMClass: #FamixCBModel super: #MooseModel>
 	<package: #'Famix-CriticBrowser-Entities'>

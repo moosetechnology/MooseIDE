@@ -2,13 +2,12 @@
 An AbstractSeverityTest is a test class for testing the behavior of AbstractSeverity
 "
 Class {
-	#name : 'MiCBAbstractSeverityTest',
-	#superclass : 'TestCase',
-	#category : 'MooseIDE-CriticBrowser-Tests',
-	#package : 'MooseIDE-CriticBrowser-Tests'
+	#name : #MiCBAbstractSeverityTest,
+	#superclass : #TestCase,
+	#category : #'MooseIDE-CriticBrowser-Tests'
 }
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiCBAbstractSeverityTest >> testLevelValueIsDifferentForEverySubclass [
 
 	| levels |

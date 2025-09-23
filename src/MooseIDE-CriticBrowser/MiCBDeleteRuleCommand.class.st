@@ -1,36 +1,34 @@
 Class {
-	#name : 'MiCBDeleteRuleCommand',
-	#superclass : 'MiAbstractCriticBrowserCommand',
-	#category : 'MooseIDE-CriticBrowser-Commands',
-	#package : 'MooseIDE-CriticBrowser',
-	#tag : 'Commands'
+	#name : #MiCBDeleteRuleCommand,
+	#superclass : #MiAbstractCriticBrowserCommand,
+	#category : #'MooseIDE-CriticBrowser-Commands'
 }
 
-{ #category : 'default' }
+{ #category : #default }
 MiCBDeleteRuleCommand class >> defaultIconName [
 
 	^ #smallDelete
 ]
 
-{ #category : 'default' }
+{ #category : #default }
 MiCBDeleteRuleCommand class >> defaultName [
 
 	^ 'Delete rule'
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiCBDeleteRuleCommand class >> priority [
 
 	^ 2
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 MiCBDeleteRuleCommand >> canBeExecuted [
 
 	^ self context selectedRule class ~= FamixCBRootContext
 ]
 
-{ #category : 'executing' }
+{ #category : #executing }
 MiCBDeleteRuleCommand >> execute [
 
 	self context deleteSelectedRule

@@ -2,13 +2,12 @@
 A MiCriticBrowserContextMakerPresenterTest is a test class for testing the behavior of MiCriticBrowserContextMakerPresenter
 "
 Class {
-	#name : 'MiCBContextBuilderPresenterTest',
-	#superclass : 'MiCBRuleComponentBuilderPresenterTest',
-	#category : 'MooseIDE-CriticBrowser-Tests',
-	#package : 'MooseIDE-CriticBrowser-Tests'
+	#name : #MiCBContextBuilderPresenterTest,
+	#superclass : #MiCBRuleComponentBuilderPresenterTest,
+	#category : #'MooseIDE-CriticBrowser-Tests'
 }
 
-{ #category : 'running' }
+{ #category : #running }
 MiCBContextBuilderPresenterTest >> otherComponent [
 
 	^ FamixCBContext
@@ -17,7 +16,7 @@ MiCBContextBuilderPresenterTest >> otherComponent [
 		  summary: 'Context modified by tests'
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 MiCBContextBuilderPresenterTest >> ruleComponentToEdit [
 
 	^ FamixCBContext
@@ -26,7 +25,7 @@ MiCBContextBuilderPresenterTest >> ruleComponentToEdit [
 		  summary: 'Context used in tests'
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiCBContextBuilderPresenterTest >> toolClass [
 
 	^ MiCBContextBuilderPresenter

@@ -165,12 +165,6 @@ MiDeadCodeBrowser >> selectedHeuristics: aCollection [
 	heuristicColumn selectedHeuristics: aCollection
 ]
 
-{ #category : 'accessing - private tests' }
-MiDeadCodeBrowser >> specModel [
-
-	^specModel
-]
-
 { #category : 'TOREMOVE' }
 MiDeadCodeBrowser >> toolbarHeight [
 

@@ -89,11 +89,13 @@ When the container has several attributes of different colors, the color is chos
 
 { #category : 'settings' }
 MiCoUsageMapSettings class >> browsingSettings02On: aBuilder [
+
 	<systemsettings>
 	(aBuilder group: #CoUsageMap)
 		parent: #moose;
 		label: 'Co Usage Map';
-		description: 'Alls settings concerned with co usage map browser'
+		description: 'Alls settings concerned with co usage map browser';
+		order: 10
 ]
 
 { #category : 'accessing' }

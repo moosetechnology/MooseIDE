@@ -4,7 +4,9 @@ Class {
 	#instVars : [
 		'visualization',
 		'builder',
-		'browser'
+		'browser',
+		'application',
+		'previousApplication'
 	],
 	#category : 'MooseIDE-CoUsageMap-Tests-Browser',
 	#package : 'MooseIDE-CoUsageMap-Tests',
@@ -13,36 +15,50 @@ Class {
 
 { #category : 'running' }
 MiCoUsageAbstractTest >> createTag: aName [
-	^(builder specModel currentMooseModel tagNamed: aName)
-		color: (Color red) ;
-		yourself
+
+	^ (builder specModel currentMooseModel tagNamed: aName)
+		  color: Color red;
+		  yourself
 ]
 
 { #category : 'running' }
 MiCoUsageAbstractTest >> setUp [
 
-	| browser |
 	super setUp.
+	previousApplication := MiApplication current.
+
+	application := MiTestApplication new.
+	MiApplication current: application.
 
 	browser := MiCoUsageMapBrowser
-		newApplication: MiTestApplication new
-		model: MiCoUsageMapModel new.
-	browser model followEntity: MiCoUsageTestFamixModel new allMethods.
+		           newApplication: application
+		           model: MiCoUsageMapModel new.
+
+	browser specModel followEntity:
+		MiCoUsageTestFamixModel new allMethods.
 
 	visualization := browser mapVisualization.
 
-	builder := visualization mapBuilder.
-	"builder containerEntities: browser model collectionModel"
+	builder := visualization mapBuilder
 ]
 
 { #category : 'running' }
 MiCoUsageAbstractTest >> specModel [
-	^visualization specModel
+
+	^ visualization specModel
 ]
 
 { #category : 'private - testing' }
 MiCoUsageAbstractTest >> tagsWithPalette: aCollection [
-	aCollection do: [:str |
-		(self createTag: str)
-			color: (NSScale category20 scale: str) ]
+
+	aCollection do: [ :str |
+		(self createTag: str) color: (NSScale category20 scale: str) ]
+]
+
+{ #category : 'running' }
+MiCoUsageAbstractTest >> tearDown [
+
+	MiApplication reset.
+	MiApplication current: previousApplication.
+	super tearDown
 ]

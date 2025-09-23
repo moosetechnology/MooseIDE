@@ -136,11 +136,6 @@ MiAbstractBrowser class >> isAbstract [
 	^ self == MiAbstractBrowser
 ]
 
-{ #category : 'testing' }
-MiAbstractBrowser class >> isModelImporter [
-	^false
-]
-
 { #category : 'keymaps' }
 MiAbstractBrowser class >> keyText [
 
@@ -328,11 +323,6 @@ MiAbstractBrowser class >> taskbarIcon [
 
 ]
 
-{ #category : 'testing' }
-MiAbstractBrowser >> acceptsDropFileExtension: aString [
-	^false
-]
-
 { #category : 'actions' }
 MiAbstractBrowser >> beFrozen [
 
@@ -413,8 +403,7 @@ MiAbstractBrowser >> closeSettings [
 	"to close the settings window when testing
 	Should not be used otherwise"
 
-	self hasSettings 
-	ifTrue: [ self model settings window close]
+	self hasSettings ifTrue: [ self specModel settings window close ]
 ]
 
 { #category : 'layout' }
@@ -461,7 +450,7 @@ MiAbstractBrowser >> freezeDuring: aBlock [
 { #category : 'testing' }
 MiAbstractBrowser >> hasSettings [
 
-	^false
+	^ specModel hasSettings
 ]
 
 { #category : 'testing' }
@@ -479,18 +468,11 @@ MiAbstractBrowser >> highlightEntity: anEntity [
 	
 ]
 
-{ #category : 'testing' }
-MiAbstractBrowser >> ifAutonomous: aBlock [
-	
-	self owner isNotNil and: [ 
-		self owner isWindowPresenter ifTrue: aBlock ]
-]
-
 { #category : 'initialization' }
 MiAbstractBrowser >> initialize [
 
 	super initialize.
-	self setDefaultReceivingMode.
+	self receivingMode: MiFollowMode.
 	buses := Set new
 ]
 
@@ -501,13 +483,12 @@ MiAbstractBrowser >> initializeWindow: aMiWindowPresenter [
 
 	self class shouldBuildToolbar ifTrue: [
 		aMiWindowPresenter buildToolbar ].
-	aMiWindowPresenter setContextBindingKeys.
 
-	aMiWindowPresenter whenClosedDo: [ self browserClosed ].
-	aMiWindowPresenter withAdapterPerformOrDefer: [ :anAdapter |
-		self registerToAdapterEvents: anAdapter ].
-
-	aMiWindowPresenter initialExtent: self class preferredExtent
+	aMiWindowPresenter
+		setContextBindingKeys;
+		whenClosedDo: [ self browserClosed ];
+		withAdapterPerformOrDefer: [ :anAdapter |
+			self registerToAdapterEvents: anAdapter ]
 ]
 
 { #category : 'private - for tests' }
@@ -519,11 +500,6 @@ MiAbstractBrowser >> inspector [
 { #category : 'testing' }
 MiAbstractBrowser >> isMiBrowser [
 	^ true
-]
-
-{ #category : 'testing' }
-MiAbstractBrowser >> isModelImporter [
-	^self class isModelImporter
 ]
 
 { #category : 'accessing' }
@@ -541,24 +517,36 @@ MiAbstractBrowser >> miSelectedItemToPropagate [
 
 { #category : 'accessing' }
 MiAbstractBrowser >> model [
-	^ specModel
+
+	self
+		deprecated: 'This is a getter. Lets name it correctly.'
+		transformWith: '`@receiver model' -> '`@receiver specModel'.
+	^ self specModel
 ]
 
 { #category : 'accessing' }
 MiAbstractBrowser >> model: anObject [
-	specModel := anObject
+
+	self
+		deprecated: 'This is a getter. Lets name it correctly.'
+		transformWith:
+		'`@receiver model: `@arg' -> '`@receiver specModel: `@arg'.
+	self specModel: anObject
 ]
 
-{ #category : 'testing' }
-MiAbstractBrowser >> needUpdate: anEntity [
+{ #category : 'actions' }
+MiAbstractBrowser >> openSettings [
 
-	^ anEntity ~= specModel selected
+	^ specModel openSettings
 ]
 
 { #category : 'private - accessing' }
 MiAbstractBrowser >> receiveEntity: anEntity [
 
-	"I am used by the Mi Application. You should use #globallySelect: anEntity that will transmit the message to me and the other browsers"
+	"Entry point to receiving an entity used by MiApplication.
+	This method is called when an entity has been propagated on a bus I listen.
+	See MiBus>>#globallySelect:"
+
 	receivingMode browser: self actOnEntity: anEntity.
 	self updateToolbar
 ]
@@ -594,22 +582,18 @@ MiAbstractBrowser >> registerToAdapterEvents: anAdapter [
 { #category : 'accessing' }
 MiAbstractBrowser >> selectedTag [
 
-	^ self model ifNil: [ nil ] ifNotNil: [ :model | model selectedTag ]
+	^ self specModel
+		  ifNil: [ nil ]
+		  ifNotNil: [ :model | model selectedTag ]
 ]
 
 { #category : 'accessing' }
 MiAbstractBrowser >> selectedTag: aTag [
 
-	self model
+	self specModel
 		ifNil: [ nil ]
 		ifNotNil: [ :model | model selectedTag: aTag ].
 	self updateToolbar
-]
-
-{ #category : 'initialization' }
-MiAbstractBrowser >> setDefaultReceivingMode [
-
-	self receivingMode: MiFollowMode
 ]
 
 { #category : 'initialization' }
@@ -623,15 +607,31 @@ MiAbstractBrowser >> setModelBeforeInitialization: aBrowserModel [
 { #category : 'actions' }
 MiAbstractBrowser >> settings [
 
-	self hasSettings ifTrue: [ specModel openSettings ]
+	self
+		deprecated: 'This is not a getter so it should not appear like one'
+		transformWith: '`@receiver settings' -> '`@receiver openSettings'.
+
+	self openSettings
+]
+
+{ #category : 'accessing' }
+MiAbstractBrowser >> specModel [
+
+	^ specModel
+]
+
+{ #category : 'accessing' }
+MiAbstractBrowser >> specModel: anObject [
+
+	specModel := anObject
 ]
 
 { #category : 'accessing' }
 MiAbstractBrowser >> tagList [
 
-	^self model
-		ifNil: [ #() ]
-		ifNotNil: [ :model | model tagList ]
+	^ self specModel
+		  ifNil: [ #(  ) ]
+		  ifNotNil: [ :model | model tagList ]
 ]
 
 { #category : 'accessing' }
@@ -644,7 +644,7 @@ MiAbstractBrowser >> tagName [
 { #category : 'actions' }
 MiAbstractBrowser >> tagSelectedEntities [
 
-	self model ifNotNil: [ :model | model tagSelectedEntities ]
+	self specModel ifNotNil: [ :model | model tagSelectedEntities ]
 ]
 
 { #category : 'buses' }

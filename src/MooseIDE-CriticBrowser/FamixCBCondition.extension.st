@@ -1,6 +1,6 @@
-Extension { #name : 'FamixCBCondition' }
+Extension { #name : #FamixCBCondition }
 
-{ #category : '*MooseIDE-CriticBrowser' }
+{ #category : #'*MooseIDE-CriticBrowser' }
 FamixCBCondition >> reset [
 
 	self removeAllViolations

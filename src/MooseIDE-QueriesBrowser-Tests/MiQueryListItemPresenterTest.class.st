@@ -1,23 +1,21 @@
 Class {
-	#name : 'MiQueryListItemPresenterTest',
-	#superclass : 'MiAbstractApplicationTest',
+	#name : #MiQueryListItemPresenterTest,
+	#superclass : #MiAbstractApplicationTest,
 	#instVars : [
 		'presenter',
 		'browser',
 		'helper'
 	],
-	#category : 'MooseIDE-QueriesBrowser-Tests-Queries Browser',
-	#package : 'MooseIDE-QueriesBrowser-Tests',
-	#tag : 'Queries Browser'
+	#category : #'MooseIDE-QueriesBrowser-Tests-Queries Browser'
 }
 
-{ #category : 'running' }
+{ #category : #running }
 MiQueryListItemPresenterTest >> bus [
 
 	^ self application defaultBus
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 MiQueryListItemPresenterTest >> setUp [
 
 	| parentPresenter |
@@ -38,14 +36,14 @@ MiQueryListItemPresenterTest >> setUp [
 	presenter updateQueryConfiguratorPresenterFor: FQStringQuery
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 MiQueryListItemPresenterTest >> tearDown [
 
 	browser window ifNotNil: [ :window | window close ].
 	super tearDown
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiQueryListItemPresenterTest >> testAllQueryPresentersExceptSelf [
 
 	self assert: presenter allQueryPresentersExceptSelf size equals: 0.
@@ -58,7 +56,7 @@ MiQueryListItemPresenterTest >> testAllQueryPresentersExceptSelf [
 		includesAny: (OrderedCollection with: presenter)
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiQueryListItemPresenterTest >> testConfigureFor [
 
 	| newQuery rootQuery |
@@ -79,7 +77,7 @@ MiQueryListItemPresenterTest >> testConfigureFor [
 		equals: newQuery class miPresenterClass
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiQueryListItemPresenterTest >> testIndentationSpacesPresenters [
 
 	| lowQuery2 lowQuery1 complementQuery naryQuery |
@@ -104,13 +102,13 @@ MiQueryListItemPresenterTest >> testIndentationSpacesPresenters [
 	self assert: presenter indentationSpacesPresenters size equals: 1
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiQueryListItemPresenterTest >> testName [
 
 	self assert: presenter name equals: 'Q1'
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiQueryListItemPresenterTest >> testNewQueryForClass [
 
 	"We check that the method doesn't die when calling it from non unary queries"
@@ -129,7 +127,7 @@ MiQueryListItemPresenterTest >> testNewQueryForClass [
 		equals: presenter parentQuery
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiQueryListItemPresenterTest >> testUpdateQueryConfigurationFor [
 
 	presenter updateQueryConfiguratorPresenterFor: FQBooleanQuery.
@@ -154,7 +152,7 @@ MiQueryListItemPresenterTest >> testUpdateQueryConfigurationFor [
 		equals: presenter query class miPresenterClass
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiQueryListItemPresenterTest >> testUpdateQueryConfiguratorPresenterFor [
 
 	presenter updateQueryConfiguratorPresenterFor: FQBooleanQuery.

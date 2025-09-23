@@ -11,24 +11,24 @@ MiButterflyExpandCollapseNode >> canBeExecuted [
 	^ shape model children isNotEmpty
 ]
 
-{ #category : 'testing' }
+{ #category : 'accessing' }
 MiButterflyExpandCollapseNode >> label [
 	^ shape model isExpanded
 		ifTrue: [ 'Collapse' ]
 		ifFalse: [ 'Expand' ]
 ]
 
-{ #category : 'testing' }
+{ #category : 'accessing' }
 MiButterflyExpandCollapseNode >> order [
 	^ 0
 ]
 
-{ #category : 'testing' }
+{ #category : 'accessing' }
 MiButterflyExpandCollapseNode >> selector [
 	^ #expandCollapse
 ]
 
-{ #category : 'testing' }
+{ #category : 'accessing' }
 MiButterflyExpandCollapseNode >> target [
 	^ shape model
 ]

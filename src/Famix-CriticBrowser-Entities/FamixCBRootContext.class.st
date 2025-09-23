@@ -1,12 +1,10 @@
 Class {
-	#name : 'FamixCBRootContext',
-	#superclass : 'FamixCBContext',
-	#category : 'Famix-CriticBrowser-Entities-Entities',
-	#package : 'Famix-CriticBrowser-Entities',
-	#tag : 'Entities'
+	#name : #FamixCBRootContext,
+	#superclass : #FamixCBContext,
+	#category : #'Famix-CriticBrowser-Entities-Entities'
 }
 
-{ #category : 'meta' }
+{ #category : #meta }
 FamixCBRootContext class >> annotation [
 
 	<FMClass: #RootContext super: #FamixCBContext>
@@ -15,7 +13,7 @@ FamixCBRootContext class >> annotation [
 	^ self
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 FamixCBRootContext >> getAllViolations [
 	| res |
 	res := Dictionary new.
@@ -24,37 +22,37 @@ FamixCBRootContext >> getAllViolations [
 	
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 FamixCBRootContext >> isCBRootContext [
 
 	^ true
 ]
 
-{ #category : 'removing' }
+{ #category : #removing }
 FamixCBRootContext >> removeSelfFromTree [
 
 	^ self
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 FamixCBRootContext >> runOn: aCollection [
 
 	self entities: aCollection
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 FamixCBRootContext >> runOn: aCollection withCallback: aBlock [
 
 	aBlock cull: self name.
 	self entities: aCollection
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 FamixCBRootContext >> runUpTree: aCollection [
 	^ aCollection
 ]
 
-{ #category : 'ston persistence' }
+{ #category : #'ston persistence' }
 FamixCBRootContext >> stonOn: stonWriter [
 	self children do: [ :child | child stonOn: stonWriter ]
 ]

@@ -90,9 +90,13 @@ MiFilesBrowser >> canTagEntities [
 MiFilesBrowser >> computeItemsInFileReference: aFileReference [
 	"isChildOf: can bug see issue https://github.com/pharo-project/pharo/issues/5720"
 
-	^ (self model mooseModel allUsing: FamixTFileAnchor)
-		select: [ :anchor | anchor element isClass and: [ anchor element isAnonymousClass not and: [ anchor fileReference canonicalize isChildOf: self model fileReference ] ] ]
-		thenCollect: [ :anchor | anchor element ]
+	^ (self specModel mooseModel allUsing: FamixTFileAnchor)
+		  select: [ :anchor |
+				  anchor element isClass and: [
+						  anchor element isAnonymousClass not and: [
+							  anchor fileReference canonicalize isChildOf:
+								  self specModel fileReference ] ] ]
+		  thenCollect: [ :anchor | anchor element ]
 ]
 
 { #category : 'initialization' }
@@ -103,7 +107,7 @@ MiFilesBrowser >> connectPresenters [
 		[ selected selectedItem hasChildren] ) 
 			ifTrue: [
 				self selectFileReference: selected selectedItem.
-				treeEntity roots: (self computeItemsInFileReference: self model fileReference) ] ] 
+				treeEntity roots: (self computeItemsInFileReference: self specModel fileReference) ] ] 
 ]
 
 { #category : 'layout' }
@@ -118,7 +122,7 @@ MiFilesBrowser >> defaultLayout [
 { #category : 'actions' }
 MiFilesBrowser >> followEntity: anEntity [
 
-	self model mooseModel: anEntity.
+	self specModel mooseModel: anEntity.
 	self selectFileReference: anEntity rootFolder asFileReference.
 	self updateWindowTitle
 ]
@@ -159,7 +163,7 @@ MiFilesBrowser >> initializeTreeTable [
 			(SpCompositeTableColumn new
 				addColumn:
 					(SpStringTableColumn evaluated: [ :fileRef |
-						(fileRef isChildOf: self model fileReference)
+						(fileRef isChildOf: self specModel fileReference)
 							ifTrue: [ fileRef basename ] ifFalse: [ '..' ] ]);
 				yourself);
 		beResizable
@@ -174,21 +178,23 @@ MiFilesBrowser >> miSelectedItem [
 { #category : 'refreshing' }
 MiFilesBrowser >> refresh [
 
-	tree items: { self model fileReference parent }
-		, self model fileReference directories
-		, self model fileReference files
+	tree items: { self specModel fileReference parent }
+		, self specModel fileReference directories
+		, self specModel fileReference files
 ]
 
 { #category : 'actions' }
 MiFilesBrowser >> selectFileReference: aFileReference [
-	self model fileReference: aFileReference.
+
+	self specModel fileReference: aFileReference.
 	self refresh
 ]
 
 { #category : 'refreshing' }
 MiFilesBrowser >> updateWindowTitle [
-	self
-		withWindowDo: [ :window | 
-			window
-				title: self class title , ' of ' , self model mooseModel name , ' model' ]
+
+	self withWindowDo: [ :window |
+			window title:
+				self class title , ' of ' , self specModel mooseModel name
+				, ' model' ]
 ]

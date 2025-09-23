@@ -1,1 +1,1 @@
-Package { #name : 'MooseIDE-ClassBlueprint' }
+Package { #name : #'MooseIDE-ClassBlueprint' }
