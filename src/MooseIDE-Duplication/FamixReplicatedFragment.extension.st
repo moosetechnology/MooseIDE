@@ -7,6 +7,10 @@ FamixReplicatedFragment >> displayStringOn: aStream [
 	 - number of lines of code
 	 - beginning of replicated fragment code"
 
+	self hasReplicas ifFalse: [
+			aStream << 'No fragment'.
+			^ self ].
+
 	aStream
 		<< self replicas size asString;
 		<< 'x';
