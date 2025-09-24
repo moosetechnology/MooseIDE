@@ -12,7 +12,8 @@ Class {
 		'consumers',
 		'dropFileHandlers',
 		'mooseModelsTag',
-		'currentModelsBrowser'
+		'currentModelsBrowser',
+		'visualizationTimeout'
 	],
 	#classVars : [
 		'Current'
@@ -25,7 +26,7 @@ Class {
 { #category : 'instance creation' }
 MiApplication class >> current [
 
-	  ^ Current ifNil: [ Current := self new ]
+	^ Current ifNil: [ Current := self basicNew initialize ]
 ]
 
 { #category : 'accessing' }
@@ -34,11 +35,34 @@ MiApplication class >> defaultBusName [
 	^ 'Default'
 ]
 
+{ #category : 'instance creation' }
+MiApplication class >> new [
+
+	self error: 'Do not create another MiApplication'
+]
+
 { #category : 'class initialization' }
 MiApplication class >> reset [
 	<script>
 	Current ifNotNil: [ [Current unregisterForDropFilesEvent] onErrorDo: [ "ignore" ] ].
 	Current := nil
+]
+
+{ #category : 'settings' }
+MiApplication class >> visualizationTimeoutSetting: aBuilder [
+
+	<systemsettings>
+	| aMiApplication |
+	aMiApplication := self current.
+	(aBuilder range: #visualizationTimeout)
+		parent: #moose;
+		range: (10 to: 300);
+		target: aMiApplication;
+		order: 1;
+		label: 'Visualization timeout (seconds)';
+		description:
+			'How long can a visualization be unresponsive while building, before failing';
+		default: 30
 ]
 
 { #category : 'brokerage' }
@@ -62,6 +86,13 @@ MiApplication >> addBindingForModel: aModel [
 { #category : 'accessing' }
 MiApplication >> allBrowsers: aMiClass [
 	^self browsers select: [ :aBrowser | aBrowser isKindOf: aMiClass ]
+]
+
+{ #category : 'queries' }
+MiApplication >> availableQueries [
+
+	^ OrderedCollection withAll:
+		  ((self itemsFor: FQAbstractQuery) select: #isValid)
 ]
 
 { #category : 'drag and drop support' }
@@ -156,6 +187,30 @@ MiApplication >> defaultBus [
 MiApplication >> defaultBus: aMiBus [
 
 	  defaultBus := aMiBus
+]
+
+{ #category : 'queries' }
+MiApplication >> defaultChildrenQuery [
+
+	^ (FQCollectScriptQuery script: [ :each | each children ])
+		  name: 'All children';
+		  yourself
+]
+
+{ #category : 'queries' }
+MiApplication >> defaultClientsQuery [
+
+	^ (FQCollectScriptQuery script: [ :entity | entity allClients ])
+		  name: 'All clients';
+		  yourself
+]
+
+{ #category : 'queries' }
+MiApplication >> defaultProvidersQuery [
+
+	^ (FQCollectScriptQuery script: [ :entity | entity allClients ])
+		  name: 'All providers';
+		  yourself
 ]
 
 { #category : 'showing' }
@@ -378,11 +433,8 @@ MiApplication >> removeItem: anItem from: aProducer [
 
 { #category : 'tags' }
 MiApplication >> selectedTag: aTag [
-	"mooseModel is deduced from aTag itself"
 
-	aTag ifNotNil: [
-		mooseModelsTag at: aTag mooseModel put: aTag
-	]
+	aTag ifNotNil: [ mooseModelsTag at: aTag mooseModel put: aTag ]
 ]
 
 { #category : 'running' }
@@ -398,14 +450,16 @@ MiApplication >> styleSheet [
 
 { #category : 'tags' }
 MiApplication >> tagListForMooseModel: aMooseModel [
-	^aMooseModel 
-		ifNil: [ #() ]
-		ifNotNil: [ aMooseModel allTags sorted: [ :a :b | a name < b name ] ]
+
+	^ aMooseModel
+		  ifNil: [ #(  ) ]
+		  ifNotNil: [ aMooseModel allTags sorted: #name ascending ]
 ]
 
 { #category : 'tags' }
 MiApplication >> tagSelectedInMooseModel: aMooseModel [
-	^mooseModelsTag at: aMooseModel ifAbsent: [ nil ]
+
+	^ mooseModelsTag at: aMooseModel ifAbsent: [ nil ]
 ]
 
 { #category : 'settings' }
@@ -465,6 +519,17 @@ MiApplication >> updateOverviewBrowsers [
 		collect: [ :each | each presenter]
 		thenSelect: [ :presenter | presenter class == MiOverviewBrowser ])
 		do: [ :each | each updateBrowsersListItems]
+]
+
+{ #category : 'settings' }
+MiApplication >> visualizationTimeout [
+
+	^ visualizationTimeout
+]
+
+{ #category : 'settings' }
+MiApplication >> visualizationTimeout: anInteger [ 
+	visualizationTimeout := anInteger
 ]
 
 { #category : 'windows' }

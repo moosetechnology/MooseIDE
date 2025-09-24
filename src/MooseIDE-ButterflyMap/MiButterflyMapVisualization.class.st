@@ -12,11 +12,11 @@ Class {
 { #category : 'running' }
 MiButterflyMapVisualization >> buildInCanvas: aCanvas [
 
-	owner model currentEntity ifNil: [ ^ self ].
-	aCanvas @ RSCanvasController new noLegend. 
+	owner specModel currentEntity ifNil: [ ^ self ].
+	aCanvas @ RSCanvasController new noLegend.
 
 	builder := MiButterflyMapBuilder new
-		           mapModel: owner model;
+		           mapModel: owner specModel;
 		           container: aCanvas;
 		           yourself.
 	builder build

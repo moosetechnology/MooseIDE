@@ -10,13 +10,27 @@ Class {
 		'orderedNodesX',
 		'orderedNodesY',
 		'selectedEntities',
-		'settings',
-		'dependencies'
+		'dependencies',
+		'shouldShowSelfDependencies'
 	],
 	#category : 'MooseIDE-Dependency-DSM',
 	#package : 'MooseIDE-Dependency',
 	#tag : 'DSM'
 }
+
+{ #category : 'settings management' }
+MiDSMBrowserModel class >> defaultConfiguration [
+
+	^ MiDSMSettingsConfiguration new
+		  shouldShowSelfDependencies: self defaultShouldShowSelfDependencies;
+		  yourself
+]
+
+{ #category : 'default' }
+MiDSMBrowserModel class >> defaultShouldShowSelfDependencies [
+
+	^ true
+]
 
 { #category : 'testing' }
 MiDSMBrowserModel >> canFollowEntity: anObject [
@@ -47,10 +61,24 @@ MiDSMBrowserModel >> computeMatrixWithX: entitiesX withY: entitiesY [
 
 ]
 
+{ #category : 'settings management' }
+MiDSMBrowserModel >> currentConfiguration [
+
+	^ MiDSMSettingsConfiguration new
+		  shouldShowSelfDependencies: shouldShowSelfDependencies;
+		  yourself
+]
+
 { #category : 'settings' }
 MiDSMBrowserModel >> defaultColor [
 
 	^ nodeColors at: #defaultCell
+]
+
+{ #category : 'settings management' }
+MiDSMBrowserModel >> defaultConfiguration [
+
+	^ self class defaultConfiguration
 ]
 
 { #category : 'accessing' }
@@ -114,23 +142,27 @@ MiDSMBrowserModel >> followEntity: aCollection [
 
 { #category : 'api' }
 MiDSMBrowserModel >> getTupleDependencyWeight: tuple [
-	"generic algorithm is to take all dependencies of the `tuple key` (column of the DSM) and count
-	 those that can be scoped up to the `tuple value` (row of the DSM)
-	
-	 if `tuple key` = `tuple value`, it is a diagonal cell.
-	 If setting showSelfDependencies is false, return 0 so that no value is displayed"
+	"Generic algorithm is to take all dependencies of the `tuple key` (column of the DSM) and count 
+	those that can be scoped up to the `tuple value` (row of the DSM)
+	- If `tuple key` = `tuple value`, it is a diagonal cell.
+	- If shouldShowSelfDependencies is false, return 0 so that no value is displayed"
 
-	((tuple key model = tuple value model)
-	and: [ self showSelfDependencies not ])
-		ifTrue: [ ^0 ].
+	(tuple key model = tuple value model and: [
+		 shouldShowSelfDependencies not ]) ifTrue: [ ^ 0 ].
 
-	^dependencies weightFrom: tuple key model to: tuple value model
+	^ dependencies weightFrom: tuple key model to: tuple value model
 ]
 
 { #category : 'accessing' }
 MiDSMBrowserModel >> graph [
 
 	^graph
+]
+
+{ #category : 'testing' }
+MiDSMBrowserModel >> hasSettings [
+
+	^ true
 ]
 
 { #category : 'initialization' }
@@ -165,16 +197,9 @@ MiDSMBrowserModel >> initializeColors [
 ]
 
 { #category : 'initialization' }
-MiDSMBrowserModel >> initializeSettings [ 
+MiDSMBrowserModel >> initializeSettings [
 
-	settings := super initializeSettings.
-	settings	addItem: (MiCheckboxSettingItem new
-		setValue: true ;
-		label: 'Show self dependency?' ;
-		help: 'In a square matrix, show the number of dependencies of an entity with itself on the diagonal?' ;
-		yourself)
-		named: #selfDependenciesSetting.
-
+	shouldShowSelfDependencies := true
 ]
 
 { #category : 'testing' }
@@ -198,11 +223,11 @@ MiDSMBrowserModel >> isDiagonal: tuple [
 
 { #category : 'api' }
 MiDSMBrowserModel >> listTupleDependencies: tuple [
-	((tuple key model = tuple value model)
-	and: [ self showSelfDependencies not ])
-		ifTrue: [ ^#() ].
 
-	^dependencies from: tuple key model to: tuple value model
+	(tuple key model = tuple value model and: [
+		 shouldShowSelfDependencies not ]) ifTrue: [ ^ #(  ) ].
+
+	^ dependencies from: tuple key model to: tuple value model
 ]
 
 { #category : 'accessing' }
@@ -297,17 +322,10 @@ MiDSMBrowserModel >> selectedEntities: anObject [
 	browser updateToolbar
 ]
 
-{ #category : 'settings' }
-MiDSMBrowserModel >> settings [
-	"If browser hasSettings, then implement this method to get them"
+{ #category : 'settings management' }
+MiDSMBrowserModel >> settingsPresenterExtent [
 
-	^settings 
-]
-
-{ #category : 'settings' }
-MiDSMBrowserModel >> settingsChanged: aBoolean [
-
-	aBoolean ifTrue: [ browser buildDSM ]
+	^ 350 @ 200
 ]
 
 { #category : 'settings' }
@@ -327,10 +345,12 @@ MiDSMBrowserModel >> showSCCColorForTuple: tuple [
 	^ self dependencyColor
 ]
 
-{ #category : 'settings' }
-MiDSMBrowserModel >> showSelfDependencies [
+{ #category : 'settings management' }
+MiDSMBrowserModel >> updateFromConfiguration: aConfiguration [
 
-	^ settings getItemValue: #selfDependenciesSetting
+	shouldShowSelfDependencies := aConfiguration shouldShowSelfDependencies.
+
+	browser buildDSM
 ]
 
 { #category : 'actions' }

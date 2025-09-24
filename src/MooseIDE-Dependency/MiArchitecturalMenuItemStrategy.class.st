@@ -12,5 +12,5 @@ MiArchitecturalMenuItemStrategy >> menuItemClassesFor: aShape [
 	| clazz |
 	clazz := self classFor: aShape.
 	^ MiArchitecturalNodeMenuItem subclasses , clazz subclasses
-	  , { MiArchitecturalInspectorMenuItem }
+	  , { HMiInspectMenuItem }
 ]

@@ -3,7 +3,8 @@ Class {
 	#superclass : 'MiAbstractApplicationTest',
 	#instVars : [
 		'browser',
-		'entityToSelect'
+		'entityToSelect',
+		'settingsWindow'
 	],
 	#category : 'MooseIDE-Tests-Browsers',
 	#package : 'MooseIDE-Tests',
@@ -89,15 +90,30 @@ MiAbstractBrowserTest >> setUp [
 	super setUp.
 
 	application defaultBus: self bus.
-	browser := self browserClass openForTests: self application.
+	browser := self browserClass openForTests: application.
 	entityToSelect := self defaultEntityToSelect
+]
+
+{ #category : 'running' }
+MiAbstractBrowserTest >> settingNamed: aName [
+
+	^ browser specModel instVarNamed: aName
+]
+
+{ #category : 'running' }
+MiAbstractBrowserTest >> settingNamed: aName setValue: anObject [
+
+	browser specModel instVarNamed: aName put: anObject
 ]
 
 { #category : 'running' }
 MiAbstractBrowserTest >> tearDown [
 
 	browser ifNotNil: [ browser withWindowDo: [ :window | window close ] ].
+
 	self application deleteBus: self bus.
+
+	settingsWindow ifNotNil: [ settingsWindow close ].
 
 	super tearDown
 ]
@@ -214,16 +230,13 @@ MiAbstractBrowserTest >> testCanOpenOnObject [
 		raise: Error
 ]
 
-{ #category : 'tests - opening' }
+{ #category : 'tests - settings' }
 MiAbstractBrowserTest >> testCanOpenSettings [
 
-	browser hasSettings ifFalse: [ self skip ].
-	"this should not raise an error"
-	browser settings.
-  "tear down"
-	[ browser closeSettings ]
-		on: Error
-		do: [ "nothing -- ensuring settings window is closed" ]
+	browser hasSettings ifFalse: [ ^ self skip ].
+
+	"This should not raise an error"
+	settingsWindow := browser openSettings
 ]
 
 { #category : 'tests - tags' }
@@ -365,51 +378,38 @@ MiAbstractBrowserTest >> testSelectedTagSetAndGet [
 	"Override to use test"
 ]
 
-{ #category : 'tests - opening' }
+{ #category : 'tests - settings' }
 MiAbstractBrowserTest >> testSettingsAction [
 	"must be redefined in browsers that do have settings"
 
 	self deny: browser hasSettings
 ]
 
-{ #category : 'tests - opening' }
+{ #category : 'tests - settings' }
 MiAbstractBrowserTest >> testSettingsClickCancel [
 
-	browser hasSettings ifFalse: [ self skip ].
+	browser hasSettings ifFalse: [ ^ self skip ].
 
-	self
-		shouldnt: [ 
-			browser settings.
-			browser model settings buttonCancel click ]
-		raise: Error.
-
+	settingsWindow := browser openSettings.
+	settingsWindow triggerCancelAction
 ]
 
-{ #category : 'tests - opening' }
+{ #category : 'tests - settings' }
 MiAbstractBrowserTest >> testSettingsClickOK [
 
-	browser hasSettings ifFalse: [ self skip ].
+	browser hasSettings ifFalse: [ ^ self skip ].
 
-	self
-		shouldnt: [ 
-			browser settings.
-			browser model settings buttonOk click ]
-		raise: Error.
-
+	settingsWindow := browser openSettings.
+	settingsWindow triggerOkAction
 ]
 
-{ #category : 'tests - opening' }
+{ #category : 'tests - settings' }
 MiAbstractBrowserTest >> testSettingsClickReset [
 
-	browser hasSettings ifFalse: [ self skip ].
+	browser hasSettings ifFalse: [ ^ self skip ].
 
-	self
-		shouldnt: [ 
-			browser settings.
-			browser model settings buttonReset click ]
-		raise: Error.
-
-	[ browser closeSettings ] on: Error do: [ "nothing -- ensuring settings window is closed as REset does not do it" ]
+	settingsWindow := browser openSettings.
+	settingsWindow presenter resetToDefault
 ]
 
 { #category : 'tests - tags' }

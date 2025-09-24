@@ -12,13 +12,13 @@ MiButterflyZoomToFit >> execute [
 	visualization container zoomToFit
 ]
 
-{ #category : 'execution' }
+{ #category : 'accessing' }
 MiButterflyZoomToFit >> group [
 
 	^ 1
 ]
 
-{ #category : 'execution' }
+{ #category : 'accessing' }
 MiButterflyZoomToFit >> label [
 
 	^ 'ZoomToFit'

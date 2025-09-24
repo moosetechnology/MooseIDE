@@ -6,14 +6,14 @@ Class {
 	#tag : 'System Complexity'
 }
 
-{ #category : 'initialization' }
+{ #category : 'running' }
 MiSystemComplexityVisualization >> buildInCanvas: canvas [
 
-	self model ifNil: [ ^ self ].
+	self specModel ifNil: [ ^ self ].
 
 	builder := MiSystemComplexityBuilder new
 		           container: canvas;
-		           mapModel: self model;
+		           mapModel: self specModel;
 		           yourself.
 
 	builder build.
@@ -22,7 +22,7 @@ MiSystemComplexityVisualization >> buildInCanvas: canvas [
 ]
 
 { #category : 'accessing' }
-MiSystemComplexityVisualization >> model [
+MiSystemComplexityVisualization >> specModel [
 
-	^ self owner model
+	^ self owner specModel
 ]

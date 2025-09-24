@@ -13,12 +13,12 @@ Class {
 { #category : 'running' }
 MiArchitecturalMapVisualization >> buildInCanvas: aCanvas [
 
-	owner model rootNodes ifNil: [ ^ self ].
+	owner specModel rootNodes ifNil: [ ^ self ].
 
 	aCanvas @ RSCanvasController new noLegend.
 
 	builder := MiArchitecturalMapBuilder new
-		           mapModel: owner model;
+		           mapModel: owner specModel;
 		           container: aCanvas;
 		           build;
 		           yourself
@@ -35,10 +35,4 @@ MiArchitecturalMapVisualization >> shapeFromEntity: anEntity [
 				  ifNil: [ false ]
 				  ifNotNil: [ :shapeModel | shapeModel rawModel = anEntity ] ]
 		  ifNone: [ nil ]
-]
-
-{ #category : 'updating' }
-MiArchitecturalMapVisualization >> update [
-
-	builder ifNil: [ self run ] ifNotNil: [ builder build ]
 ]

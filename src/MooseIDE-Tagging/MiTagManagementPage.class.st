@@ -29,24 +29,25 @@ MiTagManagementPage >> addTagButton [
 { #category : 'refreshing' }
 MiTagManagementPage >> computeExtentTagList [
 
-	^btnIsExtent state
-		ifTrue: [ tagModel currentCategory
-		     ifNil: [ self model allTags ]
-		     ifNotNil: [ :currentTag | currentTag markedTags asMooseGroup ] ]
-		ifFalse: [ #() ]
+	^ btnIsExtent state
+		  ifTrue: [
+				  tagModel currentCategory
+					  ifNil: [ self specModel allTags ]
+					  ifNotNil: [ :currentTag | currentTag markedTags asMooseGroup ] ]
+		  ifFalse: [ #(  ) ]
 ]
 
 { #category : 'refreshing' }
 MiTagManagementPage >> computeIntentTagList [
 
-	^btnIsIntent state
-		ifTrue: [ tagModel currentCategory
-			ifNil: [ self model dynamicTags ]
-			ifNotNil: [ :currentCat | 
-				self model dynamicTags select: [ :tag | 
-					tag category = currentCat ] ] ]
-		ifFalse: [ #() ]
-
+	^ btnIsIntent state
+		  ifTrue: [
+				  tagModel currentCategory
+					  ifNil: [ self specModel dynamicTags ]
+					  ifNotNil: [ :currentCat |
+						  self specModel dynamicTags select: [ :tag |
+							  tag category = currentCat ] ] ]
+		  ifFalse: [ #(  ) ]
 ]
 
 { #category : 'refreshing' }
@@ -185,7 +186,10 @@ MiTagManagementPage >> intentTagButton [
 { #category : 'accessing' }
 MiTagManagementPage >> model [
 
-	^ owner model
+	self
+		deprecated: 'This is a getter. Lets name it correctly.'
+		transformWith: '`@receiver model' -> '`@receiver specModel'.
+	^ self specModel
 ]
 
 { #category : 'action' }
@@ -224,11 +228,10 @@ MiTagManagementPage >> refreshDescriptionPage [
 MiTagManagementPage >> refreshTagList [
 
 	tagList items:
-		(self computeTagList asArray
-			sort: [ :t1 :t2 | t1 name <= t2 name ] ) .
+		(self computeTagList asArray sort: [ :t1 :t2 | t1 name <= t2 name ]).
 
-	self model currentTag ifNotNil: [ :currentTag | tagList selectItem: currentTag ]
-
+	self specModel currentTag ifNotNil: [ :currentTag |
+		tagList selectItem: currentTag ]
 ]
 
 { #category : 'initialization' }
@@ -240,7 +243,7 @@ MiTagManagementPage >> refreshTaggedEntitiesList [
 { #category : 'action' }
 MiTagManagementPage >> removeCategory [
 
-	self model deleteCurrentCategory.
+	self specModel deleteCurrentCategory.
 	self refreshCategoryList
 ]
 
@@ -276,6 +279,12 @@ MiTagManagementPage >> setTagTo: aTag [
 ]
 
 { #category : 'accessing' }
+MiTagManagementPage >> specModel [
+
+	^ owner specModel
+]
+
+{ #category : 'accessing' }
 MiTagManagementPage >> tagList [
 
 	^ tagList
@@ -302,5 +311,5 @@ MiTagManagementPage >> tagListMenu [
 { #category : 'accessing' }
 MiTagManagementPage >> tagModel [
 
-	^ owner model
+	^ owner specModel
 ]

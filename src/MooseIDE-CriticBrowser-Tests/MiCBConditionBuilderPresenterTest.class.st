@@ -51,9 +51,9 @@ MiCBConditionBuilderPresenterTest >> testAddNewQueryCondition [
 
 	contextBuilder addNewComponent.
 
-	self assert: browser model rootContext children size equals: 1.
+	self assert: browser specModel rootContext children size equals: 1.
 	self
-		assert: browser model rootContext children anyOne name
+		assert: browser specModel rootContext children anyOne name
 		equals: 'test'
 ]
 

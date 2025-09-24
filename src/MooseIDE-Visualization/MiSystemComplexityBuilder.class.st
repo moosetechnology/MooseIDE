@@ -2,17 +2,14 @@ Class {
 	#name : 'MiSystemComplexityBuilder',
 	#superclass : 'HSimpleVisualizationBuilder',
 	#instVars : [
-		'nodeMooseIDDict',
-		'widthMetricThreshold',
-		'heightMetricThreshold',
-		'colorMetricThreshold'
+		'nodeMooseIDDict'
 	],
 	#category : 'MooseIDE-Visualization-System Complexity',
 	#package : 'MooseIDE-Visualization',
 	#tag : 'System Complexity'
 }
 
-{ #category : 'rendering' }
+{ #category : 'hooks' }
 MiSystemComplexityBuilder >> addInteractionsToShape: aShape [
 
 	| node |
@@ -33,7 +30,6 @@ MiSystemComplexityBuilder >> addInteractionsToShape: aShape [
 { #category : 'building' }
 MiSystemComplexityBuilder >> build [
 
-	
 	self initializeRootNode.
 	self setDependencies.
 	self renderIn: self container.
@@ -43,21 +39,24 @@ MiSystemComplexityBuilder >> build [
 
 { #category : 'building' }
 MiSystemComplexityBuilder >> buildLegend [
-	| legend |
+
+	| legend box |
 	legend := RSLegend new.
+	legend withFrame.
 	legend container: self container.
 	legend onDemand.
 	legend title: 'System complexity'.
-	legend text: ''.
-	legend
-		polymetricWidth: mapModel widthMetric
-		height: mapModel heightMetric
-		box: 'Class'.
-	legend
-		text: mapModel colorMetric
-		withFadingRamp:
-			{(0 -> mapModel colorRangeStart).
-			(1 -> mapModel colorRangeEnd)}.
+	legend text: ' '.
+	box := legend
+		       polymetricWidth: mapModel widthMetric asWords
+		       height: mapModel heightMetric asWords
+		       box: 'Class'.
+	self paintLegendBox: box.
+	legend text: ' '.
+	legend text: mapModel colorMetric asWords withFadingRamp: {
+			(0 -> mapModel startColor).
+			(1 -> mapModel endColor) }.
+	legend text: ' '.
 	legend text: 'Line = Inheritance'.
 	legend build
 ]
@@ -68,11 +67,11 @@ MiSystemComplexityBuilder >> buildNodeFromEntity: anEntity [
 	| node |
 	node := HNode new
 		        rawModel: anEntity;
-		        name: (anEntity perform: self mapModel nameToDisplay);
+		        name: (self mapModel displayedName value: anEntity);
 		        style: MiHSystemComplexityStyle new;
 		        addAll:
-			        ((anEntity children asOrderedCollection sort: [ :c1 :c2 | 
-					          c1 name < c2 name ]) collect: [ :e | 
+			        ((anEntity children asOrderedCollection sort: [ :c1 :c2 |
+					          c1 name < c2 name ]) collect: [ :e |
 					         self buildNodeFromEntity: e ]);
 		        collapse;
 		        yourself.
@@ -83,42 +82,18 @@ MiSystemComplexityBuilder >> buildNodeFromEntity: anEntity [
 { #category : 'building' }
 MiSystemComplexityBuilder >> colorBlock [
 
-	^ [ :e | e rawModel perform: mapModel colorMetric ]
+	^ [ :e | mapModel colorMetric value: e rawModel ]
 ]
 
-{ #category : 'initialization' }
+{ #category : 'public - hooks' }
 MiSystemComplexityBuilder >> colorFor: node [
 	^ Color fromHexString: '2980B9'
-]
-
-{ #category : 'accessing' }
-MiSystemComplexityBuilder >> colorMetricThreshold [
-
-	^ colorMetricThreshold ifNil: [ colorMetricThreshold := 100 ]
-]
-
-{ #category : 'accessing' }
-MiSystemComplexityBuilder >> colorMetricThreshold: anObject [
-
-	colorMetricThreshold := anObject
 ]
 
 { #category : 'building' }
 MiSystemComplexityBuilder >> elements [
 
 	^ self types entityStorage
-]
-
-{ #category : 'accessing' }
-MiSystemComplexityBuilder >> heightMetricThreshold [
-
-	^ heightMetricThreshold ifNil: [ heightMetricThreshold := 10 ]
-]
-
-{ #category : 'accessing' }
-MiSystemComplexityBuilder >> heightMetricThreshold: anObject [
-
-	heightMetricThreshold := anObject
 ]
 
 { #category : 'initialization' }
@@ -135,36 +110,21 @@ MiSystemComplexityBuilder >> initializeRootNode [
 		(self elements collect: [ :e | self buildNodeFromEntity: e ])
 ]
 
-{ #category : 'building' }
-MiSystemComplexityBuilder >> layoutChildrenOn: aGroupOfShapes parent: shape [
-	aGroupOfShapes ifEmpty: [ ^ self ].
-	
-	aGroupOfShapes first model position ifNotNil: [ 
-		aGroupOfShapes do: [ :child | child position: (child model position ifNil: [ 0@0 ]) ].
-		^ self.
-		 ].
-	self relayoutChildren: aGroupOfShapes parent: shape.
-	
-	
-]
-
-{ #category : 'building' }
+{ #category : 'layout' }
 MiSystemComplexityBuilder >> layoutOn: aGroupOfShapes parent: shape [
+
 	aGroupOfShapes ifEmpty: [ ^ self ].
-	
-	
-	self relayout: aGroupOfShapes parent: shape.
-	
-	
+
+	self relayout: aGroupOfShapes parent: shape
 ]
 
-{ #category : 'accessing' }
+{ #category : 'accessing - attributes' }
 MiSystemComplexityBuilder >> menuItemStrategy [
 
 	^ MiSystemComplexityMenuItemStrategy new
 ]
 
-{ #category : 'building' }
+{ #category : 'hooks' }
 MiSystemComplexityBuilder >> nodeAnnouncer [
 	"plug new events here"
 
@@ -187,13 +147,13 @@ MiSystemComplexityBuilder >> normalizeColor [
 	colorMetric := mapModel colorMetric.
 	scale := self
 		         normalizeMetric: colorMetric
-		         threshold: self colorMetricThreshold.
+		         threshold: mapModel colorMetricThreshold.
 	scale range: {
-			mapModel colorRangeStart.
-			mapModel colorRangeEnd }.
+			mapModel startColor.
+			mapModel endColor }.
 	self container nodes do: [ :each |
-		(each propertyAt: #background) color:
-			(scale scale: (each model rawModel perform: colorMetric)) ]
+			(each propertyAt: #background) color:
+				(scale scale: (colorMetric value: each model rawModel)) ]
 ]
 
 { #category : 'building' }
@@ -203,34 +163,35 @@ MiSystemComplexityBuilder >> normalizeHeight [
 	heightMetric := mapModel heightMetric.
 	scale := self
 		         normalizeMetric: heightMetric
-		         threshold: self heightMetricThreshold.
+		         threshold: mapModel heightMetricThreshold.
 	scale range: { 20. 400 }.
-	self container nodes do: [ :each | 
-		(each propertyAt: #background) height:
-			(scale scale: (each model rawModel perform: heightMetric)) ]
+	self container nodes do: [ :each |
+			(each propertyAt: #background) height:
+				(scale scale: (heightMetric value: each model rawModel)) ]
 ]
 
 { #category : 'building' }
 MiSystemComplexityBuilder >> normalizeMetric: metric threshold: threshold [
-
 	"When all elements are homogeneous, we want to show that the difference is small by making them look similar. They are considered homogeneous when the difference between the min and max values of the metric is below the threshold."
 
 	| min max |
 	"start by finding min and max"
 	min := SmallInteger maxVal.
 	max := 0.
-	self container nodes do: [ :shape | 
-		| value |
-		value := shape model rawModel perform: metric.
-		min := min min: value.
-		max := max max: value ].
+	self container nodes do: [ :shape |
+			| value |
+			value := metric value: shape model rawModel.
+			min := min min: value.
+			max := max max: value ].
 
 	"widen the domain by the difference if it is below the threshold, which reduces the effective range and thus makes the elements more similar"
-	^ NSScale linear
-		  domain: (max - min > threshold
-				   ifTrue: [ { min. max } ]
-				   ifFalse: [ 
-					   { 
+	^ NSScale linear domain: (max - min > threshold
+			   ifTrue: [
+					   {
+						   min.
+						   max } ]
+			   ifFalse: [
+					   {
 						   (min - max / 2 + min).
 						   (max - min / 2 + max) } ])
 ]
@@ -242,12 +203,9 @@ MiSystemComplexityBuilder >> normalizeShapes [
 	self normalizeHeight.
 	self normalizeColor.
 	self container nodes do: [ :canvasShape |
-		canvasShape model isExpanded ifFalse: [
-			RSVerticalLineLayout new alignCenter on: canvasShape children.
-			canvasShape adjustToChildren.
-			
-			
-			 ] ]
+			canvasShape model isExpanded ifFalse: [
+					RSVerticalLineLayout new alignCenter on: canvasShape children.
+					canvasShape adjustToChildren ] ]
 ]
 
 { #category : 'building' }
@@ -257,11 +215,21 @@ MiSystemComplexityBuilder >> normalizeWidth [
 	widthMetric := mapModel widthMetric.
 	scale := self
 		         normalizeMetric: widthMetric
-		         threshold: self widthMetricThreshold.
+		         threshold: mapModel widthMetricThreshold.
 	scale range: { 20. 400 }.
-	self container nodes do: [ :each | 
-		(each propertyAt: #background) width:
-			(scale scale: (each model rawModel perform: widthMetric)) ]
+	self container nodes do: [ :each |
+			(each propertyAt: #background) width:
+				(scale scale: (widthMetric value: each model rawModel)) ]
+]
+
+{ #category : 'building' }
+MiSystemComplexityBuilder >> paintLegendBox: aComposite [
+
+	| actualBox |
+	actualBox := (aComposite nodes reject: #isLabel) anyOne.
+	actualBox
+		color: (mapModel startColor alphaMixed: 0.5 with: mapModel endColor);
+		borderWidth: 2
 ]
 
 { #category : 'hooks' }
@@ -271,7 +239,7 @@ MiSystemComplexityBuilder >> rebuildRootShape: shape [
 	self relayout: self container nodes parent: self rootNode
 ]
 
-{ #category : 'building' }
+{ #category : 'layout' }
 MiSystemComplexityBuilder >> relayout: aGroupOfShapes parent: shape [
 
 	RSDominanceTreeLayout new
@@ -283,14 +251,12 @@ MiSystemComplexityBuilder >> relayout: aGroupOfShapes parent: shape [
 { #category : 'building' }
 MiSystemComplexityBuilder >> relayoutChildren: aGroupOfShapes parent: shape [
 
-	shape layout ifNil: [ 
-		RSFlowLayout new
-			gapSize: 10;
-			on: aGroupOfShapes. 
-		^ self ].
-	shape layout on: aGroupOfShapes.
-	
-	
+	shape layout ifNil: [
+			RSFlowLayout new
+				gapSize: 10;
+				on: aGroupOfShapes.
+			^ self ].
+	shape layout on: aGroupOfShapes
 ]
 
 { #category : 'rendering' }
@@ -321,7 +287,7 @@ MiSystemComplexityBuilder >> renderIn: aCanvas [
 	self layoutOn: rootShapes parent: rootNode
 ]
 
-{ #category : 'building' }
+{ #category : 'hooks' }
 MiSystemComplexityBuilder >> renderLinesIn: aCanvas [
 
 	| arrow |
@@ -346,26 +312,14 @@ MiSystemComplexityBuilder >> setDependencies [
 { #category : 'building' }
 MiSystemComplexityBuilder >> setDependenciesFor: aNode [
 
-	aNode rawModel directSubclasses do: [ :e | 
-		nodeMooseIDDict
-			at: e mooseID
-			ifPresent: [ :hNode | aNode dependencyTo: hNode ] ]
+	aNode rawModel directSubclasses do: [ :e |
+			nodeMooseIDDict
+				at: e mooseID
+				ifPresent: [ :hNode | aNode dependencyTo: hNode ] ]
 ]
 
 { #category : 'accessing' }
 MiSystemComplexityBuilder >> types [
 
 	^ self mapModel entities
-]
-
-{ #category : 'accessing' }
-MiSystemComplexityBuilder >> widthMetricThreshold [
-
-	^ widthMetricThreshold ifNil: [ widthMetricThreshold := 10 ]
-]
-
-{ #category : 'accessing' }
-MiSystemComplexityBuilder >> widthMetricThreshold: anObject [
-
-	widthMetricThreshold := anObject
 ]

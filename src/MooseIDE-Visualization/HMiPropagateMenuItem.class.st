@@ -23,6 +23,18 @@ HMiPropagateMenuItem >> canBeExecuted [
 ]
 
 { #category : 'accessing' }
+HMiPropagateMenuItem >> description [
+
+	^ 'Propagate the entity on the buses of the browser'
+]
+
+{ #category : 'execution' }
+HMiPropagateMenuItem >> execute [
+
+	self target miPropagateOn: self argument
+]
+
+{ #category : 'accessing' }
 HMiPropagateMenuItem >> group [
 	^1
 ]

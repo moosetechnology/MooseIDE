@@ -56,7 +56,7 @@ MiCBRuleComponentBuilderPresenterTest >> setUp [
 { #category : 'running' }
 MiCBRuleComponentBuilderPresenterTest >> setUpBuilderAsCreator [
 
-	contextBuilder := self toolClass on: browser model
+	contextBuilder := self toolClass on: browser specModel
 ]
 
 { #category : 'running' }
@@ -65,14 +65,14 @@ MiCBRuleComponentBuilderPresenterTest >> setUpBuilderAsEditor [
 	| contextToEdit |
 	contextToEdit := self ruleComponentToEdit.
 
-	browser model addChildToRootContext: contextToEdit.
+	browser specModel addChildToRootContext: contextToEdit.
 	browser updateRulesList.
 
 	(browser presenterAt: #rules) selectItem: contextToEdit.
 
-	contextBuilder := (self toolClass on: browser model)
-		                        beForEdition;
-		                        yourself
+	contextBuilder := (self toolClass on: browser specModel)
+		                  beForEdition;
+		                  yourself
 ]
 
 { #category : 'running' }
@@ -92,9 +92,9 @@ MiCBRuleComponentBuilderPresenterTest >> testAddNewComponent [
 
 	contextBuilder addNewComponent.
 
-	self assert: browser model rootContext children size equals: 1.
+	self assert: browser specModel rootContext children size equals: 1.
 	self
-		assert: browser model rootContext children anyOne name
+		assert: browser specModel rootContext children anyOne name
 		equals: 'test'
 ]
 

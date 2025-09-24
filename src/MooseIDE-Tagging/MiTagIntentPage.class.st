@@ -34,8 +34,8 @@ MiTagIntentPage >> initializePresenters [
 MiTagIntentPage >> refresh [
 
 	super refresh.
-	selectedQuery label: (String streamContents: [ :aStream | 
-			 self model currentTag query storeWithParentsOn: aStream ]).
+	selectedQuery label: (String streamContents: [ :aStream |
+			 self specModel currentTag query storeWithParentsOn: aStream ]).
 	self update
 ]
 

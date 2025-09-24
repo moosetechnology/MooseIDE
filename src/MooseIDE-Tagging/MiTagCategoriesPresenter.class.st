@@ -65,12 +65,12 @@ MiTagCategoriesPresenter >> initializeLayout [
 MiTagCategoriesPresenter >> initializePresenters [
 
 	categoryDropList := self newDropList
-		                    sortingBlock: [ :c1 :c2 | 
-			                    c1 model ifNil: [ true ] ifNotNil: [ 
-					                    c2 model
-						                    ifNil: [ false ]
-						                    ifNotNil: [ c1 model name < c2 model name ] ] ];
-		                    display: [ :category | 
+		                    sortingBlock: [ :item |
+			                    item model
+				                    ifNil: [ '' ]
+				                    ifNotNil: [ :category | category name ] ]
+				                    ascending;
+		                    display: [ :category |
 			                    category
 				                    ifNil: [ 'All categories' ]
 				                    ifNotNil: [ category name ] ];
