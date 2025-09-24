@@ -2,27 +2,28 @@
 TODO
 "
 Class {
-	#name : #RSTagEmphasisAttribute,
-	#superclass : #RSAbstractTextAttribute,
+	#name : 'RSTagEmphasisAttribute',
+	#superclass : 'RSAbstractTextAttribute',
 	#instVars : [
 		'color'
 	],
-	#category : #'MooseIDE-AttributedText'
+	#category : 'MooseIDE-AttributedText',
+	#package : 'MooseIDE-AttributedText'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 RSTagEmphasisAttribute >> color [
 
 	^ color
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 RSTagEmphasisAttribute >> color: anObject [
 
 	color := anObject
 ]
 
-{ #category : #rendering }
+{ #category : 'rendering' }
 RSTagEmphasisAttribute >> lineShapesFor: aShape startLine: startLine endLine: endLine [
 	| lines currentLine |
 	lines := OrderedCollection new.
@@ -43,7 +44,7 @@ RSTagEmphasisAttribute >> lineShapesFor: aShape startLine: startLine endLine: en
 	^ lines
 ]
 
-{ #category : #rendering }
+{ #category : 'rendering' }
 RSTagEmphasisAttribute >> newLine [
 	^ RSLine new
 		color: color;
@@ -51,7 +52,7 @@ RSTagEmphasisAttribute >> newLine [
 		yourself.
 ]
 
-{ #category : #rendering }
+{ #category : 'rendering' }
 RSTagEmphasisAttribute >> renderIn: aShape [
 	| startLine endLine dot lines |
 	startLine := self startLine: aShape.

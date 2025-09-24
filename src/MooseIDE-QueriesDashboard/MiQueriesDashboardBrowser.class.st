@@ -5,16 +5,18 @@ Accepted entities: any moose object, the moose model is accessed from it.
 It looks for queries that could be applied on the model using subclasses of MiAbstractQueriesHolder.
 "
 Class {
-	#name : #MiQueriesDashboardBrowser,
-	#superclass : #MiAbstractBrowser,
+	#name : 'MiQueriesDashboardBrowser',
+	#superclass : 'MiAbstractBrowser',
 	#instVars : [
 		'queryPresenters',
 		'titlePresenter'
 	],
-	#category : #'MooseIDE-QueriesDashboard-Browser'
+	#category : 'MooseIDE-QueriesDashboard-Browser',
+	#package : 'MooseIDE-QueriesDashboard',
+	#tag : 'Browser'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiQueriesDashboardBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
@@ -22,49 +24,49 @@ MiQueriesDashboardBrowser class >> menuCommandOn: aBuilder [
 	^ self buildMenuItemIn: aBuilder
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiQueriesDashboardBrowser class >> menuItem [
 
 	^ #MiQueriesDashboardBrowser
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiQueriesDashboardBrowser class >> menuPriority [
 
 	^ self menuVisualizationToolsPriority + 1
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MiQueriesDashboardBrowser class >> newModel [
 
 	^ MiQueriesDashboardModel new
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiQueriesDashboardBrowser class >> open [
 	<script>
 	super open
 ]
 
-{ #category : #specs }
+{ #category : 'specs' }
 MiQueriesDashboardBrowser class >> preferredExtent [
 
 	^ 800 @ 500
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiQueriesDashboardBrowser class >> title [
 
 	^ 'Queries dashboard'
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiQueriesDashboardBrowser >> canFollowEntity: anObject [
 
 	^ anObject isMooseObject
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiQueriesDashboardBrowser >> followEntity: anEntity [
 
 	super followEntity: anEntity.
@@ -74,7 +76,7 @@ MiQueriesDashboardBrowser >> followEntity: anEntity [
 	self updatePresenters
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiQueriesDashboardBrowser >> getQueries [
 
 	| qh qhClass queries results |
@@ -92,14 +94,14 @@ MiQueriesDashboardBrowser >> getQueries [
 	^ results
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiQueriesDashboardBrowser >> initialize [
 
 	super initialize.
 	queryPresenters := OrderedCollection new.
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiQueriesDashboardBrowser >> initializeLayout [
 
 	self layout: (SpBoxLayout newTopToBottom
@@ -109,7 +111,7 @@ MiQueriesDashboardBrowser >> initializeLayout [
 			 yourself)
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiQueriesDashboardBrowser >> initializePresenters [
 
 	titlePresenter := self newLabel
@@ -119,19 +121,19 @@ MiQueriesDashboardBrowser >> initializePresenters [
 	self initializeLayout
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiQueriesDashboardBrowser >> miSelectedItem [
 
 	^ nil
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiQueriesDashboardBrowser >> selectedTag [
 
 	^ nil 
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiQueriesDashboardBrowser >> setModelBeforeInitialization: aBrowserModel [
 
 	aBrowserModel ifNil: [ ^ self ].
@@ -139,7 +141,7 @@ MiQueriesDashboardBrowser >> setModelBeforeInitialization: aBrowserModel [
 	specModel := aBrowserModel
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiQueriesDashboardBrowser >> updatePresenters [
 
 	| results newLayout groups |

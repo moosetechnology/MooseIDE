@@ -2,12 +2,13 @@
 A FamixCBViolationTest is a test class for testing the behavior of FamixCBViolation
 "
 Class {
-	#name : #FamixCBViolationTest,
-	#superclass : #TestCase,
-	#category : #'Famix-CriticBrowser-Tests'
+	#name : 'FamixCBViolationTest',
+	#superclass : 'TestCase',
+	#category : 'Famix-CriticBrowser-Tests',
+	#package : 'Famix-CriticBrowser-Tests'
 }
 
-{ #category : #test }
+{ #category : 'test' }
 FamixCBViolationTest >> testEqualsSign [
 	| violation entity condition |
 	entity := FamixJavaClass new.

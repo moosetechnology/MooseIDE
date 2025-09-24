@@ -1,25 +1,26 @@
 Class {
-	#name : #RSForgroundColorEmphasisAttribute,
-	#superclass : #RSAbstractTextAttribute,
+	#name : 'RSForgroundColorEmphasisAttribute',
+	#superclass : 'RSAbstractTextAttribute',
 	#instVars : [
 		'color'
 	],
-	#category : #'MooseIDE-AttributedText'
+	#category : 'MooseIDE-AttributedText',
+	#package : 'MooseIDE-AttributedText'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 RSForgroundColorEmphasisAttribute >> color [
 
 	^ color
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 RSForgroundColorEmphasisAttribute >> color: anObject [
 
 	color := anObject
 ]
 
-{ #category : #rendering }
+{ #category : 'rendering' }
 RSForgroundColorEmphasisAttribute >> renderIn: aShape [
 	| startLine endLine label rect box |
 	startLine := self startLine: aShape.
