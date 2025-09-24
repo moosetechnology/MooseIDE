@@ -100,6 +100,12 @@ MiModelsBrowser class >> title [
 	^ 'Models browser'
 ]
 
+{ #category : 'accessing' }
+MiModelsBrowser >> allModels [
+
+	^specModel entities
+]
+
 { #category : 'window control' }
 MiModelsBrowser >> browserClosed [
 
