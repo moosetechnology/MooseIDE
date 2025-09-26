@@ -3,7 +3,12 @@ Class {
 	#superclass : 'MiPresenter',
 	#instVars : [
 		'browserModel',
-		'configuration'
+		'configuration',
+		'saveButton',
+		'cancelButton',
+		'loadButton',
+		'okButton',
+		'settingsLayout'
 	],
 	#category : 'MooseIDE-Core-Settings',
 	#package : 'MooseIDE-Core',
@@ -42,7 +47,11 @@ MiSettingsPresenter >> initializeDialogWindow: aSpDialogWindowPresenter [
 	aSpDialogWindowPresenter initialExtent: browserModel settingsPresenterExtent.
 	aSpDialogWindowPresenter toolbar: self toolbar.
 
-	aSpDialogWindowPresenter okAction: [ self acceptChanges ]
+	aSpDialogWindowPresenter okAction: [ self acceptChanges ].
+	
+	aSpDialogWindowPresenter addButton: 'Load' do: [ self loadSettings ];
+	addButton: 'Save' do: [ self saveSettings ].	
+
 ]
 
 { #category : 'initialization' }
@@ -53,11 +62,23 @@ MiSettingsPresenter >> initializePresenters [
 				self addPresenter: presenterClass inBuilder: builder ] ]
 ]
 
+{ #category : 'as yet unclassified' }
+MiSettingsPresenter >> loadSettings [
+
+	self inform: ' Loading the settings is not implemented yet... (sorry)'
+]
+
 { #category : 'initialization' }
 MiSettingsPresenter >> resetToDefault [
 
 	configuration := browserModel defaultConfiguration.
 	self initializePresenters
+]
+
+{ #category : 'as yet unclassified' }
+MiSettingsPresenter >> saveSettings [
+
+	self inform: 'Saving the settings is not implemented yet... (sorry)'
 ]
 
 { #category : 'accessing - model' }
