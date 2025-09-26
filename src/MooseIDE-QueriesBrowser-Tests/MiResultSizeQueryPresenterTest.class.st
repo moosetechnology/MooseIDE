@@ -27,7 +27,6 @@ MiResultSizeQueryPresenterTest >> classToTest [
 MiResultSizeQueryPresenterTest >> configureInnerQuery [
 
 	| rootQuery |
-
 	rootQuery := FQRootQuery new
 		             input: helper classesAndMethods;
 		             yourself.
@@ -35,8 +34,8 @@ MiResultSizeQueryPresenterTest >> configureInnerQuery [
 		              resetAndChangeDirection: FQIncomingNavigation;
 		              association: FamixStInvocation;
 		              yourself.
-	browser queriesListPresenter addNewFirstLevelQuery.
-	browser queriesListPresenter queryItemsPresenters last configureFor:
+	queriesListPresenter addNewFirstLevelQuery.
+	queriesListPresenter queryItemsPresenters last configureFor:
 		innerQuery.
 	^ innerQuery
 ]
@@ -61,19 +60,13 @@ MiResultSizeQueryPresenterTest >> queryClass [
 MiResultSizeQueryPresenterTest >> resetPresenterWithEntities: aMooseGroup [
 
 	| builder superPresenter |
-
-	browser := MiQueriesBrowser
-		           newApplication: self application
-		           model: (FQRootQuery new
-				            input: aMooseGroup;
-				            yourself).
-	builder := browser instantiate: MiQueriesListPresenter on: browser.
-	builder
+	browser followEntity: aMooseGroup.
+	queriesListPresenter
 		addNewFirstLevelQuery;
 		addNewFirstLevelQuery.
-	builder componentList items first configureFor:
+	queriesListPresenter componentList items first configureFor:
 		self configureInnerQuery.
-	superPresenter := builder componentList items last.
+	superPresenter := queriesListPresenter componentList items last.
 	superPresenter queryTypesDropList selectItem: self queryClass.
 	presenter := superPresenter queryConfiguratorPresenter
 ]
@@ -104,9 +97,9 @@ MiResultSizeQueryPresenterTest >> testPresentersOnImpossibleQuery [
 MiResultSizeQueryPresenterTest >> testQueryValidity [
 
 	self configureInnerQuery.
-	browser queriesListPresenter componentList items first configureFor:
+	queriesListPresenter componentList items first configureFor:
 		innerQuery.
-	browser queriesListPresenter updateComponentList.
+	queriesListPresenter updateComponentList.
 
 	self deny: presenter query isValid.
 

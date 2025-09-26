@@ -84,8 +84,10 @@ MiQueriesModel >> resetRootQueryForEntities: receivedEntities [
 
 	self rootQuery
 		resetResult;
-		input: receivedEntities;
-		name: receivedEntities first mooseModel name.
+		input: receivedEntities.
+	self rootQuery name: (receivedEntities isEmptyOrNil
+			 ifTrue: [ 'No entities' ]
+			 ifFalse: [ receivedEntities first mooseModel name ]).
 	self selectedQuery: self rootQuery
 ]
 
