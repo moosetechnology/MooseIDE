@@ -1,46 +1,45 @@
 Class {
-	#name : #MiNAryQueryPresenterTest,
-	#superclass : #MiQueryConfiguratorPresenterTest,
-	#category : #'MooseIDE-QueriesBrowser-Tests-Queries Configuration'
+	#name : 'MiNAryQueryPresenterTest',
+	#superclass : 'MiQueryConfiguratorPresenterTest',
+	#category : 'MooseIDE-QueriesBrowser-Tests-Queries Configuration',
+	#package : 'MooseIDE-QueriesBrowser-Tests',
+	#tag : 'Queries Configuration'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiNAryQueryPresenterTest >> assertSubpresentersAreConfigured [
 
 	self assert: presenter query subqueries size equals: 3.
 	self assert: presenter subqueryDropLists size equals: 3
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiNAryQueryPresenterTest >> classToTest [
 
 	^ MiNAryQueryPresenter
 ]
 
-{ #category : #tests }
+{ #category : 'running' }
 MiNAryQueryPresenterTest >> configureInnerQueries [
 
-	| rootQuery query1 query2 query3 |
-
-	rootQuery := FQRootQuery new
-		             input: helper classesAndMethods;
-		             yourself.
-	query1 := FQStringQuery defaultForParent: rootQuery.
+	| query1 query2 query3 |
+	browser followEntity: helper classesAndMethods.
+	query1 := FQStringQuery defaultForParent: browser rootQuery.
 	query1
 		property: #name;
 		comparator: #includesSubstring:;
 		valueToCompare: 'a'.
 
-	query2 := FQScopeQuery defaultForParent: rootQuery.
+	query2 := FQScopeQuery defaultForParent: browser rootQuery.
 	query2
 		directionStrategy: FQScopeUpAndDown;
 		scope: FamixStClass.
 
-	query3 := FQBooleanQuery defaultForParent: rootQuery.
+	query3 := FQBooleanQuery defaultForParent: browser rootQuery.
 	query3 property: #isStub.
 
 	"Add the queries to the browser"
-	browser queriesListPresenter
+	queriesListPresenter
 		addNewFirstLevelQuery;
 		addNewFirstLevelQuery;
 		addNewFirstLevelQuery.
@@ -48,7 +47,7 @@ MiNAryQueryPresenterTest >> configureInnerQueries [
 		query1.
 		query2.
 		query3 }
-		with: browser queriesListPresenter queryItemsPresenters
+		with: queriesListPresenter queryItemsPresenters
 		do: [ :a :b | b configureFor: a ].
 	^ {
 		  query1.
@@ -56,44 +55,42 @@ MiNAryQueryPresenterTest >> configureInnerQueries [
 		  query3 }
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiNAryQueryPresenterTest >> createNewQuery [
 
 	^ FQUnionQuery subqueries: self configureInnerQueries
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiNAryQueryPresenterTest >> createUnconfiguredQuery [
 
-	| builder superPresenter |
-	builder := browser queriesListPresenter addNewFirstLevelQuery.
+	| superPresenter |
+	queriesListPresenter addNewFirstLevelQuery.
 
-	superPresenter := builder componentList items last.
+	superPresenter := queriesListPresenter componentList items last.
 	superPresenter queryTypesDropList selectItem: self queryClass.
 
 	presenter := superPresenter queryConfiguratorPresenter
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiNAryQueryPresenterTest >> queryClass [
 
 	^ FQUnionQuery
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiNAryQueryPresenterTest >> resetPresenterWithEntities: aMooseGroup [
 
-	browser := MiQueriesBrowser
-		           newApplication: self application
-		           model: (FQRootQuery new
-				            input: aMooseGroup;
-				            yourself).
+	queriesListPresenter reinitializeQueryPresenters.
+	browser followEntity: aMooseGroup.
+
 	self configureInnerQueries.
 
 	self createUnconfiguredQuery
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiNAryQueryPresenterTest >> testIsQueryUsed [
 
 	self assert:
@@ -105,7 +102,7 @@ MiNAryQueryPresenterTest >> testIsQueryUsed [
 			 presenter subqueryDropLists first items second)
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiNAryQueryPresenterTest >> testNormalQueryInitialization [
 
 	presenter subqueryDropLists first selectIndex: 1.
@@ -114,7 +111,7 @@ MiNAryQueryPresenterTest >> testNormalQueryInitialization [
 	self assert: presenter query class identicalTo: self queryClass
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiNAryQueryPresenterTest >> testPresenters [
 
 	self assert: presenter subqueryDropLists isCollection.
@@ -126,13 +123,13 @@ MiNAryQueryPresenterTest >> testPresenters [
 		equals: SpButtonPresenter
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiNAryQueryPresenterTest >> testPresentersOnImpossibleQuery [
 
 	self assert: true
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiNAryQueryPresenterTest >> testQueryValidity [
 
 	self deny: presenter query isValid.

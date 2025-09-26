@@ -28,7 +28,7 @@ QueryCompilerPresenter >> compileQuery [
 		evaluate: codePresenter text
 		onCompileError: [ :e | ^ self ]
 		onError: [ :e | e pass ].
-	compiledQuery beChildOf: configuratorPresenter queriesBrowser rootQuery.
+	compiledQuery beChildOf: configuratorPresenter owner specModel rootQuery.
 	^ compiledQuery
 ]
 

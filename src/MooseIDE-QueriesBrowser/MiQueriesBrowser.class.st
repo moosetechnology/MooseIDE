@@ -11,8 +11,6 @@ Class {
 		'queryResultTreePresenter',
 		'queryCodePresenter',
 		'queryNotebookPresenter',
-		'selectedQuery',
-		'rootQuery',
 		'queriesListPresenter'
 	],
 	#category : 'MooseIDE-QueriesBrowser-Main presenters',
@@ -55,12 +53,11 @@ MiQueriesBrowser class >> menuPriority [
 { #category : 'instance creation' }
 MiQueriesBrowser class >> newModel [
 
-	^ MiQueriesModel newModel
+	^ MiQueriesModel new
 ]
 
 { #category : 'instance creation' }
 MiQueriesBrowser class >> open [
-
 	"This method implementation is the same as their parent. But it is here for opening this browser more confortably from the system's browser."
 
 	<script>
@@ -100,14 +97,8 @@ MiQueriesBrowser >> canTagEntities [
 { #category : 'actions' }
 MiQueriesBrowser >> clearQueries [
 
-	| anyQuery |
-
-	self rootQuery children ifEmpty: [ ^ self ].
-
-	anyQuery := self rootQuery children anyOne.
-	self rootQuery children removeAll.
-	self application removeItem: anyQuery.
-	self selectQuery: rootQuery
+	specModel clearQueries.
+	self updateSelectedQuery
 ]
 
 { #category : 'api - actions' }
@@ -120,24 +111,26 @@ MiQueriesBrowser >> enableProgressNotification [
 { #category : 'actions' }
 MiQueriesBrowser >> followEntity: anEntity [
 
-	| busMooseEntities |
+	| busMooseEntities allEntities |
 	super followEntity: anEntity.
 	"Create a group in case that only one entity was received from the bus"
-	busMooseEntities := anEntity asMooseGroup select: #isQueryable.
+	allEntities := anEntity asMooseGroup.
+	busMooseEntities := allEntities select: #isQueryable.
+
+	busMooseEntities size < allEntities size ifTrue: [
+			self inform: (String streamContents: [ :s |
+						 s
+							 << 'Queries browser:';
+							 cr;
+							 << (allEntities size - busMooseEntities size) asString;
+							 << ' rejected entities.' ]) ].
 
 	"Create the new root query"
-	self resetRootQueryForEntities: busMooseEntities.
-
-
+	specModel resetRootQueryForEntities: busMooseEntities.
+	self updateSelectedQuery.
 
 	"Update the all the sub presenters with this new query"
 	queriesListPresenter followNewEntity
-]
-
-{ #category : 'testing' }
-MiQueriesBrowser >> hasSettings [
-
-	^ false
 ]
 
 { #category : 'initialization' }
@@ -174,16 +167,16 @@ MiQueriesBrowser >> initializePresenters [
 	self initializeQueryCodePresenter.
 	self initializeResultTreePresenter.
 	self initializeNotebookPresenter.
-	self initializeQueryBuilder.
+	self initializeQueriesListPresenter.
 	self initializeLayout
 ]
 
 { #category : 'initialization' }
-MiQueriesBrowser >> initializeQueryBuilder [
+MiQueriesBrowser >> initializeQueriesListPresenter [
 
 	queriesListPresenter := self
 		                        instantiate: MiQueriesListPresenter
-		                        on: self
+		                        on: specModel
 ]
 
 { #category : 'initialization' }
@@ -197,80 +190,41 @@ MiQueriesBrowser >> initializeResultTreePresenter [
 
 	queryResultTreePresenter := self newMooseGroupsTreeTable.
 
-	queryResultTreePresenter updateForEntities: self queryResultEntities
+	queryResultTreePresenter updateForEntities:
+		specModel selectedQueryResult.
+	queryResultTreePresenter whenSelectedEntityChangedDo: [
+		:selectedEntity | specModel entities: selectedEntity ]
 ]
 
 { #category : 'brokerage' }
 MiQueriesBrowser >> itemsFor: aClass [
-	
-	^ rootQuery allChildren select: [ :query | query isKindOf: aClass ]
+
+	^ specModel queriesOfType: aClass
 ]
 
 { #category : 'accessing' }
 MiQueriesBrowser >> miSelectedItem [
 
-	^ queryResultTreePresenter miSelectedItem asCollection
-		  ifEmpty: [ selectedQuery result ]
-		  ifNotEmpty: [ :items | items ]
-]
-
-{ #category : 'accessing' }
-MiQueriesBrowser >> queryResultEntities [
-
-	^ selectedQuery result
-]
-
-{ #category : 'removing' }
-MiQueriesBrowser >> removeChild: childToRemove fromParent: aParent [
-
-	(aParent children includes: childToRemove) ifTrue: [ 
-		aParent removeChild: childToRemove.
-		^ self ].
-	aParent children do: [ :aChild | 
-		self removeChild: childToRemove fromParent: aChild ]
-]
-
-{ #category : 'api - actions' }
-MiQueriesBrowser >> removeQuery: aQuery [
-
-	self removeChild: aQuery fromParent: rootQuery.
-	application removeItem: aQuery
-]
-
-{ #category : 'api - actions' }
-MiQueriesBrowser >> resetRootQueryForEntities: busMooseEntities [
-
-	rootQuery
-		resetResult;
-		input: busMooseEntities;
-		name: busMooseEntities first mooseModel name.
-	self selectQuery: rootQuery
+	^ specModel miSelectedItem
 ]
 
 { #category : 'accessing' }
 MiQueriesBrowser >> rootQuery [
-	^ rootQuery
+
+	^ specModel rootQuery
 ]
 
 { #category : 'actions' }
 MiQueriesBrowser >> selectQuery: aQuery [
 
-	selectedQuery := aQuery.
-	self updateResultPresenterForQuery: aQuery.
-	queryCodePresenter updateForQuery: aQuery
+	specModel selectedQuery: aQuery.
+	self updateSelectedQuery
 ]
 
 { #category : 'accessing' }
 MiQueriesBrowser >> selectedQuery [
 
-	^ selectedQuery
-]
-
-{ #category : 'initialization' }
-MiQueriesBrowser >> setModelBeforeInitialization: aRootQuery [
-	self flag: 'Does not follow default Model/Browser organization'.
-	rootQuery := aRootQuery.
-	selectedQuery := aRootQuery
+	^ specModel selectedQuery
 ]
 
 { #category : 'actions' }
@@ -293,4 +247,12 @@ MiQueriesBrowser >> updateResultPresenterForQuery: aQuery [
 		ifTrue: [ self showResultOfQuery: aQuery ]
 		ifFalse: [ 
 		queryResultTreePresenter updateForEntities: MooseGroup new ]
+]
+
+{ #category : 'actions' }
+MiQueriesBrowser >> updateSelectedQuery [
+
+	specModel resetEntities.
+	self updateResultPresenterForQuery: specModel selectedQuery.
+	queryCodePresenter updateForQuery: specModel selectedQuery
 ]

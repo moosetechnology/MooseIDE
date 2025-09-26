@@ -2,33 +2,36 @@
 A MiQueryBuilderPresenterTest is a test class for testing the behavior of MiQueryBuilderPresenter
 "
 Class {
-	#name : #MiQueriesListPresenterTest,
-	#superclass : #MiAbstractApplicationTest,
+	#name : 'MiQueriesListPresenterTest',
+	#superclass : 'MiAbstractApplicationTest',
 	#instVars : [
 		'presenter',
 		'browser'
 	],
-	#category : #'MooseIDE-QueriesBrowser-Tests-Queries Browser'
+	#category : 'MooseIDE-QueriesBrowser-Tests-Queries Browser',
+	#package : 'MooseIDE-QueriesBrowser-Tests',
+	#tag : 'Queries Browser'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 MiQueriesListPresenterTest >> bus [
 
 	^ self application defaultBus
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiQueriesListPresenterTest >> setUp [
+
 	| helper |
 	super setUp.
 
 	helper := FQTestsHelper new.
 	browser := MiQueriesBrowser openForTests: self application.
 	browser receiveEntity: helper classesAndMethods.
-	presenter := browser instantiate: MiQueriesListPresenter on: browser
+	presenter := browser presenterAt: #queriesListPresenter
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiQueriesListPresenterTest >> tearDown [
 
 	browser window ifNotNil: [ :window | window close ].
@@ -37,7 +40,7 @@ MiQueriesListPresenterTest >> tearDown [
 	super tearDown
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiQueriesListPresenterTest >> testAddNewChildQueryAction [
 
 	presenter addNewFirstLevelQuery.
@@ -69,7 +72,7 @@ MiQueriesListPresenterTest >> testAddNewChildQueryAction [
 	self assert: presenter queryItemsPresenters second name equals: 'Q5'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiQueriesListPresenterTest >> testAddNewFirstLevelQuery [
 
 	presenter addNewFirstLevelQuery.
@@ -96,7 +99,7 @@ MiQueriesListPresenterTest >> testAddNewFirstLevelQuery [
 		self assert: aPresenter query parent isRootQuery ]
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiQueriesListPresenterTest >> testCreateNewQueryPresenter [
 
 	self assert: presenter queryCounter equals: 1.
@@ -104,7 +107,7 @@ MiQueriesListPresenterTest >> testCreateNewQueryPresenter [
 	self assert: presenter queryCounter equals: 2
 ]
 
-{ #category : #test }
+{ #category : 'test' }
 MiQueriesListPresenterTest >> testFindPresenterForQuery [
 
 	presenter addNewFirstLevelQuery.
@@ -113,7 +116,7 @@ MiQueriesListPresenterTest >> testFindPresenterForQuery [
 		equals: (presenter findPresenterForQuery: presenter queryItemsPresenters first query) query
 ]
 
-{ #category : #test }
+{ #category : 'test' }
 MiQueriesListPresenterTest >> testFollowNewEntity [
 
 	presenter
@@ -126,7 +129,7 @@ MiQueriesListPresenterTest >> testFollowNewEntity [
 	presenter followNewEntity.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiQueriesListPresenterTest >> testRemoveQueryAction [
 
 	presenter addNewFirstLevelQuery.
@@ -151,7 +154,7 @@ MiQueriesListPresenterTest >> testRemoveQueryAction [
 	self assert: presenter queryItemsPresenters size equals: 0
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiQueriesListPresenterTest >> testUpdateComponentList [
 
 	self

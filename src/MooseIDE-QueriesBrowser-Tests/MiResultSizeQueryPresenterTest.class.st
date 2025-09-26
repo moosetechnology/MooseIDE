@@ -1,13 +1,15 @@
 Class {
-	#name : #MiResultSizeQueryPresenterTest,
-	#superclass : #MiQueryConfiguratorPresenterTest,
+	#name : 'MiResultSizeQueryPresenterTest',
+	#superclass : 'MiQueryConfiguratorPresenterTest',
 	#instVars : [
 		'innerQuery'
 	],
-	#category : #'MooseIDE-QueriesBrowser-Tests-Queries Configuration'
+	#category : 'MooseIDE-QueriesBrowser-Tests-Queries Configuration',
+	#package : 'MooseIDE-QueriesBrowser-Tests',
+	#tag : 'Queries Configuration'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiResultSizeQueryPresenterTest >> assertSubpresentersAreConfigured [
 
 	self
@@ -15,17 +17,16 @@ MiResultSizeQueryPresenterTest >> assertSubpresentersAreConfigured [
 		equals: innerQuery
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiResultSizeQueryPresenterTest >> classToTest [
 
 	^ MiResultSizeQueryPresenter
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiResultSizeQueryPresenterTest >> configureInnerQuery [
 
 	| rootQuery |
-
 	rootQuery := FQRootQuery new
 		             input: helper classesAndMethods;
 		             yourself.
@@ -33,13 +34,13 @@ MiResultSizeQueryPresenterTest >> configureInnerQuery [
 		              resetAndChangeDirection: FQIncomingNavigation;
 		              association: FamixStInvocation;
 		              yourself.
-	browser queriesListPresenter addNewFirstLevelQuery.
-	browser queriesListPresenter queryItemsPresenters last configureFor:
+	queriesListPresenter addNewFirstLevelQuery.
+	queriesListPresenter queryItemsPresenters last configureFor:
 		innerQuery.
 	^ innerQuery
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiResultSizeQueryPresenterTest >> createNewQuery [
 
 	self configureInnerQuery.
@@ -49,40 +50,34 @@ MiResultSizeQueryPresenterTest >> createNewQuery [
 		  valueToCompare: 2
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiResultSizeQueryPresenterTest >> queryClass [
 
 	^ FQResultSizeQuery
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiResultSizeQueryPresenterTest >> resetPresenterWithEntities: aMooseGroup [
 
 	| builder superPresenter |
-
-	browser := MiQueriesBrowser
-		           newApplication: self application
-		           model: (FQRootQuery new
-				            input: aMooseGroup;
-				            yourself).
-	builder := browser instantiate: MiQueriesListPresenter on: browser.
-	builder
+	browser followEntity: aMooseGroup.
+	queriesListPresenter
 		addNewFirstLevelQuery;
 		addNewFirstLevelQuery.
-	builder componentList items first configureFor:
+	queriesListPresenter componentList items first configureFor:
 		self configureInnerQuery.
-	superPresenter := builder componentList items last.
+	superPresenter := queriesListPresenter componentList items last.
 	superPresenter queryTypesDropList selectItem: self queryClass.
 	presenter := superPresenter queryConfiguratorPresenter
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiResultSizeQueryPresenterTest >> testImpossibleQueryInitialization [
 
 	self assert: true
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiResultSizeQueryPresenterTest >> testPresenters [
 
 	self
@@ -90,7 +85,7 @@ MiResultSizeQueryPresenterTest >> testPresenters [
 		identicalTo: SpDropListPresenter
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiResultSizeQueryPresenterTest >> testPresentersOnImpossibleQuery [
 
 	"this presenter will not have the impossible query presenter as it only have a droplist to select other queries"
@@ -98,13 +93,13 @@ MiResultSizeQueryPresenterTest >> testPresentersOnImpossibleQuery [
 	self assert: true
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiResultSizeQueryPresenterTest >> testQueryValidity [
 
 	self configureInnerQuery.
-	browser queriesListPresenter componentList items first configureFor:
+	queriesListPresenter componentList items first configureFor:
 		innerQuery.
-	browser queriesListPresenter updateComponentList.
+	queriesListPresenter updateComponentList.
 
 	self deny: presenter query isValid.
 

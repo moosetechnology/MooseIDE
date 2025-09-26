@@ -1,10 +1,12 @@
 Class {
-	#name : #MiTypeQueryPresenterTest,
-	#superclass : #MiQueryConfiguratorPresenterTest,
-	#category : #'MooseIDE-QueriesBrowser-Tests-Queries Configuration'
+	#name : 'MiTypeQueryPresenterTest',
+	#superclass : 'MiQueryConfiguratorPresenterTest',
+	#category : 'MooseIDE-QueriesBrowser-Tests-Queries Configuration',
+	#package : 'MooseIDE-QueriesBrowser-Tests',
+	#tag : 'Queries Configuration'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiTypeQueryPresenterTest >> assertSubpresentersAreConfigured [
 
 	self
@@ -17,12 +19,12 @@ MiTypeQueryPresenterTest >> assertSubpresentersAreConfigured [
 	self assert: presenter typesButton class equals: SpButtonPresenter
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiTypeQueryPresenterTest >> classToTest [
 	^ MiTypeQueryPresenter
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiTypeQueryPresenterTest >> createNewQuery [
 
 	| rootQuery |
@@ -37,12 +39,12 @@ MiTypeQueryPresenterTest >> createNewQuery [
 		  yourself
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiTypeQueryPresenterTest >> queryClass [
 	^ FQTypeQuery
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiTypeQueryPresenterTest >> testImpossibleQueryInitialization [
 
 	self resetPresenterWithEntities: helper noEntities.
@@ -50,7 +52,7 @@ MiTypeQueryPresenterTest >> testImpossibleQueryInitialization [
 	self deny: presenter query isValid
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiTypeQueryPresenterTest >> testModalSelectionTypes [
 
 	presenter typesList selectItems: { FamixStClass }.
@@ -61,13 +63,13 @@ MiTypeQueryPresenterTest >> testModalSelectionTypes [
 		hasSameElements: { FamixStClass }
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiTypeQueryPresenterTest >> testPresenters [
 
 	self assert: presenter typesButton class equals: SpButtonPresenter
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiTypeQueryPresenterTest >> testPresentersOnImpossibleQuery [
 
 	self resetPresenterWithEntities: helper noEntities.
@@ -76,7 +78,7 @@ MiTypeQueryPresenterTest >> testPresentersOnImpossibleQuery [
 		identicalTo: NoPossibleQueryPresenter
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiTypeQueryPresenterTest >> testQueryValidity [
 
 	"A type query with no types is invalid"
@@ -87,7 +89,7 @@ MiTypeQueryPresenterTest >> testQueryValidity [
 	self deny: presenter query isValid
 ]
 
-{ #category : #test }
+{ #category : 'test' }
 MiTypeQueryPresenterTest >> testUpdateQueryWithSelectedTypes [
 
 	| typesRemoved |

@@ -149,7 +149,7 @@ MiMooseGroupsTreeTablePresenter >> miPropagate [
 { #category : 'accessing' }
 MiMooseGroupsTreeTablePresenter >> miSelectedItem [
 
-	^ self selectedItem ifNil: [ {  } ]
+	^ self selectedItem ifNil: [ MooseGroup new ]
 ]
 
 { #category : 'update' }
@@ -191,4 +191,16 @@ MiMooseGroupsTreeTablePresenter >> updateForEntities: entities [
 
 	self roots:
 		(groups sort: [ :group | group description onlyLetters ] ascending)
+]
+
+{ #category : 'enumerating' }
+MiMooseGroupsTreeTablePresenter >> whenSelectedEntityChangedDo: aBlock [
+
+	self whenSelectedItemChangedDo: [ :selectedItem |
+			| actualEntity |
+			actualEntity := selectedItem isCollection
+				                ifTrue: [ selectedItem asMooseGroup ]
+				                ifFalse: [ selectedItem ].
+
+			aBlock value: actualEntity ]
 ]

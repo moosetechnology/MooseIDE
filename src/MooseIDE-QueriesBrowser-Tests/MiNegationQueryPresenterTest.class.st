@@ -2,83 +2,78 @@
 A MiNegationQueryPresenterTest is a test class for testing the behavior of MiNegationQueryPresenter
 "
 Class {
-	#name : #MiNegationQueryPresenterTest,
-	#superclass : #MiQueryConfiguratorPresenterTest,
+	#name : 'MiNegationQueryPresenterTest',
+	#superclass : 'MiQueryConfiguratorPresenterTest',
 	#instVars : [
 		'queryToNegate'
 	],
-	#category : #'MooseIDE-QueriesBrowser-Tests-Queries Configuration'
+	#category : 'MooseIDE-QueriesBrowser-Tests-Queries Configuration',
+	#package : 'MooseIDE-QueriesBrowser-Tests',
+	#tag : 'Queries Configuration'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiNegationQueryPresenterTest >> assertSubpresentersAreConfigured [
 
 	self assert: presenter subqueryDropListPresenter selectedItem query equals: queryToNegate
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiNegationQueryPresenterTest >> classToTest [
 
 	^ MiNegationQueryPresenter
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiNegationQueryPresenterTest >> createNewQuery [
 
 	| rootQuery |
-
 	rootQuery := FQRootQuery new
 		             input: helper classesAndMethods;
 		             yourself.
 	queryToNegate := (FQBooleanQuery defaultForParent: rootQuery)
 		                 property: #isStub;
 		                 yourself.
-	browser queriesListPresenter addNewFirstLevelQuery.
-	browser queriesListPresenter queryItemsPresenters last configureFor:
+	queriesListPresenter addNewFirstLevelQuery.
+	queriesListPresenter queryItemsPresenters last configureFor:
 		queryToNegate.
 	^ FQComplementQuery queryToNegate: queryToNegate
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiNegationQueryPresenterTest >> queryClass [
 
 	^ FQComplementQuery
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiNegationQueryPresenterTest >> resetPresenterWithEntities: aMooseGroup [
 
-	| builder superPresenter |
-
-	browser := MiQueriesBrowser
-		           newApplication: self application
-		           model: (FQRootQuery new
-				            input: aMooseGroup;
-				            yourself).
-	builder := browser instantiate: MiQueriesListPresenter on: browser.
-	builder
+	| superPresenter |
+	browser followEntity: aMooseGroup.
+	queriesListPresenter
 		addNewFirstLevelQuery;
 		addNewFirstLevelQuery;
 		addNewFirstLevelQuery.
-	superPresenter := builder componentList items third.
+	superPresenter := queriesListPresenter componentList items third.
 	superPresenter queryTypesDropList selectItem: self queryClass.
 	presenter := superPresenter queryConfiguratorPresenter
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiNegationQueryPresenterTest >> testImpossibleQueryInitialization [
 
 	self assert: true
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiNegationQueryPresenterTest >> testIsQueryUsed [
 
 	self assert: (presenter isQueryUsed: presenter subqueryDropListPresenter selectedItem).
 	self deny: (presenter isQueryUsed: presenter subqueryDropListPresenter items second)
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiNegationQueryPresenterTest >> testNormalQueryInitialization [
 
 	self assert: presenter query class identicalTo: self queryClass.
@@ -89,7 +84,7 @@ MiNegationQueryPresenterTest >> testNormalQueryInitialization [
 	self assert: presenter query isValid
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiNegationQueryPresenterTest >> testPresenters [
 
 	self
@@ -97,7 +92,7 @@ MiNegationQueryPresenterTest >> testPresenters [
 		equals: SpDropListPresenter
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiNegationQueryPresenterTest >> testPresentersOnImpossibleQuery [
 
 	"this presenter will not have the impossible query presenter as it only have a droplist to select other queries"
@@ -105,7 +100,7 @@ MiNegationQueryPresenterTest >> testPresentersOnImpossibleQuery [
 	self assert: true
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiNegationQueryPresenterTest >> testQueryValidity [
 
 	"This presenter does not know is the query is valid because it depends on the other queries. You select a query from the droplist and then it computes the value"

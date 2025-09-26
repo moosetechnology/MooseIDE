@@ -205,7 +205,7 @@ MiQueryListItemPresenter >> printOn: aStream [
 { #category : 'accessing' }
 MiQueryListItemPresenter >> queriesBrowser [
 
-	^ queriesListPresenter queriesBrowser
+	^ queriesListPresenter owner
 ]
 
 { #category : 'accessing' }

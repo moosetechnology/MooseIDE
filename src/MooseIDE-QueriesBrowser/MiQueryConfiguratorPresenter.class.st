@@ -65,12 +65,6 @@ MiQueryConfiguratorPresenter >> notifyQueryChanged [
 ]
 
 { #category : 'accessing' }
-MiQueryConfiguratorPresenter >> queriesBrowser [
-
-	^ owner queriesBrowser
-]
-
-{ #category : 'accessing' }
 MiQueryConfiguratorPresenter >> query [
 	^ query
 ]
