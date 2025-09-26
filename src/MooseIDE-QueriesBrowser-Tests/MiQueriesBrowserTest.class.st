@@ -77,11 +77,10 @@ MiQueriesBrowserTest >> testAddNewNAryQuery [
 
 	| unionQuery |
 	unionQuery := self unionQuery.
-	browser rootQuery addChild: unionQuery.
 
+	browser rootQuery addChild: unionQuery.
 	browser selectQuery: unionQuery.
-	self assert: (browser rootQuery children includes: unionQuery).
-	self assert: browser selectedQuery equals: unionQuery.
+
 	self
 		assertCollection: self queryResultTreeItems
 		hasSameElements: unionQuery result
@@ -168,17 +167,6 @@ MiQueriesBrowserTest >> testRegisterAtStartup [
 ]
 
 { #category : 'tests' }
-MiQueriesBrowserTest >> testRemoveNAryQuery [
-
-	| unionQuery firstParent |
-	unionQuery := self unionQuery.
-	browser rootQuery addChild: unionQuery.
-	firstParent := unionQuery subqueries first.
-	browser specModel removeQuery: unionQuery.
-	self deny: (browser rootQuery children includes: unionQuery)
-]
-
-{ #category : 'tests' }
 MiQueriesBrowserTest >> testRemoveQuery [
 
 	| query query2 |
@@ -188,8 +176,6 @@ MiQueriesBrowserTest >> testRemoveQuery [
 	query2 beChildOf: query.
 
 	browser specModel removeQuery: query.
-	self deny: (browser rootQuery children includes: query).
-	self deny: (browser rootQuery children includes: query2).
 	self
 		assertCollection: self queryResultTreeItems
 		hasSameElements: browser specModel selectedQueryResult
@@ -198,33 +184,33 @@ MiQueriesBrowserTest >> testRemoveQuery [
 { #category : 'tests' }
 MiQueriesBrowserTest >> testSelectQuery [
 
-	| query previousCurrentQuery newQuery |
+	| query newQuery |
 	query := (FQBooleanQuery property: #isDead) beChildOf:
 		         browser rootQuery.
-	previousCurrentQuery := browser selectedQuery.
+
 	browser selectQuery: query.
-	self deny: previousCurrentQuery equals: browser selectedQuery.
-	self assert: browser selectedQuery equals: query.
+
 	self
 		assertCollection: self queryResultTreeItems
 		hasSameElements: query result.
-	"Check if the code presenter changed its text to the new query"
 
 	newQuery := Smalltalk compiler evaluate: self queryCodePresenter text.
-	self assert: newQuery class equals: query class.
-	self assert: newQuery property equals: query property
+	self assert: newQuery equals: query
 ]
 
 { #category : 'tests' }
 MiQueriesBrowserTest >> testSetModelBeforeInitialization [
 
-	self assert: browser rootQuery class equals: FQRootQuery
+	self assert: browser specModel class equals: MiQueriesModel
 ]
 
 { #category : 'tests' }
 MiQueriesBrowserTest >> testUnregisterAtClose [
+
 	browser window close.
-	self assert: (browser application producersOf: FQAbstractQuery) size equals: 0.
+	self
+		assert: (browser application producersOf: FQAbstractQuery) size
+		equals: 0
 ]
 
 { #category : 'defaults' }

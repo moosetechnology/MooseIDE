@@ -50,7 +50,7 @@ MiQueriesModel >> miSelectedItem [
 	^ self selectedQueryResult
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'brokerage' }
 MiQueriesModel >> queriesOfType: aFamixQueryClass [
 
 	^ self rootQuery allChildren select: [ :query |
@@ -116,7 +116,7 @@ MiQueriesModel >> selectedQuery: anObject [
 	selectedQuery := anObject
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'accessing' }
 MiQueriesModel >> selectedQueryResult [
 
 	^ selectedQuery result
