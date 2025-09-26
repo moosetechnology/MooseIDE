@@ -19,7 +19,7 @@ MiNAryQueryPresenterTest >> classToTest [
 	^ MiNAryQueryPresenter
 ]
 
-{ #category : 'tests' }
+{ #category : 'running' }
 MiNAryQueryPresenterTest >> configureInnerQueries [
 
 	| query1 query2 query3 |
@@ -82,8 +82,9 @@ MiNAryQueryPresenterTest >> queryClass [
 { #category : 'running' }
 MiNAryQueryPresenterTest >> resetPresenterWithEntities: aMooseGroup [
 
+	queriesListPresenter reinitializeQueryPresenters.
 	browser followEntity: aMooseGroup.
-	
+
 	self configureInnerQueries.
 
 	self createUnconfiguredQuery
