@@ -2,21 +2,23 @@
 A MiNewQueriesBrowserTest is a test class for testing the behavior of MiNewQueriesBrowser
 "
 Class {
-	#name : #MiQueriesBrowserTest,
-	#superclass : #MiAbstractBrowserTest,
+	#name : 'MiQueriesBrowserTest',
+	#superclass : 'MiAbstractBrowserTest',
 	#instVars : [
 		'helper'
 	],
-	#category : #'MooseIDE-QueriesBrowser-Tests-Queries Browser'
+	#category : 'MooseIDE-QueriesBrowser-Tests-Queries Browser',
+	#package : 'MooseIDE-QueriesBrowser-Tests',
+	#tag : 'Queries Browser'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 MiQueriesBrowserTest >> browserClass [
 
 	^ MiQueriesBrowser
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiQueriesBrowserTest >> queryResultTreeItems [
 
 	| resultTree |
@@ -25,14 +27,14 @@ MiQueriesBrowserTest >> queryResultTreeItems [
 		  resultTree childrenFor: root ]
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiQueriesBrowserTest >> resetBrowser [
 
 	browser withWindowDo: [ :window | window close ].
 	browser := self browserClass openForTests: self application
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiQueriesBrowserTest >> setUp [
 
 	super setUp.
@@ -40,7 +42,7 @@ MiQueriesBrowserTest >> setUp [
 	browser receiveEntity: helper classesAndMethods
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiQueriesBrowserTest >> testActivateActionButtons [
 
 	self resetBrowser.
@@ -52,7 +54,7 @@ MiQueriesBrowserTest >> testActivateActionButtons [
 	browser actionButtons do: [ :button | self assert: button isEnabled ]
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiQueriesBrowserTest >> testAddNewNAryQuery [
 
 	| unionQuery |
@@ -67,12 +69,28 @@ MiQueriesBrowserTest >> testAddNewNAryQuery [
 		hasSameElements: unionQuery result
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiQueriesBrowserTest >> testCanTagEntities [
 	self deny: browser canTagEntities 
 ]
 
-{ #category : #'tests - actions' }
+{ #category : 'tests' }
+MiQueriesBrowserTest >> testClearQueries [
+
+	| query query2 |
+	query := FQBooleanQuery new property: #isAbstract.
+	query beChildOf: browser rootQuery.
+	query2 := FQBooleanQuery new property: #isStub.
+	query2 beChildOf: query.
+
+	self assert: (application availableQueries includes: query).
+	self assert: (application availableQueries includes: query2).
+	browser clearQueries.
+	self deny: (application availableQueries includes: query).
+	self deny: (application availableQueries includes: query2).
+]
+
+{ #category : 'tests - actions' }
 MiQueriesBrowserTest >> testFollowEntity [
 
 	| previousResult newResult |
@@ -107,11 +125,11 @@ MiQueriesBrowserTest >> testFollowEntity [
 		do: [ :a :b | self denyCollection: a hasSameElements: b ]
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiQueriesBrowserTest >> testInitializePresenters [
 
 	self
-		assertCollection: browser queryResultEntities
+		assertCollection: browser specModel selectedQueryResult
 		hasSameElements: helper classesAndMethods.
 
 	self assert: browser layout isNotNil.
@@ -123,28 +141,28 @@ MiQueriesBrowserTest >> testInitializePresenters [
 		assert: browser queryResultTreePresenter class
 		equals: MiMooseGroupsTreeTablePresenter.
 	self
-		assertCollection: browser queryResultEntities
+		assertCollection:browser specModel selectedQueryResult
 		hasSameElements: helper classesAndMethods
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiQueriesBrowserTest >> testRegisterAtStartup [
 
 	self assert: (browser application producersOf: FQAbstractQuery) size equals: 1.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiQueriesBrowserTest >> testRemoveNAryQuery [
 
 	| unionQuery firstParent |
 	unionQuery := self unionQuery.
 	browser rootQuery addChild: unionQuery.
 	firstParent := unionQuery subqueries first.
-	browser removeQuery: unionQuery.
+	browser specModel removeQuery: unionQuery.
 	self deny: (browser rootQuery children includes: unionQuery)
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiQueriesBrowserTest >> testRemoveQuery [
 
 	| query query2 |
@@ -153,15 +171,15 @@ MiQueriesBrowserTest >> testRemoveQuery [
 	query2 := FQBooleanQuery new property: #isStub.
 	query2 beChildOf: query.
 
-	browser removeQuery: query.
+	browser specModel removeQuery: query.
 	self deny: (browser rootQuery children includes: query).
 	self deny: (browser rootQuery children includes: query2).
 	self
 		assertCollection: self queryResultTreeItems
-		hasSameElements: browser queryResultEntities
+		hasSameElements: browser specModel selectedQueryResult
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiQueriesBrowserTest >> testSelectQuery [
 
 	| query previousCurrentQuery newQuery |
@@ -182,19 +200,19 @@ MiQueriesBrowserTest >> testSelectQuery [
 	self assert: newQuery property equals: query property
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiQueriesBrowserTest >> testSetModelBeforeInitialization [
 
 	self assert: browser rootQuery class equals: FQRootQuery
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiQueriesBrowserTest >> testUnregisterAtClose [
 	browser window close.
 	self assert: (browser application producersOf: FQAbstractQuery) size equals: 0.
 ]
 
-{ #category : #defaults }
+{ #category : 'defaults' }
 MiQueriesBrowserTest >> unionQuery [
 
 	| subqueries union |
