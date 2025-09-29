@@ -1,13 +1,15 @@
 Class {
-	#name : #MiPropertyExtension,
-	#superclass : #SpPresenter,
+	#name : 'MiPropertyExtension',
+	#superclass : 'SpPresenter',
 	#instVars : [
 		'inspectedObject'
 	],
-	#category : #'MooseIDE-NewTools-Inspector tabs'
+	#category : 'MooseIDE-NewTools-Inspector tabs',
+	#package : 'MooseIDE-NewTools',
+	#tag : 'Inspector tabs'
 }
 
-{ #category : #specs }
+{ #category : 'specs' }
 MiPropertyExtension class >> defaultLayout [
 
 	^ SpBoxLayout newVertical
@@ -15,7 +17,7 @@ MiPropertyExtension class >> defaultLayout [
 		  yourself
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiPropertyExtension >> initializePresenters [
 
 	properties := self newTable.
@@ -34,7 +36,7 @@ MiPropertyExtension >> initializePresenters [
 		beResizable
 ]
 
-{ #category : #'accessing - model' }
+{ #category : 'accessing - model' }
 MiPropertyExtension >> setModelBeforeInitialization: aModel [
 
 	inspectedObject := aModel
