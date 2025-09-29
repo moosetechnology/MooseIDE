@@ -629,7 +629,9 @@ MiAbstractBrowser >> specModel: anObject [
 { #category : 'accessing' }
 MiAbstractBrowser >> tagList [
 
-	^ self model ifNil: [ #(  ) ] ifNotNil: [ :model | model tagsList ]
+	^ self specModel
+		  ifNil: [ #(  ) ]
+		  ifNotNil: [ :model | model tagList ]
 ]
 
 { #category : 'accessing' }
