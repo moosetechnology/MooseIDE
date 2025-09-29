@@ -20,6 +20,8 @@ MiQueriesModelTest >> setUp [
 	specModel := MiQueriesModel new.
 
 	previousApplication := MiApplication current.
+	previousApplication unregisterForDropFilesEvent.
+
 	application := MiTestApplication new.
 	MiApplication current: application.
 
