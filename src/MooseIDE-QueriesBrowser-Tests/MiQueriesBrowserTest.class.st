@@ -2,33 +2,35 @@
 A MiNewQueriesBrowserTest is a test class for testing the behavior of MiNewQueriesBrowser
 "
 Class {
-	#name : #MiQueriesBrowserTest,
-	#superclass : #MiAbstractBrowserTest,
+	#name : 'MiQueriesBrowserTest',
+	#superclass : 'MiAbstractBrowserTest',
 	#instVars : [
 		'helper'
 	],
-	#category : #'MooseIDE-QueriesBrowser-Tests-Queries Browser'
+	#category : 'MooseIDE-QueriesBrowser-Tests-Queries Browser',
+	#package : 'MooseIDE-QueriesBrowser-Tests',
+	#tag : 'Queries Browser'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 MiQueriesBrowserTest >> browserClass [
 
 	^ MiQueriesBrowser
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 MiQueriesBrowserTest >> queriesListPresenter [
 
 	^ browser presenterAt: #queriesListPresenter
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 MiQueriesBrowserTest >> queryCodePresenter [
 
 	^ browser presenterAt: #queryCodePresenter
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiQueriesBrowserTest >> queryResultTreeItems [
 
 	| resultTree |
@@ -37,20 +39,20 @@ MiQueriesBrowserTest >> queryResultTreeItems [
 		  resultTree childrenFor: root ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 MiQueriesBrowserTest >> queryResultTreePresenter [
 
 	^ browser presenterAt: #queryResultTreePresenter
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiQueriesBrowserTest >> resetBrowser [
 
 	browser withWindowDo: [ :window | window close ].
 	browser := self browserClass openForTests: self application
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiQueriesBrowserTest >> setUp [
 
 	super setUp.
@@ -58,7 +60,7 @@ MiQueriesBrowserTest >> setUp [
 	browser receiveEntity: helper classesAndMethods
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiQueriesBrowserTest >> testActivateActionButtons [
 
 	self resetBrowser.
@@ -70,7 +72,7 @@ MiQueriesBrowserTest >> testActivateActionButtons [
 	browser actionButtons do: [ :button | self assert: button isEnabled ]
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiQueriesBrowserTest >> testAddNewNAryQuery [
 
 	| unionQuery |
@@ -84,12 +86,12 @@ MiQueriesBrowserTest >> testAddNewNAryQuery [
 		hasSameElements: unionQuery result
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiQueriesBrowserTest >> testCanTagEntities [
 	self deny: browser canTagEntities 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiQueriesBrowserTest >> testClearQueries [
 
 	| query query2 |
@@ -105,7 +107,7 @@ MiQueriesBrowserTest >> testClearQueries [
 	self deny: (application availableQueries includes: query2).
 ]
 
-{ #category : #'tests - actions' }
+{ #category : 'tests - actions' }
 MiQueriesBrowserTest >> testFollowEntity [
 
 	| previousResult newResult |
@@ -140,7 +142,7 @@ MiQueriesBrowserTest >> testFollowEntity [
 		do: [ :a :b | self denyCollection: a hasSameElements: b ]
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiQueriesBrowserTest >> testInitializePresenters [
 
 	self
@@ -158,13 +160,13 @@ MiQueriesBrowserTest >> testInitializePresenters [
 		hasSameElements: helper classesAndMethods
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiQueriesBrowserTest >> testRegisterAtStartup [
 
 	self assert: (browser application producersOf: FQAbstractQuery) size equals: 1.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiQueriesBrowserTest >> testRemoveQuery [
 
 	| query query2 |
@@ -179,7 +181,7 @@ MiQueriesBrowserTest >> testRemoveQuery [
 		hasSameElements: browser specModel selectedQueryResult
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiQueriesBrowserTest >> testSelectQuery [
 
 	| query newQuery |
@@ -196,13 +198,13 @@ MiQueriesBrowserTest >> testSelectQuery [
 	self assert: newQuery equals: query
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiQueriesBrowserTest >> testSetModelBeforeInitialization [
 
 	self assert: browser specModel class equals: MiQueriesModel
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiQueriesBrowserTest >> testUnregisterAtClose [
 
 	browser window close.
@@ -211,7 +213,7 @@ MiQueriesBrowserTest >> testUnregisterAtClose [
 		equals: 0
 ]
 
-{ #category : #defaults }
+{ #category : 'defaults' }
 MiQueriesBrowserTest >> unionQuery [
 
 	| subqueries union |

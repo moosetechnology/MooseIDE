@@ -1,15 +1,17 @@
 Class {
-	#name : #MiComparativeQueryPresenterTest,
-	#superclass : #MiPropertyQueryPresenterTest,
-	#category : #'MooseIDE-QueriesBrowser-Tests-Queries Configuration'
+	#name : 'MiComparativeQueryPresenterTest',
+	#superclass : 'MiPropertyQueryPresenterTest',
+	#category : 'MooseIDE-QueriesBrowser-Tests-Queries Configuration',
+	#package : 'MooseIDE-QueriesBrowser-Tests',
+	#tag : 'Queries Configuration'
 }
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiComparativeQueryPresenterTest class >> isAbstract [
 	^ self == MiComparativeQueryPresenterTest
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiComparativeQueryPresenterTest >> assertComparatorsDropList [
 
 	self
@@ -20,7 +22,7 @@ MiComparativeQueryPresenterTest >> assertComparatorsDropList [
 		hasSameElements: presenter query class comparators
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiComparativeQueryPresenterTest >> assertValueInputField [
 
 	self
@@ -28,7 +30,7 @@ MiComparativeQueryPresenterTest >> assertValueInputField [
 		identicalTo: self valueInputClass
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiComparativeQueryPresenterTest >> testMatchesQuery [
 
 	super testMatchesQuery.
@@ -46,7 +48,7 @@ MiComparativeQueryPresenterTest >> testMatchesQuery [
 		equals: presenter valueInputField text
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiComparativeQueryPresenterTest >> testPresenters [
 
 	super testPresenters.
@@ -55,7 +57,7 @@ MiComparativeQueryPresenterTest >> testPresenters [
 		assertValueInputField
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiComparativeQueryPresenterTest >> testPresentersOnImpossibleQuery [
 
 	super testPresentersOnImpossibleQuery.
@@ -69,7 +71,7 @@ MiComparativeQueryPresenterTest >> testPresentersOnImpossibleQuery [
 		identicalTo: SpNullPresenter
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiComparativeQueryPresenterTest >> testQueryValidity [
 
 	self deny: presenter query isValid.
@@ -89,12 +91,12 @@ MiComparativeQueryPresenterTest >> testQueryValidity [
 	self deny: presenter query isValid
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiComparativeQueryPresenterTest >> valueInput [
 	^ self subclassResponsibility
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiComparativeQueryPresenterTest >> valueInputClass [
 	^ self subclassResponsibility
 ]

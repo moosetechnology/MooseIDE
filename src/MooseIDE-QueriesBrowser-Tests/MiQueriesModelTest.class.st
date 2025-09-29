@@ -1,15 +1,17 @@
 Class {
-	#name : #MiQueriesModelTest,
-	#superclass : #TestCase,
+	#name : 'MiQueriesModelTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'specModel',
 		'previousApplication',
 		'application'
 	],
-	#category : #'MooseIDE-QueriesBrowser-Tests-Queries Browser'
+	#category : 'MooseIDE-QueriesBrowser-Tests-Queries Browser',
+	#package : 'MooseIDE-QueriesBrowser-Tests',
+	#tag : 'Queries Browser'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 MiQueriesModelTest >> setUp [
 
 	| browser |
@@ -18,6 +20,8 @@ MiQueriesModelTest >> setUp [
 	specModel := MiQueriesModel new.
 
 	previousApplication := MiApplication current.
+	previousApplication unregisterForDropFilesEvent.
+
 	application := MiTestApplication new.
 	MiApplication current: application.
 
@@ -27,7 +31,7 @@ MiQueriesModelTest >> setUp [
 	browser followEntity: FQTestsHelper new classesAndMethods
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiQueriesModelTest >> tearDown [
 
 	MiApplication reset.
@@ -36,7 +40,7 @@ MiQueriesModelTest >> tearDown [
 	super tearDown
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiQueriesModelTest >> testAddNewNAryQuery [
 
 	| unionQuery |
@@ -49,7 +53,7 @@ MiQueriesModelTest >> testAddNewNAryQuery [
 	self assert: specModel selectedQuery equals: unionQuery
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiQueriesModelTest >> testClearQueries [
 
 	| query query2 |
@@ -68,7 +72,7 @@ MiQueriesModelTest >> testClearQueries [
 	self assert: specModel selectedQuery equals: specModel rootQuery
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiQueriesModelTest >> testRemoveNAryQuery [
 
 	| unionQuery |
@@ -84,7 +88,7 @@ MiQueriesModelTest >> testRemoveNAryQuery [
 	self deny: (specModel rootQuery children includes: unionQuery)
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiQueriesModelTest >> testRemoveQuery [
 
 	| query query2 |
@@ -99,7 +103,7 @@ MiQueriesModelTest >> testRemoveQuery [
 	self deny: (specModel rootQuery children includes: query2)
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiQueriesModelTest >> testResetRootQueryForEntities [
 
 	| query1 initialResult newResult |
@@ -123,7 +127,7 @@ MiQueriesModelTest >> testResetRootQueryForEntities [
 	self assert: specModel selectedQuery equals: specModel rootQuery
 ]
 
-{ #category : #defaults }
+{ #category : 'defaults' }
 MiQueriesModelTest >> unionQuery [
 
 	| subqueries union |

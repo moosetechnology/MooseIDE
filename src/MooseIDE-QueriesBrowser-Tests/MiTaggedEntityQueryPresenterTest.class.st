@@ -1,10 +1,12 @@
 Class {
-	#name : #MiTaggedEntityQueryPresenterTest,
-	#superclass : #MiQueryConfiguratorPresenterTest,
-	#category : #'MooseIDE-QueriesBrowser-Tests-Queries Configuration'
+	#name : 'MiTaggedEntityQueryPresenterTest',
+	#superclass : 'MiQueryConfiguratorPresenterTest',
+	#category : 'MooseIDE-QueriesBrowser-Tests-Queries Configuration',
+	#package : 'MooseIDE-QueriesBrowser-Tests',
+	#tag : 'Queries Configuration'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiTaggedEntityQueryPresenterTest >> assertSubpresentersAreConfigured [
 
 	self
@@ -12,12 +14,12 @@ MiTaggedEntityQueryPresenterTest >> assertSubpresentersAreConfigured [
 		equals: self createNewQuery tagName
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiTaggedEntityQueryPresenterTest >> classToTest [
 	^MiTaggedEntityQueryPresenter 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiTaggedEntityQueryPresenterTest >> createNewQuery [
 
 	| rootQuery |
@@ -28,7 +30,7 @@ MiTaggedEntityQueryPresenterTest >> createNewQuery [
 	^ FQTaggedEntityQuery defaultForParent: rootQuery
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiTaggedEntityQueryPresenterTest >> createTestHelper [
 	| tag |
 	helper := super createTestHelper.
@@ -39,12 +41,12 @@ MiTaggedEntityQueryPresenterTest >> createTestHelper [
 	^helper
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiTaggedEntityQueryPresenterTest >> queryClass [
 	^ FQTaggedEntityQuery 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiTaggedEntityQueryPresenterTest >> testPresenters [
 
 	self
@@ -52,7 +54,7 @@ MiTaggedEntityQueryPresenterTest >> testPresenters [
 		identicalTo: SpDropListPresenter
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiTaggedEntityQueryPresenterTest >> testPresentersOnImpossibleQuery [
 
 	self resetPresenterWithEntities: helper noEntities.
@@ -61,7 +63,7 @@ MiTaggedEntityQueryPresenterTest >> testPresentersOnImpossibleQuery [
 		identicalTo: NoPossibleQueryPresenter
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiTaggedEntityQueryPresenterTest >> testQueryValidity [
 
 	self deny: presenter query isValid.

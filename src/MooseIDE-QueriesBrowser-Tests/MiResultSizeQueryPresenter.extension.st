@@ -1,6 +1,6 @@
-Extension { #name : #MiResultSizeQueryPresenter }
+Extension { #name : 'MiResultSizeQueryPresenter' }
 
-{ #category : #'*MooseIDE-QueriesBrowser-Tests' }
+{ #category : '*MooseIDE-QueriesBrowser-Tests' }
 MiResultSizeQueryPresenter >> subqueriesDropList [
 	^ subqueriesDropList
 ]
