@@ -1,12 +1,10 @@
 Class {
-	#name : 'MiShowOutgoingMenuItem',
-	#superclass : 'MiArchitecturalNodeMenuItem',
-	#category : 'MooseIDE-Dependency-ArchitecturalMap',
-	#package : 'MooseIDE-Dependency',
-	#tag : 'ArchitecturalMap'
+	#name : #MiShowOutgoingMenuItem,
+	#superclass : #MiArchitecturalNodeMenuItem,
+	#category : #'MooseIDE-Dependency-ArchitecturalMap'
 }
 
-{ #category : 'testing' }
+{ #category : #testing }
 MiShowOutgoingMenuItem >> canBeExecuted [
 
 	^ shape isShape and: [ 
@@ -15,13 +13,13 @@ MiShowOutgoingMenuItem >> canBeExecuted [
 				  shape model parent rawModel isTag ] ] ]
 ]
 
-{ #category : 'execution' }
+{ #category : #execution }
 MiShowOutgoingMenuItem >> execute [
 
 	visualization addOutgoingsFor: shape model
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiShowOutgoingMenuItem >> label [
 	^ 'Show outgoing'
 ]

@@ -1,22 +1,20 @@
 Class {
-	#name : 'MiUMLBrowserTest',
-	#superclass : 'MiAbstractBrowserTest',
-	#category : 'MooseIDE-Tests-Browsers',
-	#package : 'MooseIDE-Tests',
-	#tag : 'Browsers'
+	#name : #MiUMLBrowserTest,
+	#superclass : #MiAbstractBrowserTest,
+	#category : #'MooseIDE-Tests-Browsers'
 }
 
-{ #category : 'running' }
+{ #category : #running }
 MiUMLBrowserTest >> browserClass [
 	^ MiUMLBrowser
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiUMLBrowserTest >> testCanTagEntities [
 	self deny: browser canTagEntities 
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiUMLBrowserTest >> testMiSelectedItem [
 
 	| entityToSelect |

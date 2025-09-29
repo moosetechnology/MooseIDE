@@ -1,6 +1,6 @@
-Extension { #name : 'FamixStLocalVariable' }
+Extension { #name : #FamixStLocalVariable }
 
-{ #category : '*MooseIDE-Famix' }
+{ #category : #'*MooseIDE-Famix' }
 FamixStLocalVariable >> accept: aVisitor [
 
 	^aVisitor visitFamixStLocalVariable: self

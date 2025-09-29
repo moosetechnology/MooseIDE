@@ -1,13 +1,13 @@
-Extension { #name : 'MiShortcutsCategory' }
+Extension { #name : #MiShortcutsCategory }
 
-{ #category : '*MooseIDE-Tagging' }
+{ #category : #'*MooseIDE-Tagging' }
 MiShortcutsCategory >> openAnalysisBrowser [
 
 	<shortcut>
 	^ MiAnalysisBrowser openKeyMap
 ]
 
-{ #category : '*MooseIDE-Tagging' }
+{ #category : #'*MooseIDE-Tagging' }
 MiShortcutsCategory >> openTagBrowser [
 
 	<shortcut>

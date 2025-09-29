@@ -1,6 +1,6 @@
 Class {
-	#name : 'MiMetaBrowser',
-	#superclass : 'MiAbstractBrowser',
+	#name : #MiMetaBrowser,
+	#superclass : #MiAbstractBrowser,
 	#instVars : [
 		'commentNoteBook',
 		'entities',
@@ -14,18 +14,16 @@ Class {
 		'getterCode',
 		'setterCode'
 	],
-	#category : 'MooseIDE-Meta-MetaBrowser',
-	#package : 'MooseIDE-Meta',
-	#tag : 'MetaBrowser'
+	#category : #'MooseIDE-Meta-MetaBrowser'
 }
 
-{ #category : 'world menu' }
+{ #category : #'world menu' }
 MiMetaBrowser class >> helpMessage [
 
 	^ 'Meta description in a metamodel'
 ]
 
-{ #category : 'world menu' }
+{ #category : #'world menu' }
 MiMetaBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
@@ -33,61 +31,61 @@ MiMetaBrowser class >> menuCommandOn: aBuilder [
 	^ self buildMenuItemIn: aBuilder
 ]
 
-{ #category : 'world menu' }
+{ #category : #'world menu' }
 MiMetaBrowser class >> menuIconName [
 
 	^ #mooseFame
 ]
 
-{ #category : 'world menu' }
+{ #category : #'world menu' }
 MiMetaBrowser class >> menuItem [
 
 	^ #MetaBrowser
 ]
 
-{ #category : 'world menu' }
+{ #category : #'world menu' }
 MiMetaBrowser class >> menuParent [
 
 	^ self oldBrowserMenuRoot
 ]
 
-{ #category : 'world menu' }
+{ #category : #'world menu' }
 MiMetaBrowser class >> menuPriority [
 
 	^ self menuOldBrowsersPriority + 1
 ]
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 MiMetaBrowser class >> newModel [
 
 	^ MiMetaBrowserModel new
 ]
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 MiMetaBrowser class >> open [
 	<script>
 	^ super open
 ]
 
-{ #category : 'specs' }
+{ #category : #specs }
 MiMetaBrowser class >> preferredExtent [
 
 	^ 750 @ 550
 ]
 
-{ #category : 'specs' }
+{ #category : #specs }
 MiMetaBrowser class >> title [
 
 	^ 'Meta Browser'
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 MiMetaBrowser >> canFollowEntity: anObject [
 
 	^ anObject isMooseObject
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiMetaBrowser >> followEntity: anEntity [
 
 	entities roots: (anEntity metamodel classes select: [ :class | 
@@ -98,7 +96,7 @@ MiMetaBrowser >> followEntity: anEntity [
 		run
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiMetaBrowser >> initializeCommentNoteBook [
 
 	comment := self newText.
@@ -118,7 +116,7 @@ MiMetaBrowser >> initializeCommentNoteBook [
 	commentNoteBook addPage: commentCommentPage
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiMetaBrowser >> initializeEntities [
 
 	entities := self newTree.
@@ -129,7 +127,7 @@ MiMetaBrowser >> initializeEntities [
 		element ifNotNil: [ self selected: element ] ]
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiMetaBrowser >> initializeLayout [
 
 	| toolbar left |
@@ -151,14 +149,14 @@ MiMetaBrowser >> initializeLayout [
 			 yourself)
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiMetaBrowser >> initializeMap [
 
 	map := self instantiate: MiUMLVisualization.
 	map classDescriptor: RSUMLClassDescriptor new forFame
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiMetaBrowser >> initializePresenters [
 	self initializeCommentNoteBook.
 	self initializeEntities.
@@ -167,7 +165,7 @@ MiMetaBrowser >> initializePresenters [
 	self initializeLayout
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiMetaBrowser >> initializeProperties [
 
 	properties := self newNotebook.
@@ -200,13 +198,13 @@ MiMetaBrowser >> initializeProperties [
 		addPageTitle: 'Properties' provider: [ propertiesPropertiesTable ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiMetaBrowser >> miSelectedItem [
 
 	^ specModel selected
 ]
 
-{ #category : 'enumerating' }
+{ #category : #enumerating }
 MiMetaBrowser >> selected: anEntity [
 
 	specModel selected: anEntity.
@@ -215,7 +213,7 @@ MiMetaBrowser >> selected: anEntity [
 	self window updateToolbar
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiMetaBrowser >> updateCommentOf: mooseDescription [
 
 	mooseDescription isFM3Property
@@ -239,7 +237,7 @@ MiMetaBrowser >> updateCommentOf: mooseDescription [
 			commentNoteBook pages: { commentCommentPage } ]
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiMetaBrowser >> updateProperty [
 
 	propertiesRelationsTable items: specModel selected allComplexProperties.

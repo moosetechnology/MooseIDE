@@ -1,18 +1,16 @@
 Class {
-	#name : 'MiCoUsageVisualizationTest',
-	#superclass : 'MiCoUsageAbstractTest',
-	#category : 'MooseIDE-CoUsageMap-Tests-Browser',
-	#package : 'MooseIDE-CoUsageMap-Tests',
-	#tag : 'Browser'
+	#name : #MiCoUsageVisualizationTest,
+	#superclass : #MiCoUsageAbstractTest,
+	#category : #'MooseIDE-CoUsageMap-Tests-Browser'
 }
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiCoUsageVisualizationTest >> test01Basic [
 
 	self assert: builder canvas nodes size equals: 5
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiCoUsageVisualizationTest >> test03AttributeWidth [
 
 	| attribute shapes |
@@ -22,7 +20,7 @@ MiCoUsageVisualizationTest >> test03AttributeWidth [
 
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiCoUsageVisualizationTest >> test04Highlight [
 
 	| attribute shapes border event |
@@ -49,7 +47,7 @@ MiCoUsageVisualizationTest >> test04Highlight [
 				 shape border width = border width ] ])
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiCoUsageVisualizationTest >> test05MethodAttributePopup [
 
 	| attribute method |
@@ -61,7 +59,7 @@ MiCoUsageVisualizationTest >> test05MethodAttributePopup [
 		createContainerBoxTextMorphFor: method
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiCoUsageVisualizationTest >> testConsumeTag [
 
 	self shouldnt: (visualization consume: (self createTag: 'aTag')) raise: Error

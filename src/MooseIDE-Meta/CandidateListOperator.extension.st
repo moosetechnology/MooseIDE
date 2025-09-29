@@ -1,6 +1,6 @@
-Extension { #name : 'CandidateListOperator' }
+Extension { #name : #CandidateListOperator }
 
-{ #category : '*MooseIDE-Meta' }
+{ #category : #'*MooseIDE-Meta' }
 CandidateListOperator class >> description [
 	^ 'Use the standard CandidateListOperator'
 ]

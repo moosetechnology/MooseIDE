@@ -1,12 +1,12 @@
-Extension { #name : 'FamixStSourcedEntity' }
+Extension { #name : #FamixStSourcedEntity }
 
-{ #category : '*MooseIDE-Famix' }
+{ #category : #'*MooseIDE-Famix' }
 FamixStSourcedEntity >> sourceCodeBoundingEntity [
 
 	^self
 ]
 
-{ #category : '*MooseIDE-Famix' }
+{ #category : #'*MooseIDE-Famix' }
 FamixStSourcedEntity >> stringToHighlight [
 
 	^self name

@@ -6,20 +6,18 @@ I take care of getting the source code for an entity and ""formatting"" it (actu
 I also keep the displayedEntity and the selectedEntity (in the source code) if any
 "
 Class {
-	#name : 'MiSourceTextBrowserModel',
-	#superclass : 'MiAbstractModel',
+	#name : #MiSourceTextBrowserModel,
+	#superclass : #MiAbstractModel,
 	#instVars : [
 		'displayedText',
 		'highlights',
 		'shouldHighlightChildren',
 		'entity'
 	],
-	#category : 'MooseIDE-Famix-SourceText',
-	#package : 'MooseIDE-Famix',
-	#tag : 'SourceText'
+	#category : #'MooseIDE-Famix-SourceText'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiSourceTextBrowserModel class >> defaultConfiguration [
 
 	^ MiSourceTextSettingsConfiguration new
@@ -27,18 +25,18 @@ MiSourceTextBrowserModel class >> defaultConfiguration [
 		  yourself
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 MiSourceTextBrowserModel class >> defaultShouldHighlightChildren [
 
 	^ true
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiSourceTextBrowserModel >> addHighlight: aSourceTextHighlight [
 	highlights add: aSourceTextHighlight
 ]
 
-{ #category : 'highlights' }
+{ #category : #highlights }
 MiSourceTextBrowserModel >> commentHighlightFor: aComment [
 
 	self addHighlight: (MiSourceTextCommentHighlight new
@@ -47,7 +45,7 @@ MiSourceTextBrowserModel >> commentHighlightFor: aComment [
 
 ]
 
-{ #category : 'highlights' }
+{ #category : #highlights }
 MiSourceTextBrowserModel >> createHighlightsFor: anEntity [
 
 	(anEntity class usesFamixTrait: FamixTComment)
@@ -72,7 +70,7 @@ MiSourceTextBrowserModel >> createHighlightsFor: anEntity [
 	]."
 ]
 
-{ #category : 'highlights' }
+{ #category : #highlights }
 MiSourceTextBrowserModel >> createKeywordHighlights [
 	"search for all sourceLanguage keywords in the displayedText and highlight them
 	There are several guard conditions because this feature is work in progress and
@@ -92,7 +90,7 @@ MiSourceTextBrowserModel >> createKeywordHighlights [
 	]
 ]
 
-{ #category : 'settings management' }
+{ #category : #'settings management' }
 MiSourceTextBrowserModel >> currentConfiguration [
 
 	^ MiSourceTextSettingsConfiguration new
@@ -100,13 +98,13 @@ MiSourceTextBrowserModel >> currentConfiguration [
 		  yourself
 ]
 
-{ #category : 'settings management' }
+{ #category : #'settings management' }
 MiSourceTextBrowserModel >> defaultConfiguration [
 
 	^ self class defaultConfiguration
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiSourceTextBrowserModel >> displayedEntity: anEntity [
 
 	self selectedEntity: anEntity.
@@ -116,22 +114,22 @@ MiSourceTextBrowserModel >> displayedEntity: anEntity [
 	browser renderTextFor: anEntity
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiSourceTextBrowserModel >> displayedText [
 	^displayedText
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiSourceTextBrowserModel >> entities [
 
 	^ entity ifNil: [ #(  ) ] ifNotNil: [ { entity } ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiSourceTextBrowserModel >> entity: anEntity [
 ]
 
-{ #category : 'highlights' }
+{ #category : #highlights }
 MiSourceTextBrowserModel >> errorHighlightInterval: anInterval [
 
 	self addHighlight: (MiSourceTextErrorHighlight new
@@ -140,7 +138,7 @@ MiSourceTextBrowserModel >> errorHighlightInterval: anInterval [
 
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 MiSourceTextBrowserModel >> event: aMouseEvent selectedEntity: anEntity [
 
 	self selectedEntity: anEntity.
@@ -149,18 +147,18 @@ MiSourceTextBrowserModel >> event: aMouseEvent selectedEntity: anEntity [
 		ifTrue: [ anEntity inspect ]
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 MiSourceTextBrowserModel >> hasSettings [
 
 	^ true
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiSourceTextBrowserModel >> highlights [
 	^highlights
 ]
 
-{ #category : 'highlights' }
+{ #category : #highlights }
 MiSourceTextBrowserModel >> identifierHighlightFor: aChildEntity [
 	
 	self addHighlight: (MiSourceTextIdentifierHighlight new
@@ -169,20 +167,20 @@ MiSourceTextBrowserModel >> identifierHighlightFor: aChildEntity [
 
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiSourceTextBrowserModel >> initialize [
 	super initialize.
 	
 	self resetHighlights
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiSourceTextBrowserModel >> initializeSettings [
 
 	shouldHighlightChildren := self class defaultShouldHighlightChildren
 ]
 
-{ #category : 'highlights' }
+{ #category : #highlights }
 MiSourceTextBrowserModel >> keywordHighlightInterval: anInterval [
 
 	self addHighlight: (MiSourceTextKeywordHighlight new
@@ -191,13 +189,13 @@ MiSourceTextBrowserModel >> keywordHighlightInterval: anInterval [
 
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiSourceTextBrowserModel >> miSelectedItem [
 
 	^self entities
 ]
 
-{ #category : 'formatting' }
+{ #category : #formatting }
 MiSourceTextBrowserModel >> noSourceCodeFor: anEntity [
 	displayedText := ('There is no source code to show for {1}'
 		format: { anEntity name }).
@@ -205,12 +203,12 @@ MiSourceTextBrowserModel >> noSourceCodeFor: anEntity [
 	self errorHighlightInterval: (Interval from: 37 to: displayedText size)
 ]
 
-{ #category : 'highlights' }
+{ #category : #highlights }
 MiSourceTextBrowserModel >> nullHighlightFor: aChildEntity [
 
 ]
 
-{ #category : 'formatting' }
+{ #category : #formatting }
 MiSourceTextBrowserModel >> prepareFormating [
 	entity sourceText
 		ifEmpty: [ self noSourceCodeFor: entity ]
@@ -218,7 +216,7 @@ MiSourceTextBrowserModel >> prepareFormating [
 
 ]
 
-{ #category : 'formatting' }
+{ #category : #formatting }
 MiSourceTextBrowserModel >> prepareFormating: aString [
 
 	displayedText := aString.
@@ -230,31 +228,31 @@ MiSourceTextBrowserModel >> prepareFormating: aString [
 		ifFalse: [ self resetHighlights ]
 ]
 
-{ #category : 'highlights' }
+{ #category : #highlights }
 MiSourceTextBrowserModel >> resetHighlights [
 
 	highlights := OrderedCollection new
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiSourceTextBrowserModel >> selectedEntity [
 	^entity
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiSourceTextBrowserModel >> selectedEntity: anEntity [
 
 	entity := anEntity.
 	browser updateToolbar
 ]
 
-{ #category : 'settings management' }
+{ #category : #'settings management' }
 MiSourceTextBrowserModel >> settingsPresenterExtent [
 
 	^ 375 @ 200
 ]
 
-{ #category : 'highlights' }
+{ #category : #highlights }
 MiSourceTextBrowserModel >> tagHighlight: aTag for: anEntity [
 
 	self addHighlight: (MiSourceTextTagHighlight new
@@ -264,7 +262,7 @@ MiSourceTextBrowserModel >> tagHighlight: aTag for: anEntity [
 
 ]
 
-{ #category : 'settings management' }
+{ #category : #'settings management' }
 MiSourceTextBrowserModel >> updateFromConfiguration: aConfiguration [
 
 	shouldHighlightChildren := aConfiguration shouldHighlightChildren.

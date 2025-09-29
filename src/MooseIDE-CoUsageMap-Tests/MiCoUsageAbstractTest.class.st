@@ -1,6 +1,6 @@
 Class {
-	#name : 'MiCoUsageAbstractTest',
-	#superclass : 'TestCase',
+	#name : #MiCoUsageAbstractTest,
+	#superclass : #TestCase,
 	#instVars : [
 		'visualization',
 		'builder',
@@ -8,12 +8,10 @@ Class {
 		'application',
 		'previousApplication'
 	],
-	#category : 'MooseIDE-CoUsageMap-Tests-Browser',
-	#package : 'MooseIDE-CoUsageMap-Tests',
-	#tag : 'Browser'
+	#category : #'MooseIDE-CoUsageMap-Tests-Browser'
 }
 
-{ #category : 'running' }
+{ #category : #running }
 MiCoUsageAbstractTest >> createTag: aName [
 
 	^ (builder specModel currentMooseModel tagNamed: aName)
@@ -21,7 +19,7 @@ MiCoUsageAbstractTest >> createTag: aName [
 		  yourself
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 MiCoUsageAbstractTest >> setUp [
 
 	super setUp.
@@ -42,20 +40,20 @@ MiCoUsageAbstractTest >> setUp [
 	builder := visualization mapBuilder
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 MiCoUsageAbstractTest >> specModel [
 
 	^ visualization specModel
 ]
 
-{ #category : 'private - testing' }
+{ #category : #'private - testing' }
 MiCoUsageAbstractTest >> tagsWithPalette: aCollection [
 
 	aCollection do: [ :str |
 		(self createTag: str) color: (NSScale category20 scale: str) ]
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 MiCoUsageAbstractTest >> tearDown [
 
 	MiApplication reset.

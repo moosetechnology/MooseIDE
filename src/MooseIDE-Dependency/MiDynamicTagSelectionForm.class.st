@@ -2,40 +2,38 @@
 I am a dynamic tag creation form.
 "
 Class {
-	#name : 'MiDynamicTagSelectionForm',
-	#superclass : 'MiPresenter',
+	#name : #MiDynamicTagSelectionForm,
+	#superclass : #MiPresenter,
 	#instVars : [
 		'cancelButton',
 		'submitButton',
 		'tagList'
 	],
-	#category : 'MooseIDE-Dependency-DistributionMap',
-	#package : 'MooseIDE-Dependency',
-	#tag : 'DistributionMap'
+	#category : #'MooseIDE-Dependency-DistributionMap'
 }
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiDynamicTagSelectionForm >> addTag: aTag [
 
 	tagList model items add: aTag.
 	tagList refresh
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiDynamicTagSelectionForm >> checkFormInputs [
 
 	tagList selectedItems ifEmpty: [ ^ false ].
 	^ true
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiDynamicTagSelectionForm >> connectPresenters [
 
 	cancelButton action: [ self owner closeTagCreationForm ].
 	submitButton action: [ self submit ]
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiDynamicTagSelectionForm >> initializeLayout [
 
 	self layout: (SpBoxLayout newTopToBottom
@@ -53,7 +51,7 @@ MiDynamicTagSelectionForm >> initializeLayout [
 			 yourself)
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiDynamicTagSelectionForm >> initializePresenters [
 
 	(tagList := self newList)
@@ -65,20 +63,20 @@ MiDynamicTagSelectionForm >> initializePresenters [
 	self initializeLayout
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiDynamicTagSelectionForm >> removeTag: aTag [
 
 	tagList model items remove: aTag.
 	tagList refresh
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiDynamicTagSelectionForm >> reset [
 
 	tagList unselectAll.
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiDynamicTagSelectionForm >> setTags [
 
 	tagList items: ((self root application itemsFor: MiDynamicTag)
@@ -87,7 +85,7 @@ MiDynamicTagSelectionForm >> setTags [
 	tagList refresh
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiDynamicTagSelectionForm >> submit [
 
 	self checkFormInputs ifFalse: [ ^ self ].
@@ -96,13 +94,13 @@ MiDynamicTagSelectionForm >> submit [
 	self owner closeTagCreationForm
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiDynamicTagSelectionForm >> tagList [
 
 	^ tagList
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiDynamicTagSelectionForm >> tagList: anObject [
 
 	^ tagList := anObject

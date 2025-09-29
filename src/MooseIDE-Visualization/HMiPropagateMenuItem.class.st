@@ -2,14 +2,12 @@
 Entry menu in HNode for 'Propagate' option
 "
 Class {
-	#name : 'HMiPropagateMenuItem',
-	#superclass : 'HNodeMenuItem',
-	#category : 'MooseIDE-Visualization-Helpers',
-	#package : 'MooseIDE-Visualization',
-	#tag : 'Helpers'
+	#name : #HMiPropagateMenuItem,
+	#superclass : #HNodeMenuItem,
+	#category : #'MooseIDE-Visualization-Helpers'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 HMiPropagateMenuItem >> argument [
 	"Propagate on the buses selected by the browser"
 
@@ -17,49 +15,49 @@ HMiPropagateMenuItem >> argument [
 		  mapModel browser buses ]
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 HMiPropagateMenuItem >> canBeExecuted [
 	^ shape model rawModel isMooseEntity
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 HMiPropagateMenuItem >> description [
 
 	^ 'Propagate the entity on the buses of the browser'
 ]
 
-{ #category : 'execution' }
+{ #category : #execution }
 HMiPropagateMenuItem >> execute [
 
 	self target miPropagateOn: self argument
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 HMiPropagateMenuItem >> group [
 	^1
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 HMiPropagateMenuItem >> iconName [
 	^ #mooseOutgoing
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 HMiPropagateMenuItem >> label [
 	^ 'Propagate'
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 HMiPropagateMenuItem >> order [
 	^ 100
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 HMiPropagateMenuItem >> selector [
 	^ #miPropagateOn:
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 HMiPropagateMenuItem >> target [
 	^ shape model rawModel
 ]

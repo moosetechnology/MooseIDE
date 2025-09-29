@@ -1,18 +1,16 @@
 Class {
-	#name : 'MiButterflyMapBrowserTest',
-	#superclass : 'MiAbstractBrowserTest',
-	#category : 'MooseIDE-Tests-Browsers',
-	#package : 'MooseIDE-Tests',
-	#tag : 'Browsers'
+	#name : #MiButterflyMapBrowserTest,
+	#superclass : #MiAbstractBrowserTest,
+	#category : #'MooseIDE-Tests-Browsers'
 }
 
-{ #category : 'running' }
+{ #category : #running }
 MiButterflyMapBrowserTest >> browserClass [
 
 	^ MiButterflyMapBrowser
 ]
 
-{ #category : 'tests - tags' }
+{ #category : #'tests - tags' }
 MiButterflyMapBrowserTest >> testSelectedTagSetAndGet [
 	| model entity tag |
 	model := FamixRepTestModel new.
@@ -24,7 +22,7 @@ MiButterflyMapBrowserTest >> testSelectedTagSetAndGet [
 	self assert: browser selectedTag equals: tag
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiButterflyMapBrowserTest >> testSettingsAction [
 
 	self assert: browser hasSettings

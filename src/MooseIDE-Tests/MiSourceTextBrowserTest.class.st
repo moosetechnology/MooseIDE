@@ -1,17 +1,15 @@
 Class {
-	#name : 'MiSourceTextBrowserTest',
-	#superclass : 'MiAbstractBrowserTest',
-	#category : 'MooseIDE-Tests-Browsers',
-	#package : 'MooseIDE-Tests',
-	#tag : 'Browsers'
+	#name : #MiSourceTextBrowserTest,
+	#superclass : #MiAbstractBrowserTest,
+	#category : #'MooseIDE-Tests-Browsers'
 }
 
-{ #category : 'running' }
+{ #category : #running }
 MiSourceTextBrowserTest >> browserClass [
 	^ MiSourceTextBrowser
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 MiSourceTextBrowserTest >> stubImmediateAnchorText: aString [
 	^FamixTest1SourceTextAnchor new
 		source: aString 
@@ -19,12 +17,12 @@ MiSourceTextBrowserTest >> stubImmediateAnchorText: aString [
 
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 MiSourceTextBrowserTest >> stubIndexedAnchorText: aString [
 	^self stubIndexedAnchorText: aString positions: 1@(aString size)
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 MiSourceTextBrowserTest >> stubIndexedAnchorText: aString positions: startEndPos [
 	^FamixStubIndexedFileAnchor new
 		source: aString ;
@@ -34,7 +32,7 @@ MiSourceTextBrowserTest >> stubIndexedAnchorText: aString positions: startEndPos
 
 ]
 
-{ #category : 'tests - externalEditor' }
+{ #category : #'tests - externalEditor' }
 MiSourceTextBrowserTest >> testFollowEntityPassesOnToToolbar [
 	| toolbar wasCalled |
 	wasCalled := false.
@@ -47,13 +45,13 @@ MiSourceTextBrowserTest >> testFollowEntityPassesOnToToolbar [
 	self assert: wasCalled
 ]
 
-{ #category : 'tests - externalEditor' }
+{ #category : #'tests - externalEditor' }
 MiSourceTextBrowserTest >> testHasExternalEditorEmacs [
 
 	self assert: browser externalEditor equals: MiSourceTextExternalEditorEmacs 
 ]
 
-{ #category : 'tests - highlighting' }
+{ #category : #'tests - highlighting' }
 MiSourceTextBrowserTest >> testHighlightChildWithImmediateTextAnchor [
 	| entity displayedText |
 
@@ -83,7 +81,7 @@ aClass >> aMethod()
 	self assert: ((displayedText attributesAt: 70) anySatisfy: [ :att | (att class = TextEmphasis) and: [ att set ] ]).
 ]
 
-{ #category : 'tests - highlighting' }
+{ #category : #'tests - highlighting' }
 MiSourceTextBrowserTest >> testHighlightChildWithIndexedFileAnchor [
 	| entity displayedText |
 	entity := FamixJavaClass new
@@ -109,7 +107,7 @@ MiSourceTextBrowserTest >> testHighlightChildWithIndexedFileAnchor [
 		((displayedText attributesAt: 30) anySatisfy: [ :att | (att class = TextEmphasis) and: [ att set ] ]).
 ]
 
-{ #category : 'tests - highlighting' }
+{ #category : #'tests - highlighting' }
 MiSourceTextBrowserTest >> testHighlightChildWithNoAnchor [
 	| entity displayedText |
 	entity := FamixStClass new
@@ -131,7 +129,7 @@ MiSourceTextBrowserTest >> testHighlightChildWithNoAnchor [
 
 ]
 
-{ #category : 'tests - highlighting' }
+{ #category : #'tests - highlighting' }
 MiSourceTextBrowserTest >> testHighlightJavaComment [
 
 	| entity displayedText |
@@ -159,7 +157,7 @@ MiSourceTextBrowserTest >> testHighlightJavaComment [
 			 att class = TextColor and: [ att color = Color gray ] ])
 ]
 
-{ #category : 'tests - highlighting' }
+{ #category : #'tests - highlighting' }
 MiSourceTextBrowserTest >> testHighlightNoAnchor [
 	| entity displayedText |
 	entity := FamixStClass new
@@ -176,7 +174,7 @@ MiSourceTextBrowserTest >> testHighlightNoAnchor [
 	self deny: (displayedText attributesAt: (displayedText size)) isEmpty.
 ]
 
-{ #category : 'tests - highlighting' }
+{ #category : #'tests - highlighting' }
 MiSourceTextBrowserTest >> testHighlightNoChild [
 	| entity displayedText |
 	entity := FamixStClass new
@@ -195,7 +193,7 @@ MiSourceTextBrowserTest >> testHighlightNoChild [
 
 ]
 
-{ #category : 'tests - highlighting' }
+{ #category : #'tests - highlighting' }
 MiSourceTextBrowserTest >> testHighlightStComment [
 
 	| entity displayedText |
@@ -218,7 +216,7 @@ MiSourceTextBrowserTest >> testHighlightStComment [
 	self assert: ((displayedText attributesAt: 25) anySatisfy: [ :att | att class = TextColor and: [ att color = Color gray ] ])
 ]
 
-{ #category : 'tests - highlighting' }
+{ #category : #'tests - highlighting' }
 MiSourceTextBrowserTest >> testHighlightStCommentForClass [
 	"class comment appear before the class in Pharo"
 
@@ -242,7 +240,7 @@ code of aClass {
 	self assert: ((displayedText attributesAt: 20) anySatisfy: [ :att | att class = TextColor and: [ att color = Color gray ] ])
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiSourceTextBrowserTest >> testMiSelectedItem [
 
 	| entityToSelect |
@@ -254,7 +252,7 @@ MiSourceTextBrowserTest >> testMiSelectedItem [
 	self assert: browser miSelectedItem equals: entityToSelect
 ]
 
-{ #category : 'tests - tags' }
+{ #category : #'tests - tags' }
 MiSourceTextBrowserTest >> testSelectedTagSetAndGet [
 	| model entity tag |
 	model := FamixRepTestModel new.
@@ -266,13 +264,13 @@ MiSourceTextBrowserTest >> testSelectedTagSetAndGet [
 	self assert: browser selectedTag equals: tag
 ]
 
-{ #category : 'tests - opening' }
+{ #category : #'tests - opening' }
 MiSourceTextBrowserTest >> testSettingsAction [
 
 	self assert: browser hasSettings
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiSourceTextBrowserTest >> testShowNoSourceCodeMessage [
 
 	browser receiveEntity: (FamixStClass named: 'TestClass').
@@ -281,7 +279,7 @@ MiSourceTextBrowserTest >> testShowNoSourceCodeMessage [
 		equals: 'There is no source code to show for TestClass'
 ]
 
-{ #category : 'tests - externalEditor' }
+{ #category : #'tests - externalEditor' }
 MiSourceTextBrowserTest >> testToolbarAutoTransmit [
 	| toolbar editor entity received |
 	toolbar := browser toolBarExternalEditor.
@@ -303,7 +301,7 @@ MiSourceTextBrowserTest >> testToolbarAutoTransmit [
 	self assert: received equals: entity.
 ]
 
-{ #category : 'private - testing' }
+{ #category : #'private - testing' }
 MiSourceTextBrowserTest >> textRenderer [
 
 	^ browser presenterAt: #textRenderer

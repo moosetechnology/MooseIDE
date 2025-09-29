@@ -1,10 +1,12 @@
 Class {
-	#name : #MiNavigationQueryPresenterTest,
-	#superclass : #MiQueryConfiguratorPresenterTest,
-	#category : #'MooseIDE-QueriesBrowser-Tests-Queries Configuration'
+	#name : 'MiNavigationQueryPresenterTest',
+	#superclass : 'MiQueryConfiguratorPresenterTest',
+	#category : 'MooseIDE-QueriesBrowser-Tests-Queries Configuration',
+	#package : 'MooseIDE-QueriesBrowser-Tests',
+	#tag : 'Queries Configuration'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiNavigationQueryPresenterTest >> assertSubpresentersAreConfigured [
 
 	self
@@ -24,12 +26,12 @@ MiNavigationQueryPresenterTest >> assertSubpresentersAreConfigured [
 		equals: SpButtonPresenter
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiNavigationQueryPresenterTest >> classToTest [
 	^ MiNavigationQueryPresenter
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiNavigationQueryPresenterTest >> createNewQuery [
 
 	| rootQuery |
@@ -43,12 +45,12 @@ MiNavigationQueryPresenterTest >> createNewQuery [
 		  yourself
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiNavigationQueryPresenterTest >> queryClass [
 	^ FQNavigationQuery
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiNavigationQueryPresenterTest >> testPresenters [
 
 	self
@@ -64,7 +66,7 @@ MiNavigationQueryPresenterTest >> testPresenters [
 		equals: SpButtonPresenter
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiNavigationQueryPresenterTest >> testPresentersOnImpossibleQuery [
 
 	self resetPresenterWithEntities: helper noEntities.
@@ -77,7 +79,7 @@ MiNavigationQueryPresenterTest >> testPresentersOnImpossibleQuery [
 		identicalTo: NoPossibleQueryPresenter
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiNavigationQueryPresenterTest >> testQueryValidity [
 
 	self deny: presenter query isValid.
@@ -97,7 +99,7 @@ MiNavigationQueryPresenterTest >> testQueryValidity [
 	self deny: presenter query isValid
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiNavigationQueryPresenterTest >> testUpdateQueryWithSelectedAssociations [
 
 	| associationsRemoved |

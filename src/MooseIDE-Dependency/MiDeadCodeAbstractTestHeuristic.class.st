@@ -9,21 +9,19 @@ All these heuristics are refuting that a method is dead, meaning:
 - when they are false, it is undecided
 "
 Class {
-	#name : 'MiDeadCodeAbstractTestHeuristic',
-	#superclass : 'MiDeadCodeAbstractHeuristic',
-	#category : 'MooseIDE-Dependency-DeadCode',
-	#package : 'MooseIDE-Dependency',
-	#tag : 'DeadCode'
+	#name : #MiDeadCodeAbstractTestHeuristic,
+	#superclass : #MiDeadCodeAbstractHeuristic,
+	#category : #'MooseIDE-Dependency-DeadCode'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiDeadCodeAbstractTestHeuristic >> description [ 
 
 	^super description ,
 	'Any method of a test class is considered not dead'
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiDeadCodeAbstractTestHeuristic >> name [
 
 	^super name , 'Test: '

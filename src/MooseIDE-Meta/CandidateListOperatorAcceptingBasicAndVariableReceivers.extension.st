@@ -1,6 +1,6 @@
-Extension { #name : 'CandidateListOperatorAcceptingBasicAndVariableReceivers' }
+Extension { #name : #CandidateListOperatorAcceptingBasicAndVariableReceivers }
 
-{ #category : '*MooseIDE-Meta' }
+{ #category : #'*MooseIDE-Meta' }
 CandidateListOperatorAcceptingBasicAndVariableReceivers class >> description [
 	^ 'Compute for simple receivers and variables'
 ]

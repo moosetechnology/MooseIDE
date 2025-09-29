@@ -4,8 +4,8 @@ Abstract class for slider presenters
 TODO: Make generic for whole MooseIDE ?
 "
 Class {
-	#name : 'MiCoAbstractSliderPresenter',
-	#superclass : 'SpPresenter',
+	#name : #MiCoAbstractSliderPresenter,
+	#superclass : #SpPresenter,
 	#instVars : [
 		'sliderBuilder',
 		'get',
@@ -14,27 +14,25 @@ Class {
 		'flag',
 		'slider'
 	],
-	#category : 'MooseIDE-CoUsageMap-Sliders',
-	#package : 'MooseIDE-CoUsageMap',
-	#tag : 'Sliders'
+	#category : #'MooseIDE-CoUsageMap-Sliders'
 }
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiCoAbstractSliderPresenter >> defaultSlider [
 	^ self subclassResponsibility
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiCoAbstractSliderPresenter >> get [
 	^ get
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiCoAbstractSliderPresenter >> get: anObject [
 	get := anObject
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiCoAbstractSliderPresenter >> initializePresenters [
 	flag := false.
 	slider := self newRoassal.
@@ -43,12 +41,12 @@ MiCoAbstractSliderPresenter >> initializePresenters [
 		model: self.
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiCoAbstractSliderPresenter >> model: anObject [
 	model := anObject
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiCoAbstractSliderPresenter >> range: anObject [
 	sliderBuilder
 		min: anObject first;
@@ -57,12 +55,12 @@ MiCoAbstractSliderPresenter >> range: anObject [
 		build
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiCoAbstractSliderPresenter >> realValue [
 	^ get value: model
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiCoAbstractSliderPresenter >> realValue: anObject [
 	flag ifTrue: [ ^ self ].
 	flag := true.
@@ -70,17 +68,17 @@ MiCoAbstractSliderPresenter >> realValue: anObject [
 	flag := false.
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiCoAbstractSliderPresenter >> set [
 	^ set
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiCoAbstractSliderPresenter >> set: anObject [
 	set := anObject
 ]
 
-{ #category : 'private' }
+{ #category : #private }
 MiCoAbstractSliderPresenter >> setValue: anObject [
 	model perform: set with: anObject.
 	sliderBuilder updateValue.

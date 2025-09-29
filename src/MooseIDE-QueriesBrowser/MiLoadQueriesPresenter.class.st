@@ -4,44 +4,42 @@ Load a set of already saved queries into the queries browser.
 Width of popover is forced in #initializeLayout
 "
 Class {
-	#name : 'MiLoadQueriesPresenter',
-	#superclass : 'MiPresenter',
+	#name : #MiLoadQueriesPresenter,
+	#superclass : #MiPresenter,
 	#instVars : [
 		'filteringListPresenter',
 		'directoryPathInput',
 		'directorySelectionButton',
 		'queriesListPresenter'
 	],
-	#category : 'MooseIDE-QueriesBrowser-Widgets',
-	#package : 'MooseIDE-QueriesBrowser',
-	#tag : 'Widgets'
+	#category : #'MooseIDE-QueriesBrowser-Widgets'
 }
 
-{ #category : 'default' }
+{ #category : #default }
 MiLoadQueriesPresenter class >> defaultDescription [
 
 	^ 'Load a set of saved queries into the browser'
 ]
 
-{ #category : 'default' }
+{ #category : #default }
 MiLoadQueriesPresenter class >> defaultName [
 
 	^ 'Load saved queries'
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiLoadQueriesPresenter class >> iconName [
 
 	^ #smallLoadProject
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiLoadQueriesPresenter class >> tilte [
 
 	^ self defaultName
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 MiLoadQueriesPresenter >> acceptAction [
 
 	^ [ 
@@ -49,7 +47,7 @@ MiLoadQueriesPresenter >> acceptAction [
 	  queriesListPresenter constructQueries: self loadQueries ]
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 MiLoadQueriesPresenter >> chooseDirectory [
 
 	| newDirectory |
@@ -62,7 +60,7 @@ MiLoadQueriesPresenter >> chooseDirectory [
 		directoryPathInput text: newDirectory pathString ]
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiLoadQueriesPresenter >> initializeDialogWindow: aDialogWindow [
 
 	aDialogWindow initialExtent: 250 @ 300.
@@ -72,7 +70,7 @@ MiLoadQueriesPresenter >> initializeDialogWindow: aDialogWindow [
 		addButton: 'Cancel' do: [ :dialog | dialog close ]
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiLoadQueriesPresenter >> initializeDirectorySelectionButton [
 
 	directorySelectionButton := self newButton
@@ -81,7 +79,7 @@ MiLoadQueriesPresenter >> initializeDirectorySelectionButton [
 		                            yourself
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiLoadQueriesPresenter >> initializeLayout [
 
 	self layout: (SpBoxLayout newTopToBottom
@@ -95,7 +93,7 @@ MiLoadQueriesPresenter >> initializeLayout [
 			 yourself)
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiLoadQueriesPresenter >> initializeList [
 
 	filteringListPresenter := self newFilteringList.
@@ -115,7 +113,7 @@ MiLoadQueriesPresenter >> initializeList [
 		whenActivatedDo: self acceptAction
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiLoadQueriesPresenter >> initializePathInputField [
 
 	directoryPathInput := self newTextInput
@@ -127,7 +125,7 @@ MiLoadQueriesPresenter >> initializePathInputField [
 		                      yourself
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiLoadQueriesPresenter >> initializePresenters [
 
 	self initializePathInputField.
@@ -137,7 +135,7 @@ MiLoadQueriesPresenter >> initializePresenters [
 	self initializeLayout
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 MiLoadQueriesPresenter >> loadQueries [
 
 	^ [ 
@@ -145,13 +143,13 @@ MiLoadQueriesPresenter >> loadQueries [
 		  STON fromStream: stream ] ] onErrorDo: [ #(  ) ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiLoadQueriesPresenter >> selectedFile [
 
 	^ filteringListPresenter selectedItem
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 MiLoadQueriesPresenter >> setDirectory: aFileReference [
 
 	aFileReference exists ifFalse: [ 
@@ -164,7 +162,7 @@ MiLoadQueriesPresenter >> setDirectory: aFileReference [
 		(MiSaveQueriesCommand directory allChildrenMatching: '*.ston')
 ]
 
-{ #category : 'accessing - model' }
+{ #category : #'accessing - model' }
 MiLoadQueriesPresenter >> setModelBeforeInitialization: aQueriesListPresenter [
 
 	queriesListPresenter := aQueriesListPresenter

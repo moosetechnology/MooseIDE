@@ -2,14 +2,12 @@
 Butterfly visualization.
 "
 Class {
-	#name : 'MiButterflyMapVisualization',
-	#superclass : 'MiAbstractHierarchicalVisualization',
-	#category : 'MooseIDE-ButterflyMap-Browser',
-	#package : 'MooseIDE-ButterflyMap',
-	#tag : 'Browser'
+	#name : #MiButterflyMapVisualization,
+	#superclass : #MiAbstractHierarchicalVisualization,
+	#category : #'MooseIDE-ButterflyMap-Browser'
 }
 
-{ #category : 'running' }
+{ #category : #running }
 MiButterflyMapVisualization >> buildInCanvas: aCanvas [
 
 	owner specModel currentEntity ifNil: [ ^ self ].
@@ -22,7 +20,7 @@ MiButterflyMapVisualization >> buildInCanvas: aCanvas [
 	builder build
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 MiButterflyMapVisualization >> update [
 
 	self refresh

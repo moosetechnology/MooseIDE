@@ -1,6 +1,6 @@
-Extension { #name : 'MooseGroup' }
+Extension { #name : #MooseGroup }
 
-{ #category : '*MooseIDE-NewTools' }
+{ #category : #'*MooseIDE-NewTools' }
 MooseGroup >> mooseInterestingEntity [
 
 	"Method used in UI. 
@@ -13,7 +13,7 @@ MooseGroup >> mooseInterestingEntity [
 		  ifFalse: [ self specialize ]
 ]
 
-{ #category : '*MooseIDE-NewTools' }
+{ #category : #'*MooseIDE-NewTools' }
 MooseGroup >> sum [
 
 	^ storage sum

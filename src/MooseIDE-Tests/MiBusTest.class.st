@@ -1,15 +1,13 @@
 Class {
-	#name : 'MiBusTest',
-	#superclass : 'MiAbstractApplicationTest',
+	#name : #MiBusTest,
+	#superclass : #MiAbstractApplicationTest,
 	#instVars : [
 		'bus'
 	],
-	#category : 'MooseIDE-Tests-Application',
-	#package : 'MooseIDE-Tests',
-	#tag : 'Application'
+	#category : #'MooseIDE-Tests-Application'
 }
 
-{ #category : 'running' }
+{ #category : #running }
 MiBusTest >> mockBrowser [
 	| mockBrowser |
 	mockBrowser := Mock named: 'Mock browser'.
@@ -18,21 +16,21 @@ MiBusTest >> mockBrowser [
 	^ mockBrowser
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiBusTest >> setUp [
 	  super setUp.
 
 	  bus := self application defaultBus
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 MiBusTest >> tearDown [
 
 	self application class reset.
 	super tearDown
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiBusTest >> testGloballySelect [
 	| browser entity |
 	
@@ -46,7 +44,7 @@ MiBusTest >> testGloballySelect [
 	browser should receive receiveEntity: entity.
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiBusTest >> testRegisterBrowser [
 	| browser |
 	browser := self mockBrowser.
@@ -54,7 +52,7 @@ MiBusTest >> testRegisterBrowser [
 	self assert: (bus browsers includes: browser)
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiBusTest >> testUnregisterBrowser [
 	| browser |
 	browser := self mockBrowser.

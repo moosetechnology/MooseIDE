@@ -21,20 +21,18 @@ Controls:
 * R to clear all searches
 "
 Class {
-	#name : 'MiDistributionMapBrowser',
-	#superclass : 'MiAbstractVisualizationBrowser',
-	#category : 'MooseIDE-Dependency-DistributionMap',
-	#package : 'MooseIDE-Dependency',
-	#tag : 'DistributionMap'
+	#name : #MiDistributionMapBrowser,
+	#superclass : #MiAbstractVisualizationBrowser,
+	#category : #'MooseIDE-Dependency-DistributionMap'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiDistributionMapBrowser class >> mapClass [
 
 	^ MiDistributionMapVisualization
 ]
 
-{ #category : 'world menu' }
+{ #category : #'world menu' }
 MiDistributionMapBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
@@ -42,65 +40,65 @@ MiDistributionMapBrowser class >> menuCommandOn: aBuilder [
 	^ self buildMenuItemIn: aBuilder
 ]
 
-{ #category : 'world menu' }
+{ #category : #'world menu' }
 MiDistributionMapBrowser class >> menuItem [
 
 	^ #DMBrowser
 ]
 
-{ #category : 'world menu' }
+{ #category : #'world menu' }
 MiDistributionMapBrowser class >> menuPriority [
 
 	^ self menuVisualizationToolsPriority + 5
 ]
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 MiDistributionMapBrowser class >> newModel [
 
 	^ MiDistributionMapModel new
 ]
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 MiDistributionMapBrowser class >> open [
 
 	<script>
 	^ super open
 ]
 
-{ #category : 'specs' }
+{ #category : #specs }
 MiDistributionMapBrowser class >> preferredExtent [
 
 	^ 850 @ 520
 ]
 
-{ #category : 'specs' }
+{ #category : #specs }
 MiDistributionMapBrowser class >> title [
 
 	^ 'Distribution map'
 ]
 
-{ #category : 'adding' }
+{ #category : #adding }
 MiDistributionMapBrowser >> addDynamicTags: aCollection [
 
 	aCollection do: [ :dt | self specModel addDynamicTag: dt ].
 	"settings refreshTagList"
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 MiDistributionMapBrowser >> availableQueries [
 
 	^ (self application itemsFor: FQAbstractQuery) asOrderedCollection 
 		  select: [ :q | q isValid ]
 ]
 
-{ #category : 'window control' }
+{ #category : #'window control' }
 MiDistributionMapBrowser >> browserClosed [
 
 	super browserClosed.
 	application unregisterConsumer: self
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 MiDistributionMapBrowser >> canFollowEntity: aCollection [
 
 	| uniqType confirm |
@@ -129,19 +127,19 @@ Are you sure you want to continue ?
 	^ true
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 MiDistributionMapBrowser >> canReceiveEntity: anEntity [
 
 	^ anEntity isMooseObject
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiDistributionMapBrowser >> canvas [
 
 	^ mainPresenter canvas
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 MiDistributionMapBrowser >> followEntity: anEntity [
 
 	super followEntity: anEntity.
@@ -151,7 +149,7 @@ MiDistributionMapBrowser >> followEntity: anEntity [
 	self runVisualization
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiDistributionMapBrowser >> initializeLayout [
 
 	self layout: (SpBoxLayout newLeftToRight
@@ -160,14 +158,14 @@ MiDistributionMapBrowser >> initializeLayout [
 			 yourself)
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiDistributionMapBrowser >> initializePresenters [
 
 	mainPresenter := self class mapClass owner: self.
 	self initializeLayout
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiDistributionMapBrowser >> visualization [
 
 	^ mainPresenter

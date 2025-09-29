@@ -1,12 +1,10 @@
 Class {
-	#name : 'MiLVVerticalBoxNode',
-	#superclass : 'MiLVAbstractBoxNode',
-	#category : 'MooseIDE-LayerVisualization-Model',
-	#package : 'MooseIDE-LayerVisualization',
-	#tag : 'Model'
+	#name : #MiLVVerticalBoxNode,
+	#superclass : #MiLVAbstractBoxNode,
+	#category : #'MooseIDE-LayerVisualization-Model'
 }
 
-{ #category : 'visiting' }
+{ #category : #visiting }
 MiLVVerticalBoxNode >> acceptVisitor: aVisitor [
 
 	^ aVisitor visitVerticalBox: self

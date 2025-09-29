@@ -1,12 +1,10 @@
 Class {
-	#name : 'MiSourceTextNullAdapter',
-	#superclass : 'MiAbstractSourceTextAnchorAdapter',
-	#category : 'MooseIDE-Famix-SourceText',
-	#package : 'MooseIDE-Famix',
-	#tag : 'SourceText'
+	#name : #MiSourceTextNullAdapter,
+	#superclass : #MiAbstractSourceTextAnchorAdapter,
+	#category : #'MooseIDE-Famix-SourceText'
 }
 
-{ #category : 'api' }
+{ #category : #api }
 MiSourceTextNullAdapter >> intervalForEntity: anEntity [
 
 	Error signal: 'No source anchor adpater found'

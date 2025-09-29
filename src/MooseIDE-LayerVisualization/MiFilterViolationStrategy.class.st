@@ -1,12 +1,10 @@
 Class {
-	#name : 'MiFilterViolationStrategy',
-	#superclass : 'MiLayerDisplayStrategy',
-	#category : 'MooseIDE-LayerVisualization-Strategy',
-	#package : 'MooseIDE-LayerVisualization',
-	#tag : 'Strategy'
+	#name : #MiFilterViolationStrategy,
+	#superclass : #MiLayerDisplayStrategy,
+	#category : #'MooseIDE-LayerVisualization-Strategy'
 }
 
-{ #category : 'filtering' }
+{ #category : #filtering }
 MiFilterViolationStrategy >> fetchNotSharedDTOs [
 
 	| shared clientLayers serverLayers incomingCache dict clientProviders serverProviders rootClassBlock |
@@ -38,7 +36,7 @@ MiFilterViolationStrategy >> fetchNotSharedDTOs [
 	^ dict
 ]
 
-{ #category : 'filtering' }
+{ #category : #filtering }
 MiFilterViolationStrategy >> fetchViolating: layers [
 
 	| outgoingCache incomingCache |
@@ -58,20 +56,20 @@ MiFilterViolationStrategy >> fetchViolating: layers [
 						  visualizationModel sharedLayer includes: p ] ] ] ] ]
 ]
 
-{ #category : 'filtering' }
+{ #category : #filtering }
 MiFilterViolationStrategy >> fetchViolatingClients [
 
 
 	^ self fetchViolating:  visualizationModel clientLayers 
 ]
 
-{ #category : 'filtering' }
+{ #category : #filtering }
 MiFilterViolationStrategy >> fetchViolatingServers [
 
 	^ self fetchViolating: visualizationModel serverLayers
 ]
 
-{ #category : 'filtering' }
+{ #category : #filtering }
 MiFilterViolationStrategy >> shouldDisplaySharedDTOs [
 
 	^ false

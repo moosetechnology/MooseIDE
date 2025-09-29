@@ -3,8 +3,8 @@ the page that allows to enter information about the tag (like its name and categ
 This is the right part of the tag browser
 "
 Class {
-	#name : 'MiTagCreationForm',
-	#superclass : 'MiPresenter',
+	#name : #MiTagCreationForm,
+	#superclass : #MiPresenter,
 	#instVars : [
 		'colorPicker',
 		'cancelButton',
@@ -20,38 +20,36 @@ Class {
 		'queryList',
 		'queryListLabeled'
 	],
-	#category : 'MooseIDE-Tagging-Browser',
-	#package : 'MooseIDE-Tagging',
-	#tag : 'Browser'
+	#category : #'MooseIDE-Tagging-Browser'
 }
 
-{ #category : 'private' }
+{ #category : #private }
 MiTagCreationForm >> cancel [
 
 	self reset.
 	self owner closeTagCreationForm
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiTagCreationForm >> cancelButton [
 
 	^ cancelButton
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiTagCreationForm >> categorySelection [
 
 	^ categorySelection
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiTagCreationForm >> checkFormInputs [
 
 	nameField text ifEmpty: [ ^ false ].
 	^ true
 ]
 
-{ #category : 'private' }
+{ #category : #private }
 MiTagCreationForm >> connectPresenters [
 	
 	extentButton action: [ self setExtentForm ].
@@ -60,38 +58,38 @@ MiTagCreationForm >> connectPresenters [
 	submitButton action: [ self submit ]
 ]
 
-{ #category : 'brokerage' }
+{ #category : #brokerage }
 MiTagCreationForm >> consume: aQuery [
 
 	self updateQueryList
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiTagCreationForm >> extentButton [
 
 	^ extentButton
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiTagCreationForm >> fetchQueries [
 
 	^ (self owner application itemsFor: FQAbstractQuery) asOrderedCollection
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiTagCreationForm >> formTitle [
 
 	^ 'Create tag'
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiTagCreationForm >> initialize [
 
 	super initialize.
 	isIntent := false.
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiTagCreationForm >> initializeLayout [
 
 	| sep colorPickerWidth headerLayout mainLayout |
@@ -170,7 +168,7 @@ MiTagCreationForm >> initializeLayout [
 		add: mainLayout
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiTagCreationForm >> initializePresenters [
 
 	(colorPicker := self newColorPicker) setColor: Color random.
@@ -214,43 +212,43 @@ MiTagCreationForm >> initializePresenters [
 	self initializeLayout
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiTagCreationForm >> intentButton [
 
 	^ intentButton
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiTagCreationForm >> model [
 
 	^ self owner specModel
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiTagCreationForm >> nameField [
 
 	^ nameField
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiTagCreationForm >> queryList [
 
 	^ queryList
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiTagCreationForm >> queryListLabeled [
 
 	^ queryListLabeled
 ]
 
-{ #category : 'brokerage' }
+{ #category : #brokerage }
 MiTagCreationForm >> remove: aQuery [
 
 	self updateQueryList
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiTagCreationForm >> reset [
 
 	colorPicker setColor: Color random.
@@ -261,7 +259,7 @@ MiTagCreationForm >> reset [
 	self updateQueryList
 ]
 
-{ #category : 'private' }
+{ #category : #private }
 MiTagCreationForm >> setExtentForm [
 
 	isIntent ifFalse: [ 
@@ -273,7 +271,7 @@ MiTagCreationForm >> setExtentForm [
 	self update
 ]
 
-{ #category : 'private' }
+{ #category : #private }
 MiTagCreationForm >> setIntentForm [
 
 	isIntent ifTrue: [ 
@@ -285,19 +283,19 @@ MiTagCreationForm >> setIntentForm [
 	self update
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiTagCreationForm >> setModelBeforeInitialization: aTagModel [
 
 	tagModel := aTagModel
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiTagCreationForm >> specModel [
 
 	^ self owner specModel
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiTagCreationForm >> stringForQuery: aQuery [
 
 	| queryText contractor |
@@ -312,7 +310,7 @@ MiTagCreationForm >> stringForQuery: aQuery [
 	^ contractor reduce: queryText
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiTagCreationForm >> submit [
 
 	| tag |
@@ -339,19 +337,19 @@ MiTagCreationForm >> submit [
 		ifNotNil: [ self owner closeTagCreationForm ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiTagCreationForm >> submitButton [
 
 	^ submitButton
 ]
 
-{ #category : 'private' }
+{ #category : #private }
 MiTagCreationForm >> updateCategories [
 
 	categorySelection items: { nil }, tagModel allCategories
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiTagCreationForm >> updateQueryList [
 
 	queryList items: { nil } , self fetchQueries

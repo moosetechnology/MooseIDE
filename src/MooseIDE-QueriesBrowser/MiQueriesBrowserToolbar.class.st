@@ -2,8 +2,8 @@
 I am the toolbar for the queries browser that containts the buttons for adding a new first level query, clearing the queries, saving and loading
 "
 Class {
-	#name : 'MiQueriesBrowserToolbar',
-	#superclass : 'MiPresenter',
+	#name : #MiQueriesBrowserToolbar,
+	#superclass : #MiPresenter,
 	#instVars : [
 		'addRootQueryButton',
 		'saveQueriesButton',
@@ -13,12 +13,10 @@ Class {
 		'queryListPresenter',
 		'loadQueriesList'
 	],
-	#category : 'MooseIDE-QueriesBrowser-Main presenters',
-	#package : 'MooseIDE-QueriesBrowser',
-	#tag : 'Main presenters'
+	#category : #'MooseIDE-QueriesBrowser-Main presenters'
 }
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiQueriesBrowserToolbar >> initializeButtons [
 
 	addRootQueryButton := self newButton.
@@ -49,7 +47,7 @@ MiQueriesBrowserToolbar >> initializeButtons [
 		action: [ queryListPresenter addNewManualQuery ]
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiQueriesBrowserToolbar >> initializeLayout [
 
 	self layout: (SpBoxLayout newLeftToRight
@@ -62,14 +60,14 @@ MiQueriesBrowserToolbar >> initializeLayout [
 		yourself)
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiQueriesBrowserToolbar >> initializePresenters [
 
 	self initializeButtons.
 	self initializeLayout
 ]
 
-{ #category : 'accessing - model' }
+{ #category : #'accessing - model' }
 MiQueriesBrowserToolbar >> setModelBeforeInitialization: aQueryListPresenter [
 
 	queryListPresenter := aQueryListPresenter

@@ -1,12 +1,10 @@
 Class {
-	#name : 'MiLVHorizontalBoxNode',
-	#superclass : 'MiLVAbstractBoxNode',
-	#category : 'MooseIDE-LayerVisualization-Model',
-	#package : 'MooseIDE-LayerVisualization',
-	#tag : 'Model'
+	#name : #MiLVHorizontalBoxNode,
+	#superclass : #MiLVAbstractBoxNode,
+	#category : #'MooseIDE-LayerVisualization-Model'
 }
 
-{ #category : 'visiting' }
+{ #category : #visiting }
 MiLVHorizontalBoxNode >> acceptVisitor: aVisitor [
 
 	^ aVisitor visitHorizontalBox: self

@@ -1,61 +1,59 @@
 Class {
-	#name : 'MiAbstractBrowserTest',
-	#superclass : 'MiAbstractApplicationTest',
+	#name : #MiAbstractBrowserTest,
+	#superclass : #MiAbstractApplicationTest,
 	#instVars : [
 		'browser',
 		'entityToSelect',
 		'settingsWindow'
 	],
-	#category : 'MooseIDE-Tests-Browsers',
-	#package : 'MooseIDE-Tests',
-	#tag : 'Browsers'
+	#category : #'MooseIDE-Tests-Browsers'
 }
 
-{ #category : 'testing' }
+{ #category : #testing }
 MiAbstractBrowserTest class >> isAbstract [
 	^ self == MiAbstractBrowserTest
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 MiAbstractBrowserTest >> anEntity: aName [
 
 	^FamixStClass new
 		name: aName
 ]
 
-{ #category : 'tests - actions' }
+{ #category : #'tests - actions' }
 MiAbstractBrowserTest >> assertFollowActionFor: aMooseObject [
 	"Override to test follow action"
 
 	self skip
 ]
 
-{ #category : 'tests - actions' }
+{ #category : #'tests - actions' }
 MiAbstractBrowserTest >> assertHighlightActionFor: aMooseObject [
 	"Override to test highlight action"
 
 	self skip
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 MiAbstractBrowserTest >> browserClass [
 
 	^ self subclassResponsibility
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 MiAbstractBrowserTest >> bus [
 
 	^ self application defaultBus
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 MiAbstractBrowserTest >> defaultEntityToSelect [
 
 	^ FamixStModel new newClassNamed: 'TestClass'
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 MiAbstractBrowserTest >> mooseObjects [
 
 	^ { 
@@ -66,7 +64,7 @@ MiAbstractBrowserTest >> mooseObjects [
 		  (MooseModel with: MooseEntity new) }
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 MiAbstractBrowserTest >> populateBrowser: mooseModel [
 	"Some abstract tests require the browser to 'contain' propagated entity(-ies).
 	 For example to be able to retreive the current MooseModel.
@@ -78,13 +76,13 @@ MiAbstractBrowserTest >> populateBrowser: mooseModel [
 
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 MiAbstractBrowserTest >> receiveEntityToSelect [
 
 	browser receiveEntity: entityToSelect
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 MiAbstractBrowserTest >> setUp [
 
 	super setUp.
@@ -94,19 +92,19 @@ MiAbstractBrowserTest >> setUp [
 	entityToSelect := self defaultEntityToSelect
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 MiAbstractBrowserTest >> settingNamed: aName [
 
 	^ browser specModel instVarNamed: aName
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 MiAbstractBrowserTest >> settingNamed: aName setValue: anObject [
 
 	browser specModel instVarNamed: aName put: anObject
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 MiAbstractBrowserTest >> tearDown [
 
 	browser ifNotNil: [ browser withWindowDo: [ :window | window close ] ].
@@ -118,7 +116,7 @@ MiAbstractBrowserTest >> tearDown [
 	super tearDown
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiAbstractBrowserTest >> testActivateActionButtons [
 
 	browser actionButtons do: [ :button | self deny: button isEnabled ].
@@ -128,13 +126,13 @@ MiAbstractBrowserTest >> testActivateActionButtons [
 	browser actionButtons do: [ :button | self assert: button isEnabled ]
 ]
 
-{ #category : 'tests - opening' }
+{ #category : #'tests - opening' }
 MiAbstractBrowserTest >> testBrowserHasATitle [
 
 	self deny: browser window title equals: SpPresenter title
 ]
 
-{ #category : 'tests - opening' }
+{ #category : #'tests - opening' }
 MiAbstractBrowserTest >> testCanOpenOnEmptyBus [
 
 	| newBrowser |
@@ -145,7 +143,7 @@ MiAbstractBrowserTest >> testCanOpenOnEmptyBus [
 		raise: Error
 ]
 
-{ #category : 'tests - opening' }
+{ #category : #'tests - opening' }
 MiAbstractBrowserTest >> testCanOpenOnEmptyMooseGroup [
 
 	| newBrowser |
@@ -157,7 +155,7 @@ MiAbstractBrowserTest >> testCanOpenOnEmptyMooseGroup [
 		raise: Error
 ]
 
-{ #category : 'tests - opening' }
+{ #category : #'tests - opening' }
 MiAbstractBrowserTest >> testCanOpenOnEmptyMooseModel [
 
 	| newBrowser |
@@ -169,7 +167,7 @@ MiAbstractBrowserTest >> testCanOpenOnEmptyMooseModel [
 		raise: Error
 ]
 
-{ #category : 'tests - opening' }
+{ #category : #'tests - opening' }
 MiAbstractBrowserTest >> testCanOpenOnMooseEntity [
 
 	| newBrowser |
@@ -181,7 +179,7 @@ MiAbstractBrowserTest >> testCanOpenOnMooseEntity [
 		raise: Error
 ]
 
-{ #category : 'tests - opening' }
+{ #category : #'tests - opening' }
 MiAbstractBrowserTest >> testCanOpenOnMooseGroup [
 
 	| newBrowser |
@@ -194,7 +192,7 @@ MiAbstractBrowserTest >> testCanOpenOnMooseGroup [
 		raise: Error
 ]
 
-{ #category : 'tests - opening' }
+{ #category : #'tests - opening' }
 MiAbstractBrowserTest >> testCanOpenOnMooseModel [
 
 	| newBrowser |
@@ -206,7 +204,7 @@ MiAbstractBrowserTest >> testCanOpenOnMooseModel [
 		raise: Error
 ]
 
-{ #category : 'tests - opening' }
+{ #category : #'tests - opening' }
 MiAbstractBrowserTest >> testCanOpenOnNil [
 
 	| newBrowser |
@@ -218,7 +216,7 @@ MiAbstractBrowserTest >> testCanOpenOnNil [
 		raise: Error
 ]
 
-{ #category : 'tests - opening' }
+{ #category : #'tests - opening' }
 MiAbstractBrowserTest >> testCanOpenOnObject [
 
 	| newBrowser |
@@ -230,7 +228,7 @@ MiAbstractBrowserTest >> testCanOpenOnObject [
 		raise: Error
 ]
 
-{ #category : 'tests - settings' }
+{ #category : #'tests - settings' }
 MiAbstractBrowserTest >> testCanOpenSettings [
 
 	browser hasSettings ifFalse: [ ^ self skip ].
@@ -239,20 +237,20 @@ MiAbstractBrowserTest >> testCanOpenSettings [
 	settingsWindow := browser openSettings
 ]
 
-{ #category : 'tests - tags' }
+{ #category : #'tests - tags' }
 MiAbstractBrowserTest >> testCanTagEntities [
 	"this is the default. Overrides in tools that cannot tag entities"
 
 	self assert: browser canTagEntities
 ]
 
-{ #category : 'tests - tags' }
+{ #category : #'tests - tags' }
 MiAbstractBrowserTest >> testDefaultSelectedTagIsNil [
 
 	self assert: browser selectedTag isNil
 ]
 
-{ #category : 'tests - receiving' }
+{ #category : #'tests - receiving' }
 MiAbstractBrowserTest >> testDoNotPropagateWhenReceivingInFollowMode [
 
 	browser privateReceivingMode: MiFollowMode.
@@ -261,7 +259,7 @@ MiAbstractBrowserTest >> testDoNotPropagateWhenReceivingInFollowMode [
 		self assertEmpty: self bus logger logs ]
 ]
 
-{ #category : 'tests - receiving' }
+{ #category : #'tests - receiving' }
 MiAbstractBrowserTest >> testDoNotPropagateWhenReceivingInFreezeMode [
 
 	browser privateReceivingMode: MiFreezeMode.
@@ -270,7 +268,7 @@ MiAbstractBrowserTest >> testDoNotPropagateWhenReceivingInFreezeMode [
 		self assertEmpty: self bus logger logs ]
 ]
 
-{ #category : 'tests - receiving' }
+{ #category : #'tests - receiving' }
 MiAbstractBrowserTest >> testDoNotPropagateWhenReceivingInHighlightMode [
 
 	browser privateReceivingMode: MiHighlightMode.
@@ -279,7 +277,7 @@ MiAbstractBrowserTest >> testDoNotPropagateWhenReceivingInHighlightMode [
 		self assertEmpty: self bus logger logs ]
 ]
 
-{ #category : 'tests - buses' }
+{ #category : #'tests - buses' }
 MiAbstractBrowserTest >> testFollowBus [
 
 	self assertCollection: browser buses hasSameElements: { self bus }.
@@ -288,7 +286,7 @@ MiAbstractBrowserTest >> testFollowBus [
 	self assert: browser busButton label equals: 'Bus: Test'
 ]
 
-{ #category : 'tests - buses' }
+{ #category : #'tests - buses' }
 MiAbstractBrowserTest >> testFollowBusSetsDefaultBus [
 
 	self assert: browser application defaultBus name equals: 'Test' .
@@ -305,7 +303,7 @@ MiAbstractBrowserTest >> testFollowBusSetsDefaultBus [
 	
 ]
 
-{ #category : 'tests - buses' }
+{ #category : #'tests - buses' }
 MiAbstractBrowserTest >> testFollowBusTriggersSelectEntity [
 
 	| propagatedEntity |
@@ -319,7 +317,7 @@ MiAbstractBrowserTest >> testFollowBusTriggersSelectEntity [
 	browser should receive receiveEntity: propagatedEntity
 ]
 
-{ #category : 'tests - actions' }
+{ #category : #'tests - actions' }
 MiAbstractBrowserTest >> testFollowEntity [
 
 	browser privateReceivingMode: MiFollowMode.
@@ -328,7 +326,7 @@ MiAbstractBrowserTest >> testFollowEntity [
 		self assertFollowActionFor: mooseObject ]
 ]
 
-{ #category : 'tests - buses' }
+{ #category : #'tests - buses' }
 MiAbstractBrowserTest >> testFollowOtherBus [
 
 	| otherBus oldDefaultBus |
@@ -346,7 +344,7 @@ MiAbstractBrowserTest >> testFollowOtherBus [
 	self assert: browser busButton label equals: '2 buses'
 ]
 
-{ #category : 'tests - receiving' }
+{ #category : #'tests - receiving' }
 MiAbstractBrowserTest >> testFreezeOnCollapse [
 
 	browser privateReceivingMode: MiFollowMode.
@@ -355,14 +353,14 @@ MiAbstractBrowserTest >> testFreezeOnCollapse [
 	self assert: browser receivingMode equals: MiFreezeMode.
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiAbstractBrowserTest >> testHelpHasSomeInformation [
 
 	self assert:
 		(browser class comment includesSubstring: 'Accepted entities:')
 ]
 
-{ #category : 'tests - actions' }
+{ #category : #'tests - actions' }
 MiAbstractBrowserTest >> testHighlightEntity [
 
 	browser privateReceivingMode: MiHighlightMode.
@@ -371,21 +369,21 @@ MiAbstractBrowserTest >> testHighlightEntity [
 		self assertHighlightActionFor: mooseObject ]
 ]
 
-{ #category : 'tests - tags' }
+{ #category : #'tests - tags' }
 MiAbstractBrowserTest >> testSelectedTagSetAndGet [
 
 	browser canTagEntities ifFalse: [ self skip ]
 	"Override to use test"
 ]
 
-{ #category : 'tests - settings' }
+{ #category : #'tests - settings' }
 MiAbstractBrowserTest >> testSettingsAction [
 	"must be redefined in browsers that do have settings"
 
 	self deny: browser hasSettings
 ]
 
-{ #category : 'tests - settings' }
+{ #category : #'tests - settings' }
 MiAbstractBrowserTest >> testSettingsClickCancel [
 
 	browser hasSettings ifFalse: [ ^ self skip ].
@@ -394,7 +392,7 @@ MiAbstractBrowserTest >> testSettingsClickCancel [
 	settingsWindow triggerCancelAction
 ]
 
-{ #category : 'tests - settings' }
+{ #category : #'tests - settings' }
 MiAbstractBrowserTest >> testSettingsClickOK [
 
 	browser hasSettings ifFalse: [ ^ self skip ].
@@ -403,7 +401,7 @@ MiAbstractBrowserTest >> testSettingsClickOK [
 	settingsWindow triggerOkAction
 ]
 
-{ #category : 'tests - settings' }
+{ #category : #'tests - settings' }
 MiAbstractBrowserTest >> testSettingsClickReset [
 
 	browser hasSettings ifFalse: [ ^ self skip ].
@@ -412,7 +410,7 @@ MiAbstractBrowserTest >> testSettingsClickReset [
 	settingsWindow presenter resetToDefault
 ]
 
-{ #category : 'tests - tags' }
+{ #category : #'tests - tags' }
 MiAbstractBrowserTest >> testTagMenuListsTags [
 	"The tags are defined in the 'current MooseModel'
 	 To find this model, one of its entities need to be propagated to the browser
@@ -430,7 +428,7 @@ MiAbstractBrowserTest >> testTagMenuListsTags [
 	
 ]
 
-{ #category : 'tests - buses' }
+{ #category : #'tests - buses' }
 MiAbstractBrowserTest >> testUnfollowBus [
 
 	browser unfollowBus: self bus.
@@ -441,7 +439,7 @@ MiAbstractBrowserTest >> testUnfollowBus [
 	self assert: browser busButton label equals: 'No bus'
 ]
 
-{ #category : 'tests - closing' }
+{ #category : #'tests - closing' }
 MiAbstractBrowserTest >> testWindowClosedAction [
 
 	browser window close.
@@ -449,7 +447,7 @@ MiAbstractBrowserTest >> testWindowClosedAction [
 	self deny: (self application browsers includes: browser)
 ]
 
-{ #category : 'tests - opening' }
+{ #category : #'tests - opening' }
 MiAbstractBrowserTest >> testWindowOpeningAction [
 
 	self assert: (self bus browsers includes: browser).

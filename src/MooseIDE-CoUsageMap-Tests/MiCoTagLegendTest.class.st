@@ -1,18 +1,16 @@
 Class {
-	#name : 'MiCoTagLegendTest',
-	#superclass : 'MiCoUsageAbstractTest',
-	#category : 'MooseIDE-CoUsageMap-Tests-Browser',
-	#package : 'MooseIDE-CoUsageMap-Tests',
-	#tag : 'Browser'
+	#name : #MiCoTagLegendTest,
+	#superclass : #MiCoUsageAbstractTest,
+	#category : #'MooseIDE-CoUsageMap-Tests-Browser'
 }
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiCoTagLegendTest >> testEmptyLegend [
 	"Empty legend has one entry (at bottom) describing the size of the inner box"
 	self assert: builder legendTagBuilder shapes size equals: 1
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiCoTagLegendTest >> testNotEmptyLegend [
 	"Empty legend has one entry for each tag + one (at bottom) describing the size of the inner box"
 
@@ -23,7 +21,7 @@ MiCoTagLegendTest >> testNotEmptyLegend [
 	self assert: builder legendTagBuilder shapes size equals: 4
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiCoTagLegendTest >> testToggleTag [
 	| tag tagShape |
 	tag := self createTag: 'aTag'.

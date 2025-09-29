@@ -1,18 +1,16 @@
 Class {
-	#name : 'MiLayerVisualizationBuilder',
-	#superclass : 'HSimpleVisualizationBuilder',
+	#name : #MiLayerVisualizationBuilder,
+	#superclass : #HSimpleVisualizationBuilder,
 	#instVars : [
 		'visitHNodeCache',
 		'description',
 		'highlightShapes',
 		'colorScale'
 	],
-	#category : 'MooseIDE-LayerVisualization-Roassal-builder',
-	#package : 'MooseIDE-LayerVisualization',
-	#tag : 'Roassal-builder'
+	#category : #'MooseIDE-LayerVisualization-Roassal-builder'
 }
 
-{ #category : 'building' }
+{ #category : #building }
 MiLayerVisualizationBuilder >> addNextLevelButton [
 
 	| next |
@@ -46,7 +44,7 @@ MiLayerVisualizationBuilder >> addNextLevelButton [
 		for: self
 ]
 
-{ #category : 'building' }
+{ #category : #building }
 MiLayerVisualizationBuilder >> build [
 
 	mapModel initializePartitioning.
@@ -61,14 +59,14 @@ MiLayerVisualizationBuilder >> build [
 	^ self container
 ]
 
-{ #category : 'visiting' }
+{ #category : #visiting }
 MiLayerVisualizationBuilder >> changeColorFor: class [
 
 
 	^ nil
 ]
 
-{ #category : 'visiting' }
+{ #category : #visiting }
 MiLayerVisualizationBuilder >> createAndStoreHNodeFor: anLVElement [
 
 	| hn |
@@ -77,7 +75,7 @@ MiLayerVisualizationBuilder >> createAndStoreHNodeFor: anLVElement [
 	^ hn
 ]
 
-{ #category : 'visiting' }
+{ #category : #visiting }
 MiLayerVisualizationBuilder >> createHNodeFor: anLVElement [
 
 	| color class |
@@ -92,7 +90,7 @@ MiLayerVisualizationBuilder >> createHNodeFor: anLVElement [
 		  yourself
 ]
 
-{ #category : 'visiting' }
+{ #category : #visiting }
 MiLayerVisualizationBuilder >> createHNodeForPackage: aPackageElement [
 
 	^ (self createHNodeFor: aPackageElement)
@@ -101,7 +99,7 @@ MiLayerVisualizationBuilder >> createHNodeForPackage: aPackageElement [
 		  yourself
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiLayerVisualizationBuilder >> highlightable [
 
 	^ highlightable ifNil: [ 
@@ -141,7 +139,7 @@ MiLayerVisualizationBuilder >> highlightable [
 			                   yourself ]
 ]
 
-{ #category : 'visiting' }
+{ #category : #visiting }
 MiLayerVisualizationBuilder >> highlightableLinkedShapes [
 
 	^ highlightShapes ifNil: [ 
@@ -175,7 +173,7 @@ MiLayerVisualizationBuilder >> highlightableLinkedShapes [
 			                     yourself ]
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiLayerVisualizationBuilder >> initialize [
 
 	super initialize.
@@ -187,7 +185,7 @@ MiLayerVisualizationBuilder >> initialize [
 		              yourself
 ]
 
-{ #category : 'visiting' }
+{ #category : #visiting }
 MiLayerVisualizationBuilder >> layoutHStyle [
 
 	^ HBoxNodeStyle new
@@ -195,7 +193,7 @@ MiLayerVisualizationBuilder >> layoutHStyle [
 		  yourself
 ]
 
-{ #category : 'building' }
+{ #category : #building }
 MiLayerVisualizationBuilder >> layoutOn: aGroupOfShapes parent: shape [
 
 	aGroupOfShapes ifEmpty: [ ^ self ].
@@ -203,7 +201,7 @@ MiLayerVisualizationBuilder >> layoutOn: aGroupOfShapes parent: shape [
 	self relayout: (aGroupOfShapes reject: #isFixed) parent: shape
 ]
 
-{ #category : 'building' }
+{ #category : #building }
 MiLayerVisualizationBuilder >> nodeAnnouncer [
 
 	"plug new events here"
@@ -219,7 +217,7 @@ MiLayerVisualizationBuilder >> nodeAnnouncer [
 	^ baseNode announcer
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiLayerVisualizationBuilder >> rebuildShape: aShape [
 
 	super rebuildShape: aShape.
@@ -229,7 +227,7 @@ MiLayerVisualizationBuilder >> rebuildShape: aShape [
 	self container signalUpdate
 ]
 
-{ #category : 'rendering' }
+{ #category : #rendering }
 MiLayerVisualizationBuilder >> renderLinesIn: aCanvas [
 
 	self lineBuilder
@@ -239,7 +237,7 @@ MiLayerVisualizationBuilder >> renderLinesIn: aCanvas [
 		connectFromAll: #dependentsFromLinks
 ]
 
-{ #category : 'building' }
+{ #category : #building }
 MiLayerVisualizationBuilder >> updateBuild [
 
 	self container shapes do: #remove.
@@ -251,14 +249,14 @@ MiLayerVisualizationBuilder >> updateBuild [
 	^ self container
 ]
 
-{ #category : 'visiting' }
+{ #category : #visiting }
 MiLayerVisualizationBuilder >> visit: aVisualizationModel [
 
 	visitHNodeCache := Dictionary new.
 	rootNode := aVisualizationModel acceptVisitor: self
 ]
 
-{ #category : 'visiting' }
+{ #category : #visiting }
 MiLayerVisualizationBuilder >> visitBox: aMiNVBoxNode withRSLayout: aRoassalLayout [
 
 	| hNode |
@@ -277,13 +275,13 @@ MiLayerVisualizationBuilder >> visitBox: aMiNVBoxNode withRSLayout: aRoassalLayo
 	^ hNode
 ]
 
-{ #category : 'visiting' }
+{ #category : #visiting }
 MiLayerVisualizationBuilder >> visitFlowBox: aMiNVBoxNode [
 
 	^ self visitBox: aMiNVBoxNode withRSLayout: RSFlowLayout
 ]
 
-{ #category : 'visiting' }
+{ #category : #visiting }
 MiLayerVisualizationBuilder >> visitHorizontalBox: aMiNVBoxNode [
 
 	^ self
@@ -294,19 +292,19 @@ MiLayerVisualizationBuilder >> visitHorizontalBox: aMiNVBoxNode [
 				   yourself)
 ]
 
-{ #category : 'visiting' }
+{ #category : #visiting }
 MiLayerVisualizationBuilder >> visitPackageElement: aPackageElement [
 
 	^ self createHNodeForPackage: aPackageElement
 ]
 
-{ #category : 'visiting' }
+{ #category : #visiting }
 MiLayerVisualizationBuilder >> visitTypeElement: aMiLVTypeElement [
 
 	^ self createAndStoreHNodeFor: aMiLVTypeElement
 ]
 
-{ #category : 'visiting' }
+{ #category : #visiting }
 MiLayerVisualizationBuilder >> visitVerticalBox: aMiNVBoxNode [
 
 	^ self

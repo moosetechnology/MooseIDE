@@ -1,30 +1,28 @@
 Class {
-	#name : 'MiMultiLayerStrategy',
-	#superclass : 'MiAbstractDisplayStrategy',
-	#category : 'MooseIDE-LayerVisualization-Strategy',
-	#package : 'MooseIDE-LayerVisualization',
-	#tag : 'Strategy'
+	#name : #MiMultiLayerStrategy,
+	#superclass : #MiAbstractDisplayStrategy,
+	#category : #'MooseIDE-LayerVisualization-Strategy'
 }
 
-{ #category : 'filtering' }
+{ #category : #filtering }
 MiMultiLayerStrategy >> fetchViolatingDaos [
 
 	^ self subclassResponsibility 
 ]
 
-{ #category : 'filtering' }
+{ #category : #filtering }
 MiMultiLayerStrategy >> fetchViolatingServers [
 	
 	^ self subclassResponsibility
 ]
 
-{ #category : 'filtering' }
+{ #category : #filtering }
 MiMultiLayerStrategy >> fetchViolatingServices [
 
 	^ self subclassResponsibility
 ]
 
-{ #category : 'filtering' }
+{ #category : #filtering }
 MiMultiLayerStrategy >> fetchViolatingTransverse [
 
 	^ self subclassResponsibility

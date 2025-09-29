@@ -1,6 +1,6 @@
-Extension { #name : 'FamixTag' }
+Extension { #name : #FamixTag }
 
-{ #category : '*MooseIDE-CoUsageMap' }
+{ #category : #'*MooseIDE-CoUsageMap' }
 FamixTag >> addReference: aMooseObject [
 	| tags |
 	tags := aMooseObject allTagAssociations 
@@ -10,7 +10,7 @@ FamixTag >> addReference: aMooseObject [
 
 ]
 
-{ #category : '*MooseIDE-CoUsageMap' }
+{ #category : #'*MooseIDE-CoUsageMap' }
 FamixTag >> asMiCoTag [
 	"self flag: 'TODO'.
 	^ MiCoTag new
@@ -22,7 +22,7 @@ FamixTag >> asMiCoTag [
 	^ self
 ]
 
-{ #category : '*MooseIDE-CoUsageMap' }
+{ #category : #'*MooseIDE-CoUsageMap' }
 FamixTag >> removeReference: aMooseObject [
 	| tagAssociation app |
 	tagAssociation := aMooseObject allTagAssociations 

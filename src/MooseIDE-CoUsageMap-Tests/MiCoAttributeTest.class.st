@@ -1,22 +1,20 @@
 Class {
-	#name : 'MiCoAttributeTest',
-	#superclass : 'TestCase',
-	#category : 'MooseIDE-CoUsageMap-Tests-Browser',
-	#package : 'MooseIDE-CoUsageMap-Tests',
-	#tag : 'Browser'
+	#name : #MiCoAttributeTest,
+	#superclass : #TestCase,
+	#category : #'MooseIDE-CoUsageMap-Tests-Browser'
 }
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiCoAttributeTest >> containerBoxOn: aName [
 	^MiCoContainerBox new mooseEntity: (FamixStMethod new name: aName)
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiCoAttributeTest >> innerBoxOn: aName [
 	^MiCoInnerBox new mooseEntity: (FamixStAttribute new name: aName)
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiCoAttributeTest >> test01ContainerBox [
 
 	| container |
@@ -24,7 +22,7 @@ MiCoAttributeTest >> test01ContainerBox [
 	self assert: container asString equals: 'method1'
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiCoAttributeTest >> test02InnerBox [
 
 	| innerBox |
@@ -32,7 +30,7 @@ MiCoAttributeTest >> test02InnerBox [
 	self assert: innerBox asString equals: 'aVar'
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiCoAttributeTest >> test03PopupMessage [
 
 	| innerBox containerBox |

@@ -1,16 +1,14 @@
 Class {
-	#name : 'MiTagSelectedTest',
-	#superclass : 'MiAbstractApplicationTest',
+	#name : #MiTagSelectedTest,
+	#superclass : #MiAbstractApplicationTest,
 	#instVars : [
 		'model1',
 		'model2'
 	],
-	#category : 'MooseIDE-Tests-Application',
-	#package : 'MooseIDE-Tests',
-	#tag : 'Application'
+	#category : #'MooseIDE-Tests-Application'
 }
 
-{ #category : 'running' }
+{ #category : #running }
 MiTagSelectedTest >> setUp [
 
 	super setUp.
@@ -18,7 +16,7 @@ MiTagSelectedTest >> setUp [
 	model2 := MooseModel new.
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiTagSelectedTest >> testSelectedTagSetAndGet [
 	| tag |
 	tag := model1 tagNamed: 'tag'.
@@ -29,13 +27,13 @@ MiTagSelectedTest >> testSelectedTagSetAndGet [
 	self assert: (application tagSelectedInMooseModel: model1) equals: tag.
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiTagSelectedTest >> testTagListNoModels [
 
 	self assert: (application tagListForMooseModel: nil) isEmpty.
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiTagSelectedTest >> testTagListNoTags [
 	| tag1 tag2 |
 	tag1 := model1 tagNamed: 'tag1'.
@@ -44,7 +42,7 @@ MiTagSelectedTest >> testTagListNoTags [
 	self assertCollection: (application tagListForMooseModel: model1) hasSameElements: { tag1 . tag2 }.
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiTagSelectedTest >> testTagListSeveralModels [
 	| tag11 tag12 tag21 |
 	tag11 := model1 tagNamed: 'tag11'.
@@ -55,7 +53,7 @@ MiTagSelectedTest >> testTagListSeveralModels [
 	self assertCollection: (application tagListForMooseModel: model2) hasSameElements: { tag21 }.
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiTagSelectedTest >> testTagListSeveralTags [
 	| tag1 tag2 |
 	tag1 := model1 tagNamed: 'tag1'.
@@ -64,14 +62,14 @@ MiTagSelectedTest >> testTagListSeveralTags [
 	self assertCollection: (application tagListForMooseModel: model1) hasSameElements: { tag1 . tag2 }.
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiTagSelectedTest >> testTagSelectedNoModel [
 
 	self assert: (application tagSelectedInMooseModel: nil) equals: nil.
 
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiTagSelectedTest >> testTagSelectedOneTagSeveralModels [
 	| tag |
 	tag := model1 tagNamed: 'tag1'.
@@ -82,7 +80,7 @@ MiTagSelectedTest >> testTagSelectedOneTagSeveralModels [
 	self assert: (application tagSelectedInMooseModel: model2) equals: nil.
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiTagSelectedTest >> testTagSelectedSetNeedsModel [
 	| tag |
 	tag := model1 tagNamed: 'tag1'.
@@ -93,7 +91,7 @@ MiTagSelectedTest >> testTagSelectedSetNeedsModel [
 
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiTagSelectedTest >> testTagSelectedSeveralTagsOneModel [
 	| tag1 tag2 |
 	tag1 := model1 tagNamed: 'tag1'.
@@ -106,7 +104,7 @@ MiTagSelectedTest >> testTagSelectedSeveralTagsOneModel [
 	self assert: (application tagSelectedInMooseModel: model1) equals: tag2.
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiTagSelectedTest >> testTagSelectedSeveralTagsSeveralModels [
 	| tag1 tag2 |
 	tag1 := model1 tagNamed: 'tag1'.

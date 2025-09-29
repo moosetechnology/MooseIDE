@@ -1,12 +1,10 @@
 Class {
-	#name : 'MiCoMenuManagerTest',
-	#superclass : 'MiCoUsageAbstractTest',
-	#category : 'MooseIDE-CoUsageMap-Tests-Browser',
-	#package : 'MooseIDE-CoUsageMap-Tests',
-	#tag : 'Browser'
+	#name : #MiCoMenuManagerTest,
+	#superclass : #MiCoUsageAbstractTest,
+	#category : #'MooseIDE-CoUsageMap-Tests-Browser'
 }
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiCoMenuManagerTest >> testOpenMenu [
 
 	| attribute method |

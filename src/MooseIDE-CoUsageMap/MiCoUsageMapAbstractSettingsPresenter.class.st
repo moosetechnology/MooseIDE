@@ -2,22 +2,20 @@
 for common attributes
 "
 Class {
-	#name : 'MiCoUsageMapAbstractSettingsPresenter',
-	#superclass : 'SpPresenter',
+	#name : #MiCoUsageMapAbstractSettingsPresenter,
+	#superclass : #SpPresenter,
 	#instVars : [
 		'settings'
 	],
-	#category : 'MooseIDE-CoUsageMap-Settings',
-	#package : 'MooseIDE-CoUsageMap',
-	#tag : 'Settings'
+	#category : #'MooseIDE-CoUsageMap-Settings'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiCoUsageMapAbstractSettingsPresenter >> settings [
 	^ settings
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiCoUsageMapAbstractSettingsPresenter >> settings: anObject [
 	settings := anObject
 ]

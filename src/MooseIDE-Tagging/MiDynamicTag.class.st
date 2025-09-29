@@ -1,6 +1,6 @@
 Class {
-	#name : 'MiDynamicTag',
-	#superclass : 'Object',
+	#name : #MiDynamicTag,
+	#superclass : #Object,
 	#instVars : [
 		'name',
 		'query',
@@ -8,48 +8,46 @@ Class {
 		'description',
 		'category'
 	],
-	#category : 'MooseIDE-Tagging-Model',
-	#package : 'MooseIDE-Tagging',
-	#tag : 'Model'
+	#category : #'MooseIDE-Tagging-Model'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiDynamicTag >> category [
 
 	^ category
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiDynamicTag >> category: anObject [
 
 	category := anObject
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiDynamicTag >> color [
 
 	^ color
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiDynamicTag >> color: anObject [
 
 	color := anObject
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiDynamicTag >> description [
 
 	^ description
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiDynamicTag >> description: anObject [
 
 	description := anObject
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 MiDynamicTag >> isApplicableTo: anObject [
 
 	"The query should accept one parameter (anObject) and return a boolean."
@@ -57,37 +55,37 @@ MiDynamicTag >> isApplicableTo: anObject [
 	^ (query runOn: anObject asMooseGroup) isNotEmpty
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 MiDynamicTag >> isIntent [
 
 	^ true
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiDynamicTag >> name [
 
 	^ name
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiDynamicTag >> name: anObject [
 
 	name := anObject
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiDynamicTag >> query [
 
 	^ query
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiDynamicTag >> query: anObject [
 
 	query := anObject
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiDynamicTag >> taggedEntities [
 
 	^ #()

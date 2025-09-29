@@ -2,24 +2,22 @@
 A MiExportModelTest is a test class for testing the behavior of MiExportModel
 "
 Class {
-	#name : 'MiExportModelTest',
-	#superclass : 'TestCase',
+	#name : #MiExportModelTest,
+	#superclass : #TestCase,
 	#instVars : [
 		'model'
 	],
-	#category : 'MooseIDE-Tests-Browsers',
-	#package : 'MooseIDE-Tests',
-	#tag : 'Browsers'
+	#category : #'MooseIDE-Tests-Browsers'
 }
 
-{ #category : 'running' }
+{ #category : #running }
 MiExportModelTest >> setUp [
 	super setUp.
 
 	model := MiExportModel new.
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 MiExportModelTest >> testaddColumnForQuerywithNameReturnAColumn [
 
 	| returned |

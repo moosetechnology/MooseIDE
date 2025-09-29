@@ -1,33 +1,32 @@
 Class {
-	#name : 'MiButterflyMapBuilder',
-	#superclass : 'HSimpleVisualizationBuilder',
+	#name : #MiButterflyMapBuilder,
+	#superclass : #HSimpleVisualizationBuilder,
 	#instVars : [
 		'incomingGroups',
 		'outgoingGroups',
 		'centralNode',
 		'centralShape',
-		'butterfly'
+		'butterfly',
+		'nodeStyle'
 	],
-	#category : 'MooseIDE-ButterflyMap-Model',
-	#package : 'MooseIDE-ButterflyMap',
-	#tag : 'Model'
+	#category : #'MooseIDE-ButterflyMap-Model'
 }
 
-{ #category : 'adding' }
+{ #category : #adding }
 MiButterflyMapBuilder >> addLevel [
 
 	butterfly addLevel.
 	self updateShapes
 ]
 
-{ #category : 'adding' }
+{ #category : #adding }
 MiButterflyMapBuilder >> addNodesFor: aShape [
 
 	butterfly generateChildrenFor: aShape.
 	self updateShapes
 ]
 
-{ #category : 'building' }
+{ #category : #building }
 MiButterflyMapBuilder >> build [
 
 	centralNode := self buildNodeFromEntity: self mapModel currentEntity.
@@ -38,7 +37,7 @@ MiButterflyMapBuilder >> build [
 	super build
 ]
 
-{ #category : 'building' }
+{ #category : #building }
 MiButterflyMapBuilder >> buildButterflyNodes [
 
 	| node |
@@ -70,7 +69,7 @@ MiButterflyMapBuilder >> buildButterflyNodes [
 	butterfly addLevel
 ]
 
-{ #category : 'building' }
+{ #category : #building }
 MiButterflyMapBuilder >> buildNodeFromEntity: anEntity [
 
 	| node |
@@ -78,17 +77,18 @@ MiButterflyMapBuilder >> buildNodeFromEntity: anEntity [
 		        name:
 			        (String streamContents: [ :s | anEntity displayStringOn: s ]);
 		        addAll: ((self mapModel childrenFor: anEntity)
-				         collect: [ :e | 
+				         collect: [ :e |
 					         anEntity == e ifFalse: [ self buildNodeFromEntity: e ] ]
 				         thenSelect: [ :e | e isNotNil ]);
 		        color: (Smalltalk ui theme baseColor alpha: 0.7);
+		        style: self nodeStyle;
 		        rawModel: anEntity;
 		        collapse;
 		        yourself.
 	^ node
 ]
 
-{ #category : 'rendering' }
+{ #category : #rendering }
 MiButterflyMapBuilder >> buildShapes [
 
 	| allShapes leftLayers rightLayers layout layoutLeft |
@@ -111,25 +111,25 @@ MiButterflyMapBuilder >> buildShapes [
 	^ allShapes
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiButterflyMapBuilder >> centralNode [
 
 	^ centralNode
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiButterflyMapBuilder >> centralNode: anObject [
 
 	centralNode := anObject
 ]
 
-{ #category : 'building' }
+{ #category : #building }
 MiButterflyMapBuilder >> colorFor: node [
 
 	^ node color ifNil: [ Color fromHexString: '6DAFDC' ] ifNotNil: [ :color | color ]
 ]
 
-{ #category : 'building' }
+{ #category : #building }
 MiButterflyMapBuilder >> initialize [
 
 	super initialize.
@@ -143,7 +143,7 @@ MiButterflyMapBuilder >> initialize [
 	outgoingGroups := OrderedCollection new
 ]
 
-{ #category : 'rendering' }
+{ #category : #rendering }
 MiButterflyMapBuilder >> layoutButterfly [
 
 	RSHorizontalLineLayout new
@@ -152,7 +152,7 @@ MiButterflyMapBuilder >> layoutButterfly [
 		on: incomingGroups reversed , { centralShape } , outgoingGroups
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiButterflyMapBuilder >> menuInteraction [
 	^ menuInteraction ifNil: [
 		menuInteraction := RSMenuActivable new
@@ -164,7 +164,7 @@ MiButterflyMapBuilder >> menuInteraction [
 	]
 ]
 
-{ #category : 'hooks' }
+{ #category : #hooks }
 MiButterflyMapBuilder >> nodeAnnouncer [
 
 	"plug new events here"
@@ -181,7 +181,13 @@ MiButterflyMapBuilder >> nodeAnnouncer [
 	^ baseNode announcer
 ]
 
-{ #category : 'removing' }
+{ #category : #accessing }
+MiButterflyMapBuilder >> nodeStyle [
+	
+	^ nodeStyle ifNil: [ nodeStyle := HDefaultStyleWithTags new ]
+]
+
+{ #category : #removing }
 MiButterflyMapBuilder >> removeLevel [
 	
 	
@@ -189,21 +195,21 @@ MiButterflyMapBuilder >> removeLevel [
 	self updateShapes.
 ]
 
-{ #category : 'removing' }
+{ #category : #removing }
 MiButterflyMapBuilder >> removeNode: aShape [
 
 	butterfly remove: aShape.
 	self updateShapes
 ]
 
-{ #category : 'removing' }
+{ #category : #removing }
 MiButterflyMapBuilder >> removeNodesFor: aShape [
 
 	butterfly removeChildrenFor: aShape.
 	self updateShapes
 ]
 
-{ #category : 'rendering' }
+{ #category : #rendering }
 MiButterflyMapBuilder >> renderIn: aCanvas [
 
 	aCanvas color: Smalltalk ui theme backgroundColor.
@@ -212,7 +218,7 @@ MiButterflyMapBuilder >> renderIn: aCanvas [
 	self updateShapes
 ]
 
-{ #category : 'rendering' }
+{ #category : #rendering }
 MiButterflyMapBuilder >> renderLinesIn: aCanvas [
 	
 	self lineBuilder
@@ -221,14 +227,14 @@ MiButterflyMapBuilder >> renderLinesIn: aCanvas [
 		connectFromAll: #dependentsFromLinks
 ]
 
-{ #category : 'updating' }
+{ #category : #updating }
 MiButterflyMapBuilder >> updateCentralNode: anEntity [ 
 	
 	self mapModel currentEntity: anEntity.
 	self build
 ]
 
-{ #category : 'rendering' }
+{ #category : #rendering }
 MiButterflyMapBuilder >> updateShapes [
 
 	| allShapes leftLayers rightLayers layout rightLayout |

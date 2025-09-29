@@ -2,8 +2,8 @@
 used to display basic settings, like threshold, height of the inner box of co usage map
 "
 Class {
-	#name : 'MiCoUsageMapGeneralSettingsPresenter',
-	#superclass : 'MiCoUsageMapAbstractSettingsPresenter',
+	#name : #MiCoUsageMapGeneralSettingsPresenter,
+	#superclass : #MiCoUsageMapAbstractSettingsPresenter,
 	#instVars : [
 		'threshold',
 		'innerBoxHeight',
@@ -11,12 +11,10 @@ Class {
 		'rangeInnerWidth',
 		'coUsageMap'
 	],
-	#category : 'MooseIDE-CoUsageMap-Settings',
-	#package : 'MooseIDE-CoUsageMap',
-	#tag : 'Settings'
+	#category : #'MooseIDE-CoUsageMap-Settings'
 }
 
-{ #category : 'layout' }
+{ #category : #layout }
 MiCoUsageMapGeneralSettingsPresenter class >> defaultLayout [
 	^ SpBoxLayout newTopToBottom
 		spacing: 3;
@@ -31,7 +29,7 @@ MiCoUsageMapGeneralSettingsPresenter class >> defaultLayout [
 		yourself
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiCoUsageMapGeneralSettingsPresenter >> connectPresenters [
 	| set |
 	set := self settings.
@@ -58,7 +56,7 @@ MiCoUsageMapGeneralSettingsPresenter >> connectPresenters [
 		range: (5 to: 100)
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiCoUsageMapGeneralSettingsPresenter >> initializePresenters [
 	threshold := self instantiate: MiCoSliderPresenter.
 	innerBoxHeight := self instantiate: MiCoSliderPresenter.

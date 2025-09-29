@@ -1,30 +1,28 @@
 Class {
-	#name : 'MiAnalysisCloseBrowserCommand',
-	#superclass : 'MiCommand',
-	#category : 'MooseIDE-Analysis-Commands',
-	#package : 'MooseIDE-Analysis',
-	#tag : 'Commands'
+	#name : #MiAnalysisCloseBrowserCommand,
+	#superclass : #MiCommand,
+	#category : #'MooseIDE-Analysis-Commands'
 }
 
-{ #category : 'default' }
+{ #category : #default }
 MiAnalysisCloseBrowserCommand class >> defaultDescription [
 
 	^ 'Close browser'
 ]
 
-{ #category : 'default' }
+{ #category : #default }
 MiAnalysisCloseBrowserCommand class >> defaultIconName [
 
 	^ #smallDelete
 ]
 
-{ #category : 'default' }
+{ #category : #default }
 MiAnalysisCloseBrowserCommand class >> defaultName [
 
 	^ 'Close browser'
 ]
 
-{ #category : 'executing' }
+{ #category : #executing }
 MiAnalysisCloseBrowserCommand >> execute [
 
 	self context closeBrowser

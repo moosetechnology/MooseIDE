@@ -9,17 +9,15 @@ FQTypeQuery types: {
 ```
 "
 Class {
-	#name : 'QueryCodePresenter',
-	#superclass : 'MiPresenter',
+	#name : #QueryCodePresenter,
+	#superclass : #MiPresenter,
 	#instVars : [
 		'code'
 	],
-	#category : 'MooseIDE-QueriesBrowser-Widgets',
-	#package : 'MooseIDE-QueriesBrowser',
-	#tag : 'Widgets'
+	#category : #'MooseIDE-QueriesBrowser-Widgets'
 }
 
-{ #category : 'action' }
+{ #category : #action }
 QueryCodePresenter >> acceptQueryCode: aCode [
 
 	| query |
@@ -31,13 +29,13 @@ QueryCodePresenter >> acceptQueryCode: aCode [
 	(query isNil or: [ query isClass ]) ifFalse: [ self informWrongCode ]
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 QueryCodePresenter >> defaultComment [
 
 	^ '"Query code"'
 ]
 
-{ #category : 'action' }
+{ #category : #action }
 QueryCodePresenter >> informWrongCode [
 
 	| message |
@@ -50,7 +48,7 @@ Click to get current query code.'.
 			(String streamContents: [ :s | owner selectedQuery storeOn: s ]) ]
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 QueryCodePresenter >> initializeCode [
 
 	code := self newCode
@@ -62,7 +60,7 @@ QueryCodePresenter >> initializeCode [
 		yourself
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 QueryCodePresenter >> initializeLayout [
 
 	self layout: (SpBoxLayout newVertical
@@ -70,14 +68,14 @@ QueryCodePresenter >> initializeLayout [
 		yourself)
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 QueryCodePresenter >> initializePresenters [
 
 	self initializeCode.
 	self initializeLayout
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 QueryCodePresenter >> queryCodeComment: aQueryScript [
 
 	^ '"To execute this query on your input, copy this script:
@@ -85,7 +83,7 @@ QueryCodePresenter >> queryCodeComment: aQueryScript [
  "' format: { aQueryScript }
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 QueryCodePresenter >> updateForQuery: aQuery [
 
 	| text |

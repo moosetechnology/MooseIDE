@@ -1,21 +1,19 @@
 Class {
-	#name : 'MiAbstractDisplayStrategy',
-	#superclass : 'Object',
+	#name : #MiAbstractDisplayStrategy,
+	#superclass : #Object,
 	#instVars : [
 		'visualizationModel'
 	],
-	#category : 'MooseIDE-LayerVisualization-Strategy',
-	#package : 'MooseIDE-LayerVisualization',
-	#tag : 'Strategy'
+	#category : #'MooseIDE-LayerVisualization-Strategy'
 }
 
-{ #category : 'filtering' }
+{ #category : #filtering }
 MiAbstractDisplayStrategy >> addDto: dto in: dict atKey: aSymbol [
 
 	^ dict at: aSymbol ifPresent: [ :coll | coll add: dto ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiAbstractDisplayStrategy >> visualizationModel: anObject [
 
 	visualizationModel := anObject

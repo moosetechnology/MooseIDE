@@ -1,12 +1,10 @@
 Class {
-	#name : 'MiSystemComplexityMenuItemStrategy',
-	#superclass : 'HDefaultMenuItemStrategy',
-	#category : 'MooseIDE-Visualization-System Complexity',
-	#package : 'MooseIDE-Visualization',
-	#tag : 'System Complexity'
+	#name : #MiSystemComplexityMenuItemStrategy,
+	#superclass : #HDefaultMenuItemStrategy,
+	#category : #'MooseIDE-Visualization-System Complexity'
 }
 
-{ #category : 'public' }
+{ #category : #public }
 MiSystemComplexityMenuItemStrategy >> menuItemClassesFor: aShape [
 
 	| clazz |

@@ -7,14 +7,12 @@ I am responsible for :
 - color the parts according to their property
 "
 Class {
-	#name : 'MiDistributionMapBuilder',
-	#superclass : 'HSimpleVisualizationBuilder',
-	#category : 'MooseIDE-Dependency-DistributionMap',
-	#package : 'MooseIDE-Dependency',
-	#tag : 'DistributionMap'
+	#name : #MiDistributionMapBuilder,
+	#superclass : #HSimpleVisualizationBuilder,
+	#category : #'MooseIDE-Dependency-DistributionMap'
 }
 
-{ #category : 'building' }
+{ #category : #building }
 MiDistributionMapBuilder >> build [
 	rootNode := HNode new
 		            addAll:
@@ -27,7 +25,7 @@ MiDistributionMapBuilder >> build [
 	^ self container
 ]
 
-{ #category : 'building' }
+{ #category : #building }
 MiDistributionMapBuilder >> buildLegend [
 
 	| legend |
@@ -50,7 +48,7 @@ MiDistributionMapBuilder >> buildLegend [
 	legend build
 ]
 
-{ #category : 'building' }
+{ #category : #building }
 MiDistributionMapBuilder >> buildNodeFromEntity: anEntity [
 
 	^ HNode new
@@ -69,13 +67,13 @@ MiDistributionMapBuilder >> buildNodeFromEntity: anEntity [
 		  yourself
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiDistributionMapBuilder >> elements [
 
 	^ mapModel entities
 ]
 
-{ #category : 'accessing - attributes' }
+{ #category : #'accessing - attributes' }
 MiDistributionMapBuilder >> menuInteraction [
 
 	^ menuInteraction ifNil: [
@@ -88,7 +86,7 @@ MiDistributionMapBuilder >> menuInteraction [
 				                     yourself ]
 ]
 
-{ #category : 'hooks' }
+{ #category : #hooks }
 MiDistributionMapBuilder >> nodeAnnouncer [
 	"plug new events here"
 
@@ -101,7 +99,7 @@ MiDistributionMapBuilder >> nodeAnnouncer [
 	^ baseNode announcer
 ]
 
-{ #category : 'hooks' }
+{ #category : #hooks }
 MiDistributionMapBuilder >> nodeLayout [
 
 	^ RSFlowLayout new
@@ -109,7 +107,7 @@ MiDistributionMapBuilder >> nodeLayout [
 		  yourself
 ]
 
-{ #category : 'building' }
+{ #category : #building }
 MiDistributionMapBuilder >> setColors [
 
 	rootNode children do: [ :c |

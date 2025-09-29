@@ -1,12 +1,10 @@
 Class {
-	#name : 'MiVisualizationThemeTest',
-	#superclass : 'TestCase',
-	#category : 'MooseIDE-Tests-Browsers',
-	#package : 'MooseIDE-Tests',
-	#tag : 'Browsers'
+	#name : #MiVisualizationThemeTest,
+	#superclass : #TestCase,
+	#category : #'MooseIDE-Tests-Browsers'
 }
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiVisualizationThemeTest >> testDefaultIconForTClass [
 	| theme |
 	theme := MiVisualizationTheme new.
@@ -16,7 +14,7 @@ MiVisualizationThemeTest >> testDefaultIconForTClass [
 	self deny: (theme mooseIconNameFor: FamixJavaMethod new) equals: #famixClass.
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiVisualizationThemeTest >> testDefaultIconForTMethod [
 	| theme |
 	theme := MiVisualizationTheme new.
@@ -26,7 +24,7 @@ MiVisualizationThemeTest >> testDefaultIconForTMethod [
 	self deny: (theme mooseIconNameFor: FamixJavaAttribute new) equals: #famixMethod.
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiVisualizationThemeTest >> testNonDefaultIconTheme [
 	| theme |
 	theme := MiVisualizationTheme new.
@@ -37,7 +35,7 @@ MiVisualizationThemeTest >> testNonDefaultIconTheme [
 	self assert: (theme mooseIconNameFor: FamixJavaClass new) equals: #blah.
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiVisualizationThemeTest >> testRecursiveSearchOfTrait [
 	| theme |
 	theme := MiVisualizationTheme new.

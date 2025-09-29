@@ -1,13 +1,13 @@
-Extension { #name : 'MooseModel' }
+Extension { #name : #MooseModel }
 
-{ #category : '*MooseIDE-NewTools' }
+{ #category : #'*MooseIDE-NewTools' }
 MooseModel >> miInspectionNavigation: aBuilder [
 
 	<inspectorPresentationOrder: -100 title: 'Navigation'>
 	^ aBuilder instantiate: MiMetaModelNavigationBrowser on: self
 ]
 
-{ #category : '*MooseIDE-NewTools' }
+{ #category : #'*MooseIDE-NewTools' }
 MooseModel >> miMetaNavigationItems [
 
 	| roots |

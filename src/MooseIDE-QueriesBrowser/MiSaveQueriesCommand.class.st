@@ -2,59 +2,57 @@
 I am a command that saves all current queries on disk as a STON file. The path is determined on the class side method
 "
 Class {
-	#name : 'MiSaveQueriesCommand',
-	#superclass : 'MiCommand',
+	#name : #MiSaveQueriesCommand,
+	#superclass : #MiCommand,
 	#classVars : [
 		'Directory'
 	],
-	#category : 'MooseIDE-QueriesBrowser-Commands',
-	#package : 'MooseIDE-QueriesBrowser',
-	#tag : 'Commands'
+	#category : #'MooseIDE-QueriesBrowser-Commands'
 }
 
-{ #category : 'accessing - defaults' }
+{ #category : #'accessing - defaults' }
 MiSaveQueriesCommand class >> defaultDescription [
 
 	^ 'Save all current queries on disk as a STON file'
 ]
 
-{ #category : 'default' }
+{ #category : #default }
 MiSaveQueriesCommand class >> defaultIconName [
 
 	^ #smallSaveAs
 ]
 
-{ #category : 'accessing - defaults' }
+{ #category : #'accessing - defaults' }
 MiSaveQueriesCommand class >> defaultName [
 
 	^ 'Save queries on disk'
 ]
 
-{ #category : 'accessing - defaults' }
+{ #category : #'accessing - defaults' }
 MiSaveQueriesCommand class >> defaultPath [
 
 	^ './pharo-local/queries-browser-saved-queries/'
 ]
 
-{ #category : 'accessing - defaults' }
+{ #category : #'accessing - defaults' }
 MiSaveQueriesCommand class >> directory [
 
 	^ Directory ifNil: [ Directory := self defaultPath asFileReference ]
 ]
 
-{ #category : 'accessing - defaults' }
+{ #category : #'accessing - defaults' }
 MiSaveQueriesCommand class >> directory: aDirectory [
 
 	Directory := aDirectory
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiSaveQueriesCommand class >> path [
 
 	^ self directory pathString , '/'
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 MiSaveQueriesCommand >> copyQueriesReferencesOf: queries [
 
 	"We don't want to do that on the original queries to keep the queries browser still running"
@@ -64,7 +62,7 @@ MiSaveQueriesCommand >> copyQueriesReferencesOf: queries [
 	^ copy
 ]
 
-{ #category : 'write on disk' }
+{ #category : #'write on disk' }
 MiSaveQueriesCommand >> createFile: fileName [
 
 	| file |
@@ -78,7 +76,7 @@ MiSaveQueriesCommand >> createFile: fileName [
 	^ file
 ]
 
-{ #category : 'executing' }
+{ #category : #executing }
 MiSaveQueriesCommand >> execute [
 
 	| fileName |
@@ -90,7 +88,7 @@ MiSaveQueriesCommand >> execute [
 	] asJob run
 ]
 
-{ #category : 'executing' }
+{ #category : #executing }
 MiSaveQueriesCommand >> getFileName [
 
 	| fileName |
@@ -109,19 +107,19 @@ MiSaveQueriesCommand >> getFileName [
 	^fileName
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 MiSaveQueriesCommand >> getQueries [
 
 	^ self context famixQueries
 ]
 
-{ #category : 'executing' }
+{ #category : #executing }
 MiSaveQueriesCommand >> jobTitle [
 
 	^ 'Saving queries on disk'
 ]
 
-{ #category : 'sorting' }
+{ #category : #sorting }
 MiSaveQueriesCommand >> putChildrenInPlace: topSortQueries [
 	"This method sorts the queries to put a query directly under its parent KEEPING the topological sorting"
 
@@ -151,14 +149,14 @@ MiSaveQueriesCommand >> putChildrenInPlace: topSortQueries [
 	^ (sortedTrees collect: #tree) flattened
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 MiSaveQueriesCommand >> putNilAsParentForRootQuery: aQuery [
 
 	aQuery isUnaryQuery ifTrue: [
 		aQuery parent isRootQuery ifTrue: [ aQuery parent: nil ] ]
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 MiSaveQueriesCommand >> queriesToStore [
 
 	| queriesToStore topSortedQueries uiSortedQueries |
@@ -175,14 +173,14 @@ MiSaveQueriesCommand >> queriesToStore [
 	^ uiSortedQueries
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 MiSaveQueriesCommand >> resetResultFor: aQuery [
 
 	aQuery resetResult.
 	aQuery parent ifNotNil: [ :parent | self resetResultFor: parent ]
 ]
 
-{ #category : 'sorting' }
+{ #category : #sorting }
 MiSaveQueriesCommand >> topologicalSortForQueries: queries [
 
 	"Gives the topological sort for the list of queries passed as argument. A topological sort assures that a query always comes after its dependencies.
@@ -204,14 +202,14 @@ MiSaveQueriesCommand >> topologicalSortForQueries: queries [
 	^ sortedQueries
 ]
 
-{ #category : 'write on disk' }
+{ #category : #'write on disk' }
 MiSaveQueriesCommand >> write: queriesToStore toFile: file [
 
 	file writeStreamDo: [ :stream |
 		STON put: queriesToStore onStream: stream ]
 ]
 
-{ #category : 'write on disk' }
+{ #category : #'write on disk' }
 MiSaveQueriesCommand >> write: queriesToStore toFileNamed: aFilename [
 
 	| file |

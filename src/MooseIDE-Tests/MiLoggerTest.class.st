@@ -2,22 +2,20 @@
 A MiLoggerTest is a test class for testing the behavior of MiLogger
 "
 Class {
-	#name : 'MiLoggerTest',
-	#superclass : 'TestCase',
+	#name : #MiLoggerTest,
+	#superclass : #TestCase,
 	#instVars : [
 		'logger'
 	],
-	#category : 'MooseIDE-Tests-Application',
-	#package : 'MooseIDE-Tests',
-	#tag : 'Application'
+	#category : #'MooseIDE-Tests-Application'
 }
 
-{ #category : 'running' }
+{ #category : #running }
 MiLoggerTest >> setUp [
 	logger := MiLogger new
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiLoggerTest >> testClean [
 	| logs |
 	logs := logger logs.
@@ -31,7 +29,7 @@ MiLoggerTest >> testClean [
 	self assert: logger logs identicalTo: logs
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiLoggerTest >> testMostRecentEntity [
 	| entity |
 	self assert: logger mostRecentEntity isNil.
@@ -40,7 +38,7 @@ MiLoggerTest >> testMostRecentEntity [
 	self assert: logger mostRecentEntity identicalTo: entity
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiLoggerTest >> testMostRecentLog [
 	| log |
 	self assert: logger mostRecentLog isNil.
@@ -48,7 +46,7 @@ MiLoggerTest >> testMostRecentLog [
 	self assert: logger mostRecentLog identicalTo: log
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiLoggerTest >> testNewLogFor [
 	| entity group firstLog secondLog thirdLog |
 	entity := MooseEntity new.
@@ -76,7 +74,7 @@ MiLoggerTest >> testNewLogFor [
 			thirdLog}
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiLoggerTest >> testRemoveLog [
 	| firstLog secondLog |
 	firstLog := logger newLogFor: MooseEntity new.

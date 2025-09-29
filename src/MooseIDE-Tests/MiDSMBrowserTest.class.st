@@ -1,30 +1,28 @@
 Class {
-	#name : 'MiDSMBrowserTest',
-	#superclass : 'MiAbstractBrowserTest',
+	#name : #MiDSMBrowserTest,
+	#superclass : #MiAbstractBrowserTest,
 	#instVars : [
 		'model',
 		'class1',
 		'class2',
 		'class3'
 	],
-	#category : 'MooseIDE-Tests-Browsers',
-	#package : 'MooseIDE-Tests',
-	#tag : 'Browsers'
+	#category : #'MooseIDE-Tests-Browsers'
 }
 
-{ #category : 'running' }
+{ #category : #running }
 MiDSMBrowserTest >> browserClass [
 
 	^ MiDSMBrowser
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 MiDSMBrowserTest >> defaultEntityToSelect [
 
 	^{ 	FamixStClass new name: 'a'. FamixStClass new name: 'b' }
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 MiDSMBrowserTest >> makeGraphNode: anEntity [
 
 	^AIGraphNode new
@@ -32,7 +30,7 @@ MiDSMBrowserTest >> makeGraphNode: anEntity [
 		yourself
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 MiDSMBrowserTest >> setUp [
 	| mth1 mth2 |
 
@@ -52,7 +50,7 @@ MiDSMBrowserTest >> setUp [
 
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 MiDSMBrowserTest >> shapeAtRow: rEntity column: cEntity2 [
 
 	^browser diagram canvas shapes detect: [ :sh |
@@ -61,13 +59,13 @@ MiDSMBrowserTest >> shapeAtRow: rEntity column: cEntity2 [
 	]
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiDSMBrowserTest >> testCanTagEntities [
 
 	self deny: browser canTagEntities
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiDSMBrowserTest >> testCellListTupleDependencies [
 	"detailed DSM title should show the original entities"
 
@@ -80,7 +78,7 @@ MiDSMBrowserTest >> testCellListTupleDependencies [
 	self assert: (browser diagram listTupleDependencies: tuple) anyOne class equals: FamixJavaInvocation 
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiDSMBrowserTest >> testDoesNotOpenEmptyDetailedDSM [
 	"sets a fake spec model that delegates #userActionOn: to the original model
 	 We checks that #userActionOn: was called and #openDetailedDSMOn: was not"
@@ -109,7 +107,7 @@ MiDSMBrowserTest >> testDoesNotOpenEmptyDetailedDSM [
 	self assert: detailedDSM isNil
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiDSMBrowserTest >> testDontShowSelfDependenciesHideDiagonalWeight [
 
 	| tuple configuration |
@@ -129,7 +127,7 @@ MiDSMBrowserTest >> testDontShowSelfDependenciesHideDiagonalWeight [
 		equals: 0
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiDSMBrowserTest >> testDontShowSelfDependenciesShowNonDiagonalWeight [
 
 	| tuple configuration |
@@ -149,7 +147,7 @@ MiDSMBrowserTest >> testDontShowSelfDependenciesShowNonDiagonalWeight [
 		equals: 3
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiDSMBrowserTest >> testDoubleClickCallsUserAction [
 	"sets a fake spec model on the visualization to check that #userAction: is called
 	 with the right tuple when double clicking on a square"
@@ -170,7 +168,7 @@ MiDSMBrowserTest >> testDoubleClickCallsUserAction [
 	self assert: detailedDSM value model equals: class2.
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiDSMBrowserTest >> testOutgoingDependencyFromInvocation [
 
 	| dependencies |
@@ -181,7 +179,7 @@ MiDSMBrowserTest >> testOutgoingDependencyFromInvocation [
 		hasSameElements: class1 methods anyOne outgoingInvocations
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiDSMBrowserTest >> testOutgoingDependencyFromMethodDeclaredType [
 
 	| mth2 dependencies |
@@ -193,7 +191,7 @@ MiDSMBrowserTest >> testOutgoingDependencyFromMethodDeclaredType [
 	self assertCollection: dependencies hasSameElements: { mth2 typing }
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiDSMBrowserTest >> testOutgoingDependencyFromVMethodDeclaredTypeParametric [
 	"
 	public class Class2 { 
@@ -222,7 +220,7 @@ MiDSMBrowserTest >> testOutgoingDependencyFromVMethodDeclaredTypeParametric [
 			mth2 typing concretizations anyOne }
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiDSMBrowserTest >> testOutgoingDependencyFromVariableDeclaredType [
 
 	| mth2 dependencies |
@@ -241,7 +239,7 @@ MiDSMBrowserTest >> testOutgoingDependencyFromVariableDeclaredType [
 		hasSameElements: { mth2 localVariables anyOne typing }
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiDSMBrowserTest >> testOutgoingDependencyFromVariableDeclaredTypeParametric [
 	"
 	public class Class2 { 
@@ -273,13 +271,13 @@ MiDSMBrowserTest >> testOutgoingDependencyFromVariableDeclaredTypeParametric [
 			localVariable typing concretizations anyOne }
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiDSMBrowserTest >> testSettingsAction [
 
 	self assert: browser hasSettings
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiDSMBrowserTest >> testShowSelfDependenciesDoNotHideDiagonalWeight [
 
 	| tuple configuration |
@@ -300,7 +298,7 @@ MiDSMBrowserTest >> testShowSelfDependenciesDoNotHideDiagonalWeight [
 		equals: 3
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiDSMBrowserTest >> testTitleOfDSM [
 
 	browser followEntity: {  class1 . class2 }.
@@ -312,7 +310,7 @@ MiDSMBrowserTest >> testTitleOfDSM [
 	]
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiDSMBrowserTest >> testTitleOfDetailedDSM [
 	"detailed DSM title should show the original entities"
 
@@ -332,7 +330,7 @@ MiDSMBrowserTest >> testTitleOfDetailedDSM [
 			self assert: title equals: 'DSM Class1 -> Class2' ]
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiDSMBrowserTest >> testTupleIsCycle [
 
 	| tarjanGraph tuple |
@@ -348,7 +346,7 @@ MiDSMBrowserTest >> testTupleIsCycle [
 	self assert: (browser specModel isCycle: tuple)
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiDSMBrowserTest >> testTupleIsDependency [
 
 	| tuple |
@@ -362,7 +360,7 @@ MiDSMBrowserTest >> testTupleIsDependency [
 	self assert: (browser specModel isDependency: tuple)
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiDSMBrowserTest >> testTupleIsDiagonal [
 
 	| node tuple |
@@ -372,7 +370,7 @@ MiDSMBrowserTest >> testTupleIsDiagonal [
 	self assert: (browser specModel isDiagonal: tuple)
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiDSMBrowserTest >> testTupleIsNotCycle [
 
 	| tarjanGraph tuple |
@@ -387,7 +385,7 @@ MiDSMBrowserTest >> testTupleIsNotCycle [
 	self deny: (browser specModel isCycle: tuple)
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiDSMBrowserTest >> testTupleIsNotDependency [
 
 	| tuple |
@@ -397,7 +395,7 @@ MiDSMBrowserTest >> testTupleIsNotDependency [
 	self deny: (browser specModel isDependency: tuple)
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiDSMBrowserTest >> testTupleIsNotDiagonal [
 
 	| tuple |

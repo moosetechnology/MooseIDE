@@ -1,15 +1,13 @@
 Class {
-	#name : 'MiDSMSettingsConfiguration',
-	#superclass : 'MiAbstractSettingsConfiguration',
+	#name : #MiDSMSettingsConfiguration,
+	#superclass : #MiAbstractSettingsConfiguration,
 	#instVars : [
 		'shouldShowSelfDependencies'
 	],
-	#category : 'MooseIDE-Dependency-DSM',
-	#package : 'MooseIDE-Dependency',
-	#tag : 'DSM'
+	#category : #'MooseIDE-Dependency-DSM'
 }
 
-{ #category : 'ui' }
+{ #category : #ui }
 MiDSMSettingsConfiguration >> settingsPresenters [
 
 	^ OrderedCollection with: ((MiBooleanSettingPresenter on: self)
@@ -22,13 +20,13 @@ MiDSMSettingsConfiguration >> settingsPresenters [
 			   yourself)
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiDSMSettingsConfiguration >> shouldShowSelfDependencies [
 
 	^ shouldShowSelfDependencies
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiDSMSettingsConfiguration >> shouldShowSelfDependencies: anObject [
 
 	shouldShowSelfDependencies := anObject

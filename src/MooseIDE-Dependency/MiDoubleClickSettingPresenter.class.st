@@ -1,30 +1,28 @@
 Class {
-	#name : 'MiDoubleClickSettingPresenter',
-	#superclass : 'MiAbstractRadioButtonSettingPresenter',
-	#category : 'MooseIDE-Dependency-ArchitecturalMap',
-	#package : 'MooseIDE-Dependency',
-	#tag : 'ArchitecturalMap'
+	#name : #MiDoubleClickSettingPresenter,
+	#superclass : #MiAbstractRadioButtonSettingPresenter,
+	#category : #'MooseIDE-Dependency-ArchitecturalMap'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiDoubleClickSettingPresenter class >> help [
 
 	^ 'What happens when double-clicking on an entity? '
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiDoubleClickSettingPresenter class >> label [
 
 	^ 'Double click action'
 ]
 
-{ #category : 'event handling' }
+{ #category : #'event handling' }
 MiDoubleClickSettingPresenter >> activate: aCommand [
 
 	configuration doubleClickAction: aCommand
 ]
 
-{ #category : 'adding' }
+{ #category : #adding }
 MiDoubleClickSettingPresenter >> addButton: aButton [
 
 	self layout
@@ -38,25 +36,25 @@ MiDoubleClickSettingPresenter >> addButton: aButton [
 	6 is arbitrary"
 ]
 
-{ #category : 'building' }
+{ #category : #building }
 MiDoubleClickSettingPresenter >> helpForItem: aCommand [
 
 	^ aCommand description
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 MiDoubleClickSettingPresenter >> isCurrentValue: aCommand [
 
 	^ aCommand class = configuration doubleClickAction class
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiDoubleClickSettingPresenter >> items [
 
 	^ configuration availableDoubleClickActions
 ]
 
-{ #category : 'building' }
+{ #category : #building }
 MiDoubleClickSettingPresenter >> labelForItem: aCommand [
 
 	^ aCommand name

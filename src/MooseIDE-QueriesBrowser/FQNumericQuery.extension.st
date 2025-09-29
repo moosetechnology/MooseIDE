@@ -1,12 +1,12 @@
-Extension { #name : 'FQNumericQuery' }
+Extension { #name : #FQNumericQuery }
 
-{ #category : '*MooseIDE-QueriesBrowser' }
+{ #category : #'*MooseIDE-QueriesBrowser' }
 FQNumericQuery class >> canBeConfigured [
 
 	^ true
 ]
 
-{ #category : '*MooseIDE-QueriesBrowser' }
+{ #category : #'*MooseIDE-QueriesBrowser' }
 FQNumericQuery class >> miPresenterClass [
 
 	^ MiNumericQueryPresenter

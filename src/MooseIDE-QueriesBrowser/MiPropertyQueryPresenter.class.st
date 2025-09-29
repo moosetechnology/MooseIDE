@@ -12,8 +12,8 @@ have:
 - valueInputField: a field to enter a value with which to compare
 "
 Class {
-	#name : 'MiPropertyQueryPresenter',
-	#superclass : 'MiQueryConfiguratorPresenter',
+	#name : #MiPropertyQueryPresenter,
+	#superclass : #MiQueryConfiguratorPresenter,
 	#instVars : [
 		'propertyDropList',
 		'valueInputField',
@@ -21,12 +21,10 @@ Class {
 		'process',
 		'delayer'
 	],
-	#category : 'MooseIDE-QueriesBrowser-Configuration presenters',
-	#package : 'MooseIDE-QueriesBrowser',
-	#tag : 'Configuration presenters'
+	#category : #'MooseIDE-QueriesBrowser-Configuration presenters'
 }
 
-{ #category : 'api - actions' }
+{ #category : #'api - actions' }
 MiPropertyQueryPresenter >> configureFor: aQuery [
 
 	query := aQuery.
@@ -35,7 +33,7 @@ MiPropertyQueryPresenter >> configureFor: aQuery [
 	self configurePropertyDroplistFor: aQuery
 ]
 
-{ #category : 'api - actions' }
+{ #category : #'api - actions' }
 MiPropertyQueryPresenter >> configurePropertyDroplistFor: aQuery [
 
 	| queryProperty |
@@ -47,7 +45,7 @@ MiPropertyQueryPresenter >> configurePropertyDroplistFor: aQuery [
 	propertyDropList selectItem: queryProperty
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiPropertyQueryPresenter >> initializePresenters [
 
 	delayer := InputProcessingWaiter new.
@@ -60,7 +58,7 @@ MiPropertyQueryPresenter >> initializePresenters [
 			valueInputField := self newNullPresenter ]
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiPropertyQueryPresenter >> initializePresentersForValidQuery [
 
 	propertyDropList := self newPropertyDropList.
@@ -68,7 +66,7 @@ MiPropertyQueryPresenter >> initializePresentersForValidQuery [
 	valueInputField := self newValueInputField
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiPropertyQueryPresenter >> newComparatorDropList [
 
 	^ self newDropList
@@ -81,7 +79,7 @@ MiPropertyQueryPresenter >> newComparatorDropList [
 		  yourself
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiPropertyQueryPresenter >> newPropertyDropList [
 
 	| sortedProperties |
@@ -97,12 +95,12 @@ MiPropertyQueryPresenter >> newPropertyDropList [
 		  yourself
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiPropertyQueryPresenter >> newValueInputField [
 	self subclassResponsibility 
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 MiPropertyQueryPresenter >> updateProperty: property [
 
 	self query property: property.

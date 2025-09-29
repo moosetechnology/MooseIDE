@@ -1,6 +1,6 @@
-Extension { #name : 'SpEditableListPresenter' }
+Extension { #name : #SpEditableListPresenter }
 
-{ #category : '*MooseIDE-Dependency' }
+{ #category : #'*MooseIDE-Dependency' }
 SpEditableListPresenter >> displayIcon: aBlock [
 
 	list displayIcon: aBlock

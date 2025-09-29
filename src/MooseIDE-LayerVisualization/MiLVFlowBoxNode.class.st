@@ -1,12 +1,10 @@
 Class {
-	#name : 'MiLVFlowBoxNode',
-	#superclass : 'MiLVAbstractBoxNode',
-	#category : 'MooseIDE-LayerVisualization-Model',
-	#package : 'MooseIDE-LayerVisualization',
-	#tag : 'Model'
+	#name : #MiLVFlowBoxNode,
+	#superclass : #MiLVAbstractBoxNode,
+	#category : #'MooseIDE-LayerVisualization-Model'
 }
 
-{ #category : 'visiting' }
+{ #category : #visiting }
 MiLVFlowBoxNode >> acceptVisitor: aVisitor [
 
 	^ aVisitor visitFlowBox: self

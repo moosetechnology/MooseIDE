@@ -1,30 +1,28 @@
 Class {
-	#name : 'MiImportErrorDialog',
-	#superclass : 'SpConfirmDialog',
-	#category : 'MooseIDE-Meta-Import',
-	#package : 'MooseIDE-Meta',
-	#tag : 'Import'
+	#name : #MiImportErrorDialog,
+	#superclass : #SpConfirmDialog,
+	#category : #'MooseIDE-Meta-Import'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiImportErrorDialog class >> defaultAcceptLabel [
 
 	^ 'Ok'
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiImportErrorDialog class >> defaultCancelLabel [
 
 	^ 'Debug'
 ]
 
-{ #category : 'private' }
+{ #category : #private }
 MiImportErrorDialog >> defaultIcon [
 
 	^ self application iconNamed: #info
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiImportErrorDialog >> defaultTitle [
 
 	^ 'Import error'

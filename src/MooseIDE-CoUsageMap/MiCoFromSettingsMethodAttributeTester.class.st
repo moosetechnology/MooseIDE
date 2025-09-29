@@ -3,14 +3,12 @@ I use the block text from MiCoUsageMapSettingsPresenter, stored in MiCoUsageMapS
 If there is an error with the user input, I will return an empy list
 "
 Class {
-	#name : 'MiCoFromSettingsMethodAttributeTester',
-	#superclass : 'MiCoMethodAttributeCounter',
-	#category : 'MooseIDE-CoUsageMap-Model',
-	#package : 'MooseIDE-CoUsageMap',
-	#tag : 'Model'
+	#name : #MiCoFromSettingsMethodAttributeTester,
+	#superclass : #MiCoMethodAttributeCounter,
+	#category : #'MooseIDE-CoUsageMap-Model'
 }
 
-{ #category : 'public' }
+{ #category : #public }
 MiCoFromSettingsMethodAttributeTester >> allAttributesFor: aMiCoMethod [
 	^ [ self settings childrenBlockCompiled value: aMiCoMethod mooseEntity ]
 	onErrorDo: [ :ex | ex traceCr. #() ].

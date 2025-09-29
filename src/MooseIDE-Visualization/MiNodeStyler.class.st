@@ -1,12 +1,10 @@
 Class {
-	#name : 'MiNodeStyler',
-	#superclass : 'HNodeStyler',
-	#category : 'MooseIDE-Visualization-Helpers',
-	#package : 'MooseIDE-Visualization',
-	#tag : 'Helpers'
+	#name : #MiNodeStyler,
+	#superclass : #HNodeStyler,
+	#category : #'MooseIDE-Visualization-Helpers'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiNodeStyler >> iconNamed: anIconName [
 
 	^ [ MiApplication current iconNamed: anIconName ]

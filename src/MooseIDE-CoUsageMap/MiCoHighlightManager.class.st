@@ -5,23 +5,21 @@ There are two kinds of Highlights:
 - select: when there is a mouse click on an inner box (kind-of permanent highlight)
 "
 Class {
-	#name : 'MiCoHighlightManager',
-	#superclass : 'RSInteraction',
+	#name : #MiCoHighlightManager,
+	#superclass : #RSInteraction,
 	#instVars : [
 		'highlight',
 		'mapBuilder'
 	],
-	#category : 'MooseIDE-CoUsageMap-Roassal3',
-	#package : 'MooseIDE-CoUsageMap',
-	#tag : 'Roassal3'
+	#category : #'MooseIDE-CoUsageMap-Roassal3'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiCoHighlightManager >> defaultBoxBorder [
 	^  RSBorder new color: Color black; joinMiter
 ]
 
-{ #category : 'selection' }
+{ #category : #selection }
 MiCoHighlightManager >> deselectInnerBox: evt [
 	"Called when clicking on a shape ('permanent' highlight)"
 
@@ -34,7 +32,7 @@ MiCoHighlightManager >> deselectInnerBox: evt [
 	evt signalUpdate
 ]
 
-{ #category : 'highlighting' }
+{ #category : #highlighting }
 MiCoHighlightManager >> highlight: evt [
 	"called on mouse entering a shape"
 
@@ -42,7 +40,7 @@ MiCoHighlightManager >> highlight: evt [
 		evt shape border: self selectedBoxBorder ]
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiCoHighlightManager >> highlightInteraction [
 	^ RSHighlightable new
 		highlightShapes: [ :shape | shape canvas deepShapesFromModel: shape model ];
@@ -52,24 +50,24 @@ MiCoHighlightManager >> highlightInteraction [
 		
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiCoHighlightManager >> initialize [
 	super initialize.
 	highlight := self highlightInteraction.
 	
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiCoHighlightManager >> mapBuilder [
 	^mapBuilder
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiCoHighlightManager >> mapBuilder: aCoUsageMapBuilder [
 	mapBuilder := aCoUsageMapBuilder
 ]
 
-{ #category : 'hooks' }
+{ #category : #hooks }
 MiCoHighlightManager >> onShape: aShape [
 
 	(aShape isShape not or: [ aShape isComposite ]) ifTrue: [
@@ -80,7 +78,7 @@ MiCoHighlightManager >> onShape: aShape [
 		when: RSMouseLeftClick send: #selectInnerBox: to: self
 ]
 
-{ #category : 'selection' }
+{ #category : #selection }
 MiCoHighlightManager >> selectInnerBox: evt [
 	"called when clicking on a shape ('permanent' highlight)"
 
@@ -90,7 +88,7 @@ MiCoHighlightManager >> selectInnerBox: evt [
 	mapBuilder selectedInnerShape: evt shape
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiCoHighlightManager >> selectedBoxBorder [
 	^ RSBorder new 
 		color: Color orange;
@@ -99,7 +97,7 @@ MiCoHighlightManager >> selectedBoxBorder [
 		yourself.
 ]
 
-{ #category : 'highlighting' }
+{ #category : #highlighting }
 MiCoHighlightManager >> unhighlight: evt [
 	"called on mouse leaving a shape"
 

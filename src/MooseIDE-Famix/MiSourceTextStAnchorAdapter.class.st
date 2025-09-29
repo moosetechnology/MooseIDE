@@ -2,20 +2,18 @@
 For FamixStEntities the StSourceAnchor contains very little information and the sourceText comes from the entity itself
 "
 Class {
-	#name : 'MiSourceTextStAnchorAdapter',
-	#superclass : 'MiAbstractSourceTextAnchorAdapter',
-	#category : 'MooseIDE-Famix-SourceText',
-	#package : 'MooseIDE-Famix',
-	#tag : 'SourceText'
+	#name : #MiSourceTextStAnchorAdapter,
+	#superclass : #MiAbstractSourceTextAnchorAdapter,
+	#category : #'MooseIDE-Famix-SourceText'
 }
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 MiSourceTextStAnchorAdapter class >> acceptEntity: anEntity [
 
 	^anEntity class name beginsWith: 'FamixSt'
 ]
 
-{ #category : 'formatting' }
+{ #category : #formatting }
 MiSourceTextStAnchorAdapter >> initialBoundingPos: anEntity [
 
 	| boundingInterval |
@@ -29,7 +27,7 @@ MiSourceTextStAnchorAdapter >> initialBoundingPos: anEntity [
 	^boundingInterval first
 ]
 
-{ #category : 'formatting' }
+{ #category : #formatting }
 MiSourceTextStAnchorAdapter >> intervalForEntity: anEntity [
 	"First find from where to start searching in the code,
 	 This will be from the first position of the entity owning anEntity.
@@ -43,7 +41,7 @@ MiSourceTextStAnchorAdapter >> intervalForEntity: anEntity [
 		]
 ]
 
-{ #category : 'formatting' }
+{ #category : #formatting }
 MiSourceTextStAnchorAdapter >> intervalForString: aString after: afterPos [
 
 	| intervalStart |

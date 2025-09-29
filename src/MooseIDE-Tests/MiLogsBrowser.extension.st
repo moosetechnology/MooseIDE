@@ -1,6 +1,6 @@
-Extension { #name : 'MiLogsBrowser' }
+Extension { #name : #MiLogsBrowser }
 
-{ #category : '*MooseIDE-Tests' }
+{ #category : #'*MooseIDE-Tests' }
 MiLogsBrowser class >> openForTests: aTestApplication [
 
 	^ (self newApplication: aTestApplication)

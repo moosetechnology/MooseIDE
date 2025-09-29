@@ -1,18 +1,16 @@
 Class {
-	#name : 'MiExportBrowserTest',
-	#superclass : 'MiAbstractBrowserTest',
-	#category : 'MooseIDE-Tests-Browsers',
-	#package : 'MooseIDE-Tests',
-	#tag : 'Browsers'
+	#name : #MiExportBrowserTest,
+	#superclass : #MiAbstractBrowserTest,
+	#category : #'MooseIDE-Tests-Browsers'
 }
 
-{ #category : 'running' }
+{ #category : #running }
 MiExportBrowserTest >> browserClass [
 
 	^ MiExportBrowser
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiExportBrowserTest >> testMiSelectedItem [
 
 	| entityToSelect |
@@ -25,7 +23,7 @@ MiExportBrowserTest >> testMiSelectedItem [
 	self assert: browser miSelectedItem anyOne equals: entityToSelect
 ]
 
-{ #category : 'tests - tags' }
+{ #category : #'tests - tags' }
 MiExportBrowserTest >> testSelectedTagSetAndGet [
 	| model entity tag |
 	model := FamixRepTestModel new.

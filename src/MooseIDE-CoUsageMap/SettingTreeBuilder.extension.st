@@ -1,11 +1,11 @@
-Extension { #name : 'SettingTreeBuilder' }
+Extension { #name : #SettingTreeBuilder }
 
-{ #category : '*MooseIDE-CoUsageMap' }
+{ #category : #'*MooseIDE-CoUsageMap' }
 SettingTreeBuilder >> miDualRange: aSymbol [
 	^ self nodeClass: MiCoDualRangeSettingDeclaration name: aSymbol
 ]
 
-{ #category : '*MooseIDE-CoUsageMap' }
+{ #category : #'*MooseIDE-CoUsageMap' }
 SettingTreeBuilder >> miRange: aSymbol [
 	^ self nodeClass: MiCoRangeSettingDeclaration name: aSymbol
 ]

@@ -1,12 +1,10 @@
 Class {
-	#name : 'MiSourceTextTIndexedFileAnchorAdapter',
-	#superclass : 'MiAbstractSourceTextAnchorAdapter',
-	#category : 'MooseIDE-Famix-SourceText',
-	#package : 'MooseIDE-Famix',
-	#tag : 'SourceText'
+	#name : #MiSourceTextTIndexedFileAnchorAdapter,
+	#superclass : #MiAbstractSourceTextAnchorAdapter,
+	#category : #'MooseIDE-Famix-SourceText'
 }
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 MiSourceTextTIndexedFileAnchorAdapter class >> acceptEntity: anEntity [
 
 	^anEntity sourceAnchor
@@ -14,7 +12,7 @@ MiSourceTextTIndexedFileAnchorAdapter class >> acceptEntity: anEntity [
 		ifNotNil: [ :anchor | anchor class usesTrait: FamixTIndexedFileNavigation ]
 ]
 
-{ #category : 'api' }
+{ #category : #api }
 MiSourceTextTIndexedFileAnchorAdapter >> initialBoundingPos: anEntity [
 
 	anEntity ifNil: [ ^nil ].
@@ -23,7 +21,7 @@ MiSourceTextTIndexedFileAnchorAdapter >> initialBoundingPos: anEntity [
 	^self reOffset: anEntity sourceAnchor startPos
 ]
 
-{ #category : 'api' }
+{ #category : #api }
 MiSourceTextTIndexedFileAnchorAdapter >> intervalForComment: anEntity [
 	"Some comments do not have 'content', but only a sourceAnchor,
 	 for them, return this sourceAnchor relocalized in the owner's displayedText
@@ -40,7 +38,7 @@ MiSourceTextTIndexedFileAnchorAdapter >> intervalForComment: anEntity [
 		]
 ]
 
-{ #category : 'api' }
+{ #category : #api }
 MiSourceTextTIndexedFileAnchorAdapter >> intervalForEntity: anEntity [
 	"First find from where to start searching in the displayed code,
 	 This will be from the first position of anEntity.
@@ -59,7 +57,7 @@ MiSourceTextTIndexedFileAnchorAdapter >> intervalForEntity: anEntity [
 		]
 ]
 
-{ #category : 'api' }
+{ #category : #api }
 MiSourceTextTIndexedFileAnchorAdapter >> intervalForString: aString after: afterPos [
 
 	| intervalStart |
@@ -73,7 +71,7 @@ MiSourceTextTIndexedFileAnchorAdapter >> intervalForString: aString after: after
 
 ]
 
-{ #category : 'api' }
+{ #category : #api }
 MiSourceTextTIndexedFileAnchorAdapter >> reOffset: aPosition [
 	"convert aPosition in source file to a position in displayedTextS"
 

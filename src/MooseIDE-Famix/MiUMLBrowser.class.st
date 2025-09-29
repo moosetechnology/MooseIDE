@@ -24,14 +24,12 @@ Controls:
 * R to clear all searches
 "
 Class {
-	#name : 'MiUMLBrowser',
-	#superclass : 'MiAbstractVisualizationBrowser',
-	#category : 'MooseIDE-Famix-UML',
-	#package : 'MooseIDE-Famix',
-	#tag : 'UML'
+	#name : #MiUMLBrowser,
+	#superclass : #MiAbstractVisualizationBrowser,
+	#category : #'MooseIDE-Famix-UML'
 }
 
-{ #category : 'world menu' }
+{ #category : #'world menu' }
 MiUMLBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
@@ -39,63 +37,63 @@ MiUMLBrowser class >> menuCommandOn: aBuilder [
 	^ self buildMenuItemIn: aBuilder
 ]
 
-{ #category : 'world menu' }
+{ #category : #'world menu' }
 MiUMLBrowser class >> menuIconName [
 
 	^ #mooseUml
 ]
 
-{ #category : 'world menu' }
+{ #category : #'world menu' }
 MiUMLBrowser class >> menuItem [
 
 	^ #UMLVisualisationBrowser
 ]
 
-{ #category : 'world menu' }
+{ #category : #'world menu' }
 MiUMLBrowser class >> menuParent [
 
 	^ self oldBrowserMenuRoot
 ]
 
-{ #category : 'world menu' }
+{ #category : #'world menu' }
 MiUMLBrowser class >> menuPriority [
 
 	^ self menuOldBrowsersPriority + 2
 ]
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 MiUMLBrowser class >> newModel [
 
 	^ MiUMLModel new
 ]
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 MiUMLBrowser class >> open [
 
 	<script>
 	^ super open
 ]
 
-{ #category : 'specs' }
+{ #category : #specs }
 MiUMLBrowser class >> title [
 
 	^ 'UML'
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 MiUMLBrowser >> canFollowEntity: anObject [
 
 	^ anObject isMooseObject and: [ 
 		  anObject asMooseSpecializedGroup isKindOf: FamixTypeGroup ]
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 MiUMLBrowser >> canTagEntities [
 
 	^ false
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 MiUMLBrowser >> followEntity: anEntity [
 
 	super followEntity: anEntity.
@@ -107,25 +105,25 @@ MiUMLBrowser >> followEntity: anEntity [
 		run
 ]
 
-{ #category : 'highlighting' }
+{ #category : #highlighting }
 MiUMLBrowser >> highlightEntity: anEntity [
 
 	mainPresenter highlightEntities: anEntity asCollection
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiUMLBrowser >> initializePresenters [
 
 	mainPresenter := self instantiate: MiUMLVisualization
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiUMLBrowser >> miSelectedItem [
 
 	^ specModel selected ifNil: [ specModel entities ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiUMLBrowser >> selected: anEntity [
 
 	specModel selected: anEntity

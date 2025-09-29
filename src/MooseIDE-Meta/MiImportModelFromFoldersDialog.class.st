@@ -4,39 +4,37 @@ I am a presenter that will allow the user to select one or multiple folders and 
 For now, I only work with Java and the latest version of VerveineJ. In the future we could add other languages.
 "
 Class {
-	#name : 'MiImportModelFromFoldersDialog',
-	#superclass : 'MiImportModelDialog',
+	#name : #MiImportModelFromFoldersDialog,
+	#superclass : #MiImportModelDialog,
 	#instVars : [
 		'description',
 		'foldersList',
 		'addFolderButton',
 		'addFoldersButton'
 	],
-	#category : 'MooseIDE-Meta-Import',
-	#package : 'MooseIDE-Meta',
-	#tag : 'Import'
+	#category : #'MooseIDE-Meta-Import'
 }
 
-{ #category : 'opening' }
+{ #category : #opening }
 MiImportModelFromFoldersDialog class >> open [
 
 	<script>
 	^ super open
 ]
 
-{ #category : 'specs' }
+{ #category : #specs }
 MiImportModelFromFoldersDialog class >> title [
 
 	^ 'Parse and import models from folders'
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiImportModelFromFoldersDialog class >> windowExtent [
 
 	^ 600 @ 500
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiImportModelFromFoldersDialog >> connectPresenters [
 
 	super connectPresenters.
@@ -51,7 +49,7 @@ MiImportModelFromFoldersDialog >> connectPresenters [
 			foldersList refresh ] ]
 ]
 
-{ #category : 'layout' }
+{ #category : #layout }
 MiImportModelFromFoldersDialog >> defaultLayout [
 
 	^ SpBoxLayout newTopToBottom
@@ -66,13 +64,13 @@ MiImportModelFromFoldersDialog >> defaultLayout [
 		  yourself
 ]
 
-{ #category : 'action' }
+{ #category : #action }
 MiImportModelFromFoldersDialog >> importModel [
 
 	^ self privateImportModel
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiImportModelFromFoldersDialog >> initializePresenters [
 
 	super initializePresenters.
@@ -95,19 +93,19 @@ MiImportModelFromFoldersDialog >> initializePresenters [
 		iconName: #add
 ]
 
-{ #category : 'action' }
+{ #category : #action }
 MiImportModelFromFoldersDialog >> privateImportModel [
 
 	^ MiMooseModelsWrapper models: (FamixJavaFoldersImporter importFolders: self selectedFolders)
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiImportModelFromFoldersDialog >> selectedFolders [
 
 	^ foldersList items
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiImportModelFromFoldersDialog >> userDescription [
 
 	^ 'I am in interface to easily parse projects and import the resulting models into Moose.
@@ -115,7 +113,7 @@ For now I am only working for Java projects. This might change in the future dep
 Bellow, you can select folders containing each a project to parse with the latest version of VerveineJ. If you wish to use your own VerveineJ version, a setting is available.'
 ]
 
-{ #category : 'action' }
+{ #category : #action }
 MiImportModelFromFoldersDialog >> validateImportForm [
 
 	self selectedFolders ifEmpty: [ self error: 'Please select at least one folder.' ].

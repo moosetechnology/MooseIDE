@@ -2,26 +2,24 @@
 This is a command for removing a query and all of its subqueries. I am called in `MiQueryListItemPresenter`
 "
 Class {
-	#name : 'MiSaveQueryCommand',
-	#superclass : 'MiSaveQueriesCommand',
-	#category : 'MooseIDE-QueriesBrowser-Commands',
-	#package : 'MooseIDE-QueriesBrowser',
-	#tag : 'Commands'
+	#name : #MiSaveQueryCommand,
+	#superclass : #MiSaveQueriesCommand,
+	#category : #'MooseIDE-QueriesBrowser-Commands'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiSaveQueryCommand class >> defaultDescription [
 
 	^ 'Save query and its sub-queries'
 ]
 
-{ #category : 'accessing - defaults' }
+{ #category : #'accessing - defaults' }
 MiSaveQueryCommand class >> defaultName [
 
 	^ 'Save query on disk'
 ]
 
-{ #category : 'executing' }
+{ #category : #executing }
 MiSaveQueryCommand >> getQueries [
 
 	| queryToStore |
@@ -29,7 +27,7 @@ MiSaveQueryCommand >> getQueries [
 	^ { queryToStore } , queryToStore children
 ]
 
-{ #category : 'executing' }
+{ #category : #executing }
 MiSaveQueryCommand >> jobTitle [
 
 	^ 'Saving query and it''s sub queries on disk'

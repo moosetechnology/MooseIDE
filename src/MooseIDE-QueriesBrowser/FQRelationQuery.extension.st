@@ -1,6 +1,6 @@
-Extension { #name : 'FQRelationQuery' }
+Extension { #name : #FQRelationQuery }
 
-{ #category : '*MooseIDE-QueriesBrowser' }
+{ #category : #'*MooseIDE-QueriesBrowser' }
 FQRelationQuery class >> miPresenterClass [
 
 	^ MiRelationQueryPresenter

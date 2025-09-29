@@ -1,12 +1,12 @@
-Extension { #name : 'FQAbstractQuery' }
+Extension { #name : #FQAbstractQuery }
 
-{ #category : '*MooseIDE-QueriesBrowser' }
+{ #category : #'*MooseIDE-QueriesBrowser' }
 FQAbstractQuery >> allChildren [
 
 	^ self allChildren: OrderedCollection new
 ]
 
-{ #category : '*MooseIDE-QueriesBrowser' }
+{ #category : #'*MooseIDE-QueriesBrowser' }
 FQAbstractQuery >> allChildren: aCollection [
 
 	children do: [ :each | 
@@ -15,20 +15,20 @@ FQAbstractQuery >> allChildren: aCollection [
 	^ aCollection
 ]
 
-{ #category : '*MooseIDE-QueriesBrowser' }
+{ #category : #'*MooseIDE-QueriesBrowser' }
 FQAbstractQuery class >> isAvailableForQueriesSize: numberOfQueriesInPresenter [
 
 	^ self isAbstract not and: [
 		  numberOfQueriesInPresenter >= self minimumQueriesSize ]
 ]
 
-{ #category : '*MooseIDE-QueriesBrowser' }
+{ #category : #'*MooseIDE-QueriesBrowser' }
 FQAbstractQuery class >> minimumQueriesSize [
 
 	self subclassResponsibility
 ]
 
-{ #category : '*MooseIDE-QueriesBrowser' }
+{ #category : #'*MooseIDE-QueriesBrowser' }
 FQAbstractQuery class >> threeWayCompareTo: anotherQuery [
 
 	self minimumQueriesSize = anotherQuery minimumQueriesSize ifTrue: [

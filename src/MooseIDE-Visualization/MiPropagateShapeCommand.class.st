@@ -1,33 +1,31 @@
 Class {
-	#name : 'MiPropagateShapeCommand',
-	#superclass : 'MiShapeCommand',
+	#name : #MiPropagateShapeCommand,
+	#superclass : #MiShapeCommand,
 	#instVars : [
 		'browser'
 	],
-	#category : 'MooseIDE-Visualization-Commands',
-	#package : 'MooseIDE-Visualization',
-	#tag : 'Commands'
+	#category : #'MooseIDE-Visualization-Commands'
 }
 
-{ #category : 'default' }
+{ #category : #default }
 MiPropagateShapeCommand class >> defaultDescription [
 
 	^ 'Propagate the entity on the browser buses'
 ]
 
-{ #category : 'default' }
+{ #category : #default }
 MiPropagateShapeCommand class >> defaultName [
 
 	^ 'Propagate'
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiPropagateShapeCommand >> browser: aMiBrowser [
 
 	browser := aMiBrowser
 ]
 
-{ #category : 'executing' }
+{ #category : #executing }
 MiPropagateShapeCommand >> execute [
 
 	browser freezeDuring: [ self context miPropagateOn: browser buses ]

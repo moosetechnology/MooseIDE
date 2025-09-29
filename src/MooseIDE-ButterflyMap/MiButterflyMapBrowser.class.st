@@ -24,20 +24,18 @@ Controls:
 
 "
 Class {
-	#name : 'MiButterflyMapBrowser',
-	#superclass : 'MiAbstractVisualizationBrowser',
-	#category : 'MooseIDE-ButterflyMap-Browser',
-	#package : 'MooseIDE-ButterflyMap',
-	#tag : 'Browser'
+	#name : #MiButterflyMapBrowser,
+	#superclass : #MiAbstractVisualizationBrowser,
+	#category : #'MooseIDE-ButterflyMap-Browser'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiButterflyMapBrowser class >> mapClass [
 
 	^ MiButterflyMapVisualization
 ]
 
-{ #category : 'world menu' }
+{ #category : #'world menu' }
 MiButterflyMapBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
@@ -45,62 +43,62 @@ MiButterflyMapBrowser class >> menuCommandOn: aBuilder [
 	^ self buildMenuItemIn: aBuilder
 ]
 
-{ #category : 'world menu' }
+{ #category : #'world menu' }
 MiButterflyMapBrowser class >> menuItem [
 
 	^ #ButterflyMapBrowser
 ]
 
-{ #category : 'world menu' }
+{ #category : #'world menu' }
 MiButterflyMapBrowser class >> menuPriority [
 
 	^ self menuVisualizationToolsPriority + 2
 ]
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 MiButterflyMapBrowser class >> newModel [
 
 	^ MiButterflyMapModel new
 ]
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 MiButterflyMapBrowser class >> open [
 	<script>
 	super open
 ]
 
-{ #category : 'specs' }
+{ #category : #specs }
 MiButterflyMapBrowser class >> preferredExtent [
 
 	^ 850 @ 520
 ]
 
-{ #category : 'specs' }
+{ #category : #specs }
 MiButterflyMapBrowser class >> title [
 
 	^ 'Butterfly map'
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 MiButterflyMapBrowser >> canFollowEntity: anObject [
 
 	^ anObject isMooseEntity
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 MiButterflyMapBrowser >> followEntity: anEntity [
 
 	super followEntity: anEntity.
 	self specModel currentEntity: anEntity
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiButterflyMapBrowser >> initializeLayout [
 
 	self layout: (SpScrollableLayout with: mainPresenter)
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiButterflyMapBrowser >> initializePresenters [
 
 	mainPresenter := self class mapClass owner: self.
@@ -108,19 +106,19 @@ MiButterflyMapBrowser >> initializePresenters [
 	self initializeLayout
 ]
 
-{ #category : 'brokerage' }
+{ #category : #brokerage }
 MiButterflyMapBrowser >> itemsFor: aClass [
 
 	^ self application itemsFor: aClass
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 MiButterflyMapBrowser >> run [
 	self deprecated: 'Use runVisualization method instead' transformWith: '`@receiver run' -> '`@receiver runVisualization'.
 	self runVisualization 
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiButterflyMapBrowser >> visualization [
 
 	^ mainPresenter

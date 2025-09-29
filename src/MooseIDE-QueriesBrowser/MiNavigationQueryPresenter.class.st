@@ -2,25 +2,23 @@
 A query configuration presenter for the `FQNavigationQuery`
 "
 Class {
-	#name : 'MiNavigationQueryPresenter',
-	#superclass : 'MiQueryConfiguratorPresenter',
+	#name : #MiNavigationQueryPresenter,
+	#superclass : #MiQueryConfiguratorPresenter,
 	#instVars : [
 		'directionDropList',
 		'associationsButton',
 		'associationsList',
 		'selectedAssociationsLabel'
 	],
-	#category : 'MooseIDE-QueriesBrowser-Configuration presenters',
-	#package : 'MooseIDE-QueriesBrowser',
-	#tag : 'Configuration presenters'
+	#category : #'MooseIDE-QueriesBrowser-Configuration presenters'
 }
 
-{ #category : 'specs' }
+{ #category : #specs }
 MiNavigationQueryPresenter class >> title [
 	^ 'Navigation Query'
 ]
 
-{ #category : 'api - actions' }
+{ #category : #'api - actions' }
 MiNavigationQueryPresenter >> configureFor: aQuery [
 
 	| queryAssociations |
@@ -37,14 +35,14 @@ MiNavigationQueryPresenter >> configureFor: aQuery [
 		associationsList activateItem: assoc ]
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 MiNavigationQueryPresenter >> configureQuery: association [
 
 	self updateQueryWithSelectedAssociations:
 		associationsList selectedItems
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiNavigationQueryPresenter >> initializeAssociationsButton [
 
 	associationsButton := self query availableAssociations
@@ -53,7 +51,7 @@ MiNavigationQueryPresenter >> initializeAssociationsButton [
 		                      ifNotEmpty: [ self newAssociationsButton ]
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiNavigationQueryPresenter >> initializeAssociationsList [
 
 	associationsList := self instantiate: SpFilteringSelectableListPresenter.
@@ -71,7 +69,7 @@ MiNavigationQueryPresenter >> initializeAssociationsList [
 		associationsList activateItem: assoc ]
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiNavigationQueryPresenter >> initializeDirectionsDropList [
 
 	directionDropList := self newDropList.
@@ -83,14 +81,14 @@ MiNavigationQueryPresenter >> initializeDirectionsDropList [
 			self updateDirection: selectedDirection ]
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiNavigationQueryPresenter >> initializeLabel [
 
 	selectedAssociationsLabel := self newLabel.
 	self updateLabel
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiNavigationQueryPresenter >> initializePresenters [
 
 	self initializeDirectionsDropList.
@@ -100,7 +98,7 @@ MiNavigationQueryPresenter >> initializePresenters [
 	self initializeLayout
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiNavigationQueryPresenter >> newAssociationsButton [
 
 	^ self newButton
@@ -109,7 +107,7 @@ MiNavigationQueryPresenter >> newAssociationsButton [
 		  yourself
 ]
 
-{ #category : 'layout' }
+{ #category : #layout }
 MiNavigationQueryPresenter >> newLayout [
 
 	| padding |
@@ -127,14 +125,14 @@ MiNavigationQueryPresenter >> newLayout [
 		yourself
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 MiNavigationQueryPresenter >> selectAssociationAction: association [
 
 	self updateLabel.
 	self computeQueryAction: association
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiNavigationQueryPresenter >> showAssociationsPopover [
 
 	self newPopover
@@ -144,7 +142,7 @@ MiNavigationQueryPresenter >> showAssociationsPopover [
 		popup
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 MiNavigationQueryPresenter >> updateDirection: selectedDirection [
 
 	self query resetAndChangeDirection: selectedDirection.
@@ -156,7 +154,7 @@ MiNavigationQueryPresenter >> updateDirection: selectedDirection [
 	self notifyQueryChanged
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 MiNavigationQueryPresenter >> updateLabel [
 	
 	| selectedAssociationsString names reducedNames |
@@ -175,7 +173,7 @@ MiNavigationQueryPresenter >> updateLabel [
 	selectedAssociationsLabel label: selectedAssociationsString
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 MiNavigationQueryPresenter >> updateQueryWithSelectedAssociations: selectedAssociations [
 
 	| nonSelectedAssociations |

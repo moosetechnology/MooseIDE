@@ -2,17 +2,15 @@
 Used to obtain a list of inner models and their number of uses on the current method.
 "
 Class {
-	#name : 'MiCoMethodAttributeCounter',
-	#superclass : 'Object',
+	#name : #MiCoMethodAttributeCounter,
+	#superclass : #Object,
 	#instVars : [
 		'settings'
 	],
-	#category : 'MooseIDE-CoUsageMap-Model',
-	#package : 'MooseIDE-CoUsageMap',
-	#tag : 'Model'
+	#category : #'MooseIDE-CoUsageMap-Model'
 }
 
-{ #category : 'public' }
+{ #category : #public }
 MiCoMethodAttributeCounter >> allAttributesFor: aMiCoMethod [
 	"should return a list of associations(a Bag), for each association:
 	key is the object
@@ -20,12 +18,12 @@ MiCoMethodAttributeCounter >> allAttributesFor: aMiCoMethod [
 	^ self subclassResponsibility
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiCoMethodAttributeCounter >> settings [
 	^ settings
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiCoMethodAttributeCounter >> settings: anObject [
 	settings := anObject
 ]

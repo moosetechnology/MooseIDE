@@ -1,6 +1,6 @@
-Extension { #name : 'HNode' }
+Extension { #name : #HNode }
 
-{ #category : '*MooseIDE-ButterflyMap' }
+{ #category : #'*MooseIDE-ButterflyMap' }
 HNode >> remove [
 
 	self removeAllLinks.
@@ -8,14 +8,14 @@ HNode >> remove [
 	
 ]
 
-{ #category : '*MooseIDE-ButterflyMap' }
+{ #category : #'*MooseIDE-ButterflyMap' }
 HNode >> remove: anHNode [
 
 	children remove: anHNode
 	
 ]
 
-{ #category : '*MooseIDE-ButterflyMap' }
+{ #category : #'*MooseIDE-ButterflyMap' }
 HNode >> removeAllLinks [
 
 	self allDependencies do: [ :link | 

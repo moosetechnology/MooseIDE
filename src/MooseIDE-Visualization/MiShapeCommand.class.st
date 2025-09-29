@@ -1,21 +1,19 @@
 Class {
-	#name : 'MiShapeCommand',
-	#superclass : 'MiCommand',
+	#name : #MiShapeCommand,
+	#superclass : #MiCommand,
 	#instVars : [
 		'shape'
 	],
-	#category : 'MooseIDE-Visualization-Commands',
-	#package : 'MooseIDE-Visualization',
-	#tag : 'Commands'
+	#category : #'MooseIDE-Visualization-Commands'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiShapeCommand >> shape [
 
 	^ shape
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiShapeCommand >> shape: aShape [
 
 	shape := aShape

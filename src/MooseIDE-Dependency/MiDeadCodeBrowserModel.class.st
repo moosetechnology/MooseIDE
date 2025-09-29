@@ -4,51 +4,49 @@ The spec model for the MiDeadCodeBrowser
 Responsible for handling all interactions as well as computing the dead entities
 "
 Class {
-	#name : 'MiDeadCodeBrowserModel',
-	#superclass : 'MiAbstractModel',
+	#name : #MiDeadCodeBrowserModel,
+	#superclass : #MiAbstractModel,
 	#instVars : [
 		'deadEntities',
 		'candidateEntities',
 		'allHeuristics',
 		'selectedHeuristics'
 	],
-	#category : 'MooseIDE-Dependency-DeadCode',
-	#package : 'MooseIDE-Dependency',
-	#tag : 'DeadCode'
+	#category : #'MooseIDE-Dependency-DeadCode'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiDeadCodeBrowserModel >> availableHeuristics [
 
 	^allHeuristics
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 MiDeadCodeBrowserModel >> clearDeads [
 
 	deadEntities := OrderedCollection new.
 	browser updateDeadEntities
 ]
 
-{ #category : 'accessing - private tests' }
+{ #category : #'accessing - private tests' }
 MiDeadCodeBrowserModel >> clearSelectedHeuristics [
 
 	selectedHeuristics removeAll
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiDeadCodeBrowserModel >> deadEntities [
 
 	^deadEntities 
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiDeadCodeBrowserModel >> entities [
 
 	^candidateEntities
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 MiDeadCodeBrowserModel >> firstRoundComputation [
 
 	deadEntities removeAll.
@@ -57,7 +55,7 @@ MiDeadCodeBrowserModel >> firstRoundComputation [
 	browser updateDeadEntities
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 MiDeadCodeBrowserModel >> firstRoundOn: entity [
 	"search for a heuristic that could deal with the entity
 	 when found, go to next entity"
@@ -68,7 +66,7 @@ MiDeadCodeBrowserModel >> firstRoundOn: entity [
 		]
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 MiDeadCodeBrowserModel >> followEntity: aCollection [
 
 	candidateEntities := aCollection.
@@ -76,7 +74,7 @@ MiDeadCodeBrowserModel >> followEntity: aCollection [
 	browser updateHeuristicSelection
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiDeadCodeBrowserModel >> gatherHeuristics [
 
 	^MiDeadCodeAbstractHeuristic withAllSubclasses
@@ -84,7 +82,7 @@ MiDeadCodeBrowserModel >> gatherHeuristics [
 		thenCollect: [ :class | class new ]
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 MiDeadCodeBrowserModel >> heuristic: heuristic handle: entity [
 	"returns whether a decision was reach or not.
 	 A decision is reached for _refuting_ heuristics if the entity is not dead
@@ -102,7 +100,7 @@ MiDeadCodeBrowserModel >> heuristic: heuristic handle: entity [
 	^false
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiDeadCodeBrowserModel >> initialize [ 
 
 	super initialize.
@@ -111,7 +109,7 @@ MiDeadCodeBrowserModel >> initialize [
 	deadEntities := OrderedCollection new
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiDeadCodeBrowserModel >> initializeHeuristics [
 
 	allHeuristics := self gatherHeuristics.
@@ -123,7 +121,7 @@ MiDeadCodeBrowserModel >> initializeHeuristics [
 
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 MiDeadCodeBrowserModel >> isNewDead: anEntity [
 
 	(deadEntities includes: anEntity) ifTrue: [ ^false ].
@@ -133,13 +131,13 @@ MiDeadCodeBrowserModel >> isNewDead: anEntity [
 	] 
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiDeadCodeBrowserModel >> miSelectedItem [
 
 	^deadEntities 
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 MiDeadCodeBrowserModel >> oneRoundRecursion [
 
 	| addNewDead |
@@ -157,14 +155,14 @@ MiDeadCodeBrowserModel >> oneRoundRecursion [
 	^addNewDead
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 MiDeadCodeBrowserModel >> recursionComputation [
 
 	[ self oneRoundRecursion ]
 		whileTrue
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 MiDeadCodeBrowserModel >> rejectHeuristics [
 	"remove all heuristics selected by the user in listHeuristicsSelected from
 	 the internal list of selectedHeuristics"
@@ -176,7 +174,7 @@ MiDeadCodeBrowserModel >> rejectHeuristics [
 	browser updateHeuristicSelection
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 MiDeadCodeBrowserModel >> selectHeuristics [
 	"add all heuristics selected by the user in listHeuristicsOffered to
 	 the internal list of selectedHeuristics"
@@ -187,18 +185,18 @@ MiDeadCodeBrowserModel >> selectHeuristics [
 	browser updateHeuristicSelection
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiDeadCodeBrowserModel >> selectedHeuristics [
 
 	^selectedHeuristics 
 ]
 
-{ #category : 'settings' }
+{ #category : #settings }
 MiDeadCodeBrowserModel >> settings [
 
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 MiDeadCodeBrowserModel >> sortHeuristics [
 	"sorts refuting heuristics before asserting ones.
 	 if of the samecategory, sort on their names"

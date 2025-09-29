@@ -1,6 +1,6 @@
 Class {
-	#name : 'MiModelReportSettingsConfiguration',
-	#superclass : 'MiAbstractSettingsConfiguration',
+	#name : #MiModelReportSettingsConfiguration,
+	#superclass : #MiAbstractSettingsConfiguration,
 	#instVars : [
 		'largeClassThreshold',
 		'longClassThreshold',
@@ -9,83 +9,82 @@ Class {
 		'complexMethodThreshold',
 		'excessiveAPIThreshold'
 	],
-	#category : 'MooseIDE-Core-Reporter',
-	#package : 'MooseIDE-Core-Reporter'
+	#category : #'MooseIDE-Core-Reporter'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiModelReportSettingsConfiguration >> complexMethodThreshold [
 
 	^ complexMethodThreshold
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiModelReportSettingsConfiguration >> complexMethodThreshold: anObject [
 
 	complexMethodThreshold := anObject
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiModelReportSettingsConfiguration >> dataClassThreshold [
 
 	^ dataClassThreshold
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiModelReportSettingsConfiguration >> dataClassThreshold: anObject [
 
 	dataClassThreshold := anObject
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiModelReportSettingsConfiguration >> excessiveAPIThreshold [
 
 	^ excessiveAPIThreshold
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiModelReportSettingsConfiguration >> excessiveAPIThreshold: anObject [
 
 	excessiveAPIThreshold := anObject
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiModelReportSettingsConfiguration >> largeClassThreshold [
 
 	^ largeClassThreshold
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiModelReportSettingsConfiguration >> largeClassThreshold: anObject [
 
 	largeClassThreshold := anObject
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiModelReportSettingsConfiguration >> longClassThreshold [
 
 	^ longClassThreshold
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiModelReportSettingsConfiguration >> longClassThreshold: anObject [
 
 	longClassThreshold := anObject
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiModelReportSettingsConfiguration >> longMethodThreshold [
 
 	^ longMethodThreshold
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiModelReportSettingsConfiguration >> longMethodThreshold: anObject [
 
 	longMethodThreshold := anObject
 ]
 
-{ #category : 'ui' }
+{ #category : #ui }
 MiModelReportSettingsConfiguration >> settingsPresenters [
 
 	^ OrderedCollection new

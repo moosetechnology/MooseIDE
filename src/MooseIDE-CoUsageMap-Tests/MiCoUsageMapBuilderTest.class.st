@@ -1,17 +1,15 @@
 Class {
-	#name : 'MiCoUsageMapBuilderTest',
-	#superclass : 'MiCoUsageAbstractTest',
-	#category : 'MooseIDE-CoUsageMap-Tests-Browser',
-	#package : 'MooseIDE-CoUsageMap-Tests',
-	#tag : 'Browser'
+	#name : #MiCoUsageMapBuilderTest,
+	#superclass : #MiCoUsageAbstractTest,
+	#category : #'MooseIDE-CoUsageMap-Tests-Browser'
 }
 
-{ #category : 'running' }
+{ #category : #running }
 MiCoUsageMapBuilderTest >> browserClass [
 	^ MiCoUsageMapBrowser
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiCoUsageMapBuilderTest >> testLastTagInitialization [
 
 	self createTag: 'aTag'.
@@ -20,7 +18,7 @@ MiCoUsageMapBuilderTest >> testLastTagInitialization [
 
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiCoUsageMapBuilderTest >> testQuickTaggingWithoutLastTag [
 	| innerBox shapes tagColor event |
 	self createTag: 'aTag'.
@@ -37,7 +35,7 @@ MiCoUsageMapBuilderTest >> testQuickTaggingWithoutLastTag [
 
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiCoUsageMapBuilderTest >> testQuickTaggingWithoutMetaKey [
 	| innerBox shapes  event tag |
 	tag := self createTag: 'aTag'.
@@ -56,7 +54,7 @@ MiCoUsageMapBuilderTest >> testQuickTaggingWithoutMetaKey [
 
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiCoUsageMapBuilderTest >> testSeveralInnerBoxesColorWithTag [
 
 	| attribute shapes tag |
@@ -69,7 +67,7 @@ MiCoUsageMapBuilderTest >> testSeveralInnerBoxesColorWithTag [
 
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiCoUsageMapBuilderTest >> testSeveralInnerBoxesColorWithoutTag [
 
 	| attribute shapes tagColor |
@@ -82,7 +80,7 @@ MiCoUsageMapBuilderTest >> testSeveralInnerBoxesColorWithoutTag [
 
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiCoUsageMapBuilderTest >> testSeveralInnerBoxesForOneEntity [
 
 	| attribute shapes |

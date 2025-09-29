@@ -1,36 +1,34 @@
 Class {
-	#name : 'MiDeadCodeBrowserHeuristicColum',
-	#superclass : 'SpPresenter',
+	#name : #MiDeadCodeBrowserHeuristicColum,
+	#superclass : #SpPresenter,
 	#instVars : [
 		'lstHeuristicsOffered',
 		'btnSelectHeuristic',
 		'btnRejectHeuristic',
 		'lstHeuristicsChosen'
 	],
-	#category : 'MooseIDE-Dependency-DeadCode',
-	#package : 'MooseIDE-Dependency',
-	#tag : 'DeadCode'
+	#category : #'MooseIDE-Dependency-DeadCode'
 }
 
-{ #category : 'accessing - private tests' }
+{ #category : #'accessing - private tests' }
 MiDeadCodeBrowserHeuristicColum >> buttonRejectHeuristics [
 
 	^btnRejectHeuristic 
 ]
 
-{ #category : 'accessing - private tests' }
+{ #category : #'accessing - private tests' }
 MiDeadCodeBrowserHeuristicColum >> buttonSelectHeuristics [
 
 	^btnSelectHeuristic 
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiDeadCodeBrowserHeuristicColum >> chosenHeuristics [
 
 	^self specModel chosenHeuristics
 ]
 
-{ #category : 'layout' }
+{ #category : #layout }
 MiDeadCodeBrowserHeuristicColum >> defaultLayout [
 
 	^SpBoxLayout newTopToBottom
@@ -46,7 +44,7 @@ MiDeadCodeBrowserHeuristicColum >> defaultLayout [
 		yourself
 ]
 
-{ #category : 'layout' }
+{ #category : #layout }
 MiDeadCodeBrowserHeuristicColum >> heuristicColumnLayout [
 
 	^SpBoxLayout newTopToBottom
@@ -60,7 +58,7 @@ MiDeadCodeBrowserHeuristicColum >> heuristicColumnLayout [
 		yourself
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiDeadCodeBrowserHeuristicColum >> initializePresenters [
 
 	lstHeuristicsOffered := self newList
@@ -84,31 +82,31 @@ MiDeadCodeBrowserHeuristicColum >> initializePresenters [
 
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiDeadCodeBrowserHeuristicColum >> listHeuristicsOffered [ 
 
 	^lstHeuristicsOffered 
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiDeadCodeBrowserHeuristicColum >> listHeuristicsSelected [ 
 
 	^lstHeuristicsChosen
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 MiDeadCodeBrowserHeuristicColum >> selectedHeuristics: aCollection [
 
 	lstHeuristicsChosen items: aCollection
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiDeadCodeBrowserHeuristicColum >> specModel [ 
 
 	^owner specModel
 ]
 
-{ #category : 'TOREMOVE' }
+{ #category : #TOREMOVE }
 MiDeadCodeBrowserHeuristicColum >> toolbarHeight [
 
 	^self class toolbarHeight

@@ -43,9 +43,13 @@ MiAbstractModel >> currentConfiguration [
 { #category : 'accessing' }
 MiAbstractModel >> currentMooseModel [
 
+	| anyEntity |
 	self entities isEmptyOrNil ifTrue: [ ^ nil ].
 
-	^ self entities anyOne mooseModel
+	anyEntity := self entities anyOne.
+	^ anyEntity isMooseModel
+		  ifTrue: [ anyEntity ]
+		  ifFalse: [ anyEntity mooseModel ]
 ]
 
 { #category : 'accessing' }
@@ -152,7 +156,8 @@ MiAbstractModel >> tagEntity: aMooseEntity with: aTag [
 { #category : 'tagging' }
 MiAbstractModel >> tagList [
 
-	^self currentApplication tagListForMooseModel: self currentMooseModel 
+	^ self currentApplication tagListForMooseModel:
+		  self currentMooseModel
 ]
 
 { #category : 'tagging' }

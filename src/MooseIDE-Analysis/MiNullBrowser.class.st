@@ -1,21 +1,19 @@
 Class {
-	#name : 'MiNullBrowser',
-	#superclass : 'MiPresenter',
+	#name : #MiNullBrowser,
+	#superclass : #MiPresenter,
 	#instVars : [
 		'mainPresenter'
 	],
-	#category : 'MooseIDE-Analysis-Widgets',
-	#package : 'MooseIDE-Analysis',
-	#tag : 'Widgets'
+	#category : #'MooseIDE-Analysis-Widgets'
 }
 
-{ #category : 'testing' }
+{ #category : #testing }
 MiNullBrowser >> canFollowEntity: anObject [
 
 	^ false
 ]
 
-{ #category : 'layout' }
+{ #category : #layout }
 MiNullBrowser >> defaultLayout [
 
 	^ SpBoxLayout newVertical
@@ -23,20 +21,20 @@ MiNullBrowser >> defaultLayout [
 		  yourself
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiNullBrowser >> initializePresenters [
 
 	super initializePresenters.
 	mainPresenter := self newNullPresenter
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiNullBrowser >> miSelectedItem [
 
 	^ nil
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiNullBrowser >> miSelectedItemToPropagate [
 
 	^ nil

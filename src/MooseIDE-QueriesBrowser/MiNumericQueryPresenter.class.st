@@ -2,14 +2,12 @@
 A query configuration presenter for the `FQNumericQuery`
 "
 Class {
-	#name : 'MiNumericQueryPresenter',
-	#superclass : 'MiPropertyQueryPresenter',
-	#category : 'MooseIDE-QueriesBrowser-Configuration presenters',
-	#package : 'MooseIDE-QueriesBrowser',
-	#tag : 'Configuration presenters'
+	#name : #MiNumericQueryPresenter,
+	#superclass : #MiPropertyQueryPresenter,
+	#category : #'MooseIDE-QueriesBrowser-Configuration presenters'
 }
 
-{ #category : 'api - actions' }
+{ #category : #'api - actions' }
 MiNumericQueryPresenter >> configureFor: aQuery [
 
 	super configureFor: aQuery.
@@ -18,20 +16,20 @@ MiNumericQueryPresenter >> configureFor: aQuery [
 	valueInputField number: aQuery valueToCompare
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 MiNumericQueryPresenter >> configureQuery: num [
 
 	self query valueToCompare: num
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiNumericQueryPresenter >> initializePresenters [
 
 	super initializePresenters.
 	self initializeLayout
 ]
 
-{ #category : 'layout' }
+{ #category : #layout }
 MiNumericQueryPresenter >> newLayout [
 
 	| padding |
@@ -52,7 +50,7 @@ MiNumericQueryPresenter >> newLayout [
 		yourself
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiNumericQueryPresenter >> newValueInputField [
 
 	^ self newNumberInput
