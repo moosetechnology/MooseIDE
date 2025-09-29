@@ -1,10 +1,12 @@
 Class {
-	#name : #MooseResetAllMetamodelsMenuCommand,
-	#superclass : #MooseAbstractMetamodelMenuCommand,
-	#category : #'MooseIDE-Core-MenuBar'
+	#name : 'MooseResetAllMetamodelsMenuCommand',
+	#superclass : 'MooseAbstractMetamodelMenuCommand',
+	#category : 'MooseIDE-Core-MenuBar',
+	#package : 'MooseIDE-Core',
+	#tag : 'MenuBar'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseResetAllMetamodelsMenuCommand class >> help [
 
 	^ 'For each metamodel in the system:
@@ -12,26 +14,26 @@ MooseResetAllMetamodelsMenuCommand class >> help [
 - In each subclass of MooseModel, reset the #metamodel instance variable to the newly generated metamodel.'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseResetAllMetamodelsMenuCommand class >> label [
 
 	^ 'Reset all metamodels'
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MooseResetAllMetamodelsMenuCommand class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
 	^ self menuCommandOn: aBuilder forCommand: self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseResetAllMetamodelsMenuCommand class >> menuPriority [
 
 	^super menuPriority + 2
 ]
 
-{ #category : #executing }
+{ #category : 'executing' }
 MooseResetAllMetamodelsMenuCommand >> execute [
 
 	MooseModel resetMetamodels

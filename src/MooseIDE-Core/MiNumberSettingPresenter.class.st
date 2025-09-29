@@ -1,14 +1,16 @@
 Class {
-	#name : #MiNumberSettingPresenter,
-	#superclass : #MiAbstractSettingPresenter,
+	#name : 'MiNumberSettingPresenter',
+	#superclass : 'MiAbstractSettingPresenter',
 	#instVars : [
 		'inputField',
 		'unitLabel'
 	],
-	#category : #'MooseIDE-Core-Settings'
+	#category : 'MooseIDE-Core-Settings',
+	#package : 'MooseIDE-Core',
+	#tag : 'Settings'
 }
 
-{ #category : #layout }
+{ #category : 'layout' }
 MiNumberSettingPresenter >> defaultLayout [
 
 	^ self newBoxLayoutLeftToRight
@@ -20,7 +22,7 @@ MiNumberSettingPresenter >> defaultLayout [
 		  yourself
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiNumberSettingPresenter >> initializePresenters [
 
 	inputField := self newNumberInput
@@ -29,31 +31,31 @@ MiNumberSettingPresenter >> initializePresenters [
 	unitLabel := self newLabel
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiNumberSettingPresenter >> maximum: aNumber [
 
 	inputField maximum: aNumber
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiNumberSettingPresenter >> minimum: aNumber [
 
 	inputField minimum: aNumber
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiNumberSettingPresenter >> number: aNumber [
 
 	inputField number: aNumber
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 MiNumberSettingPresenter >> unit: aString [
 
 	unitLabel label: aString
 ]
 
-{ #category : #enumerating }
+{ #category : 'enumerating' }
 MiNumberSettingPresenter >> whenNumberChangedDo: aBlock [
 
 	inputField whenNumberChangedDo: aBlock

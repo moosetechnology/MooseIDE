@@ -1,27 +1,29 @@
 Class {
-	#name : #MiAbstractRadioButtonSettingPresenter,
-	#superclass : #MiAbstractSettingPresenter,
+	#name : 'MiAbstractRadioButtonSettingPresenter',
+	#superclass : 'MiAbstractSettingPresenter',
 	#instVars : [
 		'selectedButton',
 		'buttons',
 		'itemWidth'
 	],
-	#category : #'MooseIDE-Core-Settings'
+	#category : 'MooseIDE-Core-Settings',
+	#package : 'MooseIDE-Core',
+	#tag : 'Settings'
 }
 
-{ #category : #'event handling' }
+{ #category : 'event handling' }
 MiAbstractRadioButtonSettingPresenter >> activate: anItem [
 
 	self subclassResponsibility
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 MiAbstractRadioButtonSettingPresenter >> addButton: aButton [
 
 	self layout add: aButton
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 MiAbstractRadioButtonSettingPresenter >> connectButtons [
 
 	selectedButton
@@ -29,19 +31,19 @@ MiAbstractRadioButtonSettingPresenter >> connectButtons [
 		state: true
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 MiAbstractRadioButtonSettingPresenter >> defaultLayout [
 
 	^ self newBoxLayoutLeftToRight
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 MiAbstractRadioButtonSettingPresenter >> helpForItem: anItem [
 
 	^ anItem printString
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiAbstractRadioButtonSettingPresenter >> initializePresenters [
 
 	buttons := self items collect: [ :item |
@@ -53,25 +55,25 @@ MiAbstractRadioButtonSettingPresenter >> initializePresenters [
 	self connectButtons
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiAbstractRadioButtonSettingPresenter >> isCurrentValue: anItem [
 
 	self subclassResponsibility
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiAbstractRadioButtonSettingPresenter >> items [
 
 	^ self subclassResponsibility 
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 MiAbstractRadioButtonSettingPresenter >> labelForItem: anItem [
 
 	^ anItem printString
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MiAbstractRadioButtonSettingPresenter >> newRadioButtonFor: anItem [
 
 	| button |

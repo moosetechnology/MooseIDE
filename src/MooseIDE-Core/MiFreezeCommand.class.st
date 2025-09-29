@@ -3,29 +3,31 @@ I represent a command corresponding to a freeze button in browsers.
 This command allows to ignore changes pushed by the bus.
 "
 Class {
-	#name : #MiFreezeCommand,
-	#superclass : #MiReceivingModeCommand,
-	#category : #'MooseIDE-Core-Command'
+	#name : 'MiFreezeCommand',
+	#superclass : 'MiReceivingModeCommand',
+	#category : 'MooseIDE-Core-Command',
+	#package : 'MooseIDE-Core',
+	#tag : 'Command'
 }
 
-{ #category : #default }
+{ #category : 'default' }
 MiFreezeCommand class >> defaultDescription [
 	^ 'A mode that allows to ignores changes pushed on the bus'
 ]
 
-{ #category : #default }
+{ #category : 'default' }
 MiFreezeCommand class >> defaultName [
 
 	^ 'Freeze'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiFreezeCommand >> iconName [
 
 	^ self iconNameForState: self context canFollow not
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiFreezeCommand >> receivingMode [
 
 	^ MiFreezeMode

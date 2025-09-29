@@ -1,10 +1,12 @@
 Class {
-	#name : #MooseLoadMooseNexusMenuCommand,
-	#superclass : #MooseAbstractLoadToolMenuCommand,
-	#category : #'MooseIDE-Core-MenuBar'
+	#name : 'MooseLoadMooseNexusMenuCommand',
+	#superclass : 'MooseAbstractLoadToolMenuCommand',
+	#category : 'MooseIDE-Core-MenuBar',
+	#package : 'MooseIDE-Core',
+	#tag : 'MenuBar'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseLoadMooseNexusMenuCommand class >> help [
 
 	^ 'Load Moose Nexus. 
@@ -13,13 +15,13 @@ Nexus provides dependency analysis and management similar to Maven and Gradle wh
 	'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseLoadMooseNexusMenuCommand class >> label [
 
 	^ 'Moose Nexus'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseLoadMooseNexusMenuCommand class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
@@ -28,25 +30,25 @@ MooseLoadMooseNexusMenuCommand class >> menuCommandOn: aBuilder [
 		  yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseLoadMooseNexusMenuCommand class >> menuPriority [
 
 	^ super menuPriority + 5
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseLoadMooseNexusMenuCommand >> baselineName [
 
 	^ 'MooseNexus'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseLoadMooseNexusMenuCommand >> repositoryURL [
 
 	^ 'github://moosetechnology/MooseNexus:', self version , '/src'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseLoadMooseNexusMenuCommand >> version [
 
 	^ 'main'

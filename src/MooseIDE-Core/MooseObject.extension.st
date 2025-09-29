@@ -1,30 +1,30 @@
-Extension { #name : #MooseObject }
+Extension { #name : 'MooseObject' }
 
-{ #category : #'*MooseIDE-Core' }
+{ #category : '*MooseIDE-Core' }
 MooseObject >> iconNamed: aSymbol [
 
 	^ MiApplication current iconProvider iconNamed: aSymbol
 ]
 
-{ #category : #'*MooseIDE-Core' }
+{ #category : '*MooseIDE-Core' }
 MooseObject >> miDescription [
 
 	^ self description
 ]
 
-{ #category : #'*MooseIDE-Core' }
+{ #category : '*MooseIDE-Core' }
 MooseObject >> miInspect [
 
 	MiInspectorBrowser inspect: self
 ]
 
-{ #category : #'*MooseIDE-Core' }
+{ #category : '*MooseIDE-Core' }
 MooseObject >> miPropagate [
 
 	MiApplication current defaultBus globallySelect: self
 ]
 
-{ #category : #'*MooseIDE-Core' }
+{ #category : '*MooseIDE-Core' }
 MooseObject >> miPropagateOn: buses [
 
 	buses do: [ :bus | bus globallySelect: self ]

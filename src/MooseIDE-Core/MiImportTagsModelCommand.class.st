@@ -1,25 +1,27 @@
 Class {
-	#name : #MiImportTagsModelCommand,
-	#superclass : #MiModelUtilityCommand,
-	#category : #'MooseIDE-Core-Command'
+	#name : 'MiImportTagsModelCommand',
+	#superclass : 'MiModelUtilityCommand',
+	#category : 'MooseIDE-Core-Command',
+	#package : 'MooseIDE-Core',
+	#tag : 'Command'
 }
 
-{ #category : #default }
+{ #category : 'default' }
 MiImportTagsModelCommand class >> defaultDescription [
 	^ 'Import tags from another model'
 ]
 
-{ #category : #default }
+{ #category : 'default' }
 MiImportTagsModelCommand class >> defaultIconName [
 	^ #mooseIncoming
 ]
 
-{ #category : #default }
+{ #category : 'default' }
 MiImportTagsModelCommand class >> defaultName [
 	^ 'Import tags'
 ]
 
-{ #category : #executing }
+{ #category : 'executing' }
 MiImportTagsModelCommand >> execute [
 
 	| models chosen |

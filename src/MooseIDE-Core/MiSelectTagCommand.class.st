@@ -1,40 +1,42 @@
 Class {
-	#name : #MiSelectTagCommand,
-	#superclass : #MiCommand,
-	#category : #'MooseIDE-Core-Command'
+	#name : 'MiSelectTagCommand',
+	#superclass : 'MiCommand',
+	#category : 'MooseIDE-Core-Command',
+	#package : 'MooseIDE-Core',
+	#tag : 'Command'
 }
 
-{ #category : #default }
+{ #category : 'default' }
 MiSelectTagCommand class >> defaultDescription [
 
 	^ 'Select the tag that will be used to tag the current entities in this browser'
 ]
 
-{ #category : #default }
+{ #category : 'default' }
 MiSelectTagCommand class >> defaultIconName [
 
 	^ #mooseDown
 ]
 
-{ #category : #default }
+{ #category : 'default' }
 MiSelectTagCommand class >> defaultName [
 
 	^ 'Tag'
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiSelectTagCommand >> canBeExecuted [
 
 	^ self context canTagEntities
 ]
 
-{ #category : #executing }
+{ #category : 'executing' }
 MiSelectTagCommand >> execute [
 
 	self newMenu openWithSpecAtPointer
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MiSelectTagCommand >> newMenu [
 
 	^ SpMenuPresenter new
@@ -49,13 +51,13 @@ MiSelectTagCommand >> newMenu [
 		  yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiSelectTagCommand >> selectedTag: aTag [
 
 	context selectedTag: aTag
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiSelectTagCommand >> tagsList [
 
 	^ self context tagList

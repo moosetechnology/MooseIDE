@@ -1,13 +1,15 @@
 Class {
-	#name : #MiDroplistSettingPresenter,
-	#superclass : #MiAbstractSettingPresenter,
+	#name : 'MiDroplistSettingPresenter',
+	#superclass : 'MiAbstractSettingPresenter',
 	#instVars : [
 		'droplist'
 	],
-	#category : #'MooseIDE-Core-Settings'
+	#category : 'MooseIDE-Core-Settings',
+	#package : 'MooseIDE-Core',
+	#tag : 'Settings'
 }
 
-{ #category : #layout }
+{ #category : 'layout' }
 MiDroplistSettingPresenter >> defaultLayout [
 
 	^ self newBoxLayoutLeftToRight
@@ -15,31 +17,31 @@ MiDroplistSettingPresenter >> defaultLayout [
 		  yourself
 ]
 
-{ #category : #api }
+{ #category : 'api' }
 MiDroplistSettingPresenter >> display: aBlock [
 
 	droplist display: aBlock
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiDroplistSettingPresenter >> initializePresenters [
 
 	droplist := self newDropList
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDroplistSettingPresenter >> items: aCollection [
 
 	droplist items: aCollection
 ]
 
-{ #category : #'api - selection' }
+{ #category : 'api - selection' }
 MiDroplistSettingPresenter >> selectItem: anObject [
 
 	droplist selectItem: anObject
 ]
 
-{ #category : #api }
+{ #category : 'api' }
 MiDroplistSettingPresenter >> whenSelectedDo: aBlock [
 
 	droplist whenSelectedItemChangedDo: aBlock

@@ -7,8 +7,8 @@ Centralizes bus and browser creation and managment.
 
 "
 Class {
-	#name : #MiOverviewBrowser,
-	#superclass : #MiPresenter,
+	#name : 'MiOverviewBrowser',
+	#superclass : 'MiPresenter',
 	#instVars : [
 		'browsersPage',
 		'busesPage',
@@ -17,10 +17,12 @@ Class {
 		'mainPresenter',
 		'toolbar'
 	],
-	#category : #'MooseIDE-Core-Overview'
+	#category : 'MooseIDE-Core-Overview',
+	#package : 'MooseIDE-Core',
+	#tag : 'Overview'
 }
 
-{ #category : #height }
+{ #category : 'height' }
 MiOverviewBrowser class >> browsersTabHeight [
 
 	^ self currentApplication browsers size * self toolbarHeight
@@ -29,7 +31,7 @@ MiOverviewBrowser class >> browsersTabHeight [
 		   * self tableLineHeight)
 ]
 
-{ #category : #height }
+{ #category : 'height' }
 MiOverviewBrowser class >> busesTabHeight [
 
 	^ self currentApplication buses size * self toolbarHeight
@@ -38,33 +40,33 @@ MiOverviewBrowser class >> busesTabHeight [
 		   * self tableLineHeight)
 ]
 
-{ #category : #height }
+{ #category : 'height' }
 MiOverviewBrowser class >> defaultHeight [
 
 	^ 400
 ]
 
-{ #category : #height }
+{ #category : 'height' }
 MiOverviewBrowser class >> emptyBrowserHeight [
 
 	^ 75
 ]
 
-{ #category : #height }
+{ #category : 'height' }
 MiOverviewBrowser class >> height [
 
 	^ (self busesTabHeight max: self browsersTabHeight)
 	  + self emptyBrowserHeight max: self defaultHeight
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiOverviewBrowser class >> helpMessage [
 
 	^ (self comment lines copyUpTo: '') fold: [ :s1 :s2 | 
 		  s1 , Character cr asString , s2 ]
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiOverviewBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
@@ -77,50 +79,50 @@ MiOverviewBrowser class >> menuCommandOn: aBuilder [
 		order: self menuPriority
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiOverviewBrowser class >> menuIcon [
 
 	^ MooseIcons mooseIcon
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiOverviewBrowser class >> menuItem [
 
 	^ #MiOverview
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiOverviewBrowser class >> menuLabel [
 
 	^ self title
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiOverviewBrowser class >> menuParent [
 
 	^ MiAbstractBrowser menuParent
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiOverviewBrowser class >> menuPriority [
 
 	^ MiAbstractBrowser menuMainToolsPriority + 1
 ]
 
-{ #category : #specs }
+{ #category : 'specs' }
 MiOverviewBrowser class >> open [
 
 	<script>
 	self new open
 ]
 
-{ #category : #specs }
+{ #category : 'specs' }
 MiOverviewBrowser class >> title [
 
 	^ 'MooseIDE Overview'
 ]
 
-{ #category : #presenters }
+{ #category : 'presenters' }
 MiOverviewBrowser >> addBrowser: aMiPresenterClass asPage: aString [
 
 	| spPage |
@@ -136,19 +138,19 @@ MiOverviewBrowser >> addBrowser: aMiPresenterClass asPage: aString [
 	^spPage
 ]
 
-{ #category : #toolbar }
+{ #category : 'toolbar' }
 MiOverviewBrowser >> browsersMenu [
 
 	^ MiAbstractBrowser miBrowsersMenuPresenter
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiOverviewBrowser >> buses [
 
 	^ self application buses
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 MiOverviewBrowser >> defaultLayout [
 
 	^ SpBoxLayout newVertical
@@ -158,13 +160,13 @@ MiOverviewBrowser >> defaultLayout [
 		  yourself
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiOverviewBrowser >> followBus: aBus [
 
 	self updateBusesPage
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiOverviewBrowser >> initializeBrowsersList [
 
 	browsersListPresenter := self newComponentList
@@ -175,7 +177,7 @@ MiOverviewBrowser >> initializeBrowsersList [
 			selection selectedItem ifNotNil: [ :object | object highlightWindow] ] 
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiOverviewBrowser >> initializeBrowsersPage [
 
 	self initializeBrowsersList.
@@ -185,7 +187,7 @@ MiOverviewBrowser >> initializeBrowsersPage [
 		presenter: [ browsersListPresenter ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiOverviewBrowser >> initializeBusesList [
 
 	 busesListPresenter :=  self newComponentList
@@ -194,14 +196,14 @@ MiOverviewBrowser >> initializeBusesList [
 		  sortingBlock: [ :a :b | a toolbarLabel < b toolbarLabel ] 
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiOverviewBrowser >> initializeBusesPage [
 
 	self initializeBusesList.
 	busesPage := self pageNamed: 'Buses' presenter: [ busesListPresenter ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiOverviewBrowser >> initializeNotebook [
 
 	mainPresenter := self newNotebook.
@@ -213,14 +215,14 @@ MiOverviewBrowser >> initializeNotebook [
 	mainPresenter addPage: busesPage
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiOverviewBrowser >> initializePresenters [
 
 	self initializeToolbar.
 	self initializeNotebook
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiOverviewBrowser >> initializeToolbar [
 
 	toolbar := self newToolbar.
@@ -237,21 +239,21 @@ MiOverviewBrowser >> initializeToolbar [
 		(MiHelpCommand forSpecContext: self) buildPresenter
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiOverviewBrowser >> initializeWindow: aWindowPresenter [
 
 	super initializeWindow: aWindowPresenter.
 	aWindowPresenter initialExtent: 500 @ self class height
 ]
 
-{ #category : #presenters }
+{ #category : 'presenters' }
 MiOverviewBrowser >> openedBrowsers [
 
 	^ self application openedBrowsers asOrderedCollection
 		collect: [ :browser | MiBrowserPresenter on: browser ]
 ]
 
-{ #category : #presenters }
+{ #category : 'presenters' }
 MiOverviewBrowser >> pageNamed: aName presenter: aComponentList [
 	^ self newNotebookPage
 		title: aName;
@@ -259,7 +261,7 @@ MiOverviewBrowser >> pageNamed: aName presenter: aComponentList [
 		yourself
 ]
 
-{ #category : #toolbar }
+{ #category : 'toolbar' }
 MiOverviewBrowser >> replaceMenuItemAction: aMenuItem [
 
 	| itemAction |
@@ -268,19 +270,19 @@ MiOverviewBrowser >> replaceMenuItemAction: aMenuItem [
 	aMenuItem action: [ itemAction value ]
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiOverviewBrowser >> unfollowBus: aBus [
 
 	self updateBusesPage
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiOverviewBrowser >> updateBrowsersListItems [
 
 	browsersListPresenter items: self openedBrowsers
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiOverviewBrowser >> updateBusesPage [
 
 	busesListPresenter items:

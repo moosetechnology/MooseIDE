@@ -1,22 +1,24 @@
 Class {
-	#name : #MiAbstractSelectableSettingPresenter,
-	#superclass : #MiAbstractSettingPresenter,
+	#name : 'MiAbstractSelectableSettingPresenter',
+	#superclass : 'MiAbstractSettingPresenter',
 	#instVars : [
 		'allItemsButton',
 		'customItemsButton',
 		'table',
 		'noItemsButton'
 	],
-	#category : #'MooseIDE-Core-Settings'
+	#category : 'MooseIDE-Core-Settings',
+	#package : 'MooseIDE-Core',
+	#tag : 'Settings'
 }
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiAbstractSelectableSettingPresenter >> allItems [
 
 	self subclassResponsibility
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 MiAbstractSelectableSettingPresenter >> defaultLayout [
 
 	^ self newBoxLayoutLeftToRight
@@ -29,20 +31,20 @@ MiAbstractSelectableSettingPresenter >> defaultLayout [
 		  yourself
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiAbstractSelectableSettingPresenter >> displayItem: anItem [
 
 	^ anItem printString
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiAbstractSelectableSettingPresenter >> iconColumn [
 	"Do nothing by default. Add an icon column if necessary"
 
 	^ nil
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiAbstractSelectableSettingPresenter >> initializePresenters [
 
 	super initializePresenters.
@@ -57,7 +59,7 @@ MiAbstractSelectableSettingPresenter >> initializePresenters [
 	self initializeRadioButtons
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiAbstractSelectableSettingPresenter >> initializeRadioButtons [
 
 	allItemsButton := self newRadioButton
@@ -90,31 +92,31 @@ MiAbstractSelectableSettingPresenter >> initializeRadioButtons [
 				ifNotEmpty: [ customItemsButton toggleState ] ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiAbstractSelectableSettingPresenter >> selectAll [
 
 	self subclassResponsibility
 ]
 
-{ #category : #'api - selection' }
+{ #category : 'api - selection' }
 MiAbstractSelectableSettingPresenter >> selectItem: anObject [
 
 	self subclassResponsibility
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiAbstractSelectableSettingPresenter >> selectNone [
 
 	self subclassResponsibility
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiAbstractSelectableSettingPresenter >> selectedItems [
 
 	self subclassResponsibility
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiAbstractSelectableSettingPresenter >> tableColumns [
 
 	| column |
@@ -135,7 +137,7 @@ MiAbstractSelectableSettingPresenter >> tableColumns [
 	^ column
 ]
 
-{ #category : #'api - selection' }
+{ #category : 'api - selection' }
 MiAbstractSelectableSettingPresenter >> unselectItem: anObject [
 
 	self subclassResponsibility

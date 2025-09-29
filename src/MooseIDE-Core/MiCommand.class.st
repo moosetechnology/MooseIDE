@@ -1,34 +1,36 @@
 Class {
-	#name : #MiCommand,
-	#superclass : #CmCommand,
-	#category : #'MooseIDE-Core-Command'
+	#name : 'MiCommand',
+	#superclass : 'CmCommand',
+	#category : 'MooseIDE-Core-Command',
+	#package : 'MooseIDE-Core',
+	#tag : 'Command'
 }
 
-{ #category : #default }
+{ #category : 'default' }
 MiCommand class >> defaultIconName [
 
 	^ ''
 ]
 
-{ #category : #default }
+{ #category : 'default' }
 MiCommand class >> defaultShortcut [
 
 	^ nil
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiCommand class >> isAbstract [
 
 	^ self = MiCommand
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 MiCommand >> application [
 
 	^ context application
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 MiCommand >> asSpecCommand [
 
 	| command |
@@ -44,7 +46,7 @@ MiCommand >> asSpecCommand [
 	^ command
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 MiCommand >> iconProvider [
 
 	^ self application iconProvider

@@ -2,12 +2,14 @@
 This style shows tags on nodes.
 "
 Class {
-	#name : #HDefaultStyleWithTags,
-	#superclass : #HDefaultStyle,
-	#category : #'MooseIDE-Core-Hierarchical'
+	#name : 'HDefaultStyleWithTags',
+	#superclass : 'HDefaultStyle',
+	#category : 'MooseIDE-Core-Hierarchical',
+	#package : 'MooseIDE-Core',
+	#tag : 'Hierarchical'
 }
 
-{ #category : #hooks }
+{ #category : 'hooks' }
 HDefaultStyleWithTags >> labelAndIconFor: node [
 
 	| group entity |
@@ -28,7 +30,7 @@ HDefaultStyleWithTags >> labelAndIconFor: node [
 	^ group
 ]
 
-{ #category : #hooks }
+{ #category : 'hooks' }
 HDefaultStyleWithTags >> tagIconFor: node [
 	"We could just do a #flatCollectAsSet: of the tags on the #allChildren but this can be pretty long to do. And in the end we just want to know if there is 0, 1 or multiple tags so here is an optimized version.
 	

@@ -1,28 +1,30 @@
 Class {
-	#name : #MiColorGradientSelectionPresenter,
-	#superclass : #MiAbstractSettingPresenter,
+	#name : 'MiColorGradientSelectionPresenter',
+	#superclass : 'MiAbstractSettingPresenter',
 	#instVars : [
 		'originButton',
 		'gradient',
 		'endButton',
 		'colorPicker'
 	],
-	#category : #'MooseIDE-Core-Settings'
+	#category : 'MooseIDE-Core-Settings',
+	#package : 'MooseIDE-Core',
+	#tag : 'Settings'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiColorGradientSelectionPresenter class >> help [
 
 	^ 'Choose start color for the minimal value and end color for the higher value'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiColorGradientSelectionPresenter class >> label [
 
 	^ 'Color range:'
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiColorGradientSelectionPresenter >> buildGradientOn: aCanvas [
 
 	| paint |
@@ -43,7 +45,7 @@ MiColorGradientSelectionPresenter >> buildGradientOn: aCanvas [
 		paint: paint
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 MiColorGradientSelectionPresenter >> defaultLayout [
 
 	^ self newBoxLayoutTopToBottom
@@ -57,7 +59,7 @@ MiColorGradientSelectionPresenter >> defaultLayout [
 		  yourself
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiColorGradientSelectionPresenter >> initializePresenters [
 
 	originButton := self newButton
@@ -81,7 +83,7 @@ MiColorGradientSelectionPresenter >> initializePresenters [
 					             action: [ :newColor | configuration endColor: newColor ] ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 MiColorGradientSelectionPresenter >> openNewColorPickerFrom: aButton on: aColor action: aBlock [
 
 	| picker popover |

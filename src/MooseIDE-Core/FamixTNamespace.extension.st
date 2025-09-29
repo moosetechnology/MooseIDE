@@ -1,6 +1,6 @@
-Extension { #name : #FamixTNamespace }
+Extension { #name : 'FamixTNamespace' }
 
-{ #category : #'*MooseIDE-Core' }
+{ #category : '*MooseIDE-Core' }
 FamixTNamespace >> mooseIcon [
 	^ self iconNamed: #famixNamespace
 ]

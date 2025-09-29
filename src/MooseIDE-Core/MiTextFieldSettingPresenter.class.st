@@ -1,13 +1,15 @@
 Class {
-	#name : #MiTextFieldSettingPresenter,
-	#superclass : #MiAbstractSettingPresenter,
+	#name : 'MiTextFieldSettingPresenter',
+	#superclass : 'MiAbstractSettingPresenter',
 	#instVars : [
 		'inputField'
 	],
-	#category : #'MooseIDE-Core-Settings'
+	#category : 'MooseIDE-Core-Settings',
+	#package : 'MooseIDE-Core',
+	#tag : 'Settings'
 }
 
-{ #category : #layout }
+{ #category : 'layout' }
 MiTextFieldSettingPresenter >> defaultLayout [
 
 	^ self newBoxLayoutLeftToRight
@@ -15,7 +17,7 @@ MiTextFieldSettingPresenter >> defaultLayout [
 		yourself
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiTextFieldSettingPresenter >> initializePresenters [
 
 	inputField := self newTextInput
@@ -23,13 +25,13 @@ MiTextFieldSettingPresenter >> initializePresenters [
 		yourself.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiTextFieldSettingPresenter >> text: aString [
 
 	inputField text: aString 
 ]
 
-{ #category : #enumerating }
+{ #category : 'enumerating' }
 MiTextFieldSettingPresenter >> whenTextChangedDo: aBlock [
 
 	inputField whenTextChangedDo: aBlock

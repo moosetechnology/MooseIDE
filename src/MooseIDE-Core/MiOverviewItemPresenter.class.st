@@ -1,27 +1,29 @@
 Class {
-	#name : #MiOverviewItemPresenter,
-	#superclass : #MiPresenter,
+	#name : 'MiOverviewItemPresenter',
+	#superclass : 'MiPresenter',
 	#instVars : [
 		'nameLabel',
 		'model'
 	],
-	#category : #'MooseIDE-Core-Overview'
+	#category : 'MooseIDE-Core-Overview',
+	#package : 'MooseIDE-Core',
+	#tag : 'Overview'
 }
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiOverviewItemPresenter >> initializePresenters [
 
 	super initializePresenters.
 	nameLabel := self newLabel label: self toolbarLabel
 ]
 
-{ #category : #'accessing - model' }
+{ #category : 'accessing - model' }
 MiOverviewItemPresenter >> setModelBeforeInitialization: aBusOrBrowser [
 
 	model := aBusOrBrowser
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 MiOverviewItemPresenter >> toolbarLabel [
 
 	^ self subclassResponsibility

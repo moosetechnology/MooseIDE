@@ -1,21 +1,23 @@
 Class {
-	#name : #MiColorSelectionPresenter,
-	#superclass : #MiAbstractSettingPresenter,
+	#name : 'MiColorSelectionPresenter',
+	#superclass : 'MiAbstractSettingPresenter',
 	#instVars : [
 		'colorButton',
 		'colorPicker',
 		'button'
 	],
-	#category : #'MooseIDE-Core-Settings'
+	#category : 'MooseIDE-Core-Settings',
+	#package : 'MooseIDE-Core',
+	#tag : 'Settings'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiColorSelectionPresenter >> color: aColor [
 
 	colorButton color: aColor
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 MiColorSelectionPresenter >> defaultLayout [
 
 	^ self newBoxLayoutLeftToRight
@@ -23,13 +25,13 @@ MiColorSelectionPresenter >> defaultLayout [
 		  yourself
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiColorSelectionPresenter >> initializePresenters [
 
 	colorButton := self newButton
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 MiColorSelectionPresenter >> openNewColorPickerFrom: aButton on: aColor action: aBlock [
 
 	| picker popover |
@@ -47,7 +49,7 @@ MiColorSelectionPresenter >> openNewColorPickerFrom: aButton on: aColor action: 
 	popover popup
 ]
 
-{ #category : #enumerating }
+{ #category : 'enumerating' }
 MiColorSelectionPresenter >> whenColorChangedDo: aBlock [
 
 	colorButton whenActivatedDo: [

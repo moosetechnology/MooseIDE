@@ -1,27 +1,29 @@
 Class {
-	#name : #MiEditableListSelector,
-	#superclass : #MiPresenter,
+	#name : 'MiEditableListSelector',
+	#superclass : 'MiPresenter',
 	#instVars : [
 		'editableList',
 		'addList',
 		'allItems'
 	],
-	#category : #'MooseIDE-Core-Widgets'
+	#category : 'MooseIDE-Core-Widgets',
+	#package : 'MooseIDE-Core',
+	#tag : 'Widgets'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiEditableListSelector >> allItems: aCollection [
 
 	allItems := aCollection
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiEditableListSelector >> connectPresenters [
 
 	editableList addItemBlock: [ self openAddList. nil ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiEditableListSelector >> defaultLayout [
 
 	^ SpScrollableLayout new
@@ -29,28 +31,28 @@ MiEditableListSelector >> defaultLayout [
 		  yourself
 ]
 
-{ #category : #api }
+{ #category : 'api' }
 MiEditableListSelector >> display: aBlock [
 
 	editableList display: aBlock.
 	addList display: aBlock
 ]
 
-{ #category : #api }
+{ #category : 'api' }
 MiEditableListSelector >> displayIcon: aBlock [
 
 	editableList displayIcon: aBlock.
 	addList displayIcon: aBlock
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiEditableListSelector >> initialize [ 
 
 	super initialize.
 	allItems := OrderedCollection new
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiEditableListSelector >> initializePresenters [
 
 	addList := self newList
@@ -59,19 +61,19 @@ MiEditableListSelector >> initializePresenters [
 	editableList := self instantiate: SpEditableListPresenter
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiEditableListSelector >> items [
 
 	^ editableList items
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiEditableListSelector >> items: aCollection [
 
 	editableList items: aCollection
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiEditableListSelector >> openAddList [
 
 	| modal |

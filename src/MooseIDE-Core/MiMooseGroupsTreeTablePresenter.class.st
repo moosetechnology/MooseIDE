@@ -2,8 +2,8 @@
 I am a presenter thas shows the result of the current selected query in a tree presenter.
 "
 Class {
-	#name : #MiMooseGroupsTreeTablePresenter,
-	#superclass : #SpTreeTablePresenter,
+	#name : 'MiMooseGroupsTreeTablePresenter',
+	#superclass : 'SpTreeTablePresenter',
 	#instVars : [
 		'sortedEntitiesCache',
 		'headerTitle',
@@ -11,17 +11,19 @@ Class {
 		'extensionMenuItems',
 		'manageNodesFromMenu'
 	],
-	#category : #'MooseIDE-Core-Widgets'
+	#category : 'MooseIDE-Core-Widgets',
+	#package : 'MooseIDE-Core',
+	#tag : 'Widgets'
 }
 
-{ #category : #commands }
+{ #category : 'commands' }
 MiMooseGroupsTreeTablePresenter class >> buildCommandsGroupWith: presenterInstance forRoot: aCmCommandsGroup [
 
 	aCmCommandsGroup register:
 		(MiInspectCommand forSpecContext: presenterInstance)
 ]
 
-{ #category : #menu }
+{ #category : 'menu' }
 MiMooseGroupsTreeTablePresenter >> addExtensionMenugroupIn: aContextMenu [
 
 	extensionMenuItems ifEmpty: [ ^ self ].
@@ -30,13 +32,13 @@ MiMooseGroupsTreeTablePresenter >> addExtensionMenugroupIn: aContextMenu [
 		extensionMenuItems do: [ :item | group addItem: item ] ]
 ]
 
-{ #category : #api }
+{ #category : 'api' }
 MiMooseGroupsTreeTablePresenter >> addMenuItem: aBlockOrMenuItem [
 
 	extensionMenuItems add: aBlockOrMenuItem
 ]
 
-{ #category : #menu }
+{ #category : 'menu' }
 MiMooseGroupsTreeTablePresenter >> addNodesManagementMenuGroupIn: aContextMenu [
 
 	manageNodesFromMenu ifFalse: [ ^ self ].
@@ -55,25 +57,25 @@ MiMooseGroupsTreeTablePresenter >> addNodesManagementMenuGroupIn: aContextMenu [
 					action: [ self expandAll ] ] ]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiMooseGroupsTreeTablePresenter >> canPropagate [
 
 	^ true
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiMooseGroupsTreeTablePresenter >> childrenSortingBlock [
 
 	^ childrenSortingBlock ifNil: [ #displayString ascending ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiMooseGroupsTreeTablePresenter >> childrenSortingBlock: aBlock [
 
 	childrenSortingBlock := aBlock
 ]
 
-{ #category : #api }
+{ #category : 'api' }
 MiMooseGroupsTreeTablePresenter >> displayIcon: aValuable [
 
 	columns := columns copyWithFirst: (SpImageTableColumn new
@@ -82,7 +84,7 @@ MiMooseGroupsTreeTablePresenter >> displayIcon: aValuable [
 			            yourself)
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiMooseGroupsTreeTablePresenter >> initialize [
 
 	super initialize.
@@ -101,7 +103,7 @@ MiMooseGroupsTreeTablePresenter >> initialize [
 	manageNodesFromMenu := false
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiMooseGroupsTreeTablePresenter >> initializeChildrenBlock [
 
 	self children: [ :item |
@@ -113,7 +115,7 @@ MiMooseGroupsTreeTablePresenter >> initializeChildrenBlock [
 			ifFalse: [ {  } ] ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiMooseGroupsTreeTablePresenter >> initializeContextMenu [
 
 	self contextMenu: [
@@ -126,43 +128,43 @@ MiMooseGroupsTreeTablePresenter >> initializeContextMenu [
 	extensionMenuItems := OrderedCollection new
 ]
 
-{ #category : #menu }
+{ #category : 'menu' }
 MiMooseGroupsTreeTablePresenter >> manageNodesFromMenu [
 
 	manageNodesFromMenu := true
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 MiMooseGroupsTreeTablePresenter >> miInspect [
 
 	self selectedItem miInspect
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 MiMooseGroupsTreeTablePresenter >> miPropagate [
 
 	self selectedItem miPropagate
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiMooseGroupsTreeTablePresenter >> miSelectedItem [
 
 	^ self selectedItem ifNil: [ MooseGroup new ]
 ]
 
-{ #category : #update }
+{ #category : 'update' }
 MiMooseGroupsTreeTablePresenter >> resetEntitiesCache [
 
 	^ sortedEntitiesCache := IdentityDictionary new
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiMooseGroupsTreeTablePresenter >> rootBrowser [
 
 	^ owner rootBrowser
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiMooseGroupsTreeTablePresenter >> setDoubleClickInspect [
 
 	self
@@ -170,7 +172,7 @@ MiMooseGroupsTreeTablePresenter >> setDoubleClickInspect [
 		whenActivatedDo: [ :each | each selectedItem miInspect ]
 ]
 
-{ #category : #naming }
+{ #category : 'naming' }
 MiMooseGroupsTreeTablePresenter >> stringForItem: item [
 
 	(self roots includes: item) ifTrue: [ ^ item description ].
@@ -178,7 +180,7 @@ MiMooseGroupsTreeTablePresenter >> stringForItem: item [
 	^ item displayString
 ]
 
-{ #category : #update }
+{ #category : 'update' }
 MiMooseGroupsTreeTablePresenter >> updateForEntities: entities [
 
 	| groups |
@@ -191,7 +193,7 @@ MiMooseGroupsTreeTablePresenter >> updateForEntities: entities [
 		(groups sort: [ :group | group description onlyLetters ] ascending)
 ]
 
-{ #category : #enumerating }
+{ #category : 'enumerating' }
 MiMooseGroupsTreeTablePresenter >> whenSelectedEntityChangedDo: aBlock [
 
 	self whenSelectedItemChangedDo: [ :selectedItem |

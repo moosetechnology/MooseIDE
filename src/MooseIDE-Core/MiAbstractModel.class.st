@@ -3,42 +3,44 @@ An abstract model class for all MooseIDE browsers
 IT knows its browser and have some default behavior implemented (e.g. to manage settings)
 "
 Class {
-	#name : #MiAbstractModel,
-	#superclass : #Object,
+	#name : 'MiAbstractModel',
+	#superclass : 'Object',
 	#instVars : [
 		'browser',
 		'selectedTag'
 	],
-	#category : #'MooseIDE-Core-Browser'
+	#category : 'MooseIDE-Core-Browser',
+	#package : 'MooseIDE-Core',
+	#tag : 'Browser'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiAbstractModel >> browser [
 
 	^ browser
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiAbstractModel >> browser: anObject [
 
 	browser := anObject.
 	self initializeSettings
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiAbstractModel >> currentApplication [
 
 	^ browser application
 ]
 
-{ #category : #'settings management' }
+{ #category : 'settings management' }
 MiAbstractModel >> currentConfiguration [
 	"Override to configure with current settings values"
 
 	self subclassResponsibility
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiAbstractModel >> currentMooseModel [
 
 	self entities isEmptyOrNil ifTrue: [ ^ nil ].
@@ -46,54 +48,54 @@ MiAbstractModel >> currentMooseModel [
 	^ self entities anyOne mooseModel
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiAbstractModel >> defaultChildrenQuery [
 
 	^ self currentApplication defaultChildrenQuery
 ]
 
-{ #category : #'settings management' }
+{ #category : 'settings management' }
 MiAbstractModel >> defaultConfiguration [
 	"Override to configure with default settings values"
 
 	self subclassResponsibility
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiAbstractModel >> doubleClickAction [
 	self shouldBeImplemented.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiAbstractModel >> entities [
 	self subclassResponsibility 
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiAbstractModel >> hasSettings [
 
 	^ false
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiAbstractModel >> initializeSettings [
 
 	"Override if necessary"
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiAbstractModel >> miSelectedItem [
 
 	self subclassResponsibility
 ]
 
-{ #category : #'settings management' }
+{ #category : 'settings management' }
 MiAbstractModel >> openSettings [
 
 	^ (MiSettingsPresenter on: self) openDialog
 ]
 
-{ #category : #tagging }
+{ #category : 'tagging' }
 MiAbstractModel >> privateRemoveTag: aTag fromEntity: aMooseEntity [
 	"should find the corresponding TagAssociation and remove it and return it
 	 does nothing for now"
@@ -103,7 +105,7 @@ MiAbstractModel >> privateRemoveTag: aTag fromEntity: aMooseEntity [
 		new
 ]
 
-{ #category : #tagging }
+{ #category : 'tagging' }
 MiAbstractModel >> privateSetTag: aTag onEntity: aMooseEntity [
 
 	^FamixTagEntityAssociation
@@ -112,26 +114,26 @@ MiAbstractModel >> privateSetTag: aTag onEntity: aMooseEntity [
 	
 ]
 
-{ #category : #tagging }
+{ #category : 'tagging' }
 MiAbstractModel >> selectedTag [
 
 	^ selectedTag
 ]
 
-{ #category : #tagging }
+{ #category : 'tagging' }
 MiAbstractModel >> selectedTag: aTag [
 
 	selectedTag := aTag
 ]
 
-{ #category : #'settings management' }
+{ #category : 'settings management' }
 MiAbstractModel >> settingsPresenterExtent [
 	"Override to set a custom size"
 
 	^ 350 @ 300
 ]
 
-{ #category : #tagging }
+{ #category : 'tagging' }
 MiAbstractModel >> tagEntity: aMooseEntity with: aTag [
 
 	| tagAssociation |
@@ -147,13 +149,14 @@ MiAbstractModel >> tagEntity: aMooseEntity with: aTag [
 
 ]
 
-{ #category : #tagging }
+{ #category : 'tagging' }
 MiAbstractModel >> tagList [
 
-	^self currentApplication tagListForMooseModel: self currentMooseModel.
+	^ self currentApplication tagListForMooseModel:
+		  self currentMooseModel
 ]
 
-{ #category : #tagging }
+{ #category : 'tagging' }
 MiAbstractModel >> tagSelectedEntities [
 
 	| tag entity |
@@ -166,13 +169,13 @@ MiAbstractModel >> tagSelectedEntities [
 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiAbstractModel >> toolName [
 
 	^ browser title
 ]
 
-{ #category : #'settings management' }
+{ #category : 'settings management' }
 MiAbstractModel >> updateFromConfiguration: aConfiguration [
 	"Override to update"
 

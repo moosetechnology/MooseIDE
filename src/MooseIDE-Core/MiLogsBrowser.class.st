@@ -4,15 +4,17 @@ I am a bus log browser. I display logs of all buses, each one in a notebook.
 Accepted entities: Does not apply.
 "
 Class {
-	#name : #MiLogsBrowser,
-	#superclass : #MiAbstractBrowser,
+	#name : 'MiLogsBrowser',
+	#superclass : 'MiAbstractBrowser',
 	#instVars : [
 		'mainPresenter'
 	],
-	#category : #'MooseIDE-Core-Logger'
+	#category : 'MooseIDE-Core-Logger',
+	#package : 'MooseIDE-Core',
+	#tag : 'Logger'
 }
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiLogsBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
@@ -20,19 +22,19 @@ MiLogsBrowser class >> menuCommandOn: aBuilder [
 	^ self buildMenuItemIn: aBuilder
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiLogsBrowser class >> menuItem [
 
 	^ #Logger
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiLogsBrowser class >> menuPriority [
 
 	^ self menuMetaToolsPriority + 1
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MiLogsBrowser class >> open [
 
 	<script>
@@ -43,13 +45,13 @@ MiLogsBrowser class >> open [
 		  yourself
 ]
 
-{ #category : #specs }
+{ #category : 'specs' }
 MiLogsBrowser class >> title [
 
 	^ 'Logger'
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiLogsBrowser >> canFollowEntity: anObject [
 
 	"Subpresenters are MiBrowsers. They are responsible for entities reception"
@@ -57,13 +59,13 @@ MiLogsBrowser >> canFollowEntity: anObject [
 	^ false
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiLogsBrowser >> canTagEntities [
 
 	^false
 ]
 
-{ #category : #buses }
+{ #category : 'buses' }
 MiLogsBrowser >> followBus: aBus [
 
 	  | busPage |
@@ -78,14 +80,14 @@ MiLogsBrowser >> followBus: aBus [
 	  busPage activePresenter ifNotNil: #updateToolbars
 ]
 
-{ #category : #buses }
+{ #category : 'buses' }
 MiLogsBrowser >> followBuses: aCollectionOfBus [
 
 	(aCollectionOfBus sorted: [ :aBus | aBus name ] ascending) do: [ 
 		:aBus | self followBus: aBus ]
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiLogsBrowser >> followEntity: anEntity [
 
 	"Subpresenters are MiBrowsers. They are responsible for entities reception"
@@ -93,19 +95,19 @@ MiLogsBrowser >> followEntity: anEntity [
 	
 ]
 
-{ #category : #'accessing - private tests' }
+{ #category : 'accessing - private tests' }
 MiLogsBrowser >> getSelectedPage [
 
 	^ mainPresenter selectedPage
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiLogsBrowser >> hasSettings [
 
 	^ false
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiLogsBrowser >> initializePresenters [
 
 	self layout: (SpBoxLayout newTopToBottom
@@ -117,7 +119,7 @@ MiLogsBrowser >> initializePresenters [
 			activePresenter updateToolbars ] ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiLogsBrowser >> initializeWindow: aMiWindowPresenter [
 
 	super initializeWindow: aMiWindowPresenter.
@@ -128,14 +130,14 @@ MiLogsBrowser >> initializeWindow: aMiWindowPresenter [
 				presenter buses do: [ :bus | bus unregisterBrowser: presenter ] ] ] ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiLogsBrowser >> miSelectedItem [
 
 	^ mainPresenter selectedPage ifNotNil: [ :page | 
 		  page activePresenter miSelectedItem ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiLogsBrowser >> updateToolbars [
 
 	self updateToolbar.

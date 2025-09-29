@@ -1,51 +1,53 @@
 Class {
-	#name : #MiAbstractSettingPresenter,
-	#superclass : #MiPresenter,
+	#name : 'MiAbstractSettingPresenter',
+	#superclass : 'MiPresenter',
 	#instVars : [
 		'label',
 		'help',
 		'configuration'
 	],
-	#category : #'MooseIDE-Core-Settings'
+	#category : 'MooseIDE-Core-Settings',
+	#package : 'MooseIDE-Core',
+	#tag : 'Settings'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiAbstractSettingPresenter class >> help [
 
 	^ ''
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiAbstractSettingPresenter class >> label [
 
 	^ ''
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiAbstractSettingPresenter >> help [
 
 	^ help ifNil: [ self class help ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiAbstractSettingPresenter >> help: aString [
 
 	help := aString
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiAbstractSettingPresenter >> label [
 
 	^ label ifNil: [ self class label ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiAbstractSettingPresenter >> label: aString [
 
 	label := aString
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiAbstractSettingPresenter >> labelPresenter [
 
 	^ self label asPresenter
@@ -53,7 +55,7 @@ MiAbstractSettingPresenter >> labelPresenter [
 		  yourself
 ]
 
-{ #category : #'accessing - model' }
+{ #category : 'accessing - model' }
 MiAbstractSettingPresenter >> setModelBeforeInitialization: aMemento [
 
 	configuration := aMemento

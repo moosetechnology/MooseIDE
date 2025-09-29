@@ -1,28 +1,30 @@
 Class {
-	#name : #MooseAbstractLoadModuleMenuCommand,
-	#superclass : #MooseAbstractMenuCommand,
-	#category : #'MooseIDE-Core-MenuBar'
+	#name : 'MooseAbstractLoadModuleMenuCommand',
+	#superclass : 'MooseAbstractMenuCommand',
+	#category : 'MooseIDE-Core-MenuBar',
+	#package : 'MooseIDE-Core',
+	#tag : 'MenuBar'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseAbstractLoadModuleMenuCommand class >> help [
 
 	^ 'Load additional modules using Metacello'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseAbstractLoadModuleMenuCommand class >> label [
 
 	^ 'Load additional modules'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseAbstractLoadModuleMenuCommand class >> labelFor: aMooseCommand [
 
 	^ 'Load ' , aMooseCommand label
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MooseAbstractLoadModuleMenuCommand class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
@@ -37,25 +39,25 @@ MooseAbstractLoadModuleMenuCommand class >> menuCommandOn: aBuilder [
 		  yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseAbstractLoadModuleMenuCommand class >> menuPriority [
 
 	^ 10
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MooseAbstractLoadModuleMenuCommand class >> menuRoot [
 
 	^ #'Additional modules'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseAbstractLoadModuleMenuCommand >> baselineName [
 
 	self subclassResponsibility
 ]
 
-{ #category : #executing }
+{ #category : 'executing' }
 MooseAbstractLoadModuleMenuCommand >> execute [
 
 	Metacello new
@@ -65,19 +67,19 @@ MooseAbstractLoadModuleMenuCommand >> execute [
 		load: self groupToLoad
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 MooseAbstractLoadModuleMenuCommand >> groupToLoad [
 
 	^ 'default'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseAbstractLoadModuleMenuCommand >> repositoryURL [
 
 	self subclassResponsibility
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseAbstractLoadModuleMenuCommand >> version [
 
 	^ self subclassResponsibility

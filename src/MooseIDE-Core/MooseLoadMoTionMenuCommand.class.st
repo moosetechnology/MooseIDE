@@ -1,53 +1,55 @@
 Class {
-	#name : #MooseLoadMoTionMenuCommand,
-	#superclass : #MooseAbstractLoadToolMenuCommand,
-	#category : #'MooseIDE-Core-MenuBar'
+	#name : 'MooseLoadMoTionMenuCommand',
+	#superclass : 'MooseAbstractLoadToolMenuCommand',
+	#category : 'MooseIDE-Core-MenuBar',
+	#package : 'MooseIDE-Core',
+	#tag : 'MenuBar'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseLoadMoTionMenuCommand class >> help [
 
 	^ 'Load MoTion, a declarative object matching tool.'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseLoadMoTionMenuCommand class >> label [
 
 	^ 'MoTion'
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MooseLoadMoTionMenuCommand class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
 	^ self menuCommandOn: aBuilder forCommand: self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseLoadMoTionMenuCommand class >> menuPriority [
 
 	^ super menuPriority + 4
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseLoadMoTionMenuCommand >> baselineName [
 
 	^ 'MoTion'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 MooseLoadMoTionMenuCommand >> groupToLoad [
 
 	^ 'MoTionMoose'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseLoadMoTionMenuCommand >> repositoryURL [
 
 	^ 'github://moosetechnology/MoTion:' , self version
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseLoadMoTionMenuCommand >> version [
 
 	^ 'main'

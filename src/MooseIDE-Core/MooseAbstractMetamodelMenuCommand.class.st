@@ -1,22 +1,24 @@
 Class {
-	#name : #MooseAbstractMetamodelMenuCommand,
-	#superclass : #MooseAbstractMenuCommand,
-	#category : #'MooseIDE-Core-MenuBar'
+	#name : 'MooseAbstractMetamodelMenuCommand',
+	#superclass : 'MooseAbstractMenuCommand',
+	#category : 'MooseIDE-Core-MenuBar',
+	#package : 'MooseIDE-Core',
+	#tag : 'MenuBar'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseAbstractMetamodelMenuCommand class >> help [
 
 	^ 'Manage metamodels'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseAbstractMetamodelMenuCommand class >> label [
 
 	^ 'Manage metamodels'
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MooseAbstractMetamodelMenuCommand class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
@@ -31,13 +33,13 @@ MooseAbstractMetamodelMenuCommand class >> menuCommandOn: aBuilder [
 		  yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseAbstractMetamodelMenuCommand class >> menuPriority [
 
 	^ 20
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MooseAbstractMetamodelMenuCommand class >> menuRoot [
 
 	^ #Metamodels

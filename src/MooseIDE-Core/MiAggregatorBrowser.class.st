@@ -8,72 +8,74 @@ You can propagate several set of entities
 when you are done, you can now propagate all of them together
 "
 Class {
-	#name : #MiAggregatorBrowser,
-	#superclass : #MiAbstractBrowser,
+	#name : 'MiAggregatorBrowser',
+	#superclass : 'MiAbstractBrowser',
 	#instVars : [
 		'btnClear',
 		'statusBar',
 		'lstEntities',
 		'btnRemove'
 	],
-	#category : #'MooseIDE-Core-Logger'
+	#category : 'MooseIDE-Core-Logger',
+	#package : 'MooseIDE-Core',
+	#tag : 'Logger'
 }
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiAggregatorBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
 	^ self buildMenuItemIn: aBuilder
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiAggregatorBrowser class >> menuItem [
 
 	^#AccumulatorBrowser
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiAggregatorBrowser class >> menuPriority [
 
 	^ self menuMetaToolsPriority + 2
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MiAggregatorBrowser class >> newModel [
 
 	^ MiAggregatorBrowserModel new
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MiAggregatorBrowser class >> open [
 	<script>
 	^ super open
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiAggregatorBrowser class >> title [
 	^ 'Aggregator Browser'
 ]
 
-{ #category : #'private - testing' }
+{ #category : 'private - testing' }
 MiAggregatorBrowser >> btnClear [
 
 	^btnClear
 ]
 
-{ #category : #'private - testing' }
+{ #category : 'private - testing' }
 MiAggregatorBrowser >> btnRemove [
 
 	^btnRemove
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiAggregatorBrowser >> canFollowEntity: anObject [
 
 	^anObject isMooseObject
 ]
 
-{ #category : #utilities }
+{ #category : 'utilities' }
 MiAggregatorBrowser >> entityDescription: entity [
 
 	^String streamContents: [ :st |
@@ -87,7 +89,7 @@ MiAggregatorBrowser >> entityDescription: entity [
 	]
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiAggregatorBrowser >> followEntity: anObject [
 
 	anObject isCollection
@@ -96,7 +98,7 @@ MiAggregatorBrowser >> followEntity: anObject [
 
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiAggregatorBrowser >> initializeLayout [
 
 	self layout: (SpBoxLayout newTopToBottom
@@ -110,7 +112,7 @@ MiAggregatorBrowser >> initializeLayout [
 		yourself)
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiAggregatorBrowser >> initializeListEntities [
 
 	lstEntities := self newFilteringList.
@@ -121,7 +123,7 @@ MiAggregatorBrowser >> initializeListEntities [
 		specModel selectedEntities: selection selectedItems ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiAggregatorBrowser >> initializePresenters [
 
 	super initializePresenters.
@@ -141,13 +143,13 @@ MiAggregatorBrowser >> initializePresenters [
 	self initializeLayout
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiAggregatorBrowser >> miSelectedItem [
 
 	^specModel selectedEntities ifEmpty: [ specModel entities ]
 ]
 
-{ #category : #utilities }
+{ #category : 'utilities' }
 MiAggregatorBrowser >> updateEntityList: entities [
 
 	lstEntities items: entities.
@@ -155,7 +157,7 @@ MiAggregatorBrowser >> updateEntityList: entities [
 	self updateStatusBar 
 ]
 
-{ #category : #utilities }
+{ #category : 'utilities' }
 MiAggregatorBrowser >> updateStatusBar [
 
 	^String streamContents: [ :stream |
