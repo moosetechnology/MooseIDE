@@ -1,6 +1,6 @@
-Extension { #name : 'FQScriptQuery' }
+Extension { #name : #FQScriptQuery }
 
-{ #category : '*MooseIDE-QueriesBrowser' }
+{ #category : #'*MooseIDE-QueriesBrowser' }
 FQScriptQuery class >> isAvailableForQueriesSize: numberOfQueriesInPresenter [
 
 	^ false

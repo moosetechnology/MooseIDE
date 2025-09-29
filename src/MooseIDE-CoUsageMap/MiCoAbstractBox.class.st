@@ -3,42 +3,40 @@ Abstract calss for wrappers of container entities (eg. methods) and inner entiti
 
 "
 Class {
-	#name : 'MiCoAbstractBox',
-	#superclass : 'Object',
+	#name : #MiCoAbstractBox,
+	#superclass : #Object,
 	#instVars : [
 		'mooseEntity'
 	],
-	#category : 'MooseIDE-CoUsageMap-Model',
-	#package : 'MooseIDE-CoUsageMap',
-	#tag : 'Model'
+	#category : #'MooseIDE-CoUsageMap-Model'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiCoAbstractBox >> mooseEntity [
 	^ mooseEntity
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiCoAbstractBox >> mooseEntity: anObject [
 	mooseEntity := anObject
 ]
 
-{ #category : 'inspector' }
+{ #category : #inspector }
 MiCoAbstractBox >> mooseInspect [
 	MiInspectorBrowser inspect: self mooseEntity
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiCoAbstractBox >> name [
 	^self mooseEntity name
 ]
 
-{ #category : 'printing' }
+{ #category : #printing }
 MiCoAbstractBox >> printOn: s [
 	s nextPutAll: self name
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiCoAbstractBox >> tag [
 	self flag: 'handle multiple tags'.
 	^self mooseEntity allTags
@@ -46,7 +44,7 @@ MiCoAbstractBox >> tag [
 	ifNotEmpty: [ :tags | tags anyOne ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiCoAbstractBox >> type [
 	^ self subclassResponsibility
 ]

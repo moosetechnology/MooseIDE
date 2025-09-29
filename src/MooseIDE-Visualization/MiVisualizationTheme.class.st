@@ -1,15 +1,13 @@
 Class {
-	#name : 'MiVisualizationTheme',
-	#superclass : 'Object',
+	#name : #MiVisualizationTheme,
+	#superclass : #Object,
 	#instVars : [
 		'iconTheme'
 	],
-	#category : 'MooseIDE-Visualization-Helpers',
-	#package : 'MooseIDE-Visualization',
-	#tag : 'Helpers'
+	#category : #'MooseIDE-Visualization-Helpers'
 }
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiVisualizationTheme >> defaultIconTheme [
 
 	^ {
@@ -23,19 +21,19 @@ MiVisualizationTheme >> defaultIconTheme [
 		  (MooseEntity -> #mooseIcon) }
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiVisualizationTheme >> iconTheme [
 
 	^ iconTheme
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiVisualizationTheme >> iconTheme: anObject [
 
 	iconTheme := anObject
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiVisualizationTheme >> initialize [
 
 	super initialize.
@@ -43,7 +41,7 @@ MiVisualizationTheme >> initialize [
 	self iconTheme: self defaultIconTheme
 ]
 
-{ #category : 'api' }
+{ #category : #api }
 MiVisualizationTheme >> mooseIconNameFor: anEntity [
 	| usedTraits |
 	self flag: 'should find a better way to match traits to icon (some kind of double dispatch?)'.

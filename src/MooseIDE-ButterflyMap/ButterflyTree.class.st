@@ -1,6 +1,6 @@
 Class {
-	#name : 'ButterflyTree',
-	#superclass : 'Object',
+	#name : #ButterflyTree,
+	#superclass : #Object,
 	#instVars : [
 		'root',
 		'lBlock',
@@ -8,12 +8,10 @@ Class {
 		'leftTree',
 		'rightTree'
 	],
-	#category : 'MooseIDE-ButterflyMap-Model',
-	#package : 'MooseIDE-ButterflyMap',
-	#tag : 'Model'
+	#category : #'MooseIDE-ButterflyMap-Model'
 }
 
-{ #category : 'adding' }
+{ #category : #adding }
 ButterflyTree >> addLevel [
 
 	(root isNil or: [ lBlock isNil or: [ rBlock isNil ] ]) ifTrue: [ 
@@ -22,60 +20,60 @@ ButterflyTree >> addLevel [
 	rightTree addLevel
 ]
 
-{ #category : 'adding' }
+{ #category : #adding }
 ButterflyTree >> generateChildrenFor: aShape [
 
 	leftTree generateChildrenFor: aShape.
 	rightTree generateChildrenFor: aShape
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 ButterflyTree >> lBlock [
 
 	^ lBlock
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 ButterflyTree >> lBlock: anObject [
 
 	lBlock := anObject.
 	leftTree childrenBlock: lBlock
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 ButterflyTree >> leftTree [
 
 	^ leftTree
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 ButterflyTree >> rBlock [
 
 	^ rBlock
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 ButterflyTree >> rBlock: anObject [
 
 	rBlock := anObject.
 	rightTree childrenBlock: rBlock
 ]
 
-{ #category : 'removing' }
+{ #category : #removing }
 ButterflyTree >> remove: anEntity [
 
 	leftTree removeSubNode: anEntity.
 	rightTree removeSubNode: anEntity 
 ]
 
-{ #category : 'removing' }
+{ #category : #removing }
 ButterflyTree >> removeChildrenFor: aShape [
 
 	leftTree removeChildrenFor: aShape.
 	rightTree removeChildrenFor: aShape
 ]
 
-{ #category : 'removing' }
+{ #category : #removing }
 ButterflyTree >> removeLevel [
 
 	| maxLevel |
@@ -86,19 +84,19 @@ ButterflyTree >> removeLevel [
 		rightTree removeLevel: maxLevel ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 ButterflyTree >> rightTree [
 
 	^ rightTree
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 ButterflyTree >> root [
 
 	^ root
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 ButterflyTree >> root: anObject [
 
 	root := ButterflyNode new

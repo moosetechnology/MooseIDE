@@ -2,20 +2,18 @@
 A query configuration presenter for the `FQBooleanQuery`
 "
 Class {
-	#name : 'MiBooleanQueryPresenter',
-	#superclass : 'MiPropertyQueryPresenter',
-	#category : 'MooseIDE-QueriesBrowser-Configuration presenters',
-	#package : 'MooseIDE-QueriesBrowser',
-	#tag : 'Configuration presenters'
+	#name : #MiBooleanQueryPresenter,
+	#superclass : #MiPropertyQueryPresenter,
+	#category : #'MooseIDE-QueriesBrowser-Configuration presenters'
 }
 
-{ #category : 'actions' }
+{ #category : #actions }
 MiBooleanQueryPresenter >> configureQuery: aProperty [
 
 	self updateProperty: aProperty
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiBooleanQueryPresenter >> initializePresenters [
 
 	super initializePresenters.
@@ -26,13 +24,13 @@ MiBooleanQueryPresenter >> initializePresenters [
 	self initializeLayout
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiBooleanQueryPresenter >> newComparatorDropList [
 
 	^ self newNullPresenter
 ]
 
-{ #category : 'layout' }
+{ #category : #layout }
 MiBooleanQueryPresenter >> newLayout [
 
 	| padding |
@@ -45,7 +43,7 @@ MiBooleanQueryPresenter >> newLayout [
 		  yourself
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiBooleanQueryPresenter >> newValueInputField [
 
 	"Boolean queries do not have a value to compare to (only a comparator: #not or #yourself)"
@@ -53,7 +51,7 @@ MiBooleanQueryPresenter >> newValueInputField [
 	^ self newNullPresenter
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 MiBooleanQueryPresenter >> updateProperty: property [
 
 	self query property: property.

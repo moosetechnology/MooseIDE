@@ -1,6 +1,6 @@
 Class {
-	#name : 'MiSystemComplexitySettingsConfiguration',
-	#superclass : 'MiAbstractSettingsConfiguration',
+	#name : #MiSystemComplexitySettingsConfiguration,
+	#superclass : #MiAbstractSettingsConfiguration,
 	#instVars : [
 		'startColor',
 		'endColor',
@@ -13,96 +13,94 @@ Class {
 		'widthMetricThreshold',
 		'colorMetricThreshold'
 	],
-	#category : 'MooseIDE-Visualization-System Complexity',
-	#package : 'MooseIDE-Visualization',
-	#tag : 'System Complexity'
+	#category : #'MooseIDE-Visualization-System Complexity'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiSystemComplexitySettingsConfiguration >> availableMetrics [
 
 	^ availableMetrics
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiSystemComplexitySettingsConfiguration >> availableMetrics: aCollection [
 
 	availableMetrics := aCollection
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiSystemComplexitySettingsConfiguration >> colorMetric [
 
 	^ colorMetric
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiSystemComplexitySettingsConfiguration >> colorMetric: aFM3Property [
 
 	colorMetric := aFM3Property
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiSystemComplexitySettingsConfiguration >> colorMetricThreshold [
 
 	^ colorMetricThreshold
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiSystemComplexitySettingsConfiguration >> colorMetricThreshold: anObject [
 
 	colorMetricThreshold := anObject
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiSystemComplexitySettingsConfiguration >> displayedName [
 
 	^ displayedName
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiSystemComplexitySettingsConfiguration >> displayedName: aSymbol [
 
 	displayedName := aSymbol
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiSystemComplexitySettingsConfiguration >> endColor [
 
 	^ endColor
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiSystemComplexitySettingsConfiguration >> endColor: anObject [
 
 	endColor := anObject
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiSystemComplexitySettingsConfiguration >> heightMetric [
 
 	^ heightMetric
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiSystemComplexitySettingsConfiguration >> heightMetric: aFM3Property [
 
 	heightMetric := aFM3Property
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiSystemComplexitySettingsConfiguration >> heightMetricThreshold [
 
 	^ heightMetricThreshold
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiSystemComplexitySettingsConfiguration >> heightMetricThreshold: anObject [
 
 	heightMetricThreshold := anObject
 ]
 
-{ #category : 'ui' }
+{ #category : #ui }
 MiSystemComplexitySettingsConfiguration >> settingsPresenters [
 
 	^ super settingsPresenters
@@ -153,37 +151,37 @@ MiSystemComplexitySettingsConfiguration >> settingsPresenters [
 		  yourself
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiSystemComplexitySettingsConfiguration >> startColor [
 
 	^ startColor
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiSystemComplexitySettingsConfiguration >> startColor: anObject [
 
 	startColor := anObject
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiSystemComplexitySettingsConfiguration >> widthMetric [
 
 	^ widthMetric
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiSystemComplexitySettingsConfiguration >> widthMetric: aFM3Property [
 
 	widthMetric := aFM3Property
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiSystemComplexitySettingsConfiguration >> widthMetricThreshold [
 
 	^ widthMetricThreshold
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiSystemComplexitySettingsConfiguration >> widthMetricThreshold: anObject [
 
 	widthMetricThreshold := anObject

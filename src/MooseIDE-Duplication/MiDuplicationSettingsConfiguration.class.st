@@ -1,6 +1,6 @@
 Class {
-	#name : 'MiDuplicationSettingsConfiguration',
-	#superclass : 'MiAbstractSettingsConfiguration',
+	#name : #MiDuplicationSettingsConfiguration,
+	#superclass : #MiAbstractSettingsConfiguration,
 	#instVars : [
 		'maximumShownReplicas',
 		'sourcesCleaner',
@@ -9,71 +9,70 @@ Class {
 		'minimumNumberOfLines',
 		'availableSourceCleaners'
 	],
-	#category : 'MooseIDE-Duplication',
-	#package : 'MooseIDE-Duplication'
+	#category : #'MooseIDE-Duplication'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiDuplicationSettingsConfiguration >> availableSourceCleaners [
 
 	^ availableSourceCleaners
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiDuplicationSettingsConfiguration >> availableSourceCleaners: aCollection [
 
 	availableSourceCleaners := aCollection
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiDuplicationSettingsConfiguration >> maximumShownReplicas [
 
 	^ maximumShownReplicas
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiDuplicationSettingsConfiguration >> maximumShownReplicas: anObject [
 
 	maximumShownReplicas := anObject
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiDuplicationSettingsConfiguration >> minimumNumberOfCharacters [
 
 	^ minimumNumberOfCharacters
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiDuplicationSettingsConfiguration >> minimumNumberOfCharacters: anObject [
 
 	minimumNumberOfCharacters := anObject
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiDuplicationSettingsConfiguration >> minimumNumberOfLines [
 
 	^ minimumNumberOfLines
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiDuplicationSettingsConfiguration >> minimumNumberOfLines: anObject [
 
 	minimumNumberOfLines := anObject
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiDuplicationSettingsConfiguration >> minimumNumberOfReplicas [
 
 	^ minimumNumberOfReplicas
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiDuplicationSettingsConfiguration >> minimumNumberOfReplicas: anObject [
 
 	minimumNumberOfReplicas := anObject
 ]
 
-{ #category : 'ui' }
+{ #category : #ui }
 MiDuplicationSettingsConfiguration >> settingsPresenters [
 
 	^ OrderedCollection new
@@ -114,13 +113,13 @@ If a fragment is duplicated many times, the browser will only show that maximum 
 		  yourself
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiDuplicationSettingsConfiguration >> sourcesCleaner [
 
 	^ sourcesCleaner
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiDuplicationSettingsConfiguration >> sourcesCleaner: anObject [
 
 	sourcesCleaner := anObject

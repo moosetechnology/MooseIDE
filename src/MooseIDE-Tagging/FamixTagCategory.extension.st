@@ -1,6 +1,6 @@
-Extension { #name : 'FamixTagCategory' }
+Extension { #name : #FamixTagCategory }
 
-{ #category : '*MooseIDE-Tagging' }
+{ #category : #'*MooseIDE-Tagging' }
 FamixTagCategory >> removeTag: aTag [
 
 	self markedTags remove: aTag

@@ -1,12 +1,10 @@
 Class {
-	#name : 'HMiPropagateMenuItemTest',
-	#superclass : 'MiAbstractApplicationTest',
-	#category : 'MooseIDE-Tests-Command',
-	#package : 'MooseIDE-Tests',
-	#tag : 'Command'
+	#name : #HMiPropagateMenuItemTest,
+	#superclass : #MiAbstractApplicationTest,
+	#category : #'MooseIDE-Tests-Command'
 }
 
-{ #category : 'tests' }
+{ #category : #tests }
 HMiPropagateMenuItemTest >> testPropagateMenuItem [
 
 	| root node visualization shape items |

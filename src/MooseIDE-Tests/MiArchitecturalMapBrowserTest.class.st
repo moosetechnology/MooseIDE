@@ -1,23 +1,21 @@
 Class {
-	#name : 'MiArchitecturalMapBrowserTest',
-	#superclass : 'MiAbstractBrowserTest',
+	#name : #MiArchitecturalMapBrowserTest,
+	#superclass : #MiAbstractBrowserTest,
 	#instVars : [
 		'entity1',
 		'entity2',
 		'entity3'
 	],
-	#category : 'MooseIDE-Tests-Browsers',
-	#package : 'MooseIDE-Tests',
-	#tag : 'Browsers'
+	#category : #'MooseIDE-Tests-Browsers'
 }
 
-{ #category : 'running' }
+{ #category : #running }
 MiArchitecturalMapBrowserTest >> browserClass [
 
 	^ MiArchitecturalMapBrowser
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 MiArchitecturalMapBrowserTest >> setUp [
 	| model |
 	super setUp.
@@ -29,7 +27,7 @@ MiArchitecturalMapBrowserTest >> setUp [
 
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiArchitecturalMapBrowserTest >> testMiSelectedItemWithSelection [
 	"returns selected entities"
 	| map |
@@ -42,7 +40,7 @@ MiArchitecturalMapBrowserTest >> testMiSelectedItemWithSelection [
 	
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiArchitecturalMapBrowserTest >> testMiSelectedItemWithoutSelection [
 	"returns all entities"
 	| map |
@@ -54,7 +52,7 @@ MiArchitecturalMapBrowserTest >> testMiSelectedItemWithoutSelection [
 	
 ]
 
-{ #category : 'tests - tags' }
+{ #category : #'tests - tags' }
 MiArchitecturalMapBrowserTest >> testSelectedTagSetAndGet [
 	| tag |
 	tag := entity1 mooseModel tagNamed: 'aTag'.
@@ -64,19 +62,19 @@ MiArchitecturalMapBrowserTest >> testSelectedTagSetAndGet [
 	self assert: browser selectedTag equals: tag
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiArchitecturalMapBrowserTest >> testSettingsAction [
 
 	self assert: browser hasSettings
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiArchitecturalMapBrowserTest >> testSettingsAvailableLayouts [
 
 	self assert: browser specModel class availableLayouts isNotEmpty
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiArchitecturalMapBrowserTest >> testSettingsDefaultLayout [
 
 	self assert: browser specModel layout equals: RSFlowLayout

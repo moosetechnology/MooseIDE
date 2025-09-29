@@ -2,29 +2,27 @@
 Basic slider inspired from sliders from mobile phones
 "
 Class {
-	#name : 'MiCoSlider',
-	#superclass : 'MiCoAbstractSlider',
+	#name : #MiCoSlider,
+	#superclass : #MiCoAbstractSlider,
 	#instVars : [
 		'value',
 		'getValueSelector',
 		'setValueSelector'
 	],
-	#category : 'MooseIDE-CoUsageMap-Sliders',
-	#package : 'MooseIDE-CoUsageMap',
-	#tag : 'Sliders'
+	#category : #'MooseIDE-CoUsageMap-Sliders'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiCoSlider >> getValueSelector [
 	^ getValueSelector
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiCoSlider >> getValueSelector: aString [ 
 	getValueSelector := aString
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiCoSlider >> initialize [
 	super initialize.
 	min := 0.
@@ -35,19 +33,19 @@ MiCoSlider >> initialize [
 	
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiCoSlider >> initializeScale [
 	scale := NSScale linear
 		domain: { min. max };
 		range: #(0 1).
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiCoSlider >> radius [
 	^ 10
 ]
 
-{ #category : 'hooks' }
+{ #category : #hooks }
 MiCoSlider >> renderIn: aCanvas [
 	self initializeScale.
 	aCanvas color: Color transparent.
@@ -63,7 +61,7 @@ MiCoSlider >> renderIn: aCanvas [
 		when: RSMouseDragging send: #updateValue: to: self
 ]
 
-{ #category : 'events' }
+{ #category : #events }
 MiCoSlider >> resizeSlider: evt [
 	| extent w h minPoint maxPoint valuePoint winScale |
 	extent := evt canvas extent.
@@ -77,29 +75,29 @@ MiCoSlider >> resizeSlider: evt [
 	rangeLine startPoint: minPoint; endPoint: valuePoint.
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiCoSlider >> setValueSelector [
 
 	^ setValueSelector
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiCoSlider >> setValueSelector: aString [ 
 	setValueSelector := aString
 ]
 
-{ #category : 'updating' }
+{ #category : #updating }
 MiCoSlider >> update: aParameter [
 	aParameter = getValueSelector ifTrue: [ self updateValue ].
 ]
 
-{ #category : 'updating' }
+{ #category : #updating }
 MiCoSlider >> updateValue [
 	value := self valueFromModel.
 	self resizeSlider: self container.
 ]
 
-{ #category : 'events' }
+{ #category : #events }
 MiCoSlider >> updateValue: evt [
 	| w newValue winScale |
 	w := evt canvas extent x-self lineGap.
@@ -112,17 +110,17 @@ MiCoSlider >> updateValue: evt [
 	evt signalUpdate.
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiCoSlider >> value [
 	^ value
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiCoSlider >> value: aNumber [
 	value :=aNumber
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiCoSlider >> valueFromModel [
 	model ifNil: [ ^ 0.5 ].
 	getValueSelector ifNil: [ ^ 0.5 ].
@@ -130,7 +128,7 @@ MiCoSlider >> valueFromModel [
 	
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiCoSlider >> valueFromModel: aNumber [
 	model ifNil: [ ^ self ].
 	setValueSelector ifNil: [ ^ self ].

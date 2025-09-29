@@ -1,1 +1,1 @@
-Package { #name : 'MooseIDE-QueriesBrowser' }
+Package { #name : #'MooseIDE-QueriesBrowser' }

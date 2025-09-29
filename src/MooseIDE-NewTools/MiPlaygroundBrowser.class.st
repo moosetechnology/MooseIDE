@@ -9,23 +9,21 @@ Bindings:
 See Bindings button.
 "
 Class {
-	#name : 'MiPlaygroundBrowser',
-	#superclass : 'MiAbstractBrowser',
+	#name : #MiPlaygroundBrowser,
+	#superclass : #MiAbstractBrowser,
 	#instVars : [
 		'playground'
 	],
-	#category : 'MooseIDE-NewTools-Playground',
-	#package : 'MooseIDE-NewTools',
-	#tag : 'Playground'
+	#category : #'MooseIDE-NewTools-Playground'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiPlaygroundBrowser class >> defaultTitle [ 
 
 	^ 'Moose Playground'
 ]
 
-{ #category : 'class initialization' }
+{ #category : #'class initialization' }
 MiPlaygroundBrowser class >> initialize [
 	"Make playground active by default"
 
@@ -33,7 +31,7 @@ MiPlaygroundBrowser class >> initialize [
 	self register
 ]
 
-{ #category : 'world menu' }
+{ #category : #'world menu' }
 MiPlaygroundBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
@@ -50,32 +48,32 @@ MiPlaygroundBrowser class >> menuCommandOn: aBuilder [
 		  yourself
 ]
 
-{ #category : 'world menu' }
+{ #category : #'world menu' }
 MiPlaygroundBrowser class >> menuLabel [
 
 	^ 'Moose Playground'
 ]
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 MiPlaygroundBrowser class >> open [
 
 	<script>
 	^ super open
 ]
 
-{ #category : 'specs' }
+{ #category : #specs }
 MiPlaygroundBrowser class >> preferredExtent [
 
 	^ StPlaygroundPresenter preferredExtent
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 MiPlaygroundBrowser class >> receivedEntityBindingName [
 
 	^ 'receivedEntity'
 ]
 
-{ #category : 'finalization' }
+{ #category : #finalization }
 MiPlaygroundBrowser class >> register [
 	"Add ourselves to registry. See [Smalltalk tools]"
 
@@ -83,44 +81,44 @@ MiPlaygroundBrowser class >> register [
 	self registerToolsOn: Smalltalk tools
 ]
 
-{ #category : 'tools registry' }
+{ #category : #'tools registry' }
 MiPlaygroundBrowser class >> registerToolsOn: registry [
 	"Add ourselves to registry. See [Smalltalk tools]"
 
 	registry register: self as: #workspace
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 MiPlaygroundBrowser class >> shouldBuildToolbar [
 
 	^ false
 ]
 
-{ #category : 'specs' }
+{ #category : #specs }
 MiPlaygroundBrowser class >> title [
 
 	^ 'Moose Playground'
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 MiPlaygroundBrowser >> canFollowEntity: anObject [
 
 	^ true
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 MiPlaygroundBrowser >> canPropagate [
 
 	^ true
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 MiPlaygroundBrowser >> canTagEntities [
 
 	^ false
 ]
 
-{ #category : 'layout' }
+{ #category : #layout }
 MiPlaygroundBrowser >> defaultLayout [
 
 	^ SpBoxLayout newVertical
@@ -128,7 +126,7 @@ MiPlaygroundBrowser >> defaultLayout [
 		  yourself
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 MiPlaygroundBrowser >> followEntity: anEntity [
 
 	playground firstPage interactionModel addBinding: (WorkspaceVariable
@@ -136,32 +134,32 @@ MiPlaygroundBrowser >> followEntity: anEntity [
 			 value: anEntity)
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 MiPlaygroundBrowser >> hasSettings [
 
 	^ false
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiPlaygroundBrowser >> initializePresenters [
 
 	super initializePresenters.
 	playground := self instantiate: MiPlayground
 ]
 
-{ #category : 'inspecting' }
+{ #category : #inspecting }
 MiPlaygroundBrowser >> miInspect [
 
 	MiInspectorBrowser inspect: playground firstPage evaluate
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiPlaygroundBrowser >> miSelectedItem [
 
 	^ playground firstPage evaluate
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 MiPlaygroundBrowser >> updateToolbar [
 
 	playground millerList pages first updateToolbar

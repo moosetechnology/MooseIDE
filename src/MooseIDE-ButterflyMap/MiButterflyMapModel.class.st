@@ -1,24 +1,22 @@
 Class {
-	#name : 'MiButterflyMapModel',
-	#superclass : 'MiAbstractModel',
+	#name : #MiButterflyMapModel,
+	#superclass : #MiAbstractModel,
 	#instVars : [
 		'currentEntity',
 		'childrenQuery',
 		'clientsQuery',
 		'providersQuery'
 	],
-	#category : 'MooseIDE-ButterflyMap-Model',
-	#package : 'MooseIDE-ButterflyMap',
-	#tag : 'Model'
+	#category : #'MooseIDE-ButterflyMap-Model'
 }
 
-{ #category : 'computing' }
+{ #category : #computing }
 MiButterflyMapModel >> childrenFor: anEntity [
 
 	^ childrenQuery runOn: anEntity asMooseGroup
 ]
 
-{ #category : 'settings management' }
+{ #category : #'settings management' }
 MiButterflyMapModel >> currentConfiguration [
 
 	^ MiButterflyMapSettingsConfiguration new
@@ -28,20 +26,20 @@ MiButterflyMapModel >> currentConfiguration [
 		  yourself
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiButterflyMapModel >> currentEntity [
 
 	^ currentEntity
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiButterflyMapModel >> currentEntity: anObject [
 
 	currentEntity := anObject.
 	browser runVisualization
 ]
 
-{ #category : 'settings management' }
+{ #category : #'settings management' }
 MiButterflyMapModel >> defaultConfiguration [
 
 	^ MiButterflyMapSettingsConfiguration new
@@ -51,7 +49,7 @@ MiButterflyMapModel >> defaultConfiguration [
 		  yourself
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiButterflyMapModel >> entities [
 	"should probably return all entities displayed and not only the central one"
 	^self currentEntity
@@ -59,13 +57,13 @@ MiButterflyMapModel >> entities [
 		ifNotNil: [ :entity | { entity } ]
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 MiButterflyMapModel >> hasSettings [
 
 	^ true
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiButterflyMapModel >> initializeSettings [
 
 	childrenQuery := self defaultChildrenQuery.
@@ -73,31 +71,31 @@ MiButterflyMapModel >> initializeSettings [
 	providersQuery := self currentApplication defaultProvidersQuery
 ]
 
-{ #category : 'computing' }
+{ #category : #computing }
 MiButterflyMapModel >> leftEntitiesFor: anEntity [
 
 	^ clientsQuery runOn: anEntity asMooseGroup
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiButterflyMapModel >> miSelectedItem [
 
 	^ self entities
 ]
 
-{ #category : 'computing' }
+{ #category : #computing }
 MiButterflyMapModel >> rightEntitiesFor: anEntity [
 
 	^ providersQuery runOn: anEntity asMooseGroup
 ]
 
-{ #category : 'settings management' }
+{ #category : #'settings management' }
 MiButterflyMapModel >> settingsPresenterExtent [
 
 	^ 300 @ 250
 ]
 
-{ #category : 'settings management' }
+{ #category : #'settings management' }
 MiButterflyMapModel >> updateFromConfiguration: aConfiguration [
 
 	childrenQuery := aConfiguration childrenQuery.

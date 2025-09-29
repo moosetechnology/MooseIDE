@@ -3,17 +3,15 @@ I am a model for MiInspectorBrowser.
 I store the object to inspect.
 "
 Class {
-	#name : 'MiInspectorModel',
-	#superclass : 'MiAbstractModel',
+	#name : #MiInspectorModel,
+	#superclass : #MiAbstractModel,
 	#instVars : [
 		'entity'
 	],
-	#category : 'MooseIDE-NewTools-Inspector',
-	#package : 'MooseIDE-NewTools',
-	#tag : 'Inspector'
+	#category : #'MooseIDE-NewTools-Inspector'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiInspectorModel >> entities [
 
 	^entity
@@ -21,19 +19,19 @@ MiInspectorModel >> entities [
 		ifNotNil: [ { entity} ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiInspectorModel >> entity [
 
 	^ entity
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiInspectorModel >> entity: anObject [
 
 	entity := anObject
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiInspectorModel >> miSelectedItem [
 	"the inspector keeps its own model"
 

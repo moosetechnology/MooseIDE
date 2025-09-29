@@ -1,1 +1,1 @@
-Package { #name : 'MooseIDE-LayerVisualization' }
+Package { #name : #'MooseIDE-LayerVisualization' }

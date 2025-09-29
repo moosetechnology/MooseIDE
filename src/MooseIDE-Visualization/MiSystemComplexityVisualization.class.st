@@ -1,12 +1,10 @@
 Class {
-	#name : 'MiSystemComplexityVisualization',
-	#superclass : 'MiAbstractHierarchicalVisualization',
-	#category : 'MooseIDE-Visualization-System Complexity',
-	#package : 'MooseIDE-Visualization',
-	#tag : 'System Complexity'
+	#name : #MiSystemComplexityVisualization,
+	#superclass : #MiAbstractHierarchicalVisualization,
+	#category : #'MooseIDE-Visualization-System Complexity'
 }
 
-{ #category : 'running' }
+{ #category : #running }
 MiSystemComplexityVisualization >> buildInCanvas: canvas [
 
 	self specModel ifNil: [ ^ self ].
@@ -21,7 +19,7 @@ MiSystemComplexityVisualization >> buildInCanvas: canvas [
 	^ canvas @ RSCanvasController new noLegend
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiSystemComplexityVisualization >> specModel [
 
 	^ self owner specModel

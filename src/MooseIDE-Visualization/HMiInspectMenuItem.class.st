@@ -1,45 +1,43 @@
 Class {
-	#name : 'HMiInspectMenuItem',
-	#superclass : 'HAbstractMenuItem',
-	#category : 'MooseIDE-Visualization-Helpers',
-	#package : 'MooseIDE-Visualization',
-	#tag : 'Helpers'
+	#name : #HMiInspectMenuItem,
+	#superclass : #HAbstractMenuItem,
+	#category : #'MooseIDE-Visualization-Helpers'
 }
 
-{ #category : 'testing' }
+{ #category : #testing }
 HMiInspectMenuItem >> canBeExecuted [
 
 	^ shape isShape
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 HMiInspectMenuItem >> description [
 
 	^ 'Inspect the entity in Moose'
 ]
 
-{ #category : 'execution' }
+{ #category : #execution }
 HMiInspectMenuItem >> execute [
 	shape miInspect
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 HMiInspectMenuItem >> group [
 
 	^ 100
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 HMiInspectMenuItem >> iconName [
 	^ #smallInspectIt
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 HMiInspectMenuItem >> label [
 	^ 'Inspect'
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 HMiInspectMenuItem >> order [
 	^ 100
 ]

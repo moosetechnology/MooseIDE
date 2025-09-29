@@ -1,12 +1,10 @@
 Class {
-	#name : 'MiShowIncomingMenuItem',
-	#superclass : 'MiArchitecturalNodeMenuItem',
-	#category : 'MooseIDE-Dependency-ArchitecturalMap',
-	#package : 'MooseIDE-Dependency',
-	#tag : 'ArchitecturalMap'
+	#name : #MiShowIncomingMenuItem,
+	#superclass : #MiArchitecturalNodeMenuItem,
+	#category : #'MooseIDE-Dependency-ArchitecturalMap'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiShowIncomingMenuItem >> canBeExecuted [
 
 	^ shape isShape and: [ 
@@ -15,13 +13,13 @@ MiShowIncomingMenuItem >> canBeExecuted [
 				  shape model parent rawModel isTag ] ] ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiShowIncomingMenuItem >> execute [
 
 	visualization addIncomingsFor: shape model
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiShowIncomingMenuItem >> label [
 	^ 'Show incoming'
 ]

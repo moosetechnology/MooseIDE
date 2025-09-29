@@ -1,27 +1,25 @@
 Class {
-	#name : 'MiLVPackageElement',
-	#superclass : 'MiLVAbstractElement',
+	#name : #MiLVPackageElement,
+	#superclass : #MiLVAbstractElement,
 	#instVars : [
 		'children'
 	],
-	#category : 'MooseIDE-LayerVisualization-Model',
-	#package : 'MooseIDE-LayerVisualization',
-	#tag : 'Model'
+	#category : #'MooseIDE-LayerVisualization-Model'
 }
 
-{ #category : 'visiting' }
+{ #category : #visiting }
 MiLVPackageElement >> acceptVisitor: aVisitor [
 
 	^ aVisitor visitPackageElement: self
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiLVPackageElement >> children [
 
 	^ children
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiLVPackageElement >> children: anObject [
 
 	children := anObject

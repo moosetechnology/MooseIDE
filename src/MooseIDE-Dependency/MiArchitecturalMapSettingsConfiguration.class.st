@@ -1,6 +1,6 @@
 Class {
-	#name : 'MiArchitecturalMapSettingsConfiguration',
-	#superclass : 'MiAbstractSettingsConfiguration',
+	#name : #MiArchitecturalMapSettingsConfiguration,
+	#superclass : #MiAbstractSettingsConfiguration,
 	#instVars : [
 		'associationTypes',
 		'tags',
@@ -16,144 +16,142 @@ Class {
 		'availableDoubleClickActions',
 		'availableAssociationTypes'
 	],
-	#category : 'MooseIDE-Dependency-ArchitecturalMap',
-	#package : 'MooseIDE-Dependency',
-	#tag : 'ArchitecturalMap'
+	#category : #'MooseIDE-Dependency-ArchitecturalMap'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiArchitecturalMapSettingsConfiguration >> associationTypes [
 
 	^ associationTypes
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiArchitecturalMapSettingsConfiguration >> associationTypes: aCollection [
 
 	associationTypes := aCollection
 ]
 
-{ #category : 'available' }
+{ #category : #available }
 MiArchitecturalMapSettingsConfiguration >> availableAssociationTypes [
 
 	^ availableAssociationTypes
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiArchitecturalMapSettingsConfiguration >> availableAssociationTypes: anObject [
 
 	availableAssociationTypes := anObject
 ]
 
-{ #category : 'available' }
+{ #category : #available }
 MiArchitecturalMapSettingsConfiguration >> availableDoubleClickActions [
 
 	^ availableDoubleClickActions
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiArchitecturalMapSettingsConfiguration >> availableDoubleClickActions: anObject [
 
 	availableDoubleClickActions := anObject
 ]
 
-{ #category : 'available' }
+{ #category : #available }
 MiArchitecturalMapSettingsConfiguration >> availableLayouts [
 
 	^ availableLayouts
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiArchitecturalMapSettingsConfiguration >> availableLayouts: anObject [
 
 	availableLayouts := anObject
 ]
 
-{ #category : 'available' }
+{ #category : #available }
 MiArchitecturalMapSettingsConfiguration >> availableTags [
 
 	^ availableTags
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiArchitecturalMapSettingsConfiguration >> availableTags: anObject [
 
 	availableTags := anObject
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiArchitecturalMapSettingsConfiguration >> childrenQuery [
 
 	^ childrenQuery
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiArchitecturalMapSettingsConfiguration >> childrenQuery: aQuery [
 
 	childrenQuery := aQuery
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiArchitecturalMapSettingsConfiguration >> doubleClickAction [
 
 	^ doubleClickCommand
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiArchitecturalMapSettingsConfiguration >> doubleClickAction: aCommand [
 
 	doubleClickCommand := aCommand
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiArchitecturalMapSettingsConfiguration >> hideMegamorphicInvocations [
 
 	^ hideMegamorphicInvocations
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiArchitecturalMapSettingsConfiguration >> hideMegamorphicInvocations: aBoolean [
 
 	hideMegamorphicInvocations := aBoolean
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiArchitecturalMapSettingsConfiguration >> hideReceivedEntities [
 
 	^ hideReceivedEntities
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiArchitecturalMapSettingsConfiguration >> hideReceivedEntities: aBoolean [
 
 	hideReceivedEntities := aBoolean
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiArchitecturalMapSettingsConfiguration >> layout [
 
 	^ layout
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiArchitecturalMapSettingsConfiguration >> layout: aRSLayout [
 
 	layout := aRSLayout
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiArchitecturalMapSettingsConfiguration >> megamorphicTreshold [
 
 	^ megamorphicTreshold
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiArchitecturalMapSettingsConfiguration >> megamorphicTreshold: anInteger [
 
 	megamorphicTreshold := anInteger
 ]
 
-{ #category : 'ui' }
+{ #category : #ui }
 MiArchitecturalMapSettingsConfiguration >> settingsPresenters [
 
 	^ super settingsPresenters
@@ -189,25 +187,25 @@ Inner elements will be the tagged entities';
 		  yourself
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiArchitecturalMapSettingsConfiguration >> showDirectoriesAsRootNodes [
 
 	^ showDirectoriesAsRootNodes
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiArchitecturalMapSettingsConfiguration >> showDirectoriesAsRootNodes: aBoolean [
 
 	showDirectoriesAsRootNodes := aBoolean
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiArchitecturalMapSettingsConfiguration >> tags [
 
 	^ tags
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiArchitecturalMapSettingsConfiguration >> tags: aCollection [
 
 	tags := aCollection

@@ -25,8 +25,8 @@ Internal Representation and Key Implementation Points.
     Implementation Points
 "
 Class {
-	#name : 'MiNavigationInspectionTab',
-	#superclass : 'StPresenter',
+	#name : #MiNavigationInspectionTab,
+	#superclass : #StPresenter,
 	#traits : 'SpTActivable',
 	#classTraits : 'SpTActivable classTrait',
 	#instVars : [
@@ -36,12 +36,10 @@ Class {
 		'inspectedObject',
 		'propertiesPane'
 	],
-	#category : 'MooseIDE-NewTools-Inspector tabs',
-	#package : 'MooseIDE-NewTools',
-	#tag : 'Inspector tabs'
+	#category : #'MooseIDE-NewTools-Inspector tabs'
 }
 
-{ #category : 'specs' }
+{ #category : #specs }
 MiNavigationInspectionTab class >> buildCommandsGroupWith: presenter forRoot: aCmCommandsGroup [
 
 	aCmCommandsGroup
@@ -52,38 +50,38 @@ MiNavigationInspectionTab class >> buildCommandsGroupWith: presenter forRoot: aC
 			(MiPropagateCommand forSpecContext: presenter window presenter)
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 MiNavigationInspectionTab class >> defaultShouldShowPropertiesPane [
 
 	^ false
 ]
 
-{ #category : 'private - actions' }
+{ #category : #'private - actions' }
 MiNavigationInspectionTab >> activate [
 
 	activationAction cull:
 		(SpActivatedSelection newValue: navigation selectedItem value)
 ]
 
-{ #category : 'api' }
+{ #category : #api }
 MiNavigationInspectionTab >> activateOnDoubleClick [
 
 	navigation activateOnDoubleClick
 ]
 
-{ #category : 'api' }
+{ #category : #api }
 MiNavigationInspectionTab >> activateOnSingleClick [
 
 	navigation activateOnSingleClick
 ]
 
-{ #category : 'private - display' }
+{ #category : #'private - display' }
 MiNavigationInspectionTab >> childrenFor: anEntity [
 
 	^ self itemsFor: anEntity value
 ]
 
-{ #category : 'layout' }
+{ #category : #layout }
 MiNavigationInspectionTab >> defaultLayout [
 
 	^ SpBoxLayout newTopToBottom
@@ -92,19 +90,19 @@ MiNavigationInspectionTab >> defaultLayout [
 		  yourself
 ]
 
-{ #category : 'layout' }
+{ #category : #layout }
 MiNavigationInspectionTab >> hidePropertiesPane [
 
 	self layout remove: propertiesPane
 ]
 
-{ #category : 'private - display' }
+{ #category : #'private - display' }
 MiNavigationInspectionTab >> iconBlock [
 
 	^ [ :el | el value mooseIcon ]
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiNavigationInspectionTab >> initialize [
 
 	super initialize.
@@ -112,7 +110,7 @@ MiNavigationInspectionTab >> initialize [
 	self shouldShowPropertiesPane ifTrue: [ self showPropertiesPane ]
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiNavigationInspectionTab >> initializeNavigationTreeTable [
 
 	navigation := self newTreeTable.
@@ -136,7 +134,7 @@ MiNavigationInspectionTab >> initializeNavigationTreeTable [
 		whenActivatedDo: [ self activate ]
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiNavigationInspectionTab >> initializePresenters [
 
 	self initializeNavigationTreeTable.
@@ -150,23 +148,23 @@ MiNavigationInspectionTab >> initializePresenters [
 			 yourself)
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiNavigationInspectionTab >> inspectedObject [
 	^ inspectedObject
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiNavigationInspectionTab >> inspectedObject: anObject [
 	inspectedObject := anObject
 ]
 
-{ #category : 'private - display' }
+{ #category : #'private - display' }
 MiNavigationInspectionTab >> itemsFor: anObject [
 
 	^ anObject miMetaNavigationItems
 ]
 
-{ #category : 'private - display' }
+{ #category : #'private - display' }
 MiNavigationInspectionTab >> printEntry: anAssociation [
 
 	^ String streamContents: [ :s |
@@ -178,19 +176,19 @@ MiNavigationInspectionTab >> printEntry: anAssociation [
 		  s << anAssociation value mooseName ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiNavigationInspectionTab >> selectedObject [
 
 	^ navigation selection selectedItem value
 ]
 
-{ #category : 'accessing - model' }
+{ #category : #'accessing - model' }
 MiNavigationInspectionTab >> setModelBeforeInitialization: anInspectionModel [ 
 
 	inspectedObject := anInspectionModel
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 MiNavigationInspectionTab >> shouldShowPropertiesPane [
 	"This is legacy. Not removed because it may be used? If so, it should be a setting. Else, removed"
 
@@ -198,7 +196,7 @@ MiNavigationInspectionTab >> shouldShowPropertiesPane [
 		  self class defaultShouldShowPropertiesPane ]
 ]
 
-{ #category : 'layout' }
+{ #category : #layout }
 MiNavigationInspectionTab >> showPropertiesPane [
 
 	propertiesPane ifNil: [

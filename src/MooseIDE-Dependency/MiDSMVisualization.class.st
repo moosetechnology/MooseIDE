@@ -2,20 +2,18 @@
 A visualization of a RSDSM inside a MooseIDE browser
 "
 Class {
-	#name : 'MiDSMVisualization',
-	#superclass : 'MiAbstractVisualization',
+	#name : #MiDSMVisualization,
+	#superclass : #MiAbstractVisualization,
 	#instVars : [
 		'lastSCCShapes',
 		'lastHighlighted',
 		'lastUnhighlighted',
 		'specModel'
 	],
-	#category : 'MooseIDE-Dependency-DSM',
-	#package : 'MooseIDE-Dependency',
-	#tag : 'DSM'
+	#category : #'MooseIDE-Dependency-DSM'
 }
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiDSMVisualization >> buildInCanvas: aRSCanvas [
 	| dsm |
 
@@ -39,22 +37,22 @@ MiDSMVisualization >> buildInCanvas: aRSCanvas [
 
 ]
 
-{ #category : 'coloring' }
+{ #category : #coloring }
 MiDSMVisualization >> cellColor: tuple [
 	^specModel colorForTuple: tuple
 ]
 
-{ #category : 'coloring' }
+{ #category : #coloring }
 MiDSMVisualization >> cellShowSCCColor: tuple [
 	^specModel showSCCColorForTuple: tuple
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiDSMVisualization >> getTupleDependencyWeight: tuple [
 	^ specModel getTupleDependencyWeight: tuple
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiDSMVisualization >> initialize [
 
 	super initialize.
@@ -63,12 +61,12 @@ MiDSMVisualization >> initialize [
 	lastSCCShapes := nil -> #(  )
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiDSMVisualization >> listTupleDependencies: tuple [
 	^ specModel listTupleDependencies: tuple
 ]
 
-{ #category : 'private' }
+{ #category : #private }
 MiDSMVisualization >> sccShapesIncluding: aRSShape [
 
 	"Returns all shapes involved in the same cycle as aRSShape.
@@ -83,7 +81,7 @@ MiDSMVisualization >> sccShapesIncluding: aRSShape [
 	^ lastSCCShapes value
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiDSMVisualization >> setInteractions: dsm [
 	|   |
 	dsm shapes @ (RSPopup text: [:tuple | specModel displayValueForTuple: tuple ]).
@@ -104,24 +102,24 @@ MiDSMVisualization >> setInteractions: dsm [
 	dsm shapes @ inspect"
 ]
 
-{ #category : 'utilities' }
+{ #category : #utilities }
 MiDSMVisualization >> shapeFor: tuple [
 	currentCanvas deepShapeFromModel: tuple
 ]
 
-{ #category : 'coloring' }
+{ #category : #coloring }
 MiDSMVisualization >> showSCC: aCollection [
 	aCollection do: [ :tuple |
 		(self shapeFor: tuple) color: (specModel showSCCColorForTuple: tuple)
 	]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiDSMVisualization >> specModel [
 	^ specModel
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiDSMVisualization >> specModel: aDSMModel [
 	specModel := aDSMModel
 ]

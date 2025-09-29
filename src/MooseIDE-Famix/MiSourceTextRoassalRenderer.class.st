@@ -8,23 +8,21 @@ A renderer has a MiSourceTextBrowserModel and a browser.
 It can #renderText by applying the highlights of its #model
 "
 Class {
-	#name : 'MiSourceTextRoassalRenderer',
-	#superclass : 'MiAbstractVisualization',
+	#name : #MiSourceTextRoassalRenderer,
+	#superclass : #MiAbstractVisualization,
 	#instVars : [
 		'roassalTextRenderer',
 		'model'
 	],
-	#category : 'MooseIDE-Famix-SourceText',
-	#package : 'MooseIDE-Famix',
-	#tag : 'SourceText'
+	#category : #'MooseIDE-Famix-SourceText'
 }
 
-{ #category : 'deprecation' }
+{ #category : #deprecation }
 MiSourceTextRoassalRenderer class >> isDeprecated [
 	^ true
 ]
 
-{ #category : 'formatting' }
+{ #category : #formatting }
 MiSourceTextRoassalRenderer >> applyErrorHighlight: aHighlight [
 
 	roassalTextRenderer
@@ -33,7 +31,7 @@ MiSourceTextRoassalRenderer >> applyErrorHighlight: aHighlight [
 		to: aHighlight to
 ]
 
-{ #category : 'formatting' }
+{ #category : #formatting }
 MiSourceTextRoassalRenderer >> applyIdentifierHighlight: aHighlight [
 
 	roassalTextRenderer
@@ -45,7 +43,7 @@ MiSourceTextRoassalRenderer >> applyIdentifierHighlight: aHighlight [
 		to: aHighlight to
 ]
 
-{ #category : 'formatting' }
+{ #category : #formatting }
 MiSourceTextRoassalRenderer >> applyTagHighlight: aHighlight [
 
 	roassalTextRenderer
@@ -58,13 +56,13 @@ MiSourceTextRoassalRenderer >> applyTagHighlight: aHighlight [
 		to: aHighlight to
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiSourceTextRoassalRenderer >> browser [
 
 	^ model browser
 ]
 
-{ #category : 'highlighting' }
+{ #category : #highlighting }
 MiSourceTextRoassalRenderer >> buildInCanvas: aCanvas [
 
 	model displayedText ifNil: [ ^ self ].
@@ -74,12 +72,12 @@ MiSourceTextRoassalRenderer >> buildInCanvas: aCanvas [
 	roassalTextRenderer renderIn: aCanvas
 ]
 
-{ #category : 'highlighting' }
+{ #category : #highlighting }
 MiSourceTextRoassalRenderer >> highlightShapes [
 	^ #()
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiSourceTextRoassalRenderer >> initialize [
 
 	super initialize.
@@ -87,13 +85,13 @@ MiSourceTextRoassalRenderer >> initialize [
 	roassalTextRenderer := RSAttributedText new
 ]
 
-{ #category : 'highlighting' }
+{ #category : #highlighting }
 MiSourceTextRoassalRenderer >> reRenderText [
 
 	self run
 ]
 
-{ #category : 'accessing - model' }
+{ #category : #'accessing - model' }
 MiSourceTextRoassalRenderer >> setModelBeforeInitialization: aModel [
 
 	model := aModel

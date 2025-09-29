@@ -1,34 +1,32 @@
 Class {
-	#name : 'MiLogsBrowserTest',
-	#superclass : 'MiAbstractBrowserTest',
+	#name : #MiLogsBrowserTest,
+	#superclass : #MiAbstractBrowserTest,
 	#instVars : [
 		'newBrowser'
 	],
-	#category : 'MooseIDE-Tests-Browsers',
-	#package : 'MooseIDE-Tests',
-	#tag : 'Browsers'
+	#category : #'MooseIDE-Tests-Browsers'
 }
 
-{ #category : 'running' }
+{ #category : #running }
 MiLogsBrowserTest >> browserClass [
 
 	^ MiLogsBrowser
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 MiLogsBrowserTest >> receiveEntityToSelect [
 
 	self bus globallySelect: entityToSelect
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 MiLogsBrowserTest >> tearDown [
 
 	newBrowser ifNotNil: [ newBrowser window close ].
 	super tearDown
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiLogsBrowserTest >> testActivateActionButtons [
 	" test that the top toolbar buttons are not activated by default
 	 (because there is not selection by default)"
@@ -40,7 +38,7 @@ MiLogsBrowserTest >> testActivateActionButtons [
 	browser actionButtons do: [ :button | self deny: button isEnabled ]
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiLogsBrowserTest >> testActivateActionButtonsAfterSelection [
 	" test that the top toolbar buttons are activated after some entry is selected"
 
@@ -52,12 +50,12 @@ MiLogsBrowserTest >> testActivateActionButtonsAfterSelection [
 	browser actionButtons do: [ :button | self assert: button isEnabled ]
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiLogsBrowserTest >> testCanTagEntities [
 	self deny: browser canTagEntities 
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiLogsBrowserTest >> testMiSelectedItem [
 	"Test that when there is no selection, selectedItem is empty
 	 even after propagating something"
@@ -69,7 +67,7 @@ MiLogsBrowserTest >> testMiSelectedItem [
 	self assert: browser miSelectedItem isEmpty
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiLogsBrowserTest >> testMiSelectedItemAfterSelection [
 	"Test that when there is a selection, the selectedItem contains it"
 

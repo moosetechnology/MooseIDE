@@ -1,53 +1,51 @@
 Class {
-	#name : 'MiButterflyMapSettingsConfiguration',
-	#superclass : 'MiAbstractSettingsConfiguration',
+	#name : #MiButterflyMapSettingsConfiguration,
+	#superclass : #MiAbstractSettingsConfiguration,
 	#instVars : [
 		'childrenQuery',
 		'clientsQuery',
 		'providersQuery'
 	],
-	#category : 'MooseIDE-ButterflyMap-Model',
-	#package : 'MooseIDE-ButterflyMap',
-	#tag : 'Model'
+	#category : #'MooseIDE-ButterflyMap-Model'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiButterflyMapSettingsConfiguration >> childrenQuery [
 
 	^ childrenQuery
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiButterflyMapSettingsConfiguration >> childrenQuery: aQuery [
 
 	childrenQuery := aQuery
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiButterflyMapSettingsConfiguration >> clientsQuery [
 
 	^ clientsQuery
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiButterflyMapSettingsConfiguration >> clientsQuery: aQuery [
 
 	clientsQuery := aQuery
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiButterflyMapSettingsConfiguration >> providersQuery [
 
 	^ providersQuery
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiButterflyMapSettingsConfiguration >> providersQuery: aQuery [
 
 	providersQuery := aQuery
 ]
 
-{ #category : 'ui' }
+{ #category : #ui }
 MiButterflyMapSettingsConfiguration >> settingsPresenters [
 
 	^ super settingsPresenters

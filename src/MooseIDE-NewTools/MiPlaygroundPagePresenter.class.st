@@ -3,20 +3,18 @@ I am a custom `StPlaygroundPagePresenter`.
 I have a specific toolbar button to select a model and `MiPlaygroundPagePresenter>>#addModelExpression:` to add an expression to my code.
 "
 Class {
-	#name : 'MiPlaygroundPagePresenter',
-	#superclass : 'StPlaygroundPagePresenter',
-	#category : 'MooseIDE-NewTools-Playground',
-	#package : 'MooseIDE-NewTools',
-	#tag : 'Playground'
+	#name : #MiPlaygroundPagePresenter,
+	#superclass : #StPlaygroundPagePresenter,
+	#category : #'MooseIDE-NewTools-Playground'
 }
 
-{ #category : 'adding' }
+{ #category : #adding }
 MiPlaygroundPagePresenter >> addModelExpression: anExpression [
 
 	text insertAndSelectAfterCurrentSelection: anExpression
 ]
 
-{ #category : 'private' }
+{ #category : #private }
 MiPlaygroundPagePresenter >> addMooseToolbarCommandsTo: aGroup [
 
 	MiWindowPresenter
@@ -24,7 +22,7 @@ MiPlaygroundPagePresenter >> addMooseToolbarCommandsTo: aGroup [
 		forRoot: aGroup
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiPlaygroundPagePresenter >> application [
 	"This allows the playground to use the StPharoApplication instead of the Moose-specific application.
 	We do not want the native windows to open silently as Moose windows."
@@ -32,7 +30,7 @@ MiPlaygroundPagePresenter >> application [
 	^ application
 ]
 
-{ #category : 'public access' }
+{ #category : #'public access' }
 MiPlaygroundPagePresenter >> evaluate [
 
 	^ self text
@@ -41,14 +39,14 @@ MiPlaygroundPagePresenter >> evaluate [
 		  onError: [ :e | e pass ]
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiPlaygroundPagePresenter >> initializePresenters [
 
 	super initializePresenters.
 	text interactionModel: MiPlaygroundInteractionModel new
 ]
 
-{ #category : 'private' }
+{ #category : #private }
 MiPlaygroundPagePresenter >> menuActionsFor: aCodePresenter [
 
 	^ CmCommandGroup forSpec
@@ -80,7 +78,7 @@ MiPlaygroundPagePresenter >> menuActionsFor: aCodePresenter [
 		  yourself
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiPlaygroundPagePresenter >> playgroundBrowser [
 
 	^ self owner ifNotNil: [ :presenter |
@@ -91,7 +89,7 @@ MiPlaygroundPagePresenter >> playgroundBrowser [
 			  ifTrue: [ root presenter ] ]
 ]
 
-{ #category : 'private' }
+{ #category : #private }
 MiPlaygroundPagePresenter >> toolbarActions [
 
 	^ CmCommandGroup forSpec
@@ -101,7 +99,7 @@ MiPlaygroundPagePresenter >> toolbarActions [
 		  yourself
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 MiPlaygroundPagePresenter >> updateToolbar [
 
 	toolbar fillWith: self toolbarActions

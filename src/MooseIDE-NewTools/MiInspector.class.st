@@ -5,20 +5,18 @@ The only difference between my `newInspectorFor:` method implementation and the 
 (See `StInspector>>#newInspectorFor:`)
 "
 Class {
-	#name : 'MiInspector',
-	#superclass : 'StInspectorPresenter',
-	#category : 'MooseIDE-NewTools-Inspector',
-	#package : 'MooseIDE-NewTools',
-	#tag : 'Inspector'
+	#name : #MiInspector,
+	#superclass : #StInspectorPresenter,
+	#category : #'MooseIDE-NewTools-Inspector'
 }
 
-{ #category : 'inspector compatibility' }
+{ #category : #'inspector compatibility' }
 MiInspector >> defaultObjectInspectorClass [
 
 	^ MiObjectInspectorPresenter
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiInspector >> initializePresenters [
 
 	super initializePresenters.
@@ -28,7 +26,7 @@ MiInspector >> initializePresenters [
 		self owner updateToolbar ]
 ]
 
-{ #category : 'private - factory' }
+{ #category : #'private - factory' }
 MiInspector >> newInspectorFor: aModel [
 
 	| newInspector |

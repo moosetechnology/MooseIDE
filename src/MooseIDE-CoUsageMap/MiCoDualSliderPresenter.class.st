@@ -2,18 +2,16 @@
 Dual slider presenter (for Spec) for MiCoDualSlider
 "
 Class {
-	#name : 'MiCoDualSliderPresenter',
-	#superclass : 'MiCoAbstractSliderPresenter',
+	#name : #MiCoDualSliderPresenter,
+	#superclass : #MiCoAbstractSliderPresenter,
 	#instVars : [
 		'leftText',
 		'rightText'
 	],
-	#category : 'MooseIDE-CoUsageMap-Sliders',
-	#package : 'MooseIDE-CoUsageMap',
-	#tag : 'Sliders'
+	#category : #'MooseIDE-CoUsageMap-Sliders'
 }
 
-{ #category : 'layout' }
+{ #category : #layout }
 MiCoDualSliderPresenter class >> defaultLayout [
 	^ SpBoxLayout newLeftToRight
 		spacing: 10;
@@ -26,12 +24,12 @@ MiCoDualSliderPresenter class >> defaultLayout [
 		
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiCoDualSliderPresenter >> defaultSlider [
 	^ MiCoDualSlider new
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiCoDualSliderPresenter >> initializePresenters [
 	super initializePresenters.
 	leftText := self newNumberInput.
@@ -44,31 +42,31 @@ MiCoDualSliderPresenter >> initializePresenters [
 		setMin: #minValue:
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiCoDualSliderPresenter >> maxValue [
 	^ self realValue last
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiCoDualSliderPresenter >> maxValue: anObject [
 	| newMax |
 	newMax := anObject min: sliderBuilder max max: self realValue first.
 	self realValue: (self realValue first to: newMax)
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiCoDualSliderPresenter >> minValue [
 	^ self realValue first
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiCoDualSliderPresenter >> minValue: anObject [
 	| newMin |
 	newMin := anObject min: self realValue last max: sliderBuilder min.
 	self realValue: (newMin to: self realValue last)
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiCoDualSliderPresenter >> range: anInterval [
 	super range: anInterval.
 	leftText
@@ -86,7 +84,7 @@ MiCoDualSliderPresenter >> range: anInterval [
 		whenNumberChangedDo: [:number | self maxValue: number ].
 ]
 
-{ #category : 'private' }
+{ #category : #private }
 MiCoDualSliderPresenter >> setValue: anObject [
 	super setValue: anObject.
 	leftText text: self realValue first asString.

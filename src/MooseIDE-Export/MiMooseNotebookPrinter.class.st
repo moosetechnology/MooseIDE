@@ -1,42 +1,40 @@
 Class {
-	#name : 'MiMooseNotebookPrinter',
-	#superclass : 'INMicrodownNotebookPrinter',
+	#name : #MiMooseNotebookPrinter,
+	#superclass : #INMicrodownNotebookPrinter,
 	#instVars : [
 		'nameSelector'
 	],
-	#category : 'MooseIDE-Export-Notebook',
-	#package : 'MooseIDE-Export',
-	#tag : 'Notebook'
+	#category : #'MooseIDE-Export-Notebook'
 }
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiMooseNotebookPrinter >> initialize [
 
 	super initialize.
 	nameSelector := #mooseName
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiMooseNotebookPrinter >> nameSelector [
 
 	^ nameSelector
 ]
 
-{ #category : 'printing' }
+{ #category : #printing }
 MiMooseNotebookPrinter >> printMooseName: anObject [
 
 	nameSelector := #mooseName.
 	self print: anObject
 ]
 
-{ #category : 'printing' }
+{ #category : #printing }
 MiMooseNotebookPrinter >> printName: anObject [
 
 	nameSelector := #name.
 	self print: anObject
 ]
 
-{ #category : 'printing' }
+{ #category : #printing }
 MiMooseNotebookPrinter >> stringForObject: anObject [
 
 	^ anObject isMooseObject

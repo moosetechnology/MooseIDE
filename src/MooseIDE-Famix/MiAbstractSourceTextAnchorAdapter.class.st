@@ -7,24 +7,22 @@ This will often rely on sourceAnchor of the entity
 
 "
 Class {
-	#name : 'MiAbstractSourceTextAnchorAdapter',
-	#superclass : 'Object',
+	#name : #MiAbstractSourceTextAnchorAdapter,
+	#superclass : #Object,
 	#instVars : [
 		'displayedText',
 		'displayedEntityInterval'
 	],
-	#category : 'MooseIDE-Famix-SourceText',
-	#package : 'MooseIDE-Famix',
-	#tag : 'SourceText'
+	#category : #'MooseIDE-Famix-SourceText'
 }
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 MiAbstractSourceTextAnchorAdapter class >> acceptEntity: anEntity [
 
 	^false
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 MiAbstractSourceTextAnchorAdapter class >> adapterFor: anEntity [
 
 	self withAllSubclassesDo: [ :adapterClass |
@@ -35,19 +33,19 @@ MiAbstractSourceTextAnchorAdapter class >> adapterFor: anEntity [
 	^MiSourceTextNullAdapter new
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiAbstractSourceTextAnchorAdapter >> displayedText [
 
 	^ displayedText
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiAbstractSourceTextAnchorAdapter >> displayedText: anObject [
 
 	displayedText := anObject
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiAbstractSourceTextAnchorAdapter >> initialize [
 
 	super initialize.
@@ -56,7 +54,7 @@ MiAbstractSourceTextAnchorAdapter >> initialize [
 	displayedText := ''
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiAbstractSourceTextAnchorAdapter >> initializeDisplayedText: aText andEntity: anEntity [
 	"initialize the adapter with the displayedText and the main displayedEntity"
 
@@ -64,7 +62,7 @@ MiAbstractSourceTextAnchorAdapter >> initializeDisplayedText: aText andEntity: a
 	displayedEntityInterval := anEntity -> (Interval from: 1 to: aText size)
 ]
 
-{ #category : 'api' }
+{ #category : #api }
 MiAbstractSourceTextAnchorAdapter >> intervalForEntity: anEntity [
 	"Find the first and last character of anEntity's name in the displayedText"
 

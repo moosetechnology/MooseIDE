@@ -1,18 +1,16 @@
 Class {
-	#name : 'ButterflyNode',
-	#superclass : 'Object',
+	#name : #ButterflyNode,
+	#superclass : #Object,
 	#instVars : [
 		'children',
 		'parent',
 		'entity',
 		'childrenBlock'
 	],
-	#category : 'MooseIDE-ButterflyMap-Model',
-	#package : 'MooseIDE-ButterflyMap',
-	#tag : 'Model'
+	#category : #'MooseIDE-ButterflyMap-Model'
 }
 
-{ #category : 'adding' }
+{ #category : #adding }
 ButterflyNode >> add: aBNode [
 
 	children add: aBNode.
@@ -20,38 +18,38 @@ ButterflyNode >> add: aBNode [
 	aBNode childrenBlock: childrenBlock
 ]
 
-{ #category : 'adding' }
+{ #category : #adding }
 ButterflyNode >> addLevel [
 
 	children do: #addLevel.
 	self generateChildren
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 ButterflyNode >> children [
 
 	^ children
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 ButterflyNode >> children: anObject [
 
 	children := anObject
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 ButterflyNode >> childrenBlock [
 
 	^ childrenBlock
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 ButterflyNode >> childrenBlock: anObject [
 
 	childrenBlock := anObject
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 ButterflyNode >> depth [
 
 	| q source depth i j |
@@ -73,19 +71,19 @@ ButterflyNode >> depth [
 	^ depth
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 ButterflyNode >> entity [
 
 	^ entity
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 ButterflyNode >> entity: anObject [
 
 	entity := anObject
 ]
 
-{ #category : 'adding' }
+{ #category : #adding }
 ButterflyNode >> generateChildren [
 
 	children ifNotEmpty: [ ^ children ].
@@ -96,7 +94,7 @@ ButterflyNode >> generateChildren [
 	^ children
 ]
 
-{ #category : 'adding' }
+{ #category : #adding }
 ButterflyNode >> generateChildrenFor: anEntity [
 
 	anEntity = entity
@@ -104,7 +102,7 @@ ButterflyNode >> generateChildrenFor: anEntity [
 		ifFalse: [ children copy do: [ :c | c generateChildrenFor: anEntity ] ]
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 ButterflyNode >> initialize [ 
 
 	super initialize.
@@ -112,7 +110,7 @@ ButterflyNode >> initialize [
 	childrenBlock := [ :e | {  } ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 ButterflyNode >> layers [
 
 	"Return all levels of this tree, exept current node. Return a collection of collections."
@@ -141,26 +139,26 @@ ButterflyNode >> layers [
 	^ layers
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 ButterflyNode >> level [
 
 	parent ifNil: [ ^ 0 ].
 	^ parent level + 1
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 ButterflyNode >> parent [
 
 	^ parent
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 ButterflyNode >> parent: anObject [
 
 	parent := anObject
 ]
 
-{ #category : 'removing' }
+{ #category : #removing }
 ButterflyNode >> remove [
 
 	parent ifNil: [ ^ self ].
@@ -171,19 +169,19 @@ ButterflyNode >> remove [
 	children copy do: #remove
 ]
 
-{ #category : 'removing' }
+{ #category : #removing }
 ButterflyNode >> remove: aBNode [
 
 	children remove: aBNode
 ]
 
-{ #category : 'removing' }
+{ #category : #removing }
 ButterflyNode >> removeChildren [
 
 	children copy do: #remove
 ]
 
-{ #category : 'removing' }
+{ #category : #removing }
 ButterflyNode >> removeChildrenFor: anEntity [
 
 	anEntity = entity
@@ -191,13 +189,13 @@ ButterflyNode >> removeChildrenFor: anEntity [
 		ifFalse: [ children copy do: [ :c | c removeChildrenFor: anEntity ] ]
 ]
 
-{ #category : 'removing' }
+{ #category : #removing }
 ButterflyNode >> removeLevel [
 
 	self removeLevel: self root depth
 ]
 
-{ #category : 'removing' }
+{ #category : #removing }
 ButterflyNode >> removeLevel: anInteger [
 
 	self level = anInteger
@@ -205,7 +203,7 @@ ButterflyNode >> removeLevel: anInteger [
 		ifFalse: [ children copy do: [ :c | c removeLevel: anInteger ] ]
 ]
 
-{ #category : 'removing' }
+{ #category : #removing }
 ButterflyNode >> removeSubNode: anEntity [
 
 	anEntity = entity
@@ -213,7 +211,7 @@ ButterflyNode >> removeSubNode: anEntity [
 		ifFalse: [ children copy do: [ :c | c removeSubNode: anEntity ] ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 ButterflyNode >> root [
 
 	parent ifNil: [ ^ self ].

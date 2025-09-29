@@ -5,14 +5,12 @@ I rewrite `newInspectionForContext:` method only to return an instance of `MiObj
 (See `StObjectInspectorPresenter>>#newInspectionForContext:`)
 "
 Class {
-	#name : 'MiObjectInspectorPresenter',
-	#superclass : 'StObjectInspectorPresenter',
-	#category : 'MooseIDE-NewTools-Inspector',
-	#package : 'MooseIDE-NewTools',
-	#tag : 'Inspector'
+	#name : #MiObjectInspectorPresenter,
+	#superclass : #StObjectInspectorPresenter,
+	#category : #'MooseIDE-NewTools-Inspector'
 }
 
-{ #category : 'private' }
+{ #category : #private }
 MiObjectInspectorPresenter >> allPages [
 
 	| allPagesWithoutBreakpointsPage |
@@ -22,7 +20,7 @@ MiObjectInspectorPresenter >> allPages [
 	^ allPagesWithoutBreakpointsPage
 ]
 
-{ #category : 'private - factory' }
+{ #category : #'private - factory' }
 MiObjectInspectorPresenter >> newInspectionForContext: aContext [
 
 	^ MiObjectContextPresenter on: (StObjectContextModel new
@@ -32,7 +30,7 @@ MiObjectInspectorPresenter >> newInspectionForContext: aContext [
 			   yourself)
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiObjectInspectorPresenter >> refreshContent [
 
 	super refreshContent.

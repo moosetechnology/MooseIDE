@@ -3,35 +3,33 @@ Builds a legend for visualization with all tags in it.
 The legend allows to check/uncheck each tag individually
 "
 Class {
-	#name : 'MiCoTagLegendBuilder',
-	#superclass : 'RSBuilder',
+	#name : #MiCoTagLegendBuilder,
+	#superclass : #RSBuilder,
 	#instVars : [
 		'tags',
 		'mapBuilder'
 	],
-	#category : 'MooseIDE-CoUsageMap-Roassal3',
-	#package : 'MooseIDE-CoUsageMap',
-	#tag : 'Roassal3'
+	#category : #'MooseIDE-CoUsageMap-Roassal3'
 }
 
-{ #category : 'adding' }
+{ #category : #adding }
 MiCoTagLegendBuilder >> addTag: aTag [
 	self tags add: aTag
 ]
 
-{ #category : 'hooks' }
+{ #category : #hooks }
 MiCoTagLegendBuilder >> boxLabelExtent [
 	^ 25@15
 ]
 
-{ #category : 'hooks' }
+{ #category : #hooks }
 MiCoTagLegendBuilder >> checkBoxFor: aTag [
 	^ self iconNamed: (aTag isHidden  
 		ifTrue: [ #checkboxUnselected ]
 		ifFalse: [ #checkboxSelected ])
 ]
 
-{ #category : 'highlighting' }
+{ #category : #highlighting }
 MiCoTagLegendBuilder >> highlightLegend: evt [
 	| shape |
 	self flag: #FIXME.
@@ -44,7 +42,7 @@ MiCoTagLegendBuilder >> highlightLegend: evt [
 	evt signalUpdate.
 ]
 
-{ #category : 'hooks' }
+{ #category : #hooks }
 MiCoTagLegendBuilder >> legendBottomLine [
 	"explains the form of the innerBoxes (width based on number of dependencies)"
 	| box marker arrow label |
@@ -72,7 +70,7 @@ MiCoTagLegendBuilder >> legendBottomLine [
 	^ { box. arrow. label } asGroup asShape
 ]
 
-{ #category : 'hooks' }
+{ #category : #hooks }
 MiCoTagLegendBuilder >> legendDo: aShape [
 
 	| highlight |
@@ -97,7 +95,7 @@ MiCoTagLegendBuilder >> legendDo: aShape [
 		addInteraction: highlight
 ]
 
-{ #category : 'hooks' }
+{ #category : #hooks }
 MiCoTagLegendBuilder >> legendTagLine: aTag [ 
 	| label icon checkBox line |
 	checkBox := RSBitmap new
@@ -123,23 +121,23 @@ MiCoTagLegendBuilder >> legendTagLine: aTag [
 	^ line
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiCoTagLegendBuilder >> legendTitle [
 	^ 'Legend'
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiCoTagLegendBuilder >> mapBuilder [
 	self flag: 'interactions with MiCoUsageMapBuilder should go through specModel ?'.
 	^ mapBuilder
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiCoTagLegendBuilder >> mapBuilder: aMiCoUsageMapBuilder [
 	mapBuilder := aMiCoUsageMapBuilder
 ]
 
-{ #category : 'public' }
+{ #category : #public }
 MiCoTagLegendBuilder >> removeOldLegend [
 	| canvas legendShape |
 	canvas := self canvas.
@@ -154,7 +152,7 @@ MiCoTagLegendBuilder >> removeOldLegend [
 
 ]
 
-{ #category : 'rendering' }
+{ #category : #rendering }
 MiCoTagLegendBuilder >> renderIn: aCanvas [
 
 	| legend |
@@ -181,22 +179,22 @@ MiCoTagLegendBuilder >> renderIn: aCanvas [
 		build
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiCoTagLegendBuilder >> specModel [
 	^ mapBuilder specModel
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiCoTagLegendBuilder >> tagNamed: aString [ 
 	^ self tags detect: [ :tag | tag name = aString ] ifNone: [ nil ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiCoTagLegendBuilder >> tags [
 	^tags ifNil: [tags := self specModel tagList]
 ]
 
-{ #category : 'hooks' }
+{ #category : #hooks }
 MiCoTagLegendBuilder >> toggleTag: evt [
 	| checkBox tag |
 	checkBox := evt shape.
@@ -210,7 +208,7 @@ MiCoTagLegendBuilder >> toggleTag: evt [
 	
 ]
 
-{ #category : 'highlighting' }
+{ #category : #highlighting }
 MiCoTagLegendBuilder >> unhighlightLegend: evt [
 	evt canvas
 		propertyAt: #tagCheck

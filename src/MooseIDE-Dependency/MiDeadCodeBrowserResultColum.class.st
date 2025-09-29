@@ -2,32 +2,30 @@
 A class to implement the right column (results) of the DeadCodeBrowser
 "
 Class {
-	#name : 'MiDeadCodeBrowserResultColum',
-	#superclass : 'SpPresenter',
+	#name : #MiDeadCodeBrowserResultColum,
+	#superclass : #SpPresenter,
 	#instVars : [
 		'lstDeadMethods',
 		'btnFirstRound',
 		'btnRecursive',
 		'lblDeadMethods'
 	],
-	#category : 'MooseIDE-Dependency-DeadCode',
-	#package : 'MooseIDE-Dependency',
-	#tag : 'DeadCode'
+	#category : #'MooseIDE-Dependency-DeadCode'
 }
 
-{ #category : 'accessing - private tests' }
+{ #category : #'accessing - private tests' }
 MiDeadCodeBrowserResultColum >> buttonFirstRound [
 
 	^btnFirstRound 
 ]
 
-{ #category : 'accessing - private tests' }
+{ #category : #'accessing - private tests' }
 MiDeadCodeBrowserResultColum >> buttonRecursiveRound [
 
 	^btnRecursive 
 ]
 
-{ #category : 'layout' }
+{ #category : #layout }
 MiDeadCodeBrowserResultColum >> defaultLayout [
 
 	^SpBoxLayout newTopToBottom
@@ -41,7 +39,7 @@ MiDeadCodeBrowserResultColum >> defaultLayout [
 		yourself
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiDeadCodeBrowserResultColum >> initializePresenters [
 
 	lstDeadMethods := self newList
@@ -61,31 +59,31 @@ MiDeadCodeBrowserResultColum >> initializePresenters [
 		label: '0 dead entities'
 ]
 
-{ #category : 'accessing - private tests' }
+{ #category : #'accessing - private tests' }
 MiDeadCodeBrowserResultColum >> labelDeadEntities [
 
 	^lblDeadMethods 
 ]
 
-{ #category : 'accessing - private tests' }
+{ #category : #'accessing - private tests' }
 MiDeadCodeBrowserResultColum >> listDeadEntities [
 
 	^lstDeadMethods 
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiDeadCodeBrowserResultColum >> specModel [ 
 
 	^owner specModel
 ]
 
-{ #category : 'TOREMOVE' }
+{ #category : #TOREMOVE }
 MiDeadCodeBrowserResultColum >> toolbarHeight [
 
 	^self class toolbarHeight
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 MiDeadCodeBrowserResultColum >> update [
 
 	| deads |
@@ -97,7 +95,7 @@ MiDeadCodeBrowserResultColum >> update [
 	btnRecursive enabled: (deads isNotEmpty)
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 MiDeadCodeBrowserResultColum >> updateHeuristicSelection [
 
 	btnFirstRound enabled: (self specModel selectedHeuristics isNotEmpty)

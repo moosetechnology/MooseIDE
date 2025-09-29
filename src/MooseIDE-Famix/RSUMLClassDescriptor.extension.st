@@ -1,6 +1,6 @@
-Extension { #name : 'RSUMLClassDescriptor' }
+Extension { #name : #RSUMLClassDescriptor }
 
-{ #category : '*MooseIDE-Famix' }
+{ #category : #'*MooseIDE-Famix' }
 RSUMLClassDescriptor >> forFamix [
 
 	self

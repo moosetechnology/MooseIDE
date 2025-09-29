@@ -1,36 +1,34 @@
 Class {
-	#name : 'MiImportingContextPresenter',
-	#superclass : 'MiPresenter',
+	#name : #MiImportingContextPresenter,
+	#superclass : #MiPresenter,
 	#instVars : [
 		'importingContext',
 		'entitiesList',
 		'associationList',
 		'toolbar'
 	],
-	#category : 'MooseIDE-Meta-Import',
-	#package : 'MooseIDE-Meta',
-	#tag : 'Import'
+	#category : #'MooseIDE-Meta-Import'
 }
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiImportingContextPresenter class >> numberOfEntitiesPerColumn [
 
 	^ 15
 ]
 
-{ #category : 'specs' }
+{ #category : #specs }
 MiImportingContextPresenter class >> title [
 
 	^ 'Select entities to be imported in your model'
 ]
 
-{ #category : 'specs' }
+{ #category : #specs }
 MiImportingContextPresenter class >> windowExtent [
 
 	^ 600 @ 400
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiImportingContextPresenter >> initializeAssociationsList [
 
 	associationList := self instantiate:
@@ -52,7 +50,7 @@ MiImportingContextPresenter >> initializeAssociationsList [
 		a name < b name ]
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiImportingContextPresenter >> initializeEntitiesList [
 
 	entitiesList := self instantiate: SpFilteringSelectableListPresenter.
@@ -71,7 +69,7 @@ MiImportingContextPresenter >> initializeEntitiesList [
 	entitiesList listPresenter sortingBlock: [ :a :b | a name < b name ]
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiImportingContextPresenter >> initializeLayout [
 
 	self layout: (SpBoxLayout newVertical
@@ -90,7 +88,7 @@ MiImportingContextPresenter >> initializeLayout [
 			 yourself)
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiImportingContextPresenter >> initializePresenters [
 
 	self initializeToolbar.
@@ -100,7 +98,7 @@ MiImportingContextPresenter >> initializePresenters [
 	self updateSelection
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiImportingContextPresenter >> initializeToolbar [
 
 	toolbar := self newToolbar.
@@ -119,7 +117,7 @@ MiImportingContextPresenter >> initializeToolbar [
 					 self updateSelection ])
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiImportingContextPresenter >> initializeWindow: aWindowPresenter [
 
 	aWindowPresenter
@@ -127,13 +125,13 @@ MiImportingContextPresenter >> initializeWindow: aWindowPresenter [
 		initialExtent: self class windowExtent
 ]
 
-{ #category : 'accessing - model' }
+{ #category : #'accessing - model' }
 MiImportingContextPresenter >> setModelBeforeInitialization: aFmxImportingContext [
 
 	importingContext := aFmxImportingContext
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiImportingContextPresenter >> updateSelection [
 
 	associationList

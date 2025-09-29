@@ -5,26 +5,24 @@ queryBuilderPresenter` instance variable that contains a list with all the queri
 Accepted entities: a MooseGroup with some named entities.
 "
 Class {
-	#name : 'MiQueriesBrowser',
-	#superclass : 'MiAbstractBrowser',
+	#name : #MiQueriesBrowser,
+	#superclass : #MiAbstractBrowser,
 	#instVars : [
 		'queryResultTreePresenter',
 		'queryCodePresenter',
 		'queryNotebookPresenter',
 		'queriesListPresenter'
 	],
-	#category : 'MooseIDE-QueriesBrowser-Main presenters',
-	#package : 'MooseIDE-QueriesBrowser',
-	#tag : 'Main presenters'
+	#category : #'MooseIDE-QueriesBrowser-Main presenters'
 }
 
-{ #category : 'keymaps' }
+{ #category : #keymaps }
 MiQueriesBrowser class >> browserKey [
 
 	^ $f
 ]
 
-{ #category : 'world menu' }
+{ #category : #'world menu' }
 MiQueriesBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
@@ -32,31 +30,31 @@ MiQueriesBrowser class >> menuCommandOn: aBuilder [
 	^ self buildMenuItemIn: aBuilder
 ]
 
-{ #category : 'world menu' }
+{ #category : #'world menu' }
 MiQueriesBrowser class >> menuIconName [
 
 	^ #mooseTree
 ]
 
-{ #category : 'world menu' }
+{ #category : #'world menu' }
 MiQueriesBrowser class >> menuItem [
 
 	^ #QueriesBrowser
 ]
 
-{ #category : 'world menu' }
+{ #category : #'world menu' }
 MiQueriesBrowser class >> menuPriority [
 
 	^ self menuMainToolsPriority + 3
 ]
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 MiQueriesBrowser class >> newModel [
 
 	^ MiQueriesModel new
 ]
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 MiQueriesBrowser class >> open [
 	"This method implementation is the same as their parent. But it is here for opening this browser more confortably from the system's browser."
 
@@ -64,51 +62,51 @@ MiQueriesBrowser class >> open [
 	^ super open
 ]
 
-{ #category : 'specs' }
+{ #category : #specs }
 MiQueriesBrowser class >> preferredExtent [
 
 	^ 650 @ 420
 ]
 
-{ #category : 'specs' }
+{ #category : #specs }
 MiQueriesBrowser class >> title [
 
 	^ 'Queries Browser'
 ]
 
-{ #category : 'window control' }
+{ #category : #'window control' }
 MiQueriesBrowser >> browserClosed [
 	super browserClosed.
 	application unregisterProducer: self
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 MiQueriesBrowser >> canFollowEntity: anObject [
 
 	^ anObject isMooseObject and: [ anObject asMooseGroup anySatisfy: #isQueryable ]
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 MiQueriesBrowser >> canTagEntities [ 
 	self flag: 'TODO, put browser in default Browser/Model pattern (issue #809) so that tagging can work'.
 	^false
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 MiQueriesBrowser >> clearQueries [
 
 	specModel clearQueries.
 	self updateSelectedQuery
 ]
 
-{ #category : 'api - actions' }
+{ #category : #'api - actions' }
 MiQueriesBrowser >> enableProgressNotification [
 
 	queryResultTreePresenter := self instantiate: MiSpinnerPresenter.
 	queryNotebookPresenter resetAllPageContents
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 MiQueriesBrowser >> followEntity: anEntity [
 
 	| busMooseEntities allEntities |
@@ -133,13 +131,13 @@ MiQueriesBrowser >> followEntity: anEntity [
 	queriesListPresenter followNewEntity
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiQueriesBrowser >> initialize [ 
 	super initialize.
 	application registerProducer: self for: FQAbstractQuery 
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiQueriesBrowser >> initializeLayout [
 
 	self layout: (SpPanedLayout new
@@ -148,7 +146,7 @@ MiQueriesBrowser >> initializeLayout [
 			 yourself)
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiQueriesBrowser >> initializeNotebookPresenter [
 
 	queryNotebookPresenter := self newNotebook.
@@ -161,7 +159,7 @@ MiQueriesBrowser >> initializeNotebookPresenter [
 				 provider: [ queryCodePresenter ]) }
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiQueriesBrowser >> initializePresenters [
 
 	self initializeQueryCodePresenter.
@@ -171,7 +169,7 @@ MiQueriesBrowser >> initializePresenters [
 	self initializeLayout
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiQueriesBrowser >> initializeQueriesListPresenter [
 
 	queriesListPresenter := self
@@ -179,13 +177,13 @@ MiQueriesBrowser >> initializeQueriesListPresenter [
 		                        on: specModel
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiQueriesBrowser >> initializeQueryCodePresenter [
 
 	queryCodePresenter := self instantiate: QueryCodePresenter
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiQueriesBrowser >> initializeResultTreePresenter [
 
 	queryResultTreePresenter := self newMooseGroupsTreeTable.
@@ -196,38 +194,38 @@ MiQueriesBrowser >> initializeResultTreePresenter [
 		:selectedEntity | specModel entities: selectedEntity ]
 ]
 
-{ #category : 'brokerage' }
+{ #category : #brokerage }
 MiQueriesBrowser >> itemsFor: aClass [
 
 	^ specModel queriesOfType: aClass
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiQueriesBrowser >> miSelectedItem [
 
 	^ specModel miSelectedItem
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiQueriesBrowser >> rootQuery [
 
 	^ specModel rootQuery
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 MiQueriesBrowser >> selectQuery: aQuery [
 
 	specModel selectedQuery: aQuery.
 	self updateSelectedQuery
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiQueriesBrowser >> selectedQuery [
 
 	^ specModel selectedQuery
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 MiQueriesBrowser >> showResultOfQuery: aQuery [
 
 	| result |
@@ -240,7 +238,7 @@ MiQueriesBrowser >> showResultOfQuery: aQuery [
 	queryNotebookPresenter resetAllPageContents
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 MiQueriesBrowser >> updateResultPresenterForQuery: aQuery [
 
 	aQuery isValid
@@ -249,7 +247,7 @@ MiQueriesBrowser >> updateResultPresenterForQuery: aQuery [
 		queryResultTreePresenter updateForEntities: MooseGroup new ]
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 MiQueriesBrowser >> updateSelectedQuery [
 
 	specModel resetEntities.

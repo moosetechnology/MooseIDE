@@ -9,18 +9,16 @@ Provides some highlighting for the code (work in progress).
 <TODO> Improvement: tabs for several entities (receiving a MooseGroup)
 "
 Class {
-	#name : 'MiSourceTextBrowser',
-	#superclass : 'MiAbstractBrowser',
+	#name : #MiSourceTextBrowser,
+	#superclass : #MiAbstractBrowser,
 	#instVars : [
 		'toolBarExternalEditor',
 		'textRenderer'
 	],
-	#category : 'MooseIDE-Famix-SourceText',
-	#package : 'MooseIDE-Famix',
-	#tag : 'SourceText'
+	#category : #'MooseIDE-Famix-SourceText'
 }
 
-{ #category : 'world menu' }
+{ #category : #'world menu' }
 MiSourceTextBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
@@ -28,56 +26,56 @@ MiSourceTextBrowser class >> menuCommandOn: aBuilder [
 	^ self buildMenuItemIn: aBuilder
 ]
 
-{ #category : 'world menu' }
+{ #category : #'world menu' }
 MiSourceTextBrowser class >> menuIconName [
 
 	^ #mooseSourceText
 ]
 
-{ #category : 'world menu' }
+{ #category : #'world menu' }
 MiSourceTextBrowser class >> menuItem [
 
 	^ #SourceTextBrowser
 ]
 
-{ #category : 'world menu' }
+{ #category : #'world menu' }
 MiSourceTextBrowser class >> menuPriority [
 
 	^ self menuCodeToolsPriority + 1
 ]
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 MiSourceTextBrowser class >> newModel [
 
 	^ MiSourceTextBrowserModel new
 ]
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 MiSourceTextBrowser class >> open [
 
 	<script>
 	^ super open
 ]
 
-{ #category : 'specs' }
+{ #category : #specs }
 MiSourceTextBrowser class >> preferredExtent [
 
 	^ 600 @ 700
 ]
 
-{ #category : 'specs' }
+{ #category : #specs }
 MiSourceTextBrowser class >> title [
 
 	^ 'Source code'
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 MiSourceTextBrowser >> canFollowEntity: anObject [
 
 	^ anObject usesFamixTrait: FamixTSourceEntity
 ]
 
-{ #category : 'layout' }
+{ #category : #layout }
 MiSourceTextBrowser >> defaultLayout [
 
 	^ SpBoxLayout newVertical
@@ -86,24 +84,24 @@ MiSourceTextBrowser >> defaultLayout [
 		  yourself
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 MiSourceTextBrowser >> editExternally: anExternalTool [
 	anExternalTool new open: specModel selectedEntity
 ]
 
-{ #category : 'private - testing' }
+{ #category : #'private - testing' }
 MiSourceTextBrowser >> externalEditor [
 	"only for testing"
 	^toolBarExternalEditor externalEditor 
 ]
 
-{ #category : 'private - testing' }
+{ #category : #'private - testing' }
 MiSourceTextBrowser >> externalEditor: anObject [
 	"only for testing"
 	toolBarExternalEditor externalEditor: anObject
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 MiSourceTextBrowser >> followEntity: anEntity [
 
 	super followEntity: anEntity.
@@ -112,7 +110,7 @@ MiSourceTextBrowser >> followEntity: anEntity [
 	toolBarExternalEditor newEntity
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiSourceTextBrowser >> initializePresenters [
 
 	toolBarExternalEditor := self
@@ -124,13 +122,13 @@ MiSourceTextBrowser >> initializePresenters [
 		                on: specModel
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiSourceTextBrowser >> miSelectedItem [
 
 	^ specModel selectedEntity
 ]
 
-{ #category : 'showing' }
+{ #category : #showing }
 MiSourceTextBrowser >> open [
 
 	super open.
@@ -138,25 +136,25 @@ MiSourceTextBrowser >> open [
 		a widgetDo: [ :w | w theme: MiSourceTextRendererTheme new ] ]
 ]
 
-{ #category : 'formatting' }
+{ #category : #formatting }
 MiSourceTextBrowser >> reRenderText [ 
 
 	textRenderer reRenderText
 ]
 
-{ #category : 'formatting' }
+{ #category : #formatting }
 MiSourceTextBrowser >> renderTextFor: anEntity [
 
 	textRenderer renderTextFor: anEntity
 ]
 
-{ #category : 'private - testing' }
+{ #category : #'private - testing' }
 MiSourceTextBrowser >> toolBarExternalEditor [
 	"only for testing"
 	^toolBarExternalEditor
 ]
 
-{ #category : 'private - testing' }
+{ #category : #'private - testing' }
 MiSourceTextBrowser >> toolBarExternalEditor: anObject [
 	"only for testing"
 	toolBarExternalEditor := anObject

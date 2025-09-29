@@ -1,6 +1,6 @@
-Extension { #name : 'Symbol' }
+Extension { #name : #Symbol }
 
-{ #category : '*MooseIDE-Visualization' }
+{ #category : #'*MooseIDE-Visualization' }
 Symbol >> asWords [
 	"#numberOfMethods >>> 'Number of methods'"
 

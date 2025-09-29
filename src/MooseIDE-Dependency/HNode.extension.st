@@ -1,6 +1,6 @@
-Extension { #name : 'HNode' }
+Extension { #name : #HNode }
 
-{ #category : '*MooseIDE-Dependency' }
+{ #category : #'*MooseIDE-Dependency' }
 HNode >> hasTagAncestor [
 
 	"Return tue if this node is in a tag node"

@@ -20,17 +20,15 @@ Some globals are avalaible in all code cells:
 When the notebook is executed, all cells are responsible to print there content in the stream. The order of cells is therfore important.
 "
 Class {
-	#name : 'MiNotebookBrowser',
-	#superclass : 'MiAbstractBrowser',
+	#name : #MiNotebookBrowser,
+	#superclass : #MiAbstractBrowser,
 	#instVars : [
 		'notebook'
 	],
-	#category : 'MooseIDE-Export-Notebook',
-	#package : 'MooseIDE-Export',
-	#tag : 'Notebook'
+	#category : #'MooseIDE-Export-Notebook'
 }
 
-{ #category : 'world menu' }
+{ #category : #'world menu' }
 MiNotebookBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
@@ -45,44 +43,44 @@ MiNotebookBrowser class >> menuCommandOn: aBuilder [
 		action: [ self open ]
 ]
 
-{ #category : 'world menu' }
+{ #category : #'world menu' }
 MiNotebookBrowser class >> menuItem [
 
 	^ #reporteBuilder
 ]
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 MiNotebookBrowser class >> newModel [
 
 	^ MiNotebookModel new
 ]
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 MiNotebookBrowser class >> open [
 
 	<script>
 	^ super open
 ]
 
-{ #category : 'specs' }
+{ #category : #specs }
 MiNotebookBrowser class >> preferredExtent [
 
 	^ 1083 @ 697
 ]
 
-{ #category : 'specs' }
+{ #category : #specs }
 MiNotebookBrowser class >> title [
 
 	^ 'Notebook'
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 MiNotebookBrowser >> canFollowEntity: anObject [
 
 	^ true
 ]
 
-{ #category : 'layout' }
+{ #category : #layout }
 MiNotebookBrowser >> defaultLayout [
 
 	^ self newBoxLayoutLeftToRight
@@ -90,7 +88,7 @@ MiNotebookBrowser >> defaultLayout [
 		  yourself
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 MiNotebookBrowser >> followEntity: anEntity [
 
 	super followEntity: anEntity.
@@ -98,14 +96,14 @@ MiNotebookBrowser >> followEntity: anEntity [
 	notebook addBinding: (WorkspaceVariable key: #mooseModel value: anEntity mooseModel)
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiNotebookBrowser >> initializePresenters [
 
 	notebook := self instantiate: INNotebookPresenter.
 	notebook addBinding: (WorkspaceVariable key: #mooseModel value: 42)
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiNotebookBrowser >> miSelectedItem [
 
 	^ specModel entities

@@ -3,8 +3,8 @@ Presenter created to edit the children block, outer boxes sort block, and inner 
 This interacts directly with MiCoUsageMapSettings
 "
 Class {
-	#name : 'MiCoUsageMapBlockSettingsPresenter',
-	#superclass : 'MiCoUsageMapAbstractSettingsPresenter',
+	#name : #MiCoUsageMapBlockSettingsPresenter,
+	#superclass : #MiCoUsageMapAbstractSettingsPresenter,
 	#instVars : [
 		'childrenTextInput',
 		'sortOuterBoxTextInput',
@@ -13,18 +13,16 @@ Class {
 		'applyButton',
 		'closeButton'
 	],
-	#category : 'MooseIDE-CoUsageMap-Settings',
-	#package : 'MooseIDE-CoUsageMap',
-	#tag : 'Settings'
+	#category : #'MooseIDE-CoUsageMap-Settings'
 }
 
-{ #category : 'accessing - private tests' }
+{ #category : #'accessing - private tests' }
 MiCoUsageMapBlockSettingsPresenter >> applyButton [
 
 	^applyButton
 ]
 
-{ #category : 'layout' }
+{ #category : #layout }
 MiCoUsageMapBlockSettingsPresenter >> buttonRowLayout [
 
 	^SpBoxLayout newLeftToRight
@@ -39,25 +37,25 @@ MiCoUsageMapBlockSettingsPresenter >> buttonRowLayout [
 		yourself
 ]
 
-{ #category : 'accessing - private tests' }
+{ #category : #'accessing - private tests' }
 MiCoUsageMapBlockSettingsPresenter >> childrenTextInput [
 
 	^childrenTextInput
 ]
 
-{ #category : 'accessing - private tests' }
+{ #category : #'accessing - private tests' }
 MiCoUsageMapBlockSettingsPresenter >> closeButton [
 
 	^closeButton
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiCoUsageMapBlockSettingsPresenter >> closeWindow [
 
 	self delete
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiCoUsageMapBlockSettingsPresenter >> connectPresenters [
 	| set |
 	set := self settings.
@@ -67,7 +65,7 @@ MiCoUsageMapBlockSettingsPresenter >> connectPresenters [
 	sortInnerBoxTextInput text: set innerBoxSortBlockText.
 ]
 
-{ #category : 'layout' }
+{ #category : #layout }
 MiCoUsageMapBlockSettingsPresenter >> defaultLayout [
 	^ SpBoxLayout newTopToBottom
 		spacing: 3;
@@ -87,7 +85,7 @@ MiCoUsageMapBlockSettingsPresenter >> defaultLayout [
 		yourself
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiCoUsageMapBlockSettingsPresenter >> initializeButtons [
 
 	applyButton := self newButton
@@ -117,7 +115,7 @@ MiCoUsageMapBlockSettingsPresenter >> initializeButtons [
 
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiCoUsageMapBlockSettingsPresenter >> initializePresenters [
 
 	childrenTextInput := self newCode
@@ -135,26 +133,26 @@ MiCoUsageMapBlockSettingsPresenter >> initializePresenters [
 	self initializeButtons
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiCoUsageMapBlockSettingsPresenter >> initializeWindow: aWindowPresenter [
 	aWindowPresenter 
 		initialExtent: 500@700;
 		title: 'Blocks Settings - Co Usage Map'
 ]
 
-{ #category : 'accessing - private tests' }
+{ #category : #'accessing - private tests' }
 MiCoUsageMapBlockSettingsPresenter >> resetButton [
 
 	^resetButton
 ]
 
-{ #category : 'accessing - private tests' }
+{ #category : #'accessing - private tests' }
 MiCoUsageMapBlockSettingsPresenter >> sortInnerBoxTextInput [
 
 	^sortInnerBoxTextInput
 ]
 
-{ #category : 'accessing - private tests' }
+{ #category : #'accessing - private tests' }
 MiCoUsageMapBlockSettingsPresenter >> sortOuterBoxTextInput [
 
 	^sortOuterBoxTextInput

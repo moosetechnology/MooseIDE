@@ -1,12 +1,10 @@
 Class {
-	#name : 'MiFilterMultiLayerViolationStrategy',
-	#superclass : 'MiMultiLayerStrategy',
-	#category : 'MooseIDE-LayerVisualization-Strategy',
-	#package : 'MooseIDE-LayerVisualization',
-	#tag : 'Strategy'
+	#name : #MiFilterMultiLayerViolationStrategy,
+	#superclass : #MiMultiLayerStrategy,
+	#category : #'MooseIDE-LayerVisualization-Strategy'
 }
 
-{ #category : 'filtering' }
+{ #category : #filtering }
 MiFilterMultiLayerViolationStrategy >> fetchViolatingDaos [
 
 	^ visualizationModel daoLayer select: [ :dao | 
@@ -17,7 +15,7 @@ MiFilterMultiLayerViolationStrategy >> fetchViolatingDaos [
 				  visualizationModel serverLayers flatten includes: c ] ] ]
 ]
 
-{ #category : 'filtering' }
+{ #category : #filtering }
 MiFilterMultiLayerViolationStrategy >> fetchViolatingServers [
 
 	^ visualizationModel serverLayers collect: [ :layer | 
@@ -26,7 +24,7 @@ MiFilterMultiLayerViolationStrategy >> fetchViolatingServers [
 				  self serverHasDirectLinkFromService: server ] ] ]
 ]
 
-{ #category : 'filtering' }
+{ #category : #filtering }
 MiFilterMultiLayerViolationStrategy >> fetchViolatingServices [
 
 	^ visualizationModel serviceLayer select: [ :service | 
@@ -36,7 +34,7 @@ MiFilterMultiLayerViolationStrategy >> fetchViolatingServices [
 				  :c | visualizationModel serverLayersIncludes: c ] ] ]
 ]
 
-{ #category : 'filtering' }
+{ #category : #filtering }
 MiFilterMultiLayerViolationStrategy >> fetchViolatingTransverse [
 
 	^ visualizationModel transverseLayer select: [ :transverse | 
@@ -47,7 +45,7 @@ MiFilterMultiLayerViolationStrategy >> fetchViolatingTransverse [
 					  visualizationModel serviceLayer includes: c ] ] ] ]
 ]
 
-{ #category : 'filtering' }
+{ #category : #filtering }
 MiFilterMultiLayerViolationStrategy >> serverHasDirectLinkFromService: aServerClass [
 
 	| testBlock |
@@ -62,7 +60,7 @@ MiFilterMultiLayerViolationStrategy >> serverHasDirectLinkFromService: aServerCl
 	^ false
 ]
 
-{ #category : 'filtering' }
+{ #category : #filtering }
 MiFilterMultiLayerViolationStrategy >> serverHasDirectLinkWithDAO: aServerClass [
 
 	| testBlock |

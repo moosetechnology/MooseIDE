@@ -1,36 +1,34 @@
 Class {
-	#name : 'MiImportFromFileCommand',
-	#superclass : 'MiImportCommand',
-	#category : 'MooseIDE-Meta-Import',
-	#package : 'MooseIDE-Meta',
-	#tag : 'Import'
+	#name : #MiImportFromFileCommand,
+	#superclass : #MiImportCommand,
+	#category : #'MooseIDE-Meta-Import'
 }
 
-{ #category : 'accessing - defaults' }
+{ #category : #'accessing - defaults' }
 MiImportFromFileCommand class >> defaultDescription [
 
 	^ 'Import model from MSE or JSON file'
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiImportFromFileCommand class >> defaultIcon [
 
 	^ MooseIcons mooseImportFile
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiImportFromFileCommand class >> defaultIconName [
 
 	^ #mooseImportFile
 ]
 
-{ #category : 'accessing - defaults' }
+{ #category : #'accessing - defaults' }
 MiImportFromFileCommand class >> defaultName [
 
 	^ 'Import from file'
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiImportFromFileCommand class >> importForm [
 
 	^ MiImportModelFromFileDialog

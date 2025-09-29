@@ -1,6 +1,6 @@
-Extension { #name : 'FamixStClass' }
+Extension { #name : #FamixStClass }
 
-{ #category : '*MooseIDE-Famix' }
+{ #category : #'*MooseIDE-Famix' }
 FamixStClass >> accept: aVisitor [
 
 	^aVisitor visitFamixStClass: self

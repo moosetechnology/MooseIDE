@@ -7,31 +7,29 @@ It also has a class side method #allExternalEditors to discover all available co
 
 "
 Class {
-	#name : 'MiSourceTextExternalEditor',
-	#superclass : 'Object',
-	#category : 'MooseIDE-Famix-SourceText',
-	#package : 'MooseIDE-Famix',
-	#tag : 'SourceText'
+	#name : #MiSourceTextExternalEditor,
+	#superclass : #Object,
+	#category : #'MooseIDE-Famix-SourceText'
 }
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 MiSourceTextExternalEditor class >> allExternalEditors [
 	^self withAllSubclasses reject: [ :class | class isAbstract ]
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 MiSourceTextExternalEditor class >> editorName [
 	"All concrete subclasses should return a string
 	returning nil is used to mark abstract (sub-)classes"
 	^nil
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 MiSourceTextExternalEditor class >> isAbstract [
 	^self editorName isNil
 ]
 
-{ #category : 'protocol' }
+{ #category : #protocol }
 MiSourceTextExternalEditor >> open: aMooseEntity [
 	self subclassResponsibility 
 ]

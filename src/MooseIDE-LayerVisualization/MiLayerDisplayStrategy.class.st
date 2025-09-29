@@ -1,30 +1,28 @@
 Class {
-	#name : 'MiLayerDisplayStrategy',
-	#superclass : 'MiAbstractDisplayStrategy',
-	#category : 'MooseIDE-LayerVisualization-Strategy',
-	#package : 'MooseIDE-LayerVisualization',
-	#tag : 'Strategy'
+	#name : #MiLayerDisplayStrategy,
+	#superclass : #MiAbstractDisplayStrategy,
+	#category : #'MooseIDE-LayerVisualization-Strategy'
 }
 
-{ #category : 'filtering' }
+{ #category : #filtering }
 MiLayerDisplayStrategy >> fetchNotSharedDTOs [
 
  ^ self subclassResponsibility 
 ]
 
-{ #category : 'filtering' }
+{ #category : #filtering }
 MiLayerDisplayStrategy >> fetchViolatingClients [
 
 	^ self subclassResponsibility 
 ]
 
-{ #category : 'filtering' }
+{ #category : #filtering }
 MiLayerDisplayStrategy >> fetchViolatingServers [
 
 	^ self subclassResponsibility
 ]
 
-{ #category : 'filtering' }
+{ #category : #filtering }
 MiLayerDisplayStrategy >> shouldDisplaySharedDTOs [
 
 	^ self subclassResponsibility

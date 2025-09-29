@@ -1,24 +1,22 @@
 Class {
-	#name : 'MiButterflyAddLevelMenuItem',
-	#superclass : 'MiButterflyCanvasMenuItem',
-	#category : 'MooseIDE-ButterflyMap-Menu',
-	#package : 'MooseIDE-ButterflyMap',
-	#tag : 'Menu'
+	#name : #MiButterflyAddLevelMenuItem,
+	#superclass : #MiButterflyCanvasMenuItem,
+	#category : #'MooseIDE-ButterflyMap-Menu'
 }
 
-{ #category : 'execution' }
+{ #category : #execution }
 MiButterflyAddLevelMenuItem >> execute [
 
 	visualization addLevel
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiButterflyAddLevelMenuItem >> label [
 
 	^ 'Add layer'
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiButterflyAddLevelMenuItem >> order [
 
 	^ 0

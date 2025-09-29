@@ -6,14 +6,12 @@ There are a number of annotations in Java that mark test methods (@Test, @Before
 Recognizes annotations from JUnit4 and JUnit5
 "
 Class {
-	#name : 'MiDeadCodeJavaTestAnnotationHeuristic',
-	#superclass : 'MiDeadCodeAbstractTestHeuristic',
-	#category : 'MooseIDE-Dependency-DeadCode',
-	#package : 'MooseIDE-Dependency',
-	#tag : 'DeadCode'
+	#name : #MiDeadCodeJavaTestAnnotationHeuristic,
+	#superclass : #MiDeadCodeAbstractTestHeuristic,
+	#category : #'MooseIDE-Dependency-DeadCode'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiDeadCodeJavaTestAnnotationHeuristic >> description [ 
 
 	^super description , '
@@ -21,14 +19,14 @@ MiDeadCodeJavaTestAnnotationHeuristic >> description [
 	 (@Test, @Before, @BeforeEach,...)'
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 MiDeadCodeJavaTestAnnotationHeuristic >> junit4Annotations [
 	"from https://www.softwaretestinghelp.com/junit-annotations-tutorial/"
 
 	^{ 'Test' . 'Before' . 'After' . 'BeforeClass' . 'AfterClass' }
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 MiDeadCodeJavaTestAnnotationHeuristic >> junit5Annotations [
 	"from https://junit.org/junit5/docs/current/user-guide/
 	other possibilities: DisplayName, DisplayNameGeneration, Nested, Tag, Disabled, AutoClose, TempDir, ExtendWith, RegisterExtension"
@@ -37,13 +35,13 @@ MiDeadCodeJavaTestAnnotationHeuristic >> junit5Annotations [
 
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiDeadCodeJavaTestAnnotationHeuristic >> name [
 
 	^super name , 'Java @Test method'
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 MiDeadCodeJavaTestAnnotationHeuristic >> notDead: aTMethod [
 
 	aTMethod annotationInstances ifEmpty: [ ^false ].

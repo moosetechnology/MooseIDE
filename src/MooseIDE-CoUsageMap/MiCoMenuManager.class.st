@@ -2,17 +2,15 @@
 I create a menu for each element and the main canvas in MiCoUsageMapBuilder.
 "
 Class {
-	#name : 'MiCoMenuManager',
-	#superclass : 'RSInteraction',
+	#name : #MiCoMenuManager,
+	#superclass : #RSInteraction,
 	#instVars : [
 		'mapBuilder'
 	],
-	#category : 'MooseIDE-CoUsageMap-Roassal3',
-	#package : 'MooseIDE-CoUsageMap',
-	#tag : 'Roassal3'
+	#category : #'MooseIDE-CoUsageMap-Roassal3'
 }
 
-{ #category : 'hooks' }
+{ #category : #hooks }
 MiCoMenuManager >> clickOn: aRSMouseClick [ 
 	aRSMouseClick metaKeyPressed
 	  ifFalse: [ ^ self ].
@@ -20,7 +18,7 @@ MiCoMenuManager >> clickOn: aRSMouseClick [
 	aRSMouseClick signalUpdate
 ]
 
-{ #category : 'building - menus' }
+{ #category : #'building - menus' }
 MiCoMenuManager >> contractLabel: aString [
 	| contractor |
 	contractor := LbCContractor new.
@@ -31,7 +29,7 @@ MiCoMenuManager >> contractLabel: aString [
 	^ contractor reduce: aString
 ]
 
-{ #category : 'building - menus' }
+{ #category : #'building - menus' }
 MiCoMenuManager >> createGlobalMenuOn: menu [
 	(menu
 		add: 'Auto-coloring containers'
@@ -49,7 +47,7 @@ MiCoMenuManager >> createGlobalMenuOn: menu [
 	
 ]
 
-{ #category : 'building - menus' }
+{ #category : #'building - menus' }
 MiCoMenuManager >> createMenu: aMenuMorph onBox: aMiCoBox [
 
 	aMenuMorph
@@ -60,14 +58,14 @@ MiCoMenuManager >> createMenu: aMenuMorph onBox: aMiCoBox [
 		add: 'Inspect' target: aMiCoBox selector: #mooseInspect
 ]
 
-{ #category : 'building - menus' }
+{ #category : #'building - menus' }
 MiCoMenuManager >> createMenu: menu onShape: aShape [
 	aShape isShape
 		ifTrue: [ self createMenu: menu onBox: aShape model ]
 		ifFalse: [ self createGlobalMenuOn: menu ]
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiCoMenuManager >> defaultMenuInteraction [
 
 	^ RSMenuActivable new
@@ -75,7 +73,7 @@ MiCoMenuManager >> defaultMenuInteraction [
 		  yourself
 ]
 
-{ #category : 'building - menus' }
+{ #category : #'building - menus' }
 MiCoMenuManager >> fillTagMenu: menu for: aMiCoBox [
 	"Fill #menu on #aMiCoBox with all tag names (not hidden tags)"
 	self mapBuilder tags
@@ -99,7 +97,7 @@ MiCoMenuManager >> fillTagMenu: menu for: aMiCoBox [
 	^ menu
 ]
 
-{ #category : 'building - menus' }
+{ #category : #'building - menus' }
 MiCoMenuManager >> iconFormFor: aMiCoTag [
 
 	^ (FormCanvas extent: 15 asPoint)
@@ -107,26 +105,26 @@ MiCoMenuManager >> iconFormFor: aMiCoTag [
 		  form
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiCoMenuManager >> mapBuilder [
 
 	^ mapBuilder
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiCoMenuManager >> mapBuilder: anObject [
 
 	mapBuilder := anObject
 ]
 
-{ #category : 'hooks' }
+{ #category : #hooks }
 MiCoMenuManager >> onShape: aShape [
 	aShape
 		addInteraction: self defaultMenuInteraction ;
 		when: RSMouseLeftClick send: #clickOn: to: self
 ]
 
-{ #category : 'dependencies' }
+{ #category : #dependencies }
 MiCoMenuManager >> release [
 	super release.
 	self class instVarNames do: [ :n | self instVarNamed: n put: nil ]

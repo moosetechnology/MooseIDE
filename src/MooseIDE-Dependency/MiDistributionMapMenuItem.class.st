@@ -2,14 +2,12 @@
 Base class for distribution map menu.
 "
 Class {
-	#name : 'MiDistributionMapMenuItem',
-	#superclass : 'HAbstractMenuItem',
-	#category : 'MooseIDE-Dependency-DistributionMap',
-	#package : 'MooseIDE-Dependency',
-	#tag : 'DistributionMap'
+	#name : #MiDistributionMapMenuItem,
+	#superclass : #HAbstractMenuItem,
+	#category : #'MooseIDE-Dependency-DistributionMap'
 }
 
-{ #category : 'public' }
+{ #category : #public }
 MiDistributionMapMenuItem class >> buildIn: aMenuMorph shape: aRoassalShape visualization: anHSimpleVisualizationBuilder [
 	| items clazz |
 	clazz := self classFor: aRoassalShape.
@@ -26,7 +24,7 @@ MiDistributionMapMenuItem class >> buildIn: aMenuMorph shape: aRoassalShape visu
 	
 ]
 
-{ #category : 'public' }
+{ #category : #public }
 MiDistributionMapMenuItem class >> classFor: aRoassalShape [
 	aRoassalShape isShape
 		ifFalse: [ ^ self ].

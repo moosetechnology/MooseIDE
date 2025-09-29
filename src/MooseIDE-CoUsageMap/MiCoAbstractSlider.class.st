@@ -4,8 +4,8 @@ Abstract class for sliders made with Roassal
 TODO: Make generic for whole MooseIDE ?
 "
 Class {
-	#name : 'MiCoAbstractSlider',
-	#superclass : 'RSAbstractContainerBuilder',
+	#name : #MiCoAbstractSlider,
+	#superclass : #RSAbstractContainerBuilder,
 	#instVars : [
 		'backLine',
 		'rangeLine',
@@ -15,12 +15,10 @@ Class {
 		'model',
 		'scale'
 	],
-	#category : 'MooseIDE-CoUsageMap-Sliders',
-	#package : 'MooseIDE-CoUsageMap',
-	#tag : 'Sliders'
+	#category : #'MooseIDE-CoUsageMap-Sliders'
 }
 
-{ #category : 'hooks' }
+{ #category : #hooks }
 MiCoAbstractSlider >> backLine [
 	| paint width |
 	backLine ifNotNil: [ ^ backLine ].
@@ -39,68 +37,68 @@ MiCoAbstractSlider >> backLine [
 		
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiCoAbstractSlider >> backPaint [
 	^ LinearGradientPaint fromArray:
 		{0->'cfd9df'. 
 		1->'e2ebf0' }.
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiCoAbstractSlider >> lineGap [
 	^ 25
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiCoAbstractSlider >> lineWidth [
 	^ 15
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiCoAbstractSlider >> max [
 	^ max
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiCoAbstractSlider >> max: aNumber [
 	max := aNumber
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiCoAbstractSlider >> min [
 	^ min
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiCoAbstractSlider >> min: aNumber [
 	min := aNumber
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiCoAbstractSlider >> model [
 	^ model
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiCoAbstractSlider >> model: anObject [
 	model ifNotNil: [model removeDependent: self].
 	anObject ifNotNil: [anObject addDependent: self].
 	model := anObject.
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiCoAbstractSlider >> quantum [
 
 	^ quantum
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiCoAbstractSlider >> quantum: anObject [
 
 	quantum := anObject
 ]
 
-{ #category : 'hooks' }
+{ #category : #hooks }
 MiCoAbstractSlider >> rangeLine [
 	| width paint |
 	rangeLine ifNotNil: [ ^ rangeLine ].
@@ -119,19 +117,19 @@ MiCoAbstractSlider >> rangeLine [
 		yourself
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiCoAbstractSlider >> rangePaint [
 	^ LinearGradientPaint fromArray:
 		{0->'a1c4fd'. 
 		1->'c2e9fb' }
 ]
 
-{ #category : 'events' }
+{ #category : #events }
 MiCoAbstractSlider >> resizeSlider: evt [
 	self subclassResponsibility
 ]
 
-{ #category : 'protocol' }
+{ #category : #protocol }
 MiCoAbstractSlider >> updateValue [
 	self subclassResponsibility
 ]

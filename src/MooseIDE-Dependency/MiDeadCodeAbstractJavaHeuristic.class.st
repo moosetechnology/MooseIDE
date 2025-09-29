@@ -3,21 +3,19 @@ An abstract class for all Java heuristics
 Adds 'Java:' to the description
 "
 Class {
-	#name : 'MiDeadCodeAbstractJavaHeuristic',
-	#superclass : 'MiDeadCodeAbstractHeuristic',
-	#category : 'MooseIDE-Dependency-DeadCode',
-	#package : 'MooseIDE-Dependency',
-	#tag : 'DeadCode'
+	#name : #MiDeadCodeAbstractJavaHeuristic,
+	#superclass : #MiDeadCodeAbstractHeuristic,
+	#category : #'MooseIDE-Dependency-DeadCode'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiDeadCodeAbstractJavaHeuristic >> description [
 
 	^super description ,
 	'Java: '
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiDeadCodeAbstractJavaHeuristic >> name [
 
 	^'Java: '

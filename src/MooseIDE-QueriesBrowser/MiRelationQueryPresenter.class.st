@@ -2,23 +2,21 @@
 The query configuration presenter for `FQRelationQuery`
 "
 Class {
-	#name : 'MiRelationQueryPresenter',
-	#superclass : 'MiQueryConfiguratorPresenter',
+	#name : #MiRelationQueryPresenter,
+	#superclass : #MiQueryConfiguratorPresenter,
 	#instVars : [
 		'relationsList'
 	],
-	#category : 'MooseIDE-QueriesBrowser-Configuration presenters',
-	#package : 'MooseIDE-QueriesBrowser',
-	#tag : 'Configuration presenters'
+	#category : #'MooseIDE-QueriesBrowser-Configuration presenters'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiRelationQueryPresenter class >> title [
 
 	^ 'Relation Query'
 ]
 
-{ #category : 'api - actions' }
+{ #category : #'api - actions' }
 MiRelationQueryPresenter >> configureFor: aQuery [
 
 	query := aQuery.
@@ -27,13 +25,13 @@ MiRelationQueryPresenter >> configureFor: aQuery [
 	query relationName: aQuery relationName
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 MiRelationQueryPresenter >> configureQuery: anObject [
 
 	self query relationName: anObject
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiRelationQueryPresenter >> initializeDropListForRelations: relationNames [
 
 	relationsList := relationNames
@@ -44,14 +42,14 @@ MiRelationQueryPresenter >> initializeDropListForRelations: relationNames [
 				                 relationNames ]
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiRelationQueryPresenter >> initializePresenters [
 
 	self initializeDropListForRelations: query availableRelationNames.
 	self initializeLayout
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiRelationQueryPresenter >> initializeRelationDroplistForValidQueryRelations: relationNames [
 
 	^ self newDropList
@@ -61,7 +59,7 @@ MiRelationQueryPresenter >> initializeRelationDroplistForValidQueryRelations: re
 			  self computeQueryAction: selectedRelationName ]
 ]
 
-{ #category : 'layout' }
+{ #category : #layout }
 MiRelationQueryPresenter >> newLayout [
 
 	| padding |

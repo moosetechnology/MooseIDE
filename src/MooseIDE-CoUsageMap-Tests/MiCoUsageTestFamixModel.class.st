@@ -2,20 +2,18 @@
 A FamixStModel prebuilt with 6 attributes, 5 methods, and some accesses between them
 "
 Class {
-	#name : 'MiCoUsageTestFamixModel',
-	#superclass : 'FamixStModel',
-	#category : 'MooseIDE-CoUsageMap-Tests-Resource',
-	#package : 'MooseIDE-CoUsageMap-Tests',
-	#tag : 'Resource'
+	#name : #MiCoUsageTestFamixModel,
+	#superclass : #FamixStModel,
+	#category : #'MooseIDE-CoUsageMap-Tests-Resource'
 }
 
-{ #category : 'testing' }
+{ #category : #testing }
 MiCoUsageTestFamixModel class >> canBeImportedFromFile [
 
 	^ false
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiCoUsageTestFamixModel >> initialize [
 
 	super initialize.
@@ -26,7 +24,7 @@ MiCoUsageTestFamixModel >> initialize [
 	self initializeAccesses
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiCoUsageTestFamixModel >> initializeAccesses [
 
 	(self entityNamed: 'method1') addAccess:
@@ -54,7 +52,7 @@ MiCoUsageTestFamixModel >> initializeAccesses [
 		(FamixStAccess new variable: (self entityNamed: 'var6'))
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiCoUsageTestFamixModel >> initializeAttributes [
 
 	self newAttributeNamed: 'var1'.
@@ -65,7 +63,7 @@ MiCoUsageTestFamixModel >> initializeAttributes [
 	self newAttributeNamed: 'var6'
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiCoUsageTestFamixModel >> initializeMethods [
 
 	self newMethodNamed: 'method1'.

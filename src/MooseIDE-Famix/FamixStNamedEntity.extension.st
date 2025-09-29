@@ -1,6 +1,6 @@
-Extension { #name : 'FamixStNamedEntity' }
+Extension { #name : #FamixStNamedEntity }
 
-{ #category : '*MooseIDE-Famix' }
+{ #category : #'*MooseIDE-Famix' }
 FamixStNamedEntity >> displayedNameInMiSourceText [
 
 	^self name

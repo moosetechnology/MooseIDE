@@ -1,6 +1,6 @@
-Extension { #name : 'FamixTSourceEntity' }
+Extension { #name : #FamixTSourceEntity }
 
-{ #category : '*MooseIDE-Famix' }
+{ #category : #'*MooseIDE-Famix' }
 FamixTSourceEntity >> sourceCodeBoundingEntity [
 
 	^self

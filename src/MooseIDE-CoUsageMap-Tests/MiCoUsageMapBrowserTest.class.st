@@ -1,17 +1,15 @@
 Class {
-	#name : 'MiCoUsageMapBrowserTest',
-	#superclass : 'MiAbstractBrowserTest',
-	#category : 'MooseIDE-CoUsageMap-Tests-Browser',
-	#package : 'MooseIDE-CoUsageMap-Tests',
-	#tag : 'Browser'
+	#name : #MiCoUsageMapBrowserTest,
+	#superclass : #MiAbstractBrowserTest,
+	#category : #'MooseIDE-CoUsageMap-Tests-Browser'
 }
 
-{ #category : 'running' }
+{ #category : #running }
 MiCoUsageMapBrowserTest >> browserClass [
 	^ MiCoUsageMapBrowser
 ]
 
-{ #category : 'tests - actions' }
+{ #category : #'tests - actions' }
 MiCoUsageMapBrowserTest >> populateBrowser: mooseModel [
 
 	mooseModel add: (FamixStClass new name: 'AClass').
@@ -20,13 +18,13 @@ MiCoUsageMapBrowserTest >> populateBrowser: mooseModel [
 
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 MiCoUsageMapBrowserTest >> receiveEntityToSelect [
 
 	browser receiveEntity: entityToSelect asMooseGroup
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiCoUsageMapBrowserTest >> testBlockSettingsApplyButton [
 	"Apply button should close the block setting window"
 
@@ -45,7 +43,7 @@ MiCoUsageMapBrowserTest >> testBlockSettingsApplyButton [
 
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiCoUsageMapBrowserTest >> testBlockSettingsChangeValue [
 
 	| settings |
@@ -65,7 +63,7 @@ MiCoUsageMapBrowserTest >> testBlockSettingsChangeValue [
 		settings delete ]
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiCoUsageMapBrowserTest >> testBlockSettingsClickClose [
 
 	| settings |
@@ -91,7 +89,7 @@ MiCoUsageMapBrowserTest >> testBlockSettingsClickClose [
 		settings delete ]
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiCoUsageMapBrowserTest >> testBlockSettingsDefaultValues [
 
 	| settings |
@@ -109,7 +107,7 @@ MiCoUsageMapBrowserTest >> testBlockSettingsDefaultValues [
 		settings delete ]
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiCoUsageMapBrowserTest >> testBlockSettingsResetValues [
 
 	| settings |
@@ -131,7 +129,7 @@ MiCoUsageMapBrowserTest >> testBlockSettingsResetValues [
 		settings delete ]
 ]
 
-{ #category : 'tests - settings' }
+{ #category : #'tests - settings' }
 MiCoUsageMapBrowserTest >> testCanOpenSettings [
 
 	browser hasSettings ifFalse: [ ^ self skip ].
@@ -140,7 +138,7 @@ MiCoUsageMapBrowserTest >> testCanOpenSettings [
 	settingsWindow := browser openSettings
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiCoUsageMapBrowserTest >> testConsumerProducer [
 	self assert: ((browser application consumersOf: FamixTag) 
 		anySatisfy: [ :each | each = browser mapVisualization ]).
@@ -152,7 +150,7 @@ MiCoUsageMapBrowserTest >> testConsumerProducer [
 		anySatisfy: [ :each | each = browser mapVisualization ])
 ]
 
-{ #category : 'tests - tags' }
+{ #category : #'tests - tags' }
 MiCoUsageMapBrowserTest >> testSelectedTagSetAndGet [
 
 	| model entity entity2 tag |
@@ -175,28 +173,28 @@ MiCoUsageMapBrowserTest >> testSelectedTagSetAndGet [
 	self assert: browser selectedTag equals: tag
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiCoUsageMapBrowserTest >> testSettingsAction [
 	"must be redefined in browsers that do have settings"
 
 	self assert: browser hasSettings
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiCoUsageMapBrowserTest >> testSettingsClickCancel [
 	"skipping for now because settings are handled in a very special way"
 	self flag: 'should test settings'.
 	self skip.
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiCoUsageMapBrowserTest >> testSettingsClickOK [
 	"overrind and skipping for now because settings are handled in a very special way"
 	self flag: 'should test settings'.
 	self skip.
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 MiCoUsageMapBrowserTest >> testSettingsClickReset [
 	"overrind and skipping for now because settings are handled in a very special way"
 	self flag: 'should test settings'.

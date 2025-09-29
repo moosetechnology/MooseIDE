@@ -1,25 +1,23 @@
 Class {
-	#name : 'MiDeadCodeJavaInitializerHeuristic',
-	#superclass : 'MiDeadCodeAbstractJavaHeuristic',
-	#category : 'MooseIDE-Dependency-DeadCode',
-	#package : 'MooseIDE-Dependency',
-	#tag : 'DeadCode'
+	#name : #MiDeadCodeJavaInitializerHeuristic,
+	#superclass : #MiDeadCodeAbstractJavaHeuristic,
+	#category : #'MooseIDE-Dependency-DeadCode'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiDeadCodeJavaInitializerHeuristic >> description [
 
 	^super description ,
 	'Initialization block in Java are assumed not dead'
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiDeadCodeJavaInitializerHeuristic >> name [
 
 	^super name , 'Initialization block'
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 MiDeadCodeJavaInitializerHeuristic >> notDead: aTMethod [
 
 	^aTMethod name = '<Initializer>'

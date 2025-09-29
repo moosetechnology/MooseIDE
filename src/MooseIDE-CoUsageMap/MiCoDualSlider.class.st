@@ -2,8 +2,8 @@
 slider with two handles representing a min and a max on a scale
 "
 Class {
-	#name : 'MiCoDualSlider',
-	#superclass : 'MiCoAbstractSlider',
+	#name : #MiCoDualSlider,
+	#superclass : #MiCoAbstractSlider,
 	#instVars : [
 		'minValue',
 		'maxValue',
@@ -14,39 +14,37 @@ Class {
 		'getMax',
 		'setMax'
 	],
-	#category : 'MooseIDE-CoUsageMap-Sliders',
-	#package : 'MooseIDE-CoUsageMap',
-	#tag : 'Sliders'
+	#category : #'MooseIDE-CoUsageMap-Sliders'
 }
 
-{ #category : 'default values' }
+{ #category : #'default values' }
 MiCoDualSlider >> defaultMaxValue [
 	^ 0.6
 ]
 
-{ #category : 'default values' }
+{ #category : #'default values' }
 MiCoDualSlider >> defaultMinValue [
 	^ 0.4
 ]
 
-{ #category : 'examples' }
+{ #category : #examples }
 MiCoDualSlider >> example01 [
 	<script: 'self new example01 open'>
 	^ self
 	
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiCoDualSlider >> getMax: anObject [
 	getMax := anObject
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiCoDualSlider >> getMin: anObject [
 	getMin := anObject
 ]
 
-{ #category : 'highlighting' }
+{ #category : #highlighting }
 MiCoDualSlider >> highlight: evt [
 	| paint |
 	evt interaction record: evt shape selector: #paint value: evt shape paint.
@@ -57,7 +55,7 @@ MiCoDualSlider >> highlight: evt [
 	evt shape color: paint.
 ]
 
-{ #category : 'highlighting' }
+{ #category : #highlighting }
 MiCoDualSlider >> hightlightInteraction [
 	^ RSHighlightable new
 		when: RSHighlightEvent send: #highlight: to: self;
@@ -65,7 +63,7 @@ MiCoDualSlider >> hightlightInteraction [
 		yourself.
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiCoDualSlider >> initialize [
 	super initialize.
 	self
@@ -76,7 +74,7 @@ MiCoDualSlider >> initialize [
 		
 ]
 
-{ #category : 'hooks' }
+{ #category : #hooks }
 MiCoDualSlider >> maxButton [
 	^ maxButton := self newButton
 		when: RSMouseDragging send: #updateMaxValue: to: self;
@@ -84,31 +82,31 @@ MiCoDualSlider >> maxButton [
 		yourself
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiCoDualSlider >> maxValue [
 	^ maxValue
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiCoDualSlider >> maxValue: aNumber [
 	maxValue := aNumber
 ]
 
-{ #category : 'public' }
+{ #category : #public }
 MiCoDualSlider >> maxValueFromModel [
 	model ifNil: [ ^ self defaultMaxValue ].
 	getMax ifNil: [ ^ self defaultMaxValue ].
 	^ scale scale: ((model perform: getMax) roundTo: quantum).
 ]
 
-{ #category : 'public' }
+{ #category : #public }
 MiCoDualSlider >> maxValueFromModel: aNumber [
 	model ifNil: [ ^ self ].
 	setMax ifNil: [ ^ self ].
 	model perform: setMax with: ((scale invert: aNumber) roundTo: quantum)
 ]
 
-{ #category : 'hooks' }
+{ #category : #hooks }
 MiCoDualSlider >> minButton [
 	^ minButton := self newButton
 		when: RSMouseDragging send: #updateMinValue: to: self;
@@ -117,31 +115,31 @@ MiCoDualSlider >> minButton [
 		
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiCoDualSlider >> minValue [
 	^ minValue
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiCoDualSlider >> minValue: aNumber [
 	minValue := aNumber
 ]
 
-{ #category : 'public' }
+{ #category : #public }
 MiCoDualSlider >> minValueFromModel [
 	model ifNil: [ ^ 0.4 ].
 	getMin ifNil: [ ^ 0.4 ].
 	^ scale scale: ((model perform: getMin) roundTo: quantum).
 ]
 
-{ #category : 'public' }
+{ #category : #public }
 MiCoDualSlider >> minValueFromModel: aNumber [
 	model ifNil: [ ^ self ].
 	setMin ifNil: [ ^ self ].
 	model perform: setMin with: ((scale invert: aNumber) roundTo: quantum)
 ]
 
-{ #category : 'hooks' }
+{ #category : #hooks }
 MiCoDualSlider >> newButton [
 	| size paint |
 	paint := self backPaint.
@@ -157,7 +155,7 @@ MiCoDualSlider >> newButton [
 		yourself
 ]
 
-{ #category : 'hooks' }
+{ #category : #hooks }
 MiCoDualSlider >> renderIn: aCanvas [
 	aCanvas 
 		color: Color transparent;
@@ -178,7 +176,7 @@ MiCoDualSlider >> renderIn: aCanvas [
 		
 ]
 
-{ #category : 'events' }
+{ #category : #events }
 MiCoDualSlider >> resizeSlider: evt [
 	| extent w h minPoint maxPoint canvasScale |
 	extent := evt canvas extent.
@@ -200,22 +198,22 @@ MiCoDualSlider >> resizeSlider: evt [
 	
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiCoDualSlider >> setMax: anObject [
 	setMax := anObject
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiCoDualSlider >> setMin: anObject [
 	setMin := anObject
 ]
 
-{ #category : 'highlighting' }
+{ #category : #highlighting }
 MiCoDualSlider >> unhighlight: evt [
 	evt interaction restore: evt shape selector: #paint.
 ]
 
-{ #category : 'events' }
+{ #category : #events }
 MiCoDualSlider >> updateCloserPoint: evt [
 	| dist1 dist2 button |
 	dist1 := evt position distanceTo: minButton position.
@@ -231,7 +229,7 @@ MiCoDualSlider >> updateCloserPoint: evt [
 	evt signalUpdate.
 ]
 
-{ #category : 'events' }
+{ #category : #events }
 MiCoDualSlider >> updateMaxValue: evt [
 	| newValue w |
 	w := evt canvas extent x - self lineGap.
@@ -242,12 +240,12 @@ MiCoDualSlider >> updateMaxValue: evt [
 	evt signalUpdate.
 ]
 
-{ #category : 'events' }
+{ #category : #events }
 MiCoDualSlider >> updateMaxValueUp: evt [
 	self maxValueFromModel: maxValue.
 ]
 
-{ #category : 'events' }
+{ #category : #events }
 MiCoDualSlider >> updateMinValue: evt [
 	| newValue w |
 	w := evt canvas extent x - self lineGap.
@@ -259,12 +257,12 @@ MiCoDualSlider >> updateMinValue: evt [
 	evt signalUpdate.
 ]
 
-{ #category : 'events' }
+{ #category : #events }
 MiCoDualSlider >> updateMinValueUp: evt [
 	self minValueFromModel: minValue.
 ]
 
-{ #category : 'update' }
+{ #category : #update }
 MiCoDualSlider >> updateValue [
 	minValue := self minValueFromModel.
 	maxValue := self maxValueFromModel.

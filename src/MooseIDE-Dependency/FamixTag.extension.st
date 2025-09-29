@@ -1,6 +1,6 @@
-Extension { #name : 'FamixTag' }
+Extension { #name : #FamixTag }
 
-{ #category : '*MooseIDE-Dependency' }
+{ #category : #'*MooseIDE-Dependency' }
 FamixTag >> isApplicableTo: anEntity [
 
 	^ self taggedEntities anySatisfy: [ :e | e = anEntity ]

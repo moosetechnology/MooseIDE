@@ -2,33 +2,31 @@
 Utility class to add a dual slider (slider with two handles representing a min and a max on a scale)
 "
 Class {
-	#name : 'MiCoDualRangeSettingDeclaration',
-	#superclass : 'RangeSettingDeclaration',
+	#name : #MiCoDualRangeSettingDeclaration,
+	#superclass : #RangeSettingDeclaration,
 	#instVars : [
 		'dual',
 		'leftText',
 		'rightText'
 	],
-	#category : 'MooseIDE-CoUsageMap-Settings',
-	#package : 'MooseIDE-CoUsageMap',
-	#tag : 'Settings'
+	#category : #'MooseIDE-CoUsageMap-Settings'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiCoDualRangeSettingDeclaration >> dmaxValue: aValue [
 	self maxValue: aValue.
 	dual updateValue.
 	self updateText: rightText.
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiCoDualRangeSettingDeclaration >> dminValue: aValue [
 	self minValue: aValue.
 	dual updateValue.
 	self updateText: leftText.
 ]
 
-{ #category : 'user interface' }
+{ #category : #'user interface' }
 MiCoDualRangeSettingDeclaration >> inputWidget [
 	| slider |
 	dual := MiCoDualSlider new
@@ -80,12 +78,12 @@ MiCoDualRangeSettingDeclaration >> inputWidget [
 		yourself
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiCoDualRangeSettingDeclaration >> maxValue [
 	^ self realValue last
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiCoDualRangeSettingDeclaration >> maxValue: aValue [
 	aValue
 		ifNil: [self settingReceiver perform: self setSelector with: nil]
@@ -97,12 +95,12 @@ MiCoDualRangeSettingDeclaration >> maxValue: aValue [
 				with: (minVal to: maxVal)].
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiCoDualRangeSettingDeclaration >> minValue [
 	^ self realValue first
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiCoDualRangeSettingDeclaration >> minValue: aValue [
 	aValue
 		ifNil: [self settingReceiver perform: self setSelector with: nil]
@@ -114,21 +112,21 @@ MiCoDualRangeSettingDeclaration >> minValue: aValue [
 				with: (minVal to: maxVal)].
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiCoDualRangeSettingDeclaration >> smaxValue: aValue [
 	self maxValue: aValue.
 	rightText updateTextWith: rightText getTextFromModel
 
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiCoDualRangeSettingDeclaration >> sminValue: aValue [
 	self minValue: aValue.
 	leftText updateTextWith: leftText getTextFromModel
 
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiCoDualRangeSettingDeclaration >> updateText: text [
 	| string |
 	string := text getTextFromModel.

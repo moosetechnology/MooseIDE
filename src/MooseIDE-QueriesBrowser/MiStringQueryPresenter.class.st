@@ -2,14 +2,12 @@
 A query configuration presenter for the `FQStringQuery`
 "
 Class {
-	#name : 'MiStringQueryPresenter',
-	#superclass : 'MiPropertyQueryPresenter',
-	#category : 'MooseIDE-QueriesBrowser-Configuration presenters',
-	#package : 'MooseIDE-QueriesBrowser',
-	#tag : 'Configuration presenters'
+	#name : #MiStringQueryPresenter,
+	#superclass : #MiPropertyQueryPresenter,
+	#category : #'MooseIDE-QueriesBrowser-Configuration presenters'
 }
 
-{ #category : 'api - actions' }
+{ #category : #'api - actions' }
 MiStringQueryPresenter >> configureFor: aQuery [
 
 	super configureFor: aQuery.
@@ -18,20 +16,20 @@ MiStringQueryPresenter >> configureFor: aQuery [
 	valueInputField text: aQuery valueToCompare
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 MiStringQueryPresenter >> configureQuery: pattern [
 
 	self query valueToCompare: pattern
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiStringQueryPresenter >> initializePresenters [
 
 	super initializePresenters.
 	self initializeLayout
 ]
 
-{ #category : 'layout' }
+{ #category : #layout }
 MiStringQueryPresenter >> newLayout [
 
 	| padding |
@@ -52,7 +50,7 @@ MiStringQueryPresenter >> newLayout [
 		  yourself
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiStringQueryPresenter >> newValueInputField [
 
 	^ self newTextInput

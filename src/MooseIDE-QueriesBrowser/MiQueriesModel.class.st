@@ -1,63 +1,61 @@
 Class {
-	#name : 'MiQueriesModel',
-	#superclass : 'MiAbstractModel',
+	#name : #MiQueriesModel,
+	#superclass : #MiAbstractModel,
 	#instVars : [
 		'entities',
 		'rootQuery',
 		'selectedQuery'
 	],
-	#category : 'MooseIDE-QueriesBrowser-Model',
-	#package : 'MooseIDE-QueriesBrowser',
-	#tag : 'Model'
+	#category : #'MooseIDE-QueriesBrowser-Model'
 }
 
-{ #category : 'actions' }
+{ #category : #actions }
 MiQueriesModel >> clearQueries [
 
 	self rootQuery children removeAll.
 	self selectedQuery: self rootQuery
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiQueriesModel >> entities [
 
 	^ entities ifNil: [ #(  ) ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiQueriesModel >> entities: anObject [
 
 	entities := anObject
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 MiQueriesModel >> hasSettings [
 
 	^ false
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiQueriesModel >> initialize [
 
 	rootQuery := FQRootQuery new.
 	selectedQuery := rootQuery
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiQueriesModel >> miSelectedItem [
 
 	entities ifNotNil: [ ^ entities ].
 	^ self selectedQueryResult
 ]
 
-{ #category : 'brokerage' }
+{ #category : #brokerage }
 MiQueriesModel >> queriesOfType: aFamixQueryClass [
 
 	^ self rootQuery allChildren select: [ :query |
 		  query isKindOf: aFamixQueryClass ]
 ]
 
-{ #category : 'removing' }
+{ #category : #removing }
 MiQueriesModel >> removeChild: childToRemove fromParent: aParent [
 
 	(aParent children includes: childToRemove) ifTrue: [ 
@@ -67,19 +65,19 @@ MiQueriesModel >> removeChild: childToRemove fromParent: aParent [
 		self removeChild: childToRemove fromParent: aChild ]
 ]
 
-{ #category : 'removing' }
+{ #category : #removing }
 MiQueriesModel >> removeQuery: aQuery [
 
 	self removeChild: aQuery fromParent: self rootQuery
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiQueriesModel >> resetEntities [
 
 	entities := nil
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiQueriesModel >> resetRootQueryForEntities: receivedEntities [
 
 	self rootQuery
@@ -91,32 +89,32 @@ MiQueriesModel >> resetRootQueryForEntities: receivedEntities [
 	self selectedQuery: self rootQuery
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiQueriesModel >> rootQuery [
 
 	^ rootQuery
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiQueriesModel >> selectEntities: aMooseObject [
 
 	aMooseObject isMooseEntity ifTrue: [ entities := aMooseObject ].
 	aMooseObject isEmpty ifFalse: [ entities := aMooseObject ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiQueriesModel >> selectedQuery [
 
 	^ selectedQuery ifNil: [ selectedQuery := rootQuery ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiQueriesModel >> selectedQuery: anObject [
 
 	selectedQuery := anObject
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiQueriesModel >> selectedQueryResult [
 
 	^ selectedQuery result

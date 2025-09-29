@@ -4,18 +4,16 @@ I am a class that holds the information of the tree of a query. Tree means all t
 I am used to help the sorting of the queries.
 "
 Class {
-	#name : 'TreeQueryHolder',
-	#superclass : 'Object',
+	#name : #TreeQueryHolder,
+	#superclass : #Object,
 	#instVars : [
 		'tree',
 		'index'
 	],
-	#category : 'MooseIDE-QueriesBrowser-Commands',
-	#package : 'MooseIDE-QueriesBrowser',
-	#tag : 'Commands'
+	#category : #'MooseIDE-QueriesBrowser-Commands'
 }
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 TreeQueryHolder class >> tree: aCollection index: anIndex [
 
 	^ self new
@@ -24,31 +22,31 @@ TreeQueryHolder class >> tree: aCollection index: anIndex [
 		yourself
 ]
 
-{ #category : 'adding' }
+{ #category : #adding }
 TreeQueryHolder >> addQuery: aQuery [
 
 	^ tree add: aQuery
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 TreeQueryHolder >> index [
 
 	^ index
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 TreeQueryHolder >> index: anObject [
 
 	index := anObject
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 TreeQueryHolder >> tree [
 
 	^ tree
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 TreeQueryHolder >> tree: anObject [
 
 	tree := anObject
