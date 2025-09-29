@@ -98,6 +98,12 @@ MiModelsBrowser class >> title [
 	^ 'Models browser'
 ]
 
+{ #category : #accessing }
+MiModelsBrowser >> allModels [
+
+	^specModel entities
+]
+
 { #category : #'window control' }
 MiModelsBrowser >> browserClosed [
 
@@ -136,18 +142,13 @@ MiModelsBrowser >> followEntity: anEntity [
 { #category : #actions }
 MiModelsBrowser >> handleDropFile: aFileReference [
 
-	self model autoImportSetting
+	self specModel modelImportIsAutomatic
 		ifTrue: [
 		self importFromFileUI handleDropFileAndImport: aFileReference ]
 		ifFalse: [
-			self importFromFileUI
-				openDialog;
-				handleDropFile: aFileReference ]
-]
-
-{ #category : #testing }
-MiModelsBrowser >> hasSettings [
-	^ true
+				self importFromFileUI
+					openDialog;
+					handleDropFile: aFileReference ]
 ]
 
 { #category : #accessing }
@@ -181,8 +182,8 @@ MiModelsBrowser >> initializeList [
 				 evaluated: [ :model | model entities size asString ];
 				 beSortable;
 				 yourself);
-		contextMenu: [
-		(self class buildModelCommandsGroupWith: self) asMenuPresenter ];
+		contextMenu: [specModel selected ifNotNil: [  
+		(self class buildModelCommandsGroupWith: self) asMenuPresenter ]];
 		whenSelectionChangedDo: [ :selected |
 		specModel selected: selected selectedItem ];
 		activateOnDoubleClick;
@@ -246,17 +247,6 @@ MiModelsBrowser >> selectAModelIfPossible [
 
 	specModel entities ifNotEmpty: [ :list |
 		modelFilteringList selectItem: list first ]
-]
-
-{ #category : #'accessing - tests' }
-MiModelsBrowser >> settingsItem [
-	^ specModel settings
-]
-
-{ #category : #accessing }
-MiModelsBrowser >> specModel [
-
-	^ specModel 
 ]
 
 { #category : #updating }

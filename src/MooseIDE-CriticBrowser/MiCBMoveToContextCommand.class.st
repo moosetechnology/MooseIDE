@@ -10,11 +10,11 @@ Class {
 { #category : #'instance creation' }
 MiCBMoveToContextCommand class >> availableContextsIn: aPresenter [
 
-	^ { aPresenter model rootContext }
-	  , (aPresenter model ruleComponents select: [ :component |
-			   component isCBContext and: [
-				   component ~= aPresenter selectedRule and: [
-					   (component allParents includes: aPresenter selectedRule) not ] ] ])
+	^ { aPresenter specModel rootContext }
+	  , (aPresenter specModel ruleComponents select: [ :component |
+				   component isCBContext and: [
+						   component ~= aPresenter selectedRule and: [
+							   (component allParents includes: aPresenter selectedRule) not ] ] ])
 ]
 
 { #category : #default }

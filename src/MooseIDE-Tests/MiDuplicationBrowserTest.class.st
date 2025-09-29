@@ -97,21 +97,14 @@ MiDuplicationBrowserTest >> sourceCode: lineInterval [
 { #category : #'tests - actions' }
 MiDuplicationBrowserTest >> testFollowEntity [
 
-	self assertEmpty: browser model entities.
+	self assertEmpty: browser specModel entities.
 
-	browser followEntity: { 
+	browser followEntity: {
 			(self method: 'method1').
 			(self method: 'method2') }.
 
-	self assert: browser model entities size equals: 2
-]
-
-{ #category : #tests }
-MiDuplicationBrowserTest >> testFormatReplicatedFragment [
-
-	self
-		assert: (self replicatedFragment formatForDuplicationBrowser)
-		equals: '2x3:"Goodness, what big ey...'
+	self assert: browser specModel entities size equals: 2.
+	self assert: browser lstEntities items first name equals: 'method1'
 ]
 
 { #category : #tests }
@@ -122,25 +115,33 @@ MiDuplicationBrowserTest >> testMiSelectedItem [
 		            (self method: 'method1').
 		            (self method: 'method2') } asMooseGroup.
 
-	browser model entities: entities.
+	browser specModel entities: entities.
 
 	self denyEmpty: browser miSelectedItem.
 	self assert: browser canPropagate.
 
-	browser model selectEntities: entities.
+	browser specModel selectEntities: entities.
 	self assert: browser miSelectedItem size equals: 2.
 	self assert: browser canPropagate
+]
+
+{ #category : #tests }
+MiDuplicationBrowserTest >> testReplicatedFragmentDisplayString [
+
+	self
+		assert: self replicatedFragment displayString
+		equals: '2x3:"Goodness, what big ey...'
 ]
 
 { #category : #tests }
 MiDuplicationBrowserTest >> testSelectEntity [
 	"issue https://github.com/moosetechnology/MooseIDE/issues/655"
 
-	browser model entities: { 
-		(self method: 'method1').
-		(self method: 'method2') } asMooseGroup.
+	browser specModel entities: {
+			(self method: 'method1').
+			(self method: 'method2') } asMooseGroup.
 
-	self shouldnt: (browser lstEntities selectIndex: 1) raise: Error.
+	self shouldnt: (browser lstEntities selectIndex: 1) raise: Error
 ]
 
 { #category : #'tests - tags' }
@@ -174,12 +175,12 @@ MiDuplicationBrowserTest >> testShowEntities [
 
 	self assertEmpty: browser lstEntities items.
 
-	browser showEntities: { 
+	browser stub.
+	browser followEntity: {
 			(self method: 'method1').
 			(self method: 'method2') }.
 
-	self assert: browser lstEntities items size equals: 2.
-	self assert: browser lstEntities items first name equals: 'method1'
+	browser should receive showEntities
 ]
 
 { #category : #tests }
@@ -194,9 +195,10 @@ MiDuplicationBrowserTest >> testShowReplicas [
 
 { #category : #tests }
 MiDuplicationBrowserTest >> testShowReplicatedFragments [
+
 	| fragment |
 	fragment := self replicatedFragment.
-	browser model replicatedFragmentsHierarchy
+	browser specModel replicatedFragmentsHierarchy
 		at: fragment
 		put: #(  ).
 
@@ -217,7 +219,7 @@ MiDuplicationBrowserTest >> testUpdateStatusBar [
 		equals:
 		'Searched entities: 0 | Number of clones: 0 | Entities with clones: 0 | Selected entities: 0 | Selected clones: 0'.
 
-	browser followEntity: { 
+	browser followEntity: {
 			(self method: 'method1').
 			(self method: 'method2') }.
 	self
@@ -226,14 +228,16 @@ MiDuplicationBrowserTest >> testUpdateStatusBar [
 		'Searched entities: 2 | Number of clones: 0 | Entities with clones: 0 | Selected entities: 0 | Selected clones: 0'.
 	fragment := self replicatedFragment.
 
-	browser model replicatedFragmentsHierarchy at: fragment put: #(  ).
+	browser specModel replicatedFragmentsHierarchy
+		at: fragment
+		put: #(  ).
 	browser updateStatusBar.
 	self
 		assert: browser statusBarText
 		equals:
 		'Searched entities: 2 | Number of clones: 1 | Entities with clones: 2 | Selected entities: 0 | Selected clones: 0'.
 
-	browser model fragmentsSelection: { fragment }.
+	browser specModel fragmentsSelection: { fragment }.
 	self
 		assert: browser updateStatusBar
 		equals:

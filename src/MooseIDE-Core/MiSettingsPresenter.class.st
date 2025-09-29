@@ -1,193 +1,83 @@
 Class {
 	#name : #MiSettingsPresenter,
-	#superclass : #SpPresenter,
+	#superclass : #MiPresenter,
 	#instVars : [
-		'ownerTool',
-		'settingItems',
-		'btnCancel',
-		'btnOk',
-		'btnReset',
-		'settingsChanged'
+		'browserModel',
+		'configuration'
 	],
 	#category : #'MooseIDE-Core-Settings'
 }
 
-{ #category : #'instance creation' }
-MiSettingsPresenter class >> owner: aMiSpecModel [
+{ #category : #visiting }
+MiSettingsPresenter >> acceptChanges [
 
-	^ self new
-		  ownerTool: aMiSpecModel;
-		  yourself
+	browserModel updateFromConfiguration: configuration
 ]
 
-{ #category : #accessing }
-MiSettingsPresenter >> addItem: anItem named: aName [
+{ #category : #adding }
+MiSettingsPresenter >> addPresenter: aPresenter inBuilder: aBuilder [
 
-	anItem owner: self.
-	settingItems at: aName put: anItem
-]
-
-{ #category : #'instance creation' }
-MiSettingsPresenter >> buildPresenter [
-	self layout
-]
-
-{ #category : #'accessing - tests' }
-MiSettingsPresenter >> buttonCancel [
-
-	^ btnCancel
-]
-
-{ #category : #'accessing - tests' }
-MiSettingsPresenter >> buttonOk [
-
-	^ btnOk
-]
-
-{ #category : #'accessing - tests' }
-MiSettingsPresenter >> buttonReset [
-
-	^ btnReset
-]
-
-{ #category : #actions }
-MiSettingsPresenter >> closeSettings [
-	self window close.
-	ownerTool settingsChanged: settingsChanged 
-]
-
-{ #category : #actions }
-MiSettingsPresenter >> confirmItems [
-
-	settingItems valuesDo: [ :item | item confirmValue ].
-	settingsChanged := true
-]
-
-{ #category : #initialization }
-MiSettingsPresenter >> connectPresenters [
-
-	btnOk action: [ 
-		self confirmItems.
-		self closeSettings ].
-	btnCancel action: [ 
-		self resetItems.
-		self closeSettings ].
-	btnReset action: [ self resetItems ]
+	aBuilder
+		add: aPresenter labelPresenter;
+		add: aPresenter;
+		nextRow
 ]
 
 { #category : #layout }
 MiSettingsPresenter >> defaultLayout [
 
-	| tmpLayout tmpLayout2 |
-	tmpLayout := SpBoxLayout newTopToBottom
-		             spacing: self itemSpacing;
-		             vAlignCenter;
-		             yourself.
-	settingItems valuesDo: [ :item | 
-		tmpLayout add: item buildLayout expand: false ].
-	tmpLayout2 := SpBoxLayout newLeftToRight
-		              add: btnCancel;
-		              add: btnReset;
-		              add: btnOk;
-		              yourself.
-	^ SpBoxLayout newTopToBottom
-		  add: (SpScrollableLayout new child: tmpLayout);
-		  add: tmpLayout2 expand: false;
+	^ self newGridLayout
+		  beColumnNotHomogeneous;
+		  column: 2 expand: false;
 		  yourself
 ]
 
-{ #category : #accessing }
-MiSettingsPresenter >> getItemValue: aString [
-
-	^ (self itemNamed: aString) getValue
-]
-
-{ #category : #'morphic ui' }
-MiSettingsPresenter >> initialExtent [
-
-	^ 470 @ ((10 min: settingItems size) + 1 * self settingItemHeight
-	   + (settingItems size - 1 * self itemSpacing))
-]
-
 { #category : #initialization }
-MiSettingsPresenter >> initialize [
+MiSettingsPresenter >> initializeDialogWindow: aSpDialogWindowPresenter [
 
-	super initialize.
-	settingItems := OrderedDictionary new.
-	settingsChanged := false
+	super initializeDialogWindow: aSpDialogWindowPresenter.
+
+	aSpDialogWindowPresenter initialExtent: browserModel settingsPresenterExtent.
+	aSpDialogWindowPresenter toolbar: self toolbar.
+
+	aSpDialogWindowPresenter okAction: [ self acceptChanges ]
 ]
 
 { #category : #initialization }
 MiSettingsPresenter >> initializePresenters [
 
-	btnReset := self newButton label: 'Reset'.
-	btnCancel := self newButton label: 'Cancel'.
-	btnOk := self newButton label: 'Ok'
+	self layout build: [ :builder |
+			configuration settingsPresenters do: [ :presenterClass |
+				self addPresenter: presenterClass inBuilder: builder ] ]
 ]
 
 { #category : #initialization }
-MiSettingsPresenter >> initializeWindow: aWindowPresenter [
+MiSettingsPresenter >> resetToDefault [
 
-	super initializeWindow: aWindowPresenter.
-	aWindowPresenter title: ownerTool toolName , ' settings'
+	configuration := browserModel defaultConfiguration.
+	self initializePresenters
+]
+
+{ #category : #'accessing - model' }
+MiSettingsPresenter >> setModelBeforeInitialization: aSpecModel [
+
+	browserModel := aSpecModel.
+	configuration := aSpecModel currentConfiguration
 ]
 
 { #category : #accessing }
-MiSettingsPresenter >> itemNamed: aName [
-	^settingItems at: aName ifAbsent: [ MiNoSuchSettingItem signal ]
+MiSettingsPresenter >> toolbar [
+
+	^ self newToolbar addItemRight: (self newToolbarButton
+			   action: [ self resetToDefault ];
+			   label: 'Reset';
+			   help: 'Restore all settings to default values';
+			   icon: (self iconNamed: #smallUpdate);
+			   yourself)
 ]
 
 { #category : #accessing }
-MiSettingsPresenter >> itemSpacing [
+MiSettingsPresenter >> windowTitle [
 
-	^ 2
-]
-
-{ #category : #'instance creation' }
-MiSettingsPresenter >> open [
-
-	self buildPresenter.
-	settingsChanged := false.
-	super open
-]
-
-{ #category : #accessing }
-MiSettingsPresenter >> ownerTool [
-
-	^ ownerTool
-]
-
-{ #category : #accessing }
-MiSettingsPresenter >> ownerTool: anObject [
-
-	ownerTool := anObject
-]
-
-{ #category : #actions }
-MiSettingsPresenter >> resetItems [
-
-	settingItems valuesDo: [ :item | item resetValue ]
-]
-
-{ #category : #accessing }
-MiSettingsPresenter >> setItem: itemName value: aValue [ 
-	
-	(self itemNamed: itemName) setValue: aValue
-]
-
-{ #category : #accessing }
-MiSettingsPresenter >> settingItemHeight [
-
-	^ self class toolbarHeight + 10
-]
-
-{ #category : #'accessing - tests' }
-MiSettingsPresenter >> settingItems [
-
-	^ settingItems
-]
-
-{ #category : #accessing }
-MiSettingsPresenter >> settingsChanged [
-	^settingsChanged
+	^ browserModel toolName , ' settings'
 ]

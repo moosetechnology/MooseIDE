@@ -17,30 +17,27 @@ MiNAryQueryPresenterTest >> classToTest [
 	^ MiNAryQueryPresenter
 ]
 
-{ #category : #tests }
+{ #category : #running }
 MiNAryQueryPresenterTest >> configureInnerQueries [
 
-	| rootQuery query1 query2 query3 |
-
-	rootQuery := FQRootQuery new
-		             input: helper classesAndMethods;
-		             yourself.
-	query1 := FQStringQuery defaultForParent: rootQuery.
+	| query1 query2 query3 |
+	browser followEntity: helper classesAndMethods.
+	query1 := FQStringQuery defaultForParent: browser rootQuery.
 	query1
 		property: #name;
 		comparator: #includesSubstring:;
 		valueToCompare: 'a'.
 
-	query2 := FQScopeQuery defaultForParent: rootQuery.
+	query2 := FQScopeQuery defaultForParent: browser rootQuery.
 	query2
 		directionStrategy: FQScopeUpAndDown;
 		scope: FamixStClass.
 
-	query3 := FQBooleanQuery defaultForParent: rootQuery.
+	query3 := FQBooleanQuery defaultForParent: browser rootQuery.
 	query3 property: #isStub.
 
 	"Add the queries to the browser"
-	browser queriesListPresenter
+	queriesListPresenter
 		addNewFirstLevelQuery;
 		addNewFirstLevelQuery;
 		addNewFirstLevelQuery.
@@ -48,7 +45,7 @@ MiNAryQueryPresenterTest >> configureInnerQueries [
 		query1.
 		query2.
 		query3 }
-		with: browser queriesListPresenter queryItemsPresenters
+		with: queriesListPresenter queryItemsPresenters
 		do: [ :a :b | b configureFor: a ].
 	^ {
 		  query1.
@@ -65,10 +62,10 @@ MiNAryQueryPresenterTest >> createNewQuery [
 { #category : #running }
 MiNAryQueryPresenterTest >> createUnconfiguredQuery [
 
-	| builder superPresenter |
-	builder := browser queriesListPresenter addNewFirstLevelQuery.
+	| superPresenter |
+	queriesListPresenter addNewFirstLevelQuery.
 
-	superPresenter := builder componentList items last.
+	superPresenter := queriesListPresenter componentList items last.
 	superPresenter queryTypesDropList selectItem: self queryClass.
 
 	presenter := superPresenter queryConfiguratorPresenter
@@ -83,11 +80,9 @@ MiNAryQueryPresenterTest >> queryClass [
 { #category : #running }
 MiNAryQueryPresenterTest >> resetPresenterWithEntities: aMooseGroup [
 
-	browser := MiQueriesBrowser
-		           newApplication: self application
-		           model: (FQRootQuery new
-				            input: aMooseGroup;
-				            yourself).
+	queriesListPresenter reinitializeQueryPresenters.
+	browser followEntity: aMooseGroup.
+
 	self configureInnerQueries.
 
 	self createUnconfiguredQuery

@@ -129,6 +129,15 @@ MiCoUsageMapBrowserTest >> testBlockSettingsResetValues [
 		settings delete ]
 ]
 
+{ #category : #'tests - settings' }
+MiCoUsageMapBrowserTest >> testCanOpenSettings [
+
+	browser hasSettings ifFalse: [ ^ self skip ].
+
+	"This should not raise an error"
+	settingsWindow := browser openSettings
+]
+
 { #category : #tests }
 MiCoUsageMapBrowserTest >> testConsumerProducer [
 	self assert: ((browser application consumersOf: FamixTag) 

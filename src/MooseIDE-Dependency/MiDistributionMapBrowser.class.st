@@ -80,7 +80,7 @@ MiDistributionMapBrowser class >> title [
 { #category : #adding }
 MiDistributionMapBrowser >> addDynamicTags: aCollection [
 
-	aCollection do: [ :dt | self model addDynamicTag: dt ].
+	aCollection do: [ :dt | self specModel addDynamicTag: dt ].
 	"settings refreshTagList"
 ]
 
@@ -91,7 +91,7 @@ MiDistributionMapBrowser >> availableQueries [
 		  select: [ :q | q isValid ]
 ]
 
-{ #category : #initialization }
+{ #category : #'window control' }
 MiDistributionMapBrowser >> browserClosed [
 
 	super browserClosed.
@@ -102,33 +102,29 @@ MiDistributionMapBrowser >> browserClosed [
 MiDistributionMapBrowser >> canFollowEntity: aCollection [
 
 	| uniqType confirm |
-	aCollection isCollection ifFalse: [ ^false ].
+	aCollection isCollection ifFalse: [ ^ false ].
 
 	"for example, this allows to open on an empty collection
 	 (to propagate entities later)"
-	aCollection ifEmpty: [ ^true ].
+	aCollection ifEmpty: [ ^ true ].
 
-	(aCollection size > self model tooManyEntities)
-		ifTrue: [ 
-			confirm := UIManager default
-				confirm: 'DistributionMap uses an algorithm in O^2.
+	aCollection size > self specModel tooManyEntities ifTrue: [
+			confirm := UIManager default confirm:
+				           'DistributionMap uses an algorithm in O^2.
 Propagating many entities to it will result in lengthy computation.
 Are you sure you want to continue ?'.
-			confirm ifFalse: [ ^false ]
-	].
+			confirm ifFalse: [ ^ false ] ].
 
 	uniqType := aCollection anyOne class.
-	(aCollection allSatisfy: [ :e | (e class = uniqType) ])
-		ifFalse: [
-			confirm := UIManager default
-				confirm: 'DistributionMap is intend to work on _one_ kind of entity (and their direct ''children'').
+	(aCollection allSatisfy: [ :e | e class = uniqType ]) ifFalse: [
+			confirm := UIManager default confirm:
+				           'DistributionMap is intend to work on _one_ kind of entity (and their direct ''children'').
 You are propagating several different kinds of entities.
 Are you sure you want to continue ?
 (That might result in unecessary lengthy computation)'.
-			confirm ifFalse: [ ^false ]
-		].
+			confirm ifFalse: [ ^ false ] ].
 
-	^true
+	^ true
 ]
 
 { #category : #testing }
@@ -147,14 +143,10 @@ MiDistributionMapBrowser >> canvas [
 MiDistributionMapBrowser >> followEntity: anEntity [
 
 	super followEntity: anEntity.
-	specModel entities: anEntity asMooseGroup.
+	specModel
+		entities: anEntity asMooseGroup;
+		initializeSettings.
 	self runVisualization
-]
-
-{ #category : #testing }
-MiDistributionMapBrowser >> hasSettings [
-
-	^ true
 ]
 
 { #category : #initialization }

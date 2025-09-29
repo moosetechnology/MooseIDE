@@ -9,9 +9,9 @@ Class {
 	#name : #MiSourceTextSpecRenderer,
 	#superclass : #SpTextPresenter,
 	#instVars : [
-		'model',
 		'formatedText',
-		'sourceAnchorAdapter'
+		'sourceAnchorAdapter',
+		'specModel'
 	],
 	#category : #'MooseIDE-Famix-SourceText'
 }
@@ -46,24 +46,33 @@ MiSourceTextSpecRenderer >> applyIdentifierHighlight: aHighlight [
 		from: aHighlight from
 		to: aHighlight to ;
 
-		addAttribute: TextEmphasis italic
+		"addAttribute: TextEmphasis italic
 		from: aHighlight from
-		to: aHighlight to ;
+		to: aHighlight to ;"
 		
-		addAttribute: TextEmphasis bold
+		"addAttribute: TextEmphasis bold
 		from: aHighlight from
-		to: aHighlight to ;
+		to: aHighlight to ;"
 
 		addAttribute:
 			(TextDoIt new actOnClickBlock: [ :ignored :event |
 				self event: event selectedEntity: aHighlight highlightedEntity ])
 		from: aHighlight from
-		to: aHighlight to ;
+		to: aHighlight to ";"
 
-		addAttribute: TextColor black
+		"addAttribute: TextColor black
 		from: aHighlight from
-		to: aHighlight to.
+		to: aHighlight to"
 
+]
+
+{ #category : #formatting }
+MiSourceTextSpecRenderer >> applyKeywordHighlight: aHighlight [
+
+	formatedText 
+		addAttribute: TextColor magenta
+		from: aHighlight from
+		to: aHighlight to
 ]
 
 { #category : #formatting }
@@ -89,7 +98,7 @@ MiSourceTextSpecRenderer >> clearFormating [
 { #category : #actions }
 MiSourceTextSpecRenderer >> event: anEvent selectedEntity: anEntity [
 
-	model event: anEvent selectedEntity: anEntity.
+	specModel event: anEvent selectedEntity: anEntity.
 	self inform: 'Selected entity: ' , anEntity asString
 ]
 
@@ -106,16 +115,6 @@ MiSourceTextSpecRenderer >> initialize [
 	sourceAnchorAdapter := MiSourceTextNullAdapter new
 ]
 
-{ #category : #accessing }
-MiSourceTextSpecRenderer >> model [
-	^model
-]
-
-{ #category : #accessing }
-MiSourceTextSpecRenderer >> model: aSourceTextModel [
-	model := aSourceTextModel
-]
-
 { #category : #rendering }
 MiSourceTextSpecRenderer >> reRenderText [
 	"Apply highlights if needed
@@ -123,20 +122,18 @@ MiSourceTextSpecRenderer >> reRenderText [
 
 	self clearFormating.
 
-	model highlights do: [ :hlght |
-		hlght adaptSourceAnchorWith: self sourceAnchorAdapter.
-		hlght hasInterval ifTrue: [ hlght applyTo: self ]	
-	].
+	specModel highlights do: [ :hlght |
+			hlght adaptSourceAnchorWith: self sourceAnchorAdapter.
+			hlght hasInterval ifTrue: [ hlght applyTo: self ] ].
 
 	self clearContent.
 	self text: formatedText
-
 ]
 
 { #category : #rendering }
 MiSourceTextSpecRenderer >> renderTextFor: anEntity [
 	
-	formatedText := model displayedText asText.
+	formatedText := specModel displayedText asText.
 	sourceAnchorAdapter := MiAbstractSourceTextAnchorAdapter adapterFor: anEntity.
 	sourceAnchorAdapter initializeDisplayedText: formatedText andEntity: anEntity.
 
@@ -146,11 +143,24 @@ MiSourceTextSpecRenderer >> renderTextFor: anEntity [
 
 { #category : #initialization }
 MiSourceTextSpecRenderer >> setModelBeforeInitialization: aModel [
-	self model: aModel
+
+	self specModel: aModel
 ]
 
 { #category : #accessing }
 MiSourceTextSpecRenderer >> sourceAnchorAdapter [
 
 	^sourceAnchorAdapter
+]
+
+{ #category : #accessing }
+MiSourceTextSpecRenderer >> specModel [
+
+	^ specModel
+]
+
+{ #category : #accessing }
+MiSourceTextSpecRenderer >> specModel: anObject [
+
+	specModel := anObject
 ]

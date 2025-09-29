@@ -30,21 +30,45 @@ Class {
 	#instVars : [
 		'mooseModelsList',
 		'selected',
-		'settings'
+		'shouldFilterStubs',
+		'shouldCreateCache',
+		'modelImportIsAutomatic'
 	],
 	#category : #'MooseIDE-Meta-ModelsBrowser'
 }
+
+{ #category : #'settings management' }
+MiModelsBrowserModel class >> defaultConfiguration [
+
+	^ MiModelsSettingsConfiguration new
+		  shouldCreateCache: self defaultShouldCreateCache;
+		  filterStubs: self defaultFilterStubs;
+		  modelImportIsAutomatic: self defaultModelImportIsAutomatic;
+		  yourself
+]
+
+{ #category : #'settings management' }
+MiModelsBrowserModel class >> defaultFilterStubs [
+
+	^ true
+]
+
+{ #category : #'settings management' }
+MiModelsBrowserModel class >> defaultModelImportIsAutomatic [
+
+	^ false
+]
+
+{ #category : #'settings management' }
+MiModelsBrowserModel class >> defaultShouldCreateCache [
+
+	^ false
+]
 
 { #category : #updating }
 MiModelsBrowserModel >> allModelRootBrowser [
 
 	^ browser application allBrowsers: MiModelsBrowser
-]
-
-{ #category : #settings }
-MiModelsBrowserModel >> autoImportSetting [
-
-	^ settings getItemValue: #modelAutoImportSetting
 ]
 
 { #category : #accessing }
@@ -53,10 +77,26 @@ MiModelsBrowserModel >> availableMooseModels [
 	^ MooseModel root entities
 ]
 
+{ #category : #'settings management' }
+MiModelsBrowserModel >> currentConfiguration [
+
+	^ MiModelsSettingsConfiguration new
+		  shouldCreateCache: shouldCreateCache;
+		  filterStubs: shouldFilterStubs;
+		  modelImportIsAutomatic: modelImportIsAutomatic;
+		  yourself
+]
+
 { #category : #accessing }
 MiModelsBrowserModel >> currentMooseModel [
 
 	^ self selected
+]
+
+{ #category : #'settings management' }
+MiModelsBrowserModel >> defaultConfiguration [
+
+	^ self class defaultConfiguration
 ]
 
 { #category : #'accessing - tests' }
@@ -71,42 +111,31 @@ MiModelsBrowserModel >> entities: aList [
 	mooseModelsList := aList
 ]
 
+{ #category : #testing }
+MiModelsBrowserModel >> hasSettings [
+
+	^ true
+]
+
 { #category : #initialization }
 MiModelsBrowserModel >> initialize [
 
 	super initialize.
-	mooseModelsList := self availableMooseModels.
-
-	self initializeSettings 
+	mooseModelsList := self availableMooseModels
 ]
 
 { #category : #initialization }
-MiModelsBrowserModel >> initializeSettings [ 
+MiModelsBrowserModel >> initializeSettings [
 
-	settings := super initializeSettings.
-		
-	settings	addItem: (MiCheckboxSettingItem new
-		setValue: false ;
-		label: 'Import with cache?' ;
-		help: 'Caching entities in the model may improve some functionalities but takes time on import' ;
-		yourself)
-		named: #createWithCache.
-			
-		
-	settings addItem: (MiCheckboxSettingItem new
-		setValue: false ;
-		label: 'Automatically import drag&drop files?' ;
-		help: 'When drag & drop model from file should it be automatically imported if possible or should it just configure the import dialog' ;
-		yourself)
-		named: #modelAutoImportSetting.
+	shouldCreateCache := self class defaultShouldCreateCache.
+	shouldFilterStubs := self class defaultFilterStubs.
+	modelImportIsAutomatic := self class defaultModelImportIsAutomatic
+]
 
-	settings	addItem: (MiCheckboxSettingItem new
-		setValue: true ;
-		label: 'Filter out stubs?' ;
-		help: 'When propagating the model should it filter out the stub entities or pass them along' ;
-		yourself)
-		named: #filterStubsSetting.
+{ #category : #settings }
+MiModelsBrowserModel >> modelImportIsAutomatic [
 
+	^ modelImportIsAutomatic
 ]
 
 { #category : #accessing }
@@ -124,26 +153,24 @@ MiModelsBrowserModel >> selected: anObject [
 { #category : #accessing }
 MiModelsBrowserModel >> selectedModel [
 
-	^ self shouldFilterStubs
-		  ifTrue: [ self selected ifNotNil: [ :selectedModel | (selectedModel reject: [ :each | each isStub ]) asMooseGroup ] ]
+	^ shouldFilterStubs
+		  ifTrue: [
+				  self selected ifNotNil: [ :selectedModel |
+					  (selectedModel reject: [ :each | each isStub ]) asMooseGroup ] ]
 		  ifFalse: [ self selected ]
 ]
 
-{ #category : #'accessing - tests' }
-MiModelsBrowserModel >> settings [
-	^ settings
+{ #category : #'settings management' }
+MiModelsBrowserModel >> settingsPresenterExtent [
+	"Large extent because checkboxes are large"
+
+	^ 475 @ 250
 ]
 
 { #category : #settings }
 MiModelsBrowserModel >> shouldCreateCache [
 
-	^ settings getItemValue: #createWithCache
-]
-
-{ #category : #settings }
-MiModelsBrowserModel >> shouldFilterStubs [
-
-	^ settings getItemValue: #filterStubsSetting
+	^ shouldCreateCache
 ]
 
 { #category : #updating }
@@ -152,6 +179,14 @@ MiModelsBrowserModel >> updateForNewModel: aMooseModel [
 	self allModelRootBrowser do: [ :modelBrowser |
 		modelBrowser updateList ].
 	self selected: aMooseModel
+]
+
+{ #category : #'settings management' }
+MiModelsBrowserModel >> updateFromConfiguration: aConfiguration [
+
+	shouldCreateCache := aConfiguration shouldCreateCache.
+	shouldFilterStubs := aConfiguration filterStubs.
+	modelImportIsAutomatic := aConfiguration modelImportIsAutomatic
 ]
 
 { #category : #updating }

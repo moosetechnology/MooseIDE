@@ -23,14 +23,14 @@ MiAnalysisBrowser class >> duplicationAnalysis [
 	duplicationTag := FamixTag named: 'Duplication'.
 
 	queryBrowser := MiQueriesBrowser new.
-	queryBrowser followBus: MiApplication current defaultBus.
+	queryBrowser followBus: self currentApplication defaultBus.
 	queryBrowser queriesListPresenter constructQueries:
 		{ (FQTypeQuery types: { FamixTMethod }) }.
 
 	duplicationBrowser := MiDuplicationBrowser new.
-	duplicationBrowser followBus: MiApplication current defaultBus.
-	duplicationBrowser resetReplicas.
-	duplicationBrowser model findReplicas.
+	duplicationBrowser followBus: self currentApplication defaultBus.
+	duplicationBrowser resetDisplayedReplicas.
+	duplicationBrowser specModel findReplicas.
 	duplicationBrowser selectedTag: duplicationTag.
 	duplicationBrowser tagSelectedEntities.
 

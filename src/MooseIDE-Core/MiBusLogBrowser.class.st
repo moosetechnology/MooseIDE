@@ -122,6 +122,12 @@ MiBusLogBrowser >> getDisplayedList [
 	^list
 ]
 
+{ #category : #testing }
+MiBusLogBrowser >> hasSettings [
+
+	^ false
+]
+
 { #category : #initialization }
 MiBusLogBrowser >> initializePresenters [
 

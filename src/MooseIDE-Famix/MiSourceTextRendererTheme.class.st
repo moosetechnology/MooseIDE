@@ -26,5 +26,5 @@ MiSourceTextRendererTheme >> doesNotUnderstand: aMessage [
 { #category : #cursor }
 MiSourceTextRendererTheme >> overTextCursorFor: aTextMorph [
 
-	^Cursor normal
+	^ Cursor normal
 ]

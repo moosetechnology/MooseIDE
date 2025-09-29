@@ -26,15 +26,14 @@ MiNegationQueryPresenterTest >> classToTest [
 MiNegationQueryPresenterTest >> createNewQuery [
 
 	| rootQuery |
-
 	rootQuery := FQRootQuery new
 		             input: helper classesAndMethods;
 		             yourself.
 	queryToNegate := (FQBooleanQuery defaultForParent: rootQuery)
 		                 property: #isStub;
 		                 yourself.
-	browser queriesListPresenter addNewFirstLevelQuery.
-	browser queriesListPresenter queryItemsPresenters last configureFor:
+	queriesListPresenter addNewFirstLevelQuery.
+	queriesListPresenter queryItemsPresenters last configureFor:
 		queryToNegate.
 	^ FQComplementQuery queryToNegate: queryToNegate
 ]
@@ -48,19 +47,13 @@ MiNegationQueryPresenterTest >> queryClass [
 { #category : #running }
 MiNegationQueryPresenterTest >> resetPresenterWithEntities: aMooseGroup [
 
-	| builder superPresenter |
-
-	browser := MiQueriesBrowser
-		           newApplication: self application
-		           model: (FQRootQuery new
-				            input: aMooseGroup;
-				            yourself).
-	builder := browser instantiate: MiQueriesListPresenter on: browser.
-	builder
+	| superPresenter |
+	browser followEntity: aMooseGroup.
+	queriesListPresenter
 		addNewFirstLevelQuery;
 		addNewFirstLevelQuery;
 		addNewFirstLevelQuery.
-	superPresenter := builder componentList items third.
+	superPresenter := queriesListPresenter componentList items third.
 	superPresenter queryTypesDropList selectItem: self queryClass.
 	presenter := superPresenter queryConfiguratorPresenter
 ]

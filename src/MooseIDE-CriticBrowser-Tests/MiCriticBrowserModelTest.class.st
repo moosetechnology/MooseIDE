@@ -29,7 +29,7 @@ MiCriticBrowserModelTest >> setUp [
 
 	super setUp.
 	browser := MiCriticBrowser openForTests: self application.
-	model := browser model.
+	model := browser specModel.
 	stubCondition := FamixCBCondition
 		                 named: 'test1'
 		                 on:

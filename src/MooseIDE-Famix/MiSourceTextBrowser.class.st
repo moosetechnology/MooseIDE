@@ -1,5 +1,6 @@
 "
 Shows the source text of an entity if it has one.
+Provides some highlighting for the code (work in progress).
 
 - Accepted entities: a MooseEntity that uses FamixTSourceEntity.
 - Highlight: Nothing to do.
@@ -109,18 +110,16 @@ MiSourceTextBrowser >> followEntity: anEntity [
 	toolBarExternalEditor newEntity
 ]
 
-{ #category : #settings }
-MiSourceTextBrowser >> hasSettings [
-
-	^ true
-]
-
 { #category : #initialization }
 MiSourceTextBrowser >> initializePresenters [
 
-	toolBarExternalEditor := self instantiate: MiSourceTextToolBar on: self.
-	"self withRoassalRenderer."
-	self withSpecRenderer.
+	toolBarExternalEditor := self
+		                         instantiate: MiSourceTextToolBar
+		                         on: self.
+
+	textRenderer := self
+		                instantiate: MiSourceTextSpecRenderer
+		                on: specModel
 ]
 
 { #category : #accessing }
@@ -129,13 +128,12 @@ MiSourceTextBrowser >> miSelectedItem [
 	^ specModel selectedEntity
 ]
 
-{ #category : #initialization }
+{ #category : #showing }
 MiSourceTextBrowser >> open [
-	"redefined to change the cursor in the text morph"
+
 	super open.
-
-	textRenderer adapter widget theme: MiSourceTextRendererTheme new.
-
+	textRenderer withAdapterDo: [ :a |
+		a widgetDo: [ :w | w theme: MiSourceTextRendererTheme new ] ]
 ]
 
 { #category : #formatting }
@@ -150,17 +148,6 @@ MiSourceTextBrowser >> renderTextFor: anEntity [
 	textRenderer renderTextFor: anEntity
 ]
 
-{ #category : #settings }
-MiSourceTextBrowser >> settingsModel [
-
-	^ specModel settings
-]
-
-{ #category : #'private - testing' }
-MiSourceTextBrowser >> textRenderer [
-	^textRenderer
-]
-
 { #category : #'private - testing' }
 MiSourceTextBrowser >> toolBarExternalEditor [
 	"only for testing"
@@ -171,18 +158,4 @@ MiSourceTextBrowser >> toolBarExternalEditor [
 MiSourceTextBrowser >> toolBarExternalEditor: anObject [
 	"only for testing"
 	toolBarExternalEditor := anObject
-]
-
-{ #category : #formatting }
-MiSourceTextBrowser >> withRoassalRenderer [
-
-	self deprecated: 'RoassalRenderer is out of sync with the rest of the code'.
-
-	textRenderer := self instantiate: MiSourceTextRoassalRenderer on: specModel
-]
-
-{ #category : #formatting }
-MiSourceTextBrowser >> withSpecRenderer [
-
-	textRenderer := self instantiate: MiSourceTextSpecRenderer on: specModel
 ]

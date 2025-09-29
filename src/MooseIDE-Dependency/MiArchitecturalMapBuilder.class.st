@@ -134,11 +134,11 @@ MiArchitecturalMapBuilder >> borderFor: node [
 MiArchitecturalMapBuilder >> build [
 
 	rootNode ifNotNil: [
-		self updateWithModelSettings.
-		^ self ].
+			self updateWithModelSettings.
+			^ self ].
 	rootNode := HNode new.
 	self addTags.
-	mapModel showBusEntities ifTrue: [
+	mapModel hideReceivedEntities ifFalse: [
 		rootNode addAll: self createRootNodes ].
 	self renderIn: self container.
 	self updateWithModelSettings.
@@ -219,12 +219,6 @@ MiArchitecturalMapBuilder >> buildNodeFromTag: aTag [
 		        yourself.
 	tagNodes add: node.
 	^ node
-]
-
-{ #category : #accessing }
-MiArchitecturalMapBuilder >> childrenBlock [
-
-	^ mapModel childrenBlock
 ]
 
 { #category : #accessing }
@@ -339,7 +333,7 @@ MiArchitecturalMapBuilder >> menuItemStrategy [
 	^ MiArchitecturalMenuItemStrategy new
 ]
 
-{ #category : #accessing }
+{ #category : #hooks }
 MiArchitecturalMapBuilder >> nodeAnnouncer [
 	"plug new events here"
 
@@ -358,8 +352,7 @@ MiArchitecturalMapBuilder >> nodeAnnouncer [
 
 	baseNode
 		when: RSMouseDoubleLeftClick
-		do: [ :event |
-			mapModel perform: mapModel doubleClickSetting with: event shape ]
+		do: [ :event | mapModel doubleClickActOn: event shape ]
 		for: self.
 
 	^ baseNode announcer
@@ -403,13 +396,11 @@ MiArchitecturalMapBuilder >> parentNodeFor: anHNode [
 
 { #category : #layout }
 MiArchitecturalMapBuilder >> relayout: aGroupOfShapes parent: shape [
-	
-	shape layout ifNil: [ 
-		mapModel layoutSetting new
-			"gapSize: 10;"
-			on: aGroupOfShapes. 
-		^ self ].
-	shape layout on: aGroupOfShapes.
+
+	shape layout ifNil: [
+			mapModel layout new on: aGroupOfShapes.
+			^ self ].
+	shape layout on: aGroupOfShapes
 ]
 
 { #category : #building }
@@ -422,20 +413,12 @@ MiArchitecturalMapBuilder >> setDependencies [
 { #category : #building }
 MiArchitecturalMapBuilder >> setDependenciesForEntity: anEntity [
 
-	| associationTypes |
 	anEntity isQueryable ifFalse: [ ^ self ].
 
-	associationTypes := mapModel associationTypes.
-
-	associationTypes do: [ :at |
-		| assocs |
-		assocs := anEntity queryLocal: #in with: at.
-
-		assocs do: [ :dep |
-			(mapModel noMegaMorphic and: [
-				 dep isInvocation and: [
-					 dep candidates size > mapModel megaMorphicSize ] ]) ifFalse: [
-				self setDependency: dep forEntity: anEntity ] ] ]
+	mapModel associationTypes do: [ :associationType |
+			(anEntity queryLocal: #in with: associationType) do: [ :dependency |
+					(mapModel shouldHideDependency: dependency) ifFalse: [
+						self setDependency: dependency forEntity: anEntity ] ] ]
 ]
 
 { #category : #building }
@@ -460,18 +443,20 @@ MiArchitecturalMapBuilder >> setDependency: e forEntity: anEntity [
 MiArchitecturalMapBuilder >> tooltipOf: entity [
 
 	^ String streamContents: [ :s |
-		  s << entity miDescription.
+			  s << entity miDescription.
 
-		  entity isTag ifFalse: [
-			  entity tags ifNotEmpty: [ :tags |
-				  s << '
+			  entity isTag ifFalse: [
+					  entity tags ifNotEmpty: [ :tags |
+							  s << '
 Tags: '.
-				  tags do: [ :tag | s << tag name ] separatedBy: [ s << ', ' ] ].
-			
-			  ((nodeMooseIDDict at: entity mooseID) allChildren flatCollectAsSet: [ :child | child rawModel tags ]) ifNotEmpty: [ :tags |
-				  s << '
+							  tags do: [ :tag | s << tag name ] separatedBy: [ s << ', ' ] ].
+
+					  ((nodeMooseIDDict at: entity mooseID) allChildren
+						   flatCollectAsSet: [ :child | child rawModel tags ])
+						  ifNotEmpty: [ :tags |
+								  s << '
 Tags on children: '.
-				  tags do: [ :tag | s << tag name ] separatedBy: [ s << ', ' ] ] ] ]
+								  tags do: [ :tag | s << tag name ] separatedBy: [ s << ', ' ] ] ] ]
 ]
 
 { #category : #building }

@@ -54,8 +54,8 @@ MiAbstractVisualizationBrowser >> exportWith: roassalExporter [
 	fileName := (self class title copyReplaceAll: ' ' with: '_') uncapitalized, '.', roassalExporter extension.
 	file := UIManager default
 		        chooseForSaveFileReference: 'Chose export destination'
-		        extensions: roassalExporter extension
-		        path: fileName.
+		        extensions: {roassalExporter extension}
+		        path: fileName asFileReference.
 
 	file ifNotNil: [
 		roassalExporter new

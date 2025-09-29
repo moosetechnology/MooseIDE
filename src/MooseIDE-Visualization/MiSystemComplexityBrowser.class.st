@@ -56,7 +56,7 @@ MiSystemComplexityBrowser class >> newModel [
 MiSystemComplexityBrowser class >> open [
 
 	<script>
-	super open
+	^ super open
 ]
 
 { #category : #specs }
@@ -68,20 +68,24 @@ MiSystemComplexityBrowser class >> title [
 { #category : #actions }
 MiSystemComplexityBrowser >> buildVisualization [
 
-	self deprecated: 'Use runVisualization method instead' transformWith: '`@receiver buildVisualization' -> '`@receiver runVisualization'.
-	self runVisualization 
+	self
+		deprecated: 'Use runVisualization method instead'
+		transformWith:
+		'`@receiver buildVisualization' -> '`@receiver runVisualization'.
+	self runVisualization
 ]
 
 { #category : #testing }
 MiSystemComplexityBrowser >> canFollowEntity: anObject [
 
-	^ anObject isKindOf: MooseGroup
+	^ anObject isMooseObject and: [ anObject isCollection ]
 ]
 
 { #category : #testing }
-MiSystemComplexityBrowser >> canTagEntities [ 
+MiSystemComplexityBrowser >> canTagEntities [
+
 	self flag: 'No for now, but will need to be implemented'.
-	^false
+	^ false
 ]
 
 { #category : #actions }
@@ -89,17 +93,23 @@ MiSystemComplexityBrowser >> followEntity: aMooseGroup [
 
 	| newGroup |
 	super followEntity: aMooseGroup.
-	newGroup := aMooseGroup select: [ :e | e isClass ].
+	newGroup := (aMooseGroup select: [ :e | e isClass ]) asMooseGroup.
+
+	newGroup ifEmpty: [
+			self inform: 'System Complexity:
+All received entities were rejected'.
+			^ self ].
+
 	newGroup size < aMooseGroup size ifTrue: [
-		self inform:
-			(aMooseGroup size - newGroup size) asString , ' rejected entities.' ].
-	specModel entities: newGroup
-]
+			self inform: (String streamContents: [ :s |
+						 s
+							 << 'SystemComplexity:';
+							 cr;
+							 << (aMooseGroup size - newGroup size) asString;
+							 << ' rejected entities.' ]) ].
 
-{ #category : #testing }
-MiSystemComplexityBrowser >> hasSettings [
-
-	^ true
+	specModel entities: newGroup.
+	self runVisualization
 ]
 
 { #category : #initialization }

@@ -97,7 +97,8 @@ MiDuplicationBrowser >> canHighlight [
 MiDuplicationBrowser >> followEntity: anEntity [
 
 	super followEntity: anEntity.
-	specModel allEntities: anEntity
+	specModel entities: anEntity.
+	self showEntities
 ]
 
 { #category : #initialization }
@@ -118,11 +119,6 @@ MiDuplicationBrowser >> handleFragmentSelection: selectedFragments [
 	].
 
 	specModel highlightEntities: commonEntities"
-]
-
-{ #category : #actions }
-MiDuplicationBrowser >> hasSettings [
-	^ true
 ]
 
 { #category : #highlighting }
@@ -171,7 +167,7 @@ MiDuplicationBrowser >> initializeListReplicatedFragments [
 	lstReplicatedFragments beMultipleSelection.
 
 	lstReplicatedFragments display: [ :replicatedFragment | 
-		replicatedFragment formatForDuplicationBrowser ].
+		replicatedFragment displayString ].
 
 	lstReplicatedFragments children: [ :replicatedFragment | specModel childrenFragments: replicatedFragment ].
 	
@@ -256,12 +252,21 @@ MiDuplicationBrowser >> selectFragments: selectedFragments [
 ]
 
 { #category : #api }
+MiDuplicationBrowser >> showEntities [
+	"displays list of entities in the left list"
+
+	self resetDisplayedReplicas.
+	lstEntities items: specModel entities.
+	self updateStatusBar
+]
+
+{ #category : #api }
 MiDuplicationBrowser >> showEntities: entities [
 	"displays list of entities in the left list"
 
 	self resetDisplayedReplicas.
-	lstEntities items: entities.
-	self updateStatusBar.
+	lstEntities items: specModel entities.
+	self updateStatusBar
 ]
 
 { #category : #api }
@@ -293,7 +298,7 @@ MiDuplicationBrowser >> showSelectedClones: replicas [
 	 If the list is empty (no selected replicas) show all entities"
 
 	replicas
-		ifEmpty: [ lstEntities items: self model allEntities ]
+		ifEmpty: [ lstEntities items: self specModel entities ]
 		ifNotEmpty: [ lstEntities items: (replicas collect: #entity) ]
 ]
 
@@ -304,18 +309,18 @@ MiDuplicationBrowser >> statusBarText [
 
 { #category : #utilities }
 MiDuplicationBrowser >> updateStatusBar [
-	^String streamContents: [ :stream |
-		stream
-			<< 'Searched entities: ' ;
-			<< specModel numberOfEntities asString ;
-			<< ' | Number of clones: ' ;
-			<< specModel numberOfFragments asString ;
-			<< ' | Entities with clones: ' ;
-			<< specModel numberOfEntitiesInReplicas asString ;
-			<< ' | Selected entities: ' ;
-			<< specModel numberOfSelectedEntities asString ;
-			<< ' | Selected clones: ' ;
-			<< specModel numberOfSelectedFragments asString.
-		statusBar label: stream contents
-	]
+
+	^ String streamContents: [ :stream |
+			  stream
+				  << 'Searched entities: ';
+				  << specModel numberOfEntities asString;
+				  << ' | Number of clones: ';
+				  << specModel numberOfFragments asString;
+				  << ' | Entities with clones: ';
+				  << specModel numberOfEntitiesInReplicas asString;
+				  << ' | Selected entities: ';
+				  << specModel numberOfSelectedEntities asString;
+				  << ' | Selected clones: ';
+				  << specModel numberOfSelectedFragments asString.
+			  statusBar label: stream contents ]
 ]

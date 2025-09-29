@@ -32,13 +32,18 @@ MiTagPage >> initializeLayout [
 
 { #category : #initialization }
 MiTagPage >> initializePresenters [
-	
-	tagDescription := self instantiate: MiTagDescription on: self model
+
+	tagDescription := self
+		                  instantiate: MiTagDescription
+		                  on: self specModel
 ]
 
 { #category : #accessing }
 MiTagPage >> model [
-	^owner model
+	self
+		deprecated: 'This is a getter. Lets name it correctly.'
+		transformWith: '`@receiver model' -> '`@receiver specModel'.
+	^ self specModel
 ]
 
 { #category : #refreshing }
@@ -57,4 +62,10 @@ MiTagPage >> refreshTagDescription [
 MiTagPage >> setTag: aTag [
 
 	tagDescription setTag: aTag.
+]
+
+{ #category : #accessing }
+MiTagPage >> specModel [
+
+	^ owner specModel
 ]

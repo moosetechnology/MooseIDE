@@ -9,17 +9,15 @@ BaselineOfMooseIDE >> baseline: spec [
 
 	<baseline>
 	spec for: #common do: [
-		spec preLoadDoIt: #removeRoassalFromSystem.
+			self defineDependencies: spec.
+			self definePackages: spec.
+			self defineGroups: spec.
 
-		self defineDependencies: spec.
-		self definePackages: spec.
-		self defineGroups: spec.
+			spec for: #NoFamix do: [
+					self defineMooseDependencies: spec.
+					self definePackagesWhenNoFamix: spec ].
 
-		spec for: #NoFamix do: [
-			self defineMooseDependencies: spec.
-			self definePackagesWhenNoFamix: spec ].
-
-		spec postLoadDoIt: #registerCustomTools ]
+			spec postLoadDoIt: #registerCustomTools ]
 ]
 
 { #category : #dependencies }
@@ -43,11 +41,9 @@ BaselineOfMooseIDE >> customProjectAttributes [
 BaselineOfMooseIDE >> defineDependencies: spec [
 
 	self labelContractor: spec.
-	self roassal: spec.
 	self roassalExporters: spec.
 	self hierarchicalVisualizations: spec.
 	self pharoAIHierachicalClustering: spec.
-	self stonCustomizer: spec.
 	self interactiveNotebook: spec.
 	self classBlueprint: spec.
 
@@ -68,7 +64,7 @@ BaselineOfMooseIDE >> defineGroups: spec [
 BaselineOfMooseIDE >> defineMooseCriticsPackages: spec [
 
 	spec
-		package: 'MooseIDE-CriticBrowser' with: [ spec requires: #( 'MooseIDE-Core' 'Famix-CriticBrowser-Entities' 'STONCustomizer' ) ];
+		package: 'MooseIDE-CriticBrowser' with: [ spec requires: #( 'MooseIDE-Core' 'Famix-CriticBrowser-Entities' ) ];
 		package: 'MooseIDE-CriticBrowser-Tests' with: [ spec requires: #( 'MooseIDE-Tests' 'MooseIDE-CriticBrowser' ) ];
 		
 		package: 'Famix-CriticBrowser-ManualEntities' with: [ spec requires: #( 'FamixQueries' ) ];
@@ -91,72 +87,34 @@ BaselineOfMooseIDE >> defineMooseDependencies: spec [
 BaselineOfMooseIDE >> definePackages: spec [
 
 	spec
-		package: 'MooseIDE-Core' with: [
-			spec requires:
-					#( 'LabelContractor' 'RoassalExporters' ) ];
-		package: 'MooseIDE-Visualization'
-		with: [
-			spec requires: #( 'MooseIDE-Core' 'HierarchicalVisualizations' ) ];
-		package: 'MooseIDE-Meta'
-		with: [ spec requires: #( 'MooseIDE-Core' 'MooseIDE-Famix' ) ];
-		package: 'MooseIDE-Dependency' with: [
-			spec requires:
-					#( 'MooseIDE-Core' 'MooseIDE-Visualization'
-					   'Roassal' 'AIHierarchicalClustering' ) ];
-		package: 'MooseIDE-Tests' with: [
-			spec requires:
-					#( 'MooseIDE-Core' 'MooseIDE-Dependency' 'MooseIDE-Visualization' ) ];
+		package: 'MooseIDE-Core' with: [ spec requires: #( 'LabelContractor' 'RoassalExporters' ) ];
+		package: 'MooseIDE-WelcomeBrowser'
+		with: [ spec requires: #( 'MooseIDE-Core' 'MooseIDE-Meta' 'MooseIDE-CoUsageMap' 'MooseIDE-Dependency' 'MooseIDE-NewTools' 'MooseIDE-QueriesBrowser' ) ];
+		package: 'MooseIDE-Visualization' with: [ spec requires: #( 'MooseIDE-Core' 'HierarchicalVisualizations' ) ];
+		package: 'MooseIDE-Meta' with: [ spec requires: #( 'MooseIDE-Core' 'MooseIDE-Famix' ) ];
+		package: 'MooseIDE-Dependency' with: [ spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' 'AIHierarchicalClustering' ) ];
+		package: 'MooseIDE-Tests' with: [ spec requires: #( 'MooseIDE-Core' 'MooseIDE-Dependency' 'MooseIDE-Visualization' ) ];
 		package: 'MooseIDE-AttributedText';
-		package: 'MooseIDE-Famix' with: [
-			spec requires:
-					#( 'MooseIDE-Core' 'MooseIDE-Visualization'
-					   'MooseIDE-AttributedText' ) ];
-		package: 'MooseIDE-QueriesBrowser'
-		with: [ spec requires: #( 'MooseIDE-Core' 'FamixQueries' ) ];
-		package: 'MooseIDE-QueriesBrowser-Tests'
-		with: [
-			spec requires: #( 'MooseIDE-QueriesBrowser'
-				   'MooseIDE-Tests' ) ];
-		package: 'MooseIDE-Tagging'
-		with: [
-			spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' ) ];
-		package: 'MooseIDE-Tagging-Tests'
-		with: [ spec requires: #( 'MooseIDE-Tagging' 'MooseIDE-Tests' ) ];
-		package: 'MooseIDE-CoUsageMap'
-		with: [
-			spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' ) ];
-		package: 'MooseIDE-CoUsageMap-Tests'
-		with: [ spec requires: #( 'MooseIDE-CoUsageMap'
-				   'MooseIDE-Tests' ) ];
-		package: 'MooseIDE-NewTools'
-		with: [
-			spec requires: #( 'MooseIDE-Meta' 'MooseIDE-Core' 'FamixQueries' ) ];
-		package: 'MooseIDE-NewTools-Tests'
-		with: [ spec requires: #( 'MooseIDE-NewTools' 'MooseIDE-Tests' ) ];
-		package: 'MooseIDE-Export'
-		with: [ spec requires: #( 'MooseIDE-Core' 'InteractiveNotebook' ) ];
-		package: 'MooseIDE-Duplication'
-		with: [ spec requires: #( 'MooseIDE-Core' ) ];
-		package: 'MooseIDE-ButterflyMap'
-		with: [
-			spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' ) ];
-		package: 'MooseIDE-ButterflyMap-Tests'
-		with: [ spec requires: #( 'MooseIDE-ButterflyMap' ) ];
-		package: 'MooseIDE-QueriesDashboard'
-		with: [ spec requires: #( 'MooseIDE-Core' ) ];
-		package: 'MooseIDE-LayerVisualization' with: [
-			spec requires:
-					#( 'MooseIDE-Core' 'MooseIDE-Visualization'
-					   'MooseIDE-QueriesDashboard' ) ];
-		package: 'MooseIDE-ClassBlueprint'
-		with: [
-			spec requires: #( 'MooseIDE-Visualization' 'ClassBlueprint' ) ];
+		package: 'MooseIDE-Famix' with: [ spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' 'MooseIDE-AttributedText' ) ];
+		package: 'MooseIDE-QueriesBrowser' with: [ spec requires: #( 'MooseIDE-Core' 'FamixQueries' ) ];
+		package: 'MooseIDE-QueriesBrowser-Tests' with: [ spec requires: #( 'MooseIDE-QueriesBrowser' 'MooseIDE-Tests' ) ];
+		package: 'MooseIDE-Tagging' with: [ spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' ) ];
+		package: 'MooseIDE-Tagging-Tests' with: [ spec requires: #( 'MooseIDE-Tagging' 'MooseIDE-Tests' ) ];
+		package: 'MooseIDE-CoUsageMap' with: [ spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' ) ];
+		package: 'MooseIDE-CoUsageMap-Tests' with: [ spec requires: #( 'MooseIDE-CoUsageMap' 'MooseIDE-Tests' ) ];
+		package: 'MooseIDE-NewTools' with: [ spec requires: #( 'MooseIDE-Meta' 'MooseIDE-Core' 'FamixQueries' ) ];
+		package: 'MooseIDE-NewTools-Tests' with: [ spec requires: #( 'MooseIDE-NewTools' 'MooseIDE-Tests' ) ];
+		package: 'MooseIDE-Export' with: [ spec requires: #( 'MooseIDE-Core' 'InteractiveNotebook' ) ];
+		package: 'MooseIDE-Duplication' with: [ spec requires: #( 'MooseIDE-Core' ) ];
+		package: 'MooseIDE-ButterflyMap' with: [ spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' ) ];
+		package: 'MooseIDE-ButterflyMap-Tests' with: [ spec requires: #( 'MooseIDE-ButterflyMap' ) ];
+		package: 'MooseIDE-QueriesDashboard' with: [ spec requires: #( 'MooseIDE-Core' ) ];
+		package: 'MooseIDE-LayerVisualization' with: [ spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' 'MooseIDE-QueriesDashboard' ) ];
+		package: 'MooseIDE-ClassBlueprint' with: [ spec requires: #( 'MooseIDE-Visualization' 'ClassBlueprint' ) ];
 		package: 'MooseIDE-Spotter';
 		package: 'MooseIDE-Core-Reporter';
-		package: 'MooseIDE-Spotter-Tests'
-		with: [ spec requires: #( 'MooseIDE-Spotter' ) ];
-		package: 'MooseIDE-Analysis'
-		with: [ spec requires: #( 'MooseIDE-Core' ) ].
+		package: 'MooseIDE-Spotter-Tests' with: [ spec requires: #( 'MooseIDE-Spotter' ) ];
+		package: 'MooseIDE-Analysis' with: [ spec requires: #( 'MooseIDE-Core' ) ].
 
 	self defineMooseCriticsPackages: spec
 ]
@@ -264,11 +222,10 @@ BaselineOfMooseIDE >> pharoAIHierachicalClustering: spec [
 { #category : #actions }
 BaselineOfMooseIDE >> registerCustomTools [
 
-	self registerShortcuts.
+	self registerShortcuts. "MiPlayground could be absent if we load only a group"
+	(Smalltalk classNamed: #MiPlaygroundBrowser) ifNotNil: [ :miPlayground | miPlayground register ].
 
-	"MiPlayground could be absent if we load only a group"
-	(Smalltalk classNamed: #MiPlaygroundBrowser) ifNotNil: [
-		:miPlayground | miPlayground register ]
+	Smalltalk at: #MooseIDEWelcomeBrowser ifPresent: [ :mooseWelcome | mooseWelcome register ]
 ]
 
 { #category : #actions }
@@ -279,40 +236,11 @@ BaselineOfMooseIDE >> registerShortcuts [
 		miShortcutsCategory new installAsGlobalCategory ]
 ]
 
-{ #category : #actions }
-BaselineOfMooseIDE >> removeRoassalFromSystem [
-
-	#( Roassal3 Numeric ) do: [ :string |
-		| packages |
-		packages := self packageOrganizer packages
-			            select: [ :each |
-			            (string surroundedBy: '*') match: each name ]
-			            thenDo: [ :each | each removeFromSystem ] ]
-]
-
-{ #category : #dependencies }
-BaselineOfMooseIDE >> roassal: spec [
-
-	spec
-		baseline: 'Roassal'
-		with: [
-		spec repository: 'github://pharo-graphics/Roassal:v1.06c/src' ]
-]
-
 { #category : #dependencies }
 BaselineOfMooseIDE >> roassalExporters: spec [
 
 	spec
 		baseline: 'RoassalExporters'
 		with: [ 
-		spec repository: 'github://pharo-graphics/RoassalExporters:v1.01/src' ]
-]
-
-{ #category : #dependencies }
-BaselineOfMooseIDE >> stonCustomizer: spec [
-
-	spec
-		baseline: 'STONCustomizer'
-		with: [ 
-		spec repository: 'github://jecisc/STONCustomizer:v1.x.x/src' ]
+		spec repository: 'github://pharo-graphics/RoassalExporters:v1.02/src' ]
 ]

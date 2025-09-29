@@ -82,21 +82,23 @@ MiDSMBrowserTest >> testCellListTupleDependencies [
 MiDSMBrowserTest >> testDoesNotOpenEmptyDetailedDSM [
 	"sets a fake spec model that delegates #userActionOn: to the original model
 	 We checks that #userActionOn: was called and #openDetailedDSMOn: was not"
-	| originalModel mockModel userAction detailedDSM  |
 
-	browser followEntity: {  class2 . class3 }.
+	| originalModel mockModel userAction detailedDSM |
+	browser followEntity: {
+			class2.
+			class3 }.
 
-	originalModel := browser model.
+	originalModel := browser specModel.
 	mockModel := Mock named: 'DSM-spec-model'.
 	(mockModel stub userActionOn: Any) will: [ :arg |
-		userAction := arg.
-		originalModel userActionOn: arg ].
-	(mockModel stub openDetailedDSMOn: Any) will: [ :arg | detailedDSM := arg ].
+			userAction := arg.
+			originalModel userActionOn: arg ].
+	(mockModel stub openDetailedDSMOn: Any) will: [ :arg |
+		detailedDSM := arg ].
 	detailedDSM := nil.
 	browser diagram specModel: mockModel.
 
-	(self shapeAtRow: class2 column: class3)
-		announce: RSMouseDoubleClick.
+	(self shapeAtRow: class2 column: class3) announce: RSMouseDoubleClick.
 
 	self assert: userAction isNotNil.
 	self assert: userAction key model equals: class2.
@@ -108,25 +110,41 @@ MiDSMBrowserTest >> testDoesNotOpenEmptyDetailedDSM [
 { #category : #tests }
 MiDSMBrowserTest >> testDontShowSelfDependenciesHideDiagonalWeight [
 
-	| tuple |
-	browser model settings setItem: #selfDependenciesSetting value: false.
-	tuple := (AITarjanNode with: #entityA) -> (AITarjanNode with: #entityA).
-	browser model dependencies
-		recordDependencies: #(1 2 3) from: #entityA to: #entityA.
+	| tuple configuration |
+	configuration := browser specModel currentConfiguration.
+	configuration shouldShowSelfDependencies: false.
+	browser specModel updateFromConfiguration: configuration.
 
-	self assert: (browser model getTupleDependencyWeight: tuple) equals: 0.
+	tuple := (AITarjanNode with: #entityA)
+	         -> (AITarjanNode with: #entityA).
+	browser specModel dependencies
+		recordDependencies: #( 1 2 3 )
+		from: #entityA
+		to: #entityA.
+
+	self
+		assert: (browser specModel getTupleDependencyWeight: tuple)
+		equals: 0
 ]
 
 { #category : #tests }
 MiDSMBrowserTest >> testDontShowSelfDependenciesShowNonDiagonalWeight [
 
-	| tuple |
-	browser model settings setItem: #selfDependenciesSetting value: false.
-	tuple := (AITarjanNode with: #entityA) -> (AITarjanNode with: #entityB).
-	browser model dependencies
-		recordDependencies: #(1 2 3) from: #entityA to: #entityB.
+	| tuple configuration |
+	configuration := browser specModel currentConfiguration.
+	configuration shouldShowSelfDependencies: false.
+	browser specModel updateFromConfiguration: configuration.
 
-	self assert: (browser model getTupleDependencyWeight: tuple) equals: 3.
+	tuple := (AITarjanNode with: #entityA)
+	         -> (AITarjanNode with: #entityB).
+	browser specModel dependencies
+		recordDependencies: #( 1 2 3 )
+		from: #entityA
+		to: #entityB.
+
+	self
+		assert: (browser specModel getTupleDependencyWeight: tuple)
+		equals: 3
 ]
 
 { #category : #tests }
@@ -260,43 +278,24 @@ MiDSMBrowserTest >> testSettingsAction [
 ]
 
 { #category : #tests }
-MiDSMBrowserTest >> testSettingsChanged [
-
-	| stubDSM redrawn |
-	redrawn := false.
-	stubDSM := Mock new.
-	stubDSM stub run will: [ redrawn := true ].
-	browser mainPresenter: stubDSM.
-
-	browser model settingsChanged: true.
-		
-	self assert: redrawn
-]
-
-{ #category : #tests }
-MiDSMBrowserTest >> testSettingsNotChanged [
-
-	| stubDSM redrawn |
-	redrawn := false.
-	stubDSM := Mock new.
-	stubDSM stub run will: [ redrawn := true ].
-	browser mainPresenter: stubDSM.
-
-	browser model settingsChanged: false.
-		
-	self deny: redrawn
-]
-
-{ #category : #tests }
 MiDSMBrowserTest >> testShowSelfDependenciesDoNotHideDiagonalWeight [
 
-	| tuple |
-	browser model settings setItem: #selfDependenciesSetting value: true.
-	tuple := (AITarjanNode with: #entityA) -> (AITarjanNode with: #entityA).
-	browser model dependencies
-		recordDependencies: #(1 2 3) from: #entityA to: #entityA.
+	| tuple configuration |
+	configuration := browser specModel currentConfiguration.
+	configuration shouldShowSelfDependencies: true.
+	browser specModel updateFromConfiguration: configuration.
 
-	self assert: (browser model getTupleDependencyWeight: tuple) equals: 3.
+	tuple := (AITarjanNode with: #entityA)
+	         -> (AITarjanNode with: #entityA).
+
+	browser specModel dependencies
+		recordDependencies: #( 1 2 3 )
+		from: #entityA
+		to: #entityA.
+
+	self
+		assert: (browser specModel getTupleDependencyWeight: tuple)
+		equals: 3
 ]
 
 { #category : #tests }
@@ -314,90 +313,94 @@ MiDSMBrowserTest >> testTitleOfDSM [
 { #category : #tests }
 MiDSMBrowserTest >> testTitleOfDetailedDSM [
 	"detailed DSM title should show the original entities"
+
 	| detailedDSM |
+	browser followEntity: {
+			class1.
+			class2 }.
 
-	browser followEntity: {  class1 . class2 }.
+	detailedDSM := browser specModel openDetailedDSMOn:
+		               (self makeGraphNode: class1)
+		               -> (self makeGraphNode: class2).
 
-	detailedDSM := browser model
-		openDetailedDSMOn: ( (self makeGraphNode: class1) -> (self makeGraphNode: class2) ).
-
-	detailedDSM withWindowDo: [ : window || title |
-		title := window title.
-		window close.
-		self assert: title equals: 'DSM Class1 -> Class2'
-	]
+	detailedDSM withWindowDo: [ :window |
+			| title |
+			title := window title.
+			window close.
+			self assert: title equals: 'DSM Class1 -> Class2' ]
 ]
 
 { #category : #tests }
 MiDSMBrowserTest >> testTupleIsCycle [
 
 	| tarjanGraph tuple |
-
-	tarjanGraph := browser model graph graph.
-	tarjanGraph nodes: { #entityA . #entityB }.
+	tarjanGraph := browser specModel graph graph.
+	tarjanGraph nodes: { #entityA. #entityB }.
 	tarjanGraph addEdge: #entityA -> #entityB from: #key to: #value.
 	tarjanGraph addEdge: #entityB -> #entityA from: #key to: #value.
 	tarjanGraph run.
 
-	tuple := (tarjanGraph findNode: #entityA) -> (tarjanGraph findNode: #entityB).
- 
-	self assert: (browser model isCycle: tuple)
+	tuple := (tarjanGraph findNode: #entityA)
+	         -> (tarjanGraph findNode: #entityB).
+
+	self assert: (browser specModel isCycle: tuple)
 ]
 
 { #category : #tests }
 MiDSMBrowserTest >> testTupleIsDependency [
 
 	| tuple |
+	tuple := (AITarjanNode with: #entityA)
+	         -> (AITarjanNode with: #entityB).
+	browser specModel dependencies
+		recordDependencies: #( 1 2 3 )
+		from: #entityA
+		to: #entityB.
 
-	tuple := (AITarjanNode with: #entityA) -> (AITarjanNode with: #entityB).
-	browser model dependencies
-		recordDependencies: #(1 2 3) from: #entityA to: #entityB.
-
-	self assert: (browser model isDependency: tuple)
+	self assert: (browser specModel isDependency: tuple)
 ]
 
 { #category : #tests }
 MiDSMBrowserTest >> testTupleIsDiagonal [
 
 	| node tuple |
-
 	node := AITarjanNode with: #entityA.
 	tuple := node -> node.
 
-	self assert: (browser model isDiagonal: tuple)
+	self assert: (browser specModel isDiagonal: tuple)
 ]
 
 { #category : #tests }
 MiDSMBrowserTest >> testTupleIsNotCycle [
 
 	| tarjanGraph tuple |
-
-	tarjanGraph := browser model graph graph.
-	tarjanGraph nodes: { #entityA . #entityB }.
+	tarjanGraph := browser specModel graph graph.
+	tarjanGraph nodes: { #entityA. #entityB }.
 	tarjanGraph addEdge: #entityA -> #entityB from: #key to: #value.
 	tarjanGraph run.
 
-	tuple := (tarjanGraph findNode: #entityA) -> (tarjanGraph findNode: #entityB).
- 
-	self deny: (browser model isCycle: tuple)
+	tuple := (tarjanGraph findNode: #entityA)
+	         -> (tarjanGraph findNode: #entityB).
+
+	self deny: (browser specModel isCycle: tuple)
 ]
 
 { #category : #tests }
 MiDSMBrowserTest >> testTupleIsNotDependency [
 
 	| tuple |
+	tuple := (AITarjanNode with: #entityA)
+	         -> (AITarjanNode with: #entityB).
 
-	tuple := (AITarjanNode with: #entityA) -> (AITarjanNode with: #entityB).
-
-	self deny: (browser model isDependency: tuple)
+	self deny: (browser specModel isDependency: tuple)
 ]
 
 { #category : #tests }
 MiDSMBrowserTest >> testTupleIsNotDiagonal [
 
 	| tuple |
+	tuple := (AITarjanNode with: #entityA)
+	         -> (AITarjanNode with: #entityB).
 
-	tuple := (AITarjanNode with: #entityA) -> (AITarjanNode with: #entityB).
-
-	self deny: (browser model isDiagonal: tuple)
+	self deny: (browser specModel isDiagonal: tuple)
 ]

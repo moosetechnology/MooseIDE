@@ -77,6 +77,8 @@ MiTagBrowserModel >> createTag: name description: aText color: aColor category: 
 		color: aColor
 		category: aCategory.
 
+	self currentTag: newTag.
+
 	browser refreshTagList.
 	self currentApplication consumeItem: newTag.
 
@@ -139,14 +141,18 @@ MiTagBrowserModel >> editCurrentDynamicTag: name description: description color:
 	tag := self currentTag.
 	tag ifNil: [ ^ self ].
 
-	(name isNil or: [ name isEmpty ]) ifTrue: [ ^ self ].
+	name isEmptyOrNil ifTrue: [ ^ self ].
 
 	tag name: name.
-	self setTag: tag description: description color: color category: category.
+	self
+		setTag: tag
+		description: description
+		color: color
+		category: category.
 	tag query: query.
 
 	browser refreshTagList.
-	browser refreshDescriptionPage .
+	browser refreshDescriptionPage.
 	self currentApplication updateItem: tag
 ]
 
@@ -157,16 +163,20 @@ MiTagBrowserModel >> editCurrentTag: name description: description color: color 
 	tag := self currentTag.
 	tag ifNil: [ ^ self ].
 
-	(name isNil or: [ name isEmpty ]) ifTrue: [ ^ self ].
+	name isEmptyOrNil ifTrue: [ ^ self ].
 
 	tag name: name.
-	tag categories ifNotEmpty: [ tag removeCategory: tag categories anyOne ].
-	self setTag: tag description: description color: color category: category.
+	tag categories ifNotEmpty: [
+		tag removeCategory: tag categories anyOne ].
+	self
+		setTag: tag
+		description: description
+		color: color
+		category: category.
 
-	browser refreshTagList .
-	browser refreshDescriptionPage .
-	self currentApplication updateItem: tag.
-
+	browser refreshTagList.
+	browser refreshDescriptionPage.
+	self currentApplication updateItem: tag
 ]
 
 { #category : #accessing }

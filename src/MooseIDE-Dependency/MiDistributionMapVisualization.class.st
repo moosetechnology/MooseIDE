@@ -12,9 +12,9 @@ Class {
 { #category : #running }
 MiDistributionMapVisualization >> buildInCanvas: aCanvas [
 
-	owner model entities ifNil: [ ^ self ].
+	owner specModel entities ifNil: [ ^ self ].
 	builder := MiDistributionMapBuilder new
-		           mapModel: owner model;
+		           mapModel: owner specModel;
 		           container: aCanvas;
 		           yourself.
 

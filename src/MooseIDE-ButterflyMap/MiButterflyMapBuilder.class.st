@@ -6,7 +6,8 @@ Class {
 		'outgoingGroups',
 		'centralNode',
 		'centralShape',
-		'butterfly'
+		'butterfly',
+		'nodeStyle'
 	],
 	#category : #'MooseIDE-ButterflyMap-Model'
 }
@@ -76,10 +77,11 @@ MiButterflyMapBuilder >> buildNodeFromEntity: anEntity [
 		        name:
 			        (String streamContents: [ :s | anEntity displayStringOn: s ]);
 		        addAll: ((self mapModel childrenFor: anEntity)
-				         collect: [ :e | 
+				         collect: [ :e |
 					         anEntity == e ifFalse: [ self buildNodeFromEntity: e ] ]
 				         thenSelect: [ :e | e isNotNil ]);
 		        color: (Smalltalk ui theme baseColor alpha: 0.7);
+		        style: self nodeStyle;
 		        rawModel: anEntity;
 		        collapse;
 		        yourself.
@@ -177,6 +179,12 @@ MiButterflyMapBuilder >> nodeAnnouncer [
 		            @ HResizeParentWhenChildMoves new;
 		            yourself.
 	^ baseNode announcer
+]
+
+{ #category : #accessing }
+MiButterflyMapBuilder >> nodeStyle [
+	
+	^ nodeStyle ifNil: [ nodeStyle := HDefaultStyleWithTags new ]
 ]
 
 { #category : #removing }

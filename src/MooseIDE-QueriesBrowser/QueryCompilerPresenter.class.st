@@ -7,7 +7,8 @@ Class {
 	#instVars : [
 		'submitButton',
 		'codePresenter',
-		'configuratorPresenter'
+		'configuratorPresenter',
+		'closeButton'
 	],
 	#category : #'MooseIDE-QueriesBrowser-Widgets'
 }
@@ -25,7 +26,7 @@ QueryCompilerPresenter >> compileQuery [
 		evaluate: codePresenter text
 		onCompileError: [ :e | ^ self ]
 		onError: [ :e | e pass ].
-	compiledQuery beChildOf: configuratorPresenter queriesBrowser rootQuery.
+	compiledQuery beChildOf: configuratorPresenter owner specModel rootQuery.
 	^ compiledQuery
 ]
 
@@ -43,11 +44,15 @@ QueryCompilerPresenter >> initialize [
 
 { #category : #initialization }
 QueryCompilerPresenter >> initializeButtons [
-
+	
 	submitButton := self newButton.
 	submitButton
 		label: 'Submit';
-		icon: (self iconNamed: #smallDoIt)
+		icon: (self iconNamed: #smallDoIt).
+	closeButton := self newButton.
+	closeButton
+		label: 'Close';
+		action: [ self owner dismiss ]
 ]
 
 { #category : #initialization }
@@ -65,6 +70,7 @@ QueryCompilerPresenter >> initializeLayout [
 	| tempLayout |
 	tempLayout := SpBoxLayout newTopToBottom
 		add: (SpBoxLayout newLeftToRight
+			add: closeButton expand: false;
 			addLast: submitButton expand: false;
 			yourself)
 		expand: false;

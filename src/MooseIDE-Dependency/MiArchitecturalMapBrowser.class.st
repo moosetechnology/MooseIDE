@@ -78,13 +78,6 @@ MiArchitecturalMapBrowser class >> title [
 ]
 
 { #category : #actions }
-MiArchitecturalMapBrowser >> availableQueries [
-
-	^ (self application itemsFor: FQAbstractQuery) asOrderedCollection 
-		  select: [ :q | q isValid ]
-]
-
-{ #category : #actions }
 MiArchitecturalMapBrowser >> canFollowEntity: anEntity [
 
 	^ anEntity isMooseObject
@@ -105,15 +98,15 @@ MiArchitecturalMapBrowser >> canvas [
 { #category : #actions }
 MiArchitecturalMapBrowser >> doWithTimeout: aBlock [
 
-	self model timeoutDuration
+	self application visualizationTimeout
 		ifNil: [ aBlock value ]
 		ifNotNil: [ :duration |
-			aBlock
-				valueWithin: self model timeoutDuration asSeconds
-				onTimeout: [
-					Abort signal:
-						'Process took longer than the configured time ('
-						, duration asString , ' seconds)' ] ]
+				aBlock
+					valueWithin: self application visualizationTimeout asSeconds
+					onTimeout: [
+							Abort signal:
+								'Process took longer than the configured time ('
+								, duration asString , ' seconds)' ] ]
 ]
 
 { #category : #actions }
@@ -122,12 +115,6 @@ MiArchitecturalMapBrowser >> followEntity: anEntity [
 	super followEntity: anEntity.
 	specModel entities: anEntity asMooseGroup.
 	self runVisualization
-]
-
-{ #category : #settings }
-MiArchitecturalMapBrowser >> hasSettings [
-
-	^ true
 ]
 
 { #category : #initialization }
@@ -154,24 +141,6 @@ MiArchitecturalMapBrowser >> setModelBeforeInitialization: aModel [
 
 	super setModelBeforeInitialization: aModel.
 	aModel browser: self
-]
-
-{ #category : #settings }
-MiArchitecturalMapBrowser >> setSettingItem: aSymbol value: aValue [
-
-	specModel settings setItem: aSymbol value: aValue
-]
-
-{ #category : #settings }
-MiArchitecturalMapBrowser >> settingsModel [
-
-	^ specModel settings
-]
-
-{ #category : #settings }
-MiArchitecturalMapBrowser >> updateSettings [
-
-	specModel settingsChanged: true
 ]
 
 { #category : #'accessing - private tests' }

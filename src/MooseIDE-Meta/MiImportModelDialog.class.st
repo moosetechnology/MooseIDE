@@ -5,8 +5,7 @@ Class {
 	#name : #MiImportModelDialog,
 	#superclass : #MiPresenter,
 	#instVars : [
-		'originBrowser',
-		'isImporting'
+		'originBrowser'
 	],
 	#category : #'MooseIDE-Meta-Import'
 }
@@ -44,8 +43,15 @@ MiImportModelDialog >> importModel [
 MiImportModelDialog >> importModelStep1Import [
 
 	^ [ self importModel ] onErrorDo: [ :err |
-		  UIManager default alert: 'Import error: ' , err messageText.
-		  nil ]
+		    (MorphicUIManager new
+        confirm: ('Import error: ' , err messageText)
+        trueChoice: 'Ignore'
+        falseChoice: nil
+        cancelChoice: 'Debug'
+        default: false)
+    ifNil: [ err pass ]
+	 ifNotNil: [  ].
+	]
 ]
 
 { #category : #action }
@@ -65,7 +71,7 @@ MiImportModelDialog >> importModelThenCloseDialogWindow [
 	[ self validateImportForm ] onErrorDo: [ :err |
 		UIManager default alert: 'Invalid input: ' , err messageText.
 		^ self ].
-	isImporting ifFalse: [
+
 		aJob := [ :job |
 		        job title: 'Importing model'.
 		        mooseModel := self importModelStep1Import.
@@ -73,14 +79,9 @@ MiImportModelDialog >> importModelThenCloseDialogWindow [
 		        self importModelStep2Install: mooseModel ] asJob.
 
 		[ aJob run ] forkAt: Processor userBackgroundPriority.
-		isImporting := true ]
-	ifTrue: [ UIManager default alert: 'Model is already importing' ]
-]
+		self withWindowDo: [ :window | window close ].
+	
 
-{ #category : #initialization }
-MiImportModelDialog >> initialize [
-	super initialize .
-	isImporting := false
 ]
 
 { #category : #initialization }
@@ -107,13 +108,7 @@ MiImportModelDialog >> setModelBeforeInitialization: aBrowserOrMoosePanel [
 	originBrowser := aBrowserOrMoosePanel
 ]
 
-{ #category : #accessing }
-MiImportModelDialog >> settings [
-
-	^ originBrowser settingsItem
-]
-
-{ #category : #accessing }
+{ #category : #testing }
 MiImportModelDialog >> shouldCreateCache [
 
 	^ originBrowser specModel shouldCreateCache 
@@ -131,4 +126,11 @@ MiImportModelDialog >> updateBrowserWith: mooseModel [
 MiImportModelDialog >> validateImportForm [
 	"checks that required fields are properly filled in"
 	self subclassResponsibility 
+]
+
+{ #category : #accessing }
+MiImportModelDialog >> windowTitle [ 
+
+	^ self class title 
+	
 ]

@@ -96,8 +96,8 @@ MiInspectorBrowser >> followEntity: anEntity [
 
 	super followEntity: anEntity.
 	anEntity ifNil: [ ^ self ].
-	self model entity: anEntity.
-	mainPresenter model: self model entity.
+	self specModel entity: anEntity.
+	mainPresenter model: self specModel entity.
 	self withWindowDo: [ :window | window title: self windowTitle ].
 	self updateToolbar
 ]
@@ -105,7 +105,9 @@ MiInspectorBrowser >> followEntity: anEntity [
 { #category : #initialization }
 MiInspectorBrowser >> initializePresenters [
 
-	mainPresenter := self instantiate: MiInspector on: self model entity
+	mainPresenter := self
+		                 instantiate: MiInspector
+		                 on: self specModel entity
 ]
 
 { #category : #accessing }
@@ -119,5 +121,5 @@ MiInspectorBrowser >> miSelectedItem [
 { #category : #accessing }
 MiInspectorBrowser >> windowTitle [
 
-	^ self windowTitleFor: self model entity
+	^ self windowTitleFor: self specModel entity
 ]

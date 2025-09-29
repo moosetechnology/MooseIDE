@@ -75,22 +75,33 @@ MiModelsBrowserTest >> testCanTagEntities [
 ]
 
 { #category : #tests }
+MiModelsBrowserTest >> testDisplayImportModelDialogTitle [
+
+	| dialog |
+	dialog := browser importFromFileUI.
+	[self assert: dialog title equals: 'Import model from file']
+		ensure: [ dialog delete].
+
+
+
+	
+]
+
+{ #category : #tests }
 MiModelsBrowserTest >> testFilterStubsSettingsWithStub [
 
 	| newModel |
-
 	self assert: browser miSelectedItemToPropagate isNil.
 
 	newModel := self newModel: 'aModel'.
 	(newModel newClassNamed: 'Class1') isStub: true.
 	(newModel newClassNamed: 'Class2') isStub: false.
 
-	browser settingsItem setItem: #filterStubsSetting value: false.
+	self settingNamed: #shouldFilterStubs setValue: false.
 
 	browser updateForNewModel: newModel.
 
 	self assert: browser miSelectedItemToPropagate size equals: 2
-
 ]
 
 { #category : #tests }
@@ -116,22 +127,21 @@ MiModelsBrowserTest >> testFilterStubsSettingsWithoutStub [
 MiModelsBrowserTest >> testHandleDropFileImportsModel [
 
 	| file |
-
 	file := self stModelFile.
 
-	self assertEmpty: browser model entities.
+	self assertEmpty: browser specModel entities.
 
-	browser settingsItem setItem: #modelAutoImportSetting value: true.
+	self settingNamed: #modelImportIsAutomatic setValue: true.
 	browser handleDropFile: file.
 
 	"Must wait a bit to ensure model finishes importing.
 	 Also need to update list manually because only browsers in MiApplication are updated
 	 and this one is in MiApplicationTest"
 	[
-	0.1 second wait.
-	browser updateList ] ensure: [ file delete ].
+		0.1 second wait.
+		browser updateList ] ensure: [ file delete ].
 
-	self assert: browser model entities size equals: 1
+	self assert: browser specModel entities size equals: 1
 ]
 
 { #category : #tests }
@@ -157,13 +167,12 @@ MiModelsBrowserTest >> testMiInspectCommand [
 MiModelsBrowserTest >> testMiInspectCommandWithoutStubFilter [
 
 	| inspector result newModel |
-
 	newModel := self newModel: 'aModel'.
 	newModel newClass.
 
 	browser updateForNewModel: newModel.
 
-	browser settingsItem setItem: #filterStubsSetting value: false.
+	self settingNamed: #shouldFilterStubs setValue: false.
 	inspector := Mock named: 'inspector'.
 	(inspector stub inspect: Any forBuses: Any) will: [ :object :buses |
 		result := object ].
@@ -197,18 +206,17 @@ MiModelsBrowserTest >> testSettingsAction [
 MiModelsBrowserTest >> testUpdateForNewModel [
 
 	| newModel |
-
 	self newModel: 'model1'.
 	browser updateList.
 
-	self assert: browser model entities size equals: 1.
-	self assert: browser model selected isNil.
+	self assert: browser specModel entities size equals: 1.
+	self assert: browser specModel selected isNil.
 
 	newModel := self newModel: 'model2'.
 	browser updateForNewModel: newModel.
 
-	self assert: browser model entities size equals: 2.
-	self assert: browser model selected equals: newModel
+	self assert: browser specModel entities size equals: 2.
+	self assert: browser specModel selected equals: newModel
 ]
 
 { #category : #tests }
@@ -220,20 +228,20 @@ MiModelsBrowserTest >> testUpdateForNewModelMultipleBrowsers [
 
 	browser updateList.
 
-	self assert: browser model entities size equals: 1.
-	self assert: browser model selected isNil.
+	self assert: browser specModel entities size equals: 1.
+	self assert: browser specModel selected isNil.
 
-	self assert: browser2 model entities size equals: 1.
-	self assert: browser2 model selected isNil.
+	self assert: browser2 specModel entities size equals: 1.
+	self assert: browser2 specModel selected isNil.
 
 	newModel := self newModel: 'model2'.
 	browser updateForNewModel: newModel.
 
-	self assert: browser model entities size equals: 2.
-	self assert: browser model selected equals: newModel.
+	self assert: browser specModel entities size equals: 2.
+	self assert: browser specModel selected equals: newModel.
 
-	self assert: browser2 model entities size equals: 2.
-	self assert: browser2 model selected isNil.
+	self assert: browser2 specModel entities size equals: 2.
+	self assert: browser2 specModel selected isNil.
 
 	browser2 window close
 ]
@@ -241,12 +249,12 @@ MiModelsBrowserTest >> testUpdateForNewModelMultipleBrowsers [
 { #category : #tests }
 MiModelsBrowserTest >> testUpdateList [
 
-	self assertEmpty: browser model entities.
+	self assertEmpty: browser specModel entities.
 
 	self newModel: 'aModel'.
 	browser updateList.
 
-	self assert: browser model entities size equals: 1
+	self assert: browser specModel entities size equals: 1
 ]
 
 { #category : #tests }
@@ -268,11 +276,14 @@ MiModelsBrowserTest >> testWithCacheSettingWithCache [
 
 	| newModel |
 	newModel := self newModel: 'aModel'.
-	(newModel newClassNamed: 'Class1').
-	(newModel newClassNamed: 'Class2').
+	newModel newClassNamed: 'Class1'.
+	newModel newClassNamed: 'Class2'.
 
-	browser settingsItem setItem: #createWithCache value: true.
+	self settingNamed: #shouldCreateCache setValue: true.
 	browser importFromFileUI importModelStep2Install: newModel.
 
-	self assert: (newModel cacheAt: FamixTClass ifAbsent: [ false ] ifPresent: [:cache | cache isEmpty not])
+	self assert: (newModel
+			 cacheAt: FamixTClass
+			 ifAbsent: [ false ]
+			 ifPresent: [ :cache | cache isEmpty not ])
 ]

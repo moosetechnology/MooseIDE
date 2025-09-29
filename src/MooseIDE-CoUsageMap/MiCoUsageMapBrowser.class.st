@@ -75,12 +75,10 @@ MiCoUsageMapBrowser class >> title [
 
 { #category : #'window control' }
 MiCoUsageMapBrowser >> browserClosed [
+
 	super browserClosed.
 	application unregisterConsumer: mainPresenter.
-	application unregisterProducer: mainPresenter.
-	"settings mapVisualization: nil.
-	mapVisualization settings: nil."
-
+	application unregisterProducer: mainPresenter
 ]
 
 { #category : #testing }
@@ -101,7 +99,7 @@ MiCoUsageMapBrowser >> closeSettings [
 MiCoUsageMapBrowser >> followEntity: anEntity [
 
 	super followEntity: anEntity.
-	self model followEntity: anEntity
+	self specModel followEntity: anEntity
 ]
 
 { #category : #testing }

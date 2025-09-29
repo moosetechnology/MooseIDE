@@ -15,7 +15,7 @@ MooseObject class >> inspectorToString [
 MooseObject >> miInspectionNavigation: aBuilder [
 
 	<inspectorPresentationOrder: 1 title: 'Navigation'>
-	^ aBuilder instantiate: MiMetaNavigationBrowser on: self
+	^ aBuilder instantiate: MiNavigationInspectionTab on: self
 ]
 
 { #category : #'*MooseIDE-NewTools' }
@@ -23,13 +23,13 @@ MooseObject >> miMetaNavigationItems [
 
 	^ self mooseDescription allComplexProperties
 		  collect: [ :property |
-			  | value |
-			  value := self propertyNamed: property name ifAbsent: [ nil ].
-			  value isCollection ifTrue: [ value := value asMooseGroup ].
-			  property name -> value ]
+				  | value |
+				  value := self cacheAt: property name ifAbsent: [ nil ].
+				  value isCollection ifTrue: [ value := value asMooseGroup ].
+				  property name -> value ]
 		  thenReject: [ :assoc |
-			  assoc value isNil or: [
-				  assoc value isCollection and: [ assoc value isEmpty ] ] ]
+				  assoc value isNil or: [
+					  assoc value isCollection and: [ assoc value isEmpty ] ] ]
 ]
 
 { #category : #'*MooseIDE-NewTools' }
