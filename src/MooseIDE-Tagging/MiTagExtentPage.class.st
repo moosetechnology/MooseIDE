@@ -172,6 +172,14 @@ MiTagExtentPage >> refreshEntitiesList [
 { #category : #refreshing }
 MiTagExtentPage >> refreshTaggedEntitiesList [
 
+	"check first if the entity being propogated is already in the list of TaggedEntitites and check (select) it in this case"
+
+	self taggedEntities do: [:aTaggedEntity | 
+		(self specModel entities includes: aTaggedEntity) ifTrue: [ 
+			taggedEntitiesFilteringList activateItem: aTaggedEntity
+			 ]
+		].
+	
 	taggedEntitiesFilteringList items: self taggedEntities
 ]
 

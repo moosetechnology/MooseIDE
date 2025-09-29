@@ -51,7 +51,20 @@ MiTagExtentPageTest >> testEntitiesListIsNotEmpty [
 	self assert: entities isNotEmpty.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
+MiTagExtentPageTest >> testRefreshTaggedEntitiesList [
+
+	|entity|
+
+	entity := browser specModel entities first.
+	browser followEntity: entity.
+	
+	self assert: (browser tagManagementPage descriptionPage) selectedItems size equals: 3.
+
+	
+]
+
+{ #category : 'tests' }
 MiTagExtentPageTest >> testTaggedEntitesListIsSorted [
 
 	| entities |
