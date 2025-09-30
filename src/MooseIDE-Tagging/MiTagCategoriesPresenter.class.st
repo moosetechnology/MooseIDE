@@ -1,6 +1,6 @@
 Class {
-	#name : #MiTagCategoriesPresenter,
-	#superclass : #MiPresenter,
+	#name : 'MiTagCategoriesPresenter',
+	#superclass : 'MiPresenter',
 	#instVars : [
 		'categoryDropList',
 		'addCategoryButton',
@@ -8,28 +8,30 @@ Class {
 		'mainPresenter',
 		'categoryCreationForm'
 	],
-	#category : #'MooseIDE-Tagging-Browser'
+	#category : 'MooseIDE-Tagging-Browser',
+	#package : 'MooseIDE-Tagging',
+	#tag : 'Browser'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiTagCategoriesPresenter >> addCategoryButton [
 
 	^ addCategoryButton
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiTagCategoriesPresenter >> categoryCreationForm [
 
 	^ categoryCreationForm
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiTagCategoriesPresenter >> categoryDropList [
 
 	^ categoryDropList
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiTagCategoriesPresenter >> closeCategoryCreationForm [
 
 	self layout replace: categoryCreationForm with: mainPresenter.
@@ -37,7 +39,7 @@ MiTagCategoriesPresenter >> closeCategoryCreationForm [
 	self owner update.
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiTagCategoriesPresenter >> connectPresenters [
 
 	addCategoryButton action: [ self openCategoryCreationForm ].
@@ -46,7 +48,7 @@ MiTagCategoriesPresenter >> connectPresenters [
 		self owner refreshTagList ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiTagCategoriesPresenter >> initializeLayout [
 
 	self layout: (SpBoxLayout newTopToBottom
@@ -59,7 +61,7 @@ MiTagCategoriesPresenter >> initializeLayout [
 			 yourself)
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiTagCategoriesPresenter >> initializePresenters [
 
 	categoryDropList := self newDropList
@@ -88,21 +90,21 @@ MiTagCategoriesPresenter >> initializePresenters [
 	self initializeLayout
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiTagCategoriesPresenter >> openCategoryCreationForm [
 
 	self layout replace: mainPresenter with: categoryCreationForm.
 	self owner update
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiTagCategoriesPresenter >> refreshCategoryList [
 
 	categoryDropList items: { nil } , tagModel allCategories.
 	categoryDropList selectIndex: 1
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiTagCategoriesPresenter >> setModelBeforeInitialization: aTagModel [
 
 	tagModel := aTagModel
