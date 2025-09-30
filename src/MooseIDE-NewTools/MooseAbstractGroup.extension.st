@@ -1,6 +1,6 @@
-Extension { #name : #MooseAbstractGroup }
+Extension { #name : 'MooseAbstractGroup' }
 
-{ #category : #'*MooseIDE-NewTools' }
+{ #category : '*MooseIDE-NewTools' }
 MooseAbstractGroup >> customNavigationItems [
 
 	| result |
@@ -13,7 +13,7 @@ MooseAbstractGroup >> customNavigationItems [
 	^ result
 ]
 
-{ #category : #'*MooseIDE-NewTools' }
+{ #category : '*MooseIDE-NewTools' }
 MooseAbstractGroup >> details [
 
 	^ String streamContents: [ :s | 
@@ -29,7 +29,7 @@ MooseAbstractGroup >> details [
 				   ifFalse: [ typeName ]) ] ]
 ]
 
-{ #category : #'*MooseIDE-NewTools' }
+{ #category : '*MooseIDE-NewTools' }
 MooseAbstractGroup >> miMetaNavigationItems [
 
 	^ self

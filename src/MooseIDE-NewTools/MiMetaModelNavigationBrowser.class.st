@@ -1,16 +1,18 @@
 Class {
-	#name : #MiMetaModelNavigationBrowser,
-	#superclass : #MiNavigationInspectionTab,
-	#category : #'MooseIDE-NewTools-Inspector tabs'
+	#name : 'MiMetaModelNavigationBrowser',
+	#superclass : 'MiNavigationInspectionTab',
+	#category : 'MooseIDE-NewTools-Inspector tabs',
+	#package : 'MooseIDE-NewTools',
+	#tag : 'Inspector tabs'
 }
 
-{ #category : #'private - display' }
+{ #category : 'private - display' }
 MiMetaModelNavigationBrowser >> childrenFor: anEntity [
 
 	^ {  }
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiMetaModelNavigationBrowser >> initializeNavigationTreeTable [
 
 	| sizeColumn |
@@ -28,7 +30,7 @@ MiMetaModelNavigationBrowser >> initializeNavigationTreeTable [
 	navigation expandRoots
 ]
 
-{ #category : #'private - display' }
+{ #category : 'private - display' }
 MiMetaModelNavigationBrowser >> printEntry: anAssociation [
 
 	^ anAssociation value size > 1
