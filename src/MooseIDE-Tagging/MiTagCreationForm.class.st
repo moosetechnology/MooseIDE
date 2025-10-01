@@ -12,11 +12,9 @@ Class {
 		'nameField',
 		'descriptionField',
 		'categorySelection',
-		'tagModel',
 		'intentButton',
 		'extentButton',
 		'isIntent',
-		'formLayout',
 		'queryList',
 		'queryListLabeled',
 		'tagBrowser'
@@ -43,6 +41,12 @@ MiTagCreationForm >> checkFormInputs [
 
 	nameField text ifEmpty: [ ^ false ].
 	^ true
+]
+
+{ #category : 'initialization' }
+MiTagCreationForm >> close [
+
+	owner close
 ]
 
 { #category : 'private' }
@@ -75,22 +79,56 @@ MiTagCreationForm >> initialize [
 
 	super initialize.
 	isIntent := false.
+
 ]
 
 { #category : 'initialization' }
-MiTagCreationForm >> initializeDialogWindow: aDialog [
+MiTagCreationForm >> initializeDialogButtonsLayout [
 
-	"aDialog initialExtent: self class windowExtent."
+	^SpBoxLayout newLeftToRight
+		hAlignEnd ;
+		add: cancelButton expand: false ;
+		add: submitButton expand: false ;
+		yourself
+]
 
-	aDialog
-		addButton: 'Cancel'
-		do: [ :dialog | dialog close ].
-	aDialog
-		addButton: 'Add'
-		do: [ :dialog | 
-			self submit.
-			dialog close ].
+{ #category : 'initialization' }
+MiTagCreationForm >> initializeFormLayout [
 
+	^SpBoxLayout newTopToBottom
+		spacing: 5;
+
+		add: (SpBoxLayout newLeftToRight
+			add: extentButton;
+			add: intentButton;
+			yourself)
+		expand: false;
+
+		add: (SpBoxLayout newLeftToRight
+			spacing: 5;
+
+			add: (SpBoxLayout newTopToBottom
+				add: 'Name' asPresenter expand: false;
+				add: nameField expand: false;
+				yourself);
+
+			add: (SpBoxLayout newTopToBottom
+				add: 'Category (optional)';
+				add: categorySelection;
+				yourself)
+			width: 200;
+
+			yourself)
+		expand: false;
+
+		add: (SpBoxLayout newTopToBottom
+			add: 'Description (optional)' asPresenter
+			expand: false;
+			add: descriptionField;
+			yourself)
+		 expand: true;
+		 add: queryListLabeled expand: false;
+		 yourself.
 ]
 
 { #category : 'initialization' }
@@ -115,46 +153,19 @@ MiTagCreationForm >> initializeLayout [
 		width: colorPickerWidth;
 		add: colorPicker  ;
 		yourself.
-
-	formLayout := SpBoxLayout newTopToBottom
-		spacing: 5;
-		add: (SpBoxLayout newLeftToRight
-			spacing: 5;
-			add: (SpBoxLayout newTopToBottom
-				add: 'Name' asPresenter expand: false;
-				add: nameField expand: false;
-				yourself);
-			add: (SpBoxLayout newTopToBottom
-				add: 'Category (optional)';
-				add: categorySelection;
-				yourself)
-			width: 200;
-			yourself)
-		expand: false;
-		add: (SpBoxLayout newTopToBottom
-			add: 'Description (optional)' asPresenter
-			expand: false;
-			add: descriptionField;
-			yourself)
-		 expand: true;
-		 add: queryListLabeled expand: false;
-		 yourself.
+	
+	self initializeFormLayout.
 
 	self layout
 		add:  (SpBoxLayout newLeftToRight
 			spacing: 10;
-			add: colorPickerLayout
-			width: colorPickerWidth ;
+			add: colorPickerLayout width: colorPickerWidth ;
 			add: sep width: 2;
 			add: (SpBoxLayout newTopToBottom
-				spacing: 4;
-				add: (SpBoxLayout newLeftToRight
-				add: extentButton;
-				add: intentButton;
-				yourself)
-			expand: false;
-			add: formLayout expand: true fill: true;
-			yourself);
+			spacing: 5;
+				add: (self initializeFormLayout) expand: true fill: true;
+				add: self initializeDialogButtonsLayout expand: false ;
+				yourself);
 		yourself)
 
 ]
@@ -162,40 +173,49 @@ MiTagCreationForm >> initializeLayout [
 { #category : 'initialization' }
 MiTagCreationForm >> initializePresenters [
 
-	(colorPicker := self newColorPicker) setColor: Color random.
+	submitButton := self newButton 
+		label: 'Add' ;
+		action: [ self submit ].
+	cancelButton := self newButton 
+		label: 'Cancel' ;
+		action: [ self close ].
+
+	colorPicker := self newColorPicker
+		setColor: Color random.
 	extentButton := self newToggleButton
 		state: true;
-		label: 'Static';
-		yourself.
+		label: 'Static'.
 	intentButton := self newToggleButton
 		state: false;
-		label: 'Dynamic';
-		yourself.
+		label: 'Dynamic'.
+
+	self initializeTagDescriptionPresenters.
+
+	self initializeLayout
+]
+
+{ #category : 'initialization' }
+MiTagCreationForm >> initializeTagDescriptionPresenters [
 
 	nameField := self newTextInput.
 	descriptionField := self newText.
 	categorySelection := self newDropList
 		sortingBlock: [ :item |
-			item specModel
+			item model
 				ifNil: [ '' ]
 				ifNotNil: [ :category | category name ] ]
 		ascending;
-		display: [ :cat |
-			cat ifNil: [ '' ] ifNotNil: [ cat name ] ];
-		yourself.
+		display: [ :cat | cat ifNil: [ '' ] ifNotNil: [ cat name ] ].
 	queryList := self newDropList
-		             startWithoutSelection;
-		             display:
-			             [ :query | self stringForQuery: query ] yourself.
+		startWithoutSelection;
+		display: [ :query | self stringForQuery: query ].
 	queryListLabeled := MiPresenter new
-		                    layout: (SpBoxLayout newTopToBottom
-				                     add: 'Query' asPresenter expand: false;
-				                     add: queryList expand: false;
-				                     yourself);
-		                    hide;
-		                    yourself.
+		layout: (SpBoxLayout newTopToBottom
+			add: 'Query' asPresenter expand: false;
+			add: queryList expand: false;
+			yourself);
+		 hide.
 
-	self initializeLayout
 ]
 
 { #category : 'accessing' }
@@ -263,12 +283,6 @@ MiTagCreationForm >> setIntentForm [
 	self update
 ]
 
-{ #category : 'initialization' }
-MiTagCreationForm >> setModelBeforeInitialization: aTagModel [
-
-	tagModel := aTagModel
-]
-
 { #category : 'accessing' }
 MiTagCreationForm >> specModel [
 
@@ -295,26 +309,27 @@ MiTagCreationForm >> submit [
 
 	| tag |
 	self checkFormInputs ifFalse: [ ^ self ].
+
 	tag := isIntent
-		ifFalse: [
-			self specModel
-				createTag: nameField text
-				description: descriptionField text
-				color: colorPicker color
-				category: categorySelection selectedItem ]
 		ifTrue: [
 			self specModel
 				createDynamicTag: nameField text
 				description: descriptionField text
 				color: colorPicker color
 				category: categorySelection selectedItem
-				query: queryList selectedItem ].
+				query: queryList selectedItem ]
+		ifFalse: [
+			self specModel
+				createTag: nameField text
+				description: descriptionField text
+				color: colorPicker color
+				category: categorySelection selectedItem ].
 
 	tag
-		ifNil: [
-			self alert:
-				'This tag name is already in use. Please choose a different one.' ]
-		ifNotNil: [ tagBrowser refreshTagList ]
+		ifNil: [ self alert: 'This tag name is already in use. Please choose a different one.' ].
+
+	tagBrowser refreshTagList.
+	self close
 ]
 
 { #category : 'accessing' }
@@ -327,11 +342,13 @@ MiTagCreationForm >> submitButton [
 MiTagCreationForm >> tagBrowser: aTagBrowser [
 
 	tagBrowser := aTagBrowser.
-		self updateQueryList.
+	self updateQueryList.
+	self updateCategories
 ]
 
 { #category : 'private' }
 MiTagCreationForm >> updateCategories [
+	"allow to have no category, hence the first nil element"
 
 	categorySelection items: { nil }, (self specModel allCategories)
 ]
@@ -339,7 +356,7 @@ MiTagCreationForm >> updateCategories [
 { #category : 'accessing' }
 MiTagCreationForm >> updateQueryList [
 
-	queryList items: { nil } , self fetchQueries
+	queryList items: self fetchQueries
 ]
 
 { #category : 'accessing - deprecated' }

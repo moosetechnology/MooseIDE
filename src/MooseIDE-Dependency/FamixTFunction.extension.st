@@ -1,6 +1,6 @@
-Extension { #name : #FamixTFunction }
+Extension { #name : 'FamixTFunction' }
 
-{ #category : #'*MooseIDE-Dependency' }
+{ #category : '*MooseIDE-Dependency' }
 FamixTFunction >> queryAllOutgoingForDSM [
 	"DO NOT USE OUTSIDE THE CONTEXT OF DSM.
 See declaration in TEntityMetalevelDependency for context."
@@ -8,7 +8,7 @@ See declaration in TEntityMetalevelDependency for context."
 	| dependencies |
 	dependencies := self queryAllOutgoing asSet.
 
-	self children do: [ :c |
+	self containedEntities do: [ :c |
 		dependencies addAll: c queryAllOutgoingForDSM ].
 
 	self typing isNotNil and: [

@@ -149,7 +149,6 @@ MiTagManagementPage >> initializePresenters [
 	tagDescriptionPage := self instantiate: MiTagExtentPage.
 	dynamicTagDescriptionPage := self instantiate: MiTagIntentPage.
 	descriptionPage := tagDescriptionPage.
-	descriptionPage hide.
 
 	btnIsExtent := self newToggleButton
 		               state: true;
@@ -219,9 +218,9 @@ MiTagManagementPage >> refreshCategoryList [
 
 { #category : 'refreshing' }
 MiTagManagementPage >> refreshDescriptionPage [
-	"No need to refresh if this is hidden."
 
-	descriptionPage isVisible ifTrue: [ descriptionPage refresh ]
+	self setRightPart: descriptionPage.
+	descriptionPage refresh
 ]
 
 { #category : 'refreshing' }
@@ -267,6 +266,21 @@ MiTagManagementPage >> setModelBeforeInitialization: aTagModel [
 	tagModel := aTagModel
 ]
 
+{ #category : 'initialization' }
+MiTagManagementPage >> setRightPart: aSpPresenter [
+	"temporary hack, the descriptionPage should not be in this class but in the MiTagBrowser
+	 We need to replace the right part of the window (descriptionPage) with the new presenter
+	 this part is the 3rd presenter in the layout
+	 So if this right part is not the same as aSpPresenter,
+	 we remove it and then add the correct one"
+
+	(layout presenters third = aSpPresenter) ifTrue: [ ^self ].
+
+	layout remove: layout presenters third.
+	layout add: aSpPresenter 
+
+]
+
 { #category : 'action' }
 MiTagManagementPage >> setTagTo: aTag [
 
@@ -276,6 +290,19 @@ MiTagManagementPage >> setTagTo: aTag [
 	descriptionPage show.
 	self refreshDescriptionPage.
 	self update
+]
+
+{ #category : 'initialization' }
+MiTagManagementPage >> showNoMooseModel [
+
+	self setRightPart: (SpPresenter new
+		layout: (SpBoxLayout newTopToBottom
+			vAlignCenter;
+			hAlignCenter;
+			add: 'No available moose model in selected buses.';
+			add: 'Propagate entities or moose model on selected buses.';
+			yourself);
+		yourself)
 ]
 
 { #category : 'accessing' }

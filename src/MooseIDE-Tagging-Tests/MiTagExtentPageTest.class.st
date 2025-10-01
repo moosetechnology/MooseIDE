@@ -1,22 +1,23 @@
 Class {
-	#name : #MiTagExtentPageTest,
-	#superclass : #MiTagPresenterTest,
-	#category : #'MooseIDE-Tagging-Tests'
+	#name : 'MiTagExtentPageTest',
+	#superclass : 'MiTagPresenterTest',
+	#category : 'MooseIDE-Tagging-Tests',
+	#package : 'MooseIDE-Tagging-Tests'
 }
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 MiTagExtentPageTest >> presenterClass [
 
 	^ MiTagExtentPage
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 MiTagExtentPageTest >> presenterOwner [
 
 	^ browser
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiTagExtentPageTest >> setUp [
 
 	| entities tag |
@@ -25,16 +26,16 @@ MiTagExtentPageTest >> setUp [
 	entities := #( Lorem iposum dolor sit amet ) collect: [ :each | 
 		            FamixStClass named: each ].
 	self createExtentTag: 'Tag001'.
-	tag := browser tagModel allTags first.
+	tag := browser specModel allTags first.
 	browser setTagTo: tag.
 
 	(entities first: 3)
-		do: [ :e | browser tagModel tagEntityNotYourself: e ].
+		do: [ :e | browser specModel tagEntityNotYourself: e ].
 
 	browser followEntity: entities asMooseGroup
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiTagExtentPageTest >> testEntitesListIsSorted [
 
 	| entities |
@@ -43,7 +44,7 @@ MiTagExtentPageTest >> testEntitesListIsSorted [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiTagExtentPageTest >> testEntitiesListIsNotEmpty [
 
 	| entities |
@@ -73,7 +74,7 @@ MiTagExtentPageTest >> testTaggedEntitesListIsSorted [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiTagExtentPageTest >> testTaggedEntitiesListIsNotEmpty [
 
 	| entities |

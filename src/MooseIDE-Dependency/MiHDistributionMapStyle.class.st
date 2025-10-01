@@ -2,14 +2,16 @@
 I am the class responsible of building shapes for the distribution map.
 "
 Class {
-	#name : #MiHDistributionMapStyle,
-	#superclass : #HStyle,
+	#name : 'MiHDistributionMapStyle',
+	#superclass : 'HStyle',
 	#traits : 'THWithCornerRadiusStyle',
 	#classTraits : 'THWithCornerRadiusStyle classTrait',
-	#category : #'MooseIDE-Dependency-DistributionMap'
+	#category : 'MooseIDE-Dependency-DistributionMap',
+	#package : 'MooseIDE-Dependency',
+	#tag : 'DistributionMap'
 }
 
-{ #category : #hooks }
+{ #category : 'hooks' }
 MiHDistributionMapStyle >> adjustLabel: aLabel ToWidth: width [
 
 	| sizeOfNewText font text |
@@ -22,7 +24,7 @@ MiHDistributionMapStyle >> adjustLabel: aLabel ToWidth: width [
 	aLabel text: (text truncateTo: sizeOfNewText - 1),'.'
 ]
 
-{ #category : #hooks }
+{ #category : 'hooks' }
 MiHDistributionMapStyle >> buildCompositeEmptyNodeIn: shape [
 
 	| node box rect |
@@ -48,7 +50,7 @@ MiHDistributionMapStyle >> buildCompositeEmptyNodeIn: shape [
 	shape propertyAt: #background put: box
 ]
 
-{ #category : #hooks }
+{ #category : 'hooks' }
 MiHDistributionMapStyle >> buildCompositeFullNodeIn: shape [
 
 	| childrenShapes node titleGroup title titleBox children boxChildren list |
@@ -107,19 +109,19 @@ MiHDistributionMapStyle >> buildCompositeFullNodeIn: shape [
 	shape adjustToChildren
 ]
 
-{ #category : #hooks }
+{ #category : 'hooks' }
 MiHDistributionMapStyle >> elementWidth [
 
 	^ 10
 ]
 
-{ #category : #hooks }
+{ #category : 'hooks' }
 MiHDistributionMapStyle >> emptyBoxExtent [
 
 	^ 30@20
 ]
 
-{ #category : #hooks }
+{ #category : 'hooks' }
 MiHDistributionMapStyle >> iconFor: anHNode [
 	anHNode iconName ifNil: [ ^ nil ].
 	^ RSBitmap new
@@ -128,7 +130,7 @@ MiHDistributionMapStyle >> iconFor: anHNode [
 		
 ]
 
-{ #category : #hooks }
+{ #category : 'hooks' }
 MiHDistributionMapStyle >> labelAndIconFor: anHNode [
 	| group icon |
 	group := RSGroup new.
@@ -140,7 +142,7 @@ MiHDistributionMapStyle >> labelAndIconFor: anHNode [
 	^ group
 ]
 
-{ #category : #hooks }
+{ #category : 'hooks' }
 MiHDistributionMapStyle >> shapeFor: aHNode [
 
 	| shape |
