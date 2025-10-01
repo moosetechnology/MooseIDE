@@ -9,8 +9,8 @@ I am responsible for :
 - color the nodes according to their property
 "
 Class {
-	#name : #MiArchitecturalMapBuilder,
-	#superclass : #HSimpleVisualizationBuilder,
+	#name : 'MiArchitecturalMapBuilder',
+	#superclass : 'HSimpleVisualizationBuilder',
 	#instVars : [
 		'nodeMooseIDDict',
 		'allEntities',
@@ -19,10 +19,12 @@ Class {
 		'highlightShapes',
 		'nodeStyle'
 	],
-	#category : #'MooseIDE-Dependency-ArchitecturalMap'
+	#category : 'MooseIDE-Dependency-ArchitecturalMap',
+	#package : 'MooseIDE-Dependency',
+	#tag : 'ArchitecturalMap'
 }
 
-{ #category : #adding }
+{ #category : 'adding' }
 MiArchitecturalMapBuilder >> addIncomingEntitiesFor: anHNode [
 
 	"Add to the visualization incoming entities"
@@ -40,7 +42,7 @@ MiArchitecturalMapBuilder >> addIncomingEntitiesFor: anHNode [
 			n dependencyTo: anHNode ] ]
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 MiArchitecturalMapBuilder >> addIncomingsFor: anHNode [
 
 	self addIncomingEntitiesFor: anHNode.
@@ -50,7 +52,7 @@ MiArchitecturalMapBuilder >> addIncomingsFor: anHNode [
 	self container signalUpdate
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 MiArchitecturalMapBuilder >> addNode: mooseEntity [
 
 	| node parentNode |
@@ -68,7 +70,7 @@ MiArchitecturalMapBuilder >> addNode: mooseEntity [
 	^ node
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 MiArchitecturalMapBuilder >> addOutgoingEntitiesFor: anHNode [
 
 	"Add to the visualization outgoing entities"
@@ -83,7 +85,7 @@ MiArchitecturalMapBuilder >> addOutgoingEntitiesFor: anHNode [
 		self addOutgoingNodes: e target asCollection from: anHNode ]
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 MiArchitecturalMapBuilder >> addOutgoingNodes: aCollection from: anHNode [
 
 	| node |
@@ -95,7 +97,7 @@ MiArchitecturalMapBuilder >> addOutgoingNodes: aCollection from: anHNode [
 			anHNode dependencyTo: n ] ]
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 MiArchitecturalMapBuilder >> addOutgoingsFor: anHNode [
 
 	self addOutgoingEntitiesFor: anHNode.
@@ -105,14 +107,14 @@ MiArchitecturalMapBuilder >> addOutgoingsFor: anHNode [
 	self container signalUpdate
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 MiArchitecturalMapBuilder >> addTags [
 
 	rootNode addAll: (mapModel tags collect: [ :e | 
 					             self buildNodeFromTag: e ])
 ]
 
-{ #category : #'public - hooks' }
+{ #category : 'public - hooks' }
 MiArchitecturalMapBuilder >> borderFor: node [
 
 	| border |
@@ -130,7 +132,7 @@ MiArchitecturalMapBuilder >> borderFor: node [
 	^ border
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 MiArchitecturalMapBuilder >> build [
 
 	rootNode ifNotNil: [
@@ -145,7 +147,7 @@ MiArchitecturalMapBuilder >> build [
 	^ self container
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 MiArchitecturalMapBuilder >> buildChildrenNodesFrom: anEntity [
 
 	^ ((self mapModel childrenFor: anEntity)
@@ -153,7 +155,7 @@ MiArchitecturalMapBuilder >> buildChildrenNodesFrom: anEntity [
 		   thenSelect: [ :childNode | childNode isNotNil ]) sort: [ :c1 :c2 | c1 name < c2 name ]
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 MiArchitecturalMapBuilder >> buildChildrenNodesFromTag: aTag [
 
 	| nodes |
@@ -175,7 +177,7 @@ With Imen we propose to display also the name of the parent entity in the label 
 	^ nodes sort: [ :a :b | a name < b name ]
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 MiArchitecturalMapBuilder >> buildNodeFrom: aMooseEntity [
 
 	^ aMooseEntity isTag
@@ -183,7 +185,7 @@ MiArchitecturalMapBuilder >> buildNodeFrom: aMooseEntity [
 		  ifFalse: [ self buildNodeFromEntity: aMooseEntity ]
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 MiArchitecturalMapBuilder >> buildNodeFromEntity: anEntity [
 
 	| node |
@@ -205,7 +207,7 @@ MiArchitecturalMapBuilder >> buildNodeFromEntity: anEntity [
 	^ node
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 MiArchitecturalMapBuilder >> buildNodeFromTag: aTag [
 
 	| node |
@@ -221,13 +223,13 @@ MiArchitecturalMapBuilder >> buildNodeFromTag: aTag [
 	^ node
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiArchitecturalMapBuilder >> colorFor: node [
 
 	^ node color ifNil: [ Smalltalk ui theme baseColor ] 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiArchitecturalMapBuilder >> createMultiTagBoxSized: aSize [
 
 	| cp |
@@ -253,7 +255,7 @@ MiArchitecturalMapBuilder >> createMultiTagBoxSized: aSize [
 	^ cp
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 MiArchitecturalMapBuilder >> createRootNodes [
 
 	^ (mapModel rootNodes
@@ -261,13 +263,13 @@ MiArchitecturalMapBuilder >> createRootNodes [
 		   thenReject: [ :node | node isNil ]) sort: [ :a :b | a name < b name ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiArchitecturalMapBuilder >> elements [
 
 	^ mapModel entities
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 MiArchitecturalMapBuilder >> groupTagElements: aTag [
 
 	| classDict |
@@ -282,7 +284,7 @@ MiArchitecturalMapBuilder >> groupTagElements: aTag [
 	^ classDict values
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiArchitecturalMapBuilder >> highlightableLinkedShapes [
 
 	^ highlightShapes ifNil: [ 
@@ -316,7 +318,7 @@ MiArchitecturalMapBuilder >> highlightableLinkedShapes [
 			                     yourself ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiArchitecturalMapBuilder >> initialize [
 
 	super initialize.
@@ -327,13 +329,13 @@ MiArchitecturalMapBuilder >> initialize [
 	self popup text: [ :model | self tooltipOf: model rawModel ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiArchitecturalMapBuilder >> menuItemStrategy [
 
 	^ MiArchitecturalMenuItemStrategy new
 ]
 
-{ #category : #hooks }
+{ #category : 'hooks' }
 MiArchitecturalMapBuilder >> nodeAnnouncer [
 	"plug new events here"
 
@@ -358,19 +360,19 @@ MiArchitecturalMapBuilder >> nodeAnnouncer [
 	^ baseNode announcer
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiArchitecturalMapBuilder >> nodeStyle [
 
 	^ nodeStyle ifNil: [ nodeStyle := MiArchitecturalMapStyle new ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiArchitecturalMapBuilder >> nodeStyle: anObject [
 
 	nodeStyle := anObject
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 MiArchitecturalMapBuilder >> parentNodeFor: anHNode [
 
 	"Search for parent node in the node dictionary, add it if not present."
@@ -394,7 +396,7 @@ MiArchitecturalMapBuilder >> parentNodeFor: anHNode [
 	^ parentNode
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 MiArchitecturalMapBuilder >> relayout: aGroupOfShapes parent: shape [
 
 	shape layout ifNil: [
@@ -403,14 +405,14 @@ MiArchitecturalMapBuilder >> relayout: aGroupOfShapes parent: shape [
 	shape layout on: aGroupOfShapes
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 MiArchitecturalMapBuilder >> setDependencies [
 
 	tagNodes do: [ :tagNode | self setDependenciesForTag: tagNode ].
 	allEntities do: [ :e | self setDependenciesForEntity: e ]
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 MiArchitecturalMapBuilder >> setDependenciesForEntity: anEntity [
 
 	anEntity isQueryable ifFalse: [ ^ self ].
@@ -421,7 +423,7 @@ MiArchitecturalMapBuilder >> setDependenciesForEntity: anEntity [
 						self setDependency: dependency forEntity: anEntity ] ] ]
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 MiArchitecturalMapBuilder >> setDependenciesForTag: aTagNode [
 
 	aTagNode children do: [ :child |
@@ -430,7 +432,7 @@ MiArchitecturalMapBuilder >> setDependenciesForTag: aTagNode [
 				(nodeMooseIDDict at: incommingDependency source mooseID ifAbsent: [ nil ]) ifNotNil: [ :hNode | hNode dependencyTo: child withModel: incommingDependency ] ] ] ]
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 MiArchitecturalMapBuilder >> setDependency: e forEntity: anEntity [
 
 	^ nodeMooseIDDict at: e source mooseID ifPresent: [ :hNode | 
@@ -439,7 +441,7 @@ MiArchitecturalMapBuilder >> setDependency: e forEntity: anEntity [
 			  withModel: e ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiArchitecturalMapBuilder >> tooltipOf: entity [
 
 	^ String streamContents: [ :s |
@@ -459,7 +461,7 @@ Tags on children: '.
 								  tags do: [ :tag | s << tag name ] separatedBy: [ s << ', ' ] ] ] ]
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 MiArchitecturalMapBuilder >> updateWithModelSettings [
 	self setDependencies.
 	mapModel showAllLinks

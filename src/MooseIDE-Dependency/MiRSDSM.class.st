@@ -1,14 +1,16 @@
 Class {
-	#name : #MiRSDSM,
-	#superclass : #RSDSM,
+	#name : 'MiRSDSM',
+	#superclass : 'RSDSM',
 	#instVars : [
 		'owner',
 		'menuInteraction'
 	],
-	#category : #'MooseIDE-Dependency-DSM'
+	#category : 'MooseIDE-Dependency-DSM',
+	#package : 'MooseIDE-Dependency',
+	#tag : 'DSM'
 }
 
-{ #category : #hooks }
+{ #category : 'hooks' }
 MiRSDSM >> cellMenu [
 	^menuInteraction ifNil: [
 		menuInteraction := RSMenuActivable new
@@ -21,7 +23,7 @@ MiRSDSM >> cellMenu [
 	]
 ]
 
-{ #category : #'hooks - labels' }
+{ #category : 'hooks - labels' }
 MiRSDSM >> createLabelShapeX: aRSBox [
 
 	^(super createLabelShapeX: aRSBox)
@@ -29,7 +31,7 @@ MiRSDSM >> createLabelShapeX: aRSBox [
 		yourself
 ]
 
-{ #category : #'hooks - labels' }
+{ #category : 'hooks - labels' }
 MiRSDSM >> createLabelShapeY: aRSBox [
 
 	^(super createLabelShapeY: aRSBox)
@@ -37,7 +39,7 @@ MiRSDSM >> createLabelShapeY: aRSBox [
 		yourself
 ]
 
-{ #category : #hooks }
+{ #category : 'hooks' }
 MiRSDSM >> createShape: tuple [
 
 	| weight |
@@ -58,12 +60,12 @@ MiRSDSM >> createShape: tuple [
 	^shape
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiRSDSM >> getTupleDependencyWeight: tuple [
 	^ owner getTupleDependencyWeight: tuple
 ]
 
-{ #category : #highlighting }
+{ #category : 'highlighting' }
 MiRSDSM >> highlight: evt [
 	"Probable bug in RSDSM: `super highlight: evt` draws the row and column with bold border
 	 But the borders are shapes that should not receive announcement (like mouseEnter/Leave for highlight/unhighlight"
@@ -77,29 +79,29 @@ MiRSDSM >> highlight: evt [
 	]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiRSDSM >> listTupleDependencies: tuple [
 	^(owner listTupleDependencies: tuple)
 		inspect
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiRSDSM >> owner [
 	^ owner
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiRSDSM >> owner: anObject [
 
 	owner := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiRSDSM >> specModel [
 	^self owner specModel.
 ]
 
-{ #category : #highlighting }
+{ #category : 'highlighting' }
 MiRSDSM >> unhighlight: evt [
 
 	super unhighlight: evt.
@@ -109,7 +111,7 @@ MiRSDSM >> unhighlight: evt [
 	]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 MiRSDSM >> userActionOn: aTuple [
 	
 	self specModel userActionOn: aTuple

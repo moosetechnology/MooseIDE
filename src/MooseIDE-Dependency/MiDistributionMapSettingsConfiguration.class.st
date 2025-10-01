@@ -1,52 +1,54 @@
 Class {
-	#name : #MiDistributionMapSettingsConfiguration,
-	#superclass : #MiAbstractSettingsConfiguration,
+	#name : 'MiDistributionMapSettingsConfiguration',
+	#superclass : 'MiAbstractSettingsConfiguration',
 	#instVars : [
 		'baseColor',
 		'childrenQuery',
 		'tags',
 		'availableTags'
 	],
-	#category : #'MooseIDE-Dependency-DistributionMap'
+	#category : 'MooseIDE-Dependency-DistributionMap',
+	#package : 'MooseIDE-Dependency',
+	#tag : 'DistributionMap'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDistributionMapSettingsConfiguration >> availableTags [
 
 	^ availableTags
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDistributionMapSettingsConfiguration >> availableTags: anObject [
 
 	availableTags := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDistributionMapSettingsConfiguration >> baseColor [
 
 	^ baseColor
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDistributionMapSettingsConfiguration >> baseColor: anObject [
 
 	baseColor := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDistributionMapSettingsConfiguration >> childrenQuery [
 
 	^ childrenQuery
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDistributionMapSettingsConfiguration >> childrenQuery: anObject [
 
 	childrenQuery := anObject
 ]
 
-{ #category : #ui }
+{ #category : 'ui' }
 MiDistributionMapSettingsConfiguration >> settingsPresenters [
 
 	^ super settingsPresenters
@@ -66,13 +68,13 @@ If an entity has several tags, it will get the color of the first of its tags ap
 		  yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDistributionMapSettingsConfiguration >> tags [
 
 	^ tags
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDistributionMapSettingsConfiguration >> tags: anObject [
 
 	tags := anObject

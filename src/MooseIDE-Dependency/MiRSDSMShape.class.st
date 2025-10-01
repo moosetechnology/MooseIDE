@@ -2,18 +2,20 @@
 This is a modified version of the `RSComposite` to accomodate our new DSM
 "
 Class {
-	#name : #MiRSDSMShape,
-	#superclass : #RSComposite,
-	#category : #'MooseIDE-Dependency-DSM'
+	#name : 'MiRSDSMShape',
+	#superclass : 'RSComposite',
+	#category : 'MooseIDE-Dependency-DSM',
+	#package : 'MooseIDE-Dependency',
+	#tag : 'DSM'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiRSDSMShape >> color: aColor [
 	self children first
 		color: aColor
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiRSDSMShape >> initialize [ 
 	super initialize.
 
@@ -23,7 +25,7 @@ MiRSDSMShape >> initialize [
 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiRSDSMShape >> text: aString [
 
 	self children second
