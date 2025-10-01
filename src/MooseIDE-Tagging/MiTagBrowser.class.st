@@ -98,19 +98,6 @@ MiTagBrowser >> canTagEntities [
 	^false
 ]
 
-{ #category : 'initialization' }
-MiTagBrowser >> closeTagCreationForm [
-
-	self layout child: tagManagementPage.
-	self updateToolbar
-]
-
-{ #category : 'initialization' }
-MiTagBrowser >> closeTagEditionForm [
-
-	self layout child: tagManagementPage
-]
-
 { #category : 'testing' }
 MiTagBrowser >> consume: anObject [
 	anObject class = FamixTag ifTrue: [ 
@@ -133,8 +120,7 @@ MiTagBrowser >> followEntity: anEntity [
 
 	specModel entities: anEntity asMooseGroup.
 	specModel mooseModel
-		ifNil: [ self showNoMooseModel ]
-		ifNotNil: [ self closeTagCreationForm ].
+		ifNil: [ self showNoMooseModel ].
 	tagManagementPage refresh
 ]
 
@@ -161,7 +147,7 @@ MiTagBrowser >> initializeLayout [
 MiTagBrowser >> initializePresenters [
 
 	tagManagementPage := MiTagManagementPage newApplication: self application owner: self model: specModel.
-	"tagEditionForm := self instantiate: MiTagEditionForm on: specModel. "
+
 	self initializeLayout
 ]
 
@@ -187,11 +173,13 @@ MiTagBrowser >> newTagSelected [
 
 { #category : 'initialization' }
 MiTagBrowser >> openTagCreationForm [
+	"returning the MiTagCreationForm allows to test it"
 
-	MiTagCreationForm new 
+	^MiTagCreationForm new 
 		tagBrowser: self ;
 		updateCategories ;
-		open
+		open ;
+		yourself
 ]
 
 { #category : 'initialization' }
@@ -250,10 +238,4 @@ MiTagBrowser >> tagManagementPage [
 	"see `MiTagManagementPage` : left part of the browser allowing to create, select, or remove tags"
 
 	^ tagManagementPage
-]
-
-{ #category : 'testing' }
-MiTagBrowser >> tagModel [
-
-	^ specModel
 ]
