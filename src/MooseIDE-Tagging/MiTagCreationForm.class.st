@@ -12,11 +12,9 @@ Class {
 		'nameField',
 		'descriptionField',
 		'categorySelection',
-		'tagModel',
 		'intentButton',
 		'extentButton',
 		'isIntent',
-		'formLayout',
 		'queryList',
 		'queryListLabeled',
 		'tagBrowser'
@@ -277,12 +275,6 @@ MiTagCreationForm >> setIntentForm [
 	extentButton state: false.
 	queryListLabeled show.
 	self update
-]
-
-{ #category : 'initialization' }
-MiTagCreationForm >> setModelBeforeInitialization: aTagModel [
-
-	tagModel := aTagModel
 ]
 
 { #category : 'accessing' }
