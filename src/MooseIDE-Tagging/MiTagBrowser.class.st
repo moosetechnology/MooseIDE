@@ -247,6 +247,7 @@ MiTagBrowser >> showNoMooseModel [
 
 { #category : 'accessing' }
 MiTagBrowser >> tagManagementPage [
+	"see `MiTagManagementPage` : left part of the browser allowing to create, select, or remove tags"
 
 	^ tagManagementPage
 ]
