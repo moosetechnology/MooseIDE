@@ -10,9 +10,7 @@ Class {
 	#name : 'MiTagBrowser',
 	#superclass : 'MiAbstractBrowser',
 	#instVars : [
-		'tagManagementPage',
-		'tagCreationForm',
-		'tagEditionForm'
+		'tagManagementPage'
 	],
 	#category : 'MooseIDE-Tagging-Browser',
 	#package : 'MooseIDE-Tagging',
@@ -82,9 +80,9 @@ MiTagBrowser class >> title [
 MiTagBrowser >> browserClosed [
 
 	super browserClosed.
+
 	application unregisterProducer: self.
-	application unregisterConsumer: self.
-	application unregisterConsumer: tagCreationForm
+	application unregisterConsumer: self
 ]
 
 { #category : 'testing' }
@@ -148,7 +146,6 @@ MiTagBrowser >> initialize [
 	application registerProducer: self for: FamixTag.
 	application registerConsumer: self for: FamixTag.
 	application registerConsumer: self for: FamixTagAssociation.
-	application registerConsumer: tagCreationForm for: FQAbstractQuery
 ]
 
 { #category : 'initialization' }
@@ -246,12 +243,6 @@ MiTagBrowser >> showNoMooseModel [
 							  asPresenter;
 					  yourself);
 			 yourself)
-]
-
-{ #category : 'accessing' }
-MiTagBrowser >> tagCreationForm [
-
-	^ tagCreationForm
 ]
 
 { #category : 'accessing' }
