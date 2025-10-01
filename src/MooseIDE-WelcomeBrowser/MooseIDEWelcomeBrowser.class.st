@@ -3,12 +3,13 @@ A welcome browser for the Moose environment.
 See superclass for more implementation details
 "
 Class {
-	#name : #MooseIDEWelcomeBrowser,
-	#superclass : #StWelcomeBrowser,
-	#category : #'MooseIDE-WelcomeBrowser'
+	#name : 'MooseIDEWelcomeBrowser',
+	#superclass : 'StWelcomeBrowser',
+	#category : 'MooseIDE-WelcomeBrowser',
+	#package : 'MooseIDE-WelcomeBrowser'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MooseIDEWelcomeBrowser class >> closePharoWelcomeThenOpen [
 
 	self superclass allInstancesDo: [ :browser |
@@ -16,14 +17,14 @@ MooseIDEWelcomeBrowser class >> closePharoWelcomeThenOpen [
 	self openForRelease
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MooseIDEWelcomeBrowser class >> logo [
 
 	^ Form fromBinaryStream:
 		  MooseConfiguration mooseLogoContents base64Decoded readStream
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MooseIDEWelcomeBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 
@@ -36,14 +37,14 @@ MooseIDEWelcomeBrowser class >> menuCommandOn: aBuilder [
 		withSeparatorAfter 
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MooseIDEWelcomeBrowser class >> open [
 
 	<script>
 	self new open
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MooseIDEWelcomeBrowser class >> openForRelease [
 	<script>
 	| window |
@@ -58,7 +59,7 @@ MooseIDEWelcomeBrowser class >> openForRelease [
 			extent: self windowExtent ]
 ]
 
-{ #category : #finalization }
+{ #category : 'finalization' }
 MooseIDEWelcomeBrowser class >> register [
 	"Add ourselves to registry. See [Smalltalk tools]" 
 	<script>
@@ -66,7 +67,7 @@ MooseIDEWelcomeBrowser class >> register [
 	self registerToolsOn: Smalltalk tools
 ]
 
-{ #category : #finalization }
+{ #category : 'finalization' }
 MooseIDEWelcomeBrowser class >> registerToolsOn: registry [
 	"Add ourselves to registry. See [Smalltalk tools]" 
 
@@ -74,7 +75,7 @@ MooseIDEWelcomeBrowser class >> registerToolsOn: registry [
 
 ]
 
-{ #category : #'accessing - labels' }
+{ #category : 'accessing - labels' }
 MooseIDEWelcomeBrowser >> mainToolsContent [
 
 	^ '# Main Moose tools
@@ -128,13 +129,13 @@ CoUsage map browser:
 			   MiCoUsageMapBrowser } collect: #name)
 ]
 
-{ #category : #'accessing - labels' }
+{ #category : 'accessing - labels' }
 MooseIDEWelcomeBrowser >> mainToolsLabel [
 
 	^ 'Main tools'
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MooseIDEWelcomeBrowser >> topics [
 
 	^ {
@@ -146,7 +147,7 @@ MooseIDEWelcomeBrowser >> topics [
 			   contents: self mainToolsContent) }
 ]
 
-{ #category : #'accessing - contents' }
+{ #category : 'accessing - contents' }
 MooseIDEWelcomeBrowser >> welcomeContent [
 
 	| version |
@@ -155,7 +156,7 @@ MooseIDEWelcomeBrowser >> welcomeContent [
 	^ '
 # Welcome to Moose  {1}
  
-![test](pharo:///MooseWelcomeBrowser/logo)	
+![Moose logo](pharo:///{2}/logo)
 
 Moose is a platform for software analysis.
 
@@ -165,15 +166,16 @@ Moose is based on Pharo and it''s open source under BSD/MIT.
 
 For more information, please visit online documentation: [modularmoose.org](https://modularmoose.org/moose-wiki/).
 
-Version {2}. Commit: [{3}](https://github.com/moosetechnology/Moose/commit/{4})'
+Version {3}. Commit: [{4}](https://github.com/moosetechnology/Moose/commit/{5})'
 		  format: {
 				  version major.
+				  self class name.
 				  version versionNumber.
 				  (version commitHash first: 7).
 				  version commitHash }
 ]
 
-{ #category : #'accessing - labels' }
+{ #category : 'accessing - labels' }
 MooseIDEWelcomeBrowser >> welcomeLabel [
 
 	^ 'Welcome to Moose ' , MooseVersion current major

@@ -22,12 +22,11 @@ MiScopeQueriesPresenterTest >> classToTest [
 MiScopeQueriesPresenterTest >> createNewQuery [
 
 	| rootQuery |
-
 	rootQuery := FQRootQuery new
 		             input: helper classesAndMethods;
 		             yourself.
 	^ (FQScopeQuery defaultForParent: rootQuery)
-		  resetAndChangeDirection: FQScopeUpAndDown;
+		  resetAndChangeDirection: FQScopeContainers;
 		  scope: FamixStClass;
 		  yourself
 ]
@@ -99,7 +98,7 @@ MiScopeQueriesPresenterTest >> testNoScopesForADirection [
 
 	self resetPresenterWithEntities: helper entitiesWithNoDownScope.
 
-	presenter directionsDropList selectItem: FQScopeDown.
+	presenter directionsDropList selectItem: FQScopeContainedEntities.
 
 	self
 		assert: presenter scopesDropList class
@@ -135,7 +134,7 @@ MiScopeQueriesPresenterTest >> testPresentersOnImpossibleQuery [
 { #category : 'tests' }
 MiScopeQueriesPresenterTest >> testQueryValidity [
 
-	presenter directionsDropList selectItem: FQScopeDown.
+	presenter directionsDropList selectItem: FQScopeContainedEntities.
 	presenter scopesDropList selectItem:
 		presenter scopesDropList items anyOne.
 	self assert: presenter query isValid.
@@ -149,7 +148,7 @@ MiScopeQueriesPresenterTest >> testQueryValidity [
 	self assert: presenter query isValid.
 
 	self resetPresenterWithEntities: helper entitiesWithNoDownScope.
-	presenter directionsDropList selectItem: FQScopeDown.
+	presenter directionsDropList selectItem: FQScopeContainedEntities.
 	self deny: presenter query isValid.
 
 	self resetPresenterWithEntities: helper noEntities.

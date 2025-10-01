@@ -7,7 +7,7 @@ See declaration in TEntityMetalevelDependency for context."
 
 	| dependencies |
 	dependencies := Set new.
-	self children do: [ :c |
+	self containedEntities do: [ :c |
 		dependencies addAll: c queryAllOutgoingForDSM ].
 
 	^ dependencies
