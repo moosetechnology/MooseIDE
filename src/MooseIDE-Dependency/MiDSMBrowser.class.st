@@ -20,15 +20,17 @@ Controls:
 - Double click on a cell to open a detailed DSM
 "
 Class {
-	#name : #MiDSMBrowser,
-	#superclass : #MiAbstractBrowser,
+	#name : 'MiDSMBrowser',
+	#superclass : 'MiAbstractBrowser',
 	#instVars : [
 		'mainPresenter'
 	],
-	#category : #'MooseIDE-Dependency-DSM'
+	#category : 'MooseIDE-Dependency-DSM',
+	#package : 'MooseIDE-Dependency',
+	#tag : 'DSM'
 }
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiDSMBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
@@ -36,43 +38,43 @@ MiDSMBrowser class >> menuCommandOn: aBuilder [
 	^ self buildMenuItemIn: aBuilder
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiDSMBrowser class >> menuIconName [
 
 	^ #mooseTree
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiDSMBrowser class >> menuItem [
 
 	^ #DSMVisualisationBrowser
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiDSMBrowser class >> menuLabel [
 
 	^ 'Dependency Structural Matrix'
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiDSMBrowser class >> menuPriority [
 
 	^ self menuVisualizationToolsPriority + 4
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MiDSMBrowser class >> newModel [
 	^MiDSMBrowserModel new
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MiDSMBrowser class >> open [
 
 	<script>
 	^ super open
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MiDSMBrowser class >> openWithX: entitiesX withY: entitiesY [
 
 	^(super on: self newModel)
@@ -82,66 +84,66 @@ MiDSMBrowser class >> openWithX: entitiesX withY: entitiesY [
 
 ]
 
-{ #category : #specs }
+{ #category : 'specs' }
 MiDSMBrowser class >> title [
 
 	^ 'Dependency Structural Matrix'
 ]
 
-{ #category : #api }
+{ #category : 'api' }
 MiDSMBrowser >> buildDSM [
 	mainPresenter run
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiDSMBrowser >> canFollowEntity: anObject [
 
 	^ specModel canFollowEntity: anObject
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiDSMBrowser >> canTagEntities [ 
 	^false
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDSMBrowser >> diagram [
 
 	^ mainPresenter
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiDSMBrowser >> followEntity: anEntity [
 
 	super followEntity: anEntity.
 	specModel followEntity: anEntity
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiDSMBrowser >> initializePresenters [
 
 	mainPresenter := self instantiate: MiDSMVisualization.
 	mainPresenter specModel: specModel
 ]
 
-{ #category : #'accessing - private tests' }
+{ #category : 'accessing - private tests' }
 MiDSMBrowser >> mainPresenter: anObject [
 
 	mainPresenter := anObject 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDSMBrowser >> miSelectedItem [
 
 	^ specModel miSelectedItem
 ]
 
-{ #category : #api }
+{ #category : 'api' }
 MiDSMBrowser >> showSCC: aCollection [
 	mainPresenter showSCC: aCollection 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDSMBrowser >> withX: entitiesX withY: entitiesY [
 	specModel withX: entitiesX withY: entitiesY
 ]

@@ -1,16 +1,18 @@
 Class {
-	#name : #MiMegamorphicInvocationsSettingPresenter,
-	#superclass : #MiAbstractSettingPresenter,
+	#name : 'MiMegamorphicInvocationsSettingPresenter',
+	#superclass : 'MiAbstractSettingPresenter',
 	#instVars : [
 		'checkbox',
 		'tresholdField',
 		'tresholdLabel',
 		'invocationsLabel'
 	],
-	#category : #'MooseIDE-Dependency-ArchitecturalMap'
+	#category : 'MooseIDE-Dependency-ArchitecturalMap',
+	#package : 'MooseIDE-Dependency',
+	#tag : 'ArchitecturalMap'
 }
 
-{ #category : #layout }
+{ #category : 'layout' }
 MiMegamorphicInvocationsSettingPresenter >> defaultLayout [
 
 	^ self newBoxLayoutLeftToRight
@@ -22,7 +24,7 @@ MiMegamorphicInvocationsSettingPresenter >> defaultLayout [
 		  yourself
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 MiMegamorphicInvocationsSettingPresenter >> fullLayout [
 
 	^ self newBoxLayoutLeftToRight
@@ -34,13 +36,13 @@ MiMegamorphicInvocationsSettingPresenter >> fullLayout [
 		  yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiMegamorphicInvocationsSettingPresenter >> help [
 
 	^ 'Hide invocations if they have more than a specified number of candidates. Examples: #new, #add:'
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiMegamorphicInvocationsSettingPresenter >> initializePresenters [
 
 	super initializePresenters.
@@ -74,7 +76,7 @@ MiMegamorphicInvocationsSettingPresenter >> initializePresenters [
 		                    yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiMegamorphicInvocationsSettingPresenter >> label [
 
 	^ 'Hide megamorphic invocations'
