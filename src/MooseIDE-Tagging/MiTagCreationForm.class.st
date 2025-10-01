@@ -195,7 +195,7 @@ MiTagCreationForm >> initializeTagDescriptionPresenters [
 	descriptionField := self newText.
 	categorySelection := self newDropList
 		sortingBlock: [ :item |
-			item specModel
+			item model
 				ifNil: [ '' ]
 				ifNotNil: [ :category | category name ] ]
 		ascending;
