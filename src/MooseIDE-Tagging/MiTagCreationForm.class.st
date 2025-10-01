@@ -43,6 +43,12 @@ MiTagCreationForm >> checkFormInputs [
 	^ true
 ]
 
+{ #category : 'initialization' }
+MiTagCreationForm >> close [
+
+	owner close
+]
+
 { #category : 'private' }
 MiTagCreationForm >> connectPresenters [
 	
@@ -169,10 +175,10 @@ MiTagCreationForm >> initializePresenters [
 
 	submitButton := self newButton 
 		label: 'Add' ;
-		action: [ self submit. owner close ].
+		action: [ self submit ].
 	cancelButton := self newButton 
 		label: 'Cancel' ;
-		action: [ owner close ].
+		action: [ self close ].
 
 	colorPicker := self newColorPicker
 		setColor: Color random.
@@ -303,6 +309,7 @@ MiTagCreationForm >> submit [
 
 	| tag |
 	self checkFormInputs ifFalse: [ ^ self ].
+
 	tag := isIntent
 		ifFalse: [
 			self specModel
@@ -319,10 +326,10 @@ MiTagCreationForm >> submit [
 				query: queryList selectedItem ].
 
 	tag
-		ifNil: [
-			self alert:
-				'This tag name is already in use. Please choose a different one.' ]
-		ifNotNil: [ tagBrowser refreshTagList ]
+		ifNil: [ self alert: 'This tag name is already in use. Please choose a different one.' ].
+
+	tagBrowser refreshTagList.
+	self close
 ]
 
 { #category : 'accessing' }
