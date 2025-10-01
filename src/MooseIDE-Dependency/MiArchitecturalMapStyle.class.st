@@ -1,10 +1,12 @@
 Class {
-	#name : #MiArchitecturalMapStyle,
-	#superclass : #HDefaultStyleWithTags,
-	#category : #'MooseIDE-Dependency-ArchitecturalMap'
+	#name : 'MiArchitecturalMapStyle',
+	#superclass : 'HDefaultStyleWithTags',
+	#category : 'MooseIDE-Dependency-ArchitecturalMap',
+	#package : 'MooseIDE-Dependency',
+	#tag : 'ArchitecturalMap'
 }
 
-{ #category : #'public - hooks' }
+{ #category : 'public - hooks' }
 MiArchitecturalMapStyle >> boxChildrenColorFor: anHNode [
 
 	^ anHNode level odd
@@ -12,13 +14,13 @@ MiArchitecturalMapStyle >> boxChildrenColorFor: anHNode [
 		  ifFalse: [ Color veryLightGray ]
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MiArchitecturalMapStyle >> colorFor: node [
 
 	^ node color ifNil: [ (Smalltalk ui theme baseColor) alpha: 0.7 ]
 ]
 
-{ #category : #hooks }
+{ #category : 'hooks' }
 MiArchitecturalMapStyle >> createMultiTagBox [
 
 	| cp |

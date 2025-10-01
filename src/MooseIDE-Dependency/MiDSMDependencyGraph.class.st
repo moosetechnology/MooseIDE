@@ -1,14 +1,16 @@
 Class {
-	#name : #MiDSMDependencyGraph,
-	#superclass : #Object,
+	#name : 'MiDSMDependencyGraph',
+	#superclass : 'Object',
 	#instVars : [
 		'graph',
 		'dependencies'
 	],
-	#category : #'MooseIDE-Dependency-DSM'
+	#category : 'MooseIDE-Dependency-DSM',
+	#package : 'MooseIDE-Dependency',
+	#tag : 'DSM'
 }
 
-{ #category : #buildGraph }
+{ #category : 'buildGraph' }
 MiDSMDependencyGraph >> buildGraph [
 
 	graph nodes: dependencies entities.
@@ -19,7 +21,7 @@ MiDSMDependencyGraph >> buildGraph [
 	graph run
 ]
 
-{ #category : #buildGraph }
+{ #category : 'buildGraph' }
 MiDSMDependencyGraph >> buildGraphEdges [
 	"We choose to say that there is a relation from column to line if column depends on line"
 
@@ -33,38 +35,38 @@ MiDSMDependencyGraph >> buildGraphEdges [
 			]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDSMDependencyGraph >> dependencies: aMiDSMDependencyManager [
 
 	dependencies := aMiDSMDependencyManager 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDSMDependencyGraph >> findNode: anEntity [
 
 	^graph findNode: anEntity
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDSMDependencyGraph >> graph [
 
 	^ graph
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDSMDependencyGraph >> graph: anObject [
 
 	graph := anObject
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 MiDSMDependencyGraph >> inCycle: fromEntity with: toEntity [
 
 	^fromEntity cycleNodes
 		includes: toEntity 
 ]
 
-{ #category : #buildGraph }
+{ #category : 'buildGraph' }
 MiDSMDependencyGraph >> initialize [
 
 	super initialize.

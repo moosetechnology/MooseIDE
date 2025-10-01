@@ -3,12 +3,14 @@ A heuristic to recognize test methods based on naming conventions.
 See #description for details
 "
 Class {
-	#name : #MiDeadCodeNamingConventionHeuristic,
-	#superclass : #MiDeadCodeAbstractTestHeuristic,
-	#category : #'MooseIDE-Dependency-DeadCode'
+	#name : 'MiDeadCodeNamingConventionHeuristic',
+	#superclass : 'MiDeadCodeAbstractTestHeuristic',
+	#category : 'MooseIDE-Dependency-DeadCode',
+	#package : 'MooseIDE-Dependency',
+	#tag : 'DeadCode'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDeadCodeNamingConventionHeuristic >> description [
 
 	^super description , '
@@ -19,13 +21,13 @@ MiDeadCodeNamingConventionHeuristic >> description [
 	- fifth character is not a lower case ("tester")'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDeadCodeNamingConventionHeuristic >> name [
 
 	^super name , 'Naming convention'
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiDeadCodeNamingConventionHeuristic >> notDead: aTMethod [
 
 	(aTMethod name beginsWith: #test) ifFalse: [ ^false ].
