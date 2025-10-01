@@ -340,6 +340,7 @@ MiTagCreationForm >> tagBrowser: aTagBrowser [
 
 { #category : 'private' }
 MiTagCreationForm >> updateCategories [
+	"allow to have no category, hence the first nil element"
 
 	categorySelection items: { nil }, (self specModel allCategories)
 ]
