@@ -348,7 +348,7 @@ MiTagCreationForm >> updateCategories [
 { #category : 'accessing' }
 MiTagCreationForm >> updateQueryList [
 
-	queryList items: { nil } , self fetchQueries
+	queryList items: self fetchQueries
 ]
 
 { #category : 'accessing - deprecated' }
