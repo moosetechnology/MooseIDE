@@ -1,22 +1,23 @@
 Class {
-	#name : #MiTagExtentPageTest,
-	#superclass : #MiTagPresenterTest,
-	#category : #'MooseIDE-Tagging-Tests'
+	#name : 'MiTagExtentPageTest',
+	#superclass : 'MiTagPresenterTest',
+	#category : 'MooseIDE-Tagging-Tests',
+	#package : 'MooseIDE-Tagging-Tests'
 }
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 MiTagExtentPageTest >> presenterClass [
 
 	^ MiTagExtentPage
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 MiTagExtentPageTest >> presenterOwner [
 
 	^ browser
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiTagExtentPageTest >> setUp [
 
 	| entities tag |
@@ -34,7 +35,7 @@ MiTagExtentPageTest >> setUp [
 	browser followEntity: entities asMooseGroup
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiTagExtentPageTest >> testEntitesListIsSorted [
 
 	| entities |
@@ -43,7 +44,7 @@ MiTagExtentPageTest >> testEntitesListIsSorted [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiTagExtentPageTest >> testEntitiesListIsNotEmpty [
 
 	| entities |
@@ -73,7 +74,7 @@ MiTagExtentPageTest >> testTaggedEntitesListIsSorted [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiTagExtentPageTest >> testTaggedEntitiesListIsNotEmpty [
 
 	| entities |

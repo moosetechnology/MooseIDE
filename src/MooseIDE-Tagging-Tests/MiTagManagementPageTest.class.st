@@ -1,22 +1,23 @@
 Class {
-	#name : #MiTagManagementPageTest,
-	#superclass : #MiTagPresenterTest,
-	#category : #'MooseIDE-Tagging-Tests'
+	#name : 'MiTagManagementPageTest',
+	#superclass : 'MiTagPresenterTest',
+	#category : 'MooseIDE-Tagging-Tests',
+	#package : 'MooseIDE-Tagging-Tests'
 }
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 MiTagManagementPageTest >> presenterClass [
 
 	^ MiTagManagementPage
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiTagManagementPageTest >> presenterOwner [
 
 	^ browser
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiTagManagementPageTest >> testAddTagSelectsNewTag [
 
 	| newTag |
@@ -25,7 +26,7 @@ MiTagManagementPageTest >> testAddTagSelectsNewTag [
 	self assert: presenter tagList selectedItem equals: newTag
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiTagManagementPageTest >> testAddTagUpdatingTagList [
 
 	self createExtentTag: 'Tag001'.
@@ -33,7 +34,7 @@ MiTagManagementPageTest >> testAddTagUpdatingTagList [
 	self assert: presenter tagList items size equals: 1
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiTagManagementPageTest >> testCurrentTagAfterSelectionInTagList [
 
 	self createExtentTag: 'Tag001'.
@@ -42,7 +43,7 @@ MiTagManagementPageTest >> testCurrentTagAfterSelectionInTagList [
 	self assert: presenter tagModel currentTag notNil
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiTagManagementPageTest >> testDeleteCurrentTagAfterSelectionInTagList [
 
 	self createExtentTag: 'Tag001'.
@@ -52,7 +53,7 @@ MiTagManagementPageTest >> testDeleteCurrentTagAfterSelectionInTagList [
 	self assert: presenter tagList items size equals: 0
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiTagManagementPageTest >> testOpenTagCreationForm [
 
 	self deny: browser layout child equals: browser tagCreationForm.
@@ -60,7 +61,7 @@ MiTagManagementPageTest >> testOpenTagCreationForm [
 	self assert: browser layout child equals: browser tagCreationForm
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiTagManagementPageTest >> testShowExtentTagsOnlyInTagList [
 
 	self createExtentTag: 'Tag001'.
@@ -70,7 +71,7 @@ MiTagManagementPageTest >> testShowExtentTagsOnlyInTagList [
 	self assert: presenter tagList items size equals: 2
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiTagManagementPageTest >> testShowIntentAndExtentTagsInTagList [
 
 	self createExtentTag: 'Tag001'.
@@ -81,7 +82,7 @@ MiTagManagementPageTest >> testShowIntentAndExtentTagsInTagList [
 	self assert: presenter tagList items size equals: 3
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiTagManagementPageTest >> testShowIntentTagsOnlyInTagList [
 
 	self createExtentTag: 'Tag001'.
@@ -93,7 +94,7 @@ MiTagManagementPageTest >> testShowIntentTagsOnlyInTagList [
 	self assert: presenter tagList items size equals: 1
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiTagManagementPageTest >> testTagListIsEmpty [
 
 	self assert: presenter tagList items isEmpty
