@@ -176,15 +176,22 @@ MiTagCreationForm >> initializePresenters [
 		label: 'Cancel' ;
 		action: [ owner close ].
 
-	(colorPicker := self newColorPicker) setColor: Color random.
+	colorPicker := self newColorPicker
+		setColor: Color random.
 	extentButton := self newToggleButton
 		state: true;
-		label: 'Static';
-		yourself.
+		label: 'Static'.
 	intentButton := self newToggleButton
 		state: false;
-		label: 'Dynamic';
-		yourself.
+		label: 'Dynamic'.
+
+	self initializeTagDescriptionPresenters.
+
+	self initializeLayout
+]
+
+{ #category : 'initialization' }
+MiTagCreationForm >> initializeTagDescriptionPresenters [
 
 	nameField := self newTextInput.
 	descriptionField := self newText.
@@ -194,22 +201,17 @@ MiTagCreationForm >> initializePresenters [
 				ifNil: [ '' ]
 				ifNotNil: [ :category | category name ] ]
 		ascending;
-		display: [ :cat |
-			cat ifNil: [ '' ] ifNotNil: [ cat name ] ];
-		yourself.
+		display: [ :cat | cat ifNil: [ '' ] ifNotNil: [ cat name ] ].
 	queryList := self newDropList
-		             startWithoutSelection;
-		             display:
-			             [ :query | self stringForQuery: query ] yourself.
+		startWithoutSelection;
+		display: [ :query | self stringForQuery: query ].
 	queryListLabeled := MiPresenter new
-		                    layout: (SpBoxLayout newTopToBottom
-				                     add: 'Query' asPresenter expand: false;
-				                     add: queryList expand: false;
-				                     yourself);
-		                    hide;
-		                    yourself.
+		layout: (SpBoxLayout newTopToBottom
+			add: 'Query' asPresenter expand: false;
+			add: queryList expand: false;
+			yourself);
+		 hide.
 
-	self initializeLayout
 ]
 
 { #category : 'accessing' }
