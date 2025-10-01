@@ -7,23 +7,23 @@ Accepted entities: a MooseObject.
 
 "
 Class {
-	#name : #MiTagBrowser,
-	#superclass : #MiAbstractBrowser,
+	#name : 'MiTagBrowser',
+	#superclass : 'MiAbstractBrowser',
 	#instVars : [
-		'tagManagementPage',
-		'tagCreationForm',
-		'tagEditionForm'
+		'tagManagementPage'
 	],
-	#category : #'MooseIDE-Tagging-Browser'
+	#category : 'MooseIDE-Tagging-Browser',
+	#package : 'MooseIDE-Tagging',
+	#tag : 'Browser'
 }
 
-{ #category : #keymaps }
+{ #category : 'keymaps' }
 MiTagBrowser class >> browserKey [
 
 	^ $t
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiTagBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
@@ -31,19 +31,19 @@ MiTagBrowser class >> menuCommandOn: aBuilder [
 	^ self buildMenuItemIn: aBuilder
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiTagBrowser class >> menuItem [
 
 	^ #FilesBrowser
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiTagBrowser class >> menuPriority [
 
 	^ self menuMainToolsPriority + 4
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MiTagBrowser class >> mostRecentModel [
 
 	^ self currentApplication defaultBus logger mostRecentEntity
@@ -51,67 +51,54 @@ MiTagBrowser class >> mostRecentModel [
 		  ifNil: [ MooseModel new ]
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MiTagBrowser class >> newModel [
 
 	^ MiTagBrowserModel new
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MiTagBrowser class >> open [
 
 	<script>
 	^ super open
 ]
 
-{ #category : #specs }
+{ #category : 'specs' }
 MiTagBrowser class >> preferredExtent [
 
 	^ 700 @ 475
 ]
 
-{ #category : #specs }
+{ #category : 'specs' }
 MiTagBrowser class >> title [
 
 	^ 'Tag browser'
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiTagBrowser >> browserClosed [
 
 	super browserClosed.
+
 	application unregisterProducer: self.
-	application unregisterConsumer: self.
-	application unregisterConsumer: tagCreationForm
+	application unregisterConsumer: self
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiTagBrowser >> canFollowEntity: anObject [
 
 	^ anObject isMooseObject
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiTagBrowser >> canTagEntities [
 	"tagging done in the browser main window, not through the toolbar"
 
 	^false
 ]
 
-{ #category : #initialization }
-MiTagBrowser >> closeTagCreationForm [
-
-	self layout child: tagManagementPage.
-	self updateToolbar
-]
-
-{ #category : #initialization }
-MiTagBrowser >> closeTagEditionForm [
-
-	self layout child: tagManagementPage
-]
-
-{ #category : #testing }
+{ #category : 'testing' }
 MiTagBrowser >> consume: anObject [
 	anObject class = FamixTag ifTrue: [ 
 		tagManagementPage refreshTagList
@@ -122,23 +109,22 @@ MiTagBrowser >> consume: anObject [
 			ifTrue: [ tagManagementPage refreshTaggedEntitiesList ] ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiTagBrowser >> descriptionPage [
 
 	^ tagManagementPage descriptionPage
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiTagBrowser >> followEntity: anEntity [
 
 	specModel entities: anEntity asMooseGroup.
 	specModel mooseModel
-		ifNil: [ self showNoMooseModel ]
-		ifNotNil: [ self closeTagCreationForm ].
+		ifNil: [ self showNoMooseModel ].
 	tagManagementPage refresh
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiTagBrowser >> initialize [
 
 	super initialize.
@@ -146,10 +132,9 @@ MiTagBrowser >> initialize [
 	application registerProducer: self for: FamixTag.
 	application registerConsumer: self for: FamixTag.
 	application registerConsumer: self for: FamixTagAssociation.
-	application registerConsumer: tagCreationForm for: FQAbstractQuery
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiTagBrowser >> initializeLayout [
 
 	self layout: (SpScrollableLayout with: tagManagementPage).
@@ -158,16 +143,15 @@ MiTagBrowser >> initializeLayout [
 	
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiTagBrowser >> initializePresenters [
 
-	tagCreationForm := self instantiate: MiTagCreationForm on: specModel.
 	tagManagementPage := MiTagManagementPage newApplication: self application owner: self model: specModel.
-	tagEditionForm := self instantiate: MiTagEditionForm on: specModel. 
+
 	self initializeLayout
 ]
 
-{ #category : #brokerage }
+{ #category : 'brokerage' }
 MiTagBrowser >> itemsFor: aClass [
 
 	aClass = MiDynamicTag ifTrue: [ ^ specModel dynamicTags ].
@@ -175,92 +159,72 @@ MiTagBrowser >> itemsFor: aClass [
 	^ #(  )
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiTagBrowser >> miSelectedItem [
 
 	^ specModel miSelectedItem
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiTagBrowser >> newTagSelected [
 
 	self updateToolbar
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiTagBrowser >> openTagCreationForm [
+	"returning the MiTagCreationForm allows to test it"
 
-	tagCreationForm
-		reset;
-		updateCategories.
-	self layout child: tagCreationForm
+	^MiTagCreationForm new 
+		tagBrowser: self ;
+		open ;
+		yourself
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiTagBrowser >> openTagEditionForm [
+	"returning the MiTagCreationForm allows to test it"
 
-	tagEditionForm
-		reset;
-		updateCategories.
-	self layout child: tagEditionForm.
-	tagEditionForm fillWithCurrentTag.
-	tagEditionForm update
+	^MiTagEditionForm new 
+		tagBrowser: self ;
+		open ;
+		yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiTagBrowser >> refreshDescriptionPage [
 
 	tagManagementPage refreshDescriptionPage
 ]
 
-{ #category : #refreshing }
+{ #category : 'refreshing' }
 MiTagBrowser >> refreshTagList [
 
 	tagManagementPage refreshTagList
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiTagBrowser >> remove: aTagAssociation [
 
 	tagManagementPage refreshTaggedEntitiesList 
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiTagBrowser >> setTagTo: aTag [
 
 	self specModel currentTag: aTag.
 	self updateToolbar
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiTagBrowser >> showNoMooseModel [
 
-	self layout child: (SpPresenter new
-			 layout: (SpBoxLayout newTopToBottom
-					  vAlignCenter;
-					  hAlignCenter;
-					  add: 'No available moose model in selected buses.' asPresenter;
-					  add:
-						  'Propagate entities or moose model on selected buses.'
-							  asPresenter;
-					  yourself);
-			 yourself)
+	tagManagementPage showNoMooseModel 
 ]
 
-{ #category : #accessing }
-MiTagBrowser >> tagCreationForm [
-
-	^ tagCreationForm
-]
-
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiTagBrowser >> tagManagementPage [
+	"see `MiTagManagementPage` : left part of the browser allowing to create, select, or remove tags"
 
 	^ tagManagementPage
-]
-
-{ #category : #testing }
-MiTagBrowser >> tagModel [
-
-	^ specModel
 ]
