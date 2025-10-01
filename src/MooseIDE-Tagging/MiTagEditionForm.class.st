@@ -10,9 +10,9 @@ Class {
 MiTagEditionForm >> checkFormInputs [
 
 	nameField text ifEmpty: [ ^ false ].
-	tagModel currentTag isIntent ifFalse: [
-		(tagModel getTagNamed: nameField text) ifNotNil: [ :tag |
-			tagModel currentTag = tag ifFalse: [
+	self specModel currentTag isIntent ifFalse: [
+		(self specModel getTagNamed: nameField text) ifNotNil: [ :tag |
+			self specModel currentTag = tag ifFalse: [
 				| popup |
 				(popup := self newPopover)
 					addStyle: 'error';
@@ -54,7 +54,7 @@ MiTagEditionForm >> fillFormWithTag: aTag [
 { #category : 'accessing' }
 MiTagEditionForm >> fillWithCurrentTag [
 
-	self fillFormWithTag: tagModel currentTag
+	self fillFormWithTag: self specModel currentTag
 ]
 
 { #category : 'initialization' }
@@ -99,9 +99,10 @@ MiTagEditionForm >> formTitle [
 MiTagEditionForm >> initializePresenters [
 
 	super initializePresenters.
+
+	submitButton label: 'Save'.
 	extentButton hide.
-	intentButton hide. 
-	"submitButton label: 'Edit'".
+	intentButton hide.
 ]
 
 { #category : 'accessing' }
@@ -134,22 +135,32 @@ MiTagEditionForm >> setTag: aTag [
 MiTagEditionForm >> submit [
 
 	self checkFormInputs ifFalse: [ ^ self ].
-	tagModel currentTag isIntent
+
+	self specModel currentTag isIntent
 		ifTrue: [ 
-			self owner tagModel
+			self specModel 
 				editCurrentDynamicTag: nameField text
 				description: descriptionField text
 				color: colorPicker color
 				category: categorySelection selectedItem
 				query: queryList selectedItem ]
 		ifFalse: [ 
-			self owner tagModel
+			self specModel
 				editCurrentTag: nameField text
 				description: descriptionField text
 				color: colorPicker color
 				category: categorySelection selectedItem ].
 
-	self owner closeTagEditionForm
+	tagBrowser refreshTagList.
+	self close
+]
+
+{ #category : 'accessing' }
+MiTagEditionForm >> tagBrowser: aTagBrowser [
+
+	super tagBrowser: aTagBrowser.
+
+	self fillFormWithTag: self specModel currentTag
 ]
 
 { #category : 'accessing' }

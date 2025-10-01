@@ -311,19 +311,19 @@ MiTagCreationForm >> submit [
 	self checkFormInputs ifFalse: [ ^ self ].
 
 	tag := isIntent
-		ifFalse: [
-			self specModel
-				createTag: nameField text
-				description: descriptionField text
-				color: colorPicker color
-				category: categorySelection selectedItem ]
 		ifTrue: [
 			self specModel
 				createDynamicTag: nameField text
 				description: descriptionField text
 				color: colorPicker color
 				category: categorySelection selectedItem
-				query: queryList selectedItem ].
+				query: queryList selectedItem ]
+		ifFalse: [
+			self specModel
+				createTag: nameField text
+				description: descriptionField text
+				color: colorPicker color
+				category: categorySelection selectedItem ].
 
 	tag
 		ifNil: [ self alert: 'This tag name is already in use. Please choose a different one.' ].
@@ -343,6 +343,7 @@ MiTagCreationForm >> tagBrowser: aTagBrowser [
 
 	tagBrowser := aTagBrowser.
 	self updateQueryList.
+	self updateCategories
 ]
 
 { #category : 'private' }

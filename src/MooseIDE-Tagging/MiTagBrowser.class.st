@@ -177,20 +177,18 @@ MiTagBrowser >> openTagCreationForm [
 
 	^MiTagCreationForm new 
 		tagBrowser: self ;
-		updateCategories ;
 		open ;
 		yourself
 ]
 
 { #category : 'initialization' }
 MiTagBrowser >> openTagEditionForm [
+	"returning the MiTagCreationForm allows to test it"
 
-	tagEditionForm
-		reset;
-		updateCategories.
-	self layout child: tagEditionForm.
-	tagEditionForm fillWithCurrentTag.
-	tagEditionForm update
+	^MiTagEditionForm new 
+		tagBrowser: self ;
+		open ;
+		yourself
 ]
 
 { #category : 'accessing' }
