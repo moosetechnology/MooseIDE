@@ -221,16 +221,7 @@ MiTagBrowser >> setTagTo: aTag [
 { #category : 'initialization' }
 MiTagBrowser >> showNoMooseModel [
 
-	self layout child: (SpPresenter new
-			 layout: (SpBoxLayout newTopToBottom
-					  vAlignCenter;
-					  hAlignCenter;
-					  add: 'No available moose model in selected buses.' asPresenter;
-					  add:
-						  'Propagate entities or moose model on selected buses.'
-							  asPresenter;
-					  yourself);
-			 yourself)
+	tagManagementPage showNoMooseModel 
 ]
 
 { #category : 'accessing' }
