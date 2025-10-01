@@ -335,7 +335,7 @@ MiTagCreationForm >> submitButton [
 MiTagCreationForm >> tagBrowser: aTagBrowser [
 
 	tagBrowser := aTagBrowser.
-		self updateQueryList.
+	self updateQueryList.
 ]
 
 { #category : 'private' }
