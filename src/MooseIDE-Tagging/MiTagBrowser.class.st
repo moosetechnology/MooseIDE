@@ -194,8 +194,7 @@ MiTagBrowser >> openTagCreationForm [
 	MiTagCreationForm new 
 		tagBrowser: self ;
 		updateCategories ;
-		openDialog.
-	"self layout child: tagCreationForm" 
+		open
 ]
 
 { #category : 'initialization' }

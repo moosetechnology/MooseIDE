@@ -75,22 +75,56 @@ MiTagCreationForm >> initialize [
 
 	super initialize.
 	isIntent := false.
+
 ]
 
 { #category : 'initialization' }
-MiTagCreationForm >> initializeDialogWindow: aDialog [
+MiTagCreationForm >> initializeDialogButtonsLayout [
 
-	"aDialog initialExtent: self class windowExtent."
+	^SpBoxLayout newLeftToRight
+		hAlignEnd ;
+		add: cancelButton expand: false ;
+		add: submitButton expand: false ;
+		yourself
+]
 
-	aDialog
-		addButton: 'Cancel'
-		do: [ :dialog | dialog close ].
-	aDialog
-		addButton: 'Add'
-		do: [ :dialog | 
-			self submit.
-			dialog close ].
+{ #category : 'initialization' }
+MiTagCreationForm >> initializeFormLayout [
 
+	^SpBoxLayout newTopToBottom
+		spacing: 5;
+
+		add: (SpBoxLayout newLeftToRight
+			add: extentButton;
+			add: intentButton;
+			yourself)
+		expand: false;
+
+		add: (SpBoxLayout newLeftToRight
+			spacing: 5;
+
+			add: (SpBoxLayout newTopToBottom
+				add: 'Name' asPresenter expand: false;
+				add: nameField expand: false;
+				yourself);
+
+			add: (SpBoxLayout newTopToBottom
+				add: 'Category (optional)';
+				add: categorySelection;
+				yourself)
+			width: 200;
+
+			yourself)
+		expand: false;
+
+		add: (SpBoxLayout newTopToBottom
+			add: 'Description (optional)' asPresenter
+			expand: false;
+			add: descriptionField;
+			yourself)
+		 expand: true;
+		 add: queryListLabeled expand: false;
+		 yourself.
 ]
 
 { #category : 'initialization' }
@@ -115,52 +149,32 @@ MiTagCreationForm >> initializeLayout [
 		width: colorPickerWidth;
 		add: colorPicker  ;
 		yourself.
-
-	formLayout := SpBoxLayout newTopToBottom
-		spacing: 5;
-		add: (SpBoxLayout newLeftToRight
-			spacing: 5;
-			add: (SpBoxLayout newTopToBottom
-				add: 'Name' asPresenter expand: false;
-				add: nameField expand: false;
-				yourself);
-			add: (SpBoxLayout newTopToBottom
-				add: 'Category (optional)';
-				add: categorySelection;
-				yourself)
-			width: 200;
-			yourself)
-		expand: false;
-		add: (SpBoxLayout newTopToBottom
-			add: 'Description (optional)' asPresenter
-			expand: false;
-			add: descriptionField;
-			yourself)
-		 expand: true;
-		 add: queryListLabeled expand: false;
-		 yourself.
+	
+	self initializeFormLayout.
 
 	self layout
 		add:  (SpBoxLayout newLeftToRight
 			spacing: 10;
-			add: colorPickerLayout
-			width: colorPickerWidth ;
+			add: colorPickerLayout width: colorPickerWidth ;
 			add: sep width: 2;
 			add: (SpBoxLayout newTopToBottom
-				spacing: 4;
-				add: (SpBoxLayout newLeftToRight
-				add: extentButton;
-				add: intentButton;
-				yourself)
-			expand: false;
-			add: formLayout expand: true fill: true;
-			yourself);
+			spacing: 5;
+				add: (self initializeFormLayout) expand: true fill: true;
+				add: self initializeDialogButtonsLayout expand: false ;
+				yourself);
 		yourself)
 
 ]
 
 { #category : 'initialization' }
 MiTagCreationForm >> initializePresenters [
+
+	submitButton := self newButton 
+		label: 'Add' ;
+		action: [ self submit. owner close ].
+	cancelButton := self newButton 
+		label: 'Cancel' ;
+		action: [ owner close ].
 
 	(colorPicker := self newColorPicker) setColor: Color random.
 	extentButton := self newToggleButton
