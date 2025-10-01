@@ -29,7 +29,7 @@ MiTagBrowserTest >> mooseModelSize [
 { #category : 'running' }
 MiTagBrowserTest >> numberOfTaggedEntities [
 
-	^ (self defaultEntityToSelect anyOne mooseModel select: #isTagged)
+	^ (entityToSelect anyOne mooseModel select: #isTagged)
 		  size
 ]
 
@@ -104,7 +104,11 @@ MiTagBrowserTest >> testTagDetailPageAddEntityToTag [
 
 	| entities tag |
 	entities := browser specModel mooseModel entities.
+
 	self assert: entities size equals: self mooseModelSize.
+	self
+		assert: (entities select: #isTagged) size
+		equals: 0.
 
 	tag := browser specModel addTag: 'aTag'.
 	browser specModel currentTag: tag.
