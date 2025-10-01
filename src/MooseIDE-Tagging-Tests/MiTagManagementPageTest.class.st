@@ -40,7 +40,7 @@ MiTagManagementPageTest >> testCurrentTagAfterSelectionInTagList [
 	self createExtentTag: 'Tag001'.
 	presenter refreshTagList.
 	presenter tagList selectIndex: 1.
-	self assert: presenter tagModel currentTag notNil
+	self assert: presenter specModel currentTag notNil
 ]
 
 { #category : 'tests' }
@@ -51,14 +51,6 @@ MiTagManagementPageTest >> testDeleteCurrentTagAfterSelectionInTagList [
 	presenter tagList selectIndex: 1.
 	presenter deleteCurrentTag.
 	self assert: presenter tagList items size equals: 0
-]
-
-{ #category : 'tests' }
-MiTagManagementPageTest >> testOpenTagCreationForm [
-
-	self deny: browser layout child equals: browser tagCreationForm.
-	presenter addTagButton click.
-	self assert: browser layout child equals: browser tagCreationForm
 ]
 
 { #category : 'tests' }

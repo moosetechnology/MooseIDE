@@ -18,7 +18,7 @@ MiTagPresenterTest class >> isAbstract [
 { #category : 'API - tags' }
 MiTagPresenterTest >> createCategory: aName [
 
-	browser tagModel addCategory: aName
+	browser specModel addCategory: aName
 ]
 
 { #category : 'API - tags' }
@@ -66,5 +66,5 @@ MiTagPresenterTest >> setUp [
 	  browser receiveEntity: mooseModel.
 	  presenter := self presenterOwner
 		               instantiate: self presenterClass
-		               on: browser tagModel
+		               on: browser specModel
 ]

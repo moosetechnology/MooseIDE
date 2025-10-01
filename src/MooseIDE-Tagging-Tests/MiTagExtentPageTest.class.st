@@ -26,11 +26,11 @@ MiTagExtentPageTest >> setUp [
 	entities := #( Lorem iposum dolor sit amet ) collect: [ :each | 
 		            FamixStClass named: each ].
 	self createExtentTag: 'Tag001'.
-	tag := browser tagModel allTags first.
+	tag := browser specModel allTags first.
 	browser setTagTo: tag.
 
 	(entities first: 3)
-		do: [ :e | browser tagModel tagEntityNotYourself: e ].
+		do: [ :e | browser specModel tagEntityNotYourself: e ].
 
 	browser followEntity: entities asMooseGroup
 ]
