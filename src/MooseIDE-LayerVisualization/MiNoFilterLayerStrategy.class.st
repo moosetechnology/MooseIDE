@@ -1,10 +1,12 @@
 Class {
-	#name : #MiNoFilterLayerStrategy,
-	#superclass : #MiLayerDisplayStrategy,
-	#category : #'MooseIDE-LayerVisualization-Strategy'
+	#name : 'MiNoFilterLayerStrategy',
+	#superclass : 'MiLayerDisplayStrategy',
+	#category : 'MooseIDE-LayerVisualization-Strategy',
+	#package : 'MooseIDE-LayerVisualization',
+	#tag : 'Strategy'
 }
 
-{ #category : #filtering }
+{ #category : 'filtering' }
 MiNoFilterLayerStrategy >> fetchNotSharedDTOs [
 
 	| dict |
@@ -16,19 +18,19 @@ MiNoFilterLayerStrategy >> fetchNotSharedDTOs [
 	^ dict
 ]
 
-{ #category : #filtering }
+{ #category : 'filtering' }
 MiNoFilterLayerStrategy >> fetchViolatingClients [
 
 	^ visualizationModel clientLayers
 ]
 
-{ #category : #filtering }
+{ #category : 'filtering' }
 MiNoFilterLayerStrategy >> fetchViolatingServers [
 
 	^ visualizationModel serverLayers
 ]
 
-{ #category : #filtering }
+{ #category : 'filtering' }
 MiNoFilterLayerStrategy >> shouldDisplaySharedDTOs [
 
 	^ true
