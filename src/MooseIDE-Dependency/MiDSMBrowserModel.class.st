@@ -120,11 +120,7 @@ MiDSMBrowserModel >> entityChildrenForDSM: anEntity [
 	"children of an entity except concretization of generic entities which are considered more
 	 like associations"
 
-	^anEntity children reject: [ :child |
-		(child usesFamixTrait: FamixTParametricEntity) and:
-		[ child genericization isNotNil ]
-	]
-	
+	^ anEntity containedEntities reject: [ :child | (child usesFamixTrait: FamixTParametricEntity) and: [ child genericization isNotNil ] ]
 ]
 
 { #category : 'actions' }
