@@ -1,6 +1,6 @@
 Class {
-	#name : #MiLayerVisualizationModel,
-	#superclass : #MiAbstractModel,
+	#name : 'MiLayerVisualizationModel',
+	#superclass : 'MiAbstractModel',
 	#instVars : [
 		'mooseModel',
 		'queriesHolder',
@@ -17,10 +17,12 @@ Class {
 		'serverClasses',
 		'displayStrategy'
 	],
-	#category : #'MooseIDE-LayerVisualization-Model'
+	#category : 'MooseIDE-LayerVisualization-Model',
+	#package : 'MooseIDE-LayerVisualization',
+	#tag : 'Model'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 MiLayerVisualizationModel class >> findModelApplicableTo: aMooseModel [
 
 	self subclassesDo: [ :modelClass | 
@@ -29,13 +31,13 @@ MiLayerVisualizationModel class >> findModelApplicableTo: aMooseModel [
 	^ nil
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 MiLayerVisualizationModel class >> queriesHolder [
 
 	self subclassResponsibility
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 MiLayerVisualizationModel >> addCacheServerDependencies [
 
 	^ (serverLayers at: index) flatCollectAsSet: [ :class | 
@@ -47,7 +49,7 @@ MiLayerVisualizationModel >> addCacheServerDependencies [
 			  (self checkIsImplementationOrService: dc) not and: [ exits not ] ] ]
 ]
 
-{ #category : #partitioning }
+{ #category : 'partitioning' }
 MiLayerVisualizationModel >> addDependency: valueEntity in: aDictionary for: keyEntity [
 
 	aDictionary
@@ -56,18 +58,18 @@ MiLayerVisualizationModel >> addDependency: valueEntity in: aDictionary for: key
 		ifAbsentPut: [ OrderedCollection with: valueEntity ]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiLayerVisualizationModel >> checkIsImplementation: aFamixJavaClass [
 
 	^ (self serverLayers at: 1) includes: aFamixJavaClass
 ]
 
-{ #category : #partitioning }
+{ #category : 'partitioning' }
 MiLayerVisualizationModel >> checkIsImplementationOrService: aClass [
  self subclassResponsibility 
 ]
 
-{ #category : #partitioning }
+{ #category : 'partitioning' }
 MiLayerVisualizationModel >> classDependantsFor: aClass [
 
 	^ ((aClass queryAllIncoming withoutSelfLoops reject: [ :a | 
@@ -77,7 +79,7 @@ MiLayerVisualizationModel >> classDependantsFor: aClass [
 		   self rootClass: e source ]) asSet
 ]
 
-{ #category : #partitioning }
+{ #category : 'partitioning' }
 MiLayerVisualizationModel >> classDependenciesFor: aClass [
 
 	^ (aClass allProviders
@@ -85,31 +87,28 @@ MiLayerVisualizationModel >> classDependenciesFor: aClass [
 		  thenCollect: [ :e | self rootClass: e ]) asSet
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiLayerVisualizationModel >> clientLayers [
 
 	^ clientLayers
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiLayerVisualizationModel >> commonPackagesFor: elements [
 
 	| groups |
-	groups := (elements groupedBy: [ :e | 
-		           (e atScope: FamixTPackage) anyOne ])
-		          associations.
+	groups := (elements groupedBy: [ :e | (e containersOfType: FamixTPackage) anyOne ]) associations.
 
-	^ groups collect: [ :a | 
-		  self createPackageElement: a key with: a value ]
+	^ groups collect: [ :a | self createPackageElement: a key with: a value ]
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 MiLayerVisualizationModel >> createLinksIn: hNodeDict [
 
 	self subclassResponsibility
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiLayerVisualizationModel >> createPackageElement: famixPackage with: elements [
 
 	^ MiLVPackageElement new
@@ -118,7 +117,7 @@ MiLayerVisualizationModel >> createPackageElement: famixPackage with: elements [
 		  yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiLayerVisualizationModel >> createTypeElementsFor: aCollectionOfMooseEntities [
 
 	^ aCollectionOfMooseEntities collect: [ :me | 
@@ -127,13 +126,13 @@ MiLayerVisualizationModel >> createTypeElementsFor: aCollectionOfMooseEntities [
 			  yourself ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiLayerVisualizationModel >> entities [
 
 	^ nil
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 MiLayerVisualizationModel >> entitiesOf: aLayer [
 
 	^ aLayer size > 100
@@ -141,7 +140,7 @@ MiLayerVisualizationModel >> entitiesOf: aLayer [
 		  ifFalse: [ self createTypeElementsFor: aLayer ]
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiLayerVisualizationModel >> followEntity: anEntity [
 
 	self mooseModel: (anEntity isMooseModel
@@ -151,13 +150,13 @@ MiLayerVisualizationModel >> followEntity: anEntity [
 	browser runVisualization.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiLayerVisualizationModel >> incomingCache [
 
 	^ incomingCache
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiLayerVisualizationModel >> initialize [
 
 	super initialize.
@@ -171,59 +170,57 @@ MiLayerVisualizationModel >> initialize [
 	queriesHolder := self class queriesHolder new.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiLayerVisualizationModel >> mooseModel [
 
 	^ mooseModel
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiLayerVisualizationModel >> mooseModel: aMooseModel [
 
 	mooseModel := aMooseModel.
 	queriesHolder mooseModel: mooseModel
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiLayerVisualizationModel >> outgoingCache [
 
 	^ outgoingCache
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiLayerVisualizationModel >> purgatoryLayer [
 
 	^ purgatoryLayer
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 MiLayerVisualizationModel >> rootClass: anEntity [
 
 	| rootTypes |
-	rootTypes := anEntity atScopeWithProperty: [ :c | 
-		             c isType and: [ c typeContainer isPackage ] ].
+	rootTypes := anEntity query containers withProperty: [ :c | c isType and: [ c typeContainer isPackage ] ].
 
-	self flag:
-		'This should not be empty, if it happens. It means that there is a problem in the model'.
+	self flag: 'This should not be empty, if it happens. It means that there is a problem in the model'.
 	rootTypes ifEmpty: [ ^ anEntity ].
 
 	^ rootTypes anyOne
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiLayerVisualizationModel >> serverLayers [
 
 	^ serverLayers
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiLayerVisualizationModel >> setServerClasses [ 
 
 	serverClasses := Dictionary new.
 	self serverLayers allButFirst doWithIndex: [ :l :i | l do: [:c | serverClasses at: c put: i + 1]  ] .
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiLayerVisualizationModel >> sharedLayer [
 
 	^ sharedLayer

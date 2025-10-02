@@ -6,51 +6,53 @@ The model that is propagated should have a description model that specifies the 
 This is done programmaticaly by subclassing the class MiLayerVisualizationModel.
 "
 Class {
-	#name : #MiLayerVisualizationBrowser,
-	#superclass : #MiAbstractBrowser,
+	#name : 'MiLayerVisualizationBrowser',
+	#superclass : 'MiAbstractBrowser',
 	#instVars : [
 		'visualization'
 	],
-	#category : #'MooseIDE-LayerVisualization-Presenters'
+	#category : 'MooseIDE-LayerVisualization-Presenters',
+	#package : 'MooseIDE-LayerVisualization',
+	#tag : 'Presenters'
 }
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiLayerVisualizationBrowser class >> menuCommandOn: aBuilder [
 	
 	^ self buildMenuItemIn: aBuilder
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiLayerVisualizationBrowser class >> menuItem [
 
 	^ #MiLayerVisualizationBrowser
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiLayerVisualizationBrowser class >> menuPriority [
 
 	^ self menuVisualizationToolsPriority + 1
 ]
 
-{ #category : #specs }
+{ #category : 'specs' }
 MiLayerVisualizationBrowser class >> preferredExtent [
 
 	^ self currentWorld extent
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiLayerVisualizationBrowser class >> title [
 
 	^ 'Layer visualization'
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiLayerVisualizationBrowser >> canFollowEntity: anObject [
 
 	^ anObject isMooseObject
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 MiLayerVisualizationBrowser >> defaultLayout [
 
 	^ SpBoxLayout newTopToBottom
@@ -58,7 +60,7 @@ MiLayerVisualizationBrowser >> defaultLayout [
 		  yourself
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiLayerVisualizationBrowser >> followEntity: anEntity [
 
 	| mooseModel modelClass |
@@ -76,19 +78,19 @@ MiLayerVisualizationBrowser >> followEntity: anEntity [
 	specModel followEntity: anEntity
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiLayerVisualizationBrowser >> initializePresenters [
 
 	visualization := self instantiate: MiLayerVisualization
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiLayerVisualizationBrowser >> miSelectedItem [
 
 	^ nil
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiLayerVisualizationBrowser >> runVisualization [
 
 	visualization run

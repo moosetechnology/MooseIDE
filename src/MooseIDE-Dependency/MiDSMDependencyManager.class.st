@@ -174,7 +174,7 @@ MiDSMDependencyManager >> entitiesY [
 MiDSMDependencyManager >> entity: aCandidate belongsTo: anEntity [
 	"test whether aDependentEntity can be scoped up to anEntity"
 
-	^(aCandidate atScope: anEntity class) includes: anEntity
+	^ (aCandidate containersOfType: anEntity class) includes: anEntity
 ]
 
 { #category : 'api' }
