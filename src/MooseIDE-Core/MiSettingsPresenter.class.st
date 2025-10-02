@@ -39,6 +39,12 @@ MiSettingsPresenter >> defaultLayout [
 		  yourself
 ]
 
+{ #category : 'accessing' }
+MiSettingsPresenter >> defaultSettingsFileName [
+
+	^self class name , '-settings.json'
+]
+
 { #category : 'initialization' }
 MiSettingsPresenter >> initializeDialogWindow: aSpDialogWindowPresenter [
 
@@ -62,10 +68,15 @@ MiSettingsPresenter >> initializePresenters [
 				self addPresenter: presenterClass inBuilder: builder ] ]
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'file in/out' }
 MiSettingsPresenter >> loadSettings [
+	"We change the #configuration for a new object loaded from Json"
 
-	self inform: ' Loading the settings is not implemented yet... (sorry)'
+	[
+		configuration := configuration class fromJson: self defaultSettingsFileName asFileReference contents.
+		self initializePresenters
+	] on: Error
+	do: [ :err | self inform: 'Error while loading settings: ' , err messageText ]
 ]
 
 { #category : 'initialization' }
@@ -75,10 +86,18 @@ MiSettingsPresenter >> resetToDefault [
 	self initializePresenters
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'file in/out' }
 MiSettingsPresenter >> saveSettings [
 
-	self inform: 'Saving the settings is not implemented yet... (sorry)'
+	| jsonFilename |
+	jsonFilename := self defaultSettingsFileName.
+	jsonFilename asFileReference
+		writeStreamDo: [ :str |
+			str << configuration asJSON
+		].
+
+	self inform: 'Settings saved to: ' , jsonFilename
+
 ]
 
 { #category : 'accessing - model' }
