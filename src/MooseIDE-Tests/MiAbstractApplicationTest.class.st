@@ -1,20 +1,22 @@
 Class {
-	#name : #MiAbstractApplicationTest,
-	#superclass : #TestCase,
+	#name : 'MiAbstractApplicationTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'application',
 		'previousApplication'
 	],
-	#category : #'MooseIDE-Tests-Application'
+	#category : 'MooseIDE-Tests-Application',
+	#package : 'MooseIDE-Tests',
+	#tag : 'Application'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiAbstractApplicationTest >> application [
 
 	^ application
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiAbstractApplicationTest >> setUp [
 
 	super setUp.
@@ -25,7 +27,7 @@ MiAbstractApplicationTest >> setUp [
 	MiApplication current: application
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiAbstractApplicationTest >> tearDown [
 
 	MiApplication reset.

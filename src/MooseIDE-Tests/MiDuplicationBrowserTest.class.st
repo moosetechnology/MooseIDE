@@ -1,28 +1,30 @@
 Class {
-	#name : #MiDuplicationBrowserTest,
-	#superclass : #MiAbstractBrowserTest,
-	#category : #'MooseIDE-Tests-Browsers'
+	#name : 'MiDuplicationBrowserTest',
+	#superclass : 'MiAbstractBrowserTest',
+	#category : 'MooseIDE-Tests-Browsers',
+	#package : 'MooseIDE-Tests',
+	#tag : 'Browsers'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 MiDuplicationBrowserTest >> browserClass [
 
 	^ MiDuplicationBrowser
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiDuplicationBrowserTest >> defaultEntityToSelect [
 
 	^ (self method: 'method1' withSource: (1 to: 8)) asMooseGroup
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiDuplicationBrowserTest >> method: aName [
 
 	^ FamixRepTestMethod named: aName
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiDuplicationBrowserTest >> method: aName withSource: lineInterval [
 
 	^ (self method: aName)
@@ -32,7 +34,7 @@ MiDuplicationBrowserTest >> method: aName withSource: lineInterval [
 		  yourself
 ]
 
-{ #category : #'tests - actions' }
+{ #category : 'tests - actions' }
 MiDuplicationBrowserTest >> populateBrowser: mooseModel [
 
 	mooseModel add: (FamixStClass new name: 'AClass').
@@ -41,7 +43,7 @@ MiDuplicationBrowserTest >> populateBrowser: mooseModel [
 
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiDuplicationBrowserTest >> replicaFor: anEntity source: lineInterval [
 
 	| replica |
@@ -58,7 +60,7 @@ MiDuplicationBrowserTest >> replicaFor: anEntity source: lineInterval [
 	^ replica
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiDuplicationBrowserTest >> replicatedFragment [
 
 	| fragment method replica |
@@ -77,7 +79,7 @@ MiDuplicationBrowserTest >> replicatedFragment [
 	^ fragment
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiDuplicationBrowserTest >> sourceCode: lineInterval [
 
 	^ String cr join:
@@ -94,7 +96,7 @@ MiDuplicationBrowserTest >> sourceCode: lineInterval [
 				    to: lineInterval last)
 ]
 
-{ #category : #'tests - actions' }
+{ #category : 'tests - actions' }
 MiDuplicationBrowserTest >> testFollowEntity [
 
 	self assertEmpty: browser specModel entities.
@@ -107,7 +109,7 @@ MiDuplicationBrowserTest >> testFollowEntity [
 	self assert: browser lstEntities items first name equals: 'method1'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiDuplicationBrowserTest >> testMiSelectedItem [
 
 	| entities |
@@ -125,7 +127,7 @@ MiDuplicationBrowserTest >> testMiSelectedItem [
 	self assert: browser canPropagate
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiDuplicationBrowserTest >> testReplicatedFragmentDisplayString [
 
 	self
@@ -133,7 +135,7 @@ MiDuplicationBrowserTest >> testReplicatedFragmentDisplayString [
 		equals: '2x3:"Goodness, what big ey...'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiDuplicationBrowserTest >> testSelectEntity [
 	"issue https://github.com/moosetechnology/MooseIDE/issues/655"
 
@@ -144,7 +146,7 @@ MiDuplicationBrowserTest >> testSelectEntity [
 	self shouldnt: (browser lstEntities selectIndex: 1) raise: Error
 ]
 
-{ #category : #'tests - tags' }
+{ #category : 'tests - tags' }
 MiDuplicationBrowserTest >> testSelectedTagSetAndGet [
 
 	| model entity entity2 tag |
@@ -164,13 +166,13 @@ MiDuplicationBrowserTest >> testSelectedTagSetAndGet [
 	self assert: browser selectedTag equals: tag
 ]
 
-{ #category : #'tests - opening' }
+{ #category : 'tests - opening' }
 MiDuplicationBrowserTest >> testSettingsAction [
 
 	self assert: browser hasSettings
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiDuplicationBrowserTest >> testShowEntities [
 
 	self assertEmpty: browser lstEntities items.
@@ -183,7 +185,7 @@ MiDuplicationBrowserTest >> testShowEntities [
 	browser should receive showEntities
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiDuplicationBrowserTest >> testShowReplicas [
 
 	self assertEmpty: browser panCodes pages.
@@ -193,7 +195,7 @@ MiDuplicationBrowserTest >> testShowReplicas [
 	self assert: browser panCodes pages first title equals: 'method1'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiDuplicationBrowserTest >> testShowReplicatedFragments [
 
 	| fragment |
@@ -210,7 +212,7 @@ MiDuplicationBrowserTest >> testShowReplicatedFragments [
 		equals: fragment
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiDuplicationBrowserTest >> testUpdateStatusBar [
 
 	| fragment |
@@ -244,7 +246,7 @@ MiDuplicationBrowserTest >> testUpdateStatusBar [
 		'Searched entities: 2 | Number of clones: 1 | Entities with clones: 2 | Selected entities: 2 | Selected clones: 0'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiDuplicationBrowserTest >> testresetDisplayedReplicas [
 
 	browser showReplicas: self replicatedFragment replicas.
