@@ -55,5 +55,5 @@ MiForceBasedLayout >> reset [
 		initialLayout: RSCircleLayout new;
 		strength: 5;
 		length: 300;
-		charge: -5300
+		charge: -300
 ]
