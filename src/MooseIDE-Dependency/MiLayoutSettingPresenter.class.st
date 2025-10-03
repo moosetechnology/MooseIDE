@@ -25,9 +25,9 @@ MiLayoutSettingPresenter >> activate: aLayout [
 ]
 
 { #category : 'adding' }
-MiLayoutSettingPresenter >> addButton: aButton [
+MiLayoutSettingPresenter >> addButton: button toRow: aBoxLayout [
 
-	self layout add: aButton width: 75
+	aBoxLayout add: button width: 75
 ]
 
 { #category : 'building' }
