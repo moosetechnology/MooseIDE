@@ -36,7 +36,8 @@ But some of them require specific configuration that we cannot easily specify he
 		  RSFlowLayout.
 		  RSCircleLayout.
 		  RSGridLayout.
-		  RSTreeLayout }
+		  RSTreeLayout.
+		  MiForceBasedLayout }
 ]
 
 { #category : 'as yet unclassified' }
