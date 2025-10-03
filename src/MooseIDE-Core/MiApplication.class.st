@@ -192,8 +192,8 @@ MiApplication >> defaultBus: aMiBus [
 { #category : 'queries' }
 MiApplication >> defaultChildrenQuery [
 
-	^ (FQCollectScriptQuery script: [ :each | each children ])
-		  name: 'All children';
+	^ (FQCollectScriptQuery script: [ :each | each containedEntities ])
+		  name: 'All contained entities';
 		  yourself
 ]
 

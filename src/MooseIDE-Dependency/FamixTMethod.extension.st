@@ -8,12 +8,9 @@ See declaration in TEntityMetalevelDependency for context."
 	| dependencies |
 	dependencies := self queryAllOutgoing asSet.
 
-	self children do: [ :c |
-		dependencies addAll: c queryAllOutgoingForDSM ].
+	self containedEntities do: [ :c | dependencies addAll: c queryAllOutgoingForDSM ].
 
-	self typing isNotNil and: [
-		self typing isParametricAssociation ifTrue: [
-			dependencies addAll: self typing concretizations ] ].
+	self typing isNotNil and: [ self typing isParametricAssociation ifTrue: [ dependencies addAll: self typing concretizations ] ].
 
 	^ dependencies
 ]

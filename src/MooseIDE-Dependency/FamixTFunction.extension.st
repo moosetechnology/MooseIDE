@@ -8,7 +8,7 @@ See declaration in TEntityMetalevelDependency for context."
 	| dependencies |
 	dependencies := self queryAllOutgoing asSet.
 
-	self children do: [ :c |
+	self containedEntities do: [ :c |
 		dependencies addAll: c queryAllOutgoingForDSM ].
 
 	self typing isNotNil and: [
