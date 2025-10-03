@@ -435,6 +435,7 @@ MiArchitecturalMapBuilder >> setDependenciesForTag: aTagNode [
 { #category : 'building' }
 MiArchitecturalMapBuilder >> setDependency: e forEntity: anEntity [
 
+	e source ifNil: [ ^nil ].
 	^ nodeMooseIDDict at: e source mooseID ifPresent: [ :hNode | 
 		  hNode
 			  dependencyTo: (nodeMooseIDDict at: anEntity mooseID)
