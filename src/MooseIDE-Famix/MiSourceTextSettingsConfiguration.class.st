@@ -1,13 +1,15 @@
 Class {
-	#name : #MiSourceTextSettingsConfiguration,
-	#superclass : #MiAbstractSettingsConfiguration,
+	#name : 'MiSourceTextSettingsConfiguration',
+	#superclass : 'MiAbstractSettingsConfiguration',
 	#instVars : [
 		'shouldHighlightChildren'
 	],
-	#category : #'MooseIDE-Famix-SourceText'
+	#category : 'MooseIDE-Famix-SourceText',
+	#package : 'MooseIDE-Famix',
+	#tag : 'SourceText'
 }
 
-{ #category : #ui }
+{ #category : 'ui' }
 MiSourceTextSettingsConfiguration >> settingsPresenters [
 
 	^ OrderedCollection with: ((MiBooleanSettingPresenter on: self)
@@ -18,13 +20,13 @@ MiSourceTextSettingsConfiguration >> settingsPresenters [
 				   self shouldHighlightChildren: state ])
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiSourceTextSettingsConfiguration >> shouldHighlightChildren [
 
 	^ shouldHighlightChildren
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiSourceTextSettingsConfiguration >> shouldHighlightChildren: aBoolean [
 
 	shouldHighlightChildren := aBoolean

@@ -1,25 +1,27 @@
 Class {
-	#name : #MiAbstractHierarchicalVisualization,
-	#superclass : #MiAbstractVisualization,
+	#name : 'MiAbstractHierarchicalVisualization',
+	#superclass : 'MiAbstractVisualization',
 	#instVars : [
 		'builder'
 	],
-	#category : #'MooseIDE-Visualization-Helpers'
+	#category : 'MooseIDE-Visualization-Helpers',
+	#package : 'MooseIDE-Visualization',
+	#tag : 'Helpers'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiAbstractHierarchicalVisualization >> builder [
 
 	^ builder
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiAbstractHierarchicalVisualization >> builder: anObject [
 
 	builder := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiAbstractHierarchicalVisualization >> modelForShape: aShape [
 
 	^ aShape model rawModel

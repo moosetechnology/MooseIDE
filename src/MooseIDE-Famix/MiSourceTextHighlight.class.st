@@ -10,58 +10,60 @@ An highlight applies:
 - on an #interval (from/to) of this text
 "
 Class {
-	#name : #MiSourceTextHighlight,
-	#superclass : #Object,
+	#name : 'MiSourceTextHighlight',
+	#superclass : 'Object',
 	#instVars : [
 		'highlightedEntity',
 		'highlightInterval'
 	],
-	#category : #'MooseIDE-Famix-SourceText'
+	#category : 'MooseIDE-Famix-SourceText',
+	#package : 'MooseIDE-Famix',
+	#tag : 'SourceText'
 }
 
-{ #category : #formatting }
+{ #category : 'formatting' }
 MiSourceTextHighlight >> adaptSourceAnchorWith: aSourceAnchorAdapter [
 
 	^highlightInterval := aSourceAnchorAdapter intervalForEntity: self highlightedEntity
 ]
 
-{ #category : #formatting }
+{ #category : 'formatting' }
 MiSourceTextHighlight >> applyTo: aRenderer [
 
 	self subclassResponsibility 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiSourceTextHighlight >> from [
 
 	^highlightInterval first
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiSourceTextHighlight >> hasInterval [
 
 	^highlightInterval isNotNil
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiSourceTextHighlight >> highlightInterval: anObject [
 
 	^ highlightInterval := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiSourceTextHighlight >> highlightedEntity [
 
 	^ highlightedEntity
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiSourceTextHighlight >> highlightedEntity: anObject [
 
 	highlightedEntity := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiSourceTextHighlight >> to [
 
 	^highlightInterval last

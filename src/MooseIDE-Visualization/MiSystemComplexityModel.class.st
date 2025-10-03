@@ -1,6 +1,6 @@
 Class {
-	#name : #MiSystemComplexityModel,
-	#superclass : #MiAbstractModel,
+	#name : 'MiSystemComplexityModel',
+	#superclass : 'MiAbstractModel',
 	#instVars : [
 		'entities',
 		'startColor',
@@ -13,10 +13,12 @@ Class {
 		'widthMetricThreshold',
 		'heightMetricThreshold'
 	],
-	#category : #'MooseIDE-Visualization-System Complexity'
+	#category : 'MooseIDE-Visualization-System Complexity',
+	#package : 'MooseIDE-Visualization',
+	#tag : 'System Complexity'
 }
 
-{ #category : #default }
+{ #category : 'default' }
 MiSystemComplexityModel class >> defaultAvailableMetrics [
 
 	^ OrderedCollection withAll: {
@@ -25,19 +27,19 @@ MiSystemComplexityModel class >> defaultAvailableMetrics [
 			  self defaultColorMetric }
 ]
 
-{ #category : #default }
+{ #category : 'default' }
 MiSystemComplexityModel class >> defaultColorMetric [
 
 	^ #numberOfLinesOfCode
 ]
 
-{ #category : #default }
+{ #category : 'default' }
 MiSystemComplexityModel class >> defaultColorMetricThreshold [
 
 	^ 100
 ]
 
-{ #category : #'settings management' }
+{ #category : 'settings management' }
 MiSystemComplexityModel class >> defaultConfiguration [
 
 	^ MiSystemComplexitySettingsConfiguration new
@@ -53,49 +55,49 @@ MiSystemComplexityModel class >> defaultConfiguration [
 		  yourself
 ]
 
-{ #category : #default }
+{ #category : 'default' }
 MiSystemComplexityModel class >> defaultDisplayedName [
 
 	^ #name
 ]
 
-{ #category : #default }
+{ #category : 'default' }
 MiSystemComplexityModel class >> defaultEndColor [
 
 	^ Color black
 ]
 
-{ #category : #default }
+{ #category : 'default' }
 MiSystemComplexityModel class >> defaultHeightMetric [
 
 	^ #numberOfMethods
 ]
 
-{ #category : #default }
+{ #category : 'default' }
 MiSystemComplexityModel class >> defaultHeightMetricThreshold [
 
 	^ 10
 ]
 
-{ #category : #default }
+{ #category : 'default' }
 MiSystemComplexityModel class >> defaultStartColor [
 
 	^ Color white
 ]
 
-{ #category : #default }
+{ #category : 'default' }
 MiSystemComplexityModel class >> defaultWidthMetric [
 
 	^ #numberOfAttributes
 ]
 
-{ #category : #default }
+{ #category : 'default' }
 MiSystemComplexityModel class >> defaultWidthMetricThreshold [
 
 	^ 10
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiSystemComplexityModel >> availableMetrics [
 
 	entities ifEmpty: [ ^ self class defaultAvailableMetrics ].
@@ -103,7 +105,7 @@ MiSystemComplexityModel >> availableMetrics [
 	^ self availableMetricsForEntities
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiSystemComplexityModel >> availableMetricsForEntities [
 	"entities are 
 		- MooseObjects (See MiSystemComplexityBrowser>>#canFollowEntity:) 
@@ -115,19 +117,19 @@ MiSystemComplexityModel >> availableMetricsForEntities [
 		   #implementingSelector) sorted: #yourself ascending
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiSystemComplexityModel >> colorMetric [
 
 	^ colorMetric
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiSystemComplexityModel >> colorMetricThreshold [
 
 	^ colorMetricThreshold
 ]
 
-{ #category : #'settings management' }
+{ #category : 'settings management' }
 MiSystemComplexityModel >> currentConfiguration [
 
 	^ MiSystemComplexitySettingsConfiguration new
@@ -143,7 +145,7 @@ MiSystemComplexityModel >> currentConfiguration [
 		  displayedName: displayedName
 ]
 
-{ #category : #'settings management' }
+{ #category : 'settings management' }
 MiSystemComplexityModel >> defaultConfiguration [
 
 	^ self class defaultConfiguration
@@ -151,56 +153,56 @@ MiSystemComplexityModel >> defaultConfiguration [
 		  yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiSystemComplexityModel >> displayedName [
 
 	^ displayedName
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiSystemComplexityModel >> endColor [
 
 	^ endColor
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiSystemComplexityModel >> entities [
 
 	^ entities
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiSystemComplexityModel >> entities: aMooseGroup [
 
 	entities := aMooseGroup
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiSystemComplexityModel >> hasSettings [
 
 	^ true
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiSystemComplexityModel >> heightMetric [
 
 	^ heightMetric
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiSystemComplexityModel >> heightMetricThreshold [
 
 	^ heightMetricThreshold
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiSystemComplexityModel >> initialize [
 
 	super initialize.
 	entities := MooseGroup new
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiSystemComplexityModel >> initializeSettings [
 
 	startColor := self class defaultStartColor.
@@ -214,25 +216,25 @@ MiSystemComplexityModel >> initializeSettings [
 	displayedName := self class defaultDisplayedName
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiSystemComplexityModel >> miSelectedItem [
 
 	^ entities
 ]
 
-{ #category : #'settings management' }
+{ #category : 'settings management' }
 MiSystemComplexityModel >> settingsPresenterExtent [
 
 	^ 380 @ 400
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiSystemComplexityModel >> startColor [
 
 	^ startColor
 ]
 
-{ #category : #'settings management' }
+{ #category : 'settings management' }
 MiSystemComplexityModel >> updateFromConfiguration: aConfiguration [
 
 	heightMetric := aConfiguration heightMetric.
@@ -248,13 +250,13 @@ MiSystemComplexityModel >> updateFromConfiguration: aConfiguration [
 	browser runVisualization
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiSystemComplexityModel >> widthMetric [
 
 	^ widthMetric
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiSystemComplexityModel >> widthMetricThreshold [
 
 	^ widthMetricThreshold

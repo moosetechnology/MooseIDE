@@ -1,13 +1,15 @@
 Class {
-	#name : #MiSystemComplexityBuilder,
-	#superclass : #HSimpleVisualizationBuilder,
+	#name : 'MiSystemComplexityBuilder',
+	#superclass : 'HSimpleVisualizationBuilder',
 	#instVars : [
 		'nodeMooseIDDict'
 	],
-	#category : #'MooseIDE-Visualization-System Complexity'
+	#category : 'MooseIDE-Visualization-System Complexity',
+	#package : 'MooseIDE-Visualization',
+	#tag : 'System Complexity'
 }
 
-{ #category : #hooks }
+{ #category : 'hooks' }
 MiSystemComplexityBuilder >> addInteractionsToShape: aShape [
 
 	| node |
@@ -25,7 +27,7 @@ MiSystemComplexityBuilder >> addInteractionsToShape: aShape [
 		for: self
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 MiSystemComplexityBuilder >> build [
 
 	self initializeRootNode.
@@ -35,7 +37,7 @@ MiSystemComplexityBuilder >> build [
 	^ self container
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 MiSystemComplexityBuilder >> buildLegend [
 
 	| legend box |
@@ -59,7 +61,7 @@ MiSystemComplexityBuilder >> buildLegend [
 	legend build
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 MiSystemComplexityBuilder >> buildNodeFromEntity: anEntity [
 
 	| node |
@@ -68,8 +70,8 @@ MiSystemComplexityBuilder >> buildNodeFromEntity: anEntity [
 		        name: (self mapModel displayedName value: anEntity);
 		        style: MiHSystemComplexityStyle new;
 		        addAll:
-			        ((anEntity children asOrderedCollection sort: [ :c1 :c2 |
-					          c1 name < c2 name ]) collect: [ :e |
+			        ((anEntity containedEntities asOrderedCollection sort:
+					          #name ascending) collect: [ :e |
 					         self buildNodeFromEntity: e ]);
 		        collapse;
 		        yourself.
@@ -77,38 +79,38 @@ MiSystemComplexityBuilder >> buildNodeFromEntity: anEntity [
 	^ node
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 MiSystemComplexityBuilder >> colorBlock [
 
 	^ [ :e | mapModel colorMetric value: e rawModel ]
 ]
 
-{ #category : #'public - hooks' }
+{ #category : 'public - hooks' }
 MiSystemComplexityBuilder >> colorFor: node [
 	^ Color fromHexString: '2980B9'
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 MiSystemComplexityBuilder >> elements [
 
 	^ self types entityStorage
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiSystemComplexityBuilder >> initialize [
 
 	super initialize.
 	nodeMooseIDDict := Dictionary new
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 MiSystemComplexityBuilder >> initializeRootNode [
 
 	(rootNode := HNode new) addAll:
 		(self elements collect: [ :e | self buildNodeFromEntity: e ])
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 MiSystemComplexityBuilder >> layoutOn: aGroupOfShapes parent: shape [
 
 	aGroupOfShapes ifEmpty: [ ^ self ].
@@ -116,13 +118,13 @@ MiSystemComplexityBuilder >> layoutOn: aGroupOfShapes parent: shape [
 	self relayout: aGroupOfShapes parent: shape
 ]
 
-{ #category : #'accessing - attributes' }
+{ #category : 'accessing - attributes' }
 MiSystemComplexityBuilder >> menuItemStrategy [
 
 	^ MiSystemComplexityMenuItemStrategy new
 ]
 
-{ #category : #hooks }
+{ #category : 'hooks' }
 MiSystemComplexityBuilder >> nodeAnnouncer [
 	"plug new events here"
 
@@ -138,7 +140,7 @@ MiSystemComplexityBuilder >> nodeAnnouncer [
 	^ baseNode announcer
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 MiSystemComplexityBuilder >> normalizeColor [
 
 	| colorMetric scale |
@@ -154,7 +156,7 @@ MiSystemComplexityBuilder >> normalizeColor [
 				(scale scale: (colorMetric value: each model rawModel)) ]
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 MiSystemComplexityBuilder >> normalizeHeight [
 
 	| heightMetric scale |
@@ -168,7 +170,7 @@ MiSystemComplexityBuilder >> normalizeHeight [
 				(scale scale: (heightMetric value: each model rawModel)) ]
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 MiSystemComplexityBuilder >> normalizeMetric: metric threshold: threshold [
 	"When all elements are homogeneous, we want to show that the difference is small by making them look similar. They are considered homogeneous when the difference between the min and max values of the metric is below the threshold."
 
@@ -194,7 +196,7 @@ MiSystemComplexityBuilder >> normalizeMetric: metric threshold: threshold [
 						   (max - min / 2 + max) } ])
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 MiSystemComplexityBuilder >> normalizeShapes [
 
 	self normalizeWidth.
@@ -206,7 +208,7 @@ MiSystemComplexityBuilder >> normalizeShapes [
 					canvasShape adjustToChildren ] ]
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 MiSystemComplexityBuilder >> normalizeWidth [
 
 	| widthMetric scale |
@@ -220,7 +222,7 @@ MiSystemComplexityBuilder >> normalizeWidth [
 				(scale scale: (widthMetric value: each model rawModel)) ]
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 MiSystemComplexityBuilder >> paintLegendBox: aComposite [
 
 	| actualBox |
@@ -230,14 +232,14 @@ MiSystemComplexityBuilder >> paintLegendBox: aComposite [
 		borderWidth: 2
 ]
 
-{ #category : #hooks }
+{ #category : 'hooks' }
 MiSystemComplexityBuilder >> rebuildRootShape: shape [
 
 	super rebuildRootShape: shape.
 	self relayout: self container nodes parent: self rootNode
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 MiSystemComplexityBuilder >> relayout: aGroupOfShapes parent: shape [
 
 	RSDominanceTreeLayout new
@@ -246,7 +248,7 @@ MiSystemComplexityBuilder >> relayout: aGroupOfShapes parent: shape [
 		on: aGroupOfShapes
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 MiSystemComplexityBuilder >> relayoutChildren: aGroupOfShapes parent: shape [
 
 	shape layout ifNil: [
@@ -257,7 +259,7 @@ MiSystemComplexityBuilder >> relayoutChildren: aGroupOfShapes parent: shape [
 	shape layout on: aGroupOfShapes
 ]
 
-{ #category : #rendering }
+{ #category : 'rendering' }
 MiSystemComplexityBuilder >> renderIn: aCanvas [
 
 	| rootShapes |
@@ -285,7 +287,7 @@ MiSystemComplexityBuilder >> renderIn: aCanvas [
 	self layoutOn: rootShapes parent: rootNode
 ]
 
-{ #category : #hooks }
+{ #category : 'hooks' }
 MiSystemComplexityBuilder >> renderLinesIn: aCanvas [
 
 	| arrow |
@@ -301,13 +303,13 @@ MiSystemComplexityBuilder >> renderLinesIn: aCanvas [
 	aCanvas pushBackEdges
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 MiSystemComplexityBuilder >> setDependencies [
 
 	rootNode children do: [ :each | self setDependenciesFor: each ]
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 MiSystemComplexityBuilder >> setDependenciesFor: aNode [
 
 	aNode rawModel directSubclasses do: [ :e |
@@ -316,7 +318,7 @@ MiSystemComplexityBuilder >> setDependenciesFor: aNode [
 				ifPresent: [ :hNode | aNode dependencyTo: hNode ] ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiSystemComplexityBuilder >> types [
 
 	^ self mapModel entities

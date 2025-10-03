@@ -1,6 +1,6 @@
-Extension { #name : #RSAbstractLine }
+Extension { #name : 'RSAbstractLine' }
 
-{ #category : #'*MooseIDE-Visualization' }
+{ #category : '*MooseIDE-Visualization' }
 RSAbstractLine >> miInspect [
 
 	| list |
@@ -14,7 +14,7 @@ RSAbstractLine >> miInspect [
 		 ifFalse: [ list ]) miInspect
 ]
 
-{ #category : #'*MooseIDE-Visualization' }
+{ #category : '*MooseIDE-Visualization' }
 RSAbstractLine >> miPropagateOn: buses [
 
 	| list |

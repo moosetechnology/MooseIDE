@@ -1,10 +1,12 @@
 Class {
-	#name : #MiDisplayedNameSettingPresenter,
-	#superclass : #MiAbstractRadioButtonSettingPresenter,
-	#category : #'MooseIDE-Visualization-System Complexity'
+	#name : 'MiDisplayedNameSettingPresenter',
+	#superclass : 'MiAbstractRadioButtonSettingPresenter',
+	#category : 'MooseIDE-Visualization-System Complexity',
+	#package : 'MooseIDE-Visualization',
+	#tag : 'System Complexity'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDisplayedNameSettingPresenter class >> help [
 
 	^ 'How should the entities name be computed?
@@ -12,25 +14,25 @@ MiDisplayedNameSettingPresenter class >> help [
 - #mooseName will display all the containment branch with the form: ''TopContainer.TypeContainer.Class'' ]'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDisplayedNameSettingPresenter class >> label [
 
 	^ 'Name to display:'
 ]
 
-{ #category : #'event handling' }
+{ #category : 'event handling' }
 MiDisplayedNameSettingPresenter >> activate: aSymbol [
 
 	configuration displayedName: aSymbol
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 MiDisplayedNameSettingPresenter >> addButton: aButton [
 
 	self layout add: aButton width: 90
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 MiDisplayedNameSettingPresenter >> helpForItem: aSymbol [
 
 	^ aSymbol = #name
@@ -39,19 +41,19 @@ MiDisplayedNameSettingPresenter >> helpForItem: aSymbol [
 			  'Display all the containment branch with the form: ''TopContainer.TypeContainer.Class''' ]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiDisplayedNameSettingPresenter >> isCurrentValue: aSymbol [
 
 	^ aSymbol = configuration displayedName
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDisplayedNameSettingPresenter >> items [
 
 	^ { #name. #mooseName }
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 MiDisplayedNameSettingPresenter >> labelForItem: aSymbol [
 
 	^ aSymbol asString
