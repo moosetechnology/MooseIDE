@@ -19,6 +19,13 @@ MooseLoadAPIBrowserMenuCommand class >> label [
 	^ 'API browser'
 ]
 
+{ #category : 'world menu' }
+MooseLoadAPIBrowserMenuCommand class >> menuCommandOn: aBuilder [
+
+	<worldMenu>
+	^ (self menuCommandOn: aBuilder forCommand: self) yourself
+]
+
 { #category : 'accessing' }
 MooseLoadAPIBrowserMenuCommand class >> menuPriority [
 
