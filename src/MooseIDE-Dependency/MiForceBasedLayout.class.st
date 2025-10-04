@@ -23,31 +23,19 @@ MiForceBasedLayout class >> layoutName [
 
 { #category : 'initialization' }
 MiForceBasedLayout >> reset [
-	"explanation of some parameters (according to ChatGPT)
-	1. gravity
-		Meaning: Controls how strongly nodes are pulled toward the center of the layout (like a gravitational force).
-			Higher value → nodes cluster more tightly toward the center.
-			Lower value → nodes spread out more, possibly drifting toward the edges.
-	2. friction
-		Meaning: Simulates resistance or damping in motion — it slows down node movement over time.
-			Higher value → nodes slow down quickly and the layout stabilizes faster.
-			Lower value → nodes move more freely and take longer to settle.
-	3. theta
-		Meaning: A precision parameter used in the Barnes-Hut approximation, which speeds up force calculations for large graphs.
-			Lower value → more precise force calculation (but slower).
-			Higher value → faster layout computation (but less accurate).
-	4. strength
-		Meaning: The spring strength or stiffness between connected nodes (links).
-			Higher value → stronger pull between connected nodes, edges stay shorter.
-			Lower value → weaker pull, connected nodes can drift farther apart.
-	5. charge
-		Meaning: Controls the repulsive force between nodes (like electric charge).
-			Positive value → nodes repel each other (spread out).
-			Negative value → nodes attract each other (cluster).
-	6. length
-		Meaning: Defines the natural (desired) distance between connected nodes — like the resting length of a spring.
-			Higher value → connected nodes are positioned farther apart.
-			Lower value → connected nodes are closer together."
+	"explanation of some parameters (from super class comments and help of ChatGPT)
+	strength: Set the force of attraction for the edges. A high value results in having nodes together.
+		The default value is 1.0
+	charge: Typically a negative value. E.g., -300.
+		This is a repulsive force between nodes (like electric charge).
+	length: the natural (desired) distance between connected nodes, eg. 50
+	gravity: it is the force from nodes to move toward center.
+		Higher value results in nodes clustered more tightly toward the center.
+	friction: Simulates resistance or damping in motion — it slows down node movement over time.
+		Usualy a value between 0 and 1. Higher value makes nodes slow down quickly and the layout stabilizes faster.
+	theta: Theta coefficient from Barnes-Hut simulation. Value ranges on [0, 1].
+		Performance is better with smaller values. 
+		Very small values may not create enough force to give a good result"
 
 	super reset.
 
@@ -55,5 +43,6 @@ MiForceBasedLayout >> reset [
 		initialLayout: RSCircleLayout new;
 		strength: 5;
 		length: 300;
-		charge: -5300
+		charge: -500;
+		friction: 0.5
 ]
