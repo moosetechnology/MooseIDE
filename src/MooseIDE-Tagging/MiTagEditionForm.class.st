@@ -156,14 +156,6 @@ MiTagEditionForm >> submit [
 ]
 
 { #category : 'accessing' }
-MiTagEditionForm >> tagBrowser: aTagBrowser [
-
-	super tagBrowser: aTagBrowser.
-
-	self fillFormWithTag: self specModel currentTag
-]
-
-{ #category : 'accessing' }
 MiTagEditionForm >> title [
 
 	^ 'Edit tag'

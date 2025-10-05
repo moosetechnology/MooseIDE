@@ -7,10 +7,7 @@ Class {
 	#instVars : [
 		'categoryManagement',
 		'tagList',
-		'descriptionPage',
 		'tagModel',
-		'tagDescriptionPage',
-		'dynamicTagDescriptionPage',
 		'addTagButton',
 		'btnIsExtent',
 		'btnIsIntent'
@@ -73,29 +70,14 @@ MiTagManagementPage >> connectPresenters [
 { #category : 'action' }
 MiTagManagementPage >> deleteCurrentTag [
 
-	|tag|
-	tag := tagModel deleteCurrentTag.
-	self owner application removeItem: tag.
-	descriptionPage hide.
+	tagModel deleteCurrentTag.
 	self refreshTagList
-]
-
-{ #category : 'accessing' }
-MiTagManagementPage >> descriptionPage [
-
-	^ descriptionPage
-]
-
-{ #category : 'accessing' }
-MiTagManagementPage >> dynamicTagDescriptionPage [
-
-	^ dynamicTagDescriptionPage
 ]
 
 { #category : 'action' }
 MiTagManagementPage >> editCurrentTag [
 
-	self owner openTagEditionForm
+	tagModel editCurrentTag
 ]
 
 { #category : 'accessing' }
@@ -108,60 +90,43 @@ MiTagManagementPage >> extentTagButton [
 MiTagManagementPage >> initializeLayout [
 
 	| sep |
-	(sep := SpRoassalPresenter new) canvas color: (Color
-			 r: 40
-			 g: 40
-			 b: 40
-			 range: 255) translucent.
+	sep := owner separator.
 
-	self layout: (SpBoxLayout newLeftToRight
-			 spacing: 4;
-			 add: (SpBoxLayout newTopToBottom
-					  spacing: 5;
-					  add: categoryManagement expand: false;
-					  add: (SpBoxLayout newLeftToRight
-							   add: 'Tag list' asPresenter;
-							   hAlignCenter;
-							   yourself)
-					  expand: false;
-					  add: (SpBoxLayout newLeftToRight
-							   spacing: 3;
-							   add: btnIsExtent;
-							   add: btnIsIntent;
-							   add: addTagButton width: 30;
-							   yourself)
-					  expand: false;
-					  add: tagList;
-					  yourself)
-			 width: 200;
-			 add: sep width: 2;
-			 add: descriptionPage;
-			 yourself)
+	self layout: (SpBoxLayout newTopToBottom
+		spacing: 5;
+		add: categoryManagement expand: false;
+		add: (SpBoxLayout newLeftToRight
+			add: 'Tag list' asPresenter;
+			hAlignCenter;
+			yourself)
+		expand: false;
+		add: (SpBoxLayout newLeftToRight
+			spacing: 3;
+			add: btnIsExtent;
+			add: btnIsIntent;
+			add: addTagButton width: 30;
+			yourself)
+		expand: false;
+		add: tagList;
+		yourself).
+
 ]
 
 { #category : 'initialization' }
 MiTagManagementPage >> initializePresenters [
 
-	categoryManagement := self
-		                      instantiate: MiTagCategoriesPresenter
-		                      on: tagModel.
-
-	tagDescriptionPage := self instantiate: MiTagExtentPage.
-	dynamicTagDescriptionPage := self instantiate: MiTagIntentPage.
-	descriptionPage := tagDescriptionPage.
+	categoryManagement := self instantiate: MiTagCategoriesPresenter on: tagModel.
 
 	btnIsExtent := self newToggleButton
-		               state: true;
-		               icon:
-			               (Smalltalk ui icons iconNamed: #checkboxSelected);
-		               label: 'Static';
-		               yourself.
+		state: true;
+		icon: (Smalltalk ui icons iconNamed: #checkboxSelected);
+		label: 'Static';
+		yourself.
 	btnIsIntent := self newToggleButton
-		               state: false;
-		               icon:
-			               (Smalltalk ui icons iconNamed: #checkboxUnselected);
-		               label: 'Dynamic';
-		               yourself.
+		state: false;
+		icon: (Smalltalk ui icons iconNamed: #checkboxUnselected);
+		label: 'Dynamic';
+		yourself.
 
 	tagList := self newList.
 	tagList contextMenu: self tagListMenu.
@@ -171,7 +136,7 @@ MiTagManagementPage >> initializePresenters [
 		whenSelectionChangedDo: [ :selection |
 			selection selectedItem ifNotNil: [ :item | self setTagTo: item ] ].
 	addTagButton := self newButton icon: (Smalltalk iconNamed: #smallAdd).
-	addTagButton action: [ self owner openTagCreationForm ].
+	addTagButton action: [ self owner createTag ].
 
 	self initializeLayout
 ]
@@ -191,36 +156,17 @@ MiTagManagementPage >> model [
 	^ self specModel
 ]
 
-{ #category : 'action' }
-MiTagManagementPage >> preparePageFor: aTag [
-
-	aTag isIntent ifTrue: [ 
-		self layout replace: descriptionPage with: dynamicTagDescriptionPage.
-		descriptionPage := dynamicTagDescriptionPage.
-		^ self ].
-	self layout replace: descriptionPage with: tagDescriptionPage.
-	descriptionPage := tagDescriptionPage
-]
-
 { #category : 'refreshing' }
 MiTagManagementPage >> refresh [
 
 	self refreshTagList.
-	self refreshCategoryList.
-	self refreshDescriptionPage
+	self refreshCategoryList
 ]
 
 { #category : 'refreshing' }
 MiTagManagementPage >> refreshCategoryList [
 
 	categoryManagement refreshCategoryList
-]
-
-{ #category : 'refreshing' }
-MiTagManagementPage >> refreshDescriptionPage [
-
-	self setRightPart: descriptionPage.
-	descriptionPage refresh
 ]
 
 { #category : 'refreshing' }
@@ -233,23 +179,11 @@ MiTagManagementPage >> refreshTagList [
 		tagList selectItem: currentTag ]
 ]
 
-{ #category : 'initialization' }
-MiTagManagementPage >> refreshTaggedEntitiesList [
-
-	descriptionPage refreshTaggedEntitiesList
-]
-
 { #category : 'action' }
 MiTagManagementPage >> removeCategory [
 
 	self specModel deleteCurrentCategory.
 	self refreshCategoryList
-]
-
-{ #category : 'accessing' }
-MiTagManagementPage >> selectedItems [
-
-	^ tagDescriptionPage selectedItems
 ]
 
 { #category : 'initialization' }
@@ -266,43 +200,11 @@ MiTagManagementPage >> setModelBeforeInitialization: aTagModel [
 	tagModel := aTagModel
 ]
 
-{ #category : 'initialization' }
-MiTagManagementPage >> setRightPart: aSpPresenter [
-	"temporary hack, the descriptionPage should not be in this class but in the MiTagBrowser
-	 We need to replace the right part of the window (descriptionPage) with the new presenter
-	 this part is the 3rd presenter in the layout
-	 So if this right part is not the same as aSpPresenter,
-	 we remove it and then add the correct one"
-
-	(layout presenters third = aSpPresenter) ifTrue: [ ^self ].
-
-	layout remove: layout presenters third.
-	layout add: aSpPresenter 
-
-]
-
 { #category : 'action' }
 MiTagManagementPage >> setTagTo: aTag [
 
-	self owner setTagTo: aTag.
-	self preparePageFor: aTag.
-	descriptionPage setTag: aTag.
-	descriptionPage show.
-	self refreshDescriptionPage.
-	self update
-]
+	self specModel setTagTo: aTag.
 
-{ #category : 'initialization' }
-MiTagManagementPage >> showNoMooseModel [
-
-	self setRightPart: (SpPresenter new
-		layout: (SpBoxLayout newTopToBottom
-			vAlignCenter;
-			hAlignCenter;
-			add: 'No available moose model in selected buses.';
-			add: 'Propagate entities or moose model on selected buses.';
-			yourself);
-		yourself)
 ]
 
 { #category : 'accessing' }

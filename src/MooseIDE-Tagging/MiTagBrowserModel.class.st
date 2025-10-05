@@ -122,9 +122,14 @@ MiTagBrowserModel >> deleteCurrentTag [
 
 	| tag |
 	tag := currentTag.
+
+	MiApplication current removeItem: tag.
+	browser hideDescriptionPage.
+
 	tag isIntent ifTrue: [ 
 		dynamicTags remove: tag.
-		^ tag ]. tag remove.
+		^ tag ].
+	tag remove.
 	tag categories ifNotEmpty: [ tag categories first removeTag: tag ].
 	self currentTag: nil.
 	^ tag
@@ -153,6 +158,17 @@ MiTagBrowserModel >> editCurrentDynamicTag: name description: description color:
 		category: category.
 	tag query: query.
 
+	browser refreshTagList.
+	browser refreshDescriptionPage.
+	self currentApplication updateItem: tag
+]
+
+{ #category : 'actions' }
+MiTagBrowserModel >> editCurrentTag [
+
+	| tag |
+	tag := self currentTag.
+	browser editTag: tag.
 	browser refreshTagList.
 	browser refreshDescriptionPage.
 	self currentApplication updateItem: tag
@@ -190,7 +206,11 @@ MiTagBrowserModel >> entities [
 { #category : 'accessing' }
 MiTagBrowserModel >> entities: anObject [
 
-	entities := anObject
+	entities := anObject.
+	self mooseModel
+		ifNil: [ browser showNoMooseModel ]
+		ifNotNil: [ browser refreshDescriptionPage ].
+	browser tagManagementPage refresh
 ]
 
 { #category : 'accessing' }
@@ -244,6 +264,12 @@ MiTagBrowserModel >> setTag: newTag description: aText color: aColor category: a
 	aCategory ifNotNil: [
 		aCategory addTag: newTag.
 		newTag addCategory: aCategory ]
+]
+
+{ #category : 'initialization' }
+MiTagBrowserModel >> setTagTo: aTag [
+
+	browser setTagTo: aTag.
 ]
 
 { #category : 'accessing' }

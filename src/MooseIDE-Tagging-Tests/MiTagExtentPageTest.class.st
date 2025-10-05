@@ -60,7 +60,7 @@ MiTagExtentPageTest >> testRefreshTaggedEntitiesList [
 	entity := browser specModel entities first.
 	browser followEntity: entity.
 	
-	self assert: (browser tagManagementPage descriptionPage) selectedItems size equals: 3.
+	self assert: (browser descriptionPage) selectedItems size equals: 3.
 
 	
 ]
