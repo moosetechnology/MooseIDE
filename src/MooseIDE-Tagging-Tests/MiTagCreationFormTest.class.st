@@ -20,11 +20,11 @@ MiTagCreationFormTest >> presenterOwner [
 	^ browser
 ]
 
-{ #category : 'initialization' }
+{ #category : 'running' }
 MiTagCreationFormTest >> setUp [
 
 	super setUp.
-	creationForm := browser openTagCreationForm.
+	creationForm := browser createTag
 ]
 
 { #category : 'running' }

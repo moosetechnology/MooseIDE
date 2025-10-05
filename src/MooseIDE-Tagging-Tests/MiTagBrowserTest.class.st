@@ -44,7 +44,7 @@ MiTagBrowserTest >> receiveEntityToSelect [
 
 	browser refreshTagList.
 	browser tagManagementPage setTagTo: tag.
-	browser tagManagementPage descriptionPage addAll
+	browser descriptionPage addAll
 ]
 
 { #category : 'running' }
