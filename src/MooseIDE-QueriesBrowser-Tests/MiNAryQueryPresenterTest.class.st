@@ -32,7 +32,7 @@ MiNAryQueryPresenterTest >> configureInnerQueries [
 
 	query2 := FQScopeQuery defaultForParent: browser rootQuery.
 	query2
-		directionStrategy: FQScopeContainers;
+		queryContainers;
 		scope: FamixStClass.
 
 	query3 := FQBooleanQuery defaultForParent: browser rootQuery.

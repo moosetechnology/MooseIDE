@@ -26,7 +26,7 @@ MiScopeQueriesPresenterTest >> createNewQuery [
 		             input: helper classesAndMethods;
 		             yourself.
 	^ (FQScopeQuery defaultForParent: rootQuery)
-		  resetAndChangeDirection: FQScopeContainers;
+		  resetAndChangeDirection: MQScopeContainersStrategy;
 		  scope: FamixStClass;
 		  yourself
 ]
@@ -98,11 +98,9 @@ MiScopeQueriesPresenterTest >> testNoScopesForADirection [
 
 	self resetPresenterWithEntities: helper entitiesWithNoDownScope.
 
-	presenter directionsDropList selectItem: FQScopeContainedEntities.
+	presenter directionsDropList selectItem: MQScopeContainedEntitiesStrategy.
 
-	self
-		assert: presenter scopesDropList class
-		identicalTo: NoPossibleQueryPresenter
+	self assert: presenter scopesDropList class identicalTo: NoPossibleQueryPresenter
 ]
 
 { #category : 'tests' }
@@ -134,21 +132,18 @@ MiScopeQueriesPresenterTest >> testPresentersOnImpossibleQuery [
 { #category : 'tests' }
 MiScopeQueriesPresenterTest >> testQueryValidity [
 
-	presenter directionsDropList selectItem: FQScopeContainedEntities.
-	presenter scopesDropList selectItem:
-		presenter scopesDropList items anyOne.
+	presenter directionsDropList selectItem: MQScopeContainedEntitiesStrategy.
+	presenter scopesDropList selectItem: presenter scopesDropList items anyOne.
 	self assert: presenter query isValid.
 
 	self selectNonSelectedDirection.
 	self deny: presenter query isValid.
 
-	presenter scopesDropList selectItem:
-		(presenter scopesDropList listItems copyWithout:
-			 presenter scopesDropList selectedItem) anyOne.
+	presenter scopesDropList selectItem: (presenter scopesDropList listItems copyWithout: presenter scopesDropList selectedItem) anyOne.
 	self assert: presenter query isValid.
 
 	self resetPresenterWithEntities: helper entitiesWithNoDownScope.
-	presenter directionsDropList selectItem: FQScopeContainedEntities.
+	presenter directionsDropList selectItem: MQScopeContainedEntitiesStrategy.
 	self deny: presenter query isValid.
 
 	self resetPresenterWithEntities: helper noEntities.
