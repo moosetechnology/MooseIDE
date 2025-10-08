@@ -142,8 +142,13 @@ MiArchitecturalMapBuilder >> build [
 	self addTags.
 	mapModel hideReceivedEntities ifFalse: [
 		rootNode addAll: self createRootNodes ].
+
+	"dependencies mustr be computed before rendering because some layout depend on them"
+	self setDependencies.
+
 	self renderIn: self container.
 	self updateWithModelSettings.
+
 	^ self container
 ]
 
@@ -464,7 +469,9 @@ Tags on children: '.
 
 { #category : 'building' }
 MiArchitecturalMapBuilder >> updateWithModelSettings [
-	self setDependencies.
+	"used to compute dependencies here, but they are needed by some layout (ex: TreeLayout)
+	 so it was moved into #build method"
+
 	mapModel showAllLinks
 		ifFalse: [ rootNode hideAllLinks ]
 		ifTrue: [ rootNode showAllLinks ].
