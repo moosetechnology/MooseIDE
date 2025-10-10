@@ -6,9 +6,8 @@ FamixTClass >> queryAllOutgoingForDSM [
 See declaration in TEntityMetalevelDependency for context."
 
 	| dependencies |
-	dependencies := self queryOutgoingInheritances asSet.
-	self containedEntities do: [ :c |
-		dependencies addAll: c queryAllOutgoingForDSM ].
+	dependencies := (self queryOutgoing: FamixTInheritance) asSet.
+	self containedEntities do: [ :c | dependencies addAll: c queryAllOutgoingForDSM ].
 
 	^ dependencies
 ]

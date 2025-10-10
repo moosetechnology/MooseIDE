@@ -126,11 +126,9 @@ MiDeadCodeBrowserModel >> initializeHeuristics [
 { #category : 'actions' }
 MiDeadCodeBrowserModel >> isNewDead: anEntity [
 
-	(deadEntities includes: anEntity) ifTrue: [ ^false ].
+	(deadEntities includes: anEntity) ifTrue: [ ^ false ].
 
-	^anEntity queryAllIncomingInvocations opposites allSatisfy: [ :invoker |
-		deadEntities includes: invoker
-	] 
+	^ (anEntity queryIncoming: FamixTInvocation) opposites allSatisfy: [ :invoker | deadEntities includes: invoker ]
 ]
 
 { #category : 'accessing' }
@@ -146,15 +144,12 @@ MiDeadCodeBrowserModel >> oneRoundRecursion [
 	addNewDead := false.
 
 	self deadEntities clone do: [ :dead |
-		dead queryAllOutgoingInvocations opposites do: [ :invoked |
-			(self isNewDead: invoked) ifTrue: [
-				deadEntities add: invoked.
-				addNewDead := true
-			]
-		]
-	].
+			(dead queryOutgoing: FamixTInvocation) opposites do: [ :invoked |
+					(self isNewDead: invoked) ifTrue: [
+							deadEntities add: invoked.
+							addNewDead := true ] ] ].
 
-	^addNewDead
+	^ addNewDead
 ]
 
 { #category : 'actions' }
