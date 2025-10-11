@@ -16,8 +16,7 @@ Class {
 		'allEntities',
 		'tagNodes',
 		'nodesToAdd',
-		'highlightShapes',
-		'nodeStyle'
+		'highlightShapes'
 	],
 	#category : 'MooseIDE-Dependency-ArchitecturalMap',
 	#package : 'MooseIDE-Dependency',
@@ -269,6 +268,12 @@ MiArchitecturalMapBuilder >> createRootNodes [
 ]
 
 { #category : 'accessing' }
+MiArchitecturalMapBuilder >> defaultNodeStyle [
+
+	^MiArchitecturalMapStyle new
+]
+
+{ #category : 'accessing' }
 MiArchitecturalMapBuilder >> elements [
 
 	^ mapModel entities
@@ -363,18 +368,6 @@ MiArchitecturalMapBuilder >> nodeAnnouncer [
 		for: self.
 
 	^ baseNode announcer
-]
-
-{ #category : 'accessing' }
-MiArchitecturalMapBuilder >> nodeStyle [
-
-	^ nodeStyle ifNil: [ nodeStyle := MiArchitecturalMapStyle new ]
-]
-
-{ #category : 'accessing' }
-MiArchitecturalMapBuilder >> nodeStyle: anObject [
-
-	nodeStyle := anObject
 ]
 
 { #category : 'adding' }
