@@ -143,7 +143,7 @@ MiArchitecturalMapBuilder >> build [
 	mapModel hideReceivedEntities ifFalse: [
 		rootNode addAll: self createRootNodes ].
 
-	"dependencies mustr be computed before rendering because some layout depend on them"
+	"dependencies must be computed before rendering because some layout depend on them"
 	self setDependencies.
 
 	self renderIn: self container.

@@ -40,9 +40,26 @@ MiForceBasedLayout >> reset [
 	super reset.
 
 	self
-		initialLayout: RSCircleLayout new;
-		strength: 5;
-		length: 300;
-		charge: -500;
+		iterations: 10 ;
+		strength: 0.5 ;
+		charge: -500 ;
+		length: 200 ;
 		friction: 0.5
+]
+
+{ #category : 'hook' }
+MiForceBasedLayout >> start [
+	"parent uses an initialLayout.
+	 We remove that to give the user the opportunity to influence the result"
+
+	"initialLayout on: nodes."
+
+	nodes := nodes collect: [ :node | self newMockElementFor: node ].
+	lines := lines
+		collect: [ :e | self newMockLineFor: e ]
+		thenReject: [:e | e isNil ].
+	self autoRepulse ifTrue: [
+		self calculateAutoRepulse.
+		 ].
+	alpha ifNil: [ alpha :=  0.1 ]
 ]
