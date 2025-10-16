@@ -13,6 +13,22 @@ MiDuplicationBrowserTest >> browserClass [
 ]
 
 { #category : 'running' }
+MiDuplicationBrowserTest >> class: aName [
+
+	^ FamixRepTestClass named: aName
+]
+
+{ #category : 'running' }
+MiDuplicationBrowserTest >> class: aName withSource: lineInterval [
+
+	^ (self class: aName)
+		  sourceAnchor:
+			  (FamixRepTestSourceTextAnchor source:
+					   (self sourceCode: lineInterval));
+		  yourself
+]
+
+{ #category : 'running' }
 MiDuplicationBrowserTest >> defaultEntityToSelect [
 
 	^ (self method: 'method1' withSource: (1 to: 8)) asMooseGroup
@@ -94,6 +110,30 @@ MiDuplicationBrowserTest >> sourceCode: lineInterval [
 			       'and jumping out of bed, he swallowed her up too.' )
 				    copyFrom: lineInterval first
 				    to: lineInterval last)
+]
+
+{ #category : 'tests - actions' }
+MiDuplicationBrowserTest >> testCanFollowEntity [
+
+	| entities |
+	entities := MooseGroup withAll: {
+		(self class: 'AClass' withSource: (1 to: 8)) .
+		(self method: 'aMethod' withSource: (1 to: 8)) }.
+
+	self assert: (browser canFollowEntity: entities)
+
+]
+
+{ #category : 'tests - actions' }
+MiDuplicationBrowserTest >> testCannotFollowEntityNoSourceAnchor [
+
+	| entities |
+	entities := MooseGroup withAll: {
+		(self class: 'AClass') .
+		(self method: 'aMethod' withSource: (1 to: 8)) }.
+
+	self deny: (browser canFollowEntity: entities)
+
 ]
 
 { #category : 'tests - actions' }

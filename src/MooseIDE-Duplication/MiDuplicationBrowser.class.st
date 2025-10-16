@@ -10,8 +10,8 @@ Use:
 4. select a duplicated code chunk to see the ducplicated sources (the duplication is greyed in the source code)
 "
 Class {
-	#name : #MiDuplicationBrowser,
-	#superclass : #MiAbstractBrowser,
+	#name : 'MiDuplicationBrowser',
+	#superclass : 'MiAbstractBrowser',
 	#instVars : [
 		'lstEntities',
 		'btnRun',
@@ -19,10 +19,11 @@ Class {
 		'lstReplicatedFragments',
 		'statusBar'
 	],
-	#category : #'MooseIDE-Duplication'
+	#category : 'MooseIDE-Duplication',
+	#package : 'MooseIDE-Duplication'
 }
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiDuplicationBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
@@ -30,70 +31,71 @@ MiDuplicationBrowser class >> menuCommandOn: aBuilder [
 	^ (self buildMenuItemIn: aBuilder) withSeparatorAfter
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiDuplicationBrowser class >> menuIconName [
 
 	^ #smallCopy
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiDuplicationBrowser class >> menuItem [
 
 	^ #SpecializedBrowser
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiDuplicationBrowser class >> menuPriority [
 
 	^ self menuCodeToolsPriority + 2
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MiDuplicationBrowser class >> newModel [
 
 	^ MiDuplicationBrowserModel new
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MiDuplicationBrowser class >> open [
 	<script>
 	^ super open
 ]
 
-{ #category : #specs }
+{ #category : 'specs' }
 MiDuplicationBrowser class >> preferredExtent [
 
 	^ 1000 @ 500
 ]
 
-{ #category : #specs }
+{ #category : 'specs' }
 MiDuplicationBrowser class >> title [
 	^ 'Duplication browser'
 ]
 
-{ #category : #'accessing - private tests' }
+{ #category : 'accessing - private tests' }
 MiDuplicationBrowser >> btnRun [
 
 	^ btnRun
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiDuplicationBrowser >> canFollowEntity: anObject [
+	
 
-	^ anObject isMooseObject and: [
-		  anObject isCollection and: [
-			  anObject anySatisfy: [ :each |
-				  [ each hasSourceAnchor ]
-					  on: Error
-					  do: [ false ] ] ] ]
+	^anObject isCollection and: [
+		anObject isNotEmpty and: [
+			anObject allSatisfy: [ :each |
+				[ each hasSourceAnchor ]
+					on: Error
+					do: [ false ] ] ] ]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiDuplicationBrowser >> canHighlight [
 	^true
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiDuplicationBrowser >> followEntity: anEntity [
 
 	super followEntity: anEntity.
@@ -101,7 +103,7 @@ MiDuplicationBrowser >> followEntity: anEntity [
 	self showEntities
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiDuplicationBrowser >> handleFragmentSelection: selectedFragments [
 
 	"| commonEntities |"
@@ -121,7 +123,7 @@ MiDuplicationBrowser >> handleFragmentSelection: selectedFragments [
 	specModel highlightEntities: commonEntities"
 ]
 
-{ #category : #highlighting }
+{ #category : 'highlighting' }
 MiDuplicationBrowser >> highlightEntities: entities [
 
 	specModel highlightEntities: entities
@@ -129,7 +131,7 @@ MiDuplicationBrowser >> highlightEntities: entities [
 	
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiDuplicationBrowser >> initializeLayout [
 
 	self layout: (SpBoxLayout newTopToBottom
@@ -149,7 +151,7 @@ MiDuplicationBrowser >> initializeLayout [
 			 yourself)
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiDuplicationBrowser >> initializeListEntities [
 
 	lstEntities := self newList.
@@ -160,7 +162,7 @@ MiDuplicationBrowser >> initializeListEntities [
 		specModel highlightEntities: selection selectedItems ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiDuplicationBrowser >> initializeListReplicatedFragments [
 
 	lstReplicatedFragments := self newTree.
@@ -174,7 +176,7 @@ MiDuplicationBrowser >> initializeListReplicatedFragments [
 	lstReplicatedFragments whenSelectionChangedDo: [ :selection | self handleFragmentSelection: selection selectedItems ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiDuplicationBrowser >> initializePresenters [
 
 	super initializePresenters.
@@ -196,51 +198,51 @@ MiDuplicationBrowser >> initializePresenters [
 	self initializeLayout
 ]
 
-{ #category : #utilities }
+{ #category : 'utilities' }
 MiDuplicationBrowser >> list: collection1 hasSameElements: collection2 [
 	(collection1 size = collection2 size)
 		ifFalse: [ ^false ].
 	^collection1 allSatisfy: [ :elt | collection2 includes: elt ]
 ]
 
-{ #category : #'accessing - private tests' }
+{ #category : 'accessing - private tests' }
 MiDuplicationBrowser >> lstEntities [
 
 	^ lstEntities
 ]
 
-{ #category : #'accessing - private tests' }
+{ #category : 'accessing - private tests' }
 MiDuplicationBrowser >> lstReplicatedFragments [
 
 	^ lstReplicatedFragments 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiDuplicationBrowser >> miSelectedItem [
 
 	^ specModel miSelectedItem
 ]
 
-{ #category : #utilities }
+{ #category : 'utilities' }
 MiDuplicationBrowser >> newCodePage: replica [
 	^MiDuplicationBrowserPage forReplica: replica
 		
 ]
 
-{ #category : #'accessing - private tests' }
+{ #category : 'accessing - private tests' }
 MiDuplicationBrowser >> panCodes [
 
 	^ panCodes
 ]
 
-{ #category : #api }
+{ #category : 'api' }
 MiDuplicationBrowser >> resetDisplayedReplicas [
 
 	lstEntities unselectAll.
 	panCodes removeAll.
 ]
 
-{ #category : #api }
+{ #category : 'api' }
 MiDuplicationBrowser >> selectFragments: selectedFragments [
 
 	(self
@@ -251,7 +253,7 @@ MiDuplicationBrowser >> selectFragments: selectedFragments [
 	lstReplicatedFragments selectItems: selectedFragments
 ]
 
-{ #category : #api }
+{ #category : 'api' }
 MiDuplicationBrowser >> showEntities [
 	"displays list of entities in the left list"
 
@@ -260,7 +262,7 @@ MiDuplicationBrowser >> showEntities [
 	self updateStatusBar
 ]
 
-{ #category : #api }
+{ #category : 'api' }
 MiDuplicationBrowser >> showEntities: entities [
 	"displays list of entities in the left list"
 
@@ -269,7 +271,7 @@ MiDuplicationBrowser >> showEntities: entities [
 	self updateStatusBar
 ]
 
-{ #category : #api }
+{ #category : 'api' }
 MiDuplicationBrowser >> showReplicas: replicas [
 	 "a replica is an entity containing a clone
 	show the code of the replicas in right pane"
@@ -281,7 +283,7 @@ MiDuplicationBrowser >> showReplicas: replicas [
 	self updateStatusBar.
 ]
 
-{ #category : #api }
+{ #category : 'api' }
 MiDuplicationBrowser >> showReplicatedFragments: replicatedFragments [
 	"update middle list (of replicated fragments)"
 
@@ -292,7 +294,7 @@ MiDuplicationBrowser >> showReplicatedFragments: replicatedFragments [
 	self updateStatusBar.
 ]
 
-{ #category : #api }
+{ #category : 'api' }
 MiDuplicationBrowser >> showSelectedClones: replicas [
 	"show on the left list the entities belonging to selected replica(s)
 	 If the list is empty (no selected replicas) show all entities"
@@ -302,12 +304,12 @@ MiDuplicationBrowser >> showSelectedClones: replicas [
 		ifNotEmpty: [ lstEntities items: (replicas collect: #entity) ]
 ]
 
-{ #category : #'accessing - private tests' }
+{ #category : 'accessing - private tests' }
 MiDuplicationBrowser >> statusBarText [
 	^statusBar label
 ]
 
-{ #category : #utilities }
+{ #category : 'utilities' }
 MiDuplicationBrowser >> updateStatusBar [
 
 	^ String streamContents: [ :stream |
