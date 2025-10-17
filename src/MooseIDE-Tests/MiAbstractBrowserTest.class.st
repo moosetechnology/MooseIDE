@@ -149,7 +149,7 @@ MiAbstractBrowserTest >> testCanOpenOnEmptyBus [
 MiAbstractBrowserTest >> testCanOpenOnEmptyMooseGroup [
 
 	| newBrowser |
-	self bus globallySelect: MooseGroup new.
+	self application miPropagate: MooseGroup new.
 	self
 		shouldnt: [ 
 			newBrowser := self browserClass openForTests: self application.
@@ -161,7 +161,7 @@ MiAbstractBrowserTest >> testCanOpenOnEmptyMooseGroup [
 MiAbstractBrowserTest >> testCanOpenOnEmptyMooseModel [
 
 	| newBrowser |
-	self bus globallySelect: MooseModel new.
+	self application miPropagate: MooseModel new.
 	self
 		shouldnt: [ 
 			newBrowser := self browserClass openForTests: self application.
@@ -173,11 +173,11 @@ MiAbstractBrowserTest >> testCanOpenOnEmptyMooseModel [
 MiAbstractBrowserTest >> testCanOpenOnMooseEntity [
 
 	| newBrowser |
-	self bus globallySelect: MooseEntity new.
+	self application miPropagate: MooseEntity new.
 	self
-		shouldnt: [ 
-			newBrowser := self browserClass openForTests: self application.
-			newBrowser window close ]
+		shouldnt: [
+				newBrowser := self browserClass openForTests: self application.
+				newBrowser window close ]
 		raise: Error
 ]
 
@@ -185,12 +185,11 @@ MiAbstractBrowserTest >> testCanOpenOnMooseEntity [
 MiAbstractBrowserTest >> testCanOpenOnMooseGroup [
 
 	| newBrowser |
-	self bus globallySelect:
-		(MooseModel with: MooseEntity new) entities asMooseGroup.
+	self application miPropagate: (MooseModel with: MooseEntity new) entities asMooseGroup.
 	self
-		shouldnt: [ 
-			newBrowser := self browserClass openForTests: self application.
-			newBrowser window close ]
+		shouldnt: [
+				newBrowser := self browserClass openForTests: self application.
+				newBrowser window close ]
 		raise: Error
 ]
 
@@ -198,11 +197,11 @@ MiAbstractBrowserTest >> testCanOpenOnMooseGroup [
 MiAbstractBrowserTest >> testCanOpenOnMooseModel [
 
 	| newBrowser |
-	self bus globallySelect: (MooseModel with: MooseEntity new).
+	self application miPropagate: (MooseModel with: MooseEntity new).
 	self
-		shouldnt: [ 
-			newBrowser := self browserClass openForTests: self application.
-			newBrowser window close ]
+		shouldnt: [
+				newBrowser := self browserClass openForTests: self application.
+				newBrowser window close ]
 		raise: Error
 ]
 
@@ -210,11 +209,11 @@ MiAbstractBrowserTest >> testCanOpenOnMooseModel [
 MiAbstractBrowserTest >> testCanOpenOnNil [
 
 	| newBrowser |
-	self bus globallySelect: nil.
+	self application miPropagate: nil.
 	self
-		shouldnt: [ 
-			newBrowser := self browserClass openForTests: self application.
-			newBrowser window close ]
+		shouldnt: [
+				newBrowser := self browserClass openForTests: self application.
+				newBrowser window close ]
 		raise: Error
 ]
 
@@ -222,11 +221,11 @@ MiAbstractBrowserTest >> testCanOpenOnNil [
 MiAbstractBrowserTest >> testCanOpenOnObject [
 
 	| newBrowser |
-	self bus globallySelect: Object new.
+	self application miPropagate: Object new.
 	self
-		shouldnt: [ 
-			newBrowser := self browserClass openForTests: self application.
-			newBrowser window close ]
+		shouldnt: [
+				newBrowser := self browserClass openForTests: self application.
+				newBrowser window close ]
 		raise: Error
 ]
 
@@ -310,11 +309,11 @@ MiAbstractBrowserTest >> testFollowBusTriggersSelectEntity [
 
 	| propagatedEntity |
 	propagatedEntity := MooseEntity new.
-	
+
 	browser stub.
-	
-	self bus globallySelect: propagatedEntity.
-	
+
+	self application miPropagate: propagatedEntity.
+
 	browser followBus: self bus.
 	browser should receive receiveEntity: propagatedEntity
 ]
@@ -323,9 +322,9 @@ MiAbstractBrowserTest >> testFollowBusTriggersSelectEntity [
 MiAbstractBrowserTest >> testFollowEntity [
 
 	browser privateReceivingMode: MiFollowMode.
-	self mooseObjects do: [ :mooseObject | 
-		self bus globallySelect: mooseObject.
-		self assertFollowActionFor: mooseObject ]
+	self mooseObjects do: [ :mooseObject |
+			self application miPropagate: mooseObject.
+			self assertFollowActionFor: mooseObject ]
 ]
 
 { #category : 'tests - buses' }
@@ -366,9 +365,9 @@ MiAbstractBrowserTest >> testHelpHasSomeInformation [
 MiAbstractBrowserTest >> testHighlightEntity [
 
 	browser privateReceivingMode: MiHighlightMode.
-	self mooseObjects do: [ :mooseObject | 
-		self bus globallySelect: mooseObject.
-		self assertHighlightActionFor: mooseObject ]
+	self mooseObjects do: [ :mooseObject |
+			self application miPropagate: mooseObject.
+			self assertHighlightActionFor: mooseObject ]
 ]
 
 { #category : 'tests - tags' }

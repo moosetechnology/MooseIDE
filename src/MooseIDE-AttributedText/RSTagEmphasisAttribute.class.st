@@ -2,27 +2,28 @@
 TODO
 "
 Class {
-	#name : #RSTagEmphasisAttribute,
-	#superclass : #RSAbstractTextAttribute,
+	#name : 'RSTagEmphasisAttribute',
+	#superclass : 'RSAbstractTextAttribute',
 	#instVars : [
 		'color'
 	],
-	#category : #'MooseIDE-AttributedText'
+	#category : 'MooseIDE-AttributedText',
+	#package : 'MooseIDE-AttributedText'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 RSTagEmphasisAttribute >> color [
 
 	^ color
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 RSTagEmphasisAttribute >> color: anObject [
 
 	color := anObject
 ]
 
-{ #category : #rendering }
+{ #category : 'rendering' }
 RSTagEmphasisAttribute >> lineShapesFor: aShape startLine: startLine endLine: endLine [
 	| lines currentLine |
 	lines := OrderedCollection new.
@@ -43,7 +44,7 @@ RSTagEmphasisAttribute >> lineShapesFor: aShape startLine: startLine endLine: en
 	^ lines
 ]
 
-{ #category : #rendering }
+{ #category : 'rendering' }
 RSTagEmphasisAttribute >> newLine [
 	^ RSLine new
 		color: color;
@@ -51,23 +52,32 @@ RSTagEmphasisAttribute >> newLine [
 		yourself.
 ]
 
-{ #category : #rendering }
+{ #category : 'rendering' }
 RSTagEmphasisAttribute >> renderIn: aShape [
+
 	| startLine endLine dot lines |
 	startLine := self startLine: aShape.
 	endLine := self endLine: aShape.
-	dot := RSCircle  new
-		size: 9;
-		color: color;
-		translateTo: startLine point ;
-		yourself.
+	dot := RSCircle new
+		       size: 9;
+		       color: color;
+		       translateTo: startLine point;
+		       yourself.
 	aShape addShape: dot.
-	interactions keysAndValuesDo: [ :event : action | dot when: event do: action ].
+	interactions keysAndValuesDo: [ :event :action | dot when: event do: action for: self ].
 
 	lines := self lineShapesFor: aShape startLine: startLine endLine: endLine.
 	lines do: [ :lineShape |
-		dot
-			when: RSMouseEnter do: [ :evt | lineShape width: 3; signalUpdate ];
-			when: RSMouseLeave do: [ :evt | lineShape width: 1; signalUpdate ] ].
-	aShape addAll: lines.
+			dot
+				when: RSMouseEnter do: [ :evt |
+						lineShape
+							width: 3;
+							signalUpdate ]
+				for: self;
+				when: RSMouseLeave do: [ :evt |
+						lineShape
+							width: 1;
+							signalUpdate ]
+				for: self ].
+	aShape addAll: lines
 ]

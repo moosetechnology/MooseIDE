@@ -31,10 +31,9 @@ MiNoSelectedElementToPropagateException >> browser: anObject [
 
 { #category : 'handling' }
 MiNoSelectedElementToPropagateException >> defaultAction [
-
 	"The default action taken if the exception is signaled."
 
-	self inform: self browser class title , ': ' , self messageText
+	MiApplication current inform: self browser class title , ': ' , self messageText
 ]
 
 { #category : 'initialization' }

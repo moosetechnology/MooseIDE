@@ -23,11 +23,11 @@ MiAccumulatorBrowserTest >> mooseObjects [
 MiAccumulatorBrowserTest >> testCanOpenOnMooseEntity [
 
 	| newBrowser |
-	self bus globallySelect: (self anEntity: 'a').
+	self application miPropagate: (self anEntity: 'a').
 	self
-		shouldnt: [ 
-			newBrowser := self browserClass openForTests: self application.
-			newBrowser window close ]
+		shouldnt: [
+				newBrowser := self browserClass openForTests: self application.
+				newBrowser window close ]
 		raise: Error
 ]
 
@@ -63,11 +63,11 @@ MiAccumulatorBrowserTest >> testFollowBusTriggersSelectEntity [
 
 	| propagatedEntity |
 	propagatedEntity := self anEntity: 'a'.
-	
+
 	browser stub.
-	
-	self bus globallySelect: propagatedEntity.
-	
+
+	self application miPropagate: propagatedEntity.
+
 	browser followBus: self bus.
 	browser should receive receiveEntity: propagatedEntity
 ]

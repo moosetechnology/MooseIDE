@@ -2,22 +2,24 @@
 A query configuration presenter for the `FQScopeQuery`
 "
 Class {
-	#name : #MiScopeQueryPresenter,
-	#superclass : #MiQueryConfiguratorPresenter,
+	#name : 'MiScopeQueryPresenter',
+	#superclass : 'MiQueryConfiguratorPresenter',
 	#instVars : [
 		'scopesDropList',
 		'directionsDropList',
 		'recursiveCheckbox'
 	],
-	#category : #'MooseIDE-QueriesBrowser-Configuration presenters'
+	#category : 'MooseIDE-QueriesBrowser-Configuration presenters',
+	#package : 'MooseIDE-QueriesBrowser',
+	#tag : 'Configuration presenters'
 }
 
-{ #category : #specs }
+{ #category : 'specs' }
 MiScopeQueryPresenter class >> title [
 	^ 'Scope Query'
 ]
 
-{ #category : #'api - actions' }
+{ #category : 'api - actions' }
 MiScopeQueryPresenter >> configureFor: aQuery [
 
 	| queryScope |
@@ -28,14 +30,14 @@ MiScopeQueryPresenter >> configureFor: aQuery [
 	scopesDropList selectItem: queryScope
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiScopeQueryPresenter >> configureQuery: scope [
 
 	scope ifNil: [ ^ self ].
 	self query scope: scope
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiScopeQueryPresenter >> initializeDirectionsDropList [
 
 	directionsDropList := self newDropList.
@@ -49,7 +51,7 @@ MiScopeQueryPresenter >> initializeDirectionsDropList [
 			self notifyQueryChanged ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiScopeQueryPresenter >> initializePresenters [
 
 	scopesDropList := self newDropList.
@@ -58,7 +60,7 @@ MiScopeQueryPresenter >> initializePresenters [
 	self initializeLayout
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiScopeQueryPresenter >> initializeRecursiveCheckbox [
 
 	recursiveCheckbox := self newCheckBox
@@ -72,7 +74,7 @@ MiScopeQueryPresenter >> initializeRecursiveCheckbox [
 		                     yourself
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 MiScopeQueryPresenter >> newLayout [
 
 	| padding |
@@ -90,7 +92,7 @@ MiScopeQueryPresenter >> newLayout [
 		  yourself
 ]
 
-{ #category : #'widgets configuration' }
+{ #category : 'widgets configuration' }
 MiScopeQueryPresenter >> scopesDropListForScopes: scopes [
 
 	^ self newDropList
@@ -102,7 +104,7 @@ MiScopeQueryPresenter >> scopesDropListForScopes: scopes [
 			  self computeQueryAction: scope ]
 ]
 
-{ #category : #'widgets configuration' }
+{ #category : 'widgets configuration' }
 MiScopeQueryPresenter >> setScopesDropList [
 
 	scopesDropList := self query availableScopes
@@ -111,7 +113,7 @@ MiScopeQueryPresenter >> setScopesDropList [
 		                  self scopesDropListForScopes: scopes ]
 ]
 
-{ #category : #update }
+{ #category : 'update' }
 MiScopeQueryPresenter >> updateAccordingToDirection [
 
 	self setScopesDropList.

@@ -2,21 +2,23 @@
 This is the negation query. It receives one query and negates it. Obviously, can only negate queries that can be negated.
 "
 Class {
-	#name : #MiNegationQueryPresenter,
-	#superclass : #MiQueryConfiguratorPresenter,
+	#name : 'MiNegationQueryPresenter',
+	#superclass : 'MiQueryConfiguratorPresenter',
 	#instVars : [
 		'subqueryDropListPresenter'
 	],
-	#category : #'MooseIDE-QueriesBrowser-Configuration presenters'
+	#category : 'MooseIDE-QueriesBrowser-Configuration presenters',
+	#package : 'MooseIDE-QueriesBrowser',
+	#tag : 'Configuration presenters'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiNegationQueryPresenter class >> dropListWidth [
 
 	^ 57
 ]
 
-{ #category : #'api - actions' }
+{ #category : 'api - actions' }
 MiNegationQueryPresenter >> configureFor: aQuery [
 
 	subqueryDropListPresenter selectItem:
@@ -24,7 +26,7 @@ MiNegationQueryPresenter >> configureFor: aQuery [
 	query := aQuery
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiNegationQueryPresenter >> configureQuery: selectedPresenter [
 
 	"Sometimes the SpDropListPresenter>>#whenSelectedItemChangedDo: in spec is triggered even though no item were selected. When this happends the selected item is nil. So to avoid crashin we check in an if that the item is not nil. This is an spec problem."
@@ -35,21 +37,21 @@ MiNegationQueryPresenter >> configureQuery: selectedPresenter [
 	query runOn: selectedPresenter query parent result
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiNegationQueryPresenter >> initialize [
 
 	super initialize.
 	owner queriesListPresenter announcer when: QueriesListChangedAnnouncement do: [ self queryPresentersListChanged ] for: self
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiNegationQueryPresenter >> initializePresenters [
 
 	self initializeQueryDropListPresenter.
 	self initializeLayout
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiNegationQueryPresenter >> initializeQueryDropListPresenter [
 
 	subqueryDropListPresenter := self newDropList.
@@ -60,13 +62,13 @@ MiNegationQueryPresenter >> initializeQueryDropListPresenter [
 		whenSelectedItemChangedDo: [ :item | self computeQueryAction: item ]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiNegationQueryPresenter >> isQueryUsed: aQuery [
 
 	^ subqueryDropListPresenter selectedItem = aQuery
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 MiNegationQueryPresenter >> newLayout [
 
 	^ SpBoxLayout newLeftToRight
@@ -74,7 +76,7 @@ MiNegationQueryPresenter >> newLayout [
 		  yourself
 ]
 
-{ #category : #'api - actions' }
+{ #category : 'api - actions' }
 MiNegationQueryPresenter >> queryPresentersListChanged [
 
 	"Since the list of available queries of the MiQueryBuilder changed, we need to update the items on the drop list. We do not want to have deleted queries on the list or we want to add the new added query presenter."

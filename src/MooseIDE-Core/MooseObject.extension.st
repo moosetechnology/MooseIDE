@@ -21,11 +21,11 @@ MooseObject >> miInspect [
 { #category : '*MooseIDE-Core' }
 MooseObject >> miPropagate [
 
-	MiApplication current defaultBus globallySelect: self
+	MiApplication current miPropagate: self
 ]
 
 { #category : '*MooseIDE-Core' }
 MooseObject >> miPropagateOn: buses [
 
-	buses do: [ :bus | bus globallySelect: self ]
+	MiApplication current miPropagate: self on: buses
 ]

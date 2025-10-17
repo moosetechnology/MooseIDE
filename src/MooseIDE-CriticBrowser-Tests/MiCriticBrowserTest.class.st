@@ -1,6 +1,6 @@
 Class {
-	#name : #MiCriticBrowserTest,
-	#superclass : #MiAbstractBrowserTest,
+	#name : 'MiCriticBrowserTest',
+	#superclass : 'MiAbstractBrowserTest',
 	#instVars : [
 		'stubRule',
 		'deadRule',
@@ -10,10 +10,11 @@ Class {
 		'rootContext',
 		'childContext'
 	],
-	#category : #'MooseIDE-CriticBrowser-Tests'
+	#category : 'MooseIDE-CriticBrowser-Tests',
+	#package : 'MooseIDE-CriticBrowser-Tests'
 }
 
-{ #category : #asserting }
+{ #category : 'asserting' }
 MiCriticBrowserTest >> assertFollowActionFor: aMooseObject [
 
 	aMooseObject isCollection
@@ -30,30 +31,30 @@ MiCriticBrowserTest >> assertFollowActionFor: aMooseObject [
 				equals: aMooseObject ]
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiCriticBrowserTest >> browserClass [ 
 	^ MiCriticBrowser 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiCriticBrowserTest >> browserEntitiesListTree [
 
 	^ browser presenterAt: #entitiesList
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiCriticBrowserTest >> browserRulesResultTree [
 
 	^ browser presenterAt: #rulesResult
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiCriticBrowserTest >> browserRulesTree [
 
 	^ browser presenterAt: #rules
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiCriticBrowserTest >> createRulesThenImport [
 
 	| writeStream fileReference readStream |
@@ -75,7 +76,7 @@ MiCriticBrowserTest >> createRulesThenImport [
 	readStream close
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiCriticBrowserTest >> initializeContexts [
 
 	rootContext := browser specModel rootContext.
@@ -84,7 +85,7 @@ MiCriticBrowserTest >> initializeContexts [
 		                on: '[ :col | col allClasses ]'
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiCriticBrowserTest >> initializeEntities [
 
 	stubEntity := FamixStMethod named: 'test1'.
@@ -93,7 +94,7 @@ MiCriticBrowserTest >> initializeEntities [
 	basicEntity := FamixStMethod named: 'test2'
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiCriticBrowserTest >> initializeRules [
 
 	stubRule := FamixCBCondition
@@ -116,14 +117,14 @@ MiCriticBrowserTest >> initializeRules [
 		(FQTypeQuery types: { FamixStMethod })
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiCriticBrowserTest >> receiveEntityToSelect [
 
 	super receiveEntityToSelect.
 	self browserEntitiesListTree selectPath: { 1 }
 ]
 
-{ #category : #removing }
+{ #category : 'removing' }
 MiCriticBrowserTest >> removeAllFromRootContext [
 
 	[ browser specModel rootContext children isNotEmpty ] whileTrue: [
@@ -132,7 +133,7 @@ MiCriticBrowserTest >> removeAllFromRootContext [
 				fromContext: browser specModel rootContext ]
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiCriticBrowserTest >> setUp [
 
 	super setUp.
@@ -142,7 +143,7 @@ MiCriticBrowserTest >> setUp [
 	self initializeEntities
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiCriticBrowserTest >> testChildrenFor [
 
 	| entity |
@@ -162,7 +163,7 @@ MiCriticBrowserTest >> testChildrenFor [
 		equals: entity
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiCriticBrowserTest >> testChildrenForContext [
 
 	browser specModel rootContext addChild: stubRule.
@@ -176,7 +177,7 @@ MiCriticBrowserTest >> testChildrenForContext [
 		equals: stubRule
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiCriticBrowserTest >> testDeleteSelectedRule [
 
 	rootContext
@@ -189,7 +190,7 @@ MiCriticBrowserTest >> testDeleteSelectedRule [
 	self assert: browser specModel rootContext children size equals: 1
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiCriticBrowserTest >> testExportRulesToStream [
 
 	| fileReference writeStream readStream stonReader cont cond1 cond2 cond3 hierarchy |
@@ -236,28 +237,35 @@ MiCriticBrowserTest >> testExportRulesToStream [
 	stonReader close
 ]
 
-{ #category : #'tests - actions' }
+{ #category : 'tests - actions' }
 MiCriticBrowserTest >> testFollowEntity [
+
 	| mooseObjects entity1 entity2 entity3 |
-	entity1 := FamixStClass new. entity1 name: 'Test'.
-	entity2 := FamixJavaMethod new. entity2 name: 'test'.
-	entity3 := FamixStPackage new. entity3 := { entity3 name: 'Test' } asMooseGroup.
-	mooseObjects := { entity1. entity2. entity3 } asMooseGroup. 
-	
+	entity1 := FamixStClass new.
+	entity1 name: 'Test'.
+	entity2 := FamixJavaMethod new.
+	entity2 name: 'test'.
+	entity3 := FamixStPackage new.
+	entity3 := { (entity3 name: 'Test') } asMooseGroup.
+	mooseObjects := {
+		                entity1.
+		                entity2.
+		                entity3 } asMooseGroup.
+
 	browser privateReceivingMode: MiFollowMode.
-	mooseObjects do: [ :mooseObject | 
-		self bus globallySelect: mooseObject.
-		self assertFollowActionFor: mooseObject ]
+	mooseObjects do: [ :mooseObject |
+			self application miPropagate: mooseObject.
+			self assertFollowActionFor: mooseObject ]
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiCriticBrowserTest >> testImportRulesFromStream [
 
 	self createRulesThenImport.
 	self assert: browser specModel rootContext children size equals: 3
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiCriticBrowserTest >> testImportedRulesAreCorrectlyDisplayed [
 
 	self createRulesThenImport.
@@ -268,7 +276,7 @@ MiCriticBrowserTest >> testImportedRulesAreCorrectlyDisplayed [
 		equals: '[ :entity | entity isStub ]'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiCriticBrowserTest >> testMiSelectedItem [
 
 	| entity entityStub |
@@ -293,13 +301,13 @@ MiCriticBrowserTest >> testMiSelectedItem [
 		equals: entityStub
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiCriticBrowserTest >> testModelStartsEmpty [
 
 	self assert: browser specModel entities isEmpty
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiCriticBrowserTest >> testMoveCondition [
 
 	| newContext |
@@ -317,7 +325,7 @@ MiCriticBrowserTest >> testMoveCondition [
 	self assert: stubRule parent equals: newContext
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiCriticBrowserTest >> testMoveContext [
 
 	| newContext |
@@ -335,7 +343,7 @@ MiCriticBrowserTest >> testMoveContext [
 	self assert: childContext parent equals: newContext
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiCriticBrowserTest >> testRunButtonAction [
 
 	browser specModel setEntities: { stubEntity } asMooseGroup.
@@ -347,7 +355,7 @@ MiCriticBrowserTest >> testRunButtonAction [
 	self assert: browser specModel violations size equals: 1
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiCriticBrowserTest >> testSelectedRules [
 
 	| classEntity methodsContext |
@@ -394,7 +402,7 @@ MiCriticBrowserTest >> testSelectedRules [
 				basicEntity }
 ]
 
-{ #category : #'tests - tags' }
+{ #category : 'tests - tags' }
 MiCriticBrowserTest >> testSelectedTagSetAndGet [
 	| model entity tag |
 	model := FamixRepTestModel new.
@@ -406,7 +414,7 @@ MiCriticBrowserTest >> testSelectedTagSetAndGet [
 	self assert: browser selectedTag equals: tag
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiCriticBrowserTest >> testUnselectPrintsCompleteOutput [
 
 	browser specModel setEntities: {
@@ -423,7 +431,7 @@ MiCriticBrowserTest >> testUnselectPrintsCompleteOutput [
 	self assert: self browserRulesResultTree roots flatten size equals: 3
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiCriticBrowserTest >> testUpdateEntitiesList [
 
 	browser specModel setEntities: stubEntity.
@@ -433,7 +441,7 @@ MiCriticBrowserTest >> testUpdateEntitiesList [
 		equals: 1
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiCriticBrowserTest >> testUpdateResultList [
 
 	browser updateResultList:

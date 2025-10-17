@@ -1,6 +1,6 @@
-Extension { #name : #MiShortcutsCategory }
+Extension { #name : 'MiShortcutsCategory' }
 
-{ #category : #'*MooseIDE-QueriesBrowser' }
+{ #category : '*MooseIDE-QueriesBrowser' }
 MiShortcutsCategory >> openQueriesBrowser [
 
 	<shortcut>

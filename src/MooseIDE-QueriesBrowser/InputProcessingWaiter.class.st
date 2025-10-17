@@ -3,15 +3,17 @@ I am a class that has the reponsibility of waiting when an user types someting i
 I wait a certain amount of time before executing the action.
 "
 Class {
-	#name : #InputProcessingWaiter,
-	#superclass : #Object,
+	#name : 'InputProcessingWaiter',
+	#superclass : 'Object',
 	#instVars : [
 		'process'
 	],
-	#category : #'MooseIDE-QueriesBrowser-Time delayer'
+	#category : 'MooseIDE-QueriesBrowser-Time delayer',
+	#package : 'MooseIDE-QueriesBrowser',
+	#tag : 'Time delayer'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 InputProcessingWaiter class >> delayBeforeProcessing [
 
 	"Put a delay so the user has time to write a long string or a long number before the spinner appears. Sometimes the user needs to write a long number and for not computing each digit we should wait"
@@ -19,7 +21,7 @@ InputProcessingWaiter class >> delayBeforeProcessing [
 	^ 600 milliSeconds
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 InputProcessingWaiter >> waitAndRun: aBlock [
 
 	| past |

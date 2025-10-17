@@ -274,6 +274,22 @@ MiApplication >> itemsFor: aClass [
 	
 ]
 
+{ #category : 'as yet unclassified' }
+MiApplication >> miPropagate: anObject [
+
+	anObject isMooseObject
+		ifTrue: [ self defaultBus globallySelect: anObject ]
+		ifFalse: [ self inform: 'No Moose object to propagate.' ]
+]
+
+{ #category : 'as yet unclassified' }
+MiApplication >> miPropagate: anObject on: aCollectionOfBuses [
+
+	anObject isMooseObject
+		ifTrue: [ aCollectionOfBuses do: [ :bus | bus globallySelect: anObject ] ]
+		ifFalse: [ self inform: 'No Moose object to propagate.' ]
+]
+
 { #category : 'style' }
 MiApplication >> mooseStyleSheet [
 

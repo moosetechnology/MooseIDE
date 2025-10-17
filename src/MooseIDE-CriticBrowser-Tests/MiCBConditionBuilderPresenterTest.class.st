@@ -2,12 +2,13 @@
 A MiCriticBrowserQueryMakerPresenterTest is a test class for testing the behavior of MiCriticBrowserQueryMakerPresenter
 "
 Class {
-	#name : #MiCBConditionBuilderPresenterTest,
-	#superclass : #MiCBRuleComponentBuilderPresenterTest,
-	#category : #'MooseIDE-CriticBrowser-Tests'
+	#name : 'MiCBConditionBuilderPresenterTest',
+	#superclass : 'MiCBRuleComponentBuilderPresenterTest',
+	#category : 'MooseIDE-CriticBrowser-Tests',
+	#package : 'MooseIDE-CriticBrowser-Tests'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 MiCBConditionBuilderPresenterTest >> conditionWithQuery [
 
 	^ FamixCBCondition
@@ -16,7 +17,7 @@ MiCBConditionBuilderPresenterTest >> conditionWithQuery [
 		  summary: 'autre règle utilisée pour un test'
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiCBConditionBuilderPresenterTest >> otherComponent [
 
 	^ FamixCBCondition
@@ -25,7 +26,7 @@ MiCBConditionBuilderPresenterTest >> otherComponent [
 		  summary: 'Condition modified by tests'
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiCBConditionBuilderPresenterTest >> ruleComponentToEdit [
 
 	^ FamixCBCondition
@@ -34,7 +35,7 @@ MiCBConditionBuilderPresenterTest >> ruleComponentToEdit [
 		  summary: 'Condition used in tests'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiCBConditionBuilderPresenterTest >> testAddNewQueryCondition [
 
 	| query |
@@ -56,7 +57,7 @@ MiCBConditionBuilderPresenterTest >> testAddNewQueryCondition [
 		equals: 'test'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiCBConditionBuilderPresenterTest >> testFillWithQueryCondtion [
 
 	| queriesBrowserRule |
@@ -75,7 +76,7 @@ MiCBConditionBuilderPresenterTest >> testFillWithQueryCondtion [
 		equals: queriesBrowserRule summary
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiCBConditionBuilderPresenterTest >> toolClass [
 
 	^ MiCBConditionBuilderPresenter

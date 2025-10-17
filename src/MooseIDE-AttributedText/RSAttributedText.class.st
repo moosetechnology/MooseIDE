@@ -2,21 +2,22 @@
 TODO
 "
 Class {
-	#name : #RSAttributedText,
-	#superclass : #RSAbstractContainerBuilder,
+	#name : 'RSAttributedText',
+	#superclass : 'RSAbstractContainerBuilder',
 	#instVars : [
 		'text',
 		'attributes'
 	],
-	#category : #'MooseIDE-AttributedText'
+	#category : 'MooseIDE-AttributedText',
+	#package : 'MooseIDE-AttributedText'
 }
 
-{ #category : #adding }
+{ #category : 'adding' }
 RSAttributedText >> addAttribute: attribute [
 	attributes add: attribute.
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 RSAttributedText >> addAttribute: attribute from: from to: to [
 	attribute
 		from: from;
@@ -24,7 +25,7 @@ RSAttributedText >> addAttribute: attribute from: from to: to [
 	self addAttribute: attribute.
 ]
 
-{ #category : #hooks }
+{ #category : 'hooks' }
 RSAttributedText >> canvasController [
 
 	| c |
@@ -40,18 +41,18 @@ RSAttributedText >> canvasController [
 	^ c
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 RSAttributedText >> initialize [
 	super initialize.
 	attributes := OrderedCollection new.
 ]
 
-{ #category : #hooks }
+{ #category : 'hooks' }
 RSAttributedText >> renderAttributes: comp [
 	attributes do: [ :att | att renderIn: comp ].
 ]
 
-{ #category : #hooks }
+{ #category : 'hooks' }
 RSAttributedText >> renderIn: aCanvas [
 	| theme b comp |
 	theme := Smalltalk ui theme.
@@ -68,12 +69,12 @@ RSAttributedText >> renderIn: aCanvas [
 	
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 RSAttributedText >> text [
 	^ text
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 RSAttributedText >> text: aString [
 	text := aString ,' '
 ]

@@ -235,11 +235,13 @@ MiTagBrowser >> newTagSelected [
 { #category : 'initialization' }
 MiTagBrowser >> preparePageFor: aTag [
 
-	aTag isIntent ifTrue: [ 
-		self layout replace: descriptionPage with: dynamicTagDescriptionPage.
-		descriptionPage := dynamicTagDescriptionPage.
-		^ self ].
+	aTag isIntent ifTrue: [
+			self layout replace: descriptionPage with: dynamicTagDescriptionPage.
+			descriptionPage := dynamicTagDescriptionPage.
+			^ self ].
+
 	self layout replace: descriptionPage with: staticTagDescriptionPage.
+
 	descriptionPage := staticTagDescriptionPage
 ]
 

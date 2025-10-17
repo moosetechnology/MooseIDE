@@ -1,12 +1,12 @@
-Extension { #name : #FQStringQuery }
+Extension { #name : 'FQStringQuery' }
 
-{ #category : #'*MooseIDE-QueriesBrowser' }
+{ #category : '*MooseIDE-QueriesBrowser' }
 FQStringQuery class >> canBeConfigured [
 
 	^ true
 ]
 
-{ #category : #'*MooseIDE-QueriesBrowser' }
+{ #category : '*MooseIDE-QueriesBrowser' }
 FQStringQuery class >> miPresenterClass [
 
 	^ MiStringQueryPresenter

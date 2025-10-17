@@ -111,35 +111,23 @@ MiQueriesBrowserTest >> testClearQueries [
 MiQueriesBrowserTest >> testFollowEntity [
 
 	| previousResult newResult |
-	self queriesListPresenter addNewFirstLevelQuery.
-	"Modify the query to not have an empty result"
-	self queriesListPresenter queryItemsPresenters first 
-		updateQueryConfiguratorPresenterFor: FQBooleanQuery.
-	self queriesListPresenter queryItemsPresenters first
-		queryConfiguratorPresenter query property: #isDead.
+	self queriesListPresenter addNewFirstLevelQuery. "Modify the query to not have an empty result"
+	self queriesListPresenter queryItemsPresenters first updateQueryConfiguratorPresenterFor: FQBooleanQuery.
+	self queriesListPresenter queryItemsPresenters first queryConfiguratorPresenter query property: #isDead.
 
-	self queriesListPresenter addNewChildQueryAction:
-		self queriesListPresenter queryItemsPresenters first query.
-	"Modify the query to not have an empty result"
-	self queriesListPresenter queryItemsPresenters second 
-		updateQueryConfiguratorPresenterFor: FQStringQuery.
-	self queriesListPresenter queryItemsPresenters second
-		queryConfiguratorPresenter query
+	self queriesListPresenter addNewChildQueryAction: self queriesListPresenter queryItemsPresenters first query. "Modify the query to not have an empty result"
+	self queriesListPresenter queryItemsPresenters second updateQueryConfiguratorPresenterFor: FQStringQuery.
+	self queriesListPresenter queryItemsPresenters second queryConfiguratorPresenter query
 		property: #name;
 		comparator: #includesSubstring:;
 		valueToCompare: ''.
 
-	previousResult := (self queriesListPresenter queryItemsPresenters 
-		                   collect: #query) collect: #result.
-	self bus globallySelect: helper methods.
-	newResult := (self queriesListPresenter queryItemsPresenters 
-		              collect: #query) collect: #result.
-	"When a new entity is received from the bus we need to keep the same queries but
+	previousResult := (self queriesListPresenter queryItemsPresenters collect: #query) collect: #result.
+	self application miPropagate: helper methods.
+	newResult := (self queriesListPresenter queryItemsPresenters collect: #query) collect: #result. "When a new entity is received from the bus we need to keep the same queries but
 	update the result of the queries with the new entity"
 	self assert: previousResult size equals: newResult size.
-	previousResult
-		with: newResult
-		do: [ :a :b | self denyCollection: a hasSameElements: b ]
+	previousResult with: newResult do: [ :a :b | self denyCollection: a hasSameElements: b ]
 ]
 
 { #category : 'tests' }

@@ -6,8 +6,8 @@ Each query is an instance of `MiNewQueryCreationPresenter`.
 I manage all the logic related to showing all the queries. Also, I update myself and my parentBrowser when a query is added or removed.
 "
 Class {
-	#name : #MiQueriesListPresenter,
-	#superclass : #MiPresenter,
+	#name : 'MiQueriesListPresenter',
+	#superclass : 'MiPresenter',
 	#instVars : [
 		'componentListPresenter',
 		'queryCounter',
@@ -17,10 +17,12 @@ Class {
 		'queryToolBar',
 		'specModel'
 	],
-	#category : #'MooseIDE-QueriesBrowser-Main presenters'
+	#category : 'MooseIDE-QueriesBrowser-Main presenters',
+	#package : 'MooseIDE-QueriesBrowser',
+	#tag : 'Main presenters'
 }
 
-{ #category : #'api - actions' }
+{ #category : 'api - actions' }
 MiQueriesListPresenter >> addNewChildQueryAction: query [
 
 	| newPresenter indexToInsert |
@@ -32,14 +34,14 @@ MiQueriesListPresenter >> addNewChildQueryAction: query [
 	self updateComponentList
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiQueriesListPresenter >> addNewFirstLevelQuery [
 
 	queryItemsPresenters add: self newFirstLevelQueryPresenter.
 	self updateComponentList
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiQueriesListPresenter >> addNewManualQuery [
 	
 	| newPresenter |
@@ -54,14 +56,14 @@ MiQueriesListPresenter >> addNewManualQuery [
 	self updateComponentList
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiQueriesListPresenter >> availableQueryTypes [
 
 	^ FQAbstractQuery allSubclasses select: [ :each | 
 		  each isAvailableForQueriesSize: queryItemsPresenters size ]
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiQueriesListPresenter >> constructQueries: acollectionsOfQueries [
 	"Put the root query as the parent for the first level unary queries"
 
@@ -81,7 +83,7 @@ MiQueriesListPresenter >> constructQueries: acollectionsOfQueries [
 	self updateComponentList
 ]
 
-{ #category : #'api - actions' }
+{ #category : 'api - actions' }
 MiQueriesListPresenter >> createNewQueryPresenter: query [
 
 	| newPresenter |
@@ -94,20 +96,20 @@ MiQueriesListPresenter >> createNewQueryPresenter: query [
 	^ newPresenter
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiQueriesListPresenter >> famixQueries [
 
 	^ (queryItemsPresenters collect: #queryConfiguratorPresenter) 
 		  collect: #query
 ]
 
-{ #category : #'api - actions' }
+{ #category : 'api - actions' }
 MiQueriesListPresenter >> findPresenterForQuery: aQuery [
 
 	^ queryItemsPresenters detect: [ :each | each query = aQuery ]
 ]
 
-{ #category : #'api - actions' }
+{ #category : 'api - actions' }
 MiQueriesListPresenter >> followNewEntity [
 
 	queryItemsPresenters
@@ -118,14 +120,14 @@ MiQueriesListPresenter >> followNewEntity [
 					ifTrue: [ each query parent: specModel rootQuery ] ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiQueriesListPresenter >> initialize [
 
 	queryCounter := 1.
 	super initialize
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiQueriesListPresenter >> initializeComponentListPresenter [
 
 	componentListPresenter := self newComponentList.
@@ -136,7 +138,7 @@ MiQueriesListPresenter >> initializeComponentListPresenter [
 			self queryChangedUpdate: selectedPresenter query ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiQueriesListPresenter >> initializeLayout [
 
 	self layout: (SpBoxLayout newTopToBottom
@@ -146,7 +148,7 @@ MiQueriesListPresenter >> initializeLayout [
 			 yourself)
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiQueriesListPresenter >> initializePresenters [
 
 	queryItemsPresenters := OrderedCollection empty.
@@ -155,13 +157,13 @@ MiQueriesListPresenter >> initializePresenters [
 	self initializeLayout
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiQueriesListPresenter >> initializeQueryToolbar [
 
 	queryToolBar := self instantiate: MiQueriesBrowserToolbar on: self
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiQueriesListPresenter >> isQueryUsed: aQuery [
 
 	^ (queryItemsPresenters collect: #queryConfiguratorPresenter)
@@ -169,26 +171,26 @@ MiQueriesListPresenter >> isQueryUsed: aQuery [
 				queryPresenter isQueryUsed: aQuery ]
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiQueriesListPresenter >> newFirstLevelQueryPresenter [
 	"This is a query that is a direct child of a FQRootQuery"
 
 	^ self createNewQueryPresenter: specModel rootQuery
 ]
 
-{ #category : #'api - actions' }
+{ #category : 'api - actions' }
 MiQueriesListPresenter >> queryChangedUpdate: query [
 
 	owner selectQuery: query
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiQueriesListPresenter >> queryItemsPresenters [
 
 	^ queryItemsPresenters
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiQueriesListPresenter >> reinitializeQueryPresenters [
 
 	queryCounter := 1.
@@ -198,7 +200,7 @@ MiQueriesListPresenter >> reinitializeQueryPresenters [
 	self owner clearQueries
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiQueriesListPresenter >> removePresentersAssociatedWith: nodeQuery [
 
 	nodeQuery children do: [ :childQuery | 
@@ -209,7 +211,7 @@ MiQueriesListPresenter >> removePresentersAssociatedWith: nodeQuery [
 		self removePresentersAssociatedWith: childQuery ]
 ]
 
-{ #category : #'api - actions' }
+{ #category : 'api - actions' }
 MiQueriesListPresenter >> removeQueryAction: aQueryCreationPresenter [
 
 	specModel removeQuery: aQueryCreationPresenter query.
@@ -218,20 +220,20 @@ MiQueriesListPresenter >> removeQueryAction: aQueryCreationPresenter [
 	self updateComponentList
 ]
 
-{ #category : #'accessing - model' }
+{ #category : 'accessing - model' }
 MiQueriesListPresenter >> setModelBeforeInitialization: aSpecModel [
 
 	specModel := aSpecModel 
 ]
 
-{ #category : #update }
+{ #category : 'update' }
 MiQueriesListPresenter >> updateComponentList [
 
 	self updateSubqueriesListPresenter.
 	componentListPresenter presenters: queryItemsPresenters
 ]
 
-{ #category : #update }
+{ #category : 'update' }
 MiQueriesListPresenter >> updateSubqueriesListPresenter [
 
 	self announcer announce: QueriesListChangedAnnouncement new

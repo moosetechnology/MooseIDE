@@ -18,7 +18,7 @@ MiBusLogBrowserTest >> browserClass [
 { #category : 'running' }
 MiBusLogBrowserTest >> receiveEntityToSelect [
 
-	self bus globallySelect: entityToSelect
+	self application miPropagate: entityToSelect
 ]
 
 { #category : 'running' }

@@ -1,6 +1,6 @@
 Class {
-	#name : #MiQueryResultPresenter,
-	#superclass : #MiPresenter,
+	#name : 'MiQueryResultPresenter',
+	#superclass : 'MiPresenter',
 	#instVars : [
 		'queryResult',
 		'menu',
@@ -8,31 +8,32 @@ Class {
 		'propagateButton',
 		'descriptionButton'
 	],
-	#category : #'MooseIDE-QueriesDashboard-Browser'
+	#category : 'MooseIDE-QueriesDashboard-Browser',
+	#package : 'MooseIDE-QueriesDashboard',
+	#tag : 'Browser'
 }
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiQueryResultPresenter >> buildButtons [
 
 	| buttons comp |
 	menu canvas color: Color transparent.
 	descriptionButton canvas color: Color transparent.
 	descriptionButton canvas add: (RSBitmap new
-			 form: (Smalltalk ui icons iconNamed: #comments);
+			 form: (self iconNamed: #comments);
 			 model: 'Description';
 			 when: RSMouseClick do: [ self displayDescription ] for: self;
 			 @ self popupInteraction;
 			 yourself).
+
 	inspectButton := RSBitmap new
-		                 form:
-			                 (Smalltalk ui icons iconNamed: #glamorousInspect);
+		                 form: (self iconNamed: #glamorousInspect);
 		                 size: 16;
 		                 model: 'Inspect result';
 		                 yourself.
-	inspectButton
-		when: RSMouseClick
-		do: [ MiInspectorBrowser inspect: queryResult result asMooseGroup ]
-		for: self.
+
+	inspectButton when: RSMouseClick do: [ MiInspectorBrowser inspect: queryResult result asMooseGroup ] for: self.
+
 	propagateButton := RSBitmap new
 		                   form: (self iconNamed: #mooseOutgoing);
 		                   model: 'Propagate result';
@@ -40,26 +41,23 @@ MiQueryResultPresenter >> buildButtons [
 		                   yourself.
 	propagateButton
 		when: RSMouseClick
-		do: [ 
-			self owner buses do: [ :bus | 
-				bus globallySelect: queryResult result asMooseGroup ] ]
+		do: [ self application miPropagate: queryResult result asMooseGroup on: self owner buses ]
 		for: self.
-	buttons := RSGroup withAll: { 
+
+	buttons := RSGroup withAll: {
 			           inspectButton.
 			           propagateButton }.
 
-	queryResult browsers ifNotNil: [ :browsers | 
-		browsers do: [ :b | 
-			| newButton |
-			newButton := RSBitmap new
-				             form: (self iconNamed: #mooseFame);
-				             size: 16;
-				             model: 'Open with ' , b title;
-				             when: RSMouseClick
-				             do: [ b openOn: queryResult result asMooseGroup ]
-				             for: self;
-				             yourself.
-			buttons add: newButton ] ].
+	queryResult browsers ifNotNil: [ :browsers |
+			browsers do: [ :b |
+					| newButton |
+					newButton := RSBitmap new
+						             form: (self iconNamed: #mooseFame);
+						             size: 16;
+						             model: 'Open with ' , b title;
+						             when: RSMouseClick do: [ b openOn: queryResult result asMooseGroup ] for: self;
+						             yourself.
+					buttons add: newButton ] ].
 
 	queryResult description ifNotNil: [ :d | descriptionButton show ].
 	RSHorizontalLineLayout new
@@ -77,7 +75,7 @@ MiQueryResultPresenter >> buildButtons [
 		translateTopLeftTo: 0 @ 0
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiQueryResultPresenter >> createDescriptionFor: aString [
 
 	^ aString asTextMorph
@@ -89,7 +87,7 @@ MiQueryResultPresenter >> createDescriptionFor: aString [
 		  yourself
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiQueryResultPresenter >> displayDescription [
 
 	self newPopover
@@ -99,7 +97,7 @@ MiQueryResultPresenter >> displayDescription [
 		popup
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiQueryResultPresenter >> initializeLayout [
 
 	| sep |
@@ -125,7 +123,7 @@ MiQueryResultPresenter >> initializeLayout [
 			 yourself)
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiQueryResultPresenter >> initializePresenters [
 
 	menu := self newRoassal.
@@ -137,7 +135,7 @@ MiQueryResultPresenter >> initializePresenters [
 	self initializeLayout
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiQueryResultPresenter >> popupInteraction [
 
 	^ RSMorphicPopupInteraction new
@@ -145,7 +143,7 @@ MiQueryResultPresenter >> popupInteraction [
 		  yourself
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiQueryResultPresenter >> setModelBeforeInitialization: aQueryResult [
 
 	queryResult := aQueryResult

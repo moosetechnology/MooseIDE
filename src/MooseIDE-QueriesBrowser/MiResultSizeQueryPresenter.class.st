@@ -2,8 +2,8 @@
 The query configuration presenter for `FQResultSizeQuery`
 "
 Class {
-	#name : #MiResultSizeQueryPresenter,
-	#superclass : #MiQueryConfiguratorPresenter,
+	#name : 'MiResultSizeQueryPresenter',
+	#superclass : 'MiQueryConfiguratorPresenter',
 	#instVars : [
 		'subqueriesDropList',
 		'comparatorDropList',
@@ -11,16 +11,18 @@ Class {
 		'process',
 		'delayer'
 	],
-	#category : #'MooseIDE-QueriesBrowser-Configuration presenters'
+	#category : 'MooseIDE-QueriesBrowser-Configuration presenters',
+	#package : 'MooseIDE-QueriesBrowser',
+	#tag : 'Configuration presenters'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiResultSizeQueryPresenter class >> dropListWidth [
 
 	^ 57
 ]
 
-{ #category : #'api - actions' }
+{ #category : 'api - actions' }
 MiResultSizeQueryPresenter >> configureFor: aQuery [
 
 	comparatorDropList selectItem: aQuery comparator.
@@ -30,13 +32,13 @@ MiResultSizeQueryPresenter >> configureFor: aQuery [
 	query := aQuery
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiResultSizeQueryPresenter >> configureQuery: num [
 
 	self query valueToCompare: num
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiResultSizeQueryPresenter >> initialize [
 
 	super initialize.
@@ -44,7 +46,7 @@ MiResultSizeQueryPresenter >> initialize [
 	owner queriesListPresenter announcer when: QueriesListChangedAnnouncement do: [ self queryPresentersListChanged ] for: self
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiResultSizeQueryPresenter >> initializeComparatorsDropList [
 
 	comparatorDropList := self newDropList.
@@ -56,7 +58,7 @@ MiResultSizeQueryPresenter >> initializeComparatorsDropList [
 			query comparator: comparator ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiResultSizeQueryPresenter >> initializePresenters [
 
 	self initializeSubqueriesDropList.
@@ -65,7 +67,7 @@ MiResultSizeQueryPresenter >> initializePresenters [
 	self initializeLayout
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiResultSizeQueryPresenter >> initializeSubqueriesDropList [
 
 	subqueriesDropList := self newDropList.
@@ -79,7 +81,7 @@ MiResultSizeQueryPresenter >> initializeSubqueriesDropList [
 		help: 'The inner query can only be Scope or Navigation query'
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiResultSizeQueryPresenter >> initializeValueInput [
 
 	valueInputField := self newNumberInput.
@@ -89,13 +91,13 @@ MiResultSizeQueryPresenter >> initializeValueInput [
 			delayer waitAndRun: [ self computeQueryAction: newNumber ] ]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiResultSizeQueryPresenter >> isQueryUsed: aQuery [
 
 	^ subqueriesDropList selectedItem = aQuery
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 MiResultSizeQueryPresenter >> newLayout [
 
 	^ SpBoxLayout newLeftToRight
@@ -105,7 +107,7 @@ MiResultSizeQueryPresenter >> newLayout [
 		  yourself
 ]
 
-{ #category : #'api - actions' }
+{ #category : 'api - actions' }
 MiResultSizeQueryPresenter >> queryPresentersListChanged [
 
 	"Since the list of available queries of the MiQueryBuilder changed, we need to update the items on the drop list. We do not want to have deleted queries on the list or we want to add the new added query presenter."

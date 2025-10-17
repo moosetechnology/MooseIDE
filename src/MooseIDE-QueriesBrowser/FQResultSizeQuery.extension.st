@@ -1,12 +1,12 @@
-Extension { #name : #FQResultSizeQuery }
+Extension { #name : 'FQResultSizeQuery' }
 
-{ #category : #'*MooseIDE-QueriesBrowser' }
+{ #category : '*MooseIDE-QueriesBrowser' }
 FQResultSizeQuery class >> miPresenterClass [
 
 	^ MiResultSizeQueryPresenter
 ]
 
-{ #category : #'*MooseIDE-QueriesBrowser' }
+{ #category : '*MooseIDE-QueriesBrowser' }
 FQResultSizeQuery class >> minimumQueriesSize [
 
 	^ 1
