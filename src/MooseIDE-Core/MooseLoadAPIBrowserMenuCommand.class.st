@@ -41,7 +41,7 @@ MooseLoadAPIBrowserMenuCommand >> baselineName [
 { #category : 'accessing' }
 MooseLoadAPIBrowserMenuCommand >> repositoryURL [
 
-	^ 'github://moosetechnology/APIBrowser' , self version , '/src'
+	^ 'github://moosetechnology/API-Browser:' , self version , '/src'
 ]
 
 { #category : 'accessing' }
