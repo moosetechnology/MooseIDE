@@ -14,7 +14,8 @@ Class {
 		'availableTags',
 		'availableLayouts',
 		'availableDoubleClickActions',
-		'availableAssociationTypes'
+		'availableAssociationTypes',
+		'weightedLinks'
 	],
 	#category : 'MooseIDE-Dependency-ArchitecturalMap',
 	#package : 'MooseIDE-Dependency',
@@ -158,17 +159,22 @@ MiArchitecturalMapSettingsConfiguration >> settingsPresenters [
 
 	^ super settingsPresenters
 		  add: (MiLayoutSettingPresenter on: self);
+
 		  add: ((MiQuerySettingPresenter on: self)
 				   beForChildren;
 				   yourself);
+
 		  add: (MiAssociationTypesSettingPresenter on: self);
+
 		  add: (MiMegamorphicInvocationsSettingPresenter on: self);
+
 		  add: ((MiTagsSettingPresenter on: self)
 				   label: 'Show these tags as entities:';
 				   help:
 					   'The selected tags will be represented as entities in the visualisation.
 Inner elements will be the tagged entities';
 				   yourself);
+
 		  add: ((MiBooleanSettingPresenter on: self)
 				   label: 'Hide received entities';
 				   help:
@@ -177,6 +183,16 @@ Inner elements will be the tagged entities';
 				   whenStateChangedDo: [ :boolean |
 					   self hideReceivedEntities: boolean ];
 				   yourself);
+
+		  add: ((MiBooleanSettingPresenter on: self)
+				   label: 'Show the weight of links';
+				   help:
+					   'Show how many dependencies are included in a link';
+				   state: weightedLinks;
+				   whenStateChangedDo: [ :boolean |
+					   self weightedLinks: boolean ];
+				   yourself);
+
 		  add: ((MiBooleanSettingPresenter on: self)
 				   label: 'Show directories as root nodes (experimental)';
 				   help:
@@ -185,7 +201,9 @@ Inner elements will be the tagged entities';
 				   whenStateChangedDo: [ :boolean |
 					   self showDirectoriesAsRootNodes: boolean ];
 				   yourself);
+
 		  add: (MiDoubleClickSettingPresenter on: self);
+
 		  yourself
 ]
 
@@ -211,4 +229,16 @@ MiArchitecturalMapSettingsConfiguration >> tags [
 MiArchitecturalMapSettingsConfiguration >> tags: aCollection [
 
 	tags := aCollection
+]
+
+{ #category : 'accessing' }
+MiArchitecturalMapSettingsConfiguration >> weightedLinks [
+
+	^weightedLinks
+]
+
+{ #category : 'accessing' }
+MiArchitecturalMapSettingsConfiguration >> weightedLinks: aBoolean [
+
+	weightedLinks := aBoolean
 ]

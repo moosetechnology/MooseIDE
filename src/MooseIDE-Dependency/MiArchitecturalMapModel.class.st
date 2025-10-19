@@ -20,7 +20,7 @@ Class {
 		'hideMegamorphicInvocations',
 		'megamorphicTreshold',
 		'showDirectoriesAsRootNodes',
-		'default'
+		'weightedLinks'
 	],
 	#category : 'MooseIDE-Dependency-ArchitecturalMap',
 	#package : 'MooseIDE-Dependency',
@@ -102,6 +102,12 @@ MiArchitecturalMapModel class >> defaultShowDirectoriesAsRootNodes [
 MiArchitecturalMapModel class >> defaultTags [
 
 	^ OrderedCollection new
+]
+
+{ #category : 'defaults' }
+MiArchitecturalMapModel class >> weightedLinks [
+
+	^ false
 ]
 
 { #category : 'private' }
@@ -233,6 +239,7 @@ MiArchitecturalMapModel >> currentConfiguration [
 		  hideMegamorphicInvocations: hideMegamorphicInvocations;
 		  megamorphicTreshold: megamorphicTreshold;
 		  showDirectoriesAsRootNodes: showDirectoriesAsRootNodes;
+		  weightedLinks: weightedLinks;
 		  yourself
 ]
 
@@ -255,6 +262,7 @@ MiArchitecturalMapModel >> defaultConfiguration [
 		  megamorphicTreshold: self class defaultMegamorphicTreshold;
 		  showDirectoriesAsRootNodes:
 			  self class defaultShowDirectoriesAsRootNodes;
+		  weightedLinks: self class weightedLinks;
 		  yourself
 ]
 
@@ -307,11 +315,10 @@ MiArchitecturalMapModel >> initializeSettings [
 	hideReceivedEntities := self class defaultHideReceivedEntities.
 	doubleClickAction := self defaultDoubleClickAction.
 	layout := self class defaultLayout.
-	hideMegamorphicInvocations := self class
-		                              defaultHideMegamorphicInvocations.
+	hideMegamorphicInvocations := self class defaultHideMegamorphicInvocations.
 	megamorphicTreshold := self class defaultMegamorphicTreshold.
-	showDirectoriesAsRootNodes := self class
-		                              defaultShowDirectoriesAsRootNodes
+	showDirectoriesAsRootNodes := self class defaultShowDirectoriesAsRootNodes.
+	weightedLinks := self class weightedLinks 
 ]
 
 { #category : 'accessing' }
@@ -399,6 +406,7 @@ MiArchitecturalMapModel >> updateFromConfiguration: aConfiguration [
 	hideMegamorphicInvocations := aConfiguration hideMegamorphicInvocations.
 	megamorphicTreshold := aConfiguration megamorphicTreshold.
 	showDirectoriesAsRootNodes := aConfiguration showDirectoriesAsRootNodes.
+	weightedLinks := aConfiguration weightedLinks.
 
 	self recomputeRootNodes.
 	browser runVisualization
@@ -412,4 +420,9 @@ MiArchitecturalMapModel >> virtualEntity: aFileReference belowRoot: virtualRoot 
 	^virtualEntities keys
 		detect: [ :virtualEntity | virtualEntity rawEntity = aFileReference ]
 		ifNone: [ MiArchitecturalMapVirtualEntity new rawEntity: aFileReference ]
+]
+
+{ #category : 'accessing' }
+MiArchitecturalMapModel >> weightedLinks [
+	^ weightedLinks
 ]
