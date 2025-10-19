@@ -16,8 +16,7 @@ Class {
 		'allEntities',
 		'tagNodes',
 		'nodesToAdd',
-		'highlightShapes',
-		'nodeStyle'
+		'highlightShapes'
 	],
 	#category : 'MooseIDE-Dependency-ArchitecturalMap',
 	#package : 'MooseIDE-Dependency',
@@ -408,6 +407,29 @@ MiArchitecturalMapBuilder >> relayout: aGroupOfShapes parent: shape [
 			mapModel layout new on: aGroupOfShapes.
 			^ self ].
 	shape layout on: aGroupOfShapes
+]
+
+{ #category : 'hooks' }
+MiArchitecturalMapBuilder >> renderLinesIn: aCanvas [
+
+	| label |
+
+	super renderLinesIn: aCanvas.
+
+	aCanvas lines do: [ :line |
+		line model: (line from model allRawModelDependenciesIn: line to model)
+	].
+
+	self mapModel weightedLinks ifFalse: [ ^self ].
+
+	label := RSLabeled new text: [ :dependencies | dependencies size asString ].
+	label location
+		middle.
+
+	aCanvas lines do: [ :line |
+		label onShape: line
+	].
+
 ]
 
 { #category : 'building' }
