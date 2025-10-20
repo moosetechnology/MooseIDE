@@ -24,8 +24,9 @@ MiClipBoardCopyQueryCommand class >> defaultName [
 	^ 'Copy query to clipboard'
 ]
 
-{ #category : 'execution' }
+{ #category : 'executing' }
 MiClipBoardCopyQueryCommand >> execute [
 
-	Clipboard clipboardText: (String streamContents: [ :aStream | self context query storeWithParentsOn: aStream ]) informing: 'Query code copied, use Cmd+V'
+	self application inform: 'Query code copied, use Cmd+V'.
+	Clipboard clipboardText: (String streamContents: [ :aStream | self context query storeWithParentsOn: aStream ])
 ]
