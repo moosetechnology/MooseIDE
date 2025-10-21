@@ -5,9 +5,6 @@ HSimpleVisualizationBuilder >> updateTags [
 	"'redraw' all shapes so that new tags can be displayed if nodeStyler wants
 	 need to unselect all shapes before because this raises error"
 
-	| selectedShapes |
-
-	selectedShapes := container selectedShapes.
 	container setSelectedShapes: RSGroup new.
 
 	container shapes do: [ :sh |
@@ -16,5 +13,4 @@ HSimpleVisualizationBuilder >> updateTags [
 		]
 	].
 
-	container setSelectedShapes: selectedShapes
 ]
