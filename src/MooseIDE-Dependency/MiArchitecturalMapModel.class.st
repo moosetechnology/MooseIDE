@@ -258,7 +258,7 @@ MiArchitecturalMapModel >> defaultConfiguration [
 		  yourself
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'settings management' }
 MiArchitecturalMapModel >> defaultDoubleClickAction [
 
 	^ self availableDoubleClickActions first
