@@ -24,6 +24,13 @@ MiArchitecturalMapVisualization >> buildInCanvas: aCanvas [
 		           yourself
 ]
 
+{ #category : 'interactions' }
+MiArchitecturalMapVisualization >> selectRelatedTo: anEntity [ 
+
+	builder selectRelatedTo: anEntity 
+
+]
+
 { #category : 'searching' }
 MiArchitecturalMapVisualization >> shapeFromEntity: anEntity [
 	"search for the RSShape in the canvas that represent anEntity returns nil otherwise

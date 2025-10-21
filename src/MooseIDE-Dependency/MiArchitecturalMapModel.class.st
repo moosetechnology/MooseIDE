@@ -354,6 +354,13 @@ MiArchitecturalMapModel >> rootNodes [
 	^roots
 ]
 
+{ #category : 'interactions' }
+MiArchitecturalMapModel >> selectRelatedTo: anEntity [ 
+
+	browser selectRelatedTo: anEntity 
+
+]
+
 { #category : 'settings management' }
 MiArchitecturalMapModel >> settingsPresenterExtent [
 
