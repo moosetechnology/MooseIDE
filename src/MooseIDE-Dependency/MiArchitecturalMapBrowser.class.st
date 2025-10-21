@@ -138,6 +138,12 @@ MiArchitecturalMapBrowser >> runVisualization [
 	self doWithTimeout: [ mainPresenter run ]
 ]
 
+{ #category : 'actions' }
+MiArchitecturalMapBrowser >> selectRelatedTo: anEntity [ 
+
+	mainPresenter selectRelatedTo: anEntity 
+]
+
 { #category : 'initialization' }
 MiArchitecturalMapBrowser >> setModelBeforeInitialization: aModel [
 

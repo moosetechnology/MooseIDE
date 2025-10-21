@@ -16,8 +16,7 @@ Class {
 		'allEntities',
 		'tagNodes',
 		'nodesToAdd',
-		'highlightShapes',
-		'nodeStyle'
+		'highlightShapes'
 	],
 	#category : 'MooseIDE-Dependency-ArchitecturalMap',
 	#package : 'MooseIDE-Dependency',
@@ -269,6 +268,12 @@ MiArchitecturalMapBuilder >> createRootNodes [
 ]
 
 { #category : 'accessing' }
+MiArchitecturalMapBuilder >> defaultNodeStyle [
+
+	^MiArchitecturalMapStyle new
+]
+
+{ #category : 'accessing' }
 MiArchitecturalMapBuilder >> elements [
 
 	^ mapModel entities
@@ -365,18 +370,6 @@ MiArchitecturalMapBuilder >> nodeAnnouncer [
 	^ baseNode announcer
 ]
 
-{ #category : 'accessing' }
-MiArchitecturalMapBuilder >> nodeStyle [
-
-	^ nodeStyle ifNil: [ nodeStyle := MiArchitecturalMapStyle new ]
-]
-
-{ #category : 'accessing' }
-MiArchitecturalMapBuilder >> nodeStyle: anObject [
-
-	nodeStyle := anObject
-]
-
 { #category : 'adding' }
 MiArchitecturalMapBuilder >> parentNodeFor: anHNode [
 
@@ -408,6 +401,15 @@ MiArchitecturalMapBuilder >> relayout: aGroupOfShapes parent: shape [
 			mapModel layout new on: aGroupOfShapes.
 			^ self ].
 	shape layout on: aGroupOfShapes
+]
+
+{ #category : 'interactions' }
+MiArchitecturalMapBuilder >> selectRelatedTo: anEntity [ 
+
+	| shape |
+	shape := container nodes detect: [ :node | node model rawModel = anEntity ] ifNone: [ ^self ].
+	container  setSelectedShapes:
+		shape outgoingShapes , shape incomingShapes
 ]
 
 { #category : 'building' }

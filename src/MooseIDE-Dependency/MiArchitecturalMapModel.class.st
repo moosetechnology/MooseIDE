@@ -258,7 +258,7 @@ MiArchitecturalMapModel >> defaultConfiguration [
 		  yourself
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'settings management' }
 MiArchitecturalMapModel >> defaultDoubleClickAction [
 
 	^ self availableDoubleClickActions first
@@ -352,6 +352,13 @@ MiArchitecturalMapModel >> recomputeRootNodes [
 MiArchitecturalMapModel >> rootNodes [
 
 	^roots
+]
+
+{ #category : 'interactions' }
+MiArchitecturalMapModel >> selectRelatedTo: anEntity [ 
+
+	browser selectRelatedTo: anEntity 
+
 ]
 
 { #category : 'settings management' }
