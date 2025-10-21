@@ -412,6 +412,28 @@ MiArchitecturalMapBuilder >> selectRelatedTo: anEntity [
 		shape outgoingShapes , shape incomingShapes
 ]
 
+{ #category : 'hooks' }
+MiArchitecturalMapBuilder >> renderLinesIn: aCanvas [
+
+	| label |
+
+	super renderLinesIn: aCanvas.
+
+	aCanvas lines do: [ :line |
+		line model: (line from model allRawModelDependenciesIn: line to model)
+	].
+
+	self mapModel weightedLinks ifFalse: [ ^self ].
+
+	label := RSLabeled new text: [ :dependencies | dependencies size asString ].
+	label location
+		middle.
+
+	aCanvas lines do: [ :line |
+		label onShape: line
+	].
+]
+
 { #category : 'building' }
 MiArchitecturalMapBuilder >> setDependencies [
 
