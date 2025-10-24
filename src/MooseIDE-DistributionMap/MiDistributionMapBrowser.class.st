@@ -23,9 +23,8 @@ Controls:
 Class {
 	#name : 'MiDistributionMapBrowser',
 	#superclass : 'MiAbstractVisualizationBrowser',
-	#category : 'MooseIDE-Dependency-DistributionMap',
-	#package : 'MooseIDE-Dependency',
-	#tag : 'DistributionMap'
+	#category : 'MooseIDE-DistributionMap',
+	#package : 'MooseIDE-DistributionMap'
 }
 
 { #category : 'accessing' }

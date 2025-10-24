@@ -9,9 +9,8 @@ I am responsible for :
 Class {
 	#name : 'MiDistributionMapBuilder',
 	#superclass : 'HSimpleVisualizationBuilder',
-	#category : 'MooseIDE-Dependency-DistributionMap',
-	#package : 'MooseIDE-Dependency',
-	#tag : 'DistributionMap'
+	#category : 'MooseIDE-DistributionMap',
+	#package : 'MooseIDE-DistributionMap'
 }
 
 { #category : 'building' }

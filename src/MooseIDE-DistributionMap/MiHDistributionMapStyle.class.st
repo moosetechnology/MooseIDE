@@ -6,9 +6,8 @@ Class {
 	#superclass : 'HStyle',
 	#traits : 'THWithCornerRadiusStyle',
 	#classTraits : 'THWithCornerRadiusStyle classTrait',
-	#category : 'MooseIDE-Dependency-DistributionMap',
-	#package : 'MooseIDE-Dependency',
-	#tag : 'DistributionMap'
+	#category : 'MooseIDE-DistributionMap',
+	#package : 'MooseIDE-DistributionMap'
 }
 
 { #category : 'hooks' }

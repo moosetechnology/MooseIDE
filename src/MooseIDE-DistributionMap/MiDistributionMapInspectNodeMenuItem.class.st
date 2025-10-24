@@ -4,9 +4,8 @@ This menu item inspects a node with a moose inspector.
 Class {
 	#name : 'MiDistributionMapInspectNodeMenuItem',
 	#superclass : 'MiDistributionMapNodeMenuItem',
-	#category : 'MooseIDE-Dependency-DistributionMap',
-	#package : 'MooseIDE-Dependency',
-	#tag : 'DistributionMap'
+	#category : 'MooseIDE-DistributionMap',
+	#package : 'MooseIDE-DistributionMap'
 }
 
 { #category : 'execution' }

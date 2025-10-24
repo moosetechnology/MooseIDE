@@ -4,9 +4,8 @@ Base class for distribution map menu.
 Class {
 	#name : 'MiDistributionMapMenuItem',
 	#superclass : 'HAbstractMenuItem',
-	#category : 'MooseIDE-Dependency-DistributionMap',
-	#package : 'MooseIDE-Dependency',
-	#tag : 'DistributionMap'
+	#category : 'MooseIDE-DistributionMap',
+	#package : 'MooseIDE-DistributionMap'
 }
 
 { #category : 'public' }

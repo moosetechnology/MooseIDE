@@ -6,9 +6,8 @@ I am a visualization, using a builder to draw a distribution map [1] on my canva
 Class {
 	#name : 'MiDistributionMapVisualization',
 	#superclass : 'MiAbstractHierarchicalVisualization',
-	#category : 'MooseIDE-Dependency-DistributionMap',
-	#package : 'MooseIDE-Dependency',
-	#tag : 'DistributionMap'
+	#category : 'MooseIDE-DistributionMap',
+	#package : 'MooseIDE-DistributionMap'
 }
 
 { #category : 'running' }
