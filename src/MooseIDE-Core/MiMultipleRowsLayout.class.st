@@ -55,5 +55,8 @@ MiMultipleRowsLayout >> addPresenters: aCollection withConstraints: aConstraints
 			| rowLayout |
 			rowLayout := SpBoxLayout newLeftToRight.
 			aRow do: [ :presenter | rowLayout add: presenter withConstraints: aConstraintsBlock ].
-			self add: rowLayout expand: false fill: false ]
+			super add: rowLayout withConstraints: [ :c |
+					c
+						expand: false;
+						fill: false ] ]
 ]
