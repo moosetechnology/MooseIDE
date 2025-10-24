@@ -42,7 +42,7 @@ MiSettingsPresenter >> defaultLayout [
 { #category : 'accessing' }
 MiSettingsPresenter >> defaultSettingsFileName [
 
-	^self class name , '-settings.json'
+	^ browserModel toolName asCamelCase , 'Settings.ston'
 ]
 
 { #category : 'initialization' }
@@ -68,11 +68,19 @@ MiSettingsPresenter >> initializePresenters [
 MiSettingsPresenter >> loadSettings [
 	"We change the #configuration for a new object loaded from Json"
 
+	| fileReference |
+	fileReference := UITheme builder
+		                 chooseExistingFileReference: 'Choose settings file to import'
+		                 extensions: { 'ston' }
+		                 path: './pharo-local' asFileReference.
+
 	[
-		configuration := configuration class fromJson: self defaultSettingsFileName asFileReference contents.
-		self initializePresenters
-	] on: Error
-	do: [ :err | self inform: 'Error while loading settings: ' , err messageText ]
+		fileReference ifNotNil: [
+				configuration := STON fromStream: fileReference readStream.
+				self initializePresenters.
+				self inform: fileReference basename , ' loaded' ] ]
+		on: Error
+		do: [ :err | self inform: 'Error while loading settings: ' , err messageText ]
 ]
 
 { #category : 'initialization' }
@@ -85,15 +93,15 @@ MiSettingsPresenter >> resetToDefault [
 { #category : 'file in/out' }
 MiSettingsPresenter >> saveSettings [
 
-	| jsonFilename |
-	jsonFilename := self defaultSettingsFileName.
-	jsonFilename asFileReference
-		writeStreamDo: [ :str |
-			str << configuration asJSON
-		].
+	| fileReference |
+	fileReference := UITheme builder
+		                 chooseForSaveFileReference: 'Choose a location to save your settings'
+		                 extensions: { 'ston' }
+		                 path: ('./pharo-local/' , self defaultSettingsFileName) asFileReference.
 
-	self inform: 'Settings saved to: ' , jsonFilename
-
+	fileReference ifNotNil: [
+			fileReference writeStreamDo: [ :str | STON put: configuration onStream: str ].
+			self inform: 'Settings saved to: ' , fileReference pathString ]
 ]
 
 { #category : 'accessing - model' }
