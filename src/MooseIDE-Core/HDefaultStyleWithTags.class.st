@@ -10,6 +10,32 @@ Class {
 }
 
 { #category : 'hooks' }
+HDefaultStyleWithTags >> createMultiTagBox [
+
+	| cp |
+	cp := RSComposite new.
+	cp addAll: ({
+			 Color red.
+			 Color cyan.
+			 Color green.
+			 Color yellow } collect: [ :color |
+			 RSBox new
+				 size: 7;
+				 color: color;
+				 yourself ]).
+	RSGridLayout new
+		lineItemsCount: 2;
+		gapSize: 0;
+		on: cp children.
+	cp adjustToChildren.
+	cp border: (RSBorder new
+			 color: Color black;
+			 width: 1;
+			 yourself).
+	^ cp
+]
+
+{ #category : 'hooks' }
 HDefaultStyleWithTags >> labelAndIconFor: node [
 
 	| group entity |
