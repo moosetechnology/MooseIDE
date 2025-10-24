@@ -1,6 +1,6 @@
 Extension { #name : 'FamixTStructuralEntity' }
 
-{ #category : '*MooseIDE-Dependency' }
+{ #category : '*MooseIDE-DSM' }
 FamixTStructuralEntity >> queryAllOutgoingForDSM [
 	"DO NOT USE OUTSIDE THE CONTEXT OF DSM.
 See declaration in TEntityMetalevelDependency for context."

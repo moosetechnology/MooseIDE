@@ -1,6 +1,6 @@
 Extension { #name : 'TEntityMetaLevelDependency' }
 
-{ #category : '*MooseIDE-Dependency' }
+{ #category : '*MooseIDE-DSM' }
 TEntityMetaLevelDependency >> queryAllOutgoingForDSM [
 	"DO NOT USE OUTSIDE THE CONTEXT OF DSM"
 
