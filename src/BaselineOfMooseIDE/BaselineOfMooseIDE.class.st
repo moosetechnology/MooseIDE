@@ -90,15 +90,16 @@ BaselineOfMooseIDE >> definePackages: spec [
 	spec
 		package: 'MooseIDE-Core' with: [ spec requires: #( 'LabelContractor' 'RoassalExporters' ) ];
 		package: 'MooseIDE-WelcomeBrowser'
-		with: [ spec requires: #( 'MooseIDE-Core' 'MooseIDE-Meta' 'MooseIDE-CoUsageMap' 'MooseIDE-Dependency' 'MooseIDE-NewTools' 'MooseIDE-QueriesBrowser' ) ];
+		with: [ spec requires: #( 'MooseIDE-Core' 'MooseIDE-Meta' 'MooseIDE-CoUsageMap' 'MooseIDE-NewTools' 'MooseIDE-QueriesBrowser' ) ];
 		package: 'MooseIDE-Visualization' with: [ spec requires: #( 'MooseIDE-Core' 'HierarchicalVisualizations' ) ];
 		package: 'MooseIDE-Meta' with: [ spec requires: #( 'MooseIDE-Core' 'MooseIDE-Famix' ) ];
-		package: 'MooseIDE-Dependency' with: [ spec requires: #( 'MooseIDE-Visualization' 'AIHierarchicalClustering' ) ];
 		package: 'MooseIDE-ArchitecturalMap' with: [ spec requires: #( 'MooseIDE-Visualization' ) ];
 		package: 'MooseIDE-ArchitecturalMap-Tests' with: [ spec requires: #( 'MooseIDE-ArchitecturalMap' 'MooseIDE-Tests' ) ];
+		package: 'MooseIDE-DeadCode' with: [ spec requires: #( 'MooseIDE-Core' ) ];
+		package: 'MooseIDE-DeadCode-Tests' with: [ spec requires: #( 'MooseIDE-DeadCode' ) ];		
 		package: 'MooseIDE-DSM' with: [ spec requires: #( 'MooseIDE-Visualization' 'AIHierarchicalClustering' ) ];
 		package: 'MooseIDE-DistributionMap' with: [ spec requires: #( 'MooseIDE-Visualization' 'AIHierarchicalClustering' ) ];
-		package: 'MooseIDE-Tests' with: [ spec requires: #( 'MooseIDE-Dependency' 'MooseIDE-Visualization' ) ];
+		package: 'MooseIDE-Tests' with: [ spec requires: #( 'MooseIDE-Visualization' ) ];
 		package: 'MooseIDE-AttributedText';
 		package: 'MooseIDE-Famix' with: [ spec requires: #( 'MooseIDE-Visualization' 'MooseIDE-AttributedText' ) ];
 		package: 'MooseIDE-QueriesBrowser' with: [ spec requires: #( 'MooseIDE-Core' 'FamixQueries' ) ];
