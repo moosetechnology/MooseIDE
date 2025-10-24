@@ -25,23 +25,21 @@ MiLayoutSettingPresenter >> activate: aLayout [
 ]
 
 { #category : 'adding' }
-MiLayoutSettingPresenter >> addButton: button toRow: aBoxLayout [
+MiLayoutSettingPresenter >> addButtons: aCollection [
 
-	aBoxLayout add: button width: 75
+	self layout addPresenters: aCollection withConstraints: [ :c | c width: 75 ]
+]
+
+{ #category : 'layout' }
+MiLayoutSettingPresenter >> defaultLayout [
+
+	^ MiMultipleRowsLayout new
 ]
 
 { #category : 'building' }
 MiLayoutSettingPresenter >> helpForItem: aLayout [
 
 	^ aLayout layoutDescription
-]
-
-{ #category : 'initialization' }
-MiLayoutSettingPresenter >> initialize [
-
-	super initialize.
-
-	self beMultipleRows
 ]
 
 { #category : 'testing' }
