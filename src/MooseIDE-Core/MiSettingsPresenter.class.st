@@ -53,11 +53,7 @@ MiSettingsPresenter >> initializeDialogWindow: aSpDialogWindowPresenter [
 	aSpDialogWindowPresenter initialExtent: browserModel settingsPresenterExtent.
 	aSpDialogWindowPresenter toolbar: self toolbar.
 
-	aSpDialogWindowPresenter okAction: [ self acceptChanges ].
-	
-	aSpDialogWindowPresenter addButton: 'Load' do: [ self loadSettings ];
-	addButton: 'Save' do: [ self saveSettings ].	
-
+	aSpDialogWindowPresenter okAction: [ self acceptChanges ]
 ]
 
 { #category : 'initialization' }
@@ -110,12 +106,25 @@ MiSettingsPresenter >> setModelBeforeInitialization: aSpecModel [
 { #category : 'accessing' }
 MiSettingsPresenter >> toolbar [
 
-	^ self newToolbar addItemRight: (self newToolbarButton
-			   action: [ self resetToDefault ];
-			   label: 'Reset';
-			   help: 'Restore all settings to default values';
-			   icon: (self iconNamed: #smallUpdate);
-			   yourself)
+	^ self newToolbar
+		  addItemRight: (self newToolbarButton
+				   action: [ self resetToDefault ];
+				   label: 'Reset';
+				   help: 'Restore all settings to default values';
+				   icon: (self iconNamed: #smallUpdate);
+				   yourself);
+		  addItemRight: (self newToolbarButton
+				   action: [ self saveSettings ];
+				   label: 'Save';
+				   help: 'Save all settings';
+				   icon: (self iconNamed: #smallSave);
+				   yourself);
+		  addItemRight: (self newToolbarButton
+				   action: [ self loadSettings ];
+				   label: 'Load';
+				   help: 'Load settings from a file';
+				   icon: (self iconNamed: #smallLoadProject);
+				   yourself)
 ]
 
 { #category : 'accessing' }
