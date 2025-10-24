@@ -403,15 +403,6 @@ MiArchitecturalMapBuilder >> relayout: aGroupOfShapes parent: shape [
 	shape layout on: aGroupOfShapes
 ]
 
-{ #category : 'interactions' }
-MiArchitecturalMapBuilder >> selectRelatedTo: anEntity [ 
-
-	| shape |
-	shape := container nodes detect: [ :node | node model rawModel = anEntity ] ifNone: [ ^self ].
-	container  setSelectedShapes:
-		shape outgoingShapes , shape incomingShapes
-]
-
 { #category : 'hooks' }
 MiArchitecturalMapBuilder >> renderLinesIn: aCanvas [
 
@@ -432,6 +423,15 @@ MiArchitecturalMapBuilder >> renderLinesIn: aCanvas [
 	aCanvas lines do: [ :line |
 		label onShape: line
 	].
+]
+
+{ #category : 'interactions' }
+MiArchitecturalMapBuilder >> selectRelatedTo: anEntity [ 
+
+	| shape |
+	shape := container nodes detect: [ :node | node model rawModel = anEntity ] ifNone: [ ^self ].
+	container  setSelectedShapes:
+		shape outgoingShapes , shape incomingShapes
 ]
 
 { #category : 'building' }
