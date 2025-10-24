@@ -1,0 +1,117 @@
+"
+I am a builder of a distribution map using HierarchicalMapModel.
+
+I am responsible for :
+- creating the parts for each container
+- display the containers on a canvas
+- color the parts according to their property
+"
+Class {
+	#name : 'MiDistributionMapBuilder',
+	#superclass : 'HSimpleVisualizationBuilder',
+	#category : 'MooseIDE-DistributionMap',
+	#package : 'MooseIDE-DistributionMap'
+}
+
+{ #category : 'building' }
+MiDistributionMapBuilder >> build [
+	rootNode := HNode new
+		            addAll:
+			            ((mapModel orderOuterNodes: self elements) collect: [ 
+					             :e | self buildNodeFromEntity: e ]);
+		            yourself.
+	self setColors.
+	self buildLegend.
+	self renderIn: self container.
+	^ self container
+]
+
+{ #category : 'building' }
+MiDistributionMapBuilder >> buildLegend [
+
+	| legend |
+	legend := RSLegend new
+		          container: self canvas;
+		          title: 'Dynamic tags';
+		          onDemand: 'Legend';
+		          legendDo: [ :l |
+				          l
+					          border: RSBorder new;
+					          color: Color white;
+					          padding: 10 ];
+		          yourself.
+
+	mapModel tagsDo: [ :dynamicTag |
+			legend
+				text: dynamicTag name
+				withBoxColor: (self mapModel colorForTag: dynamicTag) ].
+
+	legend build
+]
+
+{ #category : 'building' }
+MiDistributionMapBuilder >> buildNodeFromEntity: anEntity [
+
+	^ HNode new
+		  name:
+			  (String streamContents: [ :s | anEntity displayStringOn: s ]);
+		  rawModel: anEntity;
+		  style: MiHDistributionMapStyle new;
+		  layout: self nodeLayout;
+		  addAll: ((self mapModel childrenFor: anEntity) collect: [ :n | 
+					   HNode new
+						   name: (String streamContents: [ :s | n displayStringOn: s ]);
+						   style: MiHDistributionMapStyle new;
+						   rawModel: n;
+						   yourself ]);
+		  expand;
+		  yourself
+]
+
+{ #category : 'accessing' }
+MiDistributionMapBuilder >> elements [
+
+	^ mapModel entities
+]
+
+{ #category : 'accessing - attributes' }
+MiDistributionMapBuilder >> menuInteraction [
+
+	^ menuInteraction ifNil: [
+			  menuInteraction := RSMenuActivable new
+				                     menuDo: [ :menu :aShape |
+						                     MiDistributionMapMenuItem
+							                     buildIn: menu
+							                     shape: aShape
+							                     visualization: self ];
+				                     yourself ]
+]
+
+{ #category : 'hooks' }
+MiDistributionMapBuilder >> nodeAnnouncer [
+	"plug new events here"
+
+	baseNode ifNotNil: [ ^ baseNode announcer ].
+	baseNode := RSComposite new
+		            @ self popup;
+		            @ self menuInteraction;
+		            @ self highlightable;
+		            yourself.
+	^ baseNode announcer
+]
+
+{ #category : 'hooks' }
+MiDistributionMapBuilder >> nodeLayout [
+
+	^ RSFlowLayout new
+		  gapSize: 3;
+		  yourself
+]
+
+{ #category : 'building' }
+MiDistributionMapBuilder >> setColors [
+
+	rootNode children do: [ :c |
+			c children do: [ :childNode |
+				childNode color: (mapModel colorFor: childNode rawModel) ] ]
+]
