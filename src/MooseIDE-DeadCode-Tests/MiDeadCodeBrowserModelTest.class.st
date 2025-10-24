@@ -4,9 +4,8 @@ Class {
 	#instVars : [
 		'model'
 	],
-	#category : 'MooseIDE-Tests-Browsers',
-	#package : 'MooseIDE-Tests',
-	#tag : 'Browsers'
+	#category : 'MooseIDE-DeadCode-Tests',
+	#package : 'MooseIDE-DeadCode-Tests'
 }
 
 { #category : 'running' }
