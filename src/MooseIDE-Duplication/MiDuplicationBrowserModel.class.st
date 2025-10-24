@@ -70,6 +70,16 @@ MiDuplicationBrowserModel class >> defaultMinimumNumberOfReplicas [
 ]
 
 { #category : 'settings management' }
+MiDuplicationBrowserModel class >> defaultRepConfiguration [
+
+	^ FamixRepConfiguration
+		  sourcesCleaner: self defaultSourcesCleaner
+		  minimumNumberOfReplicas: self defaultMinimumNumberOfReplicas
+		  ofLines: self defaultMinimumNumberOfLines
+		  ofCharacters: self defaultMinimumNumberOfCharacters
+]
+
+{ #category : 'settings management' }
 MiDuplicationBrowserModel class >> defaultSourcesCleaner [
 
 	^ FamixRepCLikeCleaner new
@@ -317,7 +327,7 @@ MiDuplicationBrowserModel >> selectEntities: entityCollection [
 { #category : 'as yet unclassified' }
 MiDuplicationBrowserModel >> setConfigurationForEntities [
 
-	configuration := self class defaultConfiguration.
+	configuration := self class defaultRepConfiguration.
 
 	entities ifNotNil: [
 			entities detect: #hasMooseModel ifFound: [ :entity |
