@@ -370,7 +370,7 @@ MiArchitecturalMapModel >> selectRelatedTo: anEntity [
 { #category : 'settings management' }
 MiArchitecturalMapModel >> settingsPresenterExtent [
 
-	^ 600 @ 500
+	^ 600 @ 600
 ]
 
 { #category : 'settings' }
