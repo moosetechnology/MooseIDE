@@ -3,8 +3,7 @@ Class {
 	#superclass : 'MiAbstractSettingPresenter',
 	#instVars : [
 		'selectedButton',
-		'itemWidth',
-		'buttonRows'
+		'buttons'
 	],
 	#category : 'MooseIDE-Core-Settings',
 	#package : 'MooseIDE-Core',
@@ -18,16 +17,50 @@ MiAbstractRadioButtonSettingPresenter >> activate: anItem [
 ]
 
 { #category : 'adding' }
+MiAbstractRadioButtonSettingPresenter >> addButton: aButton [
+
+	self layout add: aButton
+]
+
+{ #category : 'adding' }
 MiAbstractRadioButtonSettingPresenter >> addButton: button toRow: aBoxLayout [
 
 	aBoxLayout add: button expand: false fill: false
+]
+
+{ #category : 'as yet unclassified' }
+MiAbstractRadioButtonSettingPresenter >> beMultipleRows [
+	"puts radioButtons on rows of up to 4 buttons (to the limit of 12 buttons)
+	 tries to put same number of radioButtons on each row"
+
+	| nbRows rowLength currentRow buttonRows|
+	self layout: self newBoxLayoutTopToBottom.
+	
+	nbRows := ((self items size) / 4) roundUpTo: 1.
+	rowLength := ((self items size) / nbRows) roundUpTo: 1.
+	
+	buttonRows := Array new: nbRows.
+	1 to: nbRows do: [ :i | | row |
+		row := self newBoxLayoutLeftToRight.
+		self layout add: row expand: false fill: false.
+		buttonRows at: i put: row
+	].
+
+	currentRow := 1.
+	buttons do: [ :button |
+		self addButton: button toRow: (buttonRows at: currentRow).
+		(self rowSize: (buttonRows at: currentRow) isFull: rowLength) 
+			ifTrue: [ currentRow := currentRow + 1 ].
+	].
+	
+	
 ]
 
 { #category : 'building' }
 MiAbstractRadioButtonSettingPresenter >> connectButtons [
 
 	selectedButton
-		associatedRadioButtons: (buttonRows flatCollect: #children);
+		associatedRadioButtons: buttons;
 		state: true
 ]
 
@@ -45,27 +78,12 @@ MiAbstractRadioButtonSettingPresenter >> helpForItem: anItem [
 
 { #category : 'initialization' }
 MiAbstractRadioButtonSettingPresenter >> initializePresenters [
-	"puts radioButtons on rows of up to 4 buttons (to the limit of 12 buttons)
-	 tries to put same number of radioButtons on each row"
 
-	| nbRows rowLength currentRow |
-	nbRows := ((self items size) / 4) roundUpTo: 1.
-	rowLength := ((self items size) / nbRows) roundUpTo: 1.
-	
-	buttonRows := Array new: nbRows.
-	1 to: nbRows do: [ :i | | row |
-		row := self newBoxLayoutLeftToRight.
-		self layout add: row expand: false fill: false.
-		buttonRows at: i put: row
-	].
-
-	currentRow := 1.
-	self items do: [ :item || button |
-		button := self newRadioButtonFor: item.
-		self addButton: button toRow: (buttonRows at: currentRow).
-		(self rowSize: (buttonRows at: currentRow) isFull: rowLength) 
-			ifTrue: [ currentRow := currentRow + 1 ].
-	].
+	buttons := self items collect: [ :item |
+			           | button |
+			           button := self newRadioButtonFor: item.
+			           self addButton: button.
+			           button ].
 
 	self connectButtons
 ]

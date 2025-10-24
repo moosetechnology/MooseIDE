@@ -36,6 +36,14 @@ MiLayoutSettingPresenter >> helpForItem: aLayout [
 	^ aLayout layoutDescription
 ]
 
+{ #category : 'initialization' }
+MiLayoutSettingPresenter >> initialize [
+
+	super initialize.
+
+	self beMultipleRows
+]
+
 { #category : 'testing' }
 MiLayoutSettingPresenter >> isCurrentValue: aLayout [
 
