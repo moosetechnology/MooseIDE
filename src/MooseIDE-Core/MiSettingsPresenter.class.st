@@ -99,9 +99,11 @@ MiSettingsPresenter >> saveSettings [
 		                 extensions: { 'ston' }
 		                 path: ('./pharo-local/' , self defaultSettingsFileName) asFileReference.
 
-	fileReference ifNotNil: [
-			fileReference writeStreamDo: [ :str | STON put: configuration onStream: str ].
-			self inform: 'Settings saved to: ' , fileReference pathString ]
+	[
+		fileReference ifNotNil: [
+				fileReference writeStreamDo: [ :str | STON put: configuration onStream: str ].
+				self inform: 'Settings saved to: ' , fileReference pathString ] ] onErrorDo: [ :err |
+		self inform: 'Error while saving settings: ' , err messageText ]
 ]
 
 { #category : 'accessing - model' }
