@@ -19,8 +19,8 @@ Class {
 		'selectedEntities',
 		'replicatedFragmentsHierarchy',
 		'entities',
-		'configuration',
-		'maximumShownReplicas'
+		'maximumShownReplicas',
+		'repConfiguration'
 	],
 	#category : 'MooseIDE-Duplication',
 	#package : 'MooseIDE-Duplication'
@@ -70,6 +70,16 @@ MiDuplicationBrowserModel class >> defaultMinimumNumberOfReplicas [
 ]
 
 { #category : 'settings management' }
+MiDuplicationBrowserModel class >> defaultRepConfiguration [
+
+	^ FamixRepConfiguration
+		  sourcesCleaner: self defaultSourcesCleaner
+		  minimumNumberOfReplicas: self defaultMinimumNumberOfReplicas
+		  ofLines: self defaultMinimumNumberOfLines
+		  ofCharacters: self defaultMinimumNumberOfCharacters
+]
+
+{ #category : 'settings management' }
 MiDuplicationBrowserModel class >> defaultSourcesCleaner [
 
 	^ FamixRepCLikeCleaner new
@@ -98,10 +108,10 @@ MiDuplicationBrowserModel >> childrenFragments: aFragment [
 MiDuplicationBrowserModel >> currentConfiguration [
 
 	^ MiDuplicationSettingsConfiguration new
-		  minimumNumberOfLines: configuration minimumNumberOfLines;
-		  minimumNumberOfCharacters: configuration minimumNumberOfCharacters;
-		  minimumNumberOfReplicas: configuration minimumNumberOfReplicas;
-		  sourcesCleaner: configuration sourcesCleaner;
+		  minimumNumberOfLines: repConfiguration minimumNumberOfLines;
+		  minimumNumberOfCharacters: repConfiguration minimumNumberOfCharacters;
+		  minimumNumberOfReplicas: repConfiguration minimumNumberOfReplicas;
+		  sourcesCleaner: repConfiguration sourcesCleaner;
 		  maximumShownReplicas: maximumShownReplicas;
 		  availableSourceCleaners: self class availableSourcesCleaners;
 		  yourself
@@ -251,7 +261,7 @@ MiDuplicationBrowserModel >> miSelectedItem [
 MiDuplicationBrowserModel >> newDetector [
 
 	^ FamixRepDetector new
-		  configuration: configuration;
+		  configuration: repConfiguration;
 		  yourself
 ]
 
@@ -314,15 +324,15 @@ MiDuplicationBrowserModel >> selectEntities: entityCollection [
 	browser updateToolbar
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'initialization' }
 MiDuplicationBrowserModel >> setConfigurationForEntities [
 
-	configuration := self class defaultConfiguration.
+	repConfiguration := self class defaultRepConfiguration.
 
 	entities ifNotNil: [
 			entities detect: #hasMooseModel ifFound: [ :entity |
 					entity mooseModel replicationDetectionConfiguration ifNotNil: [
-						:modelConfiguration | configuration := modelConfiguration ] ] ]
+						:modelConfiguration | repConfiguration := modelConfiguration ] ] ]
 ]
 
 { #category : 'settings management' }
@@ -334,7 +344,7 @@ MiDuplicationBrowserModel >> settingsPresenterExtent [
 { #category : 'settings management' }
 MiDuplicationBrowserModel >> updateFromConfiguration: aConfiguration [
 
-	configuration
+	repConfiguration
 		minimumNumberOfLines: aConfiguration minimumNumberOfLines;
 		minimumNumberOfCharacters: aConfiguration minimumNumberOfCharacters;
 		minimumNumberOfReplicas: aConfiguration minimumNumberOfReplicas;
