@@ -27,11 +27,15 @@ MiArchitecturalMapTest >> architecturalMapWith: entities [
 
 { #category : 'tests' }
 MiArchitecturalMapTest >> testShapeFromEntity [
+
 	| map entity |
 	entity := FamixStClass named: 'anEntity'.
-	map := self architecturalMapWith: { FamixStClass named: 'entity2' . entity }.
-	map run.
+	map := self architecturalMapWith: {
+			       (FamixStClass named: 'entity2').
+			       entity }.
+	map buildInCanvas: map canvas.
 
 	self assert: (map shapeFromEntity: entity) notNil.
-	self assert: (map shapeFromEntity: (FamixStClass named: 'entity3')) isNil
+	self assert:
+		(map shapeFromEntity: (FamixStClass named: 'entity3')) isNil
 ]

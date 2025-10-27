@@ -1,10 +1,12 @@
 Class {
-	#name : #MiCoHighlightManagerTest,
-	#superclass : #MiCoUsageAbstractTest,
-	#category : #'MooseIDE-CoUsageMap-Tests-Browser'
+	#name : 'MiCoHighlightManagerTest',
+	#superclass : 'MiCoUsageAbstractTest',
+	#category : 'MooseIDE-CoUsageMap-Tests-Browser',
+	#package : 'MooseIDE-CoUsageMap-Tests',
+	#tag : 'Browser'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiCoHighlightManagerTest >> testDeselectGoesToModel [
 	| mooseEntity attribute1 shape1 |
 	mooseEntity := self specModel currentMooseModel entityNamed: #var1.
@@ -20,7 +22,7 @@ MiCoHighlightManagerTest >> testDeselectGoesToModel [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiCoHighlightManagerTest >> testDeselectInnerBox [
 	| attribute1 shape1 default selected |
 	self tagsWithPalette: { 'Frame'. 'Connection' }.
@@ -39,7 +41,7 @@ MiCoHighlightManagerTest >> testDeselectInnerBox [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiCoHighlightManagerTest >> testHighlight [
 	| attribute1 shape1 default selected |
 	self tagsWithPalette: { 'Frame'. 'Connection' }.
@@ -60,7 +62,7 @@ MiCoHighlightManagerTest >> testHighlight [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiCoHighlightManagerTest >> testNoHighlightWhenSelectedInnerBox [
 	| attribute1 shape1 default selected attribute2 shape2 |
 	self tagsWithPalette: { 'Frame'. 'Connection' }.
@@ -82,7 +84,7 @@ MiCoHighlightManagerTest >> testNoHighlightWhenSelectedInnerBox [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiCoHighlightManagerTest >> testSelectGoesToModel [
 	| attribute1 shape1 |
 	attribute1 := self specModel getInnerBoxNamed: #var1.
@@ -95,7 +97,7 @@ MiCoHighlightManagerTest >> testSelectGoesToModel [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiCoHighlightManagerTest >> testSelectInnerBox [
 	| attribute1 shape1 default selected |
 	self tagsWithPalette: { 'Frame'. 'Connection' }.

@@ -2,12 +2,14 @@
 A MiCoDualSliderPresenterTest is a test class for testing the behavior of MiCoDualSliderPresenter
 "
 Class {
-	#name : #MiCoDualSliderPresenterTest,
-	#superclass : #TestCase,
-	#category : #'MooseIDE-CoUsageMap-Tests-Sliders'
+	#name : 'MiCoDualSliderPresenterTest',
+	#superclass : 'TestCase',
+	#category : 'MooseIDE-CoUsageMap-Tests-Sliders',
+	#package : 'MooseIDE-CoUsageMap-Tests',
+	#tag : 'Sliders'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiCoDualSliderPresenterTest >> testBasic [
 	| slider value |
 	slider := MiCoDualSliderPresenter new.

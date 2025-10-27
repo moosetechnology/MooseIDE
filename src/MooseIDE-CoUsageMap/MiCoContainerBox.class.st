@@ -4,41 +4,43 @@ Model for the user entities, container boxes (eg. methods)
 Knows it #innerBoxes
 "
 Class {
-	#name : #MiCoContainerBox,
-	#superclass : #MiCoAbstractBox,
+	#name : 'MiCoContainerBox',
+	#superclass : 'MiCoAbstractBox',
 	#instVars : [
 		'innerBoxes'
 	],
-	#category : #'MooseIDE-CoUsageMap-Model'
+	#category : 'MooseIDE-CoUsageMap-Model',
+	#package : 'MooseIDE-CoUsageMap',
+	#tag : 'Model'
 }
 
-{ #category : #adding }
+{ #category : 'adding' }
 MiCoContainerBox >> addInnerBox: aMiCoAttribute [
 	innerBoxes add: aMiCoAttribute
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiCoContainerBox >> initialize [
 	super initialize.
 	innerBoxes := OrderedCollection new: 5.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiCoContainerBox >> innerBoxes [
 	^ innerBoxes
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiCoContainerBox >> innerBoxes: aCollection [
 	innerBoxes := aCollection
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiCoContainerBox >> numberOfInnerBoxes [
 	^ self innerBoxes size
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiCoContainerBox >> type [
 	^ 'Container'
 ]

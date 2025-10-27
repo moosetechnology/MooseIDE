@@ -24,12 +24,14 @@ Controls:
 * R to clear all searches
 "
 Class {
-	#name : #MiCoUsageMapBrowser,
-	#superclass : #MiAbstractVisualizationBrowser,
-	#category : #'MooseIDE-CoUsageMap-Browser'
+	#name : 'MiCoUsageMapBrowser',
+	#superclass : 'MiAbstractVisualizationBrowser',
+	#category : 'MooseIDE-CoUsageMap-Browser',
+	#package : 'MooseIDE-CoUsageMap',
+	#tag : 'Browser'
 }
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiCoUsageMapBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
@@ -37,43 +39,43 @@ MiCoUsageMapBrowser class >> menuCommandOn: aBuilder [
 	^ self buildMenuItemIn: aBuilder
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiCoUsageMapBrowser class >> menuItem [
 
 	^ #FilesBrowser
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 MiCoUsageMapBrowser class >> menuPriority [
 
 	^ self menuVisualizationToolsPriority + 3
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MiCoUsageMapBrowser class >> newModel [
 	^MiCoUsageMapModel new
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MiCoUsageMapBrowser class >> open [
 
 	<script>
 	^ super open
 ]
 
-{ #category : #specs }
+{ #category : 'specs' }
 MiCoUsageMapBrowser class >> preferredExtent [
 
 	^ 900 @ 700
 ]
 
-{ #category : #specs }
+{ #category : 'specs' }
 MiCoUsageMapBrowser class >> title [
 
 	^ 'Co Usage Map'
 ]
 
-{ #category : #'window control' }
+{ #category : 'window control' }
 MiCoUsageMapBrowser >> browserClosed [
 
 	super browserClosed.
@@ -81,13 +83,13 @@ MiCoUsageMapBrowser >> browserClosed [
 	application unregisterProducer: mainPresenter
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiCoUsageMapBrowser >> canFollowEntity: anEntity [
 
 	^ anEntity isCollection and: [ anEntity isMooseModel not ]
 ]
 
-{ #category : #'private - for tests' }
+{ #category : 'private - for tests' }
 MiCoUsageMapBrowser >> closeSettings [
 	"to close the settings window when testing
 	Should not be used otherwise"
@@ -95,19 +97,19 @@ MiCoUsageMapBrowser >> closeSettings [
 	specModel closeSettings 
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiCoUsageMapBrowser >> followEntity: anEntity [
 
 	super followEntity: anEntity.
 	self specModel followEntity: anEntity
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiCoUsageMapBrowser >> hasSettings [ 
 	^ true
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiCoUsageMapBrowser >> initializePresenters [
 	mainPresenter := self instantiate: MiCoUsageMapVisualization.
 	mainPresenter specModel: specModel.
@@ -118,23 +120,23 @@ MiCoUsageMapBrowser >> initializePresenters [
 	application registerProducer: mainPresenter for: FamixTagAssociation.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiCoUsageMapBrowser >> mapVisualization [
 	^ mainPresenter
 ]
 
-{ #category : #dependencies }
+{ #category : 'dependencies' }
 MiCoUsageMapBrowser >> release [
 	self class instVarNames do: [ :n | self instVarNamed: n put: nil ]
 ]
 
-{ #category : #updating }
+{ #category : 'updating' }
 MiCoUsageMapBrowser >> update [
 	self deprecated: 'Use runVisualization method instead' transformWith: '`@receiver update' -> '`@receiver runVisualization'.
 	self runVisualization 
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 MiCoUsageMapBrowser >> updateBoxColor: aMiCoBox fromTags: tags [
 
 	mainPresenter updateBoxColor: aMiCoBox fromTags: tags

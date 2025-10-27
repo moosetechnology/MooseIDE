@@ -1,6 +1,6 @@
-Extension { #name : #BlockClosure }
+Extension { #name : 'BlockClosure' }
 
-{ #category : #'*MooseIDE-CoUsageMap' }
+{ #category : '*MooseIDE-CoUsageMap' }
 BlockClosure >> runAsRoassalJobOn: aCanvas [
 	^ MiJob new
 		block: self;
