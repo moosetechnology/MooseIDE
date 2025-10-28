@@ -80,14 +80,6 @@ MiWindowPresenter >> defaultInitialExtent [
 	^ 500 @ 400
 ]
 
-{ #category : 'window management' }
-MiWindowPresenter >> restore [
-	"We have to get to the adpater because #restore is not in SpWindowPresenter yet"
-
-	self withAdapterDo: [ :windowAdapter |
-		windowAdapter widgetDo: [ :widget | widget restore ] ]
-]
-
 { #category : 'initialization' }
 MiWindowPresenter >> setContextBindingKeys [
 
