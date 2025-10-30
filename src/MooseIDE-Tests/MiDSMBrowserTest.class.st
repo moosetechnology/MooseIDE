@@ -81,6 +81,34 @@ MiDSMBrowserTest >> testCellListTupleDependencies [
 ]
 
 { #category : 'tests' }
+MiDSMBrowserTest >> testComputeDependenciesFromToParameterConcreteType [
+	"Checking that #computeDependenciesFrom:to: works for a concrete parameter type
+	public class Class1 { 
+		public ParametricClass<Class3> mth1 { }
+	}
+	 Here there should be a dependency from Class1 to Class3"
+
+	| mth1 dependencies |
+	mth1 := model entityNamed: 'Class1.mth1'.
+	model newParametricEntityTyping
+		declaredType: (model newParametricClassNamed: 'ParametricClass');
+		typedEntity: mth1;
+		concretizations: {
+			model newConcretization
+				typeParameter: (model newTypeParameter name: 'T') ;
+				typeArgument: class3
+		}.
+
+	dependencies := browser specModel dependencies
+		computeDependenciesFrom: class1
+		to: class3.
+
+	self assert: dependencies size equals: 1.
+	self assert: dependencies anyOne source equals: class3.
+	self assert: dependencies anyOne target name equals: 'T'.
+]
+
+{ #category : 'tests' }
 MiDSMBrowserTest >> testDoesNotOpenEmptyDetailedDSM [
 	"sets a fake spec model that delegates #userActionOn: to the original model
 	 We checks that #userActionOn: was called and #openDetailedDSMOn: was not"
