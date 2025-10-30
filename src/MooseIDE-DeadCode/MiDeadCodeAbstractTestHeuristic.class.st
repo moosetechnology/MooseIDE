@@ -19,7 +19,8 @@ Class {
 MiDeadCodeAbstractTestHeuristic >> description [ 
 
 	^super description ,
-	'Any method of a test class is considered not dead'
+	'Any method of a test class is assumed not-dead.' ,
+	String cr
 ]
 
 { #category : 'accessing' }

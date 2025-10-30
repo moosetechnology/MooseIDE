@@ -62,11 +62,11 @@ MiDeadCodeBrowserHeuristicColum >> heuristicColumnLayout [
 { #category : 'initialization' }
 MiDeadCodeBrowserHeuristicColum >> initializePresenters [
 
-	lstHeuristicsOffered := self newList
-		items: self specModel availableHeuristics ;
-		beMultipleSelection ;
-		display: [:item | item name] ;
-		sortingBlock: #name ascending.
+	lstHeuristicsOffered := self newTable
+		hideColumnHeaders ;
+		addColumn: (MiDeadCodeMorphicStringTableColumn evaluated: #name) ;
+		items: (self specModel availableHeuristics sorted: [ :o1 :o2 | o1 name < o2 name ]) ;
+		beMultipleSelection.
 
 	lstHeuristicsChosen := self newList
 		beMultipleSelection ;

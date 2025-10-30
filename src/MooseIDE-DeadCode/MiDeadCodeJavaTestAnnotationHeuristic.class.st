@@ -15,8 +15,8 @@ Class {
 { #category : 'accessing' }
 MiDeadCodeJavaTestAnnotationHeuristic >> description [ 
 
-	^super description , '
-	In Java, different annotations mark methods of test class
+	^super description ,
+	'In Java, different annotations mark methods of test class
 	 (@Test, @Before, @BeforeEach,...)'
 ]
 

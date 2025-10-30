@@ -14,7 +14,7 @@ Class {
 MiDeadCodeJavaImplementedInterfaceHeuristic >> description [
 
 	^super description ,
-	'A method implementing a Java interface that is called is not dead'
+	'All concrete methods implementing a called interface method are assumed not-dead'
 ]
 
 { #category : 'accessing' }

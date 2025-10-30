@@ -12,12 +12,12 @@ Class {
 { #category : 'accessing' }
 MiDeadCodeNamingConventionHeuristic >> description [
 
-	^super description , '
-	Check test methods according to naming convention:
+	^super description ,
+	'Check test methods according to naming convention:
 	- method name begins with "test"
 	- class name ends with "Test"
 	- method name is longer than 5 characters ("test...")
-	- fifth character is not a lower case ("tester")'
+	- 5th character is not a lower case (eg. not "tester")'
 ]
 
 { #category : 'accessing' }
