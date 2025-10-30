@@ -12,8 +12,8 @@ Class {
 { #category : 'accessing' }
 MiDeadCodePharoTestCaseSubClassHeuristic >> description [
 
-	^super description , '
-	In Pharo, sub-classes of TestCase are test classes'
+	^super description ,
+	'In Pharo, sub-classes of TestCase are test classes'
 ]
 
 { #category : 'accessing' }

@@ -12,7 +12,7 @@ Class {
 MiDeadCodeJavaMainHeuristic >> description [
 
 	^super description ,
-	'Java "public static void main()" methods are not dead'
+	'"public static void main()" methods are assumed not-dead'
 ]
 
 { #category : 'accessing' }

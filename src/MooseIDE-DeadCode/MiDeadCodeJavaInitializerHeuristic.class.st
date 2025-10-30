@@ -9,7 +9,7 @@ Class {
 MiDeadCodeJavaInitializerHeuristic >> description [
 
 	^super description ,
-	'Initialization block in Java are assumed not dead'
+	'Initialization block are assumed not-dead'
 ]
 
 { #category : 'accessing' }

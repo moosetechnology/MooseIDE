@@ -14,8 +14,8 @@ Class {
 { #category : 'accessing' }
 MiDeadCodePharoPragmasHeuristic >> description [ 
 
-	^super description , '
-	In Pharo, some pragmas mark method called by the end-user
+	^super description ,
+	'In Pharo, some pragmas mark method called by the end-user
 	 (<script>, <example>. <inspectorPresentationOrder:title:>,...)'
 ]
 
