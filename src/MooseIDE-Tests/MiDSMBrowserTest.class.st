@@ -251,7 +251,7 @@ MiDSMBrowserTest >> testOutgoingDependencyFromMethodDeclaredType [
 ]
 
 { #category : 'tests' }
-MiDSMBrowserTest >> testOutgoingDependencyFromVMethodDeclaredTypeParametric [
+MiDSMBrowserTest >> testOutgoingDependencyFromMethodDeclaredTypeParametric [
 	"
 	public class Class2 { 
 		public ParametricClass<Classs1> mth2 { }
