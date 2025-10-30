@@ -53,27 +53,26 @@ MiDSMDependencyManager >> allPairsDo: aBlock [
 ]
 
 { #category : 'testing' }
-MiDSMDependencyManager >> association: associations isTo: entity [
+MiDSMDependencyManager >> association: association isTo: entity [
 	"need to get the target because DSM is done between entities"
 
 	| target |
 
-	target := associations target.
-	^target isCollection
+	target := association target.
+	target isCollection
 		ifTrue: [
 			"the association is an Invocation and the target-s are the candidates"
-			target anySatisfy: [ :each | self entity: each belongsTo: entity ]
-		]
-		ifFalse: [
-			((target usesFamixTrait: FamixTParametricEntity) and:
-			[ target genericization isNotNil ])
-				ifTrue: [ target := target genericization genericEntity ].
+			^target anySatisfy: [ :each | self entity: each belongsTo: entity ]
+		].
 
-			target 
-				ifNotNil: [ self entity: target belongsTo: entity ] 
-				ifNil: [false]
-		]
-		
+	(self entity: target belongsTo: entity)
+		ifTrue: [ ^true ].
+
+	(association usesFamixTrait: FamixTConcretization) 
+		ifTrue: [ ^self entity: association typeArgument belongsTo: entity ].
+
+	^false
+
 ]
 
 { #category : 'initialization' }
@@ -130,11 +129,10 @@ MiDSMDependencyManager >> dependency: dependency isTo: entity [
 MiDSMDependencyManager >> dependency: dependency isToPackage: aPackage [
 	"dependencies to sub-packages are added to their parent package"
 
-	^(self dependency: dependency isTo: aPackage)
-		or: [
-			aPackage children anySatisfy: [ :child |
-				child isPackage and:
-				[ self dependency: dependency isToPackage: child ]
+	^(self dependency: dependency isTo: aPackage) or: [
+		aPackage containedEntities anySatisfy: [ :child |
+			child isPackage and:
+			[ self dependency: dependency isToPackage: child ]
 		]
 	]
 ]
