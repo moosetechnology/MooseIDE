@@ -1,12 +1,8 @@
 Class {
 	#name : 'MiDeadCodeBrowserTest',
 	#superclass : 'MiAbstractBrowserTest',
-	#instVars : [
-		'newBrowser'
-	],
-	#category : 'MooseIDE-Tests-Browsers',
-	#package : 'MooseIDE-Tests',
-	#tag : 'Browsers'
+	#category : 'MooseIDE-DeadCode-Tests',
+	#package : 'MooseIDE-DeadCode-Tests'
 }
 
 { #category : 'running' }
