@@ -6,6 +6,7 @@ Class {
 	#superclass : 'SpNotebookPage',
 	#instVars : [
 		'replica',
+		'textMorph',
 		'text'
 	],
 	#category : 'MooseIDE-Duplication',
@@ -29,6 +30,16 @@ MiDuplicationBrowserPage >> backgroundColor: aColor at: anInterval [
 		from: anInterval first
 		to: anInterval last.
  
+]
+
+{ #category : 'formatting' }
+MiDuplicationBrowserPage >> createTextMorphForReplica [
+
+	^textMorph := RubScrolledTextMorph new 
+		withLineNumbers ;
+		setText: self textContent;
+		in: [ :this | this textArea readOnly: true ];
+		yourself
 ]
 
 { #category : 'formatting' }
@@ -83,12 +94,10 @@ MiDuplicationBrowserPage >> initialize [
 
 	self beCloseable.
 	self presenterProvider: [
-		SpMorphPresenter new 
-        morph: (RubScrolledTextMorph new 
-            setText: self textContent;
-            in: [ :this | this textArea readOnly: true ];
-            yourself);
-        yourself ]
+		self createTextMorphForReplica.
+		self scrollToReplica.
+		SpMorphPresenter new morph: textMorph ; yourself
+	]
 ]
 
 { #category : 'private' }
@@ -124,6 +133,16 @@ MiDuplicationBrowserPage >> replica: aReplica [
 	replica := aReplica.
 	self title: aReplica entity name.
 
+]
+
+{ #category : 'formatting' }
+MiDuplicationBrowserPage >> scrollToReplica [
+
+	| interval |
+	replica ifNil: [ ^self ].
+
+	interval := self linesToCharPos: (replica startLine to: replica endLine).
+	textMorph moveCursorToIndex: interval first
 ]
 
 { #category : 'private' }
