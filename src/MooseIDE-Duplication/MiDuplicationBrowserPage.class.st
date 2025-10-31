@@ -145,10 +145,22 @@ MiDuplicationBrowserPage >> scrollToReplica [
 	textMorph moveCursorToIndex: interval first
 ]
 
+{ #category : 'accessing' }
+MiDuplicationBrowserPage >> text [
+
+	^text
+]
+
 { #category : 'private' }
 MiDuplicationBrowserPage >> textContent [
 
 	^ replica ifNil: [ '** no source code found**' ] ifNotNil: [ self formatReplicaText ]
+]
+
+{ #category : 'accessing' }
+MiDuplicationBrowserPage >> textMorph [
+
+	^textMorph 
 ]
 
 { #category : 'accessing' }
