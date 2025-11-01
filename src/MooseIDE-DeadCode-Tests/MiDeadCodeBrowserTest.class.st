@@ -34,6 +34,28 @@ MiDeadCodeBrowserTest >> testActivateActionButtons [
 ]
 
 { #category : 'tests' }
+MiDeadCodeBrowserTest >> testButtonChooseHeuristics [
+	"by default, there is only one chosen heuristics
+	 Select anyOne and add it to the chosen
+	 Note: works because the first heuristic is not the default one"
+
+	| heuristicToSelect itemToSelect numberChosen |
+
+	heuristicToSelect := (browser specModel availableHeuristics \ browser specModel chosenHeuristics)
+		anyOne.
+	itemToSelect := browser heuristicColumn listHeuristicsOffered items
+		detect: [ :item |
+			item heuristic = heuristicToSelect ].
+
+	numberChosen := browser specModel chosenHeuristics size.
+
+	browser heuristicColumn listHeuristicsOffered selectItem: itemToSelect.
+	browser heuristicColumn buttonChooseHeuristics click.
+
+	self assert: browser specModel chosenHeuristics size equals: numberChosen + 1
+]
+
+{ #category : 'tests' }
 MiDeadCodeBrowserTest >> testCanPropagateAfterDeadComputation [
 
 	| mooseModel |
@@ -58,11 +80,23 @@ MiDeadCodeBrowserTest >> testCannotPropagateAtInitialization [
 ]
 
 { #category : 'tests' }
+MiDeadCodeBrowserTest >> testChoosingHeuristicsResetsSelection [
+
+	browser heuristicColumn listHeuristicsOffered selectIndex: 1.
+
+	self assert: browser heuristicColumn listHeuristicsOffered selectedItems size equals: 1.
+
+	browser heuristicColumn buttonChooseHeuristics click.
+
+	self assert: browser heuristicColumn listHeuristicsOffered selectedItems size equals: 0
+]
+
+{ #category : 'tests' }
 MiDeadCodeBrowserTest >> testDisabledFirstRoundButton [
 	"without selected heuristics, 1st-round button is disabled"
 
-	browser specModel clearSelectedHeuristics.
-	browser updateHeuristicSelection.
+	browser specModel clearChosenHeuristics.
+	browser updateChosenHeuristics.
 
 	self deny: browser resultColumn buttonFirstRound isEnabled
 ]
@@ -71,7 +105,7 @@ MiDeadCodeBrowserTest >> testDisabledFirstRoundButton [
 MiDeadCodeBrowserTest >> testEnabledFirstRoundButton [
 	"with a selected heuristics, 1st-round button is enabled"
 
-	browser updateHeuristicSelection.
+	browser updateChosenHeuristics.
 	self assert: browser resultColumn buttonFirstRound isEnabled
 ]
 
@@ -97,30 +131,18 @@ MiDeadCodeBrowserTest >> testInitializeSelectedHeuristicsList [
 	"by default, there is one selected heuristics: `MiDeadCodeNoIncomingInvocationHeuristic`
 	 see also: MiDeadCodeAbstractHeuristic >> selectedByDefault"
 
-	self assert: browser heuristicColumn listHeuristicsSelected items size equals: 1.
+	self assert: browser heuristicColumn listHeuristicsChosen items size equals: 1.
 
 ]
 
 { #category : 'tests' }
-MiDeadCodeBrowserTest >> testRejectHeuristic [
+MiDeadCodeBrowserTest >> testUnchooseHeuristic [
 	"by default, there is one selected heuristics"
 
-	browser heuristicColumn listHeuristicsSelected selectIndex: 1.
-	browser heuristicColumn buttonRejectHeuristics click.
+	browser heuristicColumn listHeuristicsChosen selectIndex: 1.
+	browser heuristicColumn buttonUnchooseHeuristics click.
 
-	self assert: browser heuristicColumn listHeuristicsSelected items size equals: 0
-]
-
-{ #category : 'tests' }
-MiDeadCodeBrowserTest >> testSelectHeuristics [
-	"by default, there is one selected heuristics"
-
-	browser heuristicColumn listHeuristicsOffered
-		selectItem: 	(browser heuristicColumn listHeuristicsOffered items
-			detect: [:item | item selectedByDefault not ]).
-	browser heuristicColumn buttonSelectHeuristics click.
-
-	self assert: browser heuristicColumn listHeuristicsSelected items size equals: 2
+	self assert: browser heuristicColumn listHeuristicsChosen items size equals: 0
 ]
 
 { #category : 'tests' }
