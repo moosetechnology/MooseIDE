@@ -132,7 +132,10 @@ MiDeadCodeBrowser >> heuristicColumn [
 { #category : 'initialization' }
 MiDeadCodeBrowser >> initializePresenters [
 
-	lstMethod := self newList.
+	lstMethod := self newList
+		display: #name ;
+		sortingBlock: #name ascending.
+
 	lblAllMethods := self newLabel
 		label: '0 entities'.
 
@@ -158,12 +161,6 @@ MiDeadCodeBrowser >> resultColumn [
 	^resultColumn 
 ]
 
-{ #category : 'heuristic column' }
-MiDeadCodeBrowser >> selectedHeuristics: aCollection [
-
-	heuristicColumn selectedHeuristics: aCollection
-]
-
 { #category : 'TOREMOVE' }
 MiDeadCodeBrowser >> toolbarHeight [
 
@@ -171,14 +168,14 @@ MiDeadCodeBrowser >> toolbarHeight [
 ]
 
 { #category : 'actions' }
-MiDeadCodeBrowser >> updateDeadEntities [
+MiDeadCodeBrowser >> updateChosenHeuristics [
 
-	resultColumn update
+	heuristicColumn chosenHeuristics: specModel chosenHeuristics.
+	resultColumn updateChosenHeuristics
 ]
 
 { #category : 'actions' }
-MiDeadCodeBrowser >> updateHeuristicSelection [
+MiDeadCodeBrowser >> updateDeadEntities [
 
-	heuristicColumn selectedHeuristics: specModel selectedHeuristics.
-	resultColumn updateHeuristicSelection
+	resultColumn update
 ]

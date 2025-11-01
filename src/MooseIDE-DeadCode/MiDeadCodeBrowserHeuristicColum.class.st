@@ -3,30 +3,45 @@ Class {
 	#superclass : 'SpPresenter',
 	#instVars : [
 		'lstHeuristicsOffered',
-		'btnSelectHeuristic',
 		'btnRejectHeuristic',
-		'lstHeuristicsChosen'
+		'btnChooseHeuristics',
+		'lstChosenHeuristics'
 	],
 	#category : 'MooseIDE-DeadCode',
 	#package : 'MooseIDE-DeadCode'
 }
 
 { #category : 'accessing - private tests' }
-MiDeadCodeBrowserHeuristicColum >> buttonRejectHeuristics [
+MiDeadCodeBrowserHeuristicColum >> buttonChooseHeuristics [
+
+	^btnChooseHeuristics 
+]
+
+{ #category : 'accessing - private tests' }
+MiDeadCodeBrowserHeuristicColum >> buttonUnchooseHeuristics [
 
 	^btnRejectHeuristic 
 ]
 
-{ #category : 'accessing - private tests' }
-MiDeadCodeBrowserHeuristicColum >> buttonSelectHeuristics [
+{ #category : 'accessing' }
+MiDeadCodeBrowserHeuristicColum >> chosenHeuristics: aCollection [
 
-	^btnSelectHeuristic 
+	lstChosenHeuristics items: aCollection
 ]
 
-{ #category : 'accessing' }
-MiDeadCodeBrowserHeuristicColum >> chosenHeuristics [
+{ #category : 'initialization' }
+MiDeadCodeBrowserHeuristicColum >> connectPresenters [
 
-	^self specModel chosenHeuristics
+	btnChooseHeuristics action: [
+		self specModel chooseHeuristics: lstHeuristicsOffered chosenHeuristics.
+		self resetSelection
+	].
+
+	btnRejectHeuristic action: [
+		self specModel unchooseHeuristics: lstChosenHeuristics chosenHeuristics.
+		self resetSelection
+	].
+
 ]
 
 { #category : 'layout' }
@@ -36,69 +51,57 @@ MiDeadCodeBrowserHeuristicColum >> defaultLayout [
 		add: 'Available heuristics' expand: false ;
 		add: lstHeuristicsOffered expand: true ;
 		add: (SpBoxLayout newLeftToRight
-			add: btnSelectHeuristic ;
+			add: btnChooseHeuristics ;
 			add: btnRejectHeuristic ;
 			yourself)
 		height: self toolbarHeight ;
 		add: 'Selected heuristics' expand: false ;
-		add: lstHeuristicsChosen expand: true ;
-		yourself
-]
-
-{ #category : 'layout' }
-MiDeadCodeBrowserHeuristicColum >> heuristicColumnLayout [
-
-	^SpBoxLayout newTopToBottom
-		add: lstHeuristicsOffered expand: true ;
-		add: (SpBoxLayout newLeftToRight
-			add: btnSelectHeuristic ;
-			add: btnRejectHeuristic ;
-			yourself)
-		height: self toolbarHeight ;
-		add: lstHeuristicsChosen expand: true ;
+		add: lstChosenHeuristics expand: true ;
 		yourself
 ]
 
 { #category : 'initialization' }
 MiDeadCodeBrowserHeuristicColum >> initializePresenters [
 
-	lstHeuristicsOffered := self newTable
-		hideColumnHeaders ;
-		addColumn: (MiDeadCodeMorphicStringTableColumn evaluated: #name) ;
-		items: (self specModel availableHeuristics sorted: [ :o1 :o2 | o1 name < o2 name ]) ;
-		beMultipleSelection.
+	lstHeuristicsOffered := self newHeuristicList
+		items: self specModel availableHeuristics.
 
-	lstHeuristicsChosen := self newList
-		beMultipleSelection ;
-		display: [:item | item name].
-	self selectedHeuristics: self specModel selectedHeuristics.
+	lstChosenHeuristics := self newHeuristicList
+		items: self specModel chosenHeuristics.
 
-	btnSelectHeuristic := self newButton
+	btnChooseHeuristics := self newButton
 		label: 'v' ;
-		action: [ self specModel selectHeuristics].
+		action: [ self specModel chooseHeuristics: lstHeuristicsOffered chosenHeuristics ].
 
 	btnRejectHeuristic := self newButton
 		label: '^' ;
-		action: [ self specModel rejectHeuristics].
+		action: [ self specModel unchooseHeuristics: lstChosenHeuristics chosenHeuristics ].
 
 ]
 
-{ #category : 'accessing' }
+{ #category : 'accessing - private tests' }
+MiDeadCodeBrowserHeuristicColum >> listHeuristicsChosen [ 
+
+	^lstChosenHeuristics
+]
+
+{ #category : 'accessing - private tests' }
 MiDeadCodeBrowserHeuristicColum >> listHeuristicsOffered [ 
 
 	^lstHeuristicsOffered 
 ]
 
-{ #category : 'accessing' }
-MiDeadCodeBrowserHeuristicColum >> listHeuristicsSelected [ 
+{ #category : 'initialization' }
+MiDeadCodeBrowserHeuristicColum >> newHeuristicList [
 
-	^lstHeuristicsChosen
+	^self instantiate: MiDeadCodeHeuristicListPresenter
 ]
 
 { #category : 'actions' }
-MiDeadCodeBrowserHeuristicColum >> selectedHeuristics: aCollection [
+MiDeadCodeBrowserHeuristicColum >> resetSelection [
 
-	lstHeuristicsChosen items: aCollection
+	lstHeuristicsOffered unselectAll.
+	lstChosenHeuristics unselectAll 
 ]
 
 { #category : 'accessing' }

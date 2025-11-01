@@ -9,8 +9,8 @@ Class {
 	#instVars : [
 		'deadEntities',
 		'candidateEntities',
-		'allHeuristics',
-		'selectedHeuristics'
+		'chosenHeuristics',
+		'availableHeuristics'
 	],
 	#category : 'MooseIDE-DeadCode',
 	#package : 'MooseIDE-DeadCode'
@@ -19,26 +19,48 @@ Class {
 { #category : 'accessing' }
 MiDeadCodeBrowserModel >> availableHeuristics [
 
-	^allHeuristics
+	^availableHeuristics ifNil: [
+		availableHeuristics := MiDeadCodeAbstractHeuristic withAllSubclasses
+			select: [ :class | class isAbstract not ]
+			thenCollect: [ :class | class new ]
+	]
 ]
 
 { #category : 'actions' }
-MiDeadCodeBrowserModel >> clearDeads [
+MiDeadCodeBrowserModel >> chooseHeuristics: heuristicCollection [
+	"add all of heuristicCollection  to the internal list of chosenHeuristics"
 
-	deadEntities := OrderedCollection new.
-	browser updateDeadEntities
+	chosenHeuristics := (chosenHeuristics union: heuristicCollection)
+		sort: self heuristicSortBlock.
+	browser updateChosenHeuristics
+]
+
+{ #category : 'accessing' }
+MiDeadCodeBrowserModel >> chosenHeuristics [
+
+	^chosenHeuristics 
 ]
 
 { #category : 'accessing - private tests' }
-MiDeadCodeBrowserModel >> clearSelectedHeuristics [
+MiDeadCodeBrowserModel >> clearChosenHeuristics [
 
-	selectedHeuristics removeAll
+	chosenHeuristics removeAll
+]
+
+{ #category : 'settings management' }
+MiDeadCodeBrowserModel >> currentConfiguration [
+	"no settings"
 ]
 
 { #category : 'accessing' }
 MiDeadCodeBrowserModel >> deadEntities [
 
 	^deadEntities 
+]
+
+{ #category : 'settings management' }
+MiDeadCodeBrowserModel >> defaultConfiguration [
+	"no settings"
 ]
 
 { #category : 'accessing' }
@@ -61,7 +83,7 @@ MiDeadCodeBrowserModel >> firstRoundOn: entity [
 	"search for a heuristic that could deal with the entity
 	 when found, go to next entity"
 
-	selectedHeuristics do: [ :heuristic |
+	chosenHeuristics do: [ :heuristic |
 		(self heuristic: heuristic handle: entity)
 			ifTrue: [ ^self ]
 		]
@@ -72,20 +94,12 @@ MiDeadCodeBrowserModel >> followEntity: aCollection [
 
 	candidateEntities := aCollection.
 	browser candidateEntities: aCollection.
-	browser updateHeuristicSelection
-]
-
-{ #category : 'accessing' }
-MiDeadCodeBrowserModel >> gatherHeuristics [
-
-	^MiDeadCodeAbstractHeuristic withAllSubclasses
-		select: [ :class | class isAbstract not ]
-		thenCollect: [ :class | class new ]
+	browser updateChosenHeuristics
 ]
 
 { #category : 'actions' }
 MiDeadCodeBrowserModel >> heuristic: heuristic handle: entity [
-	"returns whether a decision was reach or not.
+	"returns whether a decision was reached or not.
 	 A decision is reached for _refuting_ heuristics if the entity is not dead
 	   and there is nothing to do (but we do not need to check other heuristics)
 	 A decision is reached for _asserting_ heuristic, if the entity is dead
@@ -101,6 +115,18 @@ MiDeadCodeBrowserModel >> heuristic: heuristic handle: entity [
 	^false
 ]
 
+{ #category : 'actions' }
+MiDeadCodeBrowserModel >> heuristicSortBlock [
+	"sorts refuting heuristics before asserting ones.
+	 inside these two categories, sort on their names"
+
+	^[ :a :b |
+		(a refuteDead = b refuteDead)
+			ifTrue: [ a name < b name ]
+			ifFalse: [ a refuteDead ]
+		]
+]
+
 { #category : 'initialization' }
 MiDeadCodeBrowserModel >> initialize [ 
 
@@ -113,13 +139,11 @@ MiDeadCodeBrowserModel >> initialize [
 { #category : 'initialization' }
 MiDeadCodeBrowserModel >> initializeHeuristics [
 
-	allHeuristics := self gatherHeuristics.
-
-	selectedHeuristics := OrderedCollection new: allHeuristics size.
-	allHeuristics do: [ :heuristic |
-		heuristic selectedByDefault
-			ifTrue: [ selectedHeuristics add: heuristic ] ].
-
+	chosenHeuristics := OrderedCollection new:
+		                    self availableHeuristics size.
+	chosenHeuristics addAll:
+		(self availableHeuristics select: [ :heuristic |
+			 heuristic selectedByDefault ])
 ]
 
 { #category : 'actions' }
@@ -127,7 +151,8 @@ MiDeadCodeBrowserModel >> isNewDead: anEntity [
 
 	(deadEntities includes: anEntity) ifTrue: [ ^ false ].
 
-	^ (anEntity queryIncoming: FamixTInvocation) opposites allSatisfy: [ :invoker | deadEntities includes: invoker ]
+	^(anEntity queryIncoming: FamixTInvocation) opposites
+		allSatisfy: [ :invoker | deadEntities includes: invoker ]
 ]
 
 { #category : 'accessing' }
@@ -143,10 +168,13 @@ MiDeadCodeBrowserModel >> oneRoundRecursion [
 	addNewDead := false.
 
 	self deadEntities clone do: [ :dead |
-			(dead queryOutgoing: FamixTInvocation) opposites do: [ :invoked |
-					(self isNewDead: invoked) ifTrue: [
-							deadEntities add: invoked.
-							addNewDead := true ] ] ].
+		(dead queryOutgoing: FamixTInvocation) opposites do: [ :invoked |
+			(self isNewDead: invoked) ifTrue: [
+				deadEntities add: invoked.
+				addNewDead := true
+			]
+		]
+	].
 
 	^ addNewDead
 ]
@@ -158,48 +186,21 @@ MiDeadCodeBrowserModel >> recursionComputation [
 		whileTrue
 ]
 
-{ #category : 'actions' }
-MiDeadCodeBrowserModel >> rejectHeuristics [
-	"remove all heuristics selected by the user in listHeuristicsSelected from
-	 the internal list of selectedHeuristics"
-
-	| reject |
-	reject := browser heuristicColumn listHeuristicsSelected selectedItems clone.
-
-	selectedHeuristics removeAll: reject.
-	browser updateHeuristicSelection
-]
-
-{ #category : 'actions' }
-MiDeadCodeBrowserModel >> selectHeuristics [
-	"add all heuristics selected by the user in listHeuristicsOffered to
-	 the internal list of selectedHeuristics"
-
-	selectedHeuristics := (selectedHeuristics union:
-		browser heuristicColumn listHeuristicsOffered selectedItems).
-	self sortHeuristics.
-	browser updateHeuristicSelection
-]
-
-{ #category : 'accessing' }
-MiDeadCodeBrowserModel >> selectedHeuristics [
-
-	^selectedHeuristics 
-]
-
-{ #category : 'settings' }
+{ #category : 'settings management' }
 MiDeadCodeBrowserModel >> settings [
+	"no settings"
 
 ]
 
 { #category : 'actions' }
-MiDeadCodeBrowserModel >> sortHeuristics [
-	"sorts refuting heuristics before asserting ones.
-	 if of the samecategory, sort on their names"
+MiDeadCodeBrowserModel >> unchooseHeuristics: heuristicCollection [
+	"remove all of heuristicCollection from the internal list of chosenHeuristics"
 
-	selectedHeuristics sort: [ :a :b |
-		(a refuteDead = b refuteDead)
-			ifTrue: [ a name < b name ]
-			ifFalse: [ a refuteDead ]
-		]
+	chosenHeuristics removeAll: heuristicCollection.
+	browser updateChosenHeuristics
+]
+
+{ #category : 'settings management' }
+MiDeadCodeBrowserModel >> updateFromConfiguration: aConfiguration [
+	"no settings"
 ]

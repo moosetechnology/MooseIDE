@@ -44,6 +44,7 @@ MiDeadCodeBrowserResultColum >> defaultLayout [
 MiDeadCodeBrowserResultColum >> initializePresenters [
 
 	lstDeadMethods := self newList
+		display: #mooseName ;
 		sortingBlock: #mooseName ascending.
 
 	btnFirstRound := self newButton
@@ -92,12 +93,12 @@ MiDeadCodeBrowserResultColum >> update [
 	lstDeadMethods items: deads.
 	lblDeadMethods label: deads size asString , ' dead entities'.
 
-	btnFirstRound enabled: (self specModel selectedHeuristics isNotEmpty).
+	btnFirstRound enabled: (self specModel chosenHeuristics isNotEmpty).
 	btnRecursive enabled: (deads isNotEmpty)
 ]
 
 { #category : 'actions' }
-MiDeadCodeBrowserResultColum >> updateHeuristicSelection [
+MiDeadCodeBrowserResultColum >> updateChosenHeuristics [
 
-	btnFirstRound enabled: (self specModel selectedHeuristics isNotEmpty)
+	btnFirstRound enabled: (self specModel chosenHeuristics isNotEmpty)
 ]
