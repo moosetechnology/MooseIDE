@@ -96,7 +96,7 @@ BaselineOfMooseIDE >> definePackages: spec [
 		package: 'MooseIDE-ArchitecturalMap' with: [ spec requires: #( 'MooseIDE-Visualization' ) ];
 		package: 'MooseIDE-ArchitecturalMap-Tests' with: [ spec requires: #( 'MooseIDE-ArchitecturalMap' 'MooseIDE-Tests' ) ];
 		package: 'MooseIDE-DeadCode' with: [ spec requires: #( 'MooseIDE-Core' ) ];
-		package: 'MooseIDE-DeadCode-Tests' with: [ spec requires: #( 'MooseIDE-DeadCode' ) ];		
+		package: 'MooseIDE-DeadCode-Tests' with: [ spec requires: #( 'MooseIDE-DeadCode' 'MooseIDE-Tests' ) ];		
 		package: 'MooseIDE-DSM' with: [ spec requires: #( 'MooseIDE-Visualization' 'AIHierarchicalClustering' ) ];
 		package: 'MooseIDE-DistributionMap' with: [ spec requires: #( 'MooseIDE-Visualization' 'AIHierarchicalClustering' ) ];
 		package: 'MooseIDE-Tests' with: [ spec requires: #( 'MooseIDE-Visualization' ) ];
@@ -118,7 +118,7 @@ BaselineOfMooseIDE >> definePackages: spec [
 		package: 'MooseIDE-LayerVisualization' with: [ spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' 'MooseIDE-QueriesDashboard' ) ];
 		package: 'MooseIDE-ClassBlueprint' with: [ spec requires: #( 'MooseIDE-Visualization' 'ClassBlueprint' ) ];
 		package: 'MooseIDE-Spotter';
-		package: 'MooseIDE-Core-Reporter';
+		package: 'MooseIDE-Core-Reporter' with: [ spec requires: #( 'MooseIDE-Core' ) ];
 		package: 'MooseIDE-Spotter-Tests' with: [ spec requires: #( 'MooseIDE-Spotter' ) ];
 		package: 'MooseIDE-Analysis' with: [ spec requires: #( 'MooseIDE-Core' ) ].
 
