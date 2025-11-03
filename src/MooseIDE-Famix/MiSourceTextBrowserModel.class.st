@@ -69,7 +69,7 @@ MiSourceTextBrowserModel >> createHighlightsFor: anEntity [
 ]
 
 { #category : 'highlights' }
-MiSourceTextBrowserModel >> createKeywordHighlights [
+MiSourceTextBrowserModel >> createLanguageKeywordHighlights [
 	"search for all sourceLanguage keywords in the displayedText and highlight them
 	There are several guard conditions because this feature is work in progress and
 	not all language implement it"
