@@ -15,7 +15,7 @@ New Tools for Moose
 4. (optionally change **Image name:**)
 5. **Create image**
 
-![Screen capture of Pharo Launcher to make MooseIDE image](<img width="964" height="572" src="https://github.com/user-attachments/assets/2fafecbc-df09-4ab2-921c-0f1fe12e511d"/>)
+![Screen capture of Pharo Launcher to make MooseIDE image](https://github.com/user-attachments/assets/2fafecbc-df09-4ab2-921c-0f1fe12e511d)
 
 ### From latest Pharo Image
 
