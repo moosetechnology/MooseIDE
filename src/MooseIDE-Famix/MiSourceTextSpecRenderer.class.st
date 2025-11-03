@@ -20,9 +20,11 @@ Class {
 
 { #category : 'formatting' }
 MiSourceTextSpecRenderer >> applyCommentHighlight: aHighlight [
-	"put comments in grey"
+	"remove all other attributes on comments and set color attribute to grey"
 
-	formatedText 
+	self clearFormatingFrom: aHighlight from to: aHighlight to.
+
+	formatedText
 		addAttribute: TextColor gray
 		from: aHighlight from
 		to: aHighlight to.
@@ -95,6 +97,12 @@ MiSourceTextSpecRenderer >> browser [
 MiSourceTextSpecRenderer >> clearFormating [
 
 	formatedText := formatedText asString asText
+]
+
+{ #category : 'formatting' }
+MiSourceTextSpecRenderer >> clearFormatingFrom: start to: stop [
+
+	formatedText := formatedText copyReplaceFrom: start to: stop with: (formatedText copyFrom: start to: stop) asString
 ]
 
 { #category : 'actions' }
