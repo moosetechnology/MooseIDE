@@ -136,9 +136,8 @@ MiSourceTextBrowserTest >> testHighlightJavaComment [
 
 	| entity displayedText |
 	entity := FamixJavaClass new
-		          name: 'aClass';
-		          sourceAnchor:
-			          (self stubIndexedAnchorText: 'code of aClass {
+		name: 'aClass';
+		sourceAnchor: (self stubIndexedAnchorText: 'code of aClass {
 	/* this is a Java comment */
 }').
 	FamixJavaComment new
