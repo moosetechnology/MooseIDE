@@ -139,12 +139,6 @@ MiSourceTextBrowser >> open [
 ]
 
 { #category : 'formatting' }
-MiSourceTextBrowser >> reRenderText [ 
-
-	textRenderer reRenderText
-]
-
-{ #category : 'formatting' }
 MiSourceTextBrowser >> renderTextFor: anEntity [
 
 	textRenderer renderTextFor: anEntity
