@@ -61,15 +61,6 @@ MiDeadCodeBrowserModelTest >> javaMethod: methName annotatedWith: annotationName
 ]
 
 { #category : 'running' }
-MiDeadCodeBrowserModelTest >> modelWithHeuristic: aCollection [
-
-	model initializeHeuristics.
-	model selectedHeuristics addAll: aCollection.
-	model sortHeuristics.
-
-]
-
-{ #category : 'running' }
 MiDeadCodeBrowserModelTest >> pharoClass: aClass inheritFrom: superclassName [
 
 	FamixStInheritance new
@@ -128,7 +119,8 @@ MiDeadCodeBrowserModelTest >> setUp [
 { #category : 'tests' }
 MiDeadCodeBrowserModelTest >> testFirstRoundDeadNotRefuted [
 
-	self modelWithHeuristic: { MiDeadCodeNamingConventionHeuristic new }.
+	model initializeHeuristics.
+	model chooseHeuristics: { MiDeadCodeNamingConventionHeuristic new }.
 
 	model followEntity: { self pharoMethod: 'whateverFunctionality' inClass: 'IsAClassTest' }.
 
@@ -161,7 +153,7 @@ MiDeadCodeBrowserModelTest >> testFirstRoundOneDead [
 MiDeadCodeBrowserModelTest >> testFirstRoundRefutedDead [
 	"entity is not invoked, but it should be considered a test method"
 
-	self modelWithHeuristic: { MiDeadCodeNamingConventionHeuristic new }.
+	model chooseHeuristics: { MiDeadCodeNamingConventionHeuristic new }.
 
 	model followEntity: { self pharoMethod: 'testWhateverFunctionality' inClass: 'IsAClassTest' }.
 
@@ -174,7 +166,7 @@ MiDeadCodeBrowserModelTest >> testFirstRoundRefutedDead [
 MiDeadCodeBrowserModelTest >> testGatherHeuristicsList [
 	"Expected number must be updated according to number of non abstract heuristics classes"
 
-	self assert: model gatherHeuristics size equals: 8
+	self assert: model availableHeuristics size equals: 8
 ]
 
 { #category : 'tests' }
@@ -326,16 +318,15 @@ MiDeadCodeBrowserModelTest >> testRecursionRoundInvokedByNotDead [
 
 { #category : 'tests' }
 MiDeadCodeBrowserModelTest >> testSortHeuristics [
-	"entity is not invoked, but it should be considered a test method"
 
-	self modelWithHeuristic: {
+	model chooseHeuristics: {
 		MiDeadCodeJavaImplementedInterfaceHeuristic new .
 		MiDeadCodeJavaTestAnnotationHeuristic new }.
 
-	self assert: model selectedHeuristics size equals: 3.
-	self assert: model selectedHeuristics first  class equals: MiDeadCodeJavaImplementedInterfaceHeuristic.
-	self assert: model selectedHeuristics second class equals: MiDeadCodeJavaTestAnnotationHeuristic.
-	self assert: model selectedHeuristics third  class equals: MiDeadCodeNoIncomingInvocationHeuristic.
+	self assert: model chosenHeuristics size equals: 3.
+	self assert: model chosenHeuristics first  class equals: MiDeadCodeJavaImplementedInterfaceHeuristic.
+	self assert: model chosenHeuristics second class equals: MiDeadCodeJavaTestAnnotationHeuristic.
+	self assert: model chosenHeuristics third  class equals: MiDeadCodeNoIncomingInvocationHeuristic.
 ]
 
 { #category : 'tests - heuristics' }
