@@ -223,8 +223,8 @@ MiSourceTextBrowserModel >> prepareFormating: aString [
 
 	shouldHighlightChildren
 		ifTrue: [
-				self createHighlightsFor: self selectedEntity.
-				self createKeywordHighlights ]
+			self createLanguageKeywordHighlights.
+			self createHighlightsFor: self selectedEntity ]
 		ifFalse: [ self resetHighlights ]
 ]
 
