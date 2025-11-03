@@ -49,6 +49,8 @@ MiSourceTextBrowserModel >> commentHighlightFor: aComment [
 
 { #category : 'highlights' }
 MiSourceTextBrowserModel >> createHighlightsFor: anEntity [
+	"note: checks if anEntity is a comment first
+	 if so: apply comment formatting, and leave to not add any other one"
 
 	(anEntity class usesFamixTrait: FamixTComment) ifTrue: [
 			self commentHighlightFor: anEntity.
