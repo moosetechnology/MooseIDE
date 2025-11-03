@@ -1,6 +1,6 @@
 Extension { #name : 'RSLayout' }
 
-{ #category : '*MooseIDE-Dependency' }
+{ #category : '*MooseIDE-Visualization' }
 RSLayout class >> layoutDescription [
 
 	^ self comment
@@ -8,7 +8,7 @@ RSLayout class >> layoutDescription [
 		ifNotNil: [ :classComment | classComment lines first ]
 ]
 
-{ #category : '*MooseIDE-Dependency' }
+{ #category : '*MooseIDE-Visualization' }
 RSLayout class >> layoutName [
 	"remove 'RS' prefix and 'Layout' suffix"
 
