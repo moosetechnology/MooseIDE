@@ -159,6 +159,28 @@ MiSourceTextBrowserTest >> testHighlightJavaComment [
 ]
 
 { #category : 'tests - highlighting' }
+MiSourceTextBrowserTest >> testHighlightJavaKeywords [
+
+	| entity displayedText |
+	entity := FamixJavaClass new
+		name: 'aClass' ;
+		mooseModel: FamixJavaModel new ;
+		sourceAnchor: (self stubIndexedAnchorText: 'public class aClass { }').
+	entity mooseModel sourceLanguage: FamixJavaSourceLanguage new.
+
+	browser followEntity: entity.
+
+	displayedText := self textRenderer formatedText.
+
+	self deny: displayedText unembellished.
+
+	8 to: 12 do: [ :i |
+		self assert: ((displayedText attributesAt: i) anySatisfy: [ :att |
+			 att class = TextColor and: [ att color = Color magenta ] ]) ].
+
+]
+
+{ #category : 'tests - highlighting' }
 MiSourceTextBrowserTest >> testHighlightNoAnchor [
 	| entity displayedText |
 	entity := FamixStClass new
@@ -192,6 +214,36 @@ MiSourceTextBrowserTest >> testHighlightNoChild [
 	self assert: (displayedText attributesAt: 20) isEmpty.
 	self assert: (displayedText attributesAt: 30) isEmpty.
 
+]
+
+{ #category : 'tests - highlighting' }
+MiSourceTextBrowserTest >> testHighlightNoKeywordInComment [
+
+	| entity displayedText |
+	entity := FamixJavaClass new
+		name: 'aClass' ;
+		mooseModel: FamixJavaModel new ;
+		sourceAnchor: (self stubIndexedAnchorText: 'public class aClass {
+	/* this word "class" is not a keyword */
+}').
+	entity mooseModel sourceLanguage: FamixJavaSourceLanguage new.
+	FamixJavaComment new
+		sourceAnchor: (self stubIndexedAnchorText: 'this word "class" is not a keyword');
+		commentedEntity: entity;
+		sourceAnchor: (self stubIndexedAnchorText: #whatever positions: 24 @ 63).
+
+	browser followEntity: entity.
+
+	displayedText := self textRenderer formatedText.
+
+	self assert: (displayedText attributesAt: 33) size equals: 1.
+	self assert: (displayedText attributesAt: 33) anyOne class equals: TextColor.
+	self assert: (displayedText attributesAt: 33) anyOne color equals: Color gray.
+	
+	"40 is in the middle of the word 'class' in the comment"
+	self assert: (displayedText attributesAt: 40) size equals: 1.
+	self assert: (displayedText attributesAt: 40) anyOne class equals: TextColor.
+	self assert: (displayedText attributesAt: 40) anyOne color equals: Color gray.
 ]
 
 { #category : 'tests - highlighting' }
