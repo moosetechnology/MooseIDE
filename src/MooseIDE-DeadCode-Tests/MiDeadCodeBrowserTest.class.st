@@ -214,18 +214,18 @@ MiDeadCodeBrowserTest >> testInitializeCandidateEntityList [
 ]
 
 { #category : 'tests' }
-MiDeadCodeBrowserTest >> testInitializeHeuristicsList [
-
-	self assert: self browserOfferedHeuristicsListPresenter items isNotEmpty
-]
-
-{ #category : 'tests' }
-MiDeadCodeBrowserTest >> testInitializeSelectedHeuristicsList [
+MiDeadCodeBrowserTest >> testInitializeChosenHeuristicsList [
 	"by default, there is one selected heuristics: `MiDeadCodeNoIncomingInvocationHeuristic`
 	 see also: MiDeadCodeAbstractHeuristic >> selectedByDefault"
 
 	self assert: self browserChosenHeuristicsListPresenter items size equals: 1.
 
+]
+
+{ #category : 'tests' }
+MiDeadCodeBrowserTest >> testInitializeHeuristicsList [
+
+	self assert: self browserOfferedHeuristicsListPresenter items isNotEmpty
 ]
 
 { #category : 'tests' }
