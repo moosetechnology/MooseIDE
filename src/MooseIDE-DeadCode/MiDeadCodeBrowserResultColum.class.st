@@ -14,18 +14,6 @@ Class {
 	#package : 'MooseIDE-DeadCode'
 }
 
-{ #category : 'accessing - private tests' }
-MiDeadCodeBrowserResultColum >> buttonFirstRound [
-
-	^btnFirstRound 
-]
-
-{ #category : 'accessing - private tests' }
-MiDeadCodeBrowserResultColum >> buttonRecursiveRound [
-
-	^btnRecursive 
-]
-
 { #category : 'layout' }
 MiDeadCodeBrowserResultColum >> defaultLayout [
 
@@ -59,18 +47,6 @@ MiDeadCodeBrowserResultColum >> initializePresenters [
 
 	lblDeadMethods := self newLabel
 		label: '0 dead entities'
-]
-
-{ #category : 'accessing - private tests' }
-MiDeadCodeBrowserResultColum >> labelDeadEntities [
-
-	^lblDeadMethods 
-]
-
-{ #category : 'accessing - private tests' }
-MiDeadCodeBrowserResultColum >> listDeadEntities [
-
-	^lstDeadMethods 
 ]
 
 { #category : 'accessing' }

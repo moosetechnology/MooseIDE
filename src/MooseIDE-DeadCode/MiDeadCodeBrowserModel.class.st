@@ -183,7 +183,9 @@ MiDeadCodeBrowserModel >> oneRoundRecursion [
 MiDeadCodeBrowserModel >> recursionComputation [
 
 	[ self oneRoundRecursion ]
-		whileTrue
+		whileTrue.
+
+	browser updateDeadEntities
 ]
 
 { #category : 'settings management' }

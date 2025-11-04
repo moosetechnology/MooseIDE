@@ -2,26 +2,14 @@ Class {
 	#name : 'MiDeadCodeBrowserHeuristicColum',
 	#superclass : 'SpPresenter',
 	#instVars : [
-		'lstHeuristicsOffered',
 		'btnRejectHeuristic',
 		'btnChooseHeuristics',
-		'lstChosenHeuristics'
+		'lstChosenHeuristics',
+		'lstOfferedHeuristics'
 	],
 	#category : 'MooseIDE-DeadCode',
 	#package : 'MooseIDE-DeadCode'
 }
-
-{ #category : 'accessing - private tests' }
-MiDeadCodeBrowserHeuristicColum >> buttonChooseHeuristics [
-
-	^btnChooseHeuristics 
-]
-
-{ #category : 'accessing - private tests' }
-MiDeadCodeBrowserHeuristicColum >> buttonUnchooseHeuristics [
-
-	^btnRejectHeuristic 
-]
 
 { #category : 'accessing' }
 MiDeadCodeBrowserHeuristicColum >> chosenHeuristics: aCollection [
@@ -33,7 +21,7 @@ MiDeadCodeBrowserHeuristicColum >> chosenHeuristics: aCollection [
 MiDeadCodeBrowserHeuristicColum >> connectPresenters [
 
 	btnChooseHeuristics action: [
-		self specModel chooseHeuristics: lstHeuristicsOffered chosenHeuristics.
+		self specModel chooseHeuristics: lstOfferedHeuristics chosenHeuristics.
 		self resetSelection
 	].
 
@@ -49,7 +37,7 @@ MiDeadCodeBrowserHeuristicColum >> defaultLayout [
 
 	^SpBoxLayout newTopToBottom
 		add: 'Available heuristics' expand: false ;
-		add: lstHeuristicsOffered expand: true ;
+		add: lstOfferedHeuristics expand: true ;
 		add: (SpBoxLayout newLeftToRight
 			add: btnChooseHeuristics ;
 			add: btnRejectHeuristic ;
@@ -63,7 +51,7 @@ MiDeadCodeBrowserHeuristicColum >> defaultLayout [
 { #category : 'initialization' }
 MiDeadCodeBrowserHeuristicColum >> initializePresenters [
 
-	lstHeuristicsOffered := self newHeuristicList
+	lstOfferedHeuristics := self newHeuristicList
 		items: self specModel availableHeuristics.
 
 	lstChosenHeuristics := self newHeuristicList
@@ -71,24 +59,12 @@ MiDeadCodeBrowserHeuristicColum >> initializePresenters [
 
 	btnChooseHeuristics := self newButton
 		label: 'v' ;
-		action: [ self specModel chooseHeuristics: lstHeuristicsOffered chosenHeuristics ].
+		action: [ self specModel chooseHeuristics: lstOfferedHeuristics chosenHeuristics ].
 
 	btnRejectHeuristic := self newButton
 		label: '^' ;
 		action: [ self specModel unchooseHeuristics: lstChosenHeuristics chosenHeuristics ].
 
-]
-
-{ #category : 'accessing - private tests' }
-MiDeadCodeBrowserHeuristicColum >> listHeuristicsChosen [ 
-
-	^lstChosenHeuristics
-]
-
-{ #category : 'accessing - private tests' }
-MiDeadCodeBrowserHeuristicColum >> listHeuristicsOffered [ 
-
-	^lstHeuristicsOffered 
 ]
 
 { #category : 'initialization' }
@@ -100,7 +76,7 @@ MiDeadCodeBrowserHeuristicColum >> newHeuristicList [
 { #category : 'actions' }
 MiDeadCodeBrowserHeuristicColum >> resetSelection [
 
-	lstHeuristicsOffered unselectAll.
+	lstOfferedHeuristics unselectAll.
 	lstChosenHeuristics unselectAll 
 ]
 

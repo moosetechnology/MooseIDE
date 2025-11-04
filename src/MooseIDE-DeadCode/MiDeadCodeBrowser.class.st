@@ -14,10 +14,6 @@ Class {
 	#superclass : 'MiAbstractBrowser',
 	#instVars : [
 		'lstMethod',
-		'lstHeuristicsOffered',
-		'lstHeuristicsChosen',
-		'btnSelectHeuristic',
-		'btnRejectHeuristic',
 		'lblAllMethods',
 		'resultColumn',
 		'heuristicColumn'
@@ -84,12 +80,6 @@ MiDeadCodeBrowser >> candidateEntiesColumnLayout [
 		yourself
 ]
 
-{ #category : 'accessing - private tests' }
-MiDeadCodeBrowser >> candidateEntities [
-
-	^lstMethod 
-]
-
 { #category : 'accessing' }
 MiDeadCodeBrowser >> candidateEntities: aCollection [
 
@@ -143,22 +133,10 @@ MiDeadCodeBrowser >> initializePresenters [
 	resultColumn := self instantiate: MiDeadCodeBrowserResultColum.
 ]
 
-{ #category : 'accessing - private tests' }
-MiDeadCodeBrowser >> labelCandidateEntities [
-
-	^lblAllMethods 
-]
-
 { #category : 'accessing' }
 MiDeadCodeBrowser >> miSelectedItem [
 
 	^specModel miSelectedItem 
-]
-
-{ #category : 'accessing' }
-MiDeadCodeBrowser >> resultColumn [
-
-	^resultColumn 
 ]
 
 { #category : 'TOREMOVE' }
