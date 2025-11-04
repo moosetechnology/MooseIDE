@@ -14,28 +14,56 @@ Class {
 MiDeadCodeJavaImplementedInterfaceHeuristic >> description [
 
 	^super description ,
-	'All concrete methods implementing a called interface method are assumed not-dead'
+	'All methods overriding an invoked method are assumed not-dead'
+]
+
+{ #category : 'testing' }
+MiDeadCodeJavaImplementedInterfaceHeuristic >> implementsInterfaceMethods: aTMethod [
+	"aTMethod implements methods declared in Java interfaces"
+
+	(aTMethod parentType mooseDescription allProperties
+		noneSatisfy: [ :fmProp | fmProp name = #interfaceImplementations ]) ifTrue: [ ^#() ].
+
+	aTMethod parentType interfaceImplementations ifEmpty: [ ^#() ].
+
+	^aTMethod parentType interfaceImplementations
+		flatCollect: [ :implementation |
+			implementation interface methods
+				select: [ :interfaceMethod | interfaceMethod signature = aTMethod signature]
+		].
+
 ]
 
 { #category : 'accessing' }
 MiDeadCodeJavaImplementedInterfaceHeuristic >> name [
 
-	^super name , 'Implemented interface'
+	^super name , 'Overriden invoked method'
 ]
 
 { #category : 'testing' }
 MiDeadCodeJavaImplementedInterfaceHeuristic >> notDead: aTMethod [
-	"metods implementing a Java interface method that is invoked are considered not dead
-	 the other one are 'dead' (refuting heuristic)"
 
-	(aTMethod parentType mooseDescription allProperties noneSatisfy: [ :fmProp | fmProp name = #interfaceImplementations ]) ifTrue: [ ^ false ].
+	(self implementsInterfaceMethods: aTMethod)
+		do: [ :interfaceMethod |
+			interfaceMethod incomingInvocations isNotEmpty ifTrue: [ ^true ]
+		].
 
-	aTMethod parentType interfaceImplementations ifEmpty: [ ^ false ].
-
-	aTMethod parentType interfaceImplementations do: [ :implementation |
-		implementation interface methods
-			detect: [ :interfaceMethod | interfaceMethod signature = aTMethod signature and: [ interfaceMethod incomingInvocations isNotEmpty ] ]
-			ifFound: [ :ignore | ^ true ] ].
+	(self overridesMethods: aTMethod)
+		do: [ :overridenMethod |
+			overridenMethod incomingInvocations isNotEmpty ifTrue: [ ^true ]
+		].
 
 	^ false
+]
+
+{ #category : 'testing' }
+MiDeadCodeJavaImplementedInterfaceHeuristic >> overridesMethods: aTMethod [
+	"aTMethod overridess methods defines in Java superclasses"
+
+	^aTMethod parentType superclassHierarchy
+		flatCollect: [ :superclass |
+			superclass methods
+				select: [ :overridenMethod | overridenMethod signature = aTMethod signature]
+		].
+
 ]
