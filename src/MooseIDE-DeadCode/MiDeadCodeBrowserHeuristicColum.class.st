@@ -11,18 +11,6 @@ Class {
 	#package : 'MooseIDE-DeadCode'
 }
 
-{ #category : 'accessing - private tests' }
-MiDeadCodeBrowserHeuristicColum >> buttonChooseHeuristics [
-
-	^btnChooseHeuristics 
-]
-
-{ #category : 'accessing - private tests' }
-MiDeadCodeBrowserHeuristicColum >> buttonUnchooseHeuristics [
-
-	^btnRejectHeuristic 
-]
-
 { #category : 'accessing' }
 MiDeadCodeBrowserHeuristicColum >> chosenHeuristics: aCollection [
 
@@ -77,12 +65,6 @@ MiDeadCodeBrowserHeuristicColum >> initializePresenters [
 		label: '^' ;
 		action: [ self specModel unchooseHeuristics: lstChosenHeuristics chosenHeuristics ].
 
-]
-
-{ #category : 'accessing - private tests' }
-MiDeadCodeBrowserHeuristicColum >> listHeuristicsOffered [ 
-
-	^lstHeuristicsOffered 
 ]
 
 { #category : 'initialization' }

@@ -6,6 +6,13 @@ Class {
 }
 
 { #category : 'running' }
+MiDeadCodeBrowserTest >> browserChooseHeuristicsButtonPresenter [
+
+	^(browser presenterAt: #heuristicColumn)
+		presenterAt: #btnChooseHeuristics
+]
+
+{ #category : 'running' }
 MiDeadCodeBrowserTest >> browserChosenHeuristicsListPresenter [
 
 	^(browser presenterAt: #heuristicColumn)
@@ -40,10 +47,24 @@ MiDeadCodeBrowserTest >> browserFirstRoundButtonPresenter [
 ]
 
 { #category : 'running' }
+MiDeadCodeBrowserTest >> browserOfferedHeuristicsListPresenter [
+
+	^(browser presenterAt: #heuristicColumn)
+		presenterAt: #lstOfferedHeuristics
+]
+
+{ #category : 'running' }
 MiDeadCodeBrowserTest >> browserRecursiveRoundButtonPresenter [
 
 	^(browser presenterAt: #resultColumn)
 		presenterAt: #btnRecursive
+]
+
+{ #category : 'running' }
+MiDeadCodeBrowserTest >> browserUnChooseHeuristicsButtonPresenter [
+
+	^(browser presenterAt: #heuristicColumn)
+		presenterAt: #btnRejectHeuristic
 ]
 
 { #category : 'running' }
@@ -90,14 +111,14 @@ MiDeadCodeBrowserTest >> testButtonChooseHeuristics [
 
 	heuristicToSelect := (browser specModel availableHeuristics \ browser specModel chosenHeuristics)
 		anyOne.
-	itemToSelect := browser heuristicColumn listHeuristicsOffered items
+	itemToSelect := self browserOfferedHeuristicsListPresenter items
 		detect: [ :item |
 			item heuristic = heuristicToSelect ].
 
 	numberChosen := browser specModel chosenHeuristics size.
 
-	browser heuristicColumn listHeuristicsOffered selectItem: itemToSelect.
-	browser heuristicColumn buttonChooseHeuristics click.
+	self browserOfferedHeuristicsListPresenter selectItem: itemToSelect.
+	self browserChooseHeuristicsButtonPresenter click.
 
 	self assert: browser specModel chosenHeuristics size equals: numberChosen + 1
 ]
@@ -129,13 +150,13 @@ MiDeadCodeBrowserTest >> testCannotPropagateAtInitialization [
 { #category : 'tests' }
 MiDeadCodeBrowserTest >> testChoosingHeuristicsResetsSelection [
 
-	browser heuristicColumn listHeuristicsOffered selectIndex: 1.
+	self browserOfferedHeuristicsListPresenter selectIndex: 1.
 
-	self assert: browser heuristicColumn listHeuristicsOffered selectedItems size equals: 1.
+	self assert: self browserOfferedHeuristicsListPresenter selectedItems size equals: 1.
 
-	browser heuristicColumn buttonChooseHeuristics click.
+	self browserChooseHeuristicsButtonPresenter click.
 
-	self assert: browser heuristicColumn listHeuristicsOffered selectedItems size equals: 0
+	self assert: self browserOfferedHeuristicsListPresenter selectedItems size equals: 0
 ]
 
 { #category : 'tests' }
@@ -170,7 +191,7 @@ MiDeadCodeBrowserTest >> testInitializeCandidateEntityList [
 { #category : 'tests' }
 MiDeadCodeBrowserTest >> testInitializeHeuristicsList [
 
-	self assert: browser heuristicColumn listHeuristicsOffered items isNotEmpty
+	self assert: self browserOfferedHeuristicsListPresenter items isNotEmpty
 ]
 
 { #category : 'tests' }
@@ -198,7 +219,7 @@ MiDeadCodeBrowserTest >> testUnchooseHeuristic [
 	"by default, there is one selected heuristics"
 
 	self browserChosenHeuristicsListPresenter selectIndex: 1.
-	browser heuristicColumn buttonUnchooseHeuristics click.
+	self browserUnChooseHeuristicsButtonPresenter click.
 
 	self assert: self browserChosenHeuristicsListPresenter items size equals: 0
 ]
