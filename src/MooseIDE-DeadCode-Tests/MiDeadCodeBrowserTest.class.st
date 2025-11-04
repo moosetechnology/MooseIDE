@@ -6,6 +6,18 @@ Class {
 }
 
 { #category : 'running' }
+MiDeadCodeBrowserTest >> browserCandidateEntitiesLabelPresenter [
+
+	^browser presenterAt: #lblAllMethods
+]
+
+{ #category : 'running' }
+MiDeadCodeBrowserTest >> browserCandidateEntitiesListPresenter [
+
+	^browser presenterAt: #lstMethod
+]
+
+{ #category : 'running' }
 MiDeadCodeBrowserTest >> browserChooseHeuristicsButtonPresenter [
 
 	^(browser presenterAt: #heuristicColumn)
@@ -174,7 +186,18 @@ MiDeadCodeBrowserTest >> testEnabledFirstRoundButton [
 	"with a selected heuristics, '1st-round' button is enabled"
 
 	browser updateChosenHeuristics.
+
 	self assert: self browserFirstRoundButtonPresenter isEnabled
+]
+
+{ #category : 'tests' }
+MiDeadCodeBrowserTest >> testInitializeCandidateEntityLabel [
+
+	| mooseModel |
+	mooseModel := FamixStModel new.
+	self populateBrowser: mooseModel.
+
+	self assert: self browserCandidateEntitiesLabelPresenter label equals: '2 entities'
 ]
 
 { #category : 'tests' }
@@ -184,8 +207,7 @@ MiDeadCodeBrowserTest >> testInitializeCandidateEntityList [
 	mooseModel := FamixStModel new.
 	self populateBrowser: mooseModel.
 
-	self assert: browser candidateEntities items isNotEmpty.
-	self assert: browser labelCandidateEntities label equals: '2 entities'
+	self assert: self browserCandidateEntitiesListPresenter items size equals: 2
 ]
 
 { #category : 'tests' }

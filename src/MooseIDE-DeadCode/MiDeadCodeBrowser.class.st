@@ -80,12 +80,6 @@ MiDeadCodeBrowser >> candidateEntiesColumnLayout [
 		yourself
 ]
 
-{ #category : 'accessing - private tests' }
-MiDeadCodeBrowser >> candidateEntities [
-
-	^lstMethod 
-]
-
 { #category : 'accessing' }
 MiDeadCodeBrowser >> candidateEntities: aCollection [
 
@@ -137,12 +131,6 @@ MiDeadCodeBrowser >> initializePresenters [
 
 	heuristicColumn := self instantiate: MiDeadCodeBrowserHeuristicColum.
 	resultColumn := self instantiate: MiDeadCodeBrowserResultColum.
-]
-
-{ #category : 'accessing - private tests' }
-MiDeadCodeBrowser >> labelCandidateEntities [
-
-	^lblAllMethods 
 ]
 
 { #category : 'accessing' }
