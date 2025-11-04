@@ -12,6 +12,34 @@ MiDeadCodeBrowserTest >> browserClass [
 ]
 
 { #category : 'running' }
+MiDeadCodeBrowserTest >> browserDeadEntitiesLabelPresenter [
+
+	^(browser presenterAt: #resultColumn)
+		presenterAt: #lblDeadMethods
+]
+
+{ #category : 'running' }
+MiDeadCodeBrowserTest >> browserDeadEntitiesListPresenter [
+
+	^(browser presenterAt: #resultColumn)
+		presenterAt: #lstDeadMethods
+]
+
+{ #category : 'running' }
+MiDeadCodeBrowserTest >> browserFirstRoundButtonPresenter [
+
+	^(browser presenterAt: #resultColumn)
+		presenterAt: #btnFirstRound
+]
+
+{ #category : 'running' }
+MiDeadCodeBrowserTest >> browserRecursiveRoundButtonPresenter [
+
+	^(browser presenterAt: #resultColumn)
+		presenterAt: #btnRecursive
+]
+
+{ #category : 'running' }
 MiDeadCodeBrowserTest >> populateBrowser: mooseModel [
 
 	mooseModel newMethodNamed: 'aMethod'.
@@ -31,6 +59,18 @@ MiDeadCodeBrowserTest >> testActivateActionButtons [
 	self receiveEntityToSelect.
 
 	browser actionButtons do: [ :button | self deny: button isEnabled ]
+]
+
+{ #category : 'tests' }
+MiDeadCodeBrowserTest >> testActivateRecursiveRoundButton [
+
+	self deny: self browserRecursiveRoundButtonPresenter isEnabled.
+
+	browser specModel deadEntities addAll: { FamixStMethod new . FamixStMethod new }.
+	browser updateDeadEntities.
+
+	self assert: self browserRecursiveRoundButtonPresenter isEnabled.
+
 ]
 
 { #category : 'tests' }
@@ -93,20 +133,20 @@ MiDeadCodeBrowserTest >> testChoosingHeuristicsResetsSelection [
 
 { #category : 'tests' }
 MiDeadCodeBrowserTest >> testDisabledFirstRoundButton [
-	"without selected heuristics, 1st-round button is disabled"
+	"without selected heuristics, '1st-round' button is disabled"
 
 	browser specModel clearChosenHeuristics.
 	browser updateChosenHeuristics.
 
-	self deny: browser resultColumn buttonFirstRound isEnabled
+	self deny: self browserFirstRoundButtonPresenter isEnabled
 ]
 
 { #category : 'tests' }
 MiDeadCodeBrowserTest >> testEnabledFirstRoundButton [
-	"with a selected heuristics, 1st-round button is enabled"
+	"with a selected heuristics, '1st-round' button is enabled"
 
 	browser updateChosenHeuristics.
-	self assert: browser resultColumn buttonFirstRound isEnabled
+	self assert: self browserFirstRoundButtonPresenter isEnabled
 ]
 
 { #category : 'tests' }
@@ -136,6 +176,17 @@ MiDeadCodeBrowserTest >> testInitializeSelectedHeuristicsList [
 ]
 
 { #category : 'tests' }
+MiDeadCodeBrowserTest >> testRecursionButtonUpdatesDeadEntitiesList [
+
+	self assert: self browserDeadEntitiesListPresenter items size equals: 0.
+
+	browser specModel deadEntities addAll: { FamixStMethod new . FamixStMethod new }.
+	browser updateDeadEntities.
+
+	self assert: self browserDeadEntitiesListPresenter items size equals: 2.
+]
+
+{ #category : 'tests' }
 MiDeadCodeBrowserTest >> testUnchooseHeuristic [
 	"by default, there is one selected heuristics"
 
@@ -146,14 +197,23 @@ MiDeadCodeBrowserTest >> testUnchooseHeuristic [
 ]
 
 { #category : 'tests' }
-MiDeadCodeBrowserTest >> testUpdateDeadEntities [
+MiDeadCodeBrowserTest >> testUpdateDeadEntitiesLabel [
 
-	self assert: browser resultColumn listDeadEntities items size equals: 0.
-	self deny: browser resultColumn buttonRecursiveRound isEnabled.
+	self assert: self browserDeadEntitiesLabelPresenter label equals: '0 dead entities'.
 
 	browser specModel deadEntities addAll: { FamixStMethod new . FamixStMethod new }.
 	browser updateDeadEntities.
 
-	self assert: browser resultColumn listDeadEntities items size equals: 2.
-	self assert: browser resultColumn labelDeadEntities label equals: '2 dead entities'
+	self assert: self browserDeadEntitiesLabelPresenter label equals: '2 dead entities'
+]
+
+{ #category : 'tests' }
+MiDeadCodeBrowserTest >> testUpdateDeadEntitiesList [
+
+	self assert: self browserDeadEntitiesListPresenter items size equals: 0.
+
+	browser specModel deadEntities addAll: { FamixStMethod new . FamixStMethod new }.
+	browser updateDeadEntities.
+
+	self assert: self browserDeadEntitiesListPresenter items size equals: 2.
 ]

@@ -155,12 +155,6 @@ MiDeadCodeBrowser >> miSelectedItem [
 	^specModel miSelectedItem 
 ]
 
-{ #category : 'accessing' }
-MiDeadCodeBrowser >> resultColumn [
-
-	^resultColumn 
-]
-
 { #category : 'TOREMOVE' }
 MiDeadCodeBrowser >> toolbarHeight [
 
