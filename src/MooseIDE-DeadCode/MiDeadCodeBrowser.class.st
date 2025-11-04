@@ -14,10 +14,6 @@ Class {
 	#superclass : 'MiAbstractBrowser',
 	#instVars : [
 		'lstMethod',
-		'lstHeuristicsOffered',
-		'lstHeuristicsChosen',
-		'btnSelectHeuristic',
-		'btnRejectHeuristic',
 		'lblAllMethods',
 		'resultColumn',
 		'heuristicColumn'
