@@ -6,6 +6,13 @@ Class {
 }
 
 { #category : 'running' }
+MiDeadCodeBrowserTest >> browserChosenHeuristicsListPresenter [
+
+	^(browser presenterAt: #heuristicColumn)
+		presenterAt: #lstChosenHeuristics
+]
+
+{ #category : 'running' }
 MiDeadCodeBrowserTest >> browserClass [
 
 	^MiDeadCodeBrowser
@@ -171,7 +178,7 @@ MiDeadCodeBrowserTest >> testInitializeSelectedHeuristicsList [
 	"by default, there is one selected heuristics: `MiDeadCodeNoIncomingInvocationHeuristic`
 	 see also: MiDeadCodeAbstractHeuristic >> selectedByDefault"
 
-	self assert: browser heuristicColumn listHeuristicsChosen items size equals: 1.
+	self assert: self browserChosenHeuristicsListPresenter items size equals: 1.
 
 ]
 
@@ -190,10 +197,10 @@ MiDeadCodeBrowserTest >> testRecursionButtonUpdatesDeadEntitiesList [
 MiDeadCodeBrowserTest >> testUnchooseHeuristic [
 	"by default, there is one selected heuristics"
 
-	browser heuristicColumn listHeuristicsChosen selectIndex: 1.
+	self browserChosenHeuristicsListPresenter selectIndex: 1.
 	browser heuristicColumn buttonUnchooseHeuristics click.
 
-	self assert: browser heuristicColumn listHeuristicsChosen items size equals: 0
+	self assert: self browserChosenHeuristicsListPresenter items size equals: 0
 ]
 
 { #category : 'tests' }

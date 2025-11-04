@@ -80,12 +80,6 @@ MiDeadCodeBrowserHeuristicColum >> initializePresenters [
 ]
 
 { #category : 'accessing - private tests' }
-MiDeadCodeBrowserHeuristicColum >> listHeuristicsChosen [ 
-
-	^lstChosenHeuristics
-]
-
-{ #category : 'accessing - private tests' }
 MiDeadCodeBrowserHeuristicColum >> listHeuristicsOffered [ 
 
 	^lstHeuristicsOffered 
