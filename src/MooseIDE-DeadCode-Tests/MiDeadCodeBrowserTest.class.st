@@ -84,8 +84,11 @@ MiDeadCodeBrowserTest >> populateBrowser: mooseModel [
 
 	mooseModel newMethodNamed: 'aMethod'.
 	mooseModel newMethodNamed: 'anotherMethod'.
+	mooseModel newInvocation
+		sender: (mooseModel entityNamed: 'aMethod') ;
+		candidates: { mooseModel entityNamed: 'anotherMethod' }.
 
-	browser followEntity: mooseModel entities.
+	browser followEntity: mooseModel allMethods.
 
 ]
 
@@ -142,7 +145,7 @@ MiDeadCodeBrowserTest >> testCanPropagateAfterDeadComputation [
 	mooseModel := FamixStModel new.
 	self populateBrowser: mooseModel.
 
-	browser specModel deadEntities addAll: self mooseObjects.
+	browser specModel deadEntities addAll: mooseModel allMethods.
 
 	self assert: browser canPropagate.
 
