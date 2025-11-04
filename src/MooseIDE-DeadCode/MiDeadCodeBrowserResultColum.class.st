@@ -14,6 +14,18 @@ Class {
 	#package : 'MooseIDE-DeadCode'
 }
 
+{ #category : 'initialization' }
+MiDeadCodeBrowserResultColum >> connectPresenters [
+
+	lstDeadMethods
+		whenModelChangedDo: [ :new :old :evt | lstDeadMethods unselectAll ] ;
+		whenSelectionChangedDo: [ self specModel miSelectedItems: lstDeadMethods selectedItems ].
+
+	btnFirstRound action: [ self specModel firstRoundComputation].
+
+	btnRecursive action: [ self specModel recursionComputation].
+]
+
 { #category : 'layout' }
 MiDeadCodeBrowserResultColum >> defaultLayout [
 
@@ -32,18 +44,17 @@ MiDeadCodeBrowserResultColum >> defaultLayout [
 MiDeadCodeBrowserResultColum >> initializePresenters [
 
 	lstDeadMethods := self newList
+		beMultipleSelection ;
 		display: #mooseName ;
 		sortingBlock: #mooseName ascending.
 
 	btnFirstRound := self newButton
 		label: '1st round' ;
-		enabled: false ;
-		action: [ self specModel firstRoundComputation].
+		enabled: false.
 
 	btnRecursive := self newButton
 		label: 'recursion' ;
-		enabled: false ;
-		action: [ self specModel recursionComputation].
+		enabled: false.
 
 	lblDeadMethods := self newLabel
 		label: '0 dead entities'
