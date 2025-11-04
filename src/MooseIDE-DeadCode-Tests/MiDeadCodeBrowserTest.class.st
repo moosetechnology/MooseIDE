@@ -259,14 +259,42 @@ MiDeadCodeBrowserTest >> testInitializeHeuristicsList [
 ]
 
 { #category : 'tests' }
+MiDeadCodeBrowserTest >> testRecursionButtonUpdatesDeadEntitiesLabel [
+	"put calling method in the _model_'s list of dead entities
+	 the browser knows nothing about it yet, so 'Recursion' button is disabled and number of dead entities is 0
+	 then enable the button and click on it which updates the browser"
+
+	| mooseModel |
+	mooseModel := FamixStModel new.
+	self populateBrowser: mooseModel.
+	browser specModel deadEntities add: (mooseModel entityNamed: 'aMethod').
+
+	self assert: self browserDeadEntitiesLabelPresenter label equals: '0 dead entities'.
+
+	self browserRecursiveRoundButtonPresenter enabled: true.
+	self browserRecursiveRoundButtonPresenter click.
+
+	self assert: self browserDeadEntitiesLabelPresenter label equals: '2 dead entities'.
+
+]
+
+{ #category : 'tests' }
 MiDeadCodeBrowserTest >> testRecursionButtonUpdatesDeadEntitiesList [
+	"put calling method in the _model_'s list of dead entities
+	 the browser knows nothing about it yet, so 'Recursion' button is disabled
+	 then enable the button and click on it which updates the browser"
 
-	self assert: self browserDeadEntitiesListPresenter items size equals: 0.
+	| mooseModel |
+	mooseModel := FamixStModel new.
+	self populateBrowser: mooseModel.
+	browser specModel deadEntities add: (mooseModel entityNamed: 'aMethod').
 
-	browser specModel deadEntities addAll: { FamixStMethod new . FamixStMethod new }.
-	browser updateDeadEntities.
+	self browserRecursiveRoundButtonPresenter enabled: true.
+	self browserRecursiveRoundButtonPresenter click.
 
 	self assert: self browserDeadEntitiesListPresenter items size equals: 2.
+	self assert: (self browserDeadEntitiesListPresenter items anySatisfy: [ :mth | mth name = 'aMethod']).
+	self assert: (self browserDeadEntitiesListPresenter items anySatisfy: [ :mth | mth name = 'anotherMethod']).
 ]
 
 { #category : 'tests' }
