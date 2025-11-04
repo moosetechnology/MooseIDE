@@ -194,6 +194,36 @@ MiDeadCodeBrowserTest >> testEnabledFirstRoundButton [
 ]
 
 { #category : 'tests' }
+MiDeadCodeBrowserTest >> testFirstRoundButtonUpdatesDeadEntitiesLabel [
+
+	| mooseModel |
+	mooseModel := FamixStModel new.
+	self populateBrowser: mooseModel.
+
+	self assert: self browserDeadEntitiesLabelPresenter label equals: '0 dead entities'.
+
+	self browserFirstRoundButtonPresenter click.
+
+	self assert: self browserDeadEntitiesLabelPresenter label equals: '1 dead entities'.
+
+]
+
+{ #category : 'tests' }
+MiDeadCodeBrowserTest >> testFirstRoundButtonUpdatesDeadEntitiesList [
+
+	| mooseModel |
+	mooseModel := FamixStModel new.
+	self populateBrowser: mooseModel.
+
+	self assert: self browserDeadEntitiesListPresenter items size equals: 0.
+
+	self browserFirstRoundButtonPresenter click.
+
+	self assert: self browserDeadEntitiesListPresenter items size equals: 1.
+	self assert: self browserDeadEntitiesListPresenter items anyOne name equals: 'aMethod'.
+]
+
+{ #category : 'tests' }
 MiDeadCodeBrowserTest >> testInitializeCandidateEntityLabel [
 
 	| mooseModel |
@@ -247,26 +277,4 @@ MiDeadCodeBrowserTest >> testUnchooseHeuristic [
 	self browserUnChooseHeuristicsButtonPresenter click.
 
 	self assert: self browserChosenHeuristicsListPresenter items size equals: 0
-]
-
-{ #category : 'tests' }
-MiDeadCodeBrowserTest >> testUpdateDeadEntitiesLabel [
-
-	self assert: self browserDeadEntitiesLabelPresenter label equals: '0 dead entities'.
-
-	browser specModel deadEntities addAll: { FamixStMethod new . FamixStMethod new }.
-	browser updateDeadEntities.
-
-	self assert: self browserDeadEntitiesLabelPresenter label equals: '2 dead entities'
-]
-
-{ #category : 'tests' }
-MiDeadCodeBrowserTest >> testUpdateDeadEntitiesList [
-
-	self assert: self browserDeadEntitiesListPresenter items size equals: 0.
-
-	browser specModel deadEntities addAll: { FamixStMethod new . FamixStMethod new }.
-	browser updateDeadEntities.
-
-	self assert: self browserDeadEntitiesListPresenter items size equals: 2.
 ]
