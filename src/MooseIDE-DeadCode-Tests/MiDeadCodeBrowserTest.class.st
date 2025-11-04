@@ -117,6 +117,18 @@ MiDeadCodeBrowserTest >> testActivateRecursiveRoundButton [
 ]
 
 { #category : 'tests' }
+MiDeadCodeBrowserTest >> testAllDeadEntitiesAreMiSelected [
+
+	self assert: browser miSelectedItem size equals: 0.
+
+	browser specModel deadEntities addAll: { FamixStMethod new . FamixStMethod new }.
+	browser updateDeadEntities.
+
+	self assert: browser miSelectedItem size equals: 2.
+
+]
+
+{ #category : 'tests' }
 MiDeadCodeBrowserTest >> testButtonChooseHeuristics [
 	"by default, there is only one chosen heuristics
 	 Select anyOne and add it to the chosen
@@ -256,6 +268,45 @@ MiDeadCodeBrowserTest >> testInitializeChosenHeuristicsList [
 MiDeadCodeBrowserTest >> testInitializeHeuristicsList [
 
 	self assert: self browserOfferedHeuristicsListPresenter items isNotEmpty
+]
+
+{ #category : 'tests' }
+MiDeadCodeBrowserTest >> testOnlySelectedDeadEntitiesAreMiSelected [
+	"If one entity is selected in result column, only this one is miSelected"
+
+	self assert: browser miSelectedItem size equals: 0.
+
+	browser specModel deadEntities addAll: { FamixStMethod new . FamixStMethod new }.
+	browser updateDeadEntities.
+
+	self browserDeadEntitiesListPresenter selectIndex: 1.
+
+	self assert: browser miSelectedItem size equals: 1.
+
+]
+
+{ #category : 'tests' }
+MiDeadCodeBrowserTest >> testRecursionButtonUResetsSelectedDeadEntities [
+	"put the calling method in the list of dead entities
+	 select it (it is 'miSelected')
+	 click on 'Recursion' that adds the anotherMethod tot he deads
+	 the previously selected methods should not be anymore"
+
+	| mooseModel |
+	mooseModel := FamixStModel new.
+	self populateBrowser: mooseModel.
+	browser specModel deadEntities add: (mooseModel entityNamed: 'aMethod').
+	browser updateDeadEntities.	
+	self browserDeadEntitiesListPresenter selectIndex: 1.
+
+	self assert: browser miSelectedItem size equals: 1.
+
+	self browserRecursiveRoundButtonPresenter enabled: true.
+	self browserRecursiveRoundButtonPresenter click.
+
+	self assert: self browserDeadEntitiesListPresenter selectedItems size equals: 0.
+	self assert: browser miSelectedItem size equals: 2.
+
 ]
 
 { #category : 'tests' }

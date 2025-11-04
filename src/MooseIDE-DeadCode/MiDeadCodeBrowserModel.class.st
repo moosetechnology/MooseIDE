@@ -10,7 +10,8 @@ Class {
 		'deadEntities',
 		'candidateEntities',
 		'chosenHeuristics',
-		'availableHeuristics'
+		'availableHeuristics',
+		'selectedDeadEntities'
 	],
 	#category : 'MooseIDE-DeadCode',
 	#package : 'MooseIDE-DeadCode'
@@ -133,7 +134,8 @@ MiDeadCodeBrowserModel >> initialize [
 	super initialize.
 
 	self initializeHeuristics.
-	deadEntities := OrderedCollection new
+	deadEntities := OrderedCollection new.
+	selectedDeadEntities := #()
 ]
 
 { #category : 'initialization' }
@@ -158,7 +160,13 @@ MiDeadCodeBrowserModel >> isNewDead: anEntity [
 { #category : 'accessing' }
 MiDeadCodeBrowserModel >> miSelectedItem [
 
-	^deadEntities 
+	^selectedDeadEntities ifEmpty: [ deadEntities ] 
+]
+
+{ #category : 'accessing' }
+MiDeadCodeBrowserModel >> miSelectedItems: aCollection [
+
+	selectedDeadEntities := aCollection 
 ]
 
 { #category : 'actions' }
