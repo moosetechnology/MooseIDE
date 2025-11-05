@@ -5,8 +5,9 @@ Adds 'Java:' to the description
 Class {
 	#name : 'MiDeadCodeAbstractJavaHeuristic',
 	#superclass : 'MiDeadCodeAbstractHeuristic',
-	#category : 'MooseIDE-DeadCode',
-	#package : 'MooseIDE-DeadCode'
+	#category : 'MooseIDE-DeadCode-Rules',
+	#package : 'MooseIDE-DeadCode',
+	#tag : 'Rules'
 }
 
 { #category : 'accessing' }

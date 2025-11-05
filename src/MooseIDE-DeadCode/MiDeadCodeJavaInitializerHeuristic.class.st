@@ -7,8 +7,9 @@ But rules cannot model this, so we just assume they are not-dead by default
 Class {
 	#name : 'MiDeadCodeJavaInitializerHeuristic',
 	#superclass : 'MiDeadCodeAbstractJavaHeuristic',
-	#category : 'MooseIDE-DeadCode',
-	#package : 'MooseIDE-DeadCode'
+	#category : 'MooseIDE-DeadCode-Rules',
+	#package : 'MooseIDE-DeadCode',
+	#tag : 'Rules'
 }
 
 { #category : 'testing' }
