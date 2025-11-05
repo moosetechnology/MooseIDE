@@ -45,7 +45,7 @@ MiDeadCodeBrowser class >> menuPriority [
 { #category : 'world menu' }
 MiDeadCodeBrowser class >> newModel [
 
-	^ MiDeadCodeBrowserModel new
+	^ MiDeadCodeBrowserModelWithCallGraph new
 ]
 
 { #category : 'world menu' }

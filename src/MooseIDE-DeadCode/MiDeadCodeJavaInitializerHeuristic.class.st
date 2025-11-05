@@ -12,6 +12,12 @@ Class {
 	#tag : 'Rules'
 }
 
+{ #category : 'visiting' }
+MiDeadCodeJavaInitializerHeuristic >> accept: aTMethod [
+
+	^self notDead: aTMethod 
+]
+
 { #category : 'testing' }
 MiDeadCodeJavaInitializerHeuristic >> classHasNonDefaultConstructor: aClass [
 
@@ -38,6 +44,12 @@ MiDeadCodeJavaInitializerHeuristic >> isDefaultConstructorWithOtherConstructors:
 	aTMethod parameters isEmpty ifFalse: [ ^false ].
 	^self classHasNonDefaultConstructor: aTMethod parentType
 
+]
+
+{ #category : 'accessing' }
+MiDeadCodeJavaInitializerHeuristic >> isForEntryPoint [
+
+	^true
 ]
 
 { #category : 'testing' }
