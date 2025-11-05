@@ -13,8 +13,9 @@ Class {
 		'availableHeuristics',
 		'selectedDeadEntities'
 	],
-	#category : 'MooseIDE-DeadCode',
-	#package : 'MooseIDE-DeadCode'
+	#category : 'MooseIDE-DeadCode-Model',
+	#package : 'MooseIDE-DeadCode',
+	#tag : 'Model'
 }
 
 { #category : 'accessing' }

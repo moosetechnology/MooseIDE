@@ -6,8 +6,9 @@ I a Java interface method is called, we assume any method implementing it in a c
 Class {
 	#name : 'MiDeadCodeJavaImplementedInterfaceHeuristic',
 	#superclass : 'MiDeadCodeAbstractJavaHeuristic',
-	#category : 'MooseIDE-DeadCode',
-	#package : 'MooseIDE-DeadCode'
+	#category : 'MooseIDE-DeadCode-Rules',
+	#package : 'MooseIDE-DeadCode',
+	#tag : 'Rules'
 }
 
 { #category : 'accessing' }

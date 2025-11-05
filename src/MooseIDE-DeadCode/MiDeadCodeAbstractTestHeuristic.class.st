@@ -11,8 +11,9 @@ All these heuristics are refuting that a method is dead, meaning:
 Class {
 	#name : 'MiDeadCodeAbstractTestHeuristic',
 	#superclass : 'MiDeadCodeAbstractHeuristic',
-	#category : 'MooseIDE-DeadCode',
-	#package : 'MooseIDE-DeadCode'
+	#category : 'MooseIDE-DeadCode-Rules',
+	#package : 'MooseIDE-DeadCode',
+	#tag : 'Rules'
 }
 
 { #category : 'accessing' }

@@ -4,8 +4,9 @@ A heuristic to recognize 'public static void main()' function in Java
 Class {
 	#name : 'MiDeadCodeJavaMainHeuristic',
 	#superclass : 'MiDeadCodeAbstractJavaHeuristic',
-	#category : 'MooseIDE-DeadCode',
-	#package : 'MooseIDE-DeadCode'
+	#category : 'MooseIDE-DeadCode-Rules',
+	#package : 'MooseIDE-DeadCode',
+	#tag : 'Rules'
 }
 
 { #category : 'accessing' }

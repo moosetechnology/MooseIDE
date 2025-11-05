@@ -9,8 +9,9 @@ Class {
 	#instVars : [
 		'heuristic'
 	],
-	#category : 'MooseIDE-DeadCode',
-	#package : 'MooseIDE-DeadCode'
+	#category : 'MooseIDE-DeadCode-Browser',
+	#package : 'MooseIDE-DeadCode',
+	#tag : 'Browser'
 }
 
 { #category : 'instance creation' }

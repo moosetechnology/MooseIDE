@@ -7,8 +7,9 @@ ex: <script>, <example>. <inspectorPresentationOrder:title:>,...
 Class {
 	#name : 'MiDeadCodePharoPragmasHeuristic',
 	#superclass : 'MiDeadCodeAbstractHeuristic',
-	#category : 'MooseIDE-DeadCode',
-	#package : 'MooseIDE-DeadCode'
+	#category : 'MooseIDE-DeadCode-Rules',
+	#package : 'MooseIDE-DeadCode',
+	#tag : 'Rules'
 }
 
 { #category : 'accessing' }
