@@ -49,6 +49,12 @@ MiDeadCodeAbstractHeuristic >> isDead: aTMethod [
 ]
 
 { #category : 'accessing' }
+MiDeadCodeAbstractHeuristic >> isForEntryPoint [
+
+	^false
+]
+
+{ #category : 'accessing' }
 MiDeadCodeAbstractHeuristic >> name [
 
 	^self selectedByDefault

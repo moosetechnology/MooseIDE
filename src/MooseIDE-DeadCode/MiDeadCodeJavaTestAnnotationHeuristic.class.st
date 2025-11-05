@@ -27,6 +27,12 @@ MiDeadCodeJavaTestAnnotationHeuristic >> description [
 	 (@Test, @Before, @BeforeEach,...)'
 ]
 
+{ #category : 'accessing' }
+MiDeadCodeJavaTestAnnotationHeuristic >> isForEntryPoint [
+
+	^true
+]
+
 { #category : 'testing' }
 MiDeadCodeJavaTestAnnotationHeuristic >> junit4Annotations [
 	"from https://www.softwaretestinghelp.com/junit-annotations-tutorial/"

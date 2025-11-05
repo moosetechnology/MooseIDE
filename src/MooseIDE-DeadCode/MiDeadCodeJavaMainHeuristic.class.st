@@ -9,11 +9,23 @@ Class {
 	#tag : 'Rules'
 }
 
+{ #category : 'testing' }
+MiDeadCodeJavaMainHeuristic >> accept: aTMethod [
+
+	^self notDead: aTMethod 
+]
+
 { #category : 'accessing' }
 MiDeadCodeJavaMainHeuristic >> description [
 
 	^super description ,
 	'"public static void main()" methods are assumed not-dead'
+]
+
+{ #category : 'accessing' }
+MiDeadCodeJavaMainHeuristic >> isForEntryPoint [
+
+	^true
 ]
 
 { #category : 'accessing' }
