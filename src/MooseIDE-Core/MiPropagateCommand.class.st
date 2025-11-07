@@ -63,10 +63,10 @@ MiPropagateCommand >> propagate [
 
 	| selectedItem |
 	selectedItem := [ self context miSelectedItemToPropagate ]
-		                on: MiNoSelectedElementToPropagateException
-		                do: [ :exception |
-				                exception signal.
-				                ^ self ].
+		on: MiNoSelectedElementToPropagateException
+		do: [ :exception |
+			exception signal.
+			^ self ].
 
 	self application miPropagate: selectedItem mooseInterestingEntity on: self context buses
 ]

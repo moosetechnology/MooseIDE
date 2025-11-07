@@ -3,21 +3,57 @@ used to display basic settings, like threshold, height of the inner box of co us
 "
 Class {
 	#name : 'MiCoUsageMapGeneralSettingsPresenter',
-	#superclass : 'MiCoUsageMapAbstractSettingsPresenter',
+	#superclass : 'SpPresenter',
 	#instVars : [
 		'threshold',
 		'innerBoxHeight',
 		'innerBoxWidthScale',
 		'rangeInnerWidth',
-		'coUsageMap'
+		'coUsageMap',
+		'blockSettings',
+		'settings'
 	],
-	#category : 'MooseIDE-CoUsageMap-Settings',
+	#category : 'MooseIDE-CoUsageMap-Browser',
 	#package : 'MooseIDE-CoUsageMap',
-	#tag : 'Settings'
+	#tag : 'Browser'
 }
 
+{ #category : 'accessing' }
+MiCoUsageMapGeneralSettingsPresenter class >> preferredExtent [
+
+	^ 900 @ 880
+]
+
+{ #category : 'initialization' }
+MiCoUsageMapGeneralSettingsPresenter >> connectPresenters [
+
+	settings ifNil: [ ^ self ].
+
+	innerBoxWidthScale 
+		items: settings scaleTypes;
+		selectItem: settings innerBoxScaleType;
+		whenSelectedItemChangedDo: [:item | settings innerBoxScaleType: item ].
+	
+	threshold 
+		model: settings  ;
+		get: #threshold75PercentGroup;
+		set: #threshold75PercentGroup:;
+		range: (10 to: 100).
+	innerBoxHeight 
+		model: settings ;
+		get: #innerBoxHeight;
+		set: #innerBoxHeight:;
+		range: (2 to: 50).
+	rangeInnerWidth
+		model: settings ;
+		get: #innerBoxRange;
+		set: #innerBoxRange:;
+		range: (5 to: 100)
+]
+
 { #category : 'layout' }
-MiCoUsageMapGeneralSettingsPresenter class >> defaultLayout [
+MiCoUsageMapGeneralSettingsPresenter >> defaultLayout [
+
 	^ SpBoxLayout newTopToBottom
 		spacing: 3;
 		add: 'Threshold percent per group' asPresenter expand: false;
@@ -28,34 +64,8 @@ MiCoUsageMapGeneralSettingsPresenter class >> defaultLayout [
 		add: #innerBoxWidthScale expand: false;
 		add: 'Range for inner boxes' asPresenter expand: false;
 		add: #rangeInnerWidth expand: false;
+		add: blockSettings ;
 		yourself
-]
-
-{ #category : 'initialization' }
-MiCoUsageMapGeneralSettingsPresenter >> connectPresenters [
-	| set |
-	set := self settings.
-	set ifNil: [ ^ self ].
-	innerBoxWidthScale 
-		items: set scaleTypes;
-		selectItem: set innerBoxScaleType;
-		whenSelectedItemChangedDo: [:item | set innerBoxScaleType: item ].
-	
-	threshold 
-		model: set;
-		get: #threshold75PercentGroup;
-		set: #threshold75PercentGroup:;
-		range: (10 to: 100).
-	innerBoxHeight 
-		model: set;
-		get: #innerBoxHeight;
-		set: #innerBoxHeight:;
-		range: (2 to: 50).
-	rangeInnerWidth
-		model: set;
-		get: #innerBoxRange;
-		set: #innerBoxRange:;
-		range: (5 to: 100)
 ]
 
 { #category : 'initialization' }
@@ -64,4 +74,20 @@ MiCoUsageMapGeneralSettingsPresenter >> initializePresenters [
 	innerBoxHeight := self instantiate: MiCoSliderPresenter.
 	innerBoxWidthScale := self newDropList.
 	rangeInnerWidth := self instantiate: MiCoDualSliderPresenter.
+
+	blockSettings := self instantiate: MiCoUsageMapBlockSettingsPresenter
+]
+
+{ #category : 'accessing' }
+MiCoUsageMapGeneralSettingsPresenter >> settings [
+
+	^settings
+]
+
+{ #category : 'accessing' }
+MiCoUsageMapGeneralSettingsPresenter >> settings: anObject [
+
+	settings := anObject.
+	self connectPresenters.
+	blockSettings connectPresenters.
 ]
