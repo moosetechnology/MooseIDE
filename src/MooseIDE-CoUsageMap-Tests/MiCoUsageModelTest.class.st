@@ -29,8 +29,6 @@ MiCoUsageModelTest >> setUp [
 { #category : 'initialization' }
 MiCoUsageModelTest >> tearDown [
 
-	MiCoUsageMapSettings reset.
-
 	MiApplication reset.
 	MiApplication current: previousApplication.
 
