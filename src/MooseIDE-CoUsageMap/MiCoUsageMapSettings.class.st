@@ -4,7 +4,7 @@ I am a singleton, I store global values for settings used by CoUsageMapBuilder
 Class {
 	#name : 'MiCoUsageMapSettings',
 	#superclass : 'Object',
-	#classInstVars : [
+	#instVars : [
 		'properties'
 	],
 	#category : 'MooseIDE-CoUsageMap-Settings',
@@ -13,7 +13,7 @@ Class {
 }
 
 { #category : 'settings' }
-MiCoUsageMapSettings class >> browsingBlockSettings: aBuilder [
+MiCoUsageMapSettings >> browsingBlockSettings: aBuilder [
 	<systemsettings>
 	(aBuilder group: #ShowBlockSettings)
 		target: self;
@@ -31,7 +31,7 @@ MiCoUsageMapSettings class >> browsingBlockSettings: aBuilder [
 ]
 
 { #category : 'settings' }
-MiCoUsageMapSettings class >> browsingSettingInnerBoxRange: aBuilder [
+MiCoUsageMapSettings >> browsingSettingInnerBoxRange: aBuilder [
 	<systemsettings>
 	
 	(aBuilder miDualRange: #innerBoxRange)
@@ -46,7 +46,7 @@ MiCoUsageMapSettings class >> browsingSettingInnerBoxRange: aBuilder [
 ]
 
 { #category : 'settings' }
-MiCoUsageMapSettings class >> browsingSettingInnerScale: aBuilder [
+MiCoUsageMapSettings >> browsingSettingInnerScale: aBuilder [
 	<systemsettings>
 	(aBuilder pickOne: #innerBoxScaleType)
 		parent: #CoUsageMap;
@@ -59,7 +59,7 @@ MiCoUsageMapSettings class >> browsingSettingInnerScale: aBuilder [
 ]
 
 { #category : 'settings' }
-MiCoUsageMapSettings class >> browsingSettingInnerSize: aBuilder [
+MiCoUsageMapSettings >> browsingSettingInnerSize: aBuilder [
 	<systemsettings>
 	(aBuilder miRange: #innerBoxHeight)
 		parent: #CoUsageMap;
@@ -73,7 +73,7 @@ MiCoUsageMapSettings class >> browsingSettingInnerSize: aBuilder [
 ]
 
 { #category : 'settings' }
-MiCoUsageMapSettings class >> browsingSettingThreshold: aBuilder [
+MiCoUsageMapSettings >> browsingSettingThreshold: aBuilder [
 	<systemsettings>
 	(aBuilder miRange: #threshold75PercentGroup)
 		parent: #CoUsageMap;
@@ -88,7 +88,7 @@ When the container has several attributes of different colors, the color is chos
 ]
 
 { #category : 'settings' }
-MiCoUsageMapSettings class >> browsingSettings02On: aBuilder [
+MiCoUsageMapSettings >> browsingSettings02On: aBuilder [
 
 	<systemsettings>
 	(aBuilder group: #CoUsageMap)
@@ -99,29 +99,29 @@ MiCoUsageMapSettings class >> browsingSettings02On: aBuilder [
 ]
 
 { #category : 'accessing' }
-MiCoUsageMapSettings class >> buttonSettingLabel [
+MiCoUsageMapSettings >> buttonSettingLabel [
 	^ 'Blocks Settings'
 		
 
 ]
 
 { #category : 'accessing - computed' }
-MiCoUsageMapSettings class >> childrenBlockCompiled [
+MiCoUsageMapSettings >> childrenBlockCompiled [
 	^ self compiledBlock: self childrenBlockText onError: self defaultChildrenBlockText
 ]
 
 { #category : 'accessing' }
-MiCoUsageMapSettings class >> childrenBlockText [
+MiCoUsageMapSettings >> childrenBlockText [
 	^ self propertiesMap at: #childrenBlockText ifAbsent: [ self defaultChildrenBlockText ]
 ]
 
 { #category : 'accessing' }
-MiCoUsageMapSettings class >> childrenBlockText: aString [
+MiCoUsageMapSettings >> childrenBlockText: aString [
 	self propertiesMap at: #childrenBlockText put: aString
 ]
 
 { #category : 'accessing - computed' }
-MiCoUsageMapSettings class >> compiledBlock: aString onError: defaultString [
+MiCoUsageMapSettings >> compiledBlock: aString onError: defaultString [
 	| compiler |
 	compiler := Smalltalk compiler.
 	^ [ compiler evaluate: aString ]
@@ -130,7 +130,7 @@ MiCoUsageMapSettings class >> compiledBlock: aString onError: defaultString [
 ]
 
 { #category : 'accessing - defaults' }
-MiCoUsageMapSettings class >> defaultChildrenBlockText [
+MiCoUsageMapSettings >> defaultChildrenBlockText [
 
 	^ '"This code is for entity method, but you can change it
 You should return all the inner entities even with duplicates"
@@ -146,22 +146,22 @@ You should return all the inner entities even with duplicates"
 ]
 
 { #category : 'accessing - defaults' }
-MiCoUsageMapSettings class >> defaultInnerBoxHeight [
+MiCoUsageMapSettings >> defaultInnerBoxHeight [
 	^ 10
 ]
 
 { #category : 'accessing - defaults' }
-MiCoUsageMapSettings class >> defaultInnerBoxRange [
+MiCoUsageMapSettings >> defaultInnerBoxRange [
 	^ #(5 100)
 ]
 
 { #category : 'accessing - defaults' }
-MiCoUsageMapSettings class >> defaultInnerBoxScaleType [
+MiCoUsageMapSettings >> defaultInnerBoxScaleType [
 	^ #linear
 ]
 
 { #category : 'accessing - defaults' }
-MiCoUsageMapSettings class >> defaultInnerBoxSortBlockText [
+MiCoUsageMapSettings >> defaultInnerBoxSortBlockText [
 	^ '[:entityA :entityB :container |
 	| sizeA sizeB |
 	sizeA := entityA numberOfUsesOn: container.
@@ -173,7 +173,7 @@ MiCoUsageMapSettings class >> defaultInnerBoxSortBlockText [
 ]
 
 { #category : 'accessing - defaults' }
-MiCoUsageMapSettings class >> defaultOuterBoxSortBlockText [
+MiCoUsageMapSettings >> defaultOuterBoxSortBlockText [
 	^ '[:containerA :containerB |
 "containers are MiCoMethod instances"
 | sizeA sizeB |
@@ -185,90 +185,89 @@ sizeA = sizeB
 ]
 
 { #category : 'accessing - defaults' }
-MiCoUsageMapSettings class >> defaultThreshold75 [
+MiCoUsageMapSettings >> defaultThreshold75 [
 	^ 75
 ]
 
 { #category : 'accessing' }
-MiCoUsageMapSettings class >> innerBoxHeight [
+MiCoUsageMapSettings >> innerBoxHeight [
 	^ self propertiesMap at: #innerBoxHeight ifAbsent: [ self defaultInnerBoxHeight ].
 ]
 
 { #category : 'accessing' }
-MiCoUsageMapSettings class >> innerBoxHeight: aNumber [
+MiCoUsageMapSettings >> innerBoxHeight: aNumber [
 	self propertiesMap at: #innerBoxHeight put: aNumber
 ]
 
 { #category : 'accessing' }
-MiCoUsageMapSettings class >> innerBoxRange [
+MiCoUsageMapSettings >> innerBoxRange [
 	^ self propertiesMap at: #innerBoxRange ifAbsent: [ self defaultInnerBoxRange ]
 ]
 
 { #category : 'accessing' }
-MiCoUsageMapSettings class >> innerBoxRange: anInterval [
+MiCoUsageMapSettings >> innerBoxRange: anInterval [
 	self propertiesMap at: #innerBoxRange put: anInterval
 ]
 
 { #category : 'accessing' }
-MiCoUsageMapSettings class >> innerBoxScaleType [
+MiCoUsageMapSettings >> innerBoxScaleType [
 	^ self propertiesMap at: #innerBoxScaleType ifAbsent: [ self defaultInnerBoxScaleType ]
 ]
 
 { #category : 'accessing' }
-MiCoUsageMapSettings class >> innerBoxScaleType: aString [
+MiCoUsageMapSettings >> innerBoxScaleType: aString [
 	self propertiesMap at: #innerBoxScaleType put: aString
 ]
 
 { #category : 'accessing - computed' }
-MiCoUsageMapSettings class >> innerBoxSortBlockCompiled [
+MiCoUsageMapSettings >> innerBoxSortBlockCompiled [
 	^ self compiledBlock: self innerBoxSortBlockText onError: self defaultInnerBoxSortBlockText
 ]
 
 { #category : 'accessing' }
-MiCoUsageMapSettings class >> innerBoxSortBlockText [
+MiCoUsageMapSettings >> innerBoxSortBlockText [
 	^ self propertiesMap at: #innerBoxSortBlockText ifAbsent: [ self defaultInnerBoxSortBlockText ]
 ]
 
 { #category : 'accessing' }
-MiCoUsageMapSettings class >> innerBoxSortBlockText: aString [
+MiCoUsageMapSettings >> innerBoxSortBlockText: aString [
 	self propertiesMap at: #innerBoxSortBlockText put: aString
 ]
 
 { #category : 'opening' }
-MiCoUsageMapSettings class >> openBlocksSettings [
+MiCoUsageMapSettings >> openBlocksSettings [
 	MiCoUsageMapBlockSettingsPresenter new 
 		settings: self;
 		open
 ]
 
 { #category : 'accessing - computed' }
-MiCoUsageMapSettings class >> outerBoxSortBlockCompiled [
+MiCoUsageMapSettings >> outerBoxSortBlockCompiled [
 	^ self compiledBlock: self outerBoxSortBlockText onError: self defaultOuterBoxSortBlockText
 ]
 
 { #category : 'accessing' }
-MiCoUsageMapSettings class >> outerBoxSortBlockText [
+MiCoUsageMapSettings >> outerBoxSortBlockText [
 	^ self propertiesMap at: #outerBoxSortBlockText ifAbsent: [ self defaultOuterBoxSortBlockText ]
 ]
 
 { #category : 'accessing' }
-MiCoUsageMapSettings class >> outerBoxSortBlockText: aString [
+MiCoUsageMapSettings >> outerBoxSortBlockText: aString [
 	self propertiesMap at: #outerBoxSortBlockText put: aString
 ]
 
 { #category : 'private' }
-MiCoUsageMapSettings class >> propertiesMap [
+MiCoUsageMapSettings >> propertiesMap [
 	^ properties ifNil: [ properties := Dictionary new ]
 ]
 
 { #category : 'class initialization' }
-MiCoUsageMapSettings class >> reset [
-	<script>
+MiCoUsageMapSettings >> reset [
 	properties := nil
 ]
 
 { #category : 'class initialization' }
-MiCoUsageMapSettings class >> resetText [
+MiCoUsageMapSettings >> resetText [
 	<script>
 	self propertiesMap
 		removeKey: #childrenBlockText ifAbsent: [] ;
@@ -277,16 +276,16 @@ MiCoUsageMapSettings class >> resetText [
 ]
 
 { #category : 'accessing' }
-MiCoUsageMapSettings class >> scaleTypes [
+MiCoUsageMapSettings >> scaleTypes [
 	^ #(linear symlog)
 ]
 
 { #category : 'accessing' }
-MiCoUsageMapSettings class >> threshold75PercentGroup [
+MiCoUsageMapSettings >> threshold75PercentGroup [
 	^ self propertiesMap at: #threshold75 ifAbsent: [ self defaultThreshold75 ]
 ]
 
 { #category : 'accessing' }
-MiCoUsageMapSettings class >> threshold75PercentGroup: aNumber [
+MiCoUsageMapSettings >> threshold75PercentGroup: aNumber [
 	self propertiesMap at: #threshold75 put: aNumber
 ]
