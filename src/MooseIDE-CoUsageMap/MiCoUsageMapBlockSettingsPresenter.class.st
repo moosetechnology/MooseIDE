@@ -4,7 +4,7 @@ This interacts directly with MiCoUsageMapSettings
 "
 Class {
 	#name : 'MiCoUsageMapBlockSettingsPresenter',
-	#superclass : 'MiCoUsageMapAbstractSettingsPresenter',
+	#superclass : 'SpPresenter',
 	#instVars : [
 		'childrenTextInput',
 		'sortOuterBoxTextInput',
@@ -13,9 +13,9 @@ Class {
 		'applyButton',
 		'closeButton'
 	],
-	#category : 'MooseIDE-CoUsageMap-Settings',
+	#category : 'MooseIDE-CoUsageMap-Browser',
 	#package : 'MooseIDE-CoUsageMap',
-	#tag : 'Settings'
+	#tag : 'Browser'
 }
 
 { #category : 'accessing - private tests' }
@@ -59,12 +59,38 @@ MiCoUsageMapBlockSettingsPresenter >> closeWindow [
 
 { #category : 'initialization' }
 MiCoUsageMapBlockSettingsPresenter >> connectPresenters [
-	| set |
-	set := self settings.
-	set ifNil: [ ^ self ].
-	childrenTextInput text: set childrenBlockText.
-	sortOuterBoxTextInput text: set outerBoxSortBlockText.
-	sortInnerBoxTextInput text: set innerBoxSortBlockText.
+
+	self settings ifNil: [ ^ self ].
+
+	childrenTextInput
+		text: self settings childrenBlockText ;
+		whenSubmitDo: [ :text | self settings childrenBlockText: text ].
+
+	sortOuterBoxTextInput
+		text: self settings outerBoxSortBlockText ;
+		whenSubmitDo: [ :text | self settings outerBoxSortBlockText: text ].
+
+	sortInnerBoxTextInput
+		text: self settings innerBoxSortBlockText ;
+		whenSubmitDo: [ :text | self settings innerBoxSortBlockText: text ].
+
+	applyButton action: [ 
+		childrenTextInput triggerSubmitAction.
+		sortOuterBoxTextInput triggerSubmitAction.
+		sortInnerBoxTextInput triggerSubmitAction.
+		self closeWindow 
+	].
+
+	resetButton action: [ | set |
+		set := self settings.
+		set resetText.
+		childrenTextInput text: set childrenBlockText.
+		sortOuterBoxTextInput text: set outerBoxSortBlockText.
+		sortInnerBoxTextInput text: set innerBoxSortBlockText.
+	].
+	closeButton action: [
+		self closeWindow 
+	].
 ]
 
 { #category : 'layout' }
@@ -91,47 +117,21 @@ MiCoUsageMapBlockSettingsPresenter >> defaultLayout [
 MiCoUsageMapBlockSettingsPresenter >> initializeButtons [
 
 	applyButton := self newButton
-		label: 'Apply all';
-		action: [ 
-			childrenTextInput triggerSubmitAction.
-			sortOuterBoxTextInput triggerSubmitAction.
-			sortInnerBoxTextInput triggerSubmitAction.
-			self closeWindow 
-		].
-
+		label: 'Apply all'.
 	resetButton := self newButton
-		label: 'Reset text fields';
-		action: [ | set |
-			set := self settings.
-			set resetText.
-			childrenTextInput text: set childrenBlockText.
-			sortOuterBoxTextInput text: set outerBoxSortBlockText.
-			sortInnerBoxTextInput text: set innerBoxSortBlockText.
-		].
-
+		label: 'Reset text fields'.
 	closeButton := self newButton
-		label: 'Close';
-		action: [
-			self closeWindow 
-		].
+		label: 'Close'.
 
 ]
 
 { #category : 'initialization' }
 MiCoUsageMapBlockSettingsPresenter >> initializePresenters [
 
-	childrenTextInput := self newCode
-		text: MiCoUsageMapSettings childrenBlockText ;
-		whenSubmitDo: [ :text | self settings childrenBlockText: text ];
-		yourself.
-	sortOuterBoxTextInput := self newCode
-		text: MiCoUsageMapSettings outerBoxSortBlockText ;
-		whenSubmitDo: [ :text | self settings outerBoxSortBlockText: text ];
-		yourself.
-	sortInnerBoxTextInput := self newCode
-		text: MiCoUsageMapSettings innerBoxSortBlockText ;
-		whenSubmitDo: [ :text | self settings innerBoxSortBlockText: text ];
-		yourself.
+	childrenTextInput := self newCode.
+	sortOuterBoxTextInput := self newCode.
+	sortInnerBoxTextInput := self newCode.
+
 	self initializeButtons
 ]
 
@@ -146,6 +146,16 @@ MiCoUsageMapBlockSettingsPresenter >> initializeWindow: aWindowPresenter [
 MiCoUsageMapBlockSettingsPresenter >> resetButton [
 
 	^resetButton
+]
+
+{ #category : 'accessing' }
+MiCoUsageMapBlockSettingsPresenter >> settings [
+	^ owner settings
+]
+
+{ #category : 'accessing' }
+MiCoUsageMapBlockSettingsPresenter >> settings: anObject [
+	owner settings: anObject
 ]
 
 { #category : 'accessing - private tests' }

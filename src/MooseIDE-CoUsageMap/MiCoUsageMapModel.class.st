@@ -11,7 +11,8 @@ Class {
 		'methodAttributeCounter',
 		'innerBoxes',
 		'containerBoxes',
-		'widthScale'
+		'widthScale',
+		'settings'
 	],
 	#category : 'MooseIDE-CoUsageMap-Model',
 	#package : 'MooseIDE-CoUsageMap',
@@ -98,11 +99,6 @@ MiCoUsageMapModel >> defaultInnerSortBlock [
 ]
 
 { #category : 'settings' }
-MiCoUsageMapModel >> defaultSettings [
-	^ MiCoUsageMapSettings
-]
-
-{ #category : 'settings' }
 MiCoUsageMapModel >> defaultSortBlock [
 	^ [ :container1 :container2 | 
 		| size1 size2 |
@@ -167,6 +163,7 @@ MiCoUsageMapModel >> getOrCreateInnerBoxFor: object [
 MiCoUsageMapModel >> initialize [
 	super initialize.
 
+	settings := MiCoUsageMapSettings new.
 	self containerInnerCounter: self defaultTester
 ]
 
@@ -199,13 +196,12 @@ MiCoUsageMapModel >> initializeReferences [
 
 { #category : 'initialization' }
 MiCoUsageMapModel >> initializeScale [
-	| allInnerUses range scaleType cls |
+	| allInnerUses range scaleType |
 
 	allInnerUses := self containerBoxes flatCollect: [ :cont | 
 		cont innerBoxes collect: [ :inner | inner numberOfUses ] ].
-	cls := MiCoUsageMapSettings.
-	range := cls innerBoxRange.
-	scaleType := cls innerBoxScaleType.
+	range := self settings innerBoxRange.
+	scaleType := self settings innerBoxScaleType.
 	
 	widthScale := (scaleType value: NSScale)
 		range: {range first. range last}.
@@ -289,31 +285,11 @@ MiCoUsageMapModel >> newInnerBoxFor: anObject [
 
 { #category : 'settings' }
 MiCoUsageMapModel >> openSettings [
-	"For now, we handle settings here:
-	 - create the window 
-	 - subscribe to be informed when any window is closed closed
-	 - if this is the setting window that is closed
-	    - unsubscribe to ALL announcements
-	    - update the visualization"
+	"note: should use default settings infrastructure"
 
-	| settingBrowser |
-	settingBrowser := SettingBrowser new.
-	settingBrowser changePackageSet: (OrderedCollection with:
-			 (self packageOrganizer packageNamed:
-				  MiCoUsageMapSettings package name)).
-	settingsWindow := settingBrowser open.
-	settingsWindow position:
-		self currentWorld extent - settingsWindow extent // 2.
-	settingBrowser expandAll.
-
-	self currentWorld announcer
-		when: WindowClosed
-		do: [ :annoucement |
-				annoucement window = settingsWindow ifTrue: [
-						self currentWorld announcer unsubscribe: self.
-						browser runVisualization ] ]
-		for: self.
-	^ settingsWindow
+	^MiCoUsageMapGeneralSettingsPresenter new
+		settings: settings ;
+		openDialog
 ]
 
 { #category : 'settings' }
@@ -365,7 +341,7 @@ MiCoUsageMapModel >> settings [
 	self flag: #FIXME.
 	"settings should not be handled by a an other class (with only class side methods"
 
-	^MiCoUsageMapSettings
+	^settings
 ]
 
 { #category : 'tagging' }
