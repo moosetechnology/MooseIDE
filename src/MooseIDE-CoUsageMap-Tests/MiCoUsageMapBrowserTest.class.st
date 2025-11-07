@@ -7,11 +7,17 @@ Class {
 }
 
 { #category : 'running' }
+MiCoUsageMapBrowserTest >> blockSettingsPresenter [
+
+	^settingsWindow presenter presenterAt: #blockSettings
+]
+
+{ #category : 'running' }
 MiCoUsageMapBrowserTest >> browserClass [
 	^ MiCoUsageMapBrowser
 ]
 
-{ #category : 'tests - actions' }
+{ #category : 'running' }
 MiCoUsageMapBrowserTest >> populateBrowser: mooseModel [
 
 	mooseModel add: (FamixStClass new name: 'AClass').
@@ -26,112 +32,117 @@ MiCoUsageMapBrowserTest >> receiveEntityToSelect [
 	browser receiveEntity: entityToSelect asMooseGroup
 ]
 
+{ #category : 'running' }
+MiCoUsageMapBrowserTest >> settingsApplyButtonPresenter [
+
+	^self blockSettingsPresenter
+		presenterAt: #applyButton
+]
+
+{ #category : 'running' }
+MiCoUsageMapBrowserTest >> settingsChildrenTextInputPresenter [
+
+	^self blockSettingsPresenter
+		presenterAt: #childrenTextInput
+]
+
+{ #category : 'running' }
+MiCoUsageMapBrowserTest >> settingsCloseButtonPresenter [
+
+	^self blockSettingsPresenter
+		presenterAt: #closeButton
+]
+
+{ #category : 'running' }
+MiCoUsageMapBrowserTest >> settingsResetButtonPresenter [
+
+	^self blockSettingsPresenter
+		presenterAt: #resetButton
+]
+
+{ #category : 'running' }
+MiCoUsageMapBrowserTest >> settingsSortInnerBoxTextInputPresenter [
+
+	^self blockSettingsPresenter
+		presenterAt: #sortInnerBoxTextInput
+]
+
 { #category : 'tests' }
 MiCoUsageMapBrowserTest >> testBlockSettingsApplyButton [
 	"Apply button should close the block setting window"
 
-	| settings |
+	settingsWindow := browser openSettings.
 
-	settings := MiCoUsageMapBlockSettingsPresenter new 
-		settings: MiCoUsageMapSettings ;
-		open ;
-		yourself.
+	self assert: settingsWindow isOpen.
 
-	self assert: settings owner isOpen.
+	self settingsApplyButtonPresenter click.
 
-	settings applyButton click.
-
-	self assert: settings owner isClosed.
+	self assert: settingsWindow isClosed.
 
 ]
 
 { #category : 'tests' }
 MiCoUsageMapBrowserTest >> testBlockSettingsChangeValue [
 
-	| settings |
+	settingsWindow := browser specModel openSettings.
 
-	settings := MiCoUsageMapBlockSettingsPresenter new 
-		settings: MiCoUsageMapSettings ;
-		yourself.
-
-	[
-		settings sortInnerBoxTextInput text: '[ ]'.
-		settings applyButton click.
+	self settingsSortInnerBoxTextInputPresenter text: '[ ]'.
+	self settingsApplyButtonPresenter  click.
 		
-		self assert: MiCoUsageMapSettings innerBoxSortBlockText equals: '[ ]'.
-	]
-	ensure: [
-		"tearDown"
-		settings delete ]
+	self assert: browser specModel settings innerBoxSortBlockText equals: '[ ]'.
+
 ]
 
 { #category : 'tests' }
 MiCoUsageMapBrowserTest >> testBlockSettingsClickClose [
 
-	| settings |
+	self
+		assert: browser specModel settings childrenBlockText
+		equals: browser specModel settings defaultChildrenBlockText.
+
+	settingsWindow := browser specModel openSettings.
+	self settingsChildrenTextInputPresenter text: 'Blah'.
+
+	self settingsCloseButtonPresenter click.
 
 	self
-		assert: MiCoUsageMapSettings childrenBlockText
-		equals: MiCoUsageMapSettings defaultChildrenBlockText.
+		assert: browser specModel settings childrenBlockText
+		equals: browser specModel settings defaultChildrenBlockText.
 
-	settings := MiCoUsageMapBlockSettingsPresenter new 
-		settings: MiCoUsageMapSettings ;
-		yourself.
-	settings childrenTextInput text: 'Blah'.
-	
-	[
-		settings closeButton click.
-
-		self
-			assert: MiCoUsageMapSettings childrenBlockText
-			equals: MiCoUsageMapSettings defaultChildrenBlockText.
-	]
-	ensure: [
-		"tearDown"
-		settings delete ]
 ]
 
 { #category : 'tests' }
 MiCoUsageMapBrowserTest >> testBlockSettingsDefaultValues [
 
-	| settings |
-	settings := MiCoUsageMapBlockSettingsPresenter new 
-		settings: MiCoUsageMapSettings ;
-		yourself.
+	settingsWindow := browser specModel openSettings.
 
-	[
-		self assert: settings childrenTextInput     text isNotEmpty.
-		self assert: settings sortInnerBoxTextInput text isNotEmpty.
-		self assert: settings sortOuterBoxTextInput text isNotEmpty.
-	]
-	ensure: [
-		"tearDown"
-		settings delete ]
+	self assert: browser specModel settings childrenBlockText isNotEmpty.
+	self assert: browser specModel settings innerBoxSortBlockText isNotEmpty.
+	self assert: browser specModel settings outerBoxSortBlockText isNotEmpty.
+
 ]
 
 { #category : 'tests' }
 MiCoUsageMapBrowserTest >> testBlockSettingsResetValues [
 
-	| settings |
-	MiCoUsageMapSettings childrenBlockText: 'Blah'.
-	self assert: MiCoUsageMapSettings childrenBlockText equals: 'Blah'.
+	browser specModel settings childrenBlockText: 'Blah'.
 
-	settings := MiCoUsageMapBlockSettingsPresenter new 
-		settings: MiCoUsageMapSettings ;
-		yourself.
+	settingsWindow := browser specModel openSettings.
 
-	[
-		settings resetButton click.
+	self
+		assert: self settingsChildrenTextInputPresenter text
+		equals: 'Blah'.
 
-		self deny: MiCoUsageMapSettings childrenBlockText equals: 'Blah'.
-		self deny: MiCoUsageMapSettings childrenBlockText isEmpty.
-	]
-	ensure: [
-		"tearDown"
-		settings delete ]
+	self settingsResetButtonPresenter click.
+
+	self
+		deny: self settingsChildrenTextInputPresenter text
+		equals: 'Blah'.
+	self deny: self settingsChildrenTextInputPresenter text isEmpty.
+
 ]
 
-{ #category : 'tests - settings' }
+{ #category : 'tests' }
 MiCoUsageMapBrowserTest >> testCanOpenSettings [
 
 	browser hasSettings ifFalse: [ ^ self skip ].
@@ -152,11 +163,12 @@ MiCoUsageMapBrowserTest >> testConsumerProducer [
 		anySatisfy: [ :each | each = browser mapVisualization ])
 ]
 
-{ #category : 'tests - tags' }
+{ #category : 'tests' }
 MiCoUsageMapBrowserTest >> testSelectedTagSetAndGet [
 
 	| model entity entity2 tag |
 	self skip.
+
 	model := FamixRepTestModel new.
 	tag := model tagNamed: 'aTag'.
 	entity := FamixRepTestClass new
