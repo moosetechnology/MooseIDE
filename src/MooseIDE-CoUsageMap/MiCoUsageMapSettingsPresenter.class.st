@@ -2,7 +2,7 @@
 used to display basic settings, like threshold, height of the inner box of co usage map
 "
 Class {
-	#name : 'MiCoUsageMapGeneralSettingsPresenter',
+	#name : 'MiCoUsageMapSettingsPresenter',
 	#superclass : 'SpPresenter',
 	#instVars : [
 		'threshold',
@@ -17,13 +17,13 @@ Class {
 }
 
 { #category : 'accessing' }
-MiCoUsageMapGeneralSettingsPresenter class >> preferredExtent [
+MiCoUsageMapSettingsPresenter class >> preferredExtent [
 
 	^ 900 @ 450
 ]
 
 { #category : 'initialization' }
-MiCoUsageMapGeneralSettingsPresenter >> connectPresenters [
+MiCoUsageMapSettingsPresenter >> connectPresenters [
 
 	settings ifNil: [ ^ self ].
 
@@ -53,7 +53,7 @@ MiCoUsageMapGeneralSettingsPresenter >> connectPresenters [
 ]
 
 { #category : 'layout' }
-MiCoUsageMapGeneralSettingsPresenter >> defaultLayout [
+MiCoUsageMapSettingsPresenter >> defaultLayout [
 
 	^ SpBoxLayout newTopToBottom
 		spacing: 3;
@@ -70,7 +70,7 @@ MiCoUsageMapGeneralSettingsPresenter >> defaultLayout [
 ]
 
 { #category : 'initialization' }
-MiCoUsageMapGeneralSettingsPresenter >> initializeDialogWindow: aDialog [
+MiCoUsageMapSettingsPresenter >> initializeDialogWindow: aDialog [
 
 	aDialog
 		addButton: 'Cancel' do: [ :dialog | dialog close ] ;
@@ -78,7 +78,7 @@ MiCoUsageMapGeneralSettingsPresenter >> initializeDialogWindow: aDialog [
 ]
 
 { #category : 'initialization' }
-MiCoUsageMapGeneralSettingsPresenter >> initializePresenters [
+MiCoUsageMapSettingsPresenter >> initializePresenters [
 	threshold := self instantiate: MiCoSliderPresenter.
 	innerBoxWidthScale := self newDropList.
 	rangeInnerWidth := self instantiate: MiCoDualSliderPresenter.
@@ -87,13 +87,13 @@ MiCoUsageMapGeneralSettingsPresenter >> initializePresenters [
 ]
 
 { #category : 'accessing' }
-MiCoUsageMapGeneralSettingsPresenter >> settings [
+MiCoUsageMapSettingsPresenter >> settings [
 
 	^settings
 ]
 
 { #category : 'accessing' }
-MiCoUsageMapGeneralSettingsPresenter >> settings: anObject [
+MiCoUsageMapSettingsPresenter >> settings: anObject [
 
 	settings := anObject.
 	self connectPresenters

@@ -265,7 +265,7 @@ MiCoUsageMapModel >> newInnerBoxFor: anObject [
 MiCoUsageMapModel >> openSettings [
 	"note: should use default settings infrastructure"
 
-	^MiCoUsageMapGeneralSettingsPresenter new
+	^MiCoUsageMapSettingsPresenter new
 		settings: settings ;
 		openDialog
 ]
