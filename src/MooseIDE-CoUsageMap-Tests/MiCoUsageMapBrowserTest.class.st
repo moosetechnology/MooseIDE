@@ -7,12 +7,6 @@ Class {
 }
 
 { #category : 'running' }
-MiCoUsageMapBrowserTest >> blockSettingsPresenter [
-
-	^settingsWindow presenter presenterAt: #blockSettings
-]
-
-{ #category : 'running' }
 MiCoUsageMapBrowserTest >> browserClass [
 	^ MiCoUsageMapBrowser
 ]
@@ -35,36 +29,26 @@ MiCoUsageMapBrowserTest >> receiveEntityToSelect [
 { #category : 'running' }
 MiCoUsageMapBrowserTest >> settingsApplyButtonPresenter [
 
-	^self blockSettingsPresenter
-		presenterAt: #applyButton
+	^settingsWindow buttons detect: [ :btn | btn label = 'Apply' ]
 ]
 
 { #category : 'running' }
 MiCoUsageMapBrowserTest >> settingsChildrenTextInputPresenter [
 
-	^self blockSettingsPresenter
+	^settingsWindow presenter
 		presenterAt: #childrenTextInput
 ]
 
 { #category : 'running' }
 MiCoUsageMapBrowserTest >> settingsCloseButtonPresenter [
 
-	^self blockSettingsPresenter
-		presenterAt: #closeButton
+	^settingsWindow buttons detect: [ :btn | btn label = 'Cancel' ]
 ]
 
 { #category : 'running' }
 MiCoUsageMapBrowserTest >> settingsResetButtonPresenter [
 
-	^self blockSettingsPresenter
-		presenterAt: #resetButton
-]
-
-{ #category : 'running' }
-MiCoUsageMapBrowserTest >> settingsSortInnerBoxTextInputPresenter [
-
-	^self blockSettingsPresenter
-		presenterAt: #sortInnerBoxTextInput
+	^nil
 ]
 
 { #category : 'tests' }
@@ -121,6 +105,8 @@ MiCoUsageMapBrowserTest >> testBlockSettingsDefaultValues [
 
 { #category : 'tests' }
 MiCoUsageMapBrowserTest >> testBlockSettingsResetValues [
+
+	self skip: 'reset action removed for now'.
 
 	browser specModel settings childrenBlockText: 'Blah'.
 
