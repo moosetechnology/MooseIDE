@@ -6,12 +6,10 @@ Class {
 	#superclass : 'SpPresenter',
 	#instVars : [
 		'threshold',
-		'innerBoxHeight',
 		'innerBoxWidthScale',
 		'rangeInnerWidth',
-		'coUsageMap',
-		'blockSettings',
-		'settings'
+		'settings',
+		'childrenTextInput'
 	],
 	#category : 'MooseIDE-CoUsageMap-Settings',
 	#package : 'MooseIDE-CoUsageMap',
@@ -21,13 +19,15 @@ Class {
 { #category : 'accessing' }
 MiCoUsageMapGeneralSettingsPresenter class >> preferredExtent [
 
-	^ 900 @ 500
+	^ 900 @ 450
 ]
 
 { #category : 'initialization' }
 MiCoUsageMapGeneralSettingsPresenter >> connectPresenters [
 
 	settings ifNil: [ ^ self ].
+
+	"self onAccept: [ childrenTextInput triggerSubmitAction ]".
 
 	innerBoxWidthScale 
 		items: settings scaleTypes;
@@ -44,7 +44,12 @@ MiCoUsageMapGeneralSettingsPresenter >> connectPresenters [
 		model: settings ;
 		get: #innerBoxRange;
 		set: #innerBoxRange:;
-		range: (5 to: 100)
+		range: (5 to: 100).
+
+	childrenTextInput
+		text: self settings childrenBlockText ;
+		whenSubmitDo: [ :text | self settings childrenBlockText: text ].
+
 ]
 
 { #category : 'layout' }
@@ -58,8 +63,18 @@ MiCoUsageMapGeneralSettingsPresenter >> defaultLayout [
 		add: #innerBoxWidthScale expand: false;
 		add: 'Range for inner boxes' asPresenter expand: false;
 		add: #rangeInnerWidth expand: false;
-		add: blockSettings ;
+		add: 'Children block:' asPresenter expand: false ;
+		add: childrenTextInput height: 200 ;
+
 		yourself
+]
+
+{ #category : 'initialization' }
+MiCoUsageMapGeneralSettingsPresenter >> initializeDialogWindow: aDialog [
+
+	aDialog
+		addButton: 'Cancel' do: [ :dialog | dialog close ] ;
+		addButton: 'Apply' do: [ :dialog | childrenTextInput triggerSubmitAction. dialog close ]
 ]
 
 { #category : 'initialization' }
@@ -67,8 +82,8 @@ MiCoUsageMapGeneralSettingsPresenter >> initializePresenters [
 	threshold := self instantiate: MiCoSliderPresenter.
 	innerBoxWidthScale := self newDropList.
 	rangeInnerWidth := self instantiate: MiCoDualSliderPresenter.
+	childrenTextInput := self newCode.
 
-	blockSettings := self instantiate: MiCoUsageMapBlockSettingsPresenter
 ]
 
 { #category : 'accessing' }
@@ -81,6 +96,5 @@ MiCoUsageMapGeneralSettingsPresenter >> settings [
 MiCoUsageMapGeneralSettingsPresenter >> settings: anObject [
 
 	settings := anObject.
-	self connectPresenters.
-	blockSettings connectPresenters.
+	self connectPresenters
 ]
