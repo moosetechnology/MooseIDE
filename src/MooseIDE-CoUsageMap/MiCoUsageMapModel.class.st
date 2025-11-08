@@ -317,6 +317,29 @@ MiCoUsageMapModel >> settings [
 	^settings
 ]
 
+{ #category : 'sorting' }
+MiCoUsageMapModel >> sortContainerBoxes: containerShapes [
+
+	containerShapes sort: [:containerA :containerB || sizeA sizeB |
+		sizeA := containerA model numberOfInnerBoxes.
+		sizeB := containerB model numberOfInnerBoxes.
+		sizeA = sizeB
+			ifTrue: [ containerA model name < containerB model name ]
+			ifFalse: [ sizeA > sizeB ] ].
+]
+
+{ #category : 'sorting' }
+MiCoUsageMapModel >> sortInnerShapes: containerShape [
+
+	containerShape innerBoxShapes sort: [:entityA :entityB || sizeA sizeB |
+			sizeA := entityA model numberOfUsesOn: containerShape model.
+			sizeB := entityB model numberOfUsesOn: containerShape model.
+			sizeA = sizeB
+				ifTrue: [ entityA model name < entityB model name ]
+				ifFalse: [ sizeA > sizeB ]
+		]
+]
+
 { #category : 'tagging' }
 MiCoUsageMapModel >> tagEntity: aMooseEntity with: aTag [
 	"entites can have only one tag in this tool"

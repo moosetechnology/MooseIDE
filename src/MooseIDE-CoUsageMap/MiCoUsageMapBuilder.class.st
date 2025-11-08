@@ -334,21 +334,10 @@ MiCoUsageMapBuilder >> sortShapes [
 	| containerBoxes |
 
 	containerBoxes := self canvas children.
-	containerBoxes sort: [:containerA :containerB || sizeA sizeB |
-		sizeA := containerA model numberOfInnerBoxes.
-		sizeB := containerB model numberOfInnerBoxes.
-		sizeA = sizeB
-			ifTrue: [ containerA model name < containerB model name ]
-			ifFalse: [ sizeA > sizeB ] ].
+	self specModel sortContainerBoxes: containerBoxes.
 
 	containerBoxes do: [ :containerBox |
-		containerBox innerBoxShapes sort: [:entityA :entityB || sizeA sizeB |
-			sizeA := entityA model numberOfUsesOn: containerBox model.
-			sizeB := entityB model numberOfUsesOn: containerBox model.
-			sizeA = sizeB
-				ifTrue: [ entityA model name < entityB model name ]
-				ifFalse: [ sizeA > sizeB ]
-		]
+		self specModel sortInnerShapes: containerBox
 	]
 
 ]
