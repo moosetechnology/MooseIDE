@@ -86,10 +86,10 @@ MiCoUsageMapBrowserTest >> testBlockSettingsChangeValue [
 
 	settingsWindow := browser specModel openSettings.
 
-	self settingsSortInnerBoxTextInputPresenter text: '[ ]'.
+	self settingsChildrenTextInputPresenter text: '[ ]'.
 	self settingsApplyButtonPresenter  click.
 		
-	self assert: browser specModel settings innerBoxSortBlockText equals: '[ ]'.
+	self assert: browser specModel settings childrenBlockText equals: '[ ]'.
 
 ]
 
@@ -117,9 +117,6 @@ MiCoUsageMapBrowserTest >> testBlockSettingsDefaultValues [
 	settingsWindow := browser specModel openSettings.
 
 	self assert: browser specModel settings childrenBlockText isNotEmpty.
-	self assert: browser specModel settings innerBoxSortBlockText isNotEmpty.
-	self assert: browser specModel settings outerBoxSortBlockText isNotEmpty.
-
 ]
 
 { #category : 'tests' }
