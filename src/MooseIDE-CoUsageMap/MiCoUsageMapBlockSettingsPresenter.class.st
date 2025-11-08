@@ -13,9 +13,9 @@ Class {
 		'applyButton',
 		'closeButton'
 	],
-	#category : 'MooseIDE-CoUsageMap-Browser',
+	#category : 'MooseIDE-CoUsageMap-Settings',
 	#package : 'MooseIDE-CoUsageMap',
-	#tag : 'Browser'
+	#tag : 'Settings'
 }
 
 { #category : 'accessing - private tests' }
@@ -66,18 +66,8 @@ MiCoUsageMapBlockSettingsPresenter >> connectPresenters [
 		text: self settings childrenBlockText ;
 		whenSubmitDo: [ :text | self settings childrenBlockText: text ].
 
-	sortOuterBoxTextInput
-		text: self settings outerBoxSortBlockText ;
-		whenSubmitDo: [ :text | self settings outerBoxSortBlockText: text ].
-
-	sortInnerBoxTextInput
-		text: self settings innerBoxSortBlockText ;
-		whenSubmitDo: [ :text | self settings innerBoxSortBlockText: text ].
-
 	applyButton action: [ 
 		childrenTextInput triggerSubmitAction.
-		sortOuterBoxTextInput triggerSubmitAction.
-		sortInnerBoxTextInput triggerSubmitAction.
 		self closeWindow 
 	].
 
@@ -85,8 +75,6 @@ MiCoUsageMapBlockSettingsPresenter >> connectPresenters [
 		set := self settings.
 		set resetText.
 		childrenTextInput text: set childrenBlockText.
-		sortOuterBoxTextInput text: set outerBoxSortBlockText.
-		sortInnerBoxTextInput text: set innerBoxSortBlockText.
 	].
 	closeButton action: [
 		self closeWindow 
@@ -100,12 +88,6 @@ MiCoUsageMapBlockSettingsPresenter >> defaultLayout [
 
 		add: 'Children block:' asPresenter expand: false ;
 		add: childrenTextInput height: 200 ;
-
-		add: 'Outer box sort block:' asPresenter expand: false ;
-		add: sortOuterBoxTextInput height: 170 ;
-
-		add: 'Inner box sort block:' asPresenter expand: false ;
-		add: sortInnerBoxTextInput height: 170 ;
 
 		add: self buttonRowLayout
 		expand: false;
@@ -129,8 +111,6 @@ MiCoUsageMapBlockSettingsPresenter >> initializeButtons [
 MiCoUsageMapBlockSettingsPresenter >> initializePresenters [
 
 	childrenTextInput := self newCode.
-	sortOuterBoxTextInput := self newCode.
-	sortInnerBoxTextInput := self newCode.
 
 	self initializeButtons
 ]

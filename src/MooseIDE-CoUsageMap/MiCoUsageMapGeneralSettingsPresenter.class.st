@@ -13,15 +13,15 @@ Class {
 		'blockSettings',
 		'settings'
 	],
-	#category : 'MooseIDE-CoUsageMap-Browser',
+	#category : 'MooseIDE-CoUsageMap-Settings',
 	#package : 'MooseIDE-CoUsageMap',
-	#tag : 'Browser'
+	#tag : 'Settings'
 }
 
 { #category : 'accessing' }
 MiCoUsageMapGeneralSettingsPresenter class >> preferredExtent [
 
-	^ 900 @ 880
+	^ 900 @ 500
 ]
 
 { #category : 'initialization' }
@@ -39,11 +39,7 @@ MiCoUsageMapGeneralSettingsPresenter >> connectPresenters [
 		get: #threshold75PercentGroup;
 		set: #threshold75PercentGroup:;
 		range: (10 to: 100).
-	innerBoxHeight 
-		model: settings ;
-		get: #innerBoxHeight;
-		set: #innerBoxHeight:;
-		range: (2 to: 50).
+
 	rangeInnerWidth
 		model: settings ;
 		get: #innerBoxRange;
@@ -58,8 +54,6 @@ MiCoUsageMapGeneralSettingsPresenter >> defaultLayout [
 		spacing: 3;
 		add: 'Threshold percent per group' asPresenter expand: false;
 		add: #threshold expand: false;
-		add: 'Inner box height' asPresenter expand: false;
-		add: #innerBoxHeight expand: false;
 		add: 'Inner box width scale' asPresenter expand: false;
 		add: #innerBoxWidthScale expand: false;
 		add: 'Range for inner boxes' asPresenter expand: false;
@@ -71,7 +65,6 @@ MiCoUsageMapGeneralSettingsPresenter >> defaultLayout [
 { #category : 'initialization' }
 MiCoUsageMapGeneralSettingsPresenter >> initializePresenters [
 	threshold := self instantiate: MiCoSliderPresenter.
-	innerBoxHeight := self instantiate: MiCoSliderPresenter.
 	innerBoxWidthScale := self newDropList.
 	rangeInnerWidth := self instantiate: MiCoDualSliderPresenter.
 

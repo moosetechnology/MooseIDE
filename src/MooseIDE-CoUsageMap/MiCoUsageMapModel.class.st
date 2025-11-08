@@ -94,23 +94,6 @@ MiCoUsageMapModel >> containerInnerCounter: aMiCoMethodAttributeCounter [
 ]
 
 { #category : 'settings' }
-MiCoUsageMapModel >> defaultInnerSortBlock [
-	^ [ :inner1 :inner2 :containr | inner1 name < inner2 name ].
-]
-
-{ #category : 'settings' }
-MiCoUsageMapModel >> defaultSortBlock [
-	^ [ :container1 :container2 | 
-		| size1 size2 |
-		size1 := container1 innerBoxes size.
-		size2 := container2 innerBoxes size.
-		size1 = size2 
-			ifTrue: [ container1 name < container2 name ]
-			ifFalse: [ size1 > size2 ]
-		 ].
-]
-
-{ #category : 'settings' }
 MiCoUsageMapModel >> defaultTester [
 	^ MiCoFromSettingsMethodAttributeTester new
 ]
@@ -222,11 +205,6 @@ MiCoUsageMapModel >> innerBoxHeight [
 	^self settings innerBoxHeight
 ]
 
-{ #category : 'settings' }
-MiCoUsageMapModel >> innerBoxSortBlockCompiled [
-	^self settings innerBoxSortBlockCompiled
-]
-
 { #category : 'accessing' }
 MiCoUsageMapModel >> innerBoxes [
 	^ innerBoxes
@@ -290,11 +268,6 @@ MiCoUsageMapModel >> openSettings [
 	^MiCoUsageMapGeneralSettingsPresenter new
 		settings: settings ;
 		openDialog
-]
-
-{ #category : 'settings' }
-MiCoUsageMapModel >> outerBoxSortBlockCompiled [
-	^self settings outerBoxSortBlockCompiled
 ]
 
 { #category : 'events' }
