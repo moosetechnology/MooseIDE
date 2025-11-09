@@ -8,7 +8,6 @@ Class {
 		'settingsWindow',
 		'containerEntities',
 		'selectedEntity',
-		'methodAttributeCounter',
 		'innerBoxes',
 		'containerBoxes',
 		'widthScale',
@@ -18,6 +17,16 @@ Class {
 	#package : 'MooseIDE-CoUsageMap',
 	#tag : 'Model'
 }
+
+{ #category : 'public' }
+MiCoUsageMapModel >> allAttributesFor: aMiCoMethod [
+	"should return a list of associations(a Bag), for each association:
+	key is the object
+	value is the number of uses of that object is used by aMiCoMethod"
+
+	^[ self settings innerBoxExtractor new innerBoxesFor: aMiCoMethod mooseEntity ]
+		onErrorDo: [ :ex | ex traceCr. #() ].
+]
 
 { #category : 'tagging' }
 MiCoUsageMapModel >> automaticColor [
@@ -83,22 +92,6 @@ MiCoUsageMapModel >> containerEntities: aCollection [
 ]
 
 { #category : 'accessing' }
-MiCoUsageMapModel >> containerInnerCounter [
-
-	^ methodAttributeCounter
-]
-
-{ #category : 'accessing' }
-MiCoUsageMapModel >> containerInnerCounter: aMiCoMethodAttributeCounter [
-	methodAttributeCounter := aMiCoMethodAttributeCounter
-]
-
-{ #category : 'settings' }
-MiCoUsageMapModel >> defaultTester [
-	^ MiCoFromSettingsMethodAttributeTester new
-]
-
-{ #category : 'accessing' }
 MiCoUsageMapModel >> entities [
 	^containerEntities
 ]
@@ -146,8 +139,7 @@ MiCoUsageMapModel >> getOrCreateInnerBoxFor: object [
 MiCoUsageMapModel >> initialize [
 	super initialize.
 
-	settings := MiCoUsageMapSettings new.
-	self containerInnerCounter: self defaultTester
+	settings := MiCoUsageMapSettings new
 ]
 
 { #category : 'initialization' }
@@ -161,12 +153,10 @@ MiCoUsageMapModel >> initializeContainerBoxes [
 { #category : 'initialization' }
 MiCoUsageMapModel >> initializeReferences [
 	innerBoxes := OrderedCollection new.
-
-	self containerInnerCounter settings: self settings.
 	
 	self containerBoxes do: [ :cont | 
 		| bag |
-		bag := Bag withAll: (self containerInnerCounter allAttributesFor: cont).
+		bag := Bag withAll: (self allAttributesFor: cont).
 		bag doWithOccurrences: [ :innerEntity :count | | in |
 			count > 0 ifTrue: [ 
 				in := self getOrCreateInnerBoxFor: innerEntity.
