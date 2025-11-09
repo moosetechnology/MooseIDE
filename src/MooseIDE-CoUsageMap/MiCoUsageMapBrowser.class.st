@@ -117,6 +117,12 @@ MiCoUsageMapBrowser >> mapVisualization [
 	^ mainPresenter
 ]
 
+{ #category : 'accessing' }
+MiCoUsageMapBrowser >> refresh [
+
+	self runVisualization.
+]
+
 { #category : 'dependencies' }
 MiCoUsageMapBrowser >> release [
 	self class instVarNames do: [ :n | self instVarNamed: n put: nil ]

@@ -251,6 +251,7 @@ MiCoUsageMapModel >> openSettings [
 
 	^MiCoUsageMapSettingsPresenter new
 		settings: settings ;
+		specModel: self ;
 		openDialog
 ]
 
@@ -261,6 +262,13 @@ MiCoUsageMapModel >> quickTaggingOn: entity [
 	ifNil: [ ^ self ]
 	ifNotNil: [ :tag | self setTag: tag onInnerBox: entity ]
 
+]
+
+{ #category : 'actions' }
+MiCoUsageMapModel >> refreshVisualization [
+
+	self initializeValues.
+	browser refresh
 ]
 
 { #category : 'tagging' }

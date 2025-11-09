@@ -102,3 +102,9 @@ MiCoUsageMapSettingsPresenter >> settings: anObject [
 	settings := anObject.
 	self connectPresenters
 ]
+
+{ #category : 'accessing' }
+MiCoUsageMapSettingsPresenter >> specModel: anObject [
+
+	specModel := anObject 
+]
