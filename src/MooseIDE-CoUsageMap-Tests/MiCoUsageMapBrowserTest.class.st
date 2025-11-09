@@ -33,16 +33,16 @@ MiCoUsageMapBrowserTest >> settingsApplyButtonPresenter [
 ]
 
 { #category : 'running' }
-MiCoUsageMapBrowserTest >> settingsChildrenTextInputPresenter [
-
-	^settingsWindow presenter
-		presenterAt: #childrenTextInput
-]
-
-{ #category : 'running' }
 MiCoUsageMapBrowserTest >> settingsCloseButtonPresenter [
 
 	^settingsWindow buttons detect: [ :btn | btn label = 'Cancel' ]
+]
+
+{ #category : 'running' }
+MiCoUsageMapBrowserTest >> settingsInnerBoxExtractorListPresenter [
+
+	^settingsWindow presenter
+		presenterAt: #lstInnerBoxExtractor
 ]
 
 { #category : 'running' }
@@ -70,10 +70,10 @@ MiCoUsageMapBrowserTest >> testBlockSettingsChangeValue [
 
 	settingsWindow := browser specModel openSettings.
 
-	self settingsChildrenTextInputPresenter text: '[ ]'.
+	self settingsInnerBoxExtractorListPresenter selectItem: MiCoChildrenBoxClientClassesExtractor.
 	self settingsApplyButtonPresenter  click.
 		
-	self assert: browser specModel settings childrenBlockText equals: '[ ]'.
+	self assert: browser specModel settings innerBoxExtractor equals: MiCoChildrenBoxClientClassesExtractor .
 
 ]
 
@@ -81,17 +81,15 @@ MiCoUsageMapBrowserTest >> testBlockSettingsChangeValue [
 MiCoUsageMapBrowserTest >> testBlockSettingsClickClose [
 
 	self
-		assert: browser specModel settings childrenBlockText
-		equals: browser specModel settings defaultChildrenBlockText.
+		assert: browser specModel settings innerBoxExtractor
+		equals: browser specModel settings defaultInnerBoxExtractor.
 
 	settingsWindow := browser specModel openSettings.
-	self settingsChildrenTextInputPresenter text: 'Blah'.
+	self settingsInnerBoxExtractorListPresenter selectItem: MiCoChildrenBoxClientClassesExtractor.
 
 	self settingsCloseButtonPresenter click.
 
-	self
-		assert: browser specModel settings childrenBlockText
-		equals: browser specModel settings defaultChildrenBlockText.
+	self assert: browser specModel settings innerBoxExtractor equals: MiCoChildrenBoxAttributeAccessExtractor.
 
 ]
 
@@ -100,7 +98,7 @@ MiCoUsageMapBrowserTest >> testBlockSettingsDefaultValues [
 
 	settingsWindow := browser specModel openSettings.
 
-	self assert: browser specModel settings childrenBlockText isNotEmpty.
+	self assert: browser specModel settings innerBoxExtractor equals: MiCoChildrenBoxAttributeAccessExtractor.
 ]
 
 { #category : 'tests' }
@@ -108,20 +106,20 @@ MiCoUsageMapBrowserTest >> testBlockSettingsResetValues [
 
 	self skip: 'reset action removed for now'.
 
-	browser specModel settings childrenBlockText: 'Blah'.
+	browser specModel settings innerBoxExtractor: 'Blah'.
 
 	settingsWindow := browser specModel openSettings.
 
 	self
-		assert: self settingsChildrenTextInputPresenter text
+		assert: self settingsInnerBoxExtractorListPresenter text
 		equals: 'Blah'.
 
 	self settingsResetButtonPresenter click.
 
 	self
-		deny: self settingsChildrenTextInputPresenter text
+		deny: self settingsInnerBoxExtractorListPresenter text
 		equals: 'Blah'.
-	self deny: self settingsChildrenTextInputPresenter text isEmpty.
+	self deny: self settingsInnerBoxExtractorListPresenter text isEmpty.
 
 ]
 
