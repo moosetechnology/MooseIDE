@@ -12,44 +12,10 @@ Class {
 	#tag : 'Settings'
 }
 
-{ #category : 'accessing - computed' }
-MiCoUsageMapSettings >> childrenBlockCompiled [
-	^ self compiledBlock: self childrenBlockText onError: self defaultChildrenBlockText
-]
-
-{ #category : 'accessing' }
-MiCoUsageMapSettings >> childrenBlockText [
-	^ self propertiesMap at: #childrenBlockText ifAbsent: [ self defaultChildrenBlockText ]
-]
-
-{ #category : 'accessing' }
-MiCoUsageMapSettings >> childrenBlockText: aString [
-	self propertiesMap at: #childrenBlockText put: aString
-]
-
-{ #category : 'accessing - computed' }
-MiCoUsageMapSettings >> compiledBlock: aString onError: defaultString [
-	| compiler |
-	compiler := Smalltalk compiler.
-	^ [ compiler evaluate: aString ]
-	on: Error
-	do: [ :ex | compiler evaluate: defaultString ]
-]
-
 { #category : 'accessing - defaults' }
-MiCoUsageMapSettings >> defaultChildrenBlockText [
+MiCoUsageMapSettings >> defaultInnerBoxExtractor [
 
-	^ '"This code should return all the inner entities for one of the big boxes (outer entities).
-	It is for attributes (inner)) accessed by methods (outer), but you can change it"
-[ :outerEntity |
-	outerEntity isContainerEntity
-	ifTrue: [
-		outerEntity accesses
-			collect: [ :access | access variable ]
-			thenSelect: [ :var | var isAttribute ]
-	]
-	ifFalse: [ #() ]
-]'
+	^MiCoChildrenBoxAttributeAccessExtractor 
 ]
 
 { #category : 'accessing - defaults' }
@@ -65,6 +31,16 @@ MiCoUsageMapSettings >> defaultInnerBoxScaleType [
 { #category : 'accessing - defaults' }
 MiCoUsageMapSettings >> defaultThreshold75 [
 	^ 75
+]
+
+{ #category : 'accessing' }
+MiCoUsageMapSettings >> innerBoxExtractor [
+	^ self propertiesMap at: #innerBoxExtractor ifAbsent: [ self defaultInnerBoxExtractor ]
+]
+
+{ #category : 'accessing' }
+MiCoUsageMapSettings >> innerBoxExtractor: aString [
+	self propertiesMap at: #innerBoxExtractor put: aString
 ]
 
 { #category : 'accessing' }
@@ -101,7 +77,7 @@ MiCoUsageMapSettings >> reset [
 MiCoUsageMapSettings >> resetText [
 	<script>
 	self propertiesMap
-		removeKey: #childrenBlockText ifAbsent: []
+		removeKey: #innerBoxExtractor ifAbsent: []
 ]
 
 { #category : 'accessing' }

@@ -9,7 +9,8 @@ Class {
 		'innerBoxWidthScale',
 		'rangeInnerWidth',
 		'settings',
-		'childrenTextInput'
+		'lstInnerBoxExtractor',
+		'specModel'
 	],
 	#category : 'MooseIDE-CoUsageMap-Settings',
 	#package : 'MooseIDE-CoUsageMap',
@@ -19,15 +20,13 @@ Class {
 { #category : 'accessing' }
 MiCoUsageMapSettingsPresenter class >> preferredExtent [
 
-	^ 900 @ 450
+	^ 450 @ 280
 ]
 
 { #category : 'initialization' }
 MiCoUsageMapSettingsPresenter >> connectPresenters [
 
 	settings ifNil: [ ^ self ].
-
-	"self onAccept: [ childrenTextInput triggerSubmitAction ]".
 
 	innerBoxWidthScale 
 		items: settings scaleTypes;
@@ -46,9 +45,11 @@ MiCoUsageMapSettingsPresenter >> connectPresenters [
 		set: #innerBoxRange:;
 		range: (5 to: 100).
 
-	childrenTextInput
-		text: self settings childrenBlockText ;
-		whenSubmitDo: [ :text | self settings childrenBlockText: text ].
+	lstInnerBoxExtractor
+		items: MiCoChildrenBoxAbstractExtractor subclasses ;
+		selectItem: settings innerBoxExtractor ;
+		display: [ :i | i menuItemName ];
+		whenSelectedItemChangedDo: [:item | settings innerBoxExtractor: item ].
 
 ]
 
@@ -64,7 +65,7 @@ MiCoUsageMapSettingsPresenter >> defaultLayout [
 		add: 'Range for inner boxes' asPresenter expand: false;
 		add: #rangeInnerWidth expand: false;
 		add: 'Children block:' asPresenter expand: false ;
-		add: childrenTextInput height: 200 ;
+		add: lstInnerBoxExtractor asPresenter expand: false ;
 
 		yourself
 ]
@@ -74,7 +75,10 @@ MiCoUsageMapSettingsPresenter >> initializeDialogWindow: aDialog [
 
 	aDialog
 		addButton: 'Cancel' do: [ :dialog | dialog close ] ;
-		addButton: 'Apply' do: [ :dialog | childrenTextInput triggerSubmitAction. dialog close ]
+		addButton: 'Apply' do: [ :dialog |
+			settings innerBoxExtractor: lstInnerBoxExtractor selectedItem.
+			specModel refreshVisualization.
+			dialog close ]
 ]
 
 { #category : 'initialization' }
@@ -82,7 +86,7 @@ MiCoUsageMapSettingsPresenter >> initializePresenters [
 	threshold := self instantiate: MiCoSliderPresenter.
 	innerBoxWidthScale := self newDropList.
 	rangeInnerWidth := self instantiate: MiCoDualSliderPresenter.
-	childrenTextInput := self newCode.
+	lstInnerBoxExtractor := self newDropList.
 
 ]
 
