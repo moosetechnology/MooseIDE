@@ -65,12 +65,6 @@ MiCoUsageMapModel >> changeTagsDuring: aBlockClosure [
 	self selectedTag: lastTag
 ]
 
-{ #category : 'private - for tests' }
-MiCoUsageMapModel >> closeSettings [
-	"used only for closing settings opened in tests"
-	settingsWindow ifNotNil: [ settingsWindow close ]
-]
-
 { #category : 'accessing' }
 MiCoUsageMapModel >> containerBoxNamed: aByteString [
 	^ self containerBoxes detect: [ :contr | contr name = aByteString ]

@@ -87,11 +87,6 @@ MiCoUsageMapSettings >> innerBoxScaleType: aString [
 	self propertiesMap at: #innerBoxScaleType put: aString
 ]
 
-{ #category : 'accessing - computed' }
-MiCoUsageMapSettings >> innerBoxSortBlockCompiled [
-	^ self compiledBlock: self innerBoxSortBlockText onError: self defaultInnerBoxSortBlockText
-]
-
 { #category : 'private' }
 MiCoUsageMapSettings >> propertiesMap [
 	^ properties ifNil: [ properties := Dictionary new ]

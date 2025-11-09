@@ -368,19 +368,6 @@ MiCoUsageMapBuilder >> updateBoxColor: aMiCoBox fromTags: tags [
 ]
 
 { #category : 'update' }
-MiCoUsageMapBuilder >> updateChildren [
-	| canvas |
-	canvas := self canvas.
-	canvas nodes copy do: #remove.
-	self initializeValues.
-	shapes := self containerBoxes collect: [ :met | self containerBoxShapeFor: met ].
-	canvas addAll: shapes.
-	self sortShapes.
-	self applyLayout.
-	canvas signalUpdate.
-]
-
-{ #category : 'update' }
 MiCoUsageMapBuilder >> updateInnerBoxSize [
 	| range newScale scaleType |
 	range := self settings innerBoxRange.
