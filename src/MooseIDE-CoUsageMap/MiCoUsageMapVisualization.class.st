@@ -86,12 +86,6 @@ MiCoUsageMapVisualization >> modelForShape: aShape [
 	^ aShape model mooseEntity
 ]
 
-{ #category : 'actions' }
-MiCoUsageMapVisualization >> openSettings [
-	"called from the visualization's globalMenu"
-	specModel openSettings
-]
-
 { #category : 'brokerage' }
 MiCoUsageMapVisualization >> remove: anObject [
 	anObject class = FamixTag
