@@ -1,23 +1,23 @@
 Class {
-	#name : 'MiCoAttributeTest',
+	#name : 'MiCoInnerBoxTest',
 	#superclass : 'TestCase',
-	#category : 'MooseIDE-CoUsageMap-Tests-Browser',
+	#category : 'MooseIDE-CoUsageMap-Tests-Model',
 	#package : 'MooseIDE-CoUsageMap-Tests',
-	#tag : 'Browser'
+	#tag : 'Model'
 }
 
 { #category : 'tests' }
-MiCoAttributeTest >> containerBoxOn: aName [
+MiCoInnerBoxTest >> containerBoxOn: aName [
 	^MiCoContainerBox new mooseEntity: (FamixStMethod new name: aName)
 ]
 
 { #category : 'tests' }
-MiCoAttributeTest >> innerBoxOn: aName [
+MiCoInnerBoxTest >> innerBoxOn: aName [
 	^MiCoInnerBox new mooseEntity: (FamixStAttribute new name: aName)
 ]
 
 { #category : 'tests' }
-MiCoAttributeTest >> test01ContainerBox [
+MiCoInnerBoxTest >> test01ContainerBox [
 
 	| container |
 	container := self containerBoxOn: 'method1'.
@@ -25,7 +25,7 @@ MiCoAttributeTest >> test01ContainerBox [
 ]
 
 { #category : 'tests' }
-MiCoAttributeTest >> test02InnerBox [
+MiCoInnerBoxTest >> test02InnerBox [
 
 	| innerBox |
 	innerBox := self innerBoxOn: 'aVar'.
@@ -33,7 +33,7 @@ MiCoAttributeTest >> test02InnerBox [
 ]
 
 { #category : 'tests' }
-MiCoAttributeTest >> test03PopupMessage [
+MiCoInnerBoxTest >> test03PopupMessage [
 
 	| innerBox containerBox |
 	containerBox := self containerBoxOn: 'method1'.
