@@ -1,6 +1,9 @@
 Class {
 	#name : 'MiCoUsageMapBrowserTest',
 	#superclass : 'MiAbstractBrowserTest',
+	#instVars : [
+		'mooseModel'
+	],
 	#category : 'MooseIDE-CoUsageMap-Tests-Browser',
 	#package : 'MooseIDE-CoUsageMap-Tests',
 	#tag : 'Browser'
@@ -49,78 +52,6 @@ MiCoUsageMapBrowserTest >> settingsInnerBoxExtractorListPresenter [
 MiCoUsageMapBrowserTest >> settingsResetButtonPresenter [
 
 	^nil
-]
-
-{ #category : 'tests' }
-MiCoUsageMapBrowserTest >> testBlockSettingsApplyButton [
-	"Apply button should close the block setting window"
-
-	settingsWindow := browser openSettings.
-
-	self assert: settingsWindow isOpen.
-
-	self settingsApplyButtonPresenter click.
-
-	self assert: settingsWindow isClosed.
-
-]
-
-{ #category : 'tests' }
-MiCoUsageMapBrowserTest >> testBlockSettingsChangeValue [
-
-	settingsWindow := browser specModel openSettings.
-
-	self settingsInnerBoxExtractorListPresenter selectItem: MiCoChildrenBoxClientClassesExtractor.
-	self settingsApplyButtonPresenter  click.
-		
-	self assert: browser specModel settings innerBoxExtractor equals: MiCoChildrenBoxClientClassesExtractor .
-
-]
-
-{ #category : 'tests' }
-MiCoUsageMapBrowserTest >> testBlockSettingsClickClose [
-
-	self
-		assert: browser specModel settings innerBoxExtractor
-		equals: browser specModel settings defaultInnerBoxExtractor.
-
-	settingsWindow := browser specModel openSettings.
-	self settingsInnerBoxExtractorListPresenter selectItem: MiCoChildrenBoxClientClassesExtractor.
-
-	self settingsCloseButtonPresenter click.
-
-	self assert: browser specModel settings innerBoxExtractor equals: MiCoChildrenBoxAttributeAccessExtractor.
-
-]
-
-{ #category : 'tests' }
-MiCoUsageMapBrowserTest >> testBlockSettingsDefaultValues [
-
-	settingsWindow := browser specModel openSettings.
-
-	self assert: browser specModel settings innerBoxExtractor equals: MiCoChildrenBoxAttributeAccessExtractor.
-]
-
-{ #category : 'tests' }
-MiCoUsageMapBrowserTest >> testBlockSettingsResetValues [
-
-	self skip: 'reset action removed for now'.
-
-	browser specModel settings innerBoxExtractor: 'Blah'.
-
-	settingsWindow := browser specModel openSettings.
-
-	self
-		assert: self settingsInnerBoxExtractorListPresenter text
-		equals: 'Blah'.
-
-	self settingsResetButtonPresenter click.
-
-	self
-		deny: self settingsInnerBoxExtractorListPresenter text
-		equals: 'Blah'.
-	self deny: self settingsInnerBoxExtractorListPresenter text isEmpty.
-
 ]
 
 { #category : 'tests' }
@@ -176,22 +107,75 @@ MiCoUsageMapBrowserTest >> testSettingsAction [
 ]
 
 { #category : 'tests' }
+MiCoUsageMapBrowserTest >> testSettingsChangeValue [
+
+	settingsWindow := browser specModel openSettings.
+
+	self settingsInnerBoxExtractorListPresenter selectItem: MiCoInnerEntitiesClientClassesExtractor.
+	self settingsApplyButtonPresenter  click.
+		
+	self assert: browser specModel settings innerBoxExtractor equals: MiCoInnerEntitiesClientClassesExtractor .
+
+]
+
+{ #category : 'tests' }
 MiCoUsageMapBrowserTest >> testSettingsClickCancel [
-	"skipping for now because settings are handled in a very special way"
-	self flag: 'should test settings'.
-	self skip.
+
+	self skip: 'until settings are made standard'.
+
+	self
+		assert: browser specModel settings innerBoxExtractor
+		equals: browser specModel settings defaultInnerBoxExtractor.
+
+	settingsWindow := browser specModel openSettings.
+	self settingsInnerBoxExtractorListPresenter selectItem: MiCoInnerEntitiesClientClassesExtractor.
+
+	self settingsCloseButtonPresenter click.
+
+	self assert: browser specModel settings innerBoxExtractor equals: MiCoInnerEntitiesAttributeAccessExtractor.
+
 ]
 
 { #category : 'tests' }
 MiCoUsageMapBrowserTest >> testSettingsClickOK [
-	"overrind and skipping for now because settings are handled in a very special way"
-	self flag: 'should test settings'.
-	self skip.
+	"Apply button should close the block setting window"
+
+	settingsWindow := browser openSettings.
+
+	self assert: settingsWindow isOpen.
+
+	self settingsApplyButtonPresenter click.
+
+	self assert: settingsWindow isClosed.
+
 ]
 
 { #category : 'tests' }
 MiCoUsageMapBrowserTest >> testSettingsClickReset [
-	"overrind and skipping for now because settings are handled in a very special way"
-	self flag: 'should test settings'.
-	self skip.
+
+	self skip: 'until settings are made standard'.
+
+	browser specModel settings innerBoxExtractor: 'Blah'.
+
+	settingsWindow := browser specModel openSettings.
+
+	self
+		assert: self settingsInnerBoxExtractorListPresenter text
+		equals: 'Blah'.
+
+	self settingsResetButtonPresenter click.
+
+	self
+		deny: self settingsInnerBoxExtractorListPresenter text
+		equals: 'Blah'.
+	self deny: self settingsInnerBoxExtractorListPresenter text isEmpty.
+
+]
+
+{ #category : 'tests' }
+MiCoUsageMapBrowserTest >> testSettingsDefaultValues [
+
+	settingsWindow := browser specModel openSettings.
+
+	self assert: browser specModel settings innerBoxExtractor equals: MiCoInnerEntitiesAttributeAccessExtractor.
 ]
