@@ -46,7 +46,7 @@ MiCoUsageMapSettingsPresenter >> connectPresenters [
 		range: (5 to: 100).
 
 	lstInnerBoxExtractor
-		items: MiCoChildrenBoxAbstractExtractor subclasses ;
+		items: MiCoInnerEntitiesAbstractExtractor subclasses ;
 		selectItem: settings innerBoxExtractor ;
 		display: [ :i | i menuItemName ];
 		whenSelectedItemChangedDo: [:item | settings innerBoxExtractor: item ].

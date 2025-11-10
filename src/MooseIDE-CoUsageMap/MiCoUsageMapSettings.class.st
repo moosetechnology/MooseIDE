@@ -15,7 +15,7 @@ Class {
 { #category : 'accessing - defaults' }
 MiCoUsageMapSettings >> defaultInnerBoxExtractor [
 
-	^MiCoChildrenBoxAttributeAccessExtractor 
+	^MiCoInnerEntitiesAttributeAccessExtractor 
 ]
 
 { #category : 'accessing - defaults' }

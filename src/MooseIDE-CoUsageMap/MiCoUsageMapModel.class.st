@@ -24,7 +24,7 @@ MiCoUsageMapModel >> allAttributesFor: aMiCoMethod [
 	key is the object
 	value is the number of uses of that object is used by aMiCoMethod"
 
-	^[ self settings innerBoxExtractor new innerBoxesFor: aMiCoMethod mooseEntity ]
+	^[ self settings innerBoxExtractor new innerEntitiesFor: aMiCoMethod mooseEntity ]
 		onErrorDo: [ :ex | ex traceCr. #() ].
 ]
 

@@ -2,7 +2,7 @@
 An abstract super-class for various strategies to compute children boxes of a container box
 "
 Class {
-	#name : 'MiCoChildrenBoxAbstractExtractor',
+	#name : 'MiCoInnerEntitiesAbstractExtractor',
 	#superclass : 'Object',
 	#category : 'MooseIDE-CoUsageMap-Model',
 	#package : 'MooseIDE-CoUsageMap',
@@ -10,25 +10,19 @@ Class {
 }
 
 { #category : 'accessing' }
-MiCoChildrenBoxAbstractExtractor class >> description [
+MiCoInnerEntitiesAbstractExtractor class >> description [
 
 	self subclassResponsibility 
 ]
 
 { #category : 'accessing' }
-MiCoChildrenBoxAbstractExtractor class >> menuItemName [
+MiCoInnerEntitiesAbstractExtractor class >> menuItemName [
 
 	self subclassResponsibility 
 ]
 
 { #category : 'execute' }
-MiCoChildrenBoxAbstractExtractor >> innerBoxesFor: containerBox [
-
-	self subclassResponsibility 
-]
-
-{ #category : 'accessing' }
-MiCoChildrenBoxAbstractExtractor >> name [
+MiCoInnerEntitiesAbstractExtractor >> innerEntitiesFor: containerBox [
 
 	self subclassResponsibility 
 ]

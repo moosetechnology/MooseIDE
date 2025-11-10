@@ -1,26 +1,26 @@
 Class {
-	#name : 'MiCoChildrenBoxClientClassesExtractor',
-	#superclass : 'MiCoChildrenBoxAbstractExtractor',
+	#name : 'MiCoInnerEntitiesClientClassesExtractor',
+	#superclass : 'MiCoInnerEntitiesAbstractExtractor',
 	#category : 'MooseIDE-CoUsageMap-Model',
 	#package : 'MooseIDE-CoUsageMap',
 	#tag : 'Model'
 }
 
 { #category : 'accessing' }
-MiCoChildrenBoxClientClassesExtractor class >> description [
+MiCoInnerEntitiesClientClassesExtractor class >> description [
 
 	^'Inner boxes are all the classes dependending on
 the entities represented by the container boxes'
 ]
 
 { #category : 'accessing' }
-MiCoChildrenBoxClientClassesExtractor class >> menuItemName [
+MiCoInnerEntitiesClientClassesExtractor class >> menuItemName [
 
 	^'Client classes'
 ]
 
 { #category : 'execute' }
-MiCoChildrenBoxClientClassesExtractor >> innerBoxesFor: containerEntity [
+MiCoInnerEntitiesClientClassesExtractor >> innerEntitiesFor: containerEntity [
 
 	^containerEntity allClients
 		flatCollect: [ :client | client containersOfType: FamixTClass ]
