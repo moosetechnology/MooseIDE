@@ -6,11 +6,6 @@ Class {
 	#tag : 'Browser'
 }
 
-{ #category : 'running' }
-MiCoUsageMapBuilderTest >> browserClass [
-	^ MiCoUsageMapBrowser
-]
-
 { #category : 'tests' }
 MiCoUsageMapBuilderTest >> testLastTagInitialization [
 
