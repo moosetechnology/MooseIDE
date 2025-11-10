@@ -11,15 +11,18 @@ Class {
 
 { #category : 'running' }
 MiCoUsageMapBrowserTest >> browserClass [
-	^ MiCoUsageMapBrowser
+
+	^MiCoUsageMapBrowser
 ]
 
 { #category : 'running' }
-MiCoUsageMapBrowserTest >> populateBrowser: mooseModel [
+MiCoUsageMapBrowserTest >> populateBrowser: anotherMooseModel [
+	"necessary for inherited #testTagMenuListsTags
+	 unfortunatelly it uses its own MooseModel"
 
-	mooseModel add: (FamixStClass new name: 'AClass').
-	mooseModel add: (FamixStClass new name: 'AnotherClass').
-	browser followEntity: mooseModel entities.
+	anotherMooseModel newMethodNamed: 'method'.
+
+	browser followEntity: anotherMooseModel allModelMethods.
 
 ]
 
@@ -27,6 +30,17 @@ MiCoUsageMapBrowserTest >> populateBrowser: mooseModel [
 MiCoUsageMapBrowserTest >> receiveEntityToSelect [
 
 	browser receiveEntity: entityToSelect asMooseGroup
+]
+
+{ #category : 'running' }
+MiCoUsageMapBrowserTest >> setUp [
+
+	super setUp.
+
+	mooseModel := MiCoUsageTestFamixModel new.
+
+	browser followEntity: mooseModel allMethods.
+
 ]
 
 { #category : 'running' }
