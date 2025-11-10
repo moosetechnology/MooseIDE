@@ -1,17 +1,27 @@
 Class {
 	#name : 'MiCoUsageAbstractTest',
-	#superclass : 'TestCase',
+	#superclass : 'MiAbstractApplicationTest',
 	#instVars : [
 		'visualization',
 		'builder',
-		'browser',
-		'application',
-		'previousApplication'
+		'mooseModel',
+		'browser'
 	],
 	#category : 'MooseIDE-CoUsageMap-Tests-Browser',
 	#package : 'MooseIDE-CoUsageMap-Tests',
 	#tag : 'Browser'
 }
+
+{ #category : 'testing' }
+MiCoUsageAbstractTest class >> isAbstract [
+	^self name includesSubstring: 'Abstract'
+]
+
+{ #category : 'running' }
+MiCoUsageAbstractTest >> browserClass [
+
+	^MiCoUsageMapBrowser
+]
 
 { #category : 'running' }
 MiCoUsageAbstractTest >> createTag: aName [
@@ -25,21 +35,13 @@ MiCoUsageAbstractTest >> createTag: aName [
 MiCoUsageAbstractTest >> setUp [
 
 	super setUp.
-	previousApplication := MiApplication current.
 
-	application := MiTestApplication new.
-	MiApplication current: application.
+	mooseModel := MiCoUsageTestFamixModel new.
 
-	browser := MiCoUsageMapBrowser
-		           newApplication: application
-		           model: MiCoUsageMapModel new.
-
-	browser specModel followEntity:
-		MiCoUsageTestFamixModel new allMethods.
+	browser := self browserClass openForTests: application.
+	browser followEntity: mooseModel allMethods.
 
 	visualization := browser mapVisualization.
-	visualization buildInCanvas: visualization canvas.
-
 	builder := visualization mapBuilder
 ]
 
@@ -59,7 +61,7 @@ MiCoUsageAbstractTest >> tagsWithPalette: aCollection [
 { #category : 'running' }
 MiCoUsageAbstractTest >> tearDown [
 
-	MiApplication reset.
-	MiApplication current: previousApplication.
+	browser ifNotNil: [ browser withWindowDo: [ :window | window close ] ].
+
 	super tearDown
 ]
