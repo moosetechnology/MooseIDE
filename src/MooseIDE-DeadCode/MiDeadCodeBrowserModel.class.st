@@ -173,19 +173,19 @@ MiDeadCodeBrowserModel >> miSelectedItems: aCollection [
 { #category : 'actions' }
 MiDeadCodeBrowserModel >> oneRoundRecursion [
 
-	| addNewDead |
-	addNewDead := false.
+	| addedDeads |
+	addedDeads := false.
 
 	self deadEntities clone do: [ :dead |
 		(dead queryOutgoing: FamixTInvocation) opposites do: [ :invoked |
 			(self isNewDead: invoked) ifTrue: [
 				deadEntities add: invoked.
-				addNewDead := true
+				addedDeads := true
 			]
 		]
 	].
 
-	^ addNewDead
+	^ addedDeads
 ]
 
 { #category : 'actions' }
