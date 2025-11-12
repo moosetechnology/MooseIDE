@@ -286,7 +286,7 @@ MiDeadCodeBrowserTest >> testOnlySelectedDeadEntitiesAreMiSelected [
 ]
 
 { #category : 'tests' }
-MiDeadCodeBrowserTest >> testRecursionButtonUResetsSelectedDeadEntities [
+MiDeadCodeBrowserTest >> testRecursionButtonResetsSelectedDeadEntities [
 	"put the calling method in the list of dead entities
 	 select it (it is 'miSelected')
 	 click on 'Recursion' that adds the anotherMethod tot he deads
