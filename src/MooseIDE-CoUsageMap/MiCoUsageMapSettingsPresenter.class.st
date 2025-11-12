@@ -2,30 +2,29 @@
 used to display basic settings, like threshold, height of the inner box of co usage map
 "
 Class {
-	#name : 'MiCoUsageMapGeneralSettingsPresenter',
+	#name : 'MiCoUsageMapSettingsPresenter',
 	#superclass : 'SpPresenter',
 	#instVars : [
 		'threshold',
-		'innerBoxHeight',
 		'innerBoxWidthScale',
 		'rangeInnerWidth',
-		'coUsageMap',
-		'blockSettings',
-		'settings'
+		'settings',
+		'lstInnerBoxExtractor',
+		'specModel'
 	],
-	#category : 'MooseIDE-CoUsageMap-Browser',
+	#category : 'MooseIDE-CoUsageMap-Settings',
 	#package : 'MooseIDE-CoUsageMap',
-	#tag : 'Browser'
+	#tag : 'Settings'
 }
 
 { #category : 'accessing' }
-MiCoUsageMapGeneralSettingsPresenter class >> preferredExtent [
+MiCoUsageMapSettingsPresenter class >> preferredExtent [
 
-	^ 900 @ 880
+	^ 450 @ 280
 ]
 
 { #category : 'initialization' }
-MiCoUsageMapGeneralSettingsPresenter >> connectPresenters [
+MiCoUsageMapSettingsPresenter >> connectPresenters [
 
 	settings ifNil: [ ^ self ].
 
@@ -39,55 +38,73 @@ MiCoUsageMapGeneralSettingsPresenter >> connectPresenters [
 		get: #threshold75PercentGroup;
 		set: #threshold75PercentGroup:;
 		range: (10 to: 100).
-	innerBoxHeight 
-		model: settings ;
-		get: #innerBoxHeight;
-		set: #innerBoxHeight:;
-		range: (2 to: 50).
+
 	rangeInnerWidth
 		model: settings ;
 		get: #innerBoxRange;
 		set: #innerBoxRange:;
-		range: (5 to: 100)
+		range: (5 to: 100).
+
+	lstInnerBoxExtractor
+		items: MiCoInnerEntitiesAbstractExtractor subclasses ;
+		selectItem: settings innerBoxExtractor ;
+		display: [ :i | i menuItemName ];
+		whenSelectedItemChangedDo: [:item | settings innerBoxExtractor: item ].
+
 ]
 
 { #category : 'layout' }
-MiCoUsageMapGeneralSettingsPresenter >> defaultLayout [
+MiCoUsageMapSettingsPresenter >> defaultLayout [
 
 	^ SpBoxLayout newTopToBottom
 		spacing: 3;
 		add: 'Threshold percent per group' asPresenter expand: false;
 		add: #threshold expand: false;
-		add: 'Inner box height' asPresenter expand: false;
-		add: #innerBoxHeight expand: false;
 		add: 'Inner box width scale' asPresenter expand: false;
 		add: #innerBoxWidthScale expand: false;
 		add: 'Range for inner boxes' asPresenter expand: false;
 		add: #rangeInnerWidth expand: false;
-		add: blockSettings ;
+		add: 'Children block:' asPresenter expand: false ;
+		add: lstInnerBoxExtractor asPresenter expand: false ;
+
 		yourself
 ]
 
 { #category : 'initialization' }
-MiCoUsageMapGeneralSettingsPresenter >> initializePresenters [
+MiCoUsageMapSettingsPresenter >> initializeDialogWindow: aDialog [
+
+	aDialog
+		addButton: 'Cancel' do: [ :dialog | dialog close ] ;
+		addButton: 'Apply' do: [ :dialog |
+			settings innerBoxExtractor: lstInnerBoxExtractor selectedItem.
+			specModel refreshVisualization.
+			dialog close ]
+]
+
+{ #category : 'initialization' }
+MiCoUsageMapSettingsPresenter >> initializePresenters [
 	threshold := self instantiate: MiCoSliderPresenter.
-	innerBoxHeight := self instantiate: MiCoSliderPresenter.
 	innerBoxWidthScale := self newDropList.
 	rangeInnerWidth := self instantiate: MiCoDualSliderPresenter.
+	lstInnerBoxExtractor := self newDropList.
 
-	blockSettings := self instantiate: MiCoUsageMapBlockSettingsPresenter
 ]
 
 { #category : 'accessing' }
-MiCoUsageMapGeneralSettingsPresenter >> settings [
+MiCoUsageMapSettingsPresenter >> settings [
 
 	^settings
 ]
 
 { #category : 'accessing' }
-MiCoUsageMapGeneralSettingsPresenter >> settings: anObject [
+MiCoUsageMapSettingsPresenter >> settings: anObject [
 
 	settings := anObject.
-	self connectPresenters.
-	blockSettings connectPresenters.
+	self connectPresenters
+]
+
+{ #category : 'accessing' }
+MiCoUsageMapSettingsPresenter >> specModel: anObject [
+
+	specModel := anObject 
 ]
