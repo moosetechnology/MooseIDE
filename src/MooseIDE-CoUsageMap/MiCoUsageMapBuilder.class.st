@@ -193,13 +193,12 @@ MiCoUsageMapBuilder >> initializeShapes [
 
 { #category : 'hooks' }
 MiCoUsageMapBuilder >> innerBoxShapeFor: innerBox containerBox: containerBox [
-	| height |
-	height := self specModel innerBoxHeight.
+
 	widthScale := self specModel widthScale.
 	^ RSBox new
 		model: innerBox;
 		width: (widthScale scale: (innerBox numberOfUses));
-		height: height;
+		height: 10;
 		color: (self colorFromTags: innerBox tag);
 		border: (self highlightManager defaultBoxBorder);
 		propertyAt: #container put: containerBox;
@@ -332,22 +331,13 @@ MiCoUsageMapBuilder >> shouldUseProgressBar [
 
 { #category : 'public' }
 MiCoUsageMapBuilder >> sortShapes [
-	| block children tBlock |
-	block := self specModel outerBoxSortBlockCompiled.
-	tBlock := [ :a :b | block value: a model value: b model ].
-	children := self canvas children.
-	[ children sort: tBlock ]
-	onErrorDo: [ :ex | 
-		block := self specModel defaultSortBlock.
-		children sort: tBlock ].
-	block := self specModel innerBoxSortBlockCompiled.
-	children do: [ :node |
-		tBlock := [ :a :b | 
-			block value: a model value: b model value: node model ].
-		[ node innerBoxShapes sort: tBlock  ]
-		onErrorDo: [ :ex |
-			block := self specModel defaultInnerSortBlock.
-			node innerBoxShapes sort: tBlock ]
+	| containerBoxes |
+
+	containerBoxes := self canvas children.
+	self specModel sortContainerBoxes: containerBoxes.
+
+	containerBoxes do: [ :containerBox |
+		self specModel sortInnerShapes: containerBox
 	]
 
 ]
@@ -375,19 +365,6 @@ MiCoUsageMapBuilder >> updateBoxColor: aMiCoBox fromTags: tags [
 		do: [ :shape | shape color: tagColor ].
 	self canvas signalUpdate.
 
-]
-
-{ #category : 'update' }
-MiCoUsageMapBuilder >> updateChildren [
-	| canvas |
-	canvas := self canvas.
-	canvas nodes copy do: #remove.
-	self initializeValues.
-	shapes := self containerBoxes collect: [ :met | self containerBoxShapeFor: met ].
-	canvas addAll: shapes.
-	self sortShapes.
-	self applyLayout.
-	canvas signalUpdate.
 ]
 
 { #category : 'update' }

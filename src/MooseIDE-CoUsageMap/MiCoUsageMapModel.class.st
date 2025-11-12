@@ -8,7 +8,6 @@ Class {
 		'settingsWindow',
 		'containerEntities',
 		'selectedEntity',
-		'methodAttributeCounter',
 		'innerBoxes',
 		'containerBoxes',
 		'widthScale',
@@ -18,6 +17,16 @@ Class {
 	#package : 'MooseIDE-CoUsageMap',
 	#tag : 'Model'
 }
+
+{ #category : 'public' }
+MiCoUsageMapModel >> allAttributesFor: aMiCoMethod [
+	"should return a list of associations(a Bag), for each association:
+	key is the object
+	value is the number of uses of that object is used by aMiCoMethod"
+
+	^[ self settings innerBoxExtractor new innerEntitiesFor: aMiCoMethod mooseEntity ]
+		onErrorDo: [ :ex | ex traceCr. #() ].
+]
 
 { #category : 'tagging' }
 MiCoUsageMapModel >> automaticColor [
@@ -56,12 +65,6 @@ MiCoUsageMapModel >> changeTagsDuring: aBlockClosure [
 	self selectedTag: lastTag
 ]
 
-{ #category : 'private - for tests' }
-MiCoUsageMapModel >> closeSettings [
-	"used only for closing settings opened in tests"
-	settingsWindow ifNotNil: [ settingsWindow close ]
-]
-
 { #category : 'accessing' }
 MiCoUsageMapModel >> containerBoxNamed: aByteString [
 	^ self containerBoxes detect: [ :contr | contr name = aByteString ]
@@ -80,39 +83,6 @@ MiCoUsageMapModel >> containerEntities [
 { #category : 'accessing' }
 MiCoUsageMapModel >> containerEntities: aCollection [
 	containerEntities := aCollection
-]
-
-{ #category : 'accessing' }
-MiCoUsageMapModel >> containerInnerCounter [
-
-	^ methodAttributeCounter
-]
-
-{ #category : 'accessing' }
-MiCoUsageMapModel >> containerInnerCounter: aMiCoMethodAttributeCounter [
-	methodAttributeCounter := aMiCoMethodAttributeCounter
-]
-
-{ #category : 'settings' }
-MiCoUsageMapModel >> defaultInnerSortBlock [
-	^ [ :inner1 :inner2 :containr | inner1 name < inner2 name ].
-]
-
-{ #category : 'settings' }
-MiCoUsageMapModel >> defaultSortBlock [
-	^ [ :container1 :container2 | 
-		| size1 size2 |
-		size1 := container1 innerBoxes size.
-		size2 := container2 innerBoxes size.
-		size1 = size2 
-			ifTrue: [ container1 name < container2 name ]
-			ifFalse: [ size1 > size2 ]
-		 ].
-]
-
-{ #category : 'settings' }
-MiCoUsageMapModel >> defaultTester [
-	^ MiCoFromSettingsMethodAttributeTester new
 ]
 
 { #category : 'accessing' }
@@ -163,8 +133,7 @@ MiCoUsageMapModel >> getOrCreateInnerBoxFor: object [
 MiCoUsageMapModel >> initialize [
 	super initialize.
 
-	settings := MiCoUsageMapSettings new.
-	self containerInnerCounter: self defaultTester
+	settings := MiCoUsageMapSettings new
 ]
 
 { #category : 'initialization' }
@@ -178,12 +147,10 @@ MiCoUsageMapModel >> initializeContainerBoxes [
 { #category : 'initialization' }
 MiCoUsageMapModel >> initializeReferences [
 	innerBoxes := OrderedCollection new.
-
-	self containerInnerCounter settings: self settings.
 	
 	self containerBoxes do: [ :cont | 
 		| bag |
-		bag := Bag withAll: (self containerInnerCounter allAttributesFor: cont).
+		bag := Bag withAll: (self allAttributesFor: cont).
 		bag doWithOccurrences: [ :innerEntity :count | | in |
 			count > 0 ifTrue: [ 
 				in := self getOrCreateInnerBoxFor: innerEntity.
@@ -220,11 +187,6 @@ MiCoUsageMapModel >> initializeValues [
 { #category : 'settings' }
 MiCoUsageMapModel >> innerBoxHeight [
 	^self settings innerBoxHeight
-]
-
-{ #category : 'settings' }
-MiCoUsageMapModel >> innerBoxSortBlockCompiled [
-	^self settings innerBoxSortBlockCompiled
 ]
 
 { #category : 'accessing' }
@@ -287,14 +249,10 @@ MiCoUsageMapModel >> newInnerBoxFor: anObject [
 MiCoUsageMapModel >> openSettings [
 	"note: should use default settings infrastructure"
 
-	^MiCoUsageMapGeneralSettingsPresenter new
+	^MiCoUsageMapSettingsPresenter new
 		settings: settings ;
+		specModel: self ;
 		openDialog
-]
-
-{ #category : 'settings' }
-MiCoUsageMapModel >> outerBoxSortBlockCompiled [
-	^self settings outerBoxSortBlockCompiled
 ]
 
 { #category : 'events' }
@@ -304,6 +262,13 @@ MiCoUsageMapModel >> quickTaggingOn: entity [
 	ifNil: [ ^ self ]
 	ifNotNil: [ :tag | self setTag: tag onInnerBox: entity ]
 
+]
+
+{ #category : 'actions' }
+MiCoUsageMapModel >> refreshVisualization [
+
+	self initializeValues.
+	browser refresh
 ]
 
 { #category : 'tagging' }
@@ -342,6 +307,29 @@ MiCoUsageMapModel >> settings [
 	"settings should not be handled by a an other class (with only class side methods"
 
 	^settings
+]
+
+{ #category : 'sorting' }
+MiCoUsageMapModel >> sortContainerBoxes: containerShapes [
+
+	containerShapes sort: [:containerA :containerB || sizeA sizeB |
+		sizeA := containerA model numberOfInnerBoxes.
+		sizeB := containerB model numberOfInnerBoxes.
+		sizeA = sizeB
+			ifTrue: [ containerA model name < containerB model name ]
+			ifFalse: [ sizeA > sizeB ] ].
+]
+
+{ #category : 'sorting' }
+MiCoUsageMapModel >> sortInnerShapes: containerShape [
+
+	containerShape innerBoxShapes sort: [:entityA :entityB || sizeA sizeB |
+			sizeA := entityA model numberOfUsesOn: containerShape model.
+			sizeB := entityB model numberOfUsesOn: containerShape model.
+			sizeA = sizeB
+				ifTrue: [ entityA model name < entityB model name ]
+				ifFalse: [ sizeA > sizeB ]
+		]
 ]
 
 { #category : 'tagging' }

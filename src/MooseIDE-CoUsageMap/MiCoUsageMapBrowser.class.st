@@ -89,14 +89,6 @@ MiCoUsageMapBrowser >> canFollowEntity: anEntity [
 	^ anEntity isCollection and: [ anEntity isMooseModel not ]
 ]
 
-{ #category : 'private - for tests' }
-MiCoUsageMapBrowser >> closeSettings [
-	"to close the settings window when testing
-	Should not be used otherwise"
-
-	specModel closeSettings 
-]
-
 { #category : 'actions' }
 MiCoUsageMapBrowser >> followEntity: anEntity [
 
@@ -123,6 +115,12 @@ MiCoUsageMapBrowser >> initializePresenters [
 { #category : 'accessing' }
 MiCoUsageMapBrowser >> mapVisualization [
 	^ mainPresenter
+]
+
+{ #category : 'accessing' }
+MiCoUsageMapBrowser >> refresh [
+
+	self runVisualization.
 ]
 
 { #category : 'dependencies' }
