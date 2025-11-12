@@ -190,9 +190,12 @@ MiDeadCodeBrowserModel >> oneRoundRecursion [
 
 { #category : 'actions' }
 MiDeadCodeBrowserModel >> recursionComputation [
-
+	"Compute dead entities only invoked by already dead entities
+	 In the end restrict the result to be within the initial list of candidate (followed) entities"
 	[ self oneRoundRecursion ]
 		whileTrue.
+
+	deadEntities := deadEntities select: [ :entity | candidateEntities includes: entity ].
 
 	browser updateDeadEntities
 ]
