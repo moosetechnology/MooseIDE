@@ -4,7 +4,7 @@ The spec model for the MiDeadCodeBrowser
 Responsible for handling all interactions as well as computing the dead entities
 "
 Class {
-	#name : 'MiDeadCodeBrowserModel',
+	#name : 'MiDeadCodeBrowserModelWithCallGraph',
 	#superclass : 'MiAbstractModel',
 	#instVars : [
 		'deadEntities',
@@ -19,7 +19,7 @@ Class {
 }
 
 { #category : 'accessing' }
-MiDeadCodeBrowserModel >> availableHeuristics [
+MiDeadCodeBrowserModelWithCallGraph >> availableHeuristics [
 
 	^availableHeuristics ifNil: [
 		availableHeuristics := MiDeadCodeAbstractHeuristic withAllSubclasses
@@ -29,7 +29,7 @@ MiDeadCodeBrowserModel >> availableHeuristics [
 ]
 
 { #category : 'actions' }
-MiDeadCodeBrowserModel >> chooseHeuristics: heuristicCollection [
+MiDeadCodeBrowserModelWithCallGraph >> chooseHeuristics: heuristicCollection [
 	"add all of heuristicCollection  to the internal list of chosenHeuristics"
 
 	chosenHeuristics := (chosenHeuristics union: heuristicCollection)
@@ -38,50 +38,69 @@ MiDeadCodeBrowserModel >> chooseHeuristics: heuristicCollection [
 ]
 
 { #category : 'accessing' }
-MiDeadCodeBrowserModel >> chosenHeuristics [
+MiDeadCodeBrowserModelWithCallGraph >> chosenHeuristics [
 
 	^chosenHeuristics 
 ]
 
-{ #category : 'accessing - private tests' }
-MiDeadCodeBrowserModel >> clearChosenHeuristics [
+{ #category : 'actions' }
+MiDeadCodeBrowserModelWithCallGraph >> clearChosenHeuristics [
 
 	chosenHeuristics removeAll
 ]
 
+{ #category : 'private' }
+MiDeadCodeBrowserModelWithCallGraph >> computeCallGraph [
+
+	^(FamixJavaCHABuilder
+		entryPoints: (self entities select: [ :entity | self isEntryPoint: entity ]))
+		build.
+
+]
+
+{ #category : 'actions' }
+MiDeadCodeBrowserModelWithCallGraph >> computeDeadEntitiesFrom: calledEntities [
+
+	deadEntities := (OrderedCollection withAll: self entities) \ calledEntities
+]
+
 { #category : 'settings management' }
-MiDeadCodeBrowserModel >> currentConfiguration [
+MiDeadCodeBrowserModelWithCallGraph >> currentConfiguration [
 	"no settings"
 ]
 
 { #category : 'accessing' }
-MiDeadCodeBrowserModel >> deadEntities [
+MiDeadCodeBrowserModelWithCallGraph >> deadEntities [
 
 	^deadEntities 
 ]
 
 { #category : 'settings management' }
-MiDeadCodeBrowserModel >> defaultConfiguration [
+MiDeadCodeBrowserModelWithCallGraph >> defaultConfiguration [
 	"no settings"
 ]
 
 { #category : 'accessing' }
-MiDeadCodeBrowserModel >> entities [
+MiDeadCodeBrowserModelWithCallGraph >> entities [
 
 	^candidateEntities
 ]
 
 { #category : 'actions' }
-MiDeadCodeBrowserModel >> firstRoundComputation [
+MiDeadCodeBrowserModelWithCallGraph >> firstRoundComputation [
 
+	| graph |
 	deadEntities removeAll.
-	self entities do: [ :entity | self firstRoundOn: entity ].
+
+	graph := self computeCallGraph.
+	self computeDeadEntitiesFrom: (graph allNodes collect: #realMethod).
+
 	browser updateToolbar.
 	browser updateDeadEntities
 ]
 
 { #category : 'actions' }
-MiDeadCodeBrowserModel >> firstRoundOn: entity [
+MiDeadCodeBrowserModelWithCallGraph >> firstRoundOn: entity [
 	"search for a heuristic that could deal with the entity
 	 when found, go to next entity"
 
@@ -92,7 +111,7 @@ MiDeadCodeBrowserModel >> firstRoundOn: entity [
 ]
 
 { #category : 'actions' }
-MiDeadCodeBrowserModel >> followEntity: aCollection [
+MiDeadCodeBrowserModelWithCallGraph >> followEntity: aCollection [
 
 	candidateEntities := aCollection.
 	browser candidateEntities: aCollection.
@@ -100,7 +119,13 @@ MiDeadCodeBrowserModel >> followEntity: aCollection [
 ]
 
 { #category : 'actions' }
-MiDeadCodeBrowserModel >> heuristic: heuristic handle: entity [
+MiDeadCodeBrowserModelWithCallGraph >> graph: graph contains: mth [
+
+	^graph allNodes anySatisfy: [ :node | node realMethod = mth]
+]
+
+{ #category : 'actions' }
+MiDeadCodeBrowserModelWithCallGraph >> heuristic: heuristic handle: entity [
 	"returns whether a decision was reached or not.
 	 A decision is reached for _refuting_ heuristics if the entity is not dead
 	   and there is nothing to do (but we do not need to check other heuristics)
@@ -118,7 +143,7 @@ MiDeadCodeBrowserModel >> heuristic: heuristic handle: entity [
 ]
 
 { #category : 'actions' }
-MiDeadCodeBrowserModel >> heuristicSortBlock [
+MiDeadCodeBrowserModelWithCallGraph >> heuristicSortBlock [
 	"sorts refuting heuristics before asserting ones.
 	 inside these two categories, sort on their names"
 
@@ -130,7 +155,7 @@ MiDeadCodeBrowserModel >> heuristicSortBlock [
 ]
 
 { #category : 'initialization' }
-MiDeadCodeBrowserModel >> initialize [ 
+MiDeadCodeBrowserModelWithCallGraph >> initialize [ 
 
 	super initialize.
 
@@ -140,7 +165,7 @@ MiDeadCodeBrowserModel >> initialize [
 ]
 
 { #category : 'initialization' }
-MiDeadCodeBrowserModel >> initializeHeuristics [
+MiDeadCodeBrowserModelWithCallGraph >> initializeHeuristics [
 
 	chosenHeuristics := OrderedCollection new:
 		                    self availableHeuristics size.
@@ -150,61 +175,43 @@ MiDeadCodeBrowserModel >> initializeHeuristics [
 ]
 
 { #category : 'actions' }
-MiDeadCodeBrowserModel >> isNewDead: anEntity [
+MiDeadCodeBrowserModelWithCallGraph >> isEntryPoint: entity [
 
-	(deadEntities includes: anEntity) ifTrue: [ ^ false ].
-
-	^(anEntity queryIncoming: FamixTInvocation) opposites
-		allSatisfy: [ :invoker | deadEntities includes: invoker ]
+	chosenHeuristics do: [ :heuristic |
+		(self heuristic: heuristic handle: entity)
+			ifTrue: [ heuristic isForEntryPoint 
+				ifTrue: [ (heuristic accept: entity) ifTrue: [ ^true ] ]
+			]
+		].
+	^false
 ]
 
 { #category : 'accessing' }
-MiDeadCodeBrowserModel >> miSelectedItem [
+MiDeadCodeBrowserModelWithCallGraph >> miSelectedItem [
 
 	^selectedDeadEntities ifEmpty: [ deadEntities ] 
 ]
 
 { #category : 'accessing' }
-MiDeadCodeBrowserModel >> miSelectedItems: aCollection [
+MiDeadCodeBrowserModelWithCallGraph >> miSelectedItems: aCollection [
 
 	selectedDeadEntities := aCollection 
 ]
 
 { #category : 'actions' }
-MiDeadCodeBrowserModel >> oneRoundRecursion [
+MiDeadCodeBrowserModelWithCallGraph >> recursionComputation [
 
-	| addNewDead |
-	addNewDead := false.
-
-	self deadEntities clone do: [ :dead |
-		(dead queryOutgoing: FamixTInvocation) opposites do: [ :invoked |
-			(self isNewDead: invoked) ifTrue: [
-				deadEntities add: invoked.
-				addNewDead := true
-			]
-		]
-	].
-
-	^ addNewDead
-]
-
-{ #category : 'actions' }
-MiDeadCodeBrowserModel >> recursionComputation [
-
-	[ self oneRoundRecursion ]
-		whileTrue.
-
-	browser updateDeadEntities
+	UIManager default inform: 'No recursion done'
 ]
 
 { #category : 'settings management' }
-MiDeadCodeBrowserModel >> settings [
+MiDeadCodeBrowserModelWithCallGraph >> settings [
 	"no settings"
 
 ]
 
 { #category : 'actions' }
-MiDeadCodeBrowserModel >> unchooseHeuristics: heuristicCollection [
+MiDeadCodeBrowserModelWithCallGraph >> unchooseHeuristics: heuristicCollection [
 	"remove all of heuristicCollection from the internal list of chosenHeuristics"
 
 	chosenHeuristics removeAll: heuristicCollection.
@@ -212,6 +219,6 @@ MiDeadCodeBrowserModel >> unchooseHeuristics: heuristicCollection [
 ]
 
 { #category : 'settings management' }
-MiDeadCodeBrowserModel >> updateFromConfiguration: aConfiguration [
+MiDeadCodeBrowserModelWithCallGraph >> updateFromConfiguration: aConfiguration [
 	"no settings"
 ]

@@ -5,8 +5,9 @@ See #description for details
 Class {
 	#name : 'MiDeadCodeNamingConventionHeuristic',
 	#superclass : 'MiDeadCodeAbstractTestHeuristic',
-	#category : 'MooseIDE-DeadCode',
-	#package : 'MooseIDE-DeadCode'
+	#category : 'MooseIDE-DeadCode-Rules',
+	#package : 'MooseIDE-DeadCode',
+	#tag : 'Rules'
 }
 
 { #category : 'accessing' }

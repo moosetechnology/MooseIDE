@@ -18,8 +18,9 @@ Class {
 		'resultColumn',
 		'heuristicColumn'
 	],
-	#category : 'MooseIDE-DeadCode',
-	#package : 'MooseIDE-DeadCode'
+	#category : 'MooseIDE-DeadCode-Browser',
+	#package : 'MooseIDE-DeadCode',
+	#tag : 'Browser'
 }
 
 { #category : 'world menu' }
@@ -44,7 +45,8 @@ MiDeadCodeBrowser class >> menuPriority [
 { #category : 'world menu' }
 MiDeadCodeBrowser class >> newModel [
 
-	^ MiDeadCodeBrowserModel new
+	^MiDeadCodeBrowserModel new
+	 "MiDeadCodeBrowserModelWithCallGraph new"
 ]
 
 { #category : 'world menu' }

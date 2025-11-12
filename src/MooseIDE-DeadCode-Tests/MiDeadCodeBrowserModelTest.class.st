@@ -17,6 +17,14 @@ MiDeadCodeBrowserModelTest >> javaClass: aClass implements: anInterface [
 ]
 
 { #category : 'running' }
+MiDeadCodeBrowserModelTest >> javaClass: aClass inherits: aSuperclass [
+
+	FamixJavaInheritance new
+		subclass: aClass ;
+		superclass: aSuperclass 
+]
+
+{ #category : 'running' }
 MiDeadCodeBrowserModelTest >> javaClassMethod: methSignature [
 
 	| entity |
@@ -166,7 +174,7 @@ MiDeadCodeBrowserModelTest >> testFirstRoundRefutedDead [
 MiDeadCodeBrowserModelTest >> testGatherHeuristicsList [
 	"Expected number must be updated according to number of non abstract heuristics classes"
 
-	self assert: model availableHeuristics size equals: 8
+	self assert: model availableHeuristics size equals: 9
 ]
 
 { #category : 'tests' }
@@ -320,11 +328,11 @@ MiDeadCodeBrowserModelTest >> testRecursionRoundInvokedByNotDead [
 MiDeadCodeBrowserModelTest >> testSortHeuristics [
 
 	model chooseHeuristics: {
-		MiDeadCodeJavaImplementedInterfaceHeuristic new .
+		MiDeadCodeJavaImplementsInterfaceHeuristic new .
 		MiDeadCodeJavaTestAnnotationHeuristic new }.
 
 	self assert: model chosenHeuristics size equals: 3.
-	self assert: model chosenHeuristics first  class equals: MiDeadCodeJavaImplementedInterfaceHeuristic.
+	self assert: model chosenHeuristics first  class equals: MiDeadCodeJavaImplementsInterfaceHeuristic.
 	self assert: model chosenHeuristics second class equals: MiDeadCodeJavaTestAnnotationHeuristic.
 	self assert: model chosenHeuristics third  class equals: MiDeadCodeNoIncomingInvocationHeuristic.
 ]
@@ -357,28 +365,61 @@ MiDeadCodeBrowserModelTest >> testTestJavaAnnotationHeuristicNotDead [
 ]
 
 { #category : 'tests - heuristics' }
-MiDeadCodeBrowserModelTest >> testTestJavaInterfaceHeuristicDeadNoInterface [
-	| entity1 entity2 |
-	entity1 := self javaClassMethod: 'doSomething()'.
-	entity2 := self javaInterfaceMethod: 'doSomething()'.
-	self javaInvokeMethod: entity2.
+MiDeadCodeBrowserModelTest >> testTestJavaImplementsHeuristicNoInterface [
 
-	self assert: (MiDeadCodeJavaImplementedInterfaceHeuristic new isDead: entity1)
+	| entity1 |
+	entity1 := self javaClassMethod: 'doSomething()'.
+
+	self assert: (MiDeadCodeJavaImplementsInterfaceHeuristic new isDead: entity1)
 ]
 
 { #category : 'tests - heuristics' }
-MiDeadCodeBrowserModelTest >> testTestJavaInterfaceHeuristicDeadNoInvocation [
+MiDeadCodeBrowserModelTest >> testTestJavaImplementsHeuristicNoOverride [
 
 	| entity1 entity2 |
 	entity1 := self javaClassMethod: 'doSomething()'.
 	entity2 := self javaInterfaceMethod: 'doSomething()'.
 	self javaClass: entity1 parentType implements: entity2 parentType.
 
-	self assert: (MiDeadCodeJavaImplementedInterfaceHeuristic new isDead: entity1)
+	self deny: (MiDeadCodeJavaImplementsInterfaceHeuristic new isDead: entity1)
 ]
 
 { #category : 'tests - heuristics' }
-MiDeadCodeBrowserModelTest >> testTestJavaInterfaceHeuristicDeadNoMethod [
+MiDeadCodeBrowserModelTest >> testTestJavaImplementsHeuristicWithOverride [
+
+	| entity1 entity2 entity3 |
+	entity1 := self javaClassMethod: 'doSomething()'.
+	entity2 := self javaClassMethod: 'doSomething()'.
+	entity3 := self javaInterfaceMethod: 'doSomething()'.
+	self javaClass: entity1 parentType inherits: entity2 parentType.
+	self javaClass: entity1 parentType implements: entity3 parentType.
+
+	self assert: (MiDeadCodeJavaImplementsInterfaceHeuristic new isDead: entity1)
+]
+
+{ #category : 'tests - heuristics' }
+MiDeadCodeBrowserModelTest >> testTestJavaOverridesHeuristicDeadNoInterface [
+	| entity1 entity2 |
+	entity1 := self javaClassMethod: 'doSomething()'.
+	entity2 := self javaInterfaceMethod: 'doSomething()'.
+	self javaInvokeMethod: entity2.
+
+	self assert: (MiDeadCodeJavaOverridesInvokedHeuristic new isDead: entity1)
+]
+
+{ #category : 'tests - heuristics' }
+MiDeadCodeBrowserModelTest >> testTestJavaOverridesHeuristicDeadNoInvocation [
+
+	| entity1 entity2 |
+	entity1 := self javaClassMethod: 'doSomething()'.
+	entity2 := self javaInterfaceMethod: 'doSomething()'.
+	self javaClass: entity1 parentType implements: entity2 parentType.
+
+	self assert: (MiDeadCodeJavaOverridesInvokedHeuristic new isDead: entity1)
+]
+
+{ #category : 'tests - heuristics' }
+MiDeadCodeBrowserModelTest >> testTestJavaOverridesHeuristicDeadNoMethod [
 
 	| entity1 entity2 |
 	entity1 := self javaClassMethod: 'doSomething()'.
@@ -386,11 +427,11 @@ MiDeadCodeBrowserModelTest >> testTestJavaInterfaceHeuristicDeadNoMethod [
 	self javaClass: entity1 parentType implements: entity2 parentType.
 	self javaInvokeMethod: entity2.
 
-	self assert: (MiDeadCodeJavaImplementedInterfaceHeuristic new isDead: entity1)
+	self assert: (MiDeadCodeJavaOverridesInvokedHeuristic new isDead: entity1)
 ]
 
 { #category : 'tests - heuristics' }
-MiDeadCodeBrowserModelTest >> testTestJavaInterfaceHeuristicNotDead [
+MiDeadCodeBrowserModelTest >> testTestJavaOverridesHeuristicNotDead [
 
 	| entity1 entity2 |
 	entity1 := self javaClassMethod: 'doSomething()'.
@@ -398,7 +439,7 @@ MiDeadCodeBrowserModelTest >> testTestJavaInterfaceHeuristicNotDead [
 	self javaClass: entity1 parentType implements: entity2 parentType.
 	self javaInvokeMethod: entity2.
 
-	self deny: (MiDeadCodeJavaImplementedInterfaceHeuristic new isDead: entity1)
+	self deny: (MiDeadCodeJavaOverridesInvokedHeuristic new isDead: entity1)
 ]
 
 { #category : 'tests - heuristics' }

@@ -15,8 +15,9 @@ A heurisitc has:
 Class {
 	#name : 'MiDeadCodeAbstractHeuristic',
 	#superclass : 'Object',
-	#category : 'MooseIDE-DeadCode',
-	#package : 'MooseIDE-DeadCode'
+	#category : 'MooseIDE-DeadCode-Rules',
+	#package : 'MooseIDE-DeadCode',
+	#tag : 'Rules'
 }
 
 { #category : 'testing' }
@@ -45,6 +46,12 @@ MiDeadCodeAbstractHeuristic >> isDead: aTMethod [
 	^self refuteDead
 		ifTrue: [ (self notDead: aTMethod) not ]
 		ifFalse: [ self subclassResponsibility ]
+]
+
+{ #category : 'accessing' }
+MiDeadCodeAbstractHeuristic >> isForEntryPoint [
+
+	^false
 ]
 
 { #category : 'accessing' }

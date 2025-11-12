@@ -7,9 +7,16 @@ But rules cannot model this, so we just assume they are not-dead by default
 Class {
 	#name : 'MiDeadCodeJavaInitializerHeuristic',
 	#superclass : 'MiDeadCodeAbstractJavaHeuristic',
-	#category : 'MooseIDE-DeadCode',
-	#package : 'MooseIDE-DeadCode'
+	#category : 'MooseIDE-DeadCode-Rules',
+	#package : 'MooseIDE-DeadCode',
+	#tag : 'Rules'
 }
+
+{ #category : 'visiting' }
+MiDeadCodeJavaInitializerHeuristic >> accept: aTMethod [
+
+	^self notDead: aTMethod 
+]
 
 { #category : 'testing' }
 MiDeadCodeJavaInitializerHeuristic >> classHasNonDefaultConstructor: aClass [
@@ -37,6 +44,12 @@ MiDeadCodeJavaInitializerHeuristic >> isDefaultConstructorWithOtherConstructors:
 	aTMethod parameters isEmpty ifFalse: [ ^false ].
 	^self classHasNonDefaultConstructor: aTMethod parentType
 
+]
+
+{ #category : 'accessing' }
+MiDeadCodeJavaInitializerHeuristic >> isForEntryPoint [
+
+	^true
 ]
 
 { #category : 'testing' }

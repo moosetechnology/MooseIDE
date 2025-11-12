@@ -5,8 +5,9 @@ A heuristic to recognize test methods in Pharo.
 Class {
 	#name : 'MiDeadCodePharoTestCaseSubClassHeuristic',
 	#superclass : 'MiDeadCodeAbstractTestHeuristic',
-	#category : 'MooseIDE-DeadCode',
-	#package : 'MooseIDE-DeadCode'
+	#category : 'MooseIDE-DeadCode-Rules',
+	#package : 'MooseIDE-DeadCode',
+	#tag : 'Rules'
 }
 
 { #category : 'accessing' }

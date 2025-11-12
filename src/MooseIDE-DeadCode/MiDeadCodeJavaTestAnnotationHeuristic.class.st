@@ -8,9 +8,16 @@ Recognizes annotations from JUnit4 and JUnit5
 Class {
 	#name : 'MiDeadCodeJavaTestAnnotationHeuristic',
 	#superclass : 'MiDeadCodeAbstractTestHeuristic',
-	#category : 'MooseIDE-DeadCode',
-	#package : 'MooseIDE-DeadCode'
+	#category : 'MooseIDE-DeadCode-Rules',
+	#package : 'MooseIDE-DeadCode',
+	#tag : 'Rules'
 }
+
+{ #category : 'visiting' }
+MiDeadCodeJavaTestAnnotationHeuristic >> accept: aTMethod [
+
+	^self notDead: aTMethod 
+]
 
 { #category : 'accessing' }
 MiDeadCodeJavaTestAnnotationHeuristic >> description [ 
@@ -18,6 +25,12 @@ MiDeadCodeJavaTestAnnotationHeuristic >> description [
 	^super description ,
 	'In Java, different annotations mark methods of test class
 	 (@Test, @Before, @BeforeEach,...)'
+]
+
+{ #category : 'accessing' }
+MiDeadCodeJavaTestAnnotationHeuristic >> isForEntryPoint [
+
+	^true
 ]
 
 { #category : 'testing' }

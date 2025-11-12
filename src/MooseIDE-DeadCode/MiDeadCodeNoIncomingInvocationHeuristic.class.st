@@ -4,8 +4,9 @@ Most basic heuristic for dead code: any behavioural entiy not invoked is dead
 Class {
 	#name : 'MiDeadCodeNoIncomingInvocationHeuristic',
 	#superclass : 'MiDeadCodeAbstractHeuristic',
-	#category : 'MooseIDE-DeadCode',
-	#package : 'MooseIDE-DeadCode'
+	#category : 'MooseIDE-DeadCode-Rules',
+	#package : 'MooseIDE-DeadCode',
+	#tag : 'Rules'
 }
 
 { #category : 'accessing' }

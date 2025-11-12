@@ -4,15 +4,28 @@ A heuristic to recognize 'public static void main()' function in Java
 Class {
 	#name : 'MiDeadCodeJavaMainHeuristic',
 	#superclass : 'MiDeadCodeAbstractJavaHeuristic',
-	#category : 'MooseIDE-DeadCode',
-	#package : 'MooseIDE-DeadCode'
+	#category : 'MooseIDE-DeadCode-Rules',
+	#package : 'MooseIDE-DeadCode',
+	#tag : 'Rules'
 }
+
+{ #category : 'testing' }
+MiDeadCodeJavaMainHeuristic >> accept: aTMethod [
+
+	^self notDead: aTMethod 
+]
 
 { #category : 'accessing' }
 MiDeadCodeJavaMainHeuristic >> description [
 
 	^super description ,
 	'"public static void main()" methods are assumed not-dead'
+]
+
+{ #category : 'accessing' }
+MiDeadCodeJavaMainHeuristic >> isForEntryPoint [
+
+	^true
 ]
 
 { #category : 'accessing' }

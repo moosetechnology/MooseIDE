@@ -10,8 +10,9 @@ Class {
 		'btnRecursive',
 		'lblDeadMethods'
 	],
-	#category : 'MooseIDE-DeadCode',
-	#package : 'MooseIDE-DeadCode'
+	#category : 'MooseIDE-DeadCode-Browser',
+	#package : 'MooseIDE-DeadCode',
+	#tag : 'Browser'
 }
 
 { #category : 'initialization' }
