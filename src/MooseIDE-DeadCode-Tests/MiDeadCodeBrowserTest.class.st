@@ -286,7 +286,31 @@ MiDeadCodeBrowserTest >> testOnlySelectedDeadEntitiesAreMiSelected [
 ]
 
 { #category : 'tests' }
-MiDeadCodeBrowserTest >> testRecursionButtonUResetsSelectedDeadEntities [
+MiDeadCodeBrowserTest >> testRecursionButtonDoesNotAddOutsideFollowedEntities [
+	"Recursion step cannot add dead entities outside of the initial list of followed entities
+	 here 'aThirdDeadMethod' is dead, but not followed"
+
+	| mooseModel |
+	mooseModel := FamixStModel new.
+	self populateBrowser: mooseModel.
+
+	mooseModel newMethodNamed: 'aThirdDeadMethod'.
+	mooseModel newInvocation
+		sender: (mooseModel entityNamed: 'aMethod') ;
+		candidates: { mooseModel entityNamed: 'aThirdDeadMethod' }.
+
+	browser specModel deadEntities add: (mooseModel entityNamed: 'aMethod').
+
+	self browserRecursiveRoundButtonPresenter enabled: true.
+	self browserRecursiveRoundButtonPresenter click.
+
+	self
+		assertCollection: self browserDeadEntitiesListPresenter items
+		hasSameElements: { mooseModel entityNamed: 'aMethod' . mooseModel entityNamed: 'anotherMethod' }
+]
+
+{ #category : 'tests' }
+MiDeadCodeBrowserTest >> testRecursionButtonResetsSelectedDeadEntities [
 	"put the calling method in the list of dead entities
 	 select it (it is 'miSelected')
 	 click on 'Recursion' that adds the anotherMethod tot he deads
@@ -343,9 +367,9 @@ MiDeadCodeBrowserTest >> testRecursionButtonUpdatesDeadEntitiesList [
 	self browserRecursiveRoundButtonPresenter enabled: true.
 	self browserRecursiveRoundButtonPresenter click.
 
-	self assert: self browserDeadEntitiesListPresenter items size equals: 2.
-	self assert: (self browserDeadEntitiesListPresenter items anySatisfy: [ :mth | mth name = 'aMethod']).
-	self assert: (self browserDeadEntitiesListPresenter items anySatisfy: [ :mth | mth name = 'anotherMethod']).
+	self
+		assertCollection: self browserDeadEntitiesListPresenter items
+		hasSameElements: { mooseModel entityNamed: 'aMethod' . mooseModel entityNamed: 'anotherMethod' }
 ]
 
 { #category : 'tests' }

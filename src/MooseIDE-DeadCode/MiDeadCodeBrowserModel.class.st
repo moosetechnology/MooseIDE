@@ -173,26 +173,29 @@ MiDeadCodeBrowserModel >> miSelectedItems: aCollection [
 { #category : 'actions' }
 MiDeadCodeBrowserModel >> oneRoundRecursion [
 
-	| addNewDead |
-	addNewDead := false.
+	| addedDeads |
+	addedDeads := false.
 
 	self deadEntities clone do: [ :dead |
 		(dead queryOutgoing: FamixTInvocation) opposites do: [ :invoked |
 			(self isNewDead: invoked) ifTrue: [
 				deadEntities add: invoked.
-				addNewDead := true
+				addedDeads := true
 			]
 		]
 	].
 
-	^ addNewDead
+	^ addedDeads
 ]
 
 { #category : 'actions' }
 MiDeadCodeBrowserModel >> recursionComputation [
-
+	"Compute dead entities only invoked by already dead entities
+	 In the end restrict the result to be within the initial list of candidate (followed) entities"
 	[ self oneRoundRecursion ]
 		whileTrue.
+
+	deadEntities := deadEntities select: [ :entity | candidateEntities includes: entity ].
 
 	browser updateDeadEntities
 ]
