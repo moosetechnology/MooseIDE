@@ -343,9 +343,9 @@ MiDeadCodeBrowserTest >> testRecursionButtonUpdatesDeadEntitiesList [
 	self browserRecursiveRoundButtonPresenter enabled: true.
 	self browserRecursiveRoundButtonPresenter click.
 
-	self assert: self browserDeadEntitiesListPresenter items size equals: 2.
-	self assert: (self browserDeadEntitiesListPresenter items anySatisfy: [ :mth | mth name = 'aMethod']).
-	self assert: (self browserDeadEntitiesListPresenter items anySatisfy: [ :mth | mth name = 'anotherMethod']).
+	self
+		assertCollection: self browserDeadEntitiesListPresenter items
+		hasSameElements: { mooseModel entityNamed: 'aMethod' . mooseModel entityNamed: 'anotherMethod' }
 ]
 
 { #category : 'tests' }
