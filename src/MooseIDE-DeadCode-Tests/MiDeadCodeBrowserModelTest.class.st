@@ -281,6 +281,7 @@ MiDeadCodeBrowserModelTest >> testRecursionRoundInvokedByDead [
 	FamixStInvocation new
 		sender: entity1 ;
 		candidates: { entity2 }.
+	model followEntity: { entity1 . entity2 }.
 	model deadEntities add: entity1.
 
 	self assert: model deadEntities size equals: 1.
@@ -298,6 +299,7 @@ MiDeadCodeBrowserModelTest >> testRecursionRoundInvokedByDeadRecursively [
 	FamixStInvocation new
 		sender: entity1 ;
 		candidates: { entity2 }.
+	model followEntity: { entity1 . entity2 . entity3 }.
 	FamixStInvocation new
 		sender: entity2 ;
 		candidates: { entity3 }.
@@ -317,11 +319,33 @@ MiDeadCodeBrowserModelTest >> testRecursionRoundInvokedByNotDead [
 	FamixStInvocation new
 		sender: entity2 ;
 		candidates: { entity2 }.
+	model followEntity: { entity1 . entity2 }.
 	model deadEntities add: entity1.
 
 	self assert: model deadEntities size equals: 1.
 	model recursionComputation.
 	self assert: model deadEntities size equals: 1
+]
+
+{ #category : 'tests' }
+MiDeadCodeBrowserModelTest >> testRecursionRoundNotAddingOutsideFollwedEntities [
+
+	| entity1 entity2 entity3 |
+	entity1 := self pharoMethod: 'firstLevel' inClass: 'SomeClass'.
+	entity2 := self pharoMethod: 'secondLevel' inClass: 'SomeClass'.
+	entity3 := self pharoMethod: 'thirdLevel' inClass: 'SomeClass'.
+	FamixStInvocation new
+		sender: entity1 ;
+		candidates: { entity2 }.
+	model followEntity: { entity1 . entity2 }.
+	FamixStInvocation new
+		sender: entity2 ;
+		candidates: { entity3 }.
+	model deadEntities add: entity1.
+
+	self assert: model deadEntities size equals: 1.
+	model recursionComputation.
+	self assert: model deadEntities size equals: 2
 ]
 
 { #category : 'tests' }
