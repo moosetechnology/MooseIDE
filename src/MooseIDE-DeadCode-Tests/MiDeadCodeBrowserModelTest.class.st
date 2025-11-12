@@ -17,6 +17,14 @@ MiDeadCodeBrowserModelTest >> javaClass: aClass implements: anInterface [
 ]
 
 { #category : 'running' }
+MiDeadCodeBrowserModelTest >> javaClass: aClass inherits: aSuperclass [
+
+	FamixJavaInheritance new
+		subclass: aClass ;
+		superclass: aSuperclass 
+]
+
+{ #category : 'running' }
 MiDeadCodeBrowserModelTest >> javaClassMethod: methSignature [
 
 	| entity |
@@ -354,6 +362,39 @@ MiDeadCodeBrowserModelTest >> testTestJavaAnnotationHeuristicNotDead [
 	entity := self javaMethod: 'someFunctionality' annotatedWith: 'BeforeClass'.
 
 	self deny: (MiDeadCodeJavaTestAnnotationHeuristic new isDead: entity)
+]
+
+{ #category : 'tests - heuristics' }
+MiDeadCodeBrowserModelTest >> testTestJavaImplementsHeuristicNoInterface [
+
+	| entity1 |
+	entity1 := self javaClassMethod: 'doSomething()'.
+
+	self assert: (MiDeadCodeJavaImplementsInterfaceHeuristic new isDead: entity1)
+]
+
+{ #category : 'tests - heuristics' }
+MiDeadCodeBrowserModelTest >> testTestJavaImplementsHeuristicNoOverride [
+
+	| entity1 entity2 |
+	entity1 := self javaClassMethod: 'doSomething()'.
+	entity2 := self javaInterfaceMethod: 'doSomething()'.
+	self javaClass: entity1 parentType implements: entity2 parentType.
+
+	self deny: (MiDeadCodeJavaImplementsInterfaceHeuristic new isDead: entity1)
+]
+
+{ #category : 'tests - heuristics' }
+MiDeadCodeBrowserModelTest >> testTestJavaImplementsHeuristicWithOverride [
+
+	| entity1 entity2 entity3 |
+	entity1 := self javaClassMethod: 'doSomething()'.
+	entity2 := self javaClassMethod: 'doSomething()'.
+	entity3 := self javaInterfaceMethod: 'doSomething()'.
+	self javaClass: entity1 parentType inherits: entity2 parentType.
+	self javaClass: entity1 parentType implements: entity3 parentType.
+
+	self assert: (MiDeadCodeJavaImplementsInterfaceHeuristic new isDead: entity1)
 ]
 
 { #category : 'tests - heuristics' }
