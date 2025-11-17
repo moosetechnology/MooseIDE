@@ -11,7 +11,7 @@ Class {
 	#instVars : [
 		'formatedText',
 		'sourceAnchorAdapter',
-		'specModel'
+		'rendererModel'
 	],
 	#category : 'MooseIDE-Famix-SourceText',
 	#package : 'MooseIDE-Famix',
@@ -90,7 +90,7 @@ MiSourceTextSpecRenderer >> applyTagHighlight: aHighlight [
 
 { #category : 'accessing' }
 MiSourceTextSpecRenderer >> browser [
-	^self model browser
+	^self owner
 ]
 
 { #category : 'formatting' }
@@ -108,7 +108,7 @@ MiSourceTextSpecRenderer >> clearFormatingFrom: start to: stop [
 { #category : 'actions' }
 MiSourceTextSpecRenderer >> event: anEvent selectedEntity: anEntity [
 
-	specModel event: anEvent selectedEntity: anEntity.
+	rendererModel event: anEvent selectedEntity: anEntity.
 	self inform: 'Selected entity: ' , anEntity asString
 ]
 
@@ -132,7 +132,7 @@ MiSourceTextSpecRenderer >> reRenderText [
 
 	self clearFormating.
 
-	specModel highlights do: [ :hlght |
+	rendererModel highlights do: [ :hlght |
 			hlght adaptSourceAnchorWith: self sourceAnchorAdapter.
 			hlght hasInterval ifTrue: [ hlght applyTo: self ] ].
 
@@ -143,7 +143,7 @@ MiSourceTextSpecRenderer >> reRenderText [
 { #category : 'rendering' }
 MiSourceTextSpecRenderer >> renderTextFor: anEntity [
 	
-	formatedText := specModel displayedText asText.
+	formatedText := rendererModel displayedText asText.
 	sourceAnchorAdapter := MiAbstractSourceTextAnchorAdapter adapterFor: anEntity.
 	sourceAnchorAdapter initializeDisplayedText: formatedText andEntity: anEntity.
 
@@ -151,26 +151,27 @@ MiSourceTextSpecRenderer >> renderTextFor: anEntity [
 
 ]
 
+{ #category : 'accessing' }
+MiSourceTextSpecRenderer >> rendererModel [
+
+	^ rendererModel
+]
+
+{ #category : 'accessing' }
+MiSourceTextSpecRenderer >> rendererModel: anObject [
+
+	rendererModel := anObject.
+	anObject renderer: self
+]
+
 { #category : 'initialization' }
 MiSourceTextSpecRenderer >> setModelBeforeInitialization: aModel [
 
-	self specModel: aModel
+	self rendererModel: aModel
 ]
 
 { #category : 'accessing' }
 MiSourceTextSpecRenderer >> sourceAnchorAdapter [
 
 	^sourceAnchorAdapter
-]
-
-{ #category : 'accessing' }
-MiSourceTextSpecRenderer >> specModel [
-
-	^ specModel
-]
-
-{ #category : 'accessing' }
-MiSourceTextSpecRenderer >> specModel: anObject [
-
-	specModel := anObject
 ]
