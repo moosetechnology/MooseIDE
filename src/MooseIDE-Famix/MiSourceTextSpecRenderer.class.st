@@ -8,15 +8,29 @@ It can #renderText by applying the highlights of its #model
 Class {
 	#name : 'MiSourceTextSpecRenderer',
 	#superclass : 'SpTextPresenter',
+	#traits : 'SpTActivable',
+	#classTraits : 'SpTActivable classTrait',
 	#instVars : [
-		'formatedText',
-		'sourceAnchorAdapter',
-		'rendererModel'
+		'#formatedText',
+		'#sourceAnchorAdapter',
+		'#rendererModel',
+		'#selectedItem => ObservableSlot'
 	],
 	#category : 'MooseIDE-Famix-SourceText',
 	#package : 'MooseIDE-Famix',
 	#tag : 'SourceText'
 }
+
+{ #category : 'formatting' }
+MiSourceTextSpecRenderer >> activateTransmissionWithValue: aValue [
+	"2 actions for each possible use:
+	 - inside a MiSourceTextBrowser, #selectedItem is an ObservableSlot
+	   that will trigger transmission to the owner
+	 - inside an Inspector, there is an #activationAction to do the same thing"
+
+	selectedItem := aValue.
+	activationAction ifNotNil: [ :action | action cull: (SpActivatedSelection newValue: aValue)]
+]
 
 { #category : 'formatting' }
 MiSourceTextSpecRenderer >> applyCommentHighlight: aHighlight [
@@ -42,32 +56,18 @@ MiSourceTextSpecRenderer >> applyErrorHighlight: aHighlight [
 
 { #category : 'formatting' }
 MiSourceTextSpecRenderer >> applyIdentifierHighlight: aHighlight [
-	"Identifiers are underlined + italic + bold
-	 Clicking on them is passed on to the spec model"
+	"Identifiers are underlined. Clicking on them initiate transmission to the owner presenter"
 
 	formatedText 
 		addAttribute: TextEmphasis underlined
 		from: aHighlight from
 		to: aHighlight to ;
 
-		"addAttribute: TextEmphasis italic
-		from: aHighlight from
-		to: aHighlight to ;"
-		
-		"addAttribute: TextEmphasis bold
-		from: aHighlight from
-		to: aHighlight to ;"
-
 		addAttribute:
 			(TextDoIt new actOnClickBlock: [ :ignored :event |
-				self event: event selectedEntity: aHighlight highlightedEntity ])
+				self activateTransmissionWithValue: aHighlight highlightedEntity ])
 		from: aHighlight from
-		to: aHighlight to ";"
-
-		"addAttribute: TextColor black
-		from: aHighlight from
-		to: aHighlight to"
-
+		to: aHighlight to
 ]
 
 { #category : 'formatting' }
@@ -105,6 +105,14 @@ MiSourceTextSpecRenderer >> clearFormatingFrom: start to: stop [
 	formatedText := formatedText copyReplaceFrom: start to: stop with: (formatedText copyFrom: start to: stop) asString
 ]
 
+{ #category : 'ports' }
+MiSourceTextSpecRenderer >> defaultOutputPort [ 
+
+	^SpPropertyChangedPort
+		newPresenter: self
+		property: #selectedItem
+]
+
 { #category : 'actions' }
 MiSourceTextSpecRenderer >> event: anEvent selectedEntity: anEntity [
 
@@ -122,7 +130,8 @@ MiSourceTextSpecRenderer >> initialize [
 	super initialize.
 	self beNotEditable.
 
-	sourceAnchorAdapter := MiSourceTextNullAdapter new
+	sourceAnchorAdapter := MiSourceTextNullAdapter new.
+
 ]
 
 { #category : 'rendering' }

@@ -77,6 +77,14 @@ MiSourceTextBrowser >> canFollowEntity: anObject [
 	^ anObject usesFamixTrait: FamixTSourceEntity
 ]
 
+{ #category : 'ports' }
+MiSourceTextBrowser >> defaultInputPort [ 
+
+	^SpActionPort newAction: [ :anEntity |
+		self inform: 'selected ' , anEntity name.
+		specModel selectedEntity: anEntity ]
+]
+
 { #category : 'layout' }
 MiSourceTextBrowser >> defaultLayout [
 
