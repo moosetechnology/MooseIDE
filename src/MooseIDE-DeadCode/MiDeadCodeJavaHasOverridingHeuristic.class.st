@@ -28,8 +28,8 @@ MiDeadCodeJavaHasOverridingHeuristic >> container: aTWithMethods hasOverrideMeth
 MiDeadCodeJavaHasOverridingHeuristic >> description [
 
 	^super description ,
-		'A method having an "@Overriding" method (in a subclass) is assumed not-dead
-		 Because one cannot remove the overriden method'
+		'A method having an "@Overriding" method (in a subclass) is assumed not-dead,
+because one cannot remove the overriden method'
 ]
 
 { #category : 'testing' }
