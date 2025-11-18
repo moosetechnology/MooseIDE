@@ -105,6 +105,16 @@ MiSourceTextSpecRenderer >> clearFormatingFrom: start to: stop [
 	formatedText := formatedText copyReplaceFrom: start to: stop with: (formatedText copyFrom: start to: stop) asString
 ]
 
+{ #category : 'initialization' }
+MiSourceTextSpecRenderer >> connectPresenters [
+	"When receiver is created as part of an Inspector, #owner is nil at this point
+	   so we cannot `register` the transmission now
+	   (note: in this case, the registering is done later automatically by the Inspector)
+	 This is used when the receiver is part of a MiSourceTextBrowser"
+
+	self owner ifNotNil: [ self transmitTo: self owner ]
+]
+
 { #category : 'ports' }
 MiSourceTextSpecRenderer >> defaultOutputPort [ 
 
