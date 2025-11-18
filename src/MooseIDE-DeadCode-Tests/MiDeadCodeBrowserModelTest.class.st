@@ -174,7 +174,7 @@ MiDeadCodeBrowserModelTest >> testFirstRoundRefutedDead [
 MiDeadCodeBrowserModelTest >> testGatherHeuristicsList [
 	"Expected number must be updated according to number of non abstract heuristics classes"
 
-	self assert: model availableHeuristics size equals: 9
+	self assert: model availableHeuristics size equals: 10
 ]
 
 { #category : 'tests' }
