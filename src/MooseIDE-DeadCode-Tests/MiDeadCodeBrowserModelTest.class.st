@@ -226,6 +226,77 @@ MiDeadCodeBrowserModelTest >> testJavaAnnotationHeuristicNotDead [
 ]
 
 { #category : 'tests - heuristics' }
+MiDeadCodeBrowserModelTest >> testJavaHasOverridingHeuristicDead [
+
+	| entity1 entity2 annotation |
+	entity1 := self javaClassMethod: 'doSomething()'.
+	entity2 := self javaClassMethod: 'doSomething()'.
+	self javaClass: entity2 parentType inherits: entity1 parentType.
+
+	annotation := FamixJavaAnnotationType new name: 'Override'.
+	annotation annotationTypesContainer: (FamixJavaPackage new
+		name: 'lang' ;
+		parentPackage: (FamixJavaPackage new
+			name: 'java') ).
+	FamixJavaAnnotationInstance new
+		annotatedEntity: entity2 ;
+		annotationType: annotation.
+
+	self deny: (MiDeadCodeJavaHasOverridingHeuristic new isDead: entity1)
+]
+
+{ #category : 'tests - heuristics' }
+MiDeadCodeBrowserModelTest >> testJavaHasOverridingHeuristicDeadNoAnnotation [
+	| entity1 entity2 |
+	entity1 := self javaClassMethod: 'doSomething()'.
+	entity2 := self javaClassMethod: 'doSomething()'.
+	self javaClass: entity2 parentType inherits: entity1 parentType.
+
+	self assert: (MiDeadCodeJavaHasOverridingHeuristic new isDead: entity1)
+]
+
+{ #category : 'tests - heuristics' }
+MiDeadCodeBrowserModelTest >> testJavaHasOverridingHeuristicDeadNoOverride [
+	| entity1 entity2 annotation |
+
+	entity1 := self javaClassMethod: 'doSomething()'.
+	entity2 := self javaClassMethod: 'doSomething()'.
+	self javaClass: entity2 parentType inherits: entity1 parentType.
+
+
+	annotation := FamixJavaAnnotationType new name: 'Deprecated'.
+	annotation annotationTypesContainer: (FamixJavaPackage new
+		name: 'lang' ;
+		parentPackage: (FamixJavaPackage new
+			name: 'java') ).
+
+	FamixJavaAnnotationInstance new
+		annotatedEntity: entity2 ;
+		annotationType: annotation.
+
+	self assert: (MiDeadCodeJavaHasOverridingHeuristic new isDead: entity1)
+]
+
+{ #category : 'tests - heuristics' }
+MiDeadCodeBrowserModelTest >> testJavaHasOverridingHeuristicDeadNoSubMethod [
+	| entity1 entity2 annotation |
+
+	entity1 := self javaClassMethod: 'doSomething()'.
+	entity2 := self javaClassMethod: 'doSomething()'.
+
+	annotation := FamixJavaAnnotationType new name: 'Override'.
+	annotation annotationTypesContainer: (FamixJavaPackage new
+		name: 'lang' ;
+		parentPackage: (FamixJavaPackage new
+			name: 'java') ).
+	FamixJavaAnnotationInstance new
+		annotatedEntity: entity2 ;
+		annotationType: annotation.
+
+	self assert: (MiDeadCodeJavaHasOverridingHeuristic new isDead: entity1)
+]
+
+{ #category : 'tests - heuristics' }
 MiDeadCodeBrowserModelTest >> testJavaImplementsHeuristicNoInterface [
 
 	| entity1 |
