@@ -18,8 +18,8 @@ Class {
 	#instVars : [
 		'lines'
 	],
-	#category : 'MooseIDE-BulkCommenter',
-	#package : 'MooseIDE-BulkCommenter'
+	#category : 'MooseIDE-BulkEditor',
+	#package : 'MooseIDE-BulkEditor'
 }
 
 { #category : 'running' }

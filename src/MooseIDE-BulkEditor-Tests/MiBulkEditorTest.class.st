@@ -7,8 +7,8 @@ Class {
 	#instVars : [
 		'bulkEditor'
 	],
-	#category : 'MooseIDE-BulkCommenter-Tests',
-	#package : 'MooseIDE-BulkCommenter-Tests'
+	#category : 'MooseIDE-BulkEditor-Tests',
+	#package : 'MooseIDE-BulkEditor-Tests'
 }
 
 { #category : 'running' }
