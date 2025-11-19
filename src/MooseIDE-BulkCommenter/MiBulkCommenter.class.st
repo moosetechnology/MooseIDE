@@ -36,6 +36,8 @@ MiBulkCommenter >> commentOutEntity: method [
 
 { #category : 'running' }
 MiBulkCommenter >> firstLastLine: firstLastPos [
+	"firstLastPos is an interval of start/end position
+	 compute and returns from it an interval of lines"
 
 	| startLine endLine totalPos |
 
@@ -43,17 +45,17 @@ MiBulkCommenter >> firstLastLine: firstLastPos [
 	totalPos := 0.
 	lines withIndexDo: [ :line :iLine |
 		totalPos := totalPos + line size + 1.
-		((totalPos > firstLastPos x)  and: [ startLine = 0 ])
+		((totalPos > firstLastPos first)  and: [ startLine = 0 ])
 			ifTrue: [ startLine := iLine ].
 
-		((totalPos > firstLastPos y)  and: [ endLine = 0 ])
+		((totalPos > firstLastPos last)  and: [ endLine = 0 ])
 			ifTrue: [
 				endLine := iLine.
-				^startLine @ endLine
+				^startLine to: endLine
 			].
 	].
 
-	^startLine @ lines size
+	^startLine to: lines size
 
 ]
 
@@ -92,7 +94,7 @@ MiBulkCommenter >> sortByLine: methods [
 { #category : 'running' }
 MiBulkCommenter >> uncloseCommentBetween: firstLastLine [
 
-	firstLastLine x to: firstLastLine y do: [ :i |
+	firstLastLine first to: firstLastLine last do: [ :i |
 		lines at: i put: (self uncloseCommentsIn: (lines at: i))
 	]
 ]
