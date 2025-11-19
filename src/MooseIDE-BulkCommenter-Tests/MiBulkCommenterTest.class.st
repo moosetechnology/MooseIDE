@@ -81,37 +81,57 @@ MiBulkCommenterTest >> testCommentLast [
 { #category : 'tests' }
 MiBulkCommenterTest >> testFirstLastLineFirstChar [
 
-	self assert: (bulkCommenter firstLastLine: 1@7) equals: 1@2
+	| result |
+	result := bulkCommenter firstLastLine: (1 to: 7).
+
+	self assert: result first equals: 1.
+	self assert: result last equals: 2.
 ]
 
 { #category : 'tests' }
 MiBulkCommenterTest >> testFirstLastLineFirstLineChar [
 
-	self assert: (bulkCommenter firstLastLine: 7@17) equals: 2@3
+	| result |
+	result := bulkCommenter firstLastLine: (7 to: 17).
+
+	self assert: result first equals: 2.
+	self assert: result last equals: 3
 ]
 
 { #category : 'tests' }
 MiBulkCommenterTest >> testFirstLastLineLastChar [
 
-	self assert: (bulkCommenter firstLastLine: 7@21) equals: 2@3
+	| result |
+	result := bulkCommenter firstLastLine: (7 to: 21).
+
+	self assert: result first equals: 2.
+	self assert: result last equals: 3.
 ]
 
 { #category : 'tests' }
 MiBulkCommenterTest >> testFirstLastLineLastLineChar [
 
-	self assert: (bulkCommenter firstLastLine: 2@10) equals: 1@2
+	| result |
+	result := bulkCommenter firstLastLine: (2 to: 10).
+
+	self assert: result first equals: 1.
+	self assert: result last equals: 2.
 ]
 
 { #category : 'tests' }
 MiBulkCommenterTest >> testFirstLastLineLastSameLine [
 
-	self assert: (bulkCommenter firstLastLine: 12@15) equals: 3@3
+	| result |
+	result := bulkCommenter firstLastLine: (12 to: 15).
+
+	self assert: result first equals: 3.
+	self assert: result last equals: 3.
 ]
 
 { #category : 'tests' }
 MiBulkCommenterTest >> testUncloseCommentBetween [
 
-	bulkCommenter uncloseCommentBetween: 1@3.
+	bulkCommenter uncloseCommentBetween: (1 to: 3).
 
 	self assert: (bulkCommenter lines at: 1) equals: 'l1*_/5'.
 	self assert: (bulkCommenter lines at: 2) equals: 'l2_4'.
