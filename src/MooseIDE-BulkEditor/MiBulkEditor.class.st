@@ -16,11 +16,18 @@ Class {
 	#name : 'MiBulkEditor',
 	#superclass : 'Object',
 	#instVars : [
-		'lines'
+		'lines',
+		'editMode'
 	],
 	#category : 'MooseIDE-BulkEditor',
 	#package : 'MooseIDE-BulkEditor'
 }
+
+{ #category : 'accessing' }
+MiBulkEditor >> commentMethods [
+
+	editMode := #comment
+]
 
 { #category : 'running' }
 MiBulkEditor >> commentOutEntity: method [
@@ -32,6 +39,13 @@ MiBulkEditor >> commentOutEntity: method [
 	self uncloseCommentBetween: firstLastLine.
 	lines add: ' --- dead code removal --- */' afterIndex: firstLastLine last.
 	lines add: '/* --- dead code removal ---' beforeIndex: firstLastLine first.
+]
+
+{ #category : 'running' }
+MiBulkEditor >> editEntity: method [
+
+	(editMode = #comment) ifTrue: [ self commentOutEntity: method ].
+	(editMode = #remove) ifTrue: [ self shouldBeImplemented ].
 ]
 
 { #category : 'running' }
@@ -67,6 +81,14 @@ MiBulkEditor >> getCode: methods [
 	^file contents
 ]
 
+{ #category : 'initialization' }
+MiBulkEditor >> initialize [ 
+
+	super initialize.
+
+	self commentMethods 
+]
+
 { #category : 'accessing' }
 MiBulkEditor >> lines [
 
@@ -82,12 +104,18 @@ MiBulkEditor >> methodWithCommentInterval: method [
 		ifNone: [ method sourceAnchor startPos to: method sourceAnchor endPos ]
 ]
 
+{ #category : 'accessing' }
+MiBulkEditor >> removeMethods [
+
+	editMode := #remove
+]
+
 { #category : 'running' }
 MiBulkEditor >> runOn: methods [
 
 	lines := (self getCode: methods) lines asOrderedCollection.
 
-	(self sortByLine: methods) do: [ :meth | self commentOutEntity: meth ].
+	(self sortByLine: methods) do: [ :meth | self editEntity: meth ].
 
 	^lines
 ]
