@@ -74,6 +74,15 @@ MiBulkCommenter >> lines [
 ]
 
 { #category : 'running' }
+MiBulkCommenter >> methodWithCommentInterval: method [
+
+	^method comments
+		detect: [ :cmt | cmt sourceAnchor endPos < method sourceAnchor startPos ]
+		ifOne: [ :cmt | cmt sourceAnchor startPos to: method sourceAnchor endPos ]
+		ifNone: [ method sourceAnchor startPos to: method sourceAnchor endPos ]
+]
+
+{ #category : 'running' }
 MiBulkCommenter >> runOn: methods [
 
 	lines := (self getCode: methods) lines asOrderedCollection.
