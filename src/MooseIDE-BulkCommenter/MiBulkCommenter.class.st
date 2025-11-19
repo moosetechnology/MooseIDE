@@ -23,14 +23,15 @@ Class {
 }
 
 { #category : 'running' }
-MiBulkCommenter >> comment: method [
+MiBulkCommenter >> commentOutEntity: method [
 
 	| firstLastLine |
-	firstLastLine := self firstLastLine: (method sourceAnchor startPos @ method sourceAnchor endPos).
+
+	firstLastLine := self firstLastLine: (self methodWithCommentInterval: method).
 
 	self uncloseCommentBetween: firstLastLine.
-	lines add: ' --- dead code removal --- */' afterIndex: firstLastLine y.
-	lines add: '/* --- dead code removal ---' beforeIndex: firstLastLine x.
+	lines add: ' --- dead code removal --- */' afterIndex: firstLastLine last.
+	lines add: '/* --- dead code removal ---' beforeIndex: firstLastLine first.
 ]
 
 { #category : 'running' }
@@ -75,7 +76,7 @@ MiBulkCommenter >> runOn: methods [
 
 	lines := (self getCode: methods) lines asOrderedCollection.
 
-	(self sortByLine: methods) do: [ :meth | self comment: meth ].
+	(self sortByLine: methods) do: [ :meth | self commentOutEntity: meth ].
 
 	^lines
 ]
