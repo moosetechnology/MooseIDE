@@ -1,19 +1,19 @@
 "
-Bulk commenter on a Java file: comment out a collection of methods
+Bulk editor on a Java file: comment out a collection of methods
 Can be applied for example on dead methods:
 - compute all dead methods in a file -> `deadMethodCollection`
-- call: `MiBulkCommenter new runOn: deadMethodCollection.`
+- call: `MiBulkEditor new runOn: deadMethodCollection.`
 - Output the resulting lines in a file
 ```
-bulkCommenter := MiBulkCommenter new.
-bulkCommenter runOn: deadMethods.
+bulkEditor := MiBulkEditor new.
+bulkEditor runOn: deadMethods.
 file := 'SomeFile.java' asFileReference.
 file ifExists: [ file delete ].
-file writeStreamDo: [ :st | bulkCommenter lines do: [ :line | st << line ; cr ] ].
+file writeStreamDo: [ :st | bulkEditor lines do: [ :line | st << line ; cr ] ].
 ```
 "
 Class {
-	#name : 'MiBulkCommenter',
+	#name : 'MiBulkEditor',
 	#superclass : 'Object',
 	#instVars : [
 		'lines'
@@ -23,7 +23,7 @@ Class {
 }
 
 { #category : 'running' }
-MiBulkCommenter >> commentOutEntity: method [
+MiBulkEditor >> commentOutEntity: method [
 
 	| firstLastLine |
 
@@ -35,7 +35,7 @@ MiBulkCommenter >> commentOutEntity: method [
 ]
 
 { #category : 'running' }
-MiBulkCommenter >> firstLastLine: firstLastPos [
+MiBulkEditor >> firstLastLine: firstLastPos [
 	"firstLastPos is an interval of start/end position
 	 compute and returns from it an interval of lines"
 
@@ -60,7 +60,7 @@ MiBulkCommenter >> firstLastLine: firstLastPos [
 ]
 
 { #category : 'running' }
-MiBulkCommenter >> getCode: methods [
+MiBulkEditor >> getCode: methods [
 
 	| file |
 	file := methods anyOne mooseModel rootFolder asFileReference / (methods anyOne sourceAnchor fileName).
@@ -68,13 +68,13 @@ MiBulkCommenter >> getCode: methods [
 ]
 
 { #category : 'accessing' }
-MiBulkCommenter >> lines [
+MiBulkEditor >> lines [
 
 	^lines
 ]
 
 { #category : 'running' }
-MiBulkCommenter >> methodWithCommentInterval: method [
+MiBulkEditor >> methodWithCommentInterval: method [
 
 	^method comments
 		detect: [ :cmt | cmt sourceAnchor endPos < method sourceAnchor startPos ]
@@ -83,7 +83,7 @@ MiBulkCommenter >> methodWithCommentInterval: method [
 ]
 
 { #category : 'running' }
-MiBulkCommenter >> runOn: methods [
+MiBulkEditor >> runOn: methods [
 
 	lines := (self getCode: methods) lines asOrderedCollection.
 
@@ -93,7 +93,7 @@ MiBulkCommenter >> runOn: methods [
 ]
 
 { #category : 'running' }
-MiBulkCommenter >> sortByLine: methods [
+MiBulkEditor >> sortByLine: methods [
 	"sort methods in reverse order (decreasing) of their starting position"
 	^methods sorted: [ :m1 :m2 |
 		m1 sourceAnchor startPos > m2 sourceAnchor endPos
@@ -101,7 +101,7 @@ MiBulkCommenter >> sortByLine: methods [
 ]
 
 { #category : 'running' }
-MiBulkCommenter >> uncloseCommentBetween: firstLastLine [
+MiBulkEditor >> uncloseCommentBetween: firstLastLine [
 
 	firstLastLine first to: firstLastLine last do: [ :i |
 		lines at: i put: (self uncloseCommentsIn: (lines at: i))
@@ -109,7 +109,7 @@ MiBulkCommenter >> uncloseCommentBetween: firstLastLine [
 ]
 
 { #category : 'running' }
-MiBulkCommenter >> uncloseCommentsIn: line [
+MiBulkEditor >> uncloseCommentsIn: line [
 
 	^(line includesSubstring: '*/')
 		ifTrue: [ line copyReplaceAll: '*/' with: '*_/' ]
