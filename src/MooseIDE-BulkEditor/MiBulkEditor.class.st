@@ -38,10 +38,10 @@ MiBulkEditor >> commentOutInterval: lineInterval [
 ]
 
 { #category : 'running' }
-MiBulkEditor >> editEntity: method [
+MiBulkEditor >> editInterval: lineInterval [
 
-	(editMode = #comment) ifTrue: [ self commentOutEntity: method ].
-	(editMode = #remove) ifTrue: [ self shouldBeImplemented ].
+	(editMode = #comment) ifTrue: [ self commentOutInterval: lineInterval ].
+	(editMode = #remove) ifTrue: [ self removeInterval: lineInterval ].
 ]
 
 { #category : 'running' }
@@ -143,6 +143,20 @@ MiBulkEditor >> methodWithCommentInterval: method [
 		detect: [ :cmt | cmt sourceAnchor endPos < method sourceAnchor startPos ]
 		ifOne: [ :cmt | cmt sourceAnchor startPos to: method sourceAnchor endPos ]
 		ifNone: [ method sourceAnchor startPos to: method sourceAnchor endPos ]
+]
+
+{ #category : 'running' }
+MiBulkEditor >> removeInterval: lineInterval [
+
+	| editedLines |
+	editedLines := OrderedCollection new: (lines size - lineInterval size).
+	
+	lines withIndexDo: [ :lineI :i |
+		((i < lineInterval first) or: [ i > lineInterval last ])
+			ifTrue: [ editedLines add: lineI ]
+	].
+
+	^lines := editedLines 
 ]
 
 { #category : 'accessing' }
