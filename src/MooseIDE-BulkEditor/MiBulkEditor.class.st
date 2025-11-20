@@ -24,21 +24,17 @@ Class {
 }
 
 { #category : 'accessing' }
-MiBulkEditor >> commentMethods [
+MiBulkEditor >> commentLines [
 
 	editMode := #comment
 ]
 
 { #category : 'running' }
-MiBulkEditor >> commentOutEntity: method [
+MiBulkEditor >> commentOutInterval: lineInterval [
 
-	| firstLastLine |
-
-	firstLastLine := self firstLastLine: (self methodWithCommentInterval: method).
-
-	self uncloseCommentBetween: firstLastLine.
-	lines add: ' --- dead code removal --- */' afterIndex: firstLastLine last.
-	lines add: '/* --- dead code removal ---' beforeIndex: firstLastLine first.
+	self uncloseCommentBetween: lineInterval .
+	lines add: ' --- dead code removal --- */' afterIndex: lineInterval last.
+	lines add: '/* --- dead code removal ---' beforeIndex: lineInterval first.
 ]
 
 { #category : 'running' }
@@ -46,6 +42,18 @@ MiBulkEditor >> editEntity: method [
 
 	(editMode = #comment) ifTrue: [ self commentOutEntity: method ].
 	(editMode = #remove) ifTrue: [ self shouldBeImplemented ].
+]
+
+{ #category : 'running' }
+MiBulkEditor >> emptyLinesBetween: first and: last [
+
+	first+1 to: last-1 do: [ :i |
+		((lines at: i) allSatisfy: [ :c | c isSeparator ])
+			ifFalse: [ ^false ]
+	].
+
+	^true
+	
 ]
 
 { #category : 'running' }
@@ -76,9 +84,8 @@ MiBulkEditor >> firstLastLine: firstLastPos [
 { #category : 'running' }
 MiBulkEditor >> getCode: methods [
 
-	| file |
-	file := methods anyOne mooseModel rootFolder asFileReference / (methods anyOne sourceAnchor fileName).
-	^file contents
+	^methods anyOne mooseModel rootFolder asFileReference / (methods anyOne sourceAnchor fileName).
+
 ]
 
 { #category : 'initialization' }
@@ -86,13 +93,47 @@ MiBulkEditor >> initialize [
 
 	super initialize.
 
-	self commentMethods 
+	self commentLines 
+]
+
+{ #category : 'running' }
+MiBulkEditor >> lineIntervals: methods [
+
+	| intervals |
+	intervals := (self sortByLine: methods)
+		collect: [ :meth | self firstLastLine: (self methodWithCommentInterval: meth) ].
+
+	^self mergeIntervals: intervals
 ]
 
 { #category : 'accessing' }
 MiBulkEditor >> lines [
 
 	^lines
+]
+
+{ #category : 'running' }
+MiBulkEditor >> mergeIntervals: intervals [
+	"merge together 2 intervals separated only by blank lines"
+
+	| lastInterval merged |
+	merged := OrderedCollection new: intervals size.
+
+	lastInterval := intervals first.
+	intervals remove: lastInterval.
+
+	intervals do: [ :nextInterval |
+		(self emptyLinesBetween: nextInterval last and: lastInterval first)
+			ifTrue: [ lastInterval := nextInterval first to: lastInterval last ]
+			ifFalse: [ 
+				merged add: lastInterval.
+				lastInterval := nextInterval
+			]
+	].
+
+	merged add: lastInterval.
+
+	^merged 
 ]
 
 { #category : 'running' }
@@ -105,19 +146,28 @@ MiBulkEditor >> methodWithCommentInterval: method [
 ]
 
 { #category : 'accessing' }
-MiBulkEditor >> removeMethods [
+MiBulkEditor >> removeLines [
 
 	editMode := #remove
 ]
 
 { #category : 'running' }
+MiBulkEditor >> rewriteFile: aFileReference [
+
+	aFileReference delete.
+	aFileReference writeStreamDo: [ :st | lines do: [ :line | st << line ; cr ] ].
+]
+
+{ #category : 'running' }
 MiBulkEditor >> runOn: methods [
 
-	lines := (self getCode: methods) lines asOrderedCollection.
+	| aFileReference |
+	aFileReference := self getCode: methods.
+	lines := aFileReference contents lines asOrderedCollection.
 
-	(self sortByLine: methods) do: [ :meth | self editEntity: meth ].
+	(self lineIntervals: methods) do: [ :interv | self editInterval: interv ].
 
-	^lines
+	self rewriteFile: aFileReference
 ]
 
 { #category : 'running' }
