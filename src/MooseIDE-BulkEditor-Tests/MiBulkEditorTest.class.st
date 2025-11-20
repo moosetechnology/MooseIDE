@@ -41,7 +41,7 @@ MiBulkEditorTest >> testCommentFirst [
 	| mth |
 	mth := self methodWithPos: 3@8.
 
-	bulkEditor commentOutEntity: mth.
+	bulkEditor commentOutInterval: mth.
 
 	self assert: bulkEditor lines size equals: 5.
 	self assert: (bulkEditor lines at: 1) equals: '/* --- dead code removal ---'.
@@ -56,7 +56,7 @@ MiBulkEditorTest >> testCommentInside [
 	| mth |
 	mth := self methodWithPos: 7@10.
 
-	bulkEditor commentOutEntity: mth.
+	bulkEditor commentOutInterval: mth.
 
 	self assert: bulkEditor lines size equals: 5.
 	self assert: (bulkEditor lines at: 2) equals: '/* --- dead code removal ---'.
@@ -70,7 +70,7 @@ MiBulkEditorTest >> testCommentLast [
 	| mth |
 	mth := self methodWithPos: 12@17.
 
-	bulkEditor commentOutEntity: mth.
+	bulkEditor commentOutInterval: mth.
 
 	self assert: bulkEditor lines size equals: 5.
 	self assert: (bulkEditor lines at: 3) equals: '/* --- dead code removal ---'.
