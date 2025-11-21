@@ -120,7 +120,7 @@ MiNavigationInspectionTab >> initializeNavigationTreeTable [
 		beResizable;
 		activateOnSingleClick;
 		addColumn: ((SpCompositeTableColumn title: 'Entities')
-				 sortFunction: [ :entry | self printEntry: entry ] ascending;
+				 sortFunction: [ :entry | self printEntry: entry ] descending;
 				 addColumn: (SpImageTableColumn new
 						  evaluated: self iconBlock;
 						  width: 20;
@@ -163,7 +163,7 @@ MiNavigationInspectionTab >> inspectedObject: anObject [
 { #category : 'private - display' }
 MiNavigationInspectionTab >> itemsFor: anObject [
 
-	^ anObject miMetaNavigationItems
+	^ anObject miMetaNavigationItems sort: [ :entry | self printEntry: entry ] ascending.
 ]
 
 { #category : 'private - display' }
