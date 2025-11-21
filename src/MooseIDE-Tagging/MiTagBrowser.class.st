@@ -153,6 +153,7 @@ MiTagBrowser >> editTag: aTag [
 { #category : 'actions' }
 MiTagBrowser >> followEntity: anEntity [
 
+	super followEntity: anEntity.
 	specModel entities: anEntity asMooseGroup.
 	specModel mooseModel
 		ifNil: [ self showNoMooseModel ].
