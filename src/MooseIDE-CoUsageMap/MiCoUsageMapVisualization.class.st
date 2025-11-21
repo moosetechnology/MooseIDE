@@ -2,16 +2,18 @@
 I use the MiCoUsageMapBuilder like a bridge for the browser
 "
 Class {
-	#name : #MiCoUsageMapVisualization,
-	#superclass : #MiAbstractVisualization,
+	#name : 'MiCoUsageMapVisualization',
+	#superclass : 'MiAbstractVisualization',
 	#instVars : [
 		'specModel',
 		'mapBuilder'
 	],
-	#category : #'MooseIDE-CoUsageMap-Browser'
+	#category : 'MooseIDE-CoUsageMap-Browser',
+	#package : 'MooseIDE-CoUsageMap',
+	#tag : 'Browser'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 MiCoUsageMapVisualization >> buildInCanvas: aCanvas [
 
 	self specModel currentMooseModel ifNil: [ ^ self ].
@@ -25,19 +27,19 @@ MiCoUsageMapVisualization >> buildInCanvas: aCanvas [
 	^ aCanvas
 ]
 
-{ #category : #brokerage }
+{ #category : 'brokerage' }
 MiCoUsageMapVisualization >> consume: anItem [
 	anItem isTag
 		ifTrue: [ self consumeTag: anItem ]
 		ifFalse: [ self consumeTagAssociation: anItem ]
 ]
 
-{ #category : #brokerage }
+{ #category : 'brokerage' }
 MiCoUsageMapVisualization >> consumeTag: aTag [
 	self updateLegend
 ]
 
-{ #category : #brokerage }
+{ #category : 'brokerage' }
 MiCoUsageMapVisualization >> consumeTagAssociation: aFamixTagAssociation [
 	"search the box for the tagged entity with the right tag
 	 - if found nothing to do
@@ -54,7 +56,7 @@ MiCoUsageMapVisualization >> consumeTagAssociation: aFamixTagAssociation [
 	mapBuilder updateShapeColors
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiCoUsageMapVisualization >> initialize [
 
 	super initialize.
@@ -63,7 +65,7 @@ MiCoUsageMapVisualization >> initialize [
 	mapBuilder visualization: self
 ]
 
-{ #category : #brokerage }
+{ #category : 'brokerage' }
 MiCoUsageMapVisualization >> itemsFor: aClass [
 	| model |
 	model := self owner containerEntities mooseModel.
@@ -73,24 +75,18 @@ MiCoUsageMapVisualization >> itemsFor: aClass [
 	^ #(  )
 ]
 
-{ #category : #'private - testing' }
+{ #category : 'private - testing' }
 MiCoUsageMapVisualization >> mapBuilder [
 	^mapBuilder 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiCoUsageMapVisualization >> modelForShape: aShape [
 
 	^ aShape model mooseEntity
 ]
 
-{ #category : #actions }
-MiCoUsageMapVisualization >> openSettings [
-	"called from the visualization's globalMenu"
-	specModel openSettings
-]
-
-{ #category : #brokerage }
+{ #category : 'brokerage' }
 MiCoUsageMapVisualization >> remove: anObject [
 	anObject class = FamixTag
 		ifTrue: [ self removeTag: anObject ]
@@ -98,7 +94,7 @@ MiCoUsageMapVisualization >> remove: anObject [
 	
 ]
 
-{ #category : #brokerage }
+{ #category : 'brokerage' }
 MiCoUsageMapVisualization >> removeTag: aTag [
 	| canvas legendTag |
 	canvas := mapBuilder canvas.
@@ -112,7 +108,7 @@ MiCoUsageMapVisualization >> removeTag: aTag [
 	canvas signalUpdate.
 ]
 
-{ #category : #brokerage }
+{ #category : 'brokerage' }
 MiCoUsageMapVisualization >> removeTagAssociation: aFamixTagAssociation [
 
 	| entity miCoObject |
@@ -125,44 +121,44 @@ MiCoUsageMapVisualization >> removeTagAssociation: aFamixTagAssociation [
 	mapBuilder updateShapeColors
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiCoUsageMapVisualization >> selectedInnerEntity [
 	^specModel selectedEntity
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiCoUsageMapVisualization >> selectedInnerEntity: aMooseEntity [
 	specModel selectedEntity: aMooseEntity
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiCoUsageMapVisualization >> selectedTag [
 	^specModel selectedTag
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiCoUsageMapVisualization >> selectedTag: aTag [
 	specModel selectedTag: aTag
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiCoUsageMapVisualization >> settings [
 	^self specModel settings
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiCoUsageMapVisualization >> specModel [
 
 	^specModel
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiCoUsageMapVisualization >> specModel: anObject [
 
 	specModel := anObject
 ]
 
-{ #category : #brokerage }
+{ #category : 'brokerage' }
 MiCoUsageMapVisualization >> tagsFromMooseModel: aMooseModel [
 	| group legendTag |
 	aMooseModel ifNil: [ ^ self ]. 
@@ -172,28 +168,28 @@ MiCoUsageMapVisualization >> tagsFromMooseModel: aMooseModel [
 	group do: [ :tag | legendTag addTag: tag asMiCoTag ].
 ]
 
-{ #category : #brokerage }
+{ #category : 'brokerage' }
 MiCoUsageMapVisualization >> update: anObject [
 	self consume: anObject
 ]
 
-{ #category : #update }
+{ #category : 'update' }
 MiCoUsageMapVisualization >> updateBoxColor: aMiCoBox fromTags: tags [
 
 	mapBuilder updateBoxColor: aMiCoBox fromTags: tags
 ]
 
-{ #category : #update }
+{ #category : 'update' }
 MiCoUsageMapVisualization >> updateChildren [
 	mapBuilder updateChildren
 ]
 
-{ #category : #update }
+{ #category : 'update' }
 MiCoUsageMapVisualization >> updateInnerBoxSize [
 	mapBuilder updateInnerBoxSize
 ]
 
-{ #category : #update }
+{ #category : 'update' }
 MiCoUsageMapVisualization >> updateLegend [
 	| legendTag |
 	legendTag := mapBuilder legendTagBuilder.
@@ -202,7 +198,7 @@ MiCoUsageMapVisualization >> updateLegend [
 	mapBuilder updateShapeColors
 ]
 
-{ #category : #update }
+{ #category : 'update' }
 MiCoUsageMapVisualization >> updateShapeLayout [
 	mapBuilder updateShapeLayout
 ]

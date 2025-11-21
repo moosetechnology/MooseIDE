@@ -88,10 +88,7 @@ MiAbstractVisualization >> noHighlightColorFor: anEntity [
 { #category : 'running' }
 MiAbstractVisualization >> run [
 
-	self canvas clear.
-	self clearLegend.
-	self canvas controllerInteraction: nil.
-	self script value: self canvas
+	self refresh
 ]
 
 { #category : 'highlighting' }

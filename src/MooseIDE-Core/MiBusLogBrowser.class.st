@@ -79,8 +79,8 @@ MiBusLogBrowser class >> propagateCommandFor: presenter [
 
 	| propagateOnThisBus |
 	propagateOnThisBus := (MiPropagateCommand forContext: presenter)
-		                      doNotFreezeBrowser;
-		                      asSpecCommand.
+		doNotFreezeBrowser;
+		asSpecCommand.
 	propagateOnThisBus
 		beDisplayedOnRightSide;
 		name: 'Propagate on this bus'.

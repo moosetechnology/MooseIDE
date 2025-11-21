@@ -30,12 +30,6 @@ MiQueriesModel >> entities: anObject [
 	entities := anObject
 ]
 
-{ #category : 'testing' }
-MiQueriesModel >> hasSettings [
-
-	^ false
-]
-
 { #category : 'initialization' }
 MiQueriesModel >> initialize [
 

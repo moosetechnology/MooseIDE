@@ -49,6 +49,8 @@ MiSourceTextBrowserModel >> commentHighlightFor: aComment [
 
 { #category : 'highlights' }
 MiSourceTextBrowserModel >> createHighlightsFor: anEntity [
+	"note: checks if anEntity is a comment first
+	 if so: apply comment formatting, and leave to not add any other one"
 
 	(anEntity class usesFamixTrait: FamixTComment) ifTrue: [
 			self commentHighlightFor: anEntity.
@@ -69,7 +71,7 @@ MiSourceTextBrowserModel >> createHighlightsFor: anEntity [
 ]
 
 { #category : 'highlights' }
-MiSourceTextBrowserModel >> createKeywordHighlights [
+MiSourceTextBrowserModel >> createLanguageKeywordHighlights [
 	"search for all sourceLanguage keywords in the displayedText and highlight them
 	There are several guard conditions because this feature is work in progress and
 	not all language implement it"
@@ -221,8 +223,8 @@ MiSourceTextBrowserModel >> prepareFormating: aString [
 
 	shouldHighlightChildren
 		ifTrue: [
-				self createHighlightsFor: self selectedEntity.
-				self createKeywordHighlights ]
+			self createLanguageKeywordHighlights.
+			self createHighlightsFor: self selectedEntity ]
 		ifFalse: [ self resetHighlights ]
 ]
 

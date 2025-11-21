@@ -1,33 +1,33 @@
 Class {
-	#name : #MiCoUsageModelTest,
-	#superclass : #TestCase,
+	#name : 'MiCoUsageModelTest',
+	#superclass : 'TestCase',
 	#instVars : [
-		'model',
 		'previousApplication',
-		'application'
+		'application',
+		'specModel'
 	],
-	#category : #'MooseIDE-CoUsageMap-Tests-Browser'
+	#category : 'MooseIDE-CoUsageMap-Tests-Model',
+	#package : 'MooseIDE-CoUsageMap-Tests',
+	#tag : 'Model'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 MiCoUsageModelTest >> setUp [
 
 	super setUp.
 
-	model := MiCoUsageMapModel new.
+	specModel := MiCoUsageMapModel new.
 
 	previousApplication := MiApplication current.
 	application := MiTestApplication new.
 	MiApplication current: application.
 
-	MiCoUsageMapBrowser newApplication: application model: model.
-	model followEntity: MiCoUsageTestFamixModel new allMethods
+	MiCoUsageMapBrowser newApplication: application model: specModel.
+	specModel followEntity: MiCoUsageTestFamixModel new allMethods
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiCoUsageModelTest >> tearDown [
-
-	MiCoUsageMapSettings reset.
 
 	MiApplication reset.
 	MiApplication current: previousApplication.
@@ -35,126 +35,128 @@ MiCoUsageModelTest >> tearDown [
 	super tearDown
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiCoUsageModelTest >> test01Basic [
 
-	self assert: model containerBoxes size equals: 5.
-	self assert: model innerBoxes size equals: 5. "var5 is not used"
+	self assert: specModel containerBoxes size equals: 5.
+	self assert: specModel innerBoxes size equals: 5. "var2 is not used"
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiCoUsageModelTest >> test02MethodsAttributes [
 
 	| method |
 
-	method := model containerBoxNamed: #method1.
+	method := specModel containerBoxNamed: #method1.
 	self assert: method class equals: MiCoContainerBox.
-	self assert: method innerBoxes size equals: 2.
-	self assert: method innerBoxes first class equals: MiCoInnerBox.
+	self assert: method innerBoxes size equals: 1.
+	self assert: method innerBoxes anyOne class equals: MiCoInnerBox.
 
-	self assert: (model containerBoxNamed: #method2) innerBoxes size equals: 0.
-	self assert: (model containerBoxNamed: #method3) innerBoxes size equals: 3.
-	self assert: (model getInnerBoxNamed: #var2) numberOfUses equals: 2.
-	self assert: (model getInnerBoxNamed: #var4) numberOfUses equals: 1.
-	self should: [model getInnerBoxNamed: #var5] raise: Error.
+	self assert: (specModel containerBoxNamed: #method2) innerBoxes size equals: 1.
+	self assert: (specModel containerBoxNamed: #method3) innerBoxes size equals: 3.
+
+	self assert: (specModel getInnerBoxNamed: #att1) numberOfUses equals: 1.
+	self assert: (specModel getInnerBoxNamed: #att6) numberOfUses equals: 3.
+
+	self should: [specModel getInnerBoxNamed: #var2] raise: Error.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiCoUsageModelTest >> test03AttributeWidth [
 
 	| method |
-	method := model containerBoxNamed: #method1.
-	self assert: ((model getInnerBoxNamed: #var1) numberOfUsesOn: method) equals: 3.
+	method := specModel containerBoxNamed: #method1.
+	self assert: ((specModel getInnerBoxNamed: #att1) numberOfUsesOn: method) equals: 3.
 
-	method := model containerBoxNamed: #method3.
-	self assert: ((model getInnerBoxNamed: #var4) numberOfUsesOn: method) equals: 1
+	method := specModel containerBoxNamed: #method3.
+	self assert: ((specModel getInnerBoxNamed: #att4) numberOfUsesOn: method) equals: 1
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiCoUsageModelTest >> testAutomaticColorOneTaggedInnerBox [
 
 	| tag |
 
-	tag := model currentMooseModel tagNamed: 'aTag'.
-	model setTag: tag onInnerBox: (model getInnerBoxNamed: #var6).
+	tag := specModel currentMooseModel tagNamed: 'aTag'.
+	specModel setTag: tag onInnerBox: (specModel getInnerBoxNamed: #att6).
 
-	model automaticColor.
+	specModel automaticColor.
 
 	self
-		assertCollection: (model containerBoxNamed: #method4) mooseEntity allTags
+		assertCollection: (specModel containerBoxNamed: #method4) mooseEntity allTags
 		hasSameElements: {tag}.
 	self
-		assertCollection: (model containerBoxNamed: #method5) mooseEntity allTags
+		assertCollection: (specModel containerBoxNamed: #method5) mooseEntity allTags
 		hasSameElements: {tag}.
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiCoUsageModelTest >> testAutomaticColorSeveralInnerBoxAllTagged [
 
 	| tag |
 
-	tag := model currentMooseModel tagNamed: 'aTag'.
-	model setTag: tag onInnerBox: (model getInnerBoxNamed: #var2).
-	model setTag: tag onInnerBox: (model getInnerBoxNamed: #var3).
-	model setTag: tag onInnerBox: (model getInnerBoxNamed: #var4).
+	tag := specModel currentMooseModel tagNamed: 'aTag'.
+	specModel setTag: tag onInnerBox: (specModel getInnerBoxNamed: #att3).
+	specModel setTag: tag onInnerBox: (specModel getInnerBoxNamed: #att4).
+	specModel setTag: tag onInnerBox: (specModel getInnerBoxNamed: #att5).
 
-	model automaticColor.
+	specModel automaticColor.
 
 	self
-		assertCollection: (model containerBoxNamed: #method3) mooseEntity allTags
+		assertCollection: (specModel containerBoxNamed: #method3) mooseEntity allTags
 		hasSameElements: {tag}.
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiCoUsageModelTest >> testAutomaticColorSeveralInnerBoxAndAboveThreshold [
 
 	| tag |
 
-	tag := model currentMooseModel tagNamed: 'aTag'.
-	model setTag: tag onInnerBox: (model getInnerBoxNamed: #var2).
-	model setTag: tag onInnerBox: (model getInnerBoxNamed: #var3).
+	tag := specModel currentMooseModel tagNamed: 'aTag'.
+	specModel setTag: tag onInnerBox: (specModel getInnerBoxNamed: #att3).
+	specModel setTag: tag onInnerBox: (specModel getInnerBoxNamed: #att4).
 
-	model settings threshold75PercentGroup: 65. 
-	model automaticColor.
+	specModel settings threshold75PercentGroup: 65. 
+	specModel automaticColor.
 
 	self
-		assertCollection: (model containerBoxNamed: #method3) mooseEntity allTags
+		assertCollection: (specModel containerBoxNamed: #method3) mooseEntity allTags
 		hasSameElements: {tag}.
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiCoUsageModelTest >> testAutomaticColorSeveralInnerBoxAndBelowThreshold [
 
 	| tag |
 
-	tag := model currentMooseModel tagNamed: 'aTag'.
-	model setTag: tag onInnerBox: (model getInnerBoxNamed: #var2).
-	model setTag: tag onInnerBox: (model getInnerBoxNamed: #var3).
+	tag := specModel currentMooseModel tagNamed: 'aTag'.
+	specModel setTag: tag onInnerBox: (specModel getInnerBoxNamed: #att3).
 
-	model automaticColor.
+	specModel settings threshold75PercentGroup: 65.
+	specModel automaticColor.
 
-	self assert: (model containerBoxNamed: #method3) mooseEntity allTags isEmpty
+	self assert: (specModel containerBoxNamed: #method3) mooseEntity allTags isEmpty
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiCoUsageModelTest >> testLastTagInitialization [
 
-	self assert: model selectedTag isNil.
+	self assert: specModel selectedTag isNil.
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiCoUsageModelTest >> testLastTagWithTag [
 
 	| tag |
-	tag := model currentMooseModel tagNamed: 'aTag'.
+	tag := specModel currentMooseModel tagNamed: 'aTag'.
 
-	model setTag: tag onInnerBox: (model getInnerBoxNamed: #var2).
+	specModel setTag: tag onInnerBox: (specModel getInnerBoxNamed: #att3).
 
-	self assert: model selectedTag equals: tag.
+	self assert: specModel selectedTag equals: tag.
 
 ]

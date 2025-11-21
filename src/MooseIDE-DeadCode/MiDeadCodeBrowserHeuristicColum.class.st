@@ -1,0 +1,94 @@
+Class {
+	#name : 'MiDeadCodeBrowserHeuristicColum',
+	#superclass : 'SpPresenter',
+	#instVars : [
+		'btnRejectHeuristic',
+		'btnChooseHeuristics',
+		'lstChosenHeuristics',
+		'lstOfferedHeuristics'
+	],
+	#category : 'MooseIDE-DeadCode-Browser',
+	#package : 'MooseIDE-DeadCode',
+	#tag : 'Browser'
+}
+
+{ #category : 'accessing' }
+MiDeadCodeBrowserHeuristicColum >> chosenHeuristics: aCollection [
+
+	lstChosenHeuristics items: aCollection
+]
+
+{ #category : 'initialization' }
+MiDeadCodeBrowserHeuristicColum >> connectPresenters [
+
+	btnChooseHeuristics action: [
+		self specModel chooseHeuristics: lstOfferedHeuristics chosenHeuristics.
+		self resetSelection
+	].
+
+	btnRejectHeuristic action: [
+		self specModel unchooseHeuristics: lstChosenHeuristics chosenHeuristics.
+		self resetSelection
+	].
+
+]
+
+{ #category : 'layout' }
+MiDeadCodeBrowserHeuristicColum >> defaultLayout [
+
+	^SpBoxLayout newTopToBottom
+		add: 'Available heuristics' expand: false ;
+		add: lstOfferedHeuristics expand: true ;
+		add: (SpBoxLayout newLeftToRight
+			add: btnChooseHeuristics ;
+			add: btnRejectHeuristic ;
+			yourself)
+		height: self toolbarHeight ;
+		add: 'Selected heuristics' expand: false ;
+		add: lstChosenHeuristics expand: true ;
+		yourself
+]
+
+{ #category : 'initialization' }
+MiDeadCodeBrowserHeuristicColum >> initializePresenters [
+
+	lstOfferedHeuristics := self newHeuristicList
+		items: self specModel availableHeuristics.
+
+	lstChosenHeuristics := self newHeuristicList
+		items: self specModel chosenHeuristics.
+
+	btnChooseHeuristics := self newButton
+		label: 'v' ;
+		action: [ self specModel chooseHeuristics: lstOfferedHeuristics chosenHeuristics ].
+
+	btnRejectHeuristic := self newButton
+		label: '^' ;
+		action: [ self specModel unchooseHeuristics: lstChosenHeuristics chosenHeuristics ].
+
+]
+
+{ #category : 'initialization' }
+MiDeadCodeBrowserHeuristicColum >> newHeuristicList [
+
+	^self instantiate: MiDeadCodeHeuristicListPresenter
+]
+
+{ #category : 'actions' }
+MiDeadCodeBrowserHeuristicColum >> resetSelection [
+
+	lstOfferedHeuristics unselectAll.
+	lstChosenHeuristics unselectAll 
+]
+
+{ #category : 'accessing' }
+MiDeadCodeBrowserHeuristicColum >> specModel [ 
+
+	^owner specModel
+]
+
+{ #category : 'TOREMOVE' }
+MiDeadCodeBrowserHeuristicColum >> toolbarHeight [
+
+	^self class toolbarHeight
+]

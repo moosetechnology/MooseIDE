@@ -1,14 +1,16 @@
 Class {
-	#name : #MiCoHighlightManagerTest,
-	#superclass : #MiCoUsageAbstractTest,
-	#category : #'MooseIDE-CoUsageMap-Tests-Browser'
+	#name : 'MiCoHighlightManagerTest',
+	#superclass : 'MiCoUsageAbstractTest',
+	#category : 'MooseIDE-CoUsageMap-Tests-Browser',
+	#package : 'MooseIDE-CoUsageMap-Tests',
+	#tag : 'Browser'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiCoHighlightManagerTest >> testDeselectGoesToModel [
 	| mooseEntity attribute1 shape1 |
-	mooseEntity := self specModel currentMooseModel entityNamed: #var1.
-	attribute1 := self specModel getInnerBoxNamed: #var1.
+	mooseEntity := self specModel currentMooseModel entityNamed: #att1.
+	attribute1 := self specModel getInnerBoxNamed: #att1.
 	shape1 := builder canvas deepShapeFromModel: attribute1.
 
 	self specModel selectedEntity: mooseEntity.
@@ -20,12 +22,12 @@ MiCoHighlightManagerTest >> testDeselectGoesToModel [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiCoHighlightManagerTest >> testDeselectInnerBox [
 	| attribute1 shape1 default selected |
 	self tagsWithPalette: { 'Frame'. 'Connection' }.
 
-	attribute1 := self specModel getInnerBoxNamed: #var1.
+	attribute1 := self specModel getInnerBoxNamed: #att1.
 	shape1 := builder canvas deepShapeFromModel: attribute1.
 
 	default := builder highlightManager defaultBoxBorder color.
@@ -39,12 +41,12 @@ MiCoHighlightManagerTest >> testDeselectInnerBox [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiCoHighlightManagerTest >> testHighlight [
 	| attribute1 shape1 default selected |
 	self tagsWithPalette: { 'Frame'. 'Connection' }.
 
-	attribute1 := self specModel getInnerBoxNamed: #var1.
+	attribute1 := self specModel getInnerBoxNamed: #att1.
 	shape1 := builder canvas deepShapeFromModel: attribute1.
 	
 	default := builder highlightManager defaultBoxBorder color.
@@ -60,47 +62,47 @@ MiCoHighlightManagerTest >> testHighlight [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiCoHighlightManagerTest >> testNoHighlightWhenSelectedInnerBox [
-	| attribute1 shape1 default selected attribute2 shape2 |
+	| attribute3 shape3 default selected attribute4 shape4 |
 	self tagsWithPalette: { 'Frame'. 'Connection' }.
 
-	attribute1 := self specModel getInnerBoxNamed: #var1.
-	attribute2 := self specModel getInnerBoxNamed: #var2.
-	shape1 := builder canvas deepShapeFromModel: attribute1.
-	shape2 := builder canvas deepShapeFromModel: attribute2.
+	attribute3 := self specModel getInnerBoxNamed: #att3.
+	attribute4 := self specModel getInnerBoxNamed: #att4.
+	shape3 := builder canvas deepShapeFromModel: attribute3.
+	shape4 := builder canvas deepShapeFromModel: attribute4.
 
 	default := builder highlightManager defaultBoxBorder color.
 	selected := builder highlightManager selectedBoxBorder color.
 
-	self assert: shape2 border color equals: default.
+	self assert: shape4 border color equals: default.
 
-	shape1 announce: (RSMouseLeftClick new shape: shape1).
-	shape2 announce: (RSMouseEnter new shape: shape2).
+	shape3 announce: (RSMouseLeftClick new shape: shape3).
+	shape4 announce: (RSMouseEnter new shape: shape4).
 
-	self assert: shape2 border color equals: default.
+	self assert: shape4 border color equals: default.
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiCoHighlightManagerTest >> testSelectGoesToModel [
 	| attribute1 shape1 |
-	attribute1 := self specModel getInnerBoxNamed: #var1.
+	attribute1 := self specModel getInnerBoxNamed: #att1.
 	shape1 := builder canvas deepShapeFromModel: attribute1.
 
 	shape1 announce: (RSMouseLeftClick new shape: shape1).
 	self
 		assert: self specModel selectedEntity
-		equals: (self specModel currentMooseModel entityNamed: #var1)
+		equals: (self specModel currentMooseModel entityNamed: #att1)
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiCoHighlightManagerTest >> testSelectInnerBox [
 	| attribute1 shape1 default selected |
 	self tagsWithPalette: { 'Frame'. 'Connection' }.
 
-	attribute1 := self specModel getInnerBoxNamed: #var1.
+	attribute1 := self specModel getInnerBoxNamed: #att1.
 	shape1 := builder canvas deepShapeFromModel: attribute1.
 
 	default := builder highlightManager defaultBoxBorder color.
