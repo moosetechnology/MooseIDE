@@ -53,10 +53,11 @@ MiBulkEditorTest >> testCommentFirst [
 	bulkEditor commentOutInterval: (1 to: 2).
 
 	self assert: bulkEditor lines size equals: 5.
-	self assert: (bulkEditor lines at: 1) equals: '/* --- dead code removal ---'.
-	self assert: (bulkEditor lines at: 2) equals: 'l1*_/5'.
-	self assert: (bulkEditor lines at: 3) equals: 'l2_4'.
-	self assert: (bulkEditor lines at: 4) equals: ' --- dead code removal --- */'.
+
+	self assert: bulkEditor lines first  equals: '/* --- dead code removal ---'.
+	self assert: bulkEditor lines second equals: 'l1*_/5'.
+	self assert: bulkEditor lines third  equals: 'l2_4'.
+	self assert: bulkEditor lines fourth equals: ' --- dead code removal --- */'.
 ]
 
 { #category : 'tests' }
@@ -65,9 +66,10 @@ MiBulkEditorTest >> testCommentInside [
 	bulkEditor commentOutInterval: (2 to: 2).
 
 	self assert: bulkEditor lines size equals: 5.
-	self assert: (bulkEditor lines at: 2) equals: '/* --- dead code removal ---'.
-	self assert: (bulkEditor lines at: 3) equals: 'l2_4'.
-	self assert: (bulkEditor lines at: 4) equals: ' --- dead code removal --- */'.
+
+	self assert: bulkEditor lines second equals: '/* --- dead code removal ---'.
+	self assert: bulkEditor lines third  equals: 'l2_4'.
+	self assert: bulkEditor lines fourth equals: ' --- dead code removal --- */'.
 ]
 
 { #category : 'tests' }
@@ -76,9 +78,10 @@ MiBulkEditorTest >> testCommentLast [
 	bulkEditor commentOutInterval: (3 to: 3).
 
 	self assert: bulkEditor lines size equals: 5.
-	self assert: (bulkEditor lines at: 3) equals: '/* --- dead code removal ---'.
-	self assert: (bulkEditor lines at: 4) equals: 'l3*_/_*_/10'.
-	self assert: (bulkEditor lines at: 5) equals: ' --- dead code removal --- */'.
+
+	self assert: bulkEditor lines third  equals: '/* --- dead code removal ---'.
+	self assert: bulkEditor lines fourth equals: 'l3*_/_*_/10'.
+	self assert: bulkEditor lines fifth  equals: ' --- dead code removal --- */'.
 ]
 
 { #category : 'tests' }
@@ -166,7 +169,8 @@ MiBulkEditorTest >> testRemoveFirst [
 	bulkEditor removeInterval: (1 to: 2).
 
 	self assert: bulkEditor lines size equals: 1.
-	self assert: (bulkEditor lines at: 1) equals: 'l3*/_*/10'
+
+	self assert: bulkEditor lines first equals: 'l3*/_*/10'
 ]
 
 { #category : 'tests' }
@@ -175,8 +179,9 @@ MiBulkEditorTest >> testRemoveInside [
 	bulkEditor removeInterval: (2 to: 2).
 
 	self assert: bulkEditor lines size equals: 2.
-	self assert: (bulkEditor lines at: 1) equals: 'l1*/5'.
-	self assert: (bulkEditor lines at: 2) equals: 'l3*/_*/10'.
+
+	self assert: bulkEditor lines first  equals: 'l1*/5'.
+	self assert: bulkEditor lines second equals: 'l3*/_*/10'.
 ]
 
 { #category : 'tests' }
@@ -185,8 +190,9 @@ MiBulkEditorTest >> testRemoveLast [
 	bulkEditor removeInterval: (3 to: 3).
 
 	self assert: bulkEditor lines size equals: 2.
-	self assert: (bulkEditor lines at: 1) equals: 'l1*/5'.
-	self assert: (bulkEditor lines at: 2) equals: 'l2_4'
+
+	self assert: bulkEditor lines first  equals: 'l1*/5'.
+	self assert: bulkEditor lines second equals: 'l2_4'
 ]
 
 { #category : 'tests' }
@@ -230,9 +236,9 @@ MiBulkEditorTest >> testUncloseCommentBetween [
 
 	bulkEditor uncloseCommentBetween: (1 to: 3).
 
-	self assert: (bulkEditor lines at: 1) equals: 'l1*_/5'.
-	self assert: (bulkEditor lines at: 2) equals: 'l2_4'.
-	self assert: (bulkEditor lines at: 3) equals: 'l3*_/_*_/10'
+	self assert: bulkEditor lines first  equals: 'l1*_/5'.
+	self assert: bulkEditor lines second equals: 'l2_4'.
+	self assert: bulkEditor lines third  equals: 'l3*_/_*_/10'
 ]
 
 { #category : 'tests' }
