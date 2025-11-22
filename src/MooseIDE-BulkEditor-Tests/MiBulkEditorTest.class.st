@@ -190,6 +190,21 @@ MiBulkEditorTest >> testRemoveLast [
 ]
 
 { #category : 'tests' }
+MiBulkEditorTest >> testRewriteFile [
+
+	self bulkEditorLines: { bulkEditor lines first . bulkEditor lines last }.
+
+	bulkEditor rewriteFile: sourceFile.
+
+	self 
+		assert: sourceFile contents
+		equals:
+'l1*/5
+l3*/_*/10
+'
+]
+
+{ #category : 'tests' }
 MiBulkEditorTest >> testUncloseCommentBetween [
 
 	bulkEditor uncloseCommentBetween: (1 to: 3).
