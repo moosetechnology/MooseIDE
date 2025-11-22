@@ -162,6 +162,76 @@ MiBulkEditorTest >> testLineIntervalsLast [
 ]
 
 { #category : 'tests' }
+MiBulkEditorTest >> testMergeInterval3to1 [
+	"merge 3 intervals into 1"
+
+	| merged |
+	self bulkEditorLines: {
+		bulkEditor lines first .
+		String tab .
+		bulkEditor lines second .
+		bulkEditor lines third }.
+
+	merged := bulkEditor mergeIntervals: (OrderedCollection withAll: { 3 to: 3 . 2 to: 2 . 1 to: 1}).
+
+	self assertCollection: merged hasSameElements: { 1 to: 3 }
+]
+
+{ #category : 'tests' }
+MiBulkEditorTest >> testMergeIntervalContiguous [
+
+	| merged |
+	merged := bulkEditor mergeIntervals: (OrderedCollection withAll: { 2 to: 2 . 1 to: 1}).
+
+	self assertCollection: merged hasSameElements: { 1 to: 2 }
+]
+
+{ #category : 'tests' }
+MiBulkEditorTest >> testMergeIntervalEmptyLine [
+
+	| merged |
+	self bulkEditorLines: {
+		bulkEditor lines first .
+		'' .
+		bulkEditor lines second .
+		bulkEditor lines third }.
+
+	merged := bulkEditor mergeIntervals: (OrderedCollection withAll: { 3 to: 3 . 1 to: 1}).
+
+	self assertCollection: merged hasSameElements: { 1 to: 3 }
+]
+
+{ #category : 'tests' }
+MiBulkEditorTest >> testMergeIntervalLineWithSpaces [
+
+	| merged |
+	self bulkEditorLines: {
+		bulkEditor lines first .
+		'   ' .
+		bulkEditor lines second .
+		bulkEditor lines third }.
+
+	merged := bulkEditor mergeIntervals: (OrderedCollection withAll: { 3 to: 3 . 1 to: 1}).
+
+	self assertCollection: merged hasSameElements: { 1 to: 3 }
+]
+
+{ #category : 'tests' }
+MiBulkEditorTest >> testMergeIntervalLineWithTab [
+
+	| merged |
+	self bulkEditorLines: {
+		bulkEditor lines first .
+		String tab .
+		bulkEditor lines second .
+		bulkEditor lines third }.
+
+	merged := bulkEditor mergeIntervals: (OrderedCollection withAll: { 3 to: 3 . 1 to: 1}).
+
+	self assertCollection: merged hasSameElements: { 1 to: 3 }
+]
+
+{ #category : 'tests' }
 MiBulkEditorTest >> testRemoveFirst [
 
 
