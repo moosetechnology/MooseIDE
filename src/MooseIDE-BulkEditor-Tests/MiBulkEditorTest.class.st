@@ -59,7 +59,7 @@ MiBulkEditorTest >> setUp [
 ]
 
 { #category : 'tests' }
-MiBulkEditorTest >> testCommentFirst [
+MiBulkEditorTest >> testCommentOutFirstLine [
 
 	bulkEditor commentOutInterval: (1 to: 2).
 
@@ -72,19 +72,7 @@ MiBulkEditorTest >> testCommentFirst [
 ]
 
 { #category : 'tests' }
-MiBulkEditorTest >> testCommentInside [
-
-	bulkEditor commentOutInterval: (2 to: 2).
-
-	self assert: bulkEditor lines size equals: 5.
-
-	self assert: bulkEditor lines second equals: '/* --- dead code removal ---'.
-	self assert: bulkEditor lines third  equals: 'l2_4'.
-	self assert: bulkEditor lines fourth equals: ' --- dead code removal --- */'.
-]
-
-{ #category : 'tests' }
-MiBulkEditorTest >> testCommentLast [
+MiBulkEditorTest >> testCommentOutLastLine [
 
 	bulkEditor commentOutInterval: (3 to: 3).
 
@@ -93,6 +81,18 @@ MiBulkEditorTest >> testCommentLast [
 	self assert: bulkEditor lines third  equals: '/* --- dead code removal ---'.
 	self assert: bulkEditor lines fourth equals: 'l3*_/_*_/10'.
 	self assert: bulkEditor lines fifth  equals: ' --- dead code removal --- */'.
+]
+
+{ #category : 'tests' }
+MiBulkEditorTest >> testCommentOutMiddleLine [
+
+	bulkEditor commentOutInterval: (2 to: 2).
+
+	self assert: bulkEditor lines size equals: 5.
+
+	self assert: bulkEditor lines second equals: '/* --- dead code removal ---'.
+	self assert: bulkEditor lines third  equals: 'l2_4'.
+	self assert: bulkEditor lines fourth equals: ' --- dead code removal --- */'.
 ]
 
 { #category : 'tests' }
@@ -146,7 +146,7 @@ MiBulkEditorTest >> testFirstLastLineLastSameLine [
 ]
 
 { #category : 'tests' }
-MiBulkEditorTest >> testLineIntervalsFirst [
+MiBulkEditorTest >> testLineIntervalsFirstLines [
 
 	| mths |
 	mths := OrderedCollection with: (self methodWithPos: 3 @ 8).
@@ -155,21 +155,21 @@ MiBulkEditorTest >> testLineIntervalsFirst [
 ]
 
 { #category : 'tests' }
-MiBulkEditorTest >> testLineIntervalsInside [
-
-	| mths |
-	mths := OrderedCollection with: (self methodWithPos: 7 @ 10).
-
-	self assertCollection: (bulkEditor lineIntervals: mths) hasSameElements: { 2 to: 2 }
-]
-
-{ #category : 'tests' }
-MiBulkEditorTest >> testLineIntervalsLast [
+MiBulkEditorTest >> testLineIntervalsLastLine [
 
 	| mths |
 	mths := OrderedCollection with: (self methodWithPos: 12 @ 17).
 
 	self assertCollection: (bulkEditor lineIntervals: mths) hasSameElements: { 3 to: 3 }
+]
+
+{ #category : 'tests' }
+MiBulkEditorTest >> testLineIntervalsMiddleLine [
+
+	| mths |
+	mths := OrderedCollection with: (self methodWithPos: 7 @ 10).
+
+	self assertCollection: (bulkEditor lineIntervals: mths) hasSameElements: { 2 to: 2 }
 ]
 
 { #category : 'tests' }
@@ -189,7 +189,7 @@ MiBulkEditorTest >> testMergeInterval3to1 [
 ]
 
 { #category : 'tests' }
-MiBulkEditorTest >> testMergeIntervalContiguous [
+MiBulkEditorTest >> testMergeIntervalContiguousLines [
 
 	| merged |
 	merged := bulkEditor mergeIntervals: (OrderedCollection withAll: { 2 to: 2 . 1 to: 1}).
