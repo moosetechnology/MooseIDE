@@ -147,6 +147,37 @@ MiBulkEditorTest >> testLineIntervalsLast [
 ]
 
 { #category : 'tests' }
+MiBulkEditorTest >> testRemoveFirst [
+
+
+	bulkEditor removeLines.
+	bulkEditor removeInterval: (1 to: 2).
+
+	self assert: bulkEditor lines size equals: 1.
+	self assert: (bulkEditor lines at: 1) equals: 'l3*/_*/10'
+]
+
+{ #category : 'tests' }
+MiBulkEditorTest >> testRemoveInside [
+
+	bulkEditor removeInterval: (2 to: 2).
+
+	self assert: bulkEditor lines size equals: 2.
+	self assert: (bulkEditor lines at: 1) equals: 'l1*/5'.
+	self assert: (bulkEditor lines at: 2) equals: 'l3*/_*/10'.
+]
+
+{ #category : 'tests' }
+MiBulkEditorTest >> testRemoveLast [
+
+	bulkEditor removeInterval: (3 to: 3).
+
+	self assert: bulkEditor lines size equals: 2.
+	self assert: (bulkEditor lines at: 1) equals: 'l1*/5'.
+	self assert: (bulkEditor lines at: 2) equals: 'l2_4'
+]
+
+{ #category : 'tests' }
 MiBulkEditorTest >> testUncloseCommentBetween [
 
 	bulkEditor uncloseCommentBetween: (1 to: 3).
