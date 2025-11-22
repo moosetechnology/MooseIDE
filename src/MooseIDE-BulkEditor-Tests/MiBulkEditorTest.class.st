@@ -14,7 +14,7 @@ Class {
 { #category : 'running' }
 MiBulkEditorTest >> bulkEditorLines: lines [
 
-	bulkEditor instVarNamed: #lines put: lines
+	bulkEditor instVarNamed: #lines put: lines asOrderedCollection 
 ]
 
 { #category : 'running' }
@@ -31,17 +31,14 @@ MiBulkEditorTest >> setUp [
 
 	bulkEditor := MiBulkEditor new.
 
-	self bulkEditorLines: #( 'l1*/5' 'l2_4' 'l3*/_*/10') asOrderedCollection.
+	self bulkEditorLines: #( 'l1*/5' 'l2_4' 'l3*/_*/10').
 
 ]
 
 { #category : 'tests' }
 MiBulkEditorTest >> testCommentFirst [
 
-	| mth |
-	mth := self methodWithPos: 3@8.
-
-	bulkEditor commentOutInterval: mth.
+	bulkEditor commentOutInterval: (1 to: 2).
 
 	self assert: bulkEditor lines size equals: 5.
 	self assert: (bulkEditor lines at: 1) equals: '/* --- dead code removal ---'.
@@ -53,10 +50,7 @@ MiBulkEditorTest >> testCommentFirst [
 { #category : 'tests' }
 MiBulkEditorTest >> testCommentInside [
 
-	| mth |
-	mth := self methodWithPos: 7@10.
-
-	bulkEditor commentOutInterval: mth.
+	bulkEditor commentOutInterval: (2 to: 2).
 
 	self assert: bulkEditor lines size equals: 5.
 	self assert: (bulkEditor lines at: 2) equals: '/* --- dead code removal ---'.
@@ -67,10 +61,7 @@ MiBulkEditorTest >> testCommentInside [
 { #category : 'tests' }
 MiBulkEditorTest >> testCommentLast [
 
-	| mth |
-	mth := self methodWithPos: 12@17.
-
-	bulkEditor commentOutInterval: mth.
+	bulkEditor commentOutInterval: (3 to: 3).
 
 	self assert: bulkEditor lines size equals: 5.
 	self assert: (bulkEditor lines at: 3) equals: '/* --- dead code removal ---'.
