@@ -120,6 +120,33 @@ MiBulkEditorTest >> testFirstLastLineLastSameLine [
 ]
 
 { #category : 'tests' }
+MiBulkEditorTest >> testLineIntervalsFirst [
+
+	| mths |
+	mths := OrderedCollection with: (self methodWithPos: 3 @ 8).
+
+	self assertCollection: (bulkEditor lineIntervals: mths) hasSameElements: { 1 to: 2 }
+]
+
+{ #category : 'tests' }
+MiBulkEditorTest >> testLineIntervalsInside [
+
+	| mths |
+	mths := OrderedCollection with: (self methodWithPos: 7 @ 10).
+
+	self assertCollection: (bulkEditor lineIntervals: mths) hasSameElements: { 2 to: 2 }
+]
+
+{ #category : 'tests' }
+MiBulkEditorTest >> testLineIntervalsLast [
+
+	| mths |
+	mths := OrderedCollection with: (self methodWithPos: 12 @ 17).
+
+	self assertCollection: (bulkEditor lineIntervals: mths) hasSameElements: { 3 to: 3 }
+]
+
+{ #category : 'tests' }
 MiBulkEditorTest >> testUncloseCommentBetween [
 
 	bulkEditor uncloseCommentBetween: (1 to: 3).
