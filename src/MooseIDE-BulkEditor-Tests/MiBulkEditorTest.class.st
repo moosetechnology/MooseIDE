@@ -205,6 +205,27 @@ l3*/_*/10
 ]
 
 { #category : 'tests' }
+MiBulkEditorTest >> testSortByLine [
+
+	| mths sorted |
+	mths := {
+		self methodWithPos: 7 @ 10 .
+		self methodWithPos: 18 @ 32 .
+		self methodWithPos: 1 @ 5 .
+		self methodWithPos: 35 @ 42 .
+		}.
+
+	sorted := bulkEditor sortByLine: mths.
+
+	self assert: sorted size equals: 4.
+
+	self assert: sorted first  sourceAnchor startPos equals: 35.
+	self assert: sorted second sourceAnchor startPos equals: 18.
+	self assert: sorted third  sourceAnchor startPos equals: 7.
+	self assert: sorted fourth sourceAnchor startPos equals: 1.
+]
+
+{ #category : 'tests' }
 MiBulkEditorTest >> testUncloseCommentBetween [
 
 	bulkEditor uncloseCommentBetween: (1 to: 3).
