@@ -5,7 +5,8 @@ Class {
 	#name : 'MiBulkEditorTest',
 	#superclass : 'TestCase',
 	#instVars : [
-		'bulkEditor'
+		'bulkEditor',
+		'sourceFile'
 	],
 	#category : 'MooseIDE-BulkEditor-Tests',
 	#package : 'MooseIDE-BulkEditor-Tests'
@@ -18,21 +19,32 @@ MiBulkEditorTest >> bulkEditorLines: lines [
 ]
 
 { #category : 'running' }
+MiBulkEditorTest >> fileReferenceFor: aFileName [
+
+	^FileSystem memory root / aFileName
+]
+
+{ #category : 'running' }
 MiBulkEditorTest >> methodWithPos: pos [
 
 	^FamixJavaMethod new
 		sourceAnchor: (FamixJavaIndexedFileAnchor new 
 			startPos: pos x ;
-			endPos: pos y)
+			endPos: pos y ;
+			fileName: 'SourceFile.test')
 ]
 
 { #category : 'running' }
 MiBulkEditorTest >> setUp [
 
+	super setUp.
+
 	bulkEditor := MiBulkEditor new.
 
-	self bulkEditorLines: #( 'l1*/5' 'l2_4' 'l3*/_*/10').
+	self bulkEditorLines: #( 'l1*/5' 'l2_4' 'l3*/_*/10' ).
 
+	sourceFile := self fileReferenceFor: 'SourceFile.test'.
+	self writeLines: bulkEditor lines toFile: sourceFile
 ]
 
 { #category : 'tests' }
@@ -203,4 +215,10 @@ MiBulkEditorTest >> testUncloseCommentsInNone [
 MiBulkEditorTest >> testUncloseCommentsInOne [
 
 	self assert: (bulkEditor uncloseCommentsIn: 'xx*/xx') equals: 'xx*_/xx'
+]
+
+{ #category : 'running' }
+MiBulkEditorTest >> writeLines: aStringCollection toFile: aFileReference [
+
+	aFileReference writeStreamDo: [ :stream | stream << (Character cr join: aStringCollection) ]
 ]
