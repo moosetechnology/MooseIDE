@@ -82,10 +82,9 @@ MiBulkEditor >> firstLastLine: firstLastPos [
 ]
 
 { #category : 'running' }
-MiBulkEditor >> getCode: methods [
+MiBulkEditor >> groupByFile: methods [
 
-	^methods anyOne mooseModel rootFolder asFileReference / (methods anyOne sourceAnchor fileName).
-
+	^methods groupBy: [ :mth | mth sourceAnchor fileName ]
 ]
 
 { #category : 'initialization' }
@@ -175,13 +174,24 @@ MiBulkEditor >> rewriteFile: aFileReference [
 { #category : 'running' }
 MiBulkEditor >> runOn: methods [
 
-	| aFileReference |
-	aFileReference := self getCode: methods.
+	| rootFolder |
+	rootFolder := methods anyOne mooseModel rootFolder asFileReference.
+
+	(self groupByFile: methods) do: [ :fileMethodsAssociation |
+		self runOnMethods: fileMethodsAssociation value inFile: (rootFolder / fileMethodsAssociation key)
+	].
+
+]
+
+{ #category : 'running' }
+MiBulkEditor >> runOnMethods: methods inFile: aFileReference [
+
 	lines := aFileReference contents lines asOrderedCollection.
 
 	(self lineIntervals: methods) do: [ :interv | self editInterval: interv ].
 
 	self rewriteFile: aFileReference
+
 ]
 
 { #category : 'utilities' }
