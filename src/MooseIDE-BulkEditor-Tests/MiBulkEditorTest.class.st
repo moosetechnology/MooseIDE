@@ -96,6 +96,30 @@ MiBulkEditorTest >> testCommentOutMiddleLine [
 ]
 
 { #category : 'tests' }
+MiBulkEditorTest >> testEmptyLinesBetweenAndFalse [
+
+	self bulkEditorLines: {
+		bulkEditor lines first .
+		'blah' .
+		bulkEditor lines second .
+		bulkEditor lines third }.
+
+	self deny: (bulkEditor emptyLinesBetween: 1 and: 3).
+]
+
+{ #category : 'tests' }
+MiBulkEditorTest >> testEmptyLinesBetweenAndTrue [
+
+	self bulkEditorLines: {
+		bulkEditor lines first .
+		'   ' .
+		bulkEditor lines second .
+		bulkEditor lines third }.
+
+	self assert: (bulkEditor emptyLinesBetween: 1 and: 3).
+]
+
+{ #category : 'tests' }
 MiBulkEditorTest >> testFirstLastLineFirstChar [
 
 	| result |
