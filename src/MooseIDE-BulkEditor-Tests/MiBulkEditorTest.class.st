@@ -19,6 +19,17 @@ MiBulkEditorTest >> bulkEditorLines: lines [
 ]
 
 { #category : 'running' }
+MiBulkEditorTest >> commentMethod: aMethod withPos: pos [
+
+	^FamixJavaComment new
+		commentedEntity: aMethod ;
+		sourceAnchor: (FamixJavaIndexedFileAnchor new 
+			startPos: pos x ;
+			endPos: pos y ;
+			fileName: 'SourceFile.test')
+]
+
+{ #category : 'running' }
 MiBulkEditorTest >> fileReferenceFor: aFileName [
 
 	^FileSystem memory root / aFileName
@@ -229,6 +240,39 @@ MiBulkEditorTest >> testMergeIntervalLineWithTab [
 	merged := bulkEditor mergeIntervals: (OrderedCollection withAll: { 3 to: 3 . 1 to: 1}).
 
 	self assertCollection: merged hasSameElements: { 1 to: 3 }
+]
+
+{ #category : 'tests' }
+MiBulkEditorTest >> testMethodWithCommentIntervalCommentAfter [
+	"Comment is after the method (ignore it)"
+
+	| mth |
+	mth := self methodWithPos: 12 @ 17.
+	self commentMethod: mth withPos: 18 @ 25.
+
+	self assert: (bulkEditor methodWithCommentInterval: mth) equals: (12 to: 17)
+]
+
+{ #category : 'tests' }
+MiBulkEditorTest >> testMethodWithCommentIntervalCommentInside [
+	"Comment is inside the method"
+
+	| mth |
+	mth := self methodWithPos: 12 @ 17.
+	self commentMethod: mth withPos: 13 @ 15.
+
+	self assert: (bulkEditor methodWithCommentInterval: mth) equals: (12 to: 17)
+]
+
+{ #category : 'tests' }
+MiBulkEditorTest >> testMethodWithCommentIntervalHeaderComment [
+	"Comment is just before method"
+
+	| mth |
+	mth := self methodWithPos: 12 @ 17.
+	self commentMethod: mth withPos: 6 @ 10.
+
+	self assert: (bulkEditor methodWithCommentInterval: mth) equals: (6 to: 17)
 ]
 
 { #category : 'tests' }
