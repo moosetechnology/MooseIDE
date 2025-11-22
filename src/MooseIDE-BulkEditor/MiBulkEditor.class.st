@@ -29,7 +29,7 @@ MiBulkEditor >> commentLines [
 	editMode := #comment
 ]
 
-{ #category : 'running' }
+{ #category : 'intervals' }
 MiBulkEditor >> commentOutInterval: lineInterval [
 
 	self uncloseCommentBetween: lineInterval .
@@ -37,18 +37,18 @@ MiBulkEditor >> commentOutInterval: lineInterval [
 	lines add: '/* --- dead code removal ---' beforeIndex: lineInterval first.
 ]
 
-{ #category : 'running' }
+{ #category : 'intervals' }
 MiBulkEditor >> editInterval: lineInterval [
 
 	(editMode = #comment) ifTrue: [ self commentOutInterval: lineInterval ].
 	(editMode = #remove) ifTrue: [ self removeInterval: lineInterval ].
 ]
 
-{ #category : 'running' }
+{ #category : 'intervals' }
 MiBulkEditor >> emptyLinesBetween: first and: last [
 
 	first+1 to: last-1 do: [ :i |
-		((lines at: i) allSatisfy: [ :c | c isSeparator ])
+		((lines at: i) allSatisfy: #isSeparator)
 			ifFalse: [ ^false ]
 	].
 
@@ -56,7 +56,7 @@ MiBulkEditor >> emptyLinesBetween: first and: last [
 	
 ]
 
-{ #category : 'running' }
+{ #category : 'intervals' }
 MiBulkEditor >> firstLastLine: firstLastPos [
 	"firstLastPos is an interval of start/end position
 	 compute and returns from it an interval of lines"
@@ -96,7 +96,7 @@ MiBulkEditor >> initialize [
 	self commentLines 
 ]
 
-{ #category : 'running' }
+{ #category : 'intervals' }
 MiBulkEditor >> lineIntervals: methods [
 
 	| intervals |
@@ -112,7 +112,7 @@ MiBulkEditor >> lines [
 	^lines
 ]
 
-{ #category : 'running' }
+{ #category : 'intervals' }
 MiBulkEditor >> mergeIntervals: intervals [
 	"merge together 2 intervals separated only by blank lines"
 
@@ -136,7 +136,7 @@ MiBulkEditor >> mergeIntervals: intervals [
 	^merged 
 ]
 
-{ #category : 'running' }
+{ #category : 'intervals' }
 MiBulkEditor >> methodWithCommentInterval: method [
 
 	^method comments
@@ -145,7 +145,7 @@ MiBulkEditor >> methodWithCommentInterval: method [
 		ifNone: [ method sourceAnchor startPos to: method sourceAnchor endPos ]
 ]
 
-{ #category : 'running' }
+{ #category : 'intervals' }
 MiBulkEditor >> removeInterval: lineInterval [
 
 	| editedLines |
@@ -184,7 +184,7 @@ MiBulkEditor >> runOn: methods [
 	self rewriteFile: aFileReference
 ]
 
-{ #category : 'running' }
+{ #category : 'utilities' }
 MiBulkEditor >> sortByLine: methods [
 	"sort methods in reverse order (decreasing) of their starting position"
 	^methods sorted: [ :m1 :m2 |
@@ -192,7 +192,7 @@ MiBulkEditor >> sortByLine: methods [
 	]
 ]
 
-{ #category : 'running' }
+{ #category : 'intervals' }
 MiBulkEditor >> uncloseCommentBetween: firstLastLine [
 
 	firstLastLine first to: firstLastLine last do: [ :i |
@@ -200,7 +200,7 @@ MiBulkEditor >> uncloseCommentBetween: firstLastLine [
 	]
 ]
 
-{ #category : 'running' }
+{ #category : 'utilities' }
 MiBulkEditor >> uncloseCommentsIn: line [
 
 	^(line includesSubstring: '*/')
