@@ -170,6 +170,39 @@ MiBulkEditorTest >> testFirstLastLineLastSameLine [
 ]
 
 { #category : 'tests' }
+MiBulkEditorTest >> testGroupByFile [
+
+	| mths grouped fileMethods |
+	mths := {
+		self methodWithPos:  10 @ 42 .
+		self methodWithPos:   7 @ 128 .
+		self methodWithPos:  85 @ 729 .
+		self methodWithPos: 318 @ 544
+	}.
+	mths second sourceAnchor fileName: 'otherFile.test'.
+	mths third  sourceAnchor fileName: 'thirdFile.test'.
+
+	grouped := bulkEditor groupByFile: mths.
+
+	self assert: grouped size equals: 3.
+
+	fileMethods := grouped
+		at: 'SourceFile.test'
+		ifAbsent: [self fail: 'Missing methods for "SourceFile.test"' ].
+	self assertCollection: fileMethods value hasSameElements: { mths first . mths fourth } .
+
+	fileMethods := grouped
+		at: 'otherFile.test'
+		ifAbsent: [self fail: 'Missing methods for "otherFile.test"' ].
+	self assertCollection: fileMethods value hasSameElements: { mths second } .
+
+	fileMethods := grouped
+		at: 'thirdFile.test'
+		ifAbsent: [self fail: 'Missing methods for "thirdFile.test"' ].
+	self assertCollection: fileMethods value hasSameElements: { mths third }
+]
+
+{ #category : 'tests' }
 MiBulkEditorTest >> testLineIntervalsFirstLines [
 
 	| mths |
