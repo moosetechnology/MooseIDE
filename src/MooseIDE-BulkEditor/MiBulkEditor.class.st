@@ -84,7 +84,7 @@ MiBulkEditor >> firstLastLine: firstLastPos [
 { #category : 'running' }
 MiBulkEditor >> groupByFile: methods [
 
-	^methods groupBy: [ :mth | mth sourceAnchor fileName ]
+	^methods groupedBy: [ :mth | mth sourceAnchor fileName ]
 ]
 
 { #category : 'initialization' }
