@@ -27,6 +27,16 @@ MiBulkEditorAbstractTest >> fileReferenceFor: aFileName [
 ]
 
 { #category : 'running' }
+MiBulkEditorAbstractTest >> join: lines with: separator [
+
+	^String streamContents: [ :st |
+		lines
+			do: [ :aLine | st << aLine ]
+			separatedBy: [ st << separator ]
+	]
+]
+
+{ #category : 'running' }
 MiBulkEditorAbstractTest >> methodWithPos: pos [
 
 	^FamixJavaMethod new

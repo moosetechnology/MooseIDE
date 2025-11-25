@@ -11,16 +11,6 @@ MiBulkEditorRemoveRewriterTest >> classToTest [
 	^MiBulkEditorRemoveRewriter 
 ]
 
-{ #category : 'running' }
-MiBulkEditorRemoveRewriterTest >> join: lines with: separator [
-
-	^String streamContents: [ :st |
-		lines
-			do: [ :aLine | st << aLine ]
-			separatedBy: [ st << separator ]
-	]
-]
-
 { #category : 'tests' }
 MiBulkEditorRemoveRewriterTest >> setUp [ 
 
