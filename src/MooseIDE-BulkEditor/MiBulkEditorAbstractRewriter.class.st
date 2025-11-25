@@ -57,7 +57,7 @@ MiBulkEditorAbstractRewriter >> editIntervals: aCollection [
 	editIntervals := aCollection iterator
 ]
 
-{ #category : 'actions' }
+{ #category : 'running' }
 MiBulkEditorAbstractRewriter >> executeNextLineAction [
 
 	nextLineAction value.
