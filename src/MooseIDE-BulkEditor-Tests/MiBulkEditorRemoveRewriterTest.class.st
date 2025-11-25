@@ -30,7 +30,8 @@ l3*/_*/10'.
 
 	bulkEditor run.
 
-	self assert: bulkEditor stream contents equals: 'l3*/_*/10'
+	self assert: bulkEditor stream contents equals: '
+l3*/_*/10'
 ]
 
 { #category : 'tests' }
@@ -44,6 +45,7 @@ l3*/_*/10'.
 	bulkEditor run.
 
 	self assert: bulkEditor stream contents equals: 'l1*/5
+
 l3*/_*/10'.
 ]
 
@@ -53,12 +55,13 @@ MiBulkEditorRemoveRewriterTest >> testRemoveLast [
 	bulkEditor content: 'l1*/5
 l2_4
 l3*/_*/10'.
-	bulkEditor editIntervals: {11 to: 19}.
+	bulkEditor editIntervals: {12 to: 20}.
 
 	bulkEditor run.
 
 	self assert: bulkEditor stream contents equals: 'l1*/5
-l2_4'
+l2_4
+'
 ]
 
 { #category : 'tests' }
@@ -67,9 +70,11 @@ MiBulkEditorRemoveRewriterTest >> testRemoveMultipleIntervals [
 	bulkEditor content: 'l1*/5
 l2_4
 l3*/_*/10'.
-	bulkEditor editIntervals: { 1 to: 5 . 11 to: 19}.
+	bulkEditor editIntervals: { 1 to: 5 . 12 to: 20}.
 
 	bulkEditor run.
 
-	self assert: bulkEditor stream contents equals: 'l2_4'.
+	self assert: bulkEditor stream contents equals: '
+l2_4
+'.
 ]
