@@ -177,7 +177,7 @@ MiBulkEditor >> runOn: methods [
 	| rootFolder |
 	rootFolder := methods anyOne mooseModel rootFolder asFileReference.
 
-	(self groupByFile: methods) do: [ :fileMethodsAssociation |
+	(self groupByFile: methods) associationsDo: [ :fileMethodsAssociation |
 		self runOnMethods: fileMethodsAssociation value inFile: (rootFolder / fileMethodsAssociation key)
 	].
 
