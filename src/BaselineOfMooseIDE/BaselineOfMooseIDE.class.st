@@ -58,7 +58,9 @@ BaselineOfMooseIDE >> defineGroups: spec [
 		group: 'CriticBrowser-Metamodel'
 		with:
 			#( 'Famix-CriticBrowser-Entities' 'Famix-CriticBrowser-ManualEntities'
-			   'Famix-CriticBrowser-Generator' 'Famix-CriticBrowser-Tests' )
+			   'Famix-CriticBrowser-Generator' 'Famix-CriticBrowser-Tests' ) ;
+		group: 'bulkedit'
+		with: #( 'MooseIDE-BulkEditor' )
 ]
 
 { #category : 'packages' }
@@ -120,7 +122,8 @@ BaselineOfMooseIDE >> definePackages: spec [
 		package: 'MooseIDE-Spotter';
 		package: 'MooseIDE-Core-Reporter' with: [ spec requires: #( 'MooseIDE-Core' ) ];
 		package: 'MooseIDE-Spotter-Tests' with: [ spec requires: #( 'MooseIDE-Spotter' ) ];
-		package: 'MooseIDE-Analysis' with: [ spec requires: #( 'MooseIDE-Core' ) ].
+		package: 'MooseIDE-Analysis' with: [ spec requires: #( 'MooseIDE-Core' ) ];
+		package: 'MooseIDE-BulkEditor'.
 
 	self defineMooseCriticsPackages: spec
 ]
