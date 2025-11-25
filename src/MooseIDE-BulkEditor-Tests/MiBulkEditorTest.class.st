@@ -3,118 +3,55 @@ A P16BulkEditorTest is a test class for testing the behavior of P16BulkEditor
 "
 Class {
 	#name : 'MiBulkEditorTest',
-	#superclass : 'TestCase',
-	#instVars : [
-		'bulkEditor',
-		'sourceFile'
-	],
+	#superclass : 'MiBulkEditorAbstractTest',
 	#category : 'MooseIDE-BulkEditor-Tests',
 	#package : 'MooseIDE-BulkEditor-Tests'
 }
 
 { #category : 'running' }
-MiBulkEditorTest >> bulkEditorLines: lines [
+MiBulkEditorTest >> bulkEditorPreviousContent: aString [
 
-	bulkEditor instVarNamed: #lines put: lines asOrderedCollection 
+	bulkEditor instVarNamed: #previousFileContent put: aString
 ]
 
 { #category : 'running' }
-MiBulkEditorTest >> commentMethod: aMethod withPos: pos [
+MiBulkEditorTest >> classToTest [
 
-	^FamixJavaComment new
-		commentedEntity: aMethod ;
-		sourceAnchor: (FamixJavaIndexedFileAnchor new 
-			startPos: pos x ;
-			endPos: pos y ;
-			fileName: 'SourceFile.test')
+	^MiBulkEditor
 ]
 
 { #category : 'running' }
-MiBulkEditorTest >> fileReferenceFor: aFileName [
-
-	^FileSystem memory root / aFileName
-]
-
-{ #category : 'running' }
-MiBulkEditorTest >> methodWithPos: pos [
-
-	^FamixJavaMethod new
-		sourceAnchor: (FamixJavaIndexedFileAnchor new 
-			startPos: pos x ;
-			endPos: pos y ;
-			fileName: 'SourceFile.test')
-]
-
-{ #category : 'running' }
-MiBulkEditorTest >> setUp [
+MiBulkEditorTest >> setUp [ 
 
 	super setUp.
 
-	bulkEditor := MiBulkEditor new.
-
-	self bulkEditorLines: #( 'l1*/5' 'l2_4' 'l3*/_*/10' ).
+	self bulkEditorPreviousContent: 'l1*/5
+l2_4
+l3*/_*/10'.
 
 	sourceFile := self fileReferenceFor: 'SourceFile.test'.
 	self writeLines: bulkEditor lines toFile: sourceFile
 ]
 
 { #category : 'tests' }
-MiBulkEditorTest >> testCommentOutFirstLine [
-
-	bulkEditor commentOutInterval: (1 to: 2).
-
-	self assert: bulkEditor lines size equals: 5.
-
-	self assert: bulkEditor lines first  equals: '/* --- dead code removal ---'.
-	self assert: bulkEditor lines second equals: 'l1*_/5'.
-	self assert: bulkEditor lines third  equals: 'l2_4'.
-	self assert: bulkEditor lines fourth equals: ' --- dead code removal --- */'.
-]
-
-{ #category : 'tests' }
-MiBulkEditorTest >> testCommentOutLastLine [
-
-	bulkEditor commentOutInterval: (3 to: 3).
-
-	self assert: bulkEditor lines size equals: 5.
-
-	self assert: bulkEditor lines third  equals: '/* --- dead code removal ---'.
-	self assert: bulkEditor lines fourth equals: 'l3*_/_*_/10'.
-	self assert: bulkEditor lines fifth  equals: ' --- dead code removal --- */'.
-]
-
-{ #category : 'tests' }
-MiBulkEditorTest >> testCommentOutMiddleLine [
-
-	bulkEditor commentOutInterval: (2 to: 2).
-
-	self assert: bulkEditor lines size equals: 5.
-
-	self assert: bulkEditor lines second equals: '/* --- dead code removal ---'.
-	self assert: bulkEditor lines third  equals: 'l2_4'.
-	self assert: bulkEditor lines fourth equals: ' --- dead code removal --- */'.
-]
-
-{ #category : 'tests' }
 MiBulkEditorTest >> testEmptyLinesBetweenAndFalse [
 
-	self bulkEditorLines: {
-		bulkEditor lines first .
-		'blah' .
-		bulkEditor lines second .
-		bulkEditor lines third }.
+	self bulkEditorPreviousContent: 'l1*/5
+ blah 
+l2_4
+l3*/_*/10'.
 
 	self deny: (bulkEditor emptyLinesBetween: 1 and: 3).
 ]
 
 { #category : 'tests' }
 MiBulkEditorTest >> testEmptyLinesBetweenAndTrue [
+	"2nd line contains spaces"
 
-	self bulkEditorLines: {
-		bulkEditor lines first .
-		'   ' .
-		bulkEditor lines second .
-		bulkEditor lines third }.
+	self bulkEditorPreviousContent: 'l1*/5
+   
+l2_4
+l3*/_*/10'.
 
 	self assert: (bulkEditor emptyLinesBetween: 1 and: 3).
 ]
@@ -208,7 +145,7 @@ MiBulkEditorTest >> testLineIntervalsFirstLines [
 	| mths |
 	mths := OrderedCollection with: (self methodWithPos: 3 @ 8).
 
-	self assertCollection: (bulkEditor lineIntervals: mths) hasSameElements: { 1 to: 2 }
+	self assertCollection: (bulkEditor positionIntervals: mths) hasSameElements: { 1 to: 2 }
 ]
 
 { #category : 'tests' }
@@ -217,7 +154,7 @@ MiBulkEditorTest >> testLineIntervalsLastLine [
 	| mths |
 	mths := OrderedCollection with: (self methodWithPos: 12 @ 17).
 
-	self assertCollection: (bulkEditor lineIntervals: mths) hasSameElements: { 3 to: 3 }
+	self assertCollection: (bulkEditor positionIntervals: mths) hasSameElements: { 3 to: 3 }
 ]
 
 { #category : 'tests' }
@@ -226,19 +163,19 @@ MiBulkEditorTest >> testLineIntervalsMiddleLine [
 	| mths |
 	mths := OrderedCollection with: (self methodWithPos: 7 @ 10).
 
-	self assertCollection: (bulkEditor lineIntervals: mths) hasSameElements: { 2 to: 2 }
+	self assertCollection: (bulkEditor positionIntervals: mths) hasSameElements: { 2 to: 2 }
 ]
 
 { #category : 'tests' }
 MiBulkEditorTest >> testMergeInterval3to1 [
-	"merge 3 intervals into 1"
+	"2nd line contains a TAB
+	 merge 3 intervals into 1"
 
 	| merged |
-	self bulkEditorLines: {
-		bulkEditor lines first .
-		String tab .
-		bulkEditor lines second .
-		bulkEditor lines third }.
+	self bulkEditorPreviousContent: 'l1*/5
+	
+l2_4
+l3*/_*/10'.
 
 	merged := bulkEditor mergeIntervals: (OrderedCollection withAll: { 3 to: 3 . 2 to: 2 . 1 to: 1}).
 
@@ -256,13 +193,13 @@ MiBulkEditorTest >> testMergeIntervalContiguousLines [
 
 { #category : 'tests' }
 MiBulkEditorTest >> testMergeIntervalEmptyLine [
+	"2nd line is empty"
 
 	| merged |
-	self bulkEditorLines: {
-		bulkEditor lines first .
-		'' .
-		bulkEditor lines second .
-		bulkEditor lines third }.
+	self bulkEditorPreviousContent: 'l1*/5
+
+l2_4
+l3*/_*/10'.
 
 	merged := bulkEditor mergeIntervals: (OrderedCollection withAll: { 3 to: 3 . 1 to: 1}).
 
@@ -271,13 +208,13 @@ MiBulkEditorTest >> testMergeIntervalEmptyLine [
 
 { #category : 'tests' }
 MiBulkEditorTest >> testMergeIntervalLineWithSpaces [
+	"2nd line contains spaces"
 
 	| merged |
-	self bulkEditorLines: {
-		bulkEditor lines first .
-		'   ' .
-		bulkEditor lines second .
-		bulkEditor lines third }.
+	self bulkEditorPreviousContent: 'l1*/5
+   
+l2_4
+l3*/_*/10'.
 
 	merged := bulkEditor mergeIntervals: (OrderedCollection withAll: { 3 to: 3 . 1 to: 1}).
 
@@ -286,13 +223,13 @@ MiBulkEditorTest >> testMergeIntervalLineWithSpaces [
 
 { #category : 'tests' }
 MiBulkEditorTest >> testMergeIntervalLineWithTab [
+	"2nd line contains TAB"
 
 	| merged |
-	self bulkEditorLines: {
-		bulkEditor lines first .
-		String tab .
-		bulkEditor lines second .
-		bulkEditor lines third }.
+	self bulkEditorPreviousContent: 'l1*/5
+	
+l2_4
+l3*/_*/10'.
 
 	merged := bulkEditor mergeIntervals: (OrderedCollection withAll: { 3 to: 3 . 1 to: 1}).
 
@@ -333,43 +270,10 @@ MiBulkEditorTest >> testMethodWithCommentIntervalHeaderComment [
 ]
 
 { #category : 'tests' }
-MiBulkEditorTest >> testRemoveFirst [
-
-
-	bulkEditor removeLines.
-	bulkEditor removeInterval: (1 to: 2).
-
-	self assert: bulkEditor lines size equals: 1.
-
-	self assert: bulkEditor lines first equals: 'l3*/_*/10'
-]
-
-{ #category : 'tests' }
-MiBulkEditorTest >> testRemoveInside [
-
-	bulkEditor removeInterval: (2 to: 2).
-
-	self assert: bulkEditor lines size equals: 2.
-
-	self assert: bulkEditor lines first  equals: 'l1*/5'.
-	self assert: bulkEditor lines second equals: 'l3*/_*/10'.
-]
-
-{ #category : 'tests' }
-MiBulkEditorTest >> testRemoveLast [
-
-	bulkEditor removeInterval: (3 to: 3).
-
-	self assert: bulkEditor lines size equals: 2.
-
-	self assert: bulkEditor lines first  equals: 'l1*/5'.
-	self assert: bulkEditor lines second equals: 'l2_4'
-]
-
-{ #category : 'tests' }
 MiBulkEditorTest >> testRewriteFile [
 
-	self bulkEditorLines: { bulkEditor lines first . bulkEditor lines last }.
+	self bulkEditorPreviousContent: 'l1*/5
+l3*/_*/10'.
 
 	bulkEditor rewriteFile: sourceFile.
 
@@ -392,42 +296,14 @@ MiBulkEditorTest >> testSortByLine [
 		self methodWithPos: 35 @ 42 .
 		}.
 
-	sorted := bulkEditor sortByLine: mths.
+	sorted := bulkEditor sortByPosition: mths.
 
 	self assert: sorted size equals: 4.
 
-	self assert: sorted first  sourceAnchor startPos equals: 35.
-	self assert: sorted second sourceAnchor startPos equals: 18.
-	self assert: sorted third  sourceAnchor startPos equals: 7.
-	self assert: sorted fourth sourceAnchor startPos equals: 1.
-]
-
-{ #category : 'tests' }
-MiBulkEditorTest >> testUncloseCommentBetween [
-
-	bulkEditor uncloseCommentBetween: (1 to: 3).
-
-	self assert: bulkEditor lines first  equals: 'l1*_/5'.
-	self assert: bulkEditor lines second equals: 'l2_4'.
-	self assert: bulkEditor lines third  equals: 'l3*_/_*_/10'
-]
-
-{ #category : 'tests' }
-MiBulkEditorTest >> testUncloseCommentsInMultiple [
-
-	self assert: (bulkEditor uncloseCommentsIn: 'xx*/xx*/') equals: 'xx*_/xx*_/'
-]
-
-{ #category : 'tests' }
-MiBulkEditorTest >> testUncloseCommentsInNone [
-
-	self assert: (bulkEditor uncloseCommentsIn: 'xxxxx') equals: 'xxxxx'
-]
-
-{ #category : 'tests' }
-MiBulkEditorTest >> testUncloseCommentsInOne [
-
-	self assert: (bulkEditor uncloseCommentsIn: 'xx*/xx') equals: 'xx*_/xx'
+	self assert: sorted first  sourceAnchor startPos equals: 1.
+	self assert: sorted second sourceAnchor startPos equals: 7.
+	self assert: sorted third  sourceAnchor startPos equals: 18.
+	self assert: sorted fourth sourceAnchor startPos equals: 35.
 ]
 
 { #category : 'running' }
