@@ -5,12 +5,8 @@ Class {
 	#package : 'MooseIDE-BulkEditor'
 }
 
-{ #category : 'running' }
-MiBulkEditorRemoveRewriter >> run [ 
+{ #category : 'actions' }
+MiBulkEditorRemoveRewriter >> insideInterval: c [
+	"do not copy the characters inside an interval"
 
-	self nextInterval.
-	content withIndexDo: [ :c :i |
-		(i < interval first) ifTrue: [ stream << c ].
-		(i > interval last) ifTrue: [ self nextInterval ]
-	]
 ]
