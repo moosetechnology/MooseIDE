@@ -48,7 +48,7 @@ MiBulkEditor >> editInterval: lineInterval [
 MiBulkEditor >> emptyLinesBetween: first and: last [
 
 	first+1 to: last-1 do: [ :i |
-		((previousFileContent at: i) allSatisfy: #isSeparator)
+		((previousFileContent at: i) isSeparator)
 			ifFalse: [ ^false ]
 	].
 
@@ -105,15 +105,18 @@ MiBulkEditor >> lines [
 MiBulkEditor >> mergeIntervals: intervals [
 	"merge together 2 intervals separated only by blank lines"
 
-	| lastInterval merged |
+	| intervalsIterator lastInterval merged |
 	merged := OrderedCollection new: intervals size.
 
-	lastInterval := intervals first.
-	intervals remove: lastInterval.
+	intervalsIterator := intervals iterator withCollectionAPI.
+	
+	intervalsIterator hasNext ifFalse: [ ^intervals ].
 
-	intervals do: [ :nextInterval |
-		(self emptyLinesBetween: nextInterval last and: lastInterval first)
-			ifTrue: [ lastInterval := nextInterval first to: lastInterval last ]
+	lastInterval := intervalsIterator next.
+
+	intervalsIterator do: [ :nextInterval |
+		(self emptyLinesBetween: lastInterval last and: nextInterval first)
+			ifTrue: [ lastInterval := lastInterval first to: nextInterval last ]
 			ifFalse: [ 
 				merged add: lastInterval.
 				lastInterval := nextInterval
