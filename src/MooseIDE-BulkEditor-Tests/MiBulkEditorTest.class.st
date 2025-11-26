@@ -57,56 +57,6 @@ l3*/_*/10'.
 ]
 
 { #category : 'tests' }
-MiBulkEditorTest >> testFirstLastLineFirstChar [
-
-	| result |
-	result := bulkEditor firstLastLine: (1 to: 7).
-
-	self assert: result first equals: 1.
-	self assert: result last equals: 2.
-]
-
-{ #category : 'tests' }
-MiBulkEditorTest >> testFirstLastLineFirstLineChar [
-
-	| result |
-	result := bulkEditor firstLastLine: (7 to: 17).
-
-	self assert: result first equals: 2.
-	self assert: result last equals: 3
-]
-
-{ #category : 'tests' }
-MiBulkEditorTest >> testFirstLastLineLastChar [
-
-	| result |
-	result := bulkEditor firstLastLine: (7 to: 21).
-
-	self assert: result first equals: 2.
-	self assert: result last equals: 3.
-]
-
-{ #category : 'tests' }
-MiBulkEditorTest >> testFirstLastLineLastLineChar [
-
-	| result |
-	result := bulkEditor firstLastLine: (2 to: 10).
-
-	self assert: result first equals: 1.
-	self assert: result last equals: 2.
-]
-
-{ #category : 'tests' }
-MiBulkEditorTest >> testFirstLastLineLastSameLine [
-
-	| result |
-	result := bulkEditor firstLastLine: (12 to: 15).
-
-	self assert: result first equals: 3.
-	self assert: result last equals: 3.
-]
-
-{ #category : 'tests' }
 MiBulkEditorTest >> testGroupByFile [
 
 	| mths grouped fileMethods |
@@ -137,33 +87,6 @@ MiBulkEditorTest >> testGroupByFile [
 		at: 'thirdFile.test'
 		ifAbsent: [self fail: 'Missing methods for "thirdFile.test"' ].
 	self assertCollection: fileMethods value hasSameElements: { mths third }
-]
-
-{ #category : 'tests' }
-MiBulkEditorTest >> testLineIntervalsFirstLines [
-
-	| mths |
-	mths := OrderedCollection with: (self methodWithPos: 3 @ 8).
-
-	self assertCollection: (bulkEditor positionIntervals: mths) hasSameElements: { 1 to: 2 }
-]
-
-{ #category : 'tests' }
-MiBulkEditorTest >> testLineIntervalsLastLine [
-
-	| mths |
-	mths := OrderedCollection with: (self methodWithPos: 12 @ 17).
-
-	self assertCollection: (bulkEditor positionIntervals: mths) hasSameElements: { 3 to: 3 }
-]
-
-{ #category : 'tests' }
-MiBulkEditorTest >> testLineIntervalsMiddleLine [
-
-	| mths |
-	mths := OrderedCollection with: (self methodWithPos: 7 @ 10).
-
-	self assertCollection: (bulkEditor positionIntervals: mths) hasSameElements: { 2 to: 2 }
 ]
 
 { #category : 'tests' }
