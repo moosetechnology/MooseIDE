@@ -18,8 +18,6 @@ MiBulkEditorCommentRewriter >> insideInterval: c [
 
 	super insideInterval: c.
 
-	previousC := c
-
 ]
 
 { #category : 'actions' }

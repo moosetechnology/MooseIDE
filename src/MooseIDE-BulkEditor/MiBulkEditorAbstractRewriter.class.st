@@ -4,7 +4,6 @@ Class {
 	#instVars : [
 		'stream',
 		'editIntervals',
-		'char',
 		'interval',
 		'content',
 		'nextLineAction',
@@ -157,7 +156,9 @@ MiBulkEditorAbstractRewriter >> run [
 		}.
 
 		((c = Character cr) or: [ c = Character lf ])
-			ifTrue: [ self lineEnd: c at: i]
+			ifTrue: [ self lineEnd: c at: i].
+
+		previousC := c
 	]
 ]
 
