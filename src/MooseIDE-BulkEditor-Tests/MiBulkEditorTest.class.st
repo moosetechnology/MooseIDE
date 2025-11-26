@@ -40,26 +40,26 @@ l3______10'.
 ]
 
 { #category : 'tests' }
-MiBulkEditorTest >> testEmptyLinesBetweenAndFalse [
+MiBulkEditorTest >> testEmptyLinesBetweenAnd_isFalse [
 
-	self bulkEditorPreviousContent: 'l1*/5
- blah 
+	self bulkEditorPreviousContent: 'l1__5
+ x  
 l2_4
-l3*/_*/10'.
+l3______10'.
 
-	self deny: (bulkEditor emptyLinesBetween: 1 and: 3).
+	self deny: (bulkEditor emptyLinesBetween: 5 and: 11).
 ]
 
 { #category : 'tests' }
-MiBulkEditorTest >> testEmptyLinesBetweenAndTrue [
+MiBulkEditorTest >> testEmptyLinesBetweenAnd_isTrue [
 	"2nd line contains spaces"
 
-	self bulkEditorPreviousContent: 'l1*/5
-   
+	self bulkEditorPreviousContent: 'l1__5
+    
 l2_4
-l3*/_*/10'.
+l3______10'.
 
-	self assert: (bulkEditor emptyLinesBetween: 1 and: 3).
+	self assert: (bulkEditor emptyLinesBetween: 5 and: 11).
 ]
 
 { #category : 'tests' }
