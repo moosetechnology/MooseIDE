@@ -149,7 +149,7 @@ MiBulkEditor >> runOnMethods: methods inFile: aFileReference [
 
 	previousFileContent := aFileReference contents.
 
-	self rewriteFile: aFileReference atIntervals: (self positionIntervals: methods).
+	self rewriteFile: aFileReference atIntervals: (self intervalsToEdit: methods).
 
 ]
 
