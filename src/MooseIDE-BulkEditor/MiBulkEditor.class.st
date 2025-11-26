@@ -26,7 +26,7 @@ Class {
 { #category : 'accessing' }
 MiBulkEditor >> commentLines [
 
-	editMode := #comment
+	editMode := MiBulkEditorCommentRewriter
 ]
 
 { #category : 'intervals' }
@@ -107,29 +107,20 @@ MiBulkEditor >> methodWithCommentInterval: method [
 { #category : 'accessing' }
 MiBulkEditor >> removeLines [
 
-	editMode := #remove
+	editMode := MiBulkEditorRemoveRewriter
 ]
 
 { #category : 'running' }
 MiBulkEditor >> rewriteFile: aFileReference atIntervals: intervalsToEdit [
 
 	aFileReference delete.
+
 	aFileReference writeStreamDo: [ :st |
-		self rewriter
+		editMode new
 			stream: st ;
-			previousContent: previousFileContent ;
+			content: previousFileContent ;
 			editIntervals: intervalsToEdit ;
 			run ].
-]
-
-{ #category : 'utilities' }
-MiBulkEditor >> rewriter [
-	"defaults to commenting because it is not destructive"
-
-	(editMode = #comment) ifTrue: [ ^MiBulkEditorCommentRewriter new ].
-	(editMode = #remove) ifTrue: [ ^MiBulkEditorRemoveRewriter new ].
-	
-	^MiBulkEditorCommentRewriter new
 ]
 
 { #category : 'running' }
