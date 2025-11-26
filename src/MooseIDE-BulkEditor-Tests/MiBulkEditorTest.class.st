@@ -215,19 +215,20 @@ MiBulkEditorTest >> testMethodWithCommentIntervalHeaderComment [
 ]
 
 { #category : 'tests' }
-MiBulkEditorTest >> testRewriteFile [
+MiBulkEditorTest >> testRewriteFileWithAtIntervalsShorterContent [
+	"no intervals to edit, just copy the content
+	 but we shortened the content before"
 
-	self bulkEditorPreviousContent: 'l1*/5
-l3*/_*/10'.
+	self bulkEditorPreviousContent: 'l1__5
+l3______10'.
 
-	bulkEditor rewriteFile: sourceFile.
+	bulkEditor rewriteFile: sourceFile atIntervals: #().
 
 	self 
 		assert: sourceFile contents
 		equals:
-'l1*/5
-l3*/_*/10
-'
+'l1__5
+l3______10'
 ]
 
 { #category : 'tests' }
@@ -252,7 +253,7 @@ MiBulkEditorTest >> testSortByLine [
 ]
 
 { #category : 'running' }
-MiBulkEditorTest >> writeLines: aStringCollection toFile: aFileReference [
+MiBulkEditorTest >> writePreviousContentToFile: aFileReference [
 
-	aFileReference writeStreamDo: [ :stream | stream << (Character cr join: aStringCollection) ]
+	aFileReference writeStreamDo: [ :stream | stream << self bulkEditorPreviousContent ]
 ]
