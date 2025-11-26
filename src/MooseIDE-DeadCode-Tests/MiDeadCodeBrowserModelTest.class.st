@@ -128,7 +128,7 @@ MiDeadCodeBrowserModelTest >> setUp [
 MiDeadCodeBrowserModelTest >> testFirstRoundDeadNotRefuted [
 
 	model initializeHeuristics.
-	model chooseHeuristics: { MiDeadCodeNamingConventionHeuristic new }.
+	model chooseHeuristics: { MiDeadCodeTestNamingConventionHeuristic new }.
 
 	model followEntity: { self pharoMethod: 'whateverFunctionality' inClass: 'IsAClassTest' }.
 
@@ -161,7 +161,7 @@ MiDeadCodeBrowserModelTest >> testFirstRoundOneDead [
 MiDeadCodeBrowserModelTest >> testFirstRoundRefutedDead [
 	"entity is not invoked, but it should be considered a test method"
 
-	model chooseHeuristics: { MiDeadCodeNamingConventionHeuristic new }.
+	model chooseHeuristics: { MiDeadCodeTestNamingConventionHeuristic new }.
 
 	model followEntity: { self pharoMethod: 'testWhateverFunctionality' inClass: 'IsAClassTest' }.
 
@@ -380,7 +380,7 @@ MiDeadCodeBrowserModelTest >> testNamingConventionHeuristicMethodNameJustTest [
 	| entity |
 	entity := self pharoMethod: 'test'  inClass: 'IsAClassTest'.
 
-	self assert: (MiDeadCodeNamingConventionHeuristic new isDead: entity)
+	self assert: (MiDeadCodeTestNamingConventionHeuristic new isDead: entity)
 ]
 
 { #category : 'tests - heuristics' }
@@ -389,7 +389,7 @@ MiDeadCodeBrowserModelTest >> testNamingConventionHeuristicMethodNameNotTest [
 	| entity |
 	entity := self pharoMethod: 'whateverFunctionality'  inClass: 'IsAClassTest'.
 
-	self assert: (MiDeadCodeNamingConventionHeuristic new isDead: entity)
+	self assert: (MiDeadCodeTestNamingConventionHeuristic new isDead: entity)
 ]
 
 { #category : 'tests - heuristics' }
@@ -398,7 +398,7 @@ MiDeadCodeBrowserModelTest >> testNamingConventionHeuristicMethodNameTestosteron
 	| entity |
 	entity := self pharoMethod: 'testosterone'  inClass: 'IsAClassTest'.
 
-	self assert: (MiDeadCodeNamingConventionHeuristic new isDead: entity)
+	self assert: (MiDeadCodeTestNamingConventionHeuristic new isDead: entity)
 ]
 
 { #category : 'tests - heuristics' }
@@ -406,7 +406,7 @@ MiDeadCodeBrowserModelTest >> testNamingConventionHeuristicNotDead [
 	| entity |
 	entity := self pharoMethod: 'testWhateverFunctionality'  inClass: 'IsAClassTest'.
 
-	self deny: (MiDeadCodeNamingConventionHeuristic new isDead: entity)
+	self deny: (MiDeadCodeTestNamingConventionHeuristic new isDead: entity)
 ]
 
 { #category : 'tests - heuristics' }
@@ -415,7 +415,7 @@ MiDeadCodeBrowserModelTest >> testNamingConventionHeuristicWrongClassName [
 	| entity |
 	entity := self pharoMethod: 'testWhateverFunctionality'  inClass: 'NotATestClass'.
 
-	self assert: (MiDeadCodeNamingConventionHeuristic new isDead: entity)
+	self assert: (MiDeadCodeTestNamingConventionHeuristic new isDead: entity)
 ]
 
 { #category : 'tests - heuristics' }
