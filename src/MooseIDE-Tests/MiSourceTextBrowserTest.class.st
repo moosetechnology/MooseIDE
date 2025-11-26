@@ -328,7 +328,7 @@ MiSourceTextBrowserTest >> testShowNoSourceCodeMessage [
 
 	browser receiveEntity: (FamixStClass named: 'TestClass').
 	self
-		assert: browser specModel displayedText
+		assert: browser specModel rendererModel displayedText
 		equals: 'There is no source code to show for TestClass'
 ]
 

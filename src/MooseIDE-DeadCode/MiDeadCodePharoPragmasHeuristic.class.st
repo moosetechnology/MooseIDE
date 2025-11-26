@@ -6,7 +6,7 @@ ex: <script>, <example>. <inspectorPresentationOrder:title:>,...
 "
 Class {
 	#name : 'MiDeadCodePharoPragmasHeuristic',
-	#superclass : 'MiDeadCodeAbstractHeuristic',
+	#superclass : 'MiDeadCodeAbstractPharoHeuristic',
 	#category : 'MooseIDE-DeadCode-Rules',
 	#package : 'MooseIDE-DeadCode',
 	#tag : 'Rules'
@@ -16,14 +16,14 @@ Class {
 MiDeadCodePharoPragmasHeuristic >> description [ 
 
 	^super description ,
-	'In Pharo, some pragmas mark method called by the end-user
+	'Some pragmas mark method called by the end-user (therefore not-dead)
 	 (<script>, <example>. <inspectorPresentationOrder:title:>,...)'
 ]
 
 { #category : 'accessing' }
 MiDeadCodePharoPragmasHeuristic >> name [
 
-	^super name , 'Pharo: <script> pragmas'
+	^super name , '<script> pragmas'
 ]
 
 { #category : 'testing' }

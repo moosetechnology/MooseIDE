@@ -4,7 +4,7 @@ A heuristic to recognize test methods in Pharo.
 "
 Class {
 	#name : 'MiDeadCodePharoTestCaseSubClassHeuristic',
-	#superclass : 'MiDeadCodeAbstractTestHeuristic',
+	#superclass : 'MiDeadCodeAbstractPharoHeuristic',
 	#category : 'MooseIDE-DeadCode-Rules',
 	#package : 'MooseIDE-DeadCode',
 	#tag : 'Rules'
@@ -14,13 +14,13 @@ Class {
 MiDeadCodePharoTestCaseSubClassHeuristic >> description [
 
 	^super description ,
-	'In Pharo, sub-classes of TestCase are test classes'
+	'Sub-classes of TestCase are test classes'
 ]
 
 { #category : 'accessing' }
 MiDeadCodePharoTestCaseSubClassHeuristic >> name [
 
-	^super name , 'Pharo TestCase sub-class'
+	^super name , 'TestCase sub-class'
 ]
 
 { #category : 'testing' }

@@ -7,7 +7,7 @@ Recognizes annotations from JUnit4 and JUnit5
 "
 Class {
 	#name : 'MiDeadCodeJavaTestAnnotationHeuristic',
-	#superclass : 'MiDeadCodeAbstractTestHeuristic',
+	#superclass : 'MiDeadCodeAbstractJavaHeuristic',
 	#category : 'MooseIDE-DeadCode-Rules',
 	#package : 'MooseIDE-DeadCode',
 	#tag : 'Rules'
