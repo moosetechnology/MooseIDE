@@ -9,6 +9,12 @@ Class {
 }
 
 { #category : 'running' }
+MiBulkEditorTest >> bulkEditorPreviousContent [
+
+	^bulkEditor instVarNamed: #previousFileContent
+]
+
+{ #category : 'running' }
 MiBulkEditorTest >> bulkEditorPreviousContent: aString [
 
 	bulkEditor instVarNamed: #previousFileContent put: aString
@@ -30,7 +36,7 @@ l2_4
 l3______10'.
 
 	sourceFile := self fileReferenceFor: 'SourceFile.test'.
-	self writeLines: bulkEditor lines toFile: sourceFile
+	self writePreviousContentToFile: sourceFile
 ]
 
 { #category : 'tests' }
