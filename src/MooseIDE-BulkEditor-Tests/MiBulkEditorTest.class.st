@@ -25,9 +25,9 @@ MiBulkEditorTest >> setUp [
 
 	super setUp.
 
-	self bulkEditorPreviousContent: 'l1*/5
+	self bulkEditorPreviousContent: 'l1__5
 l2_4
-l3*/_*/10'.
+l3______10'.
 
 	sourceFile := self fileReferenceFor: 'SourceFile.test'.
 	self writeLines: bulkEditor lines toFile: sourceFile
@@ -172,23 +172,24 @@ MiBulkEditorTest >> testMergeInterval3to1 [
 	 merge 3 intervals into 1"
 
 	| merged |
-	self bulkEditorPreviousContent: 'l1*/5
+	self bulkEditorPreviousContent: 'l1__5
 	
 l2_4
-l3*/_*/10'.
+l3______10'.
 
-	merged := bulkEditor mergeIntervals: (OrderedCollection withAll: { 3 to: 3 . 2 to: 2 . 1 to: 1}).
+	merged := bulkEditor mergeIntervals: { 1 to: 5 . 9 to: 12 . 14 to: 23 }.
 
-	self assertCollection: merged hasSameElements: { 1 to: 3 }
+	self assertCollection: merged hasSameElements: { 1 to: 23 }
 ]
 
 { #category : 'tests' }
 MiBulkEditorTest >> testMergeIntervalContiguousLines [
 
 	| merged |
-	merged := bulkEditor mergeIntervals: (OrderedCollection withAll: { 2 to: 2 . 1 to: 1}).
 
-	self assertCollection: merged hasSameElements: { 1 to: 2 }
+	merged := bulkEditor mergeIntervals: { 1 to: 5 . 7 to: 10 }.
+
+	self assertCollection: merged hasSameElements: { 1 to: 10 }
 ]
 
 { #category : 'tests' }
@@ -196,29 +197,29 @@ MiBulkEditorTest >> testMergeIntervalEmptyLine [
 	"2nd line is empty"
 
 	| merged |
-	self bulkEditorPreviousContent: 'l1*/5
+	self bulkEditorPreviousContent: 'l1__5
 
 l2_4
-l3*/_*/10'.
+l3______10'.
 
-	merged := bulkEditor mergeIntervals: (OrderedCollection withAll: { 3 to: 3 . 1 to: 1}).
+	merged := bulkEditor mergeIntervals: { 1 to: 5 . 8 to: 11}.
 
-	self assertCollection: merged hasSameElements: { 1 to: 3 }
+	self assertCollection: merged hasSameElements: { 1 to: 11 }
 ]
 
 { #category : 'tests' }
 MiBulkEditorTest >> testMergeIntervalLineWithSpaces [
-	"2nd line contains spaces"
+	"2nd line contains 3 spaces"
 
 	| merged |
-	self bulkEditorPreviousContent: 'l1*/5
+	self bulkEditorPreviousContent: 'l1__5
    
 l2_4
-l3*/_*/10'.
+l3______10'.
 
-	merged := bulkEditor mergeIntervals: (OrderedCollection withAll: { 3 to: 3 . 1 to: 1}).
+	merged := bulkEditor mergeIntervals: { 1 to: 5 . 11 to: 14}.
 
-	self assertCollection: merged hasSameElements: { 1 to: 3 }
+	self assertCollection: merged hasSameElements: { 1 to: 14 }
 ]
 
 { #category : 'tests' }
@@ -226,14 +227,29 @@ MiBulkEditorTest >> testMergeIntervalLineWithTab [
 	"2nd line contains TAB"
 
 	| merged |
-	self bulkEditorPreviousContent: 'l1*/5
+	self bulkEditorPreviousContent: 'l1__5
 	
 l2_4
-l3*/_*/10'.
+l3______10'.
 
-	merged := bulkEditor mergeIntervals: (OrderedCollection withAll: { 3 to: 3 . 1 to: 1}).
+	merged := bulkEditor mergeIntervals: { 1 to: 5 . 9 to: 12}.
 
-	self assertCollection: merged hasSameElements: { 1 to: 3 }
+	self assertCollection: merged hasSameElements: { 1 to: 12 }
+]
+
+{ #category : 'tests' }
+MiBulkEditorTest >> testMergeIntervalNot [
+	"Not merging as 2nd line is not empty"
+
+	| merged |
+	self bulkEditorPreviousContent: 'l1__5
+ x 
+l2_4
+l3______10'.
+
+	merged := bulkEditor mergeIntervals: { 1 to: 5 . 11 to: 14}.
+
+	self assertCollection: merged hasSameElements: { 1 to: 5 . 11 to: 14}
 ]
 
 { #category : 'tests' }
