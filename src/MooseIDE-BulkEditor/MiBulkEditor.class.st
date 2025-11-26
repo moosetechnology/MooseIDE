@@ -97,6 +97,7 @@ MiBulkEditor >> mergeIntervals: intervals [
 
 { #category : 'intervals' }
 MiBulkEditor >> methodWithCommentInterval: method [
+	"Adds preceeding comment (if any)) to the interval of a method"
 
 	^method comments
 		detect: [ :cmt | cmt sourceAnchor endPos < method sourceAnchor startPos ]
