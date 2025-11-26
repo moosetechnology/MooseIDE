@@ -3,18 +3,19 @@ A heuristic to recognize test methods based on naming conventions.
 See #description for details
 "
 Class {
-	#name : 'MiDeadCodeNamingConventionHeuristic',
-	#superclass : 'MiDeadCodeAbstractTestHeuristic',
+	#name : 'MiDeadCodeTestNamingConventionHeuristic',
+	#superclass : 'MiDeadCodeAbstractHeuristic',
 	#category : 'MooseIDE-DeadCode-Rules',
 	#package : 'MooseIDE-DeadCode',
 	#tag : 'Rules'
 }
 
 { #category : 'accessing' }
-MiDeadCodeNamingConventionHeuristic >> description [
+MiDeadCodeTestNamingConventionHeuristic >> description [
 
 	^super description ,
-	'Check test methods according to naming convention:
+	'Any method of a test class is assumed not-dead.
+	Check test methods according to naming convention:
 	- method name begins with "test"
 	- class name ends with "Test"
 	- method name is longer than 5 characters ("test...")
@@ -22,13 +23,13 @@ MiDeadCodeNamingConventionHeuristic >> description [
 ]
 
 { #category : 'accessing' }
-MiDeadCodeNamingConventionHeuristic >> name [
+MiDeadCodeTestNamingConventionHeuristic >> name [
 
 	^super name , 'Naming convention'
 ]
 
 { #category : 'testing' }
-MiDeadCodeNamingConventionHeuristic >> notDead: aTMethod [
+MiDeadCodeTestNamingConventionHeuristic >> notDead: aTMethod [
 
 	(aTMethod name beginsWith: #test) ifFalse: [ ^false ].
 	(aTMethod parentType name endsWith: 'Test') ifFalse: [ ^false ].
