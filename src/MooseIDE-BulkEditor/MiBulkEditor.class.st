@@ -16,8 +16,8 @@ Class {
 	#name : 'MiBulkEditor',
 	#superclass : 'Object',
 	#instVars : [
-		'lines',
-		'editMode'
+		'editMode',
+		'previousFileContent'
 	],
 	#category : 'MooseIDE-BulkEditor',
 	#package : 'MooseIDE-BulkEditor'
@@ -26,59 +26,19 @@ Class {
 { #category : 'accessing' }
 MiBulkEditor >> commentLines [
 
-	editMode := #comment
-]
-
-{ #category : 'intervals' }
-MiBulkEditor >> commentOutInterval: lineInterval [
-
-	self uncloseCommentBetween: lineInterval .
-	lines add: ' --- dead code removal --- */' afterIndex: lineInterval last.
-	lines add: '/* --- dead code removal ---' beforeIndex: lineInterval first.
-]
-
-{ #category : 'intervals' }
-MiBulkEditor >> editInterval: lineInterval [
-
-	(editMode = #comment) ifTrue: [ self commentOutInterval: lineInterval ].
-	(editMode = #remove) ifTrue: [ self removeInterval: lineInterval ].
+	editMode := MiBulkEditorCommentRewriter
 ]
 
 { #category : 'intervals' }
 MiBulkEditor >> emptyLinesBetween: first and: last [
 
 	first+1 to: last-1 do: [ :i |
-		((lines at: i) allSatisfy: #isSeparator)
+		((previousFileContent at: i) isSeparator)
 			ifFalse: [ ^false ]
 	].
 
 	^true
 	
-]
-
-{ #category : 'intervals' }
-MiBulkEditor >> firstLastLine: firstLastPos [
-	"firstLastPos is an interval of start/end position
-	 compute and returns from it an interval of lines"
-
-	| startLine endLine totalPos |
-
-	startLine := endLine := 0.
-	totalPos := 0.
-	lines withIndexDo: [ :line :iLine |
-		totalPos := totalPos + line size + 1.
-		((totalPos > firstLastPos first)  and: [ startLine = 0 ])
-			ifTrue: [ startLine := iLine ].
-
-		((totalPos > firstLastPos last)  and: [ endLine = 0 ])
-			ifTrue: [
-				endLine := iLine.
-				^startLine to: endLine
-			].
-	].
-
-	^startLine to: lines size
-
 ]
 
 { #category : 'running' }
@@ -96,34 +56,34 @@ MiBulkEditor >> initialize [
 ]
 
 { #category : 'intervals' }
-MiBulkEditor >> lineIntervals: methods [
+MiBulkEditor >> intervalsToEdit: methods [
+	"- sort methods in ascending order
+	 - convert methods to position intervals and expand the intervals to include method comment if any
+	 - merge intervals separated only by blank lines"
 
-	| intervals |
-	intervals := (self sortByLine: methods)
-		collect: [ :meth | self firstLastLine: (self methodWithCommentInterval: meth) ].
+	^self mergeIntervals: (
+		(self sortByPosition: methods)
+			collect: [ :meth | self methodWithCommentInterval: meth ]
+	)
 
-	^self mergeIntervals: intervals
-]
-
-{ #category : 'accessing' }
-MiBulkEditor >> lines [
-
-	^lines
 ]
 
 { #category : 'intervals' }
 MiBulkEditor >> mergeIntervals: intervals [
 	"merge together 2 intervals separated only by blank lines"
 
-	| lastInterval merged |
+	| intervalsIterator lastInterval merged |
 	merged := OrderedCollection new: intervals size.
 
-	lastInterval := intervals first.
-	intervals remove: lastInterval.
+	intervalsIterator := intervals iterator withCollectionAPI.
+	
+	intervalsIterator hasNext ifFalse: [ ^intervals ].
 
-	intervals do: [ :nextInterval |
-		(self emptyLinesBetween: nextInterval last and: lastInterval first)
-			ifTrue: [ lastInterval := nextInterval first to: lastInterval last ]
+	lastInterval := intervalsIterator next.
+
+	intervalsIterator do: [ :nextInterval |
+		(self emptyLinesBetween: lastInterval last and: nextInterval first)
+			ifTrue: [ lastInterval := lastInterval first to: nextInterval last ]
 			ifFalse: [ 
 				merged add: lastInterval.
 				lastInterval := nextInterval
@@ -137,6 +97,7 @@ MiBulkEditor >> mergeIntervals: intervals [
 
 { #category : 'intervals' }
 MiBulkEditor >> methodWithCommentInterval: method [
+	"Adds preceeding comment (if any)) to the interval of a method"
 
 	^method comments
 		detect: [ :cmt | cmt sourceAnchor endPos < method sourceAnchor startPos ]
@@ -144,31 +105,23 @@ MiBulkEditor >> methodWithCommentInterval: method [
 		ifNone: [ method sourceAnchor startPos to: method sourceAnchor endPos ]
 ]
 
-{ #category : 'intervals' }
-MiBulkEditor >> removeInterval: lineInterval [
-
-	| editedLines |
-	editedLines := OrderedCollection new: (lines size - lineInterval size).
-	
-	lines withIndexDo: [ :lineI :i |
-		((i < lineInterval first) or: [ i > lineInterval last ])
-			ifTrue: [ editedLines add: lineI ]
-	].
-
-	^lines := editedLines 
-]
-
 { #category : 'accessing' }
 MiBulkEditor >> removeLines [
 
-	editMode := #remove
+	editMode := MiBulkEditorRemoveRewriter
 ]
 
 { #category : 'running' }
-MiBulkEditor >> rewriteFile: aFileReference [
+MiBulkEditor >> rewriteFile: aFileReference atIntervals: intervalsToEdit [
 
 	aFileReference delete.
-	aFileReference writeStreamDo: [ :st | lines do: [ :line | st << line ; cr ] ].
+
+	aFileReference writeStreamDo: [ :st |
+		editMode new
+			stream: st ;
+			content: previousFileContent ;
+			editIntervals: intervalsToEdit ;
+			run ].
 ]
 
 { #category : 'running' }
@@ -177,7 +130,7 @@ MiBulkEditor >> runOn: methods [
 	| rootFolder |
 	rootFolder := methods anyOne mooseModel rootFolder asFileReference.
 
-	(self groupByFile: methods) do: [ :fileMethodsAssociation |
+	(self groupByFile: methods) associationsDo: [ :fileMethodsAssociation |
 		self runOnMethods: fileMethodsAssociation value inFile: (rootFolder / fileMethodsAssociation key)
 	].
 
@@ -186,34 +139,15 @@ MiBulkEditor >> runOn: methods [
 { #category : 'running' }
 MiBulkEditor >> runOnMethods: methods inFile: aFileReference [
 
-	lines := aFileReference contents lines asOrderedCollection.
+	previousFileContent := aFileReference contents.
 
-	(self lineIntervals: methods) do: [ :interv | self editInterval: interv ].
-
-	self rewriteFile: aFileReference
+	self rewriteFile: aFileReference atIntervals: (self intervalsToEdit: methods).
 
 ]
 
 { #category : 'utilities' }
-MiBulkEditor >> sortByLine: methods [
-	"sort methods in reverse order (decreasing) of their starting position"
-	^methods sorted: [ :m1 :m2 |
-		m1 sourceAnchor startPos > m2 sourceAnchor endPos
-	]
-]
+MiBulkEditor >> sortByPosition: methods [
+	"sort methods in increasing order of their starting position"
 
-{ #category : 'intervals' }
-MiBulkEditor >> uncloseCommentBetween: firstLastLine [
-
-	firstLastLine first to: firstLastLine last do: [ :i |
-		lines at: i put: (self uncloseCommentsIn: (lines at: i))
-	]
-]
-
-{ #category : 'utilities' }
-MiBulkEditor >> uncloseCommentsIn: line [
-
-	^(line includesSubstring: '*/')
-		ifTrue: [ line copyReplaceAll: '*/' with: '*_/' ]
-		ifFalse: [ line ]
+	^methods sorted: [ :m | m sourceAnchor startPos ] ascending
 ]
