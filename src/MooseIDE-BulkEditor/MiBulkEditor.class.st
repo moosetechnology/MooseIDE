@@ -30,21 +30,6 @@ MiBulkEditor >> commentLines [
 ]
 
 { #category : 'intervals' }
-MiBulkEditor >> commentOutInterval: lineInterval [
-
-	self uncloseCommentBetween: lineInterval .
-	previousFileContent add: ' --- dead code removal --- */' afterIndex: lineInterval last.
-	previousFileContent add: '/* --- dead code removal ---' beforeIndex: lineInterval first.
-]
-
-{ #category : 'intervals' }
-MiBulkEditor >> editInterval: lineInterval [
-
-	(editMode = #comment) ifTrue: [ self commentOutInterval: lineInterval ].
-	(editMode = #remove) ifTrue: [ self removeInterval: lineInterval ].
-]
-
-{ #category : 'intervals' }
 MiBulkEditor >> emptyLinesBetween: first and: last [
 
 	first+1 to: last-1 do: [ :i |
@@ -54,31 +39,6 @@ MiBulkEditor >> emptyLinesBetween: first and: last [
 
 	^true
 	
-]
-
-{ #category : 'intervals' }
-MiBulkEditor >> firstLastLine: firstLastPos [
-	"firstLastPos is an interval of start/end position
-	 compute and returns from it an interval of lines"
-
-	| startLine endLine totalPos |
-
-	startLine := endLine := 0.
-	totalPos := 0.
-	previousFileContent withIndexDo: [ :line :iLine |
-		totalPos := totalPos + line size + 1.
-		((totalPos > firstLastPos first)  and: [ startLine = 0 ])
-			ifTrue: [ startLine := iLine ].
-
-		((totalPos > firstLastPos last)  and: [ endLine = 0 ])
-			ifTrue: [
-				endLine := iLine.
-				^startLine to: endLine
-			].
-	].
-
-	^startLine to: previousFileContent size
-
 ]
 
 { #category : 'running' }
@@ -93,12 +53,6 @@ MiBulkEditor >> initialize [
 	super initialize.
 
 	self commentLines 
-]
-
-{ #category : 'accessing' }
-MiBulkEditor >> lines [
-
-	^previousFileContent
 ]
 
 { #category : 'intervals' }
@@ -145,20 +99,6 @@ MiBulkEditor >> positionIntervals: methods [
 			self methodWithCommentInterval: meth
 		].
 
-]
-
-{ #category : 'intervals' }
-MiBulkEditor >> removeInterval: lineInterval [
-
-	| editedLines |
-	editedLines := OrderedCollection new: (previousFileContent size - lineInterval size).
-	
-	previousFileContent withIndexDo: [ :lineI :i |
-		((i < lineInterval first) or: [ i > lineInterval last ])
-			ifTrue: [ editedLines add: lineI ]
-	].
-
-	^previousFileContent := editedLines 
 ]
 
 { #category : 'accessing' }
@@ -215,20 +155,4 @@ MiBulkEditor >> sortByPosition: methods [
 	"sort methods in increasing order of their starting position"
 
 	^methods sorted: [ :m | m sourceAnchor startPos ] ascending
-]
-
-{ #category : 'intervals' }
-MiBulkEditor >> uncloseCommentBetween: firstLastLine [
-
-	firstLastLine first to: firstLastLine last do: [ :i |
-		previousFileContent at: i put: (self uncloseCommentsIn: (previousFileContent at: i))
-	]
-]
-
-{ #category : 'utilities' }
-MiBulkEditor >> uncloseCommentsIn: line [
-
-	^(line includesSubstring: '*/')
-		ifTrue: [ line copyReplaceAll: '*/' with: '*_/' ]
-		ifFalse: [ line ]
 ]
