@@ -56,6 +56,19 @@ MiBulkEditor >> initialize [
 ]
 
 { #category : 'intervals' }
+MiBulkEditor >> intervalsToEdit: methods [
+	"- sort methods in ascending order
+	 - convert methods to position intervals and expand the intervals to include method comment if any
+	 - merge intervals separated only by blank lines"
+
+	^self mergeIntervals: (
+		(self sortByPosition: methods)
+			collect: [ :meth | self methodWithCommentInterval: meth ]
+	)
+
+]
+
+{ #category : 'intervals' }
 MiBulkEditor >> mergeIntervals: intervals [
 	"merge together 2 intervals separated only by blank lines"
 
@@ -89,16 +102,6 @@ MiBulkEditor >> methodWithCommentInterval: method [
 		detect: [ :cmt | cmt sourceAnchor endPos < method sourceAnchor startPos ]
 		ifOne: [ :cmt | cmt sourceAnchor startPos to: method sourceAnchor endPos ]
 		ifNone: [ method sourceAnchor startPos to: method sourceAnchor endPos ]
-]
-
-{ #category : 'intervals' }
-MiBulkEditor >> positionIntervals: methods [
-
-	^(self sortByPosition: methods)
-		collect: [ :meth |
-			self methodWithCommentInterval: meth
-		].
-
 ]
 
 { #category : 'accessing' }
