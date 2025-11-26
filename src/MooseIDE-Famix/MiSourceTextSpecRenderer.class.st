@@ -8,15 +8,29 @@ It can #renderText by applying the highlights of its #model
 Class {
 	#name : 'MiSourceTextSpecRenderer',
 	#superclass : 'SpTextPresenter',
+	#traits : 'SpTActivable',
+	#classTraits : 'SpTActivable classTrait',
 	#instVars : [
-		'formatedText',
-		'sourceAnchorAdapter',
-		'specModel'
+		'#formatedText',
+		'#sourceAnchorAdapter',
+		'#rendererModel',
+		'#selectedItem => ObservableSlot'
 	],
 	#category : 'MooseIDE-Famix-SourceText',
 	#package : 'MooseIDE-Famix',
 	#tag : 'SourceText'
 }
+
+{ #category : 'formatting' }
+MiSourceTextSpecRenderer >> activateTransmissionWithValue: aValue [
+	"2 actions for each possible use:
+	 - inside a MiSourceTextBrowser, #selectedItem is an ObservableSlot
+	   that will trigger transmission to the owner
+	 - inside an Inspector, there is an #activationAction to do the same thing"
+
+	selectedItem := aValue.
+	activationAction ifNotNil: [ :action | action cull: (SpActivatedSelection newValue: aValue)]
+]
 
 { #category : 'formatting' }
 MiSourceTextSpecRenderer >> applyCommentHighlight: aHighlight [
@@ -42,32 +56,18 @@ MiSourceTextSpecRenderer >> applyErrorHighlight: aHighlight [
 
 { #category : 'formatting' }
 MiSourceTextSpecRenderer >> applyIdentifierHighlight: aHighlight [
-	"Identifiers are underlined + italic + bold
-	 Clicking on them is passed on to the spec model"
+	"Identifiers are underlined. Clicking on them initiate transmission to the owner presenter"
 
 	formatedText 
 		addAttribute: TextEmphasis underlined
 		from: aHighlight from
 		to: aHighlight to ;
 
-		"addAttribute: TextEmphasis italic
-		from: aHighlight from
-		to: aHighlight to ;"
-		
-		"addAttribute: TextEmphasis bold
-		from: aHighlight from
-		to: aHighlight to ;"
-
 		addAttribute:
 			(TextDoIt new actOnClickBlock: [ :ignored :event |
-				self event: event selectedEntity: aHighlight highlightedEntity ])
+				self activateTransmissionWithValue: aHighlight highlightedEntity ])
 		from: aHighlight from
-		to: aHighlight to ";"
-
-		"addAttribute: TextColor black
-		from: aHighlight from
-		to: aHighlight to"
-
+		to: aHighlight to
 ]
 
 { #category : 'formatting' }
@@ -90,7 +90,7 @@ MiSourceTextSpecRenderer >> applyTagHighlight: aHighlight [
 
 { #category : 'accessing' }
 MiSourceTextSpecRenderer >> browser [
-	^self model browser
+	^self owner
 ]
 
 { #category : 'formatting' }
@@ -105,10 +105,28 @@ MiSourceTextSpecRenderer >> clearFormatingFrom: start to: stop [
 	formatedText := formatedText copyReplaceFrom: start to: stop with: (formatedText copyFrom: start to: stop) asString
 ]
 
+{ #category : 'initialization' }
+MiSourceTextSpecRenderer >> connectPresenters [
+	"When receiver is created as part of an Inspector, #owner is nil at this point
+	   so we cannot `register` the transmission now
+	   (note: in this case, the registering is done later automatically by the Inspector)
+	 This is used when the receiver is part of a MiSourceTextBrowser"
+
+	self owner ifNotNil: [ self transmitTo: self owner ]
+]
+
+{ #category : 'ports' }
+MiSourceTextSpecRenderer >> defaultOutputPort [ 
+
+	^SpPropertyChangedPort
+		newPresenter: self
+		property: #selectedItem
+]
+
 { #category : 'actions' }
 MiSourceTextSpecRenderer >> event: anEvent selectedEntity: anEntity [
 
-	specModel event: anEvent selectedEntity: anEntity.
+	rendererModel event: anEvent selectedEntity: anEntity.
 	self inform: 'Selected entity: ' , anEntity asString
 ]
 
@@ -122,7 +140,8 @@ MiSourceTextSpecRenderer >> initialize [
 	super initialize.
 	self beNotEditable.
 
-	sourceAnchorAdapter := MiSourceTextNullAdapter new
+	sourceAnchorAdapter := MiSourceTextNullAdapter new.
+
 ]
 
 { #category : 'rendering' }
@@ -132,7 +151,7 @@ MiSourceTextSpecRenderer >> reRenderText [
 
 	self clearFormating.
 
-	specModel highlights do: [ :hlght |
+	rendererModel highlights do: [ :hlght |
 			hlght adaptSourceAnchorWith: self sourceAnchorAdapter.
 			hlght hasInterval ifTrue: [ hlght applyTo: self ] ].
 
@@ -143,7 +162,7 @@ MiSourceTextSpecRenderer >> reRenderText [
 { #category : 'rendering' }
 MiSourceTextSpecRenderer >> renderTextFor: anEntity [
 	
-	formatedText := specModel displayedText asText.
+	formatedText := rendererModel displayedText asText.
 	sourceAnchorAdapter := MiAbstractSourceTextAnchorAdapter adapterFor: anEntity.
 	sourceAnchorAdapter initializeDisplayedText: formatedText andEntity: anEntity.
 
@@ -151,26 +170,27 @@ MiSourceTextSpecRenderer >> renderTextFor: anEntity [
 
 ]
 
+{ #category : 'accessing' }
+MiSourceTextSpecRenderer >> rendererModel [
+
+	^ rendererModel
+]
+
+{ #category : 'accessing' }
+MiSourceTextSpecRenderer >> rendererModel: anObject [
+
+	rendererModel := anObject.
+	anObject renderer: self
+]
+
 { #category : 'initialization' }
 MiSourceTextSpecRenderer >> setModelBeforeInitialization: aModel [
 
-	self specModel: aModel
+	self rendererModel: aModel
 ]
 
 { #category : 'accessing' }
 MiSourceTextSpecRenderer >> sourceAnchorAdapter [
 
 	^sourceAnchorAdapter
-]
-
-{ #category : 'accessing' }
-MiSourceTextSpecRenderer >> specModel [
-
-	^ specModel
-]
-
-{ #category : 'accessing' }
-MiSourceTextSpecRenderer >> specModel: anObject [
-
-	specModel := anObject
 ]

@@ -9,10 +9,9 @@ Class {
 	#name : 'MiSourceTextBrowserModel',
 	#superclass : 'MiAbstractModel',
 	#instVars : [
-		'displayedText',
-		'highlights',
 		'shouldHighlightChildren',
-		'entity'
+		'entity',
+		'renderer'
 	],
 	#category : 'MooseIDE-Famix-SourceText',
 	#package : 'MooseIDE-Famix',
@@ -31,63 +30,6 @@ MiSourceTextBrowserModel class >> defaultConfiguration [
 MiSourceTextBrowserModel class >> defaultShouldHighlightChildren [
 
 	^ true
-]
-
-{ #category : 'accessing' }
-MiSourceTextBrowserModel >> addHighlight: aSourceTextHighlight [
-	highlights add: aSourceTextHighlight
-]
-
-{ #category : 'highlights' }
-MiSourceTextBrowserModel >> commentHighlightFor: aComment [
-
-	self addHighlight: (MiSourceTextCommentHighlight new
-		highlightedEntity: aComment ;
-		yourself)
-
-]
-
-{ #category : 'highlights' }
-MiSourceTextBrowserModel >> createHighlightsFor: anEntity [
-	"note: checks if anEntity is a comment first
-	 if so: apply comment formatting, and leave to not add any other one"
-
-	(anEntity class usesFamixTrait: FamixTComment) ifTrue: [
-			self commentHighlightFor: anEntity.
-			^ self ].
-
-	(anEntity class usesFamixTrait: FamixTNamedEntity) ifTrue: [
-		self identifierHighlightFor: anEntity ].
-
-	anEntity containedEntities do: [ :childChild |
-		self createHighlightsFor: childChild ].
-
-	anEntity tags size = 1 ifTrue: [
-		self tagHighlight: anEntity tags anyOne for: anEntity ]
-
-	"aChildEntity queryAllOutgoing do: [:mseAssoc |
-		mseAssoc allTargets do: [ :target | 	self addHighlight: (self dependencyHighlightFor: mseAssoc) ]
-	]."
-]
-
-{ #category : 'highlights' }
-MiSourceTextBrowserModel >> createLanguageKeywordHighlights [
-	"search for all sourceLanguage keywords in the displayedText and highlight them
-	There are several guard conditions because this feature is work in progress and
-	not all language implement it"
-
-	self selectedEntity mooseModel
-	ifNotNil: [ :mooseModel |
-		mooseModel sourceLanguage
-		ifNotNil: [ :sourceLanguage |
-			sourceLanguage languageKeyWords do: [ :kw || matcher |
-				matcher := RxMatcher forString: ('\W' , kw , '\W').
-				(matcher matchingRangesIn: self displayedText) do: [ :range |
-					self keywordHighlightInterval: (range first + 1 to: range last - 1)
-				]
-			]
-		]
-	]
 ]
 
 { #category : 'settings management' }
@@ -109,14 +51,7 @@ MiSourceTextBrowserModel >> displayedEntity: anEntity [
 
 	self selectedEntity: anEntity.
 
-	self resetHighlights.
-	self prepareFormating.
-	browser renderTextFor: anEntity
-]
-
-{ #category : 'accessing' }
-MiSourceTextBrowserModel >> displayedText [
-	^displayedText
+	renderer renderTextFor: anEntity
 ]
 
 { #category : 'accessing' }
@@ -127,15 +62,6 @@ MiSourceTextBrowserModel >> entities [
 
 { #category : 'accessing' }
 MiSourceTextBrowserModel >> entity: anEntity [
-]
-
-{ #category : 'highlights' }
-MiSourceTextBrowserModel >> errorHighlightInterval: anInterval [
-
-	self addHighlight: (MiSourceTextErrorHighlight new
-		highlightInterval: anInterval ;
-		yourself)
-
 ]
 
 { #category : 'actions' }
@@ -153,25 +79,12 @@ MiSourceTextBrowserModel >> hasSettings [
 	^ true
 ]
 
-{ #category : 'accessing' }
-MiSourceTextBrowserModel >> highlights [
-	^highlights
-]
-
-{ #category : 'highlights' }
-MiSourceTextBrowserModel >> identifierHighlightFor: aChildEntity [
-	
-	self addHighlight: (MiSourceTextIdentifierHighlight new
-		highlightedEntity: aChildEntity ;
-		yourself)
-
-]
-
 { #category : 'initialization' }
 MiSourceTextBrowserModel >> initialize [
 	super initialize.
-	
-	self resetHighlights
+
+	renderer := MiSourceTextRendererModel new.
+	renderer resetHighlights
 ]
 
 { #category : 'initialization' }
@@ -180,58 +93,16 @@ MiSourceTextBrowserModel >> initializeSettings [
 	shouldHighlightChildren := self class defaultShouldHighlightChildren
 ]
 
-{ #category : 'highlights' }
-MiSourceTextBrowserModel >> keywordHighlightInterval: anInterval [
-
-	self addHighlight: (MiSourceTextKeywordHighlight new
-		highlightInterval: anInterval ;
-		yourself)
-
-]
-
 { #category : 'accessing' }
 MiSourceTextBrowserModel >> miSelectedItem [
 
 	^self entities
 ]
 
-{ #category : 'formatting' }
-MiSourceTextBrowserModel >> noSourceCodeFor: anEntity [
-	displayedText := ('There is no source code to show for {1}'
-		format: { anEntity name }).
+{ #category : 'accessing' }
+MiSourceTextBrowserModel >> rendererModel [
 
-	self errorHighlightInterval: (Interval from: 37 to: displayedText size)
-]
-
-{ #category : 'highlights' }
-MiSourceTextBrowserModel >> nullHighlightFor: aChildEntity [
-
-]
-
-{ #category : 'formatting' }
-MiSourceTextBrowserModel >> prepareFormating [
-	entity sourceText
-		ifEmpty: [ self noSourceCodeFor: entity ]
-		ifNotEmpty: [ :code | self prepareFormating: code ]
-
-]
-
-{ #category : 'formatting' }
-MiSourceTextBrowserModel >> prepareFormating: aString [
-
-	displayedText := aString.
-
-	shouldHighlightChildren
-		ifTrue: [
-			self createLanguageKeywordHighlights.
-			self createHighlightsFor: self selectedEntity ]
-		ifFalse: [ self resetHighlights ]
-]
-
-{ #category : 'highlights' }
-MiSourceTextBrowserModel >> resetHighlights [
-
-	highlights := OrderedCollection new
+	^renderer 
 ]
 
 { #category : 'accessing' }
@@ -252,24 +123,18 @@ MiSourceTextBrowserModel >> settingsPresenterExtent [
 	^ 375 @ 200
 ]
 
-{ #category : 'highlights' }
-MiSourceTextBrowserModel >> tagHighlight: aTag for: anEntity [
+{ #category : 'accessing' }
+MiSourceTextBrowserModel >> shouldHighlightChildren: aBoolean [
 
-	self addHighlight: (MiSourceTextTagHighlight new
-		highlightedEntity: anEntity ;
-		tag: aTag ;
-		yourself)
-
+	renderer shouldHighlightChildren: aBoolean 
 ]
 
 { #category : 'settings management' }
 MiSourceTextBrowserModel >> updateFromConfiguration: aConfiguration [
 
-	shouldHighlightChildren := aConfiguration shouldHighlightChildren.
+	self shouldHighlightChildren: aConfiguration shouldHighlightChildren.
 
 	entity ifNil: [ ^ self ].
 
-	self resetHighlights.
-	self prepareFormating.
-	browser renderTextFor: entity
+	renderer renderTextFor: entity
 ]
