@@ -46,10 +46,10 @@ MooseObject >> miFameInspectorExtension: aBuilder [
 ]
 
 { #category : #'*MooseIDE-NewTools' }
-MooseObject >> miMetaNavigationInspectorExtension [
+MooseObject >> miInspectionNavigation: aBuilder [
 
 	<inspectorPresentationOrder: 1 title: 'Navigation'>
-	^ MiMetaNavigationBrowser on: self
+	^ aBuilder instantiate: MiMetaNavigationBrowser on: self
 ]
 
 { #category : #'*MooseIDE-NewTools' }
