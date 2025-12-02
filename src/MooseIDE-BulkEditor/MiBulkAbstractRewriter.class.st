@@ -88,7 +88,8 @@ MiBulkAbstractRewriter >> insideInterval: c [
 { #category : 'actions' }
 MiBulkAbstractRewriter >> intervalEnd: c [
 	"end of interval is still inside the interval
-	 and we consider we are still in it until the next line"
+	 and we consider we are still in it until the next line
+	 So record what to do when we reach the end of the line (#nextLineDo:)"
 
 	self insideInterval: c.
 	self nextLineDo: [ self nextInterval ]
