@@ -29,7 +29,7 @@ MiBulkCommentBlockRewriter >> intervalEnd: c [
 		stream
 			<< ' --- dead code removal --- */' ;
 			<< Smalltalk os lineEnding.
-		self nextInterval
+		self getNextInterval
 	]
 
 

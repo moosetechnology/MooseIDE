@@ -28,11 +28,11 @@ Class {
 
 { #category : 'actions' }
 MiBulkAbstractRewriter >> afterInterval: c [
-	"if we waitForEndOfLine, it means we are after the interval but consider we are inside
+	"if isWaitingForEol, it means we are after the interval but consider we are inside
 	 otherwise, all actions default to copying the input"
 
 
-	self waitForEndOfLine
+	self isWaitingForEol
 		ifTrue: [ self insideInterval: c ]
 		ifFalse: [ stream << c ]
 
@@ -77,6 +77,15 @@ MiBulkAbstractRewriter >> executeNextLineAction [
 	
 ]
 
+{ #category : 'running' }
+MiBulkAbstractRewriter >> getNextInterval [
+	"if no intervals, create an empty interval"
+
+	^interval := editIntervals hasNext
+		ifTrue: [  editIntervals next ]
+		ifFalse: [ 0 to: 0 ]
+]
+
 { #category : 'actions' }
 MiBulkAbstractRewriter >> insideInterval: c [
 	"all actions default to copying the input"
@@ -92,7 +101,7 @@ MiBulkAbstractRewriter >> intervalEnd: c [
 	 So record what to do when we reach the end of the line (#nextLineDo:)"
 
 	self insideInterval: c.
-	self nextLineDo: [ self nextInterval ]
+	self nextLineDo: [ self getNextInterval ]
 
 ]
 
@@ -105,47 +114,43 @@ MiBulkAbstractRewriter >> intervalStart: c [
 ]
 
 { #category : 'running' }
+MiBulkAbstractRewriter >> isWaitingForEol [
+
+	^nextLineAction isNotNil
+]
+
+{ #category : 'actions' }
 MiBulkAbstractRewriter >> lineEnd: c at: i [
-	"End of line can be CR, LF or CR+LF
-	 treat the end of line if CR or LF alone
-	 if CR in CR+LF, do nothing and end-of-line will be treated at next character"
+	"Acts after the end-of-line (which can be CR, LF or CR+LF)
+	 Treat possible end of line action if CR or LF alone
+	 if CR in CR+LF, do nothing until following LF (which is the next character)"
 
-	self waitForEndOfLine ifFalse: [ ^self ].
-
-	(c = Character cr)
-	ifTrue: [
-		((self nextC: i) = Character lf)
-			ifFalse: [ self executeNextLineAction ].
-		^self
-	].
+	self isWaitingForEol ifFalse: [ ^self ].
 
 	(c = Character lf)
-	ifTrue: [ self executeNextLineAction ]
+		ifTrue: [
+			self executeNextLineAction.
+			^self ].
 
-	
-]
+	"c = Character cr"
+	((self peekNextC: i) = Character lf)
+		ifFalse: [
+			self executeNextLineAction ]
 
-{ #category : 'running' }
-MiBulkAbstractRewriter >> nextC: i [
-
-	^(i >= content size)
-		ifTrue: [ nil ]
-		ifFalse: [ content at: (i+1) ]
-]
-
-{ #category : 'running' }
-MiBulkAbstractRewriter >> nextInterval [
-	"if no intervals, create an empty interval"
-
-	^interval := editIntervals hasNext
-		ifTrue: [  editIntervals next ]
-		ifFalse: [ 0 to: 0 ]
 ]
 
 { #category : 'actions' }
 MiBulkAbstractRewriter >> nextLineDo: aBlock [
 
 	nextLineAction := aBlock
+]
+
+{ #category : 'running' }
+MiBulkAbstractRewriter >> peekNextC: i [
+
+	^(i >= content size)
+		ifTrue: [ nil ]
+		ifFalse: [ content at: (i+1) ]
 ]
 
 { #category : 'running' }
@@ -158,7 +163,7 @@ MiBulkAbstractRewriter >> run [
 	 - there are 3 possible, non exclusive, end-of-lines: CR, LF, CRLF"
 
 	nextLineAction := nil.
-	self nextInterval.
+	self getNextInterval.
 
 	content withIndexDo: [ :c :i |
 		self switchCases: {
@@ -175,11 +180,7 @@ MiBulkAbstractRewriter >> run [
 		previousC := c
 	].
 
-	"need to deal with the case of last interval finishing at end of file"
-	self waitForEndOfLine ifFalse: [ ^self ].
-
-	stream << Smalltalk os lineEnding.
-	self executeNextLineAction
+	self endOfFile
 ]
 
 { #category : 'accessing' }
@@ -206,10 +207,4 @@ MiBulkAbstractRewriter >> switchCases: rules [
 	].
 
 	^nil
-]
-
-{ #category : 'running' }
-MiBulkAbstractRewriter >> waitForEndOfLine [
-
-	^nextLineAction isNotNil
 ]
