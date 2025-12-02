@@ -44,15 +44,3 @@ MiBulkCommentBlockRewriter >> intervalStart: c [
 
 	super intervalStart: c
 ]
-
-{ #category : 'running' }
-MiBulkCommentBlockRewriter >> run [
-	"need to deal with the case of last interval finishing at end of file"
-
-	super run.
-
-	self waitForEndOfLine 
-		ifTrue: [ 
-			stream << Smalltalk os lineEnding.
-			self executeNextLineAction ]
-]
