@@ -172,7 +172,7 @@ MiSourceTextRendererModel >> prepareFormating: aString [
 		ifFalse: [ self resetHighlights ]
 ]
 
-{ #category : 'rendering' }
+{ #category : 'formatting' }
 MiSourceTextRendererModel >> renderTextFor: anEntity [
 
 	entity := anEntity.
