@@ -14,19 +14,15 @@ file writeStreamDo: [ :st | bulkEditor lines do: [ :line | st << line ; cr ] ].
 "
 Class {
 	#name : 'MiBulkEditor',
-	#superclass : 'Object',
-	#instVars : [
-		'editMode',
-		'previousFileContent'
-	],
+	#superclass : 'MiBulkEditorAbstract',
 	#category : 'MooseIDE-BulkEditor',
 	#package : 'MooseIDE-BulkEditor'
 }
 
-{ #category : 'accessing' }
+{ #category : 'options' }
 MiBulkEditor >> commentLines [
 
-	editMode := MiBulkCommentBlockRewriter
+	rewriter := MiBulkCommentBlockRewriter
 ]
 
 { #category : 'intervals' }
@@ -41,13 +37,6 @@ MiBulkEditor >> emptyLinesBetween: first and: last [
 	
 ]
 
-{ #category : 'running' }
-MiBulkEditor >> groupByFile: entities [
-
-	^(entities reject: [:e | e sourceAnchor isNil ])
-		groupedBy: [ :e | e sourceAnchor fileName ]
-]
-
 { #category : 'initialization' }
 MiBulkEditor >> initialize [ 
 
@@ -57,13 +46,13 @@ MiBulkEditor >> initialize [
 ]
 
 { #category : 'intervals' }
-MiBulkEditor >> intervalsToEdit: methods [
-	"- sort methods in ascending order
-	 - convert methods to position intervals and expand the intervals to include method comment if any
+MiBulkEditor >> intervalsToEdit: entities [
+	"- sort entities in ascending order
+	 - convert entities to position intervals and expand the intervals to include preceeding comment if any
 	 - merge intervals separated only by blank lines"
 
 	^self mergeIntervals: (
-		(self sortByPosition: methods)
+		(super intervalsToEdit: entities)
 			collect: [ :meth | self methodWithCommentInterval: meth ]
 	)
 
@@ -106,49 +95,7 @@ MiBulkEditor >> methodWithCommentInterval: method [
 		ifNone: [ method sourceAnchor startPos to: method sourceAnchor endPos ]
 ]
 
-{ #category : 'accessing' }
+{ #category : 'options' }
 MiBulkEditor >> removeLines [
-
-	editMode := MiBulkRemoveLinesRewriter
-]
-
-{ #category : 'running' }
-MiBulkEditor >> rewriteFile: aFileReference atIntervals: intervalsToEdit [
-
-	aFileReference delete.
-
-	aFileReference writeStreamDo: [ :st |
-		editMode new
-			stream: st ;
-			content: previousFileContent ;
-			editIntervals: intervalsToEdit ;
-			run ].
-]
-
-{ #category : 'running' }
-MiBulkEditor >> runOn: entities [
-
-	| rootFolder |
-	rootFolder := entities anyOne mooseModel rootFolder asFileReference.
-
-	(self groupByFile: entities) associationsDo: [ :fileMethodsAssociation |
-		self runOnEntities: fileMethodsAssociation value inFile: (rootFolder / fileMethodsAssociation key)
-	].
-
-]
-
-{ #category : 'running' }
-MiBulkEditor >> runOnEntities: entities inFile: aFileReference [
-
-	previousFileContent := aFileReference contents.
-
-	self rewriteFile: aFileReference atIntervals: (self intervalsToEdit: entities).
-
-]
-
-{ #category : 'utilities' }
-MiBulkEditor >> sortByPosition: entities [
-	"sort entities in increasing order of their starting position"
-
-	^entities sorted: [ :e | e sourceAnchor startPos ] ascending
+	rewriter := MiBulkRemoveLinesRewriter
 ]
