@@ -181,6 +181,22 @@ MiBulkEditorTest >> testIntervalWithMethodCommenteaderComment [
 ]
 
 { #category : 'tests' }
+MiBulkEditorTest >> testIntervalsToEdit [
+	"each 'method' is shorter than a line in 'previousContent' to avoid merging of intervals"
+
+	| mths intervals |
+	mths := {
+		self methodWithPos: 7 @ 9 .
+		self methodWithPos: 12 @ 20 .
+		self methodWithPos: 1 @ 4 .
+		}.
+
+	intervals := bulkEditor intervalsToEdit: mths.
+
+	self assert: intervals size equals: 3
+]
+
+{ #category : 'tests' }
 MiBulkEditorTest >> testMergeInterval3to1 [
 	"2nd line contains a TAB
 	 merge 3 intervals into 1"
@@ -264,6 +280,21 @@ l3______10'.
 	merged := bulkEditor mergeIntervals: { 1 to: 5 . 11 to: 14}.
 
 	self assertCollection: merged hasSameElements: { 1 to: 5 . 11 to: 14}
+]
+
+{ #category : 'tests' }
+MiBulkEditorTest >> testMooseModel [
+
+	| mths model |
+	mths := {
+		self methodWithPos: 1 @ 2 .
+		self methodWithPos: 3 @ 4 .
+		self methodWithPos: 5 @ 6 
+		}.
+	model := FamixJavaModel new.
+	mths do: [ :m | m mooseModel: model ].
+
+	self assert: (bulkEditor mooseModel: mths) equals: model
 ]
 
 { #category : 'tests' }
