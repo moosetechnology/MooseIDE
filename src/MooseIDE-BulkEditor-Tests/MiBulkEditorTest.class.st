@@ -40,6 +40,47 @@ l3______10'.
 ]
 
 { #category : 'tests' }
+MiBulkEditorTest >> testCollectIntervals [
+
+	| mths intervals |
+	mths := {
+		self methodWithPos: 7 @ 10 .
+		self methodWithPos: 18 @ 32 .
+		FamixJavaMethod new .
+		self methodWithPos: 35 @ 42 .
+		}.
+
+	intervals := bulkEditor collectIntervals: mths.
+
+	self assert: intervals size equals: 3.
+
+	self assert: intervals first  first equals: 7.
+	self assert: intervals second first equals: 18.
+	self assert: intervals third  first equals: 35.
+]
+
+{ #category : 'tests' }
+MiBulkEditorTest >> testCollectIntervalsData [
+
+	| mths intervals |
+	mths := {
+		self methodWithPos: 7 @ 10 .
+		self methodWithPos: 18 @ 32 .
+		self methodWithPos: 1 @ 5 .
+		self methodWithPos: 35 @ 42 .
+		}.
+
+	intervals := bulkEditor collectIntervals: mths.
+
+	self assert: intervals size equals: 4.
+
+	intervals do: [ :interval |
+		self assert: interval data class equals: FamixJavaMethod.
+		self assert: interval first equals: interval data sourceAnchor startPos
+	]
+]
+
+{ #category : 'tests' }
 MiBulkEditorTest >> testEmptyLinesBetweenAnd_isFalse [
 
 	self bulkEditorPreviousContent: 'l1__5
