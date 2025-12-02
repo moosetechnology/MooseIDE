@@ -31,6 +31,12 @@ MiBulkEditorAbstract >> intervalsToEdit: entities [
 	^self sortByPosition: entities
 ]
 
+{ #category : 'utilities' }
+MiBulkEditorAbstract >> mooseModel: entities [
+
+	^entities anyOne mooseModel
+]
+
 { #category : 'running' }
 MiBulkEditorAbstract >> rewriteFile: aFileReference atIntervals: intervalsToEdit [
 
@@ -44,22 +50,16 @@ MiBulkEditorAbstract >> rewriteFile: aFileReference atIntervals: intervalsToEdit
 			run ].
 ]
 
-{ #category : 'utilities' }
-MiBulkEditorAbstract >> rootFolder: entities [
-
-	^entities anyOne mooseModel rootFolder asFileReference
-]
-
 { #category : 'running' }
 MiBulkEditorAbstract >> runOn: data [
 
 	| rootFolder |
-	rootFolder := self rootFolder: data.
+	rootFolder := (self mooseModel: data) rootFolder asFileReference.
 
-	(self groupByFile: data) associationsDo: [ :fileMethodsAssociation |
-		self runOnEntities: fileMethodsAssociation value inFile: (rootFolder / fileMethodsAssociation key)
-	].
-
+	(self groupByFile: data) associationsDo: [ :fileEntitiesAssociation |
+		self
+			editFile: rootFolder / fileEntitiesAssociation key
+			entities: fileEntitiesAssociation value ]
 ]
 
 { #category : 'utilities' }
