@@ -9,6 +9,15 @@ Class {
 	#package : 'MooseIDE-BulkEditor'
 }
 
+{ #category : 'running' }
+MiBulkEditorAbstract >> editFile: aFileReference entities: entities [
+
+	previousFileContent := aFileReference contents.
+
+	self rewriteFile: aFileReference atIntervals: (self intervalsToEdit: entities).
+
+]
+
 { #category : 'utilities' }
 MiBulkEditorAbstract >> groupByFile: entities [
 
@@ -50,15 +59,6 @@ MiBulkEditorAbstract >> runOn: data [
 	(self groupByFile: data) associationsDo: [ :fileMethodsAssociation |
 		self runOnEntities: fileMethodsAssociation value inFile: (rootFolder / fileMethodsAssociation key)
 	].
-
-]
-
-{ #category : 'running' }
-MiBulkEditorAbstract >> runOnEntities: entities inFile: aFileReference [
-
-	previousFileContent := aFileReference contents.
-
-	self rewriteFile: aFileReference atIntervals: (self intervalsToEdit: entities).
 
 ]
 
