@@ -185,10 +185,15 @@ MiSourceTextSpecRenderer >> reRenderText [
 MiSourceTextSpecRenderer >> renderTextFor: anEntity [
 	
 	formatedText := rendererModel displayedText asText.
-	sourceAnchorAdapter := MiAbstractSourceTextAnchorAdapter adapterFor: anEntity.
-	sourceAnchorAdapter initializeDisplayedText: formatedText andEntity: anEntity.
 
-	self reRenderText
+	[
+		sourceAnchorAdapter := MiAbstractSourceTextAnchorAdapter adapterFor: anEntity.
+		sourceAnchorAdapter initializeDisplayedText: formatedText andEntity: anEntity.
+
+		self reRenderText
+	]
+	on: Error
+	do: [ :err | "nothing but at least  display unadorned text" ]
 
 ]
 
