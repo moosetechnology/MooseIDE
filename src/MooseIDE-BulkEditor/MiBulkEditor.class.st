@@ -46,6 +46,16 @@ MiBulkEditor >> initialize [
 ]
 
 { #category : 'intervals' }
+MiBulkEditor >> intervalWithMethodComment: method [
+	"Adds preceeding comment (if any) to the interval of a method"
+
+	^method comments
+		detect: [ :cmt | cmt sourceAnchor endPos < method sourceAnchor startPos ]
+		ifOne: [ :cmt | cmt sourceAnchor startPos to: method sourceAnchor endPos ]
+		ifNone: [ method sourceAnchor startPos to: method sourceAnchor endPos ]
+]
+
+{ #category : 'intervals' }
 MiBulkEditor >> intervalsToEdit: entities [
 	"- sort entities in ascending order
 	 - convert entities to position intervals and expand the intervals to include preceeding comment if any
@@ -83,16 +93,6 @@ MiBulkEditor >> mergeIntervals: intervals [
 	merged add: lastInterval.
 
 	^merged 
-]
-
-{ #category : 'intervals' }
-MiBulkEditor >> methodWithCommentInterval: method [
-	"Adds preceeding comment (if any)) to the interval of a method"
-
-	^method comments
-		detect: [ :cmt | cmt sourceAnchor endPos < method sourceAnchor startPos ]
-		ifOne: [ :cmt | cmt sourceAnchor startPos to: method sourceAnchor endPos ]
-		ifNone: [ method sourceAnchor startPos to: method sourceAnchor endPos ]
 ]
 
 { #category : 'options' }
