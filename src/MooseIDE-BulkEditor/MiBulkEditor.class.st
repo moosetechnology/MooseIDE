@@ -42,9 +42,10 @@ MiBulkEditor >> emptyLinesBetween: first and: last [
 ]
 
 { #category : 'running' }
-MiBulkEditor >> groupByFile: methods [
+MiBulkEditor >> groupByFile: entities [
 
-	^methods groupedBy: [ :mth | mth sourceAnchor fileName ]
+	^(entities reject: [:e | e sourceAnchor isNil ])
+		groupedBy: [ :e | e sourceAnchor fileName ]
 ]
 
 { #category : 'initialization' }
@@ -125,29 +126,29 @@ MiBulkEditor >> rewriteFile: aFileReference atIntervals: intervalsToEdit [
 ]
 
 { #category : 'running' }
-MiBulkEditor >> runOn: methods [
+MiBulkEditor >> runOn: entities [
 
 	| rootFolder |
-	rootFolder := methods anyOne mooseModel rootFolder asFileReference.
+	rootFolder := entities anyOne mooseModel rootFolder asFileReference.
 
-	(self groupByFile: methods) associationsDo: [ :fileMethodsAssociation |
-		self runOnMethods: fileMethodsAssociation value inFile: (rootFolder / fileMethodsAssociation key)
+	(self groupByFile: entities) associationsDo: [ :fileMethodsAssociation |
+		self runOnEntities: fileMethodsAssociation value inFile: (rootFolder / fileMethodsAssociation key)
 	].
 
 ]
 
 { #category : 'running' }
-MiBulkEditor >> runOnMethods: methods inFile: aFileReference [
+MiBulkEditor >> runOnEntities: entities inFile: aFileReference [
 
 	previousFileContent := aFileReference contents.
 
-	self rewriteFile: aFileReference atIntervals: (self intervalsToEdit: methods).
+	self rewriteFile: aFileReference atIntervals: (self intervalsToEdit: entities).
 
 ]
 
 { #category : 'utilities' }
-MiBulkEditor >> sortByPosition: methods [
-	"sort methods in increasing order of their starting position"
+MiBulkEditor >> sortByPosition: entities [
+	"sort entities in increasing order of their starting position"
 
-	^methods sorted: [ :m | m sourceAnchor startPos ] ascending
+	^entities sorted: [ :e | e sourceAnchor startPos ] ascending
 ]
