@@ -26,7 +26,7 @@ Class {
 { #category : 'accessing' }
 MiBulkEditor >> commentLines [
 
-	editMode := MiBulkEditorCommentRewriter
+	editMode := MiBulkCommentBlockRewriter
 ]
 
 { #category : 'intervals' }
@@ -109,7 +109,7 @@ MiBulkEditor >> methodWithCommentInterval: method [
 { #category : 'accessing' }
 MiBulkEditor >> removeLines [
 
-	editMode := MiBulkEditorRemoveRewriter
+	editMode := MiBulkRemoveLinesRewriter
 ]
 
 { #category : 'running' }

@@ -1,5 +1,18 @@
+"
+Abstract class for BulkRewriter
+
+This is intended for languages based on source file (ie. not Smalltalk)
+A BulkRewriter will take:
+- some `content` (current source code) to rewrite
+- a (write) `stream` to output to
+- a collection of `editIntervals` to modify
+
+BulkRewriter sub-classes are specialized according to how they rewrite (or not) the editIntervals
+
+The main method is `run` that treats the input `content` character by character
+"
 Class {
-	#name : 'MiBulkEditorAbstractRewriter',
+	#name : 'MiBulkAbstractRewriter',
 	#superclass : 'Object',
 	#instVars : [
 		'stream',
@@ -14,7 +27,7 @@ Class {
 }
 
 { #category : 'actions' }
-MiBulkEditorAbstractRewriter >> afterInterval: c [
+MiBulkAbstractRewriter >> afterInterval: c [
 	"if we waitForEndOfLine, it means we are after the interval but consider we are inside
 	 otherwise, all actions default to copying the input"
 
@@ -26,7 +39,7 @@ MiBulkEditorAbstractRewriter >> afterInterval: c [
 ]
 
 { #category : 'actions' }
-MiBulkEditorAbstractRewriter >> beforeInterval: c [
+MiBulkAbstractRewriter >> beforeInterval: c [
 	"all actions default to copying the input"
 
 	stream << c
@@ -34,30 +47,30 @@ MiBulkEditorAbstractRewriter >> beforeInterval: c [
 ]
 
 { #category : 'accessing' }
-MiBulkEditorAbstractRewriter >> content [
+MiBulkAbstractRewriter >> content [
 
 	^ content
 ]
 
 { #category : 'accessing' }
-MiBulkEditorAbstractRewriter >> content: anObject [
+MiBulkAbstractRewriter >> content: anObject [
 
 	content := anObject
 ]
 
 { #category : 'accessing' }
-MiBulkEditorAbstractRewriter >> editIntervals [
+MiBulkAbstractRewriter >> editIntervals [
 	^ editIntervals
 ]
 
 { #category : 'accessing' }
-MiBulkEditorAbstractRewriter >> editIntervals: aCollection [
+MiBulkAbstractRewriter >> editIntervals: aCollection [
 
 	editIntervals := aCollection iterator
 ]
 
 { #category : 'running' }
-MiBulkEditorAbstractRewriter >> executeNextLineAction [
+MiBulkAbstractRewriter >> executeNextLineAction [
 
 	nextLineAction value.
 	nextLineAction := nil
@@ -65,7 +78,7 @@ MiBulkEditorAbstractRewriter >> executeNextLineAction [
 ]
 
 { #category : 'actions' }
-MiBulkEditorAbstractRewriter >> insideInterval: c [
+MiBulkAbstractRewriter >> insideInterval: c [
 	"all actions default to copying the input"
 
 	stream << c
@@ -73,7 +86,7 @@ MiBulkEditorAbstractRewriter >> insideInterval: c [
 ]
 
 { #category : 'actions' }
-MiBulkEditorAbstractRewriter >> intervalEnd: c [
+MiBulkAbstractRewriter >> intervalEnd: c [
 	"end of interval is still inside the interval
 	 and we consider we are still in it until the next line"
 
@@ -83,7 +96,7 @@ MiBulkEditorAbstractRewriter >> intervalEnd: c [
 ]
 
 { #category : 'actions' }
-MiBulkEditorAbstractRewriter >> intervalStart: c [
+MiBulkAbstractRewriter >> intervalStart: c [
 	"start of interval is inside the interval"
 
 	self insideInterval: c
@@ -91,7 +104,7 @@ MiBulkEditorAbstractRewriter >> intervalStart: c [
 ]
 
 { #category : 'running' }
-MiBulkEditorAbstractRewriter >> lineEnd: c at: i [
+MiBulkAbstractRewriter >> lineEnd: c at: i [
 	"End of line can be CR, LF or CR+LF
 	 treat the end of line if CR or LF alone
 	 if CR in CR+LF, do nothing and end-of-line will be treated at next character"
@@ -112,7 +125,7 @@ MiBulkEditorAbstractRewriter >> lineEnd: c at: i [
 ]
 
 { #category : 'running' }
-MiBulkEditorAbstractRewriter >> nextC: i [
+MiBulkAbstractRewriter >> nextC: i [
 
 	^(i >= content size)
 		ifTrue: [ nil ]
@@ -120,7 +133,7 @@ MiBulkEditorAbstractRewriter >> nextC: i [
 ]
 
 { #category : 'running' }
-MiBulkEditorAbstractRewriter >> nextInterval [
+MiBulkAbstractRewriter >> nextInterval [
 	"if no intervals, create an empty interval"
 
 	^interval := editIntervals hasNext
@@ -129,19 +142,19 @@ MiBulkEditorAbstractRewriter >> nextInterval [
 ]
 
 { #category : 'actions' }
-MiBulkEditorAbstractRewriter >> nextLineDo: aBlock [
+MiBulkAbstractRewriter >> nextLineDo: aBlock [
 
 	nextLineAction := aBlock
 ]
 
 { #category : 'running' }
-MiBulkEditorAbstractRewriter >> run [ 
+MiBulkAbstractRewriter >> run [ 
 	"treat each character at a time
 	 Consider whether it is before/inside/after the current interval
 	 Also look for first and last character of the interval
 	 Must have a special treatment for end-of-lines because:
 	 - intervals typically do not include them, and we usually want to consider them inside the interval
-	 - therer are 3 possible, non exclusive, end-of-lines"
+	 - there are 3 possible, non exclusive, end-of-lines: CR, LF, CRLF"
 
 	nextLineAction := nil.
 	self nextInterval.
@@ -159,23 +172,29 @@ MiBulkEditorAbstractRewriter >> run [
 			ifTrue: [ self lineEnd: c at: i].
 
 		previousC := c
-	]
+	].
+
+	"need to deal with the case of last interval finishing at end of file"
+	self waitForEndOfLine ifFalse: [ ^self ].
+
+	stream << Smalltalk os lineEnding.
+	self executeNextLineAction
 ]
 
 { #category : 'accessing' }
-MiBulkEditorAbstractRewriter >> stream [
+MiBulkAbstractRewriter >> stream [
 
 	^ stream
 ]
 
 { #category : 'accessing' }
-MiBulkEditorAbstractRewriter >> stream: anObject [
+MiBulkAbstractRewriter >> stream: anObject [
 
 	stream := anObject
 ]
 
 { #category : 'running' }
-MiBulkEditorAbstractRewriter >> switchCases: rules [
+MiBulkAbstractRewriter >> switchCases: rules [
 
 	rules do: [ :ruleAssociation || condition action |
 		condition := ruleAssociation key.
@@ -189,7 +208,7 @@ MiBulkEditorAbstractRewriter >> switchCases: rules [
 ]
 
 { #category : 'running' }
-MiBulkEditorAbstractRewriter >> waitForEndOfLine [
+MiBulkAbstractRewriter >> waitForEndOfLine [
 
 	^nextLineAction isNotNil
 ]
