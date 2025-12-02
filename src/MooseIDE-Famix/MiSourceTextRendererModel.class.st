@@ -66,13 +66,13 @@ MiSourceTextRendererModel >> createHighlightsFor: anEntity [
 	(anEntity tags size = 1) ifTrue: [
 		self tagHighlight: anEntity tags anyOne for: anEntity ].
 
-	anEntity queryAllOutgoing do: [:mseAssoc |
+	"anEntity queryAllOutgoing do: [:mseAssoc |
 		mseAssoc sourceAnchor ifNotNil: [ :usedAnchor |
 			mseAssoc allTargets
 				detect: [ :target | target isStub not ]
 				ifOne: [ :target | self identifierHighlightFor: mseAssoc ]
 		]
-	]
+	]"
 
 ]
 
