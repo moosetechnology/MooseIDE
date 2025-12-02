@@ -9,6 +9,17 @@ Class {
 	#package : 'MooseIDE-BulkEditor'
 }
 
+{ #category : 'intervals' }
+MiBulkEditorAbstract >> collectIntervals: data [
+
+	^data
+		reject: [ :entity | entity sourceAnchor isNil ]
+		thenCollect: [ :entity |
+			(MiBulkInterval from: entity sourceAnchor startPos to: entity sourceAnchor endPos)
+				data: entity
+	]
+]
+
 { #category : 'running' }
 MiBulkEditorAbstract >> editFile: aFileReference entities: entities [
 
@@ -26,9 +37,9 @@ MiBulkEditorAbstract >> groupByFile: entities [
 ]
 
 { #category : 'intervals' }
-MiBulkEditorAbstract >> intervalsToEdit: entities [
+MiBulkEditorAbstract >> intervalsToEdit: data [
 
-	^self sortByPosition: entities
+	^self sortByPosition: (self collectIntervals: data)
 ]
 
 { #category : 'utilities' }
@@ -63,8 +74,8 @@ MiBulkEditorAbstract >> runOn: data [
 ]
 
 { #category : 'utilities' }
-MiBulkEditorAbstract >> sortByPosition: entities [
-	"sort entities in increasing order of their starting position"
+MiBulkEditorAbstract >> sortByPosition: intervals [
+	"sort intervals in increasing order"
 
-	^entities sorted: [ :e | e sourceAnchor startPos ] ascending
+	^intervals sorted: [ :i | i first ] ascending
 ]

@@ -63,7 +63,7 @@ MiBulkEditor >> intervalsToEdit: entities [
 
 	^self mergeIntervals: (
 		(super intervalsToEdit: entities)
-			collect: [ :meth | self methodWithCommentInterval: meth ]
+			collect: [ :methodInterval | self intervalWithMethodComment: methodInterval ]
 	)
 
 ]
