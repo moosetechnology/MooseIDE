@@ -8,6 +8,13 @@ Class {
 	#package : 'MooseIDE-BulkEditor'
 }
 
+{ #category : 'instance creation' }
+MiBulkInterval class >> from: first to: last data: data [
+
+	^(self from: first to: last)
+		data: data
+]
+
 { #category : 'accessing' }
 MiBulkInterval >> data [
 

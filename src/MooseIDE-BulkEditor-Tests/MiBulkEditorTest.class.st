@@ -137,6 +137,50 @@ MiBulkEditorTest >> testGroupByFile [
 ]
 
 { #category : 'tests' }
+MiBulkEditorTest >> testIntervalWithMethodCommentCommentAfter [
+	"Comment is after the method (ignore it)"
+
+	| interval |
+
+	interval := MiBulkInterval from: 12 to: 17 data: FamixJavaMethod new.
+	self commentMethod: interval data withPos: 18 @ 25.
+
+	interval := bulkEditor intervalWithMethodComment: interval.
+	self assert: interval first equals: 12.
+	self assert: interval last equals: 17
+]
+
+{ #category : 'tests' }
+MiBulkEditorTest >> testIntervalWithMethodCommentCommentInside [
+	"Comment is inside the method"
+
+
+	| interval |
+
+	interval := MiBulkInterval from: 12 to: 17 data: FamixJavaMethod new.
+	self commentMethod: interval data withPos: 13 @ 15.
+
+	interval := bulkEditor intervalWithMethodComment: interval.
+	self assert: interval first equals: 12.
+	self assert: interval last equals: 17
+
+]
+
+{ #category : 'tests' }
+MiBulkEditorTest >> testIntervalWithMethodCommenteaderComment [
+	"Comment is just before method"
+
+	| interval |
+
+	interval := MiBulkInterval from: 12 to: 17 data: FamixJavaMethod new.
+	self commentMethod: interval data withPos: 6 @ 10.
+
+	interval := bulkEditor intervalWithMethodComment: interval.
+	self assert: interval first equals: 6.
+	self assert: interval last equals: 17
+]
+
+{ #category : 'tests' }
 MiBulkEditorTest >> testMergeInterval3to1 [
 	"2nd line contains a TAB
 	 merge 3 intervals into 1"
@@ -220,39 +264,6 @@ l3______10'.
 	merged := bulkEditor mergeIntervals: { 1 to: 5 . 11 to: 14}.
 
 	self assertCollection: merged hasSameElements: { 1 to: 5 . 11 to: 14}
-]
-
-{ #category : 'tests' }
-MiBulkEditorTest >> testMethodWithCommentIntervalCommentAfter [
-	"Comment is after the method (ignore it)"
-
-	| mth |
-	mth := self methodWithPos: 12 @ 17.
-	self commentMethod: mth withPos: 18 @ 25.
-
-	self assert: (bulkEditor intervalWithMethodComment: mth) equals: (12 to: 17)
-]
-
-{ #category : 'tests' }
-MiBulkEditorTest >> testMethodWithCommentIntervalCommentInside [
-	"Comment is inside the method"
-
-	| mth |
-	mth := self methodWithPos: 12 @ 17.
-	self commentMethod: mth withPos: 13 @ 15.
-
-	self assert: (bulkEditor intervalWithMethodComment: mth) equals: (12 to: 17)
-]
-
-{ #category : 'tests' }
-MiBulkEditorTest >> testMethodWithCommentIntervalHeaderComment [
-	"Comment is just before method"
-
-	| mth |
-	mth := self methodWithPos: 12 @ 17.
-	self commentMethod: mth withPos: 6 @ 10.
-
-	self assert: (bulkEditor intervalWithMethodComment: mth) equals: (6 to: 17)
 ]
 
 { #category : 'tests' }

@@ -15,7 +15,9 @@ MiBulkEditorAbstract >> collectIntervals: data [
 	^data
 		reject: [ :entity | entity sourceAnchor isNil ]
 		thenCollect: [ :entity |
-			(MiBulkInterval from: entity sourceAnchor startPos to: entity sourceAnchor endPos)
+			MiBulkInterval
+				from: entity sourceAnchor startPos
+				to: entity sourceAnchor endPos
 				data: entity
 	]
 ]

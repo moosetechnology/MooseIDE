@@ -46,13 +46,17 @@ MiBulkEditor >> initialize [
 ]
 
 { #category : 'intervals' }
-MiBulkEditor >> intervalWithMethodComment: method [
+MiBulkEditor >> intervalWithMethodComment: bulkInterval [
 	"Adds preceeding comment (if any) to the interval of a method"
 
-	^method comments
-		detect: [ :cmt | cmt sourceAnchor endPos < method sourceAnchor startPos ]
-		ifOne: [ :cmt | cmt sourceAnchor startPos to: method sourceAnchor endPos ]
-		ifNone: [ method sourceAnchor startPos to: method sourceAnchor endPos ]
+	^bulkInterval data comments
+		detect: [ :cmt | cmt sourceAnchor endPos < bulkInterval first ]
+		ifOne: [ :cmt |
+			MiBulkInterval
+				from: cmt sourceAnchor startPos
+				to: bulkInterval last
+				data: bulkInterval data ]
+		ifNone: [ bulkInterval ]
 ]
 
 { #category : 'intervals' }
