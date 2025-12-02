@@ -69,6 +69,16 @@ MiBulkAbstractRewriter >> editIntervals: aCollection [
 	editIntervals := aCollection iterator
 ]
 
+{ #category : 'actions' }
+MiBulkAbstractRewriter >> endOfFile [
+	"deal with the case of last interval finishing at end of file (without end-of-line)"
+
+	self isWaitingForEol ifFalse: [ ^self ].
+
+	stream << Smalltalk os lineEnding.
+	self executeNextLineAction
+]
+
 { #category : 'running' }
 MiBulkAbstractRewriter >> executeNextLineAction [
 

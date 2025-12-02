@@ -1,18 +1,18 @@
 Class {
-	#name : 'MiBulkEditorRemoveRewriterTest',
-	#superclass : 'MiBulkEditorAbstractTest',
+	#name : 'MiBulkRemoveLinesRewriterTest',
+	#superclass : 'MiBulkAbstractTest',
 	#category : 'MooseIDE-BulkEditor-Tests',
 	#package : 'MooseIDE-BulkEditor-Tests'
 }
 
 { #category : 'running' }
-MiBulkEditorRemoveRewriterTest >> classToTest [ 
+MiBulkRemoveLinesRewriterTest >> classToTest [ 
 
-	^MiBulkEditorRemoveRewriter 
+	^MiBulkRemoveLinesRewriter 
 ]
 
 { #category : 'tests' }
-MiBulkEditorRemoveRewriterTest >> setUp [ 
+MiBulkRemoveLinesRewriterTest >> setUp [ 
 
 	super setUp.
 
@@ -21,7 +21,7 @@ MiBulkEditorRemoveRewriterTest >> setUp [
 ]
 
 { #category : 'tests' }
-MiBulkEditorRemoveRewriterTest >> testRemoveFirstCR [
+MiBulkRemoveLinesRewriterTest >> testRemoveFirst_eolCR [
 
 	bulkEditor content: ( self
 		join: #( 'l1*/5' 'l2_4' 'l3*/_*/10')
@@ -37,7 +37,7 @@ MiBulkEditorRemoveRewriterTest >> testRemoveFirstCR [
 ]
 
 { #category : 'tests' }
-MiBulkEditorRemoveRewriterTest >> testRemoveFirstCRLF [
+MiBulkRemoveLinesRewriterTest >> testRemoveFirst_eolCRLF [
 
 	bulkEditor content: ( self
 		join: #( 'l1*/5' 'l2_4' 'l3*/_*/10')
@@ -53,7 +53,7 @@ MiBulkEditorRemoveRewriterTest >> testRemoveFirstCRLF [
 ]
 
 { #category : 'tests' }
-MiBulkEditorRemoveRewriterTest >> testRemoveFirstLF [
+MiBulkRemoveLinesRewriterTest >> testRemoveFirst_eolLF [
 
 	bulkEditor content: ( self
 		join: #( 'l1*/5' 'l2_4' 'l3*/_*/10')
@@ -69,7 +69,7 @@ MiBulkEditorRemoveRewriterTest >> testRemoveFirstLF [
 ]
 
 { #category : 'tests' }
-MiBulkEditorRemoveRewriterTest >> testRemoveInsideCR [
+MiBulkRemoveLinesRewriterTest >> testRemoveInside_eolCR [
 
 	bulkEditor content: ( self
 		join: #( 'l1*/5' 'l2_4' 'l3*/_*/10')
@@ -85,7 +85,7 @@ MiBulkEditorRemoveRewriterTest >> testRemoveInsideCR [
 ]
 
 { #category : 'tests' }
-MiBulkEditorRemoveRewriterTest >> testRemoveInsideCRLF [
+MiBulkRemoveLinesRewriterTest >> testRemoveInside_eolCRLF [
 
 	bulkEditor content: ( self
 		join: #( 'l1*/5' 'l2_4' 'l3*/_*/10')
@@ -101,7 +101,7 @@ MiBulkEditorRemoveRewriterTest >> testRemoveInsideCRLF [
 ]
 
 { #category : 'tests' }
-MiBulkEditorRemoveRewriterTest >> testRemoveInsideLF [
+MiBulkRemoveLinesRewriterTest >> testRemoveInside_eolLF [
 
 	bulkEditor content: ( self
 		join: #( 'l1*/5' 'l2_4' 'l3*/_*/10')
@@ -117,7 +117,7 @@ MiBulkEditorRemoveRewriterTest >> testRemoveInsideLF [
 ]
 
 { #category : 'tests' }
-MiBulkEditorRemoveRewriterTest >> testRemoveLastCR [
+MiBulkRemoveLinesRewriterTest >> testRemoveLast_eolCR [
 
 	bulkEditor content: ( self
 		join: #( 'l1*/5' 'l2_4' 'l3*/_*/10')
@@ -133,7 +133,7 @@ MiBulkEditorRemoveRewriterTest >> testRemoveLastCR [
 ]
 
 { #category : 'tests' }
-MiBulkEditorRemoveRewriterTest >> testRemoveLastCRLF [
+MiBulkRemoveLinesRewriterTest >> testRemoveLast_eolCRLF [
 
 	bulkEditor content: ( self
 		join: #( 'l1*/5' 'l2_4' 'l3*/_*/10')
@@ -149,7 +149,7 @@ MiBulkEditorRemoveRewriterTest >> testRemoveLastCRLF [
 ]
 
 { #category : 'tests' }
-MiBulkEditorRemoveRewriterTest >> testRemoveLastLF [
+MiBulkRemoveLinesRewriterTest >> testRemoveLast_eolLF [
 
 	bulkEditor content: ( self
 		join: #( 'l1*/5' 'l2_4' 'l3*/_*/10')
@@ -165,7 +165,7 @@ MiBulkEditorRemoveRewriterTest >> testRemoveLastLF [
 ]
 
 { #category : 'tests' }
-MiBulkEditorRemoveRewriterTest >> testRemoveMultipleIntervalsCR [
+MiBulkRemoveLinesRewriterTest >> testRemoveMultipleIntervals_eolCR [
 
 	bulkEditor content: ( self
 		join: #( 'l1*/5' 'l2_4' 'l3*/_*/10')
@@ -181,7 +181,7 @@ MiBulkEditorRemoveRewriterTest >> testRemoveMultipleIntervalsCR [
 ]
 
 { #category : 'tests' }
-MiBulkEditorRemoveRewriterTest >> testRemoveMultipleIntervalsCRLF [
+MiBulkRemoveLinesRewriterTest >> testRemoveMultipleIntervals_eolCRLF [
 
 	bulkEditor content: ( self
 		join: #( 'l1*/5' 'l2_4' 'l3*/_*/10')
@@ -197,7 +197,7 @@ MiBulkEditorRemoveRewriterTest >> testRemoveMultipleIntervalsCRLF [
 ]
 
 { #category : 'tests' }
-MiBulkEditorRemoveRewriterTest >> testRemoveMultipleIntervalsLF [
+MiBulkRemoveLinesRewriterTest >> testRemoveMultipleIntervals_eolLF [
 
 	bulkEditor content: ( self
 		join: #( 'l1*/5' 'l2_4' 'l3*/_*/10')

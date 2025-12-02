@@ -3,7 +3,7 @@ A P16BulkEditorTest is a test class for testing the behavior of P16BulkEditor
 "
 Class {
 	#name : 'MiBulkEditorTest',
-	#superclass : 'MiBulkEditorAbstractTest',
+	#superclass : 'MiBulkAbstractTest',
 	#category : 'MooseIDE-BulkEditor-Tests',
 	#package : 'MooseIDE-BulkEditor-Tests'
 }

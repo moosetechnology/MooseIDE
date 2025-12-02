@@ -1,5 +1,5 @@
 Class {
-	#name : 'MiBulkEditorAbstractTest',
+	#name : 'MiBulkAbstractTest',
 	#superclass : 'TestCase',
 	#instVars : [
 		'bulkEditor',
@@ -10,7 +10,13 @@ Class {
 }
 
 { #category : 'running' }
-MiBulkEditorAbstractTest >> commentMethod: aMethod withPos: pos [
+MiBulkAbstractTest >> classToTest [
+
+	self subclassResponsibility 
+]
+
+{ #category : 'running' }
+MiBulkAbstractTest >> commentMethod: aMethod withPos: pos [
 
 	^FamixJavaComment new
 		commentedEntity: aMethod ;
@@ -21,13 +27,13 @@ MiBulkEditorAbstractTest >> commentMethod: aMethod withPos: pos [
 ]
 
 { #category : 'running' }
-MiBulkEditorAbstractTest >> fileReferenceFor: aFileName [
+MiBulkAbstractTest >> fileReferenceFor: aFileName [
 
 	^FileSystem memory root / aFileName
 ]
 
 { #category : 'running' }
-MiBulkEditorAbstractTest >> join: lines with: separator [
+MiBulkAbstractTest >> join: lines with: separator [
 
 	^String streamContents: [ :st |
 		lines
@@ -37,7 +43,7 @@ MiBulkEditorAbstractTest >> join: lines with: separator [
 ]
 
 { #category : 'running' }
-MiBulkEditorAbstractTest >> methodWithPos: pos [
+MiBulkAbstractTest >> methodWithPos: pos [
 
 	^FamixJavaMethod new
 		sourceAnchor: (FamixJavaIndexedFileAnchor new 
@@ -47,7 +53,7 @@ MiBulkEditorAbstractTest >> methodWithPos: pos [
 ]
 
 { #category : 'running' }
-MiBulkEditorAbstractTest >> setUp [
+MiBulkAbstractTest >> setUp [
 
 	super setUp.
 
