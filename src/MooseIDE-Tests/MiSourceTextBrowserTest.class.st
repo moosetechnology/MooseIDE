@@ -175,8 +175,10 @@ MiSourceTextBrowserTest >> testHighlightJavaKeywords [
 	self deny: displayedText unembellished.
 
 	8 to: 12 do: [ :i |
-		self assert: ((displayedText attributesAt: i) anySatisfy: [ :att |
-			 att class = TextColor and: [ att color = Color magenta ] ]) ].
+		self 
+			assert: ((displayedText attributesAt: i) anySatisfy: [ :att |
+				att = MiSourceTextSpecRenderer new keywordMarkers anyOne ])
+			description: 'TextColor failed at character ' , i asString].
 
 ]
 

@@ -38,31 +38,33 @@ MiSourceTextSpecRenderer >> applyCommentHighlight: aHighlight [
 
 	self clearFormatingFrom: aHighlight from to: aHighlight to.
 
-	formatedText
-		addAttribute: TextColor gray
-		from: aHighlight from
-		to: aHighlight to.
-
+	self applyHighlight: aHighlight markers: self commentMarkers
 ]
 
 { #category : 'formatting' }
 MiSourceTextSpecRenderer >> applyErrorHighlight: aHighlight [
 
-	formatedText 
-		addAttribute: TextColor red
-		from: aHighlight from
-		to: aHighlight to
+	self applyHighlight: aHighlight markers: self errorMarkers
+]
+
+{ #category : 'formatting' }
+MiSourceTextSpecRenderer >> applyHighlight: aHighlight markers: markers [
+
+	markers do: [ :marker |
+		formatedText
+			addAttribute: marker
+			from: aHighlight from
+			to: aHighlight to
+	]
 ]
 
 { #category : 'formatting' }
 MiSourceTextSpecRenderer >> applyIdentifierHighlight: aHighlight [
-	"Identifiers are underlined. Clicking on them initiate transmission to the owner presenter"
+	"Clicking on identifiers initiate transmission to the owner presenter"
+
+	self applyHighlight: aHighlight markers: self identifierMarkers.
 
 	formatedText 
-		addAttribute: TextEmphasis underlined
-		from: aHighlight from
-		to: aHighlight to ;
-
 		addAttribute:
 			(TextDoIt new actOnClickBlock: [ :ignored :event |
 				self activateTransmissionWithValue: aHighlight highlightedEntity ])
@@ -73,19 +75,13 @@ MiSourceTextSpecRenderer >> applyIdentifierHighlight: aHighlight [
 { #category : 'formatting' }
 MiSourceTextSpecRenderer >> applyKeywordHighlight: aHighlight [
 
-	formatedText 
-		addAttribute: TextColor magenta
-		from: aHighlight from
-		to: aHighlight to
+	self applyHighlight: aHighlight markers: self keywordMarkers
 ]
 
 { #category : 'formatting' }
 MiSourceTextSpecRenderer >> applyTagHighlight: aHighlight [
 
-	formatedText
-		addAttribute: (TextColor color: aHighlight tag color)
-		from: aHighlight from
-		to: aHighlight to
+	self applyHighlight: aHighlight markers: (self tagMarkers: aHighlight tag)
 ]
 
 { #category : 'accessing' }
@@ -103,6 +99,12 @@ MiSourceTextSpecRenderer >> clearFormating [
 MiSourceTextSpecRenderer >> clearFormatingFrom: start to: stop [
 
 	formatedText := formatedText copyReplaceFrom: start to: stop with: (formatedText copyFrom: start to: stop) asString
+]
+
+{ #category : 'accessing - markers' }
+MiSourceTextSpecRenderer >> commentMarkers [
+
+	^{TextColor gray}
 ]
 
 { #category : 'initialization' }
@@ -123,6 +125,12 @@ MiSourceTextSpecRenderer >> defaultOutputPort [
 		property: #selectedItem
 ]
 
+{ #category : 'accessing - markers' }
+MiSourceTextSpecRenderer >> errorMarkers [
+
+	^{TextColor red}
+]
+
 { #category : 'actions' }
 MiSourceTextSpecRenderer >> event: anEvent selectedEntity: anEntity [
 
@@ -130,9 +138,17 @@ MiSourceTextSpecRenderer >> event: anEvent selectedEntity: anEntity [
 	self inform: 'Selected entity: ' , anEntity asString
 ]
 
-{ #category : 'private - testing' }
+{ #category : 'accessing' }
 MiSourceTextSpecRenderer >> formatedText [
 	^formatedText 
+]
+
+{ #category : 'accessing - markers' }
+MiSourceTextSpecRenderer >> identifierMarkers [
+
+	self flag: 'unfortunately TextEmphasis dominates: TextColor'.
+
+	^{ TextColor color: (Color fromHexString: '237ea6') . TextEmphasis underlined }
 ]
 
 { #category : 'initialization' }
@@ -142,6 +158,12 @@ MiSourceTextSpecRenderer >> initialize [
 
 	sourceAnchorAdapter := MiSourceTextNullAdapter new.
 
+]
+
+{ #category : 'accessing - markers' }
+MiSourceTextSpecRenderer >> keywordMarkers [
+
+	^{TextColor color: (Color fromHexString: '073fff')}
 ]
 
 { #category : 'rendering' }
@@ -193,4 +215,10 @@ MiSourceTextSpecRenderer >> setModelBeforeInitialization: aModel [
 MiSourceTextSpecRenderer >> sourceAnchorAdapter [
 
 	^sourceAnchorAdapter
+]
+
+{ #category : 'accessing - markers' }
+MiSourceTextSpecRenderer >> tagMarkers: aTag [
+
+	^{TextColor color: aTag color}
 ]

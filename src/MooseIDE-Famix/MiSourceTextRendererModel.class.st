@@ -51,7 +51,7 @@ MiSourceTextRendererModel >> commentHighlightFor: aComment [
 { #category : 'highlights' }
 MiSourceTextRendererModel >> createHighlightsFor: anEntity [
 	"note: checks if anEntity is a comment first
-	 if so: apply comment formatting, and leave to not add any other one"
+	 if so: apply comment formatting, and leave to avoid adding any other one"
 
 	(anEntity class usesFamixTrait: FamixTComment) ifTrue: [
 			self commentHighlightFor: anEntity.
@@ -60,15 +60,20 @@ MiSourceTextRendererModel >> createHighlightsFor: anEntity [
 	(anEntity class usesFamixTrait: FamixTNamedEntity) ifTrue: [
 		self identifierHighlightFor: anEntity ].
 
-	anEntity containedEntities do: [ :childChild |
-		self createHighlightsFor: childChild ].
+	anEntity containedEntities do: [ :child |
+		self createHighlightsFor: child ].
 
-	anEntity tags size = 1 ifTrue: [
-		self tagHighlight: anEntity tags anyOne for: anEntity ]
+	(anEntity tags size = 1) ifTrue: [
+		self tagHighlight: anEntity tags anyOne for: anEntity ].
 
-	"aChildEntity queryAllOutgoing do: [:mseAssoc |
-		mseAssoc allTargets do: [ :target | 	self addHighlight: (self dependencyHighlightFor: mseAssoc) ]
-	]."
+	"anEntity queryAllOutgoing do: [:mseAssoc |
+		mseAssoc sourceAnchor ifNotNil: [ :usedAnchor |
+			mseAssoc allTargets
+				detect: [ :target | target isStub not ]
+				ifOne: [ :target | self identifierHighlightFor: mseAssoc ]
+		]
+	]"
+
 ]
 
 { #category : 'highlights' }
@@ -172,7 +177,7 @@ MiSourceTextRendererModel >> prepareFormating: aString [
 		ifFalse: [ self resetHighlights ]
 ]
 
-{ #category : 'rendering' }
+{ #category : 'formatting' }
 MiSourceTextRendererModel >> renderTextFor: anEntity [
 
 	entity := anEntity.
