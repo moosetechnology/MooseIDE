@@ -18,11 +18,18 @@ MiBulkRewriterAbstractTest >> join: lines with: separator [
 	]
 ]
 
+{ #category : 'running' }
+MiBulkRewriterAbstractTest >> joinLinesWith: separator [
+
+	^self join: lines with: separator
+]
+
 { #category : 'tests' }
 MiBulkRewriterAbstractTest >> setUp [ 
 
 	super setUp.
 
 	bulkEditor stream: String new writeStream.
+	lines := { 'l1__5' . 'l2_4' . 'l3______10' }
 
 ]

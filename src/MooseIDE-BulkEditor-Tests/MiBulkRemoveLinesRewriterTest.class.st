@@ -14,9 +14,7 @@ MiBulkRemoveLinesRewriterTest >> classToTest [
 { #category : 'tests' }
 MiBulkRemoveLinesRewriterTest >> testRunFirst_eolCR [
 
-	bulkEditor content: ( self
-		join: #( 'l1*/5' 'l2_4' 'l3*/_*/10')
-		with: Character cr ).
+	bulkEditor content: (self joinLinesWith: Character cr).
 
 	bulkEditor editIntervals: {1 to: 10}.
 
@@ -24,15 +22,13 @@ MiBulkRemoveLinesRewriterTest >> testRunFirst_eolCR [
 
 	self
 		assert: bulkEditor stream contents
-		equals: 'l3*/_*/10'
+		equals: 'l3______10'
 ]
 
 { #category : 'tests' }
 MiBulkRemoveLinesRewriterTest >> testRunFirst_eolCRLF [
 
-	bulkEditor content: ( self
-		join: #( 'l1*/5' 'l2_4' 'l3*/_*/10')
-		with: String crlf ).
+	bulkEditor content: (self joinLinesWith: String crlf).
 
 	bulkEditor editIntervals: {1 to: 10}.
 
@@ -40,15 +36,13 @@ MiBulkRemoveLinesRewriterTest >> testRunFirst_eolCRLF [
 
 	self
 		assert: bulkEditor stream contents
-		equals: 'l3*/_*/10'
+		equals: 'l3______10'
 ]
 
 { #category : 'tests' }
 MiBulkRemoveLinesRewriterTest >> testRunFirst_eolLF [
 
-	bulkEditor content: ( self
-		join: #( 'l1*/5' 'l2_4' 'l3*/_*/10')
-		with: Character lf ).
+	bulkEditor content: (self joinLinesWith: Character lf).
 
 	bulkEditor editIntervals: {1 to: 10}.
 
@@ -56,15 +50,13 @@ MiBulkRemoveLinesRewriterTest >> testRunFirst_eolLF [
 
 	self
 		assert: bulkEditor stream contents
-		equals: 'l3*/_*/10'
+		equals: 'l3______10'
 ]
 
 { #category : 'tests' }
 MiBulkRemoveLinesRewriterTest >> testRunInside_eolCR [
 
-	bulkEditor content: ( self
-		join: #( 'l1*/5' 'l2_4' 'l3*/_*/10')
-		with: Character cr ).
+	bulkEditor content: (self joinLinesWith: Character cr).
 
 	bulkEditor editIntervals: {7 to: 10}.
 
@@ -72,15 +64,13 @@ MiBulkRemoveLinesRewriterTest >> testRunInside_eolCR [
 
 	self
 		assert: bulkEditor stream contents
-		equals: ('l1*/5' , String cr , 'l3*/_*/10')
+		equals: ('l1__5' , String cr , 'l3______10')
 ]
 
 { #category : 'tests' }
 MiBulkRemoveLinesRewriterTest >> testRunInside_eolCRLF [
 
-	bulkEditor content: ( self
-		join: #( 'l1*/5' 'l2_4' 'l3*/_*/10')
-		with: String crlf ).
+	bulkEditor content: (self joinLinesWith: String crlf).
 
 	bulkEditor editIntervals: {8 to: 11}.
 
@@ -88,15 +78,13 @@ MiBulkRemoveLinesRewriterTest >> testRunInside_eolCRLF [
 
 	self
 		assert: bulkEditor stream contents
-		equals: ('l1*/5' , String crlf , 'l3*/_*/10')
+		equals: ('l1__5' , String crlf , 'l3______10')
 ]
 
 { #category : 'tests' }
 MiBulkRemoveLinesRewriterTest >> testRunInside_eolLF [
 
-	bulkEditor content: ( self
-		join: #( 'l1*/5' 'l2_4' 'l3*/_*/10')
-		with: Character lf ).
+	bulkEditor content: (self joinLinesWith: Character lf).
 
 	bulkEditor editIntervals: {7 to: 10}.
 
@@ -104,15 +92,13 @@ MiBulkRemoveLinesRewriterTest >> testRunInside_eolLF [
 
 	self
 		assert: bulkEditor stream contents
-		equals: ('l1*/5' , String lf , 'l3*/_*/10')
+		equals: ('l1__5' , String lf , 'l3______10')
 ]
 
 { #category : 'tests' }
 MiBulkRemoveLinesRewriterTest >> testRunLast_eolCR [
 
-	bulkEditor content: ( self
-		join: #( 'l1*/5' 'l2_4' 'l3*/_*/10')
-		with: Character cr ).
+	bulkEditor content: (self joinLinesWith: Character cr).
 
 	bulkEditor editIntervals: {12 to: 20}.
 
@@ -120,15 +106,13 @@ MiBulkRemoveLinesRewriterTest >> testRunLast_eolCR [
 
 	self
 		assert: bulkEditor stream contents
-		equals: ('l1*/5' , String cr , 'l2_4' , String cr)
+		equals: ('l1__5' , String cr , 'l2_4' , String cr)
 ]
 
 { #category : 'tests' }
 MiBulkRemoveLinesRewriterTest >> testRunLast_eolCRLF [
 
-	bulkEditor content: ( self
-		join: #( 'l1*/5' 'l2_4' 'l3*/_*/10')
-		with: String crlf ).
+	bulkEditor content: (self joinLinesWith: String crlf).
 
 	bulkEditor editIntervals: {14 to: 22}.
 
@@ -136,15 +120,13 @@ MiBulkRemoveLinesRewriterTest >> testRunLast_eolCRLF [
 
 	self
 		assert: bulkEditor stream contents
-		equals: ('l1*/5' , String crlf , 'l2_4' , String crlf)
+		equals: ('l1__5' , String crlf , 'l2_4' , String crlf)
 ]
 
 { #category : 'tests' }
 MiBulkRemoveLinesRewriterTest >> testRunLast_eolLF [
 
-	bulkEditor content: ( self
-		join: #( 'l1*/5' 'l2_4' 'l3*/_*/10')
-		with: Character lf ).
+	bulkEditor content: (self joinLinesWith: Character lf).
 
 	bulkEditor editIntervals: {12 to: 20}.
 
@@ -152,15 +134,13 @@ MiBulkRemoveLinesRewriterTest >> testRunLast_eolLF [
 
 	self
 		assert: bulkEditor stream contents
-		equals: ('l1*/5' , String lf , 'l2_4' , String lf)
+		equals: ('l1__5' , String lf , 'l2_4' , String lf)
 ]
 
 { #category : 'tests' }
 MiBulkRemoveLinesRewriterTest >> testRunMultipleIntervals_eolCR [
 
-	bulkEditor content: ( self
-		join: #( 'l1*/5' 'l2_4' 'l3*/_*/10')
-		with: Character cr ).
+	bulkEditor content: (self joinLinesWith: Character cr).
 
 	bulkEditor editIntervals: { 1 to: 5 . 12 to: 20}.
 
@@ -174,9 +154,7 @@ MiBulkRemoveLinesRewriterTest >> testRunMultipleIntervals_eolCR [
 { #category : 'tests' }
 MiBulkRemoveLinesRewriterTest >> testRunMultipleIntervals_eolCRLF [
 
-	bulkEditor content: ( self
-		join: #( 'l1*/5' 'l2_4' 'l3*/_*/10')
-		with: String crlf ).
+	bulkEditor content: (self joinLinesWith: String crlf).
 
 	bulkEditor editIntervals: { 1 to: 5 . 14 to: 22}.
 
@@ -190,9 +168,7 @@ MiBulkRemoveLinesRewriterTest >> testRunMultipleIntervals_eolCRLF [
 { #category : 'tests' }
 MiBulkRemoveLinesRewriterTest >> testRunMultipleIntervals_eolLF [
 
-	bulkEditor content: ( self
-		join: #( 'l1*/5' 'l2_4' 'l3*/_*/10')
-		with: Character lf ).
+	bulkEditor content: (self joinLinesWith: Character lf).
 
 	bulkEditor editIntervals: { 1 to: 5 . 12 to: 20}.
 
