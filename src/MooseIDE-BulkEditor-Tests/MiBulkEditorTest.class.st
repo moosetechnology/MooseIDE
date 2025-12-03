@@ -3,7 +3,7 @@ A P16BulkEditorTest is a test class for testing the behavior of P16BulkEditor
 "
 Class {
 	#name : 'MiBulkEditorTest',
-	#superclass : 'MiBulkEditorAbstractTest',
+	#superclass : 'MiBulkAbstractTest',
 	#category : 'MooseIDE-BulkEditor-Tests',
 	#package : 'MooseIDE-BulkEditor-Tests'
 }
@@ -37,6 +37,47 @@ l3______10'.
 
 	sourceFile := self fileReferenceFor: 'SourceFile.test'.
 	self writePreviousContentToFile: sourceFile
+]
+
+{ #category : 'tests' }
+MiBulkEditorTest >> testCollectIntervalsData [
+
+	| methods intervals |
+	methods := {
+		self methodWithPos: 7 @ 10 .
+		self methodWithPos: 18 @ 32 .
+		self methodWithPos: 1 @ 5 .
+		self methodWithPos: 35 @ 42 .
+		}.
+
+	intervals := bulkEditor collectIntervals: methods.
+
+	self assert: intervals size equals: 4.
+
+	intervals with: methods do: [ :interval :method |
+		self assert: interval data equals: method.
+		self assert: interval first equals: method sourceAnchor startPos
+	]
+]
+
+{ #category : 'tests' }
+MiBulkEditorTest >> testCollectIntervalsFilter [
+
+	| mths intervals |
+	mths := {
+		self methodWithPos: 7 @ 10 .
+		self methodWithPos: 18 @ 32 .
+		FamixJavaMethod new .
+		self methodWithPos: 35 @ 42 .
+		}.
+
+	intervals := bulkEditor collectIntervals: mths.
+
+	self assert: intervals size equals: 3.
+
+	self assert: intervals first  first equals: 7.
+	self assert: intervals second first equals: 18.
+	self assert: intervals third  first equals: 35.
 ]
 
 { #category : 'tests' }
@@ -93,6 +134,66 @@ MiBulkEditorTest >> testGroupByFile [
 		at: 'thirdFile.test'
 		ifAbsent: [self fail: 'Missing methods for "thirdFile.test"' ].
 	self assertCollection: fileMethods value hasSameElements: { mths third }
+]
+
+{ #category : 'tests' }
+MiBulkEditorTest >> testIntervalWithMethodCommentCommentAfter [
+	"Comment is after the method (ignore it)"
+
+	| interval |
+
+	interval := MiBulkInterval from: 12 to: 17 data: FamixJavaMethod new.
+	self commentMethod: interval data withPos: 18 @ 25.
+
+	interval := bulkEditor intervalWithMethodComment: interval.
+	self assert: interval first equals: 12.
+	self assert: interval last equals: 17
+]
+
+{ #category : 'tests' }
+MiBulkEditorTest >> testIntervalWithMethodCommentCommentInside [
+	"Comment is inside the method"
+
+
+	| interval |
+
+	interval := MiBulkInterval from: 12 to: 17 data: FamixJavaMethod new.
+	self commentMethod: interval data withPos: 13 @ 15.
+
+	interval := bulkEditor intervalWithMethodComment: interval.
+	self assert: interval first equals: 12.
+	self assert: interval last equals: 17
+
+]
+
+{ #category : 'tests' }
+MiBulkEditorTest >> testIntervalWithMethodCommenteaderComment [
+	"Comment is just before method"
+
+	| interval |
+
+	interval := MiBulkInterval from: 12 to: 17 data: FamixJavaMethod new.
+	self commentMethod: interval data withPos: 6 @ 10.
+
+	interval := bulkEditor intervalWithMethodComment: interval.
+	self assert: interval first equals: 6.
+	self assert: interval last equals: 17
+]
+
+{ #category : 'tests' }
+MiBulkEditorTest >> testIntervalsToEdit [
+	"each 'method' is shorter than a line in 'previousContent' to avoid merging of intervals"
+
+	| mths intervals |
+	mths := {
+		self methodWithPos: 7 @ 9 .
+		self methodWithPos: 12 @ 20 .
+		self methodWithPos: 1 @ 4 .
+		}.
+
+	intervals := bulkEditor intervalsToEdit: mths.
+
+	self assert: intervals size equals: 3
 ]
 
 { #category : 'tests' }
@@ -182,36 +283,18 @@ l3______10'.
 ]
 
 { #category : 'tests' }
-MiBulkEditorTest >> testMethodWithCommentIntervalCommentAfter [
-	"Comment is after the method (ignore it)"
+MiBulkEditorTest >> testMooseModel [
 
-	| mth |
-	mth := self methodWithPos: 12 @ 17.
-	self commentMethod: mth withPos: 18 @ 25.
+	| mths model |
+	mths := {
+		self methodWithPos: 1 @ 2 .
+		self methodWithPos: 3 @ 4 .
+		self methodWithPos: 5 @ 6 
+		}.
+	model := FamixJavaModel new.
+	mths do: [ :m | m mooseModel: model ].
 
-	self assert: (bulkEditor methodWithCommentInterval: mth) equals: (12 to: 17)
-]
-
-{ #category : 'tests' }
-MiBulkEditorTest >> testMethodWithCommentIntervalCommentInside [
-	"Comment is inside the method"
-
-	| mth |
-	mth := self methodWithPos: 12 @ 17.
-	self commentMethod: mth withPos: 13 @ 15.
-
-	self assert: (bulkEditor methodWithCommentInterval: mth) equals: (12 to: 17)
-]
-
-{ #category : 'tests' }
-MiBulkEditorTest >> testMethodWithCommentIntervalHeaderComment [
-	"Comment is just before method"
-
-	| mth |
-	mth := self methodWithPos: 12 @ 17.
-	self commentMethod: mth withPos: 6 @ 10.
-
-	self assert: (bulkEditor methodWithCommentInterval: mth) equals: (6 to: 17)
+	self assert: (bulkEditor mooseModel: mths) equals: model
 ]
 
 { #category : 'tests' }
@@ -229,27 +312,6 @@ l3______10'.
 		equals:
 'l1__5
 l3______10'
-]
-
-{ #category : 'tests' }
-MiBulkEditorTest >> testSortByLine [
-
-	| mths sorted |
-	mths := {
-		self methodWithPos: 7 @ 10 .
-		self methodWithPos: 18 @ 32 .
-		self methodWithPos: 1 @ 5 .
-		self methodWithPos: 35 @ 42 .
-		}.
-
-	sorted := bulkEditor sortByPosition: mths.
-
-	self assert: sorted size equals: 4.
-
-	self assert: sorted first  sourceAnchor startPos equals: 1.
-	self assert: sorted second sourceAnchor startPos equals: 7.
-	self assert: sorted third  sourceAnchor startPos equals: 18.
-	self assert: sorted fourth sourceAnchor startPos equals: 35.
 ]
 
 { #category : 'running' }

@@ -1,31 +1,20 @@
 Class {
-	#name : 'MiBulkEditorCommentRewriterTest',
-	#superclass : 'MiBulkEditorAbstractTest',
+	#name : 'MiBulkCommentBlockRewriterTest',
+	#superclass : 'MiBulkRewriterAbstractTest',
 	#category : 'MooseIDE-BulkEditor-Tests',
 	#package : 'MooseIDE-BulkEditor-Tests'
 }
 
 { #category : 'running' }
-MiBulkEditorCommentRewriterTest >> classToTest [ 
+MiBulkCommentBlockRewriterTest >> classToTest [ 
 
-	^MiBulkEditorCommentRewriter 
-]
-
-{ #category : 'running' }
-MiBulkEditorCommentRewriterTest >> setUp [ 
-
-	super setUp.
-
-	bulkEditor stream: String new writeStream.
-
+	^MiBulkCommentBlockRewriter 
 ]
 
 { #category : 'tests' }
-MiBulkEditorCommentRewriterTest >> testCommentOutFirstLineCR [
+MiBulkCommentBlockRewriterTest >> testRunFirstLine_eolCR [
 
-	bulkEditor content: ( self
-		join: #( 'l1__5' 'l2_4' 'l3______10')
-		with: Character cr ).
+	bulkEditor content: ( self joinLinesWith: Character cr ).
 
 	bulkEditor editIntervals: {1 to: 10}.
 
@@ -41,11 +30,9 @@ MiBulkEditorCommentRewriterTest >> testCommentOutFirstLineCR [
 ]
 
 { #category : 'tests' }
-MiBulkEditorCommentRewriterTest >> testCommentOutFirstLineCRLF [
+MiBulkCommentBlockRewriterTest >> testRunFirstLine_eolCRLF [
 
-	bulkEditor content: ( self
-		join: #( 'l1__5' 'l2_4' 'l3______10')
-		with: String crlf ).
+	bulkEditor content: ( self joinLinesWith: String crlf ).
 
 	bulkEditor editIntervals: {1 to: 10}.
 
@@ -61,11 +48,9 @@ MiBulkEditorCommentRewriterTest >> testCommentOutFirstLineCRLF [
 ]
 
 { #category : 'tests' }
-MiBulkEditorCommentRewriterTest >> testCommentOutFirstLineLF [
+MiBulkCommentBlockRewriterTest >> testRunFirstLine_eolLF [
 
-	bulkEditor content: ( self
-		join: #( 'l1__5' 'l2_4' 'l3______10')
-		with: Character lf ).
+	bulkEditor content: ( self joinLinesWith: Character lf ).
 
 	bulkEditor editIntervals: {1 to: 10}.
 
@@ -81,12 +66,10 @@ MiBulkEditorCommentRewriterTest >> testCommentOutFirstLineLF [
 ]
 
 { #category : 'tests' }
-MiBulkEditorCommentRewriterTest >> testCommentOutLastLineNoEndCR [
+MiBulkCommentBlockRewriterTest >> testRunLastLineNoEnd_eolCR [
 	"last interval go until end of file and there is no end-of-line"
 
-	bulkEditor content: ( self
-		join: #( 'l1__5' 'l2_4' 'l3______10')
-		with: Character cr ).
+	bulkEditor content: ( self joinLinesWith: Character cr ).
 
 	bulkEditor editIntervals: {12 to: 21}.
 
@@ -102,12 +85,10 @@ MiBulkEditorCommentRewriterTest >> testCommentOutLastLineNoEndCR [
 ]
 
 { #category : 'tests' }
-MiBulkEditorCommentRewriterTest >> testCommentOutLastLineNoEndCRLF [
+MiBulkCommentBlockRewriterTest >> testRunLastLineNoEnd_eolCRLF [
 	"last interval go until end of file and there is no end-of-line"
 
-	bulkEditor content: ( self
-		join: #( 'l1__5' 'l2_4' 'l3______10')
-		with: String crlf ).
+	bulkEditor content: ( self joinLinesWith: String crlf ).
 
 	bulkEditor editIntervals: {14 to: 23}.
 
@@ -123,12 +104,10 @@ MiBulkEditorCommentRewriterTest >> testCommentOutLastLineNoEndCRLF [
 ]
 
 { #category : 'tests' }
-MiBulkEditorCommentRewriterTest >> testCommentOutLastLineNoEndLF [
+MiBulkCommentBlockRewriterTest >> testRunLastLineNoEnd_eolLF [
 	"last interval go until end of file and there is no end-of-line"
 
-	bulkEditor content: ( self
-		join: #( 'l1__5' 'l2_4' 'l3______10')
-		with: Character lf ).
+	bulkEditor content: ( self joinLinesWith: Character lf ).
 
 	bulkEditor editIntervals: {12 to: 21}.
 
@@ -144,11 +123,11 @@ MiBulkEditorCommentRewriterTest >> testCommentOutLastLineNoEndLF [
 ]
 
 { #category : 'tests' }
-MiBulkEditorCommentRewriterTest >> testCommentOutLastLineWithEndCR [
+MiBulkCommentBlockRewriterTest >> testRunLastLineWithEnd_eolCR [
 	"last interval go until end of file and there is an end-of-line"
 
 	bulkEditor content: ( self
-		join: #( 'l1__5' 'l2_4' 'l3______10' '')
+		join: lines , #( '' )
 		with: Character cr ).
 
 	bulkEditor editIntervals: {12 to: 21}.
@@ -165,11 +144,11 @@ MiBulkEditorCommentRewriterTest >> testCommentOutLastLineWithEndCR [
 ]
 
 { #category : 'tests' }
-MiBulkEditorCommentRewriterTest >> testCommentOutLastLineWithEndCRLF [
+MiBulkCommentBlockRewriterTest >> testRunLastLineWithEnd_eolCRLF [
 	"last interval go until end of file and there is an end-of-line"
 
-	bulkEditor content: ( self
-		join: #( 'l1__5' 'l2_4' 'l3______10' '')
+	bulkEditor content: (self
+		join: lines , #( '' )
 		with: String crlf ).
 
 	bulkEditor editIntervals: {14 to: 23}.
@@ -186,11 +165,11 @@ MiBulkEditorCommentRewriterTest >> testCommentOutLastLineWithEndCRLF [
 ]
 
 { #category : 'tests' }
-MiBulkEditorCommentRewriterTest >> testCommentOutLastLineWithEndLF [
+MiBulkCommentBlockRewriterTest >> testRunLastLineWithEnd_eolLF [
 	"last interval go until end of file and there is an end-of-line"
 
 	bulkEditor content: ( self
-		join: #( 'l1__5' 'l2_4' 'l3______10' '')
+		join: lines , #( '' )
 		with: Character lf ).
 
 	bulkEditor editIntervals: {12 to: 21}.
@@ -207,11 +186,10 @@ MiBulkEditorCommentRewriterTest >> testCommentOutLastLineWithEndLF [
 ]
 
 { #category : 'tests' }
-MiBulkEditorCommentRewriterTest >> testCommentOutLineWithComment [
+MiBulkCommentBlockRewriterTest >> testRunLineWithComment [
 
-	bulkEditor content: ( self
-		join: #( 'l1*/5' 'l2_4' 'l3______10')
-		with: Character cr ).
+	lines at: 1 put: 'l1*/5'.
+	bulkEditor content: ( self joinLinesWith: Character cr ).
 
 	bulkEditor editIntervals: {1 to: 10}.
 
@@ -227,11 +205,9 @@ MiBulkEditorCommentRewriterTest >> testCommentOutLineWithComment [
 ]
 
 { #category : 'tests' }
-MiBulkEditorCommentRewriterTest >> testCommentOutMiddleLineCR [
+MiBulkCommentBlockRewriterTest >> testRunMiddleLine_eolCR [
 
-	bulkEditor content: ( self
-		join: #( 'l1__5' 'l2_4' 'l3______10')
-		with: Character cr ).
+	bulkEditor content: ( self joinLinesWith: Character cr ).
 
 	bulkEditor editIntervals: {7 to: 10}.
 
@@ -247,11 +223,9 @@ MiBulkEditorCommentRewriterTest >> testCommentOutMiddleLineCR [
 ]
 
 { #category : 'tests' }
-MiBulkEditorCommentRewriterTest >> testCommentOutMiddleLineCRLF [
+MiBulkCommentBlockRewriterTest >> testRunMiddleLine_eolCRLF [
 
-	bulkEditor content: ( self
-		join: #( 'l1__5' 'l2_4' 'l3______10')
-		with: String crlf ).
+	bulkEditor content: ( self joinLinesWith: String crlf ).
 
 	bulkEditor editIntervals: {8 to: 11}.
 
@@ -267,11 +241,9 @@ MiBulkEditorCommentRewriterTest >> testCommentOutMiddleLineCRLF [
 ]
 
 { #category : 'tests' }
-MiBulkEditorCommentRewriterTest >> testCommentOutMiddleLineLF [
+MiBulkCommentBlockRewriterTest >> testRunMiddleLine_eolLF [
 
-	bulkEditor content: ( self
-		join: #( 'l1__5' 'l2_4' 'l3______10')
-		with: Character lf ).
+	bulkEditor content: ( self joinLinesWith: Character lf ).
 
 	bulkEditor editIntervals: {7 to: 10}.
 

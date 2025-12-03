@@ -14,19 +14,15 @@ file writeStreamDo: [ :st | bulkEditor lines do: [ :line | st << line ; cr ] ].
 "
 Class {
 	#name : 'MiBulkEditor',
-	#superclass : 'Object',
-	#instVars : [
-		'editMode',
-		'previousFileContent'
-	],
+	#superclass : 'MiBulkEditorAbstract',
 	#category : 'MooseIDE-BulkEditor',
 	#package : 'MooseIDE-BulkEditor'
 }
 
-{ #category : 'accessing' }
+{ #category : 'options' }
 MiBulkEditor >> commentLines [
 
-	editMode := MiBulkEditorCommentRewriter
+	rewriter := MiBulkCommentBlockRewriter
 ]
 
 { #category : 'intervals' }
@@ -41,12 +37,6 @@ MiBulkEditor >> emptyLinesBetween: first and: last [
 	
 ]
 
-{ #category : 'running' }
-MiBulkEditor >> groupByFile: methods [
-
-	^methods groupedBy: [ :mth | mth sourceAnchor fileName ]
-]
-
 { #category : 'initialization' }
 MiBulkEditor >> initialize [ 
 
@@ -56,14 +46,28 @@ MiBulkEditor >> initialize [
 ]
 
 { #category : 'intervals' }
-MiBulkEditor >> intervalsToEdit: methods [
-	"- sort methods in ascending order
-	 - convert methods to position intervals and expand the intervals to include method comment if any
+MiBulkEditor >> intervalWithMethodComment: bulkInterval [
+	"Adds preceeding comment (if any) to the interval of a method"
+
+	^bulkInterval data comments
+		detect: [ :cmt | cmt sourceAnchor endPos < bulkInterval first ]
+		ifOne: [ :cmt |
+			MiBulkInterval
+				from: cmt sourceAnchor startPos
+				to: bulkInterval last
+				data: bulkInterval data ]
+		ifNone: [ bulkInterval ]
+]
+
+{ #category : 'intervals' }
+MiBulkEditor >> intervalsToEdit: entities [
+	"- sort entities in ascending order
+	 - convert entities to position intervals and expand the intervals to include preceeding comment if any
 	 - merge intervals separated only by blank lines"
 
 	^self mergeIntervals: (
-		(self sortByPosition: methods)
-			collect: [ :meth | self methodWithCommentInterval: meth ]
+		(super intervalsToEdit: entities)
+			collect: [ :methodInterval | self intervalWithMethodComment: methodInterval ]
 	)
 
 ]
@@ -95,59 +99,7 @@ MiBulkEditor >> mergeIntervals: intervals [
 	^merged 
 ]
 
-{ #category : 'intervals' }
-MiBulkEditor >> methodWithCommentInterval: method [
-	"Adds preceeding comment (if any)) to the interval of a method"
-
-	^method comments
-		detect: [ :cmt | cmt sourceAnchor endPos < method sourceAnchor startPos ]
-		ifOne: [ :cmt | cmt sourceAnchor startPos to: method sourceAnchor endPos ]
-		ifNone: [ method sourceAnchor startPos to: method sourceAnchor endPos ]
-]
-
-{ #category : 'accessing' }
+{ #category : 'options' }
 MiBulkEditor >> removeLines [
-
-	editMode := MiBulkEditorRemoveRewriter
-]
-
-{ #category : 'running' }
-MiBulkEditor >> rewriteFile: aFileReference atIntervals: intervalsToEdit [
-
-	aFileReference delete.
-
-	aFileReference writeStreamDo: [ :st |
-		editMode new
-			stream: st ;
-			content: previousFileContent ;
-			editIntervals: intervalsToEdit ;
-			run ].
-]
-
-{ #category : 'running' }
-MiBulkEditor >> runOn: methods [
-
-	| rootFolder |
-	rootFolder := methods anyOne mooseModel rootFolder asFileReference.
-
-	(self groupByFile: methods) associationsDo: [ :fileMethodsAssociation |
-		self runOnMethods: fileMethodsAssociation value inFile: (rootFolder / fileMethodsAssociation key)
-	].
-
-]
-
-{ #category : 'running' }
-MiBulkEditor >> runOnMethods: methods inFile: aFileReference [
-
-	previousFileContent := aFileReference contents.
-
-	self rewriteFile: aFileReference atIntervals: (self intervalsToEdit: methods).
-
-]
-
-{ #category : 'utilities' }
-MiBulkEditor >> sortByPosition: methods [
-	"sort methods in increasing order of their starting position"
-
-	^methods sorted: [ :m | m sourceAnchor startPos ] ascending
+	rewriter := MiBulkRemoveLinesRewriter
 ]
