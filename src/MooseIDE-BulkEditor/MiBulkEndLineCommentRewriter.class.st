@@ -1,5 +1,16 @@
 "
-a BulkRewriter that comment out the intervals by adding (C type) block comment around it
+a BulkRewriter that adds a comment on the lines of duplicated Java String constantes (`public static final String`)
+
+The duplicated constantes can be found with this script:
+```
+attributes := your_model allAttributes reject: #isStub.
+statics := attributes select: [ :a |
+	a isFinal and: 
+	[ a isClassSide and: 
+	[ a declaredType ifNil: [ false ] ifNotNil: [ :typ | typ name = 'String'] ] ] ].
+constantes := statics select: [ :a | [a getFAST expression isLiteral] on: Error do: [ false ] ].
+(constantes groupedBy: [ :a | a getFAST expression primitiveValue asLowercase ])
+	associations select: [ :a | (a value size >= 2) and: [ a key size > 2 ] ]```
 "
 Class {
 	#name : 'MiBulkEndLineCommentRewriter',
