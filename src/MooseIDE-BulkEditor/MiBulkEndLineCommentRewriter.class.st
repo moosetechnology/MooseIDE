@@ -9,6 +9,13 @@ Class {
 }
 
 { #category : 'actions' }
+MiBulkEndLineCommentRewriter >> afterEol: c at: i [
+	"Nothing to do after EOL
+	Typically, only one of #beforeEol:at: , #afterEol:at: should be defined"
+
+]
+
+{ #category : 'actions' }
 MiBulkEndLineCommentRewriter >> intervalEnd: c [
 	"override because #nextLineDo: is different
 	 see comment in super-class"
@@ -16,22 +23,10 @@ MiBulkEndLineCommentRewriter >> intervalEnd: c [
 	self insideInterval: c.
 	self nextLineDo: [
 		stream
-			<< ' // '.
+			<< ' // same constant as: '.
+		interval data value do: [ :entity | stream << entity mooseName ] separatedBy: [ stream << ', ' ].
 		self getNextInterval
 	]
 
 
-]
-
-{ #category : 'actions' }
-MiBulkEndLineCommentRewriter >> lineEnd: c at: i [
-	"Acts before the end-of-line (which can be CR, LF or CR+LF)
-	 On CR or LF alone, executeNextLineAction
-	 if LF in CRLF, preceeding CR will have emptied the nextLineAction so ends up doing nothing"
-
-	self isWaitingForEol ifFalse: [ ^self ].
-
-	self executeNextLineAction.
-
-	
 ]
