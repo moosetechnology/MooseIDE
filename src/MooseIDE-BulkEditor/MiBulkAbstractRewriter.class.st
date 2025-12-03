@@ -110,7 +110,6 @@ MiBulkAbstractRewriter >> endOfFile [
 
 	self isWaitingForEol ifFalse: [ ^self ].
 
-	stream << Smalltalk os lineEnding.
 	self executeNextLineAction
 ]
 
@@ -197,7 +196,9 @@ MiBulkAbstractRewriter >> run [
 	self getNextInterval.
 
 	content withIndexDo: [ :c :i |
+
 		(self isEOL: c) ifTrue: [ self beforeEol: c at: i ].
+
 		self switchCases: {
 			[ i < interval first ] -> [ self beforeInterval: c ] .
 			[ i = interval first ] -> [ self intervalStart: c ] .

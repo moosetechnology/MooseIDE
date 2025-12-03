@@ -16,11 +16,6 @@ MiBulkRemoveLinesRewriter >> beforeEol: c at: i [
 ]
 
 { #category : 'actions' }
-MiBulkRemoveLinesRewriter >> endOfFile [
-	"nothing to do"
-]
-
-{ #category : 'actions' }
 MiBulkRemoveLinesRewriter >> insideInterval: c [
 	"do not copy the characters inside an interval"
 

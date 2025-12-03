@@ -16,6 +16,16 @@ MiBulkCommentBlockRewriter >> beforeEol: c at: i [
 ]
 
 { #category : 'actions' }
+MiBulkCommentBlockRewriter >> endOfFile [
+	"if last interval finishes at end of file (without end-of-line), must add one new line"
+
+	self isWaitingForEol ifFalse: [ ^self ].
+
+	stream << Smalltalk os lineEnding.
+	self executeNextLineAction
+]
+
+{ #category : 'actions' }
 MiBulkCommentBlockRewriter >> insideInterval: c [
 	"all actions default to copying the input"
 
