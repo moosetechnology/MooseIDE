@@ -12,7 +12,7 @@ MiBulkRemoveLinesRewriterTest >> classToTest [
 ]
 
 { #category : 'tests' }
-MiBulkRemoveLinesRewriterTest >> testRemoveFirst_eolCR [
+MiBulkRemoveLinesRewriterTest >> testRunFirst_eolCR [
 
 	bulkEditor content: ( self
 		join: #( 'l1*/5' 'l2_4' 'l3*/_*/10')
@@ -28,7 +28,7 @@ MiBulkRemoveLinesRewriterTest >> testRemoveFirst_eolCR [
 ]
 
 { #category : 'tests' }
-MiBulkRemoveLinesRewriterTest >> testRemoveFirst_eolCRLF [
+MiBulkRemoveLinesRewriterTest >> testRunFirst_eolCRLF [
 
 	bulkEditor content: ( self
 		join: #( 'l1*/5' 'l2_4' 'l3*/_*/10')
@@ -44,7 +44,7 @@ MiBulkRemoveLinesRewriterTest >> testRemoveFirst_eolCRLF [
 ]
 
 { #category : 'tests' }
-MiBulkRemoveLinesRewriterTest >> testRemoveFirst_eolLF [
+MiBulkRemoveLinesRewriterTest >> testRunFirst_eolLF [
 
 	bulkEditor content: ( self
 		join: #( 'l1*/5' 'l2_4' 'l3*/_*/10')
@@ -60,7 +60,7 @@ MiBulkRemoveLinesRewriterTest >> testRemoveFirst_eolLF [
 ]
 
 { #category : 'tests' }
-MiBulkRemoveLinesRewriterTest >> testRemoveInside_eolCR [
+MiBulkRemoveLinesRewriterTest >> testRunInside_eolCR [
 
 	bulkEditor content: ( self
 		join: #( 'l1*/5' 'l2_4' 'l3*/_*/10')
@@ -76,7 +76,7 @@ MiBulkRemoveLinesRewriterTest >> testRemoveInside_eolCR [
 ]
 
 { #category : 'tests' }
-MiBulkRemoveLinesRewriterTest >> testRemoveInside_eolCRLF [
+MiBulkRemoveLinesRewriterTest >> testRunInside_eolCRLF [
 
 	bulkEditor content: ( self
 		join: #( 'l1*/5' 'l2_4' 'l3*/_*/10')
@@ -92,7 +92,7 @@ MiBulkRemoveLinesRewriterTest >> testRemoveInside_eolCRLF [
 ]
 
 { #category : 'tests' }
-MiBulkRemoveLinesRewriterTest >> testRemoveInside_eolLF [
+MiBulkRemoveLinesRewriterTest >> testRunInside_eolLF [
 
 	bulkEditor content: ( self
 		join: #( 'l1*/5' 'l2_4' 'l3*/_*/10')
@@ -108,7 +108,7 @@ MiBulkRemoveLinesRewriterTest >> testRemoveInside_eolLF [
 ]
 
 { #category : 'tests' }
-MiBulkRemoveLinesRewriterTest >> testRemoveLast_eolCR [
+MiBulkRemoveLinesRewriterTest >> testRunLast_eolCR [
 
 	bulkEditor content: ( self
 		join: #( 'l1*/5' 'l2_4' 'l3*/_*/10')
@@ -124,7 +124,7 @@ MiBulkRemoveLinesRewriterTest >> testRemoveLast_eolCR [
 ]
 
 { #category : 'tests' }
-MiBulkRemoveLinesRewriterTest >> testRemoveLast_eolCRLF [
+MiBulkRemoveLinesRewriterTest >> testRunLast_eolCRLF [
 
 	bulkEditor content: ( self
 		join: #( 'l1*/5' 'l2_4' 'l3*/_*/10')
@@ -140,7 +140,7 @@ MiBulkRemoveLinesRewriterTest >> testRemoveLast_eolCRLF [
 ]
 
 { #category : 'tests' }
-MiBulkRemoveLinesRewriterTest >> testRemoveLast_eolLF [
+MiBulkRemoveLinesRewriterTest >> testRunLast_eolLF [
 
 	bulkEditor content: ( self
 		join: #( 'l1*/5' 'l2_4' 'l3*/_*/10')
@@ -156,7 +156,7 @@ MiBulkRemoveLinesRewriterTest >> testRemoveLast_eolLF [
 ]
 
 { #category : 'tests' }
-MiBulkRemoveLinesRewriterTest >> testRemoveMultipleIntervals_eolCR [
+MiBulkRemoveLinesRewriterTest >> testRunMultipleIntervals_eolCR [
 
 	bulkEditor content: ( self
 		join: #( 'l1*/5' 'l2_4' 'l3*/_*/10')
@@ -172,7 +172,7 @@ MiBulkRemoveLinesRewriterTest >> testRemoveMultipleIntervals_eolCR [
 ]
 
 { #category : 'tests' }
-MiBulkRemoveLinesRewriterTest >> testRemoveMultipleIntervals_eolCRLF [
+MiBulkRemoveLinesRewriterTest >> testRunMultipleIntervals_eolCRLF [
 
 	bulkEditor content: ( self
 		join: #( 'l1*/5' 'l2_4' 'l3*/_*/10')
@@ -188,7 +188,7 @@ MiBulkRemoveLinesRewriterTest >> testRemoveMultipleIntervals_eolCRLF [
 ]
 
 { #category : 'tests' }
-MiBulkRemoveLinesRewriterTest >> testRemoveMultipleIntervals_eolLF [
+MiBulkRemoveLinesRewriterTest >> testRunMultipleIntervals_eolLF [
 
 	bulkEditor content: ( self
 		join: #( 'l1*/5' 'l2_4' 'l3*/_*/10')

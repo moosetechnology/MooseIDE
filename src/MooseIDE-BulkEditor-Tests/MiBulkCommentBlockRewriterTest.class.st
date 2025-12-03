@@ -12,7 +12,7 @@ MiBulkCommentBlockRewriterTest >> classToTest [
 ]
 
 { #category : 'tests' }
-MiBulkCommentBlockRewriterTest >> testCommentOutFirstLine_eolCR [
+MiBulkCommentBlockRewriterTest >> testRunFirstLine_eolCR [
 
 	bulkEditor content: ( self
 		join: #( 'l1__5' 'l2_4' 'l3______10')
@@ -32,7 +32,7 @@ MiBulkCommentBlockRewriterTest >> testCommentOutFirstLine_eolCR [
 ]
 
 { #category : 'tests' }
-MiBulkCommentBlockRewriterTest >> testCommentOutFirstLine_eolCRLF [
+MiBulkCommentBlockRewriterTest >> testRunFirstLine_eolCRLF [
 
 	bulkEditor content: ( self
 		join: #( 'l1__5' 'l2_4' 'l3______10')
@@ -52,7 +52,7 @@ MiBulkCommentBlockRewriterTest >> testCommentOutFirstLine_eolCRLF [
 ]
 
 { #category : 'tests' }
-MiBulkCommentBlockRewriterTest >> testCommentOutFirstLine_eolLF [
+MiBulkCommentBlockRewriterTest >> testRunFirstLine_eolLF [
 
 	bulkEditor content: ( self
 		join: #( 'l1__5' 'l2_4' 'l3______10')
@@ -72,7 +72,7 @@ MiBulkCommentBlockRewriterTest >> testCommentOutFirstLine_eolLF [
 ]
 
 { #category : 'tests' }
-MiBulkCommentBlockRewriterTest >> testCommentOutLastLineNoEnd_eolCR [
+MiBulkCommentBlockRewriterTest >> testRunLastLineNoEnd_eolCR [
 	"last interval go until end of file and there is no end-of-line"
 
 	bulkEditor content: ( self
@@ -93,7 +93,7 @@ MiBulkCommentBlockRewriterTest >> testCommentOutLastLineNoEnd_eolCR [
 ]
 
 { #category : 'tests' }
-MiBulkCommentBlockRewriterTest >> testCommentOutLastLineNoEnd_eolCRLF [
+MiBulkCommentBlockRewriterTest >> testRunLastLineNoEnd_eolCRLF [
 	"last interval go until end of file and there is no end-of-line"
 
 	bulkEditor content: ( self
@@ -114,7 +114,7 @@ MiBulkCommentBlockRewriterTest >> testCommentOutLastLineNoEnd_eolCRLF [
 ]
 
 { #category : 'tests' }
-MiBulkCommentBlockRewriterTest >> testCommentOutLastLineNoEnd_eolLF [
+MiBulkCommentBlockRewriterTest >> testRunLastLineNoEnd_eolLF [
 	"last interval go until end of file and there is no end-of-line"
 
 	bulkEditor content: ( self
@@ -135,7 +135,7 @@ MiBulkCommentBlockRewriterTest >> testCommentOutLastLineNoEnd_eolLF [
 ]
 
 { #category : 'tests' }
-MiBulkCommentBlockRewriterTest >> testCommentOutLastLineWithEnd_eolCR [
+MiBulkCommentBlockRewriterTest >> testRunLastLineWithEnd_eolCR [
 	"last interval go until end of file and there is an end-of-line"
 
 	bulkEditor content: ( self
@@ -156,7 +156,7 @@ MiBulkCommentBlockRewriterTest >> testCommentOutLastLineWithEnd_eolCR [
 ]
 
 { #category : 'tests' }
-MiBulkCommentBlockRewriterTest >> testCommentOutLastLineWithEnd_eolCRLF [
+MiBulkCommentBlockRewriterTest >> testRunLastLineWithEnd_eolCRLF [
 	"last interval go until end of file and there is an end-of-line"
 
 	bulkEditor content: ( self
@@ -177,7 +177,7 @@ MiBulkCommentBlockRewriterTest >> testCommentOutLastLineWithEnd_eolCRLF [
 ]
 
 { #category : 'tests' }
-MiBulkCommentBlockRewriterTest >> testCommentOutLastLineWithEnd_eolLF [
+MiBulkCommentBlockRewriterTest >> testRunLastLineWithEnd_eolLF [
 	"last interval go until end of file and there is an end-of-line"
 
 	bulkEditor content: ( self
@@ -198,7 +198,7 @@ MiBulkCommentBlockRewriterTest >> testCommentOutLastLineWithEnd_eolLF [
 ]
 
 { #category : 'tests' }
-MiBulkCommentBlockRewriterTest >> testCommentOutLineWithComment [
+MiBulkCommentBlockRewriterTest >> testRunLineWithComment [
 
 	bulkEditor content: ( self
 		join: #( 'l1*/5' 'l2_4' 'l3______10')
@@ -218,7 +218,7 @@ MiBulkCommentBlockRewriterTest >> testCommentOutLineWithComment [
 ]
 
 { #category : 'tests' }
-MiBulkCommentBlockRewriterTest >> testCommentOutMiddleLine_eolCR [
+MiBulkCommentBlockRewriterTest >> testRunMiddleLine_eolCR [
 
 	bulkEditor content: ( self
 		join: #( 'l1__5' 'l2_4' 'l3______10')
@@ -238,7 +238,7 @@ MiBulkCommentBlockRewriterTest >> testCommentOutMiddleLine_eolCR [
 ]
 
 { #category : 'tests' }
-MiBulkCommentBlockRewriterTest >> testCommentOutMiddleLine_eolCRLF [
+MiBulkCommentBlockRewriterTest >> testRunMiddleLine_eolCRLF [
 
 	bulkEditor content: ( self
 		join: #( 'l1__5' 'l2_4' 'l3______10')
@@ -258,7 +258,7 @@ MiBulkCommentBlockRewriterTest >> testCommentOutMiddleLine_eolCRLF [
 ]
 
 { #category : 'tests' }
-MiBulkCommentBlockRewriterTest >> testCommentOutMiddleLine_eolLF [
+MiBulkCommentBlockRewriterTest >> testRunMiddleLine_eolLF [
 
 	bulkEditor content: ( self
 		join: #( 'l1__5' 'l2_4' 'l3______10')
