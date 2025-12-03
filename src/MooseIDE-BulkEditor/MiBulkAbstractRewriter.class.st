@@ -164,7 +164,7 @@ MiBulkAbstractRewriter >> isEOL: c [
 	^(c = Character cr) or: [ c = Character lf ]
 ]
 
-{ #category : 'running' }
+{ #category : 'testing' }
 MiBulkAbstractRewriter >> isWaitingForEol [
 
 	^nextLineAction isNotNil
