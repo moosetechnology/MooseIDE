@@ -1,6 +1,6 @@
 Class {
 	#name : 'MiBulkCommentBlockRewriterTest',
-	#superclass : 'MiBulkAbstractTest',
+	#superclass : 'MiBulkRewriterAbstractTest',
 	#category : 'MooseIDE-BulkEditor-Tests',
 	#package : 'MooseIDE-BulkEditor-Tests'
 }
@@ -9,15 +9,6 @@ Class {
 MiBulkCommentBlockRewriterTest >> classToTest [ 
 
 	^MiBulkCommentBlockRewriter 
-]
-
-{ #category : 'running' }
-MiBulkCommentBlockRewriterTest >> setUp [ 
-
-	super setUp.
-
-	bulkEditor stream: String new writeStream.
-
 ]
 
 { #category : 'tests' }
