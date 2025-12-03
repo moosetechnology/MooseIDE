@@ -5,6 +5,20 @@ Class {
 	#package : 'MooseIDE-BulkEditor'
 }
 
+{ #category : 'intervals' }
+MiBulkEditDuplicatedConstantes >> collectIntervals: data [
+	"`data` is a collection of 'entity -> { collection-of-synonym-entities }'"
+
+	^data
+		reject: [ :asso | asso key sourceAnchor isNil ]
+		thenCollect: [ :asso |
+			MiBulkInterval
+				from: asso key sourceAnchor startPos
+				to: asso key sourceAnchor endPos
+				data: asso
+	]
+]
+
 { #category : 'utilities' }
 MiBulkEditDuplicatedConstantes >> groupByFile: data [
 	"First change structure of data
