@@ -27,6 +27,28 @@ Class {
 }
 
 { #category : 'actions' }
+MiBulkAbstractRewriter >> afterEol: c at: i [
+	"Acts after the end-of-line (which can be CR, LF or CR+LF)
+	 Treat possible end of line action if CR or LF alone
+	 if CR in CR+LF, do nothing until following LF (which is the next character)
+	
+	Typically, only one of #beforeEol:at: , #afterEol:at: should be defined"
+
+	self isWaitingForEol ifFalse: [ ^self ].
+
+	(c = Character lf)
+		ifTrue: [
+			self executeNextLineAction.
+			^self ].
+
+	"c = Character cr"
+	((self peekNextC: i) = Character lf)
+		ifFalse: [
+			self executeNextLineAction ]
+
+]
+
+{ #category : 'actions' }
 MiBulkAbstractRewriter >> afterInterval: c [
 	"if isWaitingForEol, it means we are after the interval but consider we are inside
 	 otherwise, all actions default to copying the input"
@@ -36,6 +58,19 @@ MiBulkAbstractRewriter >> afterInterval: c [
 		ifTrue: [ self insideInterval: c ]
 		ifFalse: [ stream << c ]
 
+]
+
+{ #category : 'actions' }
+MiBulkAbstractRewriter >> beforeEol: c at: i [
+	"Acts before the end-of-line (which can be CR, LF or CR+LF)
+	 On CR or LF alone, executeNextLineAction
+	 if LF in CRLF, preceeding CR will have emptied the nextLineAction so ends up doing nothing	
+
+	Typically, only one of #beforeEol:at: , #afterEol:at: should be defined"
+
+	self isWaitingForEol ifFalse: [ ^self ].
+
+	self executeNextLineAction
 ]
 
 { #category : 'actions' }
@@ -123,30 +158,16 @@ MiBulkAbstractRewriter >> intervalStart: c [
 
 ]
 
+{ #category : 'testing' }
+MiBulkAbstractRewriter >> isEOL: c [
+
+	^(c = Character cr) or: [ c = Character lf ]
+]
+
 { #category : 'running' }
 MiBulkAbstractRewriter >> isWaitingForEol [
 
 	^nextLineAction isNotNil
-]
-
-{ #category : 'actions' }
-MiBulkAbstractRewriter >> lineEnd: c at: i [
-	"Acts after the end-of-line (which can be CR, LF or CR+LF)
-	 Treat possible end of line action if CR or LF alone
-	 if CR in CR+LF, do nothing until following LF (which is the next character)"
-
-	self isWaitingForEol ifFalse: [ ^self ].
-
-	(c = Character lf)
-		ifTrue: [
-			self executeNextLineAction.
-			^self ].
-
-	"c = Character cr"
-	((self peekNextC: i) = Character lf)
-		ifFalse: [
-			self executeNextLineAction ]
-
 ]
 
 { #category : 'actions' }
@@ -176,6 +197,7 @@ MiBulkAbstractRewriter >> run [
 	self getNextInterval.
 
 	content withIndexDo: [ :c :i |
+		(self isEOL: c) ifTrue: [ self beforeEol: c at: i ].
 		self switchCases: {
 			[ i < interval first ] -> [ self beforeInterval: c ] .
 			[ i = interval first ] -> [ self intervalStart: c ] .
@@ -184,8 +206,7 @@ MiBulkAbstractRewriter >> run [
 			[ true ]               -> [ self insideInterval: c ]
 		}.
 
-		((c = Character cr) or: [ c = Character lf ])
-			ifTrue: [ self lineEnd: c at: i].
+		(self isEOL: c) ifTrue: [ self afterEol: c at: i ].
 
 		previousC := c
 	].

@@ -9,6 +9,13 @@ Class {
 }
 
 { #category : 'actions' }
+MiBulkCommentBlockRewriter >> beforeEol: c at: i [
+	"Nothing to do before EOL
+	Typically, only one of #beforeEol:at: , #afterEol:at: should be defined"
+
+]
+
+{ #category : 'actions' }
 MiBulkCommentBlockRewriter >> insideInterval: c [
 	"all actions default to copying the input"
 

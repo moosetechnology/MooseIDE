@@ -9,6 +9,13 @@ Class {
 }
 
 { #category : 'actions' }
+MiBulkRemoveLinesRewriter >> beforeEol: c at: i [
+	"Nothing to do before EOL
+	Typically, only one of #beforeEol:at: , #afterEol:at: should be defined"
+
+]
+
+{ #category : 'actions' }
 MiBulkRemoveLinesRewriter >> endOfFile [
 	"nothing to do"
 ]
