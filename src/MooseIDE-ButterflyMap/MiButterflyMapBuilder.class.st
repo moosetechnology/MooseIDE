@@ -134,14 +134,19 @@ MiButterflyMapBuilder >> colorFor: node [
 MiButterflyMapBuilder >> initialize [
 
 	super initialize.
+
 	self linkStyler: (HLinkStyler new
 			 lineBuilder:
 				 (RSLineBuilder arrowedLineWithOffset: 0.5)
 					 withHorizontalAttachPoint;
 			 yourself).
+
 	shapes := RSGroup new.
+
 	incomingGroups := OrderedCollection new.
-	outgoingGroups := OrderedCollection new
+	outgoingGroups := OrderedCollection new.
+
+	self popup text: [ :hnode | hnode rawModel mooseName ]
 ]
 
 { #category : 'rendering' }
@@ -172,13 +177,13 @@ MiButterflyMapBuilder >> nodeAnnouncer [
 
 	baseNode ifNotNil: [ ^ baseNode announcer ].
 	baseNode := RSComposite new
-		            @ self popup;
-		            @ RSDraggable new;
-		            @ self menuInteraction;
-		            @ self highlightable;
-		            @ RSNodeOnTopWhenPositionChanged new;
-		            @ HResizeParentWhenChildMoves new;
-		            yourself.
+		@ self popup;
+		@ RSDraggable new;
+		@ self menuInteraction;
+		@ self highlightable;
+		@ RSNodeOnTopWhenPositionChanged new;
+		@ HResizeParentWhenChildMoves new;
+		yourself.
 	^ baseNode announcer
 ]
 
