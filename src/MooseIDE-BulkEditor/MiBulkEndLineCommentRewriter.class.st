@@ -9,8 +9,9 @@ statics := attributes select: [ :a |
 	[ a isClassSide and: 
 	[ a declaredType ifNil: [ false ] ifNotNil: [ :typ | typ name = 'String'] ] ] ].
 constantes := statics select: [ :a | [a getFAST expression isLiteral] on: Error do: [ false ] ].
-(constantes groupedBy: [ :a | a getFAST expression primitiveValue asLowercase ])
-	associations select: [ :a | (a value size >= 2) and: [ a key size > 2 ] ]```
+(constantes groupedBy: [ :a | a getFAST expression primitiveValue ])
+	associations select: [ :a | (a value size >= 2) and: [ a key size > 2 ] ]
+```
 "
 Class {
 	#name : 'MiBulkEndLineCommentRewriter',
