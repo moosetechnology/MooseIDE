@@ -46,6 +46,12 @@ MiButterflyMapBrowser class >> menuCommandOn: aBuilder [
 ]
 
 { #category : 'world menu' }
+MiButterflyMapBrowser class >> menuIconName [
+
+	^ #mooseButterfly
+]
+
+{ #category : 'world menu' }
 MiButterflyMapBrowser class >> menuItem [
 
 	^ #ButterflyMapBrowser
