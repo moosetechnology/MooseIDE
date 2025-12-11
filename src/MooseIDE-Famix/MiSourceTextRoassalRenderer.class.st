@@ -50,7 +50,7 @@ MiSourceTextRoassalRenderer >> applyTagHighlight: aHighlight [
 
 	roassalTextRenderer
 		addAttribute: (RSTagEmphasisAttribute new
-				 color: aHighlight highlightedEntity color;
+				 color: aHighlight color;
 				 on: RSMouseClick
 				 do: [ :event |
 					 model selectedEntity: aHighlight highlightedEntity ])
