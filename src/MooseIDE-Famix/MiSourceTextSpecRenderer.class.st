@@ -1,9 +1,11 @@
 "
-A renderer of highlighted source text using Spec SpTextPresenter.
-Ideally it would be subclass of a MiSourceTextAbstractRenderer, but it also need to inherit from SpTextPresenter
+A renderer of highlighted source text using `SpTextPresenter`.
+It can `MiSourceTextSpecRenderer >> #renderTextFor: anEntity` by applying the highlights of its `#model`
+Highlighting relies on Famix: to get the SourceLanguage keywords and to get the position of Famix entities.
+Some parts of the text are clickable and will trigger `MiSourceTextSpecRenderer >> #activateTransmissionWithValue:` (because the renderer uses `SpTActivable`)
 
-A renderer has a MiSourceTextBrowserModel and a browser.
-It can #renderText by applying the highlights of its #model
+A renderer has a `MiSourceTextBrowserModel` and a parent browser which can be a `MiSourceTextBrowser` or an Inspector.
+
 "
 Class {
 	#name : 'MiSourceTextSpecRenderer',
@@ -12,7 +14,6 @@ Class {
 	#classTraits : 'SpTActivable classTrait',
 	#instVars : [
 		'#formatedText',
-		'#sourceAnchorAdapter',
 		'#rendererModel',
 		'#selectedItem => ObservableSlot'
 	],
@@ -81,18 +82,12 @@ MiSourceTextSpecRenderer >> applyKeywordHighlight: aHighlight [
 { #category : 'formatting' }
 MiSourceTextSpecRenderer >> applyTagHighlight: aHighlight [
 
-	self applyHighlight: aHighlight markers: (self tagMarkers: aHighlight tag)
+	self applyHighlight: aHighlight markers: (self tagMarkers: aHighlight color)
 ]
 
 { #category : 'accessing' }
 MiSourceTextSpecRenderer >> browser [
 	^self owner
-]
-
-{ #category : 'formatting' }
-MiSourceTextSpecRenderer >> clearFormating [
-
-	formatedText := formatedText asString asText
 ]
 
 { #category : 'formatting' }
@@ -156,8 +151,6 @@ MiSourceTextSpecRenderer >> initialize [
 	super initialize.
 	self beNotEditable.
 
-	sourceAnchorAdapter := MiSourceTextNullAdapter new.
-
 ]
 
 { #category : 'accessing - markers' }
@@ -167,15 +160,13 @@ MiSourceTextSpecRenderer >> keywordMarkers [
 ]
 
 { #category : 'rendering' }
-MiSourceTextSpecRenderer >> reRenderText [
-	"Apply highlights if needed
-	 Re-display (requires to clear the text first)"
+MiSourceTextSpecRenderer >> renderText [
 
-	self clearFormating.
+	formatedText := rendererModel displayedText asText.
 
 	rendererModel highlights do: [ :hlght |
-			hlght adaptSourceAnchorWith: self sourceAnchorAdapter.
-			hlght hasInterval ifTrue: [ hlght applyTo: self ] ].
+			hlght hasInterval
+				ifTrue: [ hlght applyTo: self ] ].
 
 	self clearContent.
 	self text: formatedText
@@ -183,18 +174,8 @@ MiSourceTextSpecRenderer >> reRenderText [
 
 { #category : 'rendering' }
 MiSourceTextSpecRenderer >> renderTextFor: anEntity [
-	
-	formatedText := rendererModel displayedText asText.
 
-	[
-		sourceAnchorAdapter := MiAbstractSourceTextAnchorAdapter adapterFor: anEntity.
-		sourceAnchorAdapter initializeDisplayedText: formatedText andEntity: anEntity.
-
-		self reRenderText
-	]
-	on: Error
-	do: [ :err | "nothing but at least  display unadorned text" ]
-
+	rendererModel renderTextFor: anEntity
 ]
 
 { #category : 'accessing' }
@@ -216,14 +197,8 @@ MiSourceTextSpecRenderer >> setModelBeforeInitialization: aModel [
 	self rendererModel: aModel
 ]
 
-{ #category : 'accessing' }
-MiSourceTextSpecRenderer >> sourceAnchorAdapter [
-
-	^sourceAnchorAdapter
-]
-
 { #category : 'accessing - markers' }
-MiSourceTextSpecRenderer >> tagMarkers: aTag [
+MiSourceTextSpecRenderer >> tagMarkers: aColor [
 
-	^{TextColor color: aTag color}
+	^{TextColor color: aColor}
 ]
