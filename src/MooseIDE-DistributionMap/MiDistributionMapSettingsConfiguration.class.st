@@ -2,10 +2,10 @@ Class {
 	#name : 'MiDistributionMapSettingsConfiguration',
 	#superclass : 'MiAbstractSettingsConfiguration',
 	#instVars : [
-		'baseColor',
 		'childrenQuery',
 		'tags',
-		'availableTags'
+		'availableTags',
+		'baseColor'
 	],
 	#category : 'MooseIDE-DistributionMap',
 	#package : 'MooseIDE-DistributionMap'
@@ -60,8 +60,6 @@ MiDistributionMapSettingsConfiguration >> settingsPresenters [
 If an entity has several tags, it will get the color of the first of its tags appearing in the list';
 				   yourself);
 		  add: ((MiColorSelectionPresenter on: self)
-				   color: baseColor;
-				   whenColorChangedDo: [ :newColor | self baseColor: newColor ];
 				   label: 'Default entity color:';
 				   help: 'Color used when no property applies to an entity');
 		  yourself

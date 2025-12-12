@@ -190,6 +190,13 @@ MiDistributionMapModel >> orderOuterNodes: aCollectionOfNodes [
 	^ engine orderDendrogramLeaves collect: #item
 ]
 
+{ #category : 'settings management' }
+MiDistributionMapModel >> settingsPresenterExtent [
+	"Override to set a custom size"
+
+	^ 425 @ 300
+]
+
 { #category : 'querying' }
 MiDistributionMapModel >> tagFor: anEntity [
 
