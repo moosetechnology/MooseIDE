@@ -1,6 +1,6 @@
-Extension { #name : #RSUMLClassDescriptor }
+Extension { #name : 'RSUMLClassDescriptor' }
 
-{ #category : #'*MooseIDE-Meta' }
+{ #category : '*MooseIDE-Meta' }
 RSUMLClassDescriptor >> forFame [
 
 	self
