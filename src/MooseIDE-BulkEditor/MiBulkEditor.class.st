@@ -1,16 +1,17 @@
 "
-Bulk editor on a Java file: comment out a collection of methods
+Bulk editor on Java files: comment out or remove a collection of methods
 Can be applied for example on dead methods:
 - compute all dead methods in a file -> `deadMethodCollection`
 - call: `MiBulkEditor new runOn: deadMethodCollection.`
-- Output the resulting lines in a file
+
+The following will comment out or remove a list of methods from their respective source files
 ```
 bulkEditor := MiBulkEditor new.
-bulkEditor runOn: deadMethods.
-file := 'SomeFile.java' asFileReference.
-file ifExists: [ file delete ].
-file writeStreamDo: [ :st | bulkEditor lines do: [ :line | st << line ; cr ] ].
+bulkEditor runOn: <deadMethodCollection>.
 ```
+
+The default is to comment out the methods: `bulkEditor commentLines`
+The editor can be instructed to remove the methods from their files: `bulkEditor removeLines`
 "
 Class {
 	#name : 'MiBulkEditor',
