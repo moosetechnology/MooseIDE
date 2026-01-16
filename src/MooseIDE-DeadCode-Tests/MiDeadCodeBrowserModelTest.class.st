@@ -200,6 +200,7 @@ MiDeadCodeBrowserModelTest >> testIsNewDead [
 
 { #category : 'tests - heuristics' }
 MiDeadCodeBrowserModelTest >> testJavaAnnotationHeuristicDeadNoAnnotation [
+	"Unused method with no annotation is dead"
 
 	| entity |
 	entity := FamixJavaMethod new.
@@ -209,6 +210,7 @@ MiDeadCodeBrowserModelTest >> testJavaAnnotationHeuristicDeadNoAnnotation [
 
 { #category : 'tests - heuristics' }
 MiDeadCodeBrowserModelTest >> testJavaAnnotationHeuristicDeadWrongAnnotation [
+	"Unused method with @Deprecated annotation is dead"
 
 	| entity |
 	entity := self javaMethod: 'someFunctionality' annotatedWith: 'Deprecated'.
@@ -218,6 +220,7 @@ MiDeadCodeBrowserModelTest >> testJavaAnnotationHeuristicDeadWrongAnnotation [
 
 { #category : 'tests - heuristics' }
 MiDeadCodeBrowserModelTest >> testJavaAnnotationHeuristicNotDead [
+	"Unused method with JUnit annotation is not dead"
 
 	| entity |
 	entity := self javaMethod: 'someFunctionality' annotatedWith: 'BeforeClass'.
@@ -227,6 +230,7 @@ MiDeadCodeBrowserModelTest >> testJavaAnnotationHeuristicNotDead [
 
 { #category : 'tests - heuristics' }
 MiDeadCodeBrowserModelTest >> testJavaHasOverridingHeuristicDead [
+	"Unused method (entity1.doSomething()) with sub-method declaring @Override is not dead"
 
 	| entity1 entity2 annotation |
 	entity1 := self javaClassMethod: 'doSomething()'.
@@ -247,6 +251,8 @@ MiDeadCodeBrowserModelTest >> testJavaHasOverridingHeuristicDead [
 
 { #category : 'tests - heuristics' }
 MiDeadCodeBrowserModelTest >> testJavaHasOverridingHeuristicDeadNoAnnotation [
+	"Unused method (entity1.doSomething()) with sub-method not declaring @Override is dead"
+
 	| entity1 entity2 |
 	entity1 := self javaClassMethod: 'doSomething()'.
 	entity2 := self javaClassMethod: 'doSomething()'.
@@ -257,6 +263,8 @@ MiDeadCodeBrowserModelTest >> testJavaHasOverridingHeuristicDeadNoAnnotation [
 
 { #category : 'tests - heuristics' }
 MiDeadCodeBrowserModelTest >> testJavaHasOverridingHeuristicDeadNoOverride [
+	"Unused method (entity1.doSomething()) with sub-method not declaring @Override is dead"
+
 	| entity1 entity2 annotation |
 
 	entity1 := self javaClassMethod: 'doSomething()'.
@@ -279,6 +287,9 @@ MiDeadCodeBrowserModelTest >> testJavaHasOverridingHeuristicDeadNoOverride [
 
 { #category : 'tests - heuristics' }
 MiDeadCodeBrowserModelTest >> testJavaHasOverridingHeuristicDeadNoSubMethod [
+	"Unused method (entity1.doSomething()) with sub-method declaring @Override is dead
+	 (note: entity1.doSomething() is not a sub method of entity1.doSomething()"
+
 	| entity1 entity2 annotation |
 
 	entity1 := self javaClassMethod: 'doSomething()'.
@@ -298,26 +309,55 @@ MiDeadCodeBrowserModelTest >> testJavaHasOverridingHeuristicDeadNoSubMethod [
 
 { #category : 'tests - heuristics' }
 MiDeadCodeBrowserModelTest >> testJavaImplementsHeuristicNoInterface [
+	"Unused method (entity1.doSomething()) not implementing an abtract declaration is dead"
 
 	| entity1 |
 	entity1 := self javaClassMethod: 'doSomething()'.
 
-	self assert: (MiDeadCodeJavaImplementsInterfaceHeuristic new isDead: entity1)
+	self assert: (MiDeadCodeJavaImplementsAbstractHeuristic new isDead: entity1)
 ]
 
 { #category : 'tests - heuristics' }
 MiDeadCodeBrowserModelTest >> testJavaImplementsHeuristicNoOverride [
+	"Unused method (entity1.doSomething())) implementing an interface declaration is not dead
+	 (according to MiDeadCodeJavaImplementsAbstractHeuristic)"
 
 	| entity1 entity2 |
 	entity1 := self javaClassMethod: 'doSomething()'.
 	entity2 := self javaInterfaceMethod: 'doSomething()'.
 	self javaClass: entity1 parentType implements: entity2 parentType.
 
-	self deny: (MiDeadCodeJavaImplementsInterfaceHeuristic new isDead: entity1)
+	self deny: (MiDeadCodeJavaImplementsAbstractHeuristic new isDead: entity1)
+]
+
+{ #category : 'tests - heuristics' }
+MiDeadCodeBrowserModelTest >> testJavaImplementsHeuristicNotAbstract [
+	"Unused method (entity1.doSomething()) overriding a super-method is dead"
+
+	| entity1 entity2 |
+	entity1 := self javaClassMethod: 'doSomething()'.
+	entity2 := self javaClassMethod: 'doSomething()'.
+	self javaClass: entity1 parentType inherits: entity2 parentType.
+
+	self assert: (MiDeadCodeJavaImplementsAbstractHeuristic new isDead: entity1)
+]
+
+{ #category : 'tests - heuristics' }
+MiDeadCodeBrowserModelTest >> testJavaImplementsHeuristicWithAbstract [
+	"Unused method (entity1.doSomething()) overriding an abstract super-method is not dead"
+
+	| entity1 entity2 |
+	entity1 := self javaClassMethod: 'doSomething()'.
+	entity2 := self javaClassMethod: 'doSomething()'.
+	entity2 isAbstract: true.
+	self javaClass: entity1 parentType inherits: entity2 parentType.
+
+	self deny: (MiDeadCodeJavaImplementsAbstractHeuristic new isDead: entity1)
 ]
 
 { #category : 'tests - heuristics' }
 MiDeadCodeBrowserModelTest >> testJavaImplementsHeuristicWithOverride [
+	"Unused method (entity1.doSomething()) implementing an interface declaration but overriding a concrete implementation is dead"
 
 	| entity1 entity2 entity3 |
 	entity1 := self javaClassMethod: 'doSomething()'.
@@ -326,11 +366,14 @@ MiDeadCodeBrowserModelTest >> testJavaImplementsHeuristicWithOverride [
 	self javaClass: entity1 parentType inherits: entity2 parentType.
 	self javaClass: entity1 parentType implements: entity3 parentType.
 
-	self assert: (MiDeadCodeJavaImplementsInterfaceHeuristic new isDead: entity1)
+	self assert: (MiDeadCodeJavaImplementsAbstractHeuristic new isDead: entity1)
 ]
 
 { #category : 'tests - heuristics' }
 MiDeadCodeBrowserModelTest >> testJavaOverridesHeuristicDeadNoInterface [
+	"Unused method (entity1.doSomething()) is dead
+	 note: no link between entity1 and entity2"
+
 	| entity1 entity2 |
 	entity1 := self javaClassMethod: 'doSomething()'.
 	entity2 := self javaInterfaceMethod: 'doSomething()'.
@@ -341,6 +384,8 @@ MiDeadCodeBrowserModelTest >> testJavaOverridesHeuristicDeadNoInterface [
 
 { #category : 'tests - heuristics' }
 MiDeadCodeBrowserModelTest >> testJavaOverridesHeuristicDeadNoInvocation [
+	"Unused method implementing an interface declaration is dead
+	 (according to MiDeadCodeJavaOverridesInvokedHeuristic)"
 
 	| entity1 entity2 |
 	entity1 := self javaClassMethod: 'doSomething()'.
@@ -352,6 +397,9 @@ MiDeadCodeBrowserModelTest >> testJavaOverridesHeuristicDeadNoInvocation [
 
 { #category : 'tests - heuristics' }
 MiDeadCodeBrowserModelTest >> testJavaOverridesHeuristicDeadNoMethod [
+	"Unused method (entity1.doSomething()) with no implementing sub-method used is dead
+	 (according to MiDeadCodeJavaOverridesInvokedHeuristic)
+	 note: methods names are different"
 
 	| entity1 entity2 |
 	entity1 := self javaClassMethod: 'doSomething()'.
@@ -364,6 +412,8 @@ MiDeadCodeBrowserModelTest >> testJavaOverridesHeuristicDeadNoMethod [
 
 { #category : 'tests - heuristics' }
 MiDeadCodeBrowserModelTest >> testJavaOverridesHeuristicNotDead [
+	"Unused method (entity1.doSomething()) with implementing sub-method used is not dead
+	 (according to MiDeadCodeJavaOverridesInvokedHeuristic)"
 
 	| entity1 entity2 |
 	entity1 := self javaClassMethod: 'doSomething()'.
@@ -572,11 +622,11 @@ MiDeadCodeBrowserModelTest >> testRecursionRoundNotAddingOutsideFollwedEntities 
 MiDeadCodeBrowserModelTest >> testSortHeuristics [
 
 	model chooseHeuristics: {
-		MiDeadCodeJavaImplementsInterfaceHeuristic new .
+		MiDeadCodeJavaImplementsAbstractHeuristic new .
 		MiDeadCodeJavaTestAnnotationHeuristic new }.
 
 	self assert: model chosenHeuristics size equals: 3.
-	self assert: model chosenHeuristics first  class equals: MiDeadCodeJavaImplementsInterfaceHeuristic.
+	self assert: model chosenHeuristics first  class equals: MiDeadCodeJavaImplementsAbstractHeuristic.
 	self assert: model chosenHeuristics second class equals: MiDeadCodeJavaTestAnnotationHeuristic.
 	self assert: model chosenHeuristics third  class equals: MiDeadCodeNoIncomingInvocationHeuristic.
 ]
