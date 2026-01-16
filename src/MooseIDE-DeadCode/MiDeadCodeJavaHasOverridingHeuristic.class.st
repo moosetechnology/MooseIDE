@@ -1,3 +1,8 @@
+"
+A method having an ""@Override"" sub-method (in a subclass) is assumed not-dead,
+because one cannot remove the overriden method
+(@Override makes it mandatory to have a super-method)
+"
 Class {
 	#name : 'MiDeadCodeJavaHasOverridingHeuristic',
 	#superclass : 'MiDeadCodeAbstractJavaHeuristic',

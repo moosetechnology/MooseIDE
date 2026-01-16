@@ -23,7 +23,7 @@ Class {
 { #category : 'testing' }
 MiDeadCodeAbstractHeuristic class >> isAbstract [
 
-	^self name includesSubstring: 'Abstract'
+	^self name includesSubstring: 'MiDeadCodeAbstract'
 ]
 
 { #category : 'accessing' }
