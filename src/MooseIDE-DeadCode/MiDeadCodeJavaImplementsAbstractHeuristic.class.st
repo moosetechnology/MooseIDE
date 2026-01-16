@@ -4,7 +4,7 @@ A heuristic to recognize methods overriding another method that is called.
 If a method in a super-class (or interface) is called, we assume any method implementing it in a concrete class can be called
 "
 Class {
-	#name : 'MiDeadCodeJavaImplementsInterfaceHeuristic',
+	#name : 'MiDeadCodeJavaImplementsAbstractHeuristic',
 	#superclass : 'MiDeadCodeAbstractJavaHeuristic',
 	#category : 'MooseIDE-DeadCode-Rules',
 	#package : 'MooseIDE-DeadCode',
@@ -12,7 +12,7 @@ Class {
 }
 
 { #category : 'testing' }
-MiDeadCodeJavaImplementsInterfaceHeuristic >> any: tWithMethods declaresMethod: aTMethod [
+MiDeadCodeJavaImplementsAbstractHeuristic >> any: tWithMethods declaresMethod: aTMethod [
 
 	tWithMethods do: [ :aTWithMethods |
 		aTWithMethods methods
@@ -24,7 +24,7 @@ MiDeadCodeJavaImplementsInterfaceHeuristic >> any: tWithMethods declaresMethod: 
 ]
 
 { #category : 'testing' }
-MiDeadCodeJavaImplementsInterfaceHeuristic >> collect: tWithMethods definedMethod: aTMethod [
+MiDeadCodeJavaImplementsAbstractHeuristic >> collect: tWithMethods definedMethod: aTMethod [
 
 	^tWithMethods
 		collect: [ :aTWithMethods |
@@ -37,20 +37,20 @@ MiDeadCodeJavaImplementsInterfaceHeuristic >> collect: tWithMethods definedMetho
 ]
 
 { #category : 'accessing' }
-MiDeadCodeJavaImplementsInterfaceHeuristic >> description [
+MiDeadCodeJavaImplementsAbstractHeuristic >> description [
 
 	^super description ,
 	'A method implementing an abstract method, even dead, is needed for the implementation'
 ]
 
 { #category : 'accessing' }
-MiDeadCodeJavaImplementsInterfaceHeuristic >> name [
+MiDeadCodeJavaImplementsAbstractHeuristic >> name [
 
 	^super name , 'Implements abstract method'
 ]
 
 { #category : 'testing' }
-MiDeadCodeJavaImplementsInterfaceHeuristic >> notDead: aTMethod [
+MiDeadCodeJavaImplementsAbstractHeuristic >> notDead: aTMethod [
 	"- Get all methods defined in super-classes
 	   - if any one is not abstract, then return false, the rule does not apply
 	   - if there is one, it must be abstract, return true (is not dead)
