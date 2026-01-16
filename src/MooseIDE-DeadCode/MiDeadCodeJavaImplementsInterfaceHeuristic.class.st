@@ -24,44 +24,55 @@ MiDeadCodeJavaImplementsInterfaceHeuristic >> any: tWithMethods declaresMethod: 
 ]
 
 { #category : 'testing' }
-MiDeadCodeJavaImplementsInterfaceHeuristic >> any: tWithMethods definesMethod: aTMethod [
+MiDeadCodeJavaImplementsInterfaceHeuristic >> collect: tWithMethods definedMethod: aTMethod [
 
-	tWithMethods do: [ :aTWithMethods |
-		aTWithMethods methods
-			detect: [ :mth | (mth signature = aTMethod signature) and: [mth isAbstract not] ]
-			ifOne: [ :mth | ^true ]
-	].
+	^tWithMethods
+		collect: [ :aTWithMethods |
+			aTWithMethods methods
+				detect: [ :mth | mth signature = aTMethod signature ]
+				ifNone: [ nil ]
+		]
+		thenReject: #isNil
 
-	^false
 ]
 
 { #category : 'accessing' }
 MiDeadCodeJavaImplementsInterfaceHeuristic >> description [
 
 	^super description ,
-	'A method implementing an interface method, even dead, is needed for the implementation'
+	'A method implementing an abstract method, even dead, is needed for the implementation'
 ]
 
 { #category : 'accessing' }
 MiDeadCodeJavaImplementsInterfaceHeuristic >> name [
 
-	^super name , 'Implements interface method'
+	^super name , 'Implements abstract method'
 ]
 
 { #category : 'testing' }
 MiDeadCodeJavaImplementsInterfaceHeuristic >> notDead: aTMethod [
-	"if the method overrides a class method, this rule does not apply (return false))
-	 otherwise if the method implements an interface method, then it is not dead"
+	"- Get all methods defined in super-classes
+	   - if any one is not abstract, then return false, the rule does not apply
+	   - if there is one, it must be abstract, return true (is not dead)
+	 - Look at all methods defined in implemented interface
+	   if any matches this method then return true (is not dead)"
 
-	| superclasses implementedInterfaces |
+	| superclasses definedMethods implementedInterfaces |
 
 	superclasses := aTMethod parentType superclassHierarchy
 		reject: #isNil. "protect against a bug in VerveineJ"
-	(self any: superclasses definesMethod: aTMethod)
-		ifTrue: [ ^false ].
+
+	definedMethods := self collect: superclasses definedMethod: aTMethod.
+	
+	definedMethods
+		detect: [ :definedMethod | definedMethod isAbstract not ]
+		ifOne: [ :definedMethod | ^false ].
+
+	definedMethods ifNotEmpty: [ ^true ].
 
 	implementedInterfaces := ({ aTMethod parentType } , superclasses)
 		flatCollectAsSet: [ :c | self implementedInterfaceHierarchy: c ].
+
 	(self any: implementedInterfaces declaresMethod: aTMethod)
 		ifTrue: [ ^true ].
 
