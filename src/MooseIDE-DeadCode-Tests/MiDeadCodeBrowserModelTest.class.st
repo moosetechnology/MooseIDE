@@ -331,6 +331,31 @@ MiDeadCodeBrowserModelTest >> testJavaImplementsHeuristicNoOverride [
 ]
 
 { #category : 'tests - heuristics' }
+MiDeadCodeBrowserModelTest >> testJavaImplementsHeuristicNotAbstract [
+	"Unused method (entity1.doSomething()) overriding a super-method is dead"
+
+	| entity1 entity2 |
+	entity1 := self javaClassMethod: 'doSomething()'.
+	entity2 := self javaClassMethod: 'doSomething()'.
+	self javaClass: entity1 parentType inherits: entity2 parentType.
+
+	self assert: (MiDeadCodeJavaImplementsAbstractHeuristic new isDead: entity1)
+]
+
+{ #category : 'tests - heuristics' }
+MiDeadCodeBrowserModelTest >> testJavaImplementsHeuristicWithAbstract [
+	"Unused method (entity1.doSomething()) overriding an abstract super-method is not dead"
+
+	| entity1 entity2 |
+	entity1 := self javaClassMethod: 'doSomething()'.
+	entity2 := self javaClassMethod: 'doSomething()'.
+	entity2 isAbstract: true.
+	self javaClass: entity1 parentType inherits: entity2 parentType.
+
+	self deny: (MiDeadCodeJavaImplementsAbstractHeuristic new isDead: entity1)
+]
+
+{ #category : 'tests - heuristics' }
 MiDeadCodeBrowserModelTest >> testJavaImplementsHeuristicWithOverride [
 	"Unused method (entity1.doSomething()) implementing an interface declaration but overriding a concrete implementation is dead"
 
