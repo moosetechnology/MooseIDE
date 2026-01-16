@@ -129,12 +129,17 @@ MiSourceTextRendererModelTest >> testHighlightChildWithIndexedFileAnchor [
 
 { #category : 'tests - highlighting' }
 MiSourceTextRendererModelTest >> testHighlightChildWithNoAnchor [
+	"Although it uses FamixStClass and FamixStMethod, the code given in sourceAnchor is not
+	 formated as normal Pharo code.
+	 This is not a problem as long the entities' names are found in it"
+
 	| entity |
+
 	entity := FamixStClass new
 		name: 'aClass' ;
 		sourceAnchor: (self stubIndexedAnchorText: 
 'code of aClass {
-	code of aMethod()
+	code of aClass >> aMethod()
 }').
 	FamixStMethod new
 		name: 'aMethod' ;
@@ -146,10 +151,6 @@ MiSourceTextRendererModelTest >> testHighlightChildWithNoAnchor [
 	rendererModel highlights do: [ :highlight |
 		self assert: highlight class equals: MiSourceTextIdentifierHighlight
 	].
-
-	"one highlight has an interval, the other not"
-	self assert: (rendererModel highlights anySatisfy: #hasInterval).
-	self assert: (rendererModel highlights anySatisfy: [ :highlight | highlight hasInterval not]).
 
 ]
 

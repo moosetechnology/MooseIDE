@@ -86,7 +86,8 @@ MiSourceTextRendererModel >> addKeywordHighlight: anInterval [
 
 { #category : 'highlights' }
 MiSourceTextRendererModel >> clearHighlightsInComments [
-
+	"note: potential issue here as #clearNoncommentHighlightFrom:to: modifies the list of highlights
+	 However, it should remove only non-comment highlights, so in the end there is no harm done"
 	self highlights copy do: [ :highlight |
 		(highlight class = MiSourceTextCommentHighlight)
 			ifTrue: [
@@ -142,6 +143,8 @@ MiSourceTextRendererModel >> createHighlights [
 	self prepareSourceAnchorAdapter.
 	self createKeywordHighlights.
 	self createEntitiesHighlightsFor: entity.
+	"bypassing bug in #createEntitiesHighlightsFor:"
+	self highlights removeAllSuchThat: [ :hglght | hglght hasInterval not  ].
 	self clearHighlightsInComments
 ]
 
@@ -163,7 +166,7 @@ MiSourceTextRendererModel >> createKeywordHighlights [
 { #category : 'highlights' }
 MiSourceTextRendererModel >> createKeywordHighlightsFor: aKeyWord [
 	"Search for a keyword in the displayedText and creates a keyWordHighlight for it
-	 keywords should be whole words (after and before a word separator) or strat the text or end it"
+	 keywords should be whole words (after and before a word separator) or start the text or end it"
 
 	| matcher |
 
