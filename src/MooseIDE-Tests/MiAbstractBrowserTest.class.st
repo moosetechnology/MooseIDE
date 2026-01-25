@@ -381,7 +381,7 @@ MiAbstractBrowserTest >> testSelectedTagSetAndGet [
 MiAbstractBrowserTest >> testSettingsAction [
 	"must be redefined in browsers that do have settings"
 
-	self deny: browser hasSettings
+	self deny: browser hasSettings description: 'By default, browsers are assumed having no setting. If this is a mistake, redefine #testSettingsAction in the test class'
 ]
 
 { #category : 'tests - settings' }
