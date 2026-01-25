@@ -31,6 +31,12 @@ Class {
 	#tag : 'UML'
 }
 
+{ #category : 'accessing' }
+MiUMLBrowser class >> mapClass [ 
+
+	^MiUMLVisualization
+]
+
 { #category : 'world menu' }
 MiUMLBrowser class >> menuCommandOn: aBuilder [
 
@@ -111,12 +117,6 @@ MiUMLBrowser >> followEntity: anEntity [
 MiUMLBrowser >> highlightEntity: anEntity [
 
 	mainPresenter highlightEntities: anEntity asCollection
-]
-
-{ #category : 'initialization' }
-MiUMLBrowser >> initializePresenters [
-
-	mainPresenter := self instantiate: MiUMLVisualization
 ]
 
 { #category : 'accessing' }

@@ -28,6 +28,12 @@ Class {
 	#tag : 'System Complexity'
 }
 
+{ #category : 'accessing' }
+MiSystemComplexityBrowser class >> mapClass [
+
+	^MiSystemComplexityVisualization
+]
+
 { #category : 'world menu' }
 MiSystemComplexityBrowser class >> menuCommandOn: aBuilder [
 
@@ -112,19 +118,4 @@ All received entities were rejected'.
 
 	specModel entities: newGroup.
 	self runVisualization
-]
-
-{ #category : 'initialization' }
-MiSystemComplexityBrowser >> initializeLayout [
-
-	self layout: (SpBoxLayout newTopToBottom
-			 add: mainPresenter;
-			 yourself)
-]
-
-{ #category : 'initialization' }
-MiSystemComplexityBrowser >> initializePresenters [
-
-	mainPresenter := self instantiate: MiSystemComplexityVisualization.
-	self initializeLayout
 ]
