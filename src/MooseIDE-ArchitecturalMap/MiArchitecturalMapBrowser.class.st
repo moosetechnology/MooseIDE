@@ -118,19 +118,6 @@ MiArchitecturalMapBrowser >> followEntity: anEntity [
 	self runVisualization
 ]
 
-{ #category : 'initialization' }
-MiArchitecturalMapBrowser >> initializeLayout [
-
-	self layout: (SpScrollableLayout with: mainPresenter)
-]
-
-{ #category : 'initialization' }
-MiArchitecturalMapBrowser >> initializePresenters [
-
-	mainPresenter := self class mapClass owner: self.
-	self initializeLayout
-]
-
 { #category : 'actions' }
 MiArchitecturalMapBrowser >> runVisualization [
 

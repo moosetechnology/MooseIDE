@@ -31,6 +31,12 @@ Class {
 	#tag : 'Browser'
 }
 
+{ #category : 'accessing' }
+MiCoUsageMapBrowser class >> mapClass [ 
+
+	^MiCoUsageMapVisualization
+]
+
 { #category : 'world menu' }
 MiCoUsageMapBrowser class >> menuCommandOn: aBuilder [
 
@@ -103,7 +109,7 @@ MiCoUsageMapBrowser >> hasSettings [
 
 { #category : 'initialization' }
 MiCoUsageMapBrowser >> initializePresenters [
-	mainPresenter := self instantiate: MiCoUsageMapVisualization.
+	mainPresenter := self class mapClass owner: self.
 	mainPresenter specModel: specModel.
 
 	self flag: 'this should be in MiCoUsageMapVisualization'.
