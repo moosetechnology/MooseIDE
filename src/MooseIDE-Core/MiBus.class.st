@@ -54,6 +54,16 @@ MiBus >> name: anObject [
 	name := anObject
 ]
 
+{ #category : 'printing' }
+MiBus >> printOn: aStream [
+
+	super printOn: aStream.
+	aStream
+		nextPutAll: ':''' ;
+		nextPutAll: name ;
+		nextPut: $'
+]
+
 { #category : 'actions' }
 MiBus >> refreshBrowsersWith: anEntity [
 	self browsers do: [ :browser | browser receiveEntity: anEntity ]
