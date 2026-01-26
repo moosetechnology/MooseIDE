@@ -18,6 +18,16 @@ Class {
 	#tag : 'Model'
 }
 
+{ #category : 'actions' }
+MiDeadCodeBrowserModel >> applyChosenHeuristics: entity [
+	"search for a heuristic that could deal with the entity"
+
+	chosenHeuristics do: [ :heuristic |
+		(self heuristic: heuristic handle: entity)
+			ifTrue: [ ^self ]
+		]
+]
+
 { #category : 'accessing' }
 MiDeadCodeBrowserModel >> availableHeuristics [
 
@@ -75,20 +85,9 @@ MiDeadCodeBrowserModel >> entities [
 MiDeadCodeBrowserModel >> firstRoundComputation [
 
 	deadEntities removeAll.
-	self entities do: [ :entity | self firstRoundOn: entity ].
+	self entities do: [ :entity | self applyChosenHeuristics: entity ].
 	browser updateToolbar.
 	browser updateDeadEntities
-]
-
-{ #category : 'actions' }
-MiDeadCodeBrowserModel >> firstRoundOn: entity [
-	"search for a heuristic that could deal with the entity
-	 when found, go to next entity"
-
-	chosenHeuristics do: [ :heuristic |
-		(self heuristic: heuristic handle: entity)
-			ifTrue: [ ^self ]
-		]
 ]
 
 { #category : 'actions' }
