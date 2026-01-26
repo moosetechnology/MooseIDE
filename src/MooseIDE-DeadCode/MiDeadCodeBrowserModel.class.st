@@ -100,7 +100,7 @@ MiDeadCodeBrowserModel >> followEntity: aCollection [
 
 { #category : 'actions' }
 MiDeadCodeBrowserModel >> heuristic: heuristic handle: entity [
-	"returns whether a decision was reached or not.
+	"returns whether a decision was reached or not + register a dead entity
 	 A decision is reached for _refuting_ heuristics if the entity is not dead
 	   and there is nothing to do (but we do not need to check other heuristics)
 	 A decision is reached for _asserting_ heuristic, if the entity is dead
