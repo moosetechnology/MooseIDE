@@ -150,8 +150,17 @@ MiDeadCodeBrowserModel >> initializeHeuristics [
 
 { #category : 'actions' }
 MiDeadCodeBrowserModel >> isNewDead: anEntity [
+	"is a newDead if
+	 - not already dead
+	 - not saved by refutting heuristics
+	 - not invoked by a not dead entity"
 
 	(deadEntities includes: anEntity) ifTrue: [ ^ false ].
+
+	chosenHeuristics do: [ :heuristic |
+		(heuristic refuteDead and: [ heuristic notDead: anEntity ])
+			ifTrue: [ ^false ]
+	].
 
 	^(anEntity queryIncoming: FamixTInvocation) opposites
 		allSatisfy: [ :invoker | deadEntities includes: invoker ]
