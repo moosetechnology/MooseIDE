@@ -18,6 +18,16 @@ Class {
 	#tag : 'Model'
 }
 
+{ #category : 'actions' }
+MiDeadCodeBrowserModel >> applyChosenHeuristics: entity [
+	"search for a heuristic that could deal with the entity"
+
+	chosenHeuristics do: [ :heuristic |
+		(self heuristic: heuristic handle: entity)
+			ifTrue: [ ^self ]
+		]
+]
+
 { #category : 'accessing' }
 MiDeadCodeBrowserModel >> availableHeuristics [
 
@@ -75,20 +85,9 @@ MiDeadCodeBrowserModel >> entities [
 MiDeadCodeBrowserModel >> firstRoundComputation [
 
 	deadEntities removeAll.
-	self entities do: [ :entity | self firstRoundOn: entity ].
+	self entities do: [ :entity | self applyChosenHeuristics: entity ].
 	browser updateToolbar.
 	browser updateDeadEntities
-]
-
-{ #category : 'actions' }
-MiDeadCodeBrowserModel >> firstRoundOn: entity [
-	"search for a heuristic that could deal with the entity
-	 when found, go to next entity"
-
-	chosenHeuristics do: [ :heuristic |
-		(self heuristic: heuristic handle: entity)
-			ifTrue: [ ^self ]
-		]
 ]
 
 { #category : 'actions' }
@@ -101,7 +100,7 @@ MiDeadCodeBrowserModel >> followEntity: aCollection [
 
 { #category : 'actions' }
 MiDeadCodeBrowserModel >> heuristic: heuristic handle: entity [
-	"returns whether a decision was reached or not.
+	"returns whether a decision was reached or not + register a dead entity
 	 A decision is reached for _refuting_ heuristics if the entity is not dead
 	   and there is nothing to do (but we do not need to check other heuristics)
 	 A decision is reached for _asserting_ heuristic, if the entity is dead
@@ -151,8 +150,17 @@ MiDeadCodeBrowserModel >> initializeHeuristics [
 
 { #category : 'actions' }
 MiDeadCodeBrowserModel >> isNewDead: anEntity [
+	"is a newDead if
+	 - not already dead
+	 - not saved by refutting heuristics
+	 - not invoked by a not dead entity"
 
 	(deadEntities includes: anEntity) ifTrue: [ ^ false ].
+
+	chosenHeuristics do: [ :heuristic |
+		(heuristic refuteDead and: [ heuristic notDead: anEntity ])
+			ifTrue: [ ^false ]
+	].
 
 	^(anEntity queryIncoming: FamixTInvocation) opposites
 		allSatisfy: [ :invoker | deadEntities includes: invoker ]

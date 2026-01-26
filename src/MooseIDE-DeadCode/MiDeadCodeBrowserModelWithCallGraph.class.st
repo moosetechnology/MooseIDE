@@ -18,6 +18,17 @@ Class {
 	#tag : 'Model'
 }
 
+{ #category : 'actions' }
+MiDeadCodeBrowserModelWithCallGraph >> applyChosenHeuristics: entity [
+	"search for a heuristic that could deal with the entity
+	 when found, go to next entity"
+
+	chosenHeuristics do: [ :heuristic |
+		(self heuristic: heuristic handle: entity)
+			ifTrue: [ ^self ]
+		]
+]
+
 { #category : 'accessing' }
 MiDeadCodeBrowserModelWithCallGraph >> availableHeuristics [
 
@@ -97,17 +108,6 @@ MiDeadCodeBrowserModelWithCallGraph >> firstRoundComputation [
 
 	browser updateToolbar.
 	browser updateDeadEntities
-]
-
-{ #category : 'actions' }
-MiDeadCodeBrowserModelWithCallGraph >> firstRoundOn: entity [
-	"search for a heuristic that could deal with the entity
-	 when found, go to next entity"
-
-	chosenHeuristics do: [ :heuristic |
-		(self heuristic: heuristic handle: entity)
-			ifTrue: [ ^self ]
-		]
 ]
 
 { #category : 'actions' }

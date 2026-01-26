@@ -619,6 +619,24 @@ MiDeadCodeBrowserModelTest >> testRecursionRoundNotAddingOutsideFollwedEntities 
 ]
 
 { #category : 'tests' }
+MiDeadCodeBrowserModelTest >> testRecursionRoundProtectedByHeursitic [
+
+	| entity1 entity2 |
+	entity1 := self pharoMethod: 'invoking' inClass: 'SomeClass'.
+	entity2 := self pharoMethod: 'testSomething'  inClass: 'IsAClassTest'.
+	FamixStInvocation new
+		sender: entity1 ;
+		candidates: { entity2 }.
+	model followEntity: { entity1 . entity2 }.
+	model deadEntities add: entity1.
+	model chooseHeuristics: { MiDeadCodeTestNamingConventionHeuristic new }.
+
+	self assert: model deadEntities size equals: 1.
+	model recursionComputation.
+	self assert: model deadEntities size equals: 1
+]
+
+{ #category : 'tests' }
 MiDeadCodeBrowserModelTest >> testSortHeuristics [
 
 	model chooseHeuristics: {
