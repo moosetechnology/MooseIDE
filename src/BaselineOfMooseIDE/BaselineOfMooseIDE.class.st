@@ -119,6 +119,7 @@ BaselineOfMooseIDE >> definePackages: spec [
 		package: 'MooseIDE-QueriesDashboard' with: [ spec requires: #( 'MooseIDE-Core' ) ];
 		package: 'MooseIDE-LayerVisualization' with: [ spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' 'MooseIDE-QueriesDashboard' ) ];
 		package: 'MooseIDE-ClassBlueprint' with: [ spec requires: #( 'MooseIDE-Visualization' 'ClassBlueprint' ) ];
+		package: 'MooseIDE-ClassBlueprint-Tests' with: [ spec requires: #( 'MooseIDE-ClassBlueprint' ) ];
 		package: 'MooseIDE-Spotter';
 		package: 'MooseIDE-Core-Reporter' with: [ spec requires: #( 'MooseIDE-Core' ) ];
 		package: 'MooseIDE-Spotter-Tests' with: [ spec requires: #( 'MooseIDE-Spotter' ) ];

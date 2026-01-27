@@ -57,7 +57,7 @@ MiClassBlueprintBrowser class >> title [
 { #category : 'testing' }
 MiClassBlueprintBrowser >> canFollowEntity: anObject [
 
-	^ anObject isMooseEntity and: [ anObject isType ]
+	^ anObject usesFamixTrait: FamixTType
 ]
 
 { #category : 'actions' }
