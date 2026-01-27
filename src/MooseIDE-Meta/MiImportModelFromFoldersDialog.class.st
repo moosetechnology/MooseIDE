@@ -10,7 +10,8 @@ Class {
 		'description',
 		'foldersList',
 		'addFolderButton',
-		'addFoldersButton'
+		'addFoldersButton',
+		'jdkVersionInput'
 	],
 	#category : 'MooseIDE-Meta-Import',
 	#package : 'MooseIDE-Meta',
@@ -55,12 +56,18 @@ MiImportModelFromFoldersDialog >> connectPresenters [
 MiImportModelFromFoldersDialog >> defaultLayout [
 
 	^ SpBoxLayout newTopToBottom
-		  spacing: 3;
+		  spacing: 10;
 		  add: description;
 		  add: foldersList;
 		  add: (SpBoxLayout newLeftToRight
 				   add: addFolderButton expand: false;
 				   add: addFoldersButton expand: false;
+				   yourself)
+		  expand: false;
+		  add: (SpBoxLayout newLeftToRight
+				   spacing: 10;
+				   add: 'JDK version (only if sources includes the JDK, leave blank otherwise): ' expand: false;
+				   add: jdkVersionInput;
 				   yourself)
 		  expand: false;
 		  yourself
@@ -80,12 +87,15 @@ MiImportModelFromFoldersDialog >> initializePresenters [
 	foldersList := self newList.
 	addFolderButton := self newButton.
 	addFoldersButton := self newButton.
+	jdkVersionInput := self newTextInput.
 
 	description
 		text: self userDescription;
 		beNotEditable.
 
 	foldersList items: OrderedCollection new.
+	
+	jdkVersionInput placeholder: 'Example: 1.7'.
 
 	addFolderButton
 		label: 'Add Folder';
@@ -98,7 +108,12 @@ MiImportModelFromFoldersDialog >> initializePresenters [
 { #category : 'action' }
 MiImportModelFromFoldersDialog >> privateImportModel [
 
-	^ MiMooseModelsWrapper models: (FamixJavaFoldersImporter importFolders: self selectedFolders)
+	| importer |
+	importer := FamixJavaFoldersImporter new folders: self selectedFolders.
+
+	jdkVersionInput text ifNotEmpty: [ :version | importer jdkVersion: version ].
+
+	^ MiMooseModelsWrapper models: importer import
 ]
 
 { #category : 'accessing' }
