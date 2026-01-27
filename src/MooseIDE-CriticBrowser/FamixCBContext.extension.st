@@ -1,6 +1,6 @@
-Extension { #name : #FamixCBContext }
+Extension { #name : 'FamixCBContext' }
 
-{ #category : #'*MooseIDE-CriticBrowser' }
+{ #category : '*MooseIDE-CriticBrowser' }
 FamixCBContext >> reset [
 
 	self resetExecutionOfTree

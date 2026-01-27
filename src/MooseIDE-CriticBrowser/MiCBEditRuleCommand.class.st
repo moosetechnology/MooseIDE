@@ -1,34 +1,36 @@
 Class {
-	#name : #MiCBEditRuleCommand,
-	#superclass : #MiAbstractCriticBrowserCommand,
-	#category : #'MooseIDE-CriticBrowser-Commands'
+	#name : 'MiCBEditRuleCommand',
+	#superclass : 'MiAbstractCriticBrowserCommand',
+	#category : 'MooseIDE-CriticBrowser-Commands',
+	#package : 'MooseIDE-CriticBrowser',
+	#tag : 'Commands'
 }
 
-{ #category : #default }
+{ #category : 'default' }
 MiCBEditRuleCommand class >> defaultIconName [
 
 	^ #glamorousEdit
 ]
 
-{ #category : #default }
+{ #category : 'default' }
 MiCBEditRuleCommand class >> defaultName [
 
 	^ 'Edit rule'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiCBEditRuleCommand class >> priority [
 
 	^ 1
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiCBEditRuleCommand >> canBeExecuted [
 
 	^ self context selectedRule class ~= FamixCBRootContext
 ]
 
-{ #category : #executing }
+{ #category : 'executing' }
 MiCBEditRuleCommand >> execute [
 
 	self context openEditRuleComponentDialog

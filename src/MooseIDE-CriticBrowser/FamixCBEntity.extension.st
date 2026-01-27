@@ -1,6 +1,6 @@
-Extension { #name : #FamixCBEntity }
+Extension { #name : 'FamixCBEntity' }
 
-{ #category : #'*MooseIDE-CriticBrowser' }
+{ #category : '*MooseIDE-CriticBrowser' }
 FamixCBEntity >> reset [
 
 	self subclassResponsibility
