@@ -123,7 +123,6 @@ BaselineOfMooseIDE >> definePackages: spec [
 		package: 'MooseIDE-Spotter';
 		package: 'MooseIDE-Core-Reporter' with: [ spec requires: #( 'MooseIDE-Core' ) ];
 		package: 'MooseIDE-Spotter-Tests' with: [ spec requires: #( 'MooseIDE-Spotter' ) ];
-		package: 'MooseIDE-Analysis' with: [ spec requires: #( 'MooseIDE-Core' ) ];
 		package: 'MooseIDE-BulkEditor'.
 
 	self defineMooseCriticsPackages: spec
