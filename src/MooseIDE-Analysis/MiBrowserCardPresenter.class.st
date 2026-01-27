@@ -1,15 +1,17 @@
 Class {
-	#name : #MiBrowserCardPresenter,
-	#superclass : #MiPresenter,
+	#name : 'MiBrowserCardPresenter',
+	#superclass : 'MiPresenter',
 	#instVars : [
 		'browser',
 		'titleLabel',
 		'buttons'
 	],
-	#category : #'MooseIDE-Analysis-Widgets'
+	#category : 'MooseIDE-Analysis-Widgets',
+	#package : 'MooseIDE-Analysis',
+	#tag : 'Widgets'
 }
 
-{ #category : #commands }
+{ #category : 'commands' }
 MiBrowserCardPresenter class >> buildCommandsGroupWith: aPresenter forRoot: rootCommandGroup [
 
 	rootCommandGroup
@@ -20,25 +22,25 @@ MiBrowserCardPresenter class >> buildCommandsGroupWith: aPresenter forRoot: root
 		register: (MiHelpCommand forSpecContext: aPresenter browser)
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 MiBrowserCardPresenter >> analysisBrowser [
 
 	^ owner owner
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiBrowserCardPresenter >> browser [
 
 	^ browser
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 MiBrowserCardPresenter >> closeBrowser [
 
 	self analysisBrowser remove: browser
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 MiBrowserCardPresenter >> defaultLayout [
 
 	^ self newBoxLayoutLeftToRight
@@ -48,7 +50,7 @@ MiBrowserCardPresenter >> defaultLayout [
 		  yourself
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiBrowserCardPresenter >> initializePresenters [
 
 	super initializePresenters.
@@ -62,13 +64,13 @@ MiBrowserCardPresenter >> initializePresenters [
 		           beIcons
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 MiBrowserCardPresenter >> propagateLocally [
 
 	self analysisBrowser propagateLocallyFrom: browser
 ]
 
-{ #category : #'accessing - model' }
+{ #category : 'accessing - model' }
 MiBrowserCardPresenter >> setModelBeforeInitialization: aBrowser [
 
 	browser := aBrowser
