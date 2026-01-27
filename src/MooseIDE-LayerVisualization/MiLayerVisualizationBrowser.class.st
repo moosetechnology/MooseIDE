@@ -78,6 +78,12 @@ MiLayerVisualizationBrowser >> followEntity: anEntity [
 	specModel followEntity: anEntity
 ]
 
+{ #category : 'testing' }
+MiLayerVisualizationBrowser >> hasSettings [
+
+	^ false
+]
+
 { #category : 'initialization' }
 MiLayerVisualizationBrowser >> initializePresenters [
 
