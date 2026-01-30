@@ -43,5 +43,9 @@ MiModelNavigationBrowserTest >> testClickingOpensMooseGroup [
 
 	self clickOnAllClasses.
 
-	self assert: browser selectedObject equals: (inspectedModel allWithType: FamixStClass)
+	"Should be a MooseGroup"
+	self assert: browser selectedObject isCollection.
+	self assert: browser selectedObject isMooseObject.
+	
+	self assertCollection: browser selectedObject hasSameElements: (inspectedModel allWithType: FamixStClass)
 ]
