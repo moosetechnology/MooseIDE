@@ -71,6 +71,22 @@ MiInspectorBrowserTest >> testMetaNavigationItems [
 ]
 
 { #category : 'tests' }
+MiInspectorBrowserTest >> testMetaNavigationItemsForMooseModel [
+
+	| classA classB model |
+	
+	model := FamixStModel new.
+	classA := model newClass.
+	classB := model newClass.
+
+	model newInheritance
+		superclass: classA;
+		subclass: classB.
+
+	self assert: model miMetaNavigationItems size = 2. "An entry for Model Classes and one for Classes"
+]
+
+{ #category : 'tests' }
 MiInspectorBrowserTest >> testMetaNavigationItemsWithMethod [
 
 	| classB method |
