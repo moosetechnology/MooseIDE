@@ -144,7 +144,7 @@ MiIconProvider >> iconNamed: aName [
 	^ MooseIcons icons
 		  at: aName
 		  ifAbsent: [
-		  Smalltalk ui icons iconNamed: aName ifNone: [ self noIcon ] ]
+			StPharoDefaultIconProvider new iconNamed: aName ]
 ]
 
 { #category : 'accessing' }
