@@ -53,6 +53,40 @@ MiInspectorBrowserTest >> testCanPropagateMooseGroup [
 ]
 
 { #category : 'tests' }
+MiInspectorBrowserTest >> testMetaNavigationItems [
+
+	| classA classB |
+	classA := FamixStClass new.
+	classB := FamixStClass new.
+
+	FamixStInheritance new
+		superclass: classA;
+		subclass: classB.
+
+	self assert: classA miMetaNavigationItems size equals: 1.
+	self assert: classA miMetaNavigationItems anyOne value isCollection.
+	self
+		assert: classA miMetaNavigationItems anyOne value anyOne
+		equals: classB
+]
+
+{ #category : 'tests' }
+MiInspectorBrowserTest >> testMetaNavigationItemsWithMethod [
+
+	| classB method |
+	method := FamixJavaMethod new.
+	classB := FamixJavaClass new.
+
+	FamixJavaEntityTyping new
+		typedEntity: method;
+		declaredType: classB.
+
+	self assert: method miMetaNavigationItems size equals: 1.
+	self deny: method miMetaNavigationItems anyOne value isCollection.
+	self assert: method miMetaNavigationItems anyOne value equals: classB
+]
+
+{ #category : 'tests' }
 MiInspectorBrowserTest >> testNavigationTabIsSorted [
 
 	| entity |

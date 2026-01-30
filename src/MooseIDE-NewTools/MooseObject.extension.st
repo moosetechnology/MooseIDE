@@ -20,11 +20,11 @@ MooseObject >> miInspectionNavigation: aBuilder [
 
 { #category : '*MooseIDE-NewTools' }
 MooseObject >> miMetaNavigationItems [
-
 	^ self mooseDescription allComplexProperties
 		  collect: [ :property |
 				  | value |
 				  value := self valueOfFameProperty: property.
+				 value := self valueOfPropertyForInspector: value.
 				  value isCollection ifTrue: [ value := value asMooseGroup ].
 				  property name -> value ]
 		  thenReject: [ :assoc |
@@ -48,4 +48,14 @@ MooseObject >> navigationItemsFromPragmas [
 
 	"filter out nils and empty collections, sort"
 	^ pragmaValueAssociations reject: [ :entity | entity isNil ]
+]
+
+{ #category : '*MooseIDE-NewTools' }
+MooseObject >> valueOfPropertyForInspector: value [
+	
+	value isCollection ifTrue: [ 
+		^ value collect: [ :each | self valueOfPropertyForInspector: each ]
+		 ].
+	value isAssociation ifFalse: [ ^ value ].
+	^ value source = self ifTrue: [ value target ] ifFalse: [ value source ]
 ]
