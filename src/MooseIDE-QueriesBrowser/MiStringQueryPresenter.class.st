@@ -30,7 +30,7 @@ MiStringQueryPresenter >> initializePresenters [
 	super initializePresenters.
 	self initializeLayout.
 	propertyDropList startWithSelection.
-	comparatorDropList startWithSelection
+	comparatorDropList class = SpNullPresenter ifFalse: [comparatorDropList startWithSelection]
 ]
 
 { #category : 'layout' }
