@@ -42,7 +42,7 @@ MiModelNavigationBrowserTest >> tearDown [
 MiModelNavigationBrowserTest >> testClickingOpensMooseGroup [
 
 	self clickOnAllClasses.
-
+	
 	"Should be a MooseGroup"
 	self assert: browser selectedObject isCollection.
 	self assert: browser selectedObject isMooseObject.

@@ -35,6 +35,12 @@ MiStringQueryPresenterTest >> createNewQuery [
 ]
 
 { #category : 'running' }
+MiStringQueryPresenterTest >> propertyDropList [
+
+	^ presenter instVarNamed: #propertyDropList
+]
+
+{ #category : 'running' }
 MiStringQueryPresenterTest >> queryClass [
 	^ FQStringQuery
 ]
@@ -43,6 +49,13 @@ MiStringQueryPresenterTest >> queryClass [
 MiStringQueryPresenterTest >> setUp [
 	super setUp.
 	self resetPresenterWithEntities: helper methods
+]
+
+{ #category : 'tests' }
+MiStringQueryPresenterTest >> testDropListDefaultSelection [
+
+
+	self assert: self propertyDropList isStartWithSelection.
 ]
 
 { #category : 'running' }
