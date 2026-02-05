@@ -25,6 +25,35 @@ MiExportBrowserTest >> testMiSelectedItem [
 	self assert: browser miSelectedItem anyOne equals: entityToSelect
 ]
 
+{ #category : 'tests - receiving' }
+MiExportBrowserTest >> testPropagateToOtherBrowser [
+	"overriding because here we have 2 MiExportBrowser"
+
+	self receiveEntityToSelect.
+	
+	browser canPropagate ifFalse: [ self skip ].
+
+	browser propagateToOtherBrowser: MiExportBrowser.
+	
+	otherBrowser := browser application browsers
+		detect: [ :br | (br class = MiExportBrowser) and: [ br ~= browser ] ]
+		ifNone: [ nil ].
+
+	self assert: otherBrowser isNotNil.
+	
+	browser miSelectedItemToPropagate isCollection 
+		ifTrue: [
+			self
+				assertCollection: otherBrowser miSelectedItem
+				hasSameElements: browser miSelectedItemToPropagate
+		]
+		ifFalse: [
+			self assert: otherBrowser miSelectedItem size equals: 1.
+			self assert: otherBrowser miSelectedItem anyOne equals: browser miSelectedItemToPropagate
+		]
+
+]
+
 { #category : 'tests - tags' }
 MiExportBrowserTest >> testSelectedTagSetAndGet [
 	| model entity tag |

@@ -540,6 +540,20 @@ MiAbstractBrowser >> openSettings [
 	^ specModel openSettings
 ]
 
+{ #category : 'actions' }
+MiAbstractBrowser >> propagateToOtherBrowser: browserClass [
+
+	| selectedItem |
+	selectedItem := [ self miSelectedItemToPropagate ]
+		on: MiNoSelectedElementToPropagateException
+		do: [ :exception |
+			exception signal.
+			^ self ].
+
+	browserClass openOn: selectedItem
+
+]
+
 { #category : 'private - accessing' }
 MiAbstractBrowser >> receiveEntity: anEntity [
 

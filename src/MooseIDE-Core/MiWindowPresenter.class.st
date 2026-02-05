@@ -11,9 +11,13 @@ Class {
 
 { #category : 'commands' }
 MiWindowPresenter class >> actionsCommandGroupFor: aPresenter [
+	"displayedOnrightSide, therefore in reverse order"
 
 	^ CmCommandGroup forSpec
 		  name: 'Actions';
+		  register:
+			  (MiPropagateMenuCommand forSpecContext: aPresenter)
+				  beDisplayedOnRightSide;
 		  register:
 			  (MiPropagateCommand forSpecContext: aPresenter)
 				  beDisplayedOnRightSide;
