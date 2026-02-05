@@ -20,7 +20,8 @@ Class {
 		'hideMegamorphicInvocations',
 		'megamorphicTreshold',
 		'showDirectoriesAsRootNodes',
-		'weightedLinks'
+		'weightedLinks',
+		'showOnlyReceivedEntities'
 	],
 	#category : 'MooseIDE-ArchitecturalMap-Model',
 	#package : 'MooseIDE-ArchitecturalMap',
@@ -94,6 +95,12 @@ MiArchitecturalMapModel class >> defaultMegamorphicTreshold [
 
 { #category : 'defaults' }
 MiArchitecturalMapModel class >> defaultShowDirectoriesAsRootNodes [
+
+	^ false
+]
+
+{ #category : 'defaults' }
+MiArchitecturalMapModel class >> defaultShowOnlyReceivedEntities [
 
 	^ false
 ]
@@ -239,6 +246,7 @@ MiArchitecturalMapModel >> currentConfiguration [
 		  hideMegamorphicInvocations: hideMegamorphicInvocations;
 		  megamorphicTreshold: megamorphicTreshold;
 		  showDirectoriesAsRootNodes: showDirectoriesAsRootNodes;
+		  showOnlyReceivedEntities: showOnlyReceivedEntities ;
 		  weightedLinks: weightedLinks;
 		  yourself
 ]
@@ -257,11 +265,10 @@ MiArchitecturalMapModel >> defaultConfiguration [
 		  tags: self class defaultTags;
 		  hideReceivedEntities: self class defaultHideReceivedEntities;
 		  childrenQuery: self defaultChildrenQuery;
-		  hideMegamorphicInvocations:
-			  self class defaultHideMegamorphicInvocations;
+		  hideMegamorphicInvocations: self class defaultHideMegamorphicInvocations;
 		  megamorphicTreshold: self class defaultMegamorphicTreshold;
-		  showDirectoriesAsRootNodes:
-			  self class defaultShowDirectoriesAsRootNodes;
+		  showDirectoriesAsRootNodes: self class defaultShowDirectoriesAsRootNodes;
+		  showOnlyReceivedEntities: self class defaultShowOnlyReceivedEntities ;
 		  weightedLinks: self class weightedLinks;
 		  yourself
 ]
@@ -317,6 +324,7 @@ MiArchitecturalMapModel >> initializeSettings [
 	layout := self class defaultLayout.
 	hideMegamorphicInvocations := self class defaultHideMegamorphicInvocations.
 	megamorphicTreshold := self class defaultMegamorphicTreshold.
+	showOnlyReceivedEntities := self class defaultShowOnlyReceivedEntities.
 	showDirectoriesAsRootNodes := self class defaultShowDirectoriesAsRootNodes.
 	weightedLinks := self class weightedLinks 
 ]
@@ -371,7 +379,7 @@ MiArchitecturalMapModel >> selectRelatedTo: anEntity [
 { #category : 'settings management' }
 MiArchitecturalMapModel >> settingsPresenterExtent [
 
-	^ 600 @ 600
+	^ 600 @ 650
 ]
 
 { #category : 'settings' }
@@ -386,6 +394,12 @@ MiArchitecturalMapModel >> shouldHideDependency: aFamixAssociation [
 MiArchitecturalMapModel >> showAllLinks [
 
 	^ true
+]
+
+{ #category : 'accessing' }
+MiArchitecturalMapModel >> showOnlyReceivedEntities [
+
+	^showOnlyReceivedEntities 
 ]
 
 { #category : 'accessing' }
@@ -406,6 +420,7 @@ MiArchitecturalMapModel >> updateFromConfiguration: aConfiguration [
 	hideMegamorphicInvocations := aConfiguration hideMegamorphicInvocations.
 	megamorphicTreshold := aConfiguration megamorphicTreshold.
 	showDirectoriesAsRootNodes := aConfiguration showDirectoriesAsRootNodes.
+	showOnlyReceivedEntities := aConfiguration showOnlyReceivedEntities.
 	weightedLinks := aConfiguration weightedLinks.
 
 	self recomputeRootNodes.

@@ -11,6 +11,7 @@ Class {
 		'hideMegamorphicInvocations',
 		'megamorphicTreshold',
 		'showDirectoriesAsRootNodes',
+		'showOnlyReceivedEntities',
 		'availableTags',
 		'availableLayouts',
 		'availableDoubleClickActions',
@@ -194,6 +195,15 @@ Inner elements will be the tagged entities';
 				   yourself);
 
 		  add: ((MiBooleanSettingPresenter on: self)
+				   label: 'Only show entities received on the bus';
+				   help:
+					   'When expanding a node, only show the children that were received from the bus';
+				   state: showOnlyReceivedEntities ;
+				   whenStateChangedDo: [ :boolean |
+					   self showOnlyReceivedEntities: boolean ];
+				   yourself);
+
+		  add: ((MiBooleanSettingPresenter on: self)
 				   label: 'Show directories as root nodes (experimental)';
 				   help:
 					   'Experimental feature. Show the source files/directories containing entites as root nodes in the map';
@@ -217,6 +227,18 @@ MiArchitecturalMapSettingsConfiguration >> showDirectoriesAsRootNodes [
 MiArchitecturalMapSettingsConfiguration >> showDirectoriesAsRootNodes: aBoolean [
 
 	showDirectoriesAsRootNodes := aBoolean
+]
+
+{ #category : 'accessing' }
+MiArchitecturalMapSettingsConfiguration >> showOnlyReceivedEntities [
+
+	^ showOnlyReceivedEntities
+]
+
+{ #category : 'accessing' }
+MiArchitecturalMapSettingsConfiguration >> showOnlyReceivedEntities: anObject [
+
+	showOnlyReceivedEntities := anObject
 ]
 
 { #category : 'accessing' }
