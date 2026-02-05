@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'browser',
 		'entityToSelect',
-		'settingsWindow'
+		'settingsWindow',
+		'otherBrowser'
 	],
 	#category : 'MooseIDE-Tests-Browsers',
 	#package : 'MooseIDE-Tests',
@@ -110,6 +111,7 @@ MiAbstractBrowserTest >> settingNamed: aName setValue: anObject [
 MiAbstractBrowserTest >> tearDown [
 
 	browser ifNotNil: [ browser withWindowDo: [ :window | window close ] ].
+	otherBrowser ifNotNil: [ otherBrowser withWindowDo: [ :window | window close ] ].
 
 	self application deleteBus: self bus.
 
@@ -368,6 +370,36 @@ MiAbstractBrowserTest >> testHighlightEntity [
 	self mooseObjects do: [ :mooseObject |
 			self application miPropagate: mooseObject.
 			self assertHighlightActionFor: mooseObject ]
+]
+
+{ #category : 'tests - receiving' }
+MiAbstractBrowserTest >> testPropagateToOtherBrowser [
+	"checking that can propagate to another browser.
+	MiExportBrowser for example"
+
+	self receiveEntityToSelect.
+	
+	browser canPropagate ifFalse: [ self skip ].
+
+	browser propagateToOtherBrowser: MiExportBrowser.
+	
+	otherBrowser := browser application browsers
+		detect: [ :br | br class = MiExportBrowser ]
+		ifNone: [ nil ].
+
+	self assert: otherBrowser isNotNil.
+	
+	browser miSelectedItemToPropagate isCollection 
+		ifTrue: [
+			self
+				assertCollection: otherBrowser miSelectedItem
+				hasSameElements: browser miSelectedItemToPropagate
+		]
+		ifFalse: [
+			self assert: otherBrowser miSelectedItem size equals: 1.
+			self assert: otherBrowser miSelectedItem anyOne equals: browser miSelectedItemToPropagate
+		]
+
 ]
 
 { #category : 'tests - tags' }
