@@ -34,19 +34,5 @@ MiPropagateMenuCommand >> canBeExecuted [
 MiPropagateMenuCommand >> execute [
 
 	(MiAbstractBrowser allBrowsersMenuRoot: SpMenuPresenter new
-		  action: [ :browserClass | self propagateToBrowser: browserClass ]) openWithSpecAtPointer
-]
-
-{ #category : 'executing' }
-MiPropagateMenuCommand >> propagateToBrowser: browserClass [
-
-	| selectedItem |
-	selectedItem := [ self context miSelectedItemToPropagate ]
-		on: MiNoSelectedElementToPropagateException
-		do: [ :exception |
-			exception signal.
-			^ self ].
-
-	browserClass openOn: selectedItem
-
+		  action: [ :browserClass | self context propagateToOtherBrowser: browserClass ]) openWithSpecAtPointer
 ]
