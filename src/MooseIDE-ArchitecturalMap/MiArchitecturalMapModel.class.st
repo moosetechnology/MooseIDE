@@ -21,7 +21,8 @@ Class {
 		'megamorphicTreshold',
 		'showDirectoriesAsRootNodes',
 		'weightedLinks',
-		'showOnlyReceivedEntities'
+		'showOnlyReceivedEntities',
+		'receivedEntities'
 	],
 	#category : 'MooseIDE-ArchitecturalMap-Model',
 	#package : 'MooseIDE-ArchitecturalMap',
@@ -186,12 +187,17 @@ MiArchitecturalMapModel >> availableTags [
 { #category : 'accessing' }
 MiArchitecturalMapModel >> childrenFor: anEntity [
 
-	^ virtualEntities
+	| allChildren |
+	allChildren := virtualEntities
 		  at: anEntity
 		  ifPresent: [ :children | children ]
 		  ifAbsent: [
 				  (childrenQuery rawRunOnEntity: anEntity) asArray reject: [ :each |
-					  each == anEntity ] ]
+					  each == anEntity ] ].
+
+	^showOnlyReceivedEntities
+		ifFalse: [ allChildren ]
+		ifTrue: [ allChildren intersection: receivedEntities ]
 ]
 
 { #category : 'private' }
@@ -296,7 +302,7 @@ MiArchitecturalMapModel >> entities [
 { #category : 'accessing' }
 MiArchitecturalMapModel >> entities: aCollection [
 
-	entities := aCollection.
+	receivedEntities := entities := aCollection.
 	self recomputeRootNodes.
 	self recomputeDefaultSettings
 ]
