@@ -4,8 +4,9 @@ A force based layout for Roassal with parameterstunned for ArchitecturalMap wher
 Class {
 	#name : 'MiForceBasedLayout',
 	#superclass : 'RSForceBasedLayout',
-	#category : 'MooseIDE-ArchitecturalMap',
-	#package : 'MooseIDE-ArchitecturalMap'
+	#category : 'MooseIDE-ArchitecturalMap-Browser',
+	#package : 'MooseIDE-ArchitecturalMap',
+	#tag : 'Browser'
 }
 
 { #category : 'as yet unclassified' }

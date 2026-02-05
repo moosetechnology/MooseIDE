@@ -1,8 +1,9 @@
 Class {
 	#name : 'MiShowOutgoingMenuItem',
 	#superclass : 'MiArchitecturalNodeMenuItem',
-	#category : 'MooseIDE-ArchitecturalMap',
-	#package : 'MooseIDE-ArchitecturalMap'
+	#category : 'MooseIDE-ArchitecturalMap-Menu',
+	#package : 'MooseIDE-ArchitecturalMap',
+	#tag : 'Menu'
 }
 
 { #category : 'testing' }

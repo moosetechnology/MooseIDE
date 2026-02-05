@@ -22,8 +22,9 @@ Class {
 		'showDirectoriesAsRootNodes',
 		'weightedLinks'
 	],
-	#category : 'MooseIDE-ArchitecturalMap',
-	#package : 'MooseIDE-ArchitecturalMap'
+	#category : 'MooseIDE-ArchitecturalMap-Model',
+	#package : 'MooseIDE-ArchitecturalMap',
+	#tag : 'Model'
 }
 
 { #category : 'available' }

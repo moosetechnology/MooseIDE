@@ -23,8 +23,9 @@ Controls:
 Class {
 	#name : 'MiArchitecturalMapBrowser',
 	#superclass : 'MiAbstractVisualizationBrowser',
-	#category : 'MooseIDE-ArchitecturalMap',
-	#package : 'MooseIDE-ArchitecturalMap'
+	#category : 'MooseIDE-ArchitecturalMap-Browser',
+	#package : 'MooseIDE-ArchitecturalMap',
+	#tag : 'Browser'
 }
 
 { #category : 'accessing' }
