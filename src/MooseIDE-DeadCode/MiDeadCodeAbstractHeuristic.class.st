@@ -34,6 +34,18 @@ MiDeadCodeAbstractHeuristic >> description [
 		ifFalse: [ '' ]
 ]
 
+{ #category : 'accessing' }
+MiDeadCodeAbstractHeuristic >> heuristicGroup [
+
+	^self
+]
+
+{ #category : 'accessing' }
+MiDeadCodeAbstractHeuristic >> heuristics [
+
+	^#()
+]
+
 { #category : 'testing' }
 MiDeadCodeAbstractHeuristic >> isAbstract [
 

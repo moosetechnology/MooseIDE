@@ -11,10 +11,22 @@ Class {
 }
 
 { #category : 'accessing' }
+MiDeadCodeAbstractPharoHeuristic class >> heuristicGroups [
+
+	^#( Java ) , super heuristicGroups
+]
+
+{ #category : 'accessing' }
 MiDeadCodeAbstractPharoHeuristic >> description [
 
 	^super description ,
 	'Pharo: '
+]
+
+{ #category : 'accessing' }
+MiDeadCodeAbstractPharoHeuristic >> heuristicGroup [
+
+	^#Pharo
 ]
 
 { #category : 'accessing' }
