@@ -22,6 +22,14 @@ MiDeadCodeHeuristicPresenter class >> withHeuristic: aDeadCodeHeuristic [
 ]
 
 { #category : 'accessing' }
+MiDeadCodeHeuristicPresenter >> children [
+
+	^heuristic isAssociation
+		ifTrue: [ heuristic value ]
+		ifFalse: [ {  heuristic } ]
+]
+
+{ #category : 'accessing' }
 MiDeadCodeHeuristicPresenter >> heuristic [
 
 	^ heuristic
@@ -34,4 +42,19 @@ MiDeadCodeHeuristicPresenter >> heuristic: aDeadCodeHeuristic [
 
 	self label: heuristic name.
 	self help: heuristic description
+]
+
+{ #category : 'accessing' }
+MiDeadCodeHeuristicPresenter >> heuristicGroup: aHeuristicGroup [
+
+	heuristic := aHeuristicGroup.
+
+	aHeuristicGroup isAssociation
+		ifTrue: [
+			self label: aHeuristicGroup key.
+			self help: 'A collection of heuristics for: ' , aHeuristicGroup key ]
+		ifFalse: [
+			self label: heuristic name.
+			self help: heuristic description
+		]
 ]

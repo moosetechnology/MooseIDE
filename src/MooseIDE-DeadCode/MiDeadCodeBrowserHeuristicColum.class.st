@@ -49,11 +49,36 @@ MiDeadCodeBrowserHeuristicColum >> defaultLayout [
 		yourself
 ]
 
+{ #category : 'accessing' }
+MiDeadCodeBrowserHeuristicColum >> heuristicGroupChildrenFor: heuristicGroup [
+
+	heuristicGroup key isString
+		ifTrue: [ heuristicGroup value ]
+		ifFalse: [ {  heuristicGroup key } ]
+]
+
+{ #category : 'initialization' }
+MiDeadCodeBrowserHeuristicColum >> initializeOfferedHeuristicsList: availableHeuristics [
+
+	| treeList groupedHeuristics |
+
+	groupedHeuristics := availableHeuristics groupedBy: [ :heuristic | heuristic heuristicGroup ].
+
+	treeList := self newTreeListView.
+	treeList setup: [ :aPresenter | aPresenter instantiate: MiDeadCodeHeuristicPresenter ].
+	treeList bind: [ :aPresenter :anObject | aPresenter heuristicGroup: anObject ].
+	treeList children: [ :association | self childrenFor: association ].
+
+	treeList roots: groupedHeuristics associations.
+
+	^treeList 
+
+]
+
 { #category : 'initialization' }
 MiDeadCodeBrowserHeuristicColum >> initializePresenters [
 
-	lstOfferedHeuristics := self newHeuristicList
-		items: self specModel availableHeuristics.
+	lstOfferedHeuristics := self initializeOfferedHeuristicsList: self specModel availableHeuristics.
 
 	lstChosenHeuristics := self newHeuristicList
 		items: self specModel chosenHeuristics.
