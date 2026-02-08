@@ -129,9 +129,9 @@ MiDeadBrowserRuleColumn >> offeredRulesSelected [
 
 	^lstOfferedRules selectedItems
 		flatCollectAsSet: [  :item |
-			item key isString
+			item isAssociation
 				ifTrue: [ item value ]
-				ifFalse: [ {  item key } ] ]
+				ifFalse: [ { item } ] ]
 ]
 
 { #category : 'actions' }
