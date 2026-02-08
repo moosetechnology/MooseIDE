@@ -6,21 +6,21 @@ There are a number of annotations in Java that mark test methods (@Test, @Before
 Recognizes annotations from JUnit4 and JUnit5
 "
 Class {
-	#name : 'MiDeadCodeJavaTestAnnotationHeuristic',
-	#superclass : 'MiDeadCodeAbstractJavaHeuristic',
+	#name : 'MiDeadJavaTestAnnotationRule',
+	#superclass : 'MiDeadAbstractJavaRule',
 	#category : 'MooseIDE-DeadCode-Rules',
 	#package : 'MooseIDE-DeadCode',
 	#tag : 'Rules'
 }
 
 { #category : 'visiting' }
-MiDeadCodeJavaTestAnnotationHeuristic >> accept: aTMethod [
+MiDeadJavaTestAnnotationRule >> accept: aTMethod [
 
 	^self notDead: aTMethod 
 ]
 
 { #category : 'accessing' }
-MiDeadCodeJavaTestAnnotationHeuristic >> description [ 
+MiDeadJavaTestAnnotationRule >> description [ 
 
 	^super description ,
 	'In Java, different annotations mark methods of test class
@@ -28,20 +28,20 @@ MiDeadCodeJavaTestAnnotationHeuristic >> description [
 ]
 
 { #category : 'accessing' }
-MiDeadCodeJavaTestAnnotationHeuristic >> isForEntryPoint [
+MiDeadJavaTestAnnotationRule >> isForEntryPoint [
 
 	^true
 ]
 
 { #category : 'testing' }
-MiDeadCodeJavaTestAnnotationHeuristic >> junit4Annotations [
+MiDeadJavaTestAnnotationRule >> junit4Annotations [
 	"from https://www.softwaretestinghelp.com/junit-annotations-tutorial/"
 
 	^{ 'Test' . 'Before' . 'After' . 'BeforeClass' . 'AfterClass' }
 ]
 
 { #category : 'testing' }
-MiDeadCodeJavaTestAnnotationHeuristic >> junit5Annotations [
+MiDeadJavaTestAnnotationRule >> junit5Annotations [
 	"from https://junit.org/junit5/docs/current/user-guide/
 	other possibilities: DisplayName, DisplayNameGeneration, Nested, Tag, Disabled, AutoClose, TempDir, ExtendWith, RegisterExtension"
 
@@ -50,13 +50,13 @@ MiDeadCodeJavaTestAnnotationHeuristic >> junit5Annotations [
 ]
 
 { #category : 'accessing' }
-MiDeadCodeJavaTestAnnotationHeuristic >> name [
+MiDeadJavaTestAnnotationRule >> name [
 
 	^super name , 'Java @Test method'
 ]
 
 { #category : 'testing' }
-MiDeadCodeJavaTestAnnotationHeuristic >> notDead: aTMethod [
+MiDeadJavaTestAnnotationRule >> notDead: aTMethod [
 
 	aTMethod annotationInstances ifEmpty: [ ^false ].
 

@@ -4,15 +4,15 @@ A heuristic to recognize methods overriding another method that is called.
 If a method in a super-class (or interface) is called, we assume any method implementing it in a concrete class can be called
 "
 Class {
-	#name : 'MiDeadCodeJavaOverridesInvokedHeuristic',
-	#superclass : 'MiDeadCodeAbstractJavaHeuristic',
+	#name : 'MiDeadJavaOverridesInvokedRule',
+	#superclass : 'MiDeadAbstractJavaRule',
 	#category : 'MooseIDE-DeadCode-Rules',
 	#package : 'MooseIDE-DeadCode',
 	#tag : 'Rules'
 }
 
 { #category : 'testing' }
-MiDeadCodeJavaOverridesInvokedHeuristic >> any: tWithMethods hasInvokedMethod: aTMethod [
+MiDeadJavaOverridesInvokedRule >> any: tWithMethods hasInvokedMethod: aTMethod [
 
 	tWithMethods do: [ :aTWithMethods |
 		aTWithMethods methods
@@ -24,20 +24,20 @@ MiDeadCodeJavaOverridesInvokedHeuristic >> any: tWithMethods hasInvokedMethod: a
 ]
 
 { #category : 'accessing' }
-MiDeadCodeJavaOverridesInvokedHeuristic >> description [
+MiDeadJavaOverridesInvokedRule >> description [
 
 	^super description ,
 	'All methods overriding an invoked method are assumed not-dead'
 ]
 
 { #category : 'accessing' }
-MiDeadCodeJavaOverridesInvokedHeuristic >> name [
+MiDeadJavaOverridesInvokedRule >> name [
 
 	^super name , 'Overriden invoked method'
 ]
 
 { #category : 'testing' }
-MiDeadCodeJavaOverridesInvokedHeuristic >> notDead: aTMethod [
+MiDeadJavaOverridesInvokedRule >> notDead: aTMethod [
 
 
 	| superclasses implementedInterfaces |

@@ -3,34 +3,34 @@ An abstract class for all Java heuristics
 Adds 'Java:' to the description
 "
 Class {
-	#name : 'MiDeadCodeAbstractPharoHeuristic',
-	#superclass : 'MiDeadCodeAbstractHeuristic',
+	#name : 'MiDeadAbstractPharoRule',
+	#superclass : 'MiDeadAbstractRule',
 	#category : 'MooseIDE-DeadCode-Rules',
 	#package : 'MooseIDE-DeadCode',
 	#tag : 'Rules'
 }
 
 { #category : 'accessing' }
-MiDeadCodeAbstractPharoHeuristic class >> heuristicGroups [
+MiDeadAbstractPharoRule class >> heuristicGroups [
 
 	^#( Java ) , super heuristicGroups
 ]
 
 { #category : 'accessing' }
-MiDeadCodeAbstractPharoHeuristic >> description [
+MiDeadAbstractPharoRule >> description [
 
 	^super description ,
 	'Pharo: '
 ]
 
 { #category : 'accessing' }
-MiDeadCodeAbstractPharoHeuristic >> heuristicGroup [
+MiDeadAbstractPharoRule >> name [
 
-	^#Pharo
+	^'Pharo: '
 ]
 
 { #category : 'accessing' }
-MiDeadCodeAbstractPharoHeuristic >> name [
+MiDeadAbstractPharoRule >> ruleGroup [
 
-	^'Pharo: '
+	^#Pharo
 ]

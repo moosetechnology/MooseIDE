@@ -3,28 +3,28 @@ A heuristic to recognize test methods in Pharo.
 (they belong to a clas sinheriting from `TestCase`
 "
 Class {
-	#name : 'MiDeadCodePharoInitializeHeuristic',
-	#superclass : 'MiDeadCodeAbstractPharoHeuristic',
+	#name : 'MiDeadPharoInitializeRule',
+	#superclass : 'MiDeadAbstractPharoRule',
 	#category : 'MooseIDE-DeadCode-Rules',
 	#package : 'MooseIDE-DeadCode',
 	#tag : 'Rules'
 }
 
 { #category : 'accessing' }
-MiDeadCodePharoInitializeHeuristic >> description [
+MiDeadPharoInitializeRule >> description [
 
 	^super description ,
 	'"Initialize" is constructor, called by "new", therefore not-dead'
 ]
 
 { #category : 'accessing' }
-MiDeadCodePharoInitializeHeuristic >> name [
+MiDeadPharoInitializeRule >> name [
 
 	^super name , '"Initialize" method'
 ]
 
 { #category : 'testing' }
-MiDeadCodePharoInitializeHeuristic >> notDead: aTMethod [
+MiDeadPharoInitializeRule >> notDead: aTMethod [
 
 	^aTMethod name = 'initialize'
 ]

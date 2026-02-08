@@ -4,15 +4,15 @@ because one cannot remove the overriden method
 (@Override makes it mandatory to have a super-method)
 "
 Class {
-	#name : 'MiDeadCodeJavaHasOverridingHeuristic',
-	#superclass : 'MiDeadCodeAbstractJavaHeuristic',
+	#name : 'MiDeadJavaHasOverridingRule',
+	#superclass : 'MiDeadAbstractJavaRule',
 	#category : 'MooseIDE-DeadCode-Rules',
 	#package : 'MooseIDE-DeadCode',
 	#tag : 'Rules'
 }
 
 { #category : 'testing' }
-MiDeadCodeJavaHasOverridingHeuristic >> any: tWithMethods hasOverrideMethod: aTMethod [
+MiDeadJavaHasOverridingRule >> any: tWithMethods hasOverrideMethod: aTMethod [
 
 	^tWithMethods anySatisfy: [ :aTWithMethods |
 		self container: aTWithMethods hasOverrideMethod: aTMethod
@@ -20,7 +20,7 @@ MiDeadCodeJavaHasOverridingHeuristic >> any: tWithMethods hasOverrideMethod: aTM
 ]
 
 { #category : 'testing' }
-MiDeadCodeJavaHasOverridingHeuristic >> container: aTWithMethods hasOverrideMethod: aTMethod [
+MiDeadJavaHasOverridingRule >> container: aTWithMethods hasOverrideMethod: aTMethod [
 
 	^aTWithMethods methods
 		anySatisfy: [ :mth |
@@ -30,7 +30,7 @@ MiDeadCodeJavaHasOverridingHeuristic >> container: aTWithMethods hasOverrideMeth
 ]
 
 { #category : 'accessing' }
-MiDeadCodeJavaHasOverridingHeuristic >> description [
+MiDeadJavaHasOverridingRule >> description [
 
 	^super description ,
 		'A method having an "@Overriding" method (in a subclass) is assumed not-dead,
@@ -38,7 +38,7 @@ because one cannot remove the overriden method'
 ]
 
 { #category : 'testing' }
-MiDeadCodeJavaHasOverridingHeuristic >> hasOverrideAnnotation: anEntity [
+MiDeadJavaHasOverridingRule >> hasOverrideAnnotation: anEntity [
 
 	^anEntity annotationInstances anySatisfy: [ :anno |
 		anno annotationType mooseName = 'java.lang.Override'
@@ -46,13 +46,13 @@ MiDeadCodeJavaHasOverridingHeuristic >> hasOverrideAnnotation: anEntity [
 ]
 
 { #category : 'accessing' }
-MiDeadCodeJavaHasOverridingHeuristic >> name [
+MiDeadJavaHasOverridingRule >> name [
 
 	^super name , 'Has @Overriding sub-method'
 ]
 
 { #category : 'testing' }
-MiDeadCodeJavaHasOverridingHeuristic >> notDead: aTMethod [
+MiDeadJavaHasOverridingRule >> notDead: aTMethod [
 
 	^self
 		any: aTMethod parentType subclassHierarchy

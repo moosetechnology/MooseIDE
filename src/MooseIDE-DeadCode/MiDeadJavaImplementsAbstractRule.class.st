@@ -4,15 +4,15 @@ A heuristic to recognize methods overriding another method that is called.
 If a method in a super-class (or interface) is called, we assume any method implementing it in a concrete class can be called
 "
 Class {
-	#name : 'MiDeadCodeJavaImplementsAbstractHeuristic',
-	#superclass : 'MiDeadCodeAbstractJavaHeuristic',
+	#name : 'MiDeadJavaImplementsAbstractRule',
+	#superclass : 'MiDeadAbstractJavaRule',
 	#category : 'MooseIDE-DeadCode-Rules',
 	#package : 'MooseIDE-DeadCode',
 	#tag : 'Rules'
 }
 
 { #category : 'testing' }
-MiDeadCodeJavaImplementsAbstractHeuristic >> any: tWithMethods declaresMethod: aTMethod [
+MiDeadJavaImplementsAbstractRule >> any: tWithMethods declaresMethod: aTMethod [
 
 	tWithMethods do: [ :aTWithMethods |
 		aTWithMethods methods
@@ -24,7 +24,7 @@ MiDeadCodeJavaImplementsAbstractHeuristic >> any: tWithMethods declaresMethod: a
 ]
 
 { #category : 'testing' }
-MiDeadCodeJavaImplementsAbstractHeuristic >> collect: tWithMethods definedMethod: aTMethod [
+MiDeadJavaImplementsAbstractRule >> collect: tWithMethods definedMethod: aTMethod [
 
 	^tWithMethods
 		collect: [ :aTWithMethods |
@@ -37,20 +37,20 @@ MiDeadCodeJavaImplementsAbstractHeuristic >> collect: tWithMethods definedMethod
 ]
 
 { #category : 'accessing' }
-MiDeadCodeJavaImplementsAbstractHeuristic >> description [
+MiDeadJavaImplementsAbstractRule >> description [
 
 	^super description ,
 	'A method implementing an abstract method, even dead, is needed for the implementation'
 ]
 
 { #category : 'accessing' }
-MiDeadCodeJavaImplementsAbstractHeuristic >> name [
+MiDeadJavaImplementsAbstractRule >> name [
 
 	^super name , 'Implements abstract method'
 ]
 
 { #category : 'testing' }
-MiDeadCodeJavaImplementsAbstractHeuristic >> notDead: aTMethod [
+MiDeadJavaImplementsAbstractRule >> notDead: aTMethod [
 	"- Get all methods defined in super-classes
 	   - if any one is not abstract, then return false, the rule does not apply
 	   - if there is one, it must be abstract, return true (is not dead)
