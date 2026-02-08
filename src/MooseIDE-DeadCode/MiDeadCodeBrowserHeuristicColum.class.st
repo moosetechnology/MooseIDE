@@ -97,12 +97,6 @@ MiDeadCodeBrowserHeuristicColum >> initializePresenters [
 
 ]
 
-{ #category : 'initialization' }
-MiDeadCodeBrowserHeuristicColum >> newHeuristicList [
-
-	^self instantiate: MiDeadCodeHeuristicListPresenter
-]
-
 { #category : 'actions' }
 MiDeadCodeBrowserHeuristicColum >> resetSelection [
 
