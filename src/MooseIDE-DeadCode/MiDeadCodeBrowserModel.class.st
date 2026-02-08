@@ -9,9 +9,9 @@ Class {
 	#instVars : [
 		'deadEntities',
 		'candidateEntities',
-		'chosenHeuristics',
-		'availableHeuristics',
-		'selectedDeadEntities'
+		'selectedDeadEntities',
+		'chosenRules',
+		'availableRules'
 	],
 	#category : 'MooseIDE-DeadCode-Model',
 	#package : 'MooseIDE-DeadCode',
@@ -19,44 +19,44 @@ Class {
 }
 
 { #category : 'actions' }
-MiDeadCodeBrowserModel >> applyChosenHeuristics: entity [
+MiDeadCodeBrowserModel >> applyChosenRules: entity [
 	"search for a heuristic that could deal with the entity"
 
-	chosenHeuristics do: [ :heuristic |
+	chosenRules do: [ :heuristic |
 		(self heuristic: heuristic handle: entity)
 			ifTrue: [ ^self ]
 		]
 ]
 
 { #category : 'accessing' }
-MiDeadCodeBrowserModel >> availableHeuristics [
+MiDeadCodeBrowserModel >> availableRules [
 
-	^availableHeuristics ifNil: [
-		availableHeuristics := MiDeadCodeAbstractHeuristic withAllSubclasses
+	^availableRules ifNil: [
+		availableRules := MiDeadAbstractRule withAllSubclasses
 			select: [ :class | class isAbstract not ]
 			thenCollect: [ :class | class new ]
 	]
 ]
 
 { #category : 'actions' }
-MiDeadCodeBrowserModel >> chooseHeuristics: heuristicCollection [
+MiDeadCodeBrowserModel >> chooseRules: heuristicCollection [
 	"add all of heuristicCollection  to the internal list of chosenHeuristics"
 
-	chosenHeuristics := (chosenHeuristics union: heuristicCollection)
+	chosenRules := (chosenRules union: heuristicCollection)
 		sort: self heuristicSortBlock.
-	browser updateChosenHeuristics
+	browser updateChosenRules
 ]
 
 { #category : 'accessing' }
-MiDeadCodeBrowserModel >> chosenHeuristics [
+MiDeadCodeBrowserModel >> chosenRules [
 
-	^chosenHeuristics 
+	^chosenRules 
 ]
 
 { #category : 'accessing - private tests' }
 MiDeadCodeBrowserModel >> clearChosenHeuristics [
 
-	chosenHeuristics removeAll
+	chosenRules removeAll
 ]
 
 { #category : 'settings management' }
@@ -85,7 +85,7 @@ MiDeadCodeBrowserModel >> entities [
 MiDeadCodeBrowserModel >> firstRoundComputation [
 
 	deadEntities removeAll.
-	self entities do: [ :entity | self applyChosenHeuristics: entity ].
+	self entities do: [ :entity | self applyChosenRules: entity ].
 	browser updateToolbar.
 	browser updateDeadEntities
 ]
@@ -95,7 +95,7 @@ MiDeadCodeBrowserModel >> followEntity: aCollection [
 
 	candidateEntities := aCollection.
 	browser candidateEntities: aCollection.
-	browser updateChosenHeuristics
+	browser updateChosenRules
 ]
 
 { #category : 'actions' }
@@ -141,10 +141,10 @@ MiDeadCodeBrowserModel >> initialize [
 { #category : 'initialization' }
 MiDeadCodeBrowserModel >> initializeHeuristics [
 
-	chosenHeuristics := OrderedCollection new:
-		                    self availableHeuristics size.
-	chosenHeuristics addAll:
-		(self availableHeuristics select: [ :heuristic |
+	chosenRules := OrderedCollection new:
+		                    self availableRules size.
+	chosenRules addAll:
+		(self availableRules select: [ :heuristic |
 			 heuristic selectedByDefault ])
 ]
 
@@ -157,7 +157,7 @@ MiDeadCodeBrowserModel >> isNewDead: anEntity [
 
 	(deadEntities includes: anEntity) ifTrue: [ ^ false ].
 
-	chosenHeuristics do: [ :heuristic |
+	chosenRules do: [ :heuristic |
 		(heuristic refuteDead and: [ heuristic notDead: anEntity ])
 			ifTrue: [ ^false ]
 	].
@@ -218,8 +218,8 @@ MiDeadCodeBrowserModel >> settings [
 MiDeadCodeBrowserModel >> unchooseHeuristics: heuristicCollection [
 	"remove all of heuristicCollection from the internal list of chosenHeuristics"
 
-	chosenHeuristics removeAll: heuristicCollection.
-	browser updateChosenHeuristics
+	chosenRules removeAll: heuristicCollection.
+	browser updateChosenRules
 ]
 
 { #category : 'settings management' }

@@ -81,12 +81,12 @@ MiDeadCodeBrowserResultColum >> update [
 	lstDeadMethods items: deads.
 	lblDeadMethods label: deads size asString , ' dead entities'.
 
-	btnFirstRound enabled: (self specModel chosenHeuristics isNotEmpty).
+	btnFirstRound enabled: (self specModel chosenRules isNotEmpty).
 	btnRecursive enabled: (deads isNotEmpty)
 ]
 
 { #category : 'actions' }
-MiDeadCodeBrowserResultColum >> updateChosenHeuristics [
+MiDeadCodeBrowserResultColum >> updateChosenRules [
 
-	btnFirstRound enabled: (self specModel chosenHeuristics isNotEmpty)
+	btnFirstRound enabled: (self specModel chosenRules isNotEmpty)
 ]

@@ -16,7 +16,7 @@ Class {
 		'lstMethod',
 		'lblAllMethods',
 		'resultColumn',
-		'heuristicColumn'
+		'ruleColumn'
 	],
 	#category : 'MooseIDE-DeadCode-Browser',
 	#package : 'MooseIDE-DeadCode',
@@ -90,9 +90,9 @@ MiDeadCodeBrowser >> candidateEntities: aCollection [
 ]
 
 { #category : 'heuristic column' }
-MiDeadCodeBrowser >> chosenHeuristics [
+MiDeadCodeBrowser >> chosenRules [
 
-	^specModel chosenHeuristics
+	^specModel chosenRules
 ]
 
 { #category : 'layout' }
@@ -101,7 +101,7 @@ MiDeadCodeBrowser >> defaultLayout [
 	^SpPanedLayout newLeftToRight 
 		add: self candidateEntiesColumnLayout;
 		add: (SpPanedLayout newLeftToRight 
-			add: heuristicColumn ;
+			add: ruleColumn ;
 			add: resultColumn ;
 			yourself) ;
 		positionOfSlider: 0.3 ;
@@ -115,12 +115,6 @@ MiDeadCodeBrowser >> followEntity: anEntity [
 	specModel followEntity: anEntity
 ]
 
-{ #category : 'accessing' }
-MiDeadCodeBrowser >> heuristicColumn [
-
-	^heuristicColumn 
-]
-
 { #category : 'initialization' }
 MiDeadCodeBrowser >> initializePresenters [
 
@@ -131,7 +125,7 @@ MiDeadCodeBrowser >> initializePresenters [
 	lblAllMethods := self newLabel
 		label: '0 entities'.
 
-	heuristicColumn := self instantiate: MiDeadCodeBrowserHeuristicColum.
+	ruleColumn := self instantiate: MiDeadCodeBrowserRuleColum.
 	resultColumn := self instantiate: MiDeadCodeBrowserResultColum.
 ]
 
@@ -141,6 +135,12 @@ MiDeadCodeBrowser >> miSelectedItem [
 	^specModel miSelectedItem 
 ]
 
+{ #category : 'accessing' }
+MiDeadCodeBrowser >> ruleColumn [
+
+	^ruleColumn 
+]
+
 { #category : 'TOREMOVE' }
 MiDeadCodeBrowser >> toolbarHeight [
 
@@ -148,10 +148,10 @@ MiDeadCodeBrowser >> toolbarHeight [
 ]
 
 { #category : 'actions' }
-MiDeadCodeBrowser >> updateChosenHeuristics [
+MiDeadCodeBrowser >> updateChosenRules [
 
-	heuristicColumn chosenHeuristics: specModel chosenHeuristics.
-	resultColumn updateChosenHeuristics
+	ruleColumn chosenRules: specModel chosenRules.
+	resultColumn updateChosenRules
 ]
 
 { #category : 'actions' }

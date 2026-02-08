@@ -19,7 +19,7 @@ Class {
 }
 
 { #category : 'actions' }
-MiDeadCodeBrowserModelWithCallGraph >> applyChosenHeuristics: entity [
+MiDeadCodeBrowserModelWithCallGraph >> applyChosenRules: entity [
 	"search for a heuristic that could deal with the entity
 	 when found, go to next entity"
 
@@ -30,26 +30,26 @@ MiDeadCodeBrowserModelWithCallGraph >> applyChosenHeuristics: entity [
 ]
 
 { #category : 'accessing' }
-MiDeadCodeBrowserModelWithCallGraph >> availableHeuristics [
+MiDeadCodeBrowserModelWithCallGraph >> availableRules [
 
 	^availableHeuristics ifNil: [
-		availableHeuristics := MiDeadCodeAbstractHeuristic withAllSubclasses
+		availableHeuristics := MiDeadAbstractRule withAllSubclasses
 			select: [ :class | class isAbstract not ]
 			thenCollect: [ :class | class new ]
 	]
 ]
 
 { #category : 'actions' }
-MiDeadCodeBrowserModelWithCallGraph >> chooseHeuristics: heuristicCollection [
+MiDeadCodeBrowserModelWithCallGraph >> chooseRules: heuristicCollection [
 	"add all of heuristicCollection  to the internal list of chosenHeuristics"
 
 	chosenHeuristics := (chosenHeuristics union: heuristicCollection)
 		sort: self heuristicSortBlock.
-	browser updateChosenHeuristics
+	browser updateChosenRules
 ]
 
 { #category : 'accessing' }
-MiDeadCodeBrowserModelWithCallGraph >> chosenHeuristics [
+MiDeadCodeBrowserModelWithCallGraph >> chosenRules [
 
 	^chosenHeuristics 
 ]
@@ -115,7 +115,7 @@ MiDeadCodeBrowserModelWithCallGraph >> followEntity: aCollection [
 
 	candidateEntities := aCollection.
 	browser candidateEntities: aCollection.
-	browser updateChosenHeuristics
+	browser updateChosenRules
 ]
 
 { #category : 'actions' }
@@ -168,9 +168,9 @@ MiDeadCodeBrowserModelWithCallGraph >> initialize [
 MiDeadCodeBrowserModelWithCallGraph >> initializeHeuristics [
 
 	chosenHeuristics := OrderedCollection new:
-		                    self availableHeuristics size.
+		                    self availableRules size.
 	chosenHeuristics addAll:
-		(self availableHeuristics select: [ :heuristic |
+		(self availableRules select: [ :heuristic |
 			 heuristic selectedByDefault ])
 ]
 
@@ -215,7 +215,7 @@ MiDeadCodeBrowserModelWithCallGraph >> unchooseHeuristics: heuristicCollection [
 	"remove all of heuristicCollection from the internal list of chosenHeuristics"
 
 	chosenHeuristics removeAll: heuristicCollection.
-	browser updateChosenHeuristics
+	browser updateChosenRules
 ]
 
 { #category : 'settings management' }
