@@ -7,7 +7,7 @@ It may contain/present:
 The #name and the #help are set from internal the `MiDeadCodeAbstractHeuristic`
 "
 Class {
-	#name : 'MiDeadCodeRulePresenter',
+	#name : 'MiDeadRulePresenter',
 	#superclass : 'SpLabelPresenter',
 	#instVars : [
 		'rule'
@@ -18,14 +18,14 @@ Class {
 }
 
 { #category : 'instance creation' }
-MiDeadCodeRulePresenter class >> withRule: aDeadCodeHeuristic [
+MiDeadRulePresenter class >> withRule: aDeadCodeHeuristic [
 
 	^self new
 		rule: aDeadCodeHeuristic
 ]
 
 { #category : 'api' }
-MiDeadCodeRulePresenter >> help [
+MiDeadRulePresenter >> help [
 
 	^rule isAssociation
 		ifTrue: [ 'A collection of heuristics for ' , rule key ]
@@ -33,7 +33,7 @@ MiDeadCodeRulePresenter >> help [
 ]
 
 { #category : 'api' }
-MiDeadCodeRulePresenter >> label [
+MiDeadRulePresenter >> label [
 
 	^rule isAssociation
 		ifTrue: [ rule key ]
@@ -41,13 +41,13 @@ MiDeadCodeRulePresenter >> label [
 ]
 
 { #category : 'accessing' }
-MiDeadCodeRulePresenter >> rule [
+MiDeadRulePresenter >> rule [
 
 	^ rule
 ]
 
 { #category : 'accessing' }
-MiDeadCodeRulePresenter >> rule: aRule [
+MiDeadRulePresenter >> rule: aRule [
 
 	rule := aRule
 ]

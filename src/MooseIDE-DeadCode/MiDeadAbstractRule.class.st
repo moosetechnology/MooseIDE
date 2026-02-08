@@ -23,7 +23,7 @@ Class {
 { #category : 'testing' }
 MiDeadAbstractRule class >> isAbstract [
 
-	^self name includesSubstring: 'MiDeadCodeAbstract'
+	^self name beginsWith: 'MiDeadAbstract'
 ]
 
 { #category : 'accessing' }

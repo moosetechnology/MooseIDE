@@ -2,13 +2,13 @@
 A class to implement the right column (results) of the DeadCodeBrowser
 "
 Class {
-	#name : 'MiDeadCodeBrowserResultColum',
+	#name : 'MiDeadBrowserResultColumn',
 	#superclass : 'SpPresenter',
 	#instVars : [
 		'lstDeadMethods',
-		'btnFirstRound',
-		'btnRecursive',
-		'lblDeadMethods'
+		'lblDeadMethods',
+		'btnRun',
+		'btnClear'
 	],
 	#category : 'MooseIDE-DeadCode-Browser',
 	#package : 'MooseIDE-DeadCode',
@@ -16,24 +16,24 @@ Class {
 }
 
 { #category : 'initialization' }
-MiDeadCodeBrowserResultColum >> connectPresenters [
+MiDeadBrowserResultColumn >> connectPresenters [
 
 	lstDeadMethods
 		whenModelChangedDo: [ :new :old :evt | lstDeadMethods unselectAll ] ;
 		whenSelectionChangedDo: [ self specModel miSelectedItems: lstDeadMethods selectedItems ].
 
-	btnFirstRound action: [ self specModel firstRoundComputation].
+	btnRun action: [ self specModel runComputation].
 
-	btnRecursive action: [ self specModel recursionComputation].
+	btnClear action: [ self specModel clearDeads]
 ]
 
 { #category : 'layout' }
-MiDeadCodeBrowserResultColum >> defaultLayout [
+MiDeadBrowserResultColumn >> defaultLayout [
 
 	^SpBoxLayout newTopToBottom
 		add: (SpBoxLayout newLeftToRight
-			add: btnFirstRound ;
-			add: btnRecursive ;
+			add: btnRun ;
+			add: btnClear ;
 			yourself)
 		height: self toolbarHeight ;
 		add: lblDeadMethods height: self toolbarHeight ;
@@ -42,51 +42,49 @@ MiDeadCodeBrowserResultColum >> defaultLayout [
 ]
 
 { #category : 'initialization' }
-MiDeadCodeBrowserResultColum >> initializePresenters [
+MiDeadBrowserResultColumn >> initializePresenters [
 
 	lstDeadMethods := self newList
 		beMultipleSelection ;
 		display: #mooseName ;
 		sortingBlock: #mooseName ascending.
 
-	btnFirstRound := self newButton
-		label: '1st round' ;
+	btnRun := self newButton
+		label: 'Run' ;
 		enabled: false.
 
-	btnRecursive := self newButton
-		label: 'recursion' ;
-		enabled: false.
+	btnClear := self newButton
+		label: 'clear'.
 
 	lblDeadMethods := self newLabel
 		label: '0 dead entities'
 ]
 
 { #category : 'accessing' }
-MiDeadCodeBrowserResultColum >> specModel [ 
+MiDeadBrowserResultColumn >> specModel [ 
 
 	^owner specModel
 ]
 
 { #category : 'TOREMOVE' }
-MiDeadCodeBrowserResultColum >> toolbarHeight [
+MiDeadBrowserResultColumn >> toolbarHeight [
 
 	^self class toolbarHeight
 ]
 
 { #category : 'actions' }
-MiDeadCodeBrowserResultColum >> update [
+MiDeadBrowserResultColumn >> update [
 
 	| deads |
 	deads := self specModel deadEntities.
 	lstDeadMethods items: deads.
 	lblDeadMethods label: deads size asString , ' dead entities'.
 
-	btnFirstRound enabled: (self specModel chosenRules isNotEmpty).
-	btnRecursive enabled: (deads isNotEmpty)
+	btnRun enabled: (self specModel chosenRules isNotEmpty)
 ]
 
 { #category : 'actions' }
-MiDeadCodeBrowserResultColum >> updateChosenRules [
+MiDeadBrowserResultColumn >> updateChosenRules [
 
-	btnFirstRound enabled: (self specModel chosenRules isNotEmpty)
+	btnRun enabled: (self specModel chosenRules isNotEmpty)
 ]
