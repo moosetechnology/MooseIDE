@@ -15,19 +15,19 @@ Class {
 { #category : 'accessing' }
 MiDeadCodeBrowserHeuristicColum >> chosenHeuristics: aCollection [
 
-	lstChosenHeuristics items: aCollection
+	lstChosenHeuristics items: (aCollection collect: [:heuristic | MiDeadCodeHeuristicPresenter withHeuristic: heuristic])
 ]
 
 { #category : 'initialization' }
 MiDeadCodeBrowserHeuristicColum >> connectPresenters [
 
 	btnChooseHeuristics action: [
-		self specModel chooseHeuristics: lstOfferedHeuristics chosenHeuristics.
+		self specModel chooseHeuristics: self selectedHeuristicsOffered.
 		self resetSelection
 	].
 
 	btnRejectHeuristic action: [
-		self specModel unchooseHeuristics: lstChosenHeuristics chosenHeuristics.
+		self specModel unchooseHeuristics: self selectedHeuristicsChosen.
 		self resetSelection
 	].
 
@@ -52,27 +52,25 @@ MiDeadCodeBrowserHeuristicColum >> defaultLayout [
 { #category : 'accessing' }
 MiDeadCodeBrowserHeuristicColum >> heuristicGroupChildrenFor: heuristicGroup [
 
-	heuristicGroup key isString
-		ifTrue: [ heuristicGroup value ]
-		ifFalse: [ {  heuristicGroup key } ]
+	^heuristicGroup key isString
+		ifTrue: [ heuristicGroup value collect: [ :heuristic | heuristic -> heuristic ] ]
+		ifFalse: [ #() ]
 ]
 
 { #category : 'initialization' }
 MiDeadCodeBrowserHeuristicColum >> initializeOfferedHeuristicsList: availableHeuristics [
 
-	| treeList groupedHeuristics |
+	| groupedHeuristics |
 
 	groupedHeuristics := availableHeuristics groupedBy: [ :heuristic | heuristic heuristicGroup ].
 
-	treeList := self newTreeListView.
-	treeList setup: [ :aPresenter | aPresenter instantiate: MiDeadCodeHeuristicPresenter ].
-	treeList bind: [ :aPresenter :anObject | aPresenter heuristicGroup: anObject ].
-	treeList children: [ :association | self childrenFor: association ].
-
-	treeList roots: groupedHeuristics associations.
-
-	^treeList 
-
+	^self newTreeListView
+		beMultipleSelection ;
+		setup: [ :aPresenter | aPresenter instantiate: MiDeadCodeHeuristicPresenter ] ;
+		bind: [ :aPresenter :anObject | aPresenter heuristicGroup: anObject ] ;
+		children: [ :association | self heuristicGroupChildrenFor: association ] ;
+		roots: groupedHeuristics associations ;
+		yourself
 ]
 
 { #category : 'initialization' }
@@ -80,15 +78,21 @@ MiDeadCodeBrowserHeuristicColum >> initializePresenters [
 
 	lstOfferedHeuristics := self initializeOfferedHeuristicsList: self specModel availableHeuristics.
 
-	lstChosenHeuristics := self newHeuristicList
-		items: self specModel chosenHeuristics.
+	lstChosenHeuristics := self newList
+		beMultipleSelection ;
+		display: #label ;
+		sortingBlock: [ :a :b |a label < b label ] ;
+		items: (self specModel chosenHeuristics
+			collect: [:heuristic | MiDeadCodeHeuristicPresenter withHeuristic: heuristic]).
 
 	btnChooseHeuristics := self newButton
-		label: 'v' ;
+		icon: (self iconNamed: #mooseDown) ;
+		help: 'Select' ;
 		action: [ self specModel chooseHeuristics: lstOfferedHeuristics chosenHeuristics ].
 
 	btnRejectHeuristic := self newButton
-		label: '^' ;
+		icon: (self iconNamed: #mooseTrash) ;
+		help: 'De-select' ;
 		action: [ self specModel unchooseHeuristics: lstChosenHeuristics chosenHeuristics ].
 
 ]
@@ -104,6 +108,24 @@ MiDeadCodeBrowserHeuristicColum >> resetSelection [
 
 	lstOfferedHeuristics unselectAll.
 	lstChosenHeuristics unselectAll 
+]
+
+{ #category : 'as yet unclassified' }
+MiDeadCodeBrowserHeuristicColum >> selectedHeuristicsChosen [
+
+	^lstChosenHeuristics selectedItems
+		collect: #heuristic
+
+]
+
+{ #category : 'actions' }
+MiDeadCodeBrowserHeuristicColum >> selectedHeuristicsOffered [
+
+	^lstOfferedHeuristics selectedItems
+		flatCollectAsSet: [  :item |
+			item key isString
+				ifTrue: [ item value ]
+				ifFalse: [ {  item key } ] ]
 ]
 
 { #category : 'accessing' }
