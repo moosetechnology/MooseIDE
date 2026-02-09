@@ -5,21 +5,21 @@ So if any of the other constructors is not dead, then these ones are not-dead ei
 But rules cannot model this, so we just assume they are not-dead by default
 "
 Class {
-	#name : 'MiDeadCodeJavaInitializerHeuristic',
-	#superclass : 'MiDeadCodeAbstractJavaHeuristic',
+	#name : 'MiDeadJavaInitializerRule',
+	#superclass : 'MiDeadAbstractJavaRule',
 	#category : 'MooseIDE-DeadCode-Rules',
 	#package : 'MooseIDE-DeadCode',
 	#tag : 'Rules'
 }
 
 { #category : 'visiting' }
-MiDeadCodeJavaInitializerHeuristic >> accept: aTMethod [
+MiDeadJavaInitializerRule >> accept: aTMethod [
 
 	^self notDead: aTMethod 
 ]
 
 { #category : 'testing' }
-MiDeadCodeJavaInitializerHeuristic >> classHasNonDefaultConstructor: aClass [
+MiDeadJavaInitializerRule >> classHasNonDefaultConstructor: aClass [
 
 	aClass methods
 		detect: [ :m | m isConstructor and: [ m parameters isNotEmpty ] ]
@@ -29,14 +29,14 @@ MiDeadCodeJavaInitializerHeuristic >> classHasNonDefaultConstructor: aClass [
 ]
 
 { #category : 'accessing' }
-MiDeadCodeJavaInitializerHeuristic >> description [
+MiDeadJavaInitializerRule >> description [
 
 	^super description ,
 	'Default constructor and initialization block are assumed not-dead'
 ]
 
 { #category : 'testing' }
-MiDeadCodeJavaInitializerHeuristic >> isDefaultConstructorWithOtherConstructors: aTMethod [
+MiDeadJavaInitializerRule >> isDefaultConstructorWithOtherConstructors: aTMethod [
 	"the default constructor (no parameter) is always called by any other constructor
 	 Note: assumes but does not check that the other constructor is itself called"
 
@@ -47,25 +47,25 @@ MiDeadCodeJavaInitializerHeuristic >> isDefaultConstructorWithOtherConstructors:
 ]
 
 { #category : 'accessing' }
-MiDeadCodeJavaInitializerHeuristic >> isForEntryPoint [
+MiDeadJavaInitializerRule >> isForEntryPoint [
 
 	^true
 ]
 
 { #category : 'testing' }
-MiDeadCodeJavaInitializerHeuristic >> isInitializerBlock: aTMethod [
+MiDeadJavaInitializerRule >> isInitializerBlock: aTMethod [
 
 	^aTMethod name = '<Initializer>'
 ]
 
 { #category : 'accessing' }
-MiDeadCodeJavaInitializerHeuristic >> name [
+MiDeadJavaInitializerRule >> name [
 
 	^super name , 'Defautl constructor/Initialization block'
 ]
 
 { #category : 'testing' }
-MiDeadCodeJavaInitializerHeuristic >> notDead: aTMethod [
+MiDeadJavaInitializerRule >> notDead: aTMethod [
 
 	| parentType |
 	parentType := aTMethod parentType.

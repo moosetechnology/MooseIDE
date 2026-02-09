@@ -2,46 +2,46 @@
 Most basic heuristic for dead code: any behavioural entiy not invoked is dead
 "
 Class {
-	#name : 'MiDeadCodeNoIncomingInvocationHeuristic',
-	#superclass : 'MiDeadCodeAbstractHeuristic',
+	#name : 'MiDeadNoIncomingInvocationRule',
+	#superclass : 'MiDeadAbstractRule',
 	#category : 'MooseIDE-DeadCode-Rules',
 	#package : 'MooseIDE-DeadCode',
 	#tag : 'Rules'
 }
 
 { #category : 'accessing' }
-MiDeadCodeNoIncomingInvocationHeuristic >> description [
+MiDeadNoIncomingInvocationRule >> description [
 
 	^super description ,
 	'Methods never invoked are considered dead'
 ]
 
 { #category : 'testing' }
-MiDeadCodeNoIncomingInvocationHeuristic >> isDead: aTMethod [
+MiDeadNoIncomingInvocationRule >> isDead: aTMethod [
 
 	^aTMethod incomingInvocations isEmpty
 ]
 
 { #category : 'accessing' }
-MiDeadCodeNoIncomingInvocationHeuristic >> name [
+MiDeadNoIncomingInvocationRule >> name [
 
 	^super name , 'Not invoked method'
 ]
 
 { #category : 'testing' }
-MiDeadCodeNoIncomingInvocationHeuristic >> notDead: aTMethod [
+MiDeadNoIncomingInvocationRule >> notDead: aTMethod [
 
 	^(self isDead: aTMethod) not
 ]
 
 { #category : 'accessing' }
-MiDeadCodeNoIncomingInvocationHeuristic >> refuteDead [
+MiDeadNoIncomingInvocationRule >> refuteDead [
 
 	^false
 ]
 
 { #category : 'testing' }
-MiDeadCodeNoIncomingInvocationHeuristic >> selectedByDefault [
+MiDeadNoIncomingInvocationRule >> selectedByDefault [
 
 	^true
 ]

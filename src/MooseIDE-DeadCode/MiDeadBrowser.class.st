@@ -10,13 +10,13 @@ The user must:
 Accepted entities: A list of methods/functions (behavioural entities)
 "
 Class {
-	#name : 'MiDeadCodeBrowser',
+	#name : 'MiDeadBrowser',
 	#superclass : 'MiAbstractBrowser',
 	#instVars : [
 		'lstMethod',
 		'lblAllMethods',
 		'resultColumn',
-		'heuristicColumn'
+		'ruleColumn'
 	],
 	#category : 'MooseIDE-DeadCode-Browser',
 	#package : 'MooseIDE-DeadCode',
@@ -24,57 +24,57 @@ Class {
 }
 
 { #category : 'world menu' }
-MiDeadCodeBrowser class >> menuCommandOn: aBuilder [
+MiDeadBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
 	^ self buildMenuItemIn: aBuilder
 ]
 
 { #category : 'world menu' }
-MiDeadCodeBrowser class >> menuItem [
+MiDeadBrowser class >> menuItem [
 
 	^#mooseCancel
 ]
 
 { #category : 'world menu' }
-MiDeadCodeBrowser class >> menuPriority [
+MiDeadBrowser class >> menuPriority [
 
 	^ self menuMetaToolsPriority + 1
 ]
 
 { #category : 'world menu' }
-MiDeadCodeBrowser class >> newModel [
+MiDeadBrowser class >> newModel [
 
 	^MiDeadCodeBrowserModel new
 	 "MiDeadCodeBrowserModelWithCallGraph new"
 ]
 
 { #category : 'world menu' }
-MiDeadCodeBrowser class >> open [
+MiDeadBrowser class >> open [
 	<script>
 	^ super open
 ]
 
 { #category : 'world menu' }
-MiDeadCodeBrowser class >> preferredExtent [
+MiDeadBrowser class >> preferredExtent [
 
 	^ 900 @ 700
 ]
 
 { #category : 'world menu' }
-MiDeadCodeBrowser class >> title [
+MiDeadBrowser class >> title [
 	^'Dead code browser'
 ]
 
 { #category : 'testing' }
-MiDeadCodeBrowser >> canFollowEntity: anObject [
+MiDeadBrowser >> canFollowEntity: anObject [
 
 	^anObject isCollection and:
 	[ anObject anySatisfy: [ :entity | entity usesFamixTrait: FamixTWithInvocations ] ]
 ]
 
 { #category : 'layout' }
-MiDeadCodeBrowser >> candidateEntiesColumnLayout [
+MiDeadBrowser >> candidateEntiesColumnLayout [
 
 	^SpBoxLayout newTopToBottom
 		add: lblAllMethods expand: false;
@@ -83,25 +83,25 @@ MiDeadCodeBrowser >> candidateEntiesColumnLayout [
 ]
 
 { #category : 'accessing' }
-MiDeadCodeBrowser >> candidateEntities: aCollection [
+MiDeadBrowser >> candidateEntities: aCollection [
 
 	lstMethod items: aCollection.
 	lblAllMethods label: aCollection size asString , ' entities'
 ]
 
 { #category : 'heuristic column' }
-MiDeadCodeBrowser >> chosenHeuristics [
+MiDeadBrowser >> chosenRules [
 
-	^specModel chosenHeuristics
+	^specModel chosenRules
 ]
 
 { #category : 'layout' }
-MiDeadCodeBrowser >> defaultLayout [
+MiDeadBrowser >> defaultLayout [
 
 	^SpPanedLayout newLeftToRight 
 		add: self candidateEntiesColumnLayout;
 		add: (SpPanedLayout newLeftToRight 
-			add: heuristicColumn ;
+			add: ruleColumn ;
 			add: resultColumn ;
 			yourself) ;
 		positionOfSlider: 0.3 ;
@@ -109,20 +109,14 @@ MiDeadCodeBrowser >> defaultLayout [
 ]
 
 { #category : 'actions' }
-MiDeadCodeBrowser >> followEntity: anEntity [
+MiDeadBrowser >> followEntity: anEntity [
 
 	super followEntity: anEntity anyOne mooseModel.
 	specModel followEntity: anEntity
 ]
 
-{ #category : 'accessing' }
-MiDeadCodeBrowser >> heuristicColumn [
-
-	^heuristicColumn 
-]
-
 { #category : 'initialization' }
-MiDeadCodeBrowser >> initializePresenters [
+MiDeadBrowser >> initializePresenters [
 
 	lstMethod := self newList
 		display: #name ;
@@ -131,31 +125,37 @@ MiDeadCodeBrowser >> initializePresenters [
 	lblAllMethods := self newLabel
 		label: '0 entities'.
 
-	heuristicColumn := self instantiate: MiDeadCodeBrowserHeuristicColum.
-	resultColumn := self instantiate: MiDeadCodeBrowserResultColum.
+	ruleColumn := self instantiate: MiDeadBrowserRuleColumn.
+	resultColumn := self instantiate: MiDeadBrowserResultColumn.
 ]
 
 { #category : 'accessing' }
-MiDeadCodeBrowser >> miSelectedItem [
+MiDeadBrowser >> miSelectedItem [
 
 	^specModel miSelectedItem 
 ]
 
+{ #category : 'accessing' }
+MiDeadBrowser >> ruleColumn [
+
+	^ruleColumn 
+]
+
 { #category : 'TOREMOVE' }
-MiDeadCodeBrowser >> toolbarHeight [
+MiDeadBrowser >> toolbarHeight [
 
 	^self class toolbarHeight
 ]
 
 { #category : 'actions' }
-MiDeadCodeBrowser >> updateChosenHeuristics [
+MiDeadBrowser >> updateChosenRules [
 
-	heuristicColumn chosenHeuristics: specModel chosenHeuristics.
-	resultColumn updateChosenHeuristics
+	ruleColumn chosenRuleItems: specModel chosenRules.
+	resultColumn updateChosenRules
 ]
 
 { #category : 'actions' }
-MiDeadCodeBrowser >> updateDeadEntities [
+MiDeadBrowser >> updateDeadEntities [
 
 	resultColumn update
 ]

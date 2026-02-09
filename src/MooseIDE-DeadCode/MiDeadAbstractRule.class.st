@@ -13,7 +13,7 @@ A heurisitc has:
 - #refuteDead: true if the heuristic tries to prove that an entity is dead
 "
 Class {
-	#name : 'MiDeadCodeAbstractHeuristic',
+	#name : 'MiDeadAbstractRule',
 	#superclass : 'Object',
 	#category : 'MooseIDE-DeadCode-Rules',
 	#package : 'MooseIDE-DeadCode',
@@ -21,27 +21,33 @@ Class {
 }
 
 { #category : 'testing' }
-MiDeadCodeAbstractHeuristic class >> isAbstract [
+MiDeadAbstractRule class >> isAbstract [
 
-	^self name includesSubstring: 'MiDeadCodeAbstract'
+	^self name beginsWith: 'MiDeadAbstract'
 ]
 
 { #category : 'accessing' }
-MiDeadCodeAbstractHeuristic >> description [
+MiDeadAbstractRule >> description [
 
 	^self refuteDead
 		ifTrue: [ '[Refute a method is dead]' , String cr ]
 		ifFalse: [ '' ]
 ]
 
+{ #category : 'accessing' }
+MiDeadAbstractRule >> heuristics [
+
+	^#()
+]
+
 { #category : 'testing' }
-MiDeadCodeAbstractHeuristic >> isAbstract [
+MiDeadAbstractRule >> isAbstract [
 
 	^ self class isAbstract
 ]
 
 { #category : 'testing' }
-MiDeadCodeAbstractHeuristic >> isDead: aTMethod [
+MiDeadAbstractRule >> isDead: aTMethod [
 
 	^self refuteDead
 		ifTrue: [ (self notDead: aTMethod) not ]
@@ -49,13 +55,13 @@ MiDeadCodeAbstractHeuristic >> isDead: aTMethod [
 ]
 
 { #category : 'accessing' }
-MiDeadCodeAbstractHeuristic >> isForEntryPoint [
+MiDeadAbstractRule >> isForEntryPoint [
 
 	^false
 ]
 
 { #category : 'accessing' }
-MiDeadCodeAbstractHeuristic >> name [
+MiDeadAbstractRule >> name [
 
 	^self selectedByDefault
 		ifTrue: [ '[Default] ' ]
@@ -63,21 +69,28 @@ MiDeadCodeAbstractHeuristic >> name [
 ]
 
 { #category : 'testing' }
-MiDeadCodeAbstractHeuristic >> notDead: aTMethod [
+MiDeadAbstractRule >> notDead: aTMethod [
 
 	self subclassResponsibility 
 ]
 
 { #category : 'accessing' }
-MiDeadCodeAbstractHeuristic >> refuteDead [
+MiDeadAbstractRule >> refuteDead [
 	"if true, the heuristic tries to _refute_ a method is dead (or assert it is not dead)
 	 if false, the heuristic tries to _assert_ a method is dead"
 
 	^true
 ]
 
+{ #category : 'accessing' }
+MiDeadAbstractRule >> ruleGroup [
+	"by default a rule is not grouped (therefore in its own group)"
+
+	^self
+]
+
 { #category : 'testing' }
-MiDeadCodeAbstractHeuristic >> selectedByDefault [
+MiDeadAbstractRule >> selectedByDefault [
 	"Whether the heuristic is selected in the DeadCodeBrowser by default"
 
 	^false

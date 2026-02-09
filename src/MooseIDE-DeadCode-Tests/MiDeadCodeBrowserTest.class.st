@@ -18,23 +18,30 @@ MiDeadCodeBrowserTest >> browserCandidateEntitiesListPresenter [
 ]
 
 { #category : 'running' }
-MiDeadCodeBrowserTest >> browserChooseHeuristicsButtonPresenter [
+MiDeadCodeBrowserTest >> browserChooseRulesButtonPresenter [
 
-	^(browser presenterAt: #heuristicColumn)
-		presenterAt: #btnChooseHeuristics
+	^(browser presenterAt: #ruleColumn)
+		presenterAt: #btnChooseRules
 ]
 
 { #category : 'running' }
-MiDeadCodeBrowserTest >> browserChosenHeuristicsListPresenter [
+MiDeadCodeBrowserTest >> browserChosenRulesTreePresenter [
 
-	^(browser presenterAt: #heuristicColumn)
-		presenterAt: #lstChosenHeuristics
+	^(browser presenterAt: #ruleColumn)
+		presenterAt: #lstChosenRules
 ]
 
 { #category : 'running' }
 MiDeadCodeBrowserTest >> browserClass [
 
-	^MiDeadCodeBrowser
+	^MiDeadBrowser
+]
+
+{ #category : 'running' }
+MiDeadCodeBrowserTest >> browserClearDeadButtonPresenter [
+
+	^(browser presenterAt: #resultColumn)
+		presenterAt: #btnClear
 ]
 
 { #category : 'running' }
@@ -52,31 +59,24 @@ MiDeadCodeBrowserTest >> browserDeadEntitiesListPresenter [
 ]
 
 { #category : 'running' }
-MiDeadCodeBrowserTest >> browserFirstRoundButtonPresenter [
+MiDeadCodeBrowserTest >> browserOfferedRuleTreePresenter [
+
+	^(browser presenterAt: #ruleColumn)
+		presenterAt: #lstOfferedRules
+]
+
+{ #category : 'running' }
+MiDeadCodeBrowserTest >> browserRunButtonPresenter [
 
 	^(browser presenterAt: #resultColumn)
-		presenterAt: #btnFirstRound
+		presenterAt: #btnRun
 ]
 
 { #category : 'running' }
-MiDeadCodeBrowserTest >> browserOfferedHeuristicsListPresenter [
+MiDeadCodeBrowserTest >> browserUnChooseRulesButtonPresenter [
 
-	^(browser presenterAt: #heuristicColumn)
-		presenterAt: #lstOfferedHeuristics
-]
-
-{ #category : 'running' }
-MiDeadCodeBrowserTest >> browserRecursiveRoundButtonPresenter [
-
-	^(browser presenterAt: #resultColumn)
-		presenterAt: #btnRecursive
-]
-
-{ #category : 'running' }
-MiDeadCodeBrowserTest >> browserUnChooseHeuristicsButtonPresenter [
-
-	^(browser presenterAt: #heuristicColumn)
-		presenterAt: #btnRejectHeuristic
+	^(browser presenterAt: #ruleColumn)
+		presenterAt: #btnRejectRules
 ]
 
 { #category : 'running' }
@@ -92,28 +92,28 @@ MiDeadCodeBrowserTest >> populateBrowser: mooseModel [
 
 ]
 
+{ #category : 'running' }
+MiDeadCodeBrowserTest >> selectOfferedRule: aRuleClass [
+
+	| itemToSelect |
+	itemToSelect := self browserOfferedRuleTreePresenter roots
+		detect: [ :item | item class = aRuleClass ].
+
+	self browserOfferedRuleTreePresenter selectItem: itemToSelect.
+
+	^itemToSelect 
+]
+
 { #category : 'tests' }
 MiDeadCodeBrowserTest >> testActivateActionButtons [
 	"can only propagate dead methods, therefore receiving entities alone
-	 does not allow to propagae anything"
+	 does not allow to propagate anything"
 
 	browser actionButtons do: [ :button | self deny: button isEnabled ].
 
 	self receiveEntityToSelect.
 
 	browser actionButtons do: [ :button | self deny: button isEnabled ]
-]
-
-{ #category : 'tests' }
-MiDeadCodeBrowserTest >> testActivateRecursiveRoundButton [
-
-	self deny: self browserRecursiveRoundButtonPresenter isEnabled.
-
-	browser specModel deadEntities addAll: { FamixStMethod new . FamixStMethod new }.
-	browser updateDeadEntities.
-
-	self assert: self browserRecursiveRoundButtonPresenter isEnabled.
-
 ]
 
 { #category : 'tests' }
@@ -129,25 +129,17 @@ MiDeadCodeBrowserTest >> testAllDeadEntitiesAreMiSelected [
 ]
 
 { #category : 'tests' }
-MiDeadCodeBrowserTest >> testButtonChooseHeuristics [
-	"by default, there is only one chosen heuristics
-	 Select anyOne and add it to the chosen
-	 Note: works because the first heuristic is not the default one"
+MiDeadCodeBrowserTest >> testButtonChooseRules [
+	"by default, there is only one chosen rule
+	 Select anyOne and add it to the chosen"
 
-	| heuristicToSelect itemToSelect numberChosen |
+	| numberChosen |
+	numberChosen := browser specModel chosenRules size.
 
-	heuristicToSelect := (browser specModel availableHeuristics \ browser specModel chosenHeuristics)
-		anyOne.
-	itemToSelect := self browserOfferedHeuristicsListPresenter items
-		detect: [ :item |
-			item heuristic = heuristicToSelect ].
+	self selectOfferedRule: MiDeadTestNamingConventionRule.
+	self browserChooseRulesButtonPresenter click.
 
-	numberChosen := browser specModel chosenHeuristics size.
-
-	self browserOfferedHeuristicsListPresenter selectItem: itemToSelect.
-	self browserChooseHeuristicsButtonPresenter click.
-
-	self assert: browser specModel chosenHeuristics size equals: numberChosen + 1
+	self assert: browser specModel chosenRules size equals: numberChosen + 1
 ]
 
 { #category : 'tests' }
@@ -175,64 +167,66 @@ MiDeadCodeBrowserTest >> testCannotPropagateAtInitialization [
 ]
 
 { #category : 'tests' }
-MiDeadCodeBrowserTest >> testChoosingHeuristicsResetsSelection [
+MiDeadCodeBrowserTest >> testChoosingRuleGroup [
+	"Choose the first group which is 'Java' containing 6 rules"
 
-	self browserOfferedHeuristicsListPresenter selectIndex: 1.
+	self selectOfferedRule: Association.
+	
+	self assert: browser specModel chosenRules size equals: 1.
 
-	self assert: self browserOfferedHeuristicsListPresenter selectedItems size equals: 1.
+	self browserChooseRulesButtonPresenter click.
 
-	self browserChooseHeuristicsButtonPresenter click.
-
-	self assert: self browserOfferedHeuristicsListPresenter selectedItems size equals: 0
+	self assert: browser specModel chosenRules size equals: 7
 ]
 
 { #category : 'tests' }
-MiDeadCodeBrowserTest >> testDisabledFirstRoundButton [
-	"without selected heuristics, '1st-round' button is disabled"
+MiDeadCodeBrowserTest >> testChoosingRulesResetsSelection [
 
-	browser specModel clearChosenHeuristics.
-	browser updateChosenHeuristics.
+	self selectOfferedRule: MiDeadTestNamingConventionRule.
 
-	self deny: self browserFirstRoundButtonPresenter isEnabled
+	self assert: self browserOfferedRuleTreePresenter selectedItems size equals: 1.
+
+	self browserChooseRulesButtonPresenter click.
+
+	self assert: self browserOfferedRuleTreePresenter selectedItems size equals: 0
 ]
 
 { #category : 'tests' }
-MiDeadCodeBrowserTest >> testEnabledFirstRoundButton [
-	"with a selected heuristics, '1st-round' button is enabled"
-
-	browser updateChosenHeuristics.
-
-	self assert: self browserFirstRoundButtonPresenter isEnabled
-]
-
-{ #category : 'tests' }
-MiDeadCodeBrowserTest >> testFirstRoundButtonUpdatesDeadEntitiesLabel [
+MiDeadCodeBrowserTest >> testClearButtonEmptiesDeadEntityList [
+	"put calling method in the _model_'s list of dead entities
+	 the browser knows nothing about it yet, so 'Recursion' button is disabled
+	 then enable the button and click on it which updates the browser"
 
 	| mooseModel |
 	mooseModel := FamixStModel new.
 	self populateBrowser: mooseModel.
-
-	self assert: self browserDeadEntitiesLabelPresenter label equals: '0 dead entities'.
-
-	self browserFirstRoundButtonPresenter click.
-
-	self assert: self browserDeadEntitiesLabelPresenter label equals: '1 dead entities'.
-
-]
-
-{ #category : 'tests' }
-MiDeadCodeBrowserTest >> testFirstRoundButtonUpdatesDeadEntitiesList [
-
-	| mooseModel |
-	mooseModel := FamixStModel new.
-	self populateBrowser: mooseModel.
-
-	self assert: self browserDeadEntitiesListPresenter items size equals: 0.
-
-	self browserFirstRoundButtonPresenter click.
+	browser specModel deadEntities add: (mooseModel entityNamed: 'aMethod').
+	browser updateDeadEntities.
 
 	self assert: self browserDeadEntitiesListPresenter items size equals: 1.
-	self assert: self browserDeadEntitiesListPresenter items anyOne name equals: 'aMethod'.
+
+	self browserClearDeadButtonPresenter click.
+
+	self assert: self browserDeadEntitiesListPresenter items size equals: 0
+]
+
+{ #category : 'tests' }
+MiDeadCodeBrowserTest >> testDisabledRunButton [
+	"without selected heuristics, 'Run' button is disabled"
+
+	browser specModel clearChosenRules.
+	browser updateChosenRules.
+
+	self deny: self browserRunButtonPresenter isEnabled
+]
+
+{ #category : 'tests' }
+MiDeadCodeBrowserTest >> testEnabledRunButton [
+	"with a selected heuristics, 'Run' button is enabled"
+
+	browser updateChosenRules.
+
+	self assert: self browserRunButtonPresenter isEnabled
 ]
 
 { #category : 'tests' }
@@ -256,18 +250,18 @@ MiDeadCodeBrowserTest >> testInitializeCandidateEntityList [
 ]
 
 { #category : 'tests' }
-MiDeadCodeBrowserTest >> testInitializeChosenHeuristicsList [
+MiDeadCodeBrowserTest >> testInitializeChosenRuleList [
 	"by default, there is one selected heuristics: `MiDeadCodeNoIncomingInvocationHeuristic`
 	 see also: MiDeadCodeAbstractHeuristic >> selectedByDefault"
 
-	self assert: self browserChosenHeuristicsListPresenter items size equals: 1.
+	self assert: self browserChosenRulesTreePresenter items size equals: 1.
 
 ]
 
 { #category : 'tests' }
-MiDeadCodeBrowserTest >> testInitializeHeuristicsList [
+MiDeadCodeBrowserTest >> testInitializeOfferedRuleTree [
 
-	self assert: self browserOfferedHeuristicsListPresenter items isNotEmpty
+	self assert: self browserOfferedRuleTreePresenter roots isNotEmpty
 ]
 
 { #category : 'tests' }
@@ -286,7 +280,38 @@ MiDeadCodeBrowserTest >> testOnlySelectedDeadEntitiesAreMiSelected [
 ]
 
 { #category : 'tests' }
-MiDeadCodeBrowserTest >> testRecursionButtonDoesNotAddOutsideFollowedEntities [
+MiDeadCodeBrowserTest >> testRunButtonUpdatesDeadEntitiesLabel [
+
+	| mooseModel |
+	mooseModel := FamixStModel new.
+	self populateBrowser: mooseModel.
+
+	self assert: self browserDeadEntitiesLabelPresenter label equals: '0 dead entities'.
+
+	self browserRunButtonPresenter click.
+
+	self assert: self browserDeadEntitiesLabelPresenter label equals: '2 dead entities'.
+
+]
+
+{ #category : 'tests' }
+MiDeadCodeBrowserTest >> testRunButtonUpdatesDeadEntitiesList [
+
+	| mooseModel |
+	mooseModel := FamixStModel new.
+	self populateBrowser: mooseModel.
+
+	self assert: self browserDeadEntitiesListPresenter items size equals: 0.
+
+	self browserRunButtonPresenter click.
+
+	self
+		assertCollection: self browserDeadEntitiesListPresenter items
+		hasSameElements: { mooseModel entityNamed: 'aMethod' . mooseModel entityNamed: 'anotherMethod' }
+]
+
+{ #category : 'tests' }
+MiDeadCodeBrowserTest >> testRunDoesNotAddOutsideFollowedEntities [
 	"Recursion step cannot add dead entities outside of the initial list of followed entities
 	 here 'aThirdDeadMethod' is dead, but not followed"
 
@@ -299,73 +324,7 @@ MiDeadCodeBrowserTest >> testRecursionButtonDoesNotAddOutsideFollowedEntities [
 		sender: (mooseModel entityNamed: 'aMethod') ;
 		candidates: { mooseModel entityNamed: 'aThirdDeadMethod' }.
 
-	browser specModel deadEntities add: (mooseModel entityNamed: 'aMethod').
-
-	self browserRecursiveRoundButtonPresenter enabled: true.
-	self browserRecursiveRoundButtonPresenter click.
-
-	self
-		assertCollection: self browserDeadEntitiesListPresenter items
-		hasSameElements: { mooseModel entityNamed: 'aMethod' . mooseModel entityNamed: 'anotherMethod' }
-]
-
-{ #category : 'tests' }
-MiDeadCodeBrowserTest >> testRecursionButtonResetsSelectedDeadEntities [
-	"put the calling method in the list of dead entities
-	 select it (it is 'miSelected')
-	 click on 'Recursion' that adds the anotherMethod tot he deads
-	 the previously selected methods should not be anymore"
-
-	| mooseModel |
-	mooseModel := FamixStModel new.
-	self populateBrowser: mooseModel.
-	browser specModel deadEntities add: (mooseModel entityNamed: 'aMethod').
-	browser updateDeadEntities.	
-	self browserDeadEntitiesListPresenter selectIndex: 1.
-
-	self assert: browser miSelectedItem size equals: 1.
-
-	self browserRecursiveRoundButtonPresenter enabled: true.
-	self browserRecursiveRoundButtonPresenter click.
-
-	self assert: self browserDeadEntitiesListPresenter selectedItems size equals: 0.
-	self assert: browser miSelectedItem size equals: 2.
-
-]
-
-{ #category : 'tests' }
-MiDeadCodeBrowserTest >> testRecursionButtonUpdatesDeadEntitiesLabel [
-	"put calling method in the _model_'s list of dead entities
-	 the browser knows nothing about it yet, so 'Recursion' button is disabled and number of dead entities is 0
-	 then enable the button and click on it which updates the browser"
-
-	| mooseModel |
-	mooseModel := FamixStModel new.
-	self populateBrowser: mooseModel.
-	browser specModel deadEntities add: (mooseModel entityNamed: 'aMethod').
-
-	self assert: self browserDeadEntitiesLabelPresenter label equals: '0 dead entities'.
-
-	self browserRecursiveRoundButtonPresenter enabled: true.
-	self browserRecursiveRoundButtonPresenter click.
-
-	self assert: self browserDeadEntitiesLabelPresenter label equals: '2 dead entities'.
-
-]
-
-{ #category : 'tests' }
-MiDeadCodeBrowserTest >> testRecursionButtonUpdatesDeadEntitiesList [
-	"put calling method in the _model_'s list of dead entities
-	 the browser knows nothing about it yet, so 'Recursion' button is disabled
-	 then enable the button and click on it which updates the browser"
-
-	| mooseModel |
-	mooseModel := FamixStModel new.
-	self populateBrowser: mooseModel.
-	browser specModel deadEntities add: (mooseModel entityNamed: 'aMethod').
-
-	self browserRecursiveRoundButtonPresenter enabled: true.
-	self browserRecursiveRoundButtonPresenter click.
+	self browserRunButtonPresenter click.
 
 	self
 		assertCollection: self browserDeadEntitiesListPresenter items
@@ -376,8 +335,8 @@ MiDeadCodeBrowserTest >> testRecursionButtonUpdatesDeadEntitiesList [
 MiDeadCodeBrowserTest >> testUnchooseHeuristic [
 	"by default, there is one selected heuristics"
 
-	self browserChosenHeuristicsListPresenter selectIndex: 1.
-	self browserUnChooseHeuristicsButtonPresenter click.
+	self browserChosenRulesTreePresenter selectIndex: 1.
+	self browserUnChooseRulesButtonPresenter click.
 
-	self assert: self browserChosenHeuristicsListPresenter items size equals: 0
+	self assert: self browserChosenRulesTreePresenter items size equals: 0
 ]

@@ -3,15 +3,15 @@ A heuristic to recognize test methods based on naming conventions.
 See #description for details
 "
 Class {
-	#name : 'MiDeadCodeTestNamingConventionHeuristic',
-	#superclass : 'MiDeadCodeAbstractHeuristic',
+	#name : 'MiDeadTestNamingConventionRule',
+	#superclass : 'MiDeadAbstractRule',
 	#category : 'MooseIDE-DeadCode-Rules',
 	#package : 'MooseIDE-DeadCode',
 	#tag : 'Rules'
 }
 
 { #category : 'accessing' }
-MiDeadCodeTestNamingConventionHeuristic >> description [
+MiDeadTestNamingConventionRule >> description [
 
 	^super description ,
 	'Any method of a test class is assumed not-dead.
@@ -23,13 +23,13 @@ MiDeadCodeTestNamingConventionHeuristic >> description [
 ]
 
 { #category : 'accessing' }
-MiDeadCodeTestNamingConventionHeuristic >> name [
+MiDeadTestNamingConventionRule >> name [
 
 	^super name , 'Naming convention'
 ]
 
 { #category : 'testing' }
-MiDeadCodeTestNamingConventionHeuristic >> notDead: aTMethod [
+MiDeadTestNamingConventionRule >> notDead: aTMethod [
 
 	(aTMethod name beginsWith: #test) ifFalse: [ ^false ].
 	(aTMethod parentType name endsWith: 'Test') ifFalse: [ ^false ].

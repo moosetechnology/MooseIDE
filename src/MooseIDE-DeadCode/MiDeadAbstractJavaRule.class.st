@@ -3,22 +3,28 @@ An abstract class for all Java heuristics
 Adds 'Java:' to the description
 "
 Class {
-	#name : 'MiDeadCodeAbstractJavaHeuristic',
-	#superclass : 'MiDeadCodeAbstractHeuristic',
+	#name : 'MiDeadAbstractJavaRule',
+	#superclass : 'MiDeadAbstractRule',
 	#category : 'MooseIDE-DeadCode-Rules',
 	#package : 'MooseIDE-DeadCode',
 	#tag : 'Rules'
 }
 
 { #category : 'accessing' }
-MiDeadCodeAbstractJavaHeuristic >> description [
+MiDeadAbstractJavaRule class >> heuristicGroups [
+
+	^#( Java ) , super heuristicGroups
+]
+
+{ #category : 'accessing' }
+MiDeadAbstractJavaRule >> description [
 
 	^super description ,
 	'Java: '
 ]
 
 { #category : 'testing' }
-MiDeadCodeAbstractJavaHeuristic >> implementedInterfaceHierarchy: aType [
+MiDeadAbstractJavaRule >> implementedInterfaceHierarchy: aType [
 	"aTCanImplement can be a TClass or a TInterface.
 	 Need to differentiate them"
 
@@ -30,14 +36,20 @@ MiDeadCodeAbstractJavaHeuristic >> implementedInterfaceHierarchy: aType [
 ]
 
 { #category : 'testing' }
-MiDeadCodeAbstractJavaHeuristic >> isInterface: aType [
+MiDeadAbstractJavaRule >> isInterface: aType [
 
 	^aType mooseDescription allProperties
 		noneSatisfy: [ :fmProp | fmProp name = #interfaceImplementations ].
 ]
 
 { #category : 'accessing' }
-MiDeadCodeAbstractJavaHeuristic >> name [
+MiDeadAbstractJavaRule >> name [
 
 	^'Java: '
+]
+
+{ #category : 'accessing' }
+MiDeadAbstractJavaRule >> ruleGroup [
+
+	^#Java
 ]

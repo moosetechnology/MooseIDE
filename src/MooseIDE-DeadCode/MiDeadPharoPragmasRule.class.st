@@ -5,15 +5,15 @@ These pragmas allow to invoke the method from the GUI
 ex: <script>, <example>. <inspectorPresentationOrder:title:>,...
 "
 Class {
-	#name : 'MiDeadCodePharoPragmasHeuristic',
-	#superclass : 'MiDeadCodeAbstractPharoHeuristic',
+	#name : 'MiDeadPharoPragmasRule',
+	#superclass : 'MiDeadAbstractPharoRule',
 	#category : 'MooseIDE-DeadCode-Rules',
 	#package : 'MooseIDE-DeadCode',
 	#tag : 'Rules'
 }
 
 { #category : 'accessing' }
-MiDeadCodePharoPragmasHeuristic >> description [ 
+MiDeadPharoPragmasRule >> description [ 
 
 	^super description ,
 	'Some pragmas mark method called by the end-user (therefore not-dead)
@@ -21,13 +21,13 @@ MiDeadCodePharoPragmasHeuristic >> description [
 ]
 
 { #category : 'accessing' }
-MiDeadCodePharoPragmasHeuristic >> name [
+MiDeadPharoPragmasRule >> name [
 
 	^super name , '<script> pragmas'
 ]
 
 { #category : 'testing' }
-MiDeadCodePharoPragmasHeuristic >> notDead: aTMethod [
+MiDeadPharoPragmasRule >> notDead: aTMethod [
 
 	aTMethod annotationInstances ifEmpty: [ ^false ].
 
@@ -37,7 +37,7 @@ MiDeadCodePharoPragmasHeuristic >> notDead: aTMethod [
 ]
 
 { #category : 'accessing' }
-MiDeadCodePharoPragmasHeuristic >> undeadPragmas [
+MiDeadPharoPragmasRule >> undeadPragmas [
 
 	^#( example script inspectorPresentationOrder:title: worldMenu)
 ]
