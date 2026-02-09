@@ -167,6 +167,19 @@ MiDeadCodeBrowserTest >> testCannotPropagateAtInitialization [
 ]
 
 { #category : 'tests' }
+MiDeadCodeBrowserTest >> testChoosingRuleGroup [
+	"Choose the first group which is 'Java' containing 6 rules"
+
+	self selectOfferedRule: Association.
+	
+	self assert: browser specModel chosenRules size equals: 1.
+
+	self browserChooseRulesButtonPresenter click.
+
+	self assert: browser specModel chosenRules size equals: 7
+]
+
+{ #category : 'tests' }
 MiDeadCodeBrowserTest >> testChoosingRulesResetsSelection [
 
 	self selectOfferedRule: MiDeadTestNamingConventionRule.
