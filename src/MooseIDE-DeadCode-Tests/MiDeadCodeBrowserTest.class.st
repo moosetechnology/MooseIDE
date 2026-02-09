@@ -38,7 +38,7 @@ MiDeadCodeBrowserTest >> browserClass [
 ]
 
 { #category : 'running' }
-MiDeadCodeBrowserTest >> browserClearButtonPresenter [
+MiDeadCodeBrowserTest >> browserClearDeadButtonPresenter [
 
 	^(browser presenterAt: #resultColumn)
 		presenterAt: #btnClear
@@ -192,7 +192,7 @@ MiDeadCodeBrowserTest >> testClearButtonEmptiesDeadEntityList [
 
 	self assert: self browserDeadEntitiesListPresenter items size equals: 1.
 
-	self browserClearButtonPresenter click.
+	self browserClearDeadButtonPresenter click.
 
 	self assert: self browserDeadEntitiesListPresenter items size equals: 0
 ]
@@ -277,7 +277,7 @@ MiDeadCodeBrowserTest >> testRunButtonUpdatesDeadEntitiesLabel [
 
 	self browserRunButtonPresenter click.
 
-	self assert: self browserDeadEntitiesLabelPresenter label equals: '1 dead entities'.
+	self assert: self browserDeadEntitiesLabelPresenter label equals: '2 dead entities'.
 
 ]
 
@@ -292,8 +292,9 @@ MiDeadCodeBrowserTest >> testRunButtonUpdatesDeadEntitiesList [
 
 	self browserRunButtonPresenter click.
 
-	self assert: self browserDeadEntitiesListPresenter items size equals: 1.
-	self assert: self browserDeadEntitiesListPresenter items anyOne name equals: 'aMethod'.
+	self
+		assertCollection: self browserDeadEntitiesListPresenter items
+		hasSameElements: { mooseModel entityNamed: 'aMethod' . mooseModel entityNamed: 'anotherMethod' }
 ]
 
 { #category : 'tests' }
@@ -310,10 +311,7 @@ MiDeadCodeBrowserTest >> testRunDoesNotAddOutsideFollowedEntities [
 		sender: (mooseModel entityNamed: 'aMethod') ;
 		candidates: { mooseModel entityNamed: 'aThirdDeadMethod' }.
 
-	browser specModel deadEntities add: (mooseModel entityNamed: 'aMethod').
-
-	self browserClearButtonPresenter enabled: true.
-	self browserClearButtonPresenter click.
+	self browserRunButtonPresenter click.
 
 	self
 		assertCollection: self browserDeadEntitiesListPresenter items

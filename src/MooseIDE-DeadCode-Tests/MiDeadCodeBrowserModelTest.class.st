@@ -125,56 +125,10 @@ MiDeadCodeBrowserModelTest >> setUp [
 ]
 
 { #category : 'tests' }
-MiDeadCodeBrowserModelTest >> testFirstRoundDeadNotRefuted [
+MiDeadCodeBrowserModelTest >> testGatherRulesList [
+	"Expected number must be updated according to number of non abstract rule classes"
 
-	model initializeRules.
-	model chooseRules: { MiDeadTestNamingConventionRule new }.
-
-	model followEntity: { self pharoMethod: 'whateverFunctionality' inClass: 'IsAClassTest' }.
-
-	self assert: model deadEntities size equals: 0.
-	model runComputation.
-	self assert: model deadEntities size equals: 1
-]
-
-{ #category : 'tests' }
-MiDeadCodeBrowserModelTest >> testFirstRoundNoDead [
-
-	model followEntity: { self pharoInvokedMethod: 'someFunctionality' }.
-
-	self assert: model deadEntities size equals: 0.
-	model runComputation.
-	self assert: model deadEntities size equals: 0
-]
-
-{ #category : 'tests' }
-MiDeadCodeBrowserModelTest >> testFirstRoundOneDead [
-
-	model followEntity: { FamixStMethod new }.
-
-	self assert: model deadEntities size equals: 0.
-	model runComputation.
-	self assert: model deadEntities size equals: 1
-]
-
-{ #category : 'tests' }
-MiDeadCodeBrowserModelTest >> testFirstRoundRefutedDead [
-	"entity is not invoked, but it should be considered a test method"
-
-	model chooseRules: { MiDeadTestNamingConventionRule new }.
-
-	model followEntity: { self pharoMethod: 'testWhateverFunctionality' inClass: 'IsAClassTest' }.
-
-	self assert: model deadEntities size equals: 0.
-	model runComputation.
-	self assert: model deadEntities size equals: 0
-]
-
-{ #category : 'tests' }
-MiDeadCodeBrowserModelTest >> testGatherHeuristicsList [
-	"Expected number must be updated according to number of non abstract heuristics classes"
-
-	self assert: model availableHeuristics size equals: 11
+	self assert: model availableRules size equals: 11
 ]
 
 { #category : 'tests' }
@@ -199,7 +153,7 @@ MiDeadCodeBrowserModelTest >> testIsNewDead [
 ]
 
 { #category : 'tests - heuristics' }
-MiDeadCodeBrowserModelTest >> testJavaAnnotationHeuristicDeadNoAnnotation [
+MiDeadCodeBrowserModelTest >> testJavaAnnotationRuleDeadNoAnnotation [
 	"Unused method with no annotation is dead"
 
 	| entity |
@@ -209,7 +163,7 @@ MiDeadCodeBrowserModelTest >> testJavaAnnotationHeuristicDeadNoAnnotation [
 ]
 
 { #category : 'tests - heuristics' }
-MiDeadCodeBrowserModelTest >> testJavaAnnotationHeuristicDeadWrongAnnotation [
+MiDeadCodeBrowserModelTest >> testJavaAnnotationRuleDeadWrongAnnotation [
 	"Unused method with @Deprecated annotation is dead"
 
 	| entity |
@@ -219,7 +173,7 @@ MiDeadCodeBrowserModelTest >> testJavaAnnotationHeuristicDeadWrongAnnotation [
 ]
 
 { #category : 'tests - heuristics' }
-MiDeadCodeBrowserModelTest >> testJavaAnnotationHeuristicNotDead [
+MiDeadCodeBrowserModelTest >> testJavaAnnotationRuleNotDead [
 	"Unused method with JUnit annotation is not dead"
 
 	| entity |
@@ -229,7 +183,7 @@ MiDeadCodeBrowserModelTest >> testJavaAnnotationHeuristicNotDead [
 ]
 
 { #category : 'tests - heuristics' }
-MiDeadCodeBrowserModelTest >> testJavaHasOverridingHeuristicDead [
+MiDeadCodeBrowserModelTest >> testJavaHasOverridingRuleDead [
 	"Unused method (entity1.doSomething()) with sub-method declaring @Override is not dead"
 
 	| entity1 entity2 annotation |
@@ -250,7 +204,7 @@ MiDeadCodeBrowserModelTest >> testJavaHasOverridingHeuristicDead [
 ]
 
 { #category : 'tests - heuristics' }
-MiDeadCodeBrowserModelTest >> testJavaHasOverridingHeuristicDeadNoAnnotation [
+MiDeadCodeBrowserModelTest >> testJavaHasOverridingRuleDeadNoAnnotation [
 	"Unused method (entity1.doSomething()) with sub-method not declaring @Override is dead"
 
 	| entity1 entity2 |
@@ -262,7 +216,7 @@ MiDeadCodeBrowserModelTest >> testJavaHasOverridingHeuristicDeadNoAnnotation [
 ]
 
 { #category : 'tests - heuristics' }
-MiDeadCodeBrowserModelTest >> testJavaHasOverridingHeuristicDeadNoOverride [
+MiDeadCodeBrowserModelTest >> testJavaHasOverridingRuleDeadNoOverride [
 	"Unused method (entity1.doSomething()) with sub-method not declaring @Override is dead"
 
 	| entity1 entity2 annotation |
@@ -286,7 +240,7 @@ MiDeadCodeBrowserModelTest >> testJavaHasOverridingHeuristicDeadNoOverride [
 ]
 
 { #category : 'tests - heuristics' }
-MiDeadCodeBrowserModelTest >> testJavaHasOverridingHeuristicDeadNoSubMethod [
+MiDeadCodeBrowserModelTest >> testJavaHasOverridingRuleDeadNoSubMethod [
 	"Unused method (entity1.doSomething()) with sub-method declaring @Override is dead
 	 (note: entity1.doSomething() is not a sub method of entity1.doSomething()"
 
@@ -308,7 +262,7 @@ MiDeadCodeBrowserModelTest >> testJavaHasOverridingHeuristicDeadNoSubMethod [
 ]
 
 { #category : 'tests - heuristics' }
-MiDeadCodeBrowserModelTest >> testJavaImplementsHeuristicNoInterface [
+MiDeadCodeBrowserModelTest >> testJavaImplementsRuleNoInterface [
 	"Unused method (entity1.doSomething()) not implementing an abtract declaration is dead"
 
 	| entity1 |
@@ -318,7 +272,7 @@ MiDeadCodeBrowserModelTest >> testJavaImplementsHeuristicNoInterface [
 ]
 
 { #category : 'tests - heuristics' }
-MiDeadCodeBrowserModelTest >> testJavaImplementsHeuristicNoOverride [
+MiDeadCodeBrowserModelTest >> testJavaImplementsRuleNoOverride [
 	"Unused method (entity1.doSomething())) implementing an interface declaration is not dead
 	 (according to MiDeadCodeJavaImplementsAbstractHeuristic)"
 
@@ -331,7 +285,7 @@ MiDeadCodeBrowserModelTest >> testJavaImplementsHeuristicNoOverride [
 ]
 
 { #category : 'tests - heuristics' }
-MiDeadCodeBrowserModelTest >> testJavaImplementsHeuristicNotAbstract [
+MiDeadCodeBrowserModelTest >> testJavaImplementsRuleNotAbstract [
 	"Unused method (entity1.doSomething()) overriding a super-method is dead"
 
 	| entity1 entity2 |
@@ -343,7 +297,7 @@ MiDeadCodeBrowserModelTest >> testJavaImplementsHeuristicNotAbstract [
 ]
 
 { #category : 'tests - heuristics' }
-MiDeadCodeBrowserModelTest >> testJavaImplementsHeuristicWithAbstract [
+MiDeadCodeBrowserModelTest >> testJavaImplementsRuleWithAbstract [
 	"Unused method (entity1.doSomething()) overriding an abstract super-method is not dead"
 
 	| entity1 entity2 |
@@ -356,7 +310,7 @@ MiDeadCodeBrowserModelTest >> testJavaImplementsHeuristicWithAbstract [
 ]
 
 { #category : 'tests - heuristics' }
-MiDeadCodeBrowserModelTest >> testJavaImplementsHeuristicWithOverride [
+MiDeadCodeBrowserModelTest >> testJavaImplementsRuleWithOverride [
 	"Unused method (entity1.doSomething()) implementing an interface declaration but overriding a concrete implementation is dead"
 
 	| entity1 entity2 entity3 |
@@ -370,7 +324,7 @@ MiDeadCodeBrowserModelTest >> testJavaImplementsHeuristicWithOverride [
 ]
 
 { #category : 'tests - heuristics' }
-MiDeadCodeBrowserModelTest >> testJavaOverridesHeuristicDeadNoInterface [
+MiDeadCodeBrowserModelTest >> testJavaOverridesRuleDeadNoInterface [
 	"Unused method (entity1.doSomething()) is dead
 	 note: no link between entity1 and entity2"
 
@@ -383,7 +337,7 @@ MiDeadCodeBrowserModelTest >> testJavaOverridesHeuristicDeadNoInterface [
 ]
 
 { #category : 'tests - heuristics' }
-MiDeadCodeBrowserModelTest >> testJavaOverridesHeuristicDeadNoInvocation [
+MiDeadCodeBrowserModelTest >> testJavaOverridesRuleDeadNoInvocation [
 	"Unused method implementing an interface declaration is dead
 	 (according to MiDeadCodeJavaOverridesInvokedHeuristic)"
 
@@ -396,7 +350,7 @@ MiDeadCodeBrowserModelTest >> testJavaOverridesHeuristicDeadNoInvocation [
 ]
 
 { #category : 'tests - heuristics' }
-MiDeadCodeBrowserModelTest >> testJavaOverridesHeuristicDeadNoMethod [
+MiDeadCodeBrowserModelTest >> testJavaOverridesRuleDeadNoMethod [
 	"Unused method (entity1.doSomething()) with no implementing sub-method used is dead
 	 (according to MiDeadCodeJavaOverridesInvokedHeuristic)
 	 note: methods names are different"
@@ -411,7 +365,7 @@ MiDeadCodeBrowserModelTest >> testJavaOverridesHeuristicDeadNoMethod [
 ]
 
 { #category : 'tests - heuristics' }
-MiDeadCodeBrowserModelTest >> testJavaOverridesHeuristicNotDead [
+MiDeadCodeBrowserModelTest >> testJavaOverridesRuleNotDead [
 	"Unused method (entity1.doSomething()) with implementing sub-method used is not dead
 	 (according to MiDeadCodeJavaOverridesInvokedHeuristic)"
 
@@ -425,7 +379,7 @@ MiDeadCodeBrowserModelTest >> testJavaOverridesHeuristicNotDead [
 ]
 
 { #category : 'tests - heuristics' }
-MiDeadCodeBrowserModelTest >> testNamingConventionHeuristicMethodNameJustTest [
+MiDeadCodeBrowserModelTest >> testNamingConventionRuleMethodNameJustTest [
 
 	| entity |
 	entity := self pharoMethod: 'test'  inClass: 'IsAClassTest'.
@@ -434,7 +388,7 @@ MiDeadCodeBrowserModelTest >> testNamingConventionHeuristicMethodNameJustTest [
 ]
 
 { #category : 'tests - heuristics' }
-MiDeadCodeBrowserModelTest >> testNamingConventionHeuristicMethodNameNotTest [
+MiDeadCodeBrowserModelTest >> testNamingConventionRuleMethodNameNotTest [
 
 	| entity |
 	entity := self pharoMethod: 'whateverFunctionality'  inClass: 'IsAClassTest'.
@@ -443,7 +397,7 @@ MiDeadCodeBrowserModelTest >> testNamingConventionHeuristicMethodNameNotTest [
 ]
 
 { #category : 'tests - heuristics' }
-MiDeadCodeBrowserModelTest >> testNamingConventionHeuristicMethodNameTestosterone [
+MiDeadCodeBrowserModelTest >> testNamingConventionRuleMethodNameTestosterone [
 
 	| entity |
 	entity := self pharoMethod: 'testosterone'  inClass: 'IsAClassTest'.
@@ -452,7 +406,7 @@ MiDeadCodeBrowserModelTest >> testNamingConventionHeuristicMethodNameTestosteron
 ]
 
 { #category : 'tests - heuristics' }
-MiDeadCodeBrowserModelTest >> testNamingConventionHeuristicNotDead [
+MiDeadCodeBrowserModelTest >> testNamingConventionRuleNotDead [
 	| entity |
 	entity := self pharoMethod: 'testWhateverFunctionality'  inClass: 'IsAClassTest'.
 
@@ -460,7 +414,7 @@ MiDeadCodeBrowserModelTest >> testNamingConventionHeuristicNotDead [
 ]
 
 { #category : 'tests - heuristics' }
-MiDeadCodeBrowserModelTest >> testNamingConventionHeuristicWrongClassName [
+MiDeadCodeBrowserModelTest >> testNamingConventionRuleWrongClassName [
 
 	| entity |
 	entity := self pharoMethod: 'testWhateverFunctionality'  inClass: 'NotATestClass'.
@@ -469,7 +423,7 @@ MiDeadCodeBrowserModelTest >> testNamingConventionHeuristicWrongClassName [
 ]
 
 { #category : 'tests - heuristics' }
-MiDeadCodeBrowserModelTest >> testNoInvocationHeuristicIsDead [
+MiDeadCodeBrowserModelTest >> testNoInvocationRuleIsDead [
 
 	| entity |
 	entity := FamixStMethod new.
@@ -477,7 +431,7 @@ MiDeadCodeBrowserModelTest >> testNoInvocationHeuristicIsDead [
 ]
 
 { #category : 'tests - heuristics' }
-MiDeadCodeBrowserModelTest >> testNoInvocationHeuristicNotDead [
+MiDeadCodeBrowserModelTest >> testNoInvocationRuleNotDead [
 
 	| entity |
 	entity := self pharoInvokedMethod: 'someFunctionality'.
@@ -508,7 +462,7 @@ MiDeadCodeBrowserModelTest >> testOneRoundRecursion [
 ]
 
 { #category : 'tests - heuristics' }
-MiDeadCodeBrowserModelTest >> testPharoPragmaHeuristicIsDead [
+MiDeadCodeBrowserModelTest >> testPharoPragmaRuleIsDead [
 	| entity |
 
 	entity := self pharoMethod: 'someFunctionality' withPragma: 'generated'.
@@ -517,7 +471,7 @@ MiDeadCodeBrowserModelTest >> testPharoPragmaHeuristicIsDead [
 ]
 
 { #category : 'tests - heuristics' }
-MiDeadCodeBrowserModelTest >> testPharoPragmaHeuristicScriptNotDead [
+MiDeadCodeBrowserModelTest >> testPharoPragmaRuleScriptNotDead [
 	| entity |
 	entity := self pharoMethod: 'someFunctionality' withPragma: 'script'.
 
@@ -525,7 +479,7 @@ MiDeadCodeBrowserModelTest >> testPharoPragmaHeuristicScriptNotDead [
 ]
 
 { #category : 'tests - heuristics' }
-MiDeadCodeBrowserModelTest >> testPharoTestCaseHeuristicIsDead [
+MiDeadCodeBrowserModelTest >> testPharoTestCaseRuleIsDead [
 	| entity |
 	entity := self pharoMethod: 'someFunctionality' inClass: 'SomeClass'.
 	self pharoClass: entity parentType inheritFrom: 'Object'.
@@ -534,7 +488,7 @@ MiDeadCodeBrowserModelTest >> testPharoTestCaseHeuristicIsDead [
 ]
 
 { #category : 'tests - heuristics' }
-MiDeadCodeBrowserModelTest >> testPharoTestCaseHeuristicNotDead [
+MiDeadCodeBrowserModelTest >> testPharoTestCaseRuleNotDead [
 	| entity |
 	entity := self pharoMethod: 'someFunctionality' inClass: 'SomeClass'.
 	self pharoClass: entity parentType inheritFrom: 'TestCase'.
@@ -637,7 +591,53 @@ MiDeadCodeBrowserModelTest >> testRecursionRoundProtectedByHeursitic [
 ]
 
 { #category : 'tests' }
-MiDeadCodeBrowserModelTest >> testSortHeuristics [
+MiDeadCodeBrowserModelTest >> testRunDeadNotRefuted [
+
+	model initializeRules.
+	model chooseRules: { MiDeadTestNamingConventionRule new }.
+
+	model followEntity: { self pharoMethod: 'whateverFunctionality' inClass: 'IsAClassTest' }.
+
+	self assert: model deadEntities size equals: 0.
+	model runComputation.
+	self assert: model deadEntities size equals: 1
+]
+
+{ #category : 'tests' }
+MiDeadCodeBrowserModelTest >> testRunNoDead [
+
+	model followEntity: { self pharoInvokedMethod: 'someFunctionality' }.
+
+	self assert: model deadEntities size equals: 0.
+	model runComputation.
+	self assert: model deadEntities size equals: 0
+]
+
+{ #category : 'tests' }
+MiDeadCodeBrowserModelTest >> testRunOneDead [
+
+	model followEntity: { FamixStMethod new }.
+
+	self assert: model deadEntities size equals: 0.
+	model runComputation.
+	self assert: model deadEntities size equals: 1
+]
+
+{ #category : 'tests' }
+MiDeadCodeBrowserModelTest >> testRunRefutedDead [
+	"entity is not invoked, but it should be considered a test method"
+
+	model chooseRules: { MiDeadTestNamingConventionRule new }.
+
+	model followEntity: { self pharoMethod: 'testWhateverFunctionality' inClass: 'IsAClassTest' }.
+
+	self assert: model deadEntities size equals: 0.
+	model runComputation.
+	self assert: model deadEntities size equals: 0
+]
+
+{ #category : 'tests' }
+MiDeadCodeBrowserModelTest >> testSortRules [
 
 	model chooseRules: {
 		MiDeadJavaImplementsAbstractRule new .
