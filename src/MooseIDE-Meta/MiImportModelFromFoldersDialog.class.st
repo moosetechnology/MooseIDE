@@ -11,7 +11,9 @@ Class {
 		'foldersList',
 		'addFolderButton',
 		'addFoldersButton',
-		'jdkVersionInput'
+		'jdkVersionInput',
+		'addAutoClasspathButton',
+		'classPathTextArea'
 	],
 	#category : 'MooseIDE-Meta-Import',
 	#package : 'MooseIDE-Meta',
@@ -43,13 +45,22 @@ MiImportModelFromFoldersDialog >> connectPresenters [
 	super connectPresenters.
 	self flag: #todo. "In the future UIManager should be removed to use the spec selection tool but it is not possible since we still run on Pharo 11"
 	addFolderButton action: [
-		(UIManager default chooseDirectory: 'Select a project folder to add.') ifNotNil: [ :folder |
-			foldersList items add: folder.
-			foldersList refresh ] ].
+			(UIManager default chooseDirectory:
+				 'Select a project folder to add.') ifNotNil: [ :folder |
+					foldersList items add: folder.
+					foldersList refresh ] ].
 	addFoldersButton action: [
-		(UIManager default chooseDirectory: 'Select a folder contaninig only project folders to add.') ifNotNil: [ :folder |
-			foldersList items addAll: folder directories.
-			foldersList refresh ] ]
+			(UIManager default chooseDirectory:
+				 'Select a folder contaninig only project folders to add.')
+				ifNotNil: [ :folder |
+						foldersList items addAll: folder directories.
+						foldersList refresh ] ].
+	addAutoClasspathButton action: [
+			(UIManager default chooseDirectory:
+				 'Select a folder contanining JAR dependencies to correctly resolve the stubs in your project.')
+				ifNotNil: [ :folder |
+						classPathTextArea text: folder pathString.
+						foldersList refresh ] ]
 ]
 
 { #category : 'layout' }
@@ -62,11 +73,19 @@ MiImportModelFromFoldersDialog >> defaultLayout [
 		  add: (SpBoxLayout newLeftToRight
 				   add: addFolderButton expand: false;
 				   add: addFoldersButton expand: false;
+				   add: addAutoClasspathButton;
+				   yourself)
+		  expand: false;
+		  add: (SpBoxLayout newLeftToRight
+				   add: 'Selected auto classpath: ' expand: false;
+				   add: classPathTextArea;
 				   yourself)
 		  expand: false;
 		  add: (SpBoxLayout newLeftToRight
 				   spacing: 10;
-				   add: 'JDK version (only if sources includes the JDK, leave blank otherwise): ' expand: false;
+				   add:
+					   'JDK version (only if sources includes the JDK, leave blank otherwise): '
+				   expand: false;
 				   add: jdkVersionInput;
 				   yourself)
 		  expand: false;
@@ -88,6 +107,8 @@ MiImportModelFromFoldersDialog >> initializePresenters [
 	addFolderButton := self newButton.
 	addFoldersButton := self newButton.
 	jdkVersionInput := self newTextInput.
+	addAutoClasspathButton := self newButton.
+	classPathTextArea := self newTextInput.
 
 	description
 		text: self userDescription;
@@ -96,12 +117,17 @@ MiImportModelFromFoldersDialog >> initializePresenters [
 	foldersList items: OrderedCollection new.
 	
 	jdkVersionInput placeholder: 'Example: 1.7'.
+	
+	classPathTextArea beNotEditable.
 
 	addFolderButton
 		label: 'Add Folder';
 		iconName: #add.
 	addFoldersButton
 		label: 'Add Folders';
+		iconName: #add.
+	addAutoClasspathButton
+		label: 'Add auto classpath (optionnal)';
 		iconName: #add
 ]
 
@@ -109,9 +135,13 @@ MiImportModelFromFoldersDialog >> initializePresenters [
 MiImportModelFromFoldersDialog >> privateImportModel [
 
 	| importer |
-	importer := FamixJavaFoldersImporter new folders: self selectedFolders.
+	importer := FamixJavaFoldersImporter new folders:
+		            self selectedFolders.
 
-	jdkVersionInput text ifNotEmpty: [ :version | importer jdkVersion: version ].
+	jdkVersionInput text ifNotEmpty: [ :version |
+		importer jdkVersion: version ].
+	classPathTextArea text ifNotEmpty: [ :classpath |
+		importer autoClasspath: FileReference / classpath allButFirst ].
 
 	^ MiMooseModelsWrapper models: importer import
 ]
