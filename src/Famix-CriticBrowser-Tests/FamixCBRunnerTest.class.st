@@ -1,13 +1,14 @@
 Class {
-	#name : #FamixCBRunnerTest,
-	#superclass : #TestCase,
+	#name : 'FamixCBRunnerTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'runner'
 	],
-	#category : #'Famix-CriticBrowser-Tests'
+	#category : 'Famix-CriticBrowser-Tests',
+	#package : 'Famix-CriticBrowser-Tests'
 }
 
-{ #category : #entities }
+{ #category : 'entities' }
 FamixCBRunnerTest >> modelExample [
 
 	| model |
@@ -19,14 +20,14 @@ FamixCBRunnerTest >> modelExample [
 	^ model
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 FamixCBRunnerTest >> setUp [
 
 	super setUp.
 	runner := FamixCBRunner new
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 FamixCBRunnerTest >> testAddRule [
 
 	| rootContext context |
@@ -39,7 +40,7 @@ FamixCBRunnerTest >> testAddRule [
 	self assert: context children anyOne isCBCondition
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 FamixCBRunnerTest >> testRunOn [
 
 	| result violatingEntity |

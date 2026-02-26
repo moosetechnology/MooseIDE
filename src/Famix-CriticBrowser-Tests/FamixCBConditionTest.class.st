@@ -2,18 +2,19 @@
 A FamixCBConditionTest is a test class for testing the behavior of FamixCBCondition
 "
 Class {
-	#name : #FamixCBConditionTest,
-	#superclass : #TestCase,
+	#name : 'FamixCBConditionTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'condition',
 		'violatingEntity',
 		'violation',
 		'entity'
 	],
-	#category : #'Famix-CriticBrowser-Tests'
+	#category : 'Famix-CriticBrowser-Tests',
+	#package : 'Famix-CriticBrowser-Tests'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 FamixCBConditionTest >> setUp [
 
 	super setUp.
@@ -34,7 +35,7 @@ FamixCBConditionTest >> setUp [
 	entity := FamixJavaMethod new
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 FamixCBConditionTest >> testAddViolation [
 
 	condition addViolation: (FamixCBViolation condition: condition violatedBy: violatingEntity).
@@ -45,7 +46,7 @@ FamixCBConditionTest >> testAddViolation [
 	self assert: condition violations size equals: 2.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 FamixCBConditionTest >> testAllParents [
 
 	| parent1 parent2 |
@@ -64,7 +65,7 @@ FamixCBConditionTest >> testAllParents [
 		hasSameElements: { parent2 }
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 FamixCBConditionTest >> testPutViolationsInto [
 	| dict |
 	dict := Dictionary new.
@@ -78,7 +79,7 @@ FamixCBConditionTest >> testPutViolationsInto [
 	self assert: (dict at: condition) anyOne violatingEntity equals: violatingEntity
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 FamixCBConditionTest >> testQuery [
 
 	self
@@ -93,7 +94,7 @@ FamixCBConditionTest >> testQuery [
 		raise: FamixCBNotAValidQuery
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 FamixCBConditionTest >> testRemoveAllViolations [
 	| violation2 violation3 violation4 |
 	violation2 := FamixCBViolation condition: condition violatedBy: FamixJavaClass new.
@@ -104,7 +105,7 @@ FamixCBConditionTest >> testRemoveAllViolations [
 	self assert: condition violations size equals: 0
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 FamixCBConditionTest >> testRemoveViolation [
 	
 	condition addViolation: violation .
@@ -113,7 +114,7 @@ FamixCBConditionTest >> testRemoveViolation [
 	self assert: (violatingEntity violations includes: violation) equals: false
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 FamixCBConditionTest >> testRunOn [
 
 	| stubEntity |

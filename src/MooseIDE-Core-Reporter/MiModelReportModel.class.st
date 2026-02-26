@@ -4,8 +4,8 @@ The spec model for the `MiModelReport`
 Responsible for actually generating the report
 "
 Class {
-	#name : #MiModelReportModel,
-	#superclass : #MiAbstractModel,
+	#name : 'MiModelReportModel',
+	#superclass : 'MiAbstractModel',
 	#instVars : [
 		'mooseModel',
 		'settings',
@@ -17,16 +17,17 @@ Class {
 		'complexMethodThreshold',
 		'excessiveAPIThreshold'
 	],
-	#category : #'MooseIDE-Core-Reporter'
+	#category : 'MooseIDE-Core-Reporter',
+	#package : 'MooseIDE-Core-Reporter'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 MiModelReportModel class >> defaultComplexMethodThreshold [
 
 	^ 50
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiModelReportModel class >> defaultConfiguration [
 
 	^ MiModelReportSettingsConfiguration new
@@ -39,37 +40,37 @@ MiModelReportModel class >> defaultConfiguration [
 		  yourself
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 MiModelReportModel class >> defaultDataClassThreshold [
 
 	^ 10
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 MiModelReportModel class >> defaultExcessiveAPIThreshold [
 
 	^ 5
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 MiModelReportModel class >> defaultLargeClassThreshold [
 
 	^ 100
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 MiModelReportModel class >> defaultLongClassThreshold [
 
 	^ 1000
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 MiModelReportModel class >> defaultLongMethodThreshold [
 
 	^ 100
 ]
 
-{ #category : #microdown }
+{ #category : 'microdown' }
 MiModelReportModel >> bulletList: aCollection [
 
 	aCollection do: [ :line |
@@ -81,14 +82,14 @@ MiModelReportModel >> bulletList: aCollection [
 	report cr
 ]
 
-{ #category : #document }
+{ #category : 'document' }
 MiModelReportModel >> classMembersStats: columns [
 
 	self stats: columns compute: [ :c | c numberOfAttributes ] description: 'FIELDS'.
 	self stats: columns compute: [ :c | c numberOfMethods ]    description: 'METHODS'
 ]
 
-{ #category : #'settings management' }
+{ #category : 'settings management' }
 MiModelReportModel >> currentConfiguration [
 
 	^ MiModelReportSettingsConfiguration new
@@ -101,13 +102,13 @@ MiModelReportModel >> currentConfiguration [
 		  yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiModelReportModel >> defaultConfiguration [
 
 	^ self class defaultConfiguration
 ]
 
-{ #category : #document }
+{ #category : 'document' }
 MiModelReportModel >> document [
 		
 	self title: ('Dashboard : '  , mooseModel name).
@@ -118,12 +119,12 @@ MiModelReportModel >> document [
 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiModelReportModel >> entities [
 	^mooseModel
 ]
 
-{ #category : #'api - export' }
+{ #category : 'api - export' }
 MiModelReportModel >> exportReportToHTML: microdownText [
 
 	| filename |
@@ -134,27 +135,27 @@ MiModelReportModel >> exportReportToHTML: microdownText [
 		filename , ' generated' , String cr , '(in Pharo image directory)'
 ]
 
-{ #category : #'api - export' }
+{ #category : 'api - export' }
 MiModelReportModel >> exportReportToPDF: microdownText [
 
 	browser inform: 'PDF export not implemented yet, sorry'
 ]
 
-{ #category : #'private - formatting' }
+{ #category : 'private - formatting' }
 MiModelReportModel >> floatAsString: aFloat [
 
 	^(aFloat asFloat round: 1) asString
 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiModelReportModel >> followEntity: aMooseEntity [
 
 	mooseModel := (aMooseEntity isMooseModel ifTrue: [ aMooseEntity ] ifFalse: [ aMooseEntity mooseModel ]).
 	self updateReport
 ]
 
-{ #category : #'private - formatting' }
+{ #category : 'private - formatting' }
 MiModelReportModel >> formatCollection: collection value: valueBlock [
 
 	^collection
@@ -162,20 +163,20 @@ MiModelReportModel >> formatCollection: collection value: valueBlock [
 		ifNotEmpty: [ self floatAsString: (valueBlock value: collection) ]
 ]
 
-{ #category : #'private - formatting' }
+{ #category : 'private - formatting' }
 MiModelReportModel >> fullyQualifiedName: anEntity [
 
 	^anEntity mooseName copyReplaceAll: '::' with: '.' 
 
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiModelReportModel >> hasSettings [
 
 	^ true
 ]
 
-{ #category : #microdown }
+{ #category : 'microdown' }
 MiModelReportModel >> headerBlock: level header: aString [
 
 	level timesRepeat: [ report << '#' ].
@@ -185,7 +186,7 @@ MiModelReportModel >> headerBlock: level header: aString [
 		cr ; cr
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiModelReportModel >> initializeSettings [
 
 	largeClassThreshold := self class defaultLargeClassThreshold.
@@ -196,7 +197,7 @@ MiModelReportModel >> initializeSettings [
 	excessiveAPIThreshold := self class defaultExcessiveAPIThreshold
 ]
 
-{ #category : #microdown }
+{ #category : 'microdown' }
 MiModelReportModel >> line: aString [
 
 	report
@@ -205,7 +206,7 @@ MiModelReportModel >> line: aString [
 
 ]
 
-{ #category : #document }
+{ #category : 'document' }
 MiModelReportModel >> methodMembersStats: columns [
 
 	self stats: columns compute: [ :m | m numberOfParameters ] description: 'PARAMETERS'.
@@ -213,26 +214,26 @@ MiModelReportModel >> methodMembersStats: columns [
 	self stats: columns compute: [ :m | m cyclomaticComplexity ]    description: 'CYCLOMATIC COMPLEXITY'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiModelReportModel >> miSelectedItem [
 
 	^#()
 ]
 
-{ #category : #'private - formatting' }
+{ #category : 'private - formatting' }
 MiModelReportModel >> numericValue: text value: number [
 
 	^text , ': ' , number asString
 		
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiModelReportModel >> reportDOM [
 
 	^ report
 ]
 
-{ #category : #'api - export' }
+{ #category : 'api - export' }
 MiModelReportModel >> saveRawReport: microdownText [
 
 	| filename |
@@ -243,7 +244,7 @@ MiModelReportModel >> saveRawReport: microdownText [
 	browser inform: filename , ' saved', String cr , '(in Pharo image directory)'
 ]
 
-{ #category : #document }
+{ #category : 'document' }
 MiModelReportModel >> sectionClasses [
 
 	| allClasses largeClasses longClasses dataClasses |
@@ -287,7 +288,7 @@ MiModelReportModel >> sectionClasses [
 		'Data classes (> ' , dataClassThreshold asString , ' fields)'
 ]
 
-{ #category : #document }
+{ #category : 'document' }
 MiModelReportModel >> sectionMethods [
 
 	| allMethods longMethods complexMethods excessiveAPIMethods |
@@ -332,7 +333,7 @@ MiModelReportModel >> sectionMethods [
 			, ' parameters)'
 ]
 
-{ #category : #document }
+{ #category : 'document' }
 MiModelReportModel >> sectionMethodsStats: methods [
 
 	self stats: (methods collect: [ :c | c numberOfParameters ]) description: 'parameters'.
@@ -341,7 +342,7 @@ MiModelReportModel >> sectionMethodsStats: methods [
 
 ]
 
-{ #category : #document }
+{ #category : 'document' }
 MiModelReportModel >> sectionPackages [
 	| number allClasses |
 
@@ -362,25 +363,25 @@ MiModelReportModel >> sectionPackages [
 
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 MiModelReportModel >> settingsChanged: aBoolean [
 
 	aBoolean ifTrue: [ self updateReport ].
 ]
 
-{ #category : #'settings management' }
+{ #category : 'settings management' }
 MiModelReportModel >> settingsPresenterExtent [
 
 	^ 425 @ 350
 ]
 
-{ #category : #microdown }
+{ #category : 'microdown' }
 MiModelReportModel >> statLine: columns	description: aString [
 
 	self tableLine: { aString } , columns
 ]
 
-{ #category : #microdown }
+{ #category : 'microdown' }
 MiModelReportModel >> stats: columns compute: valueBlock description: aString [
 	"columns is a collection of collections of entities (eg. {allClasses, largeClasses, longClasses})
 	 valueBlock takes one entity of these collections and compute a number form it (eg. numberOfAttributes)
@@ -402,7 +403,7 @@ MiModelReportModel >> stats: columns compute: valueBlock description: aString [
 
 ]
 
-{ #category : #document }
+{ #category : 'document' }
 MiModelReportModel >> subSectionSpecialList: collection description: aString [
 
 	self subsubtitle: aString.
@@ -414,7 +415,7 @@ MiModelReportModel >> subSectionSpecialList: collection description: aString [
 
 ]
 
-{ #category : #document }
+{ #category : 'document' }
 MiModelReportModel >> subSectionSpecialMethods: selectionBlock description: aString [
 
 	| methods |
@@ -430,21 +431,21 @@ MiModelReportModel >> subSectionSpecialMethods: selectionBlock description: aStr
 
 ]
 
-{ #category : #microdown }
+{ #category : 'microdown' }
 MiModelReportModel >> subsubtitle: aString [
 
 	^self headerBlock: 3 header: aString.
 
 ]
 
-{ #category : #microdown }
+{ #category : 'microdown' }
 MiModelReportModel >> subtitle: aString [
 
 	^self headerBlock: 2 header: aString.
 
 ]
 
-{ #category : #microdown }
+{ #category : 'microdown' }
 MiModelReportModel >> tableHeader: aCollection [
 
 	self tableLine: aCollection.
@@ -453,7 +454,7 @@ MiModelReportModel >> tableHeader: aCollection [
 		cr
 ]
 
-{ #category : #microdown }
+{ #category : 'microdown' }
 MiModelReportModel >> tableLine: aCollection [
 
 	aCollection do: [ :item |
@@ -467,14 +468,14 @@ MiModelReportModel >> tableLine: aCollection [
 		cr
 ]
 
-{ #category : #microdown }
+{ #category : 'microdown' }
 MiModelReportModel >> title: aString [
 
 	^self headerBlock: 1 header: aString.
 
 ]
 
-{ #category : #'settings management' }
+{ #category : 'settings management' }
 MiModelReportModel >> updateFromConfiguration: aConfiguration [
 
 	largeClassThreshold := aConfiguration largeClassThreshold.
@@ -489,7 +490,7 @@ MiModelReportModel >> updateFromConfiguration: aConfiguration [
 	self updateReport
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiModelReportModel >> updateReport [
 
 	report := String new writeStream .

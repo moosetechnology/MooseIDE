@@ -1,28 +1,29 @@
 Class {
-	#name : #StMooseEntry,
-	#superclass : #StEntry,
-	#category : #'MooseIDE-Spotter'
+	#name : 'StMooseEntry',
+	#superclass : 'StEntry',
+	#category : 'MooseIDE-Spotter',
+	#package : 'MooseIDE-Spotter'
 }
 
-{ #category : #converting }
+{ #category : 'converting' }
 StMooseEntry >> asString [
 
 	^ content mooseName
 ]
 
-{ #category : #evaluating }
+{ #category : 'evaluating' }
 StMooseEntry >> doEvaluate [
 
 	^ content inspect
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 StMooseEntry >> iconName [
 
 	^ #mooseIcon
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 StMooseEntry >> label [
 
 	^ content printString

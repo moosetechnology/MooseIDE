@@ -1,48 +1,50 @@
 Class {
-	#name : #MiExportAbstractColumnModel,
-	#superclass : #Object,
+	#name : 'MiExportAbstractColumnModel',
+	#superclass : 'Object',
 	#instVars : [
 		'name'
 	],
-	#category : #'MooseIDE-Export-Browser'
+	#category : 'MooseIDE-Export-Browser',
+	#package : 'MooseIDE-Export',
+	#tag : 'Browser'
 }
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiExportAbstractColumnModel class >> isAbstract [
 	
 	^self  == MiExportAbstractColumnModel
 ]
 
-{ #category : #api }
+{ #category : 'api' }
 MiExportAbstractColumnModel >> exportValueFor: anEntity [
 	^ self printValueFor: anEntity
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiExportAbstractColumnModel >> isPropertyColumn [
 
 	^ false
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiExportAbstractColumnModel >> isQueryColumn [
 
 	^ false
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiExportAbstractColumnModel >> name [
 
 	^ name
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiExportAbstractColumnModel >> name: anObject [
 
 	name := anObject
 ]
 
-{ #category : #api }
+{ #category : 'api' }
 MiExportAbstractColumnModel >> printValueFor: anEntity [
 
 	^ [ self privatePrintValueFor: anEntity ]
@@ -50,7 +52,7 @@ MiExportAbstractColumnModel >> printValueFor: anEntity [
 		  do: [ 'error' ]
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MiExportAbstractColumnModel >> privatePrintValueFor: anEntity [
 	self subclassResponsibility
 ]
