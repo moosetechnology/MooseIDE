@@ -2,12 +2,13 @@
 A FamixCBRootContextTest is a test class for testing the behavior of FamixCBRootContext
 "
 Class {
-	#name : #FamixCBRootContextTest,
-	#superclass : #TestCase,
-	#category : #'Famix-CriticBrowser-Tests'
+	#name : 'FamixCBRootContextTest',
+	#superclass : 'TestCase',
+	#category : 'Famix-CriticBrowser-Tests',
+	#package : 'Famix-CriticBrowser-Tests'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 FamixCBRootContextTest >> testGetAllViolations [
 
 	| contextEntity childEntityViolating entity entityViolating rootContext childContext condition childCondition violations |

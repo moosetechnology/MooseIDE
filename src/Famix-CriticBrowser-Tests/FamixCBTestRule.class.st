@@ -3,12 +3,13 @@ This rule is a resource for tests.
 It implements the small API needed of Rules to work with FamixCBRunner.
 "
 Class {
-	#name : #FamixCBTestRule,
-	#superclass : #Object,
-	#category : #'Famix-CriticBrowser-Tests'
+	#name : 'FamixCBTestRule',
+	#superclass : 'Object',
+	#category : 'Famix-CriticBrowser-Tests',
+	#package : 'Famix-CriticBrowser-Tests'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FamixCBTestRule >> condition [
 
 	^ FamixCBCondition new
@@ -17,7 +18,7 @@ FamixCBTestRule >> condition [
 					   (FQSelectScriptQuery script: [ :entity | entity isAbstract ]))
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FamixCBTestRule >> context [
 
 	^ FamixCBContext new
