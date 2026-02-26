@@ -159,6 +159,7 @@ FamixCBContext >> entities [
 	<FMComment: 'Every entity that is a part of the context.'>
 	<derived>
 	<FMProperty: #entities type: #MooseObject opposite: #contexts>
+	<multivalued>
 	^ self attributeAt: #entities ifAbsentPut: [ FMMultiMultivalueLink on: self opposite: #contexts ]
 ]
 

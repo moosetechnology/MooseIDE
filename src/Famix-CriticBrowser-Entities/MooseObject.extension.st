@@ -7,6 +7,7 @@ MooseObject >> contexts [
 	<generated>
 	<FMComment: 'Every context that the entity is a part of.'>
 	<FMProperty: #contexts type: #FamixCBContext opposite: #entities>
+	<multivalued>
 	<package: #'Famix-CriticBrowser-Entities'>
 	^ self attributeAt: #contexts ifAbsentPut: [ FMMultiMultivalueLink on: self opposite: #entities ]
 ]
@@ -32,6 +33,7 @@ MooseObject >> violations [
 	<FMComment: 'Every violation raised by this entity.'>
 	<derived>
 	<FMProperty: #violations type: #FamixCBViolation opposite: #violatingEntity>
+	<multivalued>
 	<package: #'Famix-CriticBrowser-Entities'>
 	^ self attributeAt: #violations ifAbsentPut: [ FMMultivalueLink on: self opposite: #violatingEntity: ]
 ]
