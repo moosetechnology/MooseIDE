@@ -5,11 +5,13 @@ It provides an API for creating entities and adding them to the model.
 
 "
 Trait {
-	#name : #FamixCBTEntityCreator,
-	#category : #'Famix-CriticBrowser-Entities-Model'
+	#name : 'FamixCBTEntityCreator',
+	#category : 'Famix-CriticBrowser-Entities-Model',
+	#package : 'Famix-CriticBrowser-Entities',
+	#tag : 'Model'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FamixCBTEntityCreator classSide >> annotation [
 
 	<FMClass: #TEntityCreator super: #Object>
@@ -18,49 +20,49 @@ FamixCBTEntityCreator classSide >> annotation [
 	^ self
 ]
 
-{ #category : #'entity creation' }
+{ #category : 'entity creation' }
 FamixCBTEntityCreator >> newCondition [
 
 	<generated>
 	^ self add: FamixCBCondition new
 ]
 
-{ #category : #'entity creation' }
+{ #category : 'entity creation' }
 FamixCBTEntityCreator >> newConditionNamed: aName [
 
 	<generated>
 	^ self add: (FamixCBCondition named: aName)
 ]
 
-{ #category : #'entity creation' }
+{ #category : 'entity creation' }
 FamixCBTEntityCreator >> newContext [
 
 	<generated>
 	^ self add: FamixCBContext new
 ]
 
-{ #category : #'entity creation' }
+{ #category : 'entity creation' }
 FamixCBTEntityCreator >> newContextNamed: aName [
 
 	<generated>
 	^ self add: (FamixCBContext named: aName)
 ]
 
-{ #category : #'entity creation' }
+{ #category : 'entity creation' }
 FamixCBTEntityCreator >> newRootContext [
 
 	<generated>
 	^ self add: FamixCBRootContext new
 ]
 
-{ #category : #'entity creation' }
+{ #category : 'entity creation' }
 FamixCBTEntityCreator >> newRootContextNamed: aName [
 
 	<generated>
 	^ self add: (FamixCBRootContext named: aName)
 ]
 
-{ #category : #'entity creation' }
+{ #category : 'entity creation' }
 FamixCBTEntityCreator >> newViolation [
 
 	<generated>
