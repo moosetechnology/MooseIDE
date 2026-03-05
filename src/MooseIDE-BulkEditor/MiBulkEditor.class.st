@@ -38,6 +38,42 @@ MiBulkEditor >> emptyLinesBetween: first and: last [
 	
 ]
 
+{ #category : 'intervals' }
+MiBulkEditor >> enlargeInterval: methodInterval [
+	"first see if there is any preceeding comment that could be added to the interval
+	 then see if there are indentation spaces to add to the first line"
+
+	| tempInterval |
+	tempInterval := self intervalWithMethodComment: methodInterval.
+	^self includeIndentationSpaces: tempInterval 
+]
+
+{ #category : 'intervals' }
+MiBulkEditor >> includeIndentationSpaces: bulkInterval [
+	"Adds indentation spaces before interval
+	 If a non space character is found before the begining of the line, then cancel everything"
+
+	| i endOfLine |
+
+	i := bulkInterval first - 1.
+	endOfLine := String crlf.
+
+	[ endOfLine includes: (previousFileContent at: i) ] 
+		whileFalse: [
+			(previousFileContent at: i) isSeparator
+				ifFalse: [ ^bulkInterval ].
+			i := i - 1 ].
+
+	i := i + 1.
+	^(i < bulkInterval first)
+		ifTrue: [
+			MiBulkInterval
+				from: i
+				to: bulkInterval last
+				data: bulkInterval data ]
+		ifFalse: [ bulkInterval ]
+]
+
 { #category : 'initialization' }
 MiBulkEditor >> initialize [ 
 
@@ -63,12 +99,12 @@ MiBulkEditor >> intervalWithMethodComment: bulkInterval [
 { #category : 'intervals' }
 MiBulkEditor >> intervalsToEdit: entities [
 	"- sort entities in ascending order
-	 - convert entities to position intervals and expand the intervals to include preceeding comment if any
+	 - convert entities to position intervals and expand the intervals with preceeding comment or indentation spaces
 	 - merge intervals separated only by blank lines"
 
 	^self mergeIntervals: (
 		(super intervalsToEdit: entities)
-			collect: [ :methodInterval | self intervalWithMethodComment: methodInterval ]
+			collect: [ :methodInterval | self enlargeInterval: methodInterval ]
 	)
 
 ]
