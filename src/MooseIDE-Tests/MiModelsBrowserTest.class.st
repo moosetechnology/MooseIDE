@@ -198,6 +198,14 @@ MiModelsBrowserTest >> testMiSelectedItem [
 	self deny: browser miSelectedItem isNil
 ]
 
+{ #category : 'tests' }
+MiModelsBrowserTest >> testOnlyOneBrowserCanBeOpened [
+
+	| browser2 |
+	browser2 := self browserClass openForTests: self application.
+	self assert: browser2 identicalTo: browser
+]
+
 { #category : 'tests - opening' }
 MiModelsBrowserTest >> testSettingsAction [
 
