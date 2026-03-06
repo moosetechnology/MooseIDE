@@ -34,16 +34,11 @@ MooseLoadPetitParserMenuCommand class >> menuPriority [
 { #category : 'accessing' }
 MooseLoadPetitParserMenuCommand >> baselineName [
 
-	^ 'PetitParser'
+	^ 'PetitParser2'
 ]
 
 { #category : 'accessing' }
 MooseLoadPetitParserMenuCommand >> repositoryURL [
 
-	^ 'github://moosetechnology/PetitParser:' , self version , '/src'
-]
-
-{ #category : 'accessing' }
-MooseLoadPetitParserMenuCommand >> version [
-	^ 'v3'
+	^ 'github://moosetechnology/PetitParser2' , '/src'
 ]
