@@ -35,6 +35,7 @@ MiModelsBrowserTest >> newModel: aString [
 { #category : 'running' }
 MiModelsBrowserTest >> receiveEntityToSelect [
 
+	entityToSelect install. 
 	browser updateForNewModel: entityToSelect
 ]
 
