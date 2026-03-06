@@ -88,6 +88,13 @@ MiModelsBrowser class >> open [
 	^ MiApplication current openCurrentModelsBrowser
 ]
 
+{ #category : 'instance creation' }
+MiModelsBrowser class >> openForTests: aTestApplication [
+
+	<script>
+	^ aTestApplication openCurrentModelsBrowser
+]
+
 { #category : 'specs' }
 MiModelsBrowser class >> preferredExtent [
 
