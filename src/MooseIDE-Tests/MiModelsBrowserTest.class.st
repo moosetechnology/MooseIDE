@@ -16,6 +16,12 @@ MiModelsBrowserTest >> browserClass [
 ]
 
 { #category : 'running' }
+MiModelsBrowserTest >> browserModelsTable [
+
+	^browser instVarNamed: #modelsTable
+]
+
+{ #category : 'running' }
 MiModelsBrowserTest >> defaultEntityToSelect [
 
 	^ super defaultEntityToSelect mooseModel
@@ -197,6 +203,16 @@ MiModelsBrowserTest >> testMiSelectedItem [
 	browser updateForNewModel: newModel.
 
 	self deny: browser miSelectedItem isNil
+]
+
+{ #category : 'tests' }
+MiModelsBrowserTest >> testNewMooseModelIsSelected [
+
+	| newModel |
+	newModel := self newModel: 'model'.
+	browser updateForNewModel: newModel.
+
+	self assert: self browserModelsTable selectedItem equals: newModel
 ]
 
 { #category : 'tests' }
