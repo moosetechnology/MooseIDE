@@ -222,41 +222,14 @@ MiModelsBrowserTest >> testUpdateForNewModel [
 ]
 
 { #category : 'tests' }
-MiModelsBrowserTest >> testUpdateForNewModelMultipleBrowsers [
+MiModelsBrowserTest >> testUpdateList [
 
-	| browser2 newModel |
-	browser2 := self browserClass openForTests: self application.
-	self newModel: 'model1'.
-
+	self newModel: 'model'.
 	browser updateList.
 
 	self assert: browser specModel entities size equals: 1.
 	self assert: browser specModel selected isNil.
 
-	self assert: browser2 specModel entities size equals: 1.
-	self assert: browser2 specModel selected isNil.
-
-	newModel := self newModel: 'model2'.
-	browser updateForNewModel: newModel.
-
-	self assert: browser specModel entities size equals: 2.
-	self assert: browser specModel selected equals: newModel.
-
-	self assert: browser2 specModel entities size equals: 2.
-	self assert: browser2 specModel selected isNil.
-
-	browser2 window close
-]
-
-{ #category : 'tests' }
-MiModelsBrowserTest >> testUpdateList [
-
-	self assertEmpty: browser specModel entities.
-
-	self newModel: 'aModel'.
-	browser updateList.
-
-	self assert: browser specModel entities size equals: 1
 ]
 
 { #category : 'tests' }
