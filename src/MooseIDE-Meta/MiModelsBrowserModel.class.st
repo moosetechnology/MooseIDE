@@ -175,14 +175,6 @@ MiModelsBrowserModel >> shouldCreateCache [
 	^ shouldCreateCache
 ]
 
-{ #category : 'updating' }
-MiModelsBrowserModel >> updateForNewModel: aMooseModel [
-
-	self allModelRootBrowser do: [ :modelBrowser |
-		modelBrowser updateList ].
-	self selected: aMooseModel
-]
-
 { #category : 'settings management' }
 MiModelsBrowserModel >> updateFromConfiguration: aConfiguration [
 

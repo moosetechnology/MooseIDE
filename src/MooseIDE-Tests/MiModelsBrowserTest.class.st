@@ -16,6 +16,12 @@ MiModelsBrowserTest >> browserClass [
 ]
 
 { #category : 'running' }
+MiModelsBrowserTest >> browserModelsTable [
+
+	^browser instVarNamed: #modelsTable
+]
+
+{ #category : 'running' }
 MiModelsBrowserTest >> defaultEntityToSelect [
 
 	^ super defaultEntityToSelect mooseModel
@@ -35,6 +41,7 @@ MiModelsBrowserTest >> newModel: aString [
 { #category : 'running' }
 MiModelsBrowserTest >> receiveEntityToSelect [
 
+	entityToSelect install. 
 	browser updateForNewModel: entityToSelect
 ]
 
@@ -198,6 +205,24 @@ MiModelsBrowserTest >> testMiSelectedItem [
 	self deny: browser miSelectedItem isNil
 ]
 
+{ #category : 'tests' }
+MiModelsBrowserTest >> testNewMooseModelIsSelected [
+
+	| newModel |
+	newModel := self newModel: 'model'.
+	browser updateForNewModel: newModel.
+
+	self assert: self browserModelsTable selectedItem equals: newModel
+]
+
+{ #category : 'tests' }
+MiModelsBrowserTest >> testOnlyOneBrowserCanBeOpened [
+
+	| browser2 |
+	browser2 := self browserClass openForTests: self application.
+	self assert: browser2 identicalTo: browser
+]
+
 { #category : 'tests - opening' }
 MiModelsBrowserTest >> testSettingsAction [
 
@@ -208,55 +233,22 @@ MiModelsBrowserTest >> testSettingsAction [
 MiModelsBrowserTest >> testUpdateForNewModel [
 
 	| newModel |
-	self newModel: 'model1'.
-	browser updateList.
-
-	self assert: browser specModel entities size equals: 1.
-	self assert: browser specModel selected isNil.
-
-	newModel := self newModel: 'model2'.
+	newModel := self newModel: 'model'.
 	browser updateForNewModel: newModel.
 
-	self assert: browser specModel entities size equals: 2.
+	self assert: browser specModel entities size equals: 1.
 	self assert: browser specModel selected equals: newModel
-]
-
-{ #category : 'tests' }
-MiModelsBrowserTest >> testUpdateForNewModelMultipleBrowsers [
-
-	| browser2 newModel |
-	browser2 := self browserClass openForTests: self application.
-	self newModel: 'model1'.
-
-	browser updateList.
-
-	self assert: browser specModel entities size equals: 1.
-	self assert: browser specModel selected isNil.
-
-	self assert: browser2 specModel entities size equals: 1.
-	self assert: browser2 specModel selected isNil.
-
-	newModel := self newModel: 'model2'.
-	browser updateForNewModel: newModel.
-
-	self assert: browser specModel entities size equals: 2.
-	self assert: browser specModel selected equals: newModel.
-
-	self assert: browser2 specModel entities size equals: 2.
-	self assert: browser2 specModel selected isNil.
-
-	browser2 window close
 ]
 
 { #category : 'tests' }
 MiModelsBrowserTest >> testUpdateList [
 
-	self assertEmpty: browser specModel entities.
-
-	self newModel: 'aModel'.
+	self newModel: 'model'.
 	browser updateList.
 
-	self assert: browser specModel entities size equals: 1
+	self assert: browser specModel entities size equals: 1.
+	self assert: browser specModel selected isNil.
+
 ]
 
 { #category : 'tests' }

@@ -13,7 +13,7 @@ Class {
 	#superclass : 'MiAbstractBrowser',
 	#instVars : [
 		'toolbar',
-		'modelFilteringList'
+		'modelsTable'
 	],
 	#category : 'MooseIDE-Meta-ModelsBrowser',
 	#package : 'MooseIDE-Meta',
@@ -88,6 +88,13 @@ MiModelsBrowser class >> open [
 	^ MiApplication current openCurrentModelsBrowser
 ]
 
+{ #category : 'instance creation' }
+MiModelsBrowser class >> openForTests: aTestApplication [
+
+	<script>
+	^ aTestApplication openCurrentModelsBrowser
+]
+
 { #category : 'specs' }
 MiModelsBrowser class >> preferredExtent [
 
@@ -128,8 +135,8 @@ MiModelsBrowser >> canTagEntities [
 MiModelsBrowser >> defaultLayout [
 
 	^ SpBoxLayout newVertical
-		  add: #toolbar expand: false;
-		  add: #modelFilteringList;
+		  add: toolbar expand: false;
+		  add: modelsTable;
 		  yourself
 ]
 
@@ -162,10 +169,10 @@ MiModelsBrowser >> importFromFileUI [
 { #category : 'initialization' }
 MiModelsBrowser >> initializeList [
 
-	modelFilteringList := self newTable.
+	modelsTable := self newTable.
 	self listOfMooseModels: specModel entities.
 
-	modelFilteringList
+	modelsTable
 		addColumn: (SpStringTableColumn new
 				 title: 'Name';
 				 sortFunction: #name ascending;
@@ -207,14 +214,14 @@ MiModelsBrowser >> initializeToolbar [
 		           fillWith:
 			           (MiImportCommand asCommandGroupForSpecContext: self);
 		           beIcons;
-		           addItem: self refreshToolbarButton;
+		           addItemRight: self refreshToolbarButton;
 		           yourself
 ]
 
 { #category : 'updating' }
 MiModelsBrowser >> listOfMooseModels: aList [
 
-	modelFilteringList items: aList
+	modelsTable items: aList
 ]
 
 { #category : 'accessing' }
@@ -231,7 +238,7 @@ MiModelsBrowser >> miSelectedItemToPropagate [
 
 { #category : 'accessing - tests' }
 MiModelsBrowser >> modelFilteringList [
-	^ modelFilteringList
+	^ modelsTable
 ]
 
 { #category : 'initialization' }
@@ -248,13 +255,14 @@ MiModelsBrowser >> refreshToolbarButton [
 MiModelsBrowser >> selectAModelIfPossible [
 
 	specModel entities ifNotEmpty: [ :list |
-		modelFilteringList selectItem: list first ]
+		modelsTable selectItem: list first ]
 ]
 
 { #category : 'updating' }
 MiModelsBrowser >> updateForNewModel: aModel [
-	specModel updateForNewModel: aModel
 
+	self updateList.
+	modelsTable selectItem: aModel.
 ]
 
 { #category : 'updating' }

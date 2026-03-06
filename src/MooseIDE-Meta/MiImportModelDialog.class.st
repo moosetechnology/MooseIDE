@@ -4,9 +4,6 @@ Abstract class for model import dialogs
 Class {
 	#name : 'MiImportModelDialog',
 	#superclass : 'MiPresenter',
-	#instVars : [
-		'originBrowser'
-	],
 	#category : 'MooseIDE-Meta-Import',
 	#package : 'MooseIDE-Meta',
 	#tag : 'Import'
@@ -104,24 +101,16 @@ MiImportModelDialog >> privateImportModel [
 	self subclassResponsibility
 ]
 
-{ #category : 'accessing - model' }
-MiImportModelDialog >> setModelBeforeInitialization: aBrowserOrMoosePanel [
-
-	originBrowser := aBrowserOrMoosePanel
-]
-
 { #category : 'testing' }
 MiImportModelDialog >> shouldCreateCache [
 
-	^ originBrowser specModel shouldCreateCache 
+	^ self application currentModelsBrowser specModel shouldCreateCache 
 ]
 
 { #category : 'action' }
 MiImportModelDialog >> updateBrowserWith: mooseModel [
 
-	originBrowser
-		ifNotNil: [ originBrowser updateForNewModel: mooseModel ]
-		ifNil: [ MiApplication current currentModelsBrowser updateList ]
+	self application currentModelsBrowser updateForNewModel: mooseModel
 ]
 
 { #category : 'action' }
