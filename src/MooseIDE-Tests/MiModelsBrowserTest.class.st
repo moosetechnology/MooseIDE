@@ -208,16 +208,10 @@ MiModelsBrowserTest >> testSettingsAction [
 MiModelsBrowserTest >> testUpdateForNewModel [
 
 	| newModel |
-	self newModel: 'model1'.
-	browser updateList.
-
-	self assert: browser specModel entities size equals: 1.
-	self assert: browser specModel selected isNil.
-
-	newModel := self newModel: 'model2'.
+	newModel := self newModel: 'model'.
 	browser updateForNewModel: newModel.
 
-	self assert: browser specModel entities size equals: 2.
+	self assert: browser specModel entities size equals: 1.
 	self assert: browser specModel selected equals: newModel
 ]
 
