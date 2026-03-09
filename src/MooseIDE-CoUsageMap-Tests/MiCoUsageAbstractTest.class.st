@@ -48,7 +48,7 @@ MiCoUsageAbstractTest >> setUp [
 { #category : 'running' }
 MiCoUsageAbstractTest >> specModel [
 
-	^ visualization specModel
+	^ browser specModel
 ]
 
 { #category : 'private - testing' }

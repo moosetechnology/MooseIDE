@@ -1,6 +1,6 @@
 Class {
-	#name : 'MiExportBrowserNewColumnPresenter',
-	#superclass : 'MiPresenter',
+	#name : #MiExportBrowserNewColumnPresenter,
+	#superclass : #MiPresenter,
 	#instVars : [
 		'addButton',
 		'closeButton',
@@ -8,12 +8,10 @@ Class {
 		'name',
 		'exportModel'
 	],
-	#category : 'MooseIDE-Export-Browser',
-	#package : 'MooseIDE-Export',
-	#tag : 'Browser'
+	#category : #'MooseIDE-Export-Browser'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiExportBrowserNewColumnPresenter >> addButtonAction [
 
 	| producedBlock |
@@ -22,7 +20,7 @@ MiExportBrowserNewColumnPresenter >> addButtonAction [
 	self window close
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiExportBrowserNewColumnPresenter >> defaultLayout [
 
 	^ SpBoxLayout newTopToBottom
@@ -36,24 +34,24 @@ MiExportBrowserNewColumnPresenter >> defaultLayout [
 		  yourself
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiExportBrowserNewColumnPresenter >> defaultTitle [
 	^ 'Create Query Column'
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiExportBrowserNewColumnPresenter >> exportModel [
 
 	^ exportModel
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiExportBrowserNewColumnPresenter >> exportModel: anObject [
 
 	exportModel := anObject
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiExportBrowserNewColumnPresenter >> initializePresenters [
 
 	addButton := self newButton.
@@ -77,7 +75,7 @@ MiExportBrowserNewColumnPresenter >> initializePresenters [
 	self whenDisplayDo: [ block selectionInterval: (13 to: 12) ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiExportBrowserNewColumnPresenter >> initializeWindow: aWindowPresenter [	
 	super initializeWindow: aWindowPresenter.
 	aWindowPresenter

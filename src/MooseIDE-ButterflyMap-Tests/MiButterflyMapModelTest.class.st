@@ -1,15 +1,13 @@
 Class {
-	#name : 'MiButterflyMapModelTest',
-	#superclass : 'TestCase',
+	#name : #MiButterflyMapModelTest,
+	#superclass : #TestCase,
 	#instVars : [
 		'model'
 	],
-	#category : 'MooseIDE-ButterflyMap-Tests-Model',
-	#package : 'MooseIDE-ButterflyMap-Tests',
-	#tag : 'Model'
+	#category : #'MooseIDE-ButterflyMap-Tests-Model'
 }
 
-{ #category : 'running' }
+{ #category : #running }
 MiButterflyMapModelTest >> setUp [
 
 	| browser |
@@ -25,7 +23,7 @@ MiButterflyMapModelTest >> setUp [
 	model currentEntity: Mock new
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 MiButterflyMapModelTest >> testChildrenFor [
 
 	| children |
@@ -33,26 +31,26 @@ MiButterflyMapModelTest >> testChildrenFor [
 	self assert: children isMooseObject
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 MiButterflyMapModelTest >> testDefaultChildrenQueryIsNotNil [
 
 	self assert: model defaultChildrenQuery isNotNil.
 	self assert: model defaultChildrenQuery isValid
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 MiButterflyMapModelTest >> testDefaultClientsQuery [
 
 	self assert: (model instVarNamed: #clientsQuery) isNotNil
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 MiButterflyMapModelTest >> testDefaultProvidersQuery [
 
 	self assert: (model instVarNamed: #providersQuery) isNotNil
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 MiButterflyMapModelTest >> testSetCurrentEntityShouldNotifyBrowser [
 
 	model currentEntity: Mock new.

@@ -2,17 +2,15 @@
 An abstract class to represent the query side of the model critic browser.
 "
 Class {
-	#name : 'FamixCBQueryHandler',
-	#superclass : 'Object',
+	#name : #FamixCBQueryHandler,
+	#superclass : #Object,
 	#instVars : [
 		'innerQuery'
 	],
-	#category : 'Famix-CriticBrowser-ManualEntities-QueryHandler',
-	#package : 'Famix-CriticBrowser-ManualEntities',
-	#tag : 'QueryHandler'
+	#category : #'Famix-CriticBrowser-ManualEntities-QueryHandler'
 }
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 FamixCBQueryHandler class >> on: aQuery [
 
 	^ self new
@@ -20,13 +18,13 @@ FamixCBQueryHandler class >> on: aQuery [
 		  yourself
 ]
 
-{ #category : 'converting' }
+{ #category : #converting }
 FamixCBQueryHandler >> asRuleEditorString [
 
 	^ '[ :entity | entity ]'
 ]
 
-{ #category : 'converting' }
+{ #category : #converting }
 FamixCBQueryHandler >> convertToSTONString [
 
 	"Converts the query to a string used to save the query in STON format.
@@ -36,19 +34,19 @@ FamixCBQueryHandler >> convertToSTONString [
 		  innerQuery storeWithParentsOn: stream ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 FamixCBQueryHandler >> innerQuery [
 
 	^ innerQuery
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 FamixCBQueryHandler >> innerQuery: anObject [
 
 	innerQuery := anObject
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 FamixCBQueryHandler >> runOnCollection: aCollection [
 
 	^ innerQuery isUnaryQuery
@@ -56,21 +54,21 @@ FamixCBQueryHandler >> runOnCollection: aCollection [
 		  ifFalse: [ self runOnNAryQuery: aCollection ]
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 FamixCBQueryHandler >> runOnNAryQuery: aCollection [
 
 	^ innerQuery runOn: (innerQuery subqueries collect: [ :subQuery |
 			   (self class on: subQuery) runOnCollection: aCollection ])
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 FamixCBQueryHandler >> runOnQueryWithParent: aCollection [
 
 	^ innerQuery runOn:
 		  ((self class on: innerQuery parent) runOnCollection: aCollection)
 ]
 
-{ #category : 'running' }
+{ #category : #running }
 FamixCBQueryHandler >> runOnUnaryQuery: aCollection [
 
 	^ (innerQuery parent isNil or: [ innerQuery parent isRootQuery ])

@@ -22,19 +22,17 @@ exportBrowserModel removeColumnForQueryNamed: #HelloWorld.
 ```
 "
 Class {
-	#name : 'MiExportModel',
-	#superclass : 'MiAbstractModel',
+	#name : #MiExportModel,
+	#superclass : #MiAbstractModel,
 	#instVars : [
 		'entitiesList',
 		'commentDictionary',
 		'columns'
 	],
-	#category : 'MooseIDE-Export-Browser',
-	#package : 'MooseIDE-Export',
-	#tag : 'Browser'
+	#category : #'MooseIDE-Export-Browser'
 }
 
-{ #category : 'api - column property' }
+{ #category : #'api - column property' }
 MiExportModel >> addColumnForProperty: aFM3Property [
 
 	self columnAdded:
@@ -42,7 +40,7 @@ MiExportModel >> addColumnForProperty: aFM3Property [
 			 (MiExportPropertyColumnModel forProperty: aFM3Property))
 ]
 
-{ #category : 'api - column script' }
+{ #category : #'api - column script' }
 MiExportModel >> addColumnForQuery: aBlock withName: queryName [
 
 	| newColumn |
@@ -54,13 +52,13 @@ MiExportModel >> addColumnForQuery: aBlock withName: queryName [
 	^ newColumn
 ]
 
-{ #category : 'clearing' }
+{ #category : #clearing }
 MiExportModel >> clearColumns [
 
 	columns := self defaultColumns
 ]
 
-{ #category : 'clearing' }
+{ #category : #clearing }
 MiExportModel >> clearEntities [
 
 	self entitiesList: #(  ).
@@ -68,43 +66,43 @@ MiExportModel >> clearEntities [
 	self browser ifNotNil: [ :b | b updateTable ]
 ]
 
-{ #category : 'events' }
+{ #category : #events }
 MiExportModel >> columnAdded: aColumn [
 
 	self browser ifNotNil: [ :b | b columnAdded: aColumn ]
 ]
 
-{ #category : 'events' }
+{ #category : #events }
 MiExportModel >> columnRemoved: aColumn [
 
 	self browser ifNotNil: [ :b | b columnRemoved: aColumn ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiExportModel >> columns [
 
 	^ columns
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiExportModel >> columns: anObject [
 
 	columns := anObject
 ]
 
-{ #category : 'api' }
+{ #category : #api }
 MiExportModel >> comment: anEntity with: aCommentString [
 
 	^ commentDictionary at: anEntity put: aCommentString
 ]
 
-{ #category : 'api' }
+{ #category : #api }
 MiExportModel >> commentOf: anEntity [
 
 	^ commentDictionary at: anEntity ifAbsent: ''
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiExportModel >> defaultColumns [
 
 	^ OrderedCollection
@@ -118,25 +116,25 @@ MiExportModel >> defaultColumns [
 				   yourself)
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiExportModel >> entities [
 	^self entitiesList 
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiExportModel >> entitiesList [
 
 	^ entitiesList
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiExportModel >> entitiesList: anObject [
 
 	entitiesList := anObject.
 	self listEntityChanged
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 MiExportModel >> initialize [
 
 	super initialize.
@@ -145,13 +143,13 @@ MiExportModel >> initialize [
 	entitiesList := OrderedCollection new
 ]
 
-{ #category : 'events' }
+{ #category : #events }
 MiExportModel >> listEntityChanged [
 
 	self browser ifNotNil: [ :b | b listEntityChanged ]
 ]
 
-{ #category : 'api - column property' }
+{ #category : #'api - column property' }
 MiExportModel >> removeColumnForProperty: aFM3Property [
 
 	(columns removeAllSuchThat: [ :column | 
@@ -160,7 +158,7 @@ MiExportModel >> removeColumnForProperty: aFM3Property [
 		self columnRemoved: removed ]
 ]
 
-{ #category : 'api - column script' }
+{ #category : #'api - column script' }
 MiExportModel >> removeColumnForQueryNamed: queryName [
 
 	(columns removeAllSuchThat: [ :column | 
@@ -169,7 +167,7 @@ MiExportModel >> removeColumnForQueryNamed: queryName [
 		self columnRemoved: removed ]
 ]
 
-{ #category : 'api - export' }
+{ #category : #'api - export' }
 MiExportModel >> writeCSVOn: aStream [
 
 	| csvWriter |

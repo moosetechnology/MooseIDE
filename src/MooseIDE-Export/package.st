@@ -1,1 +1,1 @@
-Package { #name : 'MooseIDE-Export' }
+Package { #name : #'MooseIDE-Export' }

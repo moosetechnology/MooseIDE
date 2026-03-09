@@ -1,15 +1,13 @@
 Class {
-	#name : 'MiExportPropertyColumnModel',
-	#superclass : 'MiExportAbstractColumnModel',
+	#name : #MiExportPropertyColumnModel,
+	#superclass : #MiExportAbstractColumnModel,
 	#instVars : [
 		'property'
 	],
-	#category : 'MooseIDE-Export-Browser',
-	#package : 'MooseIDE-Export',
-	#tag : 'Browser'
+	#category : #'MooseIDE-Export-Browser'
 }
 
-{ #category : 'as yet unclassified' }
+{ #category : #'as yet unclassified' }
 MiExportPropertyColumnModel class >> forProperty: aFM3Property [
 
 	^ self new
@@ -18,24 +16,24 @@ MiExportPropertyColumnModel class >> forProperty: aFM3Property [
 		  yourself
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 MiExportPropertyColumnModel >> isPropertyColumn [
 
 	^ true
 ]
 
-{ #category : 'private' }
+{ #category : #private }
 MiExportPropertyColumnModel >> privatePrintValueFor: anEntity [
 	^ anEntity propertyNamed: self property name
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiExportPropertyColumnModel >> property [
 
 	^ property
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MiExportPropertyColumnModel >> property: anObject [
 
 	property := anObject

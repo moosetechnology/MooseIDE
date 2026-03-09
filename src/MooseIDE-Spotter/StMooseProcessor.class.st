@@ -1,29 +1,28 @@
 Class {
-	#name : 'StMooseProcessor',
-	#superclass : 'StSpotterProcessor',
-	#category : 'MooseIDE-Spotter',
-	#package : 'MooseIDE-Spotter'
+	#name : #StMooseProcessor,
+	#superclass : #StSpotterProcessor,
+	#category : #'MooseIDE-Spotter'
 }
 
-{ #category : 'default-settings' }
+{ #category : #'default-settings' }
 StMooseProcessor class >> defaultEnabled [
 
 	^ true
 ]
 
-{ #category : 'default-settings' }
+{ #category : #'default-settings' }
 StMooseProcessor class >> order [
 	
 	^ 900
 ]
 
-{ #category : 'default-settings' }
+{ #category : #'default-settings' }
 StMooseProcessor class >> title [
 
 	^ 'Moose'
 ]
 
-{ #category : 'filtering' }
+{ #category : #filtering }
 StMooseProcessor >> newTextFilteringSource [
 
 	^ ((StCollectionIterator on: (MooseModel root
