@@ -24,12 +24,7 @@ MiInspectorBrowserTest >> browserClass [
 { #category : 'running' }
 MiInspectorBrowserTest >> inspectorNavigationTab [
 
-	| miObjectInspectorPresenter |
-	miObjectInspectorPresenter := (browser instVarNamed: #mainPresenter) millerList pages anyOne.
-	(miObjectInspectorPresenter instVarNamed: #views) pages
-		detect: [ :aSpNotebookPage | aSpNotebookPage title = 'Navigation' ]
-		ifOne: [ :aSpNotebookPage | ^aSpNotebookPage ]
-		ifNone: [ self fail: 'Could not find Navigation tab' ]
+	^ (browser instVarNamed: #mainPresenter) firstPagePresenter instVarNamed: #navigation
 ]
 
 { #category : 'tests' }
@@ -117,6 +112,23 @@ MiInspectorBrowserTest >> testNavigationTabIsSorted [
 	browser followEntity: entity.
 
 	self inspectorNavigationTab inspect
+]
+
+{ #category : 'tests' }
+MiInspectorBrowserTest >> testOutgoingInvocation [
+
+	| method1 method2 inspectorTab |
+	method1 := FamixStMethod new.
+	method2 := FamixStMethod new.
+
+	FamixStInvocation new
+		sender: method1;
+		candidates: { method2 }.
+
+	browser followEntity: method1.
+	inspectorTab := self inspectorNavigationTab.
+
+	self shouldnt: [inspectorTab selectItem: inspectorTab roots second]  raise: Error
 ]
 
 { #category : 'tests - tags' }

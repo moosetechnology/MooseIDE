@@ -51,11 +51,17 @@ MooseObject >> navigationItemsFromPragmas [
 ]
 
 { #category : '*MooseIDE-NewTools' }
-MooseObject >> valueOfPropertyForInspector: value [
-	
-	value isCollection ifTrue: [ 
-		^ value collect: [ :each | self valueOfPropertyForInspector: each ]
-		 ].
-	value isAssociation ifFalse: [ ^ value ].
-	^ value source = self ifTrue: [ value target ] ifFalse: [ value source ]
+MooseObject >> valueOfPropertyForInspector: propertyValue [
+
+	propertyValue isCollection ifTrue: [ 
+		^ propertyValue collect: [ :each | self valueOfPropertyForInspector: each ]
+	].
+
+	propertyValue isAssociation ifFalse: [ ^ propertyValue ].
+
+	propertyValue source = self ifFalse: [ ^propertyValue source ].
+
+	^propertyValue target isCollection
+		ifTrue: [ propertyValue target asMooseGroup ]
+		ifFalse: [ propertyValue target ]
 ]
