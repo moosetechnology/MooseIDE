@@ -1,39 +1,41 @@
 Class {
-	#name : #MiModelsSettingsConfiguration,
-	#superclass : #MiAbstractSettingsConfiguration,
+	#name : 'MiModelsSettingsConfiguration',
+	#superclass : 'MiAbstractSettingsConfiguration',
 	#instVars : [
 		'shouldCreateCache',
 		'filterStubs',
 		'modelImportIsAutomatic'
 	],
-	#category : #'MooseIDE-Meta-ModelsBrowser'
+	#category : 'MooseIDE-Meta-ModelsBrowser',
+	#package : 'MooseIDE-Meta',
+	#tag : 'ModelsBrowser'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiModelsSettingsConfiguration >> filterStubs [
 
 	^ filterStubs
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiModelsSettingsConfiguration >> filterStubs: aBoolean [
 
 	filterStubs := aBoolean
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiModelsSettingsConfiguration >> modelImportIsAutomatic [
 
 	^ modelImportIsAutomatic
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiModelsSettingsConfiguration >> modelImportIsAutomatic: aBoolean [
 
 	modelImportIsAutomatic := aBoolean
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 MiModelsSettingsConfiguration >> settingsPresenters [
 
 	^ super settingsPresenters
@@ -63,13 +65,13 @@ MiModelsSettingsConfiguration >> settingsPresenters [
 		  yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiModelsSettingsConfiguration >> shouldCreateCache [
 
 	^ shouldCreateCache
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiModelsSettingsConfiguration >> shouldCreateCache: aBoolean [
 
 	shouldCreateCache := aBoolean

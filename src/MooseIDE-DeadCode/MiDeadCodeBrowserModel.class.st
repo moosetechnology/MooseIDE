@@ -9,44 +9,64 @@ Class {
 	#instVars : [
 		'deadEntities',
 		'candidateEntities',
-		'chosenHeuristics',
-		'availableHeuristics',
-		'selectedDeadEntities'
+		'selectedDeadEntities',
+		'chosenRules',
+		'availableRules'
 	],
 	#category : 'MooseIDE-DeadCode-Model',
 	#package : 'MooseIDE-DeadCode',
 	#tag : 'Model'
 }
 
-{ #category : 'accessing' }
-MiDeadCodeBrowserModel >> availableHeuristics [
+{ #category : 'actions' }
+MiDeadCodeBrowserModel >> applyChosenRules: entity [
+	"search for a heuristic that could deal with the entity"
 
-	^availableHeuristics ifNil: [
-		availableHeuristics := MiDeadCodeAbstractHeuristic withAllSubclasses
+	chosenRules do: [ :heuristic |
+		(self rule: heuristic handle: entity)
+			ifTrue: [ ^self ]
+		]
+]
+
+{ #category : 'accessing' }
+MiDeadCodeBrowserModel >> availableRules [
+
+	^availableRules ifNil: [
+		availableRules := MiDeadAbstractRule withAllSubclasses
 			select: [ :class | class isAbstract not ]
 			thenCollect: [ :class | class new ]
 	]
 ]
 
 { #category : 'actions' }
-MiDeadCodeBrowserModel >> chooseHeuristics: heuristicCollection [
+MiDeadCodeBrowserModel >> chooseRules: heuristicCollection [
 	"add all of heuristicCollection  to the internal list of chosenHeuristics"
 
-	chosenHeuristics := (chosenHeuristics union: heuristicCollection)
-		sort: self heuristicSortBlock.
-	browser updateChosenHeuristics
+	chosenRules := (chosenRules union: heuristicCollection)
+		sort: self rulesSortBlock.
+	browser updateChosenRules
 ]
 
 { #category : 'accessing' }
-MiDeadCodeBrowserModel >> chosenHeuristics [
+MiDeadCodeBrowserModel >> chosenRules [
 
-	^chosenHeuristics 
+	^chosenRules 
 ]
 
 { #category : 'accessing - private tests' }
-MiDeadCodeBrowserModel >> clearChosenHeuristics [
+MiDeadCodeBrowserModel >> clearChosenRules [
 
-	chosenHeuristics removeAll
+	chosenRules removeAll
+]
+
+{ #category : 'actions' }
+MiDeadCodeBrowserModel >> clearDeads [
+
+	deadEntities removeAll.
+
+	browser updateDeadEntities.
+	browser updateToolbar.
+
 ]
 
 { #category : 'settings management' }
@@ -72,61 +92,11 @@ MiDeadCodeBrowserModel >> entities [
 ]
 
 { #category : 'actions' }
-MiDeadCodeBrowserModel >> firstRoundComputation [
-
-	deadEntities removeAll.
-	self entities do: [ :entity | self firstRoundOn: entity ].
-	browser updateToolbar.
-	browser updateDeadEntities
-]
-
-{ #category : 'actions' }
-MiDeadCodeBrowserModel >> firstRoundOn: entity [
-	"search for a heuristic that could deal with the entity
-	 when found, go to next entity"
-
-	chosenHeuristics do: [ :heuristic |
-		(self heuristic: heuristic handle: entity)
-			ifTrue: [ ^self ]
-		]
-]
-
-{ #category : 'actions' }
 MiDeadCodeBrowserModel >> followEntity: aCollection [
 
 	candidateEntities := aCollection.
 	browser candidateEntities: aCollection.
-	browser updateChosenHeuristics
-]
-
-{ #category : 'actions' }
-MiDeadCodeBrowserModel >> heuristic: heuristic handle: entity [
-	"returns whether a decision was reached or not.
-	 A decision is reached for _refuting_ heuristics if the entity is not dead
-	   and there is nothing to do (but we do not need to check other heuristics)
-	 A decision is reached for _asserting_ heuristic, if the entity is dead
-	   and it must be added to the list of dead entities"
-
-	heuristic refuteDead 
-		ifTrue: [ (heuristic isDead: entity) ifFalse: [ ^true ] ]
-		ifFalse: [
-			(heuristic isDead: entity)
-				ifTrue: [ deadEntities add: entity. ^true ]
-		].
-	
-	^false
-]
-
-{ #category : 'actions' }
-MiDeadCodeBrowserModel >> heuristicSortBlock [
-	"sorts refuting heuristics before asserting ones.
-	 inside these two categories, sort on their names"
-
-	^[ :a :b |
-		(a refuteDead = b refuteDead)
-			ifTrue: [ a name < b name ]
-			ifFalse: [ a refuteDead ]
-		]
+	browser updateChosenRules
 ]
 
 { #category : 'initialization' }
@@ -134,25 +104,34 @@ MiDeadCodeBrowserModel >> initialize [
 
 	super initialize.
 
-	self initializeHeuristics.
+	self initializeRules.
 	deadEntities := OrderedCollection new.
 	selectedDeadEntities := #()
 ]
 
 { #category : 'initialization' }
-MiDeadCodeBrowserModel >> initializeHeuristics [
+MiDeadCodeBrowserModel >> initializeRules [
 
-	chosenHeuristics := OrderedCollection new:
-		                    self availableHeuristics size.
-	chosenHeuristics addAll:
-		(self availableHeuristics select: [ :heuristic |
+	chosenRules := OrderedCollection new:
+		                    self availableRules size.
+	chosenRules addAll:
+		(self availableRules select: [ :heuristic |
 			 heuristic selectedByDefault ])
 ]
 
 { #category : 'actions' }
 MiDeadCodeBrowserModel >> isNewDead: anEntity [
+	"is a newDead if
+	 - not already dead
+	 - not saved by refutting heuristics
+	 - not invoked by a not dead entity"
 
 	(deadEntities includes: anEntity) ifTrue: [ ^ false ].
+
+	chosenRules do: [ :heuristic |
+		(heuristic refuteDead and: [ heuristic notDead: anEntity ])
+			ifTrue: [ ^false ]
+	].
 
 	^(anEntity queryIncoming: FamixTInvocation) opposites
 		allSatisfy: [ :invoker | deadEntities includes: invoker ]
@@ -176,7 +155,7 @@ MiDeadCodeBrowserModel >> oneRoundRecursion [
 	| addedDeads |
 	addedDeads := false.
 
-	self deadEntities clone do: [ :dead |
+	deadEntities copy do: [ :dead |
 		(dead queryOutgoing: FamixTInvocation) opposites do: [ :invoked |
 			(self isNewDead: invoked) ifTrue: [
 				deadEntities add: invoked.
@@ -200,6 +179,59 @@ MiDeadCodeBrowserModel >> recursionComputation [
 	browser updateDeadEntities
 ]
 
+{ #category : 'actions' }
+MiDeadCodeBrowserModel >> rule: rule handle: entity [
+	"returns whether a decision was reached or not + register a dead entity
+	 A decision is reached for _refuting_ rules if the entity is not dead
+	   and there is nothing to do (but we do not need to check other rules)
+	 A decision is reached for _asserting_ rules, if the entity is dead
+	   and it must be added to the list of dead entities"
+
+	rule refuteDead 
+		ifTrue: [ (rule isDead: entity) ifFalse: [ ^true ] ]
+		ifFalse: [
+			(rule isDead: entity)
+				ifTrue: [ deadEntities add: entity. ^true ]
+		].
+	
+	^false
+]
+
+{ #category : 'actions' }
+MiDeadCodeBrowserModel >> rulesSortBlock [
+	"sorts refuting heuristics before asserting ones.
+	 inside these two categories, sort on their names"
+
+	^[ :a :b |
+		(a refuteDead = b refuteDead)
+			ifTrue: [ a name < b name ]
+			ifFalse: [ a refuteDead ]
+		]
+]
+
+{ #category : 'actions' }
+MiDeadCodeBrowserModel >> runComputation [
+	"First compute all dead entities according to the chosen rules
+	 Then compute dead entities only used by already dead entities
+	 In the end restrict the result to be within the initial list of candidate (followed) entities"
+
+	self clearDeads.
+
+	"First step"
+	self entities do: [ :entity | self applyChosenRules: entity ].
+
+	"Second step: recusrion"
+	[ self oneRoundRecursion ]
+		whileTrue.
+
+	"Third step, filter to candidate entities"
+	deadEntities := deadEntities select: [ :entity | candidateEntities includes: entity ].
+
+	browser updateDeadEntities.
+	browser updateToolbar.
+
+]
+
 { #category : 'settings management' }
 MiDeadCodeBrowserModel >> settings [
 	"no settings"
@@ -207,11 +239,11 @@ MiDeadCodeBrowserModel >> settings [
 ]
 
 { #category : 'actions' }
-MiDeadCodeBrowserModel >> unchooseHeuristics: heuristicCollection [
-	"remove all of heuristicCollection from the internal list of chosenHeuristics"
+MiDeadCodeBrowserModel >> unchooseRules: rules [
+	"remove all #rules from the internal list of chosenRules"
 
-	chosenHeuristics removeAll: heuristicCollection.
-	browser updateChosenHeuristics
+	chosenRules removeAll: rules.
+	browser updateChosenRules
 ]
 
 { #category : 'settings management' }

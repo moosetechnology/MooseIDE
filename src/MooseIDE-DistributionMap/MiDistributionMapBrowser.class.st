@@ -151,22 +151,6 @@ MiDistributionMapBrowser >> followEntity: anEntity [
 ]
 
 { #category : 'initialization' }
-MiDistributionMapBrowser >> initializeLayout [
-
-	self layout: (SpBoxLayout newLeftToRight
-			 spacing: 3;
-			 add: mainPresenter;
-			 yourself)
-]
-
-{ #category : 'initialization' }
-MiDistributionMapBrowser >> initializePresenters [
-
-	mainPresenter := self class mapClass owner: self.
-	self initializeLayout
-]
-
-{ #category : 'initialization' }
 MiDistributionMapBrowser >> visualization [
 
 	^ mainPresenter

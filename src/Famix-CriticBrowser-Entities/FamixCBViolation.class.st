@@ -12,15 +12,17 @@
 
 "
 Class {
-	#name : #FamixCBViolation,
-	#superclass : #FamixCBEntity,
+	#name : 'FamixCBViolation',
+	#superclass : 'FamixCBEntity',
 	#instVars : [
 		'#violatedCondition => FMOne type: #FamixCBCondition opposite: #violations'
 	],
-	#category : #'Famix-CriticBrowser-Entities-Entities'
+	#category : 'Famix-CriticBrowser-Entities-Entities',
+	#package : 'Famix-CriticBrowser-Entities',
+	#tag : 'Entities'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FamixCBViolation class >> annotation [
 
 	<FMClass: #Violation super: #FamixCBEntity>
@@ -29,13 +31,13 @@ FamixCBViolation class >> annotation [
 	^ self
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 FamixCBViolation class >> annotationFamixCBViolationGroup [
 	<mooseGroup>
 	^ FamixCBViolationGroup 
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 FamixCBViolation class >> condition: aCondition violatedBy: anEntity [
 	^ self new 
 		violatedCondition: aCondition;
@@ -43,25 +45,25 @@ FamixCBViolation class >> condition: aCondition violatedBy: anEntity [
 		yourself
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 FamixCBViolation >> = anObject [
 	self class = anObject class ifFalse: [ ^ false ].
 	^ self violatingEntity = anObject violatingEntity and: [ violatedCondition = anObject violatedCondition ]
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 FamixCBViolation >> hash [
 	^ self violatingEntity hash + violatedCondition 
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 FamixCBViolation >> mooseNameOn: aStream [
 	self violatingEntity ifNotNil: [ self violatingEntity displayStringOn: aStream ].
 	aStream nextPutAll: ' -> '.
 	self violatedCondition ifNotNil: [ self violatedCondition displayStringOn: aStream ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FamixCBViolation >> violatedCondition [
 	"Relation named: #violatedCondition type: #FamixCBCondition opposite: #violations"
 
@@ -70,14 +72,14 @@ FamixCBViolation >> violatedCondition [
 	^ violatedCondition
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FamixCBViolation >> violatedCondition: anObject [
 
 	<generated>
 	violatedCondition := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FamixCBViolation >> violatingEntity [
 	"Relation named: #violatingEntity type: #MooseObject opposite: #violations"
 
@@ -87,7 +89,7 @@ FamixCBViolation >> violatingEntity [
 	^ self attributeAt: #violatingEntity ifAbsent: [ nil ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FamixCBViolation >> violatingEntity: anObject [
 
 	<generated>

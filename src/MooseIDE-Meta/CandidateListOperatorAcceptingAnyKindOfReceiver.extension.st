@@ -1,6 +1,6 @@
-Extension { #name : #CandidateListOperatorAcceptingAnyKindOfReceiver }
+Extension { #name : 'CandidateListOperatorAcceptingAnyKindOfReceiver' }
 
-{ #category : #'*MooseIDE-Meta' }
+{ #category : '*MooseIDE-Meta' }
 CandidateListOperatorAcceptingAnyKindOfReceiver class >> description [
 	^ 'Compute for any kind of receiver'
 ]

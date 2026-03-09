@@ -31,6 +31,12 @@ Class {
 	#tag : 'Browser'
 }
 
+{ #category : 'accessing' }
+MiCoUsageMapBrowser class >> mapClass [ 
+
+	^MiCoUsageMapVisualization
+]
+
 { #category : 'world menu' }
 MiCoUsageMapBrowser class >> menuCommandOn: aBuilder [
 

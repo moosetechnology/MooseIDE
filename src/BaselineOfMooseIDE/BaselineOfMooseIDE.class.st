@@ -58,7 +58,9 @@ BaselineOfMooseIDE >> defineGroups: spec [
 		group: 'CriticBrowser-Metamodel'
 		with:
 			#( 'Famix-CriticBrowser-Entities' 'Famix-CriticBrowser-ManualEntities'
-			   'Famix-CriticBrowser-Generator' 'Famix-CriticBrowser-Tests' )
+			   'Famix-CriticBrowser-Generator' 'Famix-CriticBrowser-Tests' ) ;
+		group: 'bulkedit'
+		with: #( 'MooseIDE-BulkEditor' )
 ]
 
 { #category : 'packages' }
@@ -117,10 +119,11 @@ BaselineOfMooseIDE >> definePackages: spec [
 		package: 'MooseIDE-QueriesDashboard' with: [ spec requires: #( 'MooseIDE-Core' ) ];
 		package: 'MooseIDE-LayerVisualization' with: [ spec requires: #( 'MooseIDE-Core' 'MooseIDE-Visualization' 'MooseIDE-QueriesDashboard' ) ];
 		package: 'MooseIDE-ClassBlueprint' with: [ spec requires: #( 'MooseIDE-Visualization' 'ClassBlueprint' ) ];
+		package: 'MooseIDE-ClassBlueprint-Tests' with: [ spec requires: #( 'MooseIDE-ClassBlueprint' ) ];
 		package: 'MooseIDE-Spotter';
 		package: 'MooseIDE-Core-Reporter' with: [ spec requires: #( 'MooseIDE-Core' ) ];
 		package: 'MooseIDE-Spotter-Tests' with: [ spec requires: #( 'MooseIDE-Spotter' ) ];
-		package: 'MooseIDE-Analysis' with: [ spec requires: #( 'MooseIDE-Core' ) ].
+		package: 'MooseIDE-BulkEditor'.
 
 	self defineMooseCriticsPackages: spec
 ]
@@ -170,7 +173,7 @@ BaselineOfMooseIDE >> famixTagging: spec [
 	spec
 		baseline: 'FamixTagging'
 		with: [
-		spec repository: 'github://moosetechnology/FamixTagging/src' ]
+		spec repository: 'github://moosetechnology/FamixTagging:development/src' ]
 ]
 
 { #category : 'dependencies' }

@@ -1,6 +1,6 @@
-Extension { #name : #CandidateListOperatorNotAcceptingAnyReceiver }
+Extension { #name : 'CandidateListOperatorNotAcceptingAnyReceiver' }
 
-{ #category : #'*MooseIDE-Meta' }
+{ #category : '*MooseIDE-Meta' }
 CandidateListOperatorNotAcceptingAnyReceiver class >> description [
 	^ 'Do not compute any candidate'
 ]

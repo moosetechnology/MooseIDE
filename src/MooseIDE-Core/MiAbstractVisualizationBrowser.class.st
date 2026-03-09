@@ -78,6 +78,19 @@ MiAbstractVisualizationBrowser >> highlightEntity: entities [
 	mainPresenter highlightEntities: entities
 ]
 
+{ #category : 'initialization' }
+MiAbstractVisualizationBrowser >> initializeLayout [
+
+	self layout: (SpScrollableLayout with: mainPresenter)
+]
+
+{ #category : 'initialization' }
+MiAbstractVisualizationBrowser >> initializePresenters [
+
+	mainPresenter := self class mapClass owner: self.
+	self initializeLayout
+]
+
 { #category : 'accessing' }
 MiAbstractVisualizationBrowser >> miSelectedItem [
 

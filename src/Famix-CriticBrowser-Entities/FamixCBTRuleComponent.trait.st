@@ -20,17 +20,19 @@ I allow a rule component to be named and summarized.
 
 "
 Trait {
-	#name : #FamixCBTRuleComponent,
+	#name : 'FamixCBTRuleComponent',
 	#instVars : [
 		'#parent => FMOne type: #FamixCBContext opposite: #children',
 		'#summary => FMProperty'
 	],
 	#traits : 'FamixTNamedEntity',
 	#classTraits : 'FamixTNamedEntity classTrait',
-	#category : #'Famix-CriticBrowser-Entities-Traits'
+	#category : 'Famix-CriticBrowser-Entities-Traits',
+	#package : 'Famix-CriticBrowser-Entities',
+	#tag : 'Traits'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FamixCBTRuleComponent classSide >> annotation [
 
 	<FMClass: #TRuleComponent super: #Object>
@@ -39,12 +41,12 @@ FamixCBTRuleComponent classSide >> annotation [
 	^ self
 ]
 
-{ #category : #ston }
+{ #category : 'ston' }
 FamixCBTRuleComponent classSide >> stonAllInstVarNames [ 
 	^ super stonAllInstVarNames \ {#mooseID . #cache . #entityAttributes . #mooseName . #mooseModel . #entities . #violations . #contexts . #parent . #children }
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FamixCBTRuleComponent >> allParents [
 
 	^ parent
@@ -52,7 +54,7 @@ FamixCBTRuleComponent >> allParents [
 		  ifNotNil: [ self allParentsIn: OrderedCollection new ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FamixCBTRuleComponent >> allParentsIn: anOrderedCollection [
 
 	^ parent ifNil: [ anOrderedCollection ] ifNotNil: [
@@ -60,7 +62,7 @@ FamixCBTRuleComponent >> allParentsIn: anOrderedCollection [
 		  self parent allParentsIn: anOrderedCollection ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FamixCBTRuleComponent >> parent [
 	"Relation named: #parent type: #FamixCBContext opposite: #children"
 
@@ -69,26 +71,26 @@ FamixCBTRuleComponent >> parent [
 	^ parent
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FamixCBTRuleComponent >> parent: anObject [
 
 	<generated>
 	parent := anObject
 ]
 
-{ #category : #removing }
+{ #category : 'removing' }
 FamixCBTRuleComponent >> removeSelfFromTree [
 
 	self parent removeChild: self
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 FamixCBTRuleComponent >> setParentToNilIfNeeded [
 
 	parent ifNotNil: [ self parent: nil ] 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FamixCBTRuleComponent >> summary [
 
 	<FMProperty: #summary type: #String>
@@ -97,7 +99,7 @@ FamixCBTRuleComponent >> summary [
 	^ summary
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FamixCBTRuleComponent >> summary: anObject [
 	<generated>
 	summary := anObject

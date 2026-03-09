@@ -86,6 +86,7 @@ MiButterflyMapBuilder >> buildNodeFromEntity: anEntity [
 		        rawModel: anEntity;
 		        collapse;
 		        yourself.
+		
 	^ node
 ]
 
@@ -130,18 +131,62 @@ MiButterflyMapBuilder >> colorFor: node [
 	^ node color ifNil: [ Color fromHexString: '6DAFDC' ] ifNotNil: [ :color | color ]
 ]
 
+{ #category : 'nil' }
+MiButterflyMapBuilder >> highlightable [
+	"override #highlightable so that it search for all nodes for a given entity"
+
+	^highlightable ifNil: [
+		highlightable := RSHighlightable new
+			highlightShapes: [ :shape |
+				| list |
+				list := shape connectedLines copy.
+				list addAll: ((shape parent shapes select: #isNode)
+					select: [ :sh | sh model rawModel = shape model rawModel ]
+					thenCollect: [ :sh | sh propertyAt: #background ]).
+				list ];
+
+			when: RSHighlightEvent
+			do: [ :evt |
+				| color |
+				color := evt shape isNode
+					ifTrue: [
+						evt shape isLabel
+							ifTrue: [ Color red ]
+							ifFalse: [ evt shape color muchDarker ] ]
+					ifFalse: [ Color red ].
+						highlightable
+							record: evt shape
+							selector: #color
+							value: color ]
+			for: self;
+
+			when: RSUnHighlightEvent
+			do: [ :evt |
+				highlightable
+					restore: evt shape
+					selector: #color ]
+			for: self;
+
+			yourself ]
+]
+
 { #category : 'building' }
 MiButterflyMapBuilder >> initialize [
 
 	super initialize.
+
 	self linkStyler: (HLinkStyler new
 			 lineBuilder:
 				 (RSLineBuilder arrowedLineWithOffset: 0.5)
 					 withHorizontalAttachPoint;
 			 yourself).
+
 	shapes := RSGroup new.
+
 	incomingGroups := OrderedCollection new.
-	outgoingGroups := OrderedCollection new
+	outgoingGroups := OrderedCollection new.
+
+	self popup text: [ :hnode | hnode rawModel mooseName ]
 ]
 
 { #category : 'rendering' }
@@ -172,13 +217,13 @@ MiButterflyMapBuilder >> nodeAnnouncer [
 
 	baseNode ifNotNil: [ ^ baseNode announcer ].
 	baseNode := RSComposite new
-		            @ self popup;
-		            @ RSDraggable new;
-		            @ self menuInteraction;
-		            @ self highlightable;
-		            @ RSNodeOnTopWhenPositionChanged new;
-		            @ HResizeParentWhenChildMoves new;
-		            yourself.
+		@ self popup;
+		@ RSDraggable new;
+		@ self menuInteraction;
+		@ self highlightable;
+		@ RSNodeOnTopWhenPositionChanged new;
+		@ HResizeParentWhenChildMoves new;
+		yourself.
 	^ baseNode announcer
 ]
 

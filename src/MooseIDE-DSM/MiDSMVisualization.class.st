@@ -48,6 +48,12 @@ MiDSMVisualization >> cellShowSCCColor: tuple [
 	^specModel showSCCColorForTuple: tuple
 ]
 
+{ #category : 'private' }
+MiDSMVisualization >> deepShapesFromModels: aCollection [
+
+	^currentCanvas privateShapes select: [ :c | c isComposite and: [ aCollection includes: c model ] ]
+]
+
 { #category : 'accessing' }
 MiDSMVisualization >> getTupleDependencyWeight: tuple [
 	^ specModel getTupleDependencyWeight: tuple
@@ -76,7 +82,7 @@ MiDSMVisualization >> sccShapesIncluding: aRSShape [
 	
 	(lastSCCShapes key = aRSShape model key) ifFalse: [ 
 		"Transcript show: ' - NOT found' ; cr."
-		lastSCCShapes := aRSShape model key -> (aRSShape canvas deepShapesFromModels:
+		lastSCCShapes := aRSShape model key -> (self deepShapesFromModels:
 			(specModel sccTuplesForTuple: aRSShape model)) ]
 		"ifTrue: [ Transcript show: ' - found' ; cr ]".
 	^ lastSCCShapes value

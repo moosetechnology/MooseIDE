@@ -164,7 +164,7 @@ It allows to represent software system in a model, to query, manipulate, transfo
 
 Moose is based on Pharo and it''s open source under BSD/MIT.
 
-For more information, please visit online documentation: [modularmoose.org](https://modularmoose.org/moose-wiki/).
+For more information, please visit online documentation: [modularmoose.org](https://modularmoose.org/).
 
 Version {3}. Commit: [{4}](https://github.com/moosetechnology/Moose/commit/{5})'
 		  format: {

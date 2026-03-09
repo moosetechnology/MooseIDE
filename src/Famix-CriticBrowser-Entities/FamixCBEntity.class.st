@@ -1,10 +1,12 @@
 Class {
-	#name : #FamixCBEntity,
-	#superclass : #MooseEntity,
-	#category : #'Famix-CriticBrowser-Entities-Entities'
+	#name : 'FamixCBEntity',
+	#superclass : 'MooseEntity',
+	#category : 'Famix-CriticBrowser-Entities-Entities',
+	#package : 'Famix-CriticBrowser-Entities',
+	#tag : 'Entities'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FamixCBEntity class >> annotation [
 
 	<FMClass: #Entity super: #MooseEntity>
@@ -14,33 +16,33 @@ FamixCBEntity class >> annotation [
 	^ self
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 FamixCBEntity class >> isAbstract [
 
 	<generated>
 	^ self == FamixCBEntity
 ]
 
-{ #category : #meta }
+{ #category : 'meta' }
 FamixCBEntity class >> metamodel [
 
 	<generated>
 	^ FamixCBModel metamodel
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 FamixCBEntity >> isCBCondition [
 
 	^ false
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 FamixCBEntity >> isCBContext [
 
 	^ false
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 FamixCBEntity >> isCBRootContext [
 
 	^ false

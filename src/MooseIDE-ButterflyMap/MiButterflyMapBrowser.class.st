@@ -46,6 +46,12 @@ MiButterflyMapBrowser class >> menuCommandOn: aBuilder [
 ]
 
 { #category : 'world menu' }
+MiButterflyMapBrowser class >> menuIconName [
+
+	^ #mooseButterfly
+]
+
+{ #category : 'world menu' }
 MiButterflyMapBrowser class >> menuItem [
 
 	^ #ButterflyMapBrowser
@@ -92,20 +98,6 @@ MiButterflyMapBrowser >> followEntity: anEntity [
 
 	super followEntity: anEntity.
 	self specModel currentEntity: anEntity
-]
-
-{ #category : 'initialization' }
-MiButterflyMapBrowser >> initializeLayout [
-
-	self layout: (SpScrollableLayout with: mainPresenter)
-]
-
-{ #category : 'initialization' }
-MiButterflyMapBrowser >> initializePresenters [
-
-	mainPresenter := self class mapClass owner: self.
-	specModel browser: self.
-	self initializeLayout
 ]
 
 { #category : 'brokerage' }

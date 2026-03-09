@@ -77,6 +77,14 @@ MiSourceTextBrowser >> canFollowEntity: anObject [
 	^ anObject usesFamixTrait: FamixTSourceEntity
 ]
 
+{ #category : 'ports' }
+MiSourceTextBrowser >> defaultInputPort [ 
+
+	^SpActionPort newAction: [ :anEntity |
+		self inform: 'selected ' , anEntity name.
+		specModel selectedEntity: anEntity ]
+]
+
 { #category : 'layout' }
 MiSourceTextBrowser >> defaultLayout [
 
@@ -115,13 +123,9 @@ MiSourceTextBrowser >> followEntity: anEntity [
 { #category : 'initialization' }
 MiSourceTextBrowser >> initializePresenters [
 
-	toolBarExternalEditor := self
-		                         instantiate: MiSourceTextToolBar
-		                         on: self.
+	toolBarExternalEditor := self instantiate: MiSourceTextToolBar on: self.
 
-	textRenderer := self
-		                instantiate: MiSourceTextSpecRenderer
-		                on: specModel
+	textRenderer := self instantiate: MiSourceTextSpecRenderer on: specModel rendererModel
 ]
 
 { #category : 'accessing' }
@@ -136,12 +140,6 @@ MiSourceTextBrowser >> open [
 	super open.
 	textRenderer withAdapterDo: [ :a |
 		a widgetDo: [ :w | w theme: MiSourceTextRendererTheme new ] ]
-]
-
-{ #category : 'formatting' }
-MiSourceTextBrowser >> renderTextFor: anEntity [
-
-	textRenderer renderTextFor: anEntity
 ]
 
 { #category : 'private - testing' }

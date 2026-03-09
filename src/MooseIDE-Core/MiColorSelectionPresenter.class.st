@@ -11,12 +11,6 @@ Class {
 	#tag : 'Settings'
 }
 
-{ #category : 'accessing' }
-MiColorSelectionPresenter >> color: aColor [
-
-	colorButton color: aColor
-]
-
 { #category : 'layout' }
 MiColorSelectionPresenter >> defaultLayout [
 
@@ -29,32 +23,30 @@ MiColorSelectionPresenter >> defaultLayout [
 MiColorSelectionPresenter >> initializePresenters [
 
 	colorButton := self newButton
+		               color: configuration baseColor;
+		               whenActivatedDo: [
+			               self
+				               openNewColorPickerFrom: colorButton
+				               on: colorButton color ];
+		               yourself
 ]
 
 { #category : 'as yet unclassified' }
-MiColorSelectionPresenter >> openNewColorPickerFrom: aButton on: aColor action: aBlock [
+MiColorSelectionPresenter >> openNewColorPickerFrom: aButton on: aColor [
 
 	| picker popover |
 	picker := aButton newColorPicker.
 	picker
 		setColor: aColor;
 		whenColorChangedDo: [ :newColor |
-				aBlock value: newColor.
+				configuration baseColor: newColor.
 				aButton color: newColor.
 				self update ].
+
 	popover := picker asPopover.
 	popover whenOpenedDo: [ "Not nice to have to get to the widget, but no other way worked."
 			popover withAdapterDo: [ :a |
 				a widgetDo: [ :w | w extent: 350 @ 500 ] ] ].
+
 	popover popup
-]
-
-{ #category : 'enumerating' }
-MiColorSelectionPresenter >> whenColorChangedDo: aBlock [
-
-	colorButton whenActivatedDo: [
-			self
-				openNewColorPickerFrom: colorButton
-				on: configuration startColor
-				action: aBlock ]
 ]

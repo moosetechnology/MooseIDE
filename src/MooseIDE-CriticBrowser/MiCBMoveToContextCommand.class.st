@@ -1,13 +1,15 @@
 Class {
-	#name : #MiCBMoveToContextCommand,
-	#superclass : #MiAbstractCriticBrowserCommand,
+	#name : 'MiCBMoveToContextCommand',
+	#superclass : 'MiAbstractCriticBrowserCommand',
 	#instVars : [
 		'targetContext'
 	],
-	#category : #'MooseIDE-CriticBrowser-Commands'
+	#category : 'MooseIDE-CriticBrowser-Commands',
+	#package : 'MooseIDE-CriticBrowser',
+	#tag : 'Commands'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MiCBMoveToContextCommand class >> availableContextsIn: aPresenter [
 
 	^ { aPresenter specModel rootContext }
@@ -17,19 +19,19 @@ MiCBMoveToContextCommand class >> availableContextsIn: aPresenter [
 							   (component allParents includes: aPresenter selectedRule) not ] ] ])
 ]
 
-{ #category : #default }
+{ #category : 'default' }
 MiCBMoveToContextCommand class >> defaultIconName [
 
 	^ #glamorousRedo
 ]
 
-{ #category : #default }
+{ #category : 'default' }
 MiCBMoveToContextCommand class >> defaultName [
 
 	^ 'Move to context:'
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MiCBMoveToContextCommand class >> forSpecContext: aPresenter [
 
 	| commandGroup |
@@ -44,7 +46,7 @@ MiCBMoveToContextCommand class >> forSpecContext: aPresenter [
 	^ commandGroup
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MiCBMoveToContextCommand class >> newForSpecContext: aPresenter targetContext: aTargetContext [
 
 	^ (self new
@@ -52,13 +54,13 @@ MiCBMoveToContextCommand class >> newForSpecContext: aPresenter targetContext: a
 		   targetContext: aTargetContext) asSpecCommand
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiCBMoveToContextCommand class >> priority [
 
 	^ 7
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 MiCBMoveToContextCommand >> asSpecCommand [
 
 	^ (self decorateWith: SpCommand)
@@ -67,25 +69,25 @@ MiCBMoveToContextCommand >> asSpecCommand [
 		  yourself
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiCBMoveToContextCommand >> canBeExecuted [
 
 	^ self context selectedRule class ~= FamixCBRootContext
 ]
 
-{ #category : #executing }
+{ #category : 'executing' }
 MiCBMoveToContextCommand >> execute [
 
 	self context moveCurrentRuleComponentToContext: self targetContext 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiCBMoveToContextCommand >> targetContext [
 
 	^ targetContext
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiCBMoveToContextCommand >> targetContext: anObject [
 
 	targetContext := anObject

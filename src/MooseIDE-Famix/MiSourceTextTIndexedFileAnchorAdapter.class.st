@@ -47,29 +47,37 @@ MiSourceTextTIndexedFileAnchorAdapter >> intervalForEntity: anEntity [
 	 then search for first occurence of anEntity's name after this point"
 
 	(anEntity class usesFamixTrait: FamixTComment)
-	ifTrue: [ (self intervalForComment: anEntity) 
-		ifNotNil: [ :interval | ^interval ]
-	].
+	ifTrue: [ ^ self intervalForComment: anEntity ].
 
 	^(self initialBoundingPos: anEntity sourceCodeBoundingEntity)
 		ifNotNil: [ :initialPos |
 			self
-				intervalForString: anEntity stringToHighlight
+				intervalForWord: anEntity stringToHighlight
 				after: initialPos
 		]
 ]
 
 { #category : 'api' }
-MiSourceTextTIndexedFileAnchorAdapter >> intervalForString: aString after: afterPos [
+MiSourceTextTIndexedFileAnchorAdapter >> intervalForWord: aString after: afterPos [
+	"searches for aString as a full word ('\W' means wordBoundary)
+	 ifFound, `matcher position` gives the end of the match (including the word boundary)
+	 Matching position is relative to afterPos, so should add that for position in the displayedText
+	 - interval start=matcher position + starting search position - aString length"
 
-	| intervalStart |
-	intervalStart := displayedText findString: aString startingAt: afterPos.
+	| matcher searchInString offset |
 
-	^(intervalStart = 0)
-		ifTrue: [ nil ]
-		ifFalse: [Interval
-			from: intervalStart
-			to: (intervalStart + aString size - 1) ]
+	searchInString := (displayedText asString copyFrom: afterPos to: displayedText size).
+
+	matcher := RxMatcher forString: ('\W' , aString , '\W').
+	matcher search: searchInString.
+
+	^(matcher subexpression: 1)
+		ifNil: [ nil ]
+		ifNotNil: [ :subexp |
+			offset := afterPos -1.
+			Interval
+				from: (matcher position + offset - aString size)
+				to: (matcher position + offset - 1) ]
 
 ]
 

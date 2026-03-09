@@ -163,7 +163,9 @@ MiNavigationInspectionTab >> inspectedObject: anObject [
 { #category : 'private - display' }
 MiNavigationInspectionTab >> itemsFor: anObject [
 
-	^ anObject miMetaNavigationItems sort: [ :entry | self printEntry: entry ] ascending.
+	anObject isMooseModel ifTrue: [ ^ anObject miMetaNavigationItems ].
+	^ anObject miMetaNavigationItems sort:
+		  [ :entry | self printEntry: entry ] ascending
 ]
 
 { #category : 'private - display' }
