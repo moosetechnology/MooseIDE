@@ -39,8 +39,7 @@ Class {
 	#instVars : [
 		'buses',
 		'receivingMode',
-		'specModel',
-		'inspector'
+		'specModel'
 	],
 	#category : 'MooseIDE-Core-Browser',
 	#package : 'MooseIDE-Core',
@@ -489,12 +488,6 @@ MiAbstractBrowser >> initializeWindow: aMiWindowPresenter [
 		whenClosedDo: [ self browserClosed ];
 		withAdapterPerformOrDefer: [ :anAdapter |
 			self registerToAdapterEvents: anAdapter ]
-]
-
-{ #category : 'private - for tests' }
-MiAbstractBrowser >> inspector [
-
-	^ inspector ifNil: [ inspector := MiInspectorBrowser ]
 ]
 
 { #category : 'testing' }

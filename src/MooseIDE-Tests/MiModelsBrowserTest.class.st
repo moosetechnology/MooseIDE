@@ -2,7 +2,8 @@ Class {
 	#name : 'MiModelsBrowserTest',
 	#superclass : 'MiAbstractBrowserTest',
 	#instVars : [
-		'savedRoot'
+		'savedRoot',
+		'inspector'
 	],
 	#category : 'MooseIDE-Tests-Browsers',
 	#package : 'MooseIDE-Tests',
@@ -74,6 +75,9 @@ MiModelsBrowserTest >> stModelFile [
 MiModelsBrowserTest >> tearDown [
 
 	MooseModelRoot installRoot: savedRoot.
+
+	inspector ifNotNil: [ inspector withWindowDo: #close ].
+
 	super tearDown
 ]
 
@@ -156,40 +160,37 @@ MiModelsBrowserTest >> testHandleDropFileImportsModel [
 { #category : 'tests' }
 MiModelsBrowserTest >> testMiInspectCommand [
 
-	| inspector result newModel |
-
+	| newModel |
 	newModel := self newModel: 'aModel'.
 	newModel newClass.
 	browser updateForNewModel: newModel.
 
-	inspector := Mock named: 'inspector'.
-	(inspector stub inspect: Any forBuses: Any) will: [ :object :buses |
-		result := object ].
-
-	browser inspector: inspector.
 	browser miInspect.
 
-	self assert: result equals: newModel
+	self assert: browser application browsers size equals: 2. "browser + a MiInspectorBrowser"
+	inspector := browser application browsers detect: [ :b |
+		             b class = MiInspectorBrowser ].
+
+	self assert: inspector miSelectedItem equals: newModel
 ]
 
 { #category : 'tests' }
 MiModelsBrowserTest >> testMiInspectCommandWithoutStubFilter [
 
-	| inspector result newModel |
+	| newModel |
 	newModel := self newModel: 'aModel'.
 	newModel newClass.
-
 	browser updateForNewModel: newModel.
 
 	self settingNamed: #shouldFilterStubs setValue: false.
-	inspector := Mock named: 'inspector'.
-	(inspector stub inspect: Any forBuses: Any) will: [ :object :buses |
-		result := object ].
 
-	browser inspector: inspector.
 	browser miInspect.
 
-	self assert: result equals: newModel
+	self assert: browser application browsers size equals: 2. "browser + a MiInspectorBrowser"
+	inspector := browser application browsers detect: [ :b |
+		             b class = MiInspectorBrowser ].
+
+	self assert: inspector miSelectedItem equals: newModel
 ]
 
 { #category : 'tests' }

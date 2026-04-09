@@ -4,5 +4,5 @@ Extension { #name : 'MiAbstractBrowser' }
 MiAbstractBrowser >> miInspect [
 	"For the inspector we try to have a specialized moose entity to provide the most useful information."
 
-	self inspector inspect: self miSelectedItem mooseInterestingEntity forBuses: buses
+	MiInspectorBrowser inspect: self miSelectedItem mooseInterestingEntity forBuses: buses
 ]
