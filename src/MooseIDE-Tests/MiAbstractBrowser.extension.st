@@ -3,15 +3,14 @@ Extension { #name : 'MiAbstractBrowser' }
 { #category : '*MooseIDE-Tests' }
 MiAbstractBrowser >> actionButtons [
 
-	^ (self window toolbarCommandGroup commandOrGroupNamed: 'Actions')
-		  commands collect: #presenter
+	^ (self toolbarCommandGroup commandOrGroupNamed: 'Actions') commands
+		  collect: #presenter
 ]
 
 { #category : '*MooseIDE-Tests' }
 MiAbstractBrowser >> busButton [
 
-	^ (self window toolbarCommandGroup commandOrGroupNamed: 'Buses')
-		  presenter
+	^ (self toolbarCommandGroup commandOrGroupNamed: 'Buses') presenter
 ]
 
 { #category : '*MooseIDE-Tests' }
@@ -34,7 +33,6 @@ MiAbstractBrowser >> privateReceivingMode: aMiBrowserReceivingMode [
 { #category : '*MooseIDE-Tests' }
 MiAbstractBrowser >> toolbarButton: aLabel [
 
-	^(self window toolbarCommandGroup allCommands
-		collect: #presenter)
-		detect: [ :button | button label = aLabel ]
+	^ (self toolbarCommandGroup allCommands collect: #presenter) detect: [
+		  :button | button label = aLabel ]
 ]

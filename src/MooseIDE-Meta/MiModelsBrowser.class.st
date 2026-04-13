@@ -38,6 +38,12 @@ MiModelsBrowser class >> buildModelCommandsGroupWith: presenterInstance [
 			  (MiModelUtilityCommand asCommandGroupWith: presenterInstance)
 ]
 
+{ #category : 'accessing' }
+MiModelsBrowser class >> defaultPreferredExtent [
+
+	^ 600 @ 400
+]
+
 { #category : 'instance creation' }
 MiModelsBrowser class >> instantiateAndOpen [
 
@@ -93,12 +99,6 @@ MiModelsBrowser class >> openForTests: aTestApplication [
 
 	<script>
 	^ aTestApplication openCurrentModelsBrowser
-]
-
-{ #category : 'specs' }
-MiModelsBrowser class >> preferredExtent [
-
-	^ 600 @ 400
 ]
 
 { #category : 'specs' }

@@ -12,6 +12,12 @@ Class {
 }
 
 { #category : 'accessing' }
+MiClassBlueprintBrowser class >> defaultPreferredExtent [
+
+	^ 500 @ 500
+]
+
+{ #category : 'accessing' }
 MiClassBlueprintBrowser class >> mapClass [
 
 	^ MiClassBlueprintVisualization
@@ -44,7 +50,8 @@ MiClassBlueprintBrowser class >> newModel [
 ]
 
 { #category : 'instance creation' }
-MiClassBlueprintBrowser class >> open [ 
+MiClassBlueprintBrowser class >> open [
+
 	<script>
 	super open
 ]

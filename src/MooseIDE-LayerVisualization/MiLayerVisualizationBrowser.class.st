@@ -16,6 +16,12 @@ Class {
 	#tag : 'Presenters'
 }
 
+{ #category : 'accessing' }
+MiLayerVisualizationBrowser class >> defaultPreferredExtent [
+
+	^ self currentWorld extent
+]
+
 { #category : 'world menu' }
 MiLayerVisualizationBrowser class >> menuCommandOn: aBuilder [
 	
@@ -32,12 +38,6 @@ MiLayerVisualizationBrowser class >> menuItem [
 MiLayerVisualizationBrowser class >> menuPriority [
 
 	^ self menuVisualizationToolsPriority + 1
-]
-
-{ #category : 'specs' }
-MiLayerVisualizationBrowser class >> preferredExtent [
-
-	^ self currentWorld extent
 ]
 
 { #category : 'world menu' }

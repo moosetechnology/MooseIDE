@@ -24,6 +24,12 @@ MiQueriesBrowser class >> browserKey [
 	^ $f
 ]
 
+{ #category : 'accessing' }
+MiQueriesBrowser class >> defaultPreferredExtent [
+
+	^ 650 @ 420
+]
+
 { #category : 'world menu' }
 MiQueriesBrowser class >> menuCommandOn: aBuilder [
 
@@ -62,12 +68,6 @@ MiQueriesBrowser class >> open [
 
 	<script>
 	^ super open
-]
-
-{ #category : 'specs' }
-MiQueriesBrowser class >> preferredExtent [
-
-	^ 650 @ 420
 ]
 
 { #category : 'specs' }

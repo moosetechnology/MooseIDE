@@ -20,6 +20,12 @@ Class {
 	#tag : 'SourceText'
 }
 
+{ #category : 'accessing' }
+MiSourceTextBrowser class >> defaultPreferredExtent [
+
+	^ 600 @ 700
+]
+
 { #category : 'world menu' }
 MiSourceTextBrowser class >> menuCommandOn: aBuilder [
 
@@ -57,12 +63,6 @@ MiSourceTextBrowser class >> open [
 
 	<script>
 	^ super open
-]
-
-{ #category : 'specs' }
-MiSourceTextBrowser class >> preferredExtent [
-
-	^ 600 @ 700
 ]
 
 { #category : 'specs' }

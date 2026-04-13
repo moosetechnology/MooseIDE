@@ -19,6 +19,12 @@ Class {
 	#tag : 'MetaBrowser'
 }
 
+{ #category : 'accessing' }
+MiMetaBrowser class >> defaultPreferredExtent [
+
+	^ 750 @ 550
+]
+
 { #category : 'world menu' }
 MiMetaBrowser class >> helpMessage [
 
@@ -67,12 +73,6 @@ MiMetaBrowser class >> newModel [
 MiMetaBrowser class >> open [
 	<script>
 	^ super open
-]
-
-{ #category : 'specs' }
-MiMetaBrowser class >> preferredExtent [
-
-	^ 750 @ 550
 ]
 
 { #category : 'specs' }

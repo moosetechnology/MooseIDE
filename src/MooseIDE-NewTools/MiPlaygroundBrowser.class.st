@@ -20,6 +20,12 @@ Class {
 }
 
 { #category : 'accessing' }
+MiPlaygroundBrowser class >> defaultPreferredExtent [
+
+	^ StPlaygroundPresenter defaultPreferredExtent
+]
+
+{ #category : 'accessing' }
 MiPlaygroundBrowser class >> defaultTitle [ 
 
 	^ 'Moose Playground'
@@ -61,12 +67,6 @@ MiPlaygroundBrowser class >> open [
 
 	<script>
 	^ super open
-]
-
-{ #category : 'specs' }
-MiPlaygroundBrowser class >> preferredExtent [
-
-	^ StPlaygroundPresenter preferredExtent
 ]
 
 { #category : 'as yet unclassified' }

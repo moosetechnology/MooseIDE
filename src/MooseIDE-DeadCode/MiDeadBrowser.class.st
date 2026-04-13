@@ -23,6 +23,12 @@ Class {
 	#tag : 'Browser'
 }
 
+{ #category : 'accessing' }
+MiDeadBrowser class >> defaultPreferredExtent [
+
+	^ 900 @ 700
+]
+
 { #category : 'world menu' }
 MiDeadBrowser class >> menuCommandOn: aBuilder [
 
@@ -53,12 +59,6 @@ MiDeadBrowser class >> newModel [
 MiDeadBrowser class >> open [
 	<script>
 	^ super open
-]
-
-{ #category : 'world menu' }
-MiDeadBrowser class >> preferredExtent [
-
-	^ 900 @ 700
 ]
 
 { #category : 'world menu' }

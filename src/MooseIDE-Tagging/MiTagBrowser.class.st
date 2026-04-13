@@ -27,6 +27,12 @@ MiTagBrowser class >> browserKey [
 	^ $t
 ]
 
+{ #category : 'accessing' }
+MiTagBrowser class >> defaultPreferredExtent [
+
+	^ 700 @ 475
+]
+
 { #category : 'world menu' }
 MiTagBrowser class >> menuCommandOn: aBuilder [
 
@@ -66,12 +72,6 @@ MiTagBrowser class >> open [
 
 	<script>
 	^ super open
-]
-
-{ #category : 'specs' }
-MiTagBrowser class >> preferredExtent [
-
-	^ 700 @ 475
 ]
 
 { #category : 'specs' }

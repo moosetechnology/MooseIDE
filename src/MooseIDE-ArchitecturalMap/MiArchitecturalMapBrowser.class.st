@@ -28,6 +28,12 @@ Class {
 }
 
 { #category : 'accessing' }
+MiArchitecturalMapBrowser class >> defaultPreferredExtent [
+
+	^ 850 @ 520
+]
+
+{ #category : 'accessing' }
 MiArchitecturalMapBrowser class >> mapClass [
 
 	^ MiArchitecturalMapVisualization
@@ -64,12 +70,6 @@ MiArchitecturalMapBrowser class >> open [
 
 	<script>
 	^ super open
-]
-
-{ #category : 'specs' }
-MiArchitecturalMapBrowser class >> preferredExtent [
-
-	^ 850 @ 520
 ]
 
 { #category : 'specs' }

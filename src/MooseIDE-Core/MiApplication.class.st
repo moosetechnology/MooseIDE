@@ -213,12 +213,6 @@ MiApplication >> defaultProvidersQuery [
 		  yourself
 ]
 
-{ #category : 'showing' }
-MiApplication >> defaultWindowPresenterClass [
-
-	^ MiWindowPresenter
-]
-
 { #category : 'buses' }
 MiApplication >> deleteBus: aBus [
 
