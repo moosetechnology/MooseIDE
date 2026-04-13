@@ -28,6 +28,12 @@ Class {
 }
 
 { #category : 'accessing' }
+MiDistributionMapBrowser class >> defaultPreferredExtent [
+
+	^ 850 @ 520
+]
+
+{ #category : 'accessing' }
 MiDistributionMapBrowser class >> mapClass [
 
 	^ MiDistributionMapVisualization
@@ -64,12 +70,6 @@ MiDistributionMapBrowser class >> open [
 
 	<script>
 	^ super open
-]
-
-{ #category : 'specs' }
-MiDistributionMapBrowser class >> preferredExtent [
-
-	^ 850 @ 520
 ]
 
 { #category : 'specs' }

@@ -214,5 +214,6 @@ MiBusLogBrowser >> updateLocalToolbar [
 MiBusLogBrowser >> updateToolbars [
 
 	self updateLocalToolbar.
-	self updateToolbar
+
+	self withWindowDo: [ :window | window presenter updateToolbar ]
 ]

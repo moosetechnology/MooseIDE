@@ -32,6 +32,12 @@ Class {
 }
 
 { #category : 'accessing' }
+MiButterflyMapBrowser class >> defaultPreferredExtent [
+
+	^ 850 @ 520
+]
+
+{ #category : 'accessing' }
 MiButterflyMapBrowser class >> mapClass [
 
 	^ MiButterflyMapVisualization
@@ -73,12 +79,6 @@ MiButterflyMapBrowser class >> newModel [
 MiButterflyMapBrowser class >> open [
 	<script>
 	super open
-]
-
-{ #category : 'specs' }
-MiButterflyMapBrowser class >> preferredExtent [
-
-	^ 850 @ 520
 ]
 
 { #category : 'specs' }

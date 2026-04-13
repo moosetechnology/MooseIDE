@@ -53,6 +53,12 @@ MiCriticBrowser class >> childrenForContext: aRuleComponent [
 		  ifTrue: [ {  } ]
 ]
 
+{ #category : 'accessing' }
+MiCriticBrowser class >> defaultPreferredExtent [
+
+	^ 1280 @ 560
+]
+
 { #category : 'initialization' }
 MiCriticBrowser class >> iconForRuleComponent: aRuleComponent [
 
@@ -90,12 +96,6 @@ MiCriticBrowser class >> newModel [
 MiCriticBrowser class >> open [
 	<script>
 	^ super open
-]
-
-{ #category : 'specs' }
-MiCriticBrowser class >> preferredExtent [
-
-	^ 1280 @ 560
 ]
 
 { #category : 'specs' }

@@ -23,6 +23,12 @@ Class {
 	#package : 'MooseIDE-Duplication'
 }
 
+{ #category : 'accessing' }
+MiDuplicationBrowser class >> defaultPreferredExtent [
+
+	^ 1000 @ 500
+]
+
 { #category : 'world menu' }
 MiDuplicationBrowser class >> menuCommandOn: aBuilder [
 
@@ -59,12 +65,6 @@ MiDuplicationBrowser class >> newModel [
 MiDuplicationBrowser class >> open [
 	<script>
 	^ super open
-]
-
-{ #category : 'specs' }
-MiDuplicationBrowser class >> preferredExtent [
-
-	^ 1000 @ 500
 ]
 
 { #category : 'specs' }

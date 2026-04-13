@@ -18,8 +18,8 @@ builder exportToTextAt: '/path/to/your/notebook.md' asFileReference
 See export protocole (instance side) for more export methods.
 "
 Class {
-	#name : #MiNotebookModel,
-	#superclass : #MiAbstractModel,
+	#name : 'MiNotebookModel',
+	#superclass : 'MiAbstractModel',
 	#instVars : [
 		'mooseModel',
 		'textEditedSource',
@@ -29,22 +29,24 @@ Class {
 		'context',
 		'generatedDocument'
 	],
-	#category : #'MooseIDE-Export-Notebook'
+	#category : 'MooseIDE-Export-Notebook',
+	#package : 'MooseIDE-Export',
+	#tag : 'Notebook'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiNotebookModel >> entities [
 
 	^ mooseModel
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiNotebookModel >> miSelectedItem [
 
 	^ self entities
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MiNotebookModel >> mooseModel: aMooseModel [
 
 	mooseModel := aMooseModel

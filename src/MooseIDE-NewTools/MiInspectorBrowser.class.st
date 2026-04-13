@@ -15,6 +15,12 @@ Class {
 	#tag : 'Inspector'
 }
 
+{ #category : 'accessing' }
+MiInspectorBrowser class >> defaultPreferredExtent [
+
+	^ 700 @ 500
+]
+
 { #category : 'api' }
 MiInspectorBrowser class >> inspect: anObject [
 
@@ -71,12 +77,6 @@ MiInspectorBrowser class >> open [
 
 	<script>
 	^ super open
-]
-
-{ #category : 'specs' }
-MiInspectorBrowser class >> preferredExtent [
-
-	^ 700 @ 500
 ]
 
 { #category : 'specs' }

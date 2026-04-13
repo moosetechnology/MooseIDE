@@ -32,6 +32,12 @@ Class {
 }
 
 { #category : 'accessing' }
+MiCoUsageMapBrowser class >> defaultPreferredExtent [
+
+	^ 900 @ 700
+]
+
+{ #category : 'accessing' }
 MiCoUsageMapBrowser class >> mapClass [ 
 
 	^MiCoUsageMapVisualization
@@ -67,12 +73,6 @@ MiCoUsageMapBrowser class >> open [
 
 	<script>
 	^ super open
-]
-
-{ #category : 'specs' }
-MiCoUsageMapBrowser class >> preferredExtent [
-
-	^ 900 @ 700
 ]
 
 { #category : 'specs' }

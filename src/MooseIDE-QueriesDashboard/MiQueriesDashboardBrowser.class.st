@@ -17,6 +17,12 @@ Class {
 }
 
 { #category : 'accessing' }
+MiQueriesDashboardBrowser class >> defaultPreferredExtent [
+
+	^ 800 @ 500
+]
+
+{ #category : 'accessing' }
 MiQueriesDashboardBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
@@ -46,12 +52,6 @@ MiQueriesDashboardBrowser class >> newModel [
 MiQueriesDashboardBrowser class >> open [
 	<script>
 	super open
-]
-
-{ #category : 'specs' }
-MiQueriesDashboardBrowser class >> preferredExtent [
-
-	^ 800 @ 500
 ]
 
 { #category : 'accessing' }

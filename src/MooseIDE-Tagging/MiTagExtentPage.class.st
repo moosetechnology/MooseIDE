@@ -157,7 +157,7 @@ MiTagExtentPage >> refresh [
 { #category : 'action' }
 MiTagExtentPage >> refreshBrowserToolbar [
 
-	self owner owner updateToolbar
+	self rootBrowser updateToolbar
 ]
 
 { #category : 'refreshing' }

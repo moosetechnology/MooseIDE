@@ -1,30 +1,32 @@
 Class {
-	#name : #MiExportQueryColumnModel,
-	#superclass : #MiExportAbstractColumnModel,
+	#name : 'MiExportQueryColumnModel',
+	#superclass : 'MiExportAbstractColumnModel',
 	#instVars : [
 		'query'
 	],
-	#category : #'MooseIDE-Export-Browser'
+	#category : 'MooseIDE-Export-Browser',
+	#package : 'MooseIDE-Export',
+	#tag : 'Browser'
 }
 
-{ #category : #testing }
+{ #category : 'testing' }
 MiExportQueryColumnModel >> isQueryColumn [
 
 	^ true
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiExportQueryColumnModel >> privatePrintValueFor: anEntity [
 	^ query value: anEntity
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiExportQueryColumnModel >> query [
 
 	^ query
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiExportQueryColumnModel >> query: anObject [
 
 	query := anObject

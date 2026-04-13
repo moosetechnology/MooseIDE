@@ -39,12 +39,31 @@ Class {
 	#instVars : [
 		'buses',
 		'receivingMode',
-		'specModel'
+		'specModel',
+		'miToolbar',
+		'toolbarCommandGroup'
 	],
 	#category : 'MooseIDE-Core-Browser',
 	#package : 'MooseIDE-Core',
 	#tag : 'Browser'
 }
+
+{ #category : 'commands' }
+MiAbstractBrowser class >> actionsCommandGroupFor: aPresenter [
+	"displayedOnrightSide, therefore in reverse order"
+
+	^ CmCommandGroup forSpec
+		  name: 'Actions';
+		  register:
+			  (MiPropagateMenuCommand forSpecContext: aPresenter)
+				  beDisplayedOnRightSide;
+		  register:
+			  (MiPropagateCommand forSpecContext: aPresenter)
+				  beDisplayedOnRightSide;
+		  register:
+			  (MiInspectCommand forSpecContext: aPresenter)
+				  beDisplayedOnRightSide
+]
 
 { #category : 'accessing' }
 MiAbstractBrowser class >> allBrowsers [
@@ -67,6 +86,35 @@ MiAbstractBrowser class >> browserKey [
 	"Override with a character to be used after m (for Moose) to open your browser"
 
 	^ nil
+]
+
+{ #category : 'commands' }
+MiAbstractBrowser class >> buildCommandsGroupWith: aPresenter forRoot: rootCommandGroup [
+
+	rootCommandGroup
+		register:
+			(MiReceivingModeCommand asCommandGroupForSpecContext: aPresenter);
+		register: (MiEditBusCommand forSpecContext: aPresenter);
+		register:
+			(MiHelpCommand forSpecContext: aPresenter) beDisplayedOnRightSide;
+		register: (self actionsCommandGroupFor: aPresenter)
+]
+
+{ #category : 'commands' }
+MiAbstractBrowser class >> buildExtensionCommandsWith: aPresenter forRoot: rootCommandGroup [
+
+	aPresenter canTagEntities ifTrue: [
+		rootCommandGroup register: (self taggingCommandGroupFor: aPresenter) ].
+
+	aPresenter hasSettings ifTrue: [
+		rootCommandGroup register:
+			(MiSettingsCommand forSpecContext: aPresenter)
+				beDisplayedOnRightSide ].
+
+	aPresenter hasVisualization ifTrue: [
+		rootCommandGroup register:
+			(MiExportVisualizationCommand forSpecContext: aPresenter)
+				beDisplayedOnRightSide ]
 ]
 
 { #category : 'menu' }
@@ -111,6 +159,12 @@ MiAbstractBrowser class >> buildMenuItemIn: aBuilder action: aBlock [
 		  action: aBlock;
 		  keyText: self keyText;
 		  yourself
+]
+
+{ #category : 'accessing' }
+MiAbstractBrowser class >> defaultPreferredExtent [
+
+	^ 500 @ 400
 ]
 
 { #category : 'world menu' }
@@ -297,12 +351,6 @@ MiAbstractBrowser class >> openOn: anEntity [
 		  yourself
 ]
 
-{ #category : 'specs' }
-MiAbstractBrowser class >> preferredExtent [
-
-	^ 500 @ 400
-]
-
 { #category : 'keymaps' }
 MiAbstractBrowser class >> shortcut [
 
@@ -316,6 +364,15 @@ MiAbstractBrowser class >> shouldBuildToolbar [
 	^ true
 ]
 
+{ #category : 'commands' }
+MiAbstractBrowser class >> taggingCommandGroupFor: aPresenter [
+
+	^ CmCommandGroup forSpec
+		  name: 'Tagging';
+		  register: (MiTagCommand forSpecContext: aPresenter);
+		  register: (MiSelectTagCommand forSpecContext: aPresenter)
+]
+
 { #category : 'accessing' }
 MiAbstractBrowser class >> taskbarIcon [
 	^MooseIcons mooseIcon
@@ -326,7 +383,7 @@ MiAbstractBrowser class >> taskbarIcon [
 MiAbstractBrowser >> beFrozen [
 
 	self receivingMode: MiFreezeMode.
-	self window updateReceivingModeButtons
+	self updateReceivingModeButtons
 ]
 
 { #category : 'window control' }
@@ -417,12 +474,12 @@ MiAbstractBrowser >> defaultLayout [
 MiAbstractBrowser >> followBus: aBus [
 
 	(self buses includes: aBus) ifTrue: [
-		application defaultBus: aBus.
-		^ self ].
+			application defaultBus: aBus.
+			^ self ].
 
 	self buses add: aBus.
 	aBus registerBrowser: self.
-	self window ifNotNil: [ :window | window updateBusButton ].
+	self window ifNotNil: [ self updateBusButton ].
 	self receiveEntity: aBus logger mostRecentEntity.
 	application defaultBus: aBus
 ]
@@ -481,10 +538,11 @@ MiAbstractBrowser >> initializeWindow: aMiWindowPresenter [
 	super initializeWindow: aMiWindowPresenter.
 
 	self class shouldBuildToolbar ifTrue: [
-		aMiWindowPresenter buildToolbar ].
+		aMiWindowPresenter toolbar: self windowToolbar ].
 
 	aMiWindowPresenter
-		setContextBindingKeys;
+		contextKeyBindings:
+			(self class actionsCommandGroupFor: self) asKMCategory;
 		whenClosedDo: [ self browserClosed ];
 		withAdapterPerformOrDefer: [ :anAdapter |
 			self registerToAdapterEvents: anAdapter ]
@@ -649,19 +707,80 @@ MiAbstractBrowser >> tagSelectedEntities [
 	self specModel ifNotNil: [ :model | model tagSelectedEntities ]
 ]
 
+{ #category : 'toolbar' }
+MiAbstractBrowser >> toolbarCommandGroup [
+
+	^ toolbarCommandGroup ifNil: [ 
+		  toolbarCommandGroup := self rootCommandsGroup ]
+]
+
 { #category : 'buses' }
 MiAbstractBrowser >> unfollowBus: aBus [
 
 	(self buses includes: aBus) ifFalse: [ ^ self ].
 	self buses remove: aBus.
 	aBus unregisterBrowser: self.
-	self window ifNotNil: [ :window | window updateBusButton ]
+	self window ifNotNil: [ self updateBusButton ]
 ]
 
-{ #category : 'actions' }
+{ #category : 'toolbar' }
+MiAbstractBrowser >> updateBusButton [
+
+	| busEditCommand |
+	busEditCommand := self toolbarCommandGroup
+		                  commandOrGroupNamed: 'Buses'
+		                  ifNone: [ ^ self ].
+	busEditCommand presenter ifNil: [ ^ self ].
+
+	busEditCommand presenter
+		label: busEditCommand dynamicName;
+		help: busEditCommand dynamicDescription.
+
+	busEditCommand updateEnableStatus
+]
+
+{ #category : 'toolbar' }
+MiAbstractBrowser >> updateReceivingModeButtons [
+
+	(self toolbarCommandGroup commandOrGroupNamed: 'Receiving Mode')
+		commands do: [ :cmd | cmd updateIconForMode: self receivingMode ]
+]
+
+{ #category : 'toolbar' }
+MiAbstractBrowser >> updateReceivingModelToolbarButtons [
+
+	(self toolbarCommandGroup
+		 commandOrGroupNamed: 'Receiving Mode'
+		 ifNone: [ ^ self ]) commands do: [ :cmd |
+			cmd canBeExecuted ifFalse: [
+				cmd presenter icon: (cmd icon lighter: 0.4) ] ]
+]
+
+{ #category : 'toolbar' }
+MiAbstractBrowser >> updateTaggingToolbarButton [
+
+	| tagCommand |
+	tagCommand := (self toolbarCommandGroup
+		               commandOrGroupNamed: 'Tagging'
+		               ifNone: [ ^ self ])
+		              commandOrGroupNamed: MiTagCommand defaultName
+		              ifNone: [ ^ self ].
+
+	tagCommand canBeExecuted ifTrue: [
+		tagCommand presenter label: self selectedTag name ].
+	tagCommand presenter icon:
+		(self application iconForTag: self selectedTag)
+]
+
+{ #category : 'toolbar' }
 MiAbstractBrowser >> updateToolbar [
 
-	self window ifNotNil: [ :window | window updateToolbar. ]
+	self toolbarCommandGroup allCommands do: [ :cmd |
+		cmd updateEnableStatus ].
+
+	self updateReceivingModelToolbarButtons.
+
+	self updateTaggingToolbarButton
 ]
 
 { #category : 'accessing' }
@@ -678,4 +797,12 @@ MiAbstractBrowser >> windowTitleFor: anEntity [
 				  << self class title;
 				  << ' on '.
 			  anEntity displayStringOn: stream ]
+]
+
+{ #category : 'initialization' }
+MiAbstractBrowser >> windowToolbar [
+
+	^ self newToolbar
+		  fillWith: self toolbarCommandGroup;
+		  yourself
 ]
