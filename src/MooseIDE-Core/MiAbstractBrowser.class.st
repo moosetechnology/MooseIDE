@@ -305,6 +305,12 @@ MiAbstractBrowser class >> new [
 	^ self on: self newModel
 ]
 
+{ #category : 'instance creation' }
+MiAbstractBrowser class >> newApplication: anApplication [
+
+	^ self newApplication: anApplication model: self newModel
+]
+
 { #category : 'world menu' }
 MiAbstractBrowser class >> newBrowser: aBrowserClass [
 
