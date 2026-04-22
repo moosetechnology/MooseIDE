@@ -33,24 +33,6 @@ MooseObject >> miMetaNavigationItems [
 ]
 
 { #category : '*MooseIDE-NewTools' }
-MooseObject >> navigationItemsFromPragmas [
-
-	| pragmaValueAssociations |
-	"returns associations in form name->object for navigation entities obtained from
-	the pragma #navigation:"
-	pragmaValueAssociations := (self mooseInterestingEntity
-		                            navigationPragmas sorted:
-		                            [ :pragma |
-		                            pragma argumentNamed: #navigation: ]
-			                            ascending) collect: [ :pragma |
-		                           pragma inspectorToString
-		                           -> pragma methodSelector ].
-
-	"filter out nils and empty collections, sort"
-	^ pragmaValueAssociations reject: [ :entity | entity isNil ]
-]
-
-{ #category : '*MooseIDE-NewTools' }
 MooseObject >> valueOfPropertyForInspector: propertyValue [
 
 	propertyValue isCollection ifTrue: [ 
