@@ -134,6 +134,12 @@ MiNavigationQueryPresenter >> selectAssociationAction: association [
 	self computeQueryAction: association
 ]
 
+{ #category : 'accessing' }
+MiNavigationQueryPresenter >> selectedAssociationsLabel [
+
+	^ selectedAssociationsLabel
+]
+
 { #category : 'initialization' }
 MiNavigationQueryPresenter >> showAssociationsPopover [
 
