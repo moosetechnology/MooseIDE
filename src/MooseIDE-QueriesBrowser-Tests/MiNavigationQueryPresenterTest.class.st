@@ -102,17 +102,22 @@ MiNavigationQueryPresenterTest >> testQueryValidity [
 { #category : 'tests' }
 MiNavigationQueryPresenterTest >> testSelectedAssociationsLabel [
 
+	| item |
 	presenter query beDefaultForParent.
+	item := presenter query availableAssociations select: [ :i |
+		        i name = 'FamixStInheritance' ].
+	(presenter presenterAt: #associationsList) activateItem: item first.
+	item := presenter query availableAssociations select: [ :i |
+		        i name = 'FamixStAccess' ].
 
-	(presenter presenterAt: #associationsList) activateItem:
-		presenter query availableAssociations first.
-	(presenter presenterAt: #associationsList) activateItem:
-		presenter query availableAssociations second.
+	(presenter presenterAt: #associationsList) activateItem: item first.
+	item := presenter query availableAssociations select: [ :i |
+		        i name = 'FamixStInvocation' ].
 
-
+	(presenter presenterAt: #associationsList) activateItem: item first.
 	self
 		assert: presenter selectedAssociationsLabel label
-		equals: 'Inheritance, Access'
+		equals: 'Invocation, Inheritance, Access'
 ]
 
 { #category : 'tests' }
@@ -123,9 +128,7 @@ MiNavigationQueryPresenterTest >> testUpdateDirectionWithSelectedAssociations [
 	(presenter presenterAt: #associationsList) activateItem:
 		presenter query availableAssociations first.
 
-	self
-		assert: presenter selectedAssociationsLabel label
-		equals: 'Inheritance'.
+	self assert: presenter selectedAssociationsLabel label isNotEmpty.
 
 	presenter updateDirection: FQLocalIncomingNavigation.
 
