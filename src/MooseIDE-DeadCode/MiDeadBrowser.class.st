@@ -37,6 +37,12 @@ MiDeadBrowser class >> menuCommandOn: aBuilder [
 ]
 
 { #category : 'world menu' }
+MiDeadBrowser class >> menuIconName [
+
+	^ #mooseDeadCode 
+]
+
+{ #category : 'world menu' }
 MiDeadBrowser class >> menuItem [
 
 	^#mooseCancel
