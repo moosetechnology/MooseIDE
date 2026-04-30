@@ -134,6 +134,12 @@ MiNavigationQueryPresenter >> selectAssociationAction: association [
 	self computeQueryAction: association
 ]
 
+{ #category : 'accessing' }
+MiNavigationQueryPresenter >> selectedAssociationsLabel [
+
+	^ selectedAssociationsLabel
+]
+
 { #category : 'initialization' }
 MiNavigationQueryPresenter >> showAssociationsPopover [
 
@@ -152,26 +158,25 @@ MiNavigationQueryPresenter >> updateDirection: selectedDirection [
 	self initializeAssociationsList.
 	self initializeAssociationsButton.
 	self initializeLayout.
-
+	self updateLabel.
 	self notifyQueryChanged
 ]
 
 { #category : 'actions' }
 MiNavigationQueryPresenter >> updateLabel [
-	
+
 	| selectedAssociationsString names reducedNames |
 	names := associationsList selectedItems collect: [ :each |
-		each mooseDescription name asString ].
+		         each mooseDescription name asString ].
 	reducedNames := names size > 2
-	ifTrue: [
-		names collect: [ :each |
-			LbCContractor new
-				usingPriorities;
-				removeVowels;
-				ellipsisUpTo: 8;
-				reduce: each ] ]
-	ifFalse: [ names ].
-	selectedAssociationsString := reducedNames joinUsing: ', '.
+		                ifTrue: [
+				                names collect: [ :each |
+						                LbCContractor new
+							                usingPriorities;
+							                ellipsisUpTo: 8;
+							                reduce: each ] ]
+		                ifFalse: [ names ].
+	selectedAssociationsString := names joinUsing: ', '.
 	selectedAssociationsLabel label: selectedAssociationsString
 ]
 
