@@ -57,6 +57,15 @@ MiAbstractBrowserTest >> defaultEntityToSelect [
 ]
 
 { #category : 'running' }
+MiAbstractBrowserTest >> miToolbarFreezeCommand [
+
+	^ ((browser toolbarCommandGroup decoratedGroup entries detect: [ :ent |
+		    ent isGroup and: [ ent decoratedGroup name = 'Receiving Mode' ] ])
+		   decoratedGroup entries detect: [ :btnCmd |
+		   btnCmd name = 'Freeze' ])
+]
+
+{ #category : 'running' }
 MiAbstractBrowserTest >> mooseObjects [
 
 	^ { 
@@ -441,6 +450,23 @@ MiAbstractBrowserTest >> testSettingsClickReset [
 
 	settingsWindow := browser openSettings.
 	settingsWindow presenter resetToDefault
+]
+
+{ #category : 'tests - receiving' }
+MiAbstractBrowserTest >> testShowingFreezeWhenClicked [
+
+	self
+		assert: self miToolbarFreezeCommand iconName
+		equals: 'radioButtonUnselected'.
+	self assert: browser receivingMode name equals: #MiFollowMode.
+
+	self miToolbarFreezeCommand presenter click.
+
+	self
+		assert: self miToolbarFreezeCommand iconName
+		equals: 'radioButtonSelected'.
+		
+	self assert: browser receivingMode name equals: #MiFreezeMode.
 ]
 
 { #category : 'tests - tags' }
