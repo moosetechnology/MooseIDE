@@ -100,6 +100,39 @@ MiNavigationQueryPresenterTest >> testQueryValidity [
 ]
 
 { #category : 'tests' }
+MiNavigationQueryPresenterTest >> testSelectedAssociationsLabel [
+
+	presenter query beDefaultForParent.
+
+	(presenter presenterAt: #associationsList) activateItem:
+		presenter query availableAssociations first.
+	(presenter presenterAt: #associationsList) activateItem:
+		presenter query availableAssociations second.
+
+
+	self
+		assert: presenter selectedAssociationsLabel label
+		equals: 'Inheritance, Access'
+]
+
+{ #category : 'tests' }
+MiNavigationQueryPresenterTest >> testUpdateDirectionWithSelectedAssociations [
+
+	presenter query beDefaultForParent.
+
+	(presenter presenterAt: #associationsList) activateItem:
+		presenter query availableAssociations first.
+
+	self
+		assert: presenter selectedAssociationsLabel label
+		equals: 'Inheritance'.
+
+	presenter updateDirection: FQLocalIncomingNavigation.
+
+	self assert: presenter selectedAssociationsLabel label equals: ''
+]
+
+{ #category : 'tests' }
 MiNavigationQueryPresenterTest >> testUpdateQueryWithSelectedAssociations [
 
 	| associationsRemoved |
