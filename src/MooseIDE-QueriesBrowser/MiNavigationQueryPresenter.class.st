@@ -172,6 +172,8 @@ MiNavigationQueryPresenter >> updateLabel [
 							                ellipsisUpTo: 8;
 							                reduce: each ] ]
 		                ifFalse: [ names ].
+
+	names sort: #yourself ascending.
 	selectedAssociationsString := names joinUsing: ', '.
 	selectedAssociationsLabel label: selectedAssociationsString
 ]
