@@ -69,7 +69,7 @@ MiTypeQueryPresenter >> initializeTypesList [
 { #category : 'widgets configuration' }
 MiTypeQueryPresenter >> labelFor: type [
 
-	^ type mooseDescription name asEnglishPlural
+	^ type metadescription name asEnglishPlural
 ]
 
 { #category : 'layout' }

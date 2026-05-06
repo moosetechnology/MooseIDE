@@ -59,16 +59,13 @@ MiNavigationQueryPresenter >> initializeAssociationsList [
 	associationsList := self instantiate: SpFilteringSelectableListPresenter.
 	associationsList addStyle: 'smallList'.
 	associationsList
-		display: [ :item | item mooseDescription name asString ];
+		display: [ :item | item metadescription name asString ];
 		items: self query availableAssociations;
 		selectItems: self query associations;
-		onActivation: [ :association | 
-			self selectAssociationAction: association ];
-		onDeactivation: [ :association | 
-			self selectAssociationAction: association ].
+		onActivation: [ :association | self selectAssociationAction: association ];
+		onDeactivation: [ :association | self selectAssociationAction: association ].
 
-	self query associations do: [ :assoc | 
-		associationsList activateItem: assoc ]
+	self query associations do: [ :assoc | associationsList activateItem: assoc ]
 ]
 
 { #category : 'initialization' }
@@ -166,8 +163,7 @@ MiNavigationQueryPresenter >> updateDirection: selectedDirection [
 MiNavigationQueryPresenter >> updateLabel [
 
 	| selectedAssociationsString names reducedNames |
-	names := associationsList selectedItems collect: [ :each |
-		         each mooseDescription name asString ].
+	names := associationsList selectedItems collect: [ :each | each metadescription name asString ].
 	reducedNames := names size > 2
 		                ifTrue: [
 				                names collect: [ :each |
@@ -176,6 +172,8 @@ MiNavigationQueryPresenter >> updateLabel [
 							                ellipsisUpTo: 8;
 							                reduce: each ] ]
 		                ifFalse: [ names ].
+
+	names sort: #yourself ascending.
 	selectedAssociationsString := names joinUsing: ', '.
 	selectedAssociationsLabel label: selectedAssociationsString
 ]

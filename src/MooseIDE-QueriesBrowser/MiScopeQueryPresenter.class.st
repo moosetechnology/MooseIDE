@@ -98,10 +98,9 @@ MiScopeQueryPresenter >> scopesDropListForScopes: scopes [
 	^ self newDropList
 		  startWithoutSelection;
 		  items: scopes;
-		  display: [ :item | item mooseDescription name asEnglishPlural ];
+		  display: [ :item | item metadescription name asEnglishPlural ];
 		  selectItem: self query scope;
-		  whenSelectedItemChangedDo: [ :scope | 
-			  self computeQueryAction: scope ]
+		  whenSelectedItemChangedDo: [ :scope | self computeQueryAction: scope ]
 ]
 
 { #category : 'widgets configuration' }

@@ -104,20 +104,15 @@ MiNavigationQueryPresenterTest >> testSelectedAssociationsLabel [
 
 	| item |
 	presenter query beDefaultForParent.
-	item := presenter query availableAssociations select: [ :i |
-		        i name = 'FamixStInheritance' ].
+	item := presenter query availableAssociations select: [ :i | i name = 'FamixStInheritance' ].
 	(presenter presenterAt: #associationsList) activateItem: item first.
-	item := presenter query availableAssociations select: [ :i |
-		        i name = 'FamixStAccess' ].
+	item := presenter query availableAssociations select: [ :i | i name = 'FamixStAccess' ].
 
 	(presenter presenterAt: #associationsList) activateItem: item first.
-	item := presenter query availableAssociations select: [ :i |
-		        i name = 'FamixStInvocation' ].
+	item := presenter query availableAssociations select: [ :i | i name = 'FamixStInvocation' ].
 
 	(presenter presenterAt: #associationsList) activateItem: item first.
-	self
-		assert: presenter selectedAssociationsLabel label
-		equals: 'Invocation, Inheritance, Access'
+	self assert: presenter selectedAssociationsLabel label equals: 'Access, Inheritance, Invocation'
 ]
 
 { #category : 'tests' }

@@ -113,7 +113,7 @@ MiExportModel >> defaultColumns [
 				   name: #Name;
 				   yourself)
 		  with: (MiExportQueryColumnModel new
-				   query: [ :entity | entity mooseDescription name ];
+				   query: [ :entity | entity metadescription name ];
 				   name: #Type;
 				   yourself)
 ]

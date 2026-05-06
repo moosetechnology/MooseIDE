@@ -90,9 +90,8 @@ MiMetaBrowser >> canFollowEntity: anObject [
 { #category : 'initialization' }
 MiMetaBrowser >> followEntity: anEntity [
 
-	entities roots: (anEntity metamodel classes select: [ :class | 
-			 class superclass fullName = 'Moose.Entity' ]).
-	self selected: anEntity mooseDescription.
+	entities roots: (anEntity metamodel classes select: [ :class | class superclass fullName = 'Moose.Entity' ]).
+	self selected: anEntity metadescription.
 	map
 		rootEntities: anEntity metamodel classes;
 		run
