@@ -38,8 +38,7 @@ MiDeadAbstractJavaRule >> implementedInterfaceHierarchy: aType [
 { #category : 'testing' }
 MiDeadAbstractJavaRule >> isInterface: aType [
 
-	^aType mooseDescription allProperties
-		noneSatisfy: [ :fmProp | fmProp name = #interfaceImplementations ].
+	^ aType allDeclaredProperties noneSatisfy: [ :fmProp | fmProp name = #interfaceImplementations ]
 ]
 
 { #category : 'accessing' }

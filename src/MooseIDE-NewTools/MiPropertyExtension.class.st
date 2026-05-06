@@ -30,9 +30,7 @@ MiPropertyExtension >> initializePresenters [
 					 [ inspectedObject mmGetProperty: item ]
 						 on: Error
 						 do: [ 'error' ] ]);
-		items:
-			(inspectedObject mooseDescription allPrimitiveProperties sorted:
-				 #name ascending);
+		items: (inspectedObject metadescription allPrimitiveProperties sorted: #name ascending);
 		beResizable
 ]
 
