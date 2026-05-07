@@ -16,6 +16,13 @@ MiDeadAbstractJavaRule class >> heuristicGroups [
 	^#( Java ) , super heuristicGroups
 ]
 
+{ #category : 'as yet unclassified' }
+MiDeadAbstractJavaRule >> allImplementingClasses: anInterface [
+
+	^anInterface implementations flatCollect: [ :imp |
+		{imp implementingClass}  , (imp implementingClass subclassHierarchy) ]
+]
+
 { #category : 'accessing' }
 MiDeadAbstractJavaRule >> description [
 
@@ -35,6 +42,16 @@ MiDeadAbstractJavaRule >> implementedInterfaceHierarchy: aType [
 		]
 ]
 
+{ #category : 'as yet unclassified' }
+MiDeadAbstractJavaRule >> implementingClassHierarchy: anInterface [
+
+	| intrfHierarchy |
+	intrfHierarchy := {  anInterface } , (self subInterfaceHierarchy: anInterface).
+	^(intrfHierarchy
+		flatCollect: [ :intrfc | self allImplementingClasses: intrfc ])
+		asOrderedCollection removeDuplicates 
+]
+
 { #category : 'testing' }
 MiDeadAbstractJavaRule >> isInterface: aType [
 
@@ -52,4 +69,16 @@ MiDeadAbstractJavaRule >> name [
 MiDeadAbstractJavaRule >> ruleGroup [
 
 	^#Java
+]
+
+{ #category : 'as yet unclassified' }
+MiDeadAbstractJavaRule >> subInterfaceHierarchy: anInterface [
+	"#allSubclassesDo: on interfaces may can only return a collection of (sub-)interfaces"
+
+	| subinterfaces |
+
+	subinterfaces := OrderedCollection new.
+	anInterface allSubclassesDo: [:each | subinterfaces add: each].
+
+	^ subinterfaces
 ]

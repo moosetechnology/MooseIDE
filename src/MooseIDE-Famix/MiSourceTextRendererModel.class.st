@@ -120,7 +120,8 @@ MiSourceTextRendererModel >> createEntitiesHighlightsFor: anEntity [
 		self createEntitiesHighlightsFor: child ].
 
 	(anEntity tags size = 1) ifTrue: [
-		self addTagHighlight: anEntity tags anyOne on: anEntity ].
+		self flag: #TODO.
+		"self addTagHighlight: anEntity tags anyOne on: anEntity" ].
 
 	anEntity queryAllOutgoing do: [:mseAssoc |
 		mseAssoc sourceAnchor ifNotNil: [ :usedAnchor |

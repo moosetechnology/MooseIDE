@@ -26,7 +26,7 @@ MiDeadJavaOverridesInvokedRule >> any: tWithMethods hasInvokedMethod: aTMethod [
 { #category : 'accessing' }
 MiDeadJavaOverridesInvokedRule >> name [
 
-	^super name , 'Overriden invoked method'
+	^super name , 'Overrides invoked method'
 ]
 
 { #category : 'testing' }
@@ -35,7 +35,10 @@ MiDeadJavaOverridesInvokedRule >> notDead: aTMethod [
 
 	| superclasses implementedInterfaces |
 
-	superclasses := { aTMethod parentType } , (aTMethod parentType superclassHierarchy).
+	superclasses := { aTMethod parentType }.
+	aTMethod parentType isClass
+		ifTrue: [ superclasses := superclasses , (aTMethod parentType superclassHierarchy) ].
+
 	(self any: superclasses hasInvokedMethod: aTMethod)
 		ifTrue: [ ^true ].
 

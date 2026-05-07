@@ -97,3 +97,9 @@ MiDeadAbstractRule >> selectedByDefault [
 
 	^false
 ]
+
+{ #category : 'actions' }
+MiDeadAbstractRule >> whenChosen [
+
+	"defaults to returning self"
+]

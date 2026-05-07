@@ -31,6 +31,8 @@ MiDeadJavaHasOverridingRule >> container: aTWithMethods hasOverrideMethod: aTMet
 
 { #category : 'testing' }
 MiDeadJavaHasOverridingRule >> hasOverrideAnnotation: anEntity [
+	"anEntity has explicit @Override annotation or it implements an interface method
+	 ('implicit' @override)"
 
 	^anEntity annotationInstances anySatisfy: [ :anno |
 		anno annotationType mooseName = 'java.lang.Override'
@@ -46,7 +48,13 @@ MiDeadJavaHasOverridingRule >> name [
 { #category : 'testing' }
 MiDeadJavaHasOverridingRule >> notDead: aTMethod [
 
-	^self
-		any: aTMethod parentType subclassHierarchy
-		hasOverrideMethod: aTMethod
+	
+	| possibleImplementors |
+	possibleImplementors := aTMethod parentType isClass
+		ifTrue: [ aTMethod parentType subclassHierarchy ]
+		ifFalse: [ aTMethod parentType isInterface
+			ifTrue: [ self implementingClassHierarchy: aTMethod parentType ]
+			ifFalse: [ { aTMethod parentType } ] ].
+
+	^self 	any: possibleImplementors hasOverrideMethod: aTMethod
 ]
