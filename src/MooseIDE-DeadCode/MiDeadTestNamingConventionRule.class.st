@@ -11,18 +11,6 @@ Class {
 }
 
 { #category : 'accessing' }
-MiDeadTestNamingConventionRule >> description [
-
-	^super description ,
-	'Any method of a test class is assumed not-dead.
-	Check test methods according to naming convention:
-	- method name begins with "test"
-	- class name ends with "Test"
-	- method name is longer than 5 characters ("test...")
-	- 5th character is not a lower case (eg. not "tester")'
-]
-
-{ #category : 'accessing' }
 MiDeadTestNamingConventionRule >> name [
 
 	^super name , 'Naming convention'

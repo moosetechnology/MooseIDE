@@ -29,14 +29,6 @@ MiDeadJavaHasOverridingRule >> container: aTWithMethods hasOverrideMethod: aTMet
 	]
 ]
 
-{ #category : 'accessing' }
-MiDeadJavaHasOverridingRule >> description [
-
-	^super description ,
-		'A method having an "@Overriding" method (in a subclass) is assumed not-dead,
-because one cannot remove the overriden method'
-]
-
 { #category : 'testing' }
 MiDeadJavaHasOverridingRule >> hasOverrideAnnotation: anEntity [
 

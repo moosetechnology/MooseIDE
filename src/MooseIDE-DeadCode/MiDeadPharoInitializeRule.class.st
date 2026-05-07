@@ -11,13 +11,6 @@ Class {
 }
 
 { #category : 'accessing' }
-MiDeadPharoInitializeRule >> description [
-
-	^super description ,
-	'"Initialize" is constructor, called by "new", therefore not-dead'
-]
-
-{ #category : 'accessing' }
 MiDeadPharoInitializeRule >> name [
 
 	^super name , '"Initialize" method'

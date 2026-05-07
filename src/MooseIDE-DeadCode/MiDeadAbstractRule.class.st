@@ -29,9 +29,11 @@ MiDeadAbstractRule class >> isAbstract [
 { #category : 'accessing' }
 MiDeadAbstractRule >> description [
 
-	^self refuteDead
+	^(self refuteDead
 		ifTrue: [ '[Refute a method is dead]' , String cr ]
-		ifFalse: [ '' ]
+		ifFalse: [ '' ])
+	,
+	self class comment
 ]
 
 { #category : 'accessing' }

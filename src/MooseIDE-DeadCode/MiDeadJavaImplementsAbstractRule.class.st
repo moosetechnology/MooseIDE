@@ -37,13 +37,6 @@ MiDeadJavaImplementsAbstractRule >> collect: tWithMethods definedMethod: aTMetho
 ]
 
 { #category : 'accessing' }
-MiDeadJavaImplementsAbstractRule >> description [
-
-	^super description ,
-	'A method implementing an abstract method, even dead, is needed for the implementation'
-]
-
-{ #category : 'accessing' }
 MiDeadJavaImplementsAbstractRule >> name [
 
 	^super name , 'Implements abstract method'

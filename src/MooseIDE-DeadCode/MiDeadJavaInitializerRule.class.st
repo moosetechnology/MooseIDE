@@ -28,13 +28,6 @@ MiDeadJavaInitializerRule >> classHasNonDefaultConstructor: aClass [
 
 ]
 
-{ #category : 'accessing' }
-MiDeadJavaInitializerRule >> description [
-
-	^super description ,
-	'Default constructor and initialization block are assumed not-dead'
-]
-
 { #category : 'testing' }
 MiDeadJavaInitializerRule >> isDefaultConstructorWithOtherConstructors: aTMethod [
 	"the default constructor (no parameter) is always called by any other constructor

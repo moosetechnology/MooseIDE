@@ -24,13 +24,6 @@ MiDeadJavaOverridesInvokedRule >> any: tWithMethods hasInvokedMethod: aTMethod [
 ]
 
 { #category : 'accessing' }
-MiDeadJavaOverridesInvokedRule >> description [
-
-	^super description ,
-	'All methods overriding an invoked method are assumed not-dead'
-]
-
-{ #category : 'accessing' }
 MiDeadJavaOverridesInvokedRule >> name [
 
 	^super name , 'Overriden invoked method'

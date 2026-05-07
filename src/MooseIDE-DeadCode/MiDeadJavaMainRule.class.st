@@ -16,13 +16,6 @@ MiDeadJavaMainRule >> accept: aTMethod [
 ]
 
 { #category : 'accessing' }
-MiDeadJavaMainRule >> description [
-
-	^super description ,
-	'"public static void main()" methods are assumed not-dead'
-]
-
-{ #category : 'accessing' }
 MiDeadJavaMainRule >> isForEntryPoint [
 
 	^true

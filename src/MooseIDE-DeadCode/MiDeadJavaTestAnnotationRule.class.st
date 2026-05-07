@@ -20,14 +20,6 @@ MiDeadJavaTestAnnotationRule >> accept: aTMethod [
 ]
 
 { #category : 'accessing' }
-MiDeadJavaTestAnnotationRule >> description [ 
-
-	^super description ,
-	'In Java, different annotations mark methods of test class
-	 (@Test, @Before, @BeforeEach,...)'
-]
-
-{ #category : 'accessing' }
 MiDeadJavaTestAnnotationRule >> isForEntryPoint [
 
 	^true

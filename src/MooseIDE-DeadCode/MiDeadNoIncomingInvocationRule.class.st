@@ -9,13 +9,6 @@ Class {
 	#tag : 'Rules'
 }
 
-{ #category : 'accessing' }
-MiDeadNoIncomingInvocationRule >> description [
-
-	^super description ,
-	'Methods never invoked are considered dead'
-]
-
 { #category : 'testing' }
 MiDeadNoIncomingInvocationRule >> isDead: aTMethod [
 
