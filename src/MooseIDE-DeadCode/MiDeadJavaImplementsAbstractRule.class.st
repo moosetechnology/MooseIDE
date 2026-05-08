@@ -14,13 +14,9 @@ Class {
 { #category : 'testing' }
 MiDeadJavaImplementsAbstractRule >> any: tWithMethods declaresMethod: aTMethod [
 
-	tWithMethods do: [ :aTWithMethods |
-		aTWithMethods methods
-			detect: [ :mth | mth signature = aTMethod signature ]
-			ifOne: [ :mth | ^true ]
-	].
-
-	^false
+	^tWithMethods anySatisfy: [ :aTWithMethods |
+		(aTWithMethods declaresMethod: aTMethod)
+	]
 ]
 
 { #category : 'testing' }
@@ -34,13 +30,6 @@ MiDeadJavaImplementsAbstractRule >> collect: tWithMethods definedMethod: aTMetho
 		]
 		thenReject: #isNil
 
-]
-
-{ #category : 'accessing' }
-MiDeadJavaImplementsAbstractRule >> description [
-
-	^super description ,
-	'A method implementing an abstract method, even dead, is needed for the implementation'
 ]
 
 { #category : 'accessing' }
@@ -59,8 +48,9 @@ MiDeadJavaImplementsAbstractRule >> notDead: aTMethod [
 
 	| superclasses definedMethods implementedInterfaces |
 
-	superclasses := aTMethod parentType superclassHierarchy
-		reject: #isNil. "protect against a bug in VerveineJ"
+	superclasses := aTMethod parentType isClass
+		ifTrue: [ aTMethod parentType superclassHierarchy reject: #isNil ]
+		ifFalse: [ { aTMethod parentType } ].
 
 	definedMethods := self collect: superclasses definedMethod: aTMethod.
 	

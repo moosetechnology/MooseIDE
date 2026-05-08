@@ -69,6 +69,17 @@ MiDeadCodeBrowserModelTest >> javaMethod: methName annotatedWith: annotationName
 ]
 
 { #category : 'running' }
+MiDeadCodeBrowserModelTest >> javaParametricInterfaceMethod: methSignature [
+
+	| entity |
+	entity := FamixJavaMethod new.
+	entity signature: methSignature.
+	entity parentType: (FamixJavaParametricInterface new).
+
+	^entity
+]
+
+{ #category : 'running' }
 MiDeadCodeBrowserModelTest >> pharoClass: aClass inheritFrom: superclassName [
 
 	FamixStInheritance new
@@ -128,7 +139,7 @@ MiDeadCodeBrowserModelTest >> setUp [
 MiDeadCodeBrowserModelTest >> testGatherRulesList [
 	"Expected number must be updated according to number of non abstract rule classes"
 
-	self assert: model availableRules size equals: 11
+	self assert: model availableRules size equals: 12
 ]
 
 { #category : 'tests' }
@@ -259,6 +270,19 @@ MiDeadCodeBrowserModelTest >> testJavaHasOverridingRuleDeadNoSubMethod [
 		annotationType: annotation.
 
 	self assert: (MiDeadJavaHasOverridingRule new isDead: entity1)
+]
+
+{ #category : 'tests - heuristics' }
+MiDeadCodeBrowserModelTest >> testJavaImplementsRuleGenericMethod [
+	"Unused method (entity1.doSomething(String)) implementing a parametric interface declaration
+	 should not be dead"
+
+	| entity1 entity2 |
+	entity1 := self javaClassMethod: 'doSomething(String)'.
+	entity2 := self javaParametricInterfaceMethod: 'doSomething(T)'.
+	self javaClass: entity1 parentType implements: entity2 parentType.
+
+	self deny: (MiDeadJavaImplementsAbstractRule new isDead: entity1)
 ]
 
 { #category : 'tests - heuristics' }
@@ -509,7 +533,7 @@ MiDeadCodeBrowserModelTest >> testRecursionRoundInvokedByDead [
 	model deadEntities add: entity1.
 
 	self assert: model deadEntities size equals: 1.
-	model recursionComputation.
+	model runComputation.
 	self assert: model deadEntities size equals: 2
 ]
 
@@ -530,7 +554,7 @@ MiDeadCodeBrowserModelTest >> testRecursionRoundInvokedByDeadRecursively [
 	model deadEntities add: entity1.
 
 	self assert: model deadEntities size equals: 1.
-	model recursionComputation.
+	model runComputation.
 	self assert: model deadEntities size equals: 3
 ]
 
@@ -547,7 +571,7 @@ MiDeadCodeBrowserModelTest >> testRecursionRoundInvokedByNotDead [
 	model deadEntities add: entity1.
 
 	self assert: model deadEntities size equals: 1.
-	model recursionComputation.
+	model runComputation.
 	self assert: model deadEntities size equals: 1
 ]
 
@@ -568,7 +592,7 @@ MiDeadCodeBrowserModelTest >> testRecursionRoundNotAddingOutsideFollwedEntities 
 	model deadEntities add: entity1.
 
 	self assert: model deadEntities size equals: 1.
-	model recursionComputation.
+	model runComputation.
 	self assert: model deadEntities size equals: 2
 ]
 
@@ -586,7 +610,7 @@ MiDeadCodeBrowserModelTest >> testRecursionRoundProtectedByHeursitic [
 	model chooseRules: { MiDeadTestNamingConventionRule new }.
 
 	self assert: model deadEntities size equals: 1.
-	model recursionComputation.
+	model runComputation.
 	self assert: model deadEntities size equals: 1
 ]
 

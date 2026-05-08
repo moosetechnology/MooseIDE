@@ -13,14 +13,6 @@ Class {
 }
 
 { #category : 'accessing' }
-MiDeadPharoPragmasRule >> description [ 
-
-	^super description ,
-	'Some pragmas mark method called by the end-user (therefore not-dead)
-	 (<script>, <example>. <inspectorPresentationOrder:title:>,...)'
-]
-
-{ #category : 'accessing' }
 MiDeadPharoPragmasRule >> name [
 
 	^super name , '<script> pragmas'

@@ -18,6 +18,12 @@ Class {
 	#tag : 'Model'
 }
 
+{ #category : 'accessing' }
+MiDeadCodeBrowserModel >> addDeadEntity: anEntity [
+
+	deadEntities add: anEntity
+]
+
 { #category : 'actions' }
 MiDeadCodeBrowserModel >> applyChosenRules: entity [
 	"search for a heuristic that could deal with the entity"
@@ -42,8 +48,11 @@ MiDeadCodeBrowserModel >> availableRules [
 MiDeadCodeBrowserModel >> chooseRules: heuristicCollection [
 	"add all of heuristicCollection  to the internal list of chosenHeuristics"
 
-	chosenRules := (chosenRules union: heuristicCollection)
+	| configuredRules |
+	configuredRules := heuristicCollection collect: #whenChosen.
+	chosenRules := (chosenRules union: configuredRules)
 		sort: self rulesSortBlock.
+
 	browser updateChosenRules
 ]
 
@@ -158,7 +167,7 @@ MiDeadCodeBrowserModel >> oneRoundRecursion [
 	deadEntities copy do: [ :dead |
 		(dead queryOutgoing: FamixTInvocation) opposites do: [ :invoked |
 			(self isNewDead: invoked) ifTrue: [
-				deadEntities add: invoked.
+				self addDeadEntity: invoked.
 				addedDeads := true
 			]
 		]
@@ -168,30 +177,18 @@ MiDeadCodeBrowserModel >> oneRoundRecursion [
 ]
 
 { #category : 'actions' }
-MiDeadCodeBrowserModel >> recursionComputation [
-	"Compute dead entities only invoked by already dead entities
-	 In the end restrict the result to be within the initial list of candidate (followed) entities"
-	[ self oneRoundRecursion ]
-		whileTrue.
-
-	deadEntities := deadEntities select: [ :entity | candidateEntities includes: entity ].
-
-	browser updateDeadEntities
-]
-
-{ #category : 'actions' }
 MiDeadCodeBrowserModel >> rule: rule handle: entity [
 	"returns whether a decision was reached or not + register a dead entity
 	 A decision is reached for _refuting_ rules if the entity is not dead
-	   and there is nothing to do (but we do not need to check other rules)
+	   and then there is nothing to do (but we do not need to check other rules)
 	 A decision is reached for _asserting_ rules, if the entity is dead
-	   and it must be added to the list of dead entities"
+	   and then it must be added to the list of dead entities"
 
 	rule refuteDead 
 		ifTrue: [ (rule isDead: entity) ifFalse: [ ^true ] ]
 		ifFalse: [
 			(rule isDead: entity)
-				ifTrue: [ deadEntities add: entity. ^true ]
+				ifTrue: [ self addDeadEntity: entity. ^true ]
 		].
 	
 	^false
@@ -220,12 +217,12 @@ MiDeadCodeBrowserModel >> runComputation [
 	"First step"
 	self entities do: [ :entity | self applyChosenRules: entity ].
 
-	"Second step: recusrion"
+	"Second step: recursion"
 	[ self oneRoundRecursion ]
 		whileTrue.
 
 	"Third step, filter to candidate entities"
-	deadEntities := deadEntities select: [ :entity | candidateEntities includes: entity ].
+	deadEntities := deadEntities intersection: candidateEntities.
 
 	browser updateDeadEntities.
 	browser updateToolbar.

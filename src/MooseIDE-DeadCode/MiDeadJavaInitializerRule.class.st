@@ -28,22 +28,24 @@ MiDeadJavaInitializerRule >> classHasNonDefaultConstructor: aClass [
 
 ]
 
-{ #category : 'accessing' }
-MiDeadJavaInitializerRule >> description [
+{ #category : 'testing' }
+MiDeadJavaInitializerRule >> isDefaultConstructor: aTMethod [
+	"the default constructor (no parameter) is always called"
 
-	^super description ,
-	'Default constructor and initialization block are assumed not-dead'
+	aTMethod isConstructor ifFalse: [ ^false ].
+	aTMethod parameters ifNotEmpty: [ ^false ].
+
+	^true
+
 ]
 
 { #category : 'testing' }
-MiDeadJavaInitializerRule >> isDefaultConstructorWithOtherConstructors: aTMethod [
-	"the default constructor (no parameter) is always called by any other constructor
-	 Note: assumes but does not check that the other constructor is itself called"
+MiDeadJavaInitializerRule >> isEnumConstructor: aTMethod [
+	"For simplification, we assume enum constructors are always called.
+	 VerveineJ currently does not model that correctly"
 
-	aTMethod isConstructor ifFalse: [ ^false ].
-	aTMethod parameters isEmpty ifFalse: [ ^false ].
-	^self classHasNonDefaultConstructor: aTMethod parentType
-
+	^(aTMethod parentType class = FamixJavaEnum) and: [
+		aTMethod isConstructor ]
 ]
 
 { #category : 'accessing' }
@@ -71,9 +73,7 @@ MiDeadJavaInitializerRule >> notDead: aTMethod [
 	parentType := aTMethod parentType.
 
 	^(self isInitializerBlock: aTMethod ) or:
-	[  self isDefaultConstructorWithOtherConstructors: aTMethod ]
-	"[ (aTMethod name = parentType name) and:
-		[ (aTMethod parameters isEmpty) and: 
-		 [parentType methods count: [ :m | m name = aTMethod parentType name ]] ]]
-"
+	[  (self isDefaultConstructor: aTMethod)  or:
+	[  self isEnumConstructor: aTMethod ] ]
+
 ]
