@@ -11,7 +11,8 @@ Class {
 		'candidateEntities',
 		'selectedDeadEntities',
 		'chosenRules',
-		'availableRules'
+		'availableRules',
+		'deleteLines'
 	],
 	#category : 'MooseIDE-DeadCode-Model',
 	#package : 'MooseIDE-DeadCode',
@@ -128,6 +129,12 @@ MiDeadCodeBrowserModel >> initializeRules [
 			 heuristic selectedByDefault ])
 ]
 
+{ #category : 'initialization' }
+MiDeadCodeBrowserModel >> initializeSettings [
+
+	deleteLines := false
+]
+
 { #category : 'actions' }
 MiDeadCodeBrowserModel >> isNewDead: anEntity [
 	"is a newDead if
@@ -174,6 +181,19 @@ MiDeadCodeBrowserModel >> oneRoundRecursion [
 	].
 
 	^ addedDeads
+]
+
+{ #category : 'actions' }
+MiDeadCodeBrowserModel >> refactorCode [
+
+	| editor |
+	editor := MiBulkEditor new.
+	deleteLines
+		ifTrue: [ editor removeLines ]
+		ifFalse: [ editor commentLines ].
+	editor runOn: deadEntities.
+	
+	browser refactoringDone
 ]
 
 { #category : 'actions' }
