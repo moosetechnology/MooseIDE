@@ -68,6 +68,15 @@ MiDeadBrowserResultColumn >> initializePresenters [
 		label: '0 dead entities'
 ]
 
+{ #category : 'actions' }
+MiDeadBrowserResultColumn >> refactorDone [
+
+	lblDeadMethods label: (lblDeadMethods label , ' -- removed from code').
+
+	btnRun enabled: false.
+	btnRefactor enabled: false
+]
+
 { #category : 'accessing' }
 MiDeadBrowserResultColumn >> specModel [ 
 
