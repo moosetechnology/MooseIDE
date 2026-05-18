@@ -81,7 +81,10 @@ MiDeadCodeBrowserModel >> clearDeads [
 
 { #category : 'settings management' }
 MiDeadCodeBrowserModel >> currentConfiguration [
-	"no settings"
+
+	^ MiDeadCodeSettingsConfiguration new
+		  deleteLines: deleteLines ;
+		  yourself
 ]
 
 { #category : 'accessing' }
@@ -92,7 +95,10 @@ MiDeadCodeBrowserModel >> deadEntities [
 
 { #category : 'settings management' }
 MiDeadCodeBrowserModel >> defaultConfiguration [
-	"no settings"
+
+	^ MiDeadCodeSettingsConfiguration new
+		deleteLines: false ;
+		yourself
 ]
 
 { #category : 'accessing' }
@@ -107,6 +113,12 @@ MiDeadCodeBrowserModel >> followEntity: aCollection [
 	candidateEntities := aCollection.
 	browser candidateEntities: aCollection.
 	browser updateChosenRules
+]
+
+{ #category : 'testing' }
+MiDeadCodeBrowserModel >> hasSettings [
+
+	^ true
 ]
 
 { #category : 'initialization' }
@@ -265,5 +277,6 @@ MiDeadCodeBrowserModel >> unchooseRules: rules [
 
 { #category : 'settings management' }
 MiDeadCodeBrowserModel >> updateFromConfiguration: aConfiguration [
-	"no settings"
+
+	deleteLines := aConfiguration deleteLines
 ]
