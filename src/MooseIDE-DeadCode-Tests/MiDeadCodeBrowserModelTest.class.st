@@ -80,6 +80,12 @@ MiDeadCodeBrowserModelTest >> javaParametricInterfaceMethod: methSignature [
 	^entity
 ]
 
+{ #category : 'running' }
+MiDeadCodeBrowserModelTest >> modelDeleteLines: aBoolean [
+
+	model instVarNamed: #deleteLines put: aBoolean 
+]
+
 { #category : 'entity creation' }
 MiDeadCodeBrowserModelTest >> pharoClass: aClass inheritFrom: superclassName [
 
@@ -613,6 +619,79 @@ MiDeadCodeBrowserModelTest >> testRecursionRoundProtectedByHeursitic [
 	self assert: model deadEntities size equals: 1.
 	model runComputation.
 	self assert: model deadEntities size equals: 1
+]
+
+{ #category : 'tests' }
+MiDeadCodeBrowserModelTest >> testRefactorCommentsCode [
+	"Refactoring works on files and uses sourceAnchor-s
+	 Therefore we have to create all this"
+
+	| mooseModel mth actual expected |
+	mooseModel := FamixStModel new.
+
+	mooseModel rootFolder: FileSystem memory root.
+	(mooseModel rootFolder / 'fakefile')
+		ensureCreateFile;
+		writeStreamDo: [ :s | s << '123
+abc
+456' ].
+
+	mth := FamixStMethod new.
+	mth mooseModel: mooseModel.
+	FamixJavaIndexedFileAnchor new
+		startPos: 5 ;
+		endPos: 7 ;
+		fileName: 'fakefile' ;
+		element: mth.
+	model deadEntities add: mth.
+
+	self modelDeleteLines: false.
+	
+	model refactorCode.
+
+	actual := (mooseModel rootFolder / 'fakefile') contents withLineEndings: String cr.
+	expected := '123
+/* --- dead code removal ---
+abc
+ --- dead code removal --- */
+456' withLineEndings: String cr.
+
+	self assert: actual equals: expected
+]
+
+{ #category : 'tests' }
+MiDeadCodeBrowserModelTest >> testRefactorDeleteCode [
+	"Refactoring works on files and uses sourceAnchor-s
+	 Therefore we have to create all this"
+
+	| mooseModel mth actual expected |
+	mooseModel := FamixStModel new.
+
+	mooseModel rootFolder: FileSystem memory root.
+	(mooseModel rootFolder / 'fakefile')
+		ensureCreateFile;
+		writeStreamDo: [ :s | s << '123
+abc
+456' ].
+
+	mth := FamixStMethod new.
+	mth mooseModel: mooseModel.
+	FamixJavaIndexedFileAnchor new
+		startPos: 5 ;
+		endPos: 7 ;
+		fileName: 'fakefile' ;
+		element: mth.
+	model deadEntities add: mth.
+
+	self modelDeleteLines: true.
+	
+	model refactorCode.
+
+	actual := (mooseModel rootFolder / 'fakefile') contents withLineEndings: String cr.
+	expected := '123
+456' withLineEndings: String cr.
+
+	self assert: actual equals: expected
 ]
 
 { #category : 'tests' }
