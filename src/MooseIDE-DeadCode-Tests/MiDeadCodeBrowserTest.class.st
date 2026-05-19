@@ -1,108 +1,9 @@
 Class {
 	#name : 'MiDeadCodeBrowserTest',
-	#superclass : 'MiAbstractBrowserTest',
+	#superclass : 'MiAbstractDeadCodeBrowserTest',
 	#category : 'MooseIDE-DeadCode-Tests',
 	#package : 'MooseIDE-DeadCode-Tests'
 }
-
-{ #category : 'running' }
-MiDeadCodeBrowserTest >> browserCandidateEntitiesLabelPresenter [
-
-	^browser presenterAt: #lblAllMethods
-]
-
-{ #category : 'running' }
-MiDeadCodeBrowserTest >> browserCandidateEntitiesListPresenter [
-
-	^browser presenterAt: #lstMethod
-]
-
-{ #category : 'running' }
-MiDeadCodeBrowserTest >> browserChooseRulesButtonPresenter [
-
-	^(browser presenterAt: #ruleColumn)
-		presenterAt: #btnChooseRules
-]
-
-{ #category : 'running' }
-MiDeadCodeBrowserTest >> browserChosenRulesTreePresenter [
-
-	^(browser presenterAt: #ruleColumn)
-		presenterAt: #lstChosenRules
-]
-
-{ #category : 'running' }
-MiDeadCodeBrowserTest >> browserClass [
-
-	^MiDeadBrowser
-]
-
-{ #category : 'running' }
-MiDeadCodeBrowserTest >> browserClearDeadButtonPresenter [
-
-	^(browser presenterAt: #resultColumn)
-		presenterAt: #btnClear
-]
-
-{ #category : 'running' }
-MiDeadCodeBrowserTest >> browserDeadEntitiesLabelPresenter [
-
-	^(browser presenterAt: #resultColumn)
-		presenterAt: #lblDeadMethods
-]
-
-{ #category : 'running' }
-MiDeadCodeBrowserTest >> browserDeadEntitiesListPresenter [
-
-	^(browser presenterAt: #resultColumn)
-		presenterAt: #lstDeadMethods
-]
-
-{ #category : 'running' }
-MiDeadCodeBrowserTest >> browserOfferedRuleTreePresenter [
-
-	^(browser presenterAt: #ruleColumn)
-		presenterAt: #lstOfferedRules
-]
-
-{ #category : 'running' }
-MiDeadCodeBrowserTest >> browserRunButtonPresenter [
-
-	^(browser presenterAt: #resultColumn)
-		presenterAt: #btnRun
-]
-
-{ #category : 'running' }
-MiDeadCodeBrowserTest >> browserUnChooseRulesButtonPresenter [
-
-	^(browser presenterAt: #ruleColumn)
-		presenterAt: #btnRejectRules
-]
-
-{ #category : 'running' }
-MiDeadCodeBrowserTest >> populateBrowser: mooseModel [
-
-	mooseModel newMethodNamed: 'aMethod'.
-	mooseModel newMethodNamed: 'anotherMethod'.
-	mooseModel newInvocation
-		sender: (mooseModel entityNamed: 'aMethod') ;
-		candidates: { mooseModel entityNamed: 'anotherMethod' }.
-
-	browser followEntity: mooseModel allMethods.
-
-]
-
-{ #category : 'running' }
-MiDeadCodeBrowserTest >> selectOfferedRule: aRuleClass [
-
-	| itemToSelect |
-	itemToSelect := self browserOfferedRuleTreePresenter roots
-		detect: [ :item | item class = aRuleClass ].
-
-	self browserOfferedRuleTreePresenter selectItem: itemToSelect.
-
-	^itemToSelect 
-]
 
 { #category : 'tests' }
 MiDeadCodeBrowserTest >> testActivateActionButtons [
@@ -193,9 +94,6 @@ MiDeadCodeBrowserTest >> testChoosingRulesResetsSelection [
 
 { #category : 'tests' }
 MiDeadCodeBrowserTest >> testClearButtonEmptiesDeadEntityList [
-	"put calling method in the _model_'s list of dead entities
-	 the browser knows nothing about it yet, so 'Recursion' button is disabled
-	 then enable the button and click on it which updates the browser"
 
 	| mooseModel |
 	mooseModel := FamixStModel new.
