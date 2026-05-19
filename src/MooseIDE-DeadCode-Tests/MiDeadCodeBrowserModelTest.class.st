@@ -2,13 +2,14 @@ Class {
 	#name : 'MiDeadCodeBrowserModelTest',
 	#superclass : 'TestCase',
 	#instVars : [
-		'model'
+		'model',
+		'browser'
 	],
 	#category : 'MooseIDE-DeadCode-Tests',
 	#package : 'MooseIDE-DeadCode-Tests'
 }
 
-{ #category : 'running' }
+{ #category : 'entity creation' }
 MiDeadCodeBrowserModelTest >> javaClass: aClass implements: anInterface [
 
 	FamixJavaImplementation new
@@ -16,7 +17,7 @@ MiDeadCodeBrowserModelTest >> javaClass: aClass implements: anInterface [
 		interface: anInterface
 ]
 
-{ #category : 'running' }
+{ #category : 'entity creation' }
 MiDeadCodeBrowserModelTest >> javaClass: aClass inherits: aSuperclass [
 
 	FamixJavaInheritance new
@@ -24,7 +25,7 @@ MiDeadCodeBrowserModelTest >> javaClass: aClass inherits: aSuperclass [
 		superclass: aSuperclass 
 ]
 
-{ #category : 'running' }
+{ #category : 'entity creation' }
 MiDeadCodeBrowserModelTest >> javaClassMethod: methSignature [
 
 	| entity |
@@ -35,7 +36,7 @@ MiDeadCodeBrowserModelTest >> javaClassMethod: methSignature [
 	^entity
 ]
 
-{ #category : 'running' }
+{ #category : 'entity creation' }
 MiDeadCodeBrowserModelTest >> javaInterfaceMethod: methSignature [
 
 	| entity |
@@ -46,7 +47,7 @@ MiDeadCodeBrowserModelTest >> javaInterfaceMethod: methSignature [
 	^entity
 ]
 
-{ #category : 'running' }
+{ #category : 'entity creation' }
 MiDeadCodeBrowserModelTest >> javaInvokeMethod: entity [
 
 	FamixJavaInvocation new
@@ -54,7 +55,7 @@ MiDeadCodeBrowserModelTest >> javaInvokeMethod: entity [
 		candidates: { entity }.
 ]
 
-{ #category : 'running' }
+{ #category : 'entity creation' }
 MiDeadCodeBrowserModelTest >> javaMethod: methName annotatedWith: annotationName [
 
 	| entity |
@@ -68,7 +69,7 @@ MiDeadCodeBrowserModelTest >> javaMethod: methName annotatedWith: annotationName
 	^entity
 ]
 
-{ #category : 'running' }
+{ #category : 'entity creation' }
 MiDeadCodeBrowserModelTest >> javaParametricInterfaceMethod: methSignature [
 
 	| entity |
@@ -79,7 +80,7 @@ MiDeadCodeBrowserModelTest >> javaParametricInterfaceMethod: methSignature [
 	^entity
 ]
 
-{ #category : 'running' }
+{ #category : 'entity creation' }
 MiDeadCodeBrowserModelTest >> pharoClass: aClass inheritFrom: superclassName [
 
 	FamixStInheritance new
@@ -87,7 +88,7 @@ MiDeadCodeBrowserModelTest >> pharoClass: aClass inheritFrom: superclassName [
 		subclass: aClass
 ]
 
-{ #category : 'running' }
+{ #category : 'entity creation' }
 MiDeadCodeBrowserModelTest >> pharoInvokedMethod: methName [
 
 	| entity |
@@ -101,7 +102,7 @@ MiDeadCodeBrowserModelTest >> pharoInvokedMethod: methName [
 	^entity
 ]
 
-{ #category : 'running' }
+{ #category : 'entity creation' }
 MiDeadCodeBrowserModelTest >> pharoMethod: methName inClass: className [
 
 	| entity |
@@ -112,7 +113,7 @@ MiDeadCodeBrowserModelTest >> pharoMethod: methName inClass: className [
 	^entity
 ]
 
-{ #category : 'running' }
+{ #category : 'entity creation' }
 MiDeadCodeBrowserModelTest >> pharoMethod: methName withPragma: annotationName [
 
 	| entity |
