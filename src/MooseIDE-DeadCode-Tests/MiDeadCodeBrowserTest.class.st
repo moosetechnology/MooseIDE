@@ -1,9 +1,115 @@
 Class {
 	#name : 'MiDeadCodeBrowserTest',
-	#superclass : 'MiAbstractDeadCodeBrowserTest',
+	#superclass : 'MiAbstractBrowserTest',
 	#category : 'MooseIDE-DeadCode-Tests',
 	#package : 'MooseIDE-DeadCode-Tests'
 }
+
+{ #category : 'accessing - attributes' }
+MiDeadCodeBrowserTest >> browserCandidateEntitiesLabelPresenter [
+
+	^browser presenterAt: #lblAllMethods
+]
+
+{ #category : 'accessing - attributes' }
+MiDeadCodeBrowserTest >> browserCandidateEntitiesListPresenter [
+
+	^browser presenterAt: #lstMethod
+]
+
+{ #category : 'accessing - attributes' }
+MiDeadCodeBrowserTest >> browserChooseRulesButtonPresenter [
+
+	^(browser presenterAt: #ruleColumn)
+		presenterAt: #btnChooseRules
+]
+
+{ #category : 'accessing - attributes' }
+MiDeadCodeBrowserTest >> browserChosenRulesTreePresenter [
+
+	^(browser presenterAt: #ruleColumn)
+		presenterAt: #lstChosenRules
+]
+
+{ #category : 'running' }
+MiDeadCodeBrowserTest >> browserClass [
+
+	^MiDeadBrowser
+]
+
+{ #category : 'accessing - attributes' }
+MiDeadCodeBrowserTest >> browserClearDeadButtonPresenter [
+
+	^(browser presenterAt: #resultColumn)
+		presenterAt: #btnClear
+]
+
+{ #category : 'accessing - attributes' }
+MiDeadCodeBrowserTest >> browserDeadEntitiesLabelPresenter [
+
+	^(browser presenterAt: #resultColumn)
+		presenterAt: #lblDeadMethods
+]
+
+{ #category : 'accessing - attributes' }
+MiDeadCodeBrowserTest >> browserDeadEntitiesListPresenter [
+
+	^(browser presenterAt: #resultColumn)
+		presenterAt: #lstDeadMethods
+]
+
+{ #category : 'accessing - attributes' }
+MiDeadCodeBrowserTest >> browserOfferedRuleTreePresenter [
+
+	^(browser presenterAt: #ruleColumn)
+		presenterAt: #lstOfferedRules
+]
+
+{ #category : 'accessing - attributes' }
+MiDeadCodeBrowserTest >> browserRefactorButtonPresenter [
+
+	^(browser presenterAt: #resultColumn)
+		presenterAt: #btnRefactor
+]
+
+{ #category : 'accessing - attributes' }
+MiDeadCodeBrowserTest >> browserRunButtonPresenter [
+
+	^(browser presenterAt: #resultColumn)
+		presenterAt: #btnRun
+]
+
+{ #category : 'accessing - attributes' }
+MiDeadCodeBrowserTest >> browserUnChooseRulesButtonPresenter [
+
+	^(browser presenterAt: #ruleColumn)
+		presenterAt: #btnRejectRules
+]
+
+{ #category : 'running' }
+MiDeadCodeBrowserTest >> populateBrowser: mooseModel [
+
+	mooseModel newMethodNamed: 'aMethod'.
+	mooseModel newMethodNamed: 'anotherMethod'.
+	mooseModel newInvocation
+		sender: (mooseModel entityNamed: 'aMethod') ;
+		candidates: { mooseModel entityNamed: 'anotherMethod' }.
+
+	browser followEntity: mooseModel allMethods.
+
+]
+
+{ #category : 'running' }
+MiDeadCodeBrowserTest >> selectOfferedRule: aRuleClass [
+
+	| itemToSelect |
+	itemToSelect := self browserOfferedRuleTreePresenter roots
+		detect: [ :item | item class = aRuleClass ].
+
+	self browserOfferedRuleTreePresenter selectItem: itemToSelect.
+
+	^itemToSelect 
+]
 
 { #category : 'tests' }
 MiDeadCodeBrowserTest >> testActivateActionButtons [
@@ -109,11 +215,45 @@ MiDeadCodeBrowserTest >> testClearButtonEmptiesDeadEntityList [
 ]
 
 { #category : 'tests' }
+MiDeadCodeBrowserTest >> testDisabledRefactorButtonAfterRefactor [
+	"'Refactor' button disabled after doing the refactoring"
+
+	| mooseModel |
+	mooseModel := FamixStModel new.
+	self populateBrowser: mooseModel.
+
+	browser specModel deadEntities addAll: mooseModel allModelMethods.
+	browser updateDeadEntities.
+
+	self assert: self browserRefactorButtonPresenter isEnabled.
+	browser specModel refactorCode.
+
+	self deny: self browserRefactorButtonPresenter isEnabled
+]
+
+{ #category : 'tests' }
 MiDeadCodeBrowserTest >> testDisabledRunButton [
 	"without selected heuristics, 'Run' button is disabled"
 
 	browser specModel clearChosenRules.
 	browser updateChosenRules.
+
+	self deny: self browserRunButtonPresenter isEnabled
+]
+
+{ #category : 'tests' }
+MiDeadCodeBrowserTest >> testDisabledRunButtonAfterRefactor [
+	"'Run' button disabled after doing the refactoring"
+
+	| mooseModel |
+	mooseModel := FamixStModel new.
+	self populateBrowser: mooseModel.
+
+	browser specModel deadEntities addAll: mooseModel allModelMethods.
+	browser updateDeadEntities.
+
+	self assert: self browserRunButtonPresenter isEnabled.
+	browser specModel refactorCode.
 
 	self deny: self browserRunButtonPresenter isEnabled
 ]
@@ -227,6 +367,12 @@ MiDeadCodeBrowserTest >> testRunDoesNotAddOutsideFollowedEntities [
 	self
 		assertCollection: self browserDeadEntitiesListPresenter items
 		hasSameElements: { mooseModel entityNamed: 'aMethod' . mooseModel entityNamed: 'anotherMethod' }
+]
+
+{ #category : 'tests' }
+MiDeadCodeBrowserTest >> testSettingsAction [
+
+	self assert: browser hasSettings
 ]
 
 { #category : 'tests' }
