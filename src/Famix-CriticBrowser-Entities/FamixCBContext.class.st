@@ -173,7 +173,7 @@ FamixCBContext >> isCBContext [
 { #category : 'printing' }
 FamixCBContext >> printAsBlock [
 
-	^ contextFilter asString
+	^ contextFilter sourceNode sourceCode
 ]
 
 { #category : 'as yet unclassified' }
@@ -234,7 +234,8 @@ FamixCBContext >> stonOn: stonWriter [
 			self class stonAllInstVarNames do: [ :each |
 					(self instVarNamed: each) ifNotNil: [ :value |
 							dictionary at: each asSymbol put: (value isClosure
-									 ifTrue: [ value asString ]
+									 ifTrue: [
+									 value sourceNode sourceCode "The source code of a block. Cf. https://github.com/pharo-project/pharo/issues/19558" ]
 									 ifFalse: [ value ]) ] ] ]
 ]
 
