@@ -16,7 +16,7 @@ Class {
 MiQueryConfiguratorPresenter >> computeQueryAction: anObject [
 
 	self configureQuery: anObject.
-  self root application consumeItem: query.
+	self root application consumeItem: query.
 	self notifyQueryChanged
 ]
 

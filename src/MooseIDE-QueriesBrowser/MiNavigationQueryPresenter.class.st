@@ -24,7 +24,6 @@ MiNavigationQueryPresenter class >> title [
 MiNavigationQueryPresenter >> configureFor: aQuery [
 
 	| queryAssociations |
-	query := aQuery.
 	queryAssociations := aQuery associations.
 
 	directionDropList selectItem: aQuery directionStrategy.
@@ -33,8 +32,10 @@ MiNavigationQueryPresenter >> configureFor: aQuery [
 
 	associationsList items: associationsList items | queryAssociations.
 
-	queryAssociations do: [ :assoc | 
-		associationsList activateItem: assoc ]
+	queryAssociations do: [ :assoc |
+		associationsList activateItem: assoc ].
+
+	query := aQuery
 ]
 
 { #category : 'actions' }
@@ -56,18 +57,16 @@ MiNavigationQueryPresenter >> initializeAssociationsButton [
 { #category : 'initialization' }
 MiNavigationQueryPresenter >> initializeAssociationsList [
 
-	associationsList := self instantiate: SpFilteringSelectableListPresenter.
-	associationsList addStyle: 'smallList'.
+	associationsList := self instantiate: MiSelectableListPresenter.
+	associationsList addStyle: 'largeList'.
 	associationsList
 		display: [ :item | item mooseDescription name asString ];
 		items: self query availableAssociations;
 		selectItems: self query associations;
-		onActivation: [ :association | 
-			self selectAssociationAction: association ];
-		onDeactivation: [ :association | 
-			self selectAssociationAction: association ].
+		onActivation: [ self updateLabel ];
+		onDeactivation: [ self updateLabel ].
 
-	self query associations do: [ :assoc | 
+	self query associations do: [ :assoc |
 		associationsList activateItem: assoc ]
 ]
 
@@ -105,8 +104,19 @@ MiNavigationQueryPresenter >> newAssociationsButton [
 
 	^ self newButton
 		  label: 'Select Associations';
-		  action: [ self showAssociationsPopover ];
+		  action: [ self newAssociationsPopover popup ];
 		  yourself
+]
+
+{ #category : 'initialization' }
+MiNavigationQueryPresenter >> newAssociationsPopover [
+
+	^ self newPopover
+		  relativeTo: associationsButton;
+		  presenter: associationsList;
+		  bePositionRight;
+		  whenClosedDo: [
+			  self computeQueryAction: associationsList selectedItems ]
 ]
 
 { #category : 'layout' }
@@ -127,27 +137,10 @@ MiNavigationQueryPresenter >> newLayout [
 		yourself
 ]
 
-{ #category : 'actions' }
-MiNavigationQueryPresenter >> selectAssociationAction: association [
-
-	self updateLabel.
-	self computeQueryAction: association
-]
-
 { #category : 'accessing' }
 MiNavigationQueryPresenter >> selectedAssociationsLabel [
 
 	^ selectedAssociationsLabel
-]
-
-{ #category : 'initialization' }
-MiNavigationQueryPresenter >> showAssociationsPopover [
-
-	self newPopover
-		relativeTo: associationsButton;
-		presenter: associationsList;
-		bePositionRight;
-		popup
 ]
 
 { #category : 'actions' }
