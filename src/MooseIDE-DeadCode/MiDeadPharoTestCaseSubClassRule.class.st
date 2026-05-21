@@ -11,13 +11,6 @@ Class {
 }
 
 { #category : 'accessing' }
-MiDeadPharoTestCaseSubClassRule >> description [
-
-	^super description ,
-	'Sub-classes of TestCase are test classes'
-]
-
-{ #category : 'accessing' }
 MiDeadPharoTestCaseSubClassRule >> name [
 
 	^super name , 'TestCase sub-class'

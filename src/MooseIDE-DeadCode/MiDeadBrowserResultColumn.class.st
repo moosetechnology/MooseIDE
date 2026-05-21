@@ -8,7 +8,8 @@ Class {
 		'lstDeadMethods',
 		'lblDeadMethods',
 		'btnRun',
-		'btnClear'
+		'btnClear',
+		'btnRefactor'
 	],
 	#category : 'MooseIDE-DeadCode-Browser',
 	#package : 'MooseIDE-DeadCode',
@@ -24,7 +25,9 @@ MiDeadBrowserResultColumn >> connectPresenters [
 
 	btnRun action: [ self specModel runComputation].
 
-	btnClear action: [ self specModel clearDeads]
+	btnClear action: [ self specModel clearDeads].
+
+	btnRefactor action: [ self specModel refactorCode]
 ]
 
 { #category : 'layout' }
@@ -34,6 +37,7 @@ MiDeadBrowserResultColumn >> defaultLayout [
 		add: (SpBoxLayout newLeftToRight
 			add: btnRun ;
 			add: btnClear ;
+			add: btnRefactor ;
 			yourself)
 		height: self toolbarHeight ;
 		add: lblDeadMethods height: self toolbarHeight ;
@@ -54,10 +58,23 @@ MiDeadBrowserResultColumn >> initializePresenters [
 		enabled: false.
 
 	btnClear := self newButton
-		label: 'clear'.
+		label: 'Clear'.
+
+	btnRefactor := self newButton
+		label: 'Refactor' ;
+		enabled: false.
 
 	lblDeadMethods := self newLabel
 		label: '0 dead entities'
+]
+
+{ #category : 'actions' }
+MiDeadBrowserResultColumn >> refactorDone [
+
+	lblDeadMethods label: (lblDeadMethods label , ' -- removed from code').
+
+	btnRun enabled: false.
+	btnRefactor enabled: false
 ]
 
 { #category : 'accessing' }
@@ -80,7 +97,8 @@ MiDeadBrowserResultColumn >> update [
 	lstDeadMethods items: deads.
 	lblDeadMethods label: deads size asString , ' dead entities'.
 
-	btnRun enabled: (self specModel chosenRules isNotEmpty)
+	btnRun enabled: (self specModel chosenRules isNotEmpty).
+	btnRefactor enabled: (self specModel deadEntities isNotEmpty)
 ]
 
 { #category : 'actions' }

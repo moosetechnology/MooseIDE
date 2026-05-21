@@ -1,10 +1,12 @@
 Class {
-	#name : #FamixCBScriptQueryHandler,
-	#superclass : #FamixCBQueryHandler,
-	#category : #'Famix-CriticBrowser-ManualEntities-QueryHandler'
+	#name : 'FamixCBScriptQueryHandler',
+	#superclass : 'FamixCBQueryHandler',
+	#category : 'Famix-CriticBrowser-ManualEntities-QueryHandler',
+	#package : 'Famix-CriticBrowser-ManualEntities',
+	#tag : 'QueryHandler'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 FamixCBScriptQueryHandler class >> on: aString [
 
 	^ self new
@@ -12,8 +14,8 @@ FamixCBScriptQueryHandler class >> on: aString [
 		  yourself
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 FamixCBScriptQueryHandler >> asRuleEditorString [
 
-	^ innerQuery script asString
+	^ innerQuery script sourceNode sourceCode
 ]

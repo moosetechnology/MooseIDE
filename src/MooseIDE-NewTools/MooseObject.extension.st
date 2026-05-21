@@ -20,16 +20,15 @@ MooseObject >> miInspectionNavigation: aBuilder [
 
 { #category : '*MooseIDE-NewTools' }
 MooseObject >> miMetaNavigationItems [
-	^ self mooseDescription allComplexProperties
+
+	^ self metadescription allComplexProperties
 		  collect: [ :property |
 				  | value |
 				  value := self valueOfFameProperty: property.
-				 value := self valueOfPropertyForInspector: value.
+				  value := self valueOfPropertyForInspector: value.
 				  value isCollection ifTrue: [ value := value asMooseGroup ].
 				  property name -> value ]
-		  thenReject: [ :assoc |
-				  assoc value isNil or: [
-					  assoc value isCollection and: [ assoc value isEmpty ] ] ]
+		  thenReject: [ :assoc | assoc value isNil or: [ assoc value isCollection and: [ assoc value isEmpty ] ] ]
 ]
 
 { #category : '*MooseIDE-NewTools' }

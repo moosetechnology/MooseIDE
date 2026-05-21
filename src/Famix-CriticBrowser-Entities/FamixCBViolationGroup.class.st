@@ -26,16 +26,17 @@ FamixCBViolationGroup >> allWithViolatingEntitiesType: aType [
 
 { #category : 'naming' }
 FamixCBViolationGroup >> stringForCBDescription [
-"returns a string fitting for a description used in the model critic browser"
-	^ String streamContents: [ :s | 
-		  | typeName |
-		  typeName := self allViolatingEntitiesType size = 1 
-				ifTrue: [ self entities anyOne violatingEntity mooseDescription name ]
-				ifFalse: [ 'entity' ].
-		  s
-			  print: self size;
-			  space;
-		  << (self size > 1
-				   ifTrue: [ typeName asEnglishPlural ]
-				   ifFalse: [ typeName ]) ] 
+	"returns a string fitting for a description used in the model critic browser"
+
+	^ String streamContents: [ :s |
+			  | typeName |
+			  typeName := self allViolatingEntitiesType size = 1
+				              ifTrue: [ self entities anyOne violatingEntity metadescription name ]
+				              ifFalse: [ 'entity' ].
+			  s
+				  print: self size;
+				  space;
+				  << (self size > 1
+						   ifTrue: [ typeName asEnglishPlural ]
+						   ifFalse: [ typeName ]) ]
 ]

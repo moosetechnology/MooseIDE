@@ -2,13 +2,14 @@ Class {
 	#name : 'MiDeadCodeBrowserModelTest',
 	#superclass : 'TestCase',
 	#instVars : [
-		'model'
+		'model',
+		'browser'
 	],
 	#category : 'MooseIDE-DeadCode-Tests',
 	#package : 'MooseIDE-DeadCode-Tests'
 }
 
-{ #category : 'running' }
+{ #category : 'entity creation' }
 MiDeadCodeBrowserModelTest >> javaClass: aClass implements: anInterface [
 
 	FamixJavaImplementation new
@@ -16,7 +17,7 @@ MiDeadCodeBrowserModelTest >> javaClass: aClass implements: anInterface [
 		interface: anInterface
 ]
 
-{ #category : 'running' }
+{ #category : 'entity creation' }
 MiDeadCodeBrowserModelTest >> javaClass: aClass inherits: aSuperclass [
 
 	FamixJavaInheritance new
@@ -24,7 +25,7 @@ MiDeadCodeBrowserModelTest >> javaClass: aClass inherits: aSuperclass [
 		superclass: aSuperclass 
 ]
 
-{ #category : 'running' }
+{ #category : 'entity creation' }
 MiDeadCodeBrowserModelTest >> javaClassMethod: methSignature [
 
 	| entity |
@@ -35,7 +36,7 @@ MiDeadCodeBrowserModelTest >> javaClassMethod: methSignature [
 	^entity
 ]
 
-{ #category : 'running' }
+{ #category : 'entity creation' }
 MiDeadCodeBrowserModelTest >> javaInterfaceMethod: methSignature [
 
 	| entity |
@@ -46,7 +47,7 @@ MiDeadCodeBrowserModelTest >> javaInterfaceMethod: methSignature [
 	^entity
 ]
 
-{ #category : 'running' }
+{ #category : 'entity creation' }
 MiDeadCodeBrowserModelTest >> javaInvokeMethod: entity [
 
 	FamixJavaInvocation new
@@ -54,7 +55,7 @@ MiDeadCodeBrowserModelTest >> javaInvokeMethod: entity [
 		candidates: { entity }.
 ]
 
-{ #category : 'running' }
+{ #category : 'entity creation' }
 MiDeadCodeBrowserModelTest >> javaMethod: methName annotatedWith: annotationName [
 
 	| entity |
@@ -68,7 +69,24 @@ MiDeadCodeBrowserModelTest >> javaMethod: methName annotatedWith: annotationName
 	^entity
 ]
 
+{ #category : 'entity creation' }
+MiDeadCodeBrowserModelTest >> javaParametricInterfaceMethod: methSignature [
+
+	| entity |
+	entity := FamixJavaMethod new.
+	entity signature: methSignature.
+	entity parentType: (FamixJavaParametricInterface new).
+
+	^entity
+]
+
 { #category : 'running' }
+MiDeadCodeBrowserModelTest >> modelDeleteLines: aBoolean [
+
+	model instVarNamed: #deleteLines put: aBoolean 
+]
+
+{ #category : 'entity creation' }
 MiDeadCodeBrowserModelTest >> pharoClass: aClass inheritFrom: superclassName [
 
 	FamixStInheritance new
@@ -76,7 +94,7 @@ MiDeadCodeBrowserModelTest >> pharoClass: aClass inheritFrom: superclassName [
 		subclass: aClass
 ]
 
-{ #category : 'running' }
+{ #category : 'entity creation' }
 MiDeadCodeBrowserModelTest >> pharoInvokedMethod: methName [
 
 	| entity |
@@ -90,7 +108,7 @@ MiDeadCodeBrowserModelTest >> pharoInvokedMethod: methName [
 	^entity
 ]
 
-{ #category : 'running' }
+{ #category : 'entity creation' }
 MiDeadCodeBrowserModelTest >> pharoMethod: methName inClass: className [
 
 	| entity |
@@ -101,7 +119,7 @@ MiDeadCodeBrowserModelTest >> pharoMethod: methName inClass: className [
 	^entity
 ]
 
-{ #category : 'running' }
+{ #category : 'entity creation' }
 MiDeadCodeBrowserModelTest >> pharoMethod: methName withPragma: annotationName [
 
 	| entity |
@@ -128,7 +146,7 @@ MiDeadCodeBrowserModelTest >> setUp [
 MiDeadCodeBrowserModelTest >> testGatherRulesList [
 	"Expected number must be updated according to number of non abstract rule classes"
 
-	self assert: model availableRules size equals: 11
+	self assert: model availableRules size equals: 12
 ]
 
 { #category : 'tests' }
@@ -259,6 +277,19 @@ MiDeadCodeBrowserModelTest >> testJavaHasOverridingRuleDeadNoSubMethod [
 		annotationType: annotation.
 
 	self assert: (MiDeadJavaHasOverridingRule new isDead: entity1)
+]
+
+{ #category : 'tests - heuristics' }
+MiDeadCodeBrowserModelTest >> testJavaImplementsRuleGenericMethod [
+	"Unused method (entity1.doSomething(String)) implementing a parametric interface declaration
+	 should not be dead"
+
+	| entity1 entity2 |
+	entity1 := self javaClassMethod: 'doSomething(String)'.
+	entity2 := self javaParametricInterfaceMethod: 'doSomething(T)'.
+	self javaClass: entity1 parentType implements: entity2 parentType.
+
+	self deny: (MiDeadJavaImplementsAbstractRule new isDead: entity1)
 ]
 
 { #category : 'tests - heuristics' }
@@ -509,7 +540,7 @@ MiDeadCodeBrowserModelTest >> testRecursionRoundInvokedByDead [
 	model deadEntities add: entity1.
 
 	self assert: model deadEntities size equals: 1.
-	model recursionComputation.
+	model runComputation.
 	self assert: model deadEntities size equals: 2
 ]
 
@@ -530,7 +561,7 @@ MiDeadCodeBrowserModelTest >> testRecursionRoundInvokedByDeadRecursively [
 	model deadEntities add: entity1.
 
 	self assert: model deadEntities size equals: 1.
-	model recursionComputation.
+	model runComputation.
 	self assert: model deadEntities size equals: 3
 ]
 
@@ -547,7 +578,7 @@ MiDeadCodeBrowserModelTest >> testRecursionRoundInvokedByNotDead [
 	model deadEntities add: entity1.
 
 	self assert: model deadEntities size equals: 1.
-	model recursionComputation.
+	model runComputation.
 	self assert: model deadEntities size equals: 1
 ]
 
@@ -568,7 +599,7 @@ MiDeadCodeBrowserModelTest >> testRecursionRoundNotAddingOutsideFollwedEntities 
 	model deadEntities add: entity1.
 
 	self assert: model deadEntities size equals: 1.
-	model recursionComputation.
+	model runComputation.
 	self assert: model deadEntities size equals: 2
 ]
 
@@ -586,8 +617,81 @@ MiDeadCodeBrowserModelTest >> testRecursionRoundProtectedByHeursitic [
 	model chooseRules: { MiDeadTestNamingConventionRule new }.
 
 	self assert: model deadEntities size equals: 1.
-	model recursionComputation.
+	model runComputation.
 	self assert: model deadEntities size equals: 1
+]
+
+{ #category : 'tests' }
+MiDeadCodeBrowserModelTest >> testRefactorCommentsCode [
+	"Refactoring works on files and uses sourceAnchor-s
+	 Therefore we have to create all this"
+
+	| mooseModel mth actual expected |
+	mooseModel := FamixStModel new.
+
+	mooseModel rootFolder: FileSystem memory root.
+	(mooseModel rootFolder / 'fakefile')
+		ensureCreateFile;
+		writeStreamDo: [ :s | s << '123
+abc
+456' ].
+
+	mth := FamixStMethod new.
+	mth mooseModel: mooseModel.
+	FamixJavaIndexedFileAnchor new
+		startPos: 5 ;
+		endPos: 7 ;
+		fileName: 'fakefile' ;
+		element: mth.
+	model deadEntities add: mth.
+
+	self modelDeleteLines: false.
+	
+	model refactorCode.
+
+	actual := (mooseModel rootFolder / 'fakefile') contents withLineEndings: String cr.
+	expected := '123
+/* --- dead code removal ---
+abc
+ --- dead code removal --- */
+456' withLineEndings: String cr.
+
+	self assert: actual equals: expected
+]
+
+{ #category : 'tests' }
+MiDeadCodeBrowserModelTest >> testRefactorDeleteCode [
+	"Refactoring works on files and uses sourceAnchor-s
+	 Therefore we have to create all this"
+
+	| mooseModel mth actual expected |
+	mooseModel := FamixStModel new.
+
+	mooseModel rootFolder: FileSystem memory root.
+	(mooseModel rootFolder / 'fakefile')
+		ensureCreateFile;
+		writeStreamDo: [ :s | s << '123
+abc
+456' ].
+
+	mth := FamixStMethod new.
+	mth mooseModel: mooseModel.
+	FamixJavaIndexedFileAnchor new
+		startPos: 5 ;
+		endPos: 7 ;
+		fileName: 'fakefile' ;
+		element: mth.
+	model deadEntities add: mth.
+
+	self modelDeleteLines: true.
+	
+	model refactorCode.
+
+	actual := (mooseModel rootFolder / 'fakefile') contents withLineEndings: String cr.
+	expected := '123
+456' withLineEndings: String cr.
+
+	self assert: actual equals: expected
 ]
 
 { #category : 'tests' }

@@ -82,7 +82,7 @@ MiAggregatorBrowser >> entityDescription: entity [
 		st
 			<< entity name ;
 			<< ' - ' ;
-			<< entity mooseDescription name ;
+			<< entity metadescription name ;
 			<< ' (' ;
 			<< entity mooseName ;
 			<< ')'

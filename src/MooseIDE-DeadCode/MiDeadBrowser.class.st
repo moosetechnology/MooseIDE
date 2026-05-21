@@ -141,6 +141,12 @@ MiDeadBrowser >> miSelectedItem [
 	^specModel miSelectedItem 
 ]
 
+{ #category : 'actions' }
+MiDeadBrowser >> refactoringDone [
+
+	resultColumn refactorDone
+]
+
 { #category : 'accessing' }
 MiDeadBrowser >> ruleColumn [
 

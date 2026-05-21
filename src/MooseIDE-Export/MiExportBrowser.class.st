@@ -173,12 +173,9 @@ MiExportBrowser >> commonPropertiesIn: aMooseGroup [
 
 	| properties mooseDescriptions |
 	aMooseGroup ifEmpty: [ ^ aMooseGroup ].
-	mooseDescriptions := (aMooseGroup collect: [ :entity | 
-		                entity mooseDescription ]) asSet.
-	properties := ((mooseDescriptions collect: #allPrimitiveProperties)
-		               fold: [ :availableProperties :entityProperty | 
-			               availableProperties & entityProperty ]) sorted:
-		              #name ascending.
+	mooseDescriptions := (aMooseGroup collect: [ :entity | entity metadescription ]) asSet.
+	properties := ((mooseDescriptions collect: #allPrimitiveProperties) fold: [ :availableProperties :entityProperty | availableProperties & entityProperty ])
+		              sorted: #name ascending.
 
 	"Show only 5 properties, so it is still readable wothout having to expand the browser."
 	^ properties size <= 5
@@ -295,7 +292,7 @@ MiExportBrowser >> propertiesListForPopover [
 				self updateTable ].
 
 	list items: ((self miSelectedItem flatCollectAsSet: [ :entity |
-			  entity mooseDescription allPrimitiveProperties ])
+			  entity metadescription allPrimitiveProperties ])
 		 , (self specModel columns reject: #isPropertyColumn) sorted:
 			 [ :property | self showsProperty: property ] descending
 			 , #name ascending).

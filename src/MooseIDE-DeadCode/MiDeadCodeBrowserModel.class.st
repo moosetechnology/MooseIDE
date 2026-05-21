@@ -11,12 +11,19 @@ Class {
 		'candidateEntities',
 		'selectedDeadEntities',
 		'chosenRules',
-		'availableRules'
+		'availableRules',
+		'deleteLines'
 	],
 	#category : 'MooseIDE-DeadCode-Model',
 	#package : 'MooseIDE-DeadCode',
 	#tag : 'Model'
 }
+
+{ #category : 'accessing' }
+MiDeadCodeBrowserModel >> addDeadEntity: anEntity [
+
+	deadEntities add: anEntity
+]
 
 { #category : 'actions' }
 MiDeadCodeBrowserModel >> applyChosenRules: entity [
@@ -42,8 +49,11 @@ MiDeadCodeBrowserModel >> availableRules [
 MiDeadCodeBrowserModel >> chooseRules: heuristicCollection [
 	"add all of heuristicCollection  to the internal list of chosenHeuristics"
 
-	chosenRules := (chosenRules union: heuristicCollection)
+	| configuredRules |
+	configuredRules := heuristicCollection collect: #whenChosen.
+	chosenRules := (chosenRules union: configuredRules)
 		sort: self rulesSortBlock.
+
 	browser updateChosenRules
 ]
 
@@ -71,7 +81,10 @@ MiDeadCodeBrowserModel >> clearDeads [
 
 { #category : 'settings management' }
 MiDeadCodeBrowserModel >> currentConfiguration [
-	"no settings"
+
+	^ MiDeadCodeSettingsConfiguration new
+		  deleteLines: deleteLines ;
+		  yourself
 ]
 
 { #category : 'accessing' }
@@ -82,7 +95,10 @@ MiDeadCodeBrowserModel >> deadEntities [
 
 { #category : 'settings management' }
 MiDeadCodeBrowserModel >> defaultConfiguration [
-	"no settings"
+
+	^ MiDeadCodeSettingsConfiguration new
+		deleteLines: false ;
+		yourself
 ]
 
 { #category : 'accessing' }
@@ -97,6 +113,12 @@ MiDeadCodeBrowserModel >> followEntity: aCollection [
 	candidateEntities := aCollection.
 	browser candidateEntities: aCollection.
 	browser updateChosenRules
+]
+
+{ #category : 'testing' }
+MiDeadCodeBrowserModel >> hasSettings [
+
+	^ true
 ]
 
 { #category : 'initialization' }
@@ -117,6 +139,12 @@ MiDeadCodeBrowserModel >> initializeRules [
 	chosenRules addAll:
 		(self availableRules select: [ :heuristic |
 			 heuristic selectedByDefault ])
+]
+
+{ #category : 'initialization' }
+MiDeadCodeBrowserModel >> initializeSettings [
+
+	deleteLines := false
 ]
 
 { #category : 'actions' }
@@ -158,7 +186,7 @@ MiDeadCodeBrowserModel >> oneRoundRecursion [
 	deadEntities copy do: [ :dead |
 		(dead queryOutgoing: FamixTInvocation) opposites do: [ :invoked |
 			(self isNewDead: invoked) ifTrue: [
-				deadEntities add: invoked.
+				self addDeadEntity: invoked.
 				addedDeads := true
 			]
 		]
@@ -168,30 +196,31 @@ MiDeadCodeBrowserModel >> oneRoundRecursion [
 ]
 
 { #category : 'actions' }
-MiDeadCodeBrowserModel >> recursionComputation [
-	"Compute dead entities only invoked by already dead entities
-	 In the end restrict the result to be within the initial list of candidate (followed) entities"
-	[ self oneRoundRecursion ]
-		whileTrue.
+MiDeadCodeBrowserModel >> refactorCode [
 
-	deadEntities := deadEntities select: [ :entity | candidateEntities includes: entity ].
-
-	browser updateDeadEntities
+	| editor |
+	editor := MiBulkEditor new.
+	deleteLines
+		ifTrue: [ editor removeLines ]
+		ifFalse: [ editor commentLines ].
+	editor runOn: deadEntities.
+	
+	browser refactoringDone
 ]
 
 { #category : 'actions' }
 MiDeadCodeBrowserModel >> rule: rule handle: entity [
 	"returns whether a decision was reached or not + register a dead entity
 	 A decision is reached for _refuting_ rules if the entity is not dead
-	   and there is nothing to do (but we do not need to check other rules)
+	   and then there is nothing to do (but we do not need to check other rules)
 	 A decision is reached for _asserting_ rules, if the entity is dead
-	   and it must be added to the list of dead entities"
+	   and then it must be added to the list of dead entities"
 
 	rule refuteDead 
 		ifTrue: [ (rule isDead: entity) ifFalse: [ ^true ] ]
 		ifFalse: [
 			(rule isDead: entity)
-				ifTrue: [ deadEntities add: entity. ^true ]
+				ifTrue: [ self addDeadEntity: entity. ^true ]
 		].
 	
 	^false
@@ -220,12 +249,12 @@ MiDeadCodeBrowserModel >> runComputation [
 	"First step"
 	self entities do: [ :entity | self applyChosenRules: entity ].
 
-	"Second step: recusrion"
+	"Second step: recursion"
 	[ self oneRoundRecursion ]
 		whileTrue.
 
 	"Third step, filter to candidate entities"
-	deadEntities := deadEntities select: [ :entity | candidateEntities includes: entity ].
+	deadEntities := deadEntities intersection: candidateEntities.
 
 	browser updateDeadEntities.
 	browser updateToolbar.
@@ -248,5 +277,6 @@ MiDeadCodeBrowserModel >> unchooseRules: rules [
 
 { #category : 'settings management' }
 MiDeadCodeBrowserModel >> updateFromConfiguration: aConfiguration [
-	"no settings"
+
+	deleteLines := aConfiguration deleteLines
 ]
