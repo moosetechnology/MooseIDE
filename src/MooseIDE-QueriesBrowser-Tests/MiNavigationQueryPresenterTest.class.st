@@ -82,13 +82,16 @@ MiNavigationQueryPresenterTest >> testPresentersOnImpossibleQuery [
 { #category : 'tests' }
 MiNavigationQueryPresenterTest >> testQueryValidity [
 
+	| popover |
 	self deny: presenter query isValid.
 
 	(presenter presenterAt: #directionDropList) selectIndex: 1.
 	self deny: presenter query isValid.
 
+	popover := presenter newAssociationsPopover.
 	(presenter presenterAt: #associationsList) activateItem:
 		presenter query availableAssociations anyOne.
+	popover popoverClosed.
 	self assert: presenter query isValid.
 
 	self resetPresenterWithEntities:
