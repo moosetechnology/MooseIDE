@@ -15,10 +15,10 @@ MiComparativeQueryPresenterTest class >> isAbstract [
 MiComparativeQueryPresenterTest >> assertComparatorsDropList [
 
 	self
-		assert: presenter comparatorDropList class
+		assert: self comparatorDropList class
 		identicalTo: SpDropListPresenter.
 	self
-		assertCollection: presenter comparatorDropList listItems
+		assertCollection: self comparatorDropList listItems
 		hasSameElements: presenter query class comparators
 ]
 
@@ -26,26 +26,32 @@ MiComparativeQueryPresenterTest >> assertComparatorsDropList [
 MiComparativeQueryPresenterTest >> assertValueInputField [
 
 	self
-		assert: presenter valueInputField class
+		assert: self valueInputField class
 		identicalTo: self valueInputClass
+]
+
+{ #category : 'accessing-subpresenters' }
+MiComparativeQueryPresenterTest >> comparatorDropList [
+
+	^ presenter presenterAt: #comparatorDropList
 ]
 
 { #category : 'tests' }
 MiComparativeQueryPresenterTest >> testMatchesQuery [
 
 	super testMatchesQuery.
-	presenter comparatorDropList selectIndex: 2.
+	self comparatorDropList selectIndex: 2.
 	self
 		assert: presenter query comparator
-		equals: presenter comparatorDropList selectedItem.
-	presenter valueInputField text: self valueInput.
-	
-	"Emulate the waiting that the UI has. When the user types something, there is a delay before computing the result."	
+		equals: self comparatorDropList selectedItem.
+	self valueInputField text: self valueInput.
+
+	"Emulate the waiting that the UI has. When the user types something, there is a delay before computing the result."
 	(InputProcessingWaiter delayBeforeProcessing + 100 milliSeconds) wait.
-	
+
 	self
 		assert: presenter query valueToCompare asString
-		equals: presenter valueInputField text
+		equals: self valueInputField text
 ]
 
 { #category : 'tests' }
@@ -63,11 +69,11 @@ MiComparativeQueryPresenterTest >> testPresentersOnImpossibleQuery [
 	super testPresentersOnImpossibleQuery.
 
 	self
-		assert: presenter comparatorDropList class
+		assert: self comparatorDropList class
 		identicalTo: SpNullPresenter.
 
 	self
-		assert: presenter valueInputField class
+		assert: self valueInputField class
 		identicalTo: SpNullPresenter
 ]
 
@@ -76,13 +82,13 @@ MiComparativeQueryPresenterTest >> testQueryValidity [
 
 	self deny: presenter query isValid.
 
-	presenter propertyDropList selectIndex: 2.
+	self propertyDropList selectIndex: 2.
 	self deny: presenter query isValid.
 
-	presenter comparatorDropList selectIndex: 2.
+	self comparatorDropList selectIndex: 2.
 	self deny: presenter query isValid.
 
-	presenter valueInputField text: self valueInput.
+	self valueInputField text: self valueInput.
 	"The input field has a delay before it processes the change."
 	(Delay forSeconds: 1) wait.
 	self assert: presenter query isValid.
@@ -99,4 +105,10 @@ MiComparativeQueryPresenterTest >> valueInput [
 { #category : 'running' }
 MiComparativeQueryPresenterTest >> valueInputClass [
 	^ self subclassResponsibility
+]
+
+{ #category : 'accessing-subpresenters' }
+MiComparativeQueryPresenterTest >> valueInputField [
+
+	^ presenter presenterAt: #valueInputField
 ]

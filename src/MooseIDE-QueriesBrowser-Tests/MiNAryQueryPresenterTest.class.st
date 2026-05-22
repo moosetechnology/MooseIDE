@@ -10,7 +10,7 @@ Class {
 MiNAryQueryPresenterTest >> assertSubpresentersAreConfigured [
 
 	self assert: presenter query subqueries size equals: 3.
-	self assert: presenter subqueryDropLists size equals: 3
+	self assert: self subqueryDropLists size equals: 3
 ]
 
 { #category : 'running' }
@@ -90,23 +90,27 @@ MiNAryQueryPresenterTest >> resetPresenterWithEntities: aMooseGroup [
 	self createUnconfiguredQuery
 ]
 
+{ #category : 'accessing-subpresenters' }
+MiNAryQueryPresenterTest >> subqueryDropLists [
+
+	^ presenter presenterAt: #subqueryDropLists
+]
+
 { #category : 'tests' }
 MiNAryQueryPresenterTest >> testIsQueryUsed [
 
 	self assert:
-		(presenter isQueryUsed:
-			 presenter subqueryDropLists first selectedItem).
+		(presenter isQueryUsed: self subqueryDropLists first selectedItem).
 
 	self deny:
-		(presenter isQueryUsed:
-			 presenter subqueryDropLists first items second)
+		(presenter isQueryUsed: self subqueryDropLists first items second)
 ]
 
 { #category : 'tests' }
 MiNAryQueryPresenterTest >> testNormalQueryInitialization [
 
-	presenter subqueryDropLists first selectIndex: 1.
-	presenter subqueryDropLists second selectIndex: 2.
+	self subqueryDropLists first selectIndex: 1.
+	self subqueryDropLists second selectIndex: 2.
 
 	self assert: presenter query class identicalTo: self queryClass
 ]
@@ -114,12 +118,13 @@ MiNAryQueryPresenterTest >> testNormalQueryInitialization [
 { #category : 'tests' }
 MiNAryQueryPresenterTest >> testPresenters [
 
-	self assert: presenter subqueryDropLists isCollection.
+	self assert: self subqueryDropLists isCollection.
 	self
-		assert: presenter addSubqueryToLayoutButton class
+		assert: (presenter presenterAt: #addSubqueryToLayoutButton) class
 		equals: SpButtonPresenter.
 	self
-		assert: presenter removeSubqueryFromLayoutButton class
+		assert:
+		(presenter presenterAt: #removeSubqueryFromLayoutButton) class
 		equals: SpButtonPresenter
 ]
 
@@ -134,7 +139,7 @@ MiNAryQueryPresenterTest >> testQueryValidity [
 
 	self deny: presenter query isValid.
 
-	presenter subqueryDropLists withIndexDo: [ :droplist :i | 
+	self subqueryDropLists withIndexDo: [ :droplist :i | 
 		droplist selectIndex: i ].
 
 	self assert: presenter query isValid

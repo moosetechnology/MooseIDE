@@ -236,7 +236,7 @@ MiQueriesBrowser >> showResultOfQuery: aQuery [
 	result := aQuery result.
 
 	self initializeResultTreePresenter.
-	"This will sho the correct queryResultTreePresenter:"
+	"This will show the correct queryResultTreePresenter:"
 	queryNotebookPresenter resetAllPageContents
 ]
 
@@ -245,7 +245,7 @@ MiQueriesBrowser >> updateResultPresenterForQuery: aQuery [
 
 	aQuery isValid
 		ifTrue: [ self showResultOfQuery: aQuery ]
-		ifFalse: [ 
+		ifFalse: [
 		queryResultTreePresenter updateForEntities: MooseGroup new ]
 ]
 
