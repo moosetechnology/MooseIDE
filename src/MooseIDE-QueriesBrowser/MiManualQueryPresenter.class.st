@@ -17,26 +17,21 @@ Class {
 { #category : 'compiling' }
 MiManualQueryPresenter >> compileQuery [
 
-	| compiledQuery |
-	compiledQuery := queryCoder compileQuery.
-	query := compiledQuery.
+	query := queryCoder compiledQuery.
+	query beChildOf: parentQuery.
 	self notifyQueryChanged
 ]
 
 { #category : 'api - actions' }
 MiManualQueryPresenter >> configureFor: aQuery [
 
+	query := aQuery
 ]
 
 { #category : 'actions' }
-MiManualQueryPresenter >> configureQuery: queryString [
-]
+MiManualQueryPresenter >> configureQuery: aBlock [
 
-{ #category : 'initialization' }
-MiManualQueryPresenter >> initialize [
-
-	super initialize.
-	query := FQNullQuery new
+	query script: aBlock
 ]
 
 { #category : 'initialization' }
@@ -46,7 +41,9 @@ MiManualQueryPresenter >> initializeButton [
 	writeQueryButton
 		label: 'Code a query';
 		icon: (self iconNamed: #edit);
-		action: [ self openQueryCoderPopup ]
+		action: [
+				owner owner selectItem: owner.
+				self openQueryCoderPopup ]
 ]
 
 { #category : 'layout' }
@@ -67,7 +64,6 @@ MiManualQueryPresenter >> initializePresenters [
 MiManualQueryPresenter >> initializeQueryCoder [
 
 	queryCoder := self instantiate: QueryCompilerPresenter on: self.
-	queryCoder submitQueryAction: [ self compileQuery ]
 ]
 
 { #category : 'layout' }
@@ -90,11 +86,7 @@ MiManualQueryPresenter >> openQueryCoderPopup [
 		relativeTo: writeQueryButton;
 		bePositionRight;
 		presenter: queryCoder;
-		popup
-]
-
-{ #category : 'accessing - model' }
-MiManualQueryPresenter >> setModelBeforeInitialization: aParentQuery [
-
-	parentQuery := aParentQuery
+		popup;
+		whenClosedDo: [ queryCoder updateConfigurationPresenter: self ].
+	queryCoder selectBlockBehavior
 ]

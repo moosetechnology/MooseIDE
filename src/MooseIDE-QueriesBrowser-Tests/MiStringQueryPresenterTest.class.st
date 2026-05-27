@@ -9,9 +9,15 @@ Class {
 { #category : 'tests' }
 MiStringQueryPresenterTest >> assertSubpresentersAreConfigured [
 
-	self assert: presenter propertyDropList selectedItem equals: self createNewQuery property.
-	self assert: presenter valueInputField text equals: self createNewQuery valueToCompare.
-	self assert: presenter comparatorDropList selectedItem equals: self createNewQuery comparator 
+	self
+		assert: self propertyDropList selectedItem
+		equals: self createNewQuery property.
+	self
+		assert: self valueInputField text
+		equals: self createNewQuery valueToCompare.
+	self
+		assert: self comparatorDropList selectedItem
+		equals: self createNewQuery comparator
 ]
 
 { #category : 'running' }
@@ -32,12 +38,6 @@ MiStringQueryPresenterTest >> createNewQuery [
 		  property: #name;
 		  valueToCompare: 'f';
 		  yourself
-]
-
-{ #category : 'running' }
-MiStringQueryPresenterTest >> propertyDropList [
-
-	^ presenter instVarNamed: #propertyDropList
 ]
 
 { #category : 'running' }

@@ -13,7 +13,7 @@ Class {
 MiResultSizeQueryPresenterTest >> assertSubpresentersAreConfigured [
 
 	self
-		assert: presenter subqueriesDropList selectedItem query
+		assert: self subqueriesDropList selectedItem query
 		equals: innerQuery
 ]
 
@@ -71,6 +71,12 @@ MiResultSizeQueryPresenterTest >> resetPresenterWithEntities: aMooseGroup [
 	presenter := superPresenter queryConfiguratorPresenter
 ]
 
+{ #category : 'accessing-subpresenters' }
+MiResultSizeQueryPresenterTest >> subqueriesDropList [
+
+	^ presenter presenterAt: #subqueriesDropList
+]
+
 { #category : 'tests' }
 MiResultSizeQueryPresenterTest >> testImpossibleQueryInitialization [
 
@@ -81,7 +87,7 @@ MiResultSizeQueryPresenterTest >> testImpossibleQueryInitialization [
 MiResultSizeQueryPresenterTest >> testPresenters [
 
 	self
-		assert: presenter subqueriesDropList class
+		assert: self subqueriesDropList class
 		identicalTo: SpDropListPresenter
 ]
 
@@ -103,7 +109,7 @@ MiResultSizeQueryPresenterTest >> testQueryValidity [
 
 	self deny: presenter query isValid.
 
-	(presenter presenterAt: #subqueriesDropList) selectIndex: 1.
+	self subqueriesDropList selectIndex: 1.
 	self assert:
 		(presenter query innerQuery hasSameParametersAs: innerQuery).
 	self deny: presenter query isValid.

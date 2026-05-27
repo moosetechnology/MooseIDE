@@ -18,19 +18,25 @@ MiQueriesBrowserTest >> browserClass [
 	^ MiQueriesBrowser
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'accessing-subpresenters' }
 MiQueriesBrowserTest >> queriesListPresenter [
 
 	^ browser presenterAt: #queriesListPresenter
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'accessing-subpresenters' }
 MiQueriesBrowserTest >> queryCodePresenter [
 
 	^ browser presenterAt: #queryCodePresenter
 ]
 
-{ #category : 'tests' }
+{ #category : 'accessing-subpresenters' }
+MiQueriesBrowserTest >> queryCodePresenterText [
+
+	^ (self queryCodePresenter presenterAt: #code) text
+]
+
+{ #category : 'accessing-subpresenters' }
 MiQueriesBrowserTest >> queryResultTreeItems [
 
 	| resultTree |
@@ -39,7 +45,7 @@ MiQueriesBrowserTest >> queryResultTreeItems [
 		  resultTree childrenFor: root ]
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'accessing-subpresenters' }
 MiQueriesBrowserTest >> queryResultTreePresenter [
 
 	^ browser presenterAt: #queryResultTreePresenter
@@ -139,7 +145,7 @@ MiQueriesBrowserTest >> testInitializePresenters [
 
 	self assert: browser layout isNotNil.
 	self assert: self queryCodePresenter class equals: QueryCodePresenter.
-	self assert: self queryCodePresenter text isNotEmpty.
+	self assert: self queryCodePresenterText isNotEmpty.
 	self
 		assert: self queryResultTreePresenter class
 		equals: MiMooseGroupsTreeTablePresenter.
@@ -182,7 +188,7 @@ MiQueriesBrowserTest >> testSelectQuery [
 		assertCollection: self queryResultTreeItems
 		hasSameElements: query result.
 
-	newQuery := Smalltalk compiler evaluate: self queryCodePresenter text.
+	newQuery := Smalltalk compiler evaluate: self queryCodePresenterText.
 	self assert: newQuery equals: query
 ]
 

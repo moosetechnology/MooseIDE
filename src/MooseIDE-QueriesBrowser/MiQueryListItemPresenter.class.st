@@ -72,8 +72,7 @@ MiQueryListItemPresenter >> allQueryPresentersExceptSelf [
 { #category : 'manual query' }
 MiQueryListItemPresenter >> beForManualQuery [
 
-	queryConfiguratorPresenter := self instantiate:
-		(MiManualQueryPresenter owner: self on: parentQuery).
+	self updateQueryConfiguratorPresenterFor: FQCollectScriptQuery.
 	self initializeLayout.
 	self layout remove: queryTypesDropListPresenter
 ]
@@ -169,10 +168,10 @@ MiQueryListItemPresenter >> initializeQueryTypesDropList [
 { #category : 'update' }
 MiQueryListItemPresenter >> instantiateConfiguratorPresenterForQuery: newQuery [
 
-	queryConfiguratorPresenter := self instantiate:
-		(newQuery class miPresenterClass
-			owner: self
-			on: newQuery)
+	queryConfiguratorPresenter := self
+		                              instantiate:
+		                              newQuery class miPresenterClass
+		                              on: newQuery
 ]
 
 { #category : 'accessing' }
