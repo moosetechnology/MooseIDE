@@ -1,6 +1,6 @@
 Extension { #name : 'MooseObject' }
 
-{ #category : '*Famix-CriticBrowser-Entities-accessing' }
+{ #category : '*Famix-CriticBrowser-Entities' }
 MooseObject >> contexts [
 	"Relation named: #contexts type: #FamixCBContext opposite: #entities"
 
@@ -12,10 +12,12 @@ MooseObject >> contexts [
 	^ self attributeAt: #contexts ifAbsentPut: [ FMMultiMultivalueLink on: self opposite: #entities ]
 ]
 
-{ #category : '*Famix-CriticBrowser-Entities-accessing' }
+{ #category : '*Famix-CriticBrowser-Entities' }
 MooseObject >> contexts: anObject [
 
 	<generated>
+	<package: #'Famix-CriticBrowser-Entities'>
+
 	self contexts value: anObject
 ]
 
@@ -25,7 +27,7 @@ MooseObject >> removeViolation: aViolation [
 	aViolation violatedCondition ifNotNil: [ aViolation violatedCondition removeViolation: aViolation ]
 ]
 
-{ #category : '*Famix-CriticBrowser-Entities-accessing' }
+{ #category : '*Famix-CriticBrowser-Entities' }
 MooseObject >> violations [
 	"Relation named: #violations type: #FamixCBViolation opposite: #violatingEntity"
 
@@ -38,9 +40,11 @@ MooseObject >> violations [
 	^ self attributeAt: #violations ifAbsentPut: [ FMMultivalueLink on: self opposite: #violatingEntity: ]
 ]
 
-{ #category : '*Famix-CriticBrowser-Entities-accessing' }
+{ #category : '*Famix-CriticBrowser-Entities' }
 MooseObject >> violations: anObject [
 
 	<generated>
+	<package: #'Famix-CriticBrowser-Entities'>
+
 	self violations value: anObject
 ]

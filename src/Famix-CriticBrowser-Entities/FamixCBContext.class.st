@@ -40,7 +40,6 @@ FamixCBContext class >> annotation [
 	<FMClass: #Context super: #FamixCBEntity>
 	<package: #'Famix-CriticBrowser-Entities'>
 	<generated>
-	^ self
 ]
 
 { #category : 'instance creation' }
