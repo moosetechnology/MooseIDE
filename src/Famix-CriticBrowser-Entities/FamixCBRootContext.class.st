@@ -12,7 +12,6 @@ FamixCBRootContext class >> annotation [
 	<FMClass: #RootContext super: #FamixCBContext>
 	<package: #'Famix-CriticBrowser-Entities'>
 	<generated>
-	^ self
 ]
 
 { #category : 'accessing' }
