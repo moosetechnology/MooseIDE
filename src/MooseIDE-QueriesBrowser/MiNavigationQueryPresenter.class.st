@@ -63,7 +63,7 @@ MiNavigationQueryPresenter >> initializeAssociationsList [
 		display: [ :item | item metadescription name asString ];
 		items: self query availableAssociations;
 		selectItems: self query associations;
-
+		sortingBlock: #name ascending ;
 		onActivation: [ self updateLabel ];
 		onDeactivation: [ self updateLabel ].
 
