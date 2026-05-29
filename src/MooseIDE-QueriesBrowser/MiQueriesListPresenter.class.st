@@ -41,23 +41,6 @@ MiQueriesListPresenter >> addNewFirstLevelQuery [
 	self updateComponentList
 ]
 
-{ #category : 'actions' }
-MiQueriesListPresenter >> addNewManualQuery [
-
-	| newPresenter |
-	newPresenter := MiQueryListItemPresenter
-		                newManualQueryOn: specModel rootQuery
-		                owner: self
-		                queriesListPresenter: self.
-	newPresenter setQueryNumber: queryCounter.
-	queryCounter := queryCounter + 1.
-
-	queryItemsPresenters add: newPresenter.
-	self updateComponentList.
-
-	componentListPresenter selectItem: newPresenter
-]
-
 { #category : 'accessing' }
 MiQueriesListPresenter >> availableQueryTypes [
 

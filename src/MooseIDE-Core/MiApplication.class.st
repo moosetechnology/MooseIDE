@@ -316,7 +316,8 @@ MiApplication >> mooseStyleSheet [
 			#height: 225,
 			#width: 250 } ],
 		.smallList [ Geometry { #height: 120, #width: 120 } ],
-		.largeList [ Geometry { #height: 300, #width: 250 } ]
+		.largeList [ Geometry { #height: 300, #width: 250 } ], 
+		.smallRadioButton [ Geometry { #width: 65 } ]
 ]'
 ]
 
