@@ -5,9 +5,12 @@ Class {
 	#name : 'MiManualQueryPresenter',
 	#superclass : 'MiQueryConfiguratorPresenter',
 	#instVars : [
-		'writeQueryButton',
 		'parentQuery',
-		'queryCoder'
+		'queryCoder',
+		'collectQueryButton',
+		'selectQueryButton',
+		'editScriptButton',
+		'scriptLabel'
 	],
 	#category : 'MooseIDE-QueriesBrowser-Configuration presenters',
 	#package : 'MooseIDE-QueriesBrowser',
@@ -29,32 +32,28 @@ MiManualQueryPresenter >> configureFor: aQuery [
 ]
 
 { #category : 'actions' }
-MiManualQueryPresenter >> configureQuery: aBlock [
+MiManualQueryPresenter >> configureQuery: aQuery [
 
-	query script: aBlock
+	query := aQuery
 ]
 
 { #category : 'initialization' }
 MiManualQueryPresenter >> initializeButton [
 
-	writeQueryButton := self newButton.
-	writeQueryButton
-		label: 'Code a query';
+	editScriptButton := self newButton.
+	editScriptButton
+		label: 'Edit script';
 		icon: (self iconNamed: #edit);
 		action: [
 				owner owner selectItem: owner.
 				self openQueryCoderPopup ]
 ]
 
-{ #category : 'layout' }
-MiManualQueryPresenter >> initializeLayout [
-
-	self layout: self newLayout
-]
-
 { #category : 'initialization' }
 MiManualQueryPresenter >> initializePresenters [
- 
+
+	self initializeRadioButtons.
+	self initializeScriptLabel.
 	self initializeButton.
 	self initializeQueryCoder.
 	self initializeLayout
@@ -66,27 +65,59 @@ MiManualQueryPresenter >> initializeQueryCoder [
 	queryCoder := self instantiate: QueryCompilerPresenter on: self.
 ]
 
+{ #category : 'as yet unclassified' }
+MiManualQueryPresenter >> initializeRadioButtons [
+
+	collectQueryButton := self newRadioButton
+		                      addStyle: #smallRadioButton;
+		                      label: 'Collect';
+		                      whenActivatedDo: [
+			                      self computeQueryAction: query beCollect ];
+		                      yourself.
+	selectQueryButton := self newRadioButton
+		                     addStyle: #smallRadioButton;
+		                     label: 'Select';
+		                     whenActivatedDo: [
+			                     self computeQueryAction: query beSelect ];
+		                     yourself.
+	^ collectQueryButton associatedRadioButtons: { selectQueryButton }
+]
+
+{ #category : 'as yet unclassified' }
+MiManualQueryPresenter >> initializeScriptLabel [
+
+	^ scriptLabel := self newLabel
+		                     label: '[ :mooseEntity | "Your code here" ]';
+		                     yourself
+]
+
 { #category : 'layout' }
 MiManualQueryPresenter >> newLayout [
 
-	| label |
-	label := self newLabel label: 'Manual Query     '.
-
-	^ SpBoxLayout newLeftToRight
-		vAlignCenter;
-		add: label expand: false;
-		add: writeQueryButton expand: false;
-		yourself
+	^ self newBoxLayoutLeftToRight
+		  vAlignCenter;
+		  spacing: 5;
+		  add: collectQueryButton expand: false;
+		  add: selectQueryButton expand: false;
+		  add: scriptLabel;
+		  add: editScriptButton expand: false;
+		  yourself
 ]
 
 { #category : 'actions' }
 MiManualQueryPresenter >> openQueryCoderPopup [
 
 	self newPopover
-		relativeTo: writeQueryButton;
-		bePositionRight;
+		relativeTo: editScriptButton;
+		bePositionBottom;
 		presenter: queryCoder;
 		popup;
-		whenClosedDo: [ queryCoder updateConfigurationPresenter: self ].
+		whenClosedDo: [ queryCoder updateConfigurationPresenter ].
 	queryCoder selectBlockBehavior
+]
+
+{ #category : 'updating' }
+MiManualQueryPresenter >> updateLabel: aString [
+
+	scriptLabel label: aString
 ]

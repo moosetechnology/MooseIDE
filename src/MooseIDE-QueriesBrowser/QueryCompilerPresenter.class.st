@@ -28,7 +28,7 @@ QueryCompilerPresenter >> initializeButtons [
 	submitButton
 		label: 'Submit';
 		icon: (self iconNamed: #smallDoIt);
-		action: [ self owner dismiss ].
+		action: [ self updateConfigurationPresenter ].
 	closeButton := self newButton.
 	closeButton
 		label: 'Close';
@@ -91,7 +91,7 @@ QueryCompilerPresenter >> setModelBeforeInitialization: aModel [
 ]
 
 { #category : 'compiling' }
-QueryCompilerPresenter >> updateConfigurationPresenter: aConfigurationPresenter [
+QueryCompilerPresenter >> updateConfigurationPresenter [
 
 	| compiledBlock currentScript |
 	currentScript := configurationPresenter query script.
@@ -100,9 +100,12 @@ QueryCompilerPresenter >> updateConfigurationPresenter: aConfigurationPresenter 
 			 = configurationPresenter query script sourceNode sourceCode ])
 		ifTrue: [ ^ self ].
 
+	configurationPresenter updateLabel: codePresenter text.
 	compiledBlock := codePresenter
 		                 evaluate: codePresenter text
 		                 onCompileError: [ :e | ^ self ]
 		                 onError: [ :e | ^ self ].
-	configurationPresenter computeQueryAction: compiledBlock
+
+	configurationPresenter computeQueryAction:
+		(configurationPresenter query script: compiledBlock)
 ]
