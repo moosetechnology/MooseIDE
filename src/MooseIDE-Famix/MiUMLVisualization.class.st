@@ -11,22 +11,39 @@ Class {
 	#tag : 'UML'
 }
 
+{ #category : 'running' }
+MiUMLVisualization >> buildClassDescriptorForModel: aModel [
+
+	| desc |
+	classDescriptor ifNotNil: [ ^ classDescriptor ].
+
+	desc := RSUMLClassDescriptor new forFamix.
+
+	aModel showAttributes
+		ifFalse: [ desc instVars: [ :type | #() ] ].
+	aModel showMethods
+		ifFalse: [ desc methods: [ :type | #() ] ].
+
+	^ desc
+]
+
 { #category : 'initialization' }
 MiUMLVisualization >> buildInCanvas: aCanvas [
 
 	rootEntities ifNil: [ ^ self ].
 
 	builder := RSUMLClassBuilder new
-		           modelDescriptor: self classDescriptor;
+		           modelDescriptor:
+			           (self buildClassDescriptorForModel: self owner specModel);
 		           classes: rootEntities;
 		           build;
 		           renderIn: aCanvas canvas;
 		           yourself.
 
 	aCanvas nodes do: [ :node |
-		node addInteraction:
-			((MiSelection on: [ :entity | self owner selected: entity ])
-				 marginPercentage: 0.2) ].
+			node addInteraction:
+				((MiSelection on: [ :entity | self owner selected: entity ])
+					 marginPercentage: 0.2) ].
 
 	^ aCanvas @ RSCanvasController new noLegend
 ]
