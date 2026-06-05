@@ -28,3 +28,9 @@ MiUMLBrowserTest >> testMiSelectedItem [
 	self assert: browser miSelectedItem size equals: 1.
 	self assert: browser miSelectedItem anyOne equals: entityToSelect
 ]
+
+{ #category : 'tests' }
+MiUMLBrowserTest >> testSettingsAction [
+
+	self assert: browser hasSettings
+]

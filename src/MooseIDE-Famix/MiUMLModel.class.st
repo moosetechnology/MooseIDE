@@ -13,6 +13,27 @@ Class {
 }
 
 { #category : 'settings management' }
+MiUMLModel class >> defaultConfiguration [
+
+	^ MiUMLSettingsConfiguration new
+		  showAttributes: self defaultShowAttributes ;
+		  showMethods: self defaultShowMethods ;
+		  yourself
+]
+
+{ #category : 'settings management' }
+MiUMLModel class >> defaultShowAttributes [
+
+	^true
+]
+
+{ #category : 'settings management' }
+MiUMLModel class >> defaultShowMethods [
+
+	^false
+]
+
+{ #category : 'settings management' }
 MiUMLModel >> currentConfiguration [
 
 	^ MiUMLSettingsConfiguration new
@@ -24,7 +45,7 @@ MiUMLModel >> currentConfiguration [
 { #category : 'settings management' }
 MiUMLModel >> defaultConfiguration [
 
-	^ MiUMLSettingsConfiguration new
+	^ self class defaultConfiguration
 ]
 
 { #category : 'accessing' }
