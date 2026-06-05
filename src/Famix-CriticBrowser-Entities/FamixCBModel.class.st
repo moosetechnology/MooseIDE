@@ -16,7 +16,8 @@ FamixCBModel class >> allSubmetamodelsPackagesNames [
 
 { #category : 'meta' }
 FamixCBModel class >> annotation [
-	<FMClass: #FamixCBModel super: #MooseModel>
+
+	<FMClass: #Model super: #MooseModel>
 	<package: #'Famix-CriticBrowser-Entities'>
 	<generated>
 ]

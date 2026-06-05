@@ -15,7 +15,9 @@ Class {
 { #category : 'tests' }
 MiNegationQueryPresenterTest >> assertSubpresentersAreConfigured [
 
-	self assert: presenter subqueryDropListPresenter selectedItem query equals: queryToNegate
+	self
+		assert: self subqueryDropListPresenter selectedItem query
+		equals: queryToNegate
 ]
 
 { #category : 'running' }
@@ -60,6 +62,12 @@ MiNegationQueryPresenterTest >> resetPresenterWithEntities: aMooseGroup [
 	presenter := superPresenter queryConfiguratorPresenter
 ]
 
+{ #category : 'accessing-subpresenters' }
+MiNegationQueryPresenterTest >> subqueryDropListPresenter [
+
+	^ presenter presenterAt: #subqueryDropListPresenter
+]
+
 { #category : 'tests' }
 MiNegationQueryPresenterTest >> testImpossibleQueryInitialization [
 
@@ -69,8 +77,10 @@ MiNegationQueryPresenterTest >> testImpossibleQueryInitialization [
 { #category : 'tests' }
 MiNegationQueryPresenterTest >> testIsQueryUsed [
 
-	self assert: (presenter isQueryUsed: presenter subqueryDropListPresenter selectedItem).
-	self deny: (presenter isQueryUsed: presenter subqueryDropListPresenter items second)
+	self assert:
+		(presenter isQueryUsed: self subqueryDropListPresenter selectedItem).
+	self deny:
+		(presenter isQueryUsed: self subqueryDropListPresenter items second)
 ]
 
 { #category : 'tests' }
@@ -88,7 +98,7 @@ MiNegationQueryPresenterTest >> testNormalQueryInitialization [
 MiNegationQueryPresenterTest >> testPresenters [
 
 	self
-		assert: presenter subqueryDropListPresenter class
+		assert: self subqueryDropListPresenter class
 		equals: SpDropListPresenter
 ]
 

@@ -41,7 +41,6 @@ FamixCBCondition class >> annotation [
 	<FMClass: #Condition super: #FamixCBEntity>
 	<package: #'Famix-CriticBrowser-Entities'>
 	<generated>
-	^ self
 ]
 
 { #category : 'instance creation' }

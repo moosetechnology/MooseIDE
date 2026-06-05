@@ -10,13 +10,13 @@ Class {
 MiTypeQueryPresenterTest >> assertSubpresentersAreConfigured [
 
 	self
-		assertCollection: presenter typesList items
+		assertCollection: self typesList items
 		includesAll: self createNewQuery types.
 	self
-		assertCollection: presenter typesList selectedItems
+		assertCollection: self typesList selectedItems
 		hasSameElements: self createNewQuery types.
 
-	self assert: presenter typesButton class equals: SpButtonPresenter
+	self assert: self typesButton class equals: SpButtonPresenter
 ]
 
 { #category : 'running' }
@@ -55,7 +55,7 @@ MiTypeQueryPresenterTest >> testImpossibleQueryInitialization [
 { #category : 'tests' }
 MiTypeQueryPresenterTest >> testModalSelectionTypes [
 
-	presenter typesList selectItems: { FamixStClass }.
+	self typesList selectItems: { FamixStClass }.
 	presenter selectTypeAction: nil.
 
 	self
@@ -66,7 +66,7 @@ MiTypeQueryPresenterTest >> testModalSelectionTypes [
 { #category : 'tests' }
 MiTypeQueryPresenterTest >> testPresenters [
 
-	self assert: presenter typesButton class equals: SpButtonPresenter
+	self assert: self typesButton class equals: SpButtonPresenter
 ]
 
 { #category : 'tests' }
@@ -74,7 +74,7 @@ MiTypeQueryPresenterTest >> testPresentersOnImpossibleQuery [
 
 	self resetPresenterWithEntities: helper noEntities.
 	self
-		assert: presenter typesButton class
+		assert: self typesButton class
 		identicalTo: NoPossibleQueryPresenter
 ]
 
@@ -98,4 +98,16 @@ MiTypeQueryPresenterTest >> testUpdateQueryWithSelectedTypes [
 	self
 		assertCollection: presenter query types
 		hasSameElements: typesRemoved
+]
+
+{ #category : 'accessing-subpresenters' }
+MiTypeQueryPresenterTest >> typesButton [
+
+	^ presenter presenterAt: #typesButton
+]
+
+{ #category : 'accessing-subpresenters' }
+MiTypeQueryPresenterTest >> typesList [
+
+	^ presenter presenterAt: #typesList
 ]

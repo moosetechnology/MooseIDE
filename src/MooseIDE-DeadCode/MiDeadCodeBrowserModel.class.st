@@ -11,7 +11,8 @@ Class {
 		'candidateEntities',
 		'selectedDeadEntities',
 		'chosenRules',
-		'availableRules'
+		'availableRules',
+		'deleteLines'
 	],
 	#category : 'MooseIDE-DeadCode-Model',
 	#package : 'MooseIDE-DeadCode',
@@ -80,7 +81,10 @@ MiDeadCodeBrowserModel >> clearDeads [
 
 { #category : 'settings management' }
 MiDeadCodeBrowserModel >> currentConfiguration [
-	"no settings"
+
+	^ MiDeadCodeSettingsConfiguration new
+		  deleteLines: deleteLines ;
+		  yourself
 ]
 
 { #category : 'accessing' }
@@ -91,7 +95,10 @@ MiDeadCodeBrowserModel >> deadEntities [
 
 { #category : 'settings management' }
 MiDeadCodeBrowserModel >> defaultConfiguration [
-	"no settings"
+
+	^ MiDeadCodeSettingsConfiguration new
+		deleteLines: false ;
+		yourself
 ]
 
 { #category : 'accessing' }
@@ -106,6 +113,12 @@ MiDeadCodeBrowserModel >> followEntity: aCollection [
 	candidateEntities := aCollection.
 	browser candidateEntities: aCollection.
 	browser updateChosenRules
+]
+
+{ #category : 'testing' }
+MiDeadCodeBrowserModel >> hasSettings [
+
+	^ true
 ]
 
 { #category : 'initialization' }
@@ -126,6 +139,12 @@ MiDeadCodeBrowserModel >> initializeRules [
 	chosenRules addAll:
 		(self availableRules select: [ :heuristic |
 			 heuristic selectedByDefault ])
+]
+
+{ #category : 'initialization' }
+MiDeadCodeBrowserModel >> initializeSettings [
+
+	deleteLines := false
 ]
 
 { #category : 'actions' }
@@ -174,6 +193,19 @@ MiDeadCodeBrowserModel >> oneRoundRecursion [
 	].
 
 	^ addedDeads
+]
+
+{ #category : 'actions' }
+MiDeadCodeBrowserModel >> refactorCode [
+
+	| editor |
+	editor := MiBulkEditor new.
+	deleteLines
+		ifTrue: [ editor removeLines ]
+		ifFalse: [ editor commentLines ].
+	editor runOn: deadEntities.
+	
+	browser refactoringDone
 ]
 
 { #category : 'actions' }
@@ -245,5 +277,6 @@ MiDeadCodeBrowserModel >> unchooseRules: rules [
 
 { #category : 'settings management' }
 MiDeadCodeBrowserModel >> updateFromConfiguration: aConfiguration [
-	"no settings"
+
+	deleteLines := aConfiguration deleteLines
 ]

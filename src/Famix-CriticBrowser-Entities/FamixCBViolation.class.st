@@ -28,7 +28,6 @@ FamixCBViolation class >> annotation [
 	<FMClass: #Violation super: #FamixCBEntity>
 	<package: #'Famix-CriticBrowser-Entities'>
 	<generated>
-	^ self
 ]
 
 { #category : 'as yet unclassified' }

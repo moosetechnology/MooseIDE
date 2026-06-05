@@ -9,8 +9,12 @@ Class {
 { #category : 'tests' }
 MiScopeQueriesPresenterTest >> assertSubpresentersAreConfigured [
 
-	self assert: presenter scopesDropList selectedItem equals: self createNewQuery scope.
-	self assert: presenter directionsDropList selectedItem equals: self createNewQuery directionStrategy
+	self
+		assert: self scopesDropList selectedItem
+		equals: self createNewQuery scope.
+	self
+		assert: self directionsDropList selectedItem
+		equals: self createNewQuery directionStrategy
 ]
 
 { #category : 'running' }
@@ -31,16 +35,28 @@ MiScopeQueriesPresenterTest >> createNewQuery [
 		  yourself
 ]
 
+{ #category : 'accessing-subpresenters' }
+MiScopeQueriesPresenterTest >> directionsDropList [
+
+	^ presenter presenterAt: #directionsDropList
+]
+
 { #category : 'running' }
 MiScopeQueriesPresenterTest >> queryClass [
 	^ FQScopeQuery
 ]
 
+{ #category : 'accessing-subpresenters' }
+MiScopeQueriesPresenterTest >> scopesDropList [
+
+	^ presenter presenterAt: #scopesDropList
+]
+
 { #category : 'tests' }
 MiScopeQueriesPresenterTest >> selectNonSelectedDirection [
 
-	presenter directionsDropList selectItem:
-		presenter directionsDropList items last
+	self directionsDropList selectItem:
+		self directionsDropList items last
 ]
 
 { #category : 'tests' }
@@ -62,13 +78,11 @@ MiScopeQueriesPresenterTest >> testDropListMatchesAvailableScopes [
 	| scopes |
 	scopes := presenter query availableScopes.
 
-	self
-		assert: presenter scopesDropList listItems size
-		equals: scopes size.
+	self assert: self scopesDropList listItems size equals: scopes size.
 
 	self
 		assertCollection: scopes
-		hasSameElements: presenter scopesDropList listItems
+		hasSameElements: self scopesDropList listItems
 ]
 
 { #category : 'tests' }
@@ -83,13 +97,13 @@ MiScopeQueriesPresenterTest >> testDropListMatchesForOtherDirection [
 { #category : 'tests' }
 MiScopeQueriesPresenterTest >> testDropListMatchesQuery [
 
-	presenter directionsDropList selectIndex: 1. 
-	presenter scopesDropList selectItem:
-		(presenter query availableScopes detect: [ :scope | 
+	self directionsDropList selectIndex: 1.
+	self scopesDropList selectItem:
+		(presenter query availableScopes detect: [ :scope |
 			 presenter query scope ~~ scope ]).
 
 	self
-		assert: presenter scopesDropList selectedItem
+		assert: self scopesDropList selectedItem
 		equals: presenter query scope
 ]
 
@@ -98,19 +112,21 @@ MiScopeQueriesPresenterTest >> testNoScopesForADirection [
 
 	self resetPresenterWithEntities: helper entitiesWithNoDownScope.
 
-	presenter directionsDropList selectItem: MQScopeContainedEntitiesStrategy.
+	self directionsDropList selectItem: MQScopeContainedEntitiesStrategy.
 
-	self assert: presenter scopesDropList class identicalTo: NoPossibleQueryPresenter
+	self
+		assert: self scopesDropList class
+		identicalTo: NoPossibleQueryPresenter
 ]
 
 { #category : 'tests' }
 MiScopeQueriesPresenterTest >> testPresenters [
 
 	self
-		assert: presenter directionsDropList class
+		assert: self directionsDropList class
 		identicalTo: SpDropListPresenter.
 	self
-		assert: presenter scopesDropList class
+		assert: self scopesDropList class
 		identicalTo: SpDropListPresenter
 ]
 
@@ -121,29 +137,31 @@ MiScopeQueriesPresenterTest >> testPresentersOnImpossibleQuery [
 	presenter query directionStrategy: nil.
 	presenter setScopesDropList.
 	self
-		assert: presenter directionsDropList class
+		assert: self directionsDropList class
 		identicalTo: SpDropListPresenter.
 
 	self
-		assert: presenter scopesDropList class
+		assert: self scopesDropList class
 		identicalTo: NoPossibleQueryPresenter
 ]
 
 { #category : 'tests' }
 MiScopeQueriesPresenterTest >> testQueryValidity [
 
-	presenter directionsDropList selectItem: MQScopeContainedEntitiesStrategy.
-	presenter scopesDropList selectItem: presenter scopesDropList items anyOne.
+	self directionsDropList selectItem: MQScopeContainedEntitiesStrategy.
+	self scopesDropList selectItem: self scopesDropList items anyOne.
 	self assert: presenter query isValid.
 
 	self selectNonSelectedDirection.
 	self deny: presenter query isValid.
 
-	presenter scopesDropList selectItem: (presenter scopesDropList listItems copyWithout: presenter scopesDropList selectedItem) anyOne.
+	self scopesDropList selectItem:
+		(self scopesDropList listItems copyWithout:
+			 self scopesDropList selectedItem) anyOne.
 	self assert: presenter query isValid.
 
 	self resetPresenterWithEntities: helper entitiesWithNoDownScope.
-	presenter directionsDropList selectItem: MQScopeContainedEntitiesStrategy.
+	self directionsDropList selectItem: MQScopeContainedEntitiesStrategy.
 	self deny: presenter query isValid.
 
 	self resetPresenterWithEntities: helper noEntities.
@@ -156,13 +174,12 @@ MiScopeQueriesPresenterTest >> testRadioButtonsMatchAvailableDirections [
 	| directions |
 	directions := presenter query directionStrategies.
 	self
-		assert: presenter directionsDropList items size
+		assert: self directionsDropList items size
 		equals: directions size.
 
 	self
 		assertCollection: (directions collect: #label)
-		hasSameElements:
-		(presenter directionsDropList items collect: #label)
+		hasSameElements: (self directionsDropList items collect: #label)
 ]
 
 { #category : 'tests' }
@@ -170,6 +187,6 @@ MiScopeQueriesPresenterTest >> testRadioButtonsMatchQuery [
 
 	self selectNonSelectedDirection.
 	self
-		assert: presenter directionsDropList selectedItem label
+		assert: self directionsDropList selectedItem label
 		equals: presenter query directionStrategy label
 ]

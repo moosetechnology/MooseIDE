@@ -17,6 +17,18 @@ MiQueryListItemPresenterTest >> bus [
 	^ self application defaultBus
 ]
 
+{ #category : 'instance creation' }
+MiQueryListItemPresenterTest >> newPresenterOn: aQuery [
+
+	| parentPresenter |
+	parentPresenter := browser presenterAt: #queriesListPresenter.
+
+	^ MiQueryListItemPresenter
+		  on: aQuery
+		  owner: parentPresenter
+		  queriesListPresenter: parentPresenter
+]
+
 { #category : 'running' }
 MiQueryListItemPresenterTest >> setUp [
 
@@ -87,20 +99,22 @@ MiQueryListItemPresenterTest >> testIndentationSpacesPresenters [
 
 	lowQuery1 := FQStringQuery new.
 	lowQuery1 beChildOf: browser rootQuery.
-	presenter parentQuery: lowQuery1.
+	presenter := self newPresenterOn: lowQuery1.
 	self assert: presenter indentationSpacesPresenters size equals: 1.
 
 	lowQuery2 := FQBooleanQuery new.
 	lowQuery2 beChildOf: lowQuery1.
-	presenter parentQuery: lowQuery2.
+	presenter := self newPresenterOn: lowQuery2.
 	self assert: presenter indentationSpacesPresenters size equals: 2.
 
 	complementQuery := FQComplementQuery queryToNegate: lowQuery1.
-	presenter parentQuery: complementQuery.
+	presenter := self newPresenterOn: complementQuery.
 	self assert: presenter indentationSpacesPresenters size equals: 1.
 
-	naryQuery := FQNAryQuery subqueries: { lowQuery1. lowQuery2 }.
-	presenter parentQuery: naryQuery.
+	naryQuery := FQNAryQuery subqueries: {
+			             lowQuery1.
+			             lowQuery2 }.
+	presenter := self newPresenterOn: naryQuery.
 	self assert: presenter indentationSpacesPresenters size equals: 1
 ]
 
@@ -112,21 +126,20 @@ MiQueryListItemPresenterTest >> testName [
 
 { #category : 'tests' }
 MiQueryListItemPresenterTest >> testNewQueryForClass [
-
-	"We check that the method doesn't die when calling it from non unary queries"
+	"We check that the method doesn't die when calling it from non unary queries."
 
 	presenter newQueryForClass: FQComplementQuery.
 	presenter newQueryForClass: FQUnionQuery.
 
 	self
 		assert: (presenter newQueryForClass: FQBooleanQuery) parent
-		equals: presenter parentQuery.
+		equals: browser rootQuery.
 	self
 		assert: (presenter newQueryForClass: FQScopeQuery) parent
-		equals: presenter parentQuery.
+		equals: browser rootQuery.
 	self
 		assert: (presenter newQueryForClass: FQNavigationQuery) parent
-		equals: presenter parentQuery
+		equals: browser rootQuery
 ]
 
 { #category : 'tests' }

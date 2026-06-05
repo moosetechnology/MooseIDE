@@ -9,9 +9,15 @@ Class {
 { #category : 'tests' }
 MiNumericQueryPresenterTest >> assertSubpresentersAreConfigured [
 
-	self assert: presenter propertyDropList selectedItem equals: self createNewQuery property.
-	self assert: presenter valueInputField number equals: self createNewQuery valueToCompare.
-	self assert: presenter comparatorDropList selectedItem equals: self createNewQuery comparator
+	self
+		assert: self propertyDropList selectedItem
+		equals: self createNewQuery property.
+	self
+		assert: self valueInputField number
+		equals: self createNewQuery valueToCompare.
+	self
+		assert: self comparatorDropList selectedItem
+		equals: self createNewQuery comparator
 ]
 
 { #category : 'running' }

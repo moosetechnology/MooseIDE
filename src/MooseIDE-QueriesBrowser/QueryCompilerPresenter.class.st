@@ -7,30 +7,13 @@ Class {
 	#instVars : [
 		'submitButton',
 		'codePresenter',
-		'configuratorPresenter',
-		'closeButton'
+		'closeButton',
+		'configurationPresenter'
 	],
 	#category : 'MooseIDE-QueriesBrowser-Widgets',
 	#package : 'MooseIDE-QueriesBrowser',
 	#tag : 'Widgets'
 }
-
-{ #category : 'accessing' }
-QueryCompilerPresenter >> code [
-	^ codePresenter text
-]
-
-{ #category : 'compiling' }
-QueryCompilerPresenter >> compileQuery [
-
-	| compiledQuery |
-	compiledQuery := codePresenter
-		evaluate: codePresenter text
-		onCompileError: [ :e | ^ self ]
-		onError: [ :e | e pass ].
-	compiledQuery beChildOf: configuratorPresenter owner specModel rootQuery.
-	^ compiledQuery
-]
 
 { #category : 'initialization' }
 QueryCompilerPresenter >> initialExtent [
@@ -39,18 +22,13 @@ QueryCompilerPresenter >> initialExtent [
 ]
 
 { #category : 'initialization' }
-QueryCompilerPresenter >> initialize [ 
-	super initialize.
-	codePresenter text: 'FQCollectScriptQuery script: [ :mooseEntity | "Your code here" ]'
-]
-
-{ #category : 'initialization' }
 QueryCompilerPresenter >> initializeButtons [
-	
+
 	submitButton := self newButton.
 	submitButton
 		label: 'Submit';
-		icon: (self iconNamed: #smallDoIt).
+		icon: (self iconNamed: #smallDoIt);
+		action: [ self updateConfigurationPresenter ].
 	closeButton := self newButton.
 	closeButton
 		label: 'Close';
@@ -63,7 +41,8 @@ QueryCompilerPresenter >> initializeCoder [
 	codePresenter := self newCode.
 	codePresenter
 		withoutLineNumbers;
-		beForScripting
+		beForScripting;
+		text: '[ :mooseEntity | "Your code here" ]'
 ]
 
 { #category : 'initialization' }
@@ -96,14 +75,37 @@ QueryCompilerPresenter >> initializePresenters [
 	self initializeLayout
 ]
 
+{ #category : 'as yet unclassified' }
+QueryCompilerPresenter >> selectBlockBehavior [
+	"Select the comment so we can start coding immediately by replacing it with the expected behavior."
+
+	codePresenter
+		selectionInterval: (18 to: codePresenter text size - 2);
+		takeKeyboardFocus
+]
+
 { #category : 'accessing - model' }
 QueryCompilerPresenter >> setModelBeforeInitialization: aModel [
 
-	configuratorPresenter := aModel
+	configurationPresenter := aModel
 ]
 
 { #category : 'compiling' }
-QueryCompilerPresenter >> submitQueryAction: aBlock [
+QueryCompilerPresenter >> updateConfigurationPresenter [
 
-	submitButton action: aBlock
+	| compiledBlock currentScript |
+	currentScript := configurationPresenter query script.
+	(currentScript isNotNil and: [
+			 codePresenter text
+			 = configurationPresenter query script sourceNode sourceCode ])
+		ifTrue: [ ^ self ].
+
+	configurationPresenter updateLabel: codePresenter text.
+	compiledBlock := codePresenter
+		                 evaluate: codePresenter text
+		                 onCompileError: [ :e | ^ self ]
+		                 onError: [ :e | ^ self ].
+
+	configurationPresenter computeQueryAction:
+		(configurationPresenter query script: compiledBlock)
 ]

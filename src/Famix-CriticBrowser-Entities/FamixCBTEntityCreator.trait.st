@@ -17,7 +17,6 @@ FamixCBTEntityCreator classSide >> annotation [
 	<FMClass: #TEntityCreator super: #Object>
 	<package: #'Famix-CriticBrowser-Entities'>
 	<generated>
-	^ self
 ]
 
 { #category : 'entity creation' }

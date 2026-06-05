@@ -5,9 +5,12 @@ Class {
 	#name : 'MiManualQueryPresenter',
 	#superclass : 'MiQueryConfiguratorPresenter',
 	#instVars : [
-		'writeQueryButton',
 		'parentQuery',
-		'queryCoder'
+		'queryCoder',
+		'collectQueryButton',
+		'selectQueryButton',
+		'editScriptButton',
+		'scriptLabel'
 	],
 	#category : 'MooseIDE-QueriesBrowser-Configuration presenters',
 	#package : 'MooseIDE-QueriesBrowser',
@@ -17,47 +20,40 @@ Class {
 { #category : 'compiling' }
 MiManualQueryPresenter >> compileQuery [
 
-	| compiledQuery |
-	compiledQuery := queryCoder compileQuery.
-	query := compiledQuery.
+	query := queryCoder compiledQuery.
+	query beChildOf: parentQuery.
 	self notifyQueryChanged
 ]
 
 { #category : 'api - actions' }
 MiManualQueryPresenter >> configureFor: aQuery [
 
+	query := aQuery
 ]
 
 { #category : 'actions' }
-MiManualQueryPresenter >> configureQuery: queryString [
-]
+MiManualQueryPresenter >> configureQuery: aQuery [
 
-{ #category : 'initialization' }
-MiManualQueryPresenter >> initialize [
-
-	super initialize.
-	query := FQNullQuery new
+	query := aQuery
 ]
 
 { #category : 'initialization' }
 MiManualQueryPresenter >> initializeButton [
 
-	writeQueryButton := self newButton.
-	writeQueryButton
-		label: 'Code a query';
+	editScriptButton := self newButton.
+	editScriptButton
+		label: 'Edit script';
 		icon: (self iconNamed: #edit);
-		action: [ self openQueryCoderPopup ]
-]
-
-{ #category : 'layout' }
-MiManualQueryPresenter >> initializeLayout [
-
-	self layout: self newLayout
+		action: [
+				owner owner selectItem: owner.
+				self openQueryCoderPopup ]
 ]
 
 { #category : 'initialization' }
 MiManualQueryPresenter >> initializePresenters [
- 
+
+	self initializeRadioButtons.
+	self initializeScriptLabel.
 	self initializeButton.
 	self initializeQueryCoder.
 	self initializeLayout
@@ -67,34 +63,61 @@ MiManualQueryPresenter >> initializePresenters [
 MiManualQueryPresenter >> initializeQueryCoder [
 
 	queryCoder := self instantiate: QueryCompilerPresenter on: self.
-	queryCoder submitQueryAction: [ self compileQuery ]
+]
+
+{ #category : 'as yet unclassified' }
+MiManualQueryPresenter >> initializeRadioButtons [
+
+	collectQueryButton := self newRadioButton
+		                      addStyle: #smallRadioButton;
+		                      label: 'Collect';
+		                      whenActivatedDo: [
+			                      self computeQueryAction: query beCollect ];
+		                      yourself.
+	selectQueryButton := self newRadioButton
+		                     addStyle: #smallRadioButton;
+		                     label: 'Select';
+		                     whenActivatedDo: [
+			                     self computeQueryAction: query beSelect ];
+		                     yourself.
+	^ collectQueryButton associatedRadioButtons: { selectQueryButton }
+]
+
+{ #category : 'as yet unclassified' }
+MiManualQueryPresenter >> initializeScriptLabel [
+
+	^ scriptLabel := self newLabel
+		                     label: '[ :mooseEntity | "Your code here" ]';
+		                     yourself
 ]
 
 { #category : 'layout' }
 MiManualQueryPresenter >> newLayout [
 
-	| label |
-	label := self newLabel label: 'Manual Query     '.
-
-	^ SpBoxLayout newLeftToRight
-		vAlignCenter;
-		add: label expand: false;
-		add: writeQueryButton expand: false;
-		yourself
+	^ self newBoxLayoutLeftToRight
+		  vAlignCenter;
+		  spacing: 5;
+		  add: collectQueryButton expand: false;
+		  add: selectQueryButton expand: false;
+		  add: scriptLabel;
+		  add: editScriptButton expand: false;
+		  yourself
 ]
 
 { #category : 'actions' }
 MiManualQueryPresenter >> openQueryCoderPopup [
 
 	self newPopover
-		relativeTo: writeQueryButton;
-		bePositionRight;
+		relativeTo: editScriptButton;
+		bePositionBottom;
 		presenter: queryCoder;
-		popup
+		popup;
+		whenClosedDo: [ queryCoder updateConfigurationPresenter ].
+	queryCoder selectBlockBehavior
 ]
 
-{ #category : 'accessing - model' }
-MiManualQueryPresenter >> setModelBeforeInitialization: aParentQuery [
+{ #category : 'updating' }
+MiManualQueryPresenter >> updateLabel: aString [
 
-	parentQuery := aParentQuery
+	scriptLabel label: aString
 ]

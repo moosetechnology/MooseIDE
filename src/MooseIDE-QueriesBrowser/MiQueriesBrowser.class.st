@@ -227,16 +227,28 @@ MiQueriesBrowser >> selectedQuery [
 	^ specModel selectedQuery
 ]
 
+{ #category : 'as yet unclassified' }
+MiQueriesBrowser >> showResultComputingErrorPresenter [
+
+	queryResultTreePresenter := self newLabel label:
+		                            'Error while computing result'.
+	queryNotebookPresenter resetAllPageContents
+]
+
 { #category : 'actions' }
 MiQueriesBrowser >> showResultOfQuery: aQuery [
 
 	| result |
 	self enableProgressNotification.
 
-	result := aQuery result.
+	result := [ aQuery result ]
+		          on: NonBooleanReceiver
+		          do: [
+				          self showResultComputingErrorPresenter.
+				          ^ self ].
 
 	self initializeResultTreePresenter.
-	"This will sho the correct queryResultTreePresenter:"
+	"This will show the correct queryResultTreePresenter:"
 	queryNotebookPresenter resetAllPageContents
 ]
 
@@ -245,7 +257,7 @@ MiQueriesBrowser >> updateResultPresenterForQuery: aQuery [
 
 	aQuery isValid
 		ifTrue: [ self showResultOfQuery: aQuery ]
-		ifFalse: [ 
+		ifFalse: [
 		queryResultTreePresenter updateForEntities: MooseGroup new ]
 ]
 

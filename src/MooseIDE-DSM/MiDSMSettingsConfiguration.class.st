@@ -12,12 +12,10 @@ Class {
 MiDSMSettingsConfiguration >> settingsPresenters [
 
 	^ OrderedCollection with: ((MiBooleanSettingPresenter on: self)
-			   label: 'Show self dependencies';
-			   help:
-				   'Show the number of dependencies of an entity on itself on the diagonal of the matrix.';
-			   state: shouldShowSelfDependencies;
-			   whenStateChangedDo: [ :boolean |
-				   self shouldShowSelfDependencies: boolean ];
+			   label: 'Show self dependencies' ;
+			   help: 'Show the number of dependencies of an entity on itself on the diagonal of the matrix.' ;
+			   state: shouldShowSelfDependencies ;
+			   whenStateChangedDo: [ :boolean | self shouldShowSelfDependencies: boolean ] ;
 			   yourself)
 ]
 
