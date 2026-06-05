@@ -120,12 +120,6 @@ MiUMLBrowser >> highlightEntity: anEntity [
 ]
 
 { #category : 'accessing' }
-MiUMLBrowser >> miSelectedItem [
-
-	^ specModel selected ifNil: [ specModel entities ]
-]
-
-{ #category : 'accessing' }
 MiUMLBrowser >> selected: anEntity [
 
 	specModel selected: anEntity

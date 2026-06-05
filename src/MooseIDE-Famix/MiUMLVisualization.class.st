@@ -27,7 +27,7 @@ MiUMLVisualization >> buildClassDescriptorForModel: aModel [
 	^ desc
 ]
 
-{ #category : 'initialization' }
+{ #category : 'running' }
 MiUMLVisualization >> buildInCanvas: aCanvas [
 
 	rootEntities ifNil: [ ^ self ].
@@ -45,7 +45,7 @@ MiUMLVisualization >> buildInCanvas: aCanvas [
 				((MiSelection on: [ :entity | self owner selected: entity ])
 					 marginPercentage: 0.2) ].
 
-	^ aCanvas @ RSCanvasController new noLegend
+	^ aCanvas @ RSCanvasController new
 ]
 
 { #category : 'running' }
@@ -78,4 +78,14 @@ MiUMLVisualization >> noHighlightColorFor: anEntity [
 MiUMLVisualization >> rootEntities: anObject [
 
 	rootEntities := anObject
+]
+
+{ #category : 'searching' }
+MiUMLVisualization >> shapeFromEntity: anEntity [
+	"search for the RSShape in the canvas that represent anEntity returns nil otherwise
+	 each RSShape contains a HNode which contains an entity"
+
+	^ self canvas deepNodes
+		  detect: [ :shape | shape model = anEntity ]
+		  ifNone: [ nil ]
 ]
