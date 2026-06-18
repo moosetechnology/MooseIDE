@@ -146,7 +146,7 @@ MiDeadCodeBrowserModelTest >> setUp [
 MiDeadCodeBrowserModelTest >> testGatherRulesList [
 	"Expected number must be updated according to number of non abstract rule classes"
 
-	self assert: model availableRules size equals: 12
+	self assert: model availableRules size equals: 13
 ]
 
 { #category : 'tests' }
@@ -352,6 +352,102 @@ MiDeadCodeBrowserModelTest >> testJavaImplementsRuleWithOverride [
 	self javaClass: entity1 parentType implements: entity3 parentType.
 
 	self assert: (MiDeadJavaImplementsAbstractRule new isDead: entity1)
+]
+
+{ #category : 'tests - heuristics' }
+MiDeadCodeBrowserModelTest >> testJavaInitializerRuleDefaultConstructor [
+
+	| entity1 |
+	entity1 := 	FamixJavaInitializer new.
+
+	self deny: (MiDeadJavaInitializerRule new isDead: entity1)
+]
+
+{ #category : 'tests - heuristics' }
+MiDeadCodeBrowserModelTest >> testJavaInitializerRuleNonDefaultConstructor [
+
+	| entity1 |
+	entity1 := FamixJavaInitializer new.
+	entity1 name: 'SomeClass'.
+	entity1 parentType: (FamixJavaClass new name: 'SomeClass' ; yourself).
+	FamixJavaParameter new
+		parentBehaviouralEntity: entity1.
+
+	self assert: (MiDeadJavaInitializerRule new isDead: entity1)
+]
+
+{ #category : 'tests - heuristics' }
+MiDeadCodeBrowserModelTest >> testJavaInitializerRuleNotConstructor [
+
+	| entity1 |
+	entity1 := self javaClassMethod: 'doSomething()'.
+
+	self assert: (MiDeadJavaInitializerRule new isDead: entity1)
+]
+
+{ #category : 'tests - heuristics' }
+MiDeadCodeBrowserModelTest >> testJavaNonDefaultConstructorRuleInheritsObject [
+	"classes inheriting from 'Object' do not need explicit constructor (ie. there constructor can be dead)"
+
+	| entity1 rule |
+	entity1 := FamixJavaInitializer new.
+	entity1 parentType: FamixJavaClass new.
+	entity1 parentType name: 'SomeClass'.
+	entity1 name: entity1 parentType name.
+	self javaClass: entity1 parentType inherits: (FamixJavaClass new name: 'Object' ; yourself).
+
+	rule := MiDeadJavaNonDefaultConstructorRule new.
+	rule deadCodeModel: model.
+	model addDeadEntity: entity1.
+
+	self assert: (rule isDead: entity1)
+]
+
+{ #category : 'tests - heuristics' }
+MiDeadCodeBrowserModelTest >> testJavaNonDefaultConstructorRuleIsNotConstructor [
+
+	| entity1 rule |
+	entity1 := 	self javaClassMethod: 'someMethod()'.
+	rule := MiDeadJavaNonDefaultConstructorRule new.
+	rule deadCodeModel: model.
+
+	self assert: (rule isDead: entity1)
+]
+
+{ #category : 'tests - heuristics' }
+MiDeadCodeBrowserModelTest >> testJavaNonDefaultConstructorRuleWithOtherConstructor [
+	"there is 'another' constructor (even if this is the same here) not dead
+	 so the main one can be dead"
+
+	| entity1 rule |
+	entity1 := FamixJavaInitializer new.
+	entity1 parentType: FamixJavaClass new.
+	entity1 parentType name: 'SomeClass'.
+	entity1 name: entity1 parentType name.
+	self javaClass: entity1 parentType inherits: (FamixJavaClass new name: 'Object' ; yourself).
+
+	rule := MiDeadJavaNonDefaultConstructorRule new.
+	rule deadCodeModel: model.
+
+	self assert: (rule isDead: entity1)
+]
+
+{ #category : 'tests - heuristics' }
+MiDeadCodeBrowserModelTest >> testJavaNonDefaultConstructorRuleWithoutOtherConstructor [
+	"no other constructor not dead, so the main one cannot be dead"
+
+	| entity1 rule |
+	entity1 := FamixJavaInitializer new.
+	entity1 parentType: FamixJavaClass new.
+	entity1 parentType name: 'SomeClass'.
+	entity1 name: entity1 parentType name.
+	self javaClass: entity1 parentType inherits: (FamixJavaClass new name: 'SuperClazz' ; yourself).
+
+	rule := MiDeadJavaNonDefaultConstructorRule new.
+	rule deadCodeModel: model.
+	model addDeadEntity: entity1.
+
+	self deny: (rule isDead: entity1)
 ]
 
 { #category : 'tests - heuristics' }
