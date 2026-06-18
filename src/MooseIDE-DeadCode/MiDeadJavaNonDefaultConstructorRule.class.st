@@ -20,14 +20,18 @@ MiDeadJavaNonDefaultConstructorRule >> deadCodeModel: aBrowserModel [
 ]
 
 { #category : 'testing' }
-MiDeadJavaNonDefaultConstructorRule >> hasNotDeadconstructor: aTWithMethod [
+MiDeadJavaNonDefaultConstructorRule >> hasOtherConstructorNotDead: aTWithMethod [
+	"Called to check whether a constructor can be considered dead or not.
+	 If there is only one constructor, then there is no other
+	 Other wise checks whether there is a constructor that is not dead"
 
-	| deadMethods |
+	| deadMethods constructors |
+	constructors := aTWithMethod methods select: [ :m | m isConstructor ].
+
+	(constructors size < 2) ifTrue: [ ^false ].
+
 	deadMethods := deadCodeModel deadEntities.
-
-	^aTWithMethod methods anySatisfy: [ :m |
-		m isConstructor and: [ (deadMethods includes: m) not ]
-	]
+	^constructors anySatisfy: [ :c | (deadMethods includes: c) not ]
 ]
 
 { #category : 'accessing' }
@@ -48,5 +52,5 @@ MiDeadJavaNonDefaultConstructorRule >> notDead: aTMethod [
 	parentType := aTMethod parentType.
 	(parentType superclass name = 'Object') ifTrue: [ ^ false ].
 
-	^(self hasNotDeadconstructor: parentType) not
+	^(self hasOtherConstructorNotDead: parentType) not
 ]
