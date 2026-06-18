@@ -27,6 +27,11 @@ MiDeadAbstractRule class >> isAbstract [
 ]
 
 { #category : 'accessing' }
+MiDeadAbstractRule >> deadCodeModel: aBrowserModel [
+	"do nothing by default if a rule need this, it should store the model"
+]
+
+{ #category : 'accessing' }
 MiDeadAbstractRule >> description [
 
 	^(self refuteDead
@@ -54,12 +59,6 @@ MiDeadAbstractRule >> isDead: aTMethod [
 	^self refuteDead
 		ifTrue: [ (self notDead: aTMethod) not ]
 		ifFalse: [ self subclassResponsibility ]
-]
-
-{ #category : 'accessing' }
-MiDeadAbstractRule >> isForEntryPoint [
-
-	^false
 ]
 
 { #category : 'accessing' }

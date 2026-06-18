@@ -47,10 +47,12 @@ MiDeadCodeBrowserModel >> availableRules [
 
 { #category : 'actions' }
 MiDeadCodeBrowserModel >> chooseRules: heuristicCollection [
-	"add all of heuristicCollection  to the internal list of chosenHeuristics"
+	"add all of heuristicCollection to the internal list of chosenHeuristics"
 
 	| configuredRules |
 	configuredRules := heuristicCollection collect: #whenChosen.
+	configuredRules do: [ :rule | rule deadCodeModel: self ].
+
 	chosenRules := (chosenRules union: configuredRules)
 		sort: self rulesSortBlock.
 
