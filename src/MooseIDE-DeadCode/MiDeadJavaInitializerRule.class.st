@@ -12,33 +12,6 @@ Class {
 	#tag : 'Rules'
 }
 
-{ #category : 'visiting' }
-MiDeadJavaInitializerRule >> accept: aTMethod [
-
-	^self notDead: aTMethod 
-]
-
-{ #category : 'testing' }
-MiDeadJavaInitializerRule >> classHasNonDefaultConstructor: aClass [
-
-	aClass methods
-		detect: [ :m | m isConstructor and: [ m parameters isNotEmpty ] ]
-		ifOne: [ :nonDefaultConstructor | ^true ]
-		ifNone: [ ^false ]
-
-]
-
-{ #category : 'testing' }
-MiDeadJavaInitializerRule >> isDefaultConstructor: aTMethod [
-	"the default constructor (no parameter) is always called"
-
-	aTMethod isConstructor ifFalse: [ ^false ].
-	aTMethod parameters ifNotEmpty: [ ^false ].
-
-	^true
-
-]
-
 { #category : 'testing' }
 MiDeadJavaInitializerRule >> isEnumConstructor: aTMethod [
 	"For simplification, we assume enum constructors are always called.
@@ -49,31 +22,16 @@ MiDeadJavaInitializerRule >> isEnumConstructor: aTMethod [
 ]
 
 { #category : 'accessing' }
-MiDeadJavaInitializerRule >> isForEntryPoint [
-
-	^true
-]
-
-{ #category : 'testing' }
-MiDeadJavaInitializerRule >> isInitializerBlock: aTMethod [
-
-	^aTMethod name = '<Initializer>'
-]
-
-{ #category : 'accessing' }
 MiDeadJavaInitializerRule >> name [
 
-	^super name , 'Defautl constructor/Initialization block'
+	^super name , 'Default constructor/Initialization block'
 ]
 
 { #category : 'testing' }
 MiDeadJavaInitializerRule >> notDead: aTMethod [
 
-	| parentType |
-	parentType := aTMethod parentType.
-
-	^(self isInitializerBlock: aTMethod ) or:
-	[  (self isDefaultConstructor: aTMethod)  or:
+	^(aTMethod name = '<Initializer>') or:
+	[  (aTMethod isDefaultConstructor)  or:
 	[  self isEnumConstructor: aTMethod ] ]
 
 ]

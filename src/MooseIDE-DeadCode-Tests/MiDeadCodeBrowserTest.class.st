@@ -183,7 +183,7 @@ MiDeadCodeBrowserTest >> testChoosingRuleGroup [
 
 	self browserChooseRulesButtonPresenter click.
 
-	self assert: browser specModel chosenRules size equals: 7
+	self assert: browser specModel chosenRules size equals: 8
 ]
 
 { #category : 'tests' }
