@@ -51,9 +51,12 @@ MiBulkEditor >> enlargeInterval: methodInterval [
 { #category : 'intervals' }
 MiBulkEditor >> includeIndentationSpaces: bulkInterval [
 	"Adds indentation spaces before interval
+	 If interval starts at 1, there cannot be anything before
 	 If a non space character is found before the begining of the line, then cancel everything"
 
 	| i endOfLine |
+
+	(bulkInterval first = 1) ifTrue: [ ^bulkInterval ].
 
 	i := bulkInterval first - 1.
 	endOfLine := String crlf.
