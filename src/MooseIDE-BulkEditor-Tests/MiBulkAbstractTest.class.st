@@ -21,6 +21,12 @@ MiBulkAbstractTest >> commentMethod: aMethod withPos: pos [
 ]
 
 { #category : 'running' }
+MiBulkAbstractTest >> editorClass [
+
+	self subclassResponsibility 
+]
+
+{ #category : 'running' }
 MiBulkAbstractTest >> fileReferenceFor: aFileName [
 
 	^FileSystem memory root / aFileName
@@ -47,6 +53,6 @@ MiBulkAbstractTest >> setUp [
 
 	super setUp.
 
-	bulkEditor := self rewriterClass new.
+	bulkEditor := self editorClass new.
 
 ]

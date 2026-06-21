@@ -12,7 +12,7 @@ Class {
 }
 
 { #category : 'running' }
-MiBulkEditDuplicatedConstantesTest >> rewriterClass [
+MiBulkEditDuplicatedConstantesTest >> editorClass [
 
 	^MiBulkEditDuplicatedConstantes
 ]

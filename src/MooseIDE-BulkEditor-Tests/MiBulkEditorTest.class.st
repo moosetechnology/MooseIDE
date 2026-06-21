@@ -21,7 +21,7 @@ MiBulkEditorTest >> bulkEditorPreviousContent: aString [
 ]
 
 { #category : 'running' }
-MiBulkEditorTest >> rewriterClass [
+MiBulkEditorTest >> editorClass [
 
 	^MiBulkEditor
 ]
