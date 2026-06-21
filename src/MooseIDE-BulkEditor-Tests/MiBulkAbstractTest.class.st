@@ -43,12 +43,6 @@ MiBulkAbstractTest >> methodWithPos: pos [
 ]
 
 { #category : 'running' }
-MiBulkAbstractTest >> rewriterClass [
-
-	self subclassResponsibility 
-]
-
-{ #category : 'running' }
 MiBulkAbstractTest >> setUp [
 
 	super setUp.
