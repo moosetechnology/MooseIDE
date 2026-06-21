@@ -10,12 +10,6 @@ Class {
 }
 
 { #category : 'running' }
-MiBulkAbstractTest >> classToTest [
-
-	self subclassResponsibility 
-]
-
-{ #category : 'running' }
 MiBulkAbstractTest >> commentMethod: aMethod withPos: pos [
 
 	^FamixJavaComment new
@@ -43,10 +37,16 @@ MiBulkAbstractTest >> methodWithPos: pos [
 ]
 
 { #category : 'running' }
+MiBulkAbstractTest >> rewriterClass [
+
+	self subclassResponsibility 
+]
+
+{ #category : 'running' }
 MiBulkAbstractTest >> setUp [
 
 	super setUp.
 
-	bulkEditor := self classToTest new.
+	bulkEditor := self rewriterClass new.
 
 ]

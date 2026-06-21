@@ -1,15 +1,16 @@
 Class {
 	#name : 'MiBulkRewriterAbstractTest',
-	#superclass : 'MiBulkAbstractTest',
+	#superclass : 'TestCase',
 	#instVars : [
-		'lines'
+		'lines',
+		'bulkRewriter'
 	],
 	#category : 'MooseIDE-BulkEditor-Tests',
 	#package : 'MooseIDE-BulkEditor-Tests'
 }
 
 { #category : 'running' }
-MiBulkRewriterAbstractTest >> join: lines with: separator [
+MiBulkRewriterAbstractTest >> joinLinesWith: separator [
 
 	^String streamContents: [ :st |
 		lines
@@ -19,17 +20,26 @@ MiBulkRewriterAbstractTest >> join: lines with: separator [
 ]
 
 { #category : 'running' }
-MiBulkRewriterAbstractTest >> joinLinesWith: separator [
+MiBulkRewriterAbstractTest >> rewriterClass [
 
-	^self join: lines with: separator
+	self subclassResponsibility 
 ]
 
-{ #category : 'tests' }
+{ #category : 'running' }
+MiBulkRewriterAbstractTest >> runOnIntervals: intervals withLineEnder: lineEnder [
+
+	bulkRewriter content: (self joinLinesWith: lineEnder).
+	bulkRewriter editIntervals: intervals.
+	bulkRewriter run
+]
+
+{ #category : 'running' }
 MiBulkRewriterAbstractTest >> setUp [ 
 
 	super setUp.
 
-	bulkEditor stream: String new writeStream.
+	bulkRewriter := self rewriterClass new.
+	bulkRewriter stream: String new writeStream.
 	lines := { 'l1__5' . 'l2_4' . 'l3______10' }
 
 ]
