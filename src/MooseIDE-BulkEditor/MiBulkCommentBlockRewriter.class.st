@@ -27,7 +27,8 @@ MiBulkCommentBlockRewriter >> endOfFile [
 
 { #category : 'actions' }
 MiBulkCommentBlockRewriter >> insideInterval: c [
-	"all actions default to copying the input"
+	"deal with end of block comment inside an interval
+	 we don't want the block comment to end here"
 
 	((c = $/) and: [ previousC = $* ])
 		ifTrue: [ stream << $_ ].
@@ -38,8 +39,7 @@ MiBulkCommentBlockRewriter >> insideInterval: c [
 
 { #category : 'actions' }
 MiBulkCommentBlockRewriter >> intervalEnd: c [
-	"override because #nextLineDo: is different
-	 see comment in super-class"
+	"no super, override to redefine #nextLineDo: . See comment in super-class"
 
 	self insideInterval: c.
 	self nextLineDo: [
