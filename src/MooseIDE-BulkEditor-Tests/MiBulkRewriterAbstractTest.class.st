@@ -10,6 +10,15 @@ Class {
 }
 
 { #category : 'running' }
+MiBulkRewriterAbstractTest >> interval: aPoint data: entityName [
+
+	^MiBulkInterval
+		from: aPoint x
+		to: aPoint y
+		data: (FamixJavaMethod new name: entityName ; yourself)
+]
+
+{ #category : 'running' }
 MiBulkRewriterAbstractTest >> joinLinesWith: separator [
 
 	^String streamContents: [ :st |
