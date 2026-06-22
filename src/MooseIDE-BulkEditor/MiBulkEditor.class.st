@@ -25,6 +25,13 @@ Class {
 	#package : 'MooseIDE-BulkEditor'
 }
 
+{ #category : 'options' }
+MiBulkEditor >> addTrace [
+
+	rewriter := MiBulkAddJavaTraceRewriter.
+	mergeIntervals := false
+]
+
 { #category : 'intervals' }
 MiBulkEditor >> collectIntervals: data [
 
