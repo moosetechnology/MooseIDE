@@ -19,7 +19,7 @@ Class {
 	#instVars : [
 		'rewriter',
 		'previousFileContent',
-		'mergeIntervals'
+		'strictIntervals'
 	],
 	#category : 'MooseIDE-BulkEditor',
 	#package : 'MooseIDE-BulkEditor'
@@ -29,7 +29,7 @@ Class {
 MiBulkEditor >> addTrace [
 
 	rewriter := MiBulkAddJavaTraceRewriter.
-	mergeIntervals := false
+	strictIntervals := true
 ]
 
 { #category : 'intervals' }
@@ -49,7 +49,7 @@ MiBulkEditor >> collectIntervals: data [
 MiBulkEditor >> commentLines [
 
 	rewriter := MiBulkCommentBlockRewriter.
-	mergeIntervals := true
+	strictIntervals := false
 ]
 
 { #category : 'running' }
@@ -79,6 +79,8 @@ MiBulkEditor >> enlargeInterval: methodInterval [
 	 then see if there are indentation spaces to add to the first line"
 
 	| tempInterval |
+	strictIntervals ifTrue: [ ^methodInterval ].
+
 	tempInterval := self intervalWithMethodComment: methodInterval.
 	^self includeIndentationSpaces: tempInterval 
 ]
@@ -97,6 +99,8 @@ MiBulkEditor >> includeIndentationSpaces: bulkInterval [
 	 If a non space character is found before the begining of the line, then cancel everything"
 
 	| i endOfLine |
+
+	strictIntervals ifTrue: [ ^bulkInterval ].
 
 	(bulkInterval first = 1) ifTrue: [ ^bulkInterval ].
 
@@ -158,7 +162,8 @@ MiBulkEditor >> mergeIntervals: intervals [
 	"merge together 2 intervals separated only by blank lines"
 
 	| intervalsIterator lastInterval merged |
-	mergeIntervals ifFalse: [ ^intervals ].
+
+	strictIntervals ifTrue: [ ^intervals ].
 
 	merged := OrderedCollection new: intervals size.
 	intervalsIterator := intervals iterator withCollectionAPI.
@@ -191,7 +196,7 @@ MiBulkEditor >> mooseModel: entities [
 MiBulkEditor >> removeLines [
 
 	rewriter := MiBulkRemoveLinesRewriter.
-	mergeIntervals := true
+	strictIntervals := false
 ]
 
 { #category : 'running' }
@@ -224,4 +229,11 @@ MiBulkEditor >> sortByPosition: intervals [
 	"sort intervals in increasing order"
 
 	^intervals sorted: [ :i | i first ] ascending
+]
+
+{ #category : 'accessing' }
+MiBulkEditor >> strictIntervals: aBoolean [
+	"having  strcitIntervals' means, do not enlarge or merge intervals"
+
+	strictIntervals := aBoolean 
 ]
