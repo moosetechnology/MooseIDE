@@ -17,20 +17,12 @@ Class {
 	#name : 'MiBulkEditor',
 	#superclass : 'Object',
 	#instVars : [
-		'rewriter',
 		'previousFileContent',
-		'strictIntervals'
+		'rewriterClass'
 	],
 	#category : 'MooseIDE-BulkEditor',
 	#package : 'MooseIDE-BulkEditor'
 }
-
-{ #category : 'options' }
-MiBulkEditor >> addTrace [
-
-	rewriter := MiBulkAddJavaTraceRewriter.
-	strictIntervals := true
-]
 
 { #category : 'intervals' }
 MiBulkEditor >> collectIntervals: data [
@@ -43,13 +35,6 @@ MiBulkEditor >> collectIntervals: data [
 				to: entity sourceAnchor endPos
 				data: entity
 	]
-]
-
-{ #category : 'options' }
-MiBulkEditor >> commentLines [
-
-	rewriter := MiBulkCommentBlockRewriter.
-	strictIntervals := false
 ]
 
 { #category : 'running' }
@@ -79,7 +64,7 @@ MiBulkEditor >> enlargeInterval: methodInterval [
 	 then see if there are indentation spaces to add to the first line"
 
 	| tempInterval |
-	strictIntervals ifTrue: [ ^methodInterval ].
+	self strictIntervals ifTrue: [ ^methodInterval ].
 
 	tempInterval := self intervalWithMethodComment: methodInterval.
 	^self includeIndentationSpaces: tempInterval 
@@ -100,7 +85,7 @@ MiBulkEditor >> includeIndentationSpaces: bulkInterval [
 
 	| i endOfLine |
 
-	strictIntervals ifTrue: [ ^bulkInterval ].
+	self strictIntervals ifTrue: [ ^bulkInterval ].
 
 	(bulkInterval first = 1) ifTrue: [ ^bulkInterval ].
 
@@ -121,13 +106,6 @@ MiBulkEditor >> includeIndentationSpaces: bulkInterval [
 				to: bulkInterval last
 				data: bulkInterval data ]
 		ifFalse: [ bulkInterval ]
-]
-
-{ #category : 'initialization' }
-MiBulkEditor >> initialize [ 
-
-	"default"
-	self commentLines 
 ]
 
 { #category : 'intervals' }
@@ -163,7 +141,7 @@ MiBulkEditor >> mergeIntervals: intervals [
 
 	| intervalsIterator lastInterval merged |
 
-	strictIntervals ifTrue: [ ^intervals ].
+	self strictIntervals ifTrue: [ ^intervals ].
 
 	merged := OrderedCollection new: intervals size.
 	intervalsIterator := intervals iterator withCollectionAPI.
@@ -192,24 +170,23 @@ MiBulkEditor >> mooseModel: entities [
 	^entities anyOne mooseModel
 ]
 
-{ #category : 'options' }
-MiBulkEditor >> removeLines [
-
-	rewriter := MiBulkRemoveLinesRewriter.
-	strictIntervals := false
-]
-
 { #category : 'running' }
 MiBulkEditor >> rewriteFile: aFileReference atIntervals: intervalsToEdit [
 
 	aFileReference delete.
 	
 	aFileReference writeStreamDo: [ :st |
-		rewriter new
+		rewriterClass new
 			stream: st ;
 			content: previousFileContent ;
 			editIntervals: intervalsToEdit ;
 			run ].
+]
+
+{ #category : 'accessing' }
+MiBulkEditor >> rewriterClass: aMiBulkCommentBlockRewriter [ 
+
+	rewriterClass := aMiBulkCommentBlockRewriter
 ]
 
 { #category : 'running' }
@@ -232,8 +209,8 @@ MiBulkEditor >> sortByPosition: intervals [
 ]
 
 { #category : 'accessing' }
-MiBulkEditor >> strictIntervals: aBoolean [
+MiBulkEditor >> strictIntervals [
 	"having  strcitIntervals' means, do not enlarge or merge intervals"
 
-	strictIntervals := aBoolean 
+	^rewriterClass strictIntervals
 ]
