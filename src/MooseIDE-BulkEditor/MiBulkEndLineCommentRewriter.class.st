@@ -1,7 +1,7 @@
 "
-a BulkRewriter that adds a comment on the lines of duplicated Java String constantes (`public static final String`)
+A rewriter that adds a comment on the declaration line of an entity:  ""`// same constant as: ...`""
 
-The duplicated constantes can be found with this script:
+*Note:* Duplicated constantes in Java code can be found with this script:
 ```
 attributes := your_model allAttributes reject: #isStub.
 statics := attributes select: [ :a |

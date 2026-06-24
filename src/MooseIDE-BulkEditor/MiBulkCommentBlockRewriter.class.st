@@ -1,5 +1,5 @@
 "
-a BulkRewriter that comment out the intervals by adding (C type) block comment around it
+A rewriter that comments out the entities by adding (C type) block comment around it
 "
 Class {
 	#name : 'MiBulkCommentBlockRewriter',

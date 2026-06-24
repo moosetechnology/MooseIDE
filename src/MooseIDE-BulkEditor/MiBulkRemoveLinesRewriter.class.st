@@ -1,5 +1,5 @@
 "
-a BulkRewriter that remove the editIntervals from the intial content
+A rewriter that removes out the entities from the intial content
 "
 Class {
 	#name : 'MiBulkRemoveLinesRewriter',

@@ -1,3 +1,6 @@
+"
+A rewriter that adds a Java trace statement (`System.out.println(...`) after the first '{' of entities
+"
 Class {
 	#name : 'MiBulkAddJavaTraceRewriter',
 	#superclass : 'MiBulkAbstractRewriter',
