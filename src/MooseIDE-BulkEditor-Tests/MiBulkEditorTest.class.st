@@ -4,6 +4,9 @@ A P16BulkEditorTest is a test class for testing the behavior of P16BulkEditor
 Class {
 	#name : 'MiBulkEditorTest',
 	#superclass : 'MiBulkAbstractTest',
+	#instVars : [
+		'rewriter'
+	],
 	#category : 'MooseIDE-BulkEditor-Tests',
 	#package : 'MooseIDE-BulkEditor-Tests'
 }
@@ -36,7 +39,9 @@ l2_4
 l3______10'.
 
 	sourceFile := self fileReferenceFor: 'SourceFile.test'.
-	self writePreviousContentToFile: sourceFile
+	self writePreviousContentToFile: sourceFile.
+
+	bulkEditor rewriterClass: MiBulkCommentBlockRewriter
 ]
 
 { #category : 'tests' }
