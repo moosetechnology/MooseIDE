@@ -8,6 +8,19 @@ Class {
 	#package : 'MooseIDE-BulkEditor'
 }
 
+{ #category : 'printing' }
+MiBulkCommentBlockRewriter class >> commandLabel [
+
+	^'Comment out entities (block comment)'
+]
+
+{ #category : 'accessing' }
+MiBulkCommentBlockRewriter class >> strictIntervals [
+	"For this rewriter it is better to enlarge (with surrounding comments) and/or merge contiguous intervals"
+
+	^false
+]
+
 { #category : 'actions' }
 MiBulkCommentBlockRewriter >> beforeEol: c at: i [
 	"Nothing to do before EOL

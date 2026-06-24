@@ -11,6 +11,12 @@ Class {
 	#package : 'MooseIDE-BulkEditor'
 }
 
+{ #category : 'printing' }
+MiBulkAddJavaTraceRewriter class >> commandLabel [
+
+	^'Add trace instruction'
+]
+
 { #category : 'actions' }
 MiBulkAddJavaTraceRewriter >> beforeEol: c at: i [
 	"Nothing to do before EOL

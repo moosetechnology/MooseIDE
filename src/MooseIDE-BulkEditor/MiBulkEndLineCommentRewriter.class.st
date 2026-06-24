@@ -20,6 +20,12 @@ Class {
 	#package : 'MooseIDE-BulkEditor'
 }
 
+{ #category : 'printing' }
+MiBulkEndLineCommentRewriter class >> commandLabel [
+
+	^'Comment out entities (line comment)'
+]
+
 { #category : 'actions' }
 MiBulkEndLineCommentRewriter >> afterEol: c at: i [
 	"Nothing to do after EOL

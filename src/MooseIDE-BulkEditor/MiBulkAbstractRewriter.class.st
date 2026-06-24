@@ -26,6 +26,19 @@ Class {
 	#package : 'MooseIDE-BulkEditor'
 }
 
+{ #category : 'printing' }
+MiBulkAbstractRewriter class >> commandLabel [
+
+	self subclassResponsibility 
+]
+
+{ #category : 'accessing' }
+MiBulkAbstractRewriter class >> strictIntervals [
+	"having  strcitIntervals means the MiBulkEditor will not enlarge or merge intervals"
+
+	^true
+]
+
 { #category : 'actions' }
 MiBulkAbstractRewriter >> afterEol: c at: i [
 	"Acts after the end-of-line (which can be CR, LF or CR+LF)
