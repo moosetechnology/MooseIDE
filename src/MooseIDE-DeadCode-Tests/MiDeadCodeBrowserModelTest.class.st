@@ -1,18 +1,9 @@
 Class {
 	#name : 'MiDeadCodeBrowserModelTest',
 	#superclass : 'MiDeadCodeRuleModelAbstractTest',
-	#instVars : [
-		'browser'
-	],
 	#category : 'MooseIDE-DeadCode-Tests',
 	#package : 'MooseIDE-DeadCode-Tests'
 }
-
-{ #category : 'running' }
-MiDeadCodeBrowserModelTest >> modelDeleteLines: aBoolean [
-
-	model instVarNamed: #deleteLines put: aBoolean 
-]
 
 { #category : 'running' }
 MiDeadCodeBrowserModelTest >> setUp [
@@ -190,8 +181,6 @@ abc
 		fileName: 'fakefile' ;
 		element: mth.
 	model deadEntities add: mth.
-
-	self modelDeleteLines: false.
 	
 	model refactorCode.
 
@@ -229,7 +218,7 @@ abc
 		element: mth.
 	model deadEntities add: mth.
 
-	self modelDeleteLines: true.
+	model rewriterClass: MiBulkRemoveLinesRewriter.
 	
 	model refactorCode.
 
