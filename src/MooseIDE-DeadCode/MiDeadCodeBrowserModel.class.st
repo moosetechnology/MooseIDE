@@ -12,7 +12,7 @@ Class {
 		'selectedDeadEntities',
 		'chosenRules',
 		'availableRules',
-		'deleteLines'
+		'rewriterClass'
 	],
 	#category : 'MooseIDE-DeadCode-Model',
 	#package : 'MooseIDE-DeadCode',
@@ -85,8 +85,9 @@ MiDeadCodeBrowserModel >> clearDeads [
 MiDeadCodeBrowserModel >> currentConfiguration [
 
 	^ MiDeadCodeSettingsConfiguration new
-		  deleteLines: deleteLines ;
-		  yourself
+		availableRewriters: self rewriterClasses ;
+		rewriterClass: rewriterClass ;
+		yourself
 ]
 
 { #category : 'accessing' }
@@ -99,8 +100,16 @@ MiDeadCodeBrowserModel >> deadEntities [
 MiDeadCodeBrowserModel >> defaultConfiguration [
 
 	^ MiDeadCodeSettingsConfiguration new
-		deleteLines: false ;
+		availableRewriters: self rewriterClasses ;
+		defaultRewriterClass: self defaultRewriterClass ;
+		rewriterClass: self defaultRewriterClass ;
 		yourself
+]
+
+{ #category : 'settings management' }
+MiDeadCodeBrowserModel >> defaultRewriterClass [
+
+	^self rewriterClasses anyOne
 ]
 
 { #category : 'accessing' }
@@ -146,7 +155,7 @@ MiDeadCodeBrowserModel >> initializeRules [
 { #category : 'initialization' }
 MiDeadCodeBrowserModel >> initializeSettings [
 
-	deleteLines := false
+	rewriterClass := self defaultRewriterClass 
 ]
 
 { #category : 'actions' }
@@ -202,12 +211,28 @@ MiDeadCodeBrowserModel >> refactorCode [
 
 	| editor |
 	editor := MiBulkEditor new.
-	deleteLines
-		ifTrue: [ editor removeLines ]
-		ifFalse: [ editor commentLines ].
+	editor rewriterClass: rewriterClass.
 	editor runOn: deadEntities.
 	
 	browser refactoringDone
+]
+
+{ #category : 'accessing' }
+MiDeadCodeBrowserModel >> rewriterClass [
+
+	^ rewriterClass
+]
+
+{ #category : 'accessing' }
+MiDeadCodeBrowserModel >> rewriterClass: anObject [
+
+	rewriterClass := anObject
+]
+
+{ #category : 'settings management' }
+MiDeadCodeBrowserModel >> rewriterClasses [
+
+	^MiBulkAbstractRewriter allSubclasses 
 ]
 
 { #category : 'actions' }
@@ -269,6 +294,12 @@ MiDeadCodeBrowserModel >> settings [
 
 ]
 
+{ #category : 'settings management' }
+MiDeadCodeBrowserModel >> settingsPresenterExtent [
+
+	^ 500 @ 150
+]
+
 { #category : 'actions' }
 MiDeadCodeBrowserModel >> unchooseRules: rules [
 	"remove all #rules from the internal list of chosenRules"
@@ -280,5 +311,5 @@ MiDeadCodeBrowserModel >> unchooseRules: rules [
 { #category : 'settings management' }
 MiDeadCodeBrowserModel >> updateFromConfiguration: aConfiguration [
 
-	deleteLines := aConfiguration deleteLines
+	rewriterClass := aConfiguration rewriterClass
 ]

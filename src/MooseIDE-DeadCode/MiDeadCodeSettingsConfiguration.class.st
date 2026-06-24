@@ -2,7 +2,9 @@ Class {
 	#name : 'MiDeadCodeSettingsConfiguration',
 	#superclass : 'MiAbstractSettingsConfiguration',
 	#instVars : [
-		'deleteLines'
+		'availableRewriters',
+		'defaultRewriterClass',
+		'rewriterClass'
 	],
 	#category : 'MooseIDE-DeadCode-Model',
 	#package : 'MooseIDE-DeadCode',
@@ -10,24 +12,50 @@ Class {
 }
 
 { #category : 'accessing' }
-MiDeadCodeSettingsConfiguration >> deleteLines [
+MiDeadCodeSettingsConfiguration >> availableRewriters [
 
-	^ deleteLines
+	^ availableRewriters
 ]
 
 { #category : 'accessing' }
-MiDeadCodeSettingsConfiguration >> deleteLines: anObject [
+MiDeadCodeSettingsConfiguration >> availableRewriters: anObject [
 
-	deleteLines := anObject
+	availableRewriters := anObject
+]
+
+{ #category : 'accessing' }
+MiDeadCodeSettingsConfiguration >> defaultRewriterClass [
+
+	^ defaultRewriterClass
+]
+
+{ #category : 'accessing' }
+MiDeadCodeSettingsConfiguration >> defaultRewriterClass: anObject [
+
+	defaultRewriterClass := anObject
+]
+
+{ #category : 'accessing' }
+MiDeadCodeSettingsConfiguration >> rewriterClass [
+
+	^ rewriterClass
+]
+
+{ #category : 'accessing' }
+MiDeadCodeSettingsConfiguration >> rewriterClass: anObject [
+
+	rewriterClass := anObject
 ]
 
 { #category : 'ui' }
 MiDeadCodeSettingsConfiguration >> settingsPresenters [
 
-	^ OrderedCollection with: ((MiBooleanSettingPresenter on: self)
-			   label: 'Delete line of code' ;
-			   help: 'To remove dead entities, delete lines of code or comment them out.' ;
-			   state: deleteLines ;
-			   whenStateChangedDo: [ :boolean | self deleteLines: boolean ] ;
-			   yourself)
+	^ OrderedCollection with: ((MiDroplistSettingPresenter on: self)
+		label: 'Width metric:' ;
+		help: 'Rewriter to apply on dead entities (eg. delete them, or commented them out)' ;
+		items: availableRewriters ;
+		selectItem: defaultRewriterClass ;
+		display: [ :rewriter | rewriter commandLabel ] ;
+		whenSelectedDo: [ :selectedRewriterClass | rewriterClass := selectedRewriterClass ] ;
+		yourself)
 ]
