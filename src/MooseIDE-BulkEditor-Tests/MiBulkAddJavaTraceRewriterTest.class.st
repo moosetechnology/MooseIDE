@@ -131,3 +131,28 @@ MiBulkAddJavaTraceRewriterTest >> testRunTwoMethods_eolLF [
 			'System.out.println(">>> next"); }' , String cr ,
 			'}'
 ]
+
+{ #category : 'tests' }
+MiBulkAddJavaTraceRewriterTest >> testTraceFullyQualifiedName [
+
+	| interval |
+	lines := {
+'class AClazz {' .
+'	void blah() {' .
+'		// inside method' .
+'	} }'
+	}.
+	interval := self interval: 16 @ 48 data: 'blah'.
+	interval data parentType: (FamixJavaClass new name: 'AClazz' ; yourself).
+
+	self runOnIntervals: { interval } withLineEnder: Character cr.
+
+	self
+		assert: bulkRewriter stream contents
+		equals:
+			'class AClazz {' , String cr ,
+			'	void blah() {' , Smalltalk os lineEnding ,
+			'System.out.println(">>> AClazz.blah");' , String cr ,
+			'		// inside method' , String cr ,
+			'	} }'
+]
