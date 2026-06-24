@@ -21,7 +21,7 @@ MiBulkEditorTest >> bulkEditorPreviousContent: aString [
 ]
 
 { #category : 'running' }
-MiBulkEditorTest >> classToTest [
+MiBulkEditorTest >> editorClass [
 
 	^MiBulkEditor
 ]

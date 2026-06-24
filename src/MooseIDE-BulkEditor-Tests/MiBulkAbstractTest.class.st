@@ -10,12 +10,6 @@ Class {
 }
 
 { #category : 'running' }
-MiBulkAbstractTest >> classToTest [
-
-	self subclassResponsibility 
-]
-
-{ #category : 'running' }
 MiBulkAbstractTest >> commentMethod: aMethod withPos: pos [
 
 	^FamixJavaComment new
@@ -24,6 +18,12 @@ MiBulkAbstractTest >> commentMethod: aMethod withPos: pos [
 			startPos: pos x ;
 			endPos: pos y ;
 			fileName: 'SourceFile.test')
+]
+
+{ #category : 'running' }
+MiBulkAbstractTest >> editorClass [
+
+	self subclassResponsibility 
 ]
 
 { #category : 'running' }
@@ -47,6 +47,6 @@ MiBulkAbstractTest >> setUp [
 
 	super setUp.
 
-	bulkEditor := self classToTest new.
+	bulkEditor := self editorClass new.
 
 ]

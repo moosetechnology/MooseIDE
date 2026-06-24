@@ -15,15 +15,50 @@ The editor can be instructed to remove the methods from their files: `bulkEditor
 "
 Class {
 	#name : 'MiBulkEditor',
-	#superclass : 'MiBulkEditorAbstract',
+	#superclass : 'Object',
+	#instVars : [
+		'rewriter',
+		'previousFileContent',
+		'strictIntervals'
+	],
 	#category : 'MooseIDE-BulkEditor',
 	#package : 'MooseIDE-BulkEditor'
 }
 
 { #category : 'options' }
+MiBulkEditor >> addTrace [
+
+	rewriter := MiBulkAddJavaTraceRewriter.
+	strictIntervals := true
+]
+
+{ #category : 'intervals' }
+MiBulkEditor >> collectIntervals: data [
+
+	^data
+		reject: [ :entity | entity sourceAnchor isNil ]
+		thenCollect: [ :entity |
+			MiBulkInterval
+				from: entity sourceAnchor startPos
+				to: entity sourceAnchor endPos
+				data: entity
+	]
+]
+
+{ #category : 'options' }
 MiBulkEditor >> commentLines [
 
-	rewriter := MiBulkCommentBlockRewriter
+	rewriter := MiBulkCommentBlockRewriter.
+	strictIntervals := false
+]
+
+{ #category : 'running' }
+MiBulkEditor >> editFile: aFileReference entities: entities [
+
+	previousFileContent := aFileReference contents.
+
+	self rewriteFile: aFileReference atIntervals: (self intervalsToEdit: entities).
+
 ]
 
 { #category : 'intervals' }
@@ -44,16 +79,30 @@ MiBulkEditor >> enlargeInterval: methodInterval [
 	 then see if there are indentation spaces to add to the first line"
 
 	| tempInterval |
+	strictIntervals ifTrue: [ ^methodInterval ].
+
 	tempInterval := self intervalWithMethodComment: methodInterval.
 	^self includeIndentationSpaces: tempInterval 
+]
+
+{ #category : 'utilities' }
+MiBulkEditor >> groupByFile: entities [
+
+	^(entities reject: [:e | e sourceAnchor isNil ])
+		groupedBy: [ :e | e sourceAnchor fileName ]
 ]
 
 { #category : 'intervals' }
 MiBulkEditor >> includeIndentationSpaces: bulkInterval [
 	"Adds indentation spaces before interval
+	 If interval starts at 1, there cannot be anything before
 	 If a non space character is found before the begining of the line, then cancel everything"
 
 	| i endOfLine |
+
+	strictIntervals ifTrue: [ ^bulkInterval ].
+
+	(bulkInterval first = 1) ifTrue: [ ^bulkInterval ].
 
 	i := bulkInterval first - 1.
 	endOfLine := String crlf.
@@ -77,8 +126,7 @@ MiBulkEditor >> includeIndentationSpaces: bulkInterval [
 { #category : 'initialization' }
 MiBulkEditor >> initialize [ 
 
-	super initialize.
-
+	"default"
 	self commentLines 
 ]
 
@@ -103,7 +151,7 @@ MiBulkEditor >> intervalsToEdit: entities [
 	 - merge intervals separated only by blank lines"
 
 	^self mergeIntervals: (
-		(super intervalsToEdit: entities)
+		(self sortByPosition: (self collectIntervals: entities))
 			collect: [ :methodInterval | self enlargeInterval: methodInterval ]
 	)
 
@@ -114,8 +162,10 @@ MiBulkEditor >> mergeIntervals: intervals [
 	"merge together 2 intervals separated only by blank lines"
 
 	| intervalsIterator lastInterval merged |
-	merged := OrderedCollection new: intervals size.
 
+	strictIntervals ifTrue: [ ^intervals ].
+
+	merged := OrderedCollection new: intervals size.
 	intervalsIterator := intervals iterator withCollectionAPI.
 	
 	intervalsIterator hasNext ifFalse: [ ^intervals ].
@@ -136,7 +186,54 @@ MiBulkEditor >> mergeIntervals: intervals [
 	^merged 
 ]
 
+{ #category : 'utilities' }
+MiBulkEditor >> mooseModel: entities [
+
+	^entities anyOne mooseModel
+]
+
 { #category : 'options' }
 MiBulkEditor >> removeLines [
-	rewriter := MiBulkRemoveLinesRewriter
+
+	rewriter := MiBulkRemoveLinesRewriter.
+	strictIntervals := false
+]
+
+{ #category : 'running' }
+MiBulkEditor >> rewriteFile: aFileReference atIntervals: intervalsToEdit [
+
+	aFileReference delete.
+	
+	aFileReference writeStreamDo: [ :st |
+		rewriter new
+			stream: st ;
+			content: previousFileContent ;
+			editIntervals: intervalsToEdit ;
+			run ].
+]
+
+{ #category : 'running' }
+MiBulkEditor >> runOn: entities [
+
+	| rootFolder |
+	rootFolder := (self mooseModel: entities) rootFolder asFileReference.
+
+	(self groupByFile: entities) associationsDo: [ :fileEntitiesAssociation |
+		self
+			editFile: rootFolder / fileEntitiesAssociation key
+			entities: fileEntitiesAssociation value ]
+]
+
+{ #category : 'utilities' }
+MiBulkEditor >> sortByPosition: intervals [
+	"sort intervals in increasing order"
+
+	^intervals sorted: [ :i | i first ] ascending
+]
+
+{ #category : 'accessing' }
+MiBulkEditor >> strictIntervals: aBoolean [
+	"having  strcitIntervals' means, do not enlarge or merge intervals"
+
+	strictIntervals := aBoolean 
 ]

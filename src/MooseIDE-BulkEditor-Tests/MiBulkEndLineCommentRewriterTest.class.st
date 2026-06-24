@@ -6,18 +6,18 @@ Class {
 }
 
 { #category : 'running' }
-MiBulkEndLineCommentRewriterTest >> classToTest [
-
-	^MiBulkEndLineCommentRewriter 
-]
-
-{ #category : 'running' }
 MiBulkEndLineCommentRewriterTest >> interval: start to: end [
 
 	^MiBulkInterval
 		from: start
 		to: end 
 		data: (	#x -> { self stubEntity: #a . self stubEntity: #b })
+]
+
+{ #category : 'running' }
+MiBulkEndLineCommentRewriterTest >> rewriterClass [
+
+	^MiBulkEndLineCommentRewriter 
 ]
 
 { #category : 'running' }
@@ -43,89 +43,77 @@ MiBulkEndLineCommentRewriterTest >> stubEntity: aString [
 { #category : 'tests' }
 MiBulkEndLineCommentRewriterTest >> testRunLastLine_eolCR [
 
-	bulkEditor content: (self joinLinesWith: Character cr).
-
-	bulkEditor editIntervals: { self interval: 12 to: 20 }.
-
-	bulkEditor run.
+	self
+		runOnIntervals: { (self interval: 12 to: 20) }
+		withLineEnder: Character cr.
 
 	lines at: 3 put: 'l3______10 // same constant as: a, b'.
 	self
-		assert: bulkEditor stream contents
+		assert: bulkRewriter stream contents
 		equals: (self joinLinesWith: Character cr)
 ]
 
 { #category : 'tests' }
 MiBulkEndLineCommentRewriterTest >> testRunLastLine_eolCRLF [
 
-	bulkEditor content: (self joinLinesWith: String crlf).
-
-	bulkEditor editIntervals: { self interval: 12 to: 20 }.
-
-	bulkEditor run.
+	self
+		runOnIntervals: { (self interval: 12 to: 20) }
+		withLineEnder: String crlf.
 
 	lines at: 3 put: 'l3______10 // same constant as: a, b'.
 	self
-		assert: bulkEditor stream contents
+		assert: bulkRewriter stream contents
 		equals: (self joinLinesWith: String crlf)
 ]
 
 { #category : 'tests' }
 MiBulkEndLineCommentRewriterTest >> testRunLastLine_eolLF [
 
-	bulkEditor content: (self joinLinesWith: Character lf).
-
-	bulkEditor editIntervals: { self interval: 12 to: 20 }.
-
-	bulkEditor run.
+	self
+		runOnIntervals: { (self interval: 12 to: 20) }
+		withLineEnder: Character lf.
 
 	lines at: 3 put: 'l3______10 // same constant as: a, b'.
 	self
-		assert: bulkEditor stream contents
+		assert: bulkRewriter stream contents
 		equals: (self joinLinesWith: Character lf)
 ]
 
 { #category : 'tests' }
 MiBulkEndLineCommentRewriterTest >> testRun_eolCR [
 
-	bulkEditor content: (self joinLinesWith: Character cr).
-
-	bulkEditor editIntervals: { self interval: 1 to: 4 }.
-
-	bulkEditor run.
+	self
+		runOnIntervals: { (self interval: 1 to: 4) }
+		withLineEnder: Character cr.
 
 	lines at: 1 put: 'l1__5 // same constant as: a, b'.
 	self
-		assert: bulkEditor stream contents
+		assert: bulkRewriter stream contents
 		equals: (self joinLinesWith: Character cr)
 ]
 
 { #category : 'tests' }
 MiBulkEndLineCommentRewriterTest >> testRun_eolCRLF [
 
-	bulkEditor content: (self joinLinesWith: String crlf).
-
-	bulkEditor editIntervals: { self interval: 1 to: 4 }.
-
-	bulkEditor run.
+	self
+		runOnIntervals: { (self interval: 1 to: 4) }
+		withLineEnder: String crlf.
 
 	lines at: 1 put: 'l1__5 // same constant as: a, b'.
 	self
-		assert: bulkEditor stream contents
+		assert: bulkRewriter stream contents
 		equals: (self joinLinesWith: String crlf)
 ]
 
 { #category : 'tests' }
 MiBulkEndLineCommentRewriterTest >> testRun_eolLF [
 
-	bulkEditor content: (self joinLinesWith: Character lf).
-
-	bulkEditor editIntervals: { self interval: 1 to: 4 }.
-
-	bulkEditor run.
+	self
+		runOnIntervals: { (self interval: 1 to: 4) }
+		withLineEnder: Character lf.
 
 	lines at: 1 put: 'l1__5 // same constant as: a, b'.
 	self
-		assert: bulkEditor stream contents
+		assert: bulkRewriter stream contents
 		equals: (self joinLinesWith: Character lf)
 ]

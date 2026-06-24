@@ -29,8 +29,7 @@ MiBulkEndLineCommentRewriter >> afterEol: c at: i [
 
 { #category : 'actions' }
 MiBulkEndLineCommentRewriter >> intervalEnd: c [
-	"override because #nextLineDo: is different
-	 see comment in super-class"
+	"no super, override to redefine #nextLineDo: . See comment in super-class"
 
 	self insideInterval: c.
 	self nextLineDo: [
