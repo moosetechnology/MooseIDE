@@ -31,7 +31,7 @@ MiBulkAddJavaTraceRewriter >> insideInterval: c [
 
 	super insideInterval: c.
 
-	tracer := 'System.out.println(">>> {1}");' format: { interval data name }.
+	tracer := 'System.out.println(">>> {1}");' format: { interval data mooseName }.
 
 	(searchStatmentBlock and: [ c = ${ ]) ifTrue: [
 		searchStatmentBlock := false.
