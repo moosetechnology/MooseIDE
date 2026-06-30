@@ -234,7 +234,7 @@ MiDuplicationBrowser >> newCodePage: replica [
 MiDuplicationBrowser >> resetDisplayedReplicas [
 
 	lstEntities unselectAll.
-	clonePresenter removeAll.
+	clonePresenter clear.
 ]
 
 { #category : 'api' }

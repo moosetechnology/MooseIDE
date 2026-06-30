@@ -22,6 +22,25 @@ MiDuplicationBrowserClonePresenter >> backgroundColor: aColor at: anInterval [
  
 ]
 
+{ #category : 'removing' }
+MiDuplicationBrowserClonePresenter >> clear [
+
+	self clearHierarchy.
+	self clearContent
+]
+
+{ #category : 'removing' }
+MiDuplicationBrowserClonePresenter >> clearContent [
+
+	contentView text: ''
+]
+
+{ #category : 'removing' }
+MiDuplicationBrowserClonePresenter >> clearHierarchy [
+
+	treeView roots: #().
+]
+
 { #category : 'initialization' }
 MiDuplicationBrowserClonePresenter >> connectPresenters [
 
@@ -115,13 +134,6 @@ MiDuplicationBrowserClonePresenter >> mainCloneColor [
 MiDuplicationBrowserClonePresenter >> otherCloneColor [
 
 	^ Color veryVeryLightGray
-]
-
-{ #category : 'removing' }
-MiDuplicationBrowserClonePresenter >> removeAll [
-
-	treeView roots: #().
-	contentView text: ''
 ]
 
 { #category : 'api' }

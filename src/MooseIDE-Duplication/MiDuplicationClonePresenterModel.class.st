@@ -154,9 +154,9 @@ MiDuplicationClonePresenterModel >> showContentForEntity: entity [
 
 	| replica |
 
-	entity ifNil: [ ^self ].
+	entity ifNil: [ browser clearContent. ^self ].
 	replica := self replicaFor: entity.
-	replica ifNil: [ ^self ].
+	replica ifNil: [ browser clearContent. ^self ].
 
 	browser formatReplicaText: replica
 ]

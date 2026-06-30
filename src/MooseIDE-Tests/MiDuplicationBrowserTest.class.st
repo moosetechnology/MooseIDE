@@ -274,6 +274,23 @@ MiDuplicationBrowserTest >> testSelectEntity [
 ]
 
 { #category : 'tests' }
+MiDuplicationBrowserTest >> testSelectNonReplicaErasesContent [
+	"select an entity to populate contentView, then select the first entry (no replica associated)
+	 to clear contentView"
+	| replicatedFragment parentClass |
+	replicatedFragment := self replicatedFragment.
+	parentClass := FamixRepTestClass named: 'Clazz'.
+	replicatedFragment replicas do: [ :rep | rep entity parentType: parentClass ].
+	browser showReplicas: replicatedFragment replicas.
+
+	self cloneHierarchicalView selectPath: #( 1 1 ).
+	self denyEmpty: self clonePresenterContent text.
+
+	self cloneHierarchicalView selectPath: #( 1 ).
+	self assertEmpty: self clonePresenterContent text
+]
+
+{ #category : 'tests' }
 MiDuplicationBrowserTest >> testSelectNonReplicaWithoutError [
 
 	| replicatedFragment parentClass |
