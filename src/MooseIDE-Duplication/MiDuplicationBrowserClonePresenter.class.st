@@ -135,10 +135,10 @@ MiDuplicationBrowserClonePresenter >> roots: hierarchyNodes [
 
 { #category : 'api' }
 MiDuplicationBrowserClonePresenter >> scrollToReplica: replica [
+	"scrollValue: takes two reals (in a Point) each from 0 to 1
+	 0=left/top; 1=right/bottom"
 
-	| replicaInterval |
-	replicaInterval := replica startLine to: replica startLine.
-	contentView scrollValue: (1 @ replicaInterval first)
+	contentView scrollValue: (0 @ (replica startLine / text lineCount))
 ]
 
 { #category : 'api' }

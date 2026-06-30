@@ -231,9 +231,7 @@ MiDuplicationBrowserTest >> testMiSelectedItem [
 { #category : 'tests' }
 MiDuplicationBrowserTest >> testReplicaSourceCodeScrolledDown [
 	"Check that the text is scrolled down:
-	 - get textMorph, then ScrollPane inside it
-	 - get its vertical scrollbar
-	 - it must not be on top (ie. value > 0)"
+	 scrollValue is a point x-scroll @ y-scroll with values between 0=left/top and 1=right/bottom"
 
 	| scroll |
 	browser showReplicas: { self replicatedFragment replicas first }.
@@ -242,7 +240,7 @@ MiDuplicationBrowserTest >> testReplicaSourceCodeScrolledDown [
 
 	scroll := self clonePresenterContent scrollValue.
 
-	self assert: (scroll x > 0)
+	self assert: (scroll y > 0)
 ]
 
 { #category : 'tests' }
