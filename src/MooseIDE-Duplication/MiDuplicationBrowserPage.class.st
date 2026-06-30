@@ -23,6 +23,14 @@ MiDuplicationBrowserPage class >> forReplica: aReplica [
 		
 ]
 
+{ #category : 'testing' }
+MiDuplicationBrowserPage class >> isDeprecated [
+	"was replaced by MiDuplicationBrowserClonePresenter
+	 But might get back as the contentView of this one"
+
+  ^ true
+]
+
 { #category : 'formatting' }
 MiDuplicationBrowserPage >> backgroundColor: aColor at: anInterval [
 
