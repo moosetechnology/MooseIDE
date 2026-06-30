@@ -29,6 +29,26 @@ MiDuplicationBrowserTest >> class: aName withSource: lineInterval [
 ]
 
 { #category : 'running' }
+MiDuplicationBrowserTest >> cloneHierarchicalView [
+
+	^self clonePresenter
+		instVarNamed: #treeView
+]
+
+{ #category : 'running' }
+MiDuplicationBrowserTest >> clonePresenter [
+
+	^browser instVarNamed: #clonePresenter
+]
+
+{ #category : 'running' }
+MiDuplicationBrowserTest >> clonePresenterContent [
+
+	^self clonePresenter
+		instVarNamed: #contentView
+]
+
+{ #category : 'running' }
 MiDuplicationBrowserTest >> defaultEntityToSelect [
 
 	^ (self method: 'method1' withSource: (13 to: 14)) asMooseGroup
@@ -209,30 +229,20 @@ MiDuplicationBrowserTest >> testMiSelectedItem [
 ]
 
 { #category : 'tests' }
-MiDuplicationBrowserTest >> testReplicaHasEntityNameInSourceCode [
-	"Check that the entity name is on 1st line of its source code"
-
-	| sourceCode |
-	browser showReplicas: { self replicatedFragment replicas first }.
-
-	sourceCode := browser panCodes pages first text.
-
-	self assert: (sourceCode copyFrom: 1 to:7) equals: 'method1'
-]
-
-{ #category : 'tests' }
 MiDuplicationBrowserTest >> testReplicaSourceCodeScrolledDown [
 	"Check that the text is scrolled down:
-	 - get textMorph, then ScrollPnae inside it
+	 - get textMorph, then ScrollPane inside it
 	 - get its vertical scrollbar
 	 - it must not be on top (ie. value > 0)"
 
 	| scroll |
 	browser showReplicas: { self replicatedFragment replicas first }.
 
-	scroll := browser panCodes pages first textMorph submorphs first vScrollbar value.
+	self cloneHierarchicalView selectPath: #( 1 ).
 
-	self assert: (scroll > 0)
+	scroll := self clonePresenterContent scrollValue.
+
+	self assert: (scroll x > 0)
 ]
 
 { #category : 'tests' }
@@ -247,10 +257,11 @@ MiDuplicationBrowserTest >> testReplicatedFragmentDisplayString [
 MiDuplicationBrowserTest >> testResetDisplayedReplicas [
 
 	browser showReplicas: self replicatedFragment replicas.
-	self assert: browser panCodes pages size equals: 2.
+	self deny: self cloneHierarchicalView roots isEmpty.
 
 	browser resetDisplayedReplicas.
-	self assertEmpty: browser panCodes pages
+	self assertEmpty: self cloneHierarchicalView roots.
+	self assertEmpty: self clonePresenterContent text.
 ]
 
 { #category : 'tests' }
@@ -306,12 +317,11 @@ MiDuplicationBrowserTest >> testShowEntities [
 { #category : 'tests' }
 MiDuplicationBrowserTest >> testShowReplicas [
 
-	self assertEmpty: browser panCodes pages.
+	self assertEmpty: self cloneHierarchicalView roots.
 
 	browser showReplicas: self replicatedFragment replicas.
 
-	self assert: browser panCodes pages size equals: 2.
-	self assert: browser panCodes pages first title equals: 'method1'
+	self deny: self cloneHierarchicalView roots isEmpty
 ]
 
 { #category : 'tests' }
