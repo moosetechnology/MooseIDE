@@ -128,6 +128,8 @@ MiDuplicationBrowserClonePresenter >> removeAll [
 MiDuplicationBrowserClonePresenter >> roots: hierarchyNodes [
 
 	treeView roots: hierarchyNodes.
+	treeView expandAll.
+
 	contentView text: ''
 ]
 
