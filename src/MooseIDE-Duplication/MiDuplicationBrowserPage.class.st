@@ -9,8 +9,9 @@ Class {
 		'textMorph',
 		'text'
 	],
-	#category : 'MooseIDE-Duplication',
-	#package : 'MooseIDE-Duplication'
+	#category : 'MooseIDE-Duplication-Browser',
+	#package : 'MooseIDE-Duplication',
+	#tag : 'Browser'
 }
 
 { #category : 'instance creation' }
@@ -20,6 +21,14 @@ MiDuplicationBrowserPage class >> forReplica: aReplica [
 		replica: aReplica ;
 		yourself
 		
+]
+
+{ #category : 'testing' }
+MiDuplicationBrowserPage class >> isDeprecated [
+	"was replaced by MiDuplicationBrowserClonePresenter
+	 But might get back as the contentView of this one"
+
+  ^ true
 ]
 
 { #category : 'formatting' }

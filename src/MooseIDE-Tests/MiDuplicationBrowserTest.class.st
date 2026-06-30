@@ -29,6 +29,26 @@ MiDuplicationBrowserTest >> class: aName withSource: lineInterval [
 ]
 
 { #category : 'running' }
+MiDuplicationBrowserTest >> cloneHierarchicalView [
+
+	^self clonePresenter
+		instVarNamed: #treeView
+]
+
+{ #category : 'running' }
+MiDuplicationBrowserTest >> clonePresenter [
+
+	^browser instVarNamed: #clonePresenter
+]
+
+{ #category : 'running' }
+MiDuplicationBrowserTest >> clonePresenterContent [
+
+	^self clonePresenter
+		instVarNamed: #contentView
+]
+
+{ #category : 'running' }
 MiDuplicationBrowserTest >> defaultEntityToSelect [
 
 	^ (self method: 'method1' withSource: (13 to: 14)) asMooseGroup
@@ -209,30 +229,18 @@ MiDuplicationBrowserTest >> testMiSelectedItem [
 ]
 
 { #category : 'tests' }
-MiDuplicationBrowserTest >> testReplicaHasEntityNameInSourceCode [
-	"Check that the entity name is on 1st line of its source code"
-
-	| sourceCode |
-	browser showReplicas: { self replicatedFragment replicas first }.
-
-	sourceCode := browser panCodes pages first text.
-
-	self assert: (sourceCode copyFrom: 1 to:7) equals: 'method1'
-]
-
-{ #category : 'tests' }
 MiDuplicationBrowserTest >> testReplicaSourceCodeScrolledDown [
 	"Check that the text is scrolled down:
-	 - get textMorph, then ScrollPnae inside it
-	 - get its vertical scrollbar
-	 - it must not be on top (ie. value > 0)"
+	 scrollValue is a point x-scroll @ y-scroll with values between 0=left/top and 1=right/bottom"
 
 	| scroll |
 	browser showReplicas: { self replicatedFragment replicas first }.
 
-	scroll := browser panCodes pages first textMorph submorphs first vScrollbar value.
+	self cloneHierarchicalView selectPath: #( 1 ).
 
-	self assert: (scroll > 0)
+	scroll := self clonePresenterContent scrollValue.
+
+	self assert: (scroll y > 0)
 ]
 
 { #category : 'tests' }
@@ -247,10 +255,11 @@ MiDuplicationBrowserTest >> testReplicatedFragmentDisplayString [
 MiDuplicationBrowserTest >> testResetDisplayedReplicas [
 
 	browser showReplicas: self replicatedFragment replicas.
-	self assert: browser panCodes pages size equals: 2.
+	self denyEmpty: self cloneHierarchicalView roots.
 
 	browser resetDisplayedReplicas.
-	self assertEmpty: browser panCodes pages
+	self assertEmpty: self cloneHierarchicalView roots.
+	self assertEmpty: self clonePresenterContent text.
 ]
 
 { #category : 'tests' }
@@ -262,6 +271,38 @@ MiDuplicationBrowserTest >> testSelectEntity [
 			(self method: 'method2') } asMooseGroup.
 
 	self shouldnt: (browser lstEntities selectIndex: 1) raise: Error
+]
+
+{ #category : 'tests' }
+MiDuplicationBrowserTest >> testSelectNonReplicaErasesContent [
+	"select an entity to populate contentView, then select the first entry (no replica associated)
+	 to clear contentView"
+	| replicatedFragment parentClass |
+	replicatedFragment := self replicatedFragment.
+	parentClass := FamixRepTestClass named: 'Clazz'.
+	replicatedFragment replicas do: [ :rep | rep entity parentType: parentClass ].
+	browser showReplicas: replicatedFragment replicas.
+
+	self cloneHierarchicalView selectPath: #( 1 1 ).
+	self denyEmpty: self clonePresenterContent text.
+
+	self cloneHierarchicalView selectPath: #( 1 ).
+	self assertEmpty: self clonePresenterContent text
+]
+
+{ #category : 'tests' }
+MiDuplicationBrowserTest >> testSelectNonReplicaWithoutError [
+
+	| replicatedFragment parentClass |
+	replicatedFragment := self replicatedFragment.
+	parentClass := FamixRepTestClass named: 'Clazz'.
+	replicatedFragment replicas do: [ :rep | rep entity parentType: parentClass ].
+	browser showReplicas: replicatedFragment replicas.
+
+	"selecting the first entry which is 'Clazz'"
+	self cloneHierarchicalView selectPath: #( 1 ).
+
+	self denyEmpty: self cloneHierarchicalView roots
 ]
 
 { #category : 'tests - tags' }
@@ -306,12 +347,11 @@ MiDuplicationBrowserTest >> testShowEntities [
 { #category : 'tests' }
 MiDuplicationBrowserTest >> testShowReplicas [
 
-	self assertEmpty: browser panCodes pages.
+	self assertEmpty: self cloneHierarchicalView roots.
 
 	browser showReplicas: self replicatedFragment replicas.
 
-	self assert: browser panCodes pages size equals: 2.
-	self assert: browser panCodes pages first title equals: 'method1'
+	self denyEmpty: self cloneHierarchicalView roots
 ]
 
 { #category : 'tests' }
