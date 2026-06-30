@@ -33,10 +33,11 @@ MiDuplicationBrowserClonePresenter >> connectPresenters [
 { #category : 'initialization' }
 MiDuplicationBrowserClonePresenter >> defaultLayout [
 
-	^self layout: (SpPanedLayout newTopToBottom
-			 add: treeView ;
-			 add: contentView ;
-			 yourself)
+	^SpPanedLayout newTopToBottom
+		add: treeView ;
+		add: contentView ;
+		positionOfSlider: 100 ;
+		yourself
 ]
 
 { #category : 'api' }
