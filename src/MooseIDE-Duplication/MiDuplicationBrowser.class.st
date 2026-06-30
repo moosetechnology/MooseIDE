@@ -145,7 +145,7 @@ MiDuplicationBrowser >> initializeLayout [
 									    add: lstReplicatedFragments;
 									    yourself);
 							   positionOfSlider: 0.2;
-							   add: panCodes);
+							   add: clonePresenter);
 					  yourself)
 			 expand: true;
 			 add: statusBar expand: false;
@@ -191,7 +191,7 @@ MiDuplicationBrowser >> initializePresenters [
 			          self resetDisplayedReplicas.
 			          specModel findReplicas ].
 
-	panCodes := self newNotebook.
+	clonePresenter := self instantiate: MiDuplicationBrowserClonePresenter.
 	
 	statusBar := self newLabel.
 	self updateStatusBar.
@@ -230,17 +230,11 @@ MiDuplicationBrowser >> newCodePage: replica [
 		
 ]
 
-{ #category : 'accessing - private tests' }
-MiDuplicationBrowser >> panCodes [
-
-	^ panCodes
-]
-
 { #category : 'api' }
 MiDuplicationBrowser >> resetDisplayedReplicas [
 
 	lstEntities unselectAll.
-	panCodes removeAll.
+	clonePresenter removeAll.
 ]
 
 { #category : 'api' }
@@ -274,13 +268,9 @@ MiDuplicationBrowser >> showEntities: entities [
 
 { #category : 'api' }
 MiDuplicationBrowser >> showReplicas: replicas [
-	 "a replica is an entity containing a clone
-	show the code of the replicas in right pane"
 
-	replicas do: [ :replica | 
-		panCodes addPage: (self newCodePage: replica) ].
-	replicas ifNotEmpty: [panCodes selectPageIndex: 1].
-	
+	clonePresenter showReplicas: replicas.
+
 	self updateStatusBar.
 ]
 
