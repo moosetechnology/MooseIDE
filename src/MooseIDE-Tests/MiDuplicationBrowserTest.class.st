@@ -255,7 +255,7 @@ MiDuplicationBrowserTest >> testReplicatedFragmentDisplayString [
 MiDuplicationBrowserTest >> testResetDisplayedReplicas [
 
 	browser showReplicas: self replicatedFragment replicas.
-	self deny: self cloneHierarchicalView roots isEmpty.
+	self denyEmpty: self cloneHierarchicalView roots.
 
 	browser resetDisplayedReplicas.
 	self assertEmpty: self cloneHierarchicalView roots.
@@ -319,7 +319,7 @@ MiDuplicationBrowserTest >> testShowReplicas [
 
 	browser showReplicas: self replicatedFragment replicas.
 
-	self deny: self cloneHierarchicalView roots isEmpty
+	self denyEmpty: self cloneHierarchicalView roots
 ]
 
 { #category : 'tests' }
