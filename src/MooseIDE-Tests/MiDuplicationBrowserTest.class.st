@@ -273,6 +273,21 @@ MiDuplicationBrowserTest >> testSelectEntity [
 	self shouldnt: (browser lstEntities selectIndex: 1) raise: Error
 ]
 
+{ #category : 'tests' }
+MiDuplicationBrowserTest >> testSelectNonReplicaWithoutError [
+
+	| replicatedFragment parentClass |
+	replicatedFragment := self replicatedFragment.
+	parentClass := FamixRepTestClass named: 'Clazz'.
+	replicatedFragment replicas do: [ :rep | rep entity parentType: parentClass ].
+	browser showReplicas: replicatedFragment replicas.
+
+	"selecting the first entry which is 'Clazz'"
+	self cloneHierarchicalView selectPath: #( 1 ).
+
+	self denyEmpty: self cloneHierarchicalView roots
+]
+
 { #category : 'tests - tags' }
 MiDuplicationBrowserTest >> testSelectedTagSetAndGet [
 

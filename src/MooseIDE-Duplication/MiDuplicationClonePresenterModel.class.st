@@ -138,7 +138,9 @@ MiDuplicationClonePresenterModel >> registerParent: parent child: entity [
 { #category : 'accessing' }
 MiDuplicationClonePresenterModel >> replicaFor: anEntity [
 
-	^replicas detect: [ :replica | replica entity = anEntity ] 
+	^replicas
+		detect: [ :replica | replica entity = anEntity ] 
+		ifNone: [ nil ]
 ]
 
 { #category : 'accessing' }
