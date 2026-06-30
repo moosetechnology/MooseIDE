@@ -9,8 +9,9 @@ Class {
 		'textMorph',
 		'text'
 	],
-	#category : 'MooseIDE-Duplication',
-	#package : 'MooseIDE-Duplication'
+	#category : 'MooseIDE-Duplication-Browser',
+	#package : 'MooseIDE-Duplication',
+	#tag : 'Browser'
 }
 
 { #category : 'instance creation' }

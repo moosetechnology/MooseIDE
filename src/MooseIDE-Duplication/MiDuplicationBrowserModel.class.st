@@ -22,8 +22,9 @@ Class {
 		'maximumShownReplicas',
 		'repConfiguration'
 	],
-	#category : 'MooseIDE-Duplication',
-	#package : 'MooseIDE-Duplication'
+	#category : 'MooseIDE-Duplication-Model',
+	#package : 'MooseIDE-Duplication',
+	#tag : 'Model'
 }
 
 { #category : 'settings management' }

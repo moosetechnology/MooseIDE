@@ -9,8 +9,9 @@ Class {
 		'minimumNumberOfLines',
 		'availableSourceCleaners'
 	],
-	#category : 'MooseIDE-Duplication',
-	#package : 'MooseIDE-Duplication'
+	#category : 'MooseIDE-Duplication-Model',
+	#package : 'MooseIDE-Duplication',
+	#tag : 'Model'
 }
 
 { #category : 'accessing' }

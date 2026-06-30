@@ -15,12 +15,13 @@ Class {
 	#instVars : [
 		'lstEntities',
 		'btnRun',
-		'panCodes',
 		'lstReplicatedFragments',
-		'statusBar'
+		'statusBar',
+		'clonePresenter'
 	],
-	#category : 'MooseIDE-Duplication',
-	#package : 'MooseIDE-Duplication'
+	#category : 'MooseIDE-Duplication-Browser',
+	#package : 'MooseIDE-Duplication',
+	#tag : 'Browser'
 }
 
 { #category : 'accessing' }

@@ -1,8 +1,9 @@
 Class {
 	#name : 'MiCodeCleanerSettingPresenter',
 	#superclass : 'MiAbstractRadioButtonSettingPresenter',
-	#category : 'MooseIDE-Duplication',
-	#package : 'MooseIDE-Duplication'
+	#category : 'MooseIDE-Duplication-Browser',
+	#package : 'MooseIDE-Duplication',
+	#tag : 'Browser'
 }
 
 { #category : 'accessing' }
