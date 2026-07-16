@@ -17,8 +17,9 @@ Class {
 		'availableAssociationTypes',
 		'weightedLinks'
 	],
-	#category : 'MooseIDE-ArchitecturalMap',
-	#package : 'MooseIDE-ArchitecturalMap'
+	#category : 'MooseIDE-ArchitecturalMap-settings',
+	#package : 'MooseIDE-ArchitecturalMap',
+	#tag : 'settings'
 }
 
 { #category : 'accessing' }

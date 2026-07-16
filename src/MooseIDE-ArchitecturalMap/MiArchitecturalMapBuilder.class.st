@@ -18,8 +18,9 @@ Class {
 		'nodesToAdd',
 		'highlightShapes'
 	],
-	#category : 'MooseIDE-ArchitecturalMap',
-	#package : 'MooseIDE-ArchitecturalMap'
+	#category : 'MooseIDE-ArchitecturalMap-browser',
+	#package : 'MooseIDE-ArchitecturalMap',
+	#tag : 'browser'
 }
 
 { #category : 'adding' }

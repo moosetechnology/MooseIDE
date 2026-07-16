@@ -1,8 +1,9 @@
 Class {
 	#name : 'MiArchitecturalMenuItemStrategy',
 	#superclass : 'HDefaultMenuItemStrategy',
-	#category : 'MooseIDE-ArchitecturalMap',
-	#package : 'MooseIDE-ArchitecturalMap'
+	#category : 'MooseIDE-ArchitecturalMap-menu',
+	#package : 'MooseIDE-ArchitecturalMap',
+	#tag : 'menu'
 }
 
 { #category : 'public' }

@@ -4,8 +4,9 @@ Class {
 	#instVars : [
 		'rawEntity'
 	],
-	#category : 'MooseIDE-ArchitecturalMap',
-	#package : 'MooseIDE-ArchitecturalMap'
+	#category : 'MooseIDE-ArchitecturalMap-model',
+	#package : 'MooseIDE-ArchitecturalMap',
+	#tag : 'model'
 }
 
 { #category : 'accessing' }

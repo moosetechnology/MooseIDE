@@ -5,8 +5,9 @@ I compute the herarchical map using `MiArchitecturalMapBuilder`.
 Class {
 	#name : 'MiArchitecturalMapVisualization',
 	#superclass : 'MiAbstractHierarchicalVisualization',
-	#category : 'MooseIDE-ArchitecturalMap',
-	#package : 'MooseIDE-ArchitecturalMap'
+	#category : 'MooseIDE-ArchitecturalMap-browser',
+	#package : 'MooseIDE-ArchitecturalMap',
+	#tag : 'browser'
 }
 
 { #category : 'running' }

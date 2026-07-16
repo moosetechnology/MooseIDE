@@ -20,10 +20,12 @@ Class {
 		'hideMegamorphicInvocations',
 		'megamorphicTreshold',
 		'showDirectoriesAsRootNodes',
-		'weightedLinks'
+		'weightedLinks',
+		'availableDoubleClickActions'
 	],
-	#category : 'MooseIDE-ArchitecturalMap',
-	#package : 'MooseIDE-ArchitecturalMap'
+	#category : 'MooseIDE-ArchitecturalMap-model',
+	#package : 'MooseIDE-ArchitecturalMap',
+	#tag : 'model'
 }
 
 { #category : 'available' }
