@@ -1,3 +1,6 @@
+"
+Abstract class for commands that run on a Shape in a Roassal visualization
+"
 Class {
 	#name : 'MiShapeCommand',
 	#superclass : 'MiCommand',

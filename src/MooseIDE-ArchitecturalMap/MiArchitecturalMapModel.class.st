@@ -154,11 +154,18 @@ MiArchitecturalMapModel >> availableAssociationTypes [
 MiArchitecturalMapModel >> availableDoubleClickActions [
 
 	^ {
-		  MiExpandCollapseShapeCommand new.
-		  MiInspectShapeCommand new.
-		  (MiPropagateShapeCommand new
-			   browser: browser;
-			   yourself) }
+		MiExpandCollapseShapeCommand new .
+		MiInspectShapeCommand new .
+		(MiPropagateShapeCommand new
+			browser: browser;
+			yourself) .
+		(MiHideAllLinksCommand new
+			browser: browser;
+			yourself) .
+		(MiShowAllLinksCommand new
+			browser: browser;
+			yourself)
+		}
 ]
 
 { #category : 'available' }

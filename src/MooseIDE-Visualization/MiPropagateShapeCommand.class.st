@@ -1,9 +1,6 @@
 Class {
 	#name : 'MiPropagateShapeCommand',
-	#superclass : 'MiShapeCommand',
-	#instVars : [
-		'browser'
-	],
+	#superclass : 'MiShapeInBrowserCommand',
 	#category : 'MooseIDE-Visualization-Commands',
 	#package : 'MooseIDE-Visualization',
 	#tag : 'Commands'
@@ -19,12 +16,6 @@ MiPropagateShapeCommand class >> defaultDescription [
 MiPropagateShapeCommand class >> defaultName [
 
 	^ 'Propagate'
-]
-
-{ #category : 'accessing' }
-MiPropagateShapeCommand >> browser: aMiBrowser [
-
-	browser := aMiBrowser
 ]
 
 { #category : 'executing' }

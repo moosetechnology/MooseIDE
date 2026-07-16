@@ -155,6 +155,22 @@ MiArchitecturalMapSettingsConfiguration >> megamorphicTreshold: anInteger [
 ]
 
 { #category : 'ui' }
+MiArchitecturalMapSettingsConfiguration >> newDoubleClickSettingPresenter [
+
+	| actions |
+	actions := availableDoubleClickActions.
+	^ (MiDroplistSettingPresenter on: self)
+		  label: 'Double click action:';
+		  help: 'What happens when double-clicking on an entity? ';
+		  items: actions;
+		  selectItem: (actions detect: [ :each |
+				   each class = self doubleClickAction class ]);
+		  display: [ :item | item name ];
+		  whenSelectedDo: [ :item | self doubleClickAction: item ];
+		  yourself
+]
+
+{ #category : 'ui' }
 MiArchitecturalMapSettingsConfiguration >> newHideReceivedEntitiesSettingPresenter [
 
 	^ (MiBooleanSettingPresenter on: self)
@@ -222,7 +238,7 @@ MiArchitecturalMapSettingsConfiguration >> settingsPresenters [
 		  add: self newHideReceivedEntitiesSettingPresenter;
 		  add: self newShowLinkWeightsSettingPresenter;
 		  add: self newShowDirectoriesAsRootSettingPresenter;
-		  add: (MiDoubleClickSettingPresenter on: self);
+		  add: self newDoubleClickSettingPresenter;
 		  yourself
 ]
 

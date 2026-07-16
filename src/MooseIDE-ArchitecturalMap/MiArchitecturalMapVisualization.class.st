@@ -25,6 +25,15 @@ MiArchitecturalMapVisualization >> buildInCanvas: aCanvas [
 ]
 
 { #category : 'interactions' }
+MiArchitecturalMapVisualization >> hideAllLinks: aShape [ 
+
+	HHideAllLinksMenuItem new
+		context: aShape ;
+		visualization: builder ;
+		execute
+]
+
+{ #category : 'interactions' }
 MiArchitecturalMapVisualization >> selectRelatedTo: anEntity [ 
 
 	builder selectRelatedTo: anEntity 
@@ -42,4 +51,13 @@ MiArchitecturalMapVisualization >> shapeFromEntity: anEntity [
 				  ifNil: [ false ]
 				  ifNotNil: [ :shapeModel | shapeModel rawModel = anEntity ] ]
 		  ifNone: [ nil ]
+]
+
+{ #category : 'interactions' }
+MiArchitecturalMapVisualization >> showAllLinks: aShape [ 
+
+	HShowAllLinksMenuItem new
+		context: aShape ;
+		visualization: builder ;
+		execute
 ]

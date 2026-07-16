@@ -1,3 +1,6 @@
+"
+Abstract class for commands that are used in MooseIDE UI (in menus or buttons)
+"
 Class {
 	#name : 'MiCommand',
 	#superclass : 'CmCommand',

@@ -120,6 +120,12 @@ MiArchitecturalMapBrowser >> followEntity: anEntity [
 ]
 
 { #category : 'actions' }
+MiArchitecturalMapBrowser >> hideAllLinks: aShape [ 
+
+	mainPresenter hideAllLinks: aShape 
+]
+
+{ #category : 'actions' }
 MiArchitecturalMapBrowser >> runVisualization [
 
 	self doWithTimeout: [ mainPresenter run ]
@@ -136,6 +142,12 @@ MiArchitecturalMapBrowser >> setModelBeforeInitialization: aModel [
 
 	super setModelBeforeInitialization: aModel.
 	aModel browser: self
+]
+
+{ #category : 'actions' }
+MiArchitecturalMapBrowser >> showAllLinks: aShape [ 
+
+	mainPresenter showAllLinks: aShape 
 ]
 
 { #category : 'accessing - private tests' }
