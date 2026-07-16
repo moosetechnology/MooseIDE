@@ -155,55 +155,74 @@ MiArchitecturalMapSettingsConfiguration >> megamorphicTreshold: anInteger [
 ]
 
 { #category : 'ui' }
+MiArchitecturalMapSettingsConfiguration >> newHideReceivedEntitiesSettingPresenter [
+
+	^ (MiBooleanSettingPresenter on: self)
+		  label: 'Hide received entities';
+		  help:
+			  'When showing tags, hide the received entities to show only the tagged entities';
+		  state: hideReceivedEntities;
+		  whenStateChangedDo: [ :boolean |
+			  self hideReceivedEntities: boolean ];
+		  yourself
+]
+
+{ #category : 'ui' }
+MiArchitecturalMapSettingsConfiguration >> newQuerySettingPresenter [
+
+	^ (MiQuerySettingPresenter on: self)
+		  beForChildren;
+		  yourself
+]
+
+{ #category : 'ui' }
+MiArchitecturalMapSettingsConfiguration >> newShowDirectoriesAsRootSettingPresenter [
+
+	^ (MiBooleanSettingPresenter on: self)
+		  label: 'Show directories as root nodes (experimental)';
+		  help:
+			  'Experimental feature. Show the source files/directories containing entites as root nodes in the map';
+		  state: showDirectoriesAsRootNodes;
+		  whenStateChangedDo: [ :boolean |
+			  self showDirectoriesAsRootNodes: boolean ];
+		  yourself
+]
+
+{ #category : 'ui' }
+MiArchitecturalMapSettingsConfiguration >> newShowLinkWeightsSettingPresenter [
+
+	^ (MiBooleanSettingPresenter on: self)
+		  label: 'Show the weight of links';
+		  help: 'Show how many dependencies are included in a link';
+		  state: weightedLinks;
+		  whenStateChangedDo: [ :boolean | self weightedLinks: boolean ];
+		  yourself
+]
+
+{ #category : 'ui' }
+MiArchitecturalMapSettingsConfiguration >> newTagSettingPresenter [
+
+	^ (MiTagsSettingPresenter on: self)
+		  label: 'Show these tags as entities:';
+		  help:
+			  'The selected tags will be represented as entities in the visualisation.
+Inner elements will be the tagged entities';
+		  yourself
+]
+
+{ #category : 'ui' }
 MiArchitecturalMapSettingsConfiguration >> settingsPresenters [
 
 	^ super settingsPresenters
 		  add: (MiLayoutSettingPresenter on: self);
-
-		  add: ((MiQuerySettingPresenter on: self)
-				   beForChildren;
-				   yourself);
-
+		  add: self newQuerySettingPresenter;
 		  add: (MiAssociationTypesSettingPresenter on: self);
-
 		  add: (MiMegamorphicInvocationsSettingPresenter on: self);
-
-		  add: ((MiTagsSettingPresenter on: self)
-				   label: 'Show these tags as entities:';
-				   help:
-					   'The selected tags will be represented as entities in the visualisation.
-Inner elements will be the tagged entities';
-				   yourself);
-
-		  add: ((MiBooleanSettingPresenter on: self)
-				   label: 'Hide received entities';
-				   help:
-					   'When showing tags, hide the received entities to show only the tagged entities';
-				   state: hideReceivedEntities;
-				   whenStateChangedDo: [ :boolean |
-					   self hideReceivedEntities: boolean ];
-				   yourself);
-
-		  add: ((MiBooleanSettingPresenter on: self)
-				   label: 'Show the weight of links';
-				   help:
-					   'Show how many dependencies are included in a link';
-				   state: weightedLinks;
-				   whenStateChangedDo: [ :boolean |
-					   self weightedLinks: boolean ];
-				   yourself);
-
-		  add: ((MiBooleanSettingPresenter on: self)
-				   label: 'Show directories as root nodes (experimental)';
-				   help:
-					   'Experimental feature. Show the source files/directories containing entites as root nodes in the map';
-				   state: showDirectoriesAsRootNodes;
-				   whenStateChangedDo: [ :boolean |
-					   self showDirectoriesAsRootNodes: boolean ];
-				   yourself);
-
+		  add: self newTagSettingPresenter;
+		  add: self newHideReceivedEntitiesSettingPresenter;
+		  add: self newShowLinkWeightsSettingPresenter;
+		  add: self newShowDirectoriesAsRootSettingPresenter;
 		  add: (MiDoubleClickSettingPresenter on: self);
-
 		  yourself
 ]
 
