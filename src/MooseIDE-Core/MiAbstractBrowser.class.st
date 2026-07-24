@@ -327,10 +327,7 @@ MiAbstractBrowser class >> oldBrowserMenuRoot [
 { #category : 'instance creation' }
 MiAbstractBrowser class >> open [
 
-	^ (self on: self newModel)
-		  open;
-		  followBus: self currentApplication defaultBus;
-		  yourself
+	^self openRunning: [ :browser | browser followBus: self currentApplication defaultBus]
 ]
 
 { #category : 'keymaps' }
@@ -341,14 +338,26 @@ MiAbstractBrowser class >> openKeyMap [
 ]
 
 { #category : 'instance creation' }
-MiAbstractBrowser class >> openOn: anEntity [
+MiAbstractBrowser class >> openOnEntities: anEntity [
 
-	^ (self on: self newModel)
-		  open;
-		  receiveEntity: anEntity;
-		  beFrozen;
-		  followBus: self currentApplication defaultBus;
-		  yourself
+	^self openRunning: [ :browser |
+		browser
+			receiveEntity: anEntity;
+			beFrozen;
+			followBus: self currentApplication defaultBus
+	]
+]
+
+{ #category : 'instance creation' }
+MiAbstractBrowser class >> openRunning: aBlock [
+	"Open a browser window, then initializes running aBlock (possibly in a separate process)
+	 aBlock takes as parameter the new browser"
+
+	| instance |
+	instance := self on: self newModel.
+	instance open.
+	instance application scheduleBrowser: instance construction: aBlock.
+	^instance
 ]
 
 { #category : 'keymaps' }
@@ -601,7 +610,7 @@ MiAbstractBrowser >> propagateToOtherBrowser: browserClass [
 			exception signal.
 			^ self ].
 
-	browserClass openOn: selectedItem
+	browserClass openOnEntities: selectedItem
 
 ]
 

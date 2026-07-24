@@ -441,6 +441,15 @@ MiApplication >> removeItem: anItem from: aProducer [
 		aProducer = aConsumer ifFalse: [ aConsumer remove: anItem ] ]
 ]
 
+{ #category : 'presenters' }
+MiApplication >> scheduleBrowser: aMiBrowser construction: aBlock [
+	"delayed initialization of browsers in normal scenario"
+
+	[aBlock value: aMiBrowser]
+		forkAt: Processor userBackgroundPriority
+		named: ('creating a ' , aMiBrowser class name).
+]
+
 { #category : 'tags' }
 MiApplication >> selectedTag: aTag [
 
