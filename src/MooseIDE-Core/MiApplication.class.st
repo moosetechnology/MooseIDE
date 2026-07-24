@@ -268,7 +268,7 @@ MiApplication >> itemsFor: aClass [
 	
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'buses' }
 MiApplication >> miPropagate: anObject [
 
 	anObject isMooseObject
@@ -276,7 +276,7 @@ MiApplication >> miPropagate: anObject [
 		ifFalse: [ self inform: 'No Moose object to propagate.' ]
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'buses' }
 MiApplication >> miPropagate: anObject on: aCollectionOfBuses [
 
 	anObject isMooseObject
@@ -338,8 +338,7 @@ MiApplication >> openCurrentModelsBrowser [
 						  restore;
 						  activate ];
 				  yourself ]
-		  ifNil: [
-		  currentModelsBrowser := MiModelsBrowser instantiateAndOpen ]
+		  ifNil: [ currentModelsBrowser := MiModelsBrowser instantiateAndOpen ]
 ]
 
 { #category : 'presenters' }
