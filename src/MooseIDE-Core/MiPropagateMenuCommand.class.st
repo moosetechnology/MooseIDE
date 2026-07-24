@@ -1,3 +1,6 @@
+"
+A command that opens a menu of all Moose tools to propagate a result directly to another tool
+"
 Class {
 	#name : 'MiPropagateMenuCommand',
 	#superclass : 'MiCommand',
