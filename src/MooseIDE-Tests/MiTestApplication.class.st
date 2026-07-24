@@ -23,3 +23,10 @@ MiTestApplication >> importModelFromFile: aStubObject [
 	"overriding for tests"
 	aStubObject wasHandled
 ]
+
+{ #category : 'presenters' }
+MiTestApplication >> scheduleBrowser: aMiBrowser construction: aBlock [
+	"wait for initialization of browsers in test scenario"
+
+	aBlock value: aMiBrowser
+]
