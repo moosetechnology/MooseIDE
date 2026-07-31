@@ -114,7 +114,8 @@ MiDeadCodeBrowserModel >> followEntity: aCollection [
 
 	candidateEntities := aCollection.
 	browser candidateEntities: aCollection.
-	browser updateChosenRules
+	browser updateChosenRules.
+	self clearDeads
 ]
 
 { #category : 'testing' }

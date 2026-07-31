@@ -24,6 +24,15 @@ MiDeadCodeBrowserModelTest >> setUp [
 ]
 
 { #category : 'tests' }
+MiDeadCodeBrowserModelTest >> testClearResultListWhenReceivingEntities [
+
+	model deadEntities addAll: { FamixStMethod new . FamixStMethod new }.
+	model followEntity: { FamixStMethod new }.
+	
+	self assert: model deadEntities size equals: 0
+]
+
+{ #category : 'tests' }
 MiDeadCodeBrowserModelTest >> testGatherRulesList [
 	"Expected number must be updated according to number of non abstract rule classes"
 
