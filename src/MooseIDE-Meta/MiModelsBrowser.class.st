@@ -94,6 +94,13 @@ MiModelsBrowser class >> open [
 	^ MiApplication current openCurrentModelsBrowser
 ]
 
+{ #category : 'as yet unclassified' }
+MiModelsBrowser class >> openForTests: aTestApplication [
+
+	<script>
+	^ aTestApplication openCurrentModelsBrowser
+]
+
 { #category : 'specs' }
 MiModelsBrowser class >> title [
 
