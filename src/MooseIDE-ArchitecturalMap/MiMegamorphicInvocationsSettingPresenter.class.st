@@ -23,18 +23,6 @@ MiMegamorphicInvocationsSettingPresenter >> defaultLayout [
 		  yourself
 ]
 
-{ #category : 'layout' }
-MiMegamorphicInvocationsSettingPresenter >> fullLayout [
-
-	^ self newBoxLayoutLeftToRight
-		  spacing: 5;
-		  add: checkbox width: 25;
-		  add: tresholdLabel expand: false fill: true;
-		  add: tresholdField width: 75;
-		  add: invocationsLabel expand: false fill: true;
-		  yourself
-]
-
 { #category : 'accessing' }
 MiMegamorphicInvocationsSettingPresenter >> help [
 
