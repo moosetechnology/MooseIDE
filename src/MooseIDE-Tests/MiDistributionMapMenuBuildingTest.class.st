@@ -19,21 +19,26 @@ MiDistributionMapMenuBuildingTest >> browserClassToTest [
 ]
 
 { #category : 'running' }
-MiDistributionMapMenuBuildingTest >> setUp [
+MiDistributionMapMenuBuildingTest >> populateMooseModel [ 
 
 	| classA classB |
-	super setUp.
+	super populateMooseModel.
 
 	classA := model newClassNamed: 'ClassA'.
 	(model newMethodNamed: 'methodA') parentType: classA.
 	classB := model newClassNamed: 'ClassB'.
 
-	browser followEntity: {
-			classA.
-			classB }.
+]
+
+{ #category : 'running' }
+MiDistributionMapMenuBuildingTest >> setUp [
+
+	super setUp.
+
+	browser followEntity: model allModelClasses.
 	self rebuildVisualization.
 
-	nodeShape := canvas nodes detect: [ :s | s model rawModel = classA ]
+	nodeShape := self shapeForEntityNamed: 'ClassA'
 ]
 
 { #category : 'tests' }

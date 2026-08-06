@@ -22,13 +22,10 @@ MiButterflyMenuBuildingTest >> browserClassToTest [
 ]
 
 { #category : 'running' }
-MiButterflyMenuBuildingTest >> setUp [
-	"Central has one method (centralMethod). LeafClient calls it from a method
-	 with no further contained entities of its own (leaf wing node). RichClient
-	 is a subclass of Central and has its own method (wing node with children)."
+MiButterflyMenuBuildingTest >> populateMooseModel [
 
 	| central centralMethod leafClient leafMethod richClient richMethod |
-	super setUp.
+	super populateMooseModel.
 
 	central := model newClassNamed: 'Central'.
 	centralMethod := (model newMethodNamed: 'centralMethod') parentType:
@@ -49,14 +46,22 @@ MiButterflyMenuBuildingTest >> setUp [
 		superclass: central;
 		yourself.
 
-	browser followEntity: central.
+]
+
+{ #category : 'running' }
+MiButterflyMenuBuildingTest >> setUp [
+	"Central has one method (centralMethod). LeafClient calls it from a method
+	 with no further contained entities of its own (leaf wing node). RichClient
+	 is a subclass of Central and has its own method (wing node with children)."
+
+	super setUp.
+
+	browser followEntity: (model entityNamed: 'Central').
 	self rebuildVisualization.
 
 	centralShape := canvas shapeFromModel: builder centralNode.
-	leafShape := canvas nodes detect: [ :s |
-		             s model rawModel = leafMethod ].
-	richShape := canvas nodes detect: [ :s |
-		             s model rawModel = richClient ].
+	leafShape := self shapeForEntityNamed: 'leafCall'.
+	richShape := self shapeForEntityNamed: 'RichClient'.
 	lineShape := canvas lines first
 ]
 

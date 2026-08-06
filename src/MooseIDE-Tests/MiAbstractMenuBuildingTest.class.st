@@ -41,6 +41,12 @@ MiAbstractMenuBuildingTest >> buildMenuFor: aShape [
 ]
 
 { #category : 'running' }
+MiAbstractMenuBuildingTest >> populateMooseModel [
+
+	model := FamixStModel new
+]
+
+{ #category : 'running' }
 MiAbstractMenuBuildingTest >> rebuildVisualization [
 	"followEntity: only triggers a rebuild via #changed: #applyScript,
 	 so buildInCanvas: is called explicitly here instead of relying on notification's timing."
@@ -55,7 +61,14 @@ MiAbstractMenuBuildingTest >> setUp [
 
 	super setUp.
 	browser := self browserClassToTest openForTests: application.
-	model := FamixStModel new
+	self populateMooseModel
+]
+
+{ #category : 'running' }
+MiAbstractMenuBuildingTest >> shapeForEntityNamed: aName [
+
+	^canvas nodes
+		detect: [ :s | s model rawModel name = aName ]
 ]
 
 { #category : 'running' }
