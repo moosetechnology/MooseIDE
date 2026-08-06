@@ -48,10 +48,13 @@ MiAbstractMenuBuildingTest >> populateMooseModel [
 
 { #category : 'running' }
 MiAbstractMenuBuildingTest >> rebuildVisualization [
-	"followEntity: only triggers a rebuild via #changed: #applyScript,
-	 so buildInCanvas: is called explicitly here instead of relying on notification's timing."
+	"followEntity: triggers a rebuild via #changed: #applyScript (that resolves
+	 asynchronously for some browsers)
+	 #buildInCanvas: is only forced when needed"
 
-	browser visualization buildInCanvas: browser visualization canvas.
+	browser visualization builder ifNil: [
+		browser visualization buildInCanvas: browser visualization canvas ].
+
 	builder := browser visualization builder.
 	canvas := builder canvas
 ]
