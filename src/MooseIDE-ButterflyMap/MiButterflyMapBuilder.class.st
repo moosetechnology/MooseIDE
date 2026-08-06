@@ -199,15 +199,9 @@ MiButterflyMapBuilder >> layoutButterfly [
 ]
 
 { #category : 'accessing' }
-MiButterflyMapBuilder >> menuInteraction [
-	^ menuInteraction ifNil: [
-		menuInteraction := RSMenuActivable new
-			menuDo: [ :menu :aShape | MiButterflyMenuItem 
-				buildIn: menu 
-				shape: aShape 
-				visualization: self ];
-			yourself 
-	]
+MiButterflyMapBuilder >> menuItemStrategy [
+
+	^ MiButterflyMenuItemStrategy new
 ]
 
 { #category : 'hooks' }
