@@ -232,32 +232,6 @@ MiArchitecturalMapBuilder >> colorFor: node [
 	^ node color ifNil: [ Smalltalk ui theme baseColor ] 
 ]
 
-{ #category : 'accessing' }
-MiArchitecturalMapBuilder >> createMultiTagBoxSized: aSize [
-
-	| cp |
-	cp := RSComposite new.
-	cp addAll: ({
-			 Color red.
-			 Color cyan.
-			 Color green.
-			 Color yellow } collect: [ :color |
-			 RSBox new
-				 size: aSize / 2;
-				 color: color;
-				 yourself ]).
-	RSGridLayout new
-		lineItemsCount: 2;
-		gapSize: 0;
-		on: cp children.
-	cp adjustToChildren.
-	cp border: (RSBorder new
-			 color: Color black;
-			 width: 1;
-			 yourself).
-	^ cp
-]
-
 { #category : 'building' }
 MiArchitecturalMapBuilder >> createRootNodes [
 
