@@ -24,32 +24,12 @@ MiDSMDependencyManager class >> on: aMiDSMModel [
 
 { #category : 'enumerating' }
 MiDSMDependencyManager >> allDependencyPairsDo: aBlock [
-	"Excute aBlock on all paira with non-empty dependencies
+	"Excute aBlock on all pairs with non-empty dependencies
 	 aBlock takes 3 arguments: fromEntity, toEntity, pairDependencies"
 
 	dependencyDictionary keysAndValuesDo: [ :pair :pairDependencies |
-		pairDependencies ifNotEmpty: [
-			aBlock
-				value: pair key
-				value: pair value
-				value: pairDependencies
-		]
-	]
-]
-
-{ #category : 'enumerating' }
-MiDSMDependencyManager >> allPairsDo: aBlock [
-	"Excute aBlock on all pairs
-	 aBlock takes 3 arguments: fromEntity, toEntity, pairDependencies"
-
-	dependencyDictionary keysAndValuesDo: [ :pair :pairDependencies |
-		pairDependencies ifNotEmpty: [
-			aBlock
-				value: pair key
-				value: pair value
-				value: pairDependencies
-		]
-	]
+			pairDependencies ifNotEmpty: [
+				aBlock value: pair key value: pair value value: pairDependencies ] ]
 ]
 
 { #category : 'testing' }
