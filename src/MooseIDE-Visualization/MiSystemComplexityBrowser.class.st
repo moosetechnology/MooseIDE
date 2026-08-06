@@ -119,3 +119,9 @@ All received entities were rejected'.
 	specModel entities: newGroup.
 	self runVisualization
 ]
+
+{ #category : 'accessing' }
+MiSystemComplexityBrowser >> visualization [
+
+	^ mainPresenter
+]
