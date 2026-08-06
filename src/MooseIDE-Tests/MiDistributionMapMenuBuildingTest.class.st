@@ -1,15 +1,10 @@
 "
-Characterizes the current (pre-refactor) menu-building behaviour of MiDistributionMapBuilder, via MiDistributionMapMenuItem class>>buildIn:shape:visualization:. Golden-master baseline for the menuInteraction/menuItemStrategy unification.
-
-Deliberately subclasses MiAbstractApplicationTest, not MiAbstractBrowserTest: the latter carries ~30 generic browser-behaviour tests irrelevant to menu-building characterization.
+Characterizes MiDistributionMapBuilder's menuInteraction behaviour: which items show for a node and for the canvas background, and why. Doubles as the regression safety net for the menuItemStrategy unification.
 "
 Class {
 	#name : 'MiDistributionMapMenuBuildingTest',
-	#superclass : 'MiAbstractApplicationTest',
+	#superclass : 'MiAbstractMenuBuildingTest',
 	#instVars : [
-		'browser',
-		'builder',
-		'canvas',
 		'nodeShape'
 	],
 	#category : 'MooseIDE-Tests-Browsers',
@@ -18,29 +13,17 @@ Class {
 }
 
 { #category : 'running' }
-MiDistributionMapMenuBuildingTest >> buildMenuFor: aShape [
-	"Drives the actual menuInteraction block rather than reconstructing its body.
-	 RSMenuActivable exposes no public accessor for its menuBlock, so it's reached
-	 reflectively; this avoids simulating a real RSMouseRightClick event and the
-	 resulting menu popUpInWorld, which onShape: would otherwise require."
+MiDistributionMapMenuBuildingTest >> browserClassToTest [
 
-	| menu |
-	menu := MenuMorph new.
-	(builder menuInteraction instVarNamed: 'menuBlock')
-		value: menu
-		value: aShape.
-	^ menu
+	^ MiDistributionMapBrowser
 ]
 
 { #category : 'running' }
 MiDistributionMapMenuBuildingTest >> setUp [
 
-	| model classA classB |
+	| classA classB |
 	super setUp.
 
-	browser := MiDistributionMapBrowser openForTests: application.
-
-	model := FamixStModel new.
 	classA := model newClassNamed: 'ClassA'.
 	(model newMethodNamed: 'methodA') parentType: classA.
 	classB := model newClassNamed: 'ClassB'.
@@ -48,17 +31,9 @@ MiDistributionMapMenuBuildingTest >> setUp [
 	browser followEntity: {
 			classA.
 			classB }.
-	builder := browser visualization builder.
-	canvas := browser canvas.
+	self rebuildVisualization.
 
 	nodeShape := canvas nodes detect: [ :s | s model rawModel = classA ]
-]
-
-{ #category : 'running' }
-MiDistributionMapMenuBuildingTest >> tearDown [
-
-	browser ifNotNil: [ browser withWindowDo: [ :window | window close ] ].
-	super tearDown
 ]
 
 { #category : 'tests' }

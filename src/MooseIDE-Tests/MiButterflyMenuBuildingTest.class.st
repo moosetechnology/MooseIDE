@@ -1,15 +1,10 @@
 "
-Characterizes the current (pre-refactor) menu-building behaviour of MiButterflyMapBuilder, via MiButterflyMenuItem class>>buildIn:shape:visualization:. Golden-master baseline for the menuInteraction/menuItemStrategy unification.
-
-Deliberately subclasses MiAbstractApplicationTest, not MiAbstractBrowserTest: the latter carries ~30 generic browser-behaviour tests (bus following, window title, tagging, settings dialogs...) that are irrelevant here and at least one (testSettingsAction) actively fails without an override.
+Characterizes MiButterflyMapBuilder's menuInteraction behaviour: which items show for a central node, a leaf wing node, an internal wing node, a dependency line, and the canvas background, and why. Doubles as the regression safety net for the menuItemStrategy unification.
 "
 Class {
 	#name : 'MiButterflyMenuBuildingTest',
-	#superclass : 'MiAbstractApplicationTest',
+	#superclass : 'MiAbstractMenuBuildingTest',
 	#instVars : [
-		'browser',
-		'builder',
-		'canvas',
 		'centralShape',
 		'leafShape',
 		'richShape',
@@ -21,33 +16,20 @@ Class {
 }
 
 { #category : 'running' }
-MiButterflyMenuBuildingTest >> buildMenuFor: aShape [
-	"Drives the actual menuInteraction block rather than reconstructing its body"
+MiButterflyMenuBuildingTest >> browserClassToTest [
 
-	| menu |
-	menu := MenuMorph new.
-	(builder menuInteraction instVarNamed: 'menuBlock')
-		value: menu
-		value: aShape.
-	^ menu
+	^ MiButterflyMapBrowser
 ]
 
 { #category : 'running' }
 MiButterflyMenuBuildingTest >> setUp [
 	"Central has one method (centralMethod). LeafClient calls it from a method
 	 with no further contained entities of its own (leaf wing node). RichClient
-	 is a subclass of Central and has its own method (wing node with children).
+	 is a subclass of Central and has its own method (wing node with children)."
 
-	 followEntity: only triggers a rebuild via #changed: #applyScript (dependents
-	 notification, not a direct call), so buildInCanvas: is called explicitly and
-	 synchronously afterwards instead of relying on that notification's timing."
-
-	| model central centralMethod leafClient leafMethod richClient richMethod |
+	| central centralMethod leafClient leafMethod richClient richMethod |
 	super setUp.
 
-	browser := MiButterflyMapBrowser openForTests: application.
-
-	model := FamixStModel new.
 	central := model newClassNamed: 'Central'.
 	centralMethod := (model newMethodNamed: 'centralMethod') parentType:
 		                 central.
@@ -68,9 +50,7 @@ MiButterflyMenuBuildingTest >> setUp [
 		yourself.
 
 	browser followEntity: central.
-	browser visualization buildInCanvas: browser visualization canvas.
-	builder := browser visualization builder.
-	canvas := builder canvas.
+	self rebuildVisualization.
 
 	centralShape := canvas shapeFromModel: builder centralNode.
 	leafShape := canvas nodes detect: [ :s |
@@ -78,13 +58,6 @@ MiButterflyMenuBuildingTest >> setUp [
 	richShape := canvas nodes detect: [ :s |
 		             s model rawModel = richClient ].
 	lineShape := canvas lines first
-]
-
-{ #category : 'running' }
-MiButterflyMenuBuildingTest >> tearDown [
-
-	browser ifNotNil: [ browser withWindowDo: [ :window | window close ] ].
-	super tearDown
 ]
 
 { #category : 'tests' }
