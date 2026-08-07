@@ -8,7 +8,7 @@ I am responsible for :
 "
 Class {
 	#name : 'MiDistributionMapBuilder',
-	#superclass : 'HSimpleVisualizationBuilder',
+	#superclass : 'MiAbstractHierarchicalMapBuilder',
 	#category : 'MooseIDE-DistributionMap',
 	#package : 'MooseIDE-DistributionMap'
 }
@@ -66,12 +66,6 @@ MiDistributionMapBuilder >> buildNodeFromEntity: anEntity [
 						   yourself ]);
 		  expand;
 		  yourself
-]
-
-{ #category : 'accessing' }
-MiDistributionMapBuilder >> elements [
-
-	^ mapModel entities
 ]
 
 { #category : 'accessing' }
