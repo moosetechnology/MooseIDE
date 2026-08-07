@@ -10,7 +10,7 @@ I am responsible for :
 "
 Class {
 	#name : 'MiArchitecturalMapBuilder',
-	#superclass : 'HSimpleVisualizationBuilder',
+	#superclass : 'MiAbstractHierarchicalMapBuilder',
 	#instVars : [
 		'nodeMooseIDDict',
 		'allEntities',
@@ -244,12 +244,6 @@ MiArchitecturalMapBuilder >> createRootNodes [
 MiArchitecturalMapBuilder >> defaultNodeStyle [
 
 	^MiArchitecturalMapStyle new
-]
-
-{ #category : 'accessing' }
-MiArchitecturalMapBuilder >> elements [
-
-	^ mapModel entities
 ]
 
 { #category : 'building' }

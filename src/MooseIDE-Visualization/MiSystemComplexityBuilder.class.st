@@ -1,6 +1,6 @@
 Class {
 	#name : 'MiSystemComplexityBuilder',
-	#superclass : 'HSimpleVisualizationBuilder',
+	#superclass : 'MiAbstractHierarchicalMapBuilder',
 	#instVars : [
 		'nodeMooseIDDict'
 	],

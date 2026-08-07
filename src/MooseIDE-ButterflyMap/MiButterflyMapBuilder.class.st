@@ -1,6 +1,6 @@
 Class {
 	#name : 'MiButterflyMapBuilder',
-	#superclass : 'HSimpleVisualizationBuilder',
+	#superclass : 'MiAbstractHierarchicalMapBuilder',
 	#instVars : [
 		'incomingGroups',
 		'outgoingGroups',
