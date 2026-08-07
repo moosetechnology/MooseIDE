@@ -74,17 +74,10 @@ MiDistributionMapBuilder >> elements [
 	^ mapModel entities
 ]
 
-{ #category : 'accessing - attributes' }
-MiDistributionMapBuilder >> menuInteraction [
+{ #category : 'accessing' }
+MiDistributionMapBuilder >> menuItemStrategy [
 
-	^ menuInteraction ifNil: [
-			  menuInteraction := RSMenuActivable new
-				                     menuDo: [ :menu :aShape |
-						                     MiDistributionMapMenuItem
-							                     buildIn: menu
-							                     shape: aShape
-							                     visualization: self ];
-				                     yourself ]
+	^ MiDistributionMapMenuItemStrategy new
 ]
 
 { #category : 'hooks' }
