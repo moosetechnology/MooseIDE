@@ -78,7 +78,7 @@ MiSystemComplexityMenuBuildingTest >> testLeafNodeMenu [
 	 - 'New entity', 'Add dependency to'
 	 - separator
 	 - 'Show all links', 'Hide all links', 'Hide incoming links', 'Hide outgoing links',
-	 'Select related entities', 'Select all links', 'Select incoming links',
+	  'Select all links', 'Select incoming links',
 	 'Select outgoing links'
 	 - separator
 	 - 'Inspect', 'Remove node'
@@ -92,10 +92,10 @@ MiSystemComplexityMenuBuildingTest >> testLeafNodeMenu [
 		assert: (menu items collect: #contents) asArray
 		equals: #( 'Relayout' 'Propagate' 'New entity' 'Add dependency to'
 			   'Show all links' 'Hide all links' 'Hide incoming links'
-			   'Hide outgoing links' 'Select related entities'
+			   'Hide outgoing links'
 			   'Select all links' 'Select incoming links'
 			   'Select outgoing links' 'Inspect' 'Remove node' ).
-	self assert: menu submorphs size equals: 17
+	self assert: menu submorphs size equals: 16
 ]
 
 { #category : 'tests' }
@@ -124,7 +124,7 @@ MiSystemComplexityMenuBuildingTest >> testRichNodeMenu [
 	 - 'New entity', 'Add dependency to'
 	 - separator
 	 - 'Show all links', 'Hide all links', 'Hide incoming links', 'Hide outgoing links',
-	 'Collapse external links', 'Select related entities', 'Select all links',
+	 'Collapse external links', 'Select all links',
 	 'Select incoming links', 'Select outgoing links'
 	 - separator
 	 - 'Open node', 'Inspect', 'Remove node'"
@@ -139,7 +139,7 @@ MiSystemComplexityMenuBuildingTest >> testRichNodeMenu [
 			   'Relayout' 'Propagate' 'New entity' 'Add dependency to'
 			   'Show all links' 'Hide all links' 'Hide incoming links'
 			   'Hide outgoing links' 'Collapse external links'
-			   'Select related entities' 'Select all links' 'Select incoming links'
+			   'Select all links' 'Select incoming links'
 			   'Select outgoing links' 'Open node' 'Inspect' 'Remove node' ).
-	self assert: menu submorphs size equals: 23
+	self assert: menu submorphs size equals: 22
 ]

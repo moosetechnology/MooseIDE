@@ -104,7 +104,7 @@ MiArchitecturalMenuBuildingTest >> testPlainNodeMenu [
 	 - 'New entity', 'Add dependency to'
 	 - separator
 	 - 'Show all links', 'Hide all links', 'Hide incoming links', 'Hide outgoing links',
-	 'Collapse external links', 'Select related entities', 'Select all links',
+	 'Collapse external links', 'Select all links',
 	 'Select incoming links', 'Select outgoing links'
 	 - separator
 	 - 'Open node', 'Inspect', 'Remove node'
@@ -120,9 +120,9 @@ MiArchitecturalMenuBuildingTest >> testPlainNodeMenu [
 			   'Relayout' 'Propagate' 'New entity' 'Add dependency to'
 			   'Show all links' 'Hide all links' 'Hide incoming links'
 			   'Hide outgoing links' 'Collapse external links'
-			   'Select related entities' 'Select all links' 'Select incoming links'
+			   'Select all links' 'Select incoming links'
 			   'Select outgoing links' 'Open node' 'Inspect' 'Remove node' ).
-	self assert: menu submorphs size equals: 23
+	self assert: menu submorphs size equals: 22
 ]
 
 { #category : 'tests' }
@@ -135,7 +135,7 @@ MiArchitecturalMenuBuildingTest >> testTagNodeMenu [
 	 - 'New entity', 'Add dependency to'
 	 - separator
 	 - 'Show all links', 'Hide all links', 'Hide incoming links', 'Hide outgoing links',
-	 'Collapse external links', 'Select related entities', 'Select all links',
+	 'Collapse external links', 'Select all links',
 	 'Select incoming links', 'Select outgoing links'
 	 - separator
 	 - 'Open node', 'Inspect', 'Remove node'"
@@ -150,8 +150,8 @@ MiArchitecturalMenuBuildingTest >> testTagNodeMenu [
 			   'Collapse children' 'Relayout' 'Propagate' 'New entity'
 			   'Add dependency to' 'Show all links' 'Hide all links'
 			   'Hide incoming links' 'Hide outgoing links'
-			   'Collapse external links' 'Select related entities'
+			   'Collapse external links'
 			   'Select all links' 'Select incoming links'
 			   'Select outgoing links' 'Open node' 'Inspect' 'Remove node' ).
-	self assert: menu submorphs size equals: 25
+	self assert: menu submorphs size equals: 24
 ]
