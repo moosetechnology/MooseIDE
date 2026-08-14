@@ -101,6 +101,7 @@ BaselineOfMooseIDE >> definePackages: spec [
 		package: 'MooseIDE-DeadCode-Tests' with: [ spec requires: #( 'MooseIDE-DeadCode' 'MooseIDE-Tests' ) ];		
 		package: 'MooseIDE-DSM' with: [ spec requires: #( 'MooseIDE-Visualization' 'AIHierarchicalClustering' ) ];
 		package: 'MooseIDE-DistributionMap' with: [ spec requires: #( 'MooseIDE-Visualization' 'AIHierarchicalClustering' ) ];
+		package: 'MooseIDE-DistributionMap-Tests' with: [ spec requires: #( 'MooseIDE-DistributionMap' ) ];
 		package: 'MooseIDE-Tests' with: [ spec requires: #( 'MooseIDE-Visualization' ) ];
 		package: 'MooseIDE-AttributedText';
 		package: 'MooseIDE-Famix' with: [ spec requires: #( 'MooseIDE-Visualization' 'MooseIDE-AttributedText' ) ];
