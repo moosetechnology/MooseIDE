@@ -775,6 +775,7 @@ MiAbstractBrowser >> updateTaggingToolbarButton [
 		              commandOrGroupNamed: MiTagCommand defaultName
 		              ifNone: [ ^ self ].
 
+	tagCommand presenter ifNil: [ ^ self ].
 	tagCommand canBeExecuted ifTrue: [
 		tagCommand presenter label: self selectedTag name ].
 	tagCommand presenter icon:
