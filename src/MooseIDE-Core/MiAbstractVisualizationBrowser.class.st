@@ -104,3 +104,10 @@ MiAbstractVisualizationBrowser >> runVisualization [
 
 	mainPresenter run
 ]
+
+{ #category : 'interactions' }
+MiAbstractVisualizationBrowser >> selectRelatedTo: anEntity [
+
+	"empty to avoid crashes
+	 should be specialized for each visualization"
+]
