@@ -6,9 +6,9 @@ Class {
 	#instVars : [
 		'cornerRadius'
 	],
-	#category : 'MooseIDE-HeatMap-Tests',
+	#category : 'MooseIDE-HeatMap-Browser',
 	#package : 'MooseIDE-HeatMap',
-	#tag : 'Tests'
+	#tag : 'Browser'
 }
 
 { #category : 'hooks' }
@@ -118,12 +118,6 @@ MiHHeatMapStyle >> cornerRadius [
 
 	^ cornerRadius ifNil: [
 		  cornerRadius := RSCornerRadius new radius: self cornerRadiusValue ]
-]
-
-{ #category : 'accessing' }
-MiHHeatMapStyle >> cornerRadiusValue [
-
-	^ 7
 ]
 
 { #category : 'hooks' }
