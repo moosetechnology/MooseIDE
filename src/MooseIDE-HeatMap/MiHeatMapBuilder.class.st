@@ -1,9 +1,9 @@
 Class {
 	#name : 'MiHeatMapBuilder',
 	#superclass : 'MiAbstractHierarchicalMapBuilder',
-	#category : 'MooseIDE-HeatMap-Tests',
+	#category : 'MooseIDE-HeatMap-Browser',
 	#package : 'MooseIDE-HeatMap',
-	#tag : 'Tests'
+	#tag : 'Browser'
 }
 
 { #category : 'building' }

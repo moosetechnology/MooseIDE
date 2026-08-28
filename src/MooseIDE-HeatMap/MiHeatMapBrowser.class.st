@@ -21,9 +21,9 @@ Controls:
 Class {
 	#name : 'MiHeatMapBrowser',
 	#superclass : 'MiAbstractVisualizationBrowser',
-	#category : 'MooseIDE-HeatMap-Tests',
+	#category : 'MooseIDE-HeatMap-Browser',
 	#package : 'MooseIDE-HeatMap',
-	#tag : 'Tests'
+	#tag : 'Browser'
 }
 
 { #category : 'accessing' }
@@ -105,9 +105,7 @@ MiHeatMapBrowser >> canvas [
 MiHeatMapBrowser >> followEntity: anEntity [
 
 	super followEntity: anEntity.
-	specModel
-		entities: anEntity asMooseGroup;
-		initializeSettings.
+	specModel entities: anEntity asMooseGroup.
 	self runVisualization
 ]
 

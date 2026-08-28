@@ -9,9 +9,9 @@ Class {
 		'colorBlock',
 		'colorBlockSource'
 	],
-	#category : 'MooseIDE-HeatMap-Tests',
+	#category : 'MooseIDE-HeatMap-Model',
 	#package : 'MooseIDE-HeatMap',
-	#tag : 'Tests'
+	#tag : 'Model'
 }
 
 { #category : 'accessing' }

@@ -1,15 +1,26 @@
 Class {
 	#name : 'MiHeatMapBrowserTest',
 	#superclass : 'MiAbstractBrowserTest',
-	#category : 'MooseIDE-HeatMap-Tests',
-	#package : 'MooseIDE-HeatMap',
-	#tag : 'Tests'
+	#category : 'MooseIDE-Tests',
+	#package : 'MooseIDE-Tests'
 }
 
 { #category : 'running' }
 MiHeatMapBrowserTest >> browserClass [
 
 	^ MiHeatMapBrowser
+]
+
+{ #category : 'running' }
+MiHeatMapBrowserTest >> innerNodes [
+
+	^self outerNodes flatCollect: #children
+]
+
+{ #category : 'running' }
+MiHeatMapBrowserTest >> outerNodes [
+
+	^browser visualization builder rootNode children
 ]
 
 { #category : 'running' }
@@ -22,18 +33,16 @@ MiHeatMapBrowserTest >> receiveEntityToSelect [
 MiHeatMapBrowserTest >> testDefaultBlockGivesUniformColor [
 	"constant-value default block -> every leaf entity gets the same color."
 
-	| model class1 |
-	model := FamixStModel new.
-	class1 := model newClassNamed: 'A'.
-	(model newMethodNamed: 'm1') parentType: class1.
-	(model newMethodNamed: 'm2') parentType: class1.
+	| clazz |
+	clazz := FamixStClass new.
+	FamixStMethod new parentType: clazz.
+	FamixStMethod new parentType: clazz.
 
-	browser followEntity: model entities.
-	browser runVisualization.
+	browser followEntity: clazz.
 
-	self assert:
-		((browser visualization builder rootNode children flatCollect: [ :c |
-			  c children ]) collect: #color) asSet size <= 1
+	self
+		assert: (self innerNodes collectAsSet: #color) size
+		equals: 1
 ]
 
 { #category : 'tests' }
@@ -48,28 +57,22 @@ MiHeatMapBrowserTest >> testGradientCorrectnessAtMinAndMax [
 	"custom block distinguishing two methods: the min-value method's node color
 	 should equal startColor, and the max-value method's node color endColor."
 
-	| model class1 lowMethod highMethod config leafNodes low high |
-	model := FamixStModel new.
-	class1 := model newClassNamed: 'A'.
-	lowMethod := (model newMethodNamed: 'lo') parentType: class1.
-	highMethod := (model newMethodNamed: 'higherName') parentType: class1.
-
-	browser followEntity: model entities.
+	| clazz lowMethod highMethod config low high |
+	clazz := FamixStClass new.
+	lowMethod := FamixStMethod new name: 'short' ; parentType: clazz ; yourself.
+	highMethod := FamixStMethod new name: 'longName' ; parentType: clazz ; yourself.
 
 	config := browser specModel currentConfiguration.
-	config
-		colorBlockSource: '[ :entity | entity name size ]';
-		startColor: Color blue;
-		endColor: Color yellow.
+	config colorBlockSource: '[ :entity | entity name size ]'.
 	browser specModel updateFromConfiguration: config.
 
-	leafNodes := browser visualization builder rootNode children
-		             flatCollect: [ :c | c children ].
-	low := leafNodes detect: [ :n | n rawModel = lowMethod ].
-	high := leafNodes detect: [ :n | n rawModel = highMethod ].
+	browser followEntity: clazz.
 
-	self assert: low color equals: Color blue.
-	self assert: high color equals: Color yellow
+	low := self innerNodes detect: [ :n | n rawModel = lowMethod ].
+	high := self innerNodes detect: [ :n | n rawModel = highMethod ].
+
+	self assert: low color equals: Color white.
+	self assert: high color equals: Color red
 ]
 
 { #category : 'tests' }
@@ -82,7 +85,7 @@ MiHeatMapBrowserTest >> testInvalidBlockTextDoesNotCrashOrDestroyPreviousBlock [
 
 	browser specModel updateColorBlockFrom: '[ :e | '.
 
-	self assert: browser specModel colorBlock == oldBlock.
+	self assert: browser specModel colorBlock equals: oldBlock.
 	self assert: browser specModel colorBlockSource equals: oldSource
 ]
 
