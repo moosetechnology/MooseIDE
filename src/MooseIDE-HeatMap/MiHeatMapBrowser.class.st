@@ -105,9 +105,7 @@ MiHeatMapBrowser >> canvas [
 MiHeatMapBrowser >> followEntity: anEntity [
 
 	super followEntity: anEntity.
-	specModel
-		entities: anEntity asMooseGroup;
-		initializeSettings.
+	specModel entities: anEntity asMooseGroup.
 	self runVisualization
 ]
 
