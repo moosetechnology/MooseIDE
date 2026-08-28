@@ -1,11 +1,10 @@
 Class {
-	#name : 'MiColorGradientSelectionPresenter',
-	#superclass : 'MiAbstractSettingPresenter',
+	#name : 'MiColorGradientSettingPresenter',
+	#superclass : 'MiAbstractColorSettingPresenter',
 	#instVars : [
 		'originButton',
 		'gradient',
-		'endButton',
-		'colorPicker'
+		'endButton'
 	],
 	#category : 'MooseIDE-Core-Settings',
 	#package : 'MooseIDE-Core',
@@ -13,19 +12,19 @@ Class {
 }
 
 { #category : 'accessing' }
-MiColorGradientSelectionPresenter class >> help [
+MiColorGradientSettingPresenter class >> help [
 
 	^ 'Choose start color for the minimal value and end color for the higher value'
 ]
 
 { #category : 'accessing' }
-MiColorGradientSelectionPresenter class >> label [
+MiColorGradientSettingPresenter class >> label [
 
 	^ 'Color range:'
 ]
 
 { #category : 'initialization' }
-MiColorGradientSelectionPresenter >> buildGradientOn: aCanvas [
+MiColorGradientSettingPresenter >> buildGradientOn: aCanvas [
 
 	| paint |
 	aCanvas
@@ -46,7 +45,7 @@ MiColorGradientSelectionPresenter >> buildGradientOn: aCanvas [
 ]
 
 { #category : 'layout' }
-MiColorGradientSelectionPresenter >> defaultLayout [
+MiColorGradientSettingPresenter >> defaultLayout [
 
 	^ self newBoxLayoutTopToBottom
 		  add: (self newBoxLayoutLeftToRight
@@ -60,16 +59,17 @@ MiColorGradientSelectionPresenter >> defaultLayout [
 ]
 
 { #category : 'initialization' }
-MiColorGradientSelectionPresenter >> initializePresenters [
+MiColorGradientSettingPresenter >> initializePresenters [
 
 	originButton := self newButton
 		                color: configuration startColor;
 		                whenActivatedDo: [
 				                self
-					                openNewColorPickerFrom: originButton
+					                openColorPickerFrom: originButton
 					                on: configuration startColor
 					                action: [ :newColor |
-						                configuration startColor: newColor ] ].
+							                configuration startColor: newColor.
+							                gradient refresh ] ].
 
 	gradient := self newRoassal script: [ :canvas |
 		            self buildGradientOn: canvas ].
@@ -78,26 +78,9 @@ MiColorGradientSelectionPresenter >> initializePresenters [
 		             color: configuration endColor;
 		             whenActivatedDo: [
 				             self
-					             openNewColorPickerFrom: endButton
+					             openColorPickerFrom: endButton
 					             on: configuration endColor
-					             action: [ :newColor | configuration endColor: newColor ] ]
-]
-
-{ #category : 'as yet unclassified' }
-MiColorGradientSelectionPresenter >> openNewColorPickerFrom: aButton on: aColor action: aBlock [
-
-	| picker popover |
-	picker := aButton newColorPicker.
-	picker
-		setColor: aColor;
-		whenColorChangedDo: [ :newColor |
-				aBlock value: newColor.
-				aButton color: newColor.
-				gradient refresh.
-				self update ].
-	popover := picker asPopover.
-	popover whenOpenedDo: [ "Not nice to have to get to the widget, but no other way worked."
-			popover withAdapterDo: [ :a |
-				a widgetDo: [ :w | w extent: 350 @ 500 ] ] ].
-	popover popup
+					             action: [ :newColor |
+							             configuration endColor: newColor.
+							             gradient refresh ] ]
 ]

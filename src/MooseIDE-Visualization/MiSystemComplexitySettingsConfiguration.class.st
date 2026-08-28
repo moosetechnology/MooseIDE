@@ -148,7 +148,7 @@ MiSystemComplexitySettingsConfiguration >> settingsPresenters [
 				   number: colorMetricThreshold;
 				   whenNumberChangedDo: [ :nb | self colorMetricThreshold: nb ];
 				   yourself);
-		  add: (MiColorGradientSelectionPresenter on: self);
+		  add: (MiColorGradientSettingPresenter on: self);
 		  add: (MiDisplayedNameSettingPresenter on: self);
 		  yourself
 ]
