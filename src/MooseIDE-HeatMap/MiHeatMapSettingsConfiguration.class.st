@@ -55,7 +55,7 @@ MiHeatMapSettingsConfiguration >> settingsPresenters [
 		  add: ((MiQuerySettingPresenter on: self)
 				   beForChildren;
 				   yourself);
-		  add: (MiColorGradientSelectionPresenter on: self);
+		  add: (MiColorGradientSettingPresenter on: self);
 		  add: ((MiBlockSettingPresenter on: self)
 				   label: 'Color value block:';
 				   help:

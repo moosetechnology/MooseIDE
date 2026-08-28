@@ -59,7 +59,7 @@ MiDistributionMapSettingsConfiguration >> settingsPresenters [
 				   help: 'The tags used as properties to display.
 If an entity has several tags, it will get the color of the first of its tags appearing in the list';
 				   yourself);
-		  add: ((MiColorSelectionPresenter on: self)
+		  add: ((MiColorSettingPresenter on: self)
 				   label: 'Default entity color:';
 				   help: 'Color used when no property applies to an entity');
 		  yourself
