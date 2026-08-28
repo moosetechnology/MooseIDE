@@ -1,8 +1,9 @@
 Class {
 	#name : 'MiHeatMapVisualization',
 	#superclass : 'MiAbstractHierarchicalVisualization',
-	#category : 'MooseIDE-HeatMap',
-	#package : 'MooseIDE-HeatMap'
+	#category : 'MooseIDE-HeatMap-Tests',
+	#package : 'MooseIDE-HeatMap',
+	#tag : 'Tests'
 }
 
 { #category : 'running' }

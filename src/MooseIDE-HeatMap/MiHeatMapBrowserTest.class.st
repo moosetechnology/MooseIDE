@@ -1,9 +1,9 @@
 Class {
 	#name : 'MiHeatMapBrowserTest',
 	#superclass : 'MiAbstractBrowserTest',
-	#category : 'MooseIDE-Tests-Browsers',
-	#package : 'MooseIDE-Tests',
-	#tag : 'Browsers'
+	#category : 'MooseIDE-HeatMap-Tests',
+	#package : 'MooseIDE-HeatMap',
+	#tag : 'Tests'
 }
 
 { #category : 'running' }

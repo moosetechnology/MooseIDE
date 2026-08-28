@@ -1,6 +1,7 @@
 Class {
 	#name : 'MiHeatMapMenuItem',
 	#superclass : 'HAbstractMenuItem',
-	#category : 'MooseIDE-HeatMap',
-	#package : 'MooseIDE-HeatMap'
+	#category : 'MooseIDE-HeatMap-Tests',
+	#package : 'MooseIDE-HeatMap',
+	#tag : 'Tests'
 }
