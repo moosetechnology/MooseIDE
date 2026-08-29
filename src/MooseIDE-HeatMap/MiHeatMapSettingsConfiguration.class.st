@@ -2,7 +2,9 @@ Class {
 	#name : 'MiHeatMapSettingsConfiguration',
 	#superclass : 'MiAbstractSettingsConfiguration',
 	#instVars : [
-		'childrenQuery',
+		'childrenTypeName',
+		'childrenRecursive',
+		'availableChildrenTypes',
 		'startColor',
 		'endColor',
 		'colorBlockSource'
@@ -13,15 +15,39 @@ Class {
 }
 
 { #category : 'accessing' }
-MiHeatMapSettingsConfiguration >> childrenQuery [
+MiHeatMapSettingsConfiguration >> availableChildrenTypes [
 
-	^ childrenQuery
+	^ availableChildrenTypes
 ]
 
 { #category : 'accessing' }
-MiHeatMapSettingsConfiguration >> childrenQuery: anObject [
+MiHeatMapSettingsConfiguration >> availableChildrenTypes: anObject [
 
-	childrenQuery := anObject
+	availableChildrenTypes := anObject
+]
+
+{ #category : 'accessing' }
+MiHeatMapSettingsConfiguration >> childrenRecursive [
+
+	^ childrenRecursive
+]
+
+{ #category : 'accessing' }
+MiHeatMapSettingsConfiguration >> childrenRecursive: anObject [
+
+	childrenRecursive := anObject
+]
+
+{ #category : 'accessing' }
+MiHeatMapSettingsConfiguration >> childrenTypeName [
+
+	^ childrenTypeName
+]
+
+{ #category : 'accessing' }
+MiHeatMapSettingsConfiguration >> childrenTypeName: anObject [
+
+	childrenTypeName := anObject
 ]
 
 { #category : 'accessing' }
@@ -52,8 +78,20 @@ MiHeatMapSettingsConfiguration >> endColor: anObject [
 MiHeatMapSettingsConfiguration >> settingsPresenters [
 
 	^ super settingsPresenters
-		  add: ((MiQuerySettingPresenter on: self)
-				   beForChildren;
+		  add: ((MiDroplistSettingPresenter on: self)
+				   label: 'Children type:';
+				   help:
+					   'Famix type of the entities to show nested inside each propagated entity (e.g. Method, Attribute, Class).';
+				   items: availableChildrenTypes;
+				   selectItem: childrenTypeName;
+				   whenSelectedDo: [ :typeName | self childrenTypeName: typeName ];
+				   yourself);
+		  add: ((MiBooleanSettingPresenter on: self)
+				   label: 'Include all descendants (recursive)';
+				   help:
+					   'If checked, children are collected from the whole containment subtree instead of just the direct children.';
+				   state: childrenRecursive;
+				   whenStateChangedDo: [ :bool | self childrenRecursive: bool ];
 				   yourself);
 		  add: (MiColorGradientSettingPresenter on: self);
 		  add: ((MiBlockSettingPresenter on: self)

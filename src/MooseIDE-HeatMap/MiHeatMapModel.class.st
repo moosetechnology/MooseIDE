@@ -3,7 +3,8 @@ Class {
 	#superclass : 'MiAbstractModel',
 	#instVars : [
 		'entities',
-		'childrenQuery',
+		'childrenTypeName',
+		'childrenRecursive',
 		'startColor',
 		'endColor',
 		'colorBlock',
@@ -33,15 +34,59 @@ MiHeatMapModel class >> defaultStartColor [
 ]
 
 { #category : 'accessing' }
-MiHeatMapModel >> childrenFor: anEntity [
+MiHeatMapModel >> availableChildrenTypes [
 
-	^ childrenQuery runOn: anEntity asMooseGroup
+	^ self metamodelClasses
+		  select: [ :c |
+		  c implementingClass allTraits includes: FamixTSourceEntity ]
+		  thenCollect: [ :c | c name ]
 ]
 
 { #category : 'accessing' }
-MiHeatMapModel >> childrenQuery [
+MiHeatMapModel >> childrenFor: anEntity [
 
-	^ childrenQuery
+	| implementingClass pool |
+	implementingClass := self childrenImplementingClass.
+	implementingClass ifNil: [ ^ #(  ) ].
+	pool := childrenRecursive
+		        ifTrue: [ anEntity allContainedEntities ]
+		        ifFalse: [ anEntity containedEntities ].
+	^ pool select: [ :e | e isKindOf: implementingClass ]
+]
+
+{ #category : 'private' }
+MiHeatMapModel >> childrenImplementingClass [
+
+	| typeName |
+	typeName := childrenTypeName ifNil: [ self defaultChildrenTypeName ].
+	typeName ifNil: [ ^ nil ].
+	^ (self metamodelClasses
+		   detect: [ :c | c name = typeName ]
+		   ifNone: [ nil ]) ifNotNil: [ :c | c implementingClass ]
+]
+
+{ #category : 'accessing' }
+MiHeatMapModel >> childrenRecursive [
+
+	^ childrenRecursive
+]
+
+{ #category : 'accessing' }
+MiHeatMapModel >> childrenRecursive: anObject [
+
+	childrenRecursive := anObject
+]
+
+{ #category : 'accessing' }
+MiHeatMapModel >> childrenTypeName [
+
+	^ childrenTypeName
+]
+
+{ #category : 'accessing' }
+MiHeatMapModel >> childrenTypeName: anObject [
+
+	childrenTypeName := anObject
 ]
 
 { #category : 'accessing' }
@@ -68,18 +113,34 @@ MiHeatMapModel >> compile: aString ifError: aBlock [
 MiHeatMapModel >> currentConfiguration [
 
 	^ MiHeatMapSettingsConfiguration new
-		  childrenQuery: childrenQuery;
+		  availableChildrenTypes: self availableChildrenTypes;
+		  childrenTypeName:
+			  (childrenTypeName ifNil: [ self defaultChildrenTypeName ]);
+		  childrenRecursive: childrenRecursive;
 		  startColor: startColor;
 		  endColor: endColor;
 		  colorBlockSource: colorBlockSource;
 		  yourself
 ]
 
+{ #category : 'accessing' }
+MiHeatMapModel >> defaultChildrenTypeName [
+
+	| available |
+	available := self availableChildrenTypes.
+	^ (available includes: 'Method')
+		  ifTrue: [ 'Method' ]
+		  ifFalse: [
+		  available ifEmpty: [ nil ] ifNotEmpty: [ available first ] ]
+]
+
 { #category : 'settings management' }
 MiHeatMapModel >> defaultConfiguration [
 
 	^ MiHeatMapSettingsConfiguration new
-		  childrenQuery: self defaultChildrenQuery;
+		  availableChildrenTypes: self availableChildrenTypes;
+		  childrenTypeName: self defaultChildrenTypeName;
+		  childrenRecursive: false;
 		  startColor: self class defaultStartColor;
 		  endColor: self class defaultEndColor;
 		  colorBlockSource: self class defaultColorBlockSource;
@@ -113,13 +174,23 @@ MiHeatMapModel >> hasSettings [
 { #category : 'initialization' }
 MiHeatMapModel >> initializeSettings [
 
-	childrenQuery := self defaultChildrenQuery.
+	childrenTypeName := self defaultChildrenTypeName.
+	childrenRecursive := false.
 	startColor := self class defaultStartColor.
 	endColor := self class defaultEndColor.
 	colorBlockSource := self class defaultColorBlockSource.
 	colorBlock := self
 		              compile: colorBlockSource
 		              ifError: [ [ :entity | 1 ] ]
+]
+
+{ #category : 'accessing' }
+MiHeatMapModel >> metamodelClasses [
+
+	self entities isEmptyOrNil ifTrue: [ ^ #(  ) ].
+	^ [ self entities anyOne class metamodel classes ]
+		  on: Error
+		  do: [ :e | #(  ) ]
 ]
 
 { #category : 'settings management' }
@@ -154,7 +225,8 @@ The previous, working block was kept.' ]
 { #category : 'settings management' }
 MiHeatMapModel >> updateFromConfiguration: aConfiguration [
 
-	childrenQuery := aConfiguration childrenQuery.
+	childrenTypeName := aConfiguration childrenTypeName.
+	childrenRecursive := aConfiguration childrenRecursive.
 	startColor := aConfiguration startColor.
 	endColor := aConfiguration endColor.
 	self updateColorBlockFrom: aConfiguration colorBlockSource.

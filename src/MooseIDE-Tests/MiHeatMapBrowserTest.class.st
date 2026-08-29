@@ -30,6 +30,37 @@ MiHeatMapBrowserTest >> receiveEntityToSelect [
 ]
 
 { #category : 'tests' }
+MiHeatMapBrowserTest >> testChildrenRecursiveFindsNestedDescendants [
+	"Package -> Class -> Method. Direct children of type Method should find nothing
+	 (methods aren't direct children of a package); recursive should find the method."
+
+	| model package clazz method config |
+	model := FamixStModel new.
+	package := model newPackageNamed: 'aPackage'.
+	clazz := model newClassNamed: 'AClass'.
+	clazz typeContainer: package.
+	method := model newMethodNamed: 'aMethod'.
+	method parentType: clazz.
+
+	browser followEntity: package.
+
+	config := browser specModel currentConfiguration.
+	config
+		childrenTypeName: 'Method';
+		childrenRecursive: false.
+	browser specModel updateFromConfiguration: config.
+	self assert: self innerNodes isEmpty.
+
+	config := browser specModel currentConfiguration.
+	config
+		childrenTypeName: 'Method';
+		childrenRecursive: true.
+	browser specModel updateFromConfiguration: config.
+	self assert:
+		(self innerNodes anySatisfy: [ :n | n rawModel = method ])
+]
+
+{ #category : 'tests' }
 MiHeatMapBrowserTest >> testDefaultBlockGivesUniformColor [
 	"constant-value default block -> every leaf entity gets the same color."
 
