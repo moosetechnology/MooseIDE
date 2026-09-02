@@ -14,6 +14,7 @@ Trait {
 { #category : 'meta' }
 FamixCBTEntityCreator classSide >> annotation [
 
+	<ignoreForCoverage>
 	<FMClass: #TEntityCreator super: #Object>
 	<package: #'Famix-CriticBrowser-Entities'>
 	<generated>
@@ -22,6 +23,7 @@ FamixCBTEntityCreator classSide >> annotation [
 { #category : 'entity creation' }
 FamixCBTEntityCreator >> newCondition [
 
+	<ignoreForCoverage>
 	<generated>
 	^ self add: FamixCBCondition new
 ]
@@ -29,6 +31,7 @@ FamixCBTEntityCreator >> newCondition [
 { #category : 'entity creation' }
 FamixCBTEntityCreator >> newConditionNamed: aName [
 
+	<ignoreForCoverage>
 	<generated>
 	^ self add: (FamixCBCondition named: aName)
 ]
@@ -36,6 +39,7 @@ FamixCBTEntityCreator >> newConditionNamed: aName [
 { #category : 'entity creation' }
 FamixCBTEntityCreator >> newContext [
 
+	<ignoreForCoverage>
 	<generated>
 	^ self add: FamixCBContext new
 ]
@@ -43,6 +47,7 @@ FamixCBTEntityCreator >> newContext [
 { #category : 'entity creation' }
 FamixCBTEntityCreator >> newContextNamed: aName [
 
+	<ignoreForCoverage>
 	<generated>
 	^ self add: (FamixCBContext named: aName)
 ]
@@ -50,6 +55,7 @@ FamixCBTEntityCreator >> newContextNamed: aName [
 { #category : 'entity creation' }
 FamixCBTEntityCreator >> newRootContext [
 
+	<ignoreForCoverage>
 	<generated>
 	^ self add: FamixCBRootContext new
 ]
@@ -57,6 +63,7 @@ FamixCBTEntityCreator >> newRootContext [
 { #category : 'entity creation' }
 FamixCBTEntityCreator >> newRootContextNamed: aName [
 
+	<ignoreForCoverage>
 	<generated>
 	^ self add: (FamixCBRootContext named: aName)
 ]
@@ -64,6 +71,7 @@ FamixCBTEntityCreator >> newRootContextNamed: aName [
 { #category : 'entity creation' }
 FamixCBTEntityCreator >> newViolation [
 
+	<ignoreForCoverage>
 	<generated>
 	^ self add: FamixCBViolation new
 ]

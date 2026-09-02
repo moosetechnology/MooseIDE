@@ -38,6 +38,7 @@ Class {
 { #category : 'meta' }
 FamixCBCondition class >> annotation [
 
+	<ignoreForCoverage>
 	<FMClass: #Condition super: #FamixCBEntity>
 	<package: #'Famix-CriticBrowser-Entities'>
 	<generated>
@@ -72,6 +73,8 @@ FamixCBCondition class >> named: aString on: aQuery summary: aSummary severity: 
 
 { #category : 'adding' }
 FamixCBCondition >> addViolation: anObject [
+
+	<ignoreForCoverage>
 	<generated>
 	^ self violations add: anObject
 ]
@@ -97,6 +100,7 @@ FamixCBCondition >> putViolationsInto: aDictionary [
 FamixCBCondition >> query [
 
 	<FMProperty: #query type: #Object>
+	<ignoreForCoverage>
 	<generated>
 	<FMComment: 'Block to execute to find violations to the condition within the parent context'>
 	^ query
@@ -161,6 +165,7 @@ FamixCBCondition >> severity [
 
 { #category : 'accessing' }
 FamixCBCondition >> severity: anObject [
+	<ignoreForCoverage>
 	<generated>
 	severity := anObject
 ]
@@ -201,6 +206,7 @@ FamixCBCondition >> tagRuleResultInModel: aMooseModel [
 FamixCBCondition >> violations [
 	"Relation named: #violations type: #FamixCBViolation opposite: #violatedCondition"
 
+	<ignoreForCoverage>
 	<generated>
 	<FMComment: 'Every violation of this condition.'>
 	<derived>
@@ -210,6 +216,7 @@ FamixCBCondition >> violations [
 { #category : 'accessing' }
 FamixCBCondition >> violations: anObject [
 
+	<ignoreForCoverage>
 	<generated>
 	violations value: anObject
 ]

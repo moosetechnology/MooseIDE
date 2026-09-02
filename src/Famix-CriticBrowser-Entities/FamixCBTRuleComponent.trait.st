@@ -35,6 +35,7 @@ Trait {
 { #category : 'meta' }
 FamixCBTRuleComponent classSide >> annotation [
 
+	<ignoreForCoverage>
 	<FMClass: #TRuleComponent super: #Object>
 	<package: #'Famix-CriticBrowser-Entities'>
 	<generated>
@@ -65,6 +66,7 @@ FamixCBTRuleComponent >> allParentsIn: anOrderedCollection [
 FamixCBTRuleComponent >> parent [
 	"Relation named: #parent type: #FamixCBContext opposite: #children"
 
+	<ignoreForCoverage>
 	<generated>
 	<FMComment: 'Parent context, if it exists.'>
 	^ parent
@@ -73,6 +75,7 @@ FamixCBTRuleComponent >> parent [
 { #category : 'accessing' }
 FamixCBTRuleComponent >> parent: anObject [
 
+	<ignoreForCoverage>
 	<generated>
 	parent := anObject
 ]
@@ -93,6 +96,7 @@ FamixCBTRuleComponent >> setParentToNilIfNeeded [
 FamixCBTRuleComponent >> summary [
 
 	<FMProperty: #summary type: #String>
+	<ignoreForCoverage>
 	<generated>
 	<FMComment: 'A rule component can have an explanatory summary'>
 	^ summary
@@ -100,6 +104,7 @@ FamixCBTRuleComponent >> summary [
 
 { #category : 'accessing' }
 FamixCBTRuleComponent >> summary: anObject [
+	<ignoreForCoverage>
 	<generated>
 	summary := anObject
 ]
