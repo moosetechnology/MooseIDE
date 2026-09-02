@@ -37,6 +37,7 @@ Class {
 { #category : 'meta' }
 FamixCBContext class >> annotation [
 
+	<ignoreForCoverage>
 	<FMClass: #Context super: #FamixCBEntity>
 	<package: #'Famix-CriticBrowser-Entities'>
 	<generated>
@@ -68,6 +69,8 @@ FamixCBContext >> addChild: aRuleComponent [
 
 { #category : 'adding' }
 FamixCBContext >> addEntity: anObject [
+
+	<ignoreForCoverage>
 	<generated>
 	^ self entities add: anObject
 ]
@@ -76,6 +79,7 @@ FamixCBContext >> addEntity: anObject [
 FamixCBContext >> children [
 	"Relation named: #children type: #FamixCBTRuleComponent opposite: #parent"
 
+	<ignoreForCoverage>
 	<generated>
 	<FMComment: 'Every child context or condition of this context.'>
 	<derived>
@@ -85,6 +89,7 @@ FamixCBContext >> children [
 { #category : 'accessing' }
 FamixCBContext >> children: anObject [
 
+	<ignoreForCoverage>
 	<generated>
 	children value: anObject
 ]
@@ -115,6 +120,7 @@ FamixCBContext >> contextBlock: anObject [
 FamixCBContext >> contextFilter [
 
 	<FMProperty: #contextFilter type: #Object>
+	<ignoreForCoverage>
 	<generated>
 	<FMComment: 'Filter applied on entities. It can be a block or a custom object'>
 	^ contextFilter
@@ -148,6 +154,7 @@ FamixCBContext >> customContextFilter: anObject [
 FamixCBContext >> entities [
 	"Relation named: #entities type: #MooseObject opposite: #contexts"
 
+	<ignoreForCoverage>
 	<generated>
 	<FMComment: 'Every entity that is a part of the context.'>
 	<derived>
@@ -159,6 +166,7 @@ FamixCBContext >> entities [
 { #category : 'accessing' }
 FamixCBContext >> entities: anObject [
 
+	<ignoreForCoverage>
 	<generated>
 	self entities value: anObject
 ]

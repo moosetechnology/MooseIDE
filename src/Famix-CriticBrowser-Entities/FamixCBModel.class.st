@@ -10,6 +10,8 @@ Class {
 
 { #category : 'accessing' }
 FamixCBModel class >> allSubmetamodelsPackagesNames [
+
+	<ignoreForCoverage>
 	<generated>
 	^ #(#'Moose-Query' #'Moose-Core' #'Famix-Traits')
 ]
@@ -17,6 +19,7 @@ FamixCBModel class >> allSubmetamodelsPackagesNames [
 { #category : 'meta' }
 FamixCBModel class >> annotation [
 
+	<ignoreForCoverage>
 	<FMClass: #Model super: #MooseModel>
 	<package: #'Famix-CriticBrowser-Entities'>
 	<generated>

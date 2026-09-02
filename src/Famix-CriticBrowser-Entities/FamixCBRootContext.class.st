@@ -9,6 +9,7 @@ Class {
 { #category : 'meta' }
 FamixCBRootContext class >> annotation [
 
+	<ignoreForCoverage>
 	<FMClass: #RootContext super: #FamixCBContext>
 	<package: #'Famix-CriticBrowser-Entities'>
 	<generated>

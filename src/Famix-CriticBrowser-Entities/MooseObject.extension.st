@@ -4,6 +4,7 @@ Extension { #name : 'MooseObject' }
 MooseObject >> contexts [
 	"Relation named: #contexts type: #FamixCBContext opposite: #entities"
 
+	<ignoreForCoverage>
 	<generated>
 	<FMComment: 'Every context that the entity is a part of.'>
 	<FMProperty: #contexts type: #FamixCBContext opposite: #entities>
@@ -15,6 +16,7 @@ MooseObject >> contexts [
 { #category : '*Famix-CriticBrowser-Entities' }
 MooseObject >> contexts: anObject [
 
+	<ignoreForCoverage>
 	<generated>
 	<package: #'Famix-CriticBrowser-Entities'>
 
@@ -31,6 +33,7 @@ MooseObject >> removeViolation: aViolation [
 MooseObject >> violations [
 	"Relation named: #violations type: #FamixCBViolation opposite: #violatingEntity"
 
+	<ignoreForCoverage>
 	<generated>
 	<FMComment: 'Every violation raised by this entity.'>
 	<derived>
@@ -43,6 +46,7 @@ MooseObject >> violations [
 { #category : '*Famix-CriticBrowser-Entities' }
 MooseObject >> violations: anObject [
 
+	<ignoreForCoverage>
 	<generated>
 	<package: #'Famix-CriticBrowser-Entities'>
 
