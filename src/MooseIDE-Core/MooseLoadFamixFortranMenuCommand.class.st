@@ -18,7 +18,7 @@ MooseLoadFamixFortranMenuCommand class >> label [
 	^ 'Famix-Fortran'
 ]
 
-{ #category : 'accessing' }
+{ #category : 'world menu' }
 MooseLoadFamixFortranMenuCommand class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
