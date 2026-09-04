@@ -98,7 +98,7 @@ BaselineOfMooseIDE >> definePackages: spec [
 		package: 'MooseIDE-ArchitecturalMap' with: [ spec requires: #( 'MooseIDE-Visualization' ) ];
 		package: 'MooseIDE-ArchitecturalMap-Tests' with: [ spec requires: #( 'MooseIDE-ArchitecturalMap' 'MooseIDE-Tests' ) ];
 		package: 'MooseIDE-DeadCode' with: [ spec requires: #( 'MooseIDE-Core' ) ];
-		package: 'MooseIDE-DeadCode-Tests' with: [ spec requires: #( 'MooseIDE-DeadCode' 'MooseIDE-Tests' ) ];		
+		package: 'MooseIDE-DeadCode-Tests' with: [ spec requires: #( 'MooseIDE-DeadCode' 'MooseIDE-Tests' ) ];
 		package: 'MooseIDE-DSM' with: [ spec requires: #( 'MooseIDE-Visualization' 'AIHierarchicalClustering' ) ];
 		package: 'MooseIDE-DistributionMap' with: [ spec requires: #( 'MooseIDE-Visualization' 'AIHierarchicalClustering' ) ];
 		package: 'MooseIDE-HeatMap' with: [ spec requires: #( 'MooseIDE-Visualization' ) ];
@@ -124,7 +124,9 @@ BaselineOfMooseIDE >> definePackages: spec [
 		package: 'MooseIDE-Spotter';
 		package: 'MooseIDE-Core-Reporter' with: [ spec requires: #( 'MooseIDE-Core' ) ];
 		package: 'MooseIDE-Spotter-Tests' with: [ spec requires: #( 'MooseIDE-Spotter' ) ];
-		package: 'MooseIDE-BulkEditor'.
+		package: 'MooseIDE-BulkEditor';
+		package: 'MooseIDE-Github-Importer' with: [ spec requires: #( 'MooseIDE-Meta' ) ];
+		package: 'MooseIDE-Github-Importer-Tests' with: [ spec requires: #( 'MooseIDE-Github-Importer' ) ].
 
 	self defineMooseCriticsPackages: spec
 ]
