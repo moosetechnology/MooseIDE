@@ -18,6 +18,14 @@ Class {
 	#tag : 'UI'
 }
 
+{ #category : 'action' }
+MiGithubTargetSelectionPresenter >> clearVersions [
+
+	self
+		repository: nil;
+		versions: #(  )
+]
+
 { #category : 'layout' }
 MiGithubTargetSelectionPresenter >> defaultLayout [
 

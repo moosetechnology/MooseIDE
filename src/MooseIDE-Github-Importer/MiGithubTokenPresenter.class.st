@@ -19,9 +19,7 @@ Class {
 MiGithubTokenPresenter class >> open [
 
 	<script>
-	^ self new
-		  openDialog;
-		  yourself
+	^ self new openDialog
 ]
 
 { #category : 'layout' }
@@ -85,8 +83,9 @@ MiGithubTokenPresenter >> initializeWindow: aWindowPresenter [
 MiGithubTokenPresenter >> storeEnteredToken [
 
 	tokenInput text trimBoth ifEmpty: [
-			UIManager default alert: 'The token cannot be empty.'.
+			self alert: 'The token cannot be empty.'.
 			^ self ].
+
 	MiGithubRepository storeToken: tokenInput text trimBoth username: usernameInput text trimBoth
 ]
 
