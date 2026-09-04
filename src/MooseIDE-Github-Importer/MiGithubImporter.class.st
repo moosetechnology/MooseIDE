@@ -1,9 +1,9 @@
 "
-I download the sources of versions of a Github project (see MiGithubRepository and MiGithubVersion) and import them in MooseIDE as Famix models.
+I download the sources of versions of a Github project (see MiGithubRepository and MiGithubVersion) and I parse them into Famix models.
 
 The sources are kept on disk in the 'github-moose-cache' directory next to the image, with one folder per project and one folder per version, so that the user can read the code.
 
-For each downloaded version, I parse its folder with VerveineJ through FamixJavaFoldersImporter and install the resulting model.
+For each downloaded version, I parse its folder with VerveineJ through FamixJavaFoldersImporter. I do not install the models: it is the role of the import dialog (see MiGithubImportPresenter), which installs them with the cache setting of the models browser.
 
 Note: for now I only support Java projects. The check is done before with MiGithubImporter class>>isLanguageSupported:.
 
@@ -64,6 +64,7 @@ MiGithubImporter >> download [
 				job
 					title: 'Downloading ' , aVersion displayName;
 					progress: index - 1 / versions size.
+				WorldMorph doOneCycle.
 				downloadedFolders add: (self downloadVersion: aVersion) ].
 		job progress: 1 ] asJob run
 ]
@@ -83,7 +84,7 @@ MiGithubImporter >> downloadAndExtractTarballOf: aVersion in: aFolder [
 
 { #category : 'actions' }
 MiGithubImporter >> downloadAndImport [
-	"I download the sources of all the versions and then import and install a model for each downloaded folder."
+	"I download the sources of all the versions and then parse them into Famix models (without installing them)."
 
 	self download.
 	^ self import
@@ -116,9 +117,9 @@ MiGithubImporter >> folderForVersion: aVersion [
 
 { #category : 'actions' }
 MiGithubImporter >> import [
-	"I parse with VerveineJ through FamixJavaFoldersImporter and install a model for each downloaded folder."
+	"I parse the downloaded folders with VerveineJ through FamixJavaFoldersImporter and I answer the resulting models. I do not install the models: it is the role of the import dialog, with the cache setting of the models browser (see MiImportModelDialog>>importModelStep2Install:)."
 
-	^ FamixJavaFoldersImporter importAndInstallFolders: downloadedFolders
+	^ FamixJavaFoldersImporter importFolders: downloadedFolders
 ]
 
 { #category : 'accessing' }

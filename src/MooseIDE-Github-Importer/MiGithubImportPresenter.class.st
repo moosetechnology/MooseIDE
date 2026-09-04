@@ -10,7 +10,7 @@ I can be opened:
 "
 Class {
 	#name : 'MiGithubImportPresenter',
-	#superclass : 'SpPresenter',
+	#superclass : 'MiImportModelDialog',
 	#instVars : [
 		'organizationInput',
 		'repositoryNameInput',
@@ -38,17 +38,16 @@ MiGithubImportPresenter class >> menuCommandOn: aBuilder [
 		  yourself
 ]
 
-{ #category : 'opening' }
-MiGithubImportPresenter class >> open [
-
-	<script>
-	^ self new open
-]
-
 { #category : 'specs' }
 MiGithubImportPresenter class >> title [
 
 	^ 'Github Importer'
+]
+
+{ #category : 'specs' }
+MiGithubImportPresenter class >> windowExtent [
+
+	^ 600 @ 700
 ]
 
 { #category : 'action' }
@@ -72,6 +71,17 @@ MiGithubImportPresenter >> defaultLayout [
 		  add: 'Versions of the selected project' expand: false;
 		  add: versionsPresenter;
 		  yourself
+]
+
+{ #category : 'action' }
+MiGithubImportPresenter >> importModel [
+	"Like MiImportModelFromFoldersDialog, I import several models: the check that they are not empty is adapted from MiImportModelDialog>>importModel for a single model."
+
+	| mooseModelsWrapper |
+	mooseModelsWrapper := self privateImportModel.
+	mooseModelsWrapper models do: [ :each |
+		(each size - (each allUsing: FamixTSourceLanguage) size) isZero ifTrue: [ self error: 'Something is wrong, the imported model appears to be empty' ] ].
+	^ mooseModelsWrapper
 ]
 
 { #category : 'initialization' }
@@ -110,14 +120,6 @@ MiGithubImportPresenter >> initializePresenters [
 	versionsPresenter := self instantiate: MiGithubTargetSelectionPresenter
 ]
 
-{ #category : 'initialization' }
-MiGithubImportPresenter >> initializeWindow: aWindowPresenter [
-
-	super initializeWindow: aWindowPresenter.
-	aWindowPresenter title: self class title.
-	aWindowPresenter initialExtent: 600 @ 700
-]
-
 { #category : 'action' }
 MiGithubImportPresenter >> loadVersionsForSelectedRepository [
 
@@ -139,6 +141,13 @@ MiGithubImportPresenter >> openTokenDialog [
 { #category : 'accessing' }
 MiGithubImportPresenter >> organizationInput [
 	^ organizationInput
+]
+
+{ #category : 'action' }
+MiGithubImportPresenter >> privateImportModel [
+	"I download the sources of the selected versions and parse them into models."
+
+	^ MiMooseModelsWrapper models: (MiGithubImporter downloadAndImport: versionsPresenter selectedVersions from: versionsPresenter repository)
 ]
 
 { #category : 'accessing' }
@@ -169,6 +178,14 @@ MiGithubImportPresenter >> searchRepositories [
 ]
 
 { #category : 'action' }
+MiGithubImportPresenter >> shouldCreateCache [
+	"The models browser can be absent (dialog opened from the world menu), in that case I use the default."
+
+	self application currentModelsBrowser ifNil: [ ^ true ].
+	^ super shouldCreateCache
+]
+
+{ #category : 'action' }
 MiGithubImportPresenter >> showVersionsFor: aRepository [
 
 	(MiGithubImporter isLanguageSupported: aRepository primaryLanguage) ifFalse: [
@@ -180,6 +197,12 @@ MiGithubImportPresenter >> showVersionsFor: aRepository [
 	versionsPresenter
 		repository: aRepository;
 		versions: aRepository availableVersions
+]
+
+{ #category : 'action' }
+MiGithubImportPresenter >> validateImportForm [
+
+	versionsPresenter selectedVersions ifEmpty: [ self error: 'Please select at least one version to import.' ]
 ]
 
 { #category : 'accessing' }

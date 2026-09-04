@@ -1,5 +1,5 @@
 "
-I am the bottom panel of the Github importer window (see MiGithubImportPresenter): I display the versions (tags, branches, releases and pull requests) of the Github repository selected by the user (see MiGithubRepository) and I let the user select one or more of them with checkboxes to download their sources and import them as models (see MiGithubImporter).
+I am the bottom panel of the Github importer window (see MiGithubImportPresenter): I display the versions (tags, branches, releases and pull requests) of the Github repository selected by the user (see MiGithubRepository) and I let the user select one or more of them with checkboxes. The import itself is triggered by MiGithubImportPresenter which reads my #selectedVersions.
 
 Setting a new list of versions with #versions: resets the checked versions since they belong to the previously selected project.
 "
@@ -8,9 +8,7 @@ Class {
 	#superclass : 'SpPresenter',
 	#instVars : [
 		'repository',
-		'versions',
 		'versionsTable',
-		'importButton',
 		'selectedVersions'
 	],
 	#category : 'MooseIDE-Github-Importer-UI',
@@ -31,20 +29,7 @@ MiGithubTargetSelectionPresenter >> defaultLayout [
 
 	^ SpBoxLayout newTopToBottom
 		  add: versionsTable;
-		  add: importButton expand: false;
 		  yourself
-]
-
-{ #category : 'action' }
-MiGithubTargetSelectionPresenter >> importSelectedVersions [
-
-	selectedVersions ifEmpty: [
-			self alert: 'Select at least one version to import.'.
-			^ self ].
-
-	[ MiGithubImporter downloadAndImport: selectedVersions copy from: repository ]
-		on: Error
-		do: [ :error | self alert: 'Import failed: ' , error messageText ]
 ]
 
 { #category : 'initialization' }
@@ -73,12 +58,7 @@ MiGithubTargetSelectionPresenter >> initializePresenters [
 				                  yourself);
 		                 addColumn: (SpStringTableColumn title: 'Name' evaluated: #displayName);
 		                 items: OrderedCollection new;
-		                 yourself.
-	importButton := self newButton
-		                label: 'Download and import';
-		                icon: (self iconNamed: #smallImport);
-		                action: [ self importSelectedVersions ];
-		                yourself
+		                 yourself
 ]
 
 { #category : 'accessing' }
@@ -95,6 +75,7 @@ MiGithubTargetSelectionPresenter >> repository: anObject [
 
 { #category : 'accessing' }
 MiGithubTargetSelectionPresenter >> selectedVersions [
+
 	^ selectedVersions
 ]
 
