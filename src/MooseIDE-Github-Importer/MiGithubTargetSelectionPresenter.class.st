@@ -39,20 +39,25 @@ MiGithubTargetSelectionPresenter >> defaultLayout [
 MiGithubTargetSelectionPresenter >> importSelectedVersions [
 
 	selectedVersions ifEmpty: [
-			UIManager default alert: 'Select at least one version to import.'.
+			self alert: 'Select at least one version to import.'.
 			^ self ].
-	[
-		[ MiGithubImporter downloadAndImport: selectedVersions copy from: repository ]
-			on: Error
-			do: [ :error | UIManager default alert: 'Import failed: ' , error messageText ] ] forkAt: Processor userBackgroundPriority
+
+	[ MiGithubImporter downloadAndImport: selectedVersions copy from: repository ]
+		on: Error
+		do: [ :error | self alert: 'Import failed: ' , error messageText ]
+]
+
+{ #category : 'initialization' }
+MiGithubTargetSelectionPresenter >> initialize [
+
+	super initialize.
+	selectedVersions := OrderedCollection new
 ]
 
 { #category : 'initialization' }
 MiGithubTargetSelectionPresenter >> initializePresenters [
 
 	super initializePresenters.
-	versions := OrderedCollection new.
-	selectedVersions := OrderedCollection new.
 	versionsTable := self newTable
 		                 addColumn: ((SpCheckBoxTableColumn evaluated: [ :aVersion | selectedVersions includes: aVersion ])
 				                  onActivation: [ :aVersion | selectedVersions add: aVersion ];
@@ -67,7 +72,7 @@ MiGithubTargetSelectionPresenter >> initializePresenters [
 				                  width: 100;
 				                  yourself);
 		                 addColumn: (SpStringTableColumn title: 'Name' evaluated: #displayName);
-		                 items: versions;
+		                 items: OrderedCollection new;
 		                 yourself.
 	importButton := self newButton
 		                label: 'Download and import';
@@ -96,16 +101,14 @@ MiGithubTargetSelectionPresenter >> selectedVersions [
 { #category : 'accessing' }
 MiGithubTargetSelectionPresenter >> versions [
 
-	^ versions
+	^ versionsTable items
 ]
 
 { #category : 'accessing' }
 MiGithubTargetSelectionPresenter >> versions: aCollection [
 
-	versions := aCollection.
-	"The checked versions belong to the previously selected project, I reset them."
-	selectedVersions := OrderedCollection new.
-	versionsTable ifNotNil: [ versionsTable items: versions ]
+	versionsTable ifNotNil: [ versionsTable items: aCollection ].
+	selectedVersions := OrderedCollection new
 ]
 
 { #category : 'accessing' }
