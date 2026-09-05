@@ -168,7 +168,7 @@ MiGithubImportPresenter >> searchRepositories [
 			^ self ].
 
 	[
-		(MiGithubRepository searchRepositoriesNamed: repositoryNameInput text organization: organizationInput text)
+		(MiGithubRepository searchRepositoriesNamed: repositoryNameInput text trim organization: organizationInput text trim)
 			ifEmpty: [
 					self alert: 'No repository found for this search.'.
 					^ self ]

@@ -86,7 +86,13 @@ MiGithubTokenPresenter >> storeEnteredToken [
 			self alert: 'The token cannot be empty.'.
 			^ self ].
 
-	MiGithubRepository storeToken: tokenInput text trimBoth username: usernameInput text trimBoth
+	IceCredentialStore current
+		storeCredential: (IceTokenCredentials new
+				 token: tokenInput text trimBoth;
+				 username: usernameInput text trimBoth;
+				 host: 'github.com';
+				 yourself)
+		forHostname: 'github.com'
 ]
 
 { #category : 'private' }

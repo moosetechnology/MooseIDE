@@ -95,10 +95,9 @@ MiGithubImporter >> downloadVersion: aVersion [
 	"I download and extract the sources of aVersion in a dedicated folder of the cache directory. I answer the downloaded folder."
 
 	| folder |
-	folder := self folderForVersion: aVersion.
-	folder ensureDeleteAll.
-	folder parent ensureCreateDirectory.
-	folder ensureCreateDirectory.
+	folder := (self folderForVersion: aVersion)
+		          ensureDeleteAll;
+		          ensureCreateDirectory.
 	self downloadAndExtractTarballOf: aVersion in: folder.
 	^ folder
 ]

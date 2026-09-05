@@ -1,9 +1,7 @@
 "
 I represent a Github project (an owner and a project name) and I am the access point of the Github importer to the Github API (through IceGitHubAPI).
 
-I can be created from a user input with #fromString: which accepts 'owner/project' or the URL of a repository ('https://github.com/owner/project' or 'git@github.com:owner/project.git'), or from the full name of a repository found in a search with #fromFullName:.
-
-I can also search for repositories matching a part of a project name and/or a part of an organization name with class>>searchRepositoriesNamed:organization:.
+I can also search for repositories matching a part of a project name and/or a part of an organization name with #searchRepositoriesNamed:organization:.
 
 I query the information of the repository, its primary language and the available versions: tags, branches, releases and pull requests (see #availableVersions).
 I also know the URL from which the sources of a version can be downloaded (see #downloadUrlForVersion:).
@@ -24,50 +22,12 @@ Class {
 
 { #category : 'instance creation' }
 MiGithubRepository class >> fromFullName: aString [
-	"I create a repository from its full name on Github ('owner/project')."
-
-	^ self fromRepositoryPath: aString
-]
-
-{ #category : 'instance creation' }
-MiGithubRepository class >> fromHttpsUrl: aString [
-
-	^ self fromRepositoryPath: (aString allButFirst: 'https://github.com/' size)
-]
-
-{ #category : 'instance creation' }
-MiGithubRepository class >> fromRepositoryPath: aString [
 	"I parse the path of a repository ('owner/project' potentially followed by more path segments) into a repository. I answer nil if the path does not contain an owner and a project name."
 
 	| segments |
 	segments := (aString splitOn: $/) select: #isNotEmpty.
 	segments size < 2 ifTrue: [ ^ nil ].
 	^ self owner: segments first projectName: (segments second removeSuffix: '.git')
-]
-
-{ #category : 'instance creation' }
-MiGithubRepository class >> fromSshUrl: aString [
-
-	^ self fromRepositoryPath: (aString allButFirst: 'git@github.com:' size)
-]
-
-{ #category : 'instance creation' }
-MiGithubRepository class >> fromString: aString [
-	"I parse the input of the user, either 'owner/project' or the URL of a repository ('https://github.com/owner/project' or 'git@github.com:owner/project.git'). I answer nil if the input cannot be parsed."
-
-	| cleanedInput |
-	cleanedInput := aString trimBoth.
-	cleanedInput ifEmpty: [ ^ nil ].
-	(cleanedInput beginsWith: 'https://github.com/') ifTrue: [ ^ self fromHttpsUrl: cleanedInput ].
-	(cleanedInput beginsWith: 'git@github.com:') ifTrue: [ ^ self fromSshUrl: cleanedInput ].
-	^ self fromRepositoryPath: cleanedInput
-]
-
-{ #category : 'accessing' }
-MiGithubRepository class >> maximumOwnersInSearch [
-	"I am the number of owner logins that the resolution of the organization part of a search can keep. Github ranks the owners by relevance, an exact organization name is always resolved. It is also the page size of the user search."
-
-	^ 10
 ]
 
 { #category : 'accessing' }
@@ -104,25 +64,6 @@ MiGithubRepository class >> pickGithubCredentialFrom: aCollectionOfCredentials [
 MiGithubRepository class >> searchRepositoriesNamed: aNamePart organization: anOrganizationPart [
 
 	^ self new searchRepositoriesNamed: aNamePart organization: anOrganizationPart
-]
-
-{ #category : 'accessing' }
-MiGithubRepository class >> searchResultsPageSize [
-
-	^ 50
-]
-
-{ #category : 'credentials' }
-MiGithubRepository class >> storeToken: aToken username: aUsername [
-	"I store a Github personal access token in the Iceberg credential store for github.com to authenticate the requests of the Github API. I replace the credential stored for github.com since the store keeps one credential per host. The token is also usable for the git operations of Iceberg (the username is needed in that case)."
-
-	IceCredentialStore current
-		storeCredential: (IceTokenCredentials new
-				 token: aToken;
-				 username: aUsername;
-				 host: 'github.com';
-				 yourself)
-		forHostname: 'github.com'
 ]
 
 { #category : 'credentials' }
@@ -227,7 +168,7 @@ MiGithubRepository >> queryTermsFromNamePart: aNamePart ownerLogins: aCollection
 	| terms |
 	terms := OrderedCollection new.
 	aNamePart ifNotEmpty: [ terms add: aNamePart , ' in:name' ].
-	aCollectionOfLogins do: [ :aLogin | terms add: 'user:' , aLogin ].
+	terms addAll: (aCollectionOfLogins collect: [ :aLogin | 'user:' , aLogin ]).
 	^ terms
 ]
 
@@ -266,30 +207,30 @@ MiGithubRepository >> searchOwnerLoginsFromOrganizationPart: anOrganizationPart 
 
 	^ ((self get: 'search/users' parameters: {
 			    ('q' -> (anOrganizationPart , ' in:login')).
-			    ('per_page' -> self class maximumOwnersInSearch) } asDictionary) at: 'items') collect: [ :each | each at: 'login' ]
+			    ('per_page' -> 20) } asDictionary) at: 'items') collect: [ :each | each at: 'login' ]
 ]
 
 { #category : 'requesting' }
 MiGithubRepository >> searchRepositoriesFromQuery: aQuery [
+	"We display 50 results by page."
 
 	^ (self get: 'search/repositories' parameters: {
 			   ('q' -> aQuery).
-			   ('per_page' -> self class searchResultsPageSize) } asDictionary) at: 'items'
+			   ('per_page' -> 50) } asDictionary) at: 'items'
 ]
 
 { #category : 'requesting' }
-MiGithubRepository >> searchRepositoriesNamed: aNamePart organization: anOrganizationPart [
+MiGithubRepository >> searchRepositoriesNamed: projectPattern organization: organizationPattern [
 	"I search Github for the repositories matching a part of a project name and/or a part of an organization name. I answer the raw items of the Github search results: dictionaries with 'full_name', 'description', 'language', ...
 	The organization part is resolved into owner logins with a user search because the search of repositories only filters on exact owner logins (see #searchOwnerLoginsFromOrganizationPart:). If the organization part matches no owner I answer an empty result instead of searching without the organization filter."
 
-	| namePart organizationPart ownerLogins |
-	namePart := aNamePart trimBoth.
-	organizationPart := anOrganizationPart trimBoth.
-	(namePart isEmpty and: [ organizationPart isEmpty ]) ifTrue: [ ^ #(  ) ].
-	organizationPart ifEmpty: [ ^ self searchRepositoriesFromQuery: (self repositorySearchQueryFromNamePart: namePart ownerLogins: #(  )) ].
-	ownerLogins := self searchOwnerLoginsFromOrganizationPart: organizationPart.
-	ownerLogins ifEmpty: [ ^ #(  ) ].
-	^ self searchRepositoriesFromQuery: (self repositorySearchQueryFromNamePart: namePart ownerLogins: ownerLogins)
+	(projectPattern isEmpty and: [ organizationPattern isEmpty ]) ifTrue: [ ^ #(  ) ].
+
+	organizationPattern ifEmpty: [ ^ self searchRepositoriesFromQuery: (self repositorySearchQueryFromNamePart: projectPattern ownerLogins: #(  )) ].
+
+	^ (self searchOwnerLoginsFromOrganizationPart: organizationPattern)
+		  ifEmpty: [ #(  ) ]
+		  ifNotEmpty: [ :ownerLogins | self searchRepositoriesFromQuery: (self repositorySearchQueryFromNamePart: projectPattern ownerLogins: ownerLogins) ]
 ]
 
 { #category : 'requesting' }

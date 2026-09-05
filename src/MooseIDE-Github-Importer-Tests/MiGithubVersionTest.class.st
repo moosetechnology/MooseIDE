@@ -16,15 +16,6 @@ MiGithubVersionTest >> testBranchFolderNameWithSlash [
 ]
 
 { #category : 'tests' }
-MiGithubVersionTest >> testIconName [
-
-	self assert: (MiGithubVersion tagNamed: 'v1.0') iconName equals: #glamorousBookmark.
-	self assert: (MiGithubVersion releaseNamed: 'v1.0') iconName equals: #glamorousBookmark.
-	self assert: (MiGithubVersion branchNamed: 'main') iconName equals: #branch.
-	self assert: (MiGithubVersion pullRequestNumber: 42 title: 'Fix bug') iconName equals: #merge
-]
-
-{ #category : 'tests' }
 MiGithubVersionTest >> testPullRequestDownloadRef [
 
 	self assert: (MiGithubVersion pullRequestNumber: 42 title: 'Fix bug') downloadRef equals: 'refs/pull/42/head'

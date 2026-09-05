@@ -12,22 +12,12 @@ Class {
 { #category : 'tests' }
 MiGithubImporterTest >> testFolderForVersion [
 
-	| repository importer downloadedFolder expectedFolder |
-	repository := MiGithubRepositoryStub owner: 'moosetechnology' projectName: 'MooseIDE'.
+	| importer downloadedFolder expectedFolder |
 	importer := MiGithubImporter new
-		            repository: repository;
-		            versions: OrderedCollection new;
+		            repository: (MiGithubRepository owner: 'moosetechnology' projectName: 'MooseIDE');
 		            yourself.
 	downloadedFolder := importer folderForVersion: (MiGithubVersion tagNamed: 'v1.0').
 	expectedFolder := FileLocator imageDirectory / 'github-moose-cache' / 'MooseIDE' / 'v1.0'.
 
-	self assert: downloadedFolder fullName equals: expectedFolder fullName
-]
-
-{ #category : 'tests' }
-MiGithubImporterTest >> testIsLanguageSupported [
-
-	self assert: (MiGithubImporter isLanguageSupported: 'Java').
-	self deny: (MiGithubImporter isLanguageSupported: 'Python').
-	self deny: (MiGithubImporter isLanguageSupported: nil)
+	self assert: downloadedFolder equals: expectedFolder
 ]

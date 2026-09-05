@@ -81,70 +81,6 @@ MiGithubRepositoryTest >> testFromFullName [
 ]
 
 { #category : 'tests' }
-MiGithubRepositoryTest >> testFromStringEmptyInput [
-
-	self assert: (MiGithubRepository fromString: '') isNil.
-	self assert: (MiGithubRepository fromString: '   ') isNil
-]
-
-{ #category : 'tests' }
-MiGithubRepositoryTest >> testFromStringHttpsUrl [
-
-	| parsedRepository |
-	parsedRepository := MiGithubRepository fromString: 'https://github.com/pharo-project/pharo'.
-
-	self assert: parsedRepository owner equals: 'pharo-project'.
-	self assert: parsedRepository projectName equals: 'pharo'
-]
-
-{ #category : 'tests' }
-MiGithubRepositoryTest >> testFromStringHttpsUrlWithExtraSegments [
-
-	| parsedRepository |
-	parsedRepository := MiGithubRepository fromString: 'https://github.com/pharo-project/pharo/tree/P12'.
-
-	self assert: parsedRepository owner equals: 'pharo-project'.
-	self assert: parsedRepository projectName equals: 'pharo'
-]
-
-{ #category : 'tests' }
-MiGithubRepositoryTest >> testFromStringHttpsUrlWithGitSuffix [
-
-	| parsedRepository |
-	parsedRepository := MiGithubRepository fromString: 'https://github.com/pharo-project/pharo.git'.
-
-	self assert: parsedRepository owner equals: 'pharo-project'.
-	self assert: parsedRepository projectName equals: 'pharo'
-]
-
-{ #category : 'tests' }
-MiGithubRepositoryTest >> testFromStringInvalidInput [
-
-	self assert: (MiGithubRepository fromString: 'hello') isNil.
-	self assert: (MiGithubRepository fromString: 'owner/') isNil
-]
-
-{ #category : 'tests' }
-MiGithubRepositoryTest >> testFromStringOwnerAndProject [
-
-	| parsedRepository |
-	parsedRepository := MiGithubRepository fromString: 'pharo-project/pharo'.
-
-	self assert: parsedRepository owner equals: 'pharo-project'.
-	self assert: parsedRepository projectName equals: 'pharo'
-]
-
-{ #category : 'tests' }
-MiGithubRepositoryTest >> testFromStringSshUrl [
-
-	| parsedRepository |
-	parsedRepository := MiGithubRepository fromString: 'git@github.com:pharo-project/pharo.git'.
-
-	self assert: parsedRepository owner equals: 'pharo-project'.
-	self assert: parsedRepository projectName equals: 'pharo'
-]
-
-{ #category : 'tests' }
 MiGithubRepositoryTest >> testPickGithubCredentialFallsBackToPlaintext [
 
 	| plaintext |
@@ -318,7 +254,7 @@ MiGithubRepositoryTest >> testSearchRepositoriesUnknownOrganization [
 MiGithubRepositoryTest >> testSearchRepositoriesWithoutParts [
 	"The stub raises on unexpected queries, so this asserts that no query is sent when no part is given."
 
-	self assertEmpty: (repository searchRepositoriesNamed: '' organization: '   ')
+	self assertEmpty: (repository searchRepositoriesNamed: '' organization: '')
 ]
 
 { #category : 'tests' }
