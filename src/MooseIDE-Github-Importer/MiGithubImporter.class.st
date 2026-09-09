@@ -51,7 +51,7 @@ MiGithubImporter class >> isLanguageSupported: aLanguage [
 { #category : 'private' }
 MiGithubImporter >> cacheDirectory [
 
-	^ FileLocator imageDirectory / self class cacheDirectoryName
+	^ FileLocator localDirectory / self class cacheDirectoryName
 ]
 
 { #category : 'actions' }
