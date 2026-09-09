@@ -17,7 +17,7 @@ MiGithubImporterTest >> testFolderForVersion [
 		            repository: (MiGithubRepository owner: 'moosetechnology' projectName: 'MooseIDE');
 		            yourself.
 	downloadedFolder := importer folderForVersion: (MiGithubVersion tagNamed: 'v1.0').
-	expectedFolder := FileLocator imageDirectory / 'github-moose-cache' / 'MooseIDE' / 'v1.0'.
+	expectedFolder := FileLocator localDirectory / 'github-moose-cache' / 'MooseIDE' / 'v1.0'.
 
 	self assert: downloadedFolder equals: expectedFolder
 ]
