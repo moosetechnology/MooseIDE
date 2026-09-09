@@ -71,15 +71,20 @@ MiGithubImporter >> download [
 
 { #category : 'private' }
 MiGithubImporter >> downloadAndExtractTarballOf: aVersion in: aFolder [
+	"I download the sources of aVersion and extract them in aFolder with tar. I raise an error if the download or the extraction fails. Note: tar must be installed on the system (it is not shipped with Windows before the Windows 10 1803 update)."
 
-	| archiveReference |
+	| archiveReference tarExitCode |
 	archiveReference := self cacheDirectory / (aVersion folderName , '.tar.gz').
 	archiveReference parent ensureCreateDirectory.
 	(ZnClient new
 		 url: (repository downloadUrlForVersion: aVersion);
 		 downloadTo: archiveReference pathString) ifFalse: [ self error: 'Cannot download the sources of ' , aVersion displayName ].
-	LibC runCommand: 'tar -xzvf "' , archiveReference pathString , '" -C "' , aFolder pathString , '" --strip-components=1'.
-	archiveReference ensureDelete
+	tarExitCode := LibC runCommand: 'tar -xzvf "' , archiveReference pathString , '" -C "' , aFolder pathString , '" --strip-components=1'.
+	archiveReference ensureDelete.
+	tarExitCode isZero ifFalse: [
+			self error: ('The extraction of the sources of {1} failed (tar exited with code {2}). Please check that tar is installed on your system.' format: {
+						 aVersion displayName.
+						 tarExitCode printString }) ]
 ]
 
 { #category : 'actions' }
