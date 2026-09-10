@@ -121,9 +121,20 @@ MiGithubImporter >> folderForVersion: aVersion [
 
 { #category : 'actions' }
 MiGithubImporter >> import [
-	"I parse the downloaded folders with VerveineJ through FamixJavaFoldersImporter and I answer the resulting models. I do not install the models: it is the role of the import dialog, with the cache setting of the models browser (see MiImportModelDialog>>importModelStep2Install:)."
+	"I parse the downloaded folders with VerveineJ through FamixJavaFoldersImporter and I answer the resulting models. I name each model with the project name prefixed to the version folder name, with the potential special characters replaced by dashes (for example 'VerveineJ-v5'). I do not install the models: it is the role of the import dialog, with the cache setting of the models browser (see MiImportModelDialog>>importModelStep2Install:)."
 
-	^ FamixJavaFoldersImporter importFolders: downloadedFolders
+	| mooseModels |
+	mooseModels := FamixJavaFoldersImporter new
+		               folders: downloadedFolders;
+		               import.
+	mooseModels with: downloadedFolders do: [ :mooseModel :folder | mooseModel name: (self modelNameFromFolder: folder) ].
+	^ mooseModels
+]
+
+{ #category : 'private' }
+MiGithubImporter >> modelNameFromFolder: aFolder [
+
+	^ repository projectName , '-' , aFolder basename
 ]
 
 { #category : 'accessing' }
