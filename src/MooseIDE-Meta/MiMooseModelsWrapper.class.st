@@ -42,6 +42,11 @@ MiMooseModelsWrapper >> installWithCache: aBoolean [
 ]
 
 { #category : 'accessing' }
+MiMooseModelsWrapper >> models [
+	^ models
+]
+
+{ #category : 'accessing' }
 MiMooseModelsWrapper >> models: aCollection [
 
 	models := aCollection
