@@ -52,6 +52,26 @@ MiApplicationTest >> testDefaultBus [
 ]
 
 { #category : 'tests' }
+MiApplicationTest >> testDefaultDependencyQueryDirections [
+
+	| model client central provider entities |
+	model := FamixStModel new.
+	client := FamixStMethod new name: 'client'; mooseModel: model; yourself.
+	central := FamixStMethod new name: 'central'; mooseModel: model; yourself.
+	provider := FamixStMethod new name: 'provider'; mooseModel: model; yourself.
+	FamixStInvocation new sender: client; candidates: { central }; mooseModel: model.
+	FamixStInvocation new sender: central; candidates: { provider }; mooseModel: model.
+	entities := { central } asMooseGroup.
+
+	self
+		assertCollection: (self application defaultClientsQuery runOn: entities)
+		hasSameElements: { client }.
+	self
+		assertCollection: (self application defaultProvidersQuery runOn: entities)
+		hasSameElements: { provider }
+]
+
+{ #category : 'tests' }
 MiApplicationTest >> testDeleteBus [
 	| initialSize busToDelete |
 	busToDelete := self application buses first.
