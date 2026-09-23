@@ -9,10 +9,18 @@ Class {
 
 { #category : #running }
 MiButterflyMapModelTest >> setUp [
-	super setUp.
-	model := MiButterflyMapModel new browser: Mock new.
-	model currentEntity: Mock new.
 
+	| browser |
+	super setUp.
+
+	browser := Mock new.
+	browser stub application willReturn: MiApplication current.
+
+	model := MiButterflyMapModel new
+		         browser: browser;
+		         yourself.
+
+	model currentEntity: Mock new
 ]
 
 { #category : #running }
@@ -21,27 +29,25 @@ MiButterflyMapModelTest >> testChildrenFor [
 	| children |
 	children := model childrenFor: MooseEntity new.
 	self assert: children isMooseObject
-	
 ]
 
 { #category : #running }
 MiButterflyMapModelTest >> testDefaultChildrenQueryIsNotNil [
 
-	self assert: model defaultChildrenQuery isNotNil
-	.self assert: model defaultChildrenQuery isValid
-
+	self assert: model defaultChildrenQuery isNotNil.
+	self assert: model defaultChildrenQuery isValid
 ]
 
 { #category : #running }
-MiButterflyMapModelTest >> testDefaultLeftEntitiesQueryIsNotNil [
+MiButterflyMapModelTest >> testDefaultClientsQuery [
 
-	self assert: model defaultLeftEntitiesQuery isNotNil
+	self assert: (model instVarNamed: #clientsQuery) isNotNil
 ]
 
 { #category : #running }
-MiButterflyMapModelTest >> testDefaultRightEntitiesQueryIsNotNil [
+MiButterflyMapModelTest >> testDefaultProvidersQuery [
 
-	self assert: model defaultRightEntitiesQuery isNotNil
+	self assert: (model instVarNamed: #providersQuery) isNotNil
 ]
 
 { #category : #running }

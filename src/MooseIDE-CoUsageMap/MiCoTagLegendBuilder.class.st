@@ -7,10 +7,19 @@ Class {
 	#superclass : #RSBuilder,
 	#instVars : [
 		'tags',
-		'mapBuilder'
+		'mapBuilder',
+		'specModel'
 	],
 	#category : #'MooseIDE-CoUsageMap-Roassal3'
 }
+
+{ #category : #'instance creation' }
+MiCoTagLegendBuilder class >> on: aSpecModel [
+
+	^ self new
+		  specModel: aSpecModel;
+		  yourself
+]
 
 { #category : #adding }
 MiCoTagLegendBuilder >> addTag: aTag [
@@ -96,25 +105,29 @@ MiCoTagLegendBuilder >> legendDo: aShape [
 ]
 
 { #category : #hooks }
-MiCoTagLegendBuilder >> legendTagLine: aTag [ 
+MiCoTagLegendBuilder >> legendTagLine: aTag [
+
 	| label icon checkBox line |
 	checkBox := RSBitmap new
-		model: aTag;
-		form: (self checkBoxFor: aTag);
-		when: RSMouseEnter send: #highlightLegend: to: self; 
-		when: RSMouseLeave send: #unhighlightLegend: to: self; 
-		when: RSMouseClick send: #toggleTag: to: self; 
-		yourself.
-	icon := RSBitmap new form: (mapBuilder iconForTag: aTag).
+		            model: aTag;
+		            form: (self checkBoxFor: aTag);
+		            when: RSMouseEnter send: #highlightLegend: to: self;
+		            when: RSMouseLeave send: #unhighlightLegend: to: self;
+		            when: RSMouseClick send: #toggleTag: to: self;
+		            yourself.
+	icon := RSBitmap new form: (specModel currentApplication iconForTag: aTag).
 	label := RSLabel new
-		text: aTag name;
-		color: Color black;
-		yourself.
+		         text: aTag name;
+		         color: Color black;
+		         yourself.
 
-	line := { checkBox. icon. label } asGroup asShape.
+	line := {
+		        checkBox.
+		        icon.
+		        label } asGroup asShape.
 	RSHorizontalLineLayout new
-		gapSize: 5 ;
-		alignMiddle ;
+		gapSize: 5;
+		alignMiddle;
 		on: line children.
 	line adjustToChildren.
 
@@ -127,13 +140,8 @@ MiCoTagLegendBuilder >> legendTitle [
 ]
 
 { #category : #accessing }
-MiCoTagLegendBuilder >> mapBuilder [
-	self flag: 'interactions with MiCoUsageMapBuilder should go through specModel ?'.
-	^ mapBuilder
-]
-
-{ #category : #accessing }
 MiCoTagLegendBuilder >> mapBuilder: aMiCoUsageMapBuilder [
+
 	mapBuilder := aMiCoUsageMapBuilder
 ]
 
@@ -180,8 +188,9 @@ MiCoTagLegendBuilder >> renderIn: aCanvas [
 ]
 
 { #category : #accessing }
-MiCoTagLegendBuilder >> specModel [
-	^ mapBuilder specModel
+MiCoTagLegendBuilder >> specModel: aSpecModel [
+
+	specModel := aSpecModel
 ]
 
 { #category : #accessing }
@@ -191,21 +200,23 @@ MiCoTagLegendBuilder >> tagNamed: aString [
 
 { #category : #accessing }
 MiCoTagLegendBuilder >> tags [
-	^tags ifNil: [tags := self specModel tagList]
+
+	^ tags ifNil: [ tags := specModel tagList ]
 ]
 
 { #category : #hooks }
 MiCoTagLegendBuilder >> toggleTag: evt [
+
 	| checkBox tag |
 	checkBox := evt shape.
 	tag := checkBox model.
-	self flag: 'Hidding tag is part of its normal API ?!?'.
+	
 	tag toggleVisibility.
+	
 	checkBox form: (self checkBoxFor: tag).
+	
 	mapBuilder updateShapeColors.
-	evt signalUpdate.
-	
-	
+	evt signalUpdate
 ]
 
 { #category : #highlighting }

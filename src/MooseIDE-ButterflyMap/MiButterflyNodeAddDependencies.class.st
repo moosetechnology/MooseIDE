@@ -16,7 +16,7 @@ MiButterflyNodeAddDependencies >> group [
 	^ 3
 ]
 
-{ #category : #execution }
+{ #category : #accessing }
 MiButterflyNodeAddDependencies >> label [
 
 	^ 'Add dependencies'

@@ -14,8 +14,8 @@ Class {
 		'queryItemsPresenters',
 		'loadQueriesButton',
 		'loadQueriesList',
-		'queriesBrowser',
-		'queryToolBar'
+		'queryToolBar',
+		'specModel'
 	],
 	#category : #'MooseIDE-QueriesBrowser-Main presenters'
 }
@@ -25,10 +25,10 @@ MiQueriesListPresenter >> addNewChildQueryAction: query [
 
 	| newPresenter indexToInsert |
 	newPresenter := self createNewQueryPresenter: query.
-	indexToInsert := queryItemsPresenters findFirst: [ :each | 
+	indexToInsert := queryItemsPresenters findFirst: [ :each |
 		                 each query = query ].
 	queryItemsPresenters add: newPresenter afterIndex: indexToInsert.
-	queriesBrowser selectQuery: query.
+	self queryChangedUpdate: query.
 	self updateComponentList
 ]
 
@@ -36,21 +36,6 @@ MiQueriesListPresenter >> addNewChildQueryAction: query [
 MiQueriesListPresenter >> addNewFirstLevelQuery [
 
 	queryItemsPresenters add: self newFirstLevelQueryPresenter.
-	self updateComponentList
-]
-
-{ #category : #actions }
-MiQueriesListPresenter >> addNewManualQuery [
-	
-	| newPresenter |
-	newPresenter := MiQueryListItemPresenter
-		newManualQueryOn: queriesBrowser rootQuery
-		owner: self
-		queriesListPresenter: self.
-	newPresenter setQueryNumber: queryCounter.
-	queryCounter := queryCounter + 1.
-
-	queryItemsPresenters add: newPresenter.
 	self updateComponentList
 ]
 
@@ -67,12 +52,12 @@ MiQueriesListPresenter >> constructQueries: acollectionsOfQueries [
 
 	acollectionsOfQueries do: [ :each |
 		each parent ifNil: [ "This works only for subclasses of FQUnaryQuery: "
-			each parent: self queriesBrowser rootQuery ] ].
+			each parent: self specModel rootQuery ] ].
 
 	acollectionsOfQueries do: [ :each |
 		| newPresenter |
 		newPresenter := self createNewQueryPresenter: (each parent
-				                 ifNil: [ self queriesBrowser rootQuery ]
+				                 ifNil: [ self specModel rootQuery ]
 				                 ifNotNil: [ each parent ]).
 		newPresenter configureFor: each.
 
@@ -112,10 +97,10 @@ MiQueriesListPresenter >> followNewEntity [
 
 	queryItemsPresenters
 		collect: #queryConfiguratorPresenter
-		thenDo: [ :each | 
-			each query resetResult.
-			(each query parent isNotNil and: [ each query parent isRootQuery ]) 
-				ifTrue: [ each query parent: queriesBrowser rootQuery ] ]
+		thenDo: [ :each |
+				each query resetResult.
+				(each query parent isNotNil and: [ each query parent isRootQuery ])
+					ifTrue: [ each query parent: specModel rootQuery ] ]
 ]
 
 { #category : #initialization }
@@ -133,7 +118,7 @@ MiQueriesListPresenter >> initializeComponentListPresenter [
 		activateOnSingleClick;
 		propagateNaturalHeight: true;
 		whenSelectedDo: [ :selectedPresenter |
-			queriesBrowser selectQuery: selectedPresenter query ]
+			self queryChangedUpdate: selectedPresenter query ]
 ]
 
 { #category : #initialization }
@@ -171,22 +156,15 @@ MiQueriesListPresenter >> isQueryUsed: aQuery [
 
 { #category : #actions }
 MiQueriesListPresenter >> newFirstLevelQueryPresenter [
-
 	"This is a query that is a direct child of a FQRootQuery"
 
-	^ self createNewQueryPresenter: queriesBrowser rootQuery
-]
-
-{ #category : #accessing }
-MiQueriesListPresenter >> queriesBrowser [
-
-	^ queriesBrowser
+	^ self createNewQueryPresenter: specModel rootQuery
 ]
 
 { #category : #'api - actions' }
 MiQueriesListPresenter >> queryChangedUpdate: query [
 
-	queriesBrowser selectQuery: query
+	owner selectQuery: query
 ]
 
 { #category : #accessing }
@@ -219,16 +197,16 @@ MiQueriesListPresenter >> removePresentersAssociatedWith: nodeQuery [
 { #category : #'api - actions' }
 MiQueriesListPresenter >> removeQueryAction: aQueryCreationPresenter [
 
-	queriesBrowser removeQuery: aQueryCreationPresenter query.
+	specModel removeQuery: aQueryCreationPresenter query.
 	queryItemsPresenters remove: aQueryCreationPresenter.
 	self removePresentersAssociatedWith: aQueryCreationPresenter query.
 	self updateComponentList
 ]
 
 { #category : #'accessing - model' }
-MiQueriesListPresenter >> setModelBeforeInitialization: aQueryBrowserPresenter [
+MiQueriesListPresenter >> setModelBeforeInitialization: aSpecModel [
 
-	queriesBrowser := aQueryBrowserPresenter
+	specModel := aSpecModel 
 ]
 
 { #category : #update }

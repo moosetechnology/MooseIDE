@@ -3,7 +3,9 @@ Class {
 	#superclass : #MiAbstractApplicationTest,
 	#instVars : [
 		'browser',
-		'entityToSelect'
+		'entityToSelect',
+		'settingsWindow',
+		'otherBrowser'
 	],
 	#category : #'MooseIDE-Tests-Browsers'
 }
@@ -53,6 +55,15 @@ MiAbstractBrowserTest >> defaultEntityToSelect [
 ]
 
 { #category : #running }
+MiAbstractBrowserTest >> miToolbarFreezeCommand [
+
+	^ ((browser toolbarCommandGroup decoratedGroup entries detect: [ :ent |
+		    ent isGroup and: [ ent decoratedGroup name = 'Receiving Mode' ] ])
+		   decoratedGroup entries detect: [ :btnCmd |
+		   btnCmd name = 'Freeze' ])
+]
+
+{ #category : #running }
 MiAbstractBrowserTest >> mooseObjects [
 
 	^ { 
@@ -87,15 +98,31 @@ MiAbstractBrowserTest >> setUp [
 	super setUp.
 
 	application defaultBus: self bus.
-	browser := self browserClass openForTests: self application.
+	browser := self browserClass openForTests: application.
 	entityToSelect := self defaultEntityToSelect
+]
+
+{ #category : #running }
+MiAbstractBrowserTest >> settingNamed: aName [
+
+	^ browser specModel instVarNamed: aName
+]
+
+{ #category : #running }
+MiAbstractBrowserTest >> settingNamed: aName setValue: anObject [
+
+	browser specModel instVarNamed: aName put: anObject
 ]
 
 { #category : #running }
 MiAbstractBrowserTest >> tearDown [
 
 	browser ifNotNil: [ browser withWindowDo: [ :window | window close ] ].
+	otherBrowser ifNotNil: [ otherBrowser withWindowDo: [ :window | window close ] ].
+
 	self application deleteBus: self bus.
+
+	settingsWindow ifNotNil: [ settingsWindow close ].
 
 	super tearDown
 ]
@@ -131,7 +158,7 @@ MiAbstractBrowserTest >> testCanOpenOnEmptyBus [
 MiAbstractBrowserTest >> testCanOpenOnEmptyMooseGroup [
 
 	| newBrowser |
-	self bus globallySelect: MooseGroup new.
+	self application miPropagate: MooseGroup new.
 	self
 		shouldnt: [ 
 			newBrowser := self browserClass openForTests: self application.
@@ -143,7 +170,7 @@ MiAbstractBrowserTest >> testCanOpenOnEmptyMooseGroup [
 MiAbstractBrowserTest >> testCanOpenOnEmptyMooseModel [
 
 	| newBrowser |
-	self bus globallySelect: MooseModel new.
+	self application miPropagate: MooseModel new.
 	self
 		shouldnt: [ 
 			newBrowser := self browserClass openForTests: self application.
@@ -155,11 +182,11 @@ MiAbstractBrowserTest >> testCanOpenOnEmptyMooseModel [
 MiAbstractBrowserTest >> testCanOpenOnMooseEntity [
 
 	| newBrowser |
-	self bus globallySelect: MooseEntity new.
+	self application miPropagate: MooseEntity new.
 	self
-		shouldnt: [ 
-			newBrowser := self browserClass openForTests: self application.
-			newBrowser window close ]
+		shouldnt: [
+				newBrowser := self browserClass openForTests: self application.
+				newBrowser window close ]
 		raise: Error
 ]
 
@@ -167,12 +194,11 @@ MiAbstractBrowserTest >> testCanOpenOnMooseEntity [
 MiAbstractBrowserTest >> testCanOpenOnMooseGroup [
 
 	| newBrowser |
-	self bus globallySelect:
-		(MooseModel with: MooseEntity new) entities asMooseGroup.
+	self application miPropagate: (MooseModel with: MooseEntity new) entities asMooseGroup.
 	self
-		shouldnt: [ 
-			newBrowser := self browserClass openForTests: self application.
-			newBrowser window close ]
+		shouldnt: [
+				newBrowser := self browserClass openForTests: self application.
+				newBrowser window close ]
 		raise: Error
 ]
 
@@ -180,11 +206,11 @@ MiAbstractBrowserTest >> testCanOpenOnMooseGroup [
 MiAbstractBrowserTest >> testCanOpenOnMooseModel [
 
 	| newBrowser |
-	self bus globallySelect: (MooseModel with: MooseEntity new).
+	self application miPropagate: (MooseModel with: MooseEntity new).
 	self
-		shouldnt: [ 
-			newBrowser := self browserClass openForTests: self application.
-			newBrowser window close ]
+		shouldnt: [
+				newBrowser := self browserClass openForTests: self application.
+				newBrowser window close ]
 		raise: Error
 ]
 
@@ -192,11 +218,11 @@ MiAbstractBrowserTest >> testCanOpenOnMooseModel [
 MiAbstractBrowserTest >> testCanOpenOnNil [
 
 	| newBrowser |
-	self bus globallySelect: nil.
+	self application miPropagate: nil.
 	self
-		shouldnt: [ 
-			newBrowser := self browserClass openForTests: self application.
-			newBrowser window close ]
+		shouldnt: [
+				newBrowser := self browserClass openForTests: self application.
+				newBrowser window close ]
 		raise: Error
 ]
 
@@ -204,24 +230,21 @@ MiAbstractBrowserTest >> testCanOpenOnNil [
 MiAbstractBrowserTest >> testCanOpenOnObject [
 
 	| newBrowser |
-	self bus globallySelect: Object new.
+	self application miPropagate: Object new.
 	self
-		shouldnt: [ 
-			newBrowser := self browserClass openForTests: self application.
-			newBrowser window close ]
+		shouldnt: [
+				newBrowser := self browserClass openForTests: self application.
+				newBrowser window close ]
 		raise: Error
 ]
 
-{ #category : #'tests - opening' }
+{ #category : #'tests - settings' }
 MiAbstractBrowserTest >> testCanOpenSettings [
 
-	browser hasSettings ifFalse: [ self skip ].
-	"this should not raise an error"
-	browser settings.
-  "tear down"
-	[ browser closeSettings ]
-		on: Error
-		do: [ "nothing -- ensuring settings window is closed" ]
+	browser hasSettings ifFalse: [ ^ self skip ].
+
+	"This should not raise an error"
+	settingsWindow := browser openSettings
 ]
 
 { #category : #'tests - tags' }
@@ -295,11 +318,11 @@ MiAbstractBrowserTest >> testFollowBusTriggersSelectEntity [
 
 	| propagatedEntity |
 	propagatedEntity := MooseEntity new.
-	
+
 	browser stub.
-	
-	self bus globallySelect: propagatedEntity.
-	
+
+	self application miPropagate: propagatedEntity.
+
 	browser followBus: self bus.
 	browser should receive receiveEntity: propagatedEntity
 ]
@@ -308,9 +331,9 @@ MiAbstractBrowserTest >> testFollowBusTriggersSelectEntity [
 MiAbstractBrowserTest >> testFollowEntity [
 
 	browser privateReceivingMode: MiFollowMode.
-	self mooseObjects do: [ :mooseObject | 
-		self bus globallySelect: mooseObject.
-		self assertFollowActionFor: mooseObject ]
+	self mooseObjects do: [ :mooseObject |
+			self application miPropagate: mooseObject.
+			self assertFollowActionFor: mooseObject ]
 ]
 
 { #category : #'tests - buses' }
@@ -351,9 +374,39 @@ MiAbstractBrowserTest >> testHelpHasSomeInformation [
 MiAbstractBrowserTest >> testHighlightEntity [
 
 	browser privateReceivingMode: MiHighlightMode.
-	self mooseObjects do: [ :mooseObject | 
-		self bus globallySelect: mooseObject.
-		self assertHighlightActionFor: mooseObject ]
+	self mooseObjects do: [ :mooseObject |
+			self application miPropagate: mooseObject.
+			self assertHighlightActionFor: mooseObject ]
+]
+
+{ #category : #'tests - receiving' }
+MiAbstractBrowserTest >> testPropagateToOtherBrowser [
+	"checking that can propagate to another browser.
+	MiExportBrowser for example"
+
+	self receiveEntityToSelect.
+	
+	browser canPropagate ifFalse: [ self skip ].
+
+	browser propagateToOtherBrowser: MiExportBrowser.
+	
+	otherBrowser := browser application browsers
+		detect: [ :br | br class = MiExportBrowser ]
+		ifNone: [ nil ].
+
+	self assert: otherBrowser isNotNil.
+	
+	browser miSelectedItemToPropagate isCollection 
+		ifTrue: [
+			self
+				assertCollection: otherBrowser miSelectedItem
+				hasSameElements: browser miSelectedItemToPropagate
+		]
+		ifFalse: [
+			self assert: otherBrowser miSelectedItem size equals: 1.
+			self assert: otherBrowser miSelectedItem anyOne equals: browser miSelectedItemToPropagate
+		]
+
 ]
 
 { #category : #'tests - tags' }
@@ -363,51 +416,55 @@ MiAbstractBrowserTest >> testSelectedTagSetAndGet [
 	"Override to use test"
 ]
 
-{ #category : #'tests - opening' }
+{ #category : #'tests - settings' }
 MiAbstractBrowserTest >> testSettingsAction [
 	"must be redefined in browsers that do have settings"
 
-	self deny: browser hasSettings
+	self deny: browser hasSettings description: 'By default, browsers are assumed having no setting. If this is a mistake, redefine #testSettingsAction in the test class'
 ]
 
-{ #category : #'tests - opening' }
+{ #category : #'tests - settings' }
 MiAbstractBrowserTest >> testSettingsClickCancel [
 
-	browser hasSettings ifFalse: [ self skip ].
+	browser hasSettings ifFalse: [ ^ self skip ].
 
-	self
-		shouldnt: [ 
-			browser settings.
-			browser model settings buttonCancel click ]
-		raise: Error.
-
+	settingsWindow := browser openSettings.
+	settingsWindow triggerCancelAction
 ]
 
-{ #category : #'tests - opening' }
+{ #category : #'tests - settings' }
 MiAbstractBrowserTest >> testSettingsClickOK [
 
-	browser hasSettings ifFalse: [ self skip ].
+	browser hasSettings ifFalse: [ ^ self skip ].
 
-	self
-		shouldnt: [ 
-			browser settings.
-			browser model settings buttonOk click ]
-		raise: Error.
-
+	settingsWindow := browser openSettings.
+	settingsWindow triggerOkAction
 ]
 
-{ #category : #'tests - opening' }
+{ #category : #'tests - settings' }
 MiAbstractBrowserTest >> testSettingsClickReset [
 
-	browser hasSettings ifFalse: [ self skip ].
+	browser hasSettings ifFalse: [ ^ self skip ].
+
+	settingsWindow := browser openSettings.
+	settingsWindow presenter resetToDefault
+]
+
+{ #category : #'tests - receiving' }
+MiAbstractBrowserTest >> testShowingFreezeWhenClicked [
 
 	self
-		shouldnt: [ 
-			browser settings.
-			browser model settings buttonReset click ]
-		raise: Error.
+		assert: self miToolbarFreezeCommand iconName
+		equals: 'radioButtonUnselected'.
+	self assert: browser receivingMode name equals: #MiFollowMode.
 
-	[ browser closeSettings ] on: Error do: [ "nothing -- ensuring settings window is closed as REset does not do it" ]
+	self miToolbarFreezeCommand presenter click.
+
+	self
+		assert: self miToolbarFreezeCommand iconName
+		equals: 'radioButtonSelected'.
+		
+	self assert: browser receivingMode name equals: #MiFreezeMode.
 ]
 
 { #category : #'tests - tags' }

@@ -13,7 +13,7 @@ Class {
 	#superclass : #MiAbstractBrowser,
 	#instVars : [
 		'toolbar',
-		'modelFilteringList'
+		'modelsTable'
 	],
 	#category : #'MooseIDE-Meta-ModelsBrowser'
 }
@@ -34,6 +34,12 @@ MiModelsBrowser class >> buildModelCommandsGroupWith: presenterInstance [
 			  (MiModelExportCommand asCommandGroupWith: presenterInstance);
 		  register:
 			  (MiModelUtilityCommand asCommandGroupWith: presenterInstance)
+]
+
+{ #category : #accessing }
+MiModelsBrowser class >> defaultPreferredExtent [
+
+	^ 600 @ 400
 ]
 
 { #category : #'instance creation' }
@@ -86,16 +92,23 @@ MiModelsBrowser class >> open [
 	^ MiApplication current openCurrentModelsBrowser
 ]
 
+{ #category : #'as yet unclassified' }
+MiModelsBrowser class >> openForTests: aTestApplication [
+
+	<script>
+	^ aTestApplication openCurrentModelsBrowser
+]
+
 { #category : #specs }
 MiModelsBrowser class >> title [
 
 	^ 'Models browser'
 ]
 
-{ #category : #specs }
-MiModelsBrowser class >> windowSize [
+{ #category : #accessing }
+MiModelsBrowser >> allModels [
 
-	^ 600 @ 400
+	^specModel entities
 ]
 
 { #category : #'window control' }
@@ -120,8 +133,8 @@ MiModelsBrowser >> canTagEntities [
 MiModelsBrowser >> defaultLayout [
 
 	^ SpBoxLayout newVertical
-		  add: #toolbar expand: false;
-		  add: #modelFilteringList;
+		  add: toolbar expand: false;
+		  add: modelsTable;
 		  yourself
 ]
 
@@ -136,18 +149,13 @@ MiModelsBrowser >> followEntity: anEntity [
 { #category : #actions }
 MiModelsBrowser >> handleDropFile: aFileReference [
 
-	self model autoImportSetting
+	self specModel modelImportIsAutomatic
 		ifTrue: [
 		self importFromFileUI handleDropFileAndImport: aFileReference ]
 		ifFalse: [
-			self importFromFileUI
-				openDialog;
-				handleDropFile: aFileReference ]
-]
-
-{ #category : #testing }
-MiModelsBrowser >> hasSettings [
-	^ true
+				self importFromFileUI
+					openDialog;
+					handleDropFile: aFileReference ]
 ]
 
 { #category : #accessing }
@@ -159,10 +167,10 @@ MiModelsBrowser >> importFromFileUI [
 { #category : #initialization }
 MiModelsBrowser >> initializeList [
 
-	modelFilteringList := self newTable.
+	modelsTable := self newTable.
 	self listOfMooseModels: specModel entities.
 
-	modelFilteringList
+	modelsTable
 		addColumn: (SpStringTableColumn new
 				 title: 'Name';
 				 sortFunction: #name ascending;
@@ -181,8 +189,8 @@ MiModelsBrowser >> initializeList [
 				 evaluated: [ :model | model entities size asString ];
 				 beSortable;
 				 yourself);
-		contextMenu: [
-		(self class buildModelCommandsGroupWith: self) asMenuPresenter ];
+		contextMenu: [specModel selected ifNotNil: [  
+		(self class buildModelCommandsGroupWith: self) asMenuPresenter ]];
 		whenSelectionChangedDo: [ :selected |
 		specModel selected: selected selectedItem ];
 		activateOnDoubleClick;
@@ -204,14 +212,14 @@ MiModelsBrowser >> initializeToolbar [
 		           fillWith:
 			           (MiImportCommand asCommandGroupForSpecContext: self);
 		           beIcons;
-		           addItem: self refreshToolbarButton;
+		           addItemRight: self refreshToolbarButton;
 		           yourself
 ]
 
 { #category : #updating }
 MiModelsBrowser >> listOfMooseModels: aList [
 
-	modelFilteringList items: aList
+	modelsTable items: aList
 ]
 
 { #category : #accessing }
@@ -228,7 +236,7 @@ MiModelsBrowser >> miSelectedItemToPropagate [
 
 { #category : #'accessing - tests' }
 MiModelsBrowser >> modelFilteringList [
-	^ modelFilteringList
+	^ modelsTable
 ]
 
 { #category : #initialization }
@@ -245,24 +253,14 @@ MiModelsBrowser >> refreshToolbarButton [
 MiModelsBrowser >> selectAModelIfPossible [
 
 	specModel entities ifNotEmpty: [ :list |
-		modelFilteringList selectItem: list first ]
-]
-
-{ #category : #'accessing - tests' }
-MiModelsBrowser >> settingsItem [
-	^ specModel settings
-]
-
-{ #category : #accessing }
-MiModelsBrowser >> specModel [
-
-	^ specModel 
+		modelsTable selectItem: list first ]
 ]
 
 { #category : #updating }
 MiModelsBrowser >> updateForNewModel: aModel [
-	specModel updateForNewModel: aModel
 
+	self updateList.
+	modelsTable selectItem: aModel.
 ]
 
 { #category : #updating }

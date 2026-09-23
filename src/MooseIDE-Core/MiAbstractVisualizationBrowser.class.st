@@ -54,8 +54,8 @@ MiAbstractVisualizationBrowser >> exportWith: roassalExporter [
 	fileName := (self class title copyReplaceAll: ' ' with: '_') uncapitalized, '.', roassalExporter extension.
 	file := UIManager default
 		        chooseForSaveFileReference: 'Chose export destination'
-		        extensions: roassalExporter extension
-		        path: fileName.
+		        extensions: {roassalExporter extension}
+		        path: fileName asFileReference.
 
 	file ifNotNil: [
 		roassalExporter new
@@ -76,6 +76,19 @@ MiAbstractVisualizationBrowser >> highlightEntity: entities [
 	mainPresenter highlightEntities: entities
 ]
 
+{ #category : #initialization }
+MiAbstractVisualizationBrowser >> initializeLayout [
+
+	self layout: (SpScrollableLayout with: mainPresenter)
+]
+
+{ #category : #initialization }
+MiAbstractVisualizationBrowser >> initializePresenters [
+
+	mainPresenter := self class mapClass owner: self.
+	self initializeLayout
+]
+
 { #category : #accessing }
 MiAbstractVisualizationBrowser >> miSelectedItem [
 
@@ -88,4 +101,11 @@ MiAbstractVisualizationBrowser >> miSelectedItem [
 MiAbstractVisualizationBrowser >> runVisualization [
 
 	mainPresenter run
+]
+
+{ #category : #interactions }
+MiAbstractVisualizationBrowser >> selectRelatedTo: anEntity [
+
+	"empty to avoid crashes
+	 should be specialized for each visualization"
 ]

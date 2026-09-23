@@ -19,7 +19,7 @@ MooseLoadFamixCppMenuCommand class >> label [
 	^ 'Famix-Cpp'
 ]
 
-{ #category : #accessing }
+{ #category : #'world menu' }
 MooseLoadFamixCppMenuCommand class >> menuCommandOn: aBuilder [
 
 	<worldMenu>

@@ -6,12 +6,21 @@ This visualization is used to understand a class structure and presents dead art
 "
 Class {
 	#name : #MiClassBlueprintBrowser,
-	#superclass : #MiAbstractBrowser,
-	#instVars : [
-		'blueprint'
-	],
+	#superclass : #MiAbstractVisualizationBrowser,
 	#category : #'MooseIDE-ClassBlueprint'
 }
+
+{ #category : #accessing }
+MiClassBlueprintBrowser class >> defaultPreferredExtent [
+
+	^ 500 @ 500
+]
+
+{ #category : #accessing }
+MiClassBlueprintBrowser class >> mapClass [
+
+	^ MiClassBlueprintVisualization
+]
 
 { #category : #'world menu' }
 MiClassBlueprintBrowser class >> menuCommandOn: aBuilder [
@@ -34,7 +43,14 @@ MiClassBlueprintBrowser class >> menuPriority [
 ]
 
 { #category : #'instance creation' }
-MiClassBlueprintBrowser class >> open [ 
+MiClassBlueprintBrowser class >> newModel [
+
+	^ MiClassBlueprintModel new
+]
+
+{ #category : #'instance creation' }
+MiClassBlueprintBrowser class >> open [
+
 	<script>
 	super open
 ]
@@ -47,37 +63,15 @@ MiClassBlueprintBrowser class >> title [
 { #category : #testing }
 MiClassBlueprintBrowser >> canFollowEntity: anObject [
 
-	^ anObject isMooseEntity and: [ anObject isType ]
-]
-
-{ #category : #layout }
-MiClassBlueprintBrowser >> defaultLayout [
-
-	^ self newBoxLayoutTopToBottom
-		  add: blueprint;
-		  yourself
+	^ anObject usesFamixTrait: FamixTType
 ]
 
 { #category : #actions }
 MiClassBlueprintBrowser >> followEntity: anEntity [
 
 	super followEntity: anEntity.
-
-	blueprint
-		type: anEntity;
-		refresh
-]
-
-{ #category : #initialization }
-MiClassBlueprintBrowser >> initializePresenters [
-
-	blueprint := self instantiate: MiClassBlueprintVisualization
-]
-
-{ #category : #accessing }
-MiClassBlueprintBrowser >> miSelectedItem [
-
-	^ blueprint type
+	specModel currentType: anEntity.
+	self runVisualization
 ]
 
 { #category : #actions }

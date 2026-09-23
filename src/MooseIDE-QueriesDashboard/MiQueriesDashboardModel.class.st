@@ -1,6 +1,6 @@
 Class {
 	#name : #MiQueriesDashboardModel,
-	#superclass : #Object,
+	#superclass : #MiAbstractModel,
 	#instVars : [
 		'queries',
 		'mooseModel'

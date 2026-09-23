@@ -8,7 +8,7 @@ Class {
 MiTaggedEntityQueryPresenterTest >> assertSubpresentersAreConfigured [
 
 	self
-		assert: presenter tagList selectedItem
+		assert: self tagList selectedItem
 		equals: self createNewQuery tagName
 ]
 
@@ -44,11 +44,17 @@ MiTaggedEntityQueryPresenterTest >> queryClass [
 	^ FQTaggedEntityQuery 
 ]
 
+{ #category : #initialization }
+MiTaggedEntityQueryPresenterTest >> tagList [
+
+	^ presenter presenterAt: #tagList
+]
+
 { #category : #tests }
 MiTaggedEntityQueryPresenterTest >> testPresenters [
 
 	self
-		assert: presenter tagList class
+		assert: self tagList class
 		identicalTo: SpDropListPresenter
 ]
 
@@ -57,7 +63,7 @@ MiTaggedEntityQueryPresenterTest >> testPresentersOnImpossibleQuery [
 
 	self resetPresenterWithEntities: helper noEntities.
 	self
-		assert: presenter tagList class
+		assert: self tagList class
 		identicalTo: NoPossibleQueryPresenter
 ]
 
@@ -66,7 +72,7 @@ MiTaggedEntityQueryPresenterTest >> testQueryValidity [
 
 	self deny: presenter query isValid.
 
-	presenter tagList selectIndex: 1.
+	self tagList selectIndex: 1.
 	self assert: presenter query isValid.
 
 	self resetPresenterWithEntities: helper noEntities.

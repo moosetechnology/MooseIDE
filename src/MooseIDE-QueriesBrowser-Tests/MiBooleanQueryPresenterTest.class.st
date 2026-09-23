@@ -8,7 +8,7 @@ Class {
 MiBooleanQueryPresenterTest >> assertSubpresentersAreConfigured [
 
 	self
-		assert: presenter propertyDropList selectedItem
+		assert: self propertyDropList selectedItem
 		equals: self createNewQuery property
 ]
 
@@ -40,7 +40,7 @@ MiBooleanQueryPresenterTest >> testQueryValidity [
 
 	self deny: presenter query isValid.
 
-	presenter propertyDropList selectIndex: 2.
+	self propertyDropList selectIndex: 2.
 	self assert: presenter query isValid.
 
 	self resetPresenterWithEntities: helper noEntities.

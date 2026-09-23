@@ -7,16 +7,17 @@ Class {
 { #category : #meta }
 FamixCBEntity class >> annotation [
 
+	<ignoreForCoverage>
 	<FMClass: #Entity super: #MooseEntity>
 	<package: #'Famix-CriticBrowser-Entities'>
 	<generated>
 	<abstract>
-	^ self
 ]
 
 { #category : #testing }
 FamixCBEntity class >> isAbstract [
 
+	<ignoreForCoverage>
 	<generated>
 	^ self == FamixCBEntity
 ]
@@ -24,6 +25,7 @@ FamixCBEntity class >> isAbstract [
 { #category : #meta }
 FamixCBEntity class >> metamodel [
 
+	<ignoreForCoverage>
 	<generated>
 	^ FamixCBModel metamodel
 ]

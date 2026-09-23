@@ -33,7 +33,7 @@ MiTagExtentPage >> add [
 		^ self ].
 
 	incomingEntitiesFilteringList selectedItems do: [ :entity |
-		self model tagEntityNotYourself: entity ].
+		self specModel tagEntityNotYourself: entity ].
 
 	self refreshTaggedEntitiesList.
 	self refreshEntitiesList.
@@ -43,9 +43,9 @@ MiTagExtentPage >> add [
 { #category : #action }
 MiTagExtentPage >> addAll [
 
-	self currentTag ifNil: [ ^ self ]. 
+	self currentTag ifNil: [ ^ self ].
 	incomingEntitiesFilteringList items do: [ :entity |
-		self model tagEntityNotYourself: entity ].
+		self specModel tagEntityNotYourself: entity ].
 	self refreshTaggedEntitiesList.
 	self refreshEntitiesList.
 	self refreshBrowserToolbar
@@ -54,7 +54,7 @@ MiTagExtentPage >> addAll [
 { #category : #accessing }
 MiTagExtentPage >> currentTag [
 
-	^ self model currentTag
+	^ self specModel currentTag
 ]
 
 { #category : #accessing }
@@ -155,15 +155,14 @@ MiTagExtentPage >> refresh [
 { #category : #action }
 MiTagExtentPage >> refreshBrowserToolbar [
 
-	self owner owner updateToolbar
+	self rootBrowser updateToolbar
 ]
 
 { #category : #refreshing }
 MiTagExtentPage >> refreshEntitiesList [
 
 	| untaggedEntities |
-
-	untaggedEntities := self model entities asCollection
+	untaggedEntities := self specModel entities asCollection
 	                    \ self taggedEntities asCollection.
 	untaggedEntities size < self class maxNumberOfEntitiesToSort ifTrue: [
 		untaggedEntities sort: [ :a :b | a name < b name ] ].
@@ -173,6 +172,14 @@ MiTagExtentPage >> refreshEntitiesList [
 { #category : #refreshing }
 MiTagExtentPage >> refreshTaggedEntitiesList [
 
+	"check first if the entity being propogated is already in the list of TaggedEntitites and check (select) it in this case"
+
+	self taggedEntities do: [:aTaggedEntity | 
+		(self specModel entities includes: aTaggedEntity) ifTrue: [ 
+			taggedEntitiesFilteringList activateItem: aTaggedEntity
+			 ]
+		].
+	
 	taggedEntitiesFilteringList items: self taggedEntities
 ]
 
@@ -184,7 +191,7 @@ MiTagExtentPage >> remove [
 		^ self ].
 
 	taggedEntitiesFilteringList selectedItems do: [ :entity |
-		self model untagEntity: entity ].
+		self specModel untagEntity: entity ].
 	self refreshTaggedEntitiesList.
 	self refreshEntitiesList.
 	self refreshBrowserToolbar
@@ -195,7 +202,7 @@ MiTagExtentPage >> removeAll [
 
 	self currentTag ifNil: [ ^ self ].
 	taggedEntitiesFilteringList items do: [ :entity |
-		self model untagEntity: entity ].
+		self specModel untagEntity: entity ].
 	self refreshTaggedEntitiesList.
 	self refreshEntitiesList.
 	self refreshBrowserToolbar
@@ -217,6 +224,5 @@ MiTagExtentPage >> setTag: aTag [
 { #category : #accessing }
 MiTagExtentPage >> taggedEntities [
 
-	^ self model entitiesTaggedWithCurrentTag sort: [ :a :b | 
-		  a name < b name ]
+	^ self specModel entitiesTaggedWithCurrentTag sort: #name ascending
 ]

@@ -23,10 +23,10 @@ Class {
 { #category : #meta }
 FamixCBViolation class >> annotation [
 
+	<ignoreForCoverage>
 	<FMClass: #Violation super: #FamixCBEntity>
 	<package: #'Famix-CriticBrowser-Entities'>
 	<generated>
-	^ self
 ]
 
 { #category : #'as yet unclassified' }
@@ -65,6 +65,7 @@ FamixCBViolation >> mooseNameOn: aStream [
 FamixCBViolation >> violatedCondition [
 	"Relation named: #violatedCondition type: #FamixCBCondition opposite: #violations"
 
+	<ignoreForCoverage>
 	<generated>
 	<FMComment: 'Condition violated by this entity.'>
 	^ violatedCondition
@@ -73,6 +74,7 @@ FamixCBViolation >> violatedCondition [
 { #category : #accessing }
 FamixCBViolation >> violatedCondition: anObject [
 
+	<ignoreForCoverage>
 	<generated>
 	violatedCondition := anObject
 ]
@@ -81,6 +83,7 @@ FamixCBViolation >> violatedCondition: anObject [
 FamixCBViolation >> violatingEntity [
 	"Relation named: #violatingEntity type: #MooseObject opposite: #violations"
 
+	<ignoreForCoverage>
 	<generated>
 	<FMComment: 'Entity raising this violation.'>
 	<FMProperty: #violatingEntity type: #MooseObject opposite: #violations>
@@ -90,6 +93,7 @@ FamixCBViolation >> violatingEntity [
 { #category : #accessing }
 FamixCBViolation >> violatingEntity: anObject [
 
+	<ignoreForCoverage>
 	<generated>
 	self attributeAt: #violatingEntity put: (FMMultivalueLink on: self update: #violations from: self violatingEntity to: anObject).
 ]

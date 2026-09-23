@@ -52,3 +52,9 @@ MiPresenter >> rootBrowser [
 		  ifTrue: [ self ]
 		  ifFalse: [ self owner rootBrowser ]
 ]
+
+{ #category : #accessing }
+MiPresenter >> windowIcon [
+
+	^ self iconNamed: #mooseIcon
+]

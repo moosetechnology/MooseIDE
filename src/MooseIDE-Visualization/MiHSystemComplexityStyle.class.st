@@ -4,22 +4,22 @@ Class {
 	#category : #'MooseIDE-Visualization-System Complexity'
 }
 
-{ #category : #'public - hooks' }
+{ #category : #hooks }
 MiHSystemComplexityStyle >> borderFor: node [
 
 	^ node hasChildren
-		  ifTrue: [ 
-			  RSBorder new
-				  width: 2;
-				  capSquare;
-				  joinMiter;
-				  color: Smalltalk ui theme textColor;
-				  dashArray: #( 5 10 );
-				  yourself ]
-		  ifFalse: [ 
-			  RSBorder new
-				  color: Color black translucent;
-				  yourself ]
+		  ifTrue: [
+				  RSBorder new
+					  width: 2;
+					  capSquare;
+					  joinMiter;
+					  color: Smalltalk ui theme textColor;
+					  dashArray: #( 5 10 );
+					  yourself ]
+		  ifFalse: [
+				  RSBorder new
+					  color: Color black translucent;
+					  yourself ]
 ]
 
 { #category : #hooks }

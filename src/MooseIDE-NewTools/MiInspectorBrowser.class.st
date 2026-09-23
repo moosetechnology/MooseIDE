@@ -13,6 +13,12 @@ Class {
 	#category : #'MooseIDE-NewTools-Inspector'
 }
 
+{ #category : #accessing }
+MiInspectorBrowser class >> defaultPreferredExtent [
+
+	^ 700 @ 500
+]
+
 { #category : #api }
 MiInspectorBrowser class >> inspect: anObject [
 
@@ -77,12 +83,6 @@ MiInspectorBrowser class >> title [
 	^ 'Moose Inspector'
 ]
 
-{ #category : #specs }
-MiInspectorBrowser class >> windowSize [
-
-	^ 700 @ 500
-]
-
 { #category : #testing }
 MiInspectorBrowser >> canFollowEntity: anEntity [
 
@@ -96,23 +96,18 @@ MiInspectorBrowser >> followEntity: anEntity [
 
 	super followEntity: anEntity.
 	anEntity ifNil: [ ^ self ].
-	self model entity: anEntity.
-	mainPresenter model: self model entity.
-	self updateWindowTitle: self window.
+	self specModel entity: anEntity.
+	mainPresenter model: self specModel entity.
+	self withWindowDo: [ :window | window title: self windowTitle ].
 	self updateToolbar
 ]
 
 { #category : #initialization }
 MiInspectorBrowser >> initializePresenters [
 
-	mainPresenter := self instantiate: MiInspector on: self model entity
-]
-
-{ #category : #initialization }
-MiInspectorBrowser >> initializeWindow: aWindow [
-
-	super initializeWindow: aWindow.
-	self updateWindowTitle: aWindow
+	mainPresenter := self
+		                 instantiate: MiInspector
+		                 on: self specModel entity
 ]
 
 { #category : #accessing }
@@ -123,13 +118,8 @@ MiInspectorBrowser >> miSelectedItem [
 	^ lastInspectorPage model inspectedObject
 ]
 
-{ #category : #initialization }
-MiInspectorBrowser >> updateWindowTitle: aWindow [
+{ #category : #accessing }
+MiInspectorBrowser >> windowTitle [
 
-	| title |
-	title := self class title , ' on {1}' format:
-		         { ([ self model entity displayString ]
-			          on: Error
-			          do: [ :e | e printString ]) }.
-	aWindow ifNotNil: [ aWindow title: title ]
+	^ self windowTitleFor: self specModel entity
 ]

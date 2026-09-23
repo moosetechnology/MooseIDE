@@ -17,18 +17,27 @@ Class {
 		'highlightManager',
 		'legendTagBuilder',
 		'widthScale',
-		'visualization',
 		'menuManager',
 		'innerBoxInteraction',
-		'containerBoxInteraction'
+		'containerBoxInteraction',
+		'specModel'
 	],
 	#category : #'MooseIDE-CoUsageMap-Roassal3'
 }
 
+{ #category : #'instance creation' }
+MiCoUsageMapBuilder class >> on: aSpecModel [
+
+	^ self basicNew
+		  specModel: aSpecModel;
+		  initialize;
+		  yourself
+]
+
 { #category : #accessing }
 MiCoUsageMapBuilder >> application [
 
-	^self specModel currentApplication
+	^ specModel currentApplication
 ]
 
 { #category : #hooks }
@@ -42,7 +51,7 @@ MiCoUsageMapBuilder >> applyLayout [
 { #category : #tagging }
 MiCoUsageMapBuilder >> automaticColor [
 
-	self specModel automaticColor
+	specModel automaticColor
 ]
 
 { #category : #accessing }
@@ -129,11 +138,6 @@ MiCoUsageMapBuilder >> defaultMenuManager [
 	^ MiCoMenuManager new
 ]
 
-{ #category : #default }
-MiCoUsageMapBuilder >> defaultTagLegendBuilder [
-	^ MiCoTagLegendBuilder new
-]
-
 { #category : #accessing }
 MiCoUsageMapBuilder >> highlightManager [
 	^ highlightManager
@@ -157,8 +161,10 @@ MiCoUsageMapBuilder >> initialize [
 
 	super initialize.
 
+	legendTagBuilder := MiCoTagLegendBuilder on: specModel.
+	legendTagBuilder mapBuilder: self.
+
 	self
-		legendTagBuilder: self defaultTagLegendBuilder;
 		menuManager: self defaultMenuManager;
 		highlightManager: self defaultHighlightManager;
 		initializeShapes
@@ -190,18 +196,17 @@ MiCoUsageMapBuilder >> initializeShapes [
 
 { #category : #hooks }
 MiCoUsageMapBuilder >> innerBoxShapeFor: innerBox containerBox: containerBox [
-	| height |
-	height := self specModel innerBoxHeight.
-	widthScale := self specModel widthScale.
+
+	widthScale := specModel widthScale.
 	^ RSBox new
-		model: innerBox;
-		width: (widthScale scale: (innerBox numberOfUses));
-		height: height;
-		color: (self colorFromTags: innerBox tag);
-		border: (self highlightManager defaultBoxBorder);
-		propertyAt: #container put: containerBox;
-		announcer: innerBoxInteraction announcer;
-		yourself.
+		  model: innerBox;
+		  width: (widthScale scale: innerBox numberOfUses);
+		  height: 10;
+		  color: (self colorFromTags: innerBox tag);
+		  border: self highlightManager defaultBoxBorder;
+		  propertyAt: #container put: containerBox;
+		  announcer: innerBoxInteraction announcer;
+		  yourself
 ]
 
 { #category : #hooks }
@@ -217,13 +222,15 @@ MiCoUsageMapBuilder >> labelShapeFor: containerBox [
 
 { #category : #accessing }
 MiCoUsageMapBuilder >> legendTagBuilder [
+
 	^ legendTagBuilder
 ]
 
 { #category : #accessing }
-MiCoUsageMapBuilder >> legendTagBuilder: aMiCoTagLegendBuilder [ 
+MiCoUsageMapBuilder >> legendTagBuilder: aMiCoTagLegendBuilder [
+
 	legendTagBuilder := aMiCoTagLegendBuilder.
-	legendTagBuilder mapBuilder: self.
+	legendTagBuilder mapBuilder: self
 ]
 
 { #category : #accessing }
@@ -251,7 +258,7 @@ MiCoUsageMapBuilder >> release [
 { #category : #rendering }
 MiCoUsageMapBuilder >> renderIn: aCanvas [
 
-	shapes := self specModel containerBoxes collect: [ :containerEntity |
+	shapes := specModel containerBoxes collect: [ :containerEntity |
 		          self containerBoxShapeFor: containerEntity ].
 	aCanvas addAll: shapes.
 
@@ -294,7 +301,7 @@ MiCoUsageMapBuilder >> resizeLabelIfNecessary: label [
 { #category : #accessing }
 MiCoUsageMapBuilder >> selectedInnerEntity [
 
-	^ visualization selectedInnerEntity
+	^ specModel selectedEntity
 ]
 
 { #category : #accessing }
@@ -311,46 +318,38 @@ MiCoUsageMapBuilder >> selectedInnerShape [
 { #category : #accessing }
 MiCoUsageMapBuilder >> selectedInnerShape: anInnerShape [
 
-	^ visualization selectedInnerEntity:
+	^ specModel selectedEntity:
 		  (anInnerShape ifNotNil: [ anInnerShape model mooseEntity ])
 ]
 
 { #category : #accessing }
 MiCoUsageMapBuilder >> settings [
-self shouldNotImplement .
-	^visualization settings
-]
 
-{ #category : #testing }
-MiCoUsageMapBuilder >> shouldUseProgressBar [
-	^ true
+	self shouldNotImplement.
+	^ specModel settings
 ]
 
 { #category : #public }
 MiCoUsageMapBuilder >> sortShapes [
-	| block children tBlock |
-	block := self specModel outerBoxSortBlockCompiled.
-	tBlock := [ :a :b | block value: a model value: b model ].
-	children := self canvas children.
-	[ children sort: tBlock ]
-	onErrorDo: [ :ex | 
-		block := self specModel defaultSortBlock.
-		children sort: tBlock ].
-	block := self specModel innerBoxSortBlockCompiled.
-	children do: [ :node |
-		tBlock := [ :a :b | 
-			block value: a model value: b model value: node model ].
-		[ node innerBoxShapes sort: tBlock  ]
-		onErrorDo: [ :ex |
-			block := self specModel defaultInnerSortBlock.
-			node innerBoxShapes sort: tBlock ]
-	]
 
+	| containerBoxes |
+	containerBoxes := self canvas children.
+	specModel sortContainerBoxes: containerBoxes.
+
+	containerBoxes do: [ :containerBox |
+		specModel sortInnerShapes: containerBox ]
 ]
 
 { #category : #accessing }
 MiCoUsageMapBuilder >> specModel [
-	^visualization specModel
+
+	^ specModel
+]
+
+{ #category : #accessing }
+MiCoUsageMapBuilder >> specModel: aSpecModel [
+
+	specModel := aSpecModel
 ]
 
 { #category : #accessing }
@@ -360,7 +359,8 @@ MiCoUsageMapBuilder >> tagNamed: aString [
 
 { #category : #accessing }
 MiCoUsageMapBuilder >> tags [
-	^self specModel tagList
+
+	^ specModel tagList
 ]
 
 { #category : #public }
@@ -371,19 +371,6 @@ MiCoUsageMapBuilder >> updateBoxColor: aMiCoBox fromTags: tags [
 		do: [ :shape | shape color: tagColor ].
 	self canvas signalUpdate.
 
-]
-
-{ #category : #update }
-MiCoUsageMapBuilder >> updateChildren [
-	| canvas |
-	canvas := self canvas.
-	canvas nodes copy do: #remove.
-	self initializeValues.
-	shapes := self containerBoxes collect: [ :met | self containerBoxShapeFor: met ].
-	canvas addAll: shapes.
-	self sortShapes.
-	self applyLayout.
-	canvas signalUpdate.
 ]
 
 { #category : #update }
@@ -419,9 +406,8 @@ MiCoUsageMapBuilder >> updateInnerBoxSize [
 { #category : #update }
 MiCoUsageMapBuilder >> updateLegend [
 
-	legendTagBuilder removeOldLegend.
 	legendTagBuilder build.
-	self updateShapeColors.
+	self updateShapeColors
 ]
 
 { #category : #update }
@@ -447,15 +433,4 @@ MiCoUsageMapBuilder >> updateShapeLayout [
 		child adjustToChildren ].
 	self applyLayout.
 	self canvas signalUpdate.
-]
-
-{ #category : #accessing }
-MiCoUsageMapBuilder >> visualization [
-	^ visualization
-]
-
-{ #category : #accessing }
-MiCoUsageMapBuilder >> visualization: aMiCoUsageMapVisualization [
-
-	visualization := aMiCoUsageMapVisualization.
 ]

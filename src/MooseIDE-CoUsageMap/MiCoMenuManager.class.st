@@ -37,13 +37,7 @@ MiCoMenuManager >> createGlobalMenuOn: menu [
 			selector: #automaticColor
 			argumentList: #())
 		icon: (self iconNamed: #smallPaint).
-	menu addLine.
-	(menu
-		add: 'Settings'
-			target: mapBuilder visualization
-			selector: #openSettings
-			argumentList: #())
-		icon: (self iconNamed: #configuration)
+
 	
 ]
 

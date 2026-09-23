@@ -68,11 +68,21 @@ MiTagBrowserModel >> createDynamicTag: name description: aText color: aColor cat
 MiTagBrowserModel >> createTag: name description: aText color: aColor category: aCategory [
 
 	| newTag |
+	(self mooseModel allTags anySatisfy: [ :tag | tag name = name ])
+		ifTrue: [ ^ nil ].
 	newTag := self addTag: name.
-	self setTag: newTag description: aText color: aColor category: aCategory.
+	self
+		setTag: newTag
+		description: aText
+		color: aColor
+		category: aCategory.
+
+	self currentTag: newTag.
 
 	browser refreshTagList.
-	self currentApplication consumeItem: newTag
+	self currentApplication consumeItem: newTag.
+
+	^ newTag
 ]
 
 { #category : #accessing }
@@ -110,9 +120,14 @@ MiTagBrowserModel >> deleteCurrentTag [
 
 	| tag |
 	tag := currentTag.
+
+	MiApplication current removeItem: tag.
+	browser hideDescriptionPage.
+
 	tag isIntent ifTrue: [ 
 		dynamicTags remove: tag.
-		^ tag ]. tag remove.
+		^ tag ].
+	tag remove.
 	tag categories ifNotEmpty: [ tag categories first removeTag: tag ].
 	self currentTag: nil.
 	^ tag
@@ -131,14 +146,29 @@ MiTagBrowserModel >> editCurrentDynamicTag: name description: description color:
 	tag := self currentTag.
 	tag ifNil: [ ^ self ].
 
-	(name isNil or: [ name isEmpty ]) ifTrue: [ ^ self ].
+	name isEmptyOrNil ifTrue: [ ^ self ].
 
 	tag name: name.
-	self setTag: tag description: description color: color category: category.
+	self
+		setTag: tag
+		description: description
+		color: color
+		category: category.
 	tag query: query.
 
 	browser refreshTagList.
-	browser refreshDescriptionPage .
+	browser refreshDescriptionPage.
+	self currentApplication updateItem: tag
+]
+
+{ #category : #actions }
+MiTagBrowserModel >> editCurrentTag [
+
+	| tag |
+	tag := self currentTag.
+	browser editTag: tag.
+	browser refreshTagList.
+	browser refreshDescriptionPage.
 	self currentApplication updateItem: tag
 ]
 
@@ -149,16 +179,20 @@ MiTagBrowserModel >> editCurrentTag: name description: description color: color 
 	tag := self currentTag.
 	tag ifNil: [ ^ self ].
 
-	(name isNil or: [ name isEmpty ]) ifTrue: [ ^ self ].
+	name isEmptyOrNil ifTrue: [ ^ self ].
 
 	tag name: name.
-	tag categories ifNotEmpty: [ tag removeCategory: tag categories anyOne ].
-	self setTag: tag description: description color: color category: category.
+	tag categories ifNotEmpty: [
+		tag removeCategory: tag categories anyOne ].
+	self
+		setTag: tag
+		description: description
+		color: color
+		category: category.
 
-	browser refreshTagList .
-	browser refreshDescriptionPage .
-	self currentApplication updateItem: tag.
-
+	browser refreshTagList.
+	browser refreshDescriptionPage.
+	self currentApplication updateItem: tag
 ]
 
 { #category : #accessing }
@@ -170,7 +204,11 @@ MiTagBrowserModel >> entities [
 { #category : #accessing }
 MiTagBrowserModel >> entities: anObject [
 
-	entities := anObject
+	entities := anObject.
+	self mooseModel
+		ifNil: [ browser showNoMooseModel ]
+		ifNotNil: [ browser refreshDescriptionPage ].
+	browser tagManagementPage refresh
 ]
 
 { #category : #accessing }
@@ -224,6 +262,12 @@ MiTagBrowserModel >> setTag: newTag description: aText color: aColor category: a
 	aCategory ifNotNil: [
 		aCategory addTag: newTag.
 		newTag addCategory: aCategory ]
+]
+
+{ #category : #initialization }
+MiTagBrowserModel >> setTagTo: aTag [
+
+	browser setTagTo: aTag.
 ]
 
 { #category : #accessing }

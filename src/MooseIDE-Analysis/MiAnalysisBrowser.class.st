@@ -23,14 +23,14 @@ MiAnalysisBrowser class >> duplicationAnalysis [
 	duplicationTag := FamixTag named: 'Duplication'.
 
 	queryBrowser := MiQueriesBrowser new.
-	queryBrowser followBus: MiApplication current defaultBus.
+	queryBrowser followBus: self currentApplication defaultBus.
 	queryBrowser queriesListPresenter constructQueries:
 		{ (FQTypeQuery types: { FamixTMethod }) }.
 
 	duplicationBrowser := MiDuplicationBrowser new.
-	duplicationBrowser followBus: MiApplication current defaultBus.
-	duplicationBrowser resetReplicas.
-	duplicationBrowser model findReplicas.
+	duplicationBrowser followBus: self currentApplication defaultBus.
+	duplicationBrowser resetDisplayedReplicas.
+	duplicationBrowser specModel findReplicas.
 	duplicationBrowser selectedTag: duplicationTag.
 	duplicationBrowser tagSelectedEntities.
 
@@ -76,15 +76,15 @@ MiAnalysisBrowser class >> openDuplicationAnalysis [
 ]
 
 { #category : #specs }
-MiAnalysisBrowser class >> title [
+MiAnalysisBrowser class >> preferredExtent [
 
-	^ 'Moose Analysis'
+	^ 700 @ 500
 ]
 
 { #category : #specs }
-MiAnalysisBrowser class >> windowSize [
+MiAnalysisBrowser class >> title [
 
-	^ 700 @ 500
+	^ 'Moose Analysis'
 ]
 
 { #category : #initialization }
@@ -121,6 +121,12 @@ MiAnalysisBrowser >> defaultLayout [
 		  add: browsersListPresenter;
 		  add: (browserLayout := self newBoxLayoutTopToBottom);
 		  yourself
+]
+
+{ #category : #testing }
+MiAnalysisBrowser >> hasSettings [
+
+	^ false
 ]
 
 { #category : #accessing }

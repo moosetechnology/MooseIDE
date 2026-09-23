@@ -4,7 +4,7 @@ Class {
 	#category : #'MooseIDE-ButterflyMap-Menu'
 }
 
-{ #category : #accessing }
+{ #category : #execution }
 MiButterflyAddLevelMenuItem >> execute [
 
 	visualization addLevel
