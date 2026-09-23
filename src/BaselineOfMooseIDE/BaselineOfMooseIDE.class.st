@@ -1,10 +1,11 @@
 Class {
-	#name : #BaselineOfMooseIDE,
-	#superclass : #BaselineOf,
-	#category : #BaselineOfMooseIDE
+	#name : 'BaselineOfMooseIDE',
+	#superclass : 'BaselineOf',
+	#category : 'BaselineOfMooseIDE',
+	#package : 'BaselineOfMooseIDE'
 }
 
-{ #category : #baselines }
+{ #category : 'baselines' }
 BaselineOfMooseIDE >> baseline: spec [
 
 	<baseline>
@@ -20,7 +21,7 @@ BaselineOfMooseIDE >> baseline: spec [
 			spec postLoadDoIt: #registerCustomTools ]
 ]
 
-{ #category : #dependencies }
+{ #category : 'dependencies' }
 BaselineOfMooseIDE >> classBlueprint: spec [
 
 	spec
@@ -29,7 +30,7 @@ BaselineOfMooseIDE >> classBlueprint: spec [
 		spec repository: 'github://moosetechnology/ClassBlueprint:v2.2.4/src' ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 BaselineOfMooseIDE >> customProjectAttributes [
 
 	'BaselineOfFamix' asPackageIfAbsent: [ ^ #( #NoFamix ) ].
@@ -37,7 +38,7 @@ BaselineOfMooseIDE >> customProjectAttributes [
 
 ]
 
-{ #category : #dependencies }
+{ #category : 'dependencies' }
 BaselineOfMooseIDE >> defineDependencies: spec [
 
 	self labelContractor: spec.
@@ -50,7 +51,7 @@ BaselineOfMooseIDE >> defineDependencies: spec [
 	spec for: #WithFamix do: [ self famixQueries: spec ]
 ]
 
-{ #category : #groups }
+{ #category : 'groups' }
 BaselineOfMooseIDE >> defineGroups: spec [
 
 	spec
@@ -62,7 +63,7 @@ BaselineOfMooseIDE >> defineGroups: spec [
 		with: #( 'MooseIDE-BulkEditor' )
 ]
 
-{ #category : #packages }
+{ #category : 'packages' }
 BaselineOfMooseIDE >> defineMooseCriticsPackages: spec [
 
 	spec
@@ -76,7 +77,7 @@ BaselineOfMooseIDE >> defineMooseCriticsPackages: spec [
 		package: 'Famix-CriticBrowser-Tests' with: [ spec requires: 'Famix-CriticBrowser-Entities' ]
 ]
 
-{ #category : #dependencies }
+{ #category : 'dependencies' }
 BaselineOfMooseIDE >> defineMooseDependencies: spec [
 
 	self famix: spec.
@@ -85,7 +86,7 @@ BaselineOfMooseIDE >> defineMooseDependencies: spec [
 	self famixQueries: spec
 ]
 
-{ #category : #packages }
+{ #category : 'packages' }
 BaselineOfMooseIDE >> definePackages: spec [
 
 	spec
@@ -130,7 +131,7 @@ BaselineOfMooseIDE >> definePackages: spec [
 	self defineMooseCriticsPackages: spec
 ]
 
-{ #category : #packages }
+{ #category : 'packages' }
 BaselineOfMooseIDE >> definePackagesWhenNoFamix: spec [
 
 	spec
@@ -143,7 +144,7 @@ BaselineOfMooseIDE >> definePackagesWhenNoFamix: spec [
 		package: 'Famix-CriticBrowser-Generator' with: [ spec requires: 'Famix' ]
 ]
 
-{ #category : #dependencies }
+{ #category : 'dependencies' }
 BaselineOfMooseIDE >> famix: spec [
 
 	spec
@@ -152,16 +153,16 @@ BaselineOfMooseIDE >> famix: spec [
 		spec repository: 'github://moosetechnology/Famix:v1.1.2/src' ]
 ]
 
-{ #category : #dependencies }
+{ #category : 'dependencies' }
 BaselineOfMooseIDE >> famixQueries: spec [
 
 	spec
 		baseline: 'FamixQueries'
 		with: [
-		spec repository: 'github://moosetechnology/FamixQueries:v1.0.3' ]
+		spec repository: 'github://moosetechnology/FamixQueries:v1.0.4' ]
 ]
 
-{ #category : #dependencies }
+{ #category : 'dependencies' }
 BaselineOfMooseIDE >> famixReplication: spec [
 
 	spec
@@ -170,16 +171,16 @@ BaselineOfMooseIDE >> famixReplication: spec [
 		spec repository: 'github://moosetechnology/FamixReplication:v1.1.5' ]
 ]
 
-{ #category : #dependencies }
+{ #category : 'dependencies' }
 BaselineOfMooseIDE >> famixTagging: spec [
 
 	spec
 		baseline: 'FamixTagging'
 		with: [
-		spec repository: 'github://moosetechnology/FamixTagging:v1.3.7/src' ]
+		spec repository: 'github://moosetechnology/FamixTagging:v1.3.8/src' ]
 ]
 
-{ #category : #dependencies }
+{ #category : 'dependencies' }
 BaselineOfMooseIDE >> hierarchicalVisualizations: spec [
 
 	spec baseline: 'HierarchicalVisualizations' with: [
@@ -187,7 +188,7 @@ BaselineOfMooseIDE >> hierarchicalVisualizations: spec [
 			'github://moosetechnology/HierarchicalVisualizations:moose12/src' ]
 ]
 
-{ #category : #dependencies }
+{ #category : 'dependencies' }
 BaselineOfMooseIDE >> interactiveNotebook: spec [
 
 	spec
@@ -196,7 +197,7 @@ BaselineOfMooseIDE >> interactiveNotebook: spec [
 		spec repository: 'github://moosetechnology/InteractiveNotebook/src' ]
 ]
 
-{ #category : #dependencies }
+{ #category : 'dependencies' }
 BaselineOfMooseIDE >> labelContractor: spec [
 
 	spec
@@ -205,7 +206,7 @@ BaselineOfMooseIDE >> labelContractor: spec [
 		spec repository: 'github://moosetechnology/LabelContractor/src' ]
 ]
 
-{ #category : #dependencies }
+{ #category : 'dependencies' }
 BaselineOfMooseIDE >> microdown: spec [
 
 	spec for: #( #'pharo11.x' #'pharo10.x' ) do: [
@@ -221,7 +222,7 @@ BaselineOfMooseIDE >> microdown: spec [
 			spec repository: 'github://pillar-markup/Microdown:Pharo12/src' ] ]
 ]
 
-{ #category : #dependencies }
+{ #category : 'dependencies' }
 BaselineOfMooseIDE >> pharoAIHierachicalClustering: spec [
 
 	spec
@@ -230,7 +231,7 @@ BaselineOfMooseIDE >> pharoAIHierachicalClustering: spec [
 		spec repository: 'github://pharo-ai/hierarchical-clustering/src' ]
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 BaselineOfMooseIDE >> registerCustomTools [
 
 	self registerShortcuts. "MiPlayground could be absent if we load only a group"
@@ -239,7 +240,7 @@ BaselineOfMooseIDE >> registerCustomTools [
 	Smalltalk at: #MooseIDEWelcomeBrowser ifPresent: [ :mooseWelcome | mooseWelcome register ]
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 BaselineOfMooseIDE >> registerShortcuts [
 
 	(Smalltalk classNamed: #MiShortcutsCategory) ifNotNil: [
@@ -247,7 +248,7 @@ BaselineOfMooseIDE >> registerShortcuts [
 		miShortcutsCategory new installAsGlobalCategory ]
 ]
 
-{ #category : #dependencies }
+{ #category : 'dependencies' }
 BaselineOfMooseIDE >> roassalExporters: spec [
 
 	spec
