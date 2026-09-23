@@ -28,6 +28,12 @@ Class {
 	#category : #'MooseIDE-Export-Notebook'
 }
 
+{ #category : #accessing }
+MiNotebookBrowser class >> defaultPreferredExtent [
+
+	^ 1083 @ 697
+]
+
 { #category : #'world menu' }
 MiNotebookBrowser class >> menuCommandOn: aBuilder [
 
@@ -66,12 +72,6 @@ MiNotebookBrowser class >> open [
 MiNotebookBrowser class >> title [
 
 	^ 'Notebook'
-]
-
-{ #category : #specs }
-MiNotebookBrowser class >> windowSize [
-
-	^ 1083 @ 697
 ]
 
 { #category : #testing }

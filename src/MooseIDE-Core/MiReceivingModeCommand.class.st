@@ -31,7 +31,7 @@ MiReceivingModeCommand >> asSpecCommand [
 MiReceivingModeCommand >> execute [
 
 	self context receivingMode: self receivingMode.
-	self context window updateReceivingModeButtons
+	self context updateReceivingModeButtons
 ]
 
 { #category : #accessing }

@@ -13,11 +13,17 @@ MiPropertyQueryPresenterTest class >> isAbstract [
 MiPropertyQueryPresenterTest >> assertPropertiesDropList [
 
 	self
-		assert: presenter propertyDropList class
+		assert: self propertyDropList class
 		identicalTo: SpDropListPresenter.
 	self
-		assertCollection: presenter propertyDropList listItems
-		hasSameElements: presenter query availableProperties.
+		assertCollection: self propertyDropList listItems
+		hasSameElements: presenter query availableProperties
+]
+
+{ #category : #'accessing-subpresenters' }
+MiPropertyQueryPresenterTest >> propertyDropList [
+
+	^ presenter presenterAt: #propertyDropList
 ]
 
 { #category : #running }
@@ -28,10 +34,10 @@ MiPropertyQueryPresenterTest >> queryClass [
 { #category : #tests }
 MiPropertyQueryPresenterTest >> testMatchesQuery [
 
-	presenter propertyDropList selectIndex: 2.
+	self propertyDropList selectIndex: 2.
 	self
 		assert: presenter query property
-		equals: presenter propertyDropList selectedItem
+		equals: self propertyDropList selectedItem
 ]
 
 { #category : #tests }
@@ -39,7 +45,7 @@ MiPropertyQueryPresenterTest >> testNoAvailableProperties [
 
 	self resetPresenterWithEntities: helper noEntities.
 	self
-		assert: presenter propertyDropList class
+		assert: self propertyDropList class
 		identicalTo: NoPossibleQueryPresenter
 ]
 
@@ -55,7 +61,7 @@ MiPropertyQueryPresenterTest >> testPresentersOnImpossibleQuery [
 	self resetPresenterWithEntities: helper noEntities.
 
 	self
-		assert: presenter propertyDropList class
+		assert: self propertyDropList class
 		identicalTo: NoPossibleQueryPresenter
 ]
 
@@ -63,14 +69,14 @@ MiPropertyQueryPresenterTest >> testPresentersOnImpossibleQuery [
 MiPropertyQueryPresenterTest >> testQueryMatchesOwnerQuery [
 
 	self assert: presenter query equals: presenter owner query.
-	presenter propertyDropList selectIndex: 2.
+	self propertyDropList selectIndex: 2.
 	self assert: presenter query equals: presenter owner query
 ]
 
 { #category : #tests }
 MiPropertyQueryPresenterTest >> testUpdateDoesNotChangeOwnerPresenter [
 
-	presenter propertyDropList selectIndex: 2.
+	self propertyDropList selectIndex: 2.
 	self
 		assert: presenter owner queryConfiguratorPresenter
 		identicalTo: presenter

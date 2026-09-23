@@ -3,48 +3,27 @@ Class {
 	#superclass : #MiAbstractModel,
 	#instVars : [
 		'currentEntity',
-		'childrenBlock',
 		'childrenQuery',
-		'leftEntitiesQuery',
-		'leftEntitiesBlock',
-		'rightEntitiesQuery',
-		'rightEntitiesBlock',
-		'settings',
-		'defaultChildrenQuery',
-		'defaultLeftEntitiesQuery',
-		'defaultRightEntitiesQuery'
+		'clientsQuery',
+		'providersQuery'
 	],
 	#category : #'MooseIDE-ButterflyMap-Model'
 }
 
-{ #category : #accessing }
-MiButterflyMapModel >> allPossibleQueries [
-
-	^ (self browser itemsFor: FQAbstractQuery) as: OrderedCollection
-]
-
-{ #category : #accessing }
-MiButterflyMapModel >> childrenBlock [
-
-	^ childrenBlock
-]
-
-{ #category : #accessing }
-MiButterflyMapModel >> childrenBlock: anObject [
-
-	childrenBlock := anObject
-]
-
-{ #category : #accessing }
+{ #category : #computing }
 MiButterflyMapModel >> childrenFor: anEntity [
 
-	^ self getChildrenQuery runOn: anEntity asMooseGroup
+	^ childrenQuery runOn: anEntity asMooseGroup
 ]
 
-{ #category : #accessing }
-MiButterflyMapModel >> childrenQuery [
+{ #category : #'settings management' }
+MiButterflyMapModel >> currentConfiguration [
 
-	^ #childrenQuery
+	^ MiButterflyMapSettingsConfiguration new
+		  childrenQuery: childrenQuery;
+		  clientsQuery: clientsQuery;
+		  providersQuery: providersQuery;
+		  yourself
 ]
 
 { #category : #accessing }
@@ -60,28 +39,14 @@ MiButterflyMapModel >> currentEntity: anObject [
 	browser runVisualization
 ]
 
-{ #category : #accessing }
-MiButterflyMapModel >> defaultChildrenQuery [
+{ #category : #'settings management' }
+MiButterflyMapModel >> defaultConfiguration [
 
-	^ defaultChildrenQuery ifNil: [ 
-		  defaultChildrenQuery := FQCollectScriptQuery new script: [ :each | 
-			                          each children ] ]
-]
-
-{ #category : #accessing }
-MiButterflyMapModel >> defaultLeftEntitiesQuery [
-
-	^ defaultLeftEntitiesQuery ifNil: [ 
-		  defaultLeftEntitiesQuery := FQCollectScriptQuery script: [ :entity | 
-			                              entity allClients ] ]
-]
-
-{ #category : #accessing }
-MiButterflyMapModel >> defaultRightEntitiesQuery [
-
-	^ defaultRightEntitiesQuery ifNil: [ 
-		  defaultRightEntitiesQuery := FQCollectScriptQuery script: [ 
-			                               :entity | entity allProviders ] ]
+	^ MiButterflyMapSettingsConfiguration new
+		  childrenQuery: self defaultChildrenQuery;
+		  clientsQuery: self currentApplication defaultClientsQuery;
+		  providersQuery: self currentApplication defaultProvidersQuery;
+		  yourself
 ]
 
 { #category : #accessing }
@@ -92,114 +57,50 @@ MiButterflyMapModel >> entities [
 		ifNotNil: [ :entity | { entity } ]
 ]
 
-{ #category : #accessing }
-MiButterflyMapModel >> getChildrenQuery [
+{ #category : #testing }
+MiButterflyMapModel >> hasSettings [
 
-	^ settings getItemValue: self childrenQuery
+	^ true
 ]
 
-{ #category : #actions }
-MiButterflyMapModel >> getLeftEntitiesQuery [
-
-	^ settings getItemValue: self leftEntitiesQuery
-]
-
-{ #category : #actions }
-MiButterflyMapModel >> getRightEntitiesQuery [
-
-	^ settings getItemValue: self rightEntitiesQuery
-]
-
-{ #category : #accessing }
+{ #category : #initialization }
 MiButterflyMapModel >> initializeSettings [
 
-	settings := super initializeSettings
-		            addItem: self itemChildrenQuery
-		            named: self childrenQuery;
-		            addItem: self itemLeftEntitiesQuery
-		            named: self leftEntitiesQuery;
-		            addItem: self itemRightEntitiesQuery
-		            named: self rightEntitiesQuery;
-		            yourself
+	childrenQuery := self defaultChildrenQuery.
+	clientsQuery := self currentApplication defaultClientsQuery.
+	providersQuery := self currentApplication defaultProvidersQuery
 ]
 
-{ #category : #accessing }
-MiButterflyMapModel >> itemChildrenQuery [
-
-	^ MiAbstractSettingItem droplistSetting
-		  possibleValues:
-			  { self defaultChildrenQuery } , self allPossibleQueries;
-		  setValue: self defaultChildrenQuery;
-		  label: 'Node children query';
-		  help:
-			  'The query computing children for each node in order to get inner elements.';
-		  yourself
-]
-
-{ #category : #accessing }
-MiButterflyMapModel >> itemLeftEntitiesQuery [
-
-	^ MiAbstractSettingItem droplistSetting
-		  possibleValues:
-			  { self defaultLeftEntitiesQuery} , self allPossibleQueries;
-		  setValue: self defaultLeftEntitiesQuery;
-		  label: 'Left entities query';
-		  help:
-			  'The query computing left entities from the central entity.';
-		  yourself
-]
-
-{ #category : #accessing }
-MiButterflyMapModel >> itemRightEntitiesQuery [
-
-	^ MiAbstractSettingItem droplistSetting
-		  possibleValues:
-			  { self defaultRightEntitiesQuery } , self allPossibleQueries;
-		  setValue: self defaultRightEntitiesQuery;
-		  label: 'Right entities query';
-		  help:
-			  'The query computing right entities from the central entity.';
-		  yourself
-]
-
-{ #category : #accessing }
+{ #category : #computing }
 MiButterflyMapModel >> leftEntitiesFor: anEntity [
 
-	^ self getLeftEntitiesQuery runOn: anEntity asMooseGroup
-]
-
-{ #category : #accessing }
-MiButterflyMapModel >> leftEntitiesQuery [
-
-	^ #leftEntitiesQuery
+	^ clientsQuery runOn: anEntity asMooseGroup
 ]
 
 { #category : #accessing }
 MiButterflyMapModel >> miSelectedItem [
 
-	^self entities
+	^ self entities
 ]
 
-{ #category : #accessing }
+{ #category : #computing }
 MiButterflyMapModel >> rightEntitiesFor: anEntity [
 
-	^ self getRightEntitiesQuery runOn: anEntity asMooseGroup
+	^ providersQuery runOn: anEntity asMooseGroup
 ]
 
-{ #category : #accessing }
-MiButterflyMapModel >> rightEntitiesQuery [
+{ #category : #'settings management' }
+MiButterflyMapModel >> settingsPresenterExtent [
 
-	^ #rightEntitiesQuery
+	^ 300 @ 250
 ]
 
-{ #category : #accessing }
-MiButterflyMapModel >> settings [
+{ #category : #'settings management' }
+MiButterflyMapModel >> updateFromConfiguration: aConfiguration [
 
-	^ settings
-]
+	childrenQuery := aConfiguration childrenQuery.
+	clientsQuery := aConfiguration clientsQuery.
+	providersQuery := aConfiguration providersQuery.
 
-{ #category : #accessing }
-MiButterflyMapModel >> settingsChanged: aBoolean [
-
-	aBoolean ifTrue: [ browser runVisualization ]
+	browser runVisualization
 ]

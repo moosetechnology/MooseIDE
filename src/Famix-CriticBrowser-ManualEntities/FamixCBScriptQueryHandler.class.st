@@ -15,5 +15,5 @@ FamixCBScriptQueryHandler class >> on: aString [
 { #category : #converting }
 FamixCBScriptQueryHandler >> asRuleEditorString [
 
-	^ innerQuery script asString
+	^ innerQuery script sourceNode sourceCode
 ]

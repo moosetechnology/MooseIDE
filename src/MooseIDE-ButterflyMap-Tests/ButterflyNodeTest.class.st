@@ -20,13 +20,13 @@ ButterflyNodeTest >> setUp [
 	super setUp.
 	randomGenerator := Random seed: 4815162342.
 	butterflyNode := ButterflyNode new
-		             entity: Mock new;
-		             yourself.
-	butterflyNode childrenBlock: [ :e | 
-		| children |
-		children := OrderedCollection new.
-		self randomNumber timesRepeat: [ children add: Mock new ].
-		children ]
+		                 entity: Mock new;
+		                 yourself.
+	butterflyNode childrenBlock: [ :e |
+			| children |
+			children := OrderedCollection new.
+			self randomNumber timesRepeat: [ children add: Mock new ].
+			children ]
 ]
 
 { #category : #tests }

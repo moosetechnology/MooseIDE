@@ -14,11 +14,15 @@ Class {
 	#category : #'MooseIDE-LayerVisualization-Presenters'
 }
 
+{ #category : #accessing }
+MiLayerVisualizationBrowser class >> defaultPreferredExtent [
+
+	^ self currentWorld extent
+]
+
 { #category : #'world menu' }
 MiLayerVisualizationBrowser class >> menuCommandOn: aBuilder [
-
-	<worldMenu>
-	<miBrowsersMenu>
+	
 	^ self buildMenuItemIn: aBuilder
 ]
 
@@ -38,12 +42,6 @@ MiLayerVisualizationBrowser class >> menuPriority [
 MiLayerVisualizationBrowser class >> title [
 
 	^ 'Layer visualization'
-]
-
-{ #category : #specs }
-MiLayerVisualizationBrowser class >> windowSize [
-
-	^ self currentWorld extent
 ]
 
 { #category : #testing }
@@ -76,6 +74,12 @@ MiLayerVisualizationBrowser >> followEntity: anEntity [
 		             browser: self;
 		             yourself.
 	specModel followEntity: anEntity
+]
+
+{ #category : #testing }
+MiLayerVisualizationBrowser >> hasSettings [
+
+	^ false
 ]
 
 { #category : #initialization }

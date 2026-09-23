@@ -17,12 +17,15 @@ MiSetRootFolderCommand class >> defaultName [
 { #category : #executing }
 MiSetRootFolderCommand >> execute [
 
-	| file |
-	file := UIManager default
-		        chooseExistingFileReference:
-		        'Choose the root folder for the sources of '
-		        , self model name
-		        extensions: #( 'mse' )
-		        path: FileLocator home.
+	| dialog file |
+	dialog := StOpenDirectoryPresenter new
+		          title: 'Choose the root folder for the sources of ' , self model name;
+		          openModal;
+		          yourself.
+
+	file := dialog cancelled
+		        ifTrue: [ nil ]
+		        ifFalse: [ dialog selectedEntry ].
+
 	file ifNotNil: [ :folder | self model rootFolder: folder fullName ]
 ]

@@ -11,8 +11,10 @@ Class {
 	#superclass : #MiAbstractBrowser,
 	#instVars : [
 		'tagManagementPage',
-		'tagCreationForm',
-		'tagEditionForm'
+		'staticTagDescriptionPage',
+		'dynamicTagDescriptionPage',
+		'descriptionPage',
+		'separator'
 	],
 	#category : #'MooseIDE-Tagging-Browser'
 }
@@ -21,6 +23,12 @@ Class {
 MiTagBrowser class >> browserKey [
 
 	^ $t
+]
+
+{ #category : #accessing }
+MiTagBrowser class >> defaultPreferredExtent [
+
+	^ 700 @ 475
 ]
 
 { #category : #'world menu' }
@@ -70,19 +78,13 @@ MiTagBrowser class >> title [
 	^ 'Tag browser'
 ]
 
-{ #category : #specs }
-MiTagBrowser class >> windowSize [
-
-	^ 700 @ 475
-]
-
 { #category : #initialization }
 MiTagBrowser >> browserClosed [
 
 	super browserClosed.
+
 	application unregisterProducer: self.
-	application unregisterConsumer: self.
-	application unregisterConsumer: tagCreationForm
+	application unregisterConsumer: self
 ]
 
 { #category : #testing }
@@ -98,19 +100,6 @@ MiTagBrowser >> canTagEntities [
 	^false
 ]
 
-{ #category : #initialization }
-MiTagBrowser >> closeTagCreationForm [
-
-	self layout child: tagManagementPage.
-	self updateToolbar
-]
-
-{ #category : #initialization }
-MiTagBrowser >> closeTagEditionForm [
-
-	self layout child: tagManagementPage
-]
-
 { #category : #testing }
 MiTagBrowser >> consume: anObject [
 	anObject class = FamixTag ifTrue: [ 
@@ -122,20 +111,57 @@ MiTagBrowser >> consume: anObject [
 			ifTrue: [ tagManagementPage refreshTaggedEntitiesList ] ]
 ]
 
+{ #category : #initialization }
+MiTagBrowser >> createTag [
+	"returning the MiTagCreationForm allows to test it"
+
+	^MiTagCreationForm new 
+		tagBrowser: self ;
+		open ;
+		yourself
+]
+
 { #category : #accessing }
 MiTagBrowser >> descriptionPage [
 
-	^ tagManagementPage descriptionPage
+	^descriptionPage
+]
+
+{ #category : #initialization }
+MiTagBrowser >> editCurrentTag [
+	"returning the MiTagCreationForm allows to test it"
+
+	^MiTagEditionForm new 
+		tagBrowser: self ;
+		open ;
+		yourself
+]
+
+{ #category : #initialization }
+MiTagBrowser >> editTag: aTag [
+	"returning the MiTagCreationForm allows to test it"
+
+	^MiTagEditionForm new 
+		tagBrowser: self ;
+		fillFormWithTag: aTag ;
+		open ;
+		yourself
 ]
 
 { #category : #actions }
 MiTagBrowser >> followEntity: anEntity [
 
+	super followEntity: anEntity.
 	specModel entities: anEntity asMooseGroup.
 	specModel mooseModel
-		ifNil: [ self showNoMooseModel ]
-		ifNotNil: [ self closeTagCreationForm ].
+		ifNil: [ self showNoMooseModel ].
 	tagManagementPage refresh
+]
+
+{ #category : #refreshing }
+MiTagBrowser >> hideDescriptionPage [
+
+	descriptionPage hide
 ]
 
 { #category : #initialization }
@@ -146,14 +172,21 @@ MiTagBrowser >> initialize [
 	application registerProducer: self for: FamixTag.
 	application registerConsumer: self for: FamixTag.
 	application registerConsumer: self for: FamixTagAssociation.
-	application registerConsumer: tagCreationForm for: FQAbstractQuery
 ]
 
 { #category : #initialization }
 MiTagBrowser >> initializeLayout [
 
-	self layout: (SpScrollableLayout with: tagManagementPage).
-	"At start browser has no moose model"
+	| sep |
+	sep := self separator.
+
+	self layout: (SpBoxLayout newLeftToRight
+			 spacing: 4;
+			 add: tagManagementPage width: 200;
+			 add: sep width: 2;
+			 add: descriptionPage;
+			 yourself).
+
 	self showNoMooseModel
 	
 ]
@@ -161,9 +194,20 @@ MiTagBrowser >> initializeLayout [
 { #category : #initialization }
 MiTagBrowser >> initializePresenters [
 
-	tagCreationForm := self instantiate: MiTagCreationForm on: specModel.
+	separator := SpRoassalPresenter new.
+	separator canvas
+		color: (Color
+			r: 40
+			g: 40
+			b: 40
+			range: 255) translucent.
+
 	tagManagementPage := MiTagManagementPage newApplication: self application owner: self model: specModel.
-	tagEditionForm := self instantiate: MiTagEditionForm on: specModel. 
+
+	staticTagDescriptionPage := self instantiate: MiTagExtentPage.
+	dynamicTagDescriptionPage := self instantiate: MiTagIntentPage.
+	descriptionPage := staticTagDescriptionPage.
+
 	self initializeLayout
 ]
 
@@ -188,29 +232,23 @@ MiTagBrowser >> newTagSelected [
 ]
 
 { #category : #initialization }
-MiTagBrowser >> openTagCreationForm [
+MiTagBrowser >> preparePageFor: aTag [
 
-	tagCreationForm
-		reset;
-		updateCategories.
-	self layout child: tagCreationForm
-]
+	aTag isIntent ifTrue: [
+			self layout replace: descriptionPage with: dynamicTagDescriptionPage.
+			descriptionPage := dynamicTagDescriptionPage.
+			^ self ].
 
-{ #category : #initialization }
-MiTagBrowser >> openTagEditionForm [
+	self layout replace: descriptionPage with: staticTagDescriptionPage.
 
-	tagEditionForm
-		reset;
-		updateCategories.
-	self layout child: tagEditionForm.
-	tagEditionForm fillWithCurrentTag.
-	tagEditionForm update
+	descriptionPage := staticTagDescriptionPage
 ]
 
 { #category : #accessing }
 MiTagBrowser >> refreshDescriptionPage [
 
-	tagManagementPage refreshDescriptionPage
+	self setRightPart: descriptionPage.
+	descriptionPage refresh
 ]
 
 { #category : #refreshing }
@@ -222,45 +260,62 @@ MiTagBrowser >> refreshTagList [
 { #category : #testing }
 MiTagBrowser >> remove: aTagAssociation [
 
-	tagManagementPage refreshTaggedEntitiesList 
+]
+
+{ #category : #accessing }
+MiTagBrowser >> selectedItems [
+
+	^ staticTagDescriptionPage selectedItems
+]
+
+{ #category : #accessing }
+MiTagBrowser >> separator [
+
+	^separator 
+]
+
+{ #category : #initialization }
+MiTagBrowser >> setRightPart: aSpPresenter [
+	"We need to replace the right part of the window (descriptionPage) with the new presenter
+	 This part is the 3rd presenter in the layout
+	 So if this right part is not the same as aSpPresenter, we remove it and then add the correct one"
+
+	(layout presenters third = aSpPresenter) ifTrue: [ ^self ].
+
+	layout remove: layout presenters third.
+	layout add: aSpPresenter 
+
 ]
 
 { #category : #initialization }
 MiTagBrowser >> setTagTo: aTag [
 
-	self model currentTag: aTag.
+	self specModel currentTag: aTag.
+
+	self preparePageFor: aTag.
+	descriptionPage setTag: aTag.
+	descriptionPage show.
+
+	self refreshDescriptionPage.
 	self updateToolbar
 ]
 
 { #category : #initialization }
 MiTagBrowser >> showNoMooseModel [
 
-	self layout child: (SpPresenter new
-			 layout: (SpBoxLayout newTopToBottom
-					  vAlignCenter;
-					  hAlignCenter;
-					  add: 'No available moose model in selected buses.' asPresenter;
-					  add:
-						  'Propagate entities or moose model on selected buses.'
-							  asPresenter;
-					  yourself);
-			 yourself)
-]
-
-{ #category : #accessing }
-MiTagBrowser >> tagCreationForm [
-
-	^ tagCreationForm
+	self setRightPart: (SpPresenter new
+		layout: (SpBoxLayout newTopToBottom
+			vAlignCenter;
+			hAlignCenter;
+			add: 'No available moose model in selected buses.';
+			add: 'Propagate entities or moose model on selected buses.';
+			yourself);
+		yourself)
 ]
 
 { #category : #accessing }
 MiTagBrowser >> tagManagementPage [
+	"see `MiTagManagementPage` : left part of the browser allowing to create, select, or remove tags"
 
 	^ tagManagementPage
-]
-
-{ #category : #testing }
-MiTagBrowser >> tagModel [
-
-	^ specModel
 ]

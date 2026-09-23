@@ -9,6 +9,7 @@ Class {
 
 { #category : #running }
 MiApplicationTest >> alternativeBusName [
+
 	^ 'TestBus2'
 ]
 
@@ -18,7 +19,7 @@ MiApplicationTest >> busName [
 	^ 'Not the default bus'
 ]
 
-{ #category : #initialization }
+{ #category : #running }
 MiApplicationTest >> setUp [
 
 	  super setUp.
@@ -28,15 +29,16 @@ MiApplicationTest >> setUp [
 
 { #category : #tests }
 MiApplicationTest >> testBusNamed [
+
 	| initialSize newBus |
 	initialSize := self application buses size.
 	newBus := self application busNamed: self alternativeBusName.
-	
+
 	self assert: newBus class identicalTo: MiBus.
 	self assert: (self application buses includes: newBus).
 	self assert: self application buses size equals: initialSize + 1.
-	
-	self application deleteBus: newBus.
+
+	self application deleteBus: newBus
 ]
 
 { #category : #tests }
@@ -75,92 +77,81 @@ MiApplicationTest >> testDeleteBusNamed [
 
 { #category : #'tests dragNDrop' }
 MiApplicationTest >> testHandleJSONDropEvent [
-	"must reset (i.e. remove) MiApplication singleton instance
-	 for MiTestApplication special handling method to be asked to handle the drop"
+
 	| dropped wasHandled |
 	wasHandled := false.
 	dropped := Mock named: 'dropped'.
-	(dropped stub wasHandled) will: [ wasHandled := true].
+	dropped stub wasHandled will: [ wasHandled := true ].
 
-	MiApplication reset.
-	(ExternalDropHandler lookupExternalDropHandler: 'whatever.json' asFileReference)
-		handle: dropped in: nil dropEvent: nil.
+	(ExternalDropHandler lookupExternalDropHandler:
+		 'whatever.json' asFileReference)
+		handle: dropped
+		in: nil
+		dropEvent: nil.
 
-	self assert: wasHandled.
-	
-	"recreate MiApplication instance to go back to normal"
-	MiApplication current
+	self assert: wasHandled
 ]
 
 { #category : #'tests dragNDrop' }
 MiApplicationTest >> testJSONRegisteredHandler [
-	"There should be only 2 handlers: MiApplication & MiTestApplication
-	 
-	Other tests may fail and not unregister their MiTestApplication, so we clean first the
-	registeredHandlers, then we recreate a MiTestApplication and we can perfrom the actual test"
-	
-	ExternalDropHandler registeredHandlers copy do: [ :registeredHandler |
-		(registeredHandler handler class = MiTestApplication)
-		ifTrue: [ ExternalDropHandler registeredHandlers remove: registeredHandler ]
-	].
-	application := MiTestApplication new.
+	"There should be only 1 handler: MiApplication"
 
-	self assert: (ExternalDropHandler registeredHandlers select: [:handler | handler extension = #json]) size equals: 2.
+	| handlers |
+	handlers := ExternalDropHandler registeredHandlers select: [ :handler |
+		            handler extension = #json ].
 
+	self assert: handlers size equals: 1.
+	self assert: handlers anyOne handler equals: application
 ]
 
 { #category : #'tests dragNDrop' }
 MiApplicationTest >> testMSERegisteredHandler [
-	"There should be only 2 handlers: MiApplication & MiTestApplication
-	 
-	Other tests may fail and not unregister their MiTestApplication, so we clean first the
-	registeredHandlers, then we recreate a MiTestApplication and we can perfrom the actual test"
-	
-	ExternalDropHandler registeredHandlers copy do: [ :registeredHandler |
-		(registeredHandler handler class = MiTestApplication)
-		ifTrue: [ ExternalDropHandler registeredHandlers remove: registeredHandler ]
-	].
-	application := MiTestApplication new.
 
-	self assert: (ExternalDropHandler registeredHandlers select: [:handler | handler extension = #mse]) size equals: 2.
+	| handlers |
+	handlers := ExternalDropHandler registeredHandlers select: [ :handler |
+		            handler extension = #mse ].
 
+	self assert: handlers size equals: 1.
+	self assert: handlers anyOne handler equals: application
 ]
 
 { #category : #tests }
 MiApplicationTest >> testMiPropagate [
-	"This test propagate an entity on the defaultBus and checks otherBuses (if there are any) are not changed"
-	| mooseModel defaultBus otherBuses originalMostRecentEntities newMostRecentEntities |
-	
+	"This test propagate an entity on the defaultBus and checks otherBuses are not changed"
+
+	| mooseModel defaultBus otherBuses |
 	mooseModel := MooseModel new.
 	MooseEntity new mooseModel: mooseModel.
-	defaultBus :=  MiApplication current  buses 
-		detect: [ :b | b name = MiApplication defaultBusName ]
-		ifNone: [ self expectedFailures ].
-	otherBuses := MiApplication current  buses reject: [:b | b = defaultBus].
 
-	originalMostRecentEntities := otherBuses collect: [ :b | b logger mostRecentEntity ]. 
-	
+	"MiApplication sets any new bus created as default bus.
+The rationale is: if a user creates a bus, the new bus has priority.
+Here, we thus have to restore the initial default bus as actual default."
+	defaultBus := application defaultBus.
+	otherBuses := { 'bus1'. 'bus2'. 'bus3' } collect: [ :busName |
+		              application busNamed: busName ].
+	application defaultBus: defaultBus.
+
 	mooseModel entities miPropagate.
-	
-	newMostRecentEntities := otherBuses collect: [ :b | b logger mostRecentEntity ]. 	 
-	self assertCollection: originalMostRecentEntities hasSameElements: newMostRecentEntities .
-	
-	self assertCollection:  defaultBus logger mostRecentEntity hasSameElements: mooseModel entities  .
 
-	"Tear down: Removing the entity (as a collection of entities) we propagated on the default bus"
-	defaultBus logger removeLog: ({defaultBus logger mostRecentLog}) .
-	
+	"Default bus has received the entity"
+	self
+		assertCollection: defaultBus logger mostRecentEntity
+		hasSameElements: mooseModel entities.
+
+	"Other buses have not."
+	otherBuses do: [ :b | self assert: b logger mostRecentEntity isNil ]
 ]
 
 { #category : #'tests dragNDrop' }
 MiApplicationTest >> testMooseRootBrowserIsModelImporter [
+
 	| browser |
 	browser := application openCurrentModelsBrowser.
 	self assert: browser class equals: MiModelsBrowser.
 	browser window close
 ]
 
-{ #category : #'tests dragNDrop' }
+{ #category : #tests }
 MiApplicationTest >> testOpenCurrentModelsBrowser [
 
 	| browser1 browser2 |

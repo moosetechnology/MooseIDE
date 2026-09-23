@@ -13,6 +13,12 @@ MiAbstractVisualization >> buildInCanvas: aCanvas [
 	self subclassResponsibility
 ]
 
+{ #category : #running }
+MiAbstractVisualization >> clearLegend [
+
+	^ self canvas fixedShapes: RSGroup new
+]
+
 { #category : #helpers }
 MiAbstractVisualization >> colorFor: anEntity [
 	^ (highlightedEntities includes: anEntity)
@@ -36,7 +42,7 @@ MiAbstractVisualization >> highlightEntities: someEntities [
 
 { #category : #highlighting }
 MiAbstractVisualization >> highlightShapes [
-	
+
 	self selectShapes: self shapesWithModel
 ]
 
@@ -80,9 +86,7 @@ MiAbstractVisualization >> noHighlightColorFor: anEntity [
 { #category : #running }
 MiAbstractVisualization >> run [
 
-	self canvas clear.
-	self canvas controllerInteraction: nil.
-	self script value: self canvas
+	self refresh
 ]
 
 { #category : #highlighting }
@@ -93,27 +97,14 @@ MiAbstractVisualization >> selectShapes: shapes [
 
 { #category : #highlighting }
 MiAbstractVisualization >> shapesWithModel [
-	
+
 	^ self canvas shapes select: [ :shape |
-		  shape isLine not and: [
-			  shape model notNil and: [
-				  highlightedEntities includes: (self modelForShape: shape) ] ] ]
+			  shape isLine not and: [
+					  shape model notNil and: [
+						  highlightedEntities includes: (self modelForShape: shape) ] ] ]
 ]
 
 { #category : #highlighting }
 MiAbstractVisualization >> unHighlight [
 	highlightedEntities := MooseGroup new
-]
-
-{ #category : #helpers }
-MiAbstractVisualization >> withLegend: aBlock [
-	| b |
-	b := RSLegend new.
-	b container: self canvas.
-	b defaultTitle fontSize: 12.
-	b defaultLabel fontSize: 10.
-	b defaultBoldText fontSize: 10.
-	aBlock value: b.
-	b onDemand: 'Legend'.
-	b build
 ]

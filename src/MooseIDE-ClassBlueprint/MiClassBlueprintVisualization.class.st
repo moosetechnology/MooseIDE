@@ -1,33 +1,18 @@
 Class {
 	#name : #MiClassBlueprintVisualization,
 	#superclass : #MiAbstractVisualization,
-	#instVars : [
-		'blueprint',
-		'type'
-	],
 	#category : #'MooseIDE-ClassBlueprint'
 }
 
-{ #category : #initialization }
+{ #category : #running }
 MiClassBlueprintVisualization >> buildInCanvas: aCanvas [
 
-	type ifNil: [ ^ self ].
+	| currentType |
+	currentType := owner specModel currentType ifNil: [ ^ self ].
 
-	blueprint := type blueprint.
-	blueprint canvas: aCanvas.
-	blueprint build.
+	currentType blueprint
+		canvas: aCanvas;
+		build.
 
 	^ aCanvas @ RSCanvasController new noLegend
-]
-
-{ #category : #running }
-MiClassBlueprintVisualization >> type [
-
-	^ type
-]
-
-{ #category : #running }
-MiClassBlueprintVisualization >> type: anObject [
-
-	type := anObject
 ]

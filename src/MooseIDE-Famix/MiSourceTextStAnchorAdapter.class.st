@@ -21,7 +21,7 @@ MiSourceTextStAnchorAdapter >> initialBoundingPos: anEntity [
 	anEntity ifNil: [ ^nil ].
 	(anEntity = displayedEntityInterval key) ifTrue: [ ^displayedEntityInterval value first ].
 
-	boundingInterval := self intervalForString: anEntity displayedNameInMiSourceText after: 1.
+	boundingInterval := self intervalForWord: anEntity displayedNameInMiSourceText after: 1.
 	boundingInterval ifNil: [ ^nil ].
 	(boundingInterval = 0) ifTrue: [ ^nil ].
 	^boundingInterval first
@@ -36,13 +36,13 @@ MiSourceTextStAnchorAdapter >> intervalForEntity: anEntity [
 	^(self initialBoundingPos: anEntity sourceCodeBoundingEntity)
 		ifNotNil: [ :initialPos |
 			self
-				intervalForString: anEntity stringToHighlight
+				intervalForWord: anEntity stringToHighlight
 				after: initialPos
 		]
 ]
 
 { #category : #formatting }
-MiSourceTextStAnchorAdapter >> intervalForString: aString after: afterPos [
+MiSourceTextStAnchorAdapter >> intervalForWord: aString after: afterPos [
 
 	| intervalStart |
 	intervalStart := displayedText

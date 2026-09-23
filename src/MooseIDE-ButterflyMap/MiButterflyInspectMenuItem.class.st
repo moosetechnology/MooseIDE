@@ -10,31 +10,31 @@ MiButterflyInspectMenuItem >> canBeExecuted [
 	^ shape isShape
 ]
 
-{ #category : #testing }
+{ #category : #execution }
 MiButterflyInspectMenuItem >> execute [
 
 	MiInspectorBrowser inspect: shape model rawModel
 ]
 
-{ #category : #testing }
+{ #category : #accessing }
 MiButterflyInspectMenuItem >> group [ 
 
 	^ 100
 ]
 
-{ #category : #testing }
+{ #category : #accessing }
 MiButterflyInspectMenuItem >> iconName [ 
 	
 	^ #smallInspectIt
 ]
 
-{ #category : #testing }
+{ #category : #accessing }
 MiButterflyInspectMenuItem >> label [
 
 	^ 'Inpsect'
 ]
 
-{ #category : #testing }
+{ #category : #accessing }
 MiButterflyInspectMenuItem >> order [
 
 	^ 100

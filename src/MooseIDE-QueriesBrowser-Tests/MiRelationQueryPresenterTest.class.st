@@ -8,7 +8,7 @@ Class {
 MiRelationQueryPresenterTest >> assertSubpresentersAreConfigured [
 
 	self
-		assert: presenter relationsList selectedItem
+		assert: self relationsList selectedItem
 		equals: self createNewQuery relationName
 ]
 
@@ -35,11 +35,17 @@ MiRelationQueryPresenterTest >> queryClass [
 	^ FQRelationQuery
 ]
 
+{ #category : #'accessing-subpresenters' }
+MiRelationQueryPresenterTest >> relationsList [
+
+	^ presenter presenterAt: #relationsList
+]
+
 { #category : #tests }
 MiRelationQueryPresenterTest >> testPresenters [
 
 	self
-		assert: presenter relationsList class
+		assert: self relationsList class
 		identicalTo: SpDropListPresenter
 ]
 
@@ -48,7 +54,7 @@ MiRelationQueryPresenterTest >> testPresentersOnImpossibleQuery [
 
 	self resetPresenterWithEntities: helper noEntities.
 	self
-		assert: presenter relationsList class
+		assert: self relationsList class
 		identicalTo: NoPossibleQueryPresenter
 ]
 
@@ -57,7 +63,7 @@ MiRelationQueryPresenterTest >> testQueryValidity [
 
 	self deny: presenter query isValid.
 
-	presenter relationsList selectIndex: 2.
+	self relationsList selectIndex: 2.
 	self assert: presenter query isValid.
 
 	self resetPresenterWithEntities: helper noEntities.

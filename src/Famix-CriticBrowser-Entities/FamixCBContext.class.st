@@ -35,10 +35,10 @@ Class {
 { #category : #meta }
 FamixCBContext class >> annotation [
 
+	<ignoreForCoverage>
 	<FMClass: #Context super: #FamixCBEntity>
 	<package: #'Famix-CriticBrowser-Entities'>
 	<generated>
-	^ self
 ]
 
 { #category : #'instance creation' }
@@ -66,13 +66,9 @@ FamixCBContext >> addChild: aRuleComponent [
 ]
 
 { #category : #adding }
-FamixCBContext >> addChildren: anObject [
-	<generated>
-	^ self children add: anObject
-]
-
-{ #category : #adding }
 FamixCBContext >> addEntity: anObject [
+
+	<ignoreForCoverage>
 	<generated>
 	^ self entities add: anObject
 ]
@@ -81,6 +77,7 @@ FamixCBContext >> addEntity: anObject [
 FamixCBContext >> children [
 	"Relation named: #children type: #FamixCBTRuleComponent opposite: #parent"
 
+	<ignoreForCoverage>
 	<generated>
 	<FMComment: 'Every child context or condition of this context.'>
 	<derived>
@@ -90,6 +87,7 @@ FamixCBContext >> children [
 { #category : #accessing }
 FamixCBContext >> children: anObject [
 
+	<ignoreForCoverage>
 	<generated>
 	children value: anObject
 ]
@@ -120,6 +118,7 @@ FamixCBContext >> contextBlock: anObject [
 FamixCBContext >> contextFilter [
 
 	<FMProperty: #contextFilter type: #Object>
+	<ignoreForCoverage>
 	<generated>
 	<FMComment: 'Filter applied on entities. It can be a block or a custom object'>
 	^ contextFilter
@@ -153,16 +152,19 @@ FamixCBContext >> customContextFilter: anObject [
 FamixCBContext >> entities [
 	"Relation named: #entities type: #MooseObject opposite: #contexts"
 
+	<ignoreForCoverage>
 	<generated>
 	<FMComment: 'Every entity that is a part of the context.'>
 	<derived>
 	<FMProperty: #entities type: #MooseObject opposite: #contexts>
+	<multivalued>
 	^ self attributeAt: #entities ifAbsentPut: [ FMMultiMultivalueLink on: self opposite: #contexts ]
 ]
 
 { #category : #accessing }
 FamixCBContext >> entities: anObject [
 
+	<ignoreForCoverage>
 	<generated>
 	self entities value: anObject
 ]
@@ -232,19 +234,14 @@ FamixCBContext >> runUpTree: aCollection [
 
 { #category : #'ston persistence' }
 FamixCBContext >> stonOn: stonWriter [
-	stonWriter
-		writeObject: self
-		streamMap: [ :dictionary | 
-			self class stonAllInstVarNames
-				do: [ :each | 
-					(self instVarNamed: each)
-						ifNotNil: [ :value | 
-							dictionary
-								at: each asSymbol
-								put:
-									((value class = FullBlockClosure)
-										ifTrue: [ value asString ]
-										ifFalse: [ value ]) ] ] ] 
+
+	stonWriter writeObject: self streamMap: [ :dictionary |
+			self class stonAllInstVarNames do: [ :each |
+					(self instVarNamed: each) ifNotNil: [ :value |
+							dictionary at: each asSymbol put: (value isClosure
+									 ifTrue: [
+									 value sourceNode sourceCode "The source code of a block. Cf. https://github.com/pharo-project/pharo/issues/19558" ]
+									 ifFalse: [ value ]) ] ] ]
 ]
 
 { #category : #running }

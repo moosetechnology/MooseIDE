@@ -16,7 +16,7 @@ MooseLoadFASTPharoMenuCommand class >> label [
 	^ 'FAST Pharo'
 ]
 
-{ #category : #accessing }
+{ #category : #'world menu' }
 MooseLoadFASTPharoMenuCommand class >> menuCommandOn: aBuilder [
 
 	<worldMenu>

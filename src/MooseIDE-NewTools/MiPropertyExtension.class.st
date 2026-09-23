@@ -25,26 +25,15 @@ MiPropertyExtension >> initializePresenters [
 				 width: 200;
 				 evaluated: [ :item | item name ]) yourself;
 		addColumn: (SpStringTableColumn title: 'Value' evaluated: [ :item |
-				 [ self model mmGetProperty: item ]
-					 on: Error
-					 do: [ 'error' ] ]);
-		items: (self model mooseDescription allPrimitiveProperties sorted:
-				 #name ascending);
+					 [ inspectedObject mmGetProperty: item ]
+						 on: Error
+						 do: [ 'error' ] ]);
+		items: (inspectedObject metadescription allPrimitiveProperties sorted: #name ascending);
 		beResizable
-]
-
-{ #category : #accessing }
-MiPropertyExtension >> model [
-	^ model
-]
-
-{ #category : #accessing }
-MiPropertyExtension >> model: anObject [
-	model := anObject.
-	properties ifNotNil: [ :p | p items: model mooseDescription allPrimitiveProperties ]
 ]
 
 { #category : #'accessing - model' }
 MiPropertyExtension >> setModelBeforeInitialization: aModel [
-	self model: aModel
+
+	inspectedObject := aModel
 ]

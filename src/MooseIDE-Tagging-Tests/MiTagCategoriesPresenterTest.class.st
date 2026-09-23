@@ -47,7 +47,7 @@ MiTagCategoriesPresenterTest >> testOpenCategoryCreationForm [
 { #category : #tests }
 MiTagCategoriesPresenterTest >> testUpdateCategoryListWhenAddingCategory [
 
-	browser tagModel addCategory: 'Category1'.
+	browser specModel addCategory: 'Category1'.
 	presenter refreshCategoryList.
 	self assert: presenter categoryDropList items size equals: 2
 ]

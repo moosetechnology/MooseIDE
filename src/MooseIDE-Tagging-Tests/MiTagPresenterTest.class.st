@@ -8,26 +8,32 @@ Class {
 	#category : #'MooseIDE-Tagging-Tests'
 }
 
+{ #category : #testing }
+MiTagPresenterTest class >> isAbstract [
+
+	^ self == MiTagPresenterTest
+]
+
 { #category : #'API - tags' }
 MiTagPresenterTest >> createCategory: aName [
 
-	browser tagModel addCategory: aName
+	browser specModel addCategory: aName
 ]
 
 { #category : #'API - tags' }
 MiTagPresenterTest >> createExtentTag: aName [
 
-	browser model
-		createTag: aName
-		description: nil
-		color: Color red
-		category: nil
+	^ browser specModel
+		  createTag: aName
+		  description: nil
+		  color: Color red
+		  category: nil
 ]
 
 { #category : #'API - tags' }
 MiTagPresenterTest >> createIntentTag: aName [
 
-	browser model
+	browser specModel
 		createDynamicTag: aName
 		description: nil
 		color: Color blue
@@ -59,5 +65,5 @@ MiTagPresenterTest >> setUp [
 	  browser receiveEntity: mooseModel.
 	  presenter := self presenterOwner
 		               instantiate: self presenterClass
-		               on: browser tagModel
+		               on: browser specModel
 ]

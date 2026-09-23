@@ -36,5 +36,5 @@ MiSettingsCommand >> canBeExecuted [
 { #category : #executing }
 MiSettingsCommand >> execute [
 
-	self context settings
+	self context openSettings
 ]

@@ -24,12 +24,10 @@ MiBus >> browsers [
 	^ browsers
 ]
 
-{ #category : #actions }
+{ #category : #private }
 MiBus >> globallySelect: anEntity [
 
-	anEntity isMooseObject
-		ifTrue: [ (self logger newLogFor: anEntity) activateIn: self ]
-		ifFalse: [ self inform: 'No Moose object to propagate.' ]
+	(self logger newLogFor: anEntity) activateIn: self
 ]
 
 { #category : #initialization }
@@ -52,6 +50,16 @@ MiBus >> name [
 { #category : #accessing }
 MiBus >> name: anObject [
 	name := anObject
+]
+
+{ #category : #printing }
+MiBus >> printOn: aStream [
+
+	super printOn: aStream.
+	aStream
+		nextPutAll: ':''' ;
+		nextPutAll: name ;
+		nextPut: $'
 ]
 
 { #category : #actions }

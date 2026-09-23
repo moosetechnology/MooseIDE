@@ -28,9 +28,8 @@ MiRemoveQueryCommand class >> defaultName [
 { #category : #executing }
 MiRemoveQueryCommand >> execute [
 
-	(self context queriesListPresenter isQueryUsed: self context)
-		ifTrue: [ 
-			UIManager default inform: 'Cannot delete this query. It is used in another query(ies).'.
+	(self context queriesListPresenter isQueryUsed: self context) ifTrue: [
+			self application inform: 'Cannot delete this query. It is used in another query(ies).'.
 			^ self ].
 	self context queriesListPresenter removeQueryAction: self context
 ]

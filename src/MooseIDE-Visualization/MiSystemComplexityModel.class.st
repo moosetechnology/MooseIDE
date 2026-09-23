@@ -2,58 +2,165 @@ Class {
 	#name : #MiSystemComplexityModel,
 	#superclass : #MiAbstractModel,
 	#instVars : [
-		'settings',
-		'entities'
+		'entities',
+		'startColor',
+		'endColor',
+		'heightMetric',
+		'widthMetric',
+		'colorMetric',
+		'displayedName',
+		'colorMetricThreshold',
+		'widthMetricThreshold',
+		'heightMetricThreshold'
 	],
 	#category : #'MooseIDE-Visualization-System Complexity'
 }
 
-{ #category : #initialization }
+{ #category : #default }
+MiSystemComplexityModel class >> defaultAvailableMetrics [
+
+	^ OrderedCollection withAll: {
+			  self defaultHeightMetric.
+			  self defaultWidthMetric.
+			  self defaultColorMetric }
+]
+
+{ #category : #default }
+MiSystemComplexityModel class >> defaultColorMetric [
+
+	^ #numberOfLinesOfCode
+]
+
+{ #category : #default }
+MiSystemComplexityModel class >> defaultColorMetricThreshold [
+
+	^ 100
+]
+
+{ #category : #'settings management' }
+MiSystemComplexityModel class >> defaultConfiguration [
+
+	^ MiSystemComplexitySettingsConfiguration new
+		  heightMetric: self defaultHeightMetric;
+		  heightMetricThreshold: self defaultHeightMetricThreshold;
+		  widthMetric: self defaultWidthMetric;
+		  widthMetricThreshold: self defaultWidthMetricThreshold;
+		  colorMetric: self defaultColorMetric;
+		  colorMetricThreshold: self defaultColorMetricThreshold;
+		  startColor: self defaultStartColor;
+		  endColor: self defaultEndColor;
+		  displayedName: self defaultDisplayedName;
+		  yourself
+]
+
+{ #category : #default }
+MiSystemComplexityModel class >> defaultDisplayedName [
+
+	^ #name
+]
+
+{ #category : #default }
+MiSystemComplexityModel class >> defaultEndColor [
+
+	^ Color black
+]
+
+{ #category : #default }
+MiSystemComplexityModel class >> defaultHeightMetric [
+
+	^ #numberOfMethods
+]
+
+{ #category : #default }
+MiSystemComplexityModel class >> defaultHeightMetricThreshold [
+
+	^ 10
+]
+
+{ #category : #default }
+MiSystemComplexityModel class >> defaultStartColor [
+
+	^ Color white
+]
+
+{ #category : #default }
+MiSystemComplexityModel class >> defaultWidthMetric [
+
+	^ #numberOfAttributes
+]
+
+{ #category : #default }
+MiSystemComplexityModel class >> defaultWidthMetricThreshold [
+
+	^ 10
+]
+
+{ #category : #accessing }
 MiSystemComplexityModel >> availableMetrics [
 
-	entities ifEmpty: [ ^ OrderedCollection new ].
-	^ (((entities allEntityTypes collect: [ :entity | 
-		     entity famePropertiesOfType: FM3Number ]) fold: [ 
-		    :availableProperties 
-		    :entityProperties | availableProperties & entityProperties ]) 
-		   collect: #implementingSelector) asOrderedCollection sort: [ :a :b | 
-		  a < b ]
+	entities ifEmpty: [ ^ self class defaultAvailableMetrics ].
+
+	^ self availableMetricsForEntities
+]
+
+{ #category : #accessing }
+MiSystemComplexityModel >> availableMetricsForEntities [
+	"entities are 
+		- MooseObjects (See MiSystemComplexityBrowser>>#canFollowEntity:) 
+		- returning true to #isClass (See MiSystemComplexityBrowser>>#followEntity:) 
+	i.e. instances of FamixXYZClass.
+	We still have to take an entity to get the correct metamodel for the metadescription"
+
+	^ ((entities anyOne famePropertiesOfType: FM3Number) collect:
+		   #implementingSelector) sorted: #yourself ascending
 ]
 
 { #category : #accessing }
 MiSystemComplexityModel >> colorMetric [
 
-	^ settings getItemValue: #colorMetric
+	^ colorMetric
 ]
 
-{ #category : #initialization }
-MiSystemComplexityModel >> colorRangeEnd [
+{ #category : #accessing }
+MiSystemComplexityModel >> colorMetricThreshold [
 
-	^ settings getItemValue: #colorRangeEnd
+	^ colorMetricThreshold
 ]
 
-{ #category : #initialization }
-MiSystemComplexityModel >> colorRangeStart [
+{ #category : #'settings management' }
+MiSystemComplexityModel >> currentConfiguration [
 
-	^ settings getItemValue: #colorRangeStart
+	^ MiSystemComplexitySettingsConfiguration new
+		  availableMetrics: self availableMetrics;
+		  heightMetric: heightMetric;
+		  heightMetricThreshold: heightMetricThreshold;
+		  widthMetric: widthMetric;
+		  widthMetricThreshold: widthMetricThreshold;
+		  colorMetric: colorMetric;
+		  colorMetricThreshold: colorMetricThreshold;
+		  startColor: startColor;
+		  endColor: endColor;
+		  displayedName: displayedName
 ]
 
-{ #category : #initialization }
-MiSystemComplexityModel >> defaultColorMetric [
+{ #category : #'settings management' }
+MiSystemComplexityModel >> defaultConfiguration [
 
-	^ nil
+	^ self class defaultConfiguration
+		  availableMetrics: self availableMetrics;
+		  yourself
 ]
 
-{ #category : #initialization }
-MiSystemComplexityModel >> defaultHeightMetric [
+{ #category : #accessing }
+MiSystemComplexityModel >> displayedName [
 
-	^ nil
+	^ displayedName
 ]
 
-{ #category : #initialization }
-MiSystemComplexityModel >> defaultWidthMetric [
+{ #category : #accessing }
+MiSystemComplexityModel >> endColor [
 
-	^ nil
+	^ endColor
 ]
 
 { #category : #accessing }
@@ -65,139 +172,90 @@ MiSystemComplexityModel >> entities [
 { #category : #accessing }
 MiSystemComplexityModel >> entities: aMooseGroup [
 
-	aMooseGroup ifEmpty: [ ^ self ].
-	entities := aMooseGroup.
-	self updateSettings.
-	browser runVisualization
+	entities := aMooseGroup
+]
+
+{ #category : #testing }
+MiSystemComplexityModel >> hasSettings [
+
+	^ true
 ]
 
 { #category : #accessing }
 MiSystemComplexityModel >> heightMetric [
 
-	^ settings getItemValue: #heightMetric
+	^ heightMetric
+]
+
+{ #category : #accessing }
+MiSystemComplexityModel >> heightMetricThreshold [
+
+	^ heightMetricThreshold
 ]
 
 { #category : #initialization }
 MiSystemComplexityModel >> initialize [
 
 	super initialize.
-	entities := MooseGroup new.
+	entities := MooseGroup new
 ]
 
 { #category : #initialization }
 MiSystemComplexityModel >> initializeSettings [
 
-	settings := super initializeSettings
-		            addItem: self itemHeightMetric named: #heightMetric;
-		            addItem: self itemWidthMetric named: #widthMetric;
-		            addItem: self itemColorMetric named: #colorMetric;
-		            addItem: self itemColorRangeStart
-		            named: #colorRangeStart;
-		            addItem: self itemColorRangeEnd named: #colorRangeEnd;
-		            addItem: self itemNameToDisplay named: #nameToDisplay;
-		            yourself
-]
-
-{ #category : #initialization }
-MiSystemComplexityModel >> itemColorMetric [
-
-	^ MiAbstractSettingItem droplistSetting
-		  possibleValues: self availableMetrics;
-		  setValue: self defaultColorMetric;
-		  label: 'Color metric:';
-		  help: 'The metric leading the normalization of boxes color.';
-		  yourself
-]
-
-{ #category : #initialization }
-MiSystemComplexityModel >> itemColorRangeEnd [
-
-	^ MiAbstractSettingItem colorSetting
-		  setValue: Color black;
-		  label: 'Color range end:';
-		  help:
-			  'End color for scaling color metric.';
-		  yourself
-]
-
-{ #category : #initialization }
-MiSystemComplexityModel >> itemColorRangeStart [
-
-	^ MiAbstractSettingItem colorSetting
-		  setValue: Color white;
-		  label: 'Color range start:';
-		  help:
-			  'Start color for scaling color metric.';
-		  yourself
-]
-
-{ #category : #initialization }
-MiSystemComplexityModel >> itemHeightMetric [
-
-	^ MiAbstractSettingItem droplistSetting
-		  possibleValues: self availableMetrics;
-		  setValue: self defaultHeightMetric;
-		  label: 'Height metric:';
-		  help: 'The metric leading the normalization of boxes height.';
-		  yourself
-]
-
-{ #category : #initialization }
-MiSystemComplexityModel >> itemNameToDisplay [
-
-	^ MiAbstractSettingItem droplistSetting
-		  possibleValues: {#mooseName. #name};
-		  setValue: #name;
-		  label: 'Name to display:';
-		  help: 'Entity names type to display.';
-		  yourself
-]
-
-{ #category : #initialization }
-MiSystemComplexityModel >> itemWidthMetric [
-
-	^ MiAbstractSettingItem droplistSetting
-		  possibleValues: self availableMetrics;
-		  setValue: self defaultWidthMetric;
-		  label: 'Width metric:';
-		  help: 'The metric leading the normalization of boxes width.';
-		  yourself
-]
-
-{ #category : #initialization }
-MiSystemComplexityModel >> nameToDisplay [
-
-	^ settings getItemValue: #nameToDisplay
+	startColor := self class defaultStartColor.
+	endColor := self class defaultEndColor.
+	heightMetric := self class defaultHeightMetric.
+	heightMetricThreshold := self class defaultHeightMetricThreshold.
+	widthMetric := self class defaultWidthMetric.
+	widthMetricThreshold := self class defaultWidthMetricThreshold.
+	colorMetric := self class defaultColorMetric.
+	colorMetricThreshold := self class defaultColorMetricThreshold.
+	displayedName := self class defaultDisplayedName
 ]
 
 { #category : #accessing }
-MiSystemComplexityModel >> settings [
+MiSystemComplexityModel >> miSelectedItem [
 
-	^ settings
+	^ entities
+]
+
+{ #category : #'settings management' }
+MiSystemComplexityModel >> settingsPresenterExtent [
+
+	^ 380 @ 400
 ]
 
 { #category : #accessing }
-MiSystemComplexityModel >> settingsChanged: aBoolean [
+MiSystemComplexityModel >> startColor [
 
-	aBoolean ifTrue: [ browser runVisualization ]
+	^ startColor
 ]
 
-{ #category : #accessing }
-MiSystemComplexityModel >> updateSettings [
+{ #category : #'settings management' }
+MiSystemComplexityModel >> updateFromConfiguration: aConfiguration [
 
-	(settings itemNamed: #heightMetric)
-		possibleValues: self availableMetrics;
-		setValue: #numberOfMethods.
-	(settings itemNamed: #widthMetric)
-		possibleValues: self availableMetrics;
-		setValue: #numberOfAttributes.
-	(settings itemNamed: #colorMetric)
-		possibleValues: self availableMetrics;
-		setValue: #numberOfLinesOfCode
+	heightMetric := aConfiguration heightMetric.
+	heightMetricThreshold := aConfiguration heightMetricThreshold.
+	widthMetric := aConfiguration widthMetric.
+	widthMetricThreshold := aConfiguration widthMetricThreshold.
+	colorMetric := aConfiguration colorMetric.
+	colorMetricThreshold := aConfiguration colorMetricThreshold.
+	startColor := aConfiguration startColor.
+	endColor := aConfiguration endColor.
+	displayedName := aConfiguration displayedName.
+
+	browser runVisualization
 ]
 
 { #category : #accessing }
 MiSystemComplexityModel >> widthMetric [
 
-	^ settings getItemValue: #widthMetric
+	^ widthMetric
+]
+
+{ #category : #accessing }
+MiSystemComplexityModel >> widthMetricThreshold [
+
+	^ widthMetricThreshold
 ]

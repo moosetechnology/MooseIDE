@@ -7,7 +7,7 @@ Class {
 	#name : #MiSourceTextTagHighlight,
 	#superclass : #MiSourceTextHighlight,
 	#instVars : [
-		'tag'
+		'color'
 	],
 	#category : #'MooseIDE-Famix-SourceText'
 }
@@ -18,13 +18,13 @@ MiSourceTextTagHighlight >> applyTo: aRenderer [
 ]
 
 { #category : #accessing }
-MiSourceTextTagHighlight >> tag [
+MiSourceTextTagHighlight >> color [
 
-	^ tag
+	^ color
 ]
 
 { #category : #accessing }
-MiSourceTextTagHighlight >> tag: aFamixTag [ 
+MiSourceTextTagHighlight >> color: aFamixTag [ 
 
-	tag := aFamixTag
+	color := aFamixTag
 ]

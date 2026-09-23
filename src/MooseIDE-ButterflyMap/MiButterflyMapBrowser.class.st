@@ -30,6 +30,12 @@ Class {
 }
 
 { #category : #accessing }
+MiButterflyMapBrowser class >> defaultPreferredExtent [
+
+	^ 850 @ 520
+]
+
+{ #category : #accessing }
 MiButterflyMapBrowser class >> mapClass [
 
 	^ MiButterflyMapVisualization
@@ -41,6 +47,12 @@ MiButterflyMapBrowser class >> menuCommandOn: aBuilder [
 	<worldMenu>
 	<miBrowsersMenu>
 	^ self buildMenuItemIn: aBuilder
+]
+
+{ #category : #'world menu' }
+MiButterflyMapBrowser class >> menuIconName [
+
+	^ #mooseButterfly
 ]
 
 { #category : #'world menu' }
@@ -73,12 +85,6 @@ MiButterflyMapBrowser class >> title [
 	^ 'Butterfly map'
 ]
 
-{ #category : #specs }
-MiButterflyMapBrowser class >> windowSize [
-
-	^ 850 @ 520
-]
-
 { #category : #testing }
 MiButterflyMapBrowser >> canFollowEntity: anObject [
 
@@ -89,27 +95,7 @@ MiButterflyMapBrowser >> canFollowEntity: anObject [
 MiButterflyMapBrowser >> followEntity: anEntity [
 
 	super followEntity: anEntity.
-	self model currentEntity: anEntity
-]
-
-{ #category : #testing }
-MiButterflyMapBrowser >> hasSettings [
-
-	^ true
-]
-
-{ #category : #initialization }
-MiButterflyMapBrowser >> initializeLayout [
-
-	self layout: (SpScrollableLayout with: mainPresenter)
-]
-
-{ #category : #initialization }
-MiButterflyMapBrowser >> initializePresenters [
-
-	mainPresenter := self class mapClass owner: self.
-	specModel browser: self.
-	self initializeLayout
+	self specModel currentEntity: anEntity
 ]
 
 { #category : #brokerage }

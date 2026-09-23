@@ -26,7 +26,9 @@ MiStringQueryPresenter >> configureQuery: pattern [
 MiStringQueryPresenter >> initializePresenters [
 
 	super initializePresenters.
-	self initializeLayout
+	self initializeLayout.
+	propertyDropList startWithSelection.
+	comparatorDropList class = SpNullPresenter ifFalse: [comparatorDropList startWithSelection]
 ]
 
 { #category : #layout }

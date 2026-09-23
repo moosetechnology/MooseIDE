@@ -18,6 +18,12 @@ Class {
 }
 
 { #category : #accessing }
+MiPlaygroundBrowser class >> defaultPreferredExtent [
+
+	^ StPlaygroundPresenter defaultPreferredExtent
+]
+
+{ #category : #accessing }
 MiPlaygroundBrowser class >> defaultTitle [ 
 
 	^ 'Moose Playground'
@@ -82,16 +88,16 @@ MiPlaygroundBrowser class >> registerToolsOn: registry [
 	registry register: self as: #workspace
 ]
 
+{ #category : #testing }
+MiPlaygroundBrowser class >> shouldBuildToolbar [
+
+	^ false
+]
+
 { #category : #specs }
 MiPlaygroundBrowser class >> title [
 
 	^ 'Moose Playground'
-]
-
-{ #category : #specs }
-MiPlaygroundBrowser class >> windowSize [
-
-	^ StPlaygroundPresenter preferredExtent
 ]
 
 { #category : #testing }
@@ -128,6 +134,12 @@ MiPlaygroundBrowser >> followEntity: anEntity [
 			 value: anEntity)
 ]
 
+{ #category : #testing }
+MiPlaygroundBrowser >> hasSettings [
+
+	^ false
+]
+
 { #category : #initialization }
 MiPlaygroundBrowser >> initializePresenters [
 
@@ -145,12 +157,6 @@ MiPlaygroundBrowser >> miInspect [
 MiPlaygroundBrowser >> miSelectedItem [
 
 	^ playground firstPage evaluate
-]
-
-{ #category : #testing }
-MiPlaygroundBrowser >> shouldBuildToolbar [
-
-	^ false
 ]
 
 { #category : #actions }
