@@ -60,7 +60,7 @@ MiSaveQueriesCommand >> copyQueriesReferencesOf: queries [
 	"We don't want to do that on the original queries to keep the queries browser still running"
 
 	| copy |
-	copy := queries copy.
+	copy := queries collect: [:each | each copy].
 	^ copy
 ]
 
