@@ -96,7 +96,8 @@ MiTagAbstractForm >> formLayout [
 				   add: 'Description (optional)' asPresenter expand: false;
 				   add: descriptionField expand: true;
 				   yourself)
-		  expand: true.
+		  expand: true ;
+		yourself
 ]
 
 { #category : 'initialization' }
@@ -125,7 +126,40 @@ MiTagAbstractForm >> initializeFormLayout [
 
 { #category : 'initialization' }
 MiTagAbstractForm >> initializeLayout [
-	self initializeFormLayout
+
+	| sep colorPickerWidth colorPickerLayout |
+	self layout: (SpBoxLayout newTopToBottom spacing: 5).
+
+	colorPickerWidth := 240.
+	
+	(sep := SpRoassalPresenter new) canvas color: (Color
+			 r: 40
+			 g: 40
+			 b: 40
+			 range: 255) translucent.
+
+	colorPickerLayout := SpBoxLayout newTopToBottom
+		add: (SpBoxLayout newLeftToRight
+			add: 'Tag Color' asPresenter;
+			hAlignCenter;
+			yourself)
+		width: colorPickerWidth;
+		add: colorPicker  ;
+		yourself.
+	
+	self initializeFormLayout.
+
+	self layout
+		add:  (SpBoxLayout newLeftToRight
+			spacing: 10;
+			add: colorPickerLayout width: colorPickerWidth ;
+			add: sep width: 2;
+			add: (SpBoxLayout newTopToBottom
+			spacing: 5;
+				add: (self initializeFormLayout) expand: true fill: true;
+				add: self initializeDialogButtonsLayout expand: false ;
+				yourself);
+		yourself)
 
 ]
 
