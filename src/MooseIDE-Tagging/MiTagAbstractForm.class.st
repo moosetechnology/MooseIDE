@@ -118,6 +118,18 @@ MiTagAbstractForm >> initializeDialogButtonsLayout [
 ]
 
 { #category : 'initialization' }
+MiTagAbstractForm >> initializeFormLayout [
+
+	self subclassResponsibility
+]
+
+{ #category : 'initialization' }
+MiTagAbstractForm >> initializeLayout [
+	self initializeFormLayout
+
+]
+
+{ #category : 'initialization' }
 MiTagAbstractForm >> initializePresenters [
 
 	submitButton := self newButton 

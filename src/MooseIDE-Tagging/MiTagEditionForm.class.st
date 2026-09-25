@@ -49,41 +49,15 @@ MiTagEditionForm >> fillWithCurrentTag [
 ]
 
 { #category : 'initialization' }
-MiTagEditionForm >> formLayout [
-
-	^ SpBoxLayout newTopToBottom
-		  spacing: 10;
-		  add: (SpBoxLayout newLeftToRight
-				   spacing: 5;
-				   add: (SpBoxLayout newTopToBottom
-						    add: 'Name' asPresenter expand: false;
-						    add: nameField expand: false;
-						    yourself);
-				   add: (SpBoxLayout newTopToBottom
-						    add: 'Category (optional)';
-						    add: categorySelection;
-						    yourself)
-				   width: 200;
-				   yourself)
-		  expand: false;
-		  add: (SpBoxLayout newTopToBottom
-				   add: 'Description (optional)' asPresenter expand: false;
-				   add: descriptionField height: 150;
-				   yourself)
-		  expand: false;
-		  add: (SpBoxLayout newLeftToRight
-				   vAlignEnd;
-				   spacing: 10;
-				   add: cancelButton;
-				   add: submitButton;
-				   yourself);
-		  yourself
-]
-
-{ #category : 'initialization' }
 MiTagEditionForm >> formTitle [
 
 	^ 'Edit tag'
+]
+
+{ #category : 'initialization' }
+MiTagEditionForm >> initializeFormLayout [
+
+	^ self formLayout 
 ]
 
 { #category : 'initialization' }
