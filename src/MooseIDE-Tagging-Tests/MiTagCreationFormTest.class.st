@@ -93,14 +93,25 @@ MiTagCreationFormTest >> testQueryDropListFetchQueriesFromQueriesProducer [
 ]
 
 { #category : 'tests' }
+MiTagCreationFormTest >> testSetExtentTag [
+
+	self deny: creationForm intentButton state.
+	
+	creationForm extentButton click.
+	creationForm extentButton action value.  "this should be triggered by clicking on the button but it does seem to work :-("
+	
+	self deny: creationForm intentButton state.
+	self assert: creationForm extentButton state.
+	self deny: creationForm queryListLabeled isVisible
+]
+
+{ #category : 'tests' }
 MiTagCreationFormTest >> testSetIntentTag [
 
 	self deny: creationForm intentButton state.
 	
-	self flag: 'fix weird behavior'.
-	
 	creationForm intentButton click.
-	creationForm intentButton action value.
+	creationForm intentButton action value.  "this should be triggered by clicking on the button but it does seem to work :-("
 	
 	self assert: creationForm intentButton state.
 	self deny: creationForm extentButton state.

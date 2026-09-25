@@ -70,6 +70,27 @@ MiTagEditionForm >> initializePresenters [
 	intentButton hide.
 ]
 
+{ #category : 'initialization' }
+MiTagEditionForm >> isIntentSubmit [
+
+	self specModel
+		editCurrentDynamicTag: nameField text
+		description: descriptionField text
+		color: colorPicker color
+		category: categorySelection selectedItem
+		query: queryList selectedItem
+]
+
+{ #category : 'initialization' }
+MiTagEditionForm >> notIntentSubmit [
+
+	self specModel
+		editCurrentTag: nameField text
+		description: descriptionField text
+		color: colorPicker color
+		category: categorySelection selectedItem
+]
+
 { #category : 'accessing' }
 MiTagEditionForm >> setDynamicTag: aTag [
 
@@ -102,19 +123,8 @@ MiTagEditionForm >> submit [
 	self checkFormInputs ifFalse: [ ^ self ].
 
 	self specModel currentTag isIntent
-		ifTrue: [ 
-			self specModel 
-				editCurrentDynamicTag: nameField text
-				description: descriptionField text
-				color: colorPicker color
-				category: categorySelection selectedItem
-				query: queryList selectedItem ]
-		ifFalse: [ 
-			self specModel
-				editCurrentTag: nameField text
-				description: descriptionField text
-				color: colorPicker color
-				category: categorySelection selectedItem ].
+		ifTrue: [ self isIntentSubmit ]
+		ifFalse: [ self notIntentSubmit ].
 
 	tagBrowser refreshTagList.
 	self close

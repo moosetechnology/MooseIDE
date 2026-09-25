@@ -12,8 +12,6 @@ Class {
 		'nameField',
 		'descriptionField',
 		'categorySelection',
-		'intentButton',
-		'extentButton',
 		'isIntent',
 		'queryList',
 		'queryListLabeled',
@@ -49,23 +47,10 @@ MiTagAbstractForm >> close [
 	owner close
 ]
 
-{ #category : 'private' }
-MiTagAbstractForm >> connectPresenters [
-	
-	extentButton action: [ self setExtentForm ].
-	intentButton action: [ self setIntentForm ].
-]
-
 { #category : 'brokerage' }
 MiTagAbstractForm >> consume: aQuery [
 
 	self updateQueryList
-]
-
-{ #category : 'accessing' }
-MiTagAbstractForm >> extentButton [
-
-	^ extentButton
 ]
 
 { #category : 'initialization' }
@@ -175,13 +160,7 @@ MiTagAbstractForm >> initializePresenters [
 
 	colorPicker := self newColorPicker
 		setColor: Color random.
-	extentButton := self newToggleButton
-		state: true;
-		label: 'Static'.
-	intentButton := self newToggleButton
-		state: false;
-		label: 'Dynamic'.
-
+	
 	self initializeTagDescriptionPresenters.
 
 	self initializeLayout
@@ -211,16 +190,22 @@ MiTagAbstractForm >> initializeTagDescriptionPresenters [
 
 ]
 
-{ #category : 'accessing' }
-MiTagAbstractForm >> intentButton [
+{ #category : 'testing' }
+MiTagAbstractForm >> isIntentSubmit [
 
-	^ intentButton
+	self subclassResponsibility 
 ]
 
 { #category : 'accessing' }
 MiTagAbstractForm >> nameField [
 
 	^ nameField
+]
+
+{ #category : 'testing' }
+MiTagAbstractForm >> notIntentSubmit [
+
+	self subclassResponsibility 
 ]
 
 { #category : 'accessing' }
@@ -255,11 +240,7 @@ MiTagAbstractForm >> reset [
 { #category : 'private' }
 MiTagAbstractForm >> setExtentForm [
 
-	isIntent ifFalse: [ 
-		extentButton state: true.
-		^ self ].
 	isIntent := false.
-	intentButton state: false.
 	queryListLabeled hide.
 	self update
 ]
@@ -267,11 +248,7 @@ MiTagAbstractForm >> setExtentForm [
 { #category : 'private' }
 MiTagAbstractForm >> setIntentForm [
 
-	isIntent ifTrue: [ 
-		intentButton state: true.
-		^ self ].
 	isIntent := true.
-	extentButton state: false.
 	queryListLabeled show.
 	self update
 ]
@@ -304,22 +281,12 @@ MiTagAbstractForm >> submit [
 	self checkFormInputs ifFalse: [ ^ self ].
 
 	tag := isIntent
-		ifTrue: [
-			self specModel
-				createDynamicTag: nameField text
-				description: descriptionField text
-				color: colorPicker color
-				category: categorySelection selectedItem
-				query: queryList selectedItem ]
-		ifFalse: [
-			self specModel
-				createTag: nameField text
-				description: descriptionField text
-				color: colorPicker color
-				category: categorySelection selectedItem ].
+		       ifTrue: [ self isIntentSubmit ]
+		       ifFalse: [ self notIntentSubmit ].
 
-	tag
-		ifNil: [ self alert: 'This tag name is already in use. Please choose a different one.' ].
+	tag ifNil: [
+			self alert:
+				'This tag name is already in use. Please choose a different one.' ].
 
 	tagBrowser refreshTagList.
 	self close
