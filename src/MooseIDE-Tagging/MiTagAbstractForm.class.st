@@ -14,7 +14,6 @@ Class {
 		'categorySelection',
 		'isIntent',
 		'queryList',
-		'queryListLabeled',
 		'tagBrowser'
 	],
 	#category : 'MooseIDE-Tagging-Browser',
@@ -181,12 +180,6 @@ MiTagAbstractForm >> initializeTagDescriptionPresenters [
 	queryList := self newDropList
 		startWithoutSelection;
 		display: [ :query | self stringForQuery: query ].
-	queryListLabeled := MiPresenter new
-		layout: (SpBoxLayout newTopToBottom
-			add: 'Query' asPresenter expand: false;
-			add: queryList expand: false;
-			yourself);
-		 hide.
 
 ]
 
@@ -214,12 +207,6 @@ MiTagAbstractForm >> queryList [
 	^ queryList
 ]
 
-{ #category : 'accessing' }
-MiTagAbstractForm >> queryListLabeled [
-
-	^ queryListLabeled
-]
-
 { #category : 'brokerage' }
 MiTagAbstractForm >> remove: aQuery [
 
@@ -241,7 +228,6 @@ MiTagAbstractForm >> reset [
 MiTagAbstractForm >> setExtentForm [
 
 	isIntent := false.
-	queryListLabeled hide.
 	self update
 ]
 
@@ -249,7 +235,7 @@ MiTagAbstractForm >> setExtentForm [
 MiTagAbstractForm >> setIntentForm [
 
 	isIntent := true.
-	queryListLabeled show.
+
 	self update
 ]
 

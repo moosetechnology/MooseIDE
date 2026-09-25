@@ -3,7 +3,8 @@ Class {
 	#superclass : 'MiTagAbstractForm',
 	#instVars : [
 		'intentButton',
-		'extentButton'
+		'extentButton',
+		'queryListLabeled'
 	],
 	#category : 'MooseIDE-Tagging-Browser',
 	#package : 'MooseIDE-Tagging',
@@ -50,6 +51,19 @@ MiTagCreationForm >> initializePresenters [
 	super initializePresenters 
 ]
 
+{ #category : 'initialization' }
+MiTagCreationForm >> initializeTagDescriptionPresenters [
+
+	super initializeTagDescriptionPresenters. 
+	queryListLabeled := MiPresenter new
+		layout: (SpBoxLayout newTopToBottom
+			add: 'Query' asPresenter expand: false;
+			add: queryList expand: false;
+			yourself);
+		 hide.
+
+]
+
 { #category : 'accessing' }
 MiTagCreationForm >> intentButton [
 
@@ -77,6 +91,12 @@ MiTagCreationForm >> notIntentSubmit [
 				category: categorySelection selectedItem
 ]
 
+{ #category : 'accessing' }
+MiTagCreationForm >> queryListLabeled [
+
+	^ queryListLabeled
+]
+
 { #category : 'private' }
 MiTagCreationForm >> setExtentForm [
 
@@ -85,7 +105,7 @@ MiTagCreationForm >> setExtentForm [
 		^ self ].
 
 	intentButton state: false.
-
+	queryListLabeled hide.
 	super setExtentForm 
 ]
 
@@ -97,6 +117,6 @@ MiTagCreationForm >> setIntentForm [
 		^ self ].
 
 	extentButton state: false.
-
+	queryListLabeled show.
 	super setIntentForm 
 ]
