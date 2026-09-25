@@ -1,6 +1,6 @@
 Class {
 	#name : 'MiTagEditionForm',
-	#superclass : 'MiTagCreationForm',
+	#superclass : 'MiTagAbstractForm',
 	#category : 'MooseIDE-Tagging-Browser',
 	#package : 'MooseIDE-Tagging',
 	#tag : 'Browser'
@@ -9,7 +9,7 @@ Class {
 { #category : 'initialization' }
 MiTagEditionForm >> checkFormInputs [
 
-	nameField text ifEmpty: [ ^ false ].
+	
 	self specModel currentTag isIntent ifFalse: [
 		(self specModel getTagNamed: nameField text) ifNotNil: [ :tag |
 			self specModel currentTag = tag ifFalse: [
@@ -27,18 +27,9 @@ MiTagEditionForm >> checkFormInputs [
 							 yourself);
 					popup.
 				^ false ] ] ].
+	
 
-
-	^ true
-]
-
-{ #category : 'initialization' }
-MiTagEditionForm >> connectPresenters [
-
-	"cancelButton action: [ 
-		self reset.
-		self owner closeTagEditionForm ].
-	submitButton action: [ self submit ]"
+	^ super checkFormInputs 
 ]
 
 { #category : 'accessing' }

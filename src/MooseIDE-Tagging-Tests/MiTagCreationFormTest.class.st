@@ -11,7 +11,7 @@ Class {
 { #category : 'helpers' }
 MiTagCreationFormTest >> presenterClass [
 
-	^ MiTagCreationForm
+	^ MiTagCreationForm 
 ]
 
 { #category : 'helpers' }
