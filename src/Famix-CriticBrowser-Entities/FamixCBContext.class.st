@@ -82,7 +82,6 @@ FamixCBContext >> children [
 	<ignoreForCoverage>
 	<generated>
 	<FMComment: 'Every child context or condition of this context.'>
-	<derived>
 	^ children
 ]
 
@@ -157,7 +156,6 @@ FamixCBContext >> entities [
 	<ignoreForCoverage>
 	<generated>
 	<FMComment: 'Every entity that is a part of the context.'>
-	<derived>
 	<FMProperty: #entities type: #MooseObject opposite: #contexts>
 	<multivalued>
 	^ self attributeAt: #entities ifAbsentPut: [ FMMultiMultivalueLink on: self opposite: #contexts ]

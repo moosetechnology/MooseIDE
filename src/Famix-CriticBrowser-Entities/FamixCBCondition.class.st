@@ -209,7 +209,6 @@ FamixCBCondition >> violations [
 	<ignoreForCoverage>
 	<generated>
 	<FMComment: 'Every violation of this condition.'>
-	<derived>
 	^ violations
 ]
 
