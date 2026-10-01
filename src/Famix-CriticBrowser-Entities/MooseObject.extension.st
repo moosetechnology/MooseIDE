@@ -36,7 +36,6 @@ MooseObject >> violations [
 	<ignoreForCoverage>
 	<generated>
 	<FMComment: 'Every violation raised by this entity.'>
-	<derived>
 	<FMProperty: #violations type: #FamixCBViolation opposite: #violatingEntity>
 	<multivalued>
 	<package: #'Famix-CriticBrowser-Entities'>
