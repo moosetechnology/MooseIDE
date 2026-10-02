@@ -1,32 +1,33 @@
 Class {
-	#name : #MiTagCreationFormTest,
-	#superclass : #MiTagPresenterTest,
+	#name : 'MiTagCreationFormTest',
+	#superclass : 'MiTagPresenterTest',
 	#instVars : [
 		'creationForm'
 	],
-	#category : #'MooseIDE-Tagging-Tests'
+	#category : 'MooseIDE-Tagging-Tests',
+	#package : 'MooseIDE-Tagging-Tests'
 }
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 MiTagCreationFormTest >> presenterClass [
 
-	^ MiTagCreationForm
+	^ MiTagCreationForm 
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 MiTagCreationFormTest >> presenterOwner [
 
 	^ browser
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiTagCreationFormTest >> setUp [
 
 	super setUp.
 	creationForm := browser createTag
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiTagCreationFormTest >> tearDown [
 
 	creationForm close.
@@ -34,7 +35,7 @@ MiTagCreationFormTest >> tearDown [
 	super tearDown 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiTagCreationFormTest >> testCancelTagCreation [
 
 	self assert: creationForm isDisplayed.
@@ -47,7 +48,7 @@ MiTagCreationFormTest >> testCancelTagCreation [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiTagCreationFormTest >> testCategoryDropListContainsCategories [
 
 	self
@@ -58,14 +59,14 @@ MiTagCreationFormTest >> testCategoryDropListContainsCategories [
 	self assert: creationForm categorySelection items size equals: 4
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiTagCreationFormTest >> testExtentTagDefault [
 
 	self assert: creationForm extentButton state equals: true.
 	self deny: creationForm queryListLabeled isVisible
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiTagCreationFormTest >> testIsConsumerOfFQAbstractQuery [
 
 	self skip: #TODO.
@@ -75,7 +76,7 @@ MiTagCreationFormTest >> testIsConsumerOfFQAbstractQuery [
 			 elt = creationForm ])
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiTagCreationFormTest >> testQueryDropListFetchQueriesFromQueriesProducer [
 
 	| mockProducer query |
@@ -91,22 +92,33 @@ MiTagCreationFormTest >> testQueryDropListFetchQueriesFromQueriesProducer [
 	self assert: (creationForm queryList items anySatisfy: [ :q |  (q class = query class) and: [ q property = query property ] ])
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
+MiTagCreationFormTest >> testSetExtentTag [
+
+	self deny: creationForm intentButton state.
+	
+	creationForm extentButton click.
+	creationForm extentButton action value.  "this should be triggered by clicking on the button but it does seem to work :-("
+	
+	self deny: creationForm intentButton state.
+	self assert: creationForm extentButton state.
+	self deny: creationForm queryListLabeled isVisible
+]
+
+{ #category : 'tests' }
 MiTagCreationFormTest >> testSetIntentTag [
 
 	self deny: creationForm intentButton state.
 	
-	self flag: 'fix weird behavior'.
-	
 	creationForm intentButton click.
-	creationForm intentButton action value.
+	creationForm intentButton action value.  "this should be triggered by clicking on the button but it does seem to work :-("
 	
 	self assert: creationForm intentButton state.
 	self deny: creationForm extentButton state.
 	self assert: creationForm queryListLabeled isVisible
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiTagCreationFormTest >> testShouldNotSubmitWithoutName [
 
 	creationForm submit.
@@ -114,7 +126,7 @@ MiTagCreationFormTest >> testShouldNotSubmitWithoutName [
 	self assert: creationForm isDisplayed 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiTagCreationFormTest >> testSubmitCreatesATag [
 
 	self assert: browser specModel allTags size equals: 0.

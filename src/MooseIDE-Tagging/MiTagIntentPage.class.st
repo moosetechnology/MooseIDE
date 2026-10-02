@@ -3,24 +3,26 @@ The page of the TagBrowser notebook showing the boolean query that allows to che
 
 "
 Class {
-	#name : #MiTagIntentPage,
-	#superclass : #MiTagPage,
+	#name : 'MiTagIntentPage',
+	#superclass : 'MiTagPage',
 	#instVars : [
 		'selectedQuery',
 		'txtLowValue',
 		'txtHighValue'
 	],
-	#category : #'MooseIDE-Tagging-Browser'
+	#category : 'MooseIDE-Tagging-Browser',
+	#package : 'MooseIDE-Tagging',
+	#tag : 'Browser'
 }
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiTagIntentPage >> initializeLayout [
 
 	super initializeLayout.
 	self layout add: selectedQuery expand: false
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiTagIntentPage >> initializePresenters [
 
 	super initializePresenters.
@@ -28,7 +30,7 @@ MiTagIntentPage >> initializePresenters [
 	self initializeLayout
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiTagIntentPage >> refresh [
 
 	super refresh.
@@ -37,12 +39,12 @@ MiTagIntentPage >> refresh [
 	self update
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiTagIntentPage >> refreshQueryList [
 	^#()
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiTagIntentPage >> setTag: aTag [
 
 	super setTag: aTag.
