@@ -38,3 +38,9 @@ MiReportExportCommand >> execute [
 	
 	^self exportReport: self context 
 ]
+
+{ #category : #executing }
+MiReportExportCommand >> executeReport: reporterBrowser [
+
+	self subclassResponsibility
+]

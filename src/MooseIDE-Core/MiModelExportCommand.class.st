@@ -34,14 +34,11 @@ MiModelExportCommand >> execute [
 
 { #category : #executing }
 MiModelExportCommand >> exportModel: aModel [
+
 	| fileReference |
-	fileReference := UITheme builder
-		chooseForSaveFileReference: 'Choose location'
-		extensions: self fileExtension
-		path: ''.
-	fileReference
-		ifNotNil: [ fileReference
-				writeStreamDo: [ :stream | 
+	fileReference := UITheme builder chooseForSaveFileReference: 'Choose location' extensions: self fileExtension path: nil.
+	fileReference ifNotNil: [
+			fileReference writeStreamDo: [ :stream |
 					self exportModel: aModel toStream: stream.
 					Notification signal: 'Save successful!' ] ]
 ]

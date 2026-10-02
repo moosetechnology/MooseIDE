@@ -1,0 +1,39 @@
+"
+A command that opens a menu of all Moose tools to propagate a result directly to another tool
+"
+Class {
+	#name : #MiPropagateMenuCommand,
+	#superclass : #MiCommand,
+	#category : #'MooseIDE-Core-Command'
+}
+
+{ #category : #default }
+MiPropagateMenuCommand class >> defaultDescription [
+
+	^ 'Select the tag that will be used to tag the current entities in this browser'
+]
+
+{ #category : #default }
+MiPropagateMenuCommand class >> defaultIconName [
+
+	^ #mooseOutgoing
+]
+
+{ #category : #default }
+MiPropagateMenuCommand class >> defaultName [
+
+	^ 'Send to...'
+]
+
+{ #category : #testing }
+MiPropagateMenuCommand >> canBeExecuted [
+
+	^ self context canPropagate
+]
+
+{ #category : #executing }
+MiPropagateMenuCommand >> execute [
+
+	(MiAbstractBrowser allBrowsersMenuRoot: SpMenuPresenter new
+		  action: [ :browserClass | self context propagateToOtherBrowser: browserClass ]) openWithSpecAtPointer
+]

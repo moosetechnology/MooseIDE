@@ -1,40 +1,42 @@
 Class {
-	#name : #MiNullDynamicTag,
-	#superclass : #MiDynamicTag,
-	#category : #'MooseIDE-Tagging-Model'
+	#name : 'MiNullDynamicTag',
+	#superclass : 'MiDynamicTag',
+	#category : 'MooseIDE-Tagging-Model',
+	#package : 'MooseIDE-Tagging',
+	#tag : 'Model'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiNullDynamicTag >> category [
 
 	^ nil
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiNullDynamicTag >> color [
 
 	^ nil
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiNullDynamicTag >> description [
 
 	^ nil
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiNullDynamicTag >> isApplicableTo: aQuery [
 
 	^ false
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiNullDynamicTag >> name [
 	
 	^ 'null dynamic tag'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiNullDynamicTag >> query [
 
 	^ FQNullQuery new

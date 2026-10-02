@@ -29,6 +29,18 @@ Class {
 	#category : #'MooseIDE-CoUsageMap-Browser'
 }
 
+{ #category : #accessing }
+MiCoUsageMapBrowser class >> defaultPreferredExtent [
+
+	^ 900 @ 700
+]
+
+{ #category : #accessing }
+MiCoUsageMapBrowser class >> mapClass [ 
+
+	^MiCoUsageMapVisualization
+]
+
 { #category : #'world menu' }
 MiCoUsageMapBrowser class >> menuCommandOn: aBuilder [
 
@@ -67,20 +79,12 @@ MiCoUsageMapBrowser class >> title [
 	^ 'Co Usage Map'
 ]
 
-{ #category : #specs }
-MiCoUsageMapBrowser class >> windowSize [
-
-	^ 900 @ 700
-]
-
 { #category : #'window control' }
 MiCoUsageMapBrowser >> browserClosed [
+
 	super browserClosed.
 	application unregisterConsumer: mainPresenter.
-	application unregisterProducer: mainPresenter.
-	"settings mapVisualization: nil.
-	mapVisualization settings: nil."
-
+	application unregisterProducer: mainPresenter
 ]
 
 { #category : #testing }
@@ -89,19 +93,11 @@ MiCoUsageMapBrowser >> canFollowEntity: anEntity [
 	^ anEntity isCollection and: [ anEntity isMooseModel not ]
 ]
 
-{ #category : #'private - for tests' }
-MiCoUsageMapBrowser >> closeSettings [
-	"to close the settings window when testing
-	Should not be used otherwise"
-
-	specModel closeSettings 
-]
-
 { #category : #actions }
 MiCoUsageMapBrowser >> followEntity: anEntity [
 
 	super followEntity: anEntity.
-	self model followEntity: anEntity
+	self specModel followEntity: anEntity
 ]
 
 { #category : #testing }
@@ -111,18 +107,24 @@ MiCoUsageMapBrowser >> hasSettings [
 
 { #category : #initialization }
 MiCoUsageMapBrowser >> initializePresenters [
-	mainPresenter := self instantiate: MiCoUsageMapVisualization.
-	mainPresenter specModel: specModel.
+
+	mainPresenter := self instantiate: self class mapClass on: specModel.
 
 	self flag: 'this should be in MiCoUsageMapVisualization'.
 	application registerConsumer: mainPresenter for: FamixTag.
 	application registerConsumer: mainPresenter for: FamixTagAssociation.
-	application registerProducer: mainPresenter for: FamixTagAssociation.
+	application registerProducer: mainPresenter for: FamixTagAssociation
 ]
 
 { #category : #accessing }
 MiCoUsageMapBrowser >> mapVisualization [
 	^ mainPresenter
+]
+
+{ #category : #accessing }
+MiCoUsageMapBrowser >> refresh [
+
+	self runVisualization.
 ]
 
 { #category : #dependencies }

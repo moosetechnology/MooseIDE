@@ -77,8 +77,8 @@ MiBusLogBrowser class >> propagateCommandFor: presenter [
 
 	| propagateOnThisBus |
 	propagateOnThisBus := (MiPropagateCommand forContext: presenter)
-		                      doNotFreezeBrowser;
-		                      asSpecCommand.
+		doNotFreezeBrowser;
+		asSpecCommand.
 	propagateOnThisBus
 		beDisplayedOnRightSide;
 		name: 'Propagate on this bus'.
@@ -120,6 +120,12 @@ MiBusLogBrowser >> followEntity: anEntity [
 MiBusLogBrowser >> getDisplayedList [
 
 	^list
+]
+
+{ #category : #testing }
+MiBusLogBrowser >> hasSettings [
+
+	^ false
 ]
 
 { #category : #initialization }
@@ -206,5 +212,6 @@ MiBusLogBrowser >> updateLocalToolbar [
 MiBusLogBrowser >> updateToolbars [
 
 	self updateLocalToolbar.
-	self updateToolbar
+
+	self withWindowDo: [ :window | window presenter updateToolbar ]
 ]

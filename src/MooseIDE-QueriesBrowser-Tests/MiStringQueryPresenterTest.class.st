@@ -7,9 +7,15 @@ Class {
 { #category : #tests }
 MiStringQueryPresenterTest >> assertSubpresentersAreConfigured [
 
-	self assert: presenter propertyDropList selectedItem equals: self createNewQuery property.
-	self assert: presenter valueInputField text equals: self createNewQuery valueToCompare.
-	self assert: presenter comparatorDropList selectedItem equals: self createNewQuery comparator 
+	self
+		assert: self propertyDropList selectedItem
+		equals: self createNewQuery property.
+	self
+		assert: self valueInputField text
+		equals: self createNewQuery valueToCompare.
+	self
+		assert: self comparatorDropList selectedItem
+		equals: self createNewQuery comparator
 ]
 
 { #category : #running }
@@ -41,6 +47,13 @@ MiStringQueryPresenterTest >> queryClass [
 MiStringQueryPresenterTest >> setUp [
 	super setUp.
 	self resetPresenterWithEntities: helper methods
+]
+
+{ #category : #tests }
+MiStringQueryPresenterTest >> testDropListDefaultSelection [
+
+
+	self assert: self propertyDropList isStartWithSelection.
 ]
 
 { #category : #running }

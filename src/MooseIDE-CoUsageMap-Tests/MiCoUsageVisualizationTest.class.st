@@ -14,7 +14,7 @@ MiCoUsageVisualizationTest >> test01Basic [
 MiCoUsageVisualizationTest >> test03AttributeWidth [
 
 	| attribute shapes |
-	attribute := self specModel getInnerBoxNamed: #var1.
+	attribute := self specModel getInnerBoxNamed: #att1.
 	shapes := builder canvas deepShapesFromModel: attribute.
 	self assert: shapes size equals: 1.
 
@@ -26,7 +26,7 @@ MiCoUsageVisualizationTest >> test04Highlight [
 	| attribute shapes border event |
 	self tagsWithPalette: { 'Frame'. 'Connection' }.
 
-	attribute := self specModel getInnerBoxNamed: #var2.
+	attribute := self specModel getInnerBoxNamed: #att3.
 	border := builder highlightManager selectedBoxBorder.
 	shapes := builder canvas deepShapesFromModel: attribute.
 
@@ -52,8 +52,8 @@ MiCoUsageVisualizationTest >> test05MethodAttributePopup [
 
 	| attribute method |
 	self tagsWithPalette: { 'Frame'. 'Connection' }.
-	attribute := self specModel getInnerBoxNamed: #var2.
-	method := self specModel containerBoxNamed: #method1.
+	attribute := self specModel getInnerBoxNamed: #att3.
+	method := self specModel containerBoxNamed: #method3.
 	builder
 		createInnerBoxTextMorphFor: attribute containerBox: method;
 		createContainerBoxTextMorphFor: method

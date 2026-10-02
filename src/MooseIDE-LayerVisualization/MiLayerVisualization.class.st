@@ -11,10 +11,10 @@ Class {
 { #category : #initialization }
 MiLayerVisualization >> buildInCanvas: aCanvas [
 
-	owner model ifNil: [ ^ self ].
+	owner specModel ifNil: [ ^ self ].
 
 	builder := MiLayerVisualizationBuilder new
-		           mapModel: owner model;
+		           mapModel: owner specModel;
 		           container: aCanvas;
 		           yourself.
 

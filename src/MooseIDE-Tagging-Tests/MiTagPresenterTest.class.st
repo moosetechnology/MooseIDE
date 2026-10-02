@@ -1,33 +1,40 @@
 Class {
-	#name : #MiTagPresenterTest,
-	#superclass : #MiAbstractApplicationTest,
+	#name : 'MiTagPresenterTest',
+	#superclass : 'MiAbstractApplicationTest',
 	#instVars : [
 		'browser',
 		'presenter'
 	],
-	#category : #'MooseIDE-Tagging-Tests'
+	#category : 'MooseIDE-Tagging-Tests',
+	#package : 'MooseIDE-Tagging-Tests'
 }
 
-{ #category : #'API - tags' }
+{ #category : 'testing' }
+MiTagPresenterTest class >> isAbstract [
+
+	^ self == MiTagPresenterTest
+]
+
+{ #category : 'API - tags' }
 MiTagPresenterTest >> createCategory: aName [
 
-	browser tagModel addCategory: aName
+	browser specModel addCategory: aName
 ]
 
-{ #category : #'API - tags' }
+{ #category : 'API - tags' }
 MiTagPresenterTest >> createExtentTag: aName [
 
-	browser model
-		createTag: aName
-		description: nil
-		color: Color red
-		category: nil
+	^ browser specModel
+		  createTag: aName
+		  description: nil
+		  color: Color red
+		  category: nil
 ]
 
-{ #category : #'API - tags' }
+{ #category : 'API - tags' }
 MiTagPresenterTest >> createIntentTag: aName [
 
-	browser model
+	browser specModel
 		createDynamicTag: aName
 		description: nil
 		color: Color blue
@@ -35,19 +42,19 @@ MiTagPresenterTest >> createIntentTag: aName [
 		query: nil
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 MiTagPresenterTest >> presenterClass [
 
 	self subclassResponsibility
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 MiTagPresenterTest >> presenterOwner [
 
 	self subclassResponsibility
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 MiTagPresenterTest >> setUp [
 
 	  | mooseModel |
@@ -59,5 +66,5 @@ MiTagPresenterTest >> setUp [
 	  browser receiveEntity: mooseModel.
 	  presenter := self presenterOwner
 		               instantiate: self presenterClass
-		               on: browser tagModel
+		               on: browser specModel
 ]

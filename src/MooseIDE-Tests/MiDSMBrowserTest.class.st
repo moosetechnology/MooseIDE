@@ -12,6 +12,7 @@ Class {
 
 { #category : #running }
 MiDSMBrowserTest >> browserClass [
+
 	^ MiDSMBrowser
 ]
 
@@ -78,24 +79,54 @@ MiDSMBrowserTest >> testCellListTupleDependencies [
 ]
 
 { #category : #tests }
+MiDSMBrowserTest >> testComputeDependenciesFromToParameterConcreteType [
+	"Checking that #computeDependenciesFrom:to: works for a concrete parameter type
+	public class Class1 { 
+		public ParametricClass<Class3> mth1 { }
+	}
+	 Here there should be a dependency from Class1 to Class3"
+
+	| mth1 dependencies |
+	mth1 := model entityNamed: 'Class1.mth1'.
+	model newParametricEntityTyping
+		declaredType: (model newParametricClassNamed: 'ParametricClass');
+		typedEntity: mth1;
+		concretizations: {
+			model newConcretization
+				typeParameter: (model newTypeParameter name: 'T') ;
+				typeArgument: class3
+		}.
+
+	dependencies := browser specModel dependencies
+		computeDependenciesFrom: class1
+		to: class3.
+
+	self assert: dependencies size equals: 1.
+	self assert: dependencies anyOne source equals: class3.
+	self assert: dependencies anyOne target name equals: 'T'.
+]
+
+{ #category : #tests }
 MiDSMBrowserTest >> testDoesNotOpenEmptyDetailedDSM [
 	"sets a fake spec model that delegates #userActionOn: to the original model
 	 We checks that #userActionOn: was called and #openDetailedDSMOn: was not"
-	| originalModel mockModel userAction detailedDSM  |
 
-	browser followEntity: {  class2 . class3 }.
+	| originalModel mockModel userAction detailedDSM |
+	browser followEntity: {
+			class2.
+			class3 }.
 
-	originalModel := browser model.
+	originalModel := browser specModel.
 	mockModel := Mock named: 'DSM-spec-model'.
 	(mockModel stub userActionOn: Any) will: [ :arg |
-		userAction := arg.
-		originalModel userActionOn: arg ].
-	(mockModel stub openDetailedDSMOn: Any) will: [ :arg | detailedDSM := arg ].
+			userAction := arg.
+			originalModel userActionOn: arg ].
+	(mockModel stub openDetailedDSMOn: Any) will: [ :arg |
+		detailedDSM := arg ].
 	detailedDSM := nil.
 	browser diagram specModel: mockModel.
 
-	(self shapeAtRow: class2 column: class3)
-		announce: RSMouseDoubleClick.
+	(self shapeAtRow: class2 column: class3) announce: RSMouseDoubleClick.
 
 	self assert: userAction isNotNil.
 	self assert: userAction key model equals: class2.
@@ -107,25 +138,41 @@ MiDSMBrowserTest >> testDoesNotOpenEmptyDetailedDSM [
 { #category : #tests }
 MiDSMBrowserTest >> testDontShowSelfDependenciesHideDiagonalWeight [
 
-	| tuple |
-	browser model settings setItem: #selfDependenciesSetting value: false.
-	tuple := (AITarjanNode with: #entityA) -> (AITarjanNode with: #entityA).
-	browser model dependencies
-		dependencies: #(1 2 3) from: #entityA to: #entityA.
+	| tuple configuration |
+	configuration := browser specModel currentConfiguration.
+	configuration shouldShowSelfDependencies: false.
+	browser specModel updateFromConfiguration: configuration.
 
-	self assert: (browser model getTupleDependencyWeight: tuple) equals: 0.
+	tuple := (AITarjanNode with: #entityA)
+	         -> (AITarjanNode with: #entityA).
+	browser specModel dependencies
+		recordDependencies: #( 1 2 3 )
+		from: #entityA
+		to: #entityA.
+
+	self
+		assert: (browser specModel getTupleDependencyWeight: tuple)
+		equals: 0
 ]
 
 { #category : #tests }
 MiDSMBrowserTest >> testDontShowSelfDependenciesShowNonDiagonalWeight [
 
-	| tuple |
-	browser model settings setItem: #selfDependenciesSetting value: false.
-	tuple := (AITarjanNode with: #entityA) -> (AITarjanNode with: #entityB).
-	browser model dependencies
-		dependencies: #(1 2 3) from: #entityA to: #entityB.
+	| tuple configuration |
+	configuration := browser specModel currentConfiguration.
+	configuration shouldShowSelfDependencies: false.
+	browser specModel updateFromConfiguration: configuration.
 
-	self assert: (browser model getTupleDependencyWeight: tuple) equals: 3.
+	tuple := (AITarjanNode with: #entityA)
+	         -> (AITarjanNode with: #entityB).
+	browser specModel dependencies
+		recordDependencies: #( 1 2 3 )
+		from: #entityA
+		to: #entityB.
+
+	self
+		assert: (browser specModel getTupleDependencyWeight: tuple)
+		equals: 3
 ]
 
 { #category : #tests }
@@ -150,15 +197,43 @@ MiDSMBrowserTest >> testDoubleClickCallsUserAction [
 ]
 
 { #category : #tests }
+MiDSMBrowserTest >> testOpenDetailedDSM [
+
+	| parametricClass detailedDSM methA methB otherClass |
+	parametricClass := model newParametricClassNamed: 'ParametricClass'.
+	otherClass := model newClassNamed: 'OtherClass'.
+
+	methA := (model newMethodNamed: 'methA') parentType: parametricClass.
+	methB := (model newMethodNamed: 'methB') parentType: otherClass.
+	model newInvocation
+		sender: methA;
+		candidates: { methB }.
+
+	browser followEntity: {
+			parametricClass.
+			otherClass }.
+
+	detailedDSM := browser specModel openDetailedDSMOn:
+		               (self makeGraphNode: parametricClass)
+		               -> (self makeGraphNode: otherClass).
+	self
+		assertCollection: detailedDSM specModel miSelectedItem
+		hasSameElements: {
+				methA.
+				methB }.
+
+	detailedDSM withWindowDo: [ :window | window close ]
+]
+
+{ #category : #tests }
 MiDSMBrowserTest >> testOutgoingDependencyFromInvocation [
 
 	| dependencies |
 	dependencies := class1 methods anyOne queryAllOutgoingForDSM.
 
-	self assert: dependencies size equals: 1.
-	self assert: dependencies anyOne class equals: FamixJavaInvocation.
-	self assert: dependencies anyOne candidates anyOne name equals: 'mth2'.
-
+	self
+		assertCollection: dependencies
+		hasSameElements: class1 methods anyOne outgoingInvocations
 ]
 
 { #category : #tests }
@@ -166,41 +241,40 @@ MiDSMBrowserTest >> testOutgoingDependencyFromMethodDeclaredType [
 
 	| mth2 dependencies |
 	mth2 := class2 methods anyOne.
-	mth2 declaredType: class3.
+	mth2 typing: (model newEntityTyping declaredType: class3).
 
 	dependencies := mth2 queryAllOutgoingForDSM.
 
-	self assert: dependencies size equals: 1.
-	self assert: dependencies anyOne class equals: FamixJavaClass.
-	self assert: dependencies anyOne name equals: 'Class3'.
-
+	self assertCollection: dependencies hasSameElements: { mth2 typing }
 ]
 
 { #category : #tests }
-MiDSMBrowserTest >> testOutgoingDependencyFromVMethodDeclaredTypeParametric [
-	"code: 
-	Class2
-		ParametricClass<Class1> mth2
-	Note: FamixJavaConcretization is an association and we are not interested in its genericEntity here
-	Note: hueristic to detect a concreteParameter being a genuine class is to check it has children
-	  That's why we use Class1 and not Class3 as concreteParameter"
+MiDSMBrowserTest >> testOutgoingDependencyFromMethodDeclaredTypeParametric [
+	"
+	public class Class2 { 
+		public ParametricClass<Classs1> mth2 { }
+	}
+	"
 
 	| mth2 parametricClass dependencies |
 	parametricClass := model newParametricClass
-		name: 'ParametricClass' ;
-		genericization: model newConcretization ;
-		addConcreteParameter: class1 ;
-		yourself.
+		                   name: 'ParametricClass';
+		                   yourself.
 
 	mth2 := class2 methods anyOne.
-	mth2 declaredType: parametricClass.
+
+	mth2 typing: (model newParametricEntityTyping
+			 declaredType: parametricClass;
+			 addConcretization: (model newConcretization
+					  typeArgument: class1;
+					  yourself);
+			 yourself). "We do not need the type parameter"
 
 	dependencies := mth2 queryAllOutgoingForDSM.
 
-	self assert: dependencies size equals: 2.
-	dependencies do: [ :dep |
-		{ 'ParametricClass' . 'Class1' } includes: dep name
-	]
+	self assertCollection: dependencies hasSameElements: {
+			mth2 typing.
+			mth2 typing concretizations anyOne }
 ]
 
 { #category : #tests }
@@ -208,46 +282,50 @@ MiDSMBrowserTest >> testOutgoingDependencyFromVariableDeclaredType [
 
 	| mth2 dependencies |
 	mth2 := class2 methods anyOne.
+
 	(model newLocalVariableNamed: 'local2')
-		parentBehaviouralEntity: mth2 ;
-		declaredType: class3.
+		parentBehaviouralEntity: mth2;
+		typing: (model newEntityTyping
+				 declaredType: class3;
+				 yourself).
 
 	dependencies := mth2 queryAllOutgoingForDSM.
 
-	self assert: dependencies size equals: 1.
-	self assert: dependencies anyOne class equals: FamixJavaClass.
-	self assert: dependencies anyOne name equals: 'Class3'.
-
+	self
+		assertCollection: dependencies
+		hasSameElements: { mth2 localVariables anyOne typing }
 ]
 
 { #category : #tests }
 MiDSMBrowserTest >> testOutgoingDependencyFromVariableDeclaredTypeParametric [
-	"code: 
-	Class2
-		mth2
-			ParametricClass<Class1> local2
-	Note: FamixJavaConcretization is an association and we are not interested in its genericEntity here
-	Note: heuristic to detect a concreteParameter being a genuine class is to check it has children
-	  That's why we use Class1 and not Class3 as concreteParameter"
+	"
+	public class Class2 { 
+		public mth2 { 
+			ParametricClass<Classs1> local2
+		}
+	}
+	"
 
-	| mth2 parametricClass dependencies |
+	| mth2 parametricClass dependencies localVariable |
 	parametricClass := model newParametricClass
-		name: 'ParametricClass' ;
-		genericization: model newConcretization ;
-		addConcreteParameter: class1 ;
-		yourself.
+		                   name: 'ParametricClass';
+		                   yourself.
 
 	mth2 := class2 methods anyOne.
-	(model newLocalVariableNamed: 'local2')
-		parentBehaviouralEntity: mth2 ;
-		declaredType: parametricClass.
+
+	localVariable := (model newLocalVariableNamed: 'local2')
+		                 parentBehaviouralEntity: mth2;
+		                 typing: (model newParametricEntityTyping
+				                  declaredType: parametricClass;
+				                  addConcretization:
+					                  (model newConcretization typeArgument: class1);
+				                  yourself). "We do not need the type parameter"
 
 	dependencies := mth2 queryAllOutgoingForDSM.
 
-	self assert: dependencies size equals: 2.
-	dependencies do: [ :dep |
-		{ 'ParametricClass' . 'Class1' } includes: dep name
-	]
+	self assertCollection: dependencies hasSameElements: {
+			localVariable typing.
+			localVariable typing concretizations anyOne }
 ]
 
 { #category : #tests }
@@ -257,43 +335,24 @@ MiDSMBrowserTest >> testSettingsAction [
 ]
 
 { #category : #tests }
-MiDSMBrowserTest >> testSettingsChanged [
-
-	| stubDSM redrawn |
-	redrawn := false.
-	stubDSM := Mock new.
-	stubDSM stub run will: [ redrawn := true ].
-	browser mainPresenter: stubDSM.
-
-	browser model settingsChanged: true.
-		
-	self assert: redrawn
-]
-
-{ #category : #tests }
-MiDSMBrowserTest >> testSettingsNotChanged [
-
-	| stubDSM redrawn |
-	redrawn := false.
-	stubDSM := Mock new.
-	stubDSM stub run will: [ redrawn := true ].
-	browser mainPresenter: stubDSM.
-
-	browser model settingsChanged: false.
-		
-	self deny: redrawn
-]
-
-{ #category : #tests }
 MiDSMBrowserTest >> testShowSelfDependenciesDoNotHideDiagonalWeight [
 
-	| tuple |
-	browser model settings setItem: #selfDependenciesSetting value: true.
-	tuple := (AITarjanNode with: #entityA) -> (AITarjanNode with: #entityA).
-	browser model dependencies
-		dependencies: #(1 2 3) from: #entityA to: #entityA.
+	| tuple configuration |
+	configuration := browser specModel currentConfiguration.
+	configuration shouldShowSelfDependencies: true.
+	browser specModel updateFromConfiguration: configuration.
 
-	self assert: (browser model getTupleDependencyWeight: tuple) equals: 3.
+	tuple := (AITarjanNode with: #entityA)
+	         -> (AITarjanNode with: #entityA).
+
+	browser specModel dependencies
+		recordDependencies: #( 1 2 3 )
+		from: #entityA
+		to: #entityA.
+
+	self
+		assert: (browser specModel getTupleDependencyWeight: tuple)
+		equals: 3
 ]
 
 { #category : #tests }
@@ -311,90 +370,94 @@ MiDSMBrowserTest >> testTitleOfDSM [
 { #category : #tests }
 MiDSMBrowserTest >> testTitleOfDetailedDSM [
 	"detailed DSM title should show the original entities"
+
 	| detailedDSM |
+	browser followEntity: {
+			class1.
+			class2 }.
 
-	browser followEntity: {  class1 . class2 }.
+	detailedDSM := browser specModel openDetailedDSMOn:
+		               (self makeGraphNode: class1)
+		               -> (self makeGraphNode: class2).
 
-	detailedDSM := browser model
-		openDetailedDSMOn: ( (self makeGraphNode: class1) -> (self makeGraphNode: class2) ).
-
-	detailedDSM withWindowDo: [ : window || title |
-		title := window title.
-		window close.
-		self assert: title equals: 'DSM Class1 -> Class2'
-	]
+	detailedDSM withWindowDo: [ :window |
+			| title |
+			title := window title.
+			window close.
+			self assert: title equals: 'DSM Class1 -> Class2' ]
 ]
 
 { #category : #tests }
 MiDSMBrowserTest >> testTupleIsCycle [
 
 	| tarjanGraph tuple |
-
-	tarjanGraph := browser model graph graph.
-	tarjanGraph nodes: { #entityA . #entityB }.
+	tarjanGraph := browser specModel graph graph.
+	tarjanGraph nodes: { #entityA. #entityB }.
 	tarjanGraph addEdge: #entityA -> #entityB from: #key to: #value.
 	tarjanGraph addEdge: #entityB -> #entityA from: #key to: #value.
 	tarjanGraph run.
 
-	tuple := (tarjanGraph findNode: #entityA) -> (tarjanGraph findNode: #entityB).
- 
-	self assert: (browser model isCycle: tuple)
+	tuple := (tarjanGraph findNode: #entityA)
+	         -> (tarjanGraph findNode: #entityB).
+
+	self assert: (browser specModel isCycle: tuple)
 ]
 
 { #category : #tests }
 MiDSMBrowserTest >> testTupleIsDependency [
 
 	| tuple |
+	tuple := (AITarjanNode with: #entityA)
+	         -> (AITarjanNode with: #entityB).
+	browser specModel dependencies
+		recordDependencies: #( 1 2 3 )
+		from: #entityA
+		to: #entityB.
 
-	tuple := (AITarjanNode with: #entityA) -> (AITarjanNode with: #entityB).
-	browser model dependencies
-		dependencies: #(1 2 3) from: #entityA to: #entityB.
-
-	self assert: (browser model isDependency: tuple)
+	self assert: (browser specModel isDependency: tuple)
 ]
 
 { #category : #tests }
 MiDSMBrowserTest >> testTupleIsDiagonal [
 
 	| node tuple |
-
 	node := AITarjanNode with: #entityA.
 	tuple := node -> node.
 
-	self assert: (browser model isDiagonal: tuple)
+	self assert: (browser specModel isDiagonal: tuple)
 ]
 
 { #category : #tests }
 MiDSMBrowserTest >> testTupleIsNotCycle [
 
 	| tarjanGraph tuple |
-
-	tarjanGraph := browser model graph graph.
-	tarjanGraph nodes: { #entityA . #entityB }.
+	tarjanGraph := browser specModel graph graph.
+	tarjanGraph nodes: { #entityA. #entityB }.
 	tarjanGraph addEdge: #entityA -> #entityB from: #key to: #value.
 	tarjanGraph run.
 
-	tuple := (tarjanGraph findNode: #entityA) -> (tarjanGraph findNode: #entityB).
- 
-	self deny: (browser model isCycle: tuple)
+	tuple := (tarjanGraph findNode: #entityA)
+	         -> (tarjanGraph findNode: #entityB).
+
+	self deny: (browser specModel isCycle: tuple)
 ]
 
 { #category : #tests }
 MiDSMBrowserTest >> testTupleIsNotDependency [
 
 	| tuple |
+	tuple := (AITarjanNode with: #entityA)
+	         -> (AITarjanNode with: #entityB).
 
-	tuple := (AITarjanNode with: #entityA) -> (AITarjanNode with: #entityB).
-
-	self deny: (browser model isDependency: tuple)
+	self deny: (browser specModel isDependency: tuple)
 ]
 
 { #category : #tests }
 MiDSMBrowserTest >> testTupleIsNotDiagonal [
 
 	| tuple |
+	tuple := (AITarjanNode with: #entityA)
+	         -> (AITarjanNode with: #entityB).
 
-	tuple := (AITarjanNode with: #entityA) -> (AITarjanNode with: #entityB).
-
-	self deny: (browser model isDiagonal: tuple)
+	self deny: (browser specModel isDiagonal: tuple)
 ]

@@ -92,19 +92,21 @@ MiSaveQueriesCommand >> execute [
 MiSaveQueriesCommand >> getFileName [
 
 	| fileName |
-	fileName := UIManager default
-		            request: 'Name of the file: '
-		            initialAnswer: ''.
+	fileName := self application newRequest
+		            title: 'Save query to file';
+		            label: 'Name of the file: ';
+		            text: '';
+						openModal.
+
 	"If the user pressed the cancel button"
-	fileName ifNil: [ ^ self ].
+	fileName ifNil: [ ^ self ]. 
 
 	"If user did not provide any file name"
 	fileName ifEmpty: [
-		UIManager inform: 'You need to specify a name for the file.'.
-		^ self 
-	].
+			self application inform: 'You need to specify a name for the file.'.
+			^ self ].
 
-	^fileName
+	^ fileName
 ]
 
 { #category : #actions }

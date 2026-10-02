@@ -1,5 +1,6 @@
 "
 Shows the source text of an entity if it has one.
+Provides some highlighting for the code (work in progress).
 
 - Accepted entities: a MooseEntity that uses FamixTSourceEntity.
 - Highlight: Nothing to do.
@@ -16,6 +17,12 @@ Class {
 	],
 	#category : #'MooseIDE-Famix-SourceText'
 }
+
+{ #category : #accessing }
+MiSourceTextBrowser class >> defaultPreferredExtent [
+
+	^ 600 @ 700
+]
 
 { #category : #'world menu' }
 MiSourceTextBrowser class >> menuCommandOn: aBuilder [
@@ -62,16 +69,18 @@ MiSourceTextBrowser class >> title [
 	^ 'Source code'
 ]
 
-{ #category : #specs }
-MiSourceTextBrowser class >> windowSize [
-
-	^ 600 @ 700
-]
-
 { #category : #testing }
 MiSourceTextBrowser >> canFollowEntity: anObject [
 
 	^ anObject usesFamixTrait: FamixTSourceEntity
+]
+
+{ #category : #ports }
+MiSourceTextBrowser >> defaultInputPort [ 
+
+	^SpActionPort newAction: [ :anEntity |
+		self inform: 'selected ' , anEntity name.
+		specModel selectedEntity: anEntity ]
 ]
 
 { #category : #layout }
@@ -109,18 +118,12 @@ MiSourceTextBrowser >> followEntity: anEntity [
 	toolBarExternalEditor newEntity
 ]
 
-{ #category : #settings }
-MiSourceTextBrowser >> hasSettings [
-
-	^ true
-]
-
 { #category : #initialization }
 MiSourceTextBrowser >> initializePresenters [
 
 	toolBarExternalEditor := self instantiate: MiSourceTextToolBar on: self.
-	"self withRoassalRenderer."
-	self withSpecRenderer.
+
+	textRenderer := self instantiate: MiSourceTextSpecRenderer on: specModel rendererModel
 ]
 
 { #category : #accessing }
@@ -129,36 +132,12 @@ MiSourceTextBrowser >> miSelectedItem [
 	^ specModel selectedEntity
 ]
 
-{ #category : #initialization }
+{ #category : #showing }
 MiSourceTextBrowser >> open [
-	"redefined to change the cursor in the text morph"
+
 	super open.
-
-	textRenderer adapter widget theme: MiSourceTextRendererTheme new.
-
-]
-
-{ #category : #formatting }
-MiSourceTextBrowser >> reRenderText [ 
-
-	textRenderer reRenderText
-]
-
-{ #category : #formatting }
-MiSourceTextBrowser >> renderTextFor: anEntity [
-
-	textRenderer renderTextFor: anEntity
-]
-
-{ #category : #settings }
-MiSourceTextBrowser >> settingsModel [
-
-	^ specModel settings
-]
-
-{ #category : #'private - testing' }
-MiSourceTextBrowser >> textRenderer [
-	^textRenderer
+	textRenderer withAdapterDo: [ :a |
+		a widgetDo: [ :w | w theme: MiSourceTextRendererTheme new ] ]
 ]
 
 { #category : #'private - testing' }
@@ -171,18 +150,4 @@ MiSourceTextBrowser >> toolBarExternalEditor [
 MiSourceTextBrowser >> toolBarExternalEditor: anObject [
 	"only for testing"
 	toolBarExternalEditor := anObject
-]
-
-{ #category : #formatting }
-MiSourceTextBrowser >> withRoassalRenderer [
-
-	self deprecated: 'RoassalRenderer is out of sync with the rest of the code'.
-
-	textRenderer := self instantiate: MiSourceTextRoassalRenderer on: specModel
-]
-
-{ #category : #formatting }
-MiSourceTextBrowser >> withSpecRenderer [
-
-	textRenderer := self instantiate: MiSourceTextSpecRenderer on: specModel
 ]
