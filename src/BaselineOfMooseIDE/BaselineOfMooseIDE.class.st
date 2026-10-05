@@ -27,7 +27,7 @@ BaselineOfMooseIDE >> classBlueprint: spec [
 	spec
 		baseline: 'ClassBlueprint'
 		with: [
-		spec repository: 'github://moosetechnology/ClassBlueprint:v2.2.4/src' ]
+		spec repository: 'github://moosetechnology/ClassBlueprint:v2.2.5/src' ]
 ]
 
 { #category : 'accessing' }
