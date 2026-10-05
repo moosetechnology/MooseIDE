@@ -30,7 +30,7 @@ MiQueriesBrowserToolbar >> initializeButtons [
 	loadQueriesButton := self newButton.
 	loadQueriesButton
 		icon: (self iconNamed: #smallLoadProject);
-		action: [ 
+		action: [
 			(MiLoadQueriesPresenter on: queryListPresenter) openDialog ];
 		help: 'Load a set of queries into the browser'.
 
@@ -38,26 +38,21 @@ MiQueriesBrowserToolbar >> initializeButtons [
 	clearQueriesButton
 		icon: (self iconNamed: #smallUpdate);
 		action: [ queryListPresenter reinitializeQueryPresenters ];
-		label: 'Clear queries'.
-
-	addManualQueryButton := self newButton.
-	addManualQueryButton
-		icon: (self iconNamed: #edit);
-		label: 'Manual Query';
-		action: [ queryListPresenter addNewManualQuery ]
+		label: 'Clear queries'
 ]
 
 { #category : #initialization }
 MiQueriesBrowserToolbar >> initializeLayout [
 
 	self layout: (SpBoxLayout newLeftToRight
-		spacing: 5;
-		add: addRootQueryButton width: self class iconWidth;
-		add: addManualQueryButton expand: false;
-		add: clearQueriesButton expand: false;
-		addLast: loadQueriesButton withConstraints: [ :c | c width: self class iconWidth ];
-		addLast: saveQueriesButton withConstraints: [ :c | c width: self class iconWidth ];
-		yourself)
+			 spacing: 5;
+			 add: addRootQueryButton width: self class iconWidth;
+			 add: clearQueriesButton expand: false;
+			 addLast: loadQueriesButton
+			 withConstraints: [ :c | c width: self class iconWidth ];
+			 addLast: saveQueriesButton
+			 withConstraints: [ :c | c width: self class iconWidth ];
+			 yourself)
 ]
 
 { #category : #initialization }

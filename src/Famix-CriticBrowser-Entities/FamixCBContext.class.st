@@ -21,27 +21,29 @@
 
 "
 Class {
-	#name : #FamixCBContext,
-	#superclass : #FamixCBEntity,
+	#name : 'FamixCBContext',
+	#superclass : 'FamixCBEntity',
 	#traits : 'FamixCBTRuleComponent',
 	#classTraits : 'FamixCBTRuleComponent classTrait',
 	#instVars : [
 		'#children => FMMany type: #FamixCBTRuleComponent opposite: #parent',
 		'#contextFilter => FMProperty'
 	],
-	#category : #'Famix-CriticBrowser-Entities-Entities'
+	#category : 'Famix-CriticBrowser-Entities-Entities',
+	#package : 'Famix-CriticBrowser-Entities',
+	#tag : 'Entities'
 }
 
-{ #category : #meta }
+{ #category : 'meta' }
 FamixCBContext class >> annotation [
 
+	<ignoreForCoverage>
 	<FMClass: #Context super: #FamixCBEntity>
 	<package: #'Famix-CriticBrowser-Entities'>
 	<generated>
-	^ self
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 FamixCBContext class >> named: aString on: anObject [
 
 	^ self new
@@ -50,7 +52,7 @@ FamixCBContext class >> named: aString on: anObject [
 		  yourself
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 FamixCBContext class >> named: aString on: anObject summary: aSummary [
 
 	^ self new
@@ -60,41 +62,38 @@ FamixCBContext class >> named: aString on: anObject summary: aSummary [
 		  yourself
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 FamixCBContext >> addChild: aRuleComponent [
 	aRuleComponent parent: self
 ]
 
-{ #category : #adding }
-FamixCBContext >> addChildren: anObject [
-	<generated>
-	^ self children add: anObject
-]
-
-{ #category : #adding }
+{ #category : 'adding' }
 FamixCBContext >> addEntity: anObject [
+
+	<ignoreForCoverage>
 	<generated>
 	^ self entities add: anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FamixCBContext >> children [
 	"Relation named: #children type: #FamixCBTRuleComponent opposite: #parent"
 
+	<ignoreForCoverage>
 	<generated>
 	<FMComment: 'Every child context or condition of this context.'>
-	<derived>
 	^ children
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FamixCBContext >> children: anObject [
 
+	<ignoreForCoverage>
 	<generated>
 	children value: anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FamixCBContext >> contextBlock [
 
 	self
@@ -104,7 +103,7 @@ FamixCBContext >> contextBlock [
 	^ self contextFilter
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FamixCBContext >> contextBlock: anObject [
 
 	self
@@ -116,76 +115,79 @@ FamixCBContext >> contextBlock: anObject [
 	self contextFilter: anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FamixCBContext >> contextFilter [
 
 	<FMProperty: #contextFilter type: #Object>
+	<ignoreForCoverage>
 	<generated>
 	<FMComment: 'Filter applied on entities. It can be a block or a custom object'>
 	^ contextFilter
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FamixCBContext >> contextFilter: anObject [
 
 	anObject asCBContextFilterIn: self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FamixCBContext >> contextFilterBlock: aBlock [
 
 	contextFilter := aBlock
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FamixCBContext >> contextFilterString: aString [
 
 	contextFilter := Smalltalk compiler evaluate: aString
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FamixCBContext >> customContextFilter: anObject [
 
 	contextFilter := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FamixCBContext >> entities [
 	"Relation named: #entities type: #MooseObject opposite: #contexts"
 
+	<ignoreForCoverage>
 	<generated>
 	<FMComment: 'Every entity that is a part of the context.'>
-	<derived>
 	<FMProperty: #entities type: #MooseObject opposite: #contexts>
+	<multivalued>
 	^ self attributeAt: #entities ifAbsentPut: [ FMMultiMultivalueLink on: self opposite: #contexts ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FamixCBContext >> entities: anObject [
 
+	<ignoreForCoverage>
 	<generated>
 	self entities value: anObject
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 FamixCBContext >> isCBContext [
 
 	^ true
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 FamixCBContext >> printAsBlock [
 
 	^ contextFilter asString
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 FamixCBContext >> putViolationsInto: aDictionary [
 	children do: [ :child | child putViolationsInto: aDictionary ]
 
 ]
 
-{ #category : #removing }
+{ #category : 'removing' }
 FamixCBContext >> removeChild: aRuleComponent [
 
 	(children includes: aRuleComponent) ifFalse: [ ^ self ].
@@ -194,14 +196,14 @@ FamixCBContext >> removeChild: aRuleComponent [
 	aRuleComponent resetExecutionOfTree
 ]
 
-{ #category : #removing }
+{ #category : 'removing' }
 FamixCBContext >> resetExecutionOfTree [
 	self entities removeAll.
 	children do: [ :child | child resetExecutionOfTree ]
 
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 FamixCBContext >> runDownTree: aCollection withCallback: aBlock [
 
 	self entities ifEmpty: [ 
@@ -210,44 +212,39 @@ FamixCBContext >> runDownTree: aCollection withCallback: aBlock [
 		child runDownTree: self entities asMooseGroup withCallback: aBlock ]
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 FamixCBContext >> runOn: aCollection [
 
 	self entities: (contextFilter value: aCollection)
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 FamixCBContext >> runOn: aCollection withCallback: aBlock [
 
 	aBlock cull: self name.
 	self entities: (contextFilter value: aCollection)
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 FamixCBContext >> runUpTree: aCollection [
 
 	self entities ifEmpty: [ self runOn: (parent runUpTree: aCollection) ].
 	^ self entities
 ]
 
-{ #category : #'ston persistence' }
+{ #category : 'ston persistence' }
 FamixCBContext >> stonOn: stonWriter [
-	stonWriter
-		writeObject: self
-		streamMap: [ :dictionary | 
-			self class stonAllInstVarNames
-				do: [ :each | 
-					(self instVarNamed: each)
-						ifNotNil: [ :value | 
-							dictionary
-								at: each asSymbol
-								put:
-									((value class = FullBlockClosure)
-										ifTrue: [ value asString ]
-										ifFalse: [ value ]) ] ] ] 
+
+	stonWriter writeObject: self streamMap: [ :dictionary |
+			self class stonAllInstVarNames do: [ :each |
+					(self instVarNamed: each) ifNotNil: [ :value |
+							dictionary at: each asSymbol put: (value isClosure
+									 ifTrue: [
+									 value sourceNode sourceCode "The source code of a block. Cf. https://github.com/pharo-project/pharo/issues/19558" ]
+									 ifFalse: [ value ]) ] ] ]
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 FamixCBContext >> tagRuleResult [
 
 	| model |

@@ -8,20 +8,32 @@ Class {
 MiNavigationQueryPresenterTest >> assertSubpresentersAreConfigured [
 
 	self
-		assert: presenter directionDropList selectedItem
+		assert: self directionDropList selectedItem
 		equals: self createNewQuery directionStrategy.
 
 
 	self
-		assertCollection: presenter associationsList items
+		assertCollection: self associationsList items
 		includesAll: self createNewQuery associations.
 	self
-		assertCollection: presenter associationsList selectedItems
+		assertCollection: self associationsList selectedItems
 		hasSameElements: self createNewQuery associations.
 
 	self
-		assert: presenter associationsButton class
+		assert: self associationsButton class
 		equals: SpButtonPresenter
+]
+
+{ #category : #'accessing-subpresenters' }
+MiNavigationQueryPresenterTest >> associationsButton [
+
+	^ presenter presenterAt: #associationsButton
+]
+
+{ #category : #'accessing-subpresenters' }
+MiNavigationQueryPresenterTest >> associationsList [
+
+	^ presenter presenterAt: #associationsList
 ]
 
 { #category : #running }
@@ -43,6 +55,12 @@ MiNavigationQueryPresenterTest >> createNewQuery [
 		  yourself
 ]
 
+{ #category : #'accessing-subpresenters' }
+MiNavigationQueryPresenterTest >> directionDropList [
+
+	^ presenter presenterAt: #directionDropList
+]
+
 { #category : #running }
 MiNavigationQueryPresenterTest >> queryClass [
 	^ FQNavigationQuery
@@ -51,17 +69,13 @@ MiNavigationQueryPresenterTest >> queryClass [
 { #category : #tests }
 MiNavigationQueryPresenterTest >> testPresenters [
 
+	self assert: self directionDropList class equals: SpDropListPresenter.
 	self
-		assert: presenter directionDropList class
-		equals: SpDropListPresenter.
-	self
-		assertCollection: presenter directionDropList items
+		assertCollection: self directionDropList items
 		hasSameElements: presenter query class directionStrategies.
 
-	(presenter presenterAt: #directionDropList) selectIndex: 2.
-	self
-		assert: presenter associationsButton class
-		equals: SpButtonPresenter
+	self directionDropList selectIndex: 2.
+	self assert: self associationsButton class equals: SpButtonPresenter
 ]
 
 { #category : #tests }
@@ -70,23 +84,26 @@ MiNavigationQueryPresenterTest >> testPresentersOnImpossibleQuery [
 	self resetPresenterWithEntities: helper noEntities.
 
 	self
-		assert: presenter directionDropList class
+		assert: self directionDropList class
 		equals: SpDropListPresenter.
 	self
-		assert: presenter associationsButton class
+		assert: self associationsButton class
 		identicalTo: NoPossibleQueryPresenter
 ]
 
 { #category : #tests }
 MiNavigationQueryPresenterTest >> testQueryValidity [
 
+	| popover |
 	self deny: presenter query isValid.
 
 	(presenter presenterAt: #directionDropList) selectIndex: 1.
 	self deny: presenter query isValid.
 
+	popover := presenter newAssociationsPopover.
 	(presenter presenterAt: #associationsList) activateItem:
 		presenter query availableAssociations anyOne.
+	popover popoverClosed.
 	self assert: presenter query isValid.
 
 	self resetPresenterWithEntities:
@@ -95,6 +112,37 @@ MiNavigationQueryPresenterTest >> testQueryValidity [
 
 	self resetPresenterWithEntities: helper noEntities.
 	self deny: presenter query isValid
+]
+
+{ #category : #tests }
+MiNavigationQueryPresenterTest >> testSelectedAssociationsLabel [
+
+	| item |
+	presenter query beDefaultForParent.
+	item := presenter query availableAssociations select: [ :i | i name = 'FamixStInheritance' ].
+	(presenter presenterAt: #associationsList) activateItem: item first.
+	item := presenter query availableAssociations select: [ :i | i name = 'FamixStAccess' ].
+
+	(presenter presenterAt: #associationsList) activateItem: item first.
+	item := presenter query availableAssociations select: [ :i | i name = 'FamixStInvocation' ].
+
+	(presenter presenterAt: #associationsList) activateItem: item first.
+	self assert: presenter selectedAssociationsLabel label equals: 'Access, Inheritance, Invocation'
+]
+
+{ #category : #tests }
+MiNavigationQueryPresenterTest >> testUpdateDirectionWithSelectedAssociations [
+
+	presenter query beDefaultForParent.
+
+	self associationsList activateItem:
+		presenter query availableAssociations first.
+
+	self assert: presenter selectedAssociationsLabel label isNotEmpty.
+
+	presenter updateDirection: FQLocalIncomingNavigation.
+
+	self assert: presenter selectedAssociationsLabel label equals: ''
 ]
 
 { #category : #tests }

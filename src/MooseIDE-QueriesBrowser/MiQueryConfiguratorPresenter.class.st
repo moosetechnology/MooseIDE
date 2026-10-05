@@ -14,7 +14,7 @@ Class {
 MiQueryConfiguratorPresenter >> computeQueryAction: anObject [
 
 	self configureQuery: anObject.
-  self root application consumeItem: query.
+	self root application consumeItem: query.
 	self notifyQueryChanged
 ]
 
@@ -60,12 +60,6 @@ MiQueryConfiguratorPresenter >> noParameterMessage: aParameterName [
 MiQueryConfiguratorPresenter >> notifyQueryChanged [
 
 	owner queryChangedUpdate
-]
-
-{ #category : #accessing }
-MiQueryConfiguratorPresenter >> queriesBrowser [
-
-	^ owner queriesBrowser
 ]
 
 { #category : #accessing }

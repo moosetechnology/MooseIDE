@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'helper',
 		'presenter',
-		'browser'
+		'browser',
+		'queriesListPresenter'
 	],
 	#category : #'MooseIDE-QueriesBrowser-Tests-Queries Configuration'
 }
@@ -52,17 +53,12 @@ MiQueryConfiguratorPresenterTest >> queryClass [
 { #category : #running }
 MiQueryConfiguratorPresenterTest >> resetPresenterWithEntities: aMooseGroup [
 
-	| builder superPresenter |
+	| superPresenter |
+	browser followEntity: aMooseGroup.
 
-	browser := MiQueriesBrowser
-		           newApplication: self application
-		           model: (FQRootQuery new
-				            input: aMooseGroup;
-				            yourself).
-	builder := browser queriesListPresenter.
 	"Add a query presenter"
-	builder addNewFirstLevelQuery.
-	superPresenter := builder componentList items first.
+	queriesListPresenter addNewFirstLevelQuery.
+	superPresenter := queriesListPresenter componentList items first.
 	superPresenter queryTypesDropList selectItem: self queryClass.
 	presenter := superPresenter queryConfiguratorPresenter
 ]
@@ -73,14 +69,17 @@ MiQueryConfiguratorPresenterTest >> setUp [
 	super setUp.
 
 	helper := self createTestHelper.
-
+	browser := MiQueriesBrowser
+		           newApplication: self application
+		           model: MiQueriesModel new.
+	queriesListPresenter := browser presenterAt: #queriesListPresenter.
 	self resetPresenterWithEntities: helper classesAndMethods
 ]
 
 { #category : #running }
 MiQueryConfiguratorPresenterTest >> tearDown [
 
-	browser window ifNotNil: [ :window | window close ].
+	browser ifNotNil: [ browser withWindowDo: [ :window | window close ] ].
 	super tearDown
 ]
 
@@ -88,15 +87,16 @@ MiQueryConfiguratorPresenterTest >> tearDown [
 MiQueryConfiguratorPresenterTest >> testConfigureFor [
 
 	| newQuery |
-	browser queriesListPresenter reinitializeQueryPresenters.
-	
+	queriesListPresenter reinitializeQueryPresenters.
+
 	newQuery := self createNewQuery.
-	
-	browser queriesListPresenter addNewFirstLevelQuery.
-	browser queriesListPresenter queryItemsPresenters last configureFor: newQuery.
-	
-	presenter := browser queriesListPresenter queryItemsPresenters last queryConfiguratorPresenter.
-	
+
+	queriesListPresenter addNewFirstLevelQuery.
+	queriesListPresenter queryItemsPresenters last configureFor: newQuery.
+
+	presenter := queriesListPresenter queryItemsPresenters last
+		             queryConfiguratorPresenter.
+
 	self assertSubpresentersAreConfigured.
 	self assert: presenter query equals: newQuery
 ]
@@ -105,15 +105,14 @@ MiQueryConfiguratorPresenterTest >> testConfigureFor [
 MiQueryConfiguratorPresenterTest >> testConfigureForWithNoEntities [
 
 	| newQuery |
-	browser queriesListPresenter reinitializeQueryPresenters.
+	queriesListPresenter reinitializeQueryPresenters.
 
 	newQuery := self createNewQueryWithoutInput.
 
-	browser queriesListPresenter addNewFirstLevelQuery.
-	browser queriesListPresenter queryItemsPresenters last configureFor:
-		newQuery.
+	queriesListPresenter addNewFirstLevelQuery.
+	queriesListPresenter queryItemsPresenters last configureFor: newQuery.
 
-	presenter := browser queriesListPresenter queryItemsPresenters last
+	presenter := queriesListPresenter queryItemsPresenters last
 		             queryConfiguratorPresenter.
 
 	self assertSubpresentersAreConfigured.

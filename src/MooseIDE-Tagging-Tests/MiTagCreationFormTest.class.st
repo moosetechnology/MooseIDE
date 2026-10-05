@@ -1,55 +1,82 @@
 Class {
-	#name : #MiTagCreationFormTest,
-	#superclass : #MiTagPresenterTest,
-	#category : #'MooseIDE-Tagging-Tests'
+	#name : 'MiTagCreationFormTest',
+	#superclass : 'MiTagPresenterTest',
+	#instVars : [
+		'creationForm'
+	],
+	#category : 'MooseIDE-Tagging-Tests',
+	#package : 'MooseIDE-Tagging-Tests'
 }
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 MiTagCreationFormTest >> presenterClass [
 
-	^ MiTagCreationForm
+	^ MiTagCreationForm 
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 MiTagCreationFormTest >> presenterOwner [
 
 	^ browser
 ]
 
-{ #category : #initialization }
+{ #category : 'running' }
 MiTagCreationFormTest >> setUp [
 
 	super setUp.
-	browser openTagCreationForm.
+	creationForm := browser createTag
 ]
 
-{ #category : #tests }
+{ #category : 'running' }
+MiTagCreationFormTest >> tearDown [
+
+	creationForm close.
+
+	super tearDown 
+]
+
+{ #category : 'tests' }
 MiTagCreationFormTest >> testCancelTagCreation [
 
-	self assert: browser layout child equals: browser tagCreationForm.
-	presenter cancelButton click.
-	self deny: browser layout child equals: browser tagCreationForm
+	self assert: creationForm isDisplayed.
+	self assert: browser specModel allTags size equals: 0.
+
+	creationForm cancelButton click.
+
+	self deny: creationForm isDisplayed.
+	self assert: browser specModel allTags size equals: 0.
+
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiTagCreationFormTest >> testCategoryDropListContainsCategories [
 
 	self
 		createCategory: 'Category001';
 		createCategory: 'Category002';
 		createCategory: 'Category003'.
-	presenter updateCategories.
-	self assert: presenter categorySelection items size equals: 4
+	creationForm updateCategories.
+	self assert: creationForm categorySelection items size equals: 4
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiTagCreationFormTest >> testExtentTagDefault [
 
-	self assert: presenter extentButton state equals: true.
-	self deny: presenter queryListLabeled isVisible
+	self assert: creationForm extentButton state equals: true.
+	self deny: creationForm queryListLabeled isVisible
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
+MiTagCreationFormTest >> testIsConsumerOfFQAbstractQuery [
+
+	self skip: #TODO.
+
+	self assert:
+		((browser application consumersOf: FQAbstractQuery) anySatisfy: [ :elt | 
+			 elt = creationForm ])
+]
+
+{ #category : 'tests' }
 MiTagCreationFormTest >> testQueryDropListFetchQueriesFromQueriesProducer [
 
 	| mockProducer query |
@@ -59,34 +86,54 @@ MiTagCreationFormTest >> testQueryDropListFetchQueriesFromQueriesProducer [
 		for: FQAbstractQuery.
 	query := FQBooleanQuery new property: #isAbstract.
 	(mockProducer stub itemsFor: FQAbstractQuery) willReturn: { query }.
-	presenter updateQueryList.
-	self assert: (presenter queryList items anySatisfy: [ :q |  (q class = query class) and: [ q property = query property ] ])
+
+	creationForm updateQueryList.
+
+	self assert: (creationForm queryList items anySatisfy: [ :q |  (q class = query class) and: [ q property = query property ] ])
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
+MiTagCreationFormTest >> testSetExtentTag [
+
+	self deny: creationForm intentButton state.
+	
+	creationForm extentButton click.
+	creationForm extentButton action value.  "this should be triggered by clicking on the button but it does seem to work :-("
+	
+	self deny: creationForm intentButton state.
+	self assert: creationForm extentButton state.
+	self deny: creationForm queryListLabeled isVisible
+]
+
+{ #category : 'tests' }
 MiTagCreationFormTest >> testSetIntentTag [
 
-	self assert: presenter intentButton state equals: false.
-	self flag: 'fix weird behavior'.
-	presenter intentButton click.
-	presenter intentButton action value.
-	self assert: presenter intentButton state equals: true.
-	self assert: presenter extentButton state equals: false.
-	self assert: presenter queryListLabeled isVisible
+	self deny: creationForm intentButton state.
+	
+	creationForm intentButton click.
+	creationForm intentButton action value.  "this should be triggered by clicking on the button but it does seem to work :-("
+	
+	self assert: creationForm intentButton state.
+	self deny: creationForm extentButton state.
+	self assert: creationForm queryListLabeled isVisible
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiTagCreationFormTest >> testShouldNotSubmitWithoutName [
 
-	presenter submit.
-	self assert: browser layout child equals: browser tagCreationForm
+	creationForm submit.
+
+	self assert: creationForm isDisplayed 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MiTagCreationFormTest >> testSubmitCreatesATag [
 
-	self assert: browser tagModel allTags size equals: 0.
-	presenter nameField text: 'Tag001'.
-	presenter submitButton click.
-	self assert: browser tagModel allTags size equals: 1
+	self assert: browser specModel allTags size equals: 0.
+
+	creationForm nameField text: 'Tag001'.
+	creationForm submitButton click.
+
+	self assert: browser specModel allTags size equals: 1.
+	self assert: browser specModel allTags anyOne name equals: 'Tag001'
 ]

@@ -17,7 +17,7 @@ MiPlaygroundPagePresenter >> addModelExpression: anExpression [
 { #category : #private }
 MiPlaygroundPagePresenter >> addMooseToolbarCommandsTo: aGroup [
 
-	MiWindowPresenter
+	self playgroundBrowser class
 		buildCommandsGroupWith: self playgroundBrowser
 		forRoot: aGroup
 ]

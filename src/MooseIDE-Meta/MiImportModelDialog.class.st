@@ -4,9 +4,6 @@ Abstract class for model import dialogs
 Class {
 	#name : #MiImportModelDialog,
 	#superclass : #MiPresenter,
-	#instVars : [
-		'originBrowser'
-	],
 	#category : #'MooseIDE-Meta-Import'
 }
 
@@ -43,8 +40,15 @@ MiImportModelDialog >> importModel [
 MiImportModelDialog >> importModelStep1Import [
 
 	^ [ self importModel ] onErrorDo: [ :err |
-		  UIManager default alert: 'Import error: ' , err messageText.
-		  nil ]
+		    (MorphicUIManager new
+        confirm: ('Import error: ' , err messageText)
+        trueChoice: 'Ignore'
+        falseChoice: nil
+        cancelChoice: 'Debug'
+        default: false)
+    ifNil: [ err pass ]
+	 ifNotNil: [  ].
+	]
 ]
 
 { #category : #action }
@@ -65,27 +69,28 @@ MiImportModelDialog >> importModelThenCloseDialogWindow [
 		UIManager default alert: 'Invalid input: ' , err messageText.
 		^ self ].
 
-	aJob := [ :job |
-	        job title: 'Importing model'.
-	        mooseModel := self importModelStep1Import.
-	        job currentValue: 50.
-	        self importModelStep2Install: mooseModel
-	] asJob.
+		aJob := [ :job |
+		        job title: 'Importing model'.
+		        mooseModel := self importModelStep1Import.
+		        job currentValue: 50.
+		        self importModelStep2Install: mooseModel ] asJob.
 
-	[ aJob run ] forkAt: Processor userBackgroundPriority
+		[ aJob run ] forkAt: Processor userBackgroundPriority.
+		self withWindowDo: [ :window | window close ].
+	
+
 ]
 
 { #category : #initialization }
 MiImportModelDialog >> initializeDialogWindow: aDialog [
 
 	| button |
-
 	button := nil.
 	aDialog initialExtent: self class windowExtent.
-	button := aDialog
-		          addButton: 'Import'
-		          do: [ self importModelThenCloseDialogWindow ].
-	aDialog addButton: 'Cancel' do: [ :dialog | dialog close ]
+	button := aDialog addButton: 'Cancel' do: [ :dialog | dialog close ].
+	aDialog
+		 addButton: 'Import'
+		 do: [ self importModelThenCloseDialogWindow ].
 ]
 
 { #category : #action }
@@ -94,34 +99,27 @@ MiImportModelDialog >> privateImportModel [
 	self subclassResponsibility
 ]
 
-{ #category : #'accessing - model' }
-MiImportModelDialog >> setModelBeforeInitialization: aBrowserOrMoosePanel [
-
-	originBrowser := aBrowserOrMoosePanel
-]
-
-{ #category : #accessing }
-MiImportModelDialog >> settings [
-
-	^ originBrowser settingsItem
-]
-
-{ #category : #accessing }
+{ #category : #testing }
 MiImportModelDialog >> shouldCreateCache [
 
-	^ originBrowser specModel shouldCreateCache 
+	^ self application currentModelsBrowser specModel shouldCreateCache 
 ]
 
 { #category : #action }
 MiImportModelDialog >> updateBrowserWith: mooseModel [
 
-	originBrowser
-		ifNotNil: [ originBrowser updateForNewModel: mooseModel ]
-		ifNil: [ MiApplication current currentModelsBrowser updateList ]
+	self application currentModelsBrowser updateForNewModel: mooseModel
 ]
 
 { #category : #action }
 MiImportModelDialog >> validateImportForm [
 	"checks that required fields are properly filled in"
 	self subclassResponsibility 
+]
+
+{ #category : #accessing }
+MiImportModelDialog >> windowTitle [ 
+
+	^ self class title 
+	
 ]

@@ -2,13 +2,15 @@ name: Run tests
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "development", "master" ]
   pull_request:
-    branches: [ "master" ]
-  
+    branches: [ "development", "master" ]
+  workflow_dispatch:
+ 
 jobs:
   run:
     uses: moosetechnology/.github/.github/workflows/run-tests.yml@main
     with:
-      create-artifact: ${{ github.event_name == 'push' }} #Create artifact only after a push.
+      create-artifact: ${{ github.event_name == 'push' }} #Create artifact only after a push
       image-name: MooseIDE
+      run-coverage: true

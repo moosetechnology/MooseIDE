@@ -7,6 +7,7 @@ Class {
 { #category : #examples }
 RSAttributedTextExamples class >> example01 [
 	"TagEmphasis"
+
 	<example>
 	| string |
 	string := 'context function foo base 123 context
@@ -16,12 +17,19 @@ function 123
 fun
   context'.
 
-	^self new
-		text: string ;
-		tagAll: 'context'  in: string with: [RSTagEmphasisAttribute new color: Color red ; on: RSMouseClick do: [ :event | UIManager default inform: 'A red Context' ]] ;
-		tagAll: 'function' in: string with: [RSTagEmphasisAttribute new color: Color green  ; on: RSMouseClick do: [ :event | UIManager default inform: 'A green Function' ]] ;
-		open
-	
+	^ self new
+		  text: string;
+		  tagAll: 'context' in: string with: [
+				  RSTagEmphasisAttribute new
+					  color: Color red;
+					  on: RSMouseClick
+					  do: [ :event | UIManager default inform: 'A red Context' ] ];
+		  tagAll: 'function' in: string with: [
+			  RSTagEmphasisAttribute new
+				  color: Color green;
+				  on: RSMouseClick
+				  do: [ :event | UIManager default inform: 'A green Function' ] ];
+		  open
 ]
 
 { #category : #examples }

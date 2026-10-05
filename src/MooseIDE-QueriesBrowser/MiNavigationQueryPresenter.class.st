@@ -22,7 +22,6 @@ MiNavigationQueryPresenter class >> title [
 MiNavigationQueryPresenter >> configureFor: aQuery [
 
 	| queryAssociations |
-	query := aQuery.
 	queryAssociations := aQuery associations.
 
 	directionDropList selectItem: aQuery directionStrategy.
@@ -31,8 +30,10 @@ MiNavigationQueryPresenter >> configureFor: aQuery [
 
 	associationsList items: associationsList items | queryAssociations.
 
-	queryAssociations do: [ :assoc | 
-		associationsList activateItem: assoc ]
+	queryAssociations do: [ :assoc |
+		associationsList activateItem: assoc ].
+
+	query := aQuery
 ]
 
 { #category : #actions }
@@ -54,19 +55,18 @@ MiNavigationQueryPresenter >> initializeAssociationsButton [
 { #category : #initialization }
 MiNavigationQueryPresenter >> initializeAssociationsList [
 
-	associationsList := self instantiate: SpFilteringSelectableListPresenter.
-	associationsList addStyle: 'smallList'.
+	associationsList := self instantiate: MiSelectableListPresenter.
+	associationsList addStyle: 'largeList'.
 	associationsList
-		display: [ :item | item mooseDescription name asString ];
+		display: [ :item | item metadescription name asString ];
 		items: self query availableAssociations;
 		selectItems: self query associations;
-		onActivation: [ :association | 
-			self selectAssociationAction: association ];
-		onDeactivation: [ :association | 
-			self selectAssociationAction: association ].
+		sortingBlock: #name ascending ;
+		onActivation: [ self updateLabel ];
+		onDeactivation: [ self updateLabel ].
 
-	self query associations do: [ :assoc | 
-		associationsList activateItem: assoc ]
+	self query associations do: [ :assoc | associationsList activateItem: assoc ]
+
 ]
 
 { #category : #initialization }
@@ -103,8 +103,19 @@ MiNavigationQueryPresenter >> newAssociationsButton [
 
 	^ self newButton
 		  label: 'Select Associations';
-		  action: [ self showAssociationsPopover ];
+		  action: [ self newAssociationsPopover popup ];
 		  yourself
+]
+
+{ #category : #initialization }
+MiNavigationQueryPresenter >> newAssociationsPopover [
+
+	^ self newPopover
+		  relativeTo: associationsButton;
+		  presenter: associationsList;
+		  bePositionRight;
+		  whenClosedDo: [
+			  self computeQueryAction: associationsList selectedItems ]
 ]
 
 { #category : #layout }
@@ -125,21 +136,10 @@ MiNavigationQueryPresenter >> newLayout [
 		yourself
 ]
 
-{ #category : #actions }
-MiNavigationQueryPresenter >> selectAssociationAction: association [
+{ #category : #accessing }
+MiNavigationQueryPresenter >> selectedAssociationsLabel [
 
-	self updateLabel.
-	self computeQueryAction: association
-]
-
-{ #category : #initialization }
-MiNavigationQueryPresenter >> showAssociationsPopover [
-
-	self newPopover
-		relativeTo: associationsButton;
-		presenter: associationsList;
-		bePositionRight;
-		popup
+	^ selectedAssociationsLabel
 ]
 
 { #category : #actions }
@@ -150,26 +150,26 @@ MiNavigationQueryPresenter >> updateDirection: selectedDirection [
 	self initializeAssociationsList.
 	self initializeAssociationsButton.
 	self initializeLayout.
-
+	self updateLabel.
 	self notifyQueryChanged
 ]
 
 { #category : #actions }
 MiNavigationQueryPresenter >> updateLabel [
-	
+
 	| selectedAssociationsString names reducedNames |
-	names := associationsList selectedItems collect: [ :each |
-		each mooseDescription name asString ].
+	names := associationsList selectedItems collect: [ :each | each metadescription name asString ].
 	reducedNames := names size > 2
-	ifTrue: [
-		names collect: [ :each |
-			LbCContractor new
-				usingPriorities;
-				removeVowels;
-				ellipsisUpTo: 8;
-				reduce: each ] ]
-	ifFalse: [ names ].
-	selectedAssociationsString := reducedNames joinUsing: ', '.
+		                ifTrue: [
+				                names collect: [ :each |
+						                LbCContractor new
+							                usingPriorities;
+							                ellipsisUpTo: 8;
+							                reduce: each ] ]
+		                ifFalse: [ names ].
+
+	names sort: #yourself ascending.
+	selectedAssociationsString := names joinUsing: ', '.
 	selectedAssociationsLabel label: selectedAssociationsString
 ]
 

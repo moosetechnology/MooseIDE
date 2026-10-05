@@ -21,11 +21,11 @@ MiAccumulatorBrowserTest >> mooseObjects [
 MiAccumulatorBrowserTest >> testCanOpenOnMooseEntity [
 
 	| newBrowser |
-	self bus globallySelect: (self anEntity: 'a').
+	self application miPropagate: (self anEntity: 'a').
 	self
-		shouldnt: [ 
-			newBrowser := self browserClass openForTests: self application.
-			newBrowser window close ]
+		shouldnt: [
+				newBrowser := self browserClass openForTests: self application.
+				newBrowser window close ]
 		raise: Error
 ]
 
@@ -50,10 +50,10 @@ MiAccumulatorBrowserTest >> testClearEntities [
 
 	browser followEntity: self mooseObjects.
 
-	self denyEmpty: browser model entities.
+	self denyEmpty: browser specModel entities.
 
 	browser btnClear click.
-	self assertEmpty: browser model entities
+	self assertEmpty: browser specModel entities
 ]
 
 { #category : #'tests - buses' }
@@ -61,11 +61,11 @@ MiAccumulatorBrowserTest >> testFollowBusTriggersSelectEntity [
 
 	| propagatedEntity |
 	propagatedEntity := self anEntity: 'a'.
-	
+
 	browser stub.
-	
-	self bus globallySelect: propagatedEntity.
-	
+
+	self application miPropagate: propagatedEntity.
+
 	browser followBus: self bus.
 	browser should receive receiveEntity: propagatedEntity
 ]
@@ -73,22 +73,21 @@ MiAccumulatorBrowserTest >> testFollowBusTriggersSelectEntity [
 { #category : #running }
 MiAccumulatorBrowserTest >> testFollowEntity [
 
-	self assertEmpty: browser model entities.
+	self assertEmpty: browser specModel entities.
 
 	browser followEntity: self mooseObjects.
 
-	self assert: browser model entities size equals: 2
+	self assert: browser specModel entities size equals: 2
 ]
 
 { #category : #running }
 MiAccumulatorBrowserTest >> testMiSelectedItemWithSelection [
 
 	| entities |
-
 	entities := self mooseObjects.
 
 	browser followEntity: entities.
-	browser model selectedEntities: { entities first }.
+	browser specModel selectedEntities: { entities first }.
 
 	self assert: browser miSelectedItem size equals: 1
 ]
@@ -105,15 +104,14 @@ MiAccumulatorBrowserTest >> testMiSelectedItemWithoutSelection [
 MiAccumulatorBrowserTest >> testRemoveEntities [
 
 	| entities |
-
 	entities := self mooseObjects.
 
 	browser followEntity: entities.
-	browser model selectedEntities: { entities first }.
+	browser specModel selectedEntities: { entities first }.
 
-	self assert: browser model entities size equals: 2.
+	self assert: browser specModel entities size equals: 2.
 
 	browser btnRemove click.
 
-	self assert: browser model entities size equals: 1
+	self assert: browser specModel entities size equals: 1
 ]

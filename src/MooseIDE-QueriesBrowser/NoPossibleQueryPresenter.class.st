@@ -47,3 +47,8 @@ NoPossibleQueryPresenter >> isImpossibleQueryPresenter [
 NoPossibleQueryPresenter >> setModelBeforeInitialization: aString [
 	textToDisplay := 'No ' , aString , ' available'
 ]
+
+{ #category : #api }
+NoPossibleQueryPresenter >> startWithSelection [
+	
+]

@@ -15,6 +15,12 @@ Class {
 }
 
 { #category : #accessing }
+MiQueriesDashboardBrowser class >> defaultPreferredExtent [
+
+	^ 800 @ 500
+]
+
+{ #category : #accessing }
 MiQueriesDashboardBrowser class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
@@ -50,12 +56,6 @@ MiQueriesDashboardBrowser class >> open [
 MiQueriesDashboardBrowser class >> title [
 
 	^ 'Queries dashboard'
-]
-
-{ #category : #specs }
-MiQueriesDashboardBrowser class >> windowSize [
-
-	^ 800 @ 500
 ]
 
 { #category : #testing }

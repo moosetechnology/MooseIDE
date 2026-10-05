@@ -95,12 +95,9 @@ MiLayerVisualizationModel >> clientLayers [
 MiLayerVisualizationModel >> commonPackagesFor: elements [
 
 	| groups |
-	groups := (elements groupedBy: [ :e | 
-		           (e atScope: FamixTPackage) anyOne ])
-		          associations.
+	groups := (elements groupedBy: [ :e | (e containersOfType: FamixTPackage) anyOne ]) associations.
 
-	^ groups collect: [ :a | 
-		  self createPackageElement: a key with: a value ]
+	^ groups collect: [ :a | self createPackageElement: a key with: a value ]
 ]
 
 { #category : #building }
@@ -200,11 +197,9 @@ MiLayerVisualizationModel >> purgatoryLayer [
 MiLayerVisualizationModel >> rootClass: anEntity [
 
 	| rootTypes |
-	rootTypes := anEntity atScopeWithProperty: [ :c | 
-		             c isType and: [ c typeContainer isPackage ] ].
+	rootTypes := anEntity query containers withProperty: [ :c | c isType and: [ c typeContainer isPackage ] ].
 
-	self flag:
-		'This should not be empty, if it happens. It means that there is a problem in the model'.
+	self flag: 'This should not be empty, if it happens. It means that there is a problem in the model'.
 	rootTypes ifEmpty: [ ^ anEntity ].
 
 	^ rootTypes anyOne

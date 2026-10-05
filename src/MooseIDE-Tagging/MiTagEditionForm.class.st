@@ -1,31 +1,38 @@
 Class {
-	#name : #MiTagEditionForm,
-	#superclass : #MiTagCreationForm,
-	#category : #'MooseIDE-Tagging-Browser'
+	#name : 'MiTagEditionForm',
+	#superclass : 'MiTagAbstractForm',
+	#category : 'MooseIDE-Tagging-Browser',
+	#package : 'MooseIDE-Tagging',
+	#tag : 'Browser'
 }
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiTagEditionForm >> checkFormInputs [
 
-	nameField text ifEmpty: [ ^ false ].
-	tagModel currentTag isIntent ifFalse: [ 
-		(tagModel getTagNamed: nameField text) ifNotNil: [ :tag | 
-			tagModel currentTag = tag ifFalse: [ ^ false ] ] ].
+	
+	self specModel currentTag isIntent ifFalse: [
+		(self specModel getTagNamed: nameField text) ifNotNil: [ :tag |
+			self specModel currentTag = tag ifFalse: [
+				| popup |
+				(popup := self newPopover)
+					addStyle: 'error';
+					relativeTo: nameField;
+					bePositionRight;
+					presenter: (SpPresenter new
+							 layout: (SpBoxLayout newTopToBottom
+									  borderWidth: 2;
+									  spacing: 0;
+									  add: (self newLabel label: 'Name already exists');
+									  yourself);
+							 yourself);
+					popup.
+				^ false ] ] ].
+	
 
-
-	^ true
+	^ super checkFormInputs 
 ]
 
-{ #category : #initialization }
-MiTagEditionForm >> connectPresenters [
-
-	cancelButton action: [ 
-		self reset.
-		self owner closeTagEditionForm ].
-	submitButton action: [ self submit ]
-]
-
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiTagEditionForm >> fillFormWithTag: aTag [
 
 	aTag ifNil: [ ^ self ].
@@ -35,60 +42,56 @@ MiTagEditionForm >> fillFormWithTag: aTag [
 	
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiTagEditionForm >> fillWithCurrentTag [
 
-	self fillFormWithTag: tagModel currentTag
+	self fillFormWithTag: self specModel currentTag
 ]
 
-{ #category : #initialization }
-MiTagEditionForm >> formLayout [
-
-	^ SpBoxLayout newTopToBottom
-		  spacing: 10;
-		  add: (SpBoxLayout newLeftToRight
-				   spacing: 5;
-				   add: (SpBoxLayout newTopToBottom
-						    add: 'Name' asPresenter expand: false;
-						    add: nameField expand: false;
-						    yourself);
-				   add: (SpBoxLayout newTopToBottom
-						    add: 'Category (optional)';
-						    add: categorySelection;
-						    yourself)
-				   width: 200;
-				   yourself)
-		  expand: false;
-		  add: (SpBoxLayout newTopToBottom
-				   add: 'Description (optional)' asPresenter expand: false;
-				   add: descriptionField height: 150;
-				   yourself)
-		  expand: false;
-		  add: (SpBoxLayout newLeftToRight
-				   vAlignEnd;
-				   spacing: 10;
-				   add: cancelButton;
-				   add: submitButton;
-				   yourself);
-		  yourself
-]
-
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiTagEditionForm >> formTitle [
 
 	^ 'Edit tag'
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
+MiTagEditionForm >> initializeFormLayout [
+
+	^ self formLayout 
+]
+
+{ #category : 'initialization' }
 MiTagEditionForm >> initializePresenters [
 
 	super initializePresenters.
+
+	submitButton label: 'Save'.
 	extentButton hide.
-	intentButton hide. 
-	submitButton label: 'Edit'.
+	intentButton hide.
 ]
 
-{ #category : #accessing }
+{ #category : 'initialization' }
+MiTagEditionForm >> isIntentSubmit [
+
+	self specModel
+		editCurrentDynamicTag: nameField text
+		description: descriptionField text
+		color: colorPicker color
+		category: categorySelection selectedItem
+		query: queryList selectedItem
+]
+
+{ #category : 'initialization' }
+MiTagEditionForm >> notIntentSubmit [
+
+	self specModel
+		editCurrentTag: nameField text
+		description: descriptionField text
+		color: colorPicker color
+		category: categorySelection selectedItem
+]
+
+{ #category : 'accessing' }
 MiTagEditionForm >> setDynamicTag: aTag [
 
 	self setIntentForm.
@@ -103,7 +106,7 @@ MiTagEditionForm >> setDynamicTag: aTag [
 		queryList startWithSelection selectItem: aTag query ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiTagEditionForm >> setTag: aTag [
 
 	self setExtentForm.
@@ -114,29 +117,20 @@ MiTagEditionForm >> setTag: aTag [
 		categorySelection selectItem: aTag categories first ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MiTagEditionForm >> submit [
 
 	self checkFormInputs ifFalse: [ ^ self ].
-	tagModel currentTag isIntent
-		ifTrue: [ 
-			self owner tagModel
-				editCurrentDynamicTag: nameField text
-				description: descriptionField text
-				color: colorPicker color
-				category: categorySelection selectedItem
-				query: queryList selectedItem ]
-		ifFalse: [ 
-			self owner tagModel
-				editCurrentTag: nameField text
-				description: descriptionField text
-				color: colorPicker color
-				category: categorySelection selectedItem ].
 
-	self owner closeTagEditionForm
+	self specModel currentTag isIntent
+		ifTrue: [ self isIntentSubmit ]
+		ifFalse: [ self notIntentSubmit ].
+
+	tagBrowser refreshTagList.
+	self close
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MiTagEditionForm >> title [
 
 	^ 'Edit tag'

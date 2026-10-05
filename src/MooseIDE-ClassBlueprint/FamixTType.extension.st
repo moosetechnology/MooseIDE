@@ -1,8 +1,8 @@
 Extension { #name : #FamixTType }
 
 { #category : #'*MooseIDE-ClassBlueprint' }
-FamixTType >> miBlueprintInspectorExtension [
+FamixTType >> miInspectionBlueprint: aBuilder [
 
 	<inspectorPresentationOrder: 10 title: 'Blueprint'>
-	^ self blueprint asInspectorPresenter
+	^ self blueprint buildInspectorPresenter: aBuilder
 ]

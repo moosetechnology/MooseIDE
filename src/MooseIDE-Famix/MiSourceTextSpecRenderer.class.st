@@ -1,101 +1,147 @@
 "
-A renderer of highlighted source text using Spec SpTextPresenter.
-Ideally it would be subclass of a MiSourceTextAbstractRenderer, but it also need to inherit from SpTextPresenter
+A renderer of highlighted source text using `SpTextPresenter`.
+It can `MiSourceTextSpecRenderer >> #renderTextFor: anEntity` by applying the highlights of its `#model`
+Highlighting relies on Famix: to get the SourceLanguage keywords and to get the position of Famix entities.
+Some parts of the text are clickable and will trigger `MiSourceTextSpecRenderer >> #activateTransmissionWithValue:` (because the renderer uses `SpTActivable`)
 
-A renderer has a MiSourceTextBrowserModel and a browser.
-It can #renderText by applying the highlights of its #model
+A renderer has a `MiSourceTextBrowserModel` and a parent browser which can be a `MiSourceTextBrowser` or an Inspector.
+
 "
 Class {
 	#name : #MiSourceTextSpecRenderer,
 	#superclass : #SpTextPresenter,
+	#traits : 'SpTActivable',
+	#classTraits : 'SpTActivable classTrait',
 	#instVars : [
-		'model',
-		'formatedText',
-		'sourceAnchorAdapter'
+		'#formatedText',
+		'#rendererModel',
+		'#selectedItem => ObservableSlot'
 	],
 	#category : #'MooseIDE-Famix-SourceText'
 }
 
 { #category : #formatting }
+MiSourceTextSpecRenderer >> activateTransmissionWithValue: aValue [
+	"2 actions for each possible use:
+	 - inside a MiSourceTextBrowser, #selectedItem is an ObservableSlot
+	   that will trigger transmission to the owner
+	 - inside an Inspector, there is an #activationAction to do the same thing"
+
+	selectedItem := aValue.
+	activationAction ifNotNil: [ :action | action cull: (SpActivatedSelection newValue: aValue)]
+]
+
+{ #category : #formatting }
 MiSourceTextSpecRenderer >> applyCommentHighlight: aHighlight [
-	"put comments in grey"
+	"remove all other attributes on comments and set color attribute to grey"
 
-	formatedText 
-		addAttribute: TextColor gray
-		from: aHighlight from
-		to: aHighlight to.
+	self clearFormatingFrom: aHighlight from to: aHighlight to.
 
+	self applyHighlight: aHighlight markers: self commentMarkers
 ]
 
 { #category : #formatting }
 MiSourceTextSpecRenderer >> applyErrorHighlight: aHighlight [
 
+	self applyHighlight: aHighlight markers: self errorMarkers
+]
+
+{ #category : #formatting }
+MiSourceTextSpecRenderer >> applyHighlight: aHighlight markers: markers [
+
+	markers do: [ :marker |
+		formatedText
+			addAttribute: marker
+			from: aHighlight from
+			to: aHighlight to
+	]
+]
+
+{ #category : #formatting }
+MiSourceTextSpecRenderer >> applyIdentifierHighlight: aHighlight [
+	"Clicking on identifiers initiate transmission to the owner presenter"
+
+	self applyHighlight: aHighlight markers: self identifierMarkers.
+
 	formatedText 
-		addAttribute: TextColor red
+		addAttribute:
+			(TextDoIt new actOnClickBlock: [ :ignored :event |
+				self activateTransmissionWithValue: aHighlight highlightedEntity ])
 		from: aHighlight from
 		to: aHighlight to
 ]
 
 { #category : #formatting }
-MiSourceTextSpecRenderer >> applyIdentifierHighlight: aHighlight [
-	"Identifiers are underlined + italic + bold
-	 Clicking on them is passed on to the spec model"
+MiSourceTextSpecRenderer >> applyKeywordHighlight: aHighlight [
 
-	formatedText 
-		addAttribute: TextEmphasis underlined
-		from: aHighlight from
-		to: aHighlight to ;
-
-		addAttribute: TextEmphasis italic
-		from: aHighlight from
-		to: aHighlight to ;
-		
-		addAttribute: TextEmphasis bold
-		from: aHighlight from
-		to: aHighlight to ;
-
-		addAttribute:
-			(TextDoIt new actOnClickBlock: [ :ignored :event |
-				self event: event selectedEntity: aHighlight highlightedEntity ])
-		from: aHighlight from
-		to: aHighlight to ;
-
-		addAttribute: TextColor black
-		from: aHighlight from
-		to: aHighlight to.
-
+	self applyHighlight: aHighlight markers: self keywordMarkers
 ]
 
 { #category : #formatting }
 MiSourceTextSpecRenderer >> applyTagHighlight: aHighlight [
 
-	formatedText
-		addAttribute: (TextColor color: aHighlight tag color)
-		from: aHighlight from
-		to: aHighlight to
+	self applyHighlight: aHighlight markers: (self tagMarkers: aHighlight color)
 ]
 
 { #category : #accessing }
 MiSourceTextSpecRenderer >> browser [
-	^self model browser
+	^self owner
 ]
 
 { #category : #formatting }
-MiSourceTextSpecRenderer >> clearFormating [
+MiSourceTextSpecRenderer >> clearFormatingFrom: start to: stop [
 
-	formatedText := formatedText asString asText
+	formatedText := formatedText copyReplaceFrom: start to: stop with: (formatedText copyFrom: start to: stop) asString
+]
+
+{ #category : #'accessing - markers' }
+MiSourceTextSpecRenderer >> commentMarkers [
+
+	^{TextColor gray}
+]
+
+{ #category : #initialization }
+MiSourceTextSpecRenderer >> connectPresenters [
+	"When receiver is created as part of an Inspector, #owner is nil at this point
+	   so we cannot `register` the transmission now
+	   (note: in this case, the registering is done later automatically by the Inspector)
+	 This is used when the receiver is part of a MiSourceTextBrowser"
+
+	self owner ifNotNil: [ self transmitTo: self owner ]
+]
+
+{ #category : #ports }
+MiSourceTextSpecRenderer >> defaultOutputPort [ 
+
+	^SpPropertyChangedPort
+		newPresenter: self
+		property: #selectedItem
+]
+
+{ #category : #'accessing - markers' }
+MiSourceTextSpecRenderer >> errorMarkers [
+
+	^{TextColor red}
 ]
 
 { #category : #actions }
 MiSourceTextSpecRenderer >> event: anEvent selectedEntity: anEntity [
 
-	model event: anEvent selectedEntity: anEntity.
+	rendererModel event: anEvent selectedEntity: anEntity.
 	self inform: 'Selected entity: ' , anEntity asString
 ]
 
-{ #category : #'private - testing' }
+{ #category : #accessing }
 MiSourceTextSpecRenderer >> formatedText [
 	^formatedText 
+]
+
+{ #category : #'accessing - markers' }
+MiSourceTextSpecRenderer >> identifierMarkers [
+
+	self flag: 'unfortunately TextEmphasis dominates: TextColor'.
+
+	^{ TextColor color: (Color fromHexString: '237ea6') . TextEmphasis underlined }
 ]
 
 { #category : #initialization }
@@ -103,54 +149,54 @@ MiSourceTextSpecRenderer >> initialize [
 	super initialize.
 	self beNotEditable.
 
-	sourceAnchorAdapter := MiSourceTextNullAdapter new
 ]
 
-{ #category : #accessing }
-MiSourceTextSpecRenderer >> model [
-	^model
-]
+{ #category : #'accessing - markers' }
+MiSourceTextSpecRenderer >> keywordMarkers [
 
-{ #category : #accessing }
-MiSourceTextSpecRenderer >> model: aSourceTextModel [
-	model := aSourceTextModel
+	^{TextColor color: (Color fromHexString: '073fff')}
 ]
 
 { #category : #rendering }
-MiSourceTextSpecRenderer >> reRenderText [
-	"Apply highlights if needed
-	 Re-display (requires to clear the text first)"
+MiSourceTextSpecRenderer >> renderText [
 
-	self clearFormating.
+	formatedText := rendererModel displayedText asText.
 
-	model highlights do: [ :hlght |
-		hlght adaptSourceAnchorWith: self sourceAnchorAdapter.
-		hlght hasInterval ifTrue: [ hlght applyTo: self ]	
-	].
+	rendererModel highlights do: [ :hlght |
+			hlght hasInterval
+				ifTrue: [ hlght applyTo: self ] ].
 
 	self clearContent.
 	self text: formatedText
-
 ]
 
 { #category : #rendering }
 MiSourceTextSpecRenderer >> renderTextFor: anEntity [
-	
-	formatedText := model displayedText asText.
-	sourceAnchorAdapter := MiAbstractSourceTextAnchorAdapter adapterFor: anEntity.
-	sourceAnchorAdapter initializeDisplayedText: formatedText andEntity: anEntity.
 
-	self reRenderText
+	rendererModel renderTextFor: anEntity
+]
 
+{ #category : #accessing }
+MiSourceTextSpecRenderer >> rendererModel [
+
+	^ rendererModel
+]
+
+{ #category : #accessing }
+MiSourceTextSpecRenderer >> rendererModel: anObject [
+
+	rendererModel := anObject.
+	anObject renderer: self
 ]
 
 { #category : #initialization }
 MiSourceTextSpecRenderer >> setModelBeforeInitialization: aModel [
-	self model: aModel
+
+	self rendererModel: aModel
 ]
 
-{ #category : #accessing }
-MiSourceTextSpecRenderer >> sourceAnchorAdapter [
+{ #category : #'accessing - markers' }
+MiSourceTextSpecRenderer >> tagMarkers: aColor [
 
-	^sourceAnchorAdapter
+	^{TextColor color: aColor}
 ]

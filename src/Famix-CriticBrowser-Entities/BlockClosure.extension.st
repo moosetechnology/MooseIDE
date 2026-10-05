@@ -1,6 +1,6 @@
-Extension { #name : #BlockClosure }
+Extension { #name : 'BlockClosure' }
 
-{ #category : #'*Famix-CriticBrowser-Entities' }
+{ #category : '*Famix-CriticBrowser-Entities' }
 BlockClosure >> asCBContextFilterIn: aFamixCBContext [
 
 	aFamixCBContext contextFilterBlock: self
