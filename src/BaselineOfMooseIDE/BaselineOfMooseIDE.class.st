@@ -150,7 +150,7 @@ BaselineOfMooseIDE >> famix: spec [
 	spec
 		baseline: 'Famix'
 		with: [ 
-		spec repository: 'github://moosetechnology/Famix:v1.1.2/src' ]
+		spec repository: 'github://moosetechnology/Famix:v1.2.x/src' ]
 ]
 
 { #category : 'dependencies' }
@@ -159,7 +159,7 @@ BaselineOfMooseIDE >> famixQueries: spec [
 	spec
 		baseline: 'FamixQueries'
 		with: [
-		spec repository: 'github://moosetechnology/FamixQueries:v1.0.4' ]
+		spec repository: 'github://moosetechnology/FamixQueries:v1.0.x' ]
 ]
 
 { #category : 'dependencies' }
@@ -168,7 +168,7 @@ BaselineOfMooseIDE >> famixReplication: spec [
 	spec
 		baseline: 'FamixReplication'
 		with: [ 
-		spec repository: 'github://moosetechnology/FamixReplication:v1.1.5' ]
+		spec repository: 'github://moosetechnology/FamixReplication:v1.1.x' ]
 ]
 
 { #category : 'dependencies' }
