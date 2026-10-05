@@ -150,7 +150,7 @@ BaselineOfMooseIDE >> famix: spec [
 	spec
 		baseline: 'Famix'
 		with: [ 
-		spec repository: 'github://moosetechnology/Famix:v1.2.x/src' ]
+		spec repository: 'github://moosetechnology/Famix:v1.x.x/src' ]
 ]
 
 { #category : 'dependencies' }
