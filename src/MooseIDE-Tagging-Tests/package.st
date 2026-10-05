@@ -1,1 +1,1 @@
-Package { #name : #'MooseIDE-Tagging-Tests' }
+Package { #name : 'MooseIDE-Tagging-Tests' }

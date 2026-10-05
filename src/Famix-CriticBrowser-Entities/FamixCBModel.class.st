@@ -1,12 +1,14 @@
 Class {
-	#name : #FamixCBModel,
-	#superclass : #MooseModel,
+	#name : 'FamixCBModel',
+	#superclass : 'MooseModel',
 	#traits : 'FamixCBTEntityCreator',
 	#classTraits : 'FamixCBTEntityCreator classTrait',
-	#category : #'Famix-CriticBrowser-Entities-Model'
+	#category : 'Famix-CriticBrowser-Entities-Model',
+	#package : 'Famix-CriticBrowser-Entities',
+	#tag : 'Model'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 FamixCBModel class >> allSubmetamodelsPackagesNames [
 
 	<ignoreForCoverage>
@@ -14,7 +16,7 @@ FamixCBModel class >> allSubmetamodelsPackagesNames [
 	^ #(#'Moose-Query' #'Moose-Core' #'Famix-Traits')
 ]
 
-{ #category : #meta }
+{ #category : 'meta' }
 FamixCBModel class >> annotation [
 
 	<ignoreForCoverage>
