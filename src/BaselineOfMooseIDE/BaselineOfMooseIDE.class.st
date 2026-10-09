@@ -158,7 +158,7 @@ BaselineOfMooseIDE >> famixQueries: spec [
 
 	spec
 		baseline: 'FamixQueries'
-		with: [ spec repository: 'github://moosetechnology/FamixQueries' ]
+		with: [ spec repository: 'github://moosetechnology/FamixQueries:development' ]
 ]
 
 { #category : 'dependencies' }
