@@ -45,6 +45,49 @@ MiSourceTextRendererModelTest >> stubIndexedAnchorText: aString positions: start
 
 ]
 
+{ #category : 'tests - click' }
+MiSourceTextRendererModelTest >> testClickTargetOfAccessIsAttribute [
+
+	| attribute access |
+	attribute := FamixJavaAttribute new name: 'declaredMethod'.
+	access := FamixJavaAccess new variable: attribute.
+
+	self assert: (MiSourceTextIdentifierHighlight new highlightedEntity: access) clickTarget identicalTo: attribute
+]
+
+{ #category : 'tests - click' }
+MiSourceTextRendererModelTest >> testClickTargetOfEntityIsEntity [
+
+	| method |
+	method := FamixJavaMethod new name: 'aMethod'.
+
+	self assert: (MiSourceTextIdentifierHighlight new highlightedEntity: method) clickTarget identicalTo: method
+]
+
+{ #category : 'tests - click' }
+MiSourceTextRendererModelTest >> testClickTargetOfInvocationWithSeveralCandidatesIsGroupWithoutStubs [
+
+	| method1 method2 stub invocation target |
+	method1 := FamixJavaMethod new name: 'm'.
+	method2 := FamixJavaMethod new name: 'm'.
+	stub := FamixJavaMethod new
+		        name: 'm';
+		        isStub: true;
+		        yourself.
+	invocation := FamixJavaInvocation new.
+	invocation candidates: {
+			method1.
+			method2.
+			stub }.
+
+	target := (MiSourceTextIdentifierHighlight new highlightedEntity: invocation) clickTarget.
+
+	self assert: (target isKindOf: MooseGroup).
+	self assertCollection: target hasSameElements: {
+			method1.
+			method2 }
+]
+
 { #category : 'tests - highlighting' }
 MiSourceTextRendererModelTest >> testDoNotHighlightChildren [
 	| entity |

@@ -61,14 +61,16 @@ MiSourceTextSpecRenderer >> applyHighlight: aHighlight markers: markers [
 
 { #category : 'formatting' }
 MiSourceTextSpecRenderer >> applyIdentifierHighlight: aHighlight [
-	"Clicking on identifiers initiate transmission to the owner presenter"
+	"Clicking on identifiers initiate transmission to the owner presenter
+	 Ctrl-click inspects the highlighted entity itself (e.g. an association)"
 
 	self applyHighlight: aHighlight markers: self identifierMarkers.
 
-	formatedText 
-		addAttribute:
-			(TextDoIt new actOnClickBlock: [ :ignored :event |
-				self activateTransmissionWithValue: aHighlight highlightedEntity ])
+	formatedText
+		addAttribute: (TextDoIt new actOnClickBlock: [ :ignored :event |
+					 (event isNotNil and: [ event controlKeyPressed ])
+						 ifTrue: [ aHighlight highlightedEntity inspect ]
+						 ifFalse: [ self activateTransmissionWithValue: aHighlight clickTarget ] ])
 		from: aHighlight from
 		to: aHighlight to
 ]
