@@ -81,3 +81,13 @@ MiArchitecturalMapBrowserTest >> testSettingsDefaultLayout [
 
 	self assert: browser specModel layout equals: RSFlowLayout
 ]
+
+{ #category : 'tests' }
+MiArchitecturalMapBrowserTest >> testShowLoadingMessage [
+
+	| labels |
+	browser visualization showLoadingMessage.
+	labels := browser canvas shapes select: [ :shape | shape isKindOf: RSLabel ].
+	self assert: labels size equals: 1.
+	self assert: labels first text equals: 'Building visualization...'
+]

@@ -88,6 +88,7 @@ MiAbstractVisualization >> noHighlightColorFor: anEntity [
 { #category : 'running' }
 MiAbstractVisualization >> run [
 
+	self showLoadingMessage.
 	self refresh
 ]
 
@@ -104,6 +105,21 @@ MiAbstractVisualization >> shapesWithModel [
 			  shape isLine not and: [
 					  shape model notNil and: [
 						  highlightedEntities includes: (self modelForShape: shape) ] ] ]
+]
+
+{ #category : 'running' }
+MiAbstractVisualization >> showLoadingMessage [
+
+	| label |
+	self canvas shapes copy do: [ :shape | shape remove ].
+	label := RSLabel new
+		         text: 'Building visualization...';
+		         fontSize: 30;
+		         color: Color gray;
+		         yourself.
+	self canvas add: label.
+	self canvas zoomToFit.
+	self canvas signalUpdate
 ]
 
 { #category : 'highlighting' }
