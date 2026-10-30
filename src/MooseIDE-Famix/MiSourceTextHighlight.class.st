@@ -34,6 +34,19 @@ MiSourceTextHighlight >> applyTo: aRenderer [
 ]
 
 { #category : 'accessing' }
+MiSourceTextHighlight >> clickTarget [
+	"for an association, the target(s) of the association, ignoring stubs"
+
+	| targets |
+	highlightedEntity isAssociation ifFalse: [ ^ highlightedEntity ].
+
+	targets := highlightedEntity allTargets reject: #isStub.
+	^ targets size = 1
+		  ifTrue: [ targets anyOne ]
+		  ifFalse: [ targets asMooseGroup ]
+]
+
+{ #category : 'accessing' }
 MiSourceTextHighlight >> from [
 
 	^highlightInterval first
