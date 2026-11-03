@@ -178,7 +178,7 @@ FamixCBContext >> isCBContext [
 { #category : 'printing' }
 FamixCBContext >> printAsBlock [
 
-	^ contextFilter asString
+	^ contextFilter sourceNode sourceCode
 ]
 
 { #category : 'as yet unclassified' }
