@@ -26,7 +26,7 @@ MiLayoutSettingPresenter >> activate: aLayout [
 { #category : 'adding' }
 MiLayoutSettingPresenter >> addButtons: aCollection [
 
-	self layout addPresenters: aCollection withConstraints: [ :c | c width: 75 ]
+	self layout addPresenters: aCollection withConstraints: [ :c | c width: 100 ;  height: self class toolbarHeight ]
 ]
 
 { #category : 'layout' }
