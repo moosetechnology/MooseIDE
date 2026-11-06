@@ -208,7 +208,7 @@ MiApplication >> defaultClientsQuery [
 { #category : 'queries' }
 MiApplication >> defaultProvidersQuery [
 
-	^ (FQCollectScriptQuery script: [ :entity | entity allClients ])
+	^ (FQCollectScriptQuery script: [ :entity | entity allProviders ])
 		  name: 'All providers';
 		  yourself
 ]
