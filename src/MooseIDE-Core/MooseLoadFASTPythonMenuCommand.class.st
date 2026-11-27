@@ -48,13 +48,13 @@ MooseLoadFASTPythonMenuCommand >> execute [
 		baseline: self baselineName;
 		repository: self repositoryURL;
 		onConflictUseIncoming;
-		load: #all
+		load: #Core
 ]
 
 { #category : 'accessing' }
 MooseLoadFASTPythonMenuCommand >> repositoryURL [
 
-	^ 'github://moosetechnology/FAST-Python' , self version , '/src'
+	^ 'github://moosetechnology/FAST-Python:' , self version , '/src'
 ]
 
 { #category : 'accessing' }
