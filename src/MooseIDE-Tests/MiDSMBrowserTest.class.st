@@ -228,6 +228,19 @@ MiDSMBrowserTest >> testOpenDetailedDSM [
 ]
 
 { #category : 'tests' }
+MiDSMBrowserTest >> testOutgoingDependencyFromAttributeDeclaredType [
+	| attribute dependencies |
+	attribute := (model newAttributeNamed: 'attribute')
+		             parentType: class2;
+		             typing: (model newEntityTyping
+				              declaredType: class3;
+				              yourself);
+		             yourself.
+	dependencies := attribute queryAllOutgoingForDSM.
+	self assertCollection: dependencies hasSameElements: { attribute typing }
+]
+
+{ #category : 'tests' }
 MiDSMBrowserTest >> testOutgoingDependencyFromInvocation [
 
 	| dependencies |
