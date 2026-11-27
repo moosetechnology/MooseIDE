@@ -171,3 +171,43 @@ MiTagBrowserTest >> testTagRemainSelectedOnRefresh [
 
 	self assert: tagList selectedItems size equals: 1
 ]
+
+{ #category : 'tests' }
+MiTagBrowserTest >> testTaggingFromAnotherToolRefreshesTaggedEntities [
+	"Tagging an entity with the current tag from another tool must immediately
+	move it from the queried entities to the tagged entities of the tag browser"
+
+	| tag entity association |
+	tag := browser specModel addTag: 'aTag'.
+	browser specModel currentTag: tag.
+	browser refreshDescriptionPage.
+	entity := entityToSelect anyOne.
+	self assertEmpty: detailsPage taggedEntities.
+	self assert:
+		((detailsPage instVarNamed: #incomingEntitiesFilteringList) items includes: entity).
+
+	entity tagWith: tag.
+	association := entity allTagAssociations detect: [ :assoc | assoc tag = tag ].
+	browser application consumeItem: association.
+
+	self assert:
+		((detailsPage instVarNamed: #taggedEntitiesFilteringList) items includes: entity).
+	self deny:
+		((detailsPage instVarNamed: #incomingEntitiesFilteringList) items includes: entity)
+]
+
+{ #category : 'tests' }
+MiTagBrowserTest >> testTaggingTwiceDoesNotDuplicateTag [
+	"Tagging an entity that already has the tag must not create a second tag association"
+
+	| tag entity |
+	tag := browser specModel addTag: 'aTag'.
+	entity := entityToSelect anyOne.
+
+	browser specModel tagEntity: entity with: tag.
+	browser specModel tagEntity: entity with: tag.
+
+	self
+		assert: (entity allTagAssociations select: [ :assoc | assoc tag = tag ]) size
+		equals: 1
+]

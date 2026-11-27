@@ -148,6 +148,8 @@ MiAbstractModel >> tagEntity: aMooseEntity with: aTag [
 			tagAssociation := self privateRemoveTag: aTag fromEntity: aMooseEntity.
 			browser application removeItem: tagAssociation ]
 		ifNotNil: [
+			"Do not tag twice an entity with the same tag"
+			(aMooseEntity hasTag: aTag) ifTrue: [ ^ self ].
 			tagAssociation := self privateSetTag: aTag onEntity: aMooseEntity.
 			browser application consumeItem: tagAssociation ].
 
