@@ -93,6 +93,29 @@ MiArchitecturalMapBrowserTest >> testSettingsDefaultLayout [
 ]
 
 { #category : 'tests' }
+MiArchitecturalMapBrowserTest >> testSettingsKeepNoneChoiceAfterSaveAndLoad [
+	"Choosing None for dependencies and tags must still be None after Save and Load,
+	even when the map has no dependency types or tags to choose from"
+
+	| configuration loaded |
+	configuration := browser specModel currentConfiguration.
+	configuration
+		associationTypesMode: #none;
+		associationTypes: OrderedCollection new;
+		tagsMode: #none;
+		tags: OrderedCollection new.
+
+	loaded := STON fromString: (STON toString: configuration).
+
+	self assert: loaded associationTypesMode equals: #none.
+	self assert: loaded tagsMode equals: #none.
+	self assert:
+		((MiAssociationTypesSettingPresenter on: loaded) instVarNamed: #noItemsButton) state.
+	self assert:
+		((MiTagsSettingPresenter on: loaded) instVarNamed: #noItemsButton) state
+]
+
+{ #category : 'tests' }
 MiArchitecturalMapBrowserTest >> testShowLoadingMessage [
 
 	| labels |

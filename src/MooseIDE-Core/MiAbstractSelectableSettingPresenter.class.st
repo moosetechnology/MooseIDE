@@ -75,27 +75,44 @@ MiAbstractSelectableSettingPresenter >> initializeRadioButtons [
 		                 help: self help;
 		                 yourself.
 
-	customItemsButton whenActivatedDo: [ table show ].
+	customItemsButton whenActivatedDo: [
+			table show.
+			self selectionMode: #custom ].
 	allItemsButton whenActivatedDo: [
 			table hide.
-			self selectAll ].
+			self selectAll.
+			self selectionMode: #all ].
 	noItemsButton whenActivatedDo: [
 			table hide.
-			self selectNone ].
+			self selectNone.
+			self selectionMode: #none ].
 	allItemsButton associatedRadioButtons: {
 			customItemsButton.
 			noItemsButton }.
 
-	(self selectedItems equalsTo: self allItems) ifFalse: [
-			self selectedItems
-				ifEmpty: [ noItemsButton toggleState ]
-				ifNotEmpty: [ customItemsButton toggleState ] ]
+	self selectInitialRadioButton
 ]
 
 { #category : 'initialization' }
 MiAbstractSelectableSettingPresenter >> selectAll [
 
 	self subclassResponsibility
+]
+
+{ #category : 'initialization' }
+MiAbstractSelectableSettingPresenter >> selectInitialRadioButton [
+	"Use the choice stored in the configuration (All, Custom or None).
+	If it is not stored, guess it from the selected items"
+
+	self selectionMode ifNotNil: [ :mode |
+			mode = #none ifTrue: [ noItemsButton toggleState ].
+			mode = #custom ifTrue: [ customItemsButton toggleState ].
+			^ self ].
+
+	(self selectedItems equalsTo: self allItems) ifFalse: [
+			self selectedItems
+				ifEmpty: [ noItemsButton toggleState ]
+				ifNotEmpty: [ customItemsButton toggleState ] ]
 ]
 
 { #category : 'api - selection' }
@@ -112,6 +129,19 @@ MiAbstractSelectableSettingPresenter >> selectNone [
 
 { #category : 'initialization' }
 MiAbstractSelectableSettingPresenter >> selectedItems [
+
+	self subclassResponsibility
+]
+
+{ #category : 'accessing' }
+MiAbstractSelectableSettingPresenter >> selectionMode [
+	"Answer #all, #none or #custom, or nil if the configuration does not store it"
+
+	^ self subclassResponsibility
+]
+
+{ #category : 'accessing' }
+MiAbstractSelectableSettingPresenter >> selectionMode: aSymbol [
 
 	self subclassResponsibility
 ]

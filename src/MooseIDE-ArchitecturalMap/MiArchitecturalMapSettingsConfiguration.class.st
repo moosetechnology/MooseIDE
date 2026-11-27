@@ -15,7 +15,9 @@ Class {
 		'availableLayouts',
 		'availableDoubleClickActions',
 		'availableAssociationTypes',
-		'weightedLinks'
+		'weightedLinks',
+		'associationTypesMode',
+		'tagsMode'
 	],
 	#category : 'MooseIDE-ArchitecturalMap',
 	#package : 'MooseIDE-ArchitecturalMap'
@@ -31,6 +33,18 @@ MiArchitecturalMapSettingsConfiguration >> associationTypes [
 MiArchitecturalMapSettingsConfiguration >> associationTypes: aCollection [
 
 	associationTypes := aCollection
+]
+
+{ #category : 'accessing' }
+MiArchitecturalMapSettingsConfiguration >> associationTypesMode [
+
+	^ associationTypesMode
+]
+
+{ #category : 'accessing' }
+MiArchitecturalMapSettingsConfiguration >> associationTypesMode: aSymbol [
+
+	associationTypesMode := aSymbol
 ]
 
 { #category : 'available' }
@@ -256,6 +270,18 @@ MiArchitecturalMapSettingsConfiguration >> tags [
 MiArchitecturalMapSettingsConfiguration >> tags: aCollection [
 
 	tags := aCollection
+]
+
+{ #category : 'accessing' }
+MiArchitecturalMapSettingsConfiguration >> tagsMode [
+
+	^ tagsMode
+]
+
+{ #category : 'accessing' }
+MiArchitecturalMapSettingsConfiguration >> tagsMode: aSymbol [
+
+	tagsMode := aSymbol
 ]
 
 { #category : 'accessing' }
