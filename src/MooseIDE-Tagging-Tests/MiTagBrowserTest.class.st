@@ -171,3 +171,23 @@ MiTagBrowserTest >> testTagRemainSelectedOnRefresh [
 
 	self assert: tagList selectedItems size equals: 1
 ]
+
+{ #category : 'tests' }
+MiTagBrowserTest >> testTaggingFromAnotherToolRefreshesTaggedEntities [
+	"Tagging an entity with the current tag from another tool must
+	immediately show it in the tagged entities of the tag browser"
+
+	| tag entity association |
+	tag := browser specModel addTag: 'aTag'.
+	browser specModel currentTag: tag.
+	browser refreshDescriptionPage.
+	self assertEmpty: detailsPage taggedEntities.
+
+	entity := entityToSelect anyOne.
+	entity tagWith: tag.
+	association := entity allTagAssociations detect: [ :assoc | assoc tag = tag ].
+	browser application consumeItem: association.
+
+	self
+		assert: ((detailsPage instVarNamed: #taggedEntitiesFilteringList) items includes: entity)
+]

@@ -104,13 +104,12 @@ MiTagBrowser >> canTagEntities [
 
 { #category : 'testing' }
 MiTagBrowser >> consume: anObject [
-	anObject class = FamixTag ifTrue: [ 
-		tagManagementPage refreshTagList
-	].
-	
-	anObject class = FamixTagAssociation ifTrue: [ 
-		specModel currentTag = anObject tag 
-			ifTrue: [ tagManagementPage refreshTaggedEntitiesList ] ]
+
+	anObject isTag ifTrue: [ ^ tagManagementPage refreshTagList ].
+
+	((anObject isKindOf: FamixTagAssociation) and: [
+		 specModel currentTag = anObject tag ]) ifTrue: [
+		descriptionPage refreshTaggedEntitiesList ]
 ]
 
 { #category : 'initialization' }
