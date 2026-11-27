@@ -18,6 +18,14 @@ MooseLoadFamixSQLMenuCommand class >> label [
 	^ 'Famix-SQL'
 ]
 
+{ #category : 'menu' }
+MooseLoadFamixSQLMenuCommand class >> menuCommandOn: aBuilder [
+
+	<worldMenu>
+	^ (self menuCommandOn: aBuilder forCommand: self)
+		  yourself
+]
+
 { #category : 'accessing' }
 MooseLoadFamixSQLMenuCommand class >> menuPriority [
 
