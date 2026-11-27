@@ -105,6 +105,18 @@ MiArchitecturalMapSettingsConfiguration >> doubleClickAction: aCommand [
 	doubleClickCommand := aCommand
 ]
 
+{ #category : 'ston persistence' }
+MiArchitecturalMapSettingsConfiguration >> fromSton: stonReader [
+	"The children query was saved as code (see #stonOn:), we compile it back"
+
+	stonReader parseMapDo: [ :name :value |
+		self
+			instVarNamed: name
+			put: ((name = #childrenQuery and: [ value isString ])
+					 ifTrue: [ self class compiler evaluate: value ]
+					 ifFalse: [ value ]) ]
+]
+
 { #category : 'accessing' }
 MiArchitecturalMapSettingsConfiguration >> hideMegamorphicInvocations [
 
@@ -216,6 +228,20 @@ MiArchitecturalMapSettingsConfiguration >> showDirectoriesAsRootNodes [
 MiArchitecturalMapSettingsConfiguration >> showDirectoriesAsRootNodes: aBoolean [
 
 	showDirectoriesAsRootNodes := aBoolean
+]
+
+{ #category : 'ston persistence' }
+MiArchitecturalMapSettingsConfiguration >> stonOn: stonWriter [
+	"The children query holds a block that STON cannot write.
+	We save it as code, using FQScriptQuery>>#storeOn:"
+
+	stonWriter writeObject: self streamMap: [ :map |
+		self class instVarNames do: [ :name |
+			| value |
+			value := self instVarNamed: name.
+			(name = #childrenQuery and: [ value isNotNil ]) ifTrue: [
+				value := value storeString ].
+			map at: name asSymbol put: value ] ]
 ]
 
 { #category : 'accessing' }
