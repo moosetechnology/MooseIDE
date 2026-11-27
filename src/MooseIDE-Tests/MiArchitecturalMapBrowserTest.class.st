@@ -77,6 +77,16 @@ MiArchitecturalMapBrowserTest >> testSettingsAvailableLayouts [
 ]
 
 { #category : 'tests' }
+MiArchitecturalMapBrowserTest >> testSettingsCanBeSavedAsSTON [
+	"The Save button of the settings writes the configuration with STON.
+	It must only contain plain settings (no live browser, no blocks)."
+
+	| configuration |
+	configuration := browser specModel currentConfiguration.
+	self shouldnt: [ STON toString: configuration ] raise: Error
+]
+
+{ #category : 'tests' }
 MiArchitecturalMapBrowserTest >> testSettingsDefaultLayout [
 
 	self assert: browser specModel layout equals: RSFlowLayout

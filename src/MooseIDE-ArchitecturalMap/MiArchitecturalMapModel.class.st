@@ -154,9 +154,7 @@ MiArchitecturalMapModel >> availableDoubleClickActions [
 	^ {
 		  MiExpandCollapseShapeCommand new.
 		  MiInspectShapeCommand new.
-		  (MiPropagateShapeCommand new
-			   browser: browser;
-			   yourself) }
+		  MiPropagateShapeCommand new }
 ]
 
 { #category : 'available' }
@@ -273,8 +271,11 @@ MiArchitecturalMapModel >> defaultDoubleClickAction [
 
 { #category : 'settings' }
 MiArchitecturalMapModel >> doubleClickActOn: aShape [
+	"Execute a copy of the selected command, so that the configuration only keeps
+	a plain command (without the browser or the shape) and can be saved"
 
-	doubleClickAction
+	doubleClickAction copy
+		browser: browser;
 		context: aShape;
 		execute
 ]
