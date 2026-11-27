@@ -77,9 +77,42 @@ MiArchitecturalMapBrowserTest >> testSettingsAvailableLayouts [
 ]
 
 { #category : 'tests' }
+MiArchitecturalMapBrowserTest >> testSettingsCanBeSavedAsSTON [
+	"The Save button of the settings writes the configuration with STON.
+	It must only contain plain settings (no live browser, no blocks)."
+
+	| configuration |
+	configuration := browser specModel currentConfiguration.
+	self shouldnt: [ STON toString: configuration ] raise: Error
+]
+
+{ #category : 'tests' }
 MiArchitecturalMapBrowserTest >> testSettingsDefaultLayout [
 
 	self assert: browser specModel layout equals: RSFlowLayout
+]
+
+{ #category : 'tests' }
+MiArchitecturalMapBrowserTest >> testSettingsKeepNoneChoiceAfterSaveAndLoad [
+	"Choosing None for dependencies and tags must still be None after Save and Load,
+	even when the map has no dependency types or tags to choose from"
+
+	| configuration loaded |
+	configuration := browser specModel currentConfiguration.
+	configuration
+		associationTypesMode: #none;
+		associationTypes: OrderedCollection new;
+		tagsMode: #none;
+		tags: OrderedCollection new.
+
+	loaded := STON fromString: (STON toString: configuration).
+
+	self assert: loaded associationTypesMode equals: #none.
+	self assert: loaded tagsMode equals: #none.
+	self assert:
+		((MiAssociationTypesSettingPresenter on: loaded) instVarNamed: #noItemsButton) state.
+	self assert:
+		((MiTagsSettingPresenter on: loaded) instVarNamed: #noItemsButton) state
 ]
 
 { #category : 'tests' }

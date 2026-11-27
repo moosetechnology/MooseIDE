@@ -20,7 +20,9 @@ Class {
 		'hideMegamorphicInvocations',
 		'megamorphicTreshold',
 		'showDirectoriesAsRootNodes',
-		'weightedLinks'
+		'weightedLinks',
+		'associationTypesMode',
+		'tagsMode'
 	],
 	#category : 'MooseIDE-ArchitecturalMap',
 	#package : 'MooseIDE-ArchitecturalMap'
@@ -154,9 +156,7 @@ MiArchitecturalMapModel >> availableDoubleClickActions [
 	^ {
 		  MiExpandCollapseShapeCommand new.
 		  MiInspectShapeCommand new.
-		  (MiPropagateShapeCommand new
-			   browser: browser;
-			   yourself) }
+		  MiPropagateShapeCommand new }
 ]
 
 { #category : 'available' }
@@ -226,13 +226,15 @@ MiArchitecturalMapModel >> currentConfiguration [
 
 	^ MiArchitecturalMapSettingsConfiguration new
 		  availableAssociationTypes: self availableAssociationTypes;
-		  associationTypes: associationTypes;
+		  associationTypes: associationTypes copy;
+		  associationTypesMode: associationTypesMode;
 		  availableDoubleClickActions: self availableDoubleClickActions;
 		  doubleClickAction: doubleClickAction;
 		  availableLayouts: self class availableLayouts;
 		  layout: layout;
 		  availableTags: self availableTags;
-		  tags: tags;
+		  tags: tags copy;
+		  tagsMode: tagsMode;
 		  hideReceivedEntities: hideReceivedEntities;
 		  childrenQuery: childrenQuery;
 		  hideMegamorphicInvocations: hideMegamorphicInvocations;
@@ -248,12 +250,14 @@ MiArchitecturalMapModel >> defaultConfiguration [
 	^ MiArchitecturalMapSettingsConfiguration new
 		  availableAssociationTypes: self availableAssociationTypes;
 		  associationTypes: self availableAssociationTypes;
+		  associationTypesMode: #all;
 		  availableDoubleClickActions: self availableDoubleClickActions;
 		  doubleClickAction: self defaultDoubleClickAction;
 		  availableLayouts: self class availableLayouts;
 		  layout: self class defaultLayout;
 		  availableTags: self availableTags;
 		  tags: self class defaultTags;
+		  tagsMode: #none;
 		  hideReceivedEntities: self class defaultHideReceivedEntities;
 		  childrenQuery: self defaultChildrenQuery;
 		  hideMegamorphicInvocations:
@@ -273,8 +277,11 @@ MiArchitecturalMapModel >> defaultDoubleClickAction [
 
 { #category : 'settings' }
 MiArchitecturalMapModel >> doubleClickActOn: aShape [
+	"Execute a copy of the selected command, so that the configuration only keeps
+	a plain command (without the browser or the shape) and can be saved"
 
-	doubleClickAction
+	doubleClickAction copy
+		browser: browser;
 		context: aShape;
 		execute
 ]
@@ -309,7 +316,9 @@ MiArchitecturalMapModel >> hideReceivedEntities [
 MiArchitecturalMapModel >> initializeSettings [
 
 	associationTypes := self availableAssociationTypes.
+	associationTypesMode := #all.
 	tags := self class defaultTags.
+	tagsMode := #none.
 	childrenQuery := self defaultChildrenQuery.
 	hideReceivedEntities := self class defaultHideReceivedEntities.
 	doubleClickAction := self defaultDoubleClickAction.
@@ -318,6 +327,16 @@ MiArchitecturalMapModel >> initializeSettings [
 	megamorphicTreshold := self class defaultMegamorphicTreshold.
 	showDirectoriesAsRootNodes := self class defaultShowDirectoriesAsRootNodes.
 	weightedLinks := self class weightedLinks 
+]
+
+{ #category : 'settings' }
+MiArchitecturalMapModel >> itemsFor: aMode selected: selectedItems available: availableItemsBlock [
+	"All and None are computed on the current map, so that saved settings
+	can be loaded on another model. Custom keeps the selected items"
+
+	aMode = #all ifTrue: [ ^ availableItemsBlock value asOrderedCollection ].
+	aMode = #none ifTrue: [ ^ OrderedCollection new ].
+	^ selectedItems
 ]
 
 { #category : 'accessing' }
@@ -396,8 +415,16 @@ MiArchitecturalMapModel >> tags [
 { #category : 'settings management' }
 MiArchitecturalMapModel >> updateFromConfiguration: aConfiguration [
 
-	associationTypes := aConfiguration associationTypes.
-	tags := aConfiguration tags.
+	associationTypesMode := aConfiguration associationTypesMode.
+	associationTypes := self
+		                    itemsFor: associationTypesMode
+		                    selected: aConfiguration associationTypes
+		                    available: [ self availableAssociationTypes ].
+	tagsMode := aConfiguration tagsMode.
+	tags := self
+		        itemsFor: tagsMode
+		        selected: aConfiguration tags
+		        available: [ self availableTags ].
 	hideReceivedEntities := aConfiguration hideReceivedEntities.
 	childrenQuery := aConfiguration childrenQuery.
 	doubleClickAction := aConfiguration doubleClickAction.

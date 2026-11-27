@@ -48,6 +48,18 @@ MiAssociationTypesSettingPresenter >> selectedItems [
 	^ configuration associationTypes
 ]
 
+{ #category : 'accessing' }
+MiAssociationTypesSettingPresenter >> selectionMode [
+
+	^ configuration associationTypesMode
+]
+
+{ #category : 'accessing' }
+MiAssociationTypesSettingPresenter >> selectionMode: aSymbol [
+
+	configuration associationTypesMode: aSymbol
+]
+
 { #category : 'api - selection' }
 MiAssociationTypesSettingPresenter >> unselectItem: anAssociationType [
 

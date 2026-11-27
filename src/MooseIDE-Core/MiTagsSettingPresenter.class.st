@@ -49,6 +49,18 @@ MiTagsSettingPresenter >> selectedItems [
 	^ configuration tags
 ]
 
+{ #category : 'accessing' }
+MiTagsSettingPresenter >> selectionMode [
+
+	^ configuration tagsMode
+]
+
+{ #category : 'accessing' }
+MiTagsSettingPresenter >> selectionMode: aSymbol [
+
+	configuration tagsMode: aSymbol
+]
+
 { #category : 'api - selection' }
 MiTagsSettingPresenter >> unselectItem: aTag [
 

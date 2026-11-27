@@ -15,7 +15,9 @@ Class {
 		'availableLayouts',
 		'availableDoubleClickActions',
 		'availableAssociationTypes',
-		'weightedLinks'
+		'weightedLinks',
+		'associationTypesMode',
+		'tagsMode'
 	],
 	#category : 'MooseIDE-ArchitecturalMap',
 	#package : 'MooseIDE-ArchitecturalMap'
@@ -31,6 +33,18 @@ MiArchitecturalMapSettingsConfiguration >> associationTypes [
 MiArchitecturalMapSettingsConfiguration >> associationTypes: aCollection [
 
 	associationTypes := aCollection
+]
+
+{ #category : 'accessing' }
+MiArchitecturalMapSettingsConfiguration >> associationTypesMode [
+
+	^ associationTypesMode
+]
+
+{ #category : 'accessing' }
+MiArchitecturalMapSettingsConfiguration >> associationTypesMode: aSymbol [
+
+	associationTypesMode := aSymbol
 ]
 
 { #category : 'available' }
@@ -103,6 +117,18 @@ MiArchitecturalMapSettingsConfiguration >> doubleClickAction [
 MiArchitecturalMapSettingsConfiguration >> doubleClickAction: aCommand [
 
 	doubleClickCommand := aCommand
+]
+
+{ #category : 'ston persistence' }
+MiArchitecturalMapSettingsConfiguration >> fromSton: stonReader [
+	"The children query was saved as code (see #stonOn:), we compile it back"
+
+	stonReader parseMapDo: [ :name :value |
+		self
+			instVarNamed: name
+			put: ((name = #childrenQuery and: [ value isString ])
+					 ifTrue: [ self class compiler evaluate: value ]
+					 ifFalse: [ value ]) ]
 ]
 
 { #category : 'accessing' }
@@ -218,6 +244,22 @@ MiArchitecturalMapSettingsConfiguration >> showDirectoriesAsRootNodes: aBoolean 
 	showDirectoriesAsRootNodes := aBoolean
 ]
 
+{ #category : 'ston persistence' }
+MiArchitecturalMapSettingsConfiguration >> stonOn: stonWriter [
+	"The children query holds a block that STON cannot write.
+	We save it as code, using FQScriptQuery>>#storeOn:, and keep its name
+	so that the reloaded query is equal to the one in the settings droplist"
+
+	stonWriter writeObject: self streamMap: [ :map |
+		self class instVarNames do: [ :name |
+			| value |
+			value := self instVarNamed: name.
+			(name = #childrenQuery and: [ value isNotNil ]) ifTrue: [
+				value := '(' , value storeString , ') name: '
+				         , value name storeString , '; yourself' ].
+			map at: name asSymbol put: value ] ]
+]
+
 { #category : 'accessing' }
 MiArchitecturalMapSettingsConfiguration >> tags [
 
@@ -228,6 +270,18 @@ MiArchitecturalMapSettingsConfiguration >> tags [
 MiArchitecturalMapSettingsConfiguration >> tags: aCollection [
 
 	tags := aCollection
+]
+
+{ #category : 'accessing' }
+MiArchitecturalMapSettingsConfiguration >> tagsMode [
+
+	^ tagsMode
+]
+
+{ #category : 'accessing' }
+MiArchitecturalMapSettingsConfiguration >> tagsMode: aSymbol [
+
+	tagsMode := aSymbol
 ]
 
 { #category : 'accessing' }
