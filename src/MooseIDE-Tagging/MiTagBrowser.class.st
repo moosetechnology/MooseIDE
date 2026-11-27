@@ -109,7 +109,7 @@ MiTagBrowser >> consume: anObject [
 
 	((anObject isKindOf: FamixTagAssociation) and: [
 		 specModel currentTag = anObject tag ]) ifTrue: [
-		descriptionPage refreshTaggedEntitiesList ]
+		descriptionPage refresh ]
 ]
 
 { #category : 'initialization' }
