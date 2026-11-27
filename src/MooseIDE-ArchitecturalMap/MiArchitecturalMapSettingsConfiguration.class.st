@@ -233,14 +233,16 @@ MiArchitecturalMapSettingsConfiguration >> showDirectoriesAsRootNodes: aBoolean 
 { #category : 'ston persistence' }
 MiArchitecturalMapSettingsConfiguration >> stonOn: stonWriter [
 	"The children query holds a block that STON cannot write.
-	We save it as code, using FQScriptQuery>>#storeOn:"
+	We save it as code, using FQScriptQuery>>#storeOn:, and keep its name
+	so that the reloaded query is equal to the one in the settings droplist"
 
 	stonWriter writeObject: self streamMap: [ :map |
 		self class instVarNames do: [ :name |
 			| value |
 			value := self instVarNamed: name.
 			(name = #childrenQuery and: [ value isNotNil ]) ifTrue: [
-				value := value storeString ].
+				value := '(' , value storeString , ') name: '
+				         , value name storeString , '; yourself' ].
 			map at: name asSymbol put: value ] ]
 ]
 
