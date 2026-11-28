@@ -59,7 +59,7 @@ MiDuplicationBrowser class >> menuPriority [
 { #category : 'instance creation' }
 MiDuplicationBrowser class >> newModel [
 
-	^ MiDuplicationBrowserModel new
+	^ MiDuplicationModel new
 ]
 
 { #category : 'instance creation' }

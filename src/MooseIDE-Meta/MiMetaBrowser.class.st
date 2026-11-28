@@ -66,7 +66,7 @@ MiMetaBrowser class >> menuPriority [
 { #category : 'instance creation' }
 MiMetaBrowser class >> newModel [
 
-	^ MiMetaBrowserModel new
+	^ MiMetaModel new
 ]
 
 { #category : 'instance creation' }

@@ -13,7 +13,7 @@ A Replica is a clone in a file, it has a sourceanchor (fileName, startLine, endL
 A ReplicatedFragment must have at least 2 Replica-s
 "
 Class {
-	#name : 'MiDuplicationBrowserModel',
+	#name : 'MiDuplicationModel',
 	#superclass : 'MiAbstractModel',
 	#instVars : [
 		'selectedEntities',
@@ -28,13 +28,13 @@ Class {
 }
 
 { #category : 'settings management' }
-MiDuplicationBrowserModel class >> availableSourcesCleaners [
+MiDuplicationModel class >> availableSourcesCleaners [
 
 	^ FamixRepSourcesCleaner allAvailableCleaners collect: #new
 ]
 
 { #category : 'settings management' }
-MiDuplicationBrowserModel class >> defaultConfiguration [
+MiDuplicationModel class >> defaultConfiguration [
 
 	^ MiDuplicationSettingsConfiguration new
 		  minimumNumberOfLines: self defaultMinimumNumberOfLines;
@@ -47,31 +47,31 @@ MiDuplicationBrowserModel class >> defaultConfiguration [
 ]
 
 { #category : 'settings management' }
-MiDuplicationBrowserModel class >> defaultMaximumShownReplicas [
+MiDuplicationModel class >> defaultMaximumShownReplicas [
 
 	^ 10
 ]
 
 { #category : 'settings management' }
-MiDuplicationBrowserModel class >> defaultMinimumNumberOfCharacters [
+MiDuplicationModel class >> defaultMinimumNumberOfCharacters [
 
 	^ 80
 ]
 
 { #category : 'settings management' }
-MiDuplicationBrowserModel class >> defaultMinimumNumberOfLines [
+MiDuplicationModel class >> defaultMinimumNumberOfLines [
 
 	^ 10
 ]
 
 { #category : 'settings management' }
-MiDuplicationBrowserModel class >> defaultMinimumNumberOfReplicas [
+MiDuplicationModel class >> defaultMinimumNumberOfReplicas [
 
 	^ 2
 ]
 
 { #category : 'settings management' }
-MiDuplicationBrowserModel class >> defaultRepConfiguration [
+MiDuplicationModel class >> defaultRepConfiguration [
 
 	^ FamixRepConfiguration
 		  sourcesCleaner: self defaultSourcesCleaner
@@ -81,32 +81,32 @@ MiDuplicationBrowserModel class >> defaultRepConfiguration [
 ]
 
 { #category : 'settings management' }
-MiDuplicationBrowserModel class >> defaultSourcesCleaner [
+MiDuplicationModel class >> defaultSourcesCleaner [
 
 	^ FamixRepCLikeCleaner new
 ]
 
 { #category : 'accessing' }
-MiDuplicationBrowserModel >> allReplicatedFragments [
+MiDuplicationModel >> allReplicatedFragments [
 
 	^ replicatedFragmentsHierarchy keys
 ]
 
 { #category : 'private' }
-MiDuplicationBrowserModel >> ancestorsOf: aFragment in: aFragmentCollection [
+MiDuplicationModel >> ancestorsOf: aFragment in: aFragmentCollection [
 
 	^ aFragmentCollection select: [ :anotherFragment |
 		  self fragment: anotherFragment includes: aFragment ]
 ]
 
 { #category : 'api' }
-MiDuplicationBrowserModel >> childrenFragments: aFragment [
+MiDuplicationModel >> childrenFragments: aFragment [
 
 	^ replicatedFragmentsHierarchy at: aFragment
 ]
 
 { #category : 'settings management' }
-MiDuplicationBrowserModel >> currentConfiguration [
+MiDuplicationModel >> currentConfiguration [
 
 	^ MiDuplicationSettingsConfiguration new
 		  minimumNumberOfLines: repConfiguration minimumNumberOfLines;
@@ -119,13 +119,13 @@ MiDuplicationBrowserModel >> currentConfiguration [
 ]
 
 { #category : 'settings management' }
-MiDuplicationBrowserModel >> defaultConfiguration [
+MiDuplicationModel >> defaultConfiguration [
 
 	^ self class defaultConfiguration
 ]
 
 { #category : 'private' }
-MiDuplicationBrowserModel >> directParentOf: aFragment in: aFragmentCollection [
+MiDuplicationModel >> directParentOf: aFragment in: aFragmentCollection [
 	"first compute all ancestors of aFragment
 	 then sort them in decreasing order of their own ancestors inside the 1st list
 	 the first one has the most ancestors and therefore must be a direct parent of aFragment"
@@ -139,20 +139,20 @@ MiDuplicationBrowserModel >> directParentOf: aFragment in: aFragmentCollection [
 ]
 
 { #category : 'accessing' }
-MiDuplicationBrowserModel >> entities [
+MiDuplicationModel >> entities [
 
 	^ entities
 ]
 
 { #category : 'accessing' }
-MiDuplicationBrowserModel >> entities: aCollection [
+MiDuplicationModel >> entities: aCollection [
 
 	entities := aCollection sorted: #name ascending.
 	self setConfigurationForEntities
 ]
 
 { #category : 'api' }
-MiDuplicationBrowserModel >> findReplicas [
+MiDuplicationModel >> findReplicas [
 	"Compute all duplication fragments between all entities"
 
 	entities do: [ :entity | entity replicas removeAll ].
@@ -165,7 +165,7 @@ MiDuplicationBrowserModel >> findReplicas [
 ]
 
 { #category : 'private' }
-MiDuplicationBrowserModel >> fragment: aFragment includes: anotherFragment [
+MiDuplicationModel >> fragment: aFragment includes: anotherFragment [
 
 	anotherFragment = aFragment ifTrue: [ ^false ].
 	aFragment replicas size <= anotherFragment replicas size ifTrue: [ ^false ].
@@ -175,7 +175,7 @@ MiDuplicationBrowserModel >> fragment: aFragment includes: anotherFragment [
 ]
 
 { #category : 'api' }
-MiDuplicationBrowserModel >> fragmentsSelection: selectedFragments [
+MiDuplicationModel >> fragmentsSelection: selectedFragments [
 	"called when some clone(s) are selected in the listOfReplicatedFragments (middle list)
 	 - Displays the code of the clones (right pane)
 	   Note: there is a limit on the number of entities shown (see settings)
@@ -194,13 +194,13 @@ MiDuplicationBrowserModel >> fragmentsSelection: selectedFragments [
 ]
 
 { #category : 'testing' }
-MiDuplicationBrowserModel >> hasSettings [
+MiDuplicationModel >> hasSettings [
 
 	^ true
 ]
 
 { #category : 'private' }
-MiDuplicationBrowserModel >> hierarchyOfReplicatedFragment: aCollectionOfFragments [
+MiDuplicationModel >> hierarchyOfReplicatedFragment: aCollectionOfFragments [
 
 	| hierarchy |
 	hierarchy := Dictionary new: aCollectionOfFragments size.
@@ -220,7 +220,7 @@ MiDuplicationBrowserModel >> hierarchyOfReplicatedFragment: aCollectionOfFragmen
 ]
 
 { #category : 'api' }
-MiDuplicationBrowserModel >> highlightEntities: entitiesToHighlight [
+MiDuplicationModel >> highlightEntities: entitiesToHighlight [
 
 	browser selectFragments:
 		(entitiesToHighlight flatCollectAsSet: [ :entity | 
@@ -228,7 +228,7 @@ MiDuplicationBrowserModel >> highlightEntities: entitiesToHighlight [
 ]
 
 { #category : 'initialization' }
-MiDuplicationBrowserModel >> initialize [
+MiDuplicationModel >> initialize [
 
 	super initialize.
 
@@ -240,26 +240,26 @@ MiDuplicationBrowserModel >> initialize [
 ]
 
 { #category : 'initialization' }
-MiDuplicationBrowserModel >> initializeSettings [
+MiDuplicationModel >> initializeSettings [
 
 	self setConfigurationForEntities.
 	maximumShownReplicas := self class defaultMaximumShownReplicas
 ]
 
 { #category : 'api' }
-MiDuplicationBrowserModel >> isSelected: anEntity [
+MiDuplicationModel >> isSelected: anEntity [
 
 	^ selectedEntities includes: anEntity
 ]
 
 { #category : 'accessing' }
-MiDuplicationBrowserModel >> miSelectedItem [
+MiDuplicationModel >> miSelectedItem [
 
 	^ selectedEntities ifEmpty: [ entities ]
 ]
 
 { #category : 'private' }
-MiDuplicationBrowserModel >> newDetector [
+MiDuplicationModel >> newDetector [
 
 	^ FamixRepDetector new
 		  configuration: repConfiguration;
@@ -267,49 +267,49 @@ MiDuplicationBrowserModel >> newDetector [
 ]
 
 { #category : 'api' }
-MiDuplicationBrowserModel >> numberOfEntities [
+MiDuplicationModel >> numberOfEntities [
 
 	^ entities size
 ]
 
 { #category : 'api' }
-MiDuplicationBrowserModel >> numberOfEntitiesInReplicas [
+MiDuplicationModel >> numberOfEntitiesInReplicas [
 
 	^ (replicatedFragmentsHierarchy keys flatCollectAsSet: [ :fragment |
 		   fragment replicas collect: #entity ]) size
 ]
 
 { #category : 'api' }
-MiDuplicationBrowserModel >> numberOfFragments [
+MiDuplicationModel >> numberOfFragments [
 
 	^ replicatedFragmentsHierarchy size
 ]
 
 { #category : 'api' }
-MiDuplicationBrowserModel >> numberOfSelectedEntities [
+MiDuplicationModel >> numberOfSelectedEntities [
 
 	^ selectedEntities size
 ]
 
 { #category : 'api' }
-MiDuplicationBrowserModel >> numberOfSelectedFragments [
+MiDuplicationModel >> numberOfSelectedFragments [
 	^browser lstReplicatedFragments selectedItems size
 ]
 
 { #category : 'accessing' }
-MiDuplicationBrowserModel >> replicatedFragmentsHierarchy [
+MiDuplicationModel >> replicatedFragmentsHierarchy [
 
 	^ replicatedFragmentsHierarchy
 ]
 
 { #category : 'accessing' }
-MiDuplicationBrowserModel >> replicatedFragmentsHierarchy: aCollection [
+MiDuplicationModel >> replicatedFragmentsHierarchy: aCollection [
 
 	replicatedFragmentsHierarchy := aCollection
 ]
 
 { #category : 'api' }
-MiDuplicationBrowserModel >> rootFragments [
+MiDuplicationModel >> rootFragments [
 	"get children of any fragment and reject any fragment in this list "
 	| allChildFragments |
 	allChildFragments := replicatedFragmentsHierarchy associations flatCollect: #value.
@@ -319,14 +319,14 @@ MiDuplicationBrowserModel >> rootFragments [
 ]
 
 { #category : 'accessing' }
-MiDuplicationBrowserModel >> selectEntities: entityCollection [
+MiDuplicationModel >> selectEntities: entityCollection [
 
 	selectedEntities := entityCollection.
 	browser updateToolbar
 ]
 
 { #category : 'initialization' }
-MiDuplicationBrowserModel >> setConfigurationForEntities [
+MiDuplicationModel >> setConfigurationForEntities [
 
 	repConfiguration := self class defaultRepConfiguration.
 
@@ -337,13 +337,13 @@ MiDuplicationBrowserModel >> setConfigurationForEntities [
 ]
 
 { #category : 'settings management' }
-MiDuplicationBrowserModel >> settingsPresenterExtent [
+MiDuplicationModel >> settingsPresenterExtent [
 
 	^ 425 @ 350
 ]
 
 { #category : 'settings management' }
-MiDuplicationBrowserModel >> updateFromConfiguration: aConfiguration [
+MiDuplicationModel >> updateFromConfiguration: aConfiguration [
 
 	repConfiguration
 		minimumNumberOfLines: aConfiguration minimumNumberOfLines;

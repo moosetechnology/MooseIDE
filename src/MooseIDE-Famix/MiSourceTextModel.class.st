@@ -6,7 +6,7 @@ I take care of getting the source code for an entity and ""formatting"" it (actu
 I also keep the displayedEntity and the selectedEntity (in the source code) if any
 "
 Class {
-	#name : 'MiSourceTextBrowserModel',
+	#name : 'MiSourceTextModel',
 	#superclass : 'MiAbstractModel',
 	#instVars : [
 		'shouldHighlightChildren',
@@ -19,7 +19,7 @@ Class {
 }
 
 { #category : 'accessing' }
-MiSourceTextBrowserModel class >> defaultConfiguration [
+MiSourceTextModel class >> defaultConfiguration [
 
 	^ MiSourceTextSettingsConfiguration new
 		  shouldHighlightChildren: self defaultShouldHighlightChildren;
@@ -27,13 +27,13 @@ MiSourceTextBrowserModel class >> defaultConfiguration [
 ]
 
 { #category : 'as yet unclassified' }
-MiSourceTextBrowserModel class >> defaultShouldHighlightChildren [
+MiSourceTextModel class >> defaultShouldHighlightChildren [
 
 	^ true
 ]
 
 { #category : 'settings management' }
-MiSourceTextBrowserModel >> currentConfiguration [
+MiSourceTextModel >> currentConfiguration [
 
 	^ MiSourceTextSettingsConfiguration new
 		  shouldHighlightChildren: shouldHighlightChildren;
@@ -41,13 +41,13 @@ MiSourceTextBrowserModel >> currentConfiguration [
 ]
 
 { #category : 'settings management' }
-MiSourceTextBrowserModel >> defaultConfiguration [
+MiSourceTextModel >> defaultConfiguration [
 
 	^ self class defaultConfiguration
 ]
 
 { #category : 'accessing' }
-MiSourceTextBrowserModel >> displayedEntity: anEntity [
+MiSourceTextModel >> displayedEntity: anEntity [
 
 	self selectedEntity: anEntity.
 
@@ -55,17 +55,17 @@ MiSourceTextBrowserModel >> displayedEntity: anEntity [
 ]
 
 { #category : 'accessing' }
-MiSourceTextBrowserModel >> entities [
+MiSourceTextModel >> entities [
 
 	^ entity ifNil: [ #(  ) ] ifNotNil: [ { entity } ]
 ]
 
 { #category : 'accessing' }
-MiSourceTextBrowserModel >> entity: anEntity [
+MiSourceTextModel >> entity: anEntity [
 ]
 
 { #category : 'actions' }
-MiSourceTextBrowserModel >> event: aMouseEvent selectedEntity: anEntity [
+MiSourceTextModel >> event: aMouseEvent selectedEntity: anEntity [
 
 	self selectedEntity: anEntity.
 
@@ -74,13 +74,13 @@ MiSourceTextBrowserModel >> event: aMouseEvent selectedEntity: anEntity [
 ]
 
 { #category : 'testing' }
-MiSourceTextBrowserModel >> hasSettings [
+MiSourceTextModel >> hasSettings [
 
 	^ true
 ]
 
 { #category : 'initialization' }
-MiSourceTextBrowserModel >> initialize [
+MiSourceTextModel >> initialize [
 	super initialize.
 
 	renderer := MiSourceTextRendererModel new.
@@ -88,49 +88,49 @@ MiSourceTextBrowserModel >> initialize [
 ]
 
 { #category : 'initialization' }
-MiSourceTextBrowserModel >> initializeSettings [
+MiSourceTextModel >> initializeSettings [
 
 	shouldHighlightChildren := self class defaultShouldHighlightChildren
 ]
 
 { #category : 'accessing' }
-MiSourceTextBrowserModel >> miSelectedItem [
+MiSourceTextModel >> miSelectedItem [
 
 	^self entities
 ]
 
 { #category : 'accessing' }
-MiSourceTextBrowserModel >> rendererModel [
+MiSourceTextModel >> rendererModel [
 
 	^renderer 
 ]
 
 { #category : 'accessing' }
-MiSourceTextBrowserModel >> selectedEntity [
+MiSourceTextModel >> selectedEntity [
 	^entity
 ]
 
 { #category : 'accessing' }
-MiSourceTextBrowserModel >> selectedEntity: anEntity [
+MiSourceTextModel >> selectedEntity: anEntity [
 
 	entity := anEntity.
 	browser updateToolbar
 ]
 
 { #category : 'settings management' }
-MiSourceTextBrowserModel >> settingsPresenterExtent [
+MiSourceTextModel >> settingsPresenterExtent [
 
 	^ 375 @ 200
 ]
 
 { #category : 'accessing' }
-MiSourceTextBrowserModel >> shouldHighlightChildren: aBoolean [
+MiSourceTextModel >> shouldHighlightChildren: aBoolean [
 
 	renderer shouldHighlightChildren: aBoolean 
 ]
 
 { #category : 'settings management' }
-MiSourceTextBrowserModel >> updateFromConfiguration: aConfiguration [
+MiSourceTextModel >> updateFromConfiguration: aConfiguration [
 
 	self shouldHighlightChildren: aConfiguration shouldHighlightChildren.
 

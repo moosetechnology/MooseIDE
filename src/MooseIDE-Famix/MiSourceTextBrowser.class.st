@@ -55,7 +55,7 @@ MiSourceTextBrowser class >> menuPriority [
 { #category : 'instance creation' }
 MiSourceTextBrowser class >> newModel [
 
-	^ MiSourceTextBrowserModel new
+	^ MiSourceTextModel new
 ]
 
 { #category : 'instance creation' }

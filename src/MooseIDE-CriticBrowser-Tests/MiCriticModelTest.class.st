@@ -1,8 +1,8 @@
 "
-A MiCriticBrowserModelTest is a test class for testing the behavior of MiCriticBrowserModel
+A MiCriticModelTest is a test class for testing the behavior of MiCriticModel
 "
 Class {
-	#name : 'MiCriticBrowserModelTest',
+	#name : 'MiCriticModelTest',
 	#superclass : 'MiAbstractApplicationTest',
 	#instVars : [
 		'model',
@@ -17,7 +17,7 @@ Class {
 }
 
 { #category : 'removing' }
-MiCriticBrowserModelTest >> removeAllFromRootContext [
+MiCriticModelTest >> removeAllFromRootContext [
 
 	[ model rootContext children isNotEmpty ] whileTrue: [
 		model
@@ -26,7 +26,7 @@ MiCriticBrowserModelTest >> removeAllFromRootContext [
 ]
 
 { #category : 'running' }
-MiCriticBrowserModelTest >> setUp [
+MiCriticModelTest >> setUp [
 
 	super setUp.
 	browser := MiCriticBrowser openForTests: self application.
@@ -49,14 +49,14 @@ MiCriticBrowserModelTest >> setUp [
 ]
 
 { #category : 'running' }
-MiCriticBrowserModelTest >> tearDown [
+MiCriticModelTest >> tearDown [
 
 	browser ifNotNil: [ browser withWindowDo: [ :window | window close ] ].
 	super tearDown
 ]
 
 { #category : 'tests' }
-MiCriticBrowserModelTest >> testAddChildToContext [
+MiCriticModelTest >> testAddChildToContext [
 
 	self removeAllFromRootContext.
 	model addChild: stubCondition toContext: model rootContext. 
@@ -67,7 +67,7 @@ MiCriticBrowserModelTest >> testAddChildToContext [
 ]
 
 { #category : 'tests' }
-MiCriticBrowserModelTest >> testAddViolationsFor [
+MiCriticModelTest >> testAddViolationsFor [
 	
 	self assert: model violations keys size equals: 0.
 	stubCondition runOn: { stubEntity. deadEntity }.
@@ -77,7 +77,7 @@ MiCriticBrowserModelTest >> testAddViolationsFor [
 ]
 
 { #category : 'tests' }
-MiCriticBrowserModelTest >> testContextOf [
+MiCriticModelTest >> testContextOf [
 	| classes methods classEntity |
 	classes := FamixCBContext named: 'Classes' on: '[ :col | col allClasses ]'.
 	methods := FamixCBContext named: 'Methods' on: '[ :col | col allMethods ]'.
@@ -94,7 +94,7 @@ MiCriticBrowserModelTest >> testContextOf [
 ]
 
 { #category : 'tests' }
-MiCriticBrowserModelTest >> testCreateHierarchyTree [
+MiCriticModelTest >> testCreateHierarchyTree [
 	| context tree |
 	self removeAllFromRootContext.
 	context := FamixCBContext named: 'child context' on: '[ :col | col allClasses ]'. 
@@ -107,7 +107,7 @@ MiCriticBrowserModelTest >> testCreateHierarchyTree [
 ]
 
 { #category : 'tests' }
-MiCriticBrowserModelTest >> testDeleteRuleComponent [
+MiCriticModelTest >> testDeleteRuleComponent [
 	self assert: model rootContext children size equals: 2.
 	model deleteRuleComponent: stubCondition.
 	self assert: model rootContext children size equals: 1.
@@ -115,7 +115,7 @@ MiCriticBrowserModelTest >> testDeleteRuleComponent [
 ]
 
 { #category : 'tests' }
-MiCriticBrowserModelTest >> testGetAllViolations [
+MiCriticModelTest >> testGetAllViolations [
 	model setEntities: { stubEntity. deadEntity } asMooseGroup.
 	model run.
 	self assert: model getAllViolations class equals: FamixCBViolationGroup.
@@ -124,7 +124,7 @@ MiCriticBrowserModelTest >> testGetAllViolations [
 ]
 
 { #category : 'tests' }
-MiCriticBrowserModelTest >> testHasBeenEdited [
+MiCriticModelTest >> testHasBeenEdited [
 
 	model setEntities: { stubEntity } asMooseGroup.
 	model run.
@@ -138,7 +138,7 @@ MiCriticBrowserModelTest >> testHasBeenEdited [
 ]
 
 { #category : 'tests' }
-MiCriticBrowserModelTest >> testRemoveBranchFromRuleComponents [
+MiCriticModelTest >> testRemoveBranchFromRuleComponents [
 
 	| context |
 	self removeAllFromRootContext.
@@ -155,7 +155,7 @@ MiCriticBrowserModelTest >> testRemoveBranchFromRuleComponents [
 ]
 
 { #category : 'tests' }
-MiCriticBrowserModelTest >> testRemoveChildFromContext [
+MiCriticModelTest >> testRemoveChildFromContext [
 
 	model removeChild: stubCondition fromContext: model rootContext.
 	self assert: model ruleComponents size equals: 1.
@@ -164,7 +164,7 @@ MiCriticBrowserModelTest >> testRemoveChildFromContext [
 ]
 
 { #category : 'tests' }
-MiCriticBrowserModelTest >> testRemoveRuleViolations [
+MiCriticModelTest >> testRemoveRuleViolations [
 	self assert: (model violations includesKey: stubCondition) equals: false.
 	model setEntities: { } asMooseGroup.
 	model run.
@@ -175,7 +175,7 @@ MiCriticBrowserModelTest >> testRemoveRuleViolations [
 ]
 
 { #category : 'tests' }
-MiCriticBrowserModelTest >> testRun [	
+MiCriticModelTest >> testRun [	
 	model setEntities: { stubEntity. deadEntity } asMooseGroup.
 	model run.
 	self assert: model violations size equals: 2.
@@ -185,7 +185,7 @@ MiCriticBrowserModelTest >> testRun [
 ]
 
 { #category : 'tests' }
-MiCriticBrowserModelTest >> testRunCondition [
+MiCriticModelTest >> testRunCondition [
 	
 	self assert: model violations keys size equals: 0.
 	model runCondition: stubCondition.
@@ -194,7 +194,7 @@ MiCriticBrowserModelTest >> testRunCondition [
 ]
 
 { #category : 'tests' }
-MiCriticBrowserModelTest >> testSetEntities [
+MiCriticModelTest >> testSetEntities [
 	| entityA entityB group |
 	entityA := FamixStMethod new. 
 	entityA name: 'a'.
@@ -214,7 +214,7 @@ MiCriticBrowserModelTest >> testSetEntities [
 ]
 
 { #category : 'tests' }
-MiCriticBrowserModelTest >> testSetOutput [
+MiCriticModelTest >> testSetOutput [
 	| entityA |
 	entityA := FamixStMethod new. 
 	entityA name: 'a'.
@@ -226,7 +226,7 @@ MiCriticBrowserModelTest >> testSetOutput [
 ]
 
 { #category : 'tests' }
-MiCriticBrowserModelTest >> testViolationsOf [
+MiCriticModelTest >> testViolationsOf [
 	model setEntities: { stubEntity. deadEntity } asMooseGroup.
 	model run.
 	self assert: (model violationsOf: stubCondition) class equals: FamixCBViolationGroup.

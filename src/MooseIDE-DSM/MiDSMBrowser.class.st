@@ -63,7 +63,7 @@ MiDSMBrowser class >> menuPriority [
 
 { #category : 'instance creation' }
 MiDSMBrowser class >> newModel [
-	^MiDSMBrowserModel new
+	^MiDSMModel new
 ]
 
 { #category : 'instance creation' }

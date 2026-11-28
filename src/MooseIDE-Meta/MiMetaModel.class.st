@@ -1,5 +1,5 @@
 Class {
-	#name : 'MiMetaBrowserModel',
+	#name : 'MiMetaModel',
 	#superclass : 'MiAbstractModel',
 	#instVars : [
 		'selected',
@@ -11,25 +11,25 @@ Class {
 }
 
 { #category : 'accessing' }
-MiMetaBrowserModel >> entities [
+MiMetaModel >> entities [
 
 	^ entities
 ]
 
 { #category : 'accessing' }
-MiMetaBrowserModel >> entities: anObject [
+MiMetaModel >> entities: anObject [
 
 	entities := anObject
 ]
 
 { #category : 'accessing' }
-MiMetaBrowserModel >> selected [
+MiMetaModel >> selected [
 
 	^ selected
 ]
 
 { #category : 'accessing' }
-MiMetaBrowserModel >> selected: anObject [
+MiMetaModel >> selected: anObject [
 
 	selected := anObject
 ]

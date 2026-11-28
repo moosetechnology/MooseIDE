@@ -43,7 +43,7 @@ MiAggregatorBrowser class >> menuPriority [
 { #category : 'instance creation' }
 MiAggregatorBrowser class >> newModel [
 
-	^ MiAggregatorBrowserModel new
+	^ MiAggregatorModel new
 ]
 
 { #category : 'instance creation' }

@@ -62,7 +62,7 @@ MiTagPresenterTest >> setUp [
 	  mooseModel := MooseModel with: MooseEntity new.
 	  browser := MiTagBrowser
 		             newApplication: self application
-		             model: MiTagBrowserModel new.
+		             model: MiTagModel new.
 	  browser receiveEntity: mooseModel.
 	  presenter := self presenterOwner
 		               instantiate: self presenterClass

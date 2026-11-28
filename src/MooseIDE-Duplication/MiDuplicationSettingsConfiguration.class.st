@@ -101,7 +101,7 @@ The larger, the less duplicated snippets found.
 Minimum: 2';
 				   number: self minimumNumberOfReplicas;
 				   minimum:
-					   MiDuplicationBrowserModel defaultMinimumNumberOfReplicas;
+					   MiDuplicationModel defaultMinimumNumberOfReplicas;
 				   whenNumberChangedDo: [ :nb | self minimumNumberOfReplicas: nb ];
 				   yourself);
 		  add: (MiCodeCleanerSettingPresenter on: self);

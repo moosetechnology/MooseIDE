@@ -2,7 +2,7 @@
 The model for the `MiAccumulatorBrowser`
 "
 Class {
-	#name : 'MiAggregatorBrowserModel',
+	#name : 'MiAggregatorModel',
 	#superclass : 'MiAbstractModel',
 	#instVars : [
 		'entities',
@@ -14,7 +14,7 @@ Class {
 }
 
 { #category : 'api' }
-MiAggregatorBrowserModel >> clearEntities [
+MiAggregatorModel >> clearEntities [
 
 	entities removeAll.
 	selectedEntities removeAll.
@@ -23,7 +23,7 @@ MiAggregatorBrowserModel >> clearEntities [
 ]
 
 { #category : 'accessing' }
-MiAggregatorBrowserModel >> entities [
+MiAggregatorModel >> entities [
 	"converting into an Array because browser Sets have limitations
 	 (notably cannot be used as model of an SpListPresenter)"
 
@@ -31,7 +31,7 @@ MiAggregatorBrowserModel >> entities [
 ]
 
 { #category : 'initialization' }
-MiAggregatorBrowserModel >> initialize [
+MiAggregatorModel >> initialize [
 
 	super initialize.
 
@@ -41,14 +41,14 @@ MiAggregatorBrowserModel >> initialize [
 ]
 
 { #category : 'accessing' }
-MiAggregatorBrowserModel >> miSelectedItem [
+MiAggregatorModel >> miSelectedItem [
 	"overriden, synonym of #selectedEntities"
 
 	^self selectedEntities
 ]
 
 { #category : 'instance creation' }
-MiAggregatorBrowserModel >> newEntities: aCollection [
+MiAggregatorModel >> newEntities: aCollection [
 
 	entities addAll: aCollection.
 
@@ -56,19 +56,19 @@ MiAggregatorBrowserModel >> newEntities: aCollection [
 ]
 
 { #category : 'api' }
-MiAggregatorBrowserModel >> numberOfEntities [
+MiAggregatorModel >> numberOfEntities [
 
 	^entities size
 ]
 
 { #category : 'api' }
-MiAggregatorBrowserModel >> numberOfSelectedEntities [
+MiAggregatorModel >> numberOfSelectedEntities [
 
 	^selectedEntities size
 ]
 
 { #category : 'api' }
-MiAggregatorBrowserModel >> removeSelectedEntities [
+MiAggregatorModel >> removeSelectedEntities [
 
 	entities removeAll: selectedEntities.
 	selectedEntities removeAll.
@@ -77,13 +77,13 @@ MiAggregatorBrowserModel >> removeSelectedEntities [
 ]
 
 { #category : 'accessing' }
-MiAggregatorBrowserModel >> selectedEntities [
+MiAggregatorModel >> selectedEntities [
 
 	^selectedEntities
 ]
 
 { #category : 'accessing' }
-MiAggregatorBrowserModel >> selectedEntities: aCollection [
+MiAggregatorModel >> selectedEntities: aCollection [
 
 	selectedEntities := aCollection asOrderedCollection.
 

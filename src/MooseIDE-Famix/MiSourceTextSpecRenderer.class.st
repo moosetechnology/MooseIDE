@@ -4,7 +4,7 @@ It can `MiSourceTextSpecRenderer >> #renderTextFor: anEntity` by applying the hi
 Highlighting relies on Famix: to get the SourceLanguage keywords and to get the position of Famix entities.
 Some parts of the text are clickable and will trigger `MiSourceTextSpecRenderer >> #activateTransmissionWithValue:` (because the renderer uses `SpTActivable`)
 
-A renderer has a `MiSourceTextBrowserModel` and a parent browser which can be a `MiSourceTextBrowser` or an Inspector.
+A renderer has a `MiSourceTextModel` and a parent browser which can be a `MiSourceTextBrowser` or an Inspector.
 
 "
 Class {

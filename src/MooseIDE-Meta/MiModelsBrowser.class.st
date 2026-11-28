@@ -84,7 +84,7 @@ MiModelsBrowser class >> menuPriority [
 { #category : 'instance creation' }
 MiModelsBrowser class >> newModel [
 
-	^ MiModelsBrowserModel new
+	^ MiModelsModel new
 ]
 
 { #category : 'instance creation' }

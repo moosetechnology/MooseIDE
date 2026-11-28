@@ -4,7 +4,7 @@ DEPRECATED
 A renderer of highlighted source text using Roassal.
 Ideally it would be subclass of a MiSourceTextAbstractRenderer, but it also need to inherit from MiAbstractVisualization
 
-A renderer has a MiSourceTextBrowserModel and a browser.
+A renderer has a MiSourceTextModel and a browser.
 It can #renderText by applying the highlights of its #model
 "
 Class {

@@ -1,5 +1,5 @@
 Class {
-	#name : 'MiTagBrowserModel',
+	#name : 'MiTagModel',
 	#superclass : 'MiAbstractModel',
 	#instVars : [
 		'currentTag',
@@ -14,25 +14,25 @@ Class {
 }
 
 { #category : 'accessing' }
-MiTagBrowserModel >> addCategory: aName [
+MiTagModel >> addCategory: aName [
 
 	self mooseModel createTagCategoryNamed: aName
 ]
 
 { #category : 'initialization' }
-MiTagBrowserModel >> addDynamicTag: aDynamicTag [
+MiTagModel >> addDynamicTag: aDynamicTag [
 
 	dynamicTags add: aDynamicTag
 ]
 
 { #category : 'accessing' }
-MiTagBrowserModel >> addTag: aName [
+MiTagModel >> addTag: aName [
 
 	^self mooseModel tagNamed: aName
 ]
 
 { #category : 'accessing' }
-MiTagBrowserModel >> allCategories [
+MiTagModel >> allCategories [
 
 	^ self mooseModel
 		  ifNil: [ #(  ) ]
@@ -40,7 +40,7 @@ MiTagBrowserModel >> allCategories [
 ]
 
 { #category : 'accessing' }
-MiTagBrowserModel >> allTags [
+MiTagModel >> allTags [
 
 	^ self mooseModel
 		  ifNil: [ #(  ) ]
@@ -48,7 +48,7 @@ MiTagBrowserModel >> allTags [
 ]
 
 { #category : 'testing' }
-MiTagBrowserModel >> createDynamicTag: name description: aText color: aColor category: aCategory query: aQuery [
+MiTagModel >> createDynamicTag: name description: aText color: aColor category: aCategory query: aQuery [
 
 	| newTag |
 	(name notNil and: [ name isNotEmpty ]) ifFalse: [ ^ self ].
@@ -67,7 +67,7 @@ MiTagBrowserModel >> createDynamicTag: name description: aText color: aColor cat
 ]
 
 { #category : 'testing' }
-MiTagBrowserModel >> createTag: name description: aText color: aColor category: aCategory [
+MiTagModel >> createTag: name description: aText color: aColor category: aCategory [
 
 	| newTag |
 	(self mooseModel allTags anySatisfy: [ :tag | tag name = name ])
@@ -88,37 +88,37 @@ MiTagBrowserModel >> createTag: name description: aText color: aColor category: 
 ]
 
 { #category : 'accessing' }
-MiTagBrowserModel >> currentCategory [
+MiTagModel >> currentCategory [
 
 	^ currentCategory
 ]
 
 { #category : 'accessing' }
-MiTagBrowserModel >> currentCategory: aCategory [
+MiTagModel >> currentCategory: aCategory [
 
 	currentCategory := aCategory
 
 ]
 
 { #category : 'accessing' }
-MiTagBrowserModel >> currentTag [
+MiTagModel >> currentTag [
 
 	^ currentTag
 ]
 
 { #category : 'accessing' }
-MiTagBrowserModel >> currentTag: anObject [
+MiTagModel >> currentTag: anObject [
 	currentTag := anObject.
 	browser newTagSelected
 ]
 
 { #category : 'accessing' }
-MiTagBrowserModel >> deleteCurrentCategory [
+MiTagModel >> deleteCurrentCategory [
 
 ]
 
 { #category : 'accessing' }
-MiTagBrowserModel >> deleteCurrentTag [
+MiTagModel >> deleteCurrentTag [
 
 	| tag |
 	tag := currentTag.
@@ -136,13 +136,13 @@ MiTagBrowserModel >> deleteCurrentTag [
 ]
 
 { #category : 'accessing' }
-MiTagBrowserModel >> dynamicTags [
+MiTagModel >> dynamicTags [
 
 	^ dynamicTags
 ]
 
 { #category : 'actions' }
-MiTagBrowserModel >> editCurrentDynamicTag: name description: description color: color category: category query: query [
+MiTagModel >> editCurrentDynamicTag: name description: description color: color category: category query: query [
 
 	| tag |
 	tag := self currentTag.
@@ -164,7 +164,7 @@ MiTagBrowserModel >> editCurrentDynamicTag: name description: description color:
 ]
 
 { #category : 'actions' }
-MiTagBrowserModel >> editCurrentTag [
+MiTagModel >> editCurrentTag [
 
 	| tag |
 	tag := self currentTag.
@@ -175,7 +175,7 @@ MiTagBrowserModel >> editCurrentTag [
 ]
 
 { #category : 'actions' }
-MiTagBrowserModel >> editCurrentTag: name description: description color: color category: category [
+MiTagModel >> editCurrentTag: name description: description color: color category: category [
 
 	| tag |
 	tag := self currentTag.
@@ -198,13 +198,13 @@ MiTagBrowserModel >> editCurrentTag: name description: description color: color 
 ]
 
 { #category : 'accessing' }
-MiTagBrowserModel >> entities [
+MiTagModel >> entities [
 
 	^ entities ifNil: [ {  } ]
 ]
 
 { #category : 'accessing' }
-MiTagBrowserModel >> entities: anObject [
+MiTagModel >> entities: anObject [
 
 	entities := anObject.
 	self mooseModel
@@ -214,14 +214,14 @@ MiTagBrowserModel >> entities: anObject [
 ]
 
 { #category : 'accessing' }
-MiTagBrowserModel >> entitiesTaggedWithCurrentTag [
+MiTagModel >> entitiesTaggedWithCurrentTag [
 
 	self currentTag ifNil: [ ^ #(  ) ].
 	^ self mooseModel entitiesTaggedWith: self currentTag
 ]
 
 { #category : 'accessing' }
-MiTagBrowserModel >> getTagNamed: tagName [
+MiTagModel >> getTagNamed: tagName [
 
 	^ [ self mooseModel findTagNamed: tagName ]
 		  on: NotFound
@@ -229,20 +229,20 @@ MiTagBrowserModel >> getTagNamed: tagName [
 ]
 
 { #category : 'initialization' }
-MiTagBrowserModel >> initialize [
+MiTagModel >> initialize [
 
 	super initialize.
 	dynamicTags := OrderedCollection new
 ]
 
 { #category : 'accessing' }
-MiTagBrowserModel >> miSelectedItem [
+MiTagModel >> miSelectedItem [
 
 	^ self entitiesTaggedWithCurrentTag
 ]
 
 { #category : 'accessing' }
-MiTagBrowserModel >> mooseModel [
+MiTagModel >> mooseModel [
 
 	^ mooseModel ifNil: [ 
 		  self entities
@@ -251,12 +251,12 @@ MiTagBrowserModel >> mooseModel [
 ]
 
 { #category : 'accessing' }
-MiTagBrowserModel >> mooseModel: anAlcixModel [ 
+MiTagModel >> mooseModel: anAlcixModel [ 
 	mooseModel := anAlcixModel
 ]
 
 { #category : 'testing' }
-MiTagBrowserModel >> setTag: newTag description: aText color: aColor category: aCategory [
+MiTagModel >> setTag: newTag description: aText color: aColor category: aCategory [
 
 	(aText notNil and: [ aText isNotEmpty ]) ifTrue: [
 		newTag description: aText ].
@@ -267,19 +267,19 @@ MiTagBrowserModel >> setTag: newTag description: aText color: aColor category: a
 ]
 
 { #category : 'initialization' }
-MiTagBrowserModel >> setTagTo: aTag [
+MiTagModel >> setTagTo: aTag [
 
 	browser setTagTo: aTag.
 ]
 
 { #category : 'accessing' }
-MiTagBrowserModel >> tagEntityNotYourself: anEntity [
+MiTagModel >> tagEntityNotYourself: anEntity [
 
 	self tagEntity: anEntity with: self currentTag
 ]
 
 { #category : 'accessing' }
-MiTagBrowserModel >> untagEntity: anEntity [
+MiTagModel >> untagEntity: anEntity [
 
 	| assoc |
 	assoc := anEntity allTagAssociations

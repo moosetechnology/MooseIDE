@@ -89,7 +89,7 @@ MiCriticBrowser class >> menuPriority [
 
 { #category : 'instance creation' }
 MiCriticBrowser class >> newModel [
-	^ MiCriticBrowserModel new
+	^ MiCriticModel new
 ]
 
 { #category : 'instance creation' }

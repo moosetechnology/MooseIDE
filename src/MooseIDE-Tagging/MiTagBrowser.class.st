@@ -64,7 +64,7 @@ MiTagBrowser class >> mostRecentModel [
 { #category : 'instance creation' }
 MiTagBrowser class >> newModel [
 
-	^ MiTagBrowserModel new
+	^ MiTagModel new
 ]
 
 { #category : 'instance creation' }
